@@ -1,0 +1,6 @@
+#include "MotionSynthesis/MotionPrimitive.h"
+#include "MotionSynthesis/Skeleton.h"
+#include "MotionSynthesis/MotionDatabase.h"
+#include "MotionSynthesis/MotionBlender.h"
+#include "MotionSynthesis/MotionPrimitiveBlender.h"
+#include "MotionSynthesis/MotionDatabaseBuilder.h"
