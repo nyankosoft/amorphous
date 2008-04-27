@@ -1,0 +1,690 @@
+#include "Stage.h"
+#include "BSPMap.h"
+#include "StaticGeometryFG.h"
+#include "EntitySet.h"
+#include "trace.h"
+#include "ViewFrustumTest.h"
+
+#include "Stage/CopyEntityDesc.h"
+#include "Stage/ScreenEffectManager.h"
+
+#include "GameEvent/PyModules.h"
+#include "GameEvent/ScriptManager.h"
+
+//#include "Support/PrecisionTimer.h"
+#include "Support/macro.h"
+#include "Support/memory_helpers.h"
+#include "Support/Profile.h"
+#include "Support/Log/DefaultLog.h"
+#include "Support/fnop.h"
+using namespace fnop;
+
+#include "GameCommon/Timer.h"
+
+#include "JigLib/JL_PhysicsManager.h"
+#include "JigLib/JL_PhysicsVisualizer_D3D.h"
+#include "JigLib/JL_SurfaceMaterial.h"
+
+#include "SurfaceMaterialManager.h"
+
+#include "GameTextSystem/TextMessageManager.h"
+
+
+void SetStageForScriptCallback( CStage* pStage )
+{
+	SetStageForStageScriptCallback( pStage );
+	gsf::py::entity::SetStageForEntityScriptCallback( pStage );
+}
+
+
+CStage::CStage()
+:
+m_pPhysicsManager(NULL),
+m_pPhysicsVisualizer(NULL),
+m_pMaterialManager(NULL),
+m_pScriptManager(NULL),
+m_pStaticGeometry(NULL),
+m_pTextMessageManager(NULL),
+m_pCamera(NULL)
+{
+	m_pScreenEffectManager = new CScreenEffectManager;
+	m_pScreenEffectManager->Init();
+
+	m_pEntitySet = new CEntitySet( this );
+//	m_pEntitySet->InitLightEntityManager();
+
+	m_pScreenEffectManager->SetTargetSceneRenderer( m_pEntitySet->GetRenderManager() );
+
+//	m_pTimer = new PrecisionTimer();
+	m_pTimer = new CTimer();
+	PauseTimer();	// don't start until the initialization is complete
+
+	CBSPTreeForAABB::Initialize();
+
+	m_pTextMessageManager = new CTextMessageManager;
+
+	// create the script manager so that an application can add custom modules
+	// before calling CStage::Initialize() and running scripts for initialization
+	m_pScriptManager = new CScriptManager;
+}
+
+
+CStage::~CStage()
+{
+//	MsgBoxFmt( "deleting stage components...\n sg: %d, es: %d, sem: %d, em: %d, pm: %d, pv: %d",
+//		m_pStaticGeometry, m_pEntitySet, m_pScreenEffectManager, m_pScriptManager, m_pPhysicsManager, m_pPhysicsVisualizer );
+
+	SafeDelete( m_pTextMessageManager );
+	SafeDelete( m_pStaticGeometry );
+	SafeDelete( m_pEntitySet );
+	SafeDelete( m_pScreenEffectManager );
+	SafeDelete( m_pScriptManager );
+	SafeDelete( m_pPhysicsManager );
+	SafeDelete( m_pMaterialManager );
+
+//	MsgBoxFmt( "deleting physics visualizer: %d", m_pPhysicsVisualizer );
+
+	SafeDelete( m_pPhysicsVisualizer );
+
+//	MsgBox( "physics visualizer deleted" );
+
+	SafeDelete( m_pTimer );
+
+//	MsgBox( "end: CStage::~CStage()" );
+}
+
+
+CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filename )
+{
+	string ext = get_ext( filename );
+
+	if( ext == "bspx" )
+		return new CBSPMap( pStage );
+	else if( ext == "sga" )
+		return new CStaticGeometryFG( pStage );
+	else
+	{
+		LOG_PRINT_WARNING( "an invalid static geometry filename: " + filename );
+		return NULL;
+	}
+}
+
+
+bool CStage::InitPhysicsManager()
+{
+	// initialize physics manager
+	m_pPhysicsManager = new CJL_PhysicsManager;
+	m_pPhysicsManager->Init();
+
+	// set pairs that don't collide with each other
+	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_STATICGEOMETRY,ENTITY_COLL_GROUP_STATICGEOMETRY, false );
+	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_PLAYER,		ENTITY_COLL_GROUP_ITEM, false );
+	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_DOOR,			ENTITY_COLL_GROUP_STATICGEOMETRY, false );
+	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_DOOR,			ENTITY_COLL_GROUP_DOOR, false );
+	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_PLAYER,		ENTITY_COLL_GROUP_PLAYER, false );
+	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_NOCLIP,		false );
+
+	m_pPhysicsVisualizer = new CJL_PhysicsVisualizer_D3D( m_pPhysicsManager );
+
+//	MsgBoxFmt( "physics visualizer created: %d", m_pPhysicsVisualizer );
+
+	return true;
+}
+
+
+bool CStage::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
+{
+	return m_pEntitySet->LoadBaseEntity( base_entity_handle );
+}
+
+
+// render stage from the view of an entity which has been specifed as the camera entity
+void CStage::Render()
+{
+	PROFILE_FUNCTION();
+
+	// since no camera has been specified from the client, get the current camera from entity set
+	// 9:27 PM 8/26/2007 - changed: camera entity renders the stage using its own rendering routine
+	// for example,
+	// - camera entity == player
+	//   > render the scene and HUD
+	// - camera entity == scripted camera for script event (cut scene)
+	//   > render the scene
+
+	m_pEntitySet->UpdateCamera();
+
+	CCopyEntity* pCameraEntity = m_pEntitySet->GetCameraEntity();
+	if( pCameraEntity )
+	{
+		pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
+		return;
+	}
+/*
+	CCamera *pCurrentCamera = m_pEntitySet->GetCurrentCamera();
+	if( pCurrentCamera )
+	{
+		Render( *pCurrentCamera );
+//		m_pEntitySet->GetCameraEntity()->RenderStage( this );
+	}
+	else
+	{
+		m_pCamera = NULL;
+		return;	// stage cannot be rendered without a camera
+	}*/
+}
+
+/*
+// render stage by directly providing the camera
+void CStage::Render( CCamera& rCam )
+{
+	// save the current camera
+	// the camera must not be released / destroyed untill the Render() finishes
+	m_pCamera = &rCam;
+
+///	g_PerformanceCheck.iNumDrawPrimCalls = 0;
+//	g_PerformanceCheck.iNumRenderedCopyEntites = 0;
+
+	// set transforms and effect flags
+	m_pScreenEffectManager->BeginRender( rCam );
+
+	// entity set uses shader manager held by screen effect manager
+	m_pScreenEffectManager->SetShaderManager();
+
+	// next, render the objects in the world (entities)
+	// Here, 'entites' also include
+	// - static geometry
+	// - skybox
+	m_pEntitySet->Render( rCam );
+
+	// the scene has been rendered
+	// perform post-process effects on the scene
+	m_pScreenEffectManager->RenderPostProcessEffects();
+
+	// render physics-related debug info
+	// e.g. bounding boxes, contact positions & normals
+//	if( m_pPhysicsVisualizer )
+//		m_pPhysicsVisualizer->RenderVisualInfo();
+
+	m_pScreenEffectManager->EndRender();
+
+	m_pCamera = NULL;
+}*/
+
+
+// render stage by directly providing the camera
+void CStage::Render( CCamera& rCam )
+{
+	m_pCamera = &rCam;
+
+	m_pScreenEffectManager->Render( rCam );
+}
+
+
+/// Called from external module that wants to let the current camera entity render the stage.
+/// Create render tasks necessary for the current camera entity to render the stage,
+/// and add them to render task list.
+void CStage::CreateRenderTasks()
+{
+	CCopyEntity* pCameraEntity = m_pEntitySet->GetCameraEntity();
+	if( pCameraEntity )
+	{
+		pCameraEntity->pBaseEntity->CreateRenderTasks( pCameraEntity );
+		return;
+	}
+}
+
+
+/// called from base entity.
+/// Module that wants to render the stage by directly calling CStage::Render()
+/// needs to call this function in advance
+void CStage::CreateStageRenderTasks( CCamera *pCamera )
+{
+	// creates render tasks for
+	// - envmap
+	// - shadowmap
+
+	m_pEntitySet->GetRenderManager()->UpdateCamera( pCamera );
+
+	m_pScreenEffectManager->CreateRenderTasks();
+
+/*	if( m_pScreenEffectManager->UsesExtraRenderTarget() )
+	{
+		// screen effects are applied after rendering the scene
+		// - register the scene rendering as a separate render task
+		m_pEntitySet->GetRenderManager()->CreateRenderTasks( *pCamera, true );
+
+		m_pScreenEffectManager->CreateRenderTasks();
+	}
+	else
+	{
+		// no screen effects that require texture render target
+		// - final scene is rendered in CStage::Render() path
+		//   and not registered as a separate render task
+		m_pEntitySet->GetRenderManager()->CreateRenderTasks( *pCamera, false );
+	}*/
+}
+
+
+void CStage::ClipTrace(STrace& tr)
+{
+	PROFILE_FUNCTION();
+
+	if( *tr.pvStart == *tr.pvGoal )
+	{
+		tr.vEnd = *tr.pvStart;
+///		tr.fFraction = 0;			// commented out at 17:22 2007/04/15
+
+		return;
+	}
+
+	tr.SetAABB();
+	tr.vEnd = *tr.pvStart + (*tr.pvGoal - *tr.pvStart) * tr.fFraction;
+
+	if( m_pStaticGeometry && !(tr.sTraceType & TRACETYPE_IGNORE_MAP) )
+		m_pStaticGeometry->ClipTrace( tr );
+
+	if( !(tr.sTraceType & TRACETYPE_IGNORE_ALL_ENTITIES) )
+		m_pEntitySet->ClipTrace( tr );
+}
+
+
+void CStage::ClipTrace( CJL_LineSegment& segment )
+{
+	m_pPhysicsManager->ClipLineSegment( segment );
+}
+
+
+//check if a bounding volume is in a valid position
+//if it is in a solid position, turn 'tr.in_solid' to 'true' and return
+void CStage::CheckPosition(STrace& tr)
+{
+	// 'tr.aabb_swept' represents the bounding volume of the source entity in world coordinate
+	if(tr.bvType == BVTYPE_DOT)
+		tr.aabb_swept.SetMaxAndMin( tr.vEnd, tr.vEnd );	//swept volume is just a dot
+	else
+		tr.aabb_swept.TransformCoord( tr.aabb, tr.vEnd );
+
+	// Check position against map
+	if( m_pStaticGeometry && !(tr.sTraceType & TRACETYPE_IGNORE_MAP) )
+		m_pStaticGeometry->CheckPosition( tr );
+
+	// Check position against entities
+	if( !(tr.sTraceType & TRACETYPE_IGNORE_ALL_ENTITIES) )
+		m_pEntitySet->CheckPosition( tr );
+}
+
+
+void CStage::CheckCollision(CTrace& tr)
+{
+	if( tr.GetBVType() == BVTYPE_SPHERE )
+	{	// not checked against map. collision check with entities only.
+		if( tr.GetStartPosition() == tr.GetGoalPosition() )
+		{
+			// check position against entities
+			m_pEntitySet->CheckPosition( tr );
+		}
+	}
+	else if( tr.GetBVType() == BVTYPE_DOT )
+	{
+		if(tr.GetStartPosition() == tr.GetGoalPosition())
+			return;
+		else
+		{
+			STrace tr2;
+			tr2.bvType = BVTYPE_DOT;
+			tr2.pvStart = &tr.GetStartPosition();
+			tr2.pvGoal  = &tr.GetGoalPosition();
+			tr2.aabb.SetMaxAndMin( Vector3(0,0,0), Vector3(0,0,0) );
+			tr2.SetAABB();
+			tr2.sTraceType = tr.GetTraceType();
+			
+			// Check collision with the map (static geometry)
+			if( m_pStaticGeometry )
+                m_pStaticGeometry->ClipTrace(tr2);
+
+			// Check collision with other entities
+			if( !(tr2.sTraceType & TRACETYPE_IGNORE_ALL_ENTITIES) )
+				m_pEntitySet->ClipTrace(tr2);
+
+			tr.SetEndFraction( tr2.fFraction );
+			tr.SetEndPosition( tr2.vEnd );
+			if( tr2.pTouchedEntity )
+				tr.AddTouchEntity( tr2.pTouchedEntity );
+		}
+	}
+		return;
+}
+
+
+void CStage::GetVisibleEntities( CViewFrustumTest& vf_test )
+{
+	static vector<CCopyEntity *> s_vecpTempVisibleEntityBuffer;
+	s_vecpTempVisibleEntityBuffer.resize(0);
+
+	// save the original buffer
+	vector<CCopyEntity *> *pvecpOrigVisibleEntityBuffer	= vf_test.m_pvecpVisibleEntity;
+
+	// set temporary buffer
+	vf_test.SetBuffer( s_vecpTempVisibleEntityBuffer );
+
+	// get potentially visible entities
+	m_pEntitySet->GetVisibleEntities(vf_test);
+
+	// check if the potentially visible entities are occluded by the map or other entities
+	STrace tr;
+	Vector3 vStart = vf_test.GetCamera()->GetPosition();
+	Vector3 vGoal;
+	int i, iNumPotentiallyVisibles = vf_test.GetNumVisibleEntities();
+	if( 300 < iNumPotentiallyVisibles )
+		int iTooManyVisibleEntities = 1;
+
+	tr.pvStart = &vStart;
+	tr.pvGoal  = &vGoal;
+	tr.bvType = BVTYPE_DOT;
+	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
+
+	for( i=0; i<iNumPotentiallyVisibles; i++ )
+	{
+		vGoal = vf_test.GetEntity(i)->Position();
+		tr.fFraction = 1.0f;
+		tr.pTouchedEntity = NULL;
+//		m_pStaticGeometry->ClipTrace( tr );
+		ClipTrace( tr );
+
+//		if( tr.fFraction == 1.0f )
+		if( tr.pTouchedEntity == vf_test.GetEntity(i) )
+			pvecpOrigVisibleEntityBuffer->push_back( vf_test.GetEntity(i) );	// entity is not obstructed
+	}
+
+	// restore original buffer
+	vf_test.SetBuffer( *pvecpOrigVisibleEntityBuffer );
+}
+
+/*
+char CStage::IsCurrentlyVisibleCell(short sCellIndex)
+{
+	return m_pStaticGeometry->IsCurrentlyVisibleCell( sCellIndex );
+}
+*/
+
+void CStage::Update( float dt )
+{
+	PROFILE_FUNCTION();
+
+//	ONCE( MsgBoxFmt( "CStage::Update() - 0x%x", this ) );
+	ONCE( g_Log.Print( "CStage::Update() - 0x%x", this ) );
+
+	// update timer for frame time (delta time)
+	m_pTimer->UpdateFrameTime();
+
+	ONCE( g_Log.Print( "CStage::Update() - updating all entities" ) );
+
+	// update states of entities
+	m_pEntitySet->UpdateAllEntities( dt );
+
+	ONCE( g_Log.Print( "CStage::Update() - updated all entities" ) );
+
+	// event script
+	SetStageForScriptCallback( this );
+	SetTextMsgMgrForScriptCallback( m_pTextMessageManager );
+	m_pScriptManager->Update();
+	SetTextMsgMgrForScriptCallback( NULL );
+	SetStageForScriptCallback( NULL );
+
+	if( m_pTextMessageManager )
+		m_pTextMessageManager->Update( dt );
+
+	m_pScreenEffectManager->Update( dt );
+}
+
+
+double CStage::GetElapsedTime()
+{
+//	return m_pTimer->CurrentTime();
+	return m_pTimer->GetTime();
+}
+
+
+unsigned long CStage::GetElapsedTimeMS()
+{
+//	return (unsigned long)(m_pTimer->CurrentTime() * 1000.0f);
+	return m_pTimer->GetTimeMS();
+}
+
+
+void CStage::PauseTimer()
+{
+	if( m_pTimer )
+        m_pTimer->Stop();
+}
+
+
+void CStage::ResumeTimer()
+{
+	if( m_pTimer )
+        m_pTimer->Start();
+}
+
+
+void CStage::ReleasePhysicsActor( CJL_PhysicsActor* pPhysicsActor )
+{
+	m_pPhysicsManager->ReleaseActor( pPhysicsActor );
+}
+
+
+Vector3 CStage::GetGravityAccel() const
+{
+	return Vector3( 0, -9.8f, 0 );
+}
+
+
+bool CStage::LoadStaticGeometryFromFile( const std::string filename )
+{
+	SafeDelete( m_pStaticGeometry );
+	m_pStaticGeometry = CreateStaticGeometry( this, filename );
+
+	// register the static geometry as an entity
+	// - the entity is used to render the static geometry
+
+	CBaseEntityHandle baseentity_handle;
+	baseentity_handle.SetBaseEntityName( "StaticGeometry" );
+	CCopyEntityDesc desc;
+	desc.strName = filename;
+	desc.pBaseEntityHandle = &baseentity_handle;
+	desc.pUserData = m_pStaticGeometry;
+
+	CreateEntity( desc );
+
+	m_pEntitySet->WriteEntityTreeToFile( "debug/entity_tree - loaded static geometry.txt" );
+
+	return m_pStaticGeometry->LoadFromFile( filename );
+}
+
+
+bool CStage::LoadMaterial( /* const string& material_filename */)
+{
+//	string material_filename = m_strStageFilename;
+//	fnop::change_ext( material_filename, "mat" );
+
+	string material_filename = "Stage\\material.bin";
+
+	SafeDelete( m_pMaterialManager );
+
+	m_pMaterialManager = new CSurfaceMaterialManager;
+	
+	bool b = m_pMaterialManager->LoadFromFile( material_filename );
+
+	if( !b )
+		return false;
+
+	// register materials to physics simulator
+	int i, iNumMaterials = m_pMaterialManager->GetNumMaterials();
+	for( i=0; i<iNumMaterials; i++ )
+	{
+		CJL_SurfaceMaterial phys_material;
+
+		CSurfaceMaterial& src_material = m_pMaterialManager->GetSurfaceMaterial(i);
+
+		phys_material.SetDefault();
+		phys_material.fStaticFriction  = src_material.GetPhysicsMaterial().fStaticFriction;
+		phys_material.fDynamicFriction = src_material.GetPhysicsMaterial().fDynamicFriction;
+		phys_material.fElasticity      = src_material.GetPhysicsMaterial().fElasticity;
+
+//		m_pPhysicsManager->SetMaterial( i, phys_material );
+	}
+
+	return true;
+}
+
+
+CSurfaceMaterial& CStage::GetMaterial( int index )
+{
+	return m_pMaterialManager->GetSurfaceMaterial( index );
+}
+
+
+bool CStage::InitEventScriptManager( const string& script_archive_filename )
+{
+	m_ScriptArchiveFilename = script_archive_filename;
+
+	m_pScriptManager->AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
+	m_pScriptManager->AddModule( "Stage",		g_PyModuleStageMethod );
+	m_pScriptManager->AddModule( "TextMessage",	g_PyModuleTextMessageMethod );
+	m_pScriptManager->AddModule( "Sound",		g_PyModuleSoundMethod );
+	m_pScriptManager->AddModule( "Entity",		gsf::py::entity::g_PyModuleEntityMethod );
+	m_pScriptManager->AddModule( "HUD",			g_PyModuleHUDMethod );
+	m_pScriptManager->AddModule( "cam",			gsf::py::cam::g_PyModuleCameraMethod );
+	m_pScriptManager->AddModule( "StageGraph",	g_PyModuleStageGraphMethod );
+	m_pScriptManager->AddModule( "gr",			g_PyModuleGraphicsElementMethod );
+	m_pScriptManager->AddModule( "gre",			g_PyModuleAnimatedGraphicsMethod );
+	m_pScriptManager->AddModule( "Task",			gsf::py::task::g_PyModuleTaskMethod );
+	m_pScriptManager->AddModule( "Light",		gsf::py::light::g_PyModuleLightMethod );
+	m_pScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
+
+	bool res = m_pScriptManager->LoadScriptArchiveFile( script_archive_filename );
+
+	if( !res )
+	{
+		LOG_PRINT_ERROR( "unable to load script: " + script_archive_filename );
+		return false;
+	}
+
+	// run scripts for initialization
+	ResumeTimer();
+	SetStageForScriptCallback( this );
+	SetTextMsgMgrForScriptCallback( m_pTextMessageManager );
+	m_pScriptManager->InitScripts();
+	m_pScriptManager->Update();
+	SetTextMsgMgrForScriptCallback( NULL );
+	SetStageForScriptCallback( NULL );
+	PauseTimer();
+
+	return true;
+}
+
+
+bool CStage::Initialize( const string& script_archive_filename )
+{
+	LOG_FUNCTION_SCOPE();
+
+	// nullify all the copy-entities in 'm_pEntitySet'
+	m_pEntitySet->ReleaseAllEntities();
+
+	// creates a physics manager for the stage
+	// rigid-body entities are registered to physics engine when created
+	InitPhysicsManager();
+
+	// load scripts initialize
+	// also run scripts that initializes stage
+	// - static geometry is loaded by init script
+	// - entities can be created in this call
+	InitEventScriptManager( script_archive_filename );
+
+	if( m_pStaticGeometry )
+	{
+		// make EntityTree from static geometry
+		m_pStaticGeometry->MakeEntityTree( m_pEntitySet );
+
+		// set dynamic light manager for static geometry
+		m_pStaticGeometry->SetDynamicLightManager( m_pEntitySet );
+
+		// m_pEntitySet->RegisterStaticGeometry( m_pStaticGeometry );
+
+		// set shader to the light manager
+		// because shader is managed by static geometry
+//		m_pEntitySet->GetLightEntityManager()->Init( m_pEntitySet );
+	}
+
+	// load the binary material file that has the same body filename as the stage file
+	// and different suffix "mat"
+	LoadMaterial();
+
+	// stage has been initialized - start the timer
+	ResumeTimer();
+
+	double time = m_pTimer->GetTime();
+
+	return true;
+}
+
+
+void CStage::NotifyEntityTerminationToEventManager( CCopyEntity* pEntity )
+{
+//	m_pScriptManager->OnCopyEntityDestroyed( pEntity );
+}
+
+CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
+{
+	return m_pPhysicsVisualizer;
+}
+
+
+/*
+void CStage::PlaySound3D( char* pcSoundName, Vector3& rvPosition )
+{
+	GAMESOUNDMANAGER.Play3D( pcSoundName, rvPosition );
+}
+
+
+void CStage::PlaySound3D( int iIndex, Vector3& rvPosition )
+{
+	GAMESOUNDMANAGER.Play3D( iIndex, rvPosition );
+}
+
+
+void CStage::PlaySound3D( CSoundHandle &rSoundHandle, Vector3& rvPosition )
+{
+	GAMESOUNDMANAGER.Play3D( rSoundHandle, rvPosition );
+}
+*/
+
+
+/*
+void CStage::ReleaseGraphicsResources()
+{
+//	m_pStaticGeometry->ReleaseGraphicsResources();
+//	m_pEntitySet->ReleaseGraphicsResources();
+//	GetPhysicsVisualizer()->ReleaseGraphicsResources();
+}
+
+
+void CStage::LoadGraphicsResources( const CGraphicsParameters& rParam )
+{
+//	m_pStaticGeometry->LoadGraphicsResources(rParam);
+//	m_pEntitySet->LoadGraphicsResources(rParam);
+//	GetPhysicsVisualizer()->LoadGraphicsResources(rParam);
+}
+*/
+
+
+/*
+void CStage::SaveCurrentState(FILE* fp)
+{
+	m_pEntitySet->SaveCurrentCopyEntities( fp );
+}
+
+void CStage::LoadSavedData(FILE* fp)
+{
+	m_pEntitySet->LoadCopyEntitiesFromSavedData( fp );
+}
+*/

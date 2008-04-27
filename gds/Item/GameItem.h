@@ -1,0 +1,424 @@
+#ifndef  __GAMEITEM_H__
+#define  __GAMEITEM_H__
+
+
+#include <string>
+
+#include "3DCommon/fwd.h"
+#include "3DCommon/MeshObjectContainer.h"
+#include "GameCommon/LangID.h"
+#include "Stage/fwd.h"
+#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/ArchiveObjectFactory.h"
+using namespace GameLib1::Serialization;
+
+#include "fwd.h"
+
+
+/**
+ * item description
+ *
+ */
+class ItemDesc : public IArchiveObjectBase
+{
+public:
+
+	std::string text[Lang::NumLangs];
+
+	inline void Serialize( IArchive& ar, const unsigned int version )
+	{
+		for( int i=0; i<Lang::NumLangs; i++ )
+			ar & text[i];
+	}
+
+};
+
+
+/**
+ * base class for items
+ *
+ */
+class CGameItem : public IArchiveObjectBase
+{
+protected:
+
+	std::string m_strName;
+
+	/// holds mesh related properties
+	/// - mesh object handle
+	/// - 2d array of shader technique handles
+	CMeshObjectContainer m_MeshObjectContainer;
+
+	/// holds how many(much) units player can carry
+	int m_iMaxQuantity;
+
+	/// holds how many(much) units player is carrying
+	int m_iCurrentQuantity;
+
+	int m_Price;
+
+	unsigned int m_TypeFlag;
+
+	ItemDesc m_Desc;
+
+	CStageWeakPtr m_pStage;
+
+public:
+
+	inline CGameItem();
+	virtual ~CGameItem();
+
+	const std::string& GetName() const { return m_strName; }
+
+	void SetName( const std::string& item_name ) { m_strName = item_name; }
+
+	//
+	// mesh object
+	//
+
+	const CMeshObjectContainer& GetMeshObjectContainer() const { return m_MeshObjectContainer; }
+ 
+	const std::string& GetMeshObjectFilename() const { return m_MeshObjectContainer.m_MeshObjectHandle.filename; }
+
+	const CMeshObjectHandle& GetMeshObjectHandle() const { return m_MeshObjectContainer.m_MeshObjectHandle; }
+
+	bool LoadMeshObject();
+
+//	void RenderMeshObject();
+
+	//
+	// functions that change / update item states
+	//
+
+	virtual void OnSelected() {}
+
+	virtual bool HandleInput( int input_code, int input_type, float fParam ) { return false; }
+
+	virtual void Update( float dt ) {}
+
+
+	/// render item status on HUD
+	virtual void RenderStatus( int index, CFontBase *pFont ) {}
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	inline int GetCurrentQuantity() const { return m_iCurrentQuantity; }
+	inline int GetMaxQuantity() const { return m_iMaxQuantity; }
+	inline void AddQuantity( int i ) { m_iCurrentQuantity += i; }
+	inline void ReduceQuantity( int i ) { m_iCurrentQuantity -= i; }
+	inline void SetZeroQuantity() { m_iCurrentQuantity = 0; }
+	inline void SetMaxQuantity() { m_iCurrentQuantity = m_iMaxQuantity; }
+	inline int GetPrice() const { return m_Price; }
+
+	inline unsigned int GetTypeFlag() const { return m_TypeFlag; }
+
+	inline const std::string& GetDesc( int lang_id ) const { return m_Desc.text[lang_id]; }
+
+	void SetStageWeakPtr( CStageWeakPtr pStage ) { m_pStage = pStage; }
+
+	enum eTypeFlag
+	{
+		TYPE_WEAPON		= (1 << 0),
+		TYPE_AMMO		= (1 << 1),
+		TYPE_SUPPLY		= (1 << 2),
+		TYPE_KEY		= (1 << 3),
+		TYPE_UTILITY	= (1 << 4),
+		TYPE_VEHICLE	= (1 << 5),
+/*		TYPE_			= (1 << 5),
+		TYPE_			= (1 << 6),*/
+
+///		TYPE_STOCKABLE	= (1 << 3),
+	};
+
+	enum eID
+	{
+		ID_AMMUNITION = 0,
+		ID_FIREARMS,
+		ID_BINOCULAR,
+		ID_NIGHT_VISION,
+		ID_GRAVITY_GUN,
+		ID_CAMFLOUGE_DEVICE,
+		ID_SUPPRESSOR,
+		ID_KEY,
+//		ID_AMMO_SUPPLY,
+//		ID_LIFE_SUPPLY,
+		ID_MISSILELAUNCHER,
+		ID_AIRCRAFT,
+		NUM_IDS,
+	};
+
+	friend class CItemDatabaseBuilder;
+	friend class CGameItemInfo;
+	friend class CItemDatabaseManager;
+
+};
+
+
+inline CGameItem::CGameItem()
+:
+m_iCurrentQuantity(0),
+m_iMaxQuantity(1),
+m_Price(1),
+m_TypeFlag(0)
+{
+}
+
+
+inline void CGameItem::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_strName;
+	ar & m_MeshObjectContainer;
+	ar & m_iMaxQuantity;
+	ar & m_iCurrentQuantity;
+	ar & m_Price;
+	ar & m_TypeFlag;
+
+	ar & m_Desc;
+}
+
+
+
+//===========================================================================
+// CGI_Battery
+//===========================================================================
+
+
+class CGI_Battery
+{
+public:
+	bool m_bEnabled;
+
+	float m_fBatteryLeft;
+	float m_fMaxBatteryLife;
+	float m_fChargeSpeed;
+
+public:
+
+	CGI_Battery() : m_bEnabled(false), m_fBatteryLeft(0), m_fMaxBatteryLife(1), m_fChargeSpeed(1) {}
+
+	inline void Update( float dt );
+	inline bool IsBatteryFull() const { return (m_fBatteryLeft == m_fMaxBatteryLife); }
+};
+
+
+inline void CGI_Battery::Update( float dt )
+{
+	if( m_bEnabled )
+	{
+		m_fBatteryLeft -= dt;
+		if( m_fBatteryLeft <= 0 )
+		{
+			m_fBatteryLeft = 0;
+			m_bEnabled = false;
+		}
+	}
+	else
+	{
+		if( m_fBatteryLeft < m_fMaxBatteryLife )
+		{
+			m_fBatteryLeft += dt * m_fChargeSpeed;
+		}
+
+		if( m_fMaxBatteryLife <= m_fBatteryLeft )
+		{
+			m_fBatteryLeft = m_fMaxBatteryLife;
+			return;
+		}
+	}
+}
+
+
+//===========================================================================
+// CGI_Binocular
+//===========================================================================
+
+class CGI_Binocular : public CGameItem
+{
+	float m_fCurrentZoom;
+	float m_fZoomSpeed;
+	float m_fTargetZoom;
+
+	float m_fMaxZoomSpeed;
+	float m_fMaxZoom;
+
+public:
+
+	CGI_Binocular() { m_TypeFlag = TYPE_UTILITY; m_fCurrentZoom = 1.0f; m_fTargetZoom = 1.0f; m_fMaxZoom = 2.0f; m_fZoomSpeed = 0.0f; m_fMaxZoomSpeed = 5.0f; }
+
+	unsigned int GetArchiveObjectID() const { return ID_BINOCULAR; }
+
+	virtual void OnSelected();
+
+	virtual bool HandleInput( int input_code, int input_type, float fParam );
+
+	virtual void Update( float dt );
+
+	/// render item status on HUD
+	virtual void RenderStatus( int index, CFontBase *pFont );
+
+	inline void Serialize( IArchive& ar, const unsigned int version );
+
+	friend class CItemDatabaseBuilder;
+};
+
+
+inline void CGI_Binocular::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+	ar & m_fMaxZoom;
+
+//	ar & m_fCurrentZoom;
+//	ar & m_fTargetZoom;
+}
+
+
+
+//===========================================================================
+// CGI_NightVision
+//===========================================================================
+
+class CGI_NightVision : public CGameItem 
+{
+	/// indicates if the object is registered as an active item 
+	bool m_bActive;
+
+	bool m_bEnabled;
+
+	float m_fBatteryLeft;
+	float m_fMaxBatteryLife;
+	float m_fChargeSpeed;
+
+public:
+
+	CGI_NightVision() { m_TypeFlag = TYPE_UTILITY; m_bActive = false; m_bEnabled = false; m_fMaxBatteryLife = 10.0f; m_fBatteryLeft = m_fMaxBatteryLife; m_fChargeSpeed = 1.6f; }
+
+	unsigned int GetArchiveObjectID() const { return ID_NIGHT_VISION; }
+
+	virtual void OnSelected();
+
+	virtual void Update( float dt );
+
+	/// render item status on HUD
+	virtual void RenderStatus( int index, CFontBase *pFont );
+
+	inline void Serialize( IArchive& ar, const unsigned int version );
+
+	friend class CItemDatabaseBuilder;
+};
+
+
+inline void CGI_NightVision::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+	ar & m_fMaxBatteryLife;
+	ar & m_fChargeSpeed;
+	ar & m_fBatteryLeft;
+}
+
+
+//===========================================================================
+// CGI_CamouflageDevice
+//===========================================================================
+
+class CGI_CamouflageDevice : public CGameItem
+{
+	bool m_bEnabled;
+
+	float m_fEffectiveTimeLeft;
+	float m_fMaxEffectiveTime;
+
+public:
+
+	CGI_CamouflageDevice() { m_TypeFlag = TYPE_UTILITY; m_bEnabled = false; m_fMaxEffectiveTime = 10.0f; m_fEffectiveTimeLeft = m_fMaxEffectiveTime; }
+
+	void OnSelected();
+
+	unsigned int GetArchiveObjectID() const { return ID_CAMFLOUGE_DEVICE; }
+
+	inline void Serialize( IArchive& ar, const unsigned int version );
+
+	friend class CItemDatabaseBuilder;
+};
+
+
+inline void CGI_CamouflageDevice::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+	ar & m_bEnabled;
+
+	ar & m_fMaxEffectiveTime;
+	ar & m_fEffectiveTimeLeft;
+}
+
+
+
+//===========================================================================
+// CGI_Suppressor
+//===========================================================================
+
+class CGI_Suppressor : public CGameItem
+{
+	bool m_bAttached;
+
+	float m_fSuppressorPerformance;
+
+public:
+
+	CGI_Suppressor() { m_bAttached = false; }
+
+	void OnSelected();
+
+	unsigned int GetArchiveObjectID() const { return ID_SUPPRESSOR; }
+
+	inline void Serialize( IArchive& ar, const unsigned int version );
+};
+
+
+inline void CGI_Suppressor::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+	ar & m_fSuppressorPerformance;
+}
+
+
+
+//===========================================================================
+// CGI_Key
+//===========================================================================
+
+class CGI_Key : public CGameItem
+{
+	enum eKeyParam
+	{
+		KEY_CODE_LENGTH = 12,
+	};
+
+	char m_acKeyCode[KEY_CODE_LENGTH];
+
+public:
+
+	CGI_Key() { memset( m_acKeyCode, 0, sizeof(char) * KEY_CODE_LENGTH ); }
+
+	void OnSelected();
+
+	unsigned int GetArchiveObjectID() const { return ID_KEY; }
+
+	inline void Serialize( IArchive& ar, const unsigned int version );
+};
+
+
+inline void CGI_Key::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+	for( int i=0; i<KEY_CODE_LENGTH; i++ )
+        ar & m_acKeyCode[i];
+}
+
+
+
+#endif		/*  __GAMEITEM_H__  */

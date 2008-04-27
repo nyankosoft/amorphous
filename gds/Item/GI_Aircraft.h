@@ -1,0 +1,316 @@
+#ifndef __GAMEITEM_AIRCRAFT_H__
+#define __GAMEITEM_AIRCRAFT_H__
+
+#include "GameItem.h"
+#include "WeaponSystem.h"
+
+#include "Stage/BaseEntityHandle.h"
+#include "Stage/Serialization_BaseEntityHandle.h"
+
+#include "GameCommon/PseudoAircraftSimulator.h"
+#include "GameCommon/NozzleFlameParams.h"
+
+#include "GameCommon/MeshBoneController_Aircraft.h"
+#include "GameCommon/MeshBoneControllerFactory.h"
+#include "GameCommon/RangedSet.h"
+
+
+class CD3DXSMeshObject;
+//class CMeshBoneController_AircraftBase;
+
+/*
+class AccelProperty
+{
+public:
+	float accel;
+	float friction;
+
+	AccelProperty( float a, float f ) : accel(a), friction(f) {}
+};*/
+
+
+class CAircraftRotor : public IArchiveObjectBase
+{
+public:
+	float fRotationSpeed;
+	float fAngle;
+	float fAngleOffset;
+
+//	Matrix34 Pose;
+
+	CAircraftRotor() : fRotationSpeed(5.0f), fAngle(0), fAngleOffset(0) {}
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & fRotationSpeed & fAngle & fAngleOffset;
+	}
+
+};
+
+
+class CGI_Aircraft;
+typedef boost::shared_ptr<CGI_Aircraft> CGI_AircraftSharedPtr;
+
+/**
+ * CGI_Aircraft
+ *
+*/
+class CGI_Aircraft : public CGameItem
+{
+	Matrix34 m_CockpitLocalPose;
+
+	/// local camera position for the third person viewpoint
+	Vector3 m_vThirdPersonViewOffset;
+
+	std::vector<NozzleFlameParams> m_vecNozzleFlameParams;
+
+//	float m_fMaxAccel;	// maximum foward thrust
+
+	float m_fAccel;
+	float m_fBoostAccel;	///< additional accel of the boost
+	float m_fBrakeAccel;	///< negative accel to reduce accel
+
+	float m_fCurrentBoost;	///< current boost strength [0,1]
+	float m_fCurrentBrake;	///< current brake strength [0,1]
+
+	/**
+	 * set by aircraft which has limitation to turn upward/downward.
+	 * e.g.) large aircrafts like bombers. helicopters
+	 */
+	RangedSet<float> m_PitchRange;
+
+	RangedSet<float> m_RollRange;
+
+	float m_fMaxPitchAccel;	///< ... 3.0(not very maneuverable?) ... 5.0(highly maneuverable) ...
+	float m_fMaxRollAccel;	///< ... 3.0(not very maneuverable?) ... 5.0(highly maneuverable) ...
+	float m_fMaxYawAccel;
+
+	CWeaponSystem m_WeaponSystem;
+
+//	float m_iNumWeaponSlots;
+
+	enum ammo_release_pose
+	{
+		PYLON_MAIN_0,
+		PYLON_MAIN_1,
+		PYLON_SUB_0,
+		PYLON_SUB_1,
+		PYLON_SUB_2,
+		PYLON_SUB_3,
+		NUM_AMMO_RELEASE_POSITIONS
+	};
+
+	std::vector<Matrix34> m_AmmoReleaseLocalPose;
+
+	Vector3 m_vGunMuzzleEndLocalPos;
+
+	CPseudoAircraftSimulator m_PseudoSimulator;
+
+	float m_fCeiling;		///< maximum altitude the plane can climb up to
+
+	float m_fArmor;			///< min: 50.0 - max: 100.0
+
+	float m_fRCS;			///< radar cross section. the smaller, the harder to detect
+
+	float m_fGearUnitHeight;
+
+	class AmmoPayload : public IArchiveObjectBase
+	{
+	public:
+		std::string AmmoName;
+		int WeaponSlot;			///< weapon slot index where the ammo can be loaded
+		int MaxQuantity;		///< how many waepons can be loaded
+
+		AmmoPayload() : WeaponSlot(0), MaxQuantity(0) {}
+		AmmoPayload( std::string name, int weapon_slot_index, int max_quantity )
+			: AmmoName(name), WeaponSlot(weapon_slot_index), MaxQuantity(max_quantity) {}
+		void Serialize( IArchive& ar, const unsigned int version )
+		{
+			ar & AmmoName & WeaponSlot & MaxQuantity;
+		}
+	};
+
+	/// list of ammo that can be fired from this aircraft
+	std::vector<AmmoPayload> m_vecSupportedAmmo;
+
+//	CBaseEntityHandle m_EngineNozzleFlame;
+//	CBaseEntityHandle m_MuzzleFlashBaseEntity;
+
+//	std::vector<CMeshBoneControllerBase *> m_vecpMeshController;
+	std::vector<CMeshBoneController_AircraftBase *> m_vecpMeshController;
+
+	std::vector<CAircraftRotor> m_vecRotor;
+
+public:
+
+	inline CGI_Aircraft();
+	virtual ~CGI_Aircraft();
+
+	void InitWeaponSystem();
+
+	CWeaponSystem &WeaponSystem() { return m_WeaponSystem; }
+
+	/// CPseudoAircraftSimulator::Update() is not called inside of this function,
+	/// and it needs to be called separately.
+	/// Calls Update() of weapon items currently used by the aircraft
+	virtual void Update( float dt );
+
+	/// controls pseudo-aircraft simulator
+	virtual bool HandleInput( int input_code, int input_type, float fParam );
+
+	// return handle to a base entity used as ammunition
+//	inline CBaseEntityHandle& GetBaseEntityHandle() { return m_AmmoBaseEntity; }
+
+	// return handle to a base entity is used as muzzle flash of this ammo
+//	inline CBaseEntityHandle& GetMuzzleFlashHandle() { return m_MuzzleFlashBaseEntity; }
+
+	CPseudoAircraftSimulator &PseudoSimulator() { return m_PseudoSimulator; }
+
+	float GetDefaultAccel() { return m_fAccel; }
+
+	void ResetAircraftControls();
+
+	Matrix34 GetCockpitLocalPose() const { return m_CockpitLocalPose; }
+
+	Vector3 GetThirdPersonCameraOffset() const { return m_vThirdPersonViewOffset; }
+
+	std::vector<NozzleFlameParams>& GetNozzleFlameParams() { return m_vecNozzleFlameParams; }
+
+	/// \return the max quantity of specified ammunition aircraft can carry
+	/// \return 0 if aircraft cannot load the ammunition
+	int GetPayloadForAmmunition( const CGI_Ammunition& ammo, int weapon_slot_index ) const;
+
+	float GetManeuverability() const;// { return m_fMaxPitchAccel * m_fMaxRollAccel; }
+
+	float GetStealthiness() const;// { float s; s = (1.0f / m_fRCS); Limit( s, 0.0f, 1.0f ); return s; }
+
+	float GetArmor() const { return m_fArmor; }
+
+	float GetArmorScaled() const;
+
+	int GetNumRotors() const { return (int)m_vecRotor.size(); }
+	const CAircraftRotor& GetRotor( int index ) const { return m_vecRotor[index]; }
+
+
+	/// initializes mesh bone controller
+	/// If called without an argument, the mesh bone controllers use the mesh
+	/// of the aircraft item for their target mesh
+	/// If a mesh is given as the argument, the mesh bone controllers use it
+	/// as the target mesh.
+	/// In the latter case, the mesh is maintained as a simple borrowed reference,
+	/// and the user is responsible for calling ResetMeshController(),
+	/// before the mesh is destroyed
+	bool InitMeshController( CD3DXSMeshObject* pMesh = NULL);
+
+	/// disconnet the target mesh from the mesh bone controllers.
+	/// The target mesh object is held as borrowed reference
+	/// and not released/destroyed by this call
+	void ResetMeshController();
+
+	// update local transforms of the target mesh controlled by mesh bone controllers
+	// usually called before rendering the mesh
+	void UpdateTargetMeshTransforms();
+
+	unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT; }
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	friend class CItemDatabaseBuilder;
+
+};
+
+
+inline CGI_Aircraft::CGI_Aircraft()
+{
+	m_TypeFlag |= (TYPE_VEHICLE);
+
+	m_CockpitLocalPose = Matrix34( Vector3( 0.0f, 1.0f, 20.0f ), Matrix33Identity() );
+
+	m_vThirdPersonViewOffset = Vector3(0,1,0);
+
+	m_fAccel = 30.0f;
+	m_fBoostAccel = 150.0f;
+	m_fBrakeAccel = 5.0f;
+
+	m_fCurrentBoost = 0.0f;
+	m_fCurrentBrake = 0.0f;
+
+	//m_PitchRange;
+	//m_RollRange;
+
+	float m_fMaxPitchAccel = 5.0f;
+	float m_fMaxRollAccel = 5.0f;
+	float m_fMaxYawAccel = 5.0f;
+
+	m_AmmoReleaseLocalPose.resize( NUM_AMMO_RELEASE_POSITIONS, Matrix34Identity() );
+
+	m_vGunMuzzleEndLocalPos = Vector3( 0.0f, 1.0f, 20.0f );
+
+	m_fGearUnitHeight = 0.0f;
+
+	m_fCeiling = 100000.0f;
+
+	m_fArmor = 0.5f;
+	m_fRCS = 1.0f;
+
+}
+
+
+inline void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+    ar & m_CockpitLocalPose;
+
+    ar & m_vThirdPersonViewOffset;
+
+	ar & m_vecNozzleFlameParams;
+
+	ar & m_fAccel & m_fBoostAccel & m_fBrakeAccel;
+
+//	ar & m_PitchRange & m_RollRange;
+
+	ar & m_fMaxPitchAccel & m_fMaxRollAccel & m_fMaxYawAccel;
+
+//	ar & m_WeaponSystem;
+
+	ar & m_AmmoReleaseLocalPose;
+
+	ar & m_vGunMuzzleEndLocalPos;
+
+	ar & m_fGearUnitHeight;
+
+	ar & m_fCeiling;
+	ar & m_fArmor;
+	ar & m_fRCS;
+
+	ar & m_vecSupportedAmmo;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		m_fCurrentBoost = 0.0f;
+		m_fCurrentBrake = 0.0f;
+	}
+
+	// serialization of mesh controllers
+	CMeshBoneControllerFactory factory;
+	ar.Polymorphic( m_vecpMeshController, factory );
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		size_t i, num = m_vecpMeshController.size();
+		for( i=0; i<num; i++ )
+		{
+//			if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_... )
+//				((CMeshBoneController_AircraftBase *)m_vecpMeshController[i])->SetPseudoAircraftSimulator( &m_PseudoSimulator );
+				m_vecpMeshController[i]->SetPseudoAircraftSimulator( &m_PseudoSimulator );
+		}
+	}
+
+	ar & m_vecRotor;
+
+//	ar & ;
+}
+
+
+#endif  /*  __GAMEITEM_AIRCRAFT_H__  */

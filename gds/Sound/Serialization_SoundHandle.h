@@ -1,0 +1,43 @@
+
+#ifndef __GAMELIB1_SOUNDHANDLE_SERIALIZATION_H__
+#define __GAMELIB1_SOUNDHANDLE_SERIALIZATION_H__
+
+
+#include "SoundHandle.h"
+
+#include "Support/Serialization/Archive.h"
+
+
+namespace GameLib1
+{
+
+namespace Serialization
+{
+
+
+inline IArchive& operator & ( IArchive& ar, CSoundHandle& rSoundHandle )
+{
+	string strTemp;
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		// restore the sound name from the archive
+		ar & strTemp;
+		rSoundHandle.SetSoundName( strTemp.c_str() );
+	}
+	else
+	{
+		// record the entity name to the archive
+		strTemp = rSoundHandle.GetSoundName();
+		ar & strTemp;
+	}
+
+	return ar;
+}
+
+
+}  /*  Serialization  */
+
+}  /*  GameLib1  */
+
+
+#endif  /*  __GAMELIB1_SOUNDHANDLE_SERIALIZATION_H__  */

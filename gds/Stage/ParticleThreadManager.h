@@ -1,0 +1,47 @@
+
+#ifndef  __ParticleThreadManager_H__
+#define  __ParticleThreadManager_H__
+
+
+#include <vector>
+#include <string>
+
+#include "Support/Singleton.h"
+using namespace NS_KGL;
+
+
+class CBE_ParticleSet;
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
+class CParticleThreadManager
+{
+private:
+
+	std::vector<CBE_ParticleSet *> m_vecpParticleSetBaseEntity;
+
+protected:
+///	CParticleThreadManager();		//singleton
+
+	static CSingleton<CParticleThreadManager> m_obj;
+
+public:
+
+	static CParticleThreadManager* Get() { return m_obj.get(); }
+
+	CParticleThreadManager();
+
+	virtual ~CParticleThreadManager();
+
+	void AddParticleSetBaseEntity( CBE_ParticleSet *pBaseEntity );
+};
+
+
+#endif		/*  __ParticleThreadManager_H__  */

@@ -1,0 +1,562 @@
+
+#include "DirectInputGamepad.h"
+#include "DirectInput.h"
+#include "InputHub.h"
+
+#include "Support/StringAux.h"
+#include "Support/Log/StateLog.h"
+#include "Support/Log/DefaultLog.h"
+
+#include <math.h>
+
+
+#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
+
+
+
+//-----------------------------------------------------------------------------
+// Function-prototypes
+//-----------------------------------------------------------------------------
+BOOL CALLBACK    EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext );
+BOOL CALLBACK    EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VOID* pContext );
+
+// used to temporarily hold pointer to joystick device
+static LPDIRECTINPUTDEVICE8 g_pDITempJoystickDevice = NULL;
+
+
+CDirectInputGamepad::CDirectInputGamepad()
+: m_pDIJoystick(NULL)
+{
+	g_Log.Print( "CDirectInputGamepad::CDirectInputGamepad() - creating an instance..." );
+
+	int i;
+	for( i=0; i<NUM_ANALOG_CONTROLS; i++ )
+        m_afAxisPosition[i] = 0.0f;
+
+	for( i=0; i<NUM_ANALOG_CONTROLS; i++ )
+        m_bPrevHold[i] = false;
+
+	for( i=0; i<NUM_POV_INPUTS; i++ )
+	{
+		m_aPrevPOV[i] = -1;
+		m_aPOV[i] = -1;
+	}
+
+	m_bSendExtraDigitalInputFromAnalogInput = false;
+
+	m_bSendExtraDigitalInputFromPOVInput = true;
+}
+
+
+CDirectInputGamepad::~CDirectInputGamepad()
+{
+	Release();
+}
+
+
+void CDirectInputGamepad::Release()
+{
+    // Unacquire the device one last time just in case
+    // the app tried to exit while the device is still acquired.
+    if( m_pDIJoystick ) 
+        m_pDIJoystick->Unacquire();
+    
+    // Release the DirectInput object of the joystick.
+    SAFE_RELEASE( m_pDIJoystick );
+}
+
+
+HRESULT CDirectInputGamepad::Init( HWND hWnd )
+{
+	g_Log.Print( "CDirectInputGamepad::Init() - initializing gamepad..." );
+
+	HRESULT hr;
+
+	bool bExclusive = true;
+	bool bForeground = true;
+	DWORD dwCoopFlags = 0;
+
+	if( bExclusive )
+        dwCoopFlags = DISCL_EXCLUSIVE;
+    else
+        dwCoopFlags = DISCL_NONEXCLUSIVE;
+
+    if( bForeground )
+        dwCoopFlags |= DISCL_FOREGROUND;
+    else
+        dwCoopFlags |= DISCL_BACKGROUND;
+
+
+	g_pDITempJoystickDevice = NULL;
+
+	g_Log.Print( "CDirectInputGamepad::Init() - enumerating input device objects..." );
+
+    // Look for a simple joystick we can use for this sample program.
+	hr = DIRECTINPUT.GetDirectInputObject()->EnumDevices( DI8DEVCLASS_GAMECTRL, 
+		                                                  EnumJoysticksCallback,
+														  NULL, DIEDFL_ATTACHEDONLY );
+    if( FAILED(hr) )
+		return hr;
+    
+    // Make sure we got a joystick
+    if( NULL == g_pDITempJoystickDevice )
+    {
+//		MessageBox( NULL, "Joystick not found.", "DirectInputGamepad::Init()", MB_ICONERROR | MB_OK );
+		return E_FAIL;
+    }
+	else
+	{
+		m_pDIJoystick = g_pDITempJoystickDevice;
+	}
+    
+    // Set the data format to "simple joystick" - a predefined data format 
+    //
+    // A data format specifies which controls on a device we are interested in,
+    // and how they should be reported. This tells DInput that we will be
+    // passing a DIJOYSTATE2 structure to IDirectInputDevice::GetDeviceState().
+    if( FAILED( hr = m_pDIJoystick->SetDataFormat( &c_dfDIJoystick2 ) ) )
+        return hr;
+
+	g_Log.Print( "gamepad data format has been set" );
+
+    // Set the cooperativity level to let DirectInput know how
+    // this device should interact with the system and with other
+    // DirectInput applications.
+    hr = m_pDIJoystick->SetCooperativeLevel( hWnd, dwCoopFlags );
+
+    if( hr == DIERR_UNSUPPORTED && !bForeground && bExclusive )
+    {
+//      SetCooperativeLevel() returned DIERR_UNSUPPORTED. For security reasons, background exclusive mouse
+//		access is not allowed.
+		Release();
+		MessageBox( NULL, "SetCooperativeLevel() failed.", "Error", MB_OK );
+        return S_OK;
+    }
+
+    if( FAILED(hr) )
+        return hr;
+
+    // Enumerate the joystick objects. The callback function enabled user
+    // interface elements for objects that are found, and sets the min/max
+    // values property for discovered axes.
+    if( FAILED( hr = m_pDIJoystick->EnumObjects( EnumObjectsCallback, (VOID*)hWnd, DIDFT_ALL ) ) )
+        return hr;
+
+    // IMPORTANT STEP TO USE BUFFERED DEVICE DATA!
+    //
+    // DirectInput uses unbuffered I/O (buffer size = 0) by default.
+    // If you want to read buffered data, you need to set a nonzero
+    // buffer size.
+    //
+    // Set the buffer size to SAMPLE_BUFFER_SIZE (defined above) elements.
+    //
+    // The buffer size is a DWORD property associated with the device.
+    DIPROPDWORD dipdw;
+    dipdw.diph.dwSize       = sizeof(DIPROPDWORD);
+    dipdw.diph.dwHeaderSize = sizeof(DIPROPHEADER);
+    dipdw.diph.dwObj        = 0;
+    dipdw.diph.dwHow        = DIPH_DEVICE;
+    dipdw.dwData            = DIJOYSTICK_BUFFER_SIZE; // Arbitary buffer size
+    if( FAILED( hr = m_pDIJoystick->SetProperty( DIPROP_BUFFERSIZE, &dipdw.diph ) ) )
+        return hr;
+
+	// set to the absolute axis mode
+    dipdw.diph.dwSize       = sizeof(DIPROPDWORD);
+    dipdw.diph.dwHeaderSize = sizeof(DIPROPHEADER);
+    dipdw.diph.dwObj        = 0;
+    dipdw.diph.dwHow        = DIPH_DEVICE;
+    dipdw.dwData            = DIPROPAXISMODE_ABS; // Arbitary buffer size
+    if( FAILED( hr = m_pDIJoystick->SetProperty( DIPROP_AXISMODE, &dipdw.diph ) ) )
+        return hr;
+
+    // Acquire the newly created device
+    //m_pDIJoystick->Acquire();
+
+	return S_OK;
+}
+
+
+
+//-----------------------------------------------------------------------------
+// Name: EnumJoysticksCallback()
+// Desc: Called once for each enumerated joystick. If we find one, create a
+//       device interface on it so we can play with it.
+//-----------------------------------------------------------------------------
+BOOL CALLBACK EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VOID* pContext )
+{
+	HRESULT hr;
+
+	// Obtain an interface to the enumerated joystick.
+	hr = DIRECTINPUT.GetDirectInputObject()->CreateDevice( pdidInstance->guidInstance, &g_pDITempJoystickDevice, NULL );
+
+    // If it failed, then we can't use this joystick. (Maybe the user unplugged
+    // it while we were in the middle of enumerating it.)
+    if( FAILED(hr) ) 
+        return DIENUM_CONTINUE;
+
+    // Stop enumeration. Note: we're just taking the first joystick we get. You
+    // could store all the enumerated joysticks and let the user pick.
+    return DIENUM_STOP;
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+// Name: EnumObjectsCallback()
+// Desc: Callback function for enumerating objects (axes, buttons, POVs) on a 
+//       joystick. This function enables user interface elements for objects
+//       that are found to exist, and scales axes min/max values.
+//-----------------------------------------------------------------------------
+BOOL CALLBACK EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi,
+                                   VOID* pContext )
+{
+    HWND hDlg = (HWND)pContext;
+
+    static int nSliderCount = 0;  // Number of returned slider controls
+    static int nPOVCount = 0;     // Number of returned POV controls
+
+    // For axes that are returned, set the DIPROP_RANGE property for the
+    // enumerated axis in order to scale min/max values.
+    if( pdidoi->dwType & DIDFT_AXIS )
+    {
+        DIPROPRANGE diprg; 
+        diprg.diph.dwSize       = sizeof(DIPROPRANGE); 
+        diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER); 
+        diprg.diph.dwHow        = DIPH_BYID; 
+        diprg.diph.dwObj        = pdidoi->dwType; // Specify the enumerated axis
+        diprg.lMin              = -1000; 
+        diprg.lMax              = +1000; 
+    
+        // Set the range for the axis
+        if( FAILED( g_pDITempJoystickDevice->SetProperty( DIPROP_RANGE, &diprg.diph ) ) ) 
+            return DIENUM_STOP;
+         
+    }
+
+/*
+    // Set the UI to reflect what objects the joystick supports
+    if (pdidoi->guidType == GUID_XAxis)
+    {
+        EnableWindow( GetDlgItem( hDlg, IDC_X_AXIS ), TRUE );
+        EnableWindow( GetDlgItem( hDlg, IDC_X_AXIS_TEXT ), TRUE );
+    }
+    if (pdidoi->guidType == GUID_YAxis)
+    {
+        EnableWindow( GetDlgItem( hDlg, IDC_Y_AXIS ), TRUE );
+        EnableWindow( GetDlgItem( hDlg, IDC_Y_AXIS_TEXT ), TRUE );
+    }
+    if (pdidoi->guidType == GUID_ZAxis)
+    {
+        EnableWindow( GetDlgItem( hDlg, IDC_Z_AXIS ), TRUE );
+        EnableWindow( GetDlgItem( hDlg, IDC_Z_AXIS_TEXT ), TRUE );
+    }
+    if (pdidoi->guidType == GUID_RxAxis)
+    {
+        EnableWindow( GetDlgItem( hDlg, IDC_X_ROT ), TRUE );
+        EnableWindow( GetDlgItem( hDlg, IDC_X_ROT_TEXT ), TRUE );
+    }
+    if (pdidoi->guidType == GUID_RyAxis)
+    {
+        EnableWindow( GetDlgItem( hDlg, IDC_Y_ROT ), TRUE );
+        EnableWindow( GetDlgItem( hDlg, IDC_Y_ROT_TEXT ), TRUE );
+    }
+    if (pdidoi->guidType == GUID_RzAxis)
+    {
+        EnableWindow( GetDlgItem( hDlg, IDC_Z_ROT ), TRUE );
+        EnableWindow( GetDlgItem( hDlg, IDC_Z_ROT_TEXT ), TRUE );
+    }
+    if (pdidoi->guidType == GUID_Slider)
+    {
+        switch( nSliderCount++ )
+        {
+            case 0 :
+                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0 ), TRUE );
+                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0_TEXT ), TRUE );
+                break;
+
+            case 1 :
+                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1 ), TRUE );
+                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1_TEXT ), TRUE );
+                break;
+        }
+    }
+    if (pdidoi->guidType == GUID_POV)
+    {
+        switch( nPOVCount++ )
+        {
+            case 0 :
+                EnableWindow( GetDlgItem( hDlg, IDC_POV0 ), TRUE );
+                EnableWindow( GetDlgItem( hDlg, IDC_POV0_TEXT ), TRUE );
+                break;
+
+            case 1 :
+                EnableWindow( GetDlgItem( hDlg, IDC_POV1 ), TRUE );
+                EnableWindow( GetDlgItem( hDlg, IDC_POV1_TEXT ), TRUE );
+                break;
+
+            case 2 :
+                EnableWindow( GetDlgItem( hDlg, IDC_POV2 ), TRUE );
+                EnableWindow( GetDlgItem( hDlg, IDC_POV2_TEXT ), TRUE );
+                break;
+
+            case 3 :
+                EnableWindow( GetDlgItem( hDlg, IDC_POV3 ), TRUE );
+                EnableWindow( GetDlgItem( hDlg, IDC_POV3_TEXT ), TRUE );
+                break;
+        }
+    }
+*/
+    return DIENUM_CONTINUE;
+}
+
+
+HRESULT CDirectInputGamepad::Acquire()
+{
+	if( m_pDIJoystick )
+		return m_pDIJoystick->Acquire();
+	else
+		return E_FAIL;
+}
+
+
+//read input data from buffer
+HRESULT CDirectInputGamepad::UpdateInput()
+{
+	m_pDIJoystick->Poll();
+
+    DIDEVICEOBJECTDATA didod[ DIJOYSTICK_BUFFER_SIZE ];  // Receives buffered data 
+    DWORD              dwElements;
+    DWORD              i;
+    HRESULT            hr;
+
+    if( NULL == m_pDIJoystick ) 
+        return S_OK;
+    
+    dwElements = DIJOYSTICK_BUFFER_SIZE;
+    hr = m_pDIJoystick->GetDeviceData( sizeof(DIDEVICEOBJECTDATA), didod, &dwElements, 0 );
+    if( hr != DI_OK ) 
+    {
+        // We got an error or we got DI_BUFFEROVERFLOW.
+        //
+        // Either way, it means that continuous contact with the
+        // device has been lost, either due to an external
+        // interruption, or because the buffer overflowed
+        // and some events were lost.
+        //
+        // Consequently, if a button was pressed at the time
+        // the buffer overflowed or the connection was broken,
+        // the corresponding "up" message might have been lost.
+        //
+        // But since our simple sample doesn't actually have
+        // any state associated with button up or down events,
+        // there is no state to reset.  (In a real game, ignoring
+        // the buffer overflow would result in the game thinking
+        // a key was held down when in fact it isn't; it's just
+        // that the "up" event got lost because the buffer
+        // overflowed.)
+        //
+        // If we want to be cleverer, we could do a
+        // GetDeviceState() and compare the current state
+        // against the state we think the device is in,
+        // and process all the states that are currently
+        // different from our private state.
+        hr = m_pDIJoystick->Acquire();
+        while( hr == DIERR_INPUTLOST ) 
+            hr = m_pDIJoystick->Acquire();
+
+        // Update the dialog text 
+//        if( hr == DIERR_OTHERAPPHASPRIO || hr == DIERR_NOTACQUIRED ) 
+//            ErrorMessageBox("mouse unacquired");
+
+        // hr may be DIERR_OTHERAPPHASPRIO or other errors.  This
+        // may occur when the app is minimized or in the process of 
+        // switching, so just try again later 
+        return S_OK; 
+    }
+
+    if( FAILED(hr) )  
+        return hr;
+
+	SInputData input;
+
+    // Study each of the buffer elements and process them.
+    for( i = 0; i < dwElements; i++ )
+    {
+		if( didod[i].dwData & 0x80 )
+		{
+			input.iType = ITYPE_KEY_PRESSED;
+			input.fParam1 = 1.0f;
+		}
+		else
+		{
+			input.iType = ITYPE_KEY_RELEASED;
+			input.fParam1 = 0.0f;
+		}
+
+		if( DIJOFS_BUTTON0 <= didod[i].dwOfs && didod[i].dwOfs <= DIJOFS_BUTTON11 )
+		{
+			input.iGICode = GIC_GPD_BUTTON_00 + ( didod[i].dwOfs - DIJOFS_BUTTON0 );
+			INPUTHUB.UpdateInput(input);
+
+			StateLog.Update(14, "gpd.button: " + to_string(input.iGICode - GIC_GPD_BUTTON_00) );
+		}
+		else
+		{
+			switch( didod[i].dwOfs )
+			{
+				// original input data is signed value, but is represented
+				// as unsigned integer (DWORD)
+				// therefore, didod[i].dwData must be casted to signed integer
+				// before being casted to other types, such as float
+
+				case DIJOFS_X:
+					m_afAxisPosition[AXIS_X] = ((float)(int)didod[i].dwData);
+					break;
+				case DIJOFS_Y:
+					m_afAxisPosition[AXIS_Y] = ((float)(int)didod[i].dwData);
+					break;
+				case DIJOFS_Z:
+					m_afAxisPosition[AXIS_Z] = ((float)(int)didod[i].dwData);
+					break;
+				case DIJOFS_RX:
+					m_afAxisPosition[ROTATION_X] = ((float)(int)didod[i].dwData);
+					break;
+				case DIJOFS_RY:
+					m_afAxisPosition[ROTATION_Y] = ((float)(int)didod[i].dwData);
+					break;
+				case DIJOFS_RZ:
+					m_afAxisPosition[ROTATION_Z] = ((float)(int)didod[i].dwData);
+					break;
+				case DIJOFS_POV(0):
+					m_aPOV[POV_0] = ((int)didod[i].dwData);
+					break;
+/*				case DIJOFS_POV(1):
+					m_aPOV[POV_1] = ((int)didod[i].dwData);
+					break;
+				case DIJOFS_POV(2):
+					m_aPOV[POV_2] = ((int)didod[i].dwData);
+					break;
+				case DIJOFS_POV(3):
+					m_aPOV[POV_3] = ((int)didod[i].dwData);
+					break;*/
+				default:
+					break;
+		    }
+		}
+    }
+
+	input.iType = ITYPE_KEY_PRESSED;
+
+	input.iGICode = GIC_GPD_AXIS_X;
+	input.fParam1 = m_afAxisPosition[AXIS_X];
+	INPUTHUB.UpdateInput(input);
+
+	input.iGICode = GIC_GPD_AXIS_Y;
+	input.fParam1 = m_afAxisPosition[AXIS_Y];
+	INPUTHUB.UpdateInput(input);
+
+	input.iGICode = GIC_GPD_AXIS_Z;
+	input.fParam1 = m_afAxisPosition[AXIS_Z];
+	INPUTHUB.UpdateInput(input);
+
+	input.iGICode = GIC_GPD_ROTATION_Z;
+	input.fParam1 = m_afAxisPosition[ROTATION_Z];
+	INPUTHUB.UpdateInput(input);
+
+	if( m_bSendExtraDigitalInputFromAnalogInput )
+        SendAnalogInputAsDigitalInput();
+
+	if( m_bSendExtraDigitalInputFromPOVInput )
+		SendPOVInputAsDigitalInput();
+
+	StateLog.Update( 8, "gpd.axis-x: " + to_string(m_afAxisPosition[AXIS_X]) );
+	StateLog.Update( 9, "gpd.axis-y: " + to_string(m_afAxisPosition[AXIS_Y]) );
+	StateLog.Update(10, "gpd.axis-z: " + to_string(m_afAxisPosition[AXIS_Z]) );
+	StateLog.Update(11, "gpd.rotation-x: " + to_string(m_afAxisPosition[ROTATION_X]) );
+	StateLog.Update(12, "gpd.rotation-y: " + to_string(m_afAxisPosition[ROTATION_Y]) );
+	StateLog.Update(13, "gpd.rotation-z: " + to_string(m_afAxisPosition[ROTATION_Z]) );
+
+    return S_OK;
+}
+
+
+void CDirectInputGamepad::SendAnalogInputAsDigitalInput()
+{
+	static const int s_GICodeForBinarizedAnalogInput[] =
+	{
+		GIC_GPD_AXIS_X_D,     ///< AXIS_X,
+		GIC_GPD_AXIS_Y_D,     ///< AXIS_Y,
+		GIC_GPD_AXIS_Z_D,     ///< AXIS_Z,
+		GIC_GPD_ROTATION_X_D, ///< ROTATION_X,
+		GIC_GPD_ROTATION_Y_D, ///< ROTATION_Y,
+		GIC_GPD_ROTATION_Z_D, ///< ROTATION_Z,
+	};
+
+	SInputData input;
+	for( int i=0; i<NUM_ANALOG_CONTROLS; i++ )
+	{
+		const float& dirkey_threshold = 700.0f;
+
+		bool prev_hold = m_bPrevHold[i];
+		bool hold = dirkey_threshold < fabsf(m_afAxisPosition[i]) ? true : false;
+
+		m_bPrevHold[i] = hold;
+
+		input.iGICode = s_GICodeForBinarizedAnalogInput[i];
+
+		if( !prev_hold && hold )
+		{
+			input.iType = ITYPE_KEY_PRESSED;
+			input.fParam1 = 1.0f;
+			INPUTHUB.UpdateInput(input);
+		}
+		else if( prev_hold && !hold )
+		{
+			input.iType = ITYPE_KEY_RELEASED;
+			input.fParam1 = 0.0f;
+			INPUTHUB.UpdateInput(input);
+		}
+	}
+}
+
+
+static inline int GetGICodeFromPOV( int pov )
+{
+	switch( pov )
+	{
+	case 0:     return GIC_GPD_UP;
+	case 9000:  return GIC_GPD_RIGHT;
+	case 18000: return GIC_GPD_DOWN;
+	case 27000: return GIC_GPD_LEFT;
+	default:    return GIC_GPD_DOWN;
+	}
+}
+
+
+void CDirectInputGamepad::SendPOVInputAsDigitalInput()
+{
+	SInputData input;
+	for( int i=0; i<1/*NUM_POV_INPUTS*/; i++ )
+	{
+		if( m_aPrevPOV[i] == -1 && m_aPOV[i] != -1 )
+		{
+			input.iGICode = GetGICodeFromPOV( m_aPOV[i] );
+			input.iType = ITYPE_KEY_PRESSED;
+			input.fParam1 = 1.0f;
+			INPUTHUB.UpdateInput(input);
+		}
+		else if( m_aPrevPOV[i] != -1 && m_aPOV[i] == -1 )
+		{
+			input.iGICode = GetGICodeFromPOV( m_aPrevPOV[i] );
+			input.iType = ITYPE_KEY_RELEASED;
+			input.fParam1 = 0.0f;
+			INPUTHUB.UpdateInput(input);
+		}
+	}
+
+	// save the current pov indicator values
+	memcpy( m_aPrevPOV, m_aPOV, sizeof(m_aPOV) );
+}
+
+

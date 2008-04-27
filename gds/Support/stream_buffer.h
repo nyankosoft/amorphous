@@ -1,0 +1,121 @@
+
+#ifndef  __stream_buffer_H__
+#define  __stream_buffer_H__
+
+
+#include <string>
+#include <vector>
+#include <fstream>
+using namespace std;
+
+#include "Support/msgbox.h"
+
+#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/ArchiveObjectFactory.h"
+using namespace GameLib1::Serialization;
+
+
+class stream_buffer : public IArchiveObjectBase
+{
+	int m_pos;
+
+	std::vector<char> m_buffer;
+
+public:
+
+	stream_buffer() : m_pos(0) {}
+	~stream_buffer() {}
+
+//	void Init();
+//	void Release();
+
+	inline int read( void *dest_buffer, int size );
+	inline int write( const void *src_buffer, int size );
+
+	inline bool end() { return m_pos == m_buffer.size(); }
+	inline bool error() { return false; }
+
+	inline bool LoadTextFile( const std::string& filename );
+
+	inline void resize( int size ) { m_buffer.resize( size, 0 ); }
+
+	std::vector<char>& buffer() { return m_buffer; }
+
+	const std::vector<char>& get_buffer() const { return m_buffer; }
+
+	inline void seek_pos( int pos ) { m_pos = pos; }
+
+	inline void reset_pos() { seek_pos(0); }
+
+	virtual void Serialize( IArchive& ar, const unsigned int version ) { ar & m_buffer; }
+
+//	inline bool LoadText
+};
+
+
+inline int stream_buffer::read( void *dest_buffer, int size )
+{
+	int left_size = (int)m_buffer.size() - m_pos;
+//	int copy_size = std::min( left_size, size );
+	int copy_size = left_size < size ? left_size : size;
+	memcpy( dest_buffer, &m_buffer[0] + m_pos, copy_size );
+
+	m_pos += copy_size;
+
+	return copy_size;
+}
+
+
+/**
+ * add given data to the buffer
+ * returns the size of the data actually written to the buffer
+ */
+inline int stream_buffer::write( const void *src_buffer, int size )
+{
+	int left_size = (int)m_buffer.size() - m_pos;
+/*
+//	int copy_size = std::min( left_size, size );
+	int copy_size = left_size < size ? left_size : size;
+	memcpy( &m_buffer[0] + m_pos, src_buffer, copy_size );
+*/
+	// extend the buffer size if necessary
+	if( left_size < size )
+		m_buffer.insert( m_buffer.end(), size - left_size, 0 );
+
+	memcpy( &m_buffer[0] + m_pos, src_buffer, size );
+
+	m_pos += size;
+
+	return size;
+}
+
+
+inline bool stream_buffer::LoadTextFile( const std::string& filename )
+{
+	std::ifstream testfile;
+
+	testfile.open( filename.c_str() );
+
+	if ( !testfile.is_open() ) 
+	{
+//		g_Log.Print( "Cannot open Python script file, '" + filename + "'!");
+		MsgBox( string("Cannot open a file, '") + filename );
+		return false;
+	}
+
+	// Get the length of the file
+	testfile.seekg( 0, std::ios::end );
+	int nLength = testfile.tellg();
+	testfile.seekg( 0, std::ios::beg );
+
+	m_buffer.resize( nLength + 1, 0 );
+
+	testfile.read( &m_buffer[0], nLength );
+
+	m_pos = 0;
+
+	return true;
+}
+
+
+#endif		/*  __stream_buffer_H__  */

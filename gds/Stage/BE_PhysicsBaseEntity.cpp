@@ -1,0 +1,134 @@
+
+#include "BE_PhysicsBaseEntity.h"
+#include "EntityCollisionGroups.h"
+
+#include "CopyEntity.h"
+#include "3DMath/Matrix33.h"
+#include "JigLib/JL_ShapeDesc_Box.h"
+#include "JigLib/JL_ShapeDesc_Capsule.h"
+#include "JigLib/JL_PhysicsActor.h"
+
+#include "Support/SafeDeleteVector.h"
+
+
+CBE_PhysicsBaseEntity::CBE_PhysicsBaseEntity()
+{
+	this->m_EntityFlag |= ( BETYPE_RIGIDBODY | BETYPE_USE_PHYSSIM_RESULTS );
+
+	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
+
+//	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
+
+}
+
+
+CBE_PhysicsBaseEntity::~CBE_PhysicsBaseEntity()
+{
+	SafeDeleteVector( m_ActorDesc.vecpShapeDesc );
+}
+
+
+/**
+ * base entites derived from CPhysicsBaseEntity must call this functiont explicitly
+ * in their own LoadSpecificPropertiesFromFile()
+ * i.e. put CPhysicsBaseEntity::LoadSpecificPropertiesFromFile(pcLine) at the start of
+ * the function
+*/
+bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
+{
+	Vector3 vBoxSideLength, vLocalPos;
+	float fAngle;
+	float fRadius, fLength;
+	bool enable_physics_sim;
+	string coll_group;
+
+	if( scanner.TryScanBool( "PHYSICS", "TRUE/FALSE", enable_physics_sim ) )
+	{
+		if( enable_physics_sim )	RaiseEntityFlag( BETYPE_RIGIDBODY );
+		if( !enable_physics_sim )	ClearEntityFlag( BETYPE_RIGIDBODY );
+	}
+
+	if( scanner.TryScanLine( "PHYS_COLL_GROUP", coll_group ) )
+	{
+		if( coll_group == "STATICGEOMETRY" )	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_STATICGEOMETRY;
+		else if( coll_group == "PLAYER" )		m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_PLAYER;
+		else if( coll_group == "DOOR" )			m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_DOOR;
+		else if( coll_group == "OTHERS" )		m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
+		else if( coll_group == "NOCLIP" )		m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
+		else if( coll_group == "NO_COLLISION" )	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
+	}
+
+	if( scanner.TryScanLine( "MASS", m_ActorDesc.fMass ) ) return true;
+
+	if( scanner.TryScanLine( "SHAPE_BOX", vBoxSideLength ) )
+	{
+		CJL_ShapeDesc_Box *pBoxDesc = new CJL_ShapeDesc_Box;
+		pBoxDesc->vSideLength = vBoxSideLength;
+		m_ActorDesc.vecpShapeDesc.push_back( pBoxDesc );
+		return true;
+	}
+
+	if( scanner.TryScanLine( "SHAPE_CAPSULE", fRadius, fLength ) )
+	{
+		CJL_ShapeDesc_Capsule *pCapsuleDesc = new CJL_ShapeDesc_Capsule;
+		pCapsuleDesc->fLength = fLength;
+		pCapsuleDesc->fRadius = fRadius;
+		m_ActorDesc.vecpShapeDesc.push_back( pCapsuleDesc );
+		return true;
+	}
+
+	if( scanner.TryScanLine( "SHAPE_LOCAL_POSITION", vLocalPos ) )
+	{
+		if( m_ActorDesc.vecpShapeDesc.size() == 0 )
+			return false;
+
+		m_ActorDesc.vecpShapeDesc.back()->vLocalPos = vLocalPos;
+		return true;
+	}
+
+	if( scanner.GetTagString().find( "SHAPE_LOCAL_ROT" ) == 0 )
+	{
+		// the tag starts with "SHAPE_LOCAL_ROT"
+		string str;
+		scanner.ScanLine( str, fAngle );
+
+		// convert from degree to radisan
+		fAngle = fAngle / 360.0f * 2.0f * 3.141592f;
+
+		if( m_ActorDesc.vecpShapeDesc.size() == 0 )
+			return false;
+
+		const string& tag = scanner.GetTagString();
+		Matrix33 matRot;
+		if( tag == "SHAPE_LOCAL_ROT_X" )		matRot.SetRotationX(fAngle);
+		else if( tag == "SHAPE_LOCAL_ROT_Y" )	matRot.SetRotationY(fAngle);
+		else if( tag == "SHAPE_LOCAL_ROT_Z" )	matRot.SetRotationZ(fAngle);
+		else return false;
+
+		Matrix33& rmatLocalOrient = m_ActorDesc.vecpShapeDesc.back()->matLocalOrient;
+		rmatLocalOrient = matRot * rmatLocalOrient;	// the rotation is applied following ealier rotations
+
+		return true;
+	}
+
+	if( scanner.GetTagString() == "DISABLE_FREEZING" )
+	{
+		m_ActorDesc.bAllowFreezing = false;
+		return true;
+	}
+
+//	if( scanner.TryScanLine( "S_FRICTION", m_fStaticFriction ) ) return true;
+//	if( scanner.TryScanLine( "D_FRICTION", m_fDynamicFriction ) ) return true;
+
+	return false;
+}
+
+
+void CBE_PhysicsBaseEntity::Serialize( IArchive& ar, const unsigned int version )
+{
+	CBaseEntity::Serialize( ar, version );
+
+	ar & m_ActorDesc;
+
+//	ar & m_fStaticFriction & m_fDynamicFriction;
+}
