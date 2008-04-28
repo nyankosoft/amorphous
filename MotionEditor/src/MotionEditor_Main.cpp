@@ -1,0 +1,400 @@
+//-----------------------------------------------------------------------------
+// File: D3DAppTestMain.cpp
+//-----------------------------------------------------------------------------
+
+#include <vld.h>
+
+#include <xercesc/util/PlatformUtils.hpp>
+
+#include "GameInput/StdKeyboard.h"
+#include "3DCommon/all.h"
+#include "GameCommon/Timer.h"
+#include "Support/CameraController_Win32.h"
+#include "Support/FileOpenDialog_Win32.h"
+#include "Support/memory_helpers.h"
+#include "Support/Profile.h"
+#include "XML/XMLDocumentLoader.h"
+
+#include "MotionSynthesis/MotionDatabaseBuilder.h"
+
+#include "MotionPrimitiveViewer.h"
+
+
+//-----------------------------------------------------------------------------
+// Global variables
+//-----------------------------------------------------------------------------
+
+boost::shared_ptr<CMotionPrimitiveViewer> g_pMotionPrimitiveViewer;
+
+CFont g_Font;
+
+CCameraController_Win32 g_CameraController;
+
+//vector<CD3DXMeshObject *> g_vecpMeshObject;
+
+CTextureHandle g_DefaultTexture;
+
+//CShaderManager g_ShaderManager;
+
+//CShaderLightManager g_ShaderLightManager;
+
+float g_FOV = D3DX_PI / 4.0f;
+
+//CD3DXMeshObject *g_pSkySphere = NULL;
+//LPDIRECT3DTEXTURE9 g_pSkyTexture = NULL;
+
+D3DXVECTOR3 g_vLightPosition;
+
+
+CStdKeyboard g_StdKeyboardInput;
+
+
+/*
+void RenderMeshes()
+{
+	HRESULT hr;
+	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+
+	// alpha-blending settings 
+	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+    pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
+    pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+
+	pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, TRUE );
+	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
+	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
+
+	D3DXMATRIX matWorld;
+	D3DXMatrixIdentity( &matWorld );
+	g_ShaderManager.SetWorldTransform( matWorld );
+
+	LPD3DXEFFECT pEffect = g_ShaderManager.GetEffect();
+	if( !pEffect )
+		return;
+
+
+	D3DXATTRIBUTERANGE attrib_table[128];
+	DWORD attrib_table_size;
+	if( g_vecpMeshObject[0] && g_vecpMeshObject[0]->GetBaseMesh() )
+		g_vecpMeshObject[0]->GetBaseMesh()->GetAttributeTable( attrib_table, &attrib_table_size );
+
+
+	hr = pEffect->SetValue( "g_vEyePos", &(g_CameraController.GetPosition()), sizeof(float) * 3 );
+
+//	hr = pEffect->SetTechnique( "Default" );
+//	hr = pEffect->SetTechnique( "NullShader" );
+	hr = pEffect->SetTechnique( "QuickTest" );
+
+	if( FAILED(hr) )
+		return;
+
+	UINT cPasses;
+	pEffect->Begin( &cPasses, 0 );
+
+
+	size_t i, num_meshes = g_vecpMeshObject.size();
+	for( i=0; i<num_meshes; i++ )
+	{
+//		CD3DXSMeshObject *pMeshObject = g_vecpMeshObject[i];
+		CD3DXMeshObject *pMeshObject = g_vecpMeshObject[i];
+
+		if( !pMeshObject )
+			continue;
+
+	//	LPD3DXPMESH pPMesh = pMeshObject->GetPMesh();
+		LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
+		if( !pMesh )
+			return;
+
+
+		pMesh->GetAttributeTable( attrib_table, &attrib_table_size );
+
+
+		pd3dDevice->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
+
+		LPDIRECT3DTEXTURE9 pTex;
+
+		// Meshes are divided into subsets by materials. Render each subset in a loop
+		DWORD mat, num_materials = pMeshObject->GetNumMaterials();
+		for( mat=0; mat<num_materials; mat++ )
+		{
+			// Set the material and texture for this subset
+	//		pd3dDevice->SetMaterial( &pMeshObject->GetMaterial(i) );
+
+			pTex = pMeshObject->GetTexture(mat);
+			if( pTex )
+                g_ShaderManager.SetTexture( 0, pTex );
+			else
+				g_ShaderManager.SetTexture( 0, g_DefaultTexture );
+
+//			LPDIRECT3DTEXTURE9 pNMTex = NULL;
+//			if( pNMTex = pMeshObject->GetNormalMapTexture(i) )
+//				g_ShaderManager.SetTexture( 1, pNMTex );
+//
+			pEffect->CommitChanges();
+
+			for( UINT p = 0; p < cPasses; ++p )
+			{
+				pEffect->BeginPass( p );
+
+				// Draw the mesh subset
+				pMesh->DrawSubset( mat );
+
+				pEffect->EndPass();
+			}
+		}
+	}
+
+	pEffect->End();
+}
+*/
+
+
+void ReleaseGraphicsResources()
+{
+/*	size_t i, num_meshes = g_vecpMeshObject.size();
+
+	for( i=0; i<num_meshes; i++ )
+	{
+		SafeDelete( g_vecpMeshObject[i] );
+	}
+
+	g_vecpMeshObject.clear();
+*/
+	g_DefaultTexture.Release();
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: Render()
+// Desc: Draws the scene
+//-----------------------------------------------------------------------------
+VOID Render()
+{
+	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+
+	D3DXMATRIX matWorld;
+	D3DXMatrixIdentity( &matWorld );
+
+
+    // clear the backbuffer to a blue color
+    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(32,32,32), 1.0f, 0 );
+
+    // begin the scene
+    pd3dDevice->BeginScene();
+
+	if( g_pMotionPrimitiveViewer )
+		g_pMotionPrimitiveViewer->Render();
+
+/*	if( CShader::Get()->GetCurrentShaderManager() )
+	{
+		g_ShaderManager.SetViewTransform( g_CameraController.GetCameraMatrix() );
+
+		RenderMeshes();
+	}
+*/
+	// rendering
+	char acStr[256];
+	sprintf( acStr, "%f", TIMER.GetFPS() );
+	g_Font.DrawText( acStr, D3DXVECTOR2(20,20), 0xFFFFFFFF );
+
+    // end the scene
+    pd3dDevice->EndScene();
+
+    // present the backbuffer contents to the display
+    pd3dDevice->Present( NULL, NULL, NULL, NULL );
+}
+
+
+void Update( float dt )
+{
+	g_CameraController.UpdateCameraPosition( dt );
+	g_CameraController.SetCameraMatrix();
+
+	if( g_pMotionPrimitiveViewer )
+		g_pMotionPrimitiveViewer->Update( dt );
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: MsgProc()
+// Desc: The window's message handler
+//-----------------------------------------------------------------------------
+LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
+{
+	g_CameraController.HandleMessage( hWnd, msg, wParam, lParam );
+
+	D3DXMATRIX matWorld, matProj;
+
+	switch( msg )
+	{
+		case WM_DESTROY:
+			PostQuitMessage( 0 );
+			return 0;
+
+		case WM_KEYDOWN:
+			g_StdKeyboardInput.NotifyKeyDown( (int)wParam );
+
+			switch( wParam )
+			{
+/*			case VK_ADD:
+				g_FOV -= 0.01f;
+				if( g_FOV <= 0.01f )
+					g_FOV = 0.0f;
+				D3DXMatrixPerspectiveFovLH( &matProj, g_FOV, 640.0f / 480.0f, 0.5f, 200.0f );
+				DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+				g_ShaderManager.SetProjectionTransform( matProj );
+				break;
+			case VK_SUBTRACT:
+				g_FOV += 0.01f;
+				D3DXMatrixPerspectiveFovLH( &matProj, g_FOV, 640.0f / 480.0f, 0.5f, 200.0f );
+				DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+				g_ShaderManager.SetProjectionTransform( matProj );
+				break;*/
+			}
+			break;
+
+		case WM_KEYUP:
+			g_StdKeyboardInput.NotifyKeyUp( (int)wParam );
+			break;
+
+		default:
+			break;
+	}
+
+	return DefWindowProc( hWnd, msg, wParam, lParam );
+}
+
+
+bool Init()
+{
+/*	if( !g_ShaderManager.LoadShaderFromFile( "StaticGeometryViewer.fx" ) )
+		return false;
+
+	CShader::Get()->SetShaderManager( &g_ShaderManager );
+
+	D3DXMATRIX matWorld;
+	D3DXMatrixIdentity( &matWorld );
+	g_ShaderManager.SetWorldTransform( matWorld );
+
+    D3DXMATRIX matProj;
+    D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
+    DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+	g_ShaderManager.SetProjectionTransform( matProj );
+
+	g_ShaderLightManager.Init();
+
+	CHemisphericDirLight light;
+	light.UpperColor.SetRGBA( 1.00f, 1.00f, 1.00f, 1.00f );
+	light.LowerColor.SetRGBA( 0.25f, 0.25f, 0.25f, 1.00f );
+	Vector3 vDir = Vector3(1.0f,-3.0f,1.5f);
+	Vec3Normalize( vDir, vDir );
+	light.vDirection = vDir;
+	g_ShaderLightManager.SetLight( 0, light );
+
+//	g_vLightPosition = - vDir * 20.0f;
+//	g_vLightPosition = D3DXVECTOR3(0,30,0);
+	g_vLightPosition = D3DXVECTOR3(-250,60,-500) * 500.0f;
+	g_LensFlare.SetLightPosition( g_vLightPosition );
+
+	DWORD dwColor = 0xFFF0F0F0;
+//	DWORD dwColor = 0xFF8080FF;
+	CTextureTool::CreateTexture( &dwColor, 1, 1, &g_DefaultTexture );
+*/
+	return true;
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: WinMain()
+// Desc: The application's entry point
+//-----------------------------------------------------------------------------
+
+INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
+{
+    // Register the window class
+    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
+                      GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
+                      "D3D Test", NULL };
+
+    RegisterClassEx( &wc );
+
+    // Create the application's window
+    HWND hWnd = CreateWindow( "D3D Test", "D3D Application",
+                              WS_OVERLAPPEDWINDOW, 100, 100, 800, 600,
+                              GetDesktopWindow(), NULL, wc.hInstance, NULL );
+
+
+    // Show the window
+    ShowWindow( hWnd, SW_SHOWDEFAULT );
+    UpdateWindow( hWnd );
+
+	// Initialize Direct3D
+	if( !DIRECT3D9.InitD3D( hWnd ) )
+		return 0;
+
+	Vector3 vInitCamPos( 1.5f, 1.0f, -2.0f );
+	g_CameraController.SetPose(
+		Matrix34(
+		vInitCamPos,
+		CreateOrientFromFwdDir( Vec3GetNormalized(-vInitCamPos) )
+		)
+	);
+
+	CLogOutput_HTML html_log( "log.html" );
+	g_Log.AddLogOutput( &html_log );
+
+	/// init the xml parser (calls Initialize() in ctor)
+	CXMLParserInitReleaseManager xml_parser_mgr;
+
+	if( !Init() )
+		return 0;
+
+	msynth::CMotionDatabaseBuilder mdb;
+	string output_mdb_filepath = "../resources/mdb.bin";
+	bool built = mdb.Build( "../resources/bvh/Mocappers/ordinary.xml" );
+
+	bool saved = mdb.SaveMotionDatabaseToFile( output_mdb_filepath );
+
+	if( built && saved )
+	{
+		// successfully built and saved a motion database
+		g_pMotionPrimitiveViewer
+			= boost::shared_ptr<CMotionPrimitiveViewer>( new CMotionPrimitiveViewer() );
+
+		g_pMotionPrimitiveViewer->LoadMotionPrimitivesFromDatabase( output_mdb_filepath/*, tbl_name*/ );
+	}
+
+	// init font
+//	g_Font.InitFont( "", 8, 16 );
+
+	// Enter the message loop
+	MSG msg;
+	ZeroMemory( &msg, sizeof(msg) );
+
+	while( msg.message!=WM_QUIT )
+	{
+        if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
+        {
+            TranslateMessage( &msg );
+            DispatchMessage( &msg );
+        }
+        else
+		{
+			TIMER.UpdateFrameTime();
+
+			Update( TIMER.GetFrameTime() );
+
+			Render();
+
+			Sleep( 5 );
+		}
+    }
+
+	g_pMotionPrimitiveViewer.reset();
+
+
+    // Clean up everything and exit the app
+    UnregisterClass( "D3D Test", wc.hInstance );
+    return 0;
+}

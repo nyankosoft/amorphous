@@ -1,0 +1,1 @@
+input    ../../../App/FlightGame/resources/sg/swampy/desc.rd
