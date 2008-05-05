@@ -1,7 +1,7 @@
 
 #include "ShaderManager.h"
-
 #include "ShaderManagerHub.h"
+#include "ShaderLightManager.h"
 
 #include "3DCommon/Direct3D9.h"
 #include "Support/msgbox.h"
@@ -139,6 +139,13 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 	m_aHandle[HANDLE_VIEWER_POS] = m_pEffect->GetParameterByName( NULL, "g_vEyePos" );
 	m_aHandle[HANDLE_AMBIENT_COLOR] = m_pEffect->GetParameterByName( NULL, "g_vAmbientColor" );
 
+	// create shader light manager
+	CShaderLightManager *pD3DShaderLightMgr = new CShaderLightManager( m_pEffect );
+
+	pD3DShaderLightMgr->Init();
+
+	m_pLightManager = boost::shared_ptr<CShaderLightManager>( pD3DShaderLightMgr );
+
 	return true;
 }
 
@@ -208,14 +215,12 @@ HRESULT CShaderManager::SetNewTechnique( CShaderTechniqueHandle& tech_handle )
 
 		// the requested technique has not been registered to the table yet
 		// - set it as a current techqniue and register it to the table
-		g_Log.Print( "CShaderManager::SetNewTechnique() - registering a new technique: %s",
-			tech_handle.GetTechniqueName() );
+		LOG_PRINT( " - Registering a new technique: " + string(tech_handle.GetTechniqueName()) );
 		HRESULT hr = m_pEffect->SetTechnique( tech_handle.GetTechniqueName() );
 		if( FAILED(hr) )
 		{
 			// mark the handle as invalid
-			g_Log.Print( WL_ERROR, "CShaderManager::SetNewTechnique() - invalid technique: %s",
-				tech_handle.GetTechniqueName() );
+			LOG_PRINT_ERROR( " - An invalid technique: " + string(tech_handle.GetTechniqueName()) );
 			tech_handle.SetTequniqueIndex( CShaderTechniqueHandle::INVALID_INDEX );
 			return E_FAIL;
 		}

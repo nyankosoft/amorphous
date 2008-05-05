@@ -12,6 +12,14 @@ CShaderLightManager::CShaderLightManager()
 	m_pEffect = NULL;
 }
 
+
+CShaderLightManager::CShaderLightManager( LPD3DXEFFECT pEffect )
+:
+m_pEffect(pEffect)
+{
+}
+
+
 CShaderLightManager::~CShaderLightManager()
 {
 }
@@ -25,10 +33,13 @@ bool CShaderLightManager::Init()
 
 bool CShaderLightManager::SetShaderHandles()
 {
-	if( !(CShader::Get()->GetCurrentShaderManager()) )
-		return false;
+	if( !m_pEffect )
+	{
+		if( !(CShader::Get()->GetCurrentShaderManager()) )
+			return false;
 
-	m_pEffect = CShader::Get()->GetCurrentShaderManager()->GetEffect();
+		m_pEffect = CShader::Get()->GetCurrentShaderManager()->GetEffect();
+	}
 
 	assert( m_pEffect != NULL );
 

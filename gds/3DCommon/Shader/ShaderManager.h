@@ -1,15 +1,15 @@
-
 #ifndef __SHADERMANAGER_S_H__
 #define __SHADERMANAGER_S_H__
 
 
 #include <d3d9.h>
 #include <d3dx9.h>
-
 #include <string>
+#include <boost/shared_ptr.hpp>
 
 #include "ShaderTechniqueHandle.h"
 
+#include "3DCommon/fwd.h"
 #include "3DCommon/TextureHandle.h"
 
 
@@ -62,6 +62,10 @@ class CShaderManager
 	/// it indicates no vacancy is left
 	int m_VacantTechniqueEntryIndex;
 
+	boost::shared_ptr<CShaderLightManager> m_pLightManager;
+
+private:
+
 	HRESULT SetNewTechnique( CShaderTechniqueHandle& tech_handle );
 
 	void UpdateVacantTechniqueIndex();
@@ -113,8 +117,7 @@ public:
 
 	D3DXHANDLE GetTechniqueHandle( int id ) { return m_aTechniqueHandle[id]; }
 
-
-//	void SetLight( int index, CLight light );
+	boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
 };
 
 

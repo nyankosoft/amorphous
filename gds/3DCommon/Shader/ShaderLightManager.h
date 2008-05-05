@@ -43,12 +43,15 @@ class CShaderLightManager
 
 	enum eNumLights
 	{
-		NUM_MAX_LIGHTS = 5
+		NUM_MAX_LIGHTS = 8
 	};
 
 public:
 
 	CShaderLightManager();
+
+	CShaderLightManager( LPD3DXEFFECT pEffect );
+
 	~CShaderLightManager();
 
 	bool Init();

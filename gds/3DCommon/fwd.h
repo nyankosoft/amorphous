@@ -17,6 +17,7 @@ class CFont;
 class CTextureFont;
 class CCamera;
 class CShaderManager;
+class CShaderLightManager;
 class CPostProcessManager;
 class CSimpleMotionBlur;
 
