@@ -10,6 +10,41 @@
 using namespace std;
 
 
+class CD3DXInclude : public ID3DXInclude
+{
+public:
+
+	HRESULT CALLBACK Open(
+		D3DXINCLUDE_TYPE IncludeType,
+		LPCSTR pFileName,
+		LPCVOID pParentData,
+		LPCVOID * ppData,
+		UINT * pBytes
+		);
+
+	HRESULT CALLBACK Close( LPCVOID pData );
+};
+
+
+HRESULT CD3DXInclude::Open(
+							D3DXINCLUDE_TYPE IncludeType,
+							LPCSTR pFileName,
+							LPCVOID pParentData,
+							LPCVOID * ppData,
+							UINT * pBytes
+							)
+{
+	return S_OK;
+}
+
+
+HRESULT CD3DXInclude::Close( LPCVOID pData )
+{
+	return S_OK;
+}
+
+
+
 CShaderManager::CShaderManager()
 :
 m_pEffect(NULL)
@@ -58,16 +93,17 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 
 	m_strFilename = filename;
 
-	HRESULT hr;
+	CD3DXInclude d3dx_include;
+	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
+
+	HRESULT hr;	
 	LPD3DXBUFFER pCompileErrors;
-	hr = D3DXCreateEffectFromFile( DIRECT3D9.GetDevice(), filename.c_str(), NULL, NULL, 0, 
+	hr = D3DXCreateEffectFromFile( DIRECT3D9.GetDevice(), filename.c_str(), NULL, pD3DXInclude, 0, 
                                         NULL, &m_pEffect, &pCompileErrors );
 
 	if( FAILED(hr) )
 	{
-//		MsgBoxFmt( "cannot create effect object from the HLSL effect file: %s", filename.c_str() );
-		g_Log.Print( WL_ERROR,
-			"CShaderManager::LoadShaderFromFile() - cannot create effect object from the HLSL effect file: %s", filename.c_str() );
+		LOG_PRINT_ERROR( " - Cannot create an effect object from the HLSL effect file: " + filename );
 
 		if( pCompileErrors )
 		{

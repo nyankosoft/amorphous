@@ -747,3 +747,9 @@ bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, co
 
 	return true;
 }
+
+
+std::string C3DMeshModelBuilder_LW::GetBasePath()
+{
+	return m_pSrcObject->GetFilename();
+}

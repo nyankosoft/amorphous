@@ -119,6 +119,8 @@ public:
 	vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
 
 	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter );
+
+	virtual std::string GetBasePath();
 };
 
 

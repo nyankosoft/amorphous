@@ -476,6 +476,8 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 	strSrcFilename = m_strSrcFilename;
 	strDestFilename = m_strDestFilename;
 
+	string basepath = m_pModelLoader->GetBasePath();
+
 	LOG_PRINT( string(" - tex filename option: ") + GetTexFilenameOptionTitle(m_pModelLoader->GetTexturePathnameOption()) );
 
 	const size_t num_materials = rvecMaterial.size();
@@ -504,10 +506,12 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 				break;
 
 			case TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME:
-				strModelPath = fnop::get_path(strSrcFilename);
+				strModelPath = fnop::get_path(basepath);
 				pathlen = strModelPath.length();
+
 				if( pathlen == 0 )
 					break;
+
 				if( strModelPath.rfind("\\") == pathlen-1
 				 || strModelPath.rfind("/")  == pathlen-1 )
 					strModelPath = strModelPath.substr( 0, pathlen-1 );
@@ -518,7 +522,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 //				if( strTextureFilename.find( strModelPath ) == 0 )
 				{
 					strDest.assign( strTextureFilename, strModelPath.length(), 1024 );
-					strTextureFilename = strDest;
+					strTextureFilename = "." + strDest;
 				}
 				break;
 

@@ -121,6 +121,8 @@ public:
 
 	/// Returns true on success
 	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter ) = 0;
+
+	virtual std::string GetBasePath() { return string(); }
 };
 
 
