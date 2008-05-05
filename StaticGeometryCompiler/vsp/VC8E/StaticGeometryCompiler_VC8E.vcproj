@@ -40,6 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../../Project1/gds"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -191,11 +192,34 @@
 				Name="StaticGeometryCompiler"
 				>
 				<File
+					RelativePath="..\..\src\StaticGeometryCompiler.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\StaticGeometryCompiler.h"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\StaticGeometryCompilerFG.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\src\StaticGeometryCompilerFG.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\StaticGeometryDesc.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\StaticGeometryDesc.h"
 					>
 				</File>
 			</Filter>
@@ -216,15 +240,19 @@
 			Name="Stage"
 			>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometry.h"
+				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometry.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.cpp"
+				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometry.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.h"
+				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.h"
 				>
 			</File>
 		</Filter>

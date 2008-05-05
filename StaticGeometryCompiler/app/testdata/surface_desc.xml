@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SurfaceDescs>
+	<!--
+	Rationale behind adopting surface descs and surface & desc pairs
+	- FPS levels are made of many surfaces since they use many textures
+	  - write properties for each surface will be a burden
+	-->
+	<Descs>
+		<Desc name="Default">
+			<Lightmap enabled="false"></Lightmap>
+			<Shader>
+				<File>../shaders/StaticGeometryTest.fx</File>
+				<Technique>Default</Technique>
+			</Shader>
+		</Desc>
+		<Desc name="Terrain">
+			<Lightmap enabled="false"></Lightmap>
+			<Shader>
+				<File>../shaders/StaticGeometryTest.fx</File>
+				<Technique>Terrain</Technique>
+			</Shader>
+		</Desc>
+		<Desc name="Buildings">
+			<Lightmap enabled="false"></Lightmap>
+			<Shader>
+				<File>../shaders/StaticGeometryTest.fx</File>
+				<Technique>Buildings</Technique>
+			</Shader>
+		</Desc>
+	</Descs>
+	<SurfaceToDescMaps>
+		<!-- maps surface to desc -->
+		<Map surface="Default" desc="Default"></Map>
+		<Map surface="Terrain" desc="Terrain"></Map>
+		<Map surface="IcyTerrain" desc="Terrain"></Map>
+		<Map surface="ForestTerrain" desc="Terrain"></Map>
+		<Map surface="Buildings" desc="Buildings"></Map>
+		<Map surface="OldBuildings" desc="Buildings"></Map>
+	</SurfaceToDescMaps>
+</SurfaceDescs>

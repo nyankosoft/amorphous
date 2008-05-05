@@ -2,36 +2,86 @@
 // File: D3DAppTestMain.cpp
 //-----------------------------------------------------------------------------
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Font.h"
-#include "3DCommon/LogOutput_OnScreen.h"
+#include <vld.h>
+
+#include <boost/shared_ptr.hpp>
+#include <boost/foreach.hpp>
+
+#include "3DCommon/all.h"
 
 #include "GameCommon/Timer.h"
+#include "Support.h"
+#include "Support/FileOpenDialog_Win32.h"
+#include "GameInput.h"
 
-#include "Support/CameraController_Win32.h"
-//#include "Support/FileOpenDialog_Win32.h"
-#include "Support/ParamLoader.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/memory_helpers.h"
-#include "Support/fnop.h"
+#include "Stage/StaticGeometry.h"
+
 #include "XML/XMLDocumentLoader.h"
 
 #include "StaticGeometryCompilerFG.h"
+#include "StaticGeometryCompiler.h"
 
-//#include "StaticGeometryDesc.h"
 
-#include <vld.h>
 
+class CStaticGeometryViewer
+{
+
+	boost::shared_ptr<CStaticGeometryBase> m_pStaticGeometry;
+
+public:
+
+	CStaticGeometryViewer() {}
+
+	~CStaticGeometryViewer() {}
+
+	void Render( const CCamera& camera );
+
+	void Init() {}
+
+	bool LoadFromFile( const std::string& sg_db_filepath )
+	{
+		m_pStaticGeometry = boost::shared_ptr<CStaticGeometryBase>( new CStaticGeometry( NULL ) );
+		return m_pStaticGeometry->LoadFromFile( sg_db_filepath );
+	}
+
+	void Update( float dt ) {}
+};
+
+
+void CStaticGeometryViewer::Render( const CCamera& camera )
+{
+	m_pStaticGeometry->Render( camera, 0 );
+}
+
+
+boost::shared_ptr<CStaticGeometryViewer> g_pTest;
 
 //-----------------------------------------------------------------------------
 // Global variables
 //-----------------------------------------------------------------------------
 
-CFont g_Font;
+CStdKeyboard g_StdKeyboard;
+
+boost::shared_ptr<CFontBase> g_pFont;
 
 CCameraController_Win32 g_CameraController;
 
+CCamera g_Camera;
+
 CLogOutput_OnScreen *g_pLogOutput = NULL;
+
+
+
+//-----------------------------------------------------------------------------
+// Name: Update( float frametime )
+// Desc: 
+//-----------------------------------------------------------------------------
+void Update( float frametime )
+{
+	PROFILE_FUNCTION();
+
+	g_pTest->Update( frametime );
+}
 
 
 //-----------------------------------------------------------------------------
@@ -40,22 +90,48 @@ CLogOutput_OnScreen *g_pLogOutput = NULL;
 //-----------------------------------------------------------------------------
 VOID Render()
 {
+	PROFILE_FUNCTION();
+
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
+	D3DXMATRIX matWorld;
+	D3DXMatrixIdentity( &matWorld );
+	pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
+
+	g_Camera.SetPose( g_CameraController.GetPose() );
+	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+
+	D3DXMATRIX mat;
+	g_Camera.GetCameraMatrix( mat );
+//	g_pTest->UpdateViewTransform( mat );
+	g_Camera.GetProjectionMatrix( mat );
+//	g_pTest->UpdateProjectionTransform( mat );
+
+
     // clear the backbuffer to a blue color
-    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
+    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF303030, 1.0f, 0 );
 
     // begin the scene
     pd3dDevice->BeginScene();
 
+	g_pTest->Render( g_Camera );
 
 	// rendering
 	char acStr[256];
 	sprintf( acStr, "%f", TIMER.GetFPS() );
-	g_Font.DrawText( acStr, D3DXVECTOR2(20,20), 0xFFFFFFFF );
+	g_pFont->DrawText( acStr, Vector2(20,20), 0xFFFFFFFF );
+//	g_pFont->DrawText( to_string(TIMER.GetFPS()), D3DXVECTOR2(20,20), 0xFFFFFFFF );
 
-	if( g_pLogOutput )
-		g_pLogOutput->Render();
+	int i=0;
+	const vector<string>& vecProfileResults = GetProfileText();
+	BOOST_FOREACH( const string& text, vecProfileResults )
+	{
+		g_pFont->DrawText( text.c_str(), Vector2( 20, 40 + i*16 ), 0xF0F0F0FF );
+		i++;
+	}
+
+//	if( g_pLogOutput )
+//		g_pLogOutput->Render();
 
     // end the scene
     pd3dDevice->EndScene();
@@ -78,6 +154,17 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 		case WM_DESTROY:
 			PostQuitMessage( 0 );
 			return 0;
+
+		case WM_KEYDOWN:
+			StdWin32Keyboard().NotifyKeyDown( (int)wParam );
+			break;
+
+		case WM_KEYUP:
+			StdWin32Keyboard().NotifyKeyUp( (int)wParam );
+			break;
+
+		default:
+			break;
 	}
 
 	return DefWindowProc( hWnd, msg, wParam, lParam );
@@ -119,8 +206,12 @@ void SetDefaultSkyboxMesh( CStaticGeometryCompilerFG& compiler )
 
 void ReleaseMain( WNDCLASSEX& wc )
 {
+	g_pTest.reset();
+
 	g_Log.RemoveLogOutput( g_pLogOutput );
 	SafeDelete( g_pLogOutput );
+
+	g_pFont.reset();
 
     // Clean up everything and exit the app
     UnregisterClass( "D3D Test", wc.hInstance );
@@ -142,6 +233,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
                       "D3D Test", NULL };
+
     RegisterClassEx( &wc );
 
     // Create the application's window
@@ -159,28 +251,18 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		return 0;
 
 	// init font
-	g_Font.InitFont( "Arial", 8, 16 );
+	boost::shared_ptr<CFont> pFont = boost::shared_ptr<CFont>( new CFont() );
+	pFont->InitFont( "Arial", 8, 16 );
+	g_pFont = pFont;
 
 	// output log text on the screen
 	g_pLogOutput = new CLogOutput_OnScreen( "Arial", 6, 12, 24, 120 );
 	g_Log.AddLogOutput( g_pLogOutput );
 	g_pLogOutput->SetTopLeftPos( Vector2(8,16) );
 
+	CStaticGeometryCompilerFG compiler_fg;
 
-	// experiment - load a xml file
-/*	{
-		CXMLParserInitReleaseManager xml_parser_mgr;
-
-		LOG_SCOPE( "- An xml doc load experiment. Comment out this block to use static geomery compiler." );
-		CStaticGeometryDesc desc;
-		desc.LoadFromXML( "./static_geometry_desc_draft.xml" );
-		return 0;
-	}
-*/
-
-	CStaticGeometryCompilerFG compiler;
-
-//	SetDefaultSkyboxMesh( compiler );
+//	SetDefaultSkyboxMesh( compiler_fg );
 
 	string filename;
 	if( 0 < cmd_line.length() )
@@ -206,11 +288,11 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	else
 	{
 		// no command line arguments
-		if( /* Win32 file open dialog is available == */ false )
+		if( /* Win32 file open dialog is available == */ true )
 		{
 			// select a desc file from OpenFile dialog
-//			if( !GetFilename(filename, NULL) )
-//				return 0;
+			if( !GetFilename(filename, NULL) )
+				return 0;
 		}
 		else
 		{
@@ -250,10 +332,49 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 //	g_Log.Print( "_fullpath( dest, '.', MAX_PATH ) > dest: '%s'", full_path );
 
+//	filename = "./testdata/static_geometry_desc_draft.xml";
+
 	// build static geometry
 	if( 0 < filename.length() )
-		compiler.Build( filename );
+	{
+		if( filename.substr( filename.length() - 3 ) == "xml" )
+		{
+			// compile a static geometry archive
 
+			CXMLParserInitReleaseManager xml_parser_mgr;
+
+			// compile static geometry
+			LOG_SCOPE( "- static geomery compiler test." );
+			CStaticGeometryCompiler compiler;
+			bool compiled = compiler.CompileFromXMLDescFile( filename );
+
+			if( compiled )
+			{
+				// go to the directory of the input xml file
+				fnop::set_wd(fnop::get_path(filename));
+
+				// go to the directory where a static geometry file was saved
+				string output_filepath = compiler.GetDesc().m_OutputFilepath;
+				fnop::set_wd( fnop::get_path(output_filepath) );
+
+				g_pTest = boost::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
+				g_pTest->LoadFromFile( fnop::get_nopath(output_filepath) );
+			}
+			else
+			{
+				ReleaseMain( wc );
+				return 0;
+			}
+		}
+		else
+		{
+			// compile a static geometry archive of the previous version
+			// - create from a .rd (resource desc) file
+			compiler_fg.Build( filename );
+		}
+	}
+
+	// exit the app here if the input file given as a command line argument
 	if( cmd_line.length() )
 	{
 		ReleaseMain( wc );
@@ -280,6 +401,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 			Render();
 		}
+
+		Sleep( 2 );
     }
 
 	ReleaseMain( wc );

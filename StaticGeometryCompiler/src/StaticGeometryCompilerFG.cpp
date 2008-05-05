@@ -6,7 +6,6 @@
 #include "Support/StringAux.h"
 #include "Support/Serialization/BinaryDatabase.h"
 #include "Support/Log/DefaultLog.h"
-#include "Support/ImageArchive.h"
 
 #include "3DCommon/Shader/ShaderTechniqueHandle.h"
 #include "3DCommon/MeshModel/TerrainMeshGenerator.h"
@@ -336,7 +335,7 @@ void CStaticGeometryCompilerFG::CreateCollisionMesh()
 			CBSPTreeForTriangleMesh& trimesh = m_TriangleMesh;
 //			trimesh.SetNumMaxTrianglesPerCell( 16 );
 //			trimesh.SetMinimumCellVolume( 1000000.0f );
-			trimesh.SetNumMaxTrianglesPerCell( 128 );
+			trimesh.SetNumMaxGeometriesPerCell( 128 );
 			trimesh.SetMinimumCellVolume( 1000000000000.0f );
 			trimesh.SetMaxDepth( 10 );
 			trimesh.SetRecursionStopCondition( "and" );
@@ -565,46 +564,6 @@ bool CStaticGeometryCompilerFG::NeedToCompileModelFile( const string& input_mode
 
 string gs_DBFilenameRelativePathForTextureResource = "./";
 
-void CStaticGeometryCompilerFG::AddTexturesToBinaryDatabase( const string& db_filename, CBinaryDatabase<string> &db )
-{
-	int i, num_mesh_archives = (int)m_vecMeshArchive.size();
-	for( i=0; i<num_mesh_archives; i++ )
-	{
-		C3DMeshModelArchive& mesh_archive = m_vecMeshArchive[i];
-
-		int j, num_materials = (int)mesh_archive.GetMaterial().size();
-		for( j=0; j<num_materials; j++ )
-		{
-			if( mesh_archive.GetMaterial()[j].vecTexture.size() == 0 )
-				continue;
-
-			CMMA_Texture& rTexture = mesh_archive.GetMaterial()[j].vecTexture[0];
-
-			const string tex_filename = rTexture.strFilename;
-
-			if( tex_filename.length() == 0 )
-				continue;
-
-			string tex_key = fnop::get_nopath(tex_filename);
-
-//			string tex_resource_name = db_filename + "::" + tex_key;
-			string tex_resource_name = gs_DBFilenameRelativePathForTextureResource + fnop::get_nopath(db_filename) + "::" + tex_key;
-
-			// overwrite original texture filename with the resource name
-			// - (db filename) + "::" + (archive key name)
-			rTexture.strFilename = tex_resource_name;
-
-			CImageArchive img_archive = CImageArchive( tex_filename );
-
-			if( img_archive.IsValid() )
-			{
-				// add image archive to db
-				db.AddData( tex_key, img_archive );
-			}
-		}
-	}
-}
-
 
 bool CStaticGeometryCompilerFG::SaveToFile( const string& output_filename )
 {
@@ -626,7 +585,9 @@ bool CStaticGeometryCompilerFG::SaveToFile( const string& output_filename )
 	{
 		// - create image archives and add them to db
 		// - change the texture file names stored in m_vecMeshArchive
-		AddTexturesToBinaryDatabase( output_filename, db );
+		string db_filepath = gs_DBFilenameRelativePathForTextureResource + fnop::get_nopath(output_filename);
+		for( size_t i=0; i<m_vecMeshArchive.size(); i++ )
+			AddTexturesToBinaryDatabase( m_vecMeshArchive[i], db_filepath, db );
 	}
 
 	// mesh archives

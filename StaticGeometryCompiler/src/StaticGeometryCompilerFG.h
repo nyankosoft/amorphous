@@ -107,10 +107,6 @@ private:
 						   double tex_coord_shift_u,
 						   double tex_coord_shift_v );
 
-	/// - create image archives and add them to db
-	/// - change the texture file names stored in m_vecMeshArchive
-	void AddTexturesToBinaryDatabase(  const std::string& db_filename, CBinaryDatabase<string> &db );
-
 public:
 
 	CStaticGeometryCompilerFG();
