@@ -11,6 +11,7 @@ using namespace std;
 
 
 #include "3DCommon/MeshModel/3DMeshModelBuilder.h"
+#include "3DCommon/MeshModel/General3DMesh.h"
 
 #include "LightWave/LWO2_Layer.h"
 
@@ -58,6 +59,8 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 
 	std::vector<std::string> m_vecSurfaceMaterialOption;
 
+	const unsigned int m_DefaultVertexFlags;
+
 private:
 
 	void BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
@@ -83,6 +86,8 @@ private:
 	void LoadSurfaceCommentOptions();
 
 public:
+
+	C3DMeshModelBuilder_LW();
 
 	C3DMeshModelBuilder_LW( boost::shared_ptr<CLWO2_Object> pSrcObject );
 
@@ -112,6 +117,8 @@ public:
 	void BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer );
 
 	vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
+
+	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter );
 };
 
 

@@ -18,8 +18,11 @@ public:
 	int MeshIndex;
 //	int MaterialIndex;
 	std::vector<int> vecMaterialIndex;
+	int ShaderIndex;
 	int ShaderTechniqueIndex;
 	int ProjectionMatrixIndex;
+
+	AABB3 AABB;
 
 public:
 
@@ -31,12 +34,16 @@ public:
 	ProjectionMatrixIndex(0)
 	{}
 
+	const AABB3& GetAABB() const { return AABB; }
+
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
 		ar & MeshIndex;
 		ar & vecMaterialIndex;
+		ar & ShaderIndex;
 		ar & ShaderTechniqueIndex;
 		ar & ProjectionMatrixIndex;
+		ar & AABB;
 	}
 };
 

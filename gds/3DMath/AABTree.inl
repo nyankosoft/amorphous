@@ -258,10 +258,10 @@ inline void CAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int ver
 template<class TGeometry>
 inline void CAABTree<TGeometry>::AddGeometry( const TGeometry& geom )
 {
-	size_t geom_index = m_vecNode.size();
-	m_vecNode.push_back( geom );
+	size_t geom_index = m_vecGeometry.size();
+	m_vecGeometry.push_back( geom );
 
-	LinkGeometry( geom_index );
+	LinkGeometry( (int)geom_index );
 }
 
 
@@ -286,11 +286,8 @@ inline int GetSplitPlaneAxis( const AABB3& aabb )
 
 
 template<class TGeometry>
-inline void CLeafyAABTree<TGeometry>::Build()
+inline void CAABTree<TGeometry>::InitRootNode()
 {
-	if( m_vecGeometry.size() == 0 )
-		return;
-
 	// release any previous tree nodes
 	m_vecNode.resize( 0 );
 
@@ -327,6 +324,16 @@ inline void CLeafyAABTree<TGeometry>::Build()
 	{
 		m_vecNode[0].veciGeometryIndex.push_back((int)i);
 	}
+}
+
+
+template<class TGeometry>
+inline void CLeafyAABTree<TGeometry>::Build()
+{
+	if( m_vecGeometry.size() == 0 )
+		return;
+
+	InitRootNode();
 
 	// stack of nodes we need to process
 	vector<int> veciNodeToProcess;
@@ -414,6 +421,109 @@ inline void CLeafyAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned in
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 		m_vecTestCounter.resize( m_vecGeometry.size(), 0 );
+}
+
+
+template<class TGeometry>
+inline void CNonLeafyAABTree<TGeometry>::Build()
+{
+	if( m_vecGeometry.size() == 0 )
+		return;
+
+	InitRootNode();
+
+	// stack of nodes we need to process
+	vector<int> veciNodeToProcess;
+	veciNodeToProcess.reserve( 256 );
+	veciNodeToProcess.push_back(0);	// put the root node
+
+	size_t j;
+	while( !veciNodeToProcess.empty() )
+	{
+		int iNodeIndex = veciNodeToProcess.back();
+		veciNodeToProcess.pop_back();
+
+		// split into 2 subspaces if there are more triangles in the current subspace than 'm_iNumMaxTrianglesPerCell'
+		// and the volume of the current subspace cell is larger than 'm_fMinimumCellVolume'
+//		if( (size_t)m_iNumMaxTrianglesPerCell < m_vecNode[iNodeIndex].veciGeometryIndex.size()
+//		 && m_fMinimumCellVolume < m_vecNode[iNodeIndex].aabb.GetVolume() )
+		if( !ShouldStopRecursion(
+			m_vecNode[iNodeIndex].depth,
+			m_vecNode[iNodeIndex].aabb.GetVolume(),
+			(int)m_vecNode[iNodeIndex].veciGeometryIndex.size() ) )
+		{
+			// need to split
+			CAABNode& current_node = m_vecNode[iNodeIndex];
+
+			int iAxis = m_vecNode[iNodeIndex].iAxis;
+			float fMidDist = ( m_vecNode[iNodeIndex].aabb.vMax[iAxis] + m_vecNode[iNodeIndex].aabb.vMin[iAxis] ) / 2.0f;
+			for( size_t i=0; i<2; i++ )
+			{
+				m_vecNode[iNodeIndex].child[i] = (int)m_vecNode.size();
+				veciNodeToProcess.push_back( (int)m_vecNode.size() );	// add to the stack
+
+				// add a new node
+				m_vecNode.push_back( CAABNode() );
+
+				// set aabb which represents subspace of the child nodes
+				m_vecNode.back().aabb = m_vecNode[iNodeIndex].aabb;
+				if( i==0 )
+					m_vecNode.back().aabb.vMin[iAxis] = fMidDist;
+				else
+					m_vecNode.back().aabb.vMax[iAxis] = fMidDist;
+
+				m_vecNode.back().iAxis = GetSplitPlaneAxis( m_vecNode.back().aabb );
+
+				m_vecNode.back().fDist = ( m_vecNode.back().aabb.vMin[m_vecNode.back().iAxis]
+					                     + m_vecNode.back().aabb.vMax[m_vecNode.back().iAxis] ) / 2.0f;
+
+				 m_vecNode.back().depth = m_vecNode[iNodeIndex].depth + 1;
+			}
+
+			// added the 2 child nodes
+			// place polygons to
+			// 1. current node when the polygon cross the current split plane
+			// 2. child node[0] 
+			// 3. child node[1]
+			int child_node_index[2];
+			child_node_index[0] = (int)m_vecNode.size() - 1;
+			child_node_index[1] = (int)m_vecNode.size() - 2;
+
+			// copy all indices in the current node
+			vector<int> veciGeometryIndex = m_vecNode[iNodeIndex].veciGeometryIndex;
+			m_vecNode[iNodeIndex].veciGeometryIndex.resize( 0 );
+
+			// Move all the triangles of 'm_vecNode[iNodeIndex]' to either of its children.
+			for( j=0; j<m_vecNode[iNodeIndex].veciGeometryIndex.size(); j++ )
+			{
+				TGeometry& geom = m_vecGeometry[ m_vecNode[iNodeIndex].veciGeometryIndex[j] ];
+
+				const int geom_index = veciGeometryIndex[j];
+
+				if( geom.GetAABB().vMax[iAxis] < fMidDist )
+				{
+					m_vecNode[child_node_index[0]].veciGeometryIndex.push_back( geom_index );
+				}
+				else if( fMidDist < geom.GetAABB().vMin[iAxis] )
+				{
+					m_vecNode[child_node_index[1]].veciGeometryIndex.push_back( geom_index );
+				}
+				else
+					m_vecNode[iNodeIndex].veciGeometryIndex.push_back( geom_index );
+			}
+
+//			RecordNode( m_vecNode[iNodeIndex], "split a node" );
+
+		}
+/*		else
+		{
+			const CAABNode& current_node = m_vecNode[iNodeIndex];
+//			PERIODICAL( 256, RecordLeafNode( current_node ) );
+///			RecordNode( current_node, "created a leaf node" );
+
+//			UpdateLeafNodeStatistics( current_node );
+		}*/
+	}
 }
 
 

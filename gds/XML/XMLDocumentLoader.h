@@ -42,7 +42,7 @@ public:
 
 	bool Load( const XMLCh *src_fileapth, xercesc_2_8::DOMDocument** ppDoc );
 
-	xercesc_2_8::DOMNode *GetRootNode();
+//	xercesc_2_8::DOMNode *GetRootNode();
 };
 
 

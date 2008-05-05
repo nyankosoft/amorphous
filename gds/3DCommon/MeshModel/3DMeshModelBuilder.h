@@ -13,6 +13,7 @@ using namespace std;
 #include "3DCommon/FloatRGBAColor.h"
 #include "3DCommon/General3DVertex.h"
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "3DCommon/MeshModel/General3DMesh.h"
 
 #include "Support/FixedVector.h"
 
@@ -46,6 +47,12 @@ public:
 };
 
 
+/**
+ - Hold a general 3d mesh 
+ - Each modeler-specific derived class needs to implement LoadFromFile()
+
+
+*/
 class C3DModelLoader
 {
 private:
@@ -56,26 +63,7 @@ private:
 
 protected:
 
-	std::vector<CGeneral3DVertex> m_vecVertexBuffer;
-
-	unsigned int m_MeshFlag;
-
-	unsigned int m_VertexFormatFlag;
-
-	/// the number of types of surface properties
-	int m_NumMaterials;
-
-	/// Polygons that hold indices to vertices
-	/// - Can be retrieved later
-	/// - The polygons can include non-triangle polygons (with more than 4 vertices)
-	/// - They are triangulated and sotred in mesh model archive by C3DMeshModelBuilder
-	std::vector<CIndexedPolygon> m_vecIndexedPolygon;
-
-	/// stores surface property
-	std::vector<CMMA_Material> m_vecMaterial;
-
-	/// skeleton hierarchy
-	CMMA_Bone m_SkeletonRootBone;
+	boost::shared_ptr<CGeneral3DMesh> m_pMesh;
 
 	/// used to specify the way of exporting the texture filename
 	TexturePathnameOption::Option m_TextureFilePathOption;
@@ -95,17 +83,15 @@ public:
 
 	virtual ~C3DModelLoader() {}
 
-	int GetNumMaterials() const { return (int)m_vecMaterial.size(); }
+	int GetNumMaterials() const { return m_pMesh->GetNumMaterials(); }
 
-	unsigned int GetVertexFormatFlags() const { return m_VertexFormatFlag; }
+	std::vector<CGeneral3DVertex>& GetVertexBuffer() { return m_pMesh->GetVertexBuffer(); }
 
-	std::vector<CGeneral3DVertex>& GetVertexBuffer() { return m_vecVertexBuffer; }
+	std::vector<CMMA_Material>& GetMaterialBuffer() { return m_pMesh->GetMaterialBuffer(); }
 
-	std::vector<CMMA_Material>& GetMaterialBuffer() { return m_vecMaterial; }
+	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return m_pMesh->GetPolygonBuffer(); }
 
-	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return m_vecIndexedPolygon; }
-
-	CMMA_Bone& GetSkeletonRootBoneBuffer() { return m_SkeletonRootBone; }
+//	CMMA_Bone& GetSkeletonRootBoneBuffer() { return ; }
 
 	virtual const std::string GetInputDirectoryPath() const { return m_DefaultInputDirPath; }
 
@@ -121,13 +107,33 @@ public:
 	void SetFixedPathForTextureFilename( const char *pPath ) { m_strTexPath = pPath; }
 
 	const std::string& GetFixedPathForTextureFilename() const { return m_strTexPath; }
+
+	/// Returns a copy of the instance of general 3d mesh currently stored in the loader
+	void GetGeneral3DMesh( CGeneral3DMesh& dest ) { dest = *m_pMesh; }
+
+	CGeneral3DMesh& GetGeneral3DMesh() { return *m_pMesh; }
+
+	boost::shared_ptr<CGeneral3DMesh> GetGeneral3DMeshSharedPtr() { return m_pMesh; }
+
+	void SetVertexFormatFlags( unsigned int flags ) { m_pMesh->m_VertexFormatFlag = flags; }
+
+	void RaiseVertexFormatFlags( unsigned int flags ) { m_pMesh->m_VertexFormatFlag |= flags; }
+
+	/// Returns true on success
+	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter ) = 0;
 };
 
 
 
 /**
- [in] 3D model data loaded by C3DModelLoader
+  Converts a general 3d mesh into a 3d mesh archive
+
+ [in] A General 3D Mesh loaded by C3DModelLoader which has
+   - non-triangulated polygons
+   - verties represented as an array of CGeneral3DVertex
  [out] a mesh archive
+   - 
+
  common routines to create mesh archives.
  NOTE: vertex buffer in CIndexedPolygon is not used. Vertices are
  stored and managed separately by the mesh model builder
@@ -146,6 +152,8 @@ public:
 protected:
 
 	boost::shared_ptr<C3DModelLoader> m_pModelLoader;
+
+	boost::shared_ptr<CGeneral3DMesh> m_pMesh;
 
 	/// file name of the original model data
 	string m_strSrcFilename;
@@ -175,6 +183,7 @@ protected:
 
 	void CreateTriangleSets();
 
+	/// TODO: create as a separate class?
 	void ProcessTextureFilenames();
 
 	void CheckShadowVolume();
@@ -193,21 +202,12 @@ public:
 
 	virtual ~C3DMeshModelBuilder();
 
-
-	/// save mesh models into files
-	/// file names for each model have to be specified prior to the call of this function
-//	void Export();
-
-	/// called by the user to start the mesh model construction
-	/// creates a mesh archive
-	/// \param [in] output filename of the mesh archive
-	/// \param [out] input filename of the source 3D model object
-	/// if pcDestFilename is not specified, no mesh file will be created,
-	/// and the mesh archive is stored in the instance of C3DMeshModelBuilder
-//	void BuildMeshModel( const char *pcDestFilename, const char *pcSrcFilename );
-
 	/// \param pModelLoader 3D model loader. Must be in a "loaded" state.
+	/// TODO: rename to BuildMeshModelArchive
 	void BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader );
+
+	/// \param [in] borrowed reference
+	void BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh );
 
 //	void SetTextureFilenameOption( unsigned int option ) { m_TextureFilenameOption = option; }
 	void SetTextureFilenameOption( TexturePathnameOption::Option option ) { m_pModelLoader->SetTexturePathnameOption( option ); }

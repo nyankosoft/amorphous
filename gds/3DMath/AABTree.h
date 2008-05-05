@@ -40,6 +40,8 @@ public:
  STMBinNode - binary tree node for triangle mesh
  - each non-leaf node holds an axis-aligned plane, which is represented by 'iAxis' & 'fDist'.
  - 'iAxis' represents the plane normal along the corresponding axis
+ - Holds indices to geometries
+   - Instances of geometries are stored in CAABTree instance that owns nodes
 */
 class CAABNode : public IArchiveObjectBase
 {
@@ -136,17 +138,21 @@ protected:
 	/// used at runtime as a stack of node indices to check for collisions
 	std::vector<int> m_vecNodeToCheck;
 
+private:
+
+	inline void BuildLA_r( int index, int depth );
+
+protected:
+
+	void InitRootNode();
+
+public:
+
 	enum RecursionStopCond
 	{
 		COND_AND, ///< i.e. loose recursion stopper
 		COND_OR,  ///< i.e. strict recursion stopper
 	};
-
-private:
-
-	inline void BuildLA_r( int index, int depth );
-
-public:
 
 	inline CAABTree();
 
@@ -178,29 +184,28 @@ public:
 
 	int GetNumNodes() const { return (int)m_vecNode.size(); }
 
+	std::vector<CAABNode>& GetNodeBuffer() { return m_vecNode; }
+
 	void SetMaxDepth( int max_depth ) { m_MaxDepth = max_depth; }
 
 	void SetMinimumCellVolume( float volume ) { m_fMinimumCellVolume = volume; }
 
-	void SetNumMaxTrianglesPerCell( int num_max_triangles ) { m_iNumMaxTrianglesPerCell = num_max_triangles; }
+	void SetNumMaxGeometriesPerCell( int num_max_triangles ) { m_iNumMaxTrianglesPerCell = num_max_triangles; }
 
 	inline void SetRecursionStopCondition( const string& cond );
 
+	inline void SetRecursionStopCondition( RecursionStopCond condition ) { m_RecursionStopCond = condition; }
+
 	inline bool ShouldStopRecursion( int depth, float sub_space_volume, int num_triangles_in_cell );
 
-//	inline int AddAABB( const AABB3& aabb );
-
-	/// register a geometry with the specified index
-//	inline void AddGeometry( const TGeometry& geom, int index )
-
-	/// get a list of geometry indices which intersect with 'raabb'
+	/// Get a list of geometry indices which intersect with 'raabb'
 	/// - Checks overlaps between abbb and geometries
 	/// \param [in] aabb
 	/// \param [out] rvecDestIndex dest buffer that holds indices of geometries
 	///              intersecting with aabb
 	inline void GetIntersectingGeometries( const AABB3& aabb, std::vector<int>& rvecDestIndex );
 
-	/// get a list of geometry indices whose aabb intersect with 'aabb'
+	/// Get a list of geometry indices whose aabb intersect with 'aabb'
 	/// - Checks overlaps between abbb and geometry aabbs
 	/// - Does not mean geometry itself intersects with the aabb
 	/// - Calls TGeometry::GetAABB() inside
@@ -211,9 +216,11 @@ public:
 	/// get AABBs which possibly include the specified position 'vPos'
 	inline void GetPossiblyIntersectingAABBs( const Vector3& vPos, std::vector<int>& rvecDestIndex );
 
+	/// Add a geometry to the list and link it to a tree node
+	/// - Assumes that the tree has already been contructed
 	inline void AddGeometry( const TGeometry& geom );
 
-	/// clear geometry indices from nodes
+	/// Clear geometry indices from nodes
 	/// - Does not remove the geometry instances. Only the indices in the nodes
 	inline void ResetRegisteredGeometries();
 
@@ -248,6 +255,8 @@ public:
 
 	void Build( const AABB3& rBoundingBox, const int depth ) { CAABTree::Build( rBoundingBox, depth ); }
 
+	void Build( const std::vector<TGeometry>& vecGeometry ) { CAABTree::Build( vecGeometry ); }
+
 	/// \param [in] vecGeometry copied and stored
 	inline void Build();
 
@@ -273,11 +282,11 @@ public:
 
 	void Build( const AABB3& rBoundingBox, const int depth ) { CAABTree::Build( rBoundingBox, depth ); }
 
+	/// Cannot call CAABTree::Build() from an instance of CNonLeafyAABTree. Why?
+	void Build( const std::vector<TGeometry>& vecGeometry ) { CAABTree::Build( vecGeometry ); }
+
 	/// \param [in] vecGeometry copied and stored
-	inline void Build()
-	{
-		assert( !"Not implemented\n" );
-	}
+	inline void Build();
 
 	inline virtual void GetIntersectingAABBs( const AABB3& aabb, std::vector<int>& rvecDestIndex )
 	{

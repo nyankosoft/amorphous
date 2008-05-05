@@ -13,6 +13,7 @@ using namespace std;
 #include "3DCommon/32BitColor.h"
 
 #include "Support/Serialization/SerializationEx.h"
+#include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
 
 
@@ -198,6 +199,9 @@ public:
 class CMMA_Material : public IArchiveObjectBase
 {
 public:
+
+	std::string Name;
+
 	float fSpecular;
 
 //	SFloatRGBAColor Diffuse;
@@ -220,7 +224,7 @@ public:
 
 	// version 1: changed from SurfaceTexture & NormalMapTexture
 	// to vecTexture
-	virtual unsigned int GetVersion() const { return 1; }
+	virtual unsigned int GetVersion() const { return 2; }
 };
 
 
@@ -251,6 +255,16 @@ public:
 //=========================================================================================
 // C3DMeshModelArchive
 //=========================================================================================
+
+
+/// - Create image archives and add them to db
+/// - Change the texture file names stored in m_vecMeshArchive
+/// - Texture image is not saved if it already exists in the db
+extern void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
+								         const std::string& db_filepath,
+								         CBinaryDatabase<std::string> &db,
+								         bool bUseTextureBasenameForKey = true );
+
 
 class C3DMeshModelArchive : public IArchiveObjectBase
 {

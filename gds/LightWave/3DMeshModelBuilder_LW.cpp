@@ -3,16 +3,41 @@
 
 #include "Support/fnop.h"
 #include "Support/StringAux.h"
+#include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
 
 #include "3DMeshModelBuilder_LW.h"
 using namespace MeshModel;
 
+using namespace boost;
+
+
+// default vertex flags for mesh archives
+// created from LightWave object files
+static const unsigned int gs_DefaultVertexFlags_LW
+= CMMA_VertexSet::VF_POSITION
+| CMMA_VertexSet::VF_NORMAL
+| CMMA_VertexSet::VF_DIFFUSE_COLOR;
+
+
+C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW()
+:
+m_DefaultVertexFlags(gs_DefaultVertexFlags_LW)
+{
+	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
+
+	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
+}
+
 
 C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW( boost::shared_ptr<CLWO2_Object> pSrcObject )
 :
-m_pSrcObject(pSrcObject)
+m_pSrcObject(pSrcObject),
+m_DefaultVertexFlags(gs_DefaultVertexFlags_LW)
 {
+	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
+
+	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
 }
 
 
@@ -91,46 +116,21 @@ bool C3DMeshModelBuilder_LW::BuildMeshModel( SLayerSet& rLayerInfo )
 }
 
 
-void C3DMeshModelBuilder_LW::LoadMeshModel()
-{
-	m_VertexFormatFlag = CMMA_VertexSet::VF_POSITION|CMMA_VertexSet::VF_NORMAL;
-
-	m_VertexFormatFlag |= CMMA_VertexSet::VF_DIFFUSE_COLOR;
-
-
-	if( m_TargetLayerInfo.pSkelegonLayer != NULL )
-	{
-		BuildSkeletonFromSkelegon( *(m_TargetLayerInfo.pSkelegonLayer) );
-	}
-
-	int i, num_mesh_layers = m_TargetLayerInfo.vecpMeshLayer.size();
-	for( i=0; i<num_mesh_layers; i++ )
-	{
-		ProcessLayer( *(m_TargetLayerInfo.vecpMeshLayer[i]) );
-	}
-
-	// create mesh materials from the surfaces of the LightWave object
-	SetMaterials();
-
-	// load additional options written as the comment on the surface dialog
-	LoadSurfaceCommentOptions();
-}
-
-
 void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 {
 
 	// get the current size of the destination vertex buffer
 	// used to offest the vertex indices in the polygons
-	const size_t vertex_offset = m_vecVertexBuffer.size();
-	const size_t polygon_offset = m_vecIndexedPolygon.size();
+	const size_t vertex_offset = m_pMesh->GetVertexBuffer().size();// m_vecVertexBuffer.size();
+	const size_t polygon_offset = m_pMesh->GetPolygonBuffer().size();// m_vecIndexedPolygon.size();
 
 	// =============== load vertices ===============
 
 	vector<Vector3> rvecVertex = rLayer.GetVertex();
 	vector<Vector3> rvecNormal = rLayer.GetVertexNormal();
 
-	int i, j, iNumVertices = rvecVertex.size();
+	int i, j;
+	const int iNumVertices = (int)rvecVertex.size();
 
 	// create a temporary buffer to hold vertices
 	vector<CGeneral3DVertex> TempVertexBuffer;
@@ -145,7 +145,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 	// check if there are any texture uv mappings
 	vector<CLWO2_TextureUVMap>& rTexUVMap = rLayer.GetTextureUVMap();
 	if( 0 < rTexUVMap.size() )
-		m_VertexFormatFlag |= CMMA_VertexSet::VF_2D_TEXCOORD;
+		RaiseVertexFormatFlags( CMMA_VertexSet::VF_2D_TEXCOORD );
 	
 	// every vertex is expected to have one set of uv tex coord
 	TEXCOORD2 tex;
@@ -168,18 +168,18 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 
 	// get surface info
 	vector<CLWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
-	size_t iNumSurfaces = rvecSurface.size();
+	const int iNumSurfaces = (int)rvecSurface.size();
 
 	// surfaces in LightWave are used as materials
-//	m_NumMaterials = iNumSurfaces;
 
 	int iMatIndex;
 
 	vector<CLWO2_Face>& rvecPolygon = rLayer.GetFace();
 
-	int iNumPolygons = rvecPolygon.size();
+	const int iNumPolygons = (int)rvecPolygon.size();
 	int iNumPolVerts;
 
+	vector<CIndexedPolygon>& polygon_buffer = m_pMesh->GetPolygonBuffer();
 	for( i=0; i<iNumPolygons; i++ )
 	{
 		CLWO2_Face& rPolygon = rvecPolygon[i];
@@ -200,12 +200,14 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 
 		// set indexed polygons
 		vector<UINT4>& rvecIndex = rPolygon.GetVertexIndex();
-		iNumPolVerts = rvecIndex.size();
-		m_vecIndexedPolygon.push_back( CIndexedPolygon() );
-		m_vecIndexedPolygon.back().m_MaterialIndex = iMatIndex;
+		iNumPolVerts = (int)rvecIndex.size();
+
+		polygon_buffer.push_back( CIndexedPolygon() );
+		polygon_buffer.back().m_MaterialIndex = iMatIndex;
+
 		for( j=0; j<iNumPolVerts; j++ )
 		{
-			m_vecIndexedPolygon.back().m_index.push_back( vertex_offset + rvecIndex[j] );
+			polygon_buffer.back().m_index.push_back( (int)vertex_offset + (int)rvecIndex[j] );
 		}
 
 		// set texture uv
@@ -258,22 +260,24 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 		}
 	}
 */
+	std::vector<CGeneral3DVertex>& vertex_buffer = m_pMesh->GetVertexBuffer();
+
 //	m_vecVertexBuffer.reserve( m_vecVertexBuffer.size() + iNumVertices );
 //	m_vecVertexBuffer.insert( m_vecVertexBuffer.end(), iNumVertices, CGeneral3DVertex() );
-	if( m_vecVertexBuffer.size() == 0 )
+	if( vertex_buffer.size() == 0 )
 	{
-		m_vecVertexBuffer.resize( iNumVertices, CGeneral3DVertex() );
+		vertex_buffer.resize( iNumVertices, CGeneral3DVertex() );
 	}
 	else
 	{
-		m_vecVertexBuffer.reserve( m_vecVertexBuffer.size() + iNumVertices );
-		m_vecVertexBuffer.insert( m_vecVertexBuffer.end(), iNumVertices, CGeneral3DVertex() );
+		vertex_buffer.reserve( vertex_buffer.size() + iNumVertices );
+		vertex_buffer.insert( vertex_buffer.end(), iNumVertices, CGeneral3DVertex() );
 	}
 
 	// copy collected vertices & polygons to the buffers
 	for( i=0; i<iNumVertices; i++ )
 	{
-		m_vecVertexBuffer[ vertex_offset + i ] = TempVertexBuffer[i];
+		vertex_buffer[ vertex_offset + i ] = TempVertexBuffer[i];
 	}
 
 }
@@ -287,42 +291,82 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 //	CMMA_Material material;
 	vector<CMMA_Material>& vecMaterial = GetMaterialBuffer();
 
+	size_t j = 0;
+
 	vector<CLWO2_StillClip>& rvecClip = m_pSrcObject->GetStillClip();
-	size_t j, iNumClips = rvecClip.size();
+	size_t k, iNumClips = rvecClip.size();
 
 	CLWO2_SurfaceBlock *pBlock;
 
 	vecMaterial.resize( iNumSurfaces );
 
+	UINT         tex_channel_tags[]    = { ID_COLR, ID_BUMP };
+	unsigned int vert_flags_to_raise[] = {       0, CMMA_VertexSet::VF_BUMPMAP };
+
 	for( i=0; i<iNumSurfaces; i++ )
 	{
 		CMMA_Material &material = vecMaterial[i];
 
+		material.Name = rvecSurface[i].GetName();
+
 		material.fSpecular = rvecSurface[i].GetBaseShadingValue( CLWO2_Surface::SHADE_SPECULAR );
 
-		pBlock = rvecSurface[i].GetSurfaceBlockByChannel( ID_COLR );
-
-		if( pBlock )
+		for( j=0; j<numof(tex_channel_tags); j++ )
 		{
-			// found a texture for color channel
-			for( j=0; j<iNumClips; j++ )
+			pBlock = rvecSurface[i].GetSurfaceBlockByChannel( tex_channel_tags[j] );
+
+			if( pBlock )
 			{
-				if( rvecClip[j].uiClipIndex == pBlock->GetImageTag() )
+				// found a texture
+
+				RaiseVertexFormatFlags( vert_flags_to_raise[j] );
+
+				for( k=0; k<iNumClips; k++ )
 				{
-					if( material.vecTexture.size() == 0 )
-						material.vecTexture.push_back( CMMA_Texture() );
-//					material.SurfaceTexture.strFilename = rvecClip[j].strName;
-					material.vecTexture[0].strFilename = rvecClip[j].strName;
+					if( rvecClip[k].uiClipIndex == pBlock->GetImageTag() )
+					{
+						for( size_t tex = material.vecTexture.size();
+							        tex <= j;
+									tex++ )
+						{
+							material.vecTexture.push_back( CMMA_Texture() );
+						}
+
+	//					material.SurfaceTexture.strFilename = rvecClip[j].strName;
+						material.vecTexture[j].strFilename = rvecClip[k].strName;
+					}
 				}
 			}
 		}
 
+#ifdef WIN32
+
+		// fix abs paths on Win32 platform
+		// - absolute paths made by LW modeler is not valid on Win32 platform. See below
+		// LightWave modeler writes it as "D:dev/models/object.lwo"
+		// Win32 wants it to be           "D:/dev/models/object.lwo"
+		for( j=0; j<material.vecTexture.size(); j++ )
+		{
+			string filepath = material.vecTexture[j].strFilename;
+
+			if( filepath[1] == ':' )
+			{
+				// absolute path
+				// - change it to a valid path string for Win32 platform
+				material.vecTexture[j].strFilename
+					= filepath.substr( 0, 1 ) + ":/" + filepath.substr( 2, 2048 );
+			}
+		}
+
+#endif /* WIN32 */
+
+/*
 		pBlock = rvecSurface[i].GetSurfaceBlockByChannel( ID_BUMP );
 
 		if( pBlock )
 		{
 			// found a bump map texture
-			m_VertexFormatFlag |= CMMA_VertexSet::VF_BUMPMAP;
+			RaiseVertexFormatFlags( CMMA_VertexSet::VF_BUMPMAP );
 			for( j=0; j<iNumClips; j++ )
 			{
 				if( rvecClip[j].uiClipIndex == pBlock->GetImageTag() )
@@ -332,9 +376,9 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 
 //					material.NormalMapTexture.strFilename = rvecClip[j].strName;
 					material.vecTexture[1].strFilename = rvecClip[j].strName;
-				}
 			}
-		}
+			}
+		}*/	
 
 //		material.NormalMapTexture.strFilename = material.SurfaceTexture.strFilename;
 //		CFileNameOperation::AppendStringToBodyFilename( material.NormalMapTexture.strFilename, "_NM" );
@@ -422,15 +466,15 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
 
 	m_vecDestBoneIndex[ iSrcBoneIndex ] = m_iNumDestBones++;
 
-	int i, num_bones = rvecSrcBone.size();
-	for( i=0; i<num_bones; i++ )
+	const size_t num_bones = rvecSrcBone.size();
+	for( size_t i=0; i<num_bones; i++ )
 	{
 		if( rvecSrcBone[i].GetVertexIndex(0) == next_pnt_index )
 		{
 			// found a child bone
 			rDestBone.vecChild.push_back( CMMA_Bone() );
 			
-			BuildSkeletonFromSkelegon_r( i, rvecSrcBone, rLayer, rDestBone.vecChild.back() );
+			BuildSkeletonFromSkelegon_r( (int)i, rvecSrcBone, rLayer, rDestBone.vecChild.back() );
 		}
 	}
 }
@@ -438,7 +482,6 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
 
 void C3DMeshModelBuilder_LW::BuildBoneTransformsNROT_r(const Vector3& vParentOffset, CMMA_Bone& rDestBone )
 {
-
 	// set transform from model space to bone space
 	Vector3 vOffset = vParentOffset + rDestBone.vLocalOffset;
 ///	Vector3 vOffset = vParentOffset;
@@ -460,7 +503,8 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 {
 	vector<CLWO2_Bone>& rvecBone = rLayer.GetBone();
 
-	int i, j, num_bones = rvecBone.size();
+	int i,j;
+	const int num_bones = (int)rvecBone.size();
 	int pnt_index;
 	int iRootBoneIndex = -1;
 
@@ -494,7 +538,7 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 	Matrix34 mat;
 	mat.Identity();
 
-	CMMA_Bone& dest_bone = m_SkeletonRootBone; //m_MeshModelArchive.GetSkeletonRootBone();
+	CMMA_Bone& dest_bone = m_pMesh->GetSkeletonRootBoneBuffer();
 
 	BuildSkeletonFromSkelegon_r( iRootBoneIndex,
 		                         rvecBone,
@@ -530,20 +574,20 @@ void C3DMeshModelBuilder_LW::SetVertexWeights( vector<CGeneral3DVertex>& rDestVe
 {
 	vector<CLWO2_WeightMap>& rWeightMap = rLayer.GetVertexWeightMap();
 
-	int num_maps = rWeightMap.size();
+	const int num_maps = (int)rWeightMap.size();
 
 	if( num_maps == 0 )
 		return;
 
 	if( m_vecDestBoneIndex.size() == 0 )
 	{
-		g_Log.Print( WL_WARNING, "cannot find a valid skelegon tree for layer: %s", rLayer.GetName().c_str() );
+		LOG_PRINT_WARNING( " - Cannot find a valid skelegon tree for layer: " + rLayer.GetName() );
 		return;
 	}
 
-	m_VertexFormatFlag |= CMMA_VertexSet::VF_WEIGHT;
+	RaiseVertexFormatFlags( CMMA_VertexSet::VF_WEIGHT );
 
-	int i, j, num_vertices;
+	int i, j, num_vertices = 0;
 	int src_bone_index, dest_bone_index;
 	UINT4 pnt_index;
 	float fWeight;
@@ -571,8 +615,8 @@ void C3DMeshModelBuilder_LW::SetVertexWeights( vector<CGeneral3DVertex>& rDestVe
 
 	// add default weight and index to vertices that have no mapped weights
 	// e.g.) vertices in a mass spring simulation
-	num_vertices = rDestVertexBuffer.size();
-	int iMatIndex = m_vecDestBoneIndex.size(); // an additional matrix which is always identity druing runtime
+	num_vertices = (int)rDestVertexBuffer.size();
+	int iMatIndex = (int)m_vecDestBoneIndex.size(); // an additional matrix which is always identity druing runtime
 	for( i=0; i<num_vertices; i++ )
 	{
 		if( rDestVertexBuffer[i].m_iMatrixIndex.size() == 0 )
@@ -586,25 +630,120 @@ void C3DMeshModelBuilder_LW::SetVertexWeights( vector<CGeneral3DVertex>& rDestVe
 
 bool C3DMeshModelBuilder_LW::BuildMeshFromLayer( CLWO2_Layer& rLayer )
 {
-//	m_strSrcFilename = m_pSrcObject->GetFilename();
 	m_TargetLayerInfo.strOutputFilename = m_pSrcObject->GetFilename();
 
-	m_VertexFormatFlag = CMMA_VertexSet::VF_POSITION | CMMA_VertexSet::VF_NORMAL;
-
-	m_VertexFormatFlag |= CMMA_VertexSet::VF_DIFFUSE_COLOR;
+	SetVertexFormatFlags( m_DefaultVertexFlags );
 
 	SetTexturePathnameOption( TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME );
 
 	// create the basic form of a mesh object
 	ProcessLayer( rLayer );
 
+	m_pMesh->UpdatePolygonAABBs();
+
 	SetMaterials();
-
-//	LoadMeshModel_PostProcess();
-
-	// check if the mesh should be created as a shadow volume mesh
-//	CheckShadowVolume();
 
 	return true;
 }
 
+
+void C3DMeshModelBuilder_LW::LoadMeshModel()
+{
+	SetVertexFormatFlags( m_DefaultVertexFlags );
+
+	if( m_TargetLayerInfo.pSkelegonLayer != NULL )
+	{
+		BuildSkeletonFromSkelegon( *(m_TargetLayerInfo.pSkelegonLayer) );
+	}
+
+	const int num_mesh_layers = (int)m_TargetLayerInfo.vecpMeshLayer.size();
+	for( int i=0; i<num_mesh_layers; i++ )
+	{
+		ProcessLayer( *(m_TargetLayerInfo.vecpMeshLayer[i]) );
+	}
+
+	m_pMesh->UpdatePolygonAABBs();
+
+	// create mesh materials from the surfaces of the LightWave object
+	SetMaterials();
+
+	// load additional options written as the comment on the surface dialog
+	LoadSurfaceCommentOptions();
+}
+
+
+/*
+bool has_string( const std::vector<std::string>& string_buffer, const std::string& name )
+{}
+*/
+
+
+/// loads 3d mesh model from geometry filter
+bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter )
+{
+	LOG_FUNCTION_SCOPE();
+
+	if( !m_pSrcObject )
+	{
+		LOG_SCOPE( " - Loading LightWave object from file " );
+
+		// load the model
+		m_pSrcObject = shared_ptr<CLWO2_Object>( new CLWO2_Object() );
+
+		bool loaded = m_pSrcObject->LoadLWO2Object( model_filepath );
+
+		if( !loaded )
+		{
+			LOG_PRINT_ERROR( " - Failed to load a LightWave object file: " + model_filepath );
+			return false;
+		}
+	}
+
+	SetVertexFormatFlags( m_DefaultVertexFlags );
+
+	list<CLWO2_Layer>& layer_list = m_pSrcObject->GetLayer();
+
+	const vector<string>& layers_to_include = geometry_filter.Include.Layers;
+	const vector<string>& layers_to_exclude = geometry_filter.Exclude.Layers;
+
+	/// create polygons and vertices from layers which are
+	/// 1. included in the 'include' filter
+	/// 2. but not included in the 'exclude' filter
+	vector<string>::const_iterator itr;
+	list<CLWO2_Layer>::iterator layer;
+	for( layer = layer_list.begin();
+		 layer != layer_list.end();
+		 layer++ )
+	{
+		if( 0 < layers_to_include.size() )
+		{
+			itr = find( layers_to_include.begin(), layers_to_include.end(), layer->GetName() );
+
+			if( itr == layers_to_include.end() )
+				continue;
+		}
+//		else
+//		{
+			// no 'include' filter is specified
+			// - include it if it is not listed on the 'exclude' list
+//		}
+
+		// layer is included in the 'include' list
+
+		if( 0 < layers_to_exclude.size() )
+		{
+			itr = find( layers_to_exclude.begin(), layers_to_exclude.end(), layer->GetName() );
+
+			if( itr != layers_to_exclude.end() )
+				continue; // in the 'exclude' list. skip this layer
+		}
+
+		ProcessLayer( *layer );
+	}
+
+	m_pMesh->UpdatePolygonAABBs();
+
+	SetMaterials();
+
+	return true;
+}

@@ -1,10 +1,11 @@
+#include "3DMeshModelArchive.h"
 
 #include <fstream>
 
 #include "3DCommon/General3DVertex.h"
 #include "Support/Vec3_StringAux.h"
+#include "Support/ImageArchive.h"
 
-#include "3DMeshModelArchive.h"
 using namespace GameLib1::Serialization;
 using namespace MeshModel;
 
@@ -217,6 +218,9 @@ void CMMA_Texture::Serialize( IArchive& ar, const unsigned int version )
 
 void CMMA_Material::Serialize( IArchive& ar, const unsigned int version )
 {
+	if( 2 <= version )
+		ar & Name;
+
 	ar & fSpecular;
 //	ar & SurfaceTexture;
 //	ar & NormalMapTexture;
@@ -260,6 +264,59 @@ void CMMA_Bone::Serialize( IArchive& ar, const unsigned int version )
 	ar & vLocalOffset;
 	ar & BoneTransform;
 	ar & vecChild;
+}
+
+
+
+//void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive, ... ) /// error: must specify the namespace. See below
+
+void MeshModel::AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
+								             const string& db_filepath,
+								             CBinaryDatabase<string> &db,
+								             bool bUseTextureBasenameForKey )
+{
+	const size_t num_materials = mesh_archive.GetMaterial().size();
+	for( size_t j=0; j<num_materials; j++ )
+	{
+		if( mesh_archive.GetMaterial()[j].vecTexture.size() == 0 )
+			continue;
+
+		CMMA_Texture& rTexture = mesh_archive.GetMaterial()[j].vecTexture[0];
+
+		const string tex_filename = rTexture.strFilename;
+
+		if( tex_filename.length() == 0 )
+			continue;
+
+		string tex_key;
+		
+		if( bUseTextureBasenameForKey )
+			tex_key = fnop::get_nopath(tex_filename);
+		else
+			tex_key = tex_filename;
+
+		if( db.KeyExists(tex_key) )
+		{
+			// the texture file has been already saved to database
+			// - skip this texture
+			continue;
+		}
+
+//		string tex_resource_name = db_filename + "::" + tex_key;
+		string tex_resource_name = db_filepath + "::" + tex_key;
+
+		// overwrite original texture filename with the resource name
+		// - (db filename) + "::" + (archive key name)
+		rTexture.strFilename = tex_resource_name;
+
+		CImageArchive img_archive = CImageArchive( tex_filename );
+
+		if( img_archive.IsValid() )
+		{
+			// add image archive to db
+			db.AddData( tex_key, img_archive );
+		}
+	}
 }
 
 

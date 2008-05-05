@@ -34,11 +34,12 @@ class CMMA_VertexSet;
 class CMMA_TriangleSet;
 class CMMA_Material;
 class CMMA_Bone;
-class CMMA_VertexSet;
 class C3DMeshModelArchive;
 class CD3DXMeshModel;
 class C3DMeshModelBuilder;
+class C3DModelLoader;
 }
+
 
 
 // mesh object classes
@@ -46,7 +47,7 @@ class C3DMeshModelBuilder;
 //   CD3DXMeshObjectBase -> ???
 //   CD3DXMeshObject -> C3DMeshObject
 //   CD3DXMeshObject -> C3DProgressiveMeshObject
-//   CD3DXMeshObject -> C3DSleletalMeshObject
+//   CD3DXMeshObject -> C3DSkeletalMeshObject
 class CD3DXMeshObjectBase;
 class CD3DXMeshObject;
 class CD3DXPMeshObject; // progressive mesh

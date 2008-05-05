@@ -329,7 +329,7 @@ void CTriangleMesh::InitSpecific( CJL_ShapeDesc& rShapeDesc )
 	// create triangle mesh from an array of vertices and indices
 
 	m_Tree.Release();
-	m_Tree.SetNumMaxTrianglesPerCell( pMeshDesc->NumMaxTrianglesPerCell );
+	m_Tree.SetNumMaxGeometriesPerCell( pMeshDesc->NumMaxTrianglesPerCell );
 	m_Tree.SetMinimumCellVolume( pMeshDesc->MinimumCellVolume );
 	m_Tree.SetRecursionStopCondition( pMeshDesc->RecursionStopCond );
 

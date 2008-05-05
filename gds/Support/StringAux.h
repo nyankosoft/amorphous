@@ -186,4 +186,17 @@ inline void SeparateStrings( std::vector<std::string>& rDestStr, const char *pSr
 }
 
 
+inline int get_str_index( const std::string& input_str, const std::vector<std::string>& reference_str )
+{
+	const size_t num_elements = reference_str.size();
+	for( size_t i=0; i<num_elements; i++ )
+	{
+		if( input_str == reference_str[i] )
+			return (int)i;
+	}
+
+	return -1;
+}
+
+
 #endif  /*  __STRINGAUX_H__  */

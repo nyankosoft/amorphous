@@ -6,8 +6,12 @@
 #include "3DMath/aabb3.h"
 #include "3DCommon/General3DVertex.h"
 
+#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization_3DMath.h"
+using namespace GameLib1::Serialization;
 
-class CIndexedPolygon
+
+class CIndexedPolygon : public IArchiveObjectBase
 {
 	/// Pointer to the vertex buffer (borrowed reference).
 	/// Every instance of indexed polygon use this same vertex
@@ -51,11 +55,18 @@ public:
 
 	const SPlane& GetPlane() const { return m_Plane; }
 
+	const AABB3& GetAABB() const { return m_AABB; }
+
 	inline void UpdateAABB();
 
 	inline void UpdatePlane();
 
 	inline float CalculateArea() const;
+
+	/// Added to use CIndexedPolygon with CAABTree
+	/// - Not added for actual use
+	/// - ms_pVertex would have to be separately serialized and restored
+	inline void Serialize( IArchive& ar, const unsigned int version );
 
 	static void SetVertexBuffer( std::vector<CGeneral3DVertex>* vertex_buffer ) { ms_pVertex = vertex_buffer; }
 
@@ -64,7 +75,6 @@ public:
 
 
 //============================== inline implementations ==============================
-
 
 #define NORMAL_EPSILON	0.001
 
@@ -318,6 +328,29 @@ inline AABB3 GetAABB( const std::vector<CIndexedPolygon>& polygon_buffer )
 	}
 
 	return aabb;
+}
+
+
+inline void UpdateAABBs( std::vector<CIndexedPolygon>& polygon_buffer )
+{
+	size_t i, num_pols = polygon_buffer.size();
+	for( i=0; i<num_pols; i++ )
+	{
+		polygon_buffer[i].UpdateAABB();
+	}
+}
+
+
+inline void CIndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_Plane;
+
+	ar & m_AABB;
+
+	ar & m_index;
+
+	/// surface property of the polygon
+	ar & m_MaterialIndex;
 }
 
 

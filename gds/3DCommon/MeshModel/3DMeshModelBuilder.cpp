@@ -18,11 +18,10 @@ using namespace MeshModel;
 
 
 C3DModelLoader::C3DModelLoader()
-:
-m_VertexFormatFlag(0),
+//:
+//m_VertexFormatFlag(0),
 //m_TextureFilenameOption(TexturePathnameOption::ORIGINAL_FILENAME),
-m_NumMaterials(0),
-m_MeshFlag(0)
+//m_MeshFlag(0)
 {
 }
 
@@ -48,13 +47,26 @@ void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pMod
 {
 	m_pModelLoader = pModelLoader;
 
+	BuildMeshModelArchive( m_pModelLoader->GetGeneral3DMeshSharedPtr() );
+}
+
+
+/// \param [in] borrowed reference
+void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh )
+{
+	m_pMesh = pGeneralMesh;
+
 	// save non-triangulated polygons
-	m_vecNonTriangulatedPolygon = pModelLoader->GetPolygonBuffer();
+	m_vecNonTriangulatedPolygon = m_pMesh->GetPolygonBuffer();
 
-	string src_dirpath   = pModelLoader->GetInputDirectoryPath();
-	string dest_filepath = pModelLoader->GetOutputFilePath();
+	string src_dirpath;
+	string dest_filepath;
 
-//	LoadMeshModel_ModelerSpecific( pcSrcFilename );
+	if( m_pModelLoader )
+	{
+		src_dirpath   = m_pModelLoader->GetInputDirectoryPath();
+		dest_filepath = m_pModelLoader->GetOutputFilePath();
+	}
 
 	CreateMeshArchive();
 
@@ -82,41 +94,42 @@ void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pMod
 	}
 	else
 	{
-		char str[16];
-		sprintf( str, "mesh%02d.txt", s_MeshNum );
-		strTextFile = str;
+		strTextFile = fmt_string( "mesh%02d.txt", s_MeshNum );
 	}
 
 	m_MeshModelArchive.WriteToTextFile( strTextFile.c_str() );
 }
 
 
+
 void C3DMeshModelBuilder::CreateMeshArchive()
 {
+	CGeneral3DMesh& general_mesh = *m_pMesh;
+
 	// copy materials
 	vector<CMMA_Material>& dest_material_buffer = m_MeshModelArchive.GetMaterial();
-	const size_t num_materials = m_pModelLoader->GetNumMaterials();
+	const int num_materials = m_pMesh->GetNumMaterials();
 	dest_material_buffer.resize( num_materials );
 	LOG_PRINT( fmt_string( " - Copying %d material(s)", num_materials ) );
-	for( size_t i=0; i<num_materials; i++ )
+	for( int i=0; i<num_materials; i++ )
 	{
-		dest_material_buffer[i] = m_pModelLoader->GetMaterialBuffer()[i];
+		dest_material_buffer[i] = general_mesh.GetMaterialBuffer()[i];
 	}
 
 	// copy skeleton
-	m_MeshModelArchive.GetSkeletonRootBone() = m_pModelLoader->GetSkeletonRootBoneBuffer();
+	m_MeshModelArchive.GetSkeletonRootBone() = general_mesh.GetSkeletonRootBoneBuffer();
 		
 	// convert all polygons to triangles
 	Triangulate();
 
 	// if the bumpmap is enabled, local space has to be calculated for each vertex
-	if( m_pModelLoader->GetVertexFormatFlags() & CMMA_VertexSet::VF_BUMPMAP )
+	if( general_mesh.GetVertexFormatFlags() & CMMA_VertexSet::VF_BUMPMAP )
 		CalculateTangentSpace();
 
 	// triangulate polygons and save their indices and triangle sets in mesh model archive
 	CreateTriangleSets();
 
-	if( m_pModelLoader->GetVertexFormatFlags() & CMMA_VertexSet::VF_WEIGHT )
+	if( general_mesh.GetVertexFormatFlags() & CMMA_VertexSet::VF_WEIGHT )
 	{
 		// make sure that every vertex has the same number of blend matrices
 		ForceWeightMatrixCount();
@@ -161,7 +174,7 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 
 
 	// fill up the vectors with your mesh's data
-	std::vector<CGeneral3DVertex>& vert_buffer = m_pModelLoader->GetVertexBuffer();
+	std::vector<CGeneral3DVertex>& vert_buffer = m_pMesh->GetVertexBuffer();
     size_t iNumVertices = vert_buffer.size();
 	for( i = 0; i < iNumVertices; ++i )
 	{
@@ -234,51 +247,14 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 void C3DMeshModelBuilder::Triangulate()
 {
 	::Triangulate( m_vecTriangulatedPolygon, m_vecNonTriangulatedPolygon );
-
-/*	size_t i, j;
-	size_t iNumVertices;
-	size_t iNumPolygons;
-	int index[3];
-
-	std::vector<CIndexedPolygon>& polygon_buffer = m_pModelLoader->GetNonTriangulatedPolygonBuffer();
-
-	vector<CIndexedPolygon> vecIndexedTriangle;
-	vecIndexedTriangle.reserve( polygon_buffer.size() );
-
-	iNumPolygons = polygon_buffer.size();
-
-	for( i=0; i<iNumPolygons; i++ )
-	{
-		CIndexedPolygon& rPolygon = polygon_buffer[i];
-
-		iNumVertices = rPolygon.m_index.size();
-		for( j=1; j<iNumVertices-1; j++ )
-		{
-			vecIndexedTriangle.push_back( CIndexedPolygon() );
-			CIndexedPolygon& triangle = vecIndexedTriangle.back();
-
-			triangle.m_MaterialIndex = rPolygon.m_MaterialIndex;
-
-			// set triangle indices
-			index[0] = rPolygon.m_index[0];
-			index[1] = rPolygon.m_index[j];
-			index[2] = rPolygon.m_index[j+1];
-			triangle.m_index.push_back( index[0] );
-			triangle.m_index.push_back( index[1] );
-			triangle.m_index.push_back( index[2] );
-		}
-	}
-
-	// swap the old non-triangulated polygon buffer with the new triangle buffer
-	polygon_buffer.clear();
-	polygon_buffer.reserve( vecIndexedTriangle.size() );
-	polygon_buffer = vecIndexedTriangle;*/
 }
 
 
 void C3DMeshModelBuilder::CreateVertices()
 {
-	std::vector<CGeneral3DVertex>& vert_buffer = m_pModelLoader->GetVertexBuffer();
+	CGeneral3DMesh& general_mesh = *m_pMesh;
+
+	std::vector<CGeneral3DVertex>& vert_buffer = general_mesh.GetVertexBuffer();
 	const size_t iNumVertices = vert_buffer.size();
 	size_t i;
 
@@ -286,7 +262,7 @@ void C3DMeshModelBuilder::CreateVertices()
 
 	CMMA_VertexSet& rVertexSet = m_MeshModelArchive.GetVertexSet();
 
-	rVertexSet.SetVertexFormat( m_pModelLoader->GetVertexFormatFlags() );
+	rVertexSet.SetVertexFormat( general_mesh.GetVertexFormatFlags() );
 
 //	rVertexSet.Resize( iNumVertices );
 
@@ -314,7 +290,7 @@ void C3DMeshModelBuilder::CreateVertices()
 	}
 
 	// set vertex weights
-	if( m_pModelLoader->GetVertexFormatFlags() & CMMA_VertexSet::VF_WEIGHT )
+	if( general_mesh.GetVertexFormatFlags() & CMMA_VertexSet::VF_WEIGHT )
 	{
 		rVertexSet.vecfMatrixWeight.resize(iNumVertices);
 		rVertexSet.veciMatrixIndex.resize(iNumVertices);
@@ -334,7 +310,7 @@ void C3DMeshModelBuilder::CreateVertices()
 	}
 
 	// set binormal & tengents for bumpmap
-	if( m_pModelLoader->GetVertexFormatFlags() & CMMA_VertexSet::VF_BUMPMAP )
+	if( general_mesh.GetVertexFormatFlags() & CMMA_VertexSet::VF_BUMPMAP )
 	{
 		rVertexSet.vecBinormal.resize(iNumVertices);
 		rVertexSet.vecTangent.resize(iNumVertices);
@@ -350,7 +326,7 @@ void C3DMeshModelBuilder::CreateVertices()
 
 void C3DMeshModelBuilder::ForceWeightMatrixCount()
 {
-	std::vector<CGeneral3DVertex>& vert_buffer = m_pModelLoader->GetVertexBuffer();
+	std::vector<CGeneral3DVertex>& vert_buffer = m_pMesh->GetVertexBuffer();
 	const size_t num_vertices = vert_buffer.size();
 
 	int num_blend_mats;
@@ -378,7 +354,7 @@ void C3DMeshModelBuilder::ForceWeightMatrixCount()
 
 void C3DMeshModelBuilder::NormalizeVertexBlendWeights()
 {
-	std::vector<CGeneral3DVertex>& vert_buffer = m_pModelLoader->GetVertexBuffer();
+	std::vector<CGeneral3DVertex>& vert_buffer = m_pMesh->GetVertexBuffer();
 
 	size_t i, iNumVertices = vert_buffer.size();
 	int j, num_blend_mats;
@@ -406,7 +382,7 @@ void C3DMeshModelBuilder::CreateTriangleSets()
 
 	int iMat, i;
 	size_t iNumTriangles = polygon_buffer.size();
-	int iNumMaterials = m_pModelLoader->GetNumMaterials();
+	int iNumMaterials = m_pMesh->GetNumMaterials();
 	int iNumTris, iMinIndex, iMaxIndex;
 	int index[3];
 
@@ -488,6 +464,9 @@ const char* GetTexFilenameOptionTitle( TexturePathnameOption::Option option )
 
 void C3DMeshModelBuilder::ProcessTextureFilenames()
 {
+	if( !m_pModelLoader )
+		return;
+
 	vector<CMMA_Material>& rvecMaterial = m_MeshModelArchive.GetMaterial();
 
 	size_t pathlen = 0;
@@ -572,7 +551,7 @@ void C3DMeshModelBuilder::CheckShadowVolume()
 
 void C3DMeshModelBuilder::TrimTriangleSetsAndMaterials()
 {
-	int num_orig_materials = m_pModelLoader->GetNumMaterials();
+	int num_orig_materials = m_pMesh->GetNumMaterials();
 
 	vector<CMMA_TriangleSet>& rvecTriangleSet	= m_MeshModelArchive.GetTriangleSet();
 	vector<CMMA_Material>& rvecMaterial			= m_MeshModelArchive.GetMaterial();

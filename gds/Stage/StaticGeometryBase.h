@@ -108,6 +108,7 @@ public:
 	{
 		TYPE_BSPMAP,
 		TYPE_FLIGHTGAME,
+		TYPE_GENERAL,
 		NUM_TYPES
 	};
 
