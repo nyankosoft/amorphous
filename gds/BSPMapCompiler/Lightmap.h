@@ -2,18 +2,14 @@
 #define __MAPCOMPILER_LIGHTMAP_H__
 
 
-#include "Graphics/Rect.h"
-using namespace Graphics;
+#include "fwd.h"
 
 #include "3DMath/Matrix34.h"
-
+#include "3DCommon/IndexedPolygon.h"
 #include "3DCommon/FloatRGBColor.h"
-
 #include "Support/2DArray.h"
-
-#include "MapFace.h"
-
-class CLightmapBuilder;
+#include "Graphics/Rect.h"
+using namespace Graphics;
 
 
 //==========================================================================================
@@ -32,12 +28,14 @@ class CLightmap
 	float m_fScaleU;
 	float m_fScaleV;
 
-	/// bounding rectangle (does not include padding texels)
+	/// Bounding rectangle on the texture
+	/// - Unit : texel
+	/// - Does not include padding texels
 	SRect m_Rect;
 
 	/// indices to grouped faces
 	/// grouped faces that are pointed by these indices share this lightmap
-	vector<int> m_vecGroupedFaceIndex;
+	std::vector<int> m_vecGroupedFaceIndex;
 
 	C2DArray<Vector3> m_vecvPoint;
 
@@ -56,17 +54,27 @@ class CLightmap
 
 	C2DArray<Vector3> m_vecvLightDir;
 
+	std::vector<CIndexedPolygon> *m_vecpPolygonBuffer;
+
+private:
+
+	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return *m_vecpPolygonBuffer; }
+
 public:
 
 	CLightmap();
 
+	void SetPolygonBuffer( std::vector<CIndexedPolygon> *vecpPolygonBuffer ) { m_vecpPolygonBuffer = vecpPolygonBuffer; }
+
 	void Clear();
 
+	/// Allocate buffer by the size width x height
+	/// - The buffer for positions of each points is not allocated
 	void SetSize( const int width, int const height );
 
 	void AddFaceIndex( int i ) { m_vecGroupedFaceIndex.push_back(i); }
 
-	vector<int>& GetGroupedFacesIndex() { return m_vecGroupedFaceIndex; }
+	std::vector<int>& GetGroupedFacesIndex() { return m_vecGroupedFaceIndex; }
 
 //	inline int GetWidth() const ;
 //	inline int GetHeight() const ;
@@ -76,21 +84,20 @@ public:
 	inline int GetNumPoints_Y() const { return m_Rect.GetHeight(); }
 	inline int GetNumPoints() const { return GetNumPoints_X() * GetNumPoints_Y(); }
 
-	inline SRect& GetRectangle() { return m_Rect; }
+	inline const SRect& GetRectangle() const { return m_Rect; }
 
-	SFloatRGBColor& GetTexelColor( int x, int y ) { return m_vecIntensity(x,y); }
+	const SFloatRGBColor& GetTexelColor( int x, int y ) { return m_vecIntensity(x,y); }
 
 	void SetTexelColor( int x, int y, const SFloatRGBColor& color ) { m_vecIntensity(x,y) = color; }
 
 	inline Vector3 GetPoint( int x, int y ) const;
 
-//	inline bool ValidPoint( int x, int y ) { return m_vecbValidTexel(x,y); }
 	inline char ValidPoint( int x, int y ) { return m_vecbValidTexel(x,y); }
 
 	/// get surface normal
-	inline Vector3 GetNormal( int x, int y ) { return m_vecvNormal(x,y); }
+	inline Vector3 GetNormal( int x, int y ) const { return m_vecvNormal(x,y); }
 
-	inline Vector3 GetLightDirection( int x, int y ) { return m_vecvLightDir(x,y); }
+	inline Vector3 GetLightDirection( int x, int y ) const { return m_vecvLightDir(x,y); }
 
 	inline Matrix34 GetWorldPose() const { return m_GlobalPose; }
 
@@ -100,21 +107,23 @@ public:
 
 	inline SPlane& GetPlane() { return m_Plane; }
 
-	void SetLightmapTextureIndexToFaces( int index, vector<CMapFace>& rvecFace );
+	void SetLightmapTextureIndexToFaces( int index );
 
 	void SetTextureUV( SRect& rRect,
-					   vector<CMapFace>& rvecFace,
 					   const int iTextureWidth,
-					   const int iTextureHeight );
+					   const int iTextureHeight,
+					   const int tex_coord_index );
 
-	void ComputeNormalsOnLightmap( vector<CMapFace>& rvecFace );
+	void ComputeNormalsOnLightmap();
 
-	void TransformLightDirectionToLocalFaceCoord( vector<CMapFace>& rvecFace );
+	void TransformLightDirectionToLocalFaceCoord();
 
 	void ApplySmoothing();
 
 	friend class CLightmapBuilder;
 };
+
+// =========================== inline implemenrations ===========================
 
 
 inline Vector3 CLightmap::GetPoint( int x, int y ) const
@@ -123,5 +132,6 @@ inline Vector3 CLightmap::GetPoint( int x, int y ) const
 		 + m_GlobalPose.matOrient.GetColumn(0) * m_fScaleU * ( (float)(x+0.5f) / (float)(m_Rect.GetWidth()) )
 		 + m_GlobalPose.matOrient.GetColumn(1) * m_fScaleV * ( (float)(y+0.5f) / (float)(m_Rect.GetHeight()) );
 }
+
 
 #endif  /*  __MAPCOMPILER_LIGHTMAP_H__  */

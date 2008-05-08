@@ -1,19 +1,18 @@
 #ifndef __MAPCOMPILER_LIGHTMAPTEXTURE_H__
 #define __MAPCOMPILER_LIGHTMAPTEXTURE_H__
 
+#include <vector>
+#include <string>
 
+#include "3DMath/Vector3.h"
+#include "Support/2DArray.h"
+#include "../3DCommon/FloatRGBColor.h"
+#include "../3DCommon/LightStructs.h"
 #include "Graphics/Rect.h"
 #include "Graphics/RectTree.h"
 using namespace Graphics;
 
-#include "3DMath/Vector3.h"
-
-#include "Support/2DArray.h"
-
-#include "../3DCommon/FloatRGBColor.h"
-#include "../3DCommon/LightStructs.h"
-#include "MapFace.h"
-
+#include "fwd.h"
 #include "Lightmap.h"
 
 
@@ -25,7 +24,7 @@ class CLightmapTexture
 {
 	/// holds indices to lightmaps
 	/// lightmaps are stored in 'CLightmapBuilder'
-	vector<int> m_vecLightmapIndex;
+	std::vector<int> m_vecLightmapIndex;
 
 	/// lightmap texture, the output of the CreateLightmapTexture
 	C2DArray<SFloatRGBColor> m_vecTexel;
@@ -64,9 +63,9 @@ public:
 
 	bool AddLightmap( CLightmap& rLightmap, int index );
 
-	void SetLightmapTextureIndexToFaces( int index, vector<CLightmap>& rvecLightmap, vector<CMapFace>& rvecFace );
+	void SetLightmapTextureIndexToFaces( int index, vector<CLightmap>& rvecLightmap/*, vector<CMapFace>& rvecFace*/ );
 
-	void SetTextureUV( vector<CLightmap>& rvecLightmap, vector<CMapFace>& rvecFace );
+	void SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_coord_index );
 
 	void UpdateTexture( vector<CLightmap>& rvecLightmap );
 
@@ -81,7 +80,7 @@ public:
 	/// in the lightmap texture
 	void ApplySmoothing( SRect& rect );
 
-	void OutputToBMPFiles( const char *pcFilename );
+	void OutputToBMPFiles( const std::string& image_body_filename );
 };
 
 

@@ -1,14 +1,28 @@
-
-#include "BSPMapCompiler.h"
-#include "lightmapbuilder.h"
+#include "_LightmapBuilder.h"
 #include <typeinfo>
 
+#include "Support/SafeDelete.h"
 #include "Support/Log/DefaultLog.h"
 
+//#include "LightingForLightmap_SimpleRaytrace.h"
+//#include "AmbientOcclusionLightmapBuilder.h"
 
-#include "LightingForLightmap_SimpleRaytrace.h"
-#include "AmbientOcclusionLightmapBuilder.h"
 
+void CLightmapOption::LoadFromFile( CTextFileScanner& scanner )
+{
+	scanner.TryScanLine( "TexelSize",			fTexelSize );
+	scanner.TryScanLine( "TextureWidth",		TextureWidth );
+	scanner.TryScanLine( "TextureWidth",		TextureHeight );
+
+	bool light_dir_map = false;
+	if( scanner.TryScanBool( "LightDirectionMap", "Yes/No", light_dir_map) )
+	{
+		bCreateLightDirectionMap = true;
+	}
+
+	scanner.TryScanLine( "AO.SceneResolution",	AO_SceneResolution );
+//	scanner.TryScanLine( "EnvLightResolution",	EnvLightResolution );
+}
 
 
 
@@ -16,22 +30,18 @@
 // CLightmapBuilder::Methods()                                 - CLightmapBuilder
 //================================================================================
 
-//Set default value
-//Get the pointer to the array of lights in the map via 'pMapCompiler'
-//At present, 'point light' and single 'ambient light' are supported.
+// Set default value
+// - At present, 'point light' and single 'ambient light' are supported.
+// - (Previous) Get the pointer to the array of lights in the map via 'pMapCompiler'
 CLightmapBuilder::CLightmapBuilder()
 {
-	m_pMapCompiler = NULL;
-
-	m_iNumCurrentLightmaps = 0;
 	m_fMaxAllowedLightmapArea = 25.0f;
 	m_iTextureWidth = 256;
 	m_iMargin = 1;
 
-//	m_TexelsPerMeter = 2;
 	m_TexelSize = 1.0f;
 
-	m_pLightingSimulator = NULL;
+//	m_pLightingSimulator = NULL;
 
 	m_iLightmapCreationFlag = 0;
 //	m_iLightmapCreationFlag |= LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE;
@@ -49,19 +59,17 @@ void CLightmapBuilder::Clear()
 {
 	m_vecLightmap.clear();
 	m_vecLightmapTexture.clear();
-	SafeDelete( m_pLightingSimulator );
+//	SafeDelete( m_pLightingSimulator );
 }
 
 
-void CLightmapBuilder::Init( CBSPMapCompiler* pMapCompiler )
+void CLightmapBuilder::Init()
 {
-	this->m_pMapCompiler = pMapCompiler;
-
 //	this->m_pvecpLight = pMapCompiler->GetLight();
 
 	Clear();
 
-	m_pLightingSimulator = new CLightingForLightmap_SimpleRaytrace<CMapFace>;
+///	m_pLightingSimulator = new CLightingForLightmap_SimpleRaytrace<CMapFace>;
 
 //	m_pLightingSimulator->RaiseOptionFlag( LF_IGNORE_ANGLE_FACTOR );
 //	m_pLightingSimulator->RaiseOptionFlag( LF_USE_HEMISPHERIC_LIGHT );
@@ -70,7 +78,7 @@ void CLightmapBuilder::Init( CBSPMapCompiler* pMapCompiler )
 
 	// get lights from map data
 	// m_pvecpLight is a pointer to the array of pointers. 
-	m_pLightingSimulator->SetLights( *(pMapCompiler->GetLight()) );
+//	m_pLightingSimulator->SetLights( *(pMapCompiler->GetLight()) );
 
 }
 
@@ -92,36 +100,34 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 
 //bool CLightmapBuilder::CreateLightmapTexture( vector<CMapFace>& rvecFace, CPolygonMesh<CMapFace>& rPolygonMesh )
 {
-	if( !desc.pvecFace || !desc.pPolygonMesh )
+	LOG_FUNCTION_SCOPE();
+
+	if( !desc.m_pMesh )//|| !desc.pPolygonMesh )
 		return false;
 
-	CPolygonMesh<CMapFace>& rPolygonMesh = *(desc.pPolygonMesh);
-	vector<CMapFace>& rvecFace = *(desc.pvecFace);
+	m_Desc = desc;
 
-	size_t i, iNumFaces = rvecFace.size();
-
-	SetOption( desc.Option );
+	SetOption( desc.m_Option );
 
 	// create lightmaps
 	// calculate the brightness of the points on the polygons
 
 	// group faces which are close to one another and on the same plane
-	// lightmaps are created during this call
-	GroupFaces( rvecFace );
+	// - Instances of lightmap are created during this call
+	GroupFaces();
 
 	const size_t iNumLightmaps = m_vecLightmap.size();
 
 	// calculate the 2 orthogonal axes for the lightmap ('vRight' & 'vUp')
 	// and determine the dimension of the lightmap
-	for( i=0; i<iNumLightmaps; i++ )
-		CalculateLightMapPosition(m_vecLightmap[i], rvecFace);
+	for( int i=0; i<iNumLightmaps; i++ )
+		CalculateLightMapPosition( m_vecLightmap[i] );
 
-	for( i=0; i<iNumLightmaps; i++ )
+	for( int i=0; i<iNumLightmaps; i++ )
 	{
-		m_vecLightmap[i].ComputeNormalsOnLightmap( rvecFace );
+		m_vecLightmap[i].ComputeNormalsOnLightmap();
 
 //		ComputePointsOnLightmap(m_vecLightmap[i], rvecFace);
-//		ComputeNormalsOnLightmap(m_vecLightmap[i], rvecFace);
 	}
 
 
@@ -129,12 +135,15 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 ///	m_pLightingSimulator->Calculate( m_vecLightmap, rPolygonMesh );
 
 	// 10:29 2007/07/04
-	AmbientOcclusionLightmapBuilder ao;
-	ao.Calculate( m_vecLightmap, desc );
+	if( /* use_ao == */ false )
+	{
+///		AmbientOcclusionLightmapBuilder ao;
+///		ao.Calculate( m_vecLightmap, desc );
+	}
 
 
 	// transform the light direction vectors on each lightmap into local space
-	TransformLightDirectionToLocalFaceCoord( rvecFace );
+	TransformLightDirectionToLocalFaceCoord();
 
 	LOG_PRINT( " - Light direction maps have been transformed into tangent spaces." );
 
@@ -144,12 +153,17 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 	LOG_PRINT( " - Lightmaps have been packed to textures." );
 
 	// set lightmap texture id to each polygon
-	SetLightmapTextureIndicesToPolygons( rvecFace );
+	SetLightmapTextureIndicesToPolygons();
+
+	// [in,out] mesh
+	// [in] current material buffer
+	// [out] updated material buffer
+//	UpdateMeshMaterials();
 
 	// update uv values of polygons
 	size_t iNumLightmapTextures = m_vecLightmapTexture.size();
-	for( i=0; i<iNumLightmapTextures; i++ )
-		m_vecLightmapTexture[i].SetTextureUV( m_vecLightmap, rvecFace );
+	for( size_t i=0; i<iNumLightmapTextures; i++ )
+		m_vecLightmapTexture[i].SetTextureUV( m_vecLightmap, m_Desc.m_LightmapTextureCoordsIndex );
 
 	LOG_PRINT( " - Lightmap texture uv coords have been calculated." );
 
@@ -169,23 +183,44 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 }
 
 
-void CLightmapBuilder::ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace)
+//void CLightmapBuilder::ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace)
+//{}
+
+
+inline bool AreOnSamePlane( const CIndexedPolygon& polygon0, const CIndexedPolygon& polygon1 )
 {
+	if( fabs(polygon1.GetPlane().dist - polygon0.GetPlane().dist) < 0.000001
+	 && Vec3LengthSq( polygon1.GetPlane().normal - polygon0.GetPlane().normal ) < 0.000001 )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 
-void CLightmapBuilder::GroupFaces( vector<CMapFace>& rvecFace )
-{//vector<int>& rveciGroupedFacesIndex, 
+void CLightmapBuilder::GroupFaces()
+{
+	//vector<int>& rveciGroupedFacesIndex, 
+	vector<CIndexedPolygon>& polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
 
-	int i, j, k, iNumFaces = rvecFace.size();
+	std::vector<int> vecTargetPolygonIndex;
+	const size_t num_polygons = m_Desc.m_pMesh->GetPolygonBuffer().size();
+ 
+	for( size_t i=0; i<num_polygons; i++ )
+	{
+		if( m_Desc.m_vecEnableLightmapForSurface[ polygon_buffer[i].m_MaterialIndex ] )
+			vecTargetPolygonIndex.push_back( (int)i );
+	}
 
-	CMapFace *pFace0, *pFace1;
+	const size_t num_lightmapped_polygons = vecTargetPolygonIndex.size();
 
-	// We use 'm_bFlag' to record if a mapface has its lightmap
-	// (m_bFlag == false) lightmap has not been allocated.
-	// (m_bFlag == true)  light map has been already allocated.
-	for(i=0; i<iNumFaces; i++)
-		rvecFace[i].m_bFlag = false;
+	int i, j, k;
+
+	vector<int> Grouped;
+	Grouped.resize( num_polygons, 0 );
 
 	float totalarea, area2;
 
@@ -197,27 +232,20 @@ void CLightmapBuilder::GroupFaces( vector<CMapFace>& rvecFace )
 		CLightmap& rLightmap = m_vecLightmap.back();
 
 		// First, set the seed for the face-group
-		for(i=0; i<iNumFaces; i++)
+		size_t i;
+		int index0 = 0;
+		for( i=0; i<num_lightmapped_polygons; i++ )
 		{
-			pFace0 = &rvecFace[i];
+			index0 = vecTargetPolygonIndex[i];
+			const CIndexedPolygon& polygon0 = polygon_buffer[ index0 ];
 
-			if(pFace0->m_bFlag)
+			if( Grouped[index0] )
 				continue; // the lightmap has been already created for this face.
 
-			if( pFace0->ReadTypeFlag(CMapFace::TYPE_INVISIBLE) || pFace0->ReadTypeFlag(CMapFace::TYPE_LIGHTSOURCE) )
-			{
-				// invisible faces and light source faces are not lit
-				pFace0->m_bFlag = true;
-				continue;
-			}
-			else
-			{
-//				rveciGroupedFacesIndex.push_back( i );
-				rLightmap.AddFaceIndex( i );
-				pFace0->m_bFlag = true;
-				totalarea = pFace0->CalculateArea();
-				break;
-			}
+			rLightmap.AddFaceIndex( index0 );
+			Grouped[index0] = 1;
+			totalarea = polygon0.CalculateArea();
+			break;
 		}
 
 		if( rLightmap.GetGroupedFacesIndex().size() == 0 )
@@ -237,59 +265,56 @@ void CLightmapBuilder::GroupFaces( vector<CMapFace>& rvecFace )
 			continue; // turn off face grouping when light direction map textures are created
 
 		vector<int>& rveciGroupedFacesIndex = rLightmap.GetGroupedFacesIndex();
+		CIndexedPolygon& polygon0 = polygon_buffer[ index0 ];
 
-		for(j=i+1; j<iNumFaces; j++)
+		for( j=i+1; j<num_lightmapped_polygons; j++ )
 		{
-			pFace1 = &rvecFace[j];
-			if(pFace1->m_bFlag)
+			int index1 = vecTargetPolygonIndex[j];
+			CIndexedPolygon& polygon1 = polygon_buffer[ index1 ];
+			if( Grouped[index1] )
 				continue;	//this face already has a lightmap
 
-			if( pFace1->ReadTypeFlag(CMapFace::TYPE_INVISIBLE) || pFace1->ReadTypeFlag(CMapFace::TYPE_LIGHTSOURCE) )
-			{	//invisible faces and light source faces are not lit
-				pFace1->m_bFlag = true;
-				continue;
-			}
-
-			if( !pFace1->HasSamePlaneWith(*pFace0) )
+			if( !AreOnSamePlane( polygon0, polygon1 ) )
 				continue;	// pFace0 & pFace1 exist on different planes - cannot share lightmaps
 
 			for(k=0; k<rveciGroupedFacesIndex.size(); k++)
 			{
-				if( pFace1->SharingPointWith( rvecFace[ rveciGroupedFacesIndex[k] ] ) )
+//				if( pFace1->SharingPointWith( rvecFace[ rveciGroupedFacesIndex[k] ] ) )
+				if( polygon1.SharesPointWith( polygon_buffer[ rveciGroupedFacesIndex[k] ] ) )
 					break;
 			}
-			if( k == rveciGroupedFacesIndex.size() )
-				continue;	//sharing no point: the faces are seperate and shouldn't be packed into the same lightmap
 
-			area2 = pFace1->CalculateArea();
+			if( k == rveciGroupedFacesIndex.size() )
+				continue;	// sharing no point: the faces are seperate and shouldn't be packed into the same lightmap
+
+			area2 = polygon1.CalculateArea();
 			if( m_fMaxAllowedLightmapArea < totalarea + area2 )
 				continue;
 
 			// add to the current face group
-			pFace1->m_bFlag = true;
+			Grouped[index1] = 1;
 			totalarea += area2;
-			rveciGroupedFacesIndex.push_back(j);
+			rveciGroupedFacesIndex.push_back( index1 );
 		}
 	}
 
 	return;
-
 }
 
 
-// Defines the 2 orthogonal axis vectors on the lightmap plane
-// and calculate the size of the rectangle which the lightmap covers
-void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap, vector<CMapFace>& rvecFace )
+/// Defines the 2 orthogonal axis vectors on the lightmap plane
+/// and calculate the size of the rectangle which the lightmap covers
+void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 {
-	int i,j, iNumVertices, iNumFaces;
+	int i,j, iNumVertices;
 
 	vector<int>& rveciGroupedFacesIndex = lightmap.m_vecGroupedFaceIndex;
 
-	CMapFace& rFace = rvecFace.at( rveciGroupedFacesIndex[0] );
-	SPlane& rPlane = rFace.GetPlane();
+	vector<CIndexedPolygon>& polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
+	const CIndexedPolygon& polygon0 = polygon_buffer[ rveciGroupedFacesIndex[0] ];
+	const SPlane& rPlane = polygon0.GetPlane();
 
 	lightmap.m_Plane = rPlane;
-
 
 	Vector3 vRight, vUp, v;
 
@@ -312,16 +337,16 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap, vector<CM
 	minup = 99999;		maxup = -99999;
 	minright = 99999;	maxright = -99999;
 
-	iNumFaces = rveciGroupedFacesIndex.size();
-	for(i=0; i<iNumFaces; i++)
+	const size_t num_polygons = rveciGroupedFacesIndex.size();
+	for(size_t i=0; i<num_polygons; i++)
 	{
-		CMapFace& rFace = rvecFace.at( rveciGroupedFacesIndex.at(i) );
+		CIndexedPolygon& polygon = polygon_buffer[ rveciGroupedFacesIndex.at(i) ];
 
-		iNumVertices = rFace.GetNumVertices();
+		iNumVertices = polygon.GetNumVertices();
 		for(j=0; j<iNumVertices; j++)
 		{
 			// up & right are measured in world coordinate
-			v = rFace.GetVertex(j);
+			v = polygon.GetVertex(j).m_vPosition;
 			double up = Vec3Dot( v, vUp );
 			double right = Vec3Dot( v, vRight );
 			if( minup > up ) minup = up;
@@ -359,14 +384,14 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap, vector<CM
 
 void CLightmapBuilder::PackLightmaps()
 {
-	int i, iNumLightmaps = m_vecLightmap.size();
+	const size_t iNumLightmaps = m_vecLightmap.size();
 	int j;//, iNumLightmapTextures = m_vecLightmapTexture.size();
 	bool bPacked = false;
 
-	for( i=0; i<iNumLightmaps; i++ )
+	for( size_t i=0; i<iNumLightmaps; i++ )
 	{
 		CLightmap& rLightmap = m_vecLightmap[i];
-		for( j=0; j<m_vecLightmapTexture.size(); j++ )
+		for( int j=0; j<m_vecLightmapTexture.size(); j++ )
 		{
 			bPacked = m_vecLightmapTexture[j].AddLightmap( rLightmap, i );
 
@@ -390,13 +415,13 @@ void CLightmapBuilder::PackLightmaps()
 }
 
 
-void CLightmapBuilder::SetLightmapTextureIndicesToPolygons( vector<CMapFace>& rvecFace )
+void CLightmapBuilder::SetLightmapTextureIndicesToPolygons()
 {
 	int i, iNumLightmapTextures = m_vecLightmapTexture.size();
 
 	for( i=0; i<iNumLightmapTextures; i++ )
 	{
-		m_vecLightmapTexture[i].SetLightmapTextureIndexToFaces( i, m_vecLightmap, rvecFace );
+		m_vecLightmapTexture[i].SetLightmapTextureIndexToFaces( i, m_vecLightmap );
 	}
 }
 
@@ -450,14 +475,14 @@ void CLightmapBuilder::ApplySmoothingToLightmaps()
 }
 
 
-void CLightmapBuilder::TransformLightDirectionToLocalFaceCoord( vector<CMapFace>& rvecFace )
+void CLightmapBuilder::TransformLightDirectionToLocalFaceCoord(/* vector<CMapFace>& rvecFace*/ )
 {
-	const size_t iNumLightmaps = m_vecLightmap.size();
+/*	const size_t iNumLightmaps = m_vecLightmap.size();
 
 	for( size_t i=0; i<iNumLightmaps; i++ )
 	{
 		m_vecLightmap[i].TransformLightDirectionToLocalFaceCoord( rvecFace );
-	}
+	}*/
 }
 
 
@@ -473,6 +498,8 @@ void CLightmapBuilder::OutputLightmapTexturesToBMPFiles( const char *pcBodyFileN
 		m_vecLightmapTexture[i].OutputToBMPFiles( acFilename );
 	}
 }
+
+
 
 
 

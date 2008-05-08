@@ -17,23 +17,6 @@ using namespace fnop;
 #include <direct.h>
 
 
-void CLightmapOption::LoadFromFile( CTextFileScanner& scanner )
-{
-	scanner.TryScanLine( "TexelSize",			fTexelSize );
-	scanner.TryScanLine( "TextureWidth",		TextureWidth );
-	scanner.TryScanLine( "TextureWidth",		TextureHeight );
-
-	bool light_dir_map = false;
-	if( scanner.TryScanBool( "LightDirectionMap", "Yes/No", light_dir_map) )
-	{
-		bCreateLightDirectionMap = true;
-	}
-
-	scanner.TryScanLine( "AO.SceneResolution",	AO_SceneResolution );
-//	scanner.TryScanLine( "EnvLightResolution",	EnvLightResolution );
-}
-
-
 void CMapCompileOption::LoadFromFile( const std::string& filename )
 {
 	CTextFileScanner scanner;

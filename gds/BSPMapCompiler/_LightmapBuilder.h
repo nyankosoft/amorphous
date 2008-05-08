@@ -1,26 +1,28 @@
 #ifndef __LIGHTMAPBUILDER_H__
 #define __LIGHTMAPBUILDER_H__
 
-#include "BSPMapCompiler.h"
-
-#include "../3DCommon/LightStructs.h"
-#include "../Stage/bspstructs.h"
-
-#include "LightmapTexture.h"
-
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
-
-#include "Graphics/Rect.h"
-#include "Graphics/RectTree.h"
-using namespace Graphics;
-
-#include "LightingForLightmap_SimpleRaytrace.h"
 
 #include <vector>
 using namespace std;
 
+#include "3DCommon/LightStructs.h"
+#include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "3DCommon/MeshModel/General3DMesh.h"
+using namespace MeshModel;
+
+#include "3DMath/Vector3.h"
+#include "3DMath/Matrix34.h"
+#include "Graphics/Rect.h"
+#include "Graphics/RectTree.h"
+using namespace Graphics;
+
+#include "Support/TextFileScanner.h"
 #include "Support/FixedVector.h"
+
+#include "fwd.h"
+#include "LightmapTexture.h"
+//#include "LightingForLightmap_SimpleRaytrace.h"
+
 
 #define LMB_NUM_MAX_LIGHTMAPTEXTURES	64
 
@@ -28,10 +30,6 @@ using namespace std;
 #define LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE	1
 
 //enum { LFALLOFF_LINEAR, LFALLOFF_INVDIST, LFALLOFF_INVDISTSQD };
-
-class CMapFace;
-class CBSPMapCompiler;
-class CLightmapOption;
 
 /*
 template<class CMapFace>
@@ -50,7 +48,7 @@ public:
 //	vector<CLightmap> *pvecLightmap;
 
 	/// [in] occluding geometry
-	vector<C3DMeshModelArchive> m_MeshArchive;
+//	vector<C3DMeshModelArchive> m_MeshArchive;
 
 	/// [in] mesh for environment light
 	/// rendered with texture color only?
@@ -58,6 +56,8 @@ public:
 
 	int RenderTargetTexWidth;
 	int RenderTargetTexHeight;
+
+public:
 
 	AOLightmapDesc()
 		:
@@ -68,22 +68,68 @@ public:
 };
 
 
+class CLightmapOption
+{
+public:
+
+	float fTexelSize;
+	int TextureWidth;
+	int TextureHeight;
+	bool bCreateLightDirectionMap;
+//	bool bUseRayCastLightmap;	// simple lightmap technique for point & directional lighting
+	bool bRayCastDirLight;
+	bool bRayCastPointLight;
+
+	int AO_SceneResolution;
+
+public:
+
+	CLightmapOption()
+		:
+	fTexelSize(1.0f),
+	TextureWidth(256),
+	TextureHeight(256),
+	bCreateLightDirectionMap(false),
+	AO_SceneResolution(32)
+	{}
+
+	void LoadFromFile( CTextFileScanner& scanner );
+};
+
+
 class LightmapDesc
 {
 public:
 
-	/// [in,out] polygons for which the lightmaps will be created
-	vector<CMapFace>* pvecFace;
+	/// target geometry
+	CGeneral3DMesh *m_pMesh;
 
-	/// [in, out]
-//	vector<CLightmap> *pvecLightmap;
+	/// controls whether lightmaps are created for a surface or not
+	std::vector<int> m_vecEnableLightmapForSurface;
 
-	CPolygonMesh<CMapFace>* pPolygonMesh;
-	/// rvecFace - [in,out] polygons for which the lightmaps will be created
+	std::vector<CLight *> *m_vecpLight;
 
-	CLightmapOption Option;
+	/// texture coordinates index for lightmap texture
+	/// - valid range: [0,3]
+	/// - index 0 is usually used for color channel texture, so this
+	///   value is probably 1 or higher
+	/// - default value: 1
+	int m_LightmapTextureCoordsIndex;
+
+//	CPolygonMesh m_RayTraceGeometry;
+
+	CLightmapOption m_Option;
 
 	AOLightmapDesc AOLightmap;
+
+public:
+
+	LightmapDesc()
+		:
+	m_LightmapTextureCoordsIndex( 1 )
+	{
+	}
+
 };
 
 
@@ -91,33 +137,40 @@ public:
 // CLightmapBuilder
 //==========================================================================================
 
+
+/**
+ input:
+   general 3d mesh
+   geometry for ray tracing
+ output:
+   general 3d mesh with texture coordinates for lightmap textures
+   lightmap textures
+
+*/
 class CLightmapBuilder
 {
 private:
 
-	CBSPMapCompiler* m_pMapCompiler;
+	LightmapDesc m_Desc;
 
 //	CLightingForLightmap<CMapFace>* m_pLightingSimulator;
-	CLightingForLightmap_SimpleRaytrace<CMapFace>* m_pLightingSimulator;
+
+///	CLightingForLightmap_SimpleRaytrace<CMapFace>* m_pLightingSimulator;
 
 	float m_fMaxAllowedLightmapArea;
 
-	int m_iNumCurrentLightmaps;	//How many lightmaps have been created
-
-	/// controlles the scaling of the lightmap texture
-	/// how many texels corresponds to one meter of the model data
-//	float m_TexelsPerMeter;
-
+	/// Resolution of the lightmaps
+	/// - size of each texel in meter
 	float m_TexelSize;
 
 	/// size configuraiton variables about 'lightmap texture' and 'lightmap'
-	/// 128, 256, 512 or higher...
+	/// - 128, 256, 512 or higher...
 	int m_iTextureWidth, m_iTextureHeight;
 
 	/// each lightmap texture has marginal texels so that it could be used with linear texture filtering
 	int m_iMargin;
 
-	vector<CLightmap> m_vecLightmap;
+	std::vector<CLightmap> m_vecLightmap;
 
 //	vector<CLightmapTexture> m_vecLightmapTexture;
 	TCFixedVector<CLightmapTexture, LMB_NUM_MAX_LIGHTMAPTEXTURES> m_vecLightmapTexture;
@@ -129,26 +182,25 @@ private:
 
 	void Clear();
 
-	void GroupFaces( vector<CMapFace>& rvecFaces );
-//	void SelectCloseFaces( vector<int>* paiGroupedFacesIndex, vector<CMapFace>* paFaces);
+	void GroupFaces();
 
-	void CalculateLightMapPosition(CLightmap& lightmap, vector<CMapFace>& rvecFaces);
+	void CalculateLightMapPosition( CLightmap& lightmap );
 
 	// calculate vectors which point to each texel on the lightmap
 	void SetUpLightMapPoints(CLightmap& rLightmap);
 
-	void ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace);
+//	void ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace);
 
 	void PackLightmaps();
 
-	void SetLightmapTextureIndicesToPolygons( vector<CMapFace>& rvecFace );
+	void SetLightmapTextureIndicesToPolygons();
 
 //	void SetTextureCoords();
 
 	void UpdateLightmapTextures();
 
 	/// transform the light direction vectors on each lightmap into local space
-	void TransformLightDirectionToLocalFaceCoord( vector<CMapFace>& rvecFace );
+	void TransformLightDirectionToLocalFaceCoord();
 
 	void FillMarginRegions();
 
@@ -159,8 +211,8 @@ private:
 	void SetTextureWidth( const int iTextureWidth )  { m_iTextureWidth = iTextureWidth; }
 	void SetTextureHeight( const int iTextureHieght ) { m_iTextureHeight = iTextureHieght; }
 
-	int GetLightmapTextureWidth() { return m_iTextureWidth; }
-	int GetLightmapTextureHeight() { return m_iTextureHeight; }
+	int GetLightmapTextureWidth() { return m_Desc.m_Option.TextureWidth; }
+	int GetLightmapTextureHeight() { return m_Desc.m_Option.TextureHeight; }
 
 	void SetOption( const CLightmapOption& option );
 
@@ -174,7 +226,7 @@ public:
 
 	~CLightmapBuilder();
 
-	void Init( CBSPMapCompiler* pMapCompiler );
+	void Init();
 
 	/// rvecFace - [in,out] polygons for which the lightmaps will be created
 	/// rPolygonMesh - [in] static geometry used for ray tracing

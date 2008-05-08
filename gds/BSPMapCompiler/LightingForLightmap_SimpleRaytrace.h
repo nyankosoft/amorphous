@@ -6,20 +6,17 @@
 #include <vector>
 using namespace std;
 
+#include "3DMath/AABTree.h"
 #include "3DCommon/FloatRGBColor.h"
 #include "3DCommon/LightStructs.h"
-
 #include "Support/StatusDisplay/StatusDisplay.h"
 #include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.h"
 
 #include "Lightmap.h"
-#include "MapFace.h"
 
 //#include "3DMath/PolygonMesh.h"
-//#include "BSPMapCompiler.h"
 
-//class CBaseLight;
-//class CPolygonMesh;
+//class CLight;
 
 
 enum eFlag
@@ -38,7 +35,7 @@ class CLightingForLightmap_SimpleRaytrace// : public CLightingForLightmap<T>
 {
 	
 	/// pointer to the array of pointers to light objects  (ライトオブジェクトのポインタの配列、へのポインタ)
-	vector<CBaseLight *>* m_pvecpLight;
+	vector<CLight *>* m_pvecpLight;
 
 	/// point lights
 	vector<CPointLight *> m_vecpPointLight;
@@ -65,15 +62,15 @@ class CLightingForLightmap_SimpleRaytrace// : public CLightingForLightmap<T>
 	
 	int m_NumProcessedLightmapTexels;
 
-	void CalculateLightmapTexelIntensity( CLightmap& rLightmap, CPolygonMesh<T>& rMesh );
+	void CalculateLightmapTexelIntensity( CLightmap& rLightmap, CNonLeafyAABTree<T>& rMesh );
 
-	void CalculateLightmapTexelIntensityDL( CLightmap& rLightmap, CPolygonMesh<T>& rMesh );
+	void CalculateLightmapTexelIntensityDL( CLightmap& rLightmap, CNonLeafyAABTree<T>& rMesh );
 
 public:
 
 	inline CLightingForLightmap_SimpleRaytrace();
 
-	void SetLights( vector<CBaseLight *>& rvecpLight ) { m_pvecpLight = &rvecpLight; }
+	void SetLights( vector<CLight *>& rvecpLight ) { m_pvecpLight = &rvecpLight; }
 
 	bool Calculate( vector<CLightmap>& rvecLightmap, CPolygonMesh<T>& rMesh );
 
@@ -110,9 +107,6 @@ inline CLightingForLightmap_SimpleRaytrace<T>::CLightingForLightmap_SimpleRaytra
 	m_NumTotalLightmapTexels = 0;
 	
 	m_NumProcessedLightmapTexels = 0;
-	
-//	m_pMapCompiler = NULL;
-
 }
 
 
@@ -148,21 +142,21 @@ bool CLightingForLightmap_SimpleRaytrace<T>::Calculate( vector<CLightmap>& rvecL
 	{
 		switch( m_pvecpLight->at(i)->GetLightType() )
 		{
-		case CBaseLight::POINT_LIGHT:
+		case CLight::POINT_LIGHT:
 			m_vecpPointLight.push_back( (CPointLight *)(m_pvecpLight->at(i)) );
 			break;
 
-		case CBaseLight::DIRECTIONAL_LIGHT:
+		case CLight::DIRECTIONAL_LIGHT:
 			m_vecpDirectionalLight.push_back( (CDirectionalLight *)(m_pvecpLight->at(i)) );
 			break;
 
-		case CBaseLight::AMBIENT_LIGHT:
+		case CLight::AMBIENT_LIGHT:
 			pAmbientLight = (CAmbientLight *)(m_pvecpLight->at(i));
 			this->m_fAmbientIntensity = pAmbientLight->fIntensity;
 			this->m_AmbientColor = pAmbientLight->Color;
 			break;
 
-		case CBaseLight::ZONE_AMBIENT_LIGHT:
+		case CLight::ZONE_AMBIENT_LIGHT:
 			m_vecpZoneAmbientLight.push_back( (CZoneAmbientLight *)(m_pvecpLight->at(i)) );
 			break;
 		break;

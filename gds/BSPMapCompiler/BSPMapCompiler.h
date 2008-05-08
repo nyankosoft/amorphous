@@ -6,6 +6,8 @@
 #include "BSPMapData.h"
 #include "MapCompiler.h"
 
+#include "_LightmapBuilder.h"
+
 #include "Stage/bspstructs.h"
 #include "3DCommon/FloatRGBColor.h"
 #include "3DCommon/LightStructs.h"
@@ -23,35 +25,6 @@ class CTriangleMesh;
 template<class CMapFace>
 class CPolygonMesh;
 */
-
-
-class CLightmapOption
-{
-public:
-
-	float fTexelSize;
-	int TextureWidth;
-	int TextureHeight;
-	bool bCreateLightDirectionMap;
-//	bool bUseRayCastLightmap;	// simple lightmap technique for point & directional lighting
-	bool bRayCastDirLight;
-	bool bRayCastPointLight;
-
-	int AO_SceneResolution;
-
-public:
-
-	CLightmapOption()
-		:
-	fTexelSize(1.0f),
-	TextureWidth(256),
-	TextureHeight(256),
-	bCreateLightDirectionMap(false),
-	AO_SceneResolution(32)
-	{}
-
-	void LoadFromFile( CTextFileScanner& scanner );
-};
 
 
 class CMapCompileOption

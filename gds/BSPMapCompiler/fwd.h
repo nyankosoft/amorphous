@@ -4,5 +4,6 @@ class CPortalFace;
 class CBSPTreeBuilder;
 class CPortalBuilder;
 class CCellBuilder;
+class CLightmap;
 class CLightmapBuilder;
 class CBSPMapCompiler;

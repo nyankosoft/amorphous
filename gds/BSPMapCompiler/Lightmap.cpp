@@ -1,6 +1,6 @@
-
 #include "Lightmap.h"
-
+#include "Support/Vec3_StringAux.h"
+#include "Support/Log/DefaultLog.h"
 
 
 //================================================================================
@@ -54,36 +54,36 @@ void CLightmap::SetSize( const int width, const int height )
 }
 
 
-void CLightmap::SetLightmapTextureIndexToFaces( int index, vector<CMapFace>& rvecFace )
+void CLightmap::SetLightmapTextureIndexToFaces( int index )
 {
-	int i, iNumFaces = m_vecGroupedFaceIndex.size();
+	const size_t iNumFaces = m_vecGroupedFaceIndex.size();
 
-	for( i=0; i<iNumFaces; i++ )
+	for( size_t i=0; i<iNumFaces; i++ )
 	{
-		rvecFace[ m_vecGroupedFaceIndex[i] ].SetLightmapTextureIndex( index );
+//		rvecFace[ m_vecGroupedFaceIndex[i] ].SetLightmapTextureIndex( index );
 	}
 }
 
 
 void CLightmap::SetTextureUV( SRect& rRect,
-							  vector<CMapFace>& rvecFace,
 							  const int iTextureWidth,
-							  const int iTextureHeight )
+							  const int iTextureHeight,
+							  const int tex_coord_index )
 {
-	int i, iNumGroupFaces = m_vecGroupedFaceIndex.size();
-	int j, iNumVertices;
+	const size_t iNumGroupFaces = m_vecGroupedFaceIndex.size();
 	TEXCOORD2 texcoord;
+	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
 
 	Vector3 vLocalPos;
 
-	for(i=0; i<iNumGroupFaces; i++)
+	for( size_t i=0; i<iNumGroupFaces; i++)
 	{
-		CMapFace& rFace = rvecFace[ m_vecGroupedFaceIndex[i] ];
-		iNumVertices = rFace.GetNumVertices();
-		for(j=0; j<iNumVertices; j++)
+		CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
+		const int iNumVertices = polygon.GetNumVertices();
+		for( int j=0; j<iNumVertices; j++ )
 		{
 			// transform into local space
-			m_GlobalPose.InvTransform( vLocalPos, rFace.GetVertex(j) );
+			m_GlobalPose.InvTransform( vLocalPos, polygon.GetVertex(j).m_vPosition );
 
 			texcoord.u = ((float)(rRect.left+1 + 0.5f) / (float)iTextureWidth)
 				       + (vLocalPos.x / m_fScaleU) * ((float)(rRect.GetWidth()-2)  / (float)iTextureWidth);
@@ -91,37 +91,69 @@ void CLightmap::SetTextureUV( SRect& rRect,
 			texcoord.v = ((float)(rRect.top+1 + 0.5f) / (float)iTextureHeight)
 				       + (vLocalPos.y / m_fScaleV) * ((float)(rRect.GetHeight()-2) / (float)iTextureHeight);
 
-			rFace.SetLightmapTextureUV( j, texcoord );
+//			polygon.SetLightmapTextureUV( j, texcoord );
+			CGeneral3DVertex& v = polygon.Vertex( j );
+			v.m_TextureCoord[tex_coord_index] = texcoord;
 		}
 	}
 }
 
 
-void CLightmap::ComputeNormalsOnLightmap( vector<CMapFace>& rvecFace )
+/*
+// check whether the given point is included in the volume
+// which is defined by sweeping the face in the direction of the face normal
+// rvPosition : [in]
+// rfDist : [out]
+bool CIndexedPolygon::IsInSweptVolume( const Vector3& rvPosition, float& rfDist )
 {
-	int i, iNumGroupedFaces = m_vecGroupedFaceIndex.size();
+	rfDist = -99999;
+	int i;
+	float d;
+	Vector3 vEdge, vNormalOut;
+	for( i=0; i<GetNumVertices() - 1; i++ )
+	{
+		vEdge = GetVertex(i+1) - GetVertex(i);
+		Vec3Cross( vNormalOut, vEdge, GetPlane().normal );
+		d = Vec3Dot( (rvPosition - GetVertex(i)), vNormalOut );
+
+		if( rfDist < d )
+			rfDist = d;
+	}
+	if( rfDist <= 0 )
+		return true;
+	else
+		return false;
+
+}
+*/
+
+void CLightmap::ComputeNormalsOnLightmap()
+{
+	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	size_t i;
+	const size_t iNumGroupedFaces = m_vecGroupedFaceIndex.size();
 
 	int x,y;
-	int width  = m_Rect.GetWidth(); // m_vecIntensity.size_x();
-	int height = m_Rect.GetHeight(); // m_vecIntensity.size_y();
+	int width  = m_Rect.GetWidth();
+	int height = m_Rect.GetHeight();
 
-	float fDist, fMinDist;
-	int iMinFaceIndex;
+//	float fDist, fMinDist;
+//	int iMinFaceIndex;
 
-//	memset(rLightmap.avNormal, 0, sizeof(Vector3) * iLightmapWidth * iLightmapWidth);
+//	m_vecvNormal.resize( width, height );
 
-	for(y=0; y<height /*iLightmapWidth - m_iMargin * 2*/; y++)
+	for(y=0; y<height; y++)
 	{	
-		for(x=0; x<width /*iLightmapWidth - m_iMargin * 2*/; x++)
+		for(x=0; x<width; x++)
 		{
-//			Vector3& rvPoint = TexelAt( x + m_iMargin, y + m_iMargin ) ];
-			Vector3& rvPoint = GetPoint( x, y );
+			const Vector3& rvPoint = GetPoint( x, y );
 
+/*			// find the polygon which has this point
 			fMinDist = 99999;
 			for(i=0; i<iNumGroupedFaces; i++)
 			{
-				CMapFace& rFace = rvecFace[ m_vecGroupedFaceIndex[i] ];
-				rFace.IsInSweptVolume(rvPoint, fDist);
+				CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
+				polygon.IsInSweptVolume(rvPoint, fDist);
 				if( fDist < fMinDist )
 				{
 					fMinDist = fDist;
@@ -129,7 +161,22 @@ void CLightmap::ComputeNormalsOnLightmap( vector<CMapFace>& rvecFace )
 				}
 			}
 
-			m_vecvNormal(x,y) = rvecFace[ m_vecGroupedFaceIndex[iMinFaceIndex] ].GetInterpolatedNormal( rvPoint );
+			m_vecvNormal(x,y)
+				= polygon_buffer[ m_vecGroupedFaceIndex[iMinFaceIndex] ].GetInterpolatedNormal( rvPoint );
+*/
+
+			for(i=0; i<iNumGroupedFaces; i++)
+			{
+				CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
+
+				if( polygon.IsOnPolygon( rvPoint ) )
+				{
+					m_vecvNormal(x,y) = polygon.GetInterpolatedNormal( rvPoint );
+					break;
+				}
+			}
+
+			LOG_PRINT_WARNING( "- Failed to compute a normal. The point is not on any polygon: " + to_string(rvPoint) );
 
 			if( true /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
 			{	// use normal as default light direction
@@ -141,21 +188,21 @@ void CLightmap::ComputeNormalsOnLightmap( vector<CMapFace>& rvecFace )
 }
 
 
-void CLightmap::TransformLightDirectionToLocalFaceCoord( vector<CMapFace>& rvecFace )
+void CLightmap::TransformLightDirectionToLocalFaceCoord()
 {
-
 	// there should be only one face per lightmap when the light direction map is created
 	// i.e. assert( m_vecGroupedFaceIndex.size() == 1 )
 	
-	CMapFace& rFace = rvecFace[ m_vecGroupedFaceIndex[0] ];
+	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[0] ];
 
 	// normalize the light direction vectors
-	int width  = m_Rect.GetWidth();
-	int height = m_Rect.GetHeight();
+	const int width  = m_Rect.GetWidth();
+	const int height = m_Rect.GetHeight();
 	int x, y;
 
 	D3DXMATRIX matToLocal;
-	rFace.GetTransformationToLocalFaceCoord_Tex0( matToLocal );
+//	rFace.GetTransformationToLocalFaceCoord_Tex0( matToLocal );
 
 	Vector3 v;
 
@@ -168,20 +215,6 @@ void CLightmap::TransformLightDirectionToLocalFaceCoord( vector<CMapFace>& rvecF
 			D3DXVec3TransformCoord( &m_vecvLightDir(x,y), &v, &matToLocal );
 		}
 	}
-
-/*
-	int i, iNumVectors = MAX_LIGHTMAP_WIDTH * MAX_LIGHTMAP_WIDTH;
-	for( i=0; i<iNumVectors; i++ )
-		Vec3Normalize( &rLightmap.avLightDir[i], &rLightmap.avLightDir[i] );
-
-
-	D3DXMATRIX matToLocal;
-	rFace.GetTransformationToLocalFaceCoord_Tex0( matToLocal );
-
-	// transform light direction to the local space of face
-	D3DXVec3TransformCoordArray( rLightmap.avLightDir, sizeof(Vector3),
-		                         rLightmap.avLightDir, sizeof(Vector3),
-								 &matToLocal, iNumVectors );*/
 }
 
 
@@ -197,18 +230,13 @@ void CLightmap::ApplySmoothing()
 		                0.09f, 0.40f, 0.09f,
 						0.06f, 0.09f, 0.06f };
 
-	int width  = m_Rect.GetWidth();
-	int height = m_Rect.GetHeight();
+	const int width  = m_Rect.GetWidth();
+	const int height = m_Rect.GetHeight();
 
 	for( i=1; i<width-1; i++ )
 	{
 		for( j=1; j<height-1; j++ )
 		{
-/*			color = Texel(i,j) * fCenterWeight;
-			for(k=0; k<8; k++)
-				color += Texel(i+x[k], j+y[k]) * (1.0f - fCenterWeight) * 0.125f;
-			Texel(i,j) = color;*/
-
 			color = SFloatRGBColor( 0,0,0 );
 			for( k=0; k<9; k++ )
 				color += m_vecIntensity(i+_x[k], j+_y[k]) * weight[k];

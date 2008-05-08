@@ -6,25 +6,24 @@
 #include "FloatRGBColor.h"
 
 #include <string>
-using namespace std;
 
-class CBaseLight
+class CLight
 {
 public:
 
-	enum eLightType
+	enum Type
 	{
 		INVALID = -1,
-		AMBIENT_LIGHT = 0,
-		POINT_LIGHT,
-		DIRECTIONAL_LIGHT,
-		ZONE_AMBIENT_LIGHT,
+		AMBIENT = 0,
+		ZONE_AMBIENT,
+		POINT,
+		DIRECTIONAL,
+		HEMISPHERIC_POINT,
+		HEMISPHERIC_DIRECTIONALT,
+		TRI_POINT,
+		TRI_DIRECTIONAL,
 		NUM_LIGHT_TYPES
 	};
-
-protected:
-
-	eLightType m_LightType;
 
 public:
 	string strName;
@@ -37,32 +36,38 @@ public:
 
 public:
 
-	inline CBaseLight();
+	inline CLight();
 
-	eLightType GetLightType() const { return m_LightType; }
+	virtual Type GetLightType() const = 0;
+
+	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal ) { return SFloatRGBColor(0,0,0); }
 };
 
 
-class CAmbientLight : public CBaseLight
+class CAmbientLight : public CLight
 {
 public:
 	int iAmbientIdentifier;
 
-	CAmbientLight() { m_LightType = AMBIENT_LIGHT; iAmbientIdentifier = 0; }
+	CAmbientLight() { iAmbientIdentifier = 0; }
+
+	Type GetLightType() const { return CLight::AMBIENT; }
 };
 
 
-class CDirectionalLight : public CBaseLight
+class CDirectionalLight : public CLight
 {
 public:
 	Vector3 vPseudoPosition;
 	Vector3 vDirection;
 
 	inline CDirectionalLight();
+
+	CLight::Type GetLightType() const { return CLight::DIRECTIONAL; }
 };
 
 
-class CPointLight : public CBaseLight
+class CPointLight : public CLight
 {
 public:
 
@@ -73,6 +78,8 @@ public:
 	float fAttenuation2;
 
 	inline CPointLight();
+
+	CLight::Type GetLightType() const { return CLight::POINT; }
 };
 
 
@@ -94,21 +101,17 @@ public:
 
 //========================== inline implementations ==========================
 
-inline CBaseLight::CBaseLight()
+inline CLight::CLight()
 :
 Color(SFloatRGBColor(0,0,0)),
 fIntensity(0),
 fRange(0)
 {
-	m_LightType = INVALID;
-
 }
 
 
 inline CDirectionalLight::CDirectionalLight()
 {
-	m_LightType = DIRECTIONAL_LIGHT;
-
 	vDirection      = Vector3(0,0,0);
 	vPseudoPosition = Vector3(0,0,0);
 }
@@ -116,8 +119,6 @@ inline CDirectionalLight::CDirectionalLight()
 
 inline CPointLight::CPointLight()
 {
-	m_LightType = POINT_LIGHT;
-
 	fRange        = 100;
 	fAttenuation0 = 0.01f;
 	fAttenuation1 = 0.01f;

@@ -53,6 +53,8 @@ public:
 
 	CGeneral3DVertex& Vertex( int vert_index ) { return (*ms_pVertex)[m_index[vert_index]]; }
 
+	int GetNumVertices() const { return (int)m_index.size(); }
+
 	const SPlane& GetPlane() const { return m_Plane; }
 
 	const AABB3& GetAABB() const { return m_AABB; }
@@ -62,6 +64,15 @@ public:
 	inline void UpdatePlane();
 
 	inline float CalculateArea() const;
+
+	bool IsOnTriangle( int iTriangleIndex, const Vector3& rvPosition ) const;
+
+	/// Returns true if the given point is on the polygon
+	inline bool IsOnPolygon( const Vector3& rvPosition ) const;
+
+	Vector3 GetInterpolatedNormal( const Vector3& rvPosition ) const;
+
+	inline bool SharesPointWith( const CIndexedPolygon& polygon );
 
 	/// Added to use CIndexedPolygon with CAABTree
 	/// - Not added for actual use
@@ -247,6 +258,39 @@ inline void CIndexedPolygon::UpdateAABB()
 	{
 		m_AABB.AddPoint( GetVertex(i).m_vPosition );
 	}
+}
+
+
+inline bool CIndexedPolygon::IsOnPolygon( const Vector3& rvPosition ) const
+{
+	const int num_triangles = GetNumVertices() - 2;
+	for( int i=0; i<num_triangles; i++ )
+	{
+		if( IsOnTriangle( i, rvPosition ) )
+			return true;
+	}
+
+	return false;
+}
+
+
+inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
+{
+	const size_t num_vertices0 = m_index.size();
+	const size_t num_vertices1 = polygon.m_index.size();
+	for( size_t i=0; i<num_vertices0; i++)
+	{
+		for( size_t j=0; j<num_vertices1; j++)
+		{
+			if( m_index[i] == m_index[j] )
+			{
+				// TODO: compare vertices
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 

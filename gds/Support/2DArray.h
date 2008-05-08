@@ -37,6 +37,8 @@ public:
 
 	inline T& operator()( int x, int y );
 
+	inline const T& operator()( int x, int y ) const;
+
 };
 
 
@@ -108,6 +110,13 @@ inline void C2DArray<T>::resize( int size_x, int size_y, T val )
 
 template<class T>
 inline T& C2DArray<T>::operator()( int x, int y )
+{
+	return m_vecData.at( y * nx + x );
+}
+
+
+template<class T>
+inline const T& C2DArray<T>::operator()( int x, int y ) const
 {
 	return m_vecData.at( y * nx + x );
 }

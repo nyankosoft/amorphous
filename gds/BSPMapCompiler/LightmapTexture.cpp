@@ -1,4 +1,3 @@
-
 #include "Lightmap.h"
 #include "LightmapTexture.h"
 
@@ -22,7 +21,7 @@ void CLightmapTexture::Resize( int width, int height )
 
 bool CLightmapTexture::AddLightmap( CLightmap& rLightmap, int index )
 {
-	SRect& orig_rect = rLightmap.GetRectangle();
+	const SRect& orig_rect = rLightmap.GetRectangle();
 	SRect padded_rect;
 
 	padded_rect.left   = orig_rect.left;
@@ -42,51 +41,51 @@ bool CLightmapTexture::AddLightmap( CLightmap& rLightmap, int index )
 
 
 void CLightmapTexture::SetLightmapTextureIndexToFaces( int index,
-													   vector<CLightmap>& rvecLightmap,
-													   vector<CMapFace>& rvecFace )
+													   vector<CLightmap>& rvecLightmap
+													   /*vector<CMapFace>& rvecFace*/ )
 {
-	int i, iNumLightmaps = m_vecLightmapIndex.size();
-	for( i=0; i<iNumLightmaps; i++ )
+	const size_t iNumLightmaps = m_vecLightmapIndex.size();
+	for( size_t i=0; i<iNumLightmaps; i++ )
 	{
-		rvecLightmap[ m_vecLightmapIndex[i] ].SetLightmapTextureIndexToFaces( index, rvecFace );
+//		rvecLightmap[ m_vecLightmapIndex[i] ].SetLightmapTextureIndexToFaces( index, rvecFace );
 	}
 
 }
 
-void CLightmapTexture::SetTextureUV( vector<CLightmap>& rvecLightmap, vector<CMapFace>& rvecFace )
+void CLightmapTexture::SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_coord_index )
 {
-	int i, iNumLightmaps = m_vecLightmapIndex.size();
+	const size_t iNumLightmaps = m_vecLightmapIndex.size();
 	int texture_width  = m_vecTexel.size_x();
 	int texture_height = m_vecTexel.size_y();
 
 
 	SRect *pRect = NULL;
-	for( i=0; i<iNumLightmaps; i++ )
+	for( size_t i=0; i<iNumLightmaps; i++ )
 	{
 		pRect = m_LightmapTree.GetRectangle( m_vecLightmapIndex[i] );
 		if( pRect )
-			rvecLightmap[ m_vecLightmapIndex[i] ].SetTextureUV( *pRect, rvecFace, texture_width, texture_height );
+			rvecLightmap[ m_vecLightmapIndex[i] ].SetTextureUV( *pRect, texture_width, texture_height, tex_coord_index );
 	}
 }
 
 
 void CLightmapTexture::UpdateTexture( vector<CLightmap>& rvecLightmap )
 {
-	int i, iNumLightmaps = m_vecLightmapIndex.size();
+	const size_t iNumLightmaps = m_vecLightmapIndex.size();
 //	int texture_width  = m_vecTexel.size_x();
 //	int texture_height = m_vecTexel.size_y();
 	int x,y;
 	int s,t;
 
 	SRect *pRect = NULL;
-	for( i=0; i<iNumLightmaps; i++ )
+	for( size_t i=0; i<iNumLightmaps; i++ )
 	{
 		pRect = m_LightmapTree.GetRectangle( m_vecLightmapIndex[i] );
 		if( !pRect )
 			continue;
 
 		CLightmap& rLightmap = rvecLightmap[ m_vecLightmapIndex[i] ];
-		SRect& local_rect = rLightmap.GetRectangle();	// size of the lightmap
+		const SRect& local_rect = rLightmap.GetRectangle();	// size of the lightmap
 
 		for( y=0; y<local_rect.GetHeight(); y++ )
 		{
@@ -409,7 +408,7 @@ void CLightmapTexture::ApplySmoothing( float fCenterWeight )
 }
 
 
-void CLightmapTexture::OutputToBMPFiles( const char *pcBodyFilename )
+void CLightmapTexture::OutputToBMPFiles( const std::string& image_body_filename )
 {
 	CBMPImageExporter bmp_image;
 	char acFilename[512];
@@ -431,7 +430,7 @@ void CLightmapTexture::OutputToBMPFiles( const char *pcBodyFilename )
 		}
 	}
 
-	sprintf( acFilename, "%s.bmp", pcBodyFilename );
+	sprintf( acFilename, "%s.bmp", image_body_filename.c_str() );
 
 	bmp_image.OutputImage_24Bit( acFilename, width, height, padwImageData );
 
@@ -459,7 +458,7 @@ void CLightmapTexture::OutputToBMPFiles( const char *pcBodyFilename )
 			}
 		}
 
-		sprintf( acFilename, "%s_LightDir.bmp", pcBodyFilename );
+		sprintf( acFilename, "%s_LightDir.bmp", image_body_filename.c_str() );
 
 		bmp_image.OutputImage_24Bit( acFilename, width, height, padwImageData );
 	}
