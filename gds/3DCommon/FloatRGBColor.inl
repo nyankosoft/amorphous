@@ -92,22 +92,6 @@ inline SFloatRGBColor SFloatRGBColor::operator *(const SFloatRGBColor& rColor) c
 }
 
 
-/*
-inline void SFloatRGBColor::CopyFromD3DCOLOR(D3DCOLOR color)
-{
-	this->fRed   = (float)((color & 0x00FF0000) >> 16) / 255.0f;
-	this->fGreen = (float)((color & 0x0000FF00) >> 8) / 255.0f;
-	this->fBlue  = (float)(color & 0x000000FF) / 255.0f;
-}
-
-inline D3DCOLOR SFloatRGBColor::ConvertToD3DCOLOR()
-{
-	return D3DCOLOR_ARGB( 0, (int)(fRed * 255.0), (int)(fGreen * 255.0f), (int)(fBlue * 255.0f) );
-
-}
-*/
-
-
 inline unsigned long SFloatRGBColor::GetARGB32() const
 {
 	return /*( ((int)(fAlpha * 255.0f)) << 24 ) &*/ 0xFF000000 |

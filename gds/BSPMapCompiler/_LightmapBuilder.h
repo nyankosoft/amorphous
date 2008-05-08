@@ -116,6 +116,12 @@ public:
 	/// - default value: 1
 	int m_LightmapTextureCoordsIndex;
 
+	/// texture index in CMMA_Material
+	int m_LightmapTextureArchiveIndex;
+
+	/// Used by lightmap textures, which require (db filename) + (key name)
+	std::string m_OutputDatabaseFilepath;
+
 //	CPolygonMesh m_RayTraceGeometry;
 
 	CLightmapOption m_Option;
@@ -207,6 +213,8 @@ private:
 	void ApplySmoothing( float fCenterWeight );
 
 	void ApplySmoothingToLightmaps();
+
+	void UpdateMeshMaterials();
 
 	void SetTextureWidth( const int iTextureWidth )  { m_iTextureWidth = iTextureWidth; }
 	void SetTextureHeight( const int iTextureHieght ) { m_iTextureHeight = iTextureHieght; }

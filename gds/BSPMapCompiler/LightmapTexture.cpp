@@ -3,6 +3,150 @@
 
 #include "Support/BMPImageExporter.h"
 
+#include "FreeImage.h"
+#include "Support/Log/DefaultLog.h"
+
+
+class CBitMapImage
+{
+	FIBITMAP* m_pFreeImageBitMap;
+
+public:
+
+	CBitMapImage() {}
+
+	CBitMapImage( int width, int height, int bpp );
+
+//	inline CBitMapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
+
+	~CBitMapImage() { FreeImage_Unload( m_pFreeImageBitMap ); }
+
+	bool LoadFromFile( const std::string& pathname, int flag = 0 );
+
+	bool SaveToFile( const std::string& pathname, int flag = 0 );
+
+	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
+
+	FIBITMAP *GetFBITMAP() { return m_pFreeImageBitMap; }
+};
+
+/*
+inline CBitMapImage::CBitMapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp )
+{
+	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
+}
+*/
+
+inline void CBitMapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
+{
+	RGBQUAD quad;
+	quad.rgbRed   = color.GetRedByte();
+	quad.rgbGreen = color.GetGreenByte();
+	quad.rgbBlue  = color.GetBlueByte();
+
+	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
+}
+
+
+CBitMapImage::CBitMapImage( int width, int height, int bpp )
+{
+	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
+}
+
+
+inline boost::shared_ptr<CBitMapImage> CreateBitMapImage( const std::string& pathname, int flag = 0 )
+{
+	boost::shared_ptr<CBitMapImage> pImage
+		= boost::shared_ptr<CBitMapImage>( new CBitMapImage() );
+
+	bool bSuccess = pImage->LoadFromFile( pathname, flag );
+
+	return pImage;
+}
+
+
+void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
+{
+	if( fif != FIF_UNKNOWN )
+	{
+		g_Log.Print( "Free Image: %s Format", FreeImage_GetFormatFromFIF(fif) );
+	}
+
+	g_Log.Print( "Free Image: %s", message );
+}
+
+//	FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler);
+
+
+// ----------------------------------------------------------
+
+/** Generic image loader
+	@param lpszPathName Pointer to the full file name
+	@param flag Optional load flag constant
+	@return Returns the loaded dib if successful, returns NULL otherwise
+*/
+//FIBITMAP* GenericLoader( const std::string& pathname, int flag )
+bool CBitMapImage::LoadFromFile( const std::string& pathname, int flag )
+{
+	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+
+	// check the file signature and deduce its format
+	// (the second argument is currently not used by FreeImage)
+	fif = FreeImage_GetFileType( pathname.c_str(), 0 );
+	if(fif == FIF_UNKNOWN)
+	{
+		// no signature ?
+		// try to guess the file format from the file extension
+		fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
+	}
+
+	// check that the plugin has reading capabilities ...
+	if( (fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif) )
+	{
+		// ok, let's load the file
+		m_pFreeImageBitMap = FreeImage_Load(fif, pathname.c_str(), flag);
+
+		// unless a bad file format, we are done !
+		if( m_pFreeImageBitMap )
+			return true;
+		else
+			return false;
+	}
+
+	return false;
+}
+
+/** Generic image writer
+	@param dib Pointer to the dib to be saved
+	@param lpszPathName Pointer to the full file name
+	@param flag Optional save flag constant
+	@return Returns true if successful, returns false otherwise
+*/
+bool CBitMapImage::SaveToFile( const std::string& pathname, int flag )
+{
+	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+	BOOL bSuccess = FALSE;
+
+	if(m_pFreeImageBitMap)
+	{
+		// try to guess the file format from the file extension
+		fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
+		if(fif != FIF_UNKNOWN ) {
+			// check that the plugin has sufficient writing and export capabilities ...
+			WORD bpp = FreeImage_GetBPP(m_pFreeImageBitMap);
+			if(FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp))
+			{
+				// ok, we can save the file
+				bSuccess = FreeImage_Save(fif, m_pFreeImageBitMap, pathname.c_str(), flag);
+				// unless an abnormal bug, we are done !
+			}
+		}
+	}
+
+	return (bSuccess == TRUE) ? true : false;
+}
+
+
 
 void CLightmapTexture::Resize( int width, int height )
 {
@@ -39,10 +183,10 @@ bool CLightmapTexture::AddLightmap( CLightmap& rLightmap, int index )
 }
 
 
-
+/*
 void CLightmapTexture::SetLightmapTextureIndexToFaces( int index,
 													   vector<CLightmap>& rvecLightmap
-													   /*vector<CMapFace>& rvecFace*/ )
+													    )
 {
 	const size_t iNumLightmaps = m_vecLightmapIndex.size();
 	for( size_t i=0; i<iNumLightmaps; i++ )
@@ -51,6 +195,7 @@ void CLightmapTexture::SetLightmapTextureIndexToFaces( int index,
 	}
 
 }
+*/
 
 void CLightmapTexture::SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_coord_index )
 {
@@ -122,6 +267,78 @@ void CLightmapTexture::UpdateTexture( vector<CLightmap>& rvecLightmap )
 		ApplySmoothing( *pRect );
 
 //		MessageBox( NULL, "applied smoothing.", "Message", MB_OK );
+	}
+}
+
+
+inline int get_new_index( const vector<int>& OldToNewMatIndex, int old_index )
+{
+	const size_t num_indices = OldToNewMatIndex.size();
+	for( size_t i=0; i<num_indices; i++ )
+	{
+		if( OldToNewMatIndex[i] == old_index )
+			return (int)i;
+	}
+	return -1;
+}
+
+
+bool CLightmapTexture::AddTexturesToDatabase( CBinaryDatabase<std::string>& db )
+{
+	int texture_data;
+
+	return db.AddData( m_KeyName, texture_data );
+}
+
+
+void CLightmapTexture::UpdateMaterials(
+	 vector<CMMA_Material>& src_material_buffer,
+//	 vector<CIndexedPolygon>& src_polygon_buffer,
+	 vector<CMMA_Material>& new_material_buffer,
+	 int texture_archive_index,
+	 const std::string& db_filepath
+)
+{
+	vector<int> OldToNewMatIndex;
+
+	int new_mat_index_offset = (int)new_material_buffer.size();
+
+	const int num_lightmaps = GetNumLightmaps();
+	for( int i=0; i<num_lightmaps; i++ )
+	{
+		const CLightmap& lightmap = GetLightmap( i );
+
+		const int num_polygons = lightmap.GetNumPolygons();
+		for( int j=0; j<num_polygons; j++ )
+		{
+			CIndexedPolygon& polygon = lightmap.GetPolygon( j );
+			int new_index = get_new_index( OldToNewMatIndex, polygon.m_MaterialIndex );
+			if( new_index == -1 )
+			{
+				new_index = (int)OldToNewMatIndex.size();
+				OldToNewMatIndex.push_back( polygon.m_MaterialIndex );
+			}
+
+			polygon.m_MaterialIndex = new_mat_index_offset + new_index;
+		}
+	}
+
+	const size_t num_materials_to_add = OldToNewMatIndex.size();
+	for( size_t i=0; i<num_materials_to_add; i++ )
+	{
+		// copy the source material
+		new_material_buffer.push_back( src_material_buffer[OldToNewMatIndex[i]] );
+
+		CMMA_Material& new_material = new_material_buffer.back();
+
+		// add lightmap texture
+		while( (int)new_material.vecTexture.size() <= texture_archive_index )
+			new_material.vecTexture.push_back( CMMA_Texture() );
+
+//		"(database filepath)::(key name)";
+		new_material.vecTexture[texture_archive_index].strFilename = db_filepath + "::" + m_KeyName;
+
+//		new_material.Texture[texture_archive_index].strFilename = m_TextureImageFilepath;
 	}
 }
 
@@ -408,6 +625,69 @@ void CLightmapTexture::ApplySmoothing( float fCenterWeight )
 }
 
 
+bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& filepath )
+{
+	int x,y;
+	int width  = texel.size_x();
+	int height = texel.size_y();
+
+	CBitMapImage img( width, height, 32 );
+
+	for( y=0; y<height ; y++ )
+	{
+		for( x=0; x<width; x++ )
+		{
+			img.SetPixel( x, y, texel(x,y) );
+		}
+	}
+
+	img.SaveToFile( filepath );
+}
+
+
+bool CLightmapTexture::SaveTextureImageToFile( const std::string& filepath )
+{
+	return SaveToImageFile( m_vecTexel, filepath );
+}
+
+
+//	shared_ptr<CBitMapImage> pImage = CreateBitMapImage(
+//	SaveImageFile( padwImageData, filepath );
+
+/*
+	// output light direction map if there is one
+	if( m_vecvLightDirMap.size_x() != 0 )//m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE )
+	{
+		Vector3 vLightDir;
+		DWORD dwColor;
+		i = 0;
+		for( y=0; y<height ; y++ )
+		{
+			for( x=0; x<width; x++ )
+			{	// convert each pixel into DWORD and store in the array
+//				vLightDir = m_vecpvLightDirMap[i][j];
+
+				vLightDir = LightDirection(x,y);
+				vLightDir = ( vLightDir + Vector3(1,1,1) ) * 0.5f;
+
+				dwColor = D3DCOLOR_XRGB( ((int)(vLightDir.x * 255.0f)),
+									     ((int)(vLightDir.y * 255.0f)),
+										 ((int)(vLightDir.z * 255.0f)) );
+
+				padwImageData[i++] = dwColor;
+			}
+		}
+
+		sprintf( acFilename, "%s_LightDir.bmp", image_body_filename.c_str() );
+
+		bmp_image.OutputImage_24Bit( acFilename, width, height, padwImageData );
+	}
+*/
+
+//	delete [] padwImageData;
+
+
+/*
 void CLightmapTexture::OutputToBMPFiles( const std::string& image_body_filename )
 {
 	CBMPImageExporter bmp_image;
@@ -436,7 +716,7 @@ void CLightmapTexture::OutputToBMPFiles( const std::string& image_body_filename 
 
 
 	// output light direction map if there is one
-	if( m_vecvLightDirMap.size_x() != 0 /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
+	if( m_vecvLightDirMap.size_x() != 0 //m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE )
 	{
 		Vector3 vLightDir;
 		DWORD dwColor;
@@ -465,3 +745,4 @@ void CLightmapTexture::OutputToBMPFiles( const std::string& image_body_filename 
 
 	delete [] padwImageData;
 }
+*/

@@ -66,6 +66,11 @@ public:
 
 	void SetPolygonBuffer( std::vector<CIndexedPolygon> *vecpPolygonBuffer ) { m_vecpPolygonBuffer = vecpPolygonBuffer; }
 
+	int GetNumPolygons() const { return (int)m_vecGroupedFaceIndex.size(); }
+
+	/// returns a NON-const reference to a polygon
+	CIndexedPolygon& GetPolygon( int index ) const { return (*m_vecpPolygonBuffer)[m_vecGroupedFaceIndex[index]]; }
+
 	void Clear();
 
 	/// Allocate buffer by the size width x height

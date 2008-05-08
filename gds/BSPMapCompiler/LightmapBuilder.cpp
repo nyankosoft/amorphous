@@ -97,8 +97,6 @@ void CLightmapBuilder::SetOption( const CLightmapOption& option )
 }
 
 bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
-
-//bool CLightmapBuilder::CreateLightmapTexture( vector<CMapFace>& rvecFace, CPolygonMesh<CMapFace>& rPolygonMesh )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -161,8 +159,8 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 //	UpdateMeshMaterials();
 
 	// update uv values of polygons
-	size_t iNumLightmapTextures = m_vecLightmapTexture.size();
-	for( size_t i=0; i<iNumLightmapTextures; i++ )
+	const size_t num_lightmap_textures = m_vecLightmapTexture.size();
+	for( size_t i=0; i<num_lightmap_textures; i++ )
 		m_vecLightmapTexture[i].SetTextureUV( m_vecLightmap, m_Desc.m_LightmapTextureCoordsIndex );
 
 	LOG_PRINT( " - Lightmap texture uv coords have been calculated." );
@@ -178,8 +176,31 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 ///	ApplySmoothing( 0.60f );
 ///	ApplySmoothing( 0.60f );
 
-
 	return true;
+}
+
+
+void CLightmapBuilder::UpdateMeshMaterials()
+{
+	vector<CMMA_Material> new_material_buffer;
+	vector<CIndexedPolygon>& orig_polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
+	vector<CMMA_Material>& src_material_buffer = m_Desc.m_pMesh->GetMaterialBuffer();
+
+	new_material_buffer.reserve( src_material_buffer.size() );
+
+	const size_t num_lightmap_textures = m_vecLightmapTexture.size();
+	for( size_t i=0; i<num_lightmap_textures; i++ )
+	{
+		m_vecLightmapTexture[i].UpdateMaterials(
+			src_material_buffer,
+//			orig_polygon_buffer,
+			new_material_buffer,
+			m_Desc.m_LightmapTextureArchiveIndex,
+			m_Desc.m_OutputDatabaseFilepath
+			);
+	}
+
+	m_Desc.m_pMesh->GetMaterialBuffer() = new_material_buffer;
 }
 
 
@@ -230,6 +251,8 @@ void CLightmapBuilder::GroupFaces()
 	{
 		m_vecLightmap.push_back( CLightmap() );
 		CLightmap& rLightmap = m_vecLightmap.back();
+
+		rLightmap.SetPolygonBuffer( &m_Desc.m_pMesh->GetPolygonBuffer() );
 
 		// First, set the seed for the face-group
 		size_t i;
@@ -414,7 +437,7 @@ void CLightmapBuilder::PackLightmaps()
 
 }
 
-
+/*
 void CLightmapBuilder::SetLightmapTextureIndicesToPolygons()
 {
 	int i, iNumLightmapTextures = m_vecLightmapTexture.size();
@@ -424,7 +447,7 @@ void CLightmapBuilder::SetLightmapTextureIndicesToPolygons()
 		m_vecLightmapTexture[i].SetLightmapTextureIndexToFaces( i, m_vecLightmap );
 	}
 }
-
+*/
 
 /*
 void CLightmapBuilder::SetTextureCoords( vector<CMapFace>& rvecFace )
@@ -495,7 +518,7 @@ void CLightmapBuilder::OutputLightmapTexturesToBMPFiles( const char *pcBodyFileN
 	for(i=0; i<iNumLightmapTextures; i++)
 	{
 		sprintf( acFilename, "%s_%02d", pcBodyFileName, i );
-		m_vecLightmapTexture[i].OutputToBMPFiles( acFilename );
+		m_vecLightmapTexture[i].SaveTextureImageToFile( acFilename );
 	}
 }
 

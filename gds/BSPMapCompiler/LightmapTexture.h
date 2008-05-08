@@ -8,6 +8,10 @@
 #include "Support/2DArray.h"
 #include "../3DCommon/FloatRGBColor.h"
 #include "../3DCommon/LightStructs.h"
+#include "../3DCommon/IndexedPolygon.h"
+#include "../3DCommon/MeshModel/3DMeshModelArchive.h"
+using namespace MeshModel;
+
 #include "Graphics/Rect.h"
 #include "Graphics/RectTree.h"
 using namespace Graphics;
@@ -22,6 +26,8 @@ using namespace Graphics;
 
 class CLightmapTexture
 {
+	std::vector<CLightmap> *m_pvecLightmap;
+
 	/// holds indices to lightmaps
 	/// lightmaps are stored in 'CLightmapBuilder'
 	std::vector<int> m_vecLightmapIndex;
@@ -42,9 +48,13 @@ class CLightmapTexture
 	/// holds rectangular lightmap images in the tree
 	CRectTree m_LightmapTree;
 
+	/// keyname in the database
+	std::string m_KeyName;
+
 public:
 
 	CLightmapTexture() {}
+
 	~CLightmapTexture() {}
 
 	void Resize( int width, int height );
@@ -63,11 +73,22 @@ public:
 
 	bool AddLightmap( CLightmap& rLightmap, int index );
 
-	void SetLightmapTextureIndexToFaces( int index, vector<CLightmap>& rvecLightmap/*, vector<CMapFace>& rvecFace*/ );
+	int GetNumLightmaps() { return (int)m_vecLightmapIndex.size(); }
+
+	const CLightmap& GetLightmap( int index ) { return (*m_pvecLightmap)[m_vecLightmapIndex[index]]; }
+
+//	void SetLightmapTextureIndexToFaces( int index, vector<CLightmap>& rvecLightmap/*, vector<CMapFace>& rvecFace*/ );
 
 	void SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_coord_index );
 
 	void UpdateTexture( vector<CLightmap>& rvecLightmap );
+
+	void UpdateMaterials(
+		 vector<CMMA_Material>& src_material_buffer,
+		 vector<CMMA_Material>& new_material_buffer,
+		 int texture_archive_index,
+		 const std::string& db_filepath
+	);
 
 	void ExpandTexels( SRect& rect );
 
@@ -80,7 +101,11 @@ public:
 	/// in the lightmap texture
 	void ApplySmoothing( SRect& rect );
 
-	void OutputToBMPFiles( const std::string& image_body_filename );
+	void SetKeyName( const std::string& keyname ) { m_KeyName = keyname; }
+
+	bool AddTexturesToDatabase( CBinaryDatabase<std::string>& db );
+
+	bool SaveTextureImageToFile( const std::string& filepath );
 };
 
 
