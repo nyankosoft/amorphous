@@ -222,6 +222,38 @@
 					RelativePath="..\..\src\StaticGeometryDesc.h"
 					>
 				</File>
+				<Filter
+					Name="BSPMapCompiler"
+					>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\_LightmapBuilder.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\fwd.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\Lightmap.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\Lightmap.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapBuilder.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapTexture.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapTexture.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -240,19 +272,19 @@
 			Name="Stage"
 			>
 			<File
-				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometry.cpp"
+				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometry.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometry.h"
+				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometry.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.cpp"
+				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.h"
+				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.h"
 				>
 			</File>
 		</Filter>

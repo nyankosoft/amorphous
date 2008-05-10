@@ -166,8 +166,8 @@ void CStaticGeometryCompiler::CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& sr
 
 	// append vertices and polygons to dest mesh
 
-	vector<CGeneral3DVertex>& src_vertex_buffer = src_mesh.GetVertexBuffer();
-	vector<CGeneral3DVertex>& dest_vertex_buffer = dest_mesh.GetVertexBuffer();
+	const vector<CGeneral3DVertex>& src_vertex_buffer = *src_mesh.GetVertexBuffer().get();
+	vector<CGeneral3DVertex>& dest_vertex_buffer = *dest_mesh.GetVertexBuffer().get();
 	std::vector<CIndexedPolygon>& dest_polygon_buffer = dest_mesh.GetPolygonBuffer();
 
 	int vert_offset = (int)dest_vertex_buffer.size();
