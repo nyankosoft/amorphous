@@ -151,7 +151,7 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 	LOG_PRINT( " - Lightmaps have been packed to textures." );
 
 	// set lightmap texture id to each polygon
-	SetLightmapTextureIndicesToPolygons();
+//	SetLightmapTextureIndicesToPolygons();
 
 	// [in,out] mesh
 	// [in] current material buffer
@@ -408,7 +408,6 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 void CLightmapBuilder::PackLightmaps()
 {
 	const size_t iNumLightmaps = m_vecLightmap.size();
-	int j;//, iNumLightmapTextures = m_vecLightmapTexture.size();
 	bool bPacked = false;
 
 	for( size_t i=0; i<iNumLightmaps; i++ )

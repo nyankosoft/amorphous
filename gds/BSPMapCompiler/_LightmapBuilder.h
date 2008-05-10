@@ -199,7 +199,7 @@ private:
 
 	void PackLightmaps();
 
-	void SetLightmapTextureIndicesToPolygons();
+//	void SetLightmapTextureIndicesToPolygons();
 
 //	void SetTextureCoords();
 

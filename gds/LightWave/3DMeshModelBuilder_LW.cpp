@@ -26,7 +26,7 @@ m_DefaultVertexFlags(gs_DefaultVertexFlags_LW)
 {
 	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
 
-	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
+//	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
 }
 
 
@@ -37,7 +37,7 @@ m_DefaultVertexFlags(gs_DefaultVertexFlags_LW)
 {
 	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
 
-	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
+//	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
 }
 
 
@@ -121,8 +121,8 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 
 	// get the current size of the destination vertex buffer
 	// used to offest the vertex indices in the polygons
-	const size_t vertex_offset = m_pMesh->GetVertexBuffer().size();// m_vecVertexBuffer.size();
-	const size_t polygon_offset = m_pMesh->GetPolygonBuffer().size();// m_vecIndexedPolygon.size();
+	const size_t vertex_offset = (*m_pMesh->GetVertexBuffer().get()).size();
+	const size_t polygon_offset = m_pMesh->GetPolygonBuffer().size();
 
 	// =============== load vertices ===============
 
@@ -202,7 +202,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 		vector<UINT4>& rvecIndex = rPolygon.GetVertexIndex();
 		iNumPolVerts = (int)rvecIndex.size();
 
-		polygon_buffer.push_back( CIndexedPolygon() );
+		polygon_buffer.push_back( CIndexedPolygon( m_pMesh->GetVertexBuffer() ) );
 		polygon_buffer.back().m_MaterialIndex = iMatIndex;
 
 		for( j=0; j<iNumPolVerts; j++ )
@@ -260,7 +260,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 		}
 	}
 */
-	std::vector<CGeneral3DVertex>& vertex_buffer = m_pMesh->GetVertexBuffer();
+	std::vector<CGeneral3DVertex>& vertex_buffer = *m_pMesh->GetVertexBuffer().get();
 
 //	m_vecVertexBuffer.reserve( m_vecVertexBuffer.size() + iNumVertices );
 //	m_vecVertexBuffer.insert( m_vecVertexBuffer.end(), iNumVertices, CGeneral3DVertex() );
@@ -639,7 +639,7 @@ bool C3DMeshModelBuilder_LW::BuildMeshFromLayer( CLWO2_Layer& rLayer )
 	// create the basic form of a mesh object
 	ProcessLayer( rLayer );
 
-	m_pMesh->UpdatePolygonAABBs();
+	m_pMesh->UpdatePolygonBuffer();
 
 	SetMaterials();
 
@@ -662,7 +662,7 @@ void C3DMeshModelBuilder_LW::LoadMeshModel()
 		ProcessLayer( *(m_TargetLayerInfo.vecpMeshLayer[i]) );
 	}
 
-	m_pMesh->UpdatePolygonAABBs();
+	m_pMesh->UpdatePolygonBuffer();
 
 	// create mesh materials from the surfaces of the LightWave object
 	SetMaterials();
@@ -741,7 +741,7 @@ bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, co
 		ProcessLayer( *layer );
 	}
 
-	m_pMesh->UpdatePolygonAABBs();
+	m_pMesh->UpdatePolygonBuffer();
 
 	SetMaterials();
 

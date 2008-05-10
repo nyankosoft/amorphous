@@ -11,6 +11,7 @@
 //#include "Support/msgbox.h"
 
 using namespace std;
+using namespace boost;
 
 /**
  *
@@ -424,7 +425,7 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 
 void TerrainMeshTree::ScaleTexCoords()
 {
-	s_processed.resize( CIndexedPolygon::VertexBuffer().size(), 0 );
+	s_processed.resize( m_pVertexBuffer->size(), 0 );
 
 	ScaleTexCoords_r( m_RootNode );
 }
@@ -465,6 +466,9 @@ CTerrainMeshGenerator::CTerrainMeshGenerator()
 
 	// set default image format
 	SetOutputTextureFormat( "bmp" );
+
+	m_pVertexBuffer
+		= shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
 }
 
 
@@ -566,7 +570,7 @@ void CTerrainMeshGenerator::ScaleTextureCoordinates()
 void CTerrainMeshGenerator::CopyVerticesAndTriangles( C3DMeshModelArchive& src_mesh )
 {
 	// copy vertices
-	src_mesh.GetVertexSet().GetVertices( m_vecVertexBuffer );
+	src_mesh.GetVertexSet().GetVertices( *m_pVertexBuffer.get() );
 
 	// copy triangles
 	const vector<unsigned int>& src_index = src_mesh.GetVertexIndex();
@@ -575,14 +579,12 @@ void CTerrainMeshGenerator::CopyVerticesAndTriangles( C3DMeshModelArchive& src_m
 	for( i=0; i<num_tris; i++ )
 	{
 		m_vecPolygonBuffer[i]
-		= CIndexedPolygon(
+		= CIndexedPolygon( m_pVertexBuffer,
 			src_index[i*3],
 			src_index[i*3+1],
 			src_index[i*3+2]
 			);
 	}
-
-	CIndexedPolygon::SetVertexBuffer( &m_vecVertexBuffer );
 }
 
 

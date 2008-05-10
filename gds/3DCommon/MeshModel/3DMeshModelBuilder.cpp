@@ -174,7 +174,7 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 
 
 	// fill up the vectors with your mesh's data
-	std::vector<CGeneral3DVertex>& vert_buffer = m_pMesh->GetVertexBuffer();
+	std::vector<CGeneral3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
     size_t iNumVertices = vert_buffer.size();
 	for( i = 0; i < iNumVertices; ++i )
 	{
@@ -254,7 +254,7 @@ void C3DMeshModelBuilder::CreateVertices()
 {
 	CGeneral3DMesh& general_mesh = *m_pMesh;
 
-	std::vector<CGeneral3DVertex>& vert_buffer = general_mesh.GetVertexBuffer();
+	const std::vector<CGeneral3DVertex>& vert_buffer = *general_mesh.GetVertexBuffer().get();
 	const size_t iNumVertices = vert_buffer.size();
 	size_t i;
 
@@ -326,7 +326,7 @@ void C3DMeshModelBuilder::CreateVertices()
 
 void C3DMeshModelBuilder::ForceWeightMatrixCount()
 {
-	std::vector<CGeneral3DVertex>& vert_buffer = m_pMesh->GetVertexBuffer();
+	std::vector<CGeneral3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
 	const size_t num_vertices = vert_buffer.size();
 
 	int num_blend_mats;
@@ -354,7 +354,7 @@ void C3DMeshModelBuilder::ForceWeightMatrixCount()
 
 void C3DMeshModelBuilder::NormalizeVertexBlendWeights()
 {
-	std::vector<CGeneral3DVertex>& vert_buffer = m_pMesh->GetVertexBuffer();
+	std::vector<CGeneral3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
 
 	size_t i, iNumVertices = vert_buffer.size();
 	int j, num_blend_mats;

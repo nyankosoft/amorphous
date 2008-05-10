@@ -85,7 +85,7 @@ public:
 
 	int GetNumMaterials() const { return m_pMesh->GetNumMaterials(); }
 
-	std::vector<CGeneral3DVertex>& GetVertexBuffer() { return m_pMesh->GetVertexBuffer(); }
+	const std::vector<CGeneral3DVertex>& GetVertexBuffer() const { return (*m_pMesh->GetVertexBuffer().get()); }
 
 	std::vector<CMMA_Material>& GetMaterialBuffer() { return m_pMesh->GetMaterialBuffer(); }
 

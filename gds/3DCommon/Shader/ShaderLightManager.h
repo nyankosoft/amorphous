@@ -64,9 +64,9 @@ public:
 
 	/// set light to shader variables
 	/// user is responsible for calling CommitChanges() after setting the light
-	inline void SetLight( const int index, const CHemisphericLight& rLight );
+	inline void SetLight( const int index, const CHemisphericPointLight& rLight );
 
-	inline void SetLight( const int index, const CHemisphericDirLight& rLight );
+	inline void SetLight( const int index, const CHemisphericDirectionalLight& rLight );
 
 	/// set the number of directional lights
 	/// user is responsible for calling CommitChanges() after this call
@@ -152,7 +152,7 @@ inline void CShaderLightManager::SetPointLightOffset( const int iPointLightOffse
 }
 
 
-inline void CShaderLightManager::SetLight( const int index, const CHemisphericLight& rLight )
+inline void CShaderLightManager::SetLight( const int index, const CHemisphericPointLight& rLight )
 {
 	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.UpperColor, sizeof(float) * 4 );
 	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
@@ -170,7 +170,7 @@ inline void CShaderLightManager::SetLight( const int index, const CHemisphericLi
 }
 
 
-inline void CShaderLightManager::SetLight( const int index, const CHemisphericDirLight& rLight )
+inline void CShaderLightManager::SetLight( const int index, const CHemisphericDirectionalLight& rLight )
 {
 	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.UpperColor, sizeof(float) * 4 );
 	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.LowerColor, sizeof(float) * 4 );

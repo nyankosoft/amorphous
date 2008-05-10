@@ -1,10 +1,12 @@
 #include "Lightmap.h"
 #include "LightmapTexture.h"
 
-#include "Support/BMPImageExporter.h"
+#include "Support/Log/DefaultLog.h"
+
 
 #include "FreeImage.h"
-#include "Support/Log/DefaultLog.h"
+
+#pragma comment( lib, "FreeImage.lib" )
 
 
 class CBitMapImage
@@ -641,7 +643,7 @@ bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& 
 		}
 	}
 
-	img.SaveToFile( filepath );
+	return img.SaveToFile( filepath );
 }
 
 

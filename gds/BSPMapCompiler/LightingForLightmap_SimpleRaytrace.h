@@ -110,6 +110,15 @@ inline CLightingForLightmap_SimpleRaytrace<T>::CLightingForLightmap_SimpleRaytra
 }
 
 
+/// task executed by a thread
+class CLightmapRaytraceTask
+{
+public:
+
+	CLightmapRaytraceTask() {}
+};
+
+
 
 template <class T>
 bool CLightingForLightmap_SimpleRaytrace<T>::Calculate( vector<CLightmap>& rvecLightmap, CPolygonMesh<T>& rMesh )

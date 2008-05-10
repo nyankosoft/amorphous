@@ -14,6 +14,13 @@
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <string>
 
+#ifdef _DEBUG
+	#pragma comment( lib, "xerces-c_2D.lib" )
+	#pragma comment( lib, "xerces-depdom_2D.lib" )
+#else // _DEBUG
+	#pragma comment( lib, "xerces-c_2.lib" )
+	#pragma comment( lib, "xerces-depdom_2.lib" )
+#endif // _DEBUG
 
 /**
  - create an instance of this as a local variable in main() before using any XML parser classes

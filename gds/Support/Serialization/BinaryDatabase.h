@@ -11,6 +11,8 @@
 #include "Archive.h"
 #include "ArchiveObjectBase.h"
 
+#include "Support/Log/DefaultLog.h"
+
 
 namespace GameLib1
 {
@@ -145,6 +147,13 @@ public:
 		{
 			// deletes the old one and create an empty file
 			FILE *fp = fopen( filename.c_str(), "wb" );
+
+			if( !fp )
+			{
+				LOG_PRINT_ERROR( std::string(" - Cannot open / create a file '") + filename + "' in the binary writing mode. Could be an invalid directory path." );
+				return false;
+			}
+
 			fclose(fp);
 		}
 

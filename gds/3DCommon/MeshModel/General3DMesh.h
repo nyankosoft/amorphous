@@ -10,6 +10,8 @@ valid combinations of geometry filters
 
 #include <vector>
 #include <list>
+#include <boost/shared_ptr.hpp>
+
 #include "../fwd.h"
 #include "../General3DVertex.h"
 #include "../IndexedPolygon.h"
@@ -47,7 +49,9 @@ class CGeneral3DMesh
 
 	unsigned int m_VertexFormatFlag;
 
-	std::vector<CGeneral3DVertex> m_vecVertexBuffer;
+	boost::shared_ptr< std::vector<CGeneral3DVertex> > m_pVertexBuffer;
+
+//	std::vector<CGeneral3DVertex> m_vecVertexBuffer;
 
 	/// Polygons that hold indices to vertices
 	/// - Can be retrieved later
@@ -69,7 +73,8 @@ public:
 	/// \param dest [out] mesh archive
 	void Create3DMeshModelArchive( C3DMeshModelArchive& dest );
 
-	std::vector<CGeneral3DVertex>& GetVertexBuffer() { return m_vecVertexBuffer; }
+//	std::vector<CGeneral3DVertex>& GetVertexBuffer() { return (*m_pVertexBuffer.get()); }
+	boost::shared_ptr< std::vector<CGeneral3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
 
 	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return m_vecPolygon; }
 
@@ -83,7 +88,15 @@ public:
 
 	void SetVertexFormatFlags( unsigned int flags ) { m_VertexFormatFlag = flags; }
 
-	void UpdatePolygonAABBs() { UpdateAABBs( m_vecPolygon ); }
+	inline void UpdatePolygonBuffer()
+	{
+		size_t i, num_pols = m_vecPolygon.size();
+		for( i=0; i<num_pols; i++ )
+		{
+			m_vecPolygon[i].UpdateAABB();
+			m_vecPolygon[i].UpdatePlane();
+		}
+	}
 
 	void Append( CGeneral3DMesh& mesh );
 
@@ -98,6 +111,8 @@ inline CGeneral3DMesh::CGeneral3DMesh()
 m_MeshFlag(0),
 m_VertexFormatFlag(0)
 {
+	m_pVertexBuffer
+		= boost::shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
 }
 
 

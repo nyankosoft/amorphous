@@ -19,14 +19,15 @@ public:
 		POINT,
 		DIRECTIONAL,
 		HEMISPHERIC_POINT,
-		HEMISPHERIC_DIRECTIONALT,
+		HEMISPHERIC_DIRECTIONAL,
 		TRI_POINT,
 		TRI_DIRECTIONAL,
 		NUM_LIGHT_TYPES
 	};
 
 public:
-	string strName;
+
+	std::string strName;
 
 	SFloatRGBColor Color;
 
@@ -37,6 +38,8 @@ public:
 public:
 
 	inline CLight();
+
+	virtual ~CLight() {}
 
 	virtual Type GetLightType() const = 0;
 
@@ -49,9 +52,13 @@ class CAmbientLight : public CLight
 public:
 	int iAmbientIdentifier;
 
+	SFloatRGBColor Color;
+
 	CAmbientLight() { iAmbientIdentifier = 0; }
 
 	Type GetLightType() const { return CLight::AMBIENT; }
+
+	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal ) { return Color; }
 };
 
 
@@ -61,9 +68,21 @@ public:
 	Vector3 vPseudoPosition;
 	Vector3 vDirection;
 
+public:
+
 	inline CDirectionalLight();
 
 	CLight::Type GetLightType() const { return CLight::DIRECTIONAL; }
+
+	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal )
+	{
+		float d = Vec3Dot( -vDirection, normal );
+
+		if( 0 < d )
+			return Color * d;
+		else
+			return SFloatRGBColor(0,0,0);
+	}
 };
 
 

@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <boost/shared_ptr.hpp>
 
 #include "../IndexedPolygon.h"
 #include "3DMath/aabb3.h"
@@ -40,6 +41,8 @@ class TerrainMeshTree
 	TerrainMeshNode m_RootNode;
 
 	int m_TargetDepth;
+
+	boost::shared_ptr<std::vector<CGeneral3DVertex>> m_pVertexBuffer;
 
 	std::vector<CIndexedPolygon>* m_pvecPolygonBuffer;
 
@@ -115,7 +118,7 @@ class CTerrainMeshGenerator
 {
 //	C3DMeshModelArchive m_SourceMesh;
 
-	std::vector<CGeneral3DVertex> m_vecVertexBuffer;
+	boost::shared_ptr<std::vector<CGeneral3DVertex>> m_pVertexBuffer;
 
 	// stores triangled copied from the source mesh
 	// m_MaterialIndex is not used
@@ -155,6 +158,7 @@ private:
 public:
 
 	CTerrainMeshGenerator();
+
 	~CTerrainMeshGenerator();
 
 	bool BuildTerrainMesh( C3DMeshModelArchive& src_mesh );

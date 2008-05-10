@@ -54,7 +54,7 @@ bool CShaderLightManager::SetShaderHandles()
 	int i;
 	for( i=0; i<NUM_LIGHTING_PROPERTIES; i++ )
 	{
-		assert( m_aPropertyHandle[i] != 0 );
+//		assert( m_aPropertyHandle[i] != 0 );
 		if( m_aPropertyHandle[i] == 0 )
 			return false;
 	}

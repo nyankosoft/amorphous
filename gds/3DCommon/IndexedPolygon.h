@@ -2,6 +2,8 @@
 #define __INDEXEDPOLYGON_H__
 
 #include <vector>
+#include <boost/shared_ptr.hpp>
+
 #include "3DMath/Plane.h"
 #include "3DMath/aabb3.h"
 #include "3DCommon/General3DVertex.h"
@@ -13,12 +15,11 @@ using namespace GameLib1::Serialization;
 
 class CIndexedPolygon : public IArchiveObjectBase
 {
-	/// Pointer to the vertex buffer (borrowed reference).
-	/// Every instance of indexed polygon use this same vertex
-	/// in this vertex buffer when one needs to access vertex data.
-	/// e.g.) when GetVertex() is called, the object will internally
-	/// access this buffer and return the reference to the vertex
-	static std::vector<CGeneral3DVertex>* ms_pVertex;
+	/// Pointer to the vertex buffer (shared pointer).
+	/// - Usually shared by polygons that belongs to the same polygon buffer
+	/// - When GetVertex() is called, the object will internally
+	///   access this buffer and return the reference to the vertex
+	boost::shared_ptr<std::vector<CGeneral3DVertex>> m_pVertexBuffer;
 
 	SPlane m_Plane;
 
@@ -37,21 +38,32 @@ public:
 
 public:
 
-	inline CIndexedPolygon() : m_MaterialIndex(0) {}
+	/// Default constructor
+	/// - Remember that the vertex buffer must be manually restored
+	inline CIndexedPolygon()
+		:
+	m_MaterialIndex(0)
+	{}
+
+	inline CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer )
+		:
+	m_pVertexBuffer(pVertexBuffer),
+	m_MaterialIndex(0)
+	{}
 
 	/// creates an indexed triangle
-	inline CIndexedPolygon( int i0, int i1, int i2 );
+	inline CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2 );
 
 	/// polygon must be convex
 	inline void Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane );
 
 	inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer ) const;
 
-	const CGeneral3DVertex& GetVertex( int vert_index ) const { return (*ms_pVertex)[m_index[vert_index]]; }
+	const CGeneral3DVertex& GetVertex( int vert_index ) const { return (*m_pVertexBuffer.get())[m_index[vert_index]]; }
 
 	const CGeneral3DVertex& GetVertex( size_t vert_index ) const { return GetVertex( (int)vert_index ); }
 
-	CGeneral3DVertex& Vertex( int vert_index ) { return (*ms_pVertex)[m_index[vert_index]]; }
+	CGeneral3DVertex& Vertex( int vert_index ) { return (*m_pVertexBuffer.get())[m_index[vert_index]]; }
 
 	int GetNumVertices() const { return (int)m_index.size(); }
 
@@ -61,7 +73,7 @@ public:
 
 	inline void UpdateAABB();
 
-	inline void UpdatePlane();
+	inline bool UpdatePlane();
 
 	inline float CalculateArea() const;
 
@@ -76,12 +88,12 @@ public:
 
 	/// Added to use CIndexedPolygon with CAABTree
 	/// - Not added for actual use
-	/// - ms_pVertex would have to be separately serialized and restored
+	/// - m_pVertexBuffer would have to be separately serialized and restored
 	inline void Serialize( IArchive& ar, const unsigned int version );
 
-	static void SetVertexBuffer( std::vector<CGeneral3DVertex>* vertex_buffer ) { ms_pVertex = vertex_buffer; }
+	void SetVertexBuffer( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer ) { m_pVertexBuffer = pVertexBuffer; }
 
-	static std::vector<CGeneral3DVertex>& VertexBuffer() { return (*ms_pVertex); }
+//	static std::vector<CGeneral3DVertex>& VertexBuffer() { return (*m_pVertexBuffer); }
 };
 
 
@@ -93,7 +105,10 @@ public:
 enum ePolygonStatus { POLYGON_ONPLANE, POLYGON_FRONT, POLYGON_BACK, POLYGON_INTERSECTING };
 
 
-inline CIndexedPolygon::CIndexedPolygon( int i0, int i1, int i2 )
+inline CIndexedPolygon::CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2 )
+:
+m_pVertexBuffer(pVertexBuffer),
+m_MaterialIndex(0)
 {
 	m_index.resize(3);
 	m_index[0] = i0;
@@ -114,9 +129,9 @@ inline int	ClassifyPolygon( const SPlane& plane,
 {
 	int front = 0;
 	int back = 0;
-	int iNumPnts = (int)polygon.m_index.size();
+	int num_vertices = (int)polygon.m_index.size();
 
-	for(int i=0; i<iNumPnts; i++)
+	for(int i=0; i<num_vertices; i++)
 	{
 		switch( ClassifyPoint( plane, polygon.GetVertex(i).m_vPosition ) )
 		{
@@ -160,7 +175,7 @@ inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& bac
 	size_t i, num_orig_verts = m_index.size();  //the number of points of this face
 //	SFloatRGBColor col, col0, col1;
 
-	std::vector<CGeneral3DVertex>& vert_buffer = *ms_pVertex;
+	std::vector<CGeneral3DVertex>& vert_buffer = *m_pVertexBuffer.get();
 
 	// copy the properties of the source polygon. e.g.) material index
 	front = *this;
@@ -233,6 +248,9 @@ inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& bac
 
 inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer ) const
 {
+	if( m_index.size() <= 2 )
+		return;
+
 	if( m_index.size() <= 3 )
 	{
 		dest_polygon_buffer.push_back( *this );
@@ -243,9 +261,58 @@ inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_pol
 	for( i=0; i<num_tris; i++ )
 	{
 		dest_polygon_buffer.push_back(
-			CIndexedPolygon( m_index[0], m_index[i+1], m_index[i+2] ) );
+			CIndexedPolygon( m_pVertexBuffer, m_index[0], m_index[i+1], m_index[i+2] ) );
+	}
+/*
+	/// experimental
+	/// - how to triangulate a concave polygon?
+
+	// copy of vertex indices
+	vector<int> index_copy = m_index;
+	float angle = 0, min_angle = 2.0f * (float)PI;
+	size_t min_angle_vert_index[3] = { 0, 1, 2 };
+	while( 3 < index_copy.size() )
+	{
+		// find a corner that has the minimum angle
+		// - index[1] is the focused vertex index
+		size_t i, num_vertices = index_copy.size();
+		size_t index[3];
+		for( i=0; i<num_vertices; i++ )
+		{
+			index[0] = i;
+			index[1] = (i+1) % num_vertices;
+			index[2] = (i+2) % num_vertices;
+			const Vector3& pos0 = ((*m_pVertexBuffer)[index_copy[index[0]]]).m_vPosition;
+			const Vector3& pos1 = ((*m_pVertexBuffer)[index_copy[index[1]]]).m_vPosition;
+			const Vector3& pos2 = ((*m_pVertexBuffer)[index_copy[index[2]]]).m_vPosition;
+
+			if( 0.0f < Vec3Dot( Vec3Cross( pos0 - pos1, pos2 - pos1 ), m_Plane.normal ) )
+				continue; // The angle is greater than ( 2 * PI ). Skip this corner.
+
+			angle = Vec3GetAngleBetween( pos0 - pos1, pos2 - pos1 );
+
+			if( angle == 0.0f )
+				int BreakHere = 1;
+
+			if( angle < min_angle )
+			{
+				min_angle = angle;
+				for( int j=0; j<3; j++ )
+					min_angle_vert_index[j] = index[j];
+			}
+		}
+
+		dest_polygon_buffer.push_back(
+			CIndexedPolygon( m_pVertexBuffer,
+			index_copy[min_angle_vert_index[0]],
+			index_copy[min_angle_vert_index[1]],
+			index_copy[min_angle_vert_index[2]] ) );
+
+		index_copy.erase( index_copy.begin() + min_angle_vert_index[1] );
 	}
 
+	dest_polygon_buffer.push_back(
+		CIndexedPolygon( m_pVertexBuffer, index_copy[0], index_copy[1], index_copy[2] ) );*/
 }
 
 
@@ -294,11 +361,61 @@ inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
 }
 
 
-#include <assert.h>
-
-inline void CIndexedPolygon::UpdatePlane()
+inline bool CIndexedPolygon::UpdatePlane()
 {
-	assert( !"Not implemented yet." );
+	if( m_index.size() <= 2 )
+		return false;
+
+	static const float s_NormalEpsilon = 0.0001;
+
+	/// Find 3 vertices that are not on a single line
+	/// - If a polygon has more than 4 vertices, some of its vertices may
+	///   be on a straight line.
+
+	Vector3 p0,p1,out;
+	Vector3 normal(0.0f, 0.0f, 0.0f);
+	Vector3 vZeroVector(0.0f, 0.0f, 0.0f);
+	float dist;
+	size_t i=0,j,k;
+	const size_t num_vertices = m_index.size();
+	while( (fabs(normal.x) < s_NormalEpsilon)
+		&& (fabs(normal.y) < s_NormalEpsilon)
+		&& (fabs(normal.z) < s_NormalEpsilon)
+		&& (i < num_vertices) )
+	{
+	 
+		j = (i+1) % num_vertices;
+		k = (i+2) % num_vertices;
+		p0 = GetVertex(i).m_vPosition - GetVertex(j).m_vPosition;
+		p1 = GetVertex(k).m_vPosition - GetVertex(j).m_vPosition;
+		Vec3Cross(normal, p1, p0 );
+		Vec3Normalize(out, normal );
+		i++;
+	}
+
+	if( normal == vZeroVector )
+	{
+		return false;
+	}
+
+	normal = out;
+	dist = Vec3Dot( GetVertex(0).m_vPosition, normal );   //Distance between (0,0,0) and this plane
+
+	m_Plane.normal = normal;
+	m_Plane.dist = dist;
+
+	if( fabs( fabs(normal.x) - 1.0 ) < NORMAL_EPSILON )
+		m_Plane.type = 0;	// plane is perpendicular to x-axis
+	else if( fabs( fabs(normal.y) - 1.0 ) < NORMAL_EPSILON )
+		m_Plane.type = 1;	// plane is perpendicular to y-axis
+	else if( fabs( fabs(normal.z) - 1.0 ) < NORMAL_EPSILON )
+		m_Plane.type = 2;	// plane is perpendicular to z-axis
+	else if( normal.y == 0.0f )
+		m_Plane.type = 3;	// plane is vertical (y == 0)
+	else
+		m_Plane.type = 5;
+
+	return true;
 }
 
 
@@ -328,13 +445,17 @@ inline float CIndexedPolygon::CalculateArea() const
 }
 
 
+/// \param src_polygon_buffer [in] array of polygons to triangulate
+/// \param dest_polygon_buffer [out] array of polygons that stores the triangulated polygons
 inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer,
 						 const std::vector<CIndexedPolygon>& src_polygon_buffer )
 {
 	const size_t num_pols = src_polygon_buffer.size();
 	for( size_t i=0; i<num_pols; i++ )
 	{
-		const CIndexedPolygon& src_polygon = src_polygon_buffer[i];
+		src_polygon_buffer[i].Triangulate( dest_polygon_buffer );
+
+/*		const CIndexedPolygon& src_polygon = src_polygon_buffer[i];
 		const size_t num_triangles = src_polygon.m_index.size() - 2;
 
 		for( size_t j=0; j<num_triangles; j++ )
@@ -347,7 +468,7 @@ inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer,
 			pol.m_index[2] = src_polygon.m_index[j+2];
 
 			dest_polygon_buffer.push_back( pol );
-		}
+		}*/
 	}
 }
 

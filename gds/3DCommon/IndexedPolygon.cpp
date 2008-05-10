@@ -3,7 +3,7 @@
 
 using namespace std;
 
-vector<CGeneral3DVertex>* CIndexedPolygon::ms_pVertex;
+//vector<CGeneral3DVertex>* CIndexedPolygon::ms_pVertex;
 
 
 bool CIndexedPolygon::IsOnTriangle( int iTriangleIndex, const Vector3& rvPosition ) const
