@@ -246,6 +246,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapLightingManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapLightingManager.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapTexture.cpp"
 						>
 					</File>

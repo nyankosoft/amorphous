@@ -3,6 +3,7 @@
 #include "Support/StringAux.h"
 #include "Support/fnop.h"
 #include "Stage/StaticGeometry.h"
+#include "BSPMapCompiler/_LightmapBuilder.h"
 
 #include "LightWave/3DMeshModelBuilder_LW.h"
 
@@ -376,7 +377,7 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	/// sort polygon by lightmap texture indices
 //	vector<vector<CIndexedPolygon>> vecPolygonSortedByLightmapTexure;
 
-//	CLightmapBuilder lightmap_builder;
+	CLightmapBuilder lightmap_builder;
 
 	/// make the polygon tree
 
