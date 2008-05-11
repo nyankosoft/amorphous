@@ -1,4 +1,3 @@
-
 #ifndef  __TRIANGLE_H__
 #define  __TRIANGLE_H__
 
@@ -17,13 +16,14 @@ public:
 
 	CTriangle();
 
-	CTriangle( Vector3& v0, Vector3& v1, Vector3& v2, Vector3& vNormal )
+	CTriangle( const Vector3& v0, const Vector3& v1, const Vector3& v2, const Vector3& vNormal )
+		:
+	m_vNormal(vNormal)
 	{
 		m_avVertex[0] = v0;
 		m_avVertex[1] = v1;
 		m_avVertex[2] = v2;
-		m_vNormal = vNormal;
-		m_fDist = Vec3Dot( &m_vNormal, &m_avVertex[0] );
+		m_fDist = Vec3Dot( &vNormal, &m_avVertex[0] );
 	}
 
 	inline Vector3& GetVertex(int i) { return m_avVertex[i]; }
@@ -40,7 +40,7 @@ public:
 	/// check if the ray intersects with the triangle
 	/// if an intersection is found, 'vGoal' is replaced by contact point
 	/// and the function returns true
-	inline bool RayIntersect( Vector3& vStart, Vector3& vGoal );
+	inline bool RayIntersect( const Vector3& vStart, Vector3& vGoal );
 
 	inline SPlane GetPlane() { SPlane plane; plane.normal = m_vNormal; plane.dist = m_fDist; return plane; }
 	
@@ -72,7 +72,7 @@ inline void CTriangle::GetSpan( float& rfMin, float& rfMax, Vector3 vAxis ) cons
 }
 
 
-inline bool CTriangle::RayIntersect( Vector3& vStart, Vector3& vGoal )
+inline bool CTriangle::RayIntersect( const Vector3& vStart, Vector3& vGoal )
 {
 	float d0, d1;
 	d0 = Vec3Dot( m_vNormal, vStart ) - m_fDist;

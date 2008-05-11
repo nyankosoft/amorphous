@@ -403,12 +403,12 @@ bool CFace::ClipVisibility(CFace& rSrcFace, CFace& rDestFace, int iClipStyle)
 }
 
 
-bool CFace::ClipTrace( SRay& ray )
+bool CFace::ClipTrace( CLineSegment& line_segment, CLineSegmentHit& results )
 {
 	bool b;
 	int i, iNumTris = GetNumVertices() - 2;
-	Vector3 vStart = ray.vStart;
-	Vector3 vGoal  = ray.vGoal;
+	Vector3 vStart = line_segment.vStart;
+	Vector3 vGoal  = line_segment.vGoal;
 	Vector3 vOrigTrace = vGoal - vStart;
 
 	// check triangles in this convex polygon
@@ -421,8 +421,8 @@ bool CFace::ClipTrace( SRay& ray )
 
 		if( b )
 		{
-			ray.vEnd = vGoal;
-			ray.fFraction = Vec3Dot( ray.vEnd - ray.vStart, vOrigTrace ) / Vec3LengthSq( vOrigTrace );
+			results.vEnd = vGoal;
+			results.fFraction = Vec3Dot( results.vEnd - line_segment.vStart, vOrigTrace ) / Vec3LengthSq( vOrigTrace );
 			return true;
 		}
 	}

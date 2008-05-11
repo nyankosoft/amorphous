@@ -54,18 +54,7 @@ void CLightmap::SetSize( const int width, const int height )
 }
 
 
-void CLightmap::SetLightmapTextureIndexToFaces( int index )
-{
-	const size_t iNumFaces = m_vecGroupedFaceIndex.size();
-
-	for( size_t i=0; i<iNumFaces; i++ )
-	{
-//		rvecFace[ m_vecGroupedFaceIndex[i] ].SetLightmapTextureIndex( index );
-	}
-}
-
-
-void CLightmap::SetTextureUV( SRect& rRect,
+void CLightmap::SetTextureUV( const SRect& rRect,
 							  const int iTextureWidth,
 							  const int iTextureHeight,
 							  const int tex_coord_index )
@@ -99,34 +88,6 @@ void CLightmap::SetTextureUV( SRect& rRect,
 }
 
 
-/*
-// check whether the given point is included in the volume
-// which is defined by sweeping the face in the direction of the face normal
-// rvPosition : [in]
-// rfDist : [out]
-bool CIndexedPolygon::IsInSweptVolume( const Vector3& rvPosition, float& rfDist )
-{
-	rfDist = -99999;
-	int i;
-	float d;
-	Vector3 vEdge, vNormalOut;
-	for( i=0; i<GetNumVertices() - 1; i++ )
-	{
-		vEdge = GetVertex(i+1) - GetVertex(i);
-		Vec3Cross( vNormalOut, vEdge, GetPlane().normal );
-		d = Vec3Dot( (rvPosition - GetVertex(i)), vNormalOut );
-
-		if( rfDist < d )
-			rfDist = d;
-	}
-	if( rfDist <= 0 )
-		return true;
-	else
-		return false;
-
-}
-*/
-
 void CLightmap::ComputeNormalsOnLightmap()
 {
 	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
@@ -134,8 +95,8 @@ void CLightmap::ComputeNormalsOnLightmap()
 	const size_t iNumGroupedFaces = m_vecGroupedFaceIndex.size();
 
 	int x,y;
-	int width  = m_Rect.GetWidth();
-	int height = m_Rect.GetHeight();
+	const int width  = m_Rect.GetWidth();
+	const int height = m_Rect.GetHeight();
 
 //	float fDist, fMinDist;
 //	int iMinFaceIndex;
@@ -192,6 +153,10 @@ void CLightmap::TransformLightDirectionToLocalFaceCoord()
 {
 	// there should be only one face per lightmap when the light direction map is created
 	// i.e. assert( m_vecGroupedFaceIndex.size() == 1 )
+
+	assert( !__FUNCTION__" - Not implemented!" );
+
+	// TODO: calc Matrix34 for world to local transfromation
 	
 	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
 	CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[0] ];
@@ -270,3 +235,18 @@ void CLightmap::ApplySmoothing()
 		}
 	}
 }
+
+
+
+
+/*
+void CLightmap::SetLightmapTextureIndexToFaces( int index )
+{
+	const size_t iNumFaces = m_vecGroupedFaceIndex.size();
+
+	for( size_t i=0; i<iNumFaces; i++ )
+	{
+//		rvecFace[ m_vecGroupedFaceIndex[i] ].SetLightmapTextureIndex( index );
+	}
+}
+*/

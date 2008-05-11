@@ -17,8 +17,8 @@ CBE_DirectionalLight::CBE_DirectionalLight()
 {
 	m_bNoClip = true;
 
-	m_DirLight.UpperColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	m_DirLight.LowerColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_DirLight.UpperColor().SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_DirLight.LowerColor().SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 
 	// direction is set per-entity basis
 	// but a default direction is set for safety
@@ -54,7 +54,7 @@ void CBE_DirectionalLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 	}
 
 	// set light properties
-	CHemisphericDirLight light = m_DirLight;
+	CHemisphericDirectionalLight light = m_DirLight;
 	if( pCopyEnt->GetDirection() != Vector3(0,0,0) )
 		light.vDirection = pCopyEnt->GetDirection();
 
@@ -117,18 +117,18 @@ bool CBE_DirectionalLight::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 {
 	CBE_Light::LoadSpecificPropertiesFromFile( scanner );
 
-	CHemisphericDirLight& light = m_DirLight;
+	CHemisphericDirectionalLight& light = m_DirLight;
 	float r,g,b;
 
 	if( scanner.TryScanLine( "UPPER_COLOR", r, g, b ) )
 	{
-		m_DirLight.UpperColor.SetRGB( r,g,b );
+		m_DirLight.UpperColor().SetRGB( r,g,b );
 		return true;
 	}
 
 	if( scanner.TryScanLine( "LOWER_COLOR", r, g, b ) )
 	{
-		m_DirLight.LowerColor.SetRGB( r,g,b );
+		m_DirLight.LowerColor().SetRGB( r,g,b );
 		return true;
 	}
 

@@ -13,12 +13,10 @@ namespace GameLib1
 namespace Serialization
 {
 
-
-inline IArchive& operator & ( IArchive& ar, CHemisphericLight& light )
+/*
+inline IArchive& operator & ( IArchive& ar, CHemisphericLightAttribute& hs )
 {
-	ar & light.vPosition;
-	ar & light.UpperColor;
-	ar & light.LowerColor;
+	ar & hs.UpperColor & hs.LowerColor;
 
 	for( int i=0; i<3; i++ )
 		ar & light.fAttenuation[i];
@@ -27,15 +25,26 @@ inline IArchive& operator & ( IArchive& ar, CHemisphericLight& light )
 }
 
 
-inline IArchive& operator & ( IArchive& ar, CHemisphericDirLight& light )
+inline IArchive& operator & ( IArchive& ar, CHemisphericPointLight& light )
 {
-	ar & light.vDirection;
-	ar & light.UpperColor;
-	ar & light.LowerColor;
+	ar & light.vPosition;
+	ar & light.Att;
+
+	for( int i=0; i<3; i++ )
+		ar & light.fAttenuation[i];
 
 	return ar;
 }
 
+
+inline IArchive& operator & ( IArchive& ar, CHemisphericDirectionalLight& light )
+{
+	ar & light.vDirection;
+	ar & light.Attribute;
+
+	return ar;
+}
+*/
 
 }	  /*  Serialization  */
 

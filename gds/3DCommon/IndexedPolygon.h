@@ -4,8 +4,10 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 
-#include "3DMath/Plane.h"
+#include "3DMath/ray.h"
 #include "3DMath/aabb3.h"
+#include "3DMath/Plane.h"
+#include "3DMath/Triangle.h"
 #include "3DCommon/General3DVertex.h"
 
 #include "Support/Serialization/Serialization.h"
@@ -86,12 +88,18 @@ public:
 
 	inline bool SharesPointWith( const CIndexedPolygon& polygon );
 
+	/// Returns true if the line segment hits the polygon
+	inline bool ClipLineSegment( const CLineSegment& line_segment, CLineSegmentHit& results ) const;
+
 	/// Added to use CIndexedPolygon with CAABTree
 	/// - Not added for actual use
 	/// - m_pVertexBuffer would have to be separately serialized and restored
 	inline void Serialize( IArchive& ar, const unsigned int version );
 
 	void SetVertexBuffer( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer ) { m_pVertexBuffer = pVertexBuffer; }
+
+	boost::shared_ptr<std::vector<CGeneral3DVertex>> VertexBuffer() { return m_pVertexBuffer; }
+
 
 //	static std::vector<CGeneral3DVertex>& VertexBuffer() { return (*m_pVertexBuffer); }
 };
@@ -114,59 +122,6 @@ m_MaterialIndex(0)
 	m_index[0] = i0;
 	m_index[1] = i1;
 	m_index[2] = i2;
-}
-
-
-/**
- * OPC_DONTCARE_NORMAL_DIRECTION
- *	the face is marked as on-plane if it is on the plane without any regard to normal direction
- * OPC_IF_NORMAL_SAME_DIRECTION (default)
- *	the face is regarded as on-plane if its normal is in the same direction as the plane
- */
-inline int	ClassifyPolygon( const SPlane& plane,
-						     const CIndexedPolygon& polygon,
-							 int iOnPlaneCondition = CIndexedPolygon::OPC_DONTCARE_NORMAL_DIRECTION )
-{
-	int front = 0;
-	int back = 0;
-	int num_vertices = (int)polygon.m_index.size();
-
-	for(int i=0; i<num_vertices; i++)
-	{
-		switch( ClassifyPoint( plane, polygon.GetVertex(i).m_vPosition ) )
-		{
-		case PNT_FRONT:		front++;	break;
-		case PNT_BACK:		back++;		break;
-		case PNT_ONPLANE:	// ignore vertrices on the plane
-		default:;
-		}
-	}
-
-	if( front == 0 && back == 0 )
-	{
-
-//		if( iOnPlaneCondition == OPC_DONTCARE_NORMAL_DIRECTION )
-			return POLYGON_ONPLANE;		//the face is on-plane regardless of its normal direction
-
-/*		SPlane &plane2 = face.GetPlane();
-
-		else if( fabs( plane.normal.x - plane2.normal.x ) < NORMAL_EPSILON 
-		&&  fabs( plane.normal.y - plane2.normal.y ) < NORMAL_EPSILON 
-		&&  fabs( plane.normal.z - plane2.normal.z ) < NORMAL_EPSILON )
-		{
-			return POLYGON_ONPLANE;	// the 2 normals face the same direction
-		}
-		else
-		{	// Consider the vertex to be behind the palne if the plane and the polygon
-			// face the opposite directions
-			return POLYGON_BACK;	//the 2 normals face the opposite directions
-		}*/
-	}
-	if( front != 0 && back != 0 )
-		return POLYGON_INTERSECTING;
-	if( front > 0 )
-		return POLYGON_FRONT;
-	return POLYGON_BACK;
 }
 
 
@@ -263,18 +218,18 @@ inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_pol
 		dest_polygon_buffer.push_back(
 			CIndexedPolygon( m_pVertexBuffer, m_index[0], m_index[i+1], m_index[i+2] ) );
 	}
-/*
+
 	/// experimental
 	/// - how to triangulate a concave polygon?
-
+/*
 	// copy of vertex indices
 	vector<int> index_copy = m_index;
-	float angle = 0, min_angle = 2.0f * (float)PI;
-	size_t min_angle_vert_index[3] = { 0, 1, 2 };
 	while( 3 < index_copy.size() )
 	{
 		// find a corner that has the minimum angle
 		// - index[1] is the focused vertex index
+		float angle = 0, min_angle = 2.0f * (float)PI;
+		size_t min_angle_vert_index[3] = { 0, 1, 2 };
 		size_t i, num_vertices = index_copy.size();
 		size_t index[3];
 		for( i=0; i<num_vertices; i++ )
@@ -302,17 +257,18 @@ inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_pol
 			}
 		}
 
-		dest_polygon_buffer.push_back(
-			CIndexedPolygon( m_pVertexBuffer,
-			index_copy[min_angle_vert_index[0]],
-			index_copy[min_angle_vert_index[1]],
-			index_copy[min_angle_vert_index[2]] ) );
+		dest_polygon_buffer.push_back( *this );
+
+		dest_polygon_buffer.back().m_index.resize( 3 );
+		dest_polygon_buffer.back().m_index[0] = index_copy[min_angle_vert_index[0]];
+		dest_polygon_buffer.back().m_index[1] = index_copy[min_angle_vert_index[1]];
+		dest_polygon_buffer.back().m_index[2] = index_copy[min_angle_vert_index[2]];
 
 		index_copy.erase( index_copy.begin() + min_angle_vert_index[1] );
 	}
 
-	dest_polygon_buffer.push_back(
-		CIndexedPolygon( m_pVertexBuffer, index_copy[0], index_copy[1], index_copy[2] ) );*/
+	dest_polygon_buffer.push_back( *this );
+	dest_polygon_buffer.back().m_index = index_copy;*/
 }
 
 
@@ -328,45 +284,12 @@ inline void CIndexedPolygon::UpdateAABB()
 }
 
 
-inline bool CIndexedPolygon::IsOnPolygon( const Vector3& rvPosition ) const
-{
-	const int num_triangles = GetNumVertices() - 2;
-	for( int i=0; i<num_triangles; i++ )
-	{
-		if( IsOnTriangle( i, rvPosition ) )
-			return true;
-	}
-
-	return false;
-}
-
-
-inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
-{
-	const size_t num_vertices0 = m_index.size();
-	const size_t num_vertices1 = polygon.m_index.size();
-	for( size_t i=0; i<num_vertices0; i++)
-	{
-		for( size_t j=0; j<num_vertices1; j++)
-		{
-			if( m_index[i] == m_index[j] )
-			{
-				// TODO: compare vertices
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-
 inline bool CIndexedPolygon::UpdatePlane()
 {
 	if( m_index.size() <= 2 )
 		return false;
 
-	static const float s_NormalEpsilon = 0.0001;
+	static const double s_NormalEpsilon = 0.0001;
 
 	/// Find 3 vertices that are not on a single line
 	/// - If a polygon has more than 4 vertices, some of its vertices may
@@ -419,6 +342,70 @@ inline bool CIndexedPolygon::UpdatePlane()
 }
 
 
+inline bool CIndexedPolygon::IsOnPolygon( const Vector3& rvPosition ) const
+{
+	const int num_triangles = GetNumVertices() - 2;
+	for( int i=0; i<num_triangles; i++ )
+	{
+		if( IsOnTriangle( i, rvPosition ) )
+			return true;
+	}
+
+	return false;
+}
+
+
+inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
+{
+	const size_t num_vertices0 = m_index.size();
+	const size_t num_vertices1 = polygon.m_index.size();
+	for( size_t i=0; i<num_vertices0; i++)
+	{
+		for( size_t j=0; j<num_vertices1; j++)
+		{
+			if( m_index[i] == m_index[j] )
+			{
+				// TODO: compare vertices
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+inline bool CIndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, CLineSegmentHit& results ) const
+{
+	// check triangles
+	// - The polygon must be convex
+	bool hit;
+	const Vector3 vStart = line_segment.vStart;
+	Vector3 vGoal  = line_segment.vGoal;
+
+	const size_t num_triangles = m_index.size() - 2;
+	for( size_t i=0; i<num_triangles; i++)
+	{
+
+		CTriangle triangle(
+			GetVertex(0).m_vPosition,
+			GetVertex(i+1).m_vPosition,
+			GetVertex(i+2).m_vPosition,
+			GetPlane().normal );
+
+		hit = triangle.RayIntersect( vStart, vGoal );
+
+		if( hit )
+		{
+			Vector3 vOrigTrace = line_segment.vGoal - line_segment.vStart;
+			results.vEnd = vGoal;
+			results.fFraction = Vec3Dot( results.vEnd - line_segment.vStart, vOrigTrace ) / Vec3LengthSq( vOrigTrace );
+			return true;
+		}
+	}
+}
+
+
 inline float CIndexedPolygon::CalculateArea() const
 {
 	float fCos, fSin;
@@ -445,6 +432,19 @@ inline float CIndexedPolygon::CalculateArea() const
 }
 
 
+inline void CIndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_Plane;
+
+	ar & m_AABB;
+
+	ar & m_index;
+
+	/// surface property of the polygon
+	ar & m_MaterialIndex;
+}
+
+
 /// \param src_polygon_buffer [in] array of polygons to triangulate
 /// \param dest_polygon_buffer [out] array of polygons that stores the triangulated polygons
 inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer,
@@ -454,21 +454,6 @@ inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer,
 	for( size_t i=0; i<num_pols; i++ )
 	{
 		src_polygon_buffer[i].Triangulate( dest_polygon_buffer );
-
-/*		const CIndexedPolygon& src_polygon = src_polygon_buffer[i];
-		const size_t num_triangles = src_polygon.m_index.size() - 2;
-
-		for( size_t j=0; j<num_triangles; j++ )
-		{
-			CIndexedPolygon pol( src_polygon );
-
-			pol.m_index.resize(3);
-			pol.m_index[0] = src_polygon.m_index[0];
-			pol.m_index[1] = src_polygon.m_index[j+1];
-			pol.m_index[2] = src_polygon.m_index[j+2];
-
-			dest_polygon_buffer.push_back( pol );
-		}*/
 	}
 }
 
@@ -506,17 +491,75 @@ inline void UpdateAABBs( std::vector<CIndexedPolygon>& polygon_buffer )
 }
 
 
-inline void CIndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
+inline bool AreOnSamePlane( const CIndexedPolygon& polygon0, const CIndexedPolygon& polygon1 )
 {
-	ar & m_Plane;
-
-	ar & m_AABB;
-
-	ar & m_index;
-
-	/// surface property of the polygon
-	ar & m_MaterialIndex;
+	if( fabs(polygon1.GetPlane().dist - polygon0.GetPlane().dist) < 0.000001
+	 && Vec3LengthSq( polygon1.GetPlane().normal - polygon0.GetPlane().normal ) < 0.000001 )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
+
+
+/**
+ * OPC_DONTCARE_NORMAL_DIRECTION
+ *	the face is marked as on-plane if it is on the plane without any regard to normal direction
+ * OPC_IF_NORMAL_SAME_DIRECTION (default)
+ *	the face is regarded as on-plane if its normal is in the same direction as the plane
+ */
+inline int	ClassifyPolygon( const SPlane& plane,
+						     const CIndexedPolygon& polygon,
+							 int iOnPlaneCondition = CIndexedPolygon::OPC_DONTCARE_NORMAL_DIRECTION )
+{
+	int front = 0;
+	int back = 0;
+	int num_vertices = (int)polygon.m_index.size();
+
+	for(int i=0; i<num_vertices; i++)
+	{
+		switch( ClassifyPoint( plane, polygon.GetVertex(i).m_vPosition ) )
+		{
+		case PNT_FRONT:		front++;	break;
+		case PNT_BACK:		back++;		break;
+		case PNT_ONPLANE:	// ignore vertrices on the plane
+		default:;
+		}
+	}
+
+	if( front == 0 && back == 0 )
+	{
+
+//		if( iOnPlaneCondition == OPC_DONTCARE_NORMAL_DIRECTION )
+			return POLYGON_ONPLANE;		//the face is on-plane regardless of its normal direction
+
+/*		SPlane &plane2 = face.GetPlane();
+
+		else if( fabs( plane.normal.x - plane2.normal.x ) < NORMAL_EPSILON 
+		&&  fabs( plane.normal.y - plane2.normal.y ) < NORMAL_EPSILON 
+		&&  fabs( plane.normal.z - plane2.normal.z ) < NORMAL_EPSILON )
+		{
+			return POLYGON_ONPLANE;	// the 2 normals face the same direction
+		}
+		else
+		{	// Consider the vertex to be behind the palne if the plane and the polygon
+			// face the opposite directions
+			return POLYGON_BACK;	//the 2 normals face the opposite directions
+		}*/
+	}
+	if( front != 0 && back != 0 )
+		return POLYGON_INTERSECTING;
+	if( front > 0 )
+		return POLYGON_FRONT;
+	return POLYGON_BACK;
+}
+
+
+extern void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolygon>& polygon_buffer );
+
 
 
 #endif  /* __INDEXEDPOLYGON_H__*/

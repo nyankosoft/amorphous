@@ -1,10 +1,12 @@
 #include "_LightmapBuilder.h"
 #include <typeinfo>
 
+#include "3DMath/AABTree.h"
 #include "Support/SafeDelete.h"
+#include "Support/StringAux.h"
 #include "Support/Log/DefaultLog.h"
 
-//#include "LightingForLightmap_SimpleRaytrace.h"
+#include "LightmapLightingManager.h"
 //#include "AmbientOcclusionLightmapBuilder.h"
 
 
@@ -36,15 +38,14 @@ void CLightmapOption::LoadFromFile( CTextFileScanner& scanner )
 CLightmapBuilder::CLightmapBuilder()
 {
 	m_fMaxAllowedLightmapArea = 25.0f;
-	m_iTextureWidth = 256;
 	m_iMargin = 1;
-
-	m_TexelSize = 1.0f;
-
-//	m_pLightingSimulator = NULL;
 
 	m_iLightmapCreationFlag = 0;
 //	m_iLightmapCreationFlag |= LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE;
+
+//	m_iTextureWidth = 256;
+//	m_TexelSize = 1.0f;
+//	m_pLightingSimulator = NULL;
 
 }
 
@@ -59,42 +60,31 @@ void CLightmapBuilder::Clear()
 {
 	m_vecLightmap.clear();
 	m_vecLightmapTexture.clear();
-//	SafeDelete( m_pLightingSimulator );
 }
 
 
 void CLightmapBuilder::Init()
 {
-//	this->m_pvecpLight = pMapCompiler->GetLight();
-
 	Clear();
 
 ///	m_pLightingSimulator = new CLightingForLightmap_SimpleRaytrace<CMapFace>;
-
 //	m_pLightingSimulator->RaiseOptionFlag( LF_IGNORE_ANGLE_FACTOR );
 //	m_pLightingSimulator->RaiseOptionFlag( LF_USE_HEMISPHERIC_LIGHT );
-
-//	m_pLightingSimulator->m_pMapCompiler = pMapCompiler;
-
-	// get lights from map data
-	// m_pvecpLight is a pointer to the array of pointers. 
-//	m_pLightingSimulator->SetLights( *(pMapCompiler->GetLight()) );
 
 }
 
 
 void CLightmapBuilder::SetOption( const CLightmapOption& option )
 {
-//	m_TexelsPerMeter = 1.0f / option.fTexelSize;
-	SetTextureWidth( option.TextureWidth );
-	SetTextureHeight( option.TextureHeight );
-
-	m_TexelSize = option.fTexelSize;
+//	SetTextureWidth( option.TextureWidth );
+//	SetTextureHeight( option.TextureHeight );
+//	m_TexelSize = option.fTexelSize;
 
 	if( option.bCreateLightDirectionMap )
 		m_iLightmapCreationFlag |= LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE;
 
 }
+
 
 bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 {
@@ -107,26 +97,33 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 
 	SetOption( desc.m_Option );
 
-	// create lightmaps
-	// calculate the brightness of the points on the polygons
+	// A lightmap can be shared by polygons only if they are on the same plane
+	// - Unweld vertices of polygons that are not on the same plane
+	UnweldVerticesOfPolygonsOnDifferentPlanes( desc.m_pMesh->GetPolygonBuffer() );
+
+	// Create lightmaps
 
 	// group faces which are close to one another and on the same plane
-	// - Instances of lightmap are created during this call
+	// - Instances of lightmap are created inside the function
 	GroupFaces();
 
-	const size_t iNumLightmaps = m_vecLightmap.size();
+	const size_t num_lightmaps = m_vecLightmap.size();
 
 	// calculate the 2 orthogonal axes for the lightmap ('vRight' & 'vUp')
 	// and determine the dimension of the lightmap
-	for( int i=0; i<iNumLightmaps; i++ )
+	for( size_t i=0; i<num_lightmaps; i++ )
 		CalculateLightMapPosition( m_vecLightmap[i] );
 
-	for( int i=0; i<iNumLightmaps; i++ )
+	for( size_t i=0; i<num_lightmaps; i++ )
 	{
 		m_vecLightmap[i].ComputeNormalsOnLightmap();
-
-//		ComputePointsOnLightmap(m_vecLightmap[i], rvecFace);
 	}
+
+	CNonLeafyAABTree<CIndexedPolygon> polygon_tree;
+	polygon_tree.Build( m_Desc.m_pMesh->GetPolygonBuffer() );
+
+	CLightmapLightingManager lighting_mgr;
+	lighting_mgr.CreateLightmaps( m_Desc.m_pvecpLight, &m_vecLightmap, &polygon_tree );
 
 
 	// calculate the color of points on each lightmap
@@ -156,7 +153,7 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 	// [in,out] mesh
 	// [in] current material buffer
 	// [out] updated material buffer
-//	UpdateMeshMaterials();
+	UpdateMeshMaterials();
 
 	// update uv values of polygons
 	const size_t num_lightmap_textures = m_vecLightmapTexture.size();
@@ -200,25 +197,8 @@ void CLightmapBuilder::UpdateMeshMaterials()
 			);
 	}
 
+	// replace the original material buffer with the new one
 	m_Desc.m_pMesh->GetMaterialBuffer() = new_material_buffer;
-}
-
-
-//void CLightmapBuilder::ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace)
-//{}
-
-
-inline bool AreOnSamePlane( const CIndexedPolygon& polygon0, const CIndexedPolygon& polygon1 )
-{
-	if( fabs(polygon1.GetPlane().dist - polygon0.GetPlane().dist) < 0.000001
-	 && Vec3LengthSq( polygon1.GetPlane().normal - polygon0.GetPlane().normal ) < 0.000001 )
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
 }
 
 
@@ -238,7 +218,7 @@ void CLightmapBuilder::GroupFaces()
 
 	const size_t num_lightmapped_polygons = vecTargetPolygonIndex.size();
 
-	int i, j, k;
+	int j, k;
 
 	vector<int> Grouped;
 	Grouped.resize( num_polygons, 0 );
@@ -329,7 +309,7 @@ void CLightmapBuilder::GroupFaces()
 /// and calculate the size of the rectangle which the lightmap covers
 void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 {
-	int i,j, iNumVertices;
+	int j, iNumVertices;
 
 	vector<int>& rveciGroupedFacesIndex = lightmap.m_vecGroupedFaceIndex;
 
@@ -389,7 +369,7 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 	lightmap.m_fScaleU = maxright - minright;
 	lightmap.m_fScaleV = maxup - minup;
 
-	float texels_per_meter = 1.0f / m_TexelSize;
+	float texels_per_meter = 1.0f / GetTexelSize();
 	lightmap.m_Rect.left = 0;
 	lightmap.m_Rect.top  = 0;
 	lightmap.m_Rect.right  = (int)(lightmap.m_fScaleU * (float)texels_per_meter);
@@ -407,10 +387,10 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 
 void CLightmapBuilder::PackLightmaps()
 {
-	const size_t iNumLightmaps = m_vecLightmap.size();
+	const int iNumLightmaps = (int)m_vecLightmap.size();
 	bool bPacked = false;
 
-	for( size_t i=0; i<iNumLightmaps; i++ )
+	for( int i=0; i<iNumLightmaps; i++ )
 	{
 		CLightmap& rLightmap = m_vecLightmap[i];
 		for( int j=0; j<m_vecLightmapTexture.size(); j++ )
@@ -429,7 +409,7 @@ void CLightmapBuilder::PackLightmaps()
 			// couldn't find a place for lightmap in any of the existing textures
 			// - create a new texture
 			m_vecLightmapTexture.push_back( CLightmapTexture() );
-			m_vecLightmapTexture.back().Resize( m_iTextureWidth, m_iTextureHeight );
+			m_vecLightmapTexture.back().Resize( GetLightmapTextureWidth(), GetLightmapTextureHeight() );
 			m_vecLightmapTexture.back().AddLightmap( rLightmap, i );
 		}
 	}
@@ -497,7 +477,7 @@ void CLightmapBuilder::ApplySmoothingToLightmaps()
 }
 
 
-void CLightmapBuilder::TransformLightDirectionToLocalFaceCoord(/* vector<CMapFace>& rvecFace*/ )
+void CLightmapBuilder::TransformLightDirectionToLocalFaceCoord()
 {
 /*	const size_t iNumLightmaps = m_vecLightmap.size();
 
@@ -508,16 +488,15 @@ void CLightmapBuilder::TransformLightDirectionToLocalFaceCoord(/* vector<CMapFac
 }
 
 
-void CLightmapBuilder::OutputLightmapTexturesToBMPFiles( const char *pcBodyFileName )
+void CLightmapBuilder::SaveLightmapTexturesToImageFiles( const std::string& dirpath_and_bodyname,
+														const std::string& img_file_suffix )
 {
 
-	int i, iNumLightmapTextures = m_vecLightmapTexture.size();
-	char acFilename[512];
-
-	for(i=0; i<iNumLightmapTextures; i++)
+	const int num_textures = (int)m_vecLightmapTexture.size();
+	for( int i=0; i<num_textures; i++)
 	{
-		sprintf( acFilename, "%s_%02d", pcBodyFileName, i );
-		m_vecLightmapTexture[i].SaveTextureImageToFile( acFilename );
+		m_vecLightmapTexture[i].SaveTextureImageToFile(
+			dirpath_and_bodyname + fmt_string("%03d",i) + img_file_suffix );
 	}
 }
 

@@ -8,7 +8,7 @@ class CBE_DirectionalLight : public CBE_Light
 {
 private:
 
-	CHemisphericDirLight m_DirLight;
+	CHemisphericDirectionalLight m_DirLight;
 
 public:
 

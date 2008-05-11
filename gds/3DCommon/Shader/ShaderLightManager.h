@@ -154,8 +154,8 @@ inline void CShaderLightManager::SetPointLightOffset( const int iPointLightOffse
 
 inline void CShaderLightManager::SetLight( const int index, const CHemisphericPointLight& rLight )
 {
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.UpperColor, sizeof(float) * 4 );
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
+	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperColor, sizeof(float) * 4 );
+	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerColor, sizeof(float) * 4 );
 
 	m_pEffect->SetValue( m_aHandle[index][LIGHT_POSITION], &rLight.vPosition, sizeof(float) * 3 );
 
@@ -172,8 +172,8 @@ inline void CShaderLightManager::SetLight( const int index, const CHemisphericPo
 
 inline void CShaderLightManager::SetLight( const int index, const CHemisphericDirectionalLight& rLight )
 {
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.UpperColor, sizeof(float) * 4 );
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
+	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperColor, sizeof(float) * 4 );
+	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerColor, sizeof(float) * 4 );
 
 	m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.vDirection, sizeof(float) * 3 );
 

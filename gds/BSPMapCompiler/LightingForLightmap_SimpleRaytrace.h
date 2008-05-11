@@ -72,7 +72,7 @@ public:
 
 	void SetLights( vector<CLight *>& rvecpLight ) { m_pvecpLight = &rvecpLight; }
 
-	bool Calculate( vector<CLightmap>& rvecLightmap, CPolygonMesh<T>& rMesh );
+//	bool Calculate( vector<CLightmap>& rvecLightmap, CPolygonMesh<T>& rMesh );
 
 	void ScaleIntensityAndAddAmbientLight( vector<CLightmap>& rvecLightmap );
 
@@ -82,10 +82,6 @@ public:
 	inline unsigned int GetOptionFlag() const { return m_OptionFlag; }
 
 	inline void ClearOptionFlag( const unsigned int flag ) { m_OptionFlag &= (~flag); }
-
-
-	/// use when the old raytrace scheme is necessary
-//	CBSPMapCompiler *m_pMapCompiler;
 };
 
 
@@ -109,15 +105,254 @@ inline CLightingForLightmap_SimpleRaytrace<T>::CLightingForLightmap_SimpleRaytra
 	m_NumProcessedLightmapTexels = 0;
 }
 
+class CLightRayTrace
+{
+	boost::shared_ptr<CLight> m_pLight;
+
+	CAABTree<CIndexedPolygon> *m_pGeometry;
+
+public:
+
+	friend class CLightmapRayTracer;
+};
+
+
+class CPointLightRayTrace
+{
+	boost::shared_ptr<CLight> m_pLight;
+
+	Vector3 m_vLightPosition;
+
+public:
+
+	inline virtual SFloatRGBColor CalcLightAmount( CLightmap& rLightmap, int x, int y );
+
+};
+
+
+class CDirectionalLightRayTrace
+{
+
+	Vector3 m_vLightDirection;
+
+public:
+
+	inline virtual SFloatRGBColor CalcLightAmount( CLightmap& rLightmap, int x, int y );
+
+};
+
 
 /// task executed by a thread
 class CLightmapRaytraceTask
 {
+	CLightmap *m_pLightmap;
+
+	vector<CLightRayTrace *> *m_pLightRayTrace;
+
+	bool m_bDone
+
 public:
 
-	CLightmapRaytraceTask() {}
+	CLightmapRaytraceTask() : m_bDone(false) {}
+
+	void thread_main();
 };
 
+
+void CLightmapRaytraceTask::thread_main()
+{
+	size_t m_pLightRayTrace;
+	const size_t num_lights = m_pLightRayTrace->size();
+	for( size_t i=0; i<num_lights; i++ )
+	{
+		const 
+	}
+}
+
+
+/**
+ \param lightmap [in,out] lightmap to update
+ \param x [in]
+ \param y [in]
+
+*/
+inline void CPointLightRayTrace::CalcLightAmount( CLightmap& rLightmap, int x, int y )
+{
+	const SPlane& plane = rLightmap.GetPlane();
+
+	float dist = plane.GetDistanceFromPoint( m_vLightPosition );
+
+	if( dist < 0.0 )
+		continue;			//The light is behind the faces
+
+	vLightmapPoint = rLightmap.GetPoint(x,y);
+
+	// check the ray from the point on the lightmap to the position of the light
+	ray.vStart = pPointLight->vPosition;
+///	ray.vGoal  = rLightmap.GetPoint(x,y);
+	ray.fFraction = 1.0f;
+
+	vToLight = m_vLightPosition - vLightmapPoint;
+	fRealDist = Vec3Length(&vToLight);
+	vDirToLight = vToLight / fRealDist;
+//	ray.vGoal = vLightmapPoint + vToLight_n * m_fSurfaceErrorTolerance;
+	ray.vGoal = vLightmapPoint + plane.normal * 0.01f;//m_fSurfaceErrorTolerance;
+
+	m_pGeometry->RayTrace( ray );
+
+	if( ray.fFraction < 1.0f )
+	{
+		// ray is blocked
+		vLightDir = rLightmap.GetLightDirection(x,y);
+		vLightDir += vDirToLight * 0.1f;//pPointLight->fIntensity * 0.1f;
+		rLightmap.SetLightDirection( x, y, vLightDir );
+
+		return;
+	}
+
+		// the light is not obstructed and reaching the target point
+///			vToLight = pPointLight->vPosition - rLightmap.GetPoint(x,y);
+///			fRealDist = Vec3Length(&vToLight);
+
+	SFloatRGBColor color = m_pLight->CalcLightAmount( vLightmapPoint, rLightmap.GetNormal(x,y) );
+
+	rLightmap.AddTexelColor( x, y, color );
+
+//		fAttenuation = 1.0f / ( pPointLight->fAttenuation0
+//					          + pPointLight->fAttenuation1 * fRealDist
+//						      + pPointLight->fAttenuation2 * fRealDist * fRealDist );
+
+//		if (fAttenuation>1) fAttenuation=1;
+
+//		fAngle = Vec3Dot( vToLight_n, rLightmap.GetNormal(x,y) );	// use normal calculated for each lightmap texel (for smooth shading)
+
+/*		if( m_OptionFlag & LF_IGNORE_ANGLE_FACTOR )
+		{
+			// exclude angle factor
+			// angle attenuation is calculated by using the light direction map during runtime
+			fPower = pPointLight->fIntensity * fAttenuation;
+		}
+		else if( m_OptionFlag & LF_USE_HEMISPHERIC_LIGHT )
+		{
+			float f = ( fAngle + 1.0f ) * 0.5f;
+			fPower = pPointLight->fIntensity * fAttenuation * f;
+		}
+		else
+		{
+			fPower = pPointLight->fIntensity * fAttenuation * fAngle;
+		}
+
+		if( fPower < 0.0 )
+			continue;
+*/
+
+		// ========================= normal pixel intensity calculation ===========================
+//		color = rLightmap.GetTexelColor(x,y);
+//		rLightmap.SetTexelColor(x,y, color + pPointLight->Color * fPower );
+
+		// ========= replace lightmap colors with normal directions (visual debugging) ============
+//				Vector3& rvNormal = rLightmap.avNormal[ LMTexelAt(x,y) ];
+//				rLightmap.intensity[ LMTexelAt(x,y) ].fRed   = (float)fabs(rvNormal.x);
+//				rLightmap.intensity[ LMTexelAt(x,y) ].fGreen = (float)fabs(rvNormal.y);
+//				rLightmap.intensity[ LMTexelAt(x,y) ].fBlue  = (float)fabs(rvNormal.z);
+
+		if( true /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
+		{
+//					vNormal = rLightmap.GetNormal(x,y);
+//					rLightmap.SetNormal(x,y, vNormal + vToLight_n * pPointLight->fIntensity );
+			vLightDir = rLightmap.GetLightDirection(x,y);
+			vLightDir += vDirToLight * pPointLight->fIntensity * 100.0f;
+			rLightmap.SetLightDirection( x, y, vLightDir );
+		}
+
+//		num_processed_texels++;
+//				CStatusDisplay::Get()->UpdateProgress( "Lightmap Raytrace",
+//				                                       (float)(num_processed_texels) / (float)num_total_texels );
+
+//		Sleep( 5 );
+}
+
+
+inline SFloatRGBColor CDirectionalLightRayTrace::CalcLightAmount( CLightmap& rLightmap, int x, int y )
+{
+//				float dist = rPlane.GetDistanceFromPoint( pDirLight->vPosition );
+//				if( dist < 0.0 )
+
+	const Vector3 vDirToLight = - m_pLight->GetDirection();
+
+	const SPlane& plane = rLightmap.GetPlane();
+
+	float d = Vec3Dot( vDirToLight, v.normal );
+	if( d < 0 )
+	{
+		// The light is behind the faces
+		// add small light direction
+		vLightDir = rLightmap.GetLightDirection(x,y);
+		vLightDir += ( rPlane.normal + Vector3( 0, vDirToLight.y, 0 ) ) * 0.01f;
+		rLightmap.SetLightDirection( x, y, vLightDir );
+
+		return;
+	}
+
+	const Vecto3 vLightmapPoint = rLightmap.GetPoint(x,y);
+
+	ray.vStart = vLightmapPoint + vDirToLight * 100.0f;//m_fDirectionalLightDistance;
+//	ray.vGoal  = vLightmapPoint + vDirToLight * m_fSurfaceErrorTolerance;
+	ray.vGoal  = vLightmapPoint + plane.normal * 0.01f;
+	ray.fFraction = 1.0f;
+
+	m_pGeometry->RayTrace( ray );
+
+	if( ray.fFraction < 1.0f )
+	{
+		// ray is blocked
+		vLightDir = rLightmap.GetLightDirection(x,y);
+		vLightDir += vDirToLight * 0.01f;
+		rLightmap.SetLightDirection( x, y, vLightDir );
+
+		return;
+	}
+
+	SFloatRGBColor color = m_pLight->CalcLightAmount( vLightmapPoint, rLightmap.GetNormal(x,y) );
+
+	rLightmap.AddTexelColor( x, y, color );
+
+	// the light is not obstructed and reaching the target point
+/*
+//				fAngle = Vec3Dot( vToLight_n, rPlane.normal );	// use face normal (for flat shading)
+	fAngle = Vec3Dot( vDirToLight, rLightmap.GetNormal(x,y) );	// use normal calculated for each lightmap texel (for smooth shading)
+
+	if( true ) // m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE )
+	{	// exclude angle factor
+		// angle attenuation is calculated by using the light direction map during runtime
+		fPower = pDirLight->fIntensity;
+	}
+	else
+	{
+		fPower = pDirLight->fIntensity * fAngle;
+	}
+
+	if( fPower < 0.0 )
+		continue;
+
+	// ========================= normal pixel intensity calculation ===========================
+	color = rLightmap.GetTexelColor(x,y);
+	rLightmap.SetTexelColor(x,y, color + pDirLight->Color * fPower );
+
+	// ========= replace lightmap colors with normal directions (visual debugging) ============
+//				Vector3& rvNormal = rLightmap.avNormal[ LMTexelAt(x,y) ];
+//				rLightmap.intensity[ LMTexelAt(x,y) ].fRed   = (float)fabs(rvNormal.x);
+//				rLightmap.intensity[ LMTexelAt(x,y) ].fGreen = (float)fabs(rvNormal.y);
+//				rLightmap.intensity[ LMTexelAt(x,y) ].fBlue  = (float)fabs(rvNormal.z);
+*/
+	if( true )//m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE )
+	{
+		vLightDir = rLightmap.GetLightDirection(x,y);
+		vLightDir += vDirToLight; // * pDirLight->fIntensity;
+		rLightmap.SetLightDirection( x, y, vLightDir );
+	}
+
+}
 
 
 template <class T>
@@ -224,94 +459,6 @@ void CLightingForLightmap_SimpleRaytrace<T>::CalculateLightmapTexelIntensity( CL
 		{
 			for(x=0; x<iLightmapWidth; x++)
 			{
-				float dist = rPlane.GetDistanceFromPoint( pPointLight->vPosition );
-
-				if( dist < 0.0 )
-					continue;			//The light is behind the faces
-
-				vLightmapPoint = rLightmap.GetPoint(x,y);
-
-				ray.vStart = pPointLight->vPosition;
-///				ray.vGoal  = rLightmap.GetPoint(x,y);
-				ray.fFraction = 1.0f;
-
-				vToLight = pPointLight->vPosition - vLightmapPoint;
-				fRealDist = Vec3Length(&vToLight);
-				vToLight_n = vToLight / fRealDist;
-				ray.vGoal = vLightmapPoint + vToLight_n * m_fSurfaceErrorTolerance;
-
-				rMesh.RayTrace( ray );
-
-				if( ray.fFraction < 1.0f )
-				{
-					// ray is blocked
-					vLightDir = rLightmap.GetLightDirection(x,y);
-					vLightDir += vToLight_n * pPointLight->fIntensity * 0.1f;
-					rLightmap.SetLightDirection( x, y, vLightDir );
-
-					continue;
-				}
-
-				// the light is not obstructed and reaching the target point
-///				vToLight = pPointLight->vPosition - rLightmap.GetPoint(x,y);
-///				fRealDist = Vec3Length(&vToLight);
-
-				fAttenuation = 1.0f / ( pPointLight->fAttenuation0
-							          + pPointLight->fAttenuation1 * fRealDist
-								      + pPointLight->fAttenuation2 * fRealDist * fRealDist );
-
-				if (fAttenuation>1) fAttenuation=1;
-
-				// normalize light direction
-///				vToLight_n = vToLight / fRealDist;
-//				Vec3Normalize(&vToLight_n, &vToLight);
-
-//				fAngle = Vec3Dot( vToLight_n, rPlane.normal );	// use face normal (for flat shading)
-				fAngle = Vec3Dot( vToLight_n, rLightmap.GetNormal(x,y) );	// use normal calculated for each lightmap texel (for smooth shading)
-
-				if( m_OptionFlag & LF_IGNORE_ANGLE_FACTOR )
-				{
-					// exclude angle factor
-					// angle attenuation is calculated by using the light direction map during runtime
-					fPower = pPointLight->fIntensity * fAttenuation;
-				}
-				else if( m_OptionFlag & LF_USE_HEMISPHERIC_LIGHT )
-				{
-					float f = ( fAngle + 1.0f ) * 0.5f;
-					fPower = pPointLight->fIntensity * fAttenuation * f;
-				}
-				else
-				{
-					fPower = pPointLight->fIntensity * fAttenuation * fAngle;
-				}
-
-				if( fPower < 0.0 )
-					continue;
-
-				// ========================= normal pixel intensity calculation ===========================
-				color = rLightmap.GetTexelColor(x,y);
-				rLightmap.SetTexelColor(x,y, color + pPointLight->Color * fPower );
-
-				// ========= replace lightmap colors with normal directions (visual debugging) ============
-//				Vector3& rvNormal = rLightmap.avNormal[ LMTexelAt(x,y) ];
-//				rLightmap.intensity[ LMTexelAt(x,y) ].fRed   = (float)fabs(rvNormal.x);
-//				rLightmap.intensity[ LMTexelAt(x,y) ].fGreen = (float)fabs(rvNormal.y);
-//				rLightmap.intensity[ LMTexelAt(x,y) ].fBlue  = (float)fabs(rvNormal.z);
-
-				if( true /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
-				{
-//					vNormal = rLightmap.GetNormal(x,y);
-//					rLightmap.SetNormal(x,y, vNormal + vToLight_n * pPointLight->fIntensity );
-					vLightDir = rLightmap.GetLightDirection(x,y);
-					vLightDir += vToLight_n * pPointLight->fIntensity * 100.0f;
-					rLightmap.SetLightDirection( x, y, vLightDir );
-				}
-
-				num_processed_texels++;
-//				CStatusDisplay::Get()->UpdateProgress( "Lightmap Raytrace",
-//				                                       (float)(num_processed_texels) / (float)num_total_texels );
-
-				Sleep( 5 );
 
 			}
 		}
@@ -351,71 +498,6 @@ void CLightingForLightmap_SimpleRaytrace<T>::CalculateLightmapTexelIntensityDL( 
 		{
 			for(x=0; x<iLightmapWidth; x++)
 			{
-//				float dist = rPlane.GetDistanceFromPoint( pDirLight->vPosition );
-//				if( dist < 0.0 )
-
-				float d = Vec3Dot( vDirToLight, rPlane.normal );
-				if( d < 0 )
-				{
-					// The light is behind the faces
-					// add small light direction
-					vLightDir = rLightmap.GetLightDirection(x,y);
-					vLightDir += ( rPlane.normal + Vector3( 0, vDirToLight.y, 0 ) ) * 0.01f;
-					rLightmap.SetLightDirection( x, y, vLightDir );
-
-					continue;
-				}
-
-				ray.vStart = rLightmap.GetPoint(x,y) + vDirToLight * m_fDirectionalLightDistance;
-				ray.vGoal  = rLightmap.GetPoint(x,y) + vDirToLight * m_fSurfaceErrorTolerance;
-				ray.fFraction = 1.0f;
-
-				rMesh.RayTrace( ray );
-
-				if( ray.fFraction < 1.0f )
-				{
-					// ray is blocked
-					vLightDir = rLightmap.GetLightDirection(x,y);
-					vLightDir += vDirToLight * 0.01f;
-					rLightmap.SetLightDirection( x, y, vLightDir );
-
-					continue;
-				}
-				// the light is not obstructed and reaching the target point
-
-//				fAngle = Vec3Dot( vToLight_n, rPlane.normal );	// use face normal (for flat shading)
-				fAngle = Vec3Dot( vDirToLight, rLightmap.GetNormal(x,y) );	// use normal calculated for each lightmap texel (for smooth shading)
-
-				if( true /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
-				{	// exclude angle factor
-					// angle attenuation is calculated by using the light direction map during runtime
-					fPower = pDirLight->fIntensity;
-				}
-				else
-				{
-					fPower = pDirLight->fIntensity * fAngle;
-				}
-
-				if( fPower < 0.0 )
-					continue;
-
-				// ========================= normal pixel intensity calculation ===========================
-				color = rLightmap.GetTexelColor(x,y);
-				rLightmap.SetTexelColor(x,y, color + pDirLight->Color * fPower );
-
-				// ========= replace lightmap colors with normal directions (visual debugging) ============
-//				Vector3& rvNormal = rLightmap.avNormal[ LMTexelAt(x,y) ];
-//				rLightmap.intensity[ LMTexelAt(x,y) ].fRed   = (float)fabs(rvNormal.x);
-//				rLightmap.intensity[ LMTexelAt(x,y) ].fGreen = (float)fabs(rvNormal.y);
-//				rLightmap.intensity[ LMTexelAt(x,y) ].fBlue  = (float)fabs(rvNormal.z);
-
-				if( true /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
-				{
-					vLightDir = rLightmap.GetLightDirection(x,y);
-					vLightDir += vDirToLight; // * pDirLight->fIntensity;
-					rLightmap.SetLightDirection( x, y, vLightDir );
-				}
-
 			}
 		}
 	}

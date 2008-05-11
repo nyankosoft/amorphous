@@ -5,7 +5,30 @@
 #include "FloatRGBColor.h"
 #include "LightStructs.h"
 
+inline SFloatRGBColor ToRGBColor( const SFloatRGBAColor& src )
+{
+	return SFloatRGBColor( src.fRed, src.fGreen, src.fBlue );
+}
 
+
+class CHemisphericLightAttribute : public IArchiveObjectBase
+{
+public:
+
+	SFloatRGBAColor UpperColor;
+	SFloatRGBAColor LowerColor;
+
+public:
+
+	inline SFloatRGBColor CalcHSLightAmount( float d )
+	{
+		return ToRGBColor( UpperColor * d + LowerColor * ( 1.0f - d ) );
+	}
+
+	virtual void Serialize( IArchive& ar, const unsigned int version ) { ar & UpperColor & LowerColor; }
+};
+
+/*
 class CHemisphericLight : public CLight
 {
 public:
@@ -25,57 +48,77 @@ public:
 	CHemisphericLight() {}
 	virtual ~CHemisphericLight() {}
 };
+*/
 
-
-class CHemisphericPointLight : public CHemisphericLight
+class CHemisphericPointLight : public CPointLight
 {
 public:
 
-	Vector3 vPosition;
-
-	float fAttenuation[3];
+	CHemisphericLightAttribute Attribute;
 
 public:
 
 //	CHemisphericPointLight();
 //	~CHemisphericPointLight();
 
-	inline void SetAttenuation( float a0, float a1, float a2 )
-	{
-		fAttenuation[0] = a0;
-		fAttenuation[1] = a1;
-		fAttenuation[2] = a2;
-	}
-
 	Type GetLightType() const { return CLight::HEMISPHERIC_POINT; }
 
-	inline SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal )
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+
+	SFloatRGBColor CalcPointLightFactor( float NdotL )
 	{
-		return SFloatRGBColor(0,0,0);
+		return Attribute.CalcHSLightAmount( ( NdotL + 1.0f ) * 0.5f );
 	}
+
+	SFloatRGBAColor& UpperColor() { return Attribute.UpperColor; }
+	SFloatRGBAColor& LowerColor() { return Attribute.LowerColor; }
 };
 
 
 
-class CHemisphericDirectionalLight : public CHemisphericLight
+class CHemisphericDirectionalLight : public CDirectionalLight
 {
 public:
 
-	Vector3 vDirection;
+	CHemisphericLightAttribute Attribute;
 
 public:
 
-//	CHemisphericDirLight();
-//	~CHemisphericDirLight();
+//	CHemisphericDirectionalLight();
+//	~CHemisphericDirectionalLight();
 
 	Type GetLightType() const { return CLight::HEMISPHERIC_DIRECTIONAL; }
 
 	inline SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal )
 	{
 		float d = ( Vec3Dot( -vDirection, normal ) + 1.0f ) * 0.5f;
-		return CalcHSLightAmount( d );
+		return Attribute.CalcHSLightAmount( d );
 	}
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	SFloatRGBAColor& UpperColor() { return Attribute.UpperColor; }
+	SFloatRGBAColor& LowerColor() { return Attribute.LowerColor; }
 };
+
+
+// ================================ inline implementations ================================ 
+
+inline void CHemisphericPointLight::Serialize( IArchive& ar, const unsigned int version )
+{
+	CPointLight::Serialize( ar, version );
+
+	ar & Attribute;
+}
+
+
+inline void CHemisphericDirectionalLight::Serialize( IArchive& ar, const unsigned int version )
+{
+	CDirectionalLight::Serialize( ar, version );
+
+	ar & Attribute;
+}
 
 
 #endif		/*  __HEMISPHERICLIGHT_H__  */

@@ -25,7 +25,7 @@ private:
 
 	float m_fTimer;
 
-	CHemisphericLight m_PointLight;
+	CHemisphericPointLight m_PointLight;
 
 public:
 

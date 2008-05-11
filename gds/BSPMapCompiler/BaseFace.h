@@ -32,7 +32,7 @@ enum { PVS_NOTVIS, PVS_FRONT, PVS_BACK, PVS_BOTH };
 enum { CLIP_NORMAL, CLIP_INVERT };
 
 struct SNode;
-struct SRay;
+class CLineSegment;
 
 
 //==========================================================================================
@@ -90,7 +90,7 @@ public:
 
 	// check collision with a ray
 	// reeturn true if the ray is intersecting with the face
-	bool ClipTrace( SRay& ray );
+	bool ClipTrace( CLineSegment& line_segment );
 
 	//operation on plane
 	SPlane& GetPlane() { return m_pPlaneBuffer->at( m_sPlaneIndex ); }

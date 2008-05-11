@@ -301,7 +301,7 @@ void CNxPhysScene::ReleaseMaterial( CMaterial*& pMaterial )
 }
 
 
-CShape *CNxPhysScene::RaycastClosestShape( const CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist )
+CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist )
 {
 	NxRay nx_ray( ToNxVec3(world_ray.Origin), ToNxVec3(world_ray.Direction) );
 

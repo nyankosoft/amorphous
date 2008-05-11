@@ -7,3 +7,4 @@ class CCellBuilder;
 class CLightmap;
 class CLightmapBuilder;
 class CBSPMapCompiler;
+class CLightmapLightingManager;

@@ -61,12 +61,12 @@ int g_iNumDynamicLights = 0;
 }
 
 
-void CLightEntity::SetLight( const CHemisphericLight& point_light, int light_type )
+void CLightEntity::SetLight( const CHemisphericPointLight& point_light, int light_type )
 {
 	ZeroMemory( &m_Light, sizeof(D3DLIGHT9) );
 	m_Light.Type         = D3DLIGHT_POINT;
 
-	SFloatRGBAColor color = point_light.UpperColor;	// use the upper color for non-hemispheric light
+	SFloatRGBAColor color = point_light.Attribute.UpperColor;	// use the upper color for non-hemispheric light
 	m_Light.Diffuse.r    = color.fRed;
 	m_Light.Diffuse.g    = color.fGreen;
 	m_Light.Diffuse.b    = color.fBlue;
@@ -102,12 +102,12 @@ void CLightEntity::SetLight( const CHemisphericLight& point_light, int light_typ
 }
 
 
-void CLightEntity::SetLight( const CHemisphericDirLight& dir_light, int light_type )
+void CLightEntity::SetLight( const CHemisphericDirectionalLight& dir_light, int light_type )
 {
 	ZeroMemory( &m_Light, sizeof(D3DLIGHT9) );
 	m_Light.Type         = D3DLIGHT_DIRECTIONAL;
 
-	SFloatRGBAColor color = dir_light.UpperColor;	// use the upper color for non-hemispheric light
+	SFloatRGBAColor color = dir_light.Attribute.UpperColor;	// use the upper color for non-hemispheric light
 	m_Light.Diffuse.r    = color.fRed;
 	m_Light.Diffuse.g    = color.fGreen;
 	m_Light.Diffuse.b    = color.fBlue;
@@ -326,7 +326,7 @@ void CLightEntityManager::GetNewLightEntity( int light_type, int& index, CLightE
 }
 
 
-int CLightEntityManager::RegisterHemisphericPointLight( CHemisphericLight& light, int light_type )
+int CLightEntityManager::RegisterHemisphericPointLight( CHemisphericPointLight& light, int light_type )
 {
 	int index;
 	CLightEntity* pLightEntity = NULL;
@@ -344,7 +344,7 @@ int CLightEntityManager::RegisterHemisphericPointLight( CHemisphericLight& light
 	return index;
 }
 
-int CLightEntityManager::RegisterHemisphericDirLight( CHemisphericDirLight& dir_light, int light_type )
+int CLightEntityManager::RegisterHemisphericDirLight( CHemisphericDirectionalLight& dir_light, int light_type )
 {
 	int index;
 	CLightEntity* pLightEntity = NULL;

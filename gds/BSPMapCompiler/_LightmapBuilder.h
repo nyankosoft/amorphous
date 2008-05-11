@@ -107,7 +107,7 @@ public:
 	/// controls whether lightmaps are created for a surface or not
 	std::vector<int> m_vecEnableLightmapForSurface;
 
-	std::vector<CLight *> *m_vecpLight;
+	std::vector<boost::shared_ptr<CLight>> *m_pvecpLight;
 
 	/// texture coordinates index for lightmap texture
 	/// - valid range: [0,3]
@@ -146,8 +146,11 @@ public:
 
 /**
  input:
-   general 3d mesh
-   geometry for ray tracing
+   1. general 3d mesh
+   - create lightmaps for polygons
+   - also create geometry for ray tracing
+   2. lights
+
  output:
    general 3d mesh with texture coordinates for lightmap textures
    lightmap textures
@@ -157,6 +160,10 @@ class CLightmapBuilder
 {
 private:
 
+	/// stores that following properties
+	/// - texel size on lightmaps (in meters)
+	/// - texture size
+	/// - etc.
 	LightmapDesc m_Desc;
 
 //	CLightingForLightmap<CMapFace>* m_pLightingSimulator;
@@ -167,11 +174,13 @@ private:
 
 	/// Resolution of the lightmaps
 	/// - size of each texel in meter
-	float m_TexelSize;
+	/// 5/10/2008 - moved to m_Desc
+//	float m_TexelSize;
 
 	/// size configuraiton variables about 'lightmap texture' and 'lightmap'
 	/// - 128, 256, 512 or higher...
-	int m_iTextureWidth, m_iTextureHeight;
+	/// 5/10/2008 - moved to m_Desc
+//	int m_iTextureWidth, m_iTextureHeight;
 
 	/// each lightmap texture has marginal texels so that it could be used with linear texture filtering
 	int m_iMargin;
@@ -193,15 +202,9 @@ private:
 	void CalculateLightMapPosition( CLightmap& lightmap );
 
 	// calculate vectors which point to each texel on the lightmap
-	void SetUpLightMapPoints(CLightmap& rLightmap);
-
-//	void ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace);
+	void SetUpLightMapPoints( CLightmap& lightmap );
 
 	void PackLightmaps();
-
-//	void SetLightmapTextureIndicesToPolygons();
-
-//	void SetTextureCoords();
 
 	void UpdateLightmapTextures();
 
@@ -216,14 +219,20 @@ private:
 
 	void UpdateMeshMaterials();
 
-	void SetTextureWidth( const int iTextureWidth )  { m_iTextureWidth = iTextureWidth; }
-	void SetTextureHeight( const int iTextureHieght ) { m_iTextureHeight = iTextureHieght; }
+	void SetTextureWidth( const int iTextureWidth )  { m_Desc.m_Option.TextureWidth   = iTextureWidth; }
+	void SetTextureHeight( const int iTextureHieght ) { m_Desc.m_Option.TextureHeight = iTextureHieght; }
 
-	int GetLightmapTextureWidth() { return m_Desc.m_Option.TextureWidth; }
-	int GetLightmapTextureHeight() { return m_Desc.m_Option.TextureHeight; }
+	float GetTexelSize() const { return m_Desc.m_Option.fTexelSize; }
+
+	int GetLightmapTextureWidth() const { return m_Desc.m_Option.TextureWidth; }
+	int GetLightmapTextureHeight() const { return m_Desc.m_Option.TextureHeight; }
 
 	void SetOption( const CLightmapOption& option );
 
+
+//	void ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace);
+//	void SetLightmapTextureIndicesToPolygons();
+//	void SetTextureCoords();
 /*
 	void CalculateLightmapTexelIntensity(CLightmap& rLightmap);	//determine how bright each texel is according to the intensity of lights pointed to the texel
 */
@@ -236,9 +245,8 @@ public:
 
 	void Init();
 
-	/// rvecFace - [in,out] polygons for which the lightmaps will be created
-	/// rPolygonMesh - [in] static geometry used for ray tracing
-//	virtual bool CreateLightmapTexture( vector<CMapFace>& rvecFace, CPolygonMesh<CMapFace>& rPolygonMesh );
+	/// desc - [in,out] polygons for which the lightmaps will be created
+	/// desc - [in] static geometry used for ray tracing
 	virtual bool CreateLightmapTexture( LightmapDesc& desc );
 
 	/// access to lightmap textures
@@ -246,11 +254,10 @@ public:
 	int GetNumLightmapTextures() { return m_vecLightmapTexture.size(); }
 	CLightmapTexture& GetLightmapTexture( int i ) { return m_vecLightmapTexture[i]; }
 
-//	void SetTexelsPerMeter( int iNumTexelsPerMeter ) { m_TexelsPerMeter = iNumTexelsPerMeter; }
-
 	int GetCreationFlag() { return m_iLightmapCreationFlag; }
 
-	void OutputLightmapTexturesToBMPFiles( const char *pcBodyFileName );
+	void SaveLightmapTexturesToImageFiles( const std::string& dirpath_and_bodyname,
+										   const std::string& img_file_suffix );
 
 };
 

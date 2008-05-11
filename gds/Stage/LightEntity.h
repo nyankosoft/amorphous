@@ -21,8 +21,8 @@ class CLightEntity
 
 	D3DLIGHT9 m_Light;
 
-	CHemisphericLight m_HemisphericLight;
-	CHemisphericDirLight m_HemisphericDirLight;
+	CHemisphericPointLight m_HemisphericLight;
+	CHemisphericDirectionalLight m_HemisphericDirLight;
 
 	int m_LightType;
 	int m_Index;
@@ -74,11 +74,11 @@ public:
 
 	/*inline*/ void SetLightFrom( CCopyEntity& rEntity, int light_type	);
 
-	/*inline*/ void SetLight( const CHemisphericLight& point_light, int light_type );
-	/*inline*/ void SetLight( const CHemisphericDirLight& dir_light, int light_type );
+	/*inline*/ void SetLight( const CHemisphericPointLight& point_light, int light_type );
+	/*inline*/ void SetLight( const CHemisphericDirectionalLight& dir_light, int light_type );
 
-	inline const CHemisphericLight& GetHemisphericLight() { return m_HemisphericLight; }
-	inline const CHemisphericDirLight& GetHemisphericDirLight() { return m_HemisphericDirLight; }
+	inline const CHemisphericPointLight& GetHemisphericLight() { return m_HemisphericLight; }
+	inline const CHemisphericDirectionalLight& GetHemisphericDirLight() { return m_HemisphericDirLight; }
 
 	inline void SetColor( int index, const SFloatRGBAColor& color );
 	inline void SetColor( int index, const SFloatRGBColor& color );
@@ -160,8 +160,8 @@ inline void CLightEntity::SetDiffuseColor( float *pafColor )
 	m_Light.Diffuse.b = pafColor[2];
 	m_Light.Diffuse.a = 1;
 
-	m_HemisphericLight.UpperColor.SetRGB( pafColor[0], pafColor[1], pafColor[2] );
-	m_HemisphericLight.LowerColor = m_HemisphericLight.UpperColor * 0.2f;
+	m_HemisphericLight.Attribute.UpperColor.SetRGB( pafColor[0], pafColor[1], pafColor[2] );
+	m_HemisphericLight.Attribute.LowerColor = m_HemisphericLight.Attribute.UpperColor * 0.2f;
 }
 
 
@@ -184,14 +184,14 @@ inline void CLightEntity::SetColor( int index, const SFloatRGBAColor& color )
 	switch( index )
 	{
 	case 0:
-		m_HemisphericDirLight.UpperColor = color;
-		m_HemisphericLight.UpperColor = color;
+		m_HemisphericDirLight.Attribute.UpperColor = color;
+		m_HemisphericLight.Attribute.UpperColor = color;
 		break;
 	case 1:
 		break;
 	case 2:
-		m_HemisphericDirLight.LowerColor = color;
-		m_HemisphericLight.LowerColor = color;
+		m_HemisphericDirLight.Attribute.LowerColor = color;
+		m_HemisphericLight.Attribute.LowerColor = color;
 		break;
 	default:
 		break;

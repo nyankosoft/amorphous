@@ -16,6 +16,10 @@ using namespace Graphics;
 // CLightmap
 //==========================================================================================
 
+/**
+ - lightmap for a group of polygons
+   - Positions of sampling points are calculated each time when GetPoint() is called and are not stored to local member variables
+*/
 class CLightmap
 {
 	SPlane m_Plane;
@@ -37,7 +41,8 @@ class CLightmap
 	/// grouped faces that are pointed by these indices share this lightmap
 	std::vector<int> m_vecGroupedFaceIndex;
 
-	C2DArray<Vector3> m_vecvPoint;
+	// Positions of sampling points are calculated each time when GetPoint() is called
+//	C2DArray<Vector3> m_vecvPoint;
 
 	C2DArray<Vector3> m_vecvNormal;
 
@@ -95,6 +100,8 @@ public:
 
 	void SetTexelColor( int x, int y, const SFloatRGBColor& color ) { m_vecIntensity(x,y) = color; }
 
+	void AddTexelColor( int x, int y, const SFloatRGBColor& color ) { m_vecIntensity(x,y) += color; }
+
 	inline Vector3 GetPoint( int x, int y ) const;
 
 	inline char ValidPoint( int x, int y ) { return m_vecbValidTexel(x,y); }
@@ -112,9 +119,9 @@ public:
 
 	inline SPlane& GetPlane() { return m_Plane; }
 
-	void SetLightmapTextureIndexToFaces( int index );
+//	void SetLightmapTextureIndexToFaces( int index );
 
-	void SetTextureUV( SRect& rRect,
+	void SetTextureUV( const SRect& rRect,
 					   const int iTextureWidth,
 					   const int iTextureHeight,
 					   const int tex_coord_index );

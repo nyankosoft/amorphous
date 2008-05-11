@@ -78,3 +78,89 @@ Vector3 CIndexedPolygon::GetInterpolatedNormal( const Vector3& rvPosition ) cons
 	Vec3Normalize( vDestNormal, vDestNormal );
 	return vDestNormal;
 }
+
+
+
+//
+// Global Functions
+//
+
+
+inline void UnweldVertices( const CIndexedPolygon& polygon0, CIndexedPolygon& polygon1 )
+{
+	const size_t num_vertices0 = polygon0.m_index.size();
+	for( size_t i=0; i<num_vertices0; i++ )
+	{
+		const size_t num_vertices1 = polygon1.m_index.size();
+		for( size_t j=0; j<num_vertices1; j++ )
+		{
+			if( polygon0.m_index[i] == polygon1.m_index[j] )
+			{
+				// A vertex is shared by polygon0 and polygon1
+				// - Unweld them
+
+				// copy the shared vertex
+				polygon1.VertexBuffer()->push_back( polygon0.GetVertex( i ) );
+
+				// update the vertex index
+				polygon1.m_index[j] = (int)polygon1.VertexBuffer()->size() - 1;
+			}
+		}
+	}
+}
+
+
+/// Unweld vertices of polygons that are not on the same plane
+/// - Vertex buffer must be shared by all the polygons
+/// - When a shared is found for a pair of polygons
+///   - Add vertices to vertex buffer
+///   - Update the vertex index of the second polygon
+void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolygon>& polygon_buffer )
+{
+	const size_t num_polygons = polygon_buffer.size();
+	for( size_t i=0; i<num_polygons; i++ )
+	{
+		const CIndexedPolygon& polygon0 = polygon_buffer[i];
+		for( size_t j=i+1; j<num_polygons; j++ )
+		{
+			CIndexedPolygon& polygon1 = polygon_buffer[j];
+
+			if( !polygon0.GetAABB().IsIntersectingWith( polygon1.GetAABB() ) )
+				continue;
+
+			if( AreOnSamePlane( polygon0, polygon1 ) )
+				continue;
+
+			UnweldVertices( polygon0, polygon1 );
+		}
+	}
+}
+
+
+/*
+// check whether the given point is included in the volume
+// which is defined by sweeping the face in the direction of the face normal
+// rvPosition : [in]
+// rfDist : [out]
+bool CIndexedPolygon::IsInSweptVolume( const Vector3& rvPosition, float& rfDist )
+{
+	rfDist = -99999;
+	int i;
+	float d;
+	Vector3 vEdge, vNormalOut;
+	for( i=0; i<GetNumVertices() - 1; i++ )
+	{
+		vEdge = GetVertex(i+1) - GetVertex(i);
+		Vec3Cross( vNormalOut, vEdge, GetPlane().normal );
+		d = Vec3Dot( (rvPosition - GetVertex(i)), vNormalOut );
+
+		if( rfDist < d )
+			rfDist = d;
+	}
+	if( rfDist <= 0 )
+		return true;
+	else
+		return false;
+
+}
+*/

@@ -6,6 +6,7 @@
 
 #include "3DMath/Vector3.h"
 #include "3DMath/AABB3.h"
+#include "3DMath/ray.h"
 
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/Serialization_3DMath.h"
@@ -138,6 +139,9 @@ protected:
 	/// used at runtime as a stack of node indices to check for collisions
 	std::vector<int> m_vecNodeToCheck;
 
+	/// used at runtime to store geometry indices that are possibly hitting the ray / linesegment
+//	std::vector<int> m_vecGeometryToCheck;
+
 private:
 
 	inline void BuildLA_r( int index, int depth );
@@ -167,6 +171,8 @@ public:
 	///   - Avoid name conflicts with Build( const std::vector<TGeometry>& vecGeometry ) below.
 	inline virtual void Build( const AABB3& rBoundingBox, const int depth );
 
+	/// Creates a tree from the given geometries
+	/// - Creates a copy of the instances of geometry and store it to a member variable
 	void Build( const std::vector<TGeometry>& vecGeometry )
 	{
 		m_vecGeometry = vecGeometry;
@@ -230,6 +236,8 @@ public:
 
 	virtual void LinkGeometry( int geom_index ) = 0;
 
+//	virtual void ClipTrace( const CLineSegment& line_segment, CLineSegmentHit& results ) = 0;
+
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 };
 
@@ -264,6 +272,8 @@ public:
 
 	inline virtual void LinkGeometry( int geom_index ) {}
 
+//	virtual void ClipTrace( const CLineSegment& line_segment, CLineSegmentHit& results ) {}
+
 	inline void Serialize( IArchive& ar, const unsigned int version );
 };
 
@@ -294,8 +304,29 @@ public:
 	}
 
 	inline virtual void LinkGeometry( int geom_index );
+
+//	void ClipTrace( const CLineSegment& line_segment, CLineSegmentHit& results );
 };
 
+/*
+void CNonLeafyAABTree::ClipTrace( const CLineSegment& line_segment, CLineSegmentHit& results )
+{
+	line_segment
+	m_vecGeometryToCheck.resize( 0 );
+
+	AABB3 aabb = // create aabb from line_segment
+	GetIntersecting( m_vecGeometryToCheck, aabb );
+
+	size_t i, num = m_vecGeometryToCheck.size();
+
+	if( num == 0 )
+		return;	// no intersection
+
+	for( i=0; i<num; i++ )
+	{
+	}
+}
+*/
 
 #include "AABTree.inl"
 

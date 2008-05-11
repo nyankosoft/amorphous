@@ -22,8 +22,8 @@ CBE_PointLight::CBE_PointLight()
 {
 	m_bNoClip = true;
 
-	m_PointLight.UpperColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	m_PointLight.LowerColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_PointLight.Attribute.UpperColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_PointLight.Attribute.LowerColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	m_PointLight.vPosition = Vector3( 1.0f, 1.0f, 1.0f );
 	m_PointLight.SetAttenuation( 0.1f, 0.1f, 0.1f );
 
@@ -104,14 +104,14 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 		short light_type = CLE_LIGHT_STATIC;
 //		int light_index = m_pStage->GetEntitySet()->RegisterLight( *pCopyEnt, sLightType );
 
-		CHemisphericLight light = m_PointLight;
+		CHemisphericPointLight light = m_PointLight;
 		light.vPosition = pCopyEnt->Position();
 
 		Vector3 vColor;
 		vColor = pCopyEnt->v1;
-		light.UpperColor = SFloatRGBAColor( vColor.x, vColor.y, vColor.z, 1.0f );
+		light.Attribute.UpperColor = SFloatRGBAColor( vColor.x, vColor.y, vColor.z, 1.0f );
 		vColor = pCopyEnt->v3;
-		light.LowerColor = SFloatRGBAColor( vColor.x, vColor.y, vColor.z, 1.0f );
+		light.Attribute.LowerColor = SFloatRGBAColor( vColor.x, vColor.y, vColor.z, 1.0f );
 
 		CLightEntityManager* pLightManager = m_pStage->GetEntitySet()->GetLightEntityManager();
 		int light_index = pLightManager->RegisterHemisphericPointLight( light, light_type );
@@ -126,7 +126,7 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 		short light_type = CLE_LIGHT_DYNAMIC;
 //		int light_index = m_pStage->GetEntitySet()->RegisterLight( *pCopyEnt, light_type );
 
-		CHemisphericLight light = m_PointLight;
+		CHemisphericPointLight light = m_PointLight;
 		light.vPosition = pCopyEnt->Position();
 		CLightEntityManager* pLightManager = m_pStage->GetEntitySet()->GetLightEntityManager();
 		int light_index = pLightManager->RegisterHemisphericPointLight( light, light_type );
@@ -455,13 +455,13 @@ bool CBE_PointLight::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 	if( scanner.TryScanLine( "UPPER_COLOR", r, g, b ) )
 	{
-		m_PointLight.UpperColor.SetRGB( r,g,b );
+		m_PointLight.Attribute.UpperColor.SetRGB( r,g,b );
 		return true;
 	}
 
 	if( scanner.TryScanLine( "LOWER_COLOR", r, g, b ) )
 	{
-		m_PointLight.LowerColor.SetRGB( r,g,b );
+		m_PointLight.Attribute.LowerColor.SetRGB( r,g,b );
 		return true;
 	}
 
