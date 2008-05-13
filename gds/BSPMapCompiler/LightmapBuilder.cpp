@@ -170,7 +170,8 @@ bool CLightmapBuilder::CreateLightmapTexture( CLightmapDesc& desc )
 
 	for( size_t i=0; i<num_lightmap_textures; i++ )
 	{
-		m_vecLightmapTexture[i].SaveTextureImageToFile( fmt_string( "lightmap%03d.bmp", i ) );
+		string image_filepath = fmt_string( "lightmap%03d.bmp", i );
+		m_vecLightmapTexture[i].SaveTextureImageToFile( image_filepath );
 	}
 
 //	FillMarginRegions();
@@ -326,6 +327,8 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 
 	Vector3 vRight, vUp, v;
 
+	// TODO: Replace this with CreateOrientFromFwdDir()?
+
 	// calculate 2 mutually orthogonal unit vectors 'vUp' & 'vRight' on the lightmap plane.
 	vUp = Vector3( 0.0, 1.0, 0.0 );
 	if( rPlane.normal.x == 0.0 && rPlane.normal.z == 0.0 )	// horizontal surface
@@ -444,7 +447,7 @@ void CLightmapBuilder::UpdateLightmapTextures()
 
 	for( i=0; i<iNumLightmapTextures; i++ )
 	{
-		m_vecLightmapTexture[i].UpdateTexture( m_vecLightmap );
+		m_vecLightmapTexture[i].UpdateTexture();
 	}
 }
 

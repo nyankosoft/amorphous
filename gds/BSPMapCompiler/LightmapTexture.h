@@ -84,7 +84,7 @@ public:
 
 	void SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_coord_index );
 
-	void UpdateTexture( vector<CLightmap>& rvecLightmap );
+	void UpdateTexture();
 
 	void UpdateMaterials(
 		 vector<CMMA_Material>& src_material_buffer,

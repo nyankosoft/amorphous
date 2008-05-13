@@ -9,6 +9,7 @@
 #include "3DMath/Vector3.h"
 #include "3DMath/Plane.h"
 #include "3DMath/ray.h"
+#include "3DMath/MathMisc.h"
 #include "3DMath/AABTree.h"
 #include "3DCommon/FloatRGBColor.h"
 #include "3DCommon/LightStructs.h"
@@ -192,7 +193,7 @@ inline CLightmap *CLightmapLightingManager::GetLightmapForRaytraceTask()
 {
 	boost::mutex::scoped_lock scoped_lock(m_Mutex);
 
-	if( m_CurrentLightmapIndex < m_pvecLightmap->size() )
+	if( m_CurrentLightmapIndex < (int)m_pvecLightmap->size() )
 	{
 		int index = m_CurrentLightmapIndex;
 		m_CurrentLightmapIndex += 1;
@@ -219,7 +220,7 @@ inline void CPointLightRaytrace::CalcLightAmount( CLightmap& rLightmap, int x, i
 //	if( dist < 0.0 )
 //		return;			//The light is behind the faces
 
-	Vector3 vLightmapPoint = rLightmap.GetPoint(x,y);
+	const Vector3 vLightmapPoint = rLightmap.GetPoint(x,y);
 
 	CLineSegment line_segment;
 	CLineSegmentHit results;
@@ -227,8 +228,8 @@ inline void CPointLightRaytrace::CalcLightAmount( CLightmap& rLightmap, int x, i
 	line_segment.vStart = m_pLight->GetPosition();
 ///	line_segment.vGoal  = rLightmap.GetPoint(x,y);
 
-	Vector3 vToLight = m_pLight->GetPosition() - vLightmapPoint;
-	float fRealDist = Vec3Length(&vToLight);
+	const Vector3 vToLight = m_pLight->GetPosition() - vLightmapPoint;
+	const float fRealDist = Vec3Length(&vToLight);
 	Vector3 vDirToLight = vToLight / fRealDist;
 //	line_segment.vGoal = vLightmapPoint + vToLight_n * m_fSurfaceErrorTolerance;
 	line_segment.vGoal = vLightmapPoint + plane.normal * 0.01f;//m_fSurfaceErrorTolerance;
@@ -259,6 +260,12 @@ inline void CPointLightRaytrace::CalcLightAmount( CLightmap& rLightmap, int x, i
 ///			fRealDist = Vec3Length(&vToLight);
 
 	SFloatRGBColor color = m_pLight->CalcLightAmount( vLightmapPoint, rLightmap.GetNormal(x,y) );
+
+	// >>> check dist calc
+//	float val = fRealDist * 0.1f;
+//	Limit( val, 0.0f, 1.0f );
+//	color = SFloatRGBColor( val, val, val );
+	// <<<< check dist calc
 
 	rLightmap.AddTexelColor( x, y, color );
 

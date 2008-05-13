@@ -29,9 +29,9 @@ struct SFloatRGBColor
 	/// alpha is set to 255(0xFF)
 	inline U32 GetARGB32() const;
 
-	inline U8 GetRedByte()   const { return (U8)( ( ((int)(fRed   * 255.0f)) << 16 ) & 0x00FF0000 ); }
-	inline U8 GetGreenByte() const { return (U8)( ( ((int)(fGreen * 255.0f)) <<  8 ) & 0x0000FF00 ); }
-	inline U8 GetBlueByte()  const { return (U8)(   ((int)(fBlue  * 255.0f))         & 0x000000FF ); }
+	inline U8 GetRedByte()   const { return get_clamped( (U8)(fRed   * 256.0f), (U8)0, (U8)255 ); }
+	inline U8 GetGreenByte() const { return get_clamped( (U8)(fGreen * 256.0f), (U8)0, (U8)255 ); }
+	inline U8 GetBlueByte()  const { return get_clamped( (U8)(fBlue  * 256.0f), (U8)0, (U8)255 ); }
 
 	inline SFloatRGBColor();
 

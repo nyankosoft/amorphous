@@ -135,7 +135,7 @@ public:
 
 		float NdotL = Vec3Dot( normal, vDirToLight );
 
-		return CalcPointLightFactor( NdotL ) * fIntensity * CalcAttenuation( dist_to_light );
+		return CalcPointLightFactor( NdotL ) * fIntensity;// * CalcAttenuation( dist_to_light );
 	}
 
 	virtual Vector3 GetPosition() const { return vPosition; }

@@ -1,151 +1,28 @@
 #include "Lightmap.h"
 #include "LightmapTexture.h"
 
+#include "Support/BitmapImage.h"
 #include "Support/Log/DefaultLog.h"
 
 
-#include "FreeImage.h"
 
-#pragma comment( lib, "FreeImage.lib" )
-
-
-class CBitmapImage
+bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& filepath )
 {
-	FIBITMAP* m_pFreeImageBitMap;
+	int x,y;
+	int width  = texel.size_x();
+	int height = texel.size_y();
 
-public:
+	CBitmapImage img( width, height, 32 );
 
-	CBitmapImage() {}
-
-	CBitmapImage( int width, int height, int bpp );
-
-//	inline CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
-
-	~CBitmapImage() { FreeImage_Unload( m_pFreeImageBitMap ); }
-
-	bool LoadFromFile( const std::string& pathname, int flag = 0 );
-
-	bool SaveToFile( const std::string& pathname, int flag = 0 );
-
-	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
-
-	FIBITMAP *GetFBITMAP() { return m_pFreeImageBitMap; }
-};
-
-/*
-inline CBitmapImage::CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp )
-{
-	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
-}
-*/
-
-inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
-{
-	RGBQUAD quad;
-	quad.rgbRed   = color.GetRedByte();
-	quad.rgbGreen = color.GetGreenByte();
-	quad.rgbBlue  = color.GetBlueByte();
-
-	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
-}
-
-
-CBitmapImage::CBitmapImage( int width, int height, int bpp )
-{
-	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
-}
-
-
-inline boost::shared_ptr<CBitmapImage> CreateBitMapImage( const std::string& pathname, int flag = 0 )
-{
-	boost::shared_ptr<CBitmapImage> pImage
-		= boost::shared_ptr<CBitmapImage>( new CBitmapImage() );
-
-	bool bSuccess = pImage->LoadFromFile( pathname, flag );
-
-	return pImage;
-}
-
-
-void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
-{
-	if( fif != FIF_UNKNOWN )
+	for( y=0; y<height ; y++ )
 	{
-		g_Log.Print( "Free Image: %s Format", FreeImage_GetFormatFromFIF(fif) );
-	}
-
-	g_Log.Print( "Free Image: %s", message );
-}
-
-//	FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler);
-
-
-// ----------------------------------------------------------
-
-/** Generic image loader
-	@param lpszPathName Pointer to the full file name
-	@param flag Optional load flag constant
-	@return Returns the loaded dib if successful, returns NULL otherwise
-*/
-//FIBITMAP* GenericLoader( const std::string& pathname, int flag )
-bool CBitmapImage::LoadFromFile( const std::string& pathname, int flag )
-{
-	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-
-	// check the file signature and deduce its format
-	// (the second argument is currently not used by FreeImage)
-	fif = FreeImage_GetFileType( pathname.c_str(), 0 );
-	if(fif == FIF_UNKNOWN)
-	{
-		// no signature ?
-		// try to guess the file format from the file extension
-		fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
-	}
-
-	// check that the plugin has reading capabilities ...
-	if( (fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif) )
-	{
-		// ok, let's load the file
-		m_pFreeImageBitMap = FreeImage_Load(fif, pathname.c_str(), flag);
-
-		// unless a bad file format, we are done !
-		if( m_pFreeImageBitMap )
-			return true;
-		else
-			return false;
-	}
-
-	return false;
-}
-
-/** Generic image writer
-	@param dib Pointer to the dib to be saved
-	@param lpszPathName Pointer to the full file name
-	@param flag Optional save flag constant
-	@return Returns true if successful, returns false otherwise
-*/
-bool CBitmapImage::SaveToFile( const std::string& pathname, int flag )
-{
-	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-	BOOL bSuccess = FALSE;
-
-	if(m_pFreeImageBitMap)
-	{
-		// try to guess the file format from the file extension
-		fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
-		if(fif != FIF_UNKNOWN ) {
-			// check that the plugin has sufficient writing and export capabilities ...
-			WORD bpp = FreeImage_GetBPP(m_pFreeImageBitMap);
-			if(FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp))
-			{
-				// ok, we can save the file
-				bSuccess = FreeImage_Save(fif, m_pFreeImageBitMap, pathname.c_str(), flag);
-				// unless an abnormal bug, we are done !
-			}
+		for( x=0; x<width; x++ )
+		{
+			img.SetPixel( x, y, texel(x,y) );
 		}
 	}
 
-	return (bSuccess == TRUE) ? true : false;
+	return img.SaveToFile( filepath );
 }
 
 
@@ -216,8 +93,9 @@ void CLightmapTexture::SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_co
 }
 
 
-void CLightmapTexture::UpdateTexture( vector<CLightmap>& rvecLightmap )
+void CLightmapTexture::UpdateTexture()
 {
+	vector<CLightmap>& rvecLightmap = *m_pvecLightmap;
 	const size_t iNumLightmaps = m_vecLightmapIndex.size();
 //	int texture_width  = m_vecTexel.size_x();
 //	int texture_height = m_vecTexel.size_y();
@@ -232,7 +110,7 @@ void CLightmapTexture::UpdateTexture( vector<CLightmap>& rvecLightmap )
 			continue;
 
 		CLightmap& rLightmap = rvecLightmap[ m_vecLightmapIndex[i] ];
-		const SRect& local_rect = rLightmap.GetRectangle();	// size of the lightmap
+		const SRect local_rect = rLightmap.GetRectangle();	// size of the lightmap
 
 		for( y=0; y<local_rect.GetHeight(); y++ )
 		{
@@ -624,26 +502,6 @@ void CLightmapTexture::ApplySmoothing( float fCenterWeight )
 		}
 	}
 
-}
-
-
-bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& filepath )
-{
-	int x,y;
-	int width  = texel.size_x();
-	int height = texel.size_y();
-
-	CBitmapImage img( width, height, 32 );
-
-	for( y=0; y<height ; y++ )
-	{
-		for( x=0; x<width; x++ )
-		{
-			img.SetPixel( x, y, texel(x,y) );
-		}
-	}
-
-	return img.SaveToFile( filepath );
 }
 
 

@@ -15,6 +15,15 @@
 extern LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM );
 
 
+class CGameWindowManager
+{
+public:
+
+	CGameWindowManager();
+	virtual ~CGameWindowManager();
+};
+
+
 class CGameWindowManager_Win32
 {
 private:

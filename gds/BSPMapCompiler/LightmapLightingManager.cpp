@@ -81,7 +81,8 @@ void CLightmapLightingManager::ScaleIntensityAndAddAmbientLight()
 {
 	vector<CLightmap>& rvecLightmap = *m_pvecLightmap;
 
-	int i,x,y;
+	size_t i;
+	int x,y;
 	float maxintensityR, maxintensityG, maxintensityB;
 	float minintensityR, minintensityG, minintensityB;
 	maxintensityR = maxintensityG = maxintensityB = -99999;
@@ -89,7 +90,7 @@ void CLightmapLightingManager::ScaleIntensityAndAddAmbientLight()
 
 	int iNumTexels = 0;
 	int width, height;
-	int iNumLightmaps = rvecLightmap.size();
+	const size_t iNumLightmaps = rvecLightmap.size();
 
 	for(i=0; i<iNumLightmaps; i++)
 	{
