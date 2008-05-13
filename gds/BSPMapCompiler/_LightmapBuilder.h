@@ -21,7 +21,6 @@ using namespace Graphics;
 
 #include "fwd.h"
 #include "LightmapTexture.h"
-//#include "LightingForLightmap_SimpleRaytrace.h"
 
 
 #define LMB_NUM_MAX_LIGHTMAPTEXTURES	64
@@ -97,7 +96,7 @@ public:
 };
 
 
-class LightmapDesc
+class CLightmapDesc
 {
 public:
 
@@ -130,9 +129,10 @@ public:
 
 public:
 
-	LightmapDesc()
+	CLightmapDesc()
 		:
-	m_LightmapTextureCoordsIndex( 1 )
+	m_LightmapTextureCoordsIndex( 1 ),
+	m_LightmapTextureArchiveIndex( 1 )
 	{
 	}
 
@@ -164,7 +164,7 @@ private:
 	/// - texel size on lightmaps (in meters)
 	/// - texture size
 	/// - etc.
-	LightmapDesc m_Desc;
+	CLightmapDesc m_Desc;
 
 //	CLightingForLightmap<CMapFace>* m_pLightingSimulator;
 
@@ -247,7 +247,7 @@ public:
 
 	/// desc - [in,out] polygons for which the lightmaps will be created
 	/// desc - [in] static geometry used for ray tracing
-	virtual bool CreateLightmapTexture( LightmapDesc& desc );
+	virtual bool CreateLightmapTexture( CLightmapDesc& desc );
 
 	/// access to lightmap textures
 

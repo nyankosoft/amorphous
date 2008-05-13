@@ -8,7 +8,7 @@ using namespace boost;
 void CLightmapRaytraceTask::RunTask()
 {
 //	size_t m_pLightRaytrace;
-	vector<CLightRaytrace *>& light_raytrace = *m_pLightRaytrace;
+	vector<CLightRaytrace *>& light_raytrace = m_pLightRaytrace;
 	const size_t num_lights = light_raytrace.size();
 	for( size_t i=0; i<num_lights; i++ )
 	{
@@ -31,10 +31,14 @@ void CLightmapRaytraceTask::RunTask()
 
 void CLightmapRaytraceTask::operator()()
 {
+	ThreadMain();
+}
+
+
+void CLightmapRaytraceTask::ThreadMain()
+{
 	while(1)
 	{
-		RunTask();
-
 		CLightmap *pLightmap = m_pMgr->GetLightmapForRaytraceTask();
 
 		if( pLightmap )
@@ -150,7 +154,7 @@ vector<CLightRaytrace *> CLightmapLightingManager::CreateLightRaytraceTasks( vec
 	// classify lights
 	const size_t num_lights = rvecpLight.size();
 
-	CAmbientLight *pAmbientLight;
+//	CAmbientLight *pAmbientLight;
 
 	vector<CLightRaytrace *> vecpLightRaytraceTask;
 
@@ -188,12 +192,63 @@ vector<CLightRaytrace *> CLightmapLightingManager::CreateLightRaytraceTasks( vec
 	return vecpLightRaytraceTask;
 }
 
+shared_ptr<CAABTree<CIndexedPolygon>> CreateAABTreeCopy( CAABTree<CIndexedPolygon> *pGeometry )
+{
+	switch( pGeometry->GetTreeType() )
+	{
+	case CAABTree<CIndexedPolygon>::NON_LEAFY:
+		{
+			CNonLeafyAABTree<CIndexedPolygon> *pNonLeafy = dynamic_cast<CNonLeafyAABTree<CIndexedPolygon> *>(pGeometry);
+			return shared_ptr<CAABTree<CIndexedPolygon>>( new CNonLeafyAABTree<CIndexedPolygon>( *pNonLeafy ) );
+		}
+		break;
+
+	case CAABTree<CIndexedPolygon>::LEAFY:
+		{
+			CLeafyAABTree<CIndexedPolygon> *pLeafy = dynamic_cast<CLeafyAABTree<CIndexedPolygon> *>(pGeometry);
+			return shared_ptr<CAABTree<CIndexedPolygon>>( new CLeafyAABTree<CIndexedPolygon>( *pLeafy ) );
+		}
+		break;
+
+	default:
+		break;
+	}
+
+	return shared_ptr<CAABTree<CIndexedPolygon>>();
+}
+
+
+#define NUM_MAX_RAYTRACE_TASKS 16
+
+boost::mutex gs_TaskThreadStart;
+
+
+static CLightmapRaytraceTask *gs_pTask = NULL;
+
+static void SetTargetRaytraceTask( CLightmapRaytraceTask *pTask )
+{
+	boost::mutex::scoped_lock scoped_lock(gs_TaskThreadStart);
+
+	gs_pTask = pTask;
+}
+
+static void StartRaytraceTask()
+{
+	boost::mutex::scoped_lock scoped_lock(gs_TaskThreadStart);
+
+	if( gs_pTask )
+	{
+		gs_pTask->ThreadMain();
+		gs_pTask = NULL;
+	}
+}
+
 
 bool CLightmapLightingManager::CreateLightmaps( vector<shared_ptr<CLight>> *pvecpLight,
 											    vector<CLightmap> *pvecLightmap,
 											    CAABTree<CIndexedPolygon> *pGeometry )
 {
-	if( m_pvecpLight->size() == 0 )
+	if( !pvecpLight || pvecpLight->size() == 0 )
 		return false;	// No light in the map
 
 	m_pvecpLight   = pvecpLight;
@@ -202,25 +257,42 @@ bool CLightmapLightingManager::CreateLightmaps( vector<shared_ptr<CLight>> *pvec
 
 	// create raytrace tasks for each light
 
-	vector<CLightRaytrace *> vecpLightRaytrace = CreateLightRaytraceTasks( pvecpLight );
+//	vector<CLightRaytrace *> vecpLightRaytrace = CreateLightRaytraceTasks( pvecpLight );
 
 	const int num_threads = 2;
 
-	vector<CLightmapRaytraceTask> vecRaytraceTask;
-	vecRaytraceTask.resize( num_threads, CLightmapRaytraceTask(this) );
+//	vector<CLightmapRaytraceTask> vecRaytraceTask;
+//	vecRaytraceTask.resize( num_threads, CLightmapRaytraceTask(this) );
+	CLightmapRaytraceTask vecRaytraceTask[NUM_MAX_RAYTRACE_TASKS];
 
 	vector<boost::thread *> vecpThread;
 	vecpThread.resize( num_threads );
 
 	for( int i=0; i<num_threads; i++ )
-		vecpThread[i] = new boost::thread( vecRaytraceTask[i] );
+	{
+		vecRaytraceTask[i].SetLightmapLightingManager( this );
+
+		// copy the polygon tree
+		// - Each thread need a copy for ray check because the polygon tree is
+		//   not thread-safe and cannot be shared by threads
+		vecRaytraceTask[i].m_pGeometry = CreateAABTreeCopy( m_pGeometry );
+
+		// light raytrace tasks
+		// - needs be created for each raytrace task
+		vecRaytraceTask[i].SetLightRaytraceTasks( CreateLightRaytraceTasks( pvecpLight ) );
+
+		// start the thread
+//		vecpThread[i] = new boost::thread( vecRaytraceTask[i] );
+	}
 
 	boost::thread_group raytrace_threads;
 	for( int i=0; i<num_threads; i++ )
 	{
 		// add threads to thread group
 		// - ownerships are transferred to raytrace_threads
-		raytrace_threads.add_thread( vecpThread[i] );
+//		raytrace_threads.add_thread( vecpThread[i] );
+		SetTargetRaytraceTask( &vecRaytraceTask[i] );
+		raytrace_threads.create_thread( &StartRaytraceTask );
 	}
 
 	raytrace_threads.join_all();

@@ -12,11 +12,14 @@
 #include "3DMath/AABTree.h"
 #include "3DCommon/FloatRGBColor.h"
 #include "3DCommon/LightStructs.h"
+#include "Support/SafeDeleteVector.h"
 //#include "Support/StatusDisplay/StatusDisplay.h"
 //#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.h"
 
 #include "Lightmap.h"
 
+
+class CLightmapLightingManager;
 
 enum eFlag
 {
@@ -32,13 +35,19 @@ protected:
 
 	boost::shared_ptr<CLight> m_pLight;
 
+	/// polygon mesh for ray check
+	/// - borrowed reference
 	CAABTree<CIndexedPolygon> *m_pGeometry;
 
 public:
 
 	CLightRaytrace( boost::shared_ptr<CLight> pLight ) : m_pLight(pLight) {}
 
+	virtual ~CLightRaytrace() {}
+
 	virtual void CalcLightAmount( CLightmap& rLightmap, int x, int y ) = 0;
+
+	void SetGeometry( CAABTree<CIndexedPolygon> *pGeometry ) { m_pGeometry = pGeometry; }
 };
 
 
@@ -73,19 +82,43 @@ class CLightmapRaytraceTask
 {
 	CLightmap *m_pLightmap;
 
-	std::vector<CLightRaytrace *> *m_pLightRaytrace;
+	std::vector<CLightRaytrace *> m_pLightRaytrace;
 
 	bool m_bDone;
 
 	CLightmapLightingManager *m_pMgr;
 
+	boost::shared_ptr<CAABTree<CIndexedPolygon>> m_pGeometry;
+
 public:
 
-	CLightmapRaytraceTask(CLightmapLightingManager *pMgr) : m_pMgr(pMgr), m_pLightmap(NULL), m_bDone(false) {}
+	CLightmapRaytraceTask() : m_pMgr(NULL), m_pLightmap(NULL), m_bDone(false) {}
+
+//	CLightmapRaytraceTask(CLightmapLightingManager *pMgr) : m_pMgr(pMgr), m_pLightmap(NULL), m_bDone(false) {}
+
+	~CLightmapRaytraceTask()
+	{
+		SafeDeleteVector( m_pLightRaytrace );
+	}
 
 	void RunTask();
 
+	void SetLightRaytraceTasks( std::vector<CLightRaytrace *>& light_raytrace )
+	{
+		m_pLightRaytrace = light_raytrace;
+
+		const size_t num = m_pLightRaytrace.size();
+		for( size_t i=0; i<num; i++ )
+			m_pLightRaytrace[i]->SetGeometry( m_pGeometry.get() );
+	}
+
+	void SetLightmapLightingManager( CLightmapLightingManager *pMgr ) { m_pMgr = pMgr; }
+
+	void ThreadMain();
+
     void operator()();
+
+	friend class CLightmapLightingManager;
 };
 
 

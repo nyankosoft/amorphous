@@ -86,7 +86,7 @@ void CLightmapBuilder::SetOption( const CLightmapOption& option )
 }
 
 
-bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
+bool CLightmapBuilder::CreateLightmapTexture( CLightmapDesc& desc )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -167,6 +167,11 @@ bool CLightmapBuilder::CreateLightmapTexture( LightmapDesc& desc )
 	UpdateLightmapTextures();
 
 	LOG_PRINT( " - Updated lightmap textures." );
+
+	for( size_t i=0; i<num_lightmap_textures; i++ )
+	{
+		m_vecLightmapTexture[i].SaveTextureImageToFile( fmt_string( "lightmap%03d.bmp", i ) );
+	}
 
 //	FillMarginRegions();
 
@@ -408,7 +413,7 @@ void CLightmapBuilder::PackLightmaps()
 		{
 			// couldn't find a place for lightmap in any of the existing textures
 			// - create a new texture
-			m_vecLightmapTexture.push_back( CLightmapTexture() );
+			m_vecLightmapTexture.push_back( CLightmapTexture(&m_vecLightmap) );
 			m_vecLightmapTexture.back().Resize( GetLightmapTextureWidth(), GetLightmapTextureHeight() );
 			m_vecLightmapTexture.back().AddLightmap( rLightmap, i );
 		}

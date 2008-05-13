@@ -137,7 +137,8 @@ void CLightmap::ComputeNormalsOnLightmap()
 				}
 			}
 
-			LOG_PRINT_WARNING( "- Failed to compute a normal. The point is not on any polygon: " + to_string(rvPoint) );
+			if( i == iNumGroupedFaces )
+				LOG_PRINT_WARNING( "- Failed to compute a normal. The point is not on any polygon: " + to_string(rvPoint) );
 
 			if( true /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
 			{	// use normal as default light direction

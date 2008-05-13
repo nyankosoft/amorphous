@@ -9,19 +9,19 @@
 #pragma comment( lib, "FreeImage.lib" )
 
 
-class CBitMapImage
+class CBitmapImage
 {
 	FIBITMAP* m_pFreeImageBitMap;
 
 public:
 
-	CBitMapImage() {}
+	CBitmapImage() {}
 
-	CBitMapImage( int width, int height, int bpp );
+	CBitmapImage( int width, int height, int bpp );
 
-//	inline CBitMapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
+//	inline CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
 
-	~CBitMapImage() { FreeImage_Unload( m_pFreeImageBitMap ); }
+	~CBitmapImage() { FreeImage_Unload( m_pFreeImageBitMap ); }
 
 	bool LoadFromFile( const std::string& pathname, int flag = 0 );
 
@@ -33,13 +33,13 @@ public:
 };
 
 /*
-inline CBitMapImage::CBitMapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp )
+inline CBitmapImage::CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp )
 {
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 }
 */
 
-inline void CBitMapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
+inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 {
 	RGBQUAD quad;
 	quad.rgbRed   = color.GetRedByte();
@@ -50,16 +50,16 @@ inline void CBitMapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 }
 
 
-CBitMapImage::CBitMapImage( int width, int height, int bpp )
+CBitmapImage::CBitmapImage( int width, int height, int bpp )
 {
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 }
 
 
-inline boost::shared_ptr<CBitMapImage> CreateBitMapImage( const std::string& pathname, int flag = 0 )
+inline boost::shared_ptr<CBitmapImage> CreateBitMapImage( const std::string& pathname, int flag = 0 )
 {
-	boost::shared_ptr<CBitMapImage> pImage
-		= boost::shared_ptr<CBitMapImage>( new CBitMapImage() );
+	boost::shared_ptr<CBitmapImage> pImage
+		= boost::shared_ptr<CBitmapImage>( new CBitmapImage() );
 
 	bool bSuccess = pImage->LoadFromFile( pathname, flag );
 
@@ -88,7 +88,7 @@ void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
 	@return Returns the loaded dib if successful, returns NULL otherwise
 */
 //FIBITMAP* GenericLoader( const std::string& pathname, int flag )
-bool CBitMapImage::LoadFromFile( const std::string& pathname, int flag )
+bool CBitmapImage::LoadFromFile( const std::string& pathname, int flag )
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 
@@ -124,7 +124,7 @@ bool CBitMapImage::LoadFromFile( const std::string& pathname, int flag )
 	@param flag Optional save flag constant
 	@return Returns true if successful, returns false otherwise
 */
-bool CBitMapImage::SaveToFile( const std::string& pathname, int flag )
+bool CBitmapImage::SaveToFile( const std::string& pathname, int flag )
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	BOOL bSuccess = FALSE;
@@ -633,7 +633,7 @@ bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& 
 	int width  = texel.size_x();
 	int height = texel.size_y();
 
-	CBitMapImage img( width, height, 32 );
+	CBitmapImage img( width, height, 32 );
 
 	for( y=0; y<height ; y++ )
 	{
@@ -653,7 +653,7 @@ bool CLightmapTexture::SaveTextureImageToFile( const std::string& filepath )
 }
 
 
-//	shared_ptr<CBitMapImage> pImage = CreateBitMapImage(
+//	shared_ptr<CBitmapImage> pImage = CreateBitMapImage(
 //	SaveImageFile( padwImageData, filepath );
 
 /*

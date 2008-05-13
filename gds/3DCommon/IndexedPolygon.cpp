@@ -14,7 +14,7 @@ bool CIndexedPolygon::IsOnTriangle( int iTriangleIndex, const Vector3& rvPositio
 	Vector3 vPrevCross = Vector3(0,0,0);
 	Vector3 vCross;
 
-	int indices[] = { 0, iTriangleIndex, iTriangleIndex + 1 };
+	int indices[] = { 0, iTriangleIndex + 1, iTriangleIndex + 2 };
 	for( int i=0; i<3; i++ )
 	{
 		Vector3 v0 = GetVertex(indices[i]).m_vPosition;

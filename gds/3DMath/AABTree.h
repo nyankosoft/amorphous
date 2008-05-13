@@ -152,6 +152,13 @@ protected:
 
 public:
 
+	enum TreeType
+	{
+		LEAFY,
+		NON_LEAFY,
+		NUM_TREE_TYPES
+	};
+
 	enum RecursionStopCond
 	{
 		COND_AND, ///< i.e. loose recursion stopper
@@ -165,6 +172,8 @@ public:
 	inline void Release();
 
 	std::vector<TGeometry>& GetGeometryBuffer() { return m_vecGeometry; }
+
+	virtual TreeType GetTreeType() const = 0;
 
 	/// creates an empty tree
 	/// - Declare as virtual and have derived class call this
@@ -261,6 +270,8 @@ public:
 
 	virtual ~CLeafyAABTree() {}
 
+	TreeType GetTreeType() const { return CAABTree::LEAFY; }
+
 	void Build( const AABB3& rBoundingBox, const int depth ) { CAABTree::Build( rBoundingBox, depth ); }
 
 	void Build( const std::vector<TGeometry>& vecGeometry ) { CAABTree::Build( vecGeometry ); }
@@ -286,6 +297,8 @@ public:
 	CNonLeafyAABTree() {}
 
 	virtual ~CNonLeafyAABTree() {}
+
+	TreeType GetTreeType() const { return CAABTree::NON_LEAFY; }
 
 	/// update the link of the geometry[index]
 	inline void UpdateGeometry( int index );

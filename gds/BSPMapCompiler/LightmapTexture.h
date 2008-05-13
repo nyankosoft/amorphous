@@ -26,6 +26,7 @@ using namespace Graphics;
 
 class CLightmapTexture
 {
+	/// borrowed reference
 	std::vector<CLightmap> *m_pvecLightmap;
 
 	/// holds indices to lightmaps
@@ -53,7 +54,9 @@ class CLightmapTexture
 
 public:
 
-	CLightmapTexture() {}
+	CLightmapTexture() : m_pvecLightmap(NULL) {}
+
+	CLightmapTexture( std::vector<CLightmap> *pvecLightmap ) : m_pvecLightmap(pvecLightmap) {}
 
 	~CLightmapTexture() {}
 
