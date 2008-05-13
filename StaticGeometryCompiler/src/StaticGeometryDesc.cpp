@@ -247,6 +247,55 @@ bool CStaticGeometryDesc::LoadSurfaceDescs( DOMNode *pSurfaceNode )
 	return LoadSurfaceToDescMaps( GetChildNode( pRootNode, "SurfaceToDescMaps" ) );
 }
 
+/*
+void LoadPointLights( vector<DOMNode *>& vecpNode )
+{
+	vecpNode;
+	for( size_t i=0; i<vecpDesc.size(); i++ )
+	{
+	}
+}
+
+
+vector<shared_ptr<CLight>> LoadLights( DOMNode *pLightsNode )
+{
+	vector<shared_ptr<CLight>> vecpLight;
+
+	vector<DOMNode *> vecpNode
+		= GetImmediateChildNodes( pLightsNode, "AmbientLight" );
+
+	vecpNode
+		= GetImmediateChildNodes( pLightsNode, "PointLight" );
+
+	LoadPointLights( vecpNode, vecpLight );
+}
+*/
+
+bool CStaticGeometryDesc::LoadLightingDesc( DOMNode *pLightingNode )
+{
+	if( !pLightingNode )
+		return false;
+
+//	DOMNode *pLightFileNode = GetChildNode( pNode, "LightFile" );
+
+	string light_filepath
+		= GetTextContentOfImmediateChildNode( pLightingNode, "LightFile" );
+
+	CXMLDocumentLoader xml_document;
+	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
+	if( !xml_document.Load( light_filepath, &pXMLDocument )
+	 || !pXMLDocument )
+		return false;
+
+	DOMNode *pRootNode = GetRootNode( pXMLDocument );
+	if( !pRootNode )
+		return false;
+
+//	LoadLights( GetChildNode( pRootNode, "Lights" ) );
+
+	return true;
+}
+
 
 bool CStaticGeometryDesc::LoadGraphicsDesc( DOMNode *pNode )
 {
@@ -257,6 +306,8 @@ bool CStaticGeometryDesc::LoadGraphicsDesc( DOMNode *pNode )
 		return false;
 
 	LoadSurfaceDescs( GetChildNode( pNode, "Surface" ) );
+
+	LoadLightingDesc( GetChildNode( pNode, "Lighting" ) );
 
 	return true;
 }

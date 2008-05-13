@@ -218,6 +218,49 @@ void ReleaseMain( WNDCLASSEX& wc )
 }
 
 
+bool CompileStaticGeometry( const std::string& filename )
+{
+	if( filename.substr( filename.length() - 3 ) == "xml" )
+	{
+		// compile a static geometry archive
+
+		CXMLParserInitReleaseManager xml_parser_mgr;
+
+		// compile static geometry
+		LOG_SCOPE( "- static geomery compiler test." );
+		CStaticGeometryCompiler compiler;
+		bool compiled = compiler.CompileFromXMLDescFile( filename );
+
+		if( compiled )
+		{
+			// go to the directory of the input xml file
+			fnop::set_wd(fnop::get_path(filename));
+
+			// go to the directory where a static geometry file was saved
+			string output_filepath = compiler.GetDesc().m_OutputFilepath;
+			fnop::set_wd( fnop::get_path(output_filepath) );
+
+			g_pTest = boost::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
+			g_pTest->LoadFromFile( fnop::get_nopath(output_filepath) );
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		// compile a static geometry archive of the previous version
+		// - create from a .rd (resource desc) file
+		CStaticGeometryCompilerFG compiler_fg;
+		return compiler_fg.Build( filename );
+	}
+
+	return true;
+}
+
+
 //-----------------------------------------------------------------------------
 // Name: WinMain()
 // Desc: The application's entry point
@@ -259,8 +302,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	g_pLogOutput = new CLogOutput_OnScreen( "Arial", 6, 12, 24, 120 );
 	g_Log.AddLogOutput( g_pLogOutput );
 	g_pLogOutput->SetTopLeftPos( Vector2(8,16) );
-
-	CStaticGeometryCompilerFG compiler_fg;
 
 //	SetDefaultSkyboxMesh( compiler_fg );
 
@@ -337,40 +378,19 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	// build static geometry
 	if( 0 < filename.length() )
 	{
-		if( filename.substr( filename.length() - 3 ) == "xml" )
+		try
 		{
-			// compile a static geometry archive
+			bool compiled = CompileStaticGeometry( filename );
 
-			CXMLParserInitReleaseManager xml_parser_mgr;
-
-			// compile static geometry
-			LOG_SCOPE( "- static geomery compiler test." );
-			CStaticGeometryCompiler compiler;
-			bool compiled = compiler.CompileFromXMLDescFile( filename );
-
-			if( compiled )
-			{
-				// go to the directory of the input xml file
-				fnop::set_wd(fnop::get_path(filename));
-
-				// go to the directory where a static geometry file was saved
-				string output_filepath = compiler.GetDesc().m_OutputFilepath;
-				fnop::set_wd( fnop::get_path(output_filepath) );
-
-				g_pTest = boost::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
-				g_pTest->LoadFromFile( fnop::get_nopath(output_filepath) );
-			}
-			else
+			if( !compiled )
 			{
 				ReleaseMain( wc );
 				return 0;
 			}
 		}
-		else
+		catch( exception& e )
 		{
-			// compile a static geometry archive of the previous version
-			// - create from a .rd (resource desc) file
-			compiler_fg.Build( filename );
+			g_Log.Print( WL_ERROR, "exception: %s", e.what() );
 		}
 	}
 

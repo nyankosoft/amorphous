@@ -379,6 +379,19 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 
 	CLightmapBuilder lightmap_builder;
 
+	// a point light for test
+	shared_ptr<CPointLight> pPntLight = shared_ptr<CPointLight>( new CPointLight() );
+	pPntLight->Color = SFloatRGBColor( 1.0f, 0.0f, 0.0f );
+	pPntLight->vPosition = Vector3( 0, 2, 0 );
+	m_Desc.m_vecpLight.push_back( pPntLight );
+
+	m_Desc.m_Lightmap.m_pvecpLight = &m_Desc.m_vecpLight;
+	m_Desc.m_Lightmap.m_pMesh = &m_GraphicsMesh;
+	m_Desc.m_Lightmap.m_vecEnableLightmapForSurface.resize( m_GraphicsMesh.GetMaterialBuffer().size(), 1 );
+
+	lightmap_builder.CreateLightmapTexture( m_Desc.m_Lightmap );
+
+
 	/// make the polygon tree
 
 	if( m_CreatedPolygonTreeThroughTextureSubdivision )

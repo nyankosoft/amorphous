@@ -17,8 +17,11 @@
 		<Surface>
 			<SurfaceDescFile>./surface_desc.xml</SurfaceDescFile>
 		</Surface>
+		<Lighting>
+			<LightFile>./hall_lights.xml</LightFile>
+		</Lighting>
+		<Lightmap>
+			<TexelSize>1.0</TexelSize>
+		</Lightmap>
 	</Graphics>
-	<Lightmap>
-		<TexelSize>1.0</TexelSize>
-	</Lightmap>
 </Root>

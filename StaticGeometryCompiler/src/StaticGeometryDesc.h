@@ -4,8 +4,11 @@
 
 #include <vector>
 #include <string>
+#include <boost/shared_ptr.hpp>
 
 #include "3DCommon/MeshModel/General3DMesh.h"
+#include "3DCommon/LightStructs.h"
+#include "BSPMapCompiler/_LightmapBuilder.h"
 #include "XML/XMLDocumentLoader.h"
 using namespace xercesc_2_8;
 
@@ -100,7 +103,9 @@ public:
 
 	std::map<std::string,std::string> m_SurfaceToDesc;
 
-//	CLightmapDesc lightmap;
+	std::vector<boost::shared_ptr<CLight>> m_vecpLight;
+
+	CLightmapDesc m_Lightmap;
 
 private:
 
@@ -111,6 +116,8 @@ private:
 	bool LoadSurfaceDescs( DOMNode *pSurfaceNode );
 
 	bool LoadSurfaceToDescMaps( DOMNode *pSurfaceToDescMapsNode );
+
+	bool LoadLightingDesc( DOMNode *pLightingNode );
 
 public:
 
