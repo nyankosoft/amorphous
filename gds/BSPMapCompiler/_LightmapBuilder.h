@@ -85,7 +85,7 @@ public:
 
 	CLightmapOption()
 		:
-	fTexelSize(1.0f),
+	fTexelSize(0.5f),
 	TextureWidth(256),
 	TextureHeight(256),
 	bCreateLightDirectionMap(false),

@@ -5,6 +5,7 @@
 
 #include "Support/WindowMisc_Win32.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/StringAux.h"
 
 
 LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM ) = NULL;
@@ -22,7 +23,7 @@ CGameWindowManager_Win32::CGameWindowManager_Win32()
 CGameWindowManager_Win32::~CGameWindowManager_Win32()
 {
 	DIRECT3D9.Release();
-    UnregisterClass( "Stage Test", m_WindowClassEx.hInstance );
+    UnregisterClass( m_ApplicationClassName.c_str(), m_WindowClassEx.hInstance );
 }
 
 
@@ -38,7 +39,7 @@ void GetCurrentResolution(int* piDesktopWidth, int* piDesktopHeight)
 }
 
 
-bool CGameWindowManager_Win32::CreateGameWindow(int iScreenWidth, int iScreenHeight, int screen_mode )
+bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHeight, int screen_mode, const std::string& app_title )
 {
 	// detemine the specification of the window class
 	m_WindowClassEx.cbSize		= sizeof(WNDCLASSEX); 
@@ -47,6 +48,8 @@ bool CGameWindowManager_Win32::CreateGameWindow(int iScreenWidth, int iScreenHei
 //    m_WindowClassEx.lpfnWndProc	= m_pMsgProc; 		// error: wrong function pointer
     m_WindowClassEx.lpfnWndProc	= g_pMessageProcedureForGameWindow; 		// correct: a valid function pointer to a message procedure
 
+	m_ApplicationClassName = "Application[" + app_title + "]";
+
     m_WindowClassEx.cbClsExtra	= 0L; 
     m_WindowClassEx.cbWndExtra	= 0L; 
     m_WindowClassEx.hInstance		= GetModuleHandle(NULL); 
@@ -54,7 +57,7 @@ bool CGameWindowManager_Win32::CreateGameWindow(int iScreenWidth, int iScreenHei
     m_WindowClassEx.hCursor       = NULL; 
     m_WindowClassEx.hbrBackground = NULL; 
     m_WindowClassEx.lpszMenuName  = NULL; 
-    m_WindowClassEx.lpszClassName = "Stage Test"; 
+    m_WindowClassEx.lpszClassName = m_ApplicationClassName.c_str();//"Stage Test"; 
     m_WindowClassEx.hIconSm		= NULL;
 
     // register the window class
@@ -64,7 +67,7 @@ bool CGameWindowManager_Win32::CreateGameWindow(int iScreenWidth, int iScreenHei
 	GetCurrentResolution( &iDesktopWidth, &iDesktopHeight );
 
     // create the application's window
-    m_hWnd = CreateWindow( "Stage Test", "D3D Stage Test",
+    m_hWnd = CreateWindow( m_ApplicationClassName.c_str(), app_title.c_str(),
  //                          /*WS_OVERLAPPEDWINDOW*/ WS_POPUPWINDOW,
                            WS_OVERLAPPED,
 						   (iDesktopWidth  - iScreenWidth ) / 2,
@@ -79,7 +82,7 @@ bool CGameWindowManager_Win32::CreateGameWindow(int iScreenWidth, int iScreenHei
 	if( screen_mode == SMD_WINDOWED )
 		ChagneClientAreaSize( m_hWnd, iScreenWidth, iScreenHeight );
 
-	g_Log.Print( "window created (size: %d x %d)", iScreenWidth, iScreenHeight );
+	LOG_PRINT( fmt_string(" Create a window (size: %d x %d)", iScreenWidth, iScreenHeight ) );
 
     // initialize Direct3D & Create the scene geometry
 	int d3d_screen_mode = screen_mode == SMD_WINDOWED ? CDirect3D9::WINDOWED : CDirect3D9::FULLSCREEN;
@@ -135,11 +138,11 @@ void CGameWindowManager_Win32::ChangeScreenSize( int iNewScreenWidth,
 	// update the current resolution and the screen mode
 	m_iCurrentScreenWidth  = iNewScreenWidth;
 	m_iCurrentScreenHeight = iNewScreenHeight;
-	m_iCurrentScreenMode   = SMD_WINDOWED;
+	m_iCurrentScreenMode   = SMD_WINDOWED; // TODO: use the new screen mode
 
 
 	CGraphicsParameters param;
-	param.ScreenWidth = iNewScreenWidth;
+	param.ScreenWidth  = iNewScreenWidth;
 	param.ScreenHeight = iNewScreenHeight;
 	param.bWindowed = (!bFullScreen);
 
@@ -190,104 +193,10 @@ bool CGameWindowManager_Win32::IsMouseCursorInClientArea()
 		return false;
 }
 
+
 void CGameWindowManager_Win32::SetWindowLeftTopCornerPosition( int left, int top )
 {
 	// set the position
 	// - use SWP_NOSIZE flag to ignore window size parameters
 	::SetWindowPos( m_hWnd, HWND_TOP, left, top, 0, 0, SWP_NOSIZE );
 }
-
-
-/*
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-	// フルスクリーンにするかどうかの判定
-	// コマンドラインに/fか/Fが設定されていたらフルスクリーンにする
-	BOOL isFullScreen = FALSE;
-    for(int i = 0; i < nCmdShow; i++) {
-		if(_stricmp((char*)&lpCmdLine[i], "/f") == 0) {	// コマンドラインに/fを発見
-			isFullScreen = TRUE;	 // フラグをTRUEに設定
-			break;
-		}
-    }
-
-	char clsName[]		= "D3DFWSampleClass";	// ウィンドウクラス名
-
-	HWND		hWnd;
-	MSG			msg;
-
-	// ウィンドウクラスの初期化
-	WNDCLASSEX	wcex = {
-		sizeof(WNDCLASSEX),				// この構造体のサイズ
-		NULL,							// ウインドウのスタイル(default)
-		WindowProc,						// メッセージ処理関数の登録
-		0,								// 通常は使わないので常に0
-		0,								// 通常は使わないので常に0
-		hInstance,						// インスタンスへのハンドル
-		NULL,							// アイコン（なし）
-		LoadCursor(NULL, IDC_ARROW),	// カーソルの形
-		NULL, NULL,						// 背景なし、メニューなし
-		clsName,						// クラス名の指定
-		NULL							// 小アイコン（なし）
-	};
-
-	// ウィンドウクラスの登録
-	if(RegisterClassEx(&wcex) == 0){
-		return 0;	// 登録失敗
-	}
-	
-	// ウィンドウの作成
-	if(isFullScreen) { // フルスクリーン
-		int sw;
-		int sh;
-		// 画面全体の幅と高さを取得
-		sw = GetSystemMetrics(SM_CXSCREEN);
-		sh = GetSystemMetrics(SM_CYSCREEN);
-
-		hWnd = CreateWindow( 
-					clsName, 				// 登録されているクラス名
-					WINDOW_NAME, 			// ウインドウ名
-					WS_POPUP,				// ウインドウスタイル（ポップアップウインドウを作成）
-					0, 						// ウインドウの横方向の位置
-					0, 						// ウインドウの縦方向の位置
-					CLIENT_WIDTH, 			// ウインドウの幅
-					CLIENT_HEIGHT,			// ウインドウの高さ
-					NULL,					// 親ウインドウのハンドル（省略）
-					NULL,					// メニューや子ウインドウのハンドル
-					hInstance, 				// アプリケーションインスタンスのハンドル
-					NULL					// ウインドウの作成データ
-				);
-	}
-	else {
-		hWnd = CreateWindow(clsName, 
-							WINDOW_NAME, 
-							WS_OVERLAPPEDWINDOW,
-							CW_USEDEFAULT, CW_USEDEFAULT, 
-							CW_USEDEFAULT, CW_USEDEFAULT,
-							NULL, NULL, hInstance, NULL);
-
-		// ウィンドウサイズを再設定する
-		RECT rect;
-		int ww, wh;
-		int cw, ch;
-		// クライアント領域の外の幅を計算
-		GetClientRect(hWnd, &rect);		// クライアント部分のサイズの取得
-		cw = rect.right - rect.left;	// クライアント領域外の横幅を計算
-		ch = rect.bottom - rect.top;	// クライアント領域外の縦幅を計算
-
-		// ウインドウ全体の横幅の幅を計算
-		GetWindowRect(hWnd, &rect);		// ウインドウ全体のサイズ取得
-		ww = rect.right - rect.left;	// ウインドウ全体の幅の横幅を計算
-		wh = rect.bottom - rect.top;	// ウインドウ全体の幅の縦幅を計算
-		ww = ww - cw;					// クライアント領域以外に必要な幅
-		wh = wh - ch;					// クライアント領域以外に必要な高さ
-
-		// ウィンドウサイズの再計算
-		ww = CLIENT_WIDTH + ww;			// 必要なウインドウの幅
-		wh = CLIENT_HEIGHT + wh;		// 必要なウインドウの高さ
-
-		// ウインドウサイズの再設定
-		SetWindowPos(hWnd, HWND_TOP, 0, 0, ww, wh, SWP_NOMOVE);
-
-	}
-*/

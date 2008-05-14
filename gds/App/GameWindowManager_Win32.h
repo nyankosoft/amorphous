@@ -1,6 +1,7 @@
 #ifndef  __GAMEWINDOWMANAGER_WIN32_H__
 #define  __GAMEWINDOWMANAGER_WIN32_H__
 
+#include <string>
 #include <windows.h>
 #include <mmsystem.h>
 #include <stdlib.h>
@@ -19,12 +20,12 @@ class CGameWindowManager
 {
 public:
 
-	CGameWindowManager();
-	virtual ~CGameWindowManager();
+	CGameWindowManager() {}
+	virtual ~CGameWindowManager() {}
 };
 
 
-class CGameWindowManager_Win32
+class CGameWindowManager_Win32 : public CGameWindowManager
 {
 private:
 	HWND m_hWnd;
@@ -33,6 +34,8 @@ private:
 	int m_iCurrentScreenWidth;
 	int m_iCurrentScreenHeight;
 	int m_iCurrentScreenMode;
+
+	std::string m_ApplicationClassName;
 
 //	LRESULT WINAPI (*m_pMsgProc)( HWND, UINT, WPARAM, LPARAM );	// this function pointer cannot be used as a pointer to a message procedure
 
@@ -47,8 +50,9 @@ public:
 
 	~CGameWindowManager_Win32();
 
-	bool CreateGameWindow(int iScreenWidth, int iScreenHeight, int screen_mode = SMD_WINDOWED );
-	void ChangeScreenSize(int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );
+	bool CreateGameWindow( int iScreenWidth, int iScreenHeight, int screen_mode = SMD_WINDOWED, const std::string& app_title = "Application" );
+
+	void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );
 
 	inline int GetScreenWidth() { return m_iCurrentScreenWidth; }
 	inline int GetScreenHeight() { return m_iCurrentScreenHeight; }
@@ -63,6 +67,12 @@ public:
 	/// \param top-left corner of the window
 	void SetWindowLeftTopCornerPosition( int left, int top );
 };
+
+
+inline CGameWindowManager_Win32& GameWindowManager()
+{
+	return CGameWindowManager_Win32::ms_SingletonInstance_;
+}
 
 
 #endif		/*  __GAMEWINDOWMANAGER_WIN32_H__  */

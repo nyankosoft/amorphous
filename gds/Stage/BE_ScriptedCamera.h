@@ -49,12 +49,6 @@ inline CameraTargetHolder operator*( const float f, const CameraTargetHolder& v 
 }
 
 
-inline SFloatRGBColor operator*( const float f, const SFloatRGBColor& c )
-{
-	return SFloatRGBColor( c * f ); 
-}
-
-
 template <class T>
 class KeyFrameParam
 {

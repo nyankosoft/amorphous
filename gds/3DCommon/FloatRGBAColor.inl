@@ -1,4 +1,14 @@
 
+//
+// global functions
+//
+
+inline SFloatRGBAColor operator*( const float f, const SFloatRGBAColor& src )
+{
+//	return SFloatRGBAColor( src.fRed * f, src.fGreen * f, src.fBlue * f );
+	return SFloatRGBAColor( src ) * f;
+}
+
 
 //===================================================================================
 // SFloatRGBAColor::Operators()                                   - SFloatRGBAColor

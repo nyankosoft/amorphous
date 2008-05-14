@@ -2,6 +2,7 @@
 #define  __APPLICATIONBASE_H__
 
 
+#include <string>
 #include "GameInput/fwd.h"
 
 class CGlobalInputHandler;
@@ -10,7 +11,6 @@ class CApplicationBase;
 
 // input devices
 // accessed from window message procedure
-
 
 extern CDirectInputMouse *g_pDIMouse;		// referenced from CGameTask classes
 //extern CDIKeyboard *g_pDIKeyboard;
@@ -60,6 +60,8 @@ public:
 	CGameTaskManager *GetTaskManager() { return m_pTaskManager; }
 
 	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
+
+	virtual const std::string GetApplicationTitle() { return "Some Application"; }
 
 	void Run();
 };

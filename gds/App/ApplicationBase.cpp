@@ -49,11 +49,11 @@ void UpdateBaseEntityDatabase()
 
 	if( !s_bBaseEntityDatabase_Initialized || s_AlwaysUpdateDatabaseBeforeStage )
 	{
-		PrintLog( "initializing the base entity database" );
-		BaseEntityManager.UpdateDatabase( "resources\\entity\\BaseEntity.txt" );
-		BaseEntityManager.OpenDatabase( "System\\BaseEntity.bin" );
+		CScopeLog sl( "- Initializing & updating the base entity database" );
+
+		BaseEntityManager.UpdateDatabase( "./resources/entity/BaseEntity.txt" );
+		BaseEntityManager.OpenDatabase( "./System/BaseEntity.bin" );
 		s_bBaseEntityDatabase_Initialized = true;
-		PrintLog( "base entity database has been updated." );
 	}
 }
 
@@ -131,7 +131,7 @@ bool CApplicationBase::Init()
 	// create the main game window
 	// Direct3D is initialized in this function
 	int mode = global_params.FullScreen ? SMD_FULLSCREEN : SMD_WINDOWED;
-	GAMEWINDOWMANAGER.CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode );
+	GAMEWINDOWMANAGER.CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode, GetApplicationTitle() );
 //	GAMEWINDOWMANAGER.CreateGameWindow( 800, 600 );
 //	GAMEWINDOWMANAGER.CreateGameWindow( 800, 600, SMD_FULLSCREEN );
 
@@ -142,28 +142,29 @@ bool CApplicationBase::Init()
 	g_pDIMouse = new CDirectInputMouse;
 	g_pDIMouse->Init( GAMEWINDOWMANAGER.GetWindowHandle() );
 
-	g_Log.Print( "CApplicationBase::Init() - direct input mouse device has been initialized" );
+	LOG_PRINT( " - Initialized the direct input mouse device." );
 
 	// initialize keyboard (DirectInput)
 	m_pDIKeyboard = new CDIKeyboard;
 	m_pDIKeyboard->Init( GAMEWINDOWMANAGER.GetWindowHandle() );
 
-//	g_Log.Print( "CApplicationBase::Init() - direct input keyboard device has been initialized" );
+//	LOG_PRINT( " - Initialized the direct input keyboard device." );
 
 	m_pDIGamepad = new CDirectInputGamepad;
 	HRESULT hr = m_pDIGamepad->Init( GAMEWINDOWMANAGER.GetWindowHandle() );
 	if( FAILED(hr) )
 		SafeDelete( m_pDIGamepad );
 
-//	g_Log.Print( "CApplicationBase::Init() - input devices have been initialized" );
+//	LOG_PRINT( " - Initialized the input devices." );
 
 	// initialize sound
 	GAMESOUNDMANAGER.Init( GAMEWINDOWMANAGER.GetWindowHandle() );
-	GAMESOUNDMANAGER.LoadSoundsFromList( "Sound\\SoundList.lst" );
+	GAMESOUNDMANAGER.LoadSoundsFromList( "./Sound/SoundList.lst" );
 
-//	g_Log.Print( "CApplicationBase::Init() - sound manager has been initialized" );
+//	LOG_PRINT( " - Initialized the sound manager" );
 
 	// update & load the item database
+//	ItemDatabaseManager().Update( "..." );
 	CItemDatabaseManager::Get()->Update( "resources\\item\\item.mkx" );
 	CItemDatabaseManager::Get()->LoadFromFile( "Item\\item.gid" );
 
