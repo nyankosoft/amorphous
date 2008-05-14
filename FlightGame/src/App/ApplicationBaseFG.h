@@ -22,6 +22,8 @@ public:
 	/// returns true if succeeds
 	virtual bool InitTaskManager();
 
+	virtual const std::string GetApplicationTitle() { return "Flight Game"; }
+
 	void Release();
 };
 
