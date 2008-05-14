@@ -1,12 +1,11 @@
 
 #include "ApplicationBaseFG.h"
 
-#include <windows.h>
-#include <mmsystem.h>
 
-#include <vld.h>
+extern CApplicationBase *CreateApplicationInstance() { return new CApplicationBaseFG(); }
 
 
+/*
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 {
 //	CApplicationBase game_app;
@@ -18,3 +17,4 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 
 	return 0;
 }
+*/

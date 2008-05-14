@@ -475,6 +475,14 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="GameStageFrameworkAppMain"
+			>
+			<File
+				RelativePath="..\..\..\..\Project1\gds\App\AppMain.cpp"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

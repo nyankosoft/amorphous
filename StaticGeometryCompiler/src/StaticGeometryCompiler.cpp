@@ -382,7 +382,7 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	// a point light for test
 	shared_ptr<CPointLight> pPntLight = shared_ptr<CPointLight>( new CPointLight() );
 	pPntLight->Color = SFloatRGBColor( 1.0f, 0.0f, 0.0f );
-	pPntLight->vPosition = Vector3( 0, 2, 0 );
+	pPntLight->vPosition = Vector3( 5, 2.8, 5 );
 	m_Desc.m_vecpLight.push_back( pPntLight );
 
 	m_Desc.m_Lightmap.m_pvecpLight = &m_Desc.m_vecpLight;
