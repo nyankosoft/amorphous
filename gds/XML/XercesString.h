@@ -3,6 +3,9 @@
 
 #include <xercesc/util/XMLString.hpp>
 
+// TODO:
+// - Avoid conflicts with DOMDocument in Microsoft Visual Studio 8/VC/PlatformSDK/Include/msxml.h 
+
 #ifdef XERCES_CPP_NAMESPACE_USE
 XERCES_CPP_NAMESPACE_USE
 #endif

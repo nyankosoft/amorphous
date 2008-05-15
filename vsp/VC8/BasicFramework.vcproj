@@ -1566,6 +1566,10 @@
 				RelativePath="..\..\gds\XML\XMLDocumentLoader.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\gds\XML\XMLNodeReader.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Physics"

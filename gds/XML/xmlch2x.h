@@ -2,12 +2,23 @@
 #define  __XMLCH2X_H__
 
 
-#include "XercesString.h"
+//#include "XercesString.h"
+#include <string>
 
 
 inline int to_int( const XMLCh *pChar )
 {
 	return atoi( xercesc_2_8::XMLString::transcode( pChar ) );
+}
+
+
+inline float to_float( const XMLCh *pChar )
+{
+	std::string buffer = xercesc_2_8::XMLString::transcode(pChar);
+	float val;
+
+	sscanf( buffer.c_str(), "%f", &val );
+	return val;
 }
 
 

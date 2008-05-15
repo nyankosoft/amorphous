@@ -4,7 +4,10 @@ namespace xer = xercesc_2_8;
 #include "Support/StringAux.h"
 #include "Support/Log/DefaultLog.h"
 
+#include "XercesString.h"
 #include "xmlch2x.h"
+
+using namespace std;
 
 
 CXMLDocumentLoader::CXMLDocumentLoader( const std::string& src_fileapth, xercesc_2_8::DOMDocument** ppDoc )
@@ -111,3 +114,114 @@ xercesc_2_8::DOMNode *CXMLDocumentLoader::GetRootNode()
 	return iterator->getRoot();
 }
 */
+
+
+DOMNode *GetRootNode( xercesc_2_8::DOMDocument *pXMLDocument )
+{	
+	xercesc_2_8::DOMElement *pElem = pXMLDocument->getDocumentElement();
+
+	xercesc_2_8::DOMNodeIterator *iterator
+		= pXMLDocument->createNodeIterator( pXMLDocument->getFirstChild(), xercesc_2_8::DOMNodeFilter::SHOW_TEXT, NULL, false );
+
+	DOMNode *pRootNode = iterator->getRoot();
+
+	if( pRootNode )
+		return pRootNode;
+	else
+	{
+		LOG_PRINT_WARNING( "- Cannot find a root node" );
+		return NULL;
+	}
+
+	return NULL;
+}
+
+
+
+std::string GetAttributeText( xercesc_2_8::DOMNode *pNode, const std::string& attrib_name )
+{
+
+	const xercesc_2_8::DOMNamedNodeMap *pAttrib = pNode->getAttributes();
+
+	if( !pAttrib )
+	{
+//		LOG_PRINT_WARNING( " - No attribute named " );
+		return std::string();
+	}
+
+	xercesc_2_8::DOMNode *pNameNode = pAttrib->getNamedItem( XercesString(attrib_name.c_str()) );
+
+	return to_string(pNameNode->getNodeValue());
+}
+
+
+xercesc_2_8::DOMNode *GetChildNode( xercesc_2_8::DOMNode *pParentNode, const std::string& node_name )
+{
+	xercesc_2_8::DOMNodeList *pNodeList = pParentNode->getChildNodes();
+	const int num_nodes = (int)pNodeList->getLength();
+	for( int i=0; i<num_nodes; i++ )
+	{
+		if( to_string(pNodeList->item(i)->getNodeName()) == node_name )
+			return pNodeList->item(i);
+	}
+
+	return NULL; // not found
+}
+
+
+vector<xercesc_2_8::DOMNode *> GetImmediateChildNodes( xercesc_2_8::DOMNode *pParentNode,
+										  const std::string& child_node_name )
+{
+	vector<xercesc_2_8::DOMNode *> child_nodes;
+	xercesc_2_8::DOMNodeList *pNodeList = pParentNode->getChildNodes();
+	const int num_nodes = (int)pNodeList->getLength();
+	for( int i=0; i<num_nodes; i++ )
+	{
+		if( to_string(pNodeList->item(i)->getNodeName()) == child_node_name )
+			child_nodes.push_back( pNodeList->item(i) );
+	}
+
+	return child_nodes;
+}
+
+
+std::string GetTextContentOfImmediateChildNode( xercesc_2_8::DOMNode *pParentNode,
+												const std::string& child_node_name )
+{
+	xercesc_2_8::DOMNode *pNode = GetChildNode( pParentNode, child_node_name );
+
+	if( !pNode )
+		return string();
+
+	return string( to_string( pNode->getTextContent() ) );
+}
+
+
+/**
+ Returns an array of text contents of immediate child nodes named child_node_name
+ - e.g.
+ <Directory>
+   <File>a.txt</File>
+   <File>b.txt</File>
+   <File>c.txt</File>
+</Directory>
+
+ - If the 1st arg, pParentNode, points to <Directory> and the 2nd arg,
+   child_node_name, is "File", the function returns ["a.txt", "b.txt", "c.txt"]
+
+*/
+vector<string> GetTextContentsOfImmediateChildNodes( xercesc_2_8::DOMNode *pParentNode,
+													 const std::string& child_node_name )
+{
+	vector<xercesc_2_8::DOMNode *> nodes = GetImmediateChildNodes( pParentNode, child_node_name );
+
+	vector<string> text_contents;
+	const size_t num_nodes = nodes.size();
+	for( size_t i=0; i<num_nodes; i++ )
+	{
+		text_contents.push_back( to_string(nodes[i]->getTextContent()) );
+	}
+
+	return text_contents;
+}
+
