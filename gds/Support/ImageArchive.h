@@ -5,7 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "ImageStone.h"
+//#include "ImageStone.h"
+#include "BitmapImage.h"
 
 #include "Support/fnop.h"
 #include "Support/Log/DefaultLog.h"
@@ -14,6 +15,13 @@
 using namespace GameLib1::Serialization;
 
 
+/**
+ - Creates an image archive from an image file
+   - Uses an image library to retrieve the width and height of the image
+   - Currently using ImageStone library
+   - TODO: change to FreeImage library
+
+*/
 class CImageArchive : public IArchiveObjectBase
 {
 public:
@@ -41,12 +49,15 @@ public:
 
 	int m_Depth;
 
+	/// buffer to store the loaded image
 	std::vector<unsigned char> m_vecData;
 
 public:
 
 	inline CImageArchive();
 
+	/// Creates an image archive from the given image file
+	/// and stores the image to the internal buffer
 	inline CImageArchive( const std::string& image_filename );
 
 //	bool LoadImage_FloatRGBA( vector<SFloatRGBAColor>& dest_buffer );
@@ -59,6 +70,8 @@ public:
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 };
 
+
+// ============================ inline implementations ============================
 
 inline CImageArchive::CImageArchive()
 :
@@ -86,16 +99,15 @@ m_Depth(0)
 	if( !res )
 		return;
 
-	// retrieve width and height
-	FCObjImage src_img;
-	if( !src_img.Load( image_filename.c_str() ) )
+	CBitmapImage src_img;
+	if( !src_img.LoadFromFile( image_filename ) )
 	{
-		g_Log.Print( WL_ERROR, "cannot load image: %s", image_filename.c_str() );
+		LOG_PRINT_ERROR( " - Cannot load an image file: " + image_filename );
 		return;
 	}
 
-	m_Width  = src_img.Width();
-	m_Height = src_img.Height();
+	m_Width  = src_img.GetWidth();
+	m_Height = src_img.GetHeight();
 	m_Depth  = 0;
 
 	FILE *fp = fopen( image_filename.c_str(), "rb" );

@@ -3,17 +3,43 @@
 
 
 #include <sys/stat.h>
-
 #include <string>
-
 #include <d3dx9tex.h>
 
+#include "Support/Serialization/BinaryDatabase.h"
+using namespace GameLib1::Serialization;
+
 class CD3DXMeshObjectBase;
-
-//#include "3DCommon/D3DXMeshObjectBase.h"
-
-
+class CShaderManager;
 class CGraphicsResourceManager;
+
+//template<class T>class CBinaryDatabase<T>;
+
+
+class GraphicsResourceType
+{
+public:
+	enum Type
+	{
+		Texture,
+		Mesh,
+		Shader,
+		Font,
+		NumTypes
+	};
+};
+
+
+class GraphicsResourceFlag
+{
+public:
+	enum Flags
+	{
+		DontShare = ( 1 << 0 ),
+		Flag1     = ( 1 << 1 ),
+		Flag2     = ( 1 << 2 ),
+	};
+};
 
 
 class CGraphicsResourceDesc
@@ -24,6 +50,8 @@ public:
 	{
 		RT_TEXTURE,
 		RT_MESHOBJECT,
+		RT_SHADERMANAGER,
+		//RT_FONT,
 		NUM_RESOURCE_TYPES
 	};
 
@@ -40,6 +68,8 @@ public:
 class CGraphicsResourceEntry
 {
 protected:
+
+	unsigned int m_OptionFlags;
 
 	std::string m_Filename;
 
@@ -59,7 +89,16 @@ public:
 
 	virtual int GetResourceType() const = 0;
 
-	virtual bool Load() = 0;
+	bool Load();
+
+	/// \param filepath [in] pathname of the file to load
+	/// - This is usually m_Filename itself
+	virtual bool LoadFromFile( const std::string& filepath ) = 0;
+
+	/// \param db [in] The database which contains the target graphics resource
+	/// \param keyname [in] Required to read the graphics resource from the db
+	/// - These are the strings obtained by decomposing m_Filename to "(db_filepath)::(keyname)"
+	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname ) = 0;
 
 	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
 
@@ -96,7 +135,9 @@ public:
 
 	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_TEXTURE; }
 
-	virtual bool Load();
+	virtual bool LoadFromFile( const std::string& filepath );
+
+	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
 	inline LPDIRECT3DTEXTURE9 GetTexture() { return m_pTexture; }
 
@@ -116,9 +157,6 @@ class CMeshObjectEntry : public CGraphicsResourceEntry
 
 public:
 
-//	CMeshObjectEntry() : m_pMeshObject(NULL), m_MeshType(CD3DXMeshObjectBase::TYPE_MESH) {}
-//	CMeshObjectEntry( const char *pMeshObjectFilename, int meshtype = CD3DXMeshObjectBase::TYPE_MESH );
-
 	CMeshObjectEntry();
 
 	CMeshObjectEntry( int mesh_type );
@@ -127,7 +165,9 @@ public:
 
 	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_MESHOBJECT; }
 
-	virtual bool Load();
+	virtual bool LoadFromFile( const std::string& filepath );
+
+	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
 	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
 
@@ -136,5 +176,32 @@ public:
 	friend class CGraphicsResourceManager;
 };
 
+
+class CShaderManagerEntry : public CGraphicsResourceEntry
+{
+	CShaderManager *m_pShaderManager;
+
+	/// Release the shader manager without changing the reference count
+	/// - Called only from this class and CMeshObjectManager
+	virtual void Release();
+
+public:
+
+	CShaderManagerEntry();
+
+	virtual ~CShaderManagerEntry();
+
+	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_SHADERMANAGER; }
+
+	virtual bool LoadFromFile( const std::string& filepath );
+
+	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
+
+//	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+
+	inline CShaderManager *GetShaderManager() { return m_pShaderManager; }
+
+	friend class CGraphicsResourceManager;
+};
 
 #endif  /* __GraphicsResourceEntry_H__ */

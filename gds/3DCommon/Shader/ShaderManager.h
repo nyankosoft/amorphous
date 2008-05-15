@@ -13,6 +13,15 @@
 #include "3DCommon/TextureHandle.h"
 
 
+typedef D3DXMATRIX Matrix44;
+
+
+/**
+ - When created, automatically registers itself to ShaderManagerHub
+
+
+
+*/
 class CShaderManager
 {
 	enum eShaderConstParam
@@ -71,7 +80,7 @@ private:
 	void UpdateVacantTechniqueIndex();
 
 public:
-	
+
 	CShaderManager();
 
 	~CShaderManager();
@@ -82,20 +91,20 @@ public:
 
 	inline LPD3DXEFFECT GetEffect() { return m_pEffect; }
 
-	inline void SetWorldTransform( const D3DXMATRIX& matWorld );
+	inline void SetWorldTransform( const Matrix44& matWorld );
 
-	inline void SetViewTransform( const D3DXMATRIX& matView );
+	inline void SetViewTransform( const Matrix44& matView );
 
-	inline void SetProjectionTransform( const D3DXMATRIX& matProj );
+	inline void SetProjectionTransform( const Matrix44& matProj );
 
-	inline void SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  );
+	inline void SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  );
 
-	inline void SetWorldViewProjectionTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView, const D3DXMATRIX& matProj );
+	inline void SetWorldViewProjectionTransform( const Matrix44& matWorld, const Matrix44& matView, const Matrix44& matProj );
 
 
-	inline void GetWorldTransform( D3DXMATRIX& matWorld ) const;
+	inline void GetWorldTransform( Matrix44& matWorld ) const;
 
-	inline void GetViewTransform( D3DXMATRIX& matView ) const;
+	inline void GetViewTransform( Matrix44& matView ) const;
 
 
 	inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition );
@@ -124,7 +133,7 @@ public:
 //================================== inline implementations ==================================
 
 
-inline void CShaderManager::SetWorldTransform( const D3DXMATRIX& matWorld )
+inline void CShaderManager::SetWorldTransform( const Matrix44& matWorld )
 {
 //	m_pEffect->SetMatrix( "World", &matWorld );
 	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
@@ -150,7 +159,7 @@ inline void CShaderManager::SetWorldTransform( const D3DXMATRIX& matWorld )
 }
 
 
-inline void CShaderManager::SetViewTransform( const D3DXMATRIX& matView )
+inline void CShaderManager::SetViewTransform( const Matrix44& matView )
 {
 	m_pEffect->SetMatrix( "View", &matView );
 
@@ -170,7 +179,7 @@ inline void CShaderManager::SetViewTransform( const D3DXMATRIX& matView )
 	m_pEffect->SetMatrix( "WorldViewProj", &matProj );}
 
 
-inline void CShaderManager::SetProjectionTransform( const D3DXMATRIX& matProj )
+inline void CShaderManager::SetProjectionTransform( const Matrix44& matProj )
 {
 	m_pEffect->SetMatrix( "Proj", &matProj );
 
@@ -183,7 +192,7 @@ inline void CShaderManager::SetProjectionTransform( const D3DXMATRIX& matProj )
 }
 
 
-inline void CShaderManager::SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  )
+inline void CShaderManager::SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  )
 {
 	m_pEffect->SetMatrix( "World", &matWorld );
 
@@ -203,9 +212,9 @@ inline void CShaderManager::SetWorldViewTransform( const D3DXMATRIX& matWorld, c
 }
 
 
-inline void CShaderManager::SetWorldViewProjectionTransform( const D3DXMATRIX& matWorld,
-															 const D3DXMATRIX& matView,
-															 const D3DXMATRIX& matProj )
+inline void CShaderManager::SetWorldViewProjectionTransform( const Matrix44& matWorld,
+															 const Matrix44& matView,
+															 const Matrix44& matProj )
 {
 	m_pEffect->SetMatrix( "World", &matWorld );
 	m_pEffect->SetMatrix( "View", &matView );
@@ -237,13 +246,13 @@ inline void CShaderManager::SetWorldViewProjectionTransform( const D3DXMATRIX& m
 }
 
 
-inline void CShaderManager::GetWorldTransform( D3DXMATRIX& matWorld ) const
+inline void CShaderManager::GetWorldTransform( Matrix44& matWorld ) const
 {
 	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
 }
 
 
-inline void CShaderManager::GetViewTransform( D3DXMATRIX& matView ) const
+inline void CShaderManager::GetViewTransform( Matrix44& matView ) const
 {
 	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
 }

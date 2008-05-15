@@ -31,6 +31,10 @@ public:
 	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
 
 	FIBITMAP *GetFBITMAP() { return m_pFreeImageBitMap; }
+
+	inline int GetWidth() const;
+
+	inline int GetHeight() const;
 };
 
 /*
@@ -39,6 +43,13 @@ inline CBitmapImage::CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer,
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 }
 */
+
+
+inline CBitmapImage::CBitmapImage( int width, int height, int bpp )
+{
+	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
+}
+
 
 inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 {
@@ -51,10 +62,23 @@ inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 }
 
 
-inline CBitmapImage::CBitmapImage( int width, int height, int bpp )
+inline int CBitmapImage::GetWidth() const
 {
-	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
+	if( m_pFreeImageBitMap )
+		return (int)FreeImage_GetWidth(m_pFreeImageBitMap);
+	else
+		return 0;
 }
+
+
+inline int CBitmapImage::GetHeight() const
+{
+	if( m_pFreeImageBitMap )
+		return (int)FreeImage_GetHeight(m_pFreeImageBitMap);
+	else
+		return 0;
+}
+
 
 //	FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler);
 

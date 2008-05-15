@@ -2,6 +2,7 @@
 
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObjectBase.h"
+#include "3DCommon/Shader/ShaderManager.h"
 #include "Support/SafeDelete.h"
 #include "Support/fnop.h"
 #include "Support/ImageArchive.h"
@@ -107,6 +108,63 @@ void CGraphicsResourceEntry::DecRefCount()
 }
 
 
+bool CGraphicsResourceEntry::Load()
+{
+	bool loaded = false;
+	size_t pos = m_Filename.find( "::" );
+	string target_filepath;
+
+	if( pos != string::npos )
+	{
+		// not supported yet
+		// found "::" in filename
+		// - "(binary database filename)::(key)"
+		string db_filename       = m_Filename.substr( 0, pos );
+		string keyname = m_Filename.substr( pos + 2, m_Filename.length() );
+
+		string cwd = fnop::get_cwd();
+
+		CBinaryDatabase<string> db;
+		bool db_open = db.Open( db_filename );
+		if( !db_open )
+			return false;
+
+		loaded = LoadFromDB( db, keyname );
+
+		target_filepath = db_filename;
+	}
+	else
+	{
+		loaded = LoadFromFile( m_Filename );
+
+		target_filepath = m_Filename;
+	}
+
+/*		pos = m_Filename.find( ":" )
+		if( pos != string::npos )
+		{
+			// pack file - not supported yet
+			CPackedFile pakfile;
+			string pakfilename = m_Filename.substr( 0, pos );
+			string texfilename = m_Filename.substr( pos + 1, 1024 );
+			pakfile.Load( pakfilename );
+			vector<unsigned char> vecPixel;
+			pakfile.GetPackedFile( texfilename, vecPixel );
+			hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &vecPixel[0], vecPixel.size(), &m_pTexture );
+		}
+		else
+*/
+
+	if( loaded )
+	{
+		// record the time of last modification of the texture file
+		m_LastModifiedTimeOfFile = fnop::get_last_modified_time(target_filepath);
+	}
+
+	return loaded;
+}
+
+
 bool CGraphicsResourceEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
 	if( GetResourceType() == desc.ResourceType
@@ -158,89 +216,61 @@ static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( int img_archive_form
  load the texture specified by m_Filename
  does not change the reference count
 */
-bool CTextureEntry::Load()
+bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	SAFE_RELEASE( m_pTexture );
 
+	string image_archive_key = keyname;
+
 	HRESULT hr;
-	size_t pos = m_Filename.find( "::" );
-	if( pos != string::npos )
-	{
-		// not supported yet
-		// found "::" in filename
-		// - "(binary database filename)::(key)"
-		string db_filename       = m_Filename.substr( 0, pos );
-		string image_archive_key = m_Filename.substr( pos + 2, m_Filename.length() );
 
-		string cwd = fnop::get_cwd();
+//	string cwd = fnop::get_cwd();
 
-		CBinaryDatabase<string> db;
-		bool db_open = db.Open( db_filename );
-		if( !db_open )
-			return false;
+	CImageArchive img;
+	db.GetData( image_archive_key, img );
 
-		CImageArchive img;
-		db.GetData( image_archive_key, img );
+	hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &img.m_vecData[0], (UINT)img.m_vecData.size(), &m_pTexture );
 
-		hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &img.m_vecData[0], (UINT)img.m_vecData.size(), &m_pTexture );
+/*	D3DXIMAGE_INFO img_info;
+	memset( &img_info, 0, sizeof(D3DXIMAGE_INFO) );
+	img_info.Width           = img.m_Width;
+	img_info.Height          = img.m_Height;
+	img_info.Depth           = 1;//24;
+	img_info.MipLevels       = 1;
+	img_info.Format          = D3DFMT_A8B8G8R8;
+	img_info.ResourceType    = D3DRTYPE_TEXTURE;
+	img_info.ImageFileFormat = ArchiveImgFmt2D3DImgFmt( img.m_Format );
 
-/*		D3DXIMAGE_INFO img_info;
-		memset( &img_info, 0, sizeof(D3DXIMAGE_INFO) );
-		img_info.Width           = img.m_Width;
-		img_info.Height          = img.m_Height;
-		img_info.Depth           = 1;//24;
-		img_info.MipLevels       = 1;
-		img_info.Format          = D3DFMT_A8B8G8R8;
-		img_info.ResourceType    = D3DRTYPE_TEXTURE;
-		img_info.ImageFileFormat = ArchiveImgFmt2D3DImgFmt( img.m_Format );
+	hr = D3DXCreateTextureFromFileInMemoryEx(
+	DIRECT3D9.GetDevice(), //	0, //LPDIRECT3DDEVICE9 pDevice,
+	&img.m_vecData[0], //	0, //LPCVOID pSrcData,
+	(UINT)img.m_vecData.size(), //	0, //UINT SrcDataSize,
+	img.m_Width,     //	0, //UINT Width,
+	img.m_Height,    //	0, //UINT Height,
+	0,               //	0, //UINT MipLevels,
+	0,               //	0, //DWORD Usage,
+	D3DFMT_A8R8G8B8, //	0, //D3DFORMAT Format,
+	D3DPOOL_MANAGED, //	0, //D3DPOOL Pool,
+	0,               //	0, //DWORD Filter,
+	0,               //	0, //DWORD MipFilter,
+	0,               //	0, //D3DCOLOR ColorKey,
+	&img_info,       //	0, //D3DXIMAGE_INFO * pSrcInfo,
+	NULL,            //	0, //PALETTEENTRY * pPalette,
+	&m_pTexture     //	0 //LPDIRECT3DTEXTURE9 * ppTexture
+	);*/
 
-		hr = D3DXCreateTextureFromFileInMemoryEx(
-		DIRECT3D9.GetDevice(), //	0, //LPDIRECT3DDEVICE9 pDevice,
-		&img.m_vecData[0], //	0, //LPCVOID pSrcData,
-		(UINT)img.m_vecData.size(), //	0, //UINT SrcDataSize,
-		img.m_Width,     //	0, //UINT Width,
-		img.m_Height,    //	0, //UINT Height,
-		0,               //	0, //UINT MipLevels,
-		0,               //	0, //DWORD Usage,
-		D3DFMT_A8R8G8B8, //	0, //D3DFORMAT Format,
-		D3DPOOL_MANAGED, //	0, //D3DPOOL Pool,
-		0,               //	0, //DWORD Filter,
-		0,               //	0, //DWORD MipFilter,
-		0,               //	0, //D3DCOLOR ColorKey,
-		&img_info,       //	0, //D3DXIMAGE_INFO * pSrcInfo,
-		NULL,            //	0, //PALETTEENTRY * pPalette,
-		&m_pTexture     //	0 //LPDIRECT3DTEXTURE9 * ppTexture
-		);*/
+	return SUCCEEDED(hr) ? true : false;
+}
 
-//		hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), &(img.vecPixel[0], vecPixel.size(), &m_pTexture );
-	}
-	else
-	{
-/*		pos = m_Filename.find( ":" )
-		if( pos != string::npos )
-		{
-			// pack file - not supported yet
-			CPackedFile pakfile;
-			string pakfilename = m_Filename.substr( 0, pos );
-			string texfilename = m_Filename.substr( pos + 1, 1024 );
-			pakfile.Load( pakfilename );
-			vector<unsigned char> vecPixel;
-			pakfile.GetPackedFile( texfilename, vecPixel );
-			hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &vecPixel[0], vecPixel.size(), &m_pTexture );
-		}
-		else
-		{*/
-			hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), m_Filename.c_str(), &m_pTexture );
-/*		}*/
-	}
 
-	if( FAILED( hr ) )
-		return false;
+//	hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), &(img.vecPixel[0], vecPixel.size(), &m_pTexture );
+bool CTextureEntry::LoadFromFile( const std::string& filepath )
+{
+	SAFE_RELEASE( m_pTexture );
 
-	// record the time of last modification of the texture file
-	m_LastModifiedTimeOfFile = fnop::get_last_modified_time(m_Filename);
+	HRESULT hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
 
-	return true;
+	return SUCCEEDED(hr) ? true : false;
 }
 
 
@@ -274,64 +304,33 @@ CMeshObjectEntry::~CMeshObjectEntry()
 }
 
 
-bool CMeshObjectEntry::Load()
+bool CMeshObjectEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	SafeDelete( m_pMeshObject );
 
-//	HRESULT hr;
-	size_t pos = m_Filename.find( "::" );
-	if( pos != string::npos )
-	{
-		// found "::" in filename
-		// - "(binary database filename)::(key)"
-		string db_filename      = m_Filename.substr( 0, pos );
-		string mesh_archive_key = m_Filename.substr( pos + 2, m_Filename.length() );
+	string mesh_archive_key = keyname;
 
-		CBinaryDatabase<string> db;
-		bool db_open = db.Open( db_filename );
-		if( !db_open )
-		{
-			LOG_PRINT_ERROR( string(" - unable to open database: ") + db_filename );
-			return false;
-		}
+	// retrieve mesh archive from db
+	C3DMeshModelArchive mesh_archive;
+	db.GetData( mesh_archive_key, mesh_archive );
 
-		// retrieve mesh archive from db
-		C3DMeshModelArchive mesh_archive;
-		db.GetData( mesh_archive_key, mesh_archive );
+	CMeshObjectFactory factory;
+	m_pMeshObject = factory.LoadMeshObjectFromArchvie( mesh_archive, m_Filename, m_MeshType );
 
-		CMeshObjectFactory factory;
-		m_pMeshObject = factory.LoadMeshObjectFromArchvie( mesh_archive, m_Filename, m_MeshType );
-		if( !m_pMeshObject )
-			return false;
-	}
-	else
-	{
-/*		pos = m_strMeshObjectFilename.find( "::" )
-		if( pos != string::npos )
-		{
-			// pack file - not supported yet
-			CPackedFile pakfile;
-			string pakfilename = m_strMeshObjectFilename.substr( 0, pos );
-			string texfilename = m_strMeshObjectFilename.substr( pos + 1, 1024 );
-			pakfile.Load( pakfilename );
-			vector<unsigned char> vecPixel;
-			pakfile.GetPackedFile( texfilename, vecPixel );
-			hr = D3DXCreateMeshObjectFromFileInMemory( DIRECT3D9.GetDevice(), &vecPixel[0], vecPixel.size(), &m_pMeshObject );
-		}
-		else
-		{*/
-			CMeshObjectFactory factory;
-			m_pMeshObject = factory.LoadMeshObjectFromFile( m_Filename, m_MeshType );
-			if( !m_pMeshObject )
-				return false;
-/*		}*/
-	}
+	return ( m_pMeshObject ? true : false );
+}
 
-	// record the time of last modification of the texture file
-	m_LastModifiedTimeOfFile = fnop::get_last_modified_time(m_Filename);
 
-	return true;
+bool CMeshObjectEntry::LoadFromFile( const std::string& filepath )
+{
+	SafeDelete( m_pMeshObject );
 
+	CMeshObjectFactory factory;
+	m_pMeshObject = factory.LoadMeshObjectFromFile( m_Filename, m_MeshType );
+	if( !m_pMeshObject )
+		return false;
+
+	return ( m_pMeshObject ? true : false );
 }
 
 
@@ -351,43 +350,52 @@ bool CMeshObjectEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& d
 }
 
 
+//==================================================================================================
+// CShaderManagerEntry
+//==================================================================================================
 
-/*
-bool CTextureEntry::LoadTexture( const char *pcTextureFilename )
+CShaderManagerEntry::CShaderManagerEntry()
+:
+m_pShaderManager(NULL)
+{}
+
+
+CShaderManagerEntry::~CShaderManagerEntry()
 {
-	if( !pcTextureFilename || strlen(pcTextureFilename) == 0 )
-		return false;	// invalid filename
-
-	// Save texture filename so that we can reload it after we lost D3D device and re-create it
-	m_Filename = pcTextureFilename;
-
-	if( Load() )
-	{
-		m_iRefCount = 1;
-		return true;
-	}
-	else
-		return false;
-}*/
-
-/*
-bool CTextureEntry::LoadTextureFromMemory( void *pSrcData, const char *name )
-{
-	if( !name || strlen(name) == 0 )
-		return false;	// invalid filename
-
-	// Save texture filename so that we can reload it after we lost D3D device and re-create it
-	m_Filename = name;
-
-	HRESULT hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), pcTextureFilename, &m_pTexture );
-    if( FAILED( hr ) )
-	{
-        m_pTexture = NULL;
-		return false;
-	}
-
-	m_iRefCount = 1;
-
-	return true;
+	Release();
 }
-*/
+
+
+bool CShaderManagerEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+{
+	SafeDelete( m_pShaderManager );
+
+	LOG_PRINT_ERROR( " - Not implemented!" );
+
+	return false;
+
+	// retrieve mesh archive from db
+//	db.GetData( keyname, shader_archive );
+
+//	m_pShaderManager = CreateShaderFromArchive( shader_archive );
+
+//	return ( m_pShaderManager ? true : false );
+}
+
+
+bool CShaderManagerEntry::LoadFromFile( const std::string& filepath )
+{
+	SafeDelete( m_pShaderManager );
+
+	// load a shader file
+	m_pShaderManager = new CShaderManager();
+	bool loaded = m_pShaderManager->LoadShaderFromFile( filepath );
+
+	return loaded;
+}
+
+
+void CShaderManagerEntry::Release()
+{
+	SafeDelete( m_pShaderManager );
+}

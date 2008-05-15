@@ -1,10 +1,8 @@
-
 #include "ShaderManager.h"
 #include "ShaderManagerHub.h"
 #include "ShaderLightManager.h"
-
 #include "3DCommon/Direct3D9.h"
-#include "Support/msgbox.h"
+
 #include "Support/Log/DefaultLog.h"
 
 using namespace std;
