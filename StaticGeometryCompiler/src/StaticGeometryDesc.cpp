@@ -3,118 +3,11 @@
 #include "Support/fnop.h"
 #include "XML/XMLDocumentLoader.h"
 #include "XML/XercesString.h"
+#include "XML/XMLNodeReader.h"
 #include "XML/xmlch2x.h"
 
 
 #define LOG_ERR_RETURN_FALSE( msg ) { LOG_PRINT_ERROR( msg ); return false; }
-
-
-DOMNode *GetRootNode( xercesc_2_8::DOMDocument *pXMLDocument )
-{	
-	xercesc_2_8::DOMElement *pElem = pXMLDocument->getDocumentElement();
-
-	xercesc_2_8::DOMNodeIterator *iterator
-		= pXMLDocument->createNodeIterator( pXMLDocument->getFirstChild(), xercesc_2_8::DOMNodeFilter::SHOW_TEXT, NULL, false );
-
-	DOMNode *pRootNode = iterator->getRoot();
-
-	if( pRootNode )
-		return pRootNode;
-	else
-	{
-		LOG_PRINT_WARNING( "- Cannot find a root node" );
-		return NULL;
-	}
-
-	return NULL;
-}
-
-
-DOMNode *GetChildNode( DOMNode *pParentNode, const std::string& node_name )
-{
-	DOMNodeList *pNodeList = pParentNode->getChildNodes();
-	const int num_nodes = (int)pNodeList->getLength();
-	for( int i=0; i<num_nodes; i++ )
-	{
-		if( to_string(pNodeList->item(i)->getNodeName()) == node_name )
-			return pNodeList->item(i);
-	}
-
-	return NULL; // not found
-}
-
-
-vector<DOMNode *> GetImmediateChildNodes( DOMNode *pParentNode,
-										  const std::string& child_node_name )
-{
-	vector<DOMNode *> child_nodes;
-	DOMNodeList *pNodeList = pParentNode->getChildNodes();
-	const int num_nodes = (int)pNodeList->getLength();
-	for( int i=0; i<num_nodes; i++ )
-	{
-		if( to_string(pNodeList->item(i)->getNodeName()) == child_node_name )
-			child_nodes.push_back( pNodeList->item(i) );
-	}
-
-	return child_nodes;
-}
-
-
-std::string GetTextContentOfImmediateChildNode( DOMNode *pParentNode,
-												const std::string& child_node_name )
-{
-	DOMNode *pNode = GetChildNode( pParentNode, child_node_name );
-
-	if( !pNode )
-		return string();
-
-	return string( to_string( pNode->getTextContent() ) );
-}
-
-
-/**
- Returns an array of text contents of immediate child nodes named child_node_name
- - e.g.
- <Directory>
-   <File>a.txt</File>
-   <File>b.txt</File>
-   <File>c.txt</File>
-</Directory>
-
- - If the 1st arg, pParentNode, points to <Directory> and the 2nd arg,
-   child_node_name, is "File", the function returns ["a.txt", "b.txt", "c.txt"]
-
-*/
-vector<string> GetTextContentsOfImmediateChildNodes( DOMNode *pParentNode,
-													 const std::string& child_node_name )
-{
-	vector<DOMNode *> nodes = GetImmediateChildNodes( pParentNode, child_node_name );
-
-	vector<string> text_contents;
-	const size_t num_nodes = nodes.size();
-	for( size_t i=0; i<num_nodes; i++ )
-	{
-		text_contents.push_back( to_string(nodes[i]->getTextContent()) );
-	}
-
-	return text_contents;
-}
-
-inline std::string GetAttributeText( DOMNode *pNode, const std::string& attrib_name )
-{
-
-	const DOMNamedNodeMap *pAttrib = pNode->getAttributes();
-
-	if( !pAttrib )
-	{
-//		LOG_PRINT_WARNING( " - No attribute named " );
-		return string();
-	}
-
-	DOMNode *pNameNode = pAttrib->getNamedItem( XercesString(attrib_name.c_str()) );
-
-	return to_string(pNameNode->getNodeValue());
-}
 
 
 bool CGeometrySurfaceDesc::Load( DOMNode *pDescNode )
@@ -255,21 +148,38 @@ void LoadPointLights( vector<DOMNode *>& vecpNode )
 	{
 	}
 }
+*/
 
-
-vector<shared_ptr<CLight>> LoadLights( DOMNode *pLightsNode )
+void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 {
-	vector<shared_ptr<CLight>> vecpLight;
+//	vector<shared_ptr<CLight>> vecpLight;
 
-	vector<DOMNode *> vecpNode
+	xercesc_2_8::DOMNodeList *pNodeList = pLightsNode->getChildNodes();
+	const int num_nodes = (int)pNodeList->getLength();
+	for( int i=0; i<num_nodes; i++ )
+	{
+		xercesc_2_8::DOMNode *pNode = pNodeList->item(i);
+		CXMLNodeReader node( pNode );
+
+		string light_type = to_string(pNode->getNodeName());
+
+		if( light_type == "AmbientLight" )
+		{
+		}
+		else if( light_type == "PointLight" )
+		{
+		}
+	}
+
+/*	vector<DOMNode *> vecpNode
 		= GetImmediateChildNodes( pLightsNode, "AmbientLight" );
 
 	vecpNode
 		= GetImmediateChildNodes( pLightsNode, "PointLight" );
 
-	LoadPointLights( vecpNode, vecpLight );
+	LoadPointLights( vecpNode, vecpLight );*/
 }
-*/
+
 
 bool CStaticGeometryDesc::LoadLightingDesc( DOMNode *pLightingNode )
 {

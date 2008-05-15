@@ -119,6 +119,8 @@ private:
 
 	bool LoadLightingDesc( DOMNode *pLightingNode );
 
+	void LoadLights( DOMNode *pLightsNode );
+
 public:
 
 	/// returns true on success
