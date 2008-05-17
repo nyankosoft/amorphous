@@ -220,6 +220,8 @@ inline void CDirectionalLight::Serialize( IArchive& ar, const unsigned int versi
 
 
 inline CPointLight::CPointLight()
+:
+vPosition(Vector3(0,0,0))
 {
 	FalloffType     = 0;
 	fAttenuation[0] = 0.00f;

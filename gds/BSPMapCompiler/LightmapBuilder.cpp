@@ -1,4 +1,4 @@
-#include "_LightmapBuilder.h"
+#include "LightmapBuilder.h"
 #include <typeinfo>
 
 #include "3DMath/AABTree.h"

@@ -55,6 +55,8 @@ class CXMLNodeReader
 	/// borrowed reference
 	xercesc_2_8::DOMNode* m_pNode;
 
+	bool m_IgnoreAlphaComponent;
+
 public:
 
 	CXMLNodeReader( xercesc_2_8::DOMNode* pNode ) : m_pNode(pNode) {}
@@ -66,17 +68,17 @@ public:
 	template<class T>
 	inline bool Get( const std::string& name, T& obj );
 
-	void SetIgnoreAlphaComponent( bool ignore );
+	void SetIgnoreAlphaComponent( bool ignore ) { m_IgnoreAlphaComponent = ignore; }
 
 //	bool get( const std::string& name, int& val );
 //	bool get( const std::string& name, short& val );
 //	bool get( const std::string& name, long& val );
 	bool get( const std::string& name, float& val );
-	bool get( const std::string& name, double& val );
-	bool get( const std::string& name, std::string& text );
+//	bool get( const std::string& name, double& val );
+//	bool get( const std::string& name, std::string& text );
 	bool get( const std::string& name, Vector3& v );
 	bool get( const std::string& name, SFloatRGBColor& color );
-	bool get( const std::string& name, SFloatRGBAColor& color );
+//	bool get( const std::string& name, SFloatRGBAColor& color );
 //	bool get( const std::string& name, AABB3& aabb );
 
 	CXMLNodeReader get_child( const std::string& name )
@@ -130,6 +132,21 @@ inline bool CXMLNodeReader::get( const std::string& name, Vector3& v )
 		return false;
 
 	sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &v.x, &v.y, &v.z );
+
+	return true;
+}
+
+
+inline bool CXMLNodeReader::get( const std::string& name, SFloatRGBColor& color )
+{
+	if( !m_pNode )
+		return false;
+
+	xercesc_2_8::DOMNode *pNode = GetChildNode( m_pNode, name );
+	if( !pNode )
+		return false;
+
+	sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.fRed, &color.fGreen, &color.fBlue );
 
 	return true;
 }
