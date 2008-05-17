@@ -23,6 +23,9 @@ protected:
 
 	std::vector<TLVERTEX> m_vecRectVertex;
 
+	/// local vertex positions
+	/// - x: [ -m_CornerRadius, m_CornerRadius ]
+	/// - y: [ -m_CornerRadius, m_CornerRadius ]
 	std::vector<Vector2> m_vecLocalVertexPosition;
 
 	/// radius of the corner in pixels
@@ -40,7 +43,7 @@ protected:
 	// - m_vecLocalVertexPosition
 	// All the previous content will be cleared.
 	// NOTE:
-	// does virtual function calls. Must not be called from ctor
+	// - Includes virtual function calls. Must not be called from ctor.
 	inline void ResizeBuffer();
 
 	virtual int GetNumVertices() const { return ( m_NumSegmentsPerCorner + 1 ) * 4; }
@@ -82,8 +85,6 @@ public:
 
 	inline void SetPosition( const Vector2& vMin, const Vector2& vMax);
 
-//	inline void SetPosition( int vert_index, const D3DXVECTOR2& rvPosition );
-
 	/// set values for left, top, right and bottom of the rectangle
 	inline void SetPositionLTRB( float l, float t, float r, float b );
 
@@ -95,7 +96,8 @@ public:
 
 	virtual void SetTextureCoords( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax );
 
-//	void SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax);
+	// TODO: replace all SetTextureUV() calls with SetTextureCoords()
+	virtual void SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax) { SetTextureCoords( rvMin, rvMax ); }
 
 	/// store a single color to 'm_Color'
 	/// - vertex colors are updated if vertex buffers are created
@@ -452,6 +454,9 @@ public:
 
 	virtual void SetCornerColor( int corner, U32 color ) { m_aCornerColor[corner].SetARGB32( color ); UpdateColor(); }
 
+	inline virtual void Set1DBorderTextureCoords();
+
+	virtual void Set2DCircularBorderTextureCoords( float margin = 0.05f );
 
 	/// draw rect without any render state changes
 	inline virtual void draw();
@@ -543,6 +548,24 @@ inline void C2DRoundFrameRect::SetColor( const SFloatRGBAColor& color )
 }
 
 
+inline void C2DRoundFrameRect::Set1DBorderTextureCoords()
+{
+	if( m_vecLocalVertexPosition.size() == 0 || GetNumVertices() == 0 )
+		return;
+
+	const int num_points = GetNumVertices() / 2;
+	for( int i=0; i<num_points; i++ )
+	{
+		int j = i*2;
+		m_vecRectVertex[j].tu   = 1.0f;
+		m_vecRectVertex[j].tv   = 0.0f;
+
+		m_vecRectVertex[j+1].tu = 0.0f;
+		m_vecRectVertex[j+1].tv = 0.0f;
+	}
+}
+
+
 inline void C2DRoundFrameRect::draw()
 {
 	if( m_vecRectVertex.size() == 0 )
@@ -603,17 +626,8 @@ inline void C2DRoundFrameRect::UpdateVertexPositions()
 	m_vecRectVertex[vert_index].vPosition.x = global_pos.x;
 	m_vecRectVertex[vert_index].vPosition.y = global_pos.y;
 
-	// set default texture coordinates
-	const int num_points = GetNumVertices() / 2;
-	for( int i=0; i<num_points; i++ )
-	{
-		int j = i*2;
-		m_vecRectVertex[j].tu   = 1.0f;
-		m_vecRectVertex[j].tv   = 0.0f;
-
-		m_vecRectVertex[j+1].tu = 0.0f;
-		m_vecRectVertex[j+1].tv = 0.0f;
-	}
+	// set default texture coordinates for simple border textures
+	Set1DBorderTextureCoords();
 }
 
 

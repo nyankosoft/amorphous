@@ -50,20 +50,6 @@ void C2DRect::Draw(	const LPDIRECT3DTEXTURE9 pTexture )
 }
 
 
-/*
-/// draws the rect with the current render state settings
-/// check the following render states before calling this function
-/// - FVF
-/// - z-buffer
-/// - texture
-/// - alpha blend
-void C2DRect::Draw()
-{
-
-	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectVertex, sizeof(TLVERTEX) );
-}*/
-
-
 void C2DRect::DrawWireframe()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -104,16 +90,6 @@ void C2DRect::DrawWireframe()
 	pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, 1, avLine, sizeof(TLVERTEX) );
 }
 
-/*
-void C2DRect::LoadTextureFromFile(char* pTextureFilename)
-{
-	// Create the texture
-	HRESULT hr;
-	hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), pTextureFilename, &m_pTexture );
-    if( FAILED( hr ) )
-        m_pTexture = NULL;
-}
-*/
 
 void C2DRect::SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax )
 {

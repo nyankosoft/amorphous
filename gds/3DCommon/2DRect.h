@@ -6,9 +6,9 @@
 
 
 /**
- * hold a 2D rectangle
- * - coord are set as left, top, right, bottom if 4 values are used as arguments without any notice
- * - vertex indexing is done in clockwise order: [0,3] > top-left, top-right, bottom-right, bottom-left
+ hold a 2D rectangle
+ - coord are set as left, top, right, bottom if 4 values are used as arguments without any notice
+ - vertex indexing is done in clockwise order: [0,3] > top-left, top-right, bottom-right, bottom-left
  */
 class C2DRect : public C2DPrimitive
 {
@@ -34,7 +34,11 @@ public:
 
 	void Release();
 
-	/// draw rect without any render state changes
+	/// Draws the rect with the current render state settings.
+	/// Check the following render states before calling this function
+	/// - z-buffer
+	/// - texture
+	/// - alpha blend
 	inline virtual void draw();
 
 	void Draw() { C2DPrimitive::Draw(); }
@@ -42,8 +46,6 @@ public:
 	void Draw( const CTextureHandle& texture ) { C2DPrimitive::Draw( texture ); }
 
 	void Draw( const LPDIRECT3DTEXTURE9 pTexture );
-
-//	inline virtual void Draw( const CTextureHandle& texture );
 
 	void DrawWireframe();
 
@@ -140,6 +142,7 @@ inline Vector2 C2DRect::GetPosition2D( int vert_index ) const
 }
 
 
+/// Draws the rect without any render state changes
 inline void C2DRect::draw()
 {
 	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );

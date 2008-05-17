@@ -19,15 +19,17 @@ using namespace::Graphics;
 
 
 /**
- * hold a 2D primitive
- * - About corner indexing of rectangular primitives:
- *   - indexing for vertices is done in clockwise order: [0,3] > top-left, top-right, bottom-right, bottom-left
+ hold a 2D primitive
+ - About corner indexing of rectangular primitives:
+   - indexing for vertices is done in clockwise order: [0,3] > top-left, top-right, bottom-right, bottom-left
  */
 class C2DPrimitive
 {
 protected:
 
 	U32 m_DestAlphaBlend;
+
+//	TextureAddress::Mode m_TextureAddressingMode;
 
 protected:
 
@@ -73,6 +75,10 @@ public:
 	virtual void SetPosition( const Vector2& vMin, const Vector2& vMax) {}
 
 	virtual void SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax ) {}
+
+	virtual void SetTextureCoords( int stretch_x, int stretch_y,
+		                           const TEXCOORD2& left_top_offset = TEXCOORD2(0,0),
+								   TextureAddress::Mode mode = TextureAddress::Wrap );
 
 	virtual void SetColor( const SFloatRGBAColor& color ) {}
 
