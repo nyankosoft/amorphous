@@ -3,7 +3,7 @@
 #include "Support/StringAux.h"
 #include "Support/fnop.h"
 #include "Stage/StaticGeometry.h"
-#include "BSPMapCompiler/_LightmapBuilder.h"
+#include "BSPMapCompiler/LightmapBuilder.h"
 
 #include "LightWave/3DMeshModelBuilder_LW.h"
 
@@ -380,10 +380,10 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	CLightmapBuilder lightmap_builder;
 
 	// a point light for test
-	shared_ptr<CPointLight> pPntLight = shared_ptr<CPointLight>( new CPointLight() );
-	pPntLight->Color = SFloatRGBColor( 1.0f, 0.0f, 0.0f );
-	pPntLight->vPosition = Vector3( 5, 2.8, 5 );
-	m_Desc.m_vecpLight.push_back( pPntLight );
+//	shared_ptr<CPointLight> pPntLight = shared_ptr<CPointLight>( new CPointLight() );
+//	pPntLight->Color = SFloatRGBColor( 1.0f, 0.0f, 0.0f );
+//	pPntLight->vPosition = Vector3( 5, 2.8, 5 );
+//	m_Desc.m_vecpLight.push_back( pPntLight );
 
 	m_Desc.m_Lightmap.m_pvecpLight = &m_Desc.m_vecpLight;
 	m_Desc.m_Lightmap.m_pMesh = &m_GraphicsMesh;

@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../Project1/gds"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;DOM_DYNAMIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -62,8 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="libcollada14dom21.lib"
 				OutputFile="$(OutDir)/StaticGeometryCompiler_VC8E_Debug.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="D:\R&amp;D\Library\colladadom\dom\build\vc8-1.4-d"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/StaticGeometryCompiler_VC8E_Debug.pdb"
 				SubSystem="2"
@@ -140,6 +142,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/StaticGeometryCompiler_VC8E_Release.exe"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="D:\R&amp;D\Library\colladadom\dom\build\vc8-1.4"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/StaticGeometryCompiler_VC8E_Release.pdb"
 				SubSystem="2"
@@ -226,10 +229,6 @@
 					Name="BSPMapCompiler"
 					>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\_LightmapBuilder.h"
-						>
-					</File>
-					<File
 						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\fwd.h"
 						>
 					</File>
@@ -243,6 +242,10 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapBuilder.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapBuilder.h"
 						>
 					</File>
 					<File

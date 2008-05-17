@@ -6,6 +6,10 @@
 #include "XML/XMLNodeReader.h"
 #include "XML/xmlch2x.h"
 
+#include <dae.h>
+
+using namespace boost;
+
 
 #define LOG_ERR_RETURN_FALSE( msg ) { LOG_PRINT_ERROR( msg ); return false; }
 
@@ -150,6 +154,16 @@ void LoadPointLights( vector<DOMNode *>& vecpNode )
 }
 */
 
+
+void CStaticGeometryDesc::LoadLightsFromColladaFile( const std::string& dae_filepath )
+{
+	DAE dae;
+	domCOLLADA *pDOM = dae.open( dae_filepath );
+
+	// The DAE::open() call above causes bad allocation exception. Why?
+}
+
+
 void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 {
 //	vector<shared_ptr<CLight>> vecpLight;
@@ -165,9 +179,32 @@ void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 
 		if( light_type == "AmbientLight" )
 		{
+			CAmbientLight amb_light;
+			node.Get( "Color", amb_light.Color );
+			m_vecpLight.push_back( shared_ptr<CLight>( new CAmbientLight(amb_light) ) );
+		}
+		else if( light_type == "DirectionalLight" )
+		{
+			CDirectionalLight dir_light;
+			node.Get( "Color",     dir_light.Color );
+			node.Get( "Direction", dir_light.vDirection );
+
+			m_vecpLight.push_back( shared_ptr<CLight>( new CDirectionalLight(dir_light) ) );
 		}
 		else if( light_type == "PointLight" )
 		{
+			CPointLight pnt_light;
+			node.Get( "Color",    pnt_light.Color );
+			node.Get( "Position", pnt_light.vPosition );
+
+			Vector3 vAttenu;
+			if( node.Get( "Attenuation", vAttenu ) )
+			{
+				for( size_t j=0; j<3; j++ )
+					pnt_light.fAttenuation[j] = vAttenu[j];
+			}
+
+			m_vecpLight.push_back( shared_ptr<CLight>( new CPointLight(pnt_light) ) );
 		}
 	}
 
@@ -191,17 +228,29 @@ bool CStaticGeometryDesc::LoadLightingDesc( DOMNode *pLightingNode )
 	string light_filepath
 		= GetTextContentOfImmediateChildNode( pLightingNode, "LightFile" );
 
-	CXMLDocumentLoader xml_document;
-	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-	if( !xml_document.Load( light_filepath, &pXMLDocument )
-	 || !pXMLDocument )
-		return false;
+	if( 0 < light_filepath.length() )
+	{
+		// load lights from custom lights file
+		CXMLDocumentLoader xml_document;
+		xercesc_2_8::DOMDocument *pXMLDocument = NULL;
+		if( !xml_document.Load( light_filepath, &pXMLDocument )
+		 || !pXMLDocument )
+			return false;
 
-	DOMNode *pRootNode = GetRootNode( pXMLDocument );
-	if( !pRootNode )
-		return false;
+		DOMNode *pRootNode = GetRootNode( pXMLDocument );
+		if( !pRootNode )
+			return false;
 
-//	LoadLights( GetChildNode( pRootNode, "Lights" ) );
+		LoadLights( GetChildNode( pRootNode, "Lights" ) );
+	}
+
+/*	string dae_filepath
+		= GetTextContentOfImmediateChildNode( pLightingNode, "DAEFile" );
+
+	if( 0 < dae_filepath.length() )
+	{
+		LoadLightsFromColladaFile( dae_filepath );
+	}*/
 
 	return true;
 }

@@ -17,6 +17,10 @@
 		<Surface>
 			<SurfaceDescFile>./surface_desc.xml</SurfaceDescFile>
 		</Surface>
+		<Lighting>
+			<LightFile>./room_lights.xml</LightFile>
+			<!--<DAEFile>./room_lights.dae</DAEFile>-->
+		</Lighting>
 	</Graphics>
 	<Lightmap>
 		<TexelSize>1.0</TexelSize>

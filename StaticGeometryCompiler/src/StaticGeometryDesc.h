@@ -8,7 +8,7 @@
 
 #include "3DCommon/MeshModel/General3DMesh.h"
 #include "3DCommon/LightStructs.h"
-#include "BSPMapCompiler/_LightmapBuilder.h"
+#include "BSPMapCompiler/LightmapBuilder.h"
 #include "XML/XMLDocumentLoader.h"
 using namespace xercesc_2_8;
 
@@ -121,6 +121,7 @@ private:
 
 	void LoadLights( DOMNode *pLightsNode );
 
+	void LoadLightsFromColladaFile( const std::string& dae_filepath );
 public:
 
 	/// returns true on success

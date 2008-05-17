@@ -10,7 +10,7 @@
 			<Lightmap enabled="false"></Lightmap>
 			<Shader>
 				<File>../shaders/StaticGeometryTest.fx</File>
-				<Technique>Default</Technique>
+				<Technique>StaticLightmap</Technique>
 			</Shader>
 		</Desc>
 		<Desc name="Terrain">
@@ -24,7 +24,7 @@
 			<Lightmap enabled="false"></Lightmap>
 			<Shader>
 				<File>../shaders/StaticGeometryTest.fx</File>
-				<Technique>Buildings</Technique>
+				<Technique>Building</Technique>
 			</Shader>
 		</Desc>
 	</Descs>
