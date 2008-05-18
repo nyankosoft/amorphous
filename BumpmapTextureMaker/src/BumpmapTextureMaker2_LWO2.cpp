@@ -18,6 +18,8 @@
 
 #include "BumpmapTextureMaker2_LWO2.h"
 
+using namespace boost;
+
 
 static int s_RenderVolumeTexture = 0;//1;
 
@@ -95,12 +97,11 @@ void CBumpmapTextureMaker2_LWO2::Release()
 
 bool CBumpmapTextureMaker2_LWO2::LoadModel( const char *pFilename )
 {
-	CLWO2_Object *pObj = NULL;
+	shared_ptr<CLWO2_Object> pObj;
 
-	pObj = new CLWO2_Object;
+	pObj = shared_ptr<CLWO2_Object>( new CLWO2_Object() );
 	if( !pObj->LoadLWO2Object(pFilename) )
 	{
-		SafeDelete( pObj );
 		return false;
 	}
 
@@ -136,33 +137,36 @@ bool CBumpmapTextureMaker2_LWO2::LoadModel( const char *pFilename )
 	if( itrLayer == rlstLayer.end() )
 	{
 		LOG_PRINT_ERROR( " - No layer with the name '" + mesh_tag + "'" );
-		SafeDelete( pObj );
 		return false;
 	}
 
 	// create mesh model
-	C3DMeshModelBuilder_LW *pMeshBuilder = new C3DMeshModelBuilder_LW(pObj);
-	pMeshBuilder->SetTextureFilenameOption( C3DMeshModelBuilder::TFN_ORIGINAL_FILENAME );
-	if( !pMeshBuilder->BuildMeshModel( layer_set ) )
+	shared_ptr<C3DMeshModelBuilder_LW> pMeshLoader
+		= shared_ptr<C3DMeshModelBuilder_LW>( new C3DMeshModelBuilder_LW(pObj) );
+
+	pMeshLoader->SetTexturePathnameOption( TexturePathnameOption::ORIGINAL_FILENAME );
+	if( !pMeshLoader->BuildMeshModel( layer_set ) )
 	{
-		MessageBox( NULL, "C3DMeshModelBuilder_LW::BuildMeshModel() failed.\n unable to build a mesh object", "error", MB_OK|MB_ICONWARNING );
-		SafeDelete( pMeshBuilder );
-		SafeDelete( pObj );
+		LOG_PRINT_ERROR( "Failed to build a mesh object" );
 		return false;
 	}
 
+	C3DMeshModelBuilder general_mesh_to_mesh_archive_converter;
+	general_mesh_to_mesh_archive_converter.BuildMeshModel( pMeshLoader );
+
+	general_mesh_to_mesh_archive_converter.GetArchive().SaveToFile( layer_set.strOutputFilename );
+
 	// the mesh has been created.
 	// destroy the source LW object and the mesh builder
-	SafeDelete( pMeshBuilder );
-	SafeDelete( pObj );
+	pMeshLoader.reset();
 
 	// load a mesh model
 //	m_p3DModel = new CD3DXSMeshObject;
 	m_p3DModel = new CD3DXMeshObject;
 
-	if( FAILED(m_p3DModel->LoadFromFile(strMeshFilename.c_str())) )
+	if( !m_p3DModel->LoadFromFile(strMeshFilename) )
 	{
-		MessageBox( NULL, "CD3DXSMeshObject::LoadFromFile() failed.\n unable to load a mesh object", "error", MB_OK|MB_ICONWARNING );
+		LOG_PRINT_ERROR( "Cannot load a mesh object: " + strMeshFilename );
 		SafeDelete( m_p3DModel );
 		return false;
 	}
@@ -286,8 +290,8 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 
 	hr = pShaderManager->SetTechnique( m_TechniqueID );
 
-	if( FAILED(hr) )
-		return;
+//	if( FAILED(hr) )
+//		return;
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -297,7 +301,7 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 		pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 		pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_ONE );
 		pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
-		pd3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+		pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
 	}
 	else
 	{
@@ -320,6 +324,11 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 	if( !pMeshObject )
 		return;
 
+
+	pMeshObject->Render( *pShaderManager );
+
+
+/*
 //	LPD3DXPMESH pPMesh = pMeshObject->GetPMesh();
 	LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
 	if( !pMesh )
@@ -328,6 +337,10 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 //	pd3dDevice->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
 
 	LPDIRECT3DTEXTURE9 pTex;
+
+
+
+
 
 	// Meshes are divided into subsets by materials. Render each subset in a loop
 	DWORD dwNumMaterials = pMeshObject->GetNumMaterials();
@@ -359,6 +372,7 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 	}
 
 	pEffect->End();
+*/
 }
 
 
