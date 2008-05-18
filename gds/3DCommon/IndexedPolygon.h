@@ -363,7 +363,7 @@ inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
 	{
 		for( size_t j=0; j<num_vertices1; j++)
 		{
-			if( m_index[i] == m_index[j] )
+			if( m_index[i] == polygon.m_index[j] )
 			{
 				// TODO: compare vertices
 				return true;
@@ -559,6 +559,10 @@ inline int	ClassifyPolygon( const SPlane& plane,
 
 
 extern void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolygon>& polygon_buffer );
+
+extern void UnweldVerticesBetween2GroupsOfPolygons( std::vector<CIndexedPolygon>& polygon_buffer,
+													const std::vector<int>& polygon_indices0,
+													const std::vector<int>& polygon_indices1 );
 
 
 

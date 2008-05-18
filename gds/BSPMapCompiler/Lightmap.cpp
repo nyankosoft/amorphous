@@ -139,7 +139,12 @@ void CLightmap::ComputeNormalsOnLightmap()
 			}
 
 			if( i == iNumGroupedFaces )
-				LOG_PRINT_WARNING( "- Failed to compute a normal. The point is not on any polygon: " + to_string(rvPoint) );
+			{
+//				LOG_PRINT_WARNING( "- Failed to compute a normal. The point is not on any polygon: " + to_string(rvPoint) );
+				// This can happen when a lightmap has 2 or more polygons
+				// - For now, use the surface normal
+				m_vecvNormal(x,y) = m_Plane.normal;
+			}
 
 			if( true /*m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE*/ )
 			{	// use normal as default light direction
@@ -237,18 +242,3 @@ void CLightmap::ApplySmoothing()
 		}
 	}
 }
-
-
-
-
-/*
-void CLightmap::SetLightmapTextureIndexToFaces( int index )
-{
-	const size_t iNumFaces = m_vecGroupedFaceIndex.size();
-
-	for( size_t i=0; i<iNumFaces; i++ )
-	{
-//		rvecFace[ m_vecGroupedFaceIndex[i] ].SetLightmapTextureIndex( index );
-	}
-}
-*/

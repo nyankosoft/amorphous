@@ -249,6 +249,8 @@ bool CLightmapLightingManager::CreateLightmaps( vector<shared_ptr<CLight>> *pvec
 											    vector<CLightmap> *pvecLightmap,
 											    CAABTree<CIndexedPolygon> *pGeometry )
 {
+	LOG_FUNCTION_SCOPE();
+
 	if( !pvecpLight || pvecpLight->size() == 0 )
 		return false;	// No light in the map
 

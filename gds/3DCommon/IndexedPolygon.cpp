@@ -137,6 +137,26 @@ void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolygon>& po
 }
 
 
+void UnweldVerticesBetween2GroupsOfPolygons( std::vector<CIndexedPolygon>& polygon_buffer,
+											 const std::vector<int>& polygon_indices0,
+											 const std::vector<int>& polygon_indices1 )
+{
+	const size_t num_polygons0 = polygon_indices0.size();
+	const size_t num_polygons1 = polygon_indices1.size();
+	for( size_t i=0; i<num_polygons0; i++ )
+	{
+		for( size_t j=0; j<num_polygons1; j++ )
+		{
+			UnweldVertices(
+				polygon_buffer[polygon_indices0[i]],
+				polygon_buffer[polygon_indices1[j]]
+			);
+		}
+	}
+
+}
+
+
 /*
 // check whether the given point is included in the volume
 // which is defined by sweeping the face in the direction of the face normal

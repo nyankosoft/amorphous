@@ -63,20 +63,6 @@ bool CLightmapTexture::AddLightmap( CLightmap& rLightmap, int index )
 }
 
 
-/*
-void CLightmapTexture::SetLightmapTextureIndexToFaces( int index,
-													   vector<CLightmap>& rvecLightmap
-													    )
-{
-	const size_t iNumLightmaps = m_vecLightmapIndex.size();
-	for( size_t i=0; i<iNumLightmaps; i++ )
-	{
-//		rvecLightmap[ m_vecLightmapIndex[i] ].SetLightmapTextureIndexToFaces( index, rvecFace );
-	}
-
-}
-*/
-
 void CLightmapTexture::SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_coord_index )
 {
 	const size_t iNumLightmaps = m_vecLightmapIndex.size();
@@ -174,7 +160,6 @@ bool CLightmapTexture::AddTexturesToDatabase( CBinaryDatabase<std::string>& db )
 
 void CLightmapTexture::UpdateMaterials(
 	 vector<CMMA_Material>& src_material_buffer,
-//	 vector<CIndexedPolygon>& src_polygon_buffer,
 	 vector<CMMA_Material>& new_material_buffer,
 	 int texture_archive_index,
 	 const std::string& db_filepath
@@ -518,69 +503,11 @@ bool CLightmapTexture::SaveTextureImageToFile( const std::string& filepath )
 }
 
 
-//	shared_ptr<CBitmapImage> pImage = CreateBitMapImage(
-//	SaveImageFile( padwImageData, filepath );
-
-/*
-	// output light direction map if there is one
-	if( m_vecvLightDirMap.size_x() != 0 )//m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE )
-	{
-		Vector3 vLightDir;
-		DWORD dwColor;
-		i = 0;
-		for( y=0; y<height ; y++ )
-		{
-			for( x=0; x<width; x++ )
-			{	// convert each pixel into DWORD and store in the array
-//				vLightDir = m_vecpvLightDirMap[i][j];
-
-				vLightDir = LightDirection(x,y);
-				vLightDir = ( vLightDir + Vector3(1,1,1) ) * 0.5f;
-
-				dwColor = D3DCOLOR_XRGB( ((int)(vLightDir.x * 255.0f)),
-									     ((int)(vLightDir.y * 255.0f)),
-										 ((int)(vLightDir.z * 255.0f)) );
-
-				padwImageData[i++] = dwColor;
-			}
-		}
-
-		sprintf( acFilename, "%s_LightDir.bmp", image_body_filename.c_str() );
-
-		bmp_image.OutputImage_24Bit( acFilename, width, height, padwImageData );
-	}
-*/
-
-//	delete [] padwImageData;
-
-
 /*
 void CLightmapTexture::OutputToBMPFiles( const std::string& image_body_filename )
 {
-	CBMPImageExporter bmp_image;
-	char acFilename[512];
 
-	int i;
-	int x,y;
-	int width  = m_vecTexel.size_x();
-	int height = m_vecTexel.size_y();
-
-	DWORD *padwImageData = new DWORD [ width * height ];
-
-	i = 0;
-	for( y=0; y<height ; y++ )
-	{
-		for( x=0; x<width; x++ )
-		{	// convert each pixel into DWORD and store in the array
-//			padwImageData[i++] = Texel(x,y).ConvertToD3DCOLOR();
-			padwImageData[i++] = Texel(x,y).GetARGB32();
-		}
-	}
-
-	sprintf( acFilename, "%s.bmp", image_body_filename.c_str() );
-
-	bmp_image.OutputImage_24Bit( acFilename, width, height, padwImageData );
-
+	// ... save lightmap textures ...
 
 	// output light direction map if there is one
 	if( m_vecvLightDirMap.size_x() != 0 //m_iLightmapCreationFlag & LMB_CREATE_LIGHT_DIRECTION_MAP_TEXTURE )

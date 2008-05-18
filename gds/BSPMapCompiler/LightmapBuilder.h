@@ -212,6 +212,10 @@ private:
 	// calculate vectors which point to each texel on the lightmap
 	void SetUpLightMapPoints( CLightmap& lightmap );
 
+	void ComputeNormalsOnLightmap();
+
+	bool UpdateTextureCoordinates();
+
 	void PackLightmaps();
 
 	void UpdateLightmapTextures();
