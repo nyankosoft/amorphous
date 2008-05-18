@@ -6,7 +6,7 @@
 #include "BSPMapData.h"
 #include "MapCompiler.h"
 
-#include "_LightmapBuilder.h"
+#include "LightmapBuilder.h"
 
 #include "Stage/bspstructs.h"
 #include "3DCommon/FloatRGBColor.h"

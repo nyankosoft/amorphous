@@ -52,6 +52,9 @@ class CLightmapTexture
 	/// keyname in the database
 	std::string m_KeyName;
 
+	/// image filename used to save the lightmap texture to disk
+	std::string m_ImageFilepath;
+
 public:
 
 	CLightmapTexture() : m_pvecLightmap(NULL) {}
@@ -108,6 +111,14 @@ public:
 
 	bool AddTexturesToDatabase( CBinaryDatabase<std::string>& db );
 
+	/// Set image filepath for texture filename field of mesh material
+	void SetImageFilepath( const std::string& filepath ) { m_ImageFilepath = filepath; }
+
+	/// save the image file with the filepath m_ImageFilepath
+	bool SaveTextureImageToFile();
+
+	/// Save image to disk for visual confirmation
+	/// \param [in] filepath
 	bool SaveTextureImageToFile( const std::string& filepath );
 };
 

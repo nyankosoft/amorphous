@@ -82,13 +82,13 @@ private:
 
 protected:
 
-	virtual void LoadVertices( void*& pVBData, C3DMeshModelArchive& archive );
+	virtual void LoadVertices( void*& pVBData, D3DVERTEXELEMENT9 *pVertexElements, C3DMeshModelArchive& archive );
 
 	HRESULT LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num_materials );
 
 	HRESULT LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive );
 
-	virtual const D3DVERTEXELEMENT9 *GetVertexElemenets( CMMA_VertexSet& rVertexSet );
+//	virtual const D3DVERTEXELEMENT9 *GetVertexElemenets( CMMA_VertexSet& rVertexSet );
 
 	HRESULT FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive& archive );
 
@@ -207,7 +207,7 @@ m_bViewFrustumTest(false)
 
 inline CTextureHandle& CD3DXMeshObjectBase::GetTexture( int material_index, int tex_index )
 {
-	return m_vecMaterial[material_index].Texture[tex_index];;
+	return m_vecMaterial[material_index].Texture[tex_index];
 }
 
 

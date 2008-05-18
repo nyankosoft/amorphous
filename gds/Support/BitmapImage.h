@@ -136,7 +136,8 @@ inline bool CBitmapImage::SaveToFile( const std::string& pathname, int flag )
 	{
 		// try to guess the file format from the file extension
 		fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
-		if(fif != FIF_UNKNOWN ) {
+		if(fif != FIF_UNKNOWN )
+		{
 			// check that the plugin has sufficient writing and export capabilities ...
 			WORD bpp = FreeImage_GetBPP(m_pFreeImageBitMap);
 			if(FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp))
@@ -148,6 +149,8 @@ inline bool CBitmapImage::SaveToFile( const std::string& pathname, int flag )
 				// unless an abnormal bug, we are done !
 			}
 		}
+		else
+			LOG_PRINT_ERROR( "Failed to save an image file to disk: " + pathname );
 	}
 
 	return (bSuccess == TRUE) ? true : false;

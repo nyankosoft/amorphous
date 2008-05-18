@@ -18,10 +18,6 @@ using namespace MeshModel;
 
 
 C3DModelLoader::C3DModelLoader()
-//:
-//m_VertexFormatFlag(0),
-//m_TextureFilenameOption(TexturePathnameOption::ORIGINAL_FILENAME),
-//m_MeshFlag(0)
 {
 }
 
@@ -258,23 +254,21 @@ void C3DMeshModelBuilder::CreateVertices()
 	const size_t iNumVertices = vert_buffer.size();
 	size_t i;
 
+	if( vert_buffer.size() == 0 )
+	{
+		LOG_PRINT_WARNING( " - No vertex in the source general 3D mesh." );
+		return;
+	}
+
 	int j, iNumBlendMatrices;
 
 	CMMA_VertexSet& rVertexSet = m_MeshModelArchive.GetVertexSet();
 
 	rVertexSet.SetVertexFormat( general_mesh.GetVertexFormatFlags() );
 
-//	rVertexSet.Resize( iNumVertices );
-
 	rVertexSet.vecPosition.resize(iNumVertices);
 	rVertexSet.vecNormal.resize(iNumVertices);
 	rVertexSet.vecDiffuseColor.resize(iNumVertices);
-
-	// TODO: support multiple texture coord sets
-	rVertexSet.vecTex.resize(1);
-	rVertexSet.vecTex[0].push_back( TEXCOORD2(0,0) );
-	for( j=0; j<rVertexSet.vecTex.size(); j++ )
-		rVertexSet.vecTex[j].resize(iNumVertices);
 
 
 	for( i=0; i<iNumVertices; i++ )
@@ -284,12 +278,26 @@ void C3DMeshModelBuilder::CreateVertices()
 		rVertexSet.vecNormal[i]       = vert_buffer[i].m_vNormal;
 
 		rVertexSet.vecDiffuseColor[i] = vert_buffer[i].m_DiffuseColor;
+	}
 
-		rVertexSet.vecTex[0][i]       = vert_buffer[i].m_TextureCoord[0];
+	// set texture coordinates
 
+	// Determine how many sets of texture coodinates are required
+	// - Just look at the texture coordinates of the first vertex
+	//   since all the vertices should have the same number of tex coords
+	rVertexSet.vecTex.resize( vert_buffer[0].m_TextureCoord.size() );
+
+	for( j=0; j<rVertexSet.vecTex.size(); j++ )
+	{
+		rVertexSet.vecTex[j].resize(iNumVertices);
+		for( i=0; i<iNumVertices; i++ )
+		{
+			rVertexSet.vecTex[j][i] = vert_buffer[i].m_TextureCoord[j];
+		}
 	}
 
 	// set vertex weights
+
 	if( general_mesh.GetVertexFormatFlags() & CMMA_VertexSet::VF_WEIGHT )
 	{
 		rVertexSet.vecfMatrixWeight.resize(iNumVertices);

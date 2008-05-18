@@ -19,7 +19,7 @@ class CBillboardArrayMesh : public CD3DXMeshObject
 {
 protected:
 
-	virtual const D3DVERTEXELEMENT9 *GetVertexElemenets( CMMA_VertexSet& rVertexSet );
+	void GetVertexElemenets( CMMA_VertexSet& rVertexSet, D3DVERTEXELEMENT9*& pVertexElements );
 
 public:
 
@@ -30,7 +30,7 @@ public:
 
 	virtual HRESULT LoadMeshFromArchive( C3DMeshModelArchive& rArchive, const std::string& filename );
 
-	virtual void LoadVertices( void*& pVBData, C3DMeshModelArchive& archive );
+	virtual void LoadVertices( void*& pVBData, D3DVERTEXELEMENT9 *pVertexElements, C3DMeshModelArchive& archive );
 };
 
 

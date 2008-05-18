@@ -18,6 +18,7 @@ using namespace Graphics;
 
 #include "Support/TextFileScanner.h"
 #include "Support/FixedVector.h"
+#include "Support/Serialization/BinaryDatabase.h"
 
 #include "fwd.h"
 #include "LightmapTexture.h"
@@ -123,6 +124,11 @@ public:
 
 //	CPolygonMesh m_RayTraceGeometry;
 
+	std::string m_BaseTextureKeyname;
+
+	/// suffix of the image files
+	std::string m_ImageFileFormat;
+
 	CLightmapOption m_Option;
 
 	AOLightmapDesc AOLightmap;
@@ -132,7 +138,9 @@ public:
 	CLightmapDesc()
 		:
 	m_LightmapTextureCoordsIndex( 1 ),
-	m_LightmapTextureArchiveIndex( 1 )
+	m_LightmapTextureArchiveIndex( 1 ),
+	m_BaseTextureKeyname("lightmap"),
+	m_ImageFileFormat("jpg")
 	{
 	}
 
@@ -229,7 +237,6 @@ private:
 
 	void SetOption( const CLightmapOption& option );
 
-
 //	void ComputeNormalsOnLightmap(vector<CMapFace>& rvecFace);
 //	void SetLightmapTextureIndicesToPolygons();
 //	void SetTextureCoords();
@@ -259,6 +266,8 @@ public:
 	void SaveLightmapTexturesToImageFiles( const std::string& dirpath_and_bodyname,
 										   const std::string& img_file_suffix );
 
+	// How to serialize image file content on memory to arbitrary image format
+//	void AddLightmapTexturesToDB( CBinaryDatabase<std::string>& db );
 };
 
 

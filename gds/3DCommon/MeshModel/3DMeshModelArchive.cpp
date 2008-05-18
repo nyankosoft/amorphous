@@ -276,45 +276,54 @@ void MeshModel::AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 								             bool bUseTextureBasenameForKey )
 {
 	const size_t num_materials = mesh_archive.GetMaterial().size();
-	for( size_t j=0; j<num_materials; j++ )
+	for( size_t i=0; i<num_materials; i++ )
 	{
-		if( mesh_archive.GetMaterial()[j].vecTexture.size() == 0 )
-			continue;
-
-		CMMA_Texture& rTexture = mesh_archive.GetMaterial()[j].vecTexture[0];
-
-		const string tex_filename = rTexture.strFilename;
-
-		if( tex_filename.length() == 0 )
-			continue;
-
-		string tex_key;
-		
-		if( bUseTextureBasenameForKey )
-			tex_key = fnop::get_nopath(tex_filename);
-		else
-			tex_key = tex_filename;
-
-		if( db.KeyExists(tex_key) )
+		const size_t num_textures = mesh_archive.GetMaterial()[i].vecTexture.size();
+		for( size_t j=0; j<num_textures; j++ )
 		{
-			// the texture file has been already saved to database
-			// - skip this texture
-			continue;
-		}
+			CMMA_Texture& rTexture = mesh_archive.GetMaterial()[i].vecTexture[j];
 
-//		string tex_resource_name = db_filename + "::" + tex_key;
-		string tex_resource_name = db_filepath + "::" + tex_key;
+			const string tex_filename = rTexture.strFilename;
 
-		// overwrite original texture filename with the resource name
-		// - (db filename) + "::" + (archive key name)
-		rTexture.strFilename = tex_resource_name;
+			if( tex_filename.length() == 0 )
+				continue;
 
-		CImageArchive img_archive = CImageArchive( tex_filename );
+			if( tex_filename.find("::") != string::npos )
+			{
+				LOG_PRINT( " - The texture filepath already includes db & keyname separator '::'. Skipping the process for" + tex_filename );
+				continue;
+			}
 
-		if( img_archive.IsValid() )
-		{
-			// add image archive to db
-			db.AddData( tex_key, img_archive );
+			string tex_key;
+			
+			if( bUseTextureBasenameForKey )
+				tex_key = fnop::get_nopath(tex_filename);
+			else
+				tex_key = tex_filename;
+
+			if( db.KeyExists(tex_key) )
+			{
+				// the texture file has been already saved to database
+				// - skip this texture
+				continue;
+			}
+
+	//		string tex_resource_name = db_filename + "::" + tex_key;
+			string tex_resource_name = db_filepath + "::" + tex_key;
+
+			// overwrite original texture filename with the resource name
+			// - (db filename) + "::" + (archive key name)
+			rTexture.strFilename = tex_resource_name;
+
+			CImageArchive img_archive = CImageArchive( tex_filename );
+
+			if( img_archive.IsValid() )
+			{
+				// add image archive to db
+				db.AddData( tex_key, img_archive );
+			}
+			else
+				LOG_PRINT_ERROR( " - invalid texture filepath: " + tex_filename );
 		}
 	}
 }

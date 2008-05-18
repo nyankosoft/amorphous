@@ -11,8 +11,9 @@ bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& 
 	int x,y;
 	int width  = texel.size_x();
 	int height = texel.size_y();
+	const int depth = 24;
 
-	CBitmapImage img( width, height, 32 );
+	CBitmapImage img( width, height, depth );
 
 	for( y=0; y<height ; y++ )
 	{
@@ -216,9 +217,9 @@ void CLightmapTexture::UpdateMaterials(
 			new_material.vecTexture.push_back( CMMA_Texture() );
 
 //		"(database filepath)::(key name)";
-		new_material.vecTexture[texture_archive_index].strFilename = db_filepath + "::" + m_KeyName;
+//		new_material.vecTexture[texture_archive_index].strFilename = db_filepath + "::" + m_KeyName;
 
-//		new_material.Texture[texture_archive_index].strFilename = m_TextureImageFilepath;
+		new_material.vecTexture[texture_archive_index].strFilename = m_ImageFilepath;
 	}
 }
 
@@ -502,6 +503,12 @@ void CLightmapTexture::ApplySmoothing( float fCenterWeight )
 		}
 	}
 
+}
+
+
+bool CLightmapTexture::SaveTextureImageToFile()
+{
+	return SaveToImageFile( m_vecTexel, m_ImageFilepath );
 }
 
 

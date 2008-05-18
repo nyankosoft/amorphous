@@ -1,5 +1,5 @@
 #include "LightmapBuilder.h"
-#include <typeinfo>
+#include <direct.h>
 
 #include "3DMath/AABTree.h"
 #include "Support/SafeDelete.h"
@@ -147,13 +147,39 @@ bool CLightmapBuilder::CreateLightmapTexture( CLightmapDesc& desc )
 
 	LOG_PRINT( " - Lightmaps have been packed to textures." );
 
-	// set lightmap texture id to each polygon
-//	SetLightmapTextureIndicesToPolygons();
-
 	// [in,out] mesh
 	// [in] current material buffer
 	// [out] updated material buffer
 	UpdateMeshMaterials();
+
+
+	unsigned int tex_flags[] =
+	{
+		CMMA_VertexSet::VF_2D_TEXCOORD0,
+		CMMA_VertexSet::VF_2D_TEXCOORD1,
+		CMMA_VertexSet::VF_2D_TEXCOORD2,
+		CMMA_VertexSet::VF_2D_TEXCOORD3
+	};
+
+	m_Desc.m_pMesh->SetVertexFormatFlags( m_Desc.m_pMesh->GetVertexFormatFlags() | tex_flags[m_Desc.m_LightmapTextureCoordsIndex] );
+
+	// Each general vertex must have texture coordinates for lightmap texture
+	vector<CGeneral3DVertex>& vert_buffer = *(m_Desc.m_pMesh->GetVertexBuffer().get());
+	if( vert_buffer.size() == 0 )
+	{
+		LOG_PRINT_ERROR( " - Source geometry has no vertex" );
+		return false;
+	}
+
+	const int num_tex_coords_to_add = m_Desc.m_LightmapTextureCoordsIndex - vert_buffer[0].m_TextureCoord.size() + 1;
+	const size_t num_vertices = vert_buffer.size();
+	for( size_t i=0; i<num_vertices; i++ )
+	{
+		for( int j=0; j<num_tex_coords_to_add; j++ )
+		{
+			vert_buffer[i].m_TextureCoord.push_back( TEXCOORD2(0,0) );
+		}
+	}
 
 	// update uv values of polygons
 	const size_t num_lightmap_textures = m_vecLightmapTexture.size();
@@ -168,10 +194,13 @@ bool CLightmapBuilder::CreateLightmapTexture( CLightmapDesc& desc )
 
 	LOG_PRINT( " - Updated lightmap textures." );
 
+	mkdir( "./temp" );
 	for( size_t i=0; i<num_lightmap_textures; i++ )
 	{
-		string image_filepath = fmt_string( "lightmap%03d.bmp", i );
-		m_vecLightmapTexture[i].SaveTextureImageToFile( image_filepath );
+		m_vecLightmapTexture[i].SaveTextureImageToFile();
+
+//		string image_filepath = fmt_string( "./temp/lightmap%03d.bmp", i );
+//		m_vecLightmapTexture[i].SaveTextureImageToFile( image_filepath );
 	}
 
 //	FillMarginRegions();
@@ -419,6 +448,14 @@ void CLightmapBuilder::PackLightmaps()
 			m_vecLightmapTexture.push_back( CLightmapTexture(&m_vecLightmap) );
 			m_vecLightmapTexture.back().Resize( GetLightmapTextureWidth(), GetLightmapTextureHeight() );
 			m_vecLightmapTexture.back().AddLightmap( rLightmap, i );
+
+			// set the image filepath or database keyname?
+
+			string id_and_ext = fmt_string("%03d.",i) + m_Desc.m_ImageFileFormat;
+			m_vecLightmapTexture.back().SetImageFilepath( "./temp/lightmap" + id_and_ext );
+
+//			string keyname = m_Desc.m_OutputDatabaseFilepath + "/" + m_Desc.m_BaseTextureKeyname + id_and_ext;
+//			m_vecLightmapTexture.back().SetKeyName( keyname );
 		}
 	}
 
@@ -499,7 +536,6 @@ void CLightmapBuilder::TransformLightDirectionToLocalFaceCoord()
 void CLightmapBuilder::SaveLightmapTexturesToImageFiles( const std::string& dirpath_and_bodyname,
 														const std::string& img_file_suffix )
 {
-
 	const int num_textures = (int)m_vecLightmapTexture.size();
 	for( int i=0; i<num_textures; i++)
 	{
@@ -508,7 +544,18 @@ void CLightmapBuilder::SaveLightmapTexturesToImageFiles( const std::string& dirp
 	}
 }
 
-
+/*
+void CLightmapBuilder::AddLightmapTexturesToDB( CBinaryDatabase<std::string>& db )
+{
+	const int num_textures = (int)m_vecLightmapTexture.size();
+	for( int i=0; i<num_textures; i++)
+	{
+		CImageArchive img( 
+		m_vecLightmapTexture[i].SaveTextureImageToFile(
+			dirpath_and_bodyname + fmt_string("%03d",i) + img_file_suffix );
+	}
+}
+*/
 
 
 

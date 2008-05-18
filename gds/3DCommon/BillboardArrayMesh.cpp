@@ -1,18 +1,11 @@
 #include "BillboardArrayMesh.h"
 #include "Support/SafeDelete.h"
+#include "Support/Macro.h"
 
 #include <d3dx9.h>
 
 
-/*
-HRESULT CBillboardArrayMesh::LoadFromFile( const std::string& filename )
-{
-	return S_OK;
-}
-*/
-
-
-const D3DVERTEXELEMENT9 *CBillboardArrayMesh::GetVertexElemenets( CMMA_VertexSet& rVertexSet )
+void CBillboardArrayMesh::GetVertexElemenets( CMMA_VertexSet& rVertexSet, D3DVERTEXELEMENT9*& pVertexElements )
 {
 	unsigned int billboard_vertex_flag =
 		CMMA_VertexSet::VF_POSITION|
@@ -21,19 +14,22 @@ const D3DVERTEXELEMENT9 *CBillboardArrayMesh::GetVertexElemenets( CMMA_VertexSet
 
 	if( billboard_vertex_flag & rVertexSet.GetVertexFormat() )
 	{
-		return BILLBOARDVERTEX_DECLARATION;
+		memcpy( pVertexElements, BILLBOARDVERTEX_DECLARATION, sizeof(BILLBOARDVERTEX_DECLARATION) * numof(BILLBOARDVERTEX_DECLARATION) );
 	}
 	else
 	{
-		return CD3DXMeshObjectBase::GetVertexElemenets( rVertexSet );
+		LOG_PRINT_ERROR( " - Invalid vertex format for billboard array mesh." );
 	}
 }
 
 
 void CBillboardArrayMesh::LoadVertices( void*& pVBData,
-								       C3DMeshModelArchive& archive )
+									    D3DVERTEXELEMENT9 *pVertexElements,
+								        C3DMeshModelArchive& archive )
 {
 	CMMA_VertexSet& rVertexSet = archive.GetVertexSet();
+
+	GetVertexElemenets(rVertexSet,pVertexElements);
 
 	int i, iNumVertices = rVertexSet.GetNumVertices();
 

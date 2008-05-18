@@ -80,6 +80,7 @@ void CLightmap::SetTextureUV( const SRect& rRect,
 			texcoord.v = ((float)(rRect.top+1 + 0.5f) / (float)iTextureHeight)
 				       + (vLocalPos.y / m_fScaleV) * ((float)(rRect.GetHeight()-2) / (float)iTextureHeight);
 
+			texcoord.v *= (-1.0f);
 //			polygon.SetLightmapTextureUV( j, texcoord );
 			CGeneral3DVertex& v = polygon.Vertex( j );
 			v.m_TextureCoord[tex_coord_index] = texcoord;

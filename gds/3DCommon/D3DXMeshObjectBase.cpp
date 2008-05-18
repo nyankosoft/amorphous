@@ -1,5 +1,6 @@
 #include "D3DXMeshObjectBase.h"
 
+#include "../base.h"
 #include "3DCommon/FVF_BumpVertex.h"
 #include "3DCommon/FVF_BumpWeightVertex.h"
 #include "3DCommon/FVF_ColorVertex.h"
@@ -13,6 +14,7 @@
 #include "Support/StringAux.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/memory_helpers.h"
+#include "Support/Macro.h"
 #include "Support/fnop.h"
 using namespace fnop;
 
@@ -171,6 +173,9 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 }
 
 
+#define NUM_MAX_VERTEX_ELEMENTS 64
+
+
 LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& archive )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -179,7 +184,12 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 
 	void *pDestVBData, *pSrcVBData = NULL;
 
-	const D3DVERTEXELEMENT9 *pVertexElements = GetVertexElemenets( archive.GetVertexSet() );
+//	const D3DVERTEXELEMENT9 *pVertexElements = GetVertexElemenets( archive.GetVertexSet() );
+	D3DVERTEXELEMENT9 aVertexElements[NUM_MAX_VERTEX_ELEMENTS];
+
+	// load vertex data from the rArchive
+	// - Need to do this before D3DXCreateMesh() to determine vertex declarations
+	LoadVertices( pSrcVBData, aVertexElements, archive );
 
 	DWORD num_vertices = (DWORD)archive.GetVertexSet().GetNumVertices();
 
@@ -190,7 +200,7 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 		                 num_vertices,
 //						 0,
 						 D3DXMESH_MANAGED,
-						 pVertexElements,
+						 aVertexElements,
 						 pd3dDev,
 						 &pMesh );
 
@@ -201,9 +211,6 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 
 	if( FAILED(hr) )
 		return NULL;
-
-	// load vertex data from the rArchive
-	LoadVertices( pSrcVBData, archive );
 
 	// copy vertices to vertex buffer
 	hr = pMesh->LockVertexBuffer( 0, &pDestVBData );
@@ -219,7 +226,7 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 	return pMesh;
 }
 
-
+/*
 const D3DVERTEXELEMENT9 *CD3DXMeshObjectBase::GetVertexElemenets( CMMA_VertexSet& rVertexSet )
 {
 	switch( rVertexSet.GetVertexFormat() )
@@ -244,159 +251,185 @@ const D3DVERTEXELEMENT9 *CD3DXMeshObjectBase::GetVertexElemenets( CMMA_VertexSet
 			return NULL;
 	}
 }
+*/
 
 
+static inline D3DVERTEXELEMENT9 D3DVertexElement( 
+    WORD    Stream,     // Stream index
+    WORD    Offset,     // Offset in the stream in bytes
+    BYTE    Type,       // Data type
+    BYTE    Method,     // Processing method
+    BYTE    Usage,      // Semantics
+    BYTE    UsageIndex  // Semantic index
+	)
+{
+	D3DVERTEXELEMENT9 elem;
+	elem.Stream     = Stream;
+	elem.Offset     = Offset;
+	elem.Type       = Type;
+	elem.Method     = Method;
+	elem.Usage      = Usage;
+	elem.UsageIndex = UsageIndex;
+	return elem;
+}
+
+/**
+ \param pVBData [in,out] reference to the pointer that points to the address of the buffer to hold vertex data
+ \param pVertexElements [in,out] pointer to the buffer for vertex element declarations
+
+*/
 void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
+									    D3DVERTEXELEMENT9 *pVertexElements,
 								        C3DMeshModelArchive& archive )
 {
 	CMMA_VertexSet& rVertexSet = archive.GetVertexSet();
 
-	int i, iNumVertices = rVertexSet.GetNumVertices();
+	int i;
+	const int iNumVertices = rVertexSet.GetNumVertices();
 
-	BUMPWEIGHTVERTEX *pBumpWeight;
-    BUMPVERTEX *pBump;
-	NORMALVERTEX *pVertex;
-	SHADOWVERTEX *pShadowVert;
-	WEIGHTVERTEX *pWeightVert;
-	COLORVERTEX *pNVert;
-	unsigned char Indices[4];
+	int vert_size = 0;
+	int num_vertex_decs = 0;
+	D3DVERTEXELEMENT9 aVertexDeclaration[NUM_MAX_VERTEX_ELEMENTS];
+	size_t pos_offset = 0, normal_offset = 0, binormal_offset = 0, tangent_offset = 0;
+	size_t weight_index_offset = 0, weight_offset = 0;
+	size_t color_offset = 0;
+	size_t tex_offset[] = {0,0,0,0};
+	const uint vert_fmt_flags = rVertexSet.GetVertexFormat();
 
-	switch( rVertexSet.GetVertexFormat() )
+	if( vert_fmt_flags & CMMA_VertexSet::VF_POSITION )
 	{
-	case CMMA_VertexSet::VF_COLORVERTEX:	// unlit vertex with diffuse color
-///	case CMMA_VertexSet::VF_TEXTUREVERTEX:	// unlit, textured vertex with no bumpmap
-
-		m_dwFVF = COLORVERTEX::FVF;
-		m_iVertexSize = sizeof(COLORVERTEX);
-		pVBData = (void *)( new COLORVERTEX [iNumVertices] );
-		pNVert = (COLORVERTEX *)pVBData;
-		for( i=0; i<iNumVertices; i++ )
-		{
-			pNVert[i].vPosition = rVertexSet.vecPosition[i];
-			pNVert[i].vNormal   = rVertexSet.vecNormal[i];
-			pNVert[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
-		}
-//		pVertexElements = COLORVERTEX_DECLARATION;
-		DIRECT3D9.GetDevice()->CreateVertexDeclaration(COLORVERTEX_DECLARATION, &m_pVertexDecleration);
-		break;
-
-	case CMMA_VertexSet::VF_BUMPVERTEX:	// unlit, textured vertex with bumpmap
-
-		m_dwFVF = BUMPVERTEX::FVF;
-		m_iVertexSize = sizeof(BUMPVERTEX);
-		pVBData = (void *)( new BUMPVERTEX [iNumVertices] );
-		pBump = (BUMPVERTEX *)pVBData;
-		for( i=0; i<iNumVertices; i++ )
-		{
-			pBump[i].vPosition = rVertexSet.vecPosition[i];
-			pBump[i].vNormal   = rVertexSet.vecNormal[i];
-			pBump[i].vBinormal = rVertexSet.vecBinormal[i];
-			pBump[i].vTangent  = rVertexSet.vecTangent[i];
-			pBump[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
-			pBump[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
-		}
-//		pVertexElements = BUMPVERTEX_DECLARATION;
-		DIRECT3D9.GetDevice()->CreateVertexDeclaration(BUMPVERTEX_DECLARATION, &m_pVertexDecleration);
-		break;
-
-	case CMMA_VertexSet::VF_TEXTUREVERTEX:	// unlit, textured vertex with no bumpmap
-
-		m_dwFVF = NORMALVERTEX::FVF;
-		m_iVertexSize = sizeof(NORMALVERTEX);
-		pVBData = (void *)( new NORMALVERTEX [iNumVertices] );
-		pVertex = (NORMALVERTEX *)pVBData;
-		for( i=0; i<iNumVertices; i++ )
-		{
-			pVertex[i].vPosition = rVertexSet.vecPosition[i];
-			pVertex[i].vNormal   = rVertexSet.vecNormal[i];
-			pVertex[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
-			pVertex[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
-		}
-//		pVertexElements = NORMALVERTEX_DECLARATION;
-		DIRECT3D9.GetDevice()->CreateVertexDeclaration(NORMALVERTEX_DECLARATION, &m_pVertexDecleration);
-		break;
-
-	case CMMA_VertexSet::VF_SHADOWVERTEX:
-
-		m_dwFVF = SHADOWVERTEX::FVF;
-		m_iVertexSize = sizeof(SHADOWVERTEX);
-		pVBData = (void *)( new SHADOWVERTEX [iNumVertices] );
-		pShadowVert = (SHADOWVERTEX *)pVBData;
-		for( i=0; i<iNumVertices; i++ )
-		{
-			pShadowVert[i].vPosition = rVertexSet.vecPosition[i];
-			pShadowVert[i].vNormal   = rVertexSet.vecNormal[i];
-		}
-//		pVertexElements = SHADOWVERTEX_DECLARATION;
-		DIRECT3D9.GetDevice()->CreateVertexDeclaration(SHADOWVERTEX_DECLARATION, &m_pVertexDecleration);
-		break;
-
-	case CMMA_VertexSet::VF_WEIGHTVERTEX:
-//		m_dwFVF = WEIGHTVERTEX::FVF;
-		m_iVertexSize = sizeof(WEIGHTVERTEX);
-		pVBData = (void *)( new WEIGHTVERTEX [iNumVertices] );
-		pWeightVert = (WEIGHTVERTEX *)pVBData;
-		for( i=0; i<iNumVertices; i++ )
-		{
-			pWeightVert[i].vPosition = rVertexSet.vecPosition[i];
-			pWeightVert[i].vNormal   = rVertexSet.vecNormal[i];
-			pWeightVert[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
-			pWeightVert[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
-
-			rVertexSet.GetBlendMatrixIndices_4Bytes( i, Indices );
-			pWeightVert[i].matrixIndices = D3DCOLOR_ARGB( Indices[0], Indices[1], Indices[2], Indices[3] );
-
-			rVertexSet.GetBlendMatrixWeights_4Floats( i, (float *)&(pWeightVert[i].matrixWeights) );
-		}
-//		pVertexElements = WEIGHTVERTEX_DECLARATION;
-		DIRECT3D9.GetDevice()->CreateVertexDeclaration(WEIGHTVERTEX_DECLARATION, &m_pVertexDecleration);
-		break;
-
-	case CMMA_VertexSet::VF_BUMPWEIGHTVERTEX:
-		m_iVertexSize = sizeof(BUMPWEIGHTVERTEX);
-		pVBData = (void *)( new BUMPWEIGHTVERTEX [iNumVertices] );
-		pBumpWeight = (BUMPWEIGHTVERTEX *)pVBData;
-		for( i=0; i<iNumVertices; i++ )
-		{
-			pBumpWeight[i].vPosition = rVertexSet.vecPosition[i];
-			pBumpWeight[i].vNormal   = rVertexSet.vecNormal[i];
-			pBumpWeight[i].vBinormal = rVertexSet.vecBinormal[i];
-			pBumpWeight[i].vTangent  = rVertexSet.vecTangent[i];
-			pBumpWeight[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
-			pBumpWeight[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
-
-			rVertexSet.GetBlendMatrixIndices_4Bytes( i, Indices );
-			pBumpWeight[i].matrixIndices = D3DCOLOR_ARGB( Indices[0], Indices[1], Indices[2], Indices[3] );
-
-			rVertexSet.GetBlendMatrixWeights_4Floats( i, (float *)&(pBumpWeight[i].matrixWeights) );
-		}
-//		pVertexElements = BUMPWEIGHTVERTEX_DECLARATION;
-		DIRECT3D9.GetDevice()->CreateVertexDeclaration(BUMPWEIGHTVERTEX_DECLARATION, &m_pVertexDecleration);
-		break;
-
-	case CMMA_VertexSet::VF_SHADOWWEIGHTVERTEX:
-		m_iVertexSize = sizeof(WEIGHTVERTEX);
-		pVBData = (void *)( new WEIGHTVERTEX [iNumVertices] );
-		pWeightVert = (WEIGHTVERTEX *)pVBData;
-		for( i=0; i<iNumVertices; i++ )
-		{
-			pWeightVert[i].vPosition = rVertexSet.vecPosition[i];
-			pWeightVert[i].vNormal   = rVertexSet.vecNormal[i];
-			pWeightVert[i].color     = 0;
-			pWeightVert[i].tex       = TEXCOORD2(0,0);
-
-			rVertexSet.GetBlendMatrixIndices_4Bytes( i, Indices );
-			pWeightVert[i].matrixIndices = D3DCOLOR_ARGB( Indices[0], Indices[1], Indices[2], Indices[3] );
-
-			rVertexSet.GetBlendMatrixWeights_4Floats( i, (float *)&(pWeightVert[i].matrixWeights) );
-		}
-//		pVertexElements = WEIGHTVERTEX_DECLARATION;
-		DIRECT3D9.GetDevice()->CreateVertexDeclaration(WEIGHTVERTEX_DECLARATION, &m_pVertexDecleration);
-		break;
-
-	default:
-		break;
+		pos_offset = vert_size;
+		aVertexDeclaration[num_vertex_decs++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION,     0 );
+		vert_size += sizeof(float) * 3;
 	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_NORMAL )
+	{
+		normal_offset = vert_size;
+		aVertexDeclaration[num_vertex_decs++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,       0 );
+		vert_size += sizeof(float) * 3;
+	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_BUMPMAP )
+	{
+		// needs binormal and tangent
+		tangent_offset = vert_size;
+		aVertexDeclaration[num_vertex_decs++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT,	0 );
+		vert_size += sizeof(float) * 3;
+		binormal_offset = vert_size;
+		aVertexDeclaration[num_vertex_decs++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL,0 );
+		vert_size += sizeof(float) * 3;
+	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_DIFFUSE_COLOR )
+	{
+		color_offset = vert_size;
+		aVertexDeclaration[num_vertex_decs++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR,        0 );
+		vert_size += 4;
+	}
+
+	uint tex_flag[] = {
+		CMMA_VertexSet::VF_2D_TEXCOORD0,
+		CMMA_VertexSet::VF_2D_TEXCOORD1,
+		CMMA_VertexSet::VF_2D_TEXCOORD2,
+		CMMA_VertexSet::VF_2D_TEXCOORD3 };
+
+	BYTE usage_index = 0;
+	for( i=0; i<numof(tex_flag); i++ )
+	{
+		if( vert_fmt_flags & tex_flag[i] )
+		{
+			tex_offset[i] = vert_size;
+			aVertexDeclaration[num_vertex_decs++]
+			= D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT2,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,     usage_index );
+			vert_size += sizeof(float) * 2;
+			usage_index++;
+		}
+	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_WEIGHT )
+	{
+		weight_index_offset = vert_size;
+		aVertexDeclaration[num_vertex_decs++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_UBYTE4,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BLENDINDICES, 0 );
+		vert_size += 4;
+		weight_offset = vert_size;
+		aVertexDeclaration[num_vertex_decs++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT4,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BLENDWEIGHT,  0 );
+		vert_size += sizeof(float) * 4;
+	}
+
+	// add terminating element to the vertex declaration
+	D3DVERTEXELEMENT9 end_element[] = { D3DDECL_END() };
+	aVertexDeclaration[num_vertex_decs++] = end_element[0];
+
+	DIRECT3D9.GetDevice()->CreateVertexDeclaration( aVertexDeclaration, &m_pVertexDecleration );
+
+	// the size of the each vertex (in bytes)
+	m_iVertexSize = vert_size;
+
+	// allocate memory to store all the vertices of the specified format
+	unsigned char *pBuffer = new unsigned char [vert_size * iNumVertices];
+
+	// copy the vertices to the buffer
+	if( vert_fmt_flags & CMMA_VertexSet::VF_POSITION )
+	{
+		for( i=0; i<iNumVertices; i++ )
+			memcpy( pBuffer + i * vert_size + pos_offset, &rVertexSet.vecPosition[i], sizeof(Vector3) );
+	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_NORMAL )
+	{
+		for( i=0; i<iNumVertices; i++ )
+			memcpy( pBuffer + i * vert_size + normal_offset, &rVertexSet.vecNormal[i], sizeof(Vector3) );
+	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_BUMPMAP )
+	{
+		for( i=0; i<iNumVertices; i++ )
+		{
+			memcpy( pBuffer + i * vert_size + tangent_offset,  &rVertexSet.vecTangent[i],  sizeof(Vector3) );
+			memcpy( pBuffer + i * vert_size + binormal_offset, &rVertexSet.vecBinormal[i], sizeof(Vector3) );
+		}
+	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_DIFFUSE_COLOR )
+	{
+		for( i=0; i<iNumVertices; i++ )
+		{
+			DWORD color = rVertexSet.vecDiffuseColor[i].GetARGB32();
+			memcpy( pBuffer + i * vert_size + color_offset, &color, sizeof(DWORD) );
+		}
+	}
+
+	for( int t=0; t<numof(tex_flag); t++ )
+	{
+		if( rVertexSet.vecTex.size() <= t )
+			break;
+
+		if( vert_fmt_flags & tex_flag[t] )
+		{
+			for( i=0; i<iNumVertices; i++ )
+				memcpy( pBuffer + i * vert_size + tex_offset[t], &rVertexSet.vecTex[t][i], sizeof(float) * 2 );
+		}
+	}
+
+	if( vert_fmt_flags & CMMA_VertexSet::VF_WEIGHT )
+	{
+		unsigned char Indices[4];
+		float weights[4];
+		for( i=0; i<iNumVertices; i++ )
+		{
+			rVertexSet.GetBlendMatrixIndices_4Bytes( i, Indices );
+			DWORD indices = D3DCOLOR_ARGB( Indices[0], Indices[1], Indices[2], Indices[3] );
+			rVertexSet.GetBlendMatrixWeights_4Floats( i, weights );
+
+			memcpy( pBuffer + i * vert_size + weight_index_offset,  &indices,  sizeof(DWORD) );
+			memcpy( pBuffer + i * vert_size + weight_offset,        weights,   sizeof(float) * 4 );
+		}
+	}
+
+	pVBData = pBuffer;
+
+	memcpy( pVertexElements, aVertexDeclaration, sizeof(D3DVERTEXELEMENT9) * num_vertex_decs );
 }
 
 
@@ -727,3 +760,147 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchvie( C3DMeshModel
 */
 }
 
+
+
+/*
+
+
+	switch( rVertexSet.GetVertexFormat() )
+	{
+	case CMMA_VertexSet::VF_COLORVERTEX:	// unlit vertex with diffuse color
+///	case CMMA_VertexSet::VF_TEXTUREVERTEX:	// unlit, textured vertex with no bumpmap
+
+		m_dwFVF = COLORVERTEX::FVF;
+		m_iVertexSize = sizeof(COLORVERTEX);
+		pVBData = (void *)( new COLORVERTEX [iNumVertices] );
+		pNVert = (COLORVERTEX *)pVBData;
+		for( i=0; i<iNumVertices; i++ )
+		{
+			pNVert[i].vPosition = rVertexSet.vecPosition[i];
+			pNVert[i].vNormal   = rVertexSet.vecNormal[i];
+			pNVert[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
+		}
+//		pVertexElements = COLORVERTEX_DECLARATION;
+		DIRECT3D9.GetDevice()->CreateVertexDeclaration(COLORVERTEX_DECLARATION, &m_pVertexDecleration);
+		break;
+
+	case CMMA_VertexSet::VF_BUMPVERTEX:	// unlit, textured vertex with bumpmap
+
+		m_dwFVF = BUMPVERTEX::FVF;
+		m_iVertexSize = sizeof(BUMPVERTEX);
+		pVBData = (void *)( new BUMPVERTEX [iNumVertices] );
+		pBump = (BUMPVERTEX *)pVBData;
+		for( i=0; i<iNumVertices; i++ )
+		{
+			pBump[i].vPosition = rVertexSet.vecPosition[i];
+			pBump[i].vNormal   = rVertexSet.vecNormal[i];
+			pBump[i].vBinormal = rVertexSet.vecBinormal[i];
+			pBump[i].vTangent  = rVertexSet.vecTangent[i];
+			pBump[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
+			pBump[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
+		}
+//		pVertexElements = BUMPVERTEX_DECLARATION;
+		DIRECT3D9.GetDevice()->CreateVertexDeclaration(BUMPVERTEX_DECLARATION, &m_pVertexDecleration);
+		break;
+
+	case CMMA_VertexSet::VF_TEXTUREVERTEX:	// unlit, textured vertex with no bumpmap
+
+		m_dwFVF = NORMALVERTEX::FVF;
+		m_iVertexSize = sizeof(NORMALVERTEX);
+		pVBData = (void *)( new NORMALVERTEX [iNumVertices] );
+		pVertex = (NORMALVERTEX *)pVBData;
+		for( i=0; i<iNumVertices; i++ )
+		{
+			pVertex[i].vPosition = rVertexSet.vecPosition[i];
+			pVertex[i].vNormal   = rVertexSet.vecNormal[i];
+			pVertex[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
+			pVertex[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
+		}
+//		pVertexElements = NORMALVERTEX_DECLARATION;
+		DIRECT3D9.GetDevice()->CreateVertexDeclaration(NORMALVERTEX_DECLARATION, &m_pVertexDecleration);
+		break;
+
+	case CMMA_VertexSet::VF_SHADOWVERTEX:
+
+		m_dwFVF = SHADOWVERTEX::FVF;
+		m_iVertexSize = sizeof(SHADOWVERTEX);
+		pVBData = (void *)( new SHADOWVERTEX [iNumVertices] );
+		pShadowVert = (SHADOWVERTEX *)pVBData;
+		for( i=0; i<iNumVertices; i++ )
+		{
+			pShadowVert[i].vPosition = rVertexSet.vecPosition[i];
+			pShadowVert[i].vNormal   = rVertexSet.vecNormal[i];
+		}
+//		pVertexElements = SHADOWVERTEX_DECLARATION;
+		DIRECT3D9.GetDevice()->CreateVertexDeclaration(SHADOWVERTEX_DECLARATION, &m_pVertexDecleration);
+		break;
+
+	case CMMA_VertexSet::VF_WEIGHTVERTEX:
+//		m_dwFVF = WEIGHTVERTEX::FVF;
+		m_iVertexSize = sizeof(WEIGHTVERTEX);
+		pVBData = (void *)( new WEIGHTVERTEX [iNumVertices] );
+		pWeightVert = (WEIGHTVERTEX *)pVBData;
+		for( i=0; i<iNumVertices; i++ )
+		{
+			pWeightVert[i].vPosition = rVertexSet.vecPosition[i];
+			pWeightVert[i].vNormal   = rVertexSet.vecNormal[i];
+			pWeightVert[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
+			pWeightVert[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
+
+			rVertexSet.GetBlendMatrixIndices_4Bytes( i, Indices );
+			pWeightVert[i].matrixIndices = D3DCOLOR_ARGB( Indices[0], Indices[1], Indices[2], Indices[3] );
+
+			rVertexSet.GetBlendMatrixWeights_4Floats( i, (float *)&(pWeightVert[i].matrixWeights) );
+		}
+//		pVertexElements = WEIGHTVERTEX_DECLARATION;
+		DIRECT3D9.GetDevice()->CreateVertexDeclaration(WEIGHTVERTEX_DECLARATION, &m_pVertexDecleration);
+		break;
+
+	case CMMA_VertexSet::VF_BUMPWEIGHTVERTEX:
+		m_iVertexSize = sizeof(BUMPWEIGHTVERTEX);
+		pVBData = (void *)( new BUMPWEIGHTVERTEX [iNumVertices] );
+		pBumpWeight = (BUMPWEIGHTVERTEX *)pVBData;
+		for( i=0; i<iNumVertices; i++ )
+		{
+			pBumpWeight[i].vPosition = rVertexSet.vecPosition[i];
+			pBumpWeight[i].vNormal   = rVertexSet.vecNormal[i];
+			pBumpWeight[i].vBinormal = rVertexSet.vecBinormal[i];
+			pBumpWeight[i].vTangent  = rVertexSet.vecTangent[i];
+			pBumpWeight[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
+			pBumpWeight[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
+
+			rVertexSet.GetBlendMatrixIndices_4Bytes( i, Indices );
+			pBumpWeight[i].matrixIndices = D3DCOLOR_ARGB( Indices[0], Indices[1], Indices[2], Indices[3] );
+
+			rVertexSet.GetBlendMatrixWeights_4Floats( i, (float *)&(pBumpWeight[i].matrixWeights) );
+		}
+//		pVertexElements = BUMPWEIGHTVERTEX_DECLARATION;
+		DIRECT3D9.GetDevice()->CreateVertexDeclaration(BUMPWEIGHTVERTEX_DECLARATION, &m_pVertexDecleration);
+		break;
+
+	case CMMA_VertexSet::VF_SHADOWWEIGHTVERTEX:
+		m_iVertexSize = sizeof(WEIGHTVERTEX);
+		pVBData = (void *)( new WEIGHTVERTEX [iNumVertices] );
+		pWeightVert = (WEIGHTVERTEX *)pVBData;
+		for( i=0; i<iNumVertices; i++ )
+		{
+			pWeightVert[i].vPosition = rVertexSet.vecPosition[i];
+			pWeightVert[i].vNormal   = rVertexSet.vecNormal[i];
+			pWeightVert[i].color     = 0;
+			pWeightVert[i].tex       = TEXCOORD2(0,0);
+
+			rVertexSet.GetBlendMatrixIndices_4Bytes( i, Indices );
+			pWeightVert[i].matrixIndices = D3DCOLOR_ARGB( Indices[0], Indices[1], Indices[2], Indices[3] );
+
+			rVertexSet.GetBlendMatrixWeights_4Floats( i, (float *)&(pWeightVert[i].matrixWeights) );
+		}
+//		pVertexElements = WEIGHTVERTEX_DECLARATION;
+		DIRECT3D9.GetDevice()->CreateVertexDeclaration(WEIGHTVERTEX_DECLARATION, &m_pVertexDecleration);
+		break;
+
+	default:
+		break;
+	}
+
+
+*/
