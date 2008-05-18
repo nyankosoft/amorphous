@@ -53,6 +53,10 @@ class CStaticGeometryCompiler
 
 	std::map<std::string,CShaderInfo> m_ShaderNameToShaderInfo;
 
+	/// why member variable
+	/// -> Need to hold lightmap textures on memory in order to add them later to db
+//	boost::shared_ptr<CLightmapBuilder> m_pLightmapBuilder;
+
 protected:
 
 	void AddDestGraphicsMeshInstance();
@@ -66,6 +70,8 @@ protected:
 	bool CompileGraphicsGeometry();
 
 	bool CreateCollisionMesh();
+
+	bool CreateLightmaps();
 
 	void SaveToBinaryDatabase( const std::string& db_filename );
 

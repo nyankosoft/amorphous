@@ -15,6 +15,18 @@
 using namespace boost;
 
 
+int get_str_index( const std::string& name, std::vector<CGeometrySurfaceDesc>& vecDesc )
+{
+	for( size_t i=0; i<vecDesc.size(); i++ )
+	{
+		if( name == vecDesc[i].m_Name )
+			return (int)i;
+	}
+
+	return 0;
+}
+
+
 inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
 {
 	boost::shared_ptr<CGeneral3DMesh> pMesh
@@ -38,7 +50,7 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 	bool db_open = db.Open( db_filename, CBinaryDatabase<string>::DB_MODE_NEW );
 	if( !db_open )
 	{
-		LOG_PRINT_ERROR( "Cannot open a file for binary database: " + db_filename );
+		LOG_PRINT_ERROR( " - Cannot open a file for binary database: " + db_filename );
 		return;
 	}
 
@@ -51,6 +63,10 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 	{
 		AddTexturesToBinaryDatabase( m_vecDestGraphicsMeshArchive[i], db_filepath, db );
 	}
+
+	// add lightmap textures
+//	if( m_pLightmapBuilder )
+//		m_pLightmapBuilder->AddLightmapTexturesToDB( db );
 
 	string db_dir_relative_path = m_DatabaseRelativeDirPathAtRuntime;
 
@@ -327,17 +343,28 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 }
 
 
-int get_str_index( const std::string& name, vector<CGeometrySurfaceDesc>& vecDesc )
+bool CStaticGeometryCompiler::CreateLightmaps()
 {
-	for( size_t i=0; i<vecDesc.size(); i++ )
-	{
-		if( name == vecDesc[i].m_Name )
-			return (int)i;
-	}
+	// create lightmaps
+	// [in] polygons
+	// [in] polygon mesh tree for raycast
+	// [in] lights
 
-	return 0;
+	CLightmapBuilder lightmap_builder;
+
+	// a point light for test
+//	shared_ptr<CPointLight> pPntLight = shared_ptr<CPointLight>( new CPointLight() );
+//	pPntLight->Color = SFloatRGBColor( 1.0f, 0.0f, 0.0f );
+//	pPntLight->vPosition = Vector3( 5, 2.8, 5 );
+//	m_Desc.m_vecpLight.push_back( pPntLight );
+
+	m_Desc.m_Lightmap.m_pvecpLight = &m_Desc.m_vecpLight;
+	m_Desc.m_Lightmap.m_pMesh = &m_GraphicsMesh;
+	m_Desc.m_Lightmap.m_vecEnableLightmapForSurface.resize( m_GraphicsMesh.GetMaterialBuffer().size(), 1 );
+	m_Desc.m_Lightmap.m_OutputDatabaseFilepath = fnop::get_nopath( m_Desc.m_OutputFilepath );
+
+	return lightmap_builder.CreateLightmapTexture( m_Desc.m_Lightmap );
 }
-
 
 bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 {
@@ -369,27 +396,9 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 		m_CreatedPolygonTreeThroughTextureSubdivision = true;
 	}
 */
-	// create lightmap
-	// [in] polygons
-	// [in] polygon mesh tree for raycast
-	// [in] lights
 
-	/// sort polygon by lightmap texture indices
-//	vector<vector<CIndexedPolygon>> vecPolygonSortedByLightmapTexure;
-
-	CLightmapBuilder lightmap_builder;
-
-	// a point light for test
-//	shared_ptr<CPointLight> pPntLight = shared_ptr<CPointLight>( new CPointLight() );
-//	pPntLight->Color = SFloatRGBColor( 1.0f, 0.0f, 0.0f );
-//	pPntLight->vPosition = Vector3( 5, 2.8, 5 );
-//	m_Desc.m_vecpLight.push_back( pPntLight );
-
-	m_Desc.m_Lightmap.m_pvecpLight = &m_Desc.m_vecpLight;
-	m_Desc.m_Lightmap.m_pMesh = &m_GraphicsMesh;
-	m_Desc.m_Lightmap.m_vecEnableLightmapForSurface.resize( m_GraphicsMesh.GetMaterialBuffer().size(), 1 );
-
-	lightmap_builder.CreateLightmapTexture( m_Desc.m_Lightmap );
+	// lightmap
+	CreateLightmaps();
 
 
 	/// make the polygon tree

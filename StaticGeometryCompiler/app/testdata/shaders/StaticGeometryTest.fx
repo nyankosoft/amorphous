@@ -174,7 +174,7 @@ float4 PS_StaticLightmap(
 
 	fog_blend = clamp( fog_blend, 0, 1 );
 
-	float4 lightmap_color = float4(1,1,1,1); //tex2D(Sampler1, Tex1);
+	float4 lightmap_color = tex2D(Sampler1, Tex1);
 
 //	return tex2D(Sampler0, Tex0);
 	return tex2D(Sampler0, Tex0) * lightmap_color * (1.0 - fog_blend) + float4( 0.7, 0.7, 0.7, 1.0 ) * fog_blend;
