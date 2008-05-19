@@ -538,6 +538,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\Project1\gds\3DCommon\ShaderHandle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\3DCommon\ShaderHandle.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\Project1\gds\3DCommon\TextureHandle.cpp"
 					>
 				</File>

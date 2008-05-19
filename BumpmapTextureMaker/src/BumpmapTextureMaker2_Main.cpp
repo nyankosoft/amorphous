@@ -14,9 +14,11 @@
 #include "Support/FileOpenDialog_Win32.h"
 #include "Support/fnop.h"
 #include "Support/Log/DefaultLog.h"
-//#include "Support/CameraController_Win32.h"
+#include "Support/SafeDelete.h"
 
 #include "BumpmapTextureMaker2_LWO2.h"
+
+#include <vld.h>
 
 
 #define	WINDOW_WIDTH	(800)
@@ -285,15 +287,14 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		}
     }
 
+	SafeDelete( g_pBumpTexMaker );
+
+	// release any singleton class that inherits CGraphicsComponent
+	CGraphicsResourceManager::ReleaseSingleton();
+
     // Clean up everything before finishing
 	DIRECT3D9.Release();
     UnregisterClass( "D3DTest", wc.hInstance );
-
-	if( g_pBumpTexMaker )
-	{
-		delete g_pBumpTexMaker;
-		g_pBumpTexMaker = NULL;
-	}
 
     return 0;
 }

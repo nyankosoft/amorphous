@@ -1,16 +1,16 @@
 
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
 #include "3DCommon/TextureTool.h"
 #include "3DCommon/TextureRenderTarget.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/D3DXSMeshObject.h"
 #include "3DCommon/D3DXMeshObject.h"
+#include "3DCommon/Shader/ShaderManager.h"
 #include "LightWave/LightWaveObject.h"
 #include "LightWave/3DMeshModelBuilder_LW.h"
 
 #include "Support/fnop.h"
+#include "Support/Macro.h"
 #include "Support/BMPImageExporter.h"
 #include "Support/memory_helpers.h"
 #include "Support/Log/DefaultLog.h"
@@ -27,25 +27,25 @@ static int s_RenderVolumeTexture = 0;//1;
 bool CBumpmapTextureMaker2_LWO2::LoadShader( const string& shader_filename )
 {
 	// load shader for rendering normal map, flat texture surface and bumpmap surface
-	SafeDelete( m_pShaderManager );
-	m_pShaderManager = new CShaderManager;
+	m_Shader.filename = shader_filename;
 
-	if( !m_pShaderManager->LoadShaderFromFile( shader_filename ) )
+	bool shader_loaded = m_Shader.Load();
+
+	if( !shader_loaded )
 	{
-		SafeDelete( m_pShaderManager );
 		return false;
 	}
 
-	CShader::Get()->SetShaderManager( m_pShaderManager );
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
-	m_pShaderManager->RegisterTechnique( BTM_RENDERMODE_NORMALMAP,				"NormalMap" );
-	m_pShaderManager->RegisterTechnique( BTM_RENDERMODE_FLAT_TEXTURED_SURFACE,	"FlatTexSurface" );
-	m_pShaderManager->RegisterTechnique( BTM_RENDERMODE_BUMPY_TEXTURED_SURFACE,	"BumpyTexturedSurface" );
+	pShaderMgr->RegisterTechnique( BTM_RENDERMODE_NORMALMAP,				"NormalMap" );
+	pShaderMgr->RegisterTechnique( BTM_RENDERMODE_FLAT_TEXTURED_SURFACE,	"FlatTexSurface" );
+	pShaderMgr->RegisterTechnique( BTM_RENDERMODE_BUMPY_TEXTURED_SURFACE,	"BumpyTexturedSurface" );
 
 	if( s_RenderVolumeTexture  == 1 )
 	{
 		// overwrite the second technique
-		m_pShaderManager->RegisterTechnique( BTM_RENDERMODE_FLAT_TEXTURED_SURFACE,	"AlphaSurface" );
+		pShaderMgr->RegisterTechnique( BTM_RENDERMODE_FLAT_TEXTURED_SURFACE,	"AlphaSurface" );
 	}
 
 
@@ -53,7 +53,7 @@ bool CBumpmapTextureMaker2_LWO2::LoadShader( const string& shader_filename )
 	D3DXMATRIX matCamera;
 	D3DXMatrixLookAtLH( &matCamera, &D3DXVECTOR3(0, 0, 5), &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 1, 0) );
 
-	m_pShaderManager->SetViewTransform( matCamera );
+	pShaderMgr->SetViewTransform( matCamera );
 
 	return true;
 }
@@ -61,8 +61,7 @@ bool CBumpmapTextureMaker2_LWO2::LoadShader( const string& shader_filename )
 
 CBumpmapTextureMaker2_LWO2::CBumpmapTextureMaker2_LWO2()
 :
-m_p3DModel(NULL),
-m_pShaderManager(NULL)
+m_p3DModel(NULL)
 {
 
 //	m_fViewVolumeWidth = 1.0f;
@@ -91,7 +90,6 @@ CBumpmapTextureMaker2_LWO2::~CBumpmapTextureMaker2_LWO2()
 void CBumpmapTextureMaker2_LWO2::Release()
 {
 	SafeDelete( m_p3DModel );
-	SafeDelete( m_pShaderManager );
 }
 
 
@@ -201,8 +199,9 @@ void CBumpmapTextureMaker2_LWO2::SetViewWidth( float fViewVolumeWidth )
 					   100.0f		// zf - Maximum z-value of the view volume which is referred to as z-far
 					   );
 
-	if( m_pShaderManager )
-		m_pShaderManager->SetProjectionTransform( matProj );
+	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	if( pShaderManager )
+		pShaderManager->SetProjectionTransform( matProj );
 
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
@@ -217,9 +216,14 @@ void CBumpmapTextureMaker2_LWO2::UpdateDirectionalLight()
 
 	m_DirLight.m_vDir = matRotY * matRotX * Vector3(0,0,1);
 
-	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
+	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
-	pEffect->SetValue( "g_vLightDir", (void *)&m_DirLight.m_vDir, sizeof(float) * 3 );
+	if( pShaderManager )
+	{
+		LPD3DXEFFECT pEffect = pShaderManager->GetEffect();
+
+		pEffect->SetValue( "g_vLightDir", (void *)&m_DirLight.m_vDir, sizeof(float) * 3 );
+	}
 }
 
 
@@ -271,14 +275,16 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 
 	HRESULT hr;
 
+	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	LPD3DXEFFECT pEffect;
-	if( !m_pShaderManager || !( pEffect = m_pShaderManager->GetEffect() ) )
+	if( !pShaderManager || !( pEffect = pShaderManager->GetEffect() ) )
+	{
+		ONCE( LOG_PRINT_ERROR( "An invalid shader" ) );
 		return;
+	}
 
 	// udpate the directional light for the shader
 	UpdateDirectionalLight();
-
-	CShaderManager *pShaderManager = m_pShaderManager;
 
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );

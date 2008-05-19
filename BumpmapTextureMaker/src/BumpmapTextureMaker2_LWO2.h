@@ -5,6 +5,7 @@
 #include "3DMath/Vector3.h"
 #include "3DMath/Matrix33.h"
 #include "3DCommon/TextureHandle.h"
+#include "3DCommon/ShaderHandle.h"
 
 #include <string>
 using namespace std;
@@ -30,7 +31,7 @@ class CBumpmapTextureMaker2_LWO2
 
 	CD3DXMeshObject *m_p3DModel;
 
-	CShaderManager *m_pShaderManager;
+	CShaderHandle m_Shader;
 
 	LPDIRECT3DTEXTURE9 m_pDefaultTexture;
 
