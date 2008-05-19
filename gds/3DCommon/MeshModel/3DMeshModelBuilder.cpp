@@ -41,6 +41,8 @@ static int s_MeshNum = 0;
 
 void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader )
 {
+	LOG_FUNCTION_SCOPE();
+
 	m_pModelLoader = pModelLoader;
 
 	BuildMeshModelArchive( m_pModelLoader->GetGeneral3DMeshSharedPtr() );
@@ -50,6 +52,8 @@ void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pMod
 /// \param [in] borrowed reference
 void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh )
 {
+	LOG_FUNCTION_SCOPE();
+
 	m_pMesh = pGeneralMesh;
 
 	// save non-triangulated polygons

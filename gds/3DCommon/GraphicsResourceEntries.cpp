@@ -97,7 +97,7 @@ void CGraphicsResourceEntry::DecRefCount()
 {
 	if( m_iRefCount == 0 )
 	{
-		g_Log.Print( WL_WARNING, "CGraphicsResourceEntry::DecRefCount() - redundant call: ref count is already 0" );
+		LOG_PRINT_WARNING( " - A redundant call: ref count is already 0 (resource name: " + m_Filename + ")" );
 		return;	// error
 	}
 
@@ -362,6 +362,8 @@ m_pShaderManager(NULL)
 
 CShaderManagerEntry::~CShaderManagerEntry()
 {
+//	LOG_FUNCTION_SCOPE();
+
 	Release();
 }
 
@@ -397,5 +399,7 @@ bool CShaderManagerEntry::LoadFromFile( const std::string& filepath )
 
 void CShaderManagerEntry::Release()
 {
+	LOG_FUNCTION_SCOPE();
+
 	SafeDelete( m_pShaderManager );
 }

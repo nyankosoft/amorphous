@@ -2,19 +2,14 @@
 #define  __GraphicsResourceManager_H__
 	
 
-#define  TEXTURE_MANAGER_SYSTEM
-
-
 #include <vector>
 #include <string>
 
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "GraphicsComponentCollector.h"
+#include "GraphicsResourceEntries.h"
 
 #include "Support/Singleton.h"
 using namespace NS_KGL;
-
-
-#include "GraphicsResourceEntries.h"
 
 
 #define GraphicsResourceManager ( (*CGraphicsResourceManager::Get()) )
@@ -37,6 +32,8 @@ private:
 
 	inline CD3DXMeshObjectBase *GetMeshObject( int iMeshObjectEntryID );
 
+	inline CShaderManager *GetShaderManager( int iShaderEntryID );
+
 	int LoadGraphicsResource( const CGraphicsResourceDesc& desc );
 
 	void IncResourceRefCount( int entry_id );
@@ -49,6 +46,9 @@ private:
 
 	/// called from handle
 	int LoadMeshObject( std::string filename, int mesh_type );
+
+	/// called from handle
+	int LoadShaderManager( std::string filename );
 
 protected:
 ///	CGraphicsResourceManager();		//singleton
@@ -79,6 +79,7 @@ public:
 	friend class CGraphicsResourceHandle;
 	friend class CTextureHandle;
 	friend class CMeshObjectHandle;
+	friend class CShaderHandle;
 
 //	void Init();
 };
@@ -99,6 +100,15 @@ inline CD3DXMeshObjectBase *CGraphicsResourceManager::GetMeshObject( int iMeshOb
 		return NULL;	// invalid texture ID
 
 	return ((CMeshObjectEntry *)m_vecpResourceEntry[iMeshObjectEntryID])->GetMeshObject();
+}
+
+
+inline CShaderManager *CGraphicsResourceManager::GetShaderManager( int iShaderEntryID )
+{
+	if( iShaderEntryID < 0 )
+		return NULL;	// invalid texture ID
+
+	return ((CShaderManagerEntry *)m_vecpResourceEntry[iShaderEntryID])->GetShaderManager();
 }
 
 

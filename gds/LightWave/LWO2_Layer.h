@@ -86,7 +86,13 @@ public:
 
 	SVertexColor_LWO2 *paVertexColor;
 
+public:
+
 	CLWO2_VertexColorMap() : iNumIndices(0), paVertexColor(NULL) {}
+
+	~CLWO2_VertexColorMap() { Release(); }
+
+	void Release() { iNumIndices = 0; SafeDelete(paVertexColor); }
 
 	string& GetName() { return strName; }
 

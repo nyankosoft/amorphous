@@ -53,8 +53,10 @@ CGraphicsResourceEntry *CGraphicsResourceManager::CreateGraphicsResourceEntry( c
 		return new CTextureEntry();
 	case CGraphicsResourceDesc::RT_MESHOBJECT:
 		return new CMeshObjectEntry(desc.MeshType);
+	case CGraphicsResourceDesc::RT_SHADERMANAGER:
+		return new CShaderManagerEntry();
 	default:
-		g_Log.Print( WL_ERROR, "CGraphicsResourceManager::CreateGraphicsResourceEntry() - invalid resource type" );
+		LOG_PRINT_WARNING( " - invalid resource type" );
 		return NULL;
 	}
 }
@@ -62,6 +64,8 @@ CGraphicsResourceEntry *CGraphicsResourceManager::CreateGraphicsResourceEntry( c
 
 int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc& desc )
 {
+	LOG_FUNCTION_SCOPE();
+
 	if( desc.Filename.length() == 0 )
 		return -1;	// invalid filename
 
@@ -87,14 +91,14 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 
 	if( m_vecpResourceEntry.back()->GetRefCount() == 1 )
 	{
-		g_Log.Print( "CGraphicsResourceManager::LoadGraphicsResource() - created a graphics resource: %s", desc.Filename.c_str() );
+		LOG_PRINT( " - Created a graphics resource: " + desc.Filename );
 
 		// new texture has been successfully loaded
 		return (int)i;
 	}
 	else
 	{
-		g_Log.Print( WL_ERROR, "CGraphicsResourceManager::LoadGraphicsResource() - '%s' was not found.", desc.Filename.c_str() );
+		LOG_PRINT_WARNING( "Failed to create a graphics resource: " + desc.Filename );
 
 		SafeDelete( m_vecpResourceEntry.back() );
 		m_vecpResourceEntry.pop_back();
@@ -118,6 +122,15 @@ int CGraphicsResourceManager::LoadMeshObject( std::string filename, int mesh_typ
 	CGraphicsResourceDesc desc = CGraphicsResourceDesc(CGraphicsResourceDesc::RT_MESHOBJECT);
 	desc.Filename = filename;
 	desc.MeshType = mesh_type;
+	return LoadGraphicsResource( desc );
+}
+
+
+/// called from handle
+int CGraphicsResourceManager::LoadShaderManager( std::string filename )
+{
+	CGraphicsResourceDesc desc = CGraphicsResourceDesc(CGraphicsResourceDesc::RT_SHADERMANAGER);
+	desc.Filename = filename;
 	return LoadGraphicsResource( desc );
 }
 

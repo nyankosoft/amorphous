@@ -37,9 +37,7 @@ CLWO2_VertexColorMap::CLWO2_VertexColorMap(const CLWO2_VertexColorMap& vc_map)
 
 	if( 0 < iNumIndices )
 	{
-		delete [] paVertexColor;
-		paVertexColor = NULL;
-		iNumIndices = 0;
+		Release();
 	}
 
 	if( 0 < vc_map.iNumIndices )
@@ -58,9 +56,7 @@ CLWO2_VertexColorMap CLWO2_VertexColorMap::operator=(CLWO2_VertexColorMap vc_map
 
 	if( 0 < iNumIndices )
 	{
-		delete [] paVertexColor;
-		paVertexColor = NULL;
-		iNumIndices = 0;
+		Release();
 	}
 
 	if( 0 < vc_map.iNumIndices )

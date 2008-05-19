@@ -22,6 +22,8 @@ public:
 
 	static const CShaderHandle& Null() { return ms_NullHandle; }
 
+	CShaderManager *GetShaderManager();
+
 //	inline const CShaderHandle &operator=( const CShaderHandle& handle );
 };
 
