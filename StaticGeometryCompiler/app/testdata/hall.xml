@@ -21,7 +21,7 @@
 			<LightFile>./hall_lights.xml</LightFile>
 		</Lighting>
 		<Lightmap>
-			<TexelSize>1.0</TexelSize>
+			<TexelSize>0.2</TexelSize>
 		</Lightmap>
 	</Graphics>
 </Root>

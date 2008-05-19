@@ -23,6 +23,6 @@
 		</Lighting>
 	</Graphics>
 	<Lightmap>
-		<TexelSize>1.0</TexelSize>
+		<TexelSize>0.2</TexelSize>
 	</Lightmap>
 </Root>
