@@ -1,15 +1,50 @@
 #ifndef __DIRECT3D9_H__
 #define __DIRECT3D9_H__
 
+#include <vector>
 #include <d3d9.h>
 #include <d3dx9.h>
+#include "../base.h"
+#include "TextureFormat.h"
 
 //#pragma comment( lib, "d3dx9dt.lib" )
 #pragma comment( lib, "d3d9.lib" )
 #pragma comment( lib, "d3dx9.lib" )
 
 
-#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
+class CDisplayMode
+{
+public:
+	uint Width;
+	uint Height;
+	uint RefreshRate;
+	TextureFormat::Format Format;
+
+public:
+
+	CDisplayMode( uint w=0, uint h=0, uint r=0, TextureFormat::Format fmt = TextureFormat::X8R8G8B8)
+		:
+	Width(w),
+	Height(h),
+	RefreshRate(r),
+	Format(fmt)
+	{}
+};
+
+class CAdapterMode
+{
+public:
+	TextureFormat::Format Format;
+
+	std::vector<CDisplayMode> vecDisplayMode;
+
+public:
+
+	CAdapterMode( TextureFormat::Format fmt = TextureFormat::X8R8G8B8 )
+		:
+	Format(fmt)
+	{}
+};
 
 
 #define DIRECT3D9 ( CDirect3D9::ms_CDirect3D9_ )
@@ -32,9 +67,15 @@ private:
 
 	D3DFORMAT m_AdapterFormat; ///< the surface format of the display mode
 
+	std::vector<CAdapterMode> m_vecAdapterMode;
+
 private:
 
 	void SetDefaultRenderStates();
+
+	/// Retrieve possible adapter modes for the primary display adapter
+	/// and store them to m_vecAdapterMode
+	void GetAdapterModesForDefaultAdapter();
 
 protected:
 

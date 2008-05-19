@@ -1,13 +1,11 @@
-
 #ifndef __3DMATH_MATRIX33_H__
 #define __3DMATH_MATRIX33_H__
 
+#include "../base.h"
 #include "precision.h"
 #include "Vector3.h"
 #include <math.h>
 
-
-typedef int uint;
 
 /// A 3x3 matrix
 class Matrix33

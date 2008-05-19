@@ -124,16 +124,11 @@ bool CApplicationBase::Init()
 	CGlobalParams global_params;
 	global_params.LoadFromFile( "config" );
 
-	// set the message procedure for the game window
-	// 19:42 5/13/2008 - Moved to AppMain_Win32.cpp
-//	g_pMessageProcedureForGameWindow = MsgProc;
-
 	// create the main game window
 	// Direct3D is initialized in this function
 	int mode = global_params.FullScreen ? SMD_FULLSCREEN : SMD_WINDOWED;
 	GAMEWINDOWMANAGER.CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode, GetApplicationTitle() );
-//	GAMEWINDOWMANAGER.CreateGameWindow( 800, 600 );
-//	GAMEWINDOWMANAGER.CreateGameWindow( 800, 600, SMD_FULLSCREEN );
+//	GAMEWINDOWMANAGER.CreateGameWindow( 800, 600, SMD_WINDOWED /*SMD_FULLSCREEN*/ );
 
 	if( 0 <= global_params.WindowLeftPos && 0 <= global_params.WindowTopPos )
 		GAMEWINDOWMANAGER.SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
@@ -165,8 +160,8 @@ bool CApplicationBase::Init()
 
 	// update & load the item database
 //	ItemDatabaseManager().Update( "..." );
-	CItemDatabaseManager::Get()->Update( "resources\\item\\item.mkx" );
-	CItemDatabaseManager::Get()->LoadFromFile( "Item\\item.gid" );
+	CItemDatabaseManager::Get()->Update( "./resources/item/item.mkx" );
+	CItemDatabaseManager::Get()->LoadFromFile( "./Item/item.gid" );
 
 	LOG_PRINT( " - Loaded the item database." );
 

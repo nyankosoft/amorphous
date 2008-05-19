@@ -1,5 +1,6 @@
 #include "DIKeyboard.h"
 
+#include "../base.h"
 #include "DirectInput.h"
 #include "InputHub.h"
 
@@ -191,13 +192,10 @@ HRESULT CDIKeyboard::Init( HWND hWnd )
     }
 
     // Acquire the newly created device
-    m_pKeyboard->Acquire();
+    hr = m_pKeyboard->Acquire();
 
     return S_OK;
 }
-
-
-#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
 
 
 //-----------------------------------------------------------------------------

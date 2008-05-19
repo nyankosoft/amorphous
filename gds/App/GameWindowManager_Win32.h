@@ -1,5 +1,5 @@
-#ifndef  __GAMEWINDOWMANAGER_WIN32_H__
-#define  __GAMEWINDOWMANAGER_WIN32_H__
+#ifndef  __GameWindowManager_Win32_H__
+#define  __GameWindowManager_Win32_H__
 
 #include <string>
 #include <windows.h>
@@ -28,6 +28,7 @@ public:
 class CGameWindowManager_Win32 : public CGameWindowManager
 {
 private:
+
 	HWND m_hWnd;
 	WNDCLASSEX m_WindowClassEx;
 
@@ -75,4 +76,4 @@ inline CGameWindowManager_Win32& GameWindowManager()
 }
 
 
-#endif		/*  __GAMEWINDOWMANAGER_WIN32_H__  */
+#endif		/*  __GameWindowManager_Win32_H__  */

@@ -1,7 +1,47 @@
 #include "Direct3D9.h"
-#include <d3dx9.h>
 
+#include <d3dx9.h>
+#include "../base.h"
+#include "TextureFormat.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/Macro.h"
+
+
+void CDirect3D9::GetAdapterModesForDefaultAdapter()
+{
+	const D3DFORMAT allowable_formats[] =
+	{
+		D3DFMT_A1R5G5B5,
+//		D3DFMT_A2R10G10B10,
+		D3DFMT_A8R8G8B8,
+		D3DFMT_R5G6B5,
+		D3DFMT_X1R5G5B5,
+		D3DFMT_X8R8G8B8
+	};
+
+	for(int i=0; i<numof(allowable_formats); i++)
+	{
+		m_vecAdapterMode.push_back( CAdapterMode(FromD3DSurfaceFormat(allowable_formats[i])) );
+		CAdapterMode& adapter_mode = m_vecAdapterMode.back();
+
+		uint num_adapter_modes = m_pD3D->GetAdapterModeCount( D3DADAPTER_DEFAULT, allowable_formats[i] );
+
+		for(uint j=0;j<num_adapter_modes;j++)
+		{
+			D3DDISPLAYMODE mode;
+			m_pD3D->EnumAdapterModes( D3DADAPTER_DEFAULT, allowable_formats[i], j, &mode );
+
+			// add to the list
+			adapter_mode.vecDisplayMode.push_back( CDisplayMode(
+			mode.Width,
+			mode.Height,
+			mode.RefreshRate,
+			FromD3DSurfaceFormat(mode.Format) )
+			);
+		}
+	}
+}
+
 
 CDirect3D9 CDirect3D9::ms_CDirect3D9_;
 
@@ -126,6 +166,8 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
     D3DXMATRIXA16 matProj;
     D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 500.0f );
     m_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+
+	GetAdapterModesForDefaultAdapter();
 
 	return true;
 }

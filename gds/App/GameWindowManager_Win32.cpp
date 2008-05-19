@@ -41,11 +41,13 @@ void GetCurrentResolution(int* piDesktopWidth, int* piDesktopHeight)
 
 bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHeight, int screen_mode, const std::string& app_title )
 {
+	LOG_FUNCTION_SCOPE();
+
 	// detemine the specification of the window class
 	m_WindowClassEx.cbSize		= sizeof(WNDCLASSEX); 
     m_WindowClassEx.style			= CS_CLASSDC; 
-//    m_WindowClassEx.lpfnWndProc	= MsgProc;
-//    m_WindowClassEx.lpfnWndProc	= m_pMsgProc; 		// error: wrong function pointer
+//	m_WindowClassEx.lpfnWndProc	= MsgProc;
+//	m_WindowClassEx.lpfnWndProc	= m_pMsgProc; 		// error: wrong function pointer
     m_WindowClassEx.lpfnWndProc	= g_pMessageProcedureForGameWindow; 		// correct: a valid function pointer to a message procedure
 
 	m_ApplicationClassName = "Application[" + app_title + "]";
@@ -82,20 +84,18 @@ bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHe
 	if( screen_mode == SMD_WINDOWED )
 		ChagneClientAreaSize( m_hWnd, iScreenWidth, iScreenHeight );
 
-	LOG_PRINT( fmt_string(" Create a window (size: %d x %d)", iScreenWidth, iScreenHeight ) );
+	LOG_PRINT( fmt_string("Created a window (size: %d x %d)", iScreenWidth, iScreenHeight ) );
 
     // initialize Direct3D & Create the scene geometry
 	int d3d_screen_mode = screen_mode == SMD_WINDOWED ? CDirect3D9::WINDOWED : CDirect3D9::FULLSCREEN;
     if( !DIRECT3D9.InitD3D( m_hWnd, iScreenWidth, iScreenHeight, d3d_screen_mode ) )
 		return false;
 
-//	g_Log.Print( "CGameWindowManager_Win32::CreateGameWindow() - Direct3D initialized" );
-
 	// show the window
     ShowWindow( m_hWnd, SW_SHOWDEFAULT );
     UpdateWindow( m_hWnd );
 
-	g_Log.Print( "CGameWindowManager_Win32::CreateGameWindow() - window displayed and updated" );
+	LOG_PRINT( "Displayed and updated the window" );
 
 	m_iCurrentScreenWidth  = iScreenWidth;
 	m_iCurrentScreenHeight = iScreenHeight;

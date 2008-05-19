@@ -1,13 +1,10 @@
-
 #ifndef __3DMATH_MATRIX22_H__
 #define __3DMATH_MATRIX22_H__
 
+#include "../base.h"
 #include "precision.h"
 #include "Vector2.h"
 #include <math.h>
-
-
-typedef int uint;
 
 
 /// A 2x2 matrix

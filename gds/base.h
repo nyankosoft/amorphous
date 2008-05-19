@@ -7,11 +7,34 @@
 #define NOMINMAX // avoid error in nxmath.h of Ageia PhysX SDK
 #include <windows.h>
 
+
+
+//
+// typedefs
+//
+
+typedef unsigned char  uchar;
+typedef unsigned short ushort;
+typedef unsigned int   uint;
+
 typedef BYTE  U8;
 typedef WORD  U16;
 typedef DWORD U32;
 //typedef ????? U64;
 
+
+//
+// macros
+//
+
+#ifndef SAFE_RELEASE
+#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
+#endif
+
+
+//
+// inline functions
+//
 
 template<class T>
 inline T get_clamped( const T& val, const T& min_val, const T& max_val )
