@@ -22,13 +22,13 @@ AmbientOcclusionLightmapBuilder::~AmbientOcclusionLightmapBuilder()
 
 void AmbientOcclusionLightmapBuilder::Release()
 {
-	SafeDeleteVector( m_vecpMesh );
-	SafeDelete( m_pEnvLightMesh );
-	SafeDelete( m_pShaderMgr );
+	assert( !__FUNCTION__"Not implemented!" )
+//	m_vecMesh;
+//	m_pEnvLightMesh;
+//	m_Shader.Release();
 }
 
 
-//template <class T>
 //bool AmbientOcclusionLightmapBuilder<T>::Calculate( vector<CLightmap>& rvecLightmap, CPolygonMesh<T>& rMesh )
 //bool AmbientOcclusionLightmapBuilder::Calculate( AOLightmapDesc& desc )
 bool AmbientOcclusionLightmapBuilder::Calculate( vector<CLightmap>& rvecLightmap, LightmapDesc& desc )
@@ -41,37 +41,45 @@ bool AmbientOcclusionLightmapBuilder::Calculate( vector<CLightmap>& rvecLightmap
 	m_NumRenderTargetTexels = ao_desc.RenderTargetTexWidth * ao_desc.RenderTargetTexHeight;
 
 	// load shader
-	m_pShaderMgr = new CShaderManager();
-	if( !m_pShaderMgr->LoadShaderFromFile( "D:\\R&D\\Project\\Project3\\BSPMapCompiler\\BSPMapCompiler\\Shader\\AmbientOcclusionLightmap.fx" ) )
+	m_Shader.filename = "D:\\R&D\\Project\\Project3\\BSPMapCompiler\\BSPMapCompiler\\Shader\\AmbientOcclusionLightmap.fx" ) )
+	if( !m_Shader.Load() )
 	{
 		return false;
 	}
-	m_pShaderMgr->RegisterTechnique( TECH_ENVIRONMENT_LIGHT,"EnvLight" );
-	m_pShaderMgr->RegisterTechnique( TECH_OCCULUSION_MESH,	"OcclusionGeometry" );
+
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	pShaderMgr->RegisterTechnique( TECH_ENVIRONMENT_LIGHT, "EnvLight" );
+	pShaderMgr->RegisterTechnique( TECH_OCCULUSION_MESH,   "OcclusionGeometry" );
 
 	// load meshes
 	size_t i, num_meshes = ao_desc.m_MeshArchive.size();
-	m_vecpMesh.resize(num_meshes);
+	m_vecMesh.resize(num_meshes);
 	for( i=0; i<num_meshes; i++ )
 	{
-		CD3DXMeshObject* pMesh = new CD3DXMeshObject();
-		pMesh->LoadMeshFromArchive( ao_desc.m_MeshArchive[i], "dummy_filename_for_mesh" );
-		m_vecpMesh[i] = pMesh;
+		m_vecMesh[i].filename = "";
+		m_vecMesh[i].Load();
+
+//		CD3DXMeshObject* pMesh = new CD3DXMeshObject();
+//		pMesh->LoadMeshFromArchive( ao_desc.m_MeshArchive[i], "dummy_filename_for_mesh" );
+//		m_vecpMesh[i] = pMesh;
 	}
 
-	CD3DXMeshObject* pEnvLightMesh = new CD3DXMeshObject();
-	pEnvLightMesh->LoadMeshFromArchive( ao_desc.m_EnvLightMesh, "dummy_name_for_envlight_mesh" );
-	m_pEnvLightMesh = pEnvLightMesh;
+//	CD3DXMeshObject* pEnvLightMesh = new CD3DXMeshObject();
+//	pEnvLightMesh->LoadMeshFromArchive( ao_desc.m_EnvLightMesh, "dummy_name_for_envlight_mesh" );
+//	m_pEnvLightMesh = pEnvLightMesh;
+	m_EnvLightMesh.filename = "";
+	m_EnvLightMesh.Load();
+//	m_EnvLightMesh.Load( ao_desc.m_EnvLightMesh );
 
 	// set world & projection matrix
 	D3DXMATRIX matWorld, matProj;
 	D3DXMatrixIdentity( &matWorld );
 	D3DXMatrixPerspectiveFovLH( &matProj, 3.141592f - 0.1f, 1.0f, 0.05f, 100.0f );
-	m_pShaderMgr->SetWorldTransform( matWorld );
-	m_pShaderMgr->SetProjectionTransform( matProj );
+	pShaderMgr->SetWorldTransform( matWorld );
+	pShaderMgr->SetProjectionTransform( matProj );
 
 
-	size_t num_lightmaps = rvecLightmap.size();
+	const size_t num_lightmaps = rvecLightmap.size();
 
 	// calc the total number of lightmap texels
 	// used to report progress
@@ -100,7 +108,6 @@ bool AmbientOcclusionLightmapBuilder::Calculate( vector<CLightmap>& rvecLightmap
 }
 
 
-//template <class T>
 void AmbientOcclusionLightmapBuilder::RenderScene()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
@@ -113,22 +120,24 @@ void AmbientOcclusionLightmapBuilder::RenderScene()
 
 	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 
-	D3DXHANDLE pTexHandle = m_pShaderMgr->GetEffect()->GetParameterByName( NULL, "Texture0" );
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
 
-	m_pShaderMgr->SetTechnique( TECH_ENVIRONMENT_LIGHT );
+	pShaderMgr->SetTechnique( TECH_ENVIRONMENT_LIGHT );
 
 	// render skybox
-//	m_pEnvLightMesh->Render( m_pShaderMgr->GetEffect(), pTexHandle, NULL );
+	m_pEnvLightMesh->Render( *pShaderMgr );
 
 
-	HRESULT	hr = m_pShaderMgr->SetTechnique( TECH_OCCULUSION_MESH );
+	HRESULT	hr = pShaderMgr->SetTechnique( TECH_OCCULUSION_MESH );
 
-	size_t i, num_meshes = m_vecpMesh.size();
-	for( i=0; i<num_meshes; i++ )
+	const size_t num_meshes = m_vecMesh.size();
+	for( size_t i=0; i<num_meshes; i++ )
 	{
 		// render mesh
-//		m_vecpMesh[i]->Render( m_pShaderMgr->GetEffect(), pTexHandle, NULL );
-		m_vecpMesh[i]->Render( *m_pShaderMgr );
+//		m_vecpMesh[i]->Render( pShaderMgr->GetEffect(), pTexHandle, NULL );
+		m_vecMesh[i].GetMeshObject()->Render( *pShaderMgr );
 	}
 
 
@@ -146,10 +155,14 @@ void SaveSceneImage( DWORD* pTexel, int num_render_target_texels )
 
 	int width = (int)sqrt( (double)num_render_target_texels );
 
-	CBMPImageExporter image_exporter;
-	image_exporter.OutputImage_24Bit(
-		fmt_string("DebugInfoFile/images/ao_scene%03d.bmp", s_Counter).c_str(),
-		width, width, pTexel );
+	int depth = 24;
+	CBitmapImage img( width, width, depth );
+	img.SaveToFile(  );
+
+//	CBMPImageExporter image_exporter;
+//	image_exporter.OutputImage_24Bit(
+//		fmt_string("DebugInfoFile/images/ao_scene%03d.bmp", s_Counter).c_str(),
+//		width, width, pTexel );
 
 	s_Counter++;
 }
@@ -177,7 +190,7 @@ inline SFloatRGBColor AmbientOcclusionLightmapBuilder::GetEnvLightIntensity( CTe
 
 	color_sum = color_sum / 256.0f;
 
-	// debut output of the scene images
+	// debug output of the scene images
 	PERIODICAL( 20, SaveSceneImage( pTexel, m_NumRenderTargetTexels ) );
 
 	pRenderTargetTexture->UnlockRect(0);
@@ -191,8 +204,8 @@ void AmbientOcclusionLightmapBuilder::CalculateLightmapTexelIntensity( CLightmap
 {
 	int i,x,y;
 
-	int iLightmapWidth  = rLightmap.GetNumPoints_X();
-	int iLightmapHeight = rLightmap.GetNumPoints_Y();
+	const int iLightmapWidth  = rLightmap.GetNumPoints_X();
+	const int iLightmapHeight = rLightmap.GetNumPoints_Y();
 
 	Vector3 vLightmapPoint;
 	Vector3 vNormal;
@@ -209,6 +222,7 @@ void AmbientOcclusionLightmapBuilder::CalculateLightmapTexelIntensity( CLightmap
 	const int num_total_texels = m_NumTotalLightmapTexels;
 
 	SPlane& rPlane = rLightmap.GetPlane();
+	CCamera cam;
 
 	for(y=0; y<iLightmapHeight; y++)
 	{
@@ -216,16 +230,10 @@ void AmbientOcclusionLightmapBuilder::CalculateLightmapTexelIntensity( CLightmap
 		{
 			vLightmapPoint = rLightmap.GetPoint(x,y) + vShift;
 
-//			vToLight = pPointLight->vPosition - vLightmapPoint;
-//			fRealDist = Vec3Length(&vToLight);
-//			vToLight_n = vToLight / fRealDist;
-//			ray.vGoal = vLightmapPoint + vToLight_n * m_fSurfaceErrorTolerance;
-
-			CCamera cam;
 			lightmap_pose.vPosition = vLightmapPoint;
 			cam.SetPose( lightmap_pose );
 			cam.GetCameraMatrix(matCamera);
-			m_pShaderMgr->SetViewTransform( matCamera );
+			pShaderMgr->SetViewTransform( matCamera );
 
 			// set texture render target
 			tex_render_target.SetRenderTarget();
@@ -258,11 +266,11 @@ void AmbientOcclusionLightmapBuilder::CalculateLightmapTexelIntensity( CLightmap
 //			CStatusDisplay::Get()->UpdateProgress( "Lightmap Raytrace",
 //			                                       (float)(num_processed_texels) / (float)num_total_texels );
 
-			Sleep( 5 );
+			PERIODICAL( 16, Sleep( 5 ) );
+//			Sleep( 2 );
 
 		}
 	}
 	
 	m_NumProcessedLightmapTexels = num_processed_texels;
-
 }

@@ -49,7 +49,6 @@ class CLightmap
 //	C2DArray<char> m_vecTexelState;
 
 	// whether a texel is on one of the stored polygons
-//	C2DArray<bool> m_vecbValidTexel;
 	C2DArray<char> m_vecbValidTexel;
 
 	C2DArray<SFloatRGBColor> m_vecIntensity;
@@ -118,8 +117,6 @@ public:
 	void SetNormal( int x, int y, const Vector3& vNormal ) { m_vecvNormal(x,y) = vNormal; }
 
 	inline SPlane& GetPlane() { return m_Plane; }
-
-//	void SetLightmapTextureIndexToFaces( int index );
 
 	void SetTextureUV( const SRect& rRect,
 					   const int iTextureWidth,

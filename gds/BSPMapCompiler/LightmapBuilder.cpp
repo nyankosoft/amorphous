@@ -9,6 +9,32 @@
 #include "LightmapLightingManager.h"
 //#include "AmbientOcclusionLightmapBuilder.h"
 
+using namespace std;
+
+
+bool CLightmapDesc::Load( xercesc_2_8::DOMNode *pNode )
+{
+	if( !pNode )
+		return false;
+
+	string texel_size = GetTextContentOfImmediateChildNode( pNode, "TexelSize" );
+
+	if( 0 < texel_size.length() )
+		m_Option.fTexelSize = to_float( texel_size );
+
+	xercesc_2_8::DOMNode *pTexNode = GetChildNode( pNode, "Texture" );
+	if( pTexNode )
+	{
+		string tex_width  = GetTextContentOfImmediateChildNode( pTexNode, "Width" );
+		string tex_height = GetTextContentOfImmediateChildNode( pTexNode, "Height" );
+
+		if( 0 < tex_width.length() )  m_Option.TextureWidth  = to_int( tex_width );
+		if( 0 < tex_height.length() ) m_Option.TextureHeight = to_int( tex_height );
+	}
+
+	return true;
+}
+
 
 void CLightmapOption::LoadFromFile( CTextFileScanner& scanner )
 {
@@ -273,7 +299,7 @@ void CLightmapBuilder::GroupFaces()
 
 	const size_t num_lightmapped_polygons = vecTargetPolygonIndex.size();
 
-	int j, k;
+	size_t j, k;
 
 	vector<int> Grouped;
 	Grouped.resize( num_polygons, 0 );

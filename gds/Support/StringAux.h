@@ -87,6 +87,22 @@ inline std::string fmt_string( const char *format,... )
 }
 
 
+inline float to_float( const std::string& str )
+{
+	float val = 0.0f;
+	sscanf( str.c_str(), "%f", &val );
+	return val;
+}
+
+
+inline int to_int( const std::string& str )
+{
+	int val = 0;
+	sscanf( str.c_str(), "%d", &val );
+	return val;
+}
+
+
 inline std::string get_time_stamp_string( unsigned long time_ms, TimeFormat::Format time_format )
 {
 	char strbuf[16];

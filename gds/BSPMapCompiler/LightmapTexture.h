@@ -26,7 +26,7 @@ using namespace Graphics;
 
 class CLightmapTexture
 {
-	/// borrowed reference
+	/// borrowed reference to the lightmap buffer
 	std::vector<CLightmap> *m_pvecLightmap;
 
 	/// holds indices to lightmaps

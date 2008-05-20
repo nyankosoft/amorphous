@@ -3,14 +3,12 @@
 
 
 #include <vector>
-using namespace std;
 
 #include "3DCommon/LightStructs.h"
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
 #include "3DCommon/MeshModel/General3DMesh.h"
 using namespace MeshModel;
 
-#include "3DMath/Vector3.h"
 #include "3DMath/Matrix34.h"
 #include "Graphics/Rect.h"
 #include "Graphics/RectTree.h"
@@ -19,6 +17,7 @@ using namespace Graphics;
 #include "Support/TextFileScanner.h"
 #include "Support/FixedVector.h"
 #include "Support/Serialization/BinaryDatabase.h"
+#include "XML/XMLDocumentLoader.h"
 
 #include "fwd.h"
 #include "LightmapTexture.h"
@@ -144,6 +143,7 @@ public:
 	{
 	}
 
+	bool Load( xercesc_2_8::DOMNode *pNode );
 };
 
 
