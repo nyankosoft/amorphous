@@ -17,6 +17,8 @@ CPseudoAircraftHUD::CPseudoAircraftHUD()
 m_pFont(NULL)
 {
 	SetColor( 0x7030B030 );//0xA070D870;
+
+	m_RectSet.SetDestAlphaBlendMode( AlphaBlend::One );
 }
 
 
@@ -247,8 +249,6 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 	// render rectangle sets
     pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-	pd3dDev->SetTexture( 0, NULL );
-	pd3dDev->SetFVF( D3DFVF_TLVERTEX );
 	m_RectSet.Draw( 0, rect_index );
 
 	// render text
