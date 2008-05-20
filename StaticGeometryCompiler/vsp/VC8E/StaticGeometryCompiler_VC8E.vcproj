@@ -277,8 +277,36 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="drafts"
+			Name="testdata"
 			>
+			<File
+				RelativePath="..\..\app\testdata\collision_geometry_filter.xml"
+				>
+			</File>
+			<File
+				RelativePath="..\..\app\testdata\graphics_geometry_filter.xml"
+				>
+			</File>
+			<File
+				RelativePath="..\..\app\testdata\hall.xml"
+				>
+			</File>
+			<File
+				RelativePath="..\..\app\testdata\hall_lights.xml"
+				>
+			</File>
+			<File
+				RelativePath="..\..\app\testdata\room.xml"
+				>
+			</File>
+			<File
+				RelativePath="..\..\app\testdata\room_lights.xml"
+				>
+			</File>
+			<File
+				RelativePath="..\..\app\testdata\surface_desc.xml"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Stage"

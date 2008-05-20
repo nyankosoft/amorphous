@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Root>
+	<Lights>
+		<!--		<AmbientLight>
+			<Color>0.1 0.1 0.1</Color>
+		</AmbientLight>
+-->
+		<PointLight>
+			<Position>0.0 2.5 0.0</Position>
+			<Color>1.0 1.0 1.0</Color>
+			<Attenuation>0.0 0.1 0.0</Attenuation>
+		</PointLight>
+	</Lights>
+</Root>

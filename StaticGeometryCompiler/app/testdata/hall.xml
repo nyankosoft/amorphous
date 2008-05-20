@@ -22,6 +22,10 @@
 		</Lighting>
 		<Lightmap>
 			<TexelSize>0.2</TexelSize>
+			<Texture>
+				<Width>512</Width>
+				<Height>512</Height>
+			</Texture>
 		</Lightmap>
 	</Graphics>
 </Root>

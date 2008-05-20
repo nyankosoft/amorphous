@@ -268,6 +268,8 @@ bool CStaticGeometryDesc::LoadGraphicsDesc( DOMNode *pNode )
 
 	LoadLightingDesc( GetChildNode( pNode, "Lighting" ) );
 
+	m_Lightmap.Load( GetChildNode( pNode, "Lightmap" ) );
+
 	return true;
 }
 
