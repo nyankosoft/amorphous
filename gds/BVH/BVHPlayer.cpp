@@ -1,8 +1,9 @@
-
 #include "BVHPlayer.h"
 
 #include "3DCommon/FVF_ColorVertex.h"
 #include "Support/memory_helpers.h"
+
+using namespace std;
 
 
 #define BVH_DEFAULT_FRAMETIMME 0.03333333333f
@@ -391,7 +392,7 @@ void CBVHPlayer::DeleteFrames( int iStartFrame, int iEndFrame )
 
 
 // move the player's body to the specified place at the specified frame
-void CBVHPlayer::MoveOffset( int iFrame, D3DXVECTOR3 vOffset,
+void CBVHPlayer::MoveOffset( int iFrame, Vector3 vOffset,
 		float fRotAngleZ, float fRotAngleX, float fRotAngleY )
 {
 	if(iFrame < 0 || GetNumTotalFrames() <= iFrame )

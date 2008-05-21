@@ -92,7 +92,7 @@ public:
 
 	void Scale_r( float factor );
 
-	CBVHBone operator=(CBVHBone bone);
+//	CBVHBone operator=(CBVHBone bone);
 
 	void SetSkeletonColor(DWORD dwSkeletonColor) { ms_dwSkeletonColor = dwSkeletonColor; }
 

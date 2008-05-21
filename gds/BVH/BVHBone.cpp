@@ -42,10 +42,6 @@ void CBVHBone::LoadFromFile( char* pcTypeAndName, FILE* fp )
 //	// skip "{"
 //	fgets( acLine, 511, fp );
 
-	// read offset from file and set to this bone
-//	fgets( acOffset, 511, fp );
-//	sscanf( acOffset, "%s%f%f%f", acStr, &m_vOffset.x, &m_vOffset.y, &m_vOffset.z );
-
 	// 4/13/2008 commented out
 	//  
 //	m_vOffset *= 0.01f;		//unit conversion: cm -> m
@@ -119,12 +115,12 @@ void CBVHBone::SetChannels( char* pcChannel )
 
 	if( iNumChannels == 3 )
 	{
-		//rotation
+		// rotation
 		this->m_iNumChannels = 3;
 	}
 	else if( iNumChannels == 6 )
 	{
-		//translation & rotation
+		// translation & rotation
 		this->m_iNumChannels = 6;
 	}
 	else
@@ -444,7 +440,7 @@ void CBVHBone::SetPointersToGlobalTransformMatrix_r(vector<D3DXMATRIX *> *pvecpG
 }
 
 
-
+/*
 CBVHBone CBVHBone::operator =(CBVHBone bone)
 {
 	m_strName, bone.m_strName;
@@ -454,3 +450,4 @@ CBVHBone CBVHBone::operator =(CBVHBone bone)
 
 	return *this;
 }
+*/
