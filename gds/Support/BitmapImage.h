@@ -5,6 +5,8 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include "FreeImage.h"
+
+#include "3DCommon/FloatRGBColor.h"
 #include "Support/Log/DefaultLog.h"
 
 #pragma comment( lib, "FreeImage.lib" )

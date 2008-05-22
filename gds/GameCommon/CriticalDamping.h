@@ -1,9 +1,9 @@
+#ifndef __CRITICALDAMPING_H__
+#define __CRITICALDAMPING_H__
+
 //
 // SmoothCD for ease-in / ease-out smoothing 
 //
-
-#ifndef __CRITICALDAMPING_H__
-#define __CRITICALDAMPING_H__
 
 //
 // NOTE: This code depends on a global variable named timeDelta,
@@ -63,6 +63,10 @@ public:
 };
 
 
+//template<typename T>
+//typedef SCDVariable<T> cdv<T>;
+
+// TODO: Use proper typedef & template
 #define cdv SCDVariable
 
 

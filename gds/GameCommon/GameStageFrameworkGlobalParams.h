@@ -10,11 +10,14 @@ using namespace GameLib1::Serialization;
 
 
 /**
-  default values for parameters
-  - physics sim timestep: 0.01
-  - default shader filename: './Shader/Default.fx'
-  - default sleep time [MS]: 3
+  - Stores default values for parameters
+    - physics sim timestep: 0.01
+    - default shader filename: './Shader/Default.fx'
+    - default sleep time [MS]: 3
 
+  - Loaded from a text file during development phase
+
+  - Loaded from a binary file in the release version
 
 
 
@@ -22,6 +25,7 @@ using namespace GameLib1::Serialization;
 
   DefaultShaderFilename             ./Shader/Default.fx
   DefaultPhysicsSimulationTimestep  0.01
+  DefaultSleepTimeMS                2
 
   --------------------------------------------------------------
 

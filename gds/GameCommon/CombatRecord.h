@@ -35,6 +35,8 @@ public:
 
 	int kill_type;	///< gun, missile, crash, etc.
 
+public:
+
 	KillReport() : score(0), vWorldPos(Vector3(0,0,0)), time(0), type(0), kill_type(0) {}
 
 /*	KillReport(

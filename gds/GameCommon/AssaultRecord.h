@@ -15,10 +15,10 @@ using namespace GameLib1::Serialization;
 class KillRecord : public IArchiveObjectBase
 {
 public:
-	std::string name	/// copied from KillReport::entity_name
-	int num_destroyed;	/// how many entities of this type has been destroyed
+	std::string name;	///< copied from KillReport::entity_name
+	int num_destroyed;	///< how many entities of this type has been destroyed
 
-	int type;	/// type of the destroyed target
+	int type;	///< type of the destroyed target
 
 public:
 

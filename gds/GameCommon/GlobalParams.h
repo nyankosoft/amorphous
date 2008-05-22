@@ -14,7 +14,13 @@ fullscreen	yes
 //<<<========================== default config file ==========================
 
 
+/**
+ - Global settings for a game application
+   - Always loaded from a text file.
+   - The application can let the user modify the content of the file
+     to configure the settings.
 
+*/
 class CGlobalParams
 {
 public:
