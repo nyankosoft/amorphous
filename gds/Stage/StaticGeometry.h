@@ -7,6 +7,7 @@
 #include "3DCommon/fwd.h"
 #include "3DCommon/FloatRGBColor.h"
 #include "3DCommon/MeshObjectHandle.h"
+#include "3DCommon/ShaderHandle.h"
 #include "3DCommon/Shader/Serialization_ShaderTechniqueHandle.h"
 #include "Physics/fwd.h"
 #include "Support/StringAux.h"
@@ -41,20 +42,21 @@ class CShaderContainer : public IArchiveObjectBase
 {
 public:
 
-	std::string ShaderFilepath;
+//	std::string ShaderFilepath;
 
-	boost::shared_ptr<CShaderManager> m_pShaderManager;
+//	boost::shared_ptr<CShaderManager> m_pShaderManager;
 
-	// CShaderManagerHandle m_ShaderHandle;
+	CShaderHandle m_ShaderHandle;
 
-	std::vector<CShaderTechniqueHandle> vecTechniqueHandle;
+	std::vector<CShaderTechniqueHandle> m_vecTechniqueHandle;
 
 public:
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		ar & ShaderFilepath;
-		ar & vecTechniqueHandle;
+//		ar & ShaderFilepath;
+		ar & m_ShaderHandle;
+		ar & m_vecTechniqueHandle;
 	}
 };
 

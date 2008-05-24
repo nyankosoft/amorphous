@@ -399,7 +399,7 @@ bool CShaderManagerEntry::LoadFromFile( const std::string& filepath )
 
 void CShaderManagerEntry::Release()
 {
-	LOG_FUNCTION_SCOPE();
+//	LOG_FUNCTION_SCOPE();
 
 	SafeDelete( m_pShaderManager );
 }

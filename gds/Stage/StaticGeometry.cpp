@@ -38,7 +38,9 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
-		m_Archive.m_vecShaderContainer[i].m_pShaderManager->SetWorldTransform( matWorld );
+//		m_Archive.m_vecShaderContainer[i].m_pShaderManager->SetWorldTransform( matWorld );
+		CShaderManager *pShaderMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		pShaderMgr->SetWorldTransform( matWorld );
 	}
 
 	CNonLeafyAABTree<CMeshSubset>& mesh_subset_tree = m_Archive.m_MeshSubsetTree;
@@ -71,9 +73,9 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 				CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].Mesh.GetMeshObject();
 
 				CShaderContainer& shader_container = rvecShaderContainer[subset.ShaderIndex];
-				CShaderManager &shader_mgr = *(shader_container.m_pShaderManager.get());
+				CShaderManager &shader_mgr = *shader_container.m_ShaderHandle.GetShaderManager();// *(shader_container.m_pShaderManager.get());
 
-				shader_mgr.SetTechnique( shader_container.vecTechniqueHandle[subset.ShaderTechniqueIndex] );
+				shader_mgr.SetTechnique( shader_container.m_vecTechniqueHandle[subset.ShaderTechniqueIndex] );
 
 				pMesh->RenderSubsets( shader_mgr, subset.vecMaterialIndex );
 			}
@@ -135,8 +137,9 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
 		CShaderContainer& container = m_Archive.m_vecShaderContainer[i];
-		container.m_pShaderManager = shared_ptr<CShaderManager>( new CShaderManager() );
-		container.m_pShaderManager->LoadShaderFromFile( container.ShaderFilepath );
+//		container.m_pShaderManager = shared_ptr<CShaderManager>( new CShaderManager() );
+//		container.m_pShaderManager->LoadShaderFromFile( container.ShaderFilepath );
+		bool shader_loaded = container.m_ShaderHandle.Load();
 	}
 
 	// load meshes
