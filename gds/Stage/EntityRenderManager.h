@@ -16,6 +16,7 @@
 
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/CubeMapManager.h"
+#include "3DCommon/ShaderHandle.h"
 
 
 class CShadowMapManager;
@@ -85,7 +86,7 @@ private:
 	CTextureHandle m_TranslucentTexture;
 	LPDIRECT3DTEXTURE9 m_pBlankTexture;
 
-	CShaderManager *m_pFallbackShaderManager;
+	CShaderHandle m_FallbackShader;
 
 	//
 	// shadow

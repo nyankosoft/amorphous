@@ -108,8 +108,7 @@ CEntityRenderManager::CEntityRenderManager( CEntitySet* pEntitySet )
 m_pEntitySet(pEntitySet),
 m_pCubeMapManager(NULL),
 m_pShadowManager(NULL),
-m_pCurrentCamera(NULL),
-m_pFallbackShaderManager(NULL)
+m_pCurrentCamera(NULL)
 {
 	m_pacRendered = NULL;
 
@@ -160,31 +159,26 @@ CEntityRenderManager::~CEntityRenderManager()
 	SafeDelete( m_pShadowManager );
 
 	SafeDelete( m_pCubeMapManager );
-
-	SafeDelete( m_pFallbackShaderManager );
 }
 
 
 bool CEntityRenderManager::LoadFallbackShader()
 {
-	m_pFallbackShaderManager = new CShaderManager;
-
-	if( !m_pFallbackShaderManager->LoadShaderFromFile( ms_DefaultFallbackShaderFilename ) )
+	m_FallbackShader.filename = ms_DefaultFallbackShaderFilename;
+	if( !m_FallbackShader.Load() )
 	{
-		SafeDelete( m_pFallbackShaderManager );
 		return false;
 	}
 
 	// check if the shader file has been properly loaded
-	LPD3DXEFFECT pEffect = m_pFallbackShaderManager->GetEffect();
+	LPD3DXEFFECT pEffect = m_FallbackShader.GetShaderManager()->GetEffect();
 	if( !pEffect )
 	{
-		SafeDelete( m_pFallbackShaderManager );
 		return false;
 	}
 
 	// CLightEntityManager needs global shader in its CLightEntityManager::InitShaderLightManager()
-	CShader::Get()->SetShaderManager( m_pFallbackShaderManager );
+	CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );
 
 	return true;
 }
@@ -950,7 +944,7 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	// set texture render target and call IDirect3DDevice9::BeginScene();
 	m_pShadowManager->BeginScene();
 
-	CShader::Get()->SetShaderManager( m_pFallbackShaderManager );
+	CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );
 
 	RenderScene( rCam );
 
@@ -1056,7 +1050,7 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	else
 	{
 		// directly render the scene to the currenet render target
-		CShader::Get()->SetShaderManager( m_pFallbackShaderManager );
+		CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );
 		RenderScene( rCam );
 	}
 
