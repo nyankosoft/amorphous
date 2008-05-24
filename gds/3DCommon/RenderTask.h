@@ -17,8 +17,8 @@ protected:
 	enum eTypeFlags
 	{
 		DO_NOT_CALL_BEGINSCENE_AND_ENDSCENE = ( 1 << 0 ),
-		RENDER_TO_BACKBUFFER                = ( 1 << 1 ), //<<< Present() is called at the end of Render(). Mutually exclusive with 'RENDER_TO_TEXTURE'
-		RENDER_TO_TEXTURE                   = ( 1 << 2 ), //<<< Mutually exclusive with 'RENDER_TO_BACKBUFFER'
+		RENDER_TO_BACKBUFFER                = ( 1 << 1 ), ///< Present() is called at the end of Render(). Mutually exclusive with 'RENDER_TO_TEXTURE'
+		RENDER_TO_TEXTURE                   = ( 1 << 2 ), ///< Mutually exclusive with 'RENDER_TO_BACKBUFFER'
 	};
 
 public:

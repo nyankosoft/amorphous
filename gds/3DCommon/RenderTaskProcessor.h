@@ -36,7 +36,8 @@ public:
 	/// call Render() of each render task in the list
 	/// - Starts from the first element of m_vecpTask
 	/// - The last render task usually renders to backbuffer,
-	///   whereas all that comes before render to texture render target
+	///   whereas all the other render tasks that come before it render to texture render target
+	/// - Release all the instances of render tasks once they are done
 	void Render();
 
 	/// \param owned reference of a render task

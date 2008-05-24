@@ -716,9 +716,14 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 
 void HUD_PlayerAircraft::CreateRenderTasks()
 {
-	if( m_pSubDisplay )
-	{
-	}
+//	if( !m_pSubDisplay )
+//		return;
+
+//	SubMonitor *pMonitor = m_pSubDisplay->GetCurrentMonitor();
+//	if( !pMonitor )
+//		return;
+
+//	pMonitor->m_pStage.lock();
 }
 
 
