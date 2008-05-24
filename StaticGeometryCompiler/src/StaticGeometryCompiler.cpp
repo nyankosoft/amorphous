@@ -94,15 +94,16 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 		 itr++ )
 	{
 		CShaderContainer& container = m_Archive.m_vecShaderContainer[ itr->second.ShaderIndex ];
-		container.ShaderFilepath = itr->first;
+//		container.ShaderFilepath = itr->first;
+		container.m_ShaderHandle.filename = itr->first;
 
-		container.vecTechniqueHandle.resize( itr->second.TechniqueToIndex.size() );
+		container.m_vecTechniqueHandle.resize( itr->second.TechniqueToIndex.size() );
 		std::map<std::string,int>::iterator itrTechnique;
 		for( itrTechnique = itr->second.TechniqueToIndex.begin();
 			 itrTechnique != itr->second.TechniqueToIndex.end();
 			 itrTechnique++ )
 		{
-			container.vecTechniqueHandle[ itrTechnique->second ].SetTechniqueName( itrTechnique->first.c_str() );
+			container.m_vecTechniqueHandle[ itrTechnique->second ].SetTechniqueName( itrTechnique->first.c_str() );
 		}
 	}
 
