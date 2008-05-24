@@ -171,27 +171,29 @@ bool CScreenEffectManager::Init()
 	HRESULT hr;
 
 	// retrieve the back buffer size
-	D3DSURFACE_DESC back_buffer_desc;
-	IDirect3DSurface9 *pBackBuffer;
-	pd3dDev->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
-	pBackBuffer->GetDesc( &back_buffer_desc );
+//	D3DSURFACE_DESC back_buffer_desc;
+//	IDirect3DSurface9 *pBackBuffer;
+//	pd3dDev->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
+//	pBackBuffer->GetDesc( &back_buffer_desc );
 
 	m_pPPManager = new CPostProcessManager;
-	hr = m_pPPManager->OnCreateDevice( pd3dDev, &back_buffer_desc, "Shader\\PostProcess\\PostProcess.fx", NULL );
+//	hr = m_pPPManager->OnCreateDevice( pd3dDev, &back_buffer_desc, "Shader\\PostProcess\\PostProcess.fx", NULL );
+	hr = m_pPPManager->OnCreateDevice( "Shader\\PostProcess\\PostProcess.fx" );
 	if( !FAILED(hr) )
 	{
-		hr = m_pPPManager->OnResetDevice( pd3dDev, &back_buffer_desc, NULL );
+//		hr = m_pPPManager->OnResetDevice( pd3dDev, &back_buffer_desc, NULL );
+		hr = m_pPPManager->OnResetDevice();
 
-		m_aPPEffectIndex[PP_COLOR_GBLUR_H]     = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorGBlurH.fx" );
-		m_aPPEffectIndex[PP_COLOR_GBLUR_V]     = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorGBlurV.fx" );
-		m_aPPEffectIndex[PP_COLOR_INVERSE]     = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorInverse.fx" );
-		m_aPPEffectIndex[PP_COLOR_MONOCHROME]  = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorMonochrome.fx" );
-		m_aPPEffectIndex[PP_COLOR_DOWNFILTER4] = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorDownFilter4.fx" );
-		m_aPPEffectIndex[PP_COLOR_UPFILTER4]   = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorUpFilter4.fx" );
-		m_aPPEffectIndex[PP_COLOR_BLOOM_H]     = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorBloomH.fx" );
-		m_aPPEffectIndex[PP_COLOR_BLOOM_V]     = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorBloomV.fx" );
-		m_aPPEffectIndex[PP_COLOR_BRIGHTPASS]  = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorBrightPass.fx" );
-		m_aPPEffectIndex[PP_COLOR_COMBINE4]    = m_pPPManager->AddPostProcessShader( pd3dDev, "Shader\\PostProcess\\PP_ColorCombine4.fx" );
+		m_aPPEffectIndex[PP_COLOR_GBLUR_H]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurH.fx" );
+		m_aPPEffectIndex[PP_COLOR_GBLUR_V]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurV.fx" );
+		m_aPPEffectIndex[PP_COLOR_INVERSE]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorInverse.fx" );
+		m_aPPEffectIndex[PP_COLOR_MONOCHROME]  = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorMonochrome.fx" );
+		m_aPPEffectIndex[PP_COLOR_DOWNFILTER4] = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorDownFilter4.fx" );
+		m_aPPEffectIndex[PP_COLOR_UPFILTER4]   = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorUpFilter4.fx" );
+		m_aPPEffectIndex[PP_COLOR_BLOOM_H]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomH.fx" );
+		m_aPPEffectIndex[PP_COLOR_BLOOM_V]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomV.fx" );
+		m_aPPEffectIndex[PP_COLOR_BRIGHTPASS]  = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBrightPass.fx" );
+		m_aPPEffectIndex[PP_COLOR_COMBINE4]    = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorCombine4.fx" );
 
 		m_pPPManager->GetPostProcessInstance().reserve( 16 );
 	}

@@ -15,7 +15,9 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "3DCommon/Direct3D9.h"
+#include "3DCommon/GraphicsComponentCollector.h"
 
+#include <string>
 #include <vector>
 
 //#define DEBUG_VS   // Uncomment this line to debug vertex shaders 
@@ -112,6 +114,9 @@ struct CPostProcess
 	/// Effect object for this technique
     LPD3DXEFFECT m_pEffect;
 
+	/// filepath of the HLSL effect file for the effect interface above
+	std::string m_ShaderFilename;
+
     /// PostProcess technique handle
     D3DXHANDLE   m_hTPostProcess;
 
@@ -155,7 +160,7 @@ public:
 
     inline ~CPostProcess() { Cleanup(); }
 
-    HRESULT Init( LPDIRECT3DDEVICE9 pDev, const char* pFilename );
+	HRESULT Init( LPDIRECT3DDEVICE9 pDev, const std::string& filename );
 
     inline void Cleanup()
     {
@@ -291,7 +296,7 @@ struct CRenderTargetSet
 //  Only the color channel is available
 //======================================================================================
 
-class CPostProcessManager
+class CPostProcessManager : public CGraphicsComponent
 {
 	enum eParam
 	{
@@ -302,6 +307,8 @@ class CPostProcessManager
 	int                     m_nScene;
 
 	LPD3DXEFFECT            m_pEffect;
+
+	std::string             m_ShaderFilename;
 
 	/// Effect object for postprocesses
 	CPostProcess            m_aPostProcess[NUM_MAX_PPCOUNT];
@@ -354,7 +361,9 @@ public:
 
     CPostProcessManager();
 
-	int AddPostProcessShader( IDirect3DDevice9 *pd3dDevice, const char *pShaderFilename );
+	/// Returns the index of the added shader.
+	/// Returns -1 on failure
+	int AddPostProcessShader( const std::string& shader_filename );
 
 	std::vector<CPProcInstance>& GetPostProcessInstance() { return m_vecPPInstance; }
 
@@ -423,24 +432,29 @@ public:
 	///                  also commented out the BeginScene() & EndScene() pair
 //	HRESULT RenderPostProcess( IDirect3DDevice9 *pd3dDevice );
 
-	/// 
 	HRESULT DrawSceneWithPostProcessEffects();
 
-    HRESULT OnCreateDevice( IDirect3DDevice9* pd3dDevice,
-					        const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
-							const char *pShaderFilename,
-					        void* pUserContext );
+//	HRESULT OnCreateDevice( IDirect3DDevice9* pd3dDevice,
+//							const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
+//							const std::string& shader_filename,
+//							void* pUserContext );
 
-    void OnDestroyDevice( void* pUserContext );
+	/// Calls this for initialization
+	/// - Returns true on success
+    bool OnCreateDevice( const std::string& shader_filename );
+
+	/// Used to release the resources to change the resolution of the back buffer
+    void OnDestroyDevice();
 
 	void OnLostDevice( void* pUserContext );
 
-	HRESULT Init( const char *pFilename );
+//	HRESULT Init( const std::string& filename );
 
-    HRESULT OnResetDevice( IDirect3DDevice9* pd3dDevice, 
-                           const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
-						   void* pUserContext );
+    HRESULT OnResetDevice();
 
+	void ReleaseGraphicsResources();
+
+	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
 
 

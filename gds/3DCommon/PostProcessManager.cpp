@@ -5,9 +5,12 @@
 ===========================================================*/
 
 #include "3DCommon/Direct3D9.h"
+#include "3DCommon/2DRect.h"
 #include "PostProcessManager.h"
 
-#include "3DCommon/2DRect.h"
+#include "Support/StringAux.h"
+#include "Support/Log/DefaultLog.h"
+
 
 using namespace std;
 
@@ -31,7 +34,7 @@ const D3DVERTEXELEMENT9 PPVERT::Decl[4] =
 #define V_RETURN(x)    { hr = x; if( FAILED(hr) ) { return hr; } }
 #endif
 
-HRESULT CPostProcess::Init( LPDIRECT3DDEVICE9 pDev, const char* pFilename )
+HRESULT CPostProcess::Init( LPDIRECT3DDEVICE9 pDev, const std::string& filename )
 {
     HRESULT hr;
 
@@ -43,8 +46,10 @@ HRESULT CPostProcess::Init( LPDIRECT3DDEVICE9 pDev, const char* pFilename )
         dwShaderFlags |= D3DXSHADER_FORCE_PS_SOFTWARE_NOOPT;
     #endif
 
+	m_ShaderFilename = filename;
+
     hr = D3DXCreateEffectFromFile( pDev,
-                                    pFilename,
+                                    filename.c_str(),
                                     NULL,
                                     NULL,
                                     dwShaderFlags,
@@ -333,23 +338,23 @@ HRESULT CPostProcessManager::Init( const char *pFilename )
 }*/
 
 
-//--------------------------------------------------------------------------------------
-// This callback function will be called immediately after the Direct3D device has been 
-// created, which will happen during application initialization and windowed/full screen 
-// toggles. This is the best location to create D3DPOOL_MANAGED resources since these 
-// resources need to be reloaded whenever the device is destroyed. Resources created  
-// here should be released in the OnDestroyDevice callback. 
-//--------------------------------------------------------------------------------------
-//HRESULT CALLBACK OnCreateDevice( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
-HRESULT CPostProcessManager::OnCreateDevice( IDirect3DDevice9* pd3dDevice,
-											 const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
-											 const char *pShaderFilename,
-											 void* pUserContext )
+bool CPostProcessManager::OnCreateDevice( const std::string& shader_filename )
 {
     HRESULT hr;
 
-    // Query multiple RT setting and set the num of passes required
+	m_ShaderFilename = shader_filename;
 
+	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
+
+	// retrieve the back buffer size
+	D3DSURFACE_DESC back_buffer_desc;
+	IDirect3DSurface9 *pBackBuffer;
+	pd3dDevice->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
+	pBackBuffer->GetDesc( &back_buffer_desc );
+
+	const D3DSURFACE_DESC* pBackBufferSurfaceDesc = &back_buffer_desc;
+
+    // Query multiple RT setting and set the num of passes required
 	m_nPasses = 1;
 	m_nRtUsed = 1;
 
@@ -414,7 +419,7 @@ HRESULT CPostProcessManager::OnCreateDevice( IDirect3DDevice9* pd3dDevice,
 	LPD3DXBUFFER pCompileErrors;
     // If this fails, there should be debug output as to 
     // they the .fx file failed to compile
-    V( D3DXCreateEffectFromFile( pd3dDevice, pShaderFilename, NULL, NULL, dwShaderFlags, 
+    V( D3DXCreateEffectFromFile( pd3dDevice, shader_filename.c_str(), NULL, NULL, dwShaderFlags, 
                                         NULL, &m_pEffect, &pCompileErrors ) );
 
 	if( FAILED(hr) )
@@ -424,7 +429,7 @@ HRESULT CPostProcessManager::OnCreateDevice( IDirect3DDevice9* pd3dDevice,
 			char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
 			pCompileErrors->Release();
 		}
-		return hr;
+		return false;
 	}
 
     // Initialize the postprocess objects
@@ -441,21 +446,26 @@ HRESULT CPostProcessManager::OnCreateDevice( IDirect3DDevice9* pd3dDevice,
 	// Create vertex declaration for post-process
 	if( FAILED( hr = pd3dDevice->CreateVertexDeclaration( PPVERT::Decl, &m_pVertDeclPP ) ) )
 	{
-		return hr;
+		return false;
 	}
 
-	return S_OK;
+	return true;
 }
 
 
-int CPostProcessManager::AddPostProcessShader( IDirect3DDevice9* pd3dDevice, const char *pShaderFilename )
+int CPostProcessManager::AddPostProcessShader( const std::string& shader_filename )
 {
+	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+
 	if( NUM_MAX_PPCOUNT <= m_iNumPostProcesses )
-		assert( !"too many post-process effect files" );
+	{
+		LOG_PRINT_ERROR( fmt_string("Too many post-process effect files: (%d)", m_iNumPostProcesses ) );
+		return -1;
+	}
 
 	HRESULT hr;
 	
-	hr = m_aPostProcess[m_iNumPostProcesses].Init( pd3dDevice, pShaderFilename );
+	hr = m_aPostProcess[m_iNumPostProcesses].Init( pd3dDevice, shader_filename.c_str() );
 
 	IDirect3DSurface9 *pBackBuffer;
 	hr = pd3dDevice->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
@@ -483,12 +493,16 @@ int CPostProcessManager::AddPostProcessShader( IDirect3DDevice9* pd3dDevice, con
 // the device is lost. Resources created here should be released in the OnLostDevice 
 // callback. 
 //--------------------------------------------------------------------------------------
-//HRESULT CALLBACK OnResetDevice( IDirect3DDevice9* pd3dDevice, 
-//                                const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
-HRESULT CPostProcessManager::OnResetDevice( IDirect3DDevice9* pd3dDevice, 
-                                            const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
-											void* pUserContext )
+HRESULT CPostProcessManager::OnResetDevice()
 {
+	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+
+	D3DSURFACE_DESC back_buffer_desc;
+	IDirect3DSurface9 *pBackBuffer;
+	pd3dDevice->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
+	pBackBuffer->GetDesc( &back_buffer_desc );
+	const D3DSURFACE_DESC* pBackBufferSurfaceDesc = &back_buffer_desc;
+
     HRESULT hr;
 
 	if( m_pEffect )
@@ -1018,6 +1032,7 @@ HRESULT CPostProcessManager::DrawSceneWithPostProcessEffects()
 	return S_OK;
 }
 
+
 /*
 //--------------------------------------------------------------------------------------
 // Inserts the postprocess effect identified by the index nEffectIndex into the
@@ -1211,6 +1226,7 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 // information about lost devices.
 //--------------------------------------------------------------------------------------
 //void CALLBACK OnLostDevice( void* pUserContext )
+/*
 void CPostProcessManager::OnLostDevice( void* pUserContext )
 {
     if( m_pEffect )
@@ -1233,7 +1249,7 @@ void CPostProcessManager::OnLostDevice( void* pUserContext )
             SAFE_RELEASE( m_aRtTable[p].pRT[rt] );
 
 }
-
+*/
 
 //--------------------------------------------------------------------------------------
 // This callback function will be called immediately after the Direct3D device has 
@@ -1241,13 +1257,28 @@ void CPostProcessManager::OnLostDevice( void* pUserContext )
 // windowed/full screen toggles. Resources created in the OnCreateDevice callback 
 // should be released here, which generally includes all D3DPOOL_MANAGED resources. 
 //--------------------------------------------------------------------------------------
-//void CALLBACK OnDestroyDevice( void* pUserContext )
-void CPostProcessManager::OnDestroyDevice( void* pUserContext )
+void CPostProcessManager::OnDestroyDevice()
 {
     SAFE_RELEASE( m_pEffect );
     SAFE_RELEASE( m_pVertDeclPP );
 
 	int num_pps = GetNumPostProcesses();
-    for( int p = 0; p < num_pps; ++p )
-        m_aPostProcess[p].Cleanup();
+	for( int p = 0; p < num_pps; ++p )
+		m_aPostProcess[p].Cleanup();
+}
+
+
+void CPostProcessManager::ReleaseGraphicsResources()
+{
+	OnDestroyDevice();
+}
+
+
+void CPostProcessManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+{
+	OnCreateDevice( m_ShaderFilename );
+
+	int num_pps = GetNumPostProcesses();
+//	for( int p = 0; p < num_pps; ++p )
+//		m_aPostProcess[p].Reload();
 }
