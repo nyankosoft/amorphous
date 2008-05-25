@@ -167,10 +167,6 @@ CGameTask_OnMissionFailedFG::CGameTask_OnMissionFailedFG()
 	// create dialog menu for selecting stages
 	InitMenu();
 
-	// set init sub menu
-	m_SubMenu = SM_SELECT1;
-	m_NextSubMenu = SM_INVALID;
-
 	SetDefaultFadeInTimeMS( 0 );
 
 	if( g_pStage )
@@ -350,12 +346,6 @@ int CGameTask_OnMissionFailedFG::FrameMove( float dt )
 	int ret = CGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
-
-	if( m_NextSubMenu != SM_INVALID )
-	{
-		m_SubMenu = m_NextSubMenu;
-		m_NextSubMenu = SM_INVALID;
-	}
 
 	m_pDialogManager->Update( dt );
 

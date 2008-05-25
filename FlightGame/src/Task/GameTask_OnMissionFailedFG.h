@@ -39,21 +39,7 @@ public:
 
 class CGameTask_OnMissionFailedFG : public CGameTaskFG
 {
-public:
-
-	enum sub_menu
-	{
-		SM_INVALID = -1,
-		SM_SELECT1 = 0,
-		SM_SELECT2,
-		SM_CONFIRM,
-		NUM_SUB_MENUS
-	};
-
 private:
-
-	int m_SubMenu;
-	int m_NextSubMenu;
 
 	CGM_DialogManagerSharedPtr m_pDialogManager;
 
