@@ -11,6 +11,11 @@
 
 class CInputHandler_Cutscene;
 
+/**
+- Camera controller entity holds one or more camera entities as its child entities
+- Camera controller entity is set as the camera entity of the stage when
+  at least one of its camera entity has motion path for the time
+*/
 class CBE_CameraController : public CBaseEntity
 {
 private:
@@ -52,6 +57,8 @@ public:
 	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	virtual void RenderStage( CCopyEntity* pCopyEnt );
+
+	virtual void CreateRenderTasks(CCopyEntity* pCopyEnt);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

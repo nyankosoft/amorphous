@@ -87,10 +87,11 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 	if( camera_active && pCurrentCameraEntity != pCopyEnt )
 	{
 		// start the cut scene
-		g_Log.Print( "CBE_CameraController::Act() - starting a cut scene" );
+		LOG_PRINT( "- Starting a cut scene" );
 
 		m_pPrevCameraEntity = pCurrentCameraEntity;
 
+		// set the camera controller entity as the camera entity of the stage
 		m_pStage->GetEntitySet()->SetCameraEntity( pCopyEnt );
 
 		if( m_bUseCutsceneInputHandler )
@@ -108,11 +109,6 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 	}
 }
 
-/*
-void CBE_CameraController::Draw(CCopyEntity* pCopyEnt)
-{
-}
-*/
 
 void CBE_CameraController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
@@ -134,33 +130,55 @@ void CBE_CameraController::MessageProcedure(SGameMessage& rGameMessage, CCopyEnt
 
 void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 {
-	const int num_cameras = pCopyEnt->GetNumChildren();
+	int num_cameras = pCopyEnt->GetNumChildren();
 
-	if( true /*num_cameras == 1*/ )
+	if( num_cameras == 0 )
 	{
-		if( pCopyEnt->GetNumChildren() == 0 )
-		{
-			g_Log.Print( "CBE_CameraController::RenderStage() - error: no camera entity" );
-			return;
-		}
+		LOG_PRINT_WARNING( " - No camera entity" );
+		return;
+	}
 
-		CCopyEntity *pCameraEntity = pCopyEnt->apChild[0];
+	num_cameras = 1;
+
+	for( int i=0; i<num_cameras; i++ )
+	{
+		CCopyEntity *pCameraEntity = pCopyEnt->apChild[i];
+
+		if( !IsValidEntity(pCameraEntity) )
+			continue;
+
+		// render stage with the camera
+//		pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
+
 		pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
 	}
-	else
+}
+
+
+void CBE_CameraController::CreateRenderTasks(CCopyEntity* pCopyEnt)
+{
+	int num_cameras = pCopyEnt->GetNumChildren();
+
+	if( num_cameras == 0 )
 	{
-		for( int i=0; i<num_cameras; i++ )
-		{
-			CCopyEntity *pCameraEntity = pCopyEnt->apChild[i];
-
-			if( !IsValidEntity(pCameraEntity) )
-				continue;
-
-			// render stage with the camera
-			pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
-		}
+		LOG_PRINT_WARNING( " - No camera entity" );
+		return;
 	}
 
+	num_cameras = 1;
+
+	for( int i=0; i<num_cameras; i++ )
+	{
+		CCopyEntity *pCameraEntity = pCopyEnt->apChild[i];
+
+		if( !IsValidEntity(pCameraEntity) )
+			continue;
+
+		// render stage with the camera
+//		pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
+
+		pCameraEntity->pBaseEntity->CreateRenderTasks( pCameraEntity );
+	}
 }
 
 

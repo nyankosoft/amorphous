@@ -65,6 +65,9 @@ void CBE_ScriptedCamera::InitCopyEntity(CCopyEntity* pCopyEnt)
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataIndex();
 
 	CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt);
+
+//	D3DXCreateTexture( DIRECT3D9.GetDevice(),
+//	ex.pSceneTexture;
 }
 
 
@@ -102,9 +105,7 @@ void CBE_ScriptedCamera::RenderStage(CCopyEntity* pCopyEnt)
 {
 	CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt);
 
-	PERIODICAL( 100, g_Log.Print( "CBE_ScriptedCamera::RenderStage() - camera pos: " +
-		to_string(ex.Camera.GetPosition(), 2) ) );
-
+	PERIODICAL( 100, LOG_PRINT( "Camera pos: " + to_string(ex.Camera.GetPosition(), 2) ) );
 
 	CScreenEffectManager *pScreenEffectManager = m_pStage->GetScreenEffectManager();
 
@@ -123,11 +124,9 @@ void CBE_ScriptedCamera::RenderStage(CCopyEntity* pCopyEnt)
 	if( effect_flag & ScreenEffect::PseudoMotionBlur )
 		pScreenEffectManager->SetMotionBlurWeight( effect.motion_blur_strength );
 
-//	pScreenEffectManager->RaiseEffectFlag( ScreenEffect::PseudoMotionBlur );	
-//	pScreenEffectManager->SetMotionBlurWeight( 0.6f );
-
 	if( effect_flag & ScreenEffect::PseudoBlur )
 		PERIODICAL( 10, g_Log.Print( "blur: %f, %f", effect.blur_x, effect.blur_y ) );
+
 //	pScreenEffectManager->SetGlareLuminanceThreshold( effect.glare_threshold );
 
 //	m_pStage->Render( m_Camera );
@@ -135,6 +134,13 @@ void CBE_ScriptedCamera::RenderStage(CCopyEntity* pCopyEnt)
 
 	// restore the original effect settings
 	pScreenEffectManager->SetEffectFlag( orig_effect_flag );
+}
+
+
+void CBE_ScriptedCamera::CreateRenderTasks(CCopyEntity* pCopyEnt)
+{
+	// add render tasks necessary to render the stage
+	m_pStage->CreateStageRenderTasks( GetCamera() );
 }
 
 

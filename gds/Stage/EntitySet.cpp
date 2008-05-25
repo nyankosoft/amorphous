@@ -390,6 +390,8 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 	// not doing this may cause error in Release build
 	entity_tree.reserve( 10000 );
 
+	// create the new entity tree on the temporary node buffer entity_tree
+	// - Do not copy the tree to m_paEntityTree until all the entities are unlinked
 	MakeEntityNode_r(0, pSrcBSPTree, &entity_tree);
 
 	if(entity_tree.size() == 0)
@@ -397,8 +399,18 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 
 	entity_tree[0].sParent = -1;	// the root node has no parent
 
+	// unlink all the entities from the current entity tree
+	for( CCopyEntity* pEntity = m_pEntityInUse;
+		 pEntity != NULL;
+		 pEntity = pEntity->pNext )
+	{
+		pEntity->Unlink();
+	}
+
+	// Do this AFTER all the entities are unlinked from the entity nodes
 	SafeDeleteArray( m_paEntityTree );
 
+	// copy the new tree
 	m_NumEntityNodes = (int)entity_tree.size();
 	m_paEntityTree = new CEntityNode [ m_NumEntityNodes ];
 	for(int i=0; i<m_NumEntityNodes; i++)
@@ -421,6 +433,13 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 		 pEntity != NULL;
 		 pEntity = pEntity->pNext )
 	{
+		// added: 11:34 PM 5/25/2008
+		// Do not re-link an entity if it has already been marked as 'not in use'
+		// - Failure to do this leads to an invalid link in the entity tree node
+		//   - Caused infinite loops in CEntityNode::CheckPosition_r()
+		if( !IsValidEntity( pEntity ) )
+			continue;
+
 		Link( pEntity );
 	}
 
@@ -1146,7 +1165,9 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 		{
 			fprintf( fp, "--------------------------------------------------------\n" );
 
-			fprintf( fp, "name: %s\n", pCopyEnt->GetName().c_str() );
+			fprintf( fp, "name:      %s\n", pCopyEnt->GetName().c_str() );
+
+			fprintf( fp, "id:        %d\n", pCopyEnt->GetID() );
 
 			fprintf( fp, "base name: %s\n", pCopyEnt->pBaseEntity->GetName() );
 

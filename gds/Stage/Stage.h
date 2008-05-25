@@ -217,6 +217,8 @@ inline CCopyEntity *CStage::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
 
 inline void CStage::TerminateEntity( CCopyEntity*& pEntity )
 {
+	LOG_PRINT( " - Terminating an entity: " + pEntity->GetName() );
+
 	pEntity->pBaseEntity->OnEntityDestroyed( pEntity );
 
 	if( pEntity->pPhysicsActor )

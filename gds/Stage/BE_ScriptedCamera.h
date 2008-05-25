@@ -330,6 +330,8 @@ public:
 
 	bool m_bInUse;
 
+//	LPDIRECT3DTEXTURE9 pSceneTexture;
+
 	CBEC_ScriptedCameraExtraData()
 		:
 	m_InitializedAtCutsceneStart(false),
@@ -368,10 +370,12 @@ public:
 	void InitCopyEntity( CCopyEntity* pCopyEnt );
 
 	void Act(CCopyEntity* pCopyEnt);	//behavior in in one frame
+
 //	void Draw(CCopyEntity* pCopyEnt);
+
 	void RenderStage(CCopyEntity* pCopyEnt);
-//	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
-//	void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
+
+	void CreateRenderTasks(CCopyEntity* pCopyEnt);
 
     virtual void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
