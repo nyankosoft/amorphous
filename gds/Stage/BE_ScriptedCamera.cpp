@@ -12,7 +12,8 @@
 
 #include "Support/Log/DefaultLog.h"
 #include "Support/Vec3_StringAux.h"
-#include "Support/macro.h"
+#include "Support/Macro.h"
+#include "Support/VectorRand.h"
 
 
 void FocusTargetFrameSet::UpdateFocusTargetEntities( CEntitySet *pEntitySet )
@@ -241,11 +242,38 @@ void CBE_ScriptedCamera::UpdateCameraParams( CCopyEntity* pCopyEnt )
 		res = cam.FocusTarget.CalcFrame( current_time, cam_target );
 		if( res )
 		{
-			Vector3 vPosToLookAt = cam_target.m_vTargetPos;
-			Vector3 vCamDir = vPosToLookAt - ex.Camera.GetPosition();
-			Vec3Normalize( vCamDir, vCamDir );
+			if( true /* shake */ )
+			{
+				Vector3 vPosToLookAt
+					= cam_target.m_vTargetPos;
+					//+ Vec3RandDir() * ;
+				Vector3 vCamDir = vPosToLookAt - ex.Camera.GetPosition();
+				Vec3Normalize( vCamDir, vCamDir );
 
-			ex.Camera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) );
+				float frametime = m_pStage->GetFrameTime();
+
+				Matrix33 orient
+					= CreateOrientFromFwdDir( vCamDir )
+					* Matrix33RotationX( RangedRand(-0.1f, 0.1f) )
+					* Matrix33RotationY( RangedRand(-0.1f, 0.1f) );
+
+				ex.m_CamOrient.target = orient;
+
+				ex.m_CamOrient.Update( frametime );
+
+				ex.m_CamOrient.current.Orthonormalize();
+
+				ex.Camera.SetOrientation( ex.m_CamOrient.current );
+//				ex.Camera.SetOrientation( orient );
+			}
+			else
+			{
+				Vector3 vPosToLookAt = cam_target.m_vTargetPos;
+				Vector3 vCamDir = vPosToLookAt - ex.Camera.GetPosition();
+				Vec3Normalize( vCamDir, vCamDir );
+
+				ex.Camera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) );
+			}
 		}
 	}
 

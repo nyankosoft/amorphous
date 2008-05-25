@@ -11,6 +11,9 @@
 #include "3DCommon/Camera.h"
 
 #include "3DMath/Vector2.h"
+#include "3DMath/Quaternion.h"
+
+#include "GameCommon/CriticalDamping.h"
 
 
 class CBE_CameraController;
@@ -330,13 +333,22 @@ public:
 
 	bool m_bInUse;
 
+//	cdv<Vector3> m_vCamPos;
+
+	cdv<Matrix33> m_CamOrient;
+
 //	LPDIRECT3DTEXTURE9 pSceneTexture;
 
 	CBEC_ScriptedCameraExtraData()
 		:
 	m_InitializedAtCutsceneStart(false),
 	m_bInUse(false)
-	{}
+	{
+		m_CamOrient.target  = Matrix33Identity();
+		m_CamOrient.current = Matrix33Identity();//.FromRotationMatrix( Matrix33Identity() );
+		m_CamOrient.vel = Matrix33Identity();//Quaternion(0,0,0,0);
+		m_CamOrient.smooth_time = 0.3f;
+	}
 
 };
 
