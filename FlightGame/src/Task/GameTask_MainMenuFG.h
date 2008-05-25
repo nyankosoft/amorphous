@@ -1,4 +1,3 @@
-
 #ifndef  __GAMETASK_MAINMENU_FG_H__
 #define  __GAMETASK_MAINMENU_FG_H__
 
@@ -17,10 +16,6 @@
 class CInputHandler_DebugMainMenuFG;
 class CGI_Aircraft;
 class CGI_Ammunition;
-class CCopyEntity;
-class CStage;
-//class CBE_GeneralEntity;
-//class CBE_ScriptedCamera;
 class CInputHandler_Debug;
 
 class StageNode;
@@ -89,8 +84,8 @@ private:
 
 //	CInputHandler_DebugMainMenuFG *m_pInputHandler;
 
-	int m_SubMenu;
-	int m_NextSubMenu;
+//	int m_SubMenu;
+//	int m_NextSubMenu;
 
 	CGM_DialogManagerSharedPtr m_apDialogManager[1];
 
@@ -105,13 +100,15 @@ private:
 
 	std::string m_SelectedStageName;
 
-	int m_CurrentStageIndex;
+//	int m_CurrentStageIndex;
 
 	std::vector<StageNode *> m_vecpStageNode;
 
 	CCopyEntity* m_pWorldMapDisplay;	/// holds 3d model currently on display (borrowed reference)
 
-	CCopyEntity* m_pCamera;
+	CCopyEntity* m_pCameraEntity;
+
+	boost::shared_ptr<CCamera> m_pCamera;
 
 	/// stage that manages scene objects for the task (owned reference)
 	CStageSharedPtr m_pStage;
@@ -125,10 +122,6 @@ private:
 	void InitMenu();
 
 	void InitStage();
-
-	void UpdateAmmoDescDisplay( CGI_Ammunition& ammo );
-
-	void UpdateAmmunitionDisplay( int ammo_type );
 
 	CGM_Dialog *CreateRootMenu();
 
@@ -152,14 +145,9 @@ public:
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-	void OnAircraftChanged( int index );
-	void OnAircraftSelected();
-	void OnAmmoTypeFocusChanged( int ammo_type );
 	void OnStageSelected( const std::string& stage_name );
 
-	void SetNextSubMenu( int next_submenu_id );
-
-	CGM_SubDialogButton *GetWeaponItemButton( int ammo_type ) { return m_apItemButton[ammo_type]; }
+//	void SetNextSubMenu( int next_submenu_id );
 
 	friend class CInputHandler_DebugMainMenuFG;
 	friend class CEventHandler_MainMenuFG;

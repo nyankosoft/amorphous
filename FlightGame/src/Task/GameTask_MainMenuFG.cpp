@@ -28,19 +28,13 @@
 
 #include "App/ApplicationBase.h"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/StringAux.h"
-#include "Support/memory_helpers.h"
-#include "Support/msgbox.h"
-#include "Support/fnop.h"
-#include "Support/macro.h"
+#include "Support.h"
 
 #include "../UI/FG_StdControlRendererManager.h"
 #include "../FlightGameGlobalParams.h"
 #include "../DefaultKeybindFG.h"
 
-#include <direct.h>
-#include <assert.h>
+using namespace boost;
 
 
 class CInputHandler_DebugMainMenuFG : public CInputHandler_Dialog
@@ -100,14 +94,10 @@ public:
 };
 
 
-static CCamera *g_pCamera = NULL;
-
-
 CGameTask_MainMenuFG::CGameTask_MainMenuFG()
 :
-m_pCamera(NULL)
+m_pCameraEntity(NULL)
 {
-//	m_CurrentAircraftIndex = 0;
 //	m_SubMenu = SM_AIRCRAFT_SELECT;
 //	m_NextSubMenu = SM_INVALID;
 
@@ -172,7 +162,6 @@ CGameTask_MainMenuFG::~CGameTask_MainMenuFG()
 //	SafeDelete( m_pInputHandler );
 
 	m_pStage.reset();
-	SafeDelete( g_pCamera );
 }
 
 
@@ -189,9 +178,9 @@ void CGameTask_MainMenuFG::InitStage()
 
 	// get entities - item display entity & scripted camera entity
 	m_pWorldMapDisplay	= m_pStage->GetEntitySet()->GetEntityByName( "worldmap_display" );
-	m_pCamera	= m_pStage->GetEntitySet()->GetEntityByName( "cam" );
+	m_pCameraEntity	= m_pStage->GetEntitySet()->GetEntityByName( "cam" );
 
-	m_pStage->GetEntitySet()->SetCameraEntity( m_pCamera );
+	m_pStage->GetEntitySet()->SetCameraEntity( m_pCameraEntity );
 }
 
 
@@ -394,10 +383,10 @@ int CGameTask_MainMenuFG::FrameMove( float dt )
 
 void CGameTask_MainMenuFG::UpdateCamera( float dt )
 {
-	if( !g_pCamera )
+	if( !m_pCamera )
 	{
-		g_pCamera = new CCamera;
-		g_pCamera->SetPosition( Vector3(0.0f, 5.0f, 0.0f) );
+		m_pCamera = shared_ptr<CCamera>( new CCamera() );
+		m_pCamera->SetPosition( Vector3(0.0f, 5.0f, 0.0f) );
 	}
 
 	static float s_Time = 0;
@@ -422,8 +411,8 @@ void CGameTask_MainMenuFG::UpdateCamera( float dt )
 	m_CamPosition.target = vLookAtPos + vDir * dist;
 	m_CamOrient.target = Matrix33( Vec3Cross( Vector3(0,1,0), (-vDir) ), Vector3(0,1,0), -vDir );
 
-	g_pCamera->SetPosition( m_CamPosition.current );
-	g_pCamera->SetOrientation( m_CamOrient.current );
+	m_pCamera->SetPosition( m_CamPosition.current );
+	m_pCamera->SetOrientation( m_CamOrient.current );
 
 	m_CamPosition.Update( dt );
 	m_CamOrient.Update( dt );
@@ -433,7 +422,7 @@ void CGameTask_MainMenuFG::UpdateCamera( float dt )
 
 void CGameTask_MainMenuFG::Render()
 {
-	if( !g_pCamera )
+	if( !m_pCamera )
 		return;
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
@@ -456,7 +445,7 @@ void CGameTask_MainMenuFG::Render()
 
 	// render the stage (aircraft, missile, etc.)
 	if( m_pStage )
-		m_pStage->Render( *g_pCamera );
+		m_pStage->Render( *m_pCamera.get() );
 
 	// render stage select dialog
 	m_apDialogManager[0]->Render();
@@ -480,44 +469,18 @@ void CGameTask_MainMenuFG::LoadGraphicsResources( const CGraphicsParameters& rPa
 }
 
 
-void CGameTask_MainMenuFG::OnAmmoTypeFocusChanged( int ammo_type )
-{
-}
-
-
 void CGameTask_MainMenuFG::OnStageSelected( const string& stage_name )
 {
-//	m_ReqState = STAGE_TASK_REQUESTED;
 	RequestTaskTransition( ID_AIRCRAFT_SELECT );
 	m_SelectedStageName = "Script/" + stage_name;
 }
 
-
-void CGameTask_MainMenuFG::UpdateAmmoDescDisplay( CGI_Ammunition& ammo )
-{
-}
-
-
-void CGameTask_MainMenuFG::UpdateAmmunitionDisplay( int ammo_type )
-{
-}
-
-
-void CGameTask_MainMenuFG::OnAircraftChanged( int index )
-{
-}
-
 /*
-void CGameTask_MainMenuFG::OnAircraftSelected()
-{
-}*/
-
-
 void CGameTask_MainMenuFG::SetNextSubMenu( int next_submenu_id )
 {
 	m_NextSubMenu = next_submenu_id;
 }
-
+*/
 
 
 void CGameTask_MainMenuFG::RenderStageGraphSkeleton_r( StageNode& node, int depth )
