@@ -5,15 +5,13 @@
 #include "../base.h"
 
 #include "fwd.h"
+#include "3DCommon/fwd.h"
 #include "StaticGeometry.h"
 #include "CopyEntity.h"
 #include "OverlapTestAABB.h"
 
 #include "LightEntity.h"
 
-class CCamera;
-class CViewFrustumTest;
-class CBSPTree;
 
 /**
  * node for entity tree
@@ -37,13 +35,12 @@ class CEntityNode : public CCopyEntity
 	/// bounding-box that represents sub-space of the node
 	AABB3 m_AABB;
 
+	CEntitySet* m_pEntitySet;
+
 //	inline bool CheckCollisionGroup( int group_index, const std::vector<int>& vecTargetGroup );
 	inline bool CheckCollisionGroup( int group0, int group1 );
 
 public:
-
-	static CEntitySet* ms_pEntitySet;
-	static CStage* ms_pStage;
 
 	static int ms_NumRenderedEntities;
 

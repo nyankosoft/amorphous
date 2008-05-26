@@ -85,13 +85,13 @@ class CCopyEntity
 	CStage *m_pStage;
 
 	/// next entity in the chain list 'm_pEntityInUse'
-	CCopyEntity* pNext;
+	CCopyEntity* m_pNext;
 
-	CCopyEntity* pNextEntity;   ///< next entity in the chain linked to entity tree-node 'CEntityNode'
-	CCopyEntity* pPrevEntity;   ///< prev entity in the chain linked to entity tree-node 'CEntityNode'
+	CCopyEntity* m_pNextEntity;   ///< next entity in the chain linked to entity tree-node 'CEntityNode'
+	CCopyEntity* m_pPrevEntity;   ///< prev entity in the chain linked to entity tree-node 'CEntityNode'
 
 	/// next entity in the link list for z-sorting (used to render transparent entities)
-	CCopyEntity* pNextEntityInZSortTable;
+	CCopyEntity* m_pNextEntityInZSortTable;
 
 	/// used for z-sort of translucent entities (rendering)
 	float fZinCameraSpace;

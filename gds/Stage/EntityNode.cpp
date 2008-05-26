@@ -1,4 +1,3 @@
-
 #include "EntityNode.h"
 #include "EntitySet.h"
 #include "EntityRenderManager.h"
@@ -12,8 +11,6 @@
 #include "Support/Profile.h"
 
 
-CEntitySet* CEntityNode::ms_pEntitySet = 0;
-CStage* CEntityNode::ms_pStage = 0;
 int CEntityNode::ms_NumRenderedEntities = 0;
 
 
@@ -22,6 +19,8 @@ int CEntityNode::ms_NumRenderedEntities = 0;
 //====================================================================================
 
 CEntityNode::CEntityNode()
+:
+m_pEntitySet(NULL)
 {
 	m_AABB.Nullify();
 	m_Plane		= SPlane( Vector3(0,0,0), 0 );
@@ -29,8 +28,6 @@ CEntityNode::CEntityNode()
 	sFrontChild = 0;
 	sBackChild  = 0;
 	sParent		= 0;
-	pNextEntity = NULL;
-	pPrevEntity = NULL;
 	m_sCellIndex= -1;
 
 //	m_pLightEntity = NULL;
@@ -52,8 +49,8 @@ inline bool CEntityNode::CheckCollisionGroup( int group_index, const vector<int>
 		{
 //			const int& tgt_grp_index = overlap_test.vecTargetGroup[i];
 
-//			if( ms_pEntitySet->m_EntityCollisionGroup[group_index][tgt_grp_index] == 1 )
-			if( ms_pEntitySet->IsCollisionEnabled( group_index, vecTargetGroup[i] ) )
+//			if( m_pEntitySet->m_EntityCollisionGroup[group_index][tgt_grp_index] == 1 )
+			if( m_pEntitySet->IsCollisionEnabled( group_index, vecTargetGroup[i] ) )
 				break;
 		}
 		if( i < num_tgt_groups )
@@ -66,28 +63,28 @@ inline bool CEntityNode::CheckCollisionGroup( int group_index, const vector<int>
 
 inline bool CEntityNode::CheckCollisionGroup( int group0, int group1 )
 {
-	return ms_pEntitySet->IsCollisionEnabled( group0, group1 );
+	return m_pEntitySet->IsCollisionEnabled( group0, group1 );
 
 }
 
 
 /// Link 'pEntity' to this entity node
 /// 'pEntity' is set to the head element of the entity list linked to this entity node
-/// pEntity->pPrevEntity is set to point to this entity node
+/// pEntity->m_pPrevEntity is set to point to this entity node
 void CEntityNode::Link(CCopyEntity* pEntity)
 {
 	CEntityNode* pThisEntityNode = this;
 
-	// The first entity on this entity-node is set to the 'pEntity->pNextEntity' 
+	// The first entity on this entity-node is set to the 'pEntity->m_pNextEntity' 
 	// If no copy-entity has been linked to this entity-node yet, NULL is set.
-	pEntity->pNextEntity = pThisEntityNode->pNextEntity;
+	pEntity->m_pNextEntity = pThisEntityNode->m_pNextEntity;
 
-	if( pThisEntityNode->pNextEntity )
+	if( pThisEntityNode->m_pNextEntity )
 	{	//There have been already some copy-entities linked to this entity-node.
-		pThisEntityNode->pNextEntity->pPrevEntity = pEntity;
+		pThisEntityNode->m_pNextEntity->m_pPrevEntity = pEntity;
 	}
-	pThisEntityNode->pNextEntity = pEntity;
-	pEntity->pPrevEntity = pThisEntityNode;
+	pThisEntityNode->m_pNextEntity = pEntity;
+	pEntity->m_pPrevEntity = pThisEntityNode;
 
 	//m_sNumEnts++;		disabled
 }
@@ -97,24 +94,24 @@ void CEntityNode::Link(CCopyEntity* pEntity)
 //   Rendering Copy Entities
 //               Draw all the copy entities linked to this node
 //=====================================================================
-void CEntityNode::Render(CCamera& rCam)
+void CEntityNode::Render( CCamera& rCam )
 {
 //	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
-//		!ms_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
+//		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
 	CCopyEntity* pEntity;
-	for( pEntity = this->pNextEntity;
+	for( pEntity = this->m_pNextEntity;
 		 pEntity;
-		 pEntity = pEntity->pNextEntity )
+		 pEntity = pEntity->m_pNextEntity )
 	{
 		if( !(pEntity->EntityFlag & BETYPE_VISIBLE) )
 			continue;
 
 		if( pEntity->EntityFlag & BETYPE_USE_ZSORT )
 		{	// 'pEntity' includes transparent polygons
-			this->ms_pEntitySet->GetRenderManager()->SendToZSortTable( pEntity );
+			this->m_pEntitySet->GetRenderManager()->SendToZSortTable( pEntity );
 		}
 		else
 		{
@@ -123,17 +120,17 @@ void CEntityNode::Render(CCamera& rCam)
 				if( pEntity->sState & CESTATE_LIGHT_INFORMATION_INVALID )
 				{	// need to update light information - find lights that reaches to this entity
 					pEntity->ClearLightIndices();
-					ms_pEntitySet->UpdateLightInfo( pEntity );
+					m_pEntitySet->UpdateLightInfo( pEntity );
 					pEntity->sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
 				}
 
 				// turn on lights that reach 'pCopyEnt'
-				ms_pEntitySet->EnableLightForEntity();
-				ms_pEntitySet->SetLightsForEntity( pEntity );
+				m_pEntitySet->EnableLightForEntity();
+				m_pEntitySet->SetLightsForEntity( pEntity );
 			}
 			else
 			{	// turn off lights
-				ms_pEntitySet->DisableLightForEntity();
+				m_pEntitySet->DisableLightForEntity();
 			}
 
 			// render the entity
@@ -148,14 +145,14 @@ void CEntityNode::Render(CCamera& rCam)
 void CEntityNode::RenderShadowCasters( CCamera& rCam )
 {
 //	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
-//		!ms_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
+//		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
 	CCopyEntity* pEntity;
-	for( pEntity = this->pNextEntity;
+	for( pEntity = this->m_pNextEntity;
 		 pEntity;
-		 pEntity = pEntity->pNextEntity )
+		 pEntity = pEntity->m_pNextEntity )
 	{
 		if( (pEntity->EntityFlag & BETYPE_VISIBLE)
 		 && (pEntity->EntityFlag & BETYPE_SHADOW_CASTER) )
@@ -170,14 +167,14 @@ void CEntityNode::RenderShadowCasters( CCamera& rCam )
 void CEntityNode::RenderShadowReceivers( CCamera& rCam )
 {
 //	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
-//		!ms_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
+//		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
 	CCopyEntity* pEntity;
-	for( pEntity = this->pNextEntity;
+	for( pEntity = this->m_pNextEntity;
 		 pEntity;
-		 pEntity = pEntity->pNextEntity )
+		 pEntity = pEntity->m_pNextEntity )
 	{
 		if( (pEntity->EntityFlag & BETYPE_VISIBLE)
 		 && (pEntity->EntityFlag & BETYPE_SHADOW_RECEIVER) )
@@ -192,14 +189,14 @@ void CEntityNode::RenderShadowReceivers( CCamera& rCam )
 void CEntityNode::RenderAllButEnvMapTraget( CCamera& rCam, U32 target_entity_id  )
 {
 //	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
-//		!ms_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
+//		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
 	CCopyEntity* pEntity;
-	for( pEntity = this->pNextEntity;
+	for( pEntity = this->m_pNextEntity;
 		 pEntity;
-		 pEntity = pEntity->pNextEntity )
+		 pEntity = pEntity->m_pNextEntity )
 	{
 		if( pEntity->GetID() == target_entity_id
 		 && pEntity->EntityFlag  & BETYPE_ENVMAPTARGET )
@@ -221,9 +218,9 @@ void CEntityNode::CheckPosition_r(STrace& tr, CEntityNode* paEntTree)
 	// Set the first copy entity on this entity node and cycle through all the copy entities
 	// on this entity node
 	CCopyEntity* pEntity;
-	for(pEntity = this->pNextEntity;
+	for(pEntity = this->m_pNextEntity;
 		pEntity != NULL;
-		pEntity = pEntity->pNextEntity )
+		pEntity = pEntity->m_pNextEntity )
 	{	
 		if( pEntity->bNoClip )
 			continue;
@@ -284,9 +281,9 @@ void CEntityNode::CheckPosition_r(CTrace& tr, CEntityNode* paEntTree)
 	// Set the first copy entity on this entity node and cycle through all the copy entities
 	// on this entity node
 	CCopyEntity* pEntity;
-	for(pEntity = this->pNextEntity;
+	for(pEntity = this->m_pNextEntity;
 		pEntity != NULL;
-		pEntity = pEntity->pNextEntity )
+		pEntity = pEntity->m_pNextEntity )
 	{	
 		if( pEntity->bNoClip && (tr.GetTraceType() & TRACETYPE_IGNORE_NOCLIP_ENTITIES) )
 			continue;
@@ -347,9 +344,9 @@ void CEntityNode::GetVisibleEntities_r(CViewFrustumTest& vf_test, CEntityNode* p
 	// Set the first copy entity on this entity node and cycle through all the copy entities
 	// on this entity node
 	CCopyEntity* pEntity;
-	for(pEntity = this->pNextEntity;
+	for(pEntity = this->m_pNextEntity;
 		pEntity != NULL;
-		pEntity = pEntity->pNextEntity )
+		pEntity = pEntity->m_pNextEntity )
 	{	
 		if( !vf_test.GetCamera()->ViewFrustumIntersectsWith( pEntity->world_aabb ) )
 			continue;
@@ -387,7 +384,7 @@ void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
 	//Set the first copy entity on this entity node and cycle through all the copy entities
 	//on this entity node
 	CCopyEntity* pEntity;
-	for( pEntity = this->pNextEntity; pEntity != NULL; pEntity = pEntity->pNextEntity )
+	for( pEntity = this->m_pNextEntity; pEntity != NULL; pEntity = pEntity->m_pNextEntity )
 	{	
 //		ProfileBegin( "CEntityNode::ClipTrace_r() - linked entities loop" );
 
@@ -486,7 +483,7 @@ void CEntityNode::GetOverlappingEntities( COverlapTestAABB& overlap_test, CEntit
 	// set the first copy entity on this entity node
 	// and cycle through all the copy entities on this entity node
 	CCopyEntity* pEntity;
-	for( pEntity = this->pNextEntity; pEntity != NULL; pEntity = pEntity->pNextEntity )
+	for( pEntity = this->m_pNextEntity; pEntity != NULL; pEntity = pEntity->m_pNextEntity )
 	{
 //		if( pEntity->bNoClip && (tr.sTraceType & TRACETYPE_IGNORE_NOCLIP_ENTITIES) )
 //			continue;

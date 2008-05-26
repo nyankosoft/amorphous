@@ -14,14 +14,12 @@ inline CCopyEntity::CCopyEntity()
 
 	bInSolid = false;
 	bNoClip = false;
-//	bUseZSort = false;
-//	bLighting = false;
 
-	pNext = NULL;
-//	pPrev = NULL;
-	pNextEntity = NULL;
-	pPrevEntity = NULL;
-	pNextEntityInZSortTable = NULL;
+	m_pNext = NULL;
+
+	m_pNextEntity = NULL;
+	m_pPrevEntity = NULL;
+	m_pNextEntityInZSortTable = NULL;
 
 	fZinCameraSpace = 0;
 	EntityFlag = 0;
@@ -29,7 +27,7 @@ inline CCopyEntity::CCopyEntity()
 
 	pBaseEntity = NULL;
 
-	Vector3 vZero = Vector3(0,0,0);
+	const Vector3 vZero = Vector3(0,0,0);
 
 	touch_plane.dist = 0;
 	touch_plane.normal = vZero;
@@ -89,15 +87,15 @@ inline CCopyEntity::CCopyEntity()
 
 inline void CCopyEntity::Unlink()	// Do not call this from 'CEntityNode'
 {
-	if( !pPrevEntity && !pNextEntity )
+	if( !m_pPrevEntity && !m_pNextEntity )
 		return;	//already unlinked
 
-	if(pNextEntity)
-		pNextEntity->pPrevEntity = this->pPrevEntity;
-	pPrevEntity->pNextEntity = this->pNextEntity;
+	if(m_pNextEntity)
+		m_pNextEntity->m_pPrevEntity = this->m_pPrevEntity;
+	m_pPrevEntity->m_pNextEntity = this->m_pNextEntity;
 
-	this->pPrevEntity = NULL;
-	this->pNextEntity = NULL;
+	this->m_pPrevEntity = NULL;
+	this->m_pNextEntity = NULL;
 
 }
 

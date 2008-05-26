@@ -1,4 +1,3 @@
-
 #include "EntitySet.h"
 
 #include "EntityNode.h"
@@ -136,7 +135,7 @@ void CEntitySet::ReleaseAllEntities()
 	{
 		// save the pointer to the next entity since CStage::TerminateEntity()
 		// takes the reference to an entity pointer and sets it to NULL
-		pNextEntity = pEntity->pNext;
+		pNextEntity = pEntity->m_pNext;
 
 		if( IsValidEntity( pEntity ) )
 		{
@@ -402,7 +401,7 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 	// unlink all the entities from the current entity tree
 	for( CCopyEntity* pEntity = m_pEntityInUse;
 		 pEntity != NULL;
-		 pEntity = pEntity->pNext )
+		 pEntity = pEntity->m_pNext )
 	{
 		pEntity->Unlink();
 	}
@@ -418,10 +417,13 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 
 	entity_tree.clear();
 
-	// allow direct access from entity tree node to this entity set and the stage
-	// not a good solution
-	CEntityNode::ms_pEntitySet = this;
-	CEntityNode::ms_pStage = m_pStage;
+	// set stage and entity set
+	for(int i=0; i<m_NumEntityNodes; i++)
+	{
+		m_paEntityTree[i].m_pStage     = m_pStage;
+		m_paEntityTree[i].m_pEntitySet = this;
+	}
+
 
 	// update entity tree of the render manager
 	m_pRenderManager->UpdateEntityTree( m_paEntityTree, m_NumEntityNodes );
@@ -431,7 +433,7 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 	// re-link all the entities to the new tree nodes
 	for( CCopyEntity* pEntity = m_pEntityInUse;
 		 pEntity != NULL;
-		 pEntity = pEntity->pNext )
+		 pEntity = pEntity->m_pNext )
 	{
 		// added: 11:34 PM 5/25/2008
 		// Do not re-link an entity if it has already been marked as 'not in use'
@@ -722,7 +724,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	pNewCopyEnt->world_aabb.TransformCoord( pNewCopyEnt->local_aabb, pNewCopyEnt->Position() );
 
 	// link the new copy-entity to the top of 'm_pEntityInUse'
-	pNewCopyEnt->pNext = m_pEntityInUse;
+	pNewCopyEnt->m_pNext = m_pEntityInUse;
 	m_pEntityInUse = pNewCopyEnt;
 
 	pNewCopyEnt->pParent = rCopyEntityDesc.pParent;
@@ -940,7 +942,7 @@ void CEntitySet::UpdatePhysics( float frametime )
 		CCopyEntity *pEntity;
 		for( pEntity = m_pEntityInUse;
 			 pEntity != NULL;
-			 pEntity = pEntity->pNext )
+			 pEntity = pEntity->m_pNext )
 		{
 			if( pEntity->inuse && pEntity->pPhysicsActor )
                 pEntity->pBaseEntity->UpdatePhysics( pEntity, timestep );
@@ -1026,7 +1028,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 	// save the current entity positions
 	for( pEntity = m_pEntityInUse;
 	     pEntity != NULL;
-	     pEntity = pEntity->pNext )
+	     pEntity = pEntity->m_pNext )
 	{
 		pEntity->PrevPosition() = pEntity->Position();
 	}
@@ -1045,7 +1047,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 	// update active entities
 	for( pEntity = this->m_pEntityInUse, pPrevEntity = NULL;
 		 pEntity != NULL;
-		 pPrevEntity = pEntity, pEntity = pEntity->pNext )
+		 pPrevEntity = pEntity, pEntity = pEntity->m_pNext )
 	{
 		// before update 'pCopyEnt', check if it has been terminated.
 		if( !pEntity->inuse )
@@ -1083,7 +1085,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 
 	for( pEntity = m_pEntityInUse;
 		 pEntity != NULL;
-		 pPrevEntity = pEntity, pEntity = pEntity->pNext )
+		 pPrevEntity = pEntity, pEntity = pEntity->m_pNext )
 	{
 		if( !pEntity->inuse )
 			continue;
@@ -1159,9 +1161,9 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 		fprintf(fp, "  aabb: %s\n\n", to_string(rEntityNode.m_AABB).c_str() );
 
 		//Write the copy entities linked to this entity node
-		for(pCopyEnt = rEntityNode.pNextEntity;
+		for(pCopyEnt = rEntityNode.m_pNextEntity;
 		pCopyEnt != NULL;
-		pCopyEnt = pCopyEnt->pNextEntity)
+		pCopyEnt = pCopyEnt->m_pNextEntity)
 		{
 			fprintf( fp, "--------------------------------------------------------\n" );
 

@@ -210,13 +210,13 @@ inline void CEntitySet::ReleaseTerminatedEntities()
 		if( !pEntity->inuse )
 		{
 			// 0, save the access to the next engaged entity in advance
-			pNextEntity = pEntity->pNext;
+			pNextEntity = pEntity->m_pNext;
 
 			// 1, unlink 'pEntity' from 'm_pEntityInUse' list
 			if( pPrevEntity )
-				pPrevEntity->pNext = pEntity->pNext;
+				pPrevEntity->m_pNext = pEntity->m_pNext;
 			else	// 'pEntity' is the first copy-entity in list 'm_pEntityInUse
-				m_pEntityInUse = pEntity->pNext;
+				m_pEntityInUse = pEntity->m_pNext;
 
 			// 2, release the entity
 			m_pEntityFactory->ReleaseEntity( pEntity );
@@ -227,7 +227,7 @@ inline void CEntitySet::ReleaseTerminatedEntities()
 		else
 		{
 			pPrevEntity = pEntity;
-			pEntity = pEntity->pNext;
+			pEntity = pEntity->m_pNext;
 		}
 	}
 }
@@ -258,7 +258,7 @@ inline CCopyEntity *CEntitySet::GetEntityByName( const char* name ) const
 	CCopyEntity *pEntity;
 	for( pEntity = m_pEntityInUse;
 		 pEntity != NULL;
-		 pEntity = pEntity->pNext )
+		 pEntity = pEntity->m_pNext )
 	{
 		if( !strcmp(pEntity->GetName().c_str(),name) && pEntity->inuse )
 			return pEntity;

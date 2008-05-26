@@ -17,7 +17,7 @@ public:
 
 	inline void Nullify();
 
-	inline void SetMaxAndMin(Vector3& vMax, Vector3& vMin) { this->vMax = vMax; this->vMin = vMin; }
+	inline void SetMaxAndMin( const Vector3& vMax, const Vector3& vMin ) { this->vMax = vMax; this->vMin = vMin; }
 
 	inline Vector3 GetCenterPosition() const { return (vMax + vMin) / 2.0f; }
 	inline Vector3 GetExtents() const { return ( vMax - vMin ) / 2.0f; }

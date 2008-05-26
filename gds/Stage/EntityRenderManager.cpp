@@ -279,29 +279,29 @@ void CEntityRenderManager::MoveSkyboxToListHead()
 
 	CCopyEntity *pEntity, *pPrevEntity;
 	CCopyEntity *pSkyboxEntity = NULL;
-	for( pEntity = rRootNode.pNextEntity, pPrevEntity = NULL;
+	for( pEntity = rRootNode.m_pNextEntity, pPrevEntity = NULL;
 		 pEntity;
-		 pPrevEntity = pEntity, pEntity = pEntity->pNextEntity )
+		 pPrevEntity = pEntity, pEntity = pEntity->m_pNextEntity )
 	{
 		if( pEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_SKYBOX )
 		{
-			if( pEntity == rRootNode.pNextEntity )
+			if( pEntity == rRootNode.m_pNextEntity )
 				break;	// already placed at the head
 
 			pSkyboxEntity = pEntity;
 
 			if( pPrevEntity )
-				pPrevEntity->pNextEntity = pEntity->pNextEntity;
+				pPrevEntity->m_pNextEntity = pEntity->m_pNextEntity;
 
-			if( pEntity->pNextEntity )
-                pEntity->pNextEntity->pPrevEntity = pPrevEntity;
+			if( pEntity->m_pNextEntity )
+                pEntity->m_pNextEntity->m_pPrevEntity = pPrevEntity;
 
-			rRootNode.pNextEntity->pPrevEntity = pSkyboxEntity;
-			pSkyboxEntity->pNextEntity = rRootNode.pNextEntity;
+			rRootNode.m_pNextEntity->m_pPrevEntity = pSkyboxEntity;
+			pSkyboxEntity->m_pNextEntity = rRootNode.m_pNextEntity;
 
-			rRootNode.pNextEntity = pSkyboxEntity;
-//			pSkyboxEntity->pPrevEntity = NULL;
-			pSkyboxEntity->pPrevEntity = &rRootNode;	// 'pPrevEntity' of the head element points to the entity node
+			rRootNode.m_pNextEntity = pSkyboxEntity;
+//			pSkyboxEntity->m_pPrevEntity = NULL;
+			pSkyboxEntity->m_pPrevEntity = &rRootNode;	// 'pPrevEntity' of the head element points to the entity node
 			break;
 		}
 	}
@@ -344,7 +344,7 @@ void CEntityRenderManager::RenderZSortTable()
 			// render the entity
 			pEntity->Draw();
 
-			pEntity = pEntity->pNextEntityInZSortTable;
+			pEntity = pEntity->m_pNextEntityInZSortTable;
 		}
 
 		// clear z-sort table
@@ -378,7 +378,7 @@ void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 	iZSortValue = (int)( fZinCameraSpace / fMaxRenderDepth * (float)(SIZE_ZSORTTABLE - 1) );
 
 	// simple but inaccurate
-	//pCopyEnt->pNextEntityInZSortTable = m_apZSortTable[iZSortValue];
+	//pCopyEnt->m_pNextEntityInZSortTable = m_apZSortTable[iZSortValue];
 	//m_apZSortTable[iZSortValue] = pCopyEnt;
 
 	// more accurate but slower
@@ -386,31 +386,31 @@ void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 	if( !m_apZSortTable[iZSortValue] )
 	{
 		// the current z-sort list is empty. (contains no copy entity)
-		pCopyEnt->pNextEntityInZSortTable = NULL;
+		pCopyEnt->m_pNextEntityInZSortTable = NULL;
 		m_apZSortTable[iZSortValue] = pCopyEnt;
 		return;
 	}
 	else if( fZinCameraSpace < m_apZSortTable[iZSortValue]->fZinCameraSpace )	// compare z with the 1st copy entity in the current z-sort list
 	{
 		// 'pCopyEnt' has the minimum z value and should be placed at the head of the z-sort list
-		pCopyEnt->pNextEntityInZSortTable = m_apZSortTable[iZSortValue];
+		pCopyEnt->m_pNextEntityInZSortTable = m_apZSortTable[iZSortValue];
 		m_apZSortTable[iZSortValue] = pCopyEnt;
 		return;
 	}
 	else
 	{	// start searching from 2nd copy entity in this z-sort list
-		pZSortedEntity = m_apZSortTable[iZSortValue]->pNextEntityInZSortTable;
+		pZSortedEntity = m_apZSortTable[iZSortValue]->m_pNextEntityInZSortTable;
 		pPrevZSortedEntity = m_apZSortTable[iZSortValue];
 		while(1)
 		{
 			if( !pZSortedEntity || fZinCameraSpace < pZSortedEntity->fZinCameraSpace )
 			{
-				pPrevZSortedEntity->pNextEntityInZSortTable = pCopyEnt;
-				pCopyEnt->pNextEntityInZSortTable = pZSortedEntity;
+				pPrevZSortedEntity->m_pNextEntityInZSortTable = pCopyEnt;
+				pCopyEnt->m_pNextEntityInZSortTable = pZSortedEntity;
 				break;
 			}
 			pPrevZSortedEntity = pZSortedEntity;
-			pZSortedEntity = pZSortedEntity->pNextEntityInZSortTable;
+			pZSortedEntity = pZSortedEntity->m_pNextEntityInZSortTable;
 		}
 		return;
 	}

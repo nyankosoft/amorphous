@@ -72,7 +72,7 @@ void CEntityNode::CheckLight_r(CCopyEntity *pEntity, CEntityNode* paEntTree)
 			vLightCenterPos = pLightEntity->GetPosition();
 			tr.pvStart = &vLightCenterPos;
 
-			ms_pEntitySet->GetStage()->ClipTrace( tr );
+			m_pEntitySet->GetStage()->ClipTrace( tr );
 
 //			if( tr.pTouchedEntity != pEntity )
 			if( tr.fFraction < 1.0f )
@@ -88,7 +88,7 @@ void CEntityNode::CheckLight_r(CCopyEntity *pEntity, CEntityNode* paEntTree)
 //			pEntity->AddLightIndex( pLightEntity->GetIndex() );
 
 			int light_type = pLightEntity->GetLightEntityType();
-			CLightEntityManager *pLightManager = ms_pEntitySet->GetLightEntityManager();
+			CLightEntityManager *pLightManager = m_pEntitySet->GetLightEntityManager();
 			if( light_type == D3DLIGHT_POINT )
 			{
 				// point light - simply add to the end of the index array
