@@ -228,13 +228,27 @@ public:
 
 class CGM_StdSliderRenderer : public CGM_StdControlRenderer
 {
+
+	CGE_Rect *m_pRect;
+	CGE_Rect *m_pFrameRect;
+	CGE_Rect *m_pSliderButtonRect;
+	CGE_Rect *m_pSliderButtonFrameRect;
+
 public:
 
-	CGM_StdSliderRenderer() {}
+	CGM_StdSliderRenderer()
+		:
+	m_pRect(NULL),
+	m_pFrameRect(NULL),
+	m_pSliderButtonRect(NULL),
+	m_pSliderButtonFrameRect(NULL)
+	{}
 
 	virtual ~CGM_StdSliderRenderer() {}
 
-	virtual void Init() {}
+	virtual void Init();
+
+	virtual void OnSliderValueChanged();
 };
 
 

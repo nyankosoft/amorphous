@@ -417,6 +417,46 @@ void CGM_StdListBoxRenderer::OnItemRemoved( int index )
 }
 
 
+void CGM_StdSliderRenderer::Init()
+{
+//	CGM_StdStaticRenderer::Init();
+
+	CGM_Slider *pSlider = GetSlider();
+	if( !pSlider )
+		return;
+
+	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
+	m_pRect                  = m_pGraphicsElementManager->CreateRect( pSlider->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
+	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetBoundingBox(), normal_color, 2 );
+	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
+	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetButtonRect(),  normal_color, 2 );
+
+	// not visible by default
+	// - visibility is controled by the owner dialog
+	int dlg_color_index = 1;
+	m_pRect->SetAlpha( dlg_color_index, 0.0f );
+	m_pFrameRect->SetAlpha( dlg_color_index, 0.0f );
+	m_pSliderButtonRect->SetAlpha( dlg_color_index, 0.0f );
+	m_pSliderButtonFrameRect->SetAlpha( dlg_color_index, 0.0f );
+
+	// register elements
+	// - set local layer offset to determine rendering order
+	RegisterGraphicsElement( 0, m_pSliderButtonFrameRect );
+	RegisterGraphicsElement( 1, m_pSliderButtonRect );
+	RegisterGraphicsElement( 2, m_pFrameRect );
+	RegisterGraphicsElement( 3, m_pRect );
+
+	// register elements that chages colors depending on states
+	RegisterColoredElement( m_pFrameRect );
+	RegisterColoredElement( m_pSliderButtonFrameRect );
+}
+
+
+void CGM_StdSliderRenderer::OnSliderValueChanged()
+{
+}
+
+
 void CGM_StdDialogRenderer::Init()
 {
 	CGM_Dialog *pDialog = GetDialog();
