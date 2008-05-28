@@ -13,6 +13,7 @@ class CGM_SubDialogButtonDesc;
 class CGM_DialogCloseButtonDesc;
 class CGM_ListBoxDesc;
 class CGM_SliderDesc;
+class CGM_ScrollBarDesc;
 
 class CGM_ControlBase;
 class CGM_Control;

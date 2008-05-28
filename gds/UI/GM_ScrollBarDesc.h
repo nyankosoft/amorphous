@@ -1,10 +1,9 @@
 #ifndef  __GM_SCROLLBARDESC_H__
 #define  __GM_SCROLLBARDESC_H__
 
+#include "ui_fwd.h"
 #include "GM_ControlDescBase.h"
 
-
-class CGM_Dialog;
 
 class CGM_ScrollBarDesc : public CGM_ControlDesc
 {

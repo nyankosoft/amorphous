@@ -109,6 +109,10 @@ protected:
 
 protected:
 
+	CGM_ControlRendererManager *GetRendererMgr();
+
+	void RegisterControl( CGM_Control *pNewControl, CGM_ControlRendererSharedPtr pRenderer );
+
 	/// Windows message handlers
 	void OnMouseMove( SPoint& pt );
 	void OnMouseUp( SPoint& pt );
@@ -136,7 +140,17 @@ public:
 
 	/// add a control to the dialog
 	/// and returns a pointer to the created control
-	CGM_Control *AddControl( CGM_ControlDesc *pControlDesc );
+//	CGM_Control *AddControl( CGM_ControlDesc *pControlDesc );
+
+	CGM_Static *AddControl( CGM_StaticDesc *pStaticDesc );
+	CGM_Button *AddControl( CGM_ButtonDesc *pButtonDesc );
+	CGM_SubDialogButton *AddControl( CGM_SubDialogButtonDesc *pSubDlgDesc );
+	CGM_CheckBox *AddControl( CGM_CheckBoxDesc *pCheckBoxDesc );
+	CGM_RadioButton *AddControl( CGM_RadioButtonDesc *pRButtonDesc );
+	CGM_DialogCloseButton *AddControl( CGM_DialogCloseButtonDesc *pCButtonDesc );
+	CGM_Slider *AddControl( CGM_SliderDesc *pSliderDesc );
+	CGM_ListBox *AddControl( CGM_ListBoxDesc *pListBoxDesc );
+	CGM_ScrollBar *AddControl( CGM_ScrollBarDesc *pScrollBarDesc );
 
 	CGM_Static *AddStatic( int id, const SRect& bound_rect, const std::string& title, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 	CGM_Button *AddButton( int id, const SRect& bound_rect, const std::string& title, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr()  );

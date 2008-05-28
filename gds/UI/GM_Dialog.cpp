@@ -5,6 +5,7 @@
 #include "GM_DialogManager.h"
 #include "GM_ControlDescBase.h"
 #include "GM_ListBoxDesc.h"
+#include "GM_ScrollBarDesc.h"
 #include "GM_Static.h"
 #include "GM_Button.h"
 #include "GM_DialogCloseButton.h"
@@ -368,79 +369,132 @@ void CGM_Dialog::OnMouseMove( SPoint& pt )
 }
 
 
-CGM_Control *CGM_Dialog::AddControl( CGM_ControlDesc *pControlDesc )
+CGM_ControlRendererManager *CGM_Dialog::GetRendererMgr()
 {
-	CGM_Control *pNewControl = NULL;
-	CGM_ControlRendererManager* pRendererMgr = m_pDialogManager->GetControlRendererManager();
-	CGM_ControlRendererSharedPtr pRenderer = pControlDesc->pRenderer;
+	return m_pDialogManager->GetControlRendererManager();
+}
 
-	switch( pControlDesc->GetType() )
-	{
-	case CGM_Control::STATIC:
-		pNewControl = new CGM_Static( this, (CGM_StaticDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateStaticRenderer( (CGM_Static *)pNewControl ) );
-		break;
 
-	case CGM_Control::BUTTON:
-		pNewControl = new CGM_Button( this, (CGM_ButtonDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateButtonRenderer( (CGM_Button *)pNewControl ) );
-		break;
+CGM_Static *CGM_Dialog::AddControl( CGM_StaticDesc *pStaticDesc )
+{
+	CGM_Static *pNewControl = new CGM_Static( this, pStaticDesc );
+	if( !pStaticDesc->pRenderer.get() )
+		pStaticDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateStaticRenderer( pNewControl ) );
 
-	case CGM_Control::SUBDIALOGBUTTON:
-		pNewControl = new CGM_SubDialogButton( this, (CGM_SubDialogButtonDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateSubDialogButtonRenderer( (CGM_SubDialogButton *)pNewControl ) );
-		break;
+	RegisterControl( pNewControl, pStaticDesc->pRenderer );
+	return pNewControl;
+}
 
-	case CGM_Control::CHECKBOX:
-		pNewControl = new CGM_CheckBox( this, (CGM_CheckBoxDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateCheckBoxRenderer( (CGM_CheckBox *)pNewControl ) );
-		break;
 
-	case CGM_Control::RADIOBUTTON:
-		pNewControl = new CGM_RadioButton( this, (CGM_RadioButtonDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateRadioButtonRenderer( (CGM_RadioButton *)pNewControl ) );
-		break;
+CGM_Button *CGM_Dialog::AddControl( CGM_ButtonDesc *pButtonDesc )
+{
+	CGM_Button *pNewControl = new CGM_Button( this, pButtonDesc );
+		if( !pButtonDesc->pRenderer.get() )
+			pButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateButtonRenderer( pNewControl ) );
 
-	case CGM_Control::DIALOGCLOSEBUTTON:
-		pNewControl = new CGM_DialogCloseButton( this, (CGM_DialogCloseButtonDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateDialogCloseButtonRenderer( (CGM_DialogCloseButton *)pNewControl ) );
-		break;
+	RegisterControl( pNewControl, pButtonDesc->pRenderer );
+	return pNewControl;
+}
 
-	case CGM_Control::SLIDER:
-		pNewControl = new CGM_Slider( this, (CGM_SliderDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateSliderRenderer( (CGM_Slider *)pNewControl ) );
-		break;
 
-	case CGM_Control::LISTBOX:
-		pNewControl = new CGM_ListBox( this, (CGM_ListBoxDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateListBoxRenderer( (CGM_ListBox *)pNewControl ) );
-		break;
+CGM_SubDialogButton *CGM_Dialog::AddControl( CGM_SubDialogButtonDesc *pSubDlgDesc )
+{
+	CGM_SubDialogButton *pNewControl = new CGM_SubDialogButton( this, pSubDlgDesc );
+	if( !pSubDlgDesc->pRenderer.get() )
+		pSubDlgDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSubDialogButtonRenderer( pNewControl ) );
 
-	case CGM_Control::SCROLLBAR:
-		pNewControl = new CGM_ScrollBar( this, (CGM_ScrollBarDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreateScrollBarRenderer( (CGM_ScrollBar *)pNewControl ) );
-		break;
+	RegisterControl( pNewControl, pSubDlgDesc->pRenderer );
+	return pNewControl;
+}
+
+
+CGM_CheckBox *CGM_Dialog::AddControl( CGM_CheckBoxDesc *pCheckBoxDesc )
+{
+	CGM_CheckBox *pNewControl = new CGM_CheckBox( this, pCheckBoxDesc );
+	if( !pCheckBoxDesc->pRenderer.get() )
+		pCheckBoxDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateCheckBoxRenderer( pNewControl ) );
+
+	RegisterControl( pNewControl, pCheckBoxDesc->pRenderer );
+	return pNewControl;
+}
+
+
+CGM_RadioButton *CGM_Dialog::AddControl( CGM_RadioButtonDesc *pRButtonDesc )
+{
+	CGM_RadioButton *pNewControl = new CGM_RadioButton( this, pRButtonDesc );
+	if( !pRButtonDesc->pRenderer.get() )
+		pRButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateRadioButtonRenderer( pNewControl ) );
+
+	RegisterControl( pNewControl, pRButtonDesc->pRenderer );
+	return pNewControl;
+}
+
+
+CGM_DialogCloseButton *CGM_Dialog::AddControl( CGM_DialogCloseButtonDesc *pCButtonDesc )
+{
+	CGM_DialogCloseButton *pNewControl = new CGM_DialogCloseButton( this, pCButtonDesc );
+	if( !pCButtonDesc->pRenderer.get() )
+		pCButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateDialogCloseButtonRenderer( pNewControl ) );
+
+	RegisterControl( pNewControl, pCButtonDesc->pRenderer );
+	return pNewControl;
+}
+
+
+CGM_Slider *CGM_Dialog::AddControl( CGM_SliderDesc *pSliderDesc )
+{
+	CGM_Slider *pNewControl = new CGM_Slider( this, pSliderDesc );
+	if( !pSliderDesc->pRenderer.get() )
+		pSliderDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSliderRenderer( pNewControl ) );
+
+	RegisterControl( pNewControl, pSliderDesc->pRenderer );
+	return pNewControl;
+}
+
+
+CGM_ListBox *CGM_Dialog::AddControl( CGM_ListBoxDesc *pListBoxDesc )
+{
+	CGM_ListBox *pNewControl = new CGM_ListBox( this, pListBoxDesc );
+	if( !pListBoxDesc->pRenderer.get() )
+		pListBoxDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateListBoxRenderer( pNewControl ) );
+
+	RegisterControl( pNewControl, pListBoxDesc->pRenderer );
+	return pNewControl;
+}
+
+
+CGM_ScrollBar *CGM_Dialog::AddControl( CGM_ScrollBarDesc *pScrollBarDesc )
+{
+	CGM_ScrollBar *pNewControl = new CGM_ScrollBar( this, pScrollBarDesc );
+	if( !pScrollBarDesc->pRenderer.get() )
+		pScrollBarDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateScrollBarRenderer( pNewControl ) );
+
+	RegisterControl( pNewControl, pScrollBarDesc->pRenderer );
+	return pNewControl;
+}
+
 
 #ifdef UI_EXTENSION_EDIT
-	case CGM_Control::PAINTBAR:
-		pNewControl = new CGM_PaintBar( this, (CGM_PaintBarDesc *)pControlDesc );
-		if( !pRenderer.get() )
-			pRenderer = CGM_ControlRendererSharedPtr( pRendererMgr->CreatePaintBarCreated( *(CGM_ *)pNewControl );
-		break;
-#endif
+// NOT IMPLEMENTED YET
+CGM_PaintBar *CGM_Dialog::AddControl( CGM_PaintBarDesc *pPaintBarDesc )
+{
+	CGM_PaintBar *pNewControl = new CGM_PaintBar( this, pPaintBarDesc );
+	if( !pPaintBarDesc->pRenderer.get() )
+		pPaintBarDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreatePaintBarRenderer( pNewControl ) );
 
-	default:
-		return NULL;	// invalid control id
-	}
+	RegisterControl( pNewControl, pPaintBarDesc->pRenderer );
+	return pNewControl;
+}
+#endif /* UI_EXTENSION_EDIT */
+
+
+void CGM_Dialog::RegisterControl( CGM_Control *pNewControl, CGM_ControlRendererSharedPtr pRenderer )
+{
+	if( !pNewControl )
+		return;
+
+	CGM_ControlRendererManager* pRendererMgr = m_pDialogManager->GetControlRendererManager();
+//	CGM_ControlRendererSharedPtr pRenderer = pControlDesc->pRenderer;
 
 	// set default sound player
 	if( !pNewControl->HasSoundPlayer() )
@@ -492,8 +546,6 @@ CGM_Control *CGM_Dialog::AddControl( CGM_ControlDesc *pControlDesc )
 		pRenderer->SetControl( pNewControl );
 		pRenderer->Init();
 	}
-
-	return pNewControl;
 }
 
 
@@ -516,14 +568,14 @@ CGM_Static *CGM_Dialog::AddStatic( int id, const SRect& bound_rect, const string
 {
 	CGM_StaticDesc desc;
 	SetStaticDesc( id, bound_rect, title, &desc, pRenderer );
-	return (CGM_Static *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 CGM_Button *CGM_Dialog::AddButton( int id, const SRect& bound_rect, const string& title, CGM_ControlRendererSharedPtr pRenderer )
 {
 	CGM_ButtonDesc desc;
 	SetStaticDesc( id, bound_rect, title, &desc, pRenderer );
-	return (CGM_Button *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 CGM_CheckBox *CGM_Dialog::AddCheckBox( int id, const SRect& bound_rect, const string& title, bool checked, CGM_ControlRendererSharedPtr pRenderer )
@@ -531,7 +583,7 @@ CGM_CheckBox *CGM_Dialog::AddCheckBox( int id, const SRect& bound_rect, const st
 	CGM_CheckBoxDesc desc;
 	desc.bChecked = checked;
 	SetStaticDesc( id, bound_rect, title, &desc, pRenderer );
-	return (CGM_CheckBox *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 CGM_RadioButton *CGM_Dialog::AddRadioButton( int id, const SRect& bound_rect, int group, const std::string& title, CGM_ControlRendererSharedPtr pRenderer )
@@ -539,7 +591,7 @@ CGM_RadioButton *CGM_Dialog::AddRadioButton( int id, const SRect& bound_rect, in
 	CGM_RadioButtonDesc desc;
 	SetStaticDesc( id, bound_rect, title, &desc, pRenderer );
 	desc.iButtonGroup = group;
-	return (CGM_RadioButton *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 CGM_SubDialogButton *CGM_Dialog::AddSubDialogButton( int id, const SRect& bound_rect, const string& title, CGM_Dialog* pSubDialog, CGM_ControlRendererSharedPtr pRenderer )
@@ -547,14 +599,14 @@ CGM_SubDialogButton *CGM_Dialog::AddSubDialogButton( int id, const SRect& bound_
 	CGM_SubDialogButtonDesc desc;
 	SetStaticDesc( id, bound_rect, title, &desc, pRenderer );
 	desc.pSubDialog = pSubDialog;
-	return (CGM_SubDialogButton *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 CGM_DialogCloseButton *CGM_Dialog::AddDialogCloseButton( int id, const SRect& bound_rect, const std::string& title, CGM_ControlRendererSharedPtr pRenderer )
 {
 	CGM_DialogCloseButtonDesc desc;
 	SetStaticDesc( id, bound_rect, title, &desc, pRenderer );
-	return (CGM_DialogCloseButton *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 CGM_ListBox *CGM_Dialog::AddListBox( int id, const SRect& bound_rect, const std::string& title, int style_flag, int item_text_height,
@@ -566,7 +618,7 @@ CGM_ListBox *CGM_Dialog::AddListBox( int id, const SRect& bound_rect, const std:
 	desc.Style       = style_flag;
 	desc.nTextHeight = item_text_height;
 	desc.pRenderer   = pRenderer;
-	return (CGM_ListBox *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 
@@ -580,7 +632,7 @@ CGM_Slider *CGM_Dialog::AddSlider( int id, const SRect& bound_rect, int min_val,
 	desc.iMax          = max_val;
 	desc.iInitialValue = init_val;
 	desc.pRenderer     = pRenderer;
-	return (CGM_Slider *)AddControl( &desc );
+	return AddControl( &desc );
 }
 
 /*
@@ -588,7 +640,7 @@ CGM_ScrollBar *CGM_Dialog::AddScrollBar( int id, const SRect& bound_rect )
 {
 	CGM_ScrollBarDesc desc;
 	SetBasicDesc( id, bound_rect, &desc );
-	return (CGM_ScrollBar *)AddControl( &desc );
+	return AddControl( &desc );
 }*/
 
 
