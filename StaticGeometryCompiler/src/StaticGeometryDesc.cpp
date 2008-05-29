@@ -6,7 +6,7 @@
 #include "XML/XMLNodeReader.h"
 #include "XML/xmlch2x.h"
 
-#include <dae.h>
+//#include <dae.h>
 
 using namespace boost;
 
@@ -156,11 +156,12 @@ void LoadPointLights( vector<DOMNode *>& vecpNode )
 
 
 void CStaticGeometryDesc::LoadLightsFromColladaFile( const std::string& dae_filepath )
-{
+{/*
 	DAE dae;
 	domCOLLADA *pDOM = dae.open( dae_filepath );
 
 	// The DAE::open() call above causes bad allocation exception. Why?
+*/
 }
 
 
@@ -180,25 +181,25 @@ void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 		if( light_type == "AmbientLight" )
 		{
 			CAmbientLight amb_light;
-			node.Get( "Color", amb_light.Color );
+			node.GetTextContentRGB( "Color", amb_light.Color );
 			m_vecpLight.push_back( shared_ptr<CLight>( new CAmbientLight(amb_light) ) );
 		}
 		else if( light_type == "DirectionalLight" )
 		{
 			CDirectionalLight dir_light;
-			node.Get( "Color",     dir_light.Color );
-			node.Get( "Direction", dir_light.vDirection );
+			node.GetTextContentRGB( "Color",     dir_light.Color );
+			node.GetTextContent( "Direction", dir_light.vDirection );
 
 			m_vecpLight.push_back( shared_ptr<CLight>( new CDirectionalLight(dir_light) ) );
 		}
 		else if( light_type == "PointLight" )
 		{
 			CPointLight pnt_light;
-			node.Get( "Color",    pnt_light.Color );
-			node.Get( "Position", pnt_light.vPosition );
+			node.GetTextContentRGB( "Color",    pnt_light.Color );
+			node.GetTextContent( "Position", pnt_light.vPosition );
 
 			Vector3 vAttenu;
-			if( node.Get( "Attenuation", vAttenu ) )
+			if( node.GetTextContent( "Attenuation", vAttenu ) )
 			{
 				for( size_t j=0; j<3; j++ )
 					pnt_light.fAttenuation[j] = vAttenu[j];
