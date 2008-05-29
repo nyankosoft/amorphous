@@ -1115,6 +1115,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\UI\GM_XMLParser.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\UI\GM_XMLParser.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\UI\InputHandler_Dialog.cpp"
 				>
 			</File>

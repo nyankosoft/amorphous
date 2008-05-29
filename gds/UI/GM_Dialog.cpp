@@ -488,6 +488,25 @@ CGM_PaintBar *CGM_Dialog::AddControl( CGM_PaintBarDesc *pPaintBarDesc )
 #endif /* UI_EXTENSION_EDIT */
 
 
+CGM_Control *CGM_Dialog::AddControl( CGM_ControlDesc *pControlDesc )
+{
+	switch(pControlDesc->GetType())
+	{
+	case CGM_Control::STATIC:            return AddControl( dynamic_cast<CGM_StaticDesc *>(pControlDesc) );
+	case CGM_Control::BUTTON:			 return AddControl( dynamic_cast<CGM_ButtonDesc *>(pControlDesc) );
+	case CGM_Control::SUBDIALOGBUTTON:	 return AddControl( dynamic_cast<CGM_SubDialogButtonDesc *>(pControlDesc) );
+	case CGM_Control::CHECKBOX:			 return AddControl( dynamic_cast<CGM_CheckBoxDesc *>(pControlDesc) );
+	case CGM_Control::RADIOBUTTON:		 return AddControl( dynamic_cast<CGM_RadioButtonDesc *>(pControlDesc) );
+	case CGM_Control::DIALOGCLOSEBUTTON: return AddControl( dynamic_cast<CGM_DialogCloseButtonDesc *>(pControlDesc) );
+	case CGM_Control::SLIDER:			 return AddControl( dynamic_cast<CGM_SliderDesc *>(pControlDesc) );
+	case CGM_Control::LISTBOX:			 return AddControl( dynamic_cast<CGM_ListBoxDesc *>(pControlDesc) );
+	case CGM_Control::SCROLLBAR:		 return AddControl( dynamic_cast<CGM_ScrollBarDesc *>(pControlDesc) );
+	default:
+		return NULL;
+	}
+}
+
+
 void CGM_Dialog::RegisterControl( CGM_Control *pNewControl, CGM_ControlRendererSharedPtr pRenderer )
 {
 	if( !pNewControl )

@@ -140,7 +140,7 @@ public:
 
 	/// add a control to the dialog
 	/// and returns a pointer to the created control
-//	CGM_Control *AddControl( CGM_ControlDesc *pControlDesc );
+	CGM_Control *AddControl( CGM_ControlDesc *pControlDesc );
 
 	CGM_Static *AddControl( CGM_StaticDesc *pStaticDesc );
 	CGM_Button *AddControl( CGM_ButtonDesc *pButtonDesc );

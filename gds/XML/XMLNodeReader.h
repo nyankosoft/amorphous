@@ -2,9 +2,12 @@
 #define __XMLNodeReader_H__
 
 #include <string>
+#include <vector>
 #include "3DMath/Vector3.h"
 #include "3DCommon/FloatRGBColor.h"
 #include "3DCommon/FloatRGBAColor.h"
+#include "Graphics/Rect.h"
+using namespace Graphics;
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
@@ -41,21 +44,19 @@
 	loader.get( "Pos", vPos );
 	loader.get( "Color", color );
 	CXMLNodeReader color_node = load.GetChildNode( "Color" );
-	color_node.get( "Upper", hs_point_light.Attribute.UpperColor );
-	color_node.get( "Lower", hs_point_light.Attribute.UpperColor );
+	color_node.GetTextContentRGB( "Upper", hs_point_light.Attribute.UpperColor );
+	color_node.GetTextContentRGB( "Lower", hs_point_light.Attribute.UpperColor );
 
 	CXMLNodeReader light_loader = loader.get_child( "HemisphericPointLight" );
-	light_loader.get( "Pos", hs_point_light.vPosition );
-	light_loader.Get( "Color/Upper", hs_point_light.Attribute.UpperColor );
-	light_loader.Get( "Color/Lower", hs_point_light.Attribute.UpperColor );
+	light_loader.GetTextContent( "Pos", hs_point_light.vPosition );
+	light_loader.GetTextContentRGB( "Color/Upper", hs_point_light.Attribute.UpperColor );
+	light_loader.GetTextContentRGB( "Color/Lower", hs_point_light.Attribute.UpperColor );
 */
 
 class CXMLNodeReader
 {
 	/// borrowed reference
-	xercesc_2_8::DOMNode* m_pNode;
-
-	bool m_IgnoreAlphaComponent;
+	xercesc_2_8::DOMNode *m_pNode;
 
 public:
 
@@ -63,39 +64,215 @@ public:
 
 	~CXMLNodeReader() {}
 
-	bool valid() const { return ( m_pNode != NULL ); }
+	xercesc_2_8::DOMNode *GetDOMNode() { return m_pNode; }
 
-	template<class T>
-	inline bool Get( const std::string& name, T& obj );
+	bool IsValid() const { return ( m_pNode != NULL ); }
 
-	void SetIgnoreAlphaComponent( bool ignore ) { m_IgnoreAlphaComponent = ignore; }
+	inline xercesc_2_8::DOMNode *GetTargetNode( const std::string& name );
 
-//	bool get( const std::string& name, int& val );
-//	bool get( const std::string& name, short& val );
-//	bool get( const std::string& name, long& val );
-	bool get( const std::string& name, float& val );
-//	bool get( const std::string& name, double& val );
-//	bool get( const std::string& name, std::string& text );
-	bool get( const std::string& name, Vector3& v );
-	bool get( const std::string& name, SFloatRGBColor& color );
-//	bool get( const std::string& name, SFloatRGBAColor& color );
-//	bool get( const std::string& name, AABB3& aabb );
+	/// get the text content of a child node
+	inline bool GetTextContent( const std::string& child_element_path, std::string& dest );
+	inline bool GetTextContent( const std::string& child_element_path, float& dest );
+	inline bool GetTextContent( const std::string& child_element_path, int& dest );
+	inline bool GetTextContentLTWH( const std::string& child_element_path, SRect& dest );
+	inline bool GetTextContentLTRB( const std::string& child_element_path, SRect& dest );
+	inline bool GetTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest );
+	inline bool GetTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest );
+	inline bool GetTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest );
+	inline bool GetTextContent( const std::string& child_element_path, Vector3& dest );
 
+	/// get the text content of the current node
+	inline bool GetTextContent( std::string& dest )         { return GetTextContent( "", dest ); }
+	inline bool GetTextContent( float& dest )               { return GetTextContent( "", dest ); }
+	inline bool GetTextContent( int& dest )                 { return GetTextContent( "", dest ); }
+	inline bool GetTextContentLTWH( SRect& dest )           { return GetTextContentLTWH( "", dest ); }
+	inline bool GetTextContentLTRB( SRect& dest )           { return GetTextContentLTRB( "", dest ); }
+	inline bool GetTextContentRGB( SFloatRGBColor& dest )   { return GetTextContentRGB( "", dest ); }
+	inline bool GetTextContentRGB( SFloatRGBAColor& dest )  { return GetTextContentRGB( "", dest ); }
+	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) { return GetTextContentRGBA( "", dest ); }
+	inline bool GetTextContent( Vector3& dest )             { return GetTextContent( "", dest ); }
 
-//	bool GetVector3( const std::string& name, Vector3& v );
-//	bool GetLTWH( const std::string& name, SRect& rect );
-//	bool GetLTRB( const std::string& name, SRect& rect );
-//	bool GetRGB( const std::string& name, SFloatRGBColor& color );
-//	bool GetRGB( const std::string& name, SFloatRGBAColor& color );
-//	bool GetRGBA( const std::string& name, SFloatRGBAColor& color );
+	std::string GetName()
+	{
+		if( m_pNode )
+			return to_string(m_pNode->getNodeName());
+		else
+			return std::string();
+	}
 
-	CXMLNodeReader get_child( const std::string& name )
+	CXMLNodeReader GetChild( const std::string& name )
 	{
 		return CXMLNodeReader( GetChildNode( m_pNode, name ) );
 	}
+
+	std::string GetAttributeText( const std::string& attrib_name )
+	{
+		if( m_pNode )
+			return ::GetAttributeText( m_pNode, attrib_name );
+		else
+			return std::string();
+	}
+
+	std::vector<CXMLNodeReader> GetImmediateChildren( const std::string& name )
+	{
+		std::vector<xercesc_2_8::DOMNode *> vecpChild = GetImmediateChildNodes( m_pNode, name );
+		std::vector<CXMLNodeReader> children;
+		const size_t num = vecpChild.size();
+		for( size_t i=0; i<num; i++ )
+		{
+			children.push_back( CXMLNodeReader( vecpChild[i] ) );
+		}
+		return children;
+	}
+
+	std::vector<CXMLNodeReader> GetImmediateChildren()
+	{
+		std::vector<CXMLNodeReader> children;
+
+		if( !m_pNode )
+			return children;
+
+		xercesc_2_8::DOMNodeList *pNodeList = m_pNode->getChildNodes();
+
+		if( !pNodeList )
+			return children;
+
+		const size_t num = pNodeList->getLength();
+		for( size_t i=0; i<num; i++ )
+		{
+			children.push_back( CXMLNodeReader( pNodeList->item((XMLSize_t)i) ) );
+		}
+
+		return children;
+	}
 };
 
+//===================================== inline implementations ======================================
 
+
+inline xercesc_2_8::DOMNode *CXMLNodeReader::GetTargetNode( const std::string& child_element_path )
+{
+	if( child_element_path.length() == 0 )
+		return m_pNode;
+
+	size_t slash_pos = child_element_path.find( "/" );
+	if( slash_pos == std::string::npos )
+	{
+		return GetChildNode( m_pNode, child_element_path );
+	}
+	else
+	{
+		if( slash_pos == child_element_path.length() - 1 )
+			return NULL;
+
+		CXMLNodeReader loader( GetChildNode( m_pNode, child_element_path.substr( 0, slash_pos ) ) );
+		return loader.GetTargetNode( child_element_path.substr( slash_pos + 1 ) );
+	}
+}
+
+inline bool CXMLNodeReader::GetTextContentLTWH( const std::string& child_element_path, SRect& rect )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		int l=0,t=0,w=0,h=0;
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%d %d %d %d", &l, &t, &w, &h );
+		rect = RectLTWH( l, t, w, h );
+		return true;
+	}
+	else
+		return false;
+}
+
+inline bool CXMLNodeReader::GetTextContentRGB( const std::string& child_element_path, SFloatRGBColor& color )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.fRed, &color.fGreen, &color.fBlue );
+		return true;
+	}
+	else
+		return false;
+}
+
+inline bool CXMLNodeReader::GetTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& color )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.fRed, &color.fGreen, &color.fBlue );
+		return true;
+	}
+	else
+		return false;
+}
+
+inline bool CXMLNodeReader::GetTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& color )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f %f", &color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha );
+		return true;
+	}
+	else
+		return false;
+}
+
+inline bool CXMLNodeReader::GetTextContent( const std::string& child_element_path, Vector3& v )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &v.x, &v.y, &v.z );
+		return true;
+	}
+	else
+		return false;
+
+}
+
+inline bool CXMLNodeReader::GetTextContent( const std::string& child_element_path, std::string& text )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		text = to_string(pNode->getTextContent());
+		return true;
+	}
+	else
+		return false;
+}
+
+inline bool CXMLNodeReader::GetTextContent( const std::string& child_element_path, float& val )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f", &val );
+		return true;
+	}
+	else
+		return false;
+}
+
+
+inline bool CXMLNodeReader::GetTextContent( const std::string& child_element_path, int& val )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%d", &val );
+		return true;
+	}
+	else
+		return false;
+}
+
+
+
+/*
 template<class T>
 inline bool CXMLNodeReader::Get( const std::string& name, T& obj )
 {
@@ -113,8 +290,8 @@ inline bool CXMLNodeReader::Get( const std::string& name, T& obj )
 		return loader.Get( name.substr( slash_pos + 1 ), obj );
 	}
 }
-
-
+*/
+/*
 inline bool CXMLNodeReader::get( const std::string& name, float& f )
 {
 	if( !m_pNode )
@@ -158,119 +335,8 @@ inline bool CXMLNodeReader::get( const std::string& name, SFloatRGBColor& color 
 
 	return true;
 }
-
-
-/*
-xercesc_2_8::DOMNode *GetTargetNode( const std::string& name )
-{
-	size_t slash_pos = name.find( "/" );
-	if( slash_pos == std::string::npos )
-	{
-		return GetChildNode( m_pNode, name );
-	}
-	else
-	{
-		if( slash_pos == name.length() - 1 )
-			return NULL;
-
-		CXMLNodeReader loader( GetChildNode( m_pNode, name.substr( 0, slash_pos ) ) );
-		return loader.GetTargetNode( name.substr( slash_pos + 1 ), obj );
-	}
-}
-
-inline bool CXMLNodeReader::GetLTWH( const std::string& name, SRect& rect )
-{
-	xercesc_2_8::DOMNode *pNode = GetTargetNode( name );
-
-	if( pNode )
-	{
-		int l=0,t=0,w=0,h=0;
-		sscanf( to_string(pNode->getTextContent()).c_str(), "%d %d %d %d", &l, &t, &w, &h );
-		rect.SetLTWH( l, t, w, h );
-		return true;
-	}
-	else
-		return false;
-}
 */
 
-/*
-
-
-//
-//pNode & v;
-//
-//	if( to_string(pNode->GetName()) == "Pos" )
-//		pNode & v;
-
-
-inline void DOMNode*& operator & ( DOMNode*& pNode, Vector3& v )
-{
-	sscanf( to_string(pNode->getContext()), "%f %f %f", &v.x, &v.y, &v.z );
-
-	return pNode;
-}
-
-
-inline DOMNode*& operator & ( DOMNode*& pNode, SFloatRGBColor& color )
-{
-	sscanf( to_string(pNode->getContext()), "%f %f %f", &color.fRed, &color.fGreen, &color.fBlue );
-
-	return pNode;
-}
-
-inline DOMNode*& operator & ( DOMNode*& pNode, SFloatRGBAColor& color )
-{
-	sscanf( to_string(pNode->getContext()), "%f %f %f %f", &color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha );
-
-	return pNode;
-}
-
-
-inline IArchive& operator & ( IArchive& ar, Vector3& v )
-{
-	ar & v.x & v.y & v.z;
-	return ar;
-}
-
-
-inline IArchive& operator & ( IArchive& ar, Quaternion& q )
-{
-	ar & q.x & q.y & q.z & q.w;
-	return ar;
-}
-
-
-inline IArchive& operator & ( IArchive& ar, AABB3& aabb )
-{
-	ar & aabb.vMin;
-	ar & aabb.vMax;
-
-	return ar;
-}
-
-inline IArchive& operator & ( IArchive& ar, SFloatRGBColor& color )
-{
-	ar & color.fRed;
-	ar & color.fGreen;
-	ar & color.fBlue;
-
-	return ar;
-}
-
-
-inline IArchive& operator & ( IArchive& ar, SFloatRGBAColor& color )
-{
-	ar & color.fRed;
-	ar & color.fGreen;
-	ar & color.fBlue;
-	ar & color.fAlpha;
-
-	return ar;
-}
-
-
-*/
 
 
 #endif /* __XMLNodeReader_H__ */
