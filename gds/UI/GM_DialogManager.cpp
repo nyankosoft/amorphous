@@ -6,6 +6,7 @@
 #include "GM_ControlRendererManager.h"
 #include "GM_StdControlRendererManager.h"
 #include "GM_SoundPlayer.h"
+#include "GM_XMLParser.h"
 
 #include "Support/memory_helpers.h"
 
@@ -57,6 +58,13 @@ void CGM_DialogManager::Release()
 	SafeDeleteVector( m_vecpDialog );
 
 	m_vecpRootDialog.clear();
+}
+
+
+bool CGM_DialogManager::LoadFromXML( const std::string& xml_filepath )
+{
+	CGM_XMLParser parser( this );
+	return parser.LoadFromXMLFile( xml_filepath );
 }
 
 

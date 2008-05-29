@@ -37,21 +37,18 @@ xercesc_2_8::DOMDocument *LoadXMLDocument( const std::string& xml_filepath )
 // CGM_XMLParser
 //========================================================================================
 
-CGM_XMLParser::CGM_XMLParser()
-{
-}
-
 
 CGM_XMLParser::~CGM_XMLParser()
 {
 }
 
 
-void CGM_XMLParser::LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDesc *pControlDesc )
+void CGM_XMLParser::LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDescBase *pControlDescBase )
 {
-	reader.GetAttributeText("id");
-	reader.GetTextContentLTWH( "LTWH", pControlDesc->Rect );
-	reader.GetTextContent( "Caption", pControlDesc->strCaption );
+	pControlDescBase->StringID = reader.GetAttributeText("id");
+	reader.GetTextContentLTWH( "LTWH", pControlDescBase->Rect );
+	reader.GetTextContentLTRB( "LTRB", pControlDescBase->Rect );
+//	reader.GetTextContent( "Caption", pControlDescBase->strCaption );
 }
 
 
@@ -129,14 +126,15 @@ bool CGM_XMLParser::LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog )
 		}
 		else if( control_type == "SubDialogButton" )
 		{
-//			CGM_SubDialogButtonDesc *pSubDlgBtnDesc = LoadButtonDesc( control_reader[i] );
-//			CGM_ControlDesc *pDesc = LoadButtonDesc( control_reader[i] );
+			CGM_SubDialogButtonDesc *pSubDlgBtnDesc = new CGM_SubDialogButtonDesc;( control_reader[i] );
+			LoadButtonDesc( control_reader[i], pSubDlgBtnDesc );
+			pDesc = pSubDlgBtnDesc;
 		}
 		else if( control_type == "Slider" )
 		{
-			CGM_SliderDesc *pSliderDesc = new CGM_SliderDesc();
-			LoadSliderDesc( control_reader[i], pSliderDesc );
-			pDesc = pSliderDesc;
+//			CGM_SliderDesc *pSliderDesc = new CGM_SliderDesc();
+//			LoadSliderDesc( control_reader[i], pSliderDesc );
+//			pDesc = pSliderDesc;
 		}
 		else if( control_type == "ListBox" )
 		{
@@ -144,8 +142,11 @@ bool CGM_XMLParser::LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog )
 //			LoaListBoxDesc( control_reader[i], pListBoxDesc );
 		}
 
-		pDialog->AddControl( pDesc );
-		SafeDelete( pDesc );
+		if( pDesc )
+		{
+			pDialog->AddControl( pDesc );
+			SafeDelete( pDesc );
+		}
 
 	}
 
@@ -158,10 +159,8 @@ bool CGM_XMLParser::LoadDialog( CXMLNodeReader& reader )
 	xercesc_2_8::DOMNode *pDlgNode = reader.GetDOMNode();
 
 	CGM_DialogDesc desc;
-	desc.StringID = GetAttributeText( pDlgNode, "id" );
-	desc.strTitle = GetTextContentOfImmediateChildNode( pDlgNode, "Title" );
-//	reader.GetLTWH( "LTWH", desc.Rect );
-//	reader.GetLTWH( "LTRB", desc.Rect );
+	LoadCommonDesc( reader, &desc );
+	reader.GetTextContent( "Title", desc.strTitle );
 
 	CGM_Dialog *pDialog = m_pDialogManager->AddDialog( desc );
 

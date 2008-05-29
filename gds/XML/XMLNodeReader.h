@@ -184,6 +184,20 @@ inline bool CXMLNodeReader::GetTextContentLTWH( const std::string& child_element
 		return false;
 }
 
+inline bool CXMLNodeReader::GetTextContentLTRB( const std::string& child_element_path, SRect& rect )
+{
+	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );
+	if( pNode )
+	{
+		int l=0,t=0,r=0,b=0;
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%d %d %d %d", &l, &t, &r, &b );
+		rect = RectLTRB( l, t, r, b );
+		return true;
+	}
+	else
+		return false;
+}
+
 inline bool CXMLNodeReader::GetTextContentRGB( const std::string& child_element_path, SFloatRGBColor& color )
 {
 	xercesc_2_8::DOMNode *pNode = GetTargetNode( child_element_path );

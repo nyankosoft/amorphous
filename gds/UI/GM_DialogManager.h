@@ -76,6 +76,8 @@ public:
 
 	void Release();
 
+	bool LoadFromXML( const std::string& xml_filepath );
+
 	CGM_Dialog *AddDialog( CGM_DialogDesc &rDialogDesc );
 
 	/// creates a root dialog

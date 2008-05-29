@@ -490,6 +490,9 @@ CGM_PaintBar *CGM_Dialog::AddControl( CGM_PaintBarDesc *pPaintBarDesc )
 
 CGM_Control *CGM_Dialog::AddControl( CGM_ControlDesc *pControlDesc )
 {
+	if( !pControlDesc )
+		return NULL;
+
 	switch(pControlDesc->GetType())
 	{
 	case CGM_Control::STATIC:            return AddControl( dynamic_cast<CGM_StaticDesc *>(pControlDesc) );

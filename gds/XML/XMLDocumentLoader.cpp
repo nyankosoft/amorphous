@@ -151,7 +151,10 @@ std::string GetAttributeText( xercesc_2_8::DOMNode *pNode, const std::string& at
 
 	xercesc_2_8::DOMNode *pNameNode = pAttrib->getNamedItem( XercesString(attrib_name.c_str()) );
 
-	return to_string(pNameNode->getNodeValue());
+	if( pNameNode )
+		return to_string(pNameNode->getNodeValue());
+	else
+		return std::string();
 }
 
 

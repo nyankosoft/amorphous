@@ -23,7 +23,8 @@ class CGM_XMLParser
 {
 private:
 
-	CGM_DialogManagerSharedPtr m_pDialogManager;
+	/// borrowed reference
+	CGM_DialogManager *m_pDialogManager;
 
 private:
 
@@ -31,7 +32,7 @@ private:
 
 	bool LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog );
 
-	void LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDesc *pControlDesc );
+	void LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDescBase *pControlDescBase );
 	void LoadStaticDesc( CXMLNodeReader& reader, CGM_StaticDesc *pStaticDesc );
 	void LoadButtonDesc( CXMLNodeReader& reader, CGM_ButtonDesc *pButtonDesc );
 	void LoadCheckBoxDesc( CXMLNodeReader& reader, CGM_CheckBoxDesc *pCheckBoxDesc );
@@ -40,7 +41,9 @@ private:
 
 public:
 
-	CGM_XMLParser();
+//	CGM_XMLParser();
+	CGM_XMLParser( CGM_DialogManager *pDlgMgr ) : m_pDialogManager(pDlgMgr) {}
+
 	virtual ~CGM_XMLParser();
 
 	bool LoadFromXMLFile( const std::string& xml_filename );
