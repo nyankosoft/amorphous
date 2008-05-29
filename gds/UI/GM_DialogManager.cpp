@@ -166,6 +166,19 @@ CGM_Dialog *CGM_DialogManager::GetDialog( int id )
 }
 
 
+CGM_Dialog *CGM_DialogManager::GetDialog( const std::string& string_id )
+{
+	size_t i, num_dlgs = m_vecpDialog.size();
+	for( i=0; i<num_dlgs; i++ )
+	{
+		if( m_vecpDialog[i]->GetStringID() == string_id )
+			return m_vecpDialog[i];
+	}
+
+	return NULL;
+}
+
+
 int CGM_DialogManager::GetRootDialogIndex( CGM_Dialog *pDialog )
 {
 	int i, num_dlgs = (int)m_vecpDialog.size();
@@ -208,6 +221,16 @@ bool CGM_DialogManager::OpenRootDialog( int id )
 
 		return true;
 	}
+	else
+		return false;
+}
+
+
+bool CGM_DialogManager::OpenRootDialog( const std::string& string_id )
+{
+	CGM_Dialog *pDlg = GetDialog(string_id);
+	if( pDlg )
+		return OpenRootDialog( pDlg->GetID() );
 	else
 		return false;
 }

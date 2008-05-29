@@ -89,7 +89,11 @@ public:
 
 	CGM_Dialog *GetDialog( int id );
 
+	CGM_Dialog *GetDialog( const std::string& string_id );
+
 	bool OpenRootDialog( int id );
+
+	bool OpenRootDialog( const std::string& string_id );
 
 	CGM_Control* GetControl( int id );
 
