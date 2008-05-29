@@ -1111,6 +1111,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Project1\gds\UI\GM_XMLParser.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Project1\gds\UI\GM_XMLParser.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Project1\gds\UI\InputHandler_Dialog.cpp"
 				>
 			</File>
