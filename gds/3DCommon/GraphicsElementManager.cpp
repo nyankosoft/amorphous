@@ -101,6 +101,23 @@ void CGE_Rect::SetTopLeftPosInternal( Vector2 vPos )
 }
 
 
+/*
+CGE_Text::CGE_Text( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 )
+:
+m_FontID(font_id),
+m_Text(text),
+m_vTextPos(Vector2(x,y))
+{
+	m_AABB.vMin = m_vTextPos;
+	m_TextAlignH = TAL_LEFT;
+	m_TextAlignV = TAL_TOP;
+	m_aColor[0] = color0;
+	ChangeScale( m_fScale );
+
+//		m_AABB.vMax = 
+}
+*/
+
 void CGE_Text::Draw()
 {
 	CFontBase *pFont = m_pManager->GetFont(m_FontID);
@@ -319,7 +336,7 @@ CGraphicsElementManager::CGraphicsElementManager()
 		m_fScale = GetScreenWidth() / (float)m_ReferenceResolutionWidth;
 
 
-	m_NumMaxLayers = 80;
+	m_NumMaxLayers = NUM_MAX_LAYERS;
 
 	m_vecLayer.resize( m_NumMaxLayers );
 }
@@ -497,7 +514,29 @@ CGE_Rect *CGraphicsElementManager::CreateRoundFrameRect( const SRect& rect, cons
 CGE_Text *CGraphicsElementManager::CreateText( int font_id, const string& text, float x, float y,
 										       const SFloatRGBAColor& color, int font_w, int font_h, int layer )
 {
-	int index = GetVacantSlotIndex();
+	CFontBase *pFont = this->GetFont(font_id);
+	if( pFont )
+	{
+		if( font_w <= 0 ) font_w = pFont->GetFontWidth();
+		if( font_h <= 0 ) font_h = pFont->GetFontHeight();
+	}
+
+	SRect rect;
+	rect.left   = (int)x;
+	rect.top    = (int)y;
+	rect.right  = (int)x + font_w * (int)text.length();
+	rect.bottom = (int)y + font_h;
+	return CreateTextBox(
+		font_id,
+		text,
+		rect,
+		CGE_Text::TAL_LEFT,
+		CGE_Text::TAL_TOP,
+		color,
+		font_w,
+		font_h,
+		layer );
+/*	int index = GetVacantSlotIndex();
 
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
@@ -509,6 +548,7 @@ CGE_Text *CGraphicsElementManager::CreateText( int font_id, const string& text, 
 	InitElement( pTextElement, index, layer );
 
 	return pTextElement;
+*/
 }
 
 

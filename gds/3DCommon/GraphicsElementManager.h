@@ -318,17 +318,7 @@ public:
 		ChangeScale( m_fScale );
 	}
 
-	CGE_Text( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 )
-		: m_FontID(font_id), m_Text(text), m_vTextPos(Vector2(x,y) )
-	{
-		m_AABB.vMin = m_vTextPos;
-		m_TextAlignH = TAL_LEFT;
-		m_TextAlignV = TAL_TOP;
-		m_aColor[0] = color0;
-		ChangeScale( m_fScale );
-
-//		m_AABB.vMax = 
-	}
+//	CGE_Text( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 );
 
 	/**
 	 draws text

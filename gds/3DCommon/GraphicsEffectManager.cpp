@@ -3,6 +3,7 @@
 #include "GraphicsElementManager.h"
 #include "GameCommon/Timer.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/Vec3_StringAux.h"
 
 #include <algorithm>
 using namespace std;
@@ -120,6 +121,8 @@ void CE_TranslateCD::Update( double current_time, double dt )
 	// currently in the animation time frame
 
 	m_Pos.Update( (float)dt );
+
+//	LOG_PRINT_CAUTION( to_string(current_time) + " - " + to_string(m_Pos.current) );
 
 	GetElement()->SetTopLeftPos( m_Pos.current );
 }
@@ -371,6 +374,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateCDV( CGraphicsElement *
 											 float smooth_time,
 											 int coord_type )
 {
+//	LOG_PRINT_CAUTION( to_string(vDestPos) );
 
 	switch( coord_type )
 	{
