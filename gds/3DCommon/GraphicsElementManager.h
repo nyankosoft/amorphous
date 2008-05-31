@@ -214,8 +214,6 @@ public:
 
 	virtual void Draw();
 
-//	virtual Vector2 GetTopLeftPos() const { return m_pPrimitive->GetPosition2D(0); }
-
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
 	virtual void ChangeScale( float scale )
@@ -259,9 +257,9 @@ public:
 
 	virtual void Draw();
 
-//	virtual Vector2 GetTopLeftPos() const { return m_pPrimitive->GetPosition2D(0); }
+//	virtual Vector2 GetTopLeftPos() const { return ???; }
 
-	virtual void SetTopLeftPos( Vector2 vPos )
+	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{
 	}
 
@@ -385,10 +383,6 @@ public:
 	virtual ~CGE_Group() {}
 
 	virtual void Draw();
-
-//	virtual void SetTexture( int texture_id ) { m_TextureID = texture_id; }
-
-//	virtual Vector2 GetTopLeftPos() const { return m_AABB.vMin; }
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
