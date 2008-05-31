@@ -81,6 +81,8 @@ protected:
 	/// - not used by group elements
 	Vector2 m_vLocalTopLeftPos;
 
+protected:
+
 	/// can only be created by CGraphicsElementManager
 	/// - make this protected and make CGraphicsElementManager a friend class
 	CGraphicsElement()
@@ -100,6 +102,8 @@ protected:
 
 	virtual ~CGraphicsElement() {}
 
+	virtual void SetTopLeftPosInternal( Vector2 vPos ) {}
+
 private:
 
 	void SetElementIndex( int element_index ) { m_ElementIndex = element_index; }
@@ -114,7 +118,9 @@ public:
 
 	const AABB2& GetAABB() const { return m_AABB; }
 
-	virtual void SetTopLeftPos( Vector2 vPos ) {}
+	/// calls SetTopLeftPosInternal() to run routines
+	/// specific to each element
+	void SetTopLeftPos( Vector2 vPos );
 
 	virtual void ChangeScale( float scale ) {}
 
@@ -210,13 +216,7 @@ public:
 
 //	virtual Vector2 GetTopLeftPos() const { return m_pPrimitive->GetPosition2D(0); }
 
-	virtual void SetTopLeftPos( Vector2 vPos )
-	{
-		Vector2 vSpan = m_AABB.vMax - m_AABB.vMin;
-		m_AABB.vMin = vPos;
-		m_AABB.vMax = vPos + vSpan;
-		m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
-	}
+	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
 	virtual void ChangeScale( float scale )
 	{
@@ -340,7 +340,7 @@ public:
 
 	virtual Vector2 GetTopLeftPos() const { return m_vTextPos; }
 
-	virtual void SetTopLeftPos( Vector2 vPos )
+	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{
 		m_vTextPos = vPos;
 		m_vScaledPos = m_vTextPos * m_fScale;
@@ -400,7 +400,7 @@ public:
 
 //	virtual Vector2 GetTopLeftPos() const { return m_AABB.vMin; }
 
-	virtual void SetTopLeftPos( Vector2 vPos );
+	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
 	virtual void ChangeScale( float scale );
 
@@ -485,7 +485,7 @@ class CGraphicsElementManager : public CGraphicsElementManagerBase, public CGrap
 	enum Params
 	{
 		NUM_MAX_TEXTURES = 64,
-		NUM_MAX_LAYERS = 80,
+		NUM_MAX_LAYERS = 96,
 	};
 
 	std::vector<CGraphicsElement *> m_vecpElement;
@@ -685,7 +685,7 @@ public:
 
 	virtual Vector2 GetTopLeftPos() const { return m_AABB.vMin;//m_FrameRect.GetCornerPos2D(0) }
 
-	virtual void SetTopLeftPos( Vector2 vPos )
+	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{
 		Vector2 vSpan = m_AABB.vMax - m_AABB.vMin;
 		m_AABB.vMin = vPos;

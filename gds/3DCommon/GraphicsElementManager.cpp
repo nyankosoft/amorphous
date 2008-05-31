@@ -22,6 +22,25 @@ inline int get_num_rows( const string& str )
 }
 
 
+void CGraphicsElement::SetTopLeftPos( Vector2 vPos )
+{
+	Vector2 vSpan = m_AABB.vMax - m_AABB.vMin;
+	m_AABB.vMin = vPos;
+	m_AABB.vMax = vPos + vSpan;
+
+	if( 0 <= m_GroupID )
+	{
+		/// owned by a group element
+		/// - need to update the local position as well
+		CGraphicsElement *pOwner = m_pManager->GetElement(m_GroupID);
+		if( pOwner )
+			m_vLocalTopLeftPos = vPos - pOwner->GetTopLeftPos();
+	}
+
+	SetTopLeftPosInternal( vPos );
+}
+
+
 void CGraphicsElement::SetLayer( int layer_index )
 {
 	// remove the element from the current layer
@@ -73,6 +92,12 @@ void CGE_Rect::Draw()
 	}
 	else
 		m_pPrimitive->Draw();	// draw rect without a texture
+}
+
+
+void CGE_Rect::SetTopLeftPosInternal( Vector2 vPos )
+{
+	m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
 }
 
 
@@ -189,10 +214,8 @@ CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement )
 }
 
 
-void CGE_Group::SetTopLeftPos( Vector2 vPos )
+void CGE_Group::SetTopLeftPosInternal( Vector2 vPos )
 {
-	Vector2 vDiagonal = m_AABB.vMax - m_AABB.vMin;
-
 	vector<CGraphicsElement *>::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
@@ -200,10 +223,6 @@ void CGE_Group::SetTopLeftPos( Vector2 vPos )
 //		(*itr)->SetTopLeftPos( vPos + vLocalTopLeftPos );
 		(*itr)->SetTopLeftPos( vPos + (*itr)->m_vLocalTopLeftPos );
 	}
-
-	// update the top left position of the group element
-	m_AABB.vMin = vPos;
-	m_AABB.vMax = vPos + vDiagonal;
 }
 
 
