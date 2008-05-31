@@ -133,6 +133,25 @@ void CGM_ControlRenderer::RegisterGraphicsElement( int local_layer_index, CGraph
 	RegisterGraphicsElementToParentDialog( pElement );
 
 	SetLocalLayerOffset( local_layer_index, pElement );
+
+/*	CGM_Dialog *pDlg = pElement->GetDialog();
+	if( !pDlg )
+	{
+		// not a dialog - need to set the fade color index
+		CGM_Control *pControl = GetControl();
+		if( pControl )
+		{
+			pDlgRenderer = dynamic_cast<CGM_DialogRenderer *>(pControl->GetOwnerDialog()->GetRenderer(););
+			if( pDlgRenderer )
+			{
+				if( !pControl->GetRenderer()->IsVisibleAtStart() )
+				{
+					int fade_color_index = pDlgRenderer->GetFadeColorIndex();
+					pElement->SetColor( fade_color_index, 0xFF000000 );
+				}
+			}
+		}
+	}*/
 }
 
 

@@ -82,6 +82,7 @@ public:
 	inline bool GetTextContent( const std::string& child_element_path, Vector3& dest );
 
 	/// get the text content of the current node
+	inline std::string GetTextContent() { std::string dest; GetTextContent(dest); return dest; }
 	inline bool GetTextContent( std::string& dest )         { return GetTextContent( "", dest ); }
 	inline bool GetTextContent( float& dest )               { return GetTextContent( "", dest ); }
 	inline bool GetTextContent( int& dest )                 { return GetTextContent( "", dest ); }

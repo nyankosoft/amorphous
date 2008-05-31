@@ -7,6 +7,7 @@
 using namespace Graphics;
 
 #include <string>
+#include <vector>
 
 
 #include "ui_fwd.h"
@@ -26,9 +27,16 @@ private:
 	/// borrowed reference
 	CGM_DialogManager *m_pDialogManager;
 
+	/// borrowed reference
+	std::vector<CGM_Dialog *> m_vecpRootDialog;
+
 private:
 
-	bool LoadDialog( CXMLNodeReader& reader );
+	CGM_Dialog *LoadDialog( CXMLNodeReader& reader, bool root_dialog );
+
+	CGM_Dialog *LoadDialogFromXMLFile( const std::string& xml_filename, bool root_dialog );
+
+	CGM_Dialog *LoadSubDialog( CXMLNodeReader& reader );
 
 	bool LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog );
 

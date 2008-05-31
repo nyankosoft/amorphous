@@ -430,6 +430,7 @@ void CGM_StdSliderRenderer::Init()
 	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetBoundingBox(), normal_color, 2 );
 	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
 	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetButtonRect(),  normal_color, 2 );
+	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       normal_color, 2 );
 
 	// not visible by default
 	// - visibility is controled by the owner dialog
@@ -441,6 +442,7 @@ void CGM_StdSliderRenderer::Init()
 
 	// register elements
 	// - set local layer offset to determine rendering order
+	RegisterGraphicsElement( 0, m_pSliderButtonDot );
 	RegisterGraphicsElement( 0, m_pSliderButtonFrameRect );
 	RegisterGraphicsElement( 1, m_pSliderButtonRect );
 	RegisterGraphicsElement( 2, m_pFrameRect );

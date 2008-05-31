@@ -228,11 +228,15 @@ public:
 
 class CGM_StdSliderRenderer : public CGM_StdControlRenderer
 {
-
 	CGE_Rect *m_pRect;
 	CGE_Rect *m_pFrameRect;
+
+	// button
 	CGE_Rect *m_pSliderButtonRect;
 	CGE_Rect *m_pSliderButtonFrameRect;
+	CGE_Rect *m_pSliderButtonDot;
+
+	CGE_Group *m_pSliderButton;
 
 public:
 
@@ -241,7 +245,9 @@ public:
 	m_pRect(NULL),
 	m_pFrameRect(NULL),
 	m_pSliderButtonRect(NULL),
-	m_pSliderButtonFrameRect(NULL)
+	m_pSliderButtonFrameRect(NULL),
+	m_pSliderButtonDot(NULL),
+	m_pSliderButton(NULL)
 	{}
 
 	virtual ~CGM_StdSliderRenderer() {}
@@ -259,9 +265,16 @@ class CGM_StdDialogRenderer : public CGM_StdControlRenderer
 
 	CGraphicsEffectHandle m_PrevSlideEffect;
 
+	int m_DialogFadeColorIndex;
+
 public:
 
-	CGM_StdDialogRenderer() : m_pRect(NULL), m_pFrameRect(NULL)  {}
+	enum Params
+	{
+		DEFAULT_FADE_COLOR_INDEX
+	};
+
+	CGM_StdDialogRenderer() : m_pRect(NULL), m_pFrameRect(NULL), m_DialogFadeColorIndex(DEFAULT_FADE_COLOR_INDEX)  {}
 
 	virtual ~CGM_StdDialogRenderer() {}
 
@@ -270,6 +283,8 @@ public:
 	virtual void OnDialogOpened();
 	virtual void OnDialogClosed();
 	virtual void OnOpenDialogAttemptedToClose() {}
+
+	int GetFadeColorIndex() { return m_DialogFadeColorIndex; }
 };
 
 

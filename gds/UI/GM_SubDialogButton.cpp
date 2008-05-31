@@ -79,6 +79,9 @@ void CGM_SubDialogButton::OnReleased()
 
 	if( HasFocus() )
 	{
+		if( !m_pSubDialog )
+			return;
+
 		if( m_pSubDialog->IsOpen() )
 		{
 			m_pDialog->ClearFocus();
