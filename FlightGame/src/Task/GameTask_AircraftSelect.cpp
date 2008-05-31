@@ -257,9 +257,10 @@ void CGameTask_AircraftSelect::InitStage()
 
 CGM_Dialog *CGameTask_AircraftSelect::CreateAircraftSelectRootMenu()
 {
+	CGM_ControlRendererSharedPtr null_renderer = CGM_ControlRendererSharedPtr( new CGM_ControlRenderer() );
 	// creates a root dialog that stores aircraft select sub-dialog
 	// & controls for aircraft caps display
-	CGM_Dialog *pRootNullDlg = m_pDialogManager->AddRootDialog( ID_TAS_DLG_ROOT_AIRCRAFTSELECT, SRect(0,0,0,0), "" );
+	CGM_Dialog *pRootNullDlg = m_pDialogManager->AddRootDialog( ID_TAS_DLG_ROOT_AIRCRAFTSELECT, SRect(0,0,0,0), "", 0, null_renderer );
 	CGM_SubDialogButton *pSubDlgButton = pRootNullDlg->AddSubDialogButton( ID_TAS_SDB_AIRCRAFTSELECT, SRect(0,0,0,0), "" );
 
 	m_apRootDialog[SM_AIRCRAFT_SELECT] = pRootNullDlg;
@@ -343,9 +344,10 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAircraftSelectDialog()
 
 CGM_Dialog *CGameTask_AircraftSelect::CreateAmmoSelectRootMenu()
 {
+	CGM_ControlRendererSharedPtr null_renderer = CGM_ControlRendererSharedPtr( new CGM_ControlRenderer() );
 	// creates a root dialog that stores aircraft select sub-dialog
 	// & controls for aircraft caps display
-	CGM_Dialog *pRootNullDlg = m_pDialogManager->AddRootDialog( ID_TAS_DLG_ROOT_AMMOSELECT, SRect(0,0,0,0), "" );
+	CGM_Dialog *pRootNullDlg = m_pDialogManager->AddRootDialog( ID_TAS_DLG_ROOT_AMMOSELECT, SRect(0,0,0,0), "", 0, null_renderer );
 	CGM_SubDialogButton *pSubDlgButton = pRootNullDlg->AddSubDialogButton( ID_TAS_SDB_AMMOSELECT, SRect(0,0,0,0), "" );
 
 	CGM_Dialog* pAmmoSelectDialog = CreateAmmoSelectDialog();

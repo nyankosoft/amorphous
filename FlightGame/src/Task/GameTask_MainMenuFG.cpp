@@ -282,8 +282,9 @@ void CGameTask_MainMenuFG::InitMenu()
 	INPUTHUB.SetInputHandler( m_pInputHandler );
 
 	// put some background image
+	int bg_layer_index = 89;
 	CGraphicsElementManager *pMgr = m_pUIRendererManager->GetGraphicsElementManager();
-	CGE_Rect *pBGRect = pMgr->CreateRect( RectLTWH( 0, 0, 800, 600 ), SFloatRGBAColor(0.7f,0.7f,0.7f,0.7f), 79 );
+	CGE_Rect *pBGRect = pMgr->CreateRect( RectLTWH( 0, 0, 800, 600 ), SFloatRGBAColor(0.7f,0.7f,0.7f,0.7f), bg_layer_index );
 	pMgr->LoadTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE, "Texture/bg_testimage.jpg" );
 	pBGRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE );
 

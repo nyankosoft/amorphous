@@ -138,11 +138,6 @@ void CFG_StdStaticRenderer::Init()
 //	m_pText->SetMargin( LEFT,  6 );
 //	m_pText->SetMargin( RIGHT, 6 );
 
-	// not visible by default
-	// - visibility is controled by the owner dialog
-	int dlg_color_index = 1;
-	m_pText->SetAlpha( dlg_color_index, 0 );
-
 	// render the text on top
 	RegisterGraphicsElement( 0, m_pText );
 
@@ -168,12 +163,6 @@ void CFG_StdButtonRenderer::Init()
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	m_pRect      = m_pGraphicsElementManager->CreateRect( pButton->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
 	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pButton->GetBoundingBox(), normal_color, 2 );
-
-	// not visible by default
-	// - visibility is controled by the owner dialog
-	int dlg_color_index = 1;
-	m_pRect->SetAlpha( dlg_color_index, 0.0f );
-	m_pFrameRect->SetAlpha( dlg_color_index, 0.0f );
 
 	// register elements
 	// - set local layer offset to determine rendering order
@@ -271,13 +260,6 @@ void CFG_StdListBoxRenderer::Init()
 //	RegisterColoredElement( m_pFrameRect );
 //	for( i=0; i<num_text_elements; i++ )
 //		RegisterColoredElement( m_vecpText[i] );
-
-	// not visible by default
-	int dlg_color_index = 1;
-//	m_pFrameRect->SetAlpha( dlg_color_index, 0 );
-//	m_pRect->SetAlpha( dlg_color_index, 0 );
-	for( i=0; i<num_text_elements; i++ )
-		m_vecpText[i]->SetAlpha( dlg_color_index, 0 );
 
 }
 
@@ -420,16 +402,10 @@ void CFG_StdDialogRenderer::Init()
 	SRect frame_rect = dlg_rect;
 	SRect bg_rect = dlg_rect;
 	bg_rect.Inflate( -8, -8 );
-//	m_pRect      = m_pGraphicsElementManager->CreateRect( dlg_rect,      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
 	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( bg_rect,      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f), 4 );
-//	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( dlg_rect, normal_color, 2 );
 	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( frame_rect, SFloatRGBAColor(1,1,1,1), 7, 4 );
 
 	m_pFrameRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_ROUNDFRAME );
-
-	int dlg_color_index = 1;
-	m_pRect->SetAlpha(      dlg_color_index, 0.0f );
-	m_pFrameRect->SetAlpha( dlg_color_index, 0.0f );
 
 	// render the frame rect on the background rect
 	RegisterGraphicsElement( 2, m_pFrameRect );
@@ -456,9 +432,6 @@ void CFG_StdDialogRenderer::Init()
 			SFloatRGBAColor( 0.9f, 0.9f, 0.9f, 1.0f ),
 			8, 16 );
 
-		m_pTitle->SetAlpha(     dlg_color_index, 0.0f );
-		m_pTitleRect->SetAlpha( dlg_color_index, 0.0f );
-
 		RegisterGraphicsElement( 0, m_pTitle );
 		RegisterGraphicsElement( 1, m_pTitleRect );
 	}
@@ -482,17 +455,20 @@ void CFG_StdDialogRenderer::OnDialogOpened()
 	if( !m_pGroupElement )
 		return;
 
+	// cancel the previous slide in/out effect
+	m_pGraphicsEffectManager->CancelEffect( m_PrevSlideEffect );
+
 	m_pGraphicsEffectManager->SetTimeOffset();
 
 	// slide in
 	const SRect& rect = GetDialog()->GetBoundingBox();
 	Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
 	m_pGroupElement->SetTopLeftPos( vDestPos - m_vSlideIn );
-//	m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
-	m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, m_vSlideIn, 0.15f, 0 );
+//	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
+	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, m_vSlideIn, 0.15f, 0 );
 
 	// fade in (change alpha form 0 to 1)
-	int dlg_color_index = 1;
+	int dlg_color_index = m_DialogFadeColorIndex;
 	m_pGroupElement->SetAlpha( dlg_color_index, 0.0f );
 	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, dlg_color_index, 1.0f, 0 );
 }
@@ -503,16 +479,19 @@ void CFG_StdDialogRenderer::OnDialogClosed()
 	if( !m_pGroupElement )
 		return;
 
+	// cancel the previous slide in/out effect
+	m_pGraphicsEffectManager->CancelEffect( m_PrevSlideEffect );
+
 	m_pGraphicsEffectManager->SetTimeOffset();
 
 	// slide out
 	const SRect& rect = GetDialog()->GetBoundingBox();
 	Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
 	m_pGroupElement->SetTopLeftPos( vStartPos );
-//	m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
-	m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + m_vSlideOut, m_vSlideOut, 0.15f, 0 );
+//	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
+	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + m_vSlideOut, m_vSlideOut, 0.15f, 0 );
 
 	// fade out (change alpha form 1 to 0)
-	int dlg_color_index = 1;
+	int dlg_color_index = m_DialogFadeColorIndex;
 	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, dlg_color_index, 0.0f, 0 );
 }

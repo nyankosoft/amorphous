@@ -140,8 +140,9 @@ CGameTask_TitleFG::CGameTask_TitleFG()
 	INPUTHUB.PushInputHandler( m_pInputHandler );
 
 	// put some background image
+	int bg_layer_index = 89;
 	CGraphicsElementManager *pMgr = m_pUIRendererManager->GetGraphicsElementManager();
-	CGE_Rect *pBGRect = pMgr->CreateRect( RectLTWH( 0, 0, 800, 600 ), SFloatRGBAColor(1,1,1,1), 79 );
+	CGE_Rect *pBGRect = pMgr->CreateRect( RectLTWH( 0, 0, 800, 600 ), SFloatRGBAColor(1,1,1,1), bg_layer_index );
 	pMgr->LoadTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE, "Texture/bg_testimage.jpg" );
 	pBGRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE );
 

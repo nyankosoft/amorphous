@@ -224,6 +224,8 @@ class CFG_StdDialogRenderer : public CFG_StdControlRenderer
 	Vector2 m_vSlideIn;
 	Vector2 m_vSlideOut;
 
+	CGraphicsEffectHandle m_PrevSlideEffect;
+
 public:
 
 	CFG_StdDialogRenderer();
