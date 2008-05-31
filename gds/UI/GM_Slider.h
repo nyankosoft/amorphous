@@ -1,18 +1,25 @@
 #ifndef  __GM_SLIDER_H__
 #define  __GM_SLIDER_H__
 
+
 #include "GM_Control.h"
-//#include "GM_GraphicElement.h"
 
 
 //========================================================================================
 // CGM_Slider
 //========================================================================================
 
-class CGM_SliderDesc;
-
 class CGM_Slider : public CGM_Control
 {
+public:
+
+	enum InputCode
+	{
+		IC_INCREASE,
+		IC_DECREASE,
+		NUM_INPUT_CODES
+	};
+
 protected:
 
 	void SetValueInternal( int iValue, bool bFromInput );
@@ -24,13 +31,18 @@ protected:
 	int m_iMin;
 	int m_iMax;
 
-	int m_iDragX;      // Mouse position at start of drag
-	int m_iDragOffset; // Drag offset from the center of the button
+	int m_iDragX;      ///< Mouse position at start of drag
+	int m_iDragOffset; ///< Drag offset from the center of the button
 	int m_iButtonX;
 
 	bool m_bPressed;
 
 	SRect m_ButtonRect;
+
+	int m_aInputCode[NUM_INPUT_CODES];
+
+	/// how much the values is changed by a single increase/decrease input
+	int m_iShiftAmount;
 
 public:
 
@@ -40,10 +52,12 @@ public:
 	virtual unsigned int GetType() const { return SLIDER; }
 
 	virtual bool IsPointInside( SPoint& pt ); 
-	virtual bool CanHaveFocus() { return (m_bVisible && m_bEnabled); }
-//    virtual bool HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam );
+
+	virtual bool CanHaveFocus() const { return (m_bVisible && m_bEnabled); }
 
 	virtual bool HandleMouseInput( CGM_InputData& input );
+
+	virtual bool HandleKeyboardInput( CGM_InputData& input );
 
 	virtual void UpdateRects(); 
 

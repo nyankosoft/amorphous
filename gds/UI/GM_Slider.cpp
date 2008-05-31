@@ -17,26 +17,12 @@ CGM_Slider::CGM_Slider( CGM_Dialog *pDialog, CGM_SliderDesc *pDesc )
 	m_iMin   = pDesc->iMin;
 	m_iValue = pDesc->iInitialValue;
 
-/*	if( pDesc->pRectElement )
-		m_BoundingRectElement = *pDesc->pRectElement;
-	else
-	{	// rect is not specified - use the default bounding box
-		m_BoundingRectElement.SetPosition( m_fPosX, m_fPosY, m_fWidth, m_fHeight );
-		m_BoundingRectElement.m_RectColor.m_aColor[CGM_Control::STATE_NORMAL].SetRGBA(0.7f, 0.7f, 0.7f, 0.8f);
-		m_BoundingRectElement.m_RectColor.m_aColor[CGM_Control::STATE_PRESSED].SetRGBA(0.7f, 0.7f, 0.7f, 0.8f);
-		m_BoundingRectElement.m_RectColor.m_aColor[CGM_Control::STATE_MOUSEOVER].SetRGBA(0.7f, 0.7f, 0.7f, 0.8f);
-	}
+	m_iShiftAmount = 1;
 
-	if( pDesc->pButtonElement )
-		m_ButtonElement = *pDesc->pButtonElement;
-	else
-	{	// rect is not specified - set the default button
-		m_ButtonElement.m_RectColor.m_aColor[CGM_Control::STATE_NORMAL].SetRGBA(0.7f, 0.7f, 0.7f, 1.0f);
-		m_ButtonElement.m_RectColor.m_aColor[CGM_Control::STATE_PRESSED].SetRGBA(1.0f, 1.0f, 1.0f, 1.0f);
-		m_ButtonElement.m_RectColor.m_aColor[CGM_Control::STATE_MOUSEOVER].SetRGBA(0.8f, 0.8f, 0.8f, 1.0f);
-	}
+	UpdateRects();
 
-	UpdateRects();*/
+	m_aInputCode[ IC_INCREASE ] = CGM_Input::SHIFT_FOCUS_RIGHT;
+	m_aInputCode[ IC_DECREASE ] = CGM_Input::SHIFT_FOCUS_LEFT;
 }
 
 
@@ -80,7 +66,8 @@ bool CGM_Slider::HandleMouseInput( CGM_InputData& input )
             }
 
 			if( m_BoundingBox.ContainsPoint( pt ) )
-			{	// pressed inside the slider control
+			{
+				// pressed inside the slider control
 				if( m_iButtonX + m_BoundingBox.left < pt.x )
 				{
 					SetValueInternal( m_iValue + 1, true );
@@ -121,6 +108,35 @@ bool CGM_Slider::HandleMouseInput( CGM_InputData& input )
 		}
 		break;
 
+	default:
+		break;
+	}
+
+	return false;
+}
+
+
+bool CGM_Slider::HandleKeyboardInput( CGM_InputData& input )
+{
+    if( !IsEnabled() || !IsVisible() )
+        return false;
+
+	SPoint pt = input.pos;
+	if( input.code == m_aInputCode[ IC_INCREASE ] )
+    {
+        if( input.type == CGM_InputData::TYPE_PRESSED )
+		{
+			SetValueInternal( m_iValue + m_iShiftAmount, true );
+			return true;
+		}
+	}
+	else if( input.code == m_aInputCode[ IC_DECREASE ] )
+	{
+        if( input.type == CGM_InputData::TYPE_PRESSED )
+		{
+			SetValueInternal( m_iValue - m_iShiftAmount, true );
+			return true;
+		}
 	}
 
 	return false;

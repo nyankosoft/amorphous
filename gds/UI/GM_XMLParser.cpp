@@ -149,9 +149,9 @@ bool CGM_XMLParser::LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog )
 		}
 		else if( control_type == "Slider" )
 		{
-//			CGM_SliderDesc *pSliderDesc = new CGM_SliderDesc();
-//			LoadSliderDesc( control_reader[i], pSliderDesc );
-//			pDesc = pSliderDesc;
+			CGM_SliderDesc *pSliderDesc = new CGM_SliderDesc();
+			LoadSliderDesc( control_reader[i], pSliderDesc );
+			pDesc = pSliderDesc;
 		}
 		else if( control_type == "ListBox" )
 		{

@@ -427,7 +427,15 @@ void CGM_StdSliderRenderer::Init()
 	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetBoundingBox(), normal_color, 2 );
 	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
 	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetButtonRect(),  normal_color, 2 );
-	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       normal_color, 2 );
+	SRect dot_rect(pSlider->GetButtonRect());
+	dot_rect.Inflate( -dot_rect.GetWidth() / 4, -dot_rect.GetHeight() / 4 );
+	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( dot_rect, normal_color, 2 );
+
+	vector<CGraphicsElement *> vecpButtonElement;
+	vecpButtonElement.push_back( m_pSliderButtonRect );
+	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
+	vecpButtonElement.push_back( m_pSliderButtonDot );
+	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement );
 
 	// register elements
 	// - set local layer offset to determine rendering order
@@ -440,11 +448,22 @@ void CGM_StdSliderRenderer::Init()
 	// register elements that chages colors depending on states
 	RegisterColoredElement( m_pFrameRect );
 	RegisterColoredElement( m_pSliderButtonFrameRect );
+
 }
 
 
 void CGM_StdSliderRenderer::OnSliderValueChanged()
 {
+	CGM_Slider *pSlider = GetSlider();
+	if( !pSlider )
+		return;
+
+	const SRect& btn_rect = pSlider->GetButtonRect();
+	Vector2 vDestPos = Vector2( (float)btn_rect.left, (float)btn_rect.top );
+//	m_pGraphicsEffectManager->SetTimeOffset();
+//	m_pGraphicsEffectManager->TranslateCDV( m_pSliderButton, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+
+	m_pSliderButton->SetTopLeftPos( vDestPos );
 }
 
 
