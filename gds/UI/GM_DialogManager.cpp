@@ -203,12 +203,11 @@ bool CGM_DialogManager::OpenRootDialog( int id )
 			// update the depth offset for the root dialog currently being opened
 			m_vecRootDialogDepthOffset[ GetRootDialogIndex(pDialog) ]
 			= ControlFocus()->GetOwnerDialog()->GetMaxDepth();
-			
-			m_NeedToUpdateGraphicsProperties = true;
 		}
 
 		// update graphics properties since dialogs access
 		// graphics elements when opened
+		m_NeedToUpdateGraphicsProperties = true;
 		UpdateGraphicsProperties();
 
 		pDialog->Open();

@@ -47,7 +47,7 @@ public:
 
 	enum eParams
 	{
-		MAX_UI_LAYER_DEPTH = 64
+		MAX_UI_LAYER_DEPTH = 80
 	};
 
 protected:

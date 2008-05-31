@@ -50,7 +50,7 @@ void CGM_ControlRendererManager::RegisterRenderer( CGM_ControlRenderer *pControl
 
 int CGM_ControlRendererManager::CalcUILayerIndex( CGM_ControlRenderer *pControlRenderer )
 {
-	int m_MaxLayerIndex = 64;
+	int m_MaxLayerIndex = 80;
 	int layer_index = 0;
 
 	CGM_ControlBase *pBaseControl = pControlRenderer->GetBaseControl();

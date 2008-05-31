@@ -1025,7 +1025,7 @@ void CGM_Dialog::SetDepth( int depth )
 	{
 		// set depth recursively
 		// - subdialog button control call SetDepth() of its subdialog
-		m_vecpControl[i]->SetDepth( depth );
+		m_vecpControl[i]->SetDepth( depth + 1 );
 	}
 }
 

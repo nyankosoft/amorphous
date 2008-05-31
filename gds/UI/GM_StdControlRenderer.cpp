@@ -431,17 +431,30 @@ void CGM_StdSliderRenderer::Init()
 	dot_rect.Inflate( -dot_rect.GetWidth() / 4, -dot_rect.GetHeight() / 4 );
 	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( dot_rect, normal_color, 2 );
 
+	// subgroup for slider button
 	vector<CGraphicsElement *> vecpButtonElement;
 	vecpButtonElement.push_back( m_pSliderButtonRect );
 	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
 	vecpButtonElement.push_back( m_pSliderButtonDot );
 	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement );
 
-	// register elements
-	// - set local layer offset to determine rendering order
-	RegisterGraphicsElement( 0, m_pSliderButtonDot );
-	RegisterGraphicsElement( 0, m_pSliderButtonFrameRect );
-	RegisterGraphicsElement( 1, m_pSliderButtonRect );
+	// For slider button elements, the following 2 things need to be done separately
+	// 1. register to parent dialog renderer
+	//    - register the subgroup of slider button elements
+	// 2. set local layer offsets
+	//    - set for each element
+
+	// register the subgroup to the parent dialog renderer
+	RegisterGraphicsElementToParentDialog( m_pSliderButton );
+
+	// set different local layer offset for each grouped element
+	SetLocalLayerOffset( 0, m_pSliderButtonDot );
+	SetLocalLayerOffset( 0, m_pSliderButtonFrameRect );
+	SetLocalLayerOffset( 1, m_pSliderButtonRect );
+
+	// register elements and set local layer offset to determine rendering order
+	// - these guy don't belong to any subgroup of the renderer so each of them can be
+	//   registered with a single call of RegisterGraphicsElement()
 	RegisterGraphicsElement( 2, m_pFrameRect );
 	RegisterGraphicsElement( 3, m_pRect );
 
