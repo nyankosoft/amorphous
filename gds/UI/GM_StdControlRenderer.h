@@ -21,6 +21,11 @@ class CGM_StdControlRenderer : public CGM_ControlRenderer
 {
 private:
 
+	enum Params
+	{
+		STD_FADE_COLOR_INDEX = 2
+	};
+
 	class ColoredElementHolder
 	{
 	public:
@@ -38,6 +43,9 @@ protected:
 
 	SFloatRGBAColor m_aColor[ CGM_Control::NUM_CONTROL_STATES ];
 
+	/// used by renderer of dialog
+	int m_DialogFadeColorIndex;
+
 protected:
 
 	/// updates the color of graphics elements registered as colored elements
@@ -46,6 +54,8 @@ protected:
 	void ChangeColorToCurrentState();
 
 	void RegisterColoredElement(CGraphicsElement *pElement) { m_vecColoredElement.push_back( ColoredElementHolder(pElement) ); }
+
+	virtual void OnGroupElementCreated();
 
 public:
 
@@ -265,16 +275,9 @@ class CGM_StdDialogRenderer : public CGM_StdControlRenderer
 
 	CGraphicsEffectHandle m_PrevSlideEffect;
 
-	int m_DialogFadeColorIndex;
-
 public:
 
-	enum Params
-	{
-		DEFAULT_FADE_COLOR_INDEX
-	};
-
-	CGM_StdDialogRenderer() : m_pRect(NULL), m_pFrameRect(NULL), m_DialogFadeColorIndex(DEFAULT_FADE_COLOR_INDEX)  {}
+	CGM_StdDialogRenderer() : m_pRect(NULL), m_pFrameRect(NULL) {}
 
 	virtual ~CGM_StdDialogRenderer() {}
 

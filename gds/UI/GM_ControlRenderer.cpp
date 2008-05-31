@@ -68,13 +68,7 @@ void CGM_ControlRenderer::GroupGraphicsElements()
 		// but first, call GroupGraphicsElements() of controls on the current dialog
 		// - should be already done. called from CGM_Dialog::UpdateGraphicsProperties() -> CGM_Control::UpdateGraphicsProperties()
 		size_t i, num_controls = rvecpControl.size();
-/*		for( i=0; i<num_controls; i++ )
-		{
-			CGM_ControlRenderer *pRenderer = rvecpControl[i]->GetRenderer();
-			if( pRenderer )
-				pRenderer->GroupGraphicsElements();
-		}
-*/
+
 		// collect graphics elements of controls on the dialog
 		vector<CGraphicsElement *> vecpGraphicsElementsToGroup;
 		for( i=0; i<num_controls; i++ )
@@ -89,6 +83,8 @@ void CGM_ControlRenderer::GroupGraphicsElements()
 
 		// create a group
 		m_pGroupElement = m_pGraphicsElementManager->CreateGroup( vecpGraphicsElementsToGroup );
+
+		OnGroupElementCreated();
 	}
 }
 
@@ -153,7 +149,6 @@ void CGM_ControlRenderer::RegisterGraphicsElement( int local_layer_index, CGraph
 		}
 	}*/
 }
-
 
 
 

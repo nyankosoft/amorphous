@@ -13,6 +13,8 @@ using namespace std;
 
 
 CGM_StdControlRenderer::CGM_StdControlRenderer()
+:
+m_DialogFadeColorIndex(STD_FADE_COLOR_INDEX)
 {
 	m_aColor[CGM_Control::STATE_NORMAL]			= SFloatRGBAColor( 0.8f, 0.8f, 0.8f, 1.0f );
     m_aColor[CGM_Control::STATE_DISABLED]		= SFloatRGBAColor( 0.3f, 0.3f, 0.3f, 1.0f );
@@ -21,6 +23,12 @@ CGM_StdControlRenderer::CGM_StdControlRenderer()
     m_aColor[CGM_Control::STATE_MOUSEOVER]		= SFloatRGBAColor( 0.2f, 0.7f, 0.2f, 1.0f );
     m_aColor[CGM_Control::STATE_PRESSED]		= SFloatRGBAColor( 0.6f, 1.0f, 0.6f, 1.0f );
     m_aColor[CGM_Control::STATE_SUBDIALOGOPEN]	= SFloatRGBAColor( 0.5f, 0.9f, 0.5f, 1.0f );
+}
+
+
+void CGM_StdControlRenderer::OnGroupElementCreated()
+{
+	m_pGroupElement->SetAlpha( STD_FADE_COLOR_INDEX, 0.0f );
 }
 
 
@@ -174,11 +182,6 @@ void CGM_StdStaticRenderer::Init()
 	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, pStatic->GetText(), pStatic->GetBoundingBox(),
 		CGE_Text::TAL_CENTER, CGE_Text::TAL_CENTER, normal_color, w, h );
 
-	// not visible by default
-	// - visibility is controled by the owner dialog
-	int dlg_color_index = 1;
-	m_pText->SetAlpha( dlg_color_index, 0 );
-
 	// render the text on top
 	RegisterGraphicsElement( 0, m_pText );
 
@@ -195,12 +198,6 @@ void CGM_StdButtonRenderer::Init()
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	m_pRect      = m_pGraphicsElementManager->CreateRect( pButton->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
 	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pButton->GetBoundingBox(), normal_color, 2 );
-
-	// not visible by default
-	// - visibility is controled by the owner dialog
-	int dlg_color_index = 1;
-	m_pRect->SetAlpha( dlg_color_index, 0.0f );
-	m_pFrameRect->SetAlpha( dlg_color_index, 0.0f );
 
 	// register elements
 	// - set local layer offset to determine rendering order
@@ -299,7 +296,7 @@ void CGM_StdListBoxRenderer::Init()
 //		RegisterColoredElement( m_vecpText[i] );
 
 	// not visible by default
-	int dlg_color_index = 1;
+	int dlg_color_index = m_DialogFadeColorIndex;
 	m_pFrameRect->SetAlpha( dlg_color_index, 0 );
 	m_pRect->SetAlpha( dlg_color_index, 0 );
 	for( i=0; i<num_text_elements; i++ )
@@ -432,14 +429,6 @@ void CGM_StdSliderRenderer::Init()
 	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetButtonRect(),  normal_color, 2 );
 	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       normal_color, 2 );
 
-	// not visible by default
-	// - visibility is controled by the owner dialog
-	int dlg_color_index = 1;
-	m_pRect->SetAlpha( dlg_color_index, 0.0f );
-	m_pFrameRect->SetAlpha( dlg_color_index, 0.0f );
-	m_pSliderButtonRect->SetAlpha( dlg_color_index, 0.0f );
-	m_pSliderButtonFrameRect->SetAlpha( dlg_color_index, 0.0f );
-
 	// register elements
 	// - set local layer offset to determine rendering order
 	RegisterGraphicsElement( 0, m_pSliderButtonDot );
@@ -471,10 +460,6 @@ void CGM_StdDialogRenderer::Init()
 	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pDialog->GetBoundingBox(), normal_color, 2 );
 //	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( pDialog->GetBoundingBox(), normal_color, 6, 6 );
 
-	int dlg_color_index = 1;
-	m_pRect->SetAlpha( dlg_color_index, 0.0f );
-	m_pFrameRect->SetAlpha( dlg_color_index, 0.0f );
-
 	// render the frame rect on the background rect
 	RegisterGraphicsElement( 0, m_pFrameRect );
 	RegisterGraphicsElement( 1, m_pRect );
@@ -499,9 +484,8 @@ void CGM_StdDialogRenderer::OnDialogOpened()
 	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 
 	// fade in (change alpha form 0 to 1)
-	int dlg_color_index = 1;
-	m_pGroupElement->SetAlpha( dlg_color_index, 0.0f );
-	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, dlg_color_index, 1.0f, 0 );
+	m_pGroupElement->SetAlpha( m_DialogFadeColorIndex, 0.0f );
+	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, m_DialogFadeColorIndex, 1.0f, 0 );
 }
 
 
@@ -523,6 +507,5 @@ void CGM_StdDialogRenderer::OnDialogClosed()
 	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + Vector2( -50, 0 ), -Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 
 	// fade out (change alpha form 1 to 0)
-	int dlg_color_index = 1;
-	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, dlg_color_index, 0.0f, 0 );
+	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, m_DialogFadeColorIndex, 0.0f, 0 );
 }

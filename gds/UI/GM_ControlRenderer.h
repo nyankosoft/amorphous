@@ -102,6 +102,7 @@ protected:
 	/// - borrowed reference
 	CGM_ControlBase *m_pControl;
 
+	/// used by the renderer of dialog
 	CGE_Group *m_pGroupElement;
 
 //	std::vector<CElementEffectDesc *> m_vecpEffectDesc[NUM_EFFECTTRIGGEREVENTS];
@@ -147,10 +148,15 @@ protected:
 	/// - Use this instead of RegisterGraphicsElement() if you do not want to register the element to owner dialog
 	void SetLocalLayerOffset( int local_layer_index, CGraphicsElement *pElement );
 
-	// equivalent to calling the following 2 functions
-	// - RegisterGraphicsElementToParentDialog()
-	// - SetLocalLayerOffset()
+	/// equivalent to calling the following 2 functions
+	/// - RegisterGraphicsElementToParentDialog()
+	/// - SetLocalLayerOffset()
 	void RegisterGraphicsElement( int local_layer_index, CGraphicsElement *pElement );
+
+	/// called when m_pGroupElement is created
+	/// - used by the renderer of dialog to set all of its controls transparent
+	///   at the start
+	virtual void OnGroupElementCreated() {}
 
 public:
 
