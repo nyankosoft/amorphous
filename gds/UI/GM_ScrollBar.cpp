@@ -88,6 +88,9 @@ void CGM_ScrollBar::UpdateThumbRect()
 		m_rcThumb.bottom = m_rcThumb.top;
 		m_bShowThumb = false;
 	}
+
+	if( m_pRenderer )
+		m_pRenderer->OnThumbUpdated( this );
 }
 
 
@@ -105,8 +108,8 @@ void CGM_ScrollBar::Scroll( int nDelta )
     // Update thumb position
     UpdateThumbRect();
 
-	if( m_pRenderer.get() )
-		m_pRenderer->OnScrolled( nDelta );
+//	if( m_pRenderer.get() )
+//		m_pRenderer->OnScrolled( this, nDelta );
 }
 
 
@@ -377,6 +380,9 @@ void CGM_ScrollBar::SetTrackRange( int nStart, int nEnd )
     m_nStart = nStart; m_nEnd = nEnd;
     Cap();
     UpdateThumbRect();
+
+//	if( m_pRenderer )
+//		m_pRenderer->OnTrackRangeChanged( this, nStart, nEnd );
 }
 
 

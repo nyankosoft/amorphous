@@ -202,12 +202,14 @@ public:
 
 	/// for scroll bar renderer
 	/// \param delta the number of items scrolled (pos: scrolled down / neg: scrolled up)
-	virtual void OnScrolled( int delta ) {}
+//	virtual void OnScrolled( CGM_ScrollBar *pScrollbar, int delta ) {}
+//	virtual void OnTrackRangeChanged( CGM_ScrollBar *pScrollbar, int start, int end ) {}
+	virtual void OnThumbUpdated( CGM_ScrollBar *pScrollbar ) {}
 
 	/// for slider renderer
 	virtual void OnSliderValueChanged() {}
 
-	// for dialog
+	/// for dialog
 	virtual void OnDialogOpened() {}
 	virtual void OnDialogClosed() {}
 	virtual void OnOpenDialogAttemptedToClose() {} ///< called when a dialog with CGM_Dialog::STYLE_ALWAYS_OPEN is attempted to close

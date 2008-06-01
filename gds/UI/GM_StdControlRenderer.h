@@ -274,7 +274,9 @@ public:
 //	virtual void OnItemInserted( int index );
 //	virtual void OnItemRemoved( int index );
 
-	virtual void OnScrolled();
+//	virtual void OnScrolled( CGM_ScrollBar *pScrollbar, int delta );
+//	virtual void OnTrackRangeChanged( CGM_ScrollBar *pScrollbar, int start, int end );
+	virtual void OnThumbUpdated( CGM_ScrollBar *pScrollbar );
 };
 
 

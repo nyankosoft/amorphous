@@ -446,7 +446,8 @@ void CGM_StdScrollBarRenderer::Init()
 	{
 		pScrollbar->GetUpButtonRect(),
 		pScrollbar->GetDownButtonRect(),
-		pScrollbar->GetTrackRect()
+		pScrollbar->GetTrackRect(),
+		pScrollbar->GetThumbButtonRect()
 	};
 
 	for( int i=0; i<NUM_RECT_ELEMENTS; i++ )
@@ -477,8 +478,11 @@ void CGM_StdScrollBarRenderer::Init()
 }
 
 
-void CGM_StdScrollBarRenderer::OnScrolled()
+void CGM_StdScrollBarRenderer::OnThumbUpdated( CGM_ScrollBar *pScrollbar )
 {
+	SRect thumb_rect = pScrollbar->GetThumbButtonRect();
+	if( m_pThumbGroup )
+		m_pThumbGroup->SetTopLeftPos( Vector2( (float)thumb_rect.left, (float)thumb_rect.top ) );
 }
 
 
