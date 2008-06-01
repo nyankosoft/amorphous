@@ -5,8 +5,6 @@
 #include "GM_Control.h"
 
 
-class CGM_ScrollBarDesc;
-
 class CGM_ScrollBar : public CGM_Control
 {
 
@@ -29,9 +27,9 @@ public:
 	virtual void UpdateRects();
 
     void SetTrackRange( int nStart, int nEnd );
-    int GetTrackPos() { return m_nPosition; }
+    int GetTrackPos() const { return m_nPosition; }
     void SetTrackPos( int nPosition ) { m_nPosition = nPosition; Cap(); UpdateThumbRect(); }
-    int GetPageSize() { return m_nPageSize; }
+    int GetPageSize() const { return m_nPageSize; }
     void SetPageSize( int nPageSize ) { m_nPageSize = nPageSize; Cap(); UpdateThumbRect(); }
 
 	const SRect& GetUpButtonRect() const { return m_rcUpButton; }

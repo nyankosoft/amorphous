@@ -26,6 +26,7 @@
 #include "GM_Button.h"
 #include "GM_ListBox.h"
 #include "GM_Slider.h"
+#include "GM_ScrollBar.h"
 #include "GM_SubDialogButton.h"
 #include "GM_Dialog.h"
 
@@ -130,6 +131,7 @@ protected:
 	CGM_CheckBox *GetCheckBox()       { return dynamic_cast<CGM_CheckBox *>(m_pControl); }
 	CGM_RadioButton *GetRadioButton() { return dynamic_cast<CGM_RadioButton *>(m_pControl); }
 	CGM_ListBox *GetListBox()         { return dynamic_cast<CGM_ListBox *>(m_pControl); }
+	CGM_ScrollBar *GetScrollBar()     { return dynamic_cast<CGM_ScrollBar *>(m_pControl); }
 	CGM_Slider *GetSlider()           { return dynamic_cast<CGM_Slider *>(m_pControl); }
 	CGM_SubDialogButton *GetSubDialogButton() { return dynamic_cast<CGM_SubDialogButton *>(m_pControl); }
 

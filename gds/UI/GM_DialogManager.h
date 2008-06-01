@@ -97,6 +97,8 @@ public:
 
 	CGM_Control* GetControl( int id );
 
+	CGM_Control* GetControl( const std::string& string_id );
+
 	/// \return reference to the control which currently owns focus
 	CGM_Control*& ControlFocus() { return m_pControlFocus; }
 

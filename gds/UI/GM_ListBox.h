@@ -114,7 +114,7 @@ public:
 	int GetStyle() const { return m_Style; }
 	const SRect& GetTextRect() const { return m_rcText; }
 	const SRect& GetSelectionRect() const { return m_rcSelection; }
-	const CGM_ScrollBar *GetScrollBar() const { return m_pScrollBar; }
+	const CGM_ScrollBar *GetScrollbar() const { return m_pScrollBar; }
 	int GetScrollBarWidth() const { return m_nSBWidth; }
 	int GetTextHeight() const { return m_nTextHeight; }
 	int GetBorderWidth() const { return m_nBorder; }
@@ -149,7 +149,6 @@ protected:
 	/// Selection box bound
 	SRect m_rcSelection;
 
-//	CDXUTScrollBar m_ScrollBar;
 	CGM_ScrollBar *m_pScrollBar;	///< scroll bar control (borrowed reference)
 
 	int m_Style;		///< List box style

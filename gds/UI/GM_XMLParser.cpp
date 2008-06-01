@@ -91,6 +91,14 @@ void CGM_XMLParser::LoadSliderDesc( CXMLNodeReader& reader, CGM_SliderDesc *pSli
 }
 
 
+void CGM_XMLParser::LoaListBoxDesc( CXMLNodeReader& reader, CGM_ListBoxDesc *pListBoxDesc )
+{
+	LoadCommonDesc( reader, pListBoxDesc );
+	reader.GetTextContent( "PageSize",        pListBoxDesc->PageSize );
+	reader.GetTextContent( "ScrollbarWidth",  pListBoxDesc->nSBWidth );
+}
+
+
 CGM_Dialog *CGM_XMLParser::LoadSubDialog( CXMLNodeReader& reader )
 {
 	CXMLNodeReader dlgfile = reader.GetChild( "DialogFile" );
@@ -155,8 +163,9 @@ bool CGM_XMLParser::LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog )
 		}
 		else if( control_type == "ListBox" )
 		{
-//			CGM_ListBoxDesc *pListBoxDesc = new CGM_ListBoxDesc();
-//			LoaListBoxDesc( control_reader[i], pListBoxDesc );
+			CGM_ListBoxDesc *pListBoxDesc = new CGM_ListBoxDesc();
+			LoaListBoxDesc( control_reader[i], pListBoxDesc );
+			pDesc = pListBoxDesc;
 		}
 		else if( control_type == "SubDialogButton" )
 		{

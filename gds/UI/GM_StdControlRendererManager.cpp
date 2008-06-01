@@ -7,7 +7,7 @@
 
 CGM_StdControlRendererManager::CGM_StdControlRendererManager()
 {
-	m_pGraphicsElementManager->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16, 0, 0 );
+	m_pGraphicsElementManager->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 10, 16, 0, 0 );
 }
 
 
@@ -68,13 +68,13 @@ CGM_ControlRenderer *CGM_StdControlRendererManager::CreateListBoxRenderer( CGM_L
 }
 
 
-/*
-CGM_ControlRenderer *CGM_StdControlRendererManager::CreateScrollBarRenderer( CGM_ScrollBar& scrollbar )
+CGM_ControlRenderer *CGM_StdControlRendererManager::CreateScrollBarRenderer( CGM_ScrollBar *pScrollbar )
 {
+	return new CGM_StdScrollBarRenderer();
 }
 
 
-
+/*
 CGM_ControlRenderer *CGM_StdControlRendererManager::CreateDialogRenderer( CGM_Dialog& dialog )
 {
 }

@@ -8,6 +8,7 @@
 class CGM_ListBoxDesc : public CGM_ControlDesc
 {
 public:
+
 	CGM_ListBoxDesc() { SetDefault(); }
 
 	virtual void SetDefault()
@@ -15,6 +16,7 @@ public:
 		CGM_ControlDesc::SetDefault();
 
 		Style = 0;
+		PageSize = 10;
 		nSBWidth = 16;
 		nTextHeight = 16;
 		nBorder = 6;
@@ -33,9 +35,11 @@ public:
 	/// Selection box bound
 	SRect SelectionRect;
 
-//	CDXUTScrollBar m_ScrollBar;
+//	CGM_ScrollBarDesc ScrollbarDesc;
 
-	int nSBWidth;	///< width of the scroll bar ?
+	int PageSize;
+
+	int nSBWidth;	///< width of the scroll bar
 
 	int nBorder;
 

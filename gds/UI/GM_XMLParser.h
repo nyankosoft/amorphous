@@ -46,6 +46,7 @@ private:
 	void LoadCheckBoxDesc( CXMLNodeReader& reader, CGM_CheckBoxDesc *pCheckBoxDesc );
 	void LoadRadioButtonDesc( CXMLNodeReader& reader, CGM_RadioButtonDesc *pRadioButtonDesc );
 	void LoadSliderDesc( CXMLNodeReader& reader, CGM_SliderDesc *pSliderDesc );
+	void LoaListBoxDesc( CXMLNodeReader& reader, CGM_ListBoxDesc *pListBoxDesc );
 
 public:
 

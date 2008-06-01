@@ -20,10 +20,6 @@ CGM_ScrollBar::CGM_ScrollBar( CGM_Dialog *pDialog, CGM_ScrollBarDesc *pDesc )
 	m_bShowThumb = true;
 	m_bDrag = false;
 
-//	SetRect( &m_rcUpButton, 0, 0, 0, 0 );
-//	SetRect( &m_rcDownButton, 0, 0, 0, 0 );
-//	SetRect( &m_rcTrack, 0, 0, 0, 0 );
-//	SetRect( &m_rcThumb, 0, 0, 0, 0 );
 	m_nPosition = pDesc->iInitPosition;
 	m_nPageSize = pDesc->iPageSize;
 	m_nStart = 0;
@@ -50,11 +46,11 @@ void CGM_ScrollBar::UpdateRects()
 
 	const SRect& box = m_BoundingBox;
 
-	m_rcUpButton.SetPositionLTRB( box.left, box.top, box.right, box.GetWidth() );
+	m_rcUpButton.SetPositionLTRB(   box.left, box.top,                     box.right, box.top + box.GetWidth() );
 
 	m_rcDownButton.SetPositionLTRB( box.left, box.bottom - box.GetWidth(), box.right, box.bottom );
 
-	m_rcTrack.SetPositionLTRB( box.left, m_rcUpButton.bottom, box.right, m_rcDownButton.top );
+	m_rcTrack.SetPositionLTRB(      box.left, m_rcUpButton.bottom,         box.right, m_rcDownButton.top );
 
 /*	SetRect( &m_rcUpButton, m_BoundingBox.left, m_BoundingBox.top,
 				m_BoundingBox.right, m_BoundingBox.top + m_BoundingBox.GetWidth() );
@@ -374,9 +370,6 @@ void CGM_ScrollBar::Render( IDirect3DDevice9* pd3dDevice, float fElapsedTime )
     m_pDialog->DrawSprite( pElement, &m_rcThumb );
  
 }*/
-
-
-//void CGM_ScrollBar::Render(){}
 
 
 void CGM_ScrollBar::SetTrackRange( int nStart, int nEnd )

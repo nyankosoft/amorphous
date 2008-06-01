@@ -8,6 +8,7 @@
 #include "3DCommon/GraphicsEffectManager.h"
 
 #include "Support/Log/DefaultLog.h"
+#include "Support/Macro.h"
 
 using namespace std;
 
@@ -196,7 +197,8 @@ void CGM_StdButtonRenderer::Init()
 	CGM_Button *pButton = GetButton();
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
-	m_pRect      = m_pGraphicsElementManager->CreateRect( pButton->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
+	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
+	m_pRect      = m_pGraphicsElementManager->CreateRect( pButton->GetBoundingBox(),      bg_color );
 	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pButton->GetBoundingBox(), normal_color, 2 );
 
 	// register elements
@@ -264,7 +266,9 @@ void CGM_StdListBoxRenderer::Init()
 		return;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
-	m_pRect      = m_pGraphicsElementManager->CreateRect( pListBox->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
+	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
+
+	m_pRect      = m_pGraphicsElementManager->CreateRect( pListBox->GetBoundingBox(),      bg_color );
 	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pListBox->GetBoundingBox(), normal_color, 2 );
 
 	// create empty text elements
@@ -274,13 +278,13 @@ void CGM_StdListBoxRenderer::Init()
 	int text_y = y;
 //	int w = 8;
 //	int h = 16;
-	int i, num_items_in_page = 10;//pListBox->GetScrollBar();
+	int i, num_items_in_page = pListBox->GetScrollbar()->GetPageSize();
 	m_vecpText.resize( num_items_in_page );
 	for( i=0; i<num_items_in_page; i++ )
 	{
 		text_x = x + 5;
 		text_y = y + i * pListBox->GetTextHeight();
-		m_vecpText[i] = m_pGraphicsElementManager->CreateText( 0, "-", (float)text_x, (float)text_y, m_aColor[CGM_Control::STATE_NORMAL] );
+		m_vecpText[i] = m_pGraphicsElementManager->CreateText( 0, "-", (float)text_x, (float)text_y, normal_color );
 	}
 
 	// set local layer offset to determine rendering order
@@ -321,7 +325,7 @@ void CGM_StdListBoxRenderer::UpdateItems( bool update_text )
 	int focused_item_index = pListBox->GetSelectedIndex();
 
 	int num_items = pListBox->GetNumItems();
-	int num_items_in_page = 10;
+	int num_items_in_page = pListBox->GetScrollbar()->GetPageSize();
 
 	int i, num_items_to_display = num_items < num_items_in_page ? num_items : num_items_in_page;
 
@@ -414,6 +418,70 @@ void CGM_StdListBoxRenderer::OnItemRemoved( int index )
 }
 
 
+
+CGM_StdScrollBarRenderer::CGM_StdScrollBarRenderer()
+:
+m_pThumbGroup(NULL)
+{
+	for( int i=0; i<NUM_RECT_ELEMENTS; i++ )
+	{
+		m_apRect[i] = NULL;
+		m_apFrameRect[i] = NULL;
+	}
+}
+
+
+void CGM_StdScrollBarRenderer::Init()
+{
+	CGM_ScrollBar *pScrollbar = GetScrollBar();
+	if( !pScrollbar )
+		return;
+
+	CGraphicsElementManager *pElementMgr = m_pGraphicsElementManager;
+
+	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
+	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
+
+	const SRect src_rect[NUM_RECT_ELEMENTS] =
+	{
+		pScrollbar->GetUpButtonRect(),
+		pScrollbar->GetDownButtonRect(),
+		pScrollbar->GetTrackRect()
+	};
+
+	for( int i=0; i<NUM_RECT_ELEMENTS; i++ )
+	{
+		m_apFrameRect[i] = pElementMgr->CreateFrameRect( src_rect[i], normal_color, 2 );
+		m_apRect[i]      = pElementMgr->CreateRect(      src_rect[i], bg_color );
+
+		RegisterColoredElement( m_apFrameRect[i] );
+	}
+
+	// register all except for the thumb rects
+	for( int i=0; i<NUM_RECT_ELEMENTS - 1; i++ )
+	{
+		RegisterGraphicsElement( 2, m_apFrameRect[i] );
+		RegisterGraphicsElement( 3, m_apRect[i] );
+	}
+
+	// register thumb rects
+	// - rendered no top of other elements
+	// - create a subgroup
+	CGraphicsElement *apElement[] = { m_apFrameRect[RE_THUMB], m_apRect[RE_THUMB] };
+	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement) );
+
+	RegisterGraphicsElementToParentDialog( m_pThumbGroup );
+
+	SetLocalLayerOffset( 0, m_apFrameRect[RE_THUMB] );
+	SetLocalLayerOffset( 1, m_apRect[RE_THUMB] );
+}
+
+
+void CGM_StdScrollBarRenderer::OnScrolled()
+{
+}
+
+
 void CGM_StdSliderRenderer::Init()
 {
 //	CGM_StdStaticRenderer::Init();
@@ -423,9 +491,10 @@ void CGM_StdSliderRenderer::Init()
 		return;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
-	m_pRect                  = m_pGraphicsElementManager->CreateRect( pSlider->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
+	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
+	m_pRect                  = m_pGraphicsElementManager->CreateRect( pSlider->GetBoundingBox(),      bg_color );
 	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetBoundingBox(), normal_color, 2 );
-	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
+	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       bg_color );
 	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetButtonRect(),  normal_color, 2 );
 	SRect dot_rect(pSlider->GetButtonRect());
 	dot_rect.Inflate( -dot_rect.GetWidth() / 4, -dot_rect.GetHeight() / 4 );
@@ -487,8 +556,9 @@ void CGM_StdDialogRenderer::Init()
 		return;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
-	m_pRect      = m_pGraphicsElementManager->CreateRect( pDialog->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
-//	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( pDialog->GetBoundingBox(),      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f), 6 );
+	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
+	m_pRect      = m_pGraphicsElementManager->CreateRect( pDialog->GetBoundingBox(),      bg_color );
+//	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( pDialog->GetBoundingBox(),      bg_color, 6 );
 	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pDialog->GetBoundingBox(), normal_color, 2 );
 //	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( pDialog->GetBoundingBox(), normal_color, 6, 6 );
 

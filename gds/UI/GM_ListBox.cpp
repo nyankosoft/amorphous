@@ -18,16 +18,10 @@ using namespace std;
 // CGM_ListBox class
 //--------------------------------------------------------------------------------------
 CGM_ListBox::CGM_ListBox( CGM_Dialog *pDialog, CGM_ListBoxDesc *pDesc )
-: CGM_Control( pDialog, pDesc )
+:
+CGM_Control( pDialog, pDesc ),
+m_pScrollBar(NULL)
 {
-	m_pScrollBar = NULL;
-/*
-	m_Style = 0;
-	m_nSBWidth = 16;
-	m_nTextHeight = 0;
-	m_nBorder = 6;
-	m_nMargin = 5;
-*/
 	m_Style		= pDesc->Style;
 
 	// TODO: support multi-selection
@@ -49,6 +43,12 @@ CGM_ListBox::CGM_ListBox( CGM_Dialog *pDialog, CGM_ListBoxDesc *pDesc )
 	CGM_ScrollBarDesc bar_desc;
 	bar_desc.Rect = GetBoundingBox();
 	bar_desc.Rect.left = GetBoundingBox().right - m_nSBWidth;
+	bar_desc.iPageSize = pDesc->PageSize;
+
+	// the rect has been already transformed to global coord in ctor of CGM_Control
+//	SRect dlg_rect = GetOwnerDialog()->GetBoundingBox();
+//	bar_desc.Rect.Offset( -dlg_rect.left, -dlg_rect.top );
+	bar_desc.coord_type = CGM_ControlDesc::COORD_GLOBAL;
 
 	m_pScrollBar = (CGM_ScrollBar *)m_pDialog->AddControl( &bar_desc );
 
@@ -168,7 +168,7 @@ bool CGM_ListBox::AddItem( const string& text, void *pUserData, int user_data_id
 	// add item to the list
 	m_vecItem.push_back( pNewItem );
 
-	m_pScrollBar->SetTrackRange( 0, m_vecItem.size() );
+	m_pScrollBar->SetTrackRange( 0, (int)m_vecItem.size() );
 
 	// set initial selection focus when the first item is given
 	if( m_vecItem.size() == 1 )
@@ -200,7 +200,7 @@ bool CGM_ListBox::InsertItem( int nIndex, const string& text, void *pUserData )
 	pNewItem->m_pOwnerListBox = this;
 
 	m_vecItem.insert( m_vecItem.begin() + nIndex, pNewItem );
-	m_pScrollBar->SetTrackRange( 0, m_vecItem.size() );
+	m_pScrollBar->SetTrackRange( 0, (int)m_vecItem.size() );
 
 	// send notification to control renderer
 	if( m_pRenderer.get() )
@@ -220,13 +220,13 @@ void CGM_ListBox::RemoveItem( int nIndex )
 
 	m_vecItem.erase( m_vecItem.begin() + nIndex );
 
-	m_pScrollBar->SetTrackRange( 0, m_vecItem.size() );
+	m_pScrollBar->SetTrackRange( 0, (int)m_vecItem.size() );
 
 	if( m_nSelected >= (int)m_vecItem.size() )
 	{
 		// The selection focus was on the last item and the last item was removed
 		// - need to update selection focus
-		m_nSelected = m_vecItem.size() - 1;
+		m_nSelected = (int)m_vecItem.size() - 1;
 
 		SetItemSelectionFocus( m_nSelected );
 	}
@@ -319,7 +319,7 @@ void CGM_ListBox::SetItemSelectionFocus( int nNewIndex )
 	if( m_nSelected < 0 )
 		m_nSelected = 0;
 	if( m_nSelected >= (int)m_vecItem.size() )
-		m_nSelected = m_vecItem.size() - 1;
+		m_nSelected = (int)m_vecItem.size() - 1;
 
 	if( nOldSelected != m_nSelected )
 	{
@@ -646,7 +646,7 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 			if( m_nSelected < 0 )
 				m_nSelected = 0;
 			if( m_nSelected >= (int)m_vecItem.size() )
-				m_nSelected = m_vecItem.size() - 1;
+				m_nSelected = (int)m_vecItem.size() - 1;
 
 			if( nOldSelected != m_nSelected )
 			{

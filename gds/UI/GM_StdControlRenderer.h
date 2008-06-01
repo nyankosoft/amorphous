@@ -236,6 +236,48 @@ public:
 };
 
 
+class CGM_StdScrollBarRenderer : public CGM_StdControlRenderer
+{
+protected:
+
+	enum RectElement
+	{
+		RE_UP_BUTTON,
+		RE_DOWN_BUTTON,
+		RE_TRACK,
+		RE_THUMB,
+		NUM_RECT_ELEMENTS
+	};
+
+	CGE_Rect *m_apRect[NUM_RECT_ELEMENTS];
+	CGE_Rect *m_apFrameRect[NUM_RECT_ELEMENTS];
+
+	CGE_Group *m_pThumbGroup;
+
+protected:
+
+	void UpdateItems( bool update_text = true );
+
+public:
+
+	CGM_StdScrollBarRenderer();
+
+	virtual ~CGM_StdScrollBarRenderer() {}
+
+	virtual void Init();
+
+//	virtual void OnItemSelectionChanged();
+
+//	virtual void OnItemSelected();
+
+//	virtual void OnItemAdded( int index );
+//	virtual void OnItemInserted( int index );
+//	virtual void OnItemRemoved( int index );
+
+	virtual void OnScrolled();
+};
+
+
 class CGM_StdSliderRenderer : public CGM_StdControlRenderer
 {
 	CGE_Rect *m_pRect;

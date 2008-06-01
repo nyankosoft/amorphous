@@ -679,6 +679,19 @@ CGM_Control* CGM_Dialog::GetControl( int id )
 }
 
 
+CGM_Control* CGM_Dialog::GetControl( const std::string& string_id )
+{
+	size_t i, num_controls = m_vecpControl.size();
+	for( i=0; i<num_controls; i++ )
+	{
+		if( m_vecpControl[i]->GetStringID() == string_id )
+			return m_vecpControl[i];
+	}
+
+	return NULL;
+}
+
+
 void CGM_Dialog::SendEvent( unsigned int event_type, bool bTriggeredByUser, CGM_ControlBase* pControl, unsigned int sub_event )
 {
 	CGM_Event event( event_type, pControl );

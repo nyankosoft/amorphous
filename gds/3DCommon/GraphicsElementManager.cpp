@@ -593,6 +593,19 @@ CGraphicsElement *CGraphicsElementManager::CreatePolygon()
 }
 
 
+CGE_Group *CGraphicsElementManager::CreateGroup( CGraphicsElement** apElement, int num_elements )
+{
+	vector<CGraphicsElement *> vecpElement;
+	vecpElement.resize(num_elements);
+	for( int i=0; i<num_elements; i++ )
+	{
+		vecpElement[i] = apElement[i];
+	}
+
+	return CreateGroup( vecpElement );
+}
+
+
 CGE_Group *CGraphicsElementManager::CreateGroup( std::vector<CGraphicsElement *>& rvecpElement )
 {
 	int index = GetVacantSlotIndex();

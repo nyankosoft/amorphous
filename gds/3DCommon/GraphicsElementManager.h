@@ -443,7 +443,8 @@ public:
 	virtual CGE_Text *CreateTextBox( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
 	virtual CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
 	virtual CGraphicsElement *CreatePolygon() { return NULL; }
-	virtual CGE_Group *CreateGroup( std::vector<int>& rvecElementID ) { return NULL; }
+	virtual CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement ) { return NULL; }
+	virtual CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements ) { return NULL; }
 	virtual int LoadTexture( const std::string& tex_filename ) { return -1; }
 	virtual int LoadFont( const std::string& font_name ) { return -1; }
 	virtual bool LoadFont( int font_id, const std::string& font_name, int font_type, int w, int h, float bold = 0.0f, float italic = 0.0f ) { return false; }
@@ -562,6 +563,8 @@ public:
 	CGraphicsElement *CreatePolygon();
 
 	CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement );
+
+	CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements );
 
 	inline CGraphicsElement *GetElement( int id );
 

@@ -22,7 +22,7 @@ public:
 	virtual CGM_ControlRenderer *CreateDialogCloseButtonRenderer( CGM_DialogCloseButton *pDlgCloseButton );
 	virtual CGM_ControlRenderer *CreateSliderRenderer( CGM_Slider *pSlider );
 	virtual CGM_ControlRenderer *CreateListBoxRenderer( CGM_ListBox *pListBox );
-//	virtual CGM_ControlRenderer *CreateScrollBarRenderer( CGM_ScrollBar *pScrollBar );
+	virtual CGM_ControlRenderer *CreateScrollBarRenderer( CGM_ScrollBar *pScrollbar );
 	virtual CGM_ControlRenderer *CreateSubDialogButtonRenderer( CGM_SubDialogButton *pSubDlgButton );
 	virtual CGM_ControlRenderer *CreateDialogRenderer( CGM_Dialog *pDialog );
 

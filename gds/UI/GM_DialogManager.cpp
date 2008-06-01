@@ -249,6 +249,20 @@ CGM_Control* CGM_DialogManager::GetControl( int id )
 }
 
 
+CGM_Control* CGM_DialogManager::GetControl( const std::string& string_id )
+{
+	size_t i, num_dlgs = m_vecpDialog.size();
+	for( i=0; i<num_dlgs; i++ )
+	{
+		CGM_Control* pControl = m_vecpDialog[i]->GetControl( string_id );
+		if( pControl )
+			return pControl;
+	}
+
+	return NULL;
+}
+
+
 bool CGM_DialogManager::HandleInput( CGM_InputData& input )
 {
 	if( m_vecpRootDialog.size() == 0 )

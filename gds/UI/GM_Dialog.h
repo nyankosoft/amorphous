@@ -165,6 +165,8 @@ public:
 
 	CGM_Control* GetControl( int id );
 
+	CGM_Control* GetControl( const std::string& string_id );
+
 	bool IsRoot() const { return m_bRootDialog; }
 
 	bool IsOpen() const;
