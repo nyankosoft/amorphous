@@ -935,14 +935,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Button.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Button.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Project1\gds\UI\GM_CaptionParameters.h"
 				>
 			</File>
@@ -951,63 +943,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Control.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Control.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ControlDescBase.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ControlDescBase.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ControlRenderer.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ControlRenderer.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ControlRendererManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ControlRendererManager.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Project1\gds\UI\GM_Controls.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Dialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Dialog.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_DialogCloseButton.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_DialogCloseButton.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_DialogDesc.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_DialogDesc.h"
 				>
 			</File>
 			<File
@@ -1039,75 +975,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ListBox.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ListBox.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ListBoxDesc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ScrollBar.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ScrollBar.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_ScrollBarDesc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Slider.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Slider.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Project1\gds\UI\GM_SoundPlayer.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\Project1\gds\UI\GM_SoundPlayer.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Static.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_Static.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_StdControlRenderer.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_StdControlRenderer.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_StdControlRendererManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_StdControlRendererManager.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_SubDialogButton.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Project1\gds\UI\GM_SubDialogButton.h"
 				>
 			</File>
 			<File
@@ -1134,6 +1006,146 @@
 				RelativePath="..\..\Project1\gds\UI\ui_fwd.h"
 				>
 			</File>
+			<Filter
+				Name="Control Renderers"
+				>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ControlRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ControlRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ControlRendererManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ControlRendererManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_StdControlRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_StdControlRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_StdControlRendererManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_StdControlRendererManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Controls"
+				>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Button.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Button.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Control.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Control.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Dialog.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_DialogCloseButton.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_DialogCloseButton.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ListBox.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ListBox.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ScrollBar.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ScrollBar.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Slider.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Slider.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Static.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_Static.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_SubDialogButton.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_SubDialogButton.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Control Descs"
+				>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ControlDescBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ControlDescBase.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_DialogDesc.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_DialogDesc.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ListBoxDesc.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Project1\gds\UI\GM_ScrollBarDesc.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GameCommon"
