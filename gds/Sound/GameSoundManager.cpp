@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <windows.h>
 #include <dxerr9.h>
-#include "../3DCommon/dxutil.h"
 
 #include "Support/TextFileScanner.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/SafeDelete.h"
 
 #include "GameSoundManager.h"
 #include "WaveFile.h"
@@ -30,7 +30,7 @@ CGameSoundManager::~CGameSoundManager()
 {
 	for(int i=0; i<m_iNumGameSounds; i++)
 	{
-		SAFE_DELETE( m_apGameSound[i] );
+		SafeDelete( m_apGameSound[i] );
 	}
 
 	SAFE_RELEASE( m_pDSListener );
@@ -61,26 +61,26 @@ HRESULT CGameSoundManager::Init( HWND hWnd )
     // Create IDirectSound using the primary sound device
     if( FAILED( hr = DirectSoundCreate8( NULL, &m_pDirectSound, NULL ) ) )
 	{
-		g_Log.Print( WL_ERROR, "CGameSoundManager::Init() - DirectSoundCreate8() failed. Error: %s", GetDSoundError(hr) );
+		LOG_PRINT_ERROR( " - DirectSoundCreate8() failed. Error: " + string(GetDSoundError(hr)) );
         return hr;
 	}
 
     // Set DirectSound coop level 
     if( FAILED( hr = m_pDirectSound->SetCooperativeLevel( hWnd, DSSCL_PRIORITY ) ) )
 	{
-		g_Log.Print( WL_ERROR, "CGameSoundManager::Init() - SetCooperativeLevel() failed." );
+		LOG_PRINT_ERROR( " - SetCooperativeLevel() failed." );
         return hr;
 	}
 
 	if( FAILED( hr = SetPrimaryBufferFormat(2, 22050, 16) ) )
 	{
-		g_Log.Print( WL_ERROR, "CGameSoundManager::Init() - SetPrimaryBufferFormat() failed." );
+		LOG_PRINT_ERROR( " - SetPrimaryBufferFormat() failed." );
         return hr;
 	}
 
 	if( FAILED( hr = Set3DListenerInterface() ) )
 	{
-		g_Log.Print( WL_ERROR, "CGameSoundManager::Init() - Set3DListenerInterface() failed." );
+		LOG_PRINT_ERROR( " - Set3DListenerInterface() failed." );
         return hr;
 	}
 
@@ -106,7 +106,10 @@ HRESULT CGameSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels,
     dsbd.lpwfxFormat   = NULL;
        
     if( FAILED( hr = m_pDirectSound->CreateSoundBuffer( &dsbd, &pDSBPrimary, NULL ) ) )
-        return DXTRACE_ERR( TEXT("CreateSoundBuffer"), hr );
+	{
+		LOG_PRINT_ERROR( " - CreateSoundBuffer() failed." );
+        return hr;
+	}
 
     WAVEFORMATEX wfx;
     ZeroMemory( &wfx, sizeof(WAVEFORMATEX) ); 
@@ -118,7 +121,10 @@ HRESULT CGameSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels,
     wfx.nAvgBytesPerSec = (DWORD) (wfx.nSamplesPerSec * wfx.nBlockAlign);
 
     if( FAILED( hr = pDSBPrimary->SetFormat(&wfx) ) )
-        return DXTRACE_ERR( TEXT("SetFormat"), hr );
+	{
+		LOG_PRINT_ERROR( " - SetFormat() failed." );
+        return hr;
+	}
 
     SAFE_RELEASE( pDSBPrimary );
 
@@ -239,7 +245,7 @@ int CGameSoundManager::GetSoundIndex( const char* pcSoundName )
 		}
 	}
 
-	PrintLog( std::string( std::string("invalid sound name: ") + std::string(pcSoundName) ) );
+	LOG_PRINT_ERROR( string("invalid sound name: ") + string(pcSoundName) );
 	return CSoundHandle::INVALID_INDEX;
 }
 
@@ -375,12 +381,12 @@ HRESULT CGameSoundManager::CreateSound( CGameSound** ppSound,
 							   fDefaultMinDist,
 							   fDefaultMaxDist );
     
-    SAFE_DELETE( apDSBuffer );
+    SafeDelete( apDSBuffer );
     return hrRet;
 
 LFail:
     // Cleanup
-    SAFE_DELETE( pWaveFile );
-    SAFE_DELETE( apDSBuffer );
+    SafeDelete( pWaveFile );
+    SafeDelete( apDSBuffer );
     return hr;
 }

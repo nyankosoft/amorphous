@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include "Support/ParamLoader.h"
+#include "Support/Log/LogOutputBase.h"
 
 
 //>>>========================== default config file ==========================
@@ -41,6 +42,12 @@ public:
 	int ScreenshotResolutionHeight;
 //	std::string ScreenshotOutputDirectory;
 
+	int LogVerbosity;
+
+private:
+
+	void LoadLogVerbosity( CParamLoader& loader );
+
 public:
 
 	CGlobalParams()
@@ -52,7 +59,8 @@ public:
 	WindowTopPos(-1),
 	ScreenshotImageFormat( "bmp" ),
 	ScreenshotResolutionWidth( -1 ),
-	ScreenshotResolutionHeight( -1 )
+	ScreenshotResolutionHeight( -1 ),
+	LogVerbosity(WL_WARNING)
 	{}
 
 	bool LoadFromFile( const std::string& filename )
@@ -63,10 +71,12 @@ public:
 			return false;
 
 		loader.LoadBoolParam( "fullscreen", "yes/no", FullScreen );
-		loader.LoadParam( "resolution",        ScreenWidth, ScreenHeight );
-		loader.LoadParam( "window_pos",        WindowLeftPos, WindowTopPos );
-		loader.LoadParam( "screenshot_format", ScreenshotImageFormat );
-		loader.LoadParam( "screenshot_resolution", ScreenshotResolutionWidth, ScreenshotResolutionHeight );
+		loader.LoadParam( "resolution",               ScreenWidth, ScreenHeight );
+		loader.LoadParam( "window_pos",               WindowLeftPos, WindowTopPos );
+		loader.LoadParam( "screenshot_format",        ScreenshotImageFormat );
+		loader.LoadParam( "screenshot_resolution",    ScreenshotResolutionWidth, ScreenshotResolutionHeight );
+
+		LoadLogVerbosity( loader );
 
 		return true;
 	}

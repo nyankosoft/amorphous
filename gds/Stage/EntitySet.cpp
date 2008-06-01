@@ -596,7 +596,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 		}
 		else
 		{
-			PrintLog( "unable to create a copy entity: " + string(rBaseEntityHandle.GetBaseEntityName()) );
+			LOG_PRINT( " - unable to create a copy entity: " + string(rBaseEntityHandle.GetBaseEntityName()) );
 			return NULL;
 		}
 	}
@@ -635,7 +635,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 			m_pStage->CheckPosition( tr );
 			if(tr.in_solid)
 			{
-				LOG_PRINT( "unable to create a copy entity due to overlaps: " + string(rBaseEntityHandle.GetBaseEntityName()) );
+				LOG_PRINT( " - cannot create a copy entity due to overlaps: " + string(rBaseEntityHandle.GetBaseEntityName()) );
 				return NULL;	// specified position is invalid - cannot create entity
 			}
 //		}
@@ -648,7 +648,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	if( !pNewCopyEnt )
 	{
 		/// too many entities or no entity is defined for rCopyEntityDesc.TypeID
-		LOG_PRINT_ERROR( "cannot create a copy entity of '" + string(rBaseEntityHandle.GetBaseEntityName()) + "'" );
+		LOG_PRINT_ERROR( " - cannot create a copy entity of '" + string(rBaseEntityHandle.GetBaseEntityName()) + "'" );
 		return NULL;
 	}
 
@@ -766,7 +766,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 //	pNewCopyEnt->Init( rCopyEntityDesc );
 
-	g_Log.Print( "created a copy entity of " + rBaseEntity.GetNameString() );
+	LOG_PRINT( " - created a copy entity of " + rBaseEntity.GetNameString() );
 
 	return pNewCopyEnt;
 }
