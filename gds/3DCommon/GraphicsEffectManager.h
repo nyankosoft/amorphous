@@ -89,10 +89,12 @@ protected:
 
 	bool m_bInitialized;
 
+	int m_Index; ///< see CGraphiceEffectManagerCallback::OnDestroyed
+
 public:
 
 	CGraphicsElementEffectBase( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: m_EffectID(-1), m_pTargetElement(pTargetElement), m_fStartTime(start_time), m_fEndTime(end_time), m_bInitialized(false) {}
+		: m_EffectID(-1), m_pTargetElement(pTargetElement), m_fStartTime(start_time), m_fEndTime(end_time), m_bInitialized(false), m_Index(-1) {}
 
 	enum TransMode
 	{
@@ -111,6 +113,10 @@ public:
 	int GetEffectID() const { return m_EffectID; }
 
 	void SetEffectID( int id ) { m_EffectID = id; }
+
+	int GetIndex() const { return m_Index; }
+
+	void SetIndex( int index ) { m_Index = index; }
 
 	virtual void Update( double current_time, double dt ) = 0;
 
@@ -474,6 +480,8 @@ class CAnimatedGraphicsManager : public CAnimatedGraphicsManagerBase
 
 	inline int GetVacantSlotIndex();
 
+	inline void RemoveEffect( int effect_index );
+
 	CGraphicsEffectHandle AddGraphicsEffect( CGraphicsElementEffectBase* pEffect );
 
 public:
@@ -566,6 +574,13 @@ inline int CAnimatedGraphicsManager::GetVacantSlotIndex()
 		m_vecpEffect.push_back( NULL );
 		return (int)m_vecpEffect.size() - 1;
 	}
+}
+
+
+inline void CAnimatedGraphicsManager::RemoveEffect( int effect_index )
+{
+	SafeDelete( m_vecpEffect[effect_index] );
+	m_vecVacantSlotIndex.push_back( effect_index );
 }
 
 

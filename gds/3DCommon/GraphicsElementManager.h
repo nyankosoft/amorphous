@@ -380,7 +380,7 @@ public:
 
 	CGE_Group( std::vector<CGraphicsElement *>& rvecpElement );
 
-	virtual ~CGE_Group() {}
+	virtual ~CGE_Group();
 
 	virtual void Draw();
 
@@ -405,6 +405,8 @@ public:
 		std::vector<CGraphicsElement *>::iterator itr = std::find( m_vecpElement.begin(), m_vecpElement.end(), pElement );
 		if( itr != m_vecpElement.end() )
 			m_vecpElement.erase( itr );
+		else
+			LOG_PRINT_ERROR( "Failed to find a graphics element in the list of its owner group element." );
 	}
 };
 
@@ -583,6 +585,7 @@ public:
 	/// \return borrowed reference to a font object
 	inline CFontBase *GetFont( int font_id );
 
+	bool RemoveElement( CGE_Group*& pGroupElement );
 	bool RemoveElement( CGraphicsElement*& pElement );
 
 	/// deletes all the graphics elements.

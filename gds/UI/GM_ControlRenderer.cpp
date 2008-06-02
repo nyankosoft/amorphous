@@ -60,6 +60,9 @@ void CGM_ControlRenderer::GroupGraphicsElements()
 
 	if( pDialog )
 	{
+		if( m_pGroupElement )
+			m_pGraphicsElementManager->RemoveElement( m_pGroupElement );
+
 		// this is a control renderer of a dialog
 		// - collect all the graphics elements managed by the control renderers
 		//   of controls on this dialog

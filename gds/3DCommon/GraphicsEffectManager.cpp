@@ -178,19 +178,21 @@ public:
 
 void CGraphiceEffectManagerCallback::OnDestroyed( CGraphicsElement *pElement )
 {
+	if( m_pEffectMgr->m_vecpEffect.size() == 0 )
+		return;
+
 	vector<CGraphicsElementEffectBase *>::iterator itr = m_pEffectMgr->m_vecpEffect.begin();
 
 	while( itr != m_pEffectMgr->m_vecpEffect.end() )
 	{
-		if( (*itr)->GetElement() == pElement )
+		if( (*itr) && (*itr)->GetElement() == pElement )
 		{
 			// target element is being released
 			// - release the effect as well
-			SafeDelete( *itr );
-			itr = m_pEffectMgr->m_vecpEffect.erase( itr );
+			m_pEffectMgr->RemoveEffect( (*itr)->GetIndex() );
 		}
-		else
-			itr++;
+
+		itr++;
 	}
 }
 
@@ -217,6 +219,12 @@ CAnimatedGraphicsManager::CAnimatedGraphicsManager()
 	SetTimeOffset();
 
 	m_pGraphicsElementManager = new CGraphicsElementManager();
+
+	// register callback that releases the effect when its target element gets released
+	CGraphicsElementManagerCallbackSharedPtr pCallback
+		= CGraphicsElementManagerCallbackSharedPtr( new CGraphiceEffectManagerCallback( this ) );
+
+	m_pGraphicsElementManager->SetCallback( pCallback );
 
 	m_NextGraphicsEffectID = 0;
 
@@ -487,6 +495,9 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::AddGraphicsEffect( CGraphicsElem
 
 	pEffect->SetEffectID( id );
 
+	// used in CGraphiceEffectManagerCallback::OnDestroyed()
+	pEffect->SetIndex( index );
+
 	return CGraphicsEffectHandle( this, index, id );
 }
 
@@ -531,8 +542,7 @@ bool CAnimatedGraphicsManager::CancelEffect( CGraphicsEffectHandle& effect_handl
 	if( m_vecpEffect[index]->GetEffectID() != effect_handle.m_EffectID )
 		return false; // ids do not match - the effect has been already released
 
-	SafeDelete( m_vecpEffect[index] );
-	m_vecVacantSlotIndex.push_back( index );
+	RemoveEffect( index );
 
 	return true;
 }

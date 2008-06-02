@@ -160,6 +160,9 @@ std::string GetAttributeText( xercesc_2_8::DOMNode *pNode, const std::string& at
 
 xercesc_2_8::DOMNode *GetChildNode( xercesc_2_8::DOMNode *pParentNode, const std::string& node_name )
 {
+	if( !pParentNode )
+		return NULL;
+
 	xercesc_2_8::DOMNodeList *pNodeList = pParentNode->getChildNodes();
 	const int num_nodes = (int)pNodeList->getLength();
 	for( int i=0; i<num_nodes; i++ )

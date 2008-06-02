@@ -21,6 +21,24 @@ inline int get_num_rows( const string& str )
 	return num_rows;
 }
 
+template<class T>
+inline void erase_dupulicate_elements( std::vector<T>& vec )
+{
+	for( std::vector<T>::iterator itr0 = vec.begin(); itr0 != vec.end(); itr0++ )
+	{
+//		std::vector<T>::iterator itr1 = itr0++; //< causes error in vector - "vector iterator not dereferencable". Why?
+		std::vector<T>::iterator itr1 = itr0+1;
+		while( itr1 != vec.end() )
+		{
+			if( (*itr0) == (*itr1) )
+				itr1 = vec.erase( itr1 );
+			else
+				itr1++;
+
+		}
+	}
+}
+
 
 void CGraphicsElement::SetTopLeftPos( Vector2 vPos )
 {
@@ -212,12 +230,23 @@ void CGE_Text::UpdateTextAlignment()
 // CGE_Group
 //==================================================================================
 
-
 CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement )
 {
 	m_vecpElement = rvecpElement;
 
-	vector<CGraphicsElement *>::iterator itr;
+	// remove NULL elements
+	vector<CGraphicsElement *>::iterator itr = m_vecpElement.begin();
+	while( itr != m_vecpElement.end() )
+	{
+		if( (*itr) == NULL )
+			itr = m_vecpElement.erase( itr );
+		else
+			itr++;
+	}
+
+	// remove the same elements
+	erase_dupulicate_elements( m_vecpElement );
+
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		m_AABB.MergeAABB( (*itr)->GetAABB() );
@@ -227,6 +256,19 @@ CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement )
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		(*itr)->m_vLocalTopLeftPos = (*itr)->GetTopLeftPos() - GetTopLeftPos();
+	}
+}
+
+
+CGE_Group::~CGE_Group()
+{
+	// release the elements from the group
+	// - does not release the element itself from the graphics element manager
+	// - they just get 'ungrouped'.
+	vector<CGraphicsElement *>::iterator itr;
+	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
+	{
+		(*itr)->m_GroupID = -1;
 	}
 }
 
@@ -728,6 +770,14 @@ int CGraphicsElementManager::LoadTextureFont( const string& font_texture_filenam
 }
 
 
+bool CGraphicsElementManager::RemoveElement( CGE_Group*& pGroupElement )
+{
+	CGraphicsElement *pElement = pGroupElement;
+	pGroupElement = NULL;
+	return RemoveElement( pElement );
+}
+
+
 bool CGraphicsElementManager::RemoveElement( CGraphicsElement*& pElement )
 {
 	if( !pElement )
@@ -757,10 +807,12 @@ bool CGraphicsElementManager::RemoveElement( CGraphicsElement*& pElement )
 
 	// remove the element from the group to which it currently belongs
 	int group_id = pElement->GetGroupID();
+	CGE_Group *pGroup = NULL;
 	if( 0 <= group_id
-	 && GetElement(group_id)->GetElementType() == CGraphicsElement::TYPE_GROUP )
+	 && GetElement(group_id)->GetElementType() == CGraphicsElement::TYPE_GROUP
+	 && ( pGroup = dynamic_cast<CGE_Group *>(GetElement(group_id)) ) )
 	{
-		((CGE_Group *)GetElement(group_id))->RemoveElementFromGroup( pElement );
+		pGroup->RemoveElementFromGroup( pElement );
 	}
 
 	SAFE_DELETE( m_vecpElement[element_id] );
