@@ -86,30 +86,10 @@ CGM_Dialog *CGameTask_OnMissionFailedFG::CreateRootMenu()
 
 	CGM_Dialog *apDialog[2];
 
+	// confirmation dialog box
 	apDialog[0] = FG_CreateYesNoDialogBox( m_pDialogManager, false, 0, "RETRY", "", ID_OMF_RETRY_YES, ID_OMF_RETRY_NO );
 	apDialog[1] = FG_CreateYesNoDialogBox( m_pDialogManager, false, 0, "QUIT",  "", ID_OMF_QUIT_YES,  ID_OMF_QUIT_NO );
 
-	// confirmation dialog box
-/*	apDialog[0]
-		= Create2ChoiceDialog( m_pDialogManager, false,
-		"RETRY", SRect( 400-80, 300-60, 400+80, 300+30 ),
-		ID_OMF_RETRY_YES,	"YES",	RectLTWH( 15, 60, 60, 25 ),
-		ID_OMF_RETRY_NO,	"NO",	RectLTWH( 85, 60, 60, 25 ) );
-
-	apDialog[1]
-		= Create2ChoiceDialog( m_pDialogManager, false,
-		"QUIT", SRect( 400-80, 300-60, 400+80, 300+30 ),
-		ID_OMF_QUIT_YES,"YES",	RectLTWH( 15, 60, 60, 25 ),
-		ID_OMF_QUIT_NO,	"NO",	RectLTWH( 85, 60, 60, 25 ) );
-
-	// customize confirm dialogs - no sliding in / out
-	for( int i=0; i<2; i++ )
-	{
-		CFG_StdDialogRenderer *pDlgRenderer = dynamic_cast<CFG_StdDialogRenderer *>(apDialog[i]->GetRenderer());
-		if( pDlgRenderer )
-			pDlgRenderer->SetSlideInOutAmount( Vector2(0,0), Vector2(0,0) );
-	}
-*/
 	CGM_DialogEventHandlerSharedPtr pEventHandler( new CEventHandler_OnMissionFailedFG(this) );
 	apDialog[0]->SetEventHandler( pEventHandler );
 	apDialog[1]->SetEventHandler( pEventHandler );

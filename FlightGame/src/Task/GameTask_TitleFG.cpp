@@ -110,20 +110,7 @@ CGameTask_TitleFG::CGameTask_TitleFG()
 		FG_CreateYesNoDialogBox(
 		m_pDialogManager, false, ID_TT_DLG_EXIT, "Exit Game",
 		"", ID_TT_EXIT_YES, ID_TT_EXIT_NO );
-/*
-	int cx = GetReferenceScreenWidth() / 2;
-	int cy = GetReferenceScreenHeight() / 2;
-	CGM_Dialog *pExitDialog
-		= Create2ChoiceDialog( m_pDialogManager, false,
-		ID_TT_DLG_EXIT, "Exit Game", RectLTWH( cx-dw/2, cy-dh/2, dw, dh ),
-		ID_TT_EXIT_YES,	"YES",	     RectLTWH( 20,     40, 60, 24 ),
-		ID_TT_EXIT_NO,	"NO",	     RectLTWH( dw/2+20, 40, 60, 24 ),
-		0, ""/"Are you sure?"/, SRect( 20, 16, 20+120, 16+20 ) );
 
-	CFG_StdDialogRenderer *pDlgRenderer = dynamic_cast<CFG_StdDialogRenderer *>(pExitDialog->GetRenderer());
-	if( pDlgRenderer )
-		pDlgRenderer->SetSlideInOutAmount( Vector2(0,0), Vector2(0,0) );
-*/
 	pExitDialog->SetEventHandler( pEventHandler );
 
 //	((CGM_Button *)(pExitDialog->GetControl(ID_TT_EXIT_YES)))->SetButtonEventHandler(  ); 
