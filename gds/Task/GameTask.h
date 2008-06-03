@@ -57,6 +57,10 @@ class CGameTask : public CGraphicsComponent
 	unsigned int m_DefaultFadeinTimeMS;
 	unsigned int m_DefaultFadeoutTimeMS;
 
+	/// Show / hide the mouse cursor. True by default
+	/// - If true, the system simply calls MouseCursor.Draw() at the end of the renderering
+	bool m_bShowMouseCursor;
+
 	bool m_bIsAppExitRequested;
 
 	/// shared by all the game tasks
@@ -205,7 +209,12 @@ inline void CGameTask::RenderBase()
 	// do the render routine of the base class
 	CGameTask::Render();
 
+	// render routine of each derived class
 	Render();
+
+	// render the mouse cursor
+	if( m_bShowMouseCursor )
+		DrawMouseCursor();
 
 	// render fade-out effect if the task is starting / terminating
 	RenderFadeEffect();

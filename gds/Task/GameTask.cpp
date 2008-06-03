@@ -23,7 +23,6 @@ int CGameTask::ms_FadeinTimeForNextTaskMS = -1;
 CGameTask::CGameTask()
 :
 m_RequestedNextTaskID(ID_INVALID),
-//m_NextTaskID(ID_INVALID),
 m_bTaskTransitionStarted(false),
 m_bIsAppExitRequested(false),
 m_pInputHandler(NULL),
@@ -32,7 +31,8 @@ m_RenderStartTimeMS(0),
 m_DefaultFadeinTimeMS(800),
 m_DefaultFadeoutTimeMS(800),
 m_FadeoutTimeMS(0),
-m_Rendered(false)//,
+m_Rendered(false),
+m_bShowMouseCursor(true)
 //ms_pAnimatedGraphicsManager(NULL)
 {
 	m_Timer.Start();
@@ -83,13 +83,7 @@ void CGameTask::ProcessTaskTransitionRequest()
  *
  * template for Render() of derived class
 
-	// do the render routine of the base class
-	CGameTask::Render(dt);
-
 	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
-
-	// begin the scene
-	pd3dDevice->BeginScene();
 
 	// set render states
 
@@ -98,15 +92,6 @@ void CGameTask::ProcessTaskTransitionRequest()
 	// render scene
 
 	// render UI
-
-	// render fade-out effect if the task is starting / terminating
-	RenderFadeEffect();
-
-	// end the scene
-	pd3dDevice->EndScene();
-
-	// present the backbuffer contents to the display
-	pd3dDevice->Present( NULL, NULL, NULL, NULL );
 
 */
 void CGameTask::RenderFadeEffect()
