@@ -112,27 +112,29 @@ inline std::string get_time_stamp_string( unsigned long time_ms, TimeFormat::For
 
 	// create a string that represents the given time in the specified format
 
-	int hrs, mins;
-	hrs =  time_ms / ( 1000 * 60 * 60 );
-	mins = (time_ms - hrs) / ( 1000 * 60 );
+	int hrs, mins, hrs_ms, mins_ms;
+	hrs =  time_ms / ( 1000*60*60 );
+	hrs_ms = hrs*1000*60*60;
+	mins = ( time_ms - hrs_ms ) / ( 1000 * 60 );
+	mins_ms = mins*1000*60;
 	if( time_format == TimeFormat::HHMMSS || time_format == TimeFormat::HHMMSSFF )
 	{
 		int sec;
-		sec = (time_ms - hrs - mins) / 1000;
+		sec = ( time_ms - hrs_ms - mins_ms ) / 1000;
 		if( time_format == TimeFormat::HHMMSS )
 		{
 			sprintf( strbuf, "%02d:%02d:%02d", hrs, mins, sec );
 		}
 		else if( time_format == TimeFormat::HHMMSSFF )
 		{
-			int frm = (time_ms - hrs - mins - sec) * 60 / 1000;
+			int frm = (time_ms - hrs_ms - mins_ms - sec*1000) * 60 / 1000;
 			sprintf( strbuf, "%02d:%02d:%02d:%02d", hrs, mins, sec, frm );
 		}
 		
 	}
 	else if( time_format == TimeFormat::HHMMSSMS )
 	{
-		int msec = (time_ms - hrs - mins);
+		int msec = (time_ms - hrs_ms - mins_ms);
 		sprintf( strbuf, "%02d:%02d:%02d.%03d", hrs, mins, msec/1000, msec%1000 );
 	}
 
