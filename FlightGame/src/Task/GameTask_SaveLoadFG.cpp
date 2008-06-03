@@ -161,7 +161,7 @@ void CGameTask_SaveLoadFG::InitMenu()
 void CGameTask_SaveLoadFG::Render()
 {
 	// do the render routine of the base class
-	CGameTask::Render();
+//	CGameTask::Render(); done in CGameTask::RenderBase()!!!
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -187,9 +187,6 @@ void CGameTask_SaveLoadFG::Render()
 	m_apDialogManager[0]->Render();
 
 	RenderTaskMenu();
-
-	// draw cursor
-	DrawMouseCursor();
 
 	// render fade-out effect if the task is starting / terminating
 	RenderFadeEffect();

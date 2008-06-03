@@ -600,9 +600,6 @@ void CGameTask_ControlCustomizerFG::Render()
 		overlay_rect.SetColor( 0x50000000 );
 		overlay_rect.Draw();
 	}
-
-	// draw cursor
-	DrawMouseCursor();
 }
 
 

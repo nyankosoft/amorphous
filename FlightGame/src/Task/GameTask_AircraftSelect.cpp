@@ -681,9 +681,6 @@ void CGameTask_AircraftSelect::Render()
 	// render stage select dialog
 	if( m_pDialogManager )
         m_pDialogManager->Render();
-
-	// draw cursor
-	DrawMouseCursor();
 }
 
 

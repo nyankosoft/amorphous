@@ -553,9 +553,6 @@ void CGameTask_ShopFG::Render()
 	// render stage select dialog
 	if( m_apDialogManager[m_SubMenu] )
         m_apDialogManager[m_SubMenu]->Render();
-
-	// draw cursor
-	DrawMouseCursor();
 }
 
 

@@ -453,10 +453,6 @@ void CGameTask_MainMenuFG::Render()
 
 	// render the structure of stage tree (test)
 	RenderStageGraphSkeleton();
-
-
-	// draw cursor
-	DrawMouseCursor();
 }
 
 
