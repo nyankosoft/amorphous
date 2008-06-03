@@ -1,4 +1,3 @@
-
 #ifndef  __GRAPHICS_RECT_H__
 #define  __GRAPHICS_RECT_H__
 
@@ -19,7 +18,10 @@ struct SRect
 
 	SRect() { SetPositionLTRB(0,0,0,0); }
 
+	/// takes left, top, right, and bottom
 	SRect( int l, int t, int r, int b ) { SetPositionLTRB(l,t,r,b); }
+
+	/// takes left, top, right, and bottom
 	SRect( float l, float t, float r, float b ) { SetPositionLTRB(l,t,r,b); }
 
 	void SetValues( int l, int t, int r, int b) { left = l; top = t; right = r; bottom = b; }
@@ -133,6 +135,18 @@ inline SRect RectLTWH( int left, int top, int width, int height )
 inline SRect RectLTRB( int left, int top, int right, int bottom )
 {
 	return SRect( left, top, right, bottom );
+}
+
+
+inline SRect RectCWH( int center_x, int center_y, int width, int height )
+{
+	return RectLTWH( center_x - width/2, center_y - height/2, width, height );
+}
+
+
+inline SRect RectCWH( const SPoint& center, int width, int height )
+{
+	return RectLTWH( center.x - width/2, center.y - height/2, width, height );
 }
 
 
