@@ -58,6 +58,10 @@ int CGM_ControlRendererManager::CalcUILayerIndex( CGM_ControlRenderer *pControlR
 	{
 		layer_index = m_MaxLayerIndex - pBaseControl->GetDepth() * GetNumGraphicsLayersPerUILayer();
 
+		// 'depth * 2' because each dialog is made up of 2 graphics layers
+		// 
+//		layer_index = m_MaxLayerIndex - pBaseControl->GetDepth() * 2 * GetNumGraphicsLayersPerUILayer();
+
 		if( layer_index < 0 )
 			layer_index = 0;
 	}
