@@ -58,7 +58,7 @@ CGM_Dialog *FG_CreateYesNoDialogBox( CGM_DialogManagerSharedPtr pDialogManager,
 	int dh = 90;
 	SPoint cp = GetReferenceScreenCenterPosition();
 	cp.y -= 30;
-	CGM_Dialog *pDlgBox = Create2ChoiceDialog( pDialogManager, false,
+	CGM_Dialog *pDlgBox = Create2ChoiceDialog( pDialogManager, is_root_dlg,
 		dlg_id, title, RectCWH( cp, dw, dh ),
 		id_yes,	"YES",	RectLTWH( 15, 60, 60, 25 ),
 		id_no,	"NO",	RectLTWH( 85, 60, 60, 25 ) );

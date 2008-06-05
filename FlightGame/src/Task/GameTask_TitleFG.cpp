@@ -15,18 +15,13 @@
 #include "3DCommon/GraphicsElementManager.h"
 
 #include "GameCommon/Timer.h"
-
 #include "GameInput/InputHub.h"
-
-#include "Sound/GameSoundManager.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/Log/StateLog.h"
 #include "Support/Log/DefaultLog.h"
 
 #include "UI/ui.h"
-#include "UI/InputHandler_Dialog.h"
-
 
 #include "GameEvent/ScriptArchive.h"
 
@@ -192,4 +187,3 @@ void CGameTask_TitleFG::ReleaseGraphicsResources()
 void CGameTask_TitleFG::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 }
-

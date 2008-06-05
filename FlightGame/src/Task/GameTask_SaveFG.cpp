@@ -198,10 +198,14 @@ CGM_Dialog *CGameTask_SaveFG::CreateOerwriteConfirmationDialog()
 	for( i=0; i<num_buttons; i++ )
 	{
 		pConfirmDlg =
-			Create2ChoiceDialog( m_apDialogManager[0].get(), true,
-			ID_UI_DLG_SAVE_CONFIRM_OVERWRITE, "overwrite?", SRect( 400-80, 450-60, 400+80, 450+30 ),
-			ID_UI_SAVE_CONFIRM_OVERWRITE_YES,	"yes",	RectLTWH( 15, 60, 60, 25 ),
-			ID_UI_SAVE_CONFIRM_OVERWRITE_NO,	"no",	RectLTWH( 85, 60, 60, 25 ) );
+			FG_CreateYesNoDialogBox( m_apDialogManager[0],
+			true, ID_UI_DLG_SAVE_CONFIRM_OVERWRITE, "", "Overwrite?",
+			ID_UI_SAVE_CONFIRM_OVERWRITE_YES, ID_UI_SAVE_CONFIRM_OVERWRITE_NO );
+//			Create2ChoiceDialog( m_apDialogManager[0].get(), true,
+//			ID_UI_DLG_SAVE_CONFIRM_OVERWRITE, "overwrite?", SRect( 400-80, 450-60, 400+80, 450+30 ),
+//			ID_UI_SAVE_CONFIRM_OVERWRITE_YES,	"yes",	RectLTWH( 15, 60, 60, 25 ),
+//			ID_UI_SAVE_CONFIRM_OVERWRITE_NO,	"no",	RectLTWH( 85, 60, 60, 25 ) );
+
 //		0, "OVERWRITE?", SRect( 400-70, 300-40, 400+70, 300-15 ) );
 
 //		btn_desc.ID = ID_UI_SAVE_BUTTON(0) + i;

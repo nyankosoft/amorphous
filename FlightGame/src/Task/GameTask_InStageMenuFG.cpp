@@ -165,11 +165,6 @@ void CGameTask_InStageMenuFG::InitMenu()
 
 CGameTask_InStageMenuFG::CGameTask_InStageMenuFG()
 {
-/*	size_t i;
-	for( i=0; i<; i++ )
-		m_apItemListBox[i] = NULL;
-*/
-
 //	m_pStage = NULL;
 
 	// create dialog menu for selecting stages
@@ -227,9 +222,6 @@ void CGameTask_InStageMenuFG::Render()
 
     pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
 
-	// Begin the scene
-	pd3dDevice->BeginScene();
-
 	pd3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 
@@ -263,18 +255,3 @@ void CGameTask_InStageMenuFG::LoadGraphicsResources( const CGraphicsParameters& 
 {
 //	InitMenu();
 }
-
-/*
-void CGameTask_InStageMenuFG::SetNextSubMenu( int next_submenu_id )
-{
-	m_NextSubMenu = next_submenu_id;
-
-	//if( m_NextSubMenu == SM_SELECT )
-	//{
-	//	CGM_SubDialogButton *pButton
-	//		= (CGM_SubDialogButton *)m_pDialogManager->GetControl(  );
-
-	//	if( !pButton->IsSubDialogOpen() )
- //           pButton->OpenDialog();
-	//}
-}*/

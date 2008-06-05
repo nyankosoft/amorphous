@@ -197,10 +197,14 @@ CGM_Dialog *CGameTask_LoadFG::CreateLoadConfirmationDialog()
 	for( i=0; i<num_buttons; i++ )
 	{
 		pConfirmDlg =
+			FG_CreateYesNoDialogBox( m_apDialogManager[SM_CONFIRM_LOAD],
+			true, 0, "", "Load this data?",
+			ID_UI_LOAD_CONFIRM_YES, ID_UI_LOAD_CONFIRM_NO );
+/*
 			Create2ChoiceDialog( m_apDialogManager[SM_CONFIRM_LOAD], true,
 			"load this data?", SRect( 400-80, 450-60, 400+80, 450+30 ),
 			ID_UI_LOAD_CONFIRM_YES,	"yes",	RectLTWH( 15, 60, 60, 25 ),
-			ID_UI_LOAD_CONFIRM_NO,	"no",	RectLTWH( 85, 60, 60, 25 ) );
+			ID_UI_LOAD_CONFIRM_NO,	"no",	RectLTWH( 85, 60, 60, 25 ) );*/
 //		0, "OVERWRITE?", SRect( 400-70, 300-40, 400+70, 300-15 ) );
 
 //		btn_desc.ID = ID_UI_LOAD_BUTTON(0) + i;

@@ -3,13 +3,11 @@
 
 
 #include "GameTaskFG.h"
+#include "3DCommon/fwd.h"
 #include "UI/ui_fwd.h"
 
 class CInputHandler;
 class TitleEventHandler;
-class CFont;
-
-
 
 
 // ui ids for Task of Control Customization
@@ -41,4 +39,3 @@ public:
 
 
 #endif  /*  __GAMETASK_TITLE_FG_H__  */
-

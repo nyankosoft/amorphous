@@ -64,18 +64,12 @@ private:
 
     CGM_ControlRendererManagerSharedPtr m_pUIRendererManager;
 
-	/// access to ui controls (borrowed references)
-//	CGM_ListBox *m_apItemListBox[NUM_AMMO_TYPES];
-
 	/// stage that manages scene objects for the task (owned reference)
 //	CStageSharedPtr m_pStage;
 
 private:
 
 	void InitMenu();
-
-//	CGM_Dialog *CreateSubDialog0();
-//	CGM_Dialog *CreateSubDialog1();
 
 	CGM_Dialog *CreateRootMenu();
 
