@@ -263,6 +263,13 @@ void CFG_StdListBoxRenderer::Init()
 
 }
 
+
+void CFG_StdListBoxRenderer::OnFocused()
+{
+	UpdateItems( false );
+}
+
+
 /*
 void CFG_StdListBoxRenderer::SetColorToTextElement( CGE_Text& rTextElement, int state )
 {

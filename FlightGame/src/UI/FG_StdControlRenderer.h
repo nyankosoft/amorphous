@@ -186,6 +186,8 @@ public:
 
 	virtual void Init();
 
+	virtual void OnFocused();
+
 	virtual void OnItemSelectionChanged();
 
 	virtual void OnItemSelected();
