@@ -428,6 +428,9 @@ m_pThumbGroup(NULL)
 		m_apRect[i] = NULL;
 		m_apFrameRect[i] = NULL;
 	}
+
+	for( int i=0; i<NUM_TRIANGLE_ELEMENTS; i++ )
+		m_apTriangle[i] = NULL;
 }
 
 
@@ -463,6 +466,19 @@ void CGM_StdScrollBarRenderer::Init()
 	{
 		RegisterGraphicsElement( 2, m_apFrameRect[i] );
 		RegisterGraphicsElement( 3, m_apRect[i] );
+	}
+
+	// craete triangles for arrows on the up/down buttons
+	SRect arrow_src_rect[2] = { src_rect[RE_UP_BUTTON], src_rect[RE_DOWN_BUTTON] };
+	C2DTriangle::Direction arrow_dir[2] = { C2DTriangle::DIR_UP, C2DTriangle::DIR_DOWN };
+	for( int i=0; i<NUM_TRIANGLE_ELEMENTS; i++ )
+	{
+		SRect arrow_rect = arrow_src_rect[i];
+		arrow_rect.Inflate( -3, -3 );
+		m_apTriangle[i] = pElementMgr->CreateTriangle( arrow_dir[i], arrow_rect, normal_color );
+
+		RegisterColoredElement( m_apTriangle[i] );
+		RegisterGraphicsElement( 2, m_apTriangle[i] );
 	}
 
 	// register thumb rects

@@ -211,6 +211,8 @@ protected:
 
 	void DrawPrimitive();
 
+	inline void SetBlendedColorToPrimitive();
+
 public:
 
 	CGE_Primitive( C2DPrimitive *pPrimitive )
@@ -235,9 +237,25 @@ public:
 		m_AABB.vMax = vMax;
 		m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
 	}
+
+	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) { m_pPrimitive->SetTextureUV( vMin, vMax ); }
 };
 
 
+//=============================== inline implementations ===============================
+
+inline void CGE_Primitive::SetBlendedColorToPrimitive()
+{
+	// update vertex colors
+	// the same color is set to all the 4 vertices of the primitive
+	m_pPrimitive->SetColor( GetBlendedColor() );
+}
+
+
+
+/**
+  - graphics element for rectangle
+*/
 class CGE_Rect : public CGE_Primitive
 {
 
@@ -253,8 +271,6 @@ public:
 	virtual ~CGE_Rect() { SafeDelete( m_pPrimitive ); }
 
 	virtual void Draw();
-
-	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) { m_pPrimitive->SetTextureUV( vMin, vMax ); }
 
 //	void SetHFrameTextureCoord();
 //	void SetVFrameTextureCoord();

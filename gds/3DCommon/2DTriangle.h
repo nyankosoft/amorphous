@@ -36,19 +36,12 @@ public:
 
 	inline void SetDefault();
 
-//	void Release();
-
-//	inline virtual void Draw();
-
-//	inline void Draw( const CTextureHandle& texture );
-
 	inline virtual void draw();
-
-//	void DrawWireframe();
 
 	inline Vector2 GetPosition2D( int vert_index ) const;
 
-//	inline void SetPosition( const Vector2& vMin, const Vector2& vMax);
+	/// Performs scaling of the triangle without changing the current orientation
+	void SetPosition( const Vector2& vMin, const Vector2& vMax );
 
 	inline void SetPosition( int vert_index, const Vector2& rvPosition );
 
@@ -142,18 +135,19 @@ inline void C2DTriangle::Draw( const CTextureHandle& texture )
 }
 */
 
-inline Vector2 C2DTriangle::GetPosition2D( int vert_index ) const
-{
-	const D3DXVECTOR3& pos = m_avVertex[vert_index].vPosition;
-
-	return Vector2( pos.x, pos.y );
-}
-
 
 inline void C2DTriangle::draw()
 {
 	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 1, m_avVertex, sizeof(TLVERTEX) );
+}
+
+
+inline Vector2 C2DTriangle::GetPosition2D( int vert_index ) const
+{
+	const D3DXVECTOR3& pos = m_avVertex[vert_index].vPosition;
+
+	return Vector2( pos.x, pos.y );
 }
 
 

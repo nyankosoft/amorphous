@@ -123,11 +123,7 @@ void CGE_Rect::Draw()
 		}
 	}
 	else
-	{
-		// update vertex colors
-		// the same color is set to all the 4 vertices of the rectangle
-		m_pPrimitive->SetColor( GetBlendedColor() );
-	}
+		SetBlendedColorToPrimitive();
 
 	DrawPrimitive();
 }
@@ -157,6 +153,8 @@ m_RFpTriangle(NULL)
 
 void CGE_Triangle::Draw()
 {
+	SetBlendedColorToPrimitive();
+
 	DrawPrimitive();
 }
 
