@@ -223,6 +223,8 @@ public:
 	{
 	}
 
+	virtual ~CGE_Primitive() { SafeDelete( m_pPrimitive ); }
+
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
 	virtual void ChangeScale( float scale )
@@ -267,8 +269,6 @@ public:
 
 	/// \param pPrimitive - owned reference
 	CGE_Rect( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
-
-	virtual ~CGE_Rect() { SafeDelete( m_pPrimitive ); }
 
 	virtual void Draw();
 
