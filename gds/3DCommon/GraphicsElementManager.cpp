@@ -67,9 +67,36 @@ void CGraphicsElement::SetLayer( int layer_index )
 }
 
 
+
+//==========================================================================================
+// CGE_Primitive
+//==========================================================================================
+
+void CGE_Primitive::DrawPrimitive()
+{
+	if( 0 <= m_TextureID )
+	{
+		const CTextureHandle& tex = m_pManager->GetTexture(m_TextureID);
+		m_pPrimitive->Draw( tex );
+	}
+	else
+		m_pPrimitive->Draw();	// draw rect without a texture
+}
+
+void CGE_Primitive::SetTopLeftPosInternal( Vector2 vPos )
+{
+	m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
+}
+
+
+
+//==========================================================================================
+// CGE_Rect
+//==========================================================================================
+
 CGE_Rect::CGE_Rect( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 )
 :
-m_pPrimitive(pPrimitive)
+CGE_Primitive(pPrimitive)
 {
 	m_AABB = AABB2( pPrimitive->GetPosition2D(0), pPrimitive->GetPosition2D(2) );
 	m_aColor[0] = color0;
@@ -102,22 +129,42 @@ void CGE_Rect::Draw()
 		m_pPrimitive->SetColor( GetBlendedColor() );
 	}
 
-
-	if( 0 <= m_TextureID )
-	{
-		const CTextureHandle& tex = m_pManager->GetTexture(m_TextureID);
-		m_pPrimitive->Draw( tex );
-	}
-	else
-		m_pPrimitive->Draw();	// draw rect without a texture
+	DrawPrimitive();
 }
 
 
-void CGE_Rect::SetTopLeftPosInternal( Vector2 vPos )
+//==========================================================================================
+// CGE_Triangle
+//==========================================================================================
+
+CGE_Triangle::CGE_Triangle( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 )
+:
+CGE_Primitive(pPrimitive),
+m_pTriangle(NULL),
+m_pFTriangle(NULL),
+m_RFpTriangle(NULL)
 {
-	m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
+	AABB2 aabb;
+	aabb.Nullify();
+	for( int i=0; i<3; i++ )
+		aabb.AddPoint( pPrimitive->GetPosition2D(i) );
+
+	m_AABB = aabb;
+	m_aColor[0] = color0;
+	ChangeScale( m_fScale );
 }
 
+
+void CGE_Triangle::Draw()
+{
+	DrawPrimitive();
+}
+
+
+
+//==========================================================================================
+// CGE_Text
+//==========================================================================================
 
 /*
 CGE_Text::CGE_Text( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 )
@@ -482,22 +529,45 @@ void CGraphicsElementManager::InitElement( CGraphicsElement *pElement, int eleme
 }
 
 
+void CGraphicsElementManager::InitPrimitiveElement( CGE_Primitive *pElement,
+												    C2DPrimitive *pPrimitive,
+												    const SFloatRGBAColor& color,
+													int element_index,
+													int layer_index )
+{
+	float z = 0;
+
+	pPrimitive->SetTextureUV( TEXCOORD2( 0.0f, 0.0f ), TEXCOORD2( 1.0f, 1.0f ) );
+	pPrimitive->SetZDepth( z );
+	pPrimitive->SetColor( color );
+
+	m_vecpElement[element_index] = pElement;
+
+	InitElement( pElement, element_index, layer_index );
+}
+
+
 CGE_Rect *CGraphicsElementManager::InitRectElement( int element_index, int layer_index,
 													C2DPrimitive *pRectPrimitive,
 													const SFloatRGBAColor& color )
 {
-	float z = 0;
-
-	pRectPrimitive->SetTextureUV( TEXCOORD2( 0.0f, 0.0f ), TEXCOORD2( 1.0f, 1.0f ) );
-	pRectPrimitive->SetZDepth( z );
-	pRectPrimitive->SetColor( color );
-
 	CGE_Rect *pRectElement = new CGE_Rect( pRectPrimitive, color );
-	m_vecpElement[element_index] = pRectElement;
 
-	InitElement( pRectElement, element_index, layer_index );
+	InitPrimitiveElement( pRectElement, pRectPrimitive, color, element_index, layer_index );
 
 	return pRectElement;
+}
+
+
+CGE_Triangle *CGraphicsElementManager::InitTriangleElement( int element_index, int layer_index,
+													        C2DPrimitive *pTrianglePrimitive,
+													        const SFloatRGBAColor& color )
+{
+	CGE_Triangle *pTriangleElement = new CGE_Triangle( pTrianglePrimitive, color );
+
+	InitPrimitiveElement( pTriangleElement, pTrianglePrimitive, color, element_index, layer_index );
+
+	return pTriangleElement;
 }
 
 
@@ -550,6 +620,26 @@ CGE_Rect *CGraphicsElementManager::CreateRoundFrameRect( const SRect& rect, cons
 	C2DRoundFrameRect *p2DRoundFrameRect = new C2DRoundFrameRect( rect, color.GetARGB32(), (int)corner_radius, (int)border_width );
 
 	return InitRectElement( index, layer, p2DRoundFrameRect, color );
+}
+
+
+CGE_Triangle *CGraphicsElementManager::CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer )
+{
+	int index = GetVacantSlotIndex();
+
+	if( !RegisterToLayer( index, layer ) )
+		return NULL;
+
+	C2DTriangle *p2DTriangle = new C2DTriangle( dir, rect, color.GetARGB32() );
+
+	return InitTriangleElement( index, layer, p2DTriangle, color );
+}
+
+
+CGE_Triangle *CGraphicsElementManager::CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer )
+{
+	LOG_PRINT_ERROR( "Not implemented yet!" );
+	return NULL;
 }
 
 

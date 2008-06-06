@@ -249,8 +249,17 @@ protected:
 		NUM_RECT_ELEMENTS
 	};
 
+	enum TriangleElement
+	{
+		TE_ARROW_UP,
+		TE_ARROW_DOWN,
+		NUM_TRIANGLE_ELEMENTS
+	};
+
 	CGE_Rect *m_apRect[NUM_RECT_ELEMENTS];
 	CGE_Rect *m_apFrameRect[NUM_RECT_ELEMENTS];
+
+	CGE_Triangle *m_apTriangle[NUM_TRIANGLE_ELEMENTS];
 
 	CGE_Group *m_pThumbGroup;
 

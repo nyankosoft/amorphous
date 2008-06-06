@@ -18,7 +18,7 @@ public:
 
 	inline C2DRect() { SetDefault(); }
 
-	inline C2DRect( const D3DXVECTOR2& vMin, const D3DXVECTOR2& vMax, U32 color = 0xFF000000 );
+	inline C2DRect( const Vector2& vMin, const Vector2& vMax, U32 color = 0xFF000000 );
 
 	inline C2DRect( int min_x, int min_y, int max_x, int max_y, U32 color = 0xFF000000 );
 

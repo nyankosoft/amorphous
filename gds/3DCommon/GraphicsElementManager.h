@@ -167,7 +167,7 @@ public:
 	enum eType
 	{
 		TYPE_RECT,
-		TYPE_FRAMERECT,
+//		TYPE_FRAMERECT,
 		TYPE_TRIANGLE,
 		TYPE_TEXT,
 		TYPE_GROUP,
@@ -185,34 +185,41 @@ inline SFloatRGBAColor CGraphicsElement::GetBlendedColor() const
 }
 
 
-class CGE_Rect : public CGraphicsElement
+class CGE_Primitive : public CGraphicsElement
 {
+protected:
+
 	/// scaled primitive
 	/// - owned reference
 	/// - holds scaled border if it is a frame primitive
 	/// - holds scaled corner radius if it is a round-cornered primitive
 	C2DPrimitive *m_pPrimitive;
 
+	/// Holds non-scaled value of frame border width.
+	/// Used by the following primitives
+	///   - frame rect
+	///   - round frame rect
 	int m_OrigBorderWidth; ///< non-scaled border width
 
-	/// holds non-scaled value
-	/// - valid for
+	/// Holds non-scaled value of corner radius.
+	/// Used by the following primitives.
 	///   - round rect
 	///   - round frame rect
 	int m_CornerRadius;
 
-	/// blended with CGraphicsElement::m_aColor[]
-	SFloatRGBAColor m_aCornerColor[4];
+protected:
+
+	void DrawPrimitive();
 
 public:
 
-
-	/// \param pPrimitive - owned reference
-	CGE_Rect( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
-
-	virtual ~CGE_Rect() { SafeDelete( m_pPrimitive ); }
-
-	virtual void Draw();
+	CGE_Primitive( C2DPrimitive *pPrimitive )
+		:
+	m_pPrimitive(pPrimitive),
+	m_OrigBorderWidth(1),
+	m_CornerRadius(0)
+	{
+	}
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
@@ -228,6 +235,24 @@ public:
 		m_AABB.vMax = vMax;
 		m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
 	}
+};
+
+
+class CGE_Rect : public CGE_Primitive
+{
+
+	/// blended with CGraphicsElement::m_aColor[]
+	SFloatRGBAColor m_aCornerColor[4];
+
+public:
+
+
+	/// \param pPrimitive - owned reference
+	CGE_Rect( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
+
+	virtual ~CGE_Rect() { SafeDelete( m_pPrimitive ); }
+
+	virtual void Draw();
 
 	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) { m_pPrimitive->SetTextureUV( vMin, vMax ); }
 
@@ -239,6 +264,33 @@ public:
 	/// not available for C2DRoundRect
 	void SetCornerColor( int corner_index, SFloatRGBAColor& color ) { m_aCornerColor[corner_index] = color; }
 };
+
+
+class CGE_Triangle : public CGE_Primitive
+{
+	/// hold one of the following 3 primitives
+
+	C2DTriangle *m_pTriangle;
+	C2DFrameTriangle *m_pFTriangle;
+	C2DRoundFrameTriangle *m_RFpTriangle;
+
+public:
+
+	CGE_Triangle( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
+
+//	virtual Vector2 GetTopLeftPos() const;
+
+	virtual void Draw();
+
+	virtual int GetElementType() const { return TYPE_TRIANGLE; }
+};
+
+
+/*
+Vector2 CGE_Triangle::GetTopLeftPos() const
+{
+}
+*/
 
 
 /*
@@ -280,6 +332,7 @@ public:
 
 }
 */
+
 
 
 class CGE_Text : public CGraphicsElement
@@ -441,6 +494,8 @@ public:
 	virtual CGE_Rect *CreateFrameRect( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 ) { return NULL; }
 	virtual CGE_Rect *CreateRoundRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, int layer = 0 ) { return NULL; }
 	virtual CGE_Rect *CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float border_width, int layer = 0 ) { return NULL; }
+	virtual CGE_Triangle *CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
+	virtual CGE_Triangle *CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 ) { return NULL; }
 	virtual CGE_Text *CreateText( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
 	virtual CGE_Text *CreateTextBox( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
 	virtual CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
@@ -523,6 +578,10 @@ private:
 
     CGE_Rect *InitRectElement( int element_index, int layer_index, C2DPrimitive *pRectPrimitive, const SFloatRGBAColor& color );
 
+    CGE_Triangle *InitTriangleElement( int element_index, int layer_index, C2DPrimitive *pRectPrimitive, const SFloatRGBAColor& color );
+
+	void InitPrimitiveElement( CGE_Primitive *pElement, C2DPrimitive *pPrimitive, const SFloatRGBAColor& color, int element_index, int layer_index );
+
 protected:
 
 	// 19:15 2007/07/29 changed to a non-singleton class
@@ -549,6 +608,10 @@ public:
 	CGE_Rect *CreateRoundRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, int layer = 0 );
 
 	CGE_Rect *CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float border_width, int layer = 0 );
+
+	CGE_Triangle *CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer = 0 );
+
+	CGE_Triangle *CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 );
 
 	///  NOT IMPLEMENTED
 	/// - Does CreatePolygon() suffice or CreateTriangle() should be available?
@@ -703,30 +766,5 @@ public:
 */
 
 
-/*
-class CGE_Triangle : public CGraphicsElement
-{
-	C2DTriangle m_Triangle;
-
-public:
-
-	CGE_Triangle() {}
-
-	virtual Vector2 GetTopLeftPos() const;
-
-	virtual void Draw();
-};
-
-
-Vector2 CGE_Triangle::GetTopLeftPos() const
-{
-}
-
-void CGE_Triangle::Draw()
-{
-}
-
-
-*/
 
 #endif  /* __GraphicsElementManager_H__ */

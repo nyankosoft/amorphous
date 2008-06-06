@@ -11,11 +11,24 @@ class C2DTriangle : public C2DPrimitive
 
 public:
 
+	enum Direction
+	{
+		DIR_UP,
+		DIR_DOWN,
+		DIR_RIGHT,
+		DIR_LEFT,
+		NUM_DIRECTIONS
+	};
+
 	inline C2DTriangle() { SetDefault(); }
 
 //	inline C2DTriangle( const Vector2& pos0, const Vector2& pos1, const Vector2& pos2 );
 //	inline C2DTriangle( const Vector2& vMin, const Vector2& vMax );
 //	inline C2DTriangle( int min_x, int min_y, int max_x, int max_y );
+
+	inline C2DTriangle( Direction dir,  const Vector3& vMin, const Vector3& vMax, U32 color = 0xFF000000 ); 
+
+	inline C2DTriangle( Direction dir,  const SRect& rect, U32 color = 0xFF000000 ); 
 
 	virtual ~C2DTriangle() {}
 
@@ -38,6 +51,8 @@ public:
 //	inline void SetPosition( const Vector2& vMin, const Vector2& vMax);
 
 	inline void SetPosition( int vert_index, const Vector2& rvPosition );
+
+	inline void SetPosition( Direction dir, const SRect& rect );
 
 	/// set values for the 3 vertices in the clockwise order starting with index 0
 	inline void SetPositionCC( float x0, float y0, float x1, float y1, float x2, float y2  );
@@ -64,6 +79,19 @@ public:
 };
 
 
+class C2DFrameTriangle : public C2DPrimitive
+{
+public:
+};
+
+
+class C2DRoundFrameTriangle : public C2DPrimitive
+{
+public:
+};
+
+
+
 // =================================== inline implementations =================================== 
 
 /*
@@ -73,6 +101,25 @@ inline C2DTriangle::C2DTriangle( int min_x, int min_y, int max_x, int max_y )
 	SetPosition( Vector2((float)min_x,(float)min_y), Vector2((float)max_x,(float)max_y) );
 }
 */
+
+inline C2DTriangle::C2DTriangle( Direction dir,  const Vector3& vMin, const Vector3& vMax, U32 color )
+{
+	SetDefault();
+
+	SetPosition( dir, RectLTRB( (int)vMin.x, (int)vMin.y, (int)vMax.x, (int)vMax.y ) );
+
+	SetColor( color );
+}
+
+
+inline C2DTriangle::C2DTriangle( Direction dir,  const SRect& rect, U32 color )
+{
+	SetDefault();
+
+	SetPosition( dir, rect );
+
+	SetColor( color );
+}
 
 
 inline void C2DTriangle::SetDefault()
@@ -114,6 +161,30 @@ inline void C2DTriangle::SetPosition( int vert_index, const Vector2& rvPosition 
 {
 	m_avVertex[vert_index].vPosition.x = rvPosition.x;
 	m_avVertex[vert_index].vPosition.y = rvPosition.y;
+}
+
+
+inline void C2DTriangle::SetPosition( Direction dir, const SRect& rect )
+{
+	const float cx = (float)( rect.left + rect.right  ) * 0.5f;//( vMax.x + vMin.x ) * 0.5f;
+	const float cy = (float)( rect.top  + rect.bottom ) * 0.5f;//( vMax.y + vMin.y ) * 0.5f;
+	const float sx = (float)rect.left;  //vMin.x;
+	const float sy = (float)rect.top;   //vMin.y;
+	const float ex = (float)rect.right; //vMax.x;
+	const float ey = (float)rect.bottom;//vMax.y;
+
+	switch( dir )
+	{
+	case DIR_UP:
+	default:
+		SetPositionCC( cx, sy,  ex, ey,  sx, ey ); break;
+	case DIR_DOWN:
+		SetPositionCC( cx, ey,  sx, sy,  ex, sy ); break;
+	case DIR_RIGHT:
+		SetPositionCC( sx, sy,  ex, cy,  sx, ey ); break;
+	case DIR_LEFT:
+		SetPositionCC( sx, cy,  ex, sy,  ex, ey ); break;
+	}
 }
 
 
