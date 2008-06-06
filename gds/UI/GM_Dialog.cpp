@@ -1054,7 +1054,7 @@ int CGM_Dialog::GetMaxDepth() const
 	{
 		if( m_vecpControl[i]->GetType() == CGM_Control::SUBDIALOGBUTTON )
 		{
-			pSubDialogButton = (CGM_SubDialogButton *)m_vecpControl[i];
+			pSubDialogButton = dynamic_cast<CGM_SubDialogButton *>(m_vecpControl[i]);
 
 			depth = pSubDialogButton->GetMaxDepth();
 

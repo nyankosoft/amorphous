@@ -10,6 +10,9 @@
 
 #include "Support/memory_helpers.h"
 
+#include <algorithm>
+using namespace std;
+
 
 CGM_DialogManager::CGM_DialogManager()
 {
@@ -87,6 +90,9 @@ CGM_Dialog *CGM_DialogManager::AddDialog( CGM_DialogDesc &rDialogDesc )
 	{
 		m_vecpRootDialog.push_back( pDialog );
 //		m_vecpRootDialog.back()->Open();		// the root dialog must be always open
+
+		// add to the stack of root dialogs
+		m_vecpRootDialogStack.push_back( pDialog );
 	}
 	// 11:47 2007-12-21 - changed: root dialogs also need to be opened manually
 
@@ -101,6 +107,7 @@ CGM_Dialog *CGM_DialogManager::AddDialog( CGM_DialogDesc &rDialogDesc )
 
 	// set default depth offset (0)
 	m_vecRootDialogDepthOffset.push_back( 0 );
+
 
 	// init control renderer
 	if( pRenderer.get() )
@@ -203,6 +210,20 @@ bool CGM_DialogManager::OpenRootDialog( int id )
 			// update the depth offset for the root dialog currently being opened
 			m_vecRootDialogDepthOffset[ GetRootDialogIndex(pDialog) ]
 			= ControlFocus()->GetOwnerDialog()->GetMaxDepth();
+		}
+
+		// remove the dialog from the stack and push it on top
+		vector<CGM_Dialog *>::iterator itrDlgOnStack;
+		for( itrDlgOnStack = m_vecpRootDialogStack.begin();
+			 itrDlgOnStack != m_vecpRootDialogStack.end();
+			 itrDlgOnStack++ )
+		{
+			if( (*itrDlgOnStack)->GetID() == id )
+			{
+				m_vecpRootDialogStack.erase( itrDlgOnStack );
+				m_vecpRootDialogStack.push_back( pDialog );
+				break;
+			}
 		}
 
 		// update graphics properties since dialogs access
@@ -308,6 +329,24 @@ void CGM_DialogManager::UpdateGraphicsProperties()
 	// - used to calc graphics layer of each control
 	for( i=0; i<num_root_dialogs; i++ )
 		m_vecpRootDialog[i]->SetDepth( m_vecRootDialogDepthOffset[i] );
+
+	// set the depth to each controls
+	// - start from the root dialog at the bottom of the stack
+	// - depth offset is given to root dialogs to control their rendering orders
+	int depth_offset = 0;
+	for( i=0; i<num_root_dialogs; i++ )
+	{
+		// calc depth without offset
+		m_vecpRootDialogStack[i]->SetDepth( 0 );
+		int orig_depth = m_vecpRootDialogStack[i]->GetMaxDepth();
+
+		// set depth with offset
+		m_vecpRootDialogStack[i]->SetDepth( depth_offset );
+
+		// update depth offset
+		// - need to add 1 to orig_depth to prevent overlaps of graphics layers
+		depth_offset += ( orig_depth + 1 );
+	}
 
 	// - place graphics elements to graphics layers to
 	//   set the rendering orders

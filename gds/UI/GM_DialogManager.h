@@ -27,6 +27,10 @@ class CGM_DialogManager
 	/// - root dialog is always open
 	std::vector<CGM_Dialog *> m_vecpRootDialog;
 
+	/// borrowed reference
+	/// - used to calculate layer offset and control rendering order
+	std::vector<CGM_Dialog *> m_vecpRootDialogStack;
+
 	std::vector<int> m_vecRootDialogDepthOffset;
 
 	/// The control which currently owns focus
