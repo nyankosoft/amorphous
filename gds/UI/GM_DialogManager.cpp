@@ -199,6 +199,38 @@ int CGM_DialogManager::GetRootDialogIndex( CGM_Dialog *pDialog )
 }
 
 
+void CGM_DialogManager::OnDialogClosed( CGM_Dialog *pDialog )
+{
+	if( pDialog->IsRoot() )
+	{
+		// put the closed root dialog to the bottom of the stack
+		// so that all the other dialogs are rendered over it
+		vector<CGM_Dialog *>::iterator itrRootDlg;
+		for( itrRootDlg = m_vecpRootDialogStack.begin();
+			 itrRootDlg != m_vecpRootDialogStack.end();
+			 itrRootDlg++ )
+		{
+			if( (*itrRootDlg)->GetID() == pDialog->GetID() )
+			{
+				m_vecpRootDialogStack.erase( itrRootDlg );
+				m_vecpRootDialogStack.insert( m_vecpRootDialogStack.begin(), pDialog );
+				break;
+			}
+		}
+
+		if( !ControlFocus() )
+		{
+			// No control is focused right now
+			// - Let's see if there is any control that should be having the focus
+			CGM_Dialog *pPrevDlg = m_vecpRootDialogStack.back();
+			if( pPrevDlg->IsOpen() ) // make sure this is not a closed root dialog itself (Consider the case when there is only one dialog).
+			{
+				pPrevDlg->SetFocusOnLastFocusedControl();
+			}
+		}
+	}
+}
+
 bool CGM_DialogManager::OpenRootDialog( int id )
 {
 	CGM_Dialog *pDialog = GetDialog( id );

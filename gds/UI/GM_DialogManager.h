@@ -68,6 +68,8 @@ private:
 
 	int GetRootDialogIndex( CGM_Dialog *pDialog );
 
+	void OnDialogClosed( CGM_Dialog *pDialog );
+
 public:
 
 //	void RenderControl( CGM_Control* pControl );
@@ -138,6 +140,8 @@ public:
 	void ChangeScale( float factor );
 
 	CGM_GlobalSoundPlayerSharedPtr GetDefaultSoundPlayer() { return m_pDefaultSoundPlayer; }
+
+	friend class CGM_Dialog; /// need to call OnDialogClosed
 };
 
 

@@ -799,6 +799,8 @@ void CGM_Dialog::Close( unsigned int sub_event )
         m_pOwnerButton->OnSubDialogClosed();
 
 	SendEvent( CGM_Event::DIALOG_CLOSED, true, this, sub_event );
+
+	m_pDialogManager->OnDialogClosed( this );
 }
 
 
