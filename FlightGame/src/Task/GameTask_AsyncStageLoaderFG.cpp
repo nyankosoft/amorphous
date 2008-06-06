@@ -134,9 +134,6 @@ void CGameTask_AsyncStageLoaderFG::Render()
 
     pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
 
-	// Begin the scene
-	pd3dDevice->BeginScene();
-
 	pd3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 
@@ -156,19 +153,6 @@ void CGameTask_AsyncStageLoaderFG::Render()
 		m_pFont->SetFontColor( 0xFFFFFFFF );
 		m_pFont->DrawText( script_name, x, y );
 	}
-
-	// draw cursor
-//	DrawMouseCursor();
-
-	RenderFadeEffect();
-
-	// End the scene
-    pd3dDevice->EndScene();
-
-    // Present the backbuffer contents to the display
-    pd3dDevice->Present( NULL, NULL, NULL, NULL );
-
-	m_bRendered = true;
 }
 
 
