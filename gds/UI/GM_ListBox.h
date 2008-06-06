@@ -71,14 +71,9 @@ public:
 
 	virtual bool CanHaveFocus() const { return (IsVisible() && IsEnabled()); }
 
-	//	virtual bool HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam );
-//	virtual bool HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam );
-
 	virtual bool HandleMouseInput( CGM_InputData& input );
 
 	virtual bool HandleKeyboardInput( CGM_InputData& input );
-
-//	virtual void Render();
 
 	virtual void UpdateRects();
 

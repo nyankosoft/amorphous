@@ -325,19 +325,27 @@ void CGM_StdListBoxRenderer::UpdateItems( bool update_text )
 	if( !pListBox )
 		return;
 
-	int focused_item_index = pListBox->GetSelectedIndex();
+	const int focused_item_index = pListBox->GetSelectedIndex();
 
 	int num_items = pListBox->GetNumItems();
 	int num_items_in_page = pListBox->GetScrollbar()->GetPageSize();
 
 	int i, num_items_to_display = num_items < num_items_in_page ? num_items : num_items_in_page;
 
+	int first_item = 0;
+	if( pListBox->GetScrollbar() )
+	{
+		first_item = pListBox->GetScrollbar()->GetTrackPos();
+		update_text = true; // The user may have scrolled the page
+	}
+
 	if( update_text )
 	{
 		for( i=0; i<num_items_to_display; i++ )
 		{
-			CGM_ListBoxItem *pItem = pListBox->GetItem( i );
-			m_vecpText[i]->SetText( pItem->GetText() );
+			CGM_ListBoxItem *pItem = pListBox->GetItem( first_item + i );
+			if( pItem )
+				m_vecpText[i]->SetText( pItem->GetText() );
 		}
 	}
 
@@ -346,7 +354,7 @@ void CGM_StdListBoxRenderer::UpdateItems( bool update_text )
 //	{
 		for( i=0; i<num_items_to_display; i++ )
 		{
-			if( i == focused_item_index )
+			if( first_item + i == focused_item_index )
 				m_vecpText[i]->SetColor( color_index, m_aColor[CGM_Control::STATE_FOCUS] );
 			else
 				m_vecpText[i]->SetColor( color_index, m_aColor[CGM_Control::STATE_NORMAL] );
@@ -360,26 +368,6 @@ void CGM_StdListBoxRenderer::OnItemSelectionChanged()
 {
 	bool update_text = false;
 	UpdateItems( update_text );
-
-/*
-	CGM_ListBox *pListBox = GetListBox();
-	if( !pListBox )
-		return;
-
-	int focused_item_index = pListBox->GetSelectedIndex();
-
-	int num_items = pListBox->GetNumItems();
-	int num_items_in_page = 10;
-
-	int i, num_items_to_display = num_items < num_items_in_page ? num_items : num_items_in_page;
-	for( i=0; i<num_items_to_display; i++ )
-	{
-		if( i == focused_item_index )
-			m_vecpText[i]->SetColor( m_aColor[CGM_Control::STATE_FOCUS] );
-		else
-			m_vecpText[i]->SetColor( m_aColor[CGM_Control::STATE_NORMAL] );
-	}
-*/
 }
 
 
@@ -393,8 +381,11 @@ void CGM_StdListBoxRenderer::OnItemSelected()
 	if( selected_item_index < 0 )
 		return;
 
-	// TODO: support scrolling
-	int text_index = selected_item_index;
+	int first_item_index = 0;
+	if( pListBox->GetScrollbar() )
+		first_item_index = pListBox->GetScrollbar()->GetTrackPos();
+
+	int text_index = selected_item_index - first_item_index;
 
 	int color_index = 0;
 	m_vecpText[text_index]->SetColor( color_index, m_aColor[CGM_Control::STATE_PRESSED] );

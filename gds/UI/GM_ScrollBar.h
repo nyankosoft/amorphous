@@ -22,8 +22,6 @@ public:
 
 	virtual bool HandleMouseInput( CGM_InputData& input );
 
-//	virtual void Render();
-
 	virtual void UpdateRects();
 
     void SetTrackRange( int nStart, int nEnd );
