@@ -184,14 +184,6 @@ CGameTask_SaveFG::~CGameTask_SaveFG()
 
 CGM_Dialog *CGameTask_SaveFG::CreateOerwriteConfirmationDialog()
 {
-/*	CGM_Dialog *pSaveSlotsDialog;
-
-	CGM_DialogDesc dlg_desc;
-	dlg_desc.Rect = SRect( 10, 10, 50, 200 );
-	dlg_desc.bRootDialog = true;
-//	dlg_desc.bRootDialog = false;
-	pSaveSlotsDialog = m_apDialogManager[SM_CONFIRM_OVERWRITE]->AddDialog( dlg_desc );
-*/
 	size_t i, num_buttons = 1;//8;
 	CGM_ButtonDesc btn_desc;
 	CGM_Dialog* pConfirmDlg;
@@ -199,19 +191,8 @@ CGM_Dialog *CGameTask_SaveFG::CreateOerwriteConfirmationDialog()
 	{
 		pConfirmDlg =
 			FG_CreateYesNoDialogBox( m_apDialogManager[0],
-			true, ID_UI_DLG_SAVE_CONFIRM_OVERWRITE, "", "Overwrite?",
+			true, ID_UI_DLG_SAVE_CONFIRM_OVERWRITE, "SAVE", "Overwrite?",
 			ID_UI_SAVE_CONFIRM_OVERWRITE_YES, ID_UI_SAVE_CONFIRM_OVERWRITE_NO );
-//			Create2ChoiceDialog( m_apDialogManager[0].get(), true,
-//			ID_UI_DLG_SAVE_CONFIRM_OVERWRITE, "overwrite?", SRect( 400-80, 450-60, 400+80, 450+30 ),
-//			ID_UI_SAVE_CONFIRM_OVERWRITE_YES,	"yes",	RectLTWH( 15, 60, 60, 25 ),
-//			ID_UI_SAVE_CONFIRM_OVERWRITE_NO,	"no",	RectLTWH( 85, 60, 60, 25 ) );
-
-//		0, "OVERWRITE?", SRect( 400-70, 300-40, 400+70, 300-15 ) );
-
-//		btn_desc.ID = ID_UI_SAVE_BUTTON(0) + i;
-//		btn_desc.Rect.SetPositionLTWH( 10, 10 + i * 20, 220, 80 );
-//		pSaveSlotsDialog->AddSubDialogButton( &btn_desc );
-//		pConfirmDlg ),
 	}
 
 	CFG_StdDialogRenderer *pDlgRenderer = dynamic_cast<CFG_StdDialogRenderer *>(pConfirmDlg->GetRenderer());
@@ -345,22 +326,3 @@ void CGameTask_SaveFG::CreateSaveDataPreviewTable()
 		db.Close();
 	}
 }*/
-
-
-/*
-void CGameTask_SaveFG::InitStage()
-{
-	SafeDelete( m_pStage );
-
-	m_pStage = new CStage;
-
-//	m_pStage->Initialize( "Script/tsk_br.bin" );
-	m_pStage->Initialize( gs_BriefingStageScript );
-
-	// get entities - item display entity & scripted camera entity
-	m_pWorldMapDisplay	= m_pStage->GetEntitySet()->GetEntityByName( "ao_display" );
-	m_pCamera	= m_pStage->GetEntitySet()->GetEntityByName( "cam" );
-
-	m_pStage->GetEntitySet()->SetCameraEntity( m_pCamera );
-}
-*/
