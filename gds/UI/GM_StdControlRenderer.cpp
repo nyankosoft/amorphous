@@ -287,12 +287,15 @@ void CGM_StdListBoxRenderer::Init()
 		m_vecpText[i] = m_pGraphicsElementManager->CreateText( 0, "-", (float)text_x, (float)text_y, normal_color );
 	}
 
+	// start with 4 to render the scrollbar on top
+	int local_layer_offset = 4;
+
 	// set local layer offset to determine rendering order
 	int num_text_elements = (int)m_vecpText.size();
 	for( i=0; i<num_text_elements; i++ )
-		RegisterGraphicsElement( 0, m_vecpText[i] );
-	RegisterGraphicsElement( 0, m_pFrameRect );
-	RegisterGraphicsElement( 1, m_pRect );
+		RegisterGraphicsElement( local_layer_offset, m_vecpText[i] );
+	RegisterGraphicsElement( local_layer_offset, m_pFrameRect );
+	RegisterGraphicsElement( local_layer_offset+1, m_pRect );
 
 	// register elements that chages colors depending on states
 	RegisterColoredElement( m_pFrameRect );
