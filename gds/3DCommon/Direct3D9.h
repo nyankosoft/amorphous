@@ -74,8 +74,8 @@ private:
 	void SetDefaultRenderStates();
 
 	/// Retrieve possible adapter modes for the primary display adapter
-	/// and store them to m_vecAdapterMode
-	void GetAdapterModesForDefaultAdapter();
+	/// and store them to m_vecAdapterMode. Called in InitD3D().
+	void EnumAdapterModesForDefaultAdapter();
 
 protected:
 
@@ -102,6 +102,9 @@ public:
 	DWORD GetBehaviorFlags() const { return m_BehaviorFlags; }
 
 	D3DFORMAT GetAdapterFormat() { return m_AdapterFormat; }
+
+	/// experimental: Could this be a platform-independent way to retrieve resolutions
+	void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer );
 
 	enum mode
 	{

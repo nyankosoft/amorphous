@@ -328,9 +328,11 @@ class CGM_StdDialogRenderer : public CGM_StdControlRenderer
 
 	CGraphicsEffectHandle m_PrevSlideEffect;
 
+	bool m_bUseSlideEffects;
+
 public:
 
-	CGM_StdDialogRenderer() : m_pRect(NULL), m_pFrameRect(NULL) {}
+	CGM_StdDialogRenderer();
 
 	virtual ~CGM_StdDialogRenderer() {}
 

@@ -297,7 +297,7 @@ void CGM_StdListBoxRenderer::Init()
 	RegisterGraphicsElement( local_layer_offset, m_pFrameRect );
 	RegisterGraphicsElement( local_layer_offset+1, m_pRect );
 
-	// register elements that chages colors depending on states
+	// register elements that changes colors depending on states
 	RegisterColoredElement( m_pFrameRect );
 //	for( i=0; i<num_text_elements; i++ )
 //		RegisterColoredElement( m_vecpText[i] );
@@ -479,7 +479,8 @@ void CGM_StdScrollBarRenderer::Init()
 	// - rendered no top of other elements
 	// - create a subgroup
 	CGraphicsElement *apElement[] = { m_apFrameRect[RE_THUMB], m_apRect[RE_THUMB] };
-	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement) );
+	const SRect bar_rect = pScrollbar->GetBoundingBox();
+	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement), SPoint(bar_rect.left,bar_rect.top) );
 
 	RegisterGraphicsElementToParentDialog( m_pThumbGroup );
 
@@ -519,7 +520,8 @@ void CGM_StdSliderRenderer::Init()
 	vecpButtonElement.push_back( m_pSliderButtonRect );
 	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
 	vecpButtonElement.push_back( m_pSliderButtonDot );
-	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement );
+	const SRect slider_rect = pSlider->GetBoundingBox();
+	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement, SPoint(slider_rect.left,slider_rect.top) );
 
 	// For slider button elements, the following 2 things need to be done separately
 	// 1. register to parent dialog renderer
@@ -563,6 +565,19 @@ void CGM_StdSliderRenderer::OnSliderValueChanged()
 }
 
 
+//========================================================================
+// CGM_StdDialogRenderer
+//========================================================================
+
+CGM_StdDialogRenderer::CGM_StdDialogRenderer()
+:
+m_pRect(NULL),
+m_pFrameRect(NULL)
+{
+	m_bUseSlideEffects = false;
+}
+
+
 void CGM_StdDialogRenderer::Init()
 {
 	CGM_Dialog *pDialog = GetDialog();
@@ -593,11 +608,14 @@ void CGM_StdDialogRenderer::OnDialogOpened()
 	m_pGraphicsEffectManager->SetTimeOffset();
 
 	// slide in
-	const SRect& rect = GetDialog()->GetBoundingBox();
-	Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
-	m_pGroupElement->SetTopLeftPos( vDestPos + Vector2( -50, 0 ) );
-//	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
-	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+	if( m_bUseSlideEffects )
+	{
+		const SRect& rect = GetDialog()->GetBoundingBox();
+		Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
+		m_pGroupElement->SetTopLeftPos( vDestPos + Vector2( -50, 0 ) );
+//		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
+		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+	}
 
 	// fade in (change alpha form 0 to 1)
 	m_pGroupElement->SetAlpha( m_DialogFadeColorIndex, 0.0f );
@@ -616,11 +634,14 @@ void CGM_StdDialogRenderer::OnDialogClosed()
 	m_pGraphicsEffectManager->SetTimeOffset();
 
 	// slide out
-	const SRect& rect = GetDialog()->GetBoundingBox();
-	Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
-	m_pGroupElement->SetTopLeftPos( vStartPos );
-//	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
-	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + Vector2( -50, 0 ), -Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+	if( m_bUseSlideEffects )
+	{
+		const SRect& rect = GetDialog()->GetBoundingBox();
+		Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
+		m_pGroupElement->SetTopLeftPos( vStartPos );
+//		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
+		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + Vector2( -50, 0 ), -Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+	}
 
 	// fade out (change alpha form 1 to 0)
 	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, m_DialogFadeColorIndex, 0.0f, 0 );

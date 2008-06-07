@@ -30,6 +30,12 @@
 #include <algorithm>
 
 
+inline AABB2 AABB2Null()
+{
+	return AABB2( Vector2(FLT_MAX,FLT_MAX), Vector2(-FLT_MAX,-FLT_MAX) );
+}
+
+
 /**
  terms
  - group: a collection of one or more graphics elements.
@@ -68,11 +74,13 @@ protected:
 
 	float m_fScale;
 
-	AABB2 m_AABB;	///< holds non-scaled rect
+	/// holds non-scaled rect
+	/// - m_AABB.vMin == non-scaled global top-left position
+	AABB2 m_AABB;
 
-	int m_GroupID; ///< group id to which the element belongs
+	int m_GroupID; ///< group id to which the element belongs. -1 if the element does not belong to any group element
 
-	int m_LayerIndex; ///< layer index to which the element belongs
+	int m_LayerIndex; ///< layer index to which the element belongs. -1 if the element is a group element
 
 	int m_ElementIndex; ///< index of the element in CGraphicsElementManager::m_vecpElement
 
@@ -85,8 +93,11 @@ protected:
 
 	/// can only be created by CGraphicsElementManager
 	/// - make this protected and make CGraphicsElementManager a friend class
-	CGraphicsElement()
+	/// \param non_scaled_aabb non-scaled axis-aligned bounding box. Needs to be
+	///        initialized in derived class if it is not specified here
+	CGraphicsElement( const AABB2& non_scaled_aabb = AABB2Null() )
 		:
+	m_AABB(non_scaled_aabb),
 	m_TextureID(-1),
 	m_fScale(1.0f),
 	m_GroupID(-1),
@@ -94,8 +105,6 @@ protected:
 	m_LayerIndex(-1),
 	m_vLocalTopLeftPos(Vector2(0,0))
 	{
-		m_AABB.Nullify();
-
 		for( int i=0; i<NUM_COLORS; i++ )
 			m_aColor[i] = SFloatRGBAColor(1,1,1,1);
 	}
@@ -108,6 +117,8 @@ private:
 
 	void SetElementIndex( int element_index ) { m_ElementIndex = element_index; }
 
+	void UpdateTopLeftPos( Vector2 vPos );
+
 public:
 
 	virtual void Draw() = 0;
@@ -116,11 +127,25 @@ public:
 
 	virtual Vector2 GetTopLeftPos() const { return m_AABB.vMin; }
 
+	virtual Vector2 GetLocalTopLeftPos() const { return m_vLocalTopLeftPos; }
+
 	const AABB2& GetAABB() const { return m_AABB; }
 
 	/// calls SetTopLeftPosInternal() to run routines
 	/// specific to each element
+	/// - The user should use SetLocalTopLeftPos() if the element is grouped.
+	///   The result is undefined if this is called when the local origin of the group element is being changed
+	/// \param vPos non-scaled global pos
 	void SetTopLeftPos( Vector2 vPos );
+
+	void SetLocalTopLeftPos( Vector2 vPos );
+
+	/// Called when the element belongs to a group element and its local origin is changed
+	/// \param vLocalOrigin local origin of the group represented in global coordinates
+	void UpdateGlobalPositions( Vector2 vLocalOrigin )
+	{
+		UpdateTopLeftPos( vLocalOrigin + m_vLocalTopLeftPos );
+	}
 
 	virtual void ChangeScale( float scale ) {}
 
@@ -215,8 +240,11 @@ protected:
 
 public:
 
+	/// \param non_scaled_aabb represents a non-scaled rectangular region of the element
+	/// \param pPrimitive owned reference to a 2d primitive that holds scaled position
 	CGE_Primitive( C2DPrimitive *pPrimitive )
 		:
+//	CGraphicsElement(non_scaled_aabb),
 	m_pPrimitive(pPrimitive),
 	m_OrigBorderWidth(1),
 	m_CornerRadius(0)
@@ -268,7 +296,7 @@ public:
 
 
 	/// \param pPrimitive - owned reference
-	CGE_Rect( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
+	CGE_Rect( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive );
 
 	virtual void Draw();
 
@@ -292,7 +320,7 @@ class CGE_Triangle : public CGE_Primitive
 
 public:
 
-	CGE_Triangle( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
+	CGE_Triangle( /*const AABB2& non_scaled_aabb, */const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive );
 
 //	virtual Vector2 GetTopLeftPos() const;
 
@@ -399,8 +427,9 @@ public:
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{
-		m_vTextPos = vPos;
-		m_vScaledPos = m_vTextPos * m_fScale;
+		UpdateTextAlignment();
+//		m_vTextPos = vPos;
+//		m_vScaledPos = m_vTextPos * m_fScale;
 	}
 
 	virtual void ChangeScale( float scale )
@@ -445,13 +474,46 @@ class CGE_Group : public CGraphicsElement
 {
 	std::vector<CGraphicsElement *> m_vecpElement;
 
+	/// origin of local top-left positions which are grouped by the group element.
+	/// - Represented in global screen coordinates
+	Vector2 m_vLocalOrigin;
+
+private:
+
+	inline void RemoveInvalidElements();
+
+	inline void UpdateAABB();
+
 public:
 
-	CGE_Group( std::vector<CGraphicsElement *>& rvecpElement );
+//	CGE_Group( std::vector<CGraphicsElement *>& rvecpElement );
+
+	/// Calculates the local top-left positions of the specified graphics elements from vLocalOrigin
+	/// \param vLocalOrigin local origin in global screen coordinates
+	CGE_Group( std::vector<CGraphicsElement *>& rvecpElement, Vector2 vLocalOrigin );
 
 	virtual ~CGE_Group();
 
 	virtual void Draw();
+
+	Vector2 GetLocalOrigin() const { return m_vLocalOrigin; }
+
+	/// Updates the global coordinates of grouped elements in this call or later?
+	/// - in this call: not good for performance
+	/// - later: you need to set a flag such as 'm_bNeedToUpdateGlobalPositionsOfGroupedElements' to true.
+	///   Later, before the rendering begins, update global positions of the grouped elements if the flag is true
+	/// NOTE: Called from ctor
+//	void SetLocalOrigin( Vector2 vLocalOrigin );
+	void SetLocalOrigin( Vector2 vLocalOrigin )
+	{
+		m_vLocalOrigin = vLocalOrigin;
+
+		vector<CGraphicsElement *>::iterator itr;
+		for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
+		{
+			(*itr)->UpdateGlobalPositions( vLocalOrigin );
+		}
+	}
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
@@ -478,6 +540,17 @@ public:
 			LOG_PRINT_ERROR( "Failed to find a graphics element in the list of its owner group element." );
 	}
 };
+
+
+inline void CGE_Group::UpdateAABB()
+{
+	m_AABB.Nullify();
+	vector<CGraphicsElement *>::iterator itr;
+	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
+	{
+		m_AABB.MergeAABB( (*itr)->GetAABB() );
+	}
+}
 
 
 // provides callback mechanism invoked when an element is created / destroyed
@@ -516,8 +589,8 @@ public:
 	virtual CGE_Text *CreateTextBox( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
 	virtual CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
 	virtual CGraphicsElement *CreatePolygon() { return NULL; }
-	virtual CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement ) { return NULL; }
-	virtual CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements ) { return NULL; }
+	virtual CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin ) { return NULL; }
+	virtual CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements, const SPoint& local_origin ) { return NULL; }
 	virtual int LoadTexture( const std::string& tex_filename ) { return -1; }
 	virtual int LoadFont( const std::string& font_name ) { return -1; }
 	virtual bool LoadFont( int font_id, const std::string& font_name, int font_type, int w, int h, float bold = 0.0f, float italic = 0.0f ) { return false; }
@@ -559,7 +632,7 @@ class CGraphicsElementManager : public CGraphicsElementManagerBase, public CGrap
 
 	bool m_bAutoScaling;	///< if true, automatically scales graphics elements in LoadGraphicsResources() when the screen resolution is changed
 
-	int m_ReferenceResolutionWidth;
+//	int m_ReferenceResolutionWidth;
 
 	class CLayer
 	{
@@ -592,11 +665,11 @@ private:
 
 	void RemoveFromLayer( CGraphicsElement *pElement );
 
-    CGE_Rect *InitRectElement( int element_index, int layer_index, C2DPrimitive *pRectPrimitive, const SFloatRGBAColor& color );
+    CGE_Rect *InitRectElement( int element_index, int layer_index, const SRect& non_scaled_rect, const SFloatRGBAColor& color, C2DPrimitive *pRectPrimitive );
 
-    CGE_Triangle *InitTriangleElement( int element_index, int layer_index, C2DPrimitive *pRectPrimitive, const SFloatRGBAColor& color );
+    CGE_Triangle *InitTriangleElement( int element_index, int layer_index, const SRect& non_scaled_rect, const SFloatRGBAColor& color, C2DPrimitive *pRectPrimitive );
 
-	void InitPrimitiveElement( CGE_Primitive *pElement, C2DPrimitive *pPrimitive, const SFloatRGBAColor& color, int element_index, int layer_index );
+	void InitPrimitiveElement( CGE_Primitive *pElement, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect, const SFloatRGBAColor& color, int element_index, int layer_index );
 
 protected:
 
@@ -643,9 +716,9 @@ public:
 	/// NOT IMPLEMENTED
 	CGraphicsElement *CreatePolygon();
 
-	CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement );
+	CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin );
 
-	CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements );
+	CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements, const SPoint& local_origin );
 
 	inline CGraphicsElement *GetElement( int id );
 
@@ -677,7 +750,7 @@ public:
 
 	void SetScale( float scale );	///< used to adjust the scale manually
 
-	void SetReferenceResolutionWidth( int res_width ) { m_ReferenceResolutionWidth = res_width; }
+//	void SetReferenceResolutionWidth( int res_width ) { m_ReferenceResolutionWidth = res_width; }
 
 	void SetCallback( CGraphicsElementManagerCallbackSharedPtr callback_ptr ) { m_pCallbackPtr = callback_ptr; }
 };

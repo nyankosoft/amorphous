@@ -7,7 +7,7 @@
 #include "Support/Macro.h"
 
 
-void CDirect3D9::GetAdapterModesForDefaultAdapter()
+void CDirect3D9::EnumAdapterModesForDefaultAdapter()
 {
 	const D3DFORMAT allowable_formats[] =
 	{
@@ -167,7 +167,7 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
     D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 500.0f );
     m_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
 
-	GetAdapterModesForDefaultAdapter();
+	EnumAdapterModesForDefaultAdapter();
 
 	return true;
 }
@@ -247,4 +247,16 @@ void CDirect3D9::Release()
 {
 	if( m_pD3DDevice ) m_pD3DDevice->Release();
 	if( m_pD3D ) m_pD3D->Release();
+}
+
+
+void CDirect3D9::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer )
+{
+	if( !m_pD3D || !m_pD3DDevice )
+		LOG_PRINT_ERROR( "Not initialized yet." );
+
+	if( m_vecAdapterMode.size() == 0 )
+		LOG_PRINT_WARNING( "No adapeter modes are in m_vecAdapterMode." );
+
+	dest_buffer = m_vecAdapterMode;
 }

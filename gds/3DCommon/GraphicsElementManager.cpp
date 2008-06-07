@@ -3,6 +3,7 @@
 #include "GraphicsElementManager.h"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/Profile.h"
 
 #include <algorithm>
 using namespace std;
@@ -40,22 +41,48 @@ inline void erase_dupulicate_elements( std::vector<T>& vec )
 }
 
 
-void CGraphicsElement::SetTopLeftPos( Vector2 vPos )
+void CGraphicsElement::UpdateTopLeftPos( Vector2 vPos )
 {
 	Vector2 vSpan = m_AABB.vMax - m_AABB.vMin;
 	m_AABB.vMin = vPos;
 	m_AABB.vMax = vPos + vSpan;
 
+	SetTopLeftPosInternal( vPos );
+}
+
+
+void CGraphicsElement::SetTopLeftPos( Vector2 vPos )
+{
+	UpdateTopLeftPos( vPos );
+
+	// Check just in case
 	if( 0 <= m_GroupID )
 	{
-		/// owned by a group element
-		/// - need to update the local position as well
-		CGraphicsElement *pOwner = m_pManager->GetElement(m_GroupID);
+		// Oh, boy... This is owned by a group element
+		// - Not really desirable. SetLocalTopLeftPos() should be used instead.
+		// - Anyway, need to update the local position as well
+		CGE_Group *pOwner = dynamic_cast<CGE_Group *>(m_pManager->GetElement(m_GroupID));
 		if( pOwner )
-			m_vLocalTopLeftPos = vPos - pOwner->GetTopLeftPos();
+			m_vLocalTopLeftPos = vPos - pOwner->GetLocalOrigin();
 	}
 
-	SetTopLeftPosInternal( vPos );
+}
+
+
+void CGraphicsElement::SetLocalTopLeftPos( Vector2 vLocalPos )
+{
+	m_vLocalTopLeftPos = vLocalPos;
+
+	if( 0 <= m_GroupID )
+	{
+		// owned by a group element
+		// - update the global position from the current local origin of the group element
+		CGE_Group *pOwner = dynamic_cast<CGE_Group *>(m_pManager->GetElement(m_GroupID));
+		if( pOwner )
+		{
+			UpdateTopLeftPos( pOwner->GetLocalOrigin() + m_vLocalTopLeftPos );
+		}
+	}
 }
 
 
@@ -74,6 +101,8 @@ void CGraphicsElement::SetLayer( int layer_index )
 
 void CGE_Primitive::DrawPrimitive()
 {
+	PROFILE_FUNCTION();
+
 	if( 0 <= m_TextureID )
 	{
 		const CTextureHandle& tex = m_pManager->GetTexture(m_TextureID);
@@ -83,8 +112,11 @@ void CGE_Primitive::DrawPrimitive()
 		m_pPrimitive->Draw();	// draw rect without a texture
 }
 
+
 void CGE_Primitive::SetTopLeftPosInternal( Vector2 vPos )
 {
+	// m_AABB has been updated in CGraphicsElement::SetTopLeftPos().
+	// - update the vertex positions
 	m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
 }
 
@@ -94,11 +126,11 @@ void CGE_Primitive::SetTopLeftPosInternal( Vector2 vPos )
 // CGE_Rect
 //==========================================================================================
 
-CGE_Rect::CGE_Rect( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 )
+CGE_Rect::CGE_Rect( /*const AABB2& non_scaled_aabb,*/ const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive )
 :
 CGE_Primitive(pPrimitive)
 {
-	m_AABB = AABB2( pPrimitive->GetPosition2D(0), pPrimitive->GetPosition2D(2) );
+//	m_AABB = AABB2( pPrimitive->GetPosition2D(0), pPrimitive->GetPosition2D(2) );
 	m_aColor[0] = color0;
 	ChangeScale( m_fScale );
 
@@ -110,6 +142,8 @@ CGE_Primitive(pPrimitive)
 
 void CGE_Rect::Draw()
 {
+	PROFILE_FUNCTION();
+
 	if( /* use_corner_colors == */ true
 	 && m_pPrimitive->GetPrimitiveType() != C2DPrimitive::TYPE_ROUNDRECT )
 	{
@@ -133,19 +167,25 @@ void CGE_Rect::Draw()
 // CGE_Triangle
 //==========================================================================================
 
-CGE_Triangle::CGE_Triangle( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 )
+CGE_Triangle::CGE_Triangle( /*const AABB2& non_scaled_aabb,*/ const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive )
 :
 CGE_Primitive(pPrimitive),
 m_pTriangle(NULL),
 m_pFTriangle(NULL),
 m_RFpTriangle(NULL)
 {
-	AABB2 aabb;
+/*	AABB2 aabb;
 	aabb.Nullify();
 	for( int i=0; i<3; i++ )
 		aabb.AddPoint( pPrimitive->GetPosition2D(i) );
 
-	m_AABB = aabb;
+	m_AABB = aabb;*/
+	// ^^^^^^^^^^^^^^ Wrong! m_AABB holds a non-scaled bounding box!!!
+
+//	m_pTriangle   = dynamic_cast<C2DTriangle *>(pPrimitive),
+//	m_pFTriangle  = dynamic_cast<C2DFrameTriangle *>(pPrimitive),
+//	m_RFpTriangle = dynamic_cast<C2DRoundFrameTriangle *>(pPrimitive)
+
 	m_aColor[0] = color0;
 	ChangeScale( m_fScale );
 }
@@ -183,6 +223,8 @@ m_vTextPos(Vector2(x,y))
 
 void CGE_Text::Draw()
 {
+	PROFILE_FUNCTION();
+
 	CFontBase *pFont = m_pManager->GetFont(m_FontID);
 	if( !pFont )
 		return;
@@ -275,10 +317,8 @@ void CGE_Text::UpdateTextAlignment()
 // CGE_Group
 //==================================================================================
 
-CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement )
+inline void CGE_Group::RemoveInvalidElements()
 {
-	m_vecpElement = rvecpElement;
-
 	// remove NULL elements
 	vector<CGraphicsElement *>::iterator itr = m_vecpElement.begin();
 	while( itr != m_vecpElement.end() )
@@ -291,17 +331,48 @@ CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement )
 
 	// remove the same elements
 	erase_dupulicate_elements( m_vecpElement );
+}
 
-	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
-	{
-		m_AABB.MergeAABB( (*itr)->GetAABB() );
-	}
+/*
+CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement )
+:
+m_vecpElement(rvecpElement)
+{
+	RemoveInvalidElements();
+
+	UpdateAABB();
+
+	// use the top-left corner as the local origin
+	SetLocalOrigin( GetTopLeftPos() );
 
 	// set local top-left potitions for grouped elements
+	vector<CGraphicsElement *>::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		(*itr)->m_vLocalTopLeftPos = (*itr)->GetTopLeftPos() - GetTopLeftPos();
 	}
+}
+*/
+
+CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement, Vector2 vLocalOrigin )
+:
+m_vLocalOrigin(vLocalOrigin),
+m_vecpElement(rvecpElement)
+{
+	RemoveInvalidElements();
+
+	UpdateAABB();
+
+	// set local top-left potitions for grouped elements
+/*	vector<CGraphicsElement *>::iterator itr;
+	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
+	{
+		(*itr)->m_vLocalTopLeftPos = (*itr)->GetTopLeftPos() - m_vLocalOrigin;
+	}
+	*/
+
+	// update global positions of grouped elements
+	SetLocalOrigin( vLocalOrigin );
 }
 
 
@@ -415,12 +486,10 @@ CGraphicsElementManager::CGraphicsElementManager()
 
 	m_fScale = 1.0f;
 
-	m_ReferenceResolutionWidth = 800;
-
 	m_bAutoScaling = true;
 
 	if( m_bAutoScaling )
-		m_fScale = GetScreenWidth() / (float)m_ReferenceResolutionWidth;
+		m_fScale = GetScreenWidth() / (float)GetReferenceScreenWidth();
 
 
 	m_NumMaxLayers = NUM_MAX_LAYERS;
@@ -461,7 +530,7 @@ void CGraphicsElementManager::LoadGraphicsResources( const CGraphicsParameters& 
 
 	if( m_bAutoScaling )
 	{
-		m_fScale = GetScreenWidth() / (float)m_ReferenceResolutionWidth;
+		m_fScale = GetScreenWidth() / (float)GetReferenceScreenWidth();
 		UpdateElementScales();
 	}
 }
@@ -529,11 +598,18 @@ void CGraphicsElementManager::InitElement( CGraphicsElement *pElement, int eleme
 
 void CGraphicsElementManager::InitPrimitiveElement( CGE_Primitive *pElement,
 												    C2DPrimitive *pPrimitive,
+													const SRect& non_scaled_rect,
 												    const SFloatRGBAColor& color,
 													int element_index,
 													int layer_index )
 {
 	float z = 0;
+
+	AABB2 non_scaled_aabb;
+	non_scaled_aabb.vMin.x = (float)non_scaled_rect.left;
+	non_scaled_aabb.vMin.y = (float)non_scaled_rect.top;
+	non_scaled_aabb.vMax.x = (float)non_scaled_rect.right;
+	non_scaled_aabb.vMax.y = (float)non_scaled_rect.bottom;
 
 	pPrimitive->SetTextureUV( TEXCOORD2( 0.0f, 0.0f ), TEXCOORD2( 1.0f, 1.0f ) );
 	pPrimitive->SetZDepth( z );
@@ -542,28 +618,33 @@ void CGraphicsElementManager::InitPrimitiveElement( CGE_Primitive *pElement,
 	m_vecpElement[element_index] = pElement;
 
 	InitElement( pElement, element_index, layer_index );
+
+	pElement->SetSizeLTRB( non_scaled_aabb.vMin, non_scaled_aabb.vMax );
 }
 
 
 CGE_Rect *CGraphicsElementManager::InitRectElement( int element_index, int layer_index,
-													C2DPrimitive *pRectPrimitive,
-													const SFloatRGBAColor& color )
+													const SRect& non_scaled_rect,
+													const SFloatRGBAColor& color,
+													C2DPrimitive *pRectPrimitive )
 {
-	CGE_Rect *pRectElement = new CGE_Rect( pRectPrimitive, color );
 
-	InitPrimitiveElement( pRectElement, pRectPrimitive, color, element_index, layer_index );
+	CGE_Rect *pRectElement = new CGE_Rect( color, pRectPrimitive );
+
+	InitPrimitiveElement( pRectElement, pRectPrimitive, non_scaled_rect, color, element_index, layer_index );
 
 	return pRectElement;
 }
 
 
 CGE_Triangle *CGraphicsElementManager::InitTriangleElement( int element_index, int layer_index,
-													        C2DPrimitive *pTrianglePrimitive,
-													        const SFloatRGBAColor& color )
+														    const SRect& non_scaled_rect,
+															const SFloatRGBAColor& color,
+													        C2DPrimitive *pTrianglePrimitive )
 {
-	CGE_Triangle *pTriangleElement = new CGE_Triangle( pTrianglePrimitive, color );
+	CGE_Triangle *pTriangleElement = new CGE_Triangle( color, pTrianglePrimitive );
 
-	InitPrimitiveElement( pTriangleElement, pTrianglePrimitive, color, element_index, layer_index );
+	InitPrimitiveElement( pTriangleElement, pTrianglePrimitive, non_scaled_rect, color, element_index, layer_index );
 
 	return pTriangleElement;
 }
@@ -576,9 +657,9 @@ CGE_Rect *CGraphicsElementManager::CreateRect( const SRect& rect, const SFloatRG
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DRect *p2DRect = new C2DRect( rect, color.GetARGB32() );
+	C2DRect *p2DRect = new C2DRect( rect * m_fScale, color.GetARGB32() );
 
-	return InitRectElement( index, layer, p2DRect, color );
+	return InitRectElement( index, layer, rect, color, p2DRect );
 }
 
 
@@ -589,9 +670,9 @@ CGE_Rect *CGraphicsElementManager::CreateFrameRect( const SRect& rect, const SFl
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DFrameRect *p2DFrameRect = new C2DFrameRect( rect, color.GetARGB32(), border_width );
+	C2DFrameRect *p2DFrameRect = new C2DFrameRect( rect * m_fScale, color.GetARGB32(), border_width );
 
-	return InitRectElement( index, layer, p2DFrameRect, color );
+	return InitRectElement( index, layer, rect, color, p2DFrameRect );
 }
 
 
@@ -602,9 +683,9 @@ CGE_Rect *CGraphicsElementManager::CreateRoundRect( const SRect& rect, const SFl
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DRoundRect *p2DRoundRect = new C2DRoundRect( rect, color.GetARGB32(), (int)corner_radius );
+	C2DRoundRect *p2DRoundRect = new C2DRoundRect( rect * m_fScale, color.GetARGB32(), (int)corner_radius );
 
-	return InitRectElement( index, layer, p2DRoundRect, color );
+	return InitRectElement( index, layer, rect, color, p2DRoundRect );
 }
 
 
@@ -615,9 +696,9 @@ CGE_Rect *CGraphicsElementManager::CreateRoundFrameRect( const SRect& rect, cons
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DRoundFrameRect *p2DRoundFrameRect = new C2DRoundFrameRect( rect, color.GetARGB32(), (int)corner_radius, (int)border_width );
+	C2DRoundFrameRect *p2DRoundFrameRect = new C2DRoundFrameRect( rect * m_fScale, color.GetARGB32(), (int)corner_radius, (int)border_width );
 
-	return InitRectElement( index, layer, p2DRoundFrameRect, color );
+	return InitRectElement( index, layer, rect, color, p2DRoundFrameRect );
 }
 
 
@@ -628,9 +709,9 @@ CGE_Triangle *CGraphicsElementManager::CreateTriangle( C2DTriangle::Direction di
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DTriangle *p2DTriangle = new C2DTriangle( dir, rect, color.GetARGB32() );
+	C2DTriangle *p2DTriangle = new C2DTriangle( dir, rect * m_fScale, color.GetARGB32() );
 
-	return InitTriangleElement( index, layer, p2DTriangle, color );
+	return InitTriangleElement( index, layer, rect, color, p2DTriangle );
 }
 
 
@@ -647,8 +728,9 @@ CGE_Text *CGraphicsElementManager::CreateText( int font_id, const string& text, 
 	CFontBase *pFont = this->GetFont(font_id);
 	if( pFont )
 	{
-		if( font_w <= 0 ) font_w = pFont->GetFontWidth();
-		if( font_h <= 0 ) font_h = pFont->GetFontHeight();
+		Vector2 non_scaled_size = m_vecOrigFontSize[font_id];
+		if( font_w <= 0 ) font_w = (int)non_scaled_size.x;// pFont->GetFontWidth();
+		if( font_h <= 0 ) font_h = (int)non_scaled_size.y;// pFont->GetFontHeight();
 	}
 
 	SRect rect;
@@ -723,7 +805,7 @@ CGraphicsElement *CGraphicsElementManager::CreatePolygon()
 }
 
 
-CGE_Group *CGraphicsElementManager::CreateGroup( CGraphicsElement** apElement, int num_elements )
+CGE_Group *CGraphicsElementManager::CreateGroup( CGraphicsElement** apElement, int num_elements, const SPoint& local_origin )
 {
 	vector<CGraphicsElement *> vecpElement;
 	vecpElement.resize(num_elements);
@@ -732,15 +814,15 @@ CGE_Group *CGraphicsElementManager::CreateGroup( CGraphicsElement** apElement, i
 		vecpElement[i] = apElement[i];
 	}
 
-	return CreateGroup( vecpElement );
+	return CreateGroup( vecpElement, local_origin );
 }
 
 
-CGE_Group *CGraphicsElementManager::CreateGroup( std::vector<CGraphicsElement *>& rvecpElement )
+CGE_Group *CGraphicsElementManager::CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin )
 {
 	int index = GetVacantSlotIndex();
 
-	CGE_Group *pGroupElement = new CGE_Group( rvecpElement );
+	CGE_Group *pGroupElement = new CGE_Group( rvecpElement, Vector2((float)local_origin.x,(float)local_origin.y) );
 	m_vecpElement[index] = pGroupElement;
 
 	// do not register to layer
@@ -801,10 +883,15 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 	if( (int)m_vecpFont.size() <= font_id )
 	{
 		for( size_t i=0; i<font_id - m_vecpFont.size() + 1; i++ )
+		{
 			m_vecpFont.push_back( NULL );
+			m_vecOrigFontSize.push_back( Vector2(0,0) );
+		}
 	}
 
 	SafeDelete( m_vecpFont[font_id] );
+
+	m_vecOrigFontSize[font_id] = Vector2( (float)w, (float)h );
 
 	switch( font_type )
 	{

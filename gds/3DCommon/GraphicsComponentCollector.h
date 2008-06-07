@@ -48,6 +48,11 @@ class CGraphicsComponent
 {
 public:
 
+	enum Params
+	{
+		REFERENCE_SCREEN_WIDTH = 1600
+	};
+
 	CGraphicsComponent();
 	virtual ~CGraphicsComponent();
 
@@ -58,6 +63,13 @@ public:
 
 	int GetScreenWidth() const { return GetCurrentGraphicsParams().ScreenWidth; }
 	int GetScreenHeight() const { return GetCurrentGraphicsParams().ScreenHeight; }
+
+	/// Returns fixed value
+	int GetReferenceScreenWidth() const { return REFERENCE_SCREEN_WIDTH; }
+
+	/// Varies according to aspect ratio
+	/// - range: [900,1280]
+	int GetReferenceScreenHeight() const { return REFERENCE_SCREEN_WIDTH * GetScreenHeight() / GetScreenWidth(); }
 };
 
 

@@ -85,8 +85,19 @@ void CGM_ControlRenderer::GroupGraphicsElements()
 		// collect graphcis elements of this dialog renderer
 		this->GetGraphicsElements( vecpGraphicsElementsToGroup );
 
+		// update local positions of each element
+		const SRect& dlg_rect = pDialog->GetBoundingBox();
+		const SPoint local_origin = SPoint( dlg_rect.left, dlg_rect.top );
+		Vector2 vLocalOrigin = Vector2( (float)local_origin.x, (float)local_origin.y );
+		for( i=0; i<vecpGraphicsElementsToGroup.size(); i++ )
+		{
+			Vector2 vGlobalPos = vecpGraphicsElementsToGroup[i]->GetTopLeftPos();
+			vecpGraphicsElementsToGroup[i]->SetLocalTopLeftPos( vGlobalPos - vLocalOrigin );
+		}
+
 		// create a group
-		m_pGroupElement = m_pGraphicsElementManager->CreateGroup( vecpGraphicsElementsToGroup );
+		// - top-left corner of the dialog box is used as the local origin of the group
+		m_pGroupElement = m_pGraphicsElementManager->CreateGroup( vecpGraphicsElementsToGroup, local_origin );
 
 		OnGroupElementCreated();
 	}
