@@ -37,6 +37,8 @@ struct SRect
 
 	inline bool ContainsPoint( SPoint& pt ) const;
 
+	inline SPoint GetTopLeftCorner() const { return SPoint( left, top ); }
+
 	inline void Offset( int dx, int dy );
 
 	inline void Inflate( int dx, int dy );

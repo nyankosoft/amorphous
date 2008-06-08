@@ -139,7 +139,11 @@ public:
 	/// \param vPos non-scaled global pos
 	void SetTopLeftPos( Vector2 vPos );
 
+	void SetTopLeftPos( SPoint pos ) { SetTopLeftPos( Vector2((float)pos.x,(float)pos.y) ); }
+
 	void SetLocalTopLeftPos( Vector2 vPos );
+
+	void SetLocalTopLeftPos( SPoint pos ) { SetLocalTopLeftPos(Vector2((float)pos.x,(float)pos.y) ); }
 
 	/// Called when the element belongs to a group element and its local origin is changed
 	/// \param vLocalOrigin local origin of the group represented in global coordinates
