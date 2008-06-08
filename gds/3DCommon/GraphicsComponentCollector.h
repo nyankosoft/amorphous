@@ -4,6 +4,9 @@
 
 #include <vector>
 
+#include "Graphics/Rect.h"
+using namespace Graphics;
+
 #include "Support/Singleton.h"
 using namespace NS_KGL;
 
@@ -39,7 +42,6 @@ public:
 };
 
 
-
 //===============================================================================
 // CGraphicsComponent
 //===============================================================================
@@ -70,6 +72,61 @@ public:
 	/// Varies according to aspect ratio
 	/// - range: [900,1280]
 	int GetReferenceScreenHeight() const { return REFERENCE_SCREEN_WIDTH * GetScreenHeight() / GetScreenWidth(); }
+
+	SRect ReferenceScreenRect() const { return RectLTWH( 0, 0, GetReferenceScreenWidth(), GetReferenceScreenHeight() ); }
+
+	SRect RectAtCenter( int width, int height )
+	{
+		return RectCWH( GetReferenceScreenWidth() / 2, GetReferenceScreenHeight() / 2, width, height );
+	}
+
+
+	SRect RectAtLeftTop( int width, int height, int left_margin, int top_margin )
+	{
+		return RectLTWH( left_margin, top_margin, width, height );
+	}
+
+
+	SRect RectAtCenterTop( int width, int height, int top_margin )
+	{
+		return RectLTWH( ( GetReferenceScreenWidth() - width ) / 2, top_margin, width, height );
+	}
+
+
+	SRect RectAtRightTop( int width, int height, int right_margin, int top_margin )
+	{
+		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, top_margin, width, height );
+	}
+
+
+	SRect RectAtLeftCenter( int width, int height, int left_margin )
+	{
+		return RectLTWH( left_margin, ( GetReferenceScreenHeight() - height ) / 2, width, height );
+	}
+
+
+	SRect RectAtRightCenter( int width, int height, int right_margin )
+	{
+		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, ( GetReferenceScreenHeight() - height ) / 2, width, height );
+	}
+
+
+	SRect RectAtLeftBottom( int width, int height, int left_margin, int bottom_margin )
+	{
+		return RectLTWH( left_margin, GetReferenceScreenHeight() - height - bottom_margin, width, height );
+	}
+
+
+	SRect RectAtCenterBottom( int width, int height, int bottom_margin )
+	{
+		return RectLTWH( ( GetReferenceScreenWidth() - width ) / 2, GetReferenceScreenHeight() - height - bottom_margin, width, height );
+	}
+
+
+	SRect RectAtRightBottom( int width, int height, int right_margin, int bottom_margin )
+	{
+		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, GetReferenceScreenHeight() - height - bottom_margin, width, height );
+	}
 };
 
 
@@ -104,6 +161,8 @@ public:
 
 	const CGraphicsParameters& GetGraphicsParams() const { return m_GraphicsParam; }
 };
+
+
 
 
 
