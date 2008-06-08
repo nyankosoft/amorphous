@@ -77,22 +77,31 @@ void CGM_ControlRenderer::GroupGraphicsElements()
 		vector<CGraphicsElement *> vecpGraphicsElementsToGroup;
 		for( i=0; i<num_controls; i++ )
 		{
+			vector<CGraphicsElement *> vecpGraphicsElements;
+
 			CGM_ControlRenderer *pRenderer = rvecpControl[i]->GetRenderer();
 			if( pRenderer )
-				pRenderer->GetGraphicsElements( vecpGraphicsElementsToGroup );
+				pRenderer->GetGraphicsElements( vecpGraphicsElements );
+
+			// set top left positions in local owner dialog coord
+//			for( size_t j=0; j<vecpGraphicsElements.size(); j++ )
+//				vecpGraphicsElements[j]->SetLocalTopLeftPos( rvecpControl[i]->GetLocalRect().GetTopLeftCorner() );
+
+			// add to dest buffer
+			vecpGraphicsElementsToGroup.insert( vecpGraphicsElementsToGroup.end(), vecpGraphicsElements.begin(), vecpGraphicsElements.end() );
 		}
 
-		// collect graphcis elements of this dialog renderer
+		// collect graphics elements of this dialog renderer
 		this->GetGraphicsElements( vecpGraphicsElementsToGroup );
 
 		// update local positions of each element
 		const SPoint local_origin = pDialog->GetBoundingBox().GetTopLeftCorner();
-		Vector2 vLocalOrigin = Vector2( (float)local_origin.x, (float)local_origin.y );
-		for( i=0; i<vecpGraphicsElementsToGroup.size(); i++ )
-		{
-			Vector2 vGlobalPos = vecpGraphicsElementsToGroup[i]->GetTopLeftPos();
-			vecpGraphicsElementsToGroup[i]->SetLocalTopLeftPos( vGlobalPos - vLocalOrigin );
-		}
+//		Vector2 vLocalOrigin = Vector2( (float)local_origin.x, (float)local_origin.y );
+//		for( i=0; i<vecpGraphicsElementsToGroup.size(); i++ )
+//		{
+//			Vector2 vGlobalPos = vecpGraphicsElementsToGroup[i]->GetTopLeftPos();
+//			vecpGraphicsElementsToGroup[i]->SetLocalTopLeftPos( vGlobalPos - vLocalOrigin );
+//		}
 
 		// create a group
 		// - top-left corner of the dialog box is used as the local origin of the group
@@ -143,6 +152,10 @@ void CGM_ControlRenderer::RegisterGraphicsElement( int local_layer_index, CGraph
 	RegisterGraphicsElementToParentDialog( pElement );
 
 	SetLocalLayerOffset( local_layer_index, pElement );
+
+	CGM_Control *pControl = GetControl();
+	if( pControl )
+		pElement->SetLocalTopLeftPos( pControl->GetLocalRect().GetTopLeftCorner() );
 }
 
 

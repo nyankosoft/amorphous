@@ -523,7 +523,7 @@ void CGM_StdSliderRenderer::Init()
 	const SRect slider_rect = pSlider->GetBoundingBox();
 	const SPoint slider_topleft = slider_rect.GetTopLeftCorner(); // global
 	const SPoint slider_local_topleft = pSlider->GetLocalRect().GetTopLeftCorner(); // local coord of owner dialog
-	const SPoint btn_local_topleft = pSlider->GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local slider coord
+	const SPoint btn_local_topleft = pSlider->GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local coord of owner dialog
 
 	// subgroup for slider button
 	vector<CGraphicsElement *> vecpButtonElement;
@@ -533,7 +533,7 @@ void CGM_StdSliderRenderer::Init()
 	m_pSliderButtonRect->SetLocalTopLeftPos( SPoint(0,0) );
 	m_pSliderButtonFrameRect->SetLocalTopLeftPos( SPoint(0,0) );
 	m_pSliderButtonDot->SetLocalTopLeftPos( SPoint(0,0) + dot_rect.GetTopLeftCorner() );
-	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement, slider_local_topleft );
+	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement, btn_local_topleft );
 
 
 	// For slider button elements, the following 2 things need to be done separately

@@ -873,6 +873,9 @@ CGE_Group *CGraphicsElementManager::CreateGroup( std::vector<CGraphicsElement *>
 	for( i=0; i<num_grouped_elements; i++ )
 		rvecpElement[i]->SetGroupID( index );
 
+	// need to call this after group id is set to each element
+	pGroupElement->SetLocalOrigin( local_origin );
+
 	return pGroupElement;
 }
 

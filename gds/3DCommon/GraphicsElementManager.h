@@ -488,6 +488,8 @@ public:
 
 	virtual void Draw();
 
+	Vector2 GetTopLeftPos() const { return GetLocalOriginInGlobalCoord(); }
+
 	void SetLocalTopLeftPos( Vector2 vPos );
 
 	Vector2 GetLocalOriginInLocalCoord() const { return m_vLocalTopLeftPos;/* m_vLocalOrigin;*/ }
