@@ -105,6 +105,14 @@ CGM_Control::~CGM_Control()
 }
 
 
+SRect CGM_Control::GetLocalRect()
+{
+	SRect rect = GetBoundingBox();
+	rect.Offset( - GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner() );
+	return rect;
+}
+
+
 void CGM_Control::OnFocusIn()
 {
 	m_bHasFocus = true;

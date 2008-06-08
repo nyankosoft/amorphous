@@ -152,8 +152,9 @@ public:
 
 	CGM_Dialog *GetOwnerDialog() { return m_pDialog; }
 
+	/// get the bounding box in the local coordinates of owner dialog
+	SRect GetLocalRect();
 
-//	virtual void Render() {}
 
 	virtual bool HandleMouseInput( CGM_InputData& input ) { return false; }
 
@@ -198,7 +199,6 @@ public:
 
 	friend class CGM_Dialog;
 };
-
 
 
 #endif		/*  __GM_CONTROL_H__  */

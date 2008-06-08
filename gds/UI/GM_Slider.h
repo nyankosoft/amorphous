@@ -61,8 +61,6 @@ public:
 
 	virtual void UpdateRects(); 
 
-	virtual void Render();
-
 	void SetValue( int iValue ) { SetValueInternal( iValue, false ); }
 
 	int  GetValue() { return m_iValue; };
@@ -73,8 +71,24 @@ public:
 
 	bool IsPressed() const { return m_bPressed; }
 
+	/// Returns the bounding box of the button (global coord)
 	const SRect& GetButtonRect() const { return m_ButtonRect; }
+
+	/// Returns the bounding box of the button (local coord of the slider control)
+	inline SRect GetLocalButtonRect() const;
+
+	SRect GetLocalButtonRectInOwnerDialogCoord();
 };
+
+
+//=================================== inline implementations ===================================
+
+inline SRect CGM_Slider::GetLocalButtonRect() const
+{
+	SRect rect = GetButtonRect();
+	rect.Offset( -GetBoundingBox().GetTopLeftCorner() );
+	return rect;
+}
 
 
 #endif  /*  __GM_SLIDER_H__  */

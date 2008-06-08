@@ -41,6 +41,8 @@ struct SRect
 
 	inline void Offset( int dx, int dy );
 
+	inline void Offset( SPoint dist ) { Offset( dist.x, dist.y ); }
+
 	inline void Inflate( int dx, int dy );
 
 	/// gives the same result as '*=' operator

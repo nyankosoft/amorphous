@@ -63,7 +63,7 @@ void CGraphicsElement::SetTopLeftPos( Vector2 vPos )
 		// - Anyway, need to update the local position as well
 		CGE_Group *pOwner = dynamic_cast<CGE_Group *>(m_pManager->GetElement(m_GroupID));
 		if( pOwner )
-			m_vLocalTopLeftPos = vPos - pOwner->GetLocalOrigin();
+			m_vLocalTopLeftPos = vPos - pOwner->GetLocalOriginInGlobalCoord();
 	}
 
 }
@@ -80,7 +80,7 @@ void CGraphicsElement::SetLocalTopLeftPos( Vector2 vLocalPos )
 		CGE_Group *pOwner = dynamic_cast<CGE_Group *>(m_pManager->GetElement(m_GroupID));
 		if( pOwner )
 		{
-			UpdateTopLeftPos( pOwner->GetLocalOrigin() + m_vLocalTopLeftPos );
+			UpdateTopLeftPos( pOwner->GetLocalOriginInGlobalCoord() + m_vLocalTopLeftPos );
 		}
 	}
 }
@@ -355,9 +355,11 @@ m_vecpElement(rvecpElement)
 
 CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement, Vector2 vLocalOrigin )
 :
-m_vLocalOrigin(vLocalOrigin),
+//m_vLocalOrigin(vLocalOrigin),
 m_vecpElement(rvecpElement)
 {
+	m_vLocalTopLeftPos = vLocalOrigin;
+
 	RemoveInvalidElements();
 
 	UpdateAABB();
@@ -388,14 +390,54 @@ CGE_Group::~CGE_Group()
 }
 
 
-void CGE_Group::SetTopLeftPosInternal( Vector2 vPos )
+void CGE_Group::SetTopLeftPosInternal( Vector2 vGlobalPos )
 {
-	vector<CGraphicsElement *>::iterator itr;
+/*	vector<CGraphicsElement *>::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 //		Vector2 vLocalTopLeftPos = (*itr)->GetTopLeftPos() - GetTopLeftPos();
 //		(*itr)->SetTopLeftPos( vPos + vLocalTopLeftPos );
-		(*itr)->SetTopLeftPos( vPos + (*itr)->m_vLocalTopLeftPos );
+///		(*itr)->SetTopLeftPos( vPos + (*itr)->m_vLocalTopLeftPos );
+		(*itr)->UpdateGlobalPositions( vGlobalPos + v );
+	}*/
+}
+
+
+Vector2 CGE_Group::GetLocalOriginInGlobalCoord() const
+{
+	if( 0 <= m_GroupID )
+	{
+		CGE_Group *pParentGroup = dynamic_cast<CGE_Group *>(m_pManager->GetElement( m_GroupID ));
+		if( pParentGroup )
+			return pParentGroup->GetLocalOriginInGlobalCoord() + m_vLocalTopLeftPos;
+		else
+			return m_vLocalTopLeftPos;
+	}
+	else
+	{
+		// not owned by any group
+		// - i.e.) m_vLocalOrigin is in global coord
+		return m_vLocalTopLeftPos;
+	}
+}
+
+
+void CGE_Group::UpdateGlobalPositions( Vector2 vLocalOrigin )
+{
+	SetLocalTopLeftPos( m_vLocalTopLeftPos );
+}
+
+
+void CGE_Group::SetLocalTopLeftPos( Vector2 vPos )
+{
+	m_vLocalTopLeftPos = vPos;
+//	CGraphicsElement::SetLocalTopLeftPos( vPos );
+
+	// update the global positions of all the child elements
+	vector<CGraphicsElement *>::iterator itr;
+	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
+	{
+		(*itr)->UpdateGlobalPositions( GetLocalOriginInGlobalCoord() );
 	}
 }
 
@@ -467,10 +509,6 @@ void CGE_Group::Draw()
 	// - CBE_Group is not intended to batch the draw calls
 	//   - elements in a group might belong to different layers, and in such a case
 	//     rendering order need to be managed the same way as non-grouped elements
-
-//	size_t i, num = m_vecElementIndex.size();
-//	for( i=0; i<num; i++ )
-//		m_pManager->GetElement( m_vecElementIndex[i] )->Draw();
 }
 
 

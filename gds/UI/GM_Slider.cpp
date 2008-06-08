@@ -203,9 +203,11 @@ int CGM_Slider::ValueFromPos( int x, int y )
 }
 
 
-void CGM_Slider::Render()
+SRect CGM_Slider::GetLocalButtonRectInOwnerDialogCoord()
 {
-//	m_pRenderManager->RenderSlider( *this );
+	SRect rect = GetButtonRect();
+	rect.Offset( -GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner() );
+	return rect;
 }
 
 

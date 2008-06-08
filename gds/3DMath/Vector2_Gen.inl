@@ -14,9 +14,18 @@
 template<class TScalar>
 inline TVector2<TScalar> operator*( const TScalar f, const TVector2<TScalar>& v )
 {
-	TVector2 vOut;
+	TVector2<TScalar> vOut;
 	vOut.x = f * v.x;
 	vOut.y = f * v.y;
+	return vOut;
+}
+
+template<class TScalar>
+inline TVector2<TScalar> operator-( const TVector2<TScalar>& v )
+{
+	TVector2<TScalar> vOut;
+	vOut.x = (-1) * v.x;
+	vOut.y = (-1) * v.y;
 	return vOut;
 }
 
@@ -92,7 +101,7 @@ inline TVector2<TScalar> TVector2<TScalar>::operator=( const TVector2<TScalar>& 
 template<class TScalar>
 inline TVector2<TScalar> TVector2<TScalar>::operator+( const TVector2<TScalar>& v ) const
 {
-	TVector2 vOut;
+	TVector2<TScalar> vOut;
 	vOut.x = x + v.x;
 	vOut.y = y + v.y;
 	return vOut;
@@ -128,7 +137,7 @@ inline void TVector2<TScalar>::operator-=( const TVector2<TScalar>& v )
 template<class TScalar>
 inline TVector2<TScalar> TVector2<TScalar>::operator*( const TScalar f ) const
 {
-	TVector2 vOut;
+	TVector2<TScalar> vOut;
 	vOut.x = x * f;
 	vOut.y = y * f;
 	return vOut;
@@ -138,7 +147,7 @@ inline TVector2<TScalar> TVector2<TScalar>::operator*( const TScalar f ) const
 template<class TScalar>
 inline TVector2<TScalar> TVector2<TScalar>::operator/( const TScalar f ) const
 {
-	TVector2 vOut;
+	TVector2<TScalar> vOut;
 	vOut.x = x / f;
 	vOut.y = y / f;
 	return vOut;

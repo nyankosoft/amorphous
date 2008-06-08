@@ -505,31 +505,34 @@ void CGM_StdSliderRenderer::Init()
 	if( !pSlider )
 		return;
 
+	// slider frame
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
 	m_pRect                  = m_pGraphicsElementManager->CreateRect( pSlider->GetBoundingBox(),      bg_color );
 	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetBoundingBox(), normal_color, 2 );
+
+	// slider button
 	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       bg_color );
 	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetButtonRect(),  normal_color, 2 );
-	SRect dot_rect(pSlider->GetButtonRect());
+
+	SRect local_btn_rect = pSlider->GetLocalButtonRect();
+	SRect dot_rect = RectLTWH( 0, 0, local_btn_rect.GetWidth(), local_btn_rect.GetHeight() );
 	dot_rect.Inflate( -dot_rect.GetWidth() / 4, -dot_rect.GetHeight() / 4 );
 	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( dot_rect, normal_color, 2 );
 
 	const SRect slider_rect = pSlider->GetBoundingBox();
 	const SPoint slider_topleft = slider_rect.GetTopLeftCorner(); // global
-	const SPoint slider_local_topleft = slider_topleft - pSlider->GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner(); // local coord of owner dialog
-	const SPoint btn_toplefft = pSlider->GetButtonRect().GetTopLeftCorner(); // global
-	const SPoint btn_local_toplefft = btn_toplefft - slider_topleft; // local slider coord
+	const SPoint slider_local_topleft = pSlider->GetLocalRect().GetTopLeftCorner(); // local coord of owner dialog
+	const SPoint btn_local_topleft = pSlider->GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local slider coord
 
 	// subgroup for slider button
 	vector<CGraphicsElement *> vecpButtonElement;
 	vecpButtonElement.push_back( m_pSliderButtonRect );
 	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
 	vecpButtonElement.push_back( m_pSliderButtonDot );
-	m_pSliderButtonRect->SetLocalTopLeftPos( btn_local_toplefft );
-	m_pSliderButtonFrameRect->SetLocalTopLeftPos( btn_local_toplefft );
-	m_pSliderButtonDot->SetLocalTopLeftPos( btn_local_toplefft );
-//	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement, SPoint(slider_rect.left,slider_rect.top) );
+	m_pSliderButtonRect->SetLocalTopLeftPos( SPoint(0,0) );
+	m_pSliderButtonFrameRect->SetLocalTopLeftPos( SPoint(0,0) );
+	m_pSliderButtonDot->SetLocalTopLeftPos( SPoint(0,0) + dot_rect.GetTopLeftCorner() );
 	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement, slider_local_topleft );
 
 
@@ -565,13 +568,16 @@ void CGM_StdSliderRenderer::OnSliderValueChanged()
 	CGM_Slider *pSlider = GetSlider();
 	if( !pSlider )
 		return;
-
+/*
 	const SRect& btn_rect = pSlider->GetButtonRect();
 	Vector2 vDestPos = Vector2( (float)btn_rect.left, (float)btn_rect.top );
 //	m_pGraphicsEffectManager->SetTimeOffset();
 //	m_pGraphicsEffectManager->TranslateCDV( m_pSliderButton, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 
-	m_pSliderButton->SetTopLeftPos( vDestPos );
+	m_pSliderButton->SetLocalTopLeftPos( vDestPos );
+*/
+
+	m_pSliderButton->SetLocalOrigin( pSlider->GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner() );
 }
 
 

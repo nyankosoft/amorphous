@@ -147,7 +147,7 @@ public:
 
 	/// Called when the element belongs to a group element and its local origin is changed
 	/// \param vLocalOrigin local origin of the group represented in global coordinates
-	void UpdateGlobalPositions( Vector2 vLocalOrigin )
+	virtual void UpdateGlobalPositions( Vector2 vLocalOrigin )
 	{
 		UpdateTopLeftPos( vLocalOrigin + m_vLocalTopLeftPos );
 	}
@@ -468,7 +468,7 @@ class CGE_Group : public CGraphicsElement
 
 	/// origin of local top-left positions which are grouped by the group element.
 	/// - Represented in global screen coordinates
-	Vector2 m_vLocalOrigin;
+//	Vector2 m_vLocalOrigin;
 
 private:
 
@@ -488,24 +488,22 @@ public:
 
 	virtual void Draw();
 
-	Vector2 GetLocalOrigin() const { return m_vLocalOrigin; }
+	void SetLocalTopLeftPos( Vector2 vPos );
+
+	Vector2 GetLocalOriginInLocalCoord() const { return m_vLocalTopLeftPos;/* m_vLocalOrigin;*/ }
+
+	Vector2 GetLocalOriginInGlobalCoord() const;
+
+	void UpdateGlobalPositions( Vector2 vLocalOrigin );
 
 	/// Updates the global coordinates of grouped elements in this call or later?
 	/// - in this call: not good for performance
 	/// - later: you need to set a flag such as 'm_bNeedToUpdateGlobalPositionsOfGroupedElements' to true.
 	///   Later, before the rendering begins, update global positions of the grouped elements if the flag is true
 	/// NOTE: Called from ctor
-//	void SetLocalOrigin( Vector2 vLocalOrigin );
-	void SetLocalOrigin( Vector2 vLocalOrigin )
-	{
-		m_vLocalOrigin = vLocalOrigin;
+	inline void SetLocalOrigin( Vector2 vLocalOrigin );
 
-		vector<CGraphicsElement *>::iterator itr;
-		for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
-		{
-			(*itr)->UpdateGlobalPositions( vLocalOrigin );
-		}
-	}
+	void SetLocalOrigin( SPoint local_origin ) { SetLocalOrigin( Vector2((float)local_origin.x,(float)local_origin.y) ); }
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
@@ -521,16 +519,7 @@ public:
 
 	virtual int GetElementType() const { return TYPE_GROUP; }
 
-	void RemoveElementFromGroup( CGraphicsElement *pElement )
-	{
-		// remove the arg element from this group
-		// - does not release the element
-		std::vector<CGraphicsElement *>::iterator itr = std::find( m_vecpElement.begin(), m_vecpElement.end(), pElement );
-		if( itr != m_vecpElement.end() )
-			m_vecpElement.erase( itr );
-		else
-			LOG_PRINT_ERROR( "Failed to find a graphics element in the list of its owner group element." );
-	}
+	inline void RemoveElementFromGroup( CGraphicsElement *pElement );
 };
 
 
@@ -544,6 +533,30 @@ inline void CGE_Group::UpdateAABB()
 	}
 }
 
+
+inline void CGE_Group::SetLocalOrigin( Vector2 vLocalOrigin )
+{
+//	m_vLocalOrigin = vLocalOrigin;
+	m_vLocalTopLeftPos = vLocalOrigin;
+
+	vector<CGraphicsElement *>::iterator itr;
+	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
+	{
+		(*itr)->UpdateGlobalPositions( GetLocalOriginInGlobalCoord() );
+	}
+}
+
+
+inline void CGE_Group::RemoveElementFromGroup( CGraphicsElement *pElement )
+{
+	// remove the arg element from this group
+	// - does not release the element
+	std::vector<CGraphicsElement *>::iterator itr = std::find( m_vecpElement.begin(), m_vecpElement.end(), pElement );
+	if( itr != m_vecpElement.end() )
+		m_vecpElement.erase( itr );
+	else
+		LOG_PRINT_ERROR( "Failed to find a graphics element in the list of its owner group element." );
+}
 
 // provides callback mechanism invoked when an element is created / destroyed
 // - used by animated graphics manager to remove effects when the targt element is removed
