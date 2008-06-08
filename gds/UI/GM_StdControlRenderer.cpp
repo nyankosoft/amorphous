@@ -175,8 +175,8 @@ void CGM_StdStaticRenderer::Init()
 	int font_id = 0;
 	int x = pStatic->GetBoundingBox().left;
 	int y = pStatic->GetBoundingBox().top;
-	int w = m_pGraphicsElementManager->GetFont(font_id)->GetFontWidth();// 8;
-	int h = m_pGraphicsElementManager->GetFont(font_id)->GetFontHeight();// 16;
+	int w = 16;//m_pGraphicsElementManager->GetFont(font_id)->GetFontWidth();// 8;
+	int h = 32;//m_pGraphicsElementManager->GetFont(font_id)->GetFontHeight();// 16;
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 
 //	m_pText = m_pGraphicsElementManager->CreateText( 0, pStatic->GetText(), x, y, normal_color, w, h );

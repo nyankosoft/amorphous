@@ -125,6 +125,7 @@ public:
 
 	virtual void SetTexture( int texture_id ) { m_TextureID = texture_id; }
 
+	/// TODO: Decide whether this really has to be virtual
 	virtual Vector2 GetTopLeftPos() const { return m_AABB.vMin; }
 
 	virtual Vector2 GetLocalTopLeftPos() const { return m_vLocalTopLeftPos; }
@@ -322,19 +323,10 @@ public:
 
 	CGE_Triangle( /*const AABB2& non_scaled_aabb, */const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive );
 
-//	virtual Vector2 GetTopLeftPos() const;
-
 	virtual void Draw();
 
 	virtual int GetElementType() const { return TYPE_TRIANGLE; }
 };
-
-
-/*
-Vector2 CGE_Triangle::GetTopLeftPos() const
-{
-}
-*/
 
 
 /*
@@ -423,13 +415,9 @@ public:
 	 */
 	virtual void Draw();
 
-	virtual Vector2 GetTopLeftPos() const { return m_vTextPos; }
-
 	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{
 		UpdateTextAlignment();
-//		m_vTextPos = vPos;
-//		m_vScaledPos = m_vTextPos * m_fScale;
 	}
 
 	virtual void ChangeScale( float scale )
@@ -824,8 +812,6 @@ public:
 
 		m_FrameRect.Draw();
 	}
-
-	virtual Vector2 GetTopLeftPos() const { return m_AABB.vMin;//m_FrameRect.GetCornerPos2D(0) }
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{

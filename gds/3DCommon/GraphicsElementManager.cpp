@@ -308,8 +308,7 @@ void CGE_Text::UpdateTextAlignment()
 
 	m_vTextPos = vLocalTextOffset + m_AABB.vMin;
 
-	// Test this, since this also updates the scaled position
-//	SetTopLeftPos( vLocalTextOffset + m_AABB.vMin );
+	m_vScaledPos = m_vTextPos * m_fScale;
 }
 
 
