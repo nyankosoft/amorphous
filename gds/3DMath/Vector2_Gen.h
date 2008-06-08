@@ -1,5 +1,5 @@
 //=====================================================================
-//  Vector2_Gen.h
+//  TVector2_Gen.h
 //     - generic 2-dimensional vector class
 //
 //                                                  by Takashi Kuamgai
@@ -12,44 +12,45 @@
 #include "precision.h"
 
 
-class Vector2
+template<class TScalar>
+class TVector2
 {
 public:
 
-	Scalar x, y;
+	TScalar x, y;
 
-	inline Vector2() {}
-	inline Vector2( Scalar _x, Scalar _y );
+	inline TVector2() {}
+	inline TVector2( TScalar _x, TScalar _y );
 
-	//	~Vector2();
+	//	~TVector2();
 
 	/// vector - vector operators
 
-	inline Vector2 operator=( const Vector2& v );
+	inline TVector2 operator=( const TVector2& v );
 
-	inline Vector2 operator+( const Vector2& v ) const;
-	inline Vector2 operator-( const Vector2& v ) const;
+	inline TVector2 operator+( const TVector2& v ) const;
+	inline TVector2 operator-( const TVector2& v ) const;
 
-	inline void operator+=( const Vector2& v );
-	inline void operator-=( const Vector2& v );
+	inline void operator+=( const TVector2& v );
+	inline void operator-=( const TVector2& v );
 
 
 	/// vector - scalar operators
 
-	inline Vector2 operator*( const Scalar f ) const;
-	inline Vector2 operator/( const Scalar f ) const;
+	inline TVector2 operator*( const TScalar f ) const;
+	inline TVector2 operator/( const TScalar f ) const;
 
-	inline void operator*=( const Scalar f );
-	inline void operator/=( const Scalar f );
+	inline void operator*=( const TScalar f );
+	inline void operator/=( const TScalar f );
 
-	inline Scalar& operator[]( int i );
+	inline TScalar& operator[]( int i );
 
 
 	inline void Normalize();
 
-	inline Scalar GetLength() const;
+	inline TScalar GetLength() const;
 
-	inline Scalar GetLengthSq() const;
+	inline TScalar GetLengthSq() const;
 
 };
 

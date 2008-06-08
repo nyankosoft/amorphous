@@ -13,6 +13,7 @@
 
 // use the original Vector2 class
 #include "Vector2_Gen.h"
+typedef TVector2<Scalar> Vector2;
 
 #endif /* USE_D3DXVECTOR */
 
