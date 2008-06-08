@@ -110,13 +110,14 @@ CGameTask_TitleFG::CGameTask_TitleFG()
 
 //	((CGM_Button *)(pExitDialog->GetControl(ID_TT_EXIT_YES)))->SetButtonEventHandler(  ); 
 
-	CGM_Dialog *pTitleDialog = m_pDialogManager->AddRootDialog( UIID_TTL_DLG_ROOT, RectLTWH( 520, 320, 130, 200 ), "ROOT" );
+//	CGM_Dialog *pTitleDialog = m_pDialogManager->AddRootDialog( UIID_TTL_DLG_ROOT, RectLTWH( 520, 320, 130, 200 ), "ROOT" );
+	CGM_Dialog *pTitleDialog = m_pDialogManager->AddRootDialog( UIID_TTL_DLG_ROOT, RectAtRightBottom( 260, 400, 40, 40 ), "ROOT" );
 
 	int top_margin = 20;
-	pTitleDialog->AddButton(          ID_TT_START,    RectLTWH( 10, top_margin,        100, 32 ), "START" );
-	pTitleDialog->AddButton(          ID_TT_CONTINUE, RectLTWH( 10, top_margin + 32*1, 100, 32 ), "CONTINUE" );
-	pTitleDialog->AddButton(          ID_TT_SYSTEM,   RectLTWH( 10, top_margin + 32*2, 100, 32 ), "SYSTEM" );
-	pTitleDialog->AddSubDialogButton( ID_TT_EXIT,     RectLTWH( 10, top_margin + 32*3, 100, 32 ), "EXIT", pExitDialog );
+	pTitleDialog->AddButton(          ID_TT_START,    RectLTWH( 20, top_margin,        200, 64 ), "START" );
+	pTitleDialog->AddButton(          ID_TT_CONTINUE, RectLTWH( 20, top_margin + 64*1, 200, 64 ), "CONTINUE" );
+	pTitleDialog->AddButton(          ID_TT_SYSTEM,   RectLTWH( 20, top_margin + 64*2, 200, 64 ), "SYSTEM" );
+	pTitleDialog->AddSubDialogButton( ID_TT_EXIT,     RectLTWH( 20, top_margin + 64*3, 200, 64 ), "EXIT", pExitDialog );
 
 	pTitleDialog->SetEventHandler( pEventHandler );
 
@@ -127,7 +128,7 @@ CGameTask_TitleFG::CGameTask_TitleFG()
 	// put some background image
 	int bg_layer_index = 89;
 	CGraphicsElementManager *pMgr = m_pUIRendererManager->GetGraphicsElementManager();
-	CGE_Rect *pBGRect = pMgr->CreateRect( RectLTWH( 0, 0, 800, 600 ), SFloatRGBAColor(1,1,1,1), bg_layer_index );
+	CGE_Rect *pBGRect = pMgr->CreateRect( ReferenceScreenRect(), SFloatRGBAColor(1,1,1,1), bg_layer_index );
 	pMgr->LoadTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE, "Texture/bg_testimage.jpg" );
 	pBGRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE );
 

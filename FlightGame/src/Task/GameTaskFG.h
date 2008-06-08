@@ -6,9 +6,6 @@
 #include "UI/ui_fwd.h"
 
 
-extern CGM_Dialog *FG_CreateYesNoDialogBox( CGM_DialogManagerSharedPtr pDialogManager,
-									 bool is_root_dlg, int dlg_id, const std::string& title,
-									 const std::string& text, int id_yes, int id_no );
 
 
 class CGameTaskFG : public CGameTask
@@ -20,6 +17,10 @@ protected:
 	void SetSounds( CGM_DialogManagerSharedPtr pDialogManager );
 
 	void DoCommonInit( CGM_DialogManagerSharedPtr pDialogManager );
+
+	CGM_Dialog *FG_CreateYesNoDialogBox( CGM_DialogManagerSharedPtr pDialogManager,
+										 bool is_root_dlg, int dlg_id, const std::string& title,
+										 const std::string& text, int id_yes, int id_no );
 
 public:
 

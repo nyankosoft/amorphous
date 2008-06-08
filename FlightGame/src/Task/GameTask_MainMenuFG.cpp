@@ -262,19 +262,6 @@ void CGameTask_MainMenuFG::InitMenu()
 
 	CGM_Dialog* pRootDialog = CreateRootMenu();
 
-/*
-	CGM_Dialog *apDialog[NUM_SUB_MENUS];
-
-	// confirmation dialog box
-	apDialog[SM_CONFIRM]
-		= Create2ChoiceDialog( m_apDialogManager[SM_CONFIRM], true,
-		"confirm", SRect( 400-80, 300-60, 400+80, 300+30 ),
-		ID_TMM_CONFIRM_OK,		"yes",	RectLTWH( 15, 60, 60, 25 ),
-		ID_TMM_CONFIRM_CANCEL,	"no",	RectLTWH( 85, 60, 60, 25 ) );
-//		0, "You're gonna go up with this one?", SRect( 400-70, 300-40, 400+70, 300-15 ) );
-
-*/
-
 //	pDialog->SetEventHandler( m_apEventHandler[SM_AIRCRAFT_SELECT] );
 
 	// set input handler for dialog menu
@@ -284,7 +271,7 @@ void CGameTask_MainMenuFG::InitMenu()
 	// put some background image
 	int bg_layer_index = 89;
 	CGraphicsElementManager *pMgr = m_pUIRendererManager->GetGraphicsElementManager();
-	CGE_Rect *pBGRect = pMgr->CreateRect( RectLTWH( 0, 0, 800, 600 ), SFloatRGBAColor(0.7f,0.7f,0.7f,0.7f), bg_layer_index );
+	CGE_Rect *pBGRect = pMgr->CreateRect( ReferenceScreenRect(), SFloatRGBAColor(0.7f,0.7f,0.7f,0.7f), bg_layer_index );
 	pMgr->LoadTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE, "Texture/bg_testimage.jpg" );
 	pBGRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE );
 

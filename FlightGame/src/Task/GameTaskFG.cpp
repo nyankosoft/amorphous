@@ -9,13 +9,7 @@
 using namespace Graphics;
 
 
-static SPoint GetReferenceScreenCenterPosition() { return SPoint(800,600)  * 0.5f; }
-
-
 /*
-static int GetReferenceScreenWidth() { return 800; }
-static int GetReferenceScreenHeight() { return 600; }
-
 
 // rearrage the layout of UI controls
 void UpdatePosOfUIControls()
@@ -23,45 +17,20 @@ void UpdatePosOfUIControls()
 	m_pDialogManager->GetControl(ID_TT_DLG_EXIT)->SetTopLeftPos(GetConformationDialogTopLeftPos());
 	m_pDialogManager->GetControl(ID_TT_CONTROL_AT_BOTTOM_RIGHT)->SetTopLeftPos();
 }
-
-
-SPoint GetConformationDialogTopLeftPos( int w, int h )
-{
-	int cx = GetReferenceScreenWidth() / 2;
-	int cy = GetReferenceScreenHeight() / 2;
-	return SPoint( cx-w/2, cy-h/2 );
-}
-
 */
 
-/*
-CreateConfirmationDialog()
-{
-	int dw = 200;
-	int dh = 80;
-	SPoint pos = GetConformationDialogTopLeftPos( dw, dh );
-
-	CGM_Dialog *pExitDialog
-		= Create2ChoiceDialog( m_pDialogManager, false,
-		ID_TT_DLG_EXIT, "Exit Game", RectLTWH( pos.x, pos.y, dw, dh ),
-		ID_TT_EXIT_YES,	"YES",	     RectLTWH( 20,     40, 60, 24 ),
-		ID_TT_EXIT_NO,	"NO",	     RectLTWH( dw/2+20, 40, 60, 24 ),
-		0, ""/"Are you sure?"/, SRect( 20, 16, 20+120, 16+20 ) );
-	pExitDialog->SetEventHandler( pEventHandler );
-}
-*/
-CGM_Dialog *FG_CreateYesNoDialogBox( CGM_DialogManagerSharedPtr pDialogManager,
+CGM_Dialog *CGameTaskFG::FG_CreateYesNoDialogBox( CGM_DialogManagerSharedPtr pDialogManager,
 									 bool is_root_dlg, int dlg_id, const std::string& title,
 									 const std::string& text, int id_yes, int id_no )
 {
-	int dw = 160;
-	int dh = 90;
-	SPoint cp = GetReferenceScreenCenterPosition();
-	cp.y -= 30;
+	int dw = 320;
+	int dh = 180;
+	SRect dlg_rect = RectAtCenter( dw, dh );
+	dlg_rect.Offset( 0, -60 );
 	CGM_Dialog *pDlgBox = Create2ChoiceDialog( pDialogManager, is_root_dlg,
-		dlg_id, title, RectCWH( cp, dw, dh ),
-		id_yes,	"YES",	RectLTWH( 15, 60, 60, 25 ),
-		id_no,	"NO",	RectLTWH( 85, 60, 60, 25 ) );
+		dlg_id, title, dlg_rect,
+		id_yes,	"YES",	RectLTWH(  30, 60, 120, 50 ),
+		id_no,	"NO",	RectLTWH( 170, 60, 120, 50 ) );
 
 	if( !pDlgBox )
 		return NULL;
@@ -80,19 +49,20 @@ void CGameTaskFG::LoadFonts( CGM_ControlRendererManagerSharedPtr pControlReneder
 	CGraphicsElementManager *pGraphicsElementMgr = pControlRenedererMgr->GetGraphicsElementManager();
 
 	// add font to UI render manager
-//	string filename = "Texture\\HGGE_16x8_256.dds";
-	string filename = "Texture\\BitstreamVeraSansMono_Bold.dds";
-	if( !pGraphicsElementMgr->LoadFont( 0, filename,        CFontBase::FONTTYPE_TEXTURE, 12, 24 ) )
-		g_Log.Print( "failed to register font: %s", filename.c_str() );
+//	string filename = "Texture/HGGE_16x8_256.dds";
+	string filename = "./Texture/BitstreamVeraSansMono_Bold.dds";
+	if( !pGraphicsElementMgr->LoadFont( 0, filename,        CFontBase::FONTTYPE_TEXTURE, 24, 48 ) )
+		LOG_PRINT_ERROR( "failed to register font: " + filename );
 
-	if( !pGraphicsElementMgr->LoadFont( 1, filename,        CFontBase::FONTTYPE_TEXTURE, 10, 20 ) )
-		g_Log.Print( "failed to register font: %s", filename.c_str() );
+	if( !pGraphicsElementMgr->LoadFont( 1, filename,        CFontBase::FONTTYPE_TEXTURE, 20, 40 ) )
+		LOG_PRINT_ERROR( "failed to register font: " + filename );
 
-	if( !pGraphicsElementMgr->LoadFont( 2, filename,        CFontBase::FONTTYPE_TEXTURE,  8, 12 ) )
-		g_Log.Print( "failed to register font: %s", filename.c_str() );
+	if( !pGraphicsElementMgr->LoadFont( 2, filename,        CFontBase::FONTTYPE_TEXTURE, 16, 24 ) )
+		LOG_PRINT_ERROR( "failed to register font: " + filename );
 
-	if( !pGraphicsElementMgr->LoadFont( 3, "‚l‚r ƒSƒVƒbƒN", CFontBase::FONTTYPE_NORMAL, 10, 20 ) )
-		g_Log.Print( "failed to register font: %s", filename.c_str() );
+	string font_name = "‚l‚r ƒSƒVƒbƒN";
+	if( !pGraphicsElementMgr->LoadFont( 3, font_name, CFontBase::FONTTYPE_NORMAL, 20, 40 ) )
+		LOG_PRINT_ERROR( "failed to register font: " + font_name );
 }
 
 

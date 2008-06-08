@@ -125,13 +125,13 @@ void CFG_StdStaticRenderer::Init()
 	int font_id = 0;
 	int x = pStatic->GetBoundingBox().left;
 	int y = pStatic->GetBoundingBox().top;
-	int w = m_pGraphicsElementManager->GetFont(font_id)->GetFontWidth();// 8;
-	int h = m_pGraphicsElementManager->GetFont(font_id)->GetFontHeight();// 16;
+	int w = 0;//m_pGraphicsElementManager->GetFont(font_id)->GetFontWidth();// 8;
+	int h = 0;//m_pGraphicsElementManager->GetFont(font_id)->GetFontHeight();// 16;
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 
 	SRect text_rect = pStatic->GetBoundingBox();
-	text_rect.left  += 6;
-	text_rect.right -= 6;
+	text_rect.Inflate( -12, 0 );
+
 	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, pStatic->GetText(), text_rect,
 		CGE_Text::TAL_LEFT, CGE_Text::TAL_CENTER, normal_color, w, h );
 
@@ -417,6 +417,9 @@ void CFG_StdDialogRenderer::Init()
 	// render the frame rect on the background rect
 	RegisterGraphicsElement( 2, m_pFrameRect );
 	RegisterGraphicsElement( 3, m_pRect );
+
+	// overwrite local top left pos of the background rect
+	m_pRect->SetLocalTopLeftPos( SPoint(8,8) );
 
 	// title
 	if( 0 < pDialog->GetTitle().length() )
