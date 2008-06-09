@@ -916,32 +916,6 @@ void CGM_Dialog::ClearPressedControl()
 	}
 }
 
-/*
-void CGM_Dialog::InitStaticProperties()
-{
-	m_pDialogManager->ControlFocus()   = NULL;
-	m_pDialogManager->ControlPressed() = NULL;
-}
-*/
-
-void CGM_Dialog::Render()
-{
-/*	m_pDialogManager->GetRenderManager()->RenderDialog( *this );
-
-	size_t i, num_controls = m_vecpControl.size();
-	for( i=0; i<num_controls; i++ )
-	{
-		m_vecpControl[i]->Render();
-	}
-
-	for( i=0; i<num_controls; i++ )
-	{
-//		m_vecpControl[i]->RenderSubDialog();
-		if( m_vecpControl[i]->GetType() == CGM_Control::SUBDIALOGBUTTON )
-			((CGM_SubDialogButton *)m_vecpControl[i])->RenderSubDialog();
-	}*/
-}
-
 
 void CGM_Dialog::ChangeScale( float factor )
 {

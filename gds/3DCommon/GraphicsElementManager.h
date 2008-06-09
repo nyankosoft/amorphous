@@ -326,7 +326,7 @@ class CGE_Triangle : public CGE_Primitive
 
 public:
 
-	CGE_Triangle( /*const AABB2& non_scaled_aabb, */const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive );
+	CGE_Triangle( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect );
 
 	virtual void Draw();
 
@@ -492,6 +492,8 @@ public:
 	Vector2 GetTopLeftPos() const { return GetLocalOriginInGlobalCoord(); }
 
 	void SetLocalTopLeftPos( Vector2 vPos );
+
+	void SetLocalTopLeftPos( SPoint pos ) { SetLocalTopLeftPos( Vector2((float)pos.x,(float)pos.y) ); }
 
 	Vector2 GetLocalOriginInLocalCoord() const { return m_vLocalTopLeftPos;/* m_vLocalOrigin;*/ }
 

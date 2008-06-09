@@ -137,7 +137,6 @@ protected:
 
 	CGM_Dialog *GetDialog() { return dynamic_cast<CGM_Dialog *>(m_pControl); }
 
-//	CGM_ScrollBar *Get() { return NULL; }
 //	CGM_DialogCloseButton *Get() { return NULL; }
 
 	/// register a graphics element to the owner dialog

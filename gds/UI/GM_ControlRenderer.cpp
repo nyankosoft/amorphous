@@ -94,14 +94,7 @@ void CGM_ControlRenderer::GroupGraphicsElements()
 		// collect graphics elements of this dialog renderer
 		this->GetGraphicsElements( vecpGraphicsElementsToGroup );
 
-		// update local positions of each element
 		const SPoint local_origin = pDialog->GetBoundingBox().GetTopLeftCorner();
-//		Vector2 vLocalOrigin = Vector2( (float)local_origin.x, (float)local_origin.y );
-//		for( i=0; i<vecpGraphicsElementsToGroup.size(); i++ )
-//		{
-//			Vector2 vGlobalPos = vecpGraphicsElementsToGroup[i]->GetTopLeftPos();
-//			vecpGraphicsElementsToGroup[i]->SetLocalTopLeftPos( vGlobalPos - vLocalOrigin );
-//		}
 
 		// create a group
 		// - top-left corner of the dialog box is used as the local origin of the group
@@ -152,10 +145,6 @@ void CGM_ControlRenderer::RegisterGraphicsElement( int local_layer_index, CGraph
 	RegisterGraphicsElementToParentDialog( pElement );
 
 	SetLocalLayerOffset( local_layer_index, pElement );
-
-//	CGM_Control *pControl = GetControl();
-//	if( pControl )
-//		pElement->SetLocalTopLeftPos( pControl->GetLocalRect().GetTopLeftCorner() );
 }
 
 

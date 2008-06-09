@@ -70,7 +70,7 @@ CGM_ControlRenderer *CGM_StdControlRendererManager::CreateListBoxRenderer( CGM_L
 
 CGM_ControlRenderer *CGM_StdControlRendererManager::CreateScrollBarRenderer( CGM_ScrollBar *pScrollbar )
 {
-	return NULL;//new CGM_StdScrollBarRenderer();
+	return new CGM_StdScrollBarRenderer();
 }
 
 

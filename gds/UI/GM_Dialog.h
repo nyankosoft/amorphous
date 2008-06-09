@@ -204,10 +204,6 @@ public:
 
     void ClearPressedControl();
 
-//	static void InitStaticProperties();
-
-	void Render();
-
 	const std::string GetTitle() const { return m_strTitle; }
 
 	void SetFocusOnLastFocusedControl();

@@ -172,20 +172,14 @@ void CGE_Rect::Draw()
 // CGE_Triangle
 //==========================================================================================
 
-CGE_Triangle::CGE_Triangle( /*const AABB2& non_scaled_aabb,*/ const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive )
+CGE_Triangle::CGE_Triangle( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect )
 :
 CGE_Primitive(pPrimitive),
 m_pTriangle(NULL),
 m_pFTriangle(NULL),
 m_RFpTriangle(NULL)
 {
-/*	AABB2 aabb;
-	aabb.Nullify();
-	for( int i=0; i<3; i++ )
-		aabb.AddPoint( pPrimitive->GetPosition2D(i) );
-
-	m_AABB = aabb;*/
-	// ^^^^^^^^^^^^^^ Wrong! m_AABB holds a non-scaled bounding box!!!
+	m_AABB = AABB2( Vector2((float)non_scaled_rect.left,(float)non_scaled_rect.top), Vector2((float)non_scaled_rect.right,(float)non_scaled_rect.bottom) );
 
 //	m_pTriangle   = dynamic_cast<C2DTriangle *>(pPrimitive),
 //	m_pFTriangle  = dynamic_cast<C2DFrameTriangle *>(pPrimitive),
@@ -689,7 +683,9 @@ CGE_Triangle *CGraphicsElementManager::InitTriangleElement( int element_index, i
 															const SFloatRGBAColor& color,
 													        C2DPrimitive *pTrianglePrimitive )
 {
-	CGE_Triangle *pTriangleElement = new CGE_Triangle( color, pTrianglePrimitive );
+	CGE_Triangle *pTriangleElement = new CGE_Triangle( color, pTrianglePrimitive, non_scaled_rect );
+
+	pTriangleElement->m_AABB = AABB2( Vector2((float)non_scaled_rect.left,(float)non_scaled_rect.top), Vector2((float)non_scaled_rect.right,(float)non_scaled_rect.bottom) );
 
 	InitPrimitiveElement( pTriangleElement, pTrianglePrimitive, non_scaled_rect, color, element_index, layer_index );
 

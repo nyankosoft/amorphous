@@ -17,7 +17,7 @@ public:
 
 		Style = 0;
 		PageSize = 10;
-		nSBWidth = 16;
+		nSBWidth = 32;
 		nTextHeight = 16;
 		nBorder = 6;
 		nMargin = 5;

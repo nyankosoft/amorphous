@@ -439,12 +439,13 @@ void CGM_StdScrollBarRenderer::Init()
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
 
+	SRect thumb_rect = pScrollbar->GetThumbButtonRect();
 	const SRect src_rect[NUM_RECT_ELEMENTS] =
 	{
 		pScrollbar->GetLocalUpButtonRectInOwnerDialogCoord(),
 		pScrollbar->GetLocalDownButtonRectInOwnerDialogCoord(),
 		pScrollbar->GetLocalTrackRectInOwnerDialogCoord(),
-		pScrollbar->GetLocalThumbButtonRectInOwnerDialogCoord()
+		RectLTWH( 0, 0, thumb_rect.GetWidth(), thumb_rect.GetHeight() ) // thumb rect elements are grouped by a group element
 	};
 
 	for( int i=0; i<NUM_RECT_ELEMENTS; i++ )
@@ -468,19 +469,24 @@ void CGM_StdScrollBarRenderer::Init()
 	for( int i=0; i<NUM_TRIANGLE_ELEMENTS; i++ )
 	{
 		SRect arrow_rect = arrow_src_rect[i];
-		arrow_rect.Inflate( -3, -3 );
+		arrow_rect.Inflate( -6, -6 );
 		m_apTriangle[i] = pElementMgr->CreateTriangle( arrow_dir[i], arrow_rect, normal_color );
 
 		RegisterColoredElement( m_apTriangle[i] );
 		RegisterGraphicsElement( 2, m_apTriangle[i] );
+
+/*		CGE_Rect *pRect = pElementMgr->CreateRect( arrow_rect, normal_color );
+		RegisterColoredElement( pRect );
+		RegisterGraphicsElement( 2, pRect );*/
 	}
 
 	// register thumb rects
-	// - rendered no top of other elements
+	// - rendered on top of other elements
 	// - create a subgroup
+	// - local origin: top-left corner of the rect in local coord of the owner dialog (owner dialog coord)
 	CGraphicsElement *apElement[] = { m_apFrameRect[RE_THUMB], m_apRect[RE_THUMB] };
-	const SRect bar_rect = pScrollbar->GetBoundingBox();
-	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement), SPoint(bar_rect.left,bar_rect.top) );
+	SRect thumb_rect_in_owner_dlg_coord = pScrollbar->GetLocalThumbButtonRectInOwnerDialogCoord();
+	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement), thumb_rect_in_owner_dlg_coord.GetTopLeftCorner() );
 
 	RegisterGraphicsElementToParentDialog( m_pThumbGroup );
 
@@ -491,9 +497,9 @@ void CGM_StdScrollBarRenderer::Init()
 
 void CGM_StdScrollBarRenderer::OnThumbUpdated( CGM_ScrollBar *pScrollbar )
 {
-	SRect thumb_rect = pScrollbar->GetThumbButtonRect();
+	SRect thumb_rect = pScrollbar->GetLocalThumbButtonRectInOwnerDialogCoord();
 	if( m_pThumbGroup )
-		m_pThumbGroup->SetTopLeftPos( Vector2( (float)thumb_rect.left, (float)thumb_rect.top ) );
+		m_pThumbGroup->SetLocalTopLeftPos( thumb_rect.GetTopLeftCorner() );
 }
 
 
