@@ -94,6 +94,38 @@ void CGM_ScrollBar::UpdateThumbRect()
 }
 
 
+SRect CGM_ScrollBar::GetLocalUpButtonRectInOwnerDialogCoord() const
+{
+	SRect rect(m_rcUpButton);
+	rect.Offset( - GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner() );
+	return rect;
+}
+
+
+SRect CGM_ScrollBar::GetLocalDownButtonRectInOwnerDialogCoord() const
+{
+	SRect rect(m_rcDownButton);
+	rect.Offset( - GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner() );
+	return rect;
+}
+
+
+SRect CGM_ScrollBar::GetLocalTrackRectInOwnerDialogCoord() const
+{
+	SRect rect(m_rcTrack);
+	rect.Offset( - GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner() );
+	return rect;
+}
+
+
+SRect CGM_ScrollBar::GetLocalThumbButtonRectInOwnerDialogCoord() const
+{
+	SRect rect(m_rcThumb);
+	rect.Offset( - GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner() );
+	return rect;
+}
+
+
 //--------------------------------------------------------------------------------------
 // Scroll() scrolls by nDelta items.  A positive value scrolls down, while a negative
 // value scrolls up.

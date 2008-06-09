@@ -97,6 +97,7 @@ protected:
 	///        initialized in derived class if it is not specified here
 	CGraphicsElement( const AABB2& non_scaled_aabb = AABB2Null() )
 		:
+	m_pManager(NULL),
 	m_AABB(non_scaled_aabb),
 	m_TextureID(-1),
 	m_fScale(1.0f),
@@ -617,6 +618,18 @@ public:
 };
 
 
+/**
+ About Create*() functions
+  - returns a borrowed reference to a graphics element
+  - User can
+    - release the element by calling CGraphicsElementManager::RemoveElement()
+    - or just leave them then the dtor of CGraphicsElementManager will remove all the element
+    - Do not ever use the element once its CGraphicsElementManager is released
+  - argument of rect or bounding box is local coord by default
+    - also set as global coord if the element does not belong to any group element
+	  - But isn't this always true because an element cannot be owned by any group the moment it is created?
+
+*/
 class CGraphicsElementManager : public CGraphicsElementManagerBase, public CGraphicsComponent
 //class CGraphicsElementManager : public CGraphicsComponent
 {
@@ -696,6 +709,10 @@ public:
 	void ReleaseGraphicsResources();
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+
+	//
+	// functions to reate primitives
+	//
 
 	CGE_Rect *CreateRect( const SRect& rect, const SFloatRGBAColor& color, int layer = 0 );
 

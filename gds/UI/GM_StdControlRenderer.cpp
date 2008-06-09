@@ -180,7 +180,7 @@ void CGM_StdStaticRenderer::Init()
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 
 //	m_pText = m_pGraphicsElementManager->CreateText( 0, pStatic->GetText(), x, y, normal_color, w, h );
-	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, pStatic->GetText(), pStatic->GetBoundingBox(),
+	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, pStatic->GetText(), pStatic->GetLocalRect(),
 		CGE_Text::TAL_CENTER, CGE_Text::TAL_CENTER, normal_color, w, h );
 
 	// render the text on top
@@ -198,8 +198,8 @@ void CGM_StdButtonRenderer::Init()
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect      = m_pGraphicsElementManager->CreateRect( pButton->GetBoundingBox(),      bg_color );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pButton->GetBoundingBox(), normal_color, 2 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      pButton->GetLocalRect(), bg_color );
+	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pButton->GetLocalRect(), normal_color, 2 );
 
 	// register elements
 	// - set local layer offset to determine rendering order
@@ -268,12 +268,12 @@ void CGM_StdListBoxRenderer::Init()
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
 
-	m_pRect      = m_pGraphicsElementManager->CreateRect( pListBox->GetBoundingBox(),      bg_color );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pListBox->GetBoundingBox(), normal_color, 2 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      pListBox->GetLocalRect(), bg_color );
+	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pListBox->GetLocalRect(), normal_color, 2 );
 
 	// create empty text elements
-	int x = GetBaseControl()->GetBoundingBox().left;
-	int y = GetBaseControl()->GetBoundingBox().top;
+	int x = pListBox->GetLocalRect().left;
+	int y = pListBox->GetLocalRect().top;
 	int text_x = x;
 	int text_y = y;
 //	int w = 8;
@@ -294,7 +294,7 @@ void CGM_StdListBoxRenderer::Init()
 	int num_text_elements = (int)m_vecpText.size();
 	for( i=0; i<num_text_elements; i++ )
 		RegisterGraphicsElement( local_layer_offset, m_vecpText[i] );
-	RegisterGraphicsElement( local_layer_offset, m_pFrameRect );
+	RegisterGraphicsElement( local_layer_offset,   m_pFrameRect );
 	RegisterGraphicsElement( local_layer_offset+1, m_pRect );
 
 	// register elements that changes colors depending on states
@@ -441,10 +441,10 @@ void CGM_StdScrollBarRenderer::Init()
 
 	const SRect src_rect[NUM_RECT_ELEMENTS] =
 	{
-		pScrollbar->GetUpButtonRect(),
-		pScrollbar->GetDownButtonRect(),
-		pScrollbar->GetTrackRect(),
-		pScrollbar->GetThumbButtonRect()
+		pScrollbar->GetLocalUpButtonRectInOwnerDialogCoord(),
+		pScrollbar->GetLocalDownButtonRectInOwnerDialogCoord(),
+		pScrollbar->GetLocalTrackRectInOwnerDialogCoord(),
+		pScrollbar->GetLocalThumbButtonRectInOwnerDialogCoord()
 	};
 
 	for( int i=0; i<NUM_RECT_ELEMENTS; i++ )
@@ -508,21 +508,21 @@ void CGM_StdSliderRenderer::Init()
 	// slider frame
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect                  = m_pGraphicsElementManager->CreateRect( pSlider->GetBoundingBox(),      bg_color );
-	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetBoundingBox(), normal_color, 2 );
+	m_pRect                  = m_pGraphicsElementManager->CreateRect(      pSlider->GetLocalRect(), bg_color );
+	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetLocalRect(), normal_color, 2 );
 
 	// slider button
-	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect( pSlider->GetButtonRect(),       bg_color );
-	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetButtonRect(),  normal_color, 2 );
+	SRect btn_rect = pSlider->GetButtonRect();
+	SRect local_btn_rect = RectLTWH( 0, 0, btn_rect.GetWidth(), btn_rect.GetHeight() );
+	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect(      local_btn_rect,  bg_color );
+	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( local_btn_rect,  normal_color, 2 );
 
-	SRect local_btn_rect = pSlider->GetLocalButtonRect();
-	SRect dot_rect = RectLTWH( 0, 0, local_btn_rect.GetWidth(), local_btn_rect.GetHeight() );
+	SRect dot_rect = local_btn_rect;
 	dot_rect.Inflate( -dot_rect.GetWidth() / 4, -dot_rect.GetHeight() / 4 );
 	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( dot_rect, normal_color, 2 );
 
 	const SRect slider_rect = pSlider->GetBoundingBox();
 	const SPoint slider_topleft = slider_rect.GetTopLeftCorner(); // global
-	const SPoint slider_local_topleft = pSlider->GetLocalRect().GetTopLeftCorner(); // local coord of owner dialog
 	const SPoint btn_local_topleft = pSlider->GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local coord of owner dialog
 
 	// subgroup for slider button
@@ -602,10 +602,10 @@ void CGM_StdDialogRenderer::Init()
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect      = m_pGraphicsElementManager->CreateRect( pDialog->GetBoundingBox(),      bg_color );
-//	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( pDialog->GetBoundingBox(),      bg_color, 6 );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pDialog->GetBoundingBox(), normal_color, 2 );
-//	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( pDialog->GetBoundingBox(), normal_color, 6, 6 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      pDialog->GetLocalRect(), bg_color );
+//	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( pDialog->GetLocalRect(), bg_color, 6 );
+	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pDialog->GetLocalRect(), normal_color, 2 );
+//	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( pDialog->GetLocalRect(), normal_color, 6, 6 );
 
 	// render the frame rect on the background rect
 	RegisterGraphicsElement( 0, m_pFrameRect );

@@ -105,7 +105,7 @@ CGM_Control::~CGM_Control()
 }
 
 
-SRect CGM_Control::GetLocalRect()
+SRect CGM_Control::GetLocalRect() const
 {
 	SRect rect = GetBoundingBox();
 	rect.Offset( - GetOwnerDialog()->GetBoundingBox().GetTopLeftCorner() );

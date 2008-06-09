@@ -153,9 +153,9 @@ void CGM_ControlRenderer::RegisterGraphicsElement( int local_layer_index, CGraph
 
 	SetLocalLayerOffset( local_layer_index, pElement );
 
-	CGM_Control *pControl = GetControl();
-	if( pControl )
-		pElement->SetLocalTopLeftPos( pControl->GetLocalRect().GetTopLeftCorner() );
+//	CGM_Control *pControl = GetControl();
+//	if( pControl )
+//		pElement->SetLocalTopLeftPos( pControl->GetLocalRect().GetTopLeftCorner() );
 }
 
 

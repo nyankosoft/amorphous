@@ -83,6 +83,11 @@ void CGraphicsElement::SetLocalTopLeftPos( Vector2 vLocalPos )
 			UpdateTopLeftPos( pOwner->GetLocalOriginInGlobalCoord() + m_vLocalTopLeftPos );
 		}
 	}
+	else
+	{
+		// local pos == global pos
+		SetTopLeftPos( m_vLocalTopLeftPos );
+	}
 }
 
 
@@ -648,6 +653,11 @@ void CGraphicsElementManager::InitPrimitiveElement( CGE_Primitive *pElement,
 	non_scaled_aabb.vMax.x = (float)non_scaled_rect.right;
 	non_scaled_aabb.vMax.y = (float)non_scaled_rect.bottom;
 
+	// set as local coord
+	// the element is owned by a group: local coord
+	// the element is not owned by any group: global coord
+	pElement->SetLocalTopLeftPos( non_scaled_rect.GetTopLeftCorner() );
+
 	pPrimitive->SetTextureUV( TEXCOORD2( 0.0f, 0.0f ), TEXCOORD2( 1.0f, 1.0f ) );
 	pPrimitive->SetZDepth( z );
 	pPrimitive->SetColor( color );
@@ -818,6 +828,10 @@ CGE_Text *CGraphicsElementManager::CreateTextBox( int font_id, const std::string
 	m_vecpElement[index] = pTextElement;
 
 	InitElement( pTextElement, index, layer );
+
+	// manager must be set to the element before calling SetLocalTopLeftPos()
+	// because it calls UpdateTextAlignment(), which calls CGraphicsElementManager::GetFont()
+	pTextElement->SetLocalTopLeftPos( textbox.GetTopLeftCorner() );
 
 	pTextElement->UpdateTextAlignment();
 

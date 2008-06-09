@@ -35,6 +35,11 @@ public:
     const SRect& GetTrackRect() const { return m_rcTrack; }
     const SRect& GetThumbButtonRect() const { return m_rcThumb; }
 
+	SRect GetLocalUpButtonRectInOwnerDialogCoord() const;
+	SRect GetLocalDownButtonRectInOwnerDialogCoord() const;
+	SRect GetLocalTrackRectInOwnerDialogCoord() const;
+	SRect GetLocalThumbButtonRectInOwnerDialogCoord() const;
+
     void Scroll( int nDelta );    ///< Scroll by nDelta items (plus or minus)
     void ShowItem( int nIndex );  ///< Ensure that item nIndex is displayed, scroll if necessary
 

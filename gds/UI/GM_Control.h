@@ -43,7 +43,12 @@ public:
 
 	const std::string& GetStringID() const { return m_StringID; }
 
-	const SRect& GetBoundingBox() const { return m_BoundingBox; }
+	const SRect& GetBoundingBox() const { return GetRect(); }
+
+	/// returns rect of the control global coord
+	const SRect& GetRect() const { return m_BoundingBox; }
+
+	virtual SRect GetLocalRect() const { return GetRect(); }
 
 	int GetDepth() const { return m_Depth; }
 
@@ -152,8 +157,10 @@ public:
 
 	CGM_Dialog *GetOwnerDialog() { return m_pDialog; }
 
-	/// get the bounding box in the local coordinates of owner dialog
-	SRect GetLocalRect();
+	const CGM_Dialog *GetOwnerDialog() const { return m_pDialog; }
+
+	/// get the bounding box in the local coordinates of the owner dialog
+	SRect GetLocalRect() const;
 
 
 	virtual bool HandleMouseInput( CGM_InputData& input ) { return false; }

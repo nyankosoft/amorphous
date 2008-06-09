@@ -138,6 +138,10 @@ public:
 
 	CGM_DialogManager *GetDialogManager() { return m_pDialogManager; }
 
+	/// Returns the bounding box in the local coordinates of this dialog.
+	/// i.e.) RectLTWH( 0, 0, dialog_width, dialog_height );
+	SRect GetLocalRect() const { return RectLTWH( 0, 0, GetRect().GetWidth(), GetRect().GetHeight() ); }
+
 	/// add a control to the dialog
 	/// and returns a pointer to the created control
 	CGM_Control *AddControl( CGM_ControlDesc *pControlDesc );
