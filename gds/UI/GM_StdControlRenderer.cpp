@@ -456,6 +456,9 @@ void CGM_StdScrollBarRenderer::Init()
 		RegisterColoredElement( m_apFrameRect[i] );
 	}
 
+	// make the thumb rect brighter than the other so that it can be distinguished
+	m_apRect[RE_THUMB]->SetColor( 0, SFloatRGBAColor(0.5f,0.5f,0.5f,0.7f) );
+
 	// register all except for the thumb rects
 	for( int i=0; i<NUM_RECT_ELEMENTS - 1; i++ )
 	{
