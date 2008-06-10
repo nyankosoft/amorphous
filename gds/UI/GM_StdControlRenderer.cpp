@@ -499,7 +499,13 @@ void CGM_StdScrollBarRenderer::OnThumbUpdated( CGM_ScrollBar *pScrollbar )
 {
 	SRect thumb_rect = pScrollbar->GetLocalThumbButtonRectInOwnerDialogCoord();
 	if( m_pThumbGroup )
+	{
 		m_pThumbGroup->SetLocalTopLeftPos( thumb_rect.GetTopLeftCorner() );
+
+		SRect local_thumb_rect = RectLTWH( 0, 0, thumb_rect.GetWidth(), thumb_rect.GetHeight() );
+		for( size_t i=0; i<m_pThumbGroup->GetElementBuffer().size(); i++ )
+			m_pThumbGroup->GetElementBuffer()[i]->SetLocalRect( local_thumb_rect );
+	}
 }
 
 

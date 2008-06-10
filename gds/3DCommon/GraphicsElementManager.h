@@ -146,6 +146,12 @@ public:
 
 	void SetLocalTopLeftPos( SPoint pos ) { SetLocalTopLeftPos(Vector2((float)pos.x,(float)pos.y) ); }
 
+	void SetLocalRect( const SRect& local_rect )
+	{
+		SetSizeLTRB( Vector2((float)local_rect.left,(float)local_rect.top), Vector2((float)local_rect.right,(float)local_rect.bottom) );
+		SetLocalTopLeftPos( local_rect.GetTopLeftCorner() );
+	}
+
 	/// Called when the element belongs to a group element and its local origin is changed
 	/// \param vLocalOrigin local origin of the group represented in global coordinates
 	virtual void UpdateGlobalPositions( Vector2 vLocalOrigin )
@@ -525,6 +531,8 @@ public:
 	virtual int GetElementType() const { return TYPE_GROUP; }
 
 	inline void RemoveElementFromGroup( CGraphicsElement *pElement );
+
+	std::vector<CGraphicsElement *>& GetElementBuffer() { return m_vecpElement; }
 };
 
 
