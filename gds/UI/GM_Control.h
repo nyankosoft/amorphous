@@ -195,6 +195,8 @@ public:
 	/// retrieve appropriate sound player from the global sound player, store the pointer to a member variable
 	virtual void SetSoundPlayer( CGM_GlobalSoundPlayerSharedPtr pGlobalSoundPlayer ) {}
 
+	void SetCaptionText( const std::string& caption_text ) { m_strCaption = caption_text; }
+
 	/// \param pRenderer owned reference
 //	virtual void RegisterRenderer( CGM_ControlRenderer* pRenderer );
 

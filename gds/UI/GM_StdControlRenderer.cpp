@@ -696,7 +696,7 @@ void CGM_StdCaptionRenderer::Init()
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
 
-	SRect caption_rect = m_pGraphicsElementManager->RectAtCenterBottom( 800, 60, 25 );
+	SRect caption_rect = m_pGraphicsElementManager->RectAtCenterBottom( 960, 60, 90 );
 
 	CGE_Rect *pRect = m_pGraphicsElementManager->CreateRect(      caption_rect, bg_color );
 

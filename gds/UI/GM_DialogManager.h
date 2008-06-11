@@ -145,6 +145,9 @@ public:
 
 	void OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl );
 
+	inline void SetCaptionText( int id, const std::string& caption_text );
+	inline void SetCaptionText( const std::string& string_id, const std::string& caption_text );
+
 	friend class CGM_Dialog; /// need to call OnDialogClosed
 };
 
@@ -158,6 +161,22 @@ inline void CGM_DialogManager::SetControlForCaption( CGM_Control* pControl )
 
 //	if( m_CaptionParam.pCaptionRenderRoutine )
 //		m_CaptionParam.pCaptionRenderRoutine->CaptionControlChanged( pControl );
+}
+
+
+inline void CGM_DialogManager::SetCaptionText( int id, const std::string& caption_text )
+{
+	CGM_Control *pControl = GetControl(id);
+	if( pControl )
+		pControl->SetCaptionText( caption_text );
+}
+
+
+inline void CGM_DialogManager::SetCaptionText( const std::string& string_id, const std::string& caption_text )
+{
+	CGM_Control *pControl = GetControl(string_id);
+	if( pControl )
+		pControl->SetCaptionText( caption_text );
 }
 
 

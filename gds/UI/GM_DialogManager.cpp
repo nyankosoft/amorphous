@@ -1,4 +1,3 @@
-
 #include "GM_DialogManager.h"
 #include "GM_DialogDesc.h"
 #include "GM_Dialog.h"
