@@ -346,4 +346,24 @@ public:
 };
 
 
+class CGM_StdCaptionRenderer : public CGM_StdControlRenderer
+{
+protected:
+
+	CGE_Text *m_pCaptionText;
+
+public:
+
+	CGM_StdCaptionRenderer() : m_pCaptionText(NULL) {}
+
+	virtual ~CGM_StdCaptionRenderer() {}
+
+	virtual void Init();
+
+	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl );
+
+	virtual void OnMouseOverControlChanged( CGM_Control *pControlUnderMouse );
+};
+
+
 #endif		/*  __GM_STDCONTROLRENDERER_H__  */

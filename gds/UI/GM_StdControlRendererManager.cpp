@@ -86,3 +86,8 @@ CGM_ControlRenderer *CGM_StdControlRendererManager::CreateDialogRenderer( CGM_Di
 	return new CGM_StdDialogRenderer();
 }
 
+
+CGM_ControlRenderer *CGM_StdControlRendererManager::CreateCaptionRenderer()
+{
+	return new CGM_StdCaptionRenderer();
+}

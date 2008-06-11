@@ -63,6 +63,7 @@ public:
 	virtual CGM_ControlRenderer *CreateScrollBarRenderer( CGM_ScrollBar *pScrollBar ) { return NULL; }
 	virtual CGM_ControlRenderer *CreateSubDialogButtonRenderer( CGM_SubDialogButton *pSubDlgButton ) { return NULL; }
 	virtual CGM_ControlRenderer *CreateDialogRenderer( CGM_Dialog *pDialog ) { return NULL; }
+	virtual CGM_ControlRenderer *CreateCaptionRenderer() { return NULL; }
 
 	virtual int GetNumGraphicsLayersPerUILayer() { return 8; } ///< called by control renderers
 

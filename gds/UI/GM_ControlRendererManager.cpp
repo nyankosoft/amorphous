@@ -65,6 +65,13 @@ int CGM_ControlRendererManager::CalcUILayerIndex( CGM_ControlRenderer *pControlR
 		if( layer_index < 0 )
 			layer_index = 0;
 	}
+	else
+	{
+		// does not owned by any control
+		// - treat this as a caption renderer
+		// - render this on top of all the other UI graphics elements
+		return 0;
+	}
 
 	return layer_index;
 }

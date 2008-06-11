@@ -726,6 +726,8 @@ void CGM_Dialog::RequestFocus( CGM_Control* pControl )
     if( !pControl->CanHaveFocus() )
         return; // cannot have focus
 
+	CGM_Control *pPrevFocusedControl = m_pDialogManager->ControlFocus();
+
 	// clear the focus from the currently focused control
     if( m_pDialogManager->ControlFocus() )
         m_pDialogManager->ControlFocus()->OnFocusOut();
@@ -733,6 +735,8 @@ void CGM_Dialog::RequestFocus( CGM_Control* pControl )
 	// set the focus to 'pControl'
     pControl->OnFocusIn();
     m_pDialogManager->ControlFocus() = pControl;
+
+	m_pDialogManager->OnFocusedControlChanged( pControl, pPrevFocusedControl );
 }
 
 

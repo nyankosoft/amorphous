@@ -216,6 +216,11 @@ public:
 	virtual void OnParentSubDialogButtonFocused() {}
 	virtual void OnParentSubDialogButtonFocusCleared() {}
 
+	/// called when the renderer is registered as a caption renderer
+	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl ) {}
+	virtual void OnMouseOverControlChanged( CGM_Control *pControlUnderMouse ) {}
+
+
 	virtual void GetGraphicsElements( std::vector<CGraphicsElement *>& rvecpDestElement );
 
 	CGM_ControlBase *GetBaseControl() { return m_pControl; }

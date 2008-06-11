@@ -53,6 +53,18 @@ void CGM_DialogManager::Init( CGM_ControlRendererManagerSharedPtr pRendererManag
 	m_pControlForCaption = NULL;
 
 	m_pRendererManager = pRendererManager;
+
+	if( m_pRendererManager )
+	{
+		// init caption renderer
+		m_pCaptionRenderer = CGM_ControlRendererSharedPtr( m_pRendererManager->CreateCaptionRenderer() );
+		if( m_pCaptionRenderer )
+		{
+			m_pCaptionRenderer->SetControlRendererManager( GetControlRendererManager() );
+			m_pCaptionRenderer->SetControl( NULL ); // caption renderer is not bound to any control
+			m_pCaptionRenderer->Init();
+		}
+	}
 }
 
 
@@ -415,6 +427,12 @@ void CGM_DialogManager::ChangeScale( float factor )
 		m_vecpRootDialog[i]->ChangeScale( factor );
 }
 
+
+void CGM_DialogManager::OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl )
+{
+	if( m_pCaptionRenderer )
+		m_pCaptionRenderer->OnFocusedControlChanged( pFocusedControl, pPrevFocusedControl );
+}
 
 
 

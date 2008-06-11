@@ -60,6 +60,8 @@ class CGM_DialogManager
 
 	CGM_GlobalSoundPlayerSharedPtr m_pDefaultSoundPlayer;
 
+	CGM_ControlRendererSharedPtr m_pCaptionRenderer;
+
 private:
 
 	void Init( CGM_ControlRendererManagerSharedPtr pRendererManager );
@@ -140,6 +142,8 @@ public:
 	void ChangeScale( float factor );
 
 	CGM_GlobalSoundPlayerSharedPtr GetDefaultSoundPlayer() { return m_pDefaultSoundPlayer; }
+
+	void OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl );
 
 	friend class CGM_Dialog; /// need to call OnDialogClosed
 };

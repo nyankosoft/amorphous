@@ -677,3 +677,51 @@ void CGM_StdDialogRenderer::OnDialogClosed()
 	// fade out (change alpha form 1 to 0)
 	m_pGraphicsEffectManager->ChangeAlphaTo( m_pGroupElement, 0.0f, 0.15f, m_DialogFadeColorIndex, 0.0f, 0 );
 }
+
+
+/*
+void CGM_DialogManager::RegisterCaptionRenderer( pCaptionRenderer )
+{
+	pCaptionRenderer(  );
+	pCaptionRenderer->Init();
+}
+*/
+
+
+void CGM_StdCaptionRenderer::Init()
+{
+	int font_id = 0;
+	int w = 24;
+	int h = 48;
+	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
+	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
+
+	SRect caption_rect = m_pGraphicsElementManager->RectAtCenterBottom( 800, 60, 25 );
+
+	CGE_Rect *pRect = m_pGraphicsElementManager->CreateRect(      caption_rect, bg_color );
+
+	m_pCaptionText = m_pGraphicsElementManager->CreateTextBox(
+		font_id, // font id
+		"",// text - set this null. update the text in OnFocusedControlChanged()
+		caption_rect,
+		CGE_Text::TAL_LEFT, CGE_Text::TAL_CENTER,
+		SFloatRGBAColor(0.9f,0.9f,0.9f,1.0f), w, h );
+
+	// render the text on top
+	RegisterGraphicsElement( 0, m_pCaptionText );
+	RegisterGraphicsElement( 1, pRect );
+
+//	RegisterColoredElement( m_pCaptionText );
+}
+
+
+void CGM_StdCaptionRenderer::OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl )
+{
+	m_pCaptionText->SetText( pNewFocusedControl->GetCaptionText() );
+}
+
+
+void CGM_StdCaptionRenderer::OnMouseOverControlChanged( CGM_Control *pControlUnderMouse )
+{
+	m_pCaptionText->SetText( pControlUnderMouse->GetCaptionText() );
+}
