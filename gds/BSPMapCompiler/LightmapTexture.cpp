@@ -6,27 +6,6 @@
 
 
 
-bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& filepath )
-{
-	int x,y;
-	int width  = texel.size_x();
-	int height = texel.size_y();
-	const int depth = 24;
-
-	CBitmapImage img( width, height, depth );
-
-	for( y=0; y<height ; y++ )
-	{
-		for( x=0; x<width; x++ )
-		{
-			img.SetPixel( x, y, texel(x,y) );
-		}
-	}
-
-	return img.SaveToFile( filepath );
-}
-
-
 
 void CLightmapTexture::Resize( int width, int height )
 {

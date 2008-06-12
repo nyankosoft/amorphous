@@ -32,6 +32,9 @@ public:
 
 	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
 
+	/// \param grayscale must be [0,255]
+	inline void SetGrayscalePixel( int x, int y, U8 grayscale );
+
 	FIBITMAP *GetFBITMAP() { return m_pFreeImageBitMap; }
 
 	inline int GetWidth() const;
@@ -59,6 +62,17 @@ inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 	quad.rgbRed   = color.GetRedByte();
 	quad.rgbGreen = color.GetGreenByte();
 	quad.rgbBlue  = color.GetBlueByte();
+
+	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
+}
+
+
+inline void CBitmapImage::SetGrayscalePixel( int x, int y, U8 grayscale )
+{
+	RGBQUAD quad;
+	quad.rgbRed   = grayscale;
+	quad.rgbGreen = grayscale;
+	quad.rgbBlue  = grayscale;
 
 	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
 }
@@ -182,6 +196,48 @@ inline void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *messag
 	}
 
 	g_Log.Print( "Free Image: %s", message );
+}
+
+
+inline bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& filepath )
+{
+	int x,y;
+	int width  = texel.size_x();
+	int height = texel.size_y();
+	const int depth = 24;
+
+	CBitmapImage img( width, height, depth );
+
+	for( y=0; y<height ; y++ )
+	{
+		for( x=0; x<width; x++ )
+		{
+			img.SetPixel( x, y, texel(x,y) );
+		}
+	}
+
+	return img.SaveToFile( filepath );
+}
+
+
+inline bool SaveGrayscaleToImageFile( const C2DArray<U8>& texel, const std::string& filepath )
+{
+	int x,y;
+	int width  = texel.size_x();
+	int height = texel.size_y();
+	const int depth = 24;
+
+	CBitmapImage img( width, height, depth );
+
+	for( y=0; y<height ; y++ )
+	{
+		for( x=0; x<width; x++ )
+		{
+			img.SetGrayscalePixel( x, y, texel(x,y) );
+		}
+	}
+
+	return img.SaveToFile( filepath );
 }
 
 
