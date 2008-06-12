@@ -208,7 +208,7 @@ public:
 	/// for slider renderer
 	virtual void OnSliderValueChanged() {}
 
-	/// for dialog
+	/// for dialog renderer
 	virtual void OnDialogOpened() {}
 	virtual void OnDialogClosed() {}
 	virtual void OnOpenDialogAttemptedToClose() {} ///< called when a dialog with CGM_Dialog::STYLE_ALWAYS_OPEN is attempted to close
@@ -216,8 +216,11 @@ public:
 	virtual void OnParentSubDialogButtonFocused() {}
 	virtual void OnParentSubDialogButtonFocusCleared() {}
 
-	/// called when the renderer is registered as a caption renderer
-	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl ) {}
+	/// for caption renderer
+	/// - called when the renderer is registered as a caption renderer
+	virtual void OnControlFocusCleared( CGM_Control *pControl ) {} ///< Note the difference with OnFocusCleared()
+	virtual void OnControlFocused( CGM_Control *pControl ) {} ///< Note the difference with OnFocused()
+//	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl ) {}
 	virtual void OnMouseOverControlChanged( CGM_Control *pControlUnderMouse ) {}
 
 

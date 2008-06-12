@@ -715,9 +715,9 @@ void CGM_StdCaptionRenderer::Init()
 }
 
 
-void CGM_StdCaptionRenderer::OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl )
+void CGM_StdCaptionRenderer::OnControlFocused( CGM_Control *pControl )
 {
-	m_pCaptionText->SetText( pNewFocusedControl->GetCaptionText() );
+	m_pCaptionText->SetText( pControl->GetCaptionText() );
 }
 
 

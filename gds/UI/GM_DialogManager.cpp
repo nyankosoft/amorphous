@@ -1,3 +1,4 @@
+
 #include "GM_DialogManager.h"
 #include "GM_DialogDesc.h"
 #include "GM_Dialog.h"
@@ -427,12 +428,40 @@ void CGM_DialogManager::ChangeScale( float factor )
 }
 
 
+bool CGM_DialogManager::RequestFocus( CGM_Control* pControl )
+{
+    if( ControlFocus() == pControl )
+        return false;//AlreadyFocused; // already focused
+
+    if( !pControl->CanHaveFocus() )
+        return false;//CannotHaveFocus; // cannot have focus
+
+	CGM_Control *pPrevFocusedControl = ControlFocus();
+
+	// clear the focus from the currently focused control
+    if( ControlFocus() )
+        ControlFocus()->OnFocusOut();
+
+	if( m_pCaptionRenderer )
+		m_pCaptionRenderer->OnControlFocusCleared( pPrevFocusedControl );
+
+	// set the focus to 'pControl'
+    pControl->OnFocusIn();
+    ControlFocus() = pControl;
+
+	if( m_pCaptionRenderer )
+		m_pCaptionRenderer->OnControlFocused( pControl );
+
+	return true;
+}
+
+/*
 void CGM_DialogManager::OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl )
 {
 	if( m_pCaptionRenderer )
 		m_pCaptionRenderer->OnFocusedControlChanged( pFocusedControl, pPrevFocusedControl );
 }
-
+*/
 
 
 /*

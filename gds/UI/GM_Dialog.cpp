@@ -319,15 +319,14 @@ bool CGM_Dialog::OnFocusShiftRequested( unsigned int direction )
 		if( pNext )
 		{
 			// move the focus to the control 'pNext'
-			m_pDialogManager->ControlFocus()->OnFocusOut();
-			m_pDialogManager->ControlFocus() = pNext;
-			pNext->OnFocusIn();
-			SendEvent( CGM_Event::FOCUS_SHIFTED, true, pNext );
+			bool focus_shifted = m_pDialogManager->RequestFocus( pNext );
+			if( focus_shifted )
+				SendEvent( CGM_Event::FOCUS_SHIFTED, true, pNext );
 			return true;
 		}
 		else
 		{
-			// no control was fount for the next focus
+			// no control was found for the next focus
 			return false;
 		}
 	}
@@ -336,9 +335,16 @@ bool CGM_Dialog::OnFocusShiftRequested( unsigned int direction )
 		CGM_Control* pFirstFocus = GetControlForFirstFocus();
 		if( pFirstFocus )
 		{
-			m_pDialogManager->ControlFocus() = pFirstFocus;
-			m_pDialogManager->ControlFocus()->OnFocusIn();
-			return true;
+			bool focus_shifted = m_pDialogManager->RequestFocus( pFirstFocus );
+
+			// send a FOCUS_SHIFTED event or not?
+			// - There has been no focus until now, so 'shifted' is not exactly the right word
+			//   - A new focus is set. What kinda event should be sent?
+
+			return focus_shifted;
+//			m_pDialogManager->ControlFocus() = pFirstFocus;
+//			m_pDialogManager->ControlFocus()->OnFocusIn();
+//			return true;
 		}
 
 		// the dialog has no control to focus on
@@ -720,23 +726,7 @@ void CGM_Dialog::SendEvent( unsigned int event_type, bool bTriggeredByUser, CGM_
 
 void CGM_Dialog::RequestFocus( CGM_Control* pControl )
 {
-    if( m_pDialogManager->ControlFocus() == pControl )
-        return; // already focused
-
-    if( !pControl->CanHaveFocus() )
-        return; // cannot have focus
-
-	CGM_Control *pPrevFocusedControl = m_pDialogManager->ControlFocus();
-
-	// clear the focus from the currently focused control
-    if( m_pDialogManager->ControlFocus() )
-        m_pDialogManager->ControlFocus()->OnFocusOut();
-
-	// set the focus to 'pControl'
-    pControl->OnFocusIn();
-    m_pDialogManager->ControlFocus() = pControl;
-
-	m_pDialogManager->OnFocusedControlChanged( pControl, pPrevFocusedControl );
+	m_pDialogManager->RequestFocus( pControl );
 }
 
 

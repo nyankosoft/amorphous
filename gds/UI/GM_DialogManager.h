@@ -141,6 +141,9 @@ public:
 	/// to re-scale visual components of UI.
 	void ChangeScale( float factor );
 
+	/// returns true if the focus is actually set on the specified control
+	bool RequestFocus( CGM_Control* pControl );
+
 	CGM_GlobalSoundPlayerSharedPtr GetDefaultSoundPlayer() { return m_pDefaultSoundPlayer; }
 
 	void OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl );

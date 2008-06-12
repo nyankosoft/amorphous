@@ -360,7 +360,10 @@ public:
 
 	virtual void Init();
 
-	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl );
+	virtual void OnControlFocused( CGM_Control *pControl );
+//	virtual void OnControlFocusCleared( CGM_Control *pControl );
+
+//	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl );
 
 	virtual void OnMouseOverControlChanged( CGM_Control *pControlUnderMouse );
 };
