@@ -7,6 +7,7 @@
 #include "FreeImage.h"
 
 #include "3DCommon/FloatRGBColor.h"
+#include "Support/2DArray.h"
 #include "Support/Log/DefaultLog.h"
 
 #pragma comment( lib, "FreeImage.lib" )
