@@ -74,7 +74,8 @@ inline void CBitmapImage::SetGrayscalePixel( int x, int y, U8 grayscale )
 	quad.rgbGreen = grayscale;
 	quad.rgbBlue  = grayscale;
 
-	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
+//	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
+	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, GetHeight() - y - 1, &quad );
 }
 
 
