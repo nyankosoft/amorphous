@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "GraphicsResource.h"
+
 #include "Support/Serialization/ArchiveObjectBase.h"
 using namespace GameLib1::Serialization;
 
@@ -12,8 +14,6 @@ class CGraphicsResourceHandle : public IArchiveObjectBase
 protected:
 
 	int m_EntryID;
-
-//	CGraphicsResourceEntry *m_pEntry;
 
 	void IncResourceRefCount();
 	void DecResourceRefCount();
@@ -27,11 +27,15 @@ public:
 public:
 
 	inline CGraphicsResourceHandle() : m_EntryID(-1) {}
-//	inline CGraphicsResourceHandle() : m_pEntry(NULL) {}
 
 	virtual ~CGraphicsResourceHandle() { Release(); }
 
+	virtual GraphicsResourceType::Name GetResourceType() const = 0;
+
 	virtual bool Load() = 0;
+
+	/// priority 0 - 256
+	virtual bool LoadAsync( int priority );
 
 	bool IsLoaded() { return ( 0 <= m_EntryID ); }
 
@@ -70,15 +74,6 @@ inline void CGraphicsResourceHandle::Release()
 
 inline void CGraphicsResourceHandle::copy( const CGraphicsResourceHandle& handle )
 {
-/*	if( handle.m_pEntry )
-		handle.m_pEntry->IncRefCount();
-
-	if( m_pEntry )
-		m_pEntry->DecRefCount();
-
-	m_pEntry = handle.m_pEntry;
-*/
-
 	if( 0 <= m_EntryID )
 	{
 		// decrement the reference count of the current texture

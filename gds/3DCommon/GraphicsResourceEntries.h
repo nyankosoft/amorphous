@@ -2,6 +2,8 @@
 #define  __GraphicsResourceEntry_H__
 
 
+#include "GraphicsResource.h"
+
 #include <sys/stat.h>
 #include <string>
 #include <d3dx9tex.h>
@@ -14,32 +16,6 @@ class CShaderManager;
 class CGraphicsResourceManager;
 
 //template<class T>class CBinaryDatabase<T>;
-
-
-class GraphicsResourceType
-{
-public:
-	enum Type
-	{
-		Texture,
-		Mesh,
-		Shader,
-		Font,
-		NumTypes
-	};
-};
-
-
-class GraphicsResourceFlag
-{
-public:
-	enum Flags
-	{
-		DontShare = ( 1 << 0 ),
-		Flag1     = ( 1 << 1 ),
-		Flag2     = ( 1 << 2 ),
-	};
-};
 
 
 class CGraphicsResourceDesc

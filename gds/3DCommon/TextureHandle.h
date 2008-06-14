@@ -23,9 +23,11 @@ public:
 
 	~CTextureHandle() {}
 
+	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
+
 	virtual bool Load();
 
-	inline const LPDIRECT3DTEXTURE9 GetTexture() const { return GraphicsResourceManager.GetTexture(m_EntryID); }
+	inline const LPDIRECT3DTEXTURE9 GetTexture() const { return GraphicsResourceManager().GetTexture(m_EntryID); }
 
 	// load texture from memory in the form of image archive
 	bool Load( CImageArchive& img_archive );

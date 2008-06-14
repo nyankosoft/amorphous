@@ -24,6 +24,7 @@ CSingleton<CGraphicsResourceManager> CGraphicsResourceManager::m_obj;
 
 CGraphicsResourceManager::CGraphicsResourceManager()
 {
+	m_AsyncLoadingAllowed = false;
 }
 
 

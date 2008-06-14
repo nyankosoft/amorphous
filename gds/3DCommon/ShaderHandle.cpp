@@ -15,7 +15,7 @@ bool CShaderHandle::Load()
 {
 	Release();
 
-	m_EntryID = GraphicsResourceManager.LoadShaderManager( filename );
+	m_EntryID = GraphicsResourceManager().LoadShaderManager( filename );
 
 	if( m_EntryID == -1 )
 		return false;	// the loading failed - this is mostly because the texture file was not found
@@ -26,5 +26,5 @@ bool CShaderHandle::Load()
 
 CShaderManager *CShaderHandle::GetShaderManager()
 {
-	return GraphicsResourceManager.GetShaderManager( m_EntryID );
+	return GraphicsResourceManager().GetShaderManager( m_EntryID );
 }

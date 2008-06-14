@@ -15,7 +15,7 @@ bool CTextureHandle::Load()
 {
 	Release();
 
-	m_EntryID = GraphicsResourceManager.LoadTexture( filename );
+	m_EntryID = GraphicsResourceManager().LoadTexture( filename );
 
 	if( m_EntryID == -1 )
 		return false;	// the loading failed - this is mostly because the texture file was not found
@@ -30,7 +30,7 @@ bool CTextureHandle::Load( CImageArchive& img_archive )
 
 /*	Release();
 
-	m_EntryID = GraphicsResourceManager.LoadTexture( img_archive );
+	m_EntryID = GraphicsResourceManager().LoadTexture( img_archive );
 
 	if( m_EntryID == -1 )
 		return false;	// the loading failed

@@ -18,6 +18,8 @@ public:
 
 	~CShaderHandle() {}
 
+	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
+
 	virtual bool Load( /*uint option_flags = 0 */ );
 
 	static const CShaderHandle& Null() { return ms_NullHandle; }

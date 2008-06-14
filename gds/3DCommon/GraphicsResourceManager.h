@@ -12,7 +12,34 @@
 using namespace NS_KGL;
 
 
-#define GraphicsResourceManager ( (*CGraphicsResourceManager::Get()) )
+#include <boost/thread.hpp>
+
+
+class CGraphicsResourceLoader
+{
+	boost::mutex m_Mutex;
+
+protected:
+
+	static CSingleton<CGraphicsResourceLoader> m_obj;
+
+public:
+
+	static CGraphicsResourceLoader* Get() { return m_obj.get(); }
+
+	void operator()()
+	{
+	}
+};
+
+
+inline CGraphicsResourceLoader& GraphicsResourceLoader()
+{
+	return (*CGraphicsResourceLoader::Get());
+}
+
+
+//#define GraphicsResourceManager ( (*CGraphicsResourceManager::Get()) )
 
 /**
  * mamage graphics resources
@@ -23,6 +50,8 @@ using namespace NS_KGL;
 class CGraphicsResourceManager : public CGraphicsComponent
 {
 private:
+
+	bool m_AsyncLoadingAllowed;
 
 	std::vector<CGraphicsResourceEntry *> m_vecpResourceEntry;
 
@@ -72,6 +101,11 @@ public:
 
 	/// reload any updated files since the last load
 	void Refresh();
+
+	/// returns whether the asynchronous loading feature is allowed
+	bool IsAsyncLoadingAllowed() const { return m_AsyncLoadingAllowed; }
+
+	void AllowAsyncLoading( bool allow );
 	
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
 	virtual void ReleaseGraphicsResources();
@@ -111,6 +145,11 @@ inline CShaderManager *CGraphicsResourceManager::GetShaderManager( int iShaderEn
 	return ((CShaderManagerEntry *)m_vecpResourceEntry[iShaderEntryID])->GetShaderManager();
 }
 
+
+inline CGraphicsResourceManager& GraphicsResourceManager()
+{
+	return (*CGraphicsResourceManager::Get());
+}
 
 
 #endif		/*  __GraphicsResourceManager_H__  */

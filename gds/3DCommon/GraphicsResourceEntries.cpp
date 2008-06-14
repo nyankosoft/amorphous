@@ -58,7 +58,7 @@ void CGraphicsResourceEntry::Release()
 */
 
 /**
-  Release and reload resource if the file has been modified since the last load
+  Release and reload resource if the file has been modified since the last time is was load
    - This method does not change the reference count
  */
 void CGraphicsResourceEntry::Refresh()

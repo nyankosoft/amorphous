@@ -15,7 +15,7 @@ bool CMeshObjectHandle::Load()
 	// if currently holding a mesh, release it
 	Release();
 
-	m_EntryID = GraphicsResourceManager.LoadMeshObject( filename, m_MeshType );
+	m_EntryID = GraphicsResourceManager().LoadMeshObject( filename, m_MeshType );
 
 	if( 0 <= m_EntryID )
 		return true;

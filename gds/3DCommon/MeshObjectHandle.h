@@ -26,11 +26,13 @@ public:
 
 	~CMeshObjectHandle() {}
 
+	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
+
 	int GetMeshType() const { return m_MeshType; }
 
 	void SetMeshType( int mesh_type ) { m_MeshType = mesh_type; }
 
-	inline CD3DXMeshObjectBase *GetMeshObject() { return GraphicsResourceManager.GetMeshObject(m_EntryID); }
+	inline CD3DXMeshObjectBase *GetMeshObject() { return GraphicsResourceManager().GetMeshObject(m_EntryID); }
 
 	virtual bool Load();
 
