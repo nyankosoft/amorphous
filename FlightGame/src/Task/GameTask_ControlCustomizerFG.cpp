@@ -364,7 +364,7 @@ CGM_Dialog *CGameTask_ControlCustomizerFG::CreateKeyBindDialog()
 {
 	CGM_Dialog *pItemTypeSelectDialog = m_apDialogManager[0]->AddRootDialog(
 		ID_TCC_DLG_ROOT_INPUTDEVICE_SELECT,
-		RectLTWH( 50, 50, 150, 150 ),
+		RectAtLeftTop( 300, 300, 100, 100 ),
 		"customize" );
 
 	// create the event handler shared by all the dialogs related to the control customizer
@@ -376,20 +376,20 @@ CGM_Dialog *CGameTask_ControlCustomizerFG::CreateKeyBindDialog()
 	string item_title[3] = { "GAMEPAD",          "KEYBOARD",         "MOUSE" };
 	int subdlg_btn_id[3] = { ID_TCC_GAMEPAD,     ID_TCC_KEYBOARD,    ID_TCC_MOUSE };
 	int listbox_id[3]    = { ID_TCC_LISTBOX_GPD, ID_TCC_LISTBOX_KBD, ID_TCC_LISTBOX_MSE };
-	int top_margin = 20;
+	int top_margin = 40;
 	for( int j=0; j<3/*NUM_INPUTDEVICE_TYPES*/; j++ )
 	{
 		CGM_SubDialogButton *pSubDlgButton = 
 			pItemTypeSelectDialog->AddSubDialogButton(
 			subdlg_btn_id[j],
-			RectLTWH( 22, top_margin + 32 * j, 106, 28 ),
+			RectLTWH( 44, top_margin + 64 * j, 212, 56 ),
 			item_title[j] );
 
 //		m_apItemButton[j] = pSubDlgButton;
 
 //		MsgBoxFmt( "sub-dlg button created: %d", GetWeaponItemButton(j) );
 
-		SRect sub_dlg_rect = RectLTWH(150,50,480,480);
+		SRect sub_dlg_rect = RectAtCenter(grof(640),640);
 		CGM_Dialog *pSubDlg = m_apDialogManager[0]->AddDialog(
 			0,
 			sub_dlg_rect,
@@ -400,11 +400,11 @@ CGM_Dialog *CGameTask_ControlCustomizerFG::CreateKeyBindDialog()
 
 		pSubDlgButton->SetSubDialog( pSubDlg );
 
-		const int item_text_height = 28;
+		const int item_text_height = 54;
 		CGM_ListBoxDesc box_desc;
 		box_desc.Style = 0;//CGM_ListBox::CLOSE_DIALOG_ON_ITEM_SELECTION;
 		box_desc.Rect.SetPositionLTWH( 0, 0, sub_dlg_rect.GetWidth(), sub_dlg_rect.GetHeight() );
-		box_desc.Rect.Inflate( -5, -5 );
+		box_desc.Rect.Inflate( -12, -12 );
 		box_desc.Rect.top += item_text_height;
 		box_desc.ID = listbox_id[j];
 		box_desc.nTextHeight = item_text_height;

@@ -123,13 +123,13 @@ void CFG_StdStaticRenderer::Init()
 		return;
 
 	int font_id = 0;
-	int x = pStatic->GetBoundingBox().left;
-	int y = pStatic->GetBoundingBox().top;
+	int x = pStatic->GetLocalRect().left;
+	int y = pStatic->GetLocalRect().top;
 	int w = 0;//m_pGraphicsElementManager->GetFont(font_id)->GetFontWidth();// 8;
 	int h = 0;//m_pGraphicsElementManager->GetFont(font_id)->GetFontHeight();// 16;
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 
-	SRect text_rect = pStatic->GetBoundingBox();
+	SRect text_rect = pStatic->GetLocalRect();
 	text_rect.Inflate( -12, 0 );
 
 	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, pStatic->GetText(), text_rect,
@@ -234,8 +234,8 @@ void CFG_StdListBoxRenderer::Init()
 //	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pListBox->GetBoundingBox(), normal_color, 2 );
 
 	// create empty text elements
-	int x = GetBaseControl()->GetBoundingBox().left;
-	int y = GetBaseControl()->GetBoundingBox().top;
+	int x = GetBaseControl()->GetLocalRect().left;
+	int y = GetBaseControl()->GetLocalRect().top;
 	int text_x = x;
 	int text_y = y;
 //	int w = 8;
@@ -244,7 +244,7 @@ void CFG_StdListBoxRenderer::Init()
 	m_vecpText.resize( num_items_in_page );
 	for( i=0; i<num_items_in_page; i++ )
 	{
-		text_x = x + 5;
+		text_x = x + 16;
 		text_y = y + i * pListBox->GetTextHeight();
 		m_vecpText[i] = m_pGraphicsElementManager->CreateText( 0, "-", (float)text_x, (float)text_y, m_aColor[CGM_Control::STATE_NORMAL] );
 	}
@@ -253,6 +253,7 @@ void CFG_StdListBoxRenderer::Init()
 	int num_text_elements = (int)m_vecpText.size();
 	for( i=0; i<num_text_elements; i++ )
 		RegisterGraphicsElement( 0, m_vecpText[i] );
+
 //	RegisterGraphicsElement( 0, m_pFrameRect );
 //	RegisterGraphicsElement( 1, m_pRect );
 
@@ -317,7 +318,7 @@ void CFG_StdListBoxRenderer::UpdateItems( bool update_text )
 // update all the text of all the text elements
 void CFG_StdListBoxRenderer::OnItemSelectionChanged()
 {
-	bool update_text = false;
+	bool update_text = true;
 	UpdateItems( update_text );
 
 /*
@@ -405,11 +406,11 @@ void CFG_StdDialogRenderer::Init()
 		return;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
-	SRect dlg_rect = pDialog->GetBoundingBox();
+	SRect dlg_rect = pDialog->GetLocalRect();
 	SRect frame_rect = dlg_rect;
 	SRect bg_rect = dlg_rect;
 	bg_rect.Inflate( -8, -8 );
-	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( bg_rect,      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f), 4 );
+	m_pRect      = m_pGraphicsElementManager->CreateRoundRect(    bg_rect,      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f), 4 );
 	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( frame_rect, SFloatRGBAColor(1,1,1,1), 7, 4 );
 
 	m_pFrameRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_ROUNDFRAME );
@@ -424,7 +425,7 @@ void CFG_StdDialogRenderer::Init()
 	// title
 	if( 0 < pDialog->GetTitle().length() )
 	{
-		SRect title_rect = RectLTRB( dlg_rect.left + 12, dlg_rect.top, dlg_rect.right - 12, dlg_rect.top + 20 );
+		SRect title_rect = RectLTRB( dlg_rect.left + 24, dlg_rect.top, dlg_rect.right - 24, dlg_rect.top + 40 );
 
 		SFloatRGBAColor upper_color = SFloatRGBAColor( 0.9f, 0.9f, 0.9f, 0.8f );
 		SFloatRGBAColor lower_color = SFloatRGBAColor( 0.1f, 0.1f, 0.1f, 0.8f );
@@ -440,10 +441,13 @@ void CFG_StdDialogRenderer::Init()
 			title_rect,
 			CGE_Text::TAL_CENTER, CGE_Text::TAL_CENTER,
 			SFloatRGBAColor( 0.9f, 0.9f, 0.9f, 1.0f ),
-			8, 16 );
+			16, 32 );
 
 		RegisterGraphicsElement( 0, m_pTitle );
 		RegisterGraphicsElement( 1, m_pTitleRect );
+
+//		m_pTitle->SetLocalTopLeftPos(  );
+//		m_pTitleRect->SetLocalTopLeftPos(  );
 	}
 }
 
