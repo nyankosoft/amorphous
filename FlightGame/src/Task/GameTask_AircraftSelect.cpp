@@ -316,7 +316,7 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAircraftSelectDialog()
 	}
 	else
 	{
-		SRect dlg_rect = RectLTWH( 10, 10, 180, (int)(180 * GOLDEN_RATIO) );
+		SRect dlg_rect = RectAtLeftTop( 360, (int)(360 * GOLDEN_RATIO), 25, 25 );
 		pAircraftSelectDialog = m_pDialogManager->AddDialog(
 			ID_TAS_DLG_AIRCRAFTSELECT,
 			dlg_rect,
@@ -325,9 +325,9 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAircraftSelectDialog()
 
 		// listbox
 		SRect listbox_rect = dlg_rect;
-		listbox_rect.bottom = listbox_rect.top + 20;
+		listbox_rect.bottom = listbox_rect.top + 40;
 		CGM_ListBox *pListBox = pAircraftSelectDialog->AddListBox( ID_TAS_LBX_AIRCRAFTSELECT, listbox_rect, "", 
-			CGM_ListBox::CLOSE_DIALOG_ON_ITEM_SELECTION, 20 );
+			CGM_ListBox::CLOSE_DIALOG_ON_ITEM_SELECTION, 40 );
 
 		for( size_t i=0; i<m_vecpPlayerAircraft.size(); i++ )
 		{
@@ -386,28 +386,29 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAmmoSelectDialog()
 	CGM_DialogDesc dlg_desc;
 	dlg_desc.SetDefault();
 	dlg_desc.ID = ID_TAS_DLG_AMMOSELECT;
-	dlg_desc.Rect.SetPositionLTWH( 70, 70, 180, (int)(180 * GOLDEN_RATIO) );
+	dlg_desc.Rect = RectAtLeftTop( 360, (int)(360 * GOLDEN_RATIO), 150, 150 );
 //	dlg_desc.bRootDialog = true;
 	dlg_desc.bRootDialog = false;
 	dlg_desc.strTitle = "WEAPONS";
 	pAmmoSelectDialog = m_pDialogManager->AddDialog( dlg_desc );
 
+	const int item_text_height = 54;
 	string ammo_title[3] = { "GUN:", "MAIN:", "SPW:" };
 	CGM_SubDialogButtonDesc sdlg_btn_desc;
 	int subdlg_button_id[3] = { ID_TAS_GUN, ID_TAS_MISSILE, ID_TAS_SPW };
 	int listbox_id[3] = { ID_TAS_LISTBOX_GUN, ID_TAS_LISTBOX_MISSILE, ID_TAS_LISTBOX_SPW };
-	int top_margin = 20; // for list box placed on dialog
+	int top_margin = 40; // for list box placed on dialog
 	int j;
 	for( j=0; j<NUM_AMMO_TYPES; j++ )
 	{
 		// ammo title (static control)
-		pAmmoSelectDialog->AddStatic( 0, RectLTWH( 10, 20 + 32 * j, 48, 28 ), ammo_title[j] );
+		pAmmoSelectDialog->AddStatic( 0, RectLTWH( 10, 40 + 64 * j, 96, item_text_height ), ammo_title[j] );
 
 		// sub-dialog button for ammo dialog and list box
 		// - also used to display the name of the selected ammo
 		sdlg_btn_desc.ID = subdlg_button_id[j];
 		sdlg_btn_desc.strText = "";
-		sdlg_btn_desc.Rect.SetPositionLTWH( 72, 20 + 32 * j, 72, 28 );
+		sdlg_btn_desc.Rect.SetPositionLTWH( 72, 40 + 64 * j, 144, item_text_height );
 		CGM_SubDialogButton *pSubDlgButton = (CGM_SubDialogButton *)pAmmoSelectDialog->AddControl( &sdlg_btn_desc );
 
 		m_apItemButton[j] = pSubDlgButton;
@@ -417,7 +418,7 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAmmoSelectDialog()
 		// dialog and listbox for each type of ammunition
 		CGM_DialogDesc sdlg_desc;
 		sdlg_desc.strTitle = ammo_title[j];
-		sdlg_desc.Rect.SetPositionLTWH( 210, 50, 160, (int)(160 * GOLDEN_RATIO) );
+		sdlg_desc.Rect = RectLTWH( 210, 50, 320, (int)(320 * GOLDEN_RATIO) );
 
 		// set event handler for the class
 		sdlg_desc.pEventHandler
@@ -427,7 +428,6 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAmmoSelectDialog()
 
 		pSubDlgButton->SetSubDialog( pSubDlg );
 
-		const int item_text_height = 28;
 		CGM_ListBoxDesc box_desc;
 		box_desc.Style = CGM_ListBox::CLOSE_DIALOG_ON_ITEM_SELECTION;
 		box_desc.Rect = RectLTWH( 0, top_margin, sdlg_desc.Rect.GetWidth(), sdlg_desc.Rect.GetHeight() - top_margin );
@@ -441,7 +441,7 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAmmoSelectDialog()
 		m_apItemListBox[j]->SetEventHandler( pListBoxEventHandler );
 	}
 
-	pAmmoSelectDialog->AddButton( ID_TAS_ITEMSELECT_OK, RectLTWH( 50, 10 + 32 * j, 48, 28 ), "OK" );
+	pAmmoSelectDialog->AddButton( ID_TAS_ITEMSELECT_OK, RectLTWH( 50, 10 + 64 * j, 48, item_text_height ), "OK" );
 
 	return pAmmoSelectDialog;
 }
@@ -466,11 +466,10 @@ void CGameTask_AircraftSelect::InitMenu()
 
 	// confirmation dialog box
 	m_apRootDialog[SM_CONFIRM]
-		= Create2ChoiceDialog( m_pDialogManager, true,
-		ID_TAS_DLG_ROOT_CONFIRM, "confirm", SRect( 400-80, 300-60, 400+80, 300+30 ),
-		ID_TAS_CONFIRM_OK,       "yes",     RectLTWH( 15, 60, 60, 25 ),
-		ID_TAS_CONFIRM_CANCEL,   "no",      RectLTWH( 85, 60, 60, 25 )/*,
-		0, "You're gonna go up with this one?", SRect( 400-70, 300-40, 400+70, 300-15 )*/ );
+	= FG_CreateYesNoDialogBox( m_pDialogManager,
+		true, ID_TAS_DLG_ROOT_CONFIRM, "Launch", "",
+		ID_TAS_CONFIRM_OK, ID_TAS_CONFIRM_CANCEL );
+		// text = "You're gonna go up with this one?"
 
 	CFG_StdDialogRenderer *pDlgRenderer
 	= dynamic_cast<CFG_StdDialogRenderer *>(m_apRootDialog[SM_CONFIRM]->GetRenderer());
