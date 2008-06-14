@@ -5,6 +5,17 @@
 #include "GM_Control.h"
 
 
+/** Scrollbar
+ - CGM_ListBox creates the scrollbar control
+   - User does not create the scrollbar
+ - Holds the sizes and positions of scrollbar components
+   - such as scrollbar, up button, down button, and thumb button
+ - Also decides which item should be displayed on the owner listbox
+   - This may be the job for the libox, though.
+
+
+
+*/
 class CGM_ScrollBar : public CGM_Control
 {
 

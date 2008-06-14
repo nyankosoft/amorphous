@@ -321,45 +321,36 @@ void CGM_StdListBoxRenderer::SetColorToTextElement( CGE_Text& rTextElement, int 
 // update all the text of all the text elements
 void CGM_StdListBoxRenderer::UpdateItems( bool update_text )
 {
+	update_text = true; // For now, just always update the texts//The user may have scrolled the page
+
 	CGM_ListBox *pListBox = GetListBox();
 	if( !pListBox )
 		return;
 
 	const int focused_item_index = pListBox->GetSelectedIndex();
 
-	int num_items = pListBox->GetNumItems();
-	int num_items_in_page = pListBox->GetScrollbar()->GetPageSize();
-
-	int i, num_items_to_display = num_items < num_items_in_page ? num_items : num_items_in_page;
-
-	int first_item = 0;
-	if( pListBox->GetScrollbar() )
-	{
-		first_item = pListBox->GetScrollbar()->GetTrackPos();
-		update_text = true; // The user may have scrolled the page
-	}
+	int i;
+	const int num_items_to_display = pListBox->GetNumItemsToDisplay();
+	const int first_item_index = pListBox->GetIndexOfFirstItemToDisplay();
 
 	if( update_text )
 	{
 		for( i=0; i<num_items_to_display; i++ )
 		{
-			CGM_ListBoxItem *pItem = pListBox->GetItem( first_item + i );
+			CGM_ListBoxItem *pItem = pListBox->GetItem( first_item_index + i );
 			if( pItem )
 				m_vecpText[i]->SetText( pItem->GetText() );
 		}
 	}
 
 	int color_index = 0;
-//	if( pListBox->GetOwnerDialog()->IsOpen() )
-//	{
-		for( i=0; i<num_items_to_display; i++ )
-		{
-			if( first_item + i == focused_item_index )
-				m_vecpText[i]->SetColor( color_index, m_aColor[CGM_Control::STATE_FOCUS] );
-			else
-				m_vecpText[i]->SetColor( color_index, m_aColor[CGM_Control::STATE_NORMAL] );
-		}
-//	}
+	for( i=0; i<num_items_to_display; i++ )
+	{
+		if( first_item_index + i == focused_item_index )
+			m_vecpText[i]->SetColor( color_index, m_aColor[CGM_Control::STATE_FOCUS] );
+		else
+			m_vecpText[i]->SetColor( color_index, m_aColor[CGM_Control::STATE_NORMAL] );
+	}
 }
 
 

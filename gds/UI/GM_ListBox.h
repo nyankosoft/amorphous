@@ -80,6 +80,10 @@ public:
 
 	int GetNumItems() const { return (int)m_vecItem.size(); }
 
+	int GetNumItemsToDisplay() const;
+
+	int GetIndexOfFirstItemToDisplay() const;
+
 	void SetStyle( int style ) { m_Style = style; }
 
 	void SetScrollBarWidth( int nWidth ) { m_nSBWidth = nWidth; UpdateRects(); }

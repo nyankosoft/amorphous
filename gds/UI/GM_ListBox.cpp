@@ -1,4 +1,3 @@
-
 #include "GM_ListBox.h"
 
 #include "GM_ListBoxDesc.h"
@@ -112,6 +111,29 @@ void CGM_ListBox::UpdateRects()
 		// Ensure that it is in page again.
 		m_pScrollBar->ShowItem( m_nSelected );
 	}**/
+}
+
+
+int CGM_ListBox::GetNumItemsToDisplay() const
+{
+	const int num_items = GetNumItems();
+
+	if( m_pScrollBar )
+	{
+		const int num_items_in_page = m_pScrollBar->GetPageSize();
+		return num_items < num_items_in_page ? num_items : num_items_in_page;
+	}
+	else
+		return num_items;
+}
+
+
+int CGM_ListBox::GetIndexOfFirstItemToDisplay() const
+{
+	if( m_pScrollBar )
+		return m_pScrollBar->GetTrackPos();
+	else
+		return 0;
 }
 
 
