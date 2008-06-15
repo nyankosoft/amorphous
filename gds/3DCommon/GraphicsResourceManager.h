@@ -73,6 +73,8 @@ private:
 	/// called from handle
 	int LoadTexture( std::string filename );
 
+	int CreateTexture( const CTextureResourceDesc& desc );
+
 	/// called from handle
 	int LoadMeshObject( std::string filename, int mesh_type );
 

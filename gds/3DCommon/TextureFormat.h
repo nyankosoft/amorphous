@@ -23,6 +23,8 @@ public:
 };
 
 
+#include <d3dx9.h>
+
 inline TextureFormat::Format FromD3DSurfaceFormat( D3DFORMAT d3d_fmt )
 {
 	switch(d3d_fmt)

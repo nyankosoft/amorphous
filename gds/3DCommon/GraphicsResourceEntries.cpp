@@ -11,6 +11,7 @@
 using namespace GameLib1::Serialization;
 
 using namespace std;
+using namespace boost;
 
 
 inline bool str_includes( const std::string& src, const std::string& target )
@@ -24,15 +25,17 @@ inline bool str_includes( const std::string& src, const std::string& target )
 
 
 //==================================================================================================
-// CGraphicsResourceDesc
+// CGraphicsResourceDesc and its derived classes
 //==================================================================================================
 
-CGraphicsResourceDesc::CGraphicsResourceDesc( int resource_type )
-:
-ResourceType(resource_type),
-MeshType(CD3DXMeshObjectBase::TYPE_MESH)
+CGraphicsResourceDesc::CGraphicsResourceDesc()
 {}
 
+
+CMeshResourceDesc::CMeshResourceDesc()
+	:
+MeshType(CD3DXMeshObjectBase::TYPE_MESH)
+{}
 
 
 //==================================================================================================
@@ -110,6 +113,21 @@ void CGraphicsResourceEntry::DecRefCount()
 
 bool CGraphicsResourceEntry::Load()
 {
+	if( IsDiskResource() )
+	{
+		return LoadFromDisk();
+	}
+	else
+	{
+		// create from non-disk resource
+		// - e.g.) empty texture
+		return CreateFromDesc();
+	}
+}
+
+
+bool CGraphicsResourceEntry::LoadFromDisk()
+{
 	bool loaded = false;
 	size_t pos = m_Filename.find( "::" );
 	string target_filepath;
@@ -167,7 +185,7 @@ bool CGraphicsResourceEntry::Load()
 
 bool CGraphicsResourceEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
-	if( GetResourceType() == desc.ResourceType
+	if( GetResourceType() == desc.GetResourceType()
 	 && GetFilename() == desc.Filename )
 		return true;
 	else
@@ -179,10 +197,15 @@ bool CGraphicsResourceEntry::CanBeSharedAsSameResource( const CGraphicsResourceD
 // CTextureEntry
 //==================================================================================================
 
-CTextureEntry::CTextureEntry()
+CTextureEntry::CTextureEntry( const CTextureResourceDesc *pDesc )
 :
 m_pTexture(NULL)
-{}
+{
+	if( pDesc )
+		m_TextureDesc = *pDesc;
+	else
+		LOG_PRINT_ERROR( "An imcompatible resource desc" );
+}
 
 
 CTextureEntry::~CTextureEntry()
@@ -263,7 +286,6 @@ bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 }
 
 
-//	hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), &(img.vecPixel[0], vecPixel.size(), &m_pTexture );
 bool CTextureEntry::LoadFromFile( const std::string& filepath )
 {
 	SAFE_RELEASE( m_pTexture );
@@ -274,9 +296,69 @@ bool CTextureEntry::LoadFromFile( const std::string& filepath )
 }
 
 
+bool CTextureEntry::CreateFromDesc()
+{
+	SAFE_RELEASE( m_pTexture );
+
+	const CTextureResourceDesc& desc = m_TextureDesc;
+
+	DWORD usage = 0;
+	D3DPOOL pool = D3DPOOL_MANAGED;
+
+	HRESULT hr = D3DXCreateTexture( DIRECT3D9.GetDevice(),
+	                                (UINT)desc.Width,
+									(UINT)desc.Height,
+									(UINT)desc.MipLevels,
+									usage,
+									ConvertTextureFormatToD3DFORMAT( desc.Format ),
+									pool,
+									&m_pTexture );
+
+	if( FAILED(hr) || !m_pTexture )
+		return false;
+
+	D3DLOCKED_RECT locked_rect;
+	hr = m_pTexture->LockRect( 0, &locked_rect, NULL, 0);	// Lock and get the pointer to the first texel of the texture
+
+	CLockedTexture tex;
+	tex.m_pBits  = locked_rect.pBits;
+	tex.m_Width  = desc.Width;
+	tex.m_Height = desc.Height;
+
+	// An empty texture has been created
+	// - fill the texture if loader was specified
+	shared_ptr<CTextureLoader> pLoader = desc.pLoader.lock();
+	if( pLoader )
+	{
+		pLoader->FillTexture( tex );
+	}
+
+	m_pTexture->UnlockRect(0);
+
+	D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+
+	return true;
+
+//	return SUCCEEDED(hr) ? true : false;
+}
+
+
 void CTextureEntry::Release()
 {
 	SAFE_RELEASE( m_pTexture );
+}
+
+
+bool CTextureEntry::IsDiskResource() const
+{
+	if( m_TextureDesc.Width == 0
+	 && m_TextureDesc.Height == 0
+	 && m_TextureDesc.Format != TextureFormat::Invalid )
+	{
+		return false;
+	}
+	else
+		return true;
 }
 
 
@@ -284,19 +366,23 @@ void CTextureEntry::Release()
 // CMeshObjectEntry
 //==================================================================================================
 
-CMeshObjectEntry::CMeshObjectEntry()
+CMeshObjectEntry::CMeshObjectEntry( const CMeshResourceDesc *pDesc )
 :
-m_pMeshObject(NULL),
-m_MeshType(CD3DXMeshObjectBase::TYPE_MESH)
-{}
+m_pMeshObject(NULL)
+{
+	if( pDesc )
+		m_MeshDesc = *pDesc;
+	else
+		LOG_PRINT_ERROR( "An imcompatible resource desc" );
+}
 
-
+/*
 CMeshObjectEntry::CMeshObjectEntry( int mesh_type )
 :
 m_pMeshObject(NULL),
 m_MeshType(mesh_type)
 {}
-
+*/
 
 CMeshObjectEntry::~CMeshObjectEntry()
 {
@@ -315,7 +401,7 @@ bool CMeshObjectEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::
 	db.GetData( mesh_archive_key, mesh_archive );
 
 	CMeshObjectFactory factory;
-	m_pMeshObject = factory.LoadMeshObjectFromArchvie( mesh_archive, m_Filename, m_MeshType );
+	m_pMeshObject = factory.LoadMeshObjectFromArchvie( mesh_archive, m_Filename, m_MeshDesc.MeshType );
 
 	return ( m_pMeshObject ? true : false );
 }
@@ -326,7 +412,7 @@ bool CMeshObjectEntry::LoadFromFile( const std::string& filepath )
 	SafeDelete( m_pMeshObject );
 
 	CMeshObjectFactory factory;
-	m_pMeshObject = factory.LoadMeshObjectFromFile( m_Filename, m_MeshType );
+	m_pMeshObject = factory.LoadMeshObjectFromFile( m_Filename, m_MeshDesc.MeshType );
 	if( !m_pMeshObject )
 		return false;
 
@@ -342,8 +428,15 @@ void CMeshObjectEntry::Release()
 
 bool CMeshObjectEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
+	if( desc.GetResourceType() != CGraphicsResourceDesc::RT_MESHOBJECT )
+		return false;
+
+	const CMeshResourceDesc *pMeshDesc = dynamic_cast<const CMeshResourceDesc *>(&desc);
+	if( !pMeshDesc )
+		return false;
+
 	if( CGraphicsResourceEntry::CanBeSharedAsSameResource(desc)
-	 && m_MeshType == desc.MeshType )
+	 && GetMeshType() == pMeshDesc->MeshType )
 		return true;
 	else
 		return false;
@@ -354,10 +447,15 @@ bool CMeshObjectEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& d
 // CShaderManagerEntry
 //==================================================================================================
 
-CShaderManagerEntry::CShaderManagerEntry()
+CShaderManagerEntry::CShaderManagerEntry( const CShaderResourceDesc *pDesc )
 :
 m_pShaderManager(NULL)
-{}
+{
+	if( pDesc )
+		m_ShaderDesc = *pDesc;
+	else
+		LOG_PRINT_ERROR( "An imcompatible resource desc" );
+}
 
 
 CShaderManagerEntry::~CShaderManagerEntry()

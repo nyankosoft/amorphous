@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <string>
 #include <d3dx9tex.h>
+#include <boost/weak_ptr.hpp>
 
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
@@ -26,18 +27,65 @@ public:
 	{
 		RT_TEXTURE,
 		RT_MESHOBJECT,
-		RT_SHADERMANAGER,
+		RT_SHADER,
 		//RT_FONT,
 		NUM_RESOURCE_TYPES
 	};
 
-	CGraphicsResourceDesc( int resource_type );
-
-	int ResourceType;
-
 	std::string Filename;
 
+public:
+
+	CGraphicsResourceDesc();
+
+	virtual int GetResourceType() const = 0;
+};
+
+
+class CMeshResourceDesc : public CGraphicsResourceDesc
+{
+public:
+
 	int MeshType;	///< used by mesh object
+
+public:
+
+	CMeshResourceDesc();
+
+	virtual int GetResourceType() const { return RT_MESHOBJECT; }
+};
+
+
+class CTextureResourceDesc : public CGraphicsResourceDesc
+{
+public:
+
+	int Width;
+	int Height;
+	int MipLevels; ///< 0 is set to create complete mipmap chain. (default: 0)
+	TextureFormat::Format Format;
+
+	boost::weak_ptr<CTextureLoader> pLoader;
+
+public:
+
+	CTextureResourceDesc()
+		:
+	Width(0),
+	Height(0),
+	MipLevels(0),
+	Format(TextureFormat::Invalid)
+	{}
+
+	virtual int GetResourceType() const { return RT_TEXTURE; }
+};
+
+
+class CShaderResourceDesc : public CGraphicsResourceDesc
+{
+public:
+
+	virtual int GetResourceType() const { return RT_SHADER; }
 };
 
 
@@ -54,8 +102,18 @@ protected:
 	/// stores the time when the file was updated last
 	time_t m_LastModifiedTimeOfFile;
 
+protected:
+
 	// reference count is not changed in this function?
 	virtual void Release() = 0;
+
+	virtual bool IsDiskResource() const { return true; }
+
+	/// load resource from a file or a binary database
+	bool LoadFromDisk();
+
+	/// Added to create empty texture as a graphics resource
+	virtual bool CreateFromDesc() { return false; }
 
 public:
 
@@ -98,14 +156,25 @@ class CTextureEntry : public CGraphicsResourceEntry
 {
 	LPDIRECT3DTEXTURE9 m_pTexture;
 
+	CTextureResourceDesc m_TextureDesc;
+
+protected:
+
 	/// release texture without changing the reference count
 	/// called only from CTextureManager
 	/// and from CTextureEntry if Refresh() is used
 	virtual void Release();
 
+	/// returns false if m_TextureDesc has valid width, height, and format 
+	virtual bool IsDiskResource() const;
+
+	/// create an empty texture
+	/// - texture settings are read from m_TextureDesc
+	bool CreateFromDesc();
+
 public:
 
-	CTextureEntry();
+	CTextureEntry( const CTextureResourceDesc *pDesc );
 
 	virtual ~CTextureEntry();
 
@@ -125,7 +194,9 @@ class CMeshObjectEntry : public CGraphicsResourceEntry
 {
 	CD3DXMeshObjectBase *m_pMeshObject;
 
-	int m_MeshType;
+	CMeshResourceDesc m_MeshDesc;
+
+protected:
 
 	/// release mesh object without changing the reference count
 	/// called only from this class and CMeshObjectManager
@@ -133,9 +204,9 @@ class CMeshObjectEntry : public CGraphicsResourceEntry
 
 public:
 
-	CMeshObjectEntry();
+	CMeshObjectEntry( const CMeshResourceDesc *pDesc );
 
-	CMeshObjectEntry( int mesh_type );
+//	CMeshObjectEntry( int mesh_type );
 
 	virtual ~CMeshObjectEntry();
 
@@ -149,6 +220,8 @@ public:
 
 	inline CD3DXMeshObjectBase *GetMeshObject() { return m_pMeshObject; }
 
+	int GetMeshType() const { return m_MeshDesc.MeshType; }
+
 	friend class CGraphicsResourceManager;
 };
 
@@ -157,17 +230,21 @@ class CShaderManagerEntry : public CGraphicsResourceEntry
 {
 	CShaderManager *m_pShaderManager;
 
+	CShaderResourceDesc m_ShaderDesc;
+
+protected:
+
 	/// Release the shader manager without changing the reference count
 	/// - Called only from this class and CMeshObjectManager
 	virtual void Release();
 
 public:
 
-	CShaderManagerEntry();
+	CShaderManagerEntry( const CShaderResourceDesc *pDesc );
 
 	virtual ~CShaderManagerEntry();
 
-	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_SHADERMANAGER; }
+	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_SHADER; }
 
 	virtual bool LoadFromFile( const std::string& filepath );
 
@@ -179,5 +256,6 @@ public:
 
 	friend class CGraphicsResourceManager;
 };
+
 
 #endif  /* __GraphicsResourceEntry_H__ */

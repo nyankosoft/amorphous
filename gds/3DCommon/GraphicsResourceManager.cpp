@@ -1,6 +1,5 @@
 #include "GraphicsResourceManager.h"
 //#include "GraphicsResourceHandle.h"
-//#include "TextureHandle.h"
 
 #include "3DCommon/Direct3D9.h"
 
@@ -48,14 +47,14 @@ void CGraphicsResourceManager::Release()
 
 CGraphicsResourceEntry *CGraphicsResourceManager::CreateGraphicsResourceEntry( const CGraphicsResourceDesc& desc )
 {
-	switch( desc.ResourceType )
+	switch( desc.GetResourceType() )
 	{
 	case CGraphicsResourceDesc::RT_TEXTURE:
-		return new CTextureEntry();
+		return new CTextureEntry(dynamic_cast<const CTextureResourceDesc *>(&desc));
 	case CGraphicsResourceDesc::RT_MESHOBJECT:
-		return new CMeshObjectEntry(desc.MeshType);
-	case CGraphicsResourceDesc::RT_SHADERMANAGER:
-		return new CShaderManagerEntry();
+		return new CMeshObjectEntry(dynamic_cast<const CMeshResourceDesc *>(&desc));
+	case CGraphicsResourceDesc::RT_SHADER:
+		return new CShaderManagerEntry(dynamic_cast<const CShaderResourceDesc *>(&desc));
 	default:
 		LOG_PRINT_WARNING( " - invalid resource type" );
 		return NULL;
@@ -88,13 +87,15 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 	m_vecpResourceEntry.push_back( CreateGraphicsResourceEntry(desc) );
 	m_vecpResourceEntry.back()->SetFilename( desc.Filename );
 
-	m_vecpResourceEntry.back()->IncRefCount();	// increment the reference count - this will load the resource
+	// increment the reference count
+	// - load the resource because the entry is new
+	m_vecpResourceEntry.back()->IncRefCount();
 
 	if( m_vecpResourceEntry.back()->GetRefCount() == 1 )
 	{
 		LOG_PRINT( " - Created a graphics resource: " + desc.Filename );
 
-		// new texture has been successfully loaded
+		// A resource has been successfully loaded
 		return (int)i;
 	}
 	else
@@ -103,7 +104,7 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 
 		SafeDelete( m_vecpResourceEntry.back() );
 		m_vecpResourceEntry.pop_back();
-		return -1;	// texture file was not found
+		return -1;	// failed to create a resource
 	}
 }
 
@@ -111,8 +112,14 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 /// called from handle
 int CGraphicsResourceManager::LoadTexture( std::string filename )
 {
-	CGraphicsResourceDesc desc = CGraphicsResourceDesc(CGraphicsResourceDesc::RT_TEXTURE);
+	CTextureResourceDesc desc;
 	desc.Filename = filename;
+	return LoadGraphicsResource( desc );
+}
+
+
+int CGraphicsResourceManager::CreateTexture( const CTextureResourceDesc& desc )
+{
 	return LoadGraphicsResource( desc );
 }
 
@@ -120,7 +127,7 @@ int CGraphicsResourceManager::LoadTexture( std::string filename )
 /// called from handle
 int CGraphicsResourceManager::LoadMeshObject( std::string filename, int mesh_type )
 {
-	CGraphicsResourceDesc desc = CGraphicsResourceDesc(CGraphicsResourceDesc::RT_MESHOBJECT);
+	CMeshResourceDesc desc;
 	desc.Filename = filename;
 	desc.MeshType = mesh_type;
 	return LoadGraphicsResource( desc );
@@ -130,7 +137,7 @@ int CGraphicsResourceManager::LoadMeshObject( std::string filename, int mesh_typ
 /// called from handle
 int CGraphicsResourceManager::LoadShaderManager( std::string filename )
 {
-	CGraphicsResourceDesc desc = CGraphicsResourceDesc(CGraphicsResourceDesc::RT_SHADERMANAGER);
+	CShaderResourceDesc desc;
 	desc.Filename = filename;
 	return LoadGraphicsResource( desc );
 }

@@ -2,13 +2,15 @@
 #define  __TextureHandle_H__
 
 
+#include "GraphicsResource.h"
 #include "GraphicsResourceHandle.h"
 #include "GraphicsResourceManager.h"
-
+#include <boost/weak_ptr.hpp>
 #include <d3dx9tex.h>
 
 
 class CImageArchive;
+class CTextureLoader;
 
 
 class CTextureHandle : public CGraphicsResourceHandle
@@ -18,6 +20,8 @@ protected:
 	static const CTextureHandle ms_NullHandle;
 
 public:
+
+//	boost::weak_ptr<CTextureLoader> m_pTextureLoader;
 
 	inline CTextureHandle() {}
 
@@ -29,7 +33,15 @@ public:
 
 	inline const LPDIRECT3DTEXTURE9 GetTexture() const { return GraphicsResourceManager().GetTexture(m_EntryID); }
 
-	// load texture from memory in the form of image archive
+	/// creates an empty texture
+	/// - Created as a shareable resource (Right now resource are always sharable)
+	/// - CGraphicsResourceHandle::filename is used as an id
+	///   - The resource is shared if CGraphicsResourceHandle::filenames are the same
+	///     just like texture resources loaded from file
+	/// \param mip_levels number of mip levels. set 0 to create a complete mipmap chain (0 by default).
+	bool Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
+
+	/// loads texture from memory in the form of image archive
 	bool Load( CImageArchive& img_archive );
 
 	static const CTextureHandle& Null() { return ms_NullHandle; }
