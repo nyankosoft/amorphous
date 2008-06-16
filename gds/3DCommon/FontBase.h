@@ -9,6 +9,26 @@
 #include <string>
 
 
+/**
+ About font colors
+ Options:
+ 1) uniform color
+   - same color for all the chars
+ 2) uniform corner colors
+   - different colors for each corner of the chars
+   - same corner colors for all the chars
+ 3) individual colors
+   - different colors for chars
+
+   availability           D3DXFont  CTextureFont
+   -----------------------------------------------------------
+   uniform colors           yes         yes
+   uniform corner colors     no         yes?
+   individua colors          no         yes?
+
+*/
+
+
 class CFontBase
 {
 protected:
@@ -27,6 +47,7 @@ public:
 	{
 		FONTTYPE_NORMAL,
 		FONTTYPE_TEXTURE,
+		FONTTYPE_TRUETYPETEXTURE,
 		NUM_FONTTYPES
 	};
 

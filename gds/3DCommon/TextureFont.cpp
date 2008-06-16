@@ -8,6 +8,8 @@
 using namespace std;
 
 
+const std::string CTextureFont::ms_Characters = " !\"#$%&'()*+,-./0123456789:;<=>?`ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~";
+
 
 void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend )
 {
@@ -99,6 +101,35 @@ bool CTextureFont::InitFont( const std::string texture_filename,
 
 	SetFontSize( font_width, font_height );
 
+//	base_char_height = 64;
+
+	float su, sv, eu, ev;
+	float fNumSegments_X = (float)m_NumTexDivisionsX;
+	float fNumSegments_Y = (float)m_NumTexDivisionsY;
+	float fLetterWidth_U  = 1.0f / fNumSegments_X;
+	float fLetterHeight_V = 1.0f / fNumSegments_Y;
+
+	// calc local positions and texture coords for fixed pitch font
+	int i, num_chars = (int)ms_Characters.size();
+	m_vecCharRect.resize( num_chars );
+	for( i=0; i<num_chars; i++ )
+	{
+		int charcode = i + ' ';
+
+		m_vecCharRect[i].rect.vMin = Vector2(0,0);
+		m_vecCharRect[i].rect.vMax = Vector2(1,1);
+
+		su = (float)(charcode % 16) / fNumSegments_X;
+		sv = (float)(charcode / 16) / fNumSegments_Y;
+		eu = su + fLetterWidth_U  - 0.0001f;
+		ev = sv + fLetterHeight_V - 0.0001f;
+
+		m_vecCharRect[i].tex_min = TEXCOORD2( su, sv );
+		m_vecCharRect[i].tex_max = TEXCOORD2( eu, ev );
+
+		m_vecCharRect[i].advance = 1.0f;
+	}
+
 	return true;
 }
 
@@ -141,55 +172,71 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 	float font_height = (float)GetFontHeight();
 
 	float italic = font_width * m_fItalic;
+	
+	Vector2 factor;
+	factor.x = GetHorizontalFactor();
+	factor.y = GetVerticalFactor();
 
-	float fNumSegments_X = (float)m_NumTexDivisionsX;
-	float fNumSegments_Y = (float)m_NumTexDivisionsY;
-	float fLetterWidth_U  = 1.0f / fNumSegments_X;
-	float fLetterHeight_V = 1.0f / fNumSegments_Y;
+	const int max_char_index = (int)m_vecCharRect.size();
 	int iCharCode;
 	float su, sv, eu, ev;
-	float sx, ex;
+	float sx, sy, ex, ey;
 	int iVert = m_CacheIndex * 6;
 	int col=0;
-	float pos_y = vPos.y;
+	int char_index = 0;
+	float current_y = vPos.y;
+	float current_x = vPos.x;
 	for(size_t i=0; i<num_letters; i++, col++)
 	{
 		iCharCode = (int)pcStr[i];
 
 		if( iCharCode == '\n' )
 		{
+			// line feed
 			col = 0;
-			pos_y += font_height;
+			current_y += font_height * factor.y;
 			continue;
 		}
 
-		sx = vPos.x + font_width * col;
-		ex = sx + font_width;
+		char_index = iCharCode-' ';
+		if( char_index < 0 || max_char_index < char_index )
+			continue;
 
-		su = (float)(iCharCode % 16) / fNumSegments_X;
-		sv = (float)(iCharCode / 16) / fNumSegments_Y;
-		eu = su + fLetterWidth_U  - 0.0001f;
-		ev = sv + fLetterHeight_V - 0.0001f;
+		const CharRect& char_rect = m_vecCharRect[char_index];
 
-		m_avTextBox[iVert  ].vPosition = D3DXVECTOR3( sx + italic, pos_y, 0 );
+		su = char_rect.tex_min.u;
+		sv = char_rect.tex_min.v;
+		eu = char_rect.tex_max.u;
+		ev = char_rect.tex_max.v;
+
+//		sx = vPos.x + font_width * col;
+//		ex = sx + font_width;
+		sx = current_x + char_rect.rect.vMin.x * factor.x;
+		ex = current_x + char_rect.rect.vMax.x * factor.x;
+		sy = current_y + char_rect.rect.vMin.y * factor.y;
+		ey = current_y + char_rect.rect.vMax.y * factor.y;
+
+		m_avTextBox[iVert  ].vPosition = D3DXVECTOR3( sx + italic, sy, 0 );
 		m_avTextBox[iVert  ].tu = su;
 		m_avTextBox[iVert  ].tv = sv;
 
-		m_avTextBox[iVert+1].vPosition = D3DXVECTOR3( ex + italic, pos_y, 0 );
+		m_avTextBox[iVert+1].vPosition = D3DXVECTOR3( ex + italic, sy, 0 );
 		m_avTextBox[iVert+1].tu = eu;
 		m_avTextBox[iVert+1].tv = sv;
 
-		m_avTextBox[iVert+2].vPosition = D3DXVECTOR3( sx, pos_y + font_height, 0 );
+		m_avTextBox[iVert+2].vPosition = D3DXVECTOR3( sx, ey, 0 );
 		m_avTextBox[iVert+2].tu = su;
 		m_avTextBox[iVert+2].tv = ev;
 
 		m_avTextBox[iVert+3] = m_avTextBox[iVert+1];
 
-		m_avTextBox[iVert+4].vPosition = D3DXVECTOR3( ex, pos_y + font_height, 0 );
+		m_avTextBox[iVert+4].vPosition = D3DXVECTOR3( ex, ey, 0 );
 		m_avTextBox[iVert+4].tu = eu;
 		m_avTextBox[iVert+4].tv = ev;
 
 		m_avTextBox[iVert+5] = m_avTextBox[iVert+2];
+
+		current_x += char_rect.advance * factor.x;
 
 		iVert += 6;
 	}

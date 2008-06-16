@@ -2,11 +2,11 @@
 #define  __TEXTUREFONT_H__
 
 #include "FontBase.h"
-
-#include "FVF_TLVertex.h"
-
-#include "AlphaBlend.h"
-#include "TextureHandle.h"
+#include "3DCommon/FVF_TLVertex.h"
+#include "3DCommon/AlphaBlend.h"
+#include "3DCommon/TextureHandle.h"
+#include "3DCommon/TextureCoord.h"
+#include "3DMath/AABB2.h"
 
 
 extern void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend );
@@ -16,13 +16,34 @@ class CTextureFont : public CFontBase
 {
 public:
 
-	enum { NUM_MAX_LETTERS = 256 };
+	class CharRect
+	{
+	public:
+
+		TEXCOORD2 tex_min, tex_max;
+		AABB2 rect;
+
+		/// horizontal advance for this character
+		float advance;
+	};
+
+	enum Params
+	{
+		NUM_MAX_LETTERS = 256,
+		CHAR_OFFSET = ' '
+	};
+	
+	static const std::string ms_Characters;
 
 protected:
 
 	std::string m_strTextureFilename;
 
 	CTextureHandle m_FontTexture;
+
+	std::vector<CharRect> m_vecCharRect;
+
+	int m_BaseHeight;
 
 	/// the number of divisions of the texture
 	int m_NumTexDivisionsX;
@@ -35,6 +56,8 @@ protected:
 	int m_CacheIndex;
 
 	float m_fItalic;	///< 1.0f == a letter slant by the width of one char
+
+protected:
 
 	void InitInternal();
 
@@ -59,7 +82,10 @@ public:
 
 	virtual void SetFontSize(int FontWidth, int FontHeight);
 
-//	virtual void DrawText( const char* pcStr, Vector2 vMin, Vector2 vMax);
+	virtual float GetHorizontalFactor() const { return (float)m_FontWidth; }
+	virtual float GetVerticalFactor() const   { return (float)m_FontHeight; }
+
+	//	virtual void DrawText( const char* pcStr, Vector2 vMin, Vector2 vMax);
 
 	virtual void DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor );
 
