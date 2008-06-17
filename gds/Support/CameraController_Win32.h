@@ -28,6 +28,10 @@ public:
 };
 
 /*
+
+#include <boost/shared_ptr.hpp>
+
+
 class CCameraController_Win32 : public CCameraController
 {
 public:
@@ -38,6 +42,20 @@ class CCameraController_Linux: public CCameraController
 {
 public:
 };
+
+
+boost::shared_ptr<CCameraController> CreateCameraController()
+{
+	boost::shared_ptr<CCameraController> ptr;
+
+#ifdef WIN32
+	ptr = boost::shared_ptr<CCameraController>( new CCameraController_Win32() );
+#else
+	ptr = boost::shared_ptr<CCameraController>( new CCameraController_Linux() );
+#endif
+
+	return ptr;
+}
 */
 
 class CCameraController_Win32
@@ -98,6 +116,12 @@ public:
 	inline void SetTranslationSpeed( float meter_per_second ) { m_fTranslationSpeed = meter_per_second; }
 };
 
+/*
+inline void CCameraController_Win32::GetCameraMatrixRowMajor44( Scalar*& pDest ) const
+{
+	// not implemented yet.
+}
+*/
 
 inline void CCameraController_Win32::GetCameraMatrix( D3DXMATRIX& rmatCamera ) const
 {

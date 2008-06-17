@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 
-//#include "ImageStone.h"
 #include "BitmapImage.h"
 
 #include "Support/fnop.h"
@@ -17,9 +16,7 @@ using namespace GameLib1::Serialization;
 
 /**
  - Creates an image archive from an image file
-   - Uses an image library to retrieve the width and height of the image
-   - Currently using ImageStone library
-   - TODO: change to FreeImage library
+   - Uses an FreeImage library to retrieve the width and height of the image
 
 */
 class CImageArchive : public IArchiveObjectBase

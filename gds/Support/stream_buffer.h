@@ -1,4 +1,3 @@
-
 #ifndef  __stream_buffer_H__
 #define  __stream_buffer_H__
 
