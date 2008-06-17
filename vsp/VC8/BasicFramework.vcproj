@@ -669,6 +669,14 @@
 					RelativePath="..\..\gds\3DCommon\TextureFont.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\3DCommon\TrueTypeTextureFont.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\3DCommon\TrueTypeTextureFont.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Debug"
