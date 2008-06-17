@@ -201,7 +201,7 @@ void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
 		rvLastUpdatePos = pSmokeEmitter->Position();
 
 
-	ProfileBegin( "adding trail" );
+//	ProfileBegin( "adding trail" );
 
 	// calculate positions of new particles
 	Vector3& rvEmitterPrevPos = pCopyEnt->v1;
@@ -224,6 +224,8 @@ void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
 	while(1)
 	{
 		// create new smoke particles
+
+//		PROFILE_SCOPE( "create new trail particles" );
 
 		if( m_MaxNumParticlesPerSet <= iNumCurrentParticles )
 			break;
@@ -250,7 +252,7 @@ void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
 		}
 	}
 
-	ProfileEnd( "adding trail" );
+//	ProfileEnd( "adding trail" );
 
 	// update the number of the particles
 	rParticleSet.iNumParticles = iNumCurrentParticles;
