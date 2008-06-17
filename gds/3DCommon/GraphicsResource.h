@@ -71,7 +71,7 @@ public:
 	/// \param alpha [0,255]
 	inline void SetAlpha( int x, int y, U8 alpha )
 	{
-		((U32 *)m_pBits)[ y * m_Width + x ] = (alpha << 24);
+		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
 	}
 
 	virtual void Clear( U32 argb_color )
@@ -82,7 +82,17 @@ public:
 		else if( argb_color == 0xFFFFFFFF )
 			memset( m_pBits, 0xFF, m_Width * m_Height * num_bytes_per_pixel );
 		else
-			int error = 1; /* Not implemented yet */;
+		{
+			int w = m_Width;
+			int h = m_Height;
+			for( int y=0; y<h; y++ )
+			{
+				for( int x=0; x<w; x++ )
+				{
+					SetPixel( x, y, argb_color );
+				}
+			}
+		}
 	}
 
 	virtual void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }

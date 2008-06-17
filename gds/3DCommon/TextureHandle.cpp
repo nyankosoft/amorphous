@@ -39,6 +39,8 @@ bool CTextureHandle::Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int
 //	desc.Usage = ;
 //	desc.Pool = ;
 
+	desc.Filename = filename;
+
 	desc.pLoader = pTextureLoader;
 
 	m_EntryID = GraphicsResourceManager().CreateTexture( desc );

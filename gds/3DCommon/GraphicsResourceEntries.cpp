@@ -337,6 +337,8 @@ bool CTextureEntry::CreateFromDesc()
 
 	D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
 
+	D3DXSaveTextureToFile( string(desc.Filename + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
+
 	return true;
 
 //	return SUCCEEDED(hr) ? true : false;
@@ -351,8 +353,8 @@ void CTextureEntry::Release()
 
 bool CTextureEntry::IsDiskResource() const
 {
-	if( m_TextureDesc.Width == 0
-	 && m_TextureDesc.Height == 0
+	if( 0 < m_TextureDesc.Width
+	 && 0 < m_TextureDesc.Height
 	 && m_TextureDesc.Format != TextureFormat::Invalid )
 	{
 		return false;

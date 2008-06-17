@@ -156,6 +156,9 @@ void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor
 
 void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 {
+	if( m_vecCharRect.size() == 0 )
+		return;
+
 	if( !pcStr )
 		return;
 
@@ -194,6 +197,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 		{
 			// line feed
 			col = 0;
+			current_x = vPos.x;
 			current_y += font_height * factor.y;
 			continue;
 		}
