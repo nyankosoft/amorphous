@@ -90,7 +90,7 @@ CGM_Dialog *CGameTask_InStageMenuFG::CreateRootMenu()
 {
 	// creates a root dialog that stores aircraft select sub-dialog
 	// & controls for aircraft caps display
-	CGM_Dialog *pRootDlg = m_pDialogManager->AddRootDialog( ID_ISM_DLG_ROOT, RectLTWH(20,20,120,200), "" );
+	CGM_Dialog *pRootDlg = m_pDialogManager->AddRootDialog( ID_ISM_DLG_ROOT, RectAtLeftBottom(250,grof(250),40,40), "" );
 
 	CGM_Dialog *apDialog[2];
 
@@ -101,26 +101,17 @@ CGM_Dialog *CGameTask_InStageMenuFG::CreateRootMenu()
 	apDialog[1] = FG_CreateYesNoDialogBox( m_pDialogManager, false,
 		0, "QUIT", "", ID_ISM_QUIT_YES, ID_ISM_QUIT_NO );
 
-/*		= Create2ChoiceDialog( m_pDialogManager, false,
-		"RETRY", SRect( 400-80, 300-60, 400+80, 300+30 ),
-		ID_ISM_RETRY_YES,	"YES",	RectLTWH( 15, 60, 60, 25 ),
-		ID_ISM_RETRY_NO,	"NO",	RectLTWH( 85, 60, 60, 25 ) );
-
-	apDialog[1]
-		= Create2ChoiceDialog( m_pDialogManager, false,
-		"QUIT", SRect( 400-80, 300-60, 400+80, 300+30 ),
-		ID_ISM_QUIT_YES,"YES",	RectLTWH( 15, 60, 60, 25 ),
-		ID_ISM_QUIT_NO,	"NO",	RectLTWH( 85, 60, 60, 25 ) );
-*/
 	CGM_DialogEventHandlerSharedPtr pEventHandler( new CEventHandler_InStageMenuFG(this) );
 	apDialog[0]->SetEventHandler( pEventHandler );
 	apDialog[1]->SetEventHandler( pEventHandler );
 
-	pRootDlg->AddButton( ID_ISM_RETURN_TO_STAGE,	RectLTWH( 10, 10 + 40*0, 100, 32 ), "RETURN" );
-	pRootDlg->AddButton( ID_ISM_OPEN_SYSTEM_MENU,	RectLTWH( 10, 10 + 40*1, 100, 32 ), "SYSTEM" );
-	pRootDlg->AddButton( ID_ISM_CUSTOMIZE_CONTROLS,	RectLTWH( 10, 10 + 40*2, 100, 32 ), "CONTROLS" );
-	pRootDlg->AddSubDialogButton(                0, RectLTWH( 10, 10 + 40*3, 100, 32 ), "RETRY", apDialog[0] );
-	pRootDlg->AddSubDialogButton(                0, RectLTWH( 10, 10 + 40*4, 100, 32 ), "QUIT",  apDialog[1] );
+
+	int w = 200, h = 40;
+	pRootDlg->AddButton( ID_ISM_RETURN_TO_STAGE,	RectLTWH( 10, 10 + h*0, w, h + 10 ), "RETURN" );
+	pRootDlg->AddButton( ID_ISM_OPEN_SYSTEM_MENU,	RectLTWH( 10, 10 + h*1, w, h + 10 ), "SYSTEM" );
+	pRootDlg->AddButton( ID_ISM_CUSTOMIZE_CONTROLS,	RectLTWH( 10, 10 + h*2, w, h + 10 ), "CONTROLS" );
+	pRootDlg->AddSubDialogButton(                0, RectLTWH( 10, 10 + h*3, w, h + 10 ), "RETRY", apDialog[0] );
+	pRootDlg->AddSubDialogButton(                0, RectLTWH( 10, 10 + h*4, w, h + 10 ), "QUIT",  apDialog[1] );
 
 	pRootDlg->SetEventHandler( pEventHandler );
 	return pRootDlg;
