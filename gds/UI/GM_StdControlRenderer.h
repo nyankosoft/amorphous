@@ -350,7 +350,13 @@ class CGM_StdCaptionRenderer : public CGM_StdControlRenderer
 {
 protected:
 
+	CGraphicsEffectHandle m_PrevTextDrawEffect;
+
 	CGE_Text *m_pCaptionText;
+
+protected:
+
+	void UpdateCaptionText( CGM_Control *pControl );
 
 public:
 

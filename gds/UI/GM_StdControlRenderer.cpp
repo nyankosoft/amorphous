@@ -706,13 +706,27 @@ void CGM_StdCaptionRenderer::Init()
 }
 
 
+void CGM_StdCaptionRenderer::UpdateCaptionText( CGM_Control *pControl )
+{
+	// cancel the previous text draw effect
+	m_pGraphicsEffectManager->CancelEffect( m_PrevTextDrawEffect );
+
+	m_pGraphicsEffectManager->SetTimeOffset();
+
+	m_pCaptionText->SetText( pControl->GetCaptionText() );
+
+	int num_chars_per_sec = 50;
+	m_PrevTextDrawEffect = m_pGraphicsEffectManager->DrawText( m_pCaptionText, 0.0f, num_chars_per_sec );
+}
+
+
 void CGM_StdCaptionRenderer::OnControlFocused( CGM_Control *pControl )
 {
-	m_pCaptionText->SetText( pControl->GetCaptionText() );
+	UpdateCaptionText( pControl );
 }
 
 
 void CGM_StdCaptionRenderer::OnMouseOverControlChanged( CGM_Control *pControlUnderMouse )
 {
-	m_pCaptionText->SetText( pControlUnderMouse->GetCaptionText() );
+	UpdateCaptionText( pControlUnderMouse );
 }
