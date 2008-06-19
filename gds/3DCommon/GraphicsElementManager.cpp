@@ -1,5 +1,5 @@
-
-#include "3DCommon/all.h"
+#include "3DCommon/Font.h"
+#include "3DCommon/TextureFont.h"
 #include "GraphicsElementManager.h"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"

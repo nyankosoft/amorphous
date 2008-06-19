@@ -311,6 +311,45 @@ public:
 };
 
 
+class CE_TextDraw : public CGraphicsElementEffect_Linear
+{
+	std::string m_OrigText;
+
+	float m_CharsPerSec;
+
+	/// how long the colors spans from solid color to fade out
+	int m_FadeLength;
+
+	CGE_Text *m_pTextElement;
+
+public:
+
+	CE_TextDraw( CGraphicsElement *pTargetElement, double start_time )
+	:
+	CGraphicsElementEffect_Linear( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
+	{
+		m_pTextElement = dynamic_cast<CGE_Text *>(pTargetElement);
+
+		if( m_pTextElement )
+		{
+			m_OrigText = m_pTextElement->GetText(); // save the original text
+
+			// clear the text of the target text element
+			m_pTextElement->SetText( "" );
+
+//			if( /* currently in animation timeframe */ )
+//				UpdateInternal( current_time, 0.0f );
+		}
+	}
+
+	void SetNumCharsPerSec( int num_chars_per_sec ) { m_CharsPerSec = (float)num_chars_per_sec; }
+
+	virtual void Update( double current_time, double dt );
+
+	friend class CAnimatedGraphicsManager;
+};
+
+
 
 class CE_Scale : public CGraphicsElementEffect_Linear
 {
@@ -419,6 +458,56 @@ public:
 };
 
 
+class CE_Blink : public CGraphicsElementEffectBase
+{
+	float m_fAccumulatedTime; ///< in sec
+	float m_fFlipInterval; ///< in sec
+
+	bool m_bLoop;
+
+public:
+
+	CE_Blink( CGraphicsElement *pTargetElement ) : CGraphicsElementEffectBase(pTargetElement, 0.0f, 0.0f ), m_fAccumulatedTime(0), m_fFlipInterval(1.0f) {}
+	~CE_Blink() {}
+};
+
+/*
+class CE_ColorBlink : public CE_Blink
+{
+	SFloatRGBAColor m_aColor[2];
+
+public:
+
+	CE_ColorBlink() {}
+};
+*/
+
+class CE_AlphaBlink : public CE_Blink
+{
+	float m_afAlpha[2];
+
+	/// usually a same value is set to [0] & [1]
+	float m_afDuration[2];
+
+public:
+
+	CE_AlphaBlink( CGraphicsElement *pTargetElement )
+		:
+	CE_Blink( pTargetElement ) 
+	{
+		m_afAlpha[0] = m_afAlpha[1] = 1.0f;
+	}
+
+	virtual void Update( double current_time, double dt );
+
+	/// set the same duration for [0] & [1]
+	void SetInterval( float interval )
+	{
+		m_afDuration[0] = m_afDuration[1] = interval;
+	}
+};
+
+
 class CAnimatedGraphicsManagerBase
 {
 public:
@@ -441,6 +530,11 @@ public:
 	virtual CGraphicsEffectHandle ScaleTo( CGraphicsElement *pTargetElement, double start_time, double end_time, float end_scale ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle TranslateTo( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle TranslateCDV( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel = Vector2(0,0), float smooth_time = 0.5f, int coord_type = 0 ) { return CGraphicsEffectHandle::Null(); }
+
+	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ) { return CGraphicsEffectHandle::Null(); } 
+	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ) { return CGraphicsEffectHandle::Null(); } 
+
+	virtual CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec ) { return CGraphicsEffectHandle::Null(); }
 
 	virtual void SetElementPath_Start() {}
 	virtual void AddElementPath() {}
@@ -541,6 +635,14 @@ public:
 	///   with the init velocity 'vInitVel' 
 	/// - uses critical damping to calc position
 	CGraphicsEffectHandle TranslateCDV( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel, float smooth_time, int coord_type );
+
+//	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ); 
+//	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ); 
+
+	/// Used only by text element.
+	/// - Effect is terminated after all the entire is drawn
+	/// - TODO: Define the behavior when the effect gets canceled when it has not been completely drawn.
+	CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec );
 
 //	void SetElementPath_Start();
 //	void AddElementPath();

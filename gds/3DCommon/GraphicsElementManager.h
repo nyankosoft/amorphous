@@ -10,11 +10,11 @@
 #include "3DCommon/3DGameMath.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/2DFrameRect.h"
+#include "3DCommon/2DRoundRect.h"
 #include "3DCommon/2DTriangle.h"
 #include "3DCommon/TextureCoord.h"
 #include "3DCommon/FloatRGBAColor.h"
 #include "3DCommon/FontBase.h"
-#include "3DCommon/TextureFont.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/TextureHandle.h"
 
@@ -182,6 +182,12 @@ public:
 
 	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) {}
 
+	/// \param stretch_x non-scaled value
+	/// \param stretch_y non-scaled value
+	virtual void SetTextureCoord( int stretch_x, int stretch_y,
+		                           const TEXCOORD2& left_top_offset = TEXCOORD2(0,0),
+								   TextureAddress::Mode mode = TextureAddress::Wrap ) {}
+
 	void SetGraphicsElementManager( CGraphicsElementManager *pMgr ) { m_pManager = pMgr; }
 
 	/// place the element in a layer
@@ -281,6 +287,13 @@ public:
 	}
 
 	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) { m_pPrimitive->SetTextureUV( vMin, vMax ); }
+
+	virtual void SetTextureCoord( int stretch_x, int stretch_y,
+		                           const TEXCOORD2& left_top_offset,
+								   TextureAddress::Mode mode )
+	{
+		m_pPrimitive->SetTextureCoords( (int)(stretch_x * m_fScale), (int)(stretch_y * m_fScale), left_top_offset, mode );
+	}
 };
 
 

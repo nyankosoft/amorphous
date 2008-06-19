@@ -76,6 +76,8 @@ public:
 
 	virtual void SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax ) {}
 
+	/// \param stretch_x horizontal stretch in pixels
+	/// \param stretch_y vertical stretch in pixels
 	virtual void SetTextureCoords( int stretch_x, int stretch_y,
 		                           const TEXCOORD2& left_top_offset = TEXCOORD2(0,0),
 								   TextureAddress::Mode mode = TextureAddress::Wrap );

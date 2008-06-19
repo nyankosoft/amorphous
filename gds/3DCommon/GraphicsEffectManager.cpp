@@ -106,6 +106,34 @@ void CE_SizeChange::Update( double current_time, double dt )
 }
 
 
+void CE_TextDraw::Update( double current_time, double dt )
+{
+	if( m_FadeLength == 0 )
+	{
+		// no fade effect
+		// - update the text
+
+		int num_current_chars = (int)( m_CharsPerSec * ( current_time - m_fStartTime ) );
+
+		if( num_current_chars < 0 )
+			num_current_chars = 0;
+
+		m_pTextElement->SetText( m_OrigText.substr(0,num_current_chars) );
+
+		if( (int)m_OrigText.length() <= num_current_chars )
+		{
+			// rendered the complete original text
+			// - terminate the effect
+			m_bAppliedAtEndTime = true;
+		}
+	}
+	else
+	{
+//		m_pTextElement->SetCharColorBuffer(  );
+	}
+}
+
+
 void CE_TranslateCD::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
@@ -155,6 +183,11 @@ bool CE_SizeChangeCD::IsOver( double current_time ) const
 {
 	return ( Vec2LengthSq( m_vMin.target - m_vMin.current ) < 0.1f
 		&& Vec2LengthSq( m_vMax.target - m_vMax.current ) < 0.1f );
+}
+
+
+void CE_AlphaBlink::Update( double current_time, double dt )
+{
 }
 
 
@@ -474,6 +507,21 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( CGraphicsElement *pTar
 	p->m_ColorIndex = color_index;
 	p->m_StartColor = pTargetElement->GetColor(color_index);
 	p->m_EndColor = color;
+
+	return AddGraphicsEffect( p );
+}
+
+
+CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec )
+{
+	if( !pTargetTextElement )//|| pTargetTextElement->GetType() != CGraphicsElement::TEXT )
+		return CGraphicsEffectHandle::Null();
+
+	CE_TextDraw *p = new CE_TextDraw( pTargetTextElement, m_fTimeOffset + start_time );
+
+	p->m_CharsPerSec = (float)num_chars_per_sec;
+
+	p->SetNumCharsPerSec( num_chars_per_sec );
 
 	return AddGraphicsEffect( p );
 }
