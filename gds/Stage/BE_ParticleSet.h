@@ -1,12 +1,6 @@
 #ifndef __BE_PARTICLESET_H__
 #define __BE_PARTICLESET_H__
 
-/*
-#include "yaneSDK/stdafx.h"
-//#include "yaneSDK/yaneSDK.h"
-#include "yaneSDK/YTL/index.h"
-#include "yaneSDK/Thread/index.h"
-*/
 
 #include <boost/thread/thread.hpp>
 
@@ -19,10 +13,6 @@
 
 #include "Support/FloatLookUpTable.h"
 #include "Support/SafeDelete.h"
-
-
-//#define NUM_MAX_PARTICLES_PER_SET	64
-//#define NUM_MAX_PARTICLES_PER_SET	128	// 2:03 2007/05/11
 
 
 // comment out the next line to draw particles without using vertex buffer and index buffer
@@ -229,19 +219,12 @@ protected:
 
 	bool m_bCreateParticleThread;
 
-	// thread for particles (experimental)
-	// used when m_bCreateParticleThread == true
-
-	//	CThreadPooler m_ThreadPooler;
-//	smart_ptr<CThreadPooler> m_ThreadPooler;	// error
-//	shared_ptr<CThreadPooler> m_ThreadPooler;
-///	CThreadPooler *m_pThreadPooler; // 19:43 1/15/2008 commented out
+	/// thread for particles (experimental)
+	/// used when m_bCreateParticleThread == true
 
 	float m_fFrameTimeLeft;
 
 	bool m_TerminateParticleThread;
-
-//	smart_ptr< function_callback > m_fn;
 
 	boost::thread_group m_ParticleThreadGroup;
 

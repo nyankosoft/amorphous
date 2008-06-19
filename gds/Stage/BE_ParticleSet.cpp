@@ -95,8 +95,6 @@ CBE_ParticleSet::CBE_ParticleSet()
 
 	m_bCreateParticleThread = false;
 
-//	m_pThreadPooler = NULL;
-
 	m_fFrameTimeLeft = 0;
 
 	m_TerminateParticleThread = false;
@@ -118,11 +116,6 @@ CBE_ParticleSet::~CBE_ParticleSet()
 	if( m_bCreateParticleThread )
 	{
 		m_TerminateParticleThread = true;
-
-//		if( m_pThreadPooler )
-//			m_pThreadPooler->wait();
-
-//		SafeDelete( m_pThreadPooler );
 
 		// wait until all the particle threads are released
 		m_ParticleThreadGroup.join_all();
