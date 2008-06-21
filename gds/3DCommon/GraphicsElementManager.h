@@ -178,6 +178,8 @@ public:
 
 	virtual void SetAlpha(  int color_index, float a ) { m_aColor[color_index].fAlpha = a; }
 
+	virtual void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) {}
+
 	inline SFloatRGBAColor GetBlendedColor() const;
 
 	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) {}
@@ -285,6 +287,8 @@ public:
 		m_AABB.vMax = vMax;
 		m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
 	}
+
+	void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) { m_pPrimitive->SetDestAlphaBlendMode( mode ); }
 
 	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) { m_pPrimitive->SetTextureUV( vMin, vMax ); }
 
@@ -415,12 +419,14 @@ class CGE_Text : public CGraphicsElement
 	int m_TextAlignH;
 	int m_TextAlignV;
 
+	AlphaBlend::Mode m_DestAlphaBlendMode;
+
 public:
 
 	enum eTextAlignment { TAL_LEFT, TAL_TOP, TAL_CENTER, TAL_RIGHT, TAL_BOTTOM, NUM_TEXT_ALIGNMENTS };
 
 	CGE_Text( int font_id, const std::string& text, const AABB2& textbox, int align_h, int align_v, const SFloatRGBAColor& color0 )
-		: m_FontID(font_id), m_Text(text), m_vTextPos(textbox.vMin)
+		: m_FontID(font_id), m_Text(text), m_vTextPos(textbox.vMin), m_DestAlphaBlendMode(AlphaBlend::InvSrcAlpha)
 	{
 		m_AABB = textbox;
 		m_TextAlignH = align_h;
@@ -463,6 +469,8 @@ public:
 
 		m_vScaledPos = m_vTextPos * m_fScale;
 	}
+
+	void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) { m_DestAlphaBlendMode = mode; }
 
 	void SetFontID( int font_id ) { m_FontID = font_id; }
 	
@@ -542,6 +550,8 @@ public:
 	virtual void SetColor( int color_index, const SFloatRGBAColor& color );
 
 	virtual void SetAlpha( int color_index, float a );
+
+	void SetDestAlphaBlendMode( AlphaBlend::Mode mode );
 
 	virtual int GetElementType() const { return TYPE_GROUP; }
 

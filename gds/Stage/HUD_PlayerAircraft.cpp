@@ -47,6 +47,9 @@ m_pTimeText(NULL)
 	m_pSubDisplay->Monitor().push_back( new SubMonitor_FixedView( PLAYERINFO.GetCurrentPlayerEntity(), local_pose ) );
 	m_pSubDisplay->Monitor().push_back( new SubMonitor_EntityTracker( PLAYERINFO.GetCurrentPlayerEntity() ) );
 	m_pSubDisplay->SetMonitorIndex( 1 );
+
+	for( int i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
+		m_apContainer[i] = NULL;
 }
 
 
@@ -110,6 +113,11 @@ void HUD_PlayerAircraft::Init()
 	m_pTimeText = pElementMgr->CreateTextBox( 0, "", RectAtRightTop( 200, 50, 50, 32 ),
 		CGE_Text::TAL_TOP, CGE_Text::TAL_CENTER,
 		m_aHUDColor[COLOR_NORMAL], 30, 40, base_layer );
+
+	m_pTimeText->SetDestAlphaBlendMode( AlphaBlend::One );
+
+	for( size_t i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
+		m_apContainer[i] = pElementMgr->CreateFrameRect( RectLTWH( 0, 0, m_ContainerSize, m_ContainerSize ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), 4.0f, base_layer );
 /*
 //	m_pFont->InitFont( "./Texture/MainFont.dds", 256, 256, 16, 8 );
 
@@ -192,19 +200,6 @@ public:
 
 static FlipVariable g_FlipVar = FlipVariable(0.4f);
 
-/*
-void HUD_PlayerAircraft::RenderTime()
-{
-	SetRenderStatesForTextureFont( AlphaBlend::One );
-
-	float sx = 600 * scale;
-	float sy = 16  * scale;
-	m_pFont->SetFontSize( (int)(15*scale), (int)(20*scale) );
-	m_pFont->SetFontColor( m_aHUDColor[COLOR_NORMAL].GetARGB32() );
-
-	m_TimerDisplay.Render( m_pFont, (int)sx, (int)sy );
-}
-*/
 
 void HUD_PlayerAircraft::Update( float  dt )
 {
@@ -276,13 +271,13 @@ void HUD_PlayerAircraft::Render()
 	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
 		return;
 
-	if( m_pGraphicsEffectManager )
-	{
-		CGraphicsElementManager *pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
-		pElementMgr->Render();
-	}
+	if( !m_pGraphicsEffectManager )
+		return;
 
 	CBE_PlayerPseudoAircraft *plane = (CBE_PlayerPseudoAircraft *)pBaseEntity;
+
+	CGraphicsElementManager *pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
+	pElementMgr->Render();
 
 	int state = plane->GetAircraftState();
 	SFloatRGBAColor hud_color;
@@ -317,15 +312,15 @@ void HUD_PlayerAircraft::Render()
 	// render containers on targets
 	D3DXVECTOR3 pos;
 	float x,y,r = (float)m_ContainerSize * 0.5f - 0.5f;
-	DWORD color;
+	SFloatRGBAColor color;
 	C2DFrameRect rect;
-	rect.SetBorderWidth( (int)( 2.0f * scale ) );
+//	rect.SetBorderWidth( (int)( 2.0f * scale ) );
 //	rect.SetDestAlphaBlendMode( D3DBLEND_ONE );
 
 	float screen_width, screen_height;
 	GetViewportSize( screen_width, screen_height );
 //	size_t i, num_container_rects = vecpVisibleEntity.size();
-	size_t i, num_container_rects = radar_info.GetNumVisibleTargets();
+	size_t i, num_container_rects = radar_info.GetNumVisibleTargets() < NUM_MAX_CONTAINER_RECTS ? radar_info.GetNumVisibleTargets() : NUM_MAX_CONTAINER_RECTS;
 	for( i=0; i<num_container_rects; i++ )
 	{
 		const HUD_TargetInfo& target = radar_info.GetVisibleTarget((int)i);
@@ -334,27 +329,33 @@ void HUD_PlayerAircraft::Render()
 
 		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
 
-		x = (  pos.x + 1.0f ) * 0.5f * screen_width;
-		y = ( -pos.y + 1.0f ) * 0.5f * screen_height;
+		x = (  pos.x + 1.0f ) * 0.5f * GetReferenceScreenWidth();// screen_width;
+		y = ( -pos.y + 1.0f ) * 0.5f * GetReferenceScreenHeight();// screen_height;
 
 		// set color for container
 		if( (target.type & HUD_TargetInfo::LOCKED_ON) )
 		{
-			color = m_aHUDColor[COLOR_LOCKED_ON].GetARGB32();	// locked-on - red
+			color = m_aHUDColor[COLOR_LOCKED_ON];	// locked-on - red
 		}
 		else if( (target.type & HUD_TargetInfo::FOCUSED) && !g_FlipVar.current )
 		{
-			color = 0x00000000;
+			color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f );
 		}
 		else
 		{
-			color = m_aHUDColor[COLOR_NORMAL].GetARGB32();
+			color = m_aHUDColor[COLOR_NORMAL];
 		}
 
-		rect.SetColor( color );
+		m_apContainer[i]->SetColor( 0, color );
 
-		rect.SetPositionLTRB( x-r, y-r, x+r, y+r );
-		rect.Draw();
+//		rect.SetPositionLTRB( x-r, y-r, x+r, y+r );
+		m_apContainer[i]->SetLocalTopLeftPos( Vector2(x-r,y-r) );
+	}
+
+	// set the rest of the rects to transparent
+	for( ; i<NUM_MAX_CONTAINER_RECTS; i++ )
+	{
+		m_apContainer[i]->SetColor( 0, SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ) );
 	}
 
 	//
@@ -411,9 +412,6 @@ void HUD_PlayerAircraft::Render()
 
 	// display targets on the local radar
 	RenderLocalRadar( plane );
-
-	// display time
-//	RenderTime();
 
 	// render weapon & ammo status
 	RenderPlaneAndWeaponStatus( plane );

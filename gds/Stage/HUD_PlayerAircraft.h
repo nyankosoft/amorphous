@@ -39,9 +39,12 @@ private:
 		LOCAL_RADAR_SIZE = 272,
 		LOCAL_RADAR_LEFT_MARGIN = 30,
 		LOCAL_RADAR_BOTTOM_MARGIN = 30,
+		NUM_MAX_CONTAINER_RECTS = 64
 	};
 
 	CGE_Text *m_pTimeText;
+
+	CGE_Rect *m_apContainer[NUM_MAX_CONTAINER_RECTS];
 
 	CTextureFont *m_pFont;
 

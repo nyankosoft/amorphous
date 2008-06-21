@@ -239,7 +239,7 @@ void CGE_Text::Draw()
 
 	// set texture stage states
 	// this is not necessary when the font is not a texture font
-	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
+	SetRenderStatesForTextureFont( m_DestAlphaBlendMode );
 
 	pFont->SetFontColor( GetBlendedColor().GetARGB32() );
 
@@ -496,6 +496,19 @@ void CGE_Group::SetAlpha( int color_index, float a )
 		itr++ )
 	{
 		(*itr)->SetAlpha( color_index, a );
+	}
+
+}
+
+
+void CGE_Group::SetDestAlphaBlendMode( AlphaBlend::Mode mode )
+{
+	vector<CGraphicsElement *>::iterator itr;
+	for( itr = m_vecpElement.begin();
+		itr != m_vecpElement.end();
+		itr++ )
+	{
+		(*itr)->SetDestAlphaBlendMode( mode );
 	}
 
 }
