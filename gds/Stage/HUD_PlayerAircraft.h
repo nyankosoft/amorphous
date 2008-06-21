@@ -32,21 +32,47 @@ public:
 
 private:
 
-	enum
+	enum Params
 	{
 		NUM_MAX_RECTS = 64,
 		NUM_MAX_TGT_INFO = 32,
+
+		// properties of graphics elements
+		CONTAINER_SIZE = 48,
 		LOCAL_RADAR_SIZE = 272,
 		LOCAL_RADAR_LEFT_MARGIN = 30,
 		LOCAL_RADAR_BOTTOM_MARGIN = 30,
+		GLOBAL_RADAR_SIZE = 560,
+		GLOBAL_RADAR_LEFT_MARGIN = 20,
+		GLOBAL_RADAR_BOTTOM_MARGIN = 20,
 		NUM_MAX_CONTAINER_RECTS = 64
 	};
+
+	enum FONT_INDEX
+	{
+		GLOBAL_FONT_INDEX = 0,
+		MESSAGE_FONT_INDEX,
+		NUM_HUD_FONTS
+	};
+
+	enum TEXTURE_INDEX
+	{
+		GLOBAL_RADAR_TEXTURE_INDEX = 0,
+		NUM_HUD_TEXTURES
+	};
+
 
 	CGE_Text *m_pTimeText;
 
 	CGE_Rect *m_apContainer[NUM_MAX_CONTAINER_RECTS];
 
-	CTextureFont *m_pFont;
+	CGE_Group *m_pGlobalRadar;
+
+	CGE_Rect *m_pGlobalRadarBG;
+
+	SRect m_LocalRadarRect;
+
+	SRect m_GlobalRadarRect;
 
 	CTextureHandle m_TexCache;
 
@@ -83,13 +109,13 @@ public:
 	HUD_PlayerAircraft();
 	virtual ~HUD_PlayerAircraft();
 
+	void Release();
+
 	virtual int GetType() const { return TYPE_AIRCRAFT; }
 
 	void UpdateScreenSize();
 
 	void Init();
-
-	inline virtual CFontBase *GetFont() { return m_pFont; }
 
 	inline bool HandleInput( int iActionCode, int input_type, float fVal );
 

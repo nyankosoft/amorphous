@@ -15,18 +15,20 @@
 #include "GameTextSystem/GameTextWindow.h"
 #include "Support/StringAux.h"
 #include "Support/memory_helpers.h"
+#include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/Macro.h"
 
 
 HUD_PlayerAircraft::HUD_PlayerAircraft()
 :
 m_bDisplayGlobalRadar(false),
-m_pFont(NULL),
-m_pSubDisplay( new HUD_SubDisplay() ),
-m_pTimeText(NULL)
+m_pSubDisplay(NULL),
+m_pTimeText(NULL),
+m_pGraphicsEffectManager(NULL)
 //m_pTextWindow(NULL)
 {
-	m_TexCache.filename = "./Texture/hud_icon.dds";
+	m_ContainerSize = CONTAINER_SIZE;
 
 	m_aHUDColor[COLOR_WHITEFRAME]   = SFloatRGBAColor( 0.92f, 0.92f, 0.92f, 0.06f );
 	m_aHUDColor[COLOR_NORMAL]       = SFloatRGBAColor( 0.19f, 0.69f, 0.19f, 0.44f );	// 0x7030B030;
@@ -40,14 +42,6 @@ m_pTimeText(NULL)
 
 	m_TimerDisplay.m_Color = m_aHUDColor[COLOR_NORMAL].GetARGB32();
 
-	// set up the sub-display
-
-	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33Identity() );	// front view
-//	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33RotationY( 3.141592f ) );	// rear view
-	m_pSubDisplay->Monitor().push_back( new SubMonitor_FixedView( PLAYERINFO.GetCurrentPlayerEntity(), local_pose ) );
-	m_pSubDisplay->Monitor().push_back( new SubMonitor_EntityTracker( PLAYERINFO.GetCurrentPlayerEntity() ) );
-	m_pSubDisplay->SetMonitorIndex( 1 );
-
 	for( int i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
 		m_apContainer[i] = NULL;
 }
@@ -55,12 +49,16 @@ m_pTimeText(NULL)
 
 HUD_PlayerAircraft::~HUD_PlayerAircraft()
 {
-	SafeDelete( m_pFont );
+	Release();
+}
 
+
+void HUD_PlayerAircraft::Release()
+{
 	SafeDelete( m_pSubDisplay );
 
 	SafeDelete( m_pGraphicsEffectManager );
-}  
+}
 
 
 void HUD_PlayerAircraft::UpdateScreenSize()
@@ -70,27 +68,30 @@ void HUD_PlayerAircraft::UpdateScreenSize()
 
 void HUD_PlayerAircraft::Init()
 {
-	m_pFont = new CTextureFont;
-	m_pFont->InitFont( "./Texture/HGGE_16x8_256.dds", 256, 256, 16, 8 );
+	Release();
 
 	m_HUD.Init();
 
-	LoadGraphicsResources( CGraphicsParameters() );
+	m_TexCache.filename = "./Texture/hud_icon.dds";
+	m_TexCache.Load();
 
 	m_pGraphicsEffectManager = new CAnimatedGraphicsManager();
 
 	CGraphicsElementManager *pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
 
-	SRect local_radar_rect = RectAtLeftBottom(
-		LOCAL_RADAR_SIZE,
-		LOCAL_RADAR_SIZE,
-		LOCAL_RADAR_LEFT_MARGIN,
-		LOCAL_RADAR_BOTTOM_MARGIN );
+	m_LocalRadarRect
+		= RectAtLeftBottom( LOCAL_RADAR_SIZE,  LOCAL_RADAR_SIZE,  LOCAL_RADAR_LEFT_MARGIN,  LOCAL_RADAR_BOTTOM_MARGIN );
+
+	SRect local_globalradar_rect
+		= RectLTWH( 0, 0, GLOBAL_RADAR_SIZE, GLOBAL_RADAR_SIZE );
+
+	m_GlobalRadarRect
+		= RectAtLeftBottom( GLOBAL_RADAR_SIZE, GLOBAL_RADAR_SIZE, GLOBAL_RADAR_LEFT_MARGIN, GLOBAL_RADAR_BOTTOM_MARGIN );
 
 	int x,y,r;
 	r = LOCAL_RADAR_SIZE / 2;
-	x = local_radar_rect.GetCenterX();
-	y = local_radar_rect.GetCenterY();
+	x = m_LocalRadarRect.GetCenterX();
+	y = m_LocalRadarRect.GetCenterY();
 //	AABB2 radar_aabb = AABB2( Vector2(-r,-r), Vector2(r,r) );
 
 //	Vector2 radar_offset = Vector2( x, y );
@@ -98,16 +99,33 @@ void HUD_PlayerAircraft::Init()
 	r = (int)( r * 0.1f );
 	int w = (int)(r * 0.15f);
 
-	int base_layer = 20;
-	// rect elements for local radar
-	pElementMgr->CreateRect(      local_radar_rect, m_aHUDColor[COLOR_BG],          base_layer + 5 ) ;
-	pElementMgr->CreateFrameRect( local_radar_rect, m_aHUDColor[COLOR_FRAME], 4.5f, base_layer );
+	int global_radar_layer = 10;
+	int local_radar_layer  = 20;
+	int base_layer = 30;
+
+	// rect elements for local & global radar
+	pElementMgr->CreateRect(      m_LocalRadarRect, m_aHUDColor[COLOR_BG],          local_radar_layer + 5 );
+	pElementMgr->CreateFrameRect( m_LocalRadarRect, m_aHUDColor[COLOR_FRAME], 4.5f, local_radar_layer );
+
+	m_pGlobalRadarBG = pElementMgr->CreateRect(      local_globalradar_rect, m_aHUDColor[COLOR_BG],          global_radar_layer + 5 );
+	CGE_Rect *pFrame = pElementMgr->CreateFrameRect( local_globalradar_rect, m_aHUDColor[COLOR_FRAME], 4.5f, global_radar_layer );
+	m_pGlobalRadarBG->SetTextureCoord( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+
+	// inner frame rect that represents the area of operation
+	SRect inner_frame_rect = local_globalradar_rect;
+	inner_frame_rect.Inflate( -85, -85 );
+	CGE_Rect *pInnerFrame = pElementMgr->CreateFrameRect( inner_frame_rect, SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.32f ), 4.0f, global_radar_layer );
+	pInnerFrame->SetDestAlphaBlendMode( AlphaBlend::One );
+
+	CGraphicsElement *apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
+	m_pGlobalRadar = pElementMgr->CreateGroup( apElement, numof(apElement), m_GlobalRadarRect.GetTopLeftCorner() );
+	m_pGlobalRadar->SetTopLeftPos( m_GlobalRadarRect.GetTopLeftCorner() );
 
 	// small white cross on the center
-	pElementMgr->CreateRect( RectLTRB( x-r, y-w, x+r, y+w ), m_aHUDColor[COLOR_WHITEFRAME], base_layer ) ;
-	pElementMgr->CreateRect( RectLTRB( x-w, y-r, x+w, y+r ), m_aHUDColor[COLOR_WHITEFRAME], base_layer ) ;
+	pElementMgr->CreateRect( RectLTRB( x-r, y-w, x+r, y+w ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
+	pElementMgr->CreateRect( RectLTRB( x-w, y-r, x+w, y+r ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
 
-	pElementMgr->LoadFont( 0, "./Texture/HGGE_16x8_256.dds", CFontBase::FONTTYPE_TEXTURE, 30, 40 );
+	pElementMgr->LoadFont( GLOBAL_FONT_INDEX, "./Texture/HGGE_16x8_256.dds", CFontBase::FONTTYPE_TEXTURE, 30, 40 );
 
 	// text for time display
 	m_pTimeText = pElementMgr->CreateTextBox( 0, "", RectAtRightTop( 200, 50, 50, 32 ),
@@ -118,6 +136,15 @@ void HUD_PlayerAircraft::Init()
 
 	for( size_t i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
 		m_apContainer[i] = pElementMgr->CreateFrameRect( RectLTWH( 0, 0, m_ContainerSize, m_ContainerSize ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), 4.0f, base_layer );
+
+	// set up the sub-display
+	m_pSubDisplay = new HUD_SubDisplay();
+	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33Identity() );	// front view
+//	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33RotationY( 3.141592f ) );	// rear view
+	m_pSubDisplay->Monitor().push_back( new SubMonitor_FixedView( PLAYERINFO.GetCurrentPlayerEntity(), local_pose ) );
+	m_pSubDisplay->Monitor().push_back( new SubMonitor_EntityTracker( PLAYERINFO.GetCurrentPlayerEntity() ) );
+	m_pSubDisplay->SetMonitorIndex( 1 );
+
 /*
 //	m_pFont->InitFont( "./Texture/MainFont.dds", 256, 256, 16, 8 );
 
@@ -132,43 +159,39 @@ bool HUD_PlayerAircraft::LoadGlobalMapTexture( const std::string& texture_filena
 {
 	g_Log.Print( "HUD_PlayerAircraft::LoadGlobalMapTexture() called" );
 
-	m_GlobalMap.filename = texture_filename;
-	bool res = m_GlobalMap.Load();
-	if( !res )
+//	m_GlobalMap.filename = texture_filename;
+//	bool res = m_GlobalMap.Load();
+//	if( res )
+
+	if( !m_pGraphicsEffectManager )
 	{
-		LOG_PRINT_ERROR( " - unable to load texture: " +  texture_filename );
-		m_GlobalMap.filename = "";
+		LOG_PRINT_ERROR( " Not initialized yet." );
 		return false;
 	}
-	else
+
+	bool loaded = m_pGraphicsEffectManager->GetGraphicsElementManager()->LoadTexture( GLOBAL_RADAR_TEXTURE_INDEX, texture_filename );
+	if( loaded )
+	{
+		m_pGlobalRadarBG->SetTexture( GLOBAL_RADAR_TEXTURE_INDEX );
         return true;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " Unable to load the texture: " +  texture_filename );
+//		m_GlobalMap.filename = "";
+		return false;
+	}
 }
 
 
 void HUD_PlayerAircraft::ReleaseGraphicsResources()
 {
-	m_pFont->Release();
-
-	m_TexCache.Release();
-
-	m_GlobalMap.Release();
-
 //	m_pSubDisplay->ReleaseGraphicsResources();
 }
 
 
 void HUD_PlayerAircraft::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	float scale = GetScreenWidth() / 800.0f;
-
-	m_ContainerSize = (int)( 24.0f * scale );
-
-	m_pFont->Reload();
-
-	m_TexCache.Load();
-
-	m_GlobalMap.Load();
-
 //	m_pSubDisplay->LoadGraphicsResources();
 }
 
@@ -203,6 +226,8 @@ static FlipVariable g_FlipVar = FlipVariable(0.4f);
 
 void HUD_PlayerAircraft::Update( float  dt )
 {
+	PROFILE_FUNCTION();
+
 	// update the center position of the HUD
 	CBaseEntity *pBaseEntity = PLAYERINFO.GetCurrentPlayerBaseEntity();
 	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
@@ -266,6 +291,8 @@ inline void SetTexCoord( int i, C2DRect& rect )
 
 void HUD_PlayerAircraft::Render()
 {
+	PROFILE_FUNCTION();
+
 	CBaseEntity *pBaseEntity = PLAYERINFO.GetCurrentPlayerBaseEntity();
 
 	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
@@ -313,13 +340,10 @@ void HUD_PlayerAircraft::Render()
 	D3DXVECTOR3 pos;
 	float x,y,r = (float)m_ContainerSize * 0.5f - 0.5f;
 	SFloatRGBAColor color;
-	C2DFrameRect rect;
-//	rect.SetBorderWidth( (int)( 2.0f * scale ) );
 //	rect.SetDestAlphaBlendMode( D3DBLEND_ONE );
 
-	float screen_width, screen_height;
-	GetViewportSize( screen_width, screen_height );
-//	size_t i, num_container_rects = vecpVisibleEntity.size();
+//	float screen_width, screen_height;
+//	GetViewportSize( screen_width, screen_height );
 	size_t i, num_container_rects = radar_info.GetNumVisibleTargets() < NUM_MAX_CONTAINER_RECTS ? radar_info.GetNumVisibleTargets() : NUM_MAX_CONTAINER_RECTS;
 	for( i=0; i<num_container_rects; i++ )
 	{
@@ -386,7 +410,7 @@ void HUD_PlayerAircraft::Render()
 
 		D3DXVec3TransformCoord( &pos, &pTarget->position, &matCamera );
 		if( pos.z < 0 ||	// target is behind the player
-			15.0f < fabsf(pos.x) && 15.0f < fabsf(pos.y) )	// targe is not in the center area of the HUD
+			15.0f < fabsf(pos.x) && 15.0f < fabsf(pos.y) )	// target is not in the center area of the HUD
 		{
 			// project 'pos' on the plane along z-axis in camera space
 			pos.z = 0;
@@ -415,6 +439,11 @@ void HUD_PlayerAircraft::Render()
 
 	// render weapon & ammo status
 	RenderPlaneAndWeaponStatus( plane );
+
+	if( m_bDisplayGlobalRadar )
+		m_pGlobalRadar->SetAlpha( 1, 1.0f );
+	else
+		m_pGlobalRadar->SetAlpha( 1, 0.0f );
 
 	if( m_bDisplayGlobalRadar )
 		RenderGlobalRadar( plane );
@@ -598,35 +627,24 @@ void HUD_PlayerAircraft::RenderGlobalRadar( CBE_PlayerPseudoAircraft *plane )
 
 	const vector<HUD_TargetInfo>& vecTargetInfo = radar_info.GetAllTargetInfo();
 
-	int radar_rect_size = 280;
-	float x,y,r;
-	x = 150 * scale;
-	y = ( 600 - 150 ) * scale;
-	r = radar_rect_size / 2 * scale;
+	int radar_rect_size = GLOBAL_RADAR_SIZE;
+	float x = (float)m_GlobalRadarRect.GetCenterX();
+	float y = (float)m_GlobalRadarRect.GetCenterY();
+	float r = (float)radar_rect_size * 0.5f;
+
+	const SRect global_radar_rect = m_GlobalRadarRect;
 
 	Vector2 radar_offset = Vector2( x, y );	// center pos of the global radar rect
-	C2DRect radar_rect;
-	radar_rect.SetPositionLTRB( x-r, y-r, x+r, y+r );
-	radar_rect.SetColor( 0xA0000000 );
-	radar_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+//	radar_rect.SetPositionLTRB( x-r, y-r, x+r, y+r );
+//	radar_rect.SetColor( 0xA0000000 );
+//	radar_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
-	if( m_GlobalMap.GetTexture() )
-	{
-		radar_rect.SetColor( 0xA0FFFFFF );
-		radar_rect.Draw( m_GlobalMap.GetTexture() );
-	}
+	if( m_pGraphicsEffectManager->GetGraphicsElementManager()->GetTexture(GLOBAL_RADAR_TEXTURE_INDEX).GetTexture() )
+		m_pGlobalRadarBG->SetColor( 0, SFloatRGBAColor(1.0f,1.0f,1.0f,0.63f) );//0xA0FFFFFF
 	else
-	{
-		radar_rect.SetColor( 0xA0000000 );
-		radar_rect.Draw();
-	}
+		m_pGlobalRadarBG->SetColor( 0, SFloatRGBAColor(0.0f,0.0f,0.0f,0.63f) );
 
-	// mission area
-	int br = (int)(r * 0.85);
-	C2DFrameRect boundary_rect( x-br, y-br, x+br, y+br, 0x50FFFFFF, 2.0f * scale );
-	boundary_rect.SetDestAlphaBlendMode( AlphaBlend::One );
-	boundary_rect.Draw();
-
+	C2DRect radar_rect;
 	r *= 0.1f;
 	float w = r * 0.15f;
 	radar_rect.SetColor( 0x10F0F0F0 );
@@ -634,6 +652,7 @@ void HUD_PlayerAircraft::RenderGlobalRadar( CBE_PlayerPseudoAircraft *plane )
 	radar_rect.Draw();
 	radar_rect.SetPositionLTRB( x-w, y-r, x+w, y+r );
 	radar_rect.Draw();
+
 	//
 	// draw icons on local radar
 	//
@@ -715,8 +734,12 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 
 	CWeaponSystem& weapon_system = pAircraft->WeaponSystem();
 
-	m_pFont->SetFontColor( m_aHUDColor[COLOR_NORMAL].GetARGB32() );
-	m_pFont->SetFontSize( (int)(10*scale), (int)(16*scale) );
+	// borrow the font from graphics element manager
+	CFontBase *pFont = m_pGraphicsEffectManager->GetGraphicsElementManager()->GetFont( GLOBAL_FONT_INDEX );
+	pFont->SetFontColor( m_aHUDColor[COLOR_NORMAL].GetARGB32() );
+	const int orig_font_w = pFont->GetFontWidth();
+	const int orig_font_h = pFont->GetFontHeight();
+	pFont->SetFontSize( (int)(10*scale), (int)(16*scale) );
 
 	SetRenderStatesForTextureFont( AlphaBlend::One );
 
@@ -740,7 +763,7 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 
 		}
 		color = i == current_weapon_index ? m_aHUDColor[COLOR_HIGHLIGHTED].GetARGB32() : m_aHUDColor[COLOR_NORMAL].GetARGB32();
-		m_pFont->DrawText( text.c_str(), D3DXVECTOR2( 630*scale, (508 + 16 * i)*scale ), color );
+		pFont->DrawText( text.c_str(), D3DXVECTOR2( 630*scale, (508 + 16 * i)*scale ), color );
 	}
 
 	// display current life by color
@@ -759,10 +782,13 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 									(int)(250*fLife/fMaxGreenLife),			// green
 									0 );
 
-		m_pFont->SetFontSize( (int)(12*scale), (int)(20*scale) );
+		pFont->SetFontSize( (int)(12*scale), (int)(20*scale) );
 
-		m_pFont->DrawText( to_string(fLife, 0, 3).c_str(), D3DXVECTOR2( 630*scale, 472*scale ), dwColor );
+		pFont->DrawText( to_string(fLife, 0, 3).c_str(), D3DXVECTOR2( 630*scale, 472*scale ), dwColor );
 	}
+
+	// restore the font size
+	pFont->SetFontSize( orig_font_w, orig_font_h );
 }
 
 

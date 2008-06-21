@@ -269,10 +269,13 @@ void CPlayerInfo::RenderHUD()
         m_pHUD->Render();
 
 	// draw the status of the items currently active
-	size_t i, num = m_vecpActiveItem.size();
-	for( i=0; i<num; i++ )
+	if( m_pHUD->GetFont() )
 	{
-		m_vecpActiveItem[i]->RenderStatus( (int)i, m_pHUD->GetFont() );
+		size_t i, num = m_vecpActiveItem.size();
+		for( i=0; i<num; i++ )
+		{
+			m_vecpActiveItem[i]->RenderStatus( (int)i, m_pHUD->GetFont() );
+		}
 	}
 }
 
