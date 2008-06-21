@@ -579,7 +579,12 @@ void CGameTask_AircraftSelect::UpdateCamera( float dt )
 {
 	if( !m_pCamera )
 	{
-		m_pCamera = new CCamera( 3.141592f / 3.0f, 4.0f / 3.0f, 1000.0f, 0.1f );
+		m_pCamera = new CCamera(
+			3.141592f / 3.0f, // field of view
+			CGraphicsComponent::GetAspectRatio(), // aspect ratio
+			1000.0f, // farclip
+			0.1f // nearclip
+			);
 
 //		m_pCamera->SetPosition( Vector3(5.0f, 4.5f, -6.0f) );
 //		m_pCamera->SetOrientation( Matrix33RotationY(-2.5f) );
@@ -690,6 +695,9 @@ void CGameTask_AircraftSelect::ReleaseGraphicsResources()
 
 void CGameTask_AircraftSelect::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
+	if( m_pCamera )
+		m_pCamera->SetAspectRatio( CGraphicsComponent::GetAspectRatio() );
+
 //	InitMenu();
 }
 
