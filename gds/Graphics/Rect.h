@@ -35,6 +35,11 @@ struct SRect
 	int GetWidth() const { return right - left + 1; }
 	int GetHeight() const { return bottom - top + 1; }
 
+	SPoint GetCenter() const { return SPoint( GetCenterX(), GetCenterY() ); }
+
+	int GetCenterX() const { return (int)((left + right) * 0.5); }
+	int GetCenterY() const { return (int)((top + bottom) * 0.5); }
+
 	inline bool ContainsPoint( SPoint& pt ) const;
 
 	inline SPoint GetTopLeftCorner() const { return SPoint( left, top ); }

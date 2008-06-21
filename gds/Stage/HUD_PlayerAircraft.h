@@ -2,19 +2,17 @@
 #define __HUD_PlayerAircraft_H__
 
 
-#include "3DCommon/TextureHandle.h"
-#include "3DCommon/TextureFont.h"
-#include "3DCommon/FloatRGBAColor.h"
-
-#include "GameCommon/PseudoAircraftHUD.h"
-//#include "QuickMenuManager.h"
-
 #include "HUD_PlayerBase.h"
+
+#include "3DCommon/fwd.h"
+#include "3DCommon/TextureHandle.h"
+#include "3DCommon/FloatRGBAColor.h"
+#include "3DCommon/TextureFont.h"
+#include "GameCommon/PseudoAircraftHUD.h"
 
 
 class CGameTextWindow;
 class CBE_PlayerPseudoAircraft;
-class HUD_SubDisplay;
 
 class HUD_PlayerAircraft : public HUD_PlayerBase
 {
@@ -25,13 +23,25 @@ public:
 		COLOR_NORMAL,
 		COLOR_HIGHLIGHTED,
 		COLOR_LOCKED_ON,
+		COLOR_FRAME,
+		COLOR_BG, ///< color for background fill rects. COLOR_BACKGROUND is used by some windows header.
+		COLOR_WHITEFRAME,
 		COLOR_MISSILE_APPROACHING,
 		NUM_COLORS
 	};
 
 private:
 
-	enum { NUM_MAX_RECTS = 64, NUM_MAX_TGT_INFO = 32 };
+	enum
+	{
+		NUM_MAX_RECTS = 64,
+		NUM_MAX_TGT_INFO = 32,
+		LOCAL_RADAR_SIZE = 272,
+		LOCAL_RADAR_LEFT_MARGIN = 30,
+		LOCAL_RADAR_BOTTOM_MARGIN = 30,
+	};
+
+	CGE_Text *m_pTimeText;
 
 	CTextureFont *m_pFont;
 
@@ -48,6 +58,8 @@ private:
 	SFloatRGBAColor m_aHUDColor[NUM_COLORS];
 
 	bool m_bDisplayGlobalRadar;
+
+	CAnimatedGraphicsManager *m_pGraphicsEffectManager;
 
 //	TCFixedVector<HUD_TargetInfo, NUM_MAX_TGT_INFO> m_vecTargetInfo;
 

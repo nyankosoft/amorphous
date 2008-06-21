@@ -24,9 +24,23 @@ public:
 
 	void Render( CFontBase *pFont, int sx, int sy );
 
+	inline void GetTimeMMSS( char *pDestBuffer );
+
 	void Show() { m_bDisplay = true; }
 	void Hide() { m_bDisplay = false; }
 };
 
+
+// ================================ inline implementations ================================
+
+inline void HUD_TimerDisplay::GetTimeMMSS( char *pDestBuffer )
+{
+	int ms = m_TimeMS % 1000;
+	int total_time_sec = m_TimeMS / 1000;
+	int sec = total_time_sec % 60;
+	int min = total_time_sec / 60;
+
+	sprintf( pDestBuffer, "%02d:%02d", min, sec );
+}
 
 #endif		/*  __HUD_TimerDisplay_H__  */

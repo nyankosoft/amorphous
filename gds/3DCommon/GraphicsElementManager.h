@@ -470,6 +470,8 @@ public:
 
 	void SetText( const std::string& text ) { m_Text = text; }
 
+	void SetText( const char *pText ) { m_Text = pText; }
+
 	void SetFontSize( int w, int h ) { m_FontWidth = w; m_FontHeight = h; }
 
 	/// \param horizontal_alignment CGE_Text::TAL_LEFT, TAL_CENTER or TAL_RIGHT

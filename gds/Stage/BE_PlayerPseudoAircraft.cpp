@@ -1068,7 +1068,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		if(	(pHUD = PLAYERINFO.GetHUD())
 		 && (pHUD->GetType() == HUD_PlayerBase::TYPE_AIRCRAFT) )
 		{
-            HUD_PlayerAircraft *pAircratHUD = (HUD_PlayerAircraft *)pHUD;
+            HUD_PlayerAircraft *pAircratHUD = dynamic_cast<HUD_PlayerAircraft *>(pHUD);
  
 			if( input.type == SPlayerEntityAction::KEY_PRESSED )
 			{

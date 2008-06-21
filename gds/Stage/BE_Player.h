@@ -116,11 +116,11 @@ protected:
 
 	CombatRecord m_CombatRecord;
 
-	/// UI for operations available in stage
-	/// e.g.)
-	/// - select and use items
-	/// - issue orders to NPCs
-	/// owned reference
+	/// Shared reference of UI manager 
+	/// - for operations / commands available to player in stage
+	///   e.g.)
+	///   - select and use items
+	///   - issue orders to NPCs
 	CGM_DialogManagerSharedPtr m_pCmdMenuDialogManager;
 
 	/// owned reference
