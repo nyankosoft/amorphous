@@ -713,7 +713,7 @@ CGE_Rect *CGraphicsElementManager::CreateFrameRect( const SRect& rect, const SFl
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DFrameRect *p2DFrameRect = new C2DFrameRect( rect * m_fScale, color.GetARGB32(), border_width );
+	C2DFrameRect *p2DFrameRect = new C2DFrameRect( rect * m_fScale, color.GetARGB32(), border_width * m_fScale );
 
 	return InitRectElement( index, layer, rect, color, p2DFrameRect );
 }
@@ -726,7 +726,7 @@ CGE_Rect *CGraphicsElementManager::CreateRoundRect( const SRect& rect, const SFl
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DRoundRect *p2DRoundRect = new C2DRoundRect( rect * m_fScale, color.GetARGB32(), (int)corner_radius );
+	C2DRoundRect *p2DRoundRect = new C2DRoundRect( rect * m_fScale, color.GetARGB32(), (int)(corner_radius * m_fScale) );
 
 	return InitRectElement( index, layer, rect, color, p2DRoundRect );
 }
@@ -739,7 +739,7 @@ CGE_Rect *CGraphicsElementManager::CreateRoundFrameRect( const SRect& rect, cons
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	C2DRoundFrameRect *p2DRoundFrameRect = new C2DRoundFrameRect( rect * m_fScale, color.GetARGB32(), (int)corner_radius, (int)border_width );
+	C2DRoundFrameRect *p2DRoundFrameRect = new C2DRoundFrameRect( rect * m_fScale, color.GetARGB32(), (int)(corner_radius * m_fScale), (int)(border_width * m_fScale) );
 
 	return InitRectElement( index, layer, rect, color, p2DRoundFrameRect );
 }
