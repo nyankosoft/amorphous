@@ -328,7 +328,7 @@ CGM_Dialog *CGameTask_ShopFG::CreateItemSelectDialog()
 {
 	CGM_Dialog *pItemTypeSelectDialog = m_apDialogManager[0]->AddRootDialog(
 		ID_TIS_ITEMTYPE_SELECT_DIALOG,
-		RectLTWH( 50, 50, 150, 150 ),
+		RectAtLeftTop( 300, grof(300), 50, 70 ),
 		"SHOP" );
 
 	CGM_DialogEventHandlerSharedPtr pEventHandler( new CEventHandler_ShopFG(this) );
@@ -352,7 +352,7 @@ CGM_Dialog *CGameTask_ShopFG::CreateItemSelectDialog()
 
 //		MsgBoxFmt( "sub-dlg button created: %d", GetWeaponItemButton(j) );
 
-		SRect sub_dlg_rect = RectLTWH(210,50,150,250);
+		SRect sub_dlg_rect = RectAtLeftTop( 300, grof(300), 420, 120 );
 		CGM_Dialog *pSubDlg = m_apDialogManager[0]->AddDialog(
 			0,
 			sub_dlg_rect,
@@ -364,7 +364,7 @@ CGM_Dialog *CGameTask_ShopFG::CreateItemSelectDialog()
 
 		pSubDlgButton->SetSubDialog( pSubDlg );
 
-		const int item_text_height = 28;
+		const int item_text_height = CGameTaskFG::LISTBOX_TEXT_HEIGHT;
 		CGM_ListBoxDesc box_desc;
 		box_desc.Style = CGM_ListBox::CLOSE_DIALOG_ON_ITEM_SELECTION;
 		box_desc.Rect.SetPositionLTWH( 0, 0, sub_dlg_rect.GetWidth(), sub_dlg_rect.GetHeight() );

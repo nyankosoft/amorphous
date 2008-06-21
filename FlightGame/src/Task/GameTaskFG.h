@@ -12,6 +12,11 @@ class CGameTaskFG : public CGameTask
 {
 protected:
 
+	enum UI_Params
+	{
+		LISTBOX_TEXT_HEIGHT = 56
+	};
+
 	void LoadFonts( CGM_ControlRendererManagerSharedPtr pControlRenedererMgr );
 
 	void SetSounds( CGM_DialogManagerSharedPtr pDialogManager );

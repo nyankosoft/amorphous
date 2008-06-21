@@ -392,7 +392,7 @@ CGM_Dialog *CGameTask_AircraftSelect::CreateAmmoSelectDialog()
 	dlg_desc.strTitle = "WEAPONS";
 	pAmmoSelectDialog = m_pDialogManager->AddDialog( dlg_desc );
 
-	const int item_text_height = 54;
+	const int item_text_height = CGameTaskFG::LISTBOX_TEXT_HEIGHT;
 	string ammo_title[3] = { "GUN:", "MAIN:", "SPW:" };
 	CGM_SubDialogButtonDesc sdlg_btn_desc;
 	int subdlg_button_id[3] = { ID_TAS_GUN, ID_TAS_MISSILE, ID_TAS_SPW };

@@ -388,8 +388,8 @@ void CFG_StdDialogRenderer::Init()
 	SRect frame_rect = dlg_rect;
 	SRect bg_rect = dlg_rect;
 	bg_rect.Inflate( -8, -8 );
-	m_pRect      = m_pGraphicsElementManager->CreateRoundRect(    bg_rect,      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f), 4 );
-	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( frame_rect, SFloatRGBAColor(1,1,1,1), 7, 4 );
+	m_pRect      = m_pGraphicsElementManager->CreateRoundRect(    bg_rect,      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f), 8 );
+	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( frame_rect, SFloatRGBAColor(1,1,1,1), 14, 8 );
 
 	m_pFrameRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_ROUNDFRAME );
 

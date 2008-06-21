@@ -132,8 +132,8 @@ CGameTask_TitleFG::CGameTask_TitleFG()
 	pMgr->LoadTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE, "Texture/bg_testimage.jpg" );
 	pBGRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE );
 
-	float scale_factor = (float)GetScreenWidth() / 800.0f;
-	m_pDialogManager->ChangeScale( scale_factor );
+//	float scale_factor = (float)GetScreenWidth() / 800.0f;
+//	m_pDialogManager->ChangeScale( scale_factor );
 	m_pDialogManager->OpenRootDialog( UIID_TTL_DLG_ROOT );
 }
 
