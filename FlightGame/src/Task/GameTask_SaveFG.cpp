@@ -241,8 +241,8 @@ void CGameTask_SaveFG::InitMenu()
 	INPUTHUB.SetInputHandler( m_pInputHandler );
 
 	// set scale for the current resolution
-	float scale_factor = (float)GetScreenWidth() / 800.0f;
-	m_apDialogManager[0]->ChangeScale( scale_factor );
+//	float scale_factor = (float)GetScreenWidth() / 800.0f;
+//	m_apDialogManager[0]->ChangeScale( scale_factor );
 
 	// register preview entries to list box
 	CreateSaveDataPreviewInfoTable();

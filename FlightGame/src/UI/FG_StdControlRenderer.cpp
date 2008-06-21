@@ -387,7 +387,7 @@ void CFG_StdDialogRenderer::Init()
 	SRect dlg_rect = pDialog->GetLocalRect();
 	SRect frame_rect = dlg_rect;
 	SRect bg_rect = dlg_rect;
-	bg_rect.Inflate( -8, -8 );
+	bg_rect.Inflate( -16, -16 );
 	m_pRect      = m_pGraphicsElementManager->CreateRoundRect(    bg_rect,      SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f), 8 );
 	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( frame_rect, SFloatRGBAColor(1,1,1,1), 14, 8 );
 
@@ -398,7 +398,7 @@ void CFG_StdDialogRenderer::Init()
 	RegisterGraphicsElement( 3, m_pRect );
 
 	// overwrite local top left pos of the background rect
-	m_pRect->SetLocalTopLeftPos( SPoint(8,8) );
+//	m_pRect->SetLocalTopLeftPos( SPoint(8,8) );
 
 	// title
 	if( 0 < pDialog->GetTitle().length() )
@@ -435,7 +435,8 @@ CFG_StdDialogRenderer::CFG_StdDialogRenderer()
 m_pRect(NULL),
 m_pFrameRect(NULL),
 m_pTitleRect(NULL),
-m_pTitle(NULL)
+m_pTitle(NULL),
+m_SlideEffectEnabled(false)
 {
 	m_vSlideIn  = Vector2( 50, 0 );
 	m_vSlideOut = Vector2(-50, 0 );
@@ -447,17 +448,20 @@ void CFG_StdDialogRenderer::OnDialogOpened()
 	if( !m_pGroupElement )
 		return;
 
-	// cancel the previous slide in/out effect
-	m_pGraphicsEffectManager->CancelEffect( m_PrevSlideEffect );
-
 	m_pGraphicsEffectManager->SetTimeOffset();
 
 	// slide in
-	const SRect& rect = GetDialog()->GetBoundingBox();
-	Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
-	m_pGroupElement->SetTopLeftPos( vDestPos - m_vSlideIn );
-//	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
-	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, m_vSlideIn, 0.15f, 0 );
+	if( m_SlideEffectEnabled )
+	{
+		// cancel the previous slide in/out effect
+		m_pGraphicsEffectManager->CancelEffect( m_PrevSlideEffect );
+
+		const SRect& rect = GetDialog()->GetBoundingBox();
+		Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
+		m_pGroupElement->SetTopLeftPos( vDestPos - m_vSlideIn );
+//		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
+		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, m_vSlideIn, 0.15f, 0 );
+	}
 
 	// fade in (change alpha form 0 to 1)
 	int dlg_color_index = m_DialogFadeColorIndex;
@@ -477,11 +481,17 @@ void CFG_StdDialogRenderer::OnDialogClosed()
 	m_pGraphicsEffectManager->SetTimeOffset();
 
 	// slide out
-	const SRect& rect = GetDialog()->GetBoundingBox();
-	Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
-	m_pGroupElement->SetTopLeftPos( vStartPos );
-//	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
-	m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + m_vSlideOut, m_vSlideOut, 0.15f, 0 );
+	if( m_SlideEffectEnabled )
+	{
+		// cancel the previous slide in/out effect
+		m_pGraphicsEffectManager->CancelEffect( m_PrevSlideEffect );
+
+		const SRect& rect = GetDialog()->GetBoundingBox();
+		Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
+		m_pGroupElement->SetTopLeftPos( vStartPos );
+//		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
+		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + m_vSlideOut, m_vSlideOut, 0.15f, 0 );
+	}
 
 	// fade out (change alpha form 1 to 0)
 	int dlg_color_index = m_DialogFadeColorIndex;

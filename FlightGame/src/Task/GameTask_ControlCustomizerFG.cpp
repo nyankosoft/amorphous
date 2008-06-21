@@ -495,12 +495,12 @@ void CGameTask_ControlCustomizerFG::InitMenu()
 	m_pKeyBindInputHandler = new CInputHandler_ControlCustomizer(this);
 
 	// set scale for the current resolution
-	int i;
+/*	int i;
 	float scale_factor = (float)GetScreenWidth() / 800.0f;
 	for( i=0; i<1; i++ )
 	{
 		m_apDialogManager[i]->ChangeScale( scale_factor );
-	}
+	}*/
 
 	m_apDialogManager[0]->OpenRootDialog( ID_TCC_DLG_ROOT_INPUTDEVICE_SELECT );
 }

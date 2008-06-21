@@ -147,8 +147,8 @@ void CGameTask_InStageMenuFG::InitMenu()
 	INPUTHUB.PushInputHandler( m_pInputHandler );
 
 	// set scale for the current resolution
-	float scale_factor = (float)GetScreenWidth() / 800.0f;
-	m_pDialogManager->ChangeScale( scale_factor );
+//	float scale_factor = (float)GetScreenWidth() / 800.0f;
+//	m_pDialogManager->ChangeScale( scale_factor );
 
 	m_pDialogManager->OpenRootDialog( ID_ISM_DLG_ROOT );
 }

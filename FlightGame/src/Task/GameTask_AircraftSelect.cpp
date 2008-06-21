@@ -495,8 +495,8 @@ void CGameTask_AircraftSelect::InitMenu()
 	INPUTHUB.PushInputHandler( m_pInputHandler );
 
 	// set scale for the current resolution
-	float scale_factor = (float)GetScreenWidth() / 800.0f;
-	m_pDialogManager->ChangeScale( scale_factor );
+//	float scale_factor = (float)GetScreenWidth() / 800.0f;
+//	m_pDialogManager->ChangeScale( scale_factor );
 
 //	m_pDialogManager->OpenRootDialog( m_apRootDialog[SM_AIRCRAFT_SELECT]->GetID() );
 }

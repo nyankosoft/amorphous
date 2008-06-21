@@ -228,6 +228,8 @@ class CFG_StdDialogRenderer : public CFG_StdControlRenderer
 
 	CGraphicsEffectHandle m_PrevSlideEffect;
 
+	bool m_SlideEffectEnabled;
+
 public:
 
 	CFG_StdDialogRenderer();

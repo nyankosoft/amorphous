@@ -188,13 +188,16 @@ CGM_Dialog *CGameTask_MainMenuFG::CreateRootMenu()
 {
 	// creates a root dialog that stores aircraft select sub-dialog
 	// & controls for aircraft caps display
-	CGM_Dialog *pRootDlg = m_apDialogManager[0]->AddRootDialog( ID_TMM_DLG_ROOT, RectLTWH(80,120,120,(int)(120 * GOLDEN_RATIO)), "" );
-	CGM_Button *pButton0 = pRootDlg->AddButton( ID_TMM_NEXT,	RectLTWH(5, 32, 80, 28), "NEXT" );
+	CGM_Dialog *pRootDlg = m_apDialogManager[0]->AddRootDialog( ID_TMM_DLG_ROOT, RectAtLeftTop( 240, (int)(240 * GOLDEN_RATIO), 60, 80 ), "" );
+
+	int btn_w = 160, btn_h = 56;
+	int y = btn_h;
+	CGM_Button *pButton0 = pRootDlg->AddButton( ID_TMM_NEXT,	RectLTWH( 15, y + btn_h * 0, btn_w, btn_h ), "NEXT" );
 //	CGM_Button *pButton1 = pRootDlg->AddButton( 0, RectLTWH(5, 64, 80, 24), "Select Stage" );
-	CGM_SubDialogButton *pSubDlgButton = pRootDlg->AddSubDialogButton( 0, RectLTWH(5, 64, 80, 28), "STAGES" );
-	CGM_Button *pButton2 = pRootDlg->AddButton( ID_TMM_SHOP,	RectLTWH(5, 96, 80, 28), "SHOP" );
-	CGM_Button *pButton3 = pRootDlg->AddButton( ID_TMM_SAVE,	RectLTWH(5,128, 80, 28), "SAVE" );
-	CGM_Button *pButton4 = pRootDlg->AddButton( ID_TMM_TITLE,	RectLTWH(5,160, 80, 28), "TITLE" );
+	CGM_SubDialogButton *pSubDlgButton = pRootDlg->AddSubDialogButton( 0, RectLTWH( 15, y + btn_h * 1, btn_w, btn_h ), "STAGES" );
+	CGM_Button *pButton2 = pRootDlg->AddButton( ID_TMM_SHOP,	RectLTWH( 15, y + btn_h * 2, btn_w, btn_h ), "SHOP" );
+	CGM_Button *pButton3 = pRootDlg->AddButton( ID_TMM_SAVE,	RectLTWH( 15, y + btn_h * 3, btn_w, btn_h ), "SAVE" );
+	CGM_Button *pButton4 = pRootDlg->AddButton( ID_TMM_TITLE,	RectLTWH( 15, y + btn_h * 4, btn_w, btn_h ), "TITLE" );
 
 	CGM_Dialog *pStageSelectDlg = CreateStageSelectMenu();
 	pSubDlgButton->SetSubDialog( pStageSelectDlg );
@@ -276,10 +279,10 @@ void CGameTask_MainMenuFG::InitMenu()
 	pBGRect->SetTexture( CFG_StdControlRendererManager::ID_TEX_BACKGROUNDTESTIMAGE );
 
 	// set scale for the current resolution
-	float scale_factor = (float)GetScreenWidth() / 800.0f;
+//	float scale_factor = (float)GetScreenWidth() / 800.0f;
 //	for( int i=0; i<1; i++ )
 //	{
-		m_apDialogManager[0]->ChangeScale( scale_factor );
+//		m_apDialogManager[0]->ChangeScale( scale_factor );
 //	}
 }
 

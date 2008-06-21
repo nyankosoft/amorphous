@@ -212,12 +212,12 @@ void CGameTask_DebriefingFG::InitMenu()
 	INPUTHUB.PushInputHandler( m_pInputHandler );
 
 	// set scale for the current resolution
-	int i;
+/*	int i;
 	float scale_factor = (float)GetScreenWidth() / 800.0f;
 	for( i=0; i<1; i++ )
 	{
 		m_apDialogManager[i]->ChangeScale( scale_factor );
-	}
+	}*/
 }
 
 
