@@ -114,19 +114,19 @@ CGameTask_SaveLoadFG::~CGameTask_SaveLoadFG()
 
 CGM_Dialog *CGameTask_SaveLoadFG::CreateSaveDataSlotListBox()
 {
-	SRect dlg_rect = RectLTWH(400,80,360,450);
+	SRect dlg_rect = RectAtRightCenter( 720, 900, 25 );
 	CGM_Dialog *pRootDlg = m_apDialogManager[0]->AddRootDialog( UIID_SL_DLG_ROOT, dlg_rect, "" );
 
-		const int item_text_height = 28;
+	const int item_text_height = 56;
 	CGM_ListBoxDesc listbox;
-	listbox.Rect.SetPositionLTWH(0,0,300,450);
+	listbox.Rect.SetPositionLTWH( 0, 0, dlg_rect.GetWidth(), dlg_rect.GetHeight() );
 	listbox.Rect.Inflate( -5, -5 );
 	listbox.Rect.top += item_text_height;
 //	listbox.TextRect = SRect(0,0,300,450);
 //	listbox.nSBWidth = 1;
 //	listbox.nBorder = 1;
 //	listbox.nMargin = 1;
-	listbox.nTextHeight = 40;
+	listbox.nTextHeight = item_text_height;
 	listbox.Style = 0;
 
 	m_pSaveSlotListBox = (CGM_ListBox *)pRootDlg->AddControl( &listbox );
