@@ -19,7 +19,7 @@ CGraphicsComponent::~CGraphicsComponent()
 }
 
 
-const CGraphicsParameters& CGraphicsComponent::GetCurrentGraphicsParams() const
+const CGraphicsParameters& CGraphicsComponent::GetCurrentGraphicsParams()
 {
 	return CGraphicsComponentCollector::Get()->GetGraphicsParams();
 }

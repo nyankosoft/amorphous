@@ -1,7 +1,8 @@
-#include "camera.h"
+#include "Camera.h"
+#include "./Support/Log/DefaultLog.h"
 
 
-CCamera::CCamera(float fov, float aspectratio, float farclip, float nearclip)
+CCamera::CCamera( float fov, float aspectratio, float farclip, float nearclip )
 {
 	m_fFieldOfView = fov;
 	m_fAspectRatio = aspectratio;
@@ -9,6 +10,9 @@ CCamera::CCamera(float fov, float aspectratio, float farclip, float nearclip)
 	m_fNearClip = nearclip;
 
 	SetPose( Matrix34Identity() );
+
+	if( farclip < nearclip )
+		LOG_PRINT_WARNING( " - farclip < nearclip." );
 
 	CreateVFTree();
 }

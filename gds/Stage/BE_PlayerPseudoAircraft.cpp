@@ -27,6 +27,7 @@
 // added for laser dot casting test
 #include "3DCommon/3DGameMath.h"
 #include "3DCommon/Direct3D9.h"
+#include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/D3DXMeshObject.h"
 #include "3DCommon/D3DXSMeshObject.h"
 #include "3DCommon/Shader/Shader.h"
@@ -159,7 +160,8 @@ void CBE_PlayerPseudoAircraft::Init()
 //	m_Camera.SetFOV( D3DX_PI / 8.0f );
 	m_Camera.SetNearClip( near_clip );
 	m_Camera.SetFarClip( far_clip );
-	m_Camera.SetAspectRatio( 640.0f / 480.0f );
+//	m_Camera.SetAspectRatio( 640.0f / 480.0f );
+	m_Camera.SetAspectRatio( CGraphicsComponent::GetAspectRatio() );
 
 //	for( int i=0; i<CWeaponSystem::NUM_WEAPONSLOTS; i++ )
 //		PLAYERINFO.GetWeaponSystem()->GetWeaponSlot(i).LocalPose.vPosition = Vector3( 0.0f, -1.2f, 12.0f );
@@ -480,7 +482,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 				if( m_pFocusedTarget == m_vecFocusCandidate[i].pEntity )
 				{
 					// keep the current focused target
-					m_CurrentTargetFocusIndex = i;
+					m_CurrentTargetFocusIndex = (int)i;
 					break;
 				}
 			}
@@ -1016,11 +1018,11 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		break;
 */
 	case ACTION_MOV_LOOK_RIGHT:
-		m_CamHeading.target = input.fParam * PI;
+		m_CamHeading.target = input.fParam * (float)PI;
 		break;
 
 	case ACTION_MOV_LOOK_UP:
-		m_CamPitch.target = input.fParam * PI * 0.5f;
+		m_CamPitch.target = input.fParam * (float)PI * 0.5f;
 		break;
 
 /*	case ACTION_MOV_BOOST:

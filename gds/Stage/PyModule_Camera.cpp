@@ -1,4 +1,3 @@
-
 #include "PyModule_Camera.h"
 #include "PyModule_Stage.h"
 
@@ -106,7 +105,8 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	char *camera_controller_name = NULL;
 	CameraParam param;
 
-	float nearclip = 0.05f, farclip = 500.0f, fov = 3.141592f / 3.0f, aspectratio = 4.0f / 3.0f;
+	float nearclip = 0.05f, farclip = 500.0f, fov = 3.141592f / 3.0f;
+	float aspectratio = CGraphicsComponent::GetAspectRatio();// 4.0f / 3.0f;
 
 	int result = PyArg_ParseTuple( args, "ss|ffff",
 		&camera_entity_name, &camera_controller_name,

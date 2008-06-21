@@ -61,17 +61,19 @@ public:
 	virtual void ReleaseGraphicsResources() = 0;
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) = 0;
 
-	const CGraphicsParameters& GetCurrentGraphicsParams() const;
+	static const CGraphicsParameters& GetCurrentGraphicsParams();
 
-	int GetScreenWidth() const { return GetCurrentGraphicsParams().ScreenWidth; }
-	int GetScreenHeight() const { return GetCurrentGraphicsParams().ScreenHeight; }
+	static int GetScreenWidth() { return GetCurrentGraphicsParams().ScreenWidth; }
+	static int GetScreenHeight() { return GetCurrentGraphicsParams().ScreenHeight; }
+
+	static float GetAspectRatio() { return (float)GetScreenWidth() / (float)GetScreenHeight(); }
 
 	/// Returns fixed value
-	int GetReferenceScreenWidth() const { return REFERENCE_SCREEN_WIDTH; }
+	static int GetReferenceScreenWidth() { return REFERENCE_SCREEN_WIDTH; }
 
 	/// Varies according to aspect ratio
 	/// - range: [900,1280]
-	int GetReferenceScreenHeight() const { return REFERENCE_SCREEN_WIDTH * GetScreenHeight() / GetScreenWidth(); }
+	static int GetReferenceScreenHeight() { return REFERENCE_SCREEN_WIDTH * GetScreenHeight() / GetScreenWidth(); }
 
 	SRect ReferenceScreenRect() const { return RectLTWH( 0, 0, GetReferenceScreenWidth(), GetReferenceScreenHeight() ); }
 

@@ -157,7 +157,7 @@ void CBE_ScriptedCamera::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 		ex.Path.SetKeyPoses( pReq->vecKeyPose );
 		ex.Path.SetMotionPathType( pReq->MotionPathType );
 
-		g_Log.Print( "CBE_ScriptedCamera::MessageProcedure() - added motion path to scripted camera" );
+		LOG_PRINT( " - added motion path to scripted camera" );
 
 //		MsgBoxFmt( "set motion path for enemy entity: %s", pCopyEnt_Self->GetName().c_str() );
 		return;
@@ -176,7 +176,7 @@ void CBE_ScriptedCamera::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 		ex.Camera.SetFOV( ex.DefaultParam.fov );
 		ex.Camera.SetAspectRatio( ex.DefaultParam.aspect_ratio );
 
-		g_Log.Print( "CBE_ScriptedCamera::MessageProcedure() - set default camera params" );
+		LOG_PRINT( " - set default camera params" );
 
 //		MsgBoxFmt( "set motion path for enemy entity: %s", pCopyEnt_Self->GetName().c_str() );
 		return;
@@ -189,7 +189,7 @@ void CBE_ScriptedCamera::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 		// set camera effects
 		ex.KeyFrames = *(CScriptCameraKeyFrames *)rGameMessage.pUserData;
 
-		g_Log.Print( "CBE_ScriptedCamera::MessageProcedure() - set camera effect params" );
+		LOG_PRINT( " - set camera effect params" );
 
 		return;
 	  }

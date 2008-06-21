@@ -200,7 +200,8 @@ public:
 	fov(3.141592f / 3.0f),
 	nearclip(0.05f),
 	farclip(200.0f),
-	aspect_ratio(4.0f / 3.0f),
+//	aspect_ratio(4.0f / 3.0f),
+	aspect_ratio( CGraphicsComponent::GetAspectRatio() ),
 	pFocusTarget(NULL)
 	{}
 };
