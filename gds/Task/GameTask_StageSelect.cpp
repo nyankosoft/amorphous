@@ -182,8 +182,8 @@ void CGameTask_StageSelect::InitMenu()
 	}
 
 	// set scale for the current resolution
-	float scale_factor = (float)GetScreenWidth() / 800.0f;
-	m_pDialogManager->ChangeScale( scale_factor );
+//	float scale_factor = (float)GetScreenWidth() / 800.0f;
+//	m_pDialogManager->ChangeScale( scale_factor );
 }
 
 
