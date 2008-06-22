@@ -60,6 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="user32.lib"
 				OutputFile="../app/$(ProjectName)_Debug.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -134,6 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="user32.lib"
 				OutputFile="../app/$(ProjectName)_Release.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
