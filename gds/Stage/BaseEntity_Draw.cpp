@@ -194,11 +194,9 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 			if( !bSingleTechnique )
 				pShaderManager->SetTechnique( rShaderTechHandleTable( i, ShaderLOD ) );
 
-			pShaderManager->SetTexture( 0, pMeshObject->GetTexture(i,0) );
-
-//			LPDIRECT3DTEXTURE9 pNMTex = NULL;
-//			if( pNMTex = pMeshObject->GetNormalMapTexture(i) )
-//				pShaderManager->SetTexture( 1, pNMTex );
+			const int num_textures_per_material = pMeshObject->GetNumTextures( i );
+			for( int tex=0; tex<num_textures_per_material; tex++ )
+				pShaderManager->SetTexture( tex, pMeshObject->GetTexture( i, tex ) );
 
 			pEffect->CommitChanges();
 
@@ -237,11 +235,9 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 			// Set the material and texture for this subset
 	//		pd3dDev->SetMaterial( &pMeshObject->GetMaterial(i) );
 
-			pd3dDev->SetTexture( 0, pMeshObject->GetTexture(i,0).GetTexture() );
-
-//			LPDIRECT3DTEXTURE9 pNMTex = NULL;
-//			if( pNMTex = pMeshObject->GetNormalMapTexture(i) )
-//				pd3dDev->SetTexture( 1, pNMTex );
+			const int num_textures_per_material = pMeshObject->GetNumTextures( i );
+			for( int tex=0; tex<num_textures_per_material; tex++ )
+				pd3dDev->SetTexture( tex, pMeshObject->GetTexture(i,tex).GetTexture() );
 
 			// Draw the mesh subset
 			pMesh->DrawSubset( i );

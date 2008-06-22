@@ -154,10 +154,8 @@ public:
 
 	inline CTextureHandle& GetTexture( int material_index, int tex_index );
 
-	/// renderes mesh using a shader technique
-	/// this method assumes that you have set a valid shader technique that renders
-	/// meshes with a texture sampler accessed by 'pTexHandle'
-//	virtual void Render( LPD3DXEFFECT pEffect, D3DXHANDLE pTexHandle, D3DXHANDLE pNormalMapTexHandle = NULL );
+	/// the number of textures for the i-th material
+	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
 
 	virtual void RenderSubsets( CShaderManager& rShaderMgr, const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
 
