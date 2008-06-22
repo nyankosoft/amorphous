@@ -37,7 +37,13 @@ class CPseudoAircraftHUD : public CGraphicsComponent
 
 	DWORD m_HUDColor;
 
+	CTextureHandle m_Texture;
+
 //	TCFixedVector<HUD_TargetInfo, NUM_MAX_TGT_INFO> m_vecTargetInfo;
+
+private:
+
+	void RenderCenterComponents();
 
 public:
 

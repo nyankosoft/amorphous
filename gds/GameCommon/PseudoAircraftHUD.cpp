@@ -31,8 +31,11 @@ CPseudoAircraftHUD::~CPseudoAircraftHUD()
 void CPseudoAircraftHUD::Init()
 {
 	CTextureFont *pTexFont = new CTextureFont;
-	pTexFont->InitFont( "Texture\\MainFont.dds", 8, 12, 16, 8 );
+	pTexFont->InitFont( "./Texture/MainFont.dds", 8, 12, 16, 8 );
 	m_pFont = pTexFont;
+
+	m_Texture.filename = "./Texture/AircraftHUD.dds";
+	m_Texture.Load();
 
 	m_RectSet.SetNumRects( NUM_MAX_RECTS );
 }
@@ -66,6 +69,25 @@ const char s_PitchTable[21][3] = { " 0", " 5", "10", "15", "20", "25", "30", "35
 const char s_DirTable[8][3] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
 
+void CPseudoAircraftHUD::RenderCenterComponents()
+{
+	C2DRect rect;
+	float scale = GetScreenWidth() / 800.0f;
+	Vector2 vCenter = m_vScreenCenter;
+
+	// render "w"
+	float w = 48.0f * scale;
+	float h = 24.0f * scale;
+	rect.SetTextureUV( TEXCOORD2(0.0f,0.5f), TEXCOORD2(1.0f,1.0f) );
+	rect.SetPosition( vCenter - Vector2(w,h) * 0.5f, vCenter + Vector2(w,h) * 0.5f );
+	rect.SetDestAlphaBlendMode( AlphaBlend::One );
+	rect.SetColor( m_HUDColor );
+	rect.Draw( m_Texture );
+
+	// render "-o-"
+}
+
+
 void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 {
 	// enable alpha blending
@@ -84,6 +106,8 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
     pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
+	RenderCenterComponents();
 
 	m_RectSet.SetColor( m_HUDColor );
 
