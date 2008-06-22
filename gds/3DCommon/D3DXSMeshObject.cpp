@@ -16,10 +16,10 @@ CD3DXSMeshObject::CD3DXSMeshObject()
 CD3DXSMeshObject::CD3DXSMeshObject( const std::string& filename )
 : m_iNumBones(0), m_paBoneMatrix(NULL), m_pRootBone(NULL)
 {
-	HRESULT hr = CD3DXMeshObjectBase::LoadFromFile( filename );
+	bool loaded = CD3DXMeshObjectBase::LoadFromFile( filename );
 
-	if( FAILED(hr) )
-		LOG_PRINT_ERROR( "Cannot to load a mesh object from file" + filename );
+	if( !loaded )
+		LOG_PRINT_ERROR( "Failed to load a mesh object from file" + filename );
 }
 
 
