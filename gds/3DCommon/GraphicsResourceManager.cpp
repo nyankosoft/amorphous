@@ -84,6 +84,7 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 	}
 
 	// not found in the list - need to load as a new texture
+	size_t new_resource_index = m_vecpResourceEntry.size(); // Save the resource index here, since IncRefCount() call below may make another call to CGraphicsResourceManager::LoadGraphicsResource().
 	m_vecpResourceEntry.push_back( CreateGraphicsResourceEntry(desc) );
 	m_vecpResourceEntry.back()->SetFilename( desc.Filename );
 
@@ -91,7 +92,7 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 	// - load the resource because the entry is new
 	m_vecpResourceEntry.back()->IncRefCount();
 
-	if( m_vecpResourceEntry.back()->GetRefCount() == 1 )
+	if( m_vecpResourceEntry[new_resource_index]->GetRefCount() == 1 )
 	{
 		LOG_PRINT( " - Created a graphics resource: " + desc.Filename );
 
@@ -102,8 +103,8 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 	{
 		LOG_PRINT_WARNING( "Failed to create a graphics resource: " + desc.Filename );
 
-		SafeDelete( m_vecpResourceEntry.back() );
-		m_vecpResourceEntry.pop_back();
+		SafeDelete( m_vecpResourceEntry[new_resource_index] );
+		m_vecpResourceEntry.erase( m_vecpResourceEntry.begin() + new_resource_index );
 		return -1;	// failed to create a resource
 	}
 }
