@@ -54,7 +54,8 @@ public:
 	{}
 
 	/// creates an indexed triangle
-	inline CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2 );
+	inline CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2,
+		                    int mat_index = 0, const SPlane& plane = SPlane(), const AABB3& aabb = AABB3() );
 
 	/// polygon must be convex
 	inline void Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane );
@@ -113,10 +114,13 @@ public:
 enum ePolygonStatus { POLYGON_ONPLANE, POLYGON_FRONT, POLYGON_BACK, POLYGON_INTERSECTING };
 
 
-inline CIndexedPolygon::CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2 )
+inline CIndexedPolygon::CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2,
+										 int mat_index, const SPlane& plane, const AABB3& aabb )
 :
 m_pVertexBuffer(pVertexBuffer),
-m_MaterialIndex(0)
+m_MaterialIndex(mat_index),
+m_Plane(plane),
+m_AABB(aabb)
 {
 	m_index.resize(3);
 	m_index[0] = i0;
@@ -216,7 +220,7 @@ inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_pol
 	for( i=0; i<num_tris; i++ )
 	{
 		dest_polygon_buffer.push_back(
-			CIndexedPolygon( m_pVertexBuffer, m_index[0], m_index[i+1], m_index[i+2] ) );
+			CIndexedPolygon( m_pVertexBuffer, m_index[0], m_index[i+1], m_index[i+2], m_MaterialIndex, m_Plane, m_AABB ) );
 	}
 
 	/// experimental
