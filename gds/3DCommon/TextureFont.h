@@ -8,6 +8,12 @@
 #include "3DCommon/TextureCoord.h"
 #include "3DMath/AABB2.h"
 
+#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization_3DCommon.h"
+#include "Support/Serialization/Serialization_3DMath.h"
+#include "Support/Serialization/BinaryDatabase.h"
+using namespace GameLib1::Serialization;
+
 
 extern void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend );
 
@@ -16,7 +22,7 @@ class CTextureFont : public CFontBase
 {
 public:
 
-	class CharRect
+	class CharRect : public IArchiveObjectBase
 	{
 	public:
 
@@ -25,6 +31,13 @@ public:
 
 		/// horizontal advance for this character
 		float advance;
+
+		void Serialize( IArchive& ar, const unsigned int version )
+		{
+			ar & tex_min & tex_max;
+			ar & rect;
+			ar & advance;
+		}
 	};
 
 	enum Params

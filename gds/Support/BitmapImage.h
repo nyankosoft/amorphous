@@ -7,6 +7,7 @@
 #include "FreeImage.h"
 
 #include "3DCommon/FloatRGBColor.h"
+#include "3DCommon/FloatRGBAColor.h"
 #include "Support/2DArray.h"
 #include "Support/Log/DefaultLog.h"
 
@@ -17,11 +18,16 @@ class CBitmapImage
 {
 	FIBITMAP* m_pFreeImageBitMap;
 
+	int m_BitsPerPixel;
+
 public:
 
 	CBitmapImage() {}
 
 	inline CBitmapImage( int width, int height, int bpp );
+
+	/// \param bpp bits per pixel. Must support RGBA format
+	inline CBitmapImage( int width, int height, int bpp, const SFloatRGBAColor& color );
 
 //	inline CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
 
@@ -31,10 +37,15 @@ public:
 
 	inline bool SaveToFile( const std::string& pathname, int flag = 0 );
 
+	inline void FillColor( const SFloatRGBAColor& color );
+
 	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
 
 	/// \param grayscale must be [0,255]
 	inline void SetGrayscalePixel( int x, int y, U8 grayscale );
+
+	/// \param alpha alpha component [0,255]
+	inline void SetAlpha( int x, int y, U8 alpha );
 
 	FIBITMAP *GetFBITMAP() { return m_pFreeImageBitMap; }
 
@@ -52,8 +63,52 @@ inline CBitmapImage::CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer,
 
 
 inline CBitmapImage::CBitmapImage( int width, int height, int bpp )
+:
+m_BitsPerPixel(bpp)
 {
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
+}
+
+
+inline CBitmapImage::CBitmapImage( int width, int height, int bpp, const SFloatRGBAColor& color )
+:
+m_BitsPerPixel(bpp)
+{
+	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
+
+	FillColor( color );
+
+}
+
+
+inline void CBitmapImage::FillColor( const SFloatRGBAColor& color )
+{
+	if( !m_pFreeImageBitMap )
+		return;
+
+	U8 r = (U8)(color.fRed   * 255);
+	U8 g = (U8)(color.fGreen * 255);
+	U8 b = (U8)(color.fBlue  * 255);
+	U8 a = (U8)(color.fAlpha * 255);
+
+	const int w = GetWidth();
+	const int h = GetHeight();
+	const int bytespp = FreeImage_GetLine(m_pFreeImageBitMap) / FreeImage_GetWidth(m_pFreeImageBitMap);
+	for( int y = 0; y < h; y++)
+	{
+		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y);
+		for( int x = 0; x < w; x++)
+		{
+			// Set pixel color to green with a transparency of 128
+			bits[FI_RGBA_RED]   = r;
+			bits[FI_RGBA_GREEN] = g;
+			bits[FI_RGBA_BLUE]  = b;
+			bits[FI_RGBA_ALPHA] = a;
+
+			// jump to next pixel
+			bits += bytespp;
+		}
+	}
 }
 
 
@@ -77,6 +132,16 @@ inline void CBitmapImage::SetGrayscalePixel( int x, int y, U8 grayscale )
 
 //	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
 	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, GetHeight() - y - 1, &quad );
+}
+
+
+inline void CBitmapImage::SetAlpha( int x, int y, U8 alpha )
+{
+//	int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
+
+	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
+
+	bits[FI_RGBA_ALPHA] = alpha;
 }
 
 

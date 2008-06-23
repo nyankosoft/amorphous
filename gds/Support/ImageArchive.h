@@ -57,6 +57,8 @@ public:
 	/// and stores the image to the internal buffer
 	inline CImageArchive( const std::string& image_filename );
 
+//	inline CImageArchive( const CBitmapImage& img, CImageArchive::eImageFormat fmt );
+
 //	bool LoadImage_FloatRGBA( vector<SFloatRGBAColor>& dest_buffer );
 
 	/// returns true on success

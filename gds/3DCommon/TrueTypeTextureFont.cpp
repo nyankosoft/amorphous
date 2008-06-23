@@ -6,6 +6,7 @@
 #include "Support/FreeTypeAux.h"
 #include "Support/BitmapImage.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/ImageArchive.h"
 
 
 #ifdef _DEBUG
@@ -16,6 +17,9 @@
 
 
 using namespace boost;
+
+
+static const std::string gs_FontTextureImageKeyname = "Texture";
 
 
 void DrawRect( C2DArray<U8>& dest_buffer, const SRect& rect, U8 color )
@@ -52,12 +56,41 @@ void CFontTextureLoader::FillTexture( CLockedTexture& texture )
 			texture.SetPixel( x, y, color );
 		}
 	}
+
+	// Save the image for faster loading from the next time
+/*	string filename_minus_ext = m_pFont->m_FontFilepath.substr( 0, m_pFont->m_FontFilepath.length() - 4 );
+	CBinaryDatabase<string> db;
+	bool db_open = db.Open( CTrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath + "/" + filename_minus_ext + ".tfd", CBinaryDatabase<string>::DB_MODE_NEW );
+	if( db_open )
+	{
+		CTextureFontArchive archive;
+		archive.BaseCharHeight = m_pFont->m_BaseHeight;
+		archive.vecCharRect    = m_pFont->m_vecCharRect;
+		db.AddData( "Base", archive );
+
+		int img_depth = 32; // ARGB, 8bits for each channel
+		CBitmapImage img( w, h, img_depth, SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ) );
+		for( int y=0; y<h; y++ )
+		{
+			for( int x=0; x<w; x++ )
+			{
+				img.SetAlpha( x, y, dest_bitmap_buffer(x,y) );
+			}
+		}
+
+		// create the image archive and add it to the db with the key
+		CImageArchive img_archive( img );
+		db.AddData( gs_FontTextureImageKeyname, img_archive );
+	}*/
 }
 
 
 //=========================================================================================
 // CTrueTypeTextureFont
 //=========================================================================================
+
+std::string CTrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath = "./Texture";
+
 
 CTrueTypeTextureFont::CTrueTypeTextureFont()
 {
@@ -90,6 +123,7 @@ void CTrueTypeTextureFont::InitTrueTypeFontInternal()
 }
 
 
+/// Sets up char rects as well
 void RenderTextToBuffer( FT_Face& face,
 						const std::string &text,
 						int char_height,
@@ -255,15 +289,38 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		// set the string id
 		m_FontTexture.filename = filename + to_string(resolution);
 
-		m_FontTexture.Create( m_pTextureLoader, 1024, 1024, TextureFormat::A8R8G8B8, 1 );
+		return m_FontTexture.Create( m_pTextureLoader, 1024, 1024, TextureFormat::A8R8G8B8, 1 );
 
 		// First, create the texture
 //		bool tex_created = CreateFontTextureFromTrueTypeFont();
 	}
-	else
+/*	else if( dot_and_3char_suffix == ".tfd" )
 	{
-		// Assume the user has specified texture font archive
-	}
+		// Assume the user has specified texture font database
+		CBinaryDatabase<string> db;
+		bool db_open = db.Open( filename, CBinaryDatabase<string>::DB_MODE_APPEND );
+		if( db_open )
+		{
+			CTextureFontArchive archive;
+			bool loaded = db.GetData( "Base", archive );
+			if( loaded )
+			{
+				m_vecCharRect    = archive.vecCharRect;
+				m_BaseCharHeight = archive.BaseCharHeight;
+			}
+			else
+				return false;
 
-	return true;
+			// Close before loading the texture
+			// - The resource manager needs to open the db
+			db.Close();
+
+			m_FontTexture.filename = filename + "::" + gs_FontTextureImageKeyname;
+			return m_FontTexture.Load();
+		}
+		else
+			return false;
+	}*/
+
+	return false;
 }

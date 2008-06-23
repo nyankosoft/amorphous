@@ -5,8 +5,58 @@
 #include "3DCommon/TextureFont.h"
 #include "Support/2DArray.h"
 
+#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/BinaryDatabase.h"
+using namespace GameLib1::Serialization;
+
 
 class CTrueTypeTextureFont;
+
+
+/**
+  - archived resource of ANSI texture font
+    - filename suffix: ".tfa"
+    - Created when a texture font is initialized for the first time
+	  - Subsequent init call of the same font will try to load the font
+	    from the texture font archive, hopefully reducing the init time
+		- i.e. Instance of this class works as a cache of font texture resource.
+
+  Rationale to have texture font archive class
+  - to support feature to initialize font texture quickly
+    - no archived resource -> need to
+	  - render the glyphs to buffer.
+	  - copy the buffer content to memory of the texture resource
+	  - usually,
+	    - color channel(rgb): full brightness
+		- alpha cahnnel: grayscale values of font
+
+		=========================================================
+		Cannot load texture from image archive directly!!!
+		Need to be (binary db filepath)::(keyname)
+		=========================================================
+
+  - Why a separate archive class? What about deriving font class from IArchiveObjectBase?
+    - CFontBase would need to be an archive object to avoid mulitple inheritance. 
+*/
+class CTextureFontArchive : public IArchiveObjectBase
+{
+public:
+
+	int BaseCharHeight;
+
+	std::vector<CTextureFont::CharRect> vecCharRect;
+
+//	CImageArchive TextureImage;
+
+public:
+
+	CTextureFontArchive() : BaseCharHeight(64) {}
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & BaseCharHeight & vecCharRect;// & TextureImage;
+	}
+};
 
 
 class CFontTextureLoader : public CTextureLoader
@@ -40,6 +90,8 @@ private:
 
 	boost::shared_ptr<CFontTextureLoader> m_pTextureLoader;
 
+	static std::string ms_TextureArchiveDestDirectoryPath;
+
 private:
 
 	void InitTrueTypeFontInternal();
@@ -63,8 +115,14 @@ public:
 	/// InitFont() is not made virtual and completely different from that of CFont
 	/// \param height font height
 	/// \param width ignored for now. width is determined from the height
+	/// \param filename font file. Filetype could be one of the following
+	/// - .ttf TrueType font
+	/// - .otf OpenType font
+	/// - .tfd ???
 	bool InitFont( const std::string& filename, int resolution,
 		           int font_width, int font_height );
+
+	static void SetTextureArchiveDestDirectoryPath( const std::string& dir_path ) { ms_TextureArchiveDestDirectoryPath = dir_path; }
 
 //	virtual void SetFontSize(int FontWidth, int FontHeight);
 
