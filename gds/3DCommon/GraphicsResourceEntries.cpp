@@ -252,7 +252,13 @@ bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 	CImageArchive img;
 	db.GetData( image_archive_key, img );
 
+	{
+		char title[1024];
+		sprintf( title, "D3DXCreateTextureFromFileInMemory (keyname: %s)", keyname.c_str() );
+		LOG_SCOPE( title );
+
 	hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &img.m_vecData[0], (UINT)img.m_vecData.size(), &m_pTexture );
+	}
 
 /*	D3DXIMAGE_INFO img_info;
 	memset( &img_info, 0, sizeof(D3DXIMAGE_INFO) );
@@ -288,6 +294,10 @@ bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 
 bool CTextureEntry::LoadFromFile( const std::string& filepath )
 {
+	char title[1024];
+	sprintf( title, "D3DXCreateTextureFromFile (file: %s)", filepath.c_str() );
+	LOG_SCOPE( title );
+
 	SAFE_RELEASE( m_pTexture );
 
 	HRESULT hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
@@ -302,10 +312,15 @@ bool CTextureEntry::CreateFromDesc()
 
 	const CTextureResourceDesc& desc = m_TextureDesc;
 
+	HRESULT hr;
 	DWORD usage = 0;
 	D3DPOOL pool = D3DPOOL_MANAGED;
+	{
+		char title[1024];
+		sprintf( title, "D3DXCreateTexture (%dx%d)", desc.Width, desc.Height );
+		LOG_SCOPE( title );
 
-	HRESULT hr = D3DXCreateTexture( DIRECT3D9.GetDevice(),
+	hr = D3DXCreateTexture( DIRECT3D9.GetDevice(),
 	                                (UINT)desc.Width,
 									(UINT)desc.Height,
 									(UINT)desc.MipLevels,
@@ -313,6 +328,7 @@ bool CTextureEntry::CreateFromDesc()
 									ConvertTextureFormatToD3DFORMAT( desc.Format ),
 									pool,
 									&m_pTexture );
+	}
 
 	if( FAILED(hr) || !m_pTexture )
 		return false;

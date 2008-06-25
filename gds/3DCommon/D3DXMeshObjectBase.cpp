@@ -196,6 +196,9 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 
 	LPD3DXMESH pMesh = NULL;
 
+	{
+		LOG_SCOPE( "D3DXCreateMesh" );
+
 	hr = D3DXCreateMesh( (DWORD)archive.GetVertexIndex().size() / 3,
 		                 num_vertices,
 //						 0,
@@ -203,6 +206,7 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 						 aVertexElements,
 						 pd3dDev,
 						 &pMesh );
+	}
 
 	if( hr == E_OUTOFMEMORY )
 	{
