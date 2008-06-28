@@ -146,25 +146,6 @@ bool CD3DXMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::
 	if( FAILED(hr) )
 		return false;
 
-
-	// set attribute IDs for each face
-	DWORD *pdwBuffer = NULL;
-	pMesh->LockAttributeBuffer( 0, &pdwBuffer );
-	DWORD face = 0;
-	for( int i=0; i<m_NumMaterials; i++ )
-	{
-		CMMA_TriangleSet& triangle_set = archive.GetTriangleSet()[i];
-
-		DWORD face_start = triangle_set.m_iStartIndex / 3;
-		DWORD num_faces = triangle_set.m_iNumTriangles;
-		for( face=face_start; face<face_start + num_faces; face++ )
-		{
-			pdwBuffer[face] = i;
-		}
-	}
-
-	pMesh->UnlockAttributeBuffer();
-
 	m_pMesh = pMesh;
 	pMesh = NULL;
 

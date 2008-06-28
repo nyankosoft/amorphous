@@ -318,6 +318,7 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 	// The created progressive mesh does not have the same attribute table(s).
 	// - The two attribute tables of the original mesh gets reduced to only one
 	//   in the created mesh...
+	// Fixed: Added code to set attribute IDs for each face in SetAttributeTable()
 	hr = D3DXGeneratePMesh( pMesh, (DWORD*)pAdjacencyBuffer->GetBufferPointer(),
 							NULL, NULL, 1, D3DXMESHSIMP_VERTEX, &pPMesh );
 	if( FAILED(hr) )
