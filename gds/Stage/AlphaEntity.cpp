@@ -58,8 +58,6 @@ void CAlphaEntity::UpdatePhysics( float dt )
 
 void CAlphaEntity::Draw()
 {
-	return;
-
 	if( !pParent )
 		return;
 

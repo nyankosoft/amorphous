@@ -237,9 +237,9 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 
 			CAlphaEntity *pEntity = dynamic_cast<CAlphaEntity *>(m_pStage->CreateEntity( desc ));
 			if( pEntity )
-				pEntity->SetAlphaMaterialIndex( 1 );
+				pEntity->SetAlphaMaterialIndex( 0 );
 
-			m_MeshProperty.m_vecTargetMaterialIndex.push_back( 0 );
+			m_MeshProperty.m_vecTargetMaterialIndex.push_back( 1 );
 		}
 //	}
 }

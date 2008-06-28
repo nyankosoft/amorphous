@@ -198,7 +198,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 
 			// pMeshObject->Render( *pShaderManager );
 
-			if( m_MeshProperty.m_vecTargetMaterialIndex.size() == 0 )
+			if( vecTargetMaterialIndex.size() == 0 )
 			{
 				// render all the materials (subsets) with the current shader technique
 				pMeshObject->Render( *pShaderManager );
@@ -211,7 +211,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 				// - Models that includes material(s) with transparency
 				//   -> Materials with no-transparancy
 				pMeshObject->RenderSubsets( *pShaderManager,
-					                        m_MeshProperty.m_vecTargetMaterialIndex );
+					                        vecTargetMaterialIndex );
 			}
 		}
 		else
@@ -231,7 +231,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 			{
 				// render target materials
 				pMeshObject->RenderSubsets( *pShaderManager,
-					                        m_MeshProperty.m_vecTargetMaterialIndex,
+					                        vecTargetMaterialIndex,
 											m_vecShaderTechniqueHolder
 											);
 			}
