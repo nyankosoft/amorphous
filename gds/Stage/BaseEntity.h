@@ -39,10 +39,19 @@ class CBE_MeshObjectProperty : public CMeshObjectContainer
 {
 public:
 
+	/// names of the materials that should be z-sorted
+	std::vector<std::string> m_vecTransparentMaterialName;
+
 	/// used by skeletal mesh (not serialized)
 	vector<CMeshBoneControllerBase*> m_vecpMeshBoneController;
 
 	CTextureHandle m_SpecTex;
+
+	/// subsets of the mesh that should be rendered by the entity
+	/// - Holds non-transparant materials(subsets) of the mesh
+	/// - Used to separate material(s) that have transparant polygons
+	/// - Default: 0 (render all the materials)
+	std::vector<int> m_vecTargetMaterialIndex;
 
 	enum ePropertyFlags
 	{
@@ -73,6 +82,8 @@ public:
 	{
 		CMeshObjectContainer::Serialize( ar, version );
 
+		ar & m_vecTargetMaterialIndex;
+
 //		if( ar.GetMode() == IArchive::MODE_INPUT )
 //		{
 			// delete the current mesh controllers
@@ -91,6 +102,10 @@ protected:
 	std::string m_strName;
 
 	CBE_MeshObjectProperty m_MeshProperty;
+
+	/// used temporary array to hold shader techniques for mesh materials
+	/// - See CBaseEntity::DrawMeshObject()
+	std::vector<CShaderTechniqueHandle> m_vecShaderTechniqueHolder;
 
 	/// ENTITY_GROUP_MIN is set by default
 	CEntityGroupHandle m_EntityGroup;

@@ -12,11 +12,15 @@
 #include "3DCommon/fwd.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/TextureHandle.h"
+#include "3DCommon/Shader/ShaderTechniquehandle.h"
 
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
 
 
+/**
+ Base class of the D3D implementation of the mesh class
+*/
 class CD3DXMeshObjectBase
 {
 private:
@@ -157,14 +161,34 @@ public:
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
 
-	virtual void RenderSubsets( CShaderManager& rShaderMgr, const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
+	//
+	// render functions
+	//
 
-	/// Renderes mesh using a shader technique
+	/// renders a single subset of the mesh with the current shader technique
+	inline void RenderSubset( CShaderManager& rShaderMgr, int material_index );
+
+	/// renders subsets of the mesh
+	/// - use different shader techniques for each material
+	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+		                        const std::vector<int>& vecMaterialIndex,
+								std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
+
+	/// renders subsets of the mesh with the current shader technique
+	/// - the same shader technique is used to render all the materials
+	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
+
+	/// renders the mesh with the current shader technique
 	/// - Assumes that you have already set a valid technique that can be obtained from 'rShaderMgr'
-	/// - 
+	/// - the same shader technique is used to render all the materials
 	inline void Render( CShaderManager& rShaderMgr );
 
-	inline void RenderSubset( CShaderManager& rShaderMgr, int material_index );
+	/// Use this when you wanna use different shader techniques for each material
+	/// \param vecShaderTechnique shader techniques for each material
+	/// - What to do if the single shader technique is applied for all materials
+	///   - shader_mgr.SetShaderTechnique() and call CD3DXMeshObjectBase::Render( shader_mgr )
+	inline void Render( CShaderManager& rShaderMgr, std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
 
 	enum eMeshType { TYPE_MESH, TYPE_PMESH, TYPE_SMESH, TYPE_DMESH };
 
@@ -213,6 +237,13 @@ inline CTextureHandle& CD3DXMeshObjectBase::GetTexture( int material_index, int 
 inline void CD3DXMeshObjectBase::Render( CShaderManager& rShaderMgr )
 {
 	RenderSubsets( rShaderMgr, m_vecFullMaterialIndices );
+}
+
+
+inline void CD3DXMeshObjectBase::Render( CShaderManager& rShaderMgr,
+										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+{
+	RenderSubsets( rShaderMgr, m_vecFullMaterialIndices, vecShaderTechnique );
 }
 
 

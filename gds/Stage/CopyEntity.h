@@ -212,8 +212,6 @@ public:
 
 	inline void Terminate();
 
-	inline void Draw() { pBaseEntity->Draw( this ); }
-
 	inline void ClipTrace(STrace& rLocalTrace) { pBaseEntity->ClipTrace( rLocalTrace, this ); }
 
 	inline void Touch(CCopyEntity* pCopyEnt_Other)
@@ -281,6 +279,7 @@ public:
 	virtual void Update( float dt ) {}
 
 	/// update entity in physics engine update cycle
+	/// \param dt fixed delta time used synchronously with physics engine
 	/// defualt: do nothing
 	/// DON'T GET CONFUSED WITH CCopyEntity::UpdatePhysics()
 	virtual void UpdatePhysics( float dt ) {}
@@ -288,6 +287,10 @@ public:
 	/// handles a game message
 	/// defualt: do nothing
 	virtual void HandleMessage( SGameMessage& msg ) {}
+
+	/// render the entity
+	/// default: let the base entity render the entity
+	virtual void Draw() { pBaseEntity->Draw( this ); }
 
 	/// called when the entity is terminated
 	/// - default: do nothing

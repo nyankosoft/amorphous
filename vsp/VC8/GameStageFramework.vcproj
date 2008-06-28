@@ -1028,6 +1028,14 @@
 					Name="Entity"
 					>
 					<File
+						RelativePath="..\..\gds\Stage\AlphaEntity.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Stage\AlphaEntity.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Stage\CopyEntity.cpp"
 						>
 					</File>

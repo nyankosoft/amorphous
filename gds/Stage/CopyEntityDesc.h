@@ -19,6 +19,7 @@ public:
 	enum eTypeID
 	{
 		DEFAULT = 0,
+		ALPHA_ENTITY,
 		USE_ID_OFFSET
 	};
 };

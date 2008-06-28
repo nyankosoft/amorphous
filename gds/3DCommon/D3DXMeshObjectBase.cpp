@@ -19,6 +19,35 @@
 using namespace fnop;
 
 
+
+/**
+Terms
+----------------------------
+- subset, material, and surface are used interchangeably
+
+Tips
+----------------------------
+- Idally, A mesh should has a single material
+  - Switching materials comes with certain performance penalty
+    - Consider using the following tricks to texture to achieve different surface properties
+      with a single material
+      - store per-pixel specularity / glossines to texture, esp. in alpha channel
+      - vertex diffuse colors
+
+Details
+----------------------------
+- 2 categorizations for rendering modes of the mesh
+  1. single / non-single shader technique
+    - single shader technique
+      - set shader technique and the call Render()
+    - individual shader techniques for each material
+  2. render all materials or some of the mesh materials
+    - all materials
+	  - Render()
+	- some of the materials
+	  - RenderSubsets()
+*/
+
 void CD3DXMeshObjectBase::Release()
 {
 	m_vecAABB.resize(0);
@@ -615,8 +644,20 @@ void CD3DXMeshObjectBase::UpdateVisibility( const CCamera& cam )
 }
 
 
-void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr, const std::vector<int>& vecMaterialIndex )
+void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+										 const std::vector<int>& vecMaterialIndex )
 {
+	vector<CShaderTechniqueHandle> empty_shader_technique_array;
+	RenderSubsets( rShaderMgr, vecMaterialIndex, empty_shader_technique_array );
+}
+
+
+void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+										 const std::vector<int>& vecMaterialIndex,
+										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+{
+	bool single_shader_technique = ( vecShaderTechnique.size() == 0 ) ? true : false;
+
 	if( m_bViewFrustumTest && !IsMeshVisible() )
 		return;
 
@@ -628,7 +669,7 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr, const std::
 		return;
 
 	UINT cPasses;
-	pEffect->Begin( &cPasses, 0 );
+//	pEffect->Begin( &cPasses, 0 );
 
 	LPD3DXBASEMESH pMesh = GetBaseMesh();
 	if( !pMesh )
@@ -647,12 +688,16 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr, const std::
 		if( m_bViewFrustumTest && !IsMeshVisible(mat) )
 			continue;
 
+		if( !single_shader_technique )
+			rShaderMgr.SetTechnique( vecShaderTechnique[i] );
+
 		const int num_textures_per_material = (int)m_vecMaterial[mat].Texture.size();
 		for( int tex=0; tex<num_textures_per_material; tex++ )
 			rShaderMgr.SetTexture( tex, GetTexture( mat, tex ) );
 
 		pEffect->CommitChanges();
 
+		pEffect->Begin( &cPasses, 0 );
 		for( UINT p = 0; p < cPasses; ++p )
 		{
 			pEffect->BeginPass( p );
@@ -662,9 +707,10 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr, const std::
 
 			pEffect->EndPass();
 		}
+		pEffect->End();
 	}
 
-	pEffect->End();
+//	pEffect->End();
 }
 
 

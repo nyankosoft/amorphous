@@ -121,6 +121,14 @@ static void RestoreOffsetWorldTransform()
 	pd3dDev->SetTransform( D3DTS_VIEW, &matView );
 }
 
+/*
+void CBaseEntity::DrawMeshSubset( const Matrix34& world_pose,
+								  CD3DXMeshObjectBase *pMeshObject,
+								  CShaderTechniqueHandle& shader_technique
+								  )
+{
+}
+*/
 
 void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 								  CD3DXMeshObjectBase *pMeshObject,
@@ -129,17 +137,6 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 {
 	D3DXMATRIX matWorld;
 	world_pose.GetRowMajorMatrix44( (float *)&matWorld );
-
-	int render_mode = GetRenderMode();
-
-/*	switch( render_mode )
-	{
-//	case ERM_NORMAL:	shader_tech_id = m_MeshProperty.m_ShaderTechniqueID;
-///	case ERM_ENVMAP:
-///		if( m_EntityFlag & BETYPE_ENVMAPTARGET )
-///			return;	// do not render env map target object in the env map scene
-	default: break;
-	}*/
 
 	if( !pMeshObject )
 	{
@@ -183,35 +180,46 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 			// render the meshes of all the materials with the same shader technique
 			// - no need to change techniques for every material
 			pShaderManager->SetTechnique( rShaderTechHandleTable( 0, ShaderLOD ) );
-		}
 
-		// Meshes are divided into subsets by materials. Render each subset in a loop
-		for( i=0; i<num_materials; i++ )
-		{
-			// Set the material and texture for this subset
-//			pEffect->SetValue( ... );
+			// pMeshObject->Render( *pShaderManager );
 
-			if( !bSingleTechnique )
-				pShaderManager->SetTechnique( rShaderTechHandleTable( i, ShaderLOD ) );
-
-			const int num_textures_per_material = pMeshObject->GetNumTextures( i );
-			for( int tex=0; tex<num_textures_per_material; tex++ )
-				pShaderManager->SetTexture( tex, pMeshObject->GetTexture( i, tex ) );
-
-			pEffect->CommitChanges();
-
-			UINT p, cPasses;
-			pEffect->Begin( &cPasses, 0 );
-			for( p = 0; p < cPasses; ++p )
+			if( m_MeshProperty.m_vecTargetMaterialIndex.size() == 0 )
 			{
-				pEffect->BeginPass( p );
-
-				// Draw the mesh subset
-				pMesh->DrawSubset( i );
-
-				pEffect->EndPass();
+				// render all the materials (subsets) with the current shader technique
+				pMeshObject->Render( *pShaderManager );
 			}
-			pEffect->End();
+			else
+			{
+				// render target materials with the current shader technique
+				// - Models that does not include transparency
+				//   -> All the materials of the mesh
+				// - Models that includes material(s) with transparency
+				//   -> Materials with no-transparancy
+				pMeshObject->RenderSubsets( *pShaderManager,
+					                        m_MeshProperty.m_vecTargetMaterialIndex );
+			}
+		}
+		else
+		{
+			// shader technique needs to be set for each material
+			// - set up the array of shader techniques
+			m_vecShaderTechniqueHolder.resize( 0 );
+			for( int i=0; i<rShaderTechHandleTable.size_x(); i++ )
+				m_vecShaderTechniqueHolder.push_back( rShaderTechHandleTable( i, ShaderLOD ) );
+
+			if( m_MeshProperty.m_vecTargetMaterialIndex.size() == 0 )
+			{
+				// render all the materials (subsets)
+				pMeshObject->Render( *pShaderManager, m_vecShaderTechniqueHolder );
+			}
+			else
+			{
+				// render target materials
+				pMeshObject->RenderSubsets( *pShaderManager,
+					                        m_MeshProperty.m_vecTargetMaterialIndex,
+											m_vecShaderTechniqueHolder
+											);
+			}
 		}
 
 		if( use_offset_world_transform )
@@ -293,7 +301,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
 	CShaderManager *pShaderManager;
-	LPD3DXEFFECT pEffect = NULL;
+//	LPD3DXEFFECT pEffect = NULL;
 	if( pShaderManager = CShader::Get()->GetCurrentShaderManager() )
 	{
 		if( m_MeshProperty.m_SpecTex.GetTexture() )
@@ -338,22 +346,7 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 								    C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 									int ShaderLOD )
 {
-	int render_mode = GetRenderMode();
-//	if( render_mode == ERM_SMAP /* &&m_EntityFlag & ShadowMap*/ )
-//		shader_tech_id = SHADER_TECH_VERTBLEND_SHADOWMAP;
-
-//	if( shader_tech_id == SHADER_TECH_INVALID )
-//		shader_tech_id = m_MeshProperty.m_ShaderTechniqueID;
-
 //	MsgBoxFmt( "drawing a skeletal mesh - entity: %s, shader id: %d", pCopyEnt->GetName().c_str(), shader_tech_id );
-
-/*	switch( render_mode )
-	{
-//	case ERM_NORMAL:	shader_tech_id = m_MeshProperty.m_ShaderTechniqueID;//SHADER_TECH_VERTBLEND_DIRLIGHT;
-	case ERM_SMAP:		shader_tech_id = SHADER_TECH_VERTBLEND_SHADOWMAP;
-//	case ERM_SDMAP:		shader_tech_id = SHADER_TECH_VERTBLEND_SDMAP;
-	default: shader_tech_id = SHADER_TECH_INVALID;
-	}*/
 
 	CD3DXSMeshObject *pSMesh
 		= (CD3DXSMeshObject *)(m_MeshProperty.m_MeshObjectHandle.GetMeshObject());

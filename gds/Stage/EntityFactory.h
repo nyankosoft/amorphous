@@ -7,17 +7,21 @@
 
 #include "Support/prealloc_pool.h"
 #include "Stage/fwd.h"
+#include "Stage/AlphaEntity.h"
 
 
 class CEntityFactory
 {
 	prealloc_pool<CCopyEntity> m_CopyEntityPool;
 
+	prealloc_pool<CAlphaEntity> m_AlphaEntityPool;
+
 public:
 
 	enum eEntityFactoryParams
 	{
 		DEFAULT_MAX_NUM_ENTITIES = 1024,
+		DEFAULT_MAX_NUM_ALPHA_ENTITIES = 64,
 	};
 
 public:
