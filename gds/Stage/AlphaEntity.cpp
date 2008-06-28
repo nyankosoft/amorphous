@@ -11,9 +11,10 @@ using namespace std;
 
 
 CAlphaEntity::CAlphaEntity()
-:
-m_AlphaMaterialIndex(0)
 {
+	// set material index 0 as the alpha material by default
+	m_AlphaMaterialIndex = 0;;
+
 //	m_Attrib |= DESTROY_IF_PARENT_IS_GONE;
 }
 
@@ -58,20 +59,11 @@ void CAlphaEntity::Draw()
 	if( !pParent )
 		return;
 
-/*	SetWorldPose( pParent->GetWorldPose() );
-	CMeshObjectBase *pMesh = MeshObjectHandle.GetMeshObject();
-	if( pMesh )
-	{
-		pMesh->DrawSubset( m_AlphaMaterialIndex );
-	}
-*/
-
-/*	pParent->pBaseEntity->DrawMeshObject(
+	pParent->pBaseEntity->DrawMeshMaterial(
 		pParent->GetWorldPose(),
-		MeshObjectHandle.GetMeshObject(),
-		pBaseEntity->m_MeshProperty->m_ShaderTechniqueTable,
+		m_AlphaMaterialIndex,
 		0
-		);*/
+		);
 }
 
 

@@ -138,6 +138,7 @@ protected:
 
 	void DrawMeshObject( const Matrix34& world_pose,
 						 CD3DXMeshObjectBase *pMeshObject,
+						 const std::vector<int>& vecTargetMaterialIndex,
 						 C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 						 int ShaderLOD = 0 );
 
@@ -181,6 +182,9 @@ public:
 	void SetStagePtr( CStageWeakPtr pStage );
 
 	void Init3DModel();
+
+	// made public since alpha entity needs to call this
+	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD );
 
 	const char* GetName() const { return m_strName.c_str(); }
 

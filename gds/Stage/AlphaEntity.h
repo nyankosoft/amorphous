@@ -13,11 +13,15 @@ class CAlphaEntityDesc;
 
 class CAlphaEntity : public CCopyEntity
 {
-	uint m_AlphaMaterialIndex;
+	int m_AlphaMaterialIndex;
+
+	// Note this vector always stores single element
+	// reason: need to set as an argument of CBaseEntity::DrawMeshObject()
+//	std::vector<int> m_SingleAlphaMaterialIndex;
 
 	/// taken from the shader technique table of the owner entity
 	/// - usually the highest resolution technique of the target subset
-	CShaderTechniqueHandle m_ShaderTechnique;
+//	CShaderTechniqueHandle m_ShaderTechnique;
 
 public:
 
@@ -38,6 +42,10 @@ public:
 	virtual void HandleMessage( SGameMessage& msg );
 
 	virtual void TerminateDerived();
+
+//	void SetShaderTechnique( CShaderTechniqueHandle& tech ) { m_ShaderTechnique = tech; }
+
+	void SetAlphaMaterialIndex( int alpha_mat_index ) { m_AlphaMaterialIndex = alpha_mat_index; }
 };
 
 

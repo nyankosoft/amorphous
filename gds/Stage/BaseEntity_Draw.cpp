@@ -130,8 +130,23 @@ void CBaseEntity::DrawMeshSubset( const Matrix34& world_pose,
 }
 */
 
+
+void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD )
+{
+	vector<int> single_index;
+	single_index.push_back( material_index );
+
+	DrawMeshObject( world_pose,
+		            m_MeshProperty.m_MeshObjectHandle.GetMeshObject(),
+					single_index,
+					m_MeshProperty.m_ShaderTechnique,
+					ShaderLOD );
+}
+
+
 void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 								  CD3DXMeshObjectBase *pMeshObject,
+								  const std::vector<int>& vecTargetMaterialIndex,
 							      C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 							      int ShaderLOD )
 {
@@ -329,7 +344,11 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 		break;
 
 	case CD3DXMeshObjectBase::TYPE_MESH:
-		DrawMeshObject( pCopyEnt->GetWorldPose(), m_MeshProperty.m_MeshObjectHandle.GetMeshObject(), rShaderTechHandleTable, ShaderLOD );
+		DrawMeshObject( pCopyEnt->GetWorldPose(),
+			           m_MeshProperty.m_MeshObjectHandle.GetMeshObject(),
+			           m_MeshProperty.m_vecTargetMaterialIndex,
+					   rShaderTechHandleTable,
+					   ShaderLOD );
 		break;
 
 	default:
@@ -349,7 +368,7 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 //	MsgBoxFmt( "drawing a skeletal mesh - entity: %s, shader id: %d", pCopyEnt->GetName().c_str(), shader_tech_id );
 
 	CD3DXSMeshObject *pSMesh
-		= (CD3DXSMeshObject *)(m_MeshProperty.m_MeshObjectHandle.GetMeshObject());
+		= dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMeshObject());
 
 	// World & View matrices are recalculated to avoid occilation in large coord
 	// Thus, world & blend matrices need to be set in a special way
@@ -363,7 +382,11 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 
 	SetBlendMatrices( pSMesh );
 
-	DrawMeshObject( pCopyEnt->GetWorldPose(), pSMesh, rShaderTechHandleTable, ShaderLOD );
+	DrawMeshObject( pCopyEnt->GetWorldPose(),
+		            pSMesh,
+					m_MeshProperty.m_vecTargetMaterialIndex,
+					rShaderTechHandleTable,
+					ShaderLOD );
 
 	pSMesh->ResetLocalTransformsCache();
 

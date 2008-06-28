@@ -122,7 +122,10 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 	// get the up direction which is constant for turret pod
 //	Vector3 vUp = rWorldPose.matOrient.GetColumn(1);
 
-	DrawMeshObject( rWorldPose, m_aMesh[MESH_POD].m_MeshObjectHandle.GetMeshObject(), m_MeshProperty.m_ShaderTechnique );
+	DrawMeshObject( rWorldPose,
+		m_aMesh[MESH_POD].m_MeshObjectHandle.GetMeshObject(),
+		m_MeshProperty.m_vecTargetMaterialIndex,
+		m_MeshProperty.m_ShaderTechnique );
 
 
 	// set the horizontal orientation for the turntable of the turret
@@ -139,7 +142,10 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 //	matWorld._11 = vRight.x; matWorld._12 = vRight.y; matWorld._13 = vRight.z; matWorld._14 = 0;
 //	matWorld._31 =   vDir.x; matWorld._32 =   vDir.y; matWorld._33 =   vDir.z; matWorld._34 = 0;
 
-	DrawMeshObject( world_pose, m_aMesh[MESH_TURNTABLE].m_MeshObjectHandle.GetMeshObject(), m_MeshProperty.m_ShaderTechnique );
+	DrawMeshObject( world_pose,
+		m_aMesh[MESH_TURNTABLE].m_MeshObjectHandle.GetMeshObject(),
+		m_MeshProperty.m_vecTargetMaterialIndex,
+		m_MeshProperty.m_ShaderTechnique );
 
 	return;
 }
