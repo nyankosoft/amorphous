@@ -708,7 +708,16 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	// z-sort is disabled by default initialization
 	// Entities that have translucent polygons have to turn on their copy entities'
 	// 'BETYPE_USE_ZSORT' in InitCopyEntity()
-	pNewCopyEnt->EntityFlag &= ~BETYPE_USE_ZSORT;
+	if( pNewCopyEnt->m_TypeID == CCopyEntityTypeID::ALPHA_ENTITY )
+	{
+		// For alpha entity, always use the  z-sorting
+		pNewCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	}
+	else
+	{
+		// Otherwise, disable z-sorting by default
+		pNewCopyEnt->EntityFlag &= ~BETYPE_USE_ZSORT;
+	}
 
 	// set the glare type
 	if( rBaseEntity.m_EntityFlag | BETYPE_GLARESOURCE )

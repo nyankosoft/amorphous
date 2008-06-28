@@ -315,6 +315,9 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 
 	// ====== generate progressive meshes ======
 
+	// The created progressive mesh does not have the same attribute table(s).
+	// - The two attribute tables of the original mesh gets reduced to only one
+	//   in the created mesh...
 	hr = D3DXGeneratePMesh( pMesh, (DWORD*)pAdjacencyBuffer->GetBufferPointer(),
 							NULL, NULL, 1, D3DXMESHSIMP_VERTEX, &pPMesh );
 	if( FAILED(hr) )

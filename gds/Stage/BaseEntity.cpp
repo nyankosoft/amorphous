@@ -1,6 +1,7 @@
 
 #include "BaseEntity.h"
 #include "CopyEntity.h"
+#include "CopyEntityDesc.h"
 #include "trace.h"
 #include "EntitySet.h"
 #include "Stage.h"
@@ -214,6 +215,33 @@ int CBaseEntity::GetEntityGroupID()
 void CBaseEntity::Init3DModel()
 {
 	m_MeshProperty.LoadMeshObject();
+}
+
+
+void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
+{
+	// test with the plane model in the aircraft select menu
+//	if( CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMeshObject() )
+//	{
+//		if( 2 <= pMesh->GetNumMaterials() &&
+		if( GetNameString() == "model_display"
+		 && pCopyEnt->pParent == NULL )
+		{
+			CBaseEntityHandle base_entity( this->GetNameString().c_str() );
+			CCopyEntityDesc desc;
+			desc.TypeID = CCopyEntityTypeID::ALPHA_ENTITY;
+			desc.pBaseEntityHandle = &base_entity;
+			desc.WorldPose = pCopyEnt->GetWorldPose();
+			desc.pParent = pCopyEnt;
+//			desc.NoCollision( true );
+
+			CAlphaEntity *pEntity = dynamic_cast<CAlphaEntity *>(m_pStage->CreateEntity( desc ));
+			if( pEntity )
+				pEntity->SetAlphaMaterialIndex( 1 );
+
+			m_MeshProperty.m_vecTargetMaterialIndex.push_back( 0 );
+		}
+//	}
 }
 
 
@@ -989,6 +1017,12 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 
 		if( scanner.TryScanLine( "3DMODEL",  m_MeshProperty.m_MeshObjectHandle.filename ) )
 			continue;
+
+		string alpha_mat_name;
+		if( scanner.TryScanLine( "ALPHA_MATERIAL", alpha_mat_name ) )
+		{
+			m_MeshProperty.m_vecTransparentMaterialName.push_back( alpha_mat_name );
+		}
 
 		if( scanner.TryScanLine( "SPEC_TEX", tex_filename ) )
 		{

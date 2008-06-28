@@ -691,8 +691,8 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 		if( !single_shader_technique )
 			rShaderMgr.SetTechnique( vecShaderTechnique[i] );
 
-		const int num_textures_per_material = (int)m_vecMaterial[mat].Texture.size();
-		for( int tex=0; tex<num_textures_per_material; tex++ )
+		const int num_textures_for_material = (int)m_vecMaterial[mat].Texture.size();
+		for( int tex=0; tex<num_textures_for_material; tex++ )
 			rShaderMgr.SetTexture( tex, GetTexture( mat, tex ) );
 
 		pEffect->CommitChanges();

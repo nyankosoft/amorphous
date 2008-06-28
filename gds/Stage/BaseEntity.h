@@ -150,6 +150,11 @@ protected:
 	/// \retval higher_values shader for lower resolution model
 	virtual int CalcShaderLOD( CCopyEntity* pCopyEnt ) { return 0; }
 
+	/// create entity(entities) for transparent parts of the material
+	void CreateAlphaEntities( CCopyEntity *pCopyEnt );
+
+protected:
+
 	/// flag that defines various attributes of a base entity
 	unsigned int m_EntityFlag;
 

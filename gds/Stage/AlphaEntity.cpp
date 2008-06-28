@@ -15,6 +15,8 @@ CAlphaEntity::CAlphaEntity()
 	// set material index 0 as the alpha material by default
 	m_AlphaMaterialIndex = 0;;
 
+	EntityFlag |= BETYPE_USE_ZSORT;
+
 //	m_Attrib |= DESTROY_IF_PARENT_IS_GONE;
 }
 
@@ -56,6 +58,8 @@ void CAlphaEntity::UpdatePhysics( float dt )
 
 void CAlphaEntity::Draw()
 {
+	return;
+
 	if( !pParent )
 		return;
 

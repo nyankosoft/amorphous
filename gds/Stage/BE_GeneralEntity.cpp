@@ -56,7 +56,6 @@ void CBE_GeneralEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 
 	if( m_EntityFlag & BETYPE_USE_ZSORT )
 		pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
-//		pCopyEnt->bUseZSort = true;
 
 	if( m_EntityFlag & BETYPE_ENVMAPTARGET )
 	{
@@ -87,6 +86,8 @@ void CBE_GeneralEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 
 		m_pStage->CreateEntity( light );
 	}
+
+	CreateAlphaEntities( pCopyEnt );
 }
 
 
