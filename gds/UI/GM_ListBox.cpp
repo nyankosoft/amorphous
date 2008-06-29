@@ -325,7 +325,20 @@ int CGM_ListBox::GetSelectedIndex( int nPreviousSelected )
 }
 
 
-//--------------------------------------------------------------------------------------
+int CGM_ListBox::GetFocusedItemLocalIndexInCurrentPage()
+{
+	int selected_item_index = GetSelectedIndex();
+	if( selected_item_index < 0 )
+		return selected_item_index;
+
+	int first_item_index = 0;
+	if( GetScrollbar() )
+		first_item_index = GetScrollbar()->GetTrackPos();
+
+	return selected_item_index - first_item_index;
+}
+
+
 void CGM_ListBox::SetItemSelectionFocus( int nNewIndex )
 {
 	// If no item exists, do nothing.

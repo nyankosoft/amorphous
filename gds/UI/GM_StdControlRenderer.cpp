@@ -368,15 +368,9 @@ void CGM_StdListBoxRenderer::OnItemSelected()
 	if( !pListBox )
 		return;
 
-	int selected_item_index = pListBox->GetSelectedIndex();
-	if( selected_item_index < 0 )
+	int text_index = pListBox->GetFocusedItemLocalIndexInCurrentPage();
+	if( text_index < 0 || (int)m_vecpText.size() <= text_index )
 		return;
-
-	int first_item_index = 0;
-	if( pListBox->GetScrollbar() )
-		first_item_index = pListBox->GetScrollbar()->GetTrackPos();
-
-	int text_index = selected_item_index - first_item_index;
 
 	int color_index = 0;
 	m_vecpText[text_index]->SetColor( color_index, m_aColor[CGM_Control::STATE_PRESSED] );

@@ -104,6 +104,11 @@ public:
 	/// TODO: should change function name to GetFocusedItemIndex() ?
 	int GetSelectedIndex( int nPreviousSelected = -1 );
 
+	/// returns index to the currently focusd index
+	/// - used by the renderer
+	/// \return the local index of the focused item in the currently displayed page.
+	int GetFocusedItemLocalIndexInCurrentPage();
+
 	/// returns borrowed pointer to the currently focused item
 	/// TODO: should change function name to GetFocusedItem() ?
 	CGM_ListBoxItem *GetSelectedItem( int nPreviousSelected = -1 ) { return GetItem( GetSelectedIndex( nPreviousSelected ) ); }
