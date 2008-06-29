@@ -1,4 +1,3 @@
-
 #include "BE_PlayerPseudoAircraft.h"
 #include <Stage/PlayerInfo.h>
 #include <Stage/EntitySet.h>
@@ -314,47 +313,6 @@ void CBE_PlayerPseudoAircraft::Move( CCopyEntity *pCopyEnt )
 */
 
 }
-
-/*
-void CBE_PlayerPseudoAircraft::UpdateObjectsInSight( CCopyEntity* pCopyEnt )
-{
-    static vector<CCopyEntity *> s_vecpVisibleEntity;
-
-	// clear any previous data
-	s_vecpVisibleEntity.resize(0);
-	m_vecpVisibleEntity.resize(0);
-
-	// check visible entities
-	CViewFrustumTest vf_test;
-//	vf_test.m_Flag = VFT_IGNORE_NOCLIP_ENTITIES;
-	vf_test.SetCamera( &m_Camera );
-	vf_test.SetBuffer( s_vecpVisibleEntity );
-
-	// collect entities that are in the view frustum volume of the sensor camera
-	m_pStage->GetVisibleEntities( vf_test );
-
-	int i, iNumVisibleEntities = vf_test.GetNumVisibleEntities();
-	for( i=0; i<iNumVisibleEntities; i++ )
-	{
-		CCopyEntity *pTarget = vf_test.GetEntity(i);
-
-		if( pTarget == pCopyEnt )
-			continue;
-
-//		if( pTarget->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_ENEMYAIRCRAFT )
-		if( !pTarget->bNoClip )
-			m_vecpVisibleEntity.push_back( pTarget );
-
-//			if( pTarget->bNoClip )	continue;	// don't target a no-clip entity
-//		if( pTarget->sGroupID == CE_GROUP_INVALID )	continue;	// don't target an entity that has an invalid group ID
-//		if( pTarget->sGroupID != pCopyEnt->sGroupID )
-//		{
-//			pCopyEnt->pTarget = vf_test.GetEntity(i);
-//			break;
-//		}
-	}
-}
-*/
 
 
 bool CBE_PlayerPseudoAircraft::SetAircraft()
@@ -994,10 +952,13 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 	}
 
 	CGI_Weapon::ms_pStage = m_pStage;
+
+	// update aircraft simulator and weapon controls
+	// - accel, brake, yaw, pitch, and roll
+	// - cycling weapons
 	if( m_pAircraft->HandleInput( input.ActionCode, input_type, input.fParam ) )
 		return true;
 
-//	CPseudoAircraftSimulator& aircraft = m_pAircraft->GetPseudoSimulator();
 	HUD_PlayerBase *pHUD = NULL;
 
 	static const int cmdmenu_misc = 0;
@@ -1005,18 +966,6 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 
 	switch( input.ActionCode )
 	{
-/*	case ACTION_MOV_PITCH_ACCEL:
-		aircraft.SetPitchAccel( input.fParam * 5.0f );
-		break;
-
-	case ACTION_MOV_ROLL_ACCEL:
-		aircraft.SetRollAccel( input.fParam * 5.0f );
-		break;
-
-	case ACTION_MOV_YAW_ACCEL:
-		aircraft.SetYawAccel( input.fParam * 1.5f );
-		break;
-*/
 	case ACTION_MOV_LOOK_RIGHT:
 		m_CamHeading.target = input.fParam * (float)PI;
 		break;
@@ -1025,20 +974,6 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		m_CamPitch.target = input.fParam * (float)PI * 0.5f;
 		break;
 
-/*	case ACTION_MOV_BOOST:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
-			SetAccel( m_fBoostAccel );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
-			SetAccel( m_fAccel );
-		return true;
-
-	case ACTION_MOV_BRAKE:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
-			SetAccel( m_fBrakeAccel );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
-			SetAccel( m_fAccel );
-		return true;
-*/
 	case ACTION_MISC_CYCLE_VIEWPOINTS:
 		if( input.type == SPlayerEntityAction::KEY_PRESSED )
 		{

@@ -1,4 +1,3 @@
-
 #include "GI_Aircraft.h"
 #include "Stage/Serialization_BaseEntityHandle.h"
 #include "GI_MissileLauncher.h"
@@ -160,19 +159,15 @@ bool CGI_Aircraft::HandleInput( int input_code, int input_type, float fParam )
 	case ACTION_MOV_BOOST:
 		if( input_type == ITYPE_KEY_PRESSED )
 			m_fCurrentBoost = 1.0f;
- //			sim.SetAccel( m_fBoostAccel );
 		else if( input_type == ITYPE_KEY_RELEASED )
 			m_fCurrentBoost = 0.0f;
-//			sim.SetAccel( m_fAccel );
 		return true;
 
 	case ACTION_MOV_BRAKE:
 		if( input_type == ITYPE_KEY_PRESSED )
 			m_fCurrentBrake = 1.0f;
-//			sim.SetAccel( m_fBrakeAccel );
 		else if( input_type == ITYPE_KEY_RELEASED )
 			m_fCurrentBrake = 0.0f;
-//			sim.SetAccel( m_fAccel );
 		return true;
 
 	case ACTION_MISC_CYCLE_WEAPON:
@@ -184,12 +179,6 @@ bool CGI_Aircraft::HandleInput( int input_code, int input_type, float fParam )
 //		else if( input_type == ITYPE_KEY_RELEASED )
 //			sim.SetAccel( m_fAccel );
 		return true;
-/*
-	case ACTION_MOV_YAW:
-		return true;
-
-	case ACTION_MOV_PITCH:
-		return true;*/
 	}
 
 	return false;
