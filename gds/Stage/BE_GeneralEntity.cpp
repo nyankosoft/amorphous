@@ -87,7 +87,7 @@ void CBE_GeneralEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 		m_pStage->CreateEntity( light );
 	}
 
-	CreateAlphaEntities( pCopyEnt );
+//	CreateAlphaEntities( pCopyEnt );
 }
 
 
