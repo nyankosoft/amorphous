@@ -470,11 +470,6 @@ void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_e
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	//==================== render the entities ====================
-//	HRESULT hr;
-//	hr = pd3dDev->BeginScene();
-
-//	if( FAILED(hr) )
-//		LOG_PRINT_ERROR( "IDirect3DDevice9::BeginScene() failed." );
 
 	CEntityNode::ms_NumRenderedEntities = 0;
 
@@ -492,8 +487,6 @@ void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_e
 		m_vecpSweepRenderBaseEntity[i]->SweepRender();
 		m_vecpSweepRenderBaseEntity[i]->ClearSweepRenderTable();
 	}
-
-//	pd3dDev->EndScene();
 }
 
 
@@ -502,11 +495,6 @@ void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	//==================== render the entities ====================
-//	HRESULT hr;
-//	hr = pd3dDev->BeginScene();
-
-//	if( FAILED(hr) )
-//		LOG_PRINT_ERROR( "IDirect3DDevice9::BeginScene() failed." );
 
 	// move the skybox to the head of the list to render it first
 //	MoveSkyboxToListHead();
@@ -523,7 +511,6 @@ void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
 //		m_vecpSweepRenderBaseEntity[i]->ClearSweepRenderTable();
 	}
 */
-//	pd3dDev->EndScene();
 }
 
 
@@ -532,11 +519,6 @@ void CEntityRenderManager::RenderShadowReceivers( CCamera& rCam )
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	//==================== render the entities ====================
-//	HRESULT hr;
-//	hr = pd3dDev->BeginScene();
-
-//	if( FAILED(hr) )
-//		LOG_PRINT_ERROR( "IDirect3DDevice9::BeginScene() failed." );
 
 	// render the entity tree by downward traversal
 	RenderShadowReceiversDownward_r( 0, rCam );
@@ -550,7 +532,6 @@ void CEntityRenderManager::RenderShadowReceivers( CCamera& rCam )
 //		m_vecpSweepRenderBaseEntity[i]->ClearSweepRenderTable();
 	}
 */
-//	pd3dDev->EndScene();
 }
 
 
@@ -599,89 +580,6 @@ void CEntityRenderManager::RenderSceneWithShadowMap( CCamera& rCam,
 	// render tasks in advance
 	// - just draw the fullscreen rect to render the scene with shadow
 	m_pShadowManager->RenderSceneWithShadow();
-}*/
-
-
-/*
-void CEntityRenderManager::Render( CCamera& rCam, CScreenEffectManager* pScreenEffectMgr )
-{
-	PROFILE_FUNCTION();
-
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	// update camera matrix & camera's position
-	rCam.GetPose( m_CameraPose );
-	m_fCameraFarClipDist = rCam.GetFarClip();
-
-	D3DXMATRIX matWorld, matView, matProj;
-	D3DXMatrixIdentity( &matWorld );
-	rCam.GetCameraMatrix(matView);
-	rCam.GetProjectionMatrix(matProj);
-
-	pd3dDev->SetTransform(D3DTS_WORLD,		&matWorld);
-	pd3dDev->SetTransform(D3DTS_VIEW,		&matView);
-	pd3dDev->SetTransform(D3DTS_PROJECTION,	&matProj);
-
-
-	// set alpha test
-	pd3dDev->SetRenderState(D3DRS_ALPHAREF, (DWORD)0x00000001);
-    pd3dDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
-    pd3dDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
-
-	// we use default D3D lights for entities
-    pd3dDev->SetRenderState( D3DRS_LIGHTING, TRUE );
-
-	pd3dDev->SetTexture( 1, m_pBlankTexture );
-	pd3dDev->SetTexture( 2, m_pBlankTexture );
-
-	// test - add some ambient light
-//    pd3dDev->SetRenderState( D3DRS_AMBIENT, 0x00202020 );
-
-	/// set view and projection matrices of all shader managers
-	ShaderManagerHub.PushViewAndProjectionMatrices( rCam );
-
-	if( 0 < m_vecEnvMapTarget.size() )
-	{
-		pScreenEffectMgr->RaiseEffectFlag( ScreenEffect::CubeEnvMap );
-
-		UpdateEnvironmentMapTextures();
-
-		pScreenEffectMgr->ClearEffectFlag( ScreenEffect::CubeEnvMap );
-	}
-
-	//if( m_bEnableEnvironmentMap )
-	//{
-	//	...
-	//}
-	//else
-	//{
-	//	if( m_pCubeMapManager )
-	//	{
-	//		// env mapping has been disabled - release the cube map manager
-	//		SafeDelete( m_pCubeMapManager );
-	//	}
-	//}
-
-	if( m_pShadowManager )
-	{
-		if( m_bOverrideShadowMapLight )
-		{
-			m_pShadowManager->SetLightPosition( m_vOverrideShadowMapPosition );
-			m_pShadowManager->SetLightDirection( m_vOverrideShadowMapDirection );
-		}
-
-		m_pShadowManager->SetCameraPosition( rCam.GetPosition() );
-		m_pShadowManager->SetCameraDirection( rCam.GetFrontDirection() );
-
-		RenderSceneWithShadowMap( rCam, pScreenEffectMgr );
-	}
-	else
-	{
-		pScreenEffectMgr->SetShaderManager();
-		RenderScene( rCam );
-	}
-
-	ShaderManagerHub.PopViewAndProjectionMatrices();
 }*/
 
 
