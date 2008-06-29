@@ -79,6 +79,10 @@ private:
 	/// release entities that have been terminated and 'inuse' is false
 	inline void ReleaseTerminatedEntities();
 
+	//============ functions for entity mangement ============
+	void Link(CCopyEntity* pCpyEnt);
+	inline void UpdateLink(CCopyEntity* pCpyEnt);
+
 public:
 
 	CEntitySet( CStage* pStage );
@@ -123,15 +127,8 @@ public:
 
 	inline int GetEntityGroupFromName( const std::string& group_name );
 
-	//============ functions for entity mangement ============
-	void Link(CCopyEntity* pCpyEnt);
-	inline void UpdateLink(CCopyEntity* pCpyEnt);
-	inline void LinkToEmptyEntList(CCopyEntity* pCpyEnt);
-
 	//============ functions for rendering ============
 	void Render( CCamera& rCam );
-
-	//void UnLink(CCopyEntity* pCpyEnt);
 
 	//============ functions for lighting control============
 	inline int RegisterLight( CCopyEntity& rLightEntity, short sLightType );
