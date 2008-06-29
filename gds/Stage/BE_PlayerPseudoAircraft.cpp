@@ -45,8 +45,8 @@
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.h"
 
-#include "../../Project3/FlightGame/src/Stage/FG_AIAircraftEntityDesc.h"
-#include "../../Project3/FlightGame/src/EntityGroups.h"
+#include "../../../GameProjects/FlightGame/src/srcroot/Stage/FG_AIAircraftEntityDesc.h"
+#include "../../../GameProjects/FlightGame/src/srcroot/EntityGroups.h"
 
 
 /// action code -> ui input code (CGM_Input)
