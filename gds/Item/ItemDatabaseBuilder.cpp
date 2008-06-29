@@ -276,7 +276,7 @@ void CItemDatabaseBuilder::LoadAircraft( CTextFileScanner& scanner, CGI_Aircraft
 */
 	if( scanner.TryScanLine( "ammo_release_pos", index, pos ) )
 	{
-		if( index < pItem->m_AmmoReleaseLocalPose.size() )
+		if( index < (int)pItem->m_AmmoReleaseLocalPose.size() )
 			pItem->m_AmmoReleaseLocalPose[index].vPosition = pos;
 	}
 
@@ -489,7 +489,12 @@ bool CItemDatabaseBuilder::OutputSingleDBFile( const string& strDBFilename )
 
 	CGameItemObjectFactory factory;
 
-	m_ItemDB.Open( strDBFilename.c_str(), CBinaryDatabase<string>::DB_MODE_NEW );
+	bool db_open = m_ItemDB.Open( strDBFilename.c_str(), CBinaryDatabase<string>::DB_MODE_NEW );
+	if( !db_open )
+	{
+		LOG_PRINT_ERROR( "Cannot open file: " + strDBFilename );
+		return false;
+	}
 
 	size_t i, num_items = m_vecpItem.size();
 	for( i=0; i<num_items; i++ )
@@ -550,7 +555,12 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFile( const string& src_filename )
 	}
 
 	// output a database file
-	OutputDatabaseFile( output_filename );
+	bool db_created = OutputDatabaseFile( output_filename );
+	if( !db_created )
+	{
+	    dirstk.prevdir();	// back to the previous work directory
+		return false;
+	}
 
     dirstk.prevdir();	// back to the previous work directory
 

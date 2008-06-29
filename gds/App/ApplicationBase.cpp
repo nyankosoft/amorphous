@@ -51,7 +51,7 @@ void UpdateBaseEntityDatabase()
 	{
 		CScopeLog sl( "- Initializing & updating the base entity database" );
 
-		BaseEntityManager.UpdateDatabase( "./resources/entity/BaseEntity.txt" );
+		BaseEntityManager.UpdateDatabase( "../resources/entity/BaseEntity.txt" );
 		BaseEntityManager.OpenDatabase( "./System/BaseEntity.bin" );
 		s_bBaseEntityDatabase_Initialized = true;
 	}
@@ -104,7 +104,7 @@ bool CApplicationBase::Init()
 	LOG_FUNCTION_SCOPE();
 
 	CGameStageFrameworkGlobalParams gsf_params;
-	bool loaded = gsf_params.LoadFromTextFile( "./resources/gsf_params" );
+	bool loaded = gsf_params.LoadFromTextFile( "../resources/gsf_params" );
 	if( loaded )
 	{
 		// update binary file
@@ -116,7 +116,7 @@ bool CApplicationBase::Init()
 
 	// update material file
 	CSurfaceMaterialManager surf_mat_mgr;
-	if( surf_mat_mgr.LoadFromTextFile( "./resources/material.rd" ) )
+	if( surf_mat_mgr.LoadFromTextFile( "../resources/material.rd" ) )
 		surf_mat_mgr.SaveToFile( "./Stage/material.bin" );
 
 	// load config file
@@ -160,7 +160,7 @@ bool CApplicationBase::Init()
 
 	// update & load the item database
 //	ItemDatabaseManager().Update( "..." );
-	CItemDatabaseManager::Get()->Update( "./resources/item/item.mkx" );
+	CItemDatabaseManager::Get()->Update( "../resources/item/item.mkx" );
 	CItemDatabaseManager::Get()->LoadFromFile( "./Item/item.gid" );
 
 	LOG_PRINT( " - Loaded the item database." );
