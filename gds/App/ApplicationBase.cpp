@@ -167,7 +167,7 @@ bool CApplicationBase::Init()
 
 	try
 	{
-		UpdateScriptArchives( "resources/script", "Script/" );
+		UpdateScriptArchives( "../resources/scripts", "Script/" );
 	}
 	catch( exception& e )
 	{
