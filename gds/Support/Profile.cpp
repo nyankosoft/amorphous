@@ -302,8 +302,6 @@ void StoreProfileInHistory( char* name, float percent )
    float oldRatio;
 //   float newRatio = 0.8f * GetElapsedTime();
 
-//	float newRatio = 0.8f * FPS.GetFrameTime();
-
    float newRatio = 0.8f * TIMER.GetFrameTime();
 
    if( newRatio > 1.0f )

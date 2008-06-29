@@ -1,34 +1,36 @@
 #ifndef  __BE_PLAYERSHIP_H__
 #define  __BE_PLAYERSHIP_H__
 
-//#include "BaseEntity.h"
 #include "BE_Player.h"
 #include "BaseEntityHandle.h"
 #include "CopyEntity.h"
 #include "GameMessage.h"
-#include "3DCommon/camera.h"
+#include "3DCommon/fwd.h"
+#include "3DCommon/Camera.h"
+#include "fwd.h"
 
-class CCopyEntity;
-class CD3DXMeshObject;
 class CShockWaveCameraEffect;
 
 /*
-enum eThrustDirection
+class ThrustDirection
 {
-	THRUST_FORWARD = 0,
-	THRUST_BACKWARD,
-	THRUST_RIGHT,
-	THRUST_LEFT,
-	THRUST_UP,
-	THRUST_DOWN
-};
+public:
+	enum Name
+	{
+		Forward = 0,
+		Backward,
+		Right,
+		Left,
+		Up,
+		Down
+	};
+}
 */
 
 #define PLAYERSHIP_ROTATION_YAW		0
 #define PLAYERSHIP_ROTATION_PITCH	1
 
 
-///class CBE_PlayerShip : public CBaseEntity
 class CBE_PlayerShip : public CBE_Player
 {
 	float m_afThrust[6];
@@ -64,7 +66,6 @@ public:
 //	void AdaptToNewScreenSize() {}
 //	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 //	void ReleaseGraphicsResources();
-
 
 	inline void SetThrust( int iThrustDirection, float fValue );
 	inline void SetRotationSpeedGain( int iRotDirection, float fSpeedGain );

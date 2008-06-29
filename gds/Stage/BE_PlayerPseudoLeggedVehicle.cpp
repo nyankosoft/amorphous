@@ -1,4 +1,3 @@
-
 #include "BE_PlayerPseudoLeggedVehicle.h"
 #include "PlayerInfo.h"
 #include "EntitySet.h"

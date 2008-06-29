@@ -1,4 +1,3 @@
-
 #include "BE_PlayerShip.h"
 #include "PlayerInfo.h"
 #include "EntitySet.h"
@@ -16,7 +15,6 @@
 #include "Support/VectorRand.h"
 #include "GameCommon/ShockWaveCameraEffect.h"
 
-//#include "Stage/bsptree.h"
 #include "Stage/BE_LaserDot.h"
 
 // added for laser dot casting test
@@ -268,19 +266,17 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 
 	//Calculate 'fWishspeed' & 'vWishdir', which are the desired speed & direction
 	float fWishspeed;
-	D3DXVECTOR3 vWishvel, vWishdir;
-	//D3DXVec3Cross(&vRight , &D3DXVECTOR3(0,1,0) , &pCopyEnt->GetDirection());
-	//D3DXVec3Normalize(&vRight, &vRight);
+	Vector3 vWishvel, vWishdir;
 
 	vWishvel = vDir   * ( m_afThrust[THRUST_FORWARD] * ( 1.0f + m_fBoost ) - m_afThrust[THRUST_BACKWARD] ) * 10.0f
 		     + vRight * ( m_afThrust[THRUST_RIGHT] - m_afThrust[THRUST_LEFT] ) * 10.0f
 		     + vUp    * ( m_afThrust[THRUST_UP] - m_afThrust[THRUST_DOWN] ) * 10.0f;
 
 //	vWishvel = ( vDir * fForward ) + ( vRight * fRight ) + ( vUp * fUp );
-	fWishspeed = D3DXVec3Length(&vWishvel);
-	D3DXVec3Normalize(&vWishdir, &vWishvel);
+	fWishspeed = Vec3Length(vWishvel);
+	Vec3Normalize(vWishdir, vWishvel);
 
-	//In original QUAKE, this code was to clamp to server defined max speed.
+	// In original QUAKE, this code was to clamp to server defined max speed.
 	if(50 < fWishspeed)
 	{
 		fWishspeed = 50;

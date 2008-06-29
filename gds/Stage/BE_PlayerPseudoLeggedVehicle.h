@@ -1,25 +1,12 @@
 #ifndef  __BE_PLAYERPSEUDOLEGGEDVEHICLE_H__
 #define  __BE_PLAYERPSEUDOLEGGEDVEHICLE_H__
 
-//#include "BaseEntity.h"
 #include "BE_Player.h"
 #include "BaseEntityHandle.h"
 #include "CopyEntity.h"
 #include "GameMessage.h"
 #include "3DCommon/camera.h"
-
-class CCopyEntity;
-
-/*
-enum eThrustDirection
-{
-	THRUST_FORWARD = 0,
-	THRUST_BACKWARD,
-	THRUST_RIGHT,
-	THRUST_LEFT,
-	THRUST_UP,
-	THRUST_DOWN
-};*/
+#include "fwd.h"
 
 
 #define PLAYERPLV_ROTATION_YAW		0
@@ -56,10 +43,6 @@ public:
 };
 
 
-
-
-
-///class CBE_PlayerPseudoLeggedVehicle : public CBaseEntity
 class CBE_PlayerPseudoLeggedVehicle : public CBE_Player
 {
 	enum eParam

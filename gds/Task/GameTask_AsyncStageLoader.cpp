@@ -176,9 +176,6 @@ void CGameTask_AsyncStageLoader::Render()
 		m_pFont->DrawText( script_name, x, y );
 	}
 
-	// draw cursor
-//	DrawMouseCursor();
-
 	RenderFadeEffect();
 
 	// End the scene

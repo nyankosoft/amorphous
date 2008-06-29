@@ -230,7 +230,6 @@ void CBE_Explosive::Act( CCopyEntity* pCopyEnt )
 	if( m_ExplosiveTypeFlag & TYPE_TIMER )
 	{
 		float& rfTimer = pCopyEnt->f3;
-//		rfTimer -= FPS.GetFrameTime();
 		rfTimer -= m_pStage->GetFrameTime();
 		if( rfTimer <= 0 )
 			Explode( pCopyEnt );
@@ -239,7 +238,6 @@ void CBE_Explosive::Act( CCopyEntity* pCopyEnt )
 	if( pCopyEnt->vVelocity == Vector3(0,0,0) )
 		return;
 
-//	pCopyEnt->vVelocity += m_pStage->GetGravityAccel() * FPS.GetFrameTime();
 	pCopyEnt->vVelocity += m_pStage->GetGravityAccel() * m_pStage->GetFrameTime();
 	pCopyEnt->f1 = Vec3LengthSq( pCopyEnt->vVelocity );
 //	char blocked = SlideMove( pCopyEnt );
@@ -252,7 +250,6 @@ void CBE_Explosive::Act( CCopyEntity* pCopyEnt )
 void CBE_Explosive::GrenadeMove(CCopyEntity* pCopyEnt)
 {
 	STrace tr;
-//	float fFrametime = FPS.GetFrameTime();
 	float fFrametime = m_pStage->GetFrameTime();
 
 	// change velocity according to gravity

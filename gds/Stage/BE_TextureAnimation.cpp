@@ -83,7 +83,6 @@ void CBE_TextureAnimation::Act(CCopyEntity* pCopyEnt)
 		m_pStage->TerminateEntity( pCopyEnt );
 	else
 		rfCurrentAnimationTime += m_pStage->GetFrameTime();
-///		rfCurrentAnimationTime += FPS.GetFrameTime();
 }
 
 

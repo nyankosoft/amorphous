@@ -61,7 +61,6 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 	float fBlastFrameTime;
 
 	float frametime = m_pStage->GetFrameTime();
-//	float frametime = FPS.GetFrameTime();
 	if( rfCurrentBlastTime + frametime < m_fBlastDuration )
 	{
 		fBlastFrameTime = frametime;

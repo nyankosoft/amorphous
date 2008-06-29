@@ -59,7 +59,7 @@ void CBE_Turret::Act(CCopyEntity* pCopyEnt)
 //	float& rfFireCycleTime		= pCopyEnt->f4;
 //	float& rfLastFireTime		= pCopyEnt->f5;
 
-	rfSensoringInterval += FPS.GetFrameTime();
+	rfSensoringInterval += m_pStage->GetFrameTime();
 
 
 	if( 0.16f <= rfSensoringInterval )

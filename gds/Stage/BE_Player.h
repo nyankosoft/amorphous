@@ -7,6 +7,7 @@
 #include "CopyEntity.h"
 #include "GameMessage.h"
 #include "3DCommon/Camera.h"
+#include "3DCommon/fwd.h"
 
 #include "GameInput/3DActionCode.h"
 
@@ -15,12 +16,7 @@
 
 #include "Sound/SoundHandle.h"
 
-
-class CD3DXMeshObject;
 class CShockWaveCameraEffect;
-
-// for command menu
-class CInputHandler_Dialog;
 
 
 enum eThrustDirection
@@ -61,21 +57,17 @@ public:
 };
 
 
-//#define PLAYER_TRIGGER_RELEASE 0
-//#define PLAYER_TRIGGER_PULL 1
-
-
 #define PLYAER_DAMAGESOUND_VARIATION 6
 
 
 /**
- * stores the state of the player in a stage
- * player base entity is the physical representation & status
- * of a player in a stage. It does not store permanent information
- * about the player data e.g.) items, levels, etc.
- * such information is stored in PLAYERINFO singleton class,
- * and accessed dynamically or linked as borrowed reference
- *
+ Stores the state of the player in a stage
+ - player base entity is the physical representation & status
+   of a player in a stage. It does not store permanent information
+   about the player data 
+   - e.g.) items owned by the player, levels, etc.
+ - Such information is stored in PLAYERINFO singleton class,
+   and accessed dynamically or linked as borrowed reference
  */
 class CBE_Player : public CBE_PhysicsBaseEntity
 {
@@ -93,10 +85,8 @@ protected:
 	/// sound names played when the player gets shot
 	CSoundHandle m_aDamageSound[NUM_DAMAGE_TYPES][PLYAER_DAMAGESOUND_VARIATION];
 
-	/// view from the player's ship
+	/// view from the player
 	CCamera m_Camera;
-
-//	float m_fDefaultFOV;
 
 	Matrix34 m_CameraLocalPose;
 
@@ -127,9 +117,6 @@ protected:
 	CGM_DialogInputHandlerSharedPtr m_pCmdMenuInputHandler;
 
 	std::vector<int> m_vecCmdMenuRootDialogID;
-
-	/// owned reference
-//	CGM_ControlRendererManagerSharedPtr m_pCmdMenuRenderMgr;
 
 protected:
 
@@ -167,7 +154,7 @@ public:
 
 	virtual void Move( CCopyEntity *pCopyEnt );
 
-	// input for various operations of the player entity
+	/// process input for various operations of the player entity
 	virtual bool HandleInput( SPlayerEntityAction& input );
 
 	void PlayerDead(CCopyEntity* pCopyEnt);
@@ -191,19 +178,6 @@ public:
 	void ToggleHeadLight();
 
 	CombatRecord& CombatRecord() { return m_CombatRecord; }
-
-	enum eInputType
-	{
-		INPUT_SET_ROTATION_SPEED_GAIN = 0,
-		INPUT_ADD_ROTATION_SPEED_GAIN,
-		INPUT_PULL_TRIGGER,
-		INPUT_RELEASE_TRIGGER,
-		INPUT_WEAPON_SAFETY_ON,
-		INPUT_WEAPON_SAFETY_OFF,
-		INPUT_LASER_ON,
-		INPUT_LASER_OFF,
-		INPUT_TOGGLE_HEADLIGHT,
-	};
 
 	virtual bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

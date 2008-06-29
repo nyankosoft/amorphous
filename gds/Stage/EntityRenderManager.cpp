@@ -423,10 +423,6 @@ void CEntityRenderManager::RenderScene( CCamera& rCam )
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	//==================== render the entities ====================
-//	HRESULT hr;
-//	hr = pd3dDev->BeginScene();
-//	if( FAILED(hr) )
-//		LOG_PRINT_ERROR( "IDirect3DDevice9::BeginScene() failed." );
 
 	CEntityNode::ms_NumRenderedEntities = 0;
 
@@ -447,8 +443,6 @@ void CEntityRenderManager::RenderScene( CCamera& rCam )
 		m_vecpSweepRenderBaseEntity[i]->SweepRender();
 		m_vecpSweepRenderBaseEntity[i]->ClearSweepRenderTable();
 	}
-
-//	pd3dDev->EndScene();
 }
 
 
