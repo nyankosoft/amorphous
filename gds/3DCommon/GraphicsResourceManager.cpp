@@ -48,19 +48,23 @@ void CGraphicsResourceManager::Release()
 template<class T>
 size_t CGraphicsResourceManager::AddEntryToVacantSlot( T ptr, vector<T>& vecPtr )
 {
+	size_t index = 0;
 	for( size_t i=0; i<vecPtr.size(); i++ )
 	{
 		if( !vecPtr[i] )
 		{
-			ptr->SetIndex( (int)i );
+			index = i;
+			ptr->SetIndex( (int)index );
 			vecPtr[i] = ptr;
-			return i;
+			return index;
 		}
 	}
 
 	// create a new element
+	index = vecPtr.size();
+	ptr->SetIndex( (int)index );
 	vecPtr.push_back( ptr );
-	return (int)vecPtr.size() - 1;
+	return index;
 }
 
 
@@ -136,7 +140,8 @@ inline int share_as_same_resource( const CGraphicsResourceDesc& desc, const std:
 	for( size_t i=0; i<num_resources; i++ )
 	{
 		// check if the requested can be shared with one already registered to the graphics resource manager
-		if( vecPtr[i]->CanBeSharedAsSameResource( desc ) )
+		if( vecPtr[i]
+		 && vecPtr[i]->CanBeSharedAsSameResource( desc ) )
 		{
 			// requested resource was found in the list
 			// - no need to add a new resource.
