@@ -61,7 +61,7 @@ public:
 
 	virtual ~CFontBase() {};
 
-	virtual void Release() = 0;
+	virtual void Release() {};
 
 	virtual void Reload() = 0;
 

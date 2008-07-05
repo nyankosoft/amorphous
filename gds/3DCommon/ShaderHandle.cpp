@@ -11,6 +11,21 @@ using namespace std;
 
 const CShaderHandle CShaderHandle::ms_NullHandle;
 
+
+void CShaderHandle::IncResourceRefCount()
+{
+	if( 0 <= m_EntryID )
+		GraphicsResourceManager().GetShaderEntry(m_EntryID).IncRefCount();
+}
+
+
+void CShaderHandle::DecResourceRefCount()
+{
+	if( 0 <= m_EntryID )
+		GraphicsResourceManager().GetShaderEntry(m_EntryID).DecRefCount();
+}
+
+
 bool CShaderHandle::Load()
 {
 	Release();

@@ -259,33 +259,6 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 	return pMesh;
 }
 
-/*
-const D3DVERTEXELEMENT9 *CD3DXMeshObjectBase::GetVertexElemenets( CMMA_VertexSet& rVertexSet )
-{
-	switch( rVertexSet.GetVertexFormat() )
-	{
-		case CMMA_VertexSet::VF_COLORVERTEX:	// unlit vertex with diffuse color
-			return COLORVERTEX_DECLARATION;
-		case CMMA_VertexSet::VF_BUMPVERTEX:	// unlit, textured vertex with bumpmap
-			return BUMPVERTEX_DECLARATION;
-		case CMMA_VertexSet::VF_TEXTUREVERTEX:	// unlit, textured vertex with no bumpmap
-			return NORMALVERTEX_DECLARATION;
-		case CMMA_VertexSet::VF_SHADOWVERTEX:
-			return SHADOWVERTEX_DECLARATION;
-		case CMMA_VertexSet::VF_WEIGHTVERTEX:
-			return WEIGHTVERTEX_DECLARATION;
-		case CMMA_VertexSet::VF_BUMPWEIGHTVERTEX:
-			return BUMPWEIGHTVERTEX_DECLARATION;
-		case CMMA_VertexSet::VF_SHADOWWEIGHTVERTEX:
-			return WEIGHTVERTEX_DECLARATION;	// use the standard weight vertex for shadow volume with vertex blends
-
-		default:
-			LOG_PRINT_WARNING( fmt_string(" - unsupported vertex elements: %d", rVertexSet.GetVertexFormat()) );
-			return NULL;
-	}
-}
-*/
-
 
 static inline D3DVERTEXELEMENT9 D3DVertexElement( 
     WORD    Stream,     // Stream index
@@ -731,6 +704,36 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 //	pEffect->End();
 }
 
+/*
+// called by the render thread
+// create mesh
+// lock VB & IB?
+// Vertex elements must be retrieved before this function is called and set to m_aVertexElements,
+// which means CD3DXMeshObjectBase::LoadVertices() must also be called before this,
+// which, in turn, means vertex buffer content gets loaded to memory before this because
+// LoadVertices() load vertex data to memory as well as determining vertex elements
+bool CD3DXMeshObjectBase::CreateMesh( vb_size, ib_size )
+{
+	LPD3DXBASEMESH pMesh;
+
+	D3DVERTEXELEMENT9 m_aVertexElements; // must be ready by the time this function is called by the render thread
+
+	archive;
+	hr = D3DXCreateMesh( (DWORD)archive.GetVertexIndex().size() / 3,
+		                 archive.GetVertexSet().GetNumVertices(),//num_vertices,
+//						 0,
+						 D3DXMESH_MANAGED,
+						 m_aVertexElements,
+						 DIRECT3D9.GetDevice(),
+						 &pMesh );
+
+	hr = pMesh->LockVertexBuffer( 0, &pDestVBData );
+
+    if( FAILED( hr = pMesh->LockIndexBuffer( 0, (VOID**)&pusIBData ) ) )
+		return hr;
+
+}
+*/
 
 HRESULT CD3DXMeshObjectBase::CreateLocalBoundingSphereFromD3DXMesh( LPD3DXMESH pMesh )
 {
@@ -795,7 +798,7 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::stri
 }
 
 
-CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchvie( C3DMeshModelArchive& mesh_archive,
+CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
 																	int mesh_type )
 {

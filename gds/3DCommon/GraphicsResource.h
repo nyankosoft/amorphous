@@ -10,6 +10,8 @@
 
 class CLockedTexture;
 class CTextureEntry;
+class CGraphicsResourceHandle;
+class CGraphicsResourceManager;
 
 
 class GraphicsResourceType
@@ -66,7 +68,7 @@ public:
 
 //	int GetWidth();
 
-	virtual void SetPixel( int x, int y, U32 argb_color ) { ((U32 *)m_pBits)[ y * m_Width + x ] = argb_color; }
+	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) { ((U32 *)m_pBits)[ y * m_Width + x ] = argb_color; }
 
 	/// \param alpha [0,255]
 	inline void SetAlpha( int x, int y, U8 alpha )
@@ -89,7 +91,7 @@ public:
 			{
 				for( int x=0; x<w; x++ )
 				{
-					SetPixel( x, y, argb_color );
+					SetPixelARGB32( x, y, argb_color );
 				}
 			}
 		}

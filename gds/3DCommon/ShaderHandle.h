@@ -12,11 +12,16 @@ protected:
 
 	static const CShaderHandle ms_NullHandle;
 
+	virtual void IncResourceRefCount();
+	virtual void DecResourceRefCount();
+
 public:
 
 	inline CShaderHandle() {}
 
-	~CShaderHandle() {}
+	~CShaderHandle() { Release(); }
+
+	inline void Release();
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
 
@@ -33,6 +38,16 @@ public:
 /*
 inline const CShaderHandle &CShaderHandle::operator=( const CShaderHandle& handle ){}
 */
+
+
+inline void CShaderHandle::Release()
+{
+	if( 0 <= m_EntryID )
+	{
+		DecResourceRefCount();
+		m_EntryID = -1;
+	}
+}
 
 
 

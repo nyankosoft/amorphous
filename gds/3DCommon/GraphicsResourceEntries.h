@@ -8,6 +8,7 @@
 #include <string>
 #include <d3dx9tex.h>
 #include <boost/weak_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
@@ -21,16 +22,18 @@ class CGraphicsResourceManager;
 
 class CGraphicsResourceDesc
 {
-public:
-
-	enum eResourceTypes
+	enum LoadingMode
 	{
-		RT_TEXTURE,
-		RT_MESHOBJECT,
-		RT_SHADER,
-		//RT_FONT,
-		NUM_RESOURCE_TYPES
+		Synchronous,
+		Asynchronous,
+		NumLoadingModes
 	};
+
+	/// filled out by the system
+	/// - User chooses a mode by calling CGraphicsResourceHandle::Load() or CGraphicsResourceHandle::LoadAsync();
+	LoadingMode m_LoadingMode;
+
+public:
 
 	std::string Filename;
 
@@ -38,7 +41,9 @@ public:
 
 	CGraphicsResourceDesc();
 
-	virtual int GetResourceType() const = 0;
+	virtual GraphicsResourceType::Name GetResourceType() const = 0;
+
+	virtual bool IsDiskResource() const { return true; }
 };
 
 
@@ -52,7 +57,7 @@ public:
 
 	CMeshResourceDesc();
 
-	virtual int GetResourceType() const { return RT_MESHOBJECT; }
+	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 };
 
 
@@ -77,7 +82,7 @@ public:
 	Format(TextureFormat::Invalid)
 	{}
 
-	virtual int GetResourceType() const { return RT_TEXTURE; }
+	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 };
 
 
@@ -85,12 +90,35 @@ class CShaderResourceDesc : public CGraphicsResourceDesc
 {
 public:
 
-	virtual int GetResourceType() const { return RT_SHADER; }
+	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
 };
 
 
+/**
+ - base class of the graphics resources
+   - derived classes are,
+     - CTextureEntry: texture resource
+	 - CMeshObjectEntry: mesh (3D model) resource
+	 - CShaderManagerEntry: shader resource
+   - each derived class has derived class instance of resource desc as one of their member variables
+
+*/
 class CGraphicsResourceEntry
 {
+public:
+
+	enum State
+	{
+		Created,               ///< Memory for the resource has been allocated. The content has not been loaded on memory. i.e.) empty state
+		LoadingSynchronously,
+		LoadingAsynchronously,
+		Loaded,                ///< The resource is ready to use
+		ReleasingSynchronously,
+		ReleasingAsynchronously,
+		Released,
+		NumStates
+	};
+
 protected:
 
 	unsigned int m_OptionFlags;
@@ -101,6 +129,13 @@ protected:
 
 	/// stores the time when the file was updated last
 	time_t m_LastModifiedTimeOfFile;
+
+	State m_State;
+
+	/// if true kept in the array of cahced resources
+	bool m_bIsCachedResource;
+
+	int m_Index;
 
 protected:
 
@@ -115,13 +150,17 @@ protected:
 	/// Added to create empty texture as a graphics resource
 	virtual bool CreateFromDesc() { return false; }
 
+	void SetIndex( int index ) { m_Index = index; }
+
 public:
 
 	CGraphicsResourceEntry();
 
 	virtual ~CGraphicsResourceEntry();
 
-	virtual int GetResourceType() const = 0;
+	virtual GraphicsResourceType::Name GetResourceType() const = 0;
+
+	int GetIndex() const { return m_Index; }
 
 	bool Load();
 
@@ -148,6 +187,12 @@ public:
 
 	void Refresh();
 
+	virtual const CGraphicsResourceDesc& GetDesc() const = 0;
+
+	virtual bool Lock() { return false; }
+
+	virtual bool Unlock() { return false; }
+
 	friend class CGraphicsResourceManager;
 };
 
@@ -157,6 +202,8 @@ class CTextureEntry : public CGraphicsResourceEntry
 	LPDIRECT3DTEXTURE9 m_pTexture;
 
 	CTextureResourceDesc m_TextureDesc;
+
+	boost::shared_ptr<CLockedTexture> m_pLockedTexture;
 
 protected:
 
@@ -178,13 +225,21 @@ public:
 
 	virtual ~CTextureEntry();
 
-	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_TEXTURE; }
+	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
 	virtual bool LoadFromFile( const std::string& filepath );
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
 	inline LPDIRECT3DTEXTURE9 GetTexture() { return m_pTexture; }
+
+	const CGraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
+
+	bool Lock();
+
+	bool Unlock();
+
+	bool Create();
 
 	friend class CGraphicsResourceManager;
 };
@@ -210,7 +265,7 @@ public:
 
 	virtual ~CMeshObjectEntry();
 
-	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_MESHOBJECT; }
+	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
 	virtual bool LoadFromFile( const std::string& filepath );
 
@@ -221,6 +276,14 @@ public:
 	inline CD3DXMeshObjectBase *GetMeshObject() { return m_pMeshObject; }
 
 	int GetMeshType() const { return m_MeshDesc.MeshType; }
+
+	const CGraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
+
+//	bool Lock();
+
+//	bool Unlock();
+
+//	bool Create();
 
 	friend class CGraphicsResourceManager;
 };
@@ -244,7 +307,7 @@ public:
 
 	virtual ~CShaderManagerEntry();
 
-	virtual int GetResourceType() const { return CGraphicsResourceDesc::RT_SHADER; }
+	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
 
 	virtual bool LoadFromFile( const std::string& filepath );
 
@@ -253,6 +316,8 @@ public:
 //	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
 
 	inline CShaderManager *GetShaderManager() { return m_pShaderManager; }
+
+	const CGraphicsResourceDesc& GetDesc() const { return m_ShaderDesc; }
 
 	friend class CGraphicsResourceManager;
 };

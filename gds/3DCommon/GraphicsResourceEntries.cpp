@@ -29,6 +29,8 @@ inline bool str_includes( const std::string& src, const std::string& target )
 //==================================================================================================
 
 CGraphicsResourceDesc::CGraphicsResourceDesc()
+:
+m_LoadingMode(Synchronous)
 {}
 
 
@@ -45,7 +47,10 @@ MeshType(CD3DXMeshObjectBase::TYPE_MESH)
 CGraphicsResourceEntry::CGraphicsResourceEntry()
 :
 m_iRefCount(0),
-m_LastModifiedTimeOfFile(0)
+m_LastModifiedTimeOfFile(0),
+m_State(Released),
+m_bIsCachedResource(false),
+m_Index(0)
 {}
 
 
@@ -129,23 +134,20 @@ bool CGraphicsResourceEntry::Load()
 bool CGraphicsResourceEntry::LoadFromDisk()
 {
 	bool loaded = false;
-	size_t pos = m_Filename.find( "::" );
 	string target_filepath;
 
-	if( pos != string::npos )
+	if( is_db_filepath_and_keyname( m_Filename ) )
 	{
-		// not supported yet
-		// found "::" in filename
-		// - "(binary database filename)::(key)"
-		string db_filename       = m_Filename.substr( 0, pos );
-		string keyname = m_Filename.substr( pos + 2, m_Filename.length() );
+		// decompose the string
+		string db_filename, keyname;
+		decompose_into_db_filepath_and_keyname( m_Filename, db_filename, keyname );
 
 		string cwd = fnop::get_cwd();
 
 		CBinaryDatabase<string> db;
 		bool db_open = db.Open( db_filename );
 		if( !db_open )
-			return false;
+			return false; // the database is being used by someone else - retry later
 
 		loaded = LoadFromDB( db, keyname );
 
@@ -158,20 +160,6 @@ bool CGraphicsResourceEntry::LoadFromDisk()
 		target_filepath = m_Filename;
 	}
 
-/*		pos = m_Filename.find( ":" )
-		if( pos != string::npos )
-		{
-			// pack file - not supported yet
-			CPackedFile pakfile;
-			string pakfilename = m_Filename.substr( 0, pos );
-			string texfilename = m_Filename.substr( pos + 1, 1024 );
-			pakfile.Load( pakfilename );
-			vector<unsigned char> vecPixel;
-			pakfile.GetPackedFile( texfilename, vecPixel );
-			hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &vecPixel[0], vecPixel.size(), &m_pTexture );
-		}
-		else
-*/
 
 	if( loaded )
 	{
@@ -292,6 +280,8 @@ bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 }
 
 
+// May only be called by render thread
+// Used in synchronous loading
 bool CTextureEntry::LoadFromFile( const std::string& filepath )
 {
 	char title[1024];
@@ -305,8 +295,17 @@ bool CTextureEntry::LoadFromFile( const std::string& filepath )
 	return SUCCEEDED(hr) ? true : false;
 }
 
+/*
+// May be called by any thread
+bool CTextureEntry::LoadAsynchronouslyFromFile( const std::string& filepath )
+{
+	// send a request to load texture from file to memory
+	AddReq( new ReqToLoadTexture(filepath) );
+	return SUCCEEDED(hr) ? true : false;
+}
+*/
 
-bool CTextureEntry::CreateFromDesc()
+bool CTextureEntry::Create()
 {
 	SAFE_RELEASE( m_pTexture );
 
@@ -332,30 +331,79 @@ bool CTextureEntry::CreateFromDesc()
 
 	if( FAILED(hr) || !m_pTexture )
 		return false;
+	else
+		return true;
+}
+
+
+bool CTextureEntry::Lock()
+{
+	if( !m_pTexture )
+		return false;
+
+	const CTextureResourceDesc& desc = m_TextureDesc;
 
 	D3DLOCKED_RECT locked_rect;
-	hr = m_pTexture->LockRect( 0, &locked_rect, NULL, 0);	// Lock and get the pointer to the first texel of the texture
+	HRESULT hr = m_pTexture->LockRect( 0, &locked_rect, NULL, 0);	// Lock and get the pointer to the first texel of the texture
 
-	CLockedTexture tex;
+	if( FAILED(hr) )
+	{
+		LOG_PRINT_WARNING( " Failed to lock the texture" );
+		return false;
+	}
+
+	m_pLockedTexture = shared_ptr<CLockedTexture>( new CLockedTexture() );
+	CLockedTexture& tex = *(m_pLockedTexture.get());
 	tex.m_pBits  = locked_rect.pBits;
 	tex.m_Width  = desc.Width;
 	tex.m_Height = desc.Height;
 
-	// An empty texture has been created
-	// - fill the texture if loader was specified
-	shared_ptr<CTextureLoader> pLoader = desc.pLoader.lock();
-	if( pLoader )
-	{
-		pLoader->FillTexture( tex );
-	}
+	return true;
+}
 
-	m_pTexture->UnlockRect(0);
+
+bool CTextureEntry::Unlock()
+{
+	if( !m_pTexture )
+		return false;
+
+	m_pLockedTexture.reset();
+
+	HRESULT hr = S_OK;
+	hr = m_pTexture->UnlockRect(0);
 
 	D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
 
-	D3DXSaveTextureToFile( string(desc.Filename + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
-
 	return true;
+}
+
+
+bool CTextureEntry::CreateFromDesc()
+{
+	SAFE_RELEASE( m_pTexture );
+
+	const CTextureResourceDesc& desc = m_TextureDesc;
+
+	Create();
+
+	if( Lock() )
+	{
+		// An empty texture has been created
+		// - fill the texture if loader was specified
+		shared_ptr<CTextureLoader> pLoader = desc.pLoader.lock();
+		if( pLoader )
+		{
+			pLoader->FillTexture( *(m_pLockedTexture.get()) );
+		}
+
+		Unlock();
+
+		D3DXSaveTextureToFile( string(desc.Filename + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
+
+		return true;
+	}
+	else
+		return false;
 
 //	return SUCCEEDED(hr) ? true : false;
 }
@@ -391,7 +439,7 @@ m_pMeshObject(NULL)
 	if( pDesc )
 		m_MeshDesc = *pDesc;
 	else
-		LOG_PRINT_ERROR( "An imcompatible resource desc" );
+		LOG_PRINT_ERROR( "An incompatible resource desc" );
 }
 
 /*
@@ -419,7 +467,7 @@ bool CMeshObjectEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::
 	db.GetData( mesh_archive_key, mesh_archive );
 
 	CMeshObjectFactory factory;
-	m_pMeshObject = factory.LoadMeshObjectFromArchvie( mesh_archive, m_Filename, m_MeshDesc.MeshType );
+	m_pMeshObject = factory.LoadMeshObjectFromArchive( mesh_archive, m_Filename, m_MeshDesc.MeshType );
 
 	return ( m_pMeshObject ? true : false );
 }
@@ -446,7 +494,7 @@ void CMeshObjectEntry::Release()
 
 bool CMeshObjectEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
-	if( desc.GetResourceType() != CGraphicsResourceDesc::RT_MESHOBJECT )
+	if( desc.GetResourceType() != GraphicsResourceType::Mesh )
 		return false;
 
 	const CMeshResourceDesc *pMeshDesc = dynamic_cast<const CMeshResourceDesc *>(&desc);

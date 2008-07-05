@@ -207,7 +207,7 @@ public:
 	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filename, int mesh_type );
 
 	/// TODO: support PMesh and SMesh
-	CD3DXMeshObjectBase*  LoadMeshObjectFromArchvie( C3DMeshModelArchive& mesh_archive, const std::string& filepath, int mesh_type );
+	CD3DXMeshObjectBase*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive, const std::string& filepath, int mesh_type );
 
 };
 

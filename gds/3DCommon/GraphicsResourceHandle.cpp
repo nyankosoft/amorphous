@@ -6,20 +6,20 @@
 
 using namespace std;
 
-
+/*
 void CGraphicsResourceHandle::IncResourceRefCount()
 {
 	if( 0 <= m_EntryID )
-        GraphicsResourceManager().IncResourceRefCount( m_EntryID );
+        GraphicsResourceManager().IncResourceRefCount( *this );
 }
 
 
 void CGraphicsResourceHandle::DecResourceRefCount()
 {
 	if( 0 <= m_EntryID )
-        GraphicsResourceManager().DecResourceRefCount( m_EntryID );
+        GraphicsResourceManager().DecResourceRefCount( *this );
 }
-
+*/
 
 void CGraphicsResourceHandle::Serialize( IArchive& ar, const unsigned int version )
 {
@@ -34,9 +34,10 @@ bool CGraphicsResourceHandle::LoadAsync( int priority )
 {
 	if(  GraphicsResourceManager().IsAsyncLoadingAllowed() )
 	{
-		ResourceLoadRequest req;
-		req.name = filename;
-		req.type = GetResourceType();
+//		ResourceLoadRequest req;
+//		req.name = filename;
+//		req.type = GetResourceType();
+//		m_EntryID = GraphicsResourceManager().LoadAsync( desc );
 	}
 	else
 		Load();

@@ -9,7 +9,6 @@
 #include <d3dx9tex.h>
 
 
-class CImageArchive;
 class CTextureLoader;
 
 
@@ -19,13 +18,18 @@ protected:
 
 	static const CTextureHandle ms_NullHandle;
 
+	virtual void IncResourceRefCount();
+	virtual void DecResourceRefCount();
+
 public:
 
 //	boost::weak_ptr<CTextureLoader> m_pTextureLoader;
 
 	inline CTextureHandle() {}
 
-	~CTextureHandle() {}
+	~CTextureHandle() { Release(); }
+
+	inline void Release();
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
@@ -42,7 +46,7 @@ public:
 	bool Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
 
 	/// loads texture from memory in the form of image archive
-	bool Load( CImageArchive& img_archive );
+//	bool Load( CImageArchive& img_archive );
 
 	static const CTextureHandle& Null() { return ms_NullHandle; }
 
@@ -53,6 +57,16 @@ public:
 /*
 inline const CTextureHandle &CTextureHandle::operator=( const CTextureHandle& handle ){}
 */
+
+
+inline void CTextureHandle::Release()
+{
+	if( 0 <= m_EntryID )
+	{
+		DecResourceRefCount();
+		m_EntryID = -1;
+	}
+}
 
 
 

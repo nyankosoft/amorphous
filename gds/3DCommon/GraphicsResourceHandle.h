@@ -15,8 +15,8 @@ protected:
 
 	int m_EntryID;
 
-	void IncResourceRefCount();
-	void DecResourceRefCount();
+	virtual void IncResourceRefCount() = 0;
+	virtual void DecResourceRefCount() = 0;
 
 	inline void copy( const CGraphicsResourceHandle& handle );
 
@@ -28,7 +28,8 @@ public:
 
 	inline CGraphicsResourceHandle() : m_EntryID(-1) {}
 
-	virtual ~CGraphicsResourceHandle() { Release(); }
+	/// Release() is called in the dtor of each derived handle class
+	virtual ~CGraphicsResourceHandle() {}
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
@@ -41,9 +42,7 @@ public:
 
 	/// does not clear the filename
 	/// - user can reload the resource after Release() by calling Load()
-	/// - ( 0 <= m_EntryID ) check is done in DecResourceRefCount()
-	///   but also added to this function in order to avoid non-inline calls when unused handle is realeased
-	inline void Release();
+	virtual void Release() = 0;
 
 	/// reload any updated file since the last load
 //	void Refresh();
@@ -56,12 +55,14 @@ public:
 
 //	static const CGraphicsResourceHandle ms_NullHandle;
 //	static const CGraphicsResourceHandle& Null() { return ms_NullHandle; }
+
+	friend class CGraphicsResourceManager;
 };
 
 
 //=================================== inline implementations ===================================
 
-
+/*
 inline void CGraphicsResourceHandle::Release()
 {
 	if( 0 <= m_EntryID )
@@ -70,7 +71,7 @@ inline void CGraphicsResourceHandle::Release()
 		m_EntryID = -1;
 	}
 }
-
+*/
 
 inline void CGraphicsResourceHandle::copy( const CGraphicsResourceHandle& handle )
 {

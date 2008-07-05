@@ -53,7 +53,7 @@ void CFontTextureLoader::FillTexture( CLockedTexture& texture )
 		{
 			U8 alpha = dest_bitmap_buffer(x,y);
 			U32 color = (alpha << 24) | 0x00FFFFFF;
-			texture.SetPixel( x, y, color );
+			texture.SetPixelARGB32( x, y, color );
 		}
 	}
 

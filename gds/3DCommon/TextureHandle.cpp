@@ -12,6 +12,21 @@ using namespace std;
 
 const CTextureHandle CTextureHandle::ms_NullHandle;
 
+
+void CTextureHandle::IncResourceRefCount()
+{
+	if( 0 <= m_EntryID )
+		GraphicsResourceManager().GetTextureEntry(m_EntryID).IncRefCount();
+}
+
+
+void CTextureHandle::DecResourceRefCount()
+{
+	if( 0 <= m_EntryID )
+		GraphicsResourceManager().GetTextureEntry(m_EntryID).DecRefCount();
+}
+
+
 bool CTextureHandle::Load()
 {
 	Release();
@@ -51,18 +66,9 @@ bool CTextureHandle::Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int
 		return true;	// the texture has been successfully loaded
 }
 
-
+/*
 bool CTextureHandle::Load( CImageArchive& img_archive )
 {
 	return false;
-
-/*	Release();
-
-	m_EntryID = GraphicsResourceManager().LoadTexture( img_archive );
-
-	if( m_EntryID == -1 )
-		return false;	// the loading failed
-	else
-		return true;	// the texture has been successfully loaded
-*/
 }
+*/

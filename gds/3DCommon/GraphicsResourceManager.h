@@ -2,11 +2,16 @@
 #define  __GraphicsResourceManager_H__
 	
 
-#include <vector>
 #include <string>
+#include <vector>
+#include <queue>
+#include <boost/thread/mutex.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "GraphicsComponentCollector.h"
+#include "GraphicsResource.h"
 #include "GraphicsResourceEntries.h"
+#include "GraphicsResourceLoaders.h"
 
 #include "Support/Singleton.h"
 using namespace NS_KGL;
@@ -15,17 +20,100 @@ using namespace NS_KGL;
 #include <boost/thread.hpp>
 
 
-class CGraphicsResourceLoader
+class CAsyncResourceLoader;
+
+
+class CResourceLoadRequest
 {
-	boost::mutex m_Mutex;
+public:
 
-protected:
+	enum Type
+	{
+		LoadFromDisk,
+		CopyToGraphicsMemory,
+		NumRequestTypes
+	};
 
-	static CSingleton<CGraphicsResourceLoader> m_obj;
+private:
+
+	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
+
+//	int	m_ResourceEntryIndex;
+
+	/// all the loaders have resource desc?
+	boost::shared_ptr<CGraphicsResourceLoader> m_pLoader;
+
+	Type m_RequestType;
 
 public:
 
-	static CGraphicsResourceLoader* Get() { return m_obj.get(); }
+	CResourceLoadRequest( Type type,
+		boost::weak_ptr<CGraphicsResourceEntry> pEntry//,
+//		int entry_index
+		)
+		:
+	m_RequestType(type),
+	m_pResourceEntry(pEntry)
+//	m_ResourceEntryIndex(entry_index)
+	{}
+
+	Type GetRequestType() const { return m_RequestType; }
+
+//	boost::weak_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry; }
+
+	friend class CAsyncResourceLoader;
+};
+
+
+class CGraphicsDeviceRequest
+{
+public:
+
+	enum Type
+	{
+		Lock,
+		Unlock,
+		NumRequestTypes
+	};
+
+	Type m_RequestType;
+
+	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
+
+public:
+
+	CGraphicsDeviceRequest( CGraphicsDeviceRequest::Type type, boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+		:
+	m_RequestType(type),
+	m_pResourceEntry(pEntry)
+	{}
+
+
+	friend class CAsyncResourceLoader;
+};
+
+
+class CAsyncResourceLoader
+{
+	boost::mutex m_Mutex;
+
+	std::queue<CResourceLoadRequest> m_ResourceLoadRequestQueue;
+
+	std::queue<CGraphicsDeviceRequest> m_GraphicsDeviceRequestQueue;
+
+protected:
+
+	static CSingleton<CAsyncResourceLoader> m_obj;
+
+public:
+
+	static CAsyncResourceLoader* Get() { return m_obj.get(); }
+
+	bool AddResourceLoadRequest( const CResourceLoadRequest& req );
+
+	void ProcessResourceLoadRequest();
+
+	void ProcessGraphicsDeviceRequests();
 
 	void operator()()
 	{
@@ -33,9 +121,9 @@ public:
 };
 
 
-inline CGraphicsResourceLoader& GraphicsResourceLoader()
+inline CAsyncResourceLoader& AsyncResourceLoader()
 {
-	return (*CGraphicsResourceLoader::Get());
+	return (*CAsyncResourceLoader::Get());
 }
 
 
@@ -51,9 +139,15 @@ class CGraphicsResourceManager : public CGraphicsComponent
 {
 private:
 
+	boost::mutex m_IOMutex;
+
 	bool m_AsyncLoadingAllowed;
 
-	std::vector<CGraphicsResourceEntry *> m_vecpResourceEntry;
+	std::vector<boost::weak_ptr<CGraphicsResourceEntry>> m_vecpResourceEntry;
+
+	std::vector<boost::shared_ptr<CTextureEntry>>       m_vecpTextureEntry;
+	std::vector<boost::shared_ptr<CMeshObjectEntry>>    m_vecpMeshEntry;
+	std::vector<boost::shared_ptr<CShaderManagerEntry>> m_vecpShaderEntry;
 
 private:
 
@@ -63,12 +157,19 @@ private:
 
 	inline CShaderManager *GetShaderManager( int iShaderEntryID );
 
+	/// Synchronously loads a graphics resource
 	int LoadGraphicsResource( const CGraphicsResourceDesc& desc );
 
-	void IncResourceRefCount( int entry_id );
-	void DecResourceRefCount( int entry_id );
+//	void IncResourceRefCount( const CGraphicsResourceHandle& handle );
+//	void DecResourceRefCount( const CGraphicsResourceHandle& handle );
 
-	CGraphicsResourceEntry *CreateGraphicsResourceEntry( const CGraphicsResourceDesc& desc );
+	CTextureEntry& GetTextureEntry( int id )      { return *(m_vecpTextureEntry[id].get()); }
+	CMeshObjectEntry& GetMeshEntry( int id )      { return *(m_vecpMeshEntry[id].get()); }
+	CShaderManagerEntry& GetShaderEntry( int id ) { return *(m_vecpShaderEntry[id].get()); }
+
+	/// creates and registers a graphics resources of the specified type
+	/// returns the shared ointer to the created and registered resource
+	boost::shared_ptr<CGraphicsResourceEntry> CreateGraphicsResourceEntry( const CGraphicsResourceDesc& desc );
 
 	/// called from handle
 	int LoadTexture( std::string filename );
@@ -80,6 +181,17 @@ private:
 
 	/// called from handle
 	int LoadShaderManager( std::string filename );
+
+	bool ReleaseResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> ptr );
+
+	/// asynchronously loads a graphics resource
+	/// - sends load request and returns
+	/// - index to the entry is returned immediately
+	int LoadAsync( const CGraphicsResourceDesc& desc );
+
+	template<class T>
+	size_t AddEntryToVacantSlot( T ptr, vector<T>& vecPtr );
+
 
 protected:
 ///	CGraphicsResourceManager();		//singleton
@@ -108,6 +220,8 @@ public:
 	bool IsAsyncLoadingAllowed() const { return m_AsyncLoadingAllowed; }
 
 	void AllowAsyncLoading( bool allow );
+
+	boost::shared_ptr<CGraphicsResourceEntry> CreateAt( const CGraphicsResourceDesc& desc, int dest_index );
 	
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
 	virtual void ReleaseGraphicsResources();
@@ -126,7 +240,7 @@ inline LPDIRECT3DTEXTURE9 CGraphicsResourceManager::GetTexture( int iTextureEntr
 	if( iTextureEntryID < 0 )
 		return NULL;	// invalid texture ID
 
-	return ((CTextureEntry *)m_vecpResourceEntry[iTextureEntryID])->GetTexture();
+	return m_vecpTextureEntry[iTextureEntryID]->GetTexture();
 }
 
 
@@ -135,7 +249,7 @@ inline CD3DXMeshObjectBase *CGraphicsResourceManager::GetMeshObject( int iMeshOb
 	if( iMeshObjectEntryID < 0 )
 		return NULL;	// invalid texture ID
 
-	return ((CMeshObjectEntry *)m_vecpResourceEntry[iMeshObjectEntryID])->GetMeshObject();
+	return m_vecpMeshEntry[iMeshObjectEntryID]->GetMeshObject();
 }
 
 
@@ -144,7 +258,7 @@ inline CShaderManager *CGraphicsResourceManager::GetShaderManager( int iShaderEn
 	if( iShaderEntryID < 0 )
 		return NULL;	// invalid texture ID
 
-	return ((CShaderManagerEntry *)m_vecpResourceEntry[iShaderEntryID])->GetShaderManager();
+	return m_vecpShaderEntry[iShaderEntryID]->GetShaderManager();
 }
 
 

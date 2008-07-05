@@ -37,6 +37,9 @@ public:
 
 	inline bool SaveToFile( const std::string& pathname, int flag = 0 );
 
+
+	inline U32 GetPixelARGB32( int x, int y );
+
 	inline void FillColor( const SFloatRGBAColor& color );
 
 	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
@@ -78,6 +81,30 @@ m_BitsPerPixel(bpp)
 
 	FillColor( color );
 
+}
+
+
+/// only valid for bitmap of 32 bpp
+inline U32 CBitmapImage::GetPixelARGB32( int x, int y )
+{
+	int bytes_per_pixel = FreeImage_GetBPP(m_pFreeImageBitMap) / sizeof(BYTE);
+
+	if( bytes_per_pixel != 4 )
+	{
+		int GetPixelARGB32_does_not_work_if_bpp_is_not_32 = 1;
+		return 0;
+	}
+
+	BYTE *bits = FreeImage_GetBits(m_pFreeImageBitMap);
+	bits += ( y * GetWidth() + x ) * bytes_per_pixel;
+
+	U32 argb32
+		= (U32)bits[FI_RGBA_ALPHA] << 24
+		| (U32)bits[FI_RGBA_RED]   << 16
+		| (U32)bits[FI_RGBA_GREEN] << 8
+		| (U32)bits[FI_RGBA_BLUE];
+
+	return argb32;
 }
 
 

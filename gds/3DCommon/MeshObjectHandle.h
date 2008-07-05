@@ -20,11 +20,16 @@ protected:
 
 	int m_MeshType;
 
+	virtual void IncResourceRefCount();
+	virtual void DecResourceRefCount();
+
 public:
 
 	inline CMeshObjectHandle( int mesh_type = CD3DXMeshObjectBase::TYPE_MESH ) : m_MeshType(mesh_type) {}
 
-	~CMeshObjectHandle() {}
+	~CMeshObjectHandle() { Release(); }
+
+	inline void Release();
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
@@ -49,6 +54,16 @@ inline const CMeshObjectHandle &CMeshObjectHandle::operator=( const CMeshObjectH
 	m_MeshType = handle.m_MeshType;
 
 	return *this;
+}
+
+
+inline void CMeshObjectHandle::Release()
+{
+	if( 0 <= m_EntryID )
+	{
+		DecResourceRefCount();
+		m_EntryID = -1;
+	}
 }
 
 
