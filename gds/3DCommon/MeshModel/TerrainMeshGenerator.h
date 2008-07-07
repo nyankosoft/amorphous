@@ -91,7 +91,9 @@ public:
 	/// remember that the content of the polygon buffer may be changed
 	/// since polygons that cross subdivision planes will be split
 	/// and new polygons will be added to the buffer
-	bool Build( std::vector<CIndexedPolygon>& vecPolygonBuffer, int target_depth );
+	bool Build( boost::shared_ptr<std::vector<CGeneral3DVertex>> pVertexBuffer,
+		        std::vector<CIndexedPolygon>& vecPolygonBuffer,
+				int target_depth );
 
 	void ScaleTexCoords();
 

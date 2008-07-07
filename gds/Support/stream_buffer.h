@@ -2,13 +2,14 @@
 #define  __stream_buffer_H__
 
 
+#include <stdio.h>
+
 #include <string>
 #include <vector>
 #include <fstream>
-using namespace std;
 
-#include "Support/msgbox.h"
-
+#include "Support/fnop.h"
+#include "Support/Log/DefaultLog.h"
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
 using namespace GameLib1::Serialization;
@@ -16,6 +17,8 @@ using namespace GameLib1::Serialization;
 
 class stream_buffer : public IArchiveObjectBase
 {
+protected:
+
 	int m_pos;
 
 	std::vector<char> m_buffer;
@@ -23,10 +26,10 @@ class stream_buffer : public IArchiveObjectBase
 public:
 
 	stream_buffer() : m_pos(0) {}
+
 	~stream_buffer() {}
 
-//	void Init();
-//	void Release();
+	inline bool LoadBinaryStream( const std::string& filepath );
 
 	inline int read( void *dest_buffer, int size );
 	inline int write( const void *src_buffer, int size );
@@ -44,18 +47,39 @@ public:
 
 	inline void seek_pos( int pos ) { m_pos = pos; }
 
+	inline int get_current_pos() const { return m_pos; }
+
 	inline void reset_pos() { seek_pos(0); }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version ) { ar & m_buffer; }
-
-//	inline bool LoadText
 };
+
+
+inline bool stream_buffer::LoadBinaryStream( const std::string& filepath )
+{
+	FILE *fp = fopen( filepath.c_str(), "rb" );
+	if( !fp )
+	{
+		LOG_PRINT_ERROR( "Failed to open a file: " + filepath );
+		return false;
+	}
+
+	int file_size = fnop::get_filesize(filepath);
+
+	m_buffer.resize( file_size );
+
+	fread( &m_buffer[0], file_size, 1, fp );
+
+	fclose(fp);
+
+	return true;
+}
 
 
 inline int stream_buffer::read( void *dest_buffer, int size )
 {
 	int left_size = (int)m_buffer.size() - m_pos;
-//	int copy_size = std::min( left_size, size );
+
 	int copy_size = left_size < size ? left_size : size;
 	memcpy( dest_buffer, &m_buffer[0] + m_pos, copy_size );
 
@@ -72,11 +96,7 @@ inline int stream_buffer::read( void *dest_buffer, int size )
 inline int stream_buffer::write( const void *src_buffer, int size )
 {
 	int left_size = (int)m_buffer.size() - m_pos;
-/*
-//	int copy_size = std::min( left_size, size );
-	int copy_size = left_size < size ? left_size : size;
-	memcpy( &m_buffer[0] + m_pos, src_buffer, copy_size );
-*/
+
 	// extend the buffer size if necessary
 	if( left_size < size )
 		m_buffer.insert( m_buffer.end(), size - left_size, 0 );
@@ -89,16 +109,15 @@ inline int stream_buffer::write( const void *src_buffer, int size )
 }
 
 
-inline bool stream_buffer::LoadTextFile( const std::string& filename )
+inline bool stream_buffer::LoadTextFile( const std::string& filepath )
 {
 	std::ifstream testfile;
 
-	testfile.open( filename.c_str() );
+	testfile.open( filepath.c_str() );
 
 	if ( !testfile.is_open() ) 
 	{
-//		g_Log.Print( "Cannot open Python script file, '" + filename + "'!");
-		MsgBox( string("Cannot open a file, '") + filename );
+		LOG_PRINT_ERROR( "Failed to open a file: " + filepath );
 		return false;
 	}
 

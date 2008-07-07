@@ -322,10 +322,13 @@ void TerrainMeshTree::Triangulate_r( TerrainMeshNode& node,
 
 
 
-bool TerrainMeshTree::Build( vector<CIndexedPolygon>& vecPolygonBuffer,
+bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<CGeneral3DVertex>> pVertexBuffer,
+							 vector<CIndexedPolygon>& vecPolygonBuffer,
 							 int target_depth )
 {
 	g_Log.Print( "TerrainMeshTree::Build() - target_depth: %d", target_depth );
+
+	m_pVertexBuffer = pVertexBuffer;
 
 	m_pvecPolygonBuffer = &vecPolygonBuffer;
 
@@ -357,6 +360,8 @@ bool TerrainMeshTree::Build( vector<CIndexedPolygon>& vecPolygonBuffer,
 
 	(*m_pvecPolygonBuffer) = dest_triangle_buffer;
 
+	LOG_PRINT( " Leaving." );
+
 	return true;
 }
 
@@ -366,6 +371,8 @@ vector<int> s_processed;
 
 void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 {
+	LOG_FUNCTION_SCOPE();
+
 	if( 0 < node.m_child.size() )
 	{
 		ScaleTexCoords_r( node.m_child[0] );
@@ -373,6 +380,8 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 	}
 	else
 	{
+		CScopeLog sl( " Scaling texture coords..." );
+
 		// leaf node
 		double min_u = 0.000007, max_u = 0.999996;		// taken from arctic2/test30.07.lwo
 		double tex_scale_u = 1.0 / ( max_u - min_u );
@@ -425,7 +434,17 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 
 void TerrainMeshTree::ScaleTexCoords()
 {
+	LOG_FUNCTION_SCOPE();
+
+	LOG_PRINT( fmt_string(" Resizing an array of flags for processed vertices: %x", (unsigned int)(m_pVertexBuffer.get())) );
+
+	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
+
+	LOG_PRINT( "Vertices: " + to_string( (int)m_pVertexBuffer->size() ) );
+
 	s_processed.resize( m_pVertexBuffer->size(), 0 );
+
+	LOG_PRINT( " Calling ScaleTexCoords_r()..." );
 
 	ScaleTexCoords_r( m_RootNode );
 }
@@ -554,8 +573,10 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 
 void CTerrainMeshGenerator::CreateMeshTree()
 {
+	LOG_FUNCTION_SCOPE();
+
 	int tree_depth = m_NumTexEdgeSplits + 1;
-	m_MeshTree.Build( m_vecPolygonBuffer, tree_depth );
+	m_MeshTree.Build( m_pVertexBuffer, m_vecPolygonBuffer, tree_depth );
 
 	m_MeshTree.SetTextureIndices( m_NumTexEdgeSplits );
 }
@@ -563,6 +584,8 @@ void CTerrainMeshGenerator::CreateMeshTree()
 
 void CTerrainMeshGenerator::ScaleTextureCoordinates()
 {
+	LOG_FUNCTION_SCOPE();
+
 	m_MeshTree.ScaleTexCoords();
 }
 
@@ -571,6 +594,10 @@ void CTerrainMeshGenerator::CopyVerticesAndTriangles( C3DMeshModelArchive& src_m
 {
 	// copy vertices
 	src_mesh.GetVertexSet().GetVertices( *m_pVertexBuffer.get() );
+
+	LOG_PRINT( "Vertices: " + to_string( (int)m_pVertexBuffer->size() ) );
+
+	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
 
 	// copy triangles
 	const vector<unsigned int>& src_index = src_mesh.GetVertexIndex();
@@ -660,12 +687,16 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( C3DMeshModelArchive& src_mesh )
 //	m_MeshTree.SetBaseTextureFilename( src_mat.SurfaceTexture.strFilename );
 	m_MeshTree.SetBaseTextureFilename( m_OutputTextureRelativePath + fnop::get_nopath(src_mat.vecTexture[0].strFilename) );
 
+	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
+
 	// copy all the triangles
 	// creates a space partitioning tree and link
 	// the polygons to its leaf nodes.
 	// This process splits the polygons and add new ones to the buffer
 	// if necessary
 	CreateMeshTree();
+
+	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
 
 	ScaleTextureCoordinates();
 

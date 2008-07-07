@@ -5,13 +5,9 @@
 #include <vector>
 #include <string>
 
-#include "BitmapImage.h"
-
+#include "Support/stream_buffer.h"
 #include "Support/fnop.h"
 #include "Support/Log/DefaultLog.h"
-
-#include "Support/Serialization/ArchiveObjectBase.h"
-using namespace GameLib1::Serialization;
 
 
 /**
@@ -19,11 +15,11 @@ using namespace GameLib1::Serialization;
    - Uses an FreeImage library to retrieve the width and height of the image
 
 */
-class CImageArchive : public IArchiveObjectBase
+class CImageArchive : public stream_buffer
 {
 public:
 
-	enum eImageFormat
+	enum ImageFormat
 	{
 		IMGFMT_INVALID,
 		IMGFMT_BMP24,
@@ -38,16 +34,7 @@ public:
 
 public:
 
-	int m_Format;
-
-	int m_Width;
-
-	int m_Height;
-
-	int m_Depth;
-
-	/// buffer to store the loaded image
-	std::vector<unsigned char> m_vecData;
+	ImageFormat m_Format;
 
 public:
 
@@ -56,8 +43,6 @@ public:
 	/// Creates an image archive from the given image file
 	/// and stores the image to the internal buffer
 	inline CImageArchive( const std::string& image_filename );
-
-//	inline CImageArchive( const CBitmapImage& img, CImageArchive::eImageFormat fmt );
 
 //	bool LoadImage_FloatRGBA( vector<SFloatRGBAColor>& dest_buffer );
 
@@ -74,19 +59,13 @@ public:
 
 inline CImageArchive::CImageArchive()
 :
-m_Format(IMGFMT_INVALID),
-m_Width(0),
-m_Height(0),
-m_Depth(0)
+m_Format(IMGFMT_INVALID)
 {}
 
 
 inline CImageArchive::CImageArchive( const std::string& image_filename )
 :
-m_Format(IMGFMT_INVALID),
-m_Width(0),
-m_Height(0),
-m_Depth(0)
+m_Format(IMGFMT_INVALID)
 {
 	// get the suffix from the filename
 	size_t dot_pos = image_filename.rfind(".");
@@ -98,28 +77,8 @@ m_Depth(0)
 	if( !res )
 		return;
 
-	CBitmapImage src_img;
-	if( !src_img.LoadFromFile( image_filename ) )
-	{
-		LOG_PRINT_ERROR( " - Cannot load an image file: " + image_filename );
-		return;
-	}
-
-	m_Width  = src_img.GetWidth();
-	m_Height = src_img.GetHeight();
-	m_Depth  = 0;
-
-	FILE *fp = fopen( image_filename.c_str(), "rb" );
-	if( !fp )
-		return;
-
-	int img_size = fnop::get_filesize(image_filename);
-
-	m_vecData.resize( img_size );
-
-	fread( &m_vecData[0], img_size, 1, fp );
-
-	fclose(fp);
+	// load image data to buffer
+	stream_buffer::LoadBinaryStream(image_filename);
 }
 
 
@@ -145,17 +104,25 @@ inline bool CImageArchive::SetFormatFromFileExtension( const std::string& image_
 
 inline bool CImageArchive::IsValid()
 {
-	return (m_Format != IMGFMT_INVALID) && ( 0 < m_Width ) && ( 0 < m_Height ) && ( 0 < m_vecData.size() );
+	return (m_Format != IMGFMT_INVALID) && ( 0 < m_buffer.size() );
 }
 
 
 inline void CImageArchive::Serialize( IArchive& ar, const unsigned int version )
 {
-	ar & m_Format;
-	ar & m_Width;
-	ar & m_Height;
-	ar & m_Depth;
-	ar & m_vecData;
+	stream_buffer::Serialize( ar, version );
+
+	ar & (int&)m_Format;
+
+/*	if( version < 1 )
+	{
+		ar & m_Width;
+		ar & m_Height;
+		ar & m_Depth;
+
+		std::vector<unsigned char> vecData;
+		ar & vecData;
+	}*/
 }
 
 

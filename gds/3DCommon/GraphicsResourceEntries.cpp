@@ -245,7 +245,7 @@ bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 		sprintf( title, "D3DXCreateTextureFromFileInMemory (keyname: %s)", keyname.c_str() );
 		LOG_SCOPE( title );
 
-	hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &img.m_vecData[0], (UINT)img.m_vecData.size(), &m_pTexture );
+	hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &img.buffer()[0], (UINT)img.buffer().size(), &m_pTexture );
 	}
 
 /*	D3DXIMAGE_INFO img_info;

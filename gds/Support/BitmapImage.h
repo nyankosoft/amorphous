@@ -8,26 +8,138 @@
 
 #include "3DCommon/FloatRGBColor.h"
 #include "3DCommon/FloatRGBAColor.h"
+#include "Support/ImageArchive.h"
 #include "Support/2DArray.h"
+#include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
 
 #pragma comment( lib, "FreeImage.lib" )
 
 
+class CBitmapImage;
+
+inline unsigned int DLL_CALLCONVImageReadProc( void *buffer, unsigned int size, unsigned count, fi_handle handle );
+inline unsigned int DLL_CALLCONV ImageWriteProc( void *buffer, unsigned size, unsigned int count, fi_handle handle );
+inline int DLL_CALLCONV ImageSeekProc( fi_handle handle, long offset, int origin );
+inline long DLL_CALLCONV ImageTellProc( fi_handle handle );
+
+
+inline void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
+{
+	if( fif != FIF_UNKNOWN )
+	{
+		g_Log.Print( "Free Image: %s Format", FreeImage_GetFormatFromFIF(fif) );
+	}
+
+	g_Log.Print( "Free Image: %s", message );
+}
+
+
+inline void SetFreeImageErrorHandler()
+{
+	// mutex - lock
+
+	ONCE( FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler) );
+}
+
+
+class CImageStreamBufferHolder
+{
+	stream_buffer *m_pStreamBuffer;
+
+public:
+
+	friend class CBitmapImage;
+	friend unsigned int DLL_CALLCONV ImageReadProc( void *buffer, unsigned int size, unsigned count, fi_handle handle );
+	friend unsigned int DLL_CALLCONV ImageWriteProc( void *buffer, unsigned size, unsigned int count, fi_handle handle );
+	friend int DLL_CALLCONV ImageSeekProc( fi_handle handle, long offset, int origin );
+	friend long DLL_CALLCONV ImageTellProc( fi_handle handle );
+};
+
+
+/// The singleton instance of CImageStreamBufferHolder
+inline CImageStreamBufferHolder& ImageStreamBufferHolder()
+{
+	static CImageStreamBufferHolder holder;
+	return holder;
+}
+
+
+inline unsigned int DLL_CALLCONV ImageReadProc( void *buffer, unsigned int size, unsigned int count, fi_handle handle )
+{
+	return ImageStreamBufferHolder().m_pStreamBuffer->read( buffer, size * count );
+}
+
+inline unsigned int DLL_CALLCONV ImageWriteProc( void *buffer, unsigned int size, unsigned int count, fi_handle handle )
+{
+	return ImageStreamBufferHolder().m_pStreamBuffer->write( buffer, size * count );
+}
+
+inline int DLL_CALLCONV ImageSeekProc( fi_handle handle, long offset, int origin )
+{
+	stream_buffer *pStreamBuffer = ImageStreamBufferHolder().m_pStreamBuffer;
+	switch(origin)
+	{
+	case SEEK_SET: pStreamBuffer->seek_pos( offset ); break;
+	case SEEK_CUR: pStreamBuffer->seek_pos( pStreamBuffer->get_current_pos() + offset ); break;
+	case SEEK_END: pStreamBuffer->seek_pos( (int)pStreamBuffer->buffer().size() + offset ); break;
+	default:
+		return 0;
+	}
+	
+	return 0; // assume it went successful
+}
+
+inline long DLL_CALLCONV ImageTellProc( fi_handle handle )
+{
+	return (long)ImageStreamBufferHolder().m_pStreamBuffer->get_current_pos();
+}
+
+
+inline FREE_IMAGE_FORMAT ToFIF( CImageArchive::ImageFormat img_fmt )
+{
+	switch(img_fmt)
+	{
+	case CImageArchive::IMGFMT_BMP24: return FIF_BMP;
+	case CImageArchive::IMGFMT_BMP32: return FIF_BMP;
+	case CImageArchive::IMGFMT_JPEG:  return FIF_JPEG;
+	case CImageArchive::IMGFMT_TGA:   return FIF_TARGA;
+	case CImageArchive::IMGFMT_PNG:   return FIF_PNG;
+//	case CImageArchive::IMGFMT_ : return FIF_DDS,
+//	case CImageArchive::IMGFMT_ : return FIF_PPM,
+//	case CImageArchive::IMGFMT_ : return FIF_DIB,
+//	case CImageArchive::IMGFMT_ : return FIF_HDR,       ///< high dynamic range formats
+//	case CImageArchive::IMGFMT_ : return FIF_PFM,       ///
+	default: return FIF_UNKNOWN;
+	}
+
+	return FIF_UNKNOWN;
+}
+
+
+/**
+ - Loads image form files (.bmp, .jpg, etc.)
+ - Uses FreeImage library
+
+*/
 class CBitmapImage
 {
 	FIBITMAP* m_pFreeImageBitMap;
 
-	int m_BitsPerPixel;
+	int m_BitsPerPixel; ///< the size of one pixel in the bitmap in bits
 
 public:
 
-	CBitmapImage() {}
+	CBitmapImage() : m_pFreeImageBitMap(NULL), m_BitsPerPixel(0) {}
 
 	inline CBitmapImage( int width, int height, int bpp );
 
 	/// \param bpp bits per pixel. Must support RGBA format
 	inline CBitmapImage( int width, int height, int bpp, const SFloatRGBAColor& color );
+
+	/// TODO: Make the argument const
+	/// - Need to do sth to CImageStreamBufferHolder. See the function definition
+	inline CBitmapImage( CImageArchive& img_archive );
 
 //	inline CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
 
@@ -69,6 +181,8 @@ inline CBitmapImage::CBitmapImage( int width, int height, int bpp )
 :
 m_BitsPerPixel(bpp)
 {
+	SetFreeImageErrorHandler();
+
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 }
 
@@ -77,11 +191,40 @@ inline CBitmapImage::CBitmapImage( int width, int height, int bpp, const SFloatR
 :
 m_BitsPerPixel(bpp)
 {
+	SetFreeImageErrorHandler();
+
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 
 	FillColor( color );
 
 }
+
+
+inline CBitmapImage::CBitmapImage( CImageArchive& img_archive )
+:
+m_pFreeImageBitMap(NULL),
+m_BitsPerPixel(0)
+{
+	SetFreeImageErrorHandler();
+
+//	lock
+
+	ImageStreamBufferHolder().m_pStreamBuffer = &img_archive;
+	FreeImageIO img_io;
+	img_io.read_proc  = ImageReadProc;
+	img_io.write_proc = ImageWriteProc;
+	img_io.seek_proc  = ImageSeekProc;
+	img_io.tell_proc  = ImageTellProc;
+
+	int sth = 0;
+
+	int flags = 0;
+	m_pFreeImageBitMap = FreeImage_LoadFromHandle( ToFIF(img_archive.m_Format), &img_io, &sth, flags );
+
+	if( m_pFreeImageBitMap )
+		m_BitsPerPixel = FreeImage_GetBPP( m_pFreeImageBitMap );
+}
+
 
 
 /// only valid for bitmap of 32 bpp
@@ -190,17 +333,14 @@ inline int CBitmapImage::GetHeight() const
 }
 
 
-//	FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler);
-
 
 // ----------------------------------------------------------
 
 /** Generic image loader
 	@param pathname Pointer to the full file name
 	@param flag Optional load flag constant
-	@return Returns the loaded dib if successful, returns NULL otherwise
+	@return Returns true on success
 */
-//FIBITMAP* GenericLoader( const std::string& pathname, int flag )
 inline bool CBitmapImage::LoadFromFile( const std::string& pathname, int flag )
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -223,7 +363,10 @@ inline bool CBitmapImage::LoadFromFile( const std::string& pathname, int flag )
 
 		// unless a bad file format, we are done !
 		if( m_pFreeImageBitMap )
+		{
+			m_BitsPerPixel = FreeImage_GetBPP( m_pFreeImageBitMap );
 			return true;
+		}
 		else
 			return false;
 	}
@@ -279,17 +422,6 @@ inline boost::shared_ptr<CBitmapImage> CreateBitmapImage( const std::string& pat
 	bool bSuccess = pImage->LoadFromFile( pathname, flag );
 
 	return pImage;
-}
-
-
-inline void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
-{
-	if( fif != FIF_UNKNOWN )
-	{
-		g_Log.Print( "Free Image: %s Format", FreeImage_GetFormatFromFIF(fif) );
-	}
-
-	g_Log.Print( "Free Image: %s", message );
 }
 
 
