@@ -80,7 +80,8 @@ void Update( float frametime )
 {
 	PROFILE_FUNCTION();
 
-	g_pTest->Update( frametime );
+	if( g_pTest )
+		g_pTest->Update( frametime );
 }
 
 
@@ -91,6 +92,8 @@ void Update( float frametime )
 VOID Render()
 {
 	PROFILE_FUNCTION();
+
+	ONCE( LOG_PRINT( " Entered" ) );
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -114,7 +117,8 @@ VOID Render()
     // begin the scene
     pd3dDevice->BeginScene();
 
-	g_pTest->Render( g_Camera );
+	if( g_pTest )
+		g_pTest->Render( g_Camera );
 
 	// rendering
 	char acStr[256];
@@ -138,6 +142,8 @@ VOID Render()
 
     // present the backbuffer contents to the display
     pd3dDevice->Present( NULL, NULL, NULL, NULL );
+
+	ONCE( LOG_PRINT( " Leaving" ) );
 }
 
 
@@ -206,6 +212,8 @@ void SetDefaultSkyboxMesh( CStaticGeometryCompilerFG& compiler )
 
 void ReleaseMain( WNDCLASSEX& wc )
 {
+	LOG_FUNCTION_SCOPE();
+
 	g_pTest.reset();
 
 	g_Log.RemoveLogOutput( g_pLogOutput );
@@ -382,7 +390,11 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		{
 			bool compiled = CompileStaticGeometry( filename );
 
-			if( !compiled )
+			if( compiled )
+			{
+				LOG_PRINT( "Compiled a static geometry from the following file: " + filename );
+			}
+			else
 			{
 				ReleaseMain( wc );
 				return 0;
@@ -400,6 +412,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		ReleaseMain( wc );
 		return 0;
 	}
+
+	LOG_PRINT( " Entering the main message loop..." );
 
 	// Enter the message loop
 	MSG msg;
@@ -424,6 +438,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 		Sleep( 2 );
     }
+
+	LOG_PRINT( " Cleaning up..." );
 
 	ReleaseMain( wc );
 

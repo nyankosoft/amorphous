@@ -377,6 +377,8 @@ bool CStaticGeometryCompilerFG::SetDefaultSkyboxMesh( const std::string& mesh_ar
 
 bool CStaticGeometryCompilerFG::Build( const string& desc_filename )
 {
+	LOG_FUNCTION_SCOPE();
+
 	Release();
 
 	string model_filename, skybox_tex_filename, output_filename;
