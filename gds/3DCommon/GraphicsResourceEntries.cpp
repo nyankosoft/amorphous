@@ -378,6 +378,16 @@ bool CTextureEntry::Unlock()
 }
 
 
+bool CTextureEntry::GetLockedTexture( CLockedTexture& texture )
+{
+	if( !m_pLockedTexture )
+		return false;
+
+	texture = *m_pLockedTexture;
+	return true;
+}
+
+
 bool CTextureEntry::CreateFromDesc()
 {
 	SAFE_RELEASE( m_pTexture );

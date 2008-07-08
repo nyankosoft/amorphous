@@ -1,6 +1,26 @@
 #include "GraphicsResourceLoaders.h"
 
 
+bool CDiskTextureLoader::LoadFromFile( const std::string& filepath )
+{
+	return m_Image.LoadFromFile( m_Desc.Filename );
+}
+
+
+bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+{
+	return false;
+	CImageArchive img_archive;
+	bool retrieved = db.GetData( keyname, img_archive );
+	if( retrieved )
+	{
+		bool loaded = m_Image.CreateFromImageArchive( img_archive );
+		return loaded;
+	}
+	else
+		return false;
+}
+
 
 bool CDiskTextureLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
 {
@@ -9,10 +29,14 @@ bool CDiskTextureLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
 		return false;
 
 	CLockedTexture locked_texture;
-//	pTextureEntry->GetLockedTexture(  );
-	FillTexture( locked_texture );
-
-	return true;
+	bool retrieved = pTextureEntry->GetLockedTexture( locked_texture );
+	if( retrieved )
+	{
+		FillTexture( locked_texture );
+		return true;
+	}
+	else
+		return false;
 }
 
 

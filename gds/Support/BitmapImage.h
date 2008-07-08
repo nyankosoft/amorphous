@@ -149,6 +149,7 @@ public:
 
 	inline bool SaveToFile( const std::string& pathname, int flag = 0 );
 
+	inline bool CreateFromImageArchive( CImageArchive& img_archive );
 
 	inline U32 GetPixelARGB32( int x, int y );
 
@@ -207,22 +208,7 @@ m_BitsPerPixel(0)
 {
 	SetFreeImageErrorHandler();
 
-//	lock
-
-	ImageStreamBufferHolder().m_pStreamBuffer = &img_archive;
-	FreeImageIO img_io;
-	img_io.read_proc  = ImageReadProc;
-	img_io.write_proc = ImageWriteProc;
-	img_io.seek_proc  = ImageSeekProc;
-	img_io.tell_proc  = ImageTellProc;
-
-	int sth = 0;
-
-	int flags = 0;
-	m_pFreeImageBitMap = FreeImage_LoadFromHandle( ToFIF(img_archive.m_Format), &img_io, &sth, flags );
-
-	if( m_pFreeImageBitMap )
-		m_BitsPerPixel = FreeImage_GetBPP( m_pFreeImageBitMap );
+	CreateFromImageArchive( img_archive );
 }
 
 
@@ -409,6 +395,32 @@ inline bool CBitmapImage::SaveToFile( const std::string& pathname, int flag )
 	return (bSuccess == TRUE) ? true : false;
 }
 
+
+inline bool CBitmapImage::CreateFromImageArchive( CImageArchive& img_archive )
+{
+
+//	lock
+
+	ImageStreamBufferHolder().m_pStreamBuffer = &img_archive;
+	FreeImageIO img_io;
+	img_io.read_proc  = ImageReadProc;
+	img_io.write_proc = ImageWriteProc;
+	img_io.seek_proc  = ImageSeekProc;
+	img_io.tell_proc  = ImageTellProc;
+
+	int sth = 0;
+
+	int flags = 0;
+	m_pFreeImageBitMap = FreeImage_LoadFromHandle( ToFIF(img_archive.m_Format), &img_io, &sth, flags );
+
+	if( m_pFreeImageBitMap )
+	{
+		m_BitsPerPixel = FreeImage_GetBPP( m_pFreeImageBitMap );
+		return true;
+	}
+	else
+		return false;
+}
 
 //
 // Global Functions

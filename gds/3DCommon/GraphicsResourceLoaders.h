@@ -45,6 +45,8 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname ) = 0;
 
+	/// Called by the resource IO thread
+	/// - copy the loaded resource to locked buffer
 	virtual bool CopyTo( CGraphicsResourceEntry *pDestEntry ) { return false; }
 };
 
@@ -88,7 +90,7 @@ class CDiskTextureLoader : public CGraphicsResourceLoader
 {
 	CTextureResourceDesc m_Desc;
 
-	// stores texture data loaded from disk
+	/// stores texture data loaded from disk
 	CBitmapImage m_Image;
 
 protected:
@@ -97,23 +99,17 @@ protected:
 
 public:
 
-	bool LoadFromFile( const std::string& filepath )
-	{
-		return m_Image.LoadFromFile( m_Desc.Filename );
-	}
+	bool LoadFromFile( const std::string& filepath );
 
-	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
-	{
-		return false;
-//		CImageArchive img_archive;
-//		db.GetData( keyname, img_archive );
-//		CBitmapImage( img_archive );
-	}
+	/// load image from the db as an image archive
+	bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
+
+	/// copy the bitmap image to the locked texture surface
+	bool CopyTo( CGraphicsResourceEntry *pDestEntry );
 
 	/// called by the system
+	/// - called inside CopyTo()
 	void FillTexture( CLockedTexture& texture );
-
-	bool CopyTo( CGraphicsResourceEntry *pDestEntry );
 };
 
 
@@ -134,15 +130,14 @@ public:
 		return m_Archive.LoadFromFile( m_Desc.Filename );
 	}
 
-	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+	bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 	{
 		return db.GetData( keyname, m_Archive );
 	}
 
+	bool CopyTo( CGraphicsResourceEntry *pDestEntry );
+
 	void FillLockedMeshVB();
 
 	void FillLockedMeshIB();
-
-	bool CopyTo( CGraphicsResourceEntry *pDestEntry );
-
 };
