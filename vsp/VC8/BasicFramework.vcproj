@@ -1183,6 +1183,10 @@
 			Name="Support"
 			>
 			<File
+				RelativePath="..\..\gds\Support\BitmapImage.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Support\BMPImageExporter.cpp"
 				>
 			</File>
@@ -1208,6 +1212,10 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\Support\fnop.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\ImageArchive.h"
 				>
 			</File>
 			<File
