@@ -280,6 +280,32 @@ bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 }
 
 
+static inline D3DXIMAGE_FILEFORMAT SuffixToD3DImgFmt( const std::string& suffix )
+{
+	if( suffix == "bmp" ) return D3DXIFF_BMP;
+	else if( suffix == "jpg" ) return D3DXIFF_JPG;
+	else if( suffix == "tga" ) return D3DXIFF_TGA;
+	else if( suffix == "png" ) return D3DXIFF_PNG;
+	else return D3DXIFF_BMP;
+}
+
+
+bool CTextureEntry::SaveTextureToImageFile( const std::string& image_filepath )
+{
+	if( m_pTexture )
+	{
+		D3DXIMAGE_FILEFORMAT img_fmt = SuffixToD3DImgFmt( image_filepath.substr( image_filepath.length() - 3, 3 ) );
+		HRESULT hr = D3DXSaveTextureToFile( image_filepath.c_str(), img_fmt, m_pTexture, NULL );
+		if( SUCCEEDED(hr) )
+			return true;
+		else
+			return false;
+	}
+	else
+		return false;
+}
+
+
 // May only be called by render thread
 // Used in synchronous loading
 bool CTextureEntry::LoadFromFile( const std::string& filepath )

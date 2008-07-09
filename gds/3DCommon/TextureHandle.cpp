@@ -66,6 +66,19 @@ bool CTextureHandle::Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int
 		return true;	// the texture has been successfully loaded
 }
 
+
+bool CTextureHandle::SaveTextureToImageFile( const std::string& image_filepath )
+{
+	if( 0 <= m_EntryID )
+	{
+		return GraphicsResourceManager().GetTextureEntry(m_EntryID).SaveTextureToImageFile( image_filepath );
+	}
+	else
+		return false;
+}
+
+
+
 /*
 bool CTextureHandle::Load( CImageArchive& img_archive )
 {

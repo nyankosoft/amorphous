@@ -294,6 +294,28 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		// First, create the texture
 //		bool tex_created = CreateFontTextureFromTrueTypeFont();
 	}
+	else
+	{
+		// load as image file for font texture
+		m_FontTexture.filename = filename;
+		bool tex_loaded = m_FontTexture.Load();
+		if( !tex_loaded )
+			return false;
+
+		// load character info
+		string charset_archive_filepath( filename );
+		fnop::change_ext( charset_archive_filepath, "tfc" );
+
+		CTextureFontArchive archive;
+		bool archive_loaded = archive.LoadFromFile( charset_archive_filepath );
+		if( !archive_loaded )
+			return false;
+
+		m_vecCharRect = archive.vecCharRect;
+		m_BaseHeight  = archive.BaseCharHeight;
+		
+		return true;
+	}
 /*	else if( dot_and_3char_suffix == ".tfd" )
 	{
 		// Assume the user has specified texture font database
@@ -323,4 +345,20 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 	}*/
 
 	return false;
+}
+
+
+bool CTrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& texture_filepath )
+{
+	m_FontTexture.SaveTextureToImageFile( texture_filepath );
+
+	string charset_filepath = texture_filepath;
+	fnop::change_ext( charset_filepath, "tfc" );
+
+	CTextureFontArchive tex_font_archive;
+	tex_font_archive.BaseCharHeight = m_BaseHeight;
+	tex_font_archive.vecCharRect    = m_vecCharRect;
+	bool saved = tex_font_archive.SaveToFile( charset_filepath );
+
+	return saved;
 }

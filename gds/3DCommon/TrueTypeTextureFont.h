@@ -133,6 +133,8 @@ public:
 
 	virtual int GetFontType() const { return FONTTYPE_TRUETYPETEXTURE; }
 
+	bool SaveTextureAndCharacterSet( const std::string& filepath ); 
+
 	friend class CFontTextureLoader;
 };
 

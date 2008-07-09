@@ -235,6 +235,8 @@ public:
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
 
+	bool SaveTextureToImageFile( const std::string& image_filepath );
+
 	bool Lock();
 
 	bool Unlock();

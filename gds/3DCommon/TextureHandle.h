@@ -45,6 +45,8 @@ public:
 	/// \param mip_levels number of mip levels. set 0 to create a complete mipmap chain (0 by default).
 	bool Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
 
+	bool SaveTextureToImageFile( const std::string& image_filepath );
+
 	/// loads texture from memory in the form of image archive
 //	bool Load( CImageArchive& img_archive );
 
