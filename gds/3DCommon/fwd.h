@@ -15,6 +15,7 @@ class C2DTriangle;
 class CFontBase;
 class CFont;
 class CTextureFont;
+class CTrueTypeTextureFont;
 class CCamera;
 class CShaderManager;
 class CShaderLightManager;

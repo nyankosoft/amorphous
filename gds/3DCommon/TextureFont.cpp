@@ -154,6 +154,47 @@ void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor
 }
 
 
+int CTextureFont::GetTextWidth( const char *text ) const
+{
+	if( !text )
+		return 0;
+
+	float factor_x = GetHorizontalFactor();
+	float text_width = 0;
+	float max_text_width = 0;
+	int char_index = 0;
+	const int max_char_index = (int)m_vecCharRect.size();
+
+	const size_t num_letters = strlen(text);
+	for(size_t i=0; i<num_letters; i++)
+	{
+		if( text[i] == '\n' )
+		{
+			if( max_text_width < text_width )
+				max_text_width = text_width;
+
+			text_width = 0;
+
+			continue;
+		}
+
+		int char_code = (int)text[i];
+		char_index = char_code - ' ';
+		if( char_index < 0 || max_char_index <= char_index )
+			continue;
+
+		const CharRect& char_rect = m_vecCharRect[char_index];
+
+		text_width += char_rect.advance * factor_x;
+	}
+
+	if( max_text_width < text_width )
+		max_text_width = text_width;
+
+	return (int)max_text_width;
+}
+
+
 void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 {
 	if( m_vecCharRect.size() == 0 )
@@ -162,7 +203,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 	if( !pcStr )
 		return;
 
-	size_t num_letters = strlen(pcStr);
+	const size_t num_letters = strlen(pcStr);
 
 	if( NUM_MAX_LETTERS <= m_CacheIndex + num_letters )
 	{
@@ -203,7 +244,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 		}
 
 		char_index = iCharCode-' ';
-		if( char_index < 0 || max_char_index < char_index )
+		if( char_index < 0 || max_char_index <= char_index )
 			continue;
 
 		const CharRect& char_rect = m_vecCharRect[char_index];

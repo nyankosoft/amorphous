@@ -1,5 +1,6 @@
 #include "3DCommon/Font.h"
 #include "3DCommon/TextureFont.h"
+#include "3DCommon/TrueTypeTextureFont.h"
 #include "GraphicsElementManager.h"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
@@ -281,7 +282,7 @@ void CGE_Text::UpdateTextAlignment()
 		vLocalTextOffset.x = 0;
 		break;
 	case CGE_Text::TAL_CENTER:
-		vLocalTextOffset.x = (float)( box_width/2  - (text_length * font_width)/2 );
+		vLocalTextOffset.x = (float)( box_width/2  - pFont->GetTextWidth(m_Text.c_str())/2 );
 		break;
 	case CGE_Text::TAL_RIGHT:
 		// --- NOT IMPLEMENTED ---
@@ -940,8 +941,10 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 {
 	CFont *pFont = NULL;
 	CTextureFont *pTexFont = NULL;
+	CTrueTypeTextureFont *pTTFont = NULL;
 	int w_scaled = (int)(w * m_fScale);
 	int h_scaled = (int)(h * m_fScale);
+	const int ttf_resolution = 64;
 
 	if( (int)m_vecpFont.size() <= font_id )
 	{
@@ -969,6 +972,13 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 		pTexFont->InitFont( font_name, w_scaled, h_scaled );
 		pTexFont->SetItalic( italic );
 		m_vecpFont[font_id] = pTexFont;
+		break;
+
+	case CFontBase::FONTTYPE_TRUETYPETEXTURE:
+		pTTFont = new CTrueTypeTextureFont();
+		pTTFont->InitFont( font_name, ttf_resolution, w_scaled, h_scaled );
+		pTTFont->SetItalic( italic );
+		m_vecpFont[font_id] = pTTFont;
 		break;
 
 	default:

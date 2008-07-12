@@ -277,6 +277,8 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 	if( filename.length() == 0 )
 		return false;
 
+	SetFontSize( font_width, font_height );
+
 	string dot_and_3char_suffix = filename.substr( filename.length() - 4 );
 
 	if( dot_and_3char_suffix == ".ttf"

@@ -77,9 +77,7 @@ public:
 
 	inline void SetFontColor( const SFloatRGBAColor& color ) { m_dwFontColor = color.GetARGB32(); }
 
-
 	virtual void DrawText( const char *text, const Vector2& vPos, U32 color ) = 0;
-
 
 	inline void DrawText( const char *text, const Vector2& vPos )
 	{
@@ -115,6 +113,14 @@ public:
 	inline void DrawText( const std::string& text, int x, int y )
 	{
 		DrawText( text.c_str(), x, y, m_dwFontColor );
+	}
+
+	virtual int GetTextWidth( const char *text ) const
+	{
+		if( !text )
+			return 0;
+		else
+			return (int)strlen(text) * GetFontWidth();
 	}
 
 	virtual int GetFontType() const = 0;

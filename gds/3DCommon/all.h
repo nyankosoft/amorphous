@@ -1,4 +1,17 @@
+// 2D primitives
+#include "2DRect.h"
+#include "2DFrameRect.h"
+#include "2DRoundRect.h"
+#include "2DRectSet.h"
 #include "2DTriangle.h"
+
+// fonts
+#include "Font.h"
+#include "FontBase.h"
+#include "TextureFont.h"
+#include "TrueTypeTextureFont.h"
+
+// others
 #include "3DGameMath.h"
 #include "3DRect.h"
 #include "Camera.h"
@@ -11,8 +24,7 @@
 #include "Direct3D9.h"
 #include "FloatRGBAColor.h"
 #include "FloatRGBColor.h"
-#include "Font.h"
-#include "FontBase.h"
+
 #include "FVF_Vertices.h"
 #include "General3DVertex.h"
 #include "GraphicsComponentCollector.h"
@@ -28,15 +40,10 @@
 #include "RectTriListIndex.h"
 #include "SimpleMotionBlur.h"
 #include "TextureCoord.h"
-#include "TextureFont.h"
 #include "GraphicsResourceManager.h"
 #include "GraphicsResourceHandle.h"
 #include "TextureRenderTarget.h"
 #include "TextureTool.h"
-#include "2DFrameRect.h"
-#include "2DRect.h"
-#include "2DRoundRect.h"
-#include "2DRectSet.h"
 
 #include "LinePrimitives.h"
 

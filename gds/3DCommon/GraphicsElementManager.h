@@ -6,7 +6,6 @@
 #include "3DMath/Vector2.h"
 #include "3DMath/Vector3.h"
 #include "3DMath/aabb2.h"
-#include "3DCommon/fwd.h"
 #include "3DCommon/3DGameMath.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/2DFrameRect.h"
@@ -17,6 +16,11 @@
 #include "3DCommon/FontBase.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/TextureHandle.h"
+
+// This will load all headers includeing this file...
+// How to avoid including "GraphicsEffectManager.h"?
+//#include "3DCommon/all.h"
+
 
 #include "GameCommon/CriticalDamping.h"
 

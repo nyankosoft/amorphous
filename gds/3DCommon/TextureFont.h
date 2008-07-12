@@ -102,6 +102,8 @@ public:
 
 	virtual void DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor );
 
+	int GetTextWidth( const char *text ) const;
+
 	/// push text data to the buffer
 	void CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor );
 
