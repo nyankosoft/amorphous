@@ -35,6 +35,7 @@ bool CGraphicsResourceHandle::LoadAsync( int priority )
 	if(  GraphicsResourceManager().IsAsyncLoadingAllowed() )
 	{
 //		ResourceLoadRequest req;
+//		req.desc = GetDesc();
 //		req.name = filename;
 //		req.type = GetResourceType();
 //		m_EntryID = GraphicsResourceManager().LoadAsync( desc );

@@ -4,8 +4,6 @@
 
 #include <string>
 #include <vector>
-#include <queue>
-#include <boost/thread/mutex.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "GraphicsComponentCollector.h"
@@ -15,116 +13,6 @@
 
 #include "Support/Singleton.h"
 using namespace NS_KGL;
-
-
-#include <boost/thread.hpp>
-
-
-class CAsyncResourceLoader;
-
-
-class CResourceLoadRequest
-{
-public:
-
-	enum Type
-	{
-		LoadFromDisk,
-		CopyToGraphicsMemory,
-		NumRequestTypes
-	};
-
-private:
-
-	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
-
-//	int	m_ResourceEntryIndex;
-
-	/// all the loaders have resource desc?
-	boost::shared_ptr<CGraphicsResourceLoader> m_pLoader;
-
-	Type m_RequestType;
-
-public:
-
-	CResourceLoadRequest( Type type,
-		boost::weak_ptr<CGraphicsResourceEntry> pEntry//,
-//		int entry_index
-		)
-		:
-	m_RequestType(type),
-	m_pResourceEntry(pEntry)
-//	m_ResourceEntryIndex(entry_index)
-	{}
-
-	Type GetRequestType() const { return m_RequestType; }
-
-//	boost::weak_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry; }
-
-	friend class CAsyncResourceLoader;
-};
-
-
-class CGraphicsDeviceRequest
-{
-public:
-
-	enum Type
-	{
-		Lock,
-		Unlock,
-		NumRequestTypes
-	};
-
-	Type m_RequestType;
-
-	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
-
-public:
-
-	CGraphicsDeviceRequest( CGraphicsDeviceRequest::Type type, boost::weak_ptr<CGraphicsResourceEntry> pEntry )
-		:
-	m_RequestType(type),
-	m_pResourceEntry(pEntry)
-	{}
-
-
-	friend class CAsyncResourceLoader;
-};
-
-
-class CAsyncResourceLoader
-{
-	boost::mutex m_Mutex;
-
-	std::queue<CResourceLoadRequest> m_ResourceLoadRequestQueue;
-
-	std::queue<CGraphicsDeviceRequest> m_GraphicsDeviceRequestQueue;
-
-protected:
-
-	static CSingleton<CAsyncResourceLoader> m_obj;
-
-public:
-
-	static CAsyncResourceLoader* Get() { return m_obj.get(); }
-
-	bool AddResourceLoadRequest( const CResourceLoadRequest& req );
-
-	void ProcessResourceLoadRequest();
-
-	void ProcessGraphicsDeviceRequests();
-
-	void operator()()
-	{
-	}
-};
-
-
-inline CAsyncResourceLoader& AsyncResourceLoader()
-{
-	return (*CAsyncResourceLoader::Get());
-}
 
 
 //#define GraphicsResourceManager ( (*CGraphicsResourceManager::Get()) )
@@ -138,8 +26,6 @@ inline CAsyncResourceLoader& AsyncResourceLoader()
 class CGraphicsResourceManager : public CGraphicsComponent
 {
 private:
-
-	boost::mutex m_IOMutex;
 
 	bool m_AsyncLoadingAllowed;
 
@@ -183,6 +69,8 @@ private:
 	int LoadShaderManager( std::string filename );
 
 	bool ReleaseResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> ptr );
+
+	boost::shared_ptr<CGraphicsResourceLoader> CreateResourceLoader( boost::shared_ptr<CGraphicsResourceEntry> pEntry );
 
 	/// asynchronously loads a graphics resource
 	/// - sends load request and returns

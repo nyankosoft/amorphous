@@ -72,6 +72,10 @@ protected:
 	/// size of vertex (in bytes)
 	int m_iVertexSize;
 
+	/// vertex elements
+	/// - updated when LoadVertices() is called.
+	D3DVERTEXELEMENT9 *m_paVertexElements;
+
 	/// vertex decleration
 	LPDIRECT3DVERTEXDECLARATION9 m_pVertexDecleration;
 
@@ -86,7 +90,9 @@ private:
 
 protected:
 
-	virtual void LoadVertices( void*& pVBData, D3DVERTEXELEMENT9 *pVertexElements, C3DMeshModelArchive& archive );
+	virtual void LoadVertices( void*& pVBData, C3DMeshModelArchive& archive );
+
+	bool LoadIndices( unsigned short*& pIBData, C3DMeshModelArchive& archive );
 
 	HRESULT LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num_materials );
 
@@ -94,11 +100,12 @@ protected:
 
 //	virtual const D3DVERTEXELEMENT9 *GetVertexElemenets( CMMA_VertexSet& rVertexSet );
 
-	HRESULT FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive& archive );
+	bool FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive& archive );
 
 	/// materials must be loaded before calling this method
 	HRESULT SetAttributeTable( LPD3DXMESH pMesh, const vector<CMMA_TriangleSet>& vecTriangleSet );
 
+	/// Synchronously load D3DXMesh
 	LPD3DXMESH LoadD3DXMeshFromArchive( C3DMeshModelArchive& archive );
 
 	/// \param xfilename [in] .x file
@@ -140,11 +147,19 @@ public:
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return NULL; }
 
+	/// added to call LockAttributeBuffer() during asynchrnous loading
+	/// - LockAttributeBuffer() is not a member of LPD3DXBASEMESH
+	virtual LPD3DXMESH GetMesh() { return NULL; }
+
 	inline int GetNumMaterials() const { return m_NumMaterials; }
 
 	inline const D3DMATERIAL9& GetMaterial( int i ) const { return m_pMeshMaterials[i]; }
 
+	bool CreateVertexDeclaration();
+
 	inline LPDIRECT3DVERTEXDECLARATION9 GetVertexDeclaration() { return m_pVertexDecleration; }
+
+	int GetVertexSize() const { return m_iVertexSize; }
 
 	/// user is responsible for updating the visibility by calling UpdateVisibility( const CCamera& cam )
 	void ViewFrustumTest( bool do_test ) { m_bViewFrustumTest = do_test; }
@@ -190,9 +205,24 @@ public:
 	///   - shader_mgr.SetShaderTechnique() and call CD3DXMeshObjectBase::Render( shader_mgr )
 	inline void Render( CShaderManager& rShaderMgr, std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
 
+	virtual bool LockVertexBuffer( void*& pLockedVertexBuffer );
+
+	virtual bool LockIndexBuffer( void*& pLockedIndexBuffer );
+
+	virtual bool LockAttributeBuffer( DWORD*& pLockedAttributeBuffer );
+
+	virtual bool UnlockVertexBuffer();
+
+	virtual bool UnlockIndexBuffer();
+
+	virtual bool UnlockAttributeBuffer();
+
 	enum eMeshType { TYPE_MESH, TYPE_PMESH, TYPE_SMESH, TYPE_DMESH };
 
 	virtual unsigned int GetMeshType() const = 0;
+
+	friend class CD3DXMeshVerticesLoader;
+	friend class CD3DXMeshIndicesLoader;
 
 };
 
@@ -221,6 +251,7 @@ inline CD3DXMeshObjectBase::CD3DXMeshObjectBase()
 m_NumMaterials(0L),
 m_pMeshMaterials(NULL),
 m_iVertexSize(0),
+m_paVertexElements(NULL),
 m_pVertexDecleration(NULL),
 m_bViewFrustumTest(false)
 {

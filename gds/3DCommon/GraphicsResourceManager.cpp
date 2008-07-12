@@ -1,6 +1,6 @@
-#include "GraphicsResourceManager.h"
-#include "GraphicsResourceHandle.h"
-
+#include "3DCommon/GraphicsResourceManager.h"
+#include "3DCommon/GraphicsResourceHandle.h"
+#include "3DCommon/AsyncResourceLoader.h"
 #include "3DCommon/Direct3D9.h"
 
 #include "Support/Log/DefaultLog.h"
@@ -171,6 +171,27 @@ bool CGraphicsResourceManager::ReleaseResourceEntry( boost::shared_ptr<CGraphics
 }
 
 
+shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoader( shared_ptr<CGraphicsResourceEntry> pEntry )
+{
+	boost::shared_ptr<CGraphicsResourceLoader> pLoader;
+	switch(pEntry->GetResourceType())
+	{
+	case GraphicsResourceType::Texture:
+		pLoader = shared_ptr<CGraphicsResourceLoader>( new CDiskTextureLoader(m_vecpTextureEntry[pEntry->GetIndex()]) );
+		break;
+	case GraphicsResourceType::Mesh:
+		pLoader = shared_ptr<CGraphicsResourceLoader>( new CMeshLoader(m_vecpMeshEntry[pEntry->GetIndex()]) );
+		break;
+//	case GraphicsResourceType::Shader:
+//		pLoader = shared_ptr<CGraphicsResourceLoader>( new CDiskTextureLoader(m_vecpShaderEntry[pEntry->GetIndex()]) );
+	default:
+		return pLoader;
+	}
+
+	return pLoader;
+}
+
+
 // async loading steps
 // 1. see if the requested resource has already been loaded
 //    true -> see if it is sharable
@@ -198,12 +219,14 @@ int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 	}
 
 	// create a new empty resource entry to determine the resource index now.
-	// - to reserve an entry index
+	// - reserves an entry index before loading the resource
+	// - graphics resource handle needs resource index
 
 	boost::shared_ptr<CGraphicsResourceEntry> pEntry = CreateGraphicsResourceEntry( desc );
 	if( pEntry )
 	{
 		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, pEntry );
+		req.m_pLoader = CreateResourceLoader(pEntry);
 		AsyncResourceLoader().AddResourceLoadRequest( req );
 		return pEntry->GetIndex();
 	}
@@ -249,7 +272,7 @@ boost::shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateAt( co
 
 int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc& desc )
 {
-    boost::mutex::scoped_lock scoped_lock(m_IOMutex);
+//    boost::mutex::scoped_lock scoped_lock(m_IOMutex);
 
 	LOG_FUNCTION_SCOPE();
 
@@ -421,138 +444,3 @@ int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 	}
 }
 */
-
-
-CSingleton<CAsyncResourceLoader> CAsyncResourceLoader::m_obj;
-
-bool CAsyncResourceLoader::AddResourceLoadRequest( const CResourceLoadRequest& req )
-{
-	m_ResourceLoadRequestQueue.push( req );
-	return true;
-}
-
-class LoadResult
-{
-public:
-	enum Name
-	{
-		ResourceNotFound,
-		DB_InUse,
-		Success,
-		NumLoadResults
-	};
-};
-
-
-// called by file IO thread
-void CAsyncResourceLoader::ProcessResourceLoadRequest()
-{
-	bool copied = false;
-	bool res = false;
-	shared_ptr<CGraphicsResourceLoader> pLoader;
-	while(1)
-	{
-		CResourceLoadRequest& req = m_ResourceLoadRequestQueue.front();
-
-		m_ResourceLoadRequestQueue.pop();
-
-		switch( req.GetRequestType() )
-		{
-		case CResourceLoadRequest::LoadFromDisk:
-			pLoader = req.m_pLoader;
-			// load the resource from the disk
-			/* LoadResult::Name r
-			switch(r)
-			{
-			case LoadResult::Success:
-				break;
-			case LoadResult::ResourceNotFound:
-				continue;
-				break;
-			case LoadResult::DB_InUse:
-				m_ResourceLoadRequestQueue.push( req );
-				continue;
-				// try again later
-				break;
-			default:
-				break;
-			}*/
-
-			res = pLoader->LoadFromDisk();
-
-			// loaded the resource
-			// - send lock request to render thread in order to
-			//   copy the loaded resource to some graphics memory
-			m_GraphicsDeviceRequestQueue.push(
-				CGraphicsDeviceRequest( CGraphicsDeviceRequest::Lock, req.m_pResourceEntry )
-				);
-			break;
-
-		case CResourceLoadRequest::CopyToGraphicsMemory:
-			// copy loaded data to locked graphics memory
-			copied = req.m_pLoader->CopyTo( req.m_pResourceEntry.lock().get() );
-			if( copied )
-			{
-				m_GraphicsDeviceRequestQueue.push(
-					CGraphicsDeviceRequest( CGraphicsDeviceRequest::Unlock, req.m_pResourceEntry.lock() )
-					);
-			}
-			
-			break;
-
-		default:
-			break;
-		}
-	}
-}
-
-
-void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
-{
-	bool resource_locked = false;
-	shared_ptr<CGraphicsResourceEntry> pSrcEntry, pEntry;
-	while(1)
-	{
-		CGraphicsDeviceRequest req = m_GraphicsDeviceRequestQueue.front();
-		m_GraphicsDeviceRequestQueue.pop();
-
-		switch( req.m_RequestType )
-		{
-		case CGraphicsDeviceRequest::Lock:
-			{
-				// find a resource entry that matches the resource description
-				pSrcEntry = req.m_pResourceEntry.lock();
-
-				// texture / mesh sizes are stored in the loader
-				// - GraphicsResourceManager can determine the graphics resource entry that matches the specification
-				// - Ceate a new graphics resource entry, or draw one from the cache
-				// - This will overwrites the slot that has been occupied by pSrcEntry
-				//   - i.e. ref count of pSrcEntry will be zero after leaving this scope
-				pEntry = GraphicsResourceManager().CreateAt( pSrcEntry->GetDesc(), pSrcEntry->GetIndex() );
-				if( pEntry )
-				{
-					resource_locked = pEntry->Lock();
-				}
-
-				// mark the entry as locked
-
-				// graphics resource memory has been locked and it's ready to receive data loaded from the disk
-				// - add a copy request to IO queue
-				CResourceLoadRequest copy_req( CResourceLoadRequest::CopyToGraphicsMemory, pEntry );
-				m_ResourceLoadRequestQueue.push( copy_req );
-
-				// save the weak/shared ptr to the entry
-//				desc/req.pLockedEntry = ;
-			}
-			break;
-
-		case CGraphicsDeviceRequest::Unlock:
-			{
-				pEntry = req.m_pResourceEntry.lock();
-				if( pEntry )
-					pEntry->Unlock();
-			}
-			break;
-		}
-	}
-}

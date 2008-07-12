@@ -5,32 +5,29 @@
 #include <string>
 
 #include "GameCommon/MTRand.h"
-
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
-using namespace MeshModel;
-
-
 #include "3DCommon/D3DXMeshObject.h"
 #include "3DCommon/FVF_BillboardVertex.h"
-
+#include "3DCommon/MeshModel/3DMeshModelArchive.h"
+using namespace MeshModel;
 
 
 class CBillboardArrayMesh : public CD3DXMeshObject
 {
 protected:
 
-	void GetVertexElemenets( CMMA_VertexSet& rVertexSet, D3DVERTEXELEMENT9*& pVertexElements );
+	void CreateVertexElemenets( CMMA_VertexSet& rVertexSet );
 
 public:
 
 	CBillboardArrayMesh() {}
+
 	~CBillboardArrayMesh() {}
 
 //	virtual HRESULT LoadFromFile( const std::string& filename );
 
-	virtual HRESULT LoadMeshFromArchive( C3DMeshModelArchive& rArchive, const std::string& filename );
+	virtual bool LoadFromArchive( C3DMeshModelArchive& rArchive, const std::string& filename );
 
-	virtual void LoadVertices( void*& pVBData, D3DVERTEXELEMENT9 *pVertexElements, C3DMeshModelArchive& archive );
+	virtual void LoadVertices( void*& pVBData, C3DMeshModelArchive& archive );
 };
 
 

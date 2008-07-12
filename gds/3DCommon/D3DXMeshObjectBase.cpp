@@ -54,6 +54,8 @@ void CD3DXMeshObjectBase::Release()
 
 	m_IsVisible.resize(0);
 
+	SafeDeleteArray( m_paVertexElements );
+
 	SAFE_RELEASE( m_pVertexDecleration );
 
 	SafeDeleteArray( m_pMeshMaterials );
@@ -205,6 +207,18 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 #define NUM_MAX_VERTEX_ELEMENTS 64
 
 
+bool CD3DXMeshObjectBase::CreateVertexDeclaration()
+{
+	if( m_paVertexElements )
+	{
+		HRESULT hr = DIRECT3D9.GetDevice()->CreateVertexDeclaration( m_paVertexElements, &m_pVertexDecleration );
+		return SUCCEEDED(hr) ? true : false;
+	}
+	else
+		return false;
+}
+
+
 LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& archive )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -213,12 +227,12 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 
 	void *pDestVBData, *pSrcVBData = NULL;
 
-//	const D3DVERTEXELEMENT9 *pVertexElements = GetVertexElemenets( archive.GetVertexSet() );
-	D3DVERTEXELEMENT9 aVertexElements[NUM_MAX_VERTEX_ELEMENTS];
-
 	// load vertex data from the rArchive
 	// - Need to do this before D3DXCreateMesh() to determine vertex declarations
-	LoadVertices( pSrcVBData, aVertexElements, archive );
+	LoadVertices( pSrcVBData, archive );
+
+	// vertex elements array has been updated in LoadVertices() - create the vertex declaration
+	CreateVertexDeclaration();
 
 	DWORD num_vertices = (DWORD)archive.GetVertexSet().GetNumVertices();
 
@@ -232,7 +246,7 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 		                 num_vertices,
 //						 0,
 						 D3DXMESH_MANAGED,
-						 aVertexElements,
+						 m_paVertexElements,
 						 pd3dDev,
 						 &pMesh );
 	}
@@ -285,7 +299,6 @@ static inline D3DVERTEXELEMENT9 D3DVertexElement(
 
 */
 void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
-									    D3DVERTEXELEMENT9 *pVertexElements,
 								        C3DMeshModelArchive& archive )
 {
 	CMMA_VertexSet& rVertexSet = archive.GetVertexSet();
@@ -367,7 +380,7 @@ void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
 	D3DVERTEXELEMENT9 end_element[] = { D3DDECL_END() };
 	aVertexDeclaration[num_vertex_decs++] = end_element[0];
 
-	DIRECT3D9.GetDevice()->CreateVertexDeclaration( aVertexDeclaration, &m_pVertexDecleration );
+//	DIRECT3D9.GetDevice()->CreateVertexDeclaration( aVertexDeclaration, &m_pVertexDecleration );
 
 	// the size of the each vertex (in bytes)
 	m_iVertexSize = vert_size;
@@ -435,7 +448,10 @@ void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
 
 	pVBData = pBuffer;
 
-	memcpy( pVertexElements, aVertexDeclaration, sizeof(D3DVERTEXELEMENT9) * num_vertex_decs );
+	// update vertex elements
+	SafeDeleteArray( m_paVertexElements );
+	m_paVertexElements = new D3DVERTEXELEMENT9 [num_vertex_decs];
+	memcpy( m_paVertexElements, aVertexDeclaration, sizeof(D3DVERTEXELEMENT9) * num_vertex_decs );
 }
 
 
@@ -544,27 +560,47 @@ HRESULT CD3DXMeshObjectBase::LoadD3DXMeshAndMaterialsFromXFile( const std::strin
 }
 
 
-HRESULT CD3DXMeshObjectBase::FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive& archive )
+/// This doesn't have to be a member of CD3DXMeshObjectBase, does it?
+/// - CD3DXMeshObjectBase may want right to choose index format (U16 / U32). This is always U16 for now.
+///   - Then, the argument type has to be void
+bool CD3DXMeshObjectBase::LoadIndices( unsigned short*& pIBData, C3DMeshModelArchive& archive )
 {
-	if( !pMesh )
-		return E_FAIL;
-
-	HRESULT hr;
+	if( !pIBData )
+		return false;
 
 	const vector<unsigned int>& rvecVertexIndex = archive.GetVertexIndex();
-	DWORD num_indices = (DWORD)archive.GetNumVertexIndices();
-//	iSize = sizeof(short) * num_indices;
+	const int num_indices = archive.GetNumVertexIndices();
+
+	pIBData = new unsigned short [num_indices];
+
+	for( int i=0; i<num_indices; i++ )
+		pIBData[i] = (unsigned short)rvecVertexIndex[i];
+
+	return true;
+}
+
+
+bool CD3DXMeshObjectBase::FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive& archive )
+{
+	if( !pMesh )
+		return false;
+
+	const vector<unsigned int>& rvecVertexIndex = archive.GetVertexIndex();
+	const int num_indices = archive.GetNumVertexIndices();
 
 	unsigned short* pusIBData;
+	HRESULT hr;
 
 	// copy the index data to the index buffer
     if( FAILED( hr = pMesh->LockIndexBuffer( 0, (VOID**)&pusIBData ) ) )
-		return hr;
+		return false;
 
-	for( DWORD i=0; i<num_indices; i++ )
+	for( int i=0; i<num_indices; i++ )
 		pusIBData[i] = (unsigned short)rvecVertexIndex[i];
 
-	return pMesh->UnlockIndexBuffer();
+	hr = pMesh->UnlockIndexBuffer();
+
+	return SUCCEEDED(hr) ? true : false;
 }
 
 
@@ -775,6 +811,77 @@ HRESULT CD3DXMeshObjectBase::CreateLocalBoundingSphereFromD3DXMesh( LPD3DXMESH p
 */
 
 	return hr;
+}
+
+bool CD3DXMeshObjectBase::LockVertexBuffer( void*& pLockedVertexBuffer )
+{
+	if( GetBaseMesh() )
+	{
+		HRESULT hr = GetBaseMesh()->LockVertexBuffer( 0, &pLockedVertexBuffer );
+		return (SUCCEEDED(hr)) ? true : false;
+	}
+	else
+		return false;
+}
+
+
+bool CD3DXMeshObjectBase::LockIndexBuffer( void*& pLockedIndexBuffer )
+{
+	if( GetBaseMesh() )
+	{
+		HRESULT hr = GetBaseMesh()->LockIndexBuffer( 0, &pLockedIndexBuffer );
+		return (SUCCEEDED(hr)) ? true : false;
+	}
+	else
+		return false;
+}
+
+
+bool CD3DXMeshObjectBase::LockAttributeBuffer( DWORD*& pLockedAttributeBuffer )
+{
+	if( GetMesh() ) // need ID3DXMesh - LockAttributeBuffer() is not a member of in ID3DXBaseMesh
+	{
+		HRESULT hr = GetMesh()->LockAttributeBuffer( 0, &pLockedAttributeBuffer );
+		return (SUCCEEDED(hr)) ? true : false;
+	}
+	else
+		return false;
+}
+
+
+bool CD3DXMeshObjectBase::UnlockVertexBuffer()
+{
+	if( GetBaseMesh() )
+	{
+		HRESULT hr = GetBaseMesh()->UnlockVertexBuffer();
+		return (SUCCEEDED(hr)) ? true : false;
+	}
+	else
+		return false;
+}
+
+
+bool CD3DXMeshObjectBase::UnlockIndexBuffer()
+{
+	if( GetBaseMesh() )
+	{
+		HRESULT hr = GetBaseMesh()->UnlockIndexBuffer();
+		return (SUCCEEDED(hr)) ? true : false;
+	}
+	else
+		return false;
+}
+
+
+bool CD3DXMeshObjectBase::UnlockAttributeBuffer()
+{
+	if( GetMesh() ) // need ID3DXMesh - LockAttributeBuffer() is not a member of in ID3DXBaseMesh
+	{
+		HRESULT hr = GetMesh()->UnlockAttributeBuffer();
+		return (SUCCEEDED(hr)) ? true : false;
+	}
+	else
+		return false;
 }
 
 

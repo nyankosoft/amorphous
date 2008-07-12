@@ -2,6 +2,7 @@
 #define  __GraphicsResourceEntry_H__
 
 
+#include "fwd.h"
 #include "GraphicsResource.h"
 
 #include <sys/stat.h>
@@ -12,10 +13,6 @@
 
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
-
-class CD3DXMeshObjectBase;
-class CShaderManager;
-class CGraphicsResourceManager;
 
 //template<class T>class CBinaryDatabase<T>;
 
@@ -35,6 +32,7 @@ class CGraphicsResourceDesc
 
 public:
 
+	/// Used when the resource is loaded from disk
 	std::string Filename;
 
 public:

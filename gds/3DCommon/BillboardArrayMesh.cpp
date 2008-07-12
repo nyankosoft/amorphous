@@ -1,11 +1,10 @@
 #include "BillboardArrayMesh.h"
 #include "Support/SafeDelete.h"
-#include "Support/Macro.h"
 
 #include <d3dx9.h>
 
 
-void CBillboardArrayMesh::GetVertexElemenets( CMMA_VertexSet& rVertexSet, D3DVERTEXELEMENT9*& pVertexElements )
+void CBillboardArrayMesh::CreateVertexElemenets( CMMA_VertexSet& rVertexSet )
 {
 	unsigned int billboard_vertex_flag =
 		CMMA_VertexSet::VF_POSITION|
@@ -14,7 +13,9 @@ void CBillboardArrayMesh::GetVertexElemenets( CMMA_VertexSet& rVertexSet, D3DVER
 
 	if( billboard_vertex_flag & rVertexSet.GetVertexFormat() )
 	{
-		memcpy( pVertexElements, BILLBOARDVERTEX_DECLARATION, sizeof(BILLBOARDVERTEX_DECLARATION) * numof(BILLBOARDVERTEX_DECLARATION) );
+		SafeDeleteArray( m_paVertexElements );
+		m_paVertexElements = new D3DVERTEXELEMENT9 [numof(BILLBOARDVERTEX_DECLARATION)];
+		memcpy( m_paVertexElements, BILLBOARDVERTEX_DECLARATION, sizeof(BILLBOARDVERTEX_DECLARATION) );
 	}
 	else
 	{
@@ -24,12 +25,11 @@ void CBillboardArrayMesh::GetVertexElemenets( CMMA_VertexSet& rVertexSet, D3DVER
 
 
 void CBillboardArrayMesh::LoadVertices( void*& pVBData,
-									    D3DVERTEXELEMENT9 *pVertexElements,
 								        C3DMeshModelArchive& archive )
 {
 	CMMA_VertexSet& rVertexSet = archive.GetVertexSet();
 
-	GetVertexElemenets(rVertexSet,pVertexElements);
+	CreateVertexElemenets( rVertexSet );
 
 	int i, iNumVertices = rVertexSet.GetNumVertices();
 
@@ -55,13 +55,15 @@ void CBillboardArrayMesh::LoadVertices( void*& pVBData,
 			pVert[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
 			pVert[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
 		}
+
 		DIRECT3D9.GetDevice()->CreateVertexDeclaration(BILLBOARDVERTEX_DECLARATION, &m_pVertexDecleration);
 	}
 }
 
-HRESULT CBillboardArrayMesh::LoadMeshFromArchive( C3DMeshModelArchive& rArchive, const string& filename )
+bool CBillboardArrayMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const string& filename )
 {
-	HRESULT hr = CD3DXMeshObject::LoadFromArchive( rArchive, filename );
+	bool loaded = CD3DXMeshObject::LoadFromArchive( rArchive, filename );
+	return loaded;
 
 /*
 	if( SUCCEEDED(hr) && m_pMesh )
@@ -97,7 +99,6 @@ HRESULT CBillboardArrayMesh::LoadMeshFromArchive( C3DMeshModelArchive& rArchive,
 	else
 		return hr;
 */
-	return hr;
 }
 
 

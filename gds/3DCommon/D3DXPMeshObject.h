@@ -53,6 +53,8 @@ public:
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return GetPMesh(); }
 
+	virtual LPD3DXMESH GetMesh() { return NULL; }
+
 	void SetNumVertices( DWORD dwNumVertices );
 
 	/// set the level of detail of the mesh

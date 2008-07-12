@@ -30,7 +30,7 @@ public:
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return m_pMesh; }
 
-	LPD3DXMESH GetMesh() { return m_pMesh; }
+	virtual LPD3DXMESH GetMesh() { return m_pMesh; }
 
 	/// render object by using the fixed function pipeline
 	void Render();
