@@ -4,13 +4,15 @@
 //===============================================================================
 
 #include "2DGraph.h"
-
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/font.h"
+#include "3DCommon/Font.h"
 
 #include "Support/memory_helpers.h"
 
 #include <stdlib.h>
+
+using namespace std;
+
 
 //================================================================================
 // CGraphSegment
@@ -22,8 +24,8 @@ C2DGraph::C2DGraph()
 	m_fMaxValue = -99999;
 	m_fMinValue =  99999;
 	m_iMaxNumData = 0;
-	m_vMin = D3DXVECTOR2(0,0);
-	m_vMax = D3DXVECTOR2(0,0);
+	m_vMin = Vector2(0,0);
+	m_vMax = Vector2(0,0);
 
 	m_BackGroundRect.SetColor( 0xAA000000 );
 	m_BackGroundRect.SetZDeppth( 0.1f );
@@ -109,7 +111,7 @@ C2DGraph C2DGraph::operator=(C2DGraph r2DGraph)
 	return *this;
 }
 
-void C2DGraph::SetData(vector<int> *pveciData, DWORD dwColor)
+void C2DGraph::SetData(vector<int> *pveciData, U32 dwColor)
 {
 	vector<float> vecfTemp;
 
@@ -119,14 +121,14 @@ void C2DGraph::SetData(vector<int> *pveciData, DWORD dwColor)
 	SetData( &vecfTemp );
 }
 
-void C2DGraph::SetData(vector<float> *pvecfData, DWORD dwColor)
+void C2DGraph::SetData(vector<float> *pvecfData, U32 dwColor)
 {
 	SGraphData new_graph;
 
-	//set color
+	// set color
 	new_graph.m_dwGraphColor = dwColor;
 
-	//copy the data from the source buffer 'pvecfData'
+	// copy the data from the source buffer 'pvecfData'
 	int i,j;
 	for(i=0; i<pvecfData->size(); i++)
 	{
@@ -155,12 +157,12 @@ void C2DGraph::SetData(vector<float> *pvecfData, DWORD dwColor)
 	}
 }
 
-void C2DGraph::SetData(vector<D3DXVECTOR3> *pvecvData)
+void C2DGraph::SetData(vector<Vector3> *pvecvData)
 {
 	int i, j;
 	int iNumData = pvecvData->size();
 	vector<float> vecfTempData;
-	DWORD adwColor[3] = { 0xCCFF0000, 0xCC00FF00, 0xCC0000FF };	// rgb for xyz
+	U32 adwColor[3] = { 0xCCFF0000, 0xCC00FF00, 0xCC0000FF };	// rgb for xyz
 	for(i=0; i<3; i++)
 	{
 		vecfTempData.clear();
@@ -174,8 +176,8 @@ void C2DGraph::SetData(vector<D3DXVECTOR3> *pvecvData)
 
 void C2DGraph::SetPosition(float sx, float ex, float sy, float ey)
 {
-	m_vMin = D3DXVECTOR2(sx, sy);
-	m_vMax = D3DXVECTOR2(ex, ey);
+	m_vMin = Vector2(sx, sy);
+	m_vMax = Vector2(ex, ey);
 
 	float fScale = m_fMaxValue - m_fMinValue;
 	float fHeight = ey - sy;
@@ -209,10 +211,12 @@ void C2DGraph::SetPosition(float sx, float ex, float sy, float ey)
 	m_avIndicator[1].vPosition.y = ey - fHeight * 0.1f;
 }
 
-void C2DGraph::ChangeBackgroundRectColor(DWORD dwColor, int iVertexNum)
+
+void C2DGraph::ChangeBackgroundRectColor(U32 dwColor, int iVertexNum)
 {
 	this->m_BackGroundRect.SetColor( dwColor, iVertexNum );
 }
+
 
 void C2DGraph::SetIndicatorPosition(int iIndex)
 {
@@ -259,7 +263,7 @@ void C2DGraph::Draw()
 	{
 		// set graph data
 		int iNumData = m_vecGraphData[i].m_vecfData.size();
-		DWORD dwColor = m_vecGraphData[i].m_dwGraphColor;
+		U32 dwColor = m_vecGraphData[i].m_dwGraphColor;
 		for(j=0; j<iNumData; j++)
 		{
 			// local position
@@ -282,7 +286,8 @@ void C2DGraph::Draw()
 
 }
 
-void C2DGraph::AddSegment(int iSegmentID, int iStart, int iEnd, DWORD dwColor)
+
+void C2DGraph::AddSegment(int iSegmentID, int iStart, int iEnd, U32 dwColor)
 {
 	if( iStart < 0 || m_iMaxNumData <= iStart ||
 		iEnd < 0   || m_iMaxNumData <= iEnd )
@@ -293,6 +298,7 @@ void C2DGraph::AddSegment(int iSegmentID, int iStart, int iEnd, DWORD dwColor)
 
 	this->m_vecGraphSegment.push_back( segment );
 }
+
 
 void C2DGraph::SetSegmentID( int iSegmentNum, int iNewSegmentID )
 {
@@ -314,7 +320,7 @@ void CGraphSegment::UpdatePosition(int iNumData, float sx, float ex, float sy, f
 	// (sx,sy) - (ex,ey): boundary of the parent graph
 	// iNumData: number of data in the parent graph
 
-	D3DXVECTOR2 vMin, vMax;
+	Vector2 vMin, vMax;
 	float fWidth = ex - sx;
 	vMin.x = sx + fWidth * (float)m_iStart / (float)iNumData;
 	vMin.y = sy;
@@ -330,17 +336,18 @@ void CGraphSegment::UpdatePosition(int iNumData, float sx, float ex, float sy, f
 		fHOffset = 0;
 	// decide the location to display the 'Segment ID'
 	// font size: w8 x h12
-//	m_vIDPosition = D3DXVECTOR2(	// display at the bottom
+//	m_vIDPosition = Vector2(	// display at the bottom
 //		(vMax.x + vMin.x)/2.0f - 4.0f - fHOffset , vMax.y - 12.0f );
-	m_vIDPosition = D3DXVECTOR2(
+	m_vIDPosition = Vector2(
 		(vMax.x + vMin.x)/2.0f - 4.0f - fHOffset , vMin.y );
 }
 
-void CGraphSegment::SetSegment(int iSegmentID, int iStart, int iEnd, DWORD dwColor, CFont* pFont)
+
+void CGraphSegment::SetSegment(int iSegmentID, int iStart, int iEnd, U32 dwColor, CFont* pFont)
 {
 	m_iSegmentID = iSegmentID;
-	m_iStart = iStart;
-	m_iEnd = iEnd;
+	m_iStart     = iStart;
+	m_iEnd       = iEnd;
 //	m_SegmentRect.SetColor( dwColor );
 	m_SegmentRect.SetZDeppth(0.05f);
 	m_SegmentRect.SetColor( D3DCOLOR_ARGB(255, 240, 240, 240), 0 );
@@ -350,6 +357,7 @@ void CGraphSegment::SetSegment(int iSegmentID, int iStart, int iEnd, DWORD dwCol
 	m_pFont = pFont;
 
 }
+
 
 void CGraphSegment::Draw()
 {
