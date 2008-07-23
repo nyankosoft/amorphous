@@ -1,4 +1,3 @@
-
 #include "BE_Player.h"
 #include "PlayerInfo.h"
 #include "EntitySet.h"
@@ -27,7 +26,7 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObject.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/Vec3_StringAux.h"
@@ -308,7 +307,7 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 		// play a damage sound according to the type of damage
 		iVariation = PLYAER_DAMAGESOUND_VARIATION * rand() / RAND_MAX;
 		if( PLYAER_DAMAGESOUND_VARIATION <= iVariation ) iVariation = PLYAER_DAMAGESOUND_VARIATION - 1;
-		GAMESOUNDMANAGER.Play3D( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->Position() );
 
 		// flash screen with red
 		m_pStage->GetScreenEffectManager()->FadeInFrom( 0x40F82000, 0.20f, AlphaBlend::InvSrcAlpha );
@@ -318,7 +317,7 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 		{
 			rfLife = 0;
 			rfTimeAfterDeath = 0;
-			pCopyEnt_Self->vVelocity = D3DXVECTOR3(0,0,0);
+			pCopyEnt_Self->vVelocity = Vector3(0,0,0);
 
 			m_pStage->GetScreenEffectManager()->FadeOutTo( 0xFFFFFFFF, 2.5f, AlphaBlend::One );
 		}
@@ -575,16 +574,16 @@ void CBE_Player::PlayerDead(CCopyEntity* pCopyEnt)
 
 void CBE_Player::InitDamageSound()
 {
-	m_aDamageSound[DMG_BULLET][0].SetSoundName( "DamageD00" );
-	m_aDamageSound[DMG_BULLET][1].SetSoundName( "DamageD00" );
-	m_aDamageSound[DMG_BULLET][2].SetSoundName( "DamageD00" );
-	m_aDamageSound[DMG_BULLET][3].SetSoundName( "DamageD01" );
-	m_aDamageSound[DMG_BULLET][4].SetSoundName( "DamageD01" );
-	m_aDamageSound[DMG_BULLET][5].SetSoundName( "DamageH00" );
+	m_aDamageSound[DMG_BULLET][0].SetResourceName( "DamageD00" );
+	m_aDamageSound[DMG_BULLET][1].SetResourceName( "DamageD00" );
+	m_aDamageSound[DMG_BULLET][2].SetResourceName( "DamageD00" );
+	m_aDamageSound[DMG_BULLET][3].SetResourceName( "DamageD01" );
+	m_aDamageSound[DMG_BULLET][4].SetResourceName( "DamageD01" );
+	m_aDamageSound[DMG_BULLET][5].SetResourceName( "DamageH00" );
 
-//	m_aDamageSound[DMG_BLAST][0].SetSoundName( "" );
-//	m_aDamageSound[DMG_BLAST][1].SetSoundName( "" );
-//	m_aDamageSound[DMG_BLAST][2].SetSoundName( "" );
+//	m_aDamageSound[DMG_BLAST][0].SetResourceName( "" );
+//	m_aDamageSound[DMG_BLAST][1].SetResourceName( "" );
+//	m_aDamageSound[DMG_BLAST][2].SetResourceName( "" );
 }
 
 

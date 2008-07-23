@@ -3,7 +3,11 @@
 
 
 class CSoundHandle;
-class CGameSoundManager;
+class CSoundSource;
+class CSoundManager;
+class CSoundManagerImpl;
 
+// sound buffer for OpenAL
+class CSoundBuffer;
 
 #endif /* __FWD_Sound_H__ */

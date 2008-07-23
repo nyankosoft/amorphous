@@ -1,7 +1,7 @@
-
 #include "PyModule_Sound.h"
+#include "Sound/SoundManager.h"
 
-#include "Sound/GameSoundManager.h"
+using namespace std;
 
 
 PyObject* Play( PyObject* self, PyObject* args )
@@ -10,10 +10,11 @@ PyObject* Play( PyObject* self, PyObject* args )
 	int volume = 100;
 	int result = PyArg_ParseTuple( args, "s|i", &sound_name, &volume );
 
-	CSoundHandle snd_handle;
-	snd_handle.SetSoundName( sound_name );
+//	CSoundHandle snd_handle;
+//	snd_handle.SetResourceName( sound_name );
 
-	GAMESOUNDMANAGER.Play( snd_handle );
+//	SoundManager().Play( snd_handle );
+	SoundManager().Play( sound_name );
 
 	return Py_None;
 }
@@ -28,7 +29,7 @@ PyObject* Play3D( PyObject* self, PyObject* args )
 	int result = PyArg_ParseTuple( args, "sfff|ff", &sound_name, &pos.x, &pos.y, &pos.z,
 		                                            &volume );
 
-	GAMESOUNDMANAGER.Play3D( sound_name, pos );
+	SoundManager().PlayAt( sound_name, pos );
 
 	return Py_None;
 }

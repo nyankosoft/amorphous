@@ -82,7 +82,7 @@ void CItemDatabaseBuilder::LoadFirearms( CTextFileScanner& scanner, CGI_Weapon* 
 	}
 	if( scanner.TryScanLine( "fire_sound", str ) )
 	{
-		pWeapon->m_FireSound.SetSoundName( str.c_str() );
+		pWeapon->m_FireSound.SetResourceName( str.c_str() );
 	}
 }
 

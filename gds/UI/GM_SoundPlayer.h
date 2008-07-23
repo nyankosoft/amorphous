@@ -70,13 +70,13 @@ public:
 
 	virtual void HandleEvent( CGM_Event &event );
 
-	void SetSoundOnFocusShifted( const std::string& resource_name )                       { m_SoundOnControlFocusShifted.SetSoundName( resource_name ); }
-//	void SetSoundOnDialogClosed( const std::string& resource_name )                       { .SetSoundName( resource_name ); }
-	void SetSoundOnDialogClosedByCancelInput( const std::string& resource_name )          { m_SoundOnDialogClosedByCancelInput.SetSoundName( resource_name ); }
-	void SetSoundOnDialogClosedByListBoxItemSelection( const std::string& resource_name ) { m_SoundOnDialogClosedByListBoxItemSelection.SetSoundName( resource_name ); }
-	void SetSoundOnDialogClosedByDialogSwitching( const std::string& resource_name )      { m_SoundOnDialogClosedByDialogSwitching.SetSoundName( resource_name ); }
-	void SetSoundOnDialogClosedByDialogCloseButton( const std::string& resource_name )    { m_SoundOnDialogClosedByDialogCloseButton.SetSoundName( resource_name ); }
-	void SetSoundOnDialogAttemptedToClose( const std::string& resource_name )             { m_SoundOnOpenDialogAttemptedToClose.SetSoundName( resource_name ); }
+	void SetSoundOnFocusShifted( const std::string& resource_name )                       { m_SoundOnControlFocusShifted.SetResourceName( resource_name ); }
+//	void SetSoundOnDialogClosed( const std::string& resource_name )                       { .SetResourceName( resource_name ); }
+	void SetSoundOnDialogClosedByCancelInput( const std::string& resource_name )          { m_SoundOnDialogClosedByCancelInput.SetResourceName( resource_name ); }
+	void SetSoundOnDialogClosedByListBoxItemSelection( const std::string& resource_name ) { m_SoundOnDialogClosedByListBoxItemSelection.SetResourceName( resource_name ); }
+	void SetSoundOnDialogClosedByDialogSwitching( const std::string& resource_name )      { m_SoundOnDialogClosedByDialogSwitching.SetResourceName( resource_name ); }
+	void SetSoundOnDialogClosedByDialogCloseButton( const std::string& resource_name )    { m_SoundOnDialogClosedByDialogCloseButton.SetResourceName( resource_name ); }
+	void SetSoundOnDialogAttemptedToClose( const std::string& resource_name )             { m_SoundOnOpenDialogAttemptedToClose.SetResourceName( resource_name ); }
 };
 
 class CGM_ButtonSoundPlayer : public CGM_ButtonEventHandler
@@ -100,12 +100,12 @@ public:
 	virtual void OnPressed();
 	virtual void OnReleased();
 
-	void SetSoundOnButtonPressed( const std::string& resource_name )            { m_SoundOnButtonPressed.SetSoundName( resource_name ); }
-	void SetSoundOnButtonReleased( const std::string& resource_name )           { m_SoundOnButtonReleased.SetSoundName( resource_name ); }
-	void SetSoundOnChecked( const std::string& resource_name )                  { m_SoundOnChecked.SetSoundName( resource_name ); }
-	void SetSoundOnCheckCleared( const std::string& resource_name )             { m_SoundOnCheckCleared.SetSoundName( resource_name ); }
-	void SetSoundOnRadioButtonChecked( const std::string& resource_name )       { m_SoundOnRadioButtonChecked.SetSoundName( resource_name ); }
-	void SetSoundOnRadioButtonCheckCleared( const std::string& resource_name )  { m_SoundOnRadioButtonCheckCleared.SetSoundName( resource_name ); }
+	void SetSoundOnButtonPressed( const std::string& resource_name )            { m_SoundOnButtonPressed.SetResourceName( resource_name ); }
+	void SetSoundOnButtonReleased( const std::string& resource_name )           { m_SoundOnButtonReleased.SetResourceName( resource_name ); }
+	void SetSoundOnChecked( const std::string& resource_name )                  { m_SoundOnChecked.SetResourceName( resource_name ); }
+	void SetSoundOnCheckCleared( const std::string& resource_name )             { m_SoundOnCheckCleared.SetResourceName( resource_name ); }
+	void SetSoundOnRadioButtonChecked( const std::string& resource_name )       { m_SoundOnRadioButtonChecked.SetResourceName( resource_name ); }
+	void SetSoundOnRadioButtonCheckCleared( const std::string& resource_name )  { m_SoundOnRadioButtonCheckCleared.SetResourceName( resource_name ); }
 };
 
 
@@ -124,8 +124,8 @@ public:
 	virtual void OnItemSelected( CGM_ListBoxItem& item );
 	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item );
 
-	void SetSoundOnItemFocusShifted( const std::string& resource_name )         { m_SoundOnItemFocusShifted.SetSoundName( resource_name ); }
-	void SetSoundOnItemSelected( const std::string& resource_name )             { m_SoundOnItemSelected.SetSoundName( resource_name ); }
+	void SetSoundOnItemFocusShifted( const std::string& resource_name )         { m_SoundOnItemFocusShifted.SetResourceName( resource_name ); }
+	void SetSoundOnItemSelected( const std::string& resource_name )             { m_SoundOnItemSelected.SetResourceName( resource_name ); }
 };
 
 
@@ -166,7 +166,7 @@ public:
 	CGM_ListBoxSoundPlayerSharedPtr GetListBoxSoundPlayer()          { return m_pListBoxSoundPlayer; }
 
 //	virtual void HandleEvent( CGM_Event &event );
-//	void SetSoundOnFocusShifted( const std::string& resource_name )             { m_aSoundHandle[CGM_Event::FOCUS_SHIFTED].SetSoundName( resource_name ); }
+//	void SetSoundOnFocusShifted( const std::string& resource_name )             { m_aSoundHandle[CGM_Event::FOCUS_SHIFTED].SetResourceName( resource_name ); }
 
 	void SetSoundOnFocusShifted( const std::string& resource_name )                       { m_pDialogSoundPlayer->SetSoundOnFocusShifted( resource_name ); }
 //	void SetSoundOnDialogClosed( const std::string& resource_name )                       { m_pDialogSoundPlayer->SetSoundOnDialogClosed( resource_name ); }

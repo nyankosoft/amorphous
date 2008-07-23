@@ -18,7 +18,7 @@
 #include "GameCommon/MTRand.h"
 #include "Support/VectorRand.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 #include "Sound/Serialization_SoundHandle.h"
 
 
@@ -33,7 +33,7 @@ CBE_Explosive::CBE_Explosive()
 
 	m_bLighting = true;
 
-	m_ExplosionSound.SetSoundName( "bom30" );
+	m_ExplosionSound.SetResourceName( "bom30" );
 }
 
 
@@ -138,7 +138,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 
 
 	// play explosion sound
-	GAMESOUNDMANAGER.Play3D( m_ExplosionSound, pCopyEnt->Position() );
+	SoundManager().PlayAt( m_ExplosionSound, pCopyEnt->Position() );
 
 	// if 'pCopyEnt' is a homing missile, target entity has to be cleared
 	pCopyEnt->pTarget = NULL;
@@ -292,7 +292,7 @@ void CBE_Explosive::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pC
 		float& rfLife = pCopyEnt_Self->fLife;
 		rfLife -= rGameMessage.fParam1;
 
-		GAMESOUNDMANAGER.Play3D( "bosu21", pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->Position() );
 
 		if( rfLife <= 0 )
 			Explode( pCopyEnt_Self );
@@ -378,7 +378,7 @@ bool CBE_Explosive::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 	if( scanner.TryScanLine( "EXPLOSION_SOUND", str ) )
 	{
-		m_ExplosionSound.SetSoundName( str.c_str() );
+		m_ExplosionSound.SetResourceName( str.c_str() );
 		return true;
 	}
 

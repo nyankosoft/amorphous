@@ -1,6 +1,6 @@
 
 #include "GM_SoundPlayer.h"
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 
 //=================================================================================
@@ -12,26 +12,26 @@ void CGM_DialogSoundPlayer::HandleEvent( CGM_Event &event )
 	switch( event.Type )
 	{
 	case CGM_Event::FOCUS_SHIFTED:
-		GAMESOUNDMANAGER.Play( m_SoundOnControlFocusShifted );
+		SoundManager().Play( m_SoundOnControlFocusShifted );
 		break;
 
 	case CGM_Event::DIALOG_CLOSED:
 		switch( event.SubType )
 		{
 		case CGM_SubEvent::DC_CANCELED:
-			GAMESOUNDMANAGER.Play( m_SoundOnDialogClosedByCancelInput );
+			SoundManager().Play( m_SoundOnDialogClosedByCancelInput );
 			break;
 
 		case CGM_SubEvent::DC_LISTBOXITEM_SELECTED:
-			GAMESOUNDMANAGER.Play( m_SoundOnDialogClosedByListBoxItemSelection );
+			SoundManager().Play( m_SoundOnDialogClosedByListBoxItemSelection );
 			break;
 
 		case CGM_SubEvent::DC_DIALOG_SWITCHED:
-			GAMESOUNDMANAGER.Play( m_SoundOnDialogClosedByDialogSwitching );
+			SoundManager().Play( m_SoundOnDialogClosedByDialogSwitching );
 			break;
 
 		case CGM_SubEvent::DC_DLGCLOSEBUTTON_PRESSED:
-			GAMESOUNDMANAGER.Play( m_SoundOnDialogClosedByDialogCloseButton );
+			SoundManager().Play( m_SoundOnDialogClosedByDialogCloseButton );
 			break;
 
 		default:
@@ -40,7 +40,7 @@ void CGM_DialogSoundPlayer::HandleEvent( CGM_Event &event )
 		break;
 
 	case CGM_Event::OPENDIALOG_ATTEMPTED_TO_CLOSE:
-		GAMESOUNDMANAGER.Play( m_SoundOnOpenDialogAttemptedToClose );
+		SoundManager().Play( m_SoundOnOpenDialogAttemptedToClose );
 		break;
 	default:
 		break;
@@ -54,13 +54,13 @@ void CGM_DialogSoundPlayer::HandleEvent( CGM_Event &event )
 
 void CGM_ButtonSoundPlayer::OnPressed()
 {
-	GAMESOUNDMANAGER.Play( m_SoundOnButtonPressed );
+	SoundManager().Play( m_SoundOnButtonPressed );
 }
 
 
 void CGM_ButtonSoundPlayer::OnReleased()
 {
-	GAMESOUNDMANAGER.Play( m_SoundOnButtonReleased );
+	SoundManager().Play( m_SoundOnButtonReleased );
 }
 
 
@@ -70,13 +70,13 @@ void CGM_ButtonSoundPlayer::OnReleased()
 
 void CGM_ListBoxSoundPlayer::OnItemSelected( CGM_ListBoxItem& item )
 {
-	GAMESOUNDMANAGER.Play( m_SoundOnItemSelected );
+	SoundManager().Play( m_SoundOnItemSelected );
 }
 
 
 void CGM_ListBoxSoundPlayer::OnItemSelectionChanged( CGM_ListBoxItem& item )
 {
-	GAMESOUNDMANAGER.Play( m_SoundOnItemFocusShifted );
+	SoundManager().Play( m_SoundOnItemFocusShifted );
 }
 
 

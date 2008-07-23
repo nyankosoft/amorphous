@@ -25,7 +25,7 @@
 
 #include "Item/WeaponSystem.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "Support/macro.h"
 #include "Support/memory_helpers.h"
@@ -162,13 +162,13 @@ int CGameTask_Stage::FrameMove( float dt )
 			}
 
 			// update listener for sound manager
-			GAMESOUNDMANAGER.UpdateListenerPose( cam_pose ); 
+			SoundManager().SetListenerPose( cam_pose ); 
 
 			CCopyEntity *pCameraEntity = g_pStage->GetEntitySet()->GetCameraEntity();
 			if( pCameraEntity )
-				GAMESOUNDMANAGER.UpdateListenerVelocity( pCameraEntity->Velocity() ); 
+				SoundManager().SetListenerVelocity( pCameraEntity->Velocity() ); 
 
-			GAMESOUNDMANAGER.CommitDeferredSettings();
+			SoundManager().CommitDeferredSettings();
 
 			GetAnimatedGraphicsManager()->UpdateEffects( dt );
 			SetAnimatedGraphicsManagerForScript();

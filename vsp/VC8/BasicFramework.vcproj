@@ -1531,11 +1531,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\GameSoundManager.cpp"
+				RelativePath="..\..\gds\Sound\OpenALSoundManagerImpl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\GameSoundManager.h"
+				RelativePath="..\..\gds\Sound\OpenALSoundManagerImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Sound\OpenALSoundSourceImpl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Sound\OpenALSoundSourceImpl.h"
 				>
 			</File>
 			<File
@@ -1551,7 +1559,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Sound\SoundDesc.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Sound\SoundHandle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Sound\SoundManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Sound\SoundManager.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Sound\SoundManagerImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Sound\SoundSource.h"
 				>
 			</File>
 			<File

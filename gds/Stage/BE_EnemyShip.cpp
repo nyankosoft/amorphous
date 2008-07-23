@@ -21,8 +21,6 @@
 #include "Support/Log/StateLog.h"
 #include "Support/StringAux.h"
 
-//#include "Sound/GameSoundManager.h"
-
 
 void CBEC_EnemyShipExtraData::Release()
 {

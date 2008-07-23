@@ -1,4 +1,3 @@
-
 #include "BE_Enemy.h"
 #include "GameMessage.h"
 #include "CopyEntity.h"
@@ -18,7 +17,7 @@
 #include "Support/VectorRand.h"
 
 #include "Sound/Serialization_SoundHandle.h"
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/msgbox.h"
@@ -602,7 +601,7 @@ void CBE_Enemy::Fire( CCopyEntity* pCopyEnt )
 		}
 
 		// play firing sound of this enemy entity
-		GAMESOUNDMANAGER.Play3D( m_FireSound, vWorldMuzzlePosition );
+		SoundManager().PlayAt( m_FireSound, vWorldMuzzlePosition );
 
 	}
 	else
@@ -706,7 +705,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 			rsCurrentState = CEnemyState::STATE_UNDERATTACK;
 		}
 
-		GAMESOUNDMANAGER.Play3D( "bosu21", pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->Position() );
 
 		if( rfLife <= 0 )
 		{
@@ -817,7 +816,7 @@ bool CBE_Enemy::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 	if( scanner.TryScanLine( "FIRE_SND", sound_name ) )
 	{
-		m_FireSound.SetSoundName( sound_name.c_str() );
+		m_FireSound.SetResourceName( sound_name );
 		return true;
 	}
 

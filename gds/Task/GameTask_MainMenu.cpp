@@ -19,7 +19,7 @@
 #include "Stage/Stage.h"
 #include "JigLib/JL_PhysicsVisualizer_D3D.h"
 
-//#include "Sound/GameSoundManager.h"
+//#include "Sound/SoundManager.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/Log/DefaultLog.h"

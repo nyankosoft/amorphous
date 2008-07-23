@@ -8,8 +8,6 @@
 #include "Stage/ScreenEffectManager.h"
 #include "GameMessage.h"
 
-#include "3DMath/Vector3.h"
-
 #include "GameCommon/BasicGameMath.h"
 #include "GameCommon/MTRand.h"
 #include "Support/VectorRand.h"
@@ -21,7 +19,7 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObject.h"
 
-#include "Sound/GameSoundManager.h"
+//#include "Sound/SoundManager.h"
 
 #include "Support/memory_helpers.h"
 #include "trace.h"
@@ -450,7 +448,7 @@ void CBE_PlayerShip::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 		// play a damage sound according to the type of damage
 		iVariation = PLYAER_DAMAGESOUND_VARIATION * rand() / RAND_MAX;
 		if( PLYAER_DAMAGESOUND_VARIATION <= iVariation ) iVariation = PLYAER_DAMAGESOUND_VARIATION - 1;
-		GAMESOUNDMANAGER.Play3D( m_aiDamageSoundIndex[rGameMessage.s1][iVariation], pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( m_aiDamageSoundIndex[rGameMessage.s1][iVariation], pCopyEnt_Self->Position() );
 
 		// flash screen with red
 		m_pStage->GetScreenEffectManager()->FadeInFrom( 0x40F82000, 0.20f, D3DBLEND_INVSRCALPHA );

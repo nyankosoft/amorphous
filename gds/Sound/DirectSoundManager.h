@@ -1,5 +1,5 @@
-#ifndef  __GAMESOUNDMANAGER_H__
-#define  __GAMESOUNDMANAGER_H__
+#ifndef  __DirectSoundManager_H__
+#define  __DirectSoundManager_H__
 
 #include "3DMath/Matrix34.h"
 
@@ -13,6 +13,7 @@
 
 #include <dsound.h>
 
+#include "SoundManagerImpl.h"
 #include "SoundHandle.h"
 #include "GameSound.h"
 
@@ -21,11 +22,7 @@
 #pragma comment( lib, "dxguid.lib" )
 
 
-#define GAMESOUNDMANAGER ( CGameSoundManager::ms_SingletonInstance_ )
-
-class CGameSound;
-
-class CGameSoundManager
+class CDirectSoundManager : public CSoundManagerImpl
 {
 private:
 
@@ -39,11 +36,9 @@ private:
 	CGameSound *m_apGameSound[NUM_MAX_SOUNDS];
 	int m_iNumGameSounds;
 
-	bool m_bMute;
-
 protected:
 
-	CGameSoundManager();		//singleton
+	CDirectSoundManager();		//singleton
 
 	HRESULT CreateSound( CGameSound** ppSound, LPTSTR strWaveFileName,
 		                 DWORD dwCreationFlags, GUID guid3DAlgorithm, DWORD dwNumBuffers,
@@ -53,9 +48,9 @@ protected:
 
 public:
 
-	static CGameSoundManager ms_SingletonInstance_;	//single instance of 'CGameSoundManager'
+	static CDirectSoundManager ms_SingletonInstance_;	//single instance of 'CDirectSoundManager'
 
-	~CGameSoundManager();
+	~CDirectSoundManager();
 
 	HRESULT Init( HWND hWnd );
 
@@ -68,29 +63,29 @@ public:
 	bool LoadSoundsFromList( const std::string& sound_list_file );
 
 	/// plays a sound at a specified position
-	inline void Play3D( const char* pcSoundName, const Vector3& rvPosition );
+	inline void PlayAt( const char* pcSoundName, const Vector3& vPosition );
 
 	/// plays a sound at a specified position
-	inline void Play3D( int index, const Vector3& rvPosition );
+	inline void PlayAt( int index, const Vector3& vPosition );
 
 	/// plays a sound at a specified position
-	inline void Play3D( CSoundHandle& rSoundHandle, const Vector3& rvPosition );
+	inline void PlayAt( CSoundHandle& rSoundHandle, const Vector3& vPosition );
 
 	/// plays non-3D sound
 	inline void Play( CSoundHandle& rSoundHandle );
 
 	int GetSoundIndex( const char* pcSoundName );
 
-	inline void SetListenerPosition( const Vector3& rvPosition );
+	inline void SetListenerPosition( const Vector3& vPosition );
 
-	inline void UpdateListenerPose( const Matrix34& pose );
+	inline void SetListenerPose( const Matrix34& pose );
 
-	inline void UpdateListenerPose( const Vector3& rvPosition,
-		                            const Vector3& rvFrontDir,
-                                    const Vector3& rvUp /*,
+	inline void SetListenerPose( const Vector3& vPosition,
+		                            const Vector3& vLookAtDirection,
+                                    const Vector3& vUp /*,
 									const Vector3& rvVelocity = Vector3(0,0,0) */ );
 
-	inline void UpdateListenerVelocity( const Vector3& vVelocity );
+	inline void SetListenerVelocity( const Vector3& vVelocity );
 
 	inline void CommitDeferredSettings()
 	{
@@ -106,7 +101,7 @@ public:
 //================================= inline implementations ============================================
 
 
-inline bool CGameSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
+inline bool CDirectSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
 {
 	if( rSoundHandle.m_iIndex < 0 )
 	{
@@ -123,7 +118,7 @@ inline bool CGameSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
 				return true;
 		}
 //		else
-//			PrintLog( "CGameSoundManager::UpdateSoundHandle() - invalid sound handle" );
+//			PrintLog( "CDirectSoundManager::UpdateSoundHandle() - invalid sound handle" );
 	}
 	else
 		return true;
@@ -132,7 +127,7 @@ inline bool CGameSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
 }
 
 
-inline void CGameSoundManager::Play3D( const char* pcSoundName, const Vector3& rvPosition )
+inline void CDirectSoundManager::PlayAt( const char* pcSoundName, const Vector3& vPosition )
 {
 	if( !m_pDirectSound )
 		return;
@@ -145,13 +140,13 @@ inline void CGameSoundManager::Play3D( const char* pcSoundName, const Vector3& r
 	{
 		if( strcmp( pcSoundName, m_apGameSound[i]->GetName() ) == 0 )
 		{
-			m_apGameSound[i]->Play3D( m_pDSListener, rvPosition );
+			m_apGameSound[i]->PlayAt( m_pDSListener, rvPosition );
 		}
 	}
 }
 
 
-inline void CGameSoundManager::Play3D( int index, const Vector3& rvPosition )
+inline void CDirectSoundManager::PlayAt( int index, const Vector3& vPosition )
 {
 	if( !m_pDirectSound )
 		return;
@@ -162,20 +157,20 @@ inline void CGameSoundManager::Play3D( int index, const Vector3& rvPosition )
 	if( index < 0 || m_iNumGameSounds <= index )
 		return;
 
-	m_apGameSound[index]->Play3D( m_pDSListener, rvPosition );
+	m_apGameSound[index]->PlayAt( m_pDSListener, rvPosition );
 }
 
 
-inline void CGameSoundManager::Play3D( CSoundHandle& rSoundHandle, const Vector3& rvPosition )
+inline void CDirectSoundManager::PlayAt( CSoundHandle& rSoundHandle, const Vector3& vPosition )
 {
 	if( !UpdateSoundHandle( rSoundHandle ) )
 		return;
 
-	Play3D( rSoundHandle.m_iIndex, rvPosition );
+	PlayAt( rSoundHandle.m_iIndex, rvPosition );
 }
 
 
-inline void CGameSoundManager::Play( CSoundHandle& rSoundHandle )
+inline void CDirectSoundManager::Play( CSoundHandle& rSoundHandle )
 {
 	if( !m_pDirectSound )
 		return;
@@ -190,14 +185,14 @@ inline void CGameSoundManager::Play( CSoundHandle& rSoundHandle )
 }
 
 
-inline void CGameSoundManager::SetListenerPosition( const Vector3& rvPosition )
+inline void CDirectSoundManager::SetListenerPosition( const Vector3& vPosition )
 {
 	m_pDSListener->SetPosition(	rvPosition.x, rvPosition.y, rvPosition.z, DS3D_DEFERRED );
 }
 
 
-inline void CGameSoundManager::UpdateListenerPose( const Vector3& rvPosition, const Vector3& rvFrontDir,
-		                                       const Vector3& rvUp/* , const Vector3& rvVelocity */ )
+inline void CDirectSoundManager::SetListenerPose( const Vector3& vPosition, const Vector3& vLookAtDirection,
+		                                       const Vector3& vUp/* , const Vector3& rvVelocity */ )
 {
 	if( !m_pDirectSound )
 		return;
@@ -205,13 +200,13 @@ inline void CGameSoundManager::UpdateListenerPose( const Vector3& rvPosition, co
 	SetListenerPosition( rvPosition );
 
 	m_pDSListener->SetOrientation(
-		rvFrontDir.x, rvFrontDir.y, rvFrontDir.z,
+		vLookAtDirection.x, vLookAtDirection.y, vLookAtDirection.z,
 		rvUp.x,		  rvUp.y,		rvUp.z,
 		DS3D_DEFERRED );
 }
 
 
-inline void CGameSoundManager::UpdateListenerPose( const Matrix34& pose )
+inline void CDirectSoundManager::SetListenerPose( const Matrix34& pose )
 {
 	if( !m_pDirectSound )
 		return;
@@ -225,7 +220,7 @@ inline void CGameSoundManager::UpdateListenerPose( const Matrix34& pose )
 }
 
 
-inline void CGameSoundManager::UpdateListenerVelocity( const Vector3& vVelocity )
+inline void CDirectSoundManager::SetListenerVelocity( const Vector3& vVelocity )
 {
 	if( !m_pDirectSound )
 		return;
@@ -234,4 +229,4 @@ inline void CGameSoundManager::UpdateListenerVelocity( const Vector3& vVelocity 
 }
 
 
-#endif		/*  __GAMESOUNDMANAGER_H__  */
+#endif		/*  __DirectSoundManager_H__  */

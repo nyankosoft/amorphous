@@ -642,19 +642,19 @@ CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
 /*
 void CStage::PlaySound3D( char* pcSoundName, Vector3& rvPosition )
 {
-	GAMESOUNDMANAGER.Play3D( pcSoundName, rvPosition );
+	SoundManager().PlayAt( pcSoundName, rvPosition );
 }
 
 
 void CStage::PlaySound3D( int iIndex, Vector3& rvPosition )
 {
-	GAMESOUNDMANAGER.Play3D( iIndex, rvPosition );
+	SoundManager().PlayAt( iIndex, rvPosition );
 }
 
 
 void CStage::PlaySound3D( CSoundHandle &rSoundHandle, Vector3& rvPosition )
 {
-	GAMESOUNDMANAGER.Play3D( rSoundHandle, rvPosition );
+	SoundManager().PlayAt( rSoundHandle, rvPosition );
 }
 */
 

@@ -44,29 +44,6 @@ public:
 }
 */
 
-inline bool is_db_filepath_and_keyname( const std::string& filepath )
-{
-	return ( filepath.find("::") != std::string::npos );
-}
-
-inline bool decompose_into_db_filepath_and_keyname( const std::string& src_filepath,
-												    std::string& db_filepath,
-												    std::string& keyname
-												    )
-{
-	const size_t pos = src_filepath.find( "::" );
-	if( pos == std::string::npos )
-		return false;
-
-	// found "::" in filename
-	// - "(binary database filename)::(key)"
-	db_filepath = src_filepath.substr( 0, pos );
-	keyname     = src_filepath.substr( pos + 2, src_filepath.length() );
-
-	return true;
-}
-
-
 
 const std::string g_NullString = "";
 

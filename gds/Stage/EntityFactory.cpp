@@ -31,9 +31,9 @@ CCopyEntity *CEntityFactory::CreateEntity( unsigned int entity_type_id )
 	switch( entity_type_id )
 	{
 	case CCopyEntityTypeID::DEFAULT:
-		return m_CopyEntityPool.get();
+		return m_CopyEntityPool.get_new_object();
 	case CCopyEntityTypeID::ALPHA_ENTITY:
-		return m_AlphaEntityPool.get();
+		return m_AlphaEntityPool.get_new_object();
 	default:
 		return CreateDerivedEntity( entity_type_id );
 	}

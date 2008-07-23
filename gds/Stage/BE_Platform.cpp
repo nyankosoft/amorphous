@@ -1,4 +1,3 @@
-
 #include "BE_Platform.h"
 #include "CopyEntity.h"
 #include "trace.h"
@@ -8,7 +7,7 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObject.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "3DMath/Vector3.h"
 
@@ -95,7 +94,7 @@ void CBE_Platform::Act(CCopyEntity* pCopyEnt)
 			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			rState = CBE_Platform::STATE_REST;
-///			this->GAMESOUNDMANAGER.Play3D( m_acStopSound, rvClosedPosition );
+///			SoundManager.PlayAt( m_acStopSound, rvClosedPosition );
 			return;
 		}
 

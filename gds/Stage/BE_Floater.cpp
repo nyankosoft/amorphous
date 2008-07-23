@@ -9,7 +9,7 @@
 
 #include "../3DCommon/fps.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 
 CBE_Floater::CBE_Floater()
@@ -163,7 +163,7 @@ void CBE_Floater::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCop
 		float& rfLife = pCopyEnt_Self->fLife;
 		rfLife -= rGameMessage.fParam1;
 
-		this->GAMESOUNDMANAGER.Play3D( "bosu21", pCopyEnt_Self->Position() );
+		this->SoundManager().PlayAt( "bosu21", pCopyEnt_Self->Position() );
 
 		if( rfLife <= 0 )
 		{
@@ -171,7 +171,7 @@ void CBE_Floater::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCop
 			this->m_pStage->CreateEntity( "Bang", pCopyEnt_Self->Position(),
 				D3DXVECTOR3(0,0,0), D3DXVECTOR3(0,0,0) );
 
-			this->GAMESOUNDMANAGER.Play3D( "bom30", pCopyEnt_Self->Position() );
+			this->SoundManager().PlayAt( "bom30", pCopyEnt_Self->Position() );
 
 			// terminate myself
 ///			pCopyEnt_Self->Terminate();

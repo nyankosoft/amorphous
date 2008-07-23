@@ -18,7 +18,7 @@
 #include "Stage/BE_HomingMissile.h"
 #include "Stage/PlayerInfo.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
@@ -414,7 +414,7 @@ void CGI_MissileLauncher::Fire()
 
 	// play sound for the shot
 //	ms_pStage->PlaySound3D( m_FireSound, rvMuzzleEndPosition );
-	GAMESOUNDMANAGER.Play3D( m_FireSound, rvMuzzleEndPosition );
+	SoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
 
 	if( m_vecpCurrentTarget.size() <= m_FireTargetIndex )
 		m_FireTargetIndex = 0;

@@ -2,20 +2,41 @@
 #define  __gsf_prealloc_pool_H__
 
 
-#include <stack>
 #include <vector>
-using namespace std;
-
 #include <Support/SafeDeleteVector.h>
+
+
+class pooled_object_handle
+{
+	int index;
+	int id;
+
+public:
+
+	pooled_object_handle() : index(-1), id(-1) {}
+
+	pooled_object_handle( int _index, int _id ) : index(_index), id(_id) {}
+
+	template<class T> friend class prealloc_pool;
+};
+
 
 /**
 object pool
-class that uses prealloc_pool needs to have the following member function
+- Class that uses prealloc_pool needs to have the following member functions.
   - defualt ctor()
     - ctor() with no args
+
+  - void SetStockIndex( int id )
+    - sets stock index
+  - int GetStockIndex() const
+    - returns index set by SetStockIndex() above
+
   - void SetStockID( int id )
-    returns id set by SetStockID() above
+    - sets stock id
   - int GetStockID() const
+    - returns id set by SetStockID() above
+
 
 
 	====================== template ======================
@@ -23,11 +44,15 @@ class that uses prealloc_pool needs to have the following member function
 	class CElement
 	{
 
+		int m_StockIndex;
 		int m_StockID;
 
 	public:
 
 		CElement() {}
+
+		int GetStockIndex() const { return m_StockIndex; }
+		void SetStockIndex( int index ) { m_StockIndex = index; }
 
 		int GetStockID() const { return m_StockID; }
 		void SetStockID( int id ) { m_StockID = id; }
@@ -38,10 +63,11 @@ class prealloc_pool
 {
 protected:
 
-//	std::stack<int> m_VacantSlot; // stack
-	std::vector<int> m_VacantSlot; // vector
+	std::vector<int> m_VacantSlot;
 
-	int m_VacantSlotPos; // vector
+	int m_VacantSlotPos;
+
+	int m_IDCounter;
 
 	/// objects
 	std::vector<CElementType *> m_vecpStock;
@@ -49,6 +75,8 @@ protected:
 public:
 
 	prealloc_pool()
+		:
+	m_IDCounter(0)
 	{
 	}
 
@@ -57,17 +85,16 @@ public:
 		release_all();
 	}
 
+	/// deletes all the objects
 	void release_all()
 	{
-//		while( !m_VacantSlot.empty() )
-//			m_VacantSlot.pop();
-
 		m_VacantSlot.resize( 0 );
 
 		SafeDeleteVector( m_vecpStock );
 		m_vecpStock.resize( 0 );
 	}
 
+	/// \param num_stocks must be much smaller than INT_MAX
 	void init( int num_stocks )
 	{
 		if( num_stocks < 0 )
@@ -77,49 +104,87 @@ public:
 
 		m_vecpStock.resize( num_stocks );
 
-		m_VacantSlot.resize( num_stocks ); // vector
+		m_VacantSlot.resize( num_stocks );
 
 		int i;
 		for( i=0; i<num_stocks; i++ )
 		{
-//			m_VacantSlot.push( i ); // stack
-			m_VacantSlot[i] = i; // vector
+			m_VacantSlot[i] = i;
 
 			m_vecpStock[i] = new CElementType();
-			m_vecpStock[i]->SetStockID( i );
+			m_vecpStock[i]->SetStockIndex( i );
+			m_vecpStock[i]->SetStockID( -1 );
 		}
 
 		m_VacantSlotPos = num_stocks - 1;
 	}
 
-	/// does not call new 
-	CElementType *get()
+	/// returns a new object
+	/// - The caller must not delete the returned object. You have been warned.
+	///   - Call prealloc_pool::release()
+	/// Note that this function does not call new
+	CElementType *get_new_object()
 	{
-//		if( 0 < m_VacantSlot.size() ) // stack
 		if( 0 <= m_VacantSlotPos )
 		{
-			// take one from the vacant stack
-//			CElementType *pObject = m_vecpStock[ m_VacantSlot.top() ]; // stack
-			CElementType *pObject = m_vecpStock[ m_VacantSlot[m_VacantSlotPos] ]; // vector
+			CElementType *pObject = m_vecpStock[ m_VacantSlot[m_VacantSlotPos] ];
 
-//			m_VacantSlot.pop(); // stack
-			m_VacantSlotPos--; // vector
+			m_VacantSlotPos--;
+
+			// set the id and increment the counter
+			pObject->SetStockID( m_IDCounter );
+			m_IDCounter = ( m_IDCounter + 1 ) % INT_MAX;
 
 			return pObject;
 		}
 		else
 		{
+			// ran out of stock!
 			return NULL;
 		}
 	}
 
-	// does not call the destructor
+	/// creates and returns a handle for an existing object
+	/// \param pObject must be a pointer to an object obtained as a return value of prealloc_pool::get_new_object().
+	pooled_object_handle get_handle( CElementType *pObject )
+	{
+		if( pObject )
+			return pooled_object_handle( pObject->GetStockIndex(), pObject->GetStockID() );
+		else
+			return pooled_object_handle();
+	}
+
+	/// get a handle to a new object
+	/// - returns a handle to retrieve the instance later
+	///   with prealloc_pool::get( const pooled_object_handle& handle )
+	pooled_object_handle get_new_handle()
+	{
+		return get_handle( get_new_object() );
+	}
+
+	/// does not call the destructor
 	void release( CElementType *pObject )
 	{
-//		m_VacantSlot.push( pObject->GetStockID() ); // stack
-
 		m_VacantSlotPos++;
-		m_VacantSlot[ m_VacantSlotPos ] = pObject->GetStockID();
+		m_VacantSlot[ m_VacantSlotPos ] = pObject->GetStockIndex();
+		pObject->SetStockID( -1 );
+	}
+
+	/// returns an object pointed to by handle.
+	/// returns NULL if
+	/// - the object has already been released
+	/// - the argument handle is invalid
+	CElementType *get( const pooled_object_handle& handle )
+	{
+		if( handle.index < 0 || (int)m_vecpStock.size() <= handle.index )
+			return NULL;
+
+		CElementType *pObject = m_vecpStock[handle.index];
+
+		if( pObject->GetStockID() == handle.id )
+			return pObject;
+		else
+			return NULL; // the requested object has already been released
 	}
 };
 

@@ -17,7 +17,7 @@
 #include "3DCommon/fps.h"
 #include "Task/GameTaskManager.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "GameEvent/ScriptArchive.h"
 
@@ -153,8 +153,8 @@ bool CApplicationBase::Init()
 //	LOG_PRINT( " - Initialized the input devices." );
 
 	// initialize sound
-	GAMESOUNDMANAGER.Init( GAMEWINDOWMANAGER.GetWindowHandle() );
-	GAMESOUNDMANAGER.LoadSoundsFromList( "./Sound/SoundList.lst" );
+	SoundManager().Init();
+	SoundManager().LoadSoundsFromList( "./Sound/SoundList.lst" );
 
 //	LOG_PRINT( " - Initialized the sound manager" );
 

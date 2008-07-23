@@ -12,10 +12,10 @@
 #include "../3DCommon/D3DXMeshObject.h"
 #include "../Stage/ScreenEffectManager.h"
 
-#include "../Sound/GameSoundManager.h"
+#include "../Sound/SoundManager.h"
 
 #include "Sound/Serialization_SoundHandle.h"
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 
 CBE_SupplyItem::CBE_SupplyItem()
@@ -86,7 +86,7 @@ void CBE_SupplyItem::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 	switch( rGameMessage.iEffect )
 	{
 	case GM_EFFECTACCEPTED:
-		GAMESOUNDMANAGER.Play3D( m_Sound, pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( m_Sound, pCopyEnt_Self->Position() );
 
 		// terminate child entity
 		CCopyEntity *pChild;
@@ -144,7 +144,7 @@ bool CBE_SupplyItem::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 		if( sound_name == "NO_SOUND" )
 			sound_name = "";
 
-		m_Sound.SetSoundName( sound_name.c_str() );
+		m_Sound.SetResourceName( sound_name );
 		return true;
 	}
 

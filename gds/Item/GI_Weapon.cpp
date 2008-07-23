@@ -19,7 +19,7 @@
 #include "3DMath/MathMisc.h"
 #include "3DCommon/3DGameMath.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 
 //======================================================================================
@@ -45,7 +45,7 @@ void CGI_Weapon::SetAmmoType( const char* pcAmmoType )
 
 void CGI_Weapon::SetFireSoundName( const char* pcFireSoundName )
 {
-	m_FireSound.SetSoundName( pcFireSoundName );
+	m_FireSound.SetResourceName( pcFireSoundName );
 }
 
 
@@ -167,8 +167,8 @@ void CGI_Weapon::Fire()
 	const Vector3& rvMuzzleDirection	= matMuzzleOrient.GetColumn(2);
 
 	// play sound for the shot
-//	ms_pStage->PlaySound3D( m_FireSound, rvMuzzleEndPosition );
-	GAMESOUNDMANAGER.Play3D( m_FireSound, rvMuzzleEndPosition );
+//	ms_pStage->PlaySoundAt( m_FireSound, rvMuzzleEndPosition );
+	SoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
 
 	Vector3 vFireDirection;
 	Vector3 vFireDir_Right, vUp = Vector3(0,1,0);

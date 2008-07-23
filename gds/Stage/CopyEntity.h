@@ -80,6 +80,7 @@ class CCopyEntity
 
 	int m_TypeID;
 
+	int m_StockIndex;
 	int m_StockID;
 
 	CStage *m_pStage;
@@ -199,10 +200,12 @@ public:
 
 	int GetEntityTypeID() const { return m_TypeID; }
 
+	int GetStockIndex() const { return m_StockIndex; }
 	int GetStockID() const { return m_StockID; }
 
 	void SetName( const std::string& name ) { strName = name; }
 
+	void SetStockIndex( int index ) { m_StockIndex = index; }
 	void SetStockID( int id ) { m_StockID = id; }
 
 	/// updates entity - called once every frame

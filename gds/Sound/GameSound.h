@@ -59,7 +59,7 @@ public:
 	HRESULT Play3D( LPDS3DBUFFER p3DBuffer, DWORD dwPriority = 0, DWORD dwFlags = 0, LONG lFrequency = 0 );
 
 	/// plays sound at a specified position
-	HRESULT Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& rvPosition,
+	HRESULT Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& vPosition,
 					float fMinDist = 0, float fMaxDist = 0,
 					DWORD dwPriority = 0, DWORD dwFlags = 0, LONG lFrequency = 0 );
 	HRESULT Stop();

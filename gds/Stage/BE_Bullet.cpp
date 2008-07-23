@@ -15,7 +15,7 @@
 #include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 
 inline float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }
@@ -513,7 +513,7 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 			if( mat.HasSoundOf( CSurfaceMaterial::REACTION_TO_HIT ) )
 			{
 				// play hit sound
-				GAMESOUNDMANAGER.Play3D( mat.GetSound_Random( CSurfaceMaterial::REACTION_TO_HIT ), pCopyEnt->Position() );
+				SoundManager().PlayAt( mat.GetSound_Random( CSurfaceMaterial::REACTION_TO_HIT ), pCopyEnt->Position() );
 			}
 		}
 	}

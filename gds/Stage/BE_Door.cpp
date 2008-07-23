@@ -8,7 +8,7 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObject.h"
 
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "3DMath/Vector3.h"
 
@@ -112,7 +112,7 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			sDoorState = DOOR_CLOSED;
-///			this->GAMESOUNDMANAGER.Play3D( m_acStopSound, rvClosedPosition );
+///			this->SoundManager().PlayAt( m_acStopSound, rvClosedPosition );
 			return;
 		}
 
@@ -143,7 +143,7 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 		// The door starts to close. 
 		rfOpenTime = 0;
 		sDoorState = DOOR_CLOSING;
-///		this->GAMESOUNDMANAGER.Play3D( m_acStartSound, rvDoorPosition );
+///		this->SoundManager().PlayAt( m_acStartSound, rvDoorPosition );
 		break;
 
 	case DOOR_OPENING:
@@ -158,7 +158,7 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			sDoorState = DOOR_OPEN;
-///			this->GAMESOUNDMANAGER.Play3D( m_acStopSound, rvFullOpenPosition );
+///			this->SoundManager().PlayAt( m_acStopSound, rvFullOpenPosition );
 			return;
 		}
 
@@ -220,7 +220,7 @@ void CBE_Door::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEn
 		if( strcmp(rGameMessage.pcStrParam, m_acKeyCode) == 0 )
 		{	// valid key-code - open the door
 			if( rsDoorState == DOOR_CLOSED )
-				this->GAMESOUNDMANAGER.Play3D( m_acStartSound, pCopyEnt_Self->Position() );
+				this->SoundManager().PlayAt( m_acStartSound, pCopyEnt_Self->Position() );
 			rsDoorState = DOOR_OPENING;
 		}
 		break;

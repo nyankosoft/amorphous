@@ -1,4 +1,3 @@
-
 #ifndef __GAMELIB1_SOUNDHANDLE_SERIALIZATION_H__
 #define __GAMELIB1_SOUNDHANDLE_SERIALIZATION_H__
 
@@ -17,12 +16,12 @@ namespace Serialization
 
 inline IArchive& operator & ( IArchive& ar, CSoundHandle& rSoundHandle )
 {
-	string strTemp;
+/*	string strTemp;
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
 		// restore the sound name from the archive
 		ar & strTemp;
-		rSoundHandle.SetSoundName( strTemp.c_str() );
+		rSoundHandle.SetResourceName( strTemp.c_str() );
 	}
 	else
 	{
@@ -30,7 +29,7 @@ inline IArchive& operator & ( IArchive& ar, CSoundHandle& rSoundHandle )
 		strTemp = rSoundHandle.GetSoundName();
 		ar & strTemp;
 	}
-
+*/
 	return ar;
 }
 

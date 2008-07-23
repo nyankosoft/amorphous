@@ -354,7 +354,7 @@ HRESULT CGameSound::Play3D( LPDS3DBUFFER p3DBuffer, DWORD dwPriority, DWORD dwFl
 }
 
 
-HRESULT CGameSound::Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& rvPosition,
+HRESULT CGameSound::Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& vPosition,
 							float fMinDist, float fMaxDist,
 							DWORD dwPriority, DWORD dwFlags, LONG lFrequency )
 {
@@ -392,7 +392,7 @@ HRESULT CGameSound::Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& 
     if( SUCCEEDED( hr ) )
     {
         hr = pDS3DBuffer->SetPosition(
-			rvPosition.x, rvPosition.y, rvPosition.z, DS3D_DEFERRED );
+			vPosition.x, vPosition.y, vPosition.z, DS3D_DEFERRED );
 
 		if( fMinDist == 0 && fMaxDist == 0 )
 		{	// play with the default volume of this sound

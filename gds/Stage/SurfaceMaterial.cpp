@@ -196,7 +196,7 @@ void CSurfaceMaterial::Load( CSurfaceMaterialData& src_material )
 		for( j=0; j<src_material.m_vecstrSoundName[i].size(); j++ )
 		{
 			m_vecSound[i].push_back( CSoundHandle() );
-			m_vecSound[i].back().SetSoundName( src_material.m_vecstrSoundName[i][j].c_str() );
+			m_vecSound[i].back().SetResourceName( src_material.m_vecstrSoundName[i][j].c_str() );
 		}
 	}
 }

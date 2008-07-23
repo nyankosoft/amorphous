@@ -106,7 +106,7 @@ void CBE_DoorController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 		if( m_strKeyCode == "NO_LOCK" )
 		{	// door is not locked
 //			if( rsDoorState == CBE_Door::DOOR_CLOSED )
-//				this->GAMESOUNDMANAGER.Play3D( m_acStartSound, pCopyEnt_Self->Position() );
+//				this->SoundManager().PlayAt( m_acStartSound, pCopyEnt_Self->Position() );
 //			rsDoorState = CBE_Door::DOOR_OPENING;
 
 			for( i=0; i<iNumChildren; i++ )
@@ -134,7 +134,7 @@ void CBE_DoorController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 		if( strcmp(rGameMessage.pcStrParam, m_strKeyCode.c_str()) == 0 )
 		{	// valid key-code - open the door
 //			if( rsDoorState == CBE_Door::DOOR_CLOSED )
-//				this->GAMESOUNDMANAGER.Play3D( m_acStartSound, pCopyEnt_Self->Position() );
+//				this->SoundManager().PlayAt( m_acStartSound, pCopyEnt_Self->Position() );
 //			rsDoorState = CBE_Door::DOOR_OPENING;
 
 			for( i=0; i<iNumChildren; i++ )
@@ -172,13 +172,13 @@ bool CBE_DoorController::LoadSpecificPropertiesFromFile( CTextFileScanner& scann
 
 	if( scanner.TryScanLine( "START_SND", str ) )
 	{
-		m_OpenSound.SetSoundName( str.c_str() );
+		m_OpenSound.SetResourceName( str.c_str() );
 		return true;
 	}
 
 	if( scanner.TryScanLine( "STOP_SND", str ) )
 	{
-		m_CloseSound.SetSoundName( str.c_str() );
+		m_CloseSound.SetResourceName( str.c_str() );
 		return true;
 	}
 

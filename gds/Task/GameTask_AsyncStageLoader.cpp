@@ -1,4 +1,3 @@
-
 #include "GameTask_AsyncStageLoader.h"
 #include "GameTask_Stage.h"
 #include "GameTask_StageSelect.h"
@@ -9,8 +8,6 @@
 #include "3DCommon/Font.h"
 
 #include "GameInput/InputHub.h"
-
-//#include "Sound/GameSoundManager.h"
 
 #include "Support/fnop.h"
 #include "Support/memory_helpers.h"

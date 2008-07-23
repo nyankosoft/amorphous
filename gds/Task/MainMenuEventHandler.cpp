@@ -4,7 +4,7 @@
 #include "UI/ui.h"
 
 #include "App/GameWindowManager_Win32.h"
-#include "Sound/GameSoundManager.h"
+#include "Sound/SoundManager.h"
 
 #include "GameTask_Stage.h"
 
@@ -21,8 +21,8 @@
 
 CMainMenuBaseEventHandler::CMainMenuBaseEventHandler()
 {
-	m_FocusShiftSound.SetSoundName( "focusshift" );
-	m_ButtonPressSound.SetSoundName( "itemselect" );
+	m_FocusShiftSound.SetResourceName( "focusshift" );
+	m_ButtonPressSound.SetResourceName( "itemselect" );
 }
 
 
@@ -35,11 +35,11 @@ void CMainMenuBaseEventHandler::HandleEvent( CGM_Event &event )
 {
 	if( event.Type == CGM_Event::FOCUS_SHIFTED )
 	{
-		GAMESOUNDMANAGER.Play( m_FocusShiftSound );
+		SoundManager().Play( m_FocusShiftSound );
 	}
 	else if( event.Type == CGM_Event::BUTTON_CLICKED )
 	{
-		GAMESOUNDMANAGER.Play( m_ButtonPressSound );
+		SoundManager().Play( m_ButtonPressSound );
 	}
 }
 

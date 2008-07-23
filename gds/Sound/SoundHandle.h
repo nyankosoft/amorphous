@@ -1,40 +1,58 @@
-#ifndef  __SOUNDHANDLE_H__
-#define  __SOUNDHANDLE_H__
+#ifndef  __SoundHandle_H__
+#define  __SoundHandle_H__
 
 
-#include "fwd.h"
 #include <string>
+#include "fwd.h"
+#include "Support/prealloc_pool.h"
+#include "Support/Serialization/ArchiveObjectBase.h"
+#include "Support/Serialization/Archive.h"
+using namespace GameLib1;
+using namespace Serialization;
 
 
-class CSoundHandle
+/// only for non-streamed sound
+/// - Use this as a sound argument of CSoundManager().Play(), PlayAt(), etc.
+/// - cache the pointer to the sound buffer when the sound is played for the first time
+///   - Sound manager can skip the search in subsequent calls of CSoundManager().Play(), PlayAt(), etc.
+class CSoundHandle : public IArchiveObjectBase
 {
-	/// name of a sound
-	std::string m_strSoundName;
+	pooled_object_handle m_Handle;
 
-	/// index to a sound
-	int m_iIndex;
+	/// name of a sound
+	std::string m_ResourceName;
 
 public:
 
-	CSoundHandle() : m_iIndex(UNINITIALIZED) {}
+	CSoundHandle() {}
 
-	CSoundHandle( const std::string& sound_name ) : m_strSoundName(sound_name), m_iIndex(UNINITIALIZED) {}
+	CSoundHandle( const std::string& sound_name )
+		:
+	m_ResourceName(sound_name)
+	{}
 
-//	inline int GetIndex() { return m_iIndex; }
+	inline const std::string &GetResourceName() const { return m_ResourceName; }
 
-	inline std::string &GetSoundName() { return m_strSoundName; }
-
-	inline void SetSoundName( const std::string& sound_name )
+	inline void SetResourceName( const std::string& sound_resource_name )
 	{
-		m_strSoundName = sound_name;
-		m_iIndex = UNINITIALIZED;	// clear the index when a new name is set
+		m_ResourceName = sound_resource_name;
+		m_Handle = pooled_object_handle(); // reset the handle
 	}
 
-	enum eSoundIndex { INVALID_INDEX = -1, UNINITIALIZED = -2 };
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & m_ResourceName;
 
-	friend class CGameSoundManager;
+		if( ar.GetMode() == IArchive::MODE_INPUT )
+		{
+			// initialize the handle
+			m_Handle = pooled_object_handle();
+		}
+	}
+
+//	friend class CSoundManager;
+	friend class CSoundManagerImpl;
 };
 
 
-
-#endif		/*  __SOUNDHANDLER_H__  */
+#endif		/*  __SoundHandle_H__  */

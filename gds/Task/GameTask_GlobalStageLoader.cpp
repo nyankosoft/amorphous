@@ -12,7 +12,7 @@
 
 #include "GameInput/InputHub.h"
 
-//#include "Sound/GameSoundManager.h"
+//#include "Sound/SoundManager.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/Log/StateLog.h"

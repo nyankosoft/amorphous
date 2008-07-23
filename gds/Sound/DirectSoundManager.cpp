@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <windows.h>
 #include <dxerr9.h>
@@ -7,16 +6,14 @@
 #include "Support/Log/DefaultLog.h"
 #include "Support/SafeDelete.h"
 
-#include "GameSoundManager.h"
+#include "DirectSoundManager.h"
 #include "WaveFile.h"
 
 using namespace std;
 
 
-// definition of the singleton instance
-CGameSoundManager CGameSoundManager::ms_SingletonInstance_;
 
-CGameSoundManager::CGameSoundManager()
+CDirectSoundManager::CDirectSoundManager()
 {
 	m_pDirectSound = NULL;
 	m_pDSListener  = NULL;
@@ -26,7 +23,7 @@ CGameSoundManager::CGameSoundManager()
 }
 
 
-CGameSoundManager::~CGameSoundManager()
+CDirectSoundManager::~CDirectSoundManager()
 {
 	for(int i=0; i<m_iNumGameSounds; i++)
 	{
@@ -52,7 +49,7 @@ static const char *GetDSoundError( HRESULT hr )
 }
 
 
-HRESULT CGameSoundManager::Init( HWND hWnd )
+HRESULT CDirectSoundManager::Init( HWND hWnd )
 {
     HRESULT hr;
 
@@ -87,7 +84,7 @@ HRESULT CGameSoundManager::Init( HWND hWnd )
     return S_OK;
 }
 
-HRESULT CGameSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels, 
+HRESULT CDirectSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels, 
                                                    DWORD dwPrimaryFreq, 
                                                    DWORD dwPrimaryBitRate )
 {
@@ -131,7 +128,7 @@ HRESULT CGameSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels,
     return S_OK;
 }
 
-HRESULT CGameSoundManager::Set3DListenerInterface()
+HRESULT CDirectSoundManager::Set3DListenerInterface()
 {
     HRESULT             hr;
     DSBUFFERDESC        dsbdesc;
@@ -160,98 +157,7 @@ HRESULT CGameSoundManager::Set3DListenerInterface()
 
     return S_OK;
 }
-
-
-bool CGameSoundManager::LoadSoundsFromList( const std::string& sound_list_file )
-{
-	if( !m_pDirectSound )
-		return false;	// hasn't been initialized yet
-
-	CTextFileScanner scanner( sound_list_file );
-
-	if( !scanner.IsReady() )
-		return false;
-
-	string current_line;
-	char acWaveFilename[512];
-	int iIs3DSound;
-	int num_buffers;
-	float fDefaultMinDist, fDefaultMaxDist;
-	DWORD dwCreationFlags;
-	GUID guid3DAlgorithm;
-	CGameSound* pNewSound;
-	HRESULT hr;
-
-	for( ; !scanner.End(); scanner.NextLine() )
-	{
-		if( NUM_MAX_SOUNDS <= m_iNumGameSounds )
-			break;
-
-		scanner.GetCurrentLine( current_line );
-
-		if( current_line.find( "#" ) == 0 )
-		{
-			// the line starts with "#". - skip
-			continue;
-		}
-
-		iIs3DSound = 0;
-		num_buffers = 1;
-		fDefaultMinDist	= 1.0f;
-		fDefaultMaxDist = 1000.0f;
-
-		sscanf( current_line.c_str(), "%s %d %d %f %f",
-			acWaveFilename, &iIs3DSound, &num_buffers, &fDefaultMinDist, &fDefaultMaxDist );
-
-		if( iIs3DSound )
-		{
-			dwCreationFlags = DSBCAPS_CTRL3D;
-			guid3DAlgorithm = DS3DALG_HRTF_LIGHT;
-		}
-		else
-		{
-			dwCreationFlags = DSBCAPS_CTRLPAN;
-			guid3DAlgorithm = DS3DALG_DEFAULT;
-		}
-
-		/* create a suond object*/
-		hr = CreateSound( &pNewSound,
-						  acWaveFilename,
-						  dwCreationFlags,
-						  guid3DAlgorithm,
-						  num_buffers,
-						  fDefaultMinDist,
-						  fDefaultMaxDist );
-
-		if( !FAILED(hr) )
-		{
-//			PrintLog( std::string( std::string("created a sound object from file: ") + std::string(acWaveFilename) ) );
-			m_apGameSound[ m_iNumGameSounds++ ] = pNewSound;
-		}
-	}
-	
-	return true;
-}
-
-
-int CGameSoundManager::GetSoundIndex( const char* pcSoundName )
-{
-	int index, num_sounds = m_iNumGameSounds;
-	for( index=0; index<num_sounds; index++ )
-	{
-		if( strcmp( pcSoundName, m_apGameSound[index]->GetName() ) == 0 )
-		{
-			return index;
-		}
-	}
-
-	LOG_PRINT_ERROR( string("invalid sound name: ") + string(pcSoundName) );
-	return CSoundHandle::INVALID_INDEX;
-}
-
-
-
-HRESULT CGameSoundManager::CreateSound( CGameSound** ppSound, 
+HRESULT CDirectSoundManager::CreateSound( CGameSound** ppSound, 
 										LPTSTR strWaveFileName, 
 									    DWORD dwCreationFlags, 
 									    GUID guid3DAlgorithm,
