@@ -12,6 +12,42 @@
 #include <alut.h>
 
 
+
+#define LOG_PRINT_AL_ERROR() ALenum ret = alGetError();	if( ret != AL_NO_ERROR ) { LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) ); }
+
+
+#define ID_AND_TEXT( id ) IDAndTextPair( id, #id )
+
+
+class IDAndTextPair
+{
+public:
+	const int id;
+	const char *text;
+
+	IDAndTextPair( int _id, const char *_text )
+		:
+	id(_id),
+	text(_text)
+	{}
+};
+
+
+#define GET_TEXT_FROM_ID( id, id_and_text_array ) GetTextFromID( id, id_and_text_array, numof(id_and_text_array) )
+
+
+inline const char* GetTextFromID( int id, const IDAndTextPair *id_and_text_array, int num_elements )
+{
+	for( int i=0; i<num_elements; i++ )
+	{
+		if( id == id_and_text_array[i].id )
+			return id_and_text_array[i].text;
+	}
+
+	return "";
+}
+
+
 class COpenALSoundSourceImpl : public CSoundSourceImpl
 {
 	// set by COpenALSoundManagerImpl
@@ -54,6 +90,8 @@ public:
 	CSoundSource::Management GetManagementType() { return m_ManagementType; }
 
 	void OnReleased();
+
+	CSoundSource::State GetState();
 
 	// functions used by prealloc_pool
 

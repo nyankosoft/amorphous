@@ -1,10 +1,23 @@
 #include "OpenALSoundManagerImpl.h"
+#include "Support/Macro.h"
 #include "Support/stream_buffer.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
 
 #include <vorbis/vorbisfile.h>
+
+
+
+const static IDAndTextPair g_OpenALErrors[] =
+{
+	ID_AND_TEXT( AL_NO_ERROR ),
+	ID_AND_TEXT( AL_INVALID_NAME ),
+	ID_AND_TEXT( AL_INVALID_ENUM ),
+	ID_AND_TEXT( AL_INVALID_VALUE ),
+	ID_AND_TEXT( AL_INVALID_OPERATION ),
+	ID_AND_TEXT( AL_OUT_OF_MEMORY )
+};
 
 
 using namespace std;
@@ -314,7 +327,11 @@ CSoundBuffer::CSoundBuffer()
 :
 m_uiBuffer(0)
 {
+	alGetError();
+
 	alGenBuffers( 1, &m_uiBuffer );
+
+	LOG_PRINT_AL_ERROR();
 }
 
 
@@ -375,6 +392,10 @@ bool CSoundBuffer::LoadOggVorbisSoundFromDisk( const std::string& resource_path 
 	// send the decoded sound data to the AL buffer
 	alBufferData( m_uiBuffer, ulFormat, &(decoded_buffer.buffer()[0]), bytes_written, ulFrequency );
 
+	ALenum ret = alGetError();
+	if( ret != AL_NO_ERROR )
+		LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) );
+
 	// Close OggVorbis stream
 	ov_clear(&ogg_vorbis_file);
 
@@ -406,6 +427,9 @@ bool COpenALSoundManagerImpl::Init()
 	m_StreamedSourceImplPool.init( NUM_DEFAULT_SOUND_SOURCES );
 
 	m_NonStreamedSourceImplPool.init( NUM_DEFAULT_NONSTREAMED_SOURCE_IMPLS );
+
+	SetListenerPosition( Vector3(0,0,0) );
+	SetListenerVelocity( Vector3(0,0,0) );
 
 	return true;
 }
@@ -548,9 +572,13 @@ void COpenALSoundManagerImpl::Play( CSoundHandle& sound_handle )
 
 	// take a sound source currently not in use
 	CSoundSource *pSource = m_SoundSourcePool.get_new_object();
+	if( !pSource )
+		return;
 
 	// get an impl
 	COpenALSoundSourceImpl *pImpl = GetSoundSourceImpl( CSoundSource::NonStreamed );
+	if( !pImpl )
+		return;
 
 	// must be manually released by the caller
 	pImpl->m_ManagementType = CSoundSource::Auto;
@@ -558,10 +586,23 @@ void COpenALSoundManagerImpl::Play( CSoundHandle& sound_handle )
 	// Always play the sound at the position of the listener
 	pImpl->SetPosition( m_ListenerPose.vPosition );
 
+	// clear any previous error
+	alGetError();
+
+	// attach source to buffer
+	alSourcei( pImpl->m_uiSource, AL_BUFFER, pBuffer->m_uiBuffer );
+
+//	LOG_PRINT_AL_ERROR();
+	ALenum ret = alGetError();
+	if( ret != AL_NO_ERROR )
+		LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) );
+
 	// attach the impl to the source
 	SetImpl( pSource, pImpl );
 
 	m_ActiveSoundList.push_back( pSource );
+
+	pSource->Play();
 
 	return;
 }
@@ -588,6 +629,8 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 
 	// take a sound source currently not in use
 	CSoundSource *pSource = m_SoundSourcePool.get_new_object();
+	if( !pSource )
+		return NULL;
 
 	// get an impl
 	CSoundSource::StreamType stream_type = desc.Streamed ? CSoundSource::Streamed : CSoundSource::NonStreamed;
@@ -602,11 +645,19 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 //		pImpl->SetMaxDistance( desc.MaxDistance );
 //		pImpl->SetReferenceDistance( desc.ReferenceDistance );
 //		pImpl->SetRollOffFactor( desc.RollOffFactor );
+		alSourcei( pImpl->m_uiSource, AL_MAX_DISTANCE,       desc.MaxDistance );
+		alSourcei( pImpl->m_uiSource, AL_REFERENCE_DISTANCE, desc.ReferenceDistance );
+		alSourcei( pImpl->m_uiSource, AL_ROLLOFF_FACTOR,     desc.RollOffFactor );
 	}
 	else
 	{
 		pImpl->SetPosition( m_ListenerPose.vPosition );
 	}
+
+	// attach source to buffer
+	alSourcei( pImpl->m_uiSource, AL_BUFFER, pBuffer->m_uiBuffer );
+
+	LOG_PRINT_AL_ERROR();
 
 	// attach the impl to the source
 	SetImpl( pSource, pImpl );

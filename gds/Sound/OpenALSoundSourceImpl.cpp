@@ -92,6 +92,21 @@ void COpenALSoundSourceImpl::OnReleased()
 }
 
 
+CSoundSource::State COpenALSoundSourceImpl::GetState()
+{
+	ALint state;
+	alGetSourcei( m_uiSource, AL_SOURCE_STATE, &state );
+
+	switch( state )
+	{
+	case AL_PLAYING: return CSoundSource::State_Playing;
+	case AL_STOPPED: return CSoundSource::State_Stopped;
+	case AL_PAUSED:  return CSoundSource::State_Paused;
+	default:         return CSoundSource::State_Invalid;
+	}
+}
+
+
 
 //====================================================================================
 // COpenALStreamedSoundSourceImpl

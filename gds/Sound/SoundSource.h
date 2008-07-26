@@ -50,6 +50,15 @@ public:
 		NumManagementTypes
 	};
 
+	enum State
+	{
+		State_Playing,
+		State_Stopped,
+		State_Paused,
+		State_Invalid,
+		NumStates
+	};
+
 public:
 
 	CSoundSource() : m_pImpl(NULL) {}
@@ -79,6 +88,8 @@ public:
 	inline CSoundSource::StreamType GetStreamType();
 
 	inline CSoundSource::Management GetManagementType();
+
+	inline CSoundSource::State GetState();
 
 	// functions used by pre_alloc_pool
 	// - Not used if the implementation of the sound manager does not use
@@ -129,6 +140,8 @@ public:
 	virtual CSoundSource::StreamType GetStreamType() = 0;
 
 	virtual CSoundSource::Management GetManagementType() = 0;
+
+	virtual CSoundSource::State GetState() = 0;
 
 	virtual void OnReleased() {}
 };
@@ -194,6 +207,11 @@ inline CSoundSource::StreamType CSoundSource::GetStreamType()
 inline CSoundSource::Management CSoundSource::GetManagementType()
 {
 	return m_pImpl->GetManagementType();
+}
+
+inline CSoundSource::State CSoundSource::GetState()
+{
+	return m_pImpl->GetState();
 }
 
 
