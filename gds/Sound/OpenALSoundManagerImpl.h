@@ -71,9 +71,17 @@ class COpenALSoundManagerImpl : public CSoundManagerImpl
 	enum Params
 	{
 		NUM_DEFAULT_SOUND_BUFFERS = 256,
-		NUM_DEFAULT_SOUND_SOURCES = 256,
-		NUM_DEFAULT_STREAMED_SOURCE_IMPLS = 16,
-		NUM_DEFAULT_NONSTREAMED_SOURCE_IMPLS = 256,
+
+		/// Under default settings done by alutInit(), my PC can create only 30 sources
+		/// How to use them for sound sources?
+		/// - 20 for non-streamed, short sound
+		/// -  5 for streamed sound (such as background music)
+		/// -> Changed: call alGenSources() in Play() / CreateSoundSource()
+		NUM_DEFAULT_SOUND_SOURCES = 25,
+
+		NUM_DEFAULT_STREAMED_SOURCE_IMPLS = 2,
+
+		NUM_DEFAULT_NONSTREAMED_SOURCE_IMPLS = 20,
 	};
 
 	/// for non-streamed sounds
@@ -95,23 +103,43 @@ class COpenALSoundManagerImpl : public CSoundManagerImpl
 	Matrix34 m_ListenerPose;
 	Vector3 m_vListenerVelocity;
 
+	// thread to release finished sound sources
+
+	boost::shared_ptr<boost::thread> m_pThread;
+
+	boost::mutex m_SourceListLock;
+
+	bool m_ExitSoundManagerThread;
+
+	struct ThreadStarter
+	{
+	public:
+
+		ThreadStarter( COpenALSoundManagerImpl *p ) : pTarget(p) {}
+
+		COpenALSoundManagerImpl *pTarget;
+
+		void operator()()
+		{
+			pTarget->ThreadMain();
+		}
+	};
+
 private:
 
 	COpenALSoundSourceImpl *GetSoundSourceImpl( CSoundSource::StreamType stream_type );
 
 	void DetachImpl( CSoundSource* pSoundSource );
 
-	CSoundBuffer *COpenALSoundManagerImpl::GetSoundBuffer( CSoundHandle& sound_handle );
+	CSoundBuffer *GetSoundBuffer( CSoundHandle& sound_handle );
+
+	void AddToActiveSourceList( CSoundSource *pSource );
 
 public:
 
-	COpenALSoundManagerImpl()
-		:
-	m_ListenerPose( Matrix34Identity() ),
-	m_vListenerVelocity( Vector3(0,0,0) )
-	{}
+	COpenALSoundManagerImpl();
 
-	~COpenALSoundManagerImpl() { Release(); }
+	~COpenALSoundManagerImpl();
 
 	bool Init();
 
@@ -165,6 +193,12 @@ public:
 //	void CommitDeferredSettings()
 
 	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type );
+
+//	void operator()();
+	void ThreadMain();
+
+	friend class COpenALStreamedSoundSourceImpl;
+	friend class COpenALNonStreamedSoundSourceImpl;
 };
 
 

@@ -2,6 +2,7 @@
 #define  __OpenALSoundSourceImpl_H__
 
 
+#include "fwd.h"
 #include "SoundSource.h"
 #include "Sound/SoundManagerImpl.h"
 #include "Support/stream_buffer.h"
@@ -13,7 +14,7 @@
 
 
 
-#define LOG_PRINT_AL_ERROR() ALenum ret = alGetError();	if( ret != AL_NO_ERROR ) { LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) ); }
+#define LOG_PRINT_AL_ERROR() { ALenum ret = alGetError();	if( ret != AL_NO_ERROR ) { LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) ); } }
 
 
 #define ID_AND_TEXT( id ) IDAndTextPair( id, #id )
@@ -57,8 +58,6 @@ class COpenALSoundSourceImpl : public CSoundSourceImpl
 
 	pooled_object_handle m_BufferHandle;
 
-//	COpenALSoundManagerImpl *m_pManager;
-
 	bool m_Released;
 
 	/// used by prealloc_pool
@@ -66,6 +65,8 @@ class COpenALSoundSourceImpl : public CSoundSourceImpl
 	int m_StockID;
 
 protected:
+
+	COpenALSoundManagerImpl *m_pManager;
 
 	ALuint m_uiSource;
 
@@ -92,6 +93,10 @@ public:
 	void OnReleased();
 
 	CSoundSource::State GetState();
+
+	void CreateSource();
+
+	void ReleaseSource();
 
 	// functions used by prealloc_pool
 
@@ -146,6 +151,8 @@ public:
 
 	COpenALStreamedSoundSourceImpl();
 
+	void Release();
+
 	void Play( double fadein_time );
 
 	void Stop( double fadeout_time );
@@ -169,6 +176,8 @@ class COpenALNonStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 	ALuint m_uiBuffer;
 
 public:
+
+	void Release();
 
 	/// TODO: implement fade effect
 	void Play( double fadein_time );

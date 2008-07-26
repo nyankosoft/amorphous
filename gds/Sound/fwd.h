@@ -9,5 +9,6 @@ class CSoundManagerImpl;
 
 // sound buffer for OpenAL
 class CSoundBuffer;
+class COpenALSoundManagerImpl;
 
 #endif /* __FWD_Sound_H__ */

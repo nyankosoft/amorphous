@@ -3,6 +3,8 @@
 #include "Support/SafeDelete.h"
 #include "../base.h"
 
+#include "OpenALSoundManagerImpl.h"
+
 using namespace std;
 using namespace boost;
 
@@ -29,15 +31,17 @@ extern unsigned long DecodeOggVorbis(OggVorbis_File *psOggVorbisFile, char *pDec
 COpenALSoundSourceImpl::COpenALSoundSourceImpl()
 :
 m_Released(false),
-m_SourceType(CSoundSource::Type_Non3DSound)
+m_SourceType(CSoundSource::Type_Non3DSound),
+m_uiSource(0),
+m_pManager(NULL)
 {
-	alGenSources( 1, &m_uiSource );
 }
 
 COpenALSoundSourceImpl::~COpenALSoundSourceImpl()
 {
-	alDeleteSources( 1, &m_uiSource );
+	ReleaseSource();
 }
+
 
 void COpenALSoundSourceImpl::SetPosition( const Vector3& vPosition )
 {
@@ -108,6 +112,30 @@ CSoundSource::State COpenALSoundSourceImpl::GetState()
 
 
 
+void COpenALSoundSourceImpl::CreateSource()
+{
+	alGetError();
+	if( alIsSource( m_uiSource ) == AL_TRUE )
+		return; // already created
+
+	alGetError();
+	alGenSources( 1, &m_uiSource );
+
+	ALenum ret = alGetError();
+	if( ret != AL_NO_ERROR )
+	{
+		LOG_PRINT_ERROR( " alGenSources() failed." );
+		m_uiSource = 0;
+	}
+}
+
+
+void COpenALSoundSourceImpl::ReleaseSource()
+{
+	alDeleteSources( 1, &m_uiSource );
+}
+
+
 //====================================================================================
 // COpenALStreamedSoundSourceImpl
 //====================================================================================
@@ -118,6 +146,12 @@ m_NumBuffersForStreaming( NUM_DEFAULT_BUFFERS_FOR_STREAMING ),
 m_ServiceUpdatePeriodMS( DEFAULT_SERVICE_UPDATE_PERIOD_MS ),
 m_StreamMethod( StreamFromDisk )
 {
+}
+
+
+void COpenALStreamedSoundSourceImpl::Release()
+{
+	m_pManager->m_StreamedSourceImplPool.release( this );
 }
 
 
@@ -300,6 +334,12 @@ int COpenALStreamedSoundSourceImpl::StreamMain()
 //====================================================================================
 // COpenALNonStreamedSoundSourceImpl
 //====================================================================================
+
+void COpenALNonStreamedSoundSourceImpl::Release()
+{
+	m_pManager->m_NonStreamedSourceImplPool.release( this );
+}
+
 
 void COpenALNonStreamedSoundSourceImpl::Play( double fadein_time )
 {

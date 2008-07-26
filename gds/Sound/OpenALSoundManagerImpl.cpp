@@ -327,10 +327,9 @@ CSoundBuffer::CSoundBuffer()
 :
 m_uiBuffer(0)
 {
+	// create a single buffer
 	alGetError();
-
 	alGenBuffers( 1, &m_uiBuffer );
-
 	LOG_PRINT_AL_ERROR();
 }
 
@@ -389,7 +388,14 @@ bool CSoundBuffer::LoadOggVorbisSoundFromDisk( const std::string& resource_path 
 	stream_buffer decoded_buffer;
 	ulong bytes_written = DecodeOggVorbis( &ogg_vorbis_file, ulChannels, decoded_buffer );
 
+	// check if the current buffer is valid
+	alGetError();
+	alIsBuffer( m_uiBuffer );
+	LOG_PRINT_AL_ERROR();
+
+
 	// send the decoded sound data to the AL buffer
+	alGetError();
 	alBufferData( m_uiBuffer, ulFormat, &(decoded_buffer.buffer()[0]), bytes_written, ulFrequency );
 
 	ALenum ret = alGetError();
@@ -408,12 +414,30 @@ bool CSoundBuffer::LoadOggVorbisSoundFromDisk( const std::string& resource_path 
 // COpenALSoundManagerImpl
 //====================================================================================
 
+COpenALSoundManagerImpl::COpenALSoundManagerImpl()
+:
+m_ListenerPose( Matrix34Identity() ),
+m_vListenerVelocity( Vector3(0,0,0) ),
+m_ExitSoundManagerThread(false)
+{}
+
+
+COpenALSoundManagerImpl::~COpenALSoundManagerImpl()
+{
+	// Do not call Release() here.
+	// - Release() is called through CSoundManager.
+//	Release();
+}
+
+
 bool COpenALSoundManagerImpl::Init()
 {
 //	int error;
 
 	// Init openAL
+	alGetError();
 	alutInit(0, NULL);
+	LOG_PRINT_AL_ERROR();
 
 	// Clear Error Code (so we can catch any new errors)
 	alGetError();
@@ -430,6 +454,10 @@ bool COpenALSoundManagerImpl::Init()
 
 	SetListenerPosition( Vector3(0,0,0) );
 	SetListenerVelocity( Vector3(0,0,0) );
+
+	// start the thread for sound manager
+	ThreadStarter starter(this);
+	m_pThread = shared_ptr<thread>( new thread(starter) ); // error: this means copy operation of COpenALSoundManagerImpl::m_SourceListLock
 
 	return true;
 }
@@ -472,21 +500,34 @@ bool COpenALSoundManagerImpl::LoadNonStreamedSound( CSoundHandle& sound_handle, 
 
 void COpenALSoundManagerImpl::Release()
 {
+	// release the thread
+	m_ExitSoundManagerThread = true;
+	m_pThread->join();
+	m_pThread.reset();
+
 	alutExit();
 }
 
 
 COpenALSoundSourceImpl *COpenALSoundManagerImpl::GetSoundSourceImpl( CSoundSource::StreamType stream_type )
 {
+	COpenALSoundSourceImpl *pImpl = NULL;
 	switch(stream_type)
 	{
-	case CSoundSource::Streamed:    return m_StreamedSourceImplPool.get_new_object();
-	case CSoundSource::NonStreamed: return m_NonStreamedSourceImplPool.get_new_object();
+	case CSoundSource::Streamed:    pImpl = m_StreamedSourceImplPool.get_new_object();
+	case CSoundSource::NonStreamed: pImpl = m_NonStreamedSourceImplPool.get_new_object();
 	default:
 		break;
 	}
 
-	return NULL;
+	if( pImpl )
+	{
+		pImpl->m_pManager = this;
+		return pImpl;
+	}
+	else
+		return NULL;
+
 }
 
 
@@ -512,6 +553,17 @@ CSoundBuffer *COpenALSoundManagerImpl::GetSoundBuffer( CSoundHandle& sound_handl
 	}
 
 	return pBuffer;
+}
+
+
+void COpenALSoundManagerImpl::ThreadMain()
+{
+	while( !m_ExitSoundManagerThread )
+	{
+		Update();
+
+		Sleep( 100 );
+	}
 }
 
 
@@ -580,6 +632,10 @@ void COpenALSoundManagerImpl::Play( CSoundHandle& sound_handle )
 	if( !pImpl )
 		return;
 
+	// create OpenAL sound source
+	// - do nothing if source already exists
+	pImpl->CreateSource();
+
 	// must be manually released by the caller
 	pImpl->m_ManagementType = CSoundSource::Auto;
 
@@ -600,7 +656,7 @@ void COpenALSoundManagerImpl::Play( CSoundHandle& sound_handle )
 	// attach the impl to the source
 	SetImpl( pSource, pImpl );
 
-	m_ActiveSoundList.push_back( pSource );
+	AddToActiveSourceList( pSource );
 
 	pSource->Play();
 
@@ -636,6 +692,11 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 	CSoundSource::StreamType stream_type = desc.Streamed ? CSoundSource::Streamed : CSoundSource::NonStreamed;
 	COpenALSoundSourceImpl *pImpl = GetSoundSourceImpl( stream_type );
 
+	if( !pImpl )
+		return NULL;
+
+	pImpl->CreateSource();
+
 	// must be manually released by the caller
 	pImpl->m_ManagementType = CSoundSource::Manual;
 
@@ -645,9 +706,9 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 //		pImpl->SetMaxDistance( desc.MaxDistance );
 //		pImpl->SetReferenceDistance( desc.ReferenceDistance );
 //		pImpl->SetRollOffFactor( desc.RollOffFactor );
-		alSourcei( pImpl->m_uiSource, AL_MAX_DISTANCE,       desc.MaxDistance );
-		alSourcei( pImpl->m_uiSource, AL_REFERENCE_DISTANCE, desc.ReferenceDistance );
-		alSourcei( pImpl->m_uiSource, AL_ROLLOFF_FACTOR,     desc.RollOffFactor );
+		alSourcef( pImpl->m_uiSource, AL_MAX_DISTANCE,       desc.MaxDistance );
+		alSourcef( pImpl->m_uiSource, AL_REFERENCE_DISTANCE, desc.ReferenceDistance );
+		alSourcef( pImpl->m_uiSource, AL_ROLLOFF_FACTOR,     desc.RollOffFactor );
 	}
 	else
 	{
@@ -662,9 +723,17 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 	// attach the impl to the source
 	SetImpl( pSource, pImpl );
 
-	m_ActiveSoundList.push_back( pSource );
+	AddToActiveSourceList( pSource );
 
 	return pSource;
+}
+
+
+void COpenALSoundManagerImpl::AddToActiveSourceList( CSoundSource *pSource )
+{
+	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+
+	m_ActiveSoundList.push_back( pSource );
 }
 
 
@@ -674,13 +743,13 @@ void COpenALSoundManagerImpl::DetachImpl( CSoundSource* pSoundSource )
 
 	pImpl->Stop( 0.0f );
 
-	switch(pSoundSource->GetStreamType())
+/*	switch(pSoundSource->GetStreamType())
 	{
 	case CSoundSource::Streamed:    m_StreamedSourceImplPool.release( dynamic_cast<COpenALStreamedSoundSourceImpl *>(pImpl) );       break;
 	case CSoundSource::NonStreamed: m_NonStreamedSourceImplPool.release( dynamic_cast<COpenALNonStreamedSoundSourceImpl *>(pImpl) ); break;
 	default:
 		break;
-	}
+	}*/
 }
 
 
@@ -739,8 +808,8 @@ void COpenALSoundManagerImpl::SetListenerPosition( const Vector3& vPosition )
 
 
 void COpenALSoundManagerImpl::SetListenerPose( const Vector3& vPosition,
-										   const Vector3& vLookAtDirection,
-										   const Vector3& vUp )
+										       const Vector3& vLookAtDirection,
+										       const Vector3& vUp )
 {
 	SetListenerPosition( vPosition );
 
@@ -768,14 +837,24 @@ void COpenALSoundManagerImpl::SetListenerVelocity( const Vector3& vVelocity )
 
 void COpenALSoundManagerImpl::Update()
 {
+	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+
 	list<CSoundSource *>::iterator itr;
 	for( itr = m_ActiveSoundList.begin();
 		itr != m_ActiveSoundList.end();
-		itr++ )
+		/* Do not increment iterator here - see erase() below */ )
 	{
 		if( (*itr)->IsDone() )
 		{
+			// release the pool impl object
+			(*itr)->Release();
+
 			DetachImpl( (*itr) );
+
+			// release routine in the object pool
+			m_SoundSourcePool.release( *itr );
+
+			// remove the pointer from the list - This does not release the instance.
 			itr = m_ActiveSoundList.erase( itr );
 		}
 		else

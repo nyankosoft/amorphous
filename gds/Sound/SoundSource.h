@@ -65,6 +65,8 @@ public:
 
 	~CSoundSource() {}
 
+	inline void Release();
+
 	inline void Play( double fadein_time = 0.0f );
 
 	inline void Stop( double fadeout_time = 0.0f );
@@ -114,6 +116,8 @@ class CSoundSourceImpl
 {
 public:
 
+	virtual void Release() {}
+
 	virtual void Play( double fadein_time ) = 0;
 
 	virtual void Stop( double fadeout_time ) = 0;
@@ -133,7 +137,7 @@ public:
 	/// return true if either following is true
 	/// - sound needs to be manual released and it has been released.
 	/// - sound is supposed to be automatically released and it has been fiinshed playing.
-	bool IsDone() { return false; }
+	virtual bool IsDone() { return false; }
 
 	virtual CSoundSource::Type GetSoundType() = 0;
 
@@ -148,6 +152,11 @@ public:
 
 
 //=================================== inline implementations ===================================
+
+inline void CSoundSource::Release()
+{
+	m_pImpl->Release();
+}
 
 inline void CSoundSource::Play( double fadein_time )
 {
