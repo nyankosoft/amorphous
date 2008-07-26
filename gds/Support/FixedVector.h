@@ -86,9 +86,9 @@ inline void TCFixedVector<CArrayType, iArraySize>::resize( int size, const CArra
 
 
 template <class CArrayType, int iArraySize>
-inline void insert_at( int pos, const CArrayType& val = CArrayType() )
+inline void TCFixedVector<CArrayType, iArraySize>::insert_at( int pos, const CArrayType& val )
 {
-	int i, size = size();
+	int i, size = this->size();
 
 	push_back( CArrayType() );
 

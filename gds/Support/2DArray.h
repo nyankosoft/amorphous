@@ -67,7 +67,7 @@ inline void C2DArray<T>::resize( int size_x, int size_y, const T& val )
 
 
 template<class T>
-inline void C2DArray<T>::increase_y( int amount_y, const T& val = T() )
+inline void C2DArray<T>::increase_y( int amount_y, const T& val )
 {
 	int i;
 	for( i=0; i<amount_y*nx; i++ )
@@ -78,10 +78,10 @@ inline void C2DArray<T>::increase_y( int amount_y, const T& val = T() )
 
 
 template<class T>
-inline void C2DArray<T>::increase_x( int amount_x, const T& val = T() )
+inline void C2DArray<T>::increase_x( int amount_x, const T& val )
 {
 	int i, j;
-	vector<T>::iterator itr;
+	typename std::vector<T>::iterator itr;
 	for( i=0; i<amount_x; i++ )
 	{
 		for( j=0; j<ny; j++ )

@@ -125,7 +125,7 @@ public:
 			n = mapData.size();
 			HandleData( &n, sizeof(size_t) );	// record array size
 
-			map<K,T>::iterator itr;
+			typename map<K,T>::iterator itr;
 			for( itr=mapData.begin(); itr!=mapData.end(); itr++ )
 			{
 				(*this) & const_cast<K&> (itr->first);

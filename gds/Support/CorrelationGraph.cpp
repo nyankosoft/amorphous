@@ -1,11 +1,10 @@
-
 #include "CorrelationGraph.h"
 
-#include "../3DCommon/Direct3D9.h"
-#include "../Support/memory_helpers.h"
+#include "3DCommon/Direct3D9.h"
+#include "Support/memory_helpers.h"
 
 
-void CCorrelationGraph::SetData(vector<float> *pvecfData, DWORD dwColor)
+void CCorrelationGraph::SetData(vector<float> *pvecfData, U32 dwColor)
 {
 	SGraphData new_graph;
 
@@ -121,7 +120,7 @@ void CCorrelationGraph::Draw()
 	float fOffsetX = m_vecGraphData[0].fMinValue;
 	float fOffsetY = m_vecGraphData[1].fMinValue;
 
-	DWORD dwColor = m_vecGraphData[i].m_dwGraphColor;
+	U32 dwColor = m_vecGraphData[i].m_dwGraphColor;
 	for(j=0; j<iNumData; j++)
 	{
 		// local position
