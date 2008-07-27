@@ -457,7 +457,7 @@ bool COpenALSoundManagerImpl::Init()
 
 	// start the thread for sound manager
 	ThreadStarter starter(this);
-	m_pThread = shared_ptr<thread>( new thread(starter) ); // error: this means copy operation of COpenALSoundManagerImpl::m_SourceListLock
+	m_pThread = shared_ptr<thread>( new thread(starter) );
 
 	return true;
 }
@@ -722,6 +722,8 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 
 	// attach the impl to the source
 	SetImpl( pSource, pImpl );
+
+	pSource->SetLoop( desc.Loop );
 
 	AddToActiveSourceList( pSource );
 

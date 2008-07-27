@@ -11,7 +11,7 @@
 #include <boost/thread.hpp>
 #include <al.h>
 #include <alut.h>
-
+#include <vorbis/vorbisfile.h>
 
 
 #define LOG_PRINT_AL_ERROR() { ALenum ret = alGetError();	if( ret != AL_NO_ERROR ) { LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) ); } }
@@ -82,8 +82,6 @@ public:
 
 	void SetPose( const Matrix34& pose );
 
-	void SetLoop( bool loop );
-
 	bool IsDone();
 
 	CSoundSource::Type GetSoundType() { return m_SourceType; }
@@ -97,6 +95,9 @@ public:
 	void CreateSource();
 
 	void ReleaseSource();
+
+	/// implemented by the streamed sound source
+	virtual void StartStreamThread() {}
 
 	// functions used by prealloc_pool
 
@@ -128,6 +129,8 @@ class COpenALStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 		NumStreamMethods
 	};
 
+	bool m_Loop;
+
 	StreamMethod m_StreamMethod;
 
 
@@ -141,11 +144,17 @@ class COpenALStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 
 	boost::mutex m_SoundOperationMutex;
 
-	boost::thread *m_pThread;
+	boost::shared_ptr<boost::thread> m_pThread;
 
 	/// stores an encoded data loaded from disk
 	/// - Not used when the sound is streamed directly from the disk
 	stream_buffer m_Buffer;
+
+private:
+
+	bool OpenOrLoadOggResource( const std::string& resource_path,
+								OggVorbis_File& sOggVorbisFile,
+								stream_buffer& src_buffer );
 
 public:
 
@@ -161,7 +170,13 @@ public:
 
 	void Resume( double fadein_time );
 
+	void SetLoop( bool loop );
+
 	CSoundSource::StreamType GetStreamType() { return CSoundSource::Streamed; }
+
+	void StartStreamThread();
+
+	void ThreadMain() { StreamMain(); }
 
 	/// Use this as a thread main loop?
 	int StreamMain();
@@ -190,6 +205,8 @@ public:
 
 	/// TODO: implement fade effect
 	void Resume( double fadein_time );
+
+	void SetLoop( bool loop );
 
 	CSoundSource::StreamType GetStreamType() { return CSoundSource::NonStreamed; }
 };

@@ -35,9 +35,30 @@ PyObject* Play3D( PyObject* self, PyObject* args )
 }
 
 
+PyObject* PlayStream( PyObject* self, PyObject* args )
+{
+	char *sound_name;
+	int volume = 100;
+	int sound_source_id = 0;
+
+	int result = PyArg_ParseTuple( args, "s|i", &sound_name, &volume );
+
+	SoundManager().PlayStream( sound_name );
+
+//	PyObject *obj = Py_BuildValue( "i", sound_source_id );
+
+	return Py_None;
+}
+
+
 PyMethodDef g_PyModuleSoundMethod[] =
 {
-	{ "Play",		Play,	METH_VARARGS, "plays a non-3D sound" },
-	{ "Play3D",		Play3D,	METH_VARARGS, "plays a sound at a given position (world coordinates)" },
-	{NULL, NULL}
+	{ "Play",       Play,	    METH_VARARGS, "plays a non-3D sound" },
+	{ "Play3D",     Play3D,     METH_VARARGS, "plays a sound at a given position (world coordinates)" },
+//	{ "PlayStream", PlayStream, METH_VARARGS, "plays a non-3D, stream sound (mainly for background music)" },
+//	{ "CreateSoundSource", CreateSoundSource, METH_VARARGS, "" },
+//	{ "Stop",              Stop,              METH_VARARGS, "" },
+//	{ "Resume",            Resume,            METH_VARARGS, "" },
+//	{ "Play",              Play,              METH_VARARGS, "" },
+	{ NULL, NULL }
 };

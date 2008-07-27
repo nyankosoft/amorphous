@@ -1,12 +1,26 @@
 #include "OpenALSoundSourceImpl.h"
-#include <vorbis/vorbisfile.h>
 #include "Support/SafeDelete.h"
+#include "Support/thread_starter.h"
 #include "../base.h"
 
 #include "OpenALSoundManagerImpl.h"
 
 using namespace std;
 using namespace boost;
+
+
+
+
+/**
+
+ - Looping streamed sound
+   - alSourcei( source, AL_LOOPING,1 ) alone does not do the job.
+     - Why?
+	   - Probably because the whole audio data is not stored in a single buffer.
+	   - Need to restart decoding the first data of the encoded buffer
+
+
+*/
 
 
 extern bool GetFormatFrequencyChannelsBufferSize( OggVorbis_File& ogg_vorbis_file,
@@ -61,12 +75,6 @@ void COpenALSoundSourceImpl::SetPose( const Matrix34& pose )
 
 	Vector3 vDirection = pose.matOrient.GetColumn(2);
 	alSource3f( m_uiSource, AL_DIRECTION, vDirection.x, vDirection.y, vDirection.z );
-}
-
-
-void COpenALSoundSourceImpl::SetLoop( bool loop )
-{
-	alSourcei( m_uiSource, AL_LOOPING, loop ? AL_TRUE : AL_FALSE );
 }
 
 
@@ -144,7 +152,8 @@ COpenALStreamedSoundSourceImpl::COpenALStreamedSoundSourceImpl()
 :
 m_NumBuffersForStreaming( NUM_DEFAULT_BUFFERS_FOR_STREAMING ),
 m_ServiceUpdatePeriodMS( DEFAULT_SERVICE_UPDATE_PERIOD_MS ),
-m_StreamMethod( StreamFromDisk )
+m_StreamMethod( StreamFromDisk ),
+m_Loop(false)
 {
 }
 
@@ -187,6 +196,35 @@ void COpenALStreamedSoundSourceImpl::Resume( double fadein_time )
 }
 
 
+void COpenALStreamedSoundSourceImpl::SetLoop( bool loop )
+{
+	m_Loop = loop;
+}
+
+
+void COpenALStreamedSoundSourceImpl::StartStreamThread()
+{
+	m_pThread = start_thread<COpenALStreamedSoundSourceImpl>( this );
+}
+
+
+bool COpenALStreamedSoundSourceImpl::OpenOrLoadOggResource( const std::string& resource_path,
+														    OggVorbis_File& sOggVorbisFile,
+															stream_buffer& src_buffer )
+{
+	bool resource_loaded = false;
+	switch( m_StreamMethod )
+	{
+	case StreamFromDisk:   resource_loaded = LoadOggVorbisSoundFromDisk( resource_path, sOggVorbisFile ); break;
+	case StreamFromMemory: resource_loaded = LoadOggVorbisSoundFromDisk( resource_path, src_buffer, sOggVorbisFile ); break;
+	default:
+		resource_loaded = false;
+	}
+
+	return resource_loaded;
+}
+
+
 int COpenALStreamedSoundSourceImpl::StreamMain()
 {
 	std::string resource_path;
@@ -204,19 +242,17 @@ int COpenALStreamedSoundSourceImpl::StreamMain()
 	stream_buffer src_buffer;
 	OggVorbis_File sOggVorbisFile;
 
-	bool resource_loaded = false;  
-	switch( m_StreamMethod )
-	{
-	case StreamFromDisk:   resource_loaded = LoadOggVorbisSoundFromDisk( resource_path, sOggVorbisFile ); break;
-	case StreamFromMemory: resource_loaded = LoadOggVorbisSoundFromDisk( resource_path, src_buffer, sOggVorbisFile ); break;
-	default:
-		break;
-	}
+	bool resource_loaded = false;
+
+	resource_loaded = OpenOrLoadOggResource( resource_path, sOggVorbisFile, src_buffer );
 
 	// sound data is decoded from either src_buffer or a file
 
 	if( !resource_loaded )
+	{
+		LOG_PRINT_ERROR( " LoadOggVorbisSoundFromDisk() failed." );
 		return 1;
+	}
 
 	GetFormatFrequencyChannelsBufferSize( sOggVorbisFile, ulFormat, ulFrequency, ulChannels, ulBufferSize );
 
@@ -231,10 +267,6 @@ int COpenALStreamedSoundSourceImpl::StreamMain()
 
 	// Generate some AL Buffers for streaming
 	alGenBuffers( m_NumBuffersForStreaming, m_uiBuffers );
-
-	// Generate a Source to playback the Buffers
-	// - Created in ctor
-//	alGenSources( 1, &m_uiSource );
 
 	// Fill all the Buffers with decoded audio data from the OggVorbis file
 	for ( int iLoop = 0; iLoop < m_NumBuffersForStreaming; iLoop++ )
@@ -254,10 +286,22 @@ int COpenALStreamedSoundSourceImpl::StreamMain()
 	iTotalBuffersProcessed = 0;
 
 	bool play = true;
-	while( play/*!ALFWKeyPress()*/)
+	while( 1 /* GetRequestedState() != CSoundSource::State_Stopped */ )
 	{
 		Sleep( m_ServiceUpdatePeriodMS );
 
+/*		if( GetRequestedState() == CSoundSource::State_Paused // Req_Resume )
+		 && GetState() == playing )
+		{
+			alSourcei( m_uiSource, state, pause );
+		}
+		else if( GetRequestedState() == CSoundSource::State_Playing // Req_Resume )
+		 && GetState() == paused )
+		{
+			alSourcei( m_uiSource, state, resume );
+
+		}
+*/
 		// Request the number of OpenAL Buffers have been processed (played) on the Source
 		iBuffersProcessed = 0;
 		alGetSourcei(m_uiSource, AL_BUFFERS_PROCESSED, &iBuffersProcessed);
@@ -280,6 +324,24 @@ int COpenALStreamedSoundSourceImpl::StreamMain()
 			{
 				alBufferData(uiBuffer, ulFormat, pDecodeBuffer, ulBytesWritten, ulFrequency);
 				alSourceQueueBuffers(m_uiSource, 1, &uiBuffer);
+			}
+			else if( m_Loop )
+			{
+				// no more data to decode
+				// - reached the end of the resource
+				// - start again from the beginning
+				ov_clear( &sOggVorbisFile );
+				OpenOrLoadOggResource( resource_path, sOggVorbisFile, src_buffer );
+				ulBytesWritten = DecodeOggVorbis( &sOggVorbisFile, pDecodeBuffer, ulBufferSize, ulChannels );
+				if( ulBytesWritten )
+				{
+					alBufferData(uiBuffer, ulFormat, pDecodeBuffer, ulBytesWritten, ulFrequency);
+					alSourceQueueBuffers(m_uiSource, 1, &uiBuffer);
+				}
+				else
+				{
+					LOG_PRINT_ERROR( "Cannot loop the sound: " + resource_path );
+				}
 			}
 
 			iBuffersProcessed--;
@@ -362,4 +424,10 @@ void COpenALNonStreamedSoundSourceImpl::Pause( double fadeout_time )
 void COpenALNonStreamedSoundSourceImpl::Resume( double fadein_time )
 {
 	alSourcePlay( m_uiSource );
+}
+
+
+void COpenALNonStreamedSoundSourceImpl::SetLoop( bool loop )
+{
+	alSourcei( m_uiSource, AL_LOOPING, loop ? AL_TRUE : AL_FALSE );
 }
