@@ -65,6 +65,10 @@ public:
 
 	~CSoundSource() {}
 
+	/// See CSoundSourceImpl::OnReleased()
+	inline void OnReleased();
+
+	/// See CSoundSourceImpl::Release()
 	inline void Release();
 
 	inline void Play( double fadein_time = 0.0f );
@@ -116,7 +120,14 @@ class CSoundSourceImpl
 {
 public:
 
+	/// Implemented by sound source implementations of OpenAL 
+	/// - Called in COpenALSoundManagerImpl::Update() when a source is detached
+	///   from the active source list
 	virtual void Release() {}
+
+	/// Implemented by sound source implementations of OpenAL 
+	/// - Called in COpenALSoundManagerImpl::ReleaseSoundSource()
+	virtual void OnReleased() {}
 
 	virtual void Play( double fadein_time ) = 0;
 
@@ -146,8 +157,6 @@ public:
 	virtual CSoundSource::Management GetManagementType() = 0;
 
 	virtual CSoundSource::State GetState() = 0;
-
-	virtual void OnReleased() {}
 };
 
 
@@ -156,6 +165,11 @@ public:
 inline void CSoundSource::Release()
 {
 	m_pImpl->Release();
+}
+
+inline void CSoundSource::OnReleased()
+{
+	m_pImpl->OnReleased();
 }
 
 inline void CSoundSource::Play( double fadein_time )

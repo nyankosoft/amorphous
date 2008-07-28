@@ -514,8 +514,8 @@ COpenALSoundSourceImpl *COpenALSoundManagerImpl::GetSoundSourceImpl( CSoundSourc
 	COpenALSoundSourceImpl *pImpl = NULL;
 	switch(stream_type)
 	{
-	case CSoundSource::Streamed:    pImpl = m_StreamedSourceImplPool.get_new_object();
-	case CSoundSource::NonStreamed: pImpl = m_NonStreamedSourceImplPool.get_new_object();
+	case CSoundSource::Streamed:    pImpl = m_StreamedSourceImplPool.get_new_object();    break;
+	case CSoundSource::NonStreamed: pImpl = m_NonStreamedSourceImplPool.get_new_object(); break;
 	default:
 		break;
 	}
@@ -679,9 +679,14 @@ void COpenALSoundManagerImpl::PlayStream( CSoundHandle& sound_handle )
 CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_handle,
 		                                                  const CSoundDesc& desc )
 {
-	CSoundBuffer *pBuffer = GetSoundBuffer( sound_handle );
-	if( !pBuffer )
-		return NULL;
+	CSoundBuffer *pBuffer = NULL;
+	
+	if( !desc.Streamed )
+	{
+		pBuffer = GetSoundBuffer( sound_handle );
+		if( !pBuffer )
+			return NULL;
+	}
 
 	// take a sound source currently not in use
 	CSoundSource *pSource = m_SoundSourcePool.get_new_object();
@@ -700,6 +705,8 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 	// must be manually released by the caller
 	pImpl->m_ManagementType = CSoundSource::Manual;
 
+	pImpl->SetResourcePath( sound_handle.GetResourceName() );
+
 	if( desc.SoundSourceType == CSoundSource::Type_3DSound )
 	{
 		pImpl->SetPosition( desc.Position );
@@ -715,8 +722,13 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 		pImpl->SetPosition( m_ListenerPose.vPosition );
 	}
 
+	// stream sound: the stream sound thread is created and started in this call.
+	// non-streamed sound: does nothing
+	pImpl->OnCreated();
+
 	// attach source to buffer
-	alSourcei( pImpl->m_uiSource, AL_BUFFER, pBuffer->m_uiBuffer );
+	if( !desc.Streamed )
+		alSourcei( pImpl->m_uiSource, AL_BUFFER, pBuffer->m_uiBuffer );
 
 	LOG_PRINT_AL_ERROR();
 
@@ -745,29 +757,26 @@ void COpenALSoundManagerImpl::DetachImpl( CSoundSource* pSoundSource )
 
 	pImpl->Stop( 0.0f );
 
-/*	switch(pSoundSource->GetStreamType())
-	{
-	case CSoundSource::Streamed:    m_StreamedSourceImplPool.release( dynamic_cast<COpenALStreamedSoundSourceImpl *>(pImpl) );       break;
-	case CSoundSource::NonStreamed: m_NonStreamedSourceImplPool.release( dynamic_cast<COpenALNonStreamedSoundSourceImpl *>(pImpl) ); break;
-	default:
-		break;
-	}*/
+	// detach the impl
+	SetImpl( pSoundSource, NULL );
 }
 
 
 void COpenALSoundManagerImpl::ReleaseSoundSource( CSoundSource*& pSoundSource )
 {
-	// detach from m_ActiveSoundList
-//	pSoundSource->OnReleased();
+	if( !pSoundSource )
+		return;
 
-	DetachImpl( pSoundSource );
+	// mark the released flag to true
+	pSoundSource->OnReleased();
 
-	// detach the impl
-	SetImpl( pSoundSource, NULL );
+//	DetachImpl( pSoundSource ); - Dont do it here. Done in Update()
 
-	m_SoundSourcePool.release( pSoundSource );
+//	m_SoundSourcePool.release( pSoundSource ); - Dont do it here. Done in Update()
 
 	pSoundSource = NULL;
+
+	// detached later from m_ActiveSoundList
 }
 
 
@@ -849,6 +858,8 @@ void COpenALSoundManagerImpl::Update()
 		if( (*itr)->IsDone() )
 		{
 			// release the pool impl object
+			// - calls prealloc_pool<T>::release(), where T is either streamed
+			//   or non-streamed sound source class. See implementations
 			(*itr)->Release();
 
 			DetachImpl( (*itr) );

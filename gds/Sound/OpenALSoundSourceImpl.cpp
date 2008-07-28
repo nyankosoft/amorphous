@@ -20,6 +20,11 @@ using namespace boost;
 	   - Need to restart decoding the first data of the encoded buffer
 
 
+ - threading
+   - stream sound source has its own thread (stream sound thread)
+     - only the stream sound thread calls OpenAL APIs
+	 - e.g.) Play(), Stop() calls will change the requested state
+	   and the requested state is processed by the stream sound thread
 */
 
 
@@ -50,6 +55,7 @@ m_uiSource(0),
 m_pManager(NULL)
 {
 }
+
 
 COpenALSoundSourceImpl::~COpenALSoundSourceImpl()
 {
@@ -153,8 +159,41 @@ COpenALStreamedSoundSourceImpl::COpenALStreamedSoundSourceImpl()
 m_NumBuffersForStreaming( NUM_DEFAULT_BUFFERS_FOR_STREAMING ),
 m_ServiceUpdatePeriodMS( DEFAULT_SERVICE_UPDATE_PERIOD_MS ),
 m_StreamMethod( StreamFromDisk ),
+m_ExitStreamThread(false),
 m_Loop(false)
 {
+}
+
+
+void COpenALStreamedSoundSourceImpl::OnCreated()
+{
+	COpenALSoundSourceImpl::OnCreated();
+
+	EndStreamThread();
+
+	m_ExitStreamThread = false;
+
+	m_pThread = start_thread<COpenALStreamedSoundSourceImpl>( this );
+}
+
+
+void COpenALStreamedSoundSourceImpl::EndStreamThread()
+{
+	if( m_pThread )
+	{
+		m_ExitStreamThread = true;
+		Stop( 0.0 );
+		m_pThread->join();
+		m_pThread.reset();
+	}
+}
+
+
+void COpenALStreamedSoundSourceImpl::OnReleased()
+{
+	EndStreamThread();
+
+	COpenALSoundSourceImpl::OnReleased();
 }
 
 
@@ -166,33 +205,25 @@ void COpenALStreamedSoundSourceImpl::Release()
 
 void COpenALStreamedSoundSourceImpl::Play( double fadein_time )
 {
-	if( alIsSource( m_uiSource ) == AL_TRUE )
-	{
-		boost::mutex::scoped_lock scoped_lock(m_SoundOperationMutex);
-
-		alSourcePlay( m_uiSource );
-	}
+	SetRequestedState( CSoundSource::State_Playing );
 }
 
 
 void COpenALStreamedSoundSourceImpl::Stop( double fadeout_time )
 {
+	SetRequestedState( CSoundSource::State_Stopped );
 }
 
 
 void COpenALStreamedSoundSourceImpl::Pause( double fadeout_time )
 {
-	if( alIsSource( m_uiSource ) == AL_TRUE )
-	{
-		boost::mutex::scoped_lock scoped_lock(m_SoundOperationMutex);
-
-		alSourcePause( m_uiSource );
-	}
+	SetRequestedState( CSoundSource::State_Paused );
 }
 
 
 void COpenALStreamedSoundSourceImpl::Resume( double fadein_time )
 {
+	SetRequestedState( CSoundSource::State_Playing );
 }
 
 
@@ -201,12 +232,12 @@ void COpenALStreamedSoundSourceImpl::SetLoop( bool loop )
 	m_Loop = loop;
 }
 
-
+/*
 void COpenALStreamedSoundSourceImpl::StartStreamThread()
 {
 	m_pThread = start_thread<COpenALStreamedSoundSourceImpl>( this );
 }
-
+*/
 
 bool COpenALStreamedSoundSourceImpl::OpenOrLoadOggResource( const std::string& resource_path,
 														    OggVorbis_File& sOggVorbisFile,
@@ -225,9 +256,24 @@ bool COpenALStreamedSoundSourceImpl::OpenOrLoadOggResource( const std::string& r
 }
 
 
-int COpenALStreamedSoundSourceImpl::StreamMain()
+void COpenALStreamedSoundSourceImpl::StreamMain()
 {
-	std::string resource_path;
+	while( !m_ExitStreamThread )
+	{
+		Sleep( m_ServiceUpdatePeriodMS );
+
+		if( GetRequestedState() == CSoundSource::State_Playing )
+		{
+			PlayStream();
+		}
+	}
+}
+
+
+
+int COpenALStreamedSoundSourceImpl::PlayStream()
+{
+	std::string resource_path = m_ResourcePath;
 
 	ALuint  uiBuffer;
 	ALint   iState;
@@ -280,28 +326,30 @@ int COpenALStreamedSoundSourceImpl::StreamMain()
 	}
 
 	// Start playing source
-	Play( 0.0 );
-//	alSourcePlay(m_uiSource);
+	alSourcePlay(m_uiSource);
 
 	iTotalBuffersProcessed = 0;
 
-	bool play = true;
-	while( 1 /* GetRequestedState() != CSoundSource::State_Stopped */ )
+	ALint state;
+	while( GetRequestedState() != CSoundSource::State_Stopped )
 	{
+		alGetSourcei( m_uiSource, AL_SOURCE_STATE, &state );
+		if( GetRequestedState() == CSoundSource::State_Paused
+		 && state == AL_PLAYING )
+		{
+			// pause
+			alSourcePause( m_uiSource );
+		}
+		else if( GetRequestedState() == CSoundSource::State_Playing
+		 && state == AL_PAUSED )
+		{
+			// resume
+			alSourcePlay( m_uiSource );
+
+		}
+
 		Sleep( m_ServiceUpdatePeriodMS );
 
-/*		if( GetRequestedState() == CSoundSource::State_Paused // Req_Resume )
-		 && GetState() == playing )
-		{
-			alSourcei( m_uiSource, state, pause );
-		}
-		else if( GetRequestedState() == CSoundSource::State_Playing // Req_Resume )
-		 && GetState() == paused )
-		{
-			alSourcei( m_uiSource, state, resume );
-
-		}
-*/
 		// Request the number of OpenAL Buffers have been processed (played) on the Source
 		iBuffersProcessed = 0;
 		alGetSourcei(m_uiSource, AL_BUFFERS_PROCESSED, &iBuffersProcessed);
@@ -368,25 +416,22 @@ int COpenALStreamedSoundSourceImpl::StreamMain()
 		}
 	}
 
-	// access source
-	// - Need lock?
-	{
-		boost::mutex::scoped_lock scoped_lock(m_SoundOperationMutex);
+	// Stop the Source and clear the Queue
+	alSourceStop(m_uiSource);
+	alSourcei(m_uiSource, AL_BUFFER, 0);
 
-		// Stop the Source and clear the Queue
-		alSourceStop(m_uiSource);
-		alSourcei(m_uiSource, AL_BUFFER, 0);
-
-		// Clean up buffers and sources
-		alDeleteSources( 1, &m_uiSource );
-		alDeleteBuffers( m_NumBuffersForStreaming, m_uiBuffers );
-	}
+	// Clean up buffers and sources
+	alDeleteSources( 1, &m_uiSource );
+	alDeleteBuffers( m_NumBuffersForStreaming, m_uiBuffers );
 
 	// Release the temporary buffer to store decoded data
 	SafeDeleteArray( pDecodeBuffer );
 
 	// Close OggVorbis stream
 	ov_clear(&sOggVorbisFile);
+
+	// end the stream thread
+	m_ExitStreamThread = true;
 
     return 0;
 }

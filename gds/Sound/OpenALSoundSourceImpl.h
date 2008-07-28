@@ -51,7 +51,7 @@ inline const char* GetTextFromID( int id, const IDAndTextPair *id_and_text_array
 
 class COpenALSoundSourceImpl : public CSoundSourceImpl
 {
-	// set by COpenALSoundManagerImpl
+	/// set by COpenALSoundManagerImpl
 	CSoundSource::Management m_ManagementType;
 
 	CSoundSource::Type m_SourceType;
@@ -70,6 +70,9 @@ protected:
 
 	ALuint m_uiSource;
 
+	/// used by the stream sound source
+	std::string m_ResourcePath;
+
 public:
 
 	COpenALSoundSourceImpl();
@@ -84,11 +87,15 @@ public:
 
 	bool IsDone();
 
+	void SetResourcePath( const std::string& resource_path ) { m_ResourcePath = resource_path; }
+
 	CSoundSource::Type GetSoundType() { return m_SourceType; }
 
 	CSoundSource::Management GetManagementType() { return m_ManagementType; }
 
-	void OnReleased();
+	virtual void OnCreated() { m_Released = false; }
+
+	virtual void OnReleased();
 
 	CSoundSource::State GetState();
 
@@ -142,7 +149,7 @@ class COpenALStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 	/// How long the thread sleeps 
 	int	m_ServiceUpdatePeriodMS;
 
-	boost::mutex m_SoundOperationMutex;
+	boost::mutex m_StreamSoundMutex;
 
 	boost::shared_ptr<boost::thread> m_pThread;
 
@@ -150,11 +157,21 @@ class COpenALStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 	/// - Not used when the sound is streamed directly from the disk
 	stream_buffer m_Buffer;
 
+	CSoundSource::State m_RequestedState;
+
+	bool m_ExitStreamThread;
+
 private:
 
 	bool OpenOrLoadOggResource( const std::string& resource_path,
 								OggVorbis_File& sOggVorbisFile,
 								stream_buffer& src_buffer );
+
+	inline CSoundSource::State GetRequestedState();
+
+	int PlayStream();
+
+	void EndStreamThread();
 
 public:
 
@@ -174,14 +191,39 @@ public:
 
 	CSoundSource::StreamType GetStreamType() { return CSoundSource::Streamed; }
 
-	void StartStreamThread();
+//	void StartStreamThread();
 
 	void ThreadMain() { StreamMain(); }
 
 	/// Use this as a thread main loop?
-	int StreamMain();
+	void StreamMain();
+
+	inline void SetRequestedState( CSoundSource::State state );
+
+	void OnCreated();
+
+	void OnReleased();
 };
 
+
+// -------------------------- inline implementations --------------------------
+
+inline CSoundSource::State COpenALStreamedSoundSourceImpl::GetRequestedState()
+{
+	boost::mutex::scoped_lock scoped_lock(m_StreamSoundMutex);
+
+	const CSoundSource::State state = m_RequestedState;
+
+	return state;
+}
+
+
+inline void COpenALStreamedSoundSourceImpl::SetRequestedState( CSoundSource::State state )
+{
+	boost::mutex::scoped_lock scoped_lock(m_StreamSoundMutex);
+
+	m_RequestedState = state;
+}
 
 
 /// Needs a CSoundBuffer object to play a sound
