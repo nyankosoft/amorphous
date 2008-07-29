@@ -27,7 +27,7 @@
 	#pragma comment( lib, "vorbisfile_static.lib" )
 #endif
 
-/// Can by used by more than one CSoundSource object
+/// Can be used by more than one CSoundSource object
 /// - Not used by CStreamSound
 class CSoundBuffer
 {

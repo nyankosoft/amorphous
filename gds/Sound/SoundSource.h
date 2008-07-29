@@ -145,9 +145,9 @@ public:
 
 	virtual void SetLoop( bool loop ) = 0;
 
-	/// return true if either following is true
-	/// - sound needs to be manual released and it has been released.
-	/// - sound is supposed to be automatically released and it has been fiinshed playing.
+	/// return true if either of the following is true
+	/// - sound source needs to be manually released and it has been released.
+	/// - sound source is supposed to be automatically released and it has been fiinshed playing.
 	virtual bool IsDone() { return false; }
 
 	virtual CSoundSource::Type GetSoundType() = 0;

@@ -651,7 +651,7 @@ void COpenALSoundManagerImpl::Play( CSoundHandle& sound_handle )
 //	LOG_PRINT_AL_ERROR();
 	ALenum ret = alGetError();
 	if( ret != AL_NO_ERROR )
-		LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) );
+		LOG_PRINT_ERROR( string("alSourcei() failed. - ") + GET_TEXT_FROM_ID( ret, g_OpenALErrors ) );
 
 	// attach the impl to the source
 	SetImpl( pSource, pImpl );

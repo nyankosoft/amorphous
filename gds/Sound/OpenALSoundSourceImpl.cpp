@@ -431,7 +431,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 	ov_clear(&sOggVorbisFile);
 
 	// end the stream thread
-	m_ExitStreamThread = true;
+//	m_ExitStreamThread = true;
 
     return 0;
 }

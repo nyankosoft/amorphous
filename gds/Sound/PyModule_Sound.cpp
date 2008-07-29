@@ -56,6 +56,13 @@ PyObject* PlayStream( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "s|ii", &sound_name, &loop, &volume );
 
+	if( gs_mapNameToSoundSource.find( sound_name ) != gs_mapNameToSoundSource.end() )
+	{
+		// A stream sound with the same name has already been loaded.
+		Py_INCREF( Py_None );
+		return Py_None;
+	}
+
 	CSoundDesc desc;
 	desc.Loop             = loop == 1 ? true : false;
 	desc.Streamed         = true;
