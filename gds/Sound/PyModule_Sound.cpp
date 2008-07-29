@@ -72,6 +72,7 @@ PyObject* PlayStream( PyObject* self, PyObject* args )
 	if( pSource )
 	{
 		gs_mapNameToSoundSource[sound_name] = pSource;
+		pSource->Play();
 	}
 	else
 	{
@@ -112,6 +113,7 @@ PyObject* StopStream( PyObject* self, PyObject* args )
 	CSoundSource *pSource = itr->second;
 	if( pSource )
 	{
+		pSource->Stop();
 		SoundManager().ReleaseSoundSource( pSource );
 	}
 

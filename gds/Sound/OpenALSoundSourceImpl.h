@@ -177,6 +177,8 @@ public:
 
 	COpenALStreamedSoundSourceImpl();
 
+	~COpenALStreamedSoundSourceImpl();
+
 	void Release();
 
 	void Play( double fadein_time );

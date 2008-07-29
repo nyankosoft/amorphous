@@ -165,6 +165,12 @@ m_Loop(false)
 }
 
 
+COpenALStreamedSoundSourceImpl::~COpenALStreamedSoundSourceImpl()
+{
+	EndStreamThread();
+}
+
+
 void COpenALStreamedSoundSourceImpl::OnCreated()
 {
 	COpenALSoundSourceImpl::OnCreated();
@@ -398,7 +404,8 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 		// Check the status of the Source.  If it is not playing, then playback was completed,
 		// or the Source was starved of audio data, and needs to be restarted.
 		alGetSourcei(m_uiSource, AL_SOURCE_STATE, &iState);
-		if (iState != AL_PLAYING)
+		if( iState != AL_PLAYING
+		 && GetRequestedState() == CSoundSource::State_Playing )
 		{
 			// If there are Buffers in the Source Queue then the Source was starved of audio
 			// data, so needs to be restarted (because there is more audio data to play)
