@@ -1,6 +1,8 @@
 #ifndef  __SoundManager_H__
 #define  __SoundManager_H__
 
+#include <string>
+#include <map>
 
 #include "../base.h"
 #include "SoundHandle.h"
@@ -17,6 +19,8 @@ private:
 	CSoundManagerImpl *m_pSoundManagerImpl;
 
 	bool m_bMute;
+
+	std::map<std::string,CSoundSource *> m_mapNameToSoundSource;
 
 protected:
 
@@ -62,16 +66,12 @@ public:
 	/// \param desc [in] sound properties (position, volume, 3D / Non-3D, looped or not, range, etc.)
 	inline void Play( CSoundHandle& sound_handle, const CSoundDesc& desc );
 
-	/// Simplified interface for playing a non-3D, non-looped, streamed sound
+	/// A convenience function for playing a non-3D, streamed sound
+	/// - Plays a non-3D, streamed sound
 	/// - The sound is automatically released after being played
-	/// - Cannot play sound in loop (rationale: no mechanism to access the sound source later and tell it to stop)
-	///   - Use Play( CSoundHandle& sound_handle, CSoundDesc& desc ) to play looped sound
-	inline void PlayStream( CSoundHandle& sound_handle );
+	bool PlayStream( const std::string& resource_path, double fadein_time = 0.0, bool looped = false, int sound_group = 0, U8 volume = 0xFF );
 
-	/// Simplified interface for playing a non-3D, non-looped, streamed sound
-	/// - Plays a non-3D, non-looped streamed sound
-	/// - The sound is automatically released after being played
-	inline void PlayStream( const std::string& resource_path );
+	bool StopStream( const std::string& resource_path, double fadeout_time = 0.0 );
 
 	/// create a sound source
 	/// - Caller is responsible for releasing the sound by ReleaseSoundSource()
@@ -152,19 +152,6 @@ inline void CSoundManager::Play( const std::string& resource_path )
 inline void CSoundManager::Play( CSoundHandle& sound_handle, const CSoundDesc& desc )
 {
 	m_pSoundManagerImpl->Play( sound_handle, desc );
-}
-
-
-inline void CSoundManager::PlayStream( CSoundHandle& sound_handle )
-{
-	m_pSoundManagerImpl->PlayStream( sound_handle );
-}
-
-
-inline void CSoundManager::PlayStream( const std::string& resource_path )
-{
-	CSoundHandle sound_handle( resource_path );
-	m_pSoundManagerImpl->PlayStream( sound_handle );
 }
 
 

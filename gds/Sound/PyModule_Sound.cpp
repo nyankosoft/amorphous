@@ -1,15 +1,43 @@
 #include "PyModule_Sound.h"
 #include "Sound/SoundManager.h"
 #include "Support/Log/DefaultLog.h"
+#include <string>
 #include <map>
 
 using namespace std;
 
 
-static std::map<int,CSoundSource *> gs_mapIDToSoundSource;
+static map<int,CSoundSource *> gs_mapIDToSoundSource;
 
 /// used by PlayStream() and StopStream()
-static std::map<std::string,CSoundSource *> gs_mapNameToSoundSource;
+static map<string,CSoundSource *> gs_mapNameToSoundSource;
+
+
+
+/// Stop and release all sound sources created from scripts
+/// - Used to stop background music and effect sounds when player chooses to leave the stage
+void ReleaseAllScriptSounds()
+{
+	// release sound sources held by id
+	map<int,CSoundSource *>::iterator id_itr;
+	for( id_itr = gs_mapIDToSoundSource.begin();
+		 id_itr != gs_mapIDToSoundSource.end();
+		 id_itr++ )
+	{
+		SoundManager().ReleaseSoundSource( id_itr->second );
+	}
+	gs_mapIDToSoundSource.clear();
+
+	// release sound sources held by name
+	map<string,CSoundSource *>::iterator name_itr;
+	for( name_itr = gs_mapNameToSoundSource.begin();
+		 name_itr != gs_mapNameToSoundSource.end();
+		 name_itr++ )
+	{
+		SoundManager().ReleaseSoundSource( name_itr->second );
+	}
+	gs_mapNameToSoundSource.clear();
+}
 
 
 /// for short, non-looped sound
@@ -49,12 +77,13 @@ PyObject* Play3D( PyObject* self, PyObject* args )
 PyObject* PlayStream( PyObject* self, PyObject* args )
 {
 	char *sound_name;
+	char *sound_group_name;
 	int loop = 0;
 	int volume = 100;
 //	int sound_source_id = 0;
 	double fadein_time = 0.0; // [sec]
 
-	int result = PyArg_ParseTuple( args, "s|ii", &sound_name, &loop, &volume );
+	int result = PyArg_ParseTuple( args, "s|isi", &sound_name, &loop, &sound_group_name, &volume );
 
 	if( gs_mapNameToSoundSource.find( sound_name ) != gs_mapNameToSoundSource.end() )
 	{
@@ -119,17 +148,29 @@ PyObject* StopStream( PyObject* self, PyObject* args )
 
 	gs_mapNameToSoundSource.erase( itr );
 
-    Py_INCREF( Py_None );
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* ReleaseAllSounds( PyObject* self, PyObject* args )
+{
+//	int result = PyArg_ParseTuple( args, "s", &sound_name );
+
+	ReleaseAllScriptSounds();
+
+	Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 PyMethodDef g_PyModuleSoundMethod[] =
 {
-	{ "Play",       Play,	    METH_VARARGS, "plays a non-3D sound" },
-	{ "Play3D",     Play3D,     METH_VARARGS, "plays a sound at a given position (world coordinates)" },
-	{ "PlayStream", PlayStream, METH_VARARGS, "plays a non-3D, stream sound (mainly for background music)" },
-	{ "StopStream", StopStream, METH_VARARGS, "plays a non-3D, stream sound (mainly for background music)" },
+	{ "Play",             Play,	            METH_VARARGS, "plays a non-3D sound" },
+	{ "Play3D",           Play3D,           METH_VARARGS, "plays a sound at a given position (world coordinates)" },
+	{ "PlayStream",       PlayStream,       METH_VARARGS, "plays a non-3D, stream sound (mainly for background music)" },
+	{ "StopStream",       StopStream,       METH_VARARGS, "plays a non-3D, stream sound (mainly for background music)" },
+	{ "ReleaseAllSounds", ReleaseAllSounds, METH_VARARGS, "" },
 //	{ "CreateSoundSource",  CreateSoundSource,  METH_VARARGS, "" },
 //	{ "ReleaseSoundSource", ReleaseSoundSource, METH_VARARGS, "" },
 //	{ "Stop",              Stop,              METH_VARARGS, "" },

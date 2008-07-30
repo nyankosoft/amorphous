@@ -7,6 +7,25 @@
 using namespace std;
 
 
+/**
+ Usage
+ 1. Play short, non-looping sounds (gunshots, explosions, etc.)
+   - Call SoundManager().PlayAt()
+   - No release operation is necessary
+     - Sound source is automatically released
+ 2. Play background music
+   - Call SoundManager().PlayStream() to play
+   - Call SoundManager().StopStream() to stop
+     - These two functions must be called in pairs
+ 3. Create a sound source object in 3D environment
+   - Call SoundManager().CreateSoundSource()
+     - Call CSoundSource::Play() to play the sound from the created sound source
+     - Call CSoundSource::Stop() to stop the sound
+   - Call SoundManager().ReleaseSoundSource() to release the sound source
+     - SoundManager().CreateSoundSource() and SoundManager().ReleaseSoundSource() must be called in pairs
+*/
+
+
 /// define the singleton instance
 CSingleton<CSoundManager> CSoundManager::m_obj;
 
@@ -54,6 +73,60 @@ bool CSoundManager::Init( const std::string& library_name )
 
 	return m_pSoundManagerImpl->Init();
 }
+
+
+bool CSoundManager::PlayStream( const std::string& resource_path, double fadein_time, bool looped, int sound_group, U8 volume )
+{
+//	m_pSoundManagerImpl->PlayStream( resource_path, fadein_time, looped, sound_group, volume );
+
+	if( m_mapNameToSoundSource.find( resource_path ) != m_mapNameToSoundSource.end() )
+	{
+		// A stream sound with the same name has already been loaded.
+		return false;
+	}
+
+	CSoundDesc desc;
+	desc.Loop             = looped == 1 ? true : false;
+	desc.Streamed         = true;
+	desc.SourceManagement = CSoundSource::Manual;
+
+	CSoundSource *pSource = CreateSoundSource( resource_path, desc );
+	if( pSource )
+	{
+		m_mapNameToSoundSource[resource_path] = pSource;
+		pSource->Play();
+		return true;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( "Cannot play streamed sound of: " + resource_path );
+		return false;
+	}
+}
+
+
+bool CSoundManager::StopStream( const std::string& resource_path, double fadeout_time )
+{
+	map<string,CSoundSource *>::iterator itr
+		= m_mapNameToSoundSource.find( resource_path );
+
+	if( itr == m_mapNameToSoundSource.end() )
+	{
+		return false;
+	}
+
+	CSoundSource *pSource = itr->second;
+	if( pSource )
+	{
+		pSource->Stop();
+		SoundManager().ReleaseSoundSource( pSource );
+	}
+
+	m_mapNameToSoundSource.erase( itr );
+
+	return true;
+}
+
 
 /*
 <Sound>
