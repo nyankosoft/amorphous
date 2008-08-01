@@ -98,6 +98,7 @@ public:
 
 	inline void ResumeAllSounds();
 
+	/// NOT IMPLEMENTED YET
 	/// \param volume_group
 	/// \param volume [0,255]
 	inline void SetVolume( int volume_group, uint volume );
@@ -209,6 +210,12 @@ inline void CSoundManager::PauseAllSounds()
 inline void CSoundManager::ResumeAllSounds()
 {
 	m_pSoundManagerImpl->ResumeAllSounds();
+}
+
+
+inline void CSoundManager::SetVolume( int volume_group, uint volume )
+{
+	m_pSoundManagerImpl->SetVolume( volume_group, volume );
 }
 
 

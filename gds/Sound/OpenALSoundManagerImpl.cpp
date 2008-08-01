@@ -325,7 +325,8 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 
 CSoundBuffer::CSoundBuffer()
 :
-m_uiBuffer(0)
+m_uiBuffer(0),
+m_SoundGroup(0)
 {
 	// create a single buffer
 	alGetError();
@@ -349,6 +350,12 @@ void CSoundBuffer::Release()
 bool CSoundBuffer::LoadFromDisk( const std::string& resource_path )
 {
 	m_ResourcePath = resource_path;
+
+	if( resource_path.length() == 0 )
+	{
+		LOG_PRINT_ERROR( "An invalid resource path (an empty string)" );
+		return false;
+	}
 
 	if( fnop::get_ext(resource_path) == "ogg" )
 	{
@@ -616,21 +623,27 @@ void COpenALSoundManagerImpl::PlayAt( CSoundHandle& sound_handle, const Vector3&
 /// plays non-3D sound
 void COpenALSoundManagerImpl::Play( CSoundHandle& sound_handle )
 {
-//	PlayAt( sound_handle, m_ListenerPose.vPosition, 1000.0f, 100.0f, 1.0f );
+	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
 
 	CSoundBuffer *pBuffer = GetSoundBuffer( sound_handle );
 	if( !pBuffer )
 		return;
 
 	// take a sound source currently not in use
-	CSoundSource *pSource = m_SoundSourcePool.get_new_object();
+	CSoundSource *pSource = NULL;
+	COpenALSoundSourceImpl *pImpl = NULL;
+
+	// take a sound source currently not in use
+	pSource = m_SoundSourcePool.get_new_object();
 	if( !pSource )
 		return;
 
 	// get an impl
-	COpenALSoundSourceImpl *pImpl = GetSoundSourceImpl( CSoundSource::NonStreamed );
+	pImpl = GetSoundSourceImpl( CSoundSource::NonStreamed );
 	if( !pImpl )
 		return;
+
+	AddToActiveSourceList( pSource );
 
 	// create OpenAL sound source
 	// - do nothing if source already exists
@@ -656,8 +669,6 @@ void COpenALSoundManagerImpl::Play( CSoundHandle& sound_handle )
 	// attach the impl to the source
 	SetImpl( pSource, pImpl );
 
-	AddToActiveSourceList( pSource );
-
 	pSource->Play();
 
 	return;
@@ -679,6 +690,8 @@ void COpenALSoundManagerImpl::PlayStream( CSoundHandle& sound_handle )
 CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_handle,
 		                                                  const CSoundDesc& desc )
 {
+	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+
 	CSoundBuffer *pBuffer = NULL;
 	
 	if( !desc.Streamed )
@@ -689,16 +702,21 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 	}
 
 	// take a sound source currently not in use
-	CSoundSource *pSource = m_SoundSourcePool.get_new_object();
+	CSoundSource *pSource = NULL;
+	COpenALSoundSourceImpl *pImpl = NULL;
+
+	pSource = m_SoundSourcePool.get_new_object();
 	if( !pSource )
 		return NULL;
 
 	// get an impl
 	CSoundSource::StreamType stream_type = desc.Streamed ? CSoundSource::Streamed : CSoundSource::NonStreamed;
-	COpenALSoundSourceImpl *pImpl = GetSoundSourceImpl( stream_type );
+	pImpl = GetSoundSourceImpl( stream_type );
 
 	if( !pImpl )
 		return NULL;
+
+	AddToActiveSourceList( pSource );
 
 	pImpl->CreateSource();
 
@@ -737,15 +755,13 @@ CSoundSource *COpenALSoundManagerImpl::CreateSoundSource( CSoundHandle& sound_ha
 
 	pSource->SetLoop( desc.Loop );
 
-	AddToActiveSourceList( pSource );
-
 	return pSource;
 }
 
 
 void COpenALSoundManagerImpl::AddToActiveSourceList( CSoundSource *pSource )
 {
-	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+//	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
 
 	m_ActiveSoundList.push_back( pSource );
 }
@@ -804,6 +820,23 @@ void COpenALSoundManagerImpl::ResumeAllSounds()
 }
 
 
+void COpenALSoundManagerImpl::SetVolume( int volume_group, uint volume )
+{
+	if( 0 <= volume_group )
+	{
+		while( (int)m_vecVolume.size() <= volume_group )
+			m_vecVolume.push_back( 0xFF );
+
+		m_vecVolume[volume_group] = volume;
+
+		{
+			boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+//			for( each active_sound_source )
+		}
+	}
+}
+
+
 void COpenALSoundManagerImpl::SetListenerPosition( const Vector3& vPosition )
 {
 	float afListenerPos[3];
@@ -815,6 +848,12 @@ void COpenALSoundManagerImpl::SetListenerPosition( const Vector3& vPosition )
 	m_ListenerPose.vPosition = vPosition;
 
 	// move non-3D sound source to the listener position?
+	{
+		boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+//		for(;;)
+//		{
+//		}
+	}
 }
 
 
@@ -875,7 +914,7 @@ void COpenALSoundManagerImpl::Update()
 	}
 }
 
-
+/*
 CSoundSourceImpl *COpenALSoundManagerImpl::CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type )
 {
 	COpenALSoundSourceImpl *pImpl;
@@ -892,7 +931,7 @@ CSoundSourceImpl *COpenALSoundManagerImpl::CreateSoundSourceImpl( CSoundSource::
 
 	return pImpl;
 }
-
+*/
 
 /*
 Based on samples included in OpenAL 1.1 SDK

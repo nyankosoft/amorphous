@@ -35,6 +35,8 @@ class CSoundBuffer
 
 	ALuint m_uiBuffer;
 
+	int m_SoundGroup; ///< defualt sound group of the source attached to this buffer (music, effect, etc.)
+
 
 	int m_StockIndex; ///< used by prealloc_pool
 	int m_StockID;    ///< used by prealloc_pool
@@ -102,6 +104,8 @@ class COpenALSoundManagerImpl : public CSoundManagerImpl
 
 	Matrix34 m_ListenerPose;
 	Vector3 m_vListenerVelocity;
+
+	std::vector<U8> m_vecVolume;
 
 	// thread to release finished sound sources
 
@@ -178,6 +182,7 @@ public:
 
 	void ResumeAllSounds();
 
+	void SetVolume( int volume_group, uint volume );
 
 	void SetListenerPosition( const Vector3& vPosition );
 
@@ -192,9 +197,8 @@ public:
 
 //	void CommitDeferredSettings()
 
-	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type );
+//	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type );
 
-//	void operator()();
 	void ThreadMain();
 
 	friend class COpenALStreamedSoundSourceImpl;

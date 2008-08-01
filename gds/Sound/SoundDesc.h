@@ -38,6 +38,13 @@ public:
 	/// - manual ... user is responsible for releasing the sound by calling SoundManager().ReleaseSoundSource()
 	CSoundSource::Management SourceManagement;
 
+	/// group to which the sound source belongs
+	/// e.g., music, effect, etc.
+	/// By default,
+	/// - non-streamed sound source: group of the sound buffer
+	/// - sreamed sound source: 0
+	int SoundGroup;
+
 public:
 
 	CSoundDesc()
@@ -52,7 +59,8 @@ public:
 	ReferenceDistance(100.0f),
 	RollOffFactor(1.0f),
 	Volume(255),
-	SourceManagement(CSoundSource::Manual)
+	SourceManagement(CSoundSource::Manual),
+	SoundGroup(-1)
 	{}
 
 	friend class CSoundManager;

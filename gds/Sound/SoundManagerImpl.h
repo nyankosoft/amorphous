@@ -52,6 +52,8 @@ public:
 
 	virtual void ResumeAllSounds() = 0;
 
+	virtual void SetVolume( int volume_group, uint volume ) = 0;
+
 	virtual void SetListenerPosition( const Vector3& vPosition ) = 0;
 
 	virtual void SetListenerPose( const Vector3& vPosition,
@@ -63,7 +65,7 @@ public:
 	/// DirectSound needs a function like this
 	virtual void CommitDeferredSettings() {}
 
-	virtual CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) = 0;
+//	virtual CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) = 0;
 };
 
 
@@ -98,6 +100,8 @@ public:
 
 	void ResumeAllSounds() {}
 
+	void SetVolume( int volume_group, uint volume ) {}
+
 	void SetListenerPosition( const Vector3& vPosition ) {}
 
 	void SetListenerPose( const Vector3& vPosition,
@@ -106,7 +110,7 @@ public:
 
 	void SetListenerVelocity( const Vector3& vVelocity ) {}
 
-	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) { return NULL; }
+//	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) { return NULL; }
 };
 
 
