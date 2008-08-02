@@ -249,6 +249,9 @@ bool CGI_Aircraft::InitMeshController( CD3DXSMeshObject* pMesh )
 // 
 void CGI_Aircraft::ResetMeshController()
 {
+	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMeshObject() )
+		return;
+
 	size_t i, num = m_vecpMeshController.size();
 	for( i=0; i<num; i++ )
 		m_vecpMeshController[i]->SetTargetMesh( NULL );
@@ -257,6 +260,9 @@ void CGI_Aircraft::ResetMeshController()
 
 void CGI_Aircraft::UpdateTargetMeshTransforms()
 {
+	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMeshObject() )
+		return;
+
 	size_t i, num = m_vecpMeshController.size();
 	for( i=0; i<num; i++ )
 		m_vecpMeshController[i]->UpdateTargetMeshTransforms();
