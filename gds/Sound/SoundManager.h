@@ -118,6 +118,8 @@ public:
 
 	inline void SetMute( bool mute ) { m_bMute = mute; }
 
+	inline void GetTextInfo( char *pDestBuffer );
+
 	friend class CSingleton<CSoundManager>;
 };
 
@@ -252,6 +254,12 @@ inline void CSoundManager::SetListenerVelocity( const Vector3& vVelocity )
 inline void CSoundManager::CommitDeferredSettings()
 {
 	m_pSoundManagerImpl->CommitDeferredSettings();
+}
+
+
+inline void CSoundManager::GetTextInfo( char *pDestBuffer )
+{
+	m_pSoundManagerImpl->GetTextInfo( pDestBuffer );
 }
 
 

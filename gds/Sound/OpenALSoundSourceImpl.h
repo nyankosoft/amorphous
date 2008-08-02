@@ -7,6 +7,7 @@
 #include "Sound/SoundManagerImpl.h"
 #include "Support/stream_buffer.h"
 #include "Support/prealloc_pool.h"
+#include "Support/Macro.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <al.h>
@@ -32,6 +33,8 @@ public:
 	text(_text)
 	{}
 };
+
+extern const IDAndTextPair g_OpenALErrors[6];
 
 
 #define GET_TEXT_FROM_ID( id, id_and_text_array ) GetTextFromID( id, id_and_text_array, numof(id_and_text_array) )
@@ -99,6 +102,8 @@ public:
 
 	CSoundSource::State GetState();
 
+//	void GetTextInfo( std::string& dest_buffer );
+
 	void CreateSource();
 
 	void ReleaseSource();
@@ -157,6 +162,8 @@ class COpenALStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 	/// - Not used when the sound is streamed directly from the disk
 	stream_buffer m_Buffer;
 
+	int m_NumTotalBuffersProcessed;
+
 	CSoundSource::State m_RequestedState;
 
 	bool m_ExitStreamThread;
@@ -192,6 +199,8 @@ public:
 	void SetLoop( bool loop );
 
 	CSoundSource::StreamType GetStreamType() { return CSoundSource::Streamed; }
+
+	void GetTextInfo( std::string& dest_buffer );
 
 //	void StartStreamThread();
 
@@ -253,6 +262,8 @@ public:
 	void SetLoop( bool loop );
 
 	CSoundSource::StreamType GetStreamType() { return CSoundSource::NonStreamed; }
+
+	void GetTextInfo( std::string& dest_buffer );
 };
 
 

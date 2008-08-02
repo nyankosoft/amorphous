@@ -5,11 +5,12 @@
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
 
+#include <string.h>
 #include <vorbis/vorbisfile.h>
 
 
 
-const static IDAndTextPair g_OpenALErrors[] =
+const IDAndTextPair g_OpenALErrors[6] =
 {
 	ID_AND_TEXT( AL_NO_ERROR ),
 	ID_AND_TEXT( AL_INVALID_NAME ),
@@ -778,6 +779,8 @@ void COpenALSoundManagerImpl::DetachImpl( CSoundSource* pSoundSource )
 }
 
 
+/// Just mark the sound source as 'released'
+/// - COpenALSoundManagerImpl::Update() later releases the sound source
 void COpenALSoundManagerImpl::ReleaseSoundSource( CSoundSource*& pSoundSource )
 {
 	if( !pSoundSource )
@@ -785,10 +788,6 @@ void COpenALSoundManagerImpl::ReleaseSoundSource( CSoundSource*& pSoundSource )
 
 	// mark the released flag to true
 	pSoundSource->OnReleased();
-
-//	DetachImpl( pSoundSource ); - Dont do it here. Done in Update()
-
-//	m_SoundSourcePool.release( pSoundSource ); - Dont do it here. Done in Update()
 
 	pSoundSource = NULL;
 
@@ -798,6 +797,8 @@ void COpenALSoundManagerImpl::ReleaseSoundSource( CSoundSource*& pSoundSource )
 
 void COpenALSoundManagerImpl::PauseAllSounds()
 {
+	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+
 	list<CSoundSource *>::iterator itr;
 	for( itr = m_ActiveSoundList.begin();
 		itr != m_ActiveSoundList.end();
@@ -810,6 +811,8 @@ void COpenALSoundManagerImpl::PauseAllSounds()
 
 void COpenALSoundManagerImpl::ResumeAllSounds()
 {
+	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+
 	list<CSoundSource *>::iterator itr;
 	for( itr = m_ActiveSoundList.begin();
 		itr != m_ActiveSoundList.end();
@@ -848,12 +851,18 @@ void COpenALSoundManagerImpl::SetListenerPosition( const Vector3& vPosition )
 	m_ListenerPose.vPosition = vPosition;
 
 	// move non-3D sound source to the listener position?
-	{
+/*	{
 		boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
-//		for(;;)
-//		{
-//		}
-	}
+
+		list<CSoundSource *>::iterator itr;
+		for( itr = m_ActiveSoundList.begin();
+			itr != m_ActiveSoundList.end();
+			itr++)
+		{
+			if( itr->GetType() == CSoundSource::Type_Non3DSound )
+				itr->SetPosition( m_ListenerPose.vPosition );
+		}
+	}*/
 }
 
 
@@ -914,6 +923,52 @@ void COpenALSoundManagerImpl::Update()
 	}
 }
 
+
+void COpenALSoundManagerImpl::GetTextInfo( char *pDestBuffer )
+{
+	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+
+	const size_t num_buffers = m_ActiveSoundBuffer.size();
+
+	char text[1024];
+	sprintf( text, "Sound Buffers (%d in total)\n----------------------------------------\n",
+		num_buffers );
+	strcat( pDestBuffer, text );
+
+	map< string, CSoundBuffer *>::iterator itr;
+	for( itr =  m_ActiveSoundBuffer.begin();
+		 itr != m_ActiveSoundBuffer.end();
+		 itr++ )
+	{
+		sprintf( text, "name: %s / buffer id: %d\n", 
+		itr->second->m_ResourcePath.c_str(),
+		itr->second->m_uiBuffer
+		);
+
+		strcat( pDestBuffer, text );
+	}
+
+	strcat( pDestBuffer, "\n" );
+
+	string text_buffer;
+	const size_t num_sources = m_ActiveSoundList.size();
+
+	sprintf( text, "Sound Sources (%d in total)\n----------------------------------------\n",
+		num_sources );
+	strcat( pDestBuffer, text );
+
+	std::list<CSoundSource *>::iterator itrSource;
+	for( itrSource =  m_ActiveSoundList.begin();
+		 itrSource != m_ActiveSoundList.end();
+		 itrSource++ )
+	{
+		(*itrSource)->GetTextInfo( text_buffer );
+
+		strcat( pDestBuffer, text_buffer.c_str() );
+	}
+}
+
+
 /*
 CSoundSourceImpl *COpenALSoundManagerImpl::CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type )
 {
@@ -960,14 +1015,6 @@ Based on samples included in OpenAL 1.1 SDK
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*
-#include "Vorbis/vorbisfile.h"
-
-int m_NumBuffersForStreaming;   (4)
-
-// Ogg Vorbis
-
-// Ogg Voribis DLL Handle
-//HINSTANCE g_hVorbisFileDLL = NULL;
 
 // Functions
 void InitVorbisFile();
@@ -988,15 +1035,4 @@ typedef vorbis_info * (*LPOVINFO)(OggVorbis_File *vf,int link);
 typedef vorbis_comment * (*LPOVCOMMENT)(OggVorbis_File *vf,int link);
 typedef int (*LPOVOPENCALLBACKS)(void *datasource, OggVorbis_File *vf,char *initial, long ibytes, ov_callbacks callbacks);
 
-
-bool g_bVorbisInit = false;
-void ShutdownVorbisFile()
-{
-	if (g_hVorbisFileDLL)
-	{
-		FreeLibrary(g_hVorbisFileDLL);
-		g_hVorbisFileDLL = NULL;
-	}
-	g_bVorbisInit = false;
-}
 */

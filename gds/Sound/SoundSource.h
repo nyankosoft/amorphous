@@ -2,6 +2,7 @@
 #define  __SoundSource_H__
 
 
+#include <string>
 #include "3DMath/Matrix34.h"
 
 
@@ -97,6 +98,8 @@ public:
 
 	inline CSoundSource::State GetState();
 
+	inline void GetTextInfo( std::string& dest_buffer );
+
 	// functions used by pre_alloc_pool
 	// - Not used if the implementation of the sound manager does not use
 	//   pre_alloc_pool for memory management of CSoundSource
@@ -157,6 +160,8 @@ public:
 	virtual CSoundSource::Management GetManagementType() = 0;
 
 	virtual CSoundSource::State GetState() = 0;
+
+	virtual void GetTextInfo( std::string& dest_buffer ) {}
 };
 
 
@@ -235,6 +240,11 @@ inline CSoundSource::Management CSoundSource::GetManagementType()
 inline CSoundSource::State CSoundSource::GetState()
 {
 	return m_pImpl->GetState();
+}
+
+inline void CSoundSource::GetTextInfo( std::string& dest_buffer )
+{
+	return m_pImpl->GetTextInfo( dest_buffer );
 }
 
 

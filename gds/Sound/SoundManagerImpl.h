@@ -65,6 +65,8 @@ public:
 	/// DirectSound needs a function like this
 	virtual void CommitDeferredSettings() {}
 
+	virtual void GetTextInfo( char *pDestBuffer ) {}
+
 //	virtual CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) = 0;
 };
 

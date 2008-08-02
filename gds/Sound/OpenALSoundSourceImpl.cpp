@@ -147,6 +147,7 @@ void COpenALSoundSourceImpl::CreateSource()
 void COpenALSoundSourceImpl::ReleaseSource()
 {
 	alDeleteSources( 1, &m_uiSource );
+	m_uiSource = 0;
 }
 
 
@@ -160,8 +161,11 @@ m_NumBuffersForStreaming( NUM_DEFAULT_BUFFERS_FOR_STREAMING ),
 m_ServiceUpdatePeriodMS( DEFAULT_SERVICE_UPDATE_PERIOD_MS ),
 m_StreamMethod( StreamFromDisk ),
 m_ExitStreamThread(false),
-m_Loop(false)
+m_Loop(false),
+m_NumTotalBuffersProcessed(0)
 {
+	for( int i=0; i<NUM_MAX_BUFFERS_FOR_STREAMING; i++ )
+		m_uiBuffers[i] = 0;
 }
 
 
@@ -283,12 +287,14 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 
 	ALuint  uiBuffer;
 	ALint   iState;
-	ALint   iBuffersProcessed, iTotalBuffersProcessed, iQueuedBuffers;
+	ALint   iBuffersProcessed;
 	ulong   ulFrequency = 0;
 	ulong   ulFormat = 0;
 	ulong   ulChannels = 0;
 	ulong   ulBufferSize;
 	ulong   ulBytesWritten;
+
+	m_NumTotalBuffersProcessed = 0;
 
 	// Open Ogg Stream
 	stream_buffer src_buffer;
@@ -317,8 +323,19 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 		return 1;
 	}
 
+	alGetError();
+
 	// Generate some AL Buffers for streaming
 	alGenBuffers( m_NumBuffersForStreaming, m_uiBuffers );
+
+	ALenum al_error = alGetError();
+	if( al_error != AL_NO_ERROR )
+		LOG_PRINT_ERROR( "alGenBuffers() failed." );
+
+	// Check if the current source is valid
+	if( alIsSource( m_uiSource ) == AL_FALSE )
+		LOG_PRINT_ERROR( "An invalid sound source." );
+
 
 	// Fill all the Buffers with decoded audio data from the OggVorbis file
 	for ( int iLoop = 0; iLoop < m_NumBuffersForStreaming; iLoop++ )
@@ -327,42 +344,72 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 		if (ulBytesWritten)
 		{
 			alBufferData( m_uiBuffers[iLoop], ulFormat, pDecodeBuffer, ulBytesWritten, ulFrequency );
+
+			al_error = alGetError();
+			if( al_error != AL_NO_ERROR )
+				LOG_PRINT_ERROR( "alBufferData() failed. Error: " + string(GET_TEXT_FROM_ID(al_error,g_OpenALErrors)) );
+
 			alSourceQueueBuffers( m_uiSource, 1, &m_uiBuffers[iLoop] );
+
+			al_error = alGetError();
+			if( al_error != AL_NO_ERROR )
+				LOG_PRINT_ERROR( "alSourceQueueBuffers() failed. Error: " + string(GET_TEXT_FROM_ID(al_error,g_OpenALErrors)) );
 		}
 	}
 
 	// Start playing source
+	alGetError();
 	alSourcePlay(m_uiSource);
 
-	iTotalBuffersProcessed = 0;
+	al_error = alGetError();
+	if( al_error != AL_NO_ERROR )
+		LOG_PRINT_ERROR( "alSourcePlay() failed. Error: " + string(GET_TEXT_FROM_ID(al_error,g_OpenALErrors)) );
+
+	m_NumTotalBuffersProcessed = 0;
 
 	ALint state;
 	while( GetRequestedState() != CSoundSource::State_Stopped )
 	{
+		Sleep( m_ServiceUpdatePeriodMS );
+
 		alGetSourcei( m_uiSource, AL_SOURCE_STATE, &state );
 		if( GetRequestedState() == CSoundSource::State_Paused
 		 && state == AL_PLAYING )
 		{
 			// pause
 			alSourcePause( m_uiSource );
+			while( GetRequestedState() == CSoundSource::State_Paused )
+			{
+				Sleep( m_ServiceUpdatePeriodMS );
+			}
+
+			if( GetRequestedState() == CSoundSource::State_Playing )
+				alSourcePlay( m_uiSource );
+
+			// Sometimes sound is not correctly played after this
+			// - The sound turns into some continuous noise
+			// - It also affects other sound sources
+			//   - e.g., When this bug happens, UI event sounds played afterwards gets some noise
+
+			// What about sleeping here a little?
+			Sleep( 100 );
 		}
-		else if( GetRequestedState() == CSoundSource::State_Playing
+
+/*		if( GetRequestedState() == CSoundSource::State_Playing
 		 && state == AL_PAUSED )
 		{
 			// resume
 			alSourcePlay( m_uiSource );
 
 		}
-
-		Sleep( m_ServiceUpdatePeriodMS );
-
+*/
 		// Request the number of OpenAL Buffers have been processed (played) on the Source
 		iBuffersProcessed = 0;
 		alGetSourcei(m_uiSource, AL_BUFFERS_PROCESSED, &iBuffersProcessed);
 
 		// Keep a running count of number of buffers processed (for logging purposes only)
-		iTotalBuffersProcessed += iBuffersProcessed;
-//		ALFWprintf("Buffers Processed %d\r", iTotalBuffersProcessed);
+		m_NumTotalBuffersProcessed += iBuffersProcessed;
+//		ALFWprintf("Buffers Processed %d\r", m_NumTotalBuffersProcessed);
 
 		// For each processed buffer, remove it from the Source Queue, read next chunk of audio
 		// data from disk, fill buffer with new data, and add it to the Source Queue
@@ -374,10 +421,20 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 
 			// Read more audio data (if there is any)
 			ulBytesWritten = DecodeOggVorbis( &sOggVorbisFile, pDecodeBuffer, ulBufferSize, ulChannels );
+			alGetError();
 			if (ulBytesWritten)
 			{
 				alBufferData(uiBuffer, ulFormat, pDecodeBuffer, ulBytesWritten, ulFrequency);
+
+				al_error = alGetError();
+				if( al_error != AL_NO_ERROR )
+					LOG_PRINT_ERROR( "alBufferData() failed. Error: " + string(GET_TEXT_FROM_ID(al_error,g_OpenALErrors)) );
+
 				alSourceQueueBuffers(m_uiSource, 1, &uiBuffer);
+
+				al_error = alGetError();
+				if( al_error != AL_NO_ERROR )
+					LOG_PRINT_ERROR( "alSourceQueueBuffers() failed. Error: " + string(GET_TEXT_FROM_ID(al_error,g_OpenALErrors)) );
 			}
 			else if( m_Loop )
 			{
@@ -409,11 +466,12 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 		{
 			// If there are Buffers in the Source Queue then the Source was starved of audio
 			// data, so needs to be restarted (because there is more audio data to play)
+			ALint iQueuedBuffers = 0;
 			alGetSourcei(m_uiSource, AL_BUFFERS_QUEUED, &iQueuedBuffers);
 			if (iQueuedBuffers)
 			{
-				Play( 0.0 );
-				// alSourcePlay(m_uiSource);
+				// Play( 0.0 );
+				alSourcePlay(m_uiSource);
 			}
 			else
 			{
@@ -429,6 +487,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 
 	// Clean up buffers and sources
 	alDeleteSources( 1, &m_uiSource );
+	m_uiSource = 0;
 	alDeleteBuffers( m_NumBuffersForStreaming, m_uiBuffers );
 
 	// Release the temporary buffer to store decoded data
@@ -441,6 +500,20 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 //	m_ExitStreamThread = true;
 
     return 0;
+}
+
+
+void COpenALStreamedSoundSourceImpl::GetTextInfo( std::string& dest_buffer )
+{
+	char buffer[1024];
+	sprintf( buffer, "streamed /     source id: %d / resource: %s / req. state: %d / %d buffers processed\n",
+		m_uiSource,
+		m_ResourcePath.c_str(),
+		GetRequestedState(),
+		m_NumTotalBuffersProcessed
+		);
+
+	dest_buffer = buffer;
 }
 
 
@@ -482,4 +555,14 @@ void COpenALNonStreamedSoundSourceImpl::Resume( double fadein_time )
 void COpenALNonStreamedSoundSourceImpl::SetLoop( bool loop )
 {
 	alSourcei( m_uiSource, AL_LOOPING, loop ? AL_TRUE : AL_FALSE );
+}
+
+
+void COpenALNonStreamedSoundSourceImpl::GetTextInfo( std::string& dest_buffer )
+{
+	char buffer[1024];
+	sprintf( buffer, "non-streamed / source id: %d\n",
+		m_uiSource );
+
+	dest_buffer = buffer;
 }

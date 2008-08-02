@@ -197,6 +197,8 @@ public:
 
 //	void CommitDeferredSettings()
 
+	void GetTextInfo( char *pDestBuffer );
+
 //	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type );
 
 	void ThreadMain();
