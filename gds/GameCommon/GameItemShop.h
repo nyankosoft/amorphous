@@ -95,7 +95,7 @@ public:
 
 		if( true/*paid*/ )
 		{
-			CGameItem *pItemCopy = ItemDatabaseManager.GetItem( m_vecpItem[index]->GetName(), quantity );
+			CGameItem *pItemCopy = ItemDatabaseManager().GetItemRawPtr( m_vecpItem[index]->GetName(), quantity );
 
 			int num_items_received = customer.AddItem( pItemCopy );
 

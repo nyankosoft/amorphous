@@ -479,7 +479,7 @@ void CBE_EnemyAircraft::AddExtraData()
 
 	ex.m_bInUse = true;
 
-	CGameItem *pItem = CItemDatabaseManager::Get()->GetItem( m_strAircraftItemName.c_str(), 1 );
+	CGameItem *pItem = ItemDatabaseManager().GetItemRawPtr( m_strAircraftItemName, 1 );
 
 	if( !pItem )
 	{

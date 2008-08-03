@@ -180,7 +180,7 @@ int CPlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
 	if( i == num_items )
 	{
 		// a new item - needs to be copied from the item database
-		CGameItem *pItem = ItemDatabaseManager.GetItem( pcItemName, iSupplyQuantity );
+		CGameItem *pItem = ItemDatabaseManager().GetItemRawPtr( pcItemName, iSupplyQuantity );
 		if( !pItem /*|| !(pItem->GetTypeFlag() & CGameItem::TYPE_AMMO)*/ )
 			return 0;	// the item was not found in the database
 

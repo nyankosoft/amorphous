@@ -20,11 +20,11 @@ void CItemDatabaseManager::Release()
 }
 
 
-bool CItemDatabaseManager::Update( const char *pcFilename )
+bool CItemDatabaseManager::Update( const std::string& filename )
 {
 	CItemDatabaseBuilder item_db_builder;
 
-	return item_db_builder.CreateItemDatabaseFile( pcFilename );
+	return item_db_builder.CreateItemDatabaseFile( filename );
 }
 
 
@@ -47,7 +47,7 @@ bool CItemDatabaseManager::LoadFromFile( const std::string& filename )
 }
 
 
-CGameItem *CItemDatabaseManager::GetItem( const std::string& item_name, int quantity )
+CGameItem *CItemDatabaseManager::GetItemRawPtr( const std::string& item_name, int quantity )
 {
 	if( !m_pItemDatabase )
 		return NULL;

@@ -77,7 +77,7 @@ PyObject* AddItem( PyObject* self, PyObject* args )
 
 	if( pShop )
 	{
-		CGameItem* pItem = ItemDatabaseManager.GetItem( item_name, 1 );
+		CGameItem* pItem = ItemDatabaseManager().GetItemRawPtr( item_name, 1 );
 
 		if( pItem )
 			pShop->AddItem( pItem );
