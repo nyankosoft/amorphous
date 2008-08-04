@@ -418,23 +418,19 @@ m_pThumbGroup(NULL)
 }
 
 
-void CGM_StdScrollBarRenderer::Init()
+void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 {
-	CGM_ScrollBar *pScrollbar = GetScrollBar();
-	if( !pScrollbar )
-		return;
-
 	CGraphicsElementManager *pElementMgr = m_pGraphicsElementManager;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
 
-	SRect thumb_rect = pScrollbar->GetThumbButtonRect();
+	SRect thumb_rect = scrollbar.GetThumbButtonRect();
 	const SRect src_rect[NUM_RECT_ELEMENTS] =
 	{
-		pScrollbar->GetLocalUpButtonRectInOwnerDialogCoord(),
-		pScrollbar->GetLocalDownButtonRectInOwnerDialogCoord(),
-		pScrollbar->GetLocalTrackRectInOwnerDialogCoord(),
+		scrollbar.GetLocalUpButtonRectInOwnerDialogCoord(),
+		scrollbar.GetLocalDownButtonRectInOwnerDialogCoord(),
+		scrollbar.GetLocalTrackRectInOwnerDialogCoord(),
 		RectLTWH( 0, 0, thumb_rect.GetWidth(), thumb_rect.GetHeight() ) // thumb rect elements are grouped by a group element
 	};
 
@@ -478,7 +474,7 @@ void CGM_StdScrollBarRenderer::Init()
 	// - create a subgroup
 	// - local origin: top-left corner of the rect in local coord of the owner dialog (owner dialog coord)
 	CGraphicsElement *apElement[] = { m_apFrameRect[RE_THUMB], m_apRect[RE_THUMB] };
-	SRect thumb_rect_in_owner_dlg_coord = pScrollbar->GetLocalThumbButtonRectInOwnerDialogCoord();
+	SRect thumb_rect_in_owner_dlg_coord = scrollbar.GetLocalThumbButtonRectInOwnerDialogCoord();
 	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement), thumb_rect_in_owner_dlg_coord.GetTopLeftCorner() );
 
 	RegisterGraphicsElementToParentDialog( m_pThumbGroup );

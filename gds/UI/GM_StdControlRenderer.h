@@ -273,7 +273,7 @@ public:
 
 	virtual ~CGM_StdScrollBarRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_ScrollBar& scrollbar );
 
 //	virtual void OnItemSelectionChanged( CGM_ListBox& listbox );
 
