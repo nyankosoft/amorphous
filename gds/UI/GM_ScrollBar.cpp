@@ -90,7 +90,7 @@ void CGM_ScrollBar::UpdateThumbRect()
 	}
 
 	if( m_pRenderer )
-		m_pRenderer->OnThumbUpdated( this );
+		m_pRenderer->OnThumbUpdated( *this );
 }
 
 

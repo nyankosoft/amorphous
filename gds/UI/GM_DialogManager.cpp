@@ -62,7 +62,7 @@ void CGM_DialogManager::Init( CGM_ControlRendererManagerSharedPtr pRendererManag
 		{
 			m_pCaptionRenderer->SetControlRendererManager( GetControlRendererManager() );
 			m_pCaptionRenderer->SetControl( NULL ); // caption renderer is not bound to any control
-			m_pCaptionRenderer->Init();
+			m_pCaptionRenderer->InitCaptionRenderer();
 		}
 	}
 }
@@ -127,7 +127,7 @@ CGM_Dialog *CGM_DialogManager::AddDialog( CGM_DialogDesc &rDialogDesc )
 		pDialog->SetRendererSharedPtr( pRenderer );
 		pRenderer->SetControlRendererManager( m_pRendererManager.get() );
 		pRenderer->SetControl( pDialog );
-		pRenderer->Init();
+		pRenderer->Init( *pDialog );
 	}
 
 	m_NeedToUpdateGraphicsProperties = true;
@@ -443,14 +443,14 @@ bool CGM_DialogManager::RequestFocus( CGM_Control* pControl )
         ControlFocus()->OnFocusOut();
 
 	if( m_pCaptionRenderer )
-		m_pCaptionRenderer->OnControlFocusCleared( pPrevFocusedControl );
+		m_pCaptionRenderer->OnControlFocusCleared( *pPrevFocusedControl );
 
 	// set the focus to 'pControl'
     pControl->OnFocusIn();
     ControlFocus() = pControl;
 
 	if( m_pCaptionRenderer )
-		m_pCaptionRenderer->OnControlFocused( pControl );
+		m_pCaptionRenderer->OnControlFocused( *pControl );
 
 	return true;
 }

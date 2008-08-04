@@ -1,4 +1,3 @@
-
 #include "GM_ControlRenderer.h"
 #include "GM_Control.h"
 #include "GM_Dialog.h"
@@ -9,15 +8,6 @@
 #include "3DCommon/GraphicsEffectManager.h"
 
 using namespace std;
-
-
-CGM_ControlRenderer::CGM_ControlRenderer()
-:
-m_pGroupElement(NULL)
-{
-//	m_TextLayoutH = TL_CENTER;
-//	m_TextLayoutV = TL_CENTER;
-}
 
 
 CGM_ControlRenderer::~CGM_ControlRenderer()

@@ -7,7 +7,7 @@
 #include "Graphics/Rect.h"
 using namespace Graphics;
 
-#include "ui_fwd.h"
+#include "fwd.h"
 
 
 extern CGM_Dialog *Create2ChoiceDialog( CGM_DialogManager* pDlgMgr, bool root_dialog,

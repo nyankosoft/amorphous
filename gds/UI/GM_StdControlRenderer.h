@@ -2,7 +2,7 @@
 #define  __GM_STDCONTROLRENDERER_H__
 
 
-#include "ui_fwd.h"
+#include "fwd.h"
 #include "GM_ControlRenderer.h"
 #include "GM_Control.h"
 
@@ -63,32 +63,32 @@ public:
 
 	virtual ~CGM_StdControlRenderer() {}
 
-	virtual void OnFocused();
-	virtual void OnFocusCleared();
+	virtual void OnFocused( CGM_Control& control );
+	virtual void OnFocusCleared( CGM_Control& control );
 
 	/// for button renderers
-	virtual void OnPressed();
-	virtual void OnReleased();
+	virtual void OnPressed( CGM_Button& button );
+	virtual void OnReleased( CGM_Button& button );
 
 	/// for check box and radio button renderers
-	virtual void OnChecked();
-	virtual void OnCheckCleared();
+	virtual void OnChecked( CGM_CheckBox& checkbox );
+	virtual void OnCheckCleared( CGM_CheckBox& checkbox );
 
-	virtual void OnMouseCursorEntered();
-	virtual void OnMouseCursorLeft();
+	virtual void OnMouseCursorEntered( CGM_Control& control );
+	virtual void OnMouseCursorLeft( CGM_Control& control );
 
 	/// for list box renderer
-	virtual void OnItemSelectionFocusCreated();
-	virtual void OnItemSelectionChanged();
-	virtual void OnItemSelected();
+	virtual void OnItemSelectionFocusCreated( CGM_ListBox& listbox );
+	virtual void OnItemSelectionChanged( CGM_ListBox& listbox );
+	virtual void OnItemSelected( CGM_ListBox& listbox );
 
 	/// for slider renderer
-	virtual void OnSliderValueChanged();
+	virtual void OnSliderValueChanged( CGM_Slider& slider );
 
 	// for dialog
-	virtual void OnDialogOpened();
-	virtual void OnDialogClosed();
-	virtual void OnOpenDialogAttemptedToClose();
+	virtual void OnDialogOpened( CGM_Dialog& dialog );
+	virtual void OnDialogClosed( CGM_Dialog& dialog );
+	virtual void OnOpenDialogAttemptedToClose( CGM_Dialog& dialog );
 
 	virtual void OnParentSubDialogButtonFocused();
 	virtual void OnParentSubDialogButtonFocusCleared();
@@ -107,7 +107,7 @@ public:
 
 	virtual ~CGM_StdStaticRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_Static& static_control );
 };
 
 
@@ -124,19 +124,19 @@ public:
 
 	virtual ~CGM_StdButtonRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_Button& button );
 
-//	virtual void OnMouseCursorEntered();
+//	virtual void OnMouseCursorEntered( CGM_Control& control );
 
-//	virtual void OnMouseCursorLeft();
+//	virtual void OnMouseCursorLeft( CGM_Control& control );
 
-	virtual void OnPressed() {}
+	virtual void OnPressed( CGM_Button& button ) {}
 
-	virtual void OnReleased() {}
+	virtual void OnReleased( CGM_Button& button ) {}
 
-//	virtual void OnFocused();
+//	virtual void OnFocused( CGM_Control& control );
 
-//	virtual void OnFocusCleared();
+//	virtual void OnFocusCleared( CGM_Control& control );
 };
 
 
@@ -152,18 +152,18 @@ public:
 
 	virtual ~CGM_StdCheckBoxRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_CheckBox& checkbox );
 
-//	virtual void OnPressed() { OnPressedStd(); }
-//	virtual void OnReleased() { OnReleasedStd(); }
-//	virtual void OnMouseCursorEntered() {}
-//	virtual void OnMouseCursorLeft() {}
+//	virtual void OnPressed( CGM_Button& button ) { OnPressedStd(); }
+//	virtual void OnReleased( CGM_Button& button ) { OnReleasedStd(); }
+//	virtual void OnMouseCursorEntered( CGM_Control& control ) {}
+//	virtual void OnMouseCursorLeft( CGM_Control& control ) {}
 
-	// what about OnPressed()?
-	// - call OnPressed() & OnChecked()
-	virtual void OnChecked();
+	// what about OnPressed( CGM_Button& button )?
+	// - call OnPressed( CGM_Button& button ) & OnChecked( CGM_CheckBox *pCheckBox )
+	virtual void OnChecked( CGM_CheckBox& checkbox );
 
-	virtual void OnCheckCleared();
+	virtual void OnCheckCleared( CGM_CheckBox& checkbox );
 };
 
 
@@ -175,11 +175,11 @@ public:
 
 	virtual ~CGM_StdRadioButtonRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_RadioButton& radiobutton );
 
-	virtual void OnChecked();
+	virtual void OnChecked( CGM_RadioButton& radiobutton );
 
-	virtual void OnCheckCleared();
+	virtual void OnCheckCleared( CGM_RadioButton& radiobutton );
 };
 
 
@@ -224,15 +224,15 @@ public:
 
 	virtual ~CGM_StdListBoxRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_ListBox& listbox );
 
-	virtual void OnItemSelectionChanged();
+	virtual void OnItemSelectionChanged( CGM_ListBox& listbox );
 
-	virtual void OnItemSelected();
+	virtual void OnItemSelected( CGM_ListBox& listbox );
 
-	virtual void OnItemAdded( int index );
-	virtual void OnItemInserted( int index );
-	virtual void OnItemRemoved( int index );
+	virtual void OnItemAdded( CGM_ListBox& listbox, int index );
+	virtual void OnItemInserted( CGM_ListBox& listbox, int index );
+	virtual void OnItemRemoved( CGM_ListBox& listbox, int index );
 };
 
 
@@ -275,17 +275,17 @@ public:
 
 	virtual void Init();
 
-//	virtual void OnItemSelectionChanged();
+//	virtual void OnItemSelectionChanged( CGM_ListBox& listbox );
 
-//	virtual void OnItemSelected();
+//	virtual void OnItemSelected( CGM_ListBox& listbox );
 
-//	virtual void OnItemAdded( int index );
-//	virtual void OnItemInserted( int index );
-//	virtual void OnItemRemoved( int index );
+//	virtual void OnItemAdded( CGM_ListBox& listbox, int index );
+//	virtual void OnItemInserted( CGM_ListBox& listbox, int index );
+//	virtual void OnItemRemoved( CGM_ListBox& listbox, int index );
 
 //	virtual void OnScrolled( CGM_ScrollBar *pScrollbar, int delta );
 //	virtual void OnTrackRangeChanged( CGM_ScrollBar *pScrollbar, int start, int end );
-	virtual void OnThumbUpdated( CGM_ScrollBar *pScrollbar );
+	virtual void OnThumbUpdated( CGM_ScrollBar& scrollbar );
 };
 
 
@@ -315,9 +315,9 @@ public:
 
 	virtual ~CGM_StdSliderRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_Slider& slider );
 
-	virtual void OnSliderValueChanged();
+	virtual void OnSliderValueChanged( CGM_Slider& slider );
 };
 
 
@@ -336,11 +336,11 @@ public:
 
 	virtual ~CGM_StdDialogRenderer() {}
 
-	virtual void Init();
+	virtual void Init( CGM_Dialog& dialog );
 
-	virtual void OnDialogOpened();
-	virtual void OnDialogClosed();
-	virtual void OnOpenDialogAttemptedToClose() {}
+	virtual void OnDialogOpened( CGM_Dialog& dialog );
+	virtual void OnDialogClosed( CGM_Dialog& dialog );
+	virtual void OnOpenDialogAttemptedToClose( CGM_Dialog *pDialog ) {}
 
 	int GetFadeColorIndex() { return m_DialogFadeColorIndex; }
 };

@@ -1,4 +1,3 @@
-
 #include "GM_Dialog.h"
 
 #include "GM_DialogDesc.h"
@@ -388,6 +387,7 @@ CGM_Static *CGM_Dialog::AddControl( CGM_StaticDesc *pStaticDesc )
 		pStaticDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateStaticRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pStaticDesc->pRenderer );
+	pStaticDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -399,6 +399,7 @@ CGM_Button *CGM_Dialog::AddControl( CGM_ButtonDesc *pButtonDesc )
 			pButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateButtonRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pButtonDesc->pRenderer );
+	pButtonDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -410,6 +411,7 @@ CGM_SubDialogButton *CGM_Dialog::AddControl( CGM_SubDialogButtonDesc *pSubDlgDes
 		pSubDlgDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSubDialogButtonRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pSubDlgDesc->pRenderer );
+	pSubDlgDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -421,6 +423,7 @@ CGM_CheckBox *CGM_Dialog::AddControl( CGM_CheckBoxDesc *pCheckBoxDesc )
 		pCheckBoxDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateCheckBoxRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pCheckBoxDesc->pRenderer );
+	pCheckBoxDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -432,6 +435,7 @@ CGM_RadioButton *CGM_Dialog::AddControl( CGM_RadioButtonDesc *pRButtonDesc )
 		pRButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateRadioButtonRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pRButtonDesc->pRenderer );
+	pRButtonDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -443,6 +447,7 @@ CGM_DialogCloseButton *CGM_Dialog::AddControl( CGM_DialogCloseButtonDesc *pCButt
 		pCButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateDialogCloseButtonRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pCButtonDesc->pRenderer );
+	pCButtonDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -454,6 +459,7 @@ CGM_Slider *CGM_Dialog::AddControl( CGM_SliderDesc *pSliderDesc )
 		pSliderDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSliderRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pSliderDesc->pRenderer );
+	pSliderDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -465,6 +471,7 @@ CGM_ListBox *CGM_Dialog::AddControl( CGM_ListBoxDesc *pListBoxDesc )
 		pListBoxDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateListBoxRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pListBoxDesc->pRenderer );
+	pListBoxDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -476,6 +483,7 @@ CGM_ScrollBar *CGM_Dialog::AddControl( CGM_ScrollBarDesc *pScrollBarDesc )
 		pScrollBarDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateScrollBarRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pScrollBarDesc->pRenderer );
+	pScrollBarDesc->pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -489,6 +497,7 @@ CGM_PaintBar *CGM_Dialog::AddControl( CGM_PaintBarDesc *pPaintBarDesc )
 		pPaintBarDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreatePaintBarRenderer( pNewControl ) );
 
 	RegisterControl( pNewControl, pPaintBarDesc->pRenderer );
+	pPaintBarDesc->pRenderer->Init( pNewControl );
 	return pNewControl;
 }
 #endif /* UI_EXTENSION_EDIT */
@@ -572,7 +581,7 @@ void CGM_Dialog::RegisterControl( CGM_Control *pNewControl, CGM_ControlRendererS
 		pNewControl->SetRendererSharedPtr( pRenderer );
 		pRenderer->SetControlRendererManager( m_pDialogManager->GetControlRendererManager() );
 		pRenderer->SetControl( pNewControl );
-		pRenderer->Init();
+//		pRenderer->Init();
 	}
 }
 
@@ -740,8 +749,8 @@ void CGM_Dialog::Open()
 {
 	m_bIsOpen = true;
 
-	if( m_pRenderer.get() )
-		m_pRenderer->OnDialogOpened();
+	if( m_pRenderer )
+		m_pRenderer->OnDialogOpened( *this );
 
 	// the first control in this dialog will be given the focus
 	// changed - after opening the dialog, focus will be given
@@ -760,8 +769,8 @@ void CGM_Dialog::Close( unsigned int sub_event )
 
 	if( m_StyleFlag & STYLE_ALWAYS_OPEN )
 	{
-		if( m_pRenderer.get() )
-			m_pRenderer->OnOpenDialogAttemptedToClose();
+		if( m_pRenderer )
+			m_pRenderer->OnOpenDialogAttemptedToClose( *this );
 
 		SendEvent( CGM_Event::OPENDIALOG_ATTEMPTED_TO_CLOSE, true, this );
 		return; // the dialog cannot be closed
@@ -772,9 +781,9 @@ void CGM_Dialog::Close( unsigned int sub_event )
 
 	m_bIsOpen = false;
 
-	if( m_pRenderer.get() )
+	if( m_pRenderer )
 	{
-		m_pRenderer->OnDialogClosed();
+		m_pRenderer->OnDialogClosed( *this );
 	}
 
 //	if( m_pDialogManager->ControlFocus() && m_pDialogManager->ControlFocus()->m_pDialog == this )

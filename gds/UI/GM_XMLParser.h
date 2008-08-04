@@ -10,7 +10,7 @@ using namespace Graphics;
 #include <vector>
 
 
-#include "ui_fwd.h"
+#include "fwd.h"
 
 
 class CXMLNodeReader;

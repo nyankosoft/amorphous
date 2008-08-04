@@ -2,7 +2,7 @@
 #define __GM_CONTROL_LISTBOX__
 
 
-#include "ui_fwd.h"
+#include "fwd.h"
 #include "GM_Control.h"
 
 #include <vector>

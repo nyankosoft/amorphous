@@ -9,7 +9,7 @@ using namespace Graphics;
 #include <string>
 
 
-#include "ui_fwd.h"
+#include "fwd.h"
 
 
 /**

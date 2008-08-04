@@ -2,7 +2,7 @@
 #define  __INPUTHANDLER_DIALOG_H__
 
 
-#include "ui_fwd.h"
+#include "fwd.h"
 #include "GM_Input.h"
 #include "../GameInput/InputHandler.h"
 

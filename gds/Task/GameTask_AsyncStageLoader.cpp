@@ -14,7 +14,7 @@
 #include "Support/Log/StateLog.h"
 #include "Support/Log/DefaultLog.h"
 
-#include "UI/ui.h"
+#include "UI.h"
 #include "UI/InputHandler_Dialog.h"
 
 using namespace std;

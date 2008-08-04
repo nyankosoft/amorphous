@@ -5,7 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "ui_fwd.h"
+#include "fwd.h"
+#include "GM_ControlRenderer.h"
 #include "3DCommon/fwd.h"
 
 
@@ -53,17 +54,17 @@ public:
 
 //	virtual void OnControlCreated( CGM_Control *pControl );
 
-	virtual CGM_ControlRenderer *CreateStaticRenderer( CGM_Static *pStatic ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateButtonRenderer( CGM_Button *pButton ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateCheckBoxRenderer( CGM_CheckBox *pCheckBox ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateRadioButtonRenderer( CGM_RadioButton *pRadioButton ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateDialogCloseButtonRenderer( CGM_DialogCloseButton *pDlgCloseButton ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateSliderRenderer( CGM_Slider *pSlider ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateListBoxRenderer( CGM_ListBox *pListBox ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateScrollBarRenderer( CGM_ScrollBar *pScrollBar ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateSubDialogButtonRenderer( CGM_SubDialogButton *pSubDlgButton ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateDialogRenderer( CGM_Dialog *pDialog ) { return NULL; }
-	virtual CGM_ControlRenderer *CreateCaptionRenderer() { return NULL; }
+	virtual CGM_ControlRenderer *CreateStaticRenderer( CGM_Static *pStatic ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateButtonRenderer( CGM_Button *pButton ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateCheckBoxRenderer( CGM_CheckBox *pCheckBox ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateRadioButtonRenderer( CGM_RadioButton *pRadioButton ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateDialogCloseButtonRenderer( CGM_DialogCloseButton *pDlgCloseButton ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateSliderRenderer( CGM_Slider *pSlider ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateListBoxRenderer( CGM_ListBox *pListBox ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateScrollBarRenderer( CGM_ScrollBar *pScrollBar ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateSubDialogButtonRenderer( CGM_SubDialogButton *pSubDlgButton ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateDialogRenderer( CGM_Dialog *pDialog ) { return new CGM_ControlRenderer(); }
+	virtual CGM_ControlRenderer *CreateCaptionRenderer() { return new CGM_ControlRenderer(); }
 
 	virtual int GetNumGraphicsLayersPerUILayer() { return 8; } ///< called by control renderers
 

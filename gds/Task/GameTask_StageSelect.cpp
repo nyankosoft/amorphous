@@ -10,7 +10,7 @@
 #include "Item/GI_Weapon.h"
 
 #include "GameInput/InputHub.h"
-#include "UI/ui.h"
+#include "UI.h"
 #include "UI/InputHandler_Dialog.h"
 #include "UI/GM_StdControlRendererManager.h"
 #include "3DCommon/font.h"

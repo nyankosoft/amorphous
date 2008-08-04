@@ -156,7 +156,7 @@ void CGM_ListBox::OnItemSelectionChanged()
 
 	// send notification to control renderer
 	if( m_pRenderer.get() )
-		m_pRenderer->OnItemSelectionChanged();
+		m_pRenderer->OnItemSelectionChanged( *this );
 
 	// play sound
 	if( m_pSoundPlayer.get() )
@@ -198,7 +198,7 @@ bool CGM_ListBox::AddItem( const string& text, void *pUserData, int user_data_id
 
 	// send notification to control renderer
 	if( m_pRenderer.get() )
-		m_pRenderer->OnItemAdded( added_item_index );
+		m_pRenderer->OnItemAdded( *this, added_item_index );
 
 	return true;
 }
@@ -226,7 +226,7 @@ bool CGM_ListBox::InsertItem( int nIndex, const string& text, void *pUserData )
 
 	// send notification to control renderer
 	if( m_pRenderer.get() )
-		m_pRenderer->OnItemInserted( nIndex );
+		m_pRenderer->OnItemInserted( *this, nIndex );
 
 	return true;//hr;
 }
@@ -378,7 +378,7 @@ void CGM_ListBox::SetItemSelectionFocus( int nNewIndex )
 	if( m_vecItem.size() == 1 && nNewIndex == 0 )
 	{
 		if( m_pRenderer )
-			m_pRenderer->OnItemSelectionFocusCreated();
+			m_pRenderer->OnItemSelectionFocusCreated( *this );
 	}
 }
 
@@ -642,7 +642,7 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 				m_pDialog->SendEvent( CGM_Event::LISTBOX_ITEM_SELECTED, true, this );
 
 				if( m_pRenderer )
-					m_pRenderer->OnItemSelected();
+					m_pRenderer->OnItemSelected( *this );
 
 				if( m_pSoundPlayer.get() )
 					m_pSoundPlayer->OnItemSelected( *GetSelectedItem() );
@@ -734,21 +734,21 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 void CGM_ListBox::OnItemTextChanged( CGM_ListBoxItem& item )
 {
 	if( m_pRenderer.get() )
-		m_pRenderer->OnItemTextChanged( item );
+		m_pRenderer->OnItemTextChanged( *this, item );
 }
 
 
 void CGM_ListBox::OnItemDescChanged( CGM_ListBoxItem& item )
 {
 	if( m_pRenderer.get() )
-		m_pRenderer->OnItemDescChanged( item );
+		m_pRenderer->OnItemDescChanged( *this, item );
 }
 
 
 void CGM_ListBox::OnItemUpdated( CGM_ListBoxItem& item )
 {
 	if( m_pRenderer.get() )
-		m_pRenderer->OnItemUpdated( item );
+		m_pRenderer->OnItemUpdated( *this, item );
 }
 
 
@@ -837,14 +837,6 @@ void CGM_ListBox::OnItemUpdated( CGM_ListBoxItem& item )
 }*/
 
 
-
-
-/*
-void CGM_ListBox::Render()
-{
-//	m_pRenderManager->RenderListBox( *this );
-}
-*/
 
 /*
 //--------------------------------------------------------------------------------------

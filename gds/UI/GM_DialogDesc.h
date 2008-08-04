@@ -2,7 +2,7 @@
 #define  __GM_DIALOGDESC_H__
 
 
-#include "ui_fwd.h"
+#include "fwd.h"
 #include "GM_ControlDescBase.h"
 #include "Graphics/Rect.h"
 

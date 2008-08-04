@@ -17,9 +17,6 @@ CGM_Button::CGM_Button( CGM_Dialog *pDialog, CGM_ButtonDesc *pDesc )
 : CGM_Static( pDialog, pDesc )
 {
 	m_bPressed = pDesc->bPressed;
-
-//	m_pEventHandler = NULL;
-//	m_pEventHandler = pDesc->pEventHandler;
 }
 
 
@@ -39,7 +36,7 @@ void CGM_Button::OnPressed()
 //	m_pDialog->SendEvent( CGM_Event::BUTTON_PRESSED, true, this );
 
 	if( m_pRenderer )
-		m_pRenderer->OnPressed();
+		m_pRenderer->OnPressed( *this );
 
 	if( m_pSoundPlayer )
 		m_pSoundPlayer->OnPressed();
@@ -60,7 +57,7 @@ void CGM_Button::OnReleased()
 //	}
 
 	if( m_pRenderer )
-		m_pRenderer->OnReleased();
+		m_pRenderer->OnReleased( *this );
 
 	if( m_pSoundPlayer )
 		m_pSoundPlayer->OnReleased();
@@ -220,9 +217,9 @@ void CGM_CheckBox::SetCheckedInternal( bool bChecked, bool bFromInput )
 	if( m_pRenderer )
 	{
 		if( m_bChecked )
-			m_pRenderer->OnChecked();
+			m_pRenderer->OnChecked( *this );
 		else
-			m_pRenderer->OnCheckCleared();
+			m_pRenderer->OnCheckCleared( *this );
 	}
 }
 
@@ -257,12 +254,6 @@ bool CGM_CheckBox::HandleMouseInput( CGM_InputData& input )
 }
 */
 
-/*
-void CGM_CheckBox::Render()
-{
-//	m_pRenderManager->RenderCheckBox( *this );
-}
-*/
 
 //========================================================================================
 // CGM_RadioButton
@@ -291,9 +282,9 @@ void CGM_RadioButton::SetCheckedInternal( bool bChecked, bool bClearGroup, bool 
 	if( m_pRenderer )
 	{
 		if( m_bChecked )
-			m_pRenderer->OnChecked();
+			m_pRenderer->OnChecked( *this );
 		else
-			m_pRenderer->OnCheckCleared();
+			m_pRenderer->OnCheckCleared( *this );
 	}
 }
 
@@ -330,12 +321,5 @@ bool CGM_RadioButton::HandleMouseInput( CGM_InputData& input )
 		return true;
 
     return false;
-}
-*/
-
-/*
-void CGM_RadioButton::Render()
-{
-//	m_pRenderManager->RenderRadioButton( *this );
 }
 */

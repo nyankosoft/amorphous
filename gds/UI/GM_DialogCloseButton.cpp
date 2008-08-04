@@ -1,4 +1,3 @@
-
 #include "GM_DialogCloseButton.h"
 
 #include "GM_ControlDescBase.h"

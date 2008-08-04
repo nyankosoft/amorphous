@@ -38,7 +38,7 @@
 #include "JigLib/JL_PhysicsActor.h"
 #include "JigLib/JL_LineSegment.h"
 
-#include "UI/ui.h"
+#include "UI.h"
 
 #include "Support/Log/DefaultLog.h"
 #include "Support/Macro.h"

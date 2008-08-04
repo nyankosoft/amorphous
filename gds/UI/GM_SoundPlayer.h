@@ -2,7 +2,7 @@
 #define  __GM_SoundPlayer_H__
 
 
-#include "ui_fwd.h"
+#include "fwd.h"
 #include "GM_Event.h"
 #include "GM_EventHandlerBase.h"
 #include "GM_ListBox.h"

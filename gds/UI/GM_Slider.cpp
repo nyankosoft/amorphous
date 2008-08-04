@@ -191,7 +191,7 @@ void CGM_Slider::SetValueInternal( int iValue, bool bFromInput )
     m_pDialog->SendEvent( CGM_Event::SLIDER_VALUE_CHANGED, bFromInput, this );
 
 	if( m_pRenderer )
-		m_pRenderer->OnSliderValueChanged();
+		m_pRenderer->OnSliderValueChanged( *this );
 }
 
 

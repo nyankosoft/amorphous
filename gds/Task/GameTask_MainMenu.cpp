@@ -9,7 +9,7 @@
 #include "3DCommon/font.h"
 #include "3DCommon/GraphicsElementManager.h"
 
-#include "UI/ui.h"
+#include "UI.h"
 #include "UI/InputHandler_Dialog.h"
 #include "UI/GM_StdControlRendererManager.h"
 //#include "UI/GM_FlowTextCaption.h"

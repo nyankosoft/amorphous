@@ -119,7 +119,7 @@ void CGM_Control::OnFocusIn()
 
 	if( m_pRenderer )
 	{
-		m_pRenderer->OnFocused();
+		m_pRenderer->OnFocused( *this );
 	}
 }
 
@@ -130,7 +130,7 @@ void CGM_Control::OnFocusOut()
 
 	if( m_pRenderer )
 	{
-		m_pRenderer->OnFocusCleared();
+		m_pRenderer->OnFocusCleared( *this );
 	}
 }
 

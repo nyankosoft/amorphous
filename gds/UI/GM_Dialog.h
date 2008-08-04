@@ -1,7 +1,7 @@
 #ifndef  __GM_DIALOG_H__
 #define  __GM_DIALOG_H__
 
-#include "ui_fwd.h"
+#include "fwd.h"
 #include "GM_Event.h"
 #include "GM_GraphicElement.h"
 #include "GM_EventHandlerBase.h"

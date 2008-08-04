@@ -1,4 +1,3 @@
-
 #include "GM_StdControlRenderer.h"
 #include "GM_Control.h"
 #include "GM_Dialog.h"
@@ -12,6 +11,30 @@
 
 using namespace std;
 
+/*
+class CGraphicsElementHandle
+{
+public:
+};
+
+
+class CRectElementHandle
+{
+	CGE_Rect *m_pRect;
+
+public:
+};
+
+
+class CTextElementHandle
+{
+	CGE_Text *m_pText;
+
+public:
+
+	CGE_Text *operator ->() { return m_pText; };
+};
+*/
 
 CGM_StdControlRenderer::CGM_StdControlRenderer()
 :
@@ -33,33 +56,33 @@ void CGM_StdControlRenderer::OnGroupElementCreated()
 }
 
 
-void CGM_StdControlRenderer::OnPressed()
+void CGM_StdControlRenderer::OnPressed( CGM_Button& button )
 {
 	ChangeColorToCurrentState();
 }
 
-void CGM_StdControlRenderer::OnReleased()
-{
-	ChangeColorToCurrentState();
-}
-
-
-void CGM_StdControlRenderer::OnChecked()
-{
-}
-
-void CGM_StdControlRenderer::OnCheckCleared()
-{
-}
-
-
-void CGM_StdControlRenderer::OnFocused()
+void CGM_StdControlRenderer::OnReleased( CGM_Button& button )
 {
 	ChangeColorToCurrentState();
 }
 
 
-void CGM_StdControlRenderer::OnFocusCleared()
+void CGM_StdControlRenderer::OnChecked( CGM_CheckBox& checkbox )
+{
+}
+
+void CGM_StdControlRenderer::OnCheckCleared( CGM_CheckBox& checkbox )
+{
+}
+
+
+void CGM_StdControlRenderer::OnFocused( CGM_Control& control )
+{
+	ChangeColorToCurrentState();
+}
+
+
+void CGM_StdControlRenderer::OnFocusCleared( CGM_Control& control )
 {
 	g_Log.Print( "%s", __FUNCTION__ );
 
@@ -67,45 +90,45 @@ void CGM_StdControlRenderer::OnFocusCleared()
 }
 
 
-void CGM_StdControlRenderer::OnMouseCursorEntered()
+void CGM_StdControlRenderer::OnMouseCursorEntered( CGM_Control& control )
 {
 	ChangeColorToCurrentState();
 }
 
 
-void CGM_StdControlRenderer::OnMouseCursorLeft()
+void CGM_StdControlRenderer::OnMouseCursorLeft( CGM_Control& control )
 {
 	ChangeColorToCurrentState();
 }
 
 
-void CGM_StdControlRenderer::OnItemSelectionFocusCreated()
+void CGM_StdControlRenderer::OnItemSelectionFocusCreated( CGM_ListBox& listbox )
 {
 }
 
-void CGM_StdControlRenderer::OnItemSelectionChanged()
+void CGM_StdControlRenderer::OnItemSelectionChanged( CGM_ListBox& listbox )
 {
 }
 
-void CGM_StdControlRenderer::OnItemSelected()
-{
-}
-
-
-void CGM_StdControlRenderer::OnSliderValueChanged()
+void CGM_StdControlRenderer::OnItemSelected( CGM_ListBox& listbox )
 {
 }
 
 
-void CGM_StdControlRenderer::OnDialogOpened()
+void CGM_StdControlRenderer::OnSliderValueChanged( CGM_Slider& slider )
 {
 }
 
-void CGM_StdControlRenderer::OnDialogClosed()
+
+void CGM_StdControlRenderer::OnDialogOpened( CGM_Dialog& dialog )
 {
 }
 
-void CGM_StdControlRenderer::OnOpenDialogAttemptedToClose()
+void CGM_StdControlRenderer::OnDialogClosed( CGM_Dialog& dialog )
+{
+}
+
+void CGM_StdControlRenderer::OnOpenDialogAttemptedToClose( CGM_Dialog& dialog )
 {
 }
 
@@ -166,21 +189,17 @@ void CGM_StdControlRenderer::ChangeColorToCurrentState()
 }
 
 
-void CGM_StdStaticRenderer::Init()
+void CGM_StdStaticRenderer::Init( CGM_Static& static_control )
 {
-	CGM_Static *pStatic = GetStatic();
-	if( !pStatic )
-		return;
-
 	int font_id = 0;
-	int x = pStatic->GetBoundingBox().left;
-	int y = pStatic->GetBoundingBox().top;
+	int x = static_control.GetBoundingBox().left;
+	int y = static_control.GetBoundingBox().top;
 	int w = 16;//m_pGraphicsElementManager->GetFont(font_id)->GetFontWidth();// 8;
 	int h = 32;//m_pGraphicsElementManager->GetFont(font_id)->GetFontHeight();// 16;
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 
-//	m_pText = m_pGraphicsElementManager->CreateText( 0, pStatic->GetText(), x, y, normal_color, w, h );
-	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, pStatic->GetText(), pStatic->GetLocalRect(),
+//	m_pText = m_pGraphicsElementManager->CreateText( 0, static_control.GetText(), x, y, normal_color, w, h );
+	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, static_control.GetText(), static_control.GetLocalRect(),
 		CGE_Text::TAL_CENTER, CGE_Text::TAL_CENTER, normal_color, w, h );
 
 	// render the text on top
@@ -190,16 +209,14 @@ void CGM_StdStaticRenderer::Init()
 }
 
 
-void CGM_StdButtonRenderer::Init()
+void CGM_StdButtonRenderer::Init( CGM_Button& button )
 {
-	CGM_StdStaticRenderer::Init();
-
-	CGM_Button *pButton = GetButton();
+	CGM_StdStaticRenderer::Init( button );
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect      = m_pGraphicsElementManager->CreateRect(      pButton->GetLocalRect(), bg_color );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pButton->GetLocalRect(), normal_color, 2 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      button.GetLocalRect(), bg_color );
+	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( button.GetLocalRect(), normal_color, 2 );
 
 	// register elements
 	// - set local layer offset to determine rendering order
@@ -211,79 +228,75 @@ void CGM_StdButtonRenderer::Init()
 }
 
 
-void CGM_StdCheckBoxRenderer::Init()
+void CGM_StdCheckBoxRenderer::Init( CGM_CheckBox& checkbox )
 {
-	CGM_StdButtonRenderer::Init();
+	CGM_StdButtonRenderer::Init( checkbox );
 
 	m_BaseTitle = m_pText->GetText();
 
-	m_pText->SetText( ( GetCheckBox()->IsChecked() ? " [x] " : " [ ] " ) + m_BaseTitle );
+	m_pText->SetText( ( checkbox.IsChecked() ? " [x] " : " [ ] " ) + m_BaseTitle );
 
 	m_pText->SetTextAlignment( CGE_Text::TAL_LEFT, CGE_Text::TAL_CENTER );
 }
 
 
-void CGM_StdCheckBoxRenderer::OnChecked()
+void CGM_StdCheckBoxRenderer::OnChecked( CGM_CheckBox& checkbox )
 {
 	m_pText->SetText( " [x] " + m_BaseTitle );
 }
 
-void CGM_StdCheckBoxRenderer::OnCheckCleared()
+void CGM_StdCheckBoxRenderer::OnCheckCleared( CGM_CheckBox& checkbox )
 {
 	m_pText->SetText( " [ ] " + m_BaseTitle );
 }
 
 
-void CGM_StdRadioButtonRenderer::Init()
+void CGM_StdRadioButtonRenderer::Init( CGM_RadioButton& radiobutton )
 {
-	CGM_StdButtonRenderer::Init();
+	CGM_StdButtonRenderer::Init( radiobutton );
 
 	m_BaseTitle = m_pText->GetText();
 
-	m_pText->SetText( ( GetCheckBox()->IsChecked() ? " (x) " : " ( ) " ) + m_BaseTitle );
+	m_pText->SetText( ( radiobutton.IsChecked() ? " (x) " : " ( ) " ) + m_BaseTitle );
 
 	m_pText->SetTextAlignment( CGE_Text::TAL_LEFT, CGE_Text::TAL_CENTER );
 }
 
 
-void CGM_StdRadioButtonRenderer::OnChecked()
+void CGM_StdRadioButtonRenderer::OnChecked( CGM_RadioButton& radiobutton )
 {
 	m_pText->SetText( " (x) " + m_BaseTitle );
 }
 
-void CGM_StdRadioButtonRenderer::OnCheckCleared()
+void CGM_StdRadioButtonRenderer::OnCheckCleared( CGM_RadioButton& radiobutton )
 {
 	m_pText->SetText( " ( ) " + m_BaseTitle );
 }
 
 
-void CGM_StdListBoxRenderer::Init()
+void CGM_StdListBoxRenderer::Init( CGM_ListBox& listbox )
 {
 //	CGM_ControlRenderer::Init();
-
-	CGM_ListBox *pListBox = GetListBox();
-	if( !pListBox )
-		return;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
 
-	m_pRect      = m_pGraphicsElementManager->CreateRect(      pListBox->GetLocalRect(), bg_color );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pListBox->GetLocalRect(), normal_color, 2 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      listbox.GetLocalRect(), bg_color );
+	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( listbox.GetLocalRect(), normal_color, 2 );
 
 	// create empty text elements
-	int x = pListBox->GetLocalRect().left;
-	int y = pListBox->GetLocalRect().top;
+	int x = listbox.GetLocalRect().left;
+	int y = listbox.GetLocalRect().top;
 	int text_x = x;
 	int text_y = y;
 //	int w = 8;
 //	int h = 16;
-	int i, num_items_in_page = pListBox->GetScrollbar()->GetPageSize();
+	int i, num_items_in_page = listbox.GetScrollbar()->GetPageSize();
 	m_vecpText.resize( num_items_in_page );
 	for( i=0; i<num_items_in_page; i++ )
 	{
 		text_x = x + 5;
-		text_y = y + i * pListBox->GetTextHeight();
+		text_y = y + i * listbox.GetTextHeight();
 		m_vecpText[i] = m_pGraphicsElementManager->CreateText( 0, "-", (float)text_x, (float)text_y, normal_color );
 	}
 
@@ -355,20 +368,16 @@ void CGM_StdListBoxRenderer::UpdateItems( bool update_text )
 
 
 // update all the text of all the text elements
-void CGM_StdListBoxRenderer::OnItemSelectionChanged()
+void CGM_StdListBoxRenderer::OnItemSelectionChanged( CGM_ListBox& listbox )
 {
 	bool update_text = false;
 	UpdateItems( update_text );
 }
 
 
-void CGM_StdListBoxRenderer::OnItemSelected()
+void CGM_StdListBoxRenderer::OnItemSelected( CGM_ListBox& listbox )
 {
-	CGM_ListBox *pListBox = GetListBox();
-	if( !pListBox )
-		return;
-
-	int text_index = pListBox->GetFocusedItemLocalIndexInCurrentPage();
+	int text_index = listbox.GetFocusedItemLocalIndexInCurrentPage();
 	if( text_index < 0 || (int)m_vecpText.size() <= text_index )
 		return;
 
@@ -379,19 +388,19 @@ void CGM_StdListBoxRenderer::OnItemSelected()
 }
 
 
-void CGM_StdListBoxRenderer::OnItemAdded( int index )
+void CGM_StdListBoxRenderer::OnItemAdded( CGM_ListBox& listbox, int index )
 {
 	UpdateItems();
 }
 
 
-void CGM_StdListBoxRenderer::OnItemInserted( int index )
+void CGM_StdListBoxRenderer::OnItemInserted( CGM_ListBox& listbox, int index )
 {
 	UpdateItems();
 }
 
 
-void CGM_StdListBoxRenderer::OnItemRemoved( int index )
+void CGM_StdListBoxRenderer::OnItemRemoved( CGM_ListBox& listbox, int index )
 {
 	UpdateItems();
 }
@@ -483,9 +492,9 @@ void CGM_StdScrollBarRenderer::Init()
 }
 
 
-void CGM_StdScrollBarRenderer::OnThumbUpdated( CGM_ScrollBar *pScrollbar )
+void CGM_StdScrollBarRenderer::OnThumbUpdated( CGM_ScrollBar& scrollbar )
 {
-	SRect thumb_rect = pScrollbar->GetLocalThumbButtonRectInOwnerDialogCoord();
+	SRect thumb_rect = scrollbar.GetLocalThumbButtonRectInOwnerDialogCoord();
 	if( m_pThumbGroup )
 	{
 		m_pThumbGroup->SetLocalTopLeftPos( thumb_rect.GetTopLeftCorner() );
@@ -497,22 +506,18 @@ void CGM_StdScrollBarRenderer::OnThumbUpdated( CGM_ScrollBar *pScrollbar )
 }
 
 
-void CGM_StdSliderRenderer::Init()
+void CGM_StdSliderRenderer::Init( CGM_Slider& slider )
 {
-//	CGM_StdStaticRenderer::Init();
-
-	CGM_Slider *pSlider = GetSlider();
-	if( !pSlider )
-		return;
+//	CGM_StdStaticRenderer::Init( CGM_Static *pStatic );
 
 	// slider frame
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect                  = m_pGraphicsElementManager->CreateRect(      pSlider->GetLocalRect(), bg_color );
-	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( pSlider->GetLocalRect(), normal_color, 2 );
+	m_pRect                  = m_pGraphicsElementManager->CreateRect(      slider.GetLocalRect(), bg_color );
+	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( slider.GetLocalRect(), normal_color, 2 );
 
 	// slider button
-	SRect btn_rect = pSlider->GetButtonRect();
+	SRect btn_rect = slider.GetButtonRect();
 	SRect local_btn_rect = RectLTWH( 0, 0, btn_rect.GetWidth(), btn_rect.GetHeight() );
 	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect(      local_btn_rect,  bg_color );
 	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( local_btn_rect,  normal_color, 2 );
@@ -521,9 +526,9 @@ void CGM_StdSliderRenderer::Init()
 	dot_rect.Inflate( -dot_rect.GetWidth() / 4, -dot_rect.GetHeight() / 4 );
 	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( dot_rect, normal_color, 2 );
 
-	const SRect slider_rect = pSlider->GetBoundingBox();
+	const SRect slider_rect = slider.GetBoundingBox();
 	const SPoint slider_topleft = slider_rect.GetTopLeftCorner(); // global
-	const SPoint btn_local_topleft = pSlider->GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local coord of owner dialog
+	const SPoint btn_local_topleft = slider.GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local coord of owner dialog
 
 	// subgroup for slider button
 	vector<CGraphicsElement *> vecpButtonElement;
@@ -551,7 +556,7 @@ void CGM_StdSliderRenderer::Init()
 	SetLocalLayerOffset( 1, m_pSliderButtonRect );
 
 	// register elements and set local layer offset to determine rendering order
-	// - these guy don't belong to any subgroup of the renderer so each of them can be
+	// - these guys don't belong to any subgroup of the renderer so each of them can be
 	//   registered with a single call of RegisterGraphicsElement()
 	RegisterGraphicsElement( 2, m_pFrameRect );
 	RegisterGraphicsElement( 3, m_pRect );
@@ -563,13 +568,10 @@ void CGM_StdSliderRenderer::Init()
 }
 
 
-void CGM_StdSliderRenderer::OnSliderValueChanged()
+void CGM_StdSliderRenderer::OnSliderValueChanged( CGM_Slider& slider )
 {
-	CGM_Slider *pSlider = GetSlider();
-	if( !pSlider )
-		return;
 /*
-	const SRect& btn_rect = pSlider->GetButtonRect();
+	const SRect& btn_rect = slider.GetButtonRect();
 	Vector2 vDestPos = Vector2( (float)btn_rect.left, (float)btn_rect.top );
 //	m_pGraphicsEffectManager->SetTimeOffset();
 //	m_pGraphicsEffectManager->TranslateCDV( m_pSliderButton, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
@@ -577,7 +579,7 @@ void CGM_StdSliderRenderer::OnSliderValueChanged()
 	m_pSliderButton->SetLocalTopLeftPos( vDestPos );
 */
 
-	m_pSliderButton->SetLocalOrigin( pSlider->GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner() );
+	m_pSliderButton->SetLocalOrigin( slider.GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner() );
 }
 
 
@@ -594,18 +596,14 @@ m_pFrameRect(NULL)
 }
 
 
-void CGM_StdDialogRenderer::Init()
+void CGM_StdDialogRenderer::Init( CGM_Dialog& dialog )
 {
-	CGM_Dialog *pDialog = GetDialog();
-	if( !pDialog )
-		return;
-
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect      = m_pGraphicsElementManager->CreateRect(      pDialog->GetLocalRect(), bg_color );
-//	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( pDialog->GetLocalRect(), bg_color, 6 );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( pDialog->GetLocalRect(), normal_color, 2 );
-//	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( pDialog->GetLocalRect(), normal_color, 6, 6 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      dialog.GetLocalRect(), bg_color );
+//	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( dialog.GetLocalRect(), bg_color, 6 );
+	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( dialog.GetLocalRect(), normal_color, 2 );
+//	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( dialog.GetLocalRect(), normal_color, 6, 6 );
 
 	// render the frame rect on the background rect
 	RegisterGraphicsElement( 0, m_pFrameRect );
@@ -613,7 +611,7 @@ void CGM_StdDialogRenderer::Init()
 }
 
 
-void CGM_StdDialogRenderer::OnDialogOpened()
+void CGM_StdDialogRenderer::OnDialogOpened( CGM_Dialog& dialog )
 {
 	if( !m_pGroupElement )
 		return;
@@ -626,7 +624,7 @@ void CGM_StdDialogRenderer::OnDialogOpened()
 	// slide in
 	if( m_bUseSlideEffects )
 	{
-		const SRect& rect = GetDialog()->GetBoundingBox();
+		const SRect& rect = dialog.GetBoundingBox();
 		Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
 		m_pGroupElement->SetTopLeftPos( vDestPos + Vector2( -50, 0 ) );
 //		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
@@ -639,7 +637,7 @@ void CGM_StdDialogRenderer::OnDialogOpened()
 }
 
 
-void CGM_StdDialogRenderer::OnDialogClosed()
+void CGM_StdDialogRenderer::OnDialogClosed( CGM_Dialog& dialog )
 {
 	if( !m_pGroupElement )
 		return;
@@ -652,7 +650,7 @@ void CGM_StdDialogRenderer::OnDialogClosed()
 	// slide out
 	if( m_bUseSlideEffects )
 	{
-		const SRect& rect = GetDialog()->GetBoundingBox();
+		const SRect& rect = dialog.GetBoundingBox();
 		Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
 		m_pGroupElement->SetTopLeftPos( vStartPos );
 //		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );

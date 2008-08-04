@@ -3,7 +3,7 @@
 
 
 #include "GameTask.h"
-#include "UI/ui_fwd.h"
+#include "UI/fwd.h"
 #include "Stage/fwd.h"
 #include "Stage/StageLoader.h"
 #include "GameCommon/Timer.h"

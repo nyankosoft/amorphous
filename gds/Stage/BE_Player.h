@@ -12,7 +12,7 @@
 #include "GameInput/3DActionCode.h"
 
 #include "GameCommon/CombatRecord.h"
-#include "UI/ui_fwd.h"
+#include "UI/fwd.h"
 
 #include "Sound/SoundHandle.h"
 

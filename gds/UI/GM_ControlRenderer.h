@@ -21,7 +21,7 @@
 #include "3DCommon/fwd.h"
 #include "3DMath/Vector2.h"
 
-#include "ui_fwd.h"
+#include "fwd.h"
 #include "GM_Static.h"
 #include "GM_Button.h"
 #include "GM_ListBox.h"
@@ -40,9 +40,14 @@ using namespace Graphics;
 
 
 /**
-
-  - support predifined animations / efffects for control renderers
-    - needs feature to store animations / effects descs to each control renderers
+ - Base class of control renderer
+   - Also used as a null object class
+     - Created by CGM_ControlRendererManager if no renderer is specified,
+	   and registered to the owner control to make null checking unnecessary.
+     - i.e., no pure virtual functions
+ - TODO:
+   - support predifined animations / efffects for control renderers
+     - needs feature to store animations / effects descs to each control renderers
 
 
 
@@ -161,67 +166,77 @@ protected:
 
 public:
 
-	CGM_ControlRenderer();
+	inline CGM_ControlRenderer();
 
 	virtual ~CGM_ControlRenderer();
 
-	virtual void Init() {}
+	virtual void Init( CGM_Control& control ) {}
+	virtual void Init( CGM_Static& static_control ) {}
+	virtual void Init( CGM_Button& button ) {}
+	virtual void Init( CGM_CheckBox& checkbox ) {}
+	virtual void Init( CGM_RadioButton& radiobutton ) {}
+	virtual void Init( CGM_ListBox& listbox ) {}
+	virtual void Init( CGM_Slider& slider ) {}
+	virtual void Init( CGM_ScrollBar& scrollbar ) {}
 
-	virtual void OnFocused() {}
-	virtual void OnFocusCleared() {}
+	virtual void Init( CGM_Dialog& dialog ) {}
+
+	virtual void OnFocused( CGM_Control& control ) {}
+	virtual void OnFocusCleared( CGM_Control& control ) {}
 
 	/// for static control renderers
 	/// - not called when the text is first set to a static control in its ctor
 	virtual void OnTextChanged() {}
 
 	/// for button renderers
-	virtual void OnPressed() {}
-	virtual void OnReleased() {}
+	virtual void OnPressed( CGM_Button& button ) {}
+	virtual void OnReleased( CGM_Button& button ) {}
 
 	/// for check box and radio button renderers
-	virtual void OnChecked() {}
-	virtual void OnCheckCleared() {}
+	virtual void OnChecked( CGM_CheckBox& checkbox ) {}
+	virtual void OnCheckCleared( CGM_CheckBox& checkbox ) {}
 
-	virtual void OnMouseCursorEntered() {}
-	virtual void OnMouseCursorLeft() {}
+	virtual void OnMouseCursorEntered( CGM_Control& control ) {}
+	virtual void OnMouseCursorLeft( CGM_Control& control ) {}
 
 	/// for list box renderer
 	/// - changes to text & desc are notified automatically
 	/// - if you want to notify other changes to control renderer of listbox, call CGM_ListBoxItem::OnItemUpdated()
-	virtual void OnItemSelectionFocusCreated() {} ///< new selection focus was created. done when an item is placed in a list box for the first time
-	virtual void OnItemSelectionChanged() {} ///< selection focus was changed
-	virtual void OnItemSelected() {}
-	virtual void OnItemAdded( int index ) {}
-	virtual void OnItemInserted( int index ) {}
-	virtual void OnItemRemoved( int index ) {}
-	virtual void OnItemTextChanged( CGM_ListBoxItem& item ) {} ///< called when a listbox item text was set through CGM_ListBoxItem::SetText()
-	virtual void OnItemDescChanged( CGM_ListBoxItem& item ) {} ///< called when a listbox item desc was set through CGM_ListBoxItem::SetDesc()
-	virtual void OnItemUpdated( CGM_ListBoxItem& item ) {} ///< called when a listbox item was modified
+	virtual void OnItemSelectionFocusCreated( CGM_ListBox& listbox ) {} ///< new selection focus was created. done when an item is placed in a list box for the first time
+	virtual void OnItemSelectionChanged( CGM_ListBox& listbox ) {} ///< selection focus was changed
+	virtual void OnItemSelected( CGM_ListBox& listbox ) {}
+	virtual void OnItemAdded( CGM_ListBox& listbox, int index ) {}
+	virtual void OnItemInserted( CGM_ListBox& listbox, int index ) {}
+	virtual void OnItemRemoved( CGM_ListBox& listbox, int index ) {}
+	virtual void OnItemTextChanged( CGM_ListBox& listbox, CGM_ListBoxItem& item ) {} ///< called when a listbox item text was set through CGM_ListBoxItem::SetText()
+	virtual void OnItemDescChanged( CGM_ListBox& listbox, CGM_ListBoxItem& item ) {} ///< called when a listbox item desc was set through CGM_ListBoxItem::SetDesc()
+	virtual void OnItemUpdated( CGM_ListBox& listbox, CGM_ListBoxItem& item ) {} ///< called when a listbox item was modified
 
 
 	/// for scroll bar renderer
 	/// \param delta the number of items scrolled (pos: scrolled down / neg: scrolled up)
 //	virtual void OnScrolled( CGM_ScrollBar *pScrollbar, int delta ) {}
 //	virtual void OnTrackRangeChanged( CGM_ScrollBar *pScrollbar, int start, int end ) {}
-	virtual void OnThumbUpdated( CGM_ScrollBar *pScrollbar ) {}
+	virtual void OnThumbUpdated( CGM_ScrollBar& scrollbar ) {}
 
 	/// for slider renderer
-	virtual void OnSliderValueChanged() {}
+	virtual void OnSliderValueChanged( CGM_Slider& slider ) {}
 
 	/// for dialog renderer
-	virtual void OnDialogOpened() {}
-	virtual void OnDialogClosed() {}
-	virtual void OnOpenDialogAttemptedToClose() {} ///< called when a dialog with CGM_Dialog::STYLE_ALWAYS_OPEN is attempted to close
+	virtual void OnDialogOpened( CGM_Dialog& dialog ) {}
+	virtual void OnDialogClosed( CGM_Dialog& dialog ) {}
+	virtual void OnOpenDialogAttemptedToClose( CGM_Dialog& dialog ) {} ///< called when a dialog with CGM_Dialog::STYLE_ALWAYS_OPEN is attempted to close
 
 	virtual void OnParentSubDialogButtonFocused() {}
 	virtual void OnParentSubDialogButtonFocusCleared() {}
 
 	/// for caption renderer
 	/// - called when the renderer is registered as a caption renderer
-	virtual void OnControlFocusCleared( CGM_Control *pControl ) {} ///< Note the difference with OnFocusCleared()
-	virtual void OnControlFocused( CGM_Control *pControl ) {} ///< Note the difference with OnFocused()
+	virtual void InitCaptionRenderer() {}
+	virtual void OnControlFocusCleared( CGM_Control& control ) {} ///< Note the difference with OnFocusCleared( CGM_Control& control )
+	virtual void OnControlFocused( CGM_Control& control ) {} ///< Note the difference with OnFocused( CGM_Control& control )
 //	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl ) {}
-	virtual void OnMouseOverControlChanged( CGM_Control *pControlUnderMouse ) {}
+	virtual void OnMouseOverControlChanged( CGM_Control& control_under_mouse ) {}
 
 
 	virtual void GetGraphicsElements( std::vector<CGraphicsElement *>& rvecpDestElement );
@@ -255,6 +270,15 @@ public:
 	virtual void ChangeScale( float scale );
 };
 
+
+//---------------------------------- inline implementations ----------------------------------
+
+CGM_ControlRenderer::CGM_ControlRenderer()
+:
+m_pControl(NULL),
+m_pGroupElement(NULL)
+{
+}
 
 //	CGM_Static *GetStatic() { if( m_pControl && m_pControl->GetType() == CGM_Control::STATIC ) return (CGM_Static *)m_pControl; else return NULL}
 
