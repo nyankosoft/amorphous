@@ -216,7 +216,7 @@ protected:
 
 protected:
 
-	void UpdateItems( bool update_text = true );
+	void UpdateItems( CGM_ListBox& listbox, bool update_text = true );
 
 public:
 

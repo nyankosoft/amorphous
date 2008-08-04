@@ -332,25 +332,21 @@ void CGM_StdListBoxRenderer::SetColorToTextElement( CGE_Text& rTextElement, int 
 
 
 // update all the text of all the text elements
-void CGM_StdListBoxRenderer::UpdateItems( bool update_text )
+void CGM_StdListBoxRenderer::UpdateItems( CGM_ListBox& listbox, bool update_text )
 {
 	update_text = true; // For now, just always update the texts//The user may have scrolled the page
 
-	CGM_ListBox *pListBox = GetListBox();
-	if( !pListBox )
-		return;
-
-	const int focused_item_index = pListBox->GetSelectedIndex();
+	const int focused_item_index = listbox.GetSelectedIndex();
 
 	int i;
-	const int num_items_to_display = pListBox->GetNumItemsToDisplay();
-	const int first_item_index = pListBox->GetIndexOfFirstItemToDisplay();
+	const int num_items_to_display = listbox.GetNumItemsToDisplay();
+	const int first_item_index = listbox.GetIndexOfFirstItemToDisplay();
 
 	if( update_text )
 	{
 		for( i=0; i<num_items_to_display; i++ )
 		{
-			CGM_ListBoxItem *pItem = pListBox->GetItem( first_item_index + i );
+			CGM_ListBoxItem *pItem = listbox.GetItem( first_item_index + i );
 			if( pItem )
 				m_vecpText[i]->SetText( pItem->GetText() );
 		}
@@ -371,7 +367,7 @@ void CGM_StdListBoxRenderer::UpdateItems( bool update_text )
 void CGM_StdListBoxRenderer::OnItemSelectionChanged( CGM_ListBox& listbox )
 {
 	bool update_text = false;
-	UpdateItems( update_text );
+	UpdateItems( listbox, update_text );
 }
 
 
@@ -390,19 +386,19 @@ void CGM_StdListBoxRenderer::OnItemSelected( CGM_ListBox& listbox )
 
 void CGM_StdListBoxRenderer::OnItemAdded( CGM_ListBox& listbox, int index )
 {
-	UpdateItems();
+	UpdateItems( listbox );
 }
 
 
 void CGM_StdListBoxRenderer::OnItemInserted( CGM_ListBox& listbox, int index )
 {
-	UpdateItems();
+	UpdateItems( listbox );
 }
 
 
 void CGM_StdListBoxRenderer::OnItemRemoved( CGM_ListBox& listbox, int index )
 {
-	UpdateItems();
+	UpdateItems( listbox );
 }
 
 
