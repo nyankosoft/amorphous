@@ -127,7 +127,7 @@ private:
 
 private:
 
-	// called by resource IO thread
+	/// Called by resource IO thread
 	void ProcessResourceLoadRequests();
 
 protected:
@@ -139,11 +139,14 @@ public:
 
 	CAsyncResourceLoader();
 
+	/// Release the resource IO thread
+	void Release();
+
 	static CAsyncResourceLoader* Get() { return m_obj.get(); }
 
 	bool AddResourceLoadRequest( const CResourceLoadRequest& req );
 
-	/// main loop for the resource IO thread
+	/// Main loop for the resource IO thread
 	void IOThreadMain();
 
 	/// Called by the render thread

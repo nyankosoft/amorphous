@@ -1,18 +1,19 @@
 #include "AsyncResourceLoader.h"
+#include <boost/thread/xtime.hpp>
 
 using namespace std;
 using namespace boost;
 
 
-class LoadResult
+class Result
 {
 public:
 	enum Name
 	{
-		ResourceNotFound,
-		DB_InUse,
-		Success,
-		NumLoadResults
+		SUCCESS = 0,
+		RESOURCE_NOT_FOUND,
+		RESOURCE_IN_USE,
+		NUM_RESULTS
 	};
 };
 
@@ -36,10 +37,25 @@ m_bEndIOThread(false)
 	m_pIOThread = shared_ptr<thread>( new thread( CIOThreadStarter(this) ) );
 }
 
+	
+/// Release the resource IO thread
+void CAsyncResourceLoader::Release()
+{
+	if( m_pIOThread )
+	{
+		m_bEndIOThread = true;
+		m_pIOThread->join();
+		m_pIOThread.reset();
+	}
+}
+
 
 bool CAsyncResourceLoader::AddResourceLoadRequest( const CResourceLoadRequest& req )
 {
+	mutex::scoped_lock scoped_lock(m_IOMutex);
+
 	m_ResourceLoadRequestQueue.push( req );
+
 	return true;
 }
 
@@ -55,11 +71,18 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 {
 	bool copied = false;
 	bool res = false;
+//	Result::Name res;
 	shared_ptr<CGraphicsResourceLoader> pLoader;
 	CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, weak_ptr<CGraphicsResourceEntry>() );
 
+	boost::xtime xt;
+	boost::xtime_get(&xt, boost::TIME_UTC);
+	xt.sec += 1; // 1 [sec]
+
 	while( !m_bEndIOThread )
 	{
+		boost::thread::sleep(xt);
+
 		{
 			mutex::scoped_lock scoped_lock(m_IOMutex);
 			req = m_ResourceLoadRequestQueue.front();
@@ -71,15 +94,15 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 		case CResourceLoadRequest::LoadFromDisk:
 			pLoader = req.m_pLoader;
 			// load the resource from the disk
-			/* LoadResult::Name r
-			switch(r)
+/*			res = pLoader->LoadFromDisk();
+			switch(res)
 			{
-			case LoadResult::Success:
+			case LoadResult::SUCCESS:
 				break;
-			case LoadResult::ResourceNotFound:
+			case LoadResult::RESOURCE_NOT_FOUND:
 				continue;
 				break;
-			case LoadResult::DB_InUse:
+			case LoadResult::RESOURCE_IN_USE:
 				m_ResourceLoadRequestQueue.push( req );
 				continue;
 				// try again later
@@ -147,7 +170,7 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 
 				// texture / mesh sizes are stored in the loader
 				// - GraphicsResourceManager can determine the graphics resource entry that matches the specification
-				// - Ceate a new graphics resource entry, or draw one from the cache
+				// - Create a new graphics resource entry, or draw one from the cache
 				// - This will overwrites the slot that has been occupied by pSrcEntry
 				//   - i.e. ref count of pSrcEntry will be zero after leaving this scope
 				pEntry = GraphicsResourceManager().CreateAt( pSrcEntry->GetDesc(), pSrcEntry->GetIndex() );

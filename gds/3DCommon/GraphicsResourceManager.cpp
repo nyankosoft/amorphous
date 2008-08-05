@@ -30,6 +30,8 @@ CGraphicsResourceManager::CGraphicsResourceManager()
 CGraphicsResourceManager::~CGraphicsResourceManager()
 {
 	Release();
+
+	AsyncResourceLoader().Release();
 }
 
 
