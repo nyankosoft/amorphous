@@ -2,7 +2,10 @@
 #define  __D3DXVEC3_COPY_H__
 
 
-#ifdef  USE_D3DXVECTOR
+#include "3DMath/3DMathLibBase.h"
+
+
+#ifdef USE_D3DXVECTOR
 
 inline void Vec3Copy( D3DXVECTOR3& dest, const D3DXVECTOR3& src )
 {
@@ -12,7 +15,7 @@ inline void Vec3Copy( D3DXVECTOR3& dest, const D3DXVECTOR3& src )
 }
 
 
-#else
+#else /* USE_D3DXVECTOR */
 
 #include "3DMath/Vector3.h"
 
@@ -30,10 +33,7 @@ inline void Vec3Copy( Vector3& dest, const D3DXVECTOR3& src )
 	dest.z = src.z;
 }
 
-#endif
+#endif /* USE_D3DXVECTOR */
 
 
 #endif  /*  __D3DXVEC3_COPY_H__  */
-
-
-

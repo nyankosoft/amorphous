@@ -12,7 +12,7 @@
 
 
 // >>> comment this out to use platform-independent(?) Vector3 class
-#ifndef USE_D3DXVECTOR
+#ifdef WIN32
 #define USE_D3DXVECTOR
 #endif
 // <<< comment this out to use platform-independent(?) Vector3 class

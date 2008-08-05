@@ -88,6 +88,20 @@ inline TScalar& TVector2<TScalar>::operator[]( int i )
 	}
 }
 
+template<class TScalar>
+inline const TScalar& TVector2<TScalar>::operator[]( int i ) const
+{
+	switch( i )
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	default:
+		return y;
+	}
+}
+
 
 template<class TScalar>
 inline TVector2<TScalar> TVector2<TScalar>::operator=( const TVector2<TScalar>& v )

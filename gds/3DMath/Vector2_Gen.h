@@ -45,6 +45,8 @@ public:
 
 	inline TScalar& operator[]( int i );
 
+	inline const TScalar& operator[]( int i ) const;
+
 
 	inline void Normalize();
 

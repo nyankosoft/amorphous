@@ -1,4 +1,3 @@
-
 #include "aabb3.h"
 #include "Sphere.h"
 
