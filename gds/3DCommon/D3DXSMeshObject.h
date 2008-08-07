@@ -21,12 +21,12 @@ class CD3DXSMeshObject : public CD3DXPMeshObject
 
 	/// hold pointers to each bone in a single array
 	/// used to set matrices with indices
-	vector<CMM_Bone *> m_vecpBone;
+	std::vector<CMM_Bone *> m_vecpBone;
 
 	/// root node of the hierarchical structure
     CMM_Bone *m_pRootBone;
 
-	vector<Matrix34> m_vecLocalTransformCache;
+	std::vector<Matrix34> m_vecLocalTransformCache;
 
 private:
 
@@ -42,9 +42,9 @@ public:
 
 	virtual void Release();
 
-	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename );
+	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags );
 
-	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, int num_pmeshes );
+	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes );
 
 	inline int GetNumBones() const { return m_iNumBones; }
 

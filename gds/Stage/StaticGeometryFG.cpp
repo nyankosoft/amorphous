@@ -397,7 +397,7 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 	 && 0 < archive.m_SkyboxMeshArchive.GetMaterial().size() )
 	{
 		pMeshObject= new CD3DXMeshObject;
-		hr = pMeshObject->LoadFromArchive( archive.m_SkyboxMeshArchive, db_filename );
+		hr = pMeshObject->LoadFromArchive( archive.m_SkyboxMeshArchive, db_filename, 0 );
 		if( SUCCEEDED(hr) )
 			m_pSkyboxMesh = pMeshObject;
 		else

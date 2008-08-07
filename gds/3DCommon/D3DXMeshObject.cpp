@@ -123,7 +123,7 @@ void CD3DXMeshObject::Render()
 }
 
 
-bool CD3DXMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename )
+bool CD3DXMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
 	// copy the contents from the archive
 
@@ -139,7 +139,7 @@ bool CD3DXMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::
 		return false;
 
 	// load surface materials & textures
-	LoadMaterialsFromArchive( archive );
+	LoadMaterialsFromArchive( archive, option_flags );
 
 	hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
 

@@ -47,9 +47,9 @@ public:
 
 	bool LoadFromFile( const std::string& filename, int num_pmeshes );
 
-	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename );
+	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags );
 
-	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, int num_pmeshes );
+	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes );
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return GetPMesh(); }
 

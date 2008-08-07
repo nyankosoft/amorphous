@@ -60,9 +60,9 @@ void CBillboardArrayMesh::LoadVertices( void*& pVBData,
 	}
 }
 
-bool CBillboardArrayMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const string& filename )
+bool CBillboardArrayMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const string& filename, U32 option_flags )
 {
-	bool loaded = CD3DXMeshObject::LoadFromArchive( rArchive, filename );
+	bool loaded = CD3DXMeshObject::LoadFromArchive( rArchive, filename, option_flags );
 	return loaded;
 
 /*

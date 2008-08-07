@@ -52,7 +52,7 @@ void CBEC_Billboard::LoadBillboardArrayMesh( float billboard_radius,
 	m_BillboardArrayMeshArchive = mesh_generator.GetMeshArchive();
 
 	m_pBillboardArrayMesh = new CBillboardArrayMesh();
-	bool loaded = m_pBillboardArrayMesh->LoadFromArchive( m_BillboardArrayMeshArchive, "BillboardArrayMesh" );
+	bool loaded = m_pBillboardArrayMesh->LoadFromArchive( m_BillboardArrayMeshArchive, "BillboardArrayMesh", 0 );
 }
 
 
@@ -297,7 +297,7 @@ void CBEC_Billboard::LoadGraphicsComponentResources( const CGraphicsParameters& 
 	m_BillboardTexture.Load();
 
 	m_pBillboardArrayMesh = new CBillboardArrayMesh();
-	bool loaded = m_pBillboardArrayMesh->LoadFromArchive( m_BillboardArrayMeshArchive, "BillboardArrayMesh" );
+	bool loaded = m_pBillboardArrayMesh->LoadFromArchive( m_BillboardArrayMeshArchive, "BillboardArrayMesh", 0 );
 }
 
 

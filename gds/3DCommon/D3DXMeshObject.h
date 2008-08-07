@@ -2,6 +2,7 @@
 #define __D3DXMESHOBJECT_H__
 
 
+#include "../base.h"
 #include "3DCommon/Direct3D9.h"
 #include "D3DXMeshObjectBase.h"
 
@@ -26,7 +27,7 @@ public:
 
 	void Release();
 
-	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename );
+	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags );
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return m_pMesh; }
 

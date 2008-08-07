@@ -1,11 +1,8 @@
-
 #include "D3DXPMeshObject.h"
 
 #include "3DCommon/Direct3D9.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/memory_helpers.h"
-
-#include <assert.h>
 
 
 CD3DXPMeshObject::CD3DXPMeshObject()
@@ -68,7 +65,8 @@ bool CD3DXPMeshObject::LoadFromFile( const std::string& filename, int num_pmeshe
 		if( !b )
 			return false;
 
-		loaded = LoadFromArchive( archive, filename );
+		// TODO: Support load option flags for LoadFromFile() functions
+		loaded = LoadFromArchive( archive, filename, 0 );
 	}
 
 //	if( loaded )
@@ -94,7 +92,6 @@ HRESULT CD3DXPMeshObject::LoadFromXFile( const std::string& filename, int num_pm
 	if( NUM_MAX_PMESHES < num_pmeshes )
 		num_pmeshes = NUM_MAX_PMESHES;
 
-
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	HRESULT hr;
 
@@ -118,13 +115,13 @@ HRESULT CD3DXPMeshObject::LoadFromXFile( const std::string& filename, int num_pm
 }
 
 
-bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename )
+bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
-	return LoadFromArchive( archive, filename, NUM_DEFAULT_PMESHES );
+	return LoadFromArchive( archive, filename, option_flags, NUM_DEFAULT_PMESHES );
 }
 
 
-bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, int num_pmeshes )
+bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes )
 {
 	Release();
 
@@ -138,7 +135,7 @@ bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 
 	LPD3DXMESH pMesh = LoadD3DXMeshFromArchive( archive );
 
-	hr = LoadMaterialsFromArchive( archive );
+	hr = LoadMaterialsFromArchive( archive, option_flags );
 
 	hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
 
@@ -289,7 +286,7 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 		}
 		if( i == MAX_FVF_DECL_SIZE )
 		{
-			assert( !"mesh normals not found - non-FVF mesh must have normals" );
+			LOG_PRINT_ERROR( "Mesh normals were not found - Non-FVF mesh must have normals." );
 			goto End;
 		}
 	}

@@ -25,7 +25,7 @@ public:
 
 //	virtual HRESULT LoadFromFile( const std::string& filename );
 
-	virtual bool LoadFromArchive( C3DMeshModelArchive& rArchive, const std::string& filename );
+	virtual bool LoadFromArchive( C3DMeshModelArchive& rArchive, const std::string& filename, U32 option_flags );
 
 	virtual void LoadVertices( void*& pVBData, C3DMeshModelArchive& archive );
 };

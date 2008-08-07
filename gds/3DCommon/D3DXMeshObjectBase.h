@@ -2,8 +2,6 @@
 #define  __D3DXMESHOBJECTBASE_H__
 
 
-#include <direct.h>
-
 #include <vector>
 #include <string>
 
@@ -16,6 +14,18 @@
 
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
+
+
+class MeshLoadOption
+{
+public:
+	enum Flag
+	{
+		DO_NOT_LOAD_TEXTURES = ( 1 << 0 ), ///< specify this to load textures later. e.g., for asynchronous loading
+//		ANOTHER_OPTION       = ( 1 << 1 ),
+//		YET_ANOTHER_OPTION   = ( 1 << 2 ),
+	};
+};
 
 
 /**
@@ -96,7 +106,7 @@ protected:
 
 	HRESULT LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num_materials );
 
-	HRESULT LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive );
+	HRESULT LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags );
 
 //	virtual const D3DVERTEXELEMENT9 *GetVertexElemenets( CMMA_VertexSet& rVertexSet );
 
@@ -141,7 +151,7 @@ public:
 
 	/// load basic mesh properties from a mesh archive
 	/// NOTE: filename is required to get the path for textures files
-	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename ) = 0;
+	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags = 0 ) = 0;
 
 	virtual void Release();
 

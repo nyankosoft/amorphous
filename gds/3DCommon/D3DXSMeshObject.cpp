@@ -1,4 +1,3 @@
-
 #include "D3DXSMeshObject.h"
 
 #include "Support/Log/DefaultLog.h"
@@ -76,17 +75,17 @@ bool CD3DXSMeshObject::LoadSkeletonFromArchive( C3DMeshModelArchive& archive )
 }
 
 
-bool CD3DXSMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename )
+bool CD3DXSMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
 	// create mesh from archive
 	// - turn off mulitple progress meshes by default
-	return LoadFromArchive( archive, filename, 1 ); 
+	return LoadFromArchive( archive, filename, option_flags, 1 ); 
 }
 
 
-bool CD3DXSMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, int num_pmeshes )
+bool CD3DXSMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes )
 {
-	bool pmesh_loaded = CD3DXPMeshObject::LoadFromArchive( archive, filename, num_pmeshes );
+	bool pmesh_loaded = CD3DXPMeshObject::LoadFromArchive( archive, filename, option_flags, num_pmeshes );
 
 	// load skeleton hierarchy
 	LoadSkeletonFromArchive( archive );

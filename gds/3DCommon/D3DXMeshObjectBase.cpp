@@ -18,6 +18,8 @@
 #include "Support/fnop.h"
 using namespace fnop;
 
+#include <direct.h>
+
 
 
 /**
@@ -125,7 +127,7 @@ void CD3DXMeshObjectBase::InitMaterials( int num_materials )
 }
 
 
-HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive )
+HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags )
 {
 	m_AABB = rArchive.GetAABB();
 	vector<CMMA_Material>& rvecSrcMaterial = rArchive.GetMaterial();
@@ -174,15 +176,20 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 		m_pMeshMaterials[i].Ambient.b = 0.25f;
 		m_pMeshMaterials[i].Ambient.a = 1.00f;
 
-		const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();
-		m_vecMaterial[i].Texture.resize( num_textures );
-		for( size_t tex=0; tex<num_textures; tex++ )
+		if( !(option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES) )
 		{
-			tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
-			if( 0 < tex_filename.length() )
+			// load texture(s) now
+			const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();
+
+			m_vecMaterial[i].Texture.resize( num_textures );
+			for( size_t tex=0; tex<num_textures; tex++ )
 			{
-				m_vecMaterial[i].Texture[tex].filename = tex_filename;
-				loaded = m_vecMaterial[i].Texture[tex].Load();
+				tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
+				if( 0 < tex_filename.length() )
+				{
+					m_vecMaterial[i].Texture[tex].filename = tex_filename;
+					loaded = m_vecMaterial[i].Texture[tex].Load();
+				}
 			}
 		}
 
@@ -914,7 +921,8 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchive( C3DMeshModel
 
 	CD3DXMeshObject *pMeshObject = new CD3DXMeshObject();
 
-	pMeshObject->LoadFromArchive( mesh_archive, filepath );
+	U32 load_option_flags = 0;
+	pMeshObject->LoadFromArchive( mesh_archive, filepath, load_option_flags );
 
 	return pMeshObject;
 }
