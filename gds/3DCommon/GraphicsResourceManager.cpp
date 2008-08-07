@@ -47,6 +47,7 @@ void CGraphicsResourceManager::Release()
 }
 
 
+/// Register the resource entry. Notify the entry of its own index in the array
 template<class T>
 size_t CGraphicsResourceManager::AddEntryToVacantSlot( T ptr, vector<T>& vecPtr )
 {
@@ -88,6 +89,7 @@ size_t add_weak_ptr_to_vacant_slot( weak_ptr<T> ptr, vector<weak_ptr<T>>& vecPtr
 }
 
 
+/// Created resource entry has its own index
 shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResourceEntry( const CGraphicsResourceDesc& desc )
 {
 	shared_ptr<CGraphicsResourceEntry> pEntry;

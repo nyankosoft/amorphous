@@ -32,9 +32,10 @@ void CGraphicsResourceHandle::Serialize( IArchive& ar, const unsigned int versio
 
 bool CGraphicsResourceHandle::LoadAsync( int priority )
 {
-	if(  GraphicsResourceManager().IsAsyncLoadingAllowed() )
+/*	if(  GraphicsResourceManager().IsAsyncLoadingAllowed() )
 	{
-//		ResourceLoadRequest req;
+//		CResourceLoadRequest req;
+//		req.m_pLoader = set the loader here?
 //		req.desc = GetDesc();
 //		req.name = filename;
 //		req.type = GetResourceType();
@@ -42,6 +43,6 @@ bool CGraphicsResourceHandle::LoadAsync( int priority )
 	}
 	else
 		Load();
-
-	return true;
+*/
+	return false;
 }

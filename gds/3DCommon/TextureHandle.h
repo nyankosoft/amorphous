@@ -35,12 +35,16 @@ public:
 
 	virtual bool Load();
 
+	virtual bool LoadAsync( int priority );
+
+	/// Direct access to D3D texture
+	/// - Avoid using this whenever possible
 	inline const LPDIRECT3DTEXTURE9 GetTexture() const { return GraphicsResourceManager().GetTexture(m_EntryID); }
 
-	/// creates an empty texture
+	/// Creates an empty texture
 	/// - Created as a shareable resource (Right now resource are always sharable)
 	/// - CGraphicsResourceHandle::filename is used as an id
-	///   - The resource is shared if CGraphicsResourceHandle::filenames are the same
+	///   - The resources are shared if CGraphicsResourceHandle::filenames are the same
 	///     just like texture resources loaded from file
 	/// \param mip_levels number of mip levels. set 0 to create a complete mipmap chain (0 by default).
 	bool Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
@@ -55,6 +59,8 @@ public:
 //	inline const CTextureHandle &operator=( const CTextureHandle& handle );
 };
 
+
+//--------------------------------- inline implementations ---------------------------------
 
 /*
 inline const CTextureHandle &CTextureHandle::operator=( const CTextureHandle& handle ){}

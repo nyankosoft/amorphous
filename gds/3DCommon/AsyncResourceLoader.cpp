@@ -37,7 +37,7 @@ m_bEndIOThread(false)
 	m_pIOThread = shared_ptr<thread>( new thread( CIOThreadStarter(this) ) );
 }
 
-	
+
 /// Release the resource IO thread
 void CAsyncResourceLoader::Release()
 {
@@ -169,10 +169,12 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 					continue;
 
 				// texture / mesh sizes are stored in the loader
-				// - GraphicsResourceManager can determine the graphics resource entry that matches the specification
-				// - Create a new graphics resource entry, or draw one from the cache
-				// - This will overwrites the slot that has been occupied by pSrcEntry
-				//   - i.e. ref count of pSrcEntry will be zero after leaving this scope
+				// - GraphicsResourceManager can determine the graphics resource entry that matches the specification.
+				//   It either,
+				//   - Create a new graphics resource entry.
+				//   - Draw one from the cache.
+				// - This will overwrite the slot that has been occupied by pSrcEntry. i.e., ref count of pSrcEntry
+				//   will be zero after leaving this scope
 				pEntry = GraphicsResourceManager().CreateAt( pSrcEntry->GetDesc(), pSrcEntry->GetIndex() );
 				if( pEntry )
 				{

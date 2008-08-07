@@ -39,6 +39,18 @@ bool CTextureHandle::Load()
 		return true;	// the texture has been successfully loaded
 }
 
+
+bool CTextureHandle::LoadAsync( int priority )
+{
+	CTextureResourceDesc desc;
+	desc.Filename = filename;
+
+	m_EntryID = GraphicsResourceManager().LoadAsync( desc );
+
+	return true;
+}
+
+
 /// \param weak pointer to an instance of CTextureLoader class that fill the texture content after the graphics device is released and recreated.
 /// Owner of the texture handle is supposed to hold shared_ptr of texture loader and set it to the first argument
 /// This can be set to null as boost::weak_ptr<CTextureLoader>() if you don't have to fill the content of the texture when it is re-created. e.g.) Texture for rendertarget

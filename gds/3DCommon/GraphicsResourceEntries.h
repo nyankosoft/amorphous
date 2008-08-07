@@ -130,7 +130,7 @@ protected:
 
 	State m_State;
 
-	/// if true kept in the array of cahced resources
+	/// If true, kept in the array of cahced resources
 	bool m_bIsCachedResource;
 
 	int m_Index;
