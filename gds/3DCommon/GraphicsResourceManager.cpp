@@ -130,6 +130,7 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResou
 		return shared_ptr<CGraphicsResourceEntry>();
 	}
 
+	// register the created entry to the ptr array that holds all the resource entries
 	weak_ptr<CGraphicsResourceEntry> pWeakPtr = pEntry;
 	add_weak_ptr_to_vacant_slot( pWeakPtr, m_vecpResourceEntry );
 
@@ -196,6 +197,14 @@ shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoad
 }
 
 
+/// Not implemented yet.
+/// - Just returns -1 to indicate that there are no saharable resoureces
+int CGraphicsResourceManager::FindSameLoadedResource( const CGraphicsResourceDesc& desc )
+{
+	return -1;
+}
+
+
 // async loading steps
 // 1. see if the requested resource has already been loaded
 //    true -> see if it is sharable
@@ -209,7 +218,7 @@ int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 		const size_t num_entries = m_vecpResourceEntry.size();
 		for( size_t i=0; i<num_entries; i++ )
 		{
-			int shared_resource_index = -1;//FindSameLoadedResource( desc );
+			int shared_resource_index = FindSameLoadedResource( desc );
 			if( 0 <= shared_resource_index )
 			{
 				return shared_resource_index;
@@ -232,6 +241,9 @@ int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, pEntry );
 		req.m_pLoader = CreateResourceLoader(pEntry);
 		AsyncResourceLoader().AddResourceLoadRequest( req );
+
+		pEntry->IncRefCount();
+
 		return pEntry->GetIndex();
 	}
 	else
@@ -266,6 +278,10 @@ boost::shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateAt( co
 	{
 		// cannot create a resource entry
 	}
+
+	// register the created entry to the ptr array that holds all the resource entries
+	weak_ptr<CGraphicsResourceEntry> pWeakPtr = pEntry;
+	add_weak_ptr_to_vacant_slot( pWeakPtr, m_vecpResourceEntry );
 
 	// lock the resource
 //	pEntry->Lock();

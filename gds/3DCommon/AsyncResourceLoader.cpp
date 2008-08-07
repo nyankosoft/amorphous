@@ -83,6 +83,7 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 	{
 		boost::thread::sleep(xt);
 
+		if( 0 < m_ResourceLoadRequestQueue.size() )
 		{
 			mutex::scoped_lock scoped_lock(m_IOMutex);
 			req = m_ResourceLoadRequestQueue.front();
@@ -181,7 +182,11 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 					// update the entry
 					req.m_pResourceEntry = pEntry;
 
-//					resource_locked = pEntry->Lock(); // Does not work for the mesh, since it has 3 buffers to lock - DB, IB, and attribute buffer
+					// refresh the entry held by the loader
+					// - Should separate resource entry class and resource class to avoid this?
+					req.m_pLoader->SetEntry( pEntry );
+
+//					resource_locked = pEntry->Lock(); // Does not work for the mesh, since it has 3 buffers to lock - VB, IB, and attribute buffer
 
 					req.m_pLoader->Lock();
 				}

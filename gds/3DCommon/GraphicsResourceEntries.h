@@ -135,6 +135,8 @@ protected:
 
 	int m_Index;
 
+//	boost::shared_ptr<CGraphicsResource> m_pResource;
+
 protected:
 
 	// reference count is not changed in this function?
@@ -194,6 +196,16 @@ public:
 	friend class CGraphicsResourceManager;
 };
 
+/*
+class CGraphicsResource
+{
+public:
+
+	virtual bool Lock() { return false; }
+
+	virtual bool Unlock() { return false; }
+};
+*/
 
 class CTextureEntry : public CGraphicsResourceEntry
 {
@@ -251,6 +263,7 @@ public:
 
 
 class CMeshObjectEntry : public CGraphicsResourceEntry
+//class CMeshObjectResource : public CGraphicsResource
 {
 	CD3DXMeshObjectBase *m_pMeshObject;
 

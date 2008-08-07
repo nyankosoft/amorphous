@@ -72,6 +72,8 @@ private:
 
 	boost::shared_ptr<CGraphicsResourceLoader> CreateResourceLoader( boost::shared_ptr<CGraphicsResourceEntry> pEntry );
 
+	int FindSameLoadedResource( const CGraphicsResourceDesc& desc );
+
 	/// asynchronously loads a graphics resource
 	/// - sends load request and returns
 	/// - index to the entry is returned immediately
@@ -79,7 +81,6 @@ private:
 
 	template<class T>
 	size_t AddEntryToVacantSlot( T ptr, vector<T>& vecPtr );
-
 
 protected:
 ///	CGraphicsResourceManager();		//singleton

@@ -69,6 +69,8 @@ public:
 	virtual bool Lock() = 0;
 
 	virtual bool Unlock() = 0;
+
+	virtual void SetEntry( boost::weak_ptr<CGraphicsResourceEntry> pEntry ) = 0;
 };
 
 
@@ -77,6 +79,7 @@ class CDiskTextureLoader : public CGraphicsResourceLoader
 {
 	/// entry to that stores the loaded resource
 	boost::weak_ptr<CTextureEntry> m_pTextureEntry;
+//	boost::weak_ptr<CTextureResource> m_pTextureResource;
 
 //	CTextureResourceDesc m_Desc;
 
@@ -127,6 +130,11 @@ public:
 			return false;
 	}
 
+	void SetEntry( boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	{
+		m_pTextureEntry = boost::dynamic_pointer_cast<CTextureEntry,CGraphicsResourceEntry>(pEntry.lock());
+	}
+
 	/// called by the system
 	/// - called inside CopyTo()
 	void FillTexture( CLockedTexture& texture );
@@ -171,6 +179,11 @@ public:
 	/// Does not unlock the mesh resource
 	/// - See the comment of Lock()
 	bool Unlock() { return false; }
+
+	void SetEntry( boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	{
+		m_pMeshEntry = boost::dynamic_pointer_cast<CMeshObjectEntry,CGraphicsResourceEntry>(pEntry.lock());
+	}
 
 	void CreateLockRequests()
 	{

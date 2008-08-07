@@ -39,6 +39,17 @@ bool CMeshObjectHandle::Load()
 }
 
 
+bool CMeshObjectHandle::LoadAsync( int priority )
+{
+	CMeshResourceDesc desc;
+	desc.Filename = filename;
+
+	m_EntryID = GraphicsResourceManager().LoadAsync( desc );
+
+	return true;
+}
+
+
 void CMeshObjectHandle::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGraphicsResourceHandle::Serialize( ar, version );

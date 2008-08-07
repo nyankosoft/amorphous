@@ -41,6 +41,8 @@ public:
 
 	virtual bool Load();
 
+	virtual bool LoadAsync( int priority );
+
 	inline virtual const CMeshObjectHandle &operator=( const CMeshObjectHandle& handle );
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
