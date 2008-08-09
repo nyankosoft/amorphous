@@ -139,7 +139,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 		CShaderContainer& container = m_Archive.m_vecShaderContainer[i];
 //		container.m_pShaderManager = shared_ptr<CShaderManager>( new CShaderManager() );
 //		container.m_pShaderManager->LoadShaderFromFile( container.ShaderFilepath );
-		bool shader_loaded = container.m_ShaderHandle.Load();
+		bool shader_loaded = container.Load();
 	}
 
 	// load meshes
@@ -147,7 +147,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	{
 		for( size_t i=0; i<m_Archive.m_vecMesh.size(); i++ )
 		{
-			m_Archive.m_vecMesh[i].Mesh.Load();
+			m_Archive.m_vecMesh[i].Load();
 		}
 	}
 

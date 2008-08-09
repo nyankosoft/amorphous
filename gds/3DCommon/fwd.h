@@ -9,6 +9,22 @@ class CGraphicsComponentCollector;
 // TODO: RenderSystem for cross platform
 class CDirect3D9;
 
+
+class CGraphicsResourceEntry;
+class CTextureEntry;
+class CMeshObjectEntry;
+class CShaderManagerEntry;
+class CGraphicsResourceDesc;
+class CTextureResourceDesc;
+class CMeshResourceDesc;
+class CShaderResourceDesc;
+class CGraphicsResourceHandle;
+class CTextureHandle;
+class CMeshObjectHandle;
+class CShaderHandle;
+class CGraphicsResourceManager;
+class CLockedTexture;
+
 class C2DRect;
 class C2DFrameRect;
 class C2DTriangle;
@@ -88,6 +104,20 @@ typedef boost::shared_ptr<CFontBase> CFontSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManager> CGraphicsElementManagerSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManagerCallback> CGraphicsElementManagerCallbackSharedPtr;
 typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;
+
+
+class CMeshType
+{
+public:
+	enum Name
+	{
+		BASIC,
+		PROGRESSIVE,
+		SKELETAL,
+		INVALID,
+		NUM_MESH_TYPES
+	};
+};
 
 
 #endif /* __FWD_3DCommon_H__ */

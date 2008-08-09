@@ -4,12 +4,9 @@
 #include <string>
 
 #include "GraphicsResource.h"
+#include "GraphicsResourceDescs.h"
 
-#include "Support/Serialization/ArchiveObjectBase.h"
-using namespace GameLib1::Serialization;
-
-
-class CGraphicsResourceHandle : public IArchiveObjectBase
+class CGraphicsResourceHandle
 {
 protected:
 
@@ -22,21 +19,12 @@ protected:
 
 public:
 
-	std::string filename;
-
-public:
-
 	inline CGraphicsResourceHandle() : m_EntryID(-1) {}
 
 	/// Release() is called in the dtor of each derived handle class
 	virtual ~CGraphicsResourceHandle() {}
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
-
-	virtual bool Load() = 0;
-
-	/// priority 0 - 256
-	virtual bool LoadAsync( int priority );
 
 	bool IsLoaded() { return ( 0 <= m_EntryID ); }
 
@@ -50,8 +38,6 @@ public:
 	inline const CGraphicsResourceHandle &operator=( const CGraphicsResourceHandle& handle );
 
 	inline CGraphicsResourceHandle( const CGraphicsResourceHandle& handle );
-
-	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 //	static const CGraphicsResourceHandle ms_NullHandle;
 //	static const CGraphicsResourceHandle& Null() { return ms_NullHandle; }
@@ -88,8 +74,6 @@ inline void CGraphicsResourceHandle::copy( const CGraphicsResourceHandle& handle
 		// increment the reference count of the newly assigned texture
 		IncResourceRefCount();
 	}
-
-	filename = handle.filename;
 }
 
 inline const CGraphicsResourceHandle &CGraphicsResourceHandle::operator=( const CGraphicsResourceHandle& handle )

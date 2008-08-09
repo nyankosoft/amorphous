@@ -86,11 +86,9 @@ void HUD_PlayerShip::LoadGraphicsResources( const CGraphicsParameters& rParam )
 
 void HUD_PlayerShip::LoadTextures()
 {
-	m_ShipIconTexture.filename = "Texture\\ShipIcon.dds";
-	m_ShipIconTexture.Load();
+	m_ShipIconTexture.Load( "Texture\\ShipIcon.dds" );
 
-	m_CrosshairTexture.filename = "Texture\\Crosshair.dds";
-	m_CrosshairTexture.Load();
+	m_CrosshairTexture.Load( "Texture\\Crosshair.dds" );
 }
 
 

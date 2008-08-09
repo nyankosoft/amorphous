@@ -912,18 +912,15 @@ bool CGraphicsElementManager::LoadTexture( int texture_id, const std::string& te
 			m_vecTexHandle.push_back( CTextureHandle() );
 	}
 
-	m_vecTexHandle[texture_id].filename = tex_filename;
-
-	return m_vecTexHandle[texture_id].Load();
+	return m_vecTexHandle[texture_id].Load( tex_filename );
 }
 
 
 int CGraphicsElementManager::LoadTexture( const std::string& tex_filename )
 {
 	m_vecTexHandle.push_back( CTextureHandle() );
-	m_vecTexHandle.back().filename = tex_filename;
 
-	bool res = m_vecTexHandle.back().Load();
+	bool res = m_vecTexHandle.back().Load( tex_filename );
 
 	if( res )
 		return (int)(m_vecTexHandle.size() - 1);

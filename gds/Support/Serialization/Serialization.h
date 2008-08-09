@@ -1,4 +1,3 @@
-
 #ifndef __GAMELIB1_SERIALIZATION_H__
 #define __GAMELIB1_SERIALIZATION_H__
 

@@ -17,6 +17,7 @@ private:
 
 	C3DRect m_LaserDotRect;
 
+	std::string m_LaserDotTexFilepath;
 	CTextureHandle m_LaserDotTex;
 
 public:

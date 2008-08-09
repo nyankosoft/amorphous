@@ -296,7 +296,7 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 
 	LOG_FUNCTION_SCOPE();
 
-	if( desc.Filename.length() == 0 )
+	if( desc.ResourcePath.length() == 0 )
 		return -1;	// invalid filename
 
 	// search if a same resource has been already loaded or is being loaded
@@ -327,7 +327,7 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 	if( !pResourceEntry )
 		return -1;
 
-	pResourceEntry->SetFilename( desc.Filename );
+	pResourceEntry->SetFilename( desc.ResourcePath );
 
 	// load 
 
@@ -337,7 +337,7 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 
 	if( pResourceEntry->GetRefCount() == 1 )
 	{
-		LOG_PRINT( " - Created a graphics resource: " + desc.Filename );
+		LOG_PRINT( " - Created a graphics resource: " + desc.ResourcePath );
 
 		// A resource has been successfully loaded
 		return pResourceEntry->GetIndex();
@@ -345,7 +345,7 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 	}
 	else
 	{
-		LOG_PRINT_WARNING( "Failed to create a graphics resource: " + desc.Filename );
+		LOG_PRINT_WARNING( "Failed to create a graphics resource: " + desc.ResourcePath );
 
 		ReleaseResourceEntry( pResourceEntry );
 		return -1;	// failed to create a resource
@@ -354,10 +354,8 @@ int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc&
 
 
 /// called from handle
-int CGraphicsResourceManager::LoadTexture( std::string filename )
+int CGraphicsResourceManager::LoadTexture( const CTextureResourceDesc& desc )
 {
-	CTextureResourceDesc desc;
-	desc.Filename = filename;
 	return LoadGraphicsResource( desc );
 }
 
@@ -369,11 +367,8 @@ int CGraphicsResourceManager::CreateTexture( const CTextureResourceDesc& desc )
 
 
 /// called from handle
-int CGraphicsResourceManager::LoadMeshObject( std::string filename, int mesh_type )
+int CGraphicsResourceManager::LoadMesh( const CMeshResourceDesc& desc )
 {
-	CMeshResourceDesc desc;
-	desc.Filename = filename;
-	desc.MeshType = mesh_type;
 	return LoadGraphicsResource( desc );
 }
 
@@ -382,7 +377,7 @@ int CGraphicsResourceManager::LoadMeshObject( std::string filename, int mesh_typ
 int CGraphicsResourceManager::LoadShaderManager( std::string filename )
 {
 	CShaderResourceDesc desc;
-	desc.Filename = filename;
+	desc.ResourcePath = filename;
 	return LoadGraphicsResource( desc );
 }
 

@@ -58,7 +58,7 @@ void CBEC_Billboard::LoadBillboardArrayMesh( float billboard_radius,
 
 void CBEC_Billboard::Init()
 {
-	bool b = m_BillboardTexture.Load();
+	bool b = m_BillboardTexture.Load( m_BillboardTextureFilepath );
 
 //	if( b )
 //		MessageBox( NULL, m_strTextureFilename.c_str(), "texture loaded", MB_OK|MB_ICONWARNING );
@@ -260,12 +260,12 @@ bool CBEC_Billboard::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
 	string blend_mode, type;
 
-	if( scanner.TryScanLine( "TEXTURE", m_BillboardTexture.filename ) ) return true;
+	if( scanner.TryScanLine( "TEXTURE", m_BillboardTextureFilepath ) ) return true;
 
 	if( scanner.TryScanLine( "BILLBOARD_TYPE", type ) )
 	{
-		if( type == "SEPARATE_VERTEX_STORAGE" ) { m_Type = CBEC_Billboard::TYPE_BILLBOARDARRAYMESH; return true; }
-		else if( type == "SHARED_VERTEX_STORAGE" ) { m_Type = CBEC_Billboard::TYPE_BILLBOARDARRAYMESH_SHARED; return true; }
+		if( type == "SEPARATE_VERTEX_STORAGE" )               { m_Type = CBEC_Billboard::TYPE_BILLBOARDARRAYMESH; return true; }
+		else if( type == "SHARED_VERTEX_STORAGE" )            { m_Type = CBEC_Billboard::TYPE_BILLBOARDARRAYMESH_SHARED; return true; }
 		else if( type == "SHARED_VERTEX_STORAGE_WITHOUT_VB" ) { m_Type = CBEC_Billboard::TYPE_RECT_ARRAY_AND_INDICES; return true; }
 		else return false;
 	}
@@ -286,7 +286,7 @@ bool CBEC_Billboard::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 void CBEC_Billboard::SerializeBillboardProperty( IArchive& ar, const unsigned int version )
 {
 	ar & m_Type;
-	ar & m_BillboardTexture.filename;
+	ar & m_BillboardTextureFilepath;
 	ar & m_DestAlphaBlendMode;
 }
 
@@ -294,7 +294,7 @@ void CBEC_Billboard::SerializeBillboardProperty( IArchive& ar, const unsigned in
 
 void CBEC_Billboard::LoadGraphicsComponentResources( const CGraphicsParameters& rParam )
 {
-	m_BillboardTexture.Load();
+	m_BillboardTexture.Load( m_BillboardTextureFilepath );
 
 	m_pBillboardArrayMesh = new CBillboardArrayMesh();
 	bool loaded = m_pBillboardArrayMesh->LoadFromArchive( m_BillboardArrayMeshArchive, "BillboardArrayMesh", 0 );

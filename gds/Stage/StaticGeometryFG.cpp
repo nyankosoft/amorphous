@@ -1,4 +1,3 @@
-
 #include "StaticGeometryFG.h"
 #include "StaticGeometryArchiveFG.h"
 
@@ -384,12 +383,13 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 
 	size_t i, num_meshes = archive.m_vecMeshArchiveKey.size();
 
+	CMeshResourceDesc mesh_desc;
 	m_vecMesh.resize( num_meshes );
 	for( i=0; i<num_meshes; i++ )
 	{
-		m_vecMesh[i].filename = db_filename + "::" + archive.m_vecMeshArchiveKey[i];
+		mesh_desc.ResourcePath = db_filename + "::" + archive.m_vecMeshArchiveKey[i];
 
-		m_vecMesh[i].Load();
+		m_vecMesh[i].Load( mesh_desc );
 	}
 
 	// load skybox(skysphere)
@@ -411,9 +411,9 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 		if( 0 < skybox_mat.size()
 		 && 0 < skybox_mat[0].vecTexture.size() )
 		{
-			m_FadeTex.filename = skybox_mat[0].vecTexture[0].strFilename;
-			fnop::append_to_body( m_FadeTex.filename, "_fade" );
-			m_FadeTex.Load();
+			string fade_tex_filepath = skybox_mat[0].vecTexture[0].strFilename;
+			fnop::append_to_body( fade_tex_filepath, "_fade" );
+			m_FadeTex.Load( fade_tex_filepath );
 		}
 	}
 
@@ -426,16 +426,15 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
         LoadShaderFromFile( "./Shader/SGViewerFG.fx" );
 
 	// load global overlay texture
-	m_TileTexture.filename = archive.m_strTileTextureFilename;
-	m_TileTexture.Load();
+	m_TileTexture.Load( archive.m_strTileTextureFilename );
 
 	// load fake bump for water surface
 //	if( m_Technique == "SGTerrainTexBlendWithWater" )
 	if( 0 < m_vecMeshGroup.size()
 	 && m_vecMeshGroup[0].m_vecShaderTechnique[0].GetTechniqueName() == "SGTerrainTexBlendWithWater" )
 	{
-		m_NormalMapForWaterSurface.filename = "Stage\\Texture\\watersurf_nmap.bmp";
-		m_NormalMapForWaterSurface.Load();
+		string tex_filepath = "Stage\\Texture\\watersurf_nmap.bmp";
+		m_NormalMapForWaterSurface.Load( tex_filepath );
 	}
 
 	return true;

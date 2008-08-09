@@ -2,94 +2,21 @@
 #define  __GraphicsResourceEntry_H__
 
 
-#include "fwd.h"
-#include "GraphicsResource.h"
-
 #include <sys/stat.h>
 #include <string>
 #include <d3dx9tex.h>
 #include <boost/weak_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/thread.hpp>
+
+#include "fwd.h"
+#include "GraphicsResource.h"
+#include "GraphicsResourceDescs.h"
 
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
 
 //template<class T>class CBinaryDatabase<T>;
-
-
-class CGraphicsResourceDesc
-{
-	enum LoadingMode
-	{
-		Synchronous,
-		Asynchronous,
-		NumLoadingModes
-	};
-
-	/// filled out by the system
-	/// - User chooses a mode by calling CGraphicsResourceHandle::Load() or CGraphicsResourceHandle::LoadAsync();
-	LoadingMode m_LoadingMode;
-
-public:
-
-	/// Used when the resource is loaded from disk
-	std::string Filename;
-
-public:
-
-	CGraphicsResourceDesc();
-
-	virtual GraphicsResourceType::Name GetResourceType() const = 0;
-
-	virtual bool IsDiskResource() const { return true; }
-};
-
-
-class CMeshResourceDesc : public CGraphicsResourceDesc
-{
-public:
-
-	int MeshType;	///< used by mesh object
-
-public:
-
-	CMeshResourceDesc();
-
-	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
-};
-
-
-class CTextureResourceDesc : public CGraphicsResourceDesc
-{
-public:
-
-	int Width;
-	int Height;
-	int MipLevels; ///< 0 is set to create complete mipmap chain. (default: 0)
-	TextureFormat::Format Format;
-
-	boost::weak_ptr<CTextureLoader> pLoader;
-
-public:
-
-	CTextureResourceDesc()
-		:
-	Width(0),
-	Height(0),
-	MipLevels(0),
-	Format(TextureFormat::Invalid)
-	{}
-
-	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
-};
-
-
-class CShaderResourceDesc : public CGraphicsResourceDesc
-{
-public:
-
-	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
-};
 
 
 /**
@@ -105,18 +32,6 @@ class CGraphicsResourceEntry
 {
 public:
 
-	enum State
-	{
-		Created,               ///< Memory for the resource has been allocated. The content has not been loaded on memory. i.e.) empty state
-		LoadingSynchronously,
-		LoadingAsynchronously,
-		Loaded,                ///< The resource is ready to use
-		ReleasingSynchronously,
-		ReleasingAsynchronously,
-		Released,
-		NumStates
-	};
-
 protected:
 
 	unsigned int m_OptionFlags;
@@ -128,12 +43,14 @@ protected:
 	/// stores the time when the file was updated last
 	time_t m_LastModifiedTimeOfFile;
 
-	State m_State;
+	GraphicsResourceState::Name m_State;
 
 	/// If true, kept in the array of cahced resources
 	bool m_bIsCachedResource;
 
 	int m_Index;
+
+	boost::mutex m_StateChangeLock;
 
 //	boost::shared_ptr<CGraphicsResource> m_pResource;
 
@@ -192,6 +109,10 @@ public:
 	virtual bool Lock() { return false; }
 
 	virtual bool Unlock() { return false; }
+
+	inline void SetState( GraphicsResourceState::Name state );
+
+	inline GraphicsResourceState::Name GetState();
 
 	friend class CGraphicsResourceManager;
 };
@@ -293,7 +214,7 @@ public:
 
 	inline CD3DXMeshObjectBase *GetMeshObject() { return m_pMeshObject; }
 
-	int GetMeshType() const { return m_MeshDesc.MeshType; }
+	CMeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
 
@@ -339,6 +260,26 @@ public:
 
 	friend class CGraphicsResourceManager;
 };
+
+
+//----------------------------------- inline implementations -----------------------------------
+
+inline void CGraphicsResourceEntry::SetState( GraphicsResourceState::Name state )
+{
+	boost::mutex::scoped_lock scoped_lock(m_StateChangeLock);
+
+	m_State = state;
+}
+
+
+inline GraphicsResourceState::Name CGraphicsResourceEntry::GetState()
+{
+	boost::mutex::scoped_lock scoped_lock(m_StateChangeLock);
+
+	GraphicsResourceState::Name current_state = m_State;
+
+	return current_state;
+}
 
 
 #endif  /* __GraphicsResourceEntry_H__ */

@@ -42,9 +42,9 @@ void CBE_FixedTurretPod::Init()
 	// turret pod does not use 'm_pMeshObject', which is the standard
 	// mesh object for base entity
 	// Therefore, the specular texture needs to be loaded separately
-	if( 0 < m_MeshProperty.m_SpecTex.filename.length() )
+	if( 0 < m_MeshProperty.m_SpecTexFilepath.length() )
 	{
-		m_MeshProperty.m_SpecTex.Load();
+		m_MeshProperty.m_SpecTex.Load( m_MeshProperty.m_SpecTexFilepath );
 	}
 
 	PrintLog( " CBE_FixedTurretPod::Init() - loaded a texture" );
@@ -198,9 +198,9 @@ bool CBE_FixedTurretPod::LoadSpecificPropertiesFromFile( CTextFileScanner& scann
 
 	if( scanner.TryScanLine( "GUN_OFFSET",	m_vTurretGunLocalOffset ) ) return true;
 
-	if( scanner.TryScanLine( "STAND_MESH",	m_aMesh[MESH_POD].m_MeshObjectHandle.filename ) ) return true;
+	if( scanner.TryScanLine( "STAND_MESH",	m_aMesh[MESH_POD].m_MeshDesc.ResourcePath ) ) return true;
 
-	if( scanner.TryScanLine( "TTBL_MESH",	m_aMesh[MESH_TURNTABLE].m_MeshObjectHandle.filename ) ) return true;
+	if( scanner.TryScanLine( "TTBL_MESH",	m_aMesh[MESH_TURNTABLE].m_MeshDesc.ResourcePath ) ) return true;
 
 	return false;
 }

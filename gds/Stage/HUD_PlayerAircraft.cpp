@@ -72,8 +72,8 @@ void HUD_PlayerAircraft::Init()
 
 	m_HUD.Init();
 
-	m_TexCache.filename = "./Texture/hud_icon.dds";
-	m_TexCache.Load();
+	const string filename = "./Texture/hud_icon.dds";
+	m_TexCache.Load( filename );
 
 	m_pGraphicsEffectManager = new CAnimatedGraphicsManager();
 

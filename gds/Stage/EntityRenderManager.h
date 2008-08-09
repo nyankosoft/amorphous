@@ -86,6 +86,7 @@ private:
 	CTextureHandle m_TranslucentTexture;
 	LPDIRECT3DTEXTURE9 m_pBlankTexture;
 
+	std::string m_FallbackShaderFilepath;
 	CShaderHandle m_FallbackShader;
 
 	//

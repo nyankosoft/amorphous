@@ -30,6 +30,7 @@ protected:
 		NUM_MAX_BILLBOARDS_PER_ENTITY = 1024,
 	};
 
+	std::string m_BillboardTextureFilepath;
 	CTextureHandle m_BillboardTexture;
 
 	TEXTUREVERTEX m_avBillboardRect[NUM_MAX_BILLBOARDS_PER_ENTITY * 4];

@@ -34,8 +34,8 @@ void CPseudoAircraftHUD::Init()
 	pTexFont->InitFont( "./Texture/MainFont.dds", 8, 12, 16, 8 );
 	m_pFont = pTexFont;
 
-	m_Texture.filename = "./Texture/AircraftHUD.dds";
-	m_Texture.Load();
+	const string tex_filename = "./Texture/AircraftHUD.dds";
+	m_Texture.Load( tex_filename );
 
 	m_RectSet.SetNumRects( NUM_MAX_RECTS );
 }

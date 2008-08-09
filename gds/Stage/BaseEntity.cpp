@@ -40,7 +40,7 @@ m_PropertyFlags(0)
 {
 	m_ShaderTechnique.resize(1,1);
 	m_ShaderTechnique(0,0).SetTechniqueName( "NoShader" );
-	m_MeshObjectHandle.SetMeshType( CD3DXMeshObjectBase::TYPE_MESH );
+	m_MeshDesc.MeshType = CMeshType::BASIC;
 }
 
 
@@ -50,7 +50,8 @@ m_PropertyFlags(0)
 {
 	m_ShaderTechnique.resize(1,1);
 	m_ShaderTechnique(0,0).SetTechniqueName( "NoShader" );
-	m_MeshObjectHandle.SetMeshType( CD3DXMeshObjectBase::TYPE_MESH );
+	m_MeshDesc.MeshType = CMeshType::BASIC;
+	m_MeshDesc.ResourcePath = filename;
 }
 
 
@@ -105,7 +106,7 @@ void CBE_MeshObjectProperty::ValidateShaderTechniqueTable()
 
 bool CBE_MeshObjectProperty::LoadMeshObject()
 {
-	m_MeshObjectHandle.Load();
+	m_MeshObjectHandle.Load( m_MeshDesc );
 
 	// validate shader technique table
 	CD3DXMeshObjectBase *pMeshObject = m_MeshObjectHandle.GetMeshObject();
@@ -1015,7 +1016,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 				ClearEntityFlag( BETYPE_RIGIDBODY );
 		}
 
-		if( scanner.TryScanLine( "3DMODEL",  m_MeshProperty.m_MeshObjectHandle.filename ) )
+		if( scanner.TryScanLine( "3DMODEL",  m_MeshProperty.m_MeshDesc.ResourcePath ) )
 			continue;
 
 		string alpha_mat_name;
@@ -1027,7 +1028,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 		if( scanner.TryScanLine( "SPEC_TEX", tex_filename ) )
 		{
 			m_MeshProperty.m_vecExtraTexture.push_back( CTextureHandle() );
-			m_MeshProperty.m_vecExtraTexture.back().filename = tex_filename;
+			m_MeshProperty.m_vecExtraTextureFilepath.push_back( tex_filename );
 			continue;
 		}
 
@@ -1042,12 +1043,11 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 
 		if( scanner.TryScanLine( "MESH_TYPE", str ) )
 		{
-			int type = CD3DXMeshObjectBase::TYPE_MESH;
-			if( str == "SIMPLE" )			type = CD3DXMeshObjectBase::TYPE_MESH;
-			if( str == "PROGRESSIVE" )		type = CD3DXMeshObjectBase::TYPE_PMESH;
-			if( str == "HIERARCHICAL" )		type = CD3DXMeshObjectBase::TYPE_SMESH;
-//			if( str == "DYNAMICRESOURCE" )	type = ;
-			m_MeshProperty.m_MeshObjectHandle.SetMeshType( type );
+			CMeshType::Name type = CMeshType::INVALID;
+			if( str == "SIMPLE" )			type = CMeshType::BASIC;
+			if( str == "PROGRESSIVE" )		type = CMeshType::PROGRESSIVE;
+			if( str == "HIERARCHICAL" )		type = CMeshType::SKELETAL;
+			m_MeshProperty.m_MeshDesc.MeshType = type;
 		}
 
 		/*

@@ -78,7 +78,7 @@ public:
 
 	const CMeshObjectContainer& GetMeshObjectContainer() const { return m_MeshObjectContainer; }
  
-	const std::string& GetMeshObjectFilename() const { return m_MeshObjectContainer.m_MeshObjectHandle.filename; }
+	const std::string& GetMeshObjectFilename() const { return m_MeshObjectContainer.m_MeshDesc.ResourcePath; }
 
 	const CMeshObjectHandle& GetMeshObjectHandle() const { return m_MeshObjectContainer.m_MeshObjectHandle; }
 

@@ -25,7 +25,9 @@ public:
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
 
-	virtual bool Load( /*uint option_flags = 0 */ );
+	bool Load( const std::string& resource_path );
+
+	bool Load( const CShaderResourceDesc& desc );
 
 	static const CShaderHandle& Null() { return ms_NullHandle; }
 
@@ -33,7 +35,6 @@ public:
 
 //	inline const CShaderHandle &operator=( const CShaderHandle& handle );
 };
-
 
 /*
 inline const CShaderHandle &CShaderHandle::operator=( const CShaderHandle& handle ){}

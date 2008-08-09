@@ -42,21 +42,26 @@ class CShaderContainer : public IArchiveObjectBase
 {
 public:
 
-//	std::string ShaderFilepath;
-
-//	boost::shared_ptr<CShaderManager> m_pShaderManager;
-
-	CShaderHandle m_ShaderHandle;
+	CShaderResourceDesc m_Desc;
 
 	std::vector<CShaderTechniqueHandle> m_vecTechniqueHandle;
+
+	/// used during runtime
+	/// - Not serialized.
+	CShaderHandle m_ShaderHandle;
 
 public:
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-//		ar & ShaderFilepath;
-		ar & m_ShaderHandle;
+//		ar & m_ShaderHandle;
+		ar & m_Desc;
 		ar & m_vecTechniqueHandle;
+	}
+
+	bool Load()
+	{
+		return m_ShaderHandle.Load( m_Desc );
 	}
 };
 
@@ -65,28 +70,37 @@ class CStaticGeometryMeshHolder : public IArchiveObjectBase
 {
 public:
 
-	CMeshObjectHandle Mesh;
+	CMeshResourceDesc m_Desc;
 
 	/// bounding volumes of the mesh
-	AABB3 aabb;
+	AABB3 m_AABB;
 //	OBB obb;
 //	Sphere Sphere;
 
 	// key string for the database
 //	std::string Key;
 
+	/// used during runtime
+	/// - Not serialized.
+	CMeshObjectHandle m_Mesh;
+
 public:
 
 	CStaticGeometryMeshHolder()
 	{
-		aabb.Nullify();
+		m_AABB.Nullify();
 	}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		ar & Mesh;
-		ar & aabb; // & obb & Sphere
+		ar & m_Desc;
+		ar & m_AABB; // & obb & Sphere
 //		ar & Key
+	}
+
+	void Load()
+	{
+		m_Mesh.Load( m_Desc );
 	}
 };
 

@@ -42,11 +42,11 @@ CBE_Bullet::CBE_Bullet()
 
 void CBE_Bullet::Init()
 {
-	if( 3 < m_MeshProperty.m_MeshObjectHandle.filename.length() )
+	if( 3 < m_MeshProperty.m_MeshDesc.ResourcePath.length() )
 		Init3DModel();
 
 	// load the texture
-	m_BillboardTexture.Load();
+	m_BillboardTexture.Load( m_BillboardTextureFilepath );
 
 	float r = m_fBillboardRadius;
 	m_avBillboardRect[0].vPosition = Vector3(-r, r, 0 );
@@ -615,7 +615,7 @@ bool CBE_Bullet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
 	string str, tex_filename;
 
-	if( scanner.TryScanLine( "TEX_FILE", m_BillboardTexture.filename ) ) return true;
+	if( scanner.TryScanLine( "TEX_FILE", m_BillboardTextureFilepath ) ) return true;
 
 	if( scanner.TryScanLine( "BILLBOARD_RADIUS", m_fBillboardRadius ) ) return true;
 
@@ -640,17 +640,12 @@ bool CBE_Bullet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 void CBE_Bullet::ReleaseGraphicsResources()
 {
 	CBaseEntity::ReleaseGraphicsResources();
-
-//	m_BillboardTexture.Release();
 }
 
 
 void CBE_Bullet::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	CBaseEntity::LoadGraphicsResources( rParam );
-
-	m_BillboardTexture.Load();
-
 }
 
 
@@ -708,7 +703,7 @@ void CBE_Bullet::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 
-	ar & m_BillboardTexture;
+	ar & m_BillboardTextureFilepath;
 
 	ar & m_fBillboardRadius;
 

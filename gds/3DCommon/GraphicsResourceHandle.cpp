@@ -1,5 +1,4 @@
 #include "GraphicsResourceHandle.h"
-#include "GraphicsResourceManager.h"
 
 //#include "Support/Log/DefaultLog.h"
 #include "Support/Serialization/Serialization.h"
@@ -20,29 +19,3 @@ void CGraphicsResourceHandle::DecResourceRefCount()
         GraphicsResourceManager().DecResourceRefCount( *this );
 }
 */
-
-void CGraphicsResourceHandle::Serialize( IArchive& ar, const unsigned int version )
-{
-	ar & filename;
-
-//	if( ar.GetMode() == IArchive::MODE_INPUT )
-//		Release();
-}
-
-
-bool CGraphicsResourceHandle::LoadAsync( int priority )
-{
-/*	if(  GraphicsResourceManager().IsAsyncLoadingAllowed() )
-	{
-//		CResourceLoadRequest req;
-//		req.m_pLoader = set the loader here?
-//		req.desc = GetDesc();
-//		req.name = filename;
-//		req.type = GetResourceType();
-//		m_EntryID = GraphicsResourceManager().LoadAsync( desc );
-	}
-	else
-		Load();
-*/
-	return false;
-}

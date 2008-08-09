@@ -289,9 +289,9 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		m_FontFilepath = filename;
 
 		// set the string id
-		m_FontTexture.filename = filename + to_string(resolution);
+		string texture_name = filename + to_string(resolution);
 
-		return m_FontTexture.Create( m_pTextureLoader, 1024, 1024, TextureFormat::A8R8G8B8, 1 );
+		return m_FontTexture.Create( m_pTextureLoader, texture_name, 1024, 1024, TextureFormat::A8R8G8B8, 1 );
 
 		// First, create the texture
 //		bool tex_created = CreateFontTextureFromTrueTypeFont();
@@ -299,8 +299,7 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 	else
 	{
 		// load as image file for font texture
-		m_FontTexture.filename = filename;
-		bool tex_loaded = m_FontTexture.Load();
+		bool tex_loaded = m_FontTexture.Load( filename );
 		if( !tex_loaded )
 			return false;
 

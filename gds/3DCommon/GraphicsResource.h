@@ -4,14 +4,9 @@
 
 #include <memory.h>
 #include <string>
+#include "fwd.h"
 #include "3DCommon/TextureFormat.h"
 #include "3DCommon/FloatRGBAColor.h"
-
-
-class CLockedTexture;
-class CTextureEntry;
-class CGraphicsResourceHandle;
-class CGraphicsResourceManager;
 
 
 class GraphicsResourceType
@@ -24,6 +19,23 @@ public:
 		Shader,
 		Font,
 		NumTypes
+	};
+};
+
+
+class GraphicsResourceState
+{
+public:
+	enum Name
+	{
+		CREATED,                  ///< Memory for the resource has been allocated. The content has not been loaded on memory. i.e.) empty state
+		LOADING_SYNCHRONOUSLY,
+		LOADING_ASYNCHRONOUSLY,
+		LOADED,                   ///< The resource is ready to use
+		RELEASING_SYNCHRONOUSLY,
+		RELEASING_ASYNCHRONOUSLY,
+		RELEASED,
+		NUMSTATES
 	};
 };
 

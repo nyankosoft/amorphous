@@ -42,7 +42,7 @@ void CBE_LaserDot::Init()
 {
 	Init3DModel();
 
-	m_LaserDotTex.Load();
+	m_LaserDotTex.Load( m_LaserDotTexFilepath );
 }
 
 
@@ -199,5 +199,5 @@ void CBE_LaserDot::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 
-	ar & m_LaserDotTex;
+	ar & m_LaserDotTexFilepath;
 }

@@ -187,8 +187,7 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 				tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
 				if( 0 < tex_filename.length() )
 				{
-					m_vecMaterial[i].Texture[tex].filename = tex_filename;
-					loaded = m_vecMaterial[i].Texture[tex].Load();
+					loaded = m_vecMaterial[i].Texture[tex].Load( tex_filename );
 				}
 			}
 		}
@@ -499,8 +498,7 @@ HRESULT CD3DXMeshObjectBase::LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num
 			strcpy( str, d3dxMaterials[i].pTextureFilename );
 			str[MAX_PATH - 1] = L'\0';
 
-			m_vecMaterial[i].Texture[0].filename = str;
-			m_vecMaterial[i].Texture[0].Load();
+			m_vecMaterial[i].Texture[0].Load( str );
 
 //			m_pMeshTextures[i].filename = str;
 //			m_pMeshTextures[i].Load();
@@ -896,17 +894,36 @@ bool CD3DXMeshObjectBase::UnlockAttributeBuffer()
 #include "D3DXSMeshObject.h"
 
 
-CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::string& filename, int mesh_type )
+
+static CD3DXMeshObjectBase* CreateMeshInstance( CMeshType::Name mesh_type )
 {
 	switch( mesh_type )
 	{
-	case CD3DXMeshObjectBase::TYPE_MESH:
-		return new CD3DXMeshObject( filename );
-	case CD3DXMeshObjectBase::TYPE_PMESH:
-		return new CD3DXPMeshObject( filename );
-	case CD3DXMeshObjectBase::TYPE_SMESH:
-		return new CD3DXSMeshObject( filename );
+	case CMeshType::BASIC:
+		return new CD3DXMeshObject();
+	case CMeshType::PROGRESSIVE:
+		return new CD3DXPMeshObject();
+	case CMeshType::SKELETAL:
+		return new CD3DXSMeshObject();
 	default:
+		return NULL;
+	}
+
+	return NULL;
+}
+
+
+CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::string& filename, CMeshType::Name mesh_type )
+{
+	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
+
+	bool loaded = pMesh->LoadFromFile( filename );
+
+	if( loaded )
+		return pMesh;
+	else
+	{
+		SafeDelete( pMesh );
 		return NULL;
 	}
 }
@@ -914,9 +931,22 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::stri
 
 CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
-																	int mesh_type )
+																	CMeshType::Name mesh_type )
 {
-	if( mesh_type != CD3DXMeshObjectBase::TYPE_MESH )
+	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
+
+	U32 load_option_flags = 0;
+	bool loaded = pMesh->LoadFromArchive( mesh_archive, filepath, load_option_flags );
+
+	if( loaded )
+		return pMesh;
+	else
+	{
+		SafeDelete( pMesh );
+		return NULL;
+	}
+
+/*	if( mesh_type != CMeshType::BASIC )
 		return false;
 
 	CD3DXMeshObject *pMeshObject = new CD3DXMeshObject();
@@ -924,5 +954,5 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchive( C3DMeshModel
 	U32 load_option_flags = 0;
 	pMeshObject->LoadFromArchive( mesh_archive, filepath, load_option_flags );
 
-	return pMeshObject;
+	return pMeshObject; */
 }

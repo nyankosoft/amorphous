@@ -107,7 +107,7 @@ public:
 
 bool CScreenEffectManager::CExtraTextureEffect::LoadTexture()
 {
-	return m_Texture.Load();
+	return m_Texture.Load( m_TextureFilepath );
 }
 
 

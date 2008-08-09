@@ -180,8 +180,7 @@ void CBE_Skybox::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 
 bool CBE_Skybox::LoadSkyboxTexture( const std::string& texture_filename )
 {
-	m_SkyboxTexture.filename = texture_filename;
-	return m_SkyboxTexture.Load();
+	return m_SkyboxTexture.Load( texture_filename );
 }
 
 
@@ -195,5 +194,5 @@ void CBE_Skybox::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 
-	ar & m_SkyboxTexture.filename;
+	ar & m_SkyboxTextureFilepath;
 }

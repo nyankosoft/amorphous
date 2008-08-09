@@ -87,8 +87,8 @@ bool CTextureFont::InitFont( const std::string texture_filename,
  		                     int font_width, int font_height,
                              int num_tex_divisions_x, int num_tex_divisions_y )
 {
-	m_FontTexture.filename = texture_filename;
-	bool result = m_FontTexture.Load();
+//	m_FontTextureFilepath = texture_filename;
+	bool result = m_FontTexture.Load( texture_filename );
 	if( !result )
 	{
 		LOG_PRINT_ERROR( "Failed to load a texture: " + texture_filename );

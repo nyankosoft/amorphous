@@ -55,8 +55,7 @@ public:
 			return;
 
 		m_Rect[index] = C2DRect( l, t, r, b, color );
-		m_Texture[index].filename = tex_filename;
-		m_Texture[index].Load();
+		m_Texture[index].Load( tex_filename );
 
 		// use the entire region of the texture for cursor rect
 		m_Rect[index].SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );

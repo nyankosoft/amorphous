@@ -1,4 +1,3 @@
-
 #include "GameItem.h"
 #include "3DCommon/Font.h"
 #include <string.h>
@@ -15,7 +14,7 @@ CGameItem::~CGameItem()
 
 bool CGameItem::LoadMeshObject()
 {
-	return m_MeshObjectContainer.m_MeshObjectHandle.Load();
+	return m_MeshObjectContainer.m_MeshObjectHandle.Load( m_MeshObjectContainer.m_MeshDesc );
 }
 
 

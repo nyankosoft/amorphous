@@ -8,6 +8,7 @@
 
 #include "GraphicsComponentCollector.h"
 #include "GraphicsResource.h"
+#include "GraphicsResourceDescs.h"
 #include "GraphicsResourceEntries.h"
 #include "GraphicsResourceLoaders.h"
 
@@ -58,12 +59,12 @@ private:
 	boost::shared_ptr<CGraphicsResourceEntry> CreateGraphicsResourceEntry( const CGraphicsResourceDesc& desc );
 
 	/// called from handle
-	int LoadTexture( std::string filename );
+	int LoadTexture( const CTextureResourceDesc& desc );
 
 	int CreateTexture( const CTextureResourceDesc& desc );
 
 	/// called from handle
-	int LoadMeshObject( std::string filename, int mesh_type );
+	int LoadMesh( const CMeshResourceDesc& desc );
 
 	/// called from handle
 	int LoadShaderManager( std::string filename );
@@ -123,6 +124,8 @@ public:
 //	void Init();
 };
 
+
+//------------------------------- inline implementations -------------------------------
 
 inline LPDIRECT3DTEXTURE9 CGraphicsResourceManager::GetTexture( int iTextureEntryID )
 {

@@ -25,22 +25,6 @@ inline bool str_includes( const std::string& src, const std::string& target )
 
 
 //==================================================================================================
-// CGraphicsResourceDesc and its derived classes
-//==================================================================================================
-
-CGraphicsResourceDesc::CGraphicsResourceDesc()
-:
-m_LoadingMode(Synchronous)
-{}
-
-
-CMeshResourceDesc::CMeshResourceDesc()
-	:
-MeshType(CD3DXMeshObjectBase::TYPE_MESH)
-{}
-
-
-//==================================================================================================
 // CGraphicsResourceEntry
 //==================================================================================================
 
@@ -48,7 +32,7 @@ CGraphicsResourceEntry::CGraphicsResourceEntry()
 :
 m_iRefCount(0),
 m_LastModifiedTimeOfFile(0),
-m_State(Released),
+m_State(GraphicsResourceState::RELEASED),
 m_bIsCachedResource(false),
 m_Index(0)
 {}
@@ -163,6 +147,8 @@ bool CGraphicsResourceEntry::LoadFromDisk()
 
 	if( loaded )
 	{
+		SetState( GraphicsResourceState::LOADED );
+
 		// record the time of last modification of the texture file
 		m_LastModifiedTimeOfFile = fnop::get_last_modified_time(target_filepath);
 	}
@@ -174,7 +160,7 @@ bool CGraphicsResourceEntry::LoadFromDisk()
 bool CGraphicsResourceEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
 	if( GetResourceType() == desc.GetResourceType()
-	 && GetFilename() == desc.Filename )
+	 && GetFilename() == desc.ResourcePath )
 		return true;
 	else
 		return false;
@@ -434,7 +420,9 @@ bool CTextureEntry::CreateFromDesc()
 
 		Unlock();
 
-		D3DXSaveTextureToFile( string(desc.Filename + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
+		SetState( GraphicsResourceState::LOADED );
+
+		D3DXSaveTextureToFile( string(desc.ResourcePath + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
 
 		return true;
 	}
@@ -448,6 +436,8 @@ bool CTextureEntry::CreateFromDesc()
 void CTextureEntry::Release()
 {
 	SAFE_RELEASE( m_pTexture );
+
+	SetState( GraphicsResourceState::RELEASED );
 }
 
 
@@ -525,6 +515,8 @@ bool CMeshObjectEntry::LoadFromFile( const std::string& filepath )
 void CMeshObjectEntry::Release()
 {
 	SafeDelete( m_pMeshObject );
+
+	SetState( GraphicsResourceState::RELEASED );
 }
 
 
@@ -602,4 +594,6 @@ void CShaderManagerEntry::Release()
 //	LOG_FUNCTION_SCOPE();
 
 	SafeDelete( m_pShaderManager );
+
+	SetState( GraphicsResourceState::RELEASED );
 }

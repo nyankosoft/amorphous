@@ -208,6 +208,8 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 				pEntry = req.m_pResourceEntry.lock();
 				if( pEntry )
 					pEntry->Unlock();
+
+				pEntry->SetState( GraphicsResourceState::LOADED );
 			}
 			break;
 		}

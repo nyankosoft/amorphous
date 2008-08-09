@@ -22,8 +22,9 @@ public:
 	enum Flag
 	{
 		DO_NOT_LOAD_TEXTURES = ( 1 << 0 ), ///< specify this to load textures later. e.g., for asynchronous loading
-//		ANOTHER_OPTION       = ( 1 << 1 ),
-//		YET_ANOTHER_OPTION   = ( 1 << 2 ),
+		LOAD_ASYNC           = ( 1 << 1 ), ///< asynchronously load the mesh
+//		ANOTHER_OPTION       = ( 1 << 2 ),
+//		YET_ANOTHER_OPTION   = ( 1 << 3 ),
 	};
 };
 
@@ -186,6 +187,8 @@ public:
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
 
+	const AABB3& GetAABB( int material_index ) const { return m_vecAABB[material_index]; }
+
 	//
 	// render functions
 	//
@@ -244,10 +247,12 @@ public:
 	CMeshObjectFactory() {}
 	virtual ~CMeshObjectFactory() {}
 
-	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filename, int mesh_type );
+	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filename, CMeshType::Name mesh_type );
 
 	/// TODO: support PMesh and SMesh
-	CD3DXMeshObjectBase*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive, const std::string& filepath, int mesh_type );
+	CD3DXMeshObjectBase*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
+		                                             const std::string& filepath,
+													 CMeshType::Name mesh_type );
 
 };
 

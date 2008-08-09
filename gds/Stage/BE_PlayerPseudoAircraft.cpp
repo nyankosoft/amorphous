@@ -339,10 +339,11 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	m_MeshProperty.Release();
 
 	m_MeshProperty.m_MeshObjectHandle = pAircraft->GetMeshObjectContainer().m_MeshObjectHandle;
-///	m_MeshProperty.m_str3DModelFileName	= pAircraft->GetMeshObjectContainer().m_MeshObjectHandle.filename;
+	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
 //	m_MeshProperty.m_SpecTex.filename	= pAircraft->GetMeshObjectHolder().m_SpecTex.filename;
 
-	m_MeshProperty.LoadMeshObject();
+	if( !m_MeshProperty.m_MeshObjectHandle.IsLoaded() )
+		m_MeshProperty.LoadMeshObject(); // load mesh from desc
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMeshObject()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
@@ -791,7 +792,7 @@ void CBE_PlayerPseudoAircraft::Draw( CCopyEntity *pCopyEnt )
 	{
 		if( m_pAircraft )
 			m_pAircraft->UpdateTargetMeshTransforms();
-		
+
 		Draw3DModel(pCopyEnt);
 	}
 }

@@ -164,8 +164,8 @@ CEntityRenderManager::~CEntityRenderManager()
 
 bool CEntityRenderManager::LoadFallbackShader()
 {
-	m_FallbackShader.filename = ms_DefaultFallbackShaderFilename;
-	if( !m_FallbackShader.Load() )
+	m_FallbackShaderFilepath = ms_DefaultFallbackShaderFilename;
+	if( !m_FallbackShader.Load( m_FallbackShaderFilepath ) )
 	{
 		return false;
 	}
@@ -777,11 +777,9 @@ void CEntityRenderManager::LoadTextures()
 	m_pBlankTexture->UnlockRect(0);
 
 	// load texture for glare effect
-	m_TransparentTexture.filename = "Texture\\TransparentTex.dds";
-	m_TransparentTexture.Load();
+	m_TransparentTexture.Load( "Texture\\TransparentTex.dds" );
 
-	m_TranslucentTexture.filename = "Texture\\TranslucentTex.dds";
-	m_TranslucentTexture.Load();
+	m_TranslucentTexture.Load( "Texture\\TranslucentTex.dds" );
 }
 
 

@@ -1,5 +1,4 @@
 #include "ShaderHandle.h"
-
 #include "Support/Log/DefaultLog.h"
 
 using namespace std;
@@ -26,16 +25,25 @@ void CShaderHandle::DecResourceRefCount()
 }
 
 
-bool CShaderHandle::Load()
+bool CShaderHandle::Load( const CShaderResourceDesc& desc )
 {
 	Release();
 
-	m_EntryID = GraphicsResourceManager().LoadShaderManager( filename );
+	// TODO: support asynchronous loading
+	m_EntryID = GraphicsResourceManager().LoadShaderManager( desc.ResourcePath );
 
 	if( m_EntryID == -1 )
 		return false;	// the loading failed - this is mostly because the texture file was not found
 	else
 		return true;	// the texture has been successfully loaded
+}
+
+
+bool CShaderHandle::Load( const std::string& resource_path )
+{
+	CShaderResourceDesc desc;
+	desc.ResourcePath = resource_path;
+	return Load( desc );
 }
 
 

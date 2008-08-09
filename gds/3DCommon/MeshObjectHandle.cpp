@@ -25,12 +25,28 @@ void CMeshObjectHandle::DecResourceRefCount()
 }
 
 
-bool CMeshObjectHandle::Load()
+CMeshType::Name CMeshObjectHandle::GetMeshType() const
+{
+	if( 0 <= m_EntryID )
+		return GraphicsResourceManager().GetMeshEntry(m_EntryID).GetMeshType();
+	else
+		return CMeshType::INVALID; // TODO: return a value that means invalid request
+}
+
+
+bool CMeshObjectHandle::Load( const CMeshResourceDesc& desc )
 {
 	// if currently holding a mesh, release it
 	Release();
 
-	m_EntryID = GraphicsResourceManager().LoadMeshObject( filename, m_MeshType );
+	if( desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
+	{
+		m_EntryID = GraphicsResourceManager().LoadMesh( desc );
+	}
+	else
+	{
+		m_EntryID = GraphicsResourceManager().LoadAsync( desc );
+	}
 
 	if( 0 <= m_EntryID )
 		return true;
@@ -39,20 +55,20 @@ bool CMeshObjectHandle::Load()
 }
 
 
+
+/*
 bool CMeshObjectHandle::LoadAsync( int priority )
 {
 	CMeshResourceDesc desc;
 	desc.Filename = filename;
 
-	m_EntryID = GraphicsResourceManager().LoadAsync( desc );
 
 	return true;
 }
-
-
+*/
+/*
 void CMeshObjectHandle::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGraphicsResourceHandle::Serialize( ar, version );
-
-	ar & m_MeshType;
 }
+*/

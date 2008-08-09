@@ -36,7 +36,7 @@ CBE_Decal::~CBE_Decal()
 
 void CBE_Decal::Init()
 {
-	m_DecalTexture.Load();
+	m_DecalTexture.Load( m_DecalTextureFilepath );
 
 	// set the local coordinate of the billboard rectangle
 	m_avDecalRect[0].tex = TEXCOORD2(0,0);
@@ -273,11 +273,11 @@ void CBE_Decal::SweepRender()
 
 bool CBE_Decal::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
-	if( scanner.TryScanLine( "DCL_RADIUS",	m_fDecalRadius ) ) return true;
+	if( scanner.TryScanLine( "DCL_RADIUS",   m_fDecalRadius ) ) return true;
 
-	if( scanner.TryScanLine( "TEX_FILENAME",m_DecalTexture.filename ) ) return true;
+	if( scanner.TryScanLine( "TEX_FILENAME", m_DecalTextureFilepath ) ) return true;
 
-	if( scanner.TryScanLine( "NUM_SEGS",	m_iNumSegments ) ) return true;
+	if( scanner.TryScanLine( "NUM_SEGS",     m_iNumSegments ) ) return true;
 
 	return false;
 }
@@ -286,16 +286,12 @@ bool CBE_Decal::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 void CBE_Decal::ReleaseGraphicsResources()
 {
 	CBaseEntity::ReleaseGraphicsResources();
-
-//	m_DecalTexture.Release();
 }
 	
 
 void CBE_Decal::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	CBaseEntity::LoadGraphicsResources( rParam );
-
-//	m_DecalTexture.Load();
 }
 
 
@@ -303,7 +299,7 @@ void CBE_Decal::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 
-	ar & m_DecalTexture.filename;
+	ar & m_DecalTextureFilepath;
 	ar & m_fDecalRadius;
 	ar & m_iNumSegments;
 }

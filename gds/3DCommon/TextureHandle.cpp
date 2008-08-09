@@ -27,11 +27,18 @@ void CTextureHandle::DecResourceRefCount()
 }
 
 
-bool CTextureHandle::Load()
+bool CTextureHandle::Load( const CTextureResourceDesc& desc )
 {
 	Release();
 
-	m_EntryID = GraphicsResourceManager().LoadTexture( filename );
+	if( desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
+	{
+		m_EntryID = GraphicsResourceManager().LoadTexture( desc );
+	}
+	else
+	{
+		m_EntryID = GraphicsResourceManager().LoadAsync( desc );
+	}
 
 	if( m_EntryID == -1 )
 		return false;	// the loading failed - this is mostly because the texture file was not found
@@ -40,21 +47,28 @@ bool CTextureHandle::Load()
 }
 
 
-bool CTextureHandle::LoadAsync( int priority )
+bool CTextureHandle::Load( const std::string& resource_path )
 {
 	CTextureResourceDesc desc;
-	desc.Filename = filename;
+	desc.ResourcePath = resource_path;
+	return Load( desc );
+}
 
-	m_EntryID = GraphicsResourceManager().LoadAsync( desc );
+
+/*
+bool CTextureHandle::LoadAsync( const CTextureResourceDesc& desc )
+{
 
 	return true;
 }
-
+*/
 
 /// \param weak pointer to an instance of CTextureLoader class that fill the texture content after the graphics device is released and recreated.
 /// Owner of the texture handle is supposed to hold shared_ptr of texture loader and set it to the first argument
 /// This can be set to null as boost::weak_ptr<CTextureLoader>() if you don't have to fill the content of the texture when it is re-created. e.g.) Texture for rendertarget
-bool CTextureHandle::Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int width, int height, TextureFormat::Format format, int mip_levels )
+bool CTextureHandle::Create( boost::weak_ptr<CTextureLoader> pTextureLoader,
+							 const std::string& resource_name,
+							 int width, int height, TextureFormat::Format format, int mip_levels )
 {
 	Release();
 
@@ -66,7 +80,7 @@ bool CTextureHandle::Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int
 //	desc.Usage = ;
 //	desc.Pool = ;
 
-	desc.Filename = filename;
+	desc.ResourcePath = resource_name;
 
 	desc.pLoader = pTextureLoader;
 

@@ -337,12 +337,12 @@ bool CD3DXMeshModel::LoadFromArchive( C3DMeshModelArchive& rArchive, const strin
 			switch( tex )
 			{
 			case 0:
-				m_paMaterial[i].m_SurfaceTexture.filename = strFilename;
-				bLoaded = m_paMaterial[i].m_SurfaceTexture.Load();
+//				m_paMaterial[i].m_SurfaceTexture.filename = strFilename;
+				bLoaded = m_paMaterial[i].m_SurfaceTexture.Load( strFilename );
 				break;
 			case 1:
-				m_paMaterial[i].m_NormalMap.filename = strFilename;
-				bLoaded = m_paMaterial[i].m_NormalMap.Load();
+//				m_paMaterial[i].m_NormalMap.filename = strFilename;
+				bLoaded = m_paMaterial[i].m_NormalMap.Load( strFilename );
 				break;
 			default:
 				bLoaded = false;

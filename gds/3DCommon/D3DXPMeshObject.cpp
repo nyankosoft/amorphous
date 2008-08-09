@@ -16,9 +16,9 @@ CD3DXPMeshObject::CD3DXPMeshObject( const std::string& filename, int num_pmeshes
 :
 m_iPMeshCur(0)
 {
-	HRESULT hr = LoadFromFile( filename, num_pmeshes );
+	bool loaded = LoadFromFile( filename, num_pmeshes );
 
-	if( FAILED(hr) )
+	if( !loaded )
 		LOG_PRINT_ERROR( "Cannot to load a mesh object from file: " + filename );
 }
 

@@ -10,7 +10,7 @@
 #include <string>
 
 
-#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization_2DArray.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
 using namespace GameLib1::Serialization;
 
@@ -19,6 +19,10 @@ class CMeshObjectContainer : public IArchiveObjectBase
 {
 public:
 
+	CMeshResourceDesc m_MeshDesc;
+
+	/// Used during runtime
+	/// - Not serialized
 	CMeshObjectHandle m_MeshObjectHandle;
 
 	/// table of shader techniques
@@ -26,12 +30,14 @@ public:
 	/// - column: corresponds to resolution (intended to be shader version of LOD)
 	C2DArray<CShaderTechniqueHandle> m_ShaderTechnique;
 
+	std::vector<std::string> m_vecExtraTextureFilepath;
+
 	/// holds textures used for any purposes other than
 	/// usual color, alpha, normal map and specular map.
 	/// For example,
 	/// - look-up texture for specular highlight
 	/// - look-up texture for membrane effect
-	vector<CTextureHandle> m_vecExtraTexture;
+	std::vector<CTextureHandle> m_vecExtraTexture;
 
 public:
 
@@ -40,9 +46,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		ar & m_MeshObjectHandle;
+		ar & m_MeshDesc;
 		ar & m_ShaderTechnique;
-		ar & m_vecExtraTexture;
+		ar & m_vecExtraTextureFilepath;
 	}
 };
 

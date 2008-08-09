@@ -2,14 +2,13 @@
 #define  __TextureHandle_H__
 
 
+#include "fwd.h"
 #include "GraphicsResource.h"
+#include "GraphicsResourceDescs.h"
 #include "GraphicsResourceHandle.h"
 #include "GraphicsResourceManager.h"
 #include <boost/weak_ptr.hpp>
 #include <d3dx9tex.h>
-
-
-class CTextureLoader;
 
 
 class CTextureHandle : public CGraphicsResourceHandle
@@ -23,8 +22,6 @@ protected:
 
 public:
 
-//	boost::weak_ptr<CTextureLoader> m_pTextureLoader;
-
 	inline CTextureHandle() {}
 
 	~CTextureHandle() { Release(); }
@@ -33,9 +30,11 @@ public:
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
-	virtual bool Load();
+	bool Load( const std::string& resource_path );
 
-	virtual bool LoadAsync( int priority );
+	bool Load( const CTextureResourceDesc& desc );
+
+//	virtual bool LoadAsync( const CTextureResourceDesc& desc );
 
 	/// Direct access to D3D texture
 	/// - Avoid using this whenever possible
@@ -47,7 +46,7 @@ public:
 	///   - The resources are shared if CGraphicsResourceHandle::filenames are the same
 	///     just like texture resources loaded from file
 	/// \param mip_levels number of mip levels. set 0 to create a complete mipmap chain (0 by default).
-	bool Create( boost::weak_ptr<CTextureLoader> pTextureLoader, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
+	bool Create( boost::weak_ptr<CTextureLoader> pTextureLoader, const std::string& resource_name, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
 
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 

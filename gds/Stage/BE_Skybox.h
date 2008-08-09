@@ -12,6 +12,7 @@ class CBE_Skybox : public CBaseEntity
 private:
 
 	/// load texture separately from the mesh
+	std::string m_SkyboxTextureFilepath;
 	CTextureHandle m_SkyboxTexture;
 
 	// CBaseEntity::m_MeshProperty is used for the mesh of the skybox

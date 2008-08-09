@@ -120,12 +120,16 @@ private:
 	class CExtraTextureEffect
 	{
 	public:
+
+		std::string m_TextureFilepath;
 		CTextureHandle m_Texture;
 		C2DRect Rect;
 
+	public:
+
 		CExtraTextureEffect() {}
 
-		void SetTextureFilename( const char *pTexFilename ) { m_Texture.filename = pTexFilename; }
+		void SetTextureFilename( const char *pTexFilename ) { m_TextureFilepath = pTexFilename; }
 		bool LoadTexture();
 //		void ReleaseTexture() { m_Texture.Release(); }
 	};

@@ -45,6 +45,7 @@ public:
 	/// used by skeletal mesh (not serialized)
 	vector<CMeshBoneControllerBase*> m_vecpMeshBoneController;
 
+	std::string m_SpecTexFilepath;
 	CTextureHandle m_SpecTex;
 
 	/// subsets of the mesh that should be rendered by the entity

@@ -65,8 +65,7 @@ bool CPseudoNoiseEffect::LoadNoiseTextures()
 	{
 		sprintf( acFilename, "Texture\\pntex%d.dds", i );
 
-		m_aNoiseTexture[i].filename = acFilename;
-		bool res = m_aNoiseTexture[i].Load();
+		bool res = m_aNoiseTexture[i].Load( acFilename );
 		if( !res )
 			return false;
 

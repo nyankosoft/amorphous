@@ -26,9 +26,9 @@ CD3DXMeshObject::CD3DXMeshObject()
 CD3DXMeshObject::CD3DXMeshObject( const std::string& filename )
 : m_pMesh(NULL)
 {
-	HRESULT hr = LoadFromFile(filename);
+	bool loaded = LoadFromFile(filename);
 
-	if( FAILED(hr) )
+	if( !loaded )
 	{
 		LOG_PRINT_ERROR( " - Failed to load a mesh file" + filename );
 	}

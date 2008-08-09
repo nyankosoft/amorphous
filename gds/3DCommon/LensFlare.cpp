@@ -209,9 +209,7 @@ bool CLensFlare::AddTexture( const std::string& texture_filename, int group_inde
 	rDestGroup.m_NumTextureSegmentsX = num_segments_x;
 	rDestGroup.m_NumTextureSegmentsY = num_segments_y;
 
-	rDestGroup.m_Texture.filename = texture_filename;
-
-	return rDestGroup.m_Texture.Load();
+	return rDestGroup.m_Texture.Load( texture_filename );
 }
 
 

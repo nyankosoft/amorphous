@@ -38,8 +38,8 @@ CBE_PointLight::CBE_PointLight()
 void CBE_PointLight::Init()
 {
 
-/*	if( 0 < m_strTextureFilename.length() )
-		m_GlareTexture.Load( m_strTextureFilename.c_str() );
+/*	if( 0 < m_GlareTextureFilepath.length() )
+		m_GlareTexture.Load( m_GlareTextureFilepath );
 */
 
 	CBEC_Billboard::Init();
@@ -451,7 +451,7 @@ bool CBE_PointLight::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 	if( scanner.TryScanLine( "GLARE_DIAMETER", m_fGlareDiameter ) ) return true;
 
-	if( scanner.TryScanLine( "TEX_FILENAME", m_GlareTexture.filename ) ) return true;
+	if( scanner.TryScanLine( "TEX_FILENAME", m_GlareTextureFilepath ) ) return true;
 
 	if( scanner.TryScanLine( "UPPER_COLOR", r, g, b ) )
 	{
@@ -485,7 +485,7 @@ void CBE_PointLight::Serialize( IArchive& ar, const unsigned int version )
 	CBEC_Billboard::SerializeBillboardProperty( ar, version );
 
 	ar & m_fGlareDiameter;
-	ar & m_GlareTexture;
+	ar & m_GlareTextureFilepath;
 	ar & m_fTimer;
 	ar & m_afBaseColor[0] & m_afBaseColor[1] & m_afBaseColor[2];
 	ar & m_PointLight;

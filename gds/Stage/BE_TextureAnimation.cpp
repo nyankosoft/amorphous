@@ -36,7 +36,7 @@ CBE_TextureAnimation::~CBE_TextureAnimation()
 
 void CBE_TextureAnimation::Init()
 {
-	m_AnimTexture.Load();
+	m_AnimTexture.Load( m_AnimTextureFilepath );
 
 	// set the local coordinate of the billboard rectangle
 	D3DXVECTOR3 vRight = D3DXVECTOR3(1,0,0);
@@ -260,7 +260,7 @@ bool CBE_TextureAnimation::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 {
 	string blend_mode, texanim_type;
 
-	if( scanner.TryScanLine( "TEX_FILE",	m_AnimTexture.filename ) )	return true;
+	if( scanner.TryScanLine( "TEX_FILE",	m_AnimTextureFilepath ) )	return true;
 	if( scanner.TryScanLine( "TEX_WIDTH",	m_iTextureWidth ) )				return true;
 	if( scanner.TryScanLine( "TEX_SEGS",	m_iNumTextureSegments ) )		return true;
 	if( scanner.TryScanLine( "ANIM_TIME",	m_fTotalAnimationTime ) )		return true;
@@ -289,12 +289,10 @@ bool CBE_TextureAnimation::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 
 void CBE_TextureAnimation::ReleaseGraphicsResources()
 {
-//	m_AnimTexture.Release();
 }
 
 void CBE_TextureAnimation::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-//	m_AnimTexture.Load();
 }
 
 
@@ -302,7 +300,7 @@ void CBE_TextureAnimation::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 
-	ar & m_AnimTexture;
+	ar & m_AnimTextureFilepath;
 	ar & m_fTotalAnimationTime;
 	ar & m_iNumTextureSegments;
 	ar & m_iTextureWidth;
