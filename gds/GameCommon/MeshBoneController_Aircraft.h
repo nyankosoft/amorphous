@@ -112,7 +112,7 @@ public:
 };
 
 /**
- * controls a pair flaps
+ * controls a pair of flaps
  * always holds a pair of right & left flaps. does not hold single right / left flap
  */
 class CMeshBoneController_Flap : public CMeshBoneController_AircraftBase

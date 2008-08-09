@@ -338,19 +338,25 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	// get mesh filename from the aircraft item and load the mesh
 	m_MeshProperty.Release();
 
-	m_MeshProperty.m_MeshObjectHandle = pAircraft->GetMeshObjectContainer().m_MeshObjectHandle;
-	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
-//	m_MeshProperty.m_SpecTex.filename	= pAircraft->GetMeshObjectHolder().m_SpecTex.filename;
+	const CMeshObjectContainer &mesh_container = pAircraft->GetMeshObjectContainer();
+	if( !mesh_container.m_MeshObjectHandle.IsLoaded() )
+		pAircraft->LoadMeshObject(); // load the mesh of the aircraft item - the mesh controller uses it
 
-	if( !m_MeshProperty.m_MeshObjectHandle.IsLoaded() )
-		m_MeshProperty.LoadMeshObject(); // load mesh from desc
+	// copy mesh related stuff from item to base entity...
+	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
+	m_MeshProperty.m_MeshObjectHandle = mesh_container.m_MeshObjectHandle;
+//	m_MeshProperty.m_SpecTex.filename	= pAircraft->GetMeshObjectHolder().m_SpecTex.filename;
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMeshObject()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
 	{
 		m_pAircraft->ResetMeshController();
-		m_pAircraft->InitMeshController( (CD3DXSMeshObject *)m_MeshProperty.m_MeshObjectHandle.GetMeshObject() );
+		m_pAircraft->InitMeshController( dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMeshObject()) );
 	}
+
+	// need to call ValidateShaderTechniqueTable()
+	// - TODO: avoid reloading the mesh
+	m_MeshProperty.LoadMeshObject();
 
 	// set mesh bone controller (experimental)
 /*	SBE_MeshObjectProperty& rMesh = m_MeshProperty;

@@ -26,7 +26,7 @@ public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
-	bool IsLoaded() { return ( 0 <= m_EntryID ); }
+	bool IsLoaded() const { return ( 0 <= m_EntryID ); }
 
 	/// does not clear the filename
 	/// - user can reload the resource after Release() by calling Load()

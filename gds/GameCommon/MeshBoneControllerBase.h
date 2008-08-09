@@ -7,13 +7,11 @@
 
 #include "3DMath/Vector3.h"
 #include "3DMath/Matrix34.h"
+#include "3DCommon/fwd.h"
 
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
 using namespace GameLib1::Serialization;
-
-
-class CD3DXSMeshObject;
 
 
 class CMeshBoneControllerBase : public IArchiveObjectBase
