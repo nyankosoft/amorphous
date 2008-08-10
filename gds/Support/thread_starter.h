@@ -70,11 +70,14 @@ private:
 
 public:
 
-	thread_class();
+	thread_class() {}
 
-	virtual ~thread_class();
+	virtual ~thread_class()
+	{
+		m_pThread.reset();
+	}
 
-	void join();
+	void join() { m_pThread->join(); }
 
 	virtual void run() = 0;
 

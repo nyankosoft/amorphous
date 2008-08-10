@@ -7,7 +7,7 @@
 
 #include "Support/stream_buffer.h"
 #include "Support/fnop.h"
-#include "Support/Log/DefaultLog.h"
+//#include "Support/Log/DefaultLog.h"
 
 
 /**

@@ -30,6 +30,7 @@
 #include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/DebugOutput.h"
+#include "Support/BitmapImage.h"
 
 #include <direct.h>
 #include <windows.h>
@@ -290,11 +291,32 @@ void CApplicationBase::Execute()
 }
 
 
+inline void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
+{
+	if( fif != FIF_UNKNOWN )
+	{
+		g_Log.Print( "Free Image: %s Format", FreeImage_GetFormatFromFIF(fif) );
+	}
+
+	g_Log.Print( "Free Image: %s", message );
+}
+
+
+inline void SetFreeImageErrorHandler()
+{
+	// mutex - lock
+
+	ONCE( FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler) );
+}
+
+
 void CApplicationBase::Run()
 {
 	// set log output device
 	CLogOutput_HTML html_log( "debug/stage_base_app_log.html" );
 	g_Log.AddLogOutput( &html_log );
+
+	SetFreeImageErrorHandler();
 
 	try
 	{

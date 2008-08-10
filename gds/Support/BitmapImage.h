@@ -11,7 +11,7 @@
 #include "Support/ImageArchive.h"
 #include "Support/2DArray.h"
 #include "Support/Macro.h"
-#include "Support/Log/DefaultLog.h"
+//#include "Support/Log/DefaultLog.h"
 
 #pragma comment( lib, "FreeImage.lib" )
 
@@ -22,25 +22,6 @@ inline unsigned int DLL_CALLCONVImageReadProc( void *buffer, unsigned int size, 
 inline unsigned int DLL_CALLCONV ImageWriteProc( void *buffer, unsigned size, unsigned int count, fi_handle handle );
 inline int DLL_CALLCONV ImageSeekProc( fi_handle handle, long offset, int origin );
 inline long DLL_CALLCONV ImageTellProc( fi_handle handle );
-
-
-inline void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
-{
-	if( fif != FIF_UNKNOWN )
-	{
-		g_Log.Print( "Free Image: %s Format", FreeImage_GetFormatFromFIF(fif) );
-	}
-
-	g_Log.Print( "Free Image: %s", message );
-}
-
-
-inline void SetFreeImageErrorHandler()
-{
-	// mutex - lock
-
-	ONCE( FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler) );
-}
 
 
 class CImageStreamBufferHolder
@@ -153,9 +134,13 @@ public:
 
 	inline U32 GetPixelARGB32( int x, int y );
 
+	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a );
+
 	inline void FillColor( const SFloatRGBAColor& color );
 
 	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
+
+	inline void SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a );
 
 	/// \param grayscale must be [0,255]
 	inline void SetGrayscalePixel( int x, int y, U8 grayscale );
@@ -182,8 +167,6 @@ inline CBitmapImage::CBitmapImage( int width, int height, int bpp )
 :
 m_BitsPerPixel(bpp)
 {
-	SetFreeImageErrorHandler();
-
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 }
 
@@ -192,8 +175,6 @@ inline CBitmapImage::CBitmapImage( int width, int height, int bpp, const SFloatR
 :
 m_BitsPerPixel(bpp)
 {
-	SetFreeImageErrorHandler();
-
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 
 	FillColor( color );
@@ -206,8 +187,6 @@ inline CBitmapImage::CBitmapImage( CImageArchive& img_archive )
 m_pFreeImageBitMap(NULL),
 m_BitsPerPixel(0)
 {
-	SetFreeImageErrorHandler();
-
 	CreateFromImageArchive( img_archive );
 }
 
@@ -237,6 +216,19 @@ inline U32 CBitmapImage::GetPixelARGB32( int x, int y )
 }
 
 
+inline void CBitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a )
+{
+	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
+
+	r = bits[FI_RGBA_RED];
+	g = bits[FI_RGBA_GREEN];
+	b = bits[FI_RGBA_BLUE];
+
+	if( m_BitsPerPixel == 32 )
+		a = bits[FI_RGBA_ALPHA];
+}
+
+
 inline void CBitmapImage::FillColor( const SFloatRGBAColor& color )
 {
 	if( !m_pFreeImageBitMap )
@@ -255,7 +247,7 @@ inline void CBitmapImage::FillColor( const SFloatRGBAColor& color )
 		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y);
 		for( int x = 0; x < w; x++)
 		{
-			// Set pixel color to green with a transparency of 128
+			// Set pixel color
 			bits[FI_RGBA_RED]   = r;
 			bits[FI_RGBA_GREEN] = g;
 			bits[FI_RGBA_BLUE]  = b;
@@ -276,6 +268,19 @@ inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 	quad.rgbBlue  = color.GetBlueByte();
 
 	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
+}
+
+
+inline void CBitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a )
+{
+	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
+
+	bits[FI_RGBA_RED]   = r;
+	bits[FI_RGBA_GREEN] = g;
+	bits[FI_RGBA_BLUE]  = b;
+
+	if( m_BitsPerPixel == 32 )
+		bits[FI_RGBA_ALPHA] = a;
 }
 
 
@@ -386,6 +391,10 @@ inline bool CBitmapImage::SaveToFile( const std::string& pathname, int flag )
 				LOG_PRINT( "Saved an image file to disk: " + pathname );
 
 				// unless an abnormal bug, we are done !
+			}
+			else
+			{
+				LOG_PRINT_ERROR( "Cannot save an image to disk: " + pathname );
 			}
 		}
 		else
