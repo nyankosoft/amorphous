@@ -81,6 +81,8 @@ public:
 
 	bool Load();
 
+	bool LoadAsync();
+
 	/// \param filepath [in] pathname of the file to load
 	/// - This is usually m_Filename itself
 	virtual bool LoadFromFile( const std::string& filepath ) = 0;

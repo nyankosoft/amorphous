@@ -115,16 +115,4 @@ public:
 };
 
 
-/**
- request to load a resource
-*/
-class ResourceLoadRequest
-{
-public:
-
-	std::string name;
-	GraphicsResourceType::Name type;
-};
-
-
 #endif /* __GraphicsResource_H__ */

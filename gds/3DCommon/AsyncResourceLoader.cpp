@@ -89,6 +89,8 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 			req = m_ResourceLoadRequestQueue.front();
 			m_ResourceLoadRequestQueue.pop();
 		}
+		else
+			continue;
 
 		switch( req.GetRequestType() )
 		{
@@ -124,6 +126,10 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 					CGraphicsDeviceRequest( CGraphicsDeviceRequest::Lock, req.m_pResourceEntry )
 					);
 			}
+			else
+			{
+				int failed_to_load_a_resource_from_disk = 1;
+			}
 			break;
 
 		case CResourceLoadRequest::CopyToGraphicsMemory:
@@ -156,6 +162,10 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 	{
 		{
 			mutex::scoped_lock scoped_lock(m_GraphicsDeviceMutex);
+
+			if( m_GraphicsDeviceRequestQueue.size() == 0 )
+				break; // no request to process
+
 			req = m_GraphicsDeviceRequestQueue.front();
 			m_GraphicsDeviceRequestQueue.pop();
 		}

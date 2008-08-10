@@ -34,6 +34,14 @@ CMeshType::Name CMeshObjectHandle::GetMeshType() const
 }
 
 
+bool CMeshObjectHandle::Load( const std::string& resource_path )
+{
+	CMeshResourceDesc desc;
+	desc.ResourcePath = resource_path;
+	return Load( desc );
+}
+
+
 bool CMeshObjectHandle::Load( const CMeshResourceDesc& desc )
 {
 	// if currently holding a mesh, release it

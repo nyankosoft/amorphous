@@ -1,3 +1,13 @@
+#ifndef  __ResourceCacheManager_H__
+#define  __ResourceCacheManager_H__
+
+
+#include <vector>
+#include <string>
+#include <queue>
+#include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
+#include "GraphicsResourceManager.h"
 
 
 class CResourceCacheManager
@@ -45,3 +55,6 @@ shared_ptr<CGraphicsResourceEntry> CResourceCacheManager::GetCachedResource( con
 
 	
 }
+
+
+#endif /* __ResourceCacheManager_H__ */

@@ -518,6 +518,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\3DCommon\GraphicsResource.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\3DCommon\GraphicsResourceDescs.h"
 					>
 				</File>

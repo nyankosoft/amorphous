@@ -242,7 +242,7 @@ int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 		req.m_pLoader = CreateResourceLoader(pEntry);
 		AsyncResourceLoader().AddResourceLoadRequest( req );
 
-		pEntry->IncRefCount();
+//		pEntry->IncRefCount();
 
 		return pEntry->GetIndex();
 	}
