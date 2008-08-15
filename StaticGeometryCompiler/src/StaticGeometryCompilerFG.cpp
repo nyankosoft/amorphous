@@ -564,7 +564,8 @@ bool CStaticGeometryCompilerFG::NeedToCompileModelFile( const string& input_mode
 }
 
 
-string gs_DBFilenameRelativePathForTextureResource = "./";
+//string gs_DBFilenameRelativePathForTextureResource = "./";
+string gs_DBFilenameRelativePathForTextureResource = "./Stage/";
 
 
 bool CStaticGeometryCompilerFG::SaveToFile( const string& output_filename )

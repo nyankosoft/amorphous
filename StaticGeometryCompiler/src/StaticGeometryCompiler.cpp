@@ -78,9 +78,9 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 	{
 		const string keyname = GetGraphicsMeshArchiveKey( (int)i );
 
-		m_Archive.m_vecMesh[i].Mesh.filename = db_file_relative_path + "::" + keyname;
+		m_Archive.m_vecMesh[i].m_Desc.ResourcePath = db_file_relative_path + "::" + keyname;
 
-		m_Archive.m_vecMesh[i].aabb = m_vecDestGraphicsMeshArchive[i].GetAABB();
+		m_Archive.m_vecMesh[i].m_AABB = m_vecDestGraphicsMeshArchive[i].GetAABB();
 
 		db.AddData( keyname, m_vecDestGraphicsMeshArchive[i] );
 	}
@@ -95,7 +95,8 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 	{
 		CShaderContainer& container = m_Archive.m_vecShaderContainer[ itr->second.ShaderIndex ];
 //		container.ShaderFilepath = itr->first;
-		container.m_ShaderHandle.filename = itr->first;
+//		container.m_ShaderHandle.filename = itr->first;
+		container.m_Desc.ResourcePath = itr->first;
 
 		container.m_vecTechniqueHandle.resize( itr->second.TechniqueToIndex.size() );
 		std::map<std::string,int>::iterator itrTechnique;
