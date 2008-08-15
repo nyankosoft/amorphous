@@ -64,7 +64,7 @@ CBE_MeshObjectProperty::~CBE_MeshObjectProperty()
 
 void CBE_MeshObjectProperty::ValidateShaderTechniqueTable()
 {
-	CD3DXMeshObjectBase *pMeshObject = m_MeshObjectHandle.GetMeshObject();
+	CD3DXMeshObjectBase *pMeshObject = m_MeshObjectHandle.GetMesh().get();
 	if( !pMeshObject )
 		return;
 
@@ -109,7 +109,7 @@ bool CBE_MeshObjectProperty::LoadMeshObject()
 	m_MeshObjectHandle.Load( m_MeshDesc );
 
 	// validate shader technique table
-	CD3DXMeshObjectBase *pMeshObject = m_MeshObjectHandle.GetMeshObject();
+	CD3DXMeshObjectBase *pMeshObject = m_MeshObjectHandle.GetMesh().get();
 	if( pMeshObject )
 	{
 		ValidateShaderTechniqueTable();
@@ -222,7 +222,7 @@ void CBaseEntity::Init3DModel()
 void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 {
 	// test with the plane model in the aircraft select menu
-//	if( CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMeshObject() )
+//	if( CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh() )
 //	{
 //		if( 2 <= pMesh->GetNumMaterials() &&
 		if( GetNameString() == "model_display"

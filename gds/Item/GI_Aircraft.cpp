@@ -223,7 +223,7 @@ bool CGI_Aircraft::InitMeshController( CD3DXSMeshObject* pMesh )
 	}
 	else
 	{
-		CD3DXMeshObjectBase *pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMeshObject();
+		CD3DXMeshObjectBase *pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh().get();
 		if( pMeshObject && pMeshObject->GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
 		{
 			pTargetMesh = (CD3DXSMeshObject *)pMeshObject;
@@ -249,7 +249,7 @@ bool CGI_Aircraft::InitMeshController( CD3DXSMeshObject* pMesh )
 // 
 void CGI_Aircraft::ResetMeshController()
 {
-	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMeshObject() )
+	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMesh() )
 		return;
 
 	size_t i, num = m_vecpMeshController.size();
@@ -260,7 +260,7 @@ void CGI_Aircraft::ResetMeshController()
 
 void CGI_Aircraft::UpdateTargetMeshTransforms()
 {
-	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMeshObject() )
+	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMesh() )
 		return;
 
 	size_t i, num = m_vecpMeshController.size();

@@ -51,6 +51,8 @@ protected:
 		//   - specular map (often stored in alpha channel of normal map)
 		// A texture handle will be empty if no texture is used for the stage
 		std::vector<CTextureHandle> Texture;
+
+		std::vector<CTextureResourceDesc> TextureDesc;
 	};
 
 	std::string m_strFilename;
@@ -148,7 +150,7 @@ public:
 	virtual ~CD3DXMeshObjectBase() { Release(); }
 
 	/// returns true on success
-	bool LoadFromFile( const std::string& filename );
+	bool LoadFromFile( const std::string& filename, U32 opiton_flags = 0 );
 
 	/// load basic mesh properties from a mesh archive
 	/// NOTE: filename is required to get the path for textures files
@@ -164,7 +166,9 @@ public:
 
 	inline int GetNumMaterials() const { return m_NumMaterials; }
 
-	inline const D3DMATERIAL9& GetMaterial( int i ) const { return m_pMeshMaterials[i]; }
+	inline const D3DMATERIAL9& GetD3DMaterial( int i ) const { return m_pMeshMaterials[i]; }
+
+	inline const CMeshMaterial GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
 
 	bool CreateVertexDeclaration();
 
@@ -247,12 +251,15 @@ public:
 	CMeshObjectFactory() {}
 	virtual ~CMeshObjectFactory() {}
 
-	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filename, CMeshType::Name mesh_type );
+	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filepath,
+		                                         U32 load_option_flags = 0,
+		                                         CMeshType::Name mesh_type = CMeshType::SKELETAL );
 
 	/// TODO: support PMesh and SMesh
 	CD3DXMeshObjectBase*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 		                                             const std::string& filepath,
-													 CMeshType::Name mesh_type );
+													 U32 load_option_flags = 0,
+													 CMeshType::Name mesh_type = CMeshType::SKELETAL );
 
 };
 

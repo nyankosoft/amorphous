@@ -759,7 +759,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 
 void CBE_Enemy::Draw(CCopyEntity *pCopyEnt)
 {
-	if( !m_MeshProperty.m_MeshObjectHandle.GetMeshObject() )
+	if( !m_MeshProperty.m_MeshObjectHandle.GetMesh() )
 		return;
 /*
 	int shader_tech_id;

@@ -6,7 +6,6 @@
 #include "GraphicsResource.h"
 #include "GraphicsResourceDescs.h"
 #include "GraphicsResourceHandle.h"
-#include "GraphicsResourceManager.h"
 #include <boost/weak_ptr.hpp>
 #include <d3dx9tex.h>
 
@@ -17,16 +16,11 @@ protected:
 
 	static const CTextureHandle ms_NullHandle;
 
-	virtual void IncResourceRefCount();
-	virtual void DecResourceRefCount();
-
 public:
 
 	inline CTextureHandle() {}
 
 	~CTextureHandle() { Release(); }
-
-	inline void Release();
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
@@ -38,7 +32,16 @@ public:
 
 	/// Direct access to D3D texture
 	/// - Avoid using this whenever possible
-	inline const LPDIRECT3DTEXTURE9 GetTexture() const { return GraphicsResourceManager().GetTexture(m_EntryID); }
+	inline const LPDIRECT3DTEXTURE9 GetTexture() const
+	{
+		if( GetEntry()
+		 && GetEntry()->GetTextureResource() )
+		{
+			return GetEntry()->GetTextureResource()->GetTexture();
+		}
+		else
+			return NULL;
+	}
 
 	/// Creates an empty texture
 	/// - Created as a shareable resource (Right now resource are always sharable)
@@ -64,17 +67,6 @@ public:
 /*
 inline const CTextureHandle &CTextureHandle::operator=( const CTextureHandle& handle ){}
 */
-
-
-inline void CTextureHandle::Release()
-{
-	if( 0 <= m_EntryID )
-	{
-		DecResourceRefCount();
-		m_EntryID = -1;
-	}
-}
-
 
 
 #endif  /* __TextureHandle_H__ */

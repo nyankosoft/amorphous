@@ -4,13 +4,12 @@
 
 #include <queue>
 #include <boost/thread.hpp>
+#include <boost/weak_ptr.hpp>
+#include "fwd.h"
 #include "GraphicsResourceManager.h"
 
 #include "Support/Singleton.h"
 using namespace NS_KGL;
-
-
-class CAsyncResourceLoader;
 
 
 class CResourceLoadRequest
@@ -38,13 +37,13 @@ private:
 public:
 
 	CResourceLoadRequest( Type type,
-		boost::weak_ptr<CGraphicsResourceEntry> pEntry//,
-//		int entry_index
+		boost::shared_ptr<CGraphicsResourceLoader> pLoader,
+		boost::weak_ptr<CGraphicsResourceEntry> pEntry
 		)
 		:
 	m_RequestType(type),
+	m_pLoader(pLoader),
 	m_pResourceEntry(pEntry)
-//	m_ResourceEntryIndex(entry_index)
 	{}
 
 	Type GetRequestType() const { return m_RequestType; }
@@ -78,9 +77,13 @@ public:
 
 public:
 
-	CGraphicsDeviceRequest( CGraphicsDeviceRequest::Type type, boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	CGraphicsDeviceRequest(
+		CGraphicsDeviceRequest::Type type,
+		boost::shared_ptr<CGraphicsResourceLoader> pLoader,
+		boost::weak_ptr<CGraphicsResourceEntry> pEntry )
 		:
 	m_RequestType(type),
+	m_pLoader(pLoader),
 	m_pResourceEntry(pEntry)
 	{}
 
@@ -91,7 +94,7 @@ public:
 
 class CAsyncResourceLoader
 {
-	boost::mutex m_Mutex;
+//	boost::mutex m_Mutex;
 
 	std::queue<CResourceLoadRequest> m_ResourceLoadRequestQueue;
 
@@ -145,6 +148,8 @@ public:
 	static CAsyncResourceLoader* Get() { return m_obj.get(); }
 
 	bool AddResourceLoadRequest( const CResourceLoadRequest& req );
+
+	bool AddGraphicsDeviceRequest( const CGraphicsDeviceRequest& req );
 
 	/// Main loop for the resource IO thread
 	void IOThreadMain();

@@ -10,10 +10,12 @@ class CGraphicsComponentCollector;
 class CDirect3D9;
 
 
+class CAsyncResourceLoader;
+class CGraphicsResource;
 class CGraphicsResourceEntry;
-class CTextureEntry;
-class CMeshObjectEntry;
-class CShaderManagerEntry;
+class CTextureResource;
+class CMeshResource;
+class CShaderResource;
 class CGraphicsResourceDesc;
 class CTextureResourceDesc;
 class CMeshResourceDesc;
@@ -23,6 +25,8 @@ class CTextureHandle;
 class CMeshObjectHandle;
 class CShaderHandle;
 class CGraphicsResourceManager;
+class CGraphicsResourceCacheManager;
+class CTextureLoader;
 class CLockedTexture;
 
 class C2DRect;

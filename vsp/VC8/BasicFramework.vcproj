@@ -522,6 +522,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\3DCommon\GraphicsResourceCacheManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\3DCommon\GraphicsResourceCacheManager.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\3DCommon\GraphicsResourceDescs.h"
 					>
 				</File>

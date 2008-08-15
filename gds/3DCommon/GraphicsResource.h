@@ -111,7 +111,7 @@ public:
 
 	virtual void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
 
-	friend class CTextureEntry;
+	friend class CTextureResource;
 };
 
 

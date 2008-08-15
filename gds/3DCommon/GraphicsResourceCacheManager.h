@@ -1,5 +1,5 @@
-#ifndef  __ResourceCacheManager_H__
-#define  __ResourceCacheManager_H__
+#ifndef  __GraphicsResourceCacheManager_H__
+#define  __GraphicsResourceCacheManager_H__
 
 
 #include <vector>
@@ -7,54 +7,133 @@
 #include <queue>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include "GraphicsResourceDescs.h"
 #include "GraphicsResourceManager.h"
 
+#include "Support/Singleton.h"
+using namespace NS_KGL;
 
-class CResourceCacheManager
+
+//=======================================================================================
+// CGraphicsResourceFactoryImpl
+//=======================================================================================
+
+class CGraphicsResourceFactoryImpl
 {
-	std::vector<boost::shared_ptr<CGraphicsResourceEntry>> m_vecpCache;
-
 public:
 
-	bool Preload( const std::string& xml_filename );
+	CGraphicsResourceFactoryImpl() {}
 
-	/// returns a cached resource that matches the desc
-	boost::shared_ptr<CGraphicsResourceEntry> GetCachedResource( const CGraphicsResourceDesc& desc );
+	virtual ~CGraphicsResourceFactoryImpl() {}
+
+//	virtual void CreateGraphicsResource( CGraphicsResourceDesc &desc ) = 0;
+
+	virtual boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc ) = 0;
+	virtual boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc ) = 0;
+	virtual boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc ) = 0;
 };
 
 
-bool CResourceCacheManager::Preload( const std::string& xml_filename )
+
+//=======================================================================================
+// CD3DGraphicsResourceFactoryImpl
+//=======================================================================================
+
+class CD3DGraphicsResourceFactoryImpl : public CGraphicsResourceFactoryImpl
 {
-	return true;
+public:
+
+//	CreateGraphicsResource( CGraphicsResourceDesc &desc );
+
+	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc );
+	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc );
+	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc );
+};
+
+
+
+//=======================================================================================
+// CGraphicsResourceFactory
+//=======================================================================================
+
+class CGraphicsResourceFactory
+{
+	CGraphicsResourceFactoryImpl *m_pImpl;
+
+protected:
+
+	static CSingleton<CGraphicsResourceFactory> m_obj;
+
+public:
+
+	CGraphicsResourceFactory();
+
+	~CGraphicsResourceFactory();
+
+	static CGraphicsResourceFactory* Get() { return m_obj.get(); }
+
+	static void ReleaseSingleton() { m_obj.Release(); }
+
+	boost::shared_ptr<CGraphicsResource> CreateGraphicsResource( const CGraphicsResourceDesc &desc );// { return m_pImpl->CreateGraphicsResource(desc); }
+
+	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc ) { return m_pImpl->CreateTextureResource(desc); }
+	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc )       { return m_pImpl->CreateMeshResource(desc); }
+	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc )   { return m_pImpl->CreateShaderResource(desc); }
+};
+
+
+inline CGraphicsResourceFactory& GraphicsResourceFactory()
+{
+	return (*CGraphicsResourceFactory::Get());
 }
 
 
-template<>
-shared_ptr<CGraphicsResourceEntry>find_cached_resource( desc, std::vector<boost::shared_ptr<T>>& vecpEntry );
-{
-	for( size_t i=0; i<num; i++ )
-	{
-		if( .CanBeUsedAsCache( desc ) )
-			return vecpEntry[i];
-	}
 
-	return shared_ptr<CGraphicsResourceEntry>();
+/**
+ - Chached resources are created in advance
+   - Usu. at the application startup
+ - Not released until the user exit the application
+   - User can force the cache manager to release a cached resource,
+     but this feature should not be used.
+
+*/
+class CGraphicsResourceCacheManager : public CGraphicsComponent
+{
+	std::vector<boost::shared_ptr<CGraphicsResource>> m_vecpResurceCache;
+
+protected:
+
+	static CSingleton<CGraphicsResourceCacheManager> m_obj;
+
+public:
+
+	static CGraphicsResourceCacheManager* Get() { return m_obj.get(); }
+
+	static void ReleaseSingleton() { m_obj.Release(); }
+
+	bool Preload( const std::string& xml_filename );
+
+	/// Create a resource and store it as a cache.
+	/// Must be called by the render thread.
+	void AddCache( CGraphicsResourceDesc& desc );
+
+	/// Returns a cached resource that matches the desc
+	boost::shared_ptr<CGraphicsResource> GetCachedResource( const CGraphicsResourceDesc& desc );
+
+	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+
+	/// Release resources currently not used by CGraphicsResourceManager
+	void ReleaseGraphicsResources();
+};
+
+
+//------------------------------- inline implementations -------------------------------
+
+inline CGraphicsResourceCacheManager& GraphicsResourceCacheManager()
+{
+	return (*CGraphicsResourceCacheManager::Get());
 }
 
-shared_ptr<CGraphicsResourceEntry> CResourceCacheManager::GetCachedResource( const CGraphicsResourceDesc& desc )
-{
-	/// find preloaded resource that matches the description
-
-	switch( desc.type )
-	{
-	case Texture: return find_cached_resource( desc, m_vecpTextureEntry );
-	default: 
-	}
-	m_vecp
-	.CanBeUsedAsCache();
-
-	
-}
 
 
-#endif /* __ResourceCacheManager_H__ */
+#endif /* __GraphicsResourceCacheManager_H__ */

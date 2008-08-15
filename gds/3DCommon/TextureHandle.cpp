@@ -1,5 +1,5 @@
 #include "TextureHandle.h"
-#include "GraphicsResourceEntries.h"
+#include "GraphicsResourceManager.h"
 
 #include "Support/Log/DefaultLog.h"
 
@@ -13,37 +13,23 @@ using namespace std;
 const CTextureHandle CTextureHandle::ms_NullHandle;
 
 
-void CTextureHandle::IncResourceRefCount()
-{
-	if( 0 <= m_EntryID )
-		GraphicsResourceManager().GetTextureEntry(m_EntryID).IncRefCount();
-}
-
-
-void CTextureHandle::DecResourceRefCount()
-{
-	if( 0 <= m_EntryID )
-		GraphicsResourceManager().GetTextureEntry(m_EntryID).DecRefCount();
-}
-
-
 bool CTextureHandle::Load( const CTextureResourceDesc& desc )
 {
 	Release();
 
 	if( desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
 	{
-		m_EntryID = GraphicsResourceManager().LoadTexture( desc );
+		m_pResourceEntry = GraphicsResourceManager().LoadTexture( desc );
 	}
 	else
 	{
-		m_EntryID = GraphicsResourceManager().LoadAsync( desc );
+		m_pResourceEntry = GraphicsResourceManager().LoadAsync( desc );
 	}
 
-	if( m_EntryID == -1 )
-		return false;	// the loading failed - this is mostly because the texture file was not found
-	else
+	if( m_pResourceEntry )
 		return true;	// the texture has been successfully loaded
+	else
+		return false;	// the loading failed - this is mostly because the texture file was not found
 }
 
 
@@ -84,20 +70,21 @@ bool CTextureHandle::Create( boost::weak_ptr<CTextureLoader> pTextureLoader,
 
 	desc.pLoader = pTextureLoader;
 
-	m_EntryID = GraphicsResourceManager().CreateTexture( desc );
+	m_pResourceEntry = GraphicsResourceManager().CreateTexture( desc );
 
-	if( m_EntryID == -1 )
-		return false;	// the loading failed - this is mostly because the texture file was not found
-	else
+	if( m_pResourceEntry )
 		return true;	// the texture has been successfully loaded
+	else
+		return false;	// the loading failed - this is mostly because the texture file was not found
 }
 
 
 bool CTextureHandle::SaveTextureToImageFile( const std::string& image_filepath )
 {
-	if( 0 <= m_EntryID )
+	if( GetEntry()
+	 && GetEntry()->GetTextureResource() )
 	{
-		return GraphicsResourceManager().GetTextureEntry(m_EntryID).SaveTextureToImageFile( image_filepath );
+		return GetEntry()->GetTextureResource()->SaveTextureToImageFile( image_filepath );
 	}
 	else
 		return false;

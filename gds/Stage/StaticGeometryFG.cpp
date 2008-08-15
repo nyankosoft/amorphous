@@ -171,7 +171,7 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 //			m_vecpMesh[mesh_index]->UpdateVisibility( rCamera );
 //			m_vecpMesh[mesh_index]->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 
-			CD3DXMeshObjectBase *pMesh = m_vecMesh[mesh_index].GetMeshObject();
+			CD3DXMeshObjectBase *pMesh = m_vecMesh[mesh_index].GetMesh().get();
 			pMesh->UpdateVisibility( rCamera );
 //			pMesh->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 			pMesh->Render( *m_pShaderManager );
@@ -621,7 +621,7 @@ void CStaticGeometryFG::RenderTreeNode( node )
 		// set the shader technique for this mesh group
 		pEffect->SetTechnique( m_vecMeshGroup[i].m_vecShaderTechnique[0].GetTechniqueName() );
 
-		CD3DXMeshObjectBase *pMesh = m_vecMesh[subset.MeshIndex].GetMeshObject();
+		CD3DXMeshObjectBase *pMesh = m_vecMesh[subset.MeshIndex].GetMesh().get();
 //		pMesh->UpdateVisibility( rCamera );
 		pMesh->RenderSubset( subset.MaterialIndex, *m_pShaderManager );
 	}

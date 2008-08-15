@@ -114,7 +114,7 @@ void CBE_LaserDot::Act(CCopyEntity* pCopyEnt)
 
 void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 {
-	if( !m_MeshProperty.m_MeshObjectHandle.GetMeshObject() )
+	if( !m_MeshProperty.m_MeshObjectHandle.GetMesh() )
 		return;
 
 	if( !(pCopyEnt->s1 & BE_LASERDOT_ON) ||

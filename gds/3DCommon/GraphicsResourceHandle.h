@@ -1,36 +1,44 @@
 #ifndef  __GraphicsResourceHandle_H__
 #define  __GraphicsResourceHandle_H__
 
+
 #include <string>
 
+#include "fwd.h"
 #include "GraphicsResource.h"
 #include "GraphicsResourceDescs.h"
+#include "GraphicsResourceEntries.h"
+
 
 class CGraphicsResourceHandle
 {
 protected:
 
-	int m_EntryID;
+	boost::shared_ptr<CGraphicsResourceEntry> m_pResourceEntry;
 
-	virtual void IncResourceRefCount() = 0;
-	virtual void DecResourceRefCount() = 0;
+//	void IncResourceRefCount();
+//	void DecResourceRefCount();
 
 	inline void copy( const CGraphicsResourceHandle& handle );
 
 public:
 
-	inline CGraphicsResourceHandle() : m_EntryID(-1) {}
+	inline CGraphicsResourceHandle() {}
 
 	/// Release() is called in the dtor of each derived handle class
 	virtual ~CGraphicsResourceHandle() {}
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
-	bool IsLoaded() const { return ( 0 <= m_EntryID ); }
+	boost::shared_ptr<CGraphicsResourceEntry> GetEntry() { return m_pResourceEntry; }
 
-	/// does not clear the filename
-	/// - user can reload the resource after Release() by calling Load()
-	virtual void Release() = 0;
+	const boost::shared_ptr<CGraphicsResourceEntry> GetEntry() const { return m_pResourceEntry; }
+
+	inline bool IsLoaded() const;
+
+	virtual GraphicsResourceState::Name GetEntryState();
+
+	inline void Release();
 
 	/// reload any updated file since the last load
 //	void Refresh();
@@ -48,33 +56,45 @@ public:
 
 //=================================== inline implementations ===================================
 
-/*
+
 inline void CGraphicsResourceHandle::Release()
 {
-	if( 0 <= m_EntryID )
+	if( m_pResourceEntry )
 	{
-		DecResourceRefCount();
-		m_EntryID = -1;
+		m_pResourceEntry->DecRefCount();
+		m_pResourceEntry.reset();
 	}
 }
-*/
+
+
+inline bool CGraphicsResourceHandle::IsLoaded() const
+{
+	if( GetEntry()
+	 && GetEntry()->GetMeshResource() )
+	{
+		if( GetEntry()->GetMeshResource()->GetState() == GraphicsResourceState::LOADED )
+			return true;
+		else
+			return false;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 
 inline void CGraphicsResourceHandle::copy( const CGraphicsResourceHandle& handle )
 {
-	if( 0 <= m_EntryID )
-	{
-		// decrement the reference count of the current texture
-		DecResourceRefCount();
-	}
+	if( m_pResourceEntry )
+        m_pResourceEntry->DecRefCount(); // decrement the reference count of the current resource
 
-	m_EntryID = handle.m_EntryID;
+	m_pResourceEntry = handle.m_pResourceEntry;
 
-	if( 0 <= m_EntryID )
-	{
-		// increment the reference count of the newly assigned texture
-		IncResourceRefCount();
-	}
+	if( m_pResourceEntry )
+        m_pResourceEntry->IncRefCount(); // increment the reference count of the newly assigned texture
 }
+
 
 inline const CGraphicsResourceHandle &CGraphicsResourceHandle::operator=( const CGraphicsResourceHandle& handle )
 {

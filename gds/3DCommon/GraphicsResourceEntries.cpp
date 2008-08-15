@@ -14,8 +14,29 @@ using namespace std;
 using namespace boost;
 
 
+static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( CImageArchive::ImageFormat img_archive_format )
+{
+	switch(img_archive_format)
+	{
+	case CImageArchive::IMGFMT_BMP24: return D3DXIFF_BMP;
+	case CImageArchive::IMGFMT_BMP32: return D3DXIFF_BMP;
+	case CImageArchive::IMGFMT_JPEG:  return D3DXIFF_JPG;
+	case CImageArchive::IMGFMT_TGA:   return D3DXIFF_TGA;
+	case CImageArchive::IMGFMT_PNG:   return D3DXIFF_PNG;
+//	case CImageArchive::IMGFMT_ : return D3DXIFF_DDS,
+//	case CImageArchive::IMGFMT_ : return D3DXIFF_PPM,
+//	case CImageArchive::IMGFMT_ : return D3DXIFF_DIB,
+//	case CImageArchive::IMGFMT_ : return D3DXIFF_HDR,       //high dynamic range formats
+//	case CImageArchive::IMGFMT_ : return D3DXIFF_PFM,       //
+	default: return D3DXIFF_BMP;
+	}
+
+	return D3DXIFF_BMP;
+}
+
+
 /**
- Graphics Resource Entries
+ Graphics Resource
  - Graphics resources are not sharable if the loading modes are different
    even if all the other properties are the same.
  Rationale:
@@ -43,34 +64,60 @@ inline bool str_includes( const std::string& src, const std::string& target )
 // CGraphicsResourceEntry
 //==================================================================================================
 
-CGraphicsResourceEntry::CGraphicsResourceEntry()
+void CGraphicsResourceEntry::GetStatus( char *pDestBuffer )
+{
+	sprintf( pDestBuffer, "ref: %02d", m_iRefCount );
+
+	if( GetResource() )
+	{
+		char buffer[512];
+		GetResource()->GetStatus( buffer );
+		strcat( pDestBuffer, buffer );
+	}
+}
+
+
+
+//==================================================================================================
+// CGraphicsResource
+//==================================================================================================
+
+CGraphicsResource::CGraphicsResource()
 :
-m_iRefCount(0),
 m_LastModifiedTimeOfFile(0),
 m_State(GraphicsResourceState::RELEASED),
-m_bIsCachedResource(false),
+m_IsCachedResource(false),
 m_Index(0)
 {}
 
 
-CGraphicsResourceEntry::~CGraphicsResourceEntry()
+CGraphicsResource::~CGraphicsResource()
 {
 //	Release();	// LNK2019 - why???
 }
 
+
 /*
-void CGraphicsResourceEntry::Release()
-{
-}
+void CGraphicsResource::Release()
+{}
 */
+
 
 /**
   Release and reload resource if the file has been modified since the last time is was load
    - This method does not change the reference count
  */
-void CGraphicsResourceEntry::Refresh()
+void CGraphicsResource::Refresh()
 {
-	if( m_LastModifiedTimeOfFile < fnop::get_last_modified_time( m_Filename ) )
+	const string& resource_path = GetDesc().ResourcePath;
+	string filepath, keyname;
+
+	if( is_db_filepath_and_keyname( resource_path ) )
+		decompose_into_db_filepath_and_keyname( resource_path, filepath, keyname );
+	else
+		filepath = resource_path;
+
+	if( m_LastModifiedTimeOfFile < fnop::get_last_modified_time( filepath ) )
 	{
 		Release();
 		Load();
@@ -78,44 +125,7 @@ void CGraphicsResourceEntry::Refresh()
 }
 
 
-/*
- Load the resource when the reference count is incremented from 0 to 1
-*/
-void CGraphicsResourceEntry::IncRefCount()
-{
-	if( m_iRefCount == 0 )
-	{
-		bool res = Load();
-		if( res )
-			m_iRefCount = 1;
-	}
-	else
-	{
-		// resource has already been loaded - just increment the reference count
-		m_iRefCount++;
-	}
-}
-
-
-/*
- Release the resource when the reference count is decremented from 1 to 0
-*/
-void CGraphicsResourceEntry::DecRefCount()
-{
-	if( m_iRefCount == 0 )
-	{
-		LOG_PRINT_WARNING( " - A redundant call: ref count is already 0 (resource name: " + m_Filename + ")" );
-		return;	// error
-	}
-
-	m_iRefCount--;
-
-	if( m_iRefCount == 0 )
-		Release();
-}
-
-
-bool CGraphicsResourceEntry::Load()
+bool CGraphicsResource::Load()
 {
 	if( IsDiskResource() )
 	{
@@ -125,21 +135,39 @@ bool CGraphicsResourceEntry::Load()
 	{
 		// create resource from non-disk resource
 		// - e.g.) empty texture that gets filled by user-defined a routine
+		// - Simply create an empty texture if no loader is set to desc. This happens
+		//   when an unused cached texture needs to be loaded after being released
+		//   in order to reconfigure graphics devices for resolution changes or something.
 		return CreateFromDesc();
 	}
 }
 
 
-bool CGraphicsResourceEntry::LoadFromDisk()
+void CGraphicsResource::ReleaseNonChachedResource()
+{
+	if( !m_IsCachedResource )
+		Release();
+}
+
+
+void CGraphicsResource::ReleaseCachedResource()
+{
+	if( m_IsCachedResource )
+		Release();
+}
+
+
+bool CGraphicsResource::LoadFromDisk()
 {
 	bool loaded = false;
 	string target_filepath;
+	const string resource_path = GetDesc().ResourcePath;
 
-	if( is_db_filepath_and_keyname( m_Filename ) )
+	if( is_db_filepath_and_keyname( resource_path ) )
 	{
 		// decompose the string
 		string db_filename, keyname;
-		decompose_into_db_filepath_and_keyname( m_Filename, db_filename, keyname );
+		decompose_into_db_filepath_and_keyname( resource_path, db_filename, keyname );
 
 		string cwd = fnop::get_cwd();
 
@@ -154,9 +182,9 @@ bool CGraphicsResourceEntry::LoadFromDisk()
 	}
 	else
 	{
-		loaded = LoadFromFile( m_Filename );
+		loaded = LoadFromFile( resource_path );
 
-		target_filepath = m_Filename;
+		target_filepath = resource_path;
 	}
 
 
@@ -172,63 +200,51 @@ bool CGraphicsResourceEntry::LoadFromDisk()
 }
 
 
-bool CGraphicsResourceEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+bool CGraphicsResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
-	if( GetResourceType() == desc.GetResourceType()
-	 && GetFilename() == desc.ResourcePath )
+	if( GetResourceType()      == desc.GetResourceType()
+	 && GetDesc().ResourcePath == desc.ResourcePath )
 		return true;
 	else
 		return false;
 }
 
 
+void CGraphicsResource::GetStatus( char *pDestBuffer )
+{
+	const CGraphicsResourceDesc& desc = GetDesc();
+
+	sprintf( pDestBuffer, " / %s",	desc.ResourcePath.c_str() );
+}
+
+
+
 //==================================================================================================
-// CTextureEntry
+// CTextureResource
 //==================================================================================================
 
-CTextureEntry::CTextureEntry( const CTextureResourceDesc *pDesc )
+CTextureResource::CTextureResource( const CTextureResourceDesc *pDesc )
 :
 m_pTexture(NULL)
 {
 	if( pDesc )
 		m_TextureDesc = *pDesc;
 	else
-		LOG_PRINT_ERROR( "An imcompatible resource desc" );
+		LOG_PRINT_ERROR( "An invalid resource desc" );
 }
 
 
-CTextureEntry::~CTextureEntry()
+CTextureResource::~CTextureResource()
 {
 	Release();
 }
 
 
-static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( int img_archive_format )
-{
-	switch(img_archive_format)
-	{
-	case CImageArchive::IMGFMT_BMP24: return D3DXIFF_BMP;
-	case CImageArchive::IMGFMT_BMP32: return D3DXIFF_BMP;
-	case CImageArchive::IMGFMT_JPEG:  return D3DXIFF_JPG;
-	case CImageArchive::IMGFMT_TGA:   return D3DXIFF_TGA;
-	case CImageArchive::IMGFMT_PNG:   return D3DXIFF_PNG;
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_DDS,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_PPM,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_DIB,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_HDR,       //high dynamic range formats
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_PFM,       //
-	default: return D3DXIFF_BMP;
-	}
-
-	return D3DXIFF_BMP;
-}
-
-
 /**
- load the texture specified by m_Filename
+ Load the texture specified by resource path in the current desc
  does not change the reference count
 */
-bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+bool CTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	SAFE_RELEASE( m_pTexture );
 
@@ -246,7 +262,7 @@ bool CTextureEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 		sprintf( title, "D3DXCreateTextureFromFileInMemory (keyname: %s)", keyname.c_str() );
 		LOG_SCOPE( title );
 
-	hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &img.buffer()[0], (UINT)img.buffer().size(), &m_pTexture );
+		hr = D3DXCreateTextureFromFileInMemory( DIRECT3D9.GetDevice(), &img.buffer()[0], (UINT)img.buffer().size(), &m_pTexture );
 	}
 
 /*	D3DXIMAGE_INFO img_info;
@@ -291,7 +307,7 @@ static inline D3DXIMAGE_FILEFORMAT SuffixToD3DImgFmt( const std::string& suffix 
 }
 
 
-bool CTextureEntry::SaveTextureToImageFile( const std::string& image_filepath )
+bool CTextureResource::SaveTextureToImageFile( const std::string& image_filepath )
 {
 	if( m_pTexture )
 	{
@@ -309,7 +325,7 @@ bool CTextureEntry::SaveTextureToImageFile( const std::string& image_filepath )
 
 // May only be called by render thread
 // Used in synchronous loading
-bool CTextureEntry::LoadFromFile( const std::string& filepath )
+bool CTextureResource::LoadFromFile( const std::string& filepath )
 {
 	char title[1024];
 	sprintf( title, "D3DXCreateTextureFromFile (file: %s)", filepath.c_str() );
@@ -322,17 +338,20 @@ bool CTextureEntry::LoadFromFile( const std::string& filepath )
 	return SUCCEEDED(hr) ? true : false;
 }
 
-/*
-// May be called by any thread
-bool CTextureEntry::LoadAsynchronouslyFromFile( const std::string& filepath )
-{
-	// send a request to load texture from file to memory
-	AddReq( new ReqToLoadTexture(filepath) );
-	return SUCCEEDED(hr) ? true : false;
-}
-*/
 
-bool CTextureEntry::Create()
+bool CTextureResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+{
+	return CGraphicsResource::CanBeSharedAsSameResource( desc );
+}
+
+
+int CTextureResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
+{
+	return desc.CanBeUsedAsTextureCache( m_TextureDesc );
+}
+
+
+bool CTextureResource::Create()
 {
 	SAFE_RELEASE( m_pTexture );
 
@@ -363,7 +382,42 @@ bool CTextureEntry::Create()
 }
 
 
-bool CTextureEntry::Lock()
+bool CTextureResource::CreateFromDesc()
+{
+	const CTextureResourceDesc& desc = m_TextureDesc;
+
+	// create an empty texture
+	Create();
+
+	if( Lock() )
+	{
+		// An empty texture has been created
+		// - fill the texture if loader was specified
+		shared_ptr<CTextureLoader> pLoader = desc.pLoader.lock();
+		if( pLoader )
+		{
+			pLoader->FillTexture( *(m_pLockedTexture.get()) );
+		}
+
+		Unlock();
+
+		SetState( GraphicsResourceState::LOADED );
+
+		D3DXSaveTextureToFile( string(desc.ResourcePath + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
+
+		return true;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " Failed to lock the texture: " + desc.ResourcePath );
+		return false;
+	}
+
+//	return SUCCEEDED(hr) ? true : false;
+}
+
+
+bool CTextureResource::Lock()
 {
 	if( !m_pTexture )
 		return false;
@@ -389,7 +443,7 @@ bool CTextureEntry::Lock()
 }
 
 
-bool CTextureEntry::Unlock()
+bool CTextureResource::Unlock()
 {
 	if( !m_pTexture )
 		return false;
@@ -405,8 +459,11 @@ bool CTextureEntry::Unlock()
 }
 
 
-bool CTextureEntry::GetLockedTexture( CLockedTexture& texture )
+bool CTextureResource::GetLockedTexture( CLockedTexture& texture )
 {
+	// TODO: increment the ref count when the async loading process is started
+//	m_iRefCount++;
+
 	if( !m_pLockedTexture )
 		return false;
 
@@ -415,40 +472,7 @@ bool CTextureEntry::GetLockedTexture( CLockedTexture& texture )
 }
 
 
-bool CTextureEntry::CreateFromDesc()
-{
-	SAFE_RELEASE( m_pTexture );
-
-	const CTextureResourceDesc& desc = m_TextureDesc;
-
-	Create();
-
-	if( Lock() )
-	{
-		// An empty texture has been created
-		// - fill the texture if loader was specified
-		shared_ptr<CTextureLoader> pLoader = desc.pLoader.lock();
-		if( pLoader )
-		{
-			pLoader->FillTexture( *(m_pLockedTexture.get()) );
-		}
-
-		Unlock();
-
-		SetState( GraphicsResourceState::LOADED );
-
-		D3DXSaveTextureToFile( string(desc.ResourcePath + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
-
-		return true;
-	}
-	else
-		return false;
-
-//	return SUCCEEDED(hr) ? true : false;
-}
-
-
-void CTextureEntry::Release()
+void CTextureResource::Release()
 {
 //	LOG_FUNCTION_SCOPE();
 
@@ -458,7 +482,7 @@ void CTextureEntry::Release()
 }
 
 
-bool CTextureEntry::IsDiskResource() const
+bool CTextureResource::IsDiskResource() const
 {
 	if( 0 < m_TextureDesc.Width
 	 && 0 < m_TextureDesc.Height
@@ -471,13 +495,24 @@ bool CTextureEntry::IsDiskResource() const
 }
 
 
+void CTextureResource::GetStatus( char *pDestBuffer )
+{
+	CGraphicsResource::GetStatus( pDestBuffer );
+
+	char buffer[256];
+	const CTextureResourceDesc& desc = m_TextureDesc;
+
+	sprintf( buffer, " / %d x %d", desc.Width, desc.Height );
+	strcat( pDestBuffer, buffer );
+}
+
+
+
 //==================================================================================================
-// CMeshObjectEntry
+// CMeshResource
 //==================================================================================================
 
-CMeshObjectEntry::CMeshObjectEntry( const CMeshResourceDesc *pDesc )
-:
-m_pMeshObject(NULL)
+CMeshResource::CMeshResource( const CMeshResourceDesc *pDesc )
 {
 	if( pDesc )
 		m_MeshDesc = *pDesc;
@@ -485,23 +520,16 @@ m_pMeshObject(NULL)
 		LOG_PRINT_ERROR( "An incompatible resource desc" );
 }
 
-/*
-CMeshObjectEntry::CMeshObjectEntry( int mesh_type )
-:
-m_pMeshObject(NULL),
-m_MeshType(mesh_type)
-{}
-*/
 
-CMeshObjectEntry::~CMeshObjectEntry()
+CMeshResource::~CMeshResource()
 {
 	Release();
 }
 
 
-bool CMeshObjectEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+bool CMeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
-	SafeDelete( m_pMeshObject );
+	m_pMeshObject.reset();
 
 	string mesh_archive_key = keyname;
 
@@ -510,49 +538,62 @@ bool CMeshObjectEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::
 	db.GetData( mesh_archive_key, mesh_archive );
 
 	CMeshObjectFactory factory;
-	m_pMeshObject = factory.LoadMeshObjectFromArchive( mesh_archive, m_Filename, m_MeshDesc.MeshType );
+	CD3DXMeshObjectBase *pMesh = factory.LoadMeshObjectFromArchive( mesh_archive, keyname, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
+	m_pMeshObject = boost::shared_ptr<CD3DXMeshObjectBase>( pMesh );
 
 	return ( m_pMeshObject ? true : false );
 }
 
 
-bool CMeshObjectEntry::LoadFromFile( const std::string& filepath )
+bool CMeshResource::LoadFromFile( const std::string& filepath )
 {
-	SafeDelete( m_pMeshObject );
+	m_pMeshObject.reset();
 
 	CMeshObjectFactory factory;
-	m_pMeshObject = factory.LoadMeshObjectFromFile( m_Filename, m_MeshDesc.MeshType );
-	if( !m_pMeshObject )
-		return false;
+	CD3DXMeshObjectBase *pMeshObject
+		= factory.LoadMeshObjectFromFile( filepath, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
 
-	return ( m_pMeshObject ? true : false );
+	if( pMeshObject )
+	{
+		m_pMeshObject = shared_ptr<CD3DXMeshObjectBase>( pMeshObject );
+		return true;
+	}
+	else
+		return false;
 }
 
 
-void CMeshObjectEntry::Release()
+void CMeshResource::Release()
 {
 //	LOG_FUNCTION_SCOPE();
 
-	SafeDelete( m_pMeshObject );
+	m_pMeshObject.reset();
 
 	SetState( GraphicsResourceState::RELEASED );
 }
 
 
-bool CMeshObjectEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+bool CMeshResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
-	if( desc.GetResourceType() != GraphicsResourceType::Mesh )
-		return false;
+	return desc.CanBeSharedAsSameMeshResource( m_MeshDesc );
+}
 
-	const CMeshResourceDesc *pMeshDesc = dynamic_cast<const CMeshResourceDesc *>(&desc);
-	if( !pMeshDesc )
-		return false;
 
-	if( CGraphicsResourceEntry::CanBeSharedAsSameResource(desc)
-	 && GetMeshType() == pMeshDesc->MeshType )
-		return true;
-	else
-		return false;
+int CMeshResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
+{
+	return desc.CanBeUsedAsMeshCache( m_MeshDesc );
+}
+
+
+void CMeshResource::GetStatus( char *pDestBuffer )
+{
+	CGraphicsResource::GetStatus( pDestBuffer );
+
+	char buffer[256];
+	const CMeshResourceDesc& desc = m_MeshDesc;
+
+	sprintf( buffer, " / %d", desc.MeshType );
+	strcat( pDestBuffer, buffer );
 }
 
 
@@ -560,18 +601,18 @@ bool CMeshObjectEntry::CanBeSharedAsSameResource( const CGraphicsResourceDesc& d
 // CShaderManagerEntry
 //==================================================================================================
 
-CShaderManagerEntry::CShaderManagerEntry( const CShaderResourceDesc *pDesc )
+CShaderResource::CShaderResource( const CShaderResourceDesc *pDesc )
 :
 m_pShaderManager(NULL)
 {
 	if( pDesc )
 		m_ShaderDesc = *pDesc;
 	else
-		LOG_PRINT_ERROR( "An imcompatible resource desc" );
+		LOG_PRINT_ERROR( "An invalid resource desc" );
 }
 
 
-CShaderManagerEntry::~CShaderManagerEntry()
+CShaderResource::~CShaderResource()
 {
 //	LOG_FUNCTION_SCOPE();
 
@@ -579,7 +620,7 @@ CShaderManagerEntry::~CShaderManagerEntry()
 }
 
 
-bool CShaderManagerEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+bool CShaderResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	SafeDelete( m_pShaderManager );
 
@@ -596,7 +637,7 @@ bool CShaderManagerEntry::LoadFromDB( CBinaryDatabase<std::string>& db, const st
 }
 
 
-bool CShaderManagerEntry::LoadFromFile( const std::string& filepath )
+bool CShaderResource::LoadFromFile( const std::string& filepath )
 {
 	SafeDelete( m_pShaderManager );
 
@@ -608,7 +649,7 @@ bool CShaderManagerEntry::LoadFromFile( const std::string& filepath )
 }
 
 
-void CShaderManagerEntry::Release()
+void CShaderResource::Release()
 {
 //	LOG_FUNCTION_SCOPE();
 

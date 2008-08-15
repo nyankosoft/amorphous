@@ -15,6 +15,7 @@
 #include "GameCommon/MouseCursor.h"
 
 #include "3DCommon/fps.h"
+#include "3DCommon/GraphicsResourceManager.h"
 #include "Task/GameTaskManager.h"
 
 #include "Sound/SoundManager.h"
@@ -95,7 +96,7 @@ void CApplicationBase::Release()
 	SafeDelete( m_pGlobalInputHandler );
 
 	// release any singleton class that inherits CGraphicsComponent
-	CGraphicsResourceManager::ReleaseSingleton();
+	GraphicsResourceManager().ReleaseSingleton();
 
 }
 

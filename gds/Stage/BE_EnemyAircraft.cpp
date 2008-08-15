@@ -498,11 +498,11 @@ void CBE_EnemyAircraft::AddExtraData()
 
     ex.m_pAircraft = (CGI_Aircraft *)pItem;
 
-	if( m_MeshProperty.m_MeshObjectHandle.GetMeshObject()
+	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
 	{
 		ex.m_pAircraft->ResetMeshController();
-		ex.m_pAircraft->InitMeshController( (CD3DXSMeshObject *)m_MeshProperty.m_MeshObjectHandle.GetMeshObject() );
+		ex.m_pAircraft->InitMeshController( (CD3DXSMeshObject *)m_MeshProperty.m_MeshObjectHandle.GetMesh().get() );
 	}
 }
 

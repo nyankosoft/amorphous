@@ -534,7 +534,7 @@ void CBE_Bullet::Draw3DObjectBullet(CCopyEntity* pCopyEnt)
 
 //		DrawMeshObject( pCopyEnt->GetWorldPose(),
 //			            SHADER_TECH_BULLET,
-//						m_MeshProperty.m_MeshObjectHandle.GetMeshObject() );
+//						m_MeshProperty.m_MeshObjectHandle.GetMesh() );
 
 		Draw3DModel( pCopyEnt );
 	}
@@ -543,7 +543,7 @@ void CBE_Bullet::Draw3DObjectBullet(CCopyEntity* pCopyEnt)
 
 void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 {
-	if( m_MeshProperty.m_MeshObjectHandle.GetMeshObject() )
+	if( m_MeshProperty.m_MeshObjectHandle.GetMesh() )
 	{
 		Draw3DObjectBullet(pCopyEnt);
 	}

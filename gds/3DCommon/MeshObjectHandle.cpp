@@ -10,25 +10,20 @@ using namespace std;
 // CMeshObjectHandle
 //==================================================================================================
 
-
-void CMeshObjectHandle::IncResourceRefCount()
+boost::shared_ptr<CMeshResource> CMeshObjectHandle::GetMeshResource()
 {
-	if( 0 <= m_EntryID )
-		GraphicsResourceManager().GetMeshEntry(m_EntryID).IncRefCount();
+	if( GetEntry() )
+		return GetEntry()->GetMeshResource();
+	else
+		return boost::shared_ptr<CMeshResource>();
 }
 
 
-void CMeshObjectHandle::DecResourceRefCount()
+CMeshType::Name CMeshObjectHandle::GetMeshType()
 {
-	if( 0 <= m_EntryID )
-		GraphicsResourceManager().GetMeshEntry(m_EntryID).DecRefCount();
-}
-
-
-CMeshType::Name CMeshObjectHandle::GetMeshType() const
-{
-	if( 0 <= m_EntryID )
-		return GraphicsResourceManager().GetMeshEntry(m_EntryID).GetMeshType();
+	if( GetEntry()
+	 && GetEntry()->GetMeshResource() )
+		return GetEntry()->GetMeshResource()->GetMeshType();
 	else
 		return CMeshType::INVALID; // TODO: return a value that means invalid request
 }
@@ -49,14 +44,14 @@ bool CMeshObjectHandle::Load( const CMeshResourceDesc& desc )
 
 	if( desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
 	{
-		m_EntryID = GraphicsResourceManager().LoadMesh( desc );
+		m_pResourceEntry = GraphicsResourceManager().LoadMesh( desc );
 	}
 	else
 	{
-		m_EntryID = GraphicsResourceManager().LoadAsync( desc );
+		m_pResourceEntry = GraphicsResourceManager().LoadAsync( desc );
 	}
 
-	if( 0 <= m_EntryID )
+	if( m_pResourceEntry )
 		return true;
 	else
 		return false;

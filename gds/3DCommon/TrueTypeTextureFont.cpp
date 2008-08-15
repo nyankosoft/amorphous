@@ -1,5 +1,7 @@
 #include "TrueTypeTextureFont.h"
 #include "3DCommon/Direct3D9.h"
+#include "Graphics/Rect.h"
+using namespace Graphics;
 
 #include <string.h>
 #include "Support/fnop.h"

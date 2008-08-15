@@ -14,28 +14,23 @@ class CMeshObjectHandle : public CGraphicsResourceHandle
 {
 protected:
 
-	virtual void IncResourceRefCount();
-	virtual void DecResourceRefCount();
-
 public:
 
 	inline CMeshObjectHandle() {}
 
 	~CMeshObjectHandle() { Release(); }
 
-	inline void Release();
-
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
-	CMeshType::Name GetMeshType() const;
+	CMeshType::Name GetMeshType();
 
-//	void SetMeshType( int mesh_type ) { m_MeshType = mesh_type; }
-
-	inline CD3DXMeshObjectBase *GetMeshObject() { return GraphicsResourceManager().GetMeshObject(m_EntryID); }
+	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh();
 
 	bool Load( const std::string& resource_path );
 
 	bool Load( const CMeshResourceDesc& desc );
+
+	boost::shared_ptr<CMeshResource> GetMeshResource();
 
 	inline virtual const CMeshObjectHandle &operator=( const CMeshObjectHandle& handle );
 };
@@ -51,13 +46,13 @@ inline const CMeshObjectHandle &CMeshObjectHandle::operator=( const CMeshObjectH
 }
 
 
-inline void CMeshObjectHandle::Release()
+inline boost::shared_ptr<CD3DXMeshObjectBase> CMeshObjectHandle::GetMesh()
 {
-	if( 0 <= m_EntryID )
-	{
-		DecResourceRefCount();
-		m_EntryID = -1;
-	}
+	if( GetEntry()
+	 && GetEntry()->GetMeshResource() )
+		return GetEntry()->GetMeshResource()->GetMesh();
+	else
+		return boost::shared_ptr<CD3DXMeshObjectBase>();
 }
 
 

@@ -25,6 +25,8 @@ public:
 
 class CGraphicsResourceDesc : public IArchiveObjectBase
 {
+	bool m_IsCachedResource;
+
 public:
 
 	/// filled out by the system
@@ -44,36 +46,26 @@ public:
 
 	virtual bool IsDiskResource() const { return true; }
 
+	bool IsCachedResource() const { return m_IsCachedResource; }
+
+	virtual bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const { return false; }
+	virtual bool CanBeSharedAsSameMeshResource( const CMeshResourceDesc& desc ) const { return false; }
+	virtual bool CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const { return false; }
+
+	/// Returns the score that shows how much the cache is preferable to be used as the requested resource.
+	/// 0 means the cache cannot be used for a requested resource
+	virtual int CanBeUsedAsTextureCache( const CTextureResourceDesc& desc ) const { return 0; }
+	virtual int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const { return 0; }
+	virtual int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
+
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
 		ar & (int&)LoadingMode;
 		ar & LoadingPriority;
 		ar & ResourcePath;
 	}
-};
 
-
-class CMeshResourceDesc : public CGraphicsResourceDesc
-{
-public:
-
-	CMeshType::Name MeshType;	///< used by mesh object
-
-	U32 LoadOptionFlags;
-
-public:
-
-	inline CMeshResourceDesc();
-
-	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
-
-	void Serialize( IArchive& ar, const unsigned int version )
-	{
-		CGraphicsResourceDesc::Serialize( ar, version );
-
-		ar & (int&)MeshType;
-		ar & LoadOptionFlags;
-	}
+	friend class CGraphicsResourceCacheManager;
 };
 
 
@@ -101,6 +93,25 @@ public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
+	bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const
+	{
+		if( ResourcePath == desc.ResourcePath )
+			return true;
+		else
+			return false;
+	}
+
+	int CanBeUsedAsTextureCache( const CTextureResourceDesc& desc ) const
+	{
+		if( Width     == desc.Width
+		 && Height    == desc.Height
+		 && MipLevels == desc.MipLevels
+		 && Format    == desc.Format )
+			return 1;
+		else
+			return 0;
+	}
+
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
 		CGraphicsResourceDesc::Serialize( ar, version );
@@ -111,11 +122,68 @@ public:
 };
 
 
+class CMeshResourceDesc : public CGraphicsResourceDesc
+{
+	/// Set after the mesh archive is loaded from the desc
+	/// or an empty mesh is created.
+	/// Used in asynchronous loading.
+	int NumVertices;
+	int NumIndices;
+	int VertexFormatFlags;
+
+public:
+
+	CMeshType::Name MeshType;	///< used by mesh object
+
+	U32 LoadOptionFlags;
+
+public:
+
+	inline CMeshResourceDesc();
+
+	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
+
+	bool CanBeSharedAsSameMeshResource( const CMeshResourceDesc& desc ) const
+	{
+		if( MeshType        == desc.MeshType
+		 && LoadOptionFlags == desc.LoadOptionFlags )
+		{
+			if( ResourcePath == desc.ResourcePath )
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+
+	int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const
+	{
+		if( MeshType        != desc.MeshType
+		 || LoadOptionFlags != desc.LoadOptionFlags )
+			return 0;
+
+		return 0;
+	}
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		CGraphicsResourceDesc::Serialize( ar, version );
+
+		ar & (int&)MeshType;
+		ar & LoadOptionFlags;
+		ar & NumVertices & NumIndices & VertexFormatFlags;
+	}
+};
+
+
 class CShaderResourceDesc : public CGraphicsResourceDesc
 {
 public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
+
+	int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -123,9 +191,8 @@ public:
 	}
 };
 
+
 //-------------------------------------- inline implementations --------------------------------------
-
-
 
 //==================================================================================================
 // CGraphicsResourceDesc and its derived classes
@@ -133,14 +200,19 @@ public:
 
 inline CGraphicsResourceDesc::CGraphicsResourceDesc()
 :
+m_IsCachedResource(false),
 LoadingMode(CResourceLoadingMode::SYNCHRONOUS),
 LoadingPriority(0)
 {}
 
 
 inline CMeshResourceDesc::CMeshResourceDesc()
-	:
-MeshType(CMeshType::BASIC)
+:
+MeshType(CMeshType::BASIC),
+NumVertices(0),
+NumIndices(0),
+VertexFormatFlags(0),
+LoadOptionFlags(0)
 {}
 
 

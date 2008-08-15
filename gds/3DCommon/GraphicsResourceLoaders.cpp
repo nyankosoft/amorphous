@@ -1,4 +1,6 @@
 #include "GraphicsResourceLoaders.h"
+#include "GraphicsResourceCacheManager.h"
+#include "AsyncResourceLoader.h"
 #include "D3DXMeshObjectBase.h"
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
 
@@ -46,6 +48,35 @@ bool CGraphicsResourceLoader::LoadFromDisk()
 }
 
 
+bool CGraphicsResourceLoader::Lock()
+{
+	shared_ptr<CGraphicsResource> pResource = GetResource();
+	if( pResource )
+		return pResource->Lock();
+	else
+		return false;
+}
+
+
+bool CGraphicsResourceLoader::Unlock()
+{
+	shared_ptr<CGraphicsResource> pResource = GetResource();
+	if( pResource )
+		return pResource->Unlock();
+	else
+		return false;
+}
+
+
+void CGraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
+{
+	FillResourceDesc();
+
+	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, pSelf, GetResourceEntry() );
+
+	AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+}
+
 
 //===================================================================================
 // CDiskTextureLoader
@@ -71,14 +102,19 @@ bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std
 }
 
 
-bool CDiskTextureLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
+bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 {
-	CTextureEntry *pTextureEntry = dynamic_cast<CTextureEntry *>(pDestEntry);
-	if( !pTextureEntry )
+	shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
+	if( !pEntry )
+		return false;
+
+	shared_ptr<CTextureResource> pTexture = pEntry->GetTextureResource();
+
+	if( !pTexture )
 		return false;
 
 	CLockedTexture locked_texture;
-	bool retrieved = pTextureEntry->GetLockedTexture( locked_texture );
+	bool retrieved = pTexture->GetLockedTexture( locked_texture );
 	if( retrieved )
 	{
 		FillTexture( locked_texture );
@@ -86,6 +122,46 @@ bool CDiskTextureLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
 	}
 	else
 		return false;
+}
+
+
+void CDiskTextureLoader::FillResourceDesc()
+{
+	m_TextureDesc.Width  = m_Image.GetWidth();
+	m_TextureDesc.Height = m_Image.GetHeight();
+
+	m_TextureDesc.Format = TextureFormat::A8R8G8B8;
+}
+
+
+bool CDiskTextureLoader::AcquireResource()
+{
+	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+
+	if( !pHolder )
+		return false;
+
+	shared_ptr<CGraphicsResource> pResource = GraphicsResourceCacheManager().GetCachedResource( m_TextureDesc );
+
+	if( pResource )
+	{
+		// set texture resource to entry (holder)
+		pHolder->SetResource( pResource );
+
+		return true;
+	}
+	else
+	{
+		// create resource instance from desc
+		// - Actual resource creation is not done in this call
+		pResource = GraphicsResourceFactory().CreateGraphicsResource( m_TextureDesc );
+
+		pHolder->SetResource( pResource );
+
+		// desc has been set to the resource object
+		//  - create the actual resource from the desc
+		return pResource->Create();
+	}
 }
 
 
@@ -112,9 +188,10 @@ void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
 // CMeshLoader
 //===================================================================================
 
-CMeshLoader::CMeshLoader( boost::weak_ptr<CMeshObjectEntry> pMeshEntry )
+CMeshLoader::CMeshLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CMeshResourceDesc& desc )
 :
-m_pMeshEntry(pMeshEntry)
+CGraphicsResourceLoader(pEntry),
+m_MeshDesc(desc)
 {
 	m_pArchive = boost::shared_ptr<C3DMeshModelArchive>( new C3DMeshModelArchive() );
 }
@@ -135,22 +212,48 @@ bool CMeshLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::strin
 }
 
 
-bool CMeshLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
+bool CMeshLoader::CopyLoadedContentToGraphicsResource()
 {
-	CMeshObjectEntry *pMeshEntry = dynamic_cast<CMeshObjectEntry *>(pDestEntry);
+	if( !GetResourceEntry() )
+		return false;
+/*
+	CMeshResource *pMesh = GetResourceEntry()->GetMeshResource();
 	if( !pMeshEntry )
 		return false;
 
 	CD3DXMeshObjectBase *pMesh = pMeshEntry->GetMeshObject();
 	if( !pMesh )
 		return false;
-
+*/
 	// copy vertices to VB / IB?
 
 //	pMesh->
 
 
 	return true;
+}
+
+
+void CMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
+{
+	shared_ptr<CD3DXMeshLoaderBase> apLoader[3];
+	apLoader[0] = shared_ptr<CD3DXMeshVerticesLoader>( new CD3DXMeshVerticesLoader(GetResourceEntry()) );
+	apLoader[1] = shared_ptr<CD3DXMeshIndicesLoader>( new CD3DXMeshIndicesLoader(GetResourceEntry()) );
+	apLoader[2] = shared_ptr<CD3DXMeshAttributeTableLoader>( new CD3DXMeshAttributeTableLoader(GetResourceEntry()) );
+
+	for( int i=0; i<3; i++ )
+	{
+		apLoader[i]->m_pArchive   = m_pArchive;
+//		apLoader[i]->m_pMeshEntry = m_pMeshEntry;
+		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
+		AsyncResourceLoader().AddResourceLoadRequest( req );
+	}
+}
+
+
+void CMeshLoader::FillResourceDesc()
+{
+	LOG_PRINT_ERROR( "Not implemented." );
 }
 
 
@@ -177,7 +280,7 @@ bool CD3DXMeshVerticesLoader::Unlock()
 }
 
 
-bool CD3DXMeshVerticesLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
+bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
 {
 	if( m_pLockedVertexBuffer )
 		memcpy( m_pLockedVertexBuffer, m_pVertexBufferContent, GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
@@ -210,7 +313,7 @@ bool CD3DXMeshIndicesLoader::Unlock()
 }
 
 
-bool CD3DXMeshIndicesLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
+bool CD3DXMeshIndicesLoader::CopyLoadedContentToGraphicsResource()
 {
 	if( m_pLockedIndexBuffer )
 		memcpy( m_pLockedIndexBuffer, m_pIndexBufferContent, m_IndexBufferSize );
@@ -238,7 +341,7 @@ bool CD3DXMeshAttributeTableLoader::Unlock()
 }
 
 
-bool CD3DXMeshAttributeTableLoader::CopyTo( CGraphicsResourceEntry *pDestEntry )
+bool CD3DXMeshAttributeTableLoader::CopyLoadedContentToGraphicsResource()
 {
 	if( !m_pLockedAttributeBuffer )
 		return false;

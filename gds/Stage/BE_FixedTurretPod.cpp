@@ -123,7 +123,7 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 //	Vector3 vUp = rWorldPose.matOrient.GetColumn(1);
 
 	DrawMeshObject( rWorldPose,
-		m_aMesh[MESH_POD].m_MeshObjectHandle.GetMeshObject(),
+		m_aMesh[MESH_POD].m_MeshObjectHandle.GetMesh().get(),
 		m_MeshProperty.m_vecTargetMaterialIndex,
 		m_MeshProperty.m_ShaderTechnique );
 
@@ -143,7 +143,7 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 //	matWorld._31 =   vDir.x; matWorld._32 =   vDir.y; matWorld._33 =   vDir.z; matWorld._34 = 0;
 
 	DrawMeshObject( world_pose,
-		m_aMesh[MESH_TURNTABLE].m_MeshObjectHandle.GetMeshObject(),
+		m_aMesh[MESH_TURNTABLE].m_MeshObjectHandle.GetMesh().get(),
 		m_MeshProperty.m_vecTargetMaterialIndex,
 		m_MeshProperty.m_ShaderTechnique );
 

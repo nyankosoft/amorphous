@@ -347,11 +347,11 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	m_MeshProperty.m_MeshObjectHandle = mesh_container.m_MeshObjectHandle;
 //	m_MeshProperty.m_SpecTex.filename	= pAircraft->GetMeshObjectHolder().m_SpecTex.filename;
 
-	if( m_MeshProperty.m_MeshObjectHandle.GetMeshObject()
+	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
 	{
 		m_pAircraft->ResetMeshController();
-		m_pAircraft->InitMeshController( dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMeshObject()) );
+		m_pAircraft->InitMeshController( dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get()) );
 	}
 
 	// need to call ValidateShaderTechniqueTable()

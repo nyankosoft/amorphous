@@ -11,31 +11,17 @@ using namespace std;
 const CShaderHandle CShaderHandle::ms_NullHandle;
 
 
-void CShaderHandle::IncResourceRefCount()
-{
-	if( 0 <= m_EntryID )
-		GraphicsResourceManager().GetShaderEntry(m_EntryID).IncRefCount();
-}
-
-
-void CShaderHandle::DecResourceRefCount()
-{
-	if( 0 <= m_EntryID )
-		GraphicsResourceManager().GetShaderEntry(m_EntryID).DecRefCount();
-}
-
-
 bool CShaderHandle::Load( const CShaderResourceDesc& desc )
 {
 	Release();
 
 	// TODO: support asynchronous loading
-	m_EntryID = GraphicsResourceManager().LoadShaderManager( desc.ResourcePath );
+	m_pResourceEntry = GraphicsResourceManager().LoadShaderManager( desc.ResourcePath );
 
-	if( m_EntryID == -1 )
-		return false;	// the loading failed - this is mostly because the texture file was not found
+	if( m_pResourceEntry )
+		return true;	// the resource has been successfully loaded
 	else
-		return true;	// the texture has been successfully loaded
+		return false;	// the loading failed - this is mostly because the texture file was not found
 }
 
 
@@ -49,5 +35,11 @@ bool CShaderHandle::Load( const std::string& resource_path )
 
 CShaderManager *CShaderHandle::GetShaderManager()
 {
-	return GraphicsResourceManager().GetShaderManager( m_EntryID );
+	if( GetEntry()
+	 && GetEntry()->GetShaderResource() )
+	{
+		return GetEntry()->GetShaderResource()->GetShaderManager();
+	}
+	else
+		return NULL;
 }

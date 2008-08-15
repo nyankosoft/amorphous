@@ -69,7 +69,7 @@ void CD3DXMeshObjectBase::Release()
 }
 
 
-bool CD3DXMeshObjectBase::LoadFromFile( const std::string& filename )
+bool CD3DXMeshObjectBase::LoadFromFile( const std::string& filename, U32 opiton_flags )
 {
 	Release();
 
@@ -100,7 +100,7 @@ bool CD3DXMeshObjectBase::LoadFromFile( const std::string& filename )
 		if( !b )
 			return false;
 
-		loaded = LoadFromArchive( archive, filename );
+		loaded = LoadFromArchive( archive, filename, opiton_flags );
 	}
 
 //	if( loaded )
@@ -176,12 +176,16 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 		m_pMeshMaterials[i].Ambient.b = 0.25f;
 		m_pMeshMaterials[i].Ambient.a = 1.00f;
 
+		// texture(s)
+
+		const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();
+
+		m_vecMaterial[i].Texture.resize( num_textures );
+		m_vecMaterial[i].TextureDesc.resize( num_textures );
+
 		if( !(option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES) )
 		{
 			// load texture(s) now
-			const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();
-
-			m_vecMaterial[i].Texture.resize( num_textures );
 			for( size_t tex=0; tex<num_textures; tex++ )
 			{
 				tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
@@ -913,11 +917,13 @@ static CD3DXMeshObjectBase* CreateMeshInstance( CMeshType::Name mesh_type )
 }
 
 
-CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::string& filename, CMeshType::Name mesh_type )
+CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::string& filepath,
+																 U32 load_option_flags,
+																 CMeshType::Name mesh_type )
 {
 	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
 
-	bool loaded = pMesh->LoadFromFile( filename );
+	bool loaded = pMesh->LoadFromFile( filepath, load_option_flags );
 
 	if( loaded )
 		return pMesh;
@@ -931,11 +937,11 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::stri
 
 CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
+																    U32 load_option_flags,
 																	CMeshType::Name mesh_type )
 {
 	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
 
-	U32 load_option_flags = 0;
 	bool loaded = pMesh->LoadFromArchive( mesh_archive, filepath, load_option_flags );
 
 	if( loaded )

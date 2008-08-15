@@ -1,4 +1,5 @@
 #include "3DCommon/GraphicsResourceManager.h"
+#include "3DCommon/GraphicsResourceCacheManager.h"
 #include "3DCommon/GraphicsResourceHandle.h"
 #include "3DCommon/AsyncResourceLoader.h"
 #include "3DCommon/Direct3D9.h"
@@ -24,6 +25,9 @@ CSingleton<CGraphicsResourceManager> CGraphicsResourceManager::m_obj;
 CGraphicsResourceManager::CGraphicsResourceManager()
 {
 	m_AsyncLoadingAllowed = false;
+
+//	m_pCacheManager = shared_ptr<CGraphicsResourceCacheManager>( new CGraphicsResourceCacheManager() );
+
 }
 
 
@@ -35,39 +39,47 @@ CGraphicsResourceManager::~CGraphicsResourceManager()
 }
 
 
-//void CGraphicsResourceManager::Init()
-//{}
-
-
 void CGraphicsResourceManager::Release()
 {
 	ReleaseGraphicsResources();
 
-//	SafeDeleteVector( m_vecpResourceEntry );
+	m_vecpResourceEntry.resize( 0 );
 }
 
 
-/// Register the resource entry. Notify the entry of its own index in the array
-template<class T>
-size_t CGraphicsResourceManager::AddEntryToVacantSlot( T ptr, vector<T>& vecPtr )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResourceEntry()
 {
+	shared_ptr<CGraphicsResourceEntry> pResourceEntry
+		= shared_ptr<CGraphicsResourceEntry>( new CGraphicsResourceEntry() );
+
+	// set the state to reserved
+	pResourceEntry->m_State = CGraphicsResourceEntry::STATE_RESERVED;
+
+	// add a created entry to a vacant slot
+
+//	AddEntryToVacantSlot( pEntry, m_vecpResourceEntry );
+
 	size_t index = 0;
-	for( size_t i=0; i<vecPtr.size(); i++ )
+	const size_t num_entries = m_vecpResourceEntry.size();
+	for( size_t i=0; i<num_entries; i++ )
 	{
-		if( !vecPtr[i] )
+		if( !m_vecpResourceEntry[i]
+		 || m_vecpResourceEntry[i]->GetState() == CGraphicsResourceEntry::STATE_RELEASED )
 		{
 			index = i;
-			ptr->SetIndex( (int)index );
-			vecPtr[i] = ptr;
-			return index;
+//			pResourceEntry->SetIndex( (int)index );
+			m_vecpResourceEntry[i] = pResourceEntry;
+//			return index;
 		}
 	}
 
 	// create a new element
-	index = vecPtr.size();
-	ptr->SetIndex( (int)index );
-	vecPtr.push_back( ptr );
-	return index;
+	index = m_vecpResourceEntry.size();
+//	pResourceEntry->SetIndex( (int)index );
+	m_vecpResourceEntry.push_back( pResourceEntry );
+//	return index;
+
+	return pResourceEntry;
 }
 
 
@@ -89,55 +101,6 @@ size_t add_weak_ptr_to_vacant_slot( weak_ptr<T> ptr, vector<weak_ptr<T>>& vecPtr
 }
 
 
-/// Created resource entry has its own index
-shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResourceEntry( const CGraphicsResourceDesc& desc )
-{
-	shared_ptr<CGraphicsResourceEntry> pEntry;
-	switch( desc.GetResourceType() )
-	{
-	case GraphicsResourceType::Texture:
-		{
-			shared_ptr<CTextureEntry> ptr
-				= shared_ptr<CTextureEntry>( new CTextureEntry(dynamic_cast<const CTextureResourceDesc *>(&desc)) );
-
-			AddEntryToVacantSlot( ptr, m_vecpTextureEntry );
-			pEntry = ptr;
-		}
-		break;
-
-	case GraphicsResourceType::Mesh:
-		{
-			shared_ptr<CMeshObjectEntry> ptr
-				= shared_ptr<CMeshObjectEntry>( new CMeshObjectEntry(dynamic_cast<const CMeshResourceDesc *>(&desc)) );
-
-			AddEntryToVacantSlot( ptr, m_vecpMeshEntry );
-			pEntry = ptr;
-		}
-		break;
-
-	case GraphicsResourceType::Shader:
-		{
-			shared_ptr<CShaderManagerEntry> ptr
-				= shared_ptr<CShaderManagerEntry>( new CShaderManagerEntry(dynamic_cast<const CShaderResourceDesc *>(&desc)) );
-
-			AddEntryToVacantSlot( ptr, m_vecpShaderEntry );
-			pEntry = ptr;
-		}
-		break;
-
-	default:
-		LOG_PRINT_WARNING( " - invalid resource type" );
-		return shared_ptr<CGraphicsResourceEntry>();
-	}
-
-	// register the created entry to the ptr array that holds all the resource entries
-	weak_ptr<CGraphicsResourceEntry> pWeakPtr = pEntry;
-	add_weak_ptr_to_vacant_slot( pWeakPtr, m_vecpResourceEntry );
-
-	return pEntry;
-}
-
-
 template<class T>
 inline int share_as_same_resource( const CGraphicsResourceDesc& desc, const std::vector<boost::shared_ptr<T>>& vecPtr )
 {
@@ -146,7 +109,9 @@ inline int share_as_same_resource( const CGraphicsResourceDesc& desc, const std:
 	{
 		// check if the requested can be shared with one already registered to the graphics resource manager
 		if( vecPtr[i]
-		 && vecPtr[i]->CanBeSharedAsSameResource( desc ) )
+		 && vecPtr[i]->GetState() == CGraphicsResourceEntry::STATE_RESERVED // still alive
+		 && vecPtr[i]->GetResource()
+		 && vecPtr[i]->GetResource()->CanBeSharedAsSameResource( desc ) )
 		{
 			// requested resource was found in the list
 			// - no need to add a new resource.
@@ -162,33 +127,39 @@ inline int share_as_same_resource( const CGraphicsResourceDesc& desc, const std:
 
 bool CGraphicsResourceManager::ReleaseResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> ptr )
 {
-	const int index = ptr->GetIndex();
-	switch(ptr->GetResourceType())
-	{
-	case GraphicsResourceType::Texture: m_vecpTextureEntry[index].reset(); return true;
-	case GraphicsResourceType::Mesh:    m_vecpMeshEntry[index].reset();    return true;
-	case GraphicsResourceType::Shader:  m_vecpShaderEntry[index].reset();  return true;
-	default:
-		return false;
-	}
+	if( ptr->GetResource() )
+		ptr->GetResource()->ReleaseNonChachedResource();
 
-	return false;
+	return true;
+
+/*	const int index = ptr->GetIndex();
+
+	if( 0 <= index )
+	{
+		m_vecpResourceEntry[index].reset();
+		return true;
+	}
+	else
+	{
+		return false;
+	}*/
 }
 
 
-shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoader( shared_ptr<CGraphicsResourceEntry> pEntry )
+shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoader( shared_ptr<CGraphicsResourceEntry> pEntry,
+																				    const CGraphicsResourceDesc& desc )
 {
 	boost::shared_ptr<CGraphicsResourceLoader> pLoader;
-	switch(pEntry->GetResourceType())
+	switch(desc.GetResourceType())
 	{
 	case GraphicsResourceType::Texture:
-		pLoader = shared_ptr<CGraphicsResourceLoader>( new CDiskTextureLoader(m_vecpTextureEntry[pEntry->GetIndex()]) );
+		pLoader = shared_ptr<CGraphicsResourceLoader>( new CDiskTextureLoader(pEntry,*dynamic_cast<const CTextureResourceDesc *>(&desc)) );
 		break;
 	case GraphicsResourceType::Mesh:
-		pLoader = shared_ptr<CGraphicsResourceLoader>( new CMeshLoader(m_vecpMeshEntry[pEntry->GetIndex()]) );
+		pLoader = shared_ptr<CGraphicsResourceLoader>( new CMeshLoader(pEntry,*dynamic_cast<const CMeshResourceDesc *>(&desc)) );
 		break;
 //	case GraphicsResourceType::Shader:
-//		pLoader = shared_ptr<CGraphicsResourceLoader>( new CDiskTextureLoader(m_vecpShaderEntry[pEntry->GetIndex()]) );
+//		pLoader = shared_ptr<CGraphicsResourceLoader>( new CShaderLoader(pEntry,) );
 	default:
 		return pLoader;
 	}
@@ -210,7 +181,7 @@ int CGraphicsResourceManager::FindSameLoadedResource( const CGraphicsResourceDes
 //    true -> see if it is sharable
 //      true -> share the resource.
 //    false (not found) -> send load request
-int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 {
 	if( desc.IsDiskResource() )
 	{
@@ -221,233 +192,207 @@ int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 			int shared_resource_index = FindSameLoadedResource( desc );
 			if( 0 <= shared_resource_index )
 			{
-				return shared_resource_index;
+				return shared_ptr<CGraphicsResourceEntry>();
+//				return shared_resource_index;
 			}
 		}
 	}
 	else
 	{
 		// non-disc resources are not sharable
-		return -1;
+		return shared_ptr<CGraphicsResourceEntry>();
 	}
 
 	// create a new empty resource entry to determine the resource index now.
 	// - reserves an entry index before loading the resource
-	// - graphics resource handle needs resource index
+	// - rationale: graphics resource handle needs resource index
 
-	boost::shared_ptr<CGraphicsResourceEntry> pEntry = CreateGraphicsResourceEntry( desc );
+	shared_ptr<CGraphicsResourceEntry> pEntry = CreateGraphicsResourceEntry();
+
 	if( pEntry )
 	{
-		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, pEntry );
-		req.m_pLoader = CreateResourceLoader(pEntry);
+		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
 		AsyncResourceLoader().AddResourceLoadRequest( req );
 
 //		pEntry->IncRefCount();
 
-		return pEntry->GetIndex();
+		return pEntry;
 	}
 	else
-		return -1;
+		return shared_ptr<CGraphicsResourceEntry>();
 }
 
 
-//void CGraphicsResourceManager::CreateAt( const CGraphicsResourceDesc& desc, int dest_index );
-boost::shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateAt( const CGraphicsResourceDesc& desc, int dest_index )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc& desc )
 {
-	// 
-	boost::shared_ptr<CGraphicsResourceEntry> pEntry = shared_ptr<CGraphicsResourceEntry>();
-//		= GetCachedResource( desc );
-
-	if( !pEntry )
-	{
-		// ceate a new resource
-		pEntry = CreateGraphicsResourceEntry( desc );
-	}
-
-//	SetToSlot( dest_index, pEntry );
-	switch(desc.GetResourceType())
-	{
-	case GraphicsResourceType::Texture: m_vecpTextureEntry[dest_index] = dynamic_pointer_cast<CTextureEntry,CGraphicsResourceEntry>(pEntry); break;
-	case GraphicsResourceType::Mesh:    m_vecpMeshEntry[dest_index]    = dynamic_pointer_cast<CMeshObjectEntry,CGraphicsResourceEntry>(pEntry); break;
-	case GraphicsResourceType::Shader:  m_vecpShaderEntry[dest_index]  = dynamic_pointer_cast<CShaderManagerEntry,CGraphicsResourceEntry>(pEntry); break;
-	default:
-		break;
-	}
-
-	if( !pEntry )
-	{
-		// cannot create a resource entry
-	}
-
-	// register the created entry to the ptr array that holds all the resource entries
-	weak_ptr<CGraphicsResourceEntry> pWeakPtr = pEntry;
-	add_weak_ptr_to_vacant_slot( pWeakPtr, m_vecpResourceEntry );
-
-	// lock the resource
-//	pEntry->Lock();
-
-	return pEntry;
-}
-
-
-int CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc& desc )
-{
-//    boost::mutex::scoped_lock scoped_lock(m_IOMutex);
-
 	LOG_FUNCTION_SCOPE();
 
 	if( desc.ResourcePath.length() == 0 )
-		return -1;	// invalid filename
+		return shared_ptr<CGraphicsResourceEntry>();	// invalid filename
 
 	// search if a same resource has been already loaded or is being loaded
 	int shared_index = -1;
-	switch(desc.GetResourceType())
-	{
-	case GraphicsResourceType::Texture:
-		shared_index = share_as_same_resource( desc, m_vecpTextureEntry );
-		break;
-	case GraphicsResourceType::Mesh:
-		shared_index = share_as_same_resource( desc, m_vecpMeshEntry );
-		break;
-	case GraphicsResourceType::Shader:
-		shared_index = share_as_same_resource( desc, m_vecpShaderEntry );
-		break;
-	default:
-		break;
-	}
+	shared_index = share_as_same_resource( desc, m_vecpResourceEntry );
 
 	// found a resource to share
 	// just return the index to the entry
 	if( 0 <= shared_index )
-		return shared_index;
+		return m_vecpResourceEntry[shared_index];
 
 	// not found in the list - need to load as a new resource
-	shared_ptr<CGraphicsResourceEntry> pResourceEntry = CreateGraphicsResourceEntry(desc);
+
+	// create an empty entry
+	shared_ptr<CGraphicsResourceEntry> pResourceEntry = CreateGraphicsResourceEntry();
 
 	if( !pResourceEntry )
-		return -1;
+		return shared_ptr<CGraphicsResourceEntry>();
 
-	pResourceEntry->SetFilename( desc.ResourcePath );
+	shared_ptr<CGraphicsResource> pResource = GraphicsResourceFactory().CreateGraphicsResource( desc );
 
-	// load 
+	if( !pResource )
+		return shared_ptr<CGraphicsResourceEntry>();
 
-	// increment the reference count
-	// - load the resource because the entry is new (increment the resource id from 0 to 1).
-	pResourceEntry->IncRefCount();
+	pResourceEntry->SetResource( pResource );
 
-	if( pResourceEntry->GetRefCount() == 1 )
+//	pResourceEntry->SetFilename( desc.ResourcePath );
+
+	// load
+
+	bool loaded = pResource->Load();
+
+	if( loaded )
 	{
+		// increment the reference count
+		// - This is always an increment from 0 to 1
+		pResourceEntry->IncRefCount();
+
 		LOG_PRINT( " - Created a graphics resource: " + desc.ResourcePath );
 
 		// A resource has been successfully loaded
-		return pResourceEntry->GetIndex();
-		//return (int)i;
+		return pResourceEntry;
 	}
 	else
 	{
 		LOG_PRINT_WARNING( "Failed to create a graphics resource: " + desc.ResourcePath );
 
 		ReleaseResourceEntry( pResourceEntry );
-		return -1;	// failed to create a resource
+		return shared_ptr<CGraphicsResourceEntry>();	// failed to create a resource
 	}
 }
 
 
 /// called from handle
-int CGraphicsResourceManager::LoadTexture( const CTextureResourceDesc& desc )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadTexture( const CTextureResourceDesc& desc )
 {
 	return LoadGraphicsResource( desc );
 }
 
 
-int CGraphicsResourceManager::CreateTexture( const CTextureResourceDesc& desc )
-{
-	return LoadGraphicsResource( desc );
-}
-
-
-/// called from handle
-int CGraphicsResourceManager::LoadMesh( const CMeshResourceDesc& desc )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateTexture( const CTextureResourceDesc& desc )
 {
 	return LoadGraphicsResource( desc );
 }
 
 
 /// called from handle
-int CGraphicsResourceManager::LoadShaderManager( std::string filename )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadMesh( const CMeshResourceDesc& desc )
+{
+	return LoadGraphicsResource( desc );
+}
+
+
+/// called from handle
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadShaderManager( std::string filename )
 {
 	CShaderResourceDesc desc;
 	desc.ResourcePath = filename;
 	return LoadGraphicsResource( desc );
 }
 
-/*
-void CGraphicsResourceManager::IncResourceRefCount( const CGraphicsResourceHandle& handle )
-{
-	const int index = handle.m_EntryID;
-	if( index < 0 )
-		return;
-
-	switch( handle.GetResourceType() )
-	{
-	case GraphicsResourceType::Texture: if( index < (int)m_vecpTextureEntry.size() ) m_vecpTextureEntry[index]->IncRefCount(); return;
-	case GraphicsResourceType::Mesh:    if( index < (int)m_vecpMeshEntry.size() )    m_vecpMeshEntry[index]->IncRefCount();    return;
-	case GraphicsResourceType::Shader:  if( index < (int)m_vecpShaderEntry.size() )  m_vecpShaderEntry[index]->IncRefCount();  return;
-	}
-}
-
-
-void CGraphicsResourceManager::DecResourceRefCount( const CGraphicsResourceHandle& handle )
-{
-	const int index = handle.m_EntryID;
-	if( index < 0 )
-		return;
-
-	switch( handle.GetResourceType() )
-	{
-	case GraphicsResourceType::Texture: if( index < (int)m_vecpTextureEntry.size() ) m_vecpTextureEntry[index]->DecRefCount(); return;
-	case GraphicsResourceType::Mesh:    if( index < (int)m_vecpMeshEntry.size() )    m_vecpMeshEntry[index]->DecRefCount();    return;
-	case GraphicsResourceType::Shader:  if( index < (int)m_vecpShaderEntry.size() )  m_vecpShaderEntry[index]->DecRefCount();  return;
-	}
-}
-*/
 
 void CGraphicsResourceManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
+	LOG_FUNCTION_SCOPE();
+
+	// load the resources
+	// - Note that reference count is not changed
 	size_t i, num_entries = m_vecpResourceEntry.size();
 	for( i=0; i<num_entries; i++ )
 	{
-		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i].lock();
-		if( pEntry )
-			pEntry->Load();
+		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i];
+		if( pEntry
+		 && pEntry->GetResource()
+		 && !pEntry->GetResource()->IsCachedResource() ) // Do not load cached resources because it's a job of CGraphicsResourceCacheManager
+		{
+			pEntry->GetResource()->Load();
+		}
 	}
 }
 
+
+void CGraphicsResourceManager::AddCache( CGraphicsResourceDesc& desc )
+{
+	if( m_pCacheManager )
+		m_pCacheManager->AddCache( desc );
+}
 
 void CGraphicsResourceManager::ReleaseGraphicsResources()
 {
 //	g_Log.Print( "CGraphicsResourceManager::ReleaseGraphicsResources()" );
 
+	// load the resources
+	// - Note that reference count is not changed
 	size_t i, num_entries = m_vecpResourceEntry.size();
 	for( i=0; i<num_entries; i++ )
 	{
-		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i].lock();
-		if( pEntry )
-			pEntry->Release();
+		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i];
+		if( pEntry
+		 && pEntry->GetResource() )
+		{
+			pEntry->GetResource()->ReleaseNonChachedResource(); // Do not release cached resources
+		}
 	}
 }
 
 
 void CGraphicsResourceManager::Refresh()
 {
+	LOG_FUNCTION_SCOPE();
+
 	size_t i, num_entries = m_vecpResourceEntry.size();
 	for( i=0; i<num_entries; i++ )
 	{
-		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i].lock();
-		if( pEntry )
-			pEntry->Refresh();
+		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i];
+		if( pEntry && pEntry->GetResource() )
+			pEntry->GetResource()->Refresh();
 	}
 }
+
+
+void CGraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, char *pDestBuffer )
+{
+	boost::mutex::scoped_lock scoped_lock(m_ResourceLock);
+
+	size_t i, num_entries = m_vecpResourceEntry.size();
+	char buffer[1024];
+	sprintf( pDestBuffer, "%d resources in total\n", num_entries );
+	strcat(  pDestBuffer, "----------------------------------------------------------\n" );
+
+	for( i=0; i<num_entries; i++ )
+	{
+		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i];
+		if( pEntry )
+			pEntry->GetStatus( buffer );
+
+		strcat( pDestBuffer, buffer );
+		strcat( pDestBuffer, "\n" );
+	}
+}
+
+
+
+
+
 
 /*
 int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )

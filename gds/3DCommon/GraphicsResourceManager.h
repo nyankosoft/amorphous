@@ -16,10 +16,8 @@
 using namespace NS_KGL;
 
 
-//#define GraphicsResourceManager ( (*CGraphicsResourceManager::Get()) )
-
 /**
- * mamage graphics resources
+ * manage graphics resources
  * - save memory by sharing the same texture / mesh resources with reference counting.
  * - singleton class
  *   - must be released before the CGraphicsComponentCollector singleton is destroyed.
@@ -30,58 +28,51 @@ private:
 
 	bool m_AsyncLoadingAllowed;
 
-	std::vector<boost::weak_ptr<CGraphicsResourceEntry>> m_vecpResourceEntry;
+	boost::shared_ptr<CGraphicsResourceCacheManager> m_pCacheManager;
 
-	std::vector<boost::shared_ptr<CTextureEntry>>       m_vecpTextureEntry;
-	std::vector<boost::shared_ptr<CMeshObjectEntry>>    m_vecpMeshEntry;
-	std::vector<boost::shared_ptr<CShaderManagerEntry>> m_vecpShaderEntry;
+	std::vector<boost::shared_ptr<CGraphicsResourceEntry>> m_vecpResourceEntry;
+
+	boost::mutex m_ResourceLock;
 
 private:
 
-	inline LPDIRECT3DTEXTURE9 GetTexture( int iTextureEntryID );
-
-	inline CD3DXMeshObjectBase *GetMeshObject( int iMeshObjectEntryID );
-
-	inline CShaderManager *GetShaderManager( int iShaderEntryID );
+//	inline LPDIRECT3DTEXTURE9 GetTexture( int iTextureEntryID );
+//	inline CD3DXMeshObjectBase *GetMeshObject( int iMeshObjectEntryID );
+//	inline CShaderManager *GetShaderManager( int iShaderEntryID );
+//	boost::shared_ptr<CTextureEntry> GetTextureEntry( int id )      { return m_vecpTextureEntry[id]; }
+//	boost::shared_ptr<CMeshObjectEntry> GetMeshEntry( int id )      { return m_vecpMeshEntry[id]; }
+//	boost::shared_ptr<CShaderManagerEntry> GetShaderEntry( int id ) { return m_vecpShaderEntry[id]; }
 
 	/// Synchronously loads a graphics resource
-	int LoadGraphicsResource( const CGraphicsResourceDesc& desc );
-
-//	void IncResourceRefCount( const CGraphicsResourceHandle& handle );
-//	void DecResourceRefCount( const CGraphicsResourceHandle& handle );
-
-	CTextureEntry& GetTextureEntry( int id )      { return *(m_vecpTextureEntry[id].get()); }
-	CMeshObjectEntry& GetMeshEntry( int id )      { return *(m_vecpMeshEntry[id].get()); }
-	CShaderManagerEntry& GetShaderEntry( int id ) { return *(m_vecpShaderEntry[id].get()); }
+	boost::shared_ptr<CGraphicsResourceEntry> LoadGraphicsResource( const CGraphicsResourceDesc& desc );
 
 	/// creates and registers a graphics resources of the specified type
 	/// returns the shared ointer to the created and registered resource
-	boost::shared_ptr<CGraphicsResourceEntry> CreateGraphicsResourceEntry( const CGraphicsResourceDesc& desc );
+	boost::shared_ptr<CGraphicsResourceEntry> CreateGraphicsResourceEntry();
 
 	/// called from handle
-	int LoadTexture( const CTextureResourceDesc& desc );
+	boost::shared_ptr<CGraphicsResourceEntry> LoadTexture( const CTextureResourceDesc& desc );
 
-	int CreateTexture( const CTextureResourceDesc& desc );
-
-	/// called from handle
-	int LoadMesh( const CMeshResourceDesc& desc );
+	boost::shared_ptr<CGraphicsResourceEntry> CreateTexture( const CTextureResourceDesc& desc );
 
 	/// called from handle
-	int LoadShaderManager( std::string filename );
+	boost::shared_ptr<CGraphicsResourceEntry> LoadMesh( const CMeshResourceDesc& desc );
+
+	/// called from handle
+	boost::shared_ptr<CGraphicsResourceEntry> LoadShaderManager( std::string filename );
 
 	bool ReleaseResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> ptr );
 
-	boost::shared_ptr<CGraphicsResourceLoader> CreateResourceLoader( boost::shared_ptr<CGraphicsResourceEntry> pEntry );
+	boost::shared_ptr<CGraphicsResourceLoader> CreateResourceLoader(
+		boost::shared_ptr<CGraphicsResourceEntry> pEntry,
+		const CGraphicsResourceDesc& desc );
 
 	int FindSameLoadedResource( const CGraphicsResourceDesc& desc );
 
 	/// asynchronously loads a graphics resource
 	/// - sends load request and returns
 	/// - index to the entry is returned immediately
-	int LoadAsync( const CGraphicsResourceDesc& desc );
-
-	template<class T>
-	size_t AddEntryToVacantSlot( T ptr, vector<T>& vecPtr );
+	boost::shared_ptr<CGraphicsResourceEntry> LoadAsync( const CGraphicsResourceDesc& desc );
 
 protected:
 ///	CGraphicsResourceManager();		//singleton
@@ -111,48 +102,23 @@ public:
 
 	void AllowAsyncLoading( bool allow );
 
-	boost::shared_ptr<CGraphicsResourceEntry> CreateAt( const CGraphicsResourceDesc& desc, int dest_index );
-	
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
-	virtual void ReleaseGraphicsResources();
+//	boost::shared_ptr<CGraphicsResourceEntry> CreateAt( const CGraphicsResourceDesc& desc, int dest_index );
+
+	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void ReleaseGraphicsResources();
+
+	void AddCache( CGraphicsResourceDesc& desc );
+
+	void GetStatus( GraphicsResourceType::Name type, char *pDestBuffer );
 
 	friend class CGraphicsResourceHandle;
 	friend class CTextureHandle;
 	friend class CMeshObjectHandle;
 	friend class CShaderHandle;
-
-//	void Init();
 };
 
 
 //------------------------------- inline implementations -------------------------------
-
-inline LPDIRECT3DTEXTURE9 CGraphicsResourceManager::GetTexture( int iTextureEntryID )
-{
-	if( iTextureEntryID < 0 )
-		return NULL;	// invalid texture ID
-
-	return m_vecpTextureEntry[iTextureEntryID]->GetTexture();
-}
-
-
-inline CD3DXMeshObjectBase *CGraphicsResourceManager::GetMeshObject( int iMeshObjectEntryID )
-{
-	if( iMeshObjectEntryID < 0 )
-		return NULL;	// invalid texture ID
-
-	return m_vecpMeshEntry[iMeshObjectEntryID]->GetMeshObject();
-}
-
-
-inline CShaderManager *CGraphicsResourceManager::GetShaderManager( int iShaderEntryID )
-{
-	if( iShaderEntryID < 0 )
-		return NULL;	// invalid texture ID
-
-	return m_vecpShaderEntry[iShaderEntryID]->GetShaderManager();
-}
-
 
 inline CGraphicsResourceManager& GraphicsResourceManager()
 {
