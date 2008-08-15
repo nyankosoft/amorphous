@@ -70,7 +70,7 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 				const CMeshSubset& subset
 					= mesh_subset_tree.GetGeometryBuffer()[node.veciGeometryIndex[i]];
 
-				CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].Mesh.GetMeshObject();
+				CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
 
 				CShaderContainer& shader_container = rvecShaderContainer[subset.ShaderIndex];
 				CShaderManager &shader_mgr = *shader_container.m_ShaderHandle.GetShaderManager();// *(shader_container.m_pShaderManager.get());
