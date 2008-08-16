@@ -498,6 +498,7 @@ CTerrainMeshGenerator::~CTerrainMeshGenerator()
 
 bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 {
+	LOG_FUNCTION_SCOPE();
 /*
 #ifdef TEXTURE_SPLIT_TEST
 	string src_tex_filename = "test.bmp";
