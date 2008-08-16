@@ -69,7 +69,7 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResou
 			index = i;
 //			pResourceEntry->SetIndex( (int)index );
 			m_vecpResourceEntry[i] = pResourceEntry;
-//			return index;
+			return pResourceEntry;
 		}
 	}
 
