@@ -227,8 +227,11 @@ void CMMA_Material::Serialize( IArchive& ar, const unsigned int version )
 
 	if( version < 1 )
 		assert( !string( string(__FUNCTION__) + " : archive version outdated - no longer supported" ).c_str() );
-	
+
 	ar & vecTexture;
+
+	if( 3 <= version )
+		ar & fMinVertexDiffuseAlpha;
 }
 
 
@@ -236,6 +239,8 @@ void CMMA_Material::SetDefault()
 {
 	fSpecular = 0;
 	vecTexture.resize( 0 );
+
+	fMinVertexDiffuseAlpha = 1.0f;
 
 //	strSurfaceTexture = "";
 //	strNormalMapTexture = "";
@@ -381,7 +386,7 @@ void C3DMeshModelArchive::UpdateAABBs()
 	{
 		CMMA_TriangleSet& rTriSet = m_vecTriangleSet[i];
 		const vector<Vector3>& vecVertPosition = m_VertexSet.vecPosition;
-		const vector<unsigned int> index_buffer = m_vecVertexIndex;
+		const vector<unsigned int>& index_buffer = m_vecVertexIndex;
 
 		AABB3 aabb;
 		aabb.Nullify();
@@ -395,6 +400,34 @@ void C3DMeshModelArchive::UpdateAABBs()
 		rTriSet.m_AABB = aabb;
 
 		m_AABB.MergeAABB( aabb );
+	}
+}
+
+
+void C3DMeshModelArchive::UpdateMinimumVertexDiffuseAlpha()
+{
+	if( m_VertexSet.vecDiffuseColor.size() == 0 )
+		return; // the mesh vertices do not have diffuse colors
+
+	const vector<SFloatRGBAColor>& vecDiffuseColor = m_VertexSet.vecDiffuseColor;
+
+	float min_alpha = 1000.0f;
+	const size_t num_materials = m_vecMaterial.size();
+	for( size_t i=0; i<num_materials; i++ )
+	{
+		CMMA_TriangleSet& rTriSet = m_vecTriangleSet[i];
+
+		float alpha = min_alpha;
+		const size_t start_index = rTriSet.m_iStartIndex;
+		const size_t end_index   = rTriSet.m_iStartIndex + rTriSet.m_iNumTriangles * 3;
+		for( size_t j=start_index; j<end_index; j++ )
+		{
+			float alpha = vecDiffuseColor[ m_vecVertexIndex[j] ].fAlpha;
+			if( alpha < min_alpha )
+				min_alpha = alpha;
+		}
+
+		m_vecMaterial[i].fMinVertexDiffuseAlpha = alpha;
 	}
 }
 

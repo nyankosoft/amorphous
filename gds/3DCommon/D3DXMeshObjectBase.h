@@ -34,12 +34,8 @@ public:
 */
 class CD3DXMeshObjectBase
 {
-private:
-
-	std::vector<int> m_vecFullMaterialIndices;
-
-protected:
-
+public:
+	
 	class CMeshMaterial
 	{
 	public:
@@ -53,7 +49,15 @@ protected:
 		std::vector<CTextureHandle> Texture;
 
 		std::vector<CTextureResourceDesc> TextureDesc;
+
+		float fMinVertexDiffuseAlpha;
 	};
+
+private:
+
+	std::vector<int> m_vecFullMaterialIndices;
+
+protected:
 
 	std::string m_strFilename;
 
@@ -168,7 +172,7 @@ public:
 
 	inline const D3DMATERIAL9& GetD3DMaterial( int i ) const { return m_pMeshMaterials[i]; }
 
-	inline const CMeshMaterial GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
+	inline const CMeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
 
 	bool CreateVertexDeclaration();
 

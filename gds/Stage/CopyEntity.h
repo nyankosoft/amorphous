@@ -16,9 +16,6 @@
 class CJL_PhysicsActor;
 
 
-// all the copy entities are linked to either 'm_pEngagedEntity' list or 'm_pEmptyEntity' list
-//
-
 enum eEntityState
 {
 	CESTATE_ATREST						= (1 << 0),
@@ -31,24 +28,25 @@ enum eEntityState
 
 enum eEntityFlag
 {
-	BETYPE_PLAYER                      = (1 << 0),
+	BETYPE_PLAYER                      = (1 << 0), ///< The entity is the single player object in the stage
 	BETYPE_TERRESTRIAL                 = (1 << 1),
 	BETYPE_FLOATING                    = (1 << 2),
 	BETYPE_ENEMY                       = (1 << 3),
 	BETYPE_ITEM                        = (1 << 4),
 	BETYPE_RIGIDBODY                   = (1 << 5),
 	BETYPE_INDESTRUCTIBLE              = (1 << 6),
-	BETYPE_LIGHTING                    = (1 << 7),  ///< set to enable simple lighting for entities
+	BETYPE_LIGHTING                    = (1 << 7),  ///< Apply lighting to entity (rendering)
 	BETYPE_NOCLIP                      = (1 << 8),
 	BETYPE_NOCLIP_WITH_STATIC_GEOMETRY = (1 << 9),
-	BETYPE_GLARESOURCE                 = (1 << 10),
-	BETYPE_GLAREHINDER                 = (1 << 11),
-	BETYPE_USE_ZSORT                   = (1 << 12), ///< use z-sort for translucent entities (rendering)
-	BETYPE_VISIBLE                     = (1 << 13), ///< if turned on, the entity is rendered by Draw() method of its base entity
-	BETYPE_USE_PHYSSIM_RESULTS         = (1 << 14), ///< if turned on, the entity pose & velocity is determined by physics simulator
-	BETYPE_ENVMAPTARGET                = (1 << 15),
-	BETYPE_SHADOW_CASTER               = (1 << 16), ///< turned on if the entity casts shadows to other entities
-	BETYPE_SHADOW_RECEIVER             = (1 << 17), ///< turned on if the entity receives shadows cast by other entities  others
+	BETYPE_GLARESOURCE                 = (1 << 10), ///< Deprecated
+	BETYPE_GLAREHINDER                 = (1 << 11), ///< Deprecated
+	BETYPE_USE_ZSORT                   = (1 << 12), ///< Use z-sort for tranparent entities (rendering)
+	BETYPE_SUPPORT_TRANSPARENT_PARTS   = (1 << 13), ///< Create separate entities to z-sort transparent parts of an entity (rendering)
+	BETYPE_VISIBLE                     = (1 << 14), ///< The entity is rendered by Draw() method of its base entity (rendering)
+	BETYPE_USE_PHYSSIM_RESULTS         = (1 << 15), ///< The entity pose & velocity is determined by physics simulator (physics)
+	BETYPE_ENVMAPTARGET                = (1 << 16),
+	BETYPE_SHADOW_CASTER               = (1 << 17), ///< If the entity casts shadows to other entities
+	BETYPE_SHADOW_RECEIVER             = (1 << 18), ///< If the entity receives shadows cast by other entities  others
 };
 
 /*

@@ -146,6 +146,9 @@ void C3DMeshModelBuilder::CreateMeshArchive()
 	// update bounding boxes for triangle sets
 	m_MeshModelArchive.UpdateAABBs();
 
+	// calculate the minimum vertex alpha for each material
+	m_MeshModelArchive.UpdateMinimumVertexDiffuseAlpha();
+
 	// modify the output texture filenames according to 'm_TextureFilenameOption'
 	ProcessTextureFilenames();
 }

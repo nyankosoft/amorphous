@@ -222,27 +222,44 @@ void CBaseEntity::Init3DModel()
 void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 {
 	// test with the plane model in the aircraft select menu
-//	if( CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh() )
-//	{
-//		if( 2 <= pMesh->GetNumMaterials() &&
-		if( GetNameString() == "model_display"
-		 && pCopyEnt->pParent == NULL )
+	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+	if( !pMesh )
+		return;
+
+	// Got a valid mesh.
+	// Create alpha entities for mesh materials that have transparency
+	const float error_for_alpha = 0.0001f;
+	const int num_materials = pMesh->GetNumMaterials();
+	vector<int> opaque_materials; // non-transparent materials 
+	for( int i=0; i<num_materials; i++ )
+	{
+		const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial( i );
+
+		if( 1.0f - error_for_alpha < mat.fMinVertexDiffuseAlpha )
 		{
+			opaque_materials.push_back( i );
+		}
+		else
+		{
+//			if( GetNameString() == "model_display"
+//			 && pCopyEnt->pParent == NULL )
+//			{
+
 			CBaseEntityHandle base_entity( this->GetNameString().c_str() );
 			CCopyEntityDesc desc;
-			desc.TypeID = CCopyEntityTypeID::ALPHA_ENTITY;
+			desc.TypeID            = CCopyEntityTypeID::ALPHA_ENTITY;
 			desc.pBaseEntityHandle = &base_entity;
-			desc.WorldPose = pCopyEnt->GetWorldPose();
-			desc.pParent = pCopyEnt;
+			desc.WorldPose         = pCopyEnt->GetWorldPose();
+			desc.pParent           = pCopyEnt;
 //			desc.NoCollision( true );
 
 			CAlphaEntity *pEntity = dynamic_cast<CAlphaEntity *>(m_pStage->CreateEntity( desc ));
 			if( pEntity )
-				pEntity->SetAlphaMaterialIndex( 0 );
-
-			m_MeshProperty.m_vecTargetMaterialIndex.push_back( 1 );
+				pEntity->SetAlphaMaterialIndex( i );
 		}
-//	}
+	}
+
+	m_MeshProperty.m_vecTargetMaterialIndex = opaque_materials;
 }
 
 
@@ -991,11 +1008,13 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 				else if( flag_str == "GLARESOURCE" )                 m_EntityFlag |= BETYPE_GLARESOURCE;
 				else if( flag_str == "GLAREHINDER" )                 m_EntityFlag |= BETYPE_GLAREHINDER;
 				else if( flag_str == "USE_ZSORT" )                   m_EntityFlag |= BETYPE_USE_ZSORT;
+				else if( flag_str == "SUPPORT_TRANSPARENT_PARTS" )   m_EntityFlag |= BETYPE_SUPPORT_TRANSPARENT_PARTS;
 //				else if( flag_str == "VISIBLE" )                     m_EntityFlag |= BETYPE_VISIBLE;
 				else if( flag_str == "USE_PHYSSIM_RESULTS" )         m_EntityFlag |= BETYPE_USE_PHYSSIM_RESULTS;
 				else if( flag_str == "ENVMAPTARGET" )                m_EntityFlag |= BETYPE_ENVMAPTARGET;
 				else if( flag_str == "SHADOW_CASTER" )               m_EntityFlag |= BETYPE_SHADOW_CASTER;
 				else if( flag_str == "SHADOW_RECEIVER" )             m_EntityFlag |= BETYPE_SHADOW_RECEIVER;
+				// Create entites to sort transparant alpha
 			}
 		}
 

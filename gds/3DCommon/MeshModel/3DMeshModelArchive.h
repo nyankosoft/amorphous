@@ -4,7 +4,6 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
 #include "3DMath/Vector3.h"
 #include "3DCommon/fwd.h"
@@ -92,20 +91,20 @@ public:
 
 	unsigned int m_VertexFormatFlag;
 
-	vector<Vector3> vecPosition;
+	std::vector<Vector3> vecPosition;
 
-	vector<Vector3> vecNormal;
+	std::vector<Vector3> vecNormal;
 
-	vector<Vector3> vecBinormal;
-	vector<Vector3> vecTangent;
+	std::vector<Vector3> vecBinormal;
+	std::vector<Vector3> vecTangent;
 
-	vector<SFloatRGBAColor> vecDiffuseColor;
+	std::vector<SFloatRGBAColor> vecDiffuseColor;
 
 	TCFixedVector< vector<TEXCOORD2>, 4 > vecTex;
 
-	vector< TCFixedVector<float,NUM_MAX_BLEND_MATRICES_PER_VERTEX> > vecfMatrixWeight;
+	std::vector< TCFixedVector<float,NUM_MAX_BLEND_MATRICES_PER_VERTEX> > vecfMatrixWeight;
 
-	vector< TCFixedVector<int,NUM_MAX_BLEND_MATRICES_PER_VERTEX> > veciMatrixIndex;
+	std::vector< TCFixedVector<int,NUM_MAX_BLEND_MATRICES_PER_VERTEX> > veciMatrixIndex;
 
 /*	TCFixedVector< vector<float>, 4 > vecfMatrixWeight;
 	TCFixedVector< vector <int>, 4 > veciMatrixIndex;
@@ -135,10 +134,10 @@ inline void CMMA_VertexSet::Addvertex( CGeneral3DVertex& src_vertex )
 // CMMA_TriangleSet
 //=========================================================================================
 
+/// store values for arguments in DrawIndexedPrimitive()
 class CMMA_TriangleSet : public IArchiveObjectBase
 {
 public:
-	/// store values for arguments in DrawIndexedPrimitive()
 
 	int m_iStartIndex;
 
@@ -155,6 +154,8 @@ public:
 
 	/// bounding box that contains the triangles in this triangle set
 	AABB3 m_AABB;
+
+public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
@@ -180,7 +181,7 @@ public:
 
 	unsigned int type;
 
-	string strFilename;
+	std::string strFilename;
 
 	C2DArray<S32BitColor> vecTexelData;
 	
@@ -213,7 +214,10 @@ public:
 //	SFloatRGBAColor Specular;
 //	SFloatRGBAColor Emissive;
 
-	vector<CMMA_Texture> vecTexture;
+	std::vector<CMMA_Texture> vecTexture;
+
+	/// minimum alpha value of diffuse colors of vertices that belong to the material
+	float fMinVertexDiffuseAlpha;
 
 //	CMMA_Texture SurfaceTexture;
 //	CMMA_Texture NormalMapTexture;
@@ -228,7 +232,7 @@ public:
 
 	// version 1: changed from SurfaceTexture & NormalMapTexture
 	// to vecTexture
-	virtual unsigned int GetVersion() const { return 2; }
+	virtual unsigned int GetVersion() const { return 3; }
 };
 
 
@@ -240,14 +244,14 @@ public:
 class CMMA_Bone : public IArchiveObjectBase
 {
 public:
-	string strName;
+	std::string strName;
 
 	Vector3 vLocalOffset;
 
 	/// transforms vertices from model space to local bone space
 	Matrix34 BoneTransform;
 
-	vector<CMMA_Bone> vecChild;
+	std::vector<CMMA_Bone> vecChild;
 
 	int GetNumBones_r() const;
 
@@ -275,12 +279,12 @@ class C3DMeshModelArchive : public IArchiveObjectBase
 	CMMA_VertexSet m_VertexSet;
 
 	/// indices to draw polygons as triangle lists
-	vector<unsigned int> m_vecVertexIndex;
+	std::vector<unsigned int> m_vecVertexIndex;
 
 	/// stores surface property
-	vector<CMMA_Material> m_vecMaterial;
+	std::vector<CMMA_Material> m_vecMaterial;
 
-	vector<CMMA_TriangleSet> m_vecTriangleSet;
+	std::vector<CMMA_TriangleSet> m_vecTriangleSet;
 
 	CMMA_Bone m_SkeletonRootBone;
 
@@ -294,13 +298,13 @@ public:
 
 	CMMA_VertexSet& GetVertexSet() { return m_VertexSet; }
 
-	vector<CMMA_TriangleSet>& GetTriangleSet() { return m_vecTriangleSet; }
+	std::vector<CMMA_TriangleSet>& GetTriangleSet() { return m_vecTriangleSet; }
 
 	unsigned int GetNumVertexIndices() const { return (unsigned int)m_vecVertexIndex.size(); }
 
-	vector<unsigned int>& GetVertexIndex() { return m_vecVertexIndex; }
+	std::vector<unsigned int>& GetVertexIndex() { return m_vecVertexIndex; }
 
-	vector<CMMA_Material>& GetMaterial() { return m_vecMaterial; }
+	std::vector<CMMA_Material>& GetMaterial() { return m_vecMaterial; }
 
 	CMMA_Bone& GetSkeletonRootBone() { return m_SkeletonRootBone; }
 
@@ -311,21 +315,23 @@ public:
 
 	void SetMaterial( unsigned int index, CMMA_Material& rMaterial );
 
-	/// calculates axis-aligned bounding boxes for each triangle set
-	void UpdateAABBs();
-
 	const AABB3& GetAABB() const { return m_AABB; }
 
 	void Scale( float factor );
+
+	/// calculates axis-aligned bounding boxes for each triangle set
+	void UpdateAABBs();
+
+	void UpdateMinimumVertexDiffuseAlpha();
+
+	void GeneratePointRepresentatives( vector<unsigned short>& rvecusPtRep);
+
+	void WriteToTextFile( const string& filename );
 
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual unsigned int GetVersion() const { return 2; }
-
-	void GeneratePointRepresentatives( vector<unsigned short>& rvecusPtRep);
-
-	void WriteToTextFile( const string& filename );
 
 	friend class C3DMeshModelBuilder;
 
