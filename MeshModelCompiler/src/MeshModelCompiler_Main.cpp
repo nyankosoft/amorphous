@@ -114,7 +114,7 @@ VOID Render()
 		if( FAILED(hr) )
 			int iFailed = 1;
 
-		CD3DXMeshObjectBase *pMesh = g_MeshObject.GetMeshObject();
+		CD3DXMeshObjectBase *pMesh = g_MeshObject.GetMesh().get();
 
 		// Rendering
 
@@ -261,13 +261,12 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR	 lpCmdLi
 		return 0;
 	}
 
-	int i = MessageBox( NULL, "review model file?", "Mesh Model compiled.", MB_OK );
+	int i = MessageBox( NULL, "Review model file?", "Mesh Model compiled.", MB_OK );
 
 
 	if( i == IDOK )
 	{
-		g_MeshObject.filename = acFilename;
-		g_MeshObject.Load();
+		g_MeshObject.Load( acFilename );
 	}
 	else
 		return 0;
