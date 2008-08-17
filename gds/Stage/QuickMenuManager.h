@@ -4,6 +4,8 @@
 #include <vector>
 using namespace std;
 
+#include <boost/shared_ptr.hpp>
+
 #include "GameInput/InputHandler.h"
 
 #include "Stage/PlayerInfo.h"
@@ -79,7 +81,7 @@ public:
 
 	inline int GetCurrentItemIndex() const { return m_iCurrentItem; }
 
-	inline CGameItem *GetCurrentItem();
+	inline boost::shared_ptr<CGameItem> GetCurrentItem();
 
 	inline void CursorUp();
 
@@ -206,7 +208,7 @@ inline void CQM_Menu::GetItemInfo( int item_index, char* pItemName, int& quantit
 	}
 	else
 	{
-		CGameItem *pItem = PLAYERINFO.GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] )[item_index];
+		boost::shared_ptr<CGameItem> pItem = PLAYERINFO.GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] )[item_index];
 
 		assert( strlen(pItem->GetName().c_str()) <= 32 );
 
@@ -216,26 +218,27 @@ inline void CQM_Menu::GetItemInfo( int item_index, char* pItemName, int& quantit
 }
 
 
-inline CGameItem *CQM_Menu::GetCurrentItem()
+inline boost::shared_ptr<CGameItem> CQM_Menu::GetCurrentItem()
 {
 	if( m_MenuType == QMENU_SUBMENU )
 	{
-		return NULL;
+		return boost::shared_ptr<CGameItem>();
 	}
 	else if( GetMenuType() == QMENU_WEAPON )
 	{
-		PLAYERINFO.GetWeaponSystem()->GetWeaponSlot( m_iCurrentItem ).pWeapon;
+		return boost::shared_ptr<CGameItem>();
+//		PLAYERINFO.GetWeaponSystem()->GetWeaponSlot( m_iCurrentItem ).pWeapon;
 	}
 	else
 	{
-		vector<CGameItem *>& rvecpItemList = PLAYERINFO.GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
+		vector<boost::shared_ptr<CGameItem>>& rvecpItemList = PLAYERINFO.GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
 		if( m_iCurrentItem < (int)rvecpItemList.size() )	// check if the item index is valid
 			return rvecpItemList[m_iCurrentItem];
 		else
-			return NULL;
+			return boost::shared_ptr<CGameItem>();
 	}
 
-	return NULL;
+	return boost::shared_ptr<CGameItem>();
 }
 
 

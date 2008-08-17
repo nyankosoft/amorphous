@@ -1,4 +1,3 @@
-
 #include "PlayerInfo.h"
 
 #include "GameInput/InputHub.h"
@@ -15,17 +14,19 @@
 
 #include "Support/memory_helpers.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/Serialization/Serialization_BoostSmartPtr.h"
 
 #include "BE_Player.h"
 
 using namespace std;
+using namespace boost;
 
 
 // definition of the singleton instance
-CPlayerInfo CPlayerInfo::ms_SingletonInstance_;
+CSingleton<CSinglePlayerInfo> CSinglePlayerInfo::m_obj;
 
 
-CPlayerInfo::CPlayerInfo()
+CSinglePlayerInfo::CSinglePlayerInfo()
 : 
 m_pHUD(NULL)
 {
@@ -47,23 +48,23 @@ m_pHUD(NULL)
 }
 
 
-CPlayerInfo::~CPlayerInfo()
+CSinglePlayerInfo::~CSinglePlayerInfo()
 {
 	Release();
 }
 
 
-void CPlayerInfo::Release()
+void CSinglePlayerInfo::Release()
 {
 	SafeDelete( m_pInputHandler );
 	SafeDelete( m_pHUD );
 	SafeDelete( m_pWeaponSystem );
 
-	SafeDeleteVector( m_vecpItem );
+	m_vecpItem.resize( 0 );
 }
 
 
-CCopyEntity *CPlayerInfo::GetCurrentPlayerEntity()
+CCopyEntity *CSinglePlayerInfo::GetCurrentPlayerEntity()
 {
 	if( GetCurrentPlayerBaseEntity() )
         return GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
@@ -72,7 +73,7 @@ CCopyEntity *CPlayerInfo::GetCurrentPlayerEntity()
 }
 
 
-void CPlayerInfo::SetInputHandlerForPlayerShip()
+void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 {
 
 	if( !GetCurrentPlayerBaseEntity() )
@@ -103,7 +104,7 @@ void CPlayerInfo::SetInputHandlerForPlayerShip()
 	INPUTHUB.SetInputHandler( m_pInputHandler );
 }
 
-void CPlayerInfo::AddItemToCategoryList( CGameItem *pItem )
+void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )
 {
 	int category;
 	switch( pItem->GetTypeFlag() )
@@ -113,7 +114,10 @@ void CPlayerInfo::AddItemToCategoryList( CGameItem *pItem )
 		break;
 	case CGameItem::TYPE_AMMO:
 		{
-			CGI_Ammunition *pAmmo = (CGI_Ammunition *)pItem;
+			shared_ptr<CGI_Ammunition> pAmmo = dynamic_pointer_cast<CGI_Ammunition,CGameItem>(pItem);
+			if( !pAmmo )
+				return;
+
 			if( !strcmp(pAmmo->GetAmmoType(), "7.62x51") )
 				category = CItemCategory::AMMO_762X51;
 			else if( !strcmp(pAmmo->GetAmmoType(), "12GS") )
@@ -150,7 +154,7 @@ void CPlayerInfo::AddItemToCategoryList( CGameItem *pItem )
 }
 
 
-int CPlayerInfo::SupplyItem( CGameItem* pItem )
+int CSinglePlayerInfo::SupplyItem( CGameItem* pItem )
 {
 	if( !pItem )
 		return false;
@@ -163,8 +167,8 @@ int CPlayerInfo::SupplyItem( CGameItem* pItem )
 }
 
 
-int CPlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
-//int CPlayerInfo::SupplyItem( CGameItem*& rpItem )/// \param owned reference
+int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
+//int CSinglePlayerInfo::SupplyItem( CGameItem*& rpItem )/// \param owned reference
 {
 	size_t i, num_items = m_vecpItem.size();
 	for(i=0; i<num_items; i++)
@@ -180,7 +184,7 @@ int CPlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
 	if( i == num_items )
 	{
 		// a new item - needs to be copied from the item database
-		CGameItem *pItem = ItemDatabaseManager().GetItemRawPtr( pcItemName, iSupplyQuantity );
+		shared_ptr<CGameItem> pItem = ItemDatabaseManager().GetItem<CGameItem>( pcItemName, iSupplyQuantity );
 		if( !pItem /*|| !(pItem->GetTypeFlag() & CGameItem::TYPE_AMMO)*/ )
 			return 0;	// the item was not found in the database
 
@@ -214,7 +218,7 @@ int CPlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
 */
 	// supply item(s)
 
-	CGameItem& rItem = *m_vecpItem[i];
+	CGameItem& rItem = *(m_vecpItem[i].get());
 	if( rItem.GetCurrentQuantity() == rItem.GetMaxQuantity() )
 		return 0;	// already been full - can't have any more
 	else
@@ -235,22 +239,22 @@ int CPlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
 }
 
 
-CGameItem *CPlayerInfo::GetItemByName( const char *pcItemName )
+CGameItem *CSinglePlayerInfo::GetItemByName( const char *pcItemName )
 {
 	size_t i=0, num_items = m_vecpItem.size();
 	for( i=0; i<num_items; i++ )
 	{
 		if( m_vecpItem[i]->GetName() == pcItemName )
-			return m_vecpItem[i];
+			return m_vecpItem[i].get();
 	}
 
-	MsgBoxFmt( "CPlayerInfo::GetItemByName() - cannot find the item '%s'", pcItemName );
-	g_Log.Print( "CPlayerInfo::GetItemByName() - cannot find the item '%s'", pcItemName );
+	LOG_PRINT( "Cannot find the item: " + string(pcItemName) );
+
 	return NULL;
 }
 
 
-void CPlayerInfo::Update( float dt )
+void CSinglePlayerInfo::Update( float dt )
 {
 	if( m_pHUD )
 		m_pHUD->Update( dt );
@@ -263,7 +267,7 @@ void CPlayerInfo::Update( float dt )
 }
 
 
-void CPlayerInfo::RenderHUD()
+void CSinglePlayerInfo::RenderHUD()
 {
 	if( m_pHUD )
         m_pHUD->Render();
@@ -280,7 +284,7 @@ void CPlayerInfo::RenderHUD()
 }
 
 
-void CPlayerInfo::Serialize( IArchive& ar, const unsigned int version )
+void CSinglePlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 {
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
@@ -290,7 +294,7 @@ void CPlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 //		m_pWeaponSystem;
 
 		m_TaskID = -1;
-		SafeDeleteVector( m_vecpItem );
+		m_vecpItem.resize( 0 );
 
 		size_t i, num_item_categories = CItemCategory::NUM_CATEGORIES;
 		for( i=0; i<num_item_categories; i++ )

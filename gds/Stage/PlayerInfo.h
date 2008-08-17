@@ -1,13 +1,17 @@
-
 #ifndef  __PLAYERINFO_H__
 #define  __PLAYERINFO_H__
 
 #include "Task/GameTask.h"
+#include "fwd.h"
 #include "BE_Player.h"
 #include "GameCommon/KeyBind.h"
 #include "GameCommon/SaveDataManager.h"
 #include "GameCommon/PlayTime.h"
 #include "Support/memory_helpers.h"
+#include "Support/Singleton.h"
+using namespace NS_KGL;
+
+#include <boost/shared_ptr.hpp>
 
 
 //#include "Support/Serialization/Serialization.h"
@@ -16,11 +20,9 @@
 
 
 // forward declerations
-class CCopyEntity;
 class CInputHandler_PlayerBase;
 class HUD_PlayerBase;
 class CGameItem;
-class CFont;
 class CWeaponSystem;
 
 class CGI_Aircraft;
@@ -29,7 +31,7 @@ class CGI_Aircraft;
 class CItemCategory
 {
 public:
-	enum eCategory
+	enum Name
 	{
 		WEAPON = 0,
 		AMMUNITION,
@@ -47,9 +49,6 @@ public:
 
 
 
-#define PLAYERINFO ( CPlayerInfo::ms_SingletonInstance_ )
-
-
 /// holds properties of the single player in the client application
 /// - singleton
 /// - holds the following items
@@ -57,7 +56,7 @@ public:
 ///   - a borrowed reference of a copy entity that represents the player in the stage
 ///   - key binds
 ///   - other settings & properties of the single player
-class CPlayerInfo : public CSaveDataComponent
+class CSinglePlayerInfo : public CSaveDataComponent
 {
 private:
 
@@ -78,11 +77,11 @@ private:
 //	CGameTask::eGameTask m_TaskID;
 	int m_TaskID;
 
-	/// a list of items the player is carrying (owned reference)
-	std::vector<CGameItem *> m_vecpItem;
+	/// a list of items the player is carrying
+	std::vector<boost::shared_ptr<CGameItem>> m_vecpItem;
 
-	/// lists of items sorted by categories (borrowed reference)
-	std::vector<CGameItem *> m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
+	/// lists of items sorted by categories
+	std::vector<boost::shared_ptr<CGameItem>> m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
 
 	/// borrowed ref?
 	std::vector<CGameItem *> m_vecpActiveItem;
@@ -105,17 +104,19 @@ private:
 
 private:
 
-	void AddItemToCategoryList( CGameItem *pItem );
+	void AddItemToCategoryList( boost::shared_ptr<CGameItem> pItem );
 
 protected:
 
-	CPlayerInfo();		// singleton
+	static CSingleton<CSinglePlayerInfo> m_obj;
 
 public:
 
-	static CPlayerInfo ms_SingletonInstance_;	// single instance of 'CPlayerInfo'
+	CSinglePlayerInfo();
 
-	~CPlayerInfo();
+	~CSinglePlayerInfo();
+
+	static CSinglePlayerInfo* Get() { return m_obj.get(); }
 
 	void Release();
 
@@ -154,11 +155,11 @@ public:
 	/// \return actual supplied quantity
 	int SupplyItem( CGameItem* pItem );
 
-	const std::vector<CGameItem *>& GetItemList() { return m_vecpItem; }
+	const std::vector<boost::shared_ptr<CGameItem>>& GetItemList() { return m_vecpItem; }
 
 	CGameItem *GetItemByName( const char *pcItemName );
 
-	inline std::vector<CGameItem *>& GetCategoryItemList( int category ) { return m_vecpCategoryItem[category]; }
+	inline std::vector<boost::shared_ptr<CGameItem>>& GetCategoryItemList( int category ) { return m_vecpCategoryItem[category]; }
 
 	inline void AddActiveItem( CGameItem *pItem );
 	inline void ReleaseActiveItem( CGameItem *pItem );
@@ -206,7 +207,7 @@ public:
 //============================= inline implementations =============================
 
 
-inline void CPlayerInfo::AddActiveItem( CGameItem *pItem )
+inline void CSinglePlayerInfo::AddActiveItem( CGameItem *pItem )
 {
 	size_t i, num = m_vecpActiveItem.size();
 	for( i=0; i<num; i++ )
@@ -219,7 +220,7 @@ inline void CPlayerInfo::AddActiveItem( CGameItem *pItem )
 }
 
 
-inline void CPlayerInfo::ReleaseActiveItem( CGameItem *pItem )
+inline void CSinglePlayerInfo::ReleaseActiveItem( CGameItem *pItem )
 {
 	size_t i=0, num = m_vecpActiveItem.size();
 	for( i=0; i<num; i++ )
@@ -233,10 +234,19 @@ inline void CPlayerInfo::ReleaseActiveItem( CGameItem *pItem )
 }
 
 
-inline int CPlayerInfo::SupplyItem( const std::string item_name, const int iSupplyQuantity )
+inline int CSinglePlayerInfo::SupplyItem( const std::string item_name, const int iSupplyQuantity )
 {
 	return SupplyItem( item_name.c_str(), iSupplyQuantity );
 }
+
+
+inline CSinglePlayerInfo& SinglePlayerInfo()
+{
+	return *CSinglePlayerInfo::Get();
+}
+
+
+#define PLAYERINFO (SinglePlayerInfo())
 
 
 #endif		/*  __PLAYERINFO_H__  */

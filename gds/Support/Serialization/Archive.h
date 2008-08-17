@@ -7,9 +7,12 @@
 #include <string>
 using namespace std;
 
+#include <boost/shared_ptr.hpp>
+
 #include <assert.h>
 
 #include "ArchiveObjectFactory.h"
+
 
 namespace GameLib1
 {
@@ -296,6 +299,45 @@ public:
 
 
 	template<class T>
+	void Polymorphic( vector<boost::shared_ptr<T>>& vecpData, IArchiveObjectFactory& rFactory )
+	{
+		size_t i, array_size = 0;
+		unsigned int id;
+
+		if( m_Mode == MODE_OUTPUT )
+		{
+			array_size = vecpData.size();
+
+			(*this) & array_size;	// record array size
+
+			for( i=0; i<array_size; i++ )
+			{
+				id = vecpData[i]->GetArchiveObjectID();
+
+				(*this) & id;	// record id for this object
+
+				(*this) & (*(vecpData[i].get()));	// the object must override the Serialize function
+			}
+		}
+		else // i.e. ( m_Mode == MODE_INPUT )
+		{
+			(*this) & array_size;	// get array size
+
+			vecpData.resize(array_size);
+
+			for( i=0; i<array_size; i++ )
+			{
+				(*this) & id;	// get id for this object
+
+				vecpData[i] = boost::shared_ptr<T>( dynamic_cast<T*>(rFactory.CreateObject(id)) );
+
+				(*this) & (*(vecpData[i].get()));	// the object must override the Serialize function
+			}
+		}
+	}
+
+
+	template<class T>
 	void Polymorphic( vector<T>& vecpData, IArchiveObjectFactory& rFactory )
 	{
 		size_t i, array_size = 0;
@@ -326,7 +368,7 @@ public:
 			{
 				(*this) & id;	// get id for this object
 
-				vecpData[i] = (T)rFactory.CreateObject(id);
+				vecpData[i] = dynamic_cast<T>(rFactory.CreateObject(id));
 
 				(*this) & (*vecpData[i]);	// the object must override the Serialize function
 			}

@@ -9,6 +9,8 @@
 
 #include "Item/WeaponSystem.h"
 
+using namespace boost;
+
 
 //--------------------------------------------------------------------
 // the following 5 input codes are used for quick menu operation
@@ -153,14 +155,14 @@ bool CQuickMenuManager::SelectCurrentItem()
 	else if( m_aQuickMenu[m_iCurrentMenu].GetTypeFlag() & CQM_Menu::TYPE_AMMUNITION )
 	{
 		// select the highlighted weapon slot
-		PLAYERINFO.GetWeaponSystem()->GetPrimaryWeaponSlot().Load( (CGI_Ammunition *)m_aQuickMenu[m_iCurrentMenu].GetCurrentItem() );
+		PLAYERINFO.GetWeaponSystem()->GetPrimaryWeaponSlot().Load( (CGI_Ammunition *)m_aQuickMenu[m_iCurrentMenu].GetCurrentItem().get() );
 		// close ammo select menu
 		m_iCurrentMenu = -1;
 	}
 	else
 	{
 		// select the current item
-		CGameItem *pItem = m_aQuickMenu[m_iCurrentMenu].GetCurrentItem();
+		shared_ptr<CGameItem> pItem = m_aQuickMenu[m_iCurrentMenu].GetCurrentItem();
 		if( pItem )
 		{
 			pItem->OnSelected();
