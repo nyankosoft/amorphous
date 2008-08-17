@@ -32,8 +32,9 @@
 #include "Support/Log/DefaultLog.h"
 #include "Support/DebugOutput.h"
 #include "Support/BitmapImage.h"
+#include "Support/MiscAux.h"
 
-#include <direct.h>
+#include <boost/filesystem.hpp>
 #include <windows.h>
 
 
@@ -314,7 +315,8 @@ inline void SetFreeImageErrorHandler()
 void CApplicationBase::Run()
 {
 	// set log output device
-	CLogOutput_HTML html_log( "debug/stage_base_app_log.html" );
+//	boost::filesystem::complete( "./debug" );
+	CLogOutput_HTML html_log( "./debug/log_" + string(GetBuildInfo()) + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
 	SetFreeImageErrorHandler();
