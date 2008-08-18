@@ -294,7 +294,12 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 	else
 	{
 		// load from a single file
-		src_buffer.LoadBinaryStream( resource_path );
+		bool loaded = src_buffer.LoadBinaryStream( resource_path );
+		if( !loaded )
+		{
+			LOG_PRINT_ERROR( "Failed to load a file as a binary stream: " + resource_path );
+			return false;
+		}
 	}
 
 	// Open Ogg Stream

@@ -1,4 +1,3 @@
-
 #include "BE_GeneralEntity.h"
 
 #include "GameMessage.h"
@@ -87,7 +86,8 @@ void CBE_GeneralEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 		m_pStage->CreateEntity( light );
 	}
 
-//	CreateAlphaEntities( pCopyEnt );
+	if( m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
+		CreateAlphaEntities( pCopyEnt );
 }
 
 

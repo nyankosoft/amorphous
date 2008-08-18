@@ -245,6 +245,13 @@ inline int CCopyEntity::AddChild( CCopyEntity *pChild )
 }
 
 
+inline void CCopyEntity::UpdateMesh()
+{
+	if( EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
+		pBaseEntity->CreateAlphaEntities( this );
+}
+
+
 // global function for copy entity
 
 inline bool IsValidEntity( CCopyEntity *pEntity )

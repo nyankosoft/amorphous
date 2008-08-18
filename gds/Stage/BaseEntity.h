@@ -151,9 +151,6 @@ protected:
 	/// \retval higher_values shader for lower resolution model
 	virtual int CalcShaderLOD( CCopyEntity* pCopyEnt ) { return 0; }
 
-	/// create entity(entities) for transparent parts of the material
-	void CreateAlphaEntities( CCopyEntity *pCopyEnt );
-
 protected:
 
 	/// flag that defines various attributes of a base entity
@@ -285,6 +282,8 @@ public:
 	virtual void SweepRender() {}
 
 //	void DrawMesh( CCopyEntity *pCopyEnt, int shader_tech_id = SHADER_TECH_INVALID );
+
+	void CreateAlphaEntities( CCopyEntity *pCopyEnt );
 
 	virtual void UpdateBaseEntity( float frametime )
 	{

@@ -132,6 +132,8 @@ bool CBE_MeshObjectProperty::LoadMeshObject()
 void CBE_MeshObjectProperty::Release()
 {
 	SafeDeleteVector( m_vecpMeshBoneController );
+
+	m_vecTargetMaterialIndex.resize( 0 );
 }
 
 
@@ -215,7 +217,26 @@ int CBaseEntity::GetEntityGroupID()
 
 void CBaseEntity::Init3DModel()
 {
+	m_MeshProperty.Release();
+
 	m_MeshProperty.LoadMeshObject();
+
+	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+
+	if( pMesh && (m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS) )
+	{
+		const float error_for_alpha = 0.0001f;
+		const int num_materials = pMesh->GetNumMaterials();
+		for( int i=0; i<num_materials; i++ )
+		{
+			const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial( i );
+
+			if( 1.0f - error_for_alpha < mat.fMinVertexDiffuseAlpha )
+			{
+				m_MeshProperty.m_vecTargetMaterialIndex.push_back( i );
+			}
+		}
+	}
 }
 
 
@@ -224,23 +245,31 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 	// test with the plane model in the aircraft select menu
 	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 	if( !pMesh )
-		return;
+	{
+		pMesh = pCopyEnt->MeshObjectHandle.GetMesh().get();
+		if( !pMesh )
+			return;
+	}
 
 	// Got a valid mesh.
 	// Create alpha entities for mesh materials that have transparency
-	const float error_for_alpha = 0.0001f;
+
 	const int num_materials = pMesh->GetNumMaterials();
-	vector<int> opaque_materials; // non-transparent materials 
 	for( int i=0; i<num_materials; i++ )
 	{
-		const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial( i );
-
-		if( 1.0f - error_for_alpha < mat.fMinVertexDiffuseAlpha )
+		const size_t num_target_materials = m_MeshProperty.m_vecTargetMaterialIndex.size();
+		size_t j;
+		for( j=0; j<num_target_materials; j++ )
 		{
-			opaque_materials.push_back( i );
+			if( i == m_MeshProperty.m_vecTargetMaterialIndex[j] )
+				break;
 		}
-		else
+
+		if( j == num_target_materials )
 		{
+			// not marked as a target material
+			// -> includes alpha
+
 //			if( GetNameString() == "model_display"
 //			 && pCopyEnt->pParent == NULL )
 //			{
@@ -258,8 +287,6 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 				pEntity->SetAlphaMaterialIndex( i );
 		}
 	}
-
-	m_MeshProperty.m_vecTargetMaterialIndex = opaque_materials;
 }
 
 

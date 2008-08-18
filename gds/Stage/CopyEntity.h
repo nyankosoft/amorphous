@@ -315,6 +315,9 @@ public:
 
 	inline void AddCallback( CCopyEntityCallbackBase* pCallback ) { vecpCallback.push_back(pCallback); }
 
+	/// Release and create alpha entities if BETYPE_SUPPORT_TRANSPARENT_PARTS is on.
+	inline void UpdateMesh();
+
 	friend class CBaseEntity;
 	friend class CEntitySet;
 	friend class CEntityNode;
