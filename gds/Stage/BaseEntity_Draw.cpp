@@ -150,6 +150,8 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 							      C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 							      int ShaderLOD )
 {
+	PROFILE_FUNCTION();
+
 	D3DXMATRIX matWorld;
 	world_pose.GetRowMajorMatrix44( (float *)&matWorld );
 
@@ -367,6 +369,8 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 {
 //	MsgBoxFmt( "drawing a skeletal mesh - entity: %s, shader id: %d", pCopyEnt->GetName().c_str(), shader_tech_id );
 
+	PROFILE_FUNCTION();
+
 	CD3DXSMeshObject *pSMesh
 		= dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get());
 
@@ -396,6 +400,8 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 
 void SetBlendMatrices( CD3DXSMeshObject *pSMeshObject )
 {
+//	PROFILE_FUNCTION();
+
 	// set blend matrices to the shader
 	LPD3DXEFFECT pEffect;
 	CShaderManager *pShaderMgr;

@@ -13,6 +13,7 @@
 
 #include "Support/StringAux.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/Profile.h"
 #include "Support/memory_helpers.h"
 #include "Support/Macro.h"
 #include "Support/fnop.h"
@@ -686,6 +687,8 @@ void CD3DXMeshObjectBase::UpdateVisibility( const CCamera& cam )
 void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 										 const std::vector<int>& vecMaterialIndex )
 {
+	PROFILE_FUNCTION();
+
 	vector<CShaderTechniqueHandle> empty_shader_technique_array;
 	RenderSubsets( rShaderMgr, vecMaterialIndex, empty_shader_technique_array );
 }

@@ -242,6 +242,9 @@ void CBaseEntity::Init3DModel()
 
 void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 {
+	if( pCopyEnt->GetEntityTypeID() == CCopyEntityTypeID::ALPHA_ENTITY )
+		return;
+
 	// test with the plane model in the aircraft select menu
 	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 	if( !pMesh )

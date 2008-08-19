@@ -411,23 +411,24 @@ void C3DMeshModelArchive::UpdateMinimumVertexDiffuseAlpha()
 
 	const vector<SFloatRGBAColor>& vecDiffuseColor = m_VertexSet.vecDiffuseColor;
 
-	float min_alpha = 1000.0f;
+	float min_alpha;
 	const size_t num_materials = m_vecMaterial.size();
 	for( size_t i=0; i<num_materials; i++ )
 	{
 		CMMA_TriangleSet& rTriSet = m_vecTriangleSet[i];
 
+		min_alpha = 1.0f;
 		float alpha = min_alpha;
 		const size_t start_index = rTriSet.m_iStartIndex;
 		const size_t end_index   = rTriSet.m_iStartIndex + rTriSet.m_iNumTriangles * 3;
 		for( size_t j=start_index; j<end_index; j++ )
 		{
-			float alpha = vecDiffuseColor[ m_vecVertexIndex[j] ].fAlpha;
+			alpha = vecDiffuseColor[ m_vecVertexIndex[j] ].fAlpha;
 			if( alpha < min_alpha )
 				min_alpha = alpha;
 		}
 
-		m_vecMaterial[i].fMinVertexDiffuseAlpha = alpha;
+		m_vecMaterial[i].fMinVertexDiffuseAlpha = min_alpha;
 	}
 }
 
@@ -593,6 +594,8 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 		const size_t num_textures = m_vecMaterial[i].vecTexture.size();
 		for( size_t tex=0; tex<num_textures; tex++ )
 			fprintf( fp, "texture[%d]: \"%s\"\n", tex, m_vecMaterial[i].vecTexture[tex].strFilename.c_str() );
+
+		fprintf( fp, "min. vertex alpha: %f\n", m_vecMaterial[i].fMinVertexDiffuseAlpha );
 
 //		fprintf( fp, "surface texture:    \"%s\"\n", m_vecMaterial[i].SurfaceTexture.strFilename.c_str() );
 //		fprintf( fp, "normal map texture: \"%s\"\n", m_vecMaterial[i].NormalMapTexture.strFilename.c_str() );
