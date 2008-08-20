@@ -1,7 +1,5 @@
 #include "WeaponSystem.h"
 
-//#include "3DCommon/Direct3D9.h"
-
 #include "GameInput/3DActionCode.h"
 #include "Stage/Stage.h"
 #include "Stage/CopyEntity.h"
@@ -26,7 +24,6 @@ CWeaponSystem::CWeaponSystem()
 
 void CWeaponSystem::Init( CStage* pStage )
 {
-	CGI_Weapon::ms_pStage = pStage;
 }
 
 

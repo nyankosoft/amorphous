@@ -1,11 +1,9 @@
-
 #ifndef  __WEAPON_GRAVITYGUN_H__
 #define  __WEAPON_GRAVITYGUN_H__
 
+#include "Stage/fwd.h"
 #include "GI_Weapon.h"
 
-
-class CCopyEntity;
 
 class CGI_GravityGun : public CGI_Weapon
 {
@@ -47,6 +45,8 @@ public:
 	friend class CItemDatabaseBuilder;
 
 };
+
+//----------------------------- inline implementations -----------------------------
 
 
 inline CGI_GravityGun::CGI_GravityGun()

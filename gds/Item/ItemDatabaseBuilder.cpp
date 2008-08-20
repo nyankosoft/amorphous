@@ -1,4 +1,3 @@
-
 #include "ItemDatabaseBuilder.h"
 
 using namespace std;

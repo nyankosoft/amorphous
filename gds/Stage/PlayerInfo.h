@@ -66,6 +66,8 @@ private:
 	/// - detached in CBE_Player::OnEntityDestroyed()
 	CBE_Player *m_pCurrentPlayerBaseEntity;
 
+	boost::weak_ptr<CStage> m_pCurrentStage;
+
 	CInputHandler_PlayerBase *m_pInputHandler;
 
 	/// owned ref?
@@ -121,6 +123,8 @@ public:
 	void Release();
 
 	inline CBE_Player *GetCurrentPlayerBaseEntity() { return m_pCurrentPlayerBaseEntity; }
+
+	void SetStage( CStageWeakPtr pStage );
 
 	CCopyEntity *GetCurrentPlayerEntity();
 

@@ -64,6 +64,18 @@ void CSinglePlayerInfo::Release()
 }
 
 
+void CSinglePlayerInfo::SetStage( CStageWeakPtr pStage )
+{
+	m_pCurrentStage = pStage;
+
+	const size_t num_items = m_vecpItem.size();
+	for( size_t i=0; i<num_items; i++ )
+	{
+		m_vecpItem[i]->SetStageWeakPtr( pStage );
+	}
+}
+
+
 CCopyEntity *CSinglePlayerInfo::GetCurrentPlayerEntity()
 {
 	if( GetCurrentPlayerBaseEntity() )
@@ -190,6 +202,8 @@ int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuan
 
 		// initialize quantity
 		pItem->SetZeroQuantity();
+
+		pItem->SetStageWeakPtr( m_pCurrentStage );
 
 		// add a new item entry to the list
 		m_vecpItem.push_back( pItem );

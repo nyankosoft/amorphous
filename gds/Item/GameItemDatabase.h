@@ -1,4 +1,3 @@
-
 #ifndef  __GAMEITEMDATABASE_H__
 #define  __GAMEITEMDATABASE_H__
 
@@ -39,11 +38,12 @@ public:
 
 class CGameItemDatabase : public IArchiveObjectBase
 {
-	vector<CGameItemInfo> m_vecGameItemInfo;
+	std::vector<CGameItemInfo> m_vecGameItemInfo;
 
 public:
 
 	CGameItemDatabase() {}
+
 	~CGameItemDatabase();
 
 	void AddItemInfo( const string& strFilename, const string& strItemName );

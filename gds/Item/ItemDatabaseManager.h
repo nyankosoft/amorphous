@@ -2,6 +2,7 @@
 #define __ITEMDATABASEMANAGER_SINGLETON_H__
 
 
+#include "fwd.h"
 #include "Support/Singleton.h"
 using namespace NS_KGL;
 
@@ -10,11 +11,7 @@ using namespace NS_KGL;
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
 
-
 #include <boost/shared_ptr.hpp>
-
-
-class CGameItem;
 
 
 /**
@@ -48,6 +45,8 @@ public:
 	inline boost::shared_ptr<T> GetItem( const std::string& item_name, int quantity );
 };
 
+
+//--------------------------------- inline implementations ---------------------------------
 
 template<class T>
 inline boost::shared_ptr<T> CItemDatabaseManager::GetItem( const std::string& item_name, int quantity )

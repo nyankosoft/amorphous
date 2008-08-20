@@ -9,18 +9,16 @@
 
 #include "GameItem.h"
 #include "GI_Weapon.h"
+#include "GI_Ammunition.h"
+#include "3DCommon/fwd.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "Stage/fwd.h"
 //#include "Stage/BaseEntityHandle.h"
 #include "Stage/EntityGroupHandle.h"
-
-#include "GI_Ammunition.h"
-
-#include "Support/msgbox.h"
+#include "Support/Log/DefaultLog.h"
 
 
-//forward decleration
-class CD3DXMeshObject;
+// forward declerations
 class CGI_Weapon;
 class CGI_Ammunition;
 
@@ -76,7 +74,7 @@ inline void SWeaponSlot::MountWeapon( CGI_Weapon* _pWeapon )
 {
 	if( !_pWeapon )
 	{
-		MsgBox( "an invalid weapon mount request has been detected\n" );
+		LOG_PRINT_WARNING( " An invalid weapon mount request has been detected." );
 		return;
 	}
 

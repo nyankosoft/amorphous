@@ -163,7 +163,7 @@ void CBE_PlayerPseudoAircraft::Init()
 	m_Camera.SetAspectRatio( CGraphicsComponent::GetAspectRatio() );
 
 //	for( int i=0; i<CWeaponSystem::NUM_WEAPONSLOTS; i++ )
-//		PLAYERINFO.GetWeaponSystem()->GetWeaponSlot(i).LocalPose.vPosition = Vector3( 0.0f, -1.2f, 12.0f );
+//		SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(i).LocalPose.vPosition = Vector3( 0.0f, -1.2f, 12.0f );
 
 	Init3DModel();
 
@@ -174,6 +174,8 @@ void CBE_PlayerPseudoAircraft::Init()
 
 	LoadBaseEntity( m_aExtraBaseEntity[EBE_SMOKE_TRAIL].Handle );
 	LoadBaseEntity( m_aExtraBaseEntity[EBE_FLAME_TRAIL].Handle );
+
+	SinglePlayerInfo().SetStage( m_pStage->GetWeakPtr() );
 }
 
 
@@ -317,7 +319,7 @@ void CBE_PlayerPseudoAircraft::Move( CCopyEntity *pCopyEnt )
 
 bool CBE_PlayerPseudoAircraft::SetAircraft()
 {
-	CGI_Aircraft* pAircraft = PLAYERINFO.GetAircraft();
+	CGI_Aircraft* pAircraft = SinglePlayerInfo().GetAircraft();
 
 	if( !pAircraft )
 	{
@@ -643,9 +645,6 @@ void CBE_PlayerPseudoAircraft::Act( CCopyEntity* pCopyEnt )
 
 	UpdateRadarInfo( pCopyEnt );
 
-	CGI_Weapon::ms_pStage = m_pStage;
-///	m_pAircraft->Update( TIMER.GetFrameTime() );
-
 	int nozzle_frame_entity_offset = m_pLaserDotEntity ? 1 : 0;
 
 	m_NozzleFlames.UpdateNozzleFlames( pCopyEnt, nozzle_frame_entity_offset, m_pAircraft );
@@ -760,7 +759,7 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 		break;
 
 /*	case GM_AMMOSUPPLY:
-		if( PLAYERINFO.SupplyItem( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
+		if( SinglePlayerInfo().SupplyItem( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
 		{
 			// the item was accepted by the player
 			msg.iEffect = GM_EFFECTACCEPTED;
@@ -779,7 +778,7 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 
 void CBE_PlayerPseudoAircraft::OnEntityDestroyed(CCopyEntity* pCopyEnt)
 {
-	// detach player base entity from the PLAYERINFO
+	// detach player base entity from the SinglePlayerInfo()
 	CBE_Player::OnEntityDestroyed( pCopyEnt );
 
 	if( m_pAircraft )
@@ -958,8 +957,6 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		// - do not return if the input was not handled
 	}
 
-	CGI_Weapon::ms_pStage = m_pStage;
-
 	// update aircraft simulator and weapon controls
 	// - accel, brake, yaw, pitch, and roll
 	// - cycling weapons
@@ -1007,7 +1004,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 
 	case ACTION_MISC_HOLD_RADAR:
 
-		if(	(pHUD = PLAYERINFO.GetHUD())
+		if(	(pHUD = SinglePlayerInfo().GetHUD())
 		 && (pHUD->GetType() == HUD_PlayerBase::TYPE_AIRCRAFT) )
 		{
             HUD_PlayerAircraft *pAircratHUD = dynamic_cast<HUD_PlayerAircraft *>(pHUD);

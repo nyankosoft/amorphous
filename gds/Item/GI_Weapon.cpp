@@ -26,8 +26,6 @@
 // CGI_Weapon
 //======================================================================================
 
-CStage* CGI_Weapon::ms_pStage = NULL;
-
 
 void CGI_Weapon::SetData(char *pcName, char *pcAmmoType, float fFireInterval)
 {
@@ -129,15 +127,15 @@ bool CGI_Weapon::HandleInput( int input_code, int input_type, float fParam )
 
 void CGI_Weapon::Fire()
 {
-	if( !ms_pStage || !m_pWeaponSlot )
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
+	if( !m_pWeaponSlot )
 		return;
 
 	if( !m_pWeaponSlot->pChargedAmmo )
 		return;		// ammo is not loaded
-
-//	CStageSharedPtr pStage = m_pStage.lock();
-//	if( !pStage )
-//		return;
 
 	CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
 
@@ -208,13 +206,13 @@ void CGI_Weapon::Fire()
 		// this is used to avoid hitting the shooter
 		bullet_entity.sGroupID = m_pWeaponSlot->ProjectileGroup;
 
-		ms_pStage->CreateEntity( bullet_entity );
+		pStage->CreateEntity( bullet_entity );
 
 		// create muzzle flash
 		CCopyEntityDesc& rMuzzleFlashDesc = bullet_entity;	// reuse the desc object 
 		rMuzzleFlashDesc.pBaseEntityHandle = &rCurrentAmmo.GetMuzzleFlashHandle();
 		rMuzzleFlashDesc.vVelocity = m_vMuzzleEndVelocity * 0.8f; // Vector3(0,0,0);
-		ms_pStage->CreateEntity( rMuzzleFlashDesc );
+		pStage->CreateEntity( rMuzzleFlashDesc );
 
 	}
 
@@ -232,7 +230,7 @@ void CGI_Weapon::Fire()
 			   + vImpact.x * rvMuzzleDir_Right;
 */
 
-	SendGameMessageTo( msg, PLAYERINFO.GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() );
+	SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() );
 
 //	if( m_pOwnerEntity )
 //		SendGameMessageTo( msg, m_pOwnerEntity );

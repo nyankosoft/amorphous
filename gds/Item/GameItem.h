@@ -241,9 +241,11 @@ class CGI_Binocular : public CGameItem
 	float m_fMaxZoomSpeed;
 	float m_fMaxZoom;
 
+	float m_fFocusDelay;
+
 public:
 
-	CGI_Binocular() { m_TypeFlag = TYPE_UTILITY; m_fCurrentZoom = 1.0f; m_fTargetZoom = 1.0f; m_fMaxZoom = 2.0f; m_fZoomSpeed = 0.0f; m_fMaxZoomSpeed = 5.0f; }
+	CGI_Binocular();
 
 	unsigned int GetArchiveObjectID() const { return ID_BINOCULAR; }
 

@@ -28,17 +28,29 @@ bool CGameItem::LoadMeshObject()
 #include "3DCommon/Camera.h"
 #include "GameCommon/CriticalDamping.h"
 #include "Stage/PlayerInfo.h"
-//#include "Stage/BE_PlayerShip.h"
 #include "Stage/Stage.h"
 #include "Stage/ScreenEffectManager.h"
 #include "GameInput/3DActionCode.h"
 #include "GameInput/InputHandler.h"
 
 
+CGI_Binocular::CGI_Binocular()
+:
+m_fCurrentZoom(1.0f),
+m_fTargetZoom(1.0f),
+m_fMaxZoom(2.0f),
+m_fZoomSpeed(0.0f),
+m_fMaxZoomSpeed(5.0f),
+m_fFocusDelay(0.0f)
+{
+	m_TypeFlag = TYPE_UTILITY;
+}
+
+
 void CGI_Binocular::OnSelected()
 {
-	PLAYERINFO.AddActiveItem( this );
-	PLAYERINFO.SetItemFocus( this );
+	SinglePlayerInfo().AddActiveItem( this );
+	SinglePlayerInfo().SetItemFocus( this );
 }
 
 
@@ -66,7 +78,7 @@ bool CGI_Binocular::HandleInput( int input_code, int input_type, float fParam )
 		{
 			// reset zoom and release the binocular
 			m_fTargetZoom = 1.0f;
-			PLAYERINFO.ReleaseItemFocus();
+			SinglePlayerInfo().ReleaseItemFocus();
 			return true;
 		}
 		break;
@@ -81,7 +93,7 @@ bool CGI_Binocular::HandleInput( int input_code, int input_type, float fParam )
 
 void CGI_Binocular::Update( float dt )
 {
- 	CCamera *pCamera = PLAYERINFO.GetCurrentPlayerBaseEntity()->GetCamera();
+ 	CCamera *pCamera = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetCamera();
 	if( !pCamera )
 		return;
 
@@ -90,34 +102,33 @@ void CGI_Binocular::Update( float dt )
 	// change the field of view of the camera to do the fake zoom effect
 	pCamera->SetFOV( 3.141592f / 3.0f / m_fCurrentZoom );
 
-	static float s_fFocusDelay = 0.0f;
 	if( 0.25f < m_fZoomSpeed )
 	{
-		s_fFocusDelay += ( m_fZoomSpeed - 0.25f ) * dt * 1.5f;
+		m_fFocusDelay += ( m_fZoomSpeed - 0.25f ) * dt * 1.5f;
 	}
 	else
 	{
-		s_fFocusDelay -= 4.0f * dt;
+		m_fFocusDelay -= 4.0f * dt;
 	}
 
-	Limit( s_fFocusDelay, 0.0f, 2.0f );
+	Limit( m_fFocusDelay, 0.0f, 2.0f );
 
 	CStageSharedPtr pStage = m_pStage.lock();
 
 	if( pStage.get() )
 	{
 		CScreenEffectManager* pEffectManager = pStage->GetScreenEffectManager();
-		pEffectManager->SetBlurEffect( s_fFocusDelay );
+		pEffectManager->SetBlurEffect( m_fFocusDelay );
 	}
 
-	if( PLAYERINFO.GetFocusedItem() != this )
+	if( SinglePlayerInfo().GetFocusedItem() != this )
 	{
 		// player has deselected the binocular
 		if( fabsf(m_fCurrentZoom - 1.0f) < 0.001f )
 		{
 			// release from the active item list
 			m_fCurrentZoom = 1.0f;
-			PLAYERINFO.ReleaseActiveItem( this );
+			SinglePlayerInfo().ReleaseActiveItem( this );
 		}
 	}
 }
@@ -160,7 +171,7 @@ void CGI_NightVision::OnSelected()
 		if( pStage.get() )
 			pStage->GetScreenEffectManager()->RaiseEffectFlag( ScreenEffect::PseudoNightVision ); 
 
-		PLAYERINFO.AddActiveItem( this );
+		SinglePlayerInfo().AddActiveItem( this );
 		m_bActive = true;
 	}
 	else
@@ -172,7 +183,7 @@ void CGI_NightVision::OnSelected()
 		if( pStage.get() )
 			pStage->GetScreenEffectManager()->ClearEffectFlag( ScreenEffect::PseudoNightVision ); 
 
-//		PLAYERINFO.ReleaseActiveItem( this );
+//		SinglePlayerInfo().ReleaseActiveItem( this );
 	}
 }
 
@@ -202,7 +213,7 @@ void CGI_NightVision::Update( float dt )
 		if( m_fMaxBatteryLife <= m_fBatteryLeft )
 		{
 			m_fBatteryLeft = m_fMaxBatteryLife;
-			PLAYERINFO.ReleaseActiveItem( this );
+			SinglePlayerInfo().ReleaseActiveItem( this );
 			m_bActive = false;
 			return;
 		}

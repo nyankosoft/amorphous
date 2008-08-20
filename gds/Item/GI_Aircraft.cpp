@@ -35,6 +35,99 @@ const T& GetLimited( const T& val, const T& min = 0.0f, const T& max = 1.0f )
 }
 
 
+CGI_Aircraft::CGI_Aircraft()
+{
+	m_TypeFlag |= (TYPE_VEHICLE);
+
+	m_CockpitLocalPose = Matrix34( Vector3( 0.0f, 1.0f, 20.0f ), Matrix33Identity() );
+
+	m_vThirdPersonViewOffset = Vector3(0,1,0);
+
+	m_fAccel = 30.0f;
+	m_fBoostAccel = 150.0f;
+	m_fBrakeAccel = 5.0f;
+
+	m_fCurrentBoost = 0.0f;
+	m_fCurrentBrake = 0.0f;
+
+	//m_PitchRange;
+	//m_RollRange;
+
+	float m_fMaxPitchAccel = 5.0f;
+	float m_fMaxRollAccel = 5.0f;
+	float m_fMaxYawAccel = 5.0f;
+
+	m_AmmoReleaseLocalPose.resize( NUM_AMMO_RELEASE_POSITIONS, Matrix34Identity() );
+
+	m_vGunMuzzleEndLocalPos = Vector3( 0.0f, 1.0f, 20.0f );
+
+	m_fGearUnitHeight = 0.0f;
+
+	m_fCeiling = 100000.0f;
+
+	m_fArmor = 0.5f;
+	m_fRCS = 1.0f;
+
+}
+
+
+void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+    ar & m_CockpitLocalPose;
+
+    ar & m_vThirdPersonViewOffset;
+
+	ar & m_vecNozzleFlameParams;
+
+	ar & m_fAccel & m_fBoostAccel & m_fBrakeAccel;
+
+//	ar & m_PitchRange & m_RollRange;
+
+	ar & m_fMaxPitchAccel & m_fMaxRollAccel & m_fMaxYawAccel;
+
+//	ar & m_WeaponSystem;
+
+	ar & m_AmmoReleaseLocalPose;
+
+	ar & m_vGunMuzzleEndLocalPos;
+
+	ar & m_fGearUnitHeight;
+
+	ar & m_fCeiling;
+	ar & m_fArmor;
+	ar & m_fRCS;
+
+	ar & m_vecSupportedAmmo;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		m_fCurrentBoost = 0.0f;
+		m_fCurrentBrake = 0.0f;
+	}
+
+	// serialization of mesh controllers
+	CMeshBoneControllerFactory factory;
+	ar.Polymorphic( m_vecpMeshController, factory );
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		size_t i, num = m_vecpMeshController.size();
+		for( i=0; i<num; i++ )
+		{
+//			if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_... )
+//				((CMeshBoneController_AircraftBase *)m_vecpMeshController[i])->SetPseudoAircraftSimulator( &m_PseudoSimulator );
+				m_vecpMeshController[i]->SetPseudoAircraftSimulator( &m_PseudoSimulator );
+		}
+	}
+
+	ar & m_vecRotor;
+
+//	ar & ;
+}
+
+
 
 CGI_Aircraft::~CGI_Aircraft()
 {

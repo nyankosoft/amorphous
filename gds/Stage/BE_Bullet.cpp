@@ -445,9 +445,9 @@ void CBE_Bullet::Act(CCopyEntity* pCopyEnt)
 
 
 /**
- * When a bullet hit a polygon of the map, the decal entity is placed to make a bullet hole.
- * Bullet holes are not made on entities but only on the polygons of the map
- * Because entities can move and disappear, placing decals on them would make things complex
+ When a bullet hit a polygon of the map, the decal entity is placed to make a bullet hole.
+ Bullet holes decals are placed only on the surface of the static geometry.
+ They are not placed on entities that move or disappear.
  */
 void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 {
@@ -613,23 +613,23 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 
 bool CBE_Bullet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
-	string str, tex_filename;
+	string light_name;
 
-	if( scanner.TryScanLine( "TEX_FILE", m_BillboardTextureFilepath ) ) return true;
+	if( scanner.TryScanLine( "TEX_FILE",         m_BillboardTextureFilepath ) ) return true;
 
 	if( scanner.TryScanLine( "BILLBOARD_RADIUS", m_fBillboardRadius ) ) return true;
 
-	if( scanner.TryScanLine( "BULLET_POWER", m_fBulletPower ) ) return true;
+	if( scanner.TryScanLine( "BULLET_POWER",     m_fBulletPower ) ) return true;
 
-	if( scanner.TryScanLine( "PENETRATION", m_fPenetration ) ) return true;
+	if( scanner.TryScanLine( "PENETRATION",      m_fPenetration ) ) return true;
 
-	if( scanner.TryScanLine( "REFLECTION", m_fSpeedAttenuAtReflection ) ) return true;
+	if( scanner.TryScanLine( "REFLECTION",       m_fSpeedAttenuAtReflection ) ) return true;
 
-	if( scanner.TryScanLine( "MAX_REFLECTS", m_fNumMaxReflections ) ) return true;
+	if( scanner.TryScanLine( "MAX_REFLECTS",     m_fNumMaxReflections ) ) return true;
 
-	if( scanner.TryScanLine( "LIGHT", str ) )
+	if( scanner.TryScanLine( "LIGHT", light_name ) )
 	{
-		m_Light.SetBaseEntityName(str.c_str());
+		m_Light.SetBaseEntityName(light_name.c_str());
 		return true;
 	}
 
@@ -646,6 +646,24 @@ void CBE_Bullet::ReleaseGraphicsResources()
 void CBE_Bullet::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	CBaseEntity::LoadGraphicsResources( rParam );
+}
+
+
+void CBE_Bullet::Serialize( IArchive& ar, const unsigned int version )
+{
+	CBaseEntity::Serialize( ar, version );
+
+	ar & m_BillboardTextureFilepath;
+
+	ar & m_fBillboardRadius;
+
+	ar & m_fBulletPower;
+	ar & m_fPenetration;
+	ar & m_fSpeedAttenuAtReflection;
+	ar & m_fNumMaxReflections;
+
+	ar & m_Spark;
+	ar & m_Light;
 }
 
 
@@ -698,20 +716,3 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 
 	rvPrevPosition = pCopyEnt->Position();
 }*/
-
-void CBE_Bullet::Serialize( IArchive& ar, const unsigned int version )
-{
-	CBaseEntity::Serialize( ar, version );
-
-	ar & m_BillboardTextureFilepath;
-
-	ar & m_fBillboardRadius;
-
-	ar & m_fBulletPower;
-	ar & m_fPenetration;
-	ar & m_fSpeedAttenuAtReflection;
-	ar & m_fNumMaxReflections;
-
-	ar & m_Spark;
-	ar & m_Light;
-}

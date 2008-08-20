@@ -7,11 +7,11 @@
 #include "3DMath/Matrix34.h"
 
 #include "3DCommon/Camera.h"
+#include "Stage/fwd.h"
 #include "Stage/ViewFrustumTest.h"
 #include "../base.h"
 
 
-class CCopyEntity;
 class CWeaponSystem;
 struct SWeaponSlot;
 

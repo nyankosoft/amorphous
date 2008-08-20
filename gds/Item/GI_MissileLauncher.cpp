@@ -1,4 +1,3 @@
-
 #include "GI_MissileLauncher.h"
 #include "GI_Ammunition.h"
 #include "WeaponSystem.h"
@@ -65,7 +64,11 @@ void CGI_MissileLauncher::SetLocalReleasePose( int index, const Matrix34& pose )
 */
 void CGI_MissileLauncher::UpdateTargets()
 {
-	if( !ms_pStage || !m_pWeaponSlot || !m_pWeaponSlot->pChargedAmmo )
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
+	if( !m_pWeaponSlot || !m_pWeaponSlot->pChargedAmmo )
 		return;		// stage is not linked / missile is not loaded
 
 	float range_sq = m_pWeaponSlot->pChargedAmmo->GetRangeSq();
@@ -104,7 +107,7 @@ void CGI_MissileLauncher::UpdateTargets()
 	vf_test.ClearEntities();	// clear any previous data
 
 	// collect entities that are in the view frustum volume of the sensor camera
-	ms_pStage->GetVisibleEntities( vf_test );
+	pStage->GetVisibleEntities( vf_test );
 
 	int i, iNumVisibleEntities = vf_test.GetNumVisibleEntities();
 	for( i=0;
@@ -192,6 +195,10 @@ void CGI_MissileLauncher::Update( float dt )
 		}
 	}
 
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
 	if( m_LauncherType == TYPE_FIRE_IMMEDIATE )
 	{
 		if( IsWeaponSelected() && m_aTriggerState[0] == 1 && SafetyOff() /*m_aTriggerState[1] == 1*/ )
@@ -226,7 +233,7 @@ void CGI_MissileLauncher::Update( float dt )
 		for( i=0; i<num_release_positions; i++ )
 		{
 			if( !m_vecpLoadedAmmo[i]
-			 && 4000 < ms_pStage->GetElapsedTimeMS() - m_vecLastFireTimeMS[i] )
+			 && 4000 < pStage->GetElapsedTimeMS() - m_vecLastFireTimeMS[i] )
 			{
 				if( rCurrentAmmo.GetCurrentQuantity() == 0 )
 					break;	// no ammo
@@ -251,7 +258,7 @@ void CGI_MissileLauncher::Update( float dt )
 				// 3D mesh object for the entity
 				missile_entity.MeshObjectHandle = rCurrentAmmo.GetMeshObjectContainer().m_MeshObjectHandle;
 
-				pMissile = ms_pStage->CreateEntity( missile_entity );
+				pMissile = pStage->CreateEntity( missile_entity );
 	
 				ONCE( g_Log.Print( "CGI_MissileLauncher::Update() - loaded a missile" ) );
 
@@ -272,6 +279,10 @@ void CGI_MissileLauncher::Update( float dt )
 /// \attention does not release any memory.
 bool CGI_MissileLauncher::ReleaseAmmo()
 {
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( !pStage )
+		return false;
+
 	ONCE( g_Log.Print( "CGI_MissileLauncher::ReleaseAmmo() - releasing the ammo" ) );
 
 	size_t i, num_release_positions = m_vecpLoadedAmmo.size();
@@ -295,7 +306,7 @@ bool CGI_MissileLauncher::ReleaseAmmo()
 			// release the ammo
 			m_vecpLoadedAmmo[i] = NULL;
 
-			m_vecLastFireTimeMS[i] = ms_pStage->GetElapsedTimeMS();
+			m_vecLastFireTimeMS[i] = pStage->GetElapsedTimeMS();
 
 			CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
 			rCurrentAmmo.ReduceQuantity( 1 );
@@ -375,7 +386,11 @@ inline void CGI_MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntit
 
 void CGI_MissileLauncher::Fire()
 {
-	if( !ms_pStage || !m_pWeaponSlot )
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
+	if( !m_pWeaponSlot )
 		return;
 
 	if( !m_pWeaponSlot->pChargedAmmo )
@@ -413,7 +428,7 @@ void CGI_MissileLauncher::Fire()
 	const Vector3& rvMuzzleDirection	= matMuzzleOrient.GetColumn(2);
 
 	// play sound for the shot
-//	ms_pStage->PlaySound3D( m_FireSound, rvMuzzleEndPosition );
+//	pStage->PlaySound3D( m_FireSound, rvMuzzleEndPosition );
 	SoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
 
 	if( m_vecpCurrentTarget.size() <= m_FireTargetIndex )
@@ -458,7 +473,7 @@ void CGI_MissileLauncher::Fire()
 		// this is used when the bullet is a homing missile to differentiate targets
 		missile_entity.sGroupID = m_pWeaponSlot->ProjectileGroup;
 
-		pMissile = ms_pStage->CreateEntity( missile_entity );
+		pMissile = pStage->CreateEntity( missile_entity );
 
 		if( !IsValidEntity(pMissile) )
 			continue;
@@ -475,7 +490,7 @@ void CGI_MissileLauncher::Fire()
 		CCopyEntityDesc& rMuzzleFlashDesc = missile_entity;	// reuse the desc object 
 		rMuzzleFlashDesc.pBaseEntityHandle = &rCurrentAmmo.GetMuzzleFlashHandle();
 		rMuzzleFlashDesc.vVelocity = m_vMuzzleEndVelocity * 0.8f; // Vector3(0,0,0);
-		ms_pStage->CreateEntity( rMuzzleFlashDesc );
+		pStage->CreateEntity( rMuzzleFlashDesc );
 	}
 
 	rCurrentAmmo.ReduceQuantity( 1 );
@@ -493,7 +508,7 @@ void CGI_MissileLauncher::Fire()
 			   + vImpact.x * rvMuzzleDir_Right;
 */
 
-	SendGameMessageTo( msg, PLAYERINFO.GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() );
+	SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() );
 
 //	if( m_pOwnerEntity )
 //		SendGameMessageTo( msg, m_pOwnerEntity );
@@ -521,4 +536,3 @@ void CGI_MissileLauncher::Disarm()
 		m_vecpLoadedAmmo[i] = NULL;
 	}
 }
-

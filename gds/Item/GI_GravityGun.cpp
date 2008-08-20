@@ -1,16 +1,11 @@
-
 #include "GI_GravityGun.h"
 #include "WeaponSystem.h"
-
 #include "GameInput/3DActionCode.h"
 #include "GameInput/InputHandler.h"
-
+#include "GameCommon/CriticalDamping.h"
 #include "Stage/CopyEntity.h"
 #include "Stage/trace.h"
 #include "Stage/Stage.h"
-
-//#include "3DCommon/fps.h"
-#include "GameCommon/CriticalDamping.h"
 
 #include "JigLib/JL_PhysicsActor.h"
 
@@ -52,7 +47,9 @@ void CGI_GravityGun::Update( float dt )
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 
 		// check trace
-		ms_pStage->ClipTrace( tr );
+		CStageSharedPtr pStage = m_pStage.lock();
+		if( pStage )
+			pStage->ClipTrace( tr );
 
 		if( tr.pTouchedEntity != m_pTarget )
 		{	// found obstacle between the player and the target object
@@ -154,7 +151,9 @@ bool CGI_GravityGun::GraspObjectInAimDirection()
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 
 	// check trace
-	ms_pStage->ClipTrace( tr );
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( pStage )
+		pStage->ClipTrace( tr );
 
 	if( tr.pTouchedEntity &&
 		tr.pTouchedEntity->EntityFlag & BETYPE_RIGIDBODY &&

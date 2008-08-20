@@ -94,8 +94,6 @@ public:
 
 public:
 
-	static CStage* ms_pStage;
-
 	inline CGI_Weapon();
 
 	virtual ~CGI_Weapon() {}
