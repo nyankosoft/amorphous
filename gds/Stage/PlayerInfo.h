@@ -8,6 +8,7 @@
 #include "GameCommon/SaveDataManager.h"
 #include "GameCommon/PlayTime.h"
 #include "Support/memory_helpers.h"
+#include "Support/Log/DefaultLog.h"
 #include "Support/Singleton.h"
 using namespace NS_KGL;
 
@@ -161,7 +162,8 @@ public:
 
 	const std::vector<boost::shared_ptr<CGameItem>>& GetItemList() { return m_vecpItem; }
 
-	CGameItem *GetItemByName( const char *pcItemName );
+	template<class CItemType>
+	inline boost::shared_ptr<CItemType> GetItemByName( const char *pcItemName );
 
 	inline std::vector<boost::shared_ptr<CGameItem>>& GetCategoryItemList( int category ) { return m_vecpCategoryItem[category]; }
 
@@ -209,6 +211,21 @@ public:
 
 
 //============================= inline implementations =============================
+
+template<class CItemType>
+inline boost::shared_ptr<CItemType> CSinglePlayerInfo::GetItemByName( const char *pcItemName )
+{
+	size_t i=0, num_items = m_vecpItem.size();
+	for( i=0; i<num_items; i++ )
+	{
+		if( m_vecpItem[i]->GetName() == pcItemName )
+			return boost::dynamic_pointer_cast<CItemType,CGameItem>(m_vecpItem[i]);
+	}
+
+	LOG_PRINT( "Cannot find the item: " + std::string(pcItemName) );
+
+	return boost::shared_ptr<CItemType>();
+}
 
 
 inline void CSinglePlayerInfo::AddActiveItem( CGameItem *pItem )

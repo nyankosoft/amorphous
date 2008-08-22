@@ -12,8 +12,6 @@
 #include "HUD_PlayerShip.h"
 #include "HUD_PlayerAircraft.h"
 
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
 #include "Support/Serialization/Serialization_BoostSmartPtr.h"
 
 #include "BE_Player.h"
@@ -252,7 +250,7 @@ int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuan
 	return 0;
 }
 
-
+/*
 CGameItem *CSinglePlayerInfo::GetItemByName( const char *pcItemName )
 {
 	size_t i=0, num_items = m_vecpItem.size();
@@ -266,6 +264,7 @@ CGameItem *CSinglePlayerInfo::GetItemByName( const char *pcItemName )
 
 	return NULL;
 }
+*/
 
 
 void CSinglePlayerInfo::Update( float dt )

@@ -97,14 +97,14 @@ m_iNumStages(0)
 
 
 	// sets a default aircraft for the player
-	if( !PLAYERINFO.GetAircraft() )
+	if( !SinglePlayerInfo().GetAircraft() )
 	{
 ///		SupplyAircraftItemsToPlayer();
-		PLAYERINFO.SetAircraft( (CGI_Aircraft *)PLAYERINFO.GetItemByName( "condor" ) );
-		CGI_Aircraft *pPlayerAircraft = PLAYERINFO.GetAircraft();
+		SinglePlayerInfo().SetAircraft( SinglePlayerInfo().GetItemByName<CGI_Aircraft>( "condor" ).get() );
+		CGI_Aircraft *pPlayerAircraft = SinglePlayerInfo().GetAircraft();
 		if( !pPlayerAircraft )
 			return;
-		pPlayerAircraft->WeaponSystem().GetWeaponSlot(1).MountWeapon( (CGI_Weapon *)PLAYERINFO.GetItemByName("SML") );
+		pPlayerAircraft->WeaponSystem().GetWeaponSlot(1).MountWeapon( SinglePlayerInfo().GetItemByName<CGI_Weapon>("SML").get() );
 	}
 
 //	SetPlayerAircraft();

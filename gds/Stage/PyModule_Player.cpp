@@ -9,8 +9,8 @@
 #include <string>
 
 
-#define PlayerBaseEntity	(*PLAYERINFO.GetCurrentPlayerBaseEntity())
-#define PlayerEntity		(*PLAYERINFO.GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity())
+#define PlayerBaseEntity	(*SinglePlayerInfo().GetCurrentPlayerBaseEntity())
+#define PlayerEntity		(*SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity())
 
 
 //======================================================================
@@ -52,7 +52,7 @@ PyObject* GetSpeed( PyObject* self, PyObject* args )
 
 PyObject* HasItem( PyObject* self, PyObject* args )
 {
-//	return Py_BuildValue( "b", PLAYERINFO.HasItem() );
+//	return Py_BuildValue( "b", SinglePlayerInfo().HasItem() );
  
 	Py_INCREF( Py_None );
 	return Py_None;
@@ -78,8 +78,8 @@ PyObject* SupplyItem( PyObject* self, PyObject* args )
 	int quantity;
     PyArg_ParseTuple( args, "si", &item_name, &quantity );
 
-//	bool supplied = PLAYERINFO.SupplyItem( item_name, quantity );
-	int supplied_quantity = PLAYERINFO.SupplyItem( item_name, quantity );
+//	bool supplied = SinglePlayerInfo().SupplyItem( item_name, quantity );
+	int supplied_quantity = SinglePlayerInfo().SupplyItem( item_name, quantity );
 
 	bool supplied = 0 < supplied_quantity ? true : false;
 
@@ -96,11 +96,11 @@ PyObject* MountWeapon( PyObject* self, PyObject* args )
 	if( weapon_slot_index < 0 || CWeaponSystem::NUM_WEAPONSLOTS <= weapon_slot_index )
 		return Py_BuildValue( "b", false );
 
-	CGameItem *pItem = PLAYERINFO.GetItemByName(weapon_name);
-	if( !pItem || !(pItem->GetTypeFlag() & CGameItem::TYPE_WEAPON) )
+	boost::shared_ptr<CGI_Weapon> pWeapon = SinglePlayerInfo().GetItemByName<CGI_Weapon>(weapon_name);
+	if( !pWeapon || !(pWeapon->GetTypeFlag() & CGameItem::TYPE_WEAPON) )
 		return Py_BuildValue( "b", false );
 
-	PLAYERINFO.GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).MountWeapon( (CGI_Weapon *)pItem );
+	SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).MountWeapon( pWeapon.get() );
 
 	return Py_BuildValue( "b", true );
 }
@@ -115,11 +115,11 @@ PyObject* LoadAmmo( PyObject* self, PyObject* args )
 	if( weapon_slot_index < 0 || CWeaponSystem::NUM_WEAPONSLOTS <= weapon_slot_index )
 		return Py_BuildValue( "b", false );
 
-	CGameItem *pItem = PLAYERINFO.GetItemByName(ammo_name);
-	if( !pItem || !(pItem->GetTypeFlag() & CGameItem::TYPE_AMMO) )
+	boost::shared_ptr<CGI_Ammunition> pAmmo = SinglePlayerInfo().GetItemByName<CGI_Ammunition>(ammo_name);
+	if( !pAmmo || !(pAmmo->GetTypeFlag() & CGameItem::TYPE_AMMO) )
 		return Py_BuildValue( "b", false );
 
-	bool loaded = PLAYERINFO.GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).Load( (CGI_Ammunition *)pItem );
+	bool loaded = SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).Load( pAmmo.get() );
 
 	return Py_BuildValue( "b", loaded );
 
