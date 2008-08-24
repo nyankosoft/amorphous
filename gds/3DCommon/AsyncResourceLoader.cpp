@@ -137,14 +137,6 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 				// Creates a lock request (texture)
 				// Create load requests for sub resources (mesh)
 				pLoader->OnLoadingCompleted( pLoader );
-
-				// loaded the resource
-				// - send lock request to render thread in order to
-				//   copy the loaded resource to some graphics memory
-//				mutex::scoped_lock scoped_lock(m_GraphicsDeviceMutex);
-//				m_GraphicsDeviceRequestQueue.push(
-//					CGraphicsDeviceRequest( CGraphicsDeviceRequest::Lock, req.m_pLoader, req.m_pResourceEntry )
-//					);
 			}
 			else
 			{
@@ -194,17 +186,13 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 		case CGraphicsDeviceRequest::Lock:
 			{
 				// Do either of the following
-				// - draw one from the cache (no need to create a new resource on memory)
-				// - create one from the desc
+				// - Draw one from the cache (no need to create a new resource on memory)
+				// - Create a new graphics resource from the desc
 				req.m_pLoader->AcquireResource();
 
 				bool locked = req.m_pLoader->Lock();
 
 				// find a resource entry that matches the resource description
-
-//				pSrcEntry = req.m_pResourceEntry.lock();
-//				if( !pSrcEntry )
-//					continue;
 
 				// texture / mesh sizes are stored in the loader
 				// - GraphicsResourceManager can determine the graphics resource entry that matches the specification.
@@ -212,22 +200,6 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 				//   Therefore, GraphicsResourceManager does either of the following,
 				//   - Creates a new graphics resource entry.
 				//   - Draws one from the cache.
-				// - This will overwrite the slot that has been occupied by pSrcEntry. i.e., ref count of pSrcEntry
-				//   will be zero after leaving this scope
-/*				pEntry = GraphicsResourceManager().CreateAt( pSrcEntry->GetDesc(), pSrcEntry->GetIndex() );
-				if( pEntry )
-				{
-					// update the entry
-					req.m_pResourceEntry = pEntry;
-
-					// refresh the entry held by the loader
-					// - Should separate resource entry class and resource class to avoid this?
-					req.m_pLoader->SetEntry( pEntry );
-
-//					resource_locked = pEntry->Lock(); // Does not work for the mesh, since it has 3 buffers to lock - VB, IB, and attribute buffer
-
-					req.m_pLoader->Lock();
-				}*/
 
 				// mark the entry as locked
 
@@ -248,10 +220,7 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 		case CGraphicsDeviceRequest::Unlock:
 			{
 				bool unlocked = req.m_pLoader->Unlock();
-/*				pEntry = req.m_pResourceEntry.lock();
-				if( pEntry )
-					pEntry->Unlock();
-*/
+
 				if( unlocked )
 				{
 					if( pEntry->GetResource() )

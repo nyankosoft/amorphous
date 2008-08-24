@@ -36,13 +36,6 @@ private:
 
 private:
 
-//	inline LPDIRECT3DTEXTURE9 GetTexture( int iTextureEntryID );
-//	inline CD3DXMeshObjectBase *GetMeshObject( int iMeshObjectEntryID );
-//	inline CShaderManager *GetShaderManager( int iShaderEntryID );
-//	boost::shared_ptr<CTextureEntry> GetTextureEntry( int id )      { return m_vecpTextureEntry[id]; }
-//	boost::shared_ptr<CMeshObjectEntry> GetMeshEntry( int id )      { return m_vecpMeshEntry[id]; }
-//	boost::shared_ptr<CShaderManagerEntry> GetShaderEntry( int id ) { return m_vecpShaderEntry[id]; }
-
 	/// Synchronously loads a graphics resource
 	boost::shared_ptr<CGraphicsResourceEntry> LoadGraphicsResource( const CGraphicsResourceDesc& desc );
 

@@ -1,4 +1,3 @@
-
 #include "GameTask.h"
 #include "App/ApplicationBase.h"
 #include "GameInput/InputHub.h"

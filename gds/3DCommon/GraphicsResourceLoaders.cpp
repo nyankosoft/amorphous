@@ -4,6 +4,7 @@
 #include "D3DXMeshObjectBase.h"
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
 
+using namespace std;
 using namespace boost;
 
 
@@ -72,6 +73,8 @@ void CGraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsRes
 {
 	FillResourceDesc();
 
+	// - send a lock request
+	//   to copy the loaded resource to some graphics memory
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, pSelf, GetResourceEntry() );
 
 	AsyncResourceLoader().AddGraphicsDeviceRequest( req );
@@ -214,6 +217,8 @@ bool CMeshLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::strin
 
 bool CMeshLoader::CopyLoadedContentToGraphicsResource()
 {
+	// Done by sub resource loaders
+
 	if( !GetResourceEntry() )
 		return false;
 /*

@@ -27,8 +27,6 @@ private:
 
 	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
 
-//	int	m_ResourceEntryIndex;
-
 	/// all the loaders have resource desc?
 	boost::shared_ptr<CGraphicsResourceLoader> m_pLoader;
 
@@ -94,8 +92,6 @@ public:
 
 class CAsyncResourceLoader
 {
-//	boost::mutex m_Mutex;
-
 	std::queue<CResourceLoadRequest> m_ResourceLoadRequestQueue;
 
 	boost::mutex m_IOMutex;

@@ -7,6 +7,7 @@
 #include "../base.h"
 #include "3DMath/MathMisc.h"
 #include "GameCommon/Timer.h"
+#include "3DCommon/fwd.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/D3DMisc.h"
@@ -16,7 +17,6 @@
 
 #include <map>
 
-class CAnimatedGraphicsManager;
 class CInputHandler;
 
 
@@ -30,7 +30,7 @@ class CGameTask : public CGraphicsComponent
 
 	U32 m_RenderStartTimeMS;
 
-	// the time when the fade-out time was started
+	/// the time when the fade-out time was started
 	U32 m_FadeoutStartTimeMS;
 
 	/// turned on when the task transition was started
