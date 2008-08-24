@@ -27,8 +27,6 @@ protected:
 
 	boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry.lock(); }
 
-	inline boost::shared_ptr<CGraphicsResource> GetResource();
-
 	inline const std::string& GetSourceFilepath();
 
 public:
@@ -38,7 +36,9 @@ public:
 	m_pResourceEntry(pEntry)
 	{}
 
-	virtual bool Load() { return LoadFromDisk(); }
+	inline boost::shared_ptr<CGraphicsResource> GetResource();
+
+	virtual bool Load();
 
 	bool LoadFromDisk();
 
@@ -71,6 +71,9 @@ public:
 	/// only after the resource is loaded from disk
 	/// - e.g., width and height of image files for textures
 	virtual void FillResourceDesc() {};
+
+	/// sub resource loaders of mesh don't have descs
+	virtual const CGraphicsResourceDesc *GetDesc() const { return NULL; }
 };
 
 
@@ -105,6 +108,8 @@ public:
 	bool CopyLoadedContentToGraphicsResource();
 
 	void FillResourceDesc();
+
+	const CGraphicsResourceDesc *GetDesc() const { return &m_TextureDesc; }
 
 	bool AcquireResource();
 
@@ -142,6 +147,8 @@ public:
 	void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf );
 
 	void FillResourceDesc();
+
+	const CGraphicsResourceDesc *GetDesc() const { return &m_MeshDesc; }
 };
 
 
@@ -297,11 +304,20 @@ inline boost::shared_ptr<CGraphicsResource> CGraphicsResourceLoader::GetResource
 
 inline const std::string& CGraphicsResourceLoader::GetSourceFilepath()
 {
-	boost::shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
+	const CGraphicsResourceDesc *pDesc = GetDesc();
+
+	if( pDesc )
+	{
+		return pDesc->ResourcePath;
+	}
+	else
+		return g_NullString;
+
+/*	boost::shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( pEntry && pEntry->GetResource() )
 		return pEntry->GetResource()->GetDesc().ResourcePath;
 	else
-		return g_NullString;
+		return g_NullString;*/
 }
 
 

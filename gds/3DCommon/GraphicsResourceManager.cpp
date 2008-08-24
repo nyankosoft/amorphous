@@ -24,7 +24,7 @@ CSingleton<CGraphicsResourceManager> CGraphicsResourceManager::m_obj;
 
 CGraphicsResourceManager::CGraphicsResourceManager()
 {
-	m_AsyncLoadingAllowed = false;
+	m_AsyncLoadingAllowed = true;
 
 //	m_pCacheManager = shared_ptr<CGraphicsResourceCacheManager>( new CGraphicsResourceCacheManager() );
 

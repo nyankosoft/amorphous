@@ -223,8 +223,8 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 
 				if( unlocked )
 				{
-					if( pEntry->GetResource() )
-						pEntry->GetResource()->SetState( GraphicsResourceState::LOADED );
+					if( req.m_pLoader->GetResource() )
+						req.m_pLoader->GetResource()->SetState( GraphicsResourceState::LOADED );
 				}
 			}
 			break;

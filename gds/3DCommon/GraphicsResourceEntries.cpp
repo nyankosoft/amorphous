@@ -303,6 +303,7 @@ static inline D3DXIMAGE_FILEFORMAT SuffixToD3DImgFmt( const std::string& suffix 
 	else if( suffix == "jpg" ) return D3DXIFF_JPG;
 	else if( suffix == "tga" ) return D3DXIFF_TGA;
 	else if( suffix == "png" ) return D3DXIFF_PNG;
+	else if( suffix == "dds" ) return D3DXIFF_DDS;
 	else return D3DXIFF_BMP;
 }
 
@@ -376,7 +377,10 @@ bool CTextureResource::Create()
 	}
 
 	if( FAILED(hr) || !m_pTexture )
+	{
+		LOG_PRINT_ERROR( " D3DXCreateTexture() failed." );
 		return false;
+	}
 	else
 		return true;
 }
@@ -453,7 +457,18 @@ bool CTextureResource::Unlock()
 	HRESULT hr = S_OK;
 	hr = m_pTexture->UnlockRect(0);
 
-	D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+	if( FAILED(hr) )
+	{
+		LOG_PRINT_ERROR( "IDirect3DTexture9::UnlockRect() failed." );
+		return false;
+	}
+
+	hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+
+	if( FAILED(hr) )
+	{
+		LOG_PRINT_ERROR( "D3DXFilterTexture() failed." );
+	}
 
 	return true;
 }

@@ -45,22 +45,18 @@ inline TextureFormat::Format FromD3DSurfaceFormat( D3DFORMAT d3d_fmt )
 
 inline D3DFORMAT ConvertTextureFormatToD3DFORMAT( TextureFormat::Format tex_format )
 {
-	D3DFORMAT d3d_fmt;
-
 	switch(tex_format)
 	{
-	case TextureFormat::R16F:          d3d_fmt = D3DFMT_R16F;
-	case TextureFormat::A16R16G16B16F: d3d_fmt = D3DFMT_A16B16G16R16F;
-	case TextureFormat::A8R8G8B8:      d3d_fmt = D3DFMT_A8R8G8B8;
-	case TextureFormat::X8R8G8B8:      d3d_fmt = D3DFMT_X8R8G8B8;
-	case TextureFormat::R5G6B5:        d3d_fmt = D3DFMT_R5G6B5;
-	case TextureFormat::A1R5G5B5:      d3d_fmt = D3DFMT_A1R5G5B5;
+	case TextureFormat::R16F:          return D3DFMT_R16F;
+	case TextureFormat::A16R16G16B16F: return D3DFMT_A16B16G16R16F;
+	case TextureFormat::A8R8G8B8:      return D3DFMT_A8R8G8B8;
+	case TextureFormat::X8R8G8B8:      return D3DFMT_X8R8G8B8;
+	case TextureFormat::R5G6B5:        return D3DFMT_R5G6B5;
+	case TextureFormat::A1R5G5B5:      return D3DFMT_A1R5G5B5;
 	default:
 		LOG_PRINT_ERROR( "An invalid texture format" );
 		return D3DFMT_A8R8G8B8;
 	}
-	
-	return d3d_fmt;
 }
 
 

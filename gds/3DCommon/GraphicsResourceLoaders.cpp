@@ -12,6 +12,12 @@ using namespace boost;
 // CGraphicsResourceLoader
 //===================================================================================
 
+bool CGraphicsResourceLoader::Load()
+{
+	return LoadFromDisk();
+}
+
+
 bool CGraphicsResourceLoader::LoadFromDisk()
 {
 	bool loaded = false;
@@ -177,11 +183,35 @@ void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
 
 	const int w = m_Image.GetWidth();
 	const int h = m_Image.GetHeight();
-	for( int y=0; y<h; y++ )
+	if( FreeImage_GetBPP( m_Image.GetFBITMAP() ) == 24 )
 	{
-		for( int x=0; x<w; x++ )
+		// probably an image without alpha channel
+		RGBQUAD quad;
+		for( int y=0; y<h; y++ )
 		{
-			texture.SetPixelARGB32( x, y, m_Image.GetPixelARGB32(x,y) );
+			for( int x=0; x<w; x++ )
+			{
+//				FreeImage_GetPixelColor( m_Image.GetFBITMAP(), x, y, &quad );
+				FreeImage_GetPixelColor( m_Image.GetFBITMAP(), x, h - y - 1, &quad );
+				U32 argb32
+					= 0xFF000000
+					| quad.rgbRed   << 16
+					| quad.rgbGreen <<  8
+					| quad.rgbBlue;
+
+				texture.SetPixelARGB32( x, y, argb32 );
+//				texture.SetPixelARGB32( x, y, 0xFF00FF00 ); / debug
+			}
+		}
+	}
+	else
+	{
+		for( int y=0; y<h; y++ )
+		{
+			for( int x=0; x<w; x++ )
+			{
+				texture.SetPixelARGB32( x, y, m_Image.GetPixelARGB32(x,y) );
+			}
 		}
 	}
 }

@@ -184,15 +184,18 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 		m_vecMaterial[i].Texture.resize( num_textures );
 		m_vecMaterial[i].TextureDesc.resize( num_textures );
 
-		if( !(option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES) )
+		for( size_t tex=0; tex<num_textures; tex++ )
 		{
-			// load texture(s) now
-			for( size_t tex=0; tex<num_textures; tex++ )
+			tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
+			if( 0 < tex_filename.length() )
 			{
-				tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
-				if( 0 < tex_filename.length() )
+				string tex_filepath = fnop::get_cwd() + "/" + tex_filename;
+				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
+
+				if( !(option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES) )
 				{
-					loaded = m_vecMaterial[i].Texture[tex].Load( tex_filename );
+					// load texture(s) now
+					loaded = m_vecMaterial[i].Texture[tex].Load( tex_filepath );
 				}
 			}
 		}

@@ -219,6 +219,16 @@ public:
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
 
+	/// Save the texture to disk as an image file
+	/// - For debugging
+	/// - Use this if the texture is loaded from file and filename is stored in GetDesc().ResourcePath
+	///   - Wait! It will overwrite the original image file!
+//	bool SaveTextureToImageFile(); commented out
+
+	/// Save the texture to disk as an image file
+	/// - For debugging
+	/// - NOTE: image_filepath should be different from GetDesc().ResourcePath,
+	///         or it will overwrite the original image file
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 
 	bool Lock();
