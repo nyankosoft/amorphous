@@ -106,6 +106,8 @@ void CLogOutput_OnScreen::Print( const CLogMessage& msg )
 	m_EndRowIndex++;
 	if( m_NumRows <= m_EndRowIndex )
 		m_EndRowIndex = 0;
+
+	m_NumOutputLines++;
 }
 
 
@@ -144,7 +146,7 @@ void CLogOutput_OnScreen::Render()
 
 	for( i=0, row_index = start_row_index;
 		 i<num_rows;
-		 i++, row_index = (row_index+1) % num_rows, m_NumOutputLines++ )	// wrap the row index
+		 i++, row_index = (row_index+1) % num_rows )	// wrap the row index
 	{
 		pos.y = (float)(sy + i * font_height);
 //		pFont->CacheText( m_TextBuffer[i].c_str(), pos, m_TextColor[i] );
@@ -152,3 +154,25 @@ void CLogOutput_OnScreen::Render()
 	}
 }
 
+/*
+const char *CLogOutput_OnScreen::GetText( int row )
+{
+	if( row < 0 || m_NumRows <= row )
+		return "";
+
+	const int row_index = ( m_EndRowIndex + row ) % m_NumRows;
+
+	return m_TextBuffer[row_index];
+}
+
+
+U32 CLogOutput_OnScreen::GetTextColor( int row )
+{
+	if( row < 0 || m_NumRows <= row )
+		return 0xFFFFFFFF;
+
+	const int row_index = ( m_EndRowIndex + row ) % m_NumRows;
+
+	return m_TextColor[row_index];
+}
+*/

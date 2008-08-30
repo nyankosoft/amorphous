@@ -8,7 +8,6 @@
 class CStage;
 class CInputHandler;
 class CFont;
-class CLogOutput_OnScreen;
 class CDebugOutput;
 
 extern CStageSharedPtr g_pStage;
@@ -32,9 +31,6 @@ protected:
 
 	// font to draw debug info (FPS, etc.)
 	CFont *m_pFont;
-
-	CLogOutput_OnScreen *m_pOnScreenLog;
-	CDebugOutput *m_pDebugOutput;
 
 	static unsigned int ms_FadeInTime;
 

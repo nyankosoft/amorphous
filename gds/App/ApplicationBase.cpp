@@ -16,6 +16,7 @@
 
 #include "3DCommon/fps.h"
 #include "3DCommon/GraphicsResourceManager.h"
+#include "3DCommon/LogOutput_OnScreen.h"
 #include "Task/GameTaskManager.h"
 
 #include "Sound/SoundManager.h"
@@ -98,7 +99,52 @@ void CApplicationBase::Release()
 
 	// release any singleton class that inherits CGraphicsComponent
 	GraphicsResourceManager().ReleaseSingleton();
+}
 
+
+void CApplicationBase::InitDebugItems()
+{
+	const string font_name = "ÇlÇr ÉSÉVÉbÉN";
+
+	// set debug items and output to the screen
+	// (graphics component)
+	GlobalDebugOutput.Init( font_name, 6, 12 );
+	DebugOutput.SetTopLeftPos( Vector2(16,32) );
+
+	DebugOutput.AddDebugItem( "perf", new CDebugItem_Profile() );
+
+	m_pOnScreenLog = new CLogOutput_OnScreen( font_name, 6, 12, 16, 95 );
+	g_Log.AddLogOutput( m_pOnScreenLog );
+
+	DebugOutput.AddDebugItem( "log",  new CDebugItem_Log(m_pOnScreenLog) );
+
+//	DebugOutput.SetBackgroundColor( 0x80000000 );
+
+
+/*
+//	m_pDebugOutput = new CDebugOutput( font name );
+	m_pDebugOutput = new CDebugOutput( "", 6, 12 );
+	m_pDebugOutput->AddDebugItem( new CDebugItem_Log( m_pOnScreenLog ) );
+	m_pDebugOutput->AddDebugItem( new CDebugItem_Profile() );
+//	m_pDebugOutput->AddDebugItem( new CDebugItem_StateLog( StateLog::PlayerLogOffset,	StateLog::NumPlayerLogs ) );
+//	m_pDebugOutput->AddDebugItem( new CDebugItem_StateLog( StateLog::EnemyLogOffset,	StateLog::NumEnemyLogs ) );
+*/
+}
+
+
+void CApplicationBase::ReleaseDebugItems()
+{
+	// delete debug output
+	//  - it uses the borrowed reference of screen overlay log (m_pOnScreenLog)
+//	SafeDelete( m_pDebugOutput );
+
+	DebugOutput.ReleaseDebugItem( "log" );
+
+	g_Log.RemoveLogOutput( m_pOnScreenLog );
+	SafeDelete( m_pOnScreenLog );
+
+	DebugOutput.ReleaseDebugItem( "perf" );
+	GlobalDebugOutput.Release();
 }
 
 
@@ -183,17 +229,10 @@ bool CApplicationBase::Init()
 	m_pGlobalInputHandler = new CGlobalInputHandler;
 	INPUTHUB.PushInputHandler( 3, m_pGlobalInputHandler );
 
-	// takes debug info and output to the screen
-	// (graphics component)
-	GlobalDebugOutput.Init( "ÇlÇr ÉSÉVÉbÉN", 6, 12 );
-	DebugOutput.SetTopLeftPos( Vector2(16,32) );
-	DebugOutput.AddDebugItem( "perf",	new CDebugItem_Profile() );
-
-	// background rect is rendered by each debug item object
-//	DebugOutput.SetBackgroundRect( C2DRect( D3DXVECTOR2(0,0), D3DXVECTOR2(0, 0), 0x00000000 ) );
-
 	CGameTask::AddTaskNameToTaskIDMap( "Stage",             CGameTask::ID_STAGE );
 	CGameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", CGameTask::ID_GLOBALSTAGELOADER );
+
+	InitDebugItems();
 
 	// start the timer
 	TIMER.Start();
@@ -282,8 +321,10 @@ void CApplicationBase::Execute()
 		}
 	}
 
-	DebugOutput.ReleaseDebugItem( "perf" );
-	GlobalDebugOutput.Release();
+	// Release graphics resources before the graphics device is released
+
+	ReleaseDebugItems();
+
 	CGameTask::ReleaseAnimatedGraphicsManager();
 	MouseCursor.ReleaseGraphicsResources();
 

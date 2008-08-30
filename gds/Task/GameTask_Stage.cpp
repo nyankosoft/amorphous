@@ -1,4 +1,3 @@
-
 #include "GameTask_Stage.h"
 #include "GameTask_StageSelect.h"
 
@@ -6,7 +5,6 @@
 #include "3DCommon/2DRect.h"
 #include "3DCommon/Font.h"
 #include "3DCommon/GraphicsEffectManager.h"
-#include "3DCommon/LogOutput_OnScreen.h"
 
 #include "Stage/Stage.h"
 #include "Stage/EntitySet.h"
@@ -72,50 +70,23 @@ CGameTask_Stage::CGameTask_Stage()
 		}
 		else
 		{
-			PrintLog( "CGameTask_Stage::CGameTask_Stage() - no global stage has been specified" );
+			LOG_PRINT_WARNING( "No global stage has been specified." );
 			return;
 		}
 	}
 
 	g_pStage->ResumeTimer();
 
-///	PLAYERINFO.SetInputHandlerForPlayerShip();
-
 	m_pFont = new CFont;
 	m_pFont->InitFont( "‚l‚r ƒSƒVƒbƒN", 8, 16);
 
 	SetDefaultFadeInTimeMS( ms_FadeInTime );
-
-	m_pOnScreenLog = new CLogOutput_OnScreen( "‚l‚r ƒSƒVƒbƒN", 6, 12, 16, 95 );
-	g_Log.AddLogOutput( m_pOnScreenLog );
-
-	DebugOutput.AddDebugItem( "log",	new CDebugItem_Log(m_pOnScreenLog) );
-//	DebugOutput.SetBackgroundRect( C2DRect( D3DXVECTOR2(8,8), D3DXVECTOR2(320, 480), 0x80000000 ) );
-
-
-/*
-//	m_pDebugOutput = new CDebugOutput( font name );
-	m_pDebugOutput = new CDebugOutput( "", 6, 12 );
-	m_pDebugOutput->AddDebugItem( new CDebugItem_Log( m_pOnScreenLog ) );
-	m_pDebugOutput->AddDebugItem( new CDebugItem_Profile() );
-//	m_pDebugOutput->AddDebugItem( new CDebugItem_StateLog( StateLog::PlayerLogOffset,	StateLog::NumPlayerLogs ) );
-//	m_pDebugOutput->AddDebugItem( new CDebugItem_StateLog( StateLog::EnemyLogOffset,	StateLog::NumEnemyLogs ) );
-*/
 }
 
 
 CGameTask_Stage::~CGameTask_Stage()
 {
 	SafeDelete( m_pFont );
-
-	// delete debug output
-	//  - it uses the borrowed reference of screen overlay log (m_pOnScreenLog)
-//	SafeDelete( m_pDebugOutput );
-
-	DebugOutput.ReleaseDebugItem( "log" );
-
-	g_Log.RemoveLogOutput( m_pOnScreenLog );
-	SafeDelete( m_pOnScreenLog );
 
 	ms_FadeInTime = 500;	// set the default fade-in time
 }
@@ -272,49 +243,24 @@ void CGameTask_Stage::Render()
 
 void CGameTask_Stage::DrawDebugInfo()
 {
-	// render background rect
-//	D3DXVECTOR2 v2d, v2end;
-	D3DXVECTOR2 v2d = D3DXVECTOR2(8,8);
-//	v2end = v2d + D3DXVECTOR2(320, 480);
-//	C2DRect rect = C2DRect( v2d, v2end, 0x88000000 );
-
-//	rect.Draw();
-
 	DebugOutput.Render();
 
-	// display fps
+	// display fps - now done by DebugOutput
 	CFontBase *pFont = m_pFont;
 	if( !pFont )
 		return;
-
-//	float fLetterHeight = (float)pFont->GetFontHeight();
-	v2d = D3DXVECTOR2(16, 8);
-
-///	StateLog.Update( 0, "FPS: " + to_string(TIMER.GetFPS()) );
-//	StateLog.Update( 1, "AVE. FPS: " + to_string(FPS.GetAverageFPS()) );
-	string fps_text = "FPS: " + to_string(TIMER.GetFPS());
-
-	DWORD color = ( TIMER.GetFPS() < 40.0f ) ? 0xFFFF0000 /* fps low - red */ : 0xFF00FF00; /* green */
-
-	pFont->DrawText( fps_text.c_str(), v2d, color );
-
-	// display ohter debug info
-	// e.g.) log, profile results, input device status, entity positions / velocities, etc.
-/*	if( m_pDebugOutput )
-	{
-		m_pDebugOutput->Render();
-	}
-*/
 }
 
 
 void CGameTask_Stage::ReleaseGraphicsResources()
 {
-	m_pFont->Release();
+	if( m_pFont )
+		m_pFont->Release();
 }
 
 
 void CGameTask_Stage::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	m_pFont->Reload(); 
+	if( m_pFont )
+		m_pFont->Reload(); 
 }

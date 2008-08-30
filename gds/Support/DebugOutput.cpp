@@ -1,12 +1,12 @@
-
 #include "DebugOutput.h"
 
 #include "3DCommon/2DRect.h"
 #include "3DCommon/Font.h"
 #include "3DCommon/TextureFont.h"
 #include "3DCommon/LogOutput_OnScreen.h"
-
+#include "3DCommon/GraphicsResourceManager.h"
 #include "GameCommon/Timer.h"
+#include "Sound/SoundManager.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/StringAux.h"
@@ -105,25 +105,54 @@ void CDebugItem_StateLog::Render()
 	CFontBase* pFont = m_pFont;
 
 	float fLetterHeight = (float)pFont->GetFontHeight();
-	D3DXVECTOR2 v2d = m_vTopLeftPos;//D3DXVECTOR2(16, 16);
-/*
-	StateLog.Update( 0, "FPS: " + to_string(TIMER.GetFPS()) );
-//	StateLog.Update( 1, "AVE. FPS: " + to_string(FPS.GetAverageFPS()) );
+	Vector2 v2d = m_vTopLeftPos;
 
-	DWORD color = ( TIMER.GetFPS() < 40.0f ) ? 0xFFFF0000 (fps low - red) : 0xFF00FF00; (green)
-
-	pFont->DrawText(StateLog.GetLog(0).c_str(), v2d, color);
-	v2d.y += fLetterHeight;
-
-	pFont->DrawText(StateLog.GetLog(1).c_str(), v2d, 0xFFFFFFFF);
-	v2d.y += fLetterHeight;
-*/
 	int row, num_rows = StateLog.GetNumLogs();
 	for( row=2; row<num_rows; row++ )
 	{
 		pFont->DrawText( StateLog.GetLog(row).c_str(), v2d );
 		v2d.y += fLetterHeight;
 	}
+}
+
+
+CDebugItem_ResourceManager::CDebugItem_ResourceManager()
+{
+	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
+}
+
+
+void CDebugItem_ResourceManager::Render()
+{
+	// set text info to the buffer
+	GetTextInfo();
+
+//	C2DRect rect( 745, 45, 1400, 700, 0x60000000 );
+	C2DRect rect( RectLTWH(
+		(int)m_vTopLeftPos.x,
+		(int)m_vTopLeftPos.y,
+		640,
+		640 ),
+		0x60000000 );
+
+	rect.Draw();
+
+	Vector2 vTextTopLeftPos = m_vTopLeftPos + Vector2(5,5);
+	m_pFont->DrawText( m_TextBuffer, vTextTopLeftPos, 0xFFFFFFFF );
+}
+
+
+void CDebugItem_GraphicsResourceManager::GetTextInfo()
+{
+	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
+	SoundManager().GetTextInfo( m_TextBuffer );
+}
+
+
+void CDebugItem_SoundManager::GetTextInfo()
+{
+	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
+	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 }
 
 
@@ -161,6 +190,21 @@ void CDebugOutput::Release()
 }
 
 
+void CDebugOutput::RenderFPS()
+{
+	if( !m_pFont )
+		return;
+
+///	StateLog.Update( 0, "FPS: " + to_string(TIMER.GetFPS()) );
+//	StateLog.Update( 1, "AVE. FPS: " + to_string(FPS.GetAverageFPS()) );
+	string fps_text = "FPS: " + to_string(TIMER.GetFPS());
+
+	U32 color = ( TIMER.GetFPS() < 40.0f ) ? 0xFFFF0000 /* fps low - red */ : 0xFF00FF00; /* green */
+
+	m_pFont->DrawText( fps_text.c_str(), m_vTopLeftPos, color );
+}
+
+
 void CDebugOutput::Render()
 {
 	if( !m_bDisplay )
@@ -173,6 +217,8 @@ void CDebugOutput::Render()
 
 	// 23:38 2007/10/07 commented out - background rect is rendered by each debug item object
 //	m_BackgroundRect.Draw();
+
+	RenderFPS();
 
 	m_vecpDebugItem[index]->Render();
 }
@@ -191,9 +237,15 @@ void CDebugOutput::SetTopLeftPos( Vector2& vTopLeftPos )
 {
 	m_vTopLeftPos = vTopLeftPos;
 
+	const int font_height = m_pFont ? m_pFont->GetFontHeight() : 0;
+
+	// top left pos for each debug item (offset for FPS text row)
+	Vector2 vItemTopLeftPos = m_vTopLeftPos;
+	vItemTopLeftPos.y += font_height;
+
 	size_t i, num_items = m_vecpDebugItem.size();
 	for( i=0; i<num_items; i++ )
-		m_vecpDebugItem[i]->SetTopLeftPos( vTopLeftPos );
+		m_vecpDebugItem[i]->SetTopLeftPos( vItemTopLeftPos );
 }
 
 

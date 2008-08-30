@@ -8,6 +8,7 @@
 class CGlobalInputHandler;
 class CGameTaskManager;
 class CApplicationBase;
+class CLogOutput_OnScreen;
 
 // input devices
 // accessed from window message procedure
@@ -37,11 +38,17 @@ protected:
 
 	CGameTaskManager *m_pTaskManager;
 
+	CLogOutput_OnScreen *m_pOnScreenLog;
+
 	static int ms_DefaultSleepTimeMS;
 
 private:
 
 	void Execute();
+
+	void InitDebugItems();
+
+	void ReleaseDebugItems();
 
 public:
 

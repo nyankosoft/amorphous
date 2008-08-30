@@ -7,6 +7,7 @@
 #include <string>
 
 #include "base.h"
+#include "3DCommon/fwd.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 
@@ -74,8 +75,6 @@ public:
 */
 
 
-
-class CFontBase;
 class CDebugItemBase;
 
 
@@ -95,6 +94,10 @@ class CDebugOutput : public CGraphicsComponent
 
 	/// top left corner position of the text
 	Vector2 m_vTopLeftPos;
+
+private:
+
+	void RenderFPS();
 
 public:
 
@@ -140,6 +143,8 @@ protected:
 public:
 
 	CDebugItemBase() : m_pFont(NULL), m_vTopLeftPos(Vector2(0,0)) {}
+
+	virtual ~CDebugItemBase() {}
 
 	virtual void SetFont( CFontBase* pFont ) { m_pFont = pFont; }
 	virtual void SetName( std::string name ) { m_Name = name; }
@@ -187,6 +192,44 @@ public:
 	CDebugItem_StateLog() {}
 
 	virtual void Render();
+};
+
+
+class CDebugItem_ResourceManager : public CDebugItemBase
+{
+protected:
+
+	char m_TextBuffer[4096];
+
+public:
+
+	CDebugItem_ResourceManager();
+
+	virtual ~CDebugItem_ResourceManager() {}
+
+	void Render();
+
+	virtual void GetTextInfo() = 0;
+};
+
+
+class CDebugItem_GraphicsResourceManager : public CDebugItem_ResourceManager
+{
+public:
+
+	CDebugItem_GraphicsResourceManager() {}
+
+	void GetTextInfo();
+};
+
+
+class CDebugItem_SoundManager : public CDebugItem_ResourceManager
+{
+public:
+
+	CDebugItem_SoundManager() {}
+
+	void GetTextInfo();
 };
 
 
