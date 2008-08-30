@@ -64,8 +64,14 @@ void CAlphaEntity::Draw()
 	pParent->pBaseEntity->DrawMeshMaterial(
 		pParent->GetWorldPose(),
 		m_AlphaMaterialIndex,
-		0
+		m_ShaderTechnique
 		);
+
+/*(	pParent->pBaseEntity->DrawMeshMaterial(
+		pParent->GetWorldPose(),
+		m_AlphaMaterialIndex,
+		0
+		);*/
 }
 
 

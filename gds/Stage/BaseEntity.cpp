@@ -273,11 +273,7 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 			// not marked as a target material
 			// -> includes alpha
 
-//			if( GetNameString() == "model_display"
-//			 && pCopyEnt->pParent == NULL )
-//			{
-
-			CBaseEntityHandle base_entity( this->GetNameString().c_str() );
+			CBaseEntityHandle base_entity( "AlphaEntityBase" );
 			CCopyEntityDesc desc;
 			desc.TypeID            = CCopyEntityTypeID::ALPHA_ENTITY;
 			desc.pBaseEntityHandle = &base_entity;
@@ -287,7 +283,12 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 
 			CAlphaEntity *pEntity = dynamic_cast<CAlphaEntity *>(m_pStage->CreateEntity( desc ));
 			if( pEntity )
+			{
 				pEntity->SetAlphaMaterialIndex( i );
+				if( i < m_MeshProperty.m_ShaderTechnique.size_x()
+				 && 0 < m_MeshProperty.m_ShaderTechnique.size_y() )
+				 pEntity->SetShaderTechnique( m_MeshProperty.m_ShaderTechnique( 0, i ) );
+			}
 		}
 	}
 }

@@ -189,6 +189,9 @@ public:
 	// made public since alpha entity needs to call this
 	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD );
 
+	// made public since alpha entity needs to call this
+	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, CShaderTechniqueHandle& shader_tech );
+
 	const char* GetName() const { return m_strName.c_str(); }
 
 	const std::string& GetNameString() const { return m_strName; }

@@ -255,6 +255,10 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 		return;
 	}
 
+	// create transparent parts of the model as separate entities
+	if( m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
+		CreateAlphaEntities( pCopyEnt );
+
 	m_pAircraft->ResetAircraftControls();
 
 //	Vector3 vInitVelocity = Vector3(0,0,5);
@@ -346,8 +350,10 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 
 	// copy mesh related stuff from item to base entity...
 	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
-	m_MeshProperty.m_MeshObjectHandle = mesh_container.m_MeshObjectHandle;
-//	m_MeshProperty.m_SpecTex.filename	= pAircraft->GetMeshObjectHolder().m_SpecTex.filename;
+//	m_MeshProperty.m_MeshObjectHandle = mesh_container.m_MeshObjectHandle;
+
+	// Set target material indices to create alpha entity
+	Init3DModel();
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
@@ -358,7 +364,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 
 	// need to call ValidateShaderTechniqueTable()
 	// - TODO: avoid reloading the mesh
-	m_MeshProperty.LoadMeshObject();
+//	m_MeshProperty.LoadMeshObject();
 
 	// set mesh bone controller (experimental)
 /*	SBE_MeshObjectProperty& rMesh = m_MeshProperty;

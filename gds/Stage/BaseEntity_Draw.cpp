@@ -144,6 +144,23 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 }
 
 
+void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, CShaderTechniqueHandle& shader_tech )
+{
+	vector<int> single_index;
+	single_index.push_back( material_index );
+
+	C2DArray<CShaderTechniqueHandle> shader_tech_table;
+	shader_tech_table.resize( material_index + 1, 1 );
+	shader_tech_table( material_index, 0 ) = shader_tech;
+
+	DrawMeshObject( world_pose,
+		            m_MeshProperty.m_MeshObjectHandle.GetMesh().get(),
+					single_index,
+					shader_tech_table,
+					0 );
+}
+
+
 void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 								  CD3DXMeshObjectBase *pMeshObject,
 								  const std::vector<int>& vecTargetMaterialIndex,
@@ -318,7 +335,6 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
 	CShaderManager *pShaderManager;
-//	LPD3DXEFFECT pEffect = NULL;
 	if( pShaderManager = CShader::Get()->GetCurrentShaderManager() )
 	{
 		if( m_MeshProperty.m_SpecTex.GetTexture() )

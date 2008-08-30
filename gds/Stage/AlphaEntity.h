@@ -21,7 +21,7 @@ class CAlphaEntity : public CCopyEntity
 
 	/// taken from the shader technique table of the owner entity
 	/// - usually the highest resolution technique of the target subset
-//	CShaderTechniqueHandle m_ShaderTechnique;
+	CShaderTechniqueHandle m_ShaderTechnique;
 
 public:
 
@@ -43,7 +43,9 @@ public:
 
 	virtual void TerminateDerived();
 
-//	void SetShaderTechnique( CShaderTechniqueHandle& tech ) { m_ShaderTechnique = tech; }
+	void SetShaderTechnique( CShaderTechniqueHandle& tech ) { m_ShaderTechnique = tech; }
+
+	void SetShaderTechniqueName( const std::string& shared_technique_name ) { m_ShaderTechnique.SetTechniqueName( shared_technique_name.c_str() ); }
 
 	void SetAlphaMaterialIndex( int alpha_mat_index ) { m_AlphaMaterialIndex = alpha_mat_index; }
 };
