@@ -1,5 +1,5 @@
-#ifndef  __LOGOUTPUT_ONSCREEN_H__
-#define  __LOGOUTPUT_ONSCREEN_H__
+#ifndef  __LogOutput_ScrolledTextBuffer_H__
+#define  __LogOutput_ScrolledTextBuffer_H__
 
 #include <vector>
 #include <string>
@@ -8,27 +8,16 @@
 #include "Support/Log/LogOutputBase.h"
 #include "Support/2DArray.h"
 #include "3DMath/Vector2.h"
-#include "3DCommon/FontBase.h"
-#include "3DCommon/GraphicsComponentCollector.h"
 
 
 /**
  * displays log texts on screen using D3D
  *
  */
-class CLogOutput_OnScreen : public CLogOutputBase, public CGraphicsComponent
+class CLogOutput_ScrolledTextBuffer : public CLogOutputBase
 {
 protected:
 
-	CFontBase* m_pFont;	///< owned reference
-	CFontBase* m_pBorrowedFont;	///< borrowed reference
-
-	/// owned reference of the borrowed font must be released & reloaded with Reload() & Reload()
-	/// when the ReleaseGraphicsResources() or LoadGraphicsResources() is called.
-	/// Otherwise 'm_pBorrowedFont' will be an invalid pointer after graphics release & reload
-	/// is done.
-
-//	C2DArray<char> m_TextBuffer;
 	std::vector<std::string> m_TextBuffer;
 	std::vector<U32> m_TextColor;
 
@@ -36,10 +25,8 @@ protected:
 
 	int m_NumRows;
 
-	/// how many logs have been taken
+	/// how many logs have been taken in total
 	int m_NumOutputLines;
-
-	Vector2 m_vTopLeftPos;
 
 private:
 
@@ -47,25 +34,45 @@ private:
 
 public:
 
-	CLogOutput_OnScreen( const std::string& font_name, int font_width, int font_height,
+	CLogOutput_ScrolledTextBuffer( const std::string& font_name, int font_width, int font_height,
                          int num_rows = 16, int num_chars = 64 );
 
-	CLogOutput_OnScreen( int num_rows = 16, int num_chars = 64 );	///< use this with a borrowed font
+	CLogOutput_ScrolledTextBuffer( int num_rows = 16, int num_chars = 64 );	///< use this with a borrowed font
 
-	~CLogOutput_OnScreen();
-
-	void SetBorrowedFont( CFontBase* pBorrowedFont ) { m_pBorrowedFont = pBorrowedFont; }
-
-	void SetTopLeftPos(	Vector2 vTopLeftPos ) { m_vTopLeftPos = vTopLeftPos; }
-
-	virtual void ReleaseGraphicsResources();
-
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	~CLogOutput_ScrolledTextBuffer();
 
 	virtual void Print( const CLogMessage& msg );
 
-	void Render();
+	inline const char *GetText( int row );
+
+	inline U32 GetTextColor( int row );
+
+	int GetNumCurrentRows();
 };
 
 
-#endif		/*  __LOGOUTPUT_ONSCREEN_H__  */
+//------------------------- inline implementations -------------------------
+
+inline const char *CLogOutput_ScrolledTextBuffer::GetText( int row )
+{
+	if( row < 0 || m_NumRows <= row )
+		return "";
+
+	const int row_index = ( m_EndRowIndex + row ) % m_NumRows;
+
+	return m_TextBuffer[row_index].c_str();
+}
+
+
+inline U32 CLogOutput_ScrolledTextBuffer::GetTextColor( int row )
+{
+	if( row < 0 || m_NumRows <= row )
+		return 0xFFFFFFFF;
+
+	const int row_index = ( m_EndRowIndex + row ) % m_NumRows;
+
+	return m_TextColor[row_index];
+}
+
+
+#endif		/*  __LogOutput_ScrolledTextBuffer_H__  */

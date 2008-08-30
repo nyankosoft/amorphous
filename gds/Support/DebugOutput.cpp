@@ -42,24 +42,64 @@ CFontBase* CFontFactory::CreateFont( const string& font_name, int font_width, in
 
 
 
-CDebugItem_Log::CDebugItem_Log( CLogOutput_OnScreen* pLogOutput )
+CDebugItem_Log::CDebugItem_Log( CLogOutput_ScrolledTextBuffer* pLogOutput )
+:
+m_pLogOutput(pLogOutput)
 {
-//	m_pLogOutput = new CLogOutput_OnScreen()// "Texture/...", w, h, rows, chars );
-	m_pLogOutput = pLogOutput;
-}
-
-
-void CDebugItem_Log::SetFont( CFontBase* pFont )
-{
-	CDebugItemBase::SetFont( pFont );
-	if( m_pLogOutput )
-        m_pLogOutput->SetBorrowedFont( m_pFont );
+//	m_pLogOutput = new CLogOutput_ScrolledTextBuffer()// "Texture/...", w, h, rows, chars );
 }
 
 
 void CDebugItem_Log::Render()
 {
-	m_pLogOutput->Render();
+	CFontBase *pFont = m_pFont;
+
+	const int font_width  = pFont->GetFontWidth();
+	const int font_height = pFont->GetFontHeight();
+//	const int num_rows = ???;
+	const int num_current_rows = m_pLogOutput->GetNumCurrentRows();
+
+	// draw rect for background
+	const int sx = (int)m_vTopLeftPos.x;
+	const int sy = (int)m_vTopLeftPos.y;
+	C2DRect bg_rect( sx, sy, sx + font_width * 80/*m_NumChars*/, sy + font_height * num_current_rows, 0x80000000 );
+	bg_rect.Draw();
+
+
+	Vector2 vTextPos = m_vTopLeftPos;
+	for( int i=0; i<num_current_rows; i++, vTextPos.y += font_height )
+	{
+		const char *pText = m_pLogOutput->GetText( i );
+		const U32 color   = m_pLogOutput->GetTextColor( i );
+
+		pFont->DrawText( pText, vTextPos, color );
+	}
+
+/*	Vector2 pos;
+	pos.x = (float)( sx + font_width * 0.5f );
+	int i, row_index;
+	int num_rows = m_NumRows;
+//	const int end_row_index = m_EndRowIndex;
+	int start_row_index = (m_EndRowIndex);// % m_NumRows;
+//	if( m_TextBuffer[start_row_index].length() == 0 )
+	if( m_NumOutputLines < num_rows )
+	{
+		// not wrapped yet - start rendering from the first row of the buffer
+		num_rows = start_row_index;
+		start_row_index = 0;
+	}
+
+	for( i=0, row_index = start_row_index;
+		 i<num_rows;
+		 i++, row_index = (row_index+1) % num_rows )	// wrap the row index
+	{
+		pos.y = (float)(sy + i * font_height);
+//		pFont->CacheText( m_TextBuffer[i].c_str(), pos, m_TextColor[i] );
+		pFont->DrawText( m_TextBuffer[row_index].c_str(), pos, m_TextColor[row_index] );
+	}
+*/
+
+//	m_pLogOutput->Render();
 }
 
 
@@ -217,6 +257,8 @@ void CDebugOutput::Render()
 
 	// 23:38 2007/10/07 commented out - background rect is rendered by each debug item object
 //	m_BackgroundRect.Draw();
+
+	SetRenderStatesForTextureFont( AlphaBlend::One );
 
 	RenderFPS();
 

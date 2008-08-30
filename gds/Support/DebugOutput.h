@@ -155,21 +155,19 @@ public:
 };
 
 
-class CLogOutput_OnScreen;
+class CLogOutput_ScrolledTextBuffer;
 
 
 class CDebugItem_Log : public CDebugItemBase
 {
 	/// borrowed reference
-	CLogOutput_OnScreen *m_pLogOutput;
+	CLogOutput_ScrolledTextBuffer *m_pLogOutput;
 
 public:
 
 //	CDebugItem_Log() {}
 
-	CDebugItem_Log( CLogOutput_OnScreen* pLogOutput );
-
-	virtual void SetFont( CFontBase* pFont );
+	CDebugItem_Log( CLogOutput_ScrolledTextBuffer* pLogOutput );
 
 	virtual void Render();
 };

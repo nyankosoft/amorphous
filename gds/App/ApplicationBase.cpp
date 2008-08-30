@@ -113,10 +113,15 @@ void CApplicationBase::InitDebugItems()
 
 	DebugOutput.AddDebugItem( "perf", new CDebugItem_Profile() );
 
-	m_pOnScreenLog = new CLogOutput_OnScreen( font_name, 6, 12, 16, 95 );
+	m_pOnScreenLog = new CLogOutput_ScrolledTextBuffer( font_name, 6, 12, 16, 95 );
 	g_Log.AddLogOutput( m_pOnScreenLog );
 
 	DebugOutput.AddDebugItem( "log",  new CDebugItem_Log(m_pOnScreenLog) );
+
+	DebugOutput.AddDebugItem( "graphics_resource_manager", new CDebugItem_GraphicsResourceManager() );
+
+	DebugOutput.AddDebugItem( "sound_manager", new CDebugItem_SoundManager() );
+
 
 //	DebugOutput.SetBackgroundColor( 0x80000000 );
 
