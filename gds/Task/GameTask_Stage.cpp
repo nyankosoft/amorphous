@@ -73,17 +73,12 @@ CGameTask_Stage::CGameTask_Stage()
 
 	g_pStage->ResumeTimer();
 
-	m_pFont = new CFont;
-	m_pFont->InitFont( "‚l‚r ƒSƒVƒbƒN", 8, 16);
-
 	SetDefaultFadeInTimeMS( ms_FadeInTime );
 }
 
 
 CGameTask_Stage::~CGameTask_Stage()
 {
-	SafeDelete( m_pFont );
-
 	ms_FadeInTime = 500;	// set the default fade-in time
 }
 
@@ -194,19 +189,6 @@ void CGameTask_Stage::Render()
 {
 	ONCE( g_Log.Print( "CGameTask_Stage::Render() - rendering the stage" ) );
 
-	// do the render routine of the base class
-	CGameTask::Render();
-
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-//	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
-///	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,255,0), 1.0f, 0 );
-	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
-
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-
-	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-
 	// set the camera and draw the scene
 	if( g_pStage )
 		g_pStage->Render();
@@ -224,39 +206,21 @@ void CGameTask_Stage::Render()
 	ProfileDumpOutputToBuffer();
 
 	// display fps and other performance information
-	pd3dDevice->BeginScene();
 	DrawDebugInfo();
-    pd3dDevice->EndScene();
-
-	pd3dDevice->BeginScene();
-	RenderFadeEffect();
-    pd3dDevice->EndScene();
-
-    // Present the backbuffer contents to the display
-    pd3dDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 
 void CGameTask_Stage::DrawDebugInfo()
 {
 	DebugOutput.Render();
-
-	// display fps - now done by DebugOutput
-	CFontBase *pFont = m_pFont;
-	if( !pFont )
-		return;
 }
 
 
 void CGameTask_Stage::ReleaseGraphicsResources()
 {
-	if( m_pFont )
-		m_pFont->Release();
 }
 
 
 void CGameTask_Stage::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	if( m_pFont )
-		m_pFont->Reload(); 
 }

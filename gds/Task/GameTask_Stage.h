@@ -26,12 +26,6 @@ class CGameTask_Stage : public CGameTask
 {
 protected:
 
-	// handles the input to the player ship
-//	CInputHandler *m_pInputHandler;
-
-	// font to draw debug info (FPS, etc.)
-	CFont *m_pFont;
-
 	static unsigned int ms_FadeInTime;
 
 public:
@@ -43,9 +37,6 @@ public:
 	virtual void Render();
 
 	void DrawDebugInfo();
-	void DrawBasicInfo();
-	void RenderProfileResult();
-	void RenderLog();
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
