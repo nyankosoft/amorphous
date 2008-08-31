@@ -11,13 +11,9 @@
 #include "Stage/ScreenEffectManager.h"
 #include "Stage/PlayerInfo.h"
 
-#include "Stage/DebugWindow.h"
-
 #include "GameCommon/Timer.h"
 
 #include "GameInput/InputHub.h"
-#include "Stage/Input/InputHandler_PlayerShip.h"
-//#include "GameInput/SystemInputHandler_Debug.h"
 
 #include "GameTextSystem/TextMessageManager.h"
 

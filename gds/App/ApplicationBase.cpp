@@ -109,7 +109,6 @@ void CApplicationBase::InitDebugItems()
 	// set debug items and output to the screen
 	// (graphics component)
 	GlobalDebugOutput.Init( font_name, 6, 12 );
-	DebugOutput.SetTopLeftPos( Vector2(16,32) );
 
 	DebugOutput.AddDebugItem( "perf", new CDebugItem_Profile() );
 
@@ -122,6 +121,7 @@ void CApplicationBase::InitDebugItems()
 
 	DebugOutput.AddDebugItem( "sound_manager", new CDebugItem_SoundManager() );
 
+	DebugOutput.SetTopLeftPos( Vector2(16,32) );
 
 //	DebugOutput.SetBackgroundColor( 0x80000000 );
 

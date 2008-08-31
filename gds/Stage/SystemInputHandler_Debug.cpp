@@ -1,4 +1,3 @@
-
 #include "SystemInputHandler_Debug.h"
 //#include <mmsystem.h>
 #include <direct.h>
@@ -6,8 +5,6 @@
 #include "App/GameWindowManager_Win32.h"
 #include "App/ApplicationBase.h"
 #include "Task/GameTaskManager.h"
-
-#include "Stage/DebugWindow.h"
 
 #include "3DCommon/font.h"
 #include "3DCommon/TextureFont.h"
@@ -54,11 +51,6 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 {
 //	static bool s_bMouseAcquired = false;
 
-//	CImageCapture image_capture;
-//	DWORD *pdwImageData;
-//	CScreenShotManager screenshot;
-//	char acCurrentDirectory[512], acStageFilename[512];
-
 	switch( input.iGICode )
 	{
 	case GIC_ESC:
@@ -67,14 +59,6 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 			g_bAppExitRequested = true;
 		}
 //		else if( input.iType == ITYPE_KEY_RELEASED ) {}
-		break;
-
-	case GIC_F1:
-/*		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-			g_iShowDebugInfo = (g_iShowDebugInfo + 1) % NUM_DEBUG_DISPLAYS;
-			break;
-		}*/
 		break;
 
 	case GIC_F4:
@@ -91,25 +75,6 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 	case GIC_F7:	// quick load
 //		if( input.iType == ITYPE_KEY_PRESSED )
 //			SAVEDATAMANAGER.LoadSavedData( 0, g_pStage );
-		break;
-
-	case GIC_F9:
-/*		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-			_getcwd( acCurrentDirectory, 511 );
-			GetFilename( acStageFilename, "bspx" );
-			_chdir( acCurrentDirectory );
-			delete g_pStage;
-			g_pStage = new CStage;
-			g_pStage->LoadStageFromFile( acStageFilename );
-			PlayerShip-.GetPlayerCopyEntity()->Position() = Vector3(0,0,0);
-			PlayerShip-.GetPlayerCopyEntity()->Right()    = Vector3(1,0,0);
-			PlayerShip-.GetPlayerCopyEntity()->Up()       = Vector3(0,1,0);
-			PlayerShip-.GetPlayerCopyEntity()->Direction()= Vector3(0,0,1);
-			PlayerShip-.Init( g_pStage );
-			g_pStage->GetEntitySet()->SetCameraEntity( PlayerShip.GetPlayerCopyEntity() );
-			WEAPONSYSTEM.Init( g_pStage );
-		}*/
 		break;
 
 	case GIC_F10:	// change screen size (to a smaller one)

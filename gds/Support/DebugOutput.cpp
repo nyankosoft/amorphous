@@ -271,6 +271,8 @@ void CDebugOutput::AddDebugItem( const std::string& item_name, CDebugItemBase *p
 	m_vecpDebugItem.push_back( pDebugItem );
 	m_vecpDebugItem.back()->SetFont( m_pFont );
 	m_vecpDebugItem.back()->SetName( item_name );
+
+	// TODO: add offset for fps display
 	m_vecpDebugItem.back()->SetTopLeftPos( m_vTopLeftPos );
 }
 
