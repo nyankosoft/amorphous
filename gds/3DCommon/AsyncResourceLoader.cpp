@@ -190,6 +190,9 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 				// - Create a new graphics resource from the desc
 				req.m_pLoader->AcquireResource();
 
+				if( req.m_pLoader->GetResource() )
+					req.m_pLoader->GetResource()->SetState( GraphicsResourceState::LOADING_ASYNCHRONOUSLY );
+
 				bool locked = req.m_pLoader->Lock();
 
 				// find a resource entry that matches the resource description

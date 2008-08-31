@@ -104,8 +104,6 @@ protected:
 
 	boost::mutex m_StateChangeLock;
 
-//	std::string m_Filename;
-
 protected:
 
 	/// reference count is not changed in this function?
@@ -120,6 +118,8 @@ protected:
 	virtual bool CreateFromDesc() { return false; }
 
 	void SetIndex( int index ) { m_Index = index; }
+
+	virtual void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc ) {}
 
 public:
 
@@ -171,9 +171,7 @@ public:
 	virtual void GetStatus( char *pDestBuffer );
 
 	friend class CGraphicsResourceManager;
-
-//	const std::string& GetFilename() const { return m_Filename; }
-//	void SetFilename( const std::string& filename ) { m_Filename = filename; }
+	friend class CGraphicsResourceCacheManager;
 };
 
 
@@ -198,6 +196,8 @@ protected:
 	/// create an empty texture
 	/// - texture settings are read from m_TextureDesc
 	bool CreateFromDesc();
+
+	void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc );
 
 public:
 

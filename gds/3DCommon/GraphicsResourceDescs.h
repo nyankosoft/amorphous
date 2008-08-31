@@ -58,6 +58,15 @@ public:
 	virtual int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const { return 0; }
 	virtual int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
 
+	/// Copy attributes to the desc of the cached resource
+	/// e.g., resource path
+	/// - Cached texture resources maintain preloaded empty textures.
+	///   A resource path (usu. a filepath) needs to be copied to it every time a new texture is loaded
+	///   so that the same texture can be shared by multiple texture handles.
+	virtual void UpdateCachedTextureResourceDesc( CTextureResourceDesc& desc ) const {}
+	virtual void UpdateCachedMeshResourceDesc( CMeshResourceDesc& desc ) const {}
+	virtual void UpdateCachedShaderResourceDesc( CTextureResourceDesc& desc ) const {}
+
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
 		ar & (int&)LoadingMode;
@@ -110,6 +119,12 @@ public:
 			return 1;
 		else
 			return 0;
+	}
+
+	void UpdateCachedTextureResourceDesc( CTextureResourceDesc& desc ) const
+	{
+		desc.ResourcePath = ResourcePath;
+		desc.pLoader      = pLoader;
 	}
 
 	void Serialize( IArchive& ar, const unsigned int version )
@@ -166,6 +181,11 @@ public:
 		return 0;
 	}
 
+	void UpdateCachedTextureResourceDesc( CMeshResourceDesc& desc ) const
+	{
+		desc.ResourcePath = ResourcePath;
+	}
+
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
 		CGraphicsResourceDesc::Serialize( ar, version );
@@ -184,6 +204,11 @@ public:
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
 
 	int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
+
+	void UpdateCachedTextureResourceDesc( CMeshResourceDesc& desc ) const
+	{
+		desc.ResourcePath = ResourcePath;
+	}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{

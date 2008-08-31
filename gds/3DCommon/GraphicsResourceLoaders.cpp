@@ -3,6 +3,7 @@
 #include "AsyncResourceLoader.h"
 #include "D3DXMeshObjectBase.h"
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "Support/Profile.h"
 
 using namespace std;
 using namespace boost;
@@ -57,6 +58,8 @@ bool CGraphicsResourceLoader::LoadFromDisk()
 
 bool CGraphicsResourceLoader::Lock()
 {
+	LOG_FUNCTION_SCOPE();
+
 	shared_ptr<CGraphicsResource> pResource = GetResource();
 	if( pResource )
 		return pResource->Lock();
@@ -67,6 +70,8 @@ bool CGraphicsResourceLoader::Lock()
 
 bool CGraphicsResourceLoader::Unlock()
 {
+	LOG_FUNCTION_SCOPE();
+
 	shared_ptr<CGraphicsResource> pResource = GetResource();
 	if( pResource )
 		return pResource->Unlock();

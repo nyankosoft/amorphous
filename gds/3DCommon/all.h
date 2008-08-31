@@ -41,6 +41,7 @@
 #include "SimpleMotionBlur.h"
 #include "TextureCoord.h"
 #include "GraphicsResourceManager.h"
+#include "GraphicsResourceCacheManager.h"
 #include "GraphicsResourceHandle.h"
 #include "TextureRenderTarget.h"
 #include "TextureTool.h"

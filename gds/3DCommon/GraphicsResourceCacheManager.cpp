@@ -81,6 +81,8 @@ void CGraphicsResourceCacheManager::AddCache( CGraphicsResourceDesc& desc )
 
 	shared_ptr<CGraphicsResource> ptr = GraphicsResourceFactory().CreateGraphicsResource( desc );
 
+//	ptr->IsCachedResource = true;
+
 	// create an empty texture / mesh
 	ptr->Create();
 
@@ -97,7 +99,14 @@ shared_ptr<CGraphicsResource> CGraphicsResourceCacheManager::GetCachedResource( 
 	{
 		shared_ptr<CGraphicsResource> pResource = m_vecpResurceCache[i];
 		if( pResource->CanBeUsedAsCache( desc ) )
+		{
+			// copy some desc attributes pResource
+			// - Need this to set attributes that are unique to each resource
+			//   - e.g., resource path
+			pResource->UpdateDescForCachedResource( desc );
+
 			return pResource;
+		}
 	}
 
 	return shared_ptr<CGraphicsResource>();

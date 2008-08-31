@@ -69,6 +69,7 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResou
 			index = i;
 //			pResourceEntry->SetIndex( (int)index );
 			m_vecpResourceEntry[i] = pResourceEntry;
+			pResourceEntry->IncRefCount();
 			return pResourceEntry;
 		}
 	}
@@ -77,8 +78,8 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResou
 	index = m_vecpResourceEntry.size();
 //	pResourceEntry->SetIndex( (int)index );
 	m_vecpResourceEntry.push_back( pResourceEntry );
-//	return index;
 
+	pResourceEntry->IncRefCount();
 	return pResourceEntry;
 }
 
@@ -214,8 +215,6 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
 		AsyncResourceLoader().AddResourceLoadRequest( req );
 
-//		pEntry->IncRefCount();
-
 		return pEntry;
 	}
 	else
@@ -254,8 +253,6 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResourc
 
 	pResourceEntry->SetResource( pResource );
 
-//	pResourceEntry->SetFilename( desc.ResourcePath );
-
 	// load
 
 	bool loaded = pResource->Load();
@@ -264,18 +261,23 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResourc
 	{
 		// increment the reference count
 		// - This is always an increment from 0 to 1
-		pResourceEntry->IncRefCount();
+		// 5:11 PM 8/31/2008 Changed: done in CreateGraphicsResourceEntry()
+//		pResourceEntry->IncRefCount();
 
-		LOG_PRINT( " - Created a graphics resource: " + desc.ResourcePath );
+		LOG_PRINT( " Created a graphics resource: " + desc.ResourcePath );
 
 		// A resource has been successfully loaded
 		return pResourceEntry;
 	}
 	else
 	{
-		LOG_PRINT_WARNING( "Failed to create a graphics resource: " + desc.ResourcePath );
+		LOG_PRINT_WARNING( " Failed to create a graphics resource: " + desc.ResourcePath );
 
-		ReleaseResourceEntry( pResourceEntry );
+		// decrement ref count
+		// - This will make the ref count zero and release the non-cachecd resource
+		pResourceEntry->DecRefCount();
+
+//		ReleaseResourceEntry( pResourceEntry );
 		return shared_ptr<CGraphicsResourceEntry>();	// failed to create a resource
 	}
 }

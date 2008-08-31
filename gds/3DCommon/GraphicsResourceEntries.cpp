@@ -231,6 +231,8 @@ m_pTexture(NULL)
 		m_TextureDesc = *pDesc;
 	else
 		LOG_PRINT_ERROR( "An invalid resource desc" );
+
+	m_IsCachedResource = pDesc->IsCachedResource();
 }
 
 
@@ -348,6 +350,9 @@ bool CTextureResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& d
 
 int CTextureResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
 {
+	if( GetState() != GraphicsResourceState::RELEASED )
+		return 0;
+
 	return desc.CanBeUsedAsTextureCache( m_TextureDesc );
 }
 
@@ -421,6 +426,12 @@ bool CTextureResource::CreateFromDesc()
 }
 
 
+void CTextureResource::UpdateDescForCachedResource( const CGraphicsResourceDesc& desc )
+{
+	desc.UpdateCachedTextureResourceDesc( m_TextureDesc );
+}
+
+
 bool CTextureResource::Lock()
 {
 	if( !m_pTexture )
@@ -463,7 +474,7 @@ bool CTextureResource::Unlock()
 		return false;
 	}
 
-	hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+//	hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
 
 	if( FAILED(hr) )
 	{
@@ -533,6 +544,8 @@ CMeshResource::CMeshResource( const CMeshResourceDesc *pDesc )
 		m_MeshDesc = *pDesc;
 	else
 		LOG_PRINT_ERROR( "An incompatible resource desc" );
+
+	m_IsCachedResource = pDesc->IsCachedResource();
 }
 
 
@@ -596,6 +609,9 @@ bool CMeshResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc
 
 int CMeshResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
 {
+	if( GetState() != GraphicsResourceState::RELEASED )
+		return 0;
+
 	return desc.CanBeUsedAsMeshCache( m_MeshDesc );
 }
 
@@ -624,6 +640,8 @@ m_pShaderManager(NULL)
 		m_ShaderDesc = *pDesc;
 	else
 		LOG_PRINT_ERROR( "An invalid resource desc" );
+
+	m_IsCachedResource = pDesc->IsCachedResource();
 }
 
 
