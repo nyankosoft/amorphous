@@ -205,16 +205,6 @@ int CGameTask_StageSelect::FrameMove( float dt )
 
 void CGameTask_StageSelect::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
-
-	// Begin the scene
-	pd3dDevice->BeginScene();
-
-	pd3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-
 	// render stage select dialog
 	m_pDialogManager->Render();
 
@@ -224,11 +214,6 @@ void CGameTask_StageSelect::Render()
 	C2DRect rect( x-2, y-2, x+5, y+5 );
 	rect.SetColor( 0xFFFF1010 );
 	rect.Draw();
-
-	// End the scene
-    pd3dDevice->EndScene();
-    // Present the backbuffer contents to the display
-    pd3dDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 

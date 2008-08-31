@@ -202,6 +202,33 @@ int CGameTask::FrameMove( float dt )
 }
 
 
+void CGameTask::RenderBase()
+{
+	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+
+    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
+//	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
+///	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,255,0), 1.0f, 0 );
+///	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
+
+	pd3dDevice->SetRenderState( D3DRS_ZENABLE,  D3DZB_TRUE );
+	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+
+	// do the render routine of the base class
+	CGameTask::Render();
+
+	// render routine of each derived class
+	Render();
+
+	// render the mouse cursor
+	if( m_bShowMouseCursor )
+		DrawMouseCursor();
+
+	// render fade-out effect if the task is starting / terminating
+	RenderFadeEffect();
+}
+
+
 void CGameTask::CreateRenderTasks()
 {
 	RenderTaskProcessor.AddRenderTask( new CGameTaskRenderTask( this ) );

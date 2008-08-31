@@ -501,13 +501,6 @@ void CGameTask_MainMenu::RenderQuickGuide()
 
 void CGameTask_MainMenu::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(32,32,32), 1.0f, 0 );
-
-	pd3dDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-
 	RenderQuickGuide();
 
 	// render stage select dialog

@@ -107,7 +107,7 @@ public:
 
 	/// called from game task manager.
 	/// calls Render() of derived class
-	inline void RenderBase();
+	void RenderBase();
 
 	virtual void CreateRenderTasks();
 
@@ -201,23 +201,6 @@ inline void CGameTask::Render()
 		m_Rendered = true;
 		m_RenderStartTimeMS = m_Timer.GetTimeMS();
 	}
-}
-
-
-inline void CGameTask::RenderBase()
-{
-	// do the render routine of the base class
-	CGameTask::Render();
-
-	// render routine of each derived class
-	Render();
-
-	// render the mouse cursor
-	if( m_bShowMouseCursor )
-		DrawMouseCursor();
-
-	// render fade-out effect if the task is starting / terminating
-	RenderFadeEffect();
 }
 
 
