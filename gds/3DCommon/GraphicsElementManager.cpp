@@ -906,11 +906,10 @@ CGE_Group *CGraphicsElementManager::CreateGroup( std::vector<CGraphicsElement *>
 
 bool CGraphicsElementManager::LoadTexture( int texture_id, const std::string& tex_filename )
 {
-	if( (int)m_vecTexHandle.size() <= texture_id )
-	{
-		for( int i=0; i<texture_id - (int)m_vecTexHandle.size() + 1; i++ )
-			m_vecTexHandle.push_back( CTextureHandle() );
-	}
+	const int required_size = texture_id + 1;
+	const int shortage = required_size - (int)m_vecTexHandle.size();
+	for( int i=0; i<shortage; i++ )
+		m_vecTexHandle.push_back( CTextureHandle() );
 
 	return m_vecTexHandle[texture_id].Load( tex_filename );
 }

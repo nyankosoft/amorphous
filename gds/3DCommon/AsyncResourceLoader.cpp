@@ -226,6 +226,8 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 
 				if( unlocked )
 				{
+					// Sleep( 2000 );
+
 					if( req.m_pLoader->GetResource() )
 						req.m_pLoader->GetResource()->SetState( GraphicsResourceState::LOADED );
 				}

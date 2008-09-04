@@ -118,7 +118,7 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
 	HRESULT hr;
 
 	m_DeviceType    = D3DDEVTYPE_HAL;
-	m_BehaviorFlags = D3DCREATE_HARDWARE_VERTEXPROCESSING;// | D3DCREATE_MULTITHREADED;
+	m_BehaviorFlags = D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED;
 
 	hr = m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, m_DeviceType, hWnd, m_BehaviorFlags,
 					  &D3DPresentParam, &m_pD3DDevice );
@@ -127,7 +127,7 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
 	{
 		LOG_PRINT_WARNING( " - Hardware vertex processing is not available." );
 
-		m_BehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING;// | D3DCREATE_MULTITHREADED;
+		m_BehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED;
 
 		hr = m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, m_DeviceType, hWnd, m_BehaviorFlags,
 						  &D3DPresentParam, &m_pD3DDevice );

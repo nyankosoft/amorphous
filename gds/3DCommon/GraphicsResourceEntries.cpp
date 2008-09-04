@@ -476,6 +476,8 @@ bool CTextureResource::Unlock()
 
 //	hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
 
+//	m_pTexture->PreLoad();
+
 	if( FAILED(hr) )
 	{
 		LOG_PRINT_ERROR( "D3DXFilterTexture() failed." );

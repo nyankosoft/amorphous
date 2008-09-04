@@ -6,8 +6,10 @@
 #include "GameCommon/MouseCursor.h"
 #include "3DCommon/GraphicsEffectManager.h"
 #include "3DCommon/PyModule_GraphicsElement.h"
-
 #include "3DCommon/RenderTaskProcessor.h"
+#include "Support/DebugOutput.h"
+#include "Support/Profile.h"
+
 
 
 using namespace std;
@@ -226,6 +228,10 @@ void CGameTask::RenderBase()
 
 	// render fade-out effect if the task is starting / terminating
 	RenderFadeEffect();
+
+	ProfileDumpOutputToBuffer();
+
+	DebugOutput.Render();
 }
 
 
