@@ -559,7 +559,7 @@ PyObject* ChangeSize( PyObject* self, PyObject* args )
  * NOTE: This function does not take animation end time
  * end time is determined by the dist to cover, initial velocity, and smooth time
  */
-PyObject* TranslateCDV( PyObject* self, PyObject* args )
+PyObject* TranslateNonLinear( PyObject* self, PyObject* args )
 {
 	int id = -1;
 	float start_time = 0;
@@ -571,7 +571,7 @@ PyObject* TranslateCDV( PyObject* self, PyObject* args )
 		&id, &start_time, &vDest.x, &vDest.y, &vInitVel.x, &vInitVel.y, &smooth_time, &coord_type );
 
 	if( 0 <= id )
-		AnimatedGraphicsManager().TranslateCDV( gs_vecpGraphicsElement[id], start_time, vDest, vInitVel, smooth_time, coord_type );
+		AnimatedGraphicsManager().TranslateNonLinear( gs_vecpGraphicsElement[id], start_time, vDest, vInitVel, smooth_time, coord_type );
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -611,7 +611,7 @@ PyMethodDef g_PyModuleAnimatedGraphicsMethod[] =
 //	{ "Translate"				Translate,				METH_VARARGS, "" },
 	{ "SetTimeOffset",			SetTimeOffset,			METH_VARARGS, "" },
 	{ "Translate",				Translate,				METH_VARARGS, "" },
-	{ "TranslateCDV",			TranslateCDV,			METH_VARARGS, "" },
+	{ "TranslateNonLinear",		TranslateNonLinear,		METH_VARARGS, "" },
 	{ "ChangeColorC32",			ChangeColorC32,			METH_VARARGS, "" },
 	{ "SetColorC32",			SetColorC32,			METH_VARARGS, "" },
 	{ "ChangeSize",				ChangeSize,				METH_VARARGS, "" },

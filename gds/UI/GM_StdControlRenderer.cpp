@@ -566,7 +566,7 @@ void CGM_StdSliderRenderer::OnSliderValueChanged( CGM_Slider& slider )
 	const SRect& btn_rect = slider.GetButtonRect();
 	Vector2 vDestPos = Vector2( (float)btn_rect.left, (float)btn_rect.top );
 //	m_pGraphicsEffectManager->SetTimeOffset();
-//	m_pGraphicsEffectManager->TranslateCDV( m_pSliderButton, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+//	m_pGraphicsEffectManager->TranslateNonLinear( m_pSliderButton, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 
 	m_pSliderButton->SetLocalTopLeftPos( vDestPos );
 */
@@ -620,7 +620,7 @@ void CGM_StdDialogRenderer::OnDialogOpened( CGM_Dialog& dialog )
 		Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
 		m_pGroupElement->SetTopLeftPos( vDestPos + Vector2( -50, 0 ) );
 //		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
-		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateNonLinear( m_pGroupElement, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 	}
 
 	// fade in (change alpha form 0 to 1)
@@ -646,7 +646,7 @@ void CGM_StdDialogRenderer::OnDialogClosed( CGM_Dialog& dialog )
 		Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
 		m_pGroupElement->SetTopLeftPos( vStartPos );
 //		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
-		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateCDV( m_pGroupElement, 0.0f, vStartPos + Vector2( -50, 0 ), -Vector2( 50.0f, 0.0f ), 0.15f, 0 );
+		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateNonLinear( m_pGroupElement, 0.0f, vStartPos + Vector2( -50, 0 ), -Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 	}
 
 	// fade out (change alpha form 1 to 0)

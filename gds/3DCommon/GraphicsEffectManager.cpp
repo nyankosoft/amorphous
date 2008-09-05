@@ -1,4 +1,3 @@
-
 #include "GraphicsEffectManager.h"
 #include "GraphicsElementManager.h"
 #include "GameCommon/Timer.h"
@@ -9,7 +8,32 @@
 using namespace std;
 
 
+/**
+- Releasing effects
+  - Certain effects are not released automatically and the user is responsible for releasing them.
+    Those are,
+    - Non-linear effects created with DONT_RELEASE flag
+      - Linear effects cannot be created with DONT_RELEASE flag
+    - Looped effects
+      - They keep repeating the same effects until the user explicitly releases them.
+
+- Multi-thread issues
+  - The following functions must be called by a single thread
+    - AnimatedGraphicsManager::UpdateEffects()
+	- CGraphicsEffectHandle::Set*()
+    - 
+*/
+
+
 const CGraphicsEffectHandle CGraphicsEffectHandle::ms_NullHandle;
+
+
+void CGraphicsEffectHandle::SetDestPosition( const Vector2& vDestPos )
+{
+	CGraphicsElementEffect *pEffect = m_pManager->GetEffect(*this);
+	if( pEffect )
+		pEffect->SetDestPosition( vDestPos );
+}
 
 
 void CE_ColorShift::Update( double current_time, double dt )
@@ -134,7 +158,7 @@ void CE_TextDraw::Update( double current_time, double dt )
 }
 
 
-void CE_TranslateCD::Update( double current_time, double dt )
+void CE_TranslateNonLinear::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
 		return;
@@ -156,7 +180,7 @@ void CE_TranslateCD::Update( double current_time, double dt )
 }
 
 
-bool CE_TranslateCD::IsOver( double current_time ) const
+bool CE_TranslateNonLinear::IsOver( double current_time ) const
 {
 	return Vec2LengthSq( m_Pos.target - m_Pos.current ) < 0.1f;
 }
@@ -214,7 +238,7 @@ void CGraphiceEffectManagerCallback::OnDestroyed( CGraphicsElement *pElement )
 	if( m_pEffectMgr->m_vecpEffect.size() == 0 )
 		return;
 
-	vector<CGraphicsElementEffectBase *>::iterator itr = m_pEffectMgr->m_vecpEffect.begin();
+	vector<CGraphicsElementEffect *>::iterator itr = m_pEffectMgr->m_vecpEffect.begin();
 
 	while( itr != m_pEffectMgr->m_vecpEffect.end() )
 	{
@@ -230,7 +254,7 @@ void CGraphiceEffectManagerCallback::OnDestroyed( CGraphicsElement *pElement )
 }
 
 
-CGraphicsElement *CGraphicsElementEffectBase::GetElement()
+CGraphicsElement *CGraphicsElementEffect::GetElement()
 {
 	return m_pTargetElement;
 //	return m_pManager->GetGraphicsElementManager()->GetElement(m_TargetElementID);
@@ -261,7 +285,7 @@ CAnimatedGraphicsManager::CAnimatedGraphicsManager()
 
 	m_NextGraphicsEffectID = 0;
 
-	// for vector<CGraphicsElementEffectBase *>
+	// for vector<CGraphicsElementEffect *>
 	m_vecpEffect.resize( 32, NULL );
 	int num_effects = (int)m_vecpEffect.size();
 	for( int i=num_effects-1; 0<=i; i-- )
@@ -274,7 +298,7 @@ CAnimatedGraphicsManager::CAnimatedGraphicsManager()
 void CAnimatedGraphicsManager::Release()
 {
 //	SafeDeleteVector( m_vecpEffect );
-	vector<CGraphicsElementEffectBase *>::iterator itr;
+	vector<CGraphicsElementEffect *>::iterator itr;
 	for( itr = m_vecpEffect.begin();
 		 itr != m_vecpEffect.end();
 		 itr++ )
@@ -408,31 +432,33 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( CGraphicsElement 
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateCDV( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( CGraphicsElement *pTargetElement,
 											 double start_time,
 											 Vector2 vDestPos,
 											 Vector2 vInitVel,
 											 float smooth_time,
-											 int coord_type )
+											 int coord_type,
+											 U32 flags )
 {
 //	LOG_PRINT_CAUTION( to_string(vDestPos) );
 
 	switch( coord_type )
 	{
-	case CGraphicsElementEffectBase::COORD_CENTER:
+	case CGraphicsElementEffect::COORD_CENTER:
 //		dest_x = dest_x - element.GetWidth() * 0.5f;
 //		dest_y = dest_y - element.GetHeight() * 0.5f;
 		break;
-	case CGraphicsElementEffectBase::COORD_TOPLEFT:
+	case CGraphicsElementEffect::COORD_TOPLEFT:
 	default:
 		break;
 	}
 
-	CE_TranslateCD *p = new CE_TranslateCD( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + start_time + 1000.0 );
+	CE_TranslateNonLinear *p = new CE_TranslateNonLinear( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + start_time + 1000.0 );
 	p->m_Pos.current = pTargetElement->GetTopLeftPos();
 	p->m_Pos.target  = vDestPos;
 	p->m_Pos.vel     = vInitVel;
 	p->m_Pos.smooth_time = smooth_time;
+	p->SetFlags( flags );
 
 	return AddGraphicsEffect( p );
 }
@@ -450,11 +476,11 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( CGraphicsElement *p
 
 	switch( coord_type )
 	{
-	case CGraphicsElementEffectBase::COORD_CENTER:
+	case CGraphicsElementEffect::COORD_CENTER:
 //		dest_x = dest_x - element.GetWidth() * 0.5f;
 //		dest_y = dest_y - element.GetHeight() * 0.5f;
 		break;
-	case CGraphicsElementEffectBase::COORD_TOPLEFT:
+	case CGraphicsElementEffect::COORD_TOPLEFT:
 	default:
 		break;
 	}
@@ -527,13 +553,13 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( CGE_Text *pTargetTextE
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::AddGraphicsEffect( CGraphicsElementEffectBase* pEffect )
+CGraphicsEffectHandle CAnimatedGraphicsManager::AddGraphicsEffect( CGraphicsElementEffect* pEffect )
 {
 	pEffect->SetAnimatedGraphicsManager( this );
 
-//	m_vecpEffect.push_back( p ); // for list<CGraphicsElementEffectBase *>
+//	m_vecpEffect.push_back( p ); // for list<CGraphicsElementEffect *>
 
-	// for vector<CGraphicsElementEffectBase *>
+	// for vector<CGraphicsElementEffect *>
 
 	int index = GetVacantSlotIndex();
 
@@ -554,7 +580,7 @@ void CAnimatedGraphicsManager::UpdateEffects( double dt )
 {
 	const double current_time = m_pTimer->GetTime();
 
-	vector<CGraphicsElementEffectBase *>::iterator itr;
+	vector<CGraphicsElementEffect *>::iterator itr;
 	for( itr = m_vecpEffect.begin();
 		 itr != m_vecpEffect.end();
 		 itr++ )
@@ -569,7 +595,9 @@ void CAnimatedGraphicsManager::UpdateEffects( double dt )
 	size_t i, num_effects = m_vecpEffect.size();
 	for( i=0; i<num_effects; i++ )
 	{
-		if( m_vecpEffect[i] && m_vecpEffect[i]->IsOver( current_time ) )
+		if( m_vecpEffect[i]
+		 && m_vecpEffect[i]->IsOver( current_time )
+		 && !(m_vecpEffect[i]->GetFlags() & CGraphicsElementEffectFlag::DONT_RELEASE) )
 		{
 			SafeDelete( m_vecpEffect[i] );
 			m_vecVacantSlotIndex.push_back( (int)i );
@@ -580,29 +608,36 @@ void CAnimatedGraphicsManager::UpdateEffects( double dt )
 
 bool CAnimatedGraphicsManager::CancelEffect( CGraphicsEffectHandle& effect_handle )
 {
-	int index = effect_handle.m_EffectIndex;
-	if( index < 0 || (int)m_vecpEffect.size() <= index )
+	if( GetEffect(effect_handle) )
+	{
+		RemoveEffect( effect_handle.m_EffectIndex );
+		return true;
+	}
+	else
 		return false;
-
-	if( !m_vecpEffect[index] )
-		return false;
-
-	if( m_vecpEffect[index]->GetEffectID() != effect_handle.m_EffectID )
-		return false; // ids do not match - the effect has been already released
-
-	RemoveEffect( index );
-
-	return true;
 }
 
 
+CGraphicsElementEffect *CAnimatedGraphicsManager::GetEffect( CGraphicsEffectHandle& effect_handle )
+{
+	int index = effect_handle.m_EffectIndex;
+	if( index < 0 || (int)m_vecpEffect.size() <= index )
+		return NULL;
 
+	if( !m_vecpEffect[index] )
+		return NULL;
+
+	if( m_vecpEffect[index]->GetEffectID() != effect_handle.m_EffectID )
+		return NULL; // ids do not match - the effect has been already released
+
+	return m_vecpEffect[index];
+}
 
 
 /*
 void CAnimatedGraphicsManager::UpdateEffects( double dt )
 {
-	vector<CGraphicsElementEffectBase *>::iterator itr;
+	vector<CGraphicsElementEffect *>::iterator itr;
 	for( itr = m_vecpEffect.begin();
 		 itr != m_vecpEffect.end();
 		 itr++ )

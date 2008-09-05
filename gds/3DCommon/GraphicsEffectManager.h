@@ -68,13 +68,21 @@ public:
 };
 */
 
+class CGraphicsElementEffectFlag
+{
+public:
+	enum Name
+	{
+		DONT_RELEASE = ( 1 << 0 ), ///< can be used with non-linear effects. User must manually release the effect if he wants to remove it before releasing the effect manager.
+	};
+};
 
 
 /**
  * base class for 2d graphics effects
  *
  */
-class CGraphicsElementEffectBase
+class CGraphicsElementEffect
 {
 protected:
 
@@ -91,15 +99,17 @@ protected:
 
 	int m_Index; ///< see CGraphiceEffectManagerCallback::OnDestroyed
 
+	U32 m_Flags;
+
 public:
 
-	CGraphicsElementEffectBase( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CGraphicsElementEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
 		: m_EffectID(-1), m_pTargetElement(pTargetElement), m_fStartTime(start_time), m_fEndTime(end_time), m_bInitialized(false), m_Index(-1) {}
 
 	enum TransMode
 	{
 		TRANS_LINEAR,
-		TRANS_CD,
+		TRANS_NONLINEAR, ///< Effect uses critical damping and transfroms non-linearly
 		NUM_TRANS_MODES
 	};
 
@@ -129,12 +139,22 @@ public:
 
 	double GetEndTime() const { return m_fEndTime; }
 
+	U32 GetFlags() const { return m_Flags; }
+
+	void SetFlags( U32 flags ) { m_Flags = flags; }
+
 	void SetAnimatedGraphicsManager( CAnimatedGraphicsManager* pMgr ) { m_pManager = pMgr; }
+
+	/// Implemented by non-linear translation effect
+	virtual void SetDestPosition( Vector2 vDestPos ) {}
+
+	/// To be implemented by non-linear color shift effect
+//	virtual void SetDestColor( const SFloatRGBAColor& dest_color ) {}
 
 };
 
 
-class CGraphicsElementEffect_Linear : public CGraphicsElementEffectBase
+class CGraphicsElementLinearEffect : public CGraphicsElementEffect
 {
 protected:
 
@@ -144,46 +164,46 @@ protected:
 
 public:
 
-	CGraphicsElementEffect_Linear( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffectBase(pTargetElement, start_time, end_time ), m_bAppliedAtEndTime(false) {}
+	CGraphicsElementLinearEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
+		: CGraphicsElementEffect(pTargetElement, start_time, end_time ), m_bAppliedAtEndTime(false) {}
 
 	virtual int GetTransType() const { return TRANS_LINEAR; }
 
 	virtual bool IsOver( double current_time ) const { return m_fEndTime + 1.0 < current_time && m_bAppliedAtEndTime; }
 
-	bool operator==( const CGraphicsElementEffectBase& effect )
+	bool operator==( const CGraphicsElementEffect& effect )
 	{
 		return m_fEndTime == effect.GetEndTime();
 	}
 
-	bool operator<( const CGraphicsElementEffectBase& effect )
+	bool operator<( const CGraphicsElementEffect& effect )
 	{
 		return m_fEndTime < effect.GetEndTime();
 	}
 };
 
 
-class CGraphicsElementEffect_CD : public CGraphicsElementEffectBase
+class CGraphicsElementNonLinearEffect : public CGraphicsElementEffect
 {
 protected:
 
 public:
 
-	CGraphicsElementEffect_CD( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffectBase(pTargetElement, start_time, end_time ) {}
+	CGraphicsElementNonLinearEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
+		: CGraphicsElementEffect(pTargetElement, start_time, end_time ) {}
 
-	virtual int GetTransType() const { return TRANS_CD; }
+	virtual int GetTransType() const { return TRANS_NONLINEAR; }
 };
 
 
-inline double CGraphicsElementEffect_Linear::GetFraction_Linear( double current_time )
+inline double CGraphicsElementLinearEffect::GetFraction_Linear( double current_time )
 {
 	double duration = m_fEndTime - m_fStartTime;
 	return (current_time - m_fStartTime) / duration;
 }
 
 
-class CE_ColorShift : public CGraphicsElementEffect_Linear
+class CE_ColorShift : public CGraphicsElementLinearEffect
 {
 	int m_ColorIndex;
 
@@ -195,7 +215,7 @@ class CE_ColorShift : public CGraphicsElementEffect_Linear
 public:
 
 	CE_ColorShift( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_Linear( pTargetElement, start_time, end_time ),
+		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ),
 		m_ColorIndex(0), m_StartColor(SFloatRGBAColor(1,1,1,1)), m_EndColor(SFloatRGBAColor(1,1,1,1)) {}
 
 	enum eTarget
@@ -213,7 +233,7 @@ public:
 };
 
 
-class CE_AlphaChange : public CGraphicsElementEffect_Linear
+class CE_AlphaChange : public CGraphicsElementLinearEffect
 {
 	int m_ColorIndex;
 
@@ -223,7 +243,7 @@ class CE_AlphaChange : public CGraphicsElementEffect_Linear
 public:
 
 	CE_AlphaChange( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_Linear( pTargetElement, start_time, end_time ),
+		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ),
 		m_ColorIndex(0), m_fStartAlpha(0), m_fEndAlpha(0) {}
 
 	virtual void Update( double current_time, double dt );
@@ -232,13 +252,13 @@ public:
 };
 
 /*
-class CE_FadeIn : public CGraphicsElementEffectBase
+class CE_FadeIn : public CGraphicsElementEffect
 {
 public:
 	void Update( float dt );
 };
 
-class CE_FadeOut : public CGraphicsElementEffectBase
+class CE_FadeOut : public CGraphicsElementEffect
 {
 public:
 	void Update( float dt );
@@ -246,7 +266,7 @@ public:
 */
 
 
-class CE_Translate : public CGraphicsElementEffect_Linear
+class CE_Translate : public CGraphicsElementLinearEffect
 {
 	Vector2 m_vStart;
 	Vector2 m_vEnd;
@@ -258,7 +278,7 @@ class CE_Translate : public CGraphicsElementEffect_Linear
 public:
 
 	CE_Translate( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_Linear( pTargetElement, start_time, end_time ) {}
+		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
 
@@ -266,7 +286,7 @@ public:
 };
 
 
-class CE_SizeChange : public CGraphicsElementEffect_Linear
+class CE_SizeChange : public CGraphicsElementLinearEffect
 {
 	AABB2 m_Start;
 	AABB2 m_End;
@@ -274,7 +294,7 @@ class CE_SizeChange : public CGraphicsElementEffect_Linear
 public:
 
 	CE_SizeChange( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_Linear( pTargetElement, start_time, end_time ) {}
+		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
 
@@ -282,7 +302,7 @@ public:
 };
 
 
-class CE_Rotate : public CGraphicsElementEffect_Linear
+class CE_Rotate : public CGraphicsElementLinearEffect
 {
 	float m_fStartAngle;
 	float m_fEndAngle;
@@ -290,7 +310,7 @@ class CE_Rotate : public CGraphicsElementEffect_Linear
 public:
 
 	CE_Rotate( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_Linear( pTargetElement, start_time, end_time ) {}
+		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt )
 	{
@@ -311,7 +331,7 @@ public:
 };
 
 
-class CE_TextDraw : public CGraphicsElementEffect_Linear
+class CE_TextDraw : public CGraphicsElementLinearEffect
 {
 	std::string m_OrigText;
 
@@ -326,7 +346,7 @@ public:
 
 	CE_TextDraw( CGraphicsElement *pTargetElement, double start_time )
 	:
-	CGraphicsElementEffect_Linear( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
+	CGraphicsElementLinearEffect( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
 	{
 		m_pTextElement = dynamic_cast<CGE_Text *>(pTargetElement);
 
@@ -351,7 +371,7 @@ public:
 
 
 
-class CE_Scale : public CGraphicsElementEffect_Linear
+class CE_Scale : public CGraphicsElementLinearEffect
 {
 	float m_fStartScale;
 	float m_fEndScale;
@@ -361,7 +381,7 @@ class CE_Scale : public CGraphicsElementEffect_Linear
 public:
 
 	CE_Scale( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_Linear( pTargetElement, start_time, end_time ) { m_vCenter = Vector2(0,0); }
+		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) { m_vCenter = Vector2(0,0); }
 
 	virtual void Update( double current_time, double dt )
 	{
@@ -389,24 +409,26 @@ public:
 };
 
 
-class CE_TranslateCD : public CGraphicsElementEffect_CD
+class CE_TranslateNonLinear : public CGraphicsElementNonLinearEffect
 {
 	cdv<Vector2> m_Pos;
 
 public:
 
-	CE_TranslateCD( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_CD( pTargetElement, start_time, end_time ) {}
+	CE_TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, double end_time )
+		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
 
 	virtual bool IsOver( double current_time ) const;
 
+	void SetDestPosition( Vector2 vDestPos ) { m_Pos.target = vDestPos; }
+
 	friend class CAnimatedGraphicsManager;
 };
 
 
-class CE_SizeChangeCD : public CGraphicsElementEffect_CD
+class CE_SizeChangeCD : public CGraphicsElementNonLinearEffect
 {
 	cdv<Vector2> m_vMin;
 	cdv<Vector2> m_vMax;
@@ -414,7 +436,7 @@ class CE_SizeChangeCD : public CGraphicsElementEffect_CD
 public:
 
 	CE_SizeChangeCD( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_CD( pTargetElement, start_time, end_time ) {}
+		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
 
@@ -424,7 +446,7 @@ public:
 };
 
 
-class CE_ScaleCD : public CGraphicsElementEffect_CD
+class CE_ScaleCD : public CGraphicsElementNonLinearEffect
 {
 	cdv<float> m_Scale;
 
@@ -433,7 +455,7 @@ class CE_ScaleCD : public CGraphicsElementEffect_CD
 public:
 
 	CE_ScaleCD( CGraphicsElement *pTargetElement, double start_time, double end_time )
-		: CGraphicsElementEffect_CD( pTargetElement, start_time, end_time ) { m_vCenter = Vector2(0,0); }
+		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, end_time ) { m_vCenter = Vector2(0,0); }
 
 	virtual void Update( double current_time, double dt )
 	{
@@ -458,7 +480,7 @@ public:
 };
 
 
-class CE_Blink : public CGraphicsElementEffectBase
+class CE_Blink : public CGraphicsElementEffect
 {
 	float m_fAccumulatedTime; ///< in sec
 	float m_fFlipInterval; ///< in sec
@@ -467,7 +489,7 @@ class CE_Blink : public CGraphicsElementEffectBase
 
 public:
 
-	CE_Blink( CGraphicsElement *pTargetElement ) : CGraphicsElementEffectBase(pTargetElement, 0.0f, 0.0f ), m_fAccumulatedTime(0), m_fFlipInterval(1.0f) {}
+	CE_Blink( CGraphicsElement *pTargetElement ) : CGraphicsElementEffect(pTargetElement, 0.0f, 0.0f ), m_fAccumulatedTime(0), m_fFlipInterval(1.0f) {}
 	~CE_Blink() {}
 };
 
@@ -529,7 +551,7 @@ public:
 	virtual CGraphicsEffectHandle ChangeSize( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestMin, Vector2 vDestMax ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle ScaleTo( CGraphicsElement *pTargetElement, double start_time, double end_time, float end_scale ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle TranslateTo( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle TranslateCDV( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel = Vector2(0,0), float smooth_time = 0.5f, int coord_type = 0 ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel = Vector2(0,0), float smooth_time = 0.5f, int coord_type = 0, U32 flags = 0 ) { return CGraphicsEffectHandle::Null(); }
 
 	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ) { return CGraphicsEffectHandle::Null(); } 
 	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ) { return CGraphicsEffectHandle::Null(); } 
@@ -557,8 +579,8 @@ class CAnimatedGraphicsManager : public CAnimatedGraphicsManagerBase
 {
 	CTimer *m_pTimer;
 
-//	std::list<CGraphicsElementEffectBase *> m_vecpEffect;
-	std::vector<CGraphicsElementEffectBase *> m_vecpEffect;
+//	std::list<CGraphicsElementEffect *> m_vecpEffect;
+	std::vector<CGraphicsElementEffect *> m_vecpEffect;
 
 	std::vector<int> m_vecVacantSlotIndex;
 
@@ -576,7 +598,14 @@ class CAnimatedGraphicsManager : public CAnimatedGraphicsManagerBase
 
 	inline void RemoveEffect( int effect_index );
 
-	CGraphicsEffectHandle AddGraphicsEffect( CGraphicsElementEffectBase* pEffect );
+	CGraphicsEffectHandle AddGraphicsEffect( CGraphicsElementEffect* pEffect );
+
+	/// Used by effect handle
+	/// - Never let any other thread call Update() while this is called and effect handles finish
+	///   necessary operations.
+	///   Reason: effect instance may be removed in Update() after effect pointer is returned
+	///   by this function
+	CGraphicsElementEffect *GetEffect( CGraphicsEffectHandle& effect_handle );
 
 public:
 
@@ -634,14 +663,14 @@ public:
 	/// - translate the element from the current position to the dest position 'vDestPos'
 	///   with the init velocity 'vInitVel' 
 	/// - uses critical damping to calc position
-	CGraphicsEffectHandle TranslateCDV( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel, float smooth_time, int coord_type );
+	CGraphicsEffectHandle TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel, float smooth_time, int coord_type, U32 flags );
 
 //	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ); 
 //	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ); 
 
 	/// Used only by text element.
-	/// - Effect is terminated after all the entire is drawn
-	/// - TODO: Define the behavior when the effect gets canceled when it has not been completely drawn.
+	/// - Effect is terminated after the entire text is drawn
+	/// - TODO: Define the behavior when the effect gets canceled before it finish drawing the complete text.
 	CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec );
 
 //	void SetElementPath_Start();
@@ -656,6 +685,7 @@ public:
 
 	bool CancelEffect( CGraphicsEffectHandle& effect_handle );
 
+	friend class CGraphicsEffectHandle;
 	friend class CGraphiceEffectManagerCallback;
 };
 

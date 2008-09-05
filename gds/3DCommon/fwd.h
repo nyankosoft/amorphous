@@ -81,10 +81,12 @@ class CGE_Rect;
 class CGE_Triangle;
 class CGE_Text;
 class CGE_Group;
-class CGraphicsElementManager;
+class CGraphicsElementManager;	
 class CGraphicsElementManagerCallback;
 
-class CGraphicsElementEffectBase;
+class CGraphicsElementEffect;
+class CGraphicsElementLinearEffect;
+class CGraphicsElementNonLinearEffect;
 class CE_ColorShift;
 class CE_AlphaChange;
 class CE_TranslateCD;
