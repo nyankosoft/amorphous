@@ -4,6 +4,7 @@
 
 #include "3DMath/MathMisc.h"
 #include "Support/memory_helpers.h"
+#include "XML/XMLNodeReader.h"
 
 #include "GameInput/3DActionCode.h"
 #include "GameInput/InputHandler.h"
@@ -33,6 +34,15 @@ const T& GetLimited( const T& val, const T& min = 0.0f, const T& max = 1.0f )
 
 	return val;
 }
+
+
+void CGI_Aircraft::AmmoPayload::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	reader.GetChildElementTextContent( "AmmoName",        AmmoName );
+	reader.GetChildElementTextContent( "WeaponSlotIndex", WeaponSlot );
+	reader.GetChildElementTextContent( "MaxQuantity",     MaxQuantity );
+}
+
 
 
 CGI_Aircraft::CGI_Aircraft()
@@ -69,64 +79,6 @@ CGI_Aircraft::CGI_Aircraft()
 	m_fRCS = 1.0f;
 
 }
-
-
-void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
-{
-	CGameItem::Serialize( ar, version );
-
-    ar & m_CockpitLocalPose;
-
-    ar & m_vThirdPersonViewOffset;
-
-	ar & m_vecNozzleFlameParams;
-
-	ar & m_fAccel & m_fBoostAccel & m_fBrakeAccel;
-
-//	ar & m_PitchRange & m_RollRange;
-
-	ar & m_fMaxPitchAccel & m_fMaxRollAccel & m_fMaxYawAccel;
-
-//	ar & m_WeaponSystem;
-
-	ar & m_AmmoReleaseLocalPose;
-
-	ar & m_vGunMuzzleEndLocalPos;
-
-	ar & m_fGearUnitHeight;
-
-	ar & m_fCeiling;
-	ar & m_fArmor;
-	ar & m_fRCS;
-
-	ar & m_vecSupportedAmmo;
-
-	if( ar.GetMode() == IArchive::MODE_INPUT )
-	{
-		m_fCurrentBoost = 0.0f;
-		m_fCurrentBrake = 0.0f;
-	}
-
-	// serialization of mesh controllers
-	CMeshBoneControllerFactory factory;
-	ar.Polymorphic( m_vecpMeshController, factory );
-
-	if( ar.GetMode() == IArchive::MODE_INPUT )
-	{
-		size_t i, num = m_vecpMeshController.size();
-		for( i=0; i<num; i++ )
-		{
-//			if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_... )
-//				((CMeshBoneController_AircraftBase *)m_vecpMeshController[i])->SetPseudoAircraftSimulator( &m_PseudoSimulator );
-				m_vecpMeshController[i]->SetPseudoAircraftSimulator( &m_PseudoSimulator );
-		}
-	}
-
-	ar & m_vecRotor;
-
-//	ar & ;
-}
-
 
 
 CGI_Aircraft::~CGI_Aircraft()
@@ -359,5 +311,94 @@ void CGI_Aircraft::UpdateTargetMeshTransforms()
 	size_t i, num = m_vecpMeshController.size();
 	for( i=0; i<num; i++ )
 		m_vecpMeshController[i]->UpdateTargetMeshTransforms();
+}
+
+
+void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+    ar & m_CockpitLocalPose;
+
+    ar & m_vThirdPersonViewOffset;
+
+	ar & m_vecNozzleFlameParams;
+
+	ar & m_fAccel & m_fBoostAccel & m_fBrakeAccel;
+
+//	ar & m_PitchRange & m_RollRange;
+
+	ar & m_fMaxPitchAccel & m_fMaxRollAccel & m_fMaxYawAccel;
+
+//	ar & m_WeaponSystem;
+
+	ar & m_AmmoReleaseLocalPose;
+
+	ar & m_vGunMuzzleEndLocalPos;
+
+	ar & m_fGearUnitHeight;
+
+	ar & m_fCeiling;
+	ar & m_fArmor;
+	ar & m_fRCS;
+
+	ar & m_vecSupportedAmmo;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		m_fCurrentBoost = 0.0f;
+		m_fCurrentBrake = 0.0f;
+	}
+
+	// serialization of mesh controllers
+	CMeshBoneControllerFactory factory;
+	ar.Polymorphic( m_vecpMeshController, factory );
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		size_t i, num = m_vecpMeshController.size();
+		for( i=0; i<num; i++ )
+		{
+//			if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_... )
+//				((CMeshBoneController_AircraftBase *)m_vecpMeshController[i])->SetPseudoAircraftSimulator( &m_PseudoSimulator );
+				m_vecpMeshController[i]->SetPseudoAircraftSimulator( &m_PseudoSimulator );
+		}
+	}
+
+	ar & m_vecRotor;
+
+//	ar & ;
+}
+
+
+void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	reader.GetChildElementTextContent( "Armor",           m_fArmor );
+	reader.GetChildElementTextContent( "Ceiling",         m_fCeiling );
+	reader.GetChildElementTextContent( "CockpitLocalPos", m_CockpitLocalPose.vPosition );
+
+	reader.GetChildElementTextContent( "ThirdPersonViewOffset", m_vThirdPersonViewOffset );
+
+//	reader.GetChildElementTextContent( m_vecNozzleFlameParams,  );
+
+	reader.GetChildElementTextContent( "Accel",           m_fAccel );
+	reader.GetChildElementTextContent( "BoostAccel",      m_fBoostAccel );
+	reader.GetChildElementTextContent( "BrakeAccel",      m_fBrakeAccel );
+
+//	reader.m_PitchRange reader.m_RollRange;
+
+	reader.GetChildElementTextContent(  "MaxPitchAccel",  m_fMaxPitchAccel );
+	reader.GetChildElementTextContent(  "MaxRollAccel",   m_fMaxRollAccel );
+	reader.GetChildElementTextContent(  "MaxYawAccel",    m_fMaxYawAccel );
+
+	std::vector<CXMLNodeReader> payloads = reader.GetImmediateChildren( "AmmoPayload" );
+
+	const size_t num_payload_info = payloads.size();
+	m_vecSupportedAmmo.resize( num_payload_info );
+	for( size_t i = 0; i<num_payload_info; i++ )
+	{
+		m_vecSupportedAmmo[i].LoadFromXMLNode( payloads[i] );
+	}
+	
 }
 

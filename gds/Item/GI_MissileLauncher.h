@@ -16,6 +16,39 @@ class CWeaponSystem;
 struct SWeaponSlot;
 
 
+class CMissileHolder : public IArchiveObjectBase
+{
+public:
+
+	// storage
+
+	Matrix34 ReleaseLocalPose;
+
+	// states - used during runtime
+
+	Matrix34 ReleaseWorldPose;
+
+	//----------------- used when m_LauncherType == TYPE_LOAD_AND_RELEASE
+
+	/// entities that represents loaded ammunition (borrowed reference)
+	CCopyEntity *pLoadedAmmo;
+
+	U32 LastFireTimeMS;
+
+	Vector3 vVelocityAtReleasePos;
+
+public:
+
+	CMissileHolder();
+
+	void Serialize( IArchive& ar, const unsigned int version );
+
+	void LoadFromXMLNode( CXMLNodeReader& reader );
+
+	void InitStates();
+};
+
+
 /**
  * missile launcher that is capable of sensoring the environment
  * to find targets.
@@ -25,6 +58,8 @@ struct SWeaponSlot;
 class CGI_MissileLauncher : public CGI_Weapon
 {
 protected:
+
+	// types - saved to and loaded from the disk
 
 	int m_LauncherType;
 
@@ -38,11 +73,11 @@ protected:
 
 	int m_NumReleasePositions;
 
-	std::vector<Matrix34> m_ReleaseLocalPose;
+	// storage & states
 
-	// state
+	std::vector<CMissileHolder> m_vecMissileHolder;
 
-	std::vector<Matrix34> m_ReleaseWorldPose;
+	// states - used during runtime
 
 	int m_CurrentReleasePoseIndex;
 
@@ -53,14 +88,9 @@ protected:
 
 	int m_FireTargetIndex;
 
+	vector<CCopyEntity *> m_vecpVisibleEntity;
+
 	//----------------- used when m_LauncherType == TYPE_LOAD_AND_RELEASE
-
-	/// entities that represents loaded ammunition (borrowed reference)
-	std::vector<CCopyEntity *> m_vecpLoadedAmmo;
-
-	std::vector<U32> m_vecLastFireTimeMS;
-
-	std::vector<Vector3> m_vecVelocityAtReleasePos;
 
 	float m_fTargetSensoringInterval;
 
@@ -78,7 +108,7 @@ protected:
 
 public:
 
-	inline CGI_MissileLauncher();
+	CGI_MissileLauncher();
 
 	virtual ~CGI_MissileLauncher() {}
 
@@ -109,16 +139,12 @@ public:
 	void SetNumReleasePositions( int num )
 	{
 		m_NumReleasePositions = num;
-		m_ReleaseLocalPose.resize( num, Matrix34Identity() );
-		m_ReleaseWorldPose.resize( num, Matrix34Identity() );
-
-		/// used when m_LauncherType == TYPE_LOAD_AND_RELEASE
-		m_vecLastFireTimeMS.resize( num, 0 );
-		m_vecpLoadedAmmo.resize( num, NULL );
-		m_vecVelocityAtReleasePos.resize( num, Vector3(0,0,0) );
+		m_vecMissileHolder.resize( num );
 	}
 
 	void SetLocalReleasePose( int index, const Matrix34& pose );
+
+	void InitStates();
 
 	/// called when the owner left the stage.
 	/// - need to release the loaded ammo stored as entity pointers
@@ -126,7 +152,9 @@ public:
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_MISSILELAUNCHER; }
 
-	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	enum eLauncherType
 	{
@@ -137,71 +165,6 @@ public:
 
 	friend class CItemDatabaseBuilder;
 };
-
-
-inline CGI_MissileLauncher::CGI_MissileLauncher()
-{
-	m_TypeFlag |= (TYPE_WEAPON);
-
-	m_fValidSensorAngle	 = 1.5f;
-	m_fMaxSensorRange	 = 200000.0f;
-
-//	m_NumMaxSimulTargets = 1;
-	SetNumMaxSimultaneousTargets( 1 );
-
-	SetNumReleasePositions( 1 );
-
-	m_CurrentReleasePoseIndex = 0;
-
-	m_pFocusedEntity = NULL;
-
-	m_FireTargetIndex = 0;
-
-	m_vecpLoadedAmmo.resize( m_NumReleasePositions );
-	m_vecLastFireTimeMS.resize( m_NumReleasePositions );
-
-	m_LauncherType = TYPE_LOAD_AND_RELEASE;
-//	m_LauncherType = TYPE_FIRE_IMMEDIATE;
-
-	m_fTargetSensoringInterval = 0.12f;
-
-	m_fFrameTimeAccumulation = 0.0f;
-}
-
-
-inline void CGI_MissileLauncher::Serialize( IArchive& ar, const unsigned int version )
-{
-	CGI_Weapon::Serialize( ar, version );
-
-	ar & m_fValidSensorAngle;
-	ar & m_fMaxSensorRange;
-
-	ar & m_NumMaxSimulTargets;
-
-	ar & m_NumReleasePositions;
-
-	ar & m_ReleaseLocalPose;
-	ar & m_ReleaseWorldPose;
-
-	if( ar.GetMode() == IArchive::MODE_INPUT )
-	{
-		// initialize states
-		m_CurrentReleasePoseIndex = 0;
-		m_pFocusedEntity = NULL;
-		m_vecpCurrentTarget.resize( 0 );
-		m_FireTargetIndex = 0;
-
-		m_vecpLoadedAmmo.resize( m_NumReleasePositions, NULL );
-		m_vecLastFireTimeMS.resize( m_NumReleasePositions, 0 );
-		m_vecVelocityAtReleasePos.resize( m_NumReleasePositions, Vector3(0,0,0) );
-
-		m_fFrameTimeAccumulation = 0.0f;
-	}
-
-	ar & m_LauncherType;
-
-	ar & m_fTargetSensoringInterval;
-}
 
 
 

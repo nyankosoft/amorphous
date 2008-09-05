@@ -7,15 +7,15 @@
 #include "Stage/BaseEntityHandle.h"
 #include "Stage/Serialization_BaseEntityHandle.h"
 
+#include "3DCommon/fwd.h"
 #include "GameCommon/PseudoAircraftSimulator.h"
 #include "GameCommon/NozzleFlameParams.h"
-
 #include "GameCommon/MeshBoneController_Aircraft.h"
 #include "GameCommon/MeshBoneControllerFactory.h"
 #include "GameCommon/RangedSet.h"
+#include "XML/fwd.h"
 
 
-class CD3DXSMeshObject;
 //class CMeshBoneController_AircraftBase;
 
 /*
@@ -117,17 +117,24 @@ class CGI_Aircraft : public CGameItem
 	class AmmoPayload : public IArchiveObjectBase
 	{
 	public:
+
 		std::string AmmoName;
 		int WeaponSlot;			///< weapon slot index where the ammo can be loaded
 		int MaxQuantity;		///< how many waepons can be loaded
 
+	public:
+
 		AmmoPayload() : WeaponSlot(0), MaxQuantity(0) {}
+
 		AmmoPayload( std::string name, int weapon_slot_index, int max_quantity )
 			: AmmoName(name), WeaponSlot(weapon_slot_index), MaxQuantity(max_quantity) {}
+
 		void Serialize( IArchive& ar, const unsigned int version )
 		{
 			ar & AmmoName & WeaponSlot & MaxQuantity;
 		}
+
+		void LoadFromXMLNode( CXMLNodeReader& reader );
 	};
 
 	/// list of ammo that can be fired from this aircraft
@@ -150,7 +157,7 @@ public:
 
 	CWeaponSystem &WeaponSystem() { return m_WeaponSystem; }
 
-	/// CPseudoAircraftSimulator::Update() is not called inside of this function,
+	/// CPseudoAircraftSimulator::Update() is not called inside this function,
 	/// and it needs to be called separately.
 	/// Calls Update() of weapon items currently used by the aircraft
 	virtual void Update( float dt );
@@ -214,6 +221,8 @@ public:
 	unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	friend class CItemDatabaseBuilder;
 

@@ -1,5 +1,6 @@
 #include "PlayerInfo.h"
 
+#include "3DCommon/FontBase.h"
 #include "GameInput/InputHub.h"
 #include "Input/InputHandler_PlayerShip.h"
 #include "Input/InputHandler_PlayerPAC.h"
@@ -128,18 +129,13 @@ void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )
 			if( !pAmmo )
 				return;
 
-			if( !strcmp(pAmmo->GetAmmoType(), "7.62x51") )
-				category = CItemCategory::AMMO_762X51;
-			else if( !strcmp(pAmmo->GetAmmoType(), "12GS") )
-				category = CItemCategory::AMMO_12GAUGE;
-			else if( !strcmp(pAmmo->GetAmmoType(), "40MMG") )
-				category = CItemCategory::AMMO_40MMGRENADE;
-			else if( !strcmp(pAmmo->GetAmmoType(), "MSSL") )
-				category = CItemCategory::AMMO_MISSILE;
-			else if( !strcmp(pAmmo->GetAmmoType(), "RBODY") )
-				category = CItemCategory::AMMO_RIGIDBODY;
-//			else if( !strcmp(pAmmo->GetAmmoType(), "50CAL") )
-//				category = CItemCategory::AMMO_50CAL;
+			const string& ammo_type = pAmmo->GetAmmoType();
+			if( ammo_type == "7.62x51" )    category = CItemCategory::AMMO_762X51;
+			else if( ammo_type == "12GS" )  category = CItemCategory::AMMO_12GAUGE;
+			else if( ammo_type == "40MMG" ) category = CItemCategory::AMMO_40MMGRENADE;
+			else if( ammo_type == "MSSL" )  category = CItemCategory::AMMO_MISSILE;
+			else if( ammo_type == "RBODY" ) category = CItemCategory::AMMO_RIGIDBODY;
+//			else if( ammo_type == "50CAL" ) category = CItemCategory::AMMO_50CAL;
 			else
 				category = -1;
 			break;
@@ -289,9 +285,13 @@ void CSinglePlayerInfo::RenderHUD()
 	if( m_pHUD->GetFont() )
 	{
 		size_t i, num = m_vecpActiveItem.size();
+		string status_buffer;
 		for( i=0; i<num; i++ )
 		{
-			m_vecpActiveItem[i]->RenderStatus( (int)i, m_pHUD->GetFont() );
+			Vector2 vPos = Vector2( 480.0f, 500.0f + i * 16 );
+			m_vecpActiveItem[i]->GetStatus( status_buffer );
+			m_pHUD->GetFont()->DrawText( status_buffer.c_str(), vPos, 0xFFFFFFFF );
+
 		}
 	}
 }

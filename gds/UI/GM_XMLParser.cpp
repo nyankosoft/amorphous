@@ -47,8 +47,8 @@ CGM_XMLParser::~CGM_XMLParser()
 void CGM_XMLParser::LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDescBase *pControlDescBase )
 {
 	pControlDescBase->StringID = reader.GetAttributeText("id");
-	reader.GetTextContentLTWH( "LTWH", pControlDescBase->Rect );
-	reader.GetTextContentLTRB( "LTRB", pControlDescBase->Rect );
+	reader.GetChildElementTextContentLTWH( "LTWH", pControlDescBase->Rect );
+	reader.GetChildElementTextContentLTRB( "LTRB", pControlDescBase->Rect );
 //	reader.GetTextContent( "Caption", pControlDescBase->strCaption );
 }
 
@@ -56,8 +56,8 @@ void CGM_XMLParser::LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDescBase 
 void CGM_XMLParser::LoadStaticDesc( CXMLNodeReader& reader, CGM_StaticDesc *pStaticDesc )
 {
 	LoadCommonDesc( reader, pStaticDesc );
-	reader.GetTextContent( "Text",  pStaticDesc->strText );
-	reader.GetTextContent( "Title", pStaticDesc->strText );
+	reader.GetChildElementTextContent( "Text",  pStaticDesc->strText );
+	reader.GetChildElementTextContent( "Title", pStaticDesc->strText );
 }
 
 
@@ -77,7 +77,7 @@ void CGM_XMLParser::LoadCheckBoxDesc( CXMLNodeReader& reader, CGM_CheckBoxDesc *
 void CGM_XMLParser::LoadRadioButtonDesc( CXMLNodeReader& reader, CGM_RadioButtonDesc *pRadioButtonDesc )
 {
 	LoadCheckBoxDesc( reader, pRadioButtonDesc );
-	reader.GetTextContent( "Group", pRadioButtonDesc->iButtonGroup );
+	reader.GetChildElementTextContent( "Group", pRadioButtonDesc->iButtonGroup );
 }
 
 
@@ -85,17 +85,17 @@ void CGM_XMLParser::LoadSliderDesc( CXMLNodeReader& reader, CGM_SliderDesc *pSli
 {
 	LoadCommonDesc( reader, pSliderDesc );
 //	reader.Get( "Title", pSliderDesc->Title );
-	reader.GetTextContent( "MinVal",  pSliderDesc->iMin );
-	reader.GetTextContent( "MaxVal",  pSliderDesc->iMax );
-	reader.GetTextContent( "InitVal", pSliderDesc->iInitialValue );
+	reader.GetChildElementTextContent( "MinVal",  pSliderDesc->iMin );
+	reader.GetChildElementTextContent( "MaxVal",  pSliderDesc->iMax );
+	reader.GetChildElementTextContent( "InitVal", pSliderDesc->iInitialValue );
 }
 
 
 void CGM_XMLParser::LoaListBoxDesc( CXMLNodeReader& reader, CGM_ListBoxDesc *pListBoxDesc )
 {
 	LoadCommonDesc( reader, pListBoxDesc );
-	reader.GetTextContent( "PageSize",        pListBoxDesc->PageSize );
-	reader.GetTextContent( "ScrollbarWidth",  pListBoxDesc->nSBWidth );
+	reader.GetChildElementTextContent( "PageSize",        pListBoxDesc->PageSize );
+	reader.GetChildElementTextContent( "ScrollbarWidth",  pListBoxDesc->nSBWidth );
 }
 
 
@@ -193,7 +193,7 @@ CGM_Dialog *CGM_XMLParser::LoadDialog( CXMLNodeReader& reader, bool root_dialog 
 	CGM_DialogDesc desc;
 	desc.bRootDialog = root_dialog;
 	LoadCommonDesc( reader, &desc );
-	reader.GetTextContent( "Title", desc.strTitle );
+	reader.GetChildElementTextContent( "Title", desc.strTitle );
 
 	CGM_Dialog *pDialog = m_pDialogManager->AddDialog( desc );
 

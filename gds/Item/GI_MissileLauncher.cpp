@@ -7,20 +7,56 @@
 #include "GameInput/3DActionCode.h"
 #include "GameInput/InputHandler.h"
 #include "GameCommon/BasicGameMath.h"
-#include "GameCommon/Timer.h"
 #include "GameCommon/MTRand.h"
+#include "Sound/SoundManager.h"
+#include "XML/XMLNodeReader.h"
 
 #include "Stage/Stage.h"
-#include "Stage/CopyEntityDesc.h"
 #include "Stage/CopyEntity.h"
+#include "Stage/CopyEntityDesc.h"
 #include "Stage/GameMessage.h"
 #include "Stage/BE_HomingMissile.h"
 #include "Stage/PlayerInfo.h"
 
-#include "Sound/SoundManager.h"
-
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
+
+
+CMissileHolder::CMissileHolder()
+:
+ReleaseLocalPose(Matrix34Identity()),
+ReleaseWorldPose(Matrix34Identity()),
+pLoadedAmmo(NULL),
+LastFireTimeMS(0),
+vVelocityAtReleasePos(Vector3(0,0,0))
+{
+}
+
+
+void CMissileHolder::InitStates()
+{
+	pLoadedAmmo = NULL;
+	LastFireTimeMS = 0;
+	vVelocityAtReleasePos = Vector3(0,0,0);
+}
+
+
+void CMissileHolder::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & ReleaseLocalPose;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+		InitStates();
+}
+
+
+void CMissileHolder::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	reader.GetChildElementTextContent( "LocalReleasePos", ReleaseLocalPose.vPosition );
+
+	InitStates();
+}
+
 
 
 /*
@@ -35,6 +71,110 @@ public:
 	}
 }
 */
+
+
+CGI_MissileLauncher::CGI_MissileLauncher()
+{
+	m_TypeFlag |= (TYPE_WEAPON);
+
+	m_fValidSensorAngle	 = 1.5f;
+	m_fMaxSensorRange	 = 200000.0f;
+
+//	m_NumMaxSimulTargets = 1;
+	SetNumMaxSimultaneousTargets( 1 );
+
+	SetNumReleasePositions( 1 );
+
+	m_CurrentReleasePoseIndex = 0;
+
+	m_pFocusedEntity = NULL;
+
+	m_FireTargetIndex = 0;
+
+	m_LauncherType = TYPE_LOAD_AND_RELEASE;
+//	m_LauncherType = TYPE_FIRE_IMMEDIATE;
+
+	m_fTargetSensoringInterval = 0.12f;
+
+	m_fFrameTimeAccumulation = 0.0f;
+}
+
+
+void CGI_MissileLauncher::InitStates()
+{
+	// initialize states
+	m_CurrentReleasePoseIndex = 0;
+	m_pFocusedEntity          = NULL;
+	m_vecpCurrentTarget.resize( 0 );
+	m_FireTargetIndex         = 0;
+
+	for( size_t i=0; i<m_vecMissileHolder.size(); i++ )
+		m_vecMissileHolder[i].InitStates();
+
+	m_fFrameTimeAccumulation = 0.0f;
+
+	m_dLastFireTime          = 0;
+}
+
+
+void CGI_MissileLauncher::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGI_Weapon::Serialize( ar, version );
+
+	ar & m_fValidSensorAngle;
+	ar & m_fMaxSensorRange;
+
+	ar & m_NumMaxSimulTargets;
+
+	ar & m_NumReleasePositions;
+
+	ar & m_vecMissileHolder;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		// initialize states
+		InitStates();
+	}
+
+	ar & m_LauncherType;
+
+	ar & m_fTargetSensoringInterval;
+}
+
+
+void CGI_MissileLauncher::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	InitStates();
+
+	CGI_Weapon::LoadFromXMLNode( reader );
+/*
+	reader.GetChildNodeTextContent( "ValidSensorAngle",    m_fValidSensorAngle );
+	reader.GetChildNodeTextContent( "MaxSensorRange",      m_fMaxSensorRange );
+
+	reader.GetChildNodeTextContent( "NumMaxSimulTargets",  m_NumMaxSimulTargets );
+
+//	reader.GetChildNodeTextContent( "NumReleasePositions", m_NumReleasePositions );
+
+	size_t num_release_positions = 0;
+	reader.GetChildNodeTextContent( "NumReleasePositions", num_release_positions );
+	SetNumReleasePositions( num_release_positions );
+
+	vector<CXMLNodeReader> = reader.GetImmediateChildren( "Holder" );
+	for(;;)
+	{
+		child_reader = [i];
+		int index = to_int( child_reader.GetAttributeText( "index" ) );
+
+		if( index < 0 )
+			continue;
+
+		child_reader.GetChildNodeTextContent( "LocalPos", m_ReleaseLocalPos[index] );
+	}
+
+	reader.GetChildNodeTextContent( "LauncherType",        m_LauncherType );
+
+	reader.GetChildNodeTextContent( "TargetSensoringInterval", m_fTargetSensoringInterval );*/
+}
 
 
 void CGI_MissileLauncher::SetNumMaxSimultaneousTargets( int num_targets )
@@ -52,7 +192,7 @@ void CGI_MissileLauncher::SetLocalReleasePose( int index, const Matrix34& pose )
 //	if( index < 0 || m_ReleaseLocalPose.size() <= index )
 //		return;
 
-	m_ReleaseLocalPose[index] = pose;
+	m_vecMissileHolder[index].ReleaseLocalPose = pose;
 }
 
 
@@ -72,7 +212,6 @@ void CGI_MissileLauncher::UpdateTargets()
 		return;		// stage is not linked / missile is not loaded
 
 	float range_sq = m_pWeaponSlot->pChargedAmmo->GetRangeSq();
-	static vector<CCopyEntity *> s_vecpVisibleEntity;
 
 	m_vecpCurrentTarget.resize( 0 );
 
@@ -85,9 +224,9 @@ void CGI_MissileLauncher::UpdateTargets()
 		float dp = Vec3Dot( vToTarget / sqrtf(dist_to_target_sq), m_SensorCamera.GetFrontDirection() );
 
 		if( acos(dp) < m_fValidSensorAngle && dist_to_target_sq < range_sq )
-            m_vecpCurrentTarget.push_back( m_pFocusedEntity );
+            m_vecpCurrentTarget.push_back( m_pFocusedEntity ); // still locking on it
 		else
-			m_vecpCurrentTarget.push_back( NULL );
+			m_vecpCurrentTarget.push_back( NULL ); // lost it
 	}
 
 	if( m_NumMaxSimulTargets <= (int)m_vecpCurrentTarget.size() )
@@ -103,7 +242,7 @@ void CGI_MissileLauncher::UpdateTargets()
 	CViewFrustumTest vf_test;
 	vf_test.m_Flag = VFT_IGNORE_NOCLIP_ENTITIES;
 	vf_test.SetCamera( &m_SensorCamera );
-	vf_test.SetBuffer( s_vecpVisibleEntity );
+	vf_test.SetBuffer( m_vecpVisibleEntity );
 	vf_test.ClearEntities();	// clear any previous data
 
 	// collect entities that are in the view frustum volume of the sensor camera
@@ -172,9 +311,9 @@ void CGI_MissileLauncher::UpdateWorldProperties( const Matrix34& rShooterWorldPo
 	size_t i, num_release_positions = m_NumReleasePositions;
 	for( i=0; i<num_release_positions; i++ )
 	{
-		m_ReleaseWorldPose[i] = m_pWeaponSlot->WorldPose * m_ReleaseLocalPose[i];
+		m_vecMissileHolder[i].ReleaseWorldPose = m_pWeaponSlot->WorldPose * m_vecMissileHolder[i].ReleaseLocalPose;
 
-		m_vecVelocityAtReleasePos[i] = rvShooterVelocity;
+		m_vecMissileHolder[i].vVelocityAtReleasePos = rvShooterVelocity;
 	}
 }
 
@@ -217,11 +356,11 @@ void CGI_MissileLauncher::Update( float dt )
 		// - also note that loading an ammo means creating a new entity in the stage
 
 		// update the world poses of the loaded ammos
-		size_t i, num_release_positions = m_vecpLoadedAmmo.size();
+		size_t i, num_release_positions = m_vecMissileHolder.size();
 		for( i=0; i<num_release_positions; i++ )
 		{
-			if( m_vecpLoadedAmmo[i] )
-				m_vecpLoadedAmmo[i]->SetWorldPose( m_ReleaseWorldPose[i] );
+			if( m_vecMissileHolder[i].pLoadedAmmo )
+				m_vecMissileHolder[i].pLoadedAmmo->SetWorldPose( m_vecMissileHolder[i].ReleaseWorldPose );
 		}
 
 		const Vector3& rvMuzzleEndPosition	= m_MuzzleEndWorldPose.vPosition;
@@ -232,8 +371,8 @@ void CGI_MissileLauncher::Update( float dt )
 
 		for( i=0; i<num_release_positions; i++ )
 		{
-			if( !m_vecpLoadedAmmo[i]
-			 && 4000 < pStage->GetElapsedTimeMS() - m_vecLastFireTimeMS[i] )
+			if( !m_vecMissileHolder[i].pLoadedAmmo
+			 && 4000 < pStage->GetElapsedTimeMS() - m_vecMissileHolder[i].LastFireTimeMS )
 			{
 				if( rCurrentAmmo.GetCurrentQuantity() == 0 )
 					break;	// no ammo
@@ -246,7 +385,7 @@ void CGI_MissileLauncher::Update( float dt )
 
 //				m_ReloadPosIndex = ( m_ReloadPosIndex + 1 ) % m_NumReleasePositions;
 
-				missile_entity.SetWorldPose( m_ReleaseWorldPose[i] );
+				missile_entity.SetWorldPose( m_vecMissileHolder[i].ReleaseWorldPose );
 				missile_entity.vVelocity = Vector3(0,0,0);
 
 				missile_entity.s1 = CBE_HomingMissile::MS_LOADED;
@@ -264,7 +403,7 @@ void CGI_MissileLauncher::Update( float dt )
 
 				if( pMissile )
 				{
-					m_vecpLoadedAmmo[i] = pMissile;
+					m_vecMissileHolder[i].pLoadedAmmo = pMissile;
 				}
 			}
 		}
@@ -285,15 +424,15 @@ bool CGI_MissileLauncher::ReleaseAmmo()
 
 	ONCE( g_Log.Print( "CGI_MissileLauncher::ReleaseAmmo() - releasing the ammo" ) );
 
-	size_t i, num_release_positions = m_vecpLoadedAmmo.size();
-	for( i=0; i<num_release_positions; i++ )
+	const size_t num_release_positions = m_vecMissileHolder.size();
+	for( size_t i=0; i<num_release_positions; i++ )
 	{
-		CCopyEntity *pAmmoEntity = m_vecpLoadedAmmo[i];
+		CCopyEntity *pAmmoEntity = m_vecMissileHolder[i].pLoadedAmmo;
 		if( IsValidEntity(pAmmoEntity) )
 		{
 			// ready for release
 
-			pAmmoEntity->SetVelocity( m_vecVelocityAtReleasePos[i] );
+			pAmmoEntity->SetVelocity( m_vecMissileHolder[i].vVelocityAtReleasePos );
 
 			// ignite the booster and set the target if it's a missile
 			if( pAmmoEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_HOMINGMISSILE )
@@ -304,9 +443,9 @@ bool CGI_MissileLauncher::ReleaseAmmo()
 			}
 
 			// release the ammo
-			m_vecpLoadedAmmo[i] = NULL;
+			m_vecMissileHolder[i].pLoadedAmmo = NULL;
 
-			m_vecLastFireTimeMS[i] = pStage->GetElapsedTimeMS();
+			m_vecMissileHolder[i].LastFireTimeMS = pStage->GetElapsedTimeMS();
 
 			CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
 			rCurrentAmmo.ReduceQuantity( 1 );
@@ -402,7 +541,7 @@ void CGI_MissileLauncher::Fire()
 		return;	// no ammo
 
 	// TODO: use a large integer for current time
-	double dCurrentTime = TIMER.GetTime();
+	double dCurrentTime = pStage->GetElapsedTime();
 	double dTimeSinceLastFire = dCurrentTime - m_dLastFireTime;
 
 	// return if enough time has not elapsed since the last fire
@@ -530,9 +669,9 @@ bool CGI_MissileLauncher::IsLockingOn( CCopyEntity *pEntity )
 
 void CGI_MissileLauncher::Disarm()
 {
-	size_t i, num_release_positions = m_vecpLoadedAmmo.size();
+	size_t i, num_release_positions = m_vecMissileHolder.size();
 	for( i=0; i<num_release_positions; i++ )
 	{
-		m_vecpLoadedAmmo[i] = NULL;
+		m_vecMissileHolder[i].pLoadedAmmo = NULL;
 	}
 }

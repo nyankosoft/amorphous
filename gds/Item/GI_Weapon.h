@@ -28,15 +28,10 @@ class CGI_Weapon : public CGameItem
 {
 protected:
 
-	enum param
-	{
-		MAX_AMMOTYPE_LENGTH = 16
-	};
-
 	SWeaponSlot *m_pWeaponSlot;
 
 	/// caliber
-	char m_acAmmoType[MAX_AMMOTYPE_LENGTH];
+	std::string m_strAmmoType;
 
 	/// fire rate measured by the time between shots
 	// (0.1 means the weapon fires 10 bulletes per sec)
@@ -72,6 +67,7 @@ protected:
 	Matrix34 m_MuzzleEndWorldPose;
 	Vector3 m_vMuzzleEndVelocity;
 
+	/// Stores the last time when the weapon fired ammo
 	double m_dLastFireTime;
 
 	int m_iCurrentBurstCount;
@@ -94,13 +90,11 @@ public:
 
 public:
 
-	inline CGI_Weapon();
+	CGI_Weapon();
 
 	virtual ~CGI_Weapon() {}
 
 	void SetWeaponSlot( SWeaponSlot *pSlot ) { m_pWeaponSlot = pSlot; }
-
-//	virtual void Update( CWeaponSystem& rWeaponSystem );
 
 	virtual void Update( float dt );
 
@@ -124,7 +118,7 @@ public:
 
 	virtual void Fire();
 
-	const char* GetAmmoType() const { return m_acAmmoType; }
+	const std::string& GetAmmoType() const { return m_strAmmoType; }
 
 	void SetData(char *pcName, char *pcAmmoType, float fFireInterval);
 	void SetAmmoType( const char* pcAmmoType );
@@ -142,88 +136,12 @@ public:
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_FIREARMS; }
 
-	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	friend class CItemDatabaseBuilder;
 };
-
-
-inline CGI_Weapon::CGI_Weapon()
-{
-	m_TypeFlag |= (TYPE_WEAPON);
-
-	m_pWeaponSlot = NULL;
-
-	memset( m_acAmmoType, 0, sizeof(m_acAmmoType) );
-
-	m_fFireInterval = 0.2f;
-
-	m_fGrouping = 0.0f;
-
-	m_fMuzzleSpeedFactor = 1.0f;
-
-	m_vLocalRecoilForce = Vector3(0,0,-5);
-
-	// fire mode is set to full-auto by default
-	m_iNumBursts = ~( 1 << (sizeof(int)*8-1) );	// a large value
-
-	m_dLastFireTime = 0;
-
-	m_iCurrentBurstCount = 0;
-
-	m_aTriggerState[0] = m_aTriggerState[1] = 0;
-
-	m_WeaponState = 0;
-
-//	m_fBurstInterval = 1.0f;
-
-	m_MuzzleEndLocalPose.Identity();
-	m_MuzzleEndLocalPose.vPosition = Vector3(0,0,10);
-	m_MuzzleEndWorldPose = m_MuzzleEndLocalPose;
-
-	m_vMuzzleEndVelocity = Vector3(0,0,0);
-
-	m_pOwnerEntity = NULL;
-}
-
-
-inline void CGI_Weapon::Serialize( IArchive& ar, const unsigned int version )
-{
-	CGameItem::Serialize( ar, version );
-
-	for( int i=0; i<MAX_AMMOTYPE_LENGTH; i++ )
-		ar & m_acAmmoType[i];
-
-	/* weapon data */
-	ar & m_fFireInterval;
-	ar & m_fGrouping;	// grouping in 10[m]
-	ar & m_fMuzzleSpeedFactor;
-
-	ar & m_vLocalRecoilForce;
-
-	ar & m_FireSound;
-
-	ar & m_iNumBursts;
-
-//	ar & m_fBurstInterval;
-
-	ar & m_MuzzleEndLocalPose;
-
-	ar & m_MuzzleEndWorldPose;
-
-	if( ar.GetMode() == IArchive::MODE_INPUT )
-	{
-		// reset state
-		m_dLastFireTime = 0;
-		m_iCurrentBurstCount = 0;
-		m_aTriggerState[0] = m_aTriggerState[1] = 0;
-		m_WeaponState = 0;
-
-		//m_MuzzleEndWorldPose = m_MuzzleEndLocalPose;
-		//m_vMuzzleEndVelocity = Vector3(0,0,0);
-		//m_pOwnerEntity = ???
-	}
-}
 
 
 /*

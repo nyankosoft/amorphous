@@ -178,18 +178,13 @@ bool CQuickMenuManager::SelectCurrentItem()
 // select a list of ammo which has the same caliber as the current weapon
 int OpenAmmoSelectMenu()
 {
-	const char *pAmmoType = PLAYERINFO.GetWeaponSystem()->GetPrimaryWeaponSlot().pWeapon->GetAmmoType();
-	if( !strcmp(pAmmoType,"7.62x51") )
-		return CQM_Menu::QMENU_AMMO_762X51;
-	else if( !strcmp(pAmmoType,"12GS") )
-		return CQM_Menu::QMENU_AMMO_12GAUGE;
-	else if( !strcmp(pAmmoType,"40MMG") )
-		return CQM_Menu::QMENU_AMMO_40MMGRENADE;
-	else if( !strcmp(pAmmoType,"MSSL") )
-		return CQM_Menu::QMENU_AMMO_MISSILE;
-	else if( !strcmp(pAmmoType,"RBODY") )
-		return CQM_Menu::QMENU_AMMO_RIGIDBODY;
-//	else if( !strcmp(pAmmoType,"CAL50") )
+	const std::string& ammo_type = PLAYERINFO.GetWeaponSystem()->GetPrimaryWeaponSlot().pWeapon->GetAmmoType();
+	if( ammo_type == "7.62x51")		return CQM_Menu::QMENU_AMMO_762X51;
+	else if( ammo_type == "12GS")	return CQM_Menu::QMENU_AMMO_12GAUGE;
+	else if( ammo_type == "40MMG")	return CQM_Menu::QMENU_AMMO_40MMGRENADE;
+	else if( ammo_type == "MSSL")	return CQM_Menu::QMENU_AMMO_MISSILE;
+	else if( ammo_type == "RBODY")	return CQM_Menu::QMENU_AMMO_RIGIDBODY;
+//	else if( ammo_type == "CAL50") )
 //		current_menu_id = CQM_Menu::QMENU_AMMO_;
 	else
 		return -1;	// an unregistered type of ammo

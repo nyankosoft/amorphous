@@ -1,4 +1,3 @@
-
 #ifndef __GAMEITEM_AMMUNITION_H__
 #define __GAMEITEM_AMMUNITION_H__
 
@@ -22,9 +21,7 @@ typedef boost::shared_ptr<CGI_Ammunition> CGI_AmmunitionSharedPtr;
 */
 class CGI_Ammunition : public CGameItem
 {
-	enum params { MAX_AMMOTYPE_NAME_LENGTH = 16 };
-
-	char m_acAmmoType[MAX_AMMOTYPE_NAME_LENGTH];	///< caliber
+	std::string m_strAmmoType;
 
 	float m_fMuzzleSpeed;
 	float m_fPower;
@@ -37,11 +34,11 @@ class CGI_Ammunition : public CGameItem
 
 public:
 
-	inline CGI_Ammunition();
+	CGI_Ammunition();
 
 	void SetData( char* pcAmmoType, float fMuzzleSpeed, float fPower, int iNumPellets, char* pcBaseEntityName );
 
-	inline const char* GetAmmoType() const { return m_acAmmoType; }
+	inline const std::string& GetAmmoType() const { return m_strAmmoType; }
 	inline float GetMuzzleSpeed() const { return m_fMuzzleSpeed; }
 	inline float GetPower() const { return m_fPower; }
 	inline int GetNumPellets() const { return m_iNumPellets; }
@@ -59,39 +56,13 @@ public:
 
 	unsigned int GetArchiveObjectID() const { return ID_AMMUNITION; }
 
-	inline void Serialize( IArchive& ar, const unsigned int version );
+	void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	friend class CItemDatabaseBuilder;
 
 };
-
-
-inline CGI_Ammunition::CGI_Ammunition()
-{
-	memset( m_acAmmoType, 0, sizeof(m_acAmmoType) );
-	m_MuzzleFlashBaseEntity.SetBaseEntityName( "mflsh" );
-	m_TypeFlag |= (TYPE_AMMO);
-	m_iNumPellets = 1;
-	m_fRange = 100000.0f;
-}
-
-
-inline void CGI_Ammunition::Serialize( IArchive& ar, const unsigned int version )
-{
-	CGameItem::Serialize( ar, version );
-
-	for( int i=0; i<MAX_AMMOTYPE_NAME_LENGTH; i++ )
-		ar & m_acAmmoType[i];
-
-	ar & m_fMuzzleSpeed;
-	ar & m_fPower;
-	ar & m_iNumPellets;
-
-	ar & m_fRange;
-
-	ar & m_AmmoBaseEntity;
-	ar & m_MuzzleFlashBaseEntity;
-}
 
 
 #endif  /*  __GAMEITEM_AMMUNITION_H__  */

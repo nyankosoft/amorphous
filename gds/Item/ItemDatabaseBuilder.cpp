@@ -75,10 +75,9 @@ void CItemDatabaseBuilder::LoadFirearms( CTextFileScanner& scanner, CGI_Weapon* 
 //	scanner.TryScanLine( "burst_interval",		pWeapon->m_fBurstInterval );
 	scanner.TryScanLine( "local_recoil_force",	pWeapon->m_vLocalRecoilForce );
 	scanner.TryScanLine( "muzzle_end_pos",		pWeapon->m_MuzzleEndLocalPose.vPosition );
-	if( scanner.TryScanLine("ammo_type",str) || scanner.TryScanLine("caliber",str) )
-	{
-		strcpy( pWeapon->m_acAmmoType, str.c_str() );
-	}
+	scanner.TryScanLine("ammo_type",			pWeapon->m_strAmmoType );
+	scanner.TryScanLine("caliber",				pWeapon->m_strAmmoType );
+
 	if( scanner.TryScanLine( "fire_sound", str ) )
 	{
 		pWeapon->m_FireSound.SetResourceName( str.c_str() );
@@ -104,10 +103,8 @@ void CItemDatabaseBuilder::LoadAmmunition( CTextFileScanner& scanner, CGI_Ammuni
 	scanner.TryScanLine( "muzzle_speed",	pAmmo->m_fMuzzleSpeed );
 	scanner.TryScanLine( "power",			pAmmo->m_fPower );
 	scanner.TryScanLine( "num_pellets",		pAmmo->m_iNumPellets );
-	if( scanner.TryScanLine("ammo_type",str) || scanner.TryScanLine("caliber",str) )
-	{
-		strcpy( pAmmo->m_acAmmoType, str.c_str() );
-	}
+	scanner.TryScanLine( "ammo_type",		pAmmo->m_strAmmoType );
+	scanner.TryScanLine( "caliber",			pAmmo->m_strAmmoType );
 	if( scanner.TryScanLine( "ammo_entity", str ) )
 	{
 		pAmmo->m_AmmoBaseEntity.SetBaseEntityName( str.c_str() );

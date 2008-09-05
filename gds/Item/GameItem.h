@@ -8,6 +8,7 @@
 #include "3DCommon/MeshObjectContainer.h"
 #include "GameCommon/LangID.h"
 #include "Stage/fwd.h"
+#include "XML/fwd.h"
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
 using namespace GameLib1::Serialization;
@@ -31,6 +32,7 @@ public:
 			ar & text[i];
 	}
 
+	void LoadFromXMLNode( CXMLNodeReader& reader );
 };
 
 
@@ -65,7 +67,7 @@ protected:
 
 public:
 
-	inline CGameItem();
+	CGameItem();
 	virtual ~CGameItem();
 
 	const std::string& GetName() const { return m_strName; }
@@ -97,10 +99,12 @@ public:
 	virtual void Update( float dt ) {}
 
 
-	/// render item status on HUD
-	virtual void RenderStatus( int index, CFontBase *pFont ) {}
+	/// item staus expressed with a text format
+	virtual void GetStatus( std::string& dest_buffer ) {}
 
-	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	inline int GetCurrentQuantity() const { return m_iCurrentQuantity; }
 	inline int GetMaxQuantity() const { return m_iMaxQuantity; }
@@ -152,29 +156,6 @@ public:
 	friend class CItemDatabaseManager;
 
 };
-
-
-inline CGameItem::CGameItem()
-:
-m_iCurrentQuantity(0),
-m_iMaxQuantity(1),
-m_Price(1),
-m_TypeFlag(0)
-{
-}
-
-
-inline void CGameItem::Serialize( IArchive& ar, const unsigned int version )
-{
-	ar & m_strName;
-	ar & m_MeshObjectContainer;
-	ar & m_iMaxQuantity;
-	ar & m_iCurrentQuantity;
-	ar & m_Price;
-	ar & m_TypeFlag;
-
-	ar & m_Desc;
-}
 
 
 
@@ -256,7 +237,7 @@ public:
 	virtual void Update( float dt );
 
 	/// render item status on HUD
-	virtual void RenderStatus( int index, CFontBase *pFont );
+	virtual void GetStatus( std::string& dest_buffer );
 
 	inline void Serialize( IArchive& ar, const unsigned int version );
 
@@ -302,7 +283,7 @@ public:
 	virtual void Update( float dt );
 
 	/// render item status on HUD
-	virtual void RenderStatus( int index, CFontBase *pFont );
+	virtual void GetStatus( std::string& dest_buffer );
 
 	inline void Serialize( IArchive& ar, const unsigned int version );
 

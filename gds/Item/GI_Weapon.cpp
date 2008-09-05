@@ -1,43 +1,120 @@
-
 #include "GI_Weapon.h"
 #include "GI_Ammunition.h"
 #include "WeaponSystem.h"
 
-#include "GameInput/3DActionCode.h"
-#include "GameInput/InputHandler.h"
-
-#include "Stage/Stage.h"
-#include "Stage/CopyEntityDesc.h"
-#include "Stage/PlayerInfo.h"
-#include "Stage/GameMessage.h"
-#include "Stage/CopyEntity.h"
-
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/Timer.h"
-#include "GameCommon/MTRand.h"
-
 #include "3DMath/MathMisc.h"
 #include "3DCommon/3DGameMath.h"
-
+#include "GameInput/3DActionCode.h"
+#include "GameInput/InputHandler.h"
+#include "GameCommon/BasicGameMath.h"
+#include "GameCommon/MTRand.h"
 #include "Sound/SoundManager.h"
+
+#include "Stage/Stage.h"
+#include "Stage/CopyEntity.h"
+#include "Stage/CopyEntityDesc.h"
+#include "Stage/GameMessage.h"
+#include "Stage/PlayerInfo.h"
 
 
 //======================================================================================
 // CGI_Weapon
 //======================================================================================
 
+CGI_Weapon::CGI_Weapon()
+{
+	m_TypeFlag |= (TYPE_WEAPON);
+
+	m_pWeaponSlot = NULL;
+
+	m_fFireInterval = 0.2f;
+
+	m_fGrouping = 0.0f;
+
+	m_fMuzzleSpeedFactor = 1.0f;
+
+	m_vLocalRecoilForce = Vector3(0,0,-5);
+
+	// fire mode is set to full-auto by default
+	m_iNumBursts = ~( 1 << (sizeof(int)*8-1) );	// a large value
+
+	m_dLastFireTime = 0;
+
+	m_iCurrentBurstCount = 0;
+
+	m_aTriggerState[0] = m_aTriggerState[1] = 0;
+
+	m_WeaponState = 0;
+
+//	m_fBurstInterval = 1.0f;
+
+	m_MuzzleEndLocalPose.Identity();
+	m_MuzzleEndLocalPose.vPosition = Vector3(0,0,10);
+	m_MuzzleEndWorldPose = m_MuzzleEndLocalPose;
+
+	m_vMuzzleEndVelocity = Vector3(0,0,0);
+
+	m_pOwnerEntity = NULL;
+}
+
+
+void CGI_Weapon::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+	ar & m_strAmmoType;
+
+	/* weapon data */
+	ar & m_fFireInterval;
+	ar & m_fGrouping;	// grouping in 10[m]
+	ar & m_fMuzzleSpeedFactor;
+
+	ar & m_vLocalRecoilForce;
+
+	ar & m_FireSound;
+
+	ar & m_iNumBursts;
+
+//	ar & m_fBurstInterval;
+
+	ar & m_MuzzleEndLocalPose;
+
+	ar & m_MuzzleEndWorldPose;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		// reset state
+		m_dLastFireTime = 0;
+		m_iCurrentBurstCount = 0;
+		m_aTriggerState[0] = m_aTriggerState[1] = 0;
+		m_WeaponState = 0;
+
+		//m_MuzzleEndWorldPose = m_MuzzleEndLocalPose;
+		//m_vMuzzleEndVelocity = Vector3(0,0,0);
+		//m_pOwnerEntity = ???
+	}
+}
+
+
+void CGI_Weapon::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	CGameItem::LoadFromXMLNode( reader );
+
+	
+}
+
 
 void CGI_Weapon::SetData(char *pcName, char *pcAmmoType, float fFireInterval)
 {
 	SetName( pcName );
-	strcpy( m_acAmmoType, pcAmmoType );
+	m_strAmmoType = pcAmmoType;
 	m_fFireInterval = fFireInterval;
 }
 
 
 void CGI_Weapon::SetAmmoType( const char* pcAmmoType )
 {
-	strcpy( m_acAmmoType, pcAmmoType );
+	m_strAmmoType = pcAmmoType;
 }
 
 
@@ -143,7 +220,7 @@ void CGI_Weapon::Fire()
 		return;	// out of ammo
 
 	// TODO: use a large integer for current time
-	double dCurrentTime = TIMER.GetTime();
+	double dCurrentTime = pStage->GetElapsedTime();
 	double dTimeSinceLastFire = dCurrentTime - m_dLastFireTime;
 
 	// return if enough time has not elapsed since the last fire

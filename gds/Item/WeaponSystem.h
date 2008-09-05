@@ -91,7 +91,7 @@ inline bool SWeaponSlot::Load( CGI_Ammunition *pAmmo )
 	if( pWeapon &&
 		pAmmo &&
 //		pAmmo->GetTypeFlag() & CGameItem::TYPE_AMMO &&
-		strcmp( pAmmo->GetAmmoType(), pWeapon->GetAmmoType() ) == 0 )
+		pAmmo->GetAmmoType() == pWeapon->GetAmmoType() )
 	{
 		pChargedAmmo = pAmmo;
 		return true;

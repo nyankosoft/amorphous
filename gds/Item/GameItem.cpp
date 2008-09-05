@@ -1,14 +1,50 @@
 #include "GameItem.h"
-#include "3DCommon/Font.h"
+#include "XML/XMLNodeReader.h"
+#include "Support/memory_helpers.h"
 #include <string.h>
 
-#include "Support/memory_helpers.h"
 
 using namespace std;
 
 
+void ItemDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	int lang_index = 0;
+	CXMLNodeReader text_node_reader = reader.GetChild( "Text" );
+	text_node_reader.GetChildElementTextContent( "Jp", text[Lang::Japanese] );
+	text_node_reader.GetChildElementTextContent( "En", text[Lang::English] );
+}
+
+
+//=======================================================================
+// CGameItem
+//=======================================================================
+
+CGameItem::CGameItem()
+:
+m_iCurrentQuantity(0),
+m_iMaxQuantity(1),
+m_Price(1),
+m_TypeFlag(0)
+{
+}
+
+
 CGameItem::~CGameItem()
 {
+}
+
+
+void CGameItem::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_strName;
+	ar & m_MeshObjectContainer;
+	ar & m_iMaxQuantity;
+	ar & m_iCurrentQuantity;
+	ar & m_Price;
+	ar & m_TypeFlag;
+
+	ar & m_Desc;
 }
 
 
@@ -18,6 +54,15 @@ bool CGameItem::LoadMeshObject()
 }
 
 
+void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	reader.GetChildElementTextContent( "Name",        m_strName );
+	reader.GetChildElementTextContent( "Price",       m_Price );
+	reader.GetChildElementTextContent( "MaxQuantity", m_iMaxQuantity );
+
+	m_Desc.LoadFromXMLNode( reader );
+}
+
 
 
 //===========================================================================
@@ -25,6 +70,7 @@ bool CGameItem::LoadMeshObject()
 //===========================================================================
 
 #include "3DMath/MathMisc.h"
+#include "3DCommon/Font.h"
 #include "3DCommon/Camera.h"
 #include "GameCommon/CriticalDamping.h"
 #include "Stage/PlayerInfo.h"
@@ -134,13 +180,11 @@ void CGI_Binocular::Update( float dt )
 }
 
 
-void CGI_Binocular::RenderStatus( int index, CFontBase *pFont )
+void CGI_Binocular::GetStatus( std::string& dest_buffer )
 {
-	D3DXVECTOR2 vPos = D3DXVECTOR2( 480.0f, 500.0f + index * 16 );
-
 	char acStatus[32];
 	sprintf( acStatus, "ZOOM: X%.2f", m_fCurrentZoom );
-	pFont->DrawText( acStatus, vPos, 0xFFFFFFFF );
+	dest_buffer = acStatus;
 }
 
 
@@ -221,13 +265,11 @@ void CGI_NightVision::Update( float dt )
 
 }
 
-void CGI_NightVision::RenderStatus( int index, CFontBase *pFont )
+void CGI_NightVision::GetStatus( std::string& dest_buffer )
 {
-	D3DXVECTOR2 vPos = D3DXVECTOR2( 480.0f, 500.0f + index * 16 );
-
 	char acStatus[32];
 	sprintf( acStatus, "Night Vision: %d/%d", (int)m_fBatteryLeft, (int)m_fMaxBatteryLife );
-	pFont->DrawText( acStatus, vPos, 0xFFFFFFFF );
+	dest_buffer = acStatus;
 }
 
 
