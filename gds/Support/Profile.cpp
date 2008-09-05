@@ -229,7 +229,7 @@ void ProfileDumpOutputToBuffer( void )
 	g_vecstrProfileText[0] = "  Ave :   Min :   Max :   # : Profile Name\n";
 	g_vecstrProfileText[1] = "--------------------------------------------\n";
 
-	size_t row;
+	size_t row = 0;
 	unsigned int i;
 	for( i = 0; i < NUM_PROFILE_SAMPLES && g_samples[i].bValid == true; i++ )
 	{
