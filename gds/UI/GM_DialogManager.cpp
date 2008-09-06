@@ -149,6 +149,7 @@ CGM_Dialog *CGM_DialogManager::AddRootDialog( int id,
 	desc.strTitle    = title;
 	desc.StyleFlag   = style_flag;
 	desc.Rect        = bound_rect;
+	desc.pRenderer   = pRenderer;
 
 	return AddDialog( desc );
 }
@@ -167,6 +168,7 @@ CGM_Dialog *CGM_DialogManager::AddDialog( int id,
 	desc.strTitle    = title;
 	desc.StyleFlag   = style_flag;
 	desc.Rect        = bound_rect;
+	desc.pRenderer   = pRenderer;
 
 	return AddDialog( desc );
 }
