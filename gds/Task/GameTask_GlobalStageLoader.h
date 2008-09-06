@@ -39,7 +39,7 @@ public:
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-	static void SetTaskForGlobalStage( const std::string& next_task_title ) { ms_strStageTask = next_task_title; }
+	static void SetTaskForGlobalStage( const std::string& next_task_name ) { ms_strStageTask = next_task_name; }
 };
 
 

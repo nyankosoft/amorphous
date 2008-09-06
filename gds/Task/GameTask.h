@@ -132,7 +132,7 @@ public:
 		                                float fade_out_time = -1.0f,
 										float fade_in_time = -1.0f );
 
-	virtual void RequestTaskTransition( const std::string& next_task_title,
+	virtual void RequestTaskTransition( const std::string& next_task_name,
 		                                float delay_in_sec = 0,
 		                                float fade_out_time_in_sec = -1.0f,
 										float fade_in_time_in_sec = -1.0f );
@@ -142,7 +142,7 @@ public:
 		                                  int fade_out_time_in_ms = -1,
 										  int fade_in_time_in_ms = -1 );
 
-	virtual void RequestTaskTransitionMS( const std::string& next_task_title,
+	virtual void RequestTaskTransitionMS( const std::string& next_task_name,
 		                                  int delay_in_ms = 0,
 		                                  int fade_out_time_in_ms = -1,
 										  int fade_in_time_in_ms = -1 );
@@ -185,6 +185,8 @@ public:
 	static void SetAnimatedGraphicsManagerForScript();
 	static void RemoveAnimatedGraphicsManagerForScript();
 	static void ReleaseAnimatedGraphicsManager();
+
+	static int GetTaskIDFromTaskName( const std::string& task_name );
 
 	virtual void ReleaseGraphicsResources() {}
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}

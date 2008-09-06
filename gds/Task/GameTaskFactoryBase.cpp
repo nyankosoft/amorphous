@@ -1,19 +1,17 @@
-
 #include "GameTaskFactoryBase.h"
 
 #include "GameTask.h"
 #include "GameTask_Stage.h"
 #include "GameTask_StageSelect.h"
-
 #include "GameTask_MainMenu.h"
-
 #include "GameTask_GlobalStageLoader.h"
 #include "GameTask_AsyncStageLoader.h"
-//#include "GameTask_.h"
 
-#include "Support/msgbox.h"
 
-#include <stdlib.h>
+CGameTask *CGameTaskFactoryBase::CreateTask( const std::string& task_name )
+{
+	return CreateTask( CGameTask::GetTaskIDFromTaskName( task_name ) );
+}
 
 
 CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
@@ -45,7 +43,7 @@ CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
 		return NULL;
 
 	default:
-//		MsgBoxFmt( "CGameTaskFactoryBase::CreateTask() - invalid task id: %d", iTaskID );
+//		LOG_PRINT_ERROR( "An invalid task id:" + to_string(iTaskID) );
 		return NULL;
 	}
 }

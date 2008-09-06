@@ -2,10 +2,11 @@
 #define  __GameTaskFactoryBase_H__
 
 
-//#include <vector>
+#include <string>
 
-#include "GameTask.h"
-//class CGameTask;
+
+class CGameTask;
+
 
 class CGameTaskFactoryBase
 {
@@ -17,6 +18,8 @@ public:
 	virtual ~CGameTaskFactoryBase();
 
 	virtual CGameTask *CreateTask( int iTaskID );
+
+	CGameTask *CreateTask( const std::string& task_name );
 };
 
 

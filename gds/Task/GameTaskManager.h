@@ -31,6 +31,9 @@ public:
 
 	CGameTaskManager( CGameTaskFactoryBase* pFactory, int iInitialTaskID );
 
+	/// - NOTE: Task names and task ids must be mapped before creating task manager
+	CGameTaskManager( CGameTaskFactoryBase* pFactory, std::string& initial_task_name );
+
 	~CGameTaskManager();
 
 	void Update( float dt );

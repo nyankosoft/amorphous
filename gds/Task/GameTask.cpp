@@ -141,12 +141,12 @@ void CGameTask::RequestTaskTransitionMS( int next_task_id,
 }
 
 
-void CGameTask::RequestTaskTransitionMS( const std::string& next_task_title,
+void CGameTask::RequestTaskTransitionMS( const std::string& next_task_name,
 		                                 int delay_in_ms,
 		                                 int fade_out_time_in_ms,
 									     int fade_in_time_in_ms )
 {
-	map<string,int>::iterator itr = ms_TaskNameStringToTaskID.find( next_task_title );
+	map<string,int>::iterator itr = ms_TaskNameStringToTaskID.find( next_task_name );
 
 	if( itr != ms_TaskNameStringToTaskID.end() )
 		RequestTaskTransitionMS( itr->second, delay_in_ms, fade_out_time_in_ms, fade_in_time_in_ms );
@@ -165,12 +165,12 @@ void CGameTask::RequestTaskTransition( int next_task_id,
 }
 
 
-void CGameTask::RequestTaskTransition( const std::string& next_task_title,
+void CGameTask::RequestTaskTransition( const std::string& next_task_name,
 		                               float delay_in_sec,
 		                               float fade_out_time_in_sec,
 									   float fade_in_time_in_sec )
 {
-	RequestTaskTransitionMS( next_task_title,
+	RequestTaskTransitionMS( next_task_name,
 		int(delay_in_sec * 1000.0f),
 		int(fade_out_time_in_sec * 1000.0f),
 		int(fade_in_time_in_sec * 1000.0f) );
@@ -287,4 +287,18 @@ void CGameTask::RemoveAnimatedGraphicsManagerForScript()
 void CGameTask::ReleaseAnimatedGraphicsManager()
 {
 	SafeDelete( ms_pAnimatedGraphicsManager );
+}
+
+
+int CGameTask::GetTaskIDFromTaskName( const std::string& task_name )
+{
+	map<string,int>::iterator itr = ms_TaskNameStringToTaskID.find( task_name );
+
+	if( itr != ms_TaskNameStringToTaskID.end() )
+		return itr->second;
+	else
+	{
+		LOG_PRINT_ERROR( "An invalid task name: " + task_name );
+		return CGameTask::ID_INVALID;
+	}
 }

@@ -1,16 +1,10 @@
-
 #include "GameTaskManager.h"
-
-#include "GameTask.h"
-#include "GameTaskFactoryBase.h"
-
-#include "Support/SafeDelete.h"
-#include "Support/msgbox.h"
 
 #include "3DCommon/RenderTask.h"
 #include "3DCommon/RenderTaskProcessor.h"
-
-#include <stdlib.h>
+#include "GameTask.h"
+#include "GameTaskFactoryBase.h"
+#include "Support/SafeDelete.h"
 
 
 CGameTask *CGameTaskManager::CreateTask( int iTaskID )
@@ -26,6 +20,16 @@ m_pFactory(pFactory),
 m_pCurrentTask(NULL),
 m_CurrentTaskID(CGameTask::ID_INVALID),
 m_NextTaskID(iInitialTaskID)
+{
+}
+
+
+CGameTaskManager::CGameTaskManager( CGameTaskFactoryBase* pFactory, std::string& initial_task_name )
+:
+m_pFactory(pFactory),
+m_pCurrentTask(NULL),
+m_CurrentTaskID(CGameTask::ID_INVALID),
+m_NextTaskID(CGameTask::GetTaskIDFromTaskName(initial_task_name))
 {
 }
 
