@@ -81,6 +81,7 @@ class CGE_Rect;
 class CGE_Triangle;
 class CGE_Text;
 class CGE_Group;
+class CGE_Primitive;
 class CGraphicsElementManager;	
 class CGraphicsElementManagerCallback;
 

@@ -670,6 +670,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\3DCommon\GraphicsElements.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\3DCommon\GraphicsElements.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\3DCommon\PyModule_GraphicsElement.cpp"
 					>
 				</File>
