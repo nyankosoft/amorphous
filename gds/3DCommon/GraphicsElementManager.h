@@ -185,6 +185,8 @@ public:
 
 	CGE_Triangle *CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 );
 
+	CGE_Polygon *CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, const SFloatRGBAColor& color, int layer = 0 );
+
 	///  NOT IMPLEMENTED
 	/// - Does CreatePolygon() suffice or CreateTriangle() should be available?
 	CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 );

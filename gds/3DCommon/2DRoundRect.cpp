@@ -3,7 +3,6 @@
 
 C2DRoundRect::~C2DRoundRect()
 {
-	Release();
 }
 
 

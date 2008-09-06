@@ -32,6 +32,7 @@ class CLockedTexture;
 class C2DRect;
 class C2DFrameRect;
 class C2DTriangle;
+class C2DRegularPolygon;
 class CFontBase;
 class CFont;
 class CTextureFont;

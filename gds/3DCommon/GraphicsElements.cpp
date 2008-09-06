@@ -3,6 +3,7 @@
 #include "3DCommon/Font.h"
 #include "3DCommon/TextureFont.h"
 #include "3DCommon/TrueTypeTextureFont.h"
+#include "3DCommon/2DPolygon.h"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Profile.h"
@@ -201,10 +202,15 @@ void CGE_Triangle::Draw()
 
 
 
+//==========================================================================================
+// CGE_Polygon
+//==========================================================================================
+
 CGE_Polygon::CGE_Polygon( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect )
 :
 CGE_Primitive(pPrimitive)
 {
+	m_pRegularPolygon = dynamic_cast<C2DRegularPolygon *>(pPrimitive);
 }
 
 
@@ -365,6 +371,7 @@ m_vecpElement(rvecpElement)
 	}
 }
 */
+
 
 CGE_Group::CGE_Group( std::vector<CGraphicsElement *>& rvecpElement, Vector2 vLocalOrigin )
 :

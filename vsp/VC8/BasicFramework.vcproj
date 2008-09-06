@@ -602,6 +602,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\3DCommon\2DPolygon.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\3DCommon\2DPolygon.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\3DCommon\2DPrimitive.cpp"
 					>
 				</File>

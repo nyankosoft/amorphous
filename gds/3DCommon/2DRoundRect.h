@@ -70,8 +70,6 @@ public:
 
 	virtual int unsigned GetPrimitiveType() const { return C2DPrimitive::TYPE_ROUNDRECT; }
 
-	inline void Release();
-
 	inline void SetDefault();
 
 	/// draw rect without any render state changes
@@ -197,13 +195,6 @@ m_NumSegmentsPerCorner(num_segments_per_corner)
 }
 
 
-inline void C2DRoundRect::Release()
-{
-//	SafeDeleteArray( m_vecLocalVertexPosition );
-//	SafeDeleteArray( m_vecRectVertex );
-}
-
-
 inline void C2DRoundRect::SetDefault()
 {
 	if( m_vecRectVertex.size() == 0 )
@@ -214,7 +205,7 @@ inline void C2DRoundRect::SetDefault()
 	for(int i=0; i<num_vertices; i++)
 	{
 		m_vecRectVertex[i].rhw = 1.0f;
-		m_vecRectVertex[i].color = 0xff000000;		//opaque by default
+		m_vecRectVertex[i].color = 0xFF000000;		// opaque by default
 	}
 
 	m_DestAlphaBlend = D3DBLEND_INVSRCALPHA;
@@ -317,15 +308,18 @@ inline void C2DRoundRect::ResizeBuffer()
 	if( num_vertices == 0 )
 		return;
 
-	Release();
-
 	// buffer for FVF vertices
-//	m_pavRectVertex = new TLVERTEX [ num_vertices ];
-	m_vecRectVertex.resize( num_vertices );
+	TLVERTEX vert;
+	vert.rhw   = 1.0f;
+	vert.color = 0xFF000000;		// opaque by default
+	vert.tu    = 0.0f;
+	vert.tv    = 0.0f;
+	vert.vPosition = D3DXVECTOR3(0,0,0);
+
+	m_vecRectVertex.resize( num_vertices, vert );
 
 	// buffer for cache of vertex positions
-//	m_pavLocalVertexPosition = new Vector2 [ num_vertices ];
-	m_vecLocalVertexPosition.resize( num_vertices );
+	m_vecLocalVertexPosition.resize( num_vertices, Vector2(0,0) );
 
 	UpdateColor();
 }

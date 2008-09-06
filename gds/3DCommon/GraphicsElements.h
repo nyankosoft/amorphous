@@ -6,6 +6,7 @@
 #include "3DMath/Vector2.h"
 #include "3DMath/Vector3.h"
 #include "3DMath/aabb2.h"
+#include "3DCommon/fwd.h"
 #include "3DCommon/3DGameMath.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/2DFrameRect.h"
@@ -364,6 +365,9 @@ public:
 
 class CGE_Polygon : public CGE_Primitive
 {
+
+	/// Only the regular polygon is supported
+	C2DRegularPolygon *m_pRegularPolygon;
 
 public:
 

@@ -2,6 +2,7 @@
 #include "3DCommon/Font.h"
 #include "3DCommon/TextureFont.h"
 #include "3DCommon/TrueTypeTextureFont.h"
+#include "3DCommon/2DPolygon.h"
 #include "GraphicsElementManager.h"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
@@ -261,6 +262,25 @@ CGE_Triangle *CGraphicsElementManager::CreateFrameTriangle( const SRect& rect, c
 {
 	LOG_PRINT_ERROR( "Not implemented yet!" );
 	return NULL;
+}
+
+
+CGE_Polygon *CGraphicsElementManager::CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, const SFloatRGBAColor& color, int layer )
+{
+	int index = GetVacantSlotIndex();
+
+	if( !RegisterToLayer( index, layer ) )
+		return NULL;
+
+	C2DRegularPolygon *p2DRegularPolygon = new C2DRegularPolygon();
+	p2DRegularPolygon->MakeRegularPolygon( num_polygon_vertices, Vector2((float)x, (float)y) * m_fScale, (int)(radius * m_fScale) );
+
+	SRect non_scaled_rect = RectLTRB( x - radius, y - radius, x + radius, y + radius );
+	CGE_Polygon *pPolygonElement = new CGE_Polygon( color, p2DRegularPolygon, non_scaled_rect );
+
+	InitPrimitiveElement( pPolygonElement, p2DRegularPolygon, non_scaled_rect, color, index, layer );
+
+	return pPolygonElement;
 }
 
 

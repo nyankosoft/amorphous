@@ -12,7 +12,7 @@
 #include "GameInput/3DActionCode.h"
 
 #include "GameCommon/CombatRecord.h"
-#include "UI/fwd.h"
+#include "../UI/fwd.h" // Need to use the relative path to include the UI/fwd.h of GameStageFramework. Otherwise the DefaultKeyBindFG.cpp of the FlightGame project include UI/fwd.h of its project
 
 #include "Sound/SoundHandle.h"
 
