@@ -52,10 +52,10 @@ public:
 	virtual CGE_Rect *CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float border_width, int layer = 0 ) { return NULL; }
 	virtual CGE_Triangle *CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
 	virtual CGE_Triangle *CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 ) { return NULL; }
+	virtual CGE_Polygon *CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
 	virtual CGE_Text *CreateText( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
 	virtual CGE_Text *CreateTextBox( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
 	virtual CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
-	virtual CGraphicsElement *CreatePolygon() { return NULL; }
 	virtual CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin ) { return NULL; }
 	virtual CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements, const SPoint& local_origin ) { return NULL; }
 	virtual int LoadTexture( const std::string& tex_filename ) { return -1; }
@@ -185,11 +185,11 @@ public:
 
 	CGE_Triangle *CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 );
 
-	CGE_Polygon *CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, const SFloatRGBAColor& color, int layer = 0 );
-
 	///  NOT IMPLEMENTED
 	/// - Does CreatePolygon() suffice or CreateTriangle() should be available?
 	CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 );
+
+	CGE_Polygon *CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style, const SFloatRGBAColor& color, int layer = 0 );
 
 	/// \param font_w, font_h font size. default size is used when set to zero or omitted.
 	/// Default font size is the size of font obtained from element manager by the font id of the text element
@@ -197,9 +197,6 @@ public:
 
 	/// \param font_w, font_h same as CreateText()
 	CGE_Text *CreateTextBox( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 );
-
-	/// NOT IMPLEMENTED
-	CGraphicsElement *CreatePolygon();
 
 	CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin );
 

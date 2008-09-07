@@ -80,6 +80,7 @@ class CD3DXSMeshObject; // skeletal mesh
 class CGraphicsElement;
 class CGE_Rect;
 class CGE_Triangle;
+class CGE_Polygon;
 class CGE_Text;
 class CGE_Group;
 class CGE_Primitive;
@@ -124,6 +125,19 @@ public:
 		SKELETAL,
 		INVALID,
 		NUM_MESH_TYPES
+	};
+};
+
+
+class CRegularPolygonStyle
+{
+public:
+
+	enum Name
+	{
+		VERTEX_AT_TOP,
+		EDGE_AT_TOP,
+		NUM_INIT_LAYOUTS
 	};
 };
 

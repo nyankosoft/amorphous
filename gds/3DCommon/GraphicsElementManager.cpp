@@ -265,7 +265,7 @@ CGE_Triangle *CGraphicsElementManager::CreateFrameTriangle( const SRect& rect, c
 }
 
 
-CGE_Polygon *CGraphicsElementManager::CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, const SFloatRGBAColor& color, int layer )
+CGE_Polygon *CGraphicsElementManager::CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style, const SFloatRGBAColor& color, int layer )
 {
 	int index = GetVacantSlotIndex();
 
@@ -273,7 +273,7 @@ CGE_Polygon *CGraphicsElementManager::CreateRegularPolygon( int num_polygon_vert
 		return NULL;
 
 	C2DRegularPolygon *p2DRegularPolygon = new C2DRegularPolygon();
-	p2DRegularPolygon->MakeRegularPolygon( num_polygon_vertices, Vector2((float)x, (float)y) * m_fScale, (int)(radius * m_fScale) );
+	p2DRegularPolygon->MakeRegularPolygon( num_polygon_vertices, Vector2((float)x, (float)y) * m_fScale, (int)(radius * m_fScale), style );
 
 	SRect non_scaled_rect = RectLTRB( x - radius, y - radius, x + radius, y + radius );
 	CGE_Polygon *pPolygonElement = new CGE_Polygon( color, p2DRegularPolygon, non_scaled_rect );
@@ -361,12 +361,6 @@ CGraphicsElement *CGraphicsElementManager::CreateTriangle( Vector2 *pVertex, con
 //	if( !RegisterToLayer( index, layer ) )
 //		return -1;
 
-	return NULL;
-}
-
-
-CGraphicsElement *CGraphicsElementManager::CreatePolygon()
-{
 	return NULL;
 }
 

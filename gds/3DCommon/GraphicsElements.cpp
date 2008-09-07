@@ -211,11 +211,17 @@ CGE_Polygon::CGE_Polygon( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitiv
 CGE_Primitive(pPrimitive)
 {
 	m_pRegularPolygon = dynamic_cast<C2DRegularPolygon *>(pPrimitive);
+	m_aColor[0] = color0;
+
+//	ChangeScale( m_fScale );
 }
 
 
 void CGE_Polygon::Draw()
 {
+	SetBlendedColorToPrimitive();
+
+	m_pRegularPolygon->Draw();
 }
 
 

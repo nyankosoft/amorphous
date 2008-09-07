@@ -20,9 +20,11 @@ protected:
 
 	int m_Radius;
 
+	CRegularPolygonStyle::Name m_InitStyle;
+
 protected:
 
-	virtual int GetNumVertices() const { return m_NumPolygonVertices + 1; }
+	virtual int GetNumVertices() const { return m_NumPolygonVertices + 2; }
 
 	virtual void CalculateLocalVertexPositions();
 
@@ -30,18 +32,11 @@ protected:
 
 //	inline virtual void UpdateColor();
 
-	enum Style
-	{
-		VERTEX_AT_TOP,
-		EDGE_AT_TOP,
-		NUM_INIT_LAYOUTS
-	};
-
 public:
 
 	inline C2DRegularPolygon();
 
-//	inline C2DRegularPolygon( int num_vertices, const Vector2& vCenter, int radius, InitLayout VERTEX_AT_TOP );
+//	inline C2DRegularPolygon( int num_vertices, const Vector2& vCenter, int radius, RegularPolygonStyle::Name style = CRegularPolygonStyle::VERTEX_AT_TOP );
 
 	virtual ~C2DRegularPolygon() {}
 
@@ -60,9 +55,9 @@ public:
 
 //	void ScalePosition( float fScale );
 
-	void MakeRegularPolygon( int num_polygon_vertices, int x, int y, int radius ) { MakeRegularPolygon( num_polygon_vertices, Vector2((float)x,(float)y), radius ); }
+	void MakeRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style = CRegularPolygonStyle::VERTEX_AT_TOP ) { MakeRegularPolygon( num_polygon_vertices, Vector2((float)x,(float)y), radius, style ); }
 
-	void MakeRegularPolygon( int num_polygon_vertices, const Vector2& vCenter, int radius );
+	void MakeRegularPolygon( int num_polygon_vertices, const Vector2& vCenter, int radius, CRegularPolygonStyle::Name style = CRegularPolygonStyle::VERTEX_AT_TOP );
 };
 
 
