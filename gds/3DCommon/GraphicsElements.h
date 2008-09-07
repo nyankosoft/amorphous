@@ -380,6 +380,8 @@ public:
 	/// change radius at each vertex
 	/// - Use this to draw cobweb charts
 	void SetRadius( int vertex, int radius );
+
+	Vector2 GetVertexPos( int vertex );
 };
 
 

@@ -1,6 +1,62 @@
 #include "2DPolygon.h"
 
 
+const float gs_fDefaultRadius = 100.0f;
+
+
+void C2DRegularPolygon::ResizeBuffer()
+{
+	C2DRoundRect::ResizeBuffer();
+
+	m_vecRadius.resize( GetNumVertices(), 0 );
+}
+
+
+void C2DRegularPolygon::CalculateLocalVertexPositions()
+{
+	if( m_vecRectVertex.size() == 0 )
+		ResizeBuffer();
+
+	m_vecLocalVertexPosition[0] = Vector2(0,0);
+
+	CRegularPolygonStyle::Name style = m_InitStyle;
+
+	// Set the vertices in the clockwise order
+//	const float radius = (float)m_Radius;
+	const int num_polygon_vertices = m_NumPolygonVertices;
+	float angle_per_vertex = 2.0f * (float)PI / (float)num_polygon_vertices;
+	float angle_offset = (float)PI / 2.0f + (float)PI * 2.0f; // Start at the vertex at the twelve o'clock position
+	angle_offset += (style == CRegularPolygonStyle::EDGE_AT_TOP) ? angle_per_vertex * 0.5f : 0.0f;
+	for( int i=0; i<num_polygon_vertices; i++ )
+	{
+		float angle = angle_offset - angle_per_vertex * (float)i;
+		m_vecLocalVertexPosition[i+1].x =  cos(angle) * gs_fDefaultRadius;//radius;
+		m_vecLocalVertexPosition[i+1].y = -sin(angle) * gs_fDefaultRadius;//radius;
+	}
+
+	// wrapping at the start position
+	// - need this because the polygon has a vertex at the center
+	m_vecLocalVertexPosition[num_polygon_vertices + 1] = m_vecLocalVertexPosition[1];
+}
+
+
+void C2DRegularPolygon::UpdateVertexPositions()
+{
+	if( m_vecLocalVertexPosition.size() == 0 || GetNumVertices() == 0 )
+		return;
+
+	const int num_buffer_vertices = GetNumVertices();
+	const Vector2 vCenterPos = m_AABB.GetCenterPosition();//m_vCenterPosition;
+	Vector2 vGlobalPos;
+	for( int i=0; i<num_buffer_vertices; i++ )
+	{
+		vGlobalPos = vCenterPos + m_vecLocalVertexPosition[i] * (float)m_vecRadius[i] / gs_fDefaultRadius;
+		m_vecRectVertex[i].vPosition.x = vGlobalPos.x;
+		m_vecRectVertex[i].vPosition.y = vGlobalPos.y;
+	}
+}
+
+
 void C2DRegularPolygon::MakeRegularPolygon( int num_polygon_vertices, const Vector2& vCenter, int radius, CRegularPolygonStyle::Name style )
 {
 	m_vCenterPosition = vCenter;
@@ -53,57 +109,15 @@ void C2DRegularPolygon::SetRadius( int vertex, int radius )
 }
 
 
-void C2DRegularPolygon::ResizeBuffer()
-{
-	C2DRoundRect::ResizeBuffer();
-
-	m_vecRadius.resize( GetNumVertices(), 0 );
-}
-
-
-const float gs_fDefaultRadius = 100.0f;
-
-
-void C2DRegularPolygon::CalculateLocalVertexPositions()
+Vector2 C2DRegularPolygon::GetVertexPos( int vertex )
 {
 	if( m_vecRectVertex.size() == 0 )
-		ResizeBuffer();
+		return Vector2(0,0);
 
-	m_vecLocalVertexPosition[0] = Vector2(0,0);
+	if( vertex < 0 || m_NumPolygonVertices <= vertex )
+		return Vector2(0,0);
 
-	CRegularPolygonStyle::Name style = m_InitStyle;
+	const Vector3& vPos = m_vecRectVertex[vertex+1].vPosition;
 
-	// Set the vertices in the clockwise order
-//	const float radius = (float)m_Radius;
-	const int num_polygon_vertices = m_NumPolygonVertices;
-	float angle_per_vertex = 2.0f * (float)PI / (float)num_polygon_vertices;
-	float angle_offset = (float)PI / 2.0f + (float)PI * 2.0f; // Start at the vertex at the twelve o'clock position
-	angle_offset += (style == CRegularPolygonStyle::EDGE_AT_TOP) ? angle_per_vertex * 0.5f : 0.0f;
-	for( int i=0; i<num_polygon_vertices; i++ )
-	{
-		float angle = angle_offset - angle_per_vertex * (float)i;
-		m_vecLocalVertexPosition[i+1].x =  cos(angle) * gs_fDefaultRadius;//radius;
-		m_vecLocalVertexPosition[i+1].y = -sin(angle) * gs_fDefaultRadius;//radius;
-	}
-
-	// wrapping at the start position
-	// - need this because the polygon has a vertex at the center
-	m_vecLocalVertexPosition[num_polygon_vertices + 1] = m_vecLocalVertexPosition[1];
-}
-
-
-void C2DRegularPolygon::UpdateVertexPositions()
-{
-	if( m_vecLocalVertexPosition.size() == 0 || GetNumVertices() == 0 )
-		return;
-
-	const int num_buffer_vertices = GetNumVertices();
-	const Vector2 vCenterPos = m_AABB.GetCenterPosition();//m_vCenterPosition;
-	Vector2 vGlobalPos;
-	for( int i=0; i<num_buffer_vertices; i++ )
-	{
-		vGlobalPos = vCenterPos + m_vecLocalVertexPosition[i] * (float)m_vecRadius[i] / gs_fDefaultRadius;
-		m_vecRectVertex[i].vPosition.x = vGlobalPos.x;
-		m_vecRectVertex[i].vPosition.y = vGlobalPos.y;
-	}
+	return Vector2(vPos.x,vPos.y);
 }

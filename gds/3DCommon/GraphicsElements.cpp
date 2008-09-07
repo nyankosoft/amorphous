@@ -231,6 +231,12 @@ void CGE_Polygon::SetRadius( int vertex, int radius )
 }
 
 
+Vector2 CGE_Polygon::GetVertexPos( int vertex )
+{
+	return m_pRegularPolygon->GetVertexPos( vertex ) / m_fScale;
+}
+
+
 //==========================================================================================
 // CGE_Text
 //==========================================================================================
@@ -305,6 +311,7 @@ void CGE_Text::UpdateTextAlignment()
 	int font_width  = 0 < m_FontWidth  ? m_FontWidth  : pFont->GetFontWidth();
 	int font_height = 0 < m_FontHeight ? m_FontHeight : pFont->GetFontHeight();
 	const int text_length = (int)m_Text.length();
+	float font_scale = 1.0f;
 
 	Vector2 vLocalTextOffset = Vector2(0,0);
 	switch(m_TextAlignH)
@@ -313,7 +320,8 @@ void CGE_Text::UpdateTextAlignment()
 		vLocalTextOffset.x = 0;
 		break;
 	case CGE_Text::TAL_CENTER:
-		vLocalTextOffset.x = (float)( box_width/2  - pFont->GetTextWidth(m_Text.c_str())/2 );
+		font_scale = font_width / (float)pFont->GetFontWidth();
+		vLocalTextOffset.x = (float)( box_width/2  - pFont->GetTextWidth(m_Text.c_str())/2*font_scale );
 		break;
 	case CGE_Text::TAL_RIGHT:
 		// --- NOT IMPLEMENTED ---

@@ -67,6 +67,8 @@ public:
 	/// - This makes the polygon non-regular
 	/// - Added to draw the cobweb chart
 	void SetRadius( int vertex, int radius );
+
+	Vector2 GetVertexPos( int vertex );
 };
 
 
