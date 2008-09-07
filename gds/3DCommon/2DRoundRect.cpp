@@ -39,6 +39,37 @@ void C2DRoundRect::CalculateLocalVertexPositions()
 }
 
 
+void C2DRoundRect::UpdateVertexPositions()
+{
+	if( m_vecLocalVertexPosition.size() == 0 || GetNumVertices() == 0 )
+		return;
+
+	const float r = (float)m_CornerRadius;
+	Vector2 avCornerCenterPos[4] =
+	{
+		// push vertices inward to save the room for the corner radius
+		Vector2( m_AABB.vMin.x + r, m_AABB.vMin.y + r ),
+		Vector2( m_AABB.vMax.x - r, m_AABB.vMin.y + r ),
+		Vector2( m_AABB.vMax.x - r, m_AABB.vMax.y - r ),
+		Vector2( m_AABB.vMin.x + r, m_AABB.vMax.y - r )
+	};
+
+	const int num_segs_per_corner = m_NumSegmentsPerCorner;
+	int vert_index = 0;
+	Vector2 global_pos;
+	for( int i=0; i<4; i++ )
+	{
+		for( int j=0; j<=num_segs_per_corner; j++, vert_index++ )
+		{
+			Vector2 global_pos = avCornerCenterPos[i] + m_vecLocalVertexPosition[vert_index];
+			m_vecRectVertex[vert_index].vPosition.x = global_pos.x;
+			m_vecRectVertex[vert_index].vPosition.y = global_pos.y;
+		}
+	}
+
+}
+
+
 /// draws the rect with render state settings
 /// if the rect has a texture, or is handed one as the argument
 /// it will be rendered with the texture

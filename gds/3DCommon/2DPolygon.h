@@ -18,11 +18,13 @@ protected:
 
 	Vector2 m_vCenterPosition;
 
-	int m_Radius;
+	std::vector<int> m_vecRadius;
 
 	CRegularPolygonStyle::Name m_InitStyle;
 
 protected:
+
+	void ResizeBuffer();
 
 	virtual int GetNumVertices() const { return m_NumPolygonVertices + 2; }
 
@@ -58,6 +60,13 @@ public:
 	void MakeRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style = CRegularPolygonStyle::VERTEX_AT_TOP ) { MakeRegularPolygon( num_polygon_vertices, Vector2((float)x,(float)y), radius, style ); }
 
 	void MakeRegularPolygon( int num_polygon_vertices, const Vector2& vCenter, int radius, CRegularPolygonStyle::Name style = CRegularPolygonStyle::VERTEX_AT_TOP );
+
+	void SetRadius( int radius );
+
+	/// change the radius at a vertex
+	/// - This makes the polygon non-regular
+	/// - Added to draw the cobweb chart
+	void SetRadius( int vertex, int radius );
 };
 
 
@@ -68,8 +77,6 @@ inline C2DRegularPolygon::C2DRegularPolygon()
 m_NumPolygonVertices(6),
 m_vCenterPosition(Vector2(0,0))
 {
-//	CalculateLocalVertexPositions();
-//	SetDefault();
 	SetColor( 0xFFFFFFFF );
 }
 

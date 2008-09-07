@@ -376,6 +376,10 @@ public:
 	virtual void Draw();
 
 	virtual int GetElementType() const { return TYPE_POLYGON; }
+
+	/// change radius at each vertex
+	/// - Use this to draw cobweb charts
+	void SetRadius( int vertex, int radius );
 };
 
 

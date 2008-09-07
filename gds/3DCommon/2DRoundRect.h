@@ -43,14 +43,14 @@ protected:
 	// - m_vecLocalVertexPosition
 	// All the previous content will be cleared.
 	// NOTE:
-	// - Includes virtual function calls. Must not be called from ctor.
-	inline void ResizeBuffer();
+	// - Virtual function call. Must not be called from ctor.
+	inline virtual void ResizeBuffer();
 
 	virtual int GetNumVertices() const { return ( m_NumSegmentsPerCorner + 1 ) * 4; }
 
 	virtual void CalculateLocalVertexPositions();
 
-	inline virtual void UpdateVertexPositions();
+	virtual void UpdateVertexPositions();
 
 	inline virtual void UpdateColor();
 
@@ -322,36 +322,6 @@ inline void C2DRoundRect::ResizeBuffer()
 	m_vecLocalVertexPosition.resize( num_vertices, Vector2(0,0) );
 
 	UpdateColor();
-}
-
-
-inline void C2DRoundRect::UpdateVertexPositions()
-{
-	if( m_vecLocalVertexPosition.size() == 0 || GetNumVertices() == 0 )
-		return;
-
-	const float r = (float)m_CornerRadius;
-	Vector2 avCornerCenterPos[4] =
-	{
-		Vector2( m_AABB.vMin.x + r, m_AABB.vMin.y + r ),
-		Vector2( m_AABB.vMax.x - r, m_AABB.vMin.y + r ),
-		Vector2( m_AABB.vMax.x - r, m_AABB.vMax.y - r ),
-		Vector2( m_AABB.vMin.x + r, m_AABB.vMax.y - r )
-	};
-
-	const int num_segs_per_corner = m_NumSegmentsPerCorner;
-	int vert_index = 0;
-	Vector2 global_pos;
-	for( int i=0; i<4; i++ )
-	{
-		for( int j=0; j<=num_segs_per_corner; j++, vert_index++ )
-		{
-			Vector2 global_pos = avCornerCenterPos[i] + m_vecLocalVertexPosition[vert_index];
-			m_vecRectVertex[vert_index].vPosition.x = global_pos.x;
-			m_vecRectVertex[vert_index].vPosition.y = global_pos.y;
-		}
-	}
-
 }
 
 

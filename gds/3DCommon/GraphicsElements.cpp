@@ -225,6 +225,12 @@ void CGE_Polygon::Draw()
 }
 
 
+void CGE_Polygon::SetRadius( int vertex, int radius )
+{
+	m_pRegularPolygon->SetRadius( vertex, (int)(radius * m_fScale) );
+}
+
+
 //==========================================================================================
 // CGE_Text
 //==========================================================================================
