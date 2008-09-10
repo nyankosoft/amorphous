@@ -63,7 +63,7 @@ public:
 
 	inline LPD3DXPMESH GetPMesh() { if( 0 < m_vecpPMesh.size() ) return m_vecpPMesh[m_iPMeshCur]; else return NULL; }
 
-	virtual unsigned int GetMeshType() const { return TYPE_PMESH; }
+	virtual CMeshType::Name GetMeshType() const { return CMeshType::PROGRESSIVE; }
 };
 
 

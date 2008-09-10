@@ -36,7 +36,7 @@ public:
 	/// render object by using the fixed function pipeline
 	void Render();
 
-	virtual unsigned int GetMeshType() const { return TYPE_MESH; }
+	virtual CMeshType::Name GetMeshType() const { return CMeshType::BASIC; }
 
 };
 

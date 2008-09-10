@@ -1,16 +1,13 @@
 #include "GI_Aircraft.h"
-#include "Stage/Serialization_BaseEntityHandle.h"
 #include "GI_MissileLauncher.h"
-
+#include "Stage/Serialization_BaseEntityHandle.h"
 #include "3DMath/MathMisc.h"
 #include "Support/memory_helpers.h"
 #include "XML/XMLNodeReader.h"
-
 #include "GameInput/3DActionCode.h"
 #include "GameInput/InputHandler.h"
 #include "GameCommon/MeshBoneController_Aircraft.h"
-
-#include "3DCommon/D3DXMeshObjectBase.h"
+#include "3DCommon/D3DXSMeshObject.h"
 
 /*
 void CBE_PseudoAircraft::Init()
@@ -269,9 +266,9 @@ bool CGI_Aircraft::InitMeshController( CD3DXSMeshObject* pMesh )
 	else
 	{
 		CD3DXMeshObjectBase *pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh().get();
-		if( pMeshObject && pMeshObject->GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
+		if( pMeshObject && pMeshObject->GetMeshType() == CMeshType::SKELETAL )
 		{
-			pTargetMesh = (CD3DXSMeshObject *)pMeshObject;
+			pTargetMesh = dynamic_cast<CD3DXSMeshObject *>(pMeshObject);
 		}
 	}
 

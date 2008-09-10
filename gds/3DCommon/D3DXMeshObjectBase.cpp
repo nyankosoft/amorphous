@@ -19,9 +19,6 @@
 #include "Support/fnop.h"
 using namespace fnop;
 
-#include <direct.h>
-
-
 
 /**
 Terms
@@ -63,10 +60,9 @@ void CD3DXMeshObjectBase::Release()
 
 	SafeDeleteArray( m_pMeshMaterials );
 
-	for( int i=0; i<m_NumMaterials; i++ )
-	{
-		// texture handles are released automatically
-	}
+	m_NumMaterials = 0;
+
+	m_vecMaterial.resize( 0 );
 }
 
 
@@ -145,16 +141,13 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 
 	string tex_filename;
 
+	// push the current working directory to the directory stack
+	dir_stack dirstk( get_path(m_strFilename) );
+
 	// save the current working directory
 //	string orig_dir = fnop::get_cwd();
 	// set the abs path of the mesh file as the working directory
 //	fnop::set_wd( fnop::get_path( m_strFilename ) );
-
-	m_vecMaterial.resize( m_NumMaterials );
-
-	// push the current working directory to the directory stack
-	dir_stack DirStack;
-	DirStack.setdir( get_path(m_strFilename) );
 
 	bool loaded = false;
 	for( int i=0; i<m_NumMaterials; i++ )
@@ -210,12 +203,9 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 		m_vecMaterial[i].fMinVertexDiffuseAlpha = rvecSrcMaterial[i].fMinVertexDiffuseAlpha;
 	}
 
-
-	// restore the previous working directory
-//	fnop::set_wd( orig_dir );
-
 	// back to the original working directory
-	DirStack.prevdir();
+	dirstk.prevdir();
+//	fnop::set_wd( orig_dir );
 
 	return S_OK;
 }
@@ -477,21 +467,9 @@ HRESULT CD3DXMeshObjectBase::LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num
 	// allocate material buffers, etc.
 	InitMaterials( num_materials );
 
-	// Change the current directory to the mesh's directory so we can
-	// find the textures.
-	size_t LastSlashPos = m_strFilename.find( "\\" );
-	if( LastSlashPos == std::string::npos )
-		LastSlashPos = m_strFilename.find( "/" );
-
-	std::string current_dir;
-	if( LastSlashPos != std::string::npos )
-		current_dir = m_strFilename.substr( 0, LastSlashPos );
-	else
-		current_dir = "./";
-
-	char str[MAX_PATH], strCWD[MAX_PATH];
-	getcwd( strCWD, MAX_PATH );
-	chdir( current_dir.c_str() );
+	// Change the current directory to the mesh's directory so that we can
+	// find the textures with relative paths.
+	dir_stack dirstk( get_path(m_strFilename) );
 
 	// Copy the materials and load the textures
 	for( int i = 0; i < m_NumMaterials; i++ )
@@ -499,26 +477,17 @@ HRESULT CD3DXMeshObjectBase::LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num
 		m_pMeshMaterials[i] = d3dxMaterials[i].MatD3D;
 		m_pMeshMaterials[i].Ambient = m_pMeshMaterials[i].Diffuse;
 
-		// Find the path to the texture and create that texture
-//		MultiByteToWideChar( CP_ACP, 0, d3dxMaterials[i].pTextureFilename, -1, str, MAX_PATH );
-
 		m_vecMaterial[i].Texture.resize(1);
 
 		if( d3dxMaterials[i].pTextureFilename )
 		{
-			strcpy( str, d3dxMaterials[i].pTextureFilename );
-			str[MAX_PATH - 1] = L'\0';
-
-			m_vecMaterial[i].Texture[0].Load( str );
-
-//			m_pMeshTextures[i].filename = str;
-//			m_pMeshTextures[i].Load();
+			string tex_filename = d3dxMaterials[i].pTextureFilename;
+			m_vecMaterial[i].Texture[0].Load( tex_filename );
 		}
 	}
 
-	// Restore the current directory
-//	SetCurrentDirectory( strCWD );
-	chdir( strCWD );
+	// restore the original directory
+	dirstk.prevdir();
 
 	return S_OK;
 }

@@ -59,15 +59,18 @@ private:
 
 protected:
 
+	// platform independent attributes
+
 	std::string m_strFilename;
+
+	std::vector<CMeshMaterial> m_vecMaterial;
+
+	/// bounding sphere in local space of the model
+	/// - Each implementation must properly initialize the sphere
+	Sphere m_LocalShpere;
 
 	/// bounding box of the mesh
 	AABB3 m_AABB;
-
-	/// Number of materials
-	int m_NumMaterials;
-
-	D3DMATERIAL9 *m_pMeshMaterials;
 
 	std::vector<AABB3> m_vecAABB;	///< aabb for each triangle subset
 
@@ -81,7 +84,13 @@ protected:
 	/// every time the mesh is rendered.
 	bool m_bViewFrustumTest;
 
-	std::vector<CMeshMaterial> m_vecMaterial;
+
+	// D3D attributes
+
+	/// Number of materials
+	int m_NumMaterials;
+
+	D3DMATERIAL9 *m_pMeshMaterials;
 
 	/// flexible vertex format flag
 	DWORD m_dwFVF;
@@ -95,10 +104,6 @@ protected:
 
 	/// vertex decleration
 	LPDIRECT3DVERTEXDECLARATION9 m_pVertexDecleration;
-
-	/// bounding sphere in local space of the model
-	/// - Each implementation must properly initialize the sphere
-	Sphere m_LocalShpere;
 
 private:
 
@@ -238,9 +243,7 @@ public:
 
 	virtual bool UnlockAttributeBuffer();
 
-	enum eMeshType { TYPE_MESH, TYPE_PMESH, TYPE_SMESH, TYPE_DMESH };
-
-	virtual unsigned int GetMeshType() const = 0;
+	virtual CMeshType::Name GetMeshType() const = 0;
 
 	friend class CD3DXMeshVerticesLoader;
 	friend class CD3DXMeshIndicesLoader;

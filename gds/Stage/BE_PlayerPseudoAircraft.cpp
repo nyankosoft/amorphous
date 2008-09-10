@@ -356,7 +356,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	Init3DModel();
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
-	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CD3DXMeshObjectBase::TYPE_SMESH )
+	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
 	{
 		m_pAircraft->ResetMeshController();
 		m_pAircraft->InitMeshController( dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get()) );

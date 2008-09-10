@@ -311,6 +311,8 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 		return;
 	}
 
+	CMeshType::Name mesh_type = pMeshObject->GetMeshType();
+
 	if( rShaderTechHandleTable.size_x() == 0 )
 	{
 		// no shader technique to render the model with
@@ -351,17 +353,15 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 		}
 	}
 
-
-	int mesh_type = m_MeshProperty.m_MeshObjectHandle.GetMeshType();
 	int render_mode = GetRenderMode();
 
 	switch( mesh_type )
 	{
-	case CD3DXMeshObjectBase::TYPE_SMESH:
-		DrawSkeletalMesh( pCopyEnt, rShaderTechHandleTable, ShaderLOD );
+	case CMeshType::SKELETAL:
+		DrawSkeletalMesh( pCopyEnt, dynamic_cast<CD3DXSMeshObject *>(pMeshObject), rShaderTechHandleTable, ShaderLOD );
 		break;
 
-	case CD3DXMeshObjectBase::TYPE_MESH:
+	case CMeshType::BASIC:
 		DrawMeshObject( pCopyEnt->GetWorldPose(),
 			           m_MeshProperty.m_MeshObjectHandle.GetMesh().get(),
 			           m_MeshProperty.m_vecTargetMaterialIndex,
@@ -380,6 +380,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
  * calling this function
  */
 void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
+								    CD3DXSMeshObject *pSkeletalMesh,
 								    C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 									int ShaderLOD )
 {
@@ -387,8 +388,8 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 
 	PROFILE_FUNCTION();
 
-	CD3DXSMeshObject *pSMesh
-		= dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get());
+//	CD3DXSMeshObject *pSMesh
+//		= dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get());
 
 	// World & View matrices are recalculated to avoid occilation in large coord
 	// Thus, world & blend matrices need to be set in a special way
@@ -396,19 +397,19 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 //	pSMesh->SetLocalTransformToCache( 0, pCopyEnt->GetWorldPose() );
 
 	// set identity matrix to the root bone since 
-	pSMesh->SetLocalTransformToCache( 0, Matrix34Identity() );//	< usu.?
+	pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );//	< usu.?
 
-	pSMesh->SetLocalTransformsFromCache();
+	pSkeletalMesh->SetLocalTransformsFromCache();
 
-	SetBlendMatrices( pSMesh );
+	SetBlendMatrices( pSkeletalMesh );
 
 	DrawMeshObject( pCopyEnt->GetWorldPose(),
-		            pSMesh,
+		            pSkeletalMesh,
 					m_MeshProperty.m_vecTargetMaterialIndex,
 					rShaderTechHandleTable,
 					ShaderLOD );
 
-	pSMesh->ResetLocalTransformsCache();
+	pSkeletalMesh->ResetLocalTransformsCache();
 
 	return;
 }
@@ -475,12 +476,12 @@ void CBaseEntity::RenderAsShaderCaster(CCopyEntity* pCopyEnt)
 
 	switch( mesh_type )
 	{
-//	case CD3DXMeshObjectBase::TYPE_SMESH:
+//	case CMeshType::SKELETAL:
 //		DrawSkeletalMesh( pCopyEnt, rShaderTechHandleTable, ShaderLOD );
 		break;
 
-	case CD3DXMeshObjectBase::TYPE_MESH:
-	case CD3DXMeshObjectBase::TYPE_SMESH:
+	case CMeshType::BASIC:
+	case CMeshType::SKELETAL:
 //		DrawMeshObject( pCopyEnt->GetWorldPose(), m_MeshProperty.m_MeshObjectHandle.GetMesh(), rShaderTechHandleTable, ShaderLOD );
 	{
 		LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
@@ -582,12 +583,12 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 
 	switch( mesh_type )
 	{
-//	case CD3DXMeshObjectBase::TYPE_SMESH:
+//	case CMeshType::SKELETAL:
 //		DrawSkeletalMesh( pCopyEnt, rShaderTechHandleTable, ShaderLOD );
 		break;
 
-	case CD3DXMeshObjectBase::TYPE_MESH:
-	case CD3DXMeshObjectBase::TYPE_SMESH:
+	case CMeshType::BASIC:
+	case CMeshType::SKELETAL:
 //		DrawMeshObject( pCopyEnt->GetWorldPose(), m_MeshProperty.m_MeshObjectHandle.GetMesh(), rShaderTechHandleTable, ShaderLOD );
 	{
 		LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();

@@ -2,8 +2,8 @@
 #define  __D3DXSMESHOBJECT_H__
 
 
+#include "3DCommon/fwd.h"
 #include "3DCommon/D3DXPMeshObject.h"
-
 #include "3DCommon/MeshModel/MeshBone.h"
 using namespace MeshModel;
 
@@ -75,7 +75,7 @@ public:
 
 	LPD3DXMESH m_pMeshForTest;
 
-	virtual unsigned int GetMeshType() const { return TYPE_SMESH; }
+	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
 
 //	virtual LPD3DXBASEMESH GetBaseMesh() { return m_pMeshForTest; }
 };

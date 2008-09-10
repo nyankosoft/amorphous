@@ -144,6 +144,7 @@ protected:
 						 int ShaderLOD = 0 );
 
 	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
+		                   CD3DXSMeshObject *pSkeletalMesh,
 		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 						   int ShaderLOD = 0 );
 
