@@ -356,7 +356,7 @@ protected:
 
 protected:
 
-	void UpdateCaptionText( CGM_Control *pControl );
+	void UpdateCaptionText( CGM_Control& control );
 
 public:
 
@@ -364,14 +364,14 @@ public:
 
 	virtual ~CGM_StdCaptionRenderer() {}
 
-	virtual void Init();
+	virtual void InitCaptionRenderer();
 
-	virtual void OnControlFocused( CGM_Control *pControl );
+	virtual void OnControlFocused( CGM_Control& control );
 //	virtual void OnControlFocusCleared( CGM_Control *pControl );
 
 //	virtual void OnFocusedControlChanged( CGM_Control *pNewFocusedControl, CGM_Control *pPrevFocusedControl );
 
-	virtual void OnMouseOverControlChanged( CGM_Control *pControlUnderMouse );
+	virtual void OnMouseOverControlChanged( CGM_Control& control_under_mouse );
 };
 
 

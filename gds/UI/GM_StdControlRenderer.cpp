@@ -663,7 +663,7 @@ void CGM_DialogManager::RegisterCaptionRenderer( pCaptionRenderer )
 */
 
 
-void CGM_StdCaptionRenderer::Init()
+void CGM_StdCaptionRenderer::InitCaptionRenderer()
 {
 	int font_id = 0;
 	int w = 24;
@@ -690,27 +690,27 @@ void CGM_StdCaptionRenderer::Init()
 }
 
 
-void CGM_StdCaptionRenderer::UpdateCaptionText( CGM_Control *pControl )
+void CGM_StdCaptionRenderer::UpdateCaptionText( CGM_Control& control )
 {
 	// cancel the previous text draw effect
 	m_pGraphicsEffectManager->CancelEffect( m_PrevTextDrawEffect );
 
 	m_pGraphicsEffectManager->SetTimeOffset();
 
-	m_pCaptionText->SetText( pControl->GetCaptionText() );
+	m_pCaptionText->SetText( control.GetCaptionText() );
 
 	int num_chars_per_sec = 50;
 	m_PrevTextDrawEffect = m_pGraphicsEffectManager->DrawText( m_pCaptionText, 0.0f, num_chars_per_sec );
 }
 
 
-void CGM_StdCaptionRenderer::OnControlFocused( CGM_Control *pControl )
+void CGM_StdCaptionRenderer::OnControlFocused( CGM_Control& control )
 {
-	UpdateCaptionText( pControl );
+	UpdateCaptionText( control );
 }
 
 
-void CGM_StdCaptionRenderer::OnMouseOverControlChanged( CGM_Control *pControlUnderMouse )
+void CGM_StdCaptionRenderer::OnMouseOverControlChanged( CGM_Control& control_under_mouse )
 {
-	UpdateCaptionText( pControlUnderMouse );
+	UpdateCaptionText( control_under_mouse );
 }
