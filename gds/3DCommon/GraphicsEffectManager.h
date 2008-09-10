@@ -344,24 +344,7 @@ class CE_TextDraw : public CGraphicsElementLinearEffect
 
 public:
 
-	CE_TextDraw( CGE_Text *pTargetElement, double start_time )
-	:
-	CGraphicsElementLinearEffect( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
-	{
-		m_pTextElement = pTargetElement;
-
-		if( m_pTextElement )
-		{
-			m_OrigText = m_pTextElement->GetText(); // save the original text
-
-			// clear the text of the target text element
-			m_pTextElement->SetText( "" );		 // This causes the memory leak. Why?
-			//m_pTextElement->SetText( string() ); // Does not fix the problem. Causes a similar memory leak
-
-//			if( /* currently in animation timeframe */ )
-//				UpdateInternal( current_time, 0.0f );
-		}
-	}
+	CE_TextDraw( CGE_Text *pTargetElement, double start_time );
 
 	void SetNumCharsPerSec( int num_chars_per_sec ) { m_CharsPerSec = (float)num_chars_per_sec; }
 
