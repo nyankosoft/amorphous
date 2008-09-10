@@ -121,3 +121,16 @@ Vector2 C2DRegularPolygon::GetVertexPos( int vertex )
 
 	return Vector2(vPos.x,vPos.y);
 }
+
+
+void C2DRegularPolygon::SetVertexColor( int vertex, const SFloatRGBAColor& color )
+{
+	if( m_vecRectVertex.size() == 0 )
+		return;
+
+	if( vertex < 0 || m_NumPolygonVertices <= vertex )
+		return;
+
+	m_vecRectVertex[vertex+1].color = color.GetARGB32();
+}
+

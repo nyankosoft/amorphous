@@ -365,7 +365,6 @@ public:
 
 class CGE_Polygon : public CGE_Primitive
 {
-
 	/// Only the regular polygon is supported
 	C2DRegularPolygon *m_pRegularPolygon;
 
@@ -382,6 +381,8 @@ public:
 	void SetRadius( int vertex, int radius );
 
 	Vector2 GetVertexPos( int vertex );
+
+	void SetVertexColor( int vertex, int color_index, const SFloatRGBAColor& color );
 };
 
 

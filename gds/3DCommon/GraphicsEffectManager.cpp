@@ -36,6 +36,22 @@ void CGraphicsEffectHandle::SetDestPosition( const Vector2& vDestPos )
 }
 
 
+void CGraphicsEffectHandle::SetDestColor( const SFloatRGBAColor& dest_color )
+{
+//	CGraphicsElementEffect *pEffect = m_pManager->GetEffect(*this);
+//	if( pEffect )
+//		pEffect->ChangeDestColor( dest_color );
+}
+
+
+void CGraphicsEffectHandle::ChangeDestVertexTexCoord( int vertex, const TEXCOORD2& tex_coord )
+{
+//	CGraphicsElementEffect *pEffect = m_pManager->GetEffect(*this);
+//	if( pEffect )
+//		pEffect->ChangeDestVertexTexCoord( vertex, tex_coord );
+}
+
+
 void CE_ColorShift::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
@@ -157,6 +173,40 @@ void CE_TextDraw::Update( double current_time, double dt )
 	}
 }
 
+
+void CE_NonLinearVertexColorShift::Update( double current_time, double dt )
+{
+	if( current_time < m_fStartTime )
+		return;
+
+	SFloatRGBAColor diff = m_Color.target - m_Color.current;
+	if( diff.fRed   < 0.001f
+	 && diff.fGreen < 0.001f
+	 && diff.fBlue  < 0.001f
+	 && diff.fAlpha < 0.001f )
+		return;
+
+	m_Color.Update( (float)dt );
+
+//	LOG_PRINT_CAUTION( to_string(current_time) + " - " + to_string(m_Pos.current) );
+
+	m_pPolygonElement->SetVertexColor( m_VertexIndex, m_ColorIndex, m_Color.current );
+}
+
+
+void CE_NonLinearVertexColorShift::SetDestColor( const SFloatRGBAColor& dest_color )
+//void CE_NonLinearVertexColorShift::SetDestVertexColor( int color_index, const SFloatRGBAColor& dest_color )
+{
+	// What to do with the color index
+	// - Already determined when the effect is created
+	// - Should not be included in the arguments
+	m_Color.target = dest_color;
+}
+
+
+//==========================================================================
+// CE_TranslateNonLinear
+//==========================================================================
 
 void CE_TranslateNonLinear::Update( double current_time, double dt )
 {
@@ -568,6 +618,26 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( CGE_Text *pTargetTextE
 	p->m_CharsPerSec = (float)num_chars_per_sec;
 
 	p->SetNumCharsPerSec( num_chars_per_sec );
+
+	return AddGraphicsEffect( p );
+}
+
+
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeVertexColorNonLinear( CGE_Polygon *pTargetPolygonElement,
+																		    double start_time,
+																			int color_index,
+																			int vertex,
+																			const SFloatRGBAColor& dest_color,
+																			const SFloatRGBAColor& color_change_velocity )
+{
+	if( !pTargetPolygonElement )
+		return CGraphicsEffectHandle::Null();
+
+	CE_NonLinearVertexColorShift *p = new CE_NonLinearVertexColorShift( pTargetPolygonElement,  m_fTimeOffset + start_time );
+	p->m_ColorIndex  = color_index;
+	p->m_VertexIndex = vertex;
+	p->SetDestColor( dest_color );
+	p->m_Color.vel = color_change_velocity;
 
 	return AddGraphicsEffect( p );
 }

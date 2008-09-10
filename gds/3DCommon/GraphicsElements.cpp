@@ -237,6 +237,12 @@ Vector2 CGE_Polygon::GetVertexPos( int vertex )
 }
 
 
+void CGE_Polygon::SetVertexColor( int vertex, int color_index, const SFloatRGBAColor& color )
+{
+	m_pRegularPolygon->SetVertexColor( vertex, color );
+}
+
+
 //==========================================================================================
 // CGE_Text
 //==========================================================================================

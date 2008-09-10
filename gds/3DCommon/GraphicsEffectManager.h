@@ -151,6 +151,9 @@ public:
 	/// To be implemented by non-linear color shift effect
 //	virtual void SetDestColor( const SFloatRGBAColor& dest_color ) {}
 
+	/// To be implemented by non-linear color shift effect
+	virtual void SetDestColor( const SFloatRGBAColor& dest_color ) {}
+//	virtual void SetDestVertexColor( int vertex, int color_index, const SFloatRGBAColor& dest_color ) {}
 };
 
 
@@ -393,6 +396,35 @@ public:
 };
 
 
+class CE_NonLinearVertexColorShift : public CGraphicsElementNonLinearEffect
+{
+	cdv<SFloatRGBAColor> m_Color;
+
+	int m_ColorIndex;
+
+	int m_VertexIndex;
+
+	/// The user must not remove polygon element until the effect is done. How's that?
+	/// - How does the user know if the effect is still doing its job or done?
+	CGE_Polygon *m_pPolygonElement;
+
+public:
+
+	CE_NonLinearVertexColorShift( CGE_Polygon *pTargetElement, double start_time )
+		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, start_time + 10000.0 ), m_pPolygonElement(pTargetElement) {}
+
+	virtual void Update( double current_time, double dt );
+
+	void SetDestColor( const SFloatRGBAColor& dest_color );
+
+	// Does this thing have any use?
+	// - It's not likely that the user wants to change target vertex / color index later.
+//	void SetDestVertexColor( int vertex, int color_index, const SFloatRGBAColor& dest_color );
+
+	friend class CAnimatedGraphicsManager;
+};
+
+
 class CE_TranslateNonLinear : public CGraphicsElementNonLinearEffect
 {
 	cdv<Vector2> m_Pos;
@@ -541,6 +573,9 @@ public:
 	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ) { return CGraphicsEffectHandle::Null(); } 
 
 	virtual CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeVertexColorNonLinear( CGE_Polygon *pTargetTextElement, double start_time,
+		int color_index, int vertex,
+		const SFloatRGBAColor& dest_color, const SFloatRGBAColor& color_change_velocity ) { return CGraphicsEffectHandle::Null(); }
 
 	virtual void SetElementPath_Start() {}
 	virtual void AddElementPath() {}
@@ -656,6 +691,10 @@ public:
 	/// - Effect is terminated after the entire text is drawn
 	/// - TODO: Define the behavior when the effect gets canceled before it finish drawing the complete text.
 	CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec );
+
+	CGraphicsEffectHandle ChangeVertexColorNonLinear( CGE_Polygon *pTargetTextElement, double start_time,
+		int color_index, int vertex,
+		const SFloatRGBAColor& dest_color, const SFloatRGBAColor& color_change_velocity );
 
 //	void SetElementPath_Start();
 //	void AddElementPath();

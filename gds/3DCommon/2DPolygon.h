@@ -44,13 +44,6 @@ public:
 
 	virtual int unsigned GetPrimitiveType() const { return C2DPrimitive::TYPE_POLYGON; }
 
-	/// store a single color to 'm_Color'
-	/// - vertex colors are updated if vertex buffers are created
-	/// - can be called from constructor
-//	inline virtual void SetColor( const SFloatRGBAColor& color );
-
-//	inline void SetColor( U32 color );
-
 	/// calls ResizeBuffer() internally
 	/// - must not be called from constructor
 //	virtual void SetZDepth(float fZValue);
@@ -69,6 +62,8 @@ public:
 	void SetRadius( int vertex, int radius );
 
 	Vector2 GetVertexPos( int vertex );
+
+	void SetVertexColor( int vertex, const SFloatRGBAColor& color );
 };
 
 

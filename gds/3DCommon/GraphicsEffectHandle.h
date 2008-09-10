@@ -3,6 +3,7 @@
 
 
 #include "3DCommon/fwd.h"
+#include "3DCommon/TextureCoord.h"
 
 
 class CGraphicsEffectHandle
@@ -32,8 +33,11 @@ public:
 	/// valid for non-linear translation effects
 	void SetDestPosition( const Vector2& vDestPos );
 
-	/// valid for non-linear color change effect
+	/// valid effect: non-linear color change effect
 	void SetDestColor( const SFloatRGBAColor& dest_color );
+
+	/// valid effect: non-linear tex coord change effect to a polygon element
+	void ChangeDestVertexTexCoord( int vertex, const TEXCOORD2& tex_coord );
 
 	friend class CAnimatedGraphicsManager;
 };
