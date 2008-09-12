@@ -28,5 +28,5 @@ void CGM_Static::SetText( const std::string& strText )
 	m_strText = strText;
 
 	if( m_pRenderer.get() )
-		m_pRenderer->OnTextChanged();
+		m_pRenderer->OnTextChanged( *this );
 }

@@ -186,7 +186,7 @@ public:
 
 	/// for static control renderers
 	/// - not called when the text is first set to a static control in its ctor
-	virtual void OnTextChanged() {}
+	virtual void OnTextChanged( CGM_Static& static_control ) {}
 
 	/// for button renderers
 	virtual void OnPressed( CGM_Button& button ) {}

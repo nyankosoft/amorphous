@@ -383,11 +383,11 @@ CGM_ControlRendererManager *CGM_Dialog::GetRendererMgr()
 CGM_Static *CGM_Dialog::AddControl( CGM_StaticDesc *pStaticDesc )
 {
 	CGM_Static *pNewControl = new CGM_Static( this, pStaticDesc );
-	if( !pStaticDesc->pRenderer.get() )
-		pStaticDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateStaticRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pStaticDesc->pRenderer ? pStaticDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateStaticRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pStaticDesc->pRenderer );
-	pStaticDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -395,11 +395,11 @@ CGM_Static *CGM_Dialog::AddControl( CGM_StaticDesc *pStaticDesc )
 CGM_Button *CGM_Dialog::AddControl( CGM_ButtonDesc *pButtonDesc )
 {
 	CGM_Button *pNewControl = new CGM_Button( this, pButtonDesc );
-		if( !pButtonDesc->pRenderer.get() )
-			pButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateButtonRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pButtonDesc->pRenderer ? pButtonDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateButtonRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pButtonDesc->pRenderer );
-	pButtonDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -407,11 +407,11 @@ CGM_Button *CGM_Dialog::AddControl( CGM_ButtonDesc *pButtonDesc )
 CGM_SubDialogButton *CGM_Dialog::AddControl( CGM_SubDialogButtonDesc *pSubDlgDesc )
 {
 	CGM_SubDialogButton *pNewControl = new CGM_SubDialogButton( this, pSubDlgDesc );
-	if( !pSubDlgDesc->pRenderer.get() )
-		pSubDlgDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSubDialogButtonRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pSubDlgDesc->pRenderer ? pSubDlgDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSubDialogButtonRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pSubDlgDesc->pRenderer );
-	pSubDlgDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -419,11 +419,11 @@ CGM_SubDialogButton *CGM_Dialog::AddControl( CGM_SubDialogButtonDesc *pSubDlgDes
 CGM_CheckBox *CGM_Dialog::AddControl( CGM_CheckBoxDesc *pCheckBoxDesc )
 {
 	CGM_CheckBox *pNewControl = new CGM_CheckBox( this, pCheckBoxDesc );
-	if( !pCheckBoxDesc->pRenderer.get() )
-		pCheckBoxDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateCheckBoxRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pCheckBoxDesc->pRenderer ? pCheckBoxDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateCheckBoxRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pCheckBoxDesc->pRenderer );
-	pCheckBoxDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -431,11 +431,11 @@ CGM_CheckBox *CGM_Dialog::AddControl( CGM_CheckBoxDesc *pCheckBoxDesc )
 CGM_RadioButton *CGM_Dialog::AddControl( CGM_RadioButtonDesc *pRButtonDesc )
 {
 	CGM_RadioButton *pNewControl = new CGM_RadioButton( this, pRButtonDesc );
-	if( !pRButtonDesc->pRenderer.get() )
-		pRButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateRadioButtonRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pRButtonDesc->pRenderer ? pRButtonDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateRadioButtonRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pRButtonDesc->pRenderer );
-	pRButtonDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -443,11 +443,11 @@ CGM_RadioButton *CGM_Dialog::AddControl( CGM_RadioButtonDesc *pRButtonDesc )
 CGM_DialogCloseButton *CGM_Dialog::AddControl( CGM_DialogCloseButtonDesc *pCButtonDesc )
 {
 	CGM_DialogCloseButton *pNewControl = new CGM_DialogCloseButton( this, pCButtonDesc );
-	if( !pCButtonDesc->pRenderer.get() )
-		pCButtonDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateDialogCloseButtonRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pCButtonDesc->pRenderer ? pCButtonDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateDialogCloseButtonRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pCButtonDesc->pRenderer );
-	pCButtonDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -455,11 +455,11 @@ CGM_DialogCloseButton *CGM_Dialog::AddControl( CGM_DialogCloseButtonDesc *pCButt
 CGM_Slider *CGM_Dialog::AddControl( CGM_SliderDesc *pSliderDesc )
 {
 	CGM_Slider *pNewControl = new CGM_Slider( this, pSliderDesc );
-	if( !pSliderDesc->pRenderer.get() )
-		pSliderDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSliderRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pSliderDesc->pRenderer ? pSliderDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateSliderRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pSliderDesc->pRenderer );
-	pSliderDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -467,11 +467,11 @@ CGM_Slider *CGM_Dialog::AddControl( CGM_SliderDesc *pSliderDesc )
 CGM_ListBox *CGM_Dialog::AddControl( CGM_ListBoxDesc *pListBoxDesc )
 {
 	CGM_ListBox *pNewControl = new CGM_ListBox( this, pListBoxDesc );
-	if( !pListBoxDesc->pRenderer.get() )
-		pListBoxDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateListBoxRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pListBoxDesc->pRenderer ? pListBoxDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateListBoxRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pListBoxDesc->pRenderer );
-	pListBoxDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -479,11 +479,11 @@ CGM_ListBox *CGM_Dialog::AddControl( CGM_ListBoxDesc *pListBoxDesc )
 CGM_ScrollBar *CGM_Dialog::AddControl( CGM_ScrollBarDesc *pScrollBarDesc )
 {
 	CGM_ScrollBar *pNewControl = new CGM_ScrollBar( this, pScrollBarDesc );
-	if( !pScrollBarDesc->pRenderer.get() )
-		pScrollBarDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateScrollBarRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pScrollBarDesc->pRenderer ? pScrollBarDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreateScrollBarRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pScrollBarDesc->pRenderer );
-	pScrollBarDesc->pRenderer->Init( *pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( *pNewControl );
 	return pNewControl;
 }
 
@@ -493,11 +493,11 @@ CGM_ScrollBar *CGM_Dialog::AddControl( CGM_ScrollBarDesc *pScrollBarDesc )
 CGM_PaintBar *CGM_Dialog::AddControl( CGM_PaintBarDesc *pPaintBarDesc )
 {
 	CGM_PaintBar *pNewControl = new CGM_PaintBar( this, pPaintBarDesc );
-	if( !pPaintBarDesc->pRenderer.get() )
-		pPaintBarDesc->pRenderer = CGM_ControlRendererSharedPtr( GetRendererMgr()->CreatePaintBarRenderer( pNewControl ) );
+	CGM_ControlRendererSharedPtr pRenderer
+		= pPaintBarDesc->pRenderer ? pPaintBarDesc->pRenderer : CGM_ControlRendererSharedPtr( GetRendererMgr()->CreatePaintBarRenderer( pNewControl ) );
 
-	RegisterControl( pNewControl, pPaintBarDesc->pRenderer );
-	pPaintBarDesc->pRenderer->Init( pNewControl );
+	RegisterControl( pNewControl, pRenderer );
+	pRenderer->Init( pNewControl );
 	return pNewControl;
 }
 #endif /* UI_EXTENSION_EDIT */
