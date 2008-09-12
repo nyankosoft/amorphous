@@ -48,9 +48,6 @@ public:
 };
 
 
-class CGI_Aircraft;
-typedef boost::shared_ptr<CGI_Aircraft> CGI_AircraftSharedPtr;
-
 /**
  * CGI_Aircraft
  *
@@ -140,6 +137,14 @@ class CGI_Aircraft : public CGameItem
 	/// list of ammo that can be fired from this aircraft
 	std::vector<AmmoPayload> m_vecSupportedAmmo;
 
+	/// cached ammunition items
+	/// - Borrowed reference. Owned reference needs to be maintained by the owner of the aircraft item
+	/// - Not serialized.
+	std::vector<std::vector<boost::weak_ptr<CGI_Ammunition>>> m_vecpAvailableAmmoCache;
+
+	/// weapon slot index : name of the previously used ammunition
+	std::map<int,std::string> m_PrevUsedAmmo;
+
 //	CBaseEntityHandle m_EngineNozzleFlame;
 //	CBaseEntityHandle m_MuzzleFlashBaseEntity;
 
@@ -198,6 +203,20 @@ public:
 	int GetNumRotors() const { return (int)m_vecRotor.size(); }
 	const CAircraftRotor& GetRotor( int index ) const { return m_vecRotor[index]; }
 
+
+	void UpdateAvailableAmmoCache(int num_weapon_slots, std::vector< boost::shared_ptr<CGI_Ammunition> >& vecpAmmo);
+
+	std::vector< std::vector< boost::weak_ptr<CGI_Ammunition> > >& AvailableAmmoCache() { return m_vecpAvailableAmmoCache; }
+	
+
+	/// update prev used ammo
+	void UpdatePrevUsedAmmo( int weapon_slot_index, const std::string& ammo_item_name ) { m_PrevUsedAmmo[weapon_slot_index] = ammo_item_name; }
+
+	std::string GetPrevUsedAmmoName( int weapon_slot_index );
+
+	int GetPrevUsedAmmoIndex( int weapon_slot_index );
+
+	boost::shared_ptr<CGI_Ammunition> GetAvailableAmmoFromCache( int weapon_slot_index, int ammo_index );
 
 	/// initializes mesh bone controller
 	/// If called without an argument, the mesh bone controllers use the mesh

@@ -126,6 +126,8 @@ public:
 
 	int GetSelectedItemIndex() const { return m_nSelected; }
 
+	int GetPageSize();
+
 //	void SetEventHandler( CGM_ListBoxEventHandler *pEventHandler ) { m_pEventHandler = pEventHandler; }
 	void SetEventHandler( CGM_ListBoxEventHandlerSharedPtr pEventHandler ) { m_pEventHandler = pEventHandler; }
 

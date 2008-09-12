@@ -9,6 +9,10 @@
 #include "GameCommon/MeshBoneController_Aircraft.h"
 #include "3DCommon/D3DXSMeshObject.h"
 
+
+using namespace std;
+using namespace boost;
+
 /*
 void CBE_PseudoAircraft::Init()
 {
@@ -100,6 +104,82 @@ float CGI_Aircraft::GetStealthiness() const
 float CGI_Aircraft::GetArmorScaled() const
 {
 	return  GetLimited( GetArmor() * 0.01f, 0.0f, 1.0f );
+}
+
+
+class ValidWeakPtr
+{
+public:
+	bool operator() ( boost::weak_ptr<CGI_Ammunition>& p ) { return !(p.lock()); }
+};
+
+
+void CGI_Aircraft::UpdateAvailableAmmoCache( int num_weapon_slots, vector< shared_ptr<CGI_Ammunition> >& vecpAmmo )
+{
+	m_vecpAvailableAmmoCache.resize( num_weapon_slots );
+
+	const int num_ammo_items = (int)vecpAmmo.size();
+	for( int i=0; i<num_ammo_items; i++ )
+	{
+		for( int j=0; j<num_weapon_slots; j++ )
+		{
+			if( 0 < GetPayloadForAmmunition( *vecpAmmo[i], j ) )
+				m_vecpAvailableAmmoCache[j].push_back( vecpAmmo[i] );
+		}
+	}
+
+	for( int j=0; j<num_weapon_slots; j++ )
+	{
+		std::remove_if(
+			m_vecpAvailableAmmoCache[j].begin(),
+			m_vecpAvailableAmmoCache[j].end(),
+			ValidWeakPtr() );
+	}
+
+}
+
+
+shared_ptr<CGI_Ammunition> CGI_Aircraft::GetAvailableAmmoFromCache( int weapon_slot_index, int ammo_index )
+{
+	if( (int)m_vecpAvailableAmmoCache.size() <= weapon_slot_index )
+		return shared_ptr<CGI_Ammunition>();
+
+	if( (int)m_vecpAvailableAmmoCache[weapon_slot_index].size() <= ammo_index )
+		return shared_ptr<CGI_Ammunition>();
+
+	return m_vecpAvailableAmmoCache[weapon_slot_index][ammo_index].lock();
+}
+
+
+std::string CGI_Aircraft::GetPrevUsedAmmoName( int weapon_slot_index )
+{
+	std::map<int,std::string>::iterator itr = m_PrevUsedAmmo.find(weapon_slot_index);
+	if( itr != m_PrevUsedAmmo.end() )
+		return itr->second;
+	else
+		return "";
+}
+
+
+int CGI_Aircraft::GetPrevUsedAmmoIndex( int weapon_slot_index )
+{
+	if( (int)m_vecpAvailableAmmoCache.size() <= weapon_slot_index )
+		return -1;
+
+	const string ammo_name = GetPrevUsedAmmoName(weapon_slot_index);
+
+	if( ammo_name.length() == 0 )
+		return -1;
+
+	const int num_cached_ammo = (int)m_vecpAvailableAmmoCache[weapon_slot_index].size();
+	for( int i=0; i<num_cached_ammo; i++ )
+	{
+		shared_ptr<CGI_Ammunition> pAmmo = m_vecpAvailableAmmoCache[weapon_slot_index][i].lock();
+		if( pAmmo && pAmmo->GetName() == ammo_name )
+			return i;
+	}
+
+	return -1;
 }
 
 
@@ -364,7 +444,7 @@ void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_vecRotor;
 
-//	ar & ;
+	ar & m_PrevUsedAmmo;
 }
 
 

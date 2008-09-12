@@ -49,7 +49,7 @@ m_pScrollBar(NULL)
 //	bar_desc.Rect.Offset( -dlg_rect.left, -dlg_rect.top );
 	bar_desc.coord_type = CGM_ControlDesc::COORD_GLOBAL;
 
-	m_pScrollBar = (CGM_ScrollBar *)m_pDialog->AddControl( &bar_desc );
+	m_pScrollBar = m_pDialog->AddControl( &bar_desc );
 
 	UpdateRects();
 }
@@ -380,6 +380,12 @@ void CGM_ListBox::SetItemSelectionFocus( int nNewIndex )
 		if( m_pRenderer )
 			m_pRenderer->OnItemSelectionFocusCreated( *this );
 	}
+}
+
+
+int CGM_ListBox::GetPageSize()
+{
+	return m_pScrollBar->GetPageSize();
 }
 
 
