@@ -84,6 +84,16 @@ void CDIKeyboard::InitKeyCodeMap()
 	m_aiGICodeForDIKCode[DIK_W]   = 'W';
 	m_aiGICodeForDIKCode[DIK_Y]   = 'Y';
 	m_aiGICodeForDIKCode[DIK_Z]   = 'Z';
+	m_aiGICodeForDIKCode[DIK_0]   = '0';
+	m_aiGICodeForDIKCode[DIK_1]   = '1';
+	m_aiGICodeForDIKCode[DIK_2]   = '2';
+	m_aiGICodeForDIKCode[DIK_3]   = '3';
+	m_aiGICodeForDIKCode[DIK_4]   = '4';
+	m_aiGICodeForDIKCode[DIK_5]   = '5';
+	m_aiGICodeForDIKCode[DIK_6]   = '6';
+	m_aiGICodeForDIKCode[DIK_7]   = '7';
+	m_aiGICodeForDIKCode[DIK_8]   = '8';
+	m_aiGICodeForDIKCode[DIK_9]   = '9';
 
 	m_aiGICodeForDIKCode[DIK_NUMPAD0] = GIC_NUMPAD0;
 	m_aiGICodeForDIKCode[DIK_NUMPAD1] = GIC_NUMPAD1;

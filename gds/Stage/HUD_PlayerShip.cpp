@@ -92,7 +92,7 @@ void HUD_PlayerShip::LoadTextures()
 }
 
 
-void HUD_PlayerShip::Render()
+void HUD_PlayerShip::RenderImpl()
 {
 	// enable alpha blending
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();

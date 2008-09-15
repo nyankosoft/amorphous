@@ -45,7 +45,7 @@ public:
 
 	void Init();
 
-	void Render();
+	void RenderImpl();
 
 	inline CFontBase *GetFont() { return &m_StatusFont; }
 

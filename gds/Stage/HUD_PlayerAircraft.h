@@ -88,8 +88,6 @@ private:
 
 	bool m_bDisplayGlobalRadar;
 
-	CAnimatedGraphicsManager *m_pGraphicsEffectManager;
-
 //	TCFixedVector<HUD_TargetInfo, NUM_MAX_TGT_INFO> m_vecTargetInfo;
 
 //	CGameTextWindow *m_pTextWindow;
@@ -107,6 +105,7 @@ private:
 public:
 
 	HUD_PlayerAircraft();
+
 	virtual ~HUD_PlayerAircraft();
 
 	void Release();
@@ -121,7 +120,7 @@ public:
 
 	void Update( float dt );
 
-	void Render();
+	void RenderImpl();
 
 	/// turns on/off the global radar
 	void DisplayGlobalRadar( bool display ) { m_bDisplayGlobalRadar = display; }

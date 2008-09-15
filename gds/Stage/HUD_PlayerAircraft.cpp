@@ -19,14 +19,15 @@
 #include "Support/Log/DefaultLog.h"
 #include "Support/Macro.h"
 
+using namespace std;
+using namespace boost;
+
 
 HUD_PlayerAircraft::HUD_PlayerAircraft()
 :
 m_bDisplayGlobalRadar(false),
 m_pSubDisplay(NULL),
-m_pTimeText(NULL),
-m_pGraphicsEffectManager(NULL)
-//m_pTextWindow(NULL)
+m_pTimeText(NULL)
 {
 	m_ContainerSize = CONTAINER_SIZE;
 
@@ -56,8 +57,6 @@ HUD_PlayerAircraft::~HUD_PlayerAircraft()
 void HUD_PlayerAircraft::Release()
 {
 	SafeDelete( m_pSubDisplay );
-
-	SafeDelete( m_pGraphicsEffectManager );
 }
 
 
@@ -75,7 +74,7 @@ void HUD_PlayerAircraft::Init()
 	const string filename = "./Texture/hud_icon.dds";
 	m_TexCache.Load( filename );
 
-	m_pGraphicsEffectManager = new CAnimatedGraphicsManager();
+	m_pGraphicsEffectManager = shared_ptr<CAnimatedGraphicsManager>( new CAnimatedGraphicsManager() );
 
 	CGraphicsElementManager *pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
 
@@ -228,6 +227,8 @@ void HUD_PlayerAircraft::Update( float  dt )
 {
 	PROFILE_FUNCTION();
 
+	HUD_PlayerBase::Update( dt );
+
 	// update the center position of the HUD
 	CBaseEntity *pBaseEntity = PLAYERINFO.GetCurrentPlayerBaseEntity();
 	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
@@ -240,8 +241,8 @@ void HUD_PlayerAircraft::Update( float  dt )
 		m_pTimeText->SetText( buffer );
 	}
 
-	if( m_pGraphicsEffectManager )
-		m_pGraphicsEffectManager->UpdateEffects( dt );
+//	if( m_pGraphicsEffectManager )
+//		m_pGraphicsEffectManager->UpdateEffects( dt );
 
 	CBE_PlayerPseudoAircraft *pPlayerAircraft = (CBE_PlayerPseudoAircraft *)pBaseEntity;
 
@@ -289,7 +290,7 @@ inline void SetTexCoord( int i, C2DRect& rect )
 }
 
 
-void HUD_PlayerAircraft::Render()
+void HUD_PlayerAircraft::RenderImpl()
 {
 	PROFILE_FUNCTION();
 

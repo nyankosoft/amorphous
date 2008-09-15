@@ -4,13 +4,12 @@
 #include <string>
 
 #include "3DCommon/GraphicsComponentCollector.h"
-
+#include "3DCommon/GraphicsEffectManager.h"
 #include "GameCommon/HUD_TimerDisplay.h"
 
 
 class CGameTextWindow;
 class CGameTextSet;
-class CFontBase;
 class HUD_SubDisplay;
 
 
@@ -18,29 +17,47 @@ class HUD_PlayerBase : public CGraphicsComponent
 {
 protected:
 
+	boost::shared_ptr<CAnimatedGraphicsManager> m_pGraphicsEffectManager;
+
+	/// show / hide the HUD
+	bool m_bShow;
+
+	/// deprecated
+	/// - Use text elements (CGE_Text) instead.
 	HUD_TimerDisplay m_TimerDisplay;
 
 public:
 
-	enum eType
+	enum Type
 	{
 		TYPE_GENERAL,
 		TYPE_AIRCRAFT,
 		NUM_TYPES
 	};
 
-	HUD_PlayerBase() {}
+	HUD_PlayerBase() : m_bShow(true) {}
+
 	virtual ~HUD_PlayerBase() {}
 
 	virtual int GetType() const = 0;
 
 	virtual void Init() {}
 
-	virtual void Render() = 0;
+	inline void Render();
+
+	/// Derived classes implement this to render HUD components
+	/// - Deprecated. All the components should be rendered as graphics elements with CGraphicsElementManager
+	/// - Called after all the graphics elements are rendered
+	virtual void RenderImpl() {};
 
 	virtual CFontBase *GetFont() { return NULL; }
 
-	virtual void Update( float dt ) {}
+	/// Must be called by derived classes if overridden
+	inline virtual void Update( float dt );
+
+	void Show() { m_bShow = true; }
+	void Hide() { m_bShow = false; }
+	void ToggleShowHide() { m_bShow = (!m_bShow); }
 
 	virtual bool HandleInput( int iActionCode, int input_type, float fVal ) { return true; }
 
@@ -53,27 +70,30 @@ public:
 	virtual bool OpenTextWindow( CGameTextSet *pTextSet ) { return false; }
 	virtual CGameTextSet *GetCurrentTextSetInTextWindow() { return NULL; }
 
+	void SetGraphicsEffectManager( boost::shared_ptr<CAnimatedGraphicsManager> pEffectMgr ) { m_pGraphicsEffectManager = pEffectMgr; }
+
 	virtual void CreateRenderTasks() {}
 };
 
 
+//----------------------------------- inline implementations -----------------------------------
 
-
-
-
-class HUD_PlayerPAC : public HUD_PlayerBase
+inline void HUD_PlayerBase::Render()
 {
+	if( !m_bShow )
+		return;
 
-public:
+	m_pGraphicsEffectManager->GetGraphicsElementManager()->Render();
 
-	void Init() {}
-
-	void Render() {}
-
-};
-
+	RenderImpl();
+}
 
 
+inline void HUD_PlayerBase::Update( float dt )
+{
+	if( m_pGraphicsEffectManager )
+		m_pGraphicsEffectManager->UpdateEffects( dt );
+}
 
 
 #endif  /*  __HUD_PLAYERBASE_H__  */

@@ -1027,6 +1027,12 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		break;
 
 	case ACTION_MISC_TOGGLE_HUD:
+		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		{
+			pHUD = SinglePlayerInfo().GetHUD();
+			if( pHUD )
+				pHUD->ToggleShowHide();
+		}
 		break;
 
 	case ACTION_MENU_OPEN_MENU_0:
