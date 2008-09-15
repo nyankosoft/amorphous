@@ -39,6 +39,15 @@ public:
 	/// valid effect: non-linear tex coord change effect to a polygon element
 	void ChangeDestVertexTexCoord( int vertex, const TEXCOORD2& tex_coord );
 
+	bool operator==( const CGraphicsEffectHandle& rhs )
+	{
+		return m_pManager    == rhs.m_pManager
+			&& m_EffectIndex == rhs.m_EffectIndex
+			&& m_EffectID    == rhs.m_EffectID;
+	}
+
+	bool operator!=( const CGraphicsEffectHandle& rhs ) { return !(*this==rhs); }
+
 	friend class CAnimatedGraphicsManager;
 };
 

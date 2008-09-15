@@ -262,6 +262,10 @@ bool CE_SizeChangeCD::IsOver( double current_time ) const
 
 void CE_AlphaBlink::Update( double current_time, double dt )
 {
+	double r = fmod( current_time, m_afDuration[0] + m_afDuration[1] );
+
+	int i = r < m_afDuration[0] ? 0 : 1;
+	GetElement()->SetAlpha( m_ColorIndex, m_afAlpha[i] );
 }
 
 
@@ -514,6 +518,20 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( CGraphicsEle
 }
 
 
+CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( CGraphicsElement *pTargetElement, double interval, int color_index )
+{
+	CE_AlphaBlink *pEffect = new CE_AlphaBlink( pTargetElement );
+	pEffect->m_afAlpha[0] = pTargetElement->GetColor(0).fAlpha;
+	pEffect->m_afAlpha[1] = 0.0f;
+	pEffect->m_afDuration[0] = interval;
+	pEffect->m_afDuration[1] = interval;
+	pEffect->m_ColorIndex = color_index;
+	pEffect->SetFlags( CGraphicsElementEffectFlag::DONT_RELEASE );
+
+	return AddGraphicsEffect( pEffect );
+}
+
+
 CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( CGraphicsElement *pTargetElement,
 											double start_time, double end_time,
 											Vector2 vDestPos,
@@ -701,6 +719,7 @@ bool CAnimatedGraphicsManager::CancelEffect( CGraphicsEffectHandle& effect_handl
 	if( GetEffect(effect_handle) )
 	{
 		RemoveEffect( effect_handle.m_EffectIndex );
+		effect_handle = CGraphicsEffectHandle();
 		return true;
 	}
 	else

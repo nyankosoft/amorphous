@@ -64,6 +64,8 @@ private:
 
 	CGE_Text *m_pTimeText;
 
+	CGraphicsEffectHandle m_TimeTextBlinkEffect;
+
 	CGE_Rect *m_apContainer[NUM_MAX_CONTAINER_RECTS];
 
 	CGE_Group *m_pGlobalRadar;

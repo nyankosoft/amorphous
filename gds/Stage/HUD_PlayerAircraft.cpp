@@ -1,4 +1,3 @@
-
 #include "HUD_PlayerAircraft.h"
 #include "HUD_SubDisplay.h"
 #include "BE_PlayerPseudoAircraft.h"
@@ -11,8 +10,6 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DMisc.h"
 #include "3DCommon/GraphicsEffectManager.h"
-//#include "GameInput/3DActionCode.h"
-#include "GameTextSystem/GameTextWindow.h"
 #include "Support/StringAux.h"
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"
@@ -21,6 +18,9 @@
 
 using namespace std;
 using namespace boost;
+
+
+static const int gs_TimerDisplayBlinkThreasholdMS = 60 * 1000 * 14;
 
 
 HUD_PlayerAircraft::HUD_PlayerAircraft()
@@ -239,6 +239,17 @@ void HUD_PlayerAircraft::Update( float  dt )
 		char buffer[32];
 		m_TimerDisplay.GetTimeMMSS( buffer );
 		m_pTimeText->SetText( buffer );
+
+		if( m_TimerDisplay.m_TimeMS < gs_TimerDisplayBlinkThreasholdMS )
+		{
+			if( m_TimeTextBlinkEffect == CGraphicsEffectHandle::Null() )
+				m_TimeTextBlinkEffect = m_pGraphicsEffectManager->BlinkAlpha( m_pTimeText, 0.5, 0 );
+		}
+		else
+		{
+			if( m_TimeTextBlinkEffect != CGraphicsEffectHandle::Null() )
+				m_pGraphicsEffectManager->CancelEffect( m_TimeTextBlinkEffect );
+		}
 	}
 
 //	if( m_pGraphicsEffectManager )

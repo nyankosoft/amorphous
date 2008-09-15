@@ -496,17 +496,27 @@ public:
 };
 
 
-class CE_Blink : public CGraphicsElementEffect
+class CE_Blink : public CGraphicsElementNonLinearEffect
 {
-	float m_fAccumulatedTime; ///< in sec
-	float m_fFlipInterval; ///< in sec
+protected:
 
-	bool m_bLoop;
+	double m_fAccumulatedTime; ///< in sec
+
+	/// usually a same value is set to [0] & [1]
+	double m_afDuration[2];
+
+	int m_ColorIndex;
+
+//	double m_fFlipInterval; ///< in sec
+
+//	bool m_bLoop;
 
 public:
 
-	CE_Blink( CGraphicsElement *pTargetElement ) : CGraphicsElementEffect(pTargetElement, 0.0f, 0.0f ), m_fAccumulatedTime(0), m_fFlipInterval(1.0f) {}
+	CE_Blink( CGraphicsElement *pTargetElement ) : CGraphicsElementNonLinearEffect(pTargetElement, 0.0f, 10000.0f ), m_fAccumulatedTime(0) {}
 	~CE_Blink() {}
+
+	friend class CAnimatedGraphicsManager;
 };
 
 /*
@@ -524,9 +534,6 @@ class CE_AlphaBlink : public CE_Blink
 {
 	float m_afAlpha[2];
 
-	/// usually a same value is set to [0] & [1]
-	float m_afDuration[2];
-
 public:
 
 	CE_AlphaBlink( CGraphicsElement *pTargetElement )
@@ -543,6 +550,8 @@ public:
 	{
 		m_afDuration[0] = m_afDuration[1] = interval;
 	}
+
+	friend class CAnimatedGraphicsManager;
 };
 
 
@@ -569,7 +578,8 @@ public:
 	virtual CGraphicsEffectHandle TranslateTo( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel = Vector2(0,0), float smooth_time = 0.5f, int coord_type = 0, U32 flags = 0 ) { return CGraphicsEffectHandle::Null(); }
 
-	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ) { return CGraphicsEffectHandle::Null(); } 
+	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double interval, int color_index = 0 ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ) { return CGraphicsEffectHandle::Null(); } 
 
 	virtual CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec ) { return CGraphicsEffectHandle::Null(); }
@@ -679,10 +689,14 @@ public:
 	CGraphicsEffectHandle TranslateTo( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode );
 
 	/// Translate with Critical Damping (Velocity)
-	/// - translate the element from the current position to the dest position 'vDestPos'
+	/// - Translate the element from the current position to the dest position 'vDestPos'
 	///   with the init velocity 'vInitVel' 
-	/// - uses critical damping to calc position
+	/// - Uses critical damping to calculate the position of the target element
 	CGraphicsEffectHandle TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel, float smooth_time, int coord_type, U32 flags );
+
+	/// blink the element by alternating its alpha component between the current value and zero
+	/// - The effect is looped. The user needs cancel the effect explicitly to stop the blink effect
+	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double interval, int color_index );
 
 //	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ); 
 //	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ); 
