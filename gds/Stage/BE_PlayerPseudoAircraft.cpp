@@ -843,11 +843,11 @@ void CBE_PlayerPseudoAircraft::UpdateCamera( CCopyEntity* pCopyEnt )
 		m_Camera.SetPosition( entity_world_pose * m_CameraLocalPose.vPosition );
 	}
 
-#else
+#else // VIEW_CONTROL
 
 	m_Camera.SetPose( pCopyEnt->GetWorldPose() );
 
-#endif
+#endif // VIEW_CONTROL
 
 	m_Camera.UpdateVFTreeForWorldSpace();
 
@@ -1024,6 +1024,9 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 				pAircratHUD->DisplayGlobalRadar( false );
 			}
 		}
+		break;
+
+	case ACTION_MISC_TOGGLE_HUD:
 		break;
 
 	case ACTION_MENU_OPEN_MENU_0:
