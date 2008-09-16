@@ -8,6 +8,7 @@
 #include <boost/foreach.hpp>
 
 #include "3DCommon/all.h"
+#include "3DCommon/LogOutput_OnScreen.h"
 
 #include "GameCommon/Timer.h"
 #include "Support.h"
@@ -68,7 +69,7 @@ CCameraController_Win32 g_CameraController;
 
 CCamera g_Camera;
 
-CLogOutput_OnScreen *g_pLogOutput = NULL;
+CLogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
 
 
 
@@ -307,9 +308,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	g_pFont = pFont;
 
 	// output log text on the screen
-	g_pLogOutput = new CLogOutput_OnScreen( "Arial", 6, 12, 24, 120 );
+	g_pLogOutput = new CLogOutput_ScrolledTextBuffer( "Arial", 6, 12, 24, 120 );
 	g_Log.AddLogOutput( g_pLogOutput );
-	g_pLogOutput->SetTopLeftPos( Vector2(8,16) );
+//	g_pLogOutput->SetTopLeftPos( Vector2(8,16) );
 
 //	SetDefaultSkyboxMesh( compiler_fg );
 
