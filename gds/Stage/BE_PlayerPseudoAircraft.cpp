@@ -159,11 +159,7 @@ void CBE_PlayerPseudoAircraft::Init()
 //	m_Camera.SetFOV( D3DX_PI / 8.0f );
 	m_Camera.SetNearClip( near_clip );
 	m_Camera.SetFarClip( far_clip );
-//	m_Camera.SetAspectRatio( 640.0f / 480.0f );
 	m_Camera.SetAspectRatio( CGraphicsComponent::GetAspectRatio() );
-
-//	for( int i=0; i<CWeaponSystem::NUM_WEAPONSLOTS; i++ )
-//		SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(i).LocalPose.vPosition = Vector3( 0.0f, -1.2f, 12.0f );
 
 	Init3DModel();
 
@@ -312,12 +308,6 @@ void CBE_PlayerPseudoAircraft::Move( CCopyEntity *pCopyEnt )
 	}
 
 	CJL_PhysicsActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
-
-/*	// update world aabb here so that collision check would not be performed between the player and his own bullets
-	// when he is stepping back while firing
-	pCopyEnt->world_aabb.TransformCoord( pCopyEnt->local_aabb, pCopyEnt->Position() );
-*/
-
 }
 
 
@@ -338,7 +328,6 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	// set release positions for missile launchers
 	m_pAircraft->InitWeaponSystem();
 
-//	m_pAircraft->WeaponSystem().SetProjectileGroup( CE_GROUP_PLAYER_PROJECTILE );
 	m_pAircraft->WeaponSystem().SetProjectileGroup( GetEntityGroupID( m_ProjectileEntityGroup ) );
 
 	// get mesh filename from the aircraft item and load the mesh
@@ -350,7 +339,6 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 
 	// copy mesh related stuff from item to base entity...
 	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
-//	m_MeshProperty.m_MeshObjectHandle = mesh_container.m_MeshObjectHandle;
 
 	// Set target material indices to create alpha entity
 	Init3DModel();
@@ -361,10 +349,6 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 		m_pAircraft->ResetMeshController();
 		m_pAircraft->InitMeshController( dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get()) );
 	}
-
-	// need to call ValidateShaderTechniqueTable()
-	// - TODO: avoid reloading the mesh
-//	m_MeshProperty.LoadMeshObject();
 
 	// set mesh bone controller (experimental)
 /*	SBE_MeshObjectProperty& rMesh = m_MeshProperty;
@@ -396,9 +380,6 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 	float effective_range = 25000.0f;
 	if( m_pAircraft )
 	{
-//		CGI_Weapon* pWeapon = m_pAircraft->WeaponSystem().GetPrimaryWeapon();
-//		if( pWeapon && pWeapon->GetArchiveObjectID() == CGameItem::ID_MISSILELAUNCHER )
-//			effective_range = ((CGI_MissileLauncher *)pWeapon)
 		SWeaponSlot& slot = m_pAircraft->WeaponSystem().GetPrimaryWeaponSlot();
 		if( slot.pChargedAmmo )
 			effective_range = slot.pChargedAmmo->GetRange() * 2.0f;
@@ -488,7 +469,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 		if( pWeapon->GetArchiveObjectID() != CGameItem::ID_MISSILELAUNCHER )
 			continue;
 
-		CGI_MissileLauncher *pLauncher = (CGI_MissileLauncher *)pWeapon;
+		CGI_MissileLauncher *pLauncher = dynamic_cast<CGI_MissileLauncher *>(pWeapon); // should always succeed
 
 		// set primary target to lock-on
 		pLauncher->SetPrimaryTarget( m_pFocusedTarget );
@@ -498,6 +479,9 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 
 void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 {
+//	std::map<int,int> m_EntityGroupIndexToTargetInfoFlag;
+//	std::map<int,int> m_EntityTypeIDtoTargetInfoFlag;
+
 	static vector<CCopyEntity *> s_vecpEntityBuffer;
 	s_vecpEntityBuffer.resize( 0 );
 
@@ -510,7 +494,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 		Vector3(-1,-1,-1) * effective_radar_radius + pCopyEnt->Position(),
 		Vector3( 1, 1, 1) * effective_radar_radius + pCopyEnt->Position() );	// m_pStage->GetAABB();
 
-	COverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, ENTITY_GROUP_MIN_ID /*CE_GROUP_GENERAL*/ );
+	COverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
 
 	m_pStage->GetEntitySet()->GetOverlappingEntities( overlap_test );
 
@@ -525,7 +509,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 	CGI_Weapon *pPrimaryWeapon = m_pAircraft->WeaponSystem().GetPrimaryWeapon();
 	CGI_MissileLauncher* pLauncher = NULL;
 	if( pPrimaryWeapon && pPrimaryWeapon->GetArchiveObjectID() == CGameItem::ID_MISSILELAUNCHER )
-		pLauncher = (CGI_MissileLauncher *)pPrimaryWeapon;
+		pLauncher = dynamic_cast<CGI_MissileLauncher *>(pPrimaryWeapon); // should always succeed
 
 	// set primary target to lock-on
 	if( pLauncher && IsValidEntity(m_pFocusedTarget) )
@@ -550,8 +534,11 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 			tgt_type = HUD_TargetInfo::PLAYER | HUD_TargetInfo::TGT_AIR;
 			break;
 
-		default:
+		case BE_HOMINGMISSILE:
+			tgt_type = HUD_TargetInfo::MISSILE;
+			break;
 
+		default:
 			switch( pEntity->GroupIndex )
 			{
 			case CE_GROUP_PLAYER:      tgt_type |= HUD_TargetInfo::PLAYER; break;
@@ -575,19 +562,6 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 			}
 
 			break;
-
-/*		case BE_ENEMYAIRCRAFT:
-			tgt_type = HUD_TargetInfo::ENEMY | HUD_TargetInfo::TGT_AIR;
-			break;
-		case BE_ENEMYSHIP:
-			tgt_type = HUD_TargetInfo::ENEMY | HUD_TargetInfo::TGT_SURFACE;
-			break;
-		case BE_HOMINGMISSILE:
-			tgt_type = HUD_TargetInfo::MISSILE;
-			break;
-		default:
-			tgt_type = 0;
-			break;*/
 		}
 
 		if( tgt_type != 0 )

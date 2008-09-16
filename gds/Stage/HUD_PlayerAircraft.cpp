@@ -315,9 +315,6 @@ void HUD_PlayerAircraft::RenderImpl()
 
 	CBE_PlayerPseudoAircraft *plane = (CBE_PlayerPseudoAircraft *)pBaseEntity;
 
-	CGraphicsElementManager *pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
-	pElementMgr->Render();
-
 	int state = plane->GetAircraftState();
 	SFloatRGBAColor hud_color;
 	switch(state)
