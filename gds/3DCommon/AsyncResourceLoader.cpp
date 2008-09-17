@@ -1,21 +1,9 @@
 #include "AsyncResourceLoader.h"
+#include "../base.h"
 #include <boost/thread/xtime.hpp>
 
 using namespace std;
 using namespace boost;
-
-
-class Result
-{
-public:
-	enum Name
-	{
-		SUCCESS = 0,
-		RESOURCE_NOT_FOUND,
-		RESOURCE_IN_USE,
-		NUM_RESULTS
-	};
-};
 
 
 CSingleton<CAsyncResourceLoader> CAsyncResourceLoader::m_obj;

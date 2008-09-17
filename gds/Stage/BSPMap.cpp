@@ -1410,8 +1410,8 @@ void CBSPMap::RenderSkybox( const CCamera& rCamera )
 	if( pEffect )
 	{
 		UINT pass, cPasses;
-//		hr = pShaderManager->SetTechnique( SHADER_TECH_SKYBOX );
-		hr = pShaderManager->SetTechnique( m_aShaderTechHandle[4] );
+//		Result::Name res = pShaderManager->SetTechnique( SHADER_TECH_SKYBOX );
+		Result::Name res = pShaderManager->SetTechnique( m_aShaderTechHandle[4] );
 		pEffect->Begin( &cPasses, 0 );
 
 		assert( !FAILED(hr) );

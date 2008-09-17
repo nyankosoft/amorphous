@@ -8,7 +8,6 @@
 #include <windows.h>
 
 
-
 //
 // typedefs
 //
@@ -54,6 +53,26 @@ inline void clamp( T& val, const T& min_val, const T& max_val )
 {
 	val = get_clamped( val, min_val, max_val );
 }
+
+
+//
+// function results
+//
+
+class Result
+{
+public:
+	enum Name
+	{
+		SUCCESS = 0,        ///< succeeded
+		OUT_OF_MEMORY,      ///< not enough memory
+		INVALID_ARGS,       ///< invalid argument(s)
+		RESOURCE_NOT_FOUND, ///< the requested resource was not found (to be used by async loader).
+		RESOURCE_IN_USE,    ///< the resource is being used by another thread (to be used by async loader).
+		UNKNOWN_ERROR,      ///< an unknown error
+		NUM_RESULTS
+	};
+};
 
 
 //#else

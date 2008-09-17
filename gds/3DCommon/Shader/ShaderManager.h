@@ -9,6 +9,7 @@
 
 #include "ShaderTechniqueHandle.h"
 
+#include "../../base.h"
 #include "3DCommon/fwd.h"
 #include "3DCommon/TextureHandle.h"
 
@@ -118,9 +119,9 @@ public:
 
 //	inline void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture );
 
-	inline HRESULT SetTechnique( const unsigned int id );
+	inline Result::Name SetTechnique( const unsigned int id );
 
-	inline HRESULT SetTechnique( CShaderTechniqueHandle& tech_handle );
+	inline Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle );
 
 	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 
@@ -285,23 +286,28 @@ inline HRESULT CShaderManager::SetCubeTexture( int index, const LPDIRECT3DCUBETE
 }
 
 
-inline HRESULT CShaderManager::SetTechnique( const unsigned int id )
+inline Result::Name CShaderManager::SetTechnique( const unsigned int id )
 {
-	return m_pEffect->SetTechnique( m_aTechniqueHandle[id] );
+	HRESULT hr = m_pEffect->SetTechnique( m_aTechniqueHandle[id] );
+
+	return ( SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR );
 }
 
 
-inline HRESULT CShaderManager::SetTechnique( CShaderTechniqueHandle& tech_handle )
+inline Result::Name CShaderManager::SetTechnique( CShaderTechniqueHandle& tech_handle )
 {
 	const int tech_index = tech_handle.GetTequniqueIndex();
 
+	HRESULT hr;
 	if( 0 <= tech_index )
 	{
 		// valid index has already been set to handle
-		return m_pEffect->SetTechnique( m_aTechniqueHandle[tech_index] );
+		hr = m_pEffect->SetTechnique( m_aTechniqueHandle[tech_index] );
 	}
 	else
-		return SetNewTechnique( tech_handle );
+		hr = SetNewTechnique( tech_handle );
+
+	return ( SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR );
 }
 
 
