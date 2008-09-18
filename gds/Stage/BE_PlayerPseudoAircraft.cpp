@@ -922,7 +922,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 	// let command menu handle the input
 	// - secondary action is sent to command menu
 	if( CActionCode::IsMenuCode( input.SecondaryActionCode )
-	 && m_pCmdMenuDialogManager.get() )
+	 && m_pCmdMenuDialogManager )
 	{
 		CGM_InputData ui_input;
 		ui_input.code = g_GMInputCodeForActionCode[input.SecondaryActionCode];
@@ -1013,7 +1013,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		if( input.type == SPlayerEntityAction::KEY_PRESSED )
 		{
 			// open misc command menu by down key
-			if( m_pCmdMenuDialogManager.get() && cmdmenu_misc < m_vecCmdMenuRootDialogID.size() )
+			if( m_pCmdMenuDialogManager && cmdmenu_misc < m_vecCmdMenuRootDialogID.size() )
 			{
 				if( !m_pCmdMenuDialogManager->GetDialog(m_vecCmdMenuRootDialogID[cmdmenu_misc])->IsOpen() )
                     m_pCmdMenuDialogManager->OpenRootDialog( m_vecCmdMenuRootDialogID[cmdmenu_misc] );
@@ -1025,7 +1025,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		if( input.type == SPlayerEntityAction::KEY_PRESSED )
 		{
 			// open order command menu by up key
-			if( m_pCmdMenuDialogManager.get() && cmdmenu_order < m_vecCmdMenuRootDialogID.size() )
+			if( m_pCmdMenuDialogManager && cmdmenu_order < m_vecCmdMenuRootDialogID.size() )
 			{
 				if( !m_pCmdMenuDialogManager->GetDialog(m_vecCmdMenuRootDialogID[cmdmenu_order])->IsOpen() )
 					m_pCmdMenuDialogManager->OpenRootDialog( m_vecCmdMenuRootDialogID[cmdmenu_order] );

@@ -77,55 +77,55 @@ public:
 
 	SRect ReferenceScreenRect() const { return RectLTWH( 0, 0, GetReferenceScreenWidth(), GetReferenceScreenHeight() ); }
 
-	SRect RectAtCenter( int width, int height )
+	static SRect RectAtCenter( int width, int height )
 	{
 		return RectCWH( GetReferenceScreenWidth() / 2, GetReferenceScreenHeight() / 2, width, height );
 	}
 
 
-	SRect RectAtLeftTop( int width, int height, int left_margin, int top_margin )
+	static SRect RectAtLeftTop( int width, int height, int left_margin, int top_margin )
 	{
 		return RectLTWH( left_margin, top_margin, width, height );
 	}
 
 
-	SRect RectAtCenterTop( int width, int height, int top_margin )
+	static SRect RectAtCenterTop( int width, int height, int top_margin )
 	{
 		return RectLTWH( ( GetReferenceScreenWidth() - width ) / 2, top_margin, width, height );
 	}
 
 
-	SRect RectAtRightTop( int width, int height, int right_margin, int top_margin )
+	static SRect RectAtRightTop( int width, int height, int right_margin, int top_margin )
 	{
 		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, top_margin, width, height );
 	}
 
 
-	SRect RectAtLeftCenter( int width, int height, int left_margin )
+	static SRect RectAtLeftCenter( int width, int height, int left_margin )
 	{
 		return RectLTWH( left_margin, ( GetReferenceScreenHeight() - height ) / 2, width, height );
 	}
 
 
-	SRect RectAtRightCenter( int width, int height, int right_margin )
+	static SRect RectAtRightCenter( int width, int height, int right_margin )
 	{
 		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, ( GetReferenceScreenHeight() - height ) / 2, width, height );
 	}
 
 
-	SRect RectAtLeftBottom( int width, int height, int left_margin, int bottom_margin )
+	static SRect RectAtLeftBottom( int width, int height, int left_margin, int bottom_margin )
 	{
 		return RectLTWH( left_margin, GetReferenceScreenHeight() - height - bottom_margin, width, height );
 	}
 
 
-	SRect RectAtCenterBottom( int width, int height, int bottom_margin )
+	static SRect RectAtCenterBottom( int width, int height, int bottom_margin )
 	{
 		return RectLTWH( ( GetReferenceScreenWidth() - width ) / 2, GetReferenceScreenHeight() - height - bottom_margin, width, height );
 	}
 
 
-	SRect RectAtRightBottom( int width, int height, int right_margin, int bottom_margin )
+	static SRect RectAtRightBottom( int width, int height, int right_margin, int bottom_margin )
 	{
 		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, GetReferenceScreenHeight() - height - bottom_margin, width, height );
 	}

@@ -458,7 +458,7 @@ void CBE_Player::RenderStage(CCopyEntity* pCopyEnt)
 
 
 	// render command menu UI
-	if( m_pCmdMenuDialogManager.get() )
+	if( m_pCmdMenuDialogManager )
         m_pCmdMenuDialogManager->Render();
 }
 
