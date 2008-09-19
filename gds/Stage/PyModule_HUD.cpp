@@ -1,17 +1,25 @@
-
 #include "PyModule_HUD.h"
 
 #include "3DMath/Vector3.h"
 #include "PlayerInfo.h"
 #include "HUD_PlayerBase.h"
 
-
 using namespace std;
+
+
+static HUD_PlayerBase *GetHUD()
+{
+	CBE_Player *pPlayerBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
+	if( pPlayerBaseEntity )
+		return pPlayerBaseEntity->GetHUD();
+	else
+		return NULL;
+}
 
 
 PyObject* ShowTime( PyObject* self, PyObject* args )
 {
-	HUD_PlayerBase *pHUD = PLAYERINFO.GetHUD();
+	HUD_PlayerBase *pHUD = GetHUD();
 	if( !pHUD )
 	{
 		Py_INCREF( Py_None );
@@ -27,7 +35,7 @@ PyObject* ShowTime( PyObject* self, PyObject* args )
 
 PyObject* HideTime( PyObject* self, PyObject* args )
 {
-	HUD_PlayerBase *pHUD = PLAYERINFO.GetHUD();
+	HUD_PlayerBase *pHUD = GetHUD();
 	if( !pHUD )
 	{
 		Py_INCREF( Py_None );
@@ -43,7 +51,7 @@ PyObject* HideTime( PyObject* self, PyObject* args )
 
 PyObject* SetTimeColor( PyObject* self, PyObject* args )
 {
-/*	HUD_PlayerBase *pHUD = PLAYERINFO.GetHUD();
+/*	HUD_PlayerBase *pHUD = GetHUD();
 	if( !pHUD )
 		return Py_None;
 
@@ -59,7 +67,7 @@ PyObject* SetTimeColor( PyObject* self, PyObject* args )
 
 PyObject* UpdateTimeS( PyObject* self, PyObject* args )
 {
-	HUD_PlayerBase *pHUD = PLAYERINFO.GetHUD();
+	HUD_PlayerBase *pHUD = GetHUD();
 	if( !pHUD )
 	{
 		Py_INCREF( Py_None );
@@ -79,7 +87,7 @@ PyObject* UpdateTimeS( PyObject* self, PyObject* args )
 
 PyObject* LoadGlobalMap( PyObject* self, PyObject* args )
 {
-	HUD_PlayerBase *pHUD = PLAYERINFO.GetHUD();
+	HUD_PlayerBase *pHUD = GetHUD();
 	if( !pHUD )
 	{
 		Py_INCREF( Py_None );
@@ -91,30 +99,6 @@ PyObject* LoadGlobalMap( PyObject* self, PyObject* args )
 
 	pHUD->LoadGlobalMapTexture( global_map_texture_filename );
 
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-/**
- * create entity from pos, dir, vel
- */
-PyObject* _CreateEntity( PyObject* self, PyObject* args )
-{
-/*	if( !gs_pTargetStage )
-		return Py_None;
-
-	char *base_name;
-	Vector3 pos;
-	Vector3 dir = Vector3(0,0,1);
-	Vector3 vel = Vector3(0,0,0);
-	int result = PyArg_ParseTuple( args, "sfff|ffffff", &base_name,
-		                                             &pos.x, &pos.y, &pos.z,
-		                                             &dir.x, &dir.y, &dir.z,
-		                                             &vel.x, &vel.y, &vel.z );
-
-	CreateNamedEntity( "", base_name, pos, dir, vel );
-*/
     Py_INCREF( Py_None );
 	return Py_None;
 }

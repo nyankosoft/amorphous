@@ -24,6 +24,8 @@ class SubMonitor
 {
 protected:
 
+	Matrix34 m_OwnerWorldPose;
+
 	CCamera m_Camera;
 
 
@@ -50,12 +52,17 @@ public:
 
 	virtual void Render();
 
-//	virtual CCamera& GetCamera() = 0;
 	virtual CCamera& GetCamera() { return m_Camera; }
+
+	void SetOwnerWorldPose( const Matrix34& world_pose ) { m_OwnerWorldPose = world_pose; }
 
 	virtual void Update( float dt ) {}
 
 	virtual int GetType() const = 0;
+
+	virtual void UpdateTargetPosition( const Vector3& pos ) {}
+
+	virtual void UpdateTargetRadius( float radius ) {}
 
 	void CreateRenderTasks();
 };
@@ -63,15 +70,11 @@ public:
 
 class SubMonitor_EntityTracker : public SubMonitor
 {
-	CCopyEntity *m_pOwner;
-
-//	CCopyEntity *m_pTarget;
-
 	Vector3 m_vTargetPosition;
 	float m_fTargetRadius;
 
 	cdv<float> m_FOV;
-//	cdv<Matrix33> m_CamOrient;
+
 	cdv<Quaternion> m_CamOrient;
 
 	float m_fOverlapTime;
@@ -80,15 +83,13 @@ class SubMonitor_EntityTracker : public SubMonitor
 
 public:
 
-	SubMonitor_EntityTracker( CCopyEntity *pOwner );
+	SubMonitor_EntityTracker();
 
 //	virtual Camera& GetCamera() { return m_Camera; }
 
 	virtual void Render();
 
 	virtual void Update( float dt );
-
-//	void UpdateTarget( CCopyEntity *pTarget );
 
 	void UpdateTargetPosition( const Vector3& pos ) { m_vTargetPosition = pos; }
 
@@ -100,31 +101,16 @@ public:
 
 class SubMonitor_FixedView : public SubMonitor
 {
-	CCopyEntity *m_pParent;
-
 	Matrix34 m_LocalCameraPose;
 
 public:
 
-	SubMonitor_FixedView( CCopyEntity *pParent, Matrix34& local_camera_pose )
+	SubMonitor_FixedView( Matrix34& local_camera_pose )
 		:
-	m_pParent(pParent),
 	m_LocalCameraPose(local_camera_pose)
 	{}
 
-//	virtual Camera& GetCamera() { return m_Camera; }
-
-	virtual void Update( float dt )
-	{
-		if( !IsValidEntity( m_pParent ) )
-		{
-			m_pParent = NULL;
-			return;
-		}
-
-		m_Camera.SetPose( m_pParent->GetWorldPose() * m_LocalCameraPose );
-		m_Camera.UpdateVFTreeForWorldSpace();
-	}
+	virtual void Update( float dt );
 
 	virtual int GetType() const { return FIXED_VIEW; }
 };
@@ -163,6 +149,12 @@ public:
 	void Render();
 
 	void Update( float dt );
+
+	void SetOwnerWorldPose( const Matrix34& world_pose )
+	{
+		for( size_t i=0; i<m_vecpMonitor.size(); i++ )
+			m_vecpMonitor[i]->SetOwnerWorldPose( world_pose );
+	}
 
 	void SetStage( CStageWeakPtr pStage )
 	{

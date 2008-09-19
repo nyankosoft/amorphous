@@ -88,7 +88,8 @@ static void SetDefaultGMInputCodesForActionCodes()
 
 CBE_PlayerPseudoAircraft::CBE_PlayerPseudoAircraft()
 :
-m_pAircraft(NULL)
+m_pAircraft(NULL),
+m_pPlayerAircraftHUD(NULL)
 {
 //	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_PLAYER;
 
@@ -143,6 +144,7 @@ m_pAircraft(NULL)
 
 CBE_PlayerPseudoAircraft::~CBE_PlayerPseudoAircraft()
 {
+	SafeDelete( m_pPlayerAircraftHUD );
 }
 
 
@@ -172,6 +174,9 @@ void CBE_PlayerPseudoAircraft::Init()
 	LoadBaseEntity( m_aExtraBaseEntity[EBE_FLAME_TRAIL].Handle );
 
 	SinglePlayerInfo().SetStage( m_pStage->GetWeakPtr() );
+
+	m_pPlayerAircraftHUD = new HUD_PlayerAircraft;
+	m_pPlayerAircraftHUD->Init();
 }
 
 
@@ -230,6 +235,31 @@ void CBE_PlayerPseudoAircraft::SetVisionMode( int vision_mode )
 
 	case CPlayerVisionMode::Thermal:
 		// NOT IMPLEMENTED
+		break;
+	}
+}
+
+
+void CBE_PlayerPseudoAircraft::SetSubDisplayType( CSubDisplayType::Name type )
+{
+	if( !m_pPlayerAircraftHUD )
+		return;
+
+	HUD_SubDisplay* pSubDisplay = m_pPlayerAircraftHUD->GetSubDisplay();
+
+	switch(type)
+	{
+	case CSubDisplayType::NONE:
+		break;
+	case CSubDisplayType::AUTO:
+	case CSubDisplayType::FOCUSED_TARGET_TRACKER:
+		break;
+	case CSubDisplayType::FRONT_VIEW:
+	case CSubDisplayType::REAR_VIEW:
+		break;
+	case CSubDisplayType::MISSILE_VIEW:
+		break;
+	default:
 		break;
 	}
 }
@@ -943,8 +973,6 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 	if( m_pAircraft->HandleInput( input.ActionCode, input_type, input.fParam ) )
 		return true;
 
-	HUD_PlayerBase *pHUD = NULL;
-
 	static const int cmdmenu_misc = 0;
 	static const int cmdmenu_order = 1;
 
@@ -984,18 +1012,15 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 
 	case ACTION_MISC_HOLD_RADAR:
 
-		if(	(pHUD = SinglePlayerInfo().GetHUD())
-		 && (pHUD->GetType() == HUD_PlayerBase::TYPE_AIRCRAFT) )
+		if(	m_pPlayerAircraftHUD )
 		{
-            HUD_PlayerAircraft *pAircratHUD = dynamic_cast<HUD_PlayerAircraft *>(pHUD);
- 
 			if( input.type == SPlayerEntityAction::KEY_PRESSED )
 			{
-				pAircratHUD->DisplayGlobalRadar( true );
+				m_pPlayerAircraftHUD->DisplayGlobalRadar( true );
 			}
 			else
 			{
-				pAircratHUD->DisplayGlobalRadar( false );
+				m_pPlayerAircraftHUD->DisplayGlobalRadar( false );
 			}
 		}
 		break;
@@ -1003,9 +1028,8 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 	case ACTION_MISC_TOGGLE_HUD:
 		if( input.type == SPlayerEntityAction::KEY_PRESSED )
 		{
-			pHUD = SinglePlayerInfo().GetHUD();
-			if( pHUD )
-				pHUD->ToggleShowHide();
+			if( m_pPlayerAircraftHUD )
+				m_pPlayerAircraftHUD->ToggleShowHide();
 		}
 		break;
 

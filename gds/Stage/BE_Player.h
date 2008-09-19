@@ -17,6 +17,7 @@
 #include "Sound/SoundHandle.h"
 
 class CShockWaveCameraEffect;
+class HUD_PlayerBase;
 
 
 enum eThrustDirection
@@ -156,6 +157,8 @@ public:
 
 	/// process input for various operations of the player entity
 	virtual bool HandleInput( SPlayerEntityAction& input );
+
+	virtual HUD_PlayerBase *GetHUD() { return NULL; }
 
 	void PlayerDead(CCopyEntity* pCopyEnt);
 

@@ -89,7 +89,7 @@ void CInputHandler_PlayerShip::SetDefaultKeyBind()
 
 void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
 {
-	CBE_Player* pPlayerBaseEntity = PLAYERINFO.GetCurrentPlayerBaseEntity();
+	CBE_Player* pPlayerBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
 
 	int action_code = m_aiActionForGICode[input.iGICode];
 
@@ -110,24 +110,24 @@ void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
 	action_input.fParam = input.fParam1;
 
 	// check if there is an item the player is using right now
-	if( PLAYERINFO.GetFocusedItem() )
+	if( SinglePlayerInfo().GetFocusedItem() )
 	{
-		if( PLAYERINFO.GetFocusedItem()->HandleInput( action_code, input.iType, input.fParam1 ) )
+		if( SinglePlayerInfo().GetFocusedItem()->HandleInput( action_code, input.iType, input.fParam1 ) )
 			return;
 	}
 
 	// let the quick menu handle the input first
 	// if the input is used for menu operation, return
-	if( PLAYERINFO.GetHUD()->HandleInput( action_code, input.iType, input.fParam1 ) )
-		return;
+//	if( SinglePlayerInfo().GetHUD()->HandleInput( action_code, input.iType, input.fParam1 ) )
+//		return;
 
 	// let the player entity handle the input
-	if( PLAYERINFO.GetCurrentPlayerBaseEntity()->HandleInput( action_input ) )
+	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity()->HandleInput( action_input ) )
 		return;
 
 	// input has not been handled yet
 
-	CWeaponSystem *pWeaponSystem = PLAYERINFO.GetWeaponSystem();
+	CWeaponSystem *pWeaponSystem = SinglePlayerInfo().GetWeaponSystem();
 
 	// let the currently selected weapon handle the input
 	if( pWeaponSystem->HandleInput( action_code, input.iType, input.fParam1 ) )
@@ -196,7 +196,7 @@ void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
 	switch( input.iGICode )
 	{
 	case GIC_ESC:
-		PLAYERINFO.RequestTaskChange( CGameTask::ID_MAIN_MENU );
+		SinglePlayerInfo().RequestTaskChange( CGameTask::ID_MAIN_MENU );
 		break;
 	}
 

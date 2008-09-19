@@ -39,6 +39,7 @@ public:
 
 SubMonitor::SubMonitor()
 {
+	m_OwnerWorldPose = Matrix34Identity();
 	m_Camera.SetNearClip( 35.0f );
 	m_Camera.SetFarClip( 20000.0f );
 }
@@ -60,11 +61,24 @@ void SubMonitor::Render()
 }
 
 
+void SubMonitor::CreateRenderTasks()
+{
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( pStage )
+	{
+		// register render tasks necessary to render the stage
+		// - does not include the rendering of stage
+		pStage->CreateStageRenderTasks( &GetCamera() );
 
-SubMonitor_EntityTracker::SubMonitor_EntityTracker( CCopyEntity *pOwner )
-:
-m_pOwner(pOwner)
-//m_pTarget(NULL)
+		// register render task to render the stage on texture render target
+		// and reset the render target
+//		RenderTaskProcessor.AddRenderTask( new CSubMonitorRenderTask( pSubDisplay ) );
+	}
+}
+
+
+
+SubMonitor_EntityTracker::SubMonitor_EntityTracker()
 {
 	m_Camera.SetNearClip( 35.0f );
 	m_Camera.SetFarClip( 30000.0f );
@@ -75,9 +89,6 @@ m_pOwner(pOwner)
 
 	m_fOverlapTime = 0;
 
-//	m_CamOrient.current = Matrix33Identity();
-//	m_CamOrient.target = Matrix33Identity();
-//	m_CamOrient.vel = Matrix33(0);
 	m_CamOrient.current = Quaternion(0,0,0,0);
 	m_CamOrient.target = Quaternion(0,0,0,0);
 	m_CamOrient.vel = Quaternion(0,0,0,0);
@@ -92,21 +103,8 @@ m_pOwner(pOwner)
 
 void SubMonitor_EntityTracker::Update( float dt )
 {
-	//if( !IsValidEntity( m_pTarget ) )
-	//{
-	//	m_pTarget = NULL;
-	//	return;
-	//}
-
-	if( !IsValidEntity( m_pOwner ) )
-	{
-		m_pOwner = NULL;
-		return;
-	}
-
 	Vector3 vDist, vDir;
-//	vDist = m_pTarget->Position() - m_pOwner->Position();
-	vDist = m_vTargetPosition - m_pOwner->Position();
+	vDist = m_vTargetPosition - m_OwnerWorldPose.vPosition;
 	float dist = Vec3Length( vDist );
 	vDir = vDist / dist;
 
@@ -118,30 +116,32 @@ void SubMonitor_EntityTracker::Update( float dt )
 //	m_Camera.SetFOV( fov * 2.0f );
 	m_FOV.target = fov * 2.0f;
 
-	// calc pose of the camera
-//	m_CamOrient.target = CreateOrientFromFwdDir( vDir );
+	// calc the dest orientation of the camera
 	m_CamOrient.target.FromRotationMatrix( CreateOrientFromFwdDir( vDir ) );
 
 	Matrix34 pose;
-//	pose.matOrient = CreateOrientFromFwdDir( vDir );
-//	pose.matOrient = m_CamOrient.current;
-	pose.vPosition = m_pOwner->Position();
+
+	// position - copy the owner's current position
+	pose.vPosition = m_OwnerWorldPose.vPosition;
+
+	// orientation - Make the submonitor camera look like it turns at a limited speed
+	// using critical damping
 
 	// udpate critical damping
 	float total_time = dt + m_fOverlapTime;
 	float timestep = 0.005f;
-	int num_loops = (int) (total_time / timestep);
+	int num_loops = (int)(total_time / timestep);
 	m_fOverlapTime = total_time - num_loops * timestep;
 	for(int i=0;i<num_loops;i++)
 	{
 		m_FOV.Update(dt);
 		m_CamOrient.Update(dt);
 	}
-//	pose = m_pOwner->GetWorldPose();
+
+	m_CamOrient.current.ToRotationMatrix( pose.matOrient );
 
 	// update camera fov & pose
 	m_Camera.SetFOV( m_FOV.current );
-	m_CamOrient.current.ToRotationMatrix( pose.matOrient );
 	m_Camera.SetPose( pose );
 	m_Camera.UpdateVFTreeForWorldSpace();
 
@@ -183,19 +183,10 @@ void SubMonitor_EntityTracker::Render()
 }
 
 
-void SubMonitor::CreateRenderTasks()
+void SubMonitor_FixedView::Update( float dt )
 {
-	CStageSharedPtr pStage = m_pStage.lock();
-	if( pStage )
-	{
-		// register render tasks necessary to render the stage
-		// - does not include the rendering of stage
-		pStage->CreateStageRenderTasks( &GetCamera() );
-
-		// register render task to render the stage on texture render target
-		// and reset the render target
-//		RenderTaskProcessor.AddRenderTask( new CSubMonitorRenderTask( pSubDisplay ) );
-	}
+	m_Camera.SetPose( m_OwnerWorldPose * m_LocalCameraPose );
+	m_Camera.UpdateVFTreeForWorldSpace();
 }
 
 

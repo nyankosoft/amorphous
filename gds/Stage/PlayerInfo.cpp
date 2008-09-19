@@ -26,8 +26,6 @@ CSingleton<CSinglePlayerInfo> CSinglePlayerInfo::m_obj;
 
 
 CSinglePlayerInfo::CSinglePlayerInfo()
-: 
-m_pHUD(NULL)
 {
 	m_pCurrentPlayerBaseEntity = NULL;
 
@@ -56,7 +54,6 @@ CSinglePlayerInfo::~CSinglePlayerInfo()
 void CSinglePlayerInfo::Release()
 {
 	SafeDelete( m_pInputHandler );
-	SafeDelete( m_pHUD );
 	SafeDelete( m_pWeaponSystem );
 
 	m_vecpItem.resize( 0 );
@@ -94,23 +91,18 @@ void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 	}
 
 	SafeDelete( m_pInputHandler );
-	SafeDelete( m_pHUD );
-
 
 	switch( GetCurrentPlayerBaseEntity()->GetArchiveObjectID() )
 	{
 	case CBaseEntity::BE_PLAYERSHIP:
 	case CBaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:
 		m_pInputHandler = new CInputHandler_PlayerShip;
-		m_pHUD = new HUD_PlayerShip;
+//		m_pHUD = new HUD_PlayerShip;
 		break;
 	case CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT:
 		m_pInputHandler = new CInputHandler_PlayerPAC;
-		m_pHUD = new HUD_PlayerAircraft;
 		break;
 	}
-
-	m_pHUD->Init();
 
 	INPUTHUB.SetInputHandler( m_pInputHandler );
 }
@@ -265,8 +257,8 @@ CGameItem *CSinglePlayerInfo::GetItemByName( const char *pcItemName )
 
 void CSinglePlayerInfo::Update( float dt )
 {
-	if( m_pHUD )
-		m_pHUD->Update( dt );
+//	if( m_pHUD )
+//		m_pHUD->Update( dt );
 
 	size_t i=0, num = m_vecpActiveItem.size();
 	for( i=0; i<num; i++ )
@@ -275,7 +267,7 @@ void CSinglePlayerInfo::Update( float dt )
 	}
 }
 
-
+/*
 void CSinglePlayerInfo::RenderHUD()
 {
 	if( m_pHUD )
@@ -295,7 +287,7 @@ void CSinglePlayerInfo::RenderHUD()
 		}
 	}
 }
-
+*/
 
 void CSinglePlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 {
@@ -303,7 +295,6 @@ void CSinglePlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 	{
 		m_pCurrentPlayerBaseEntity = NULL;
 		SafeDelete( m_pInputHandler );
-		SafeDelete( m_pHUD );
 //		m_pWeaponSystem;
 
 		m_TaskID = -1;

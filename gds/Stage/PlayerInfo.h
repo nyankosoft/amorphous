@@ -22,7 +22,6 @@ using namespace NS_KGL;
 
 // forward declerations
 class CInputHandler_PlayerBase;
-class HUD_PlayerBase;
 class CGameItem;
 class CWeaponSystem;
 
@@ -70,9 +69,6 @@ private:
 	boost::weak_ptr<CStage> m_pCurrentStage;
 
 	CInputHandler_PlayerBase *m_pInputHandler;
-
-	/// owned ref?
-	HUD_PlayerBase *m_pHUD;
 
 	CWeaponSystem *m_pWeaponSystem;
 
@@ -184,8 +180,6 @@ public:
 	void Update( float dt );
 
 	void RenderHUD();
-
-	inline HUD_PlayerBase *GetHUD() { return m_pHUD; }
 
 	/// returns currently selected aircraft
 	CGI_Aircraft *GetAircraft() { return m_pCurrentAircraft; }

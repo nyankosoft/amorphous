@@ -140,13 +140,11 @@ void HUD_PlayerAircraft::Init()
 	m_pSubDisplay = new HUD_SubDisplay();
 	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33Identity() );	// front view
 //	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33RotationY( 3.141592f ) );	// rear view
-	m_pSubDisplay->Monitor().push_back( new SubMonitor_FixedView( PLAYERINFO.GetCurrentPlayerEntity(), local_pose ) );
-	m_pSubDisplay->Monitor().push_back( new SubMonitor_EntityTracker( PLAYERINFO.GetCurrentPlayerEntity() ) );
+	m_pSubDisplay->Monitor().push_back( new SubMonitor_FixedView( local_pose ) );
+	m_pSubDisplay->Monitor().push_back( new SubMonitor_EntityTracker() );
 	m_pSubDisplay->SetMonitorIndex( 1 );
 
 /*
-//	m_pFont->InitFont( "./Texture/MainFont.dds", 256, 256, 16, 8 );
-
 	m_pTextWindow = new CGameTextWindow;
 	m_pTextWindow->InitFont( "ÇlÇr ÉSÉVÉbÉN", 0.018f, 0.036f );
 
@@ -156,7 +154,7 @@ void HUD_PlayerAircraft::Init()
 
 bool HUD_PlayerAircraft::LoadGlobalMapTexture( const std::string& texture_filename )
 {
-	g_Log.Print( "HUD_PlayerAircraft::LoadGlobalMapTexture() called" );
+	LOG_FUNCTION_SCOPE();
 
 //	m_GlobalMap.filename = texture_filename;
 //	bool res = m_GlobalMap.Load();

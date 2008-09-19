@@ -108,7 +108,7 @@ void CBE_Player::Init()
 
 	for( int i=0; i<CWeaponSystem::NUM_WEAPONSLOTS; i++ )
 	{
-		PLAYERINFO.GetWeaponSystem()->GetWeaponSlot(i).LocalPose.vPosition = Vector3(0,0,2.5f);
+		SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(i).LocalPose.vPosition = Vector3(0,0,2.5f);
 	}
 }
 
@@ -132,11 +132,11 @@ void CBE_Player::InitCopyEntity(CCopyEntity* pCopyEnt)
 	// generate laser dot entity and store its pointer to 'm_pLaserDotEntity'
 	m_pLaserDotEntity = m_pStage->CreateEntity( laser_dot );
 
-	PLAYERINFO.SetPlayerBaseEntity( this );
+	SinglePlayerInfo().SetPlayerBaseEntity( this );
 
 //	m_pStage->SetState( CStage::PLAYER_IN_STAGE );
 
-	PLAYERINFO.SetInputHandlerForPlayerShip();
+	SinglePlayerInfo().SetInputHandlerForPlayerShip();
 }
 
 
@@ -161,6 +161,8 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 
 	m_pPlayerCopyEntity = pCopyEnt;
 
+	float frametime = m_pStage->GetFrameTime();
+
 
 	// calculate motion during one frame
 //#ifdef APPLY_PHYSICS_TO_PLAYER_SHIP 
@@ -174,16 +176,16 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 //		LaserAimingDevice( true );
 
 		// update weapon system
-		PLAYERINFO.GetWeaponSystem()->UpdateWorldProperties( pCopyEnt->GetWorldPose(), pCopyEnt->Velocity(), Vector3(0,0,0) );
+		SinglePlayerInfo().GetWeaponSystem()->UpdateWorldProperties( pCopyEnt->GetWorldPose(), pCopyEnt->Velocity(), Vector3(0,0,0) );
 
-		PLAYERINFO.GetWeaponSystem()->Update( TIMER.GetFrameTime() );
+		SinglePlayerInfo().GetWeaponSystem()->Update( frametime );
 
 	
 ///	}
 ///	else
 //		LaserAimingDevice( false );
 
-	CInputHandler_PlayerBase *pInputHandler = PLAYERINFO.GetInputHandler();
+	CInputHandler_PlayerBase *pInputHandler = SinglePlayerInfo().GetInputHandler();
 	if( 0 < pInputHandler->GetActionState(ACTION_ATK_UNLOCK_TRIGGER_SAFETY) )
 		LaserAimingDevice( true );
 	else
@@ -229,13 +231,14 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 		m_pHeadLightEntity->Act();
 	}
 
-	float frametime = m_pStage->GetFrameTime();
-
 	if( m_pShockWaveEffect )
 		m_pShockWaveEffect->Update( frametime );
 
 	if( m_pCmdMenuDialogManager.get() )
 		m_pCmdMenuDialogManager->Update( frametime );
+
+	if( GetHUD() )
+		GetHUD()->Update( frametime );
 
 	UpdateStateLogs(pCopyEnt);
 
@@ -353,8 +356,8 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 		break;
 
 	case GM_AMMOSUPPLY:
-//		if( PLAYERINFO.GetWeaponSystem()->SupplyAmmunition( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
-		if( PLAYERINFO.SupplyItem( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
+//		if( SinglePlayerInfo().GetWeaponSystem()->SupplyAmmunition( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
+		if( SinglePlayerInfo().SupplyItem( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
 		{	// the item was accepted by the player
 			msg.iEffect = GM_EFFECTACCEPTED;
 			msg.pSenderEntity = pCopyEnt_Self;
@@ -406,8 +409,8 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 
 void CBE_Player::OnEntityDestroyed(CCopyEntity* pCopyEnt)
 {
-	if( PLAYERINFO.GetCurrentPlayerBaseEntity() == this )
-		PLAYERINFO.SetPlayerBaseEntity( NULL );
+	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity() == this )
+		SinglePlayerInfo().SetPlayerBaseEntity( NULL );
 }
 
 /*
@@ -428,7 +431,7 @@ void CBE_Player::RenderStage(CCopyEntity* pCopyEnt)
 
 	SubMonitor::SetStage( m_pStage );
 
-	PLAYERINFO.RenderHUD();
+	SinglePlayerInfo().RenderHUD();
 
 	// render command menu UI
 	if( m_pCmdMenuDialogManager.get() )
@@ -447,13 +450,13 @@ void CBE_Player::RenderStage(CCopyEntity* pCopyEnt)
 
 
 	// render player HUD
-	HUD_PlayerBase *pHUD = PLAYERINFO.GetHUD();
+	HUD_PlayerBase *pHUD = GetHUD();
 	if( pHUD )
 	{
 		if( pHUD->GetSubDisplay() )
 			pHUD->GetSubDisplay()->SetStage( m_pStage->GetWeakPtr() );
 
-		PLAYERINFO.RenderHUD();
+		pHUD->Render();
 	}
 
 
@@ -468,9 +471,9 @@ void CBE_Player::CreateRenderTasks(CCopyEntity* pCopyEnt)
 	// let hud create render tasks
 	// - if the submonitor is enabled, it will create render tasks
 	//   which renders the scene to a texture
-	PLAYERINFO.GetHUD()->GetSubDisplay()->SetStage( m_pStage->GetWeakPtr() );
+	GetHUD()->GetSubDisplay()->SetStage( m_pStage->GetWeakPtr() );
 
-	PLAYERINFO.GetHUD()->CreateRenderTasks();
+	GetHUD()->CreateRenderTasks();
 
 	// add render tasks necessary to render the stage
 	m_pStage->CreateStageRenderTasks( GetCamera() );

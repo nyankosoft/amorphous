@@ -46,7 +46,7 @@ void CBE_EventTrigger::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 void CBE_EventTrigger::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other)
 {
-	if( pCopyEnt_Other->pBaseEntity != PLAYERINFO.GetCurrentPlayerBaseEntity() )
+	if( pCopyEnt_Other->pBaseEntity != SinglePlayerInfo().GetCurrentPlayerBaseEntity() )
 		return;	// only the player can trigger events
 
 	float& rfTimeSincePlayerLeft = pCopyEnt_Self->f3;
@@ -72,7 +72,7 @@ void CBE_EventTrigger::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_O
 
 	// check if the text window is being used by other messages
 	if( pEvent->GetType() == CGameEvent::TEXT_MESSAGE &&
-		PLAYERINFO.GetHUD()->GetCurrentTextSetInTextWindow() != NULL )
+		SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetHUD()->GetCurrentTextSetInTextWindow() != NULL )
 		return;
 
 	// check conditions
@@ -87,13 +87,13 @@ void CBE_EventTrigger::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_O
 			break;
 
 		case CGameEventCondition::HAS_KEYCODE:
-//			if( !PLAYERINFO.GetCurrentPlayerBaseEntity()->HasKeycode( rvecCondition[i].strData.c_str() ) )
-			if( !PLAYERINFO.HasKeycode( rvecCondition[i].strData.c_str() ) )
+//			if( !SinglePlayerInfo().GetCurrentPlayerBaseEntity()->HasKeycode( rvecCondition[i].strData.c_str() ) )
+			if( !SinglePlayerInfo().HasKeycode( rvecCondition[i].strData.c_str() ) )
 				bCond = false;
 			break;
 
 		case CGameEventCondition::NOT_HAVE_KEYCODE:
-			if( PLAYERINFO.HasKeycode( rvecCondition[i].strData.c_str() ) )
+			if( SinglePlayerInfo().HasKeycode( rvecCondition[i].strData.c_str() ) )
 				bCond = false;
 			break;
 		}
@@ -108,10 +108,10 @@ void CBE_EventTrigger::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_O
 	{
 	case CGameEvent::TEXT_MESSAGE:
 		pTextEvent = (CGE_TextEvent *)pEvent;
-//		if( PLAYERINFO.GetHUD()->GetCurrentTextSetInTextWindow() != NULL )
+//		if( SinglePlayerInfo().GetHUD()->GetCurrentTextSetInTextWindow() != NULL )
 //			return;	// currently being used by another text set
 
-		PLAYERINFO.GetHUD()->OpenTextWindow( &(pTextEvent->GetTextSet()) );
+		SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetHUD()->OpenTextWindow( &(pTextEvent->GetTextSet()) );
 		break;
 
 	case CGameEvent::ENTITY_SPAWN:

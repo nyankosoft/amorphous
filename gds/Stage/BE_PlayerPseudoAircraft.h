@@ -5,13 +5,29 @@
 #include <Stage/BaseEntityHandle.h>
 #include <Stage/CopyEntity.h>
 #include <Stage/GameMessage.h>
+#include <Stage/BEC_PseudoAircraft.h>
+#include <Stage/HUD_PlayerAircraft.h>
 
 #include "Support/FixedVector.h"
 
 #include "GameCommon/PseudoAircraftSimulator.h"
 #include "Item/GI_Aircraft.h"
 
-#include "BEC_PseudoAircraft.h"
+
+class CSubDisplayType
+{
+public:
+	enum Name
+	{
+		NONE,
+		AUTO,
+		FRONT_VIEW,
+		REAR_VIEW,
+		MISSILE_VIEW,
+		FOCUSED_TARGET_TRACKER,
+		NUM_TYPES
+	};
+};
 
 
 class CPlayerVisionMode
@@ -191,6 +207,8 @@ private:
 
 	int m_VisionMode;
 
+	HUD_PlayerAircraft *m_pPlayerAircraftHUD;
+
 private:
 
 	bool SetAircraft();
@@ -212,6 +230,8 @@ private:
 	inline void UpdateNozzleFlamesVisibility();
 
 	int GetVisionMode() const { return m_VisionMode; }
+
+	HUD_PlayerBase *GetHUD() { return m_pPlayerAircraftHUD; }
 
 //	void EnableNightVision( bool enable );
 
@@ -274,6 +294,8 @@ public:
 	inline void CycleTargetFocus();
 
 	void SetVisionMode( int vision_mode );
+
+	void SetSubDisplayType( CSubDisplayType::Name type );
 
 	const RadarInfo& GetRadarInfo() const { return m_RadarInfo; }
 
