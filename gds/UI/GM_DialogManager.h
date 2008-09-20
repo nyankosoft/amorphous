@@ -146,7 +146,10 @@ public:
 
 	CGM_GlobalSoundPlayerSharedPtr GetDefaultSoundPlayer() { return m_pDefaultSoundPlayer; }
 
-	void OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl );
+//	void OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl );
+
+	/// returns true if there is at least one root dialog currently open
+	bool IsThereAnyOpenRootDialog() const;
 
 	inline void SetCaptionText( int id, const std::string& caption_text );
 	inline void SetCaptionText( const std::string& string_id, const std::string& caption_text );

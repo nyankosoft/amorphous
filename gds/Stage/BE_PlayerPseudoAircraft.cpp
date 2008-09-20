@@ -1070,7 +1070,9 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		if( input.type == SPlayerEntityAction::KEY_PRESSED )
 		{
 			// open misc command menu by down key
-			if( m_pCmdMenuDialogManager && cmdmenu_misc < m_vecCmdMenuRootDialogID.size() )
+			if( m_pCmdMenuDialogManager
+			 && cmdmenu_misc < m_vecCmdMenuRootDialogID.size()
+			 && !m_pCmdMenuDialogManager->IsThereAnyOpenRootDialog() )
 			{
 				if( !m_pCmdMenuDialogManager->GetDialog(m_vecCmdMenuRootDialogID[cmdmenu_misc])->IsOpen() )
                     m_pCmdMenuDialogManager->OpenRootDialog( m_vecCmdMenuRootDialogID[cmdmenu_misc] );
@@ -1082,7 +1084,9 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		if( input.type == SPlayerEntityAction::KEY_PRESSED )
 		{
 			// open order command menu by up key
-			if( m_pCmdMenuDialogManager && cmdmenu_order < m_vecCmdMenuRootDialogID.size() )
+			if( m_pCmdMenuDialogManager
+			 && cmdmenu_order < m_vecCmdMenuRootDialogID.size()
+			 && !m_pCmdMenuDialogManager->IsThereAnyOpenRootDialog() )
 			{
 				if( !m_pCmdMenuDialogManager->GetDialog(m_vecCmdMenuRootDialogID[cmdmenu_order])->IsOpen() )
 					m_pCmdMenuDialogManager->OpenRootDialog( m_vecCmdMenuRootDialogID[cmdmenu_order] );

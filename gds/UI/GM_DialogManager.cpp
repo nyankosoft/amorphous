@@ -459,6 +459,20 @@ bool CGM_DialogManager::RequestFocus( CGM_Control* pControl )
 	return true;
 }
 
+
+bool CGM_DialogManager::IsThereAnyOpenRootDialog() const
+{
+	const size_t num_root_dialogs = m_vecpRootDialog.size();
+	for( size_t i=0; i<num_root_dialogs; i++ )
+	{
+		if( m_vecpRootDialog[i]->IsOpen() )
+			return true;
+	}
+
+	return false;
+}
+
+
 /*
 void CGM_DialogManager::OnFocusedControlChanged( CGM_Control* pFocusedControl, CGM_Control* pPrevFocusedControl )
 {
