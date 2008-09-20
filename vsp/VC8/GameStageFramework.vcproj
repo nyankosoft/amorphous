@@ -321,14 +321,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\HUD_SubDisplay.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Stage\HUD_SubDisplay.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Stage\LightEntity.h"
 					>
 				</File>
@@ -466,6 +458,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Stage\StaticGeometryFG.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Stage\SubDisplay.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Stage\SubDisplay.h"
 					>
 				</File>
 				<File
