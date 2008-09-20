@@ -1,9 +1,10 @@
-#ifndef  __HUD_SubDisplay_H__
-#define  __HUD_SubDisplay_H__
+#ifndef  __SubDisplay_H__
+#define  __SubDisplay_H__
 
 
 #include <vector>
 #include <string>
+#include <boost/shared_ptr.hpp>
 
 #include "3DMath/Matrix34.h"
 #include "3DMath/Quaternion.h"
@@ -33,6 +34,7 @@ public:
 
 	enum type
 	{
+		TYPE_NULL,
 		FIXED_VIEW,
 		MISSILE_VIEW,
 		ENTITY_TRACKER,
@@ -65,6 +67,14 @@ public:
 	virtual void UpdateTargetRadius( float radius ) {}
 
 	void CreateRenderTasks();
+};
+
+
+class SubMonitor_Null : public SubMonitor
+{
+public:
+
+	virtual int GetType() const { return TYPE_NULL; }
 };
 
 
@@ -119,28 +129,32 @@ public:
 class CSubMonitorRenderTask;
 
 
-class HUD_SubDisplay// : public CGraphicsComponent
+class CSubDisplay// : public CGraphicsComponent
 {
 	C2DRect m_DisplayRect;
 
 	CTextureRenderTarget m_TextureRenderTarget;
 
+	Vector3 m_vTargetPosition;
+
+	float m_fTargetRadius;
+
 //	SubMonitor *m_pMonitor;
 
 	// owned reference
-	std::vector<SubMonitor *> m_vecpMonitor;
+	std::vector< boost::shared_ptr<SubMonitor> > m_vecpMonitor;
 
 	int m_CurrentMonitor;
 
 public:
 
-	HUD_SubDisplay();
+	CSubDisplay();
 
-	~HUD_SubDisplay();
+	~CSubDisplay();
 
 //	SubMonitor *GetMomitor() { return m_pMonitor; }
 
-	std::vector<SubMonitor *>& Monitor() { return m_vecpMonitor; }
+	std::vector< boost::shared_ptr<SubMonitor> >& Monitor() { return m_vecpMonitor; }
 
 	inline SubMonitor *GetCurrentMonitor();
 
@@ -162,6 +176,10 @@ public:
 			m_vecpMonitor[i]->SetStage( pStage );
 	}
 
+	void SetTargetPosition( Vector3 pos ) { m_vTargetPosition = pos; }
+
+	void SetTargetRadius( float r ) { m_fTargetRadius = r; }
+
 	void CreateRenderTasks();
 
 /* tex render target releases / loads its own resources */
@@ -173,13 +191,13 @@ public:
 };
 
 
-inline SubMonitor *HUD_SubDisplay::GetCurrentMonitor()
+inline SubMonitor *CSubDisplay::GetCurrentMonitor()
 {
 	if(  0 < m_vecpMonitor.size() && 0 <= m_CurrentMonitor )
-        return m_vecpMonitor[m_CurrentMonitor];
+        return m_vecpMonitor[m_CurrentMonitor].get();
 	else
 		return NULL;
 }
 
 
-#endif		/*  __HUD_SubDisplay_H__  */
+#endif		/*  __SubDisplay_H__  */

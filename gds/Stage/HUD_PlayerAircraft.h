@@ -84,7 +84,8 @@ private:
 
 	CPseudoAircraftHUD m_HUD;
 
-	HUD_SubDisplay* m_pSubDisplay;
+	/// borrowed reference
+	CSubDisplay* m_pSubDisplay;
 
 	SFloatRGBAColor m_aHUDColor[NUM_COLORS];
 
@@ -136,7 +137,9 @@ public:
 
 	virtual void CreateRenderTasks();
 
-	virtual HUD_SubDisplay* GetSubDisplay() { return m_pSubDisplay; }
+	virtual CSubDisplay* GetSubDisplay() { return m_pSubDisplay; }
+
+	void SetSubDisplay( CSubDisplay* pSubDisplay ) { m_pSubDisplay = pSubDisplay; }
 
 //	CGameTextSet *GetCurrentTextSetInTextWindow();
 };

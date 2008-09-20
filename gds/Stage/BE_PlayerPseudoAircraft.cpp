@@ -47,6 +47,9 @@
 #include "../../../GameProjects/FlightGame/src/srcroot/Stage/FG_AIAircraftEntityDesc.h"
 #include "../../../GameProjects/FlightGame/src/srcroot/EntityGroups.h"
 
+using namespace std;
+using namespace boost;
+
 
 /// action code -> ui input code (CGM_Input)
 static int g_GMInputCodeForActionCode[NUM_ACTION_CODES];
@@ -245,7 +248,7 @@ void CBE_PlayerPseudoAircraft::SetSubDisplayType( CSubDisplayType::Name type )
 	if( !m_pPlayerAircraftHUD )
 		return;
 
-	HUD_SubDisplay* pSubDisplay = m_pPlayerAircraftHUD->GetSubDisplay();
+//	HUD_SubDisplay* pSubDisplay = m_pPlayerAircraftHUD->GetSubDisplay();
 
 	switch(type)
 	{
@@ -253,6 +256,7 @@ void CBE_PlayerPseudoAircraft::SetSubDisplayType( CSubDisplayType::Name type )
 		break;
 	case CSubDisplayType::AUTO:
 	case CSubDisplayType::FOCUSED_TARGET_TRACKER:
+//		pSubDisplay->SetMonitorIndex(
 		break;
 	case CSubDisplayType::FRONT_VIEW:
 	case CSubDisplayType::REAR_VIEW:
@@ -322,6 +326,8 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	CreateNozzleFlames(pCopyEnt);
 
+	InitSubDisplay();
+
 	// mission started - set the mission state
 	SetMissionState( MSTATE_IN_MISSION );
 
@@ -338,6 +344,30 @@ void CBE_PlayerPseudoAircraft::Move( CCopyEntity *pCopyEnt )
 	}
 
 	CJL_PhysicsActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+}
+
+
+void CBE_PlayerPseudoAircraft::InitSubDisplay()
+{
+	// set up the sub-display
+	Matrix34 front_local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33Identity() );	// front view
+	Matrix34 rear_local_pose  = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33RotationY( 3.141592f ) );	// rear view
+	vector< shared_ptr<SubMonitor> >& submonitor = m_SubDisplay.Monitor();
+	submonitor.resize( CSubDisplayType::NUM_TYPES, shared_ptr<SubMonitor>() );
+	submonitor[CSubDisplayType::NONE]                   = shared_ptr<SubMonitor>( new SubMonitor_Null() );
+	submonitor[CSubDisplayType::AUTO]                   = shared_ptr<SubMonitor>( new SubMonitor_Null() );
+	submonitor[CSubDisplayType::FRONT_VIEW]             = shared_ptr<SubMonitor>( new SubMonitor_FixedView( front_local_pose ) );
+	submonitor[CSubDisplayType::REAR_VIEW]              = shared_ptr<SubMonitor>( new SubMonitor_FixedView( rear_local_pose ) );
+	submonitor[CSubDisplayType::MISSILE_VIEW]           = shared_ptr<SubMonitor>( new SubMonitor_Null() );
+	submonitor[CSubDisplayType::FOCUSED_TARGET_TRACKER] = shared_ptr<SubMonitor>( new SubMonitor_EntityTracker() );
+	m_SubDisplay.SetMonitorIndex( CSubDisplayType::NONE );
+
+	m_SubDisplay.SetStage( m_pStageWeakPtr );
+
+	CCopyEntity* pPlayerEntity = GetPlayerCopyEntity();
+	Vector3 vPos = pPlayerEntity->Position() + pPlayerEntity->GetWorldPose().matOrient.GetColumn(2) * 1000.0f;
+	m_SubDisplay.SetTargetPosition( vPos );
+	m_SubDisplay.SetTargetRadius( 45.0f );
 }
 
 
@@ -658,6 +688,9 @@ void CBE_PlayerPseudoAircraft::Act( CCopyEntity* pCopyEnt )
 	int nozzle_frame_entity_offset = m_pLaserDotEntity ? 1 : 0;
 
 	m_NozzleFlames.UpdateNozzleFlames( pCopyEnt, nozzle_frame_entity_offset, m_pAircraft );
+
+	m_SubDisplay.SetOwnerWorldPose( pCopyEnt->GetWorldPose() );
+	m_SubDisplay.Update( m_pStage->GetFrameTime() );
 
 	// test for nozzle flash
 //	size_t i, num_nozzles = m_pAircraft->GetNozzleFlameParams().size();

@@ -20,7 +20,7 @@
 #include "Stage/BE_LaserDot.h"
 
 #include "HUD_PlayerBase.h"
-#include "HUD_SubDisplay.h"
+#include "SubDisplay.h"
 
 // added for laser dot casting test
 #include "3DCommon/Direct3D9.h"
@@ -471,9 +471,10 @@ void CBE_Player::CreateRenderTasks(CCopyEntity* pCopyEnt)
 	// let hud create render tasks
 	// - if the submonitor is enabled, it will create render tasks
 	//   which renders the scene to a texture
-	GetHUD()->GetSubDisplay()->SetStage( m_pStage->GetWeakPtr() );
+//	GetHUD()->GetSubDisplay()->SetStage( m_pStage->GetWeakPtr() );
 
-	GetHUD()->CreateRenderTasks();
+	if( GetHUD() )
+		GetHUD()->CreateRenderTasks();
 
 	// add render tasks necessary to render the stage
 	m_pStage->CreateStageRenderTasks( GetCamera() );

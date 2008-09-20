@@ -10,7 +10,7 @@
 
 class CGameTextWindow;
 class CGameTextSet;
-class HUD_SubDisplay;
+class CSubDisplay;
 
 
 class HUD_PlayerBase : public CGraphicsComponent
@@ -63,7 +63,7 @@ public:
 
 	virtual HUD_TimerDisplay& TimerDisplay() { return m_TimerDisplay; }
 
-	virtual HUD_SubDisplay *GetSubDisplay() { return NULL; }
+	virtual CSubDisplay *GetSubDisplay() { return NULL; }
 
 	virtual bool LoadGlobalMapTexture( const std::string& texture_filename ) { return false; }
 

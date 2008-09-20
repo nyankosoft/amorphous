@@ -1,6 +1,6 @@
 #include "HUD_PlayerAircraft.h"
-#include "HUD_SubDisplay.h"
 #include "BE_PlayerPseudoAircraft.h"
+#include "SubDisplay.h"
 #include "Stage/PlayerInfo.h"
 #include "3DMath/Matrix22.h"
 #include "3DMath/AABB2.h"
@@ -26,8 +26,8 @@ static const int gs_TimerDisplayBlinkThreasholdMS = 60 * 1000 * 14;
 HUD_PlayerAircraft::HUD_PlayerAircraft()
 :
 m_bDisplayGlobalRadar(false),
-m_pSubDisplay(NULL),
-m_pTimeText(NULL)
+m_pTimeText(NULL),
+m_pSubDisplay(NULL)
 {
 	m_ContainerSize = CONTAINER_SIZE;
 
@@ -56,7 +56,6 @@ HUD_PlayerAircraft::~HUD_PlayerAircraft()
 
 void HUD_PlayerAircraft::Release()
 {
-	SafeDelete( m_pSubDisplay );
 }
 
 
@@ -136,14 +135,6 @@ void HUD_PlayerAircraft::Init()
 	for( size_t i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
 		m_apContainer[i] = pElementMgr->CreateFrameRect( RectLTWH( 0, 0, m_ContainerSize, m_ContainerSize ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), 4.0f, base_layer );
 
-	// set up the sub-display
-	m_pSubDisplay = new HUD_SubDisplay();
-	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33Identity() );	// front view
-//	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33RotationY( 3.141592f ) );	// rear view
-	m_pSubDisplay->Monitor().push_back( new SubMonitor_FixedView( local_pose ) );
-	m_pSubDisplay->Monitor().push_back( new SubMonitor_EntityTracker() );
-	m_pSubDisplay->SetMonitorIndex( 1 );
-
 /*
 	m_pTextWindow = new CGameTextWindow;
 	m_pTextWindow->InitFont( "‚l‚r ƒSƒVƒbƒN", 0.018f, 0.036f );
@@ -183,13 +174,11 @@ bool HUD_PlayerAircraft::LoadGlobalMapTexture( const std::string& texture_filena
 
 void HUD_PlayerAircraft::ReleaseGraphicsResources()
 {
-//	m_pSubDisplay->ReleaseGraphicsResources();
 }
 
 
 void HUD_PlayerAircraft::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-//	m_pSubDisplay->LoadGraphicsResources();
 }
 
 
@@ -270,7 +259,6 @@ void HUD_PlayerAircraft::Update( float  dt )
 	// update flip state for the container on focused target
 	g_FlipVar.Update(dt);
 
-	m_pSubDisplay->Update( dt );
 }
 
 
@@ -457,43 +445,6 @@ void HUD_PlayerAircraft::RenderImpl()
 
 	if( m_pSubDisplay )
 	{
-		vector<SubMonitor *>& vecpMonitor = m_pSubDisplay->Monitor();
-		size_t num_monitors = vecpMonitor.size();
-
-		SubMonitor_EntityTracker *pTrackMonitor = NULL;
-		for( size_t k=0; k<num_monitors; k++ )
-		{
-			if( vecpMonitor[k]->GetType() == SubMonitor::ENTITY_TRACKER )
-			{
-				pTrackMonitor = (SubMonitor_EntityTracker *)(vecpMonitor[k]);
-				break;
-			}
-		}
-
-		if( pTrackMonitor )
-		{
-			// direct the camera toward the currently focused target
-			CCopyEntity* pPlayerEntity = plane->GetPlayerCopyEntity();
-			Vector3 vPos = pPlayerEntity->Position() + pPlayerEntity->GetWorldPose().matOrient.GetColumn(2) * 1000.0f;
-			float radius = 45.0f;
-
-			const std::vector<HUD_TargetInfo>& vecTarget = radar_info.GetAllTargetInfo();
-			size_t num_tgts = vecTarget.size();
-			for( size_t k=0; k<num_tgts; k++ )
-			{
-				const HUD_TargetInfo& target = vecTarget[k];
-				if( target.type & HUD_TargetInfo::FOCUSED )
-				{
-					vPos = target.position;
-					radius = target.radius;
-					break;
-				}
-			}
-
-			pTrackMonitor->UpdateTargetPosition(vPos);
-			pTrackMonitor->UpdateTargetRadius(radius);
-		}
-
 		m_pSubDisplay->Render();
 	}
 }

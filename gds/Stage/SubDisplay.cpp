@@ -1,4 +1,4 @@
-#include "HUD_SubDisplay.h"
+#include "SubDisplay.h"
 #include "Stage.h"
 #include "ScreenEffectManager.h"
 
@@ -12,11 +12,11 @@
 class CSubMonitorRenderTask : public CRenderTask
 {
 //	SubMonitor *m_pSubMonitor;
-	HUD_SubDisplay *m_pSubDisplay;
+	CSubDisplay *m_pSubDisplay;
 
 public:
 
-	CSubMonitorRenderTask( HUD_SubDisplay *pSubDisplay )
+	CSubMonitorRenderTask( CSubDisplay *pSubDisplay )
 		:
 	m_pSubDisplay(pSubDisplay)
 	{
@@ -190,7 +190,10 @@ void SubMonitor_FixedView::Update( float dt )
 }
 
 
-HUD_SubDisplay::HUD_SubDisplay()
+CSubDisplay::CSubDisplay()
+:
+m_vTargetPosition(Vector3(0,0,0)),
+m_fTargetRadius(0)
 {
 	int w,h;
 	GetViewportSize(w,h);
@@ -214,14 +217,12 @@ HUD_SubDisplay::HUD_SubDisplay()
 }
 
 
-HUD_SubDisplay::~HUD_SubDisplay()
+CSubDisplay::~CSubDisplay()
 {
-//	SafeDelete( m_pMonitor );
-	SafeDeleteVector( m_vecpMonitor );
 }
 
 
-void HUD_SubDisplay::Render()
+void CSubDisplay::Render()
 {
 //	if( !m_pMonitor )
 	if( !GetCurrentMonitor() )
@@ -277,7 +278,7 @@ void HUD_SubDisplay::Render()
 }
 
 
-void HUD_SubDisplay::CreateRenderTasks()
+void CSubDisplay::CreateRenderTasks()
 {
 	m_TextureRenderTarget.SetRenderTarget();
 
@@ -293,21 +294,35 @@ void HUD_SubDisplay::CreateRenderTasks()
 }
 
 
-void HUD_SubDisplay::Update( float dt )
+void CSubDisplay::Update( float dt )
 {
-//	if( m_pMonitor )
-//		m_pMonitor->Update(dt);
 
-	if( 0 < m_vecpMonitor.size() )
-        m_vecpMonitor[m_CurrentMonitor]->Update( dt );
+//	std::for_each(
+//		m_vecpMonitor.begin(),
+//		m_vecpMonitor.end(),
+//		std::mem_fun(
+
+	const size_t num_monitors = m_vecpMonitor.size();
+	for( size_t i=0; i<num_monitors; i++ )	
+	{
+		if( m_vecpMonitor[i] )
+		{
+			m_vecpMonitor[i]->UpdateTargetPosition( m_vTargetPosition );
+			m_vecpMonitor[i]->UpdateTargetRadius( m_fTargetRadius );
+			m_vecpMonitor[i]->Update( dt );
+		}
+	}
+
+//	if( 0 < m_vecpMonitor.size() )
+//		m_vecpMonitor[m_CurrentMonitor]->Update( dt );
 }
 
 /* tex render target releases / loads its own resources */
 /*
-void HUD_SubDisplay::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CSubDisplay::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 }
-void HUD_SubDisplay::ReleaseGraphicsResources()
+void CSubDisplay::ReleaseGraphicsResources()
 {
 }
 */

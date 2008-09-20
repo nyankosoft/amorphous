@@ -7,6 +7,7 @@
 #include <Stage/GameMessage.h>
 #include <Stage/BEC_PseudoAircraft.h>
 #include <Stage/HUD_PlayerAircraft.h>
+#include <Stage/SubDisplay.h>
 
 #include "Support/FixedVector.h"
 
@@ -174,6 +175,8 @@ private:
 
 	RadarInfo m_RadarInfo;
 
+	CSubDisplay m_SubDisplay;
+
 	struct FocusCandidate
 	{
 		CCopyEntity *pEntity;
@@ -210,6 +213,8 @@ private:
 	HUD_PlayerAircraft *m_pPlayerAircraftHUD;
 
 private:
+
+	void InitSubDisplay();
 
 	bool SetAircraft();
 
