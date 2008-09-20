@@ -1,15 +1,16 @@
-
 #include "GM_SubDialogButton.h"
 
 #include "GM_ControlDescBase.h"
 #include "GM_Dialog.h"
 #include "GM_ControlRenderer.h"
 #include "GM_SoundPlayer.h"
+#include "Support/Log/DefaultLog.h"
 
 
 //========================================================================================
 // CGM_SubDialogButton
 //========================================================================================
+
 CGM_SubDialogButton::CGM_SubDialogButton( CGM_Dialog *pDialog, CGM_SubDialogButtonDesc *pDesc )
 : CGM_Button(pDialog, pDesc)
 {
@@ -30,6 +31,8 @@ void CGM_SubDialogButton::OpenDialog()
 
 void CGM_SubDialogButton::OnPressed()
 {
+	LOG_PRINT( m_strText );
+
 //	if( !HasFocus() )
 //	    m_pDialog->RequestFocus( this );
 

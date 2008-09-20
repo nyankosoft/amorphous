@@ -1,4 +1,3 @@
-
 #include "GM_DialogManager.h"
 #include "GM_DialogDesc.h"
 #include "GM_Dialog.h"
@@ -9,6 +8,7 @@
 #include "GM_XMLParser.h"
 
 #include "Support/memory_helpers.h"
+#include "Support/Log/DefaultLog.h"
 
 #include <algorithm>
 using namespace std;
@@ -247,6 +247,8 @@ void CGM_DialogManager::OnDialogClosed( CGM_Dialog *pDialog )
 
 bool CGM_DialogManager::OpenRootDialog( int id )
 {
+	LOG_PRINT( "id: " + to_string(id) );
+
 	CGM_Dialog *pDialog = GetDialog( id );
 
 	if( pDialog && pDialog->IsRoot() )
@@ -337,7 +339,7 @@ bool CGM_DialogManager::HandleInput( CGM_InputData& input )
 
 	bool input_handled = false;
 
-	// find dialog which has a control with the focus
+	// find dialog which has a focused control
 	if( ControlFocus() )
 		input_handled = ControlFocus()->GetOwnerDialog()->HandleInput( input );
 

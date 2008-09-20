@@ -181,34 +181,37 @@ bool CGM_Dialog::HandleInput( CGM_InputData& input )
 			// message should still be handled by the application (usually to move the camera).
 			switch( input.code )
 			{
-				case CGM_Input::MOUSE_AXIS_X:
-				case CGM_Input::MOUSE_AXIS_Y:
-					OnMouseMove( pt );
-					return false;
+			case CGM_Input::MOUSE_AXIS_X:
+			case CGM_Input::MOUSE_AXIS_Y:
+				OnMouseMove( pt );
+				return false;
 			}
-
-			break;
 		}
+		break;
 
 	case CGM_Input::SHIFT_FOCUS_UP:
 	case CGM_Input::NEXT_CONTROL_UP:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OnFocusShiftRequested( CGM_Control::NEXT_UP );
+		break;
 
 	case CGM_Input::SHIFT_FOCUS_LEFT:
 	case CGM_Input::NEXT_CONTROL_LEFT:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OnFocusShiftRequested( CGM_Control::NEXT_LEFT );
+		break;
 
 	case CGM_Input::SHIFT_FOCUS_DOWN:
 	case CGM_Input::NEXT_CONTROL_DOWN:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OnFocusShiftRequested( CGM_Control::NEXT_DOWN );
+		break;
 
 	case CGM_Input::SHIFT_FOCUS_RIGHT:
 	case CGM_Input::NEXT_CONTROL_RIGHT:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OnFocusShiftRequested( CGM_Control::NEXT_RIGHT );
+		break;
 
 	case CGM_Input::OK:
 		// If a control is in focus, it belongs to this dialog, and it's enabled, then give
@@ -234,18 +237,22 @@ bool CGM_Dialog::HandleInput( CGM_InputData& input )
 	case CGM_Input::NEXT_DIALOG_RIGHT:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OpenNextDialog( NEXT_RIGHT );
+		break;
 
 	case CGM_Input::NEXT_DIALOG_LEFT:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OpenNextDialog( NEXT_LEFT );
+		break;
 
 	case CGM_Input::NEXT_DIALOG_DOWN:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OpenNextDialog( NEXT_DOWN );
+		break;
 
 	case CGM_Input::NEXT_DIALOG_UP:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 			return OpenNextDialog( NEXT_UP );
+		break;
 
 	default:
 		break;
@@ -747,6 +754,8 @@ bool CGM_Dialog::IsOpen() const
 
 void CGM_Dialog::Open()
 {
+	LOG_PRINT( " (" + m_strTitle + ")" );
+
 	m_bIsOpen = true;
 
 	if( m_pRenderer )
@@ -764,6 +773,8 @@ void CGM_Dialog::Open()
 
 void CGM_Dialog::Close( unsigned int sub_event )
 {
+	LOG_PRINT( " (" + m_strTitle + ")" );
+
 	if( !IsOpen() )
 		return; // already closed
 
@@ -810,6 +821,8 @@ void CGM_Dialog::Close( unsigned int sub_event )
 // --- NOT PROPERLY IMPLEMENTED ---
 bool CGM_Dialog::OpenNextDialog( unsigned int direction )
 {
+	LOG_PRINT( " (" + m_strTitle + ") direction: " + to_string(direction) );
+
 	CGM_Dialog *pNextDialog = m_apNextDialog[direction];
 /*
 	if( !pNextDialog || !pNextDialog->m_pOwnerButton )

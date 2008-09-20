@@ -160,7 +160,7 @@ void CGM_StdControlRenderer::ChangeColorToCurrentState()
 	if( GetStatic() )
 		title = "of '" + GetStatic()->GetText() + "'";
 
-	LOG_PRINT( fmt_string("changing color %s - state: %d", title.c_str(), state ) );
+//	LOG_PRINT( fmt_string("changing color %s - state: %d", title.c_str(), state ) );
 
 	double shift_time;
 	if( state == CGM_Control::STATE_FOCUS
