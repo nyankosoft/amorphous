@@ -29,7 +29,7 @@ public:
 
 	std::string m_UsageDesc;
 
-	CTextureDesc m_Desc;
+	CTextureResourceDesc m_Desc;
 
 	/// used during runtime
 	CTextureHandle m_Texture;
