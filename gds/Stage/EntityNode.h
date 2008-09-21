@@ -6,7 +6,6 @@
 
 #include "fwd.h"
 #include "3DCommon/fwd.h"
-#include "StaticGeometry.h"
 #include "CopyEntity.h"
 #include "OverlapTestAABB.h"
 

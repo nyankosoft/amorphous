@@ -6,6 +6,7 @@
 #include "3DMath/AABTree.h"
 #include "3DCommon/fwd.h"
 #include "3DCommon/FloatRGBColor.h"
+#include "3DCommon/TextureHandle.h"
 #include "3DCommon/MeshObjectHandle.h"
 #include "3DCommon/ShaderHandle.h"
 #include "3DCommon/Shader/Serialization_ShaderTechniqueHandle.h"
@@ -101,6 +102,39 @@ public:
 };
 
 
+/// texture for additional effects
+class CAuxiliaryTexture : public IArchiveObjectBase
+{
+public:
+
+	/// shader that contains the techinque below
+	int m_ShaderIndex;
+
+	/// shader technique that needs this texture
+	int m_ShaderTechniqueIndex;
+
+	/// texture stage index
+	int m_TextureStage;
+
+	/// name of the texture in the shader
+	/// Used if m_TextureStage is not specified
+	std::string m_TextureName;
+
+	std::string m_UsageDesc;
+
+	CTextureResourceDesc m_Desc;
+
+	/// used during runtime
+	CTextureHandle m_Texture;
+
+public:
+
+	CAuxiliaryTexture();
+
+	void Serialize( IArchive& ar, const unsigned int version );
+};
+
+
 class CStaticGeometryArchive : public IArchiveObjectBase
 {
 
@@ -119,6 +153,8 @@ public:
 	float m_FogStartDist;
 
 	float m_FarClipDist;
+
+	std::vector<CAuxiliaryTexture> m_vecAuxTexture;
 
 public:
 
@@ -147,13 +183,12 @@ class CStaticGeometry : public CStaticGeometryBase
 
 	CStaticGeometryArchive m_Archive;
 
+	int m_PrevShaderIndex;
+	int m_PrevShaderTechinqueIndex;
+
 public:
 
-//	CStaticGeometry() {}
-	CStaticGeometry( CStage *pStage )
-		:
-	CStaticGeometryBase( pStage )
-	{}
+	CStaticGeometry( CStage *pStage );
 
 	virtual int GetType() const { return CStaticGeometryBase::TYPE_GENERAL; }
 

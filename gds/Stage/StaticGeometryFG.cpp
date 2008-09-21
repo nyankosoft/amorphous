@@ -588,7 +588,7 @@ bool CStaticGeometryFG::LoadShaderFromFile( const char *pFilename )
 	bool result = m_pShaderManager->LoadShaderFromFile( pFilename );
 
 	if( !result )
-		SafeDelete( m_pShaderManager ) ;
+		SafeDelete( m_pShaderManager );
 
 	return result;
 }

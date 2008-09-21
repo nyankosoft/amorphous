@@ -6,7 +6,7 @@
 
 #include "../3DCommon/FVF_MapVertex.h"
 
-#include "StaticGeometry.h"
+#include "BSPStaticGeometry.h"
 
 #include "BinaryNode.h"
 

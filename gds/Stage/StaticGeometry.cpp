@@ -23,24 +23,39 @@ using namespace boost;
 using namespace physics;
 
 
-class CAuxiliaryTexture : public IArchiveObjectBase
-{
-public:
-
-	std::string m_UsageDesc;
-
-	CTextureResourceDesc m_Desc;
-
-	/// used during runtime
-	CTextureHandle m_Texture;
-};
-
-
 const char *CStaticGeometryDBKey::Main                    = "Main";
 const char *CStaticGeometryDBKey::CollisionGeometryStream = "CollisionGeometryStream";
 const char *CStaticGeometryDBKey::GraphicsMeshArchive     = "GraphicsMeshArchive";
 //const char *CStaticGeometryDBKey::Shaders               = "Shaders";
 //const char *CStaticGeometryDBKey::MeshSubsetTree        = "MeshSubsetTree";
+
+
+
+/**
+  About m_ShaderIndex & m_ShaderTechniqueIndex
+  - Default value -1 indicates that texture is global auxiliary texture, 
+    and it is set at the begenning of CStaticGeometry::Render() once
+
+*/
+CAuxiliaryTexture::CAuxiliaryTexture()
+:
+m_ShaderIndex(-1),
+m_ShaderTechniqueIndex(-1),
+m_TextureStage(-1)
+{
+}
+
+
+void CAuxiliaryTexture::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_ShaderIndex;
+	ar & m_ShaderTechniqueIndex;
+	ar & m_TextureStage;
+	ar & m_TextureName;
+	ar & m_UsageDesc;
+	ar & m_Desc;
+}
+
 
 /*
 void UpdateResources()
@@ -147,6 +162,15 @@ void IsReadyToDisplay()
 	return true;
 }
 */
+
+
+CStaticGeometry::CStaticGeometry( CStage *pStage )
+	:
+CStaticGeometryBase( pStage ),
+m_PrevShaderIndex(-1),
+m_PrevShaderTechinqueIndex(-1)
+{}
+
 
 bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag )
 {

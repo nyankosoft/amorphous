@@ -6,7 +6,6 @@
 #include "JigLib/fwd.h"
 
 #include "3DMath/aabb3.h"
-//#include "StaticGeometry.h"
 #include "CopyEntity.h"
 #include "EntityGroupHandle.h"
 #include "EntityNode.h"

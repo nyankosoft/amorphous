@@ -5,7 +5,6 @@
 #include "Stage/fwd.h"
 #include "Stage/StaticGeometryBase.h"
 #include "Stage/BSPStaticGeometry.h"
-#include "Stage/StaticGeometry.h"
 #include "Stage/bspstructs.h"
 #include "Stage/bsptree.h"
 
