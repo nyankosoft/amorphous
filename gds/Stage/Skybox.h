@@ -2,6 +2,7 @@
 #define  __SKYBOX_H__
 
 #include "../3DCommon/Direct3D9.h"
+#include "BSPStaticGeometry.h"
 #include "StaticGeometry.h"
 
 #define  MAX_SKYBOXPOLYGONS	6

@@ -23,12 +23,130 @@ using namespace boost;
 using namespace physics;
 
 
+class CAuxiliaryTexture : public IArchiveObjectBase
+{
+public:
+
+	std::string m_UsageDesc;
+
+	CTextureDesc m_Desc;
+
+	/// used during runtime
+	CTextureHandle m_Texture;
+};
+
+
 const char *CStaticGeometryDBKey::Main                    = "Main";
 const char *CStaticGeometryDBKey::CollisionGeometryStream = "CollisionGeometryStream";
 const char *CStaticGeometryDBKey::GraphicsMeshArchive     = "GraphicsMeshArchive";
 //const char *CStaticGeometryDBKey::Shaders               = "Shaders";
 //const char *CStaticGeometryDBKey::MeshSubsetTree        = "MeshSubsetTree";
 
+/*
+void UpdateResources()
+{
+	/// Used during runtime
+	/// - Holds indices of nodes to check for visibility
+	std::vector<int> m_vecNodesToCheck;
+	m_vecNodesToCheck.push_back(0);
+
+	float dist_margin_factor = 1.5f;
+
+	while( 0 < m_vecNodesToCheck.size() )
+	{
+		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
+		m_vecNodesToCheck.pop_back();
+
+		float dist = Vec3Length( vMeshCenterPos - rCam.GetPosition() );
+		if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+		{
+			const size_t num_subsets = node.veciGeometryIndex.size();
+			for( size_t i=0; i<num_subsets; i++ )
+			{
+				const CMeshSubset& subset
+					= mesh_subset_tree.GetGeometryBuffer()[node.veciGeometryIndex[i]];
+
+				if( !mesh_is_loaded )
+				{
+					// load the mesh
+					mesh_holder.m_Mesh.LoadAsync( mesh_holder.m_Desc );
+				}
+				else if( already_loaded )
+				{
+					CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
+					vSubsetCenterPos = pMesh->GetAABB( subset.vecMaterialIndex ).GetCenterPos();
+					dist = Vec3Length( vSubsetCenterPos - rCam.GetPosition() );
+
+					if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+					{
+						// load the texture
+						for( num_textures )
+						{
+							pMesh->GetMaterial(mat_index).Texture[?].LoadAsync();
+						}
+					}
+				}
+			}
+		}
+
+		if( !node.IsLeaf() )
+		{
+			m_vecNodesToCheck.push_back( node.child[0] );
+			m_vecNodesToCheck.push_back( node.child[1] );
+		}
+	}
+
+	return true;
+}
+
+
+void IsReadyToDisplay()
+{
+	/// Used during runtime
+	/// - Holds indices of nodes to check for visibility
+	std::vector<int> m_vecNodesToCheck;
+	m_vecNodesToCheck.push_back(0);
+
+	float dist_margin_factor = 1.5f;
+
+	while( 0 < m_vecNodesToCheck.size() )
+	{
+		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
+		m_vecNodesToCheck.pop_back();
+
+		float dist = Vec3Length( vMeshCenterPos - rCam.GetPosition() );
+		if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+		{
+			const size_t num_subsets = node.veciGeometryIndex.size();
+			for( size_t i=0; i<num_subsets; i++ )
+			{
+				const CMeshSubset& subset
+					= mesh_subset_tree.GetGeometryBuffer()[node.veciGeometryIndex[i]];
+
+				if( mesh_is_not_loaded )
+					return false;
+
+				CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
+
+				vSubsetCenterPos = pMesh->GetAABB( subset.vecMaterialIndex ).GetCenterPos();
+
+				dist = Vec3Length( vSubsetCenterPos - rCam.GetPosition() );
+
+				if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+					return false;
+			}
+		}
+
+		if( !node.IsLeaf() )
+		{
+			m_vecNodesToCheck.push_back( node.child[0] );
+			m_vecNodesToCheck.push_back( node.child[1] );
+		}
+	}
+
+	return true;
+}
+*/
 
 bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag )
 {

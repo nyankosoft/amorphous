@@ -19,7 +19,8 @@
 #include "Support/memory_helpers.h"
 //#include "PerformanceCheck.h"
 
-#include <direct.h>
+
+using namespace std;
 
 
 static const string gs_DefaultShaderFilename("Stage/BSPMapShader.fx");

@@ -4,7 +4,7 @@
 #include "fwd.h"
 
 #include "Stage/bspstructs.h"
-#include "Stage/StaticGeometry.h"
+#include "Stage/BSPStaticGeometry.h"
 
 #include "3DCommon/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
