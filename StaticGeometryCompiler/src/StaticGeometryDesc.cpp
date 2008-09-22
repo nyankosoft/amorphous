@@ -144,6 +144,70 @@ bool CStaticGeometryDesc::LoadSurfaceDescs( DOMNode *pSurfaceNode )
 	return LoadSurfaceToDescMaps( GetChildNode( pRootNode, "SurfaceToDescMaps" ) );
 }
 
+
+bool CStaticGeometryDesc::LoadShaderParams( DOMNode *pShaderNode )
+{
+	static const int max_texture_stages = 8;
+
+	if( !pShaderNode )
+		LOG_ERR_RETURN_FALSE( "A shader node is missing." );
+
+	string shaderparam_filepath
+		= GetTextContentOfImmediateChildNode( pShaderNode, "ShaderParamFile" );
+
+	CXMLDocumentLoader xml_document;
+	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
+	if( !xml_document.Load( shaderparam_filepath, &pXMLDocument )
+	 || !pXMLDocument )
+		return false;
+
+	DOMNode *pRootNode = GetRootNode( pXMLDocument );
+	if( !pRootNode )
+		return false;
+
+	vector<DOMNode *> vecpShader = GetImmediateChildNodes( pRootNode, "Shader" );
+	for( size_t i=0; i<vecpShader.size(); i++ )
+	{
+		string shader_filepath = GetTextContentOfImmediateChildNode( vecpShader[i], "File" );
+
+		if( shader_filepath.length() == 0 )
+			continue;
+
+		CShaderParameterGroup param_group;
+
+		vector<DOMNode *> vecpTex = GetImmediateChildNodes( pRootNode, "Texture" );
+		for( size_t j=0; j<vecpTex.size(); j++ )
+		{
+			int index = 0;
+			string stage_str = GetAttributeText( vecpTex[i], "stage" );
+			if( 0 < stage_str.length() )
+			{
+				int stage = to_int(stage_str);
+				clamp( stage, 0, max_texture_stages );
+				while( (int)param_group.m_Texture.size() <= stage )
+					param_group.m_Texture.push_back( CShaderParameter<CTextureParam>() );
+				index = stage;
+			}
+			else
+			{
+				// simply add another texture param
+				index = (int)param_group.m_Texture.size();
+				param_group.m_Texture.push_back( CShaderParameter<CTextureParam>() );
+			}
+
+			DOMNode *pTexFile = GetChildNode( vecpTex[i], "File" );
+
+			param_group.m_Texture[index].Parameter().m_Desc.ResourcePath
+				= to_string(pTexFile->getTextContent());
+		}
+
+		m_ShaderFileToParamGroup[shader_filepath] = param_group;
+	}
+
+	return true;
+}
+
+
 /*
 void LoadPointLights( vector<DOMNode *>& vecpNode )
 {

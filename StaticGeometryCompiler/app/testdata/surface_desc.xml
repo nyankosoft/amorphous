@@ -2,8 +2,10 @@
 <SurfaceDescs>
 	<!--
 	Rationale behind adopting surface descs and surface & desc pairs
-	- FPS levels are made of many surfaces since they use many textures
-	  - write properties for each surface will be a burden
+	- FPS levels are made of many surfaces since they use many textures.
+	  - Writing properties for each surface will be a burden.
+	- Usually, same surface properties are shared by multiple surfaces.
+	  - They only differ in textures.
 	-->
 	<Descs>
 		<Desc name="Default">

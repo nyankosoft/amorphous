@@ -8,6 +8,7 @@
 
 #include "3DCommon/MeshModel/General3DMesh.h"
 #include "3DCommon/LightStructs.h"
+#include "3DCommon/Shader/ShaderParameter.h"
 #include "BSPMapCompiler/LightmapBuilder.h"
 #include "XML/XMLDocumentLoader.h"
 using namespace xercesc_2_8;
@@ -103,7 +104,9 @@ public:
 
 	std::map<std::string,std::string> m_SurfaceToDesc;
 
-	std::vector<boost::shared_ptr<CLight>> m_vecpLight;
+	std::vector< boost::shared_ptr<CLight> > m_vecpLight;
+
+	std::map<std::string,CShaderParameterGroup> m_ShaderFileToParamGroup;
 
 	CLightmapDesc m_Lightmap;
 
@@ -114,6 +117,8 @@ private:
 	bool LoadCollisionDesc( DOMNode *pNode );
 
 	bool LoadSurfaceDescs( DOMNode *pSurfaceNode );
+
+	bool LoadShaderParams( DOMNode *pSurfaceNode );
 
 	bool LoadSurfaceToDescMaps( DOMNode *pSurfaceToDescMapsNode );
 
