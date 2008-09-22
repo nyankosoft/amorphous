@@ -8,6 +8,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "ShaderTechniqueHandle.h"
+#include "ShaderParameter.h"
 
 #include "../../base.h"
 #include "3DCommon/fwd.h"
@@ -15,6 +16,7 @@
 
 
 typedef D3DXMATRIX Matrix44;
+
 
 
 /**
@@ -49,6 +51,21 @@ class CShaderManager
 		NUM_MATRIX_HANDLES
 	};
 
+	class CD3DShaderParameterHandle
+	{
+	public:
+		std::string ParameterName;
+		D3DXHANDLE Handle;
+
+	public:
+
+		CD3DShaderParameterHandle( const std::string& name, D3DXHANDLE handle )
+			:
+		ParameterName(name),
+		Handle(handle)
+		{}
+	};
+
 
 	std::string m_strFilename;
 
@@ -66,6 +83,8 @@ class CShaderManager
 	D3DXHANDLE m_aTechniqueHandle[NUM_MAX_TECHNIQUES];
 
 	std::string m_astrTechniqueName[NUM_MAX_TECHNIQUES];
+
+	std::vector<CD3DShaderParameterHandle> m_vecParamHandle;
 
 	/// the first vacant table entry for registering a technique
 	/// If m_VacantTechniqueEntryIndex = NUM_MAX_TECHNIQUES,
@@ -89,6 +108,8 @@ public:
 	bool LoadShaderFromFile( const std::string& filename );
 
 	void Release();
+
+	void Reload();
 
 	inline LPD3DXEFFECT GetEffect() { return m_pEffect; }
 
@@ -126,6 +147,12 @@ public:
 	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 
 	D3DXHANDLE GetTechniqueHandle( int id ) { return m_aTechniqueHandle[id]; }
+
+	void SetParam( CShaderParameter< std::vector<float> >& float_param );
+
+//	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
+
+//	void SetTextureParam()
 
 	boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
 };

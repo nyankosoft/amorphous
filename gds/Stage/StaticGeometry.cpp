@@ -30,6 +30,20 @@ const char *CStaticGeometryDBKey::GraphicsMeshArchive     = "GraphicsMeshArchive
 //const char *CStaticGeometryDBKey::MeshSubsetTree        = "MeshSubsetTree";
 
 
+void CShaderContainer::SetParams()
+{
+	CShaderManager *pMgr = m_ShaderHandle.GetShaderManager();
+	for( size_t i=0; i<m_ParamGroup.m_Float.size(); i++ )
+		pMgr->SetParam( m_ParamGroup.m_Float[i] );
+
+	for( size_t i=0; i<m_ParamGroup.m_Texture.size(); i++ )
+	{
+		if( m_ParamGroup.m_Texture[i].Parameter().m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
+			pMgr->SetTexture( (int)i, m_ParamGroup.m_Texture[i].Parameter().m_Handle );
+	}
+}
+
+
 
 /**
   About m_ShaderIndex & m_ShaderTechniqueIndex
@@ -171,12 +185,23 @@ m_PrevShaderIndex(-1),
 m_PrevShaderTechinqueIndex(-1)
 {}
 
+/*
+void CStaticGeometry::SetGlobalParams()
+{
+}
+*/
 
 bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag )
 {
 	// reset world transform
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );
+
+//	SetGlobalParams();
+
+	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
+		m_Archive.m_vecShaderContainer[i].SetParams();
+	
 
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{

@@ -85,6 +85,25 @@ void CShaderManager::Release()
 }
 
 
+void CShaderManager::Reload()
+{
+	LoadShaderFromFile( m_strFilename );
+
+	// reload techniques
+	for( int i=0; i<NUM_MAX_TECHNIQUES; i++ )
+	{
+		if( 0 < m_astrTechniqueName[i].length() )
+			m_aTechniqueHandle[i] = m_pEffect->GetTechniqueByName( m_astrTechniqueName[i].c_str() );
+	}
+
+	for( size_t i=0; i<m_vecParamHandle.size(); i++ )
+	{
+		m_vecParamHandle[i].Handle
+			= m_pEffect->GetParameterByName( NULL, m_vecParamHandle[i].ParameterName.c_str() );
+	}
+}
+
+
 bool CShaderManager::LoadShaderFromFile( const string& filename )
 {
 	Release();
@@ -118,10 +137,10 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 		return false;
 	}
 
-	m_aMatrixHandle[MATRIX_WORLD] = m_pEffect->GetParameterBySemantic( NULL, "WORLD" );
-	m_aMatrixHandle[MATRIX_VIEW] = m_pEffect->GetParameterBySemantic( NULL, "VIEW" );
-	m_aMatrixHandle[MATRIX_PROJ] = m_pEffect->GetParameterBySemantic( NULL, "PROJ" );
-	m_aMatrixHandle[MATRIX_WORLD_VIEW] = m_pEffect->GetParameterBySemantic( NULL, "WORLDVIEW" );
+	m_aMatrixHandle[MATRIX_WORLD]           = m_pEffect->GetParameterBySemantic( NULL, "WORLD" );
+	m_aMatrixHandle[MATRIX_VIEW]            = m_pEffect->GetParameterBySemantic( NULL, "VIEW" );
+	m_aMatrixHandle[MATRIX_PROJ]            = m_pEffect->GetParameterBySemantic( NULL, "PROJ" );
+	m_aMatrixHandle[MATRIX_WORLD_VIEW]      = m_pEffect->GetParameterBySemantic( NULL, "WORLDVIEW" );
 	m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ] = m_pEffect->GetParameterBySemantic( NULL, "WORLDVIEWPROJ" );
 
 	int i;
@@ -134,7 +153,7 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 
 	m_aCubeTextureHandle[0] = m_pEffect->GetParameterByName( NULL, "g_txCubeMap" );
 
-	m_aHandle[HANDLE_VIEWER_POS] = m_pEffect->GetParameterByName( NULL, "g_vEyePos" );
+	m_aHandle[HANDLE_VIEWER_POS]    = m_pEffect->GetParameterByName( NULL, "g_vEyePos" );
 	m_aHandle[HANDLE_AMBIENT_COLOR] = m_pEffect->GetParameterByName( NULL, "g_vAmbientColor" );
 
 	// create shader light manager
@@ -144,7 +163,43 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 
 	m_pLightManager = boost::shared_ptr<CShaderLightManager>( pD3DShaderLightMgr );
 
+	m_vecParamHandle.reserve( 8 );
+
 	return true;
+}
+
+
+void CShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
+{
+	int index = float_param.m_ParameterIndex;
+	if( index < 0 )
+	{
+		// init
+
+		size_t i;
+		for( i=0; i<m_vecParamHandle.size(); i++ )
+		{
+			if( m_vecParamHandle[i].ParameterName == float_param.GetParameterName() )
+			{
+				float_param.m_ParameterIndex = index = (int)i;
+				break;
+			}
+		}
+
+		if( i == m_vecParamHandle.size() )
+		{
+			// not found - get the parameter from the name
+			D3DXHANDLE param_handle = m_pEffect->GetParameterByName( NULL, float_param.GetParameterName().c_str() );
+			if( param_handle )
+			{
+				float_param.m_ParameterIndex = (int)m_vecParamHandle.size();
+				m_vecParamHandle.push_back( CD3DShaderParameterHandle(float_param.GetParameterName(),param_handle) );
+			}
+		}
+	}
+
+	if( 0 <= index && index < (int)m_vecParamHandle.size() )
+		m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, &(float_param.GetParameter()[0]), (UINT)m_vecParamHandle.size() );
 }
 
 

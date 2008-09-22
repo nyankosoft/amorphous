@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include "BSPMap.h"
+#include "StaticGeometry.h"
 #include "StaticGeometryFG.h"
 #include "EntitySet.h"
 #include "trace.h"
@@ -98,10 +99,11 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 {
 	string ext = get_ext( filename );
 
-	if( ext == "bspx" )
+	if( ext == "bspx" ) // bsp level file (deprecated)
 		return new CBSPMap( pStage );
-	else if( ext == "sga" )
+	else if( ext == "sga" ) // static geometry archive
 		return new CStaticGeometryFG( pStage );
+//		return new CStaticGeometry( pStage );
 	else
 	{
 		LOG_PRINT_WARNING( "an invalid static geometry filename: " + filename );

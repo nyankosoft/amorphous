@@ -10,6 +10,7 @@
 #include "3DCommon/MeshObjectHandle.h"
 #include "3DCommon/ShaderHandle.h"
 #include "3DCommon/Shader/Serialization_ShaderTechniqueHandle.h"
+#include "3DCommon/Shader/ShaderParameter.h"
 #include "Physics/fwd.h"
 #include "Support/StringAux.h"
 #include "fwd.h"
@@ -47,6 +48,8 @@ public:
 	/// - Not serialized.
 	CShaderHandle m_ShaderHandle;
 
+	CShaderParameterGroup m_ParamGroup;
+
 public:
 
 	void Serialize( IArchive& ar, const unsigned int version )
@@ -60,6 +63,8 @@ public:
 	{
 		return m_ShaderHandle.Load( m_Desc );
 	}
+
+	void SetParams();
 };
 
 
@@ -127,6 +132,12 @@ public:
 	/// used during runtime
 	CTextureHandle m_Texture;
 
+	/// float parameters set with the texture
+	std::vector< CShaderParameter<float> > m_vecFloatParameter;
+
+	/// integer parameters set with the texture
+	std::vector< CShaderParameter<int> > m_vecIntParameter;
+
 public:
 
 	CAuxiliaryTexture();
@@ -154,7 +165,9 @@ public:
 
 	float m_FarClipDist;
 
-	std::vector<CAuxiliaryTexture> m_vecAuxTexture;
+//	std::vector<CAuxiliaryTexture> m_vecAuxTexture;
+
+	CShaderParameterGroup m_GlobalShaderParameter;
 
 public:
 
