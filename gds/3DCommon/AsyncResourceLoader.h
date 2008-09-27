@@ -138,6 +138,8 @@ public:
 
 	CAsyncResourceLoader();
 
+	~CAsyncResourceLoader();
+
 	/// Release the resource IO thread
 	void Release();
 

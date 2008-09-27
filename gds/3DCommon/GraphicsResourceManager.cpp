@@ -35,7 +35,7 @@ CGraphicsResourceManager::~CGraphicsResourceManager()
 {
 	Release();
 
-	AsyncResourceLoader().Release();
+//	AsyncResourceLoader().Release();
 }
 
 

@@ -26,6 +26,12 @@ m_bEndIOThread(false)
 }
 
 
+CAsyncResourceLoader::~CAsyncResourceLoader()
+{
+	Release();
+}
+
+
 /// Release the resource IO thread
 void CAsyncResourceLoader::Release()
 {
