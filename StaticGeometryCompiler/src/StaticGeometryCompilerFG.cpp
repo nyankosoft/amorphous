@@ -143,11 +143,12 @@ bool CStaticGeometryCompilerFG::CreateTerrainMesh( int split_tex_width, double t
 	}
 
 	LOG_PRINT( " - mesh archive for terrain has been created." );
-
+/*
 	CTerrainMeshGenerator& generator = m_TerrainMeshGenerator;
 
 	// set options for terrain mesh generation
-	if( /* m_bAddTextureToBinaryDatabase == */ true )
+	bool bAddTextureToBinaryDatabase = true;
+	if( bAddTextureToBinaryDatabase )
 	{
 		mkdir( gs_TempTextureDirectory.c_str() );
 		generator.SetTextureOutputDirectory( "./" + gs_TempTextureDirectory );
@@ -199,7 +200,7 @@ bool CStaticGeometryCompilerFG::CreateTerrainMesh( int split_tex_width, double t
 	}
 
 	m_Archive.m_vecMeshGroup.push_back( terrain_mesh_group );
-
+*/
 	return true;
 }
 
@@ -378,6 +379,8 @@ bool CStaticGeometryCompilerFG::SetDefaultSkyboxMesh( const std::string& mesh_ar
 bool CStaticGeometryCompilerFG::Build( const string& desc_filename )
 {
 	LOG_FUNCTION_SCOPE();
+
+	LOG_PRINT_ERROR( " CStaticGeometryCompilerFG is no longer supported. Use or extend CStaticGeometryCompiler to create a static geometry archive that suits your needs." );
 
 	Release();
 

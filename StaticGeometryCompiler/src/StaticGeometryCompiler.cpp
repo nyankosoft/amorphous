@@ -1,4 +1,5 @@
 #include "StaticGeometryCompiler.h"
+#include "3DCommon/MeshModel/TerrainMeshGenerator.h"
 #include "Support/Serialization/BinaryDatabase.h"
 #include "Support/StringAux.h"
 #include "Support/fnop.h"
@@ -27,18 +28,52 @@ int get_str_index( const std::string& name, std::vector<CGeometrySurfaceDesc>& v
 }
 
 
-inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
-{
-	boost::shared_ptr<CGeneral3DMesh> pMesh
-		= shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
+// TODO: refactor MeshModel::AddTexturesToBinaryDatabase()
+bool AddImageFileToBinaryDatabase( const std::string& image_filepath,
+								   const std::string& db_filepath,
+								   CBinaryDatabase<std::string> &db,
+								   bool bUseImageFilepathBasenameForKey,
+								   std::string& resource_path )
 
-	return pMesh;
+{
+	string img_key;
+	if( bUseImageFilepathBasenameForKey )
+		img_key = fnop::get_nopath(image_filepath);
+	else
+		img_key = image_filepath;
+
+	if( db.KeyExists(img_key) )
+	{
+		// the texture file has been already saved to database
+		// - skip this texture
+		LOG_PRINT( "The DB already has a data with the key: " + img_key );
+		return false;
+	}
+
+	// - (db filename) + "::" + (archive key name)
+	resource_path = db_filepath + "::" + img_key;
+
+	CImageArchive img_archive = CImageArchive( image_filepath );
+
+	if( img_archive.IsValid() )
+	{
+		// add image archive to db
+		db.AddData( img_key, img_archive );
+		return true;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " - An invalid image filepath: " + image_filepath );
+		return false;
+	}
 }
 
 
 CStaticGeometryCompiler::CStaticGeometryCompiler()
 {
-	m_DatabaseRelativeDirPathAtRuntime = ".";//"./Stage";
+	m_DatabaseRelativeDirPathAtRuntime = "./Stage";
+
+	m_pGraphicsMesh = CreateGeneral3DMesh();
 }
 
 
@@ -64,13 +99,14 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 		AddTexturesToBinaryDatabase( m_vecDestGraphicsMeshArchive[i], db_filepath, db );
 	}
 
+
 	// add lightmap textures
 //	if( m_pLightmapBuilder )
 //		m_pLightmapBuilder->AddLightmapTexturesToDB( db );
 
 	string db_dir_relative_path = m_DatabaseRelativeDirPathAtRuntime;
 
-	string db_file_relative_path = db_dir_relative_path + "/" + fnop::get_nopath(db_filename);
+	string db_file_relative_path = db_dir_relative_path /*+ "/"*/ + fnop::get_nopath(db_filename);
 
 	// add mesh archives to db
 	m_Archive.m_vecMesh.resize( num_meshes );
@@ -86,7 +122,7 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 	}
 
 	// add shader and technique info
-	m_Archive.m_vecShaderContainer.resize( m_ShaderNameToShaderInfo.size() );
+	m_Archive.m_vecShaderContainer.resize( m_ShaderNameToShaderInfo.size() );	
 
 	std::map<std::string,CShaderInfo>::iterator itr;
 	for( itr = m_ShaderNameToShaderInfo.begin();
@@ -108,6 +144,19 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 		}
 	}
 
+	// add textures specified as shader params to db
+/*	const size_t num_shader_containers = m_Archive.m_vecShaderContainer.size();
+	for( size_t i=0; i<num_shader_containers; i++ )
+	{
+		const size_t num_textures = m_Archive.m_vecShaderContainer[i].m_ParamGroup.m_Texture.size();
+		for( size_t j=0; j<num_textures; j++ )
+		{
+			num_textures = 
+
+			db.AddData( keyname, m_vecDestGraphicsMeshArchive[i] );
+		}
+	}*/
+
 	db.AddData( CStaticGeometryDBKey::Main, m_Archive );
 
 	// graphics mesh archives
@@ -128,11 +177,11 @@ void CStaticGeometryCompiler::AddDestGraphicsMeshInstance()
 {
 	shared_ptr<CGeneral3DMesh> pGeneralMesh = CreateGeneral3DMesh();
 
-	pGeneralMesh->SetVertexFormatFlags( m_GraphicsMesh.GetVertexFormatFlags() );
+	pGeneralMesh->SetVertexFormatFlags( m_pGraphicsMesh->GetVertexFormatFlags() );
 
 	m_vecpDestGraphicsMesh.push_back( pGeneralMesh );
 }
-
+	
 /// Assumes that polygons at each node can be fit in a single mesh instance
 /// - Assumes polygons of src_mesh have been copied to the geometry array inside src_tree
 /// - Subdives src_mesh into multiple meshes if it has too many vertices / polygons
@@ -146,8 +195,8 @@ void CStaticGeometryCompiler::CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& sr
 
 	const CAABNode& node = src_tree.GetNode( src_node_index );
 
-	if( node.veciGeometryIndex.size() == 0 )
-		return;
+//	if( node.veciGeometryIndex.size() == 0 )
+//		return;
 
 	if( 12000 < m_vecpDestGraphicsMesh.back()->GetPolygonBuffer().size()
 		+ node.veciGeometryIndex.size() )
@@ -187,7 +236,7 @@ void CStaticGeometryCompiler::CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& sr
 
 	const vector<CGeneral3DVertex>& src_vertex_buffer = *src_mesh.GetVertexBuffer().get();
 	vector<CGeneral3DVertex>& dest_vertex_buffer = *dest_mesh.GetVertexBuffer().get();
-	std::vector<CIndexedPolygon>& dest_polygon_buffer = dest_mesh.GetPolygonBuffer();
+	vector<CIndexedPolygon>& dest_polygon_buffer = dest_mesh.GetPolygonBuffer();
 
 	int vert_offset = (int)dest_vertex_buffer.size();
 	map<int,int> OldToNewVertIndex;
@@ -292,6 +341,12 @@ void CStaticGeometryCompiler::CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& sr
 	{
 		dest_tree.AddGeometry( itrMeshSubset->second );
 	}
+
+	if( 0 <= node.child[0] )
+		CreateMeshSubsets_r( src_tree, node.child[0], src_mesh, dest_tree );
+
+	if( 0 <= node.child[1] )
+		CreateMeshSubsets_r( src_tree, node.child[1], src_mesh, dest_tree );
 }
 
 
@@ -347,6 +402,9 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 
 bool CStaticGeometryCompiler::CreateLightmaps()
 {
+	if( !m_Desc.m_Lightmap.m_Enabled )
+		return false;
+
 	// create lightmaps
 	// [in] polygons
 	// [in] polygon mesh tree for raycast
@@ -361,12 +419,37 @@ bool CStaticGeometryCompiler::CreateLightmaps()
 //	m_Desc.m_vecpLight.push_back( pPntLight );
 
 	m_Desc.m_Lightmap.m_pvecpLight = &m_Desc.m_vecpLight;
-	m_Desc.m_Lightmap.m_pMesh = &m_GraphicsMesh;
-	m_Desc.m_Lightmap.m_vecEnableLightmapForSurface.resize( m_GraphicsMesh.GetMaterialBuffer().size(), 1 );
+	m_Desc.m_Lightmap.m_pMesh = m_pGraphicsMesh.get();
+	m_Desc.m_Lightmap.m_vecEnableLightmapForSurface.resize( m_pGraphicsMesh->GetMaterialBuffer().size(), 1 );
 	m_Desc.m_Lightmap.m_OutputDatabaseFilepath = fnop::get_nopath( m_Desc.m_OutputFilepath );
 
 	return lightmap_builder.CreateLightmapTexture( m_Desc.m_Lightmap );
 }
+
+
+void CStaticGeometryCompiler::CopyTreeNodes_r( TerrainMeshTree& src_tree, TerrainMeshNode& node,
+					  CNonLeafyAABTree<CIndexedPolygon>& dest_tree, int dest_node_index/*, CAABNode& dest_node*/ )
+{
+	CAABNode& dest_node = dest_tree.GetNodeBuffer()[dest_node_index];
+
+	if( node.IsLeaf() )
+	{
+		const size_t num_indices = node.m_vecPolygonIndex.size();
+		dest_node.veciGeometryIndex.resize( num_indices );
+		for( size_t i=0; i<num_indices; i++ )
+			dest_node.veciGeometryIndex[i] = node.m_vecPolygonIndex[i];
+	}
+	else
+	{
+		// save child indices now since dest_nodes gets invalidated after calling dest_tree.Subdivide()
+//		int child0 = dest_node.child[0];
+//		int child1 = dest_node.child[1];
+		dest_tree.Subdivide( dest_node, node.m_Axis );
+		CopyTreeNodes_r( src_tree, node.m_child[0], dest_tree, /*child0*/dest_tree.GetNode( dest_node_index ).child[0] );
+		CopyTreeNodes_r( src_tree, node.m_child[1], dest_tree, /*child1*/dest_tree.GetNode( dest_node_index ).child[1] );
+	}
+}
+
 
 bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 {
@@ -374,70 +457,74 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	CreateGeneral3DMesh(
 		m_Desc.m_InputFilepath, // [in] .lwo, .3ds, etc.
 		m_Desc.m_GraphcisGeometryFilter, // [in] filter that specifies target layers, surfaces, etc.
-		m_GraphicsMesh // [out] general 3d mesh that holds collision mesh
+		*m_pGraphicsMesh // [out] general 3d mesh that holds collision mesh
 		);
 
 	// separate graphics geometry
 	// 1. geometry that uses lightmap
 	// 2. geometry that does not use lightmap
 
-	// create polygon mesh tree for ray test in lightmap creation
-
-	bool m_CreatedPolygonTreeThroughTextureSubdivision = false;
+	// create polygon mesh tree for ray test in lightmap creation?
 
 	// subdivide over-sized textures
 	// - also subdivide polygons on the edges of the split textures
 	// - recalculate texture coords
 	// - returns an array of general 3d meshes
-//	for( each general 3d mesh )
-//	{
-//	}
-//		SubdivideOversizedTextures(  );
-/*	SubdivideOversizedTextures(  )
+	CTerrainMeshGenerator mesh_divider;
+	if( m_Desc.m_TextureSubdivisionOptions.m_Enabled )
 	{
-		m_CreatedPolygonTreeThroughTextureSubdivision = true;
+		mesh_divider.SetOutputTextureFormat( m_Desc.m_TextureSubdivisionOptions.m_OutputImageFormat );
+		mesh_divider.SetSplitTextureWidth( m_Desc.m_TextureSubdivisionOptions.m_SplitSize );
+
+		bool res = mesh_divider.BuildTerrainMesh( m_pGraphicsMesh );
+		if( res )
+			*m_pGraphicsMesh = *mesh_divider.GetDestMesh();
 	}
-*/
 
 	// lightmap
 	CreateLightmaps();
 
-
 	/// make the polygon tree
 
-	if( m_CreatedPolygonTreeThroughTextureSubdivision )
+	CNonLeafyAABTree<CIndexedPolygon> tree;
+	if( m_Desc.m_TextureSubdivisionOptions.m_Enabled )
 	{
 		// use the polygon tree created during the process of
 		// splitting oversized textures
+		tree.CreateRootNode( mesh_divider.GetMeshTree().GetRootNode().m_AABB );
+		CopyTreeNodes_r( mesh_divider.GetMeshTree(), mesh_divider.GetMeshTree().GetRootNode(), tree, 0 );
+		tree.SetGeometry( m_pGraphicsMesh->GetPolygonBuffer() );
 	}
 	else
 	{
 		// create tree
-		CNonLeafyAABTree<CIndexedPolygon> tree;
 		tree.SetMinimumCellVolume( 1000000.0f );
 		tree.SetNumMaxGeometriesPerCell( 100 );
 		tree.SetMaxDepth( 6 );
 		tree.SetRecursionStopCondition( CAABTree<CIndexedPolygon>::COND_OR );
-		tree.Build( m_GraphicsMesh.GetPolygonBuffer() );
 
-		CNonLeafyAABTree<CMeshSubset>& mesh_subset_tree = m_Archive.m_MeshSubsetTree;
-
-		// copy tree structure
-		// - i.e. all the tree nodes
-		mesh_subset_tree.GetNodeBuffer() = tree.GetNodeBuffer();
-
-		// remove all the geometry indices at each node
-		mesh_subset_tree.ResetRegisteredGeometries();
-
-		// set the first graphics mesh instance to m_vecpDestGraphicsMesh
-		AddDestGraphicsMeshInstance();
-
-		CreateMeshSubsets_r( tree,
-			                 0, // node index
-							 m_GraphicsMesh,
-							 mesh_subset_tree // tree that stores mesh subsets
-							 );
+		// build the tree
+		// - copies of indexed polygons are created and stored in the tree
+		tree.Build( m_pGraphicsMesh->GetPolygonBuffer() );
 	}
+
+	CNonLeafyAABTree<CMeshSubset>& mesh_subset_tree = m_Archive.m_MeshSubsetTree;
+
+	// copy tree structure
+	// - i.e. all the tree nodes
+	mesh_subset_tree.GetNodeBuffer() = tree.GetNodeBuffer();
+
+	// remove all the geometry indices at each node
+	mesh_subset_tree.ResetRegisteredGeometries();
+
+	// set the first graphics mesh instance to m_vecpDestGraphicsMesh
+	AddDestGraphicsMeshInstance();
+
+	CreateMeshSubsets_r( tree,
+		                 0, // node index
+						 *m_pGraphicsMesh,
+						 mesh_subset_tree // tree that stores mesh subsets
+						 );
 
 	// create mesh archives
 	const size_t num_graphics_meshes = m_vecpDestGraphicsMesh.size();
@@ -457,6 +544,21 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_filepath )
 {
 	bool loaded = m_Desc.LoadFromXML( xml_filepath );
+
+	// set relative directory path
+	// e.g., m_Desc.m_OutputFilepath:           "../../app/models/sg.bin"
+	// e.g., m_Desc.m_ProgramRootDirectoryPath: "../../app"
+
+	size_t pos = m_Desc.m_OutputFilepath.find( m_Desc.m_ProgramRootDirectoryPath );// validate
+	if( pos != string::npos )
+	{
+		m_DatabaseRelativeDirPathAtRuntime
+			= fnop::get_path(m_Desc.m_OutputFilepath).substr( m_Desc.m_ProgramRootDirectoryPath.length() );
+
+		if( 0 < m_DatabaseRelativeDirPathAtRuntime.length()
+		 && m_DatabaseRelativeDirPathAtRuntime[0] == '/' )
+			m_DatabaseRelativeDirPathAtRuntime = "." + m_DatabaseRelativeDirPathAtRuntime;
+	}
 
 	// set the working directory to the directory path of the xml_filepath
 	fnop::dir_stack dir_stk;

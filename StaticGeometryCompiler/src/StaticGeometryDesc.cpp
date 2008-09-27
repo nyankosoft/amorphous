@@ -14,35 +14,6 @@ using namespace boost;
 #define LOG_ERR_RETURN_FALSE( msg ) { LOG_PRINT_ERROR( msg ); return false; }
 
 
-bool CGeometrySurfaceDesc::Load( DOMNode *pDescNode )
-{
-	m_Name = GetAttributeText( pDescNode, "name" );
-
-	DOMNode *pLightmapNode = GetChildNode( pDescNode, "Lightmap" );
-
-	string lightmap_enabled = GetAttributeText( pLightmapNode, "enabled" );
-
-	if( lightmap_enabled == "true" )
-	{
-		m_UseLightmap = true;
-
-		// load other lightmap parameters for each surface
-	}
-	else
-		m_UseLightmap = false;
-
-	DOMNode *pShaderNode = GetChildNode( pDescNode, "Shader" );
-	if( pShaderNode )
-	{
-		m_ShaderFilepath  = GetTextContentOfImmediateChildNode( pShaderNode, "File" );
-
-		m_ShaderTechnique = GetTextContentOfImmediateChildNode( pShaderNode, "Technique" );
-	}
-
-	return true;
-}
-
-
 bool LoadFilter( DOMNode *pFilterNode, CGeometryFilter::CTarget& rTarget )
 {
 	if( !pFilterNode )
@@ -87,6 +58,68 @@ bool LoadGeometryFilter( DOMNode *pParentNode, CGeometryFilter& rDestFilter )
 		LoadFilter( pExcludeFilter, rDestFilter.Exclude );
 	}
 
+	return true;
+}
+
+
+
+//=====================================================================
+// CTextureSubdivisionOptions
+//=====================================================================
+
+bool CTextureSubdivisionOptions::Load( DOMNode *pNode )
+{
+	if( pNode )
+		m_Enabled = true;
+	else
+	{
+		m_Enabled = false;
+		return false;
+	}
+
+	CXMLNodeReader node_reader( pNode );
+
+	node_reader.GetChildElementTextContent( "OutputImageFormat", m_OutputImageFormat ); // image format
+	node_reader.GetChildElementTextContent( "SplitSize",         m_SplitSize ); // split size
+
+	return true;
+}
+
+
+//=====================================================================
+// CGeometrySurfaceDesc
+//=====================================================================
+
+bool CGeometrySurfaceDesc::Load( DOMNode *pDescNode )
+{
+	m_Name = GetAttributeText( pDescNode, "name" );
+
+	DOMNode *pLightmapNode = GetChildNode( pDescNode, "Lightmap" );
+
+	string lightmap_enabled = GetAttributeText( pLightmapNode, "enabled" );
+
+	if( lightmap_enabled == "true" )
+	{
+		m_UseLightmap = true;
+
+		// load other lightmap parameters for each surface
+	}
+	else
+		m_UseLightmap = false;
+
+	DOMNode *pShaderNode = GetChildNode( pDescNode, "Shader" );
+	if( pShaderNode )
+	{
+		m_ShaderFilepath  = GetTextContentOfImmediateChildNode( pShaderNode, "File" );
+
+		m_ShaderTechnique = GetTextContentOfImmediateChildNode( pShaderNode, "Technique" );
+	}
+
+/*	CXMLNodeReader node_reader( pDescNode );
+	m_Name = node_reader.GetAttributeText( "name" );
+
+	CXMLNodeReader lightmap_node_reader = node_reader.GetChild( "Lightmap" );
+*/
 	return true;
 }
 
@@ -335,6 +368,26 @@ bool CStaticGeometryDesc::LoadGraphicsDesc( DOMNode *pNode )
 
 	m_Lightmap.Load( GetChildNode( pNode, "Lightmap" ) );
 
+	LoadTextureSubdivisionOptions( GetChildNode( pNode, "TextureSubdivision" ) );
+
+	return true;
+}
+
+
+bool CStaticGeometryDesc::LoadTextureSubdivisionOptions( DOMNode *pNode )
+{
+	DOMNode *pFileNode = GetChildNode( pNode, "TextureSubdivisionFile" );
+	if( pFileNode )
+	{
+		CXMLDocumentLoader xml_doc_loader;
+		xercesc_2_8::DOMDocument *pXMLDocument = NULL;
+		bool bSuccess = xml_doc_loader.Load( to_string(pFileNode->getTextContent()), &pXMLDocument );
+		if( !bSuccess )
+			return false;
+
+		m_TextureSubdivisionOptions.Load( GetRootNode( pXMLDocument ) ); // "TextureSubdivision"
+	}
+
 	return true;
 }
 
@@ -402,6 +455,8 @@ bool CStaticGeometryDesc::LoadFromXML( const std::string& xml_filepath )
 	}
 	else
 		LOG_ERR_RETURN_FALSE( "Cannot find an output filepath" );
+
+	m_ProgramRootDirectoryPath = GetTextContentOfImmediateChildNode( pOutputNode, "ProgramRootDirectoryPath" );
 
 	if( !LoadGraphicsDesc( GetChildNode( pRootNode, "Graphics" ) ) )
 		return false;

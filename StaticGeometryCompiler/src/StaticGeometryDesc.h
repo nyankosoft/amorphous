@@ -39,6 +39,26 @@ public:
 };
 
 
+class CTextureSubdivisionOptions
+{
+public:
+
+	bool m_Enabled;
+	std::string m_OutputImageFormat;
+	int m_SplitSize;
+
+public:
+
+	CTextureSubdivisionOptions()
+		:
+	m_Enabled(false),
+	m_SplitSize(0)
+	{}
+
+	bool Load( DOMNode *pNode );
+};
+
+
 /*
 class GeometryTarget
 {
@@ -97,6 +117,8 @@ public:
 
 	std::string m_OutputFilepath;
 
+	std::string m_ProgramRootDirectoryPath;
+
 	CGeometryFilter m_CollisionGeometryFilter;
 	CGeometryFilter m_GraphcisGeometryFilter;
 
@@ -109,6 +131,8 @@ public:
 	std::map<std::string,CShaderParameterGroup> m_ShaderFileToParamGroup;
 
 	CLightmapDesc m_Lightmap;
+
+	CTextureSubdivisionOptions m_TextureSubdivisionOptions;
 
 private:
 
@@ -126,7 +150,10 @@ private:
 
 	void LoadLights( DOMNode *pLightsNode );
 
+	bool LoadTextureSubdivisionOptions( DOMNode *pNode );
+
 	void LoadLightsFromColladaFile( const std::string& dae_filepath );
+
 public:
 
 	/// returns true on success

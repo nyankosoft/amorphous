@@ -12,6 +12,10 @@
 using namespace MeshModel;
 
 
+class TerrainMeshNode;
+class TerrainMeshTree;
+
+
 class CShaderInfo
 {
 public:
@@ -32,7 +36,8 @@ class CStaticGeometryCompiler
 
 	CGeneral3DMesh m_CollisionMesh;
 
-	CGeneral3DMesh m_GraphicsMesh;
+	/// changed to shared_ptr since terrain mesh builder accepts shared_ptr
+	boost::shared_ptr<CGeneral3DMesh> m_pGraphicsMesh;
 
 	CGeneral3DMesh m_GraphicsMeshWithLightmap;
 
@@ -75,6 +80,8 @@ protected:
 
 	void SaveToBinaryDatabase( const std::string& db_filename );
 
+	void CopyTreeNodes_r( TerrainMeshTree& src_tree, TerrainMeshNode& node,
+					  CNonLeafyAABTree<CIndexedPolygon>& dest_tree, int dest_node_index/*, CAABNode& dest_node*/ );
 public:
 
 	CStaticGeometryCompiler();
