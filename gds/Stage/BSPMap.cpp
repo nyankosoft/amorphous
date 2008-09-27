@@ -1303,9 +1303,10 @@ void CBSPMap::DrawTextureSortedPolygons_Shader_TS()
 }
 
 
-void CBSPMap::MakeEntityTree(CEntitySet* pEntitySet)
+void CBSPMap::MakeEntityTree( CBSPTree& bsptree )
 {
-	pEntitySet->MakeEntityTree( &m_BSPTree );
+	// copy the tree to dest
+	bsptree = m_BSPTree;
 }
 
 

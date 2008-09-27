@@ -1,4 +1,5 @@
 #include "StaticGeometry.h"
+#include "BSPTree.h"
 
 #include "3DCommon/Shader/ShaderManager.h"
 #include "3DCommon/Direct3D9.h"
@@ -70,6 +71,131 @@ void CAuxiliaryTexture::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_Desc;
 }
 
+
+
+static int s_MaxDepth = 0;
+
+void BuildLA_r( vector<SNode_f>& vecNode, vector<SPlane>& vecPlane, int index, int depth )
+{
+	SNode_f& rNode = vecNode[index];
+
+	// at this point, only an aabb has been set to rNode
+	// child & plane will be set during the following process
+
+	Vector3 vExtents = rNode.aabb.GetExtents();
+	int axis;
+	if( vExtents[1] < vExtents[0] )
+	{
+		if( vExtents[2] < vExtents[0] )
+			axis = 0;
+		else
+			axis = 2;
+	}
+	else
+	{
+		if( vExtents[2] < vExtents[1] )
+			axis = 1;
+		else
+			axis = 2;
+	}
+
+	SPlane plane;
+	plane.dist = rNode.aabb.GetCenterPosition()[axis];
+	plane.type = (char)axis;
+	plane.normal = Vector3(0,0,0);
+	plane.normal[axis] = 1.0f;
+
+	rNode.sPlaneIndex = (short)vecPlane.size();
+	vecPlane.push_back( plane );
+
+//	LOG_PRINT( "node[" + to_string(index) + "] - plane index: " + to_string(rNode.sPlaneIndex) );
+
+	if( s_MaxDepth <= depth )
+	{
+		rNode.sFrontChild = CONTENTS_EMPTY;
+		rNode.sBackChild = CONTENTS_EMPTY;
+		rNode.sCellIndex = 0;
+		return;
+	}
+	else
+	{
+		// resurse down to make the rest of the tree
+
+		SNode_f child_node[2];
+		child_node[0] = child_node[1] = rNode;
+
+		child_node[0].aabb.vMin[axis] = plane.dist;
+		child_node[1].aabb.vMax[axis] = plane.dist;
+
+		short child_index[2];
+		child_index[0] = (short)vecNode.size();
+		child_index[1] = (short)vecNode.size() + 1;
+
+		rNode.sFrontChild = child_index[0];
+		rNode.sBackChild  = child_index[1];
+
+		vecNode.push_back( child_node[0] );
+		vecNode.push_back( child_node[1] );
+
+		BuildLA_r( vecNode, vecPlane, child_index[0], depth+1 );
+		BuildLA_r( vecNode, vecPlane, child_index[1], depth+1 );
+	}
+}
+
+
+void BuildAxisAlignedBSPTree( CBSPTree& rDestBSPTree, const AABB3& rBoundingBox, const int depth )
+{
+	LOG_PRINT( " - creating an entity tree" );
+
+	vector<SNode_f> vecNode;
+	vector<SPlane> vecPlane;
+
+	vecNode.reserve( (size_t)pow( 2.0, depth ) );
+	vecPlane.reserve( (size_t)pow( 2.0, depth ) );
+
+	s_MaxDepth = depth;
+
+	SNode_f root_node;
+	root_node.aabb = rBoundingBox;
+
+	// set the seed of the tree
+	vecNode.push_back( root_node );
+
+	BuildLA_r( vecNode, vecPlane, 0, 1 );
+
+	// copy the tree to the dest buffer
+//	rDestBSPTree.m_paNode = new SNode_f [vecNode.size()];
+//	for( size_t i=0; i<vecNode.size(); i++ ) rDestBSPTree.m_paNode[i] = vecNode[i];
+
+//	rDestBSPTree.m_paPlane = new SPlane [vecPlane.size()];
+//	for( size_t i=0; i<vecPlane.size(); i++ ) rDestBSPTree.m_paPlane[i] = vecPlane[i];
+
+	rDestBSPTree.Init( &vecNode[0], (int)vecNode.size(), &vecPlane[0], (int)vecPlane.size() );
+
+	LOG_PRINT( " - an entity tree has been created (" + to_string((int)vecNode.size()) + " nodes)" );
+}
+
+
+
+//================================================================================
+// CStaticGeometryBase
+//================================================================================
+
+void CStaticGeometryBase::MakeEntityTree( CBSPTree& bsptree )
+{
+	AABB3 aabb = GetAABB();
+	aabb.MergeAABB( AABB3( Vector3( -300000.0f,      0.0f, -300000.0f ),
+		                   Vector3(  300000.0f,  30000.0f,  300000.0f ) ) );
+
+	BuildAxisAlignedBSPTree( bsptree, aabb, 8 );
+}
+
+
+
+
+//================================================================================
+// CStaticGeometry
+//================================================================================
 
 /*
 void UpdateResources()

@@ -2,22 +2,14 @@
 #define __STATICGEOMETRYBASE_H__
 
 
+#include "fwd.h"
+#include "3DCommon/fwd.h"
 #include "3DCommon/GraphicsComponentCollector.h"
-
 #include "3DMath/Vector3.h"
 #include "3DMath/AABB3.h"
 
-
 #include <vector>
 #include <string>
-
-
-struct STrace;
-class CTrace;
-class CCamera;
-class CStage;
-class CEntitySet;
-//class CDynamicLightManagerForStaticGeometry;
 
 
 class CStaticGeometryBase : public CGraphicsComponent
@@ -83,7 +75,7 @@ public:
 
 	virtual void WriteToFile( const char *pFilename ) {}
 
-	virtual void MakeEntityTree( CEntitySet* pEntitySet ) = 0;
+	virtual void MakeEntityTree( CBSPTree& bsptree );
 
 	/// collision detection
 	virtual int ClipTrace(STrace& tr) = 0;

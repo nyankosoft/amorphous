@@ -87,8 +87,6 @@ public:
 	// load static geometry from binary database file
 	virtual bool LoadFromFile( const std::string& db_filename, bool bLoadGraphicsOnly = false );
 
-	virtual void MakeEntityTree( CEntitySet* pEntitySet );
-
 	/// collision detection
 	/// NOT IMPLEMENTED
 	virtual int ClipTrace(STrace& tr);

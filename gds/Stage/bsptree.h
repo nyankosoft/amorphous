@@ -47,8 +47,9 @@ public:
 
 	bool WriteToFile( const char *pcFilename );
 
+	CBSPTree& operator=( const CBSPTree& src );
+	
 	void CreateBoxBSPTree( float fWidth_X, float fHeight_Y, float fDepth_Z );
-//	void Transform( D3DXMATRIX& rmatWorld, CBSPTree& rLocalBSPTree );
 
 	friend class CBSPTreeForAABB;
 	friend class CBSPMap;

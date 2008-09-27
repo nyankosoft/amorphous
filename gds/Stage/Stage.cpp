@@ -605,7 +605,9 @@ bool CStage::Initialize( const string& script_archive_filename )
 	if( m_pStaticGeometry )
 	{
 		// make EntityTree from static geometry
-		m_pStaticGeometry->MakeEntityTree( m_pEntitySet );
+		CBSPTree bsptree;
+		m_pStaticGeometry->MakeEntityTree( bsptree );
+		m_pEntitySet->MakeEntityTree( &bsptree );
 
 		// set dynamic light manager for static geometry
 		m_pStaticGeometry->SetDynamicLightManager( m_pEntitySet );

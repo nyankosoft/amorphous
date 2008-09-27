@@ -209,11 +209,6 @@ public:
 
 	virtual bool LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly = false );
 
-	virtual void MakeEntityTree( CEntitySet* pEntitySet )
-	{
-		assert( !__FUNCTION__" - Not implemented!" );
-	}
-
 	/// collision detection
 	virtual int ClipTrace(STrace& tr) { return 0; }
 

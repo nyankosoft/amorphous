@@ -161,7 +161,7 @@ public:
 
 	void WriteToFile( const char *pFilename );
 
-	void MakeEntityTree(CEntitySet* pEntitySet);
+	void MakeEntityTree( CBSPTree& beptree );
 
 	/// collision detection
 	int ClipTrace(STrace& tr);

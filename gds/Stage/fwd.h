@@ -13,6 +13,7 @@ class CBaseEntityHandle;
 class CEntitySet;
 class CStaticGeometryBase;
 class CStaticGeometryArchiveFG;
+class CBSPTree;
 struct STrace;
 class CTrace;
 class CViewFrustumTest;
@@ -22,6 +23,7 @@ class CSurfaceMaterialManager;
 class CTextMessageManager;
 struct SGameMessage;
 class CBEC_MotionPath;
+//class CDynamicLightManagerForStaticGeometry;
 
 class CScriptManager;
 

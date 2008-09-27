@@ -534,6 +534,14 @@ bool CBSPTree::WriteToFile( const char *pcFilename )
 }
 
 
+CBSPTree& CBSPTree::operator=( const CBSPTree& src )
+{
+	Release();
+	Init( src.m_paNode, src.m_NumNodes, src.m_paPlane, src.m_NumPlanes );
+	return *this;
+}
+
+
 // static member variable definition for 'CBSPTreeForAABB'
 
 CBSPTree CBSPTreeForAABB::ms_BSPTree;
