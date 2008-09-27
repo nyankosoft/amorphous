@@ -1,5 +1,5 @@
-
 #include "TerrainMeshGenerator.h"
+#include "General3DMesh.h"
 
 
 #include <stdio.h>
@@ -8,18 +8,16 @@
 #include "Support/StringAux.h"
 #include "Support/fnop.h"
 #include "Support/Log/DefaultLog.h"
-//#include "Support/msgbox.h"
 
 using namespace std;
 using namespace boost;
 
 /**
- *
- * \param axis altenates 0(x) & 2(z)
+  \param axis altenates 0(x) & 2(z)
  */
 void TerrainMeshTree::MakeMeshNodes_r( TerrainMeshNode& node, int axis, int depth )
 {
-	vector<CIndexedPolygon>& vecPolygonBuffer = *m_pvecPolygonBuffer;
+	vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
 
 	// calculate a plane that splits the subspace of this node
 	SPlane split_plane;
@@ -27,6 +25,8 @@ void TerrainMeshTree::MakeMeshNodes_r( TerrainMeshNode& node, int axis, int dept
 	split_plane.dist = ( node.m_AABB.vMax[axis] + node.m_AABB.vMin[axis] ) * 0.5f;
 
 	node.m_child.resize(2);
+
+	node.m_Axis = axis;
 
 	CIndexedPolygon front, back;
 
@@ -62,8 +62,8 @@ void TerrainMeshTree::MakeMeshNodes_r( TerrainMeshNode& node, int axis, int dept
 			vecPolygonBuffer[polygon_index].Split( front, back, split_plane );
 			vecPolygonBuffer.push_back( front );
 			vecPolygonBuffer.push_back( back );
-			node.m_child[1].m_vecPolygonIndex.push_back( vecPolygonBuffer.size() - 2 );
-			node.m_child[0].m_vecPolygonIndex.push_back( vecPolygonBuffer.size() - 1 );
+			node.m_child[1].m_vecPolygonIndex.push_back( (int)vecPolygonBuffer.size() - 2 );
+			node.m_child[0].m_vecPolygonIndex.push_back( (int)vecPolygonBuffer.size() - 1 );
 
 //			if( 32 < front.m_index.size() )
 //			{
@@ -113,14 +113,34 @@ inline int FindRegisteredIndex( int src_index, const vector<IndexMap>& index_map
 }
 
 
-/**
- * Add triangles to a mesh archive as a triangle set.
- * All polygons in the source polygon buffer must be triangulated in advance.
- */
-void TerrainMeshTree::AddToMeshArchive( TerrainMeshNode& node,
-//									    vector<CIndexedPolygon>& polygon_buffer,
-										C3DMeshModelArchive& dest_mesh )
+void TerrainMeshTree::AddToDestMesh( TerrainMeshNode& node )
 {
+	int new_mat_index = m_pDestMesh->GetNumMaterials();
+
+	vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
+
+	// udpate the material indices of the polygons
+	const size_t num_polygons_at_node = node.m_vecPolygonIndex.size();
+	for( size_t i=0; i<num_polygons_at_node; i++ )
+	{
+		vecPolygonBuffer[ node.m_vecPolygonIndex[i] ].m_MaterialIndex = new_mat_index;
+	}
+
+	// set the new material. esp. the texture
+	CMMA_Texture texture;
+	texture.type = CMMA_Texture::FILENAME;
+
+	texture.strFilename = m_BaseTextureFilename;
+	fnop::append_to_body( texture.strFilename, fmt_string("%02d", node.m_TextureIndex) );
+	fnop::change_ext( texture.strFilename, m_OutputTextureImageFormat );
+
+	CMMA_Material mat;
+	mat.vecTexture.resize( 1 );
+	mat.vecTexture[0] = texture;
+
+	m_pDestMesh->GetMaterialBuffer().push_back( mat );
+
+	/*
 	CMMA_VertexSet& vertex_set = dest_mesh.GetVertexSet();
 	vector<unsigned int>& dest_index_buffer = dest_mesh.GetVertexIndex();
 
@@ -178,25 +198,7 @@ void TerrainMeshTree::AddToMeshArchive( TerrainMeshNode& node,
 	triangle_set.m_iNumVertexBlocksToCover = max_index - min_index + 1;
 	dest_mesh.GetTriangleSet().push_back( triangle_set );
 
-	
-	// set the material
-	CMMA_Texture texture;
-	texture.type = CMMA_Texture::FILENAME;
-
-	texture.strFilename = m_BaseTextureFilename;
-	fnop::append_to_body( texture.strFilename, fmt_string("%02d",node.m_TextureIndex) );
-	fnop::change_ext( texture.strFilename, m_OutputTextureImageFormat );
-
-//	string pak_filename = 
-//	texture.strFilename = "Texture/.ptx:"
- 
-//	( base_tex_filename.change_ext()
-
-	CMMA_Material mat;
-	mat.vecTexture.resize( 1 );
-	mat.vecTexture[0] = texture;
-
-	dest_mesh.GetMaterial().push_back( mat );
+*/
 }
 
 /*
@@ -217,7 +219,7 @@ void TerrainMeshTree::MakeMesh_r( TerrainMeshNode& node,
 		if( node.m_child[i].IsLeaf() )
 		{
 			// child is a leaf node - add to mesh archive
-			
+
 			// check if it should be batched to the current mesh archive
 			if( num_current_nodes < m_NumMaxBatchNodes )
 //			&& num_current_vertices + node.m_child[i].GetNumVertices() < m_NumMaxVerticesPerMesh
@@ -227,24 +229,12 @@ void TerrainMeshTree::MakeMesh_r( TerrainMeshNode& node,
 			}
 			else
 			{
-				m_vecMeshArchive.push_back( C3DMeshModelArchive() );
-
-				// set the vertex format - texture coord buffer is set 
-				m_vecMeshArchive.back().GetVertexSet().SetVertexFormat( CMMA_VertexSet::VF_TEXTUREVERTEX );
-				m_vecMeshArchive.back().GetVertexSet().vecTex.resize(1);
-
 				num_current_nodes = 0;
 				num_current_vertices = 0;
 				num_current_triangles= 0;
 			}
 
-			AddToMeshArchive( node.m_child[i],
-//				m_pvecPolygonBuffer,
-				m_vecMeshArchive.back() );
-
-			num_current_vertices = m_vecMeshArchive.back().GetVertexSet().GetNumVertices();
-			num_current_triangles = m_vecMeshArchive.back().GetVertexIndex().size() / 3;
-			num_current_nodes++;
+			AddToDestMesh( node.m_child[i] );
 		}
 		else
 		{
@@ -260,18 +250,11 @@ void TerrainMeshTree::MakeMesh_r( TerrainMeshNode& node,
 
 void TerrainMeshTree::MakeMesh()
 {
-	m_vecMeshArchive.push_back( C3DMeshModelArchive() );
-	m_vecMeshArchive.back().GetVertexSet().SetVertexFormat( CMMA_VertexSet::VF_TEXTUREVERTEX );
-	m_vecMeshArchive.back().GetVertexSet().vecTex.resize(1);
-
 	int num_nodes = 0, num_vertices = 0, num_triangles = 0;
 	if( !m_RootNode.IsLeaf() )
         MakeMesh_r( m_RootNode, num_nodes, num_vertices, num_triangles );	// create terrain mesh from sub-meshes
 	else
-		AddToMeshArchive( m_RootNode, m_vecMeshArchive[0] );	// create terrain mesh from only one mesh archive
-
-	for( size_t i=0; i<m_vecMeshArchive.size(); i++ )
-		m_vecMeshArchive[i].UpdateAABBs();
+		AddToDestMesh( m_RootNode );	// create terrain mesh from only one mesh archive
 }
 
 
@@ -283,13 +266,11 @@ TerrainMeshTree::TerrainMeshTree()
 
 	m_NumMaxBatchNodes = 4;
 
-	m_vecMeshArchive.reserve( 8 );
-
 	m_TexCoordShiftU = -0.0078757f;
 	m_TexCoordShiftV =  0.0078757f;
 }
 
-
+/*
 void TerrainMeshTree::Triangulate_r( TerrainMeshNode& node,
 									 vector<CIndexedPolygon>& dest_triangle_buffer )
 {
@@ -319,14 +300,63 @@ void TerrainMeshTree::Triangulate_r( TerrainMeshNode& node,
 		Triangulate_r( node.m_child[1], dest_triangle_buffer );
 	}
 }
+*/
 
+/**
+ Stores the subdivided mesh to m_pDestMesh
+*/
+bool TerrainMeshTree::Build( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, int target_depth )
+{
+	LOG_FUNCTION_SCOPE();
+	LOG_PRINT( " target_depth: " + to_string(target_depth) );
 
+	m_pSrcMesh = pSrcMesh;
 
+//	m_pVertexBuffer = m_pSrcMesh->GetVertexBuffer();
+
+	// copy the properties of the source mesh to dest mesh
+	// except for the materials
+	m_pDestMesh = CreateGeneral3DMesh();
+
+	(*m_pDestMesh) = (*m_pSrcMesh);
+
+	m_pDestMesh->GetMaterialBuffer().clear();
+
+//	m_pDestMesh->ClearPolygonBuffer();
+
+	// set target depth
+	m_TargetDepth = target_depth;
+
+	std::vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
+
+	// push all polygons to the root node
+	int i, num_pols = (int)vecPolygonBuffer.size();
+	m_RootNode.m_vecPolygonIndex.resize(num_pols);
+	for( i=0; i<num_pols; i++ )
+		m_RootNode.m_vecPolygonIndex[i] = i;
+
+	m_RootNode.m_AABB = GetAABB( vecPolygonBuffer );
+
+	if( 2 < target_depth )
+	{
+		// make the space partitioning tree (recursive)
+		MakeMeshNodes_r( m_RootNode, 0, 0 );
+	}
+//	else
+//	{
+//		// no need to split mesh into submeshes
+//		// but, then, is it really necessary to use TerrainMeshGenerator in the first place?
+//	}
+
+	return true;
+}
+
+/*
 bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<CGeneral3DVertex>> pVertexBuffer,
 							 vector<CIndexedPolygon>& vecPolygonBuffer,
 							 int target_depth )
 {
-	g_Log.Print( "TerrainMeshTree::Build() - target_depth: %d", target_depth );
+	LOG_PRINT( " target_depth: " + to_string(target_depth) );
 
 	m_pVertexBuffer = pVertexBuffer;
 
@@ -347,11 +377,11 @@ bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<CGeneral3DVertex>> pV
 		// make the space partitioning tree (recursive)
 		MakeMeshNodes_r( m_RootNode, 0, 0 );
 	}
-/*	else
-	{
-		// no need to split mesh into submeshes
-		// but, then, is it really necessary to use TerrainMeshGenerator in the first place?
-	}*/
+//	else
+//	{
+//		// no need to split mesh into submeshes
+//		// but, then, is it really necessary to use TerrainMeshGenerator in the first place?
+//	}
 
 	// triangulate polygons at each leaf node
 	vector<CIndexedPolygon> dest_triangle_buffer;
@@ -363,7 +393,7 @@ bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<CGeneral3DVertex>> pV
 	LOG_PRINT( " Leaving." );
 
 	return true;
-}
+}*/
 
 
 vector<int> s_processed;
@@ -372,6 +402,8 @@ vector<int> s_processed;
 void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 {
 	LOG_FUNCTION_SCOPE();
+
+	vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
 
 	if( 0 < node.m_child.size() )
 	{
@@ -393,14 +425,14 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 		size_t j, num_verts;
 		for( i=0; i<num_pols; i++ )
 		{
-			CIndexedPolygon& polygon = (*m_pvecPolygonBuffer)[node.m_vecPolygonIndex[i]];
+			CIndexedPolygon& polygon = vecPolygonBuffer[node.m_vecPolygonIndex[i]];
 			num_verts = polygon.m_index.size();
 			for( j=0; j<num_verts; j++ )
 			{
 				if( s_processed[polygon.m_index[j]] == 1 )
 					continue;	// already done
 
-				CGeneral3DVertex& vert = polygon.Vertex(j);//m_index[j] )m_pVertexBuffer[node.m_vecPolygonIndex];
+				CGeneral3DVertex& vert = polygon.Vertex((int)j);//m_index[j] )m_pVertexBuffer[node.m_vecPolygonIndex];
 				TEXCOORD2& tex = vert.m_TextureCoord[0];
 
 				double u = tex.u, v = tex.v;
@@ -436,13 +468,13 @@ void TerrainMeshTree::ScaleTexCoords()
 {
 	LOG_FUNCTION_SCOPE();
 
-	LOG_PRINT( fmt_string(" Resizing an array of flags for processed vertices: %x", (unsigned int)(m_pVertexBuffer.get())) );
+//	LOG_PRINT( fmt_string(" Resizing an array of flags for processed vertices: %x", (unsigned int)(m_pVertexBuffer.get())) );
 
-	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
+//	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
 
-	LOG_PRINT( "Vertices: " + to_string( (int)m_pVertexBuffer->size() ) );
+//	LOG_PRINT( "Vertices: " + to_string( (int)m_pVertexBuffer->size() ) );
 
-	s_processed.resize( m_pVertexBuffer->size(), 0 );
+	s_processed.resize( m_pSrcMesh->GetVertexBuffer()->size(), 0 );
 
 	LOG_PRINT( " Calling ScaleTexCoords_r()..." );
 
@@ -486,8 +518,8 @@ CTerrainMeshGenerator::CTerrainMeshGenerator()
 	// set default image format
 	SetOutputTextureFormat( "bmp" );
 
-	m_pVertexBuffer
-		= shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
+//	m_pVertexBuffer
+//		= shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
 }
 
 
@@ -499,6 +531,7 @@ CTerrainMeshGenerator::~CTerrainMeshGenerator()
 bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 {
 	LOG_FUNCTION_SCOPE();
+
 /*
 #ifdef TEXTURE_SPLIT_TEST
 	string src_tex_filename = "test.bmp";
@@ -577,7 +610,8 @@ void CTerrainMeshGenerator::CreateMeshTree()
 	LOG_FUNCTION_SCOPE();
 
 	int tree_depth = m_NumTexEdgeSplits + 1;
-	m_MeshTree.Build( m_pVertexBuffer, m_vecPolygonBuffer, tree_depth );
+
+	m_MeshTree.Build( m_pSrcMesh, tree_depth );
 
 	m_MeshTree.SetTextureIndices( m_NumTexEdgeSplits );
 }
@@ -591,35 +625,10 @@ void CTerrainMeshGenerator::ScaleTextureCoordinates()
 }
 
 
-void CTerrainMeshGenerator::CopyVerticesAndTriangles( C3DMeshModelArchive& src_mesh )
-{
-	// copy vertices
-	src_mesh.GetVertexSet().GetVertices( *m_pVertexBuffer.get() );
-
-	LOG_PRINT( "Vertices: " + to_string( (int)m_pVertexBuffer->size() ) );
-
-	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
-
-	// copy triangles
-	const vector<unsigned int>& src_index = src_mesh.GetVertexIndex();
-	size_t i, num_tris = src_index.size() / 3;
-	m_vecPolygonBuffer.resize( num_tris );
-	for( i=0; i<num_tris; i++ )
-	{
-		m_vecPolygonBuffer[i]
-		= CIndexedPolygon( m_pVertexBuffer,
-			src_index[i*3],
-			src_index[i*3+1],
-			src_index[i*3+2]
-			);
-	}
-}
-
-
 bool CTerrainMeshGenerator::SaveToFiles()
 {
 	/// save to files
-	size_t i, num_meshes = m_MeshTree.GetMeshArchive().size();
+/*	size_t i, num_meshes = m_MeshTree.GetMeshArchive().size();
 	for( i=0; i<num_meshes; i++ )
 	{
 		string filename = fmt_string( "dest/dest%02d.msh", i ); 
@@ -628,7 +637,7 @@ bool CTerrainMeshGenerator::SaveToFiles()
 		filename = fmt_string( "dest/dest%02d.txt", i ); 
 		m_MeshTree.GetMeshArchive()[i].WriteToTextFile( filename );
 	}
-
+*/
 	return true;
 }
 
@@ -652,7 +661,7 @@ void CTerrainMeshGenerator::SetOutputTextureFormat( const std::string& image_ext
 	 && image_ext != "jpg"
 	 && image_ext != "tga" )
 	{
-		g_Log.Print( "CTerrainMeshGenerator::SetOutputTextureFormat() - unsupported image format: " + image_ext );
+		LOG_PRINT_ERROR( " An unsupported image format: " + image_ext );
 	}
 
 	m_OutputTextureImageFormat = image_ext;
@@ -660,9 +669,19 @@ void CTerrainMeshGenerator::SetOutputTextureFormat( const std::string& image_ext
 }
 
 
-bool CTerrainMeshGenerator::BuildTerrainMesh( C3DMeshModelArchive& src_mesh )
+bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<CGeneral3DMesh> pSrcMesh )
 {
-	CMMA_Material& src_mat = src_mesh.GetMaterial()[0];
+	LOG_FUNCTION_SCOPE();
+
+	m_pSrcMesh = pSrcMesh;
+
+	if( m_pSrcMesh->GetNumMaterials() == 0 )
+	{
+		LOG_PRINT_ERROR( "The source mesh has no material" );
+		return false;
+	}
+
+	CMMA_Material& src_mat = m_pSrcMesh->GetMaterialBuffer()[0];
 
 	if( src_mat.vecTexture.size() == 0 )
 	{
@@ -679,25 +698,18 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( C3DMeshModelArchive& src_mesh )
 
 	LOG_PRINT( fmt_string(" - src texture split (%d edge splits)", m_NumTexEdgeSplits) );
 
-//	MsgBox( "creating terrain mesh..." );
-
-	// copy all the vertices & triangles in the source mesh archive
-	// to a polygon buffer
-	CopyVerticesAndTriangles( src_mesh );
-
 //	m_MeshTree.SetBaseTextureFilename( src_mat.SurfaceTexture.strFilename );
 	m_MeshTree.SetBaseTextureFilename( m_OutputTextureRelativePath + fnop::get_nopath(src_mat.vecTexture[0].strFilename) );
 
-	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
+//	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
 
-	// copy all the triangles
-	// creates a space partitioning tree and link
+	// copy all the triangles creates a space partitioning tree and link
 	// the polygons to its leaf nodes.
-	// This process splits the polygons and add new ones to the buffer
-	// if necessary
+	// This process splits the polygons and add new ones to the polygon buffer if necessary.
+	// Vertices are also added when the polygons are split.
 	CreateMeshTree();
 
-	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
+//	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
 
 	ScaleTextureCoordinates();
 
@@ -707,7 +719,5 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( C3DMeshModelArchive& src_mesh )
 	/// create mesh archives
 	m_MeshTree.MakeMesh();
 	
-//	MsgBox( "terrain mesh created." );
-
 	return true;
 }

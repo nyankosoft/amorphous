@@ -73,14 +73,23 @@ public:
 	/// \param dest [out] mesh archive
 	void Create3DMeshModelArchive( C3DMeshModelArchive& dest );
 
-//	std::vector<CGeneral3DVertex>& GetVertexBuffer() { return (*m_pVertexBuffer.get()); }
 	boost::shared_ptr< std::vector<CGeneral3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
 
+	const boost::shared_ptr< std::vector<CGeneral3DVertex> > GetVertexBuffer() const { return m_pVertexBuffer; }
+
+
 	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return m_vecPolygon; }
+
+	const std::vector<CIndexedPolygon>& GetPolygonBuffer() const { return m_vecPolygon; }
+
+	void ClearPolygonBuffer() { m_vecPolygon.clear(); }
+
 
 	std::vector<CMMA_Material>& GetMaterialBuffer() { return m_vecMaterial; }
 
 	int GetNumMaterials() const { return (int)m_vecMaterial.size(); }
+
+	void ClearMaterials() { m_vecMaterial.clear(); }
 
 	CMMA_Bone& GetSkeletonRootBoneBuffer() { return m_SkeletonRootBone; }
 
@@ -113,6 +122,15 @@ m_VertexFormatFlag(0)
 {
 	m_pVertexBuffer
 		= boost::shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
+}
+
+
+inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
+{
+	boost::shared_ptr<CGeneral3DMesh> pMesh
+		= boost::shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
+
+	return pMesh;
 }
 
 

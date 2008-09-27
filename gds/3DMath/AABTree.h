@@ -201,6 +201,8 @@ public:
 
 	std::vector<CAABNode>& GetNodeBuffer() { return m_vecNode; }
 
+	void SetGeometry( const std::vector<TGeometry>& geometry ) { m_vecGeometry = geometry; }
+
 	void SetMaxDepth( int max_depth ) { m_MaxDepth = max_depth; }
 
 	void SetMinimumCellVolume( float volume ) { m_fMinimumCellVolume = volume; }
@@ -244,6 +246,31 @@ public:
 	inline void UpdateRegisteredGeometries();
 
 	virtual void LinkGeometry( int geom_index ) = 0;
+
+	/// split a leaf node in half
+	/// - precondition: the argument node must be a leaf
+	inline void Subdivide( CAABNode& node, int axis )
+	{
+		node.iAxis = axis;
+		float fMidDist = node.aabb.GetCenterPosition()[axis];
+		node.fDist = fMidDist;
+
+		int child0 = node.child[0] = (int)m_vecNode.size();
+		int child1 = node.child[1] = (int)m_vecNode.size() + 1;
+		m_vecNode.insert( m_vecNode.end(), 2, CAABNode() );
+
+		m_vecNode[child0].aabb = node.aabb;
+		m_vecNode[child0].aabb.vMin[axis] = fMidDist;
+
+		m_vecNode[child1].aabb = node.aabb;
+		m_vecNode[child1].aabb.vMax[axis] = fMidDist;
+	}
+
+	inline void CreateRootNode( const AABB3& root_aabb )
+	{
+		m_vecNode.resize( 1 );
+		m_vecNode[0].aabb = root_aabb;
+	}
 
 //	virtual void ClipTrace( const CLineSegment& line_segment, CLineSegmentHit& results ) = 0;
 

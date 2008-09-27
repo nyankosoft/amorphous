@@ -63,6 +63,7 @@ class C3DMeshModelBuilder;
 class C3DModelLoader;
 }
 
+class CGeneral3DMesh;
 
 
 // mesh object classes

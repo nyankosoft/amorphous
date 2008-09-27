@@ -100,6 +100,8 @@ class CLightmapDesc
 {
 public:
 
+	bool m_Enabled;
+
 	/// target geometry
 	CGeneral3DMesh *m_pMesh;
 
@@ -136,6 +138,7 @@ public:
 
 	CLightmapDesc()
 		:
+	m_Enabled(false),
 	m_LightmapTextureCoordsIndex( 1 ),
 	m_LightmapTextureArchiveIndex( 1 ),
 	m_BaseTextureKeyname("lightmap"),

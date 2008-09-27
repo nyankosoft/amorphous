@@ -102,8 +102,8 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 	if( ext == "bspx" ) // bsp level file (deprecated)
 		return new CBSPMap( pStage );
 	else if( ext == "sga" ) // static geometry archive
-		return new CStaticGeometryFG( pStage );
-//		return new CStaticGeometry( pStage );
+//		return new CStaticGeometryFG( pStage );
+		return new CStaticGeometry( pStage );
 	else
 	{
 		LOG_PRINT_WARNING( "an invalid static geometry filename: " + filename );

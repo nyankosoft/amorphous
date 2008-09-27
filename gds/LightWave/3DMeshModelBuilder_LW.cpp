@@ -745,6 +745,9 @@ bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, co
 
 	SetMaterials();
 
+	// load additional options written as the comment on the surface dialog
+	LoadSurfaceCommentOptions();
+
 	return true;
 }
 

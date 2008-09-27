@@ -14,8 +14,13 @@ using namespace std;
 
 bool CLightmapDesc::Load( xercesc_2_8::DOMNode *pNode )
 {
-	if( !pNode )
+	if( pNode )
+		m_Enabled = true;
+	else
+	{
+		m_Enabled = false;
 		return false;
+	}
 
 	string texel_size = GetTextContentOfImmediateChildNode( pNode, "TexelSize" );
 
