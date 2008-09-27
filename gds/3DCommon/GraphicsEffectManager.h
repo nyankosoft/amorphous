@@ -106,6 +106,8 @@ public:
 	CGraphicsElementEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
 		: m_EffectID(-1), m_pTargetElement(pTargetElement), m_fStartTime(start_time), m_fEndTime(end_time), m_bInitialized(false), m_Index(-1) {}
 
+	virtual ~CGraphicsElementEffect() {}
+
 	enum TransMode
 	{
 		TRANS_LINEAR,
@@ -170,6 +172,8 @@ public:
 	CGraphicsElementLinearEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
 		: CGraphicsElementEffect(pTargetElement, start_time, end_time ), m_bAppliedAtEndTime(false) {}
 
+	virtual ~CGraphicsElementLinearEffect() {}
+
 	virtual int GetTransType() const { return TRANS_LINEAR; }
 
 	virtual bool IsOver( double current_time ) const { return m_fEndTime + 1.0 < current_time && m_bAppliedAtEndTime; }
@@ -194,6 +198,8 @@ public:
 
 	CGraphicsElementNonLinearEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
 		: CGraphicsElementEffect(pTargetElement, start_time, end_time ) {}
+
+	virtual ~CGraphicsElementNonLinearEffect() {}
 
 	virtual int GetTransType() const { return TRANS_NONLINEAR; }
 };
@@ -336,12 +342,14 @@ public:
 
 class CE_TextDraw : public CGraphicsElementLinearEffect
 {
-	std::string m_OrigText;
-
 	float m_CharsPerSec;
 
 	/// how long the colors spans from solid color to fade out
 	int m_FadeLength;
+
+	std::string m_OrigText;
+
+	std::vector<int> m_vec;
 
 	CGE_Text *m_pTextElement;
 

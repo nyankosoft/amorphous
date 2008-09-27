@@ -315,6 +315,29 @@ CGraphicsElement *CGraphicsElementEffect::GetElement()
 }
 
 
+CE_TextDraw::CE_TextDraw( CGE_Text *pTargetElement, double start_time )
+:
+CGraphicsElementLinearEffect( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
+{
+	m_pTextElement = pTargetElement;
+
+	if( m_pTextElement )
+	{
+		// save the original text
+		m_OrigText = m_pTextElement->GetText();
+
+		// clear the text of the target text element
+		m_pTextElement->SetText( "" );
+
+		 m_vec.resize( 10, 0 );
+
+//		if( /* currently in animation timeframe */ )
+//			UpdateInternal( current_time, 0.0f );
+	}
+}
+
+
+
 //=====================================================================
 // CAnimatedGraphicsManager
 //=====================================================================
@@ -603,26 +626,6 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( CGraphicsElement *pTar
 	p->m_EndColor = color;
 
 	return AddGraphicsEffect( p );
-}
-
-
-CE_TextDraw::CE_TextDraw( CGE_Text *pTargetElement, double start_time )
-:
-CGraphicsElementLinearEffect( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
-{
-	m_pTextElement = pTargetElement;
-
-	if( m_pTextElement )
-	{
-		m_OrigText = m_pTextElement->GetText(); // save the original text
-
-		// clear the text of the target text element
-		m_pTextElement->SetText( "" );		 // This causes the memory leak. Why?
-		//m_pTextElement->SetText( string() ); // Does not fix the problem. Causes a similar memory leak
-
-//		if( /* currently in animation timeframe */ )
-//			UpdateInternal( current_time, 0.0f );
-	}
 }
 
 
