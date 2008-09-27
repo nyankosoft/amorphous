@@ -196,6 +196,14 @@
 				Name="StaticGeometryCompiler"
 				>
 				<File
+					RelativePath="..\..\..\..\Project1\gds\Stage\bsptree.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\Project1\gds\Stage\bsptree.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\StaticGeometryCompiler.cpp"
 					>
 				</File>
