@@ -69,10 +69,9 @@ inline void CGraphicsResourceHandle::Release()
 
 inline bool CGraphicsResourceHandle::IsLoaded() const
 {
-	if( GetEntry()
-	 && GetEntry()->GetMeshResource() )
+	if( GetEntry() )
 	{
-		if( GetEntry()->GetMeshResource()->GetState() == GraphicsResourceState::LOADED )
+		if( GetEntry()->GetResource()->GetState() == GraphicsResourceState::LOADED )
 			return true;
 		else
 			return false;

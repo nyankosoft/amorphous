@@ -456,7 +456,7 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 			CAABNode& current_node = m_vecNode[iNodeIndex];
 
 			int iAxis = m_vecNode[iNodeIndex].iAxis;
-			float fMidDist = ( m_vecNode[iNodeIndex].aabb.vMax[iAxis] + m_vecNode[iNodeIndex].aabb.vMin[iAxis] ) / 2.0f;
+			float fMidDist = m_vecNode[iNodeIndex].aabb.GetCenterPosition()[iAxis];
 			for( size_t i=0; i<2; i++ )
 			{
 				m_vecNode[iNodeIndex].child[i] = (int)m_vecNode.size();
@@ -494,9 +494,10 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 			m_vecNode[iNodeIndex].veciGeometryIndex.resize( 0 );
 
 			// Move all the triangles of 'm_vecNode[iNodeIndex]' to either of its children.
-			for( j=0; j<m_vecNode[iNodeIndex].veciGeometryIndex.size(); j++ )
+			const size_t num_geoms = veciGeometryIndex.size();
+			for( j=0; j<num_geoms; j++ )
 			{
-				TGeometry& geom = m_vecGeometry[ m_vecNode[iNodeIndex].veciGeometryIndex[j] ];
+				TGeometry& geom = m_vecGeometry[ veciGeometryIndex[j] ];
 
 				const int geom_index = veciGeometryIndex[j];
 

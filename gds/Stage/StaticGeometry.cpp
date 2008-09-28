@@ -333,7 +333,8 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 	{
 //		m_Archive.m_vecShaderContainer[i].m_pShaderManager->SetWorldTransform( matWorld );
 		CShaderManager *pShaderMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
-		pShaderMgr->SetWorldTransform( matWorld );
+		if( pShaderMgr )
+			pShaderMgr->SetWorldTransform( matWorld );
 	}
 
 	CNonLeafyAABTree<CMeshSubset>& mesh_subset_tree = m_Archive.m_MeshSubsetTree;
@@ -363,9 +364,15 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 				const CMeshSubset& subset
 					= mesh_subset_tree.GetGeometryBuffer()[node.veciGeometryIndex[i]];
 
+				if( !rvecMesh[subset.MeshIndex].m_Mesh.IsLoaded() )
+					continue;
+
 				CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
 
 				CShaderContainer& shader_container = rvecShaderContainer[subset.ShaderIndex];
+				if( !shader_container.m_ShaderHandle.IsLoaded() )
+					continue;
+
 				CShaderManager &shader_mgr = *shader_container.m_ShaderHandle.GetShaderManager();// *(shader_container.m_pShaderManager.get());
 
 				shader_mgr.SetTechnique( shader_container.m_vecTechniqueHandle[subset.ShaderTechniqueIndex] );

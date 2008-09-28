@@ -53,6 +53,8 @@ class TerrainMeshTree
 
 	int m_TargetDepth;
 
+	int m_TargetMaterialIndex;
+
 //	boost::shared_ptr<std::vector<CGeneral3DVertex>> m_pVertexBuffer;
 
 //	std::vector<CIndexedPolygon>* m_pvecPolygonBuffer;
@@ -122,7 +124,9 @@ public:
 
 	void SetBaseTextureFilename( const std::string& filename ) { m_BaseTextureFilename = filename; }
 
-//	std::vector<C3DMeshModelArchive>& GetMeshArchive() { return m_vecMeshArchive; }
+	void SetTargetMaterialIndex( int mat_index ) { m_TargetMaterialIndex = mat_index; }
+
+	int GetTargetMaterialIndex() const { return m_TargetMaterialIndex; }
 
 	void SetTerrainTexCoordShiftU( double shift_u ) { m_TexCoordShiftU = shift_u; }
 	void SetTerrainTexCoordShiftV( double shift_v ) { m_TexCoordShiftV = shift_v; }
@@ -212,6 +216,8 @@ public:
 	boost::shared_ptr<CGeneral3DMesh> GetDestMesh() { return m_MeshTree.GetDestMesh(); }
 
 	bool SaveToFiles();
+
+	void SetTargetMaterialIndex( int mat_index ) { m_MeshTree.SetTargetMaterialIndex( mat_index ); }
 
 	/// sets the size(width & height) of the each split texture
 	void SetSplitTextureWidth( int width ) { m_TextureWidth = width; }

@@ -12,6 +12,22 @@
 using namespace std;
 using namespace boost;
 
+
+TerrainMeshTree::TerrainMeshTree()
+:
+m_TargetMaterialIndex(0)
+{
+	m_NumMaxTrianglesPerMesh = 20000;
+
+	m_NumMaxVerticesPerMesh = 50000;
+
+	m_NumMaxBatchNodes = 4;
+
+	m_TexCoordShiftU = -0.0078757f;
+	m_TexCoordShiftV =  0.0078757f;
+}
+
+
 /**
   \param axis altenates 0(x) & 2(z)
  */
@@ -131,10 +147,12 @@ void TerrainMeshTree::AddToDestMesh( TerrainMeshNode& node )
 	texture.type = CMMA_Texture::FILENAME;
 
 	texture.strFilename = m_BaseTextureFilename;
-	fnop::append_to_body( texture.strFilename, fmt_string("%02d", node.m_TextureIndex) );
+	const string tex_index = fmt_string("%02d", node.m_TextureIndex);
+	fnop::append_to_body( texture.strFilename, tex_index );
 	fnop::change_ext( texture.strFilename, m_OutputTextureImageFormat );
 
 	CMMA_Material mat;
+	mat.Name = m_pSrcMesh->GetMaterialBuffer()[m_TargetMaterialIndex].Name + tex_index;
 	mat.vecTexture.resize( 1 );
 	mat.vecTexture[0] = texture;
 
@@ -257,18 +275,6 @@ void TerrainMeshTree::MakeMesh()
 		AddToDestMesh( m_RootNode );	// create terrain mesh from only one mesh archive
 }
 
-
-TerrainMeshTree::TerrainMeshTree()
-{
-	m_NumMaxTrianglesPerMesh = 20000;
-
-	m_NumMaxVerticesPerMesh = 50000;
-
-	m_NumMaxBatchNodes = 4;
-
-	m_TexCoordShiftU = -0.0078757f;
-	m_TexCoordShiftV =  0.0078757f;
-}
 
 /*
 void TerrainMeshTree::Triangulate_r( TerrainMeshNode& node,
@@ -681,7 +687,7 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<CGeneral3DMesh> 
 		return false;
 	}
 
-	CMMA_Material& src_mat = m_pSrcMesh->GetMaterialBuffer()[0];
+	CMMA_Material& src_mat = m_pSrcMesh->GetMaterialBuffer()[m_MeshTree.GetTargetMaterialIndex()];
 
 	if( src_mat.vecTexture.size() == 0 )
 	{

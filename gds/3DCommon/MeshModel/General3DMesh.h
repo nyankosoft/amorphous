@@ -91,6 +91,9 @@ public:
 
 	void ClearMaterials() { m_vecMaterial.clear(); }
 
+	inline int GetMaterialIndexFromName( const std::string& material_name );
+
+
 	CMMA_Bone& GetSkeletonRootBoneBuffer() { return m_SkeletonRootBone; }
 
 	unsigned int GetVertexFormatFlags() const { return m_VertexFormatFlag; }
@@ -122,6 +125,18 @@ m_VertexFormatFlag(0)
 {
 	m_pVertexBuffer
 		= boost::shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
+}
+
+
+inline int CGeneral3DMesh::GetMaterialIndexFromName( const std::string& material_name )
+{
+	for( size_t i=0; i<m_vecMaterial.size(); i++ )
+	{
+		if( material_name == m_vecMaterial[i].Name )
+			return (int)i;
+	}
+
+	return -1;
 }
 
 
