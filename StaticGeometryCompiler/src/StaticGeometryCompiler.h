@@ -14,6 +14,7 @@ using namespace MeshModel;
 
 class TerrainMeshNode;
 class TerrainMeshTree;
+class CTerrainMeshGenerator;
 
 
 class CShaderInfo
@@ -82,6 +83,12 @@ protected:
 
 	void CopyTreeNodes_r( TerrainMeshTree& src_tree, TerrainMeshNode& node,
 					  CNonLeafyAABTree<CIndexedPolygon>& dest_tree, int dest_node_index/*, CAABNode& dest_node*/ );
+
+	void UpdateSurfaceNameToSurfaceGroupIndexMapping();
+
+	bool SubdivideGraphicsMesh( CTerrainMeshGenerator& mesh_divider );
+
+
 public:
 
 	CStaticGeometryCompiler();

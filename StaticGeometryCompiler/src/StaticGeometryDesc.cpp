@@ -81,6 +81,7 @@ bool CTextureSubdivisionOptions::Load( DOMNode *pNode )
 
 	node_reader.GetChildElementTextContent( "OutputImageFormat", m_OutputImageFormat ); // image format
 	node_reader.GetChildElementTextContent( "SplitSize",         m_SplitSize ); // split size
+	node_reader.GetChildElementTextContent( "TargetSurfaceName", m_TargetSurfaceName ); 
 
 	return true;
 }

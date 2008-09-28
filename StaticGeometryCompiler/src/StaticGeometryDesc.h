@@ -44,8 +44,13 @@ class CTextureSubdivisionOptions
 public:
 
 	bool m_Enabled;
+
 	std::string m_OutputImageFormat;
+
 	int m_SplitSize;
+
+	/// name of the surface that contains texture to subdivide
+	std::string m_TargetSurfaceName;
 
 public:
 

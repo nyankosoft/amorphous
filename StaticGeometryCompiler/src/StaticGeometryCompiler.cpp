@@ -432,6 +432,10 @@ void CStaticGeometryCompiler::CopyTreeNodes_r( TerrainMeshTree& src_tree, Terrai
 {
 	CAABNode& dest_node = dest_tree.GetNodeBuffer()[dest_node_index];
 
+	dest_node.aabb  = node.m_AABB;
+	dest_node.iAxis = node.m_Axis;
+	dest_node.fDist = node.m_AABB.GetCenterPosition()[node.m_Axis];
+
 	if( node.IsLeaf() )
 	{
 		const size_t num_indices = node.m_vecPolygonIndex.size();
@@ -448,6 +452,44 @@ void CStaticGeometryCompiler::CopyTreeNodes_r( TerrainMeshTree& src_tree, Terrai
 		CopyTreeNodes_r( src_tree, node.m_child[0], dest_tree, /*child0*/dest_tree.GetNode( dest_node_index ).child[0] );
 		CopyTreeNodes_r( src_tree, node.m_child[1], dest_tree, /*child1*/dest_tree.GetNode( dest_node_index ).child[1] );
 	}
+}
+
+
+/// m_pGraphicsMesh gets updated if the mesh is successfully subdivided
+bool CStaticGeometryCompiler::SubdivideGraphicsMesh( CTerrainMeshGenerator& mesh_divider )
+{
+	mesh_divider.SetOutputTextureFormat( m_Desc.m_TextureSubdivisionOptions.m_OutputImageFormat );
+	mesh_divider.SetSplitTextureWidth( m_Desc.m_TextureSubdivisionOptions.m_SplitSize );
+
+	/// find surfaces that need texture subdivision
+	/// i.e.) surface with textures larger than 2048x2048
+	/// NOT IMPLEMENTED
+	/// - manually specified through the desc file
+
+	int surf_index = m_pGraphicsMesh->GetMaterialIndexFromName( m_Desc.m_TextureSubdivisionOptions.m_TargetSurfaceName );
+	if( surf_index < 0 )
+		surf_index = 0; // use the first material by default
+	mesh_divider.SetTargetMaterialIndex( surf_index );
+
+	// save the surface group (desc) of the target surface
+	const string surf_group_name = m_Desc.m_SurfaceToDesc[m_pGraphicsMesh->GetMaterialBuffer()[surf_index].Name];
+
+	/// save the index of the source surface
+	/// TODO: support the surface other than the first one
+
+	bool res = mesh_divider.BuildTerrainMesh( m_pGraphicsMesh );
+	if( res )
+		*m_pGraphicsMesh = *mesh_divider.GetDestMesh(); // overwrite the graphics mesh with the subdivided mesh
+	else
+		return false;
+
+	// update the (surface name) : (surface group) name mappings
+	// since new surfaces are added to the mesh during the texture subdivision
+	vector<CMMA_Material>& material_buffer = m_pGraphicsMesh->GetMaterialBuffer();
+	for( size_t mat=0; mat<material_buffer.size(); mat++ )
+		m_Desc.m_SurfaceToDesc[material_buffer[mat].Name] = surf_group_name;
+
+	return true;
 }
 
 
@@ -471,15 +513,16 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	// - recalculate texture coords
 	// - returns an array of general 3d meshes
 	CTerrainMeshGenerator mesh_divider;
+	SubdivideGraphicsMesh( mesh_divider );
 	if( m_Desc.m_TextureSubdivisionOptions.m_Enabled )
 	{
-		mesh_divider.SetOutputTextureFormat( m_Desc.m_TextureSubdivisionOptions.m_OutputImageFormat );
-		mesh_divider.SetSplitTextureWidth( m_Desc.m_TextureSubdivisionOptions.m_SplitSize );
-
-		bool res = mesh_divider.BuildTerrainMesh( m_pGraphicsMesh );
-		if( res )
-			*m_pGraphicsMesh = *mesh_divider.GetDestMesh();
+		SubdivideGraphicsMesh( mesh_divider );
 	}
+
+	// create (surface name) to (surface group index) mapping
+	// Must be called after SubdivideGraphicsMesh() since new surfaces are added
+	// to the mesh during textrue subdivision
+	UpdateSurfaceNameToSurfaceGroupIndexMapping();
 
 	// lightmap
 	CreateLightmaps();
@@ -487,7 +530,7 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	/// make the polygon tree
 
 	CNonLeafyAABTree<CIndexedPolygon> tree;
-	if( m_Desc.m_TextureSubdivisionOptions.m_Enabled )
+	if( false /*m_Desc.m_TextureSubdivisionOptions.m_Enabled*/ )
 	{
 		// use the polygon tree created during the process of
 		// splitting oversized textures
@@ -541,6 +584,18 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 }
 
 
+void CStaticGeometryCompiler::UpdateSurfaceNameToSurfaceGroupIndexMapping()
+{
+	map<string,string>::const_iterator itr;
+	for( itr = m_Desc.m_SurfaceToDesc.begin();
+		 itr != m_Desc.m_SurfaceToDesc.end();
+		 itr++ )
+	{
+		m_SurfaceNameToSurfaceDescIndex[ itr->first ] = get_str_index( itr->second, m_Desc.m_vecSurfaceDesc );
+	}
+}
+
+
 bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_filepath )
 {
 	bool loaded = m_Desc.LoadFromXML( xml_filepath );
@@ -563,14 +618,6 @@ bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_fil
 	// set the working directory to the directory path of the xml_filepath
 	fnop::dir_stack dir_stk;
 	dir_stk.setdir( fnop::get_path( xml_filepath ) );
-
-	map<string,string>::const_iterator itr;
-	for( itr = m_Desc.m_SurfaceToDesc.begin();
-		 itr != m_Desc.m_SurfaceToDesc.end();
-		 itr++ )
-	{
-		m_SurfaceNameToSurfaceDescIndex[ itr->first ] = get_str_index( itr->second, m_Desc.m_vecSurfaceDesc );
-	}
 
 	int shader_index_offset = 0;
 	const size_t num_surf_descs = m_Desc.m_vecSurfaceDesc.size();
