@@ -207,7 +207,7 @@ bool CApplicationBase::Init()
 //	LOG_PRINT( " - Initialized the input devices." );
 
 	// initialize sound
-	SoundManager().Init();
+	SoundManager().Init( global_params.AudioLibraryName );
 	SoundManager().LoadSoundsFromList( "./Sound/SoundList.lst" );
 
 //	LOG_PRINT( " - Initialized the sound manager" );

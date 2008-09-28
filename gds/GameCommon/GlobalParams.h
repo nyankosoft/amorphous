@@ -44,6 +44,8 @@ public:
 
 	int LogVerbosity;
 
+	std::string AudioLibraryName;
+
 private:
 
 	void LoadLogVerbosity( CParamLoader& loader );
@@ -60,7 +62,8 @@ public:
 	ScreenshotImageFormat( "bmp" ),
 	ScreenshotResolutionWidth( -1 ),
 	ScreenshotResolutionHeight( -1 ),
-	LogVerbosity(WL_WARNING)
+	LogVerbosity(WL_WARNING),
+	AudioLibraryName("OpenAL")
 	{}
 
 	bool LoadFromFile( const std::string& filename )
@@ -75,6 +78,7 @@ public:
 		loader.LoadParam( "window_pos",               WindowLeftPos, WindowTopPos );
 		loader.LoadParam( "screenshot_format",        ScreenshotImageFormat );
 		loader.LoadParam( "screenshot_resolution",    ScreenshotResolutionWidth, ScreenshotResolutionHeight );
+		loader.LoadParam( "audio_library",            AudioLibraryName );
 
 		LoadLogVerbosity( loader );
 
