@@ -11,6 +11,7 @@
 #include "3DCommon/Shader/ShaderParameter.h"
 #include "BSPMapCompiler/LightmapBuilder.h"
 #include "XML/XMLDocumentLoader.h"
+#include "XML/XMLNodeReader.h"
 using namespace xercesc_2_8;
 
 
@@ -60,7 +61,30 @@ public:
 	m_SplitSize(0)
 	{}
 
-	bool Load( DOMNode *pNode );
+	bool Load( CXMLNodeReader& node_reader );
+};
+
+
+class CMeshTreeOptions
+{
+public:
+
+	float MinimumCellVolume;
+	int NumMaxGeometriesPerCell;
+	int MaxDepth;
+	int RecursionStopCondition;
+
+public:
+
+	CMeshTreeOptions()
+		:
+	MinimumCellVolume(0.0f),
+	NumMaxGeometriesPerCell(0),
+	MaxDepth(0),
+	RecursionStopCondition(0)
+	{}
+
+	bool Load( CXMLNodeReader& node_reader );
 };
 
 
@@ -139,6 +163,8 @@ public:
 
 	CTextureSubdivisionOptions m_TextureSubdivisionOptions;
 
+	CMeshTreeOptions m_MeshTreeOptions;
+
 private:
 
 	bool LoadGraphicsDesc( DOMNode *pNode );
@@ -156,6 +182,8 @@ private:
 	void LoadLights( DOMNode *pLightsNode );
 
 	bool LoadTextureSubdivisionOptions( DOMNode *pNode );
+
+	bool LoadMeshTreeOptions( DOMNode *pNode );
 
 	void LoadLightsFromColladaFile( const std::string& dae_filepath );
 

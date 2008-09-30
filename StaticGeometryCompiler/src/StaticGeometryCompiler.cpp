@@ -89,6 +89,8 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 		return;
 	}
 
+	string db_file_relative_path = m_DatabaseRelativeDirPathAtRuntime /*+ "/"*/ + fnop::get_nopath(db_filename);
+
 	// add mesh textures to db
 	// - need to change the texture filename of the mesh
 	//   from (texture filepath) to (db name)::(basename of texture filepath)
@@ -96,17 +98,14 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 	const size_t num_meshes = m_vecDestGraphicsMeshArchive.size();
 	for( size_t i=0; i<num_meshes; i++ )
 	{
-		AddTexturesToBinaryDatabase( m_vecDestGraphicsMeshArchive[i], db_filepath, db );
+//		AddTexturesToBinaryDatabase( m_vecDestGraphicsMeshArchive[i], db_filepath, db );
+		AddTexturesToBinaryDatabase( m_vecDestGraphicsMeshArchive[i], db_file_relative_path, db );
 	}
 
 
 	// add lightmap textures
 //	if( m_pLightmapBuilder )
 //		m_pLightmapBuilder->AddLightmapTexturesToDB( db );
-
-	string db_dir_relative_path = m_DatabaseRelativeDirPathAtRuntime;
-
-	string db_file_relative_path = db_dir_relative_path /*+ "/"*/ + fnop::get_nopath(db_filename);
 
 	// add mesh archives to db
 	m_Archive.m_vecMesh.resize( num_meshes );
@@ -541,10 +540,11 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	else
 	{
 		// create tree
-		tree.SetMinimumCellVolume( 1000000.0f );
-		tree.SetNumMaxGeometriesPerCell( 100 );
-		tree.SetMaxDepth( 6 );
-		tree.SetRecursionStopCondition( CAABTree<CIndexedPolygon>::COND_OR );
+		CMeshTreeOptions& tree_options = m_Desc.m_MeshTreeOptions;
+		tree.SetMinimumCellVolume( tree_options.MinimumCellVolume /* 1000000.0f */ );
+		tree.SetNumMaxGeometriesPerCell( tree_options.NumMaxGeometriesPerCell /* 100 */ );
+		tree.SetMaxDepth( tree_options.MaxDepth /* 6 */ );
+		tree.SetRecursionStopCondition( (CAABTree<CIndexedPolygon>::RecursionStopCond)tree_options.RecursionStopCondition /* CAABTree<CIndexedPolygon>::COND_OR */ );
 
 		// build the tree
 		// - copies of indexed polygons are created and stored in the tree

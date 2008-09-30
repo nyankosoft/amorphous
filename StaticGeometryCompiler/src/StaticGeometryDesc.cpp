@@ -5,13 +5,28 @@
 #include "XML/XercesString.h"
 #include "XML/XMLNodeReader.h"
 #include "XML/xmlch2x.h"
+#include "3DMath/AABTree.h"
 
 //#include <dae.h>
 
 using namespace boost;
 
 
+class CXMLDocument
+{
+public:
+};
+
+/*	CXMLDocument xml_doc( "" );
+	if( !xml_doc.IsValid() )
+		return false;
+
+	xml_doc.GetRootNodeReader();
+*/
+
 #define LOG_ERR_RETURN_FALSE( msg ) { LOG_PRINT_ERROR( msg ); return false; }
+
+//#define GET_CHILD_ELEMENT_TEXT_CONTENT( node_reader, text ) node_reader.GetChildElementTextContent( #text, text )
 
 
 bool LoadFilter( DOMNode *pFilterNode, CGeometryFilter::CTarget& rTarget )
@@ -67,9 +82,9 @@ bool LoadGeometryFilter( DOMNode *pParentNode, CGeometryFilter& rDestFilter )
 // CTextureSubdivisionOptions
 //=====================================================================
 
-bool CTextureSubdivisionOptions::Load( DOMNode *pNode )
+bool CTextureSubdivisionOptions::Load( CXMLNodeReader& node_reader )
 {
-	if( pNode )
+	if( node_reader.IsValid() )
 		m_Enabled = true;
 	else
 	{
@@ -77,11 +92,31 @@ bool CTextureSubdivisionOptions::Load( DOMNode *pNode )
 		return false;
 	}
 
-	CXMLNodeReader node_reader( pNode );
-
 	node_reader.GetChildElementTextContent( "OutputImageFormat", m_OutputImageFormat ); // image format
 	node_reader.GetChildElementTextContent( "SplitSize",         m_SplitSize ); // split size
 	node_reader.GetChildElementTextContent( "TargetSurfaceName", m_TargetSurfaceName ); 
+
+	return true;
+}
+
+
+
+//=====================================================================
+// CMeshTreeOptions
+//=====================================================================
+
+bool CMeshTreeOptions::Load( CXMLNodeReader& node_reader )
+{
+//	GET_CHILD_ELEMENT_TEXT_CONTENT( node_reader, MinimumCellVolume );
+	node_reader.GetChildElementTextContent( "MinimumCellVolume"       , MinimumCellVolume );
+	node_reader.GetChildElementTextContent( "NumMaxGeometriesPerCell" , NumMaxGeometriesPerCell );
+	node_reader.GetChildElementTextContent( "MaxDepth"                , MaxDepth );
+
+	string cond;
+	node_reader.GetChildElementTextContent( "RecursionStopCondition"  , cond );
+	if( cond == "OR" )       RecursionStopCondition = CAABTree<int>::COND_OR;
+	else if( cond == "AND" ) RecursionStopCondition = CAABTree<int>::COND_AND;
+	else LOG_PRINT_ERROR( "An invalid recursion condition: " + cond );
 
 	return true;
 }
@@ -369,7 +404,11 @@ bool CStaticGeometryDesc::LoadGraphicsDesc( DOMNode *pNode )
 
 	m_Lightmap.Load( GetChildNode( pNode, "Lightmap" ) );
 
+//	CXMLNodeReader texdiv_options_reader( GetChildNode( pNode, "TextureSubdivision" ) );
 	LoadTextureSubdivisionOptions( GetChildNode( pNode, "TextureSubdivision" ) );
+
+//	CXMLNodeReader meshtree_options_reader(  );
+	LoadMeshTreeOptions( GetChildNode( pNode, "MeshTreeOptions" ) );
 
 	return true;
 }
@@ -386,7 +425,27 @@ bool CStaticGeometryDesc::LoadTextureSubdivisionOptions( DOMNode *pNode )
 		if( !bSuccess )
 			return false;
 
-		m_TextureSubdivisionOptions.Load( GetRootNode( pXMLDocument ) ); // "TextureSubdivision"
+		CXMLNodeReader node_reader( GetRootNode( pXMLDocument ) );
+		m_TextureSubdivisionOptions.Load( node_reader ); // "TextureSubdivision"
+	}
+
+	return true;
+}
+
+
+bool CStaticGeometryDesc::LoadMeshTreeOptions( DOMNode *pNode )
+{
+	DOMNode *pFileNode = GetChildNode( pNode, "MeshTreeOptionsFile" );
+	if( pFileNode )
+	{
+		CXMLDocumentLoader xml_doc_loader;
+		xercesc_2_8::DOMDocument *pXMLDocument = NULL;
+		bool bSuccess = xml_doc_loader.Load( to_string(pFileNode->getTextContent()), &pXMLDocument );
+		if( !bSuccess )
+			return false;
+
+		CXMLNodeReader node_reader( GetRootNode( pXMLDocument ) );
+		m_MeshTreeOptions.Load( node_reader ); // "TextureSubdivision"
 	}
 
 	return true;
