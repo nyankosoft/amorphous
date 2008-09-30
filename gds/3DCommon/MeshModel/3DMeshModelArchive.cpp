@@ -306,19 +306,19 @@ void MeshModel::AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 			else
 				tex_key = tex_filename;
 
-			if( db.KeyExists(tex_key) )
-			{
-				// the texture file has been already saved to database
-				// - skip this texture
-				continue;
-			}
-
 	//		string tex_resource_name = db_filename + "::" + tex_key;
 			string tex_resource_name = db_filepath + "::" + tex_key;
 
 			// overwrite original texture filename with the resource name
 			// - (db filename) + "::" + (archive key name)
 			rTexture.strFilename = tex_resource_name;
+
+			if( db.KeyExists(tex_key) )
+			{
+				// the texture file has been already saved to database
+				// - skip this texture
+				continue;
+			}
 
 			CImageArchive img_archive = CImageArchive( tex_filename );
 
