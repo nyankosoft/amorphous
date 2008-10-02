@@ -459,6 +459,7 @@ bool CStaticGeometryCompiler::SubdivideGraphicsMesh( CTerrainMeshGenerator& mesh
 {
 	mesh_divider.SetOutputTextureFormat( m_Desc.m_TextureSubdivisionOptions.m_OutputImageFormat );
 	mesh_divider.SetSplitTextureWidth( m_Desc.m_TextureSubdivisionOptions.m_SplitSize );
+	mesh_divider.SetTextureOutputDirectory( "./temp/" );
 
 	/// find surfaces that need texture subdivision
 	/// i.e.) surface with textures larger than 2048x2048
@@ -512,7 +513,6 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	// - recalculate texture coords
 	// - returns an array of general 3d meshes
 	CTerrainMeshGenerator mesh_divider;
-	SubdivideGraphicsMesh( mesh_divider );
 	if( m_Desc.m_TextureSubdivisionOptions.m_Enabled )
 	{
 		SubdivideGraphicsMesh( mesh_divider );

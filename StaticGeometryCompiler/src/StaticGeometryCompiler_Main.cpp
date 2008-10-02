@@ -13,6 +13,7 @@
 #include "GameCommon/Timer.h"
 #include "Support.h"
 #include "Support/FileOpenDialog_Win32.h"
+#include "Support/MiscAux.h"
 #include "GameInput.h"
 
 #include "Stage/StaticGeometry.h"
@@ -364,10 +365,11 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	// - GetFilename() has changed working directory to the directory where the selected file exists.
 	//   Open the log file in the same directory.
 	//   
-	CLogOutput_HTML html_log( "log.html" );
+	string log_filename = string("log_") + GetBuildInfo();
+	CLogOutput_HTML html_log( log_filename + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
-	CLogOutput_TextFile textfile_log( "log.txt" );
+	CLogOutput_TextFile textfile_log( log_filename + ".txt" );
 	g_Log.AddLogOutput( &textfile_log );
 
 	g_Log.Print( "initial working directory: " + initial_working_directory );
