@@ -257,7 +257,13 @@ bool CTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::
 //	string cwd = fnop::get_cwd();
 
 	CImageArchive img;
-	db.GetData( image_archive_key, img );
+	bool img_found = db.GetData( image_archive_key, img );
+
+	if( !img_found )
+	{
+		LOG_PRINT_ERROR( " - Cannot find the image archive with the specified key '" + image_archive_key + "' in the database" );
+		return false;
+	}
 
 	{
 		char title[1024];

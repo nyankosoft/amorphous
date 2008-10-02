@@ -2,6 +2,7 @@
 #include "General3DMesh.h"
 
 
+#include <boost/filesystem.hpp>
 #include <stdio.h>
 #include "ImageStone.h"
 
@@ -76,9 +77,11 @@ void TerrainMeshTree::MakeMeshNodes_r( TerrainMeshNode& node, int axis, int dept
 			// Split the polygon and push them into both front & back children.
 			// Note that the original polygon is not added to either of the child nodes
 			vecPolygonBuffer[polygon_index].Split( front, back, split_plane );
-			vecPolygonBuffer.push_back( front );
+//			vecPolygonBuffer.push_back( front );
+			vecPolygonBuffer[polygon_index] = front;
 			vecPolygonBuffer.push_back( back );
-			node.m_child[1].m_vecPolygonIndex.push_back( (int)vecPolygonBuffer.size() - 2 );
+//			node.m_child[1].m_vecPolygonIndex.push_back( (int)vecPolygonBuffer.size() - 2 );
+			node.m_child[1].m_vecPolygonIndex.push_back( polygon_index );
 			node.m_child[0].m_vecPolygonIndex.push_back( (int)vecPolygonBuffer.size() - 1 );
 
 //			if( 32 < front.m_index.size() )
@@ -146,13 +149,18 @@ void TerrainMeshTree::AddToDestMesh( TerrainMeshNode& node )
 	CMMA_Texture texture;
 	texture.type = CMMA_Texture::FILENAME;
 
-	texture.strFilename = m_BaseTextureFilename;
+	const CMMA_Material& src_mat = m_pSrcMesh->GetMaterialBuffer()[m_TargetMaterialIndex];
+	const string src_tex_filepath = src_mat.vecTexture[0].strFilename;
+
+	texture.strFilename = CreateSubdividedTextureFilepath( src_tex_filepath, node.m_TextureIndex );
+
+/*	texture.strFilename = m_BaseTextureFilename;
 	const string tex_index = fmt_string("%02d", node.m_TextureIndex);
 	fnop::append_to_body( texture.strFilename, tex_index );
 	fnop::change_ext( texture.strFilename, m_OutputTextureImageFormat );
-
+*/
 	CMMA_Material mat;
-	mat.Name = m_pSrcMesh->GetMaterialBuffer()[m_TargetMaterialIndex].Name + tex_index;
+	mat.Name = src_mat.Name + fmt_string("%02d",node.m_TextureIndex);
 	mat.vecTexture.resize( 1 );
 	mat.vecTexture[0] = texture;
 
@@ -273,6 +281,50 @@ void TerrainMeshTree::MakeMesh()
         MakeMesh_r( m_RootNode, num_nodes, num_vertices, num_triangles );	// create terrain mesh from sub-meshes
 	else
 		AddToDestMesh( m_RootNode );	// create terrain mesh from only one mesh archive
+}
+
+
+void TerrainMeshTree::SetOutputTextureImageFormat( const std::string& image_ext )
+{
+	if( image_ext != "bmp"
+	 && image_ext != "jpg"
+	 && image_ext != "tga" )
+	{
+		LOG_PRINT_ERROR( " An unsupported image format: " + image_ext );
+	}
+
+	m_OutputTextureImageFormat = image_ext;
+}
+
+
+std::string TerrainMeshTree::CreateSubdividedTextureFilepath( const string& src_tex_filename, int index )
+{
+	string dest_filename;
+
+	// make sure that the dest directory exists
+	boost::filesystem::create_directories( m_TextureOutputDirectory );
+
+	dest_filename = m_TextureOutputDirectory + fnop::get_nopath(src_tex_filename);
+//	dest_filename = ".\\temp" + fnop::get_nopath(src_tex_filename);
+
+	fnop::append_to_body( dest_filename, fmt_string("%02d",index) );
+
+	fnop::change_ext( dest_filename, m_OutputTextureImageFormat );
+
+	return dest_filename;
+}
+
+
+void TerrainMeshTree::SetTextureOutputDirectory( const std::string& tex_output_dir )
+{
+	m_TextureOutputDirectory = tex_output_dir;
+
+	size_t len = m_TextureOutputDirectory.length();
+
+	char last_char = m_TextureOutputDirectory[len-1];
+
+	if( last_char != '/' && last_char != '\\' )
+		m_TextureOutputDirectory += "/";
 }
 
 
@@ -538,13 +590,6 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 {
 	LOG_FUNCTION_SCOPE();
 
-/*
-#ifdef TEXTURE_SPLIT_TEST
-	string src_tex_filename = "test.bmp";
-#else
-	string src_tex_filename = "";
-#endif
-*/
 //	g_Log.Print( "splitting texture image (src filename: %s)", src_tex_filename.c_str() );
 
 	if( !fnop::file_exists(src_tex_filename) )
@@ -567,7 +612,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 
 	LOG_PRINT( fmt_string( " - src_tex_width: %d, dest_tex_width: %d", src_tex_width, dest_tex_width ) );
 
-	string image_format = m_OutputTextureImageFormat;
+//	string image_format = m_OutputTextureImageFormat;
 
 	string dest_filename;
 	FCObjImage dest_img;
@@ -588,12 +633,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 			}
 		}
 
-		dest_filename = m_TextureOutputDirectory + fnop::get_nopath(src_tex_filename);
-//		dest_filename = ".\\temp" + fnop::get_nopath(src_tex_filename);
-
-		fnop::append_to_body( dest_filename, fmt_string("%02d",i) );
-
-		fnop::change_ext( dest_filename, image_format );
+		dest_filename = m_MeshTree.CreateSubdividedTextureFilepath( src_tex_filename, i );
 
 		g_Log.Print( "saving image: %s", dest_filename.c_str() );
 
@@ -648,29 +688,8 @@ bool CTerrainMeshGenerator::SaveToFiles()
 }
 
 
-void CTerrainMeshGenerator::SetTextureOutputDirectory( const std::string& tex_output_dir )
-{
-	m_TextureOutputDirectory = tex_output_dir;
-
-	size_t len = m_TextureOutputDirectory.length();
-
-	char last_char = m_TextureOutputDirectory[len-1];
-
-	if( last_char != '/' && last_char != '\\' )
-		m_TextureOutputDirectory += "/";
-}
-
-
 void CTerrainMeshGenerator::SetOutputTextureFormat( const std::string& image_ext )
 {
-	if( image_ext != "bmp"
-	 && image_ext != "jpg"
-	 && image_ext != "tga" )
-	{
-		LOG_PRINT_ERROR( " An unsupported image format: " + image_ext );
-	}
-
-	m_OutputTextureImageFormat = image_ext;
 	m_MeshTree.SetOutputTextureImageFormat( image_ext );
 }
 
@@ -705,7 +724,7 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<CGeneral3DMesh> 
 	LOG_PRINT( fmt_string(" - src texture split (%d edge splits)", m_NumTexEdgeSplits) );
 
 //	m_MeshTree.SetBaseTextureFilename( src_mat.SurfaceTexture.strFilename );
-	m_MeshTree.SetBaseTextureFilename( m_OutputTextureRelativePath + fnop::get_nopath(src_mat.vecTexture[0].strFilename) );
+//	m_MeshTree.SetBaseTextureFilename( m_OutputTextureRelativePath + fnop::get_nopath(src_mat.vecTexture[0].strFilename) );
 
 //	LOG_PRINT( "vertex buffer ref counts: " + to_string( (int)m_pVertexBuffer.use_count() ) );
 

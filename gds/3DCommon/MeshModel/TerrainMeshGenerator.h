@@ -73,12 +73,15 @@ class TerrainMeshTree
 
 	int m_NumMaxBatchNodes;
 
-	std::string m_BaseTextureFilename;
+//	std::string m_BaseTextureFilename;
 
 	double m_TexCoordShiftU;
 	double m_TexCoordShiftV;
 
 	std::string m_OutputTextureImageFormat;
+
+	/// directory to put image files of split textures
+	std::string m_TextureOutputDirectory;
 
 private:
 
@@ -122,7 +125,7 @@ public:
 	/// create mesh archives from polygons stored in the leaf nodes
 	void MakeMesh();
 
-	void SetBaseTextureFilename( const std::string& filename ) { m_BaseTextureFilename = filename; }
+//	void SetBaseTextureFilename( const std::string& filename ) { m_BaseTextureFilename = filename; }
 
 	void SetTargetMaterialIndex( int mat_index ) { m_TargetMaterialIndex = mat_index; }
 
@@ -136,7 +139,12 @@ public:
 	boost::shared_ptr<CGeneral3DMesh> GetDestMesh() { return m_pDestMesh; }
 
 	// extension of the output texture image file
-	void SetOutputTextureImageFormat( const std::string& tex_image_format ) { m_OutputTextureImageFormat = tex_image_format; }
+	void SetOutputTextureImageFormat( const std::string& image_ext );
+
+	std::string CreateSubdividedTextureFilepath( const std::string& src_tex_filename, int index );
+
+	/// directory path where texture image files are saved
+	void SetTextureOutputDirectory( const std::string& tex_output_dir );
 };
 
 
@@ -158,11 +166,6 @@ class CTerrainMeshGenerator
 	int m_TextureWidth;
 
 	int m_NumTexEdgeSplits;
-
-	/// directory to put image files of split textures
-	std::string m_TextureOutputDirectory;
-
-	std::string m_OutputTextureImageFormat;
 
 	std::string m_OutputTextureRelativePath;
 
@@ -199,13 +202,12 @@ public:
 
 //	void GetMeshArchive( std::vector<C3DMeshModelArchive>& dest_mesh ) { dest_mesh = m_MeshTree.GetMeshArchive(); }
 
-	/// directory path where texture image files are saved
-	void SetTextureOutputDirectory( const std::string& tex_output_dir );
-
 	/// directory path used for texture filename of the mesh archives
 	void SetOutputTextureRelativePath( const std::string& pathname ) { m_OutputTextureRelativePath = pathname; }
 
 	void SetOutputTextureFormat( const std::string& image_ext );
+
+	void SetTextureOutputDirectory( const std::string& tex_output_dir ) { m_MeshTree.SetTextureOutputDirectory( tex_output_dir ); }
 
 //	int GetNumOutputTextures() { return m_vecOutputTextureFilename.size(); }
 

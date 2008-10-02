@@ -58,7 +58,7 @@ public:
 		                    int mat_index = 0, const SPlane& plane = SPlane(), const AABB3& aabb = AABB3() );
 
 	/// polygon must be convex
-	inline void Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane );
+	inline void Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane ) const;
 
 	inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer ) const;
 
@@ -129,7 +129,7 @@ m_AABB(aabb)
 }
 
 
-inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane )
+inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane ) const
 {
 	size_t i, num_orig_verts = m_index.size();  //the number of points of this face
 //	SFloatRGBColor col, col0, col1;
