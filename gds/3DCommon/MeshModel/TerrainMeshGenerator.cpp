@@ -154,86 +154,14 @@ void TerrainMeshTree::AddToDestMesh( TerrainMeshNode& node )
 
 	texture.strFilename = CreateSubdividedTextureFilepath( src_tex_filepath, node.m_TextureIndex );
 
-/*	texture.strFilename = m_BaseTextureFilename;
-	const string tex_index = fmt_string("%02d", node.m_TextureIndex);
-	fnop::append_to_body( texture.strFilename, tex_index );
-	fnop::change_ext( texture.strFilename, m_OutputTextureImageFormat );
-*/
 	CMMA_Material mat;
 	mat.Name = src_mat.Name + fmt_string("%02d",node.m_TextureIndex);
 	mat.vecTexture.resize( 1 );
 	mat.vecTexture[0] = texture;
 
 	m_pDestMesh->GetMaterialBuffer().push_back( mat );
-
-	/*
-	CMMA_VertexSet& vertex_set = dest_mesh.GetVertexSet();
-	vector<unsigned int>& dest_index_buffer = dest_mesh.GetVertexIndex();
-
-	int vert_offset = vertex_set.GetNumVertices();
-	int index_offset = dest_index_buffer.size();
-
-	size_t i, j, num_triangles = node.m_vecPolygonIndex.size();
-
-	vector<IndexMap> reg;
-	reg.reserve( 1024 );
-	int min_index = 999999999, max_index = -999999999;
-
-	AABB3 aabb;
-	aabb.Nullify();
-
-	for( i=0; i<num_triangles; i++ )
-	{
-		CIndexedPolygon& triangle = (*m_pvecPolygonBuffer)[node.m_vecPolygonIndex[i]];
-
-		for( j=0; j<3; j++ )
-		{
-			int new_index = FindRegisteredIndex( triangle.m_index[j], reg );
-
-			if( new_index == -1 )
-			{
-				// the vertex has not been registered yet
-				// 1. register the mapping from old index to the new index
-				new_index = vertex_set.GetNumVertices();
-				reg.push_back( IndexMap( triangle.m_index[j], new_index ) );
-
-				// 2. crate a new vertex in the dest vertex buffer
-//				CGeneral3DVertex& src_vertex = m_pvecVertexBuffer[triangle.m_index[i]];
-				const CGeneral3DVertex& src_vertex = triangle.GetVertex(j);
-				vertex_set.vecPosition.push_back( src_vertex.m_vPosition );
-				vertex_set.vecNormal.push_back( src_vertex.m_vNormal );
-				vertex_set.vecDiffuseColor.push_back( src_vertex.m_DiffuseColor );
-				vertex_set.vecTex[0].push_back( src_vertex.m_TextureCoord[0] );
-
-				aabb.AddPoint( src_vertex.m_vPosition );
-			}
-
-			// add vertex index to the dest index buffer
-			dest_index_buffer.push_back( new_index );
-	
-			min_index = min( min_index, new_index );
-			max_index = max( max_index, new_index );
-		}
-	}
-
-	// register a new triangle set to the dest mesh archive
-	CMMA_TriangleSet triangle_set;
-	triangle_set.m_iStartIndex = index_offset;
-	triangle_set.m_iNumTriangles = num_triangles;
-	triangle_set.m_iMinIndex = min_index;
-	triangle_set.m_iNumVertexBlocksToCover = max_index - min_index + 1;
-	dest_mesh.GetTriangleSet().push_back( triangle_set );
-
-*/
 }
 
-/*
-void CreateTriangleSets( vector<CIndexedPolygon>& rvecSrcIndexedPolygon,
-						 vector<int>& rvecSrcTriangleIndex,
-						 vector<CMMA_TriangleSet>& rvecDestTriangleSet )
-{
-}
-*/
 
 void TerrainMeshTree::MakeMesh_r( TerrainMeshNode& node,
 								 int& num_current_nodes,
@@ -327,38 +255,6 @@ void TerrainMeshTree::SetTextureOutputDirectory( const std::string& tex_output_d
 		m_TextureOutputDirectory += "/";
 }
 
-
-/*
-void TerrainMeshTree::Triangulate_r( TerrainMeshNode& node,
-									 vector<CIndexedPolygon>& dest_triangle_buffer )
-{
-	if( node.IsLeaf() )
-	{
-		// triangulate all the polygons linked to this node
-		vector<int> dest_index_buffer;
-		dest_index_buffer.reserve( node.m_vecPolygonIndex.size() );
-
-		size_t i, num_pols = node.m_vecPolygonIndex.size();
-		for( i=0; i<num_pols; i++ )
-		{
-			const CIndexedPolygon& polygon = (*m_pvecPolygonBuffer)[node.m_vecPolygonIndex[i]];
-			polygon.Triangulate( dest_triangle_buffer );
-
-			size_t j, num_tris = polygon.m_index.size() - 2;
-
-			for( j=0; j<num_tris; j++ )
-				dest_index_buffer.push_back( dest_triangle_buffer.size() - num_tris + j );
-
-		}
-		node.m_vecPolygonIndex = dest_index_buffer;
-	}
-	else
-	{
-		Triangulate_r( node.m_child[0], dest_triangle_buffer );
-		Triangulate_r( node.m_child[1], dest_triangle_buffer );
-	}
-}
-*/
 
 /**
  Stores the subdivided mesh to m_pDestMesh
