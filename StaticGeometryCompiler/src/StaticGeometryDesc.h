@@ -173,7 +173,11 @@ private:
 
 	bool LoadSurfaceDescs( DOMNode *pSurfaceNode );
 
-	bool LoadShaderParams( DOMNode *pSurfaceNode );
+	bool LoadShaderOptions( DOMNode *pShaderNode );
+
+	// bool LoadShaderParams( DOMNode *pSurfaceNode );
+
+	bool LoadShaderParamsFromFile( const std::string& shaderparam_filepath );
 
 	bool LoadSurfaceToDescMaps( DOMNode *pSurfaceToDescMapsNode );
 

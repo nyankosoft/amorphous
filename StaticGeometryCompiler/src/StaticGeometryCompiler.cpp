@@ -143,19 +143,40 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 		}
 	}
 
+	SetShaderParameterGroups();
+
+
 	// add textures specified as shader params to db
-/*	const size_t num_shader_containers = m_Archive.m_vecShaderContainer.size();
+	const size_t num_shader_containers = m_Archive.m_vecShaderContainer.size();
 	for( size_t i=0; i<num_shader_containers; i++ )
 	{
-		const size_t num_textures = m_Archive.m_vecShaderContainer[i].m_ParamGroup.m_Texture.size();
+		vector< CShaderParameter<CTextureParam> >& shader_param_tex = m_Archive.m_vecShaderContainer[i].m_ParamGroup.m_Texture;
+		const size_t num_textures = shader_param_tex.size();
 		for( size_t j=0; j<num_textures; j++ )
 		{
-			num_textures = 
+			string tex_filepath = shader_param_tex[j].GetParameter().m_Desc.ResourcePath;
 
-			db.AddData( keyname, m_vecDestGraphicsMeshArchive[i] );
+			// load the image from file
+			CImageArchive img_archive( tex_filepath );
+
+			if( img_archive.IsValid() )
+			{
+				// use the original image filepath as key in the db
+				const string keyname = tex_filepath;
+
+				db.AddData( keyname, img_archive );
+
+				shader_param_tex[j].Parameter().m_Desc.ResourcePath
+					= db_file_relative_path + "::" + keyname;
+			}
+			else
+			{
+				LOG_PRINT_ERROR( "An invalid texture image file: " + tex_filepath );
+			}
 		}
-	}*/
+	}
 
+	// add the main static geometry archive to the db
 	db.AddData( CStaticGeometryDBKey::Main, m_Archive );
 
 	// graphics mesh archives
@@ -490,6 +511,26 @@ bool CStaticGeometryCompiler::SubdivideGraphicsMesh( CTerrainMeshGenerator& mesh
 		m_Desc.m_SurfaceToDesc[material_buffer[mat].Name] = surf_group_name;
 
 	return true;
+}
+
+
+void CStaticGeometryCompiler::SetShaderParameterGroups()
+{
+	std::map<std::string,CShaderParameterGroup>::iterator itr;
+	for( itr = m_Desc.m_ShaderFileToParamGroup.begin();
+		 itr != m_Desc.m_ShaderFileToParamGroup.end();
+		 itr++ )
+	{
+		// find shader container that stores the file for the shader param group
+		for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
+		{
+			if( m_Archive.m_vecShaderContainer[i].m_Desc.ResourcePath == itr->first )
+			{
+				m_Archive.m_vecShaderContainer[i].m_ParamGroup = itr->second;
+				break;
+			}
+		}
+	}
 }
 
 

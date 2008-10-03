@@ -88,6 +88,7 @@ protected:
 
 	bool SubdivideGraphicsMesh( CTerrainMeshGenerator& mesh_divider );
 
+	void SetShaderParameterGroups();
 
 public:
 
