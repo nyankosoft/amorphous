@@ -57,12 +57,10 @@ public:
 //		ar & m_ShaderHandle;
 		ar & m_Desc;
 		ar & m_vecTechniqueHandle;
+		ar & m_ParamGroup;
 	}
 
-	bool Load()
-	{
-		return m_ShaderHandle.Load( m_Desc );
-	}
+	bool Load();
 
 	void SetParams();
 };

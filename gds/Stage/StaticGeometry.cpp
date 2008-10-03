@@ -31,6 +31,21 @@ const char *CStaticGeometryDBKey::GraphicsMeshArchive     = "GraphicsMeshArchive
 //const char *CStaticGeometryDBKey::MeshSubsetTree        = "MeshSubsetTree";
 
 
+bool CShaderContainer::Load()
+{
+	m_ShaderHandle.Load( m_Desc );
+
+	// load textures specified as texture params
+	for( size_t i=0; i<m_ParamGroup.m_Texture.size(); i++ )
+	{
+		CTextureParam& tex_param = m_ParamGroup.m_Texture[i].Parameter();
+		tex_param.m_Handle.Load( tex_param.m_Desc );
+	}
+
+	return true;
+}
+
+
 void CShaderContainer::SetParams()
 {
 	CShaderManager *pMgr = m_ShaderHandle.GetShaderManager();

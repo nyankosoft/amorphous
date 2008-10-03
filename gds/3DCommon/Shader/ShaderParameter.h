@@ -9,13 +9,20 @@
 using namespace GameLib1::Serialization;
 
 
-class CTextureParam
+class CTextureParam : public IArchiveObjectBase
 {
 public:
 
 	CTextureResourceDesc m_Desc;
 
 	CTextureHandle m_Handle;
+
+public:
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & m_Desc;
+	}
 };
 
 
@@ -48,6 +55,8 @@ public:
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
 		ar & m_ParameterName;
+
+		ar & m_Parameter;
 
 		if( ar.GetMode() == IArchive::MODE_INPUT )
 		{
