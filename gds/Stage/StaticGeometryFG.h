@@ -102,9 +102,9 @@ public:
 
 	bool LoadShaderFromFile( const char *pFilename );
 
-	void SetAmbientColor( SFloatRGBAColor& ambient_color ) { m_AmbientColor = ambient_color; }
+	void SetAmbientColor( const SFloatRGBAColor& ambient_color ) { m_AmbientColor = ambient_color; }
 
-	void SetFogColor( SFloatRGBAColor& color ) { m_FogColor = color; }
+	void SetFogColor( const SFloatRGBAColor& color ) { m_FogColor = color; }
 
 	void SetFogStartDist( float dist ) { m_FogStartDist = dist; }
 

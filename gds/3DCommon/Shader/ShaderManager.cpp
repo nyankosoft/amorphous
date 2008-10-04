@@ -192,14 +192,14 @@ void CShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_par
 			D3DXHANDLE param_handle = m_pEffect->GetParameterByName( NULL, float_param.GetParameterName().c_str() );
 			if( param_handle )
 			{
-				float_param.m_ParameterIndex = (int)m_vecParamHandle.size();
+				float_param.m_ParameterIndex = index = (int)m_vecParamHandle.size();
 				m_vecParamHandle.push_back( CD3DShaderParameterHandle(float_param.GetParameterName(),param_handle) );
 			}
 		}
 	}
 
 	if( 0 <= index && index < (int)m_vecParamHandle.size() )
-		m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, &(float_param.GetParameter()[0]), (UINT)m_vecParamHandle.size() );
+		m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, &(float_param.GetParameter()[0]), (UINT)float_param.GetParameter().size() );
 }
 
 

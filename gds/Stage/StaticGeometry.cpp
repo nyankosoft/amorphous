@@ -476,6 +476,81 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 }
 
 
+inline static void SetRGBAColor( const SFloatRGBAColor& src_color, CShaderParameter< vector<float> >& dest_param )
+{
+	dest_param.Parameter().resize( 4 ); // 4 float values for rgba
+	dest_param.Parameter()[0] = src_color.fRed;
+	dest_param.Parameter()[1] = src_color.fGreen;
+	dest_param.Parameter()[2] = src_color.fBlue;
+	dest_param.Parameter()[3] = src_color.fAlpha;
+}
+
+
+void CStaticGeometry::SetAmbientColor( const SFloatRGBAColor& ambient_color )
+{
+	// set ambient color to all the shaders
+	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
+	{
+		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		if( pMgr )
+		{
+			CShaderParameter< vector<float> > param( "g_AmbientColor" );
+			SetRGBAColor( ambient_color, param );
+
+			pMgr->SetParam( param );
+		}
+	}
+}
+
+
+void CStaticGeometry::SetFogColor( const SFloatRGBAColor& color )
+{
+	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
+	{
+		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		if( pMgr )
+		{
+			CShaderParameter< vector<float> > param( "g_vTerrainFadeColor" );
+			SetRGBAColor( color, param );
+
+			pMgr->SetParam( param );
+		}
+	}
+}
+
+
+void CStaticGeometry::SetFogStartDist( float dist )
+{
+	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
+	{
+		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		if( pMgr )
+		{
+			CShaderParameter< vector<float> > param( "g_fFogStart" );
+			param.Parameter().resize( 1 ); // 4 float values for rgba
+			param.Parameter()[0] = dist;
+
+			pMgr->SetParam( param );
+		}
+	}
+}
+
+
+void CStaticGeometry::SetFogEndDist( float dist )
+{
+	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
+	{
+		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		if( pMgr )
+		{
+			CShaderParameter< vector<float> > param( "g_fFarClip" );
+			param.Parameter().resize( 1 ); // 4 float values for rgba
+			param.Parameter()[0] = dist;
+
+			pMgr->SetParam( param );
+		}
+	}
+}
 
 
 physics::CActor *CStaticGeometry::CreateCollisionGeometry( physics::CScene& physics_scene )

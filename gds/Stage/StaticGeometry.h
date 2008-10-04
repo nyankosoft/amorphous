@@ -214,6 +214,14 @@ public:
 
 	virtual char IsCurrentlyVisibleCell( short sCellIndex ) { return 0; }
 
+	void SetAmbientColor( const SFloatRGBAColor& ambient_color );
+
+	void SetFogColor( const SFloatRGBAColor& color );
+
+	void SetFogStartDist( float dist );
+
+	void SetFogEndDist( float dist );
+
 	virtual void SetDynamicLightManager( CEntitySet* pEntitySet ) {}
 
 	/// used for dynamic lighting

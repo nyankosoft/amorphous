@@ -4,6 +4,7 @@
 
 #include "fwd.h"
 #include "3DCommon/fwd.h"
+#include "3DCommon/FloatRGBAColor.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DMath/Vector3.h"
 #include "3DMath/AABB3.h"
@@ -83,6 +84,14 @@ public:
 	virtual short CheckPosition(STrace& tr) = 0;
 
 	virtual char IsCurrentlyVisibleCell( short sCellIndex ) = 0;
+
+	virtual void SetAmbientColor( const SFloatRGBAColor& ambient_color ) {}
+
+	virtual void SetFogColor( const SFloatRGBAColor& color ) {}
+
+	virtual void SetFogStartDist( float dist ) {}
+
+	virtual void SetFogEndDist( float dist ) {}
 
 	virtual void SetDynamicLightManager( CEntitySet* pEntitySet ) {}
 

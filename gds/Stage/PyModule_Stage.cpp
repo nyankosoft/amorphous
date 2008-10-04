@@ -233,6 +233,15 @@ PyObject* LoadSkybox( PyObject* self, PyObject* args )
 }
 
 
+static inline void SetAmbientColor( const SFloatRGBAColor& ambient_color )
+{
+	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
+
+	if( pStaticGeometry )
+		pStaticGeometry->SetAmbientColor( ambient_color );
+}
+
+
 PyObject* SetAmbientColor( PyObject* self, PyObject* args )
 {
 	if( !gs_pTargetStage )
@@ -244,13 +253,7 @@ PyObject* SetAmbientColor( PyObject* self, PyObject* args )
 	SFloatRGBAColor ambient_color;
 	int result = PyArg_ParseTuple( args, "fff", &ambient_color.fRed, &ambient_color.fGreen, &ambient_color.fBlue );
 
-	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
-
-	if( pStaticGeometry
-	 && pStaticGeometry->GetType() == CStaticGeometryBase::TYPE_FLIGHTGAME )
-	{
-		((CStaticGeometryFG *)pStaticGeometry)->SetAmbientColor( ambient_color );
-	}
+	SetAmbientColor( ambient_color );
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -271,16 +274,19 @@ PyObject* SetAmbientColorC32( PyObject* self, PyObject* args )
 	SFloatRGBAColor ambient_color;
 	ambient_color.SetARGB32( src_color );
 
-	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
-
-	if( pStaticGeometry
-	 && pStaticGeometry->GetType() == CStaticGeometryBase::TYPE_FLIGHTGAME )
-	{
-		((CStaticGeometryFG *)pStaticGeometry)->SetAmbientColor( ambient_color );
-	}
+	SetAmbientColor( ambient_color );
 
     Py_INCREF( Py_None );
 	return Py_None;
+}
+
+
+static inline void SetFogColor( const SFloatRGBAColor& fog_color )
+{
+	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
+
+	if( pStaticGeometry )
+		pStaticGeometry->SetFogColor( fog_color );
 }
 
 
@@ -295,13 +301,7 @@ PyObject* SetFogColor( PyObject* self, PyObject* args )
 	SFloatRGBAColor fog_color;
 	int result = PyArg_ParseTuple( args, "fff", &fog_color.fRed, &fog_color.fGreen, &fog_color.fBlue );
 
-	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
-
-	if( pStaticGeometry
-	 && pStaticGeometry->GetType() == CStaticGeometryBase::TYPE_FLIGHTGAME )
-	{
-		((CStaticGeometryFG *)pStaticGeometry)->SetFogColor( fog_color );
-	}
+	SetFogColor( fog_color );
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -322,14 +322,7 @@ PyObject* SetFogColorC32( PyObject* self, PyObject* args )
 	SFloatRGBAColor fog_color;
 	fog_color.SetARGB32( src_color );
 
-	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
-
-	if( pStaticGeometry
-	 && pStaticGeometry->GetType() == CStaticGeometryBase::TYPE_FLIGHTGAME )
-	{
-		CStaticGeometryFG* pGeometryFG = (CStaticGeometryFG *)pStaticGeometry;
-		pGeometryFG->SetFogColor( fog_color );
-	}
+	SetFogColor( fog_color );
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -349,11 +342,8 @@ PyObject* SetFogStartDist( PyObject* self, PyObject* args )
 
 	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
 
-	if( pStaticGeometry
-	 && pStaticGeometry->GetType() == CStaticGeometryBase::TYPE_FLIGHTGAME )
-	{
-		((CStaticGeometryFG *)pStaticGeometry)->SetFogStartDist( dist );
-	}
+	if( pStaticGeometry )
+		pStaticGeometry->SetFogStartDist( dist );
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -373,11 +363,8 @@ PyObject* SetFogEndDist( PyObject* self, PyObject* args )
 
 	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
 
-	if( pStaticGeometry
-	 && pStaticGeometry->GetType() == CStaticGeometryBase::TYPE_FLIGHTGAME )
-	{
-		((CStaticGeometryFG *)pStaticGeometry)->SetFogEndDist( dist );
-	}
+	if( pStaticGeometry )
+		pStaticGeometry->SetFogEndDist( dist );
 
     Py_INCREF( Py_None );
 	return Py_None;
