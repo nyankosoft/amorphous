@@ -24,8 +24,8 @@ m_TargetMaterialIndex(0)
 
 	m_NumMaxBatchNodes = 4;
 
-	m_TexCoordShiftU = -0.0078757f;
-	m_TexCoordShiftV =  0.0078757f;
+	m_TexCoordShiftU = 0.0f;//-0.0078757f;
+	m_TexCoordShiftV = 0.0f;// 0.0078757f;
 }
 
 
