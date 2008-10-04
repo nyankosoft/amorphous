@@ -371,15 +371,18 @@ void CStaticGeometryCompiler::CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& sr
 
 
 /**
- Creates a general 3d mesh from model file
+ Creates a general 3d mesh from model file.
+ Returns true on success.
  \param [in] model_filepath
  \param [in] geometry_filter
  \param [out] dest_general_mesh
 */
-void CreateGeneral3DMesh( const std::string& model_filepath,
+bool CreateGeneral3DMesh( const std::string& model_filepath,
 						  const CGeometryFilter& geometry_filter,
 						  CGeneral3DMesh& dest_general_mesh )
 {
+	LOG_FUNCTION_SCOPE();
+
 	shared_ptr<C3DModelLoader> pLoader;
 	if( fnop::get_ext( model_filepath ) == "lwo" )
 	{
@@ -388,18 +391,26 @@ void CreateGeneral3DMesh( const std::string& model_filepath,
 
 	bool loaded = pLoader->LoadFromFile( model_filepath, geometry_filter );
 
+	if( !loaded )
+		return false;
+
 	pLoader->GetGeneral3DMesh( dest_general_mesh );
+
+	return true;
 }
 
 
 bool CStaticGeometryCompiler::CreateCollisionMesh()
 {
 	// create collision mesh
-	CreateGeneral3DMesh(
+	bool mesh_created = CreateGeneral3DMesh(
 		m_Desc.m_InputFilepath, // [in] .lwo, .3ds, etc.
 		m_Desc.m_CollisionGeometryFilter, // [in] filter that specifies target layers, surfaces, etc.
 		m_CollisionMesh // [out] general 3d mesh that holds collision mesh
 		);
+
+	if( !mesh_created )
+		return false;
 
 	physics::CTriangleMeshDesc coll_mesh_desc;
 /*	m_CollisionMesh.GetTriangulatedMeshData(
@@ -537,11 +548,14 @@ void CStaticGeometryCompiler::SetShaderParameterGroups()
 bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 {
 	// create a single graphics mesh that contains all the graphics geometry
-	CreateGeneral3DMesh(
+	bool mesh_created = CreateGeneral3DMesh(
 		m_Desc.m_InputFilepath, // [in] .lwo, .3ds, etc.
 		m_Desc.m_GraphcisGeometryFilter, // [in] filter that specifies target layers, surfaces, etc.
 		*m_pGraphicsMesh // [out] general 3d mesh that holds collision mesh
 		);
+
+	if( !mesh_created )
+		return false;
 
 	// separate graphics geometry
 	// 1. geometry that uses lightmap
@@ -688,9 +702,9 @@ bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_fil
 		}
 	}
 
-	CreateCollisionMesh();
+	bool coll_mesh_created = CreateCollisionMesh();
 
-	CompileGraphicsGeometry();
+	bool graphics_mesh_compiled = CompileGraphicsGeometry();
 
 	SaveToBinaryDatabase( m_Desc.m_OutputFilepath );
 
