@@ -111,9 +111,9 @@ public:
 	virtual void Simulate ( Scalar elapsed_time ) = 0; 
 
 	/// This checks to see if the part of the simulation run whose results you are interested in has completed. 
-	virtual bool CheckResults ( SimulationStatus status, bool block=false) = 0; 
+	virtual bool CheckResults ( SimulationStatus::Status status, bool block=false) = 0; 
 
-	virtual bool FetchResults ( SimulationStatus status, bool block=false, U32 *errorState=0) = 0; 
+	virtual bool FetchResults ( SimulationStatus::Status status, bool block=false, U32 *errorState=0) = 0; 
 
 	virtual void FlushCaches () = 0; 
 

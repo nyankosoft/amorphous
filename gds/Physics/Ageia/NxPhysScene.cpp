@@ -118,14 +118,35 @@ void CNxPhysScene::GetLimits ( CSceneLimits &limits ) const
 {
 }
 
-bool CNxPhysScene::CheckResults( SimulationStatus status, bool block )
+
+NxSimulationStatus ToNxPhysSimStatus( SimulationStatus::Status status )
 {
-	return true;
+	switch( status )
+	{
+	case SimulationStatus::RigidBodyFinished: return NX_RIGID_BODY_FINISHED;
+	case SimulationStatus::AllFinished:       return NX_ALL_FINISHED;
+	case SimulationStatus::PrimaryFinished:   return NX_PRIMARY_FINISHED;
+	default: return NX_RIGID_BODY_FINISHED;
+	}
+
+	return NX_RIGID_BODY_FINISHED;
 }
 
-bool CNxPhysScene::FetchResults( SimulationStatus status, bool block, U32 *errorState )
+
+bool CNxPhysScene::CheckResults( SimulationStatus::Status status, bool block )
 {
-	return true;
+	return m_pScene->checkResults( ToNxPhysSimStatus( status ), block );
+}
+
+
+bool CNxPhysScene::FetchResults( SimulationStatus::Status status, bool block, U32 *errorState )
+{
+	NxU32 errStat = 0;
+	bool res = m_pScene->fetchResults( ToNxPhysSimStatus( status ), block, &errStat );
+	if( errorState )
+		*errorState = errStat;
+
+	return res;
 }
 
 

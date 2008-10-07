@@ -965,14 +965,16 @@ void CEntitySet::UpdatePhysics( float frametime )
 		ProfileEnd( "Entity Update (Physics)" );
 
 
-		ProfileBegin( "Physics Simulation" );
+		{
+			PROFILE_SCOPE( "Physics Simulation" );
 
-		// handle the motions and collisions of rigid body entities
-//		m_pStage->m_pPhysicsManager->Integrate( timestep );
-		m_pStage->GetPhysicsScene()->Simulate( timestep );
+			// handle the motions and collisions of rigid body entities
+//			m_pStage->m_pPhysicsManager->Integrate( timestep );
+			m_pStage->GetPhysicsScene()->Simulate( timestep );
 
-		ProfileEnd( "Physics Simulation" );
-
+			while( !m_pStage->GetPhysicsScene()->FetchResults( physics::SimulationStatus::RigidBodyFinished ) )
+			{}
+		}
 
 		// clear forces on actors
 /*		for( itrActor = rActorList.Begin();

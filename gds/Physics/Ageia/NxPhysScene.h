@@ -84,9 +84,9 @@ public:
 	virtual void Simulate ( Scalar elapsedTime ) { m_pScene->simulate( elapsedTime ); }
 
 	/// This checks to see if the part of the simulation run whose results you are interested in has completed. 
-	virtual bool CheckResults( SimulationStatus status, bool block );
+	virtual bool CheckResults( SimulationStatus::Status status, bool block );
 
-	virtual bool FetchResults( SimulationStatus status, bool block, U32 *errorState );
+	virtual bool FetchResults( SimulationStatus::Status status, bool block, U32 *errorState );
 
 	virtual void FlushCaches () { m_pScene->flushCaches(); }
 
