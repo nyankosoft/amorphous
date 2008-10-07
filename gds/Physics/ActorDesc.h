@@ -25,7 +25,7 @@ public:
 
 	Matrix34 WorldPose;
 
-	Scalar Density;
+	Scalar fDensity;
 
 	CBodyDesc BodyDesc;
 
@@ -57,7 +57,7 @@ public:
 	inline void SetDefault()
 	{
 		WorldPose.Identity();
-		Density = 0;
+		fDensity = 0;
 //		BodyDesc = ???;
 		ActorFlags = 0;
 //		bAllowFreezing = true;
@@ -69,7 +69,7 @@ public:
 	inline virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
 		ar & WorldPose;
-		ar & Density;
+		ar & fDensity;
 		ar & BodyDesc;
 		ar & ActorFlags;
 //		ar & bAllowFreezing;

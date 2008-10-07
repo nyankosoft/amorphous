@@ -25,8 +25,8 @@ class CShapeDescFactory : public IArchiveObjectFactory
 {
 public:
 
-	CShapeDescFactory();
-	virtual ~CShapeDescFactory();
+	CShapeDescFactory() {}
+	virtual ~CShapeDescFactory() {}
 
 	inline virtual IArchiveObjectBase *CreateObject( const unsigned int id ) { return CreateShapeDesc( id ); }
 

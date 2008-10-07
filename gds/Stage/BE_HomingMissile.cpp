@@ -5,18 +5,17 @@
 #include "ViewFrustumTest.h"
 #include "Stage.h"
 #include "Serialization_BaseEntityHandle.h"
-
-#include "JigLib/JL_PhysicsActor.h"
-
+//#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
 #include "Support/Profile.h"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Vec3_StringAux.h"
-#include "Support/msgbox.h"
+//#include "Support/msgbox.h"
 
-
-#include <vector>
 using namespace std;
+using namespace physics;
+
 
 static vector<CCopyEntity *> s_vecpVisibleEntity;
 
@@ -52,9 +51,10 @@ CBE_HomingMissile::CBE_HomingMissile()
 
 	// register as no-clip to physics simulator
 	// and do the collision detection by itself
-	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
+	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
 
-	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
+//	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
+	m_ActorDesc.BodyDesc.Flags = BodyFlag::Kinematic;
 }
 
 
@@ -395,7 +395,7 @@ void CBE_HomingMissile::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	{
 		pCopyEnt->pPhysicsActor->SetWorldPose( pCopyEnt->GetWorldPose() );
 //		pCopyEnt->pPhysicsActor->SetVelocity( pCopyEnt->Velocity() );
-		pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
+		pCopyEnt->pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 	}
 }
 

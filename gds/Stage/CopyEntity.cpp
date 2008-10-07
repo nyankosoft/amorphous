@@ -2,7 +2,9 @@
 #include "BaseEntity.h"
 //#include "EntitySet.h"
 
-#include "JigLib/JL_PhysicsActor.h"
+//#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
+using namespace physics;
 
 
 void CCopyEntity::ApplyWorldImpulse( Vector3& vImpulse, Vector3& vContactPoint )
@@ -10,7 +12,8 @@ void CCopyEntity::ApplyWorldImpulse( Vector3& vImpulse, Vector3& vContactPoint )
 	if( !pPhysicsActor )
 		return;	// entity must have a corresponding physics actor to apply impulse
 
-	pPhysicsActor->ApplyWorldImpulse( vImpulse, vContactPoint );
+//	pPhysicsActor->ApplyWorldImpulse( vImpulse, vContactPoint );
+	pPhysicsActor->AddWorldForceAtWorldPos( vImpulse, vContactPoint, ForceMode::Impulse );
 }
 
 
@@ -66,6 +69,6 @@ void CCopyEntity::UpdatePhysics()
 		int error = 1;
 
 //	Position() = pPhysicsActor->GetPosition();
-	Velocity() = pPhysicsActor->GetVelocity();
+	Velocity() = pPhysicsActor->GetLinearVelocity();
 	AngularVelocity() = pPhysicsActor->GetAngularVelocity();
 }

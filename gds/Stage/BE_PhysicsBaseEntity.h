@@ -2,7 +2,7 @@
 #define __BE_PHYSICSBASEENTITY_H__
 
 #include "BaseEntity.h"
-#include "JigLib/JL_PhysicsActorDesc.h"
+#include "Physics/ActorDesc.h"
 
 
 class CBE_PhysicsBaseEntity : public CBaseEntity
@@ -10,7 +10,7 @@ class CBE_PhysicsBaseEntity : public CBaseEntity
 protected:
 
 	// the following variables are used in rigid body simulation
-	CJL_PhysicsActorDesc m_ActorDesc;
+	physics::CActorDesc m_ActorDesc;
 
 public:
 	CBE_PhysicsBaseEntity();

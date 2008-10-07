@@ -1,18 +1,17 @@
-
 #include "BE_Door.h"
 #include "CopyEntity.h"
 #include "trace.h"
 #include "Stage.h"
 #include "GameMessage.h"
-
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObject.h"
-
 #include "Sound/SoundManager.h"
 
-#include "3DMath/Vector3.h"
+//#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
 
-#include "JigLib/JL_PhysicsActor.h"
+using namespace physics;
+
 
 CBE_Door::CBE_Door()
 {
@@ -43,10 +42,11 @@ void CBE_Door::Init()
 {
 	Init3DModel();
 
-	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_DOOR;
+	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_DOOR;
 //	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 
-	m_ActorDesc.ActorFlag = JL_ACTOR_KINEMATIC;
+//	m_ActorDesc.ActorFlag = JL_ACTOR_KINEMATIC;
+	m_ActorDesc.BodyDesc.Flags = PhysBodyFlag::Kinematic;
 }
 
 
@@ -73,7 +73,7 @@ void CBE_Door::InitCopyEntity( CCopyEntity* pCopyEnt )
 	rfOpenTime = 0;
 
 	// set activity threshold to lower values than other actors
-	pCopyEnt->pPhysicsActor->SetActivityThreshold(0.02f, 20.0f);
+//	pCopyEnt->pPhysicsActor->SetActivityThreshold(0.02f, 20.0f);
 
 }
 
@@ -108,8 +108,8 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 			|| 0 < Vec3Dot( vToCover, rvOpenMotionDirection ) )
 		{	// almost reached or passed the closed position
 			rvDoorPosition = rvClosedPosition;
-			pCopyEnt->pPhysicsActor->SetPosition(rvDoorPosition);
-			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
+//			pCopyEnt->pPhysicsActor->SetPosition(rvDoorPosition);
+//			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			sDoorState = DOOR_CLOSED;
 ///			this->SoundManager().PlayAt( m_acStopSound, rvClosedPosition );
@@ -127,7 +127,7 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 ///		vImpulse = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->ApplyWorldImpulse( vImpulse, rvDoorPosition );
 		pCopyEnt->SetVelocity( vImpulse );
-		pCopyEnt->pPhysicsActor->SetVelocity( vImpulse );
+		pCopyEnt->pPhysicsActor->SetLinearVelocity( vImpulse );
 
 //		vForce = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->pPhysicsActor->AddWorldForce( vForce ); 
@@ -154,8 +154,8 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 			|| Vec3Dot( vToCover, rvOpenMotionDirection ) < 0 )
 		{
 			rvDoorPosition = rvFullOpenPosition;
-			pCopyEnt->pPhysicsActor->SetPosition(rvDoorPosition);
-			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
+			pCopyEnt->pPhysicsActor->SetWorldPosition(rvDoorPosition);
+			pCopyEnt->pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			sDoorState = DOOR_OPEN;
 ///			this->SoundManager().PlayAt( m_acStopSound, rvFullOpenPosition );
@@ -173,7 +173,7 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 ///		vImpulse = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->ApplyWorldImpulse( vImpulse, rvDoorPosition );
 		pCopyEnt->SetVelocity( vImpulse );
-		pCopyEnt->pPhysicsActor->SetVelocity( vImpulse );
+		pCopyEnt->pPhysicsActor->SetLinearVelocity( vImpulse );
 
 //		vForce = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->pPhysicsActor->AddWorldForce( vForce );

@@ -20,6 +20,7 @@
 #include "Task/GameTaskManager.h"
 
 #include "Sound/SoundManager.h"
+#include "Physics/PhysicsEngine.h"
 
 #include "GameEvent/ScriptArchive.h"
 
@@ -211,6 +212,11 @@ bool CApplicationBase::Init()
 	SoundManager().LoadSoundsFromList( "./Sound/SoundList.lst" );
 
 //	LOG_PRINT( " - Initialized the sound manager" );
+
+	bool phys_init = physics::PhysicsEngine().Init();
+
+	if( phys_init )
+		LOG_PRINT( " Initialization of the physics engine: " + string(phys_init ? "[  OK  ]" : "[FAILED]") );
 
 	// update & load the item database
 //	ItemDatabaseManager().Update( "..." );

@@ -168,9 +168,9 @@ bool CBSPMap::LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly 
 	int iNumSurfaces;
 	CSG_Surface surface;
 
-	CJL_ShapeDesc_TriangleMesh mesh_desc;
-	CJL_PhysicsActorDesc desc;
-	CJL_PhysicsActor *pActor;
+//	CJL_ShapeDesc_TriangleMesh mesh_desc;
+//	CJL_PhysicsActorDesc desc;
+//	CJL_PhysicsActor *pActor;
 
 	m_vecLightmap.clear();
 	m_vecSurface.clear();
@@ -413,7 +413,7 @@ bool CBSPMap::LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly 
 				vecsMaterialIndex.reserve( num_triangles );
 				for( i=0; i<num_triangles; i++ )
 					vecsMaterialIndex.push_back( (short)veciMaterialIndex[i] );
-
+/*
 				mesh_desc.pvecvVertex        = &vecvVertex;
 				mesh_desc.pveciIndex         = &veciTriangleIndex;
 				mesh_desc.pvecsMaterialIndex = &vecsMaterialIndex;
@@ -424,7 +424,7 @@ bool CBSPMap::LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly 
 				desc.iCollisionGroup = ENTITY_COLL_GROUP_STATICGEOMETRY;
 				desc.vecpShapeDesc.push_back( &mesh_desc );
 				pActor = m_pStage->GetPhysicsManager()->CreateActor( desc );
-				m_pTriangleMesh = (CTriangleMesh *)pActor->GetShape(0);
+				m_pTriangleMesh = (CTriangleMesh *)pActor->GetShape(0);*/
 			}
 			break;
 

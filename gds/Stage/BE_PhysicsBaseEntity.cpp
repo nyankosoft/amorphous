@@ -1,30 +1,36 @@
-
 #include "BE_PhysicsBaseEntity.h"
 #include "EntityCollisionGroups.h"
 
 #include "CopyEntity.h"
 #include "3DMath/Matrix33.h"
-#include "JigLib/JL_ShapeDesc_Box.h"
-#include "JigLib/JL_ShapeDesc_Capsule.h"
-#include "JigLib/JL_PhysicsActor.h"
+//#include "JigLib/JL_ShapeDesc_Box.h"
+//#include "JigLib/JL_ShapeDesc_Capsule.h"
+//#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Enums.h"
 
 #include "Support/SafeDeleteVector.h"
+
+using namespace std;
+using namespace physics;
 
 
 CBE_PhysicsBaseEntity::CBE_PhysicsBaseEntity()
 {
 	this->m_EntityFlag |= ( BETYPE_RIGIDBODY | BETYPE_USE_PHYSSIM_RESULTS );
-
+/*
 	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 
 //	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
+*/
+
+	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 
 }
 
 
 CBE_PhysicsBaseEntity::~CBE_PhysicsBaseEntity()
 {
-	SafeDeleteVector( m_ActorDesc.vecpShapeDesc );
+//	SafeDeleteVector( m_ActorDesc.vecpShapeDesc );
 }
 
 
@@ -50,19 +56,19 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 
 	if( scanner.TryScanLine( "PHYS_COLL_GROUP", coll_group ) )
 	{
-		if( coll_group == "STATICGEOMETRY" )	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_STATICGEOMETRY;
-		else if( coll_group == "PLAYER" )		m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_PLAYER;
-		else if( coll_group == "DOOR" )			m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_DOOR;
-		else if( coll_group == "OTHERS" )		m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
-		else if( coll_group == "NOCLIP" )		m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
-		else if( coll_group == "NO_COLLISION" )	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
+		if( coll_group == "STATICGEOMETRY" )	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_STATICGEOMETRY;
+		else if( coll_group == "PLAYER" )		m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_PLAYER;
+		else if( coll_group == "DOOR" )			m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_DOOR;
+		else if( coll_group == "OTHERS" )		m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
+		else if( coll_group == "NOCLIP" )		m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
+		else if( coll_group == "NO_COLLISION" )	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
 	}
 
-	if( scanner.TryScanLine( "MASS", m_ActorDesc.fMass ) ) return true;
+	if( scanner.TryScanLine( "MASS", m_ActorDesc.BodyDesc.fMass ) ) return true;
 
 	if( scanner.TryScanLine( "SHAPE_BOX", vBoxSideLength ) )
 	{
-		CJL_ShapeDesc_Box *pBoxDesc = new CJL_ShapeDesc_Box;
+		CBoxShapeDesc *pBoxDesc = new CBoxShapeDesc;
 		pBoxDesc->vSideLength = vBoxSideLength;
 		m_ActorDesc.vecpShapeDesc.push_back( pBoxDesc );
 		return true;
@@ -70,7 +76,7 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 
 	if( scanner.TryScanLine( "SHAPE_CAPSULE", fRadius, fLength ) )
 	{
-		CJL_ShapeDesc_Capsule *pCapsuleDesc = new CJL_ShapeDesc_Capsule;
+		CCapsuleShapeDesc *pCapsuleDesc = new CCapsuleShapeDesc;
 		pCapsuleDesc->fLength = fLength;
 		pCapsuleDesc->fRadius = fRadius;
 		m_ActorDesc.vecpShapeDesc.push_back( pCapsuleDesc );
@@ -82,7 +88,7 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 		if( m_ActorDesc.vecpShapeDesc.size() == 0 )
 			return false;
 
-		m_ActorDesc.vecpShapeDesc.back()->vLocalPos = vLocalPos;
+		m_ActorDesc.vecpShapeDesc.back()->LocalPose.vPosition = vLocalPos;
 		return true;
 	}
 
@@ -105,7 +111,7 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 		else if( tag == "SHAPE_LOCAL_ROT_Z" )	matRot.SetRotationZ(fAngle);
 		else return false;
 
-		Matrix33& rmatLocalOrient = m_ActorDesc.vecpShapeDesc.back()->matLocalOrient;
+		Matrix33& rmatLocalOrient = m_ActorDesc.vecpShapeDesc.back()->LocalPose.matOrient;
 		rmatLocalOrient = matRot * rmatLocalOrient;	// the rotation is applied following ealier rotations
 
 		return true;
@@ -113,7 +119,8 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 
 	if( scanner.GetTagString() == "DISABLE_FREEZING" )
 	{
-		m_ActorDesc.bAllowFreezing = false;
+//		m_ActorDesc.bAllowFreezing = false;
+		m_ActorDesc.ActorFlags |= ActorFlag::DISABLE_FREEZING;
 		return true;
 	}
 

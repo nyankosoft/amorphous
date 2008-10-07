@@ -2,11 +2,11 @@
 #include "CopyEntity.h"
 #include "Stage.h"
 #include "EntityMotionPathRequest.h"
-
-#include "JigLib/JL_PhysicsActor.h"
-
-#include "Support/msgbox.h"
 #include "Support/Log/DefaultLog.h"
+
+#include "Physics/Actor.h"
+
+using namespace physics;
 
 
 void CBaseEntity::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPath& path )

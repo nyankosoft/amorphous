@@ -36,9 +36,6 @@ public:
 
 
 
-#define PhysicsEngine ( (*CPhysicsEngine::Get()) )
-
-
 /**
   singleton
 
@@ -79,6 +76,13 @@ public:
 	/// Deletes the specified cloth mesh. The cloth mesh must be in this scene. 
 //	virtual void  ReleaseClothMesh ( CClothMesh*& pCloth ) { m_pEngine->ReleaseClothMesh(); }
 };
+
+
+inline CPhysicsEngine& PhysicsEngine()
+{
+	return (*CPhysicsEngine::Get());
+}
+
 
 
 } // namespace physics

@@ -3,15 +3,13 @@
 #include "trace.h"
 #include "Stage.h"
 #include "GameMessage.h"
-
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObject.h"
-
 #include "Sound/SoundManager.h"
-
 #include "3DMath/Vector3.h"
+#include "Physics/Actor.h"
 
-#include "JigLib/JL_PhysicsActor.h"
+using namespace physics;
 
 
 CBE_Platform::CBE_Platform()
@@ -37,10 +35,11 @@ void CBE_Platform::Init()
 {
 	Init3DModel();
 
-	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_DOOR;
-//	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
+	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_DOOR;
+//	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 
-	m_ActorDesc.ActorFlag = JL_ACTOR_KINEMATIC;
+//	m_ActorDesc.ActorFlag = JL_ACTOR_KINEMATIC;
+	m_ActorDesc.BodyDesc.Flags = BodyFlag::Kinematic;
 }
 
 
@@ -54,7 +53,7 @@ void CBE_Platform::InitCopyEntity( CCopyEntity* pCopyEnt )
 	rfRestTime = 0;
 
 	// set activity threshold to lower values than other actors
-	pCopyEnt->pPhysicsActor->SetActivityThreshold(0.02f, 20.0f);
+//	pCopyEnt->pPhysicsActor->SetActivityThreshold(0.02f, 20.0f);
 
 }
 
@@ -90,8 +89,8 @@ void CBE_Platform::Act(CCopyEntity* pCopyEnt)
 //			|| 0 < Vec3Dot( vToCover, rvOpenMotionDirection ) )
 		{	// almost reached or passed the closed position
 			pCopyEnt->Position() = vDestPos;
-			pCopyEnt->pPhysicsActor->SetPosition( vDestPos );
-			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
+			pCopyEnt->pPhysicsActor->SetWorldPosition( vDestPos );
+			pCopyEnt->pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			rState = CBE_Platform::STATE_REST;
 ///			SoundManager.PlayAt( m_acStopSound, rvClosedPosition );
@@ -114,7 +113,7 @@ void CBE_Platform::Act(CCopyEntity* pCopyEnt)
 //		pCopyEnt->ApplyWorldImpulse( vImpulse, rvDoorPosition );
 
 		pCopyEnt->SetVelocity( vImpulse );
-		pCopyEnt->pPhysicsActor->SetVelocity( vImpulse );
+		pCopyEnt->pPhysicsActor->SetLinearVelocity( vImpulse );
 
 //		vForce = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->pPhysicsActor->AddWorldForce( vForce ); 

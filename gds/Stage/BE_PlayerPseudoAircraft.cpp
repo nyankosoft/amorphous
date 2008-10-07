@@ -35,8 +35,9 @@
 #include "trace.h"
 #include "OverlapTestAABB.h"
 
-#include "JigLib/JL_PhysicsActor.h"
-#include "JigLib/JL_LineSegment.h"
+//#include "JigLib/JL_PhysicsActor.h"
+//#include "JigLib/JL_LineSegment.h"
+#include "Physics/Actor.h"
 
 #include "UI.h"
 
@@ -49,6 +50,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace physics;
 
 
 /// action code -> ui input code (CGM_Input)
@@ -100,7 +102,8 @@ m_pPlayerAircraftHUD(NULL)
 
 	// pseudo aircraft will not be affected by the gravity
 	// since it does not simulate the physics
-	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
+//	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
+	m_ActorDesc.BodyDesc.Flags = BodyFlag::Kinematic;
 
 	RaiseEntityFlag( BETYPE_RIGIDBODY );
 
@@ -300,7 +303,7 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 	if( pCopyEnt->pPhysicsActor )
 	{
 		pCopyEnt->pPhysicsActor->SetWorldPose( pCopyEnt->GetWorldPose() );
-		pCopyEnt->pPhysicsActor->SetVelocity( pCopyEnt->Velocity() );
+		pCopyEnt->pPhysicsActor->SetLinearVelocity( pCopyEnt->Velocity() );
 //		pCopyEnt->pPhysicsActor->SetPosition( init_pose.vPosition );
 //		pCopyEnt->pPhysicsActor->SetOrientation( init_pose.matOrient );
 //		pCopyEnt->SetVelocity( vInitVelocity );
@@ -343,7 +346,7 @@ void CBE_PlayerPseudoAircraft::Move( CCopyEntity *pCopyEnt )
 		return;
 	}
 
-	CJL_PhysicsActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
 }
 
 
@@ -902,11 +905,13 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 		return;
 	}
 
-	CJL_PhysicsActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
 
 	// wake up the actor if it's sleeping
-	if( rPhysicsActor.GetActivityState() == CJL_PhysicsActor::FROZEN )
-		rPhysicsActor.ApplyWorldImpulse( pCopyEnt->GetUpDirection() * 0.0001f );
+//	if( rPhysicsActor.GetActivityState() == CJL_PhysicsActor::FROZEN )
+//		rPhysicsActor.ApplyWorldImpulse( pCopyEnt->GetUpDirection() * 0.0001f );
+	if( rPhysicsActor.IsSleeping() )
+		rPhysicsActor.WakeUp();
 
 	if( pCopyEnt->fLife <= 0 && GetMissionState() == MSTATE_CRASHED )
 		return;
@@ -959,7 +964,7 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	pCopyEnt->fSpeed = Vec3Length( pCopyEnt->Velocity() );
 
 	pCopyEnt->pPhysicsActor->SetWorldPose( pseudo_simulator.GetWorldPose() );
-	pCopyEnt->pPhysicsActor->SetVelocity( pseudo_simulator.GetVelocity() );
+	pCopyEnt->pPhysicsActor->SetLinearVelocity( pseudo_simulator.GetVelocity() );
 
 	// update camera state - not a physics, but it requires dt
 	// should be placed somewhere else

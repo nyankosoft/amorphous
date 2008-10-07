@@ -46,7 +46,7 @@ public:
 	Vector3  MassSpaceInertia;
 
 	/// Mass of body. 
-	Scalar  Mass;
+	Scalar  fMass;
 
 	/// Linear Velocity of the body. 
 	Vector3  LinearVelocity;
@@ -105,7 +105,7 @@ inline void CBodyDesc::SetDefault()
 {
 	MassLocalPose.Identity();
 	MassSpaceInertia   = Vector3(0,0,0);
-	Mass = 1.0f;
+	fMass = 1.0f;
 	LinearVelocity     = Vector3(0,0,0);
 	AngularVelocity    = Vector3(0,0,0);
 //	WakeUpCounter;
@@ -128,7 +128,7 @@ inline void CBodyDesc::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & MassSpaceInertia;
 
-	ar & Mass;
+	ar & fMass;
 
 	ar & LinearVelocity;
 

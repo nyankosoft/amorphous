@@ -57,7 +57,7 @@ void CPhysSimVisEventHandler::HandleEvent( CGM_Event &event )
 		return;
 
 //	CPhysicsManager_Visualizer *pVisualizer = g_pStage->GetPhysicsVisualizer();
-	CJL_PhysicsVisualizer_D3D *pVisualizer = g_pStage->GetPhysicsVisualizer();
+/*	CJL_PhysicsVisualizer_D3D *pVisualizer = g_pStage->GetPhysicsVisualizer();
 	CGM_ControlBase *pControl = event.pControl;
 
 	switch( event.pControl->GetID() )
@@ -96,7 +96,7 @@ void CPhysSimVisEventHandler::HandleEvent( CGM_Event &event )
 		else if( event.Type == CGM_Event::CHECKBOX_CHECK_CLEARED )
 			pVisualizer->ClearRenderStateFlag( ID_UI_PHYSSIM_ANGULAR_VELOCITY );
 		break;
-	}
+	}*/
 }
 
 

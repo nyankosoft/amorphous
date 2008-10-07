@@ -281,7 +281,7 @@ bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int Effec
 bool CStaticGeometryFG::LoadCollisionMesh( CStaticGeometryArchiveFG& archive )
 {
 #ifndef TEST_STATICGEOMETRY_FG
-
+/*
 	CJL_ShapeDesc_TriangleMesh mesh_desc;
 	CJL_PhysicsActorDesc desc;
 
@@ -324,7 +324,7 @@ bool CStaticGeometryFG::LoadCollisionMesh( CStaticGeometryArchiveFG& archive )
 	}
 
 	m_pTriangleMesh = (CTriangleMesh *)pActor->GetShape(0);
-
+*/
 #endif /* TEST_STATICGEOMETRY_FG */
 
 	return true;

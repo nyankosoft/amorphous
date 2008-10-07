@@ -7,13 +7,13 @@
 #include "3DMath/3DStructs.h"
 #include "Support/FixedVector.h"
 #include "3DCommon/MeshObjectHandle.h"
+#include "Physics/fwd.h"
 
 #include "CopyEntityCallback.h"
 
 #include "fwd.h"
 #include "BaseEntity.h"
 
-class CJL_PhysicsActor;
 
 
 enum eEntityState
@@ -167,7 +167,7 @@ public:
 	/// directional lights have to be placed before point lights
 	TCFixedVector<short,NUM_MAX_LIGHTS_AT_ENTITY> vecLightIndex;
 
-	CJL_PhysicsActor *pPhysicsActor;
+	physics::CActor *pPhysicsActor;
 
 	/// borrowed reference
 	std::vector<CCopyEntityCallbackBase *> vecpCallback;

@@ -14,8 +14,10 @@
 #include "CopyEntityDescFileArchive.h"
 
 #include "3DCommon/3DGameMath.h"
-#include "JigLib/JL_PhysicsManager.h"
-#include "JigLib/JL_PhysicsActorDesc.h"
+//#include "JigLib/JL_PhysicsManager.h"
+//#include "JigLib/JL_PhysicsActorDesc.h"
+#include "Physics/Actor.h"
+#include "Physics/Scene.h"
 #include "Support/memory_helpers.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Vec3_StringAux.h"
@@ -23,7 +25,8 @@
 #include "Support/macro.h"
 #include "Support/Profile.h"
 
-#include "3DMath/Vector3.h"
+using namespace std;
+using namespace physics;
 
 
 float CEntitySet::ms_DefaultPhysTimestep = 1.0f / 100;
@@ -761,12 +764,14 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	// create object for physics simulation
 	if( pNewCopyEnt->EntityFlag & BETYPE_RIGIDBODY )
 	{
-		CJL_PhysicsActorDesc& rActorDesc
-			= ((CBE_PhysicsBaseEntity *)pNewCopyEnt->pBaseEntity)->m_ActorDesc;
-		rActorDesc.vPosition = pNewCopyEnt->Position();
-		rActorDesc.vVelocity = pNewCopyEnt->Velocity();
-		pNewCopyEnt->GetOrientation( rActorDesc.matOrient );
-		pNewCopyEnt->pPhysicsActor = m_pStage->m_pPhysicsManager->CreateActor( rActorDesc );
+//		CJL_PhysicsActorDesc& rActorDesc
+//			= ((CBE_PhysicsBaseEntity *)pNewCopyEnt->pBaseEntity)->m_ActorDesc;
+		CActorDesc actor_desc;
+		CActorDesc& rActorDesc = actor_desc;
+		rActorDesc.WorldPose.vPosition = pNewCopyEnt->Position();
+		rActorDesc.BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
+		pNewCopyEnt->GetOrientation( rActorDesc.WorldPose.matOrient );
+		pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( rActorDesc );
 	}
 
 	// When all the basic properties are copied, InitCopyEntity() is called to 
@@ -925,9 +930,9 @@ void CEntitySet::UpdatePhysics( float frametime )
 
 	m_PhysOverlapTime = total_time - num_loops * timestep;
 
-	TCPreAllocDynamicLinkList<CJL_PhysicsActor>& rActorList = m_pStage->m_pPhysicsManager->GetActorList();
+//	TCPreAllocDynamicLinkList<CJL_PhysicsActor>& rActorList = m_pStage->m_pPhysicsManager->GetActorList();
 
-	TCPreAllocDynamicLinkList<CJL_PhysicsActor>::LinkListIterator itrActor;
+//	TCPreAllocDynamicLinkList<CJL_PhysicsActor>::LinkListIterator itrActor;
 
 	int i;
 	for (i=0 ; i<num_loops ; ++i)
@@ -963,19 +968,20 @@ void CEntitySet::UpdatePhysics( float frametime )
 		ProfileBegin( "Physics Simulation" );
 
 		// handle the motions and collisions of rigid body entities
-		m_pStage->m_pPhysicsManager->Integrate( timestep );
+//		m_pStage->m_pPhysicsManager->Integrate( timestep );
+		m_pStage->GetPhysicsScene()->Simulate( timestep );
 
 		ProfileEnd( "Physics Simulation" );
 
 
 		// clear forces on actors
-		for( itrActor = rActorList.Begin();
+/*		for( itrActor = rActorList.Begin();
 			itrActor != rActorList.End();
 			itrActor++ )
 		{
 			itrActor->ClearForces();
 		}
-
+*/
 	}
 }
 

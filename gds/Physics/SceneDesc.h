@@ -3,11 +3,11 @@
 
 
 #include <float.h>
-
 #include "fwd.h"
+#include "Enums.h"
+
 #include "3DMath/Matrix34.h"
 #include "3DMath/aabb3.h"
-
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/Serialization_3DMath.h"
 using namespace GameLib1::Serialization;

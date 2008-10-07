@@ -1,15 +1,13 @@
-
 #include "BE_IndividualEntity.h"
-
 #include "GameMessage.h"
 #include "CopyEntityDesc.h"
 #include "CopyEntity.h"
 #include "trace.h"
 #include "Stage.h"
-
-#include "JigLib/JL_PhysicsActor.h"
-
+#include "Physics/Actor.h"
 #include "Support/Log/DefaultLog.h"
+
+using namespace physics;
 
 
 CBE_IndividualEntity::CBE_IndividualEntity()
@@ -29,7 +27,7 @@ void CBE_IndividualEntity::Init()
 {
 	Init3DModel();
 
-	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
+	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 //	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
 }
 

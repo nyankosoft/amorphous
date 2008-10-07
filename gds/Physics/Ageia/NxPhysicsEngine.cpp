@@ -1,4 +1,3 @@
-
 #include "NxPhysicsEngine.h"
 #include "NxPhysScene.h"
 #include "NxPhysTriangleMesh.h"

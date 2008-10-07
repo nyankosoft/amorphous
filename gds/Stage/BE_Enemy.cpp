@@ -5,6 +5,8 @@
 #include "trace.h"
 #include "Stage.h"
 
+#include "EntityMotionPathRequest.h"
+
 #include "Stage/PlayerInfo.h"
 
 #include "3DCommon/Direct3D9.h"
@@ -24,10 +26,9 @@
 #include "Support/Log/DefaultLog.h"
 #include "Support/Vec3_StringAux.h"
 
-#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
 
-
-#include "EntityMotionPathRequest.h"
+using namespace physics;
 
 
 //=======================================================================

@@ -4,7 +4,8 @@
 
 #include "fwd.h"
 #include "3DCommon/fwd.h"
-#include "JigLib/fwd.h"
+//#include "JigLib/fwd.h"
+#include "Physics/fwd.h"
 #include "Sound/fwd.h"
 
 #include "3DCommon/Camera.h"
@@ -32,9 +33,10 @@ class CStage
 	CEntitySet *m_pEntitySet;
 
 	/// handles physics simulation
-	CJL_PhysicsManager *m_pPhysicsManager;
+//	CJL_PhysicsManager *m_pPhysicsManager;
+	physics::CScene *m_pPhysicsScene;
 
-	CJL_PhysicsVisualizer_D3D *m_pPhysicsVisualizer;
+//	CJL_PhysicsVisualizer_D3D *m_pPhysicsVisualizer;
 
 	CSurfaceMaterialManager *m_pMaterialManager;
 
@@ -107,7 +109,7 @@ public:
 
 	// -------------- collision detection --------------
 	void ClipTrace( STrace& tr );
-	void ClipTrace( CJL_LineSegment& segment );
+//	void ClipTrace( CJL_LineSegment& segment );
 	void CheckPosition( STrace& tr );
 	void CheckCollision( CTrace& tr );
 	void GetVisibleEntities( CViewFrustumTest& vf_test );
@@ -128,7 +130,7 @@ public:
 	/// removes an entity from the stage
 	inline void TerminateEntity( CCopyEntity*& pEntity );
 
-	void ReleasePhysicsActor( CJL_PhysicsActor* pPhysicsActor );
+	void ReleasePhysicsActor( physics::CActor*& pPhysicsActor );
 
 	// -------------- sounds --------------
 //	void PlaySound3D( char* pcSoundName, Vector3& rvPosition );
@@ -171,9 +173,10 @@ public:
 
 	CTextMessageManager *GetTextMessageManager() { return m_pTextMessageManager; }
 
-	CJL_PhysicsManager *GetPhysicsManager() { return m_pPhysicsManager; }
+//	CJL_PhysicsManager *GetPhysicsManager() { return m_pPhysicsManager; }
+	physics::CScene *GetPhysicsScene() { return m_pPhysicsScene; }
 
-	CJL_PhysicsVisualizer_D3D *GetPhysicsVisualizer();
+//	CJL_PhysicsVisualizer_D3D *GetPhysicsVisualizer();
 
 	CScriptManager *GetScriptManager() { return m_pScriptManager; }
 

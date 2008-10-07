@@ -7,7 +7,9 @@
 #include "Stage/trace.h"
 #include "Stage/Stage.h"
 
-#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
+
+using namespace physics;
 
 
 /*
@@ -35,7 +37,7 @@ void CGI_GravityGun::Update( float dt )
 		if( m_fMaxRange * m_fMaxRange < fDistSq )
 		{
 			m_iHoldingTargetToggle = 0;
-			m_pTarget->pPhysicsActor->SetAllowFreezing( true );
+//			m_pTarget->pPhysicsActor->SetAllowFreezing( true );
 			m_pTarget = NULL;
 			return;
 		}
@@ -55,7 +57,7 @@ void CGI_GravityGun::Update( float dt )
 		{	// found obstacle between the player and the target object
 			// - unable to hold the target any more
 			m_iHoldingTargetToggle = 0;
-			m_pTarget->pPhysicsActor->SetAllowFreezing( true );
+//			m_pTarget->pPhysicsActor->SetAllowFreezing( true );
 			m_pTarget = NULL;
 			return;
 		}
@@ -88,7 +90,7 @@ void CGI_GravityGun::Update( float dt )
 
 			vForce += m_vMuzzleEndVelocity;
 
-			m_pTarget->pPhysicsActor->SetVelocity( vForce );
+			m_pTarget->pPhysicsActor->SetLinearVelocity( vForce );
 
 /*			Vector3 vPos = m_pTarget->pPhysicsActor->GetPosition();
 			Vector3 vVel = m_pTarget->pPhysicsActor->GetVelocity();
@@ -132,8 +134,8 @@ void CGI_GravityGun::Update( float dt )
 
 void CGI_GravityGun::ReleaseObject()
 {
-	if( m_pTarget && m_pTarget->pPhysicsActor )
-		m_pTarget->pPhysicsActor->SetAllowFreezing( true );
+//	if( m_pTarget && m_pTarget->pPhysicsActor )
+//		m_pTarget->pPhysicsActor->SetAllowFreezing( true );
 
 	m_pTarget = NULL;
 }
@@ -157,11 +159,12 @@ bool CGI_GravityGun::GraspObjectInAimDirection()
 
 	if( tr.pTouchedEntity &&
 		tr.pTouchedEntity->EntityFlag & BETYPE_RIGIDBODY &&
-		!(tr.pTouchedEntity->pPhysicsActor->GetActorFlag() & JL_ACTOR_KINEMATIC) )
+//		!(tr.pTouchedEntity->pPhysicsActor->GetActorFlag() & JL_ACTOR_KINEMATIC) )
+		(tr.pTouchedEntity->pPhysicsActor->GetMass() < 1000000.0f ) )
 	{
 		// locked a target
 		m_pTarget = tr.pTouchedEntity;
-		m_pTarget->pPhysicsActor->SetAllowFreezing( false );
+//		m_pTarget->pPhysicsActor->SetAllowFreezing( false );
 		return true;
 	}
 	else
@@ -194,10 +197,10 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 
 					// shoot object
 //					m_pTarget->ApplyWorldImpulse( vImpulse, m_pTarget->Position() );
-					m_pTarget->pPhysicsActor->SetVelocity( vImpulse );
+					m_pTarget->pPhysicsActor->SetLinearVelocity( vImpulse );
 
 					// release object
-					m_pTarget->pPhysicsActor->SetAllowFreezing( true );
+//					m_pTarget->pPhysicsActor->SetAllowFreezing( true );
 					m_pTarget = NULL;
 					m_iHoldingTargetToggle = 0;
 					return true;

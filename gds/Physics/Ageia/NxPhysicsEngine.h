@@ -10,6 +10,9 @@
 #include "NxPhysics.h"
 
 
+#pragma comment( lib, "PhysXLoader.lib" )
+
+
 namespace physics
 {
 

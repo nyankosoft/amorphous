@@ -12,19 +12,29 @@ namespace physics
 
 class CBoxShapeDesc : public CShapeDesc
 {
+public:
+
 	/// holds radii of the box
-	Vector3 SideLength;
+	Vector3 vSideLength;
 
 public:
 
 	CBoxShapeDesc()
-	{
-		SetSideLength( Vector3(1,1,1) );
-	}
+		:
+	vSideLength(Vector3(1,1,1))
+	{}
 
 	~CBoxShapeDesc() {}
 
-	inline void SetSideLength( Vector3 vSideLength );	// lengths of the edges (radii)
+	unsigned int GetArchiveObjectID() const { return PhysShape::Box; }
+
+	virtual void Serialize( IArchive& ar, const unsigned int version )
+	{
+		CShapeDesc::Serialize( ar, version );
+
+		ar & vSideLength;
+	}
+
 
 /*	void GetDefaultLocalInertiaTensor( Matrix33 &matInertia, const Scalar fMass )
 	{
@@ -40,22 +50,7 @@ public:
 			                     0, _22,   0,
 								 0,   0, _33 );
 	}*/
-
-
-	unsigned int GetArchiveObjectID() const { return PhysShape::Box; }
-
-	virtual void Serialize( IArchive& ar, const unsigned int version )
-	{
-		CShapeDesc::Serialize( ar, version );
-
-		ar & SideLength;
-	}
 };
-
-
-//inline void CBoxShapeDesc::SetSideLength( Vector3 vSideLength ){}
-
-// lengths of the edges (full length)
 
 
 } // namespace physics

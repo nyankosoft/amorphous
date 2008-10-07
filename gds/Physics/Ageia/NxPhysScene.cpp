@@ -77,7 +77,13 @@ bool CNxPhysScene::Init( const CSceneDesc& desc )
 	return true;
 }
 
-	
+
+U32 CNxPhysScene::GetFlags() const
+{
+	return m_pScene->getFlags();
+}
+
+
 void CNxPhysScene::GetGravity( Vector3 &vec )
 {
 	NxVec3 dest;
@@ -131,7 +137,7 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 	NxActorDesc nx_actor_desc;
 	nx_actor_desc.globalPose      = ToNxMat34( desc.WorldPose );
 //	nx_actor_desc.???     = ToNxVec3( desc.vVelocity );
-	nx_actor_desc.density         = desc.Density;
+	nx_actor_desc.density         = desc.fDensity;
 	nx_actor_desc.group           = desc.CollisionGroup;
 //	nx_actor_desc.dominanceGroup  = desc.;
 	nx_actor_desc.userData        = NULL; //desc.;
@@ -146,7 +152,7 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 		nx_actor_desc.body                = &nx_body_desc;
 		nx_body_desc.massLocalPose        = ToNxMat34( desc.BodyDesc.MassLocalPose );
 //		nx_body_desc.massSpaceInertia     = 
-		nx_body_desc.mass                 = desc.BodyDesc.Mass;
+		nx_body_desc.mass                 = desc.BodyDesc.fMass;
 		nx_body_desc.linearVelocity       = ToNxVec3( desc.BodyDesc.LinearVelocity );
 		nx_body_desc.angularVelocity      = ToNxVec3( desc.BodyDesc.AngularVelocity );
 //		nx_body_desc.wakeUpCounter        =

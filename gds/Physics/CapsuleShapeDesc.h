@@ -16,12 +16,12 @@ class CCapsuleShapeDesc : public CShapeDesc
 {
 public:
 
-	Scalar Radius;
-	Scalar Length;
+	Scalar fRadius;
+	Scalar fLength;
 
 public:
 
-	CCapsuleShapeDesc() : Radius(1.0f), Length(1.0f) {}
+	CCapsuleShapeDesc() : fRadius(1.0f), fLength(1.0f) {}
 
 	virtual ~CCapsuleShapeDesc() {}
 
@@ -31,7 +31,7 @@ public:
 	{
 		CShapeDesc::Serialize( ar, version );
 
-		ar & Radius & Length;
+		ar & fRadius & fLength;
 	}
 
 

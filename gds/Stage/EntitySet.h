@@ -3,7 +3,7 @@
 
 
 #include "fwd.h"
-#include "JigLib/fwd.h"
+#include "Physics/fwd.h"
 
 #include "3DMath/aabb3.h"
 #include "CopyEntity.h"

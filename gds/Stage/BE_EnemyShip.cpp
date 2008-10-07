@@ -1,5 +1,4 @@
 #include "BE_EnemyShip.h"
-
 #include "GameMessage.h"
 #include "CopyEntity.h"
 #include "CopyEntityDesc.h"
@@ -8,7 +7,7 @@
 #include "PlayerInfo.h"
 
 #include "3DMath/MathMisc.h"
-#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
 #include "Item/ItemDatabaseManager.h"
 
 #include "GameCommon/MTRand.h"
@@ -20,6 +19,8 @@
 #include "Support/Log/DefaultLog.h"
 #include "Support/Log/StateLog.h"
 #include "Support/StringAux.h"
+
+using namespace physics;
 
 
 void CBEC_EnemyShipExtraData::Release()
@@ -39,9 +40,10 @@ CBE_EnemyShip::CBE_EnemyShip()
 
 	// register as no-clip to physics simulator
 	// and do the collision detection by itself
-	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
+	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
 
-	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
+//	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
+	m_ActorDesc.BodyDesc.Flags = BodyFlag::Kinematic;
 
 	m_bNoClipAgainstMap = true;
 }
@@ -87,8 +89,8 @@ void CBE_EnemyShip::InitCopyEntity(CCopyEntity* pCopyEnt)
 //	pseudo_sim.SetWorldPose( pCopyEnt->GetWorldPose() );
 //	pseudo_sim.SetForwardVelocity( pCopyEnt->Velocity() );
 
-	if( pCopyEnt->pPhysicsActor )
-		pCopyEnt->pPhysicsActor->SetAllowFreezing( false );
+//	if( pCopyEnt->pPhysicsActor )
+//		pCopyEnt->pPhysicsActor->SetAllowFreezing( false );
 
 	// random last fire time for each enemy
 	ex.m_dLastFireTime = m_pStage->GetElapsedTime() - RangedRand( 0.0f, 5.0f );
@@ -192,21 +194,6 @@ void CBE_EnemyShip::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 //		pseudo_sim.SetWorldPose( pCopyEnt->GetWorldPose() );
 		return;
 	}
-
-	CJL_PhysicsActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
-/*
-	pseudo_sim.Update( dt );
-
-//	ex.m_pAircraft->Update( dt );
-
-	// update the properties of copy entity & physics actor
-	pCopyEnt->SetWorldPose( pseudo_sim.GetWorldPose() );
-	pCopyEnt->SetVelocity( pseudo_sim.GetVelocity() );
-	pCopyEnt->fSpeed = Vec3Length( pCopyEnt->Velocity() );
-
-	pCopyEnt->pPhysicsActor->SetWorldPose( pseudo_sim.GetWorldPose() );
-	pCopyEnt->pPhysicsActor->SetVelocity( pseudo_sim.GetVelocity() );
-*/
 }
 
 

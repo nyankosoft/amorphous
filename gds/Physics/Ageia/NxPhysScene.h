@@ -30,7 +30,9 @@ public:
 	/// Returns true on success
 	virtual bool Init( const CSceneDesc& desc );
 
-	/// Get the scene flags. 
+	/// Get the scene flags.
+	// NOT IMPLEMENTED YET. Just calls NxScene::getFlags()
+	// TODO: define flags for physics module
 	virtual U32 GetFlags () const;
 
 	/// Get the simulation type. 

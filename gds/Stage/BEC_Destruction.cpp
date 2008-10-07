@@ -1,7 +1,7 @@
-
 #include "GameCommon/RandomDirectionTable.h"
 #include "GameCommon/MTRand.h"
-#include "JigLib/JL_PhysicsActor.h"
+//#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
 #include "Support/VectorRand.h"
 #include "Support/StringAux.h"
 #include "Support/Vec3_StringAux.h"
@@ -9,6 +9,8 @@
 #include "Stage/CopyEntity.h"
 #include "Stage/CopyEntityDesc.h"
 #include "Stage/Stage.h"
+
+using namespace physics;
 
 
 void CBEC_Destruction::CreateExplosion( CCopyEntity& entity, CStage *pStage )

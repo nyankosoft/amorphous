@@ -1,18 +1,16 @@
-#include "Stage.h"
-#include "BSPMap.h"
-#include "StaticGeometry.h"
-#include "StaticGeometryFG.h"
-#include "EntitySet.h"
-#include "trace.h"
-#include "ViewFrustumTest.h"
-
+#include "Stage/Stage.h"
+#include "Stage/BSPMap.h"
+#include "Stage/StaticGeometry.h"
+//#include "Stage/StaticGeometryFG.h"
+#include "Stage/EntitySet.h"
+#include "Stage/trace.h"
+#include "Stage/ViewFrustumTest.h"
 #include "Stage/CopyEntityDesc.h"
 #include "Stage/ScreenEffectManager.h"
-
+#include "Stage/SurfaceMaterialManager.h"
 #include "GameEvent/PyModules.h"
 #include "GameEvent/ScriptManager.h"
-
-//#include "Support/PrecisionTimer.h"
+#include "GameCommon/Timer.h"
 #include "Support/macro.h"
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"
@@ -20,15 +18,18 @@
 #include "Support/fnop.h"
 using namespace fnop;
 
-#include "GameCommon/Timer.h"
-
-#include "JigLib/JL_PhysicsManager.h"
-#include "JigLib/JL_PhysicsVisualizer_D3D.h"
-#include "JigLib/JL_SurfaceMaterial.h"
-
-#include "SurfaceMaterialManager.h"
+//#include "JigLib/JL_PhysicsManager.h"
+//#include "JigLib/JL_PhysicsVisualizer_D3D.h"
+//#include "JigLib/JL_SurfaceMaterial.h"
+#include "Physics/PhysicsEngine.h"
+#include "Physics/SceneDesc.h"
+#include "Physics/Scene.h"
+#include "Physics/MaterialDesc.h"
+#include "Physics/Material.h"
 
 #include "GameTextSystem/TextMessageManager.h"
+
+using namespace physics;
 
 
 void SetStageForScriptCallback( CStage* pStage )
@@ -40,8 +41,9 @@ void SetStageForScriptCallback( CStage* pStage )
 
 CStage::CStage()
 :
-m_pPhysicsManager(NULL),
-m_pPhysicsVisualizer(NULL),
+//m_pPhysicsManager(NULL),
+m_pPhysicsScene(NULL),
+//m_pPhysicsVisualizer(NULL),
 m_pMaterialManager(NULL),
 m_pScriptManager(NULL),
 m_pStaticGeometry(NULL),
@@ -72,26 +74,20 @@ m_pCamera(NULL)
 
 CStage::~CStage()
 {
-//	MsgBoxFmt( "deleting stage components...\n sg: %d, es: %d, sem: %d, em: %d, pm: %d, pv: %d",
-//		m_pStaticGeometry, m_pEntitySet, m_pScreenEffectManager, m_pScriptManager, m_pPhysicsManager, m_pPhysicsVisualizer );
+	LOG_FUNCTION_SCOPE();
 
 	SafeDelete( m_pTextMessageManager );
 	SafeDelete( m_pStaticGeometry );
 	SafeDelete( m_pEntitySet );
 	SafeDelete( m_pScreenEffectManager );
 	SafeDelete( m_pScriptManager );
-	SafeDelete( m_pPhysicsManager );
+//	SafeDelete( m_pPhysicsManager );
+	PhysicsEngine().ReleaseScene( m_pPhysicsScene );
 	SafeDelete( m_pMaterialManager );
 
-//	MsgBoxFmt( "deleting physics visualizer: %d", m_pPhysicsVisualizer );
-
-	SafeDelete( m_pPhysicsVisualizer );
-
-//	MsgBox( "physics visualizer deleted" );
+//	SafeDelete( m_pPhysicsVisualizer );
 
 	SafeDelete( m_pTimer );
-
-//	MsgBox( "end: CStage::~CStage()" );
 }
 
 
@@ -115,18 +111,21 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 bool CStage::InitPhysicsManager()
 {
 	// initialize physics manager
-	m_pPhysicsManager = new CJL_PhysicsManager;
-	m_pPhysicsManager->Init();
+//	m_pPhysicsManager = new CJL_PhysicsManager;
+//	m_pPhysicsManager->Init();
+	CSceneDesc phys_scene_desc;
+	m_pPhysicsScene = PhysicsEngine().CreateScene( phys_scene_desc );
 
 	// set pairs that don't collide with each other
-	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_STATICGEOMETRY,ENTITY_COLL_GROUP_STATICGEOMETRY, false );
+/*	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_STATICGEOMETRY,ENTITY_COLL_GROUP_STATICGEOMETRY, false );
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_PLAYER,		ENTITY_COLL_GROUP_ITEM, false );
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_DOOR,			ENTITY_COLL_GROUP_STATICGEOMETRY, false );
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_DOOR,			ENTITY_COLL_GROUP_DOOR, false );
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_PLAYER,		ENTITY_COLL_GROUP_PLAYER, false );
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_NOCLIP,		false );
+*/
 
-	m_pPhysicsVisualizer = new CJL_PhysicsVisualizer_D3D( m_pPhysicsManager );
+//	m_pPhysicsVisualizer = new CJL_PhysicsVisualizer_D3D( m_pPhysicsManager );
 
 //	MsgBoxFmt( "physics visualizer created: %d", m_pPhysicsVisualizer );
 
@@ -289,12 +288,12 @@ void CStage::ClipTrace(STrace& tr)
 		m_pEntitySet->ClipTrace( tr );
 }
 
-
+/*
 void CStage::ClipTrace( CJL_LineSegment& segment )
 {
 	m_pPhysicsManager->ClipLineSegment( segment );
 }
-
+*/
 
 //check if a bounding volume is in a valid position
 //if it is in a solid position, turn 'tr.in_solid' to 'true' and return
@@ -468,9 +467,10 @@ void CStage::ResumeTimer()
 }
 
 
-void CStage::ReleasePhysicsActor( CJL_PhysicsActor* pPhysicsActor )
+void CStage::ReleasePhysicsActor( CActor*& pPhysicsActor )
 {
-	m_pPhysicsManager->ReleaseActor( pPhysicsActor );
+//	m_pPhysicsManager->ReleaseActor( pPhysicsActor );
+	m_pPhysicsScene->ReleaseActor( pPhysicsActor );
 }
 
 
@@ -508,7 +508,7 @@ bool CStage::LoadMaterial( /* const string& material_filename */)
 //	string material_filename = m_strStageFilename;
 //	fnop::change_ext( material_filename, "mat" );
 
-	string material_filename = "Stage\\material.bin";
+	string material_filename = "./Stage/material.bin";
 
 	SafeDelete( m_pMaterialManager );
 
@@ -523,7 +523,7 @@ bool CStage::LoadMaterial( /* const string& material_filename */)
 	int i, iNumMaterials = m_pMaterialManager->GetNumMaterials();
 	for( i=0; i<iNumMaterials; i++ )
 	{
-		CJL_SurfaceMaterial phys_material;
+/*		CJL_SurfaceMaterial phys_material;
 
 		CSurfaceMaterial& src_material = m_pMaterialManager->GetSurfaceMaterial(i);
 
@@ -533,6 +533,10 @@ bool CStage::LoadMaterial( /* const string& material_filename */)
 		phys_material.fElasticity      = src_material.GetPhysicsMaterial().fElasticity;
 
 //		m_pPhysicsManager->SetMaterial( i, phys_material );
+*/
+
+		CMaterialDesc desc;
+		m_pPhysicsScene->CreateMaterial( desc );
 	}
 
 	return true;
@@ -637,11 +641,12 @@ void CStage::NotifyEntityTerminationToEventManager( CCopyEntity* pEntity )
 //	m_pScriptManager->OnCopyEntityDestroyed( pEntity );
 }
 
+/*
 CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
 {
 	return m_pPhysicsVisualizer;
 }
-
+*/
 
 /*
 void CStage::PlaySound3D( char* pcSoundName, Vector3& rvPosition )

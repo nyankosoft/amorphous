@@ -11,6 +11,34 @@ namespace physics
 {
 
 
+class ForceMode
+{
+public:
+	enum Mode
+	{
+		Force,
+		Impulse,
+		VelocityChange,
+		SmoothImpulse,
+		SmoothVelocityChange,
+		Acceleration,
+		NumModes
+	};
+};
+
+
+class ActorFlag
+{
+public:
+	enum Name
+	{
+		DISABLE_FREEZING = (1 << 0),
+		ANOTHER_FLAG     = (1 << 1),
+		YET_ANOTHER_FLAG = (1 << 2),
+	};
+};
+
+
 class BodyFlag
 {
 public:

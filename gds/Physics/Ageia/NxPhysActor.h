@@ -19,13 +19,13 @@ class CNxPhysActor : public CActor
 {
 	NxActor *m_pActor;
 
-	unsigned int m_ActorFlag;
+	unsigned int m_NxActorFlags;
 
 public:
 
-	CNxPhysActor( NxActor *pActor ) : m_pActor(pActor), m_ActorFlag(0) {}
+	CNxPhysActor( NxActor *pActor ) : m_pActor(pActor), m_NxActorFlags(0) {}
 
-	virtual ~CNxPhysActor();
+	virtual ~CNxPhysActor() {}
 
 	// see comment in source file about why not inline...
 	void SetWorldPosition(const Vector3 & pos) { m_pActor->setGlobalPosition( ToNxVec3(pos) ); }
@@ -154,6 +154,9 @@ public:
 */
 	/// allows Setting of whether this body ever freezes
 //	void SetAllowFreezing(bool allow);
+
+	virtual bool IsSleeping() { return m_pActor->isSleeping(); }
+	virtual void WakeUp() { m_pActor->wakeUp(); }
 
 	virtual void SetMaxAngularVelocity( Scalar max_ang_vel ) { m_pActor->setMaxAngularVelocity( max_ang_vel ); }
 	virtual Scalar GetMaxAngularVelocity() { return m_pActor->getMaxAngularVelocity(); }

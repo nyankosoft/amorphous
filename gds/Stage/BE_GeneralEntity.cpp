@@ -7,7 +7,7 @@
 #include "Stage.h"
 #include "Serialization_BaseEntityHandle.h"
 
-#include "JigLib/JL_PhysicsActor.h"
+#include "Physics/Actor.h"
 
 #include "Support/Log/DefaultLog.h"
 
@@ -36,7 +36,7 @@ void CBE_GeneralEntity::Init()
 {
 	Init3DModel();
 
-	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
+	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 //	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
 
 //	LoadBaseEntity( m_SmokeTrace );

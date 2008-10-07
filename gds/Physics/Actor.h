@@ -7,28 +7,13 @@
 #include "Support/SafeDeleteVector.h"
 
 #include "fwd.h"
+#include "Enums.h"
 #include "ActorDesc.h"
 #include "Shape.h"
 
 
 namespace physics
 {
-
-
-class ForceMode
-{
-public:
-	enum Mode
-	{
-		Force,
-		Impulse,
-		VelocityChange,
-		SmoothImpulse,
-		SmoothVelocityChange,
-		Acceleration,
-		NumModes
-	};
-};
 
 
 class CActor
@@ -200,6 +185,9 @@ public:
 */
 	/// allows Setting of whether this body ever freezes
 //	void SetAllowFreezing(bool allow);
+
+	virtual bool IsSleeping() = 0;
+	virtual void WakeUp() = 0;
 
 	virtual void SetMaxAngularVelocity( Scalar max_ang_vel ) = 0;
 	virtual Scalar GetMaxAngularVelocity() = 0;
