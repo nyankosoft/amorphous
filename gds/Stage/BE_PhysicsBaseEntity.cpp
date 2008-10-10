@@ -30,7 +30,7 @@ CBE_PhysicsBaseEntity::CBE_PhysicsBaseEntity()
 
 CBE_PhysicsBaseEntity::~CBE_PhysicsBaseEntity()
 {
-//	SafeDeleteVector( m_ActorDesc.vecpShapeDesc );
+	SafeDeleteVector( m_ActorDesc.vecpShapeDesc );
 }
 
 

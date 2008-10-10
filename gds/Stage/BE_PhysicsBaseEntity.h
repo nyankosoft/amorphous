@@ -13,9 +13,12 @@ protected:
 	physics::CActorDesc m_ActorDesc;
 
 public:
+
 	CBE_PhysicsBaseEntity();
 
 	virtual ~CBE_PhysicsBaseEntity();
+
+	const physics::CActorDesc& GetPhysicsActorDesc() { return m_ActorDesc; }
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 
@@ -24,7 +27,7 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	friend class CEntitySet;
-
 };
+
 
 #endif  /*  __BE_PHYSICSBASEENTITY_H__  */

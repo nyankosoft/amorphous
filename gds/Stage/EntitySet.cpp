@@ -766,12 +766,14 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	{
 //		CJL_PhysicsActorDesc& rActorDesc
 //			= ((CBE_PhysicsBaseEntity *)pNewCopyEnt->pBaseEntity)->m_ActorDesc;
-		CActorDesc actor_desc;
-		CActorDesc& rActorDesc = actor_desc;
-		rActorDesc.WorldPose.vPosition = pNewCopyEnt->Position();
-		rActorDesc.BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
-		pNewCopyEnt->GetOrientation( rActorDesc.WorldPose.matOrient );
-		pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( rActorDesc );
+		CActorDesc actor_desc = pBaseEntity->GetPhysicsActorDesc();
+		if( actor_desc.IsValid() )
+		{
+			actor_desc.WorldPose.vPosition = pNewCopyEnt->Position();
+			actor_desc.BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
+			pNewCopyEnt->GetOrientation( actor_desc.WorldPose.matOrient );
+			pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+		}
 	}
 
 	// When all the basic properties are copied, InitCopyEntity() is called to 

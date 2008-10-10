@@ -567,13 +567,19 @@ physics::CActor *CStaticGeometry::CreateCollisionGeometry( physics::CScene& phys
 	}
 
 	physics::CStream collision_geometry_stream;
-	db.GetData( CStaticGeometryDBKey::CollisionGeometryStream, collision_geometry_stream );
+	bool retrieved = db.GetData( CStaticGeometryDBKey::CollisionGeometryStream, collision_geometry_stream );
 
-	/*
+	if( !retrieved )
+	{
+		LOG_PRINT_ERROR( " - Collision geometry stream was not found in the database: " + db_filename );
+		return NULL;
+	}
+
+/*
 	physics::CTriangleMeshShapeDesc desc;
 
 	desc.pTriangleMesh
-		= PhysicsEngine.CreateTriangleMesh( collision_geometry_stream );
+		= PhysicsEngine().CreateTriangleMesh( collision_geometry_stream );
 
 	physics::CActorDesc actor_desc;
 	

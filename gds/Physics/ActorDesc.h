@@ -57,7 +57,7 @@ public:
 	inline void SetDefault()
 	{
 		WorldPose.Identity();
-		fDensity = 0;
+		fDensity = 1.0f;
 //		BodyDesc = ???;
 		ActorFlags = 0;
 //		bAllowFreezing = true;
@@ -80,6 +80,11 @@ public:
 		CShapeDescFactory shapedesc_factory;
 
 		ar.Polymorphic( vecpShapeDesc, shapedesc_factory );
+	}
+
+	inline bool IsValid()
+	{
+		return ( 0 < vecpShapeDesc.size() );
 	}
 };
 

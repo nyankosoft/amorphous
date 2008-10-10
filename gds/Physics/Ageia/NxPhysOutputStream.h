@@ -21,7 +21,7 @@ class CNxPhysOutputStream : public NxUserOutputStream
 		if ( code < NXE_DB_INFO )
 			g_Log.Print( WL_ERROR, "AGEIA PhysX Error: [%s(%d)] %s", file, line, message );
 
-		exit(1);
+//		exit(1);
 	}
 
 	NxAssertResponse reportAssertViolation (const char *message, const char *file, int line)

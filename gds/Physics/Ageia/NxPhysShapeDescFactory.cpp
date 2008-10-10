@@ -22,6 +22,7 @@ NxShapeDesc *CNxPhysShapeDescFactory::CreateNxShapeDesc( CShapeDesc &src_desc )
 			CBoxShapeDesc *pSrcBoxDesc = dynamic_cast<CBoxShapeDesc *>(&src_desc);
 			NxBoxShapeDesc *pDesc = new NxBoxShapeDesc();
 			pDesc->dimensions = ToNxVec3( pSrcBoxDesc->vSideLength );
+			//pDesc->mass = src_desc.???
 			return pDesc;
 		}
 		break;

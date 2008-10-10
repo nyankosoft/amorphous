@@ -7,6 +7,7 @@
 
 #include "fwd.h"
 #include "3DCommon/fwd.h"
+#include "Physics/fwd.h"
 
 #include "EntityGroupHandle.h"
 #include "3DMath/aabb3.h"
@@ -293,6 +294,9 @@ public:
 	{
 		int pass = 1;
 	}
+
+	/// implemented by physics base entity
+	virtual const physics::CActorDesc& GetPhysicsActorDesc();
 
 	virtual void AdaptToNewScreenSize() {}
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );

@@ -76,6 +76,9 @@ CStage::~CStage()
 {
 	LOG_FUNCTION_SCOPE();
 
+//	for( size_t i=0; i<num; i++ )
+///		m_pPhysicsScene->ReleaseMaterial();
+
 	SafeDelete( m_pTextMessageManager );
 	SafeDelete( m_pStaticGeometry );
 	SafeDelete( m_pEntitySet );
@@ -519,24 +522,22 @@ bool CStage::LoadMaterial( /* const string& material_filename */)
 	if( !b )
 		return false;
 
+	vector<physics::CMaterial *> vecpMaterial;
+
 	// register materials to physics simulator
 	int i, iNumMaterials = m_pMaterialManager->GetNumMaterials();
+	vecpMaterial.resize( iNumMaterials );
 	for( i=0; i<iNumMaterials; i++ )
 	{
-/*		CJL_SurfaceMaterial phys_material;
-
 		CSurfaceMaterial& src_material = m_pMaterialManager->GetSurfaceMaterial(i);
 
-		phys_material.SetDefault();
-		phys_material.fStaticFriction  = src_material.GetPhysicsMaterial().fStaticFriction;
-		phys_material.fDynamicFriction = src_material.GetPhysicsMaterial().fDynamicFriction;
-		phys_material.fElasticity      = src_material.GetPhysicsMaterial().fElasticity;
-
-//		m_pPhysicsManager->SetMaterial( i, phys_material );
-*/
-
 		CMaterialDesc desc;
-		m_pPhysicsScene->CreateMaterial( desc );
+		desc.SetDefault();
+		desc.StaticFriction  = src_material.GetPhysicsMaterial().fStaticFriction;
+		desc.DynamicFriction = src_material.GetPhysicsMaterial().fDynamicFriction;
+		desc.Restitution     = src_material.GetPhysicsMaterial().fElasticity;
+
+		vecpMaterial[i] = m_pPhysicsScene->CreateMaterial( desc );
 	}
 
 	return true;

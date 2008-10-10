@@ -1,4 +1,3 @@
-
 #include "BaseEntity.h"
 #include "CopyEntity.h"
 #include "CopyEntityDesc.h"
@@ -26,6 +25,8 @@
 #include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/msgbox.h"
+
+#include "Physics/ActorDesc.h"
 
 using namespace std;
 
@@ -294,10 +295,17 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 }
 
 
+const physics::CActorDesc& CBaseEntity::GetPhysicsActorDesc()
+{
+	static physics::CActorDesc empty_desc;
+	return empty_desc;
+}
+
+
 // 'rTrace' is given in world coord
 void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 {
-	ProfileBegin( "CBaseEntity::ClipTrace()" );
+	PROFILE_FUNCTION();
 
 	STrace local_trace = rTrace;
 	Vector3 vS, vG;
@@ -374,8 +382,6 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 
 		break;	/* case BVTYPE_OBB: */
 	}
-
-	ProfileEnd( "CBaseEntity::ClipTrace()" );
 }
 
 

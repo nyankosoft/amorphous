@@ -171,7 +171,7 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 	{
 		// non-static actor - set body desc
 		nx_actor_desc.body                = &nx_body_desc;
-		nx_body_desc.massLocalPose        = ToNxMat34( desc.BodyDesc.MassLocalPose );
+//		nx_body_desc.massLocalPose        = ToNxMat34( desc.BodyDesc.MassLocalPose );
 //		nx_body_desc.massSpaceInertia     = 
 		nx_body_desc.mass                 = desc.BodyDesc.fMass;
 		nx_body_desc.linearVelocity       = ToNxVec3( desc.BodyDesc.LinearVelocity );
@@ -191,8 +191,8 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
  
 
 	CNxPhysShapeDescFactory desc_factory;
-	vector<NxShapeDesc *> vecpNxShapeDesc;
-	for( size_t i=0; i<nx_actor_desc.shapes.size(); i++ )
+//	vector<NxShapeDesc *> vecpNxShapeDesc;
+	for( size_t i=0; i<desc.vecpShapeDesc.size(); i++ )
 	{
 		nx_actor_desc.shapes.push_back( desc_factory.CreateNxShapeDesc( *(desc.vecpShapeDesc[i]) ) );
 //		nx_actor_desc.shapes.push_back = vecpNxShapeDesc[i];
@@ -201,7 +201,10 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 	// create an actor of ageia physics
 	NxActor *pNxActor = m_pScene->createActor( nx_actor_desc );
 
-	SafeDeleteVector( vecpNxShapeDesc );
+	for( unsigned int i=0; i<nx_actor_desc.shapes.size(); i++ )
+		SafeDelete( nx_actor_desc.shapes[i] );
+
+//	SafeDeleteVector( vecpNxShapeDesc );
 
 	if( !pNxActor )
 	{
