@@ -1,14 +1,9 @@
-
+#include "BE_Floater.h"
+#include "BE_Turret.h"
 #include "GameMessage.h"
 #include "CopyEntity.h"
 #include "trace.h"
 #include "Stage.h"
-
-#include "BE_Turret.h"
-#include "BE_Floater.h"
-
-#include "../3DCommon/fps.h"
-
 #include "Sound/SoundManager.h"
 
 
@@ -27,7 +22,7 @@ void CBE_Floater::InitCopyEntity(CCopyEntity* pCopyEnt)
 {
 	CBE_Enemy::InitCopyEntity(pCopyEnt);
 
-	pCopyEnt->vVelocity = D3DXVECTOR3(0,0,0);
+	pCopyEnt->vVelocity = Vector3(0,0,0);
 
 }
 
@@ -40,6 +35,8 @@ void CBE_Floater::SearchManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 	float& rfTotalManeuverTime       = pExtraData->fTotalManeuverTime;
 	Vector3& rvManeuverDir       = pExtraData->vManeuverDirection;
 	float fWishSpeed = 6.0f;
+
+	const float frametime = m_pStage->GetFrameTime();
 
 //	if( pCopyEnt->vVelocity == Vector3(0,0,0) )
 //		return;
@@ -68,7 +65,7 @@ void CBE_Floater::SearchManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 			Vec3Normalize( rvManeuverDir, rvManeuverDir );
 		}
 		else
-			rfCurrentManeuverTime += FPS.GetFrameTime();
+			rfCurrentManeuverTime += frametime;
 
 		if( 0.16f < rfSensoringInterval2 )
 		{
@@ -76,7 +73,7 @@ void CBE_Floater::SearchManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 			Vec3Normalize( rvManeuverDir, vFromCurrentPosToDest );
 		}
 		else
-			rfSensoringInterval2 += FPS.GetFrameTime();
+			rfSensoringInterval2 += frametime;
 
 		if( 0.1f < rfTotalManeuverTime - rfCurrentManeuverTime )
 		{
@@ -122,7 +119,7 @@ void CBE_Floater::AttackManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 		Vec3Normalize( rvManeuverDir, rvManeuverDir );
 	}
 	else
-		rfCurrentManeuverTime += FPS.GetFrameTime();
+		rfCurrentManeuverTime += m_pStage->GetFrameTime();
 
 	if( 0.5f < rfTotalManeuverTime - rfCurrentManeuverTime )
 	{
@@ -139,14 +136,14 @@ void CBE_Floater::AttackManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 		tr.aabb   = this->m_aabb;
 		tr.pSourceEntity = pCopyEnt;
 		tr.pvStart       = &pCopyEnt->Position();
-		D3DXVECTOR3 vGoal = pCopyEnt->Position() + pCopyEnt->vVelocity * 1.2f;
+		Vector3 vGoal = pCopyEnt->Position() + pCopyEnt->vVelocity * 1.2f;
 		tr.pvGoal        = &vGoal;
 		tr.SetAABB();
 		m_pStage->ClipTrace(tr);
 		// since the entity is heading for some obstacle, correct the velocity to avoid it
 		if( tr.fFraction < 1.0f )
 		{
-			pCopyEnt->vVelocity += tr.plane.normal * (1.0f - tr.fFraction ) * 3.0f; // FPS.GetFrameTime();
+			pCopyEnt->vVelocity += tr.plane.normal * (1.0f - tr.fFraction ) * 3.0f; // m_pStage->GetFrameTime();
 		}
 	}
 

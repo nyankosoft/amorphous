@@ -21,28 +21,28 @@ public:
 	
 	virtual ~CEnemyState();
 
-	virtual void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity ) = 0;
+	virtual void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt ) = 0;
 };
 
 
 class CES_Search : public CEnemyState
 {
 public:
-	void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity );
+	void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt );
 };
 
 
 class CES_Attack : public CEnemyState
 {
 public:
-	void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity );
+	void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt );
 };
 
 
 class CES_UnderAttack : public CEnemyState
 {
 public:
-	void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity );
+	void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt );
 };
 
 

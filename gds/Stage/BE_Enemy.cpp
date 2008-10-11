@@ -186,7 +186,7 @@ void CBE_Enemy::Act(CCopyEntity* pCopyEnt)
 	else
 	{
         short& rsCurrentState = pCopyEnt->s1;
-		m_apEnemyState[rsCurrentState]->Act( *pCopyEnt, *this );
+		m_apEnemyState[rsCurrentState]->Act( *pCopyEnt, *this, (float)m_pStage->GetElapsedTime() );
 	}
 }
 

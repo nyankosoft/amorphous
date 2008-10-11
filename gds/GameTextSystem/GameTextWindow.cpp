@@ -1,8 +1,8 @@
 #include "GameTextWindow.h"
 #include "GameTextSystem.h"
+#include "GameCommon/Timer.h"
 
 #include "../3DCommon/Direct3D9.h"
-#include "../3DCommon/fps.h"
 #include "../Support/memory_helpers.h"
 
 #include "App/GameWindowManager_Win32.h"
@@ -107,7 +107,7 @@ void CGameTextWindow::Render(int iInput)
 	if( m_iCurrentState == STATE_WAITING_USER_RESPONSE )
 		return;
 
-	m_fNumCharsForCurrentLine += FPS.GetFrameTime() * 35.0f;
+	m_fNumCharsForCurrentLine += TIMER.GetFrameTime() * 35.0f;
 
 	// draw proceeding lines and respond to events
 	bool bBreakLoop = false;

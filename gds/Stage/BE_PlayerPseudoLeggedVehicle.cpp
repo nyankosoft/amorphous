@@ -3,7 +3,6 @@
 #include "EntitySet.h"
 #include "CopyEntityDesc.h"
 #include "Stage.h"
-#include "3DCommon/fps.h"
 #include "Input/InputHandler_PlayerShip.h"
 #include "Item/WeaponSystem.h"
 #include "Stage/ScreenEffectManager.h"
@@ -235,11 +234,9 @@ void CBE_PlayerPseudoLeggedVehicle::Move( CCopyEntity *pCopyEnt )
 	// If player is in solid, try to get out of there.
 //	NudgePosition( pCopyEnt );
 
-	float fFrameTime;
-	if( 0.03125f < FPS.GetFrameTime() )
+	float fFrameTime = m_pStage->GetFrameTime();
+	if( 0.03125f < fFrameTime )
 		fFrameTime = 0.03125f;	// don't use frametime directly when if it's too large ( 32 < FPS )
-	else
-		fFrameTime = FPS.GetFrameTime();
 
 	// there used to be some jump-related code here
 

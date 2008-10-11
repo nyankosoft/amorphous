@@ -1,7 +1,6 @@
 #include "BE_PlayerShip.h"
 #include "EntitySet.h"
 #include "Stage.h"
-#include "../3DCommon/fps.h"
 //#include "../Game_Common/WeaponSystem.h"
 //#include "../Stage/ScreenEffectManager.h"
 //#include "GameMessage.h"
@@ -15,7 +14,7 @@
 
 void CBE_PlayerShip::MoveEx(CCopyEntity *pEntity)
 {
-	float fFrameTime = FPS.GetFrameTime();
+	float fFrameTime = m_pStage->GetFrameTime();
 
 	ApplyFriction( pEntity, 3.2f );
 

@@ -14,7 +14,6 @@
 #include "GameCommon/GameStageFrameworkGlobalParams.h"
 #include "GameCommon/MouseCursor.h"
 
-#include "3DCommon/fps.h"
 #include "3DCommon/GraphicsResourceManager.h"
 #include "3DCommon/LogOutput_OnScreen.h"
 #include "Task/GameTaskManager.h"
@@ -298,9 +297,6 @@ void CApplicationBase::Execute()
         }
         else
 		{
-			// update FPS timer (old)
-			FPS.UpdateFPS();
-
 			// update the timer
 			TIMER.UpdateFrameTime();
 

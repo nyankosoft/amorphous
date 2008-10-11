@@ -1,9 +1,7 @@
-// #include "../3DCommon/fps.h" - including "fps.h" first causes errors
+#include "EnemyState.h"
 #include "BE_Enemy.h"
 #include "CopyEntity.h"
-#include "EnemyState.h"
 
-#include "../3DCommon/fps.h"
 
 CEnemyState::CEnemyState()
 {
@@ -18,7 +16,7 @@ CEnemyState::~CEnemyState()
 // CES_Search::Act()
 //===============================================================================================
 
-void CES_Search::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
+void CES_Search::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt )
 {
 	// first, get the extra data of 'pCopyEnt'
 	SBE_EnemyExtraData* pExtraData = rBaseEntity.GetExtraData( rEntity.iExtraDataIndex );
@@ -28,7 +26,7 @@ void CES_Search::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
 	Vector3& rvDesiredDirection  = rEntity.v1;
 	float fSqDistToPlayer;
 
-	rfSensoringInterval += FPS.GetFrameTime();
+	rfSensoringInterval += dt;
 
 	if( 0.32f <= rfSensoringInterval )
 	{
@@ -65,7 +63,7 @@ void CES_Search::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
 // CES_Attack::Act()
 //===============================================================================================
 
-void CES_Attack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
+void CES_Attack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt )
 {
 	// first, get the extra data of 'pCopyEnt'
 	SBE_EnemyExtraData* pExtraData = rBaseEntity.GetExtraData( rEntity.iExtraDataIndex );
@@ -75,7 +73,7 @@ void CES_Attack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
 	Vector3& rvDesiredDirection  = rEntity.v1;
 	float fSqDistToPlayer;
 
-	rfSensoringInterval += FPS.GetFrameTime();
+	rfSensoringInterval += dt;
 
 	if( 0.16f <= rfSensoringInterval )
 	{
@@ -108,7 +106,7 @@ void CES_Attack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
 }
 
 
-void CES_UnderAttack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
+void CES_UnderAttack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt )
 {
 	// first, get the extra data of 'pCopyEnt'
 	SBE_EnemyExtraData* pExtraData = rBaseEntity.GetExtraData( rEntity.iExtraDataIndex );
@@ -124,7 +122,7 @@ void CES_UnderAttack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity)
 		pExtraData->vLastHitFromThisDirection = Vector3(0,0,0);
 	}
 
-	rfSensoringInterval += FPS.GetFrameTime();
+	rfSensoringInterval += dt;
 	if( 0.16f <= rfSensoringInterval )
 	{
 		rfSensoringInterval = 0;

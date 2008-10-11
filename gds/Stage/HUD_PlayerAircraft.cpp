@@ -123,7 +123,7 @@ void HUD_PlayerAircraft::Init()
 	pElementMgr->CreateRect( RectLTRB( x-r, y-w, x+r, y+w ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
 	pElementMgr->CreateRect( RectLTRB( x-w, y-r, x+w, y+r ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
 
-	pElementMgr->LoadFont( GLOBAL_FONT_INDEX, "./Texture/HGGE_16x8_256.dds", CFontBase::FONTTYPE_TEXTURE, 30, 40 );
+	pElementMgr->LoadFont( GLOBAL_FONT_INDEX, "./Texture/BitstreamVeraSansMono_Bold.dds", CFontBase::FONTTYPE_TEXTURE, 30, 40 );
 
 	// text for time display
 	m_pTimeText = pElementMgr->CreateTextBox( 0, "", RectAtRightTop( 200, 50, 50, 32 ),

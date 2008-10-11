@@ -235,14 +235,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FPS.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\3DCommon\FPS.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\3DCommon\FVF_BumpVertex.h"
 				>
 			</File>

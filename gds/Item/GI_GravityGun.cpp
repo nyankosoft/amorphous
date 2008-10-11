@@ -94,7 +94,7 @@ void CGI_GravityGun::Update( float dt )
 
 /*			Vector3 vPos = m_pTarget->pPhysicsActor->GetPosition();
 			Vector3 vVel = m_pTarget->pPhysicsActor->GetVelocity();
-			SmoothCD( vPos, vPos + vDist, vVel, 0.25f, FPS.GetFrameTime() );
+			SmoothCD( vPos, vPos + vDist, vVel, 0.25f, dt );
 
 			if( 12.0f * 12.0f < Vec3LengthSq(vVel) )
 			{
