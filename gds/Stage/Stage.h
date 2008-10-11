@@ -40,6 +40,8 @@ class CStage
 
 	CSurfaceMaterialManager *m_pMaterialManager;
 
+	vector<physics::CMaterial *> m_vecpMaterial;
+
 	/// manages scripted events
 	CScriptManager *m_pScriptManager;
 
