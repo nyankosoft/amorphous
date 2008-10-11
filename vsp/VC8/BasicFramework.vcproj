@@ -2239,14 +2239,6 @@
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
-							ExcludedFromBuild="true"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -2293,13 +2285,6 @@
 					<File
 						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.cpp"
 						>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.h"
