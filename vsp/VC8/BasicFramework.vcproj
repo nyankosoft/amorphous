@@ -1879,6 +1879,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\gds\Physics\Preprocessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Physics\Preprocessor.h"
 				>
 				<FileConfiguration
@@ -2243,7 +2247,6 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
-							ExcludedFromBuild="true"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -2291,15 +2294,7 @@
 						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.cpp"
 						>
 						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
-						<FileConfiguration
 							Name="Release|Win32"
-							ExcludedFromBuild="true"
 							>
 							<Tool
 								Name="VCCLCompilerTool"

@@ -43,6 +43,8 @@ public:
 */
 class CPhysicsEngine
 {
+	std::string m_Name;
+
 	CPhysicsEngineImpl *m_pEngine;
 
 protected:
@@ -61,6 +63,8 @@ public:
 
 	/// returns true on success
 	bool Init( const std::string& physics_engine = "AgeiaPhysX" );
+
+	const std::string& GetName() const { return m_Name; }
 
 	inline CScene *CreateScene( CSceneDesc& desc ) { return m_pEngine->CreateScene( desc ); }
 

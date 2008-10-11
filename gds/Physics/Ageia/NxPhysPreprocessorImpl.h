@@ -2,11 +2,19 @@
 #define  __NxPhysPreprocessor_H__
 
 
+// PhysX header(s)
+#include "PhysXLoader.h"
+
+// my library headers
 #include "3DMath/precision.h"
 #include "Support/Log/DefaultLog.h"
 
 #include "fwd.h"
-#include "../CPreprocessor.h"
+#include "NxPhysOutputStream.h"
+#include "../Preprocessor.h"
+
+
+//#pragma comment( lib, "NxCooking.lib" )
 
 
 namespace physics
@@ -16,6 +24,8 @@ namespace physics
 class CNxPhysPreprocessorImpl : public CPreprocessorImpl
 {
 	NxCookingInterface *m_pCooking;
+
+	CNxPhysOutputStream m_ErrorStream;
 
 public:
 

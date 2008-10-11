@@ -31,7 +31,8 @@ bool CNxPhysicsEngine::Init()
 {
 	// Initialize PhysicsSDK
 //	m_pPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION, 0, NULL);
-	m_pPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION, 0, &m_ErrorStream);
+//	m_pPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION, 0, &m_ErrorStream);
+	m_pPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION, 0, &NxPhysOutputStream() );
 
 	if(!m_pPhysicsSDK)
 		return false;

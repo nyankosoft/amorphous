@@ -1,24 +1,41 @@
-
 #include "NxPhysPreprocessorImpl.h"
 #include "NxMathConv.h"
+#include "NxPhysStream.h"
+#include "../TriangleMeshDesc.h"
+
+// PhysX header
+#include "NxCooking.h"
+
+#include "Support/SafeDelete.h"
+
+using namespace physics;
 
 
 bool CNxPhysPreprocessorImpl::Init()
 {
+	LOG_FUNCTION_SCOPE();
+
 	m_pCooking = NxGetCookingLib(NX_SDK_VERSION_NUMBER);
-	m_pCooking->NxInitCooking();
+
+	LOG_PRINT( " Created an instance of NxCookingInterface: " );
+
+	bool initialized = m_pCooking->NxInitCooking( 0, &NxPhysOutputStream() );
+
+	return initialized;
 }
 
 
 CNxPhysPreprocessorImpl::~CNxPhysPreprocessorImpl()
 {
-	SafeDelete( m_pCooking );
+//	SafeDelete( m_pCooking );
 }
 
 
 void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_desc,
 													    CStream& phys_stream )
 {
+	LOG_FUNCTION_SCOPE();
+
 	size_t i;
 
 	SetPhysicsEngineName( phys_stream );
@@ -47,8 +64,8 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 	NxTriangleMeshDesc meshDesc;
 
-	meshDesc.numVertices                = num_verts;
-	meshDesc.numTriangles               = num_triangles;
+	meshDesc.numVertices                = (NxU32)num_verts;
+	meshDesc.numTriangles               = (NxU32)num_triangles;
 
 	meshDesc.pointStrideBytes           = sizeof(NxVec3);
 	meshDesc.triangleStrideBytes        = 3*sizeof(NxU32);
@@ -60,5 +77,8 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 	meshDesc.flags                      = 0;
 
-	m_pCooking->NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
+	{
+		LOG_SCOPE( "NxCookingInterface::NxCookTriangleMesh()" );
+		m_pCooking->NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
+	}
 }

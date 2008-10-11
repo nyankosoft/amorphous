@@ -19,20 +19,24 @@ bool CPhysicsEngine::Init( const std::string& physics_engine )
 	}
 	else if( physics_engine == "JigLib" )
 	{
-		LOG_PRINT_ERROR( " - JigLib physics engine - not implemented." );
+		LOG_PRINT_ERROR( " JigLib physics engine - not implemented." );
 //		m_pEngine = new CJigLibPhysicsEngine();
 //		PhysShapeDescImplFactoryHolder.Init(  );
 		return false;
 	}
 	else
 	{
-		LOG_PRINT_ERROR( " - Invalid physics engine name: " + physics_engine );
+		LOG_PRINT_ERROR( " Invalid physics engine name: " + physics_engine );
 		return false;
 	}
 
-	m_pEngine->Init();
+	m_Name = physics_engine;
 
-	return true;
+	bool initialized = m_pEngine->Init();
+	if( !initialized )
+		LOG_PRINT_ERROR( " Failed to initialize the physics engine: " + physics_engine );
+
+	return initialized;
 }
 
 

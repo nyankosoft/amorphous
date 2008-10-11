@@ -4,7 +4,6 @@
 
 #include <string>
 #include "3DMath/precision.h"
-#include "Support/Log/DefaultLog.h"
 #include "Support/Singleton.h"
 using namespace NS_KGL;
 
@@ -14,9 +13,6 @@ using namespace NS_KGL;
 
 namespace physics
 {
-
-
-#define PhysPreprocessor ( (*CPreprocessor::Get()) )
 
 
 class CPreprocessorImpl
@@ -33,10 +29,13 @@ public:
 
 	virtual bool Init() = 0;
 
+	/// [in] desc
+	/// [out] 
 	virtual void CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream ) = 0;
 
 	virtual const char *GetPhysicsEngineName() const = 0;
 };
+
 
 //=========================== inline implementations ===========================
 
@@ -46,9 +45,22 @@ inline void CPreprocessorImpl::SetPhysicsEngineName( CStream& phys_stream )
 }
 
 
+/**
+  singleton
+  - Call physics::PhysicsEngine().Init( physics_engine_name ) in advance
+    to access the preprocessor singleton of a particular physics engine.
+  - TODO: support different preprocessors of different physics engine during runtime
+
+*/
 class CPreprocessor
 {
 	CPreprocessorImpl *m_pImpl;
+
+private:
+
+	/// returns true on success
+	/// - called in ctor
+	bool Init();
 
 protected:
 
@@ -60,14 +72,11 @@ public:
 
 public:
 
-	CPreprocessor() : m_pImpl(NULL) {}
+	CPreprocessor();
 
 	virtual ~CPreprocessor() { Release(); }
 
 	void Release();
-
-	/// returns true on success
-	bool Init( const std::string& physics_engine );
 
 	inline void CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream );
 
@@ -75,40 +84,16 @@ public:
 };
 
 
-bool CPreprocessor::Init( const std::string& physics_engine )
-{
-	SafeDelete( m_pImpl );
-
-	if( physics_engine == "AgeiaPhysX" )
-	{
-		m_pImpl = new CNxPhysicsPreprocessor();
-	}
-/*	else if( physics_engine == "JigLib" )
-	{
-		m_pImpl = new CJigLibPhysicsEngine();
-	}*/
-	else
-	{
-		LOG_PRINT_ERROR( "invalid physics engine name: " + physics_engine );
-		return false;
-	}
-
-	m_pImpl->Init();
-
-	return true;
-}
-
-
-void CPreprocessor::Release()
-{
-	SafeDelete( m_pImpl );
-}
-
-
 inline void CPreprocessor::CreateTriangleMeshStream( CTriangleMeshDesc& desc,
-													     PhysStream& phys_stream )
+													 CStream& phys_stream )
 {
 	m_pImpl->CreateTriangleMeshStream( desc, phys_stream );
+}
+
+
+inline CPreprocessor& Preprocessor()
+{
+	return (*CPreprocessor::Get());
 }
 
 

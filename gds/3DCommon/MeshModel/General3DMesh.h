@@ -100,17 +100,13 @@ public:
 
 	void SetVertexFormatFlags( unsigned int flags ) { m_VertexFormatFlag = flags; }
 
-	inline void UpdatePolygonBuffer()
-	{
-		size_t i, num_pols = m_vecPolygon.size();
-		for( i=0; i<num_pols; i++ )
-		{
-			m_vecPolygon[i].UpdateAABB();
-			m_vecPolygon[i].UpdatePlane();
-		}
-	}
+	inline void UpdatePolygonBuffer();
 
-	void Append( CGeneral3DMesh& mesh );
+	inline void GetIndexedTriangles( std::vector<Vector3>& vecVertex,
+		                             std::vector<int>& vecIndex,
+		                             std::vector<int>& vecMaterialIndex );
+
+//	void Append( CGeneral3DMesh& mesh );
 
 	friend class C3DModelLoader;
 };
@@ -140,6 +136,49 @@ inline int CGeneral3DMesh::GetMaterialIndexFromName( const std::string& material
 }
 
 
+inline void CGeneral3DMesh::UpdatePolygonBuffer()
+{
+	size_t i, num_pols = m_vecPolygon.size();
+	for( i=0; i<num_pols; i++ )
+	{
+		m_vecPolygon[i].UpdateAABB();
+		m_vecPolygon[i].UpdatePlane();
+	}
+}
+
+
+inline void CGeneral3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex,
+		                                         std::vector<int>& vecIndex,
+		                                         std::vector<int>& vecMaterialIndex )
+{
+	std::vector<CIndexedPolygon> triangulated_polygon_buffer;
+	Triangulate( triangulated_polygon_buffer, m_vecPolygon );
+
+	// copy vertices
+	const size_t num_vertices = m_pVertexBuffer->size();
+	vecVertex.resize( num_vertices );
+	for( size_t i=0; i<num_vertices; i++ )
+	{
+		vecVertex[i] = (*m_pVertexBuffer)[i].m_vPosition;
+	}
+
+	// copy triangle and material indices
+	const size_t num_triangles = triangulated_polygon_buffer.size();
+	vecIndex.resize( num_triangles * 3 );
+	vecMaterialIndex.resize( num_triangles );
+	for( size_t i=0; i<num_triangles; i++ )
+	{
+		CIndexedPolygon& triangle = triangulated_polygon_buffer[i];
+		vecIndex[i*3  ] = triangle.m_index[0];
+		vecIndex[i*3+1] = triangle.m_index[1];
+		vecIndex[i*3+2] = triangle.m_index[2];
+
+		vecMaterialIndex[i] = triangle.m_MaterialIndex;
+	}
+}
+
+
+
 inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
 {
 	boost::shared_ptr<CGeneral3DMesh> pMesh
@@ -147,6 +186,5 @@ inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
 
 	return pMesh;
 }
-
 
 #endif /* __General3DMesh_H__ */

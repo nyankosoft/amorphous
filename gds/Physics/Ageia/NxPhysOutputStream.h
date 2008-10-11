@@ -41,6 +41,14 @@ class CNxPhysOutputStream : public NxUserOutputStream
 };
 
 
+/// singleton
+inline CNxPhysOutputStream &NxPhysOutputStream()
+{
+	static CNxPhysOutputStream output_stream;
+	return output_stream;
+}
+
+
 } // namespace physics
 
 

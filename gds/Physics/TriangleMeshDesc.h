@@ -6,6 +6,7 @@
 #include "3DMath/Vector3.h"
 
 #include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization_3DMath.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
 using namespace GameLib1::Serialization;
 

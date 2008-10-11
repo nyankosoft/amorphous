@@ -23,19 +23,19 @@ public:
 
 	inline virtual              ~CNxPhysStream();
 
-	virtual     NxU8            readByte()                              const;
-	virtual     NxU16           readWord()                              const;
-	virtual     NxU32           readDword()                             const;
-	virtual     float           readFloat()                             const;
-	virtual     double          readDouble()                            const;
-	virtual     void            readBuffer(void* buffer, NxU32 size)    const;
+	inline virtual     NxU8            readByte()                              const;
+	inline virtual     NxU16           readWord()                              const;
+	inline virtual     NxU32           readDword()                             const;
+	inline virtual     float           readFloat()                             const;
+	inline virtual     double          readDouble()                            const;
+	inline virtual     void            readBuffer(void* buffer, NxU32 size)    const;
 
-	virtual     NxStream&       storeByte( NxU8 b);
-	virtual     NxStream&       storeWord( NxU16 w);
-	virtual     NxStream&       storeDword( NxU32 d);
-	virtual     NxStream&       storeFloat( NxReal f);
-	virtual     NxStream&       storeDouble( NxF64 f);
-	virtual     NxStream&       storeBuffer(const void* buffer, NxU32 size);
+	inline virtual     NxStream&       storeByte( NxU8 b);
+	inline virtual     NxStream&       storeWord( NxU16 w);
+	inline virtual     NxStream&       storeDword( NxU32 d);
+	inline virtual     NxStream&       storeFloat( NxReal f);
+	inline virtual     NxStream&       storeDouble( NxF64 f);
+	inline virtual     NxStream&       storeBuffer(const void* buffer, NxU32 size);
 };
 
 
@@ -52,7 +52,7 @@ inline CNxPhysStream::~CNxPhysStream()
 }
 
 // Loading API
-NxU8 CNxPhysStream::readByte() const
+inline NxU8 CNxPhysStream::readByte() const
 {
 	NxU8 b;
 	size_t r = m_pBuffer->read( &b, sizeof(NxU8) );
@@ -60,7 +60,7 @@ NxU8 CNxPhysStream::readByte() const
 	return b;
 }
 
-NxU16 CNxPhysStream::readWord() const
+inline NxU16 CNxPhysStream::readWord() const
 {
 	NxU16 w;
 	size_t r = m_pBuffer->read( &w, sizeof(NxU16) );
@@ -68,7 +68,7 @@ NxU16 CNxPhysStream::readWord() const
 	return w;
 }
 
-NxU32 CNxPhysStream::readDword() const
+inline NxU32 CNxPhysStream::readDword() const
 {
 	NxU32 dw;
 	size_t r = m_pBuffer->read( &dw, sizeof(NxU32) );
@@ -76,7 +76,7 @@ NxU32 CNxPhysStream::readDword() const
 	return dw;
 }
 
-float CNxPhysStream::readFloat() const
+inline float CNxPhysStream::readFloat() const
 {
 	float f;
 	size_t r = m_pBuffer->read( &f, sizeof(float) );
@@ -84,7 +84,7 @@ float CNxPhysStream::readFloat() const
 	return f;
 }
 
-double CNxPhysStream::readDouble() const
+inline double CNxPhysStream::readDouble() const
 {
 	double f;
 	size_t r = m_pBuffer->read( &f, sizeof(double) );
@@ -92,7 +92,7 @@ double CNxPhysStream::readDouble() const
 	return f;
 }
 
-void CNxPhysStream::readBuffer( void* buffer, NxU32 size )   const
+inline void CNxPhysStream::readBuffer( void* buffer, NxU32 size )   const
 {
 	size_t w = m_pBuffer->read( buffer, size );
 //	NX_ASSERT(w);
@@ -100,35 +100,35 @@ void CNxPhysStream::readBuffer( void* buffer, NxU32 size )   const
 
 
 // Saving API
-NxStream& CNxPhysStream::storeByte( NxU8 b )
+inline NxStream& CNxPhysStream::storeByte( NxU8 b )
 {
 	size_t w = m_pBuffer->write( &b, sizeof(NxU8) );
 //	NX_ASSERT(w);
 	return *this;
 }
 
-NxStream& CNxPhysStream::storeWord( NxU16 w )
+inline NxStream& CNxPhysStream::storeWord( NxU16 w )
 {
 	size_t ww = m_pBuffer->write( &w, sizeof(NxU16) );
 //	NX_ASSERT(ww);
 	return *this;
 }
 
-NxStream& CNxPhysStream::storeDword( NxU32 d )
+inline NxStream& CNxPhysStream::storeDword( NxU32 d )
 {
 	size_t ww = m_pBuffer->write( &d, sizeof(NxU32) );
 //	NX_ASSERT(ww);
 	return *this;
 }
 
-NxStream& CNxPhysStream::storeFloat( NxReal f )
+inline NxStream& CNxPhysStream::storeFloat( NxReal f )
 {
 	size_t ww = m_pBuffer->write( &f, sizeof(NxReal) );
 //	NX_ASSERT(ww);
 	return *this;
 }
 
-NxStream& CNxPhysStream::storeDouble( NxF64 f )
+inline NxStream& CNxPhysStream::storeDouble( NxF64 f )
 {
 	size_t ww = m_pBuffer->write( &f, sizeof(NxF64) );
 //	NX_ASSERT(ww);
@@ -137,7 +137,7 @@ NxStream& CNxPhysStream::storeDouble( NxF64 f )
 
 //...
 
-NxStream& CNxPhysStream::storeBuffer( const void* buffer, NxU32 size )
+inline NxStream& CNxPhysStream::storeBuffer( const void* buffer, NxU32 size )
 {
 	size_t w = m_pBuffer->write( buffer, size );
 //	NX_ASSERT(w);
