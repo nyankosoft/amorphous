@@ -103,7 +103,7 @@ m_pPlayerAircraftHUD(NULL)
 	// pseudo aircraft will not be affected by the gravity
 	// since it does not simulate the physics
 //	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
-	m_ActorDesc.BodyDesc.Flags = 0;//BodyFlag::Kinematic;
+	m_ActorDesc.BodyDesc.Flags = BodyFlag::Kinematic;
 
 	RaiseEntityFlag( BETYPE_RIGIDBODY );
 

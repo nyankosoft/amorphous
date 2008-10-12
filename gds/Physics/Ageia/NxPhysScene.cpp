@@ -245,6 +245,8 @@ void CNxPhysScene::ReleaseActor( CActor*& pActor )
 	CNxPhysActor *pNxActor = dynamic_cast<CNxPhysActor *> (pActor);
 
 	m_pScene->releaseActor( *(pNxActor->GetNxActor()) );
+
+	SafeDelete( pActor );
 }
 
 
