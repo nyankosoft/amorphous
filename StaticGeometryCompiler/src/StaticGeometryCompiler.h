@@ -9,6 +9,8 @@
 #include "Stage/StaticGeometry.h"
 #include "Stage/StaticGeometryArchiveFG.h"
 #include "3DMath/AABTree.h"
+#include "Physics/Stream.h"
+
 using namespace MeshModel;
 
 
@@ -36,6 +38,9 @@ class CStaticGeometryCompiler
 	CStaticGeometryDesc m_Desc;
 
 	CGeneral3DMesh m_CollisionMesh;
+
+	/// stores collision mesh data preprocessed by the physics engine
+	physics::CStream m_CollisionMeshStream;
 
 	/// changed to shared_ptr since terrain mesh builder accepts shared_ptr
 	boost::shared_ptr<CGeneral3DMesh> m_pGraphicsMesh;

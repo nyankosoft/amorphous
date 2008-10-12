@@ -10,7 +10,7 @@
 
 
 #include "Physics/PhysicsEngine.h"
-//#include "Physics/Preprocessor.h"
+#include "Physics/Preprocessor.h"
 #include "Physics/TriangleMeshDesc.h"
 
 using namespace boost;
@@ -185,12 +185,10 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 	// tree with mesh subset information for each node
 //	db.AddData( CStaticGeometryDBKey::MeshSubsetTree, m_MeshSubsetTree );
 
-
-//	physics::CStream m_CollisionGeometryStream;
-
 	// collision geometry stream for physics engine
 	// - stream data of triangle mesh
-//	db.AddData( CStaticGeometryDBKey::CollisionGeometryStream, /* triangulated collision mesh stream */ );
+	if( 0 < m_CollisionMeshStream.buffer().size() )
+		db.AddData( CStaticGeometryDBKey::CollisionGeometryStream, m_CollisionMeshStream );
 }
 
 void CStaticGeometryCompiler::AddDestGraphicsMeshInstance()
@@ -413,19 +411,20 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 		return false;
 
 	physics::CTriangleMeshDesc coll_mesh_desc;
-/*	m_CollisionMesh.GetTriangulatedMeshData(
+	m_CollisionMesh.GetIndexedTriangles(
 		coll_mesh_desc.m_vecVertex,
 		coll_mesh_desc.m_vecIndex,
 		coll_mesh_desc.m_vecMaterialIndex
 		);
-*/
+
 	string physics_engine_name( "AgeiaPhysX" );
 
-//	physics::PhysicsEngine.Init( physics_engine_name );
+	physics::PhysicsEngine().Init( physics_engine_name );
 
-//	physics::CStream coll_mesh_stream;
-
-//	physics::PhysPreprocessor.CreateTriangleMeshStream( coll_mesh_desc, coll_mesh_stream );
+	// access the preprocessor singleton
+	// - preprocessor of physics_engine_name is used
+	// - TODO: support different preprocessors of different physics engine during runtime
+	physics::Preprocessor().CreateTriangleMeshStream( coll_mesh_desc, m_CollisionMeshStream );
 
 	return true;
 }
