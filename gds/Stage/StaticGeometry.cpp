@@ -1,5 +1,6 @@
 #include "StaticGeometry.h"
 #include "BSPTree.h"
+#include "Stage.h" // used in CStaticGeometry::CreateCollisionGeometry() and dtor
 
 #include "3DCommon/Shader/ShaderManager.h"
 #include "3DCommon/Direct3D9.h"
@@ -323,8 +324,23 @@ CStaticGeometry::CStaticGeometry( CStage *pStage )
 	:
 CStaticGeometryBase( pStage ),
 m_PrevShaderIndex(-1),
-m_PrevShaderTechinqueIndex(-1)
+m_PrevShaderTechinqueIndex(-1),
+m_pTriangleMesh(NULL),
+m_pTriangleMeshActor(NULL)
 {}
+
+
+CStaticGeometry::~CStaticGeometry()
+{
+	if( m_pTriangleMesh )
+	{
+		PhysicsEngine().ReleaseTriangleMesh( m_pTriangleMesh );
+
+		if( m_pTriangleMeshActor )
+			m_pStage->GetPhysicsScene()->ReleaseActor( m_pTriangleMeshActor );
+	}
+}
+
 
 /*
 void CStaticGeometry::SetGlobalParams()
@@ -469,8 +485,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 
 	// register mesh collision to physics simulator
 	// loaded from a separate archive in the db
-//	if( db_has_collision_mesh )
-//		LoadCollisionMesh( archive );
+	CreateCollisionGeometry( *(m_pStage->GetPhysicsScene()) );
 
 	return true;
 }
@@ -555,7 +570,7 @@ void CStaticGeometry::SetFogEndDist( float dist )
 
 physics::CActor *CStaticGeometry::CreateCollisionGeometry( physics::CScene& physics_scene )
 {
-	string db_filename;
+	string db_filename = m_strFilename;
 
 	CBinaryDatabase<string> db;
 	bool db_open = db.Open( db_filename );
@@ -571,14 +586,15 @@ physics::CActor *CStaticGeometry::CreateCollisionGeometry( physics::CScene& phys
 
 	if( !retrieved )
 	{
-		LOG_PRINT_ERROR( " - Collision geometry stream was not found in the database: " + db_filename );
+		LOG_PRINT_WARNING( " - Collision geometry stream was not found in the database: " + db_filename );
 		return NULL;
 	}
 
-/*
+
 	physics::CTriangleMeshShapeDesc desc;
 
 	desc.pTriangleMesh
+		= m_pTriangleMesh
 		= PhysicsEngine().CreateTriangleMesh( collision_geometry_stream );
 
 	physics::CActorDesc actor_desc;
@@ -587,10 +603,7 @@ physics::CActor *CStaticGeometry::CreateCollisionGeometry( physics::CScene& phys
 	actor_desc.BodyDesc.Flags |= BodyFlag::Static;
 	actor_desc.vecpShapeDesc.push_back( &desc );
 
-	physics::CActor *pActor = physics_scene.CreateActor( actor_desc );
+	m_pTriangleMeshActor = physics_scene.CreateActor( actor_desc );
 
-	return pActor;
-*/
-
-	return NULL;
+	return m_pTriangleMeshActor;
 }

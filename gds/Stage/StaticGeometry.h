@@ -197,9 +197,15 @@ class CStaticGeometry : public CStaticGeometryBase
 	int m_PrevShaderIndex;
 	int m_PrevShaderTechinqueIndex;
 
+	physics::CTriangleMesh *m_pTriangleMesh;
+
+	physics::CActor *m_pTriangleMeshActor;
+
 public:
 
 	CStaticGeometry( CStage *pStage );
+
+	~CStaticGeometry();
 
 	virtual int GetType() const { return CStaticGeometryBase::TYPE_GENERAL; }
 

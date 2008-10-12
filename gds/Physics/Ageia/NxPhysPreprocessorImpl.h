@@ -14,7 +14,7 @@
 #include "../Preprocessor.h"
 
 
-//#pragma comment( lib, "NxCooking.lib" )
+#pragma comment( lib, "NxCooking.lib" )
 
 
 namespace physics

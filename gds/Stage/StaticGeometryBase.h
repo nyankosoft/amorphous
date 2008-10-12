@@ -8,6 +8,7 @@
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DMath/Vector3.h"
 #include "3DMath/AABB3.h"
+#include "Physics/fwd.h"
 
 #include <vector>
 #include <string>
@@ -53,11 +54,11 @@ protected:
 		NUM_EXTRA_TEXTURES
 	};
 
-	LPDIRECT3DTEXTURE9 m_apExtraTexture[NUM_EXTRA_TEXTURES];
+	CTextureHandle m_apExtraTexture[NUM_EXTRA_TEXTURES];
 
 	CDynamicLightManagerForStaticGeometry *m_pDynamicLightManager;
-	LPDIRECT3DTEXTURE9 m_pLightmap_PL;	// lightmap texture for point light
-	LPDIRECT3DTEXTURE9 m_pNormalmap_PL;	// normal map texture for point light
+	CTextureHandle m_Lightmap_PL;	///< lightmap texture for point light
+	CTextureHandle m_Normalmap_PL;	///< normal map texture for point light
 */
 
 public:
@@ -100,6 +101,8 @@ public:
 		                                  float fRadius,
 										  AABB3& aabb,
 										  std::vector<int>& veciLitPolygonIndex ) {}
+
+	virtual physics::CActor *CreateCollisionGeometry( physics::CScene& physics_scene ) { return NULL; }
 
 	virtual void ReleaseGraphicsResources() {}
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}

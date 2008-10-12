@@ -50,6 +50,9 @@ void CBE_StaticGeometry::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	Vector3 vCenterPos = pCopyEnt->Position();
 
+	// static geometry has load been loaded yet.
+	// - called from CStaticGeometry::LoadFromFile()
+//	m_vecpStaticGeometry.back()->CreateCollisionGeometry( *(m_pStage->GetPhysicsScene()) );
 }
 
 

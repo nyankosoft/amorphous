@@ -11,17 +11,34 @@
 using namespace physics;
 
 
+#define LOG_PRINT_OK_OR_FAILED( text, succeeded ) if(succeeded) LOG_PRINT(string(text) + "  [  OK  ]"); else LOG_PRINT_ERROR(string(text) + "  [FAILED]");
+
+
 bool CNxPhysPreprocessorImpl::Init()
 {
 	LOG_FUNCTION_SCOPE();
 
-	m_pCooking = NxGetCookingLib(NX_SDK_VERSION_NUMBER);
+	bool global_init = NxInitCooking( 0, &NxPhysOutputStream() );
+	if( global_init )
+		LOG_PRINT( " Initialized the PhysX Cooking module." );
+	else
+		LOG_PRINT_ERROR( " NxInitCooking() failed." );
 
-	LOG_PRINT( " Created an instance of NxCookingInterface: " );
+	return global_init;
+
+/*	m_pCooking = NxGetCookingLib(NX_SDK_VERSION_NUMBER);
+
+	if( m_pCooking )
+		LOG_PRINT( " Created an instance of NxCookingInterface: " );
+	else
+	{
+		LOG_PRINT_ERROR( " NxGetCookingLib() returned NULL." );
+		return false;
+	}
 
 	bool initialized = m_pCooking->NxInitCooking( 0, &NxPhysOutputStream() );
 
-	return initialized;
+	return initialized;*/
 }
 
 
@@ -35,6 +52,9 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 													    CStream& phys_stream )
 {
 	LOG_FUNCTION_SCOPE();
+
+//	if( !m_pCooking )
+//		return;
 
 	size_t i;
 
@@ -79,6 +99,9 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 	{
 		LOG_SCOPE( "NxCookingInterface::NxCookTriangleMesh()" );
-		m_pCooking->NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
+//		m_pCooking->NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
+		bool trimesh_cooked = NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
+
+		LOG_PRINT_OK_OR_FAILED( "NxCookTriangleMesh()", trimesh_cooked );
 	}
 }
