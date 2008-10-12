@@ -10,6 +10,24 @@
 namespace physics
 {
 
+static inline const char *NxErrorCodeString(NxErrorCode code)
+{
+	switch(code)
+	{
+	case NXE_NO_ERROR:           return "NXE_NO_ERROR";
+	case NXE_INVALID_PARAMETER:  return "NXE_INVALID_PARAMETER";
+	case NXE_INVALID_OPERATION:  return "NXE_INVALID_OPERATION";
+	case NXE_OUT_OF_MEMORY:      return "NXE_OUT_OF_MEMORY";
+	case NXE_INTERNAL_ERROR:	 return "NXE_INTERNAL_ERROR";
+	case NXE_ASSERTION:			 return "NXE_ASSERTION";
+	case NXE_DB_INFO:			 return "NXE_DB_INFO";	
+	case NXE_DB_WARNING:		 return "NXE_DB_WARNING";
+	case NXE_DB_PRINT:			 return "NXE_DB_PRINT";
+	default: return "An unknown error code";
+	}
+
+	return "An unknown error code";
+}
 
 class CNxPhysOutputStream : public NxUserOutputStream
 {
@@ -19,7 +37,7 @@ class CNxPhysOutputStream : public NxUserOutputStream
 		// then you are in most cases using the SDK wrong and you need to debug your code!
 		// however, code may just be a warning or information.
 		if ( code < NXE_DB_INFO )
-			g_Log.Print( WL_ERROR, "AGEIA PhysX Error: [%s(%d)] %s", file, line, message );
+			g_Log.Print( WL_ERROR, "AGEIA PhysX Error: [%s(%d)] %s (NxErrorCode: %s)", file, line, message, NxErrorCodeString(code) );
 
 //		exit(1);
 	}
@@ -34,6 +52,7 @@ class CNxPhysOutputStream : public NxUserOutputStream
 
 	void print (const char *message)
 	{
+		g_Log.Print( WL_NORMAL, "AGEIA PhysX: %s", message );
 //		printf(gSDK says: %s\nh, message);
 //		MessageBox( NULL, "SDK Error", message, MB_OK|MB_ICONWARNING);
 	}

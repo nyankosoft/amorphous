@@ -173,7 +173,11 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 		nx_actor_desc.body                = &nx_body_desc;
 //		nx_body_desc.massLocalPose        = ToNxMat34( desc.BodyDesc.MassLocalPose );
 //		nx_body_desc.massSpaceInertia     = 
-		nx_body_desc.mass                 = desc.BodyDesc.fMass;
+
+		// Mass is computed from a density and the shapes mass/density.
+		// Setting mass here makes the actor desc invalid.
+/*		nx_body_desc.mass                 = desc.BodyDesc.fMass;*/
+
 		nx_body_desc.linearVelocity       = ToNxVec3( desc.BodyDesc.LinearVelocity );
 		nx_body_desc.angularVelocity      = ToNxVec3( desc.BodyDesc.AngularVelocity );
 //		nx_body_desc.wakeUpCounter        =
@@ -181,12 +185,15 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 //		nx_body_desc.angularDamping       =
 //		nx_body_desc.maxAngularVelocity 
 //		nx_body_desc.CCDMotionThreshold 
-		nx_body_desc.flags                = ToNxBodyFlags( desc.BodyDesc.Flags );
+		nx_body_desc.flags                = 0;//ToNxBodyFlags( desc.BodyDesc.Flags );
 //		nx_body_desc.sleepLinearVelocity 
 //		nx_body_desc.sleepAngularVelocity 
 //		nx_body_desc.solverIterationCount 
 //		nx_body_desc.sleepEnergyThreshold 
 //		nx_body_desc.sleepDamping 
+
+		if( !nx_body_desc.isValid() )
+			LOG_PRINT_ERROR( "An invalid body desc" );
 	}
  
 
@@ -197,6 +204,9 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 		nx_actor_desc.shapes.push_back( desc_factory.CreateNxShapeDesc( *(desc.vecpShapeDesc[i]) ) );
 //		nx_actor_desc.shapes.push_back = vecpNxShapeDesc[i];
 	}
+
+	if( !nx_actor_desc.isValid() )
+		LOG_PRINT_ERROR( "An invalid actor desc" );
 
 	// create an actor of ageia physics
 	NxActor *pNxActor = m_pScene->createActor( nx_actor_desc );

@@ -334,10 +334,10 @@ CStaticGeometry::~CStaticGeometry()
 {
 	if( m_pTriangleMesh )
 	{
-		PhysicsEngine().ReleaseTriangleMesh( m_pTriangleMesh );
-
 		if( m_pTriangleMeshActor )
 			m_pStage->GetPhysicsScene()->ReleaseActor( m_pTriangleMeshActor );
+
+		PhysicsEngine().ReleaseTriangleMesh( m_pTriangleMesh );
 	}
 }
 
