@@ -32,6 +32,11 @@ const char *CStaticGeometryDBKey::GraphicsMeshArchive     = "GraphicsMeshArchive
 //const char *CStaticGeometryDBKey::MeshSubsetTree        = "MeshSubsetTree";
 
 
+
+//================================================================================
+// CShaderContainer
+//================================================================================
+
 bool CShaderContainer::Load()
 {
 	m_ShaderHandle.Load( m_Desc );
@@ -62,32 +67,9 @@ void CShaderContainer::SetParams()
 
 
 
-/**
-  About m_ShaderIndex & m_ShaderTechniqueIndex
-  - Default value -1 indicates that texture is global auxiliary texture, 
-    and it is set at the begenning of CStaticGeometry::Render() once
-
-*/
-CAuxiliaryTexture::CAuxiliaryTexture()
-:
-m_ShaderIndex(-1),
-m_ShaderTechniqueIndex(-1),
-m_TextureStage(-1)
-{
-}
-
-
-void CAuxiliaryTexture::Serialize( IArchive& ar, const unsigned int version )
-{
-	ar & m_ShaderIndex;
-	ar & m_ShaderTechniqueIndex;
-	ar & m_TextureStage;
-	ar & m_TextureName;
-	ar & m_UsageDesc;
-	ar & m_Desc;
-}
-
-
+//================================================================================
+// Some Global Functions for Tree Construction
+//================================================================================
 
 static int s_MaxDepth = 0;
 
@@ -488,6 +470,22 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	CreateCollisionGeometry( *(m_pStage->GetPhysicsScene()) );
 
 	return true;
+}
+
+
+int CStaticGeometry::ClipTrace( STrace& tr )
+{
+	physics::CRay ray;
+	ray.Origin = *tr.pvStart;
+	Vector3 vStoG = *tr.pvGoal- *tr.pvStart;
+	Vec3Normalize( ray.Direction, vStoG );
+
+/*	physics::CRaycastHit rayhit;
+	rayhit;
+	CShape *pShape m_pStage->GetPhysicsScene()->RaycastClosestShape( ray, rayhit, 0, FLT_MAX );
+	if( pShape->GetType() == PhysShape::TriangleMesh );
+*/
+	return 0;
 }
 
 

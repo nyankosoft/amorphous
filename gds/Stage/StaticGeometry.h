@@ -105,45 +105,6 @@ public:
 };
 
 
-/// texture for additional effects
-class CAuxiliaryTexture : public IArchiveObjectBase
-{
-public:
-
-	/// shader that contains the techinque below
-	int m_ShaderIndex;
-
-	/// shader technique that needs this texture
-	int m_ShaderTechniqueIndex;
-
-	/// texture stage index
-	int m_TextureStage;
-
-	/// name of the texture in the shader
-	/// Used if m_TextureStage is not specified
-	std::string m_TextureName;
-
-	std::string m_UsageDesc;
-
-	CTextureResourceDesc m_Desc;
-
-	/// used during runtime
-	CTextureHandle m_Texture;
-
-	/// float parameters set with the texture
-	std::vector< CShaderParameter<float> > m_vecFloatParameter;
-
-	/// integer parameters set with the texture
-	std::vector< CShaderParameter<int> > m_vecIntParameter;
-
-public:
-
-	CAuxiliaryTexture();
-
-	void Serialize( IArchive& ar, const unsigned int version );
-};
-
-
 class CStaticGeometryArchive : public IArchiveObjectBase
 {
 
@@ -162,8 +123,6 @@ public:
 	float m_FogStartDist;
 
 	float m_FarClipDist;
-
-//	std::vector<CAuxiliaryTexture> m_vecAuxTexture;
 
 	CShaderParameterGroup m_GlobalShaderParameter;
 
@@ -214,7 +173,7 @@ public:
 	virtual bool LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly = false );
 
 	/// collision detection
-	virtual int ClipTrace(STrace& tr) { return 0; }
+	virtual int ClipTrace(STrace& tr);
 
 	virtual short CheckPosition(STrace& tr) { return 0; }
 

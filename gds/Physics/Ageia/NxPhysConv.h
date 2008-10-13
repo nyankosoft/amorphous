@@ -68,6 +68,24 @@ inline NxRaycastHit ToNxRaycastHit( const CRaycastHit& hit )
 }
 
 
+inline CRaycastHit FromNxRaycastHit( const NxRaycastHit& src )
+{
+	CRaycastHit dest;
+	dest.pShape         = (CShape *)src.shape->userData;
+	dest.WorldImpactPos = ToVector3( src.worldImpact );
+	dest.WorldNormal    = ToVector3( src.worldNormal );
+	dest.FaceID		    = src.faceID;
+//	dest.			    = src.internalFaceID;
+	dest.fDistance	    = src.distance;
+//	dest.			    = src.u;
+//	dest.			    = src.v;
+	dest.MaterialID	    = src.materialIndex;
+	dest.Flags		    = src.flags;
+
+	return dest;
+}
+
+
 //
 // Nx to physics
 //

@@ -42,7 +42,10 @@ bool CNxPhysBoxShape::Raycast( const CRay &world_ray,
 							   CRaycastHit &hit,
 							   bool first_hit ) const
 {
-	return m_pBox->raycast( ToNxRay(world_ray), max_dist, hint_flags, ToNxRaycastHit(hit), first_hit );
+	NxRaycastHit nx_rayhit;// = ToNxRaycastHit(hit);
+	bool res = m_pBox->raycast( ToNxRay(world_ray), max_dist, hint_flags, nx_rayhit, first_hit );
+	hit = FromNxRaycastHit(nx_rayhit);
+	return res;
 }
 
 
