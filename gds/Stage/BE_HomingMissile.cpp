@@ -5,7 +5,6 @@
 #include "ViewFrustumTest.h"
 #include "Stage.h"
 #include "Serialization_BaseEntityHandle.h"
-//#include "JigLib/JL_PhysicsActor.h"
 #include "Physics/Actor.h"
 #include "Support/Profile.h"
 #include "Support/Macro.h"
@@ -53,8 +52,14 @@ CBE_HomingMissile::CBE_HomingMissile()
 	// and do the collision detection by itself
 	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_NOCLIP;
 
-//	m_ActorDesc.ActorFlag |= JL_ACTOR_KINEMATIC;
 	m_ActorDesc.BodyDesc.Flags = BodyFlag::Kinematic;
+}
+
+
+template<typename T>
+inline T take_max( const T& a, const T& b )
+{
+	return a < b ? b : a;
 }
 
 
@@ -71,6 +76,11 @@ void CBE_HomingMissile::Init()
 	LoadBaseEntity( m_SmokeTrail );
 	LoadBaseEntity( m_FlameTrail );
 	LoadBaseEntity( m_Light );
+
+	CCapsuleShapeDesc desc;
+	desc.fLength = take_max( 0.10f, m_aabb.GetExtents().z );
+	desc.fRadius = take_max( 0.05f, m_aabb.GetExtents().x * 0.5f );
+	m_ActorDesc.vecpShapeDesc.push_back( new CCapsuleShapeDesc(desc) );
 }
 
 
@@ -255,11 +265,11 @@ void CBE_HomingMissile::Act( CCopyEntity* pCopyEnt )
 		break;
 	}
 
+	// UpdateIgnitedMissile?
+
 	ProfileBegin( "missile & its child entities" );
 
-	ProfileBegin( "missile" );
 	UpdateMissile( pCopyEnt, m_pStage->GetFrameTime() );
-	ProfileEnd( "missile" );
 
 	int i, num_children = pCopyEnt->GetNumChildren();
 
@@ -286,6 +296,8 @@ void CBE_HomingMissile::Act( CCopyEntity* pCopyEnt )
 
 void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 {
+	PROFILE_FUNCTION();
+
 	float& rfSensoringTimer    = pCopyEnt->f3;
 	float& rfDesiredDeltaAngle = pCopyEnt->f4;
 	Vector3& rvAxis = RefAxis(pCopyEnt);
@@ -343,7 +355,6 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 		{	// lost sight of the target
 //			g_Log.Print( "CBE_HomingMissile::UpdateMissile - lost target" );
 			pCopyEnt->pTarget = NULL;
-///			MissileMove( pCopyEnt, frametime );
 			return;
 		}
 		else
@@ -358,7 +369,6 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 				1.0f - dp < 0.001f)		// the missile is on a right course
 			{	// maintain the current course
 //				pCopyEnt->pTarget = NULL;
-///				MissileMove( pCopyEnt, frametime );
 				return;
 			}
 			Vec3Cross( rvAxis, pCopyEnt->GetDirection(), vMissileToTarget );
@@ -378,9 +388,6 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 
 	// correct the course of the missile
 	CorrectCourse( pCopyEnt, frametime );
-
-	// update position
-///	MissileMove( pCopyEnt, frametime );
 }
 
 
@@ -413,7 +420,7 @@ void CBE_HomingMissile::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity
 
 void CBE_HomingMissile::MissileMove( CCopyEntity* pCopyEnt, float frametime )
 {
-	ProfileBegin( "MissileMove()" );
+	PROFILE_FUNCTION();
 
 	STrace tr;
 
@@ -472,8 +479,6 @@ void CBE_HomingMissile::MissileMove( CCopyEntity* pCopyEnt, float frametime )
 		// CBE_Explosive::Explode() is called in the next CBE_HomingMissile::Act()
 		MissileState(pCopyEnt) = MS_DETONATING;
 	}
-
-	ProfileEnd( "MissileMove()" );
 }
 
 
