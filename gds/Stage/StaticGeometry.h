@@ -160,6 +160,13 @@ class CStaticGeometry : public CStaticGeometryBase
 
 	physics::CActor *m_pTriangleMeshActor;
 
+	/// used in UpdateResources()
+	std::vector<int> m_vecNodesToCheckRU;
+
+private:
+
+	void UpdateResources( const CCamera& rCam );
+
 public:
 
 	CStaticGeometry( CStage *pStage );

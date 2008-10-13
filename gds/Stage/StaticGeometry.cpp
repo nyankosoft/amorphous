@@ -195,23 +195,30 @@ void CStaticGeometryBase::MakeEntityTree( CBSPTree& bsptree )
 // CStaticGeometry
 //================================================================================
 
-/*
-void UpdateResources()
+
+void CStaticGeometry::UpdateResources( const CCamera& rCam )
 {
-	/// Used during runtime
-	/// - Holds indices of nodes to check for visibility
-	std::vector<int> m_vecNodesToCheck;
-	m_vecNodesToCheck.push_back(0);
+	CNonLeafyAABTree<CMeshSubset>& mesh_subset_tree = m_Archive.m_MeshSubsetTree;
 
 	float dist_margin_factor = 1.5f;
 
-	while( 0 < m_vecNodesToCheck.size() )
-	{
-		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
-		m_vecNodesToCheck.pop_back();
+	// compute a sphere that contains camera with some margin
+	float r = rCam.GetFarClip() / cos( rCam.GetFOV() * 0.5f ) * dist_margin_factor;
+	Sphere cam_sphere = Sphere(rCam.GetPosition(),r);
 
-		float dist = Vec3Length( vMeshCenterPos - rCam.GetPosition() );
-		if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+	/// Used during runtime
+	/// - Holds indices of nodes to check for visibility
+	m_vecNodesToCheckRU.push_back(0);
+
+	while( 0 < m_vecNodesToCheckRU.size() )
+	{
+		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheckRU.back() );
+		m_vecNodesToCheckRU.pop_back();
+
+		const float node_radius = node.aabb.CreateBoundingSphere().radius;
+		const Vector3 vNodeCenterPos = node.aabb.GetCenterPosition();
+		float dist = Vec3Length( vNodeCenterPos - rCam.GetPosition() );
+		if( dist < ( rCam.GetFarClip() + node_radius ) * dist_margin_factor )
 		{
 			const size_t num_subsets = node.veciGeometryIndex.size();
 			for( size_t i=0; i<num_subsets; i++ )
@@ -219,23 +226,40 @@ void UpdateResources()
 				const CMeshSubset& subset
 					= mesh_subset_tree.GetGeometryBuffer()[node.veciGeometryIndex[i]];
 
-				if( !mesh_is_loaded )
+				CStaticGeometryMeshHolder& mesh_holder = m_Archive.m_vecMesh[subset.MeshIndex];
+
+				GraphicsResourceState::Name state = mesh_holder.m_Mesh.GetEntryState();
+				if( state == GraphicsResourceState::RELEASED )
 				{
 					// load the mesh
-					mesh_holder.m_Mesh.LoadAsync( mesh_holder.m_Desc );
+//					mesh_holder.m_Mesh.LoadAsync( mesh_holder.m_Desc );
 				}
-				else if( already_loaded )
+				else if( state == GraphicsResourceState::LOADED )
 				{
-					CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
-					vSubsetCenterPos = pMesh->GetAABB( subset.vecMaterialIndex ).GetCenterPos();
-					dist = Vec3Length( vSubsetCenterPos - rCam.GetPosition() );
+					CD3DXMeshObjectBase *pMesh = mesh_holder.m_Mesh.GetMesh().get();
+					if( !pMesh )
+						continue;
 
-					if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+					for( size_t j=0; j<subset.vecMaterialIndex.size(); j++ )
 					{
-						// load the texture
-						for( num_textures )
+						// mesh is loaded
+						// see if the textures on the mesh are loaded
+
+						const AABB3& mesh_subset_aabb = pMesh->GetAABB( subset.vecMaterialIndex[j] );
+						const float mesh_subset_radius = mesh_subset_aabb.CreateBoundingSphere().radius;
+						Vector3 vMeshSubsetCenterPos = mesh_subset_aabb.GetCenterPosition();
+						float mesh_subset_dist = Vec3Length( vMeshSubsetCenterPos - rCam.GetPosition() );
+
+						if( mesh_subset_dist < ( rCam.GetFarClip() + mesh_subset_radius ) * dist_margin_factor )
 						{
-							pMesh->GetMaterial(mat_index).Texture[?].LoadAsync();
+							// load the texture
+							const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial(subset.vecMaterialIndex[j]);
+							const size_t num_textures = mat.Texture.size();
+							for( size_t k=0; k<num_textures; k++ )
+							{
+//								mat.Texture[k].Load( mat.TextureDesc[k] );
+//								mat.Texture[?].LoadAsync();
+							}
 						}
 					}
 				}
@@ -244,15 +268,18 @@ void UpdateResources()
 
 		if( !node.IsLeaf() )
 		{
-			m_vecNodesToCheck.push_back( node.child[0] );
-			m_vecNodesToCheck.push_back( node.child[1] );
+			for( int i=0; i<2; i++ )
+			{
+				const CAABNode& child_node = mesh_subset_tree.GetNode( node.child[i] );
+
+				if( cam_sphere.IntersectsWith( child_node.aabb.CreateBoundingSphere() ) )
+					m_vecNodesToCheckRU.push_back( node.child[i] );
+			}
 		}
 	}
-
-	return true;
 }
 
-
+/*
 void IsReadyToDisplay()
 {
 	/// Used during runtime
@@ -369,8 +396,8 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
 		m_vecNodesToCheck.pop_back();
 
-		if( true )
-//		if( rCam.ViewFrustumIntersectsWith( node.aabb ) )
+//		if( true )
+		if( rCam.ViewFrustumIntersectsWith( node.aabb ) )
 		{
 			const size_t num_subsets = node.veciGeometryIndex.size();
 			for( size_t i=0; i<num_subsets; i++ )
@@ -451,16 +478,27 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
 		CShaderContainer& container = m_Archive.m_vecShaderContainer[i];
-//		container.m_pShaderManager = shared_ptr<CShaderManager>( new CShaderManager() );
-//		container.m_pShaderManager->LoadShaderFromFile( container.ShaderFilepath );
 		bool shader_loaded = container.Load();
 	}
 
 	// load meshes
-	if( /*load_all_meshes_at_startup_time == */ true )
+	bool load_all_meshes_at_startup_time = true;
+	if( load_all_meshes_at_startup_time )
 	{
 		for( size_t i=0; i<m_Archive.m_vecMesh.size(); i++ )
 		{
+			m_Archive.m_vecMesh[i].Load();
+		}
+	}
+	else
+	{
+		// modify mesh and textures desc to make them async resources
+
+		// load the meshes synchronously and textures asynchronously
+		for( size_t i=0; i<m_Archive.m_vecMesh.size(); i++ )
+		{
+//			m_Archive.m_vecMesh[i].m_Desc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
+			m_Archive.m_vecMesh[i].m_Desc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
 			m_Archive.m_vecMesh[i].Load();
 		}
 	}
