@@ -2,9 +2,9 @@
 #define __PYMODULE_TEXTMESSAGE_H__
 
 
+#include "fwd.h"
 #include <Python.h>
 
-class CTextMessageManager;
 
 //extern void SetTextMessageManager( CTextMessageManager* pTextMessageMgr );
 extern void SetTextMsgMgrForScriptCallback( CTextMessageManager* pTextMessageMgr );

@@ -1,36 +1,46 @@
-
 #include "PyModule_TextMessage.h"
-
 #include "TextMessageManager.h"
+//#include "Support/msgbox.h"
 
-#include "Support/msgbox.h"
+#include <map>
+#include <boost/shared_ptr.hpp>
 
 using namespace std;
+using namespace boost;
 
 
-static CTextMessageManager *gs_pTextMessageManager = NULL;
+static CTextMessageManager *gs_pCurrentTextMessageManager = NULL;
 
-inline static CTextMessageManager *GetTextMessageManager() { return gs_pTextMessageManager; }
+inline static CTextMessageManager *GetTextMessageManager() { return gs_pCurrentTextMessageManager; }
 
 
 /// set text message manager for script callback
 void SetTextMsgMgrForScriptCallback( CTextMessageManager* pTextMessageMgr )
 {
-	gs_pTextMessageManager = pTextMessageMgr;
+	gs_pCurrentTextMessageManager = pTextMessageMgr;
 }
 
 
 #define RETURN_PYNONE() { Py_INCREF( Py_None ); return Py_None; }
 
 
+PyObject* SetTextMessageManager( PyObject* self, PyObject* args )
+{
+	char *name;
+	int result = PyArg_ParseTuple( args, "s", &name );
+
+	SetTextMsgMgrForScriptCallback( TextMessageManagerHub().GetTextMessageManager(name) ); 
+
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+
 PyObject* StartLoadMessage( PyObject* self, PyObject* args )
 {
 	if( !GetTextMessageManager() )
 		RETURN_PYNONE();
-//	{
-//		Py_INCREF( Py_None );
-//		return Py_None;
-//	}
 
 	int index = GetTextMessageManager()->StartLoadMessage();
 
@@ -51,8 +61,10 @@ PyObject* EndLoadMessage( PyObject* self, PyObject* args )
  */
 PyObject* AddMessageRef( PyObject* self, PyObject* args )
 {
+	Py_INCREF( Py_None );
+
 	if( !GetTextMessageManager() )
-		RETURN_PYNONE();
+		return Py_None;
 
 //	MsgBox( "adding a text message referece" );
 
@@ -113,28 +125,19 @@ PyObject* EndTextMessage( PyObject* self, PyObject* args )
 
 PyObject* DisplayTextMessage( PyObject* self, PyObject* args )
 {
-//	char *base_name;
-//	Vector3 pos, vel = Vector3(0,0,0);
-//	int result = PyArg_ParseTuple( args, "sfff|fff", &base_name,
-//		                                             &pos.x, &pos.y, &pos.z,
-//		                                             &vel.x, &vel.y, &vel.z );
-
-//	CreateNamedEntity( "", base_name, pos, vel );
-
-	return Py_None;
 }*/
 
 
 
 PyMethodDef g_PyModuleTextMessageMethod[] =
 {
-	{ "StartLoadMessage",		StartLoadMessage,		METH_VARARGS, "starts pre-loading of text message" },
-//	{ "EndLoadMessage",			EndLoadMessage,			METH_VARARGS, "ends pre-loading of text message" },
-	{ "AddMessageRef",			AddMessageRef,			METH_VARARGS, "send text message" },
-	{ "StartTextMessage",		StartTextMessage,		METH_VARARGS, "requests start of text message display. returns true if the request is accepted" },
-	{ "StartPreloadedTextMessage",		StartPreloadedTextMessage,		METH_VARARGS, "requests start of text message display. returns true if the request is accepted" },
-//	{ "StartPreloadText",		StartPreloadText,		METH_VARARGS,  },
-//	{ "EndPreloadText",			EndPreloadText,			METH_VARARGS,  },
-//	{ "CreateEntityVec3",		CreateEntityVec3,		METH_VARARGS, "creates an entity at a given position" },
+	{ "SetTextMessageManager",     SetTextMessageManager,     METH_VARARGS, "Sets the target text message manager for the script" },
+	{ "StartLoadMessage",          StartLoadMessage,          METH_VARARGS, "starts pre-loading of text message" },
+//	{ "EndLoadMessage",            EndLoadMessage,            METH_VARARGS, "ends pre-loading of text message" },
+	{ "AddMessageRef",             AddMessageRef,             METH_VARARGS, "send text message" },
+	{ "StartTextMessage",          StartTextMessage,          METH_VARARGS, "requests start of text message display. returns true if the request is accepted" },
+	{ "StartPreloadedTextMessage", StartPreloadedTextMessage, METH_VARARGS, "requests start of text message display. returns true if the request is accepted" },
+//	{ "StartPreloadText",          StartPreloadText,          METH_VARARGS,  },
+//	{ "EndPreloadText",            EndPreloadText,            METH_VARARGS,  },
 	{NULL, NULL}
 };

@@ -4,22 +4,19 @@
 
 #include <vector>
 #include <string>
+#include <map>
+#include <boost/shared_ptr.hpp>
 
-#include "3DCommon/2DRect.h"
-#include "3DCommon/TextureHandle.h"
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "fwd.h"
 #include "Support/memory_helpers.h"
-
-
 #include "Graphics/Rect.h"
 using namespace Graphics;
+
 
 #define GTC_NUM_MAXLETTERS_PER_LINE 64
 
 
 #define TEXTSET_INVALID_INDEX -1
-
-class CFontBase;
 
 
 /**
@@ -31,25 +28,38 @@ protected:
 
 	float m_Wait;	///< how long the text will stay on the screen after displaying it [sec]
 
+	int m_Priority;
+
 public:
 
 //	TextMessageBase() {}
-	TextMessageBase( float waittime ) : m_Wait(waittime) {}
+
+	TextMessageBase( float waittime = 3.0f, int priority = 0 )
+		:
+	m_Wait(waittime),
+	m_Priority(priority)
+	{}
+
 	virtual ~TextMessageBase() {}
 
 	float GetWaitTime() const { return m_Wait; }
+
 	virtual const char *GetSpeaker() = 0;
+
 	virtual const char *GetText() = 0;
 
-	enum eReqResult
+	enum ReqResult
 	{
 		REQ_ACCEPTED = 0,
-		REQ_REJECTED
+		REQ_REJECTED,
+		NUM_REQ_RESULTS
 	};
 
-	enum eMode
+	enum Type
 	{
-		MODE_IMMEDIATE = 0,
+		TYPE_IMMEDIATE = 0,
+		TYPE_QUEUED,
+		NUM_TYPES
 	};
 };
 
@@ -100,89 +110,14 @@ public:
 class TextMessageSet
 {
 public:
+
+	/// Owned references
 	std::vector<TextMessageBase *> m_vecpMessage;
 
 	TextMessageSet() {}
+
 	~TextMessageSet() { SafeDeleteVector( m_vecpMessage ); }
 };
-
-
-/**
- * renders text messages and related graphical components
- */
-class CTextMessageRenderManager : public CGraphicsComponent
-{
-	enum PrivateParams
-	{
-		MAX_TEXT_LENGTH = 256,
-		NUM_MAX_ICONTEXTURES = 64,
-	};
-
-	enum FontTypes
-	{
-		SPEAKER,
-		TEXT,
-		NUM_FONTS
-	};
-
-	/// holds window size in 800x600 resolution
-	SRect m_BaseWindowRect;
-
-	/// background rectangle of window
-	C2DRect m_WindowRect;
-
-	/// texture for window rectangle
-	CTextureHandle m_WindowTexture;
-
-	C2DRect m_TexturedIcon;
-
-
-//	TCFixedVector< CTextureHandle, NUM_MAX_ICONTEXTURES > m_IconTexture;
-
-	CFontBase* m_apFont[NUM_FONTS];
-	std::string m_strFontName[NUM_FONTS];
-
-	SPoint m_BaseFontSize;
-
-	/// buffer to hold speaker name
-	char m_acSpeaker[MAX_TEXT_LENGTH-1];
-
-	/// buffer to hold message text
-    char m_acText[MAX_TEXT_LENGTH-1];
-
-	SPoint m_vTextPos;
-	SPoint m_vSpeakerPos;
-
-public:
-
-	CTextMessageRenderManager();
-	~CTextMessageRenderManager();
-
-	inline bool NoMessage();
-
-	void Render();
-
-	void UpdateSpeaker( const char *pSpeaker );
-
-	void UpdateText( const char *pText );
-
-	void UpdateScreenSize();
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-};
-
-
-inline bool CTextMessageRenderManager::NoMessage()
-{
-	if( strlen(m_acSpeaker) == 0 && strlen(m_acText) == 0 )
-		return true;
-	else
-		return false;
-}
-
-
-
-class CTextMessageManager;
 
 
 class CTextMessageWindow
@@ -205,12 +140,15 @@ class CTextMessageWindow
 
 	CTextMessageManager *m_pManager;
 
-    CTextMessageRenderManager *m_pRenderManager;
+    CTextMessageRenderer *m_pRenderer;
 
 public:
 
 	CTextMessageWindow( CTextMessageManager *pManager );
+
 	~CTextMessageWindow();
+
+	void SetRenderer( CTextMessageRenderer *pRenderer ) { SafeDelete(m_pRenderer); m_pRenderer = pRenderer; }
 
 //	void SetNumMaxCharsPerLine( int num ) { m_NumMaxCharsPerLine = num; }
 
@@ -224,16 +162,18 @@ public:
 
 	void Update( float dt );
 
-	void Render() { m_pRenderManager->Render(); }
+	void Render();
 };
 
 
 /**
- * provides the user with interfaces to load text messages
- * stores a collection of text message sets
+ * provides the user with interfaces to load text messages.
+ * Stores a collection of text message sets
  */
 class CTextMessageManager
 {
+	std::string m_Name;
+
 	bool m_bLoadingTextMessage;
 
 	std::vector<TextMessageSet> m_vecTextMessageSet;
@@ -247,10 +187,19 @@ class CTextMessageManager
 
 public:
 
-	CTextMessageManager();
+//	CTextMessageManager();
+
+	CTextMessageManager( const std::string& name = "" );
+
 	~CTextMessageManager();
 
+	void SetRenderer( CTextMessageRenderer* pRenderer );
+
 //	void Release();
+
+	const std::string& GetName() const { return m_Name; }
+
+//	void SetName( const std::string& name ) const { m_Name = name; }
 
 	/// takes request to display registered text message
 	/// returns result for the request
@@ -272,14 +221,51 @@ public:
 	void Render() { m_pWindow->Render(); }
 };
 
-/*
-inline CTextMessageManager& GetTextMessageManager()
+
+class CTextMessageManagerHub
 {
-	// Using an accessor function gives control of the construction order
-	static CTextMessageManager obj;
-	return obj;
+//	std::vector< boost::shared_ptr<TextMessageManager> > m_vecpTextMessageManager;
+
+//	std::map< std::string, boost::shared_ptr<CTextMessageManager> > m_mapNameToTextMessageManager;
+	std::map< std::string, CTextMessageManager * > m_mapNameToTextMessageManager;
+
+public:
+
+	CTextMessageManagerHub() {}
+
+	void Attach( CTextMessageManager *pMgr )
+	{
+		m_mapNameToTextMessageManager[pMgr->GetName()] = pMgr;
+	}
+
+	void Detach( CTextMessageManager *pMgr )
+	{
+//		std::map< std::string, boost::shared_ptr<TextMessageManager> >::iterator itr
+		std::map< std::string, CTextMessageManager * >::iterator itr
+			= m_mapNameToTextMessageManager.find( pMgr->GetName() );
+
+		if( itr != m_mapNameToTextMessageManager.end() )
+			m_mapNameToTextMessageManager.erase( itr );
+	}
+
+	CTextMessageManager *GetTextMessageManager( const std::string& name )
+	{
+		std::map< std::string, CTextMessageManager * >::iterator itr
+			= m_mapNameToTextMessageManager.find( name );
+
+		if( itr == m_mapNameToTextMessageManager.end() )
+			return NULL; // not found
+		else
+			return itr->second;
+	}
+};
+
+
+inline CTextMessageManagerHub& TextMessageManagerHub()
+{
+	static CTextMessageManagerHub s_obj;
+	return s_obj;
 }
-*/
 
 
 #endif		/*  __TextMessageManager_H__  */

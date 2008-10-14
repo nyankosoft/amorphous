@@ -1776,6 +1776,14 @@
 					RelativePath="..\..\gds\GameTextSystem\TextMessageManager.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\GameTextSystem\TextMessageRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\GameTextSystem\TextMessageRenderer.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>

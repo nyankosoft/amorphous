@@ -1,135 +1,25 @@
 #include "TextMessageManager.h"
+#include "TextMessageRenderer.h"
 
-#include <stdlib.h>
 #include "../3DCommon/font.h"
 #include "../Support/memory_helpers.h"
 #include "../Support/Log/DefaultLog.h"
 #include "../Support/StringAux.h"
-#include "../Support/MsgBox.h"
+
 
 using namespace std;
-
-
-CTextMessageRenderManager::CTextMessageRenderManager()
-{
-	// set graphics components in 800x600 resolution
-	m_BaseFontSize = SPoint( 12, 24 );
-
-	m_strFontName[TEXT] = "‚l‚r ‚oƒSƒVƒbƒN";
-	m_apFont[TEXT] = new CFont;
-
-	m_strFontName[SPEAKER] = "Arial";
-	m_apFont[SPEAKER] = new CFont;
-
-	m_BaseWindowRect.SetPositionLTWH( 120, 32, 560, 70 );
-
-	LoadGraphicsResources( GetCurrentGraphicsParams() );
-
-	memset( m_acText,    0, sizeof(m_acText) );
-	memset( m_acSpeaker, 0, sizeof(m_acSpeaker) );
-}
-
-
-CTextMessageRenderManager::~CTextMessageRenderManager()
-{
-	ReleaseGraphicsResources();
-
-	for( int i=0; i<NUM_FONTS; i++ )
-        SafeDelete( m_apFont[i] );
-}
-
-
-void CTextMessageRenderManager::Render()
-{
-	if( NoMessage() )
-		return;
-
-	m_WindowRect.Draw();
-
-	m_apFont[TEXT]->DrawText( m_acText, m_vTextPos.x, m_vTextPos.y, 0xFFC0C0C0 );
-
-	m_apFont[SPEAKER]->DrawText( m_acSpeaker, m_vSpeakerPos.x, m_vSpeakerPos.y, 0xFF60C0FF );
-}
-
-
-void CTextMessageRenderManager::UpdateSpeaker( const char *pSpeaker )
-{
-	if( strlen(pSpeaker) <= MAX_TEXT_LENGTH )
-		strcpy( m_acSpeaker, pSpeaker );
-	else
-	{
-        strncpy( m_acSpeaker, pSpeaker, MAX_TEXT_LENGTH );
-		m_acSpeaker[MAX_TEXT_LENGTH-1] = '\0';
-	}
-}
-
-
-void CTextMessageRenderManager::UpdateText( const char *pText )
-{
-	if( strlen(pText) <= MAX_TEXT_LENGTH )
-		strcpy( m_acText, pText );
-	else
-	{
-        strncpy( m_acText, pText, MAX_TEXT_LENGTH );
-		m_acText[MAX_TEXT_LENGTH-1] = '\0';
-	}
-}
-
-
-void CTextMessageRenderManager::UpdateScreenSize()
-{
-}
-
-
-void CTextMessageRenderManager::ReleaseGraphicsResources()
-{
-//	m_WindowTexture.Release();
-
-	for( int i=0; i<NUM_FONTS; i++ )
-		m_apFont[i]->Release();
-}
-
-
-void CTextMessageRenderManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	float screen_width = (float)GetScreenWidth();
-	float factor = (float)(screen_width / 800.0f);
-
-//	m_WindowTexture.Load();
-
-	SPoint font_size_spkr = m_BaseFontSize * ( factor * 0.5f );
-	SPoint font_size_text = m_BaseFontSize * factor;
-	
-	PrintLog( string("TextMessafeManager - font size") +  to_string(font_size_text.x) + to_string(font_size_text.y) );
-
-/*	char buffer[256];
-	sprintf( buffer, "TextMessafeManager - font size: %d x %d, factor: %f, screen_width: %d",
-		font_size_text.x, font_size_text.y, factor, screen_width );
-
-	MessageBox( NULL, buffer, "msg", MB_OK|MB_ICONWARNING );
-*/
-	// TODO: support texture font
-	((CFont *)m_apFont[SPEAKER])->InitFont( m_strFontName[SPEAKER].c_str(), font_size_spkr.x, font_size_spkr.y );
-	((CFont *)m_apFont[TEXT])->InitFont( m_strFontName[TEXT].c_str(), font_size_text.x, font_size_text.y );
-
-    SRect rect = m_BaseWindowRect * factor;
-
-	m_WindowRect.SetPositionLTRB( rect.left, rect.top, rect.right, rect.bottom );
-
-	m_WindowRect.SetColor( 0x50000000 );	// a translucent, black rectangle
-
-	m_vTextPos		= SPoint( 130, 48 ) * factor;
-	m_vSpeakerPos	= SPoint( 130, 34 ) * factor;
-}
+using namespace boost;
 
 
 /**
  * text render manager is created in ctor
  */
 CTextMessageWindow::CTextMessageWindow( CTextMessageManager *pManager )
-: m_pManager(pManager)
+:
+m_pRenderer(NULL),
+m_pManager(pManager)
 {
-	m_pRenderManager = new CTextMessageRenderManager;
+//	m_pRenderer = new CTextMessageRenderManager;
 
 	m_CurrentTextMsgSetIndex = -1;
 
@@ -141,7 +31,7 @@ CTextMessageWindow::CTextMessageWindow( CTextMessageManager *pManager )
 
 CTextMessageWindow::~CTextMessageWindow()
 {
-	SafeDelete( m_pRenderManager );
+	SafeDelete( m_pRenderer );
 }
 
 
@@ -156,12 +46,12 @@ void CTextMessageWindow::UpdateTextMessageSet( int index )
 //	TextMessageBase& msgtext = *(msgset.m_vecpMessage[m_CurrentMessageUnit]);
 	TextMessageBase* pTextMsg = msgset.m_vecpMessage[m_CurrentMessageUnit];
 
-	m_pRenderManager->UpdateSpeaker( pTextMsg->GetSpeaker() );
-	m_pRenderManager->UpdateText( pTextMsg->GetText() );
+	m_pRenderer->UpdateSpeaker( pTextMsg->GetSpeaker() );
+	m_pRenderer->UpdateText( pTextMsg->GetText() );
 
 //	TextMessageSet& msgset = m_pManager->GetMessageSet( index )
-//	m_pRenderManager->UpdateSpeaker( msgset.GetSpeaker() )
-//	m_pRenderManager->UpdateSpeaker( msgset.GetText() )
+//	m_pRenderer->UpdateSpeaker( msgset.GetSpeaker() )
+//	m_pRenderer->UpdateSpeaker( msgset.GetText() )
 }
 
 
@@ -185,8 +75,8 @@ void CTextMessageWindow::Update( float dt )
 			// no more text message unit
 			m_CurrentTextMsgSetIndex = -1;
 			m_CurrentMessageUnit = 0;
-			m_pRenderManager->UpdateSpeaker( "" );
-			m_pRenderManager->UpdateText( "" );
+			m_pRenderer->UpdateSpeaker( "" );
+			m_pRenderer->UpdateText( "" );
 			return;
 		}
 
@@ -194,36 +84,61 @@ void CTextMessageWindow::Update( float dt )
 
 		TextMessageBase& next_msgtext = *(msgset.m_vecpMessage[m_CurrentMessageUnit]);
 
-		m_pRenderManager->UpdateSpeaker( next_msgtext.GetSpeaker() );
-		m_pRenderManager->UpdateText( next_msgtext.GetText() );
+		m_pRenderer->UpdateSpeaker( next_msgtext.GetSpeaker() );
+		m_pRenderer->UpdateText( next_msgtext.GetText() );
 	}
 }
 
+
+void CTextMessageWindow::Render()
+{
+//	m_pRenderer->Render();
+}
 
 
 
 
 TextMessageSet &CTextMessageManager::GetMessageSet( int index )
 {
-	if( index < 0 || m_vecTextMessageSet.size() <= index )
-		PrintLog( "CTextMessageManager::GetMessageSet() - invalid index" );
+	if( index < 0 || (int)m_vecTextMessageSet.size() <= index )
+		LOG_PRINT( "An invalid index: " + to_string(index) );
 
 	return m_vecTextMessageSet[index];
 }
 
 
-CTextMessageManager::CTextMessageManager()
-:m_bLoadingTextMessage(false)
+
+//========================================================================================
+// CTextMessageManager
+//========================================================================================
+
+//CTextMessageManager::CTextMessageManager()
+CTextMessageManager::CTextMessageManager( const std::string& name )
+:
+m_Name(name),
+m_bLoadingTextMessage(false)
 {
 	m_pWindow = new CTextMessageWindow( this );
 
+	SetRenderer( new CNullTextMessageRenderer(shared_ptr<CAnimatedGraphicsManager>(),0,0) );
+
 	m_vecTextMessageSet.reserve( NUM_DEFAULT_TEXT_MESSAGE_SETS );
+
+
+	// register to text message manager hub
+	TextMessageManagerHub().Attach( this );
 }
 
 
 CTextMessageManager::~CTextMessageManager()
 {
 	SafeDelete( m_pWindow );
+}
+
+
+void CTextMessageManager::SetRenderer( CTextMessageRenderer* pRenderer )
+{
+	m_pWindow->SetRenderer( pRenderer );
 }
 
 
@@ -235,11 +150,11 @@ int CTextMessageManager::StartTextMessage( int index, int mode )
 	if( m_bLoadingTextMessage )
 		return TextMessageBase::REQ_REJECTED;
 
-	PrintLog( string("text message requested (index: ") + to_string(index) + string(")") );
+	LOG_PRINT( string("text message requested (index: ") + to_string(index) + string(")") );
 
 	switch( mode )
 	{
-	case TextMessageBase::MODE_IMMEDIATE:
+	case TextMessageBase::TYPE_IMMEDIATE:
 //		m_bLoadingTextMessage = true;
 		if( 0 <= m_pWindow->GetCurrentMessageSetIndex() )
             return TextMessageBase::REQ_REJECTED;
@@ -266,11 +181,7 @@ int CTextMessageManager::StartLoadMessage()
 
 	m_vecTextMessageSet.push_back( TextMessageSet() );
 
-	string str = string("CTextMessageManager::StartLoadMessage() -  text message loading start (index: ")
-		+ to_string(index) + string(").");
-
-	PrintLog( str );
-//	MsgBox( str.c_str() );
+	LOG_PRINT( fmt_string("Starting to load a text message... (index:%d)",index) );
 
 	return index;
 }
@@ -283,7 +194,7 @@ void CTextMessageManager::AddMessageRef( const char *speaker, const char *messag
 
 	m_vecTextMessageSet.back().m_vecpMessage.push_back( new TextMessageRef( speaker, message, waittime ) );
 
-	PrintLog( string("added text message reference: ") + string(message) );
+	LOG_PRINT( string("Added a text message reference: ") + string(message) );
 }
 
 
