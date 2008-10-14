@@ -4,7 +4,6 @@
 
 #include "fwd.h"
 #include "3DCommon/fwd.h"
-//#include "JigLib/fwd.h"
 #include "Physics/fwd.h"
 #include "Sound/fwd.h"
 
@@ -33,21 +32,16 @@ class CStage
 	CEntitySet *m_pEntitySet;
 
 	/// handles physics simulation
-//	CJL_PhysicsManager *m_pPhysicsManager;
 	physics::CScene *m_pPhysicsScene;
-
-//	CJL_PhysicsVisualizer_D3D *m_pPhysicsVisualizer;
 
 	CSurfaceMaterialManager *m_pMaterialManager;
 
-	vector<physics::CMaterial *> m_vecpMaterial;
+	std::vector<physics::CMaterial *> m_vecpMaterial;
 
 	/// manages scripted events
 	CScriptManager *m_pScriptManager;
 
 	CScreenEffectManager* m_pScreenEffectManager;
-
-	CTextMessageManager* m_pTextMessageManager;
 
 	/// keeps time elapsed in stage
 	/// CGameTask_Stage() pauses the timer when the stage task is left
@@ -57,6 +51,7 @@ class CStage
 
 private:
 
+	/// instantiated by CStageLoader
 	CStage();
 
 	bool InitPhysicsManager();
@@ -66,8 +61,8 @@ private:
 	bool InitEventScriptManager( const std::string& script_archive_filename );
 
 	/// load the binary material file for the stage. The file must be in the same directory
-	/// as the stage file and have the extension ".mat"
-	/// this function is called internally after the stage is loaded
+	/// as the stage file and have the extension ".mat".
+	/// This function is called internally after the stage is loaded.
 	bool LoadMaterial();
 
 public:
@@ -81,7 +76,10 @@ public:
 	/// returns true on success
 	bool Initialize( const std::string& script_archive_filename );
 
-	// -------------- rendering --------------
+
+	//
+	// Rendering
+	//
 
 	/// Renders the stage.
 	/// Renders the current scene to the current render target. Does not call BeginScene()
@@ -106,10 +104,11 @@ public:
 	inline void GetBillboardRotationMatrix( Matrix33& matBillboard ) const;
 	inline CScreenEffectManager *GetScreenEffectManager() { return m_pScreenEffectManager; }
 
-//	void ReleaseGraphicsResources();
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-	// -------------- collision detection --------------
+	//
+	// Collision Detection
+	//
+
 	void ClipTrace( STrace& tr );
 //	void ClipTrace( CJL_LineSegment& segment );
 	void CheckPosition( STrace& tr );
@@ -117,7 +116,10 @@ public:
 	void GetVisibleEntities( CViewFrustumTest& vf_test );
 
 
-	// -------------- entities --------------
+	//
+	// Entities
+	//
+
 	inline CEntitySet* GetEntitySet() { return m_pEntitySet; }
 
 	inline CBaseEntity* FindBaseEntity( char* pcBaseEntityName );
@@ -134,16 +136,28 @@ public:
 
 	void ReleasePhysicsActor( physics::CActor*& pPhysicsActor );
 
-	// -------------- sounds --------------
+
+	//
+	// Sound
+	//
+
 //	void PlaySound3D( char* pcSoundName, Vector3& rvPosition );
 //	void PlaySound3D( int iIndex, Vector3& rvPosition );
 //	void PlaySound3D( CSoundHandle &rSoundHandle, Vector3& rvPosition );
 
-	// -------------- game events --------------
+
+	//
+	// Game Events (deprecated)
+	//
+
 	void LoadEvents();
 	void NotifyEntityTerminationToEventManager( CCopyEntity* pEntity );
 
-	// -------------- other methods --------------
+
+	//
+	// Others
+	//
+
 	Vector3 GetGravityAccel() const;
 
 	CSurfaceMaterial& GetMaterial( int index );
@@ -170,20 +184,16 @@ public:
 	void PauseTimer();
 	void ResumeTimer();
 
-//	void SaveCurrentState();
-//	void LoadSavedData();
-
-	CTextMessageManager *GetTextMessageManager() { return m_pTextMessageManager; }
-
-//	CJL_PhysicsManager *GetPhysicsManager() { return m_pPhysicsManager; }
 	physics::CScene *GetPhysicsScene() { return m_pPhysicsScene; }
-
-//	CJL_PhysicsVisualizer_D3D *GetPhysicsVisualizer();
 
 	CScriptManager *GetScriptManager() { return m_pScriptManager; }
 
 	friend class CStageLoader;
 	friend class CEntitySet;
+
+
+//	void SaveCurrentState();
+//	void LoadSavedData();
 };
 
 

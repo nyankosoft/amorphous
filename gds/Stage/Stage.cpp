@@ -18,16 +18,11 @@
 #include "Support/fnop.h"
 using namespace fnop;
 
-//#include "JigLib/JL_PhysicsManager.h"
-//#include "JigLib/JL_PhysicsVisualizer_D3D.h"
-//#include "JigLib/JL_SurfaceMaterial.h"
 #include "Physics/PhysicsEngine.h"
 #include "Physics/SceneDesc.h"
 #include "Physics/Scene.h"
 #include "Physics/MaterialDesc.h"
 #include "Physics/Material.h"
-
-#include "GameTextSystem/TextMessageManager.h"
 
 using namespace physics;
 
@@ -47,7 +42,6 @@ m_pPhysicsScene(NULL),
 m_pMaterialManager(NULL),
 m_pScriptManager(NULL),
 m_pStaticGeometry(NULL),
-m_pTextMessageManager(NULL),
 m_pCamera(NULL)
 {
 	m_pScreenEffectManager = new CScreenEffectManager;
@@ -64,8 +58,6 @@ m_pCamera(NULL)
 
 	CBSPTreeForAABB::Initialize();
 
-	m_pTextMessageManager = new CTextMessageManager;
-
 	// create the script manager so that an application can add custom modules
 	// before calling CStage::Initialize() and running scripts for initialization
 	m_pScriptManager = new CScriptManager;
@@ -79,7 +71,6 @@ CStage::~CStage()
 	for( size_t i=0; i<m_vecpMaterial.size(); i++ )
 		m_pPhysicsScene->ReleaseMaterial( m_vecpMaterial[i] );
 
-	SafeDelete( m_pTextMessageManager );
 	SafeDelete( m_pStaticGeometry );
 	SafeDelete( m_pEntitySet );
 	SafeDelete( m_pScreenEffectManager );
@@ -113,9 +104,7 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 
 bool CStage::InitPhysicsManager()
 {
-	// initialize physics manager
-//	m_pPhysicsManager = new CJL_PhysicsManager;
-//	m_pPhysicsManager->Init();
+	// initialize physics scene
 	CSceneDesc phys_scene_desc;
 	m_pPhysicsScene = PhysicsEngine().CreateScene( phys_scene_desc );
 
@@ -127,8 +116,6 @@ bool CStage::InitPhysicsManager()
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_PLAYER,		ENTITY_COLL_GROUP_PLAYER, false );
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_NOCLIP,		false );
 */
-
-//	m_pPhysicsVisualizer = new CJL_PhysicsVisualizer_D3D( m_pPhysicsManager );
 
 //	MsgBoxFmt( "physics visualizer created: %d", m_pPhysicsVisualizer );
 
@@ -430,13 +417,11 @@ void CStage::Update( float dt )
 
 	// event script
 	SetStageForScriptCallback( this );
-	SetTextMsgMgrForScriptCallback( m_pTextMessageManager );
 	m_pScriptManager->Update();
-	SetTextMsgMgrForScriptCallback( NULL );
 	SetStageForScriptCallback( NULL );
 
-	if( m_pTextMessageManager )
-		m_pTextMessageManager->Update( dt );
+//	if( m_pTextMessageManager )
+//		m_pTextMessageManager->Update( dt );
 
 	m_pScreenEffectManager->Update( dt );
 }
@@ -472,7 +457,6 @@ void CStage::ResumeTimer()
 
 void CStage::ReleasePhysicsActor( CActor*& pPhysicsActor )
 {
-//	m_pPhysicsManager->ReleaseActor( pPhysicsActor );
 	m_pPhysicsScene->ReleaseActor( pPhysicsActor );
 }
 
@@ -577,10 +561,8 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 	// run scripts for initialization
 	ResumeTimer();
 	SetStageForScriptCallback( this );
-	SetTextMsgMgrForScriptCallback( m_pTextMessageManager );
 	m_pScriptManager->InitScripts();
 	m_pScriptManager->Update();
-	SetTextMsgMgrForScriptCallback( NULL );
 	SetStageForScriptCallback( NULL );
 	PauseTimer();
 
@@ -640,12 +622,6 @@ void CStage::NotifyEntityTerminationToEventManager( CCopyEntity* pEntity )
 //	m_pScriptManager->OnCopyEntityDestroyed( pEntity );
 }
 
-/*
-CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
-{
-	return m_pPhysicsVisualizer;
-}
-*/
 
 /*
 void CStage::PlaySound3D( char* pcSoundName, Vector3& rvPosition )
@@ -663,24 +639,6 @@ void CStage::PlaySound3D( int iIndex, Vector3& rvPosition )
 void CStage::PlaySound3D( CSoundHandle &rSoundHandle, Vector3& rvPosition )
 {
 	SoundManager().PlayAt( rSoundHandle, rvPosition );
-}
-*/
-
-
-/*
-void CStage::ReleaseGraphicsResources()
-{
-//	m_pStaticGeometry->ReleaseGraphicsResources();
-//	m_pEntitySet->ReleaseGraphicsResources();
-//	GetPhysicsVisualizer()->ReleaseGraphicsResources();
-}
-
-
-void CStage::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-//	m_pStaticGeometry->LoadGraphicsResources(rParam);
-//	m_pEntitySet->LoadGraphicsResources(rParam);
-//	GetPhysicsVisualizer()->LoadGraphicsResources(rParam);
 }
 */
 
