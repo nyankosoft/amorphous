@@ -57,14 +57,16 @@ CTextMessageRenderer(pEffectMgr)
 
 	CGraphicsElementManager *pGraphicsMgr = m_pEffectManager->GetGraphicsElementManager();
 
-	m_aFontID[FONT_TEXT]    = 0;
-	m_aFontID[FONT_SPEAKER] = 1;
+	int offset = 20;
+	m_aFontID[FONT_TEXT]    = offset;
+	m_aFontID[FONT_SPEAKER] = offset + 1;
 
-	pGraphicsMgr->LoadFont( m_aFontID[FONT_TEXT],    "‚l‚r ‚oƒSƒVƒbƒN", CFontBase::FONTTYPE_NORMAL, 12, 24 );
+	pGraphicsMgr->LoadFont( m_aFontID[FONT_TEXT],    "‚l‚r ‚oƒSƒVƒbƒN", CFontBase::FONTTYPE_NORMAL, 24, 48 );
 	pGraphicsMgr->LoadFont( m_aFontID[FONT_SPEAKER], "Arial",           CFontBase::FONTTYPE_NORMAL, 12, 24 );
 
-	SFloatRGBAColor color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.7f );
-	m_pWindowBGRect = pGraphicsMgr->CreateRect( RectAtCenterTop( 560, 70, 32 ), color, top_layer + 3 );
+	SRect bg_rect = RectAtCenterTop( 1000, 110, 45 );
+	SFloatRGBAColor color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.3f );
+	m_pWindowBGRect = pGraphicsMgr->CreateRect( bg_rect, color, top_layer + 3 );
 
 	LoadGraphicsResources( GetCurrentGraphicsParams() );
 
@@ -73,11 +75,11 @@ CTextMessageRenderer(pEffectMgr)
 
 	float x,y;
 	x = y = 0.0f;
-	SFloatRGBAColor font_color = SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.9f );
+	SFloatRGBAColor font_color = SFloatRGBAColor( 0.9f, 0.9f, 0.9f, 1.0f );
 	int w=0,h=0;
 	int layer = 0;
-	m_pText    = pGraphicsMgr->CreateText( m_aFontID[FONT_TEXT],   "", x, y, font_color, w, h, layer );
-	m_pSpeaker = pGraphicsMgr->CreateText( m_aFontID[FONT_SPEAKER],"", x, y, font_color, w, h, layer  );
+	m_pText    = pGraphicsMgr->CreateText( m_aFontID[FONT_TEXT],   "", (float)bg_rect.left, (float)bg_rect.top,      font_color, w, h, layer );
+	m_pSpeaker = pGraphicsMgr->CreateText( m_aFontID[FONT_SPEAKER],"", (float)bg_rect.left, (float)bg_rect.top - 32, font_color, w, h, layer  );
 }
 
 

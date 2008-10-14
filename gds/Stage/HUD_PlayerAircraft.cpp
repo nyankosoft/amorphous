@@ -10,6 +10,8 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DMisc.h"
 #include "3DCommon/GraphicsEffectManager.h"
+#include "GameTextSystem/TextMessageManager.h"
+#include "GameTextSystem/TextMessageRenderer.h"
 #include "Support/StringAux.h"
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"
@@ -27,7 +29,8 @@ HUD_PlayerAircraft::HUD_PlayerAircraft()
 :
 m_bDisplayGlobalRadar(false),
 m_pTimeText(NULL),
-m_pSubDisplay(NULL)
+m_pSubDisplay(NULL),
+m_pTextMessageManager(NULL)
 {
 	m_ContainerSize = CONTAINER_SIZE;
 
@@ -56,6 +59,7 @@ HUD_PlayerAircraft::~HUD_PlayerAircraft()
 
 void HUD_PlayerAircraft::Release()
 {
+	SafeDelete( m_pTextMessageManager );
 }
 
 
@@ -135,11 +139,9 @@ void HUD_PlayerAircraft::Init()
 	for( size_t i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
 		m_apContainer[i] = pElementMgr->CreateFrameRect( RectLTWH( 0, 0, m_ContainerSize, m_ContainerSize ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), 4.0f, base_layer );
 
-/*
-	m_pTextWindow = new CGameTextWindow;
-	m_pTextWindow->InitFont( "‚l‚r ƒSƒVƒbƒN", 0.018f, 0.036f );
 
-	UpdateScreenSize();*/
+	m_pTextMessageManager = new CTextMessageManager( "fg_radio" );
+	m_pTextMessageManager->SetRenderer( new CDefaultTextMessageRenderer( m_pGraphicsEffectManager, 0, 10 ) );
 }
 
 

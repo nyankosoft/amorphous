@@ -8,10 +8,10 @@
 #include "3DCommon/TextureHandle.h"
 #include "3DCommon/FloatRGBAColor.h"
 #include "3DCommon/TextureFont.h"
+#include "GameTextSystem/fwd.h"
 #include "GameCommon/PseudoAircraftHUD.h"
 
 
-class CGameTextWindow;
 class CBE_PlayerPseudoAircraft;
 
 class HUD_PlayerAircraft : public HUD_PlayerBase
@@ -93,7 +93,9 @@ private:
 
 //	TCFixedVector<HUD_TargetInfo, NUM_MAX_TGT_INFO> m_vecTargetInfo;
 
-//	CGameTextWindow *m_pTextWindow;
+	CTextMessageManager *m_pTextMessageManager;
+
+private:
 
 	void RenderLocalRadar( CBE_PlayerPseudoAircraft *plane );
 

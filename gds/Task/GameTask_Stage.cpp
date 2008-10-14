@@ -198,8 +198,8 @@ void CGameTask_Stage::Render()
 
 	// render text messages
 //	GetTextMessageManager().Render();
-	if( g_pStage && g_pStage->GetTextMessageManager() )
-        g_pStage->GetTextMessageManager()->Render();
+//	if( g_pStage && g_pStage->GetTextMessageManager() )
+//		g_pStage->GetTextMessageManager()->Render();
 
 	// need to finish profile before calling DrawDebugInfo()
 	ProfileEnd( "Main Loop" );

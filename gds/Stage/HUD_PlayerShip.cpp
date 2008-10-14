@@ -1,4 +1,3 @@
-
 #include "HUD_PlayerShip.h"
 #include "BE_PlayerShip.h"
 #include "Stage/PlayerInfo.h"
@@ -33,21 +32,21 @@ void HUD_PlayerShip::UpdateScreenSize()
 //	float fScreenHeight = ms_iScreenHeight;
 
 	// background rectangle in translucent black
-	D3DXVECTOR2	vMin, vMax;
-	vMin = D3DXVECTOR2( (0.5f - 0.0781f) * fScreenWidth, (0.64f - 0.0781f) * fScreenWidth );
-	vMax = D3DXVECTOR2( (0.5f + 0.0781f) * fScreenWidth, (0.64f + 0.0781f) * fScreenWidth );
+	Vector2 vMin, vMax;
+	vMin = Vector2( (0.5f - 0.0781f) * fScreenWidth, (0.64f - 0.0781f) * fScreenWidth );
+	vMax = Vector2( (0.5f + 0.0781f) * fScreenWidth, (0.64f + 0.0781f) * fScreenWidth );
 	m_StatusBackGround.SetPosition(vMin,vMax);
 	m_StatusBackGround.SetColor(0x50000000);
 
-//	vMin = D3DXVECTOR2(320-40, 370);
-//	vMax = D3DXVECTOR2(320+40, 450);
-	vMin = D3DXVECTOR2( (0.5f - 0.0625f) * fScreenWidth, (0.64f - 0.0625f) * fScreenWidth );
-	vMax = D3DXVECTOR2( (0.5f + 0.0625f) * fScreenWidth, (0.64f + 0.0625f) * fScreenWidth );
+//	vMin = Vector2(320-40, 370);
+//	vMax = Vector2(320+40, 450);
+	vMin = Vector2( (0.5f - 0.0625f) * fScreenWidth, (0.64f - 0.0625f) * fScreenWidth );
+	vMax = Vector2( (0.5f + 0.0625f) * fScreenWidth, (0.64f + 0.0625f) * fScreenWidth );
 	m_ShipIcon.SetPosition(vMin,vMax);
 	m_ShipIcon.SetTextureUV( TEXCOORD2(0.0f,0.0f), TEXCOORD2(1.0f,1.0f) );
 
-	vMin = D3DXVECTOR2( (0.5f - 0.05f) * fScreenWidth, (0.375f - 0.05f) * fScreenWidth );
-	vMax = D3DXVECTOR2( (0.5f + 0.05f) * fScreenWidth, (0.375f + 0.05f) * fScreenWidth );
+	vMin = Vector2( (0.5f - 0.05f) * fScreenWidth, (0.375f - 0.05f) * fScreenWidth );
+	vMax = Vector2( (0.5f + 0.05f) * fScreenWidth, (0.375f + 0.05f) * fScreenWidth );
 	m_Crosshair.SetPosition(vMin,vMax);
 	m_Crosshair.SetTextureUV( TEXCOORD2(0.0f,0.0f), TEXCOORD2(1.0f,1.0f) );
 	m_Crosshair.SetColor( 0xFFFFFFFF );
@@ -59,7 +58,7 @@ void HUD_PlayerShip::Init()
 	LoadTextures();
 
 //	m_StatusFont.InitFont( "Texture\\MainFont.dds", 256, 256, 16, 8 );
-	m_StatusFont.InitFont( "Texture\\HGGE_16x8_256.dds", 256, 256, 16, 8 );
+	m_StatusFont.InitFont( "./Texture/BitstreamVeraSansMono_Bold.dds", 256, 256, 16, 8 );
 
 	m_pTextWindow = new CGameTextWindow;
 	m_pTextWindow->InitFont( "ÇlÇr ÉSÉVÉbÉN", 0.018f, 0.036f );
@@ -86,9 +85,9 @@ void HUD_PlayerShip::LoadGraphicsResources( const CGraphicsParameters& rParam )
 
 void HUD_PlayerShip::LoadTextures()
 {
-	m_ShipIconTexture.Load( "Texture\\ShipIcon.dds" );
+	m_ShipIconTexture.Load( "./Texture/ShipIcon.dds" );
 
-	m_CrosshairTexture.Load( "Texture\\Crosshair.dds" );
+	m_CrosshairTexture.Load( "./Texture/Crosshair.dds" );
 }
 
 

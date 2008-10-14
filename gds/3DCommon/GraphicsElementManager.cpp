@@ -443,11 +443,9 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 
 	if( (int)m_vecpFont.size() <= font_id )
 	{
-		for( size_t i=0; i<font_id - m_vecpFont.size() + 1; i++ )
-		{
-			m_vecpFont.push_back( NULL );
-			m_vecOrigFontSize.push_back( Vector2(0,0) );
-		}
+		size_t num_to_append = font_id + 1 - m_vecpFont.size();
+		m_vecpFont.insert(        m_vecpFont.end(),        num_to_append, NULL );
+		m_vecOrigFontSize.insert( m_vecOrigFontSize.end(), num_to_append, Vector2(0,0) );
 	}
 
 	SafeDelete( m_vecpFont[font_id] );

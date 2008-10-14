@@ -148,7 +148,7 @@ public:
 
 	~CTextMessageWindow();
 
-	void SetRenderer( CTextMessageRenderer *pRenderer ) { SafeDelete(m_pRenderer); m_pRenderer = pRenderer; }
+	void SetRenderer( CTextMessageRenderer *pRenderer );
 
 //	void SetNumMaxCharsPerLine( int num ) { m_NumMaxCharsPerLine = num; }
 

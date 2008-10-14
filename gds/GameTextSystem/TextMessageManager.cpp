@@ -35,6 +35,13 @@ CTextMessageWindow::~CTextMessageWindow()
 }
 
 
+void CTextMessageWindow::SetRenderer( CTextMessageRenderer *pRenderer )
+{
+	SafeDelete(m_pRenderer);
+	m_pRenderer = pRenderer;
+}
+
+
 void CTextMessageWindow::UpdateTextMessageSet( int index )
 {
 	m_CurrentTextMsgSetIndex = index;
