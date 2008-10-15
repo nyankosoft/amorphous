@@ -160,12 +160,6 @@ PyObject* CreateNamedEntity( PyObject* self, PyObject* args )
  */
 PyObject* CreateEntity( PyObject* self, PyObject* args )
 {
-	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
-		return Py_None;
-	}
-
 	char *base_name;
 	Vector3 pos;
 	Vector3 dir = Vector3(0,0,1);
@@ -186,11 +180,10 @@ PyObject* CreateEntity( PyObject* self, PyObject* args )
 
 PyObject* LoadStaticGeometry( PyObject* self, PyObject* args )
 {
+	Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
 		return Py_None;
-	}
 
 	char *filename;
 
@@ -198,7 +191,6 @@ PyObject* LoadStaticGeometry( PyObject* self, PyObject* args )
 
 	gs_pTargetStage->LoadStaticGeometryFromFile( filename );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
@@ -206,11 +198,10 @@ PyObject* LoadStaticGeometry( PyObject* self, PyObject* args )
 
 PyObject* LoadSkybox( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
 		return Py_None;
-	}
 
 	char *base_entity_name;
 	char *texture_filename;
@@ -222,19 +213,20 @@ PyObject* LoadSkybox( PyObject* self, PyObject* args )
 	if( !pSkyboxEntity
 	 || pSkyboxEntity->pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_SKYBOX )
 	{
-	    Py_INCREF( Py_None );
 		return Py_None;
 	}
 
-	((CBE_Skybox *)pSkyboxEntity->pBaseEntity)->LoadSkyboxTexture( texture_filename );
+	(dynamic_cast<CBE_Skybox *>(pSkyboxEntity->pBaseEntity))->LoadSkyboxTexture( texture_filename );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 static inline void SetAmbientColor( const SFloatRGBAColor& ambient_color )
 {
+	if( !gs_pTargetStage )
+		return;
+
 	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
 
 	if( pStaticGeometry )
@@ -244,12 +236,6 @@ static inline void SetAmbientColor( const SFloatRGBAColor& ambient_color )
 
 PyObject* SetAmbientColor( PyObject* self, PyObject* args )
 {
-	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
-		return Py_None;
-	}
-
 	SFloatRGBAColor ambient_color;
 	int result = PyArg_ParseTuple( args, "fff", &ambient_color.fRed, &ambient_color.fGreen, &ambient_color.fBlue );
 
@@ -262,12 +248,6 @@ PyObject* SetAmbientColor( PyObject* self, PyObject* args )
 
 PyObject* SetAmbientColorC32( PyObject* self, PyObject* args )
 {
-	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
-		return Py_None;
-	}
-
 	unsigned long src_color;
 	int result = PyArg_ParseTuple( args, "k", &src_color );
 
@@ -283,6 +263,9 @@ PyObject* SetAmbientColorC32( PyObject* self, PyObject* args )
 
 static inline void SetFogColor( const SFloatRGBAColor& fog_color )
 {
+	if( !gs_pTargetStage )
+		return;
+
 	CStaticGeometryBase* pStaticGeometry = gs_pTargetStage->GetStaticGeometry();
 
 	if( pStaticGeometry )
@@ -292,12 +275,6 @@ static inline void SetFogColor( const SFloatRGBAColor& fog_color )
 
 PyObject* SetFogColor( PyObject* self, PyObject* args )
 {
-	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
-		return Py_None;
-	}
-
 	SFloatRGBAColor fog_color;
 	int result = PyArg_ParseTuple( args, "fff", &fog_color.fRed, &fog_color.fGreen, &fog_color.fBlue );
 
@@ -310,12 +287,6 @@ PyObject* SetFogColor( PyObject* self, PyObject* args )
 
 PyObject* SetFogColorC32( PyObject* self, PyObject* args )
 {
-	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
-		return Py_None;
-	}
-
 	unsigned long src_color;
 	int result = PyArg_ParseTuple( args, "k", &src_color );
 
@@ -331,11 +302,10 @@ PyObject* SetFogColorC32( PyObject* self, PyObject* args )
 
 PyObject* SetFogStartDist( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
 		return Py_None;
-	}
 
 	float dist;
 	int result = PyArg_ParseTuple( args, "f", &dist );
@@ -345,18 +315,16 @@ PyObject* SetFogStartDist( PyObject* self, PyObject* args )
 	if( pStaticGeometry )
 		pStaticGeometry->SetFogStartDist( dist );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 PyObject* SetFogEndDist( PyObject* self, PyObject* args )
 {
+	Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
 		return Py_None;
-	}
 
 	float dist;
 	int result = PyArg_ParseTuple( args, "f", &dist );
@@ -366,7 +334,6 @@ PyObject* SetFogEndDist( PyObject* self, PyObject* args )
 	if( pStaticGeometry )
 		pStaticGeometry->SetFogEndDist( dist );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
@@ -442,11 +409,10 @@ PyObject* InitPlayerHrz( PyObject* self, PyObject* args )
 
 PyObject* SetCameraEntity( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
-	{
-	    Py_INCREF( Py_None );
 		return Py_None;
-	}
 
 	char *entity_name;
 
@@ -455,7 +421,6 @@ PyObject* SetCameraEntity( PyObject* self, PyObject* args )
 	CEntitySet *pEntitySet = gs_pTargetStage->GetEntitySet();
 	pEntitySet->SetCameraEntity( pEntitySet->GetEntityByName(entity_name) );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
