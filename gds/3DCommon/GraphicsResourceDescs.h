@@ -48,6 +48,8 @@ public:
 
 	bool IsCachedResource() const { return m_IsCachedResource; }
 
+	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const = 0;
+
 	virtual bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const { return false; }
 	virtual bool CanBeSharedAsSameMeshResource( const CMeshResourceDesc& desc ) const { return false; }
 	virtual bool CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const { return false; }
@@ -101,6 +103,8 @@ public:
 	{}
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
+
+	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CTextureResourceDesc>( new CTextureResourceDesc(*this) ); }
 
 	bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const
 	{
@@ -158,6 +162,8 @@ public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
+	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CMeshResourceDesc>( new CMeshResourceDesc(*this) ); }
+
 	bool CanBeSharedAsSameMeshResource( const CMeshResourceDesc& desc ) const
 	{
 		if( MeshType        == desc.MeshType
@@ -202,6 +208,8 @@ class CShaderResourceDesc : public CGraphicsResourceDesc
 public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
+
+	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CShaderResourceDesc>( new CShaderResourceDesc(*this) ); }
 
 	int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
 

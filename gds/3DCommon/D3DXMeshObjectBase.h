@@ -51,6 +51,11 @@ public:
 		std::vector<CTextureResourceDesc> TextureDesc;
 
 		float fMinVertexDiffuseAlpha;
+
+	public:
+
+		/// Load the i-th texture asynchronously
+		void LoadTextureAsync( int i );
 	};
 
 private:
@@ -177,7 +182,11 @@ public:
 
 	inline const D3DMATERIAL9& GetD3DMaterial( int i ) const { return m_pMeshMaterials[i]; }
 
+	/// returns const reference to the i-th material
 	inline const CMeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
+
+	/// returns non-const reference to the i-th material
+	inline CMeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
 
 	bool CreateVertexDeclaration();
 

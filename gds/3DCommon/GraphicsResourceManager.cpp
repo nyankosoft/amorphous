@@ -57,17 +57,12 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResou
 
 	// add a created entry to a vacant slot
 
-//	AddEntryToVacantSlot( pEntry, m_vecpResourceEntry );
-
-	size_t index = 0;
 	const size_t num_entries = m_vecpResourceEntry.size();
 	for( size_t i=0; i<num_entries; i++ )
 	{
 		if( !m_vecpResourceEntry[i]
 		 || m_vecpResourceEntry[i]->GetState() == CGraphicsResourceEntry::STATE_RELEASED )
 		{
-			index = i;
-//			pResourceEntry->SetIndex( (int)index );
 			m_vecpResourceEntry[i] = pResourceEntry;
 			pResourceEntry->IncRefCount();
 			return pResourceEntry;
@@ -75,8 +70,6 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::CreateGraphicsResou
 	}
 
 	// create a new element
-	index = m_vecpResourceEntry.size();
-//	pResourceEntry->SetIndex( (int)index );
 	m_vecpResourceEntry.push_back( pResourceEntry );
 
 	pResourceEntry->IncRefCount();
@@ -171,9 +164,29 @@ shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoad
 
 /// Not implemented yet.
 /// - Just returns -1 to indicate that there are no saharable resoureces
-int CGraphicsResourceManager::FindSameLoadedResource( const CGraphicsResourceDesc& desc )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::FindSameLoadedResource( const CGraphicsResourceDesc& desc )
 {
-	return -1;
+	const size_t num_entries = m_vecpResourceEntry.size();
+	for( size_t i=0; i<num_entries; i++ )
+	{
+		if( m_vecpResourceEntry[i]->GetState() == CGraphicsResourceEntry::STATE_RESERVED
+		 && m_vecpResourceEntry[i]->m_pDesc->ResourcePath == desc.ResourcePath )
+		{
+			return m_vecpResourceEntry[i];
+		}
+/* Wrong -  resource may not be present at this point
+		if( m_vecpResourceEntry[i]->GetResource() )
+//			&& m_vecpResourceEntry[i]->GetResource()->GetState() == GraphicsResourceState::LOADED )
+		{
+//			if( m_vecpResourceEntry[i]->GetResource()->GetDesc().ResourcePath
+			if( m_vecpResourceEntry[i]->m_pDesc->ResourcePath == desc.ResourcePath )
+			{
+				return m_vecpResourceEntry[i];
+			}
+		}*/
+	}
+
+	return shared_ptr<CGraphicsResourceEntry>();
 }
 
 
@@ -187,7 +200,10 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 	if( desc.IsDiskResource() )
 	{
 		shared_ptr<CGraphicsResourceEntry> ptr;
-		const size_t num_entries = m_vecpResourceEntry.size();
+		ptr = FindSameLoadedResource(desc);
+		if( ptr )
+			return ptr;
+/*		const size_t num_entries = m_vecpResourceEntry.size();
 		for( size_t i=0; i<num_entries; i++ )
 		{
 			int shared_resource_index = FindSameLoadedResource( desc );
@@ -196,7 +212,7 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 				return shared_ptr<CGraphicsResourceEntry>();
 //				return shared_resource_index;
 			}
-		}
+		}*/
 	}
 	else
 	{
@@ -212,6 +228,13 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 
 	if( pEntry )
 	{
+		// make as loading here to avoid accepting the async load requests more than once
+		// - set to reserved in CreateGraphicsResourceEntry()
+//		pEntry->m_State = CGraphicsResourceEntry::;
+
+		// save a copy of the desc
+		pEntry->m_pDesc = desc.GetCopy();
+
 		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
 		AsyncResourceLoader().AddResourceLoadRequest( req );
 
@@ -245,6 +268,9 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResourc
 
 	if( !pResourceEntry )
 		return shared_ptr<CGraphicsResourceEntry>();
+
+	// save copy of the resource desc
+	pResourceEntry->m_pDesc = desc.GetCopy();
 
 	shared_ptr<CGraphicsResource> pResource = GraphicsResourceFactory().CreateGraphicsResource( desc );
 

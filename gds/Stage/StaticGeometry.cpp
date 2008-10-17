@@ -218,7 +218,7 @@ void CStaticGeometry::UpdateResources( const CCamera& rCam )
 		const float node_radius = node.aabb.CreateBoundingSphere().radius;
 		const Vector3 vNodeCenterPos = node.aabb.GetCenterPosition();
 		float dist = Vec3Length( vNodeCenterPos - rCam.GetPosition() );
-		if( dist < ( rCam.GetFarClip() + node_radius ) * dist_margin_factor )
+		if( dist < ( cam_sphere.radius + node_radius ) * dist_margin_factor )
 		{
 			const size_t num_subsets = node.veciGeometryIndex.size();
 			for( size_t i=0; i<num_subsets; i++ )
@@ -250,15 +250,15 @@ void CStaticGeometry::UpdateResources( const CCamera& rCam )
 						Vector3 vMeshSubsetCenterPos = mesh_subset_aabb.GetCenterPosition();
 						float mesh_subset_dist = Vec3Length( vMeshSubsetCenterPos - rCam.GetPosition() );
 
-						if( mesh_subset_dist < ( rCam.GetFarClip() + mesh_subset_radius ) * dist_margin_factor )
+						if( mesh_subset_dist < ( cam_sphere.radius + mesh_subset_radius ) * dist_margin_factor )
 						{
 							// load the texture
-							const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial(subset.vecMaterialIndex[j]);
+							CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
 							const size_t num_textures = mat.Texture.size();
 							for( size_t k=0; k<num_textures; k++ )
 							{
-//								mat.Texture[k].Load( mat.TextureDesc[k] );
-//								mat.Texture[?].LoadAsync();
+								if( mat.Texture[k].GetEntryState() == GraphicsResourceState::RELEASED )
+									mat.LoadTextureAsync( k );
 							}
 						}
 					}
@@ -359,6 +359,8 @@ void CStaticGeometry::SetGlobalParams()
 
 bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag )
 {
+	this->UpdateResources( rCam );
+
 	// reset world transform
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );
@@ -482,7 +484,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	}
 
 	// load meshes
-	bool load_all_meshes_at_startup_time = true;
+	bool load_all_meshes_at_startup_time = false;
 	if( load_all_meshes_at_startup_time )
 	{
 		for( size_t i=0; i<m_Archive.m_vecMesh.size(); i++ )

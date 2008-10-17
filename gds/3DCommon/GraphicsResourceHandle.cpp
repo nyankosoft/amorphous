@@ -10,9 +10,18 @@ using namespace boost;
 
 GraphicsResourceState::Name CGraphicsResourceHandle::GetEntryState()
 {
-	if( GetEntry()
-	 && GetEntry()->GetResource() )
-		return GetEntry()->GetResource()->GetState();
+	if( GetEntry() )
+	{
+		if( GetEntry()->GetResource() )
+			return GetEntry()->GetResource()->GetState();
+		else
+		{
+			if( GetEntry()->GetState() == CGraphicsResourceEntry::STATE_RESERVED )
+				return GraphicsResourceState::LOADING_ASYNCHRONOUSLY;
+			else
+				return GraphicsResourceState::RELEASED;
+		}
+	}
 	else
 		return GraphicsResourceState::RELEASED;
 }

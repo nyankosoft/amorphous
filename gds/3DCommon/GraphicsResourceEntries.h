@@ -52,6 +52,9 @@ private:
 	boost::shared_ptr<CMeshResource> m_pMeshResource;
 	boost::shared_ptr<CShaderResource> m_pShaderResource;
 
+	/// holds a copy of desc
+	boost::shared_ptr<CGraphicsResourceDesc> m_pDesc;
+
 public:
 
 	inline CGraphicsResourceEntry();

@@ -48,6 +48,27 @@ Details
 	  - RenderSubsets()
 */
 
+
+
+//=============================================================================
+// CD3DXMeshObjectBase::CMeshMaterial
+//=============================================================================
+
+void CD3DXMeshObjectBase::CMeshMaterial::LoadTextureAsync( int i )
+{
+	if( i < 0 || (int)Texture.size() <= i )
+		return;
+
+	CTextureResourceDesc desc = TextureDesc[i];
+	desc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
+	Texture[i].Load( desc );
+}
+
+
+//=============================================================================
+// CD3DXMeshObjectBase
+//=============================================================================
+
 void CD3DXMeshObjectBase::Release()
 {
 	m_vecAABB.resize(0);

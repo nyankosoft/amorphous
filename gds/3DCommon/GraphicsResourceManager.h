@@ -60,7 +60,7 @@ private:
 		boost::shared_ptr<CGraphicsResourceEntry> pEntry,
 		const CGraphicsResourceDesc& desc );
 
-	int FindSameLoadedResource( const CGraphicsResourceDesc& desc );
+	boost::shared_ptr<CGraphicsResourceEntry> FindSameLoadedResource( const CGraphicsResourceDesc& desc );
 
 	/// asynchronously loads a graphics resource
 	/// - sends load request and returns

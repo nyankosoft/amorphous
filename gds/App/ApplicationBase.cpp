@@ -15,6 +15,7 @@
 #include "GameCommon/MouseCursor.h"
 
 #include "3DCommon/GraphicsResourceManager.h"
+#include "3DCommon/AsyncResourceLoader.h"
 #include "3DCommon/LogOutput_OnScreen.h"
 #include "Task/GameTaskManager.h"
 
@@ -322,6 +323,8 @@ void CApplicationBase::Execute()
 			m_pTaskManager->Update( frametime );
 
 			m_pTaskManager->Render();
+
+			AsyncResourceLoader().ProcessGraphicsDeviceRequests();
 
 			Sleep( ms_DefaultSleepTimeMS );
 //			PERIODICAL( 2, Sleep(5) );
