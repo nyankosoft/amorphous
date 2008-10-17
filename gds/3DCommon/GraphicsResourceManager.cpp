@@ -174,16 +174,6 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::FindSameLoadedResou
 		{
 			return m_vecpResourceEntry[i];
 		}
-/* Wrong -  resource may not be present at this point
-		if( m_vecpResourceEntry[i]->GetResource() )
-//			&& m_vecpResourceEntry[i]->GetResource()->GetState() == GraphicsResourceState::LOADED )
-		{
-//			if( m_vecpResourceEntry[i]->GetResource()->GetDesc().ResourcePath
-			if( m_vecpResourceEntry[i]->m_pDesc->ResourcePath == desc.ResourcePath )
-			{
-				return m_vecpResourceEntry[i];
-			}
-		}*/
 	}
 
 	return shared_ptr<CGraphicsResourceEntry>();
@@ -203,16 +193,6 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 		ptr = FindSameLoadedResource(desc);
 		if( ptr )
 			return ptr;
-/*		const size_t num_entries = m_vecpResourceEntry.size();
-		for( size_t i=0; i<num_entries; i++ )
-		{
-			int shared_resource_index = FindSameLoadedResource( desc );
-			if( 0 <= shared_resource_index )
-			{
-				return shared_ptr<CGraphicsResourceEntry>();
-//				return shared_resource_index;
-			}
-		}*/
 	}
 	else
 	{
