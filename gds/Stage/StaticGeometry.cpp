@@ -484,7 +484,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	}
 
 	// load meshes
-	bool load_all_meshes_at_startup_time = false;
+	bool load_all_meshes_at_startup_time = true;
 	if( load_all_meshes_at_startup_time )
 	{
 		for( size_t i=0; i<m_Archive.m_vecMesh.size(); i++ )
