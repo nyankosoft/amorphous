@@ -2,7 +2,6 @@
 #include "../GameInput/DirectInput.h"
 #include "../GameInput/InputHub.h"
 
-//#include "../Stage/PerformanceCheck.h"
 //#include "App/GameWindowManager_Win32.h"
 
 
