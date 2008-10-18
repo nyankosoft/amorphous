@@ -1,13 +1,10 @@
-
 #include "ShadowMapManager.h"
-
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/Shader/Shader.h"
 #include "3DCommon/2DTexRect.h"
 #include "Support/Log/DefaultLog.h"
 
-#include <string>
 using namespace std;
 
 

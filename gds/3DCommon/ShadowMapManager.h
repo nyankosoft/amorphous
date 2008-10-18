@@ -3,7 +3,6 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-//#include "3DCommon/FVF_TLVertex.h"
 #include "3DMath/Vector3.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/Shader/ShaderManager.h"
@@ -28,7 +27,7 @@
  *
  * 4. Call CShadowMapManager::BeginSceneDepthMap().
  * 5. Render objects that receive shadow from the objects rendered in step 2
- *    using the shader technique below "SceneShadowMap".
+ *    using the shader technique "SceneShadowMap".
  * 6. Call CShadowMapManager::EndSceneDepthMap()
  *
  * 7. Call CShadowMapManager::BeginScene()
@@ -69,7 +68,7 @@ class CShadowMapManager : public CGraphicsComponent
 
 	/// Stores the shader necessasry for shadowmap.
 	/// The shader supposed to contain 2 techniques
-	/// - "ShadowMap": for shadow map rendering. renders the shadow casters to shadow map texture. m_LightCamera is used to aclculate  
+	/// - "ShadowMap": for shadow map rendering. renders the shadow casters to shadow map texture. m_LightCamera is used to calculate  
 	CShaderManager m_ShaderManager;
 
 	CTextureRenderTarget m_SceneRenderTarget;
@@ -151,9 +150,6 @@ public:
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
 	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
-
-//	virtual void DrawShadowCaster( CCopyEntity* pCopyEnt );
-//	virtual void DrawShadowReceiver( CCopyEntity* pCopyEnt );
 };
 
 
