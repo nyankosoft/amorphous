@@ -66,11 +66,15 @@ public:
 
 	virtual void Render()
 	{
+		ShaderManagerHub.PushViewAndProjectionMatrices( *m_pCamera );
+
 		// - creates shadow map
 		// - creates scene depth map
 		// - creates scene texture
 		// each of the three has BeginScene() and EndScene() pair inside
 		m_pRenderManager->RenderForShadowMaps( *m_pCamera/*, m_pScreenEffectManager*/ );
+
+		ShaderManagerHub.PopViewAndProjectionMatrices();
 	}
 };
 
