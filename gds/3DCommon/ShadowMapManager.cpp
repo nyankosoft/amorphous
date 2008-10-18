@@ -2,6 +2,7 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/Shader/Shader.h"
+#include "3DCommon/Shader/ShaderManagerHub.h"
 #include "3DCommon/2DTexRect.h"
 #include "Support/Log/DefaultLog.h"
 
@@ -347,13 +348,15 @@ void CShadowMapManager::BeginSceneShadowMap()
 	// in this shadow map shader
 	CShader::Get()->SetShaderManager( &m_ShaderManager );
 
-	D3DXMATRIX matWorld, matView, matProj;
+//	D3DXMATRIX matWorld, matView, matProj;
 
-	D3DXMatrixIdentity( &matWorld );
-	m_LightCamera.GetCameraMatrix( matView );
-	m_LightCamera.GetProjectionMatrix( matProj );
+//	D3DXMatrixIdentity( &matWorld );
+//	m_LightCamera.GetCameraMatrix( matView );
+//	m_LightCamera.GetProjectionMatrix( matProj );
 
-	m_ShaderManager.SetWorldViewProjectionTransform( matWorld, matView, matProj );
+//	m_ShaderManager.SetWorldViewProjectionTransform( matWorld, matView, matProj );
+
+	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
 
 	pd3dDev->BeginScene();
 }
@@ -365,6 +368,8 @@ void CShadowMapManager::EndSceneShadowMap()
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	pd3dDev->EndScene();
+
+	ShaderManagerHub.PopViewAndProjectionMatrices();
 
 	// restore the original render tareget
 
