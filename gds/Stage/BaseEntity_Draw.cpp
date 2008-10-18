@@ -185,7 +185,6 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 //	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	CShaderManager *pShaderManager = NULL;
-	LPD3DXEFFECT pEffect = NULL;
 
 	// set the world transform
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
@@ -199,8 +198,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 	bool bSingleTechnique
 		= ( m_MeshProperty.m_PropertyFlags & CBE_MeshObjectProperty::PF_USE_SINGLE_TECHNIQUE_FOR_ALL_MATERIALS );
 
-	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
-		(pEffect = pShaderManager->GetEffect()) )
+	if( pShaderManager = CShader::Get()->GetCurrentShaderManager() )
 	{
 		// render the mesh with an HLSL shader
 
@@ -311,8 +309,6 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 		return;
 	}
 
-	CMeshType::Name mesh_type = pMeshObject->GetMeshType();
-
 	if( rShaderTechHandleTable.size_x() == 0 )
 	{
 		// no shader technique to render the model with
@@ -353,7 +349,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 		}
 	}
 
-	int render_mode = GetRenderMode();
+	const CMeshType::Name mesh_type = pMeshObject->GetMeshType();
 
 	switch( mesh_type )
 	{
@@ -384,12 +380,7 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 								    C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 									int ShaderLOD )
 {
-//	MsgBoxFmt( "drawing a skeletal mesh - entity: %s, shader id: %d", pCopyEnt->GetName().c_str(), shader_tech_id );
-
 	PROFILE_FUNCTION();
-
-//	CD3DXSMeshObject *pSMesh
-//		= dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get());
 
 	// World & View matrices are recalculated to avoid occilation in large coord
 	// Thus, world & blend matrices need to be set in a special way

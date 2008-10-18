@@ -1100,9 +1100,9 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 		if( scanner.TryScanLine( "MESH_TYPE", str ) )
 		{
 			CMeshType::Name type = CMeshType::INVALID;
-			if( str == "SIMPLE" )			type = CMeshType::BASIC;
-			if( str == "PROGRESSIVE" )		type = CMeshType::PROGRESSIVE;
-			if( str == "HIERARCHICAL" )		type = CMeshType::SKELETAL;
+			if( str == "BASIC" )            type = CMeshType::BASIC;
+			else if( str == "PROGRESSIVE" ) type = CMeshType::PROGRESSIVE;
+			else if( str == "SKELETAL" )    type = CMeshType::SKELETAL;
 			m_MeshProperty.m_MeshDesc.MeshType = type;
 		}
 
