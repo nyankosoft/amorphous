@@ -75,6 +75,8 @@ class CShadowMapManager : public CGraphicsComponent
 
 	static std::string ms_strDefaultShaderFilename;
 
+	bool m_DisplayShadowMapTexturesForDebugging;
+
 private:
 
 	void SetDefault();

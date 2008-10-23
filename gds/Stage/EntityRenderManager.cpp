@@ -740,7 +740,7 @@ void CEntityRenderManager::DisableShadowMap()
 }
 
 
-void CEntityRenderManager::ReleaseGraphicsResources()
+void CEntityRenderManager::ReleaseGraphicsResources()	
 {
 	SAFE_RELEASE( m_pBlankTexture );
 
@@ -808,8 +808,6 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	m_pShadowManager->SetCameraPosition( rCam.GetPosition() );
 	m_pShadowManager->SetCameraDirection( rCam.GetFrontDirection() );
 
-//	pScreenEffectMgr->RaiseEffectFlag( ScreenEffect::ShadowMap );
-
 	// render shadow map
 	// the entities that cast shadows to other entities are rendered in this phase
 	// shader manager of shadow map is set to CShader (singleton)
@@ -822,13 +820,14 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	m_pShadowManager->EndSceneShadowMap();
 
 
+	m_pShadowManager->SetSceneCamera( rCam );
+	m_pShadowManager->SceneCamera().SetNearClip( 0.005f );
+	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
+
 	m_pShadowManager->BeginSceneDepthMap();
 
 	// Render to scene depth texture
 	// BeginScene() and EndScene() pair is called inside
-	m_pShadowManager->SetSceneCamera( rCam );
-	m_pShadowManager->SceneCamera().SetNearClip( 0.005f );
-	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
 
 	RenderShadowReceivers( rCam );
 

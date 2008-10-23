@@ -4,7 +4,7 @@
 
 void C2DTexRect::SetDefault()
 {
-	ZeroMemory(m_avRectVertex, sizeof(TLVERTEX) * 4);
+	ZeroMemory(m_avRectVertex, sizeof(TLVERTEX2) * 4);
 	for(int i=0; i<4; i++)
 	{
 		m_avRectVertex[i].rhw = 1.0f;
@@ -12,6 +12,16 @@ void C2DTexRect::SetDefault()
 	}
 
 	m_DestAlphaBlend = D3DBLEND_INVSRCALPHA;
+
+	for(int i=0; i<2; i++)
+	{
+		TLVERTEX2 *pVert = m_avRectVertex;
+		pVert->tex[i] = TEXCOORD2(0,0);
+		pVert->tex[i] = TEXCOORD2(1,0);
+		pVert->tex[i] = TEXCOORD2(1,1);
+		pVert->tex[i] = TEXCOORD2(0,1);
+	}
+	
 }
 
 

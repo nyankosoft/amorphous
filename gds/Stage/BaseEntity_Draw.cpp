@@ -595,7 +595,7 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 
 		int i, num_materials = pMeshObject->GetNumMaterials();
 
-		bool use_offset_world_transform = true;
+		bool use_offset_world_transform = false;
 
 		CShadowMapManager *pShadowMgr = m_pStage->GetEntitySet()->GetRenderManager()->GetShadowManager();
 		CShaderManager *pShaderManager = NULL;

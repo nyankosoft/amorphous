@@ -623,6 +623,24 @@ int CMeshResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
 	return desc.CanBeUsedAsMeshCache( m_MeshDesc );
 }
 
+/*
+struct IDAndString
+{
+	int id;
+	const char* text;
+};
+
+
+#define ID_AND_STRING(id) { id, #id }
+
+
+IDAndString g_MeshTypes[] =
+{
+	ID_AND_STRING(CMeshType::BASIC),
+	ID_AND_STRING(CMeshType::PROGRESSIVE),
+	ID_AND_STRING(CMeshType::SKELETAL)
+};
+*/
 
 void CMeshResource::GetStatus( char *pDestBuffer )
 {

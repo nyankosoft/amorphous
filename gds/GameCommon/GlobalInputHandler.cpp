@@ -1,4 +1,3 @@
-
 #include "GlobalInputHandler.h"
 
 #include "App/GameWindowManager_Win32.h"
@@ -6,6 +5,7 @@
 #include "Task/GameTaskManager.h"
 #include "Task/GameTask.h"
 
+#include "3DCommon/GraphicsresourceManager.h"
 #include "GameCommon/ImageCapture.h"
 #include "GameCommon/ScreenShotManager.h"
 
@@ -51,7 +51,9 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 	case GIC_F4:
 		break;
 
-	case GIC_F5:	// quick save
+	case GIC_F5:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			GraphicsResourceManager().Refresh();
 		break;
 
 	case GIC_F7:	// quick load
