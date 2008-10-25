@@ -15,7 +15,7 @@
 #include "Support/Macro.h"
 
 
-
+/*
 int CBaseEntity::GetRenderMode()
 {
 	unsigned int effect_flag = m_pStage->GetScreenEffectManager()->GetEffectFlag();
@@ -29,7 +29,7 @@ int CBaseEntity::GetRenderMode()
 	else
 		return ERM_NORMAL;
 }
-
+*/
 
 static D3DXVECTOR3 s_OrigViewTrans;
 static D3DXVECTOR3 s_OrigWorldPos;
@@ -121,15 +121,6 @@ static void RestoreOffsetWorldTransform()
 	pd3dDev->SetTransform( D3DTS_VIEW, &matView );
 }
 
-/*
-void CBaseEntity::DrawMeshSubset( const Matrix34& world_pose,
-								  CD3DXMeshObjectBase *pMeshObject,
-								  CShaderTechniqueHandle& shader_technique
-								  )
-{
-}
-*/
-
 
 void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD )
 {
@@ -174,7 +165,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 
 	if( !pMeshObject )
 	{
-		ONCE( g_Log.Print( "CBaseEntity::DrawMeshObject() - invlid mesh object: base entity '%s'", m_strName.c_str() ) );
+		ONCE( LOG_PRINT_ERROR( "An invalid mesh object: base entity: " + m_strName ) );
 		return;
 	}
 
@@ -224,9 +215,9 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 			{
 				// render target materials with the current shader technique
 				// - Models that does not include transparency
-				//   -> All the materials of the mesh
+				//   -> Render all the materials of the mesh
 				// - Models that includes material(s) with transparency
-				//   -> Materials with no-transparancy
+				//   -> Render the non-transparent materials
 				pMeshObject->RenderSubsets( *pShaderManager,
 					                        vecTargetMaterialIndex );
 			}
@@ -484,10 +475,6 @@ void CBaseEntity::RenderAsShaderCaster(CCopyEntity* pCopyEnt)
 		pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (float *)&matWorld );
 		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
-		pd3dDev->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
-
-		int i, num_materials = pMeshObject->GetNumMaterials();
-
 		bool use_offset_world_transform = false;
 
 //		CShadowMapManager *pShadowMgr = m_pStage->GetEntitySet()->GetRenderManager()->GetShadowManager();
@@ -505,28 +492,9 @@ void CBaseEntity::RenderAsShaderCaster(CCopyEntity* pCopyEnt)
 
 			HRESULT hr;
 			hr = pEffect->SetTechnique( "ShadowMap" );
-//			m_pStage->GetEntitySet()->GetRenderManager()->SetShaderTechniqueForShadowMap();
 
-			// Meshes are divided into subsets by materials. Render each subset in a loop
-			for( i=0; i<num_materials; i++ )
-			{
-//				pShaderManager->SetTexture( 0, pMeshObject->GetTexture(i) );
-
-				pEffect->CommitChanges();
-
-				UINT p, cPasses;
-				pEffect->Begin( &cPasses, 0 );
-				for( p = 0; p < cPasses; ++p )
-				{
-					pEffect->BeginPass( p );
-
-					// Draw the mesh subset
-					pMesh->DrawSubset( i );
-
-					pEffect->EndPass();
-				}
-				pEffect->End();
-			}
+			// TODO: skip texture settings
+			pMeshObject->Render( *pShaderManager );
 
 			if( use_offset_world_transform )
 				RestoreOffsetWorldTransform( pShaderManager );
@@ -591,10 +559,6 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 		pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (float *)&matWorld );
 		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
-		pd3dDev->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
-
-		int i, num_materials = pMeshObject->GetNumMaterials();
-
 		bool use_offset_world_transform = false;
 
 		CShadowMapManager *pShadowMgr = m_pStage->GetEntitySet()->GetRenderManager()->GetShadowManager();
@@ -613,26 +577,8 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 			pEffect->SetTechnique( "SceneShadowMap" );
 //			m_pStage->GetEntitySet()->GetRenderManager()->SetShaderTechniqueForShadowMap();
 
-			// Meshes are divided into subsets by materials. Render each subset in a loop
-			for( i=0; i<num_materials; i++ )
-			{
-//				pShaderManager->SetTexture( 0, pMeshObject->GetTexture(i) );
-
-				pEffect->CommitChanges();
-
-				UINT p, cPasses;
-				pEffect->Begin( &cPasses, 0 );
-				for( p = 0; p < cPasses; ++p )
-				{
-					pEffect->BeginPass( p );
-
-					// Draw the mesh subset
-					pMesh->DrawSubset( i );
-
-					pEffect->EndPass();
-				}
-				pEffect->End();
-			}
+			// TODO: skip texture settings
+			pMeshObject->Render( *pShaderManager );
 
 			if( use_offset_world_transform )
 				RestoreOffsetWorldTransform( pShaderManager );
