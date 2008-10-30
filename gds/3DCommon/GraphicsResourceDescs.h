@@ -23,6 +23,18 @@ public:
 };
 
 
+class UsageFlag
+{
+public:
+	enum Name
+	{
+		RENDER_TARGET           = (1 << 0),
+//		ANOTHER_USAGE_FLAG     = (1 << 1),
+//		YET_ANOTHER_USAGE_FLAG = (1 << 2),
+	};
+};
+
+
 class CGraphicsResourceDesc : public IArchiveObjectBase
 {
 	bool m_IsCachedResource;
@@ -90,6 +102,8 @@ public:
 
 	TextureFormat::Format Format;
 
+	uint UsageFlags;
+
 	boost::weak_ptr<CTextureLoader> pLoader;
 
 public:
@@ -99,7 +113,8 @@ public:
 	Width(0),
 	Height(0),
 	MipLevels(0),
-	Format(TextureFormat::Invalid)
+	Format(TextureFormat::Invalid),
+	UsageFlags(0)
 	{}
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }

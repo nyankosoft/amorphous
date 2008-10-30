@@ -15,8 +15,8 @@ CTextureRenderTarget::CTextureRenderTarget()
 	m_pRenderTargetCopyTexture = NULL;
 	m_pRenderTargetCopySurface = NULL;
 
-	m_iTextureWidth  = 1;
-	m_iTextureHeight = 1;
+	m_TextureDesc.Width  = 1;
+	m_TextureDesc.Height = 1;
 
 	m_dwBackgroundColor = 0x00000000;
 }
@@ -31,8 +31,29 @@ CTextureRenderTarget::CTextureRenderTarget( int texture_width, int texture_heigh
 	m_pRenderTargetCopyTexture = NULL;
 	m_pRenderTargetCopySurface = NULL;
 
-	m_iTextureWidth  = texture_width;
-	m_iTextureHeight = texture_height;
+	m_TextureDesc.Width  = texture_width;
+	m_TextureDesc.Height = texture_height;
+
+	m_TextureDesc.Format = texture_format;
+
+	m_TextureDesc.UsageFlags = UsageFlag::RENDER_TARGET;
+
+	m_dwBackgroundColor = 0x00000000;
+
+	LoadTextures();
+}
+
+
+CTextureRenderTarget::CTextureRenderTarget( const CTextureResourceDesc& texture_desc )
+:
+m_TextureDesc(texture_desc)
+{
+	m_pRenderTargetTexture      = NULL;
+	m_pRenderTargetSurface      = NULL;
+	m_pRenderTargetDepthSurface = NULL;
+
+	m_pRenderTargetCopyTexture = NULL;
+	m_pRenderTargetCopySurface = NULL;
 
 	m_dwBackgroundColor = 0x00000000;
 
@@ -46,14 +67,24 @@ CTextureRenderTarget::~CTextureRenderTarget()
 }
 
 
-void CTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
+bool CTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 {
-	m_iTextureWidth  = texture_width;
-	m_iTextureHeight = texture_height;
+	m_TextureDesc.Width  = texture_width;
+	m_TextureDesc.Height = texture_height;
 
 	m_dwBackgroundColor = 0x00000000;
 
-	LoadTextures();
+	return LoadTextures();
+}
+
+
+bool CTextureRenderTarget::Init( const CTextureResourceDesc& texture_desc )
+{
+	m_TextureDesc = texture_desc;
+
+	m_dwBackgroundColor = 0x00000000;
+
+	return LoadTextures();
 }
 
 
@@ -85,8 +116,11 @@ bool CTextureRenderTarget::LoadTextures()
 	HRESULT hr;
 
 	// create a texture on which the scene is rendered
-	hr = pd3dDev->CreateTexture( m_iTextureWidth, m_iTextureHeight, 
-                                 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8 /*D3DFMT_X8R8G8B8*/, 
+	hr = pd3dDev->CreateTexture( m_TextureDesc.Width,
+		                         m_TextureDesc.Height, 
+                                 1,
+								 D3DUSAGE_RENDERTARGET,
+								 ConvertTextureFormatToD3DFORMAT(m_TextureDesc.Format), // D3DFMT_A8R8G8B8 /*D3DFMT_X8R8G8B8*/, 
                                  D3DPOOL_DEFAULT, &m_pRenderTargetTexture, NULL );
 
 	if( FAILED(hr) )
@@ -96,8 +130,10 @@ bool CTextureRenderTarget::LoadTextures()
 
 
 	// create surface object to hold a copy of render target surface
-	hr = pd3dDev->CreateTexture( m_iTextureWidth, m_iTextureHeight, 
-                                 1, 0, D3DFMT_A8R8G8B8 /*D3DFMT_X8R8G8B8*/, 
+	hr = pd3dDev->CreateTexture( m_TextureDesc.Width,
+		                         m_TextureDesc.Height, 
+                                 1, 0,
+								 ConvertTextureFormatToD3DFORMAT(m_TextureDesc.Format), // D3DFMT_A8R8G8B8 /*D3DFMT_X8R8G8B8*/, 
                                  D3DPOOL_SYSTEMMEM, &m_pRenderTargetCopyTexture, NULL );
 
 	hr = m_pRenderTargetCopyTexture->GetSurfaceLevel(0, &m_pRenderTargetCopySurface);
@@ -117,8 +153,8 @@ bool CTextureRenderTarget::LoadTextures()
 	// decrement the reference count
 //	m_pOriginalDepthSurface->Release();
 
-	hr = pd3dDev->CreateDepthStencilSurface( m_iTextureWidth,
-	                                         m_iTextureHeight,
+	hr = pd3dDev->CreateDepthStencilSurface( m_TextureDesc.Width,
+	                                         m_TextureDesc.Height,
 		                                     surface_desc.Format, /*D3DFMT_D16,*/
 											 D3DMULTISAMPLE_NONE,
 											 0, TRUE, &m_pRenderTargetDepthSurface, NULL );
@@ -144,8 +180,8 @@ void CTextureRenderTarget::LoadGraphicsResources( const CGraphicsParameters& rPa
 	if( m_bScreenSizeRenderTarget )
 	{
 		// resize the render target texture size for a new screen resolution
-		m_iTextureWidth  = GetScreenWidth();
-		m_iTextureHeight = GetScreenHeight();
+		m_TextureDesc.Width  = GetScreenWidth();
+		m_TextureDesc.Height = GetScreenHeight();
 	}
 
 	LoadTextures();
@@ -168,8 +204,8 @@ void CTextureRenderTarget::SetRenderTarget()
 		)
 		return;
 
-	int iTextureWidth  = m_iTextureWidth;
-	int iTextureHeight = m_iTextureHeight;
+	int iTextureWidth  = m_TextureDesc.Width;
+	int iTextureHeight = m_TextureDesc.Height;
 
 //	MessageBox(NULL, "point 0","texture render target", MB_OK);
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -267,7 +303,7 @@ void CTextureRenderTarget::OutputImageFile( const char* filename )
 	pTex->LockRect( 0, &locked_rect, NULL, 0 );
 	pdwTexelData = (DWORD *)locked_rect.pBits;
 
-	bmp_exporter.OutputImage_24Bit( filename, m_iTextureWidth, m_iTextureHeight, pdwTexelData );
+	bmp_exporter.OutputImage_24Bit( filename, m_TextureDesc.Width, m_TextureDesc.Height, pdwTexelData );
 
 	pTex->UnlockRect( 0 );
 }

@@ -4,18 +4,25 @@
 #include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManagerHub.h"
 #include "3DCommon/2DTexRect.h"
+#include "3DCommon/TextureRenderTarget.h"
 #include "Support/Log/DefaultLog.h"
 
 using namespace std;
+using namespace boost;
 
 
 //std::string CVarianceShadowMapManager::ms_strDefaultVSMShaderFilename = "Shader/VarianceShadowMap.fx";
 
+/*
+CVarianceShadowMapManager::SetShaderTechniqueForShadowCaster()
+{
+}
+*/
 
 CVarianceShadowMapManager::CVarianceShadowMapManager()
-:
-m_pHBlurredShadowMap(NULL),
-m_pBlurredShadowMap(NULL)
+//:
+//m_pHBlurredShadowMap(NULL),
+//m_pBlurredShadowMap(NULL)
 {
 	m_ShadowMapShaderFilename = "Shader/VarianceShadowMap.fx";
 }
@@ -23,9 +30,9 @@ m_pBlurredShadowMap(NULL)
 
 CVarianceShadowMapManager::CVarianceShadowMapManager( int texture_width, int texture_height )
 :
-CShadowMapManager(texture_width,texture_height),
-m_pHBlurredShadowMap(NULL),
-m_pBlurredShadowMap(NULL)
+CShadowMapManager(texture_width,texture_height)
+//m_pHBlurredShadowMap(NULL),
+//m_pBlurredShadowMap(NULL)
 {
 	m_ShadowMapShaderFilename = "Shader/VarianceShadowMap.fx";
 }
@@ -47,6 +54,30 @@ bool CVarianceShadowMapManager::Init()
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr;
 
+	CTextureResourceDesc desc;
+	desc.Width  = m_iTextureWidth;
+	desc.Height = m_iTextureHeight;
+	desc.Format = TextureFormat::G16R16F;
+	desc.UsageFlags = UsageFlag::RENDER_TARGET;
+
+	bool initialized = false;
+
+	m_pHBlurredShadowMap = shared_ptr<CTextureRenderTarget>( new CTextureRenderTarget() );
+
+	initialized = m_pHBlurredShadowMap->Init( desc );
+
+	if( !initialized )
+		return false;
+
+	m_pBlurredShadowMap  = shared_ptr<CTextureRenderTarget>( new CTextureRenderTarget() );
+
+	initialized = m_pBlurredShadowMap->Init( desc );
+
+	if( !initialized )
+		return false;
+
+
+/*
 	// create a texture on which the blurred shadow map is rendered
 	hr = pd3dDev->CreateTexture( m_iTextureWidth, m_iTextureHeight, 
 								 1,
@@ -63,7 +94,7 @@ bool CVarianceShadowMapManager::Init()
 								 D3DPOOL_DEFAULT,
 								 &m_pBlurredShadowMap,
 								 NULL );
-
+*/
 	return true;
 }
 

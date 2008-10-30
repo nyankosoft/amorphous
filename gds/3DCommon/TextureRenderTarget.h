@@ -5,6 +5,7 @@
 #include <d3dx9.h>
 #include "3DCommon/TextureFormat.h"
 #include "3DCommon/GraphicsComponentCollector.h"
+#include "3DCommon/GraphicsResourceDescs.h"
 
 /*
 // TODO: rename this to CTextureRenderTarget
@@ -55,8 +56,9 @@ private:
 
 	D3DVIEWPORT9 m_OriginalViewport;
 
-	int m_iTextureWidth;
-	int m_iTextureHeight;
+	CTextureResourceDesc m_TextureDesc;
+
+
 
 	DWORD m_dwBackgroundColor;
 
@@ -71,12 +73,17 @@ public:
 
 	CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
 
+	CTextureRenderTarget( const CTextureResourceDesc& texture_desc );
+
 	~CTextureRenderTarget();
 
-	void Init( int texture_width,
+	/// Returns true on success
+	bool Init( int texture_width,
 		       int texture_height,
 			   TextureFormat::Format texture_format = TextureFormat::A8R8G8B8,
 			   uint option_flags = 0 );
+
+	bool Init( const CTextureResourceDesc& texture_desc );
 
 	// The texture size is automatically resized to screen size (viewport size)
 	// in LoadGraphicsResources()

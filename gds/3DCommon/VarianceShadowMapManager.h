@@ -2,6 +2,7 @@
 #define  __VarianceShadowMapManager_H__
 
 
+#include <boost/shared_ptr.hpp>
 #include "ShadowMapManager.h"
 #include "3DCommon/ShaderHandle.h"
 
@@ -10,9 +11,13 @@
  */
 class CVarianceShadowMapManager : public CShadowMapManager
 {
-	LPDIRECT3DTEXTURE9 m_pHBlurredShadowMap;
+//	LPDIRECT3DTEXTURE9 m_pHBlurredShadowMap;
 
-	LPDIRECT3DTEXTURE9 m_pBlurredShadowMap;
+//	LPDIRECT3DTEXTURE9 m_pBlurredShadowMap;
+
+	boost::shared_ptr<CTextureRenderTarget> m_pHBlurredShadowMap;
+
+	boost::shared_ptr<CTextureRenderTarget> m_pBlurredShadowMap;
 
 	CShaderHandle m_BlurShader;
 

@@ -18,6 +18,8 @@ public:
 		A1R5G5B5,
 		X1R5G5B5,
 		R5G6B5,
+		G16R16F, ///< For variance shadow map with Direct3D
+		G32R32F, ///< For variance shadow map with Direct3D
 		NumFormats
 	};
 };
@@ -53,6 +55,8 @@ inline D3DFORMAT ConvertTextureFormatToD3DFORMAT( TextureFormat::Format tex_form
 	case TextureFormat::X8R8G8B8:      return D3DFMT_X8R8G8B8;
 	case TextureFormat::R5G6B5:        return D3DFMT_R5G6B5;
 	case TextureFormat::A1R5G5B5:      return D3DFMT_A1R5G5B5;
+	case TextureFormat::G16R16F:       return D3DFMT_G16R16F;
+	case TextureFormat::G32R32F:       return D3DFMT_G32R32F;
 	default:
 		LOG_PRINT_ERROR( "An invalid texture format" );
 		return D3DFMT_A8R8G8B8;
