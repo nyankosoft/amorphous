@@ -9,11 +9,12 @@
 using namespace std;
 
 
-std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
+//std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
 
 
 CShadowMapManager::CShadowMapManager()
 :
+m_ShadowMapShaderFilename("Shader/ShadowMap.fx"),
 m_DisplayShadowMapTexturesForDebugging(false)
 {
 	SetDefault();
@@ -27,6 +28,9 @@ m_DisplayShadowMapTexturesForDebugging(false)
 
 
 CShadowMapManager::CShadowMapManager( int texture_width, int texture_height )
+:
+m_ShadowMapShaderFilename("Shader/ShadowMap.fx"),
+m_DisplayShadowMapTexturesForDebugging(false)
 {
 	SetDefault();
 
@@ -41,11 +45,11 @@ bool CShadowMapManager::Init()
 	m_ShaderManager.Release();
 	ReleaseTextures();
 
-	bool shader_loaded = m_ShaderManager.LoadShaderFromFile( ms_strDefaultShaderFilename );
+	bool shader_loaded = m_ShaderManager.LoadShaderFromFile( m_ShadowMapShaderFilename );
 
 	if( !shader_loaded )
 	{
-		LOG_PRINT_ERROR( "Cannot load shader: " + ms_strDefaultShaderFilename );
+		LOG_PRINT_ERROR( "Cannot load shader: " + m_ShadowMapShaderFilename );
 		return false;
 	}
 
@@ -107,7 +111,7 @@ void CShadowMapManager::ReleaseTextures()
 #define V_RETURN( x ) hr = x; if( FAILED(hr) ) return hr;
 
 
-HRESULT CShadowMapManager::CreateShadowMapTextures()
+bool CShadowMapManager::CreateShadowMapTextures()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -129,15 +133,20 @@ HRESULT CShadowMapManager::CreateShadowMapTextures()
 //	V_RETURN( m_pEffect->SetVector( "g_vLightDiffuse", (D3DXVECTOR4 *)&m_Light.Diffuse ) );
 //	V_RETURN( m_pEffect->SetFloat( "g_fCosTheta", cosf( g_Light.Theta ) ) );
 
+	D3DFORMAT format = GetShadowMapTextureFormat();
+
 	// Create the shadow map texture
-	V_RETURN( pd3dDevice->CreateTexture( m_ShadowMapSize, m_ShadowMapSize,
+	hr = pd3dDevice->CreateTexture( m_ShadowMapSize, m_ShadowMapSize,
 										 1,
 										 D3DUSAGE_RENDERTARGET,
-										 D3DFMT_R32F, // Color argument of Clear() does not work if D3DFMT_R32F is used?
+										 format, // Color argument of Clear() does not work if D3DFMT_R32F is used?
 										 // D3DFMT_A8R8G8B8, // use this to render the shadowmap texture for debugging
 										 D3DPOOL_DEFAULT,
 										 &m_pShadowMap,
-										 NULL ) );
+										 NULL );
+
+	if( FAILED(hr) )
+		return false;
 
 	// Create the depth-stencil buffer to be used with the shadow map
 	// We do this to ensure that the depth-stencil buffer is large
@@ -153,7 +162,7 @@ HRESULT CShadowMapManager::CreateShadowMapTextures()
 	hr = pd3dDevice->GetDepthStencilSurface( &m_pOriginalDepthSurface );
 	D3DSURFACE_DESC surface_desc;
 	m_pOriginalDepthSurface->GetDesc( &surface_desc );
-	V_RETURN( pd3dDevice->CreateDepthStencilSurface( m_ShadowMapSize,
+	hr = pd3dDevice->CreateDepthStencilSurface( m_ShadowMapSize,
 													 m_ShadowMapSize,
 //													 d3dSettings.pp.AutoDepthStencilFormat,
 													 surface_desc.Format,
@@ -161,12 +170,15 @@ HRESULT CShadowMapManager::CreateShadowMapTextures()
 													 0,
 													 TRUE,
 													 &m_pDSShadow,
-													 NULL ) );
+													 NULL );
+
+	if( FAILED(hr) )
+		return false;
 
 	// Initialize the shadow projection matrix
 //	D3DXMatrixPerspectiveFovLH( &m_mShadowProj, g_fLightFov, 1, 0.01f, 100.0f);
 
-	return S_OK;
+	return true;
 }
 
 
@@ -337,8 +349,6 @@ void CShadowMapManager::BeginSceneShadowMap()
 	// set shadow map texture as a render target
 
 	// save the current settings
-//	LPDIRECT3DSURFACE9 pOldRT = NULL;
-//	V( pd3dDev->GetRenderTarget( 0, &pOldRT ) );
 	hr = pd3dDev->GetRenderTarget( 0, &m_pOriginalSurface );
 
 	LPDIRECT3DSURFACE9 pShadowSurf;
@@ -348,7 +358,6 @@ void CShadowMapManager::BeginSceneShadowMap()
 		SAFE_RELEASE( pShadowSurf );
 	}
 
-//	LPDIRECT3DSURFACE9 pOldDS = NULL;
 	if( SUCCEEDED( pd3dDev->GetDepthStencilSurface( &m_pOriginalDepthSurface ) ) )
 		hr = pd3dDev->SetDepthStencilSurface( m_pDSShadow );
 //	{

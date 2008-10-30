@@ -3,14 +3,42 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-//#include "3DCommon/FVF_TLVertex.h"
-//#include "3DCommon/FVF_TextureVertex.h"
+#include "3DCommon/TextureFormat.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 
+/*
+// TODO: rename this to CTextureRenderTarget
+class CTextureRenderTargetBase : public CGraphicsComponent
+{
+public:
 
+//	CTextureRenderTarget( TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
 
+//	CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
+
+	virtual void Init(
+		int texture_width,
+		int texture_height,
+		TextureFormat::Format texture_format = TextureFormat::A8R8G8B8,
+		uint option_flags = 0 )
+	{}
+};
+*/
+
+// TODO: change this to class CD3DTextureRenderTarget : public CTextureRenderTarget
 class CTextureRenderTarget : public CGraphicsComponent
 {
+public:
+
+	enum OptionFlags
+	{
+		OPTFLG_NO_DEPTH_BUFFER    = ( 1 << 0 ),
+		OPTFLG_ANOTHER_OPTION     = ( 1 << 1 ),
+		OPTFLG_YET_ANOTHER_OPTION = ( 1 << 2 )
+	};
+
+private:
+
 	LPDIRECT3DTEXTURE9 m_pRenderTargetTexture;
 	LPDIRECT3DSURFACE9 m_pRenderTargetSurface;
 	LPDIRECT3DSURFACE9 m_pRenderTargetDepthSurface;
@@ -41,11 +69,14 @@ public:
 
 	CTextureRenderTarget();
 
-	CTextureRenderTarget( int texture_width, int texture_height );
+	CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
 
 	~CTextureRenderTarget();
 
-	void Init( int texture_width, int texture_height );
+	void Init( int texture_width,
+		       int texture_height,
+			   TextureFormat::Format texture_format = TextureFormat::A8R8G8B8,
+			   uint option_flags = 0 );
 
 	// The texture size is automatically resized to screen size (viewport size)
 	// in LoadGraphicsResources()

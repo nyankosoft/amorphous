@@ -37,9 +37,7 @@
  */
 class CShadowMapManager : public CGraphicsComponent
 {
-//	LPDIRECT3DTEXTURE9 m_pRenderTargetTexture;
-//	LPDIRECT3DSURFACE9 m_pRenderTargetSurface;
-//	LPDIRECT3DSURFACE9 m_pRenderTargetDepthSurface;
+protected:
 
 	/// used to temporarily hold original surfaces
 	LPDIRECT3DSURFACE9 m_pOriginalSurface;
@@ -58,10 +56,8 @@ class CShadowMapManager : public CGraphicsComponent
 	LPDIRECT3DTEXTURE9 m_pShadowedView;
 	LPDIRECT3DSURFACE9 m_pDSShadowedView;
 
-//	Vector3 m_vLightDir;
-//	Vector3 m_vLightPos;
-
 	/// used to create camera matrix and projection matrix to render shadow map
+	/// - Stores light direction and position
 	CCamera m_LightCamera;
 
 	CCamera m_SceneCamera;
@@ -73,16 +69,21 @@ class CShadowMapManager : public CGraphicsComponent
 
 	CTextureRenderTarget m_SceneRenderTarget;
 
-	static std::string ms_strDefaultShaderFilename;
+//	static std::string ms_strDefaultShaderFilename;
+
+	std::string m_ShadowMapShaderFilename;
 
 	bool m_DisplayShadowMapTexturesForDebugging;
 
-private:
+protected:
 
 	void SetDefault();
 
-	HRESULT CreateShadowMapTextures();
+	bool CreateShadowMapTextures();
+
 	bool CreateSceneShadowMapTextures();
+
+	virtual D3DFORMAT GetShadowMapTextureFormat() { return D3DFMT_R32F; }
 
 public:
 
@@ -97,26 +98,22 @@ public:
 
 //	void Init( int texture_width, int texture_height );
 
-
 //	void SetTextureWidth( const int width, const int height );
-
-//	void SetBackgroundColor( const DWORD dwBGColor ) { m_dwBackgroundColor = dwBGColor; }
-
-//	void SetRenderTarget();
-//	void ResetRenderTarget();
 
 //	void BeginSceneForShadowCaster();
 //	void EndSceneForShadowCaster();
-
 //	void BeginSceneForShadowReceiver();
 //	void EndSceneForShadowReceiver();
 
 	/// sets m_ShaderManager to CShader (singleton)
 	void BeginSceneShadowMap();
 
-	void EndSceneShadowMap();
+	/// why virtual?
+	/// - See CVarianceShadowMapManager
+	virtual void EndSceneShadowMap();
 
 	void BeginSceneDepthMap();
+
 	void EndSceneDepthMap();
 
 	/// sets the render target texture for the scene
@@ -124,8 +121,6 @@ public:
 	void EndScene();
 
 	void RenderSceneWithShadow();
-
-//	inline LPDIRECT3DTEXTURE9 GetRenderTargetTexture() { return m_pRenderTargetTexture; }
 
 	void UpdateScreenSize();
 
@@ -151,7 +146,8 @@ public:
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
-	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
+//	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
+	void SetShadowMapShaderFilename( const std::string& filename ) { m_ShadowMapShaderFilename = filename; }
 };
 
 

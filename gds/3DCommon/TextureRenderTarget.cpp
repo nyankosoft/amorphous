@@ -22,7 +22,7 @@ CTextureRenderTarget::CTextureRenderTarget()
 }
 
 
-CTextureRenderTarget::CTextureRenderTarget( int texture_width, int texture_height )
+CTextureRenderTarget::CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 {
 	m_pRenderTargetTexture      = NULL;
 	m_pRenderTargetSurface      = NULL;
@@ -46,7 +46,7 @@ CTextureRenderTarget::~CTextureRenderTarget()
 }
 
 
-void CTextureRenderTarget::Init( int texture_width, int texture_height )
+void CTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 {
 	m_iTextureWidth  = texture_width;
 	m_iTextureHeight = texture_height;
@@ -61,7 +61,7 @@ void CTextureRenderTarget::InitScreenSizeRenderTarget()
 {
 	m_bScreenSizeRenderTarget = true;
 
-	Init( GetScreenWidth(), GetScreenHeight() );
+	Init( GetScreenWidth(), GetScreenHeight(), TextureFormat::A8R8G8B8, 0 );
 }
 
 

@@ -390,6 +390,14 @@
 				RelativePath="..\..\gds\3DCommon\UnitSphere.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\gds\3DCommon\VarianceShadowMapManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DCommon\VarianceShadowMapManager.h"
+				>
+			</File>
 			<Filter
 				Name="Shader"
 				>
@@ -2229,13 +2237,6 @@
 					<File
 						RelativePath="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.cpp"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.h"
