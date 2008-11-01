@@ -1,10 +1,10 @@
-
 #include "EntityRenderManager.h"
 #include "EntitySet.h"
 #include "trace.h"
 #include "ViewFrustumTest.h"
 
 #include "3DCommon/ShadowMapManager.h"
+#include "3DCommon/VarianceShadowMapManager.h"
 #include "3DCommon/CubeMapManager.h"
 #include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManagerHub.h"
@@ -712,6 +712,26 @@ bool CEntityRenderManager::RemoveEnvMapTarget( CCopyEntity *pEntity )
 }
 
 
+bool CEntityRenderManager::EnableSoftShadow( float softness, int shadow_map_size )
+{
+	SafeDelete( m_pShadowManager );
+
+	m_pShadowManager = new CVarianceShadowMapManager();
+
+	bool initialized = m_pShadowManager->Init();
+	if( !initialized )
+	{
+		// shadow map is not available
+		// graphics card does not support float point buffer
+		// or there is not enough graphics memory, etc.
+		SafeDelete( m_pShadowManager );
+		return false;
+	}
+
+	return true;
+}
+
+
 bool CEntityRenderManager::EnableShadowMap( int shadow_map_size )
 {
 	SafeDelete( m_pShadowManager );
@@ -807,6 +827,8 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 
 	m_pShadowManager->SetCameraPosition( rCam.GetPosition() );
 	m_pShadowManager->SetCameraDirection( rCam.GetFrontDirection() );
+	m_pShadowManager->SceneCamera().SetNearClip( 0.001f );
+	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
 
 	// render shadow map
 	// the entities that cast shadows to other entities are rendered in this phase
@@ -821,7 +843,7 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 
 
 	m_pShadowManager->SetSceneCamera( rCam );
-	m_pShadowManager->SceneCamera().SetNearClip( 0.005f );
+	m_pShadowManager->SceneCamera().SetNearClip( 0.001f );
 	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
 
 	m_pShadowManager->BeginSceneDepthMap();

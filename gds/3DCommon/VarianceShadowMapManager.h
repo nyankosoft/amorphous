@@ -7,6 +7,9 @@
 #include "3DCommon/ShaderHandle.h"
 
 
+typedef CShaderParameter< std::vector<float> > CShaderParamFloatArray;
+
+
 /**
  */
 class CVarianceShadowMapManager : public CShadowMapManager
@@ -20,6 +23,20 @@ class CVarianceShadowMapManager : public CShadowMapManager
 	boost::shared_ptr<CTextureRenderTarget> m_pBlurredShadowMap;
 
 	CShaderHandle m_BlurShader;
+
+	CShaderParamFloatArray m_SampleOffsetsH;
+	CShaderParamFloatArray m_SampleOffsetsV;
+	CShaderParamFloatArray m_SampleWeights;
+
+	enum Params
+	{
+		NUM_GAUSSIAN_SAMPLES = 15
+	};
+
+	Vector2 m_avSampleOffsetH[NUM_GAUSSIAN_SAMPLES];
+	Vector2 m_avSampleOffsetV[NUM_GAUSSIAN_SAMPLES];
+
+	float m_afSampleWeights[NUM_GAUSSIAN_SAMPLES];
 
 private:
 
@@ -36,8 +53,17 @@ public:
 	/// returns true on success
 	bool Init();
 
+//	void BeginSceneShadowMap();
+
 	/// Creates the blurred shadowmap from the shadowmap
 	void EndSceneShadowMap();
+
+
+	void BeginSceneDepthMap();
+
+//	void EndSceneDepthMap();
+
+	void UpdateLightPositionAndDirection();
 
 	void ReleaseGraphicsResources();
 

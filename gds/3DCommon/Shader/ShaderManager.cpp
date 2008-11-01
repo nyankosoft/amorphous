@@ -198,8 +198,9 @@ void CShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_par
 		}
 	}
 
+	HRESULT hr;
 	if( 0 <= index && index < (int)m_vecParamHandle.size() )
-		m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, &(float_param.GetParameter()[0]), (UINT)float_param.GetParameter().size() );
+		hr = m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, &(float_param.GetParameter()[0]), (UINT)float_param.GetParameter().size() );
 }
 
 

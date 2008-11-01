@@ -12,10 +12,13 @@ using namespace std;
 //std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
 
 
+static const bool gs_Debug = false;
+
+
 CShadowMapManager::CShadowMapManager()
 :
 m_ShadowMapShaderFilename("Shader/ShadowMap.fx"),
-m_DisplayShadowMapTexturesForDebugging(false)
+m_DisplayShadowMapTexturesForDebugging(gs_Debug)
 {
 	SetDefault();
 
@@ -30,7 +33,7 @@ m_DisplayShadowMapTexturesForDebugging(false)
 CShadowMapManager::CShadowMapManager( int texture_width, int texture_height )
 :
 m_ShadowMapShaderFilename("Shader/ShadowMap.fx"),
-m_DisplayShadowMapTexturesForDebugging(false)
+m_DisplayShadowMapTexturesForDebugging(gs_Debug)
 {
 	SetDefault();
 
@@ -365,7 +368,7 @@ void CShadowMapManager::BeginSceneShadowMap()
 //		RenderScene( pd3dDevice, true, fElapsedTime, &mLightView, &m_mShadowProj );
 //	}
 
-	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFFFFFF00, 1.0f, 0 );
+	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF80FF80, 1.0f, 0 );
 
 	// set the shadow map shader
 	// meshes that renderes themselves as shadow casters use the techniques
@@ -406,6 +409,32 @@ void CShadowMapManager::EndSceneShadowMap()
 	pd3dDev->SetRenderTarget( 0, m_pOriginalSurface );
 	SAFE_RELEASE( m_pOriginalSurface );
 }
+
+
+void CShadowMapManager::UpdateLightPositionAndDirection()
+{
+	HRESULT hr;
+	LPD3DXEFFECT pEffect = m_ShaderManager.GetEffect();
+
+	// set light pos and dir in scene camera space
+	D3DXMATRIX matSceneCamView;
+	m_SceneCamera.GetCameraMatrix( matSceneCamView );
+
+	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
+	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
+
+	D3DXVECTOR3 vViewLightPos, vViewLightDir;
+	D3DXVec3TransformCoord( &vViewLightPos, &vWorldLightPos, &matSceneCamView );
+
+	// Apply only the rotation to direction vector
+	// - set translation to zero
+	matSceneCamView._41 = matSceneCamView._42 = matSceneCamView._43 = 0;
+	D3DXVec3TransformCoord( &vViewLightDir, &vWorldLightDir, &matSceneCamView );
+
+	hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vViewLightPos, 3 );
+	hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vViewLightDir, 3 );
+}
+
 
 
 //void CShadowMapManager::BeginSceneForShadowReceiver()
@@ -453,26 +482,8 @@ void CShadowMapManager::BeginSceneDepthMap()
 	D3DXMatrixMultiply( &matWorldToLightProj, &matView, &matProj );
 	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
 
-//	pEffect->SetFloatArray( "g_vLightPos", (float *)&m_LightCamera.GetPosition(), 3 );
-//	pEffect->SetFloatArray( "g_vLightDir", (float *)&m_LightCamera.GetFrontDirection(), 3 );
-
-	// set light pos and dir in scene camera space
-	D3DXMATRIX matSceneCamView;
-	m_SceneCamera.GetCameraMatrix( matSceneCamView );
-
-	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
-	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
-
-	D3DXVECTOR3 vViewLightPos, vViewLightDir;
-	D3DXVec3TransformCoord( &vViewLightPos, &vWorldLightPos, &matSceneCamView );
-
-	// Apply only the rotation to direction vector
-	// - set translation to zero
-	matSceneCamView._41 = matSceneCamView._42 = matSceneCamView._43 = 0;
-	D3DXVec3TransformCoord( &vViewLightDir, &vWorldLightDir, &matSceneCamView );
-
-	hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vViewLightPos, 3 );
-	hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vViewLightDir, 3 );
+	// update light position and direction, etc.
+	UpdateLightPositionAndDirection();
 
 	// set the shadow map texture to determine shadowed pixels
 //	m_ShaderManager.SetTexture( 3, m_pShadowMap );

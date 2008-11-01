@@ -157,6 +157,47 @@ PyObject* RemoveEnvMapTarget( PyObject* self, PyObject* args )
 }
 
 
+
+
+
+PyObject* EnableSoftShadow( PyObject* self, PyObject* args )
+{
+	float softness = 1.0f;
+	int shadow_map_size = 512;
+	int result = PyArg_ParseTuple( args, "|fi", &softness, &shadow_map_size );
+
+	RETURN_PYNONE_IF_NO_STAGE()
+
+	CStage *pStage = GetStageForScriptCallback();
+	CEntityRenderManager *pRenderMgr = pStage->GetEntitySet()->GetRenderManager();
+
+	pRenderMgr->EnableSoftShadow( softness, shadow_map_size );
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* EnableSoftShadowForLight( PyObject* self, PyObject* args )
+{
+	int light_id;
+	float softness = 1.0f;
+	int shadow_map_size = 512;
+	int result = PyArg_ParseTuple( args, "i|fi", &light_id, &softness, &shadow_map_size );
+
+	RETURN_PYNONE_IF_NO_STAGE()
+
+	CStage *pStage = GetStageForScriptCallback();
+	CEntityRenderManager *pRenderMgr = pStage->GetEntitySet()->GetRenderManager();
+
+//	pRenderMgr->EnableSoftShadowForLight( softness, shadow_map_size );
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+
 PyObject* EnableShadowMap( PyObject* self, PyObject* args )
 {
 	int shadow_map_size = 512;
@@ -359,6 +400,7 @@ PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 	{ "SaveEnvMapTextureToFile",    SaveEnvMapTextureToFile,    METH_VARARGS, "" },
 	{ "EnableShadowMap",            EnableShadowMap,            METH_VARARGS, "" },
 	{ "DisableShadowMap",           DisableShadowMap,           METH_VARARGS, "" },
+	{ "EnableSoftShadow",           EnableSoftShadow,           METH_VARARGS, "" },
 	{ "SetOverrideShadowMapLight",  SetOverrideShadowMapLight,  METH_VARARGS, "" },
 	{ "SetShadowMapLightPosition",  SetShadowMapLightPosition,  METH_VARARGS, "" },
 	{ "SetShadowMapLightDirection", SetShadowMapLightDirection, METH_VARARGS, "" },

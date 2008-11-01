@@ -211,6 +211,7 @@ public:
 	CShadowMapManager *GetShadowManager() { return m_pShadowManager; }
 
 	bool EnableShadowMap( int shadow_map_size = 512 );
+	bool EnableSoftShadow( float softness = 1.0f, int shadow_map_size = 512 );
 	void DisableShadowMap();
 	void SetOverrideShadowMapLight( bool override ) { m_bOverrideShadowMapLight = override; } 
 	void SetOverrideShadowMapLightPosition( const Vector3& pos ) { m_vOverrideShadowMapPosition = pos; }

@@ -18,6 +18,8 @@ CTextureRenderTarget::CTextureRenderTarget()
 	m_TextureDesc.Width  = 1;
 	m_TextureDesc.Height = 1;
 
+	m_TextureDesc.Format = TextureFormat::A8R8G8B8;
+
 	m_dwBackgroundColor = 0x00000000;
 }
 
@@ -71,6 +73,8 @@ bool CTextureRenderTarget::Init( int texture_width, int texture_height, TextureF
 {
 	m_TextureDesc.Width  = texture_width;
 	m_TextureDesc.Height = texture_height;
+
+	m_TextureDesc.Format = texture_format;
 
 	m_dwBackgroundColor = 0x00000000;
 

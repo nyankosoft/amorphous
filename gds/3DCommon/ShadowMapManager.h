@@ -94,7 +94,7 @@ public:
 	~CShadowMapManager();
 
 	/// returns true on success
-	bool Init();
+	virtual bool Init();
 
 //	void Init( int texture_width, int texture_height );
 
@@ -112,7 +112,11 @@ public:
 	/// - See CVarianceShadowMapManager
 	virtual void EndSceneShadowMap();
 
-	void BeginSceneDepthMap();
+
+	virtual void UpdateLightPositionAndDirection();
+
+
+	virtual void BeginSceneDepthMap();
 
 	void EndSceneDepthMap();
 
