@@ -203,7 +203,20 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 			tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
 			if( 0 < tex_filename.length() )
 			{
-				string tex_filepath = fnop::get_cwd() + "/" + tex_filename;
+				string tex_filepath;
+				if( 4 < tex_filename.length() // valid shortest abs. path filename - "C:/a"
+					&& tex_filename[1] == ':'
+					&& tex_filename[2] != ':' ) // rule out database resource name - e.g., "a::b"
+				{
+					// absolute path
+					tex_filepath = tex_filename;
+				}
+				else
+				{
+					// relative apth
+					tex_filepath = fnop::get_cwd() + "/" + tex_filename;
+				}
+
 				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
 
 				if( !(option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES) )
