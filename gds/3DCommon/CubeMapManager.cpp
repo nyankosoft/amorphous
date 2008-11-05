@@ -58,7 +58,10 @@ void CCubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format
 		d3d_fmt = ConvertTextureFormatToD3DFORMAT( tex_format );
 	}
 	else
-		g_Log.Print( "CCubeMapManager::CreateTextures() - unsupported texture format: %d", tex_format );
+	{
+		LOG_PRINT_ERROR( fmt_string(" An unsupported texture format: %d", tex_format) );
+		return;
+	}
 
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
