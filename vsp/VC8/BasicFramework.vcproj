@@ -347,6 +347,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\3DCommon\ShadowMaps.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DCommon\ShadowMaps.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\3DCommon\SimpleMotionBlur.cpp"
 				>
 			</File>

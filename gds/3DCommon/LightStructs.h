@@ -5,6 +5,7 @@
 #include <float.h>
 #include <string>
 
+#include "fwd.h"
 #include "3DMath/Vector3.h"
 #include "FloatRGBColor.h"
 
@@ -12,6 +13,17 @@
 #include "Support/Serialization/Serialization_3DMath.h"
 #include "Support/Serialization/Serialization_Color.h"
 using namespace GameLib1::Serialization;
+
+
+class CLightVisitor
+{
+public:
+
+	void VisitLight( CLight& light ) {}
+	void VisitAmbientLight( CAmbientLight& ambient_light ) {}
+	void VisitPointLight( CPointLight& point_light ) {}
+	void VisitDirectionalLight( CDirectionalLight& directional_light ) {}
+};
 
 
 class CLight : public IArchiveObjectBase
@@ -57,6 +69,8 @@ public:
 	virtual Vector3 GetDirection() const { return Vector3(0,-1,0); }
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitLight( *this ); }
 };
 
 
@@ -75,6 +89,8 @@ public:
 	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal ) { return Color; }
 
 //	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitAmbientLight( *this ); }
 };
 
 
@@ -106,6 +122,8 @@ public:
 	virtual Vector3 GetDirection() const { return vDirection; }
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitDirectionalLight( *this ); }
 };
 
 
@@ -164,6 +182,8 @@ public:
 		fAttenuation[1] = a1;
 		fAttenuation[2] = a2;
 	}
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitPointLight( *this ); }
 };
 
 

@@ -12,7 +12,6 @@
 #include "3DCommon/RenderTask.h"
 #include "3DCommon/RenderTaskProcessor.h"
 
-
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"
@@ -21,6 +20,27 @@
 #include "Support/Macro.h"
 
 #include "ScreenEffectManager.h"
+
+
+class CEntityShadowMapRenderer : public CShadowMapSceneRenderer
+{
+	CEntityRenderManager *m_pRenderer;
+
+public:
+
+	CEntityShadowMapRenderer(CEntityRenderManager *pRenderer)
+		:
+	m_pRenderer(pRenderer)
+	{}
+
+	void RenderSceneToShadowMap( CCamera& camera );
+};
+
+
+void CEntityShadowMapRenderer::RenderSceneToShadowMap( CCamera& camera )
+{
+	m_pRenderer->RenderShadowCasters( camera );
+}
 
 
 class CEntityEnvMapRenderTask : public CRenderTask
@@ -821,8 +841,8 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 {
 	if( m_bOverrideShadowMapLight )
 	{
-		m_pShadowManager->SetLightPosition( m_vOverrideShadowMapPosition );
-		m_pShadowManager->SetLightDirection( m_vOverrideShadowMapDirection );
+//		m_pShadowManager->SetLightPosition( m_vOverrideShadowMapPosition );
+//		m_pShadowManager->SetLightDirection( m_vOverrideShadowMapDirection );
 	}
 
 	m_pShadowManager->SetCameraPosition( rCam.GetPosition() );
@@ -830,6 +850,11 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	m_pShadowManager->SceneCamera().SetNearClip( 0.001f );
 	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
 
+	// render objects that cast shadows to others
+
+	// CEntityRenderManager::RenderShadowCasters() are calld 1 or more times
+	m_pShadowManager->RenderShadowCasters( rCam );
+/*
 	// render shadow map
 	// the entities that cast shadows to other entities are rendered in this phase
 	// shader manager of shadow map is set to CShader (singleton)
@@ -840,12 +865,16 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	RenderShadowCasters( rCam );
 
 	m_pShadowManager->EndSceneShadowMap();
-
+*/
 
 	m_pShadowManager->SetSceneCamera( rCam );
 	m_pShadowManager->SceneCamera().SetNearClip( 0.001f );
 	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
 
+	// render that receives shadows
+
+	m_pShadowManager->RenderShadowReceivers( rCam );
+/*
 	m_pShadowManager->BeginSceneDepthMap();
 
 	// Render to scene depth texture
@@ -854,7 +883,7 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	RenderShadowReceivers( rCam );
 
 	m_pShadowManager->EndSceneDepthMap();
-
+*/
 
 	// set texture render target and call IDirect3DDevice9::BeginScene();
 	m_pShadowManager->BeginScene();

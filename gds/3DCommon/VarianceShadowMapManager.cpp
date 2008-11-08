@@ -204,7 +204,7 @@ bool CVarianceShadowMapManager::Init()
 void CVarianceShadowMapManager::EndSceneShadowMap()
 {
 	CShadowMapManager::EndSceneShadowMap();
-
+/*
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr;
 
@@ -286,29 +286,30 @@ void CVarianceShadowMapManager::EndSceneShadowMap()
 	// restore the original RT
 	hr = pd3dDev->SetRenderTarget( 0, pOrigSurf );
 
-/*
-	m_pBlurredShadowMap->SetRenderTarget();
 
-	m_pBlurredShadowMap->ResetRenderTarget();
+//	m_pBlurredShadowMap->SetRenderTarget();
 
-	pd3dDev->SetRenderTarget( 0, prev_target );
+//	m_pBlurredShadowMap->ResetRenderTarget();
 
-	if( FAILED(hr) )
-		return;
+//	pd3dDev->SetRenderTarget( 0, prev_target );
+
+//	if( FAILED(hr) )
+//		return;
 */
 }
 
 
 void CVarianceShadowMapManager::UpdateLightPositionAndDirection()
 {
-	HRESULT hr;
-	LPD3DXEFFECT pEffect = m_ShaderManager.GetEffect();
+/*	HRESULT hr;
+	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 
 	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
 	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
 
 	hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vWorldLightPos, 3 );
 	hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vWorldLightDir, 3 );
+*/
 }
 
 void CVarianceShadowMapManager::BeginSceneDepthMap()
@@ -319,7 +320,7 @@ void CVarianceShadowMapManager::BeginSceneDepthMap()
 	farclip.Parameter().resize( 1 );
 	farclip.Parameter()[0] = m_SceneCamera.GetFarClip();
 
-	m_ShaderManager.SetParam( farclip );
+	m_Shader.GetShaderManager()->SetParam( farclip );
 }
 
 

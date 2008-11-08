@@ -224,6 +224,7 @@ public:
 
 	friend class CEntityEnvMapRenderTask;
 	friend class CEntitySceneRenderTask;
+	friend class CEntityShadowMapRenderer;
 };
 
 

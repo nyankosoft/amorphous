@@ -29,6 +29,13 @@ class CGraphicsResourceCacheManager;
 class CTextureLoader;
 class CLockedTexture;
 
+class CLight;
+class CAmbientLight;
+class CDirectionalLight;
+class CPointLight;
+class CHemisphericDirectionalLight;
+class CHemisphericPointLight;
+
 class C2DRect;
 class C2DFrameRect;
 class C2DTriangle;
@@ -42,6 +49,7 @@ class CShaderManager;
 class CShaderLightManager;
 class CPostProcessManager;
 class CSimpleMotionBlur;
+class CCubeMapManager;
 
 class CUnitCube;
 class CUnitSphere;

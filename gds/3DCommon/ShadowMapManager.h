@@ -1,6 +1,8 @@
 #ifndef  __ShadowMapManager_H__
 #define  __ShadowMapManager_H__
 
+#include <map>
+#include <boost/shared_ptr.hpp>
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "3DMath/Vector3.h"
@@ -9,6 +11,7 @@
 #include "3DCommon/TextureRenderTarget.h"
 #include "3DCommon/Camera.h"
 #include "3DCommon/3DGameMath.h"
+#include "ShadowMaps.h"
 
 
 /**
@@ -39,6 +42,14 @@ class CShadowMapManager : public CGraphicsComponent
 {
 protected:
 
+	typedef std::map< int, boost::shared_ptr<CShadowMap> > IDtoShadowMap;
+
+	IDtoShadowMap m_mapIDtoShadowMap;
+
+	CShadowMapSceneRenderer *m_pSceneRenderer;
+
+	int m_IDCounter;
+
 	/// used to temporarily hold original surfaces
 	LPDIRECT3DSURFACE9 m_pOriginalSurface;
 	LPDIRECT3DSURFACE9 m_pOriginalDepthSurface;
@@ -50,22 +61,17 @@ protected:
 
 	int m_ShadowMapSize;
 
-	LPDIRECT3DTEXTURE9 m_pShadowMap;    ///< Texture to which the shadow map is rendered
-	LPDIRECT3DSURFACE9 m_pDSShadow;     ///< Depth-stencil buffer for rendering to shadow
+	CTextureRenderTarget m_aShadowTexture[2];
 
 	LPDIRECT3DTEXTURE9 m_pShadowedView;
 	LPDIRECT3DSURFACE9 m_pDSShadowedView;
-
-	/// used to create camera matrix and projection matrix to render shadow map
-	/// - Stores light direction and position
-	CCamera m_LightCamera;
 
 	CCamera m_SceneCamera;
 
 	/// Stores the shader necessasry for shadowmap.
 	/// The shader supposed to contain 2 techniques
 	/// - "ShadowMap": for shadow map rendering. renders the shadow casters to shadow map texture. m_LightCamera is used to calculate  
-	CShaderManager m_ShaderManager;
+	CShaderHandle m_Shader;
 
 	CTextureRenderTarget m_SceneRenderTarget;
 
@@ -96,6 +102,18 @@ public:
 	/// returns true on success
 	virtual bool Init();
 
+	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
+
+	int AddShadowForLight( CLight& light );
+
+	void RemoveShadowForLight( int shadowmap_id );
+
+	void UpdateLight( int shadowmap_id, CLight& light );
+
+	void RenderShadowCasters( CCamera& camera );
+
+	void RenderShadowReceivers( CCamera& camera );
+
 //	void Init( int texture_width, int texture_height );
 
 //	void SetTextureWidth( const int width, const int height );
@@ -113,7 +131,7 @@ public:
 	virtual void EndSceneShadowMap();
 
 
-	virtual void UpdateLightPositionAndDirection();
+//	virtual void UpdateLightPositionAndDirection();
 
 
 	virtual void BeginSceneDepthMap();
@@ -134,10 +152,6 @@ public:
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-	void SetLightDirection( const Vector3& vLightDir ) { m_LightCamera.SetOrientation( CreateOrientFromFwdDir( vLightDir ) ); }
-	void SetLightPosition( const Vector3& vLightPos ) { m_LightCamera.SetPosition( vLightPos ); }
-	void SetLightCamera( const CCamera& camera ) { m_LightCamera = camera; }
-
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }
 	void SetSceneCamera( const CCamera& camera ) { m_SceneCamera = camera; }
@@ -145,7 +159,7 @@ public:
 	CCamera& SceneCamera() { return m_SceneCamera; }
 
 	/// for visual debugging
-	void RenderShadowMapTexture( int sx, int sy, int ex, int ey );
+//	void RenderShadowMapTexture( int sx, int sy, int ex, int ey );
 	void RenderSceneShadowMapTexture( int sx, int sy, int ex, int ey );
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
