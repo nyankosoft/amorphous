@@ -5,6 +5,7 @@
 #include <string>
 #include <Python.h>
 #include "Stage/fwd.h"
+#include "3DMath/Vector3.h"
 
 
 extern PyMethodDef g_PyModuleStageMethod[];
@@ -12,6 +13,13 @@ extern PyMethodDef g_PyModuleStageMethod[];
 
 extern void SetStageForStageScriptCallback( CStage* pStage );
 extern CStage *GetStageForScriptCallback();
+
+extern CCopyEntity *CreateNamedEntity( const char *entity_name,
+								const char *base_name,
+								const Vector3& pos,
+								const Vector3& dir,
+								const Vector3& vel );
+
 
 
 #endif  /*  __PyModule_Stage_H__  */

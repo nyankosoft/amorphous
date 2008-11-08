@@ -27,6 +27,15 @@ extern PyObject* SetColorU32( PyObject* self, PyObject* args );
 extern PyObject* SetPosition( PyObject* self, PyObject* args );
 extern PyObject* SetTargetEntity( PyObject* self, PyObject* args );
 
+extern PyObject* CreatePointLight( PyObject* self, PyObject* args );        
+extern PyObject* CreateDirectionalLight( PyObject* self, PyObject* args );  
+extern PyObject* CreateSpotlight( PyObject* self, PyObject* args );         
+extern PyObject* CreateHSPointLight( PyObject* self, PyObject* args );      
+extern PyObject* CreateHSDirectionalLight( PyObject* self, PyObject* args );
+extern PyObject* CreateHSSpotlight( PyObject* self, PyObject* args );       
+extern PyObject* CreateTriPointLight( PyObject* self, PyObject* args );     
+extern PyObject* CreateTriDirectionalLight( PyObject* self, PyObject* args );
+extern PyObject* CreateTriSpotlight( PyObject* self, PyObject* args );      
 
 }  /* light */
 

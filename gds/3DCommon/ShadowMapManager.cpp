@@ -170,6 +170,8 @@ int CShadowMapManager::AddShadowForLight( CLight& light )
 
 	pShadowMap->SetSceneRenderer( m_pSceneRenderer );
 
+	pShadowMap->SetSceneCamera( &m_SceneCamera );
+
 	// update light properties
 	CShadowMapLightVisitor v( pShadowMap.get() );
 	light.Accept( v );

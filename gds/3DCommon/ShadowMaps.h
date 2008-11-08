@@ -57,6 +57,10 @@ protected:
 
 	CShaderHandle m_Shader;
 
+	/// borrowed reference of scene camera
+	/// - Used by CDirectionalLightShadowMap
+	CCamera *m_pSceneCamera;
+
 	bool m_DisplayShadowMapTexturesForDebugging;
 
 
@@ -101,6 +105,8 @@ public:
 	virtual bool Init() { return true; }
 
 	void SetShader( CShaderHandle& shader ) { m_Shader = shader; }
+
+	void SetSceneCamera( CCamera *pCamera ) { m_pSceneCamera = pCamera; }
 
 //	void Init( int texture_width, int texture_height );
 
@@ -190,7 +196,11 @@ class CDirectionalLightShadowMap : public CFlatShadowMap
 public:
 
 	CDirectionalLightShadowMap()
-	{}
+	{
+		m_LightCamera.SetNearClip( 0.1f );
+		m_LightCamera.SetFarClip( 100.0f );
+		m_LightCamera.SetFOV( (float)PI / 4.0f );
+	}
 
 	void UpdateLight( CDirectionalLight& light );
 };

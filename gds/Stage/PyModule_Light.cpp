@@ -1,4 +1,3 @@
-
 #include "PyModule_Light.h"
 #include "PyModule_Stage.h"
 
@@ -22,8 +21,23 @@
 using namespace std;
 
 
-#define RETURN_PYNONE_IF_NO_STAGE()	if( !GetStageForScriptCallback() )	{	Py_INCREF( Py_None );	return Py_None;	}
-#define RETURN_PYNONE_IF_NO_TARGET()	if( !IsValidEntity(GetEntityForLight()) )	{	Py_INCREF( Py_None );	return Py_None;	}
+
+/// row:    holds light groups
+/// column: holds object groups (lighting groups)
+C2DArray<char> m_LightToObject;
+
+int init_light_groups()
+{
+	const int num_light_groups = 16;
+	const int num_ligting_groups = 16;
+	m_LightToObject.resize( num_light_groups, num_ligting_groups );
+
+	return 0;
+}
+
+
+#define RETURN_PYNONE_IF_NO_STAGE()	 if( !GetStageForScriptCallback() )        { Py_INCREF( Py_None );	return Py_None;	}
+#define RETURN_PYNONE_IF_NO_TARGET() if( !IsValidEntity(GetEntityForLight()) ) { Py_INCREF( Py_None );	return Py_None;	}
 
 
 CCopyEntity *gs_pEntityForLight = NULL;
@@ -57,6 +71,86 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
         return GetStageForScriptCallback()->GetEntitySet()->GetEntityByName(entity_name);
 	else
         return NULL;
+}
+
+
+
+PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args )
+{
+	char *light_name;
+	char *light_type = "dynamic"; // "dynamic" or "static";
+	int light_group = 0;
+	int shadow_for_light = 1; // true(1) by default
+
+	int result = PyArg_ParseTuple( args, "s|sds", &light_name, &light_type, &light_group, &shadow_for_light );
+
+	const Vector3 vDefaultDir = Vector3(0,-1,0);
+
+	CCopyEntity *pLightEntity
+	= CreateNamedEntity( light_name, "StaticPointLight",
+		Vector3(0,0,0), // position
+		vDefaultDir,    // direction
+		Vector3(0,0,0)  // velocity
+		);
+
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreateHSSpotlight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreateTriDirectionalLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreateTriPointLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::CreateTriSpotlight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
 }
 
 
@@ -197,10 +291,26 @@ PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
 
 PyMethodDef gsf::py::light::g_PyModuleLightMethod[] =
 {
+	{ "CreatePointLight",          gsf::py::light::CreatePointLight,             METH_VARARGS, "" },
+	{ "CreateDirectionalLight",    gsf::py::light::CreateDirectionalLight,       METH_VARARGS, "" },
+	{ "CreateSpotlight",           gsf::py::light::CreateSpotlight,              METH_VARARGS, "" },
+	{ "CreateHSPointLight",        gsf::py::light::CreateHSPointLight,           METH_VARARGS, "" },
+	{ "CreateHSDirectionalLight",  gsf::py::light::CreateHSDirectionalLight,     METH_VARARGS, "" },
+	{ "CreateHSSpotlight",         gsf::py::light::CreateHSSpotlight,            METH_VARARGS, "" },
+	{ "CreateTriPointLight",       gsf::py::light::CreateTriPointLight,          METH_VARARGS, "" },
+	{ "CreateTriDirectionalLight", gsf::py::light::CreateTriDirectionalLight,    METH_VARARGS, "" },
+	{ "CreateTriSpotlight",        gsf::py::light::CreateTriSpotlight,           METH_VARARGS, "" },
+
+	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
+	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
+	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
+	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
+	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
 	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
 	{ "SetColor",               gsf::py::light::SetColor,        METH_VARARGS, "" },
 	{ "SetColorU32",            gsf::py::light::SetColorU32,     METH_VARARGS, "" },
 	{ "SetPosition",            gsf::py::light::SetPosition,	 METH_VARARGS, "" },
+//	{ "SetDirection",           gsf::py::light::SetDirection,	 METH_VARARGS, "" },
 	{ "SetAttenuationFactors",  SetAttenuationFactors,	         METH_VARARGS, "set attenuation factors for point lights" },
 //	{ "SetDirection",      gsf::py::light::SetDirection,	METH_VARARGS, "" },
 //	{ "",       SetTarget,				METH_VARARGS, "" },

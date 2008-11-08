@@ -1,4 +1,4 @@
-
+#include "BE_DirectionalLight.h"
 #include "GameMessage.h"
 #include "CopyEntity.h"
 #include "trace.h"
@@ -10,7 +10,6 @@
 
 #include "Stage/LightEntity.h"
 
-#include "BE_DirectionalLight.h"
 
 
 CBE_DirectionalLight::CBE_DirectionalLight()

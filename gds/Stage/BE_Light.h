@@ -7,7 +7,6 @@
 #include "3DCommon/HemisphericLight.h"
 #include "Support/Serialization/Serialization_Light.h"
 #include "Support/StringAux.h"
-#include "Support/msgbox.h"
 
 #include <string>
 

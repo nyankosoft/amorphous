@@ -7,9 +7,6 @@
 #include "trace.h"
 #include "LightEntity.h"
 //#include "ViewFrustumTest.h"
-//#include "PerformanceCheck.h"
-
-#include "Support/msgbox.h"
 #include "Support/Vec3_StringAux.h"
 
 
@@ -81,7 +78,7 @@ void CEntityNode::CheckLight_r(CCopyEntity *pEntity, CEntityNode* paEntTree)
 			float fMaxRangeSq = pLightEntity->GetRadius() + pEntity->local_aabb.vMax.x;
 			fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
 			vLightToEntity = pEntity->Position() - vLightCenterPos;
-			if( fMaxRangeSq < D3DXVec3LengthSq(&vLightToEntity) )
+			if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
 				continue;	// out of the light range
 
 			// light is reaching the entity - register its index

@@ -1,12 +1,9 @@
-
 #include "LightEntityManager.h"
 #include "EntitySet.h"
-
 #include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
-
 #include "Support/memory_helpers.h"
-#include "Support/msgbox.h"
+
 
 int g_iNumDynamicLights = 0;
 

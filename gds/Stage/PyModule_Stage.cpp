@@ -32,11 +32,11 @@ CStage *GetStageForScriptCallback()
 //======================================================================
 
 
-static inline CCopyEntity *CreateNamedEntity( const char *entity_name,
-										      const char *base_name,
-											  const Vector3& pos,
-											  const Vector3& dir,
-											  const Vector3& vel )
+CCopyEntity *CreateNamedEntity( const char *entity_name,
+								const char *base_name,
+								const Vector3& pos,
+								const Vector3& dir,
+								const Vector3& vel )
 {
 	if( !gs_pTargetStage )
 		return NULL;

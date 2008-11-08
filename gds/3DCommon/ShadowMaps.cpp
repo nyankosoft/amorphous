@@ -86,27 +86,30 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
 	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
 
-	hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vWorldLightPos, 3 );
-	hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vWorldLightDir, 3 );
-/*
-	// set light pos and dir in scene camera space
-	D3DXMATRIX matSceneCamView;
-	m_SceneCamera.GetCameraMatrix( matSceneCamView );
+	bool variance_shadow_mapping = false;
+	if( variance_shadow_mapping )
+	{
 
-	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
-	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
+		hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vWorldLightPos, 3 );
+		hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vWorldLightDir, 3 );
+	}
+	else
+	{
+		// set light pos and dir in scene camera space
+		D3DXMATRIX matSceneCamView;
+		m_pSceneCamera->GetCameraMatrix( matSceneCamView );
 
-	D3DXVECTOR3 vViewLightPos, vViewLightDir;
-	D3DXVec3TransformCoord( &vViewLightPos, &vWorldLightPos, &matSceneCamView );
+		D3DXVECTOR3 vViewLightPos, vViewLightDir;
+		D3DXVec3TransformCoord( &vViewLightPos, &vWorldLightPos, &matSceneCamView );
 
-	// Apply only the rotation to direction vector
-	// - set translation to zero
-	matSceneCamView._41 = matSceneCamView._42 = matSceneCamView._43 = 0;
-	D3DXVec3TransformCoord( &vViewLightDir, &vWorldLightDir, &matSceneCamView );
+		// Apply only the rotation to direction vector
+		// - set translation to zero
+		matSceneCamView._41 = matSceneCamView._42 = matSceneCamView._43 = 0;
+		D3DXVec3TransformCoord( &vViewLightDir, &vWorldLightDir, &matSceneCamView );
 
-	hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vViewLightPos, 3 );
-	hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vViewLightDir, 3 );
-*/
+		hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vViewLightPos, 3 );
+		hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vViewLightDir, 3 );
+	}
 }
 
 
@@ -198,7 +201,11 @@ void CFlatShadowMap::ReleaseTextures()
 
 void CDirectionalLightShadowMap::UpdateLight( CDirectionalLight& light )
 {
-	m_LightCamera.SetPosition( light.vPseudoPosition );
+	const float light_cam_shift = 50.0f;
+
+	Vector3 vLightCameraPos = m_pSceneCamera->GetPosition() - light.vDirection * light_cam_shift;
+
+	m_LightCamera.SetPosition( vLightCameraPos );
 	m_LightCamera.SetOrientation( CreateOrientFromFwdDir(light.vDirection) );
 }
 
