@@ -50,6 +50,7 @@ class CShaderLightManager;
 class CPostProcessManager;
 class CSimpleMotionBlur;
 class CCubeMapManager;
+class CShadowMapManager;
 
 class CUnitCube;
 class CUnitSphere;

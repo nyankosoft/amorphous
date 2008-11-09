@@ -76,10 +76,10 @@ protected:
 
 //	void SetDefault();
 
-	virtual bool CreateShadowMapTextures() = 0;
-
 //	bool CreateSceneShadowMapTextures();
 //	virtual D3DFORMAT GetShadowMapTextureFormat() { return D3DFMT_R32F; }
+
+	virtual void BeginSceneShadowReceivers() {}
 
 public:
 
@@ -94,6 +94,8 @@ public:
 //	CShadowMap( int texture_width, int texture_height );
 
 	virtual ~CShadowMap();
+
+	virtual bool CreateShadowMapTextures() = 0;
 
 	virtual void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
 
@@ -132,19 +134,14 @@ public:
 	void SetLightCamera( const CCamera& camera ) { m_LightCamera = camera; }
 
 	/// for visual debugging
-	void RenderShadowMapTexture( int sx, int sy, int ex, int ey );
+	virtual void RenderShadowMapTexture( int sx, int sy, int ex, int ey ) {}
 	void RenderSceneShadowMapTexture( int sx, int sy, int ex, int ey );
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
-	void UpdateLight( CDirectionalLight& light ) {}
-	void UpdateLight( CPointLight& light ) {}
-//	void UpdateLight( CSpotLight& light ) {}
-
-//	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
-///	void SetShadowMapShaderFilename( const std::string& filename ) { m_ShadowMapShaderFilename = filename; }
-
-//	void RenderSceneWithShadow();
+	virtual void UpdateLight( CDirectionalLight& light ) {}
+	virtual void UpdateLight( CPointLight& light ) {}
+//	virtual void UpdateLight( CSpotLight& light ) {}
 
 /*
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
@@ -167,9 +164,9 @@ protected:
 
 protected:
 
-	virtual bool CreateShadowMapTextures();
-
 	void UpdateLightPositionAndDirection();
+
+	void BeginSceneShadowReceivers();
 
 public:
 
@@ -181,11 +178,15 @@ public:
 
 	virtual ~CFlatShadowMap() {}
 
+	virtual bool CreateShadowMapTextures();
+
 	void ReleaseTextures();
 
 	void BeginSceneShadowMap();
 
 	void EndSceneShadowMap();
+
+	void RenderShadowMapTexture( int sx, int sy, int ex, int ey );
 };
 
 
@@ -239,14 +240,14 @@ public:
 
 	~CPointLightShadowMap();
 
+	bool CreateShadowMapTextures();
+
 	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer )
 	{
 		CShadowMap::SetSceneRenderer( pSceneRenderer );
 
 		m_CubeShadowMapSceneRenderer.SetSceneRenderer( pSceneRenderer );
 	}
-
-	bool CreateShadowMapTextures();
 
 	void RenderSceneToShadowMap();
 

@@ -14,7 +14,7 @@ using namespace boost;
 //std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
 
 
-static const bool gs_Debug = false;
+static const bool gs_Debug = true;
 
 
 class CShadowMapLightVisitor : public CLightVisitor
@@ -145,6 +145,17 @@ void CShadowMapManager::ReleaseTextures()
 //	SAFE_RELEASE( m_pDSShadowedView );
 }
 
+void CShadowMapManager::SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer )
+{
+	m_pSceneRenderer = pSceneRenderer;
+
+	for( IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
+		itr != m_mapIDtoShadowMap.end();
+		itr++ )
+	{
+		itr->second->SetSceneRenderer( m_pSceneRenderer );
+	}
+}
 
 /// returns a valid shadowmap id on success (0 <= id)
 /// returns -1 on failure
@@ -167,6 +178,8 @@ int CShadowMapManager::AddShadowForLight( CLight& light )
 	m_mapIDtoShadowMap[shadowmap_id] = pShadowMap;
 
 	pShadowMap->SetShader( m_Shader );
+
+	bool init = pShadowMap->CreateShadowMapTextures();
 
 	pShadowMap->SetSceneRenderer( m_pSceneRenderer );
 
@@ -233,7 +246,7 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 
 	// render the first shadow texture
 
-	IDtoShadowMap::iterator itr;
+	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
 
 	m_aShadowTexture[0].SetRenderTarget();
 
@@ -266,6 +279,20 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 //	m_pSceneRenderer->RenderShadowReceivers();
 
 	EndSceneDepthMap();
+}
+
+
+void CShadowMapManager::SetShaderTechniqueForShadowCaster()
+{
+	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
+	HRESULT hr = pEffect->SetTechnique( "ShadowMap" );
+}
+
+
+void CShadowMapManager::SetShaderTechniqueForShadowReceiver()
+{
+	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
+	HRESULT hr = pEffect->SetTechnique( "SceneShadowMap" );
 }
 
 
@@ -332,6 +359,9 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 	{
 		int w = (ex - sx + 1) / 2;
 		int h = (ey - sy + 1) / 2;
+
+		if( 0 < m_mapIDtoShadowMap.size() )
+			m_mapIDtoShadowMap.begin()->second->RenderShadowMapTexture( sx,     sy, sx + w - 1,   sy + h - 1 );
 
 //		RenderShadowMapTexture(      sx,     sy, sx + w - 1,   sy + h - 1 );
 

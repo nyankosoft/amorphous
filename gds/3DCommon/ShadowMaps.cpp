@@ -1,4 +1,5 @@
 #include "ShadowMaps.h"
+#include "3DCommon/2DRect.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/LightStructs.h"
 #include "3DCommon/CubeMapManager.h"
@@ -173,6 +174,8 @@ void CShadowMap::RenderShadowReceivers( CCamera& camera )
 	if( !m_pSceneRenderer )
 		return;
 
+	BeginSceneShadowReceivers();
+
 	m_pSceneRenderer->RenderShadowReceivers( camera );
 }
 
@@ -187,10 +190,26 @@ void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
 // CFlatShadowMap
 //============================================================================
 
+void CFlatShadowMap::BeginSceneShadowReceivers()
+{
+	// set the shadow map texture to determine shadowed pixels
+//	m_ShaderManager.SetTexture( 3, m_pShadowMap );
+	m_Shader.GetShaderManager()->GetEffect()->SetTexture( "g_txShadow", m_pShadowMap );
+}
+
+
 void CFlatShadowMap::ReleaseTextures()
 {
 	SAFE_RELEASE( m_pShadowMap );
 	SAFE_RELEASE( m_pShadowMapDepthBuffer );
+}
+
+
+void CFlatShadowMap::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
+{
+	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
+	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+	rect.Draw( m_pShadowMap );
 }
 
 

@@ -19,10 +19,10 @@ class CLightVisitor
 {
 public:
 
-	void VisitLight( CLight& light ) {}
-	void VisitAmbientLight( CAmbientLight& ambient_light ) {}
-	void VisitPointLight( CPointLight& point_light ) {}
-	void VisitDirectionalLight( CDirectionalLight& directional_light ) {}
+	virtual void VisitLight( CLight& light ) {}
+	virtual void VisitAmbientLight( CAmbientLight& ambient_light ) {}
+	virtual void VisitPointLight( CPointLight& point_light ) {}
+	virtual void VisitDirectionalLight( CDirectionalLight& directional_light ) {}
 };
 
 

@@ -102,7 +102,7 @@ public:
 	/// returns true on success
 	virtual bool Init();
 
-	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
+	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer );
 
 	int AddShadowForLight( CLight& light );
 
@@ -113,6 +113,12 @@ public:
 	void RenderShadowCasters( CCamera& camera );
 
 	void RenderShadowReceivers( CCamera& camera );
+
+	CShaderHandle& GetShader() { return m_Shader; }
+
+	void SetShaderTechniqueForShadowCaster();
+
+	void SetShaderTechniqueForShadowReceiver();
 
 //	void Init( int texture_width, int texture_height );
 
