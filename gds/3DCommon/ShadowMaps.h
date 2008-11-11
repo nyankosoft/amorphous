@@ -66,11 +66,9 @@ protected:
 
 	/// Stores the shader necessasry for shadowmap.
 	/// The shader supposed to contain 2 techniques
-//	CShaderHandle m_Shader;
 //	CTextureRenderTarget m_SceneRenderTarget;
 //	static std::string ms_strDefaultShaderFilename;
 //	std::string m_ShadowMapShaderFilename;
-//	CCamera m_SceneCamera;
 
 protected:
 
@@ -143,11 +141,17 @@ public:
 	virtual void UpdateLight( CPointLight& light ) {}
 //	virtual void UpdateLight( CSpotLight& light ) {}
 
+	/// For debugging.
+	/// Strings that end with '/' are treated as directory paths
+	/// and the function determines the filename for output image
+	void SaveShadowMapTextureToFile( const std::string& file_or_directory_path );
+
+	virtual std::string CreateTextureFilename() { return string(); }
+
+	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath ) {}
 /*
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }
-	void SetSceneCamera( const CCamera& camera ) { m_SceneCamera = camera; }
-	CCamera& SceneCamera() { return m_SceneCamera; }
 */
 };
 
@@ -187,6 +191,10 @@ public:
 	void EndSceneShadowMap();
 
 	void RenderShadowMapTexture( int sx, int sy, int ex, int ey );
+
+	std::string CreateTextureFilename();
+
+	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath);
 };
 
 
@@ -256,6 +264,10 @@ public:
 	void EndSceneShadowMap();
 
 	void UpdateLight( CPointLight& light );
+
+	std::string CreateTextureFilename();
+
+	void SaveShadowMapTextureToFileInternal( const std::string& filepath );
 };
 
 

@@ -6,6 +6,7 @@
 #include "3DCommon/Shader/ShaderManagerHub.h"
 #include "3DCommon/3DGameMath.h"
 #include "Support/Log/DefaultLog.h"
+#include "Support/Vec3_StringAux.h"
 
 using namespace std;
 using namespace boost;
@@ -14,6 +15,28 @@ using namespace boost;
 CShadowMap::~CShadowMap()
 {
 	ReleaseTextures();
+}
+
+
+void CShadowMap::SaveShadowMapTextureToFile( const std::string& file_or_directory_path )
+{
+	string filepath;
+	if( file_or_directory_path.rfind("/") == file_or_directory_path.length() - 1 )
+	{
+		string directory_path = file_or_directory_path;
+
+		filepath
+			= directory_path
+			+ CreateTextureFilename();
+	}
+	else
+	{
+		filepath = file_or_directory_path;
+	}
+
+	SaveShadowMapTextureToFileInternal( filepath );
+
+//	HRESULT hr = D3DXSaveTextureToFile( filepath.c_str(), D3DXIFF_DDS, m_pShadowMap, NULL );
 }
 
 
@@ -213,6 +236,21 @@ void CFlatShadowMap::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
 }
 
 
+std::string CFlatShadowMap::CreateTextureFilename()
+{
+	return fmt_string( "shadowmap_of_directional_light_or_spotlight_pos%s_dir%s.dds",
+						to_string(m_LightCamera.GetPosition()).c_str(),
+						to_string(m_LightCamera.GetFrontDirection()).c_str() );
+
+}
+
+
+void CFlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& filepath )
+{
+	HRESULT hr = D3DXSaveTextureToFile( filepath.c_str(), D3DXIFF_DDS, m_pShadowMap, NULL );
+}
+
+
 
 //============================================================================
 // CDirectionalLightShadowMap
@@ -287,4 +325,16 @@ void CPointLightShadowMap::EndSceneShadowMap()
 void CPointLightShadowMap::UpdateLight( CPointLight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
+}
+
+
+std::string CPointLightShadowMap::CreateTextureFilename()
+{
+	return fmt_string( "shadowmap_of_pointlight_pos%s.dds", to_string(m_LightCamera.GetPosition()).c_str() );
+}
+
+
+void CPointLightShadowMap::SaveShadowMapTextureToFileInternal( const std::string& filepath )
+{
+	m_pCubeShadowMapManager->SaveCubeTextureToFile( filepath );
 }

@@ -46,30 +46,28 @@ void CCubeMapManager::Init( int tex_edge_length, TextureFormat::Format tex_forma
 }
 
 
+/// \param tex_format [in] TextureFormat::A8R8G8B8 if cube map is used to render the scene
 void CCubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format tex_format )
 {
 	m_CubeTextureSize = tex_edge_length;
 	m_TextureFormat = tex_format;
 
 	D3DFORMAT d3d_fmt;
-	if( tex_format == TextureFormat::A16R16G16B16F
-	 || tex_format == TextureFormat::A8R8G8B8 )
+	if( tex_format == TextureFormat::Invalid )
+	/* || any ohter texture formats invalid for cube mapping ) */
 	{
-		d3d_fmt = ConvertTextureFormatToD3DFORMAT( tex_format );
-	}
-	else
-	{
-		LOG_PRINT_ERROR( fmt_string(" An unsupported texture format: %d", tex_format) );
+		LOG_PRINT_ERROR( fmt_string("An unsupported texture format: %d", tex_format) );
 		return;
 	}
 
+	d3d_fmt = ConvertTextureFormatToD3DFORMAT( tex_format );
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	HRESULT hr;
 
 	m_NumCubes = 1; // always use the single cube texture
 
-	if( d3d_fmt == D3DFMT_A16B16G16R16F )
+/*	if( d3d_fmt == D3DFMT_A16B16G16R16F )
 	{
 		// Create the cube textures
 		ZeroMemory( m_apCubeMapFp, sizeof( m_apCubeMapFp ) );
@@ -83,25 +81,23 @@ void CCubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format
 
 		m_pCurrentCubeMap = m_apCubeMapFp[0];
 	}
+*/
 
-	if( d3d_fmt == D3DFMT_A8R8G8B8 || FAILED(hr) )
+	hr = pd3dDevice->CreateCubeTexture( m_CubeTextureSize,
+										1,
+										D3DUSAGE_RENDERTARGET,
+										d3d_fmt,
+										D3DPOOL_DEFAULT,
+										&m_pCubeMap32,
+										NULL );
+
+	if( FAILED(hr) || !m_pCubeMap32 )
 	{
-		hr = pd3dDevice->CreateCubeTexture( m_CubeTextureSize,
-											1,
-											D3DUSAGE_RENDERTARGET,
-											D3DFMT_A8R8G8B8,
-											D3DPOOL_DEFAULT,
-											&m_pCubeMap32,
-											NULL );
-
-		m_pCurrentCubeMap =  m_pCubeMap32;
-	}
-
-	if( !m_pCurrentCubeMap )
-	{
-		g_Log.Print( WL_WARNING, "CCubeMapManager::CreateTextures() - cannot create cube texture" );
+		LOG_PRINT_WARNING( "CreateCubeTexture() failed. Cannot create cube texture." );
 		return;
 	}
+
+	m_pCurrentCubeMap =  m_pCubeMap32;
 
 //	DXUTDeviceSettings d3dSettings = DXUTGetDeviceSettings();
 
@@ -123,7 +119,7 @@ void CCubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format
 
 	if( !m_pCurrentCubeMap )
 	{
-		g_Log.Print( WL_WARNING, "CCubeMapManager::CreateTextures() - cannot create depth stencil surface" );
+		LOG_PRINT_WARNING( "CreateDepthStencilSurface() failed. Cannot create depth stencil surface." );
 		return;
 	}
 
@@ -276,6 +272,8 @@ void CCubeMapManager::RenderToCubeMap()
 
 
 //void CCubeMapManager::EndRenderToCubeMap(){}
+
+
 inline static D3DXIMAGE_FILEFORMAT GetD3DXImageFormatFromFileExt( const std::string& file_ext )
 {
 	if( file_ext == "bmp" ) return D3DXIFF_BMP;
@@ -290,6 +288,7 @@ inline static D3DXIMAGE_FILEFORMAT GetD3DXImageFormatFromFileExt( const std::str
 	else
 		return D3DXIFF_BMP; // save as bmp image by default
 }
+
 
 void CCubeMapManager::SaveCubeTextureToFile( const std::string& output_filename )
 {

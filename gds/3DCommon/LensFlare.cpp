@@ -150,7 +150,8 @@ void CLensFlare::Render()
 }
 */
 
-void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )//LPD3DXEFFECT pEffect, D3DXHANDLE pTexHandle )
+
+void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
@@ -164,9 +165,12 @@ void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )//LP
 	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
 	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
 
+	pd3dDev->SetVertexShader( NULL );
+	pd3dDev->SetPixelShader( NULL );
+
 	UINT pass, cPasses;
 
-	LPD3DXEFFECT pEffect = rShaderManager.GetEffect();
+//	LPD3DXEFFECT pEffect = rShaderManager.GetEffect();
 
 //	pEffect->Begin( &cPasses, 0 );
 
