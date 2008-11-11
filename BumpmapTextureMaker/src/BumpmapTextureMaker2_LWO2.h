@@ -37,6 +37,8 @@ class CBumpmapTextureMaker2_LWO2
 
 	CTextureHandle m_PreviewTexture;
 
+	std::string m_PreviewTextureFilepath;
+
 	int m_TechniqueID;
 	
 	float m_fViewVolumeWidth;

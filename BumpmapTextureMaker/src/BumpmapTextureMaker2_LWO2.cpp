@@ -27,9 +27,7 @@ static int s_RenderVolumeTexture = 0;//1;
 bool CBumpmapTextureMaker2_LWO2::LoadShader( const string& shader_filename )
 {
 	// load shader for rendering normal map, flat texture surface and bumpmap surface
-	m_Shader.filename = shader_filename;
-
-	bool shader_loaded = m_Shader.Load();
+	bool shader_loaded = m_Shader.Load( shader_filename );
 
 	if( !shader_loaded )
 	{
@@ -392,7 +390,7 @@ void CBumpmapTextureMaker2_LWO2::SetRenderMode( unsigned int render_mode )
 	if( prev_mode != BTM_RENDERMODE_PREVIEW
 	 && render_mode == BTM_RENDERMODE_PREVIEW )
 	{
-		m_PreviewTexture.Load();
+		m_PreviewTexture.Load( m_PreviewTextureFilepath );
 	}
 }
 
@@ -469,5 +467,5 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 	m_TechniqueID = orig_tech_id;
 
 	// set the fake-bump texture filename for preview
-	m_PreviewTexture.filename = strTexFilename[2];
+	m_PreviewTextureFilepath = strTexFilename[2];
 }
