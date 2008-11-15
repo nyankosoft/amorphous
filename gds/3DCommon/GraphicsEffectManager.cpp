@@ -1,6 +1,6 @@
 #include "GraphicsEffectManager.h"
 #include "GraphicsElementManager.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Vec3_StringAux.h"
 

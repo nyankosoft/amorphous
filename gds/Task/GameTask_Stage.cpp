@@ -11,7 +11,7 @@
 #include "Stage/ScreenEffectManager.h"
 #include "Stage/PlayerInfo.h"
 
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 
 #include "GameInput/InputHub.h"
 

@@ -8,7 +8,7 @@
 #include "3DCommon/2DRect.h"
 #include "3DCommon/Font.h"
 
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 
 #include "GameInput/InputHub.h"
 

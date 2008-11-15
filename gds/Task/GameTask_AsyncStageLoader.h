@@ -6,7 +6,7 @@
 #include "UI/fwd.h"
 #include "Stage/fwd.h"
 #include "Stage/StageLoader.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 
 class CFontBase;
 

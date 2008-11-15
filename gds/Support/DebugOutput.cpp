@@ -5,7 +5,7 @@
 #include "3DCommon/TextureFont.h"
 #include "3DCommon/LogOutput_OnScreen.h"
 #include "3DCommon/GraphicsResourceManager.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 #include "Sound/SoundManager.h"
 
 #include "Support/memory_helpers.h"

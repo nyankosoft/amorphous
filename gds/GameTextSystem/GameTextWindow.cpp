@@ -1,6 +1,6 @@
 #include "GameTextWindow.h"
 #include "GameTextSystem.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 
 #include "../3DCommon/Direct3D9.h"
 #include "../Support/memory_helpers.h"

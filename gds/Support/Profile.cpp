@@ -17,7 +17,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "SafeDelete.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 
 using namespace std;
 using namespace boost;

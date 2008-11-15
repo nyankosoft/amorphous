@@ -8,7 +8,7 @@
 #include "Sound/fwd.h"
 
 #include "3DCommon/Camera.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 
 #include "CopyEntity.h"
 #include "EntitySet.h"

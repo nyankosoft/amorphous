@@ -10,7 +10,7 @@
 #include "Stage/SurfaceMaterialManager.h"
 #include "GameEvent/PyModules.h"
 #include "GameEvent/ScriptManager.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 #include "Support/macro.h"
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"

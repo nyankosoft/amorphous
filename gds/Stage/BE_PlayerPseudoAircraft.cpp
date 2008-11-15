@@ -19,7 +19,7 @@
 #include "GameCommon/MTRand.h"
 #include "GameCommon/RandomDirectionTable.h"
 #include "GameCommon/ShockWaveCameraEffect.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 #include "GameCommon/PseudoAircraftSimulator.h"
 #include "GameCommon/MeshBoneController_Aircraft.h"
 

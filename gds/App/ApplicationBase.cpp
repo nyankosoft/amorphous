@@ -7,7 +7,7 @@
 #include "GameInput/DirectInputGamepad.h"
 #include "GameInput/InputHub.h"
 
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 #include "GameCommon/MTRand.h"
 #include "GameCommon/GlobalInputHandler.h"
 #include "GameCommon/GlobalParams.h"

@@ -6,7 +6,7 @@
 
 #include "../base.h"
 #include "3DMath/MathMisc.h"
-#include "GameCommon/Timer.h"
+#include "Support/Timer.h"
 #include "3DCommon/fwd.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/2DRect.h"
