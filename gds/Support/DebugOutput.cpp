@@ -235,11 +235,11 @@ void CDebugOutput::RenderFPS()
 	if( !m_pFont )
 		return;
 
-///	StateLog.Update( 0, "FPS: " + to_string(TIMER.GetFPS()) );
+///	StateLog.Update( 0, "FPS: " + to_string(GlobalTimer().GetFPS()) );
 //	StateLog.Update( 1, "AVE. FPS: " + to_string(FPS.GetAverageFPS()) );
-	string fps_text = "FPS: " + to_string(TIMER.GetFPS());
+	string fps_text = "FPS: " + to_string(GlobalTimer().GetFPS());
 
-	U32 color = ( TIMER.GetFPS() < 40.0f ) ? 0xFFFF0000 /* fps low - red */ : 0xFF00FF00; /* green */
+	U32 color = ( GlobalTimer().GetFPS() < 40.0f ) ? 0xFFFF0000 /* fps low - red */ : 0xFF00FF00; /* green */
 
 	m_pFont->DrawText( fps_text.c_str(), m_vTopLeftPos, color );
 }

@@ -107,7 +107,7 @@ void CGameTextWindow::Render(int iInput)
 	if( m_iCurrentState == STATE_WAITING_USER_RESPONSE )
 		return;
 
-	m_fNumCharsForCurrentLine += TIMER.GetFrameTime() * 35.0f;
+	m_fNumCharsForCurrentLine += GlobalTimer().GetFrameTime() * 35.0f;
 
 	// draw proceeding lines and respond to events
 	bool bBreakLoop = false;

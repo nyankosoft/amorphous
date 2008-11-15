@@ -13,7 +13,6 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
 
 
 class CProfileTimer
@@ -25,9 +24,9 @@ public:
 	virtual ~CProfileTimer() {}
 
 	virtual double GetExactTime() = 0;
-};
 
-typedef boost::shared_ptr<CProfileTimer> CProfileTimerSharedPtr;
+	virtual double GetFrameTime() = 0;
+};
 
 
 void ProfileInit( void );

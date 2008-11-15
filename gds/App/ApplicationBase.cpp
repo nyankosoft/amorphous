@@ -246,7 +246,7 @@ bool CApplicationBase::Init()
 	InitDebugItems();
 
 	// start the timer
-	TIMER.Start();
+//	GlobalTimer.Start();
 
 	return true;
 }
@@ -299,9 +299,9 @@ void CApplicationBase::Execute()
         else
 		{
 			// update the timer
-			TIMER.UpdateFrameTime();
+			GlobalTimer().UpdateFrameTime();
 
-			frametime = TIMER.GetFrameTime();
+			frametime = GlobalTimer().GetFrameTime();
 
 			// process input from input devices
 			// input data are sent to an InputHandler currently set to the InputHub

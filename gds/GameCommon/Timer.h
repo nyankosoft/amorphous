@@ -1,12 +1,12 @@
-#ifndef _TIMER_H__
-#define _TIMER_H__
+#ifndef __TIMER_H__
+#define __TIMER_H__
 
 #include <windows.h>
 
 
 /**
- * Performs timer operations.
- * use GetGlobalTimer() or macro 'TIMER' to get the global instance
+ Performs timer operations.
+ - Use GetGlobalTimer() or macro 'TIMER' to get the global instance.
  */
 class CTimer
 {
@@ -78,17 +78,23 @@ protected:
 	float m_fFPS;
 };
 
-//CTimer* GetGlobalTimer();
 
-inline CTimer& GetGlobalTimer()
+inline CTimer& GlobalTimer()
 {
 	// Using an accessor function gives control of the construction order
+	// - This is a non-thread safe implementation of singleton pattern.
+	// - Make sure GlobalTimer() is not called by more than one thread at the same time.
 	static CTimer timer;
+
+	static int initialized = 0;
+	if( initialized == 0 )
+	{
+		timer.Start();
+		initialized = 1;
+	}
+
 	return timer;
 }
 
 
-#define TIMER	(GetGlobalTimer())
-
-
-#endif  /**/
+#endif  /* __TIMER_H__ */

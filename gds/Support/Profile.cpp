@@ -14,11 +14,13 @@
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
-
-using namespace std;
+#include <boost/shared_ptr.hpp>
 
 #include "SafeDelete.h"
 #include "GameCommon/Timer.h"
+
+using namespace std;
+using namespace boost;
 
 
 // TODO: move this to some "win32 platform" module
@@ -33,6 +35,8 @@ public:
 	~CProfileTimer_Win32() {}
 
 	virtual double GetExactTime() { return m_Timer.GetTime(); }
+
+	virtual double GetFrameTime() { return m_Timer.GetFrameTime(); }
 };
 
 
@@ -68,7 +72,7 @@ static float g_endProfile = 0.0f;
 
 static vector<string> g_vecstrProfileText;
 
-static CProfileTimerSharedPtr g_pTimer;
+static shared_ptr<CProfileTimer> g_pTimer;
 
 
 vector<string>& GetProfileText()
@@ -104,7 +108,7 @@ static float GetExactTime()
 	static int s_TimerInitialized = 0;
 	if( !s_TimerInitialized )
 	{
-		g_pTimer = CProfileTimerSharedPtr( new CProfileTimer_Win32() );
+		g_pTimer = shared_ptr<CProfileTimer>( new CProfileTimer_Win32() );
 		s_TimerInitialized = 1;
 	}
 
@@ -302,7 +306,7 @@ void StoreProfileInHistory( char* name, float percent )
    float oldRatio;
 //   float newRatio = 0.8f * GetElapsedTime();
 
-   float newRatio = 0.8f * TIMER.GetFrameTime();
+   float newRatio = 0.8f * (float)g_pTimer->GetFrameTime();
 
    if( newRatio > 1.0f )
    {

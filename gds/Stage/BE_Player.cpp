@@ -15,7 +15,7 @@
 #include "GameCommon/MTRand.h"
 #include "Support/VectorRand.h"
 #include "GameCommon/ShockWaveCameraEffect.h"
-#include "GameCommon/TIMER.h"
+#include "GameCommon/Timer.h"
 
 #include "Stage/BE_LaserDot.h"
 
