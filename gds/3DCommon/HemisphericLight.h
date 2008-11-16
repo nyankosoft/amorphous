@@ -65,6 +65,7 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericPointLight( *this ); }
 
 	SFloatRGBColor CalcPointLightFactor( float NdotL )
 	{
@@ -97,6 +98,8 @@ public:
 	}
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericDirectionalLight( *this ); }
 
 	SFloatRGBAColor& UpperColor() { return Attribute.UpperColor; }
 	SFloatRGBAColor& LowerColor() { return Attribute.LowerColor; }

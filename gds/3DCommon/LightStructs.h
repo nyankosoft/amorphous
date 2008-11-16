@@ -23,6 +23,10 @@ public:
 	virtual void VisitAmbientLight( CAmbientLight& ambient_light ) {}
 	virtual void VisitPointLight( CPointLight& point_light ) {}
 	virtual void VisitDirectionalLight( CDirectionalLight& directional_light ) {}
+	virtual void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) {}
+	virtual void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) {}
+//	virtual void VisitTriPointLight( CTriPointLight& tri_point_light ) {}
+//	virtual void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) {}
 };
 
 
