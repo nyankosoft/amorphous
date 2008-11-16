@@ -659,7 +659,7 @@ void CBSPMap::ClipTraceToInteriorModel_r(STrace& tr, short nodeindex)
 	while(1)
 	{
 //		SNode_f& rThisNode = paNode[nodeindex];
-		SNode_f& rThisNode = bsptree.m_paNode[nodeindex];
+		SNode_f& rThisNode = bsptree.GetNode(nodeindex);
 		sFrontChild = rThisNode.sFrontChild;
 		sBackChild = rThisNode.sBackChild;
 
@@ -674,7 +674,7 @@ void CBSPMap::ClipTraceToInteriorModel_r(STrace& tr, short nodeindex)
 //				bsptree.m_paNode = paNode + rThisCell.sBSPTreeIndex;
 //				bsptree.m_paPlane = paPlane;
 
-				if( tr.aabb_swept.IsIntersectingWith( bsptree.m_paNode[0].aabb ) )
+				if( tr.aabb_swept.IsIntersectingWith( bsptree.GetNode(0).aabb ) )
 				{	// AABB in the root node of bsp-tree represents the volume which contains this interior model
 					// check intersection with the swept AABB volume of the trace
 					if( tr.fFraction == 0 )
@@ -700,7 +700,7 @@ void CBSPMap::ClipTraceToInteriorModel_r(STrace& tr, short nodeindex)
 		}
 
 		// we are at a diverging node in the BSP-Tree (The both child nodes have the sub-trees)
-		SPlane& rPlane = bsptree.m_paPlane[ rThisNode.sPlaneIndex ];
+		SPlane& rPlane = bsptree.GetPlane( rThisNode );
 
 		fDist = rPlane.GetDistanceFromPoint( tr.aabb_swept.GetCenterPosition() );
 		fRadius = tr.aabb_swept.GetRadiusForPlane( rPlane );

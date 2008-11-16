@@ -52,7 +52,6 @@ public:
 	void CreateBoxBSPTree( float fWidth_X, float fHeight_Y, float fDepth_Z );
 
 	friend class CBSPTreeForAABB;
-	friend class CBSPMap;
 };
 
 
