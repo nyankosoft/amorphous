@@ -1218,14 +1218,6 @@
 				RelativePath="..\..\gds\GameCommon\MTRand.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\gds\GameCommon\Timer.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\GameCommon\Timer.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Support"
@@ -1316,6 +1308,14 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\Support\TextFileScanner.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\Timer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\Timer.h"
 				>
 			</File>
 			<File

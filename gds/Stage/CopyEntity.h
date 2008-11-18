@@ -95,6 +95,9 @@ class CCopyEntity
 	/// used for z-sort of translucent entities (rendering)
 	float fZinCameraSpace;
 
+	/// the time at which the entity is created in the stage [sec]
+	double m_CreatedTime;
+
 	/// true if currenly in use
 	bool inuse;
 
@@ -205,6 +208,8 @@ public:
 
 	void SetStockIndex( int index ) { m_StockIndex = index; }
 	void SetStockID( int id ) { m_StockID = id; }
+
+	double GetCreatedTime() const { return m_CreatedTime; }
 
 	/// updates entity - called once every frame
 	inline void Act() { pBaseEntity->Act(this); }

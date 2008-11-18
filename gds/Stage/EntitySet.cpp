@@ -776,6 +776,8 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 		}
 	}
 
+	pNewCopyEnt->m_CreatedTime = m_pStage->GetElapsedTime();
+
 	// When all the basic properties are copied, InitCopyEntity() is called to 
 	// do additional initialization specific to each base entity.
 	rBaseEntity.InitCopyEntity( pNewCopyEnt );

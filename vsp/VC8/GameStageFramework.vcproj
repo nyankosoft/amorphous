@@ -1261,18 +1261,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\MouseCursor.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\GameCommon\MTRand.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\GameCommon\MTRand.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\GameCommon\NozzleFlameParams.h"
 					>
 				</File>
@@ -1338,14 +1326,6 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\GameCommon\ShockWaveCameraEffect.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\GameCommon\Timer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\GameCommon\Timer.h"
 					>
 				</File>
 			</Filter>
