@@ -195,7 +195,7 @@ void CEntitySet::GetOverlappingEntities( COverlapTestAABB& overlap_test )
 }
 
 
-void CEntitySet::Link(CCopyEntity* pCpyEnt)
+void CEntitySet::Link( CCopyEntity* pEntity )
 {
 	CEntityNode* paEntNode = m_paEntityTree;
 	short sEntNodeIndex = 0;
@@ -209,18 +209,18 @@ void CEntitySet::Link(CCopyEntity* pCpyEnt)
 		// if this is a leaf node, link the entity here.
 		if( rThisEntityNode.leaf )
 		{
-			rThisEntityNode.Link(pCpyEnt);
+			rThisEntityNode.Link(pEntity);
 			return;
 		}
 
 		SPlane& rPlane = rThisEntityNode.m_Plane;
 
-		d = rPlane.GetDistanceFromPoint( pCpyEnt->Position() );
+		d = rPlane.GetDistanceFromPoint( pEntity->Position() );
 
-		if(pCpyEnt->bvType != BVTYPE_DOT)
-//			fRadius = pCpyEnt->local_aabb.GetRadiusForPlane( rPlane );
-///			fRadius = pCpyEnt->local_aabb.vMax.x * 1.4142f;
-			fRadius = pCpyEnt->fRadius;
+		if(pEntity->bvType != BVTYPE_DOT)
+//			fRadius = pEntity->local_aabb.GetRadiusForPlane( rPlane );
+///			fRadius = pEntity->local_aabb.vMax.x * 1.4142f;
+			fRadius = pEntity->fRadius;
 		else
 			fRadius = 0;
 			
@@ -238,9 +238,9 @@ void CEntitySet::Link(CCopyEntity* pCpyEnt)
 		}
 		else
 		{
-			// 'pCpyEnt' is crossing the dividing plane.
+			// 'pEntity' is crossing the dividing plane.
 			// - link the entity to this diverging-node
-			rThisEntityNode.Link(pCpyEnt);
+			rThisEntityNode.Link(pEntity);
 			return;
 		}
 	}

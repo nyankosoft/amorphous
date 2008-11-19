@@ -60,7 +60,9 @@ public:
 	void GetOverlappingEntities( COverlapTestAABB& overlap_test, CEntityNode* paEntTree );
 	void ClipTrace_r(STrace& tr, CEntityNode* paEntTree);
 
-	void Link(CCopyEntity* pEntity);
+	/// Link 'pEntity' to this entity node.
+	/// 'pEntity' is set to the head element of the entity list of this entity node
+	void Link(CCopyEntity* pEntity) { m_EntityLinkHead.InsertNext( &pEntity->m_EntityLink ); }
 
 	/// render all the entites in this sub-space(entity tree node)
 	void Render( CCamera& rCam );

@@ -64,31 +64,6 @@ inline bool CEntityNode::CheckCollisionGroup( int group_index, const vector<int>
 inline bool CEntityNode::CheckCollisionGroup( int group0, int group1 )
 {
 	return m_pEntitySet->IsCollisionEnabled( group0, group1 );
-
-}
-
-
-/// Link 'pEntity' to this entity node
-/// 'pEntity' is set to the head element of the entity list linked to this entity node
-/// pEntity->m_pPrevEntity is set to point to this entity node
-void CEntityNode::Link(CCopyEntity* pEntity)
-{
-	m_EntityLinkHead.InsertNext( &pEntity->m_EntityLink );
-/*
-	CEntityNode* pThisEntityNode = this;
-
-	// The first entity on this entity-node is set to the 'pEntity->m_pNextEntity' 
-	// If no copy-entity has been linked to this entity-node yet, NULL is set.
-	pEntity->m_pNextEntity = pThisEntityNode->m_pNextEntity;
-
-	if( pThisEntityNode->m_pNextEntity )
-	{	//There have been already some copy-entities linked to this entity-node.
-		pThisEntityNode->m_pNextEntity->m_pPrevEntity = pEntity;
-	}
-	pThisEntityNode->m_pNextEntity = pEntity;
-	pEntity->m_pPrevEntity = pThisEntityNode;
-
-	//m_sNumEnts++;		disabled*/
 }
 
 

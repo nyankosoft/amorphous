@@ -79,8 +79,8 @@ private:
 	inline void ReleaseTerminatedEntities();
 
 	//============ functions for entity mangement ============
-	void Link(CCopyEntity* pCpyEnt);
-	inline void UpdateLink(CCopyEntity* pCpyEnt);
+	void Link( CCopyEntity* pEntity );
+	inline void UpdateLink( CCopyEntity* pCpyEnt );
 
 public:
 
@@ -239,13 +239,13 @@ inline void CEntitySet::ReleaseEntity( CCopyEntity* pEntity )
 }
 */
 
-inline void CEntitySet::UpdateLink(CCopyEntity* pCopyEntity)
+inline void CEntitySet::UpdateLink( CCopyEntity* pEntity )
 {
-	pCopyEntity->Unlink();
-	Link( pCopyEntity );
+	pEntity->Unlink();
+	Link( pEntity );
 
-	//update world aabb
-	pCopyEntity->world_aabb.TransformCoord( pCopyEntity->local_aabb, pCopyEntity->Position() );
+	// update world aabb
+	pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->Position() );
 }
 
 
