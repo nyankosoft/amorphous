@@ -17,7 +17,7 @@
  * - the entities are linked to the entity node
  * - used for both rendering and collision detection
  */
-class CEntityNode : public CCopyEntity
+class CEntityNode
 {
 	bool leaf;
 	SPlane m_Plane;
@@ -29,12 +29,21 @@ class CEntityNode : public CCopyEntity
 //	CLightEntity *m_pLightEntity;	// list of light entities
 	CLightEntity m_LightEntityHead;
 
+	/// link list of entities
+	/// - The first entity of in the list is stored in m_EntityLinkHead.pNext
+	/// - m_EntityLinkHead.pOwner and m_EntityLinkHead.pPrev is always NULL
+	CLinkNode<CCopyEntity> m_EntityLinkHead;
+
+//	CLinkNode<CLightEntity> m_LightEntityLinkHead;
+
 	short m_sCellIndex;	// index to the corresponding cell - only valid for complete leaf entity node
 
 	/// bounding-box that represents sub-space of the node
 	AABB3 m_AABB;
 
 	CEntitySet* m_pEntitySet;
+
+	CStage *m_pStage;
 
 //	inline bool CheckCollisionGroup( int group_index, const std::vector<int>& vecTargetGroup );
 	inline bool CheckCollisionGroup( int group0, int group1 );
@@ -68,7 +77,7 @@ public:
 
 	/// checks if the light is reaching the entity
 	/// if it is true, registers the light index to the entity
-	void CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree );
+//	void CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree );
 
 	friend class CEntityRenderManager;
 	friend class CEntitySet;

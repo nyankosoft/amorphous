@@ -10,6 +10,8 @@
 #include "Physics/fwd.h"
 
 #include "CopyEntityCallback.h"
+#include "LinkNode.h"
+
 
 #include "fwd.h"
 #include "BaseEntity.h"
@@ -86,8 +88,7 @@ class CCopyEntity
 	/// next entity in the chain list 'm_pEntityInUse'
 	CCopyEntity* m_pNext;
 
-	CCopyEntity* m_pNextEntity;   ///< next entity in the chain linked to entity tree-node 'CEntityNode'
-	CCopyEntity* m_pPrevEntity;   ///< prev entity in the chain linked to entity tree-node 'CEntityNode'
+	CLinkNode<CCopyEntity> m_EntityLink; ///< next & prev entity in the chain linked to entity tree-node 'CEntityNode'
 
 	/// next entity in the link list for z-sorting (used to render transparent entities)
 	CCopyEntity* m_pNextEntityInZSortTable;

@@ -1160,7 +1160,6 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 
 	int i;
 	string strPlaneNormal, strPos, strDir;
-	CCopyEntity* pCopyEnt = NULL;
 
 	fprintf(fp, "total entity nodes: %d\n\n", m_NumEntityNodes);
 	for(i=0; i<m_NumEntityNodes; i++)
@@ -1181,30 +1180,36 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 
 		fprintf(fp, "  aabb: %s\n\n", to_string(rEntityNode.m_AABB).c_str() );
 
-		//Write the copy entities linked to this entity node
-		for(pCopyEnt = rEntityNode.m_pNextEntity;
-		pCopyEnt != NULL;
-		pCopyEnt = pCopyEnt->m_pNextEntity)
+		// Write the copy entities linked to this entity node
+
+		CCopyEntity* pEntity = NULL;
+		CLinkNode<CCopyEntity> *pNode;
+		for(
+			pNode = rEntityNode.m_EntityLinkHead.pNext;
+			pNode != NULL;
+			pNode = pNode->pNext )
 		{
+			pEntity = pNode->pOwner;
+
 			fprintf( fp, "--------------------------------------------------------\n" );
 
-			fprintf( fp, "name:      %s\n", pCopyEnt->GetName().c_str() );
+			fprintf( fp, "name:      %s\n", pEntity->GetName().c_str() );
 
-			fprintf( fp, "id:        %d\n", pCopyEnt->GetID() );
+			fprintf( fp, "id:        %d\n", pEntity->GetID() );
 
-			fprintf( fp, "base name: %s\n", pCopyEnt->pBaseEntity->GetName() );
+			fprintf( fp, "base name: %s\n", pEntity->pBaseEntity->GetName() );
 
-			strPos = to_string(pCopyEnt->Position() );
-			strDir = to_string(pCopyEnt->GetDirection() );
-			fprintf( fp, "  pos%s, dir%s, spd: %.2f\n", strPos.c_str(), strDir.c_str(), pCopyEnt->fSpeed );
+			strPos = to_string(pEntity->Position() );
+			strDir = to_string(pEntity->GetDirection() );
+			fprintf( fp, "  pos%s, dir%s, spd: %.2f\n", strPos.c_str(), strDir.c_str(), pEntity->fSpeed );
 
-			fprintf( fp, "  local_aabb: %s\n", to_string(pCopyEnt->local_aabb).c_str() );
+			fprintf( fp, "  local_aabb: %s\n", to_string(pEntity->local_aabb).c_str() );
 
-			fprintf( fp, "  world_aabb: %s\n", to_string(pCopyEnt->world_aabb).c_str() );
+			fprintf( fp, "  world_aabb: %s\n", to_string(pEntity->world_aabb).c_str() );
 
-			fprintf(fp, "  state: %d\n", pCopyEnt->sState);
+			fprintf(fp, "  state: %d\n", pEntity->sState);
 
-			if( pCopyEnt->bInSolid == true ) fprintf(fp, "  (in solid)\n");
+			if( pEntity->bInSolid == true ) fprintf(fp, "  (in solid)\n");
 			else fprintf(fp, "  (not in solid)\n");
 
 			fprintf(fp, "\n");

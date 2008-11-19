@@ -301,31 +301,26 @@ void CEntityRenderManager::MoveSkyboxToListHead()
 {
 	CEntityNode& rRootNode = m_paEntityTree[0];
 
-	CCopyEntity *pEntity, *pPrevEntity;
+	CCopyEntity *pEntity = NULL, *pPrevEntity;
 	CCopyEntity *pSkyboxEntity = NULL;
-	for( pEntity = rRootNode.m_pNextEntity, pPrevEntity = NULL;
-		 pEntity;
-		 pPrevEntity = pEntity, pEntity = pEntity->m_pNextEntity )
+	CLinkNode<CCopyEntity> *pLinkNode;
+	for( pLinkNode = rRootNode.m_EntityLinkHead.pNext, pPrevEntity = NULL;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext, pPrevEntity = pEntity )
 	{
+		pEntity = pLinkNode->pOwner;
+
 		if( pEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_SKYBOX )
 		{
-			if( pEntity == rRootNode.m_pNextEntity )
+			if( pEntity == rRootNode.m_EntityLinkHead.pNext->pOwner )
 				break;	// already placed at the head
 
 			pSkyboxEntity = pEntity;
 
-			if( pPrevEntity )
-				pPrevEntity->m_pNextEntity = pEntity->m_pNextEntity;
+			pSkyboxEntity->m_EntityLink.Unlink();
 
-			if( pEntity->m_pNextEntity )
-                pEntity->m_pNextEntity->m_pPrevEntity = pPrevEntity;
+			rRootNode.m_EntityLinkHead.InsertNext( &pSkyboxEntity->m_EntityLink );
 
-			rRootNode.m_pNextEntity->m_pPrevEntity = pSkyboxEntity;
-			pSkyboxEntity->m_pNextEntity = rRootNode.m_pNextEntity;
-
-			rRootNode.m_pNextEntity = pSkyboxEntity;
-//			pSkyboxEntity->m_pPrevEntity = NULL;
-			pSkyboxEntity->m_pPrevEntity = &rRootNode;	// 'pPrevEntity' of the head element points to the entity node
 			break;
 		}
 	}

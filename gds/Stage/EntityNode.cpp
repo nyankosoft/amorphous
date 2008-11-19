@@ -1,7 +1,6 @@
 #include "EntityNode.h"
 #include "EntitySet.h"
 #include "EntityRenderManager.h"
-
 #include "BaseEntity.h"
 #include "bsptree.h"
 #include "trace.h"
@@ -20,7 +19,8 @@ int CEntityNode::ms_NumRenderedEntities = 0;
 
 CEntityNode::CEntityNode()
 :
-m_pEntitySet(NULL)
+m_pEntitySet(NULL),
+m_pStage(NULL)
 {
 	m_AABB.Nullify();
 	m_Plane		= SPlane( Vector3(0,0,0), 0 );
@@ -73,6 +73,8 @@ inline bool CEntityNode::CheckCollisionGroup( int group0, int group1 )
 /// pEntity->m_pPrevEntity is set to point to this entity node
 void CEntityNode::Link(CCopyEntity* pEntity)
 {
+	m_EntityLinkHead.InsertNext( &pEntity->m_EntityLink );
+/*
 	CEntityNode* pThisEntityNode = this;
 
 	// The first entity on this entity-node is set to the 'pEntity->m_pNextEntity' 
@@ -86,7 +88,7 @@ void CEntityNode::Link(CCopyEntity* pEntity)
 	pThisEntityNode->m_pNextEntity = pEntity;
 	pEntity->m_pPrevEntity = pThisEntityNode;
 
-	//m_sNumEnts++;		disabled
+	//m_sNumEnts++;		disabled*/
 }
 
 
@@ -101,11 +103,14 @@ void CEntityNode::Render( CCamera& rCam )
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for( pEntity = this->m_pNextEntity;
-		 pEntity;
-		 pEntity = pEntity->m_pNextEntity )
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
 	{
+		pEntity = pLinkNode->pOwner;
+
 		if( !(pEntity->EntityFlag & BETYPE_VISIBLE) )
 			continue;
 
@@ -149,11 +154,14 @@ void CEntityNode::RenderShadowCasters( CCamera& rCam )
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for( pEntity = this->m_pNextEntity;
-		 pEntity;
-		 pEntity = pEntity->m_pNextEntity )
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
 	{
+		pEntity = pLinkNode->pOwner;
+
 		if( (pEntity->EntityFlag & BETYPE_VISIBLE)
 		 && (pEntity->EntityFlag & BETYPE_SHADOW_CASTER) )
 		{
@@ -171,11 +179,14 @@ void CEntityNode::RenderShadowReceivers( CCamera& rCam )
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for( pEntity = this->m_pNextEntity;
-		 pEntity;
-		 pEntity = pEntity->m_pNextEntity )
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
 	{
+		pEntity = pLinkNode->pOwner;
+
 		if( (pEntity->EntityFlag & BETYPE_VISIBLE)
 		 && (pEntity->EntityFlag & BETYPE_SHADOW_RECEIVER) )
 		{
@@ -193,11 +204,14 @@ void CEntityNode::RenderAllButEnvMapTraget( CCamera& rCam, U32 target_entity_id 
 //		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
 
 	// Get the pointer to the first copy entity on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for( pEntity = this->m_pNextEntity;
-		 pEntity;
-		 pEntity = pEntity->m_pNextEntity )
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
 	{
+		pEntity = pLinkNode->pOwner;
+
 		if( pEntity->GetID() == target_entity_id
 		 && pEntity->EntityFlag  & BETYPE_ENVMAPTARGET )
 		{
@@ -217,11 +231,14 @@ void CEntityNode::CheckPosition_r(STrace& tr, CEntityNode* paEntTree)
 
 	// Set the first copy entity on this entity node and cycle through all the copy entities
 	// on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for(pEntity = this->m_pNextEntity;
-		pEntity != NULL;
-		pEntity = pEntity->m_pNextEntity )
-	{	
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
+	{
+		pEntity = pLinkNode->pOwner;
+
 		if( pEntity->bNoClip )
 			continue;
 
@@ -280,11 +297,14 @@ void CEntityNode::CheckPosition_r(CTrace& tr, CEntityNode* paEntTree)
 
 	// Set the first copy entity on this entity node and cycle through all the copy entities
 	// on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for(pEntity = this->m_pNextEntity;
-		pEntity != NULL;
-		pEntity = pEntity->m_pNextEntity )
-	{	
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
+	{
+		pEntity = pLinkNode->pOwner;
+
 		if( pEntity->bNoClip && (tr.GetTraceType() & TRACETYPE_IGNORE_NOCLIP_ENTITIES) )
 			continue;
 
@@ -343,11 +363,14 @@ void CEntityNode::GetVisibleEntities_r(CViewFrustumTest& vf_test, CEntityNode* p
 
 	// Set the first copy entity on this entity node and cycle through all the copy entities
 	// on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for(pEntity = this->m_pNextEntity;
-		pEntity != NULL;
-		pEntity = pEntity->m_pNextEntity )
-	{	
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
+	{
+		pEntity = pLinkNode->pOwner;
+
 		if( !vf_test.GetCamera()->ViewFrustumIntersectsWith( pEntity->world_aabb ) )
 			continue;
 
@@ -383,9 +406,14 @@ void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
 
 	//Set the first copy entity on this entity node and cycle through all the copy entities
 	//on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for( pEntity = this->m_pNextEntity; pEntity != NULL; pEntity = pEntity->m_pNextEntity )
-	{	
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
+	{
+		pEntity = pLinkNode->pOwner;
+
 //		ProfileBegin( "CEntityNode::ClipTrace_r() - linked entities loop" );
 
 		if( pEntity->bvType == BVTYPE_DOT && tr.bvType == BVTYPE_DOT )
@@ -482,9 +510,14 @@ void CEntityNode::GetOverlappingEntities( COverlapTestAABB& overlap_test, CEntit
 
 	// set the first copy entity on this entity node
 	// and cycle through all the copy entities on this entity node
+	CLinkNode<CCopyEntity> *pLinkNode;
 	CCopyEntity* pEntity;
-	for( pEntity = this->m_pNextEntity; pEntity != NULL; pEntity = pEntity->m_pNextEntity )
+	for( pLinkNode = m_EntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
 	{
+		pEntity = pLinkNode->pOwner;
+
 //		if( pEntity->bNoClip && (tr.sTraceType & TRACETYPE_IGNORE_NOCLIP_ENTITIES) )
 //			continue;
 //		if( tr.pSourceEntity == pEntity )	continue;	//do not clip against myself

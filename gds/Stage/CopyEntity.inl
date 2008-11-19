@@ -17,8 +17,8 @@ inline CCopyEntity::CCopyEntity()
 
 	m_pNext = NULL;
 
-	m_pNextEntity = NULL;
-	m_pPrevEntity = NULL;
+	m_EntityLink.pOwner = this;
+
 	m_pNextEntityInZSortTable = NULL;
 
 	fZinCameraSpace = 0;
@@ -87,16 +87,7 @@ inline CCopyEntity::CCopyEntity()
 
 inline void CCopyEntity::Unlink()	// Do not call this from 'CEntityNode'
 {
-	if( !m_pPrevEntity && !m_pNextEntity )
-		return;	//already unlinked
-
-	if(m_pNextEntity)
-		m_pNextEntity->m_pPrevEntity = this->m_pPrevEntity;
-	m_pPrevEntity->m_pNextEntity = this->m_pNextEntity;
-
-	this->m_pPrevEntity = NULL;
-	this->m_pNextEntity = NULL;
-
+	m_EntityLink.Unlink();
 }
 
 

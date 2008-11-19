@@ -150,7 +150,9 @@ public:
 
     bool LoadBaseEntity( CBaseEntityHandle& base_entity_handle );
 
-	/// create entity is the stage and its pointer
+	/// create an entity in the stage
+	/// - Returns the pointer to the created entity on success
+	/// - Returns NULL on failure
 	CCopyEntity *CreateEntity( CCopyEntityDesc& rCopyEntityDesc );
 
 	CCopyEntity *CreateEntity( CBaseEntityHandle& rBaseEntityHandle,

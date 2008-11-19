@@ -45,7 +45,7 @@ void CEntityNode::LinkLightEntity_r(CLightEntity *pLightEntity, CEntityNode* paE
 	}
 }
 
-
+/*
 void CEntityNode::CheckLight_r(CCopyEntity *pEntity, CEntityNode* paEntTree)
 {
 	if( m_LightEntityHead.GetNext() )
@@ -118,3 +118,4 @@ void CEntityNode::CheckLight_r(CCopyEntity *pEntity, CEntityNode* paEntTree)
 	}
 
 }
+*/
