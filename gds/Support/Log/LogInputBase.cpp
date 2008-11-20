@@ -8,7 +8,7 @@
 #include "LogInputBase.h"
 #include "LogOutputBase.h"
 
-#include "../PrecisionTimer.h"
+#include "../Timer.h"
 #include "../SafeDelete.h"
 #include "../StringAux.h"
 
@@ -33,7 +33,7 @@ m_TimeStampFormat(TimeFormat::HHMMSSMS)
 	m_pBuffer	 = new char [buffer_size];
 	m_BufferSize = buffer_size;
 
-	m_pTimer = new PrecisionTimer;
+	m_pTimer = new CTimer;
 	m_pTimer->Start();
 }
 
@@ -132,7 +132,7 @@ void CLogInputBase::PrintInternal( int filter_val, const char *format,... )
 
 void CLogInputBase::GetTimeStampString( string& strTime )
 {
-	unsigned long time_ms = (unsigned long)( m_pTimer->CurrentTime() * 1000 );
+	unsigned long time_ms = (unsigned long)( m_pTimer->GetTime() * 1000 );
 
 	strTime = get_time_stamp_string( time_ms, m_TimeStampFormat );
 }
@@ -170,7 +170,7 @@ bool CLogInputBase::RemoveLogOutput( CLogOutputBase *pLogOutput )
 
 unsigned long CLogInputBase::GetCurrentTimeMS() const
 {
-	return (unsigned long)(m_pTimer->CurrentTime() * 1000.0f);
+	return (unsigned long)(m_pTimer->GetTime() * 1000.0f);
 }
 
 

@@ -10,7 +10,7 @@
 
 
 class CLogOutputBase;
-class PrecisionTimer;
+class CTimer;
 
 
 class CLogInputBase
@@ -20,7 +20,7 @@ class CLogInputBase
 
 	TimeFormat::Format m_TimeStampFormat;
 
-	PrecisionTimer *m_pTimer;
+	CTimer *m_pTimer;
 
 	/// holds pointers to output device (borrowed reference)
 	/// NOTE: user is responsible for releasing these instances
