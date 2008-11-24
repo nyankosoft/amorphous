@@ -8,12 +8,13 @@
 #include "GameCommon/MTRand.h"
 
 using namespace std;
+using namespace boost;
 
 
 CAlphaEntity::CAlphaEntity()
 {
 	// set material index 0 as the alpha material by default
-	m_AlphaMaterialIndex = 0;;
+	m_AlphaMaterialIndex = 0;
 
 	EntityFlag |= BETYPE_USE_ZSORT;
 
@@ -44,6 +45,7 @@ void CAlphaEntity::Init( CAlphaEntityDesc& desc )
 
 void CAlphaEntity::Update( float dt )
 {
+	CCopyEntity *pParent = m_pParent;
 	if( !pParent )
 		return;
 
@@ -58,6 +60,7 @@ void CAlphaEntity::UpdatePhysics( float dt )
 
 void CAlphaEntity::Draw()
 {
+	CCopyEntity *pParent = m_pParent;
 	if( !pParent )
 		return;
 
@@ -67,8 +70,8 @@ void CAlphaEntity::Draw()
 		m_ShaderTechnique
 		);
 
-/*(	pParent->pBaseEntity->DrawMeshMaterial(
-		pParent->GetWorldPose(),
+/*(	m_Parent->pBaseEntity->DrawMeshMaterial(
+		m_Parent->GetWorldPose(),
 		m_AlphaMaterialIndex,
 		0
 		);*/
@@ -87,4 +90,6 @@ void CAlphaEntity::HandleMessage( SGameMessage& msg )
 
 void CAlphaEntity::TerminateDerived()
 {
+//	shared_ptr<CCopyEntity> pSelf = this->Self().lock();
+//	m_pPool->release( pSelf ); // pSelf is CCopyEntity type pointer!!!
 }

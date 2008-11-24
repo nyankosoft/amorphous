@@ -12,16 +12,21 @@ inline CCopyEntity::CCopyEntity()
 
 	inuse = false;
 
+//	m_pStage = NULL;
+
 	bInSolid = false;
 	bNoClip = false;
 
-	m_pNext = NULL;
+	m_pNextRawPtr = NULL;
 
 	m_EntityLink.pOwner = this;
 
 	m_pNextEntityInZSortTable = NULL;
 
 	fZinCameraSpace = 0;
+
+	m_CreatedTime = 0.0;
+
 	EntityFlag = 0;
 	EntityFlag |= BETYPE_FLOATING;
 
@@ -62,7 +67,7 @@ inline CCopyEntity::CCopyEntity()
 
 	iExtraDataIndex = CE_INVALID_EXTRA_DATA_INDEX;
 
-	pTarget = NULL;
+//	pTarget = NULL;
 
 	MeshObjectHandle.Release();
 
@@ -73,11 +78,11 @@ inline CCopyEntity::CCopyEntity()
 		asLightIndex[i] = CE_INVALID_LIGHT_INDEX;
 */
 	// initialize parent/children information
-	pParent = NULL;
+	m_pParent = NULL;
 
 	iNumChildren = 0;
-	for( int i=0; i<NUM_MAX_CHILDREN_PER_ENTITY; i++ )
-		apChild[i] = NULL;
+//	for( int i=0; i<NUM_MAX_CHILDREN_PER_ENTITY; i++ )
+//		apChild[i] = NULL;
 
 	pPhysicsActor = NULL;
 
@@ -85,13 +90,16 @@ inline CCopyEntity::CCopyEntity()
 }
 
 
-inline void CCopyEntity::Unlink()	// Do not call this from 'CEntityNode'
+/// Do not call this from 'CEntityNode'
+inline void CCopyEntity::Unlink()
 {
 	m_EntityLink.Unlink();
 }
 
 
-inline void CCopyEntity::Terminate()	// unlink from entity tree node and set 'inuse' to false
+/// - Unlink the entity from entity tree node
+/// - Set 'inuse' to false
+inline void CCopyEntity::Terminate()
 {
 	size_t i, num_callbacks = vecpCallback.size();
 	for( i=0; i<num_callbacks; i++ )
@@ -119,7 +127,7 @@ inline void CCopyEntity::Terminate()	// unlink from entity tree node and set 'in
 
 	vecpTouchedEntity.clear();
 
-	pTarget = NULL;
+	m_Target.Reset();
 
 	EntityFlag = 0;
 	EntityFlag |= BETYPE_FLOATING;
@@ -132,7 +140,7 @@ inline void CCopyEntity::Terminate()	// unlink from entity tree node and set 'in
 
 	Unlink();
 
-	if( 0 < iNumChildren || pParent )
+	if( 0 < iNumChildren || m_pParent )
 		DisconnectFromParentAndChildren();
 
 	if( pPhysicsActor )
@@ -207,31 +215,36 @@ inline void CCopyEntity::InsertLightIndex( int pos, short sLightIndex )
 
 inline CCopyEntity *CCopyEntity::GetChild( int i )
 {
-	if( apChild[i] && apChild[i]->inuse )
-		return apChild[i];
-	else
+	if( i <= 0 || iNumChildren <= i )
 		return NULL;
+
+	return m_aChild[i].GetRawPtr();
+/*
+	if( m_aChild[i] && m_aChild[i]->inuse )
+		return m_aChild[i];
+	else
+		return NULL;*/
 }
 
 inline CCopyEntity *CCopyEntity::GetParent()
 {
-	if( pParent && pParent->inuse )
-		return pParent;
+	if( m_pParent && m_pParent->inuse )
+		return m_pParent;
 	else
 		return NULL;
 }
 
 
-// add a child
-// return an index to the newly added child
-// the index will become invalid if you delete other children
-// return -1 if no more children can be added
-inline int CCopyEntity::AddChild( CCopyEntity *pChild )
+/// Add a child
+/// - Return an index to the newly added child.
+/// - The index will become invalid if you delete other children.
+/// - Return -1 if no more children can be added.
+inline int CCopyEntity::AddChild( boost::weak_ptr<CCopyEntity> pChild )
 {
 	if( iNumChildren == NUM_MAX_CHILDREN_PER_ENTITY )
 		return -1;
 
-	apChild[iNumChildren++] = pChild;
+	m_aChild[iNumChildren++] = CEntityHandle<>( pChild );
 	return (iNumChildren - 1);
 }
 
@@ -243,7 +256,91 @@ inline void CCopyEntity::UpdateMesh()
 }
 
 
-// global function for copy entity
+
+//======================================================================
+// CEntityHandle
+//======================================================================
+
+/// Needs to be defined after the definitions of CCopyEntity
+/// since these guys use the methods of CCopyEntity
+
+template<class T>
+inline CEntityHandle<T>::CEntityHandle( boost::weak_ptr<T> pEntity )
+:
+m_pEntity(pEntity),
+m_StockID(-1)
+{
+	boost::shared_ptr<T> pEntitySharedPtr = m_pEntity.lock();
+	if( pEntitySharedPtr )
+		m_StockID = pEntitySharedPtr->GetStockID();
+}
+
+
+template<class T>
+inline CEntityHandle<T>::CEntityHandle( boost::shared_ptr<T> pEntity )
+:
+m_pEntity(pEntity),
+m_StockID(pEntity->GetStockID())
+{}
+
+
+template<class T>
+inline boost::shared_ptr<T> CEntityHandle<T>::Get()
+{
+	boost::shared_ptr<T> pEntity = m_pEntity.lock();
+	if( !pEntity )
+	{
+		// Lock failed, which means,
+		// - For non-pooled entity,
+		//   - The entity has been released or the stage has been released.
+		// - For pooled entity,
+		//   - The stage has been released.
+		return boost::shared_ptr<T>();
+	}
+	else if( !pEntity->inuse )
+	{
+		// Already terminated by Terminate().
+		// - Think of this state as 'marked as invalid'
+		// - The entity may still be in the link list of the active entities,
+		//   but it must not take any action. This entity is soon to be released.
+		return boost::shared_ptr<T>();
+	}
+	else
+	{
+		// pEntity && pEntity->inuse
+
+		if( m_StockID == -2 )
+		{
+			// non-pooled entity
+			return pEntity;
+		}
+		else
+		{
+			// pooled entity
+			// - Never deleted unless the stage is released.
+
+//			if( m_StockID == -3 )
+//			{
+//				// Not initialized yet
+//				m_StockID = pEntity->GetStockID();
+//			}
+
+			if( 0 <= m_StockID && pEntity->GetStockID() == m_StockID )
+				return pEntity;
+			else
+			{
+				// The pooled instance is currently used as another entity
+				return boost::shared_ptr<T>();
+			}
+		}
+	}
+}
+
+
+
+//======================================================================
+// global function(s) for copy entity
+//======================================================================
 
 inline bool IsValidEntity( CCopyEntity *pEntity )
 {

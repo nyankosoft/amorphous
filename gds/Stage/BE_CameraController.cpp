@@ -66,7 +66,7 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 	bool camera_active = false;
 	for( i=0; i<num_cameras; i++ )
 	{
-		CCopyEntity *pCameraEntity = pCopyEnt->apChild[i];
+		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[i].GetRawPtr();
 
 		if( !IsValidEntity(pCameraEntity) )
 			continue;
@@ -142,7 +142,7 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 
 	for( int i=0; i<num_cameras; i++ )
 	{
-		CCopyEntity *pCameraEntity = pCopyEnt->apChild[i];
+		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[i].GetRawPtr();
 
 		if( !IsValidEntity(pCameraEntity) )
 			continue;
@@ -169,7 +169,7 @@ void CBE_CameraController::CreateRenderTasks(CCopyEntity* pCopyEnt)
 
 	for( int i=0; i<num_cameras; i++ )
 	{
-		CCopyEntity *pCameraEntity = pCopyEnt->apChild[i];
+		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[i].GetRawPtr();
 
 		if( !IsValidEntity(pCameraEntity) )
 			continue;
@@ -206,7 +206,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 	const int num_cameras = pCopyEnt->GetNumChildren();
 	for( int i=0; i<num_cameras; i++ )
 	{
-		CCopyEntity *pCameraEntity = pCopyEnt->apChild[i];
+		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[i].GetRawPtr();
 
 		if( !IsValidEntity(pCameraEntity) )
 			continue;

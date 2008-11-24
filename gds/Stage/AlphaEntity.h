@@ -5,7 +5,7 @@
 #include "Stage/fwd.h"
 #include "Stage/CopyEntity.h"
 #include "Stage/EntityMotionPathRequest.h"
-#include "fwd.h"
+#include "Support/shared_prealloc_pool.h"
 
 
 class CAlphaEntityDesc;
@@ -13,6 +13,8 @@ class CAlphaEntityDesc;
 
 class CAlphaEntity : public CCopyEntity
 {
+//	shared_prealloc_pool<CAlphaEntity> *m_pPool;
+
 	int m_AlphaMaterialIndex;
 
 	// Note this vector always stores single element

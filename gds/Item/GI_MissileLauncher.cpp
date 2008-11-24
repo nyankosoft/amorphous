@@ -511,15 +511,16 @@ bool CGI_MissileLauncher::HandleInput( int input_code, int input_type, float fPa
 
 inline void CGI_MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntity )
 {
-	SGameMessage msg;
-	msg.iEffect = GM_SET_TARGET;
-//	msg.pUserData = m_vecpCurrentTarget[i];
-	if( m_FireTargetIndex < m_vecpCurrentTarget.size() )
+	if( m_FireTargetIndex < m_vecpCurrentTarget.size()
+	 && IsValidEntity(m_vecpCurrentTarget[m_FireTargetIndex]) )
+	{
+		SGameMessage msg;
+		msg.iEffect = GM_SET_TARGET;
+//		msg.pUserData = m_vecpCurrentTarget[i];
         msg.pUserData = m_vecpCurrentTarget[m_FireTargetIndex];
-	else
-		msg.pUserData = NULL;
 
-	SendGameMessageTo( msg, pMissileEntity );
+		SendGameMessageTo( msg, pMissileEntity );
+	}
 }
 
 

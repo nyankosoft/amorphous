@@ -9,9 +9,9 @@
 #include "3DCommon/MeshObjectHandle.h"
 #include "Physics/fwd.h"
 
+#include "EntityHandle.h"
 #include "CopyEntityCallback.h"
 #include "LinkNode.h"
-
 
 #include "fwd.h"
 #include "BaseEntity.h"
@@ -80,13 +80,20 @@ class CCopyEntity
 
 	int m_TypeID;
 
+	/// true if currenly in use
+	bool inuse;
+
 	int m_StockIndex;
 	int m_StockID;
 
 	CStage *m_pStage;
 
+	boost::weak_ptr<CCopyEntity> m_pSelf;
+
 	/// next entity in the chain list 'm_pEntityInUse'
-	CCopyEntity* m_pNext;
+	boost::shared_ptr<CCopyEntity> m_pNext;
+
+	CCopyEntity* m_pNextRawPtr;
 
 	CLinkNode<CCopyEntity> m_EntityLink; ///< next & prev entity in the chain linked to entity tree-node 'CEntityNode'
 
@@ -99,8 +106,19 @@ class CCopyEntity
 	/// the time at which the entity is created in the stage [sec]
 	double m_CreatedTime;
 
-	/// true if currenly in use
-	bool inuse;
+private:
+
+	void SetNext( boost::shared_ptr<CCopyEntity> pNext )
+	{
+		m_pNext       = pNext;
+		m_pNextRawPtr = pNext.get();
+	}
+
+	void SetNextToNull()
+	{
+		m_pNext       = boost::shared_ptr<CCopyEntity>();
+		m_pNextRawPtr = NULL;
+	}
 
 protected:
 
@@ -109,6 +127,8 @@ protected:
 public:
 
 	CBaseEntity* pBaseEntity;
+
+	boost::weak_ptr<CCopyEntity>& Self() { return m_pSelf; }
 
 	/// represents various attributes of the entity
 	unsigned int EntityFlag;
@@ -150,11 +170,12 @@ public:
 
 	float fLife;
 
-	CCopyEntity *apChild[NUM_MAX_CHILDREN_PER_ENTITY];
+	CEntityHandle<> m_aChild[NUM_MAX_CHILDREN_PER_ENTITY];
 	int iNumChildren;
-	CCopyEntity *pParent;
 
-	CCopyEntity* pTarget;
+	CCopyEntity *m_pParent;
+
+	CEntityHandle<> m_Target;
 
 	/// general purpose variables
 	/// Be careful since each base entity use these variables differently from others
@@ -164,7 +185,8 @@ public:
 
 	int iExtraDataIndex;
 
-	/// used to differentiate targets (e.g. target of homing missile)
+	/// Used to differentiate targets (e.g. target of homing missile)
+	/// - Default: 0
 	short GroupIndex;
 
 	/// holds indices to lights
@@ -316,7 +338,8 @@ public:
 	inline CCopyEntity *GetParent();	// return pointer to a parent if there is one
 	inline CCopyEntity *GetChild( int i );
 	inline int GetNumChildren() const { return iNumChildren; }
-	inline int AddChild( CCopyEntity *pChild );
+//	inline int AddChild( CCopyEntity *pChild );
+	inline int AddChild( boost::weak_ptr<CCopyEntity> pChild );
 	void DisconnectFromParentAndChildren();
 
 	inline void AddCallback( CCopyEntityCallbackBase* pCallback ) { vecpCallback.push_back(pCallback); }
@@ -325,6 +348,7 @@ public:
 	inline void UpdateMesh();
 
 	friend class CBaseEntity;
+	friend class CEntityHandle<>;
 	friend class CEntitySet;
 	friend class CEntityNode;
 	friend class CEntityRenderManager;

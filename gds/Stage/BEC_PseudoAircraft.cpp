@@ -58,7 +58,7 @@ void CBEC_AircraftNozzleFlames::UpdateNozzleFlames( CCopyEntity* pCopyEnt,
 	for( i=0; i<num_nozzles; i++ )
 	{
 		int child_index = child_entity_offset + (int)i;
-		CCopyEntity *pNozzleFlame = pCopyEnt->apChild[child_index];
+		CCopyEntity *pNozzleFlame = pCopyEnt->m_aChild[child_index].GetRawPtr();
 
         if( !IsValidEntity( pNozzleFlame ) )
 			continue;
@@ -78,7 +78,7 @@ void CBEC_AircraftNozzleFlames::ShowNozzleFlames( CCopyEntity* pCopyEnt,
 	size_t i, num_nozzles = pAircraft->GetNozzleFlameParams().size();
 	for( i=0; i<num_nozzles; i++ )
 	{
-		CCopyEntity *pNozzleFlame = pCopyEnt->apChild[child_entity_offset + i];
+		CCopyEntity *pNozzleFlame = pCopyEnt->m_aChild[child_entity_offset + i].GetRawPtr();
 		if( !IsValidEntity( pNozzleFlame ) )
 			continue;
 
@@ -94,7 +94,7 @@ void CBEC_AircraftNozzleFlames::HideNozzleFlames( CCopyEntity* pCopyEnt,
 	size_t i, num_nozzles = pAircraft->GetNozzleFlameParams().size();
 	for( i=0; i<num_nozzles; i++ )
 	{
-		CCopyEntity *pNozzleFlame = pCopyEnt->apChild[child_entity_offset + i];
+		CCopyEntity *pNozzleFlame = pCopyEnt->m_aChild[child_entity_offset + i].GetRawPtr();
 		if( !IsValidEntity( pNozzleFlame ) )
 			continue;
 

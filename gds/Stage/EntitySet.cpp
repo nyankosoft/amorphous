@@ -26,6 +26,7 @@
 #include "Support/Profile.h"
 
 using namespace std;
+using namespace boost;
 using namespace physics;
 
 
@@ -43,7 +44,7 @@ m_EntityIDConter(1),
 m_pStage(pStage),
 m_paEntityTree(NULL)
 {
-	m_pEntityInUse = NULL;
+//	m_pEntityInUse = NULL;
 
 	m_pCameraEntity = NULL;
 
@@ -109,6 +110,46 @@ CEntitySet::~CEntitySet()
 }
 
 
+inline void CEntitySet::ReleaseTerminatedEntities()
+{
+//	CCopyEntity *pEntity = m_pEntityInUse;
+//	CCopyEntity *pPrevEntity = NULL;
+//	CCopyEntity *pNextEntity;
+	shared_ptr<CCopyEntity> pEntity = m_pEntityInUse;
+	shared_ptr<CCopyEntity> pPrevEntity = shared_ptr<CCopyEntity>();
+	shared_ptr<CCopyEntity> pNextEntity;
+	while( pEntity )
+	{
+		if( !pEntity->inuse )
+		{
+			// 0, save the access to the next engaged entity in advance
+			pNextEntity = pEntity->m_pNext;
+
+			// 1, unlink 'pEntity' from 'm_pEntityInUse' list
+			if( pPrevEntity )
+//				pPrevEntity->m_pNext = pEntity->m_pNext;
+				pPrevEntity->SetNext( pEntity->m_pNext );
+			else	// 'pEntity' is the first copy-entity in list 'm_pEntityInUse
+				m_pEntityInUse = pEntity->m_pNext;
+
+			// 1.5 unlink from the active entity list
+			pEntity->SetNextToNull();
+
+			// 2, release the entity
+			m_pEntityFactory->ReleaseEntity( pEntity->m_pSelf.lock() );
+
+			// 3. skip this entity and check the next one
+			pEntity = pNextEntity;
+		}
+		else
+		{
+			pPrevEntity = pEntity;
+			pEntity = pEntity->m_pNext;
+		}
+	}
+}
+
+
 void CEntitySet::InitLightEntityManager()
 {
 	SafeDelete( m_pLightEntityManager );
@@ -130,19 +171,22 @@ void CEntitySet::SetEntityFactory( CEntityFactory *pEntityFactory )
 /// Release all the copy entities in 'm_pEntityInUse'
 void CEntitySet::ReleaseAllEntities()
 {
-	CCopyEntity *pEntity = this->m_pEntityInUse;
-	CCopyEntity *pNextEntity = NULL;
+//	CCopyEntity *pEntity = this->m_pEntityInUse;
+//	CCopyEntity *pNextEntity = NULL;
+	shared_ptr<CCopyEntity> pEntity = this->m_pEntityInUse;
+	shared_ptr<CCopyEntity> pNextEntity;
 
 	// terminate all the remaining entities
-	while( pEntity != NULL )
+	while( pEntity )
 	{
 		// save the pointer to the next entity since CStage::TerminateEntity()
 		// takes the reference to an entity pointer and sets it to NULL
 		pNextEntity = pEntity->m_pNext;
 
-		if( IsValidEntity( pEntity ) )
+		if( IsValidEntity( pEntity.get() ) )
 		{
-			m_pStage->TerminateEntity( pEntity );
+			CCopyEntity *p = pEntity.get();
+			m_pStage->TerminateEntity( p );
 		}
 
 		pEntity = pNextEntity;
@@ -402,11 +446,14 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 	entity_tree[0].sParent = -1;	// the root node has no parent
 
 	// unlink all the entities from the current entity tree
-	for( CCopyEntity* pEntity = m_pEntityInUse;
-		 pEntity != NULL;
-		 pEntity = pEntity->m_pNext )
+	if( m_pEntityInUse )
 	{
-		pEntity->Unlink();
+		for( CCopyEntity* pEntity = m_pEntityInUse.get();
+			 pEntity != NULL;
+			 pEntity = pEntity->m_pNextRawPtr )
+		{
+			pEntity->Unlink();
+		}
 	}
 
 	// Do this AFTER all the entities are unlinked from the entity nodes
@@ -434,18 +481,21 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 	WriteEntityTreeToFile( "debug/entity_tree - recreated the tree.txt" );
 
 	// re-link all the entities to the new tree nodes
-	for( CCopyEntity* pEntity = m_pEntityInUse;
-		 pEntity != NULL;
-		 pEntity = pEntity->m_pNext )
+	if( m_pEntityInUse )
 	{
-		// added: 11:34 PM 5/25/2008
-		// Do not re-link an entity if it has already been marked as 'not in use'
-		// - Failure to do this leads to an invalid link in the entity tree node
-		//   - Caused infinite loops in CEntityNode::CheckPosition_r()
-		if( !IsValidEntity( pEntity ) )
-			continue;
+		for( CCopyEntity* pEntity = m_pEntityInUse.get();
+			 pEntity != NULL;
+			 pEntity = pEntity->m_pNextRawPtr )
+		{
+			// added: 11:34 PM 5/25/2008
+			// Do not re-link an entity if it has already been marked as 'not in use'
+			// - Failure to do this leads to an invalid link in the entity tree node
+			//   - Caused infinite loops in CEntityNode::CheckPosition_r()
+			if( !IsValidEntity( pEntity ) )
+				continue;
 
-		Link( pEntity );
+			Link( pEntity );
+		}
 	}
 
 	WriteEntityTreeToFile( "debug/entity_tree - re-linked entities to the tree.txt" );
@@ -647,13 +697,17 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 //	g_Log.Print( "the copy entity of " + rBaseEntity.GetNameString() + " is in a valid position" );
 
 	// create an entity
-	CCopyEntity* pNewCopyEnt = m_pEntityFactory->CreateEntity( rCopyEntityDesc.TypeID );
-	if( !pNewCopyEnt )
+	shared_ptr<CCopyEntity> pNewEntitySharedPtr = m_pEntityFactory->CreateEntity( rCopyEntityDesc.TypeID );
+	if( !pNewEntitySharedPtr )
 	{
 		/// too many entities or no entity is defined for rCopyEntityDesc.TypeID
 		LOG_PRINT_ERROR( " - cannot create a copy entity of '" + string(rBaseEntityHandle.GetBaseEntityName()) + "'" );
 		return NULL;
 	}
+
+	CCopyEntity *pNewCopyEnt = pNewEntitySharedPtr.get();
+
+	pNewCopyEnt->m_pSelf = pNewEntitySharedPtr;
 
 	pNewCopyEnt->pBaseEntity = pBaseEntity;
 
@@ -736,15 +790,19 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	pNewCopyEnt->world_aabb.TransformCoord( pNewCopyEnt->local_aabb, pNewCopyEnt->Position() );
 
 	// link the new copy-entity to the top of 'm_pEntityInUse'
-	pNewCopyEnt->m_pNext = m_pEntityInUse;
-	m_pEntityInUse = pNewCopyEnt;
+	if( m_pEntityInUse )
+		pNewCopyEnt->SetNext( m_pEntityInUse );
+	else
+		pNewCopyEnt->SetNextToNull(); // first entity in the link list
 
-	pNewCopyEnt->pParent = rCopyEntityDesc.pParent;
+	m_pEntityInUse = pNewEntitySharedPtr;
 
-	if( pNewCopyEnt->pParent )
+	pNewCopyEnt->m_pParent = rCopyEntityDesc.pParent;
+
+	if( pNewCopyEnt->m_pParent )
 	{
 		// 'pNewCopyEnt' is being created as a child of another copy entity
-		pNewCopyEnt->pParent->AddChild( pNewCopyEnt );	// establish link from the parent to this entity
+		pNewCopyEnt->m_pParent->AddChild( pNewCopyEnt->m_pSelf );	// establish link from the parent to this entity
 	}
 
 //	PrintLog( "linking a copy entity of " + rBaseEntity.GetNameString() + " to the tree" );
@@ -958,9 +1016,9 @@ void CEntitySet::UpdatePhysics( float frametime )
 		// update physics properties that are specific to each entity
 		// DO NOT CONFUSE THIS WITH CCopyEntity::UpdatePhysics()
 		CCopyEntity *pEntity;
-		for( pEntity = m_pEntityInUse;
+		for( pEntity = m_pEntityInUse.get();
 			 pEntity != NULL;
-			 pEntity = pEntity->m_pNext )
+			 pEntity = pEntity->m_pNextRawPtr )
 		{
 			if( pEntity->inuse && pEntity->pPhysicsActor )
                 pEntity->pBaseEntity->UpdatePhysics( pEntity, timestep );
@@ -1034,9 +1092,9 @@ void CEntitySet::SetCollisionGroup( int group, bool collision )
  */
 void CEntitySet::UpdateAllEntities( float dt )
 {
-	CCopyEntity* pEntity = this->m_pEntityInUse;
-	CCopyEntity* pPrevEntity;
-	CCopyEntity *pTouchedEnt;
+	CCopyEntity *pEntity = NULL;
+	CCopyEntity *pPrevEntity = NULL;
+	CCopyEntity *pTouchedEnt = NULL;
 
 	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - updating base entities" ) );
 
@@ -1047,9 +1105,9 @@ void CEntitySet::UpdateAllEntities( float dt )
 	}
 
 	// save the current entity positions
-	for( pEntity = m_pEntityInUse;
+	for( pEntity = m_pEntityInUse.get();
 	     pEntity != NULL;
-	     pEntity = pEntity->m_pNext )
+	     pEntity = pEntity->m_pNextRawPtr )
 	{
 		pEntity->PrevPosition() = pEntity->Position();
 	}
@@ -1066,11 +1124,11 @@ void CEntitySet::UpdateAllEntities( float dt )
 	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - removed terminated entities from the active entity list" ) );
 
 	// update active entities
-	for( pEntity = this->m_pEntityInUse, pPrevEntity = NULL;
+	for( pEntity = this->m_pEntityInUse.get(), pPrevEntity = NULL;
 		 pEntity != NULL;
-		 pPrevEntity = pEntity, pEntity = pEntity->m_pNext )
+		 pPrevEntity = pEntity, pEntity = pEntity->m_pNextRawPtr )
 	{
-		// before update 'pCopyEnt', check if it has been terminated.
+		// before updating pEntity, check if it has been terminated.
 		if( !pEntity->inuse )
 			continue;
 
@@ -1082,7 +1140,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 		if( pEntity->sState & CESTATE_ATREST )
 			continue;
 
-		if( !pEntity->pParent || !pEntity->pParent->inuse )
+		if( !pEntity->m_pParent || !pEntity->m_pParent->inuse )
 		{
 			// 'pEntity' has no parent or its parent is already terminated
 			pEntity->pBaseEntity->Act( pEntity );
@@ -1104,9 +1162,11 @@ void CEntitySet::UpdateAllEntities( float dt )
 
 	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - updated active entities" ) );
 
-	for( pEntity = m_pEntityInUse;
+	// unlink and link the entity in the entity tree if it changed its position
+
+	for( pEntity = m_pEntityInUse.get();
 		 pEntity != NULL;
-		 pPrevEntity = pEntity, pEntity = pEntity->m_pNext )
+		 pPrevEntity = pEntity, pEntity = pEntity->m_pNextRawPtr )
 	{
 		if( !pEntity->inuse )
 			continue;

@@ -6,6 +6,8 @@
 #include "Physics/Actor.h"
 using namespace physics;
 
+using namespace boost;
+
 
 void CCopyEntity::ApplyWorldImpulse( Vector3& vImpulse, Vector3& vContactPoint )
 {
@@ -24,28 +26,34 @@ void CCopyEntity::DisconnectFromParentAndChildren()
 	int i;
 	for( i=0; i<iNumChildren; i++ )
 	{
-		apChild[i]->pParent = NULL;
-		apChild[i] = NULL;
+		shared_ptr<CCopyEntity> pChild = m_aChild[i].Get();
+		if( pChild )
+		{
+			pChild->m_pParent = NULL;
+			m_aChild[i].Reset();
+		}
+//		m_aChild[i] = NULL;
 	}
 	iNumChildren = 0;
 
 	// disconnect from parent
 	if( GetParent() )
-	{	// search myself in the parent's list of children
-		for( i=0; i< pParent->iNumChildren; i++ )
+	{
+		// search myself in the parent's list of children
+		for( i=0; i< m_pParent->iNumChildren; i++ )
 		{
-			if( pParent->apChild[i] == this )
+			if( m_pParent->m_aChild[i].GetRawPtr() == this )
 			{
-				pParent->apChild[i] = NULL;
+				m_pParent->m_aChild[i].Reset();
 				int j;
 				// push the parent's children forward to fill the vacant space in the array
-				for( j=i; j<pParent->iNumChildren-1; j++ )
-					pParent->apChild[j] = pParent->apChild[j+1];
-				pParent->iNumChildren--;
+				for( j=i; j<m_pParent->iNumChildren-1; j++ )
+					m_pParent->m_aChild[j] = m_pParent->m_aChild[j+1];
+				m_pParent->iNumChildren--;
 			}
 		}
 	}
-	pParent = NULL;
+	m_pParent = NULL;
 }
 
 

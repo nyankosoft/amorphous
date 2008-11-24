@@ -128,15 +128,15 @@ void CBE_HomingMissile::FindTarget( CCopyEntity* pCopyEnt )
 //			if( pTarget->GroupIndex != pCopyEnt->GroupIndex )
 			if( m_pStage->GetEntitySet()->IsCollisionEnabled( pCopyEnt->GroupIndex, pTarget->GroupIndex ) )
 			{
-				pCopyEnt->pTarget = vf_test.GetEntity(i);
-				OnTargetLocked(pCopyEnt,pCopyEnt->pTarget);
+				pCopyEnt->m_Target = CEntityHandle<>( pTarget->Self() );
+				OnTargetLocked( pCopyEnt, pTarget );
 				break;
 			}
 		}
 	}
 	else
 	{	// couldn't find a target to lock on
-		pCopyEnt->pTarget = NULL;
+		pCopyEnt->m_Target.Reset();
 	}
 }
 
@@ -313,13 +313,15 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 		return;
 	}
 
+	CCopyEntity *pTarget = pCopyEnt->m_Target.GetRawPtr();
+
 	// if the proximity sensor is enabled (i.e. 0 < m_fProximityThresholdDistSq ),
 	// check the distance to the target and see whether the missile is close enough to explode
-	if( 0 < m_fProximityThresholdDistSq && pCopyEnt->pTarget )
+	if( 0 < m_fProximityThresholdDistSq && pTarget )
 	{
-		float fDistSq = Vec3LengthSq( pCopyEnt->Position() - pCopyEnt->pTarget->Position() );
+		float fDistSq = Vec3LengthSq( pCopyEnt->Position() - pTarget->Position() );
 		if( fDistSq <= m_fProximityThresholdDistSq
-		 && /* m_CheckCollisionGroup == false  || */ m_pStage->GetEntitySet()->IsCollisionEnabled( pCopyEnt->GroupIndex, pCopyEnt->pTarget->GroupIndex ) )
+		 && /* m_CheckCollisionGroup == false  || */ m_pStage->GetEntitySet()->IsCollisionEnabled( pCopyEnt->GroupIndex, pTarget->GroupIndex ) )
 		 
 		{
 			g_Log.Print( "CBE_HomingMissile::UpdateMissile() - calling Explode() (case 2)" );
@@ -333,7 +335,7 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 	rfSensoringTimer += frametime;
 
 	if( m_fSensoringInterval <= rfSensoringTimer
-	 && pCopyEnt->pTarget )
+	 && pTarget )
 	{
 		// update 'rfDesiredDeltaAngle' and 'rvAxis'
 		// check the target is still in sight
@@ -342,7 +344,7 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 		Vector3 vStart = pCopyEnt->Position() + pCopyEnt->GetDirection() * (m_aabb.vMax.z * 2.0f);
 		STrace tr;
 		tr.pvStart = &vStart;	// current missile position
-		tr.pvGoal = &pCopyEnt->pTarget->Position();	// target position
+		tr.pvGoal = &pTarget->Position();	// target position
 		tr.bvType = BVTYPE_DOT;
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 		tr.GroupIndex = pCopyEnt->GroupIndex;
@@ -351,18 +353,23 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 
 		m_pStage->ClipTrace( tr );
 
-		if( tr.pTouchedEntity != pCopyEnt->pTarget && !(m_MissileFlag & DONT_LOSE_TARGET_EVEN_IF_OBSTRUCTED) )
-		{	// lost sight of the target
-//			g_Log.Print( "CBE_HomingMissile::UpdateMissile - lost target" );
-			pCopyEnt->pTarget = NULL;
+//		CCopyEntity *pTarget = pCopyEnt->m_Target.GetRawPtr();
+
+		if( tr.pTouchedEntity != pTarget
+		 && !(m_MissileFlag & DONT_LOSE_TARGET_EVEN_IF_OBSTRUCTED) )
+		{
+			// lost sight of the target
+//			LOG_PRINT( "Lost target" );
+			pCopyEnt->m_Target.Reset();
 			return;
 		}
 		else
-		{	// target is still locked on
+		{
+			// target is still locked on
 			float dp;
 			Vector3 vMissileToTarget;
 
-			vMissileToTarget = pCopyEnt->pTarget->Position() - pCopyEnt->Position();
+			vMissileToTarget = pTarget->Position() - pCopyEnt->Position();
 			Vec3Normalize( vMissileToTarget, vMissileToTarget );
 			dp = Vec3Dot( pCopyEnt->GetDirection(), vMissileToTarget );
 			if( dp < 0.05f ||			// angle too is steep - consider this case as lost target
@@ -412,8 +419,12 @@ void CBE_HomingMissile::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity
 	switch( rGameMessage.iEffect )
 	{
 	case GM_SET_TARGET:
-		pCopyEnt_Self->pTarget = (CCopyEntity *)rGameMessage.pUserData;
-		break;
+		{
+//			pCopyEnt_Self->m_Target = CEntityHandle<>( ((CCopyEntity *)rGameMessage.pUserData)->Self() );
+			CCopyEntity *pTarget = (CCopyEntity *)rGameMessage.pUserData;
+			pCopyEnt_Self->m_Target = CEntityHandle<>( pTarget->Self() );
+			break;
+		}
 	}
 }
 

@@ -141,13 +141,14 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	SoundManager().PlayAt( m_ExplosionSound, pCopyEnt->Position() );
 
 	// if 'pCopyEnt' is a homing missile, target entity has to be cleared
-	pCopyEnt->pTarget = NULL;
+	pCopyEnt->m_Target.Reset();
 
 	// flash the screen if explosion occured near the camera
 	FlashScreen( pCopyEnt );
 
 	if( m_ExplosiveTypeFlag & TYPE_BLAST )
-	{	// create blast entity
+	{
+		// create blast entity
 		// the direction of the explosive entity is inherited by the blast entity
 		m_pStage->CreateEntity( m_Blast, pCopyEnt->Position(),
 						 		 Vector3(0,0,0), pCopyEnt->GetDirection() );

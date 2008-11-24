@@ -732,8 +732,12 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 			const int num_children = pCopyEnt_Self->GetNumChildren();
 			for( int i=0; i<num_children; i++ )
 			{
-				pCopyEnt_Self->apChild[i]->pParent = NULL;
-				m_pStage->TerminateEntity( pCopyEnt_Self->apChild[i] );
+				CCopyEntity *pChild = pCopyEnt_Self->m_aChild[i].GetRawPtr();
+				if( !pChild )
+					continue;
+
+				pChild->m_pParent = NULL;
+				m_pStage->TerminateEntity( pChild );
 			}
 			pCopyEnt_Self->iNumChildren = 0;
 

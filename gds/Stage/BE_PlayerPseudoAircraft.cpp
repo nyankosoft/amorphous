@@ -663,7 +663,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 
 		if( pEntity->pBaseEntity->GetArchiveObjectID() == BE_HOMINGMISSILE )
 		{
-			if( pEntity->pTarget == pCopyEnt )
+			if( pEntity->m_Target.GetRawPtr() == pCopyEnt )
 				m_State = STATE_MISSILE_APPROACHING;
 		}
 	}
@@ -751,7 +751,8 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 				// create flame & smoke trail
 				for( int i=0; i<pCopyEnt_Self->GetNumChildren(); i++ )
 				{
-					m_pStage->TerminateEntity( pCopyEnt_Self->apChild[i] );
+					CCopyEntity *pChild = pCopyEnt_Self->m_aChild[i].GetRawPtr();
+					m_pStage->TerminateEntity( pChild );
 				}
 				pCopyEnt_Self->iNumChildren = 0;
 

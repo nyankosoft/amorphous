@@ -5,16 +5,19 @@
 #include <vector>
 #include <string>
 
-#include "Support/prealloc_pool.h"
+#include "Support/shared_prealloc_pool.h"
 #include "Stage/fwd.h"
 #include "Stage/AlphaEntity.h"
+#include "Stage/LightEntity.h"
 
 
 class CEntityFactory
 {
-	prealloc_pool<CCopyEntity> m_CopyEntityPool;
+	shared_prealloc_pool<CCopyEntity> m_CopyEntityPool;
 
-	prealloc_pool<CAlphaEntity> m_AlphaEntityPool;
+	shared_prealloc_pool<CAlphaEntity> m_AlphaEntityPool;
+
+//	shared_prealloc_pool<CLightEntity> m_LightEntityPool;
 
 public:
 
@@ -22,6 +25,7 @@ public:
 	{
 		DEFAULT_MAX_NUM_ENTITIES = 1024,
 		DEFAULT_MAX_NUM_ALPHA_ENTITIES = 64,
+		DEFAULT_MAX_NUM_LIGHT_ENTITIES = 64,
 	};
 
 public:
@@ -36,16 +40,16 @@ public:
 
 	/// \param entity_type_id determines the type of entity to be created.
 	/// By default, always returns CCopyEntity()
-	virtual CCopyEntity *CreateEntity( unsigned int entity_type_id );
+	virtual boost::shared_ptr<CCopyEntity> CreateEntity( unsigned int entity_type_id );
 
 	/// must be implemented in a derived class to create user defined entity
-	virtual CCopyEntity *CreateDerivedEntity( unsigned int entity_type_id ) { return NULL; }
+	virtual boost::shared_ptr<CCopyEntity> CreateDerivedEntity( unsigned int entity_type_id ) { return boost::shared_ptr<CCopyEntity>(); }
 
-	void ReleaseEntity( CCopyEntity *pEntity );
+	void ReleaseEntity( boost::shared_ptr<CCopyEntity> pEntity );
 
 	/// must be implemented in a derived class if user defined entity is used
 	/// - user needs to downcast 'pEntity' to release a derived entity
-	virtual void ReleaseDerivedEntity( CCopyEntity *pEntity ) {}
+	virtual void ReleaseDerivedEntity( boost::shared_ptr<CCopyEntity> pEntity ) {}
 
 	void ReleaseAllEntities();
 

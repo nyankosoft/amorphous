@@ -123,6 +123,15 @@ public:
 		pObject->SetStockID( -1 );
 	}
 
+	/// Use this if the pointer was upcasted and has lost type information
+	template<class T>
+	void release( boost::shared_ptr<T> pObject )
+	{
+		m_VacantSlotPos++;
+		m_VacantSlot[ m_VacantSlotPos ] = pObject->GetStockIndex();
+		pObject->SetStockID( -1 );
+	}
+
 	/// returns an object pointed to by handle.
 	/// returns NULL if
 	/// - the object has already been released
