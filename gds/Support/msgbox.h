@@ -69,36 +69,36 @@ inline void MsgBoxFmt( const char *format,... )
 
 
 /**
- * dislplay message boxes at the start & the end of a scope
- * note: text data must be const and not be changed within the scope
+ Dislplay message boxes at the start & the end of a scope
+ note: text data must be const and not be changed within the scope
  */
-class CheckScope
+class CScopeMsgBox
 {
-	enum param { MAX_TEXT_LENGTH = 32 };
-//	const char text[MAX_TEXT_LENGTH];
-
-	const char *m_title;
+	const char *m_pText;
 
 public:
 
-	CheckScope( const char *title ) : m_title(title)
-	{
-		char msg[MAX_TEXT_LENGTH] = { "start: " };
-		strncat( msg, m_title, MAX_TEXT_LENGTH - strlen(msg) - 1 );
-
-//		std::string msg( std::string("start: ") + std::string(text) );
-		MsgBox( msg );
-	}
-
-	~CheckScope()
-	{
-		char msg[MAX_TEXT_LENGTH] = { "end: " };
-		strncat( msg, m_title, MAX_TEXT_LENGTH - strlen(msg) - 1 );
-
-//		std::string msg( std::string("end: ") + std::string(text) );
-		MsgBox( msg );
-	}
+	inline CScopeMsgBox( const char *pText );
+	inline ~CScopeMsgBox();
 };
+
+
+inline CScopeMsgBox::CScopeMsgBox( const char *pText )
+:
+m_pText(pText)
+{
+	MsgBoxFmt( "Entered: %s", m_pText );
+}
+
+
+inline CScopeMsgBox::~CScopeMsgBox()
+{
+	MsgBoxFmt( "Leaving: %s", m_pText );
+}
+
+
+#define MSGBOX_FUNCTION_SCOPE() CScopeMsgBox function_scope_msgbox(__FUNCTION__"()")
+
 
 
 #endif  /*  __MSGBOX_H__  */

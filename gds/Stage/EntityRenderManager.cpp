@@ -16,7 +16,6 @@
 #include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Vec3_StringAux.h"
-#include "Support/msgbox.h"
 #include "Support/Macro.h"
 
 #include "ScreenEffectManager.h"

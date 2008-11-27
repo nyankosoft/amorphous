@@ -2,7 +2,6 @@
 #include "Direct3D9.h"
 
 #include <string.h>
-#include "Support/msgbox.h"
 #include "Support/Log/DefaultLog.h"
 
 using namespace std;

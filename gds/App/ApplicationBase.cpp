@@ -35,6 +35,7 @@
 #include "Support/DebugOutput.h"
 #include "Support/BitmapImage.h"
 #include "Support/MiscAux.h"
+#include "Support/msgbox.h"
 
 #include <boost/filesystem.hpp>
 #include <windows.h>
@@ -270,6 +271,8 @@ void CApplicationBase::AcquireInputDevices()
 
 void CApplicationBase::Execute()
 {
+	MSGBOX_FUNCTION_SCOPE();
+
 	// timer resolution for timeGetTime()
 	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
 
@@ -365,6 +368,8 @@ inline void SetFreeImageErrorHandler()
 
 void CApplicationBase::Run()
 {
+	MSGBOX_FUNCTION_SCOPE();
+
 	// set log output device
 //	boost::filesystem::complete( "./debug" );
 	CLogOutput_HTML html_log( "./debug/log_" + string(GetBuildInfo()) + ".html" );

@@ -62,6 +62,7 @@ void StartApp()
 	g_pAppBase->Run();
 
 	delete g_pAppBase;
+	g_pAppBase = NULL;
 }
 
 

@@ -7,6 +7,7 @@
 
 #include "Support/Log/DefaultLog.h"
 #include "Support/SafeDelete.h"
+#include "Support/MsgBox.h"
 
 using namespace physics;
 
@@ -20,6 +21,8 @@ m_pPhysicsSDK(NULL)
 
 CNxPhysicsEngine::~CNxPhysicsEngine()
 {
+	MSGBOX_FUNCTION_SCOPE();
+
 	if( m_pPhysicsSDK )
 		m_pPhysicsSDK->release();
 
