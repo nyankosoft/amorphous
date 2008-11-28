@@ -1,26 +1,7 @@
 #include "GameTask_Stage.h"
 #include "GameTask_StageSelect.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
-#include "3DCommon/Font.h"
-#include "3DCommon/GraphicsEffectManager.h"
-
-#include "Stage/Stage.h"
-#include "Stage/EntitySet.h"
-#include "Stage/ScreenEffectManager.h"
-#include "Stage/PlayerInfo.h"
-
 #include "Support/Timer.h"
-
-#include "GameInput/InputHub.h"
-
-#include "GameTextSystem/TextMessageManager.h"
-
-#include "Item/WeaponSystem.h"
-
-#include "Sound/SoundManager.h"
-
 #include "Support/macro.h"
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"
@@ -28,6 +9,17 @@
 #include "Support/Log/StateLog.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/DebugOutput.h"
+#include "3DCommon/Direct3D9.h"
+#include "3DCommon/2DRect.h"
+#include "3DCommon/Font.h"
+#include "3DCommon/GraphicsEffectManager.h"
+#include "Stage/Stage.h"
+#include "Stage/EntitySet.h"
+#include "Stage/ScreenEffectManager.h"
+#include "Stage/PlayerInfo.h"
+#include "GameInput/InputHub.h"
+#include "Item/WeaponSystem.h"
+#include "Sound/SoundManager.h"
 
 
 CStageSharedPtr g_pStage;
@@ -94,9 +86,6 @@ int CGameTask_Stage::FrameMove( float dt )
 	if( !g_pStage )
 		return CGameTask::ID_INVALID;	// stage is not loaded
 
-	Matrix34 cam_pose;
-	CCamera *pCamera;
-
 	ProfileBegin( "Main Loop" );
 
 //	ONCE( g_Log.Print( "CGameTask_Stage::FrameMove() - stage state: %d", g_pStage->GetState() ) );
@@ -107,30 +96,7 @@ int CGameTask_Stage::FrameMove( float dt )
 	{
 	case STATE_PLAYER_IN_STAGE:
 		{
-			pCamera = g_pStage->GetCurrentCamera();
-			if( pCamera )
-			{
-				pCamera->GetPose( cam_pose );
-			}
-			else
-			{
-				CCopyEntity* pEntity = g_pStage->GetEntitySet()->GetCameraEntity();
-				if( pEntity )
-					cam_pose = pEntity->GetWorldPose();
-				else
-				{
-					cam_pose.Identity();
-				}
-			}
-
-			// update listener for sound manager
-			SoundManager().SetListenerPose( cam_pose ); 
-
-			CCopyEntity *pCameraEntity = g_pStage->GetEntitySet()->GetCameraEntity();
-			if( pCameraEntity )
-				SoundManager().SetListenerVelocity( pCameraEntity->Velocity() ); 
-
-			SoundManager().CommitDeferredSettings();
+			g_pStage->UpdateListener();
 
 			GetAnimatedGraphicsManager()->UpdateEffects( dt );
 			SetAnimatedGraphicsManagerForScript();

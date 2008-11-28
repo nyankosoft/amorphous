@@ -24,6 +24,9 @@ using namespace fnop;
 #include "Physics/MaterialDesc.h"
 #include "Physics/Material.h"
 
+#include "Sound/SoundManager.h"
+
+
 using namespace physics;
 
 
@@ -622,6 +625,45 @@ void CStage::NotifyEntityTerminationToEventManager( CCopyEntity* pEntity )
 //	m_pScriptManager->OnCopyEntityDestroyed( pEntity );
 }
 
+
+void CStage::UpdateListener()
+{
+	Matrix34 cam_pose;
+	CCamera *pCamera;
+
+	// get the pose of the current camera
+	pCamera = this->GetCurrentCamera();
+	if( pCamera )
+	{
+		pCamera->GetPose( cam_pose );
+	}
+	else
+	{
+		CCopyEntity* pEntity = this->GetEntitySet()->GetCameraEntity();
+		if( pEntity )
+			cam_pose = pEntity->GetWorldPose();
+		else
+			cam_pose.Identity();
+	}
+
+	// update listener for sound manager
+	SoundManager().SetListenerPose( cam_pose ); 
+
+	CCopyEntity *pCameraEntity = this->GetEntitySet()->GetCameraEntity();
+	if( pCameraEntity )
+		SoundManager().SetListenerVelocity( pCameraEntity->Velocity() ); 
+
+	SoundManager().CommitDeferredSettings();
+}
+
+
+
+/*
+CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
+{
+	return m_pPhysicsVisualizer;
+}
+*/
 
 /*
 void CStage::PlaySound3D( char* pcSoundName, Vector3& rvPosition )
