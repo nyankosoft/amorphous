@@ -4,7 +4,7 @@
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMWriter.hpp>
+//#include <xercesc/dom/DOMWriter.hpp>
 #include <xercesc/dom/DOMNode.hpp>
 #include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
@@ -18,11 +18,11 @@
 #include <string>
 
 #ifdef _DEBUG
-	#pragma comment( lib, "xerces-c_2D.lib" )
-	#pragma comment( lib, "xerces-depdom_2D.lib" )
+	#pragma comment( lib, "xerces-c_static_3D.lib" )
+//	#pragma comment( lib, "xerces-depdom_3D.lib" )
 #else // _DEBUG
-	#pragma comment( lib, "xerces-c_2.lib" )
-	#pragma comment( lib, "xerces-depdom_2.lib" )
+	#pragma comment( lib, "xerces-c_static_3.lib" )
+//	#pragma comment( lib, "xerces-depdom_3.lib" )
 #endif // _DEBUG
 
 
@@ -31,15 +31,15 @@
 //
 // Global Functions
 //
-extern xercesc_2_8::DOMNode *GetRootNode( xercesc_2_8::DOMDocument *pXMLDocument );
-extern xercesc_2_8::DOMNode *GetChildNode( xercesc_2_8::DOMNode *pParentNode, const std::string& node_name );
-extern std::vector<xercesc_2_8::DOMNode *> GetImmediateChildNodes( xercesc_2_8::DOMNode *pParentNode,
+extern xercesc::DOMNode *GetRootNode( xercesc::DOMDocument *pXMLDocument );
+extern xercesc::DOMNode *GetChildNode( xercesc::DOMNode *pParentNode, const std::string& node_name );
+extern std::vector<xercesc::DOMNode *> GetImmediateChildNodes( xercesc::DOMNode *pParentNode,
 										  const std::string& child_node_name );
-extern std::string GetTextContentOfImmediateChildNode( xercesc_2_8::DOMNode *pParentNode,
+extern std::string GetTextContentOfImmediateChildNode( xercesc::DOMNode *pParentNode,
 												const std::string& child_node_name );
-extern std::vector<std::string> GetTextContentsOfImmediateChildNodes( xercesc_2_8::DOMNode *pParentNode,
+extern std::vector<std::string> GetTextContentsOfImmediateChildNodes( xercesc::DOMNode *pParentNode,
 													 const std::string& child_node_name );
-extern std::string GetAttributeText( xercesc_2_8::DOMNode *pNode, const std::string& attrib_name );
+extern std::string GetAttributeText( xercesc::DOMNode *pNode, const std::string& attrib_name );
 
 //
 // Global Functions (inline)
@@ -53,8 +53,8 @@ class CXMLParserInitReleaseManager
 {
 public:
 
-	CXMLParserInitReleaseManager() { xercesc_2_8::XMLPlatformUtils::Initialize(); }
-	~CXMLParserInitReleaseManager() { xercesc_2_8::XMLPlatformUtils::Terminate(); }
+	CXMLParserInitReleaseManager() { xercesc::XMLPlatformUtils::Initialize(); }
+	~CXMLParserInitReleaseManager() { xercesc::XMLPlatformUtils::Terminate(); }
 };
 
 
@@ -64,16 +64,16 @@ public:
 
 	CXMLDocumentLoader() {}
 
-	CXMLDocumentLoader( const std::string& src_fileapth, xercesc_2_8::DOMDocument** ppDoc );
+	CXMLDocumentLoader( const std::string& src_fileapth, xercesc::DOMDocument** ppDoc );
 
 	~CXMLDocumentLoader() {}
 
 	/// Returns true on success
-	bool Load( const std::string& filepath, xercesc_2_8::DOMDocument** ppDoc );
+	bool Load( const std::string& filepath, xercesc::DOMDocument** ppDoc );
 
-	bool Load( const XMLCh *src_fileapth, xercesc_2_8::DOMDocument** ppDoc );
+	bool Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc );
 
-//	xercesc_2_8::DOMNode *GetRootNode();
+//	xercesc::DOMNode *GetRootNode();
 };
 
 

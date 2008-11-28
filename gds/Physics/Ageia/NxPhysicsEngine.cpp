@@ -21,7 +21,7 @@ m_pPhysicsSDK(NULL)
 
 CNxPhysicsEngine::~CNxPhysicsEngine()
 {
-	MSGBOX_FUNCTION_SCOPE();
+//	MSGBOX_FUNCTION_SCOPE();
 
 	if( m_pPhysicsSDK )
 		m_pPhysicsSDK->release();

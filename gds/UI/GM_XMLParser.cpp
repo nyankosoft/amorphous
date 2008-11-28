@@ -1,4 +1,3 @@
-
 #include "GM_XMLParser.h"
 #include "GM_Control.h"
 #include "GM_ControlDescBase.h"
@@ -20,9 +19,9 @@ using namespace std;
 using namespace boost;
 
 
-xercesc_2_8::DOMDocument *LoadXMLDocument( const std::string& xml_filepath )
+xercesc::DOMDocument *LoadXMLDocument( const std::string& xml_filepath )
 {
-	xercesc_2_8::DOMDocument* pXMLDocument = NULL;
+	xercesc::DOMDocument* pXMLDocument = NULL;
 	CXMLDocumentLoader loader;
 	bool loaded = loader.Load( xml_filepath, &pXMLDocument );
 	if( !loaded )
@@ -188,7 +187,7 @@ bool CGM_XMLParser::LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog )
 
 CGM_Dialog *CGM_XMLParser::LoadDialog( CXMLNodeReader& reader, bool root_dialog )
 {
-	xercesc_2_8::DOMNode *pDlgNode = reader.GetDOMNode();
+	xercesc::DOMNode *pDlgNode = reader.GetDOMNode();
 
 	CGM_DialogDesc desc;
 	desc.bRootDialog = root_dialog;
@@ -205,7 +204,7 @@ CGM_Dialog *CGM_XMLParser::LoadDialog( CXMLNodeReader& reader, bool root_dialog 
 
 CGM_Dialog *CGM_XMLParser::LoadDialogFromXMLFile( const std::string& xml_filename, bool root_dialog )
 {
-	xercesc_2_8::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
+	xercesc::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
 
 	if( !pXMLDocument )
 		return false;
@@ -217,7 +216,7 @@ CGM_Dialog *CGM_XMLParser::LoadDialogFromXMLFile( const std::string& xml_filenam
 
 bool CGM_XMLParser::LoadFromXMLFile( const std::string& xml_filename )
 {
-	xercesc_2_8::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
+	xercesc::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
 
 	if( !pXMLDocument )
 		return false;

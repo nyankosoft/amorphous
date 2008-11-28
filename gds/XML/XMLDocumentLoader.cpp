@@ -1,6 +1,4 @@
 #include "XMLDocumentLoader.h"
-namespace xer = xercesc_2_8;
-
 #include "Support/StringAux.h"
 #include "Support/Log/DefaultLog.h"
 
@@ -10,36 +8,36 @@ namespace xer = xercesc_2_8;
 using namespace std;
 
 
-CXMLDocumentLoader::CXMLDocumentLoader( const std::string& src_fileapth, xercesc_2_8::DOMDocument** ppDoc )
+CXMLDocumentLoader::CXMLDocumentLoader( const std::string& src_fileapth, xercesc::DOMDocument** ppDoc )
 {
 	Load( src_fileapth, ppDoc );
 }
 
 
-bool CXMLDocumentLoader::Load( const std::string& src_fileapth, xercesc_2_8::DOMDocument** ppDoc )
+bool CXMLDocumentLoader::Load( const std::string& src_fileapth, xercesc::DOMDocument** ppDoc )
 {
 	return Load( XercesString(src_fileapth.c_str()), ppDoc );
 }
 
 
-bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc_2_8::DOMDocument** ppDoc )
+bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc )
 {
 	bool bSuccess = false;
 	//DOMString strMessage;
 
-	xercesc_2_8::XercesDOMParser *parser = new xercesc_2_8::XercesDOMParser;
+	xercesc::XercesDOMParser *parser = new xercesc::XercesDOMParser;
 	if (parser)
 	{
-		char *strSrc = xer::XMLString::transcode(src_fileapth);
+		char *strSrc = xercesc::XMLString::transcode(src_fileapth);
 //		const char *strSrc = src_filepath.c_str();
-		parser->setValidationScheme(xer::XercesDOMParser::Val_Auto);
+		parser->setValidationScheme(xercesc::XercesDOMParser::Val_Auto);
 		parser->setDoNamespaces(false);
 		parser->setDoSchema(false);
 		parser->setCreateEntityReferenceNodes(false);
 		//parser->setToCreateXMLDeclTypeNode(true);
 		try
 		{
-			xer::LocalFileInputSource source(src_fileapth);
+			xercesc::LocalFileInputSource source(src_fileapth);
 			bSuccess = false;
 
 			parser->parse(source);
@@ -50,7 +48,7 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc_2_8::DOMDocume
 				LOG_PRINT_ERROR( fmt_string("Parsing %s - error count: %d", strSrc, parser->getErrorCount() ) );
 			}
 		}
-		catch (const xer::DOMException& e)
+		catch (const xercesc::DOMException& e)
 		{
 			LOG_PRINT_ERROR( "DOM Exception parsing " + std::string(strSrc) );
 
@@ -59,22 +57,22 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc_2_8::DOMDocume
 			if (e.msg)
 			{
 				// yes: display it as ascii.
-				char *strMsg = xer::XMLString::transcode(e.msg);
+				char *strMsg = xercesc::XMLString::transcode(e.msg);
 				std::cerr << strMsg << std::endl;
-				xer::XMLString::release(&strMsg);
+				xercesc::XMLString::release(&strMsg);
 			}
 			else
 			// no: just display the error code.
 			std::cerr << e.code << std::endl;
 		}
-		catch (const xer::XMLException& e)
+		catch (const xercesc::XMLException& e)
 		{
 			std::cerr << "XML Exception parsing ";
 			std::cerr << strSrc;
 			std::cerr << " reports: ";
 			std::cerr << e.getMessage() << std::endl;
 		}
-		catch (const xer::SAXException& e)
+		catch (const xercesc::SAXException& e)
 		{
 			std::cerr << "SAX Exception parsing ";
 			std::cerr << strSrc;
@@ -90,7 +88,7 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc_2_8::DOMDocume
 		if (bSuccess)
 		  *ppDoc = parser->getDocument();
 
-		xer::XMLString::release(&strSrc);
+		xercesc::XMLString::release(&strSrc);
 	}
 	return bSuccess;
 }
@@ -99,29 +97,29 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc_2_8::DOMDocume
 
 Need to make pXMLDocument a member variable of CXMLDocumentLoader to do this
 
-xercesc_2_8::DOMNode *CXMLDocumentLoader::GetRootNode()
+xercesc::DOMNode *CXMLDocumentLoader::GetRootNode()
 {
-	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
+	xercesc::DOMDocument *pXMLDocument = NULL;
 
 	CXMLDocumentLoader xml_doc_loader;
 	xml_doc_loader.Load( source_script_filename, &pXMLDocument );
 
-	xer::DOMElement *pElem = pXMLDocument->getDocumentElement();
+	xercesc::DOMElement *pElem = pXMLDocument->getDocumentElement();
 
-	xercesc_2_8::DOMNodeIterator *iterator
-		= pXMLDocument->createNodeIterator( pXMLDocument->getFirstChild(), xer::DOMNodeFilter::SHOW_TEXT, NULL, false );
+	xercesc::DOMNodeIterator *iterator
+		= pXMLDocument->createNodeIterator( pXMLDocument->getFirstChild(), xercesc::DOMNodeFilter::SHOW_TEXT, NULL, false );
 
 	return iterator->getRoot();
 }
 */
 
 
-DOMNode *GetRootNode( xercesc_2_8::DOMDocument *pXMLDocument )
+DOMNode *GetRootNode( xercesc::DOMDocument *pXMLDocument )
 {	
-	xercesc_2_8::DOMElement *pElem = pXMLDocument->getDocumentElement();
+	xercesc::DOMElement *pElem = pXMLDocument->getDocumentElement();
 
-	xercesc_2_8::DOMNodeIterator *iterator
-		= pXMLDocument->createNodeIterator( pXMLDocument->getFirstChild(), xercesc_2_8::DOMNodeFilter::SHOW_TEXT, NULL, false );
+	xercesc::DOMNodeIterator *iterator
+		= pXMLDocument->createNodeIterator( pXMLDocument->getFirstChild(), xercesc::DOMNodeFilter::SHOW_TEXT, NULL, false );
 
 	DOMNode *pRootNode = iterator->getRoot();
 
@@ -138,10 +136,10 @@ DOMNode *GetRootNode( xercesc_2_8::DOMDocument *pXMLDocument )
 
 
 
-std::string GetAttributeText( xercesc_2_8::DOMNode *pNode, const std::string& attrib_name )
+std::string GetAttributeText( xercesc::DOMNode *pNode, const std::string& attrib_name )
 {
 
-	const xercesc_2_8::DOMNamedNodeMap *pAttrib = pNode->getAttributes();
+	const xercesc::DOMNamedNodeMap *pAttrib = pNode->getAttributes();
 
 	if( !pAttrib )
 	{
@@ -149,7 +147,7 @@ std::string GetAttributeText( xercesc_2_8::DOMNode *pNode, const std::string& at
 		return std::string();
 	}
 
-	xercesc_2_8::DOMNode *pNameNode = pAttrib->getNamedItem( XercesString(attrib_name.c_str()) );
+	xercesc::DOMNode *pNameNode = pAttrib->getNamedItem( XercesString(attrib_name.c_str()) );
 
 	if( pNameNode )
 		return to_string(pNameNode->getNodeValue());
@@ -158,12 +156,12 @@ std::string GetAttributeText( xercesc_2_8::DOMNode *pNode, const std::string& at
 }
 
 
-xercesc_2_8::DOMNode *GetChildNode( xercesc_2_8::DOMNode *pParentNode, const std::string& node_name )
+xercesc::DOMNode *GetChildNode( xercesc::DOMNode *pParentNode, const std::string& node_name )
 {
 	if( !pParentNode )
 		return NULL;
 
-	xercesc_2_8::DOMNodeList *pNodeList = pParentNode->getChildNodes();
+	xercesc::DOMNodeList *pNodeList = pParentNode->getChildNodes();
 	const int num_nodes = (int)pNodeList->getLength();
 	for( int i=0; i<num_nodes; i++ )
 	{
@@ -175,11 +173,11 @@ xercesc_2_8::DOMNode *GetChildNode( xercesc_2_8::DOMNode *pParentNode, const std
 }
 
 
-vector<xercesc_2_8::DOMNode *> GetImmediateChildNodes( xercesc_2_8::DOMNode *pParentNode,
+vector<xercesc::DOMNode *> GetImmediateChildNodes( xercesc::DOMNode *pParentNode,
 										  const std::string& child_node_name )
 {
-	vector<xercesc_2_8::DOMNode *> child_nodes;
-	xercesc_2_8::DOMNodeList *pNodeList = pParentNode->getChildNodes();
+	vector<xercesc::DOMNode *> child_nodes;
+	xercesc::DOMNodeList *pNodeList = pParentNode->getChildNodes();
 	const int num_nodes = (int)pNodeList->getLength();
 	for( int i=0; i<num_nodes; i++ )
 	{
@@ -191,10 +189,10 @@ vector<xercesc_2_8::DOMNode *> GetImmediateChildNodes( xercesc_2_8::DOMNode *pPa
 }
 
 
-std::string GetTextContentOfImmediateChildNode( xercesc_2_8::DOMNode *pParentNode,
+std::string GetTextContentOfImmediateChildNode( xercesc::DOMNode *pParentNode,
 												const std::string& child_node_name )
 {
-	xercesc_2_8::DOMNode *pNode = GetChildNode( pParentNode, child_node_name );
+	xercesc::DOMNode *pNode = GetChildNode( pParentNode, child_node_name );
 
 	if( !pNode )
 		return string();
@@ -216,10 +214,10 @@ std::string GetTextContentOfImmediateChildNode( xercesc_2_8::DOMNode *pParentNod
    child_node_name, is "File", the function returns ["a.txt", "b.txt", "c.txt"]
 
 */
-vector<string> GetTextContentsOfImmediateChildNodes( xercesc_2_8::DOMNode *pParentNode,
+vector<string> GetTextContentsOfImmediateChildNodes( xercesc::DOMNode *pParentNode,
 													 const std::string& child_node_name )
 {
-	vector<xercesc_2_8::DOMNode *> nodes = GetImmediateChildNodes( pParentNode, child_node_name );
+	vector<xercesc::DOMNode *> nodes = GetImmediateChildNodes( pParentNode, child_node_name );
 
 	vector<string> text_contents;
 	const size_t num_nodes = nodes.size();

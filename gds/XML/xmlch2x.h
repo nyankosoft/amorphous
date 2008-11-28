@@ -8,13 +8,13 @@
 
 inline int to_int( const XMLCh *pChar )
 {
-	return atoi( xercesc_2_8::XMLString::transcode( pChar ) );
+	return atoi( xercesc::XMLString::transcode( pChar ) );
 }
 
 
 inline float to_float( const XMLCh *pChar )
 {
-	std::string buffer = xercesc_2_8::XMLString::transcode(pChar);
+	std::string buffer = xercesc::XMLString::transcode(pChar);
 	float val;
 
 	sscanf( buffer.c_str(), "%f", &val );
@@ -26,7 +26,7 @@ inline float to_float( const XMLCh *pChar )
 /// anything else -> false
 inline bool to_bool( const XMLCh *pChar, const std::string& true_str = "true", const std::string& false_str = "false" )
 {
-	std::string input_string = std::string(xercesc_2_8::XMLString::transcode(pChar));
+	std::string input_string = std::string(xercesc::XMLString::transcode(pChar));
 
 	if( input_string == true_str )
 		return true;
@@ -40,7 +40,7 @@ inline bool to_bool( const XMLCh *pChar, const std::string& true_str = "true", c
 inline std::string to_string( const XMLCh *pChar )
 {
 	if( pChar )
-		return xercesc_2_8::XMLString::transcode( XercesString(pChar) );
+		return xercesc::XMLString::transcode( XercesString(pChar) );
 	else
 		return std::string("");
 }

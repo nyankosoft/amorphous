@@ -271,7 +271,7 @@ void CApplicationBase::AcquireInputDevices()
 
 void CApplicationBase::Execute()
 {
-	MSGBOX_FUNCTION_SCOPE();
+//	MSGBOX_FUNCTION_SCOPE();
 
 	// timer resolution for timeGetTime()
 	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
@@ -368,7 +368,7 @@ inline void SetFreeImageErrorHandler()
 
 void CApplicationBase::Run()
 {
-	MSGBOX_FUNCTION_SCOPE();
+//	MSGBOX_FUNCTION_SCOPE();
 
 	// set log output device
 //	boost::filesystem::complete( "./debug" );

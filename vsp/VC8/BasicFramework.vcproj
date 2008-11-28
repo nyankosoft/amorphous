@@ -61,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="winmm.lib xerces-c_2D.lib"
 				OutputFile="$(OutDir)/BasicFramework_d.lib"
 			/>
 			<Tool

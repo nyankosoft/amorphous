@@ -146,7 +146,7 @@ public:
 	{
 	}
 
-	bool Load( xercesc_2_8::DOMNode *pNode );
+	bool Load( xercesc::DOMNode *pNode );
 };
 
 
