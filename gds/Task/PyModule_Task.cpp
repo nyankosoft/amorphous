@@ -2,6 +2,7 @@
 #include "PyModule_Task.h"
 
 #include "App/ApplicationBase.h"
+#include "Task/GameTask.h"
 #include "Task/GameTaskManager.h"
 
 #include "Support/Macro.h"

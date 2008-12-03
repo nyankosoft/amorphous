@@ -169,16 +169,7 @@ void CGameTask_Stage::Render()
 
 	// need to finish profile before calling DrawDebugInfo()
 	ProfileEnd( "Main Loop" );
-	ProfileDumpOutputToBuffer();
-
-	// display fps and other performance information
-	DrawDebugInfo();
-}
-
-
-void CGameTask_Stage::DrawDebugInfo()
-{
-	DebugOutput.Render();
+//	ProfileDumpOutputToBuffer();
 }
 
 

@@ -36,8 +36,6 @@ public:
 	virtual int FrameMove( float dt );
 	virtual void Render();
 
-	void DrawDebugInfo();
-
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 

@@ -8,6 +8,11 @@
 #include "GameTask_AsyncStageLoader.h"
 
 
+CGameTaskFactoryBase::~CGameTaskFactoryBase()
+{
+}
+
+
 CGameTask *CGameTaskFactoryBase::CreateTask( const std::string& task_name )
 {
 	return CreateTask( CGameTask::GetTaskIDFromTaskName( task_name ) );
@@ -46,14 +51,4 @@ CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
 //		LOG_PRINT_ERROR( "An invalid task id:" + to_string(iTaskID) );
 		return NULL;
 	}
-}
-
-
-CGameTaskFactoryBase::CGameTaskFactoryBase()
-{
-}
-
-
-CGameTaskFactoryBase::~CGameTaskFactoryBase()
-{
 }

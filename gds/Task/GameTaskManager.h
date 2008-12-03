@@ -1,14 +1,13 @@
-
 #ifndef  __GAMETASKMANAGER_H__
 #define  __GAMETASKMANAGER_H__
 
 
 #include <vector>
+#include "fwd.h"
 
-#include "GameTask.h"
-class CGameTaskFactoryBase;
 
 // m_p = new CGameTaskManager( new CGameTaskFactoryCustomized, init_task_id );
+
 
 class CGameTaskManager
 {
@@ -32,7 +31,7 @@ public:
 	CGameTaskManager( CGameTaskFactoryBase* pFactory, int iInitialTaskID );
 
 	/// - NOTE: Task names and task ids must be mapped before creating task manager
-	CGameTaskManager( CGameTaskFactoryBase* pFactory, std::string& initial_task_name );
+	CGameTaskManager( CGameTaskFactoryBase* pFactory, const std::string& initial_task_name );
 
 	~CGameTaskManager();
 

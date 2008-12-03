@@ -4,11 +4,12 @@
 
 #include <string>
 #include "GameInput/fwd.h"
+#include "Task/fwd.h"
 
 class CGlobalInputHandler;
-class CGameTaskManager;
 class CApplicationBase;
 class CLogOutput_ScrolledTextBuffer;
+
 
 // input devices
 // accessed from window message procedure
@@ -42,6 +43,24 @@ protected:
 
 	static int ms_DefaultSleepTimeMS;
 
+protected:
+
+	// Virtual functions implemented by the developer
+
+	virtual const std::string GetApplicationTitle() { return "Some Application"; }
+
+	/// Implement either GetStartTaskName() or GetStartTaskID() to tell
+	/// the system which game task you want to use as a start-up task
+
+	virtual const std::string GetStartTaskName() const { return ""; }
+
+	virtual int GetStartTaskID() const;
+
+	virtual CGameTaskFactoryBase *CreateGameTaskFactory() const;
+
+	/// Called at the end of InitBase()
+	virtual bool Init() { return true; }
+
 private:
 
 	void Execute();
@@ -55,10 +74,10 @@ public:
 	CApplicationBase();
 	virtual ~CApplicationBase();
 
-	virtual bool Init();
+	bool InitBase();
 
 	/// returns true if succeeds
-	virtual bool InitTaskManager() = 0;
+	bool InitTaskManager();
 
 	void Release();
 
@@ -67,8 +86,6 @@ public:
 	CGameTaskManager *GetTaskManager() { return m_pTaskManager; }
 
 	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
-
-	virtual const std::string GetApplicationTitle() { return "Some Application"; }
 
 	void Run();
 };

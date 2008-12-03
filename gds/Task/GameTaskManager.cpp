@@ -1,4 +1,5 @@
 #include "GameTaskManager.h"
+#include "GameTask.h"
 
 #include "3DCommon/RenderTask.h"
 #include "3DCommon/RenderTaskProcessor.h"
@@ -24,7 +25,7 @@ m_NextTaskID(iInitialTaskID)
 }
 
 
-CGameTaskManager::CGameTaskManager( CGameTaskFactoryBase* pFactory, std::string& initial_task_name )
+CGameTaskManager::CGameTaskManager( CGameTaskFactoryBase* pFactory, const std::string& initial_task_name )
 :
 m_pFactory(pFactory),
 m_pCurrentTask(NULL),

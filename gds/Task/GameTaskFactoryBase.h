@@ -3,17 +3,15 @@
 
 
 #include <string>
-
-
-class CGameTask;
+#include "fwd.h"
 
 
 class CGameTaskFactoryBase
-{
+{	
 
 public:
 
-	CGameTaskFactoryBase();
+	CGameTaskFactoryBase() {}
 
 	virtual ~CGameTaskFactoryBase();
 
@@ -21,7 +19,6 @@ public:
 
 	CGameTask *CreateTask( const std::string& task_name );
 };
-
 
 
 #endif		/*  __GameTaskFactoryBase_H__  */

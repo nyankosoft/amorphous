@@ -1,34 +1,6 @@
 #include "ApplicationBase.h"
 
-#include "App/GameWindowManager_Win32.h"
-
-#include "GameInput/DirectInputMouse.h"
-#include "GameInput/DIKeyboard.h"
-#include "GameInput/DirectInputGamepad.h"
-#include "GameInput/InputHub.h"
-
 #include "Support/Timer.h"
-#include "GameCommon/MTRand.h"
-#include "GameCommon/GlobalInputHandler.h"
-#include "GameCommon/GlobalParams.h"
-#include "GameCommon/GameStageFrameworkGlobalParams.h"
-#include "GameCommon/MouseCursor.h"
-
-#include "3DCommon/GraphicsResourceManager.h"
-#include "3DCommon/AsyncResourceLoader.h"
-#include "3DCommon/LogOutput_OnScreen.h"
-#include "Task/GameTaskManager.h"
-
-#include "Sound/SoundManager.h"
-#include "Physics/PhysicsEngine.h"
-
-#include "GameEvent/ScriptArchive.h"
-
-#include "Item/ItemDatabaseManager.h"
-
-#include "Stage/BaseEntityManager.h"
-#include "Stage/SurfaceMaterialManager.h"
-
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"
@@ -36,8 +8,30 @@
 #include "Support/BitmapImage.h"
 #include "Support/MiscAux.h"
 #include "Support/msgbox.h"
+#include "3DCommon/GraphicsResourceManager.h"
+#include "3DCommon/AsyncResourceLoader.h"
+#include "3DCommon/LogOutput_OnScreen.h"
+#include "GameInput/DirectInputMouse.h"
+#include "GameInput/DIKeyboard.h"
+#include "GameInput/DirectInputGamepad.h"
+#include "GameInput/InputHub.h"
+#include "Sound/SoundManager.h"
+#include "Physics/PhysicsEngine.h"
 
-#include <boost/filesystem.hpp>
+#include "GameCommon/MTRand.h"
+#include "GameCommon/GlobalInputHandler.h"
+#include "GameCommon/GlobalParams.h"
+#include "GameCommon/GameStageFrameworkGlobalParams.h"
+#include "GameCommon/MouseCursor.h"
+#include "GameEvent/ScriptArchive.h"
+#include "Task/GameTask.h"
+#include "Task/GameTaskManager.h"
+#include "Task/GameTaskFactoryBase.h"
+#include "Item/ItemDatabaseManager.h"
+#include "Stage/BaseEntityManager.h"
+#include "Stage/SurfaceMaterialManager.h"
+#include "App/GameWindowManager_Win32.h"
+
 #include <windows.h>
 
 
@@ -85,6 +79,18 @@ CApplicationBase::CApplicationBase()
 CApplicationBase::~CApplicationBase()
 {
 	Release();
+}
+
+
+int CApplicationBase::GetStartTaskID() const
+{
+	return CGameTask::ID_INVALID;
+}
+
+
+CGameTaskFactoryBase *CApplicationBase::CreateGameTaskFactory() const
+{
+	return new CGameTaskFactoryBase();
 }
 
 
@@ -155,7 +161,7 @@ void CApplicationBase::ReleaseDebugItems()
 }
 
 
-bool CApplicationBase::Init()
+bool CApplicationBase::InitBase()
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -235,9 +241,6 @@ bool CApplicationBase::Init()
 		g_Log.Print( WL_WARNING, "exception: %s", e.what() );
 	}
 
-	// update the binary file of base entity database
-	UpdateBaseEntityDatabase();
-
 	m_pGlobalInputHandler = new CGlobalInputHandler;
 	INPUTHUB.PushInputHandler( 3, m_pGlobalInputHandler );
 
@@ -249,9 +252,42 @@ bool CApplicationBase::Init()
 	// start the timer
 //	GlobalTimer.Start();
 
+	// Call the init routine defined by the user
+	bool res = Init();
+
+	if( !res )
+		LOG_PRINT_WARNING( " Init() of derived class failed." );
+
+	// update the binary file of base entity database
+	// - Called after Init() since derived classes register base entity factory and (class name : id) maps in Init() above
+	UpdateBaseEntityDatabase();
+
 	return true;
 }
 
+
+bool CApplicationBase::InitTaskManager()
+{
+	const std::string start_task_name = GetStartTaskName();
+
+	if( 0 < start_task_name.length() )
+	{
+		m_pTaskManager = new CGameTaskManager( CreateGameTaskFactory(), start_task_name );
+	}
+	else
+	{
+		const int start_task_id = GetStartTaskID();
+		if( start_task_id != CGameTask::ID_INVALID )
+			m_pTaskManager = new CGameTaskManager( CreateGameTaskFactory(), start_task_id );
+		else
+		{
+			LOG_PRINT_WARNING( " No start task was specified by the user." );
+
+		}
+	}
+
+	return true;
+}
 
 #define APPBASE_TIMER_RESOLUTION	1
 
@@ -276,10 +312,10 @@ void CApplicationBase::Execute()
 	// timer resolution for timeGetTime()
 	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
 
-	if( !InitTaskManager() )
+	if( !InitBase() )
 		return;
 
-	if( !Init() )
+	if( !InitTaskManager() )
 		return;
 
 	// initialize profiler
