@@ -5,6 +5,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
+#include "../base.h"
 
 #pragma comment( lib, "dinput8.lib" )
 
@@ -38,13 +39,17 @@ class CDirectInputMouse// : public CInputDevice
 	int m_ScreenWidth;
 	int m_ScreenHeight;
 
+private:
+
+	HRESULT InitDIMouse( HWND hWnd );
+
 public:
 
 	CDirectInputMouse();
 
 	~CDirectInputMouse();
 
-	HRESULT Init( HWND hWnd );
+	Result::Name Init();
 
 	void Release();
 
@@ -68,5 +73,6 @@ public:
 	HRESULT UpdateInput();
 
 };
+
 
 #endif		/*  __MOUSEINPUT_H__  */

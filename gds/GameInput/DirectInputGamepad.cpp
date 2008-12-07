@@ -1,7 +1,7 @@
-
 #include "DirectInputGamepad.h"
 #include "DirectInput.h"
 #include "InputHub.h"
+#include "App/GameWindowManager_Win32.h"
 
 #include "Support/StringAux.h"
 #include "Support/Log/StateLog.h"
@@ -25,9 +25,10 @@ static LPDIRECTINPUTDEVICE8 g_pDITempJoystickDevice = NULL;
 
 
 CDirectInputGamepad::CDirectInputGamepad()
-: m_pDIJoystick(NULL)
+:
+m_pDIJoystick(NULL)
 {
-	g_Log.Print( "CDirectInputGamepad::CDirectInputGamepad() - creating an instance..." );
+	LOG_PRINT( " - Creating an instance..." );
 
 	int i;
 	for( i=0; i<NUM_ANALOG_CONTROLS; i++ )
@@ -66,9 +67,9 @@ void CDirectInputGamepad::Release()
 }
 
 
-HRESULT CDirectInputGamepad::Init( HWND hWnd )
+HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
 {
-	g_Log.Print( "CDirectInputGamepad::Init() - initializing gamepad..." );
+	LOG_PRINT( " - initializing gamepad..." );
 
 	HRESULT hr;
 
@@ -89,7 +90,7 @@ HRESULT CDirectInputGamepad::Init( HWND hWnd )
 
 	g_pDITempJoystickDevice = NULL;
 
-	g_Log.Print( "CDirectInputGamepad::Init() - enumerating input device objects..." );
+	LOG_PRINT( " Enumerating input device objects..." );
 
     // Look for a simple joystick we can use for this sample program.
 	hr = DIRECTINPUT.GetDirectInputObject()->EnumDevices( DI8DEVCLASS_GAMECTRL, 
@@ -117,7 +118,7 @@ HRESULT CDirectInputGamepad::Init( HWND hWnd )
     if( FAILED( hr = m_pDIJoystick->SetDataFormat( &c_dfDIJoystick2 ) ) )
         return hr;
 
-	g_Log.Print( "gamepad data format has been set" );
+	LOG_PRINT( " A Gamepad data format has been set" );
 
     // Set the cooperativity level to let DirectInput know how
     // this device should interact with the system and with other
@@ -129,7 +130,7 @@ HRESULT CDirectInputGamepad::Init( HWND hWnd )
 //      SetCooperativeLevel() returned DIERR_UNSUPPORTED. For security reasons, background exclusive mouse
 //		access is not allowed.
 		Release();
-		MessageBox( NULL, "SetCooperativeLevel() failed.", "Error", MB_OK );
+		LOG_PRINT_ERROR( " SetCooperativeLevel() failed." );
         return S_OK;
     }
 
@@ -175,6 +176,16 @@ HRESULT CDirectInputGamepad::Init( HWND hWnd )
 	return S_OK;
 }
 
+
+Result::Name CDirectInputGamepad::Init()
+{
+	HRESULT hr = InitDIGamepad( GameWindowManager_Win32().GetWindowHandle() );
+
+	if( SUCCEEDED(hr) )
+		return Result::SUCCESS;
+	else
+		return Result::UNKNOWN_ERROR;
+}
 
 
 //-----------------------------------------------------------------------------

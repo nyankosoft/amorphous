@@ -1,15 +1,35 @@
-#include "../GameInput/DirectInputMouse.h"
-#include "../GameInput/DirectInput.h"
-#include "../GameInput/InputHub.h"
+#include "DirectInputMouse.h"
 
-//#include "App/GameWindowManager_Win32.h"
+#include "Support/Profile.h"
+#include "Support/Log/DefaultLog.h"
+#include "GameInput/DirectInput.h"
+#include "GameInput/InputHub.h"
+
+#include "App/GameWindowManager_Win32.h"
 
 
-#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
+//#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
 
+/*
+class CInputDeviceFactory
+{
+public:
+
+	CMouseInputDevice *CreateMouse( int type )
+	{
+		return new CDirectInputMouse();
+	}
+
+	CKeyboardInputDevice *CreateKeyboard( int type )
+	{
+		return new CDIKeyboard();
+	}
+};
+*/
 
 CDirectInputMouse::CDirectInputMouse()
-: m_pDIMouse(NULL)
+:
+m_pDIMouse(NULL)
 {
 	m_fPrevMove_X = 0;
 	m_fPrevMove_Y = 0;
@@ -24,7 +44,7 @@ CDirectInputMouse::~CDirectInputMouse()
 }
 
 
-HRESULT CDirectInputMouse::Init( HWND hWnd )
+HRESULT CDirectInputMouse::InitDIMouse( HWND hWnd )
 {
 	HRESULT hr;
 
@@ -67,7 +87,7 @@ HRESULT CDirectInputMouse::Init( HWND hWnd )
 //      SetCooperativeLevel() returned DIERR_UNSUPPORTED. For security reasons, background exclusive mouse
 //		access is not allowed.
 		Release();
-		MessageBox( NULL, "SetCooperativeLevel() failed.", "Error", MB_OK );
+		LOG_PRINT_ERROR( " SetCooperativeLevel() failed." );
         return S_OK;
     }
 
@@ -98,14 +118,26 @@ HRESULT CDirectInputMouse::Init( HWND hWnd )
 	// get client rect size
 	RECT rect;
 	LONG cw, ch;
-	GetClientRect(hWnd, &rect);		// クライアント部分のサイズの取得
-	cw = rect.right - rect.left;	// クライアント領域外の横幅を計算
-	ch = rect.bottom - rect.top;	// クライアント領域外の縦幅を計算
+	GetClientRect(hWnd, &rect);		// get client area size
+	cw = rect.right - rect.left;	// width of the non-client area?
+	ch = rect.bottom - rect.top;	// height of the non-client area?
 	m_ScreenWidth = cw;
 	m_ScreenHeight = ch;
 
-	return S_OK;
+	return Result::SUCCESS;
 }
+
+
+Result::Name CDirectInputMouse::Init()
+{
+	HRESULT hr = InitDIMouse( GameWindowManager_Win32().GetWindowHandle() );
+
+	if( SUCCEEDED(hr) )
+		return Result::SUCCESS;
+	else
+		return Result::UNKNOWN_ERROR;
+}
+
 
 /*
 bool CDirectInputMouse::InvertMouse()
@@ -149,9 +181,11 @@ void CDirectInputMouse::Release()
     SAFE_RELEASE( m_pDIMouse );
 }
 
+
 //read input data from buffer
 HRESULT CDirectInputMouse::UpdateInput()
 {
+	PROFILE_FUNCTION();
 
     DIDEVICEOBJECTDATA didod[ DIMOUSE_BUFFER_SIZE ];  // Receives buffered data 
     DWORD              dwElements;

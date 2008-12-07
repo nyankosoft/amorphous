@@ -76,4 +76,10 @@ inline CGameWindowManager_Win32& GameWindowManager()
 }
 
 
+inline CGameWindowManager_Win32& GameWindowManager_Win32()
+{
+	return GameWindowManager();
+}
+
+
 #endif		/*  __GameWindowManager_Win32_H__  */

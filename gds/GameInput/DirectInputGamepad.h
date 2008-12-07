@@ -5,6 +5,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
+#include "../base.h"
 
 #pragma comment( lib, "dinput8.lib" )
 
@@ -67,13 +68,15 @@ private:
 
 	void SendPOVInputAsDigitalInput();
 
+	HRESULT InitDIGamepad( HWND hWnd );
+
 public:
 
 	CDirectInputGamepad();
 
 	~CDirectInputGamepad();
 
-	HRESULT Init( HWND hWnd );
+	Result::Name Init();
 
 	void Release();
 

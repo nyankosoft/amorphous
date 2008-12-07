@@ -189,27 +189,27 @@ bool CApplicationBase::InitBase()
 	// create the main game window
 	// Direct3D is initialized in this function
 	int mode = global_params.FullScreen ? SMD_FULLSCREEN : SMD_WINDOWED;
-	GAMEWINDOWMANAGER.CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode, GetApplicationTitle() );
-//	GAMEWINDOWMANAGER.CreateGameWindow( 800, 600, SMD_WINDOWED /*SMD_FULLSCREEN*/ );
+	GameWindowManager().CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode, GetApplicationTitle() );
+//	GameWindowManager().CreateGameWindow( 800, 600, SMD_WINDOWED /*SMD_FULLSCREEN*/ );
 
 	if( 0 <= global_params.WindowLeftPos && 0 <= global_params.WindowTopPos )
-		GAMEWINDOWMANAGER.SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
+		GameWindowManager().SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
 
 	// create DirectInput mouse device
 	g_pDIMouse = new CDirectInputMouse;
-	g_pDIMouse->Init( GAMEWINDOWMANAGER.GetWindowHandle() );
+	g_pDIMouse->Init();
 
 	LOG_PRINT( " - Initialized the direct input mouse device." );
 
 	// initialize keyboard (DirectInput)
 	m_pDIKeyboard = new CDIKeyboard;
-	m_pDIKeyboard->Init( GAMEWINDOWMANAGER.GetWindowHandle() );
+	m_pDIKeyboard->Init();
 
 //	LOG_PRINT( " - Initialized the direct input keyboard device." );
 
 	m_pDIGamepad = new CDirectInputGamepad;
-	HRESULT hr = m_pDIGamepad->Init( GAMEWINDOWMANAGER.GetWindowHandle() );
-	if( FAILED(hr) )
+	Result::Name r = m_pDIGamepad->Init();
+	if( r != Result::SUCCESS )
 		SafeDelete( m_pDIGamepad );
 
 //	LOG_PRINT( " - Initialized the input devices." );
@@ -297,7 +297,7 @@ void CApplicationBase::AcquireInputDevices()
 	if( m_pDIKeyboard )
 		m_pDIKeyboard->Acquire();
 
-	if( g_pDIMouse && GAMEWINDOWMANAGER.IsMouseCursorInClientArea() )
+	if( g_pDIMouse && GameWindowManager().IsMouseCursorInClientArea() )
 		g_pDIMouse->AcquireMouse();
 
 	if( m_pDIGamepad )

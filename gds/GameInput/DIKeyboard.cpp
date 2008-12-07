@@ -3,6 +3,7 @@
 #include "../base.h"
 #include "DirectInput.h"
 #include "InputHub.h"
+#include "App/GameWindowManager_Win32.h"
 
 
 #define DIKEYBOARD_SAMPLE_BUFFER_SIZE 16  // arbitrary number of buffer elements
@@ -119,7 +120,7 @@ void CDIKeyboard::InitKeyCodeMap()
 //============================================================================================
 // Init()
 //============================================================================================
-HRESULT CDIKeyboard::Init( HWND hWnd )
+HRESULT CDIKeyboard::InitDIKeyboard( HWND hWnd )
 {
 
     HRESULT hr;
@@ -205,6 +206,17 @@ HRESULT CDIKeyboard::Init( HWND hWnd )
     hr = m_pKeyboard->Acquire();
 
     return S_OK;
+}
+
+
+Result::Name CDIKeyboard::Init()
+{
+	HRESULT hr = InitDIKeyboard( GameWindowManager_Win32().GetWindowHandle() );
+
+	if( SUCCEEDED(hr) )
+		return Result::SUCCESS;
+	else
+		return Result::UNKNOWN_ERROR;
 }
 
 

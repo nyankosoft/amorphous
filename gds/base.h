@@ -2,11 +2,9 @@
 #define __BASETYPES_H__
 
 
-//#if WINDOWS
-
-#define NOMINMAX // avoid error in nxmath.h of Ageia PhysX SDK
-#include <windows.h>
-
+//==========================================================================
+// platform-independent settings
+//==========================================================================
 
 //
 // typedefs
@@ -16,11 +14,6 @@ typedef unsigned char  uchar;
 typedef unsigned short ushort;
 typedef unsigned int   uint;
 typedef unsigned long  ulong;
-
-typedef BYTE  U8;
-typedef WORD  U16;
-typedef DWORD U32;
-//typedef ????? U64;
 
 
 //
@@ -73,6 +66,27 @@ public:
 		NUM_RESULTS
 	};
 };
+
+
+
+//==========================================================================
+// platform-dependent settings
+//==========================================================================
+
+//#if WINDOWS
+
+#define NOMINMAX // avoid error in nxmath.h of Ageia PhysX SDK
+#include <windows.h>
+
+
+//
+// platform-dependent typedefs
+//
+
+typedef BYTE  U8;
+typedef WORD  U16;
+typedef DWORD U32;
+//typedef ????? U64;
 
 
 //#else

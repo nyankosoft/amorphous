@@ -3,6 +3,7 @@
 
 #include "DirectInput.h"
 #include "InputHandler.h"
+#include "../base.h"
 
 #include <dinput.h>
 #include <windows.h>
@@ -21,12 +22,17 @@ class CDIKeyboard// : public CInputDevice
 
 	int m_aiGICodeForDIKCode[NUM_SUPPORTED_DIK_CODES];
 
+private:
+
+	HRESULT InitDIKeyboard( HWND hWnd );
+
 public:
 
 	CDIKeyboard();
 	~CDIKeyboard();
 
-	HRESULT Init( HWND hWnd );
+	Result::Name Init();
+
 	void InitKeyCodeMap();
 	HRESULT GetKeyState( BYTE *pacKeyboardStateBuffer );
 	HRESULT ReadBufferedData();
