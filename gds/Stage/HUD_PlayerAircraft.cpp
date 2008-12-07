@@ -813,7 +813,7 @@ void HUD_PlayerAircraft::CreateRenderTasks()
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
     pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
 
-	float fScreenWidth = (int)GAMEWINDOWMANAGER.GetScreenWidth();
+	float fScreenWidth = (int)GameWindowManager().GetScreenWidth();
 	float fRatio = fScreenWidth / 800.0f;
 
 	D3DXVECTOR2 vPos = D3DXVECTOR2( 400 - 15, 547.5f ) * fRatio;

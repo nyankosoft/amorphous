@@ -1,4 +1,3 @@
-
 #include "GameTask_MainMenu.h"
 #include "GameTask_Stage.h"
 #include "App/ApplicationBase.h"
@@ -24,7 +23,6 @@
 #include "Support/memory_helpers.h"
 #include "Support/Log/DefaultLog.h"
 //#include "Support/Profile.h"
-#include "Support/msgbox.h"
 
 
 #define CONFIG_STATE_RETURN_TO_GAME	0
@@ -524,7 +522,7 @@ void CGameTask_MainMenu::InitFontForBackgroundText()
 {
 	SafeDelete( m_pFont );
 	m_pFont = new CFont;
-	int w = 16 * GAMEWINDOWMANAGER.GetScreenWidth() / 800;
+	int w = 16 * GameWindowManager().GetScreenWidth() / 800;
 	int h = w * 2;
 	m_pFont->InitFont( "Arial", w, h );
 }

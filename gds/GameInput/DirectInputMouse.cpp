@@ -301,8 +301,8 @@ HRESULT CDirectInputMouse::UpdateInput()
 	if( m_iPosY < 0 ) m_iPosY = 0;
 	int w = m_ScreenWidth;
 	int h = m_ScreenHeight;
-//	int w = GAMEWINDOWMANAGER.GetScreenWidth();
-//	int h = GAMEWINDOWMANAGER.GetScreenHeight();
+//	int w = GameWindowManager().GetScreenWidth();
+//	int h = GameWindowManager().GetScreenHeight();
 	if( w < m_iPosX ) m_iPosX = w;
 	if( h < m_iPosY ) m_iPosY = h;
 

@@ -71,8 +71,8 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 	case GIC_F12:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			int screen_width  = GAMEWINDOWMANAGER.GetScreenWidth();
-			int screen_height = GAMEWINDOWMANAGER.GetScreenHeight();
+			int screen_width  = GameWindowManager().GetScreenWidth();
+			int screen_height = GameWindowManager().GetScreenHeight();
 			image_capture.SetImageSize( screen_width, screen_height );
 			image_capture.EnterCaptureMode();
 

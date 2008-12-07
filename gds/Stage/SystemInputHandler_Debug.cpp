@@ -17,8 +17,6 @@
 #include "GameCommon/ScreenShotManager.h"
 #include "Item/WeaponSystem.h"
 
-#include "Support/FileOpenDialog_Win32.h"
-
 #include "Task/GameTask_Stage.h"
 
 bool g_bAppExitRequested = false;
@@ -118,7 +116,7 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 
 void CSystemInputHandler_Debug::ChangeScreenSize()
 {
-	GAMEWINDOWMANAGER.ChangeScreenSize( m_aiScreenWidth[m_iScreenSize], m_aiScreenHeight[m_iScreenSize], m_abFullscreen[m_iScreenSize] );
+	GameWindowManager().ChangeScreenSize( m_aiScreenWidth[m_iScreenSize], m_aiScreenHeight[m_iScreenSize], m_abFullscreen[m_iScreenSize] );
 }
 
 

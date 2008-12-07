@@ -49,7 +49,7 @@ void CGameTextWindow::InitFont( const char *pcFontName, float fFontWidth, float 
 	m_fFontWidth  = fFontWidth;
 	m_fFontHeight = fFontHeight;
 
-	float fScreenWidth = (float)GAMEWINDOWMANAGER.GetScreenWidth();
+	float fScreenWidth = (float)GameWindowManager().GetScreenWidth();
 
 	SafeDelete( m_pFont );
 	m_pFont = new CFont;
@@ -91,8 +91,8 @@ void CGameTextWindow::Render(int iInput)
 	// draw the window with translucent black
 	m_WindowRect.Draw();
 
-	float fScreenWidth  = (float)GAMEWINDOWMANAGER.GetScreenWidth();
-	float fScreenHeight = (float)GAMEWINDOWMANAGER.GetScreenHeight();
+	float fScreenWidth  = (float)GameWindowManager().GetScreenWidth();
+	float fScreenHeight = (float)GameWindowManager().GetScreenHeight();
 
 	// draw complete lines
 	int iLine;
@@ -176,7 +176,7 @@ void CGameTextWindow::Render(int iInput)
 
 void CGameTextWindow::UpdateScreenSize()
 {
-	int iScreenWidth = GAMEWINDOWMANAGER.GetScreenWidth();
+	int iScreenWidth = GameWindowManager().GetScreenWidth();
 
 	D3DXVECTOR2 vMin, vMax;
 

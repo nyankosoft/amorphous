@@ -1,4 +1,3 @@
-
 #include "PseudoNoiseEffect.h"
 #include "../3DCommon/Direct3D9.h"
 #include "../3DCommon/D3DMisc.h"
@@ -86,8 +85,8 @@ void CPseudoNoiseEffect::LoadExtraTexture( const char *pcTextureFilename, float 
 
 void CPseudoNoiseEffect::UpdateScreenSize()
 {
-//	m_iScreenWidth  = GAMEWINDOWMANAGER.GetScreenWidth();
-//	m_iScreenHeight = GAMEWINDOWMANAGER.GetScreenHeight();
+//	m_iScreenWidth  = GameWindowManager().GetScreenWidth();
+//	m_iScreenHeight = GameWindowManager().GetScreenHeight();
 
 	GetViewportSize( m_iScreenWidth, m_iScreenHeight );
 
