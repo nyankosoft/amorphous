@@ -1,6 +1,6 @@
 #include "ShaderManager.h"
 #include "ShaderManagerHub.h"
-#include "ShaderLightManager.h"
+#include "HLSLShaderLightManager.h"
 #include "3DCommon/Direct3D9.h"
 
 #include "Support/Log/DefaultLog.h"
@@ -157,11 +157,11 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 	m_aHandle[HANDLE_AMBIENT_COLOR] = m_pEffect->GetParameterByName( NULL, "g_vAmbientColor" );
 
 	// create shader light manager
-	CShaderLightManager *pD3DShaderLightMgr = new CShaderLightManager( m_pEffect );
+	CHLSLShaderLightManager *pD3DShaderLightMgr = new CHLSLShaderLightManager( m_pEffect );
 
 	pD3DShaderLightMgr->Init();
 
-	m_pLightManager = boost::shared_ptr<CShaderLightManager>( pD3DShaderLightMgr );
+	m_pLightManager = boost::shared_ptr<CHLSLShaderLightManager>( pD3DShaderLightMgr );
 
 	m_vecParamHandle.reserve( 8 );
 

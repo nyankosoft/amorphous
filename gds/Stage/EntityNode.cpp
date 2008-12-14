@@ -6,6 +6,7 @@
 #include "trace.h"
 #include "ViewFrustumTest.h"
 #include "Stage.h"
+#include "LightEntity.h"
 
 #include "Support/Profile.h"
 
@@ -29,8 +30,6 @@ m_pStage(NULL)
 	sBackChild  = 0;
 	sParent		= 0;
 	m_sCellIndex= -1;
-
-//	m_pLightEntity = NULL;
 }
 
 /*
@@ -95,11 +94,12 @@ void CEntityNode::Render( CCamera& rCam )
 		}
 		else
 		{
-			if( pEntity->Lighting() )
+/*			if( pEntity->Lighting() )
 			{
 				if( pEntity->sState & CESTATE_LIGHT_INFORMATION_INVALID )
-				{	// need to update light information - find lights that reaches to this entity
-					pEntity->ClearLightIndices();
+				{
+					// need to update light information - find lights that reaches to this entity
+					pEntity->ClearLights();
 					m_pEntitySet->UpdateLightInfo( pEntity );
 					pEntity->sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
 				}
@@ -111,7 +111,7 @@ void CEntityNode::Render( CCamera& rCam )
 			else
 			{	// turn off lights
 				m_pEntitySet->DisableLightForEntity();
-			}
+			}*/
 
 			// render the entity
 			pEntity->Draw();

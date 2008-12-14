@@ -87,7 +87,7 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	float& rfFadeoutTime = FadeoutTime(pCopyEnt);
 	rfFadeoutTime = 0.0f;
-
+/*
 	if( pCopyEnt->v1 == Vector3(0,0,0) )	// if color is not specified
 		memcpy( pCopyEnt->v1, m_afBaseColor, sizeof(float) * 3 );	// use the base color 
 
@@ -156,7 +156,7 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 		float& rfTimeLeft = TimeLeft(pCopyEnt);;
 		rfTimeLeft = m_fTimer;
 	}
-
+*/
 	if( pCopyEnt->GetParent() )
 	{
 		pCopyEnt->s1 |= CEDL_HAS_PARENT;
@@ -167,13 +167,13 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 void CBE_PointLight::DeleteDynamicLight( CCopyEntity* pCopyEnt )
 {
 //	MsgBoxFmt( "removing dynamic light - index: %d", pCopyEnt->iExtraDataIndex );
-
+/*
 	if( 0 <= pCopyEnt->iExtraDataIndex )
 	{
 		m_pStage->GetEntitySet()->DeleteLight( pCopyEnt->iExtraDataIndex, CLE_LIGHT_DYNAMIC );
 		CheckEntitiesInLightRange( pCopyEnt, pCopyEnt->iExtraDataIndex );
 	}
-
+*/
 	m_pStage->TerminateEntity( pCopyEnt );
 }
 
@@ -181,7 +181,7 @@ void CBE_PointLight::DeleteDynamicLight( CCopyEntity* pCopyEnt )
 void CBE_PointLight::Act( CCopyEntity* pCopyEnt )
 {
 	// test dynamic light
-	if( m_TypeFlag & TYPE_DYNAMIC )
+/*	if( m_TypeFlag & TYPE_DYNAMIC )
 	{
 		if( pCopyEnt->iExtraDataIndex == -1 )
 		{
@@ -202,12 +202,12 @@ void CBE_PointLight::Act( CCopyEntity* pCopyEnt )
 				return;
 			}
 
-			if( m_TypeFlag & TYPE_FADEOUT )
-			{
-				Vector3 vColor = pCopyEnt->v1 * rfTimeLeft / m_fTimer;
-				short sLightIndex = (short)pCopyEnt->iExtraDataIndex;
-				m_pStage->GetEntitySet()->GetLightEntity( sLightIndex )->SetDiffuseColor( (float *)&vColor );
-			}
+			//if( m_TypeFlag & TYPE_FADEOUT )
+			//{
+			//	Vector3 vColor = pCopyEnt->v1 * rfTimeLeft / m_fTimer;
+			//	short sLightIndex = (short)pCopyEnt->iExtraDataIndex;
+			//	m_pStage->GetEntitySet()->GetLightEntity( sLightIndex )->SetDiffuseColor( (float *)&vColor );
+			//}
 		}
 
 		if( pCopyEnt->s1 & CEDL_HAS_PARENT && !pCopyEnt->GetParent() )
@@ -231,7 +231,7 @@ void CBE_PointLight::Act( CCopyEntity* pCopyEnt )
 			                                                                  pCopyEnt->Position() );
 			CheckEntitiesInLightRange( pCopyEnt, (short)pCopyEnt->iExtraDataIndex );
 		}
-	}
+	}*/
 }
 
 

@@ -5,6 +5,8 @@
 class CStage;
 class CCopyEntity;
 class CCopyEntityDesc;
+class CLightEntity;
+class CAlphaEntity;
 class CEntityFactory;
 class CCopyEntityDescFileData;
 class CBaseEntity;

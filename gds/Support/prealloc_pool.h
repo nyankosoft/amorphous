@@ -6,6 +6,32 @@
 #include "SafeDeleteVector.h"
 
 
+template <class CElementType>
+class default_pooled_object_initializer
+{
+public:
+	void operator()( CElementType *p ) {}
+};
+
+
+class pooled_object
+{
+
+	int m_PooledObjectStockIndex;
+	int m_PooledObjectStockID;
+
+public:
+
+	pooled_object() {}
+
+	int GetStockIndex() const { return m_PooledObjectStockIndex; }
+	void SetStockIndex( int index ) { m_PooledObjectStockIndex = index; }
+
+	int GetStockID() const { return m_PooledObjectStockID; }
+	void SetStockID( int id ) { m_PooledObjectStockID = id; }
+};
+
+
 inline int get_prealloc_object_id()
 {
 	static int s_IDCounter = -1;
@@ -107,6 +133,12 @@ public:
 	/// \param num_stocks must be much smaller than INT_MAX
 	void init( int num_stocks )
 	{
+		init( num_stocks, default_pooled_object_initializer<CElementType>() );
+	}
+
+	template<class T>
+	void init( int num_stocks, const T& initializer )
+	{
 		if( num_stocks < 0 )
 			return;
 
@@ -124,6 +156,8 @@ public:
 			m_vecpStock[i] = new CElementType();
 			m_vecpStock[i]->SetStockIndex( i );
 			m_vecpStock[i]->SetStockID( -1 );
+
+			default_pooled_object_initializer<CElementType>()( m_vecpStock[i] );
 		}
 
 		m_VacantSlotPos = num_stocks - 1;

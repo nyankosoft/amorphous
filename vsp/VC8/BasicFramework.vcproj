@@ -409,6 +409,14 @@
 				Name="Shader"
 				>
 				<File
+					RelativePath="..\..\gds\3DCommon\Shader\HLSLShaderLightManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\3DCommon\Shader\HLSLShaderLightManager.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\3DCommon\Shader\Serialization_ShaderTechniqueHandle.h"
 					>
 				</File>

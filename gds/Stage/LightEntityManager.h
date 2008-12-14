@@ -132,7 +132,7 @@ inline void CLightEntityManager::DisableLightForEntity()
 
 
 inline void CLightEntityManager::SetLightsForEntity(CCopyEntity *pEntity)
-{
+{/*
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	int num_pnt_lights = 0, num_dir_lights = 0;
@@ -142,12 +142,12 @@ inline void CLightEntityManager::SetLightsForEntity(CCopyEntity *pEntity)
 
 	for( i=0; i<iNumCurrentLights; i++ )
 	{
-/*		light_index = pEntity->GetLightIndex(i);
-
-		if( light_index < CLEM_NUM_MAX_STATIC_LIGHTS )
-			pLightEntity = &m_aStaticLightEntity[ light_index ];
-		else
-			pLightEntity = &m_aDynamicLightEntity[ light_index - CLEM_NUM_MAX_STATIC_LIGHTS ];*/
+//		light_index = pEntity->GetLightIndex(i);
+//
+//		if( light_index < CLEM_NUM_MAX_STATIC_LIGHTS )
+//			pLightEntity = &m_aStaticLightEntity[ light_index ];
+//		else
+//			pLightEntity = &m_aDynamicLightEntity[ light_index - CLEM_NUM_MAX_STATIC_LIGHTS ];
 
 		pLightEntity = GetLightEntity( pEntity->GetLightIndex(i) );
 
@@ -181,7 +181,8 @@ inline void CLightEntityManager::SetLightsForEntity(CCopyEntity *pEntity)
 		m_pShaderLightManager->SetNumDirectionalLights( num_dir_lights );
 		m_pShaderLightManager->SetPointLightOffset( num_dir_lights );
 		m_pShaderLightManager->SetNumPointLights( num_pnt_lights );
-		m_pEffect->CommitChanges();
+		m_pShaderLightManager->CommitChanges();
+//		m_pEffect->CommitChanges();
 	}
 	else
 	{
@@ -197,24 +198,24 @@ inline void CLightEntityManager::SetLightsForEntity(CCopyEntity *pEntity)
 		}
 	}
 
-	m_iNumPrevLights = iNumCurrentLights;
+	m_iNumPrevLights = iNumCurrentLights;*/
 }
 
 
 inline void CLightEntityManager::DeleteLight( int light_index, int light_type )
-{
+{/*
 	if( light_type == CLE_LIGHT_DYNAMIC )
 	{
 		m_aDynamicLightEntity[light_index - CLEM_NUM_MAX_STATIC_LIGHTS].Invalidate();
 		m_iNumDynamicLights--;
 
 		g_iNumDynamicLights = m_iNumDynamicLights;
-	}
+	}*/
 }
 
 
 inline CLightEntity *CLightEntityManager::GetLightEntity( int light_index )
-{
+{/*
 	if( CLEM_NUM_MAX_STATIC_LIGHTS <= light_index )
 	{	// dynamic light
 		return &m_aDynamicLightEntity[light_index - CLEM_NUM_MAX_STATIC_LIGHTS];
@@ -222,7 +223,7 @@ inline CLightEntity *CLightEntityManager::GetLightEntity( int light_index )
 	else
 	{	// static light
 		return &m_aStaticLightEntity[light_index];
-	}
+	}*/
 }
 
 #endif		/*  __LIGHTENTITYMANAGER_H__  */

@@ -49,6 +49,7 @@ enum eEntityFlag
 	BETYPE_ENVMAPTARGET                = (1 << 16),
 	BETYPE_SHADOW_CASTER               = (1 << 17), ///< If the entity casts shadows to other entities
 	BETYPE_SHADOW_RECEIVER             = (1 << 18), ///< If the entity receives shadows cast by other entities  others
+	BETYPE_COPY_PARENT_POSE            = (1 << 19), ///< If the entity has a parent entity, it automatically copies the pose of the parent
 };
 
 /*
@@ -59,12 +60,7 @@ enum eEntityFlag
 #define CEGT_GLAREHINDER	2
 */
 
-#define NUM_MAX_ENTITY_TOUCHES_PER_FRAME	4
-#define NUM_MAX_LIGHTS_AT_ENTITY	4
-#define NUM_MAX_CHILDREN_PER_ENTITY	4
-
 #define CE_INVALID_LIGHT_INDEX	-1
-
 #define CE_INVALID_EXTRA_DATA_INDEX	-1
 
 
@@ -74,6 +70,13 @@ enum eEntityFlag
 */
 class CCopyEntity
 {
+	enum FixedParams
+	{
+		NUM_MAX_LIGHTS_AT_ENTITY         = 4,
+		NUM_MAX_CHILDREN_PER_ENTITY      = 4,
+		NUM_MAX_ENTITY_TOUCHES_PER_FRAME = 4,
+	};
+
 	std::string strName;	///< individual name for entity
 
 	U32 m_ID; ///< unique id for entity (0 == invalid id)
@@ -191,7 +194,7 @@ public:
 
 	/// holds indices to lights
 	/// directional lights have to be placed before point lights
-	TCFixedVector<short,NUM_MAX_LIGHTS_AT_ENTITY> vecLightIndex;
+	TCFixedVector<CEntityHandle<CLightEntity>,NUM_MAX_LIGHTS_AT_ENTITY> m_vecLight;
 
 	physics::CActor *pPhysicsActor;
 
@@ -215,9 +218,9 @@ public:
 	CBaseEntity *GetBaseEntity() { return pBaseEntity; }
 
 	/// returns the name given to each copy entity.
-	/// copy entity is given a name when it needs individual identification
-	/// such a copy entity is refered to as 'named entity'
-	/// temporary entities such as bullets/explosions/blasts usually have no names
+	/// copy entity is given a name when it needs individual identification.
+	/// Such a copy entity is refered to as a 'named entity'.
+	/// Temporary entities such as bullets/explosions/blasts usually have no names
 	const std::string& GetName() const { return strName; }
 
 	const U32 GetID() const { return m_ID; }
@@ -284,6 +287,8 @@ public:
 
 	inline void SetWorldPose( const Matrix34& rSrcWorldPose ) { WorldPose = rSrcWorldPose; }
 
+	inline float GetRadius() const { return fRadius; }
+
 
 	inline void ClearForces() { vForce = Vector3(0,0,0); vTorque = Vector3(0,0,0); }
 
@@ -293,6 +298,10 @@ public:
 
 	void ReleasePhysicsActor();
 	void UpdatePhysics();
+
+	/// Called when the entity is created.
+	/// - Called after CBaseEntity::InitCopyEntity().
+	virtual void Init( CCopyEntityDesc& desc ) {}
 
 	/// virtual functions for derived class of CCopyEntity
 	/// - By default, member functions of base entity do the job instead of these functions.
@@ -328,11 +337,11 @@ public:
 
 	// Lighting
 	inline bool Lighting() { return ( (EntityFlag & BETYPE_LIGHTING) != 0 ); }
-	inline int GetNumLights() const { return vecLightIndex.size(); }
-	inline short GetLightIndex(int i) const { return vecLightIndex[i]; }
-	inline void AddLightIndex(short sLightIndex);
-	inline void InsertLightIndex(int pos, short sLightIndex);
-	inline void ClearLightIndices() { vecLightIndex.resize(0); }
+	inline int GetNumLights() const { return m_vecLight.size(); }
+	inline CEntityHandle<CLightEntity>& GetLight(int i) { return m_vecLight[i]; }
+	inline void AddLight( CEntityHandle<CLightEntity>& light_entity );
+	inline void InsertLight( int pos, CEntityHandle<CLightEntity>& light_entity );
+	inline void ClearLights() { m_vecLight.resize(0); }
 
 	// Parent/Children
 	inline CCopyEntity *GetParent();	// return pointer to a parent if there is one
@@ -341,6 +350,7 @@ public:
 //	inline int AddChild( CCopyEntity *pChild );
 	inline int AddChild( boost::weak_ptr<CCopyEntity> pChild );
 	void DisconnectFromParentAndChildren();
+	inline void CopyParentPose();
 
 	inline void AddCallback( CCopyEntityCallbackBase* pCallback ) { vecpCallback.push_back(pCallback); }
 
@@ -348,7 +358,7 @@ public:
 	inline void UpdateMesh();
 
 	friend class CBaseEntity;
-	friend class CEntityHandle<>;
+	friend class CEntityHandleBase;
 	friend class CEntitySet;
 	friend class CEntityNode;
 	friend class CEntityRenderManager;

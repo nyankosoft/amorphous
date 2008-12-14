@@ -195,17 +195,17 @@ inline void CCopyEntity::GetPointVelocity(Vector3& rvPointVelocity, Vector3& rvP
 // light control
 //========================================================
 
-inline void CCopyEntity::AddLightIndex( short sLightIndex )
+inline void CCopyEntity::AddLight( CEntityHandle<CLightEntity>& light_entity )
 {
 	if( GetNumLights() < NUM_MAX_LIGHTS_AT_ENTITY )
-		vecLightIndex.push_back( sLightIndex );
+		m_vecLight.push_back( light_entity );
 }
 
 
-inline void CCopyEntity::InsertLightIndex( int pos, short sLightIndex )
+inline void CCopyEntity::InsertLight( int pos, CEntityHandle<CLightEntity>& light_entity )
 {
 	if( GetNumLights() < NUM_MAX_LIGHTS_AT_ENTITY )
-		vecLightIndex.insert_at( sLightIndex );
+		m_vecLight.insert_at( pos, light_entity );
 }
 
 
@@ -249,10 +249,28 @@ inline int CCopyEntity::AddChild( boost::weak_ptr<CCopyEntity> pChild )
 }
 
 
+inline void CCopyEntity::CopyParentPose()
+{
+	if( m_pParent )
+		SetWorldPose( m_pParent->GetWorldPose() );
+}
+
+
 inline void CCopyEntity::UpdateMesh()
 {
 	if( EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
 		pBaseEntity->CreateAlphaEntities( this );
+}
+
+
+
+//======================================================================
+// CEntityHandleBase
+//======================================================================
+
+inline bool CEntityHandleBase::IsEntityInUse( CCopyEntity *pEntity )
+{
+	return pEntity->inuse;
 }
 
 
@@ -297,7 +315,7 @@ inline boost::shared_ptr<T> CEntityHandle<T>::Get()
 		//   - The stage has been released.
 		return boost::shared_ptr<T>();
 	}
-	else if( !pEntity->inuse )
+	else if( IsEntityInUse(pEntity.get()) == false )
 	{
 		// Already terminated by Terminate().
 		// - Think of this state as 'marked as invalid'

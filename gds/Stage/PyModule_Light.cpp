@@ -21,6 +21,17 @@
 using namespace std;
 
 
+CCopyEntity *CreateEntityFromDesc( CCopyEntityDesc& desc )
+{
+	CStage *pStage = GetStageForScriptCallback();
+
+	if( pStage )
+		return pStage->CreateEntity( desc );
+	else
+		return NULL;
+};
+
+
 
 /// row:    holds light groups
 /// column: holds object groups (lighting groups)
@@ -77,21 +88,30 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
 
 PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args )
 {
-	char *light_name;
-	char *light_type = "dynamic"; // "dynamic" or "static";
+	char *light_name = "";
 	int light_group = 0;
 	int shadow_for_light = 1; // true(1) by default
+	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
+	SFloatRGBAColor color = SFloatRGBAColor(1,1,1,1);
+	float fIntensity = 1.0f;
 
-	int result = PyArg_ParseTuple( args, "s|sds", &light_name, &light_type, &light_group, &shadow_for_light );
+	int result = PyArg_ParseTuple( args, "|sfffffffdd",
+		&light_name, &dir.x, &dir.y, &dir.z,
+		&color.fRed, &color.fGreen, &color.fBlue,
+		&fIntensity,
+		&light_group, &shadow_for_light );
 
-	const Vector3 vDefaultDir = Vector3(0,-1,0);
+	color.fAlpha = 1.0f;
 
-	CCopyEntity *pLightEntity
-	= CreateNamedEntity( light_name, "StaticPointLight",
-		Vector3(0,0,0), // position
-		vDefaultDir,    // direction
-		Vector3(0,0,0)  // velocity
-		);
+	CLightEntityDesc desc;
+	desc.LightType = CLight::DIRECTIONAL;
+	desc.strName = light_name;
+	desc.LightGroup = light_group;
+	desc.fIntensity = fIntensity;
+	desc.WorldPose.matOrient.SetColumn( 2, dir );
+	desc.aColor[0] = color;
+
+	CreateEntityFromDesc( desc );
 
 	Py_INCREF( Py_None );
 	return Py_None;
@@ -100,6 +120,32 @@ PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args
 
 PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args )
 {
+	char *light_name = "";
+	int light_group = 0;
+	int shadow_for_light = 1; // true(1) by default
+	Vector3 pos = Vector3(0,2,0); // default position = 2m above the world origin
+	SFloatRGBAColor color = SFloatRGBAColor(1,1,1,1);
+	float fIntensity = 1.0f;
+//	float attenu[3];
+
+	int result = PyArg_ParseTuple( args, "|sfffffffdd",
+		&light_name, &pos.x, &pos.y, &pos.z,
+		&color.fRed, &color.fGreen, &color.fBlue,
+		&fIntensity,
+		&light_group, &shadow_for_light );
+
+	color.fAlpha = 1.0f;
+
+	CLightEntityDesc desc;
+	desc.LightType = CLight::POINT;
+	desc.strName = light_name;
+	desc.LightGroup = light_group;
+	desc.fIntensity = fIntensity;
+	desc.WorldPose.vPosition = pos;
+	desc.aColor[0] = color;
+
+	CreateEntityFromDesc( desc );
+
 	Py_INCREF( Py_None );
 	return Py_None;
 }
@@ -114,6 +160,32 @@ PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args )
 
 PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args )
 {
+	char *light_name = "";
+	int light_group = 0;
+	int shadow_for_light = 1; // true(1) by default
+	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
+	SFloatRGBAColor uc = SFloatRGBAColor(1,1,1,1);
+	SFloatRGBAColor lc = SFloatRGBAColor(0,0,0,1);
+	float fIntensity = 1.0f;
+
+	int result = PyArg_ParseTuple( args, "|sffffffffffdd",
+		&light_name, &dir.x, &dir.y, &dir.z,
+		&uc.fRed, uc.fGreen, &uc.fBlue,  &lc.fRed, lc.fGreen, &lc.fBlue,
+		&light_group, &shadow_for_light );
+
+	uc.fAlpha = lc.fAlpha = 1.0f;
+
+	CLightEntityDesc desc;
+	desc.LightType = CLight::HEMISPHERIC_DIRECTIONAL;
+	desc.strName = light_name;
+	desc.LightGroup = light_group;
+	desc.fIntensity = fIntensity;
+	desc.WorldPose.matOrient.SetColumn( 2, dir );
+	desc.aColor[0] = uc;
+	desc.aColor[1] = lc;
+
+	CreateEntityFromDesc( desc );
+
 	Py_INCREF( Py_None );
 	return Py_None;
 }
@@ -165,8 +237,8 @@ PyObject* SetAttenuationFactors( PyObject* self, PyObject* args )
 	RETURN_PYNONE_IF_NO_TARGET()
 	RETURN_PYNONE_IF_NO_STAGE()
 
-	CLightEntity *pLightEntity
-		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
+	CLightEntity *pLightEntity = NULL;
+//		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
 
 	if( pLightEntity )
 		pLightEntity->SetAttenuationFactors( a[0], a[1], a[2] );
@@ -188,8 +260,8 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 	if( !GetStageForScriptCallback() )
 		return;
 
-	CLightEntity *pLightEntity
-		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
+	CLightEntity *pLightEntity = NULL;
+//		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
 
 	if( pLightEntity )
 		pLightEntity->SetColor( index, color );
@@ -277,8 +349,8 @@ PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
 	RETURN_PYNONE_IF_NO_TARGET()
 	RETURN_PYNONE_IF_NO_STAGE()
 
-	CLightEntity *pLightEntity
-		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
+	CLightEntity *pLightEntity = NULL;
+//		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
 
 	if( pLightEntity )
         pLightEntity->SetPosition( pos );
@@ -300,14 +372,14 @@ PyMethodDef gsf::py::light::g_PyModuleLightMethod[] =
 	{ "CreateTriPointLight",       gsf::py::light::CreateTriPointLight,          METH_VARARGS, "" },
 	{ "CreateTriDirectionalLight", gsf::py::light::CreateTriDirectionalLight,    METH_VARARGS, "" },
 	{ "CreateTriSpotlight",        gsf::py::light::CreateTriSpotlight,           METH_VARARGS, "" },
+//	{ "RemoveLight",               gsf::py::light::RemoveLight,                  METH_VARARGS, "" },
+//	{ "RemoveNamedLight",          gsf::py::light::RemoveNamedLight,             METH_VARARGS, "" },
 
-	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
-	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
-	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
-	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
-	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
+	// used to set/change light properies after creating the light
 	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
 	{ "SetColor",               gsf::py::light::SetColor,        METH_VARARGS, "" },
+//	{ "SetUpperColor",          gsf::py::light::SetUpperColor,   METH_VARARGS, "" },
+//	{ "SetLowerColor",          gsf::py::light::SetLowerColor,   METH_VARARGS, "" },
 	{ "SetColorU32",            gsf::py::light::SetColorU32,     METH_VARARGS, "" },
 	{ "SetPosition",            gsf::py::light::SetPosition,	 METH_VARARGS, "" },
 //	{ "SetDirection",           gsf::py::light::SetDirection,	 METH_VARARGS, "" },

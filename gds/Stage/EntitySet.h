@@ -13,7 +13,7 @@
 #include "EntityNode.h"
 #include "EntityFactory.h"
 #include "BaseEntityHandle.h"
-#include "LightEntityManager.h"
+//#include "LightEntityManager.h"
 #include "EntityRenderManager.h"
 #include "OverlapTestAABB.h"
 
@@ -47,7 +47,7 @@ private:
 
 	CCopyEntity *m_pCameraEntity;
 
-	CLightEntityManager *m_pLightEntityManager;
+//	CLightEntityManager *m_pLightEntityManager;
 
 	CEntityRenderManager *m_pRenderManager;
 
@@ -91,7 +91,7 @@ public:
 	~CEntitySet();
 
 	// initialize light entity manager
-	void InitLightEntityManager();
+//	void InitLightEntityManager();
 
 	void SetEntityFactory( CEntityFactory *pEntityFactory );
 
@@ -132,7 +132,7 @@ public:
 	void Render( CCamera& rCam );
 
 	//============ functions for lighting control============
-	inline int RegisterLight( CCopyEntity& rLightEntity, short sLightType );
+/*	inline int RegisterLight( CCopyEntity& rLightEntity, short sLightType );
 	inline void DeleteLight( int light_index, short sLightType );
 	inline CLightEntity *GetLightEntity( int light_index );
 	inline void SetLightsForEntity( CCopyEntity *pEntity )	{ m_pLightEntityManager->SetLightsForEntity( pEntity ); }
@@ -140,9 +140,9 @@ public:
 	inline void EnableLightForEntity();
 	inline void DisableLightForEntity();
 	void UpdateLightForEntity(CCopyEntity *pEntity);
-	inline void UpdateLightInfo( CCopyEntity *pEntity )		{ UpdateLightForEntity(pEntity); /*m_paEntityTree->CheckLight_r( pEntity, m_paEntityTree );*/ }
+	inline void UpdateLightInfo( CCopyEntity *pEntity )		{ UpdateLightForEntity(pEntity); }//m_paEntityTree->CheckLight_r( pEntity, m_paEntityTree ); }
 	CLightEntityManager *GetLightEntityManager() { return m_pLightEntityManager; }
-
+*/
 
 	bool MakeEntityTree( CBSPTree* pSrcBSPTree );
 
@@ -325,7 +325,7 @@ inline void CEntitySet::GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) co
 //	rmatBillboard._41 =   rvPos.x; rmatBillboard._42 =   rvPos.y; rmatBillboard._43 =   rvPos.z; rmatBillboard._44 = 1;
 */
 
-
+/*
 inline int CEntitySet::RegisterLight( CCopyEntity& rLightEntity, short sLightType )
 {
 	return m_pLightEntityManager->RegisterLight( rLightEntity, sLightType ); 
@@ -353,7 +353,7 @@ inline void CEntitySet::DisableLightForEntity()
 {
 	m_pLightEntityManager->DisableLightForEntity();
 }
-
+*/
 
 inline bool CEntitySet::IsCollisionEnabled( int group0, int group1 ) const
 {
@@ -391,7 +391,6 @@ inline int CEntitySet::GetEntityGroupFromName( const std::string& group_name )
 
 	return ENTITY_GROUP_INVALID_ID;
 }
-
 
 
 

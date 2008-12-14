@@ -14,6 +14,9 @@
 #include "Support/Log/DefaultLog.h"
 #include "Support/Macro.h"
 
+using namespace std;
+using namespace boost;
+
 
 /*
 int CBaseEntity::GetRenderMode()
@@ -591,3 +594,29 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 	}
 }
 
+
+/// Update light-related shader variables
+void /*CBaseEntity::*/SetLightsToShader( CCopyEntity *pCopyEnt )
+{
+	CShaderManager *pShaderMgr = NULL;
+	shared_ptr<CShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
+
+	int i, num_current_lights = pCopyEnt->GetNumLights();
+	CLightEntity *pLightEntity = NULL;
+
+	CShaderLightParamsWriter light_params_writer( pShaderLightMgr.get() );
+
+	for( i=0; i<num_current_lights; i++ )
+	{
+		CEntityHandle<CLightEntity>& light_entity = pCopyEnt->GetLight( i );
+		CLightEntity *pLightEntity = light_entity.GetRawPtr();
+		if( !pLightEntity )
+			continue;
+
+//		pLightEntity->SetLightToShader( pShaderLightMgr );
+
+		pLightEntity->GetLightObject()->Accept( light_params_writer );
+	}
+
+	pShaderLightMgr->CommitChanges();
+}

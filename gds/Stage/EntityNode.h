@@ -9,8 +9,6 @@
 #include "CopyEntity.h"
 #include "OverlapTestAABB.h"
 
-#include "LightEntity.h"
-
 
 /**
  * node for entity tree
@@ -26,15 +24,13 @@ class CEntityNode
 	short sFrontChild;
 	short sBackChild;
 	short sParent;
-//	CLightEntity *m_pLightEntity;	// list of light entities
-	CLightEntity m_LightEntityHead;
 
 	/// link list of entities
 	/// - The first entity of in the list is stored in m_EntityLinkHead.pNext
 	/// - m_EntityLinkHead.pOwner and m_EntityLinkHead.pPrev is always NULL
 	CLinkNode<CCopyEntity> m_EntityLinkHead;
 
-//	CLinkNode<CLightEntity> m_LightEntityLinkHead;
+	CLinkNode<CLightEntity> m_LightEntityLinkHead;
 
 	short m_sCellIndex;	// index to the corresponding cell - only valid for complete leaf entity node
 

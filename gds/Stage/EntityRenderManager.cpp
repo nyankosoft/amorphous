@@ -341,7 +341,7 @@ void CEntityRenderManager::RenderZSortTable()
 
 		while(pEntity)
 		{
-			if( pEntity->Lighting() )
+/*			if( pEntity->Lighting() )
 			{
 				if( pEntity->sState & CESTATE_LIGHT_INFORMATION_INVALID )
 				{	// need to update light information - find lights that matter to this entity
@@ -358,7 +358,7 @@ void CEntityRenderManager::RenderZSortTable()
 			{	// turn off lights
 				m_pEntitySet->DisableLightForEntity();
 			}
-
+*/
 			// render the entity
 			pEntity->Draw();
 
@@ -782,7 +782,7 @@ void CEntityRenderManager::ReleaseGraphicsResources()
 	for(i=0; i<num_base_entities; i++)
 		m_pEntitySet->m_vecpBaseEntity[i]->ReleaseGraphicsResources();
 
-	m_pEntitySet->m_pLightEntityManager->ReleaseGraphicsResources();
+//	m_pEntitySet->m_pLightEntityManager->ReleaseGraphicsResources();
 
 	// m_pCubeMapManager - graphics component
 	// m_pShadowManager - graphics component
@@ -797,7 +797,7 @@ void CEntityRenderManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 	for(i=0; i<num_base_entities; i++)
 		m_pEntitySet->m_vecpBaseEntity[i]->LoadGraphicsResources( rParam );
 
-	m_pEntitySet->m_pLightEntityManager->LoadGraphicsResources();
+//	m_pEntitySet->m_pLightEntityManager->LoadGraphicsResources();
 
 	// m_pCubeMapManager - graphics component
 	// m_pShadowManager - graphics component

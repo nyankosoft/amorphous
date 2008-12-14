@@ -17,7 +17,7 @@ class CEntityFactory
 
 	shared_prealloc_pool<CAlphaEntity> m_AlphaEntityPool;
 
-//	shared_prealloc_pool<CLightEntity> m_LightEntityPool;
+	shared_prealloc_pool<CLightEntity> m_LightEntityPool;
 
 public:
 

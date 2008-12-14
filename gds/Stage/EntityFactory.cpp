@@ -23,7 +23,7 @@ void CEntityFactory::Init()
 {
 	m_CopyEntityPool.init( DEFAULT_MAX_NUM_ENTITIES );
 	m_AlphaEntityPool.init( DEFAULT_MAX_NUM_ALPHA_ENTITIES );
-//	m_LightEntityPool.init( DEFAULT_MAX_NUM_LIGHT_ENTITIES );
+	m_LightEntityPool.init( DEFAULT_MAX_NUM_LIGHT_ENTITIES );
 }
 
 
@@ -35,8 +35,12 @@ shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_i
 		return m_CopyEntityPool.get_new_object();
 	case CCopyEntityTypeID::ALPHA_ENTITY:
 		return m_AlphaEntityPool.get_new_object();
-//	case CCopyEntityTypeID::LIGHT_ENTITY:
-//		return ???;
+	case CCopyEntityTypeID::LIGHT_ENTITY:
+	{
+		shared_ptr<CLightEntity> pLightEntity = m_LightEntityPool.get_new_object();
+		pLightEntity->m_pLightEntitySelf = pLightEntity;
+		return pLightEntity;
+	}
 
 	// if your derived entity does not require memory pool, you can
 	// simply allocate them on heap with default 'new' and return

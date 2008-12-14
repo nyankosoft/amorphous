@@ -6,6 +6,7 @@
 #include "Physics/Actor.h"
 using namespace physics;
 
+using namespace std;
 using namespace boost;
 
 

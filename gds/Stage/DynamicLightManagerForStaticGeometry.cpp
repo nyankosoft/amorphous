@@ -1,4 +1,3 @@
-
 #include "DynamicLightManagerForStaticGeometry.h"
 #include "LightEntityManager.h"
 #include "BSPMap.h"
@@ -32,7 +31,7 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLight( CLightEntity& rLigh
 	D3DXVECTOR3 vNormal, avAxis[2];
 	D3DXVECTOR3 p0,p1;
 
-	vLightPos = rLight.GetPosition();
+	vLightPos = rLight.GetWorldPose().vPosition;
 
 	MAPVERTEX *v = pMap->GetVertex() + rPolygon.sIndexOffset;
 
@@ -162,21 +161,38 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLights(CBSPMap *pMap)
 	float fRadius;
 	AABB3 aabb;
 	int iNumLitPolygons;
+	float rgba[4];
 	for( i=0; i<m_iNumCurrentDynamicLights; i++ )
 	{
 		pLight = m_apDynamicLight[i];
 
 		// set the light color to the pixel shader constant
+		if( pLight->GetLightObject() )
+		{
+			rgba[0] = pLight->GetLightObject()->Color.fRed;
+			rgba[1] = pLight->GetLightObject()->Color.fGreen;
+			rgba[2] = pLight->GetLightObject()->Color.fBlue;
+			rgba[3] = 1.0f;
+		}
+		else
+		{
+			rgba[0] = 1.0f;
+			rgba[1] = 1.0f;
+			rgba[2] = 1.0f;
+			rgba[3] = 1.0f;
+		}
+
 		hr = pEffect->SetValue( "g_vDLightMapColor",
-			                    pLight->GetColor(),
+			                    rgba,
 								sizeof(float) * 4 );
 
 //		m_veciLitPolygonIndex[i].clear();
 		m_veciLitPolygonIndex[i].resize(0);
-		vLightPos = pLight->GetPosition();
+		vLightPos = pLight->Position();
 		fRadius = pLight->GetRadius();
-		aabb.vMin = vLightPos + pLight->GetLocalAABB().vMin;
-		aabb.vMax = vLightPos + pLight->GetLocalAABB().vMax;
+		const AABB3& local_aabb = pLight->local_aabb;
+		aabb.vMin = vLightPos + local_aabb.vMin;
+		aabb.vMax = vLightPos + local_aabb.vMax;
 		pMap->GetIntersectingPolygons( vLightPos, fRadius, aabb, m_veciLitPolygonIndex[i] );
 
 		iNumLitPolygons = m_veciLitPolygonIndex[i].size();

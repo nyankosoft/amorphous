@@ -7,8 +7,17 @@
 class CCopyEntity;
 
 
+/// Used to access the private members of CCopyEntity from CEntityHandle
+class CEntityHandleBase
+{
+public:
+
+	inline bool IsEntityInUse( CCopyEntity *pEntity );
+};
+
+
 template<class T = CCopyEntity>
-class CEntityHandle
+class CEntityHandle : public CEntityHandleBase
 {
 	boost::weak_ptr<T> m_pEntity;
 
@@ -32,7 +41,7 @@ public:
 	/// Defined in CopyEntity.inl
 	inline boost::shared_ptr<T> Get();
 
-	CCopyEntity *GetRawPtr()
+	T *GetRawPtr()
 	{
 		boost::shared_ptr<T> pEntity = Get();
 		if( pEntity )

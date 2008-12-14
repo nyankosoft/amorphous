@@ -48,7 +48,7 @@ m_paEntityTree(NULL)
 
 	m_pCameraEntity = NULL;
 
-	m_pLightEntityManager = NULL;
+//	m_pLightEntityManager = NULL;
 
 	m_PhysOverlapTime = 0;
 
@@ -60,7 +60,7 @@ m_paEntityTree(NULL)
 	memset( m_EntityCollisionTable, 1, sizeof(char) * NUM_MAX_ENTITY_GROUP_IDS * NUM_MAX_ENTITY_GROUP_IDS );
 
 	// create light entity manager
-	InitLightEntityManager();
+//	InitLightEntityManager();
 
 	// make default entity tree
 /*	tree.m_paNode = new SNode_f [1];
@@ -104,7 +104,7 @@ CEntitySet::~CEntitySet()
 
 	m_vecpBaseEntity.resize( 0 );
 
-	SafeDelete( m_pLightEntityManager );
+//	SafeDelete( m_pLightEntityManager );
 	SafeDelete( m_pEntityFactory );
 	SafeDelete( m_pRenderManager );
 }
@@ -149,14 +149,14 @@ inline void CEntitySet::ReleaseTerminatedEntities()
 	}
 }
 
-
+/*
 void CEntitySet::InitLightEntityManager()
 {
 	SafeDelete( m_pLightEntityManager );
 	m_pLightEntityManager = new CLightEntityManager;
 	m_pLightEntityManager->Init( this );
 }
-
+*/
 
 void CEntitySet::SetEntityFactory( CEntityFactory *pEntityFactory )
 {
@@ -291,7 +291,7 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 
 }
 
-
+/*
 static float s_DirLightCheckDist = 100.0f;
 
 static short s_asEntityNodeStack[256];
@@ -300,7 +300,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 {
 	PROFILE_FUNCTION();
 
-//	if( 1 /* disable lights for entities */ )
+//	if( 1 ) // disable lights for entities
 //		return;
 
 
@@ -318,57 +318,69 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 //	tr.pSourceEntity = pEntity;
 
 	Vector3 vLightCenterPos, vLightToEntity, vLightRefPos;
-	float fMaxRangeSq, r, d;
+	float r, d;
 
+	CLinkNode<CLightEntity> *pLinkNode = NULL;
 	while(1)
 	{
-		if( pEntityNode->m_LightEntityHead.GetNext() )
-		{	// check trace from light to entity
+		for( pLinkNode = pEntityNode->m_LightEntityLinkHead.pNext;
+			 pLinkNode != NULL;
+			 pLinkNode = pLinkNode->pNext )
+//		for( pLightEntity = pEntityNode->m_LightEntityLinkHead.pNext;
+//			 pLightEntity != NULL;
+//			 pLightEntity = pLightEntity->GetNext() )
+		{
+			pLightEntity = pLinkNode->pOwner;
 
-			for( pLightEntity = pEntityNode->m_LightEntityHead.GetNext();
-				 pLightEntity != NULL;
-				 pLightEntity = pLightEntity->GetNext() )
-			{	// find lights that reach 'pEntity'
-				tr.pTouchedEntity = NULL;
-				tr.fFraction = 1.0f;
+			// find lights that reach 'pEntity'
+			bool lit = pLightEntity->ReachesEntity( pEntity );
 
-				if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
-				{
-					vLightCenterPos = pLightEntity->GetPosition();
-					tr.pvStart = &vLightCenterPos;
-				}
-				else if( pLightEntity->GetLightType() == D3DLIGHT_DIRECTIONAL )
-				{
-					vLightRefPos = pEntity->Position() - pLightEntity->GetHemisphericDirLight().vDirection * s_DirLightCheckDist;
-					tr.pvStart = &vLightRefPos;
-				}
-				else
-				{
-					MsgBox( "CEntitySet::UpdateLightForEntity() - invalid light entity" );
-					continue;
-				}
-
-				if( !IsSensible(vLightCenterPos) )
-					int iError = 1;
-
-				GetStage()->ClipTrace( tr );
-
-//				if( tr.pTouchedEntity != pEntity )
-				if( tr.fFraction < 1.0f )
-					continue;	// static geometry obstacle between light and entity
-
-				if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
-				{
-					fMaxRangeSq = pLightEntity->GetRadius() + pEntity->local_aabb.vMax.x;
-					fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
-					vLightToEntity = pEntity->Position() - vLightCenterPos;
-					if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
-						continue;	// out of the light range
-				}
-
+			if( lit )
+			{
 				// register light to the entity
-				pEntity->AddLightIndex( pLightEntity->GetIndex() );
+				pEntity->AddLight( CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() ) );
 			}
+
+//			tr.pTouchedEntity = NULL;
+//			tr.fFraction = 1.0f;
+//
+//			if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
+//			{
+//				vLightCenterPos = pLightEntity->GetPosition();
+//				tr.pvStart = &vLightCenterPos;
+//			}
+//			else if( pLightEntity->GetLightType() == D3DLIGHT_DIRECTIONAL )
+//			{
+//				vLightRefPos = pEntity->Position() - pLightEntity->GetHemisphericDirLight().vDirection * s_DirLightCheckDist;
+//				tr.pvStart = &vLightRefPos;
+//			}
+//			else
+//			{
+//				MsgBox( "CEntitySet::UpdateLightForEntity() - invalid light entity" );
+//				continue;
+//			}
+//
+//			if( !IsSensible(vLightCenterPos) )
+//				int iError = 1;
+//
+//			GetStage()->ClipTrace( tr );
+//
+////			if( tr.pTouchedEntity != pEntity )
+//			if( tr.fFraction < 1.0f )
+//				continue;	// static geometry obstacle between light and entity
+//
+//			if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
+//			{
+//				fMaxRangeSq = pLightEntity->GetRadius() + pEntity->local_aabb.vMax.x;
+//				fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
+//				vLightToEntity = pEntity->Position() - vLightCenterPos;
+//				if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
+//					continue;	// out of the light range
+//			}
+//
+//			// register light to the entity
+//			pEntity->AddLightIndex( pLightEntity->GetIndex() );
+
 		}
 
 		if( pEntityNode->leaf )
@@ -408,7 +420,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 		}
 	}
 }
-
+*/
 
 //==========================================================================
 //
@@ -501,7 +513,7 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 	WriteEntityTreeToFile( "debug/entity_tree - re-linked entities to the tree.txt" );
 
 	// re-link all the light entities to the new tree nodes
-	m_pLightEntityManager->RelinkLightEntities();
+//	m_pLightEntityManager->RelinkLightEntities();
 
 	return true;
 }
@@ -813,8 +825,8 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	// update light information
 	if( pNewCopyEnt->Lighting() )
 	{
-		pNewCopyEnt->ClearLightIndices();
-		UpdateLightInfo( pNewCopyEnt );
+		pNewCopyEnt->ClearLights();
+//		UpdateLightInfo( pNewCopyEnt );
 
 		pNewCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 	}
@@ -840,7 +852,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	// do additional initialization specific to each base entity.
 	rBaseEntity.InitCopyEntity( pNewCopyEnt );
 
-//	pNewCopyEnt->Init( rCopyEntityDesc );
+	pNewCopyEnt->Init( rCopyEntityDesc );
 
 	LOG_PRINT( " - created a copy entity of " + rBaseEntity.GetNameString() );
 
@@ -1020,6 +1032,9 @@ void CEntitySet::UpdatePhysics( float frametime )
 			 pEntity != NULL;
 			 pEntity = pEntity->m_pNextRawPtr )
 		{
+			if( pEntity->EntityFlag & BETYPE_COPY_PARENT_POSE )
+				pEntity->CopyParentPose();
+
 			if( pEntity->inuse && pEntity->pPhysicsActor )
                 pEntity->pBaseEntity->UpdatePhysics( pEntity, timestep );
 		}

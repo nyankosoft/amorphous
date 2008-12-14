@@ -1,186 +1,70 @@
-
-#ifndef  __SHADERLIGHTMANAGER_H__
-#define  __SHADERLIGHTMANAGER_H__
+#ifndef  __ShaderLightManager_H__
+#define  __ShaderLightManager_H__
 
 
 #include <d3dx9.h>
 
+#include "../fwd.h"
 #include "../HemisphericLight.h"
 
-class CGraphicsParameters;
+
+#include "Support/FixedVector.h"
+
+
+//typedef TCFixedVector<class A, int B> fixed_vector<A,B>;
+#define fixed_vector TCFixedVector
+
+
+class CLightCache
+{
+public:
+	fixed_vector<CDirectionalLight,8> vecDirecitonalLight;
+	fixed_vector<CPointLight,8> vecPointLight;
+	fixed_vector<CHemisphericDirectionalLight,8> vecHSDirecitonalLight;
+	fixed_vector<CHemisphericPointLight,8> vecHSPointLight;
+};
 
 
 class CShaderLightManager
 {
-//	static const int m_iNumMaxLights = 6;	error
-
-	enum eHandleType
-	{
-		LIGHT_POSITION = 0,
-		LIGHT_DIRECTION,
-		LIGHT_AMBIENT_COLOR,
-		LIGHT_DIFFUSE_COLOR,
-		LIGHT_RANGE,
-		LIGHT_ATTENUATION,
-		LIGHT_ATTENUATION0,
-		LIGHT_ATTENUATION1,
-		LIGHT_ATTENUATION2,
-
-		LIGHT_UPPER_DIFFUSE_COLOR,
-		LIGHT_LOWER_DIFFUSE_COLOR,
-
-		NUM_LIGHT_PROPERTY_HANDLES
-	};
-
-	enum eLightPropertyHandle
-	{
-		LPH_NUM_DIRECTIONAL_LIGHTS,
-		LPH_DIRECTIONAL_LIGHT_OFFSET,
-		LPH_NUM_POINT_LIGHTS,
-		LPH_POINT_LIGHT_OFFSET,
-		NUM_LIGHTING_PROPERTIES
-	};
-
-	enum eNumLights
-	{
-		NUM_MAX_LIGHTS = 8
-	};
-
 public:
 
-	CShaderLightManager();
+	CShaderLightManager() {}
+	virtual ~CShaderLightManager() {}
 
-	CShaderLightManager( LPD3DXEFFECT pEffect );
+	virtual void SetAmbientLight( const CAmbientLight& light ) {}
+	virtual void SetDirectionalLight( const CDirectionalLight& light ) {}
+	virtual void SetPointLight( const CPointLight& light ) {}
+	virtual void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light ) {}
+	virtual void SetHemisphericPointLight( const CHemisphericPointLight& light ) {}
+//	virtual void SetTriDirectionalLight( const CTriDirectionalLight& light ) {}
+//	virtual void SetTriPointLight( const CTriPointLight& light ) {}
 
-	~CShaderLightManager();
-
-	bool Init();
-
-	bool SetShaderHandles();
-
-	/// set light to shader variables
-	/// user is responsible for calling CommitChanges() after setting the light
-	inline void SetLight( const int index, const D3DLIGHT9& rLight );
-
-	/// set light to shader variables
-	/// user is responsible for calling CommitChanges() after setting the light
-	inline void SetLight( const int index, const CHemisphericPointLight& rLight );
-
-	inline void SetLight( const int index, const CHemisphericDirectionalLight& rLight );
-
-	/// set the number of directional lights
-	/// user is responsible for calling CommitChanges() after this call
-	inline void SetNumDirectionalLights( const int iNumDirectionalLights );
-
-	inline void SetDirectionalLightOffset( const int iDirectionalLightOffset );
-
-	/// set the number of point lights
-	/// user is responsible for calling CommitChanges() after this call
-	inline void SetNumPointLights( const int iNumPointLights );
-
-	inline void SetPointLightOffset( const int iPointLightOffset );
-
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-
-private:
-
-	/// controls overall configurations of lights (e.g. the number of directional/point lights)
-	D3DXHANDLE m_aPropertyHandle[NUM_LIGHTING_PROPERTIES];
-	
-	/// controls properties of each light
-	D3DXHANDLE m_aHandle[NUM_MAX_LIGHTS][NUM_LIGHT_PROPERTY_HANDLES];
-
-	/// copied from shader manager
-	/// must be updated when the shader is reloaded
-	LPD3DXEFFECT	m_pEffect;
+	virtual void CommitChanges() {}
 
 };
 
 
-//================================= inline implementations =================================
-
-
-inline void CShaderLightManager::SetLight( const int index, const D3DLIGHT9& rLight )
+class CShaderLightParamsWriter : public CLightVisitor
 {
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.Ambient, sizeof(D3DCOLORVALUE) );
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_DIFFUSE_COLOR], &rLight.Diffuse, sizeof(D3DCOLORVALUE) );
+	CShaderLightManager *m_pShaderLightManager;
 
-	if( rLight.Type == D3DLIGHT_POINT )
-	{
-		m_pEffect->SetValue( m_aHandle[index][LIGHT_RANGE], &rLight.Range, sizeof(float) );
-		m_pEffect->SetValue( m_aHandle[index][LIGHT_POSITION], &rLight.Position, sizeof(D3DVECTOR) );
+public:
 
-		float attenuation[3];
-		attenuation[0] = rLight.Attenuation0;
-		attenuation[1] = rLight.Attenuation1;
-		attenuation[2] = rLight.Attenuation2;
-		m_pEffect->SetValue( m_aHandle[index][LIGHT_ATTENUATION], attenuation, sizeof(float) * 3 );
+	CShaderLightParamsWriter( CShaderLightManager *pMgr )
+	:
+	m_pShaderLightManager(pMgr)
+	{}
 
-//		m_pEffect->SetValue( m_aHandle[index][LIGHT_ATTENUATION0], &rLight.Attenuation0, sizeof(float) );
-//		m_pEffect->SetValue( m_aHandle[index][LIGHT_ATTENUATION1], &rLight.Attenuation1, sizeof(float) );
-//		m_pEffect->SetValue( m_aHandle[index][LIGHT_ATTENUATION2], &rLight.Attenuation2, sizeof(float) );
-	}
-	else if( rLight.Type == D3DLIGHT_DIRECTIONAL )
-	{
-		m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.Direction, sizeof(D3DVECTOR) );
-	}
-
-}
-
-
-inline void CShaderLightManager::SetNumDirectionalLights( const int iNumDirectionalLights )
-{
-	m_pEffect->SetValue( m_aPropertyHandle[LPH_NUM_DIRECTIONAL_LIGHTS], &iNumDirectionalLights, sizeof(int) );
-}
-
-
-inline void CShaderLightManager::SetDirectionalLightOffset( const int iDirectionalLightOffset )
-{
-	m_pEffect->SetValue( m_aPropertyHandle[LPH_DIRECTIONAL_LIGHT_OFFSET], &iDirectionalLightOffset, sizeof(int) );
-}
-
-
-inline void CShaderLightManager::SetNumPointLights( const int iNumPointLights )
-{
-	m_pEffect->SetValue( m_aPropertyHandle[LPH_NUM_POINT_LIGHTS], &iNumPointLights, sizeof(int) );
-}
-
-
-inline void CShaderLightManager::SetPointLightOffset( const int iPointLightOffset )
-{
-	m_pEffect->SetValue( m_aPropertyHandle[LPH_POINT_LIGHT_OFFSET], &iPointLightOffset, sizeof(int) );
-}
-
-
-inline void CShaderLightManager::SetLight( const int index, const CHemisphericPointLight& rLight )
-{
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperColor, sizeof(float) * 4 );
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerColor, sizeof(float) * 4 );
-
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_POSITION], &rLight.vPosition, sizeof(float) * 3 );
-
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_ATTENUATION], rLight.fAttenuation, sizeof(float) * 3 );
-
-	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &ambient, sizeof(float) * 4 );
-//	m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
-
-	float range = 100.0f;
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_RANGE], &range, sizeof(float) );
-}
-
-
-inline void CShaderLightManager::SetLight( const int index, const CHemisphericDirectionalLight& rLight )
-{
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperColor, sizeof(float) * 4 );
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerColor, sizeof(float) * 4 );
-
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.vDirection, sizeof(float) * 3 );
-
-	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &ambient, sizeof(float) * 4 );
-//	m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
-}
+//	void VisitLight( CLight& light ) {}
+	void VisitAmbientLight( CAmbientLight& ambient_light ) { m_pShaderLightManager->SetAmbientLight( ambient_light ); }
+	void VisitPointLight( CPointLight& point_light )       { m_pShaderLightManager->SetPointLight( point_light ); }
+	void VisitDirectionalLight( CDirectionalLight& directional_light )        { m_pShaderLightManager->SetDirectionalLight( directional_light ); }
+	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { m_pShaderLightManager->SetHemisphericPointLight( hs_point_light ); }
+	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { m_pShaderLightManager->SetHemisphericDirectionalLight(  hs_directional_light ); }
+//	void VisitTriPointLight( CTriPointLight& tri_point_light ) { m_pShaderLightManager->Set?Light(  ); }
+//	void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) { m_pShaderLightManager->Set?Light(  ); }
+};
 
 
 #endif		/*  __ShaderLightManager_H__  */

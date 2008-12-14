@@ -20,6 +20,7 @@ public:
 	{
 		DEFAULT = 0,
 		ALPHA_ENTITY,
+		LIGHT_ENTITY,
 		USE_ID_OFFSET
 	};
 };
@@ -65,7 +66,7 @@ public:
 
 public:
 
-	inline CCopyEntityDesc()
+	CCopyEntityDesc()
 	{
 		SetDefault();
 	}

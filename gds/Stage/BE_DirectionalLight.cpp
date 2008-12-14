@@ -33,7 +33,7 @@ void CBE_DirectionalLight::Init()
 void CBE_DirectionalLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
-
+/*
 	short light_type;
 	if( m_TypeFlag & TYPE_STATIC )
 	{
@@ -71,6 +71,7 @@ void CBE_DirectionalLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	// save the index. index will be used later to remove the light
 	pCopyEnt->iExtraDataIndex = light_index;
+*/
 }
 
 

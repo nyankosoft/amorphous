@@ -1313,8 +1313,8 @@ void CBSPMap::MakeEntityTree( CBSPTree& bsptree )
 void CBSPMap::SetDynamicLightManager( CEntitySet* pEntitySet )
 {
 	SafeDelete( m_pDynamicLightManager );
-	m_pDynamicLightManager = new CDynamicLightManagerForStaticGeometry;
-	m_pDynamicLightManager->SetLightEntityManager( pEntitySet->GetLightEntityManager() );
+//	m_pDynamicLightManager = new CDynamicLightManagerForStaticGeometry;
+//	m_pDynamicLightManager->SetLightEntityManager( pEntitySet->GetLightEntityManager() );
 }
 
 

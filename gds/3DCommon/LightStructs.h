@@ -72,6 +72,8 @@ public:
 
 	virtual Vector3 GetDirection() const { return Vector3(0,-1,0); }
 
+	virtual void SetPosition( const Vector3& pos ) {}
+
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitLight( *this ); }
@@ -161,6 +163,8 @@ public:
 	}
 
 	virtual Vector3 GetPosition() const { return vPosition; }
+
+	virtual void SetPosition( const Vector3& pos ) { vPosition = pos; }
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 

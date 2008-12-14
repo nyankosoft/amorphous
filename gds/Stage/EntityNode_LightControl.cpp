@@ -1,47 +1,33 @@
 #include "EntityNode.h"
-#include "EntitySet.h"
 
+#include "Support/Vec3_StringAux.h"
+#include "EntitySet.h"
 #include "Stage.h"
 #include "BaseEntity.h"
-#include "bsptree.h"
-#include "trace.h"
 #include "LightEntity.h"
+//#include "bsptree.h"
+//#include "trace.h"
 //#include "ViewFrustumTest.h"
-#include "Support/Vec3_StringAux.h"
 
 
-void CEntityNode::LinkLightEntity_r(CLightEntity *pLightEntity, CEntityNode* paEntTree)
+void CEntityNode::LinkLightEntity_r( CLightEntity *pLightEntity, CEntityNode* paEntTree )
 {
 	float r = pLightEntity->GetRadius();
 
-	float d = m_Plane.GetDistanceFromPoint( pLightEntity->GetPosition() );
+	float d = m_Plane.GetDistanceFromPoint( pLightEntity->GetWorldPose().vPosition );
 
 	if( r < d )
 		paEntTree[sFrontChild].LinkLightEntity_r( pLightEntity, paEntTree );
 	else if( d < -r )
 		paEntTree[sBackChild].LinkLightEntity_r( pLightEntity, paEntTree );
 	else
-	{	// link the light entity to this node
+	{
+		// link the light entity to this node
+
 //		MsgBoxFmt( "linking a light(index:%d) to entity tree - r: %f, d: %f",
 //			pLightEntity->GetIndex(), r, d );
 
-		pLightEntity->SetPrev( &m_LightEntityHead );
-		pLightEntity->SetNext( m_LightEntityHead.GetNext() );
-		if( m_LightEntityHead.GetNext() )
-			m_LightEntityHead.GetNext()->SetPrev( pLightEntity );
-		m_LightEntityHead.SetNext( pLightEntity );
-
-/*		pLightEntity->SetPrev( NULL );
-		if( m_pLightEntity )
-		{	// some light entities have been already linked
-			pLightEntity->SetNext( m_pLightEntity );
-			m_pLightEntity->SetPrev( pLightEntity );
-		}
-		else
-		{	// the first link
-			pLightEntity->SetNext( NULL );
-		}
-		m_pLightEntity = pLightEntity;*/
+		m_LightEntityLinkHead.InsertNext( &(pLightEntity->m_LightEntityLink) );
 	}
 }
 

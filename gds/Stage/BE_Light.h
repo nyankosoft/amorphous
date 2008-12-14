@@ -1,23 +1,33 @@
-#ifndef __BE_LIGHT_H__
-#define __BE_LIGHT_H__
+#ifndef __BE_Light_H__
+#define __BE_Light_H__
 
 #include "BaseEntity.h"
 #include "CopyEntity.h"
+#include "LightEntity.h"
 
+#include "3DCommon/FloatRGBAColor.h"
 #include "3DCommon/HemisphericLight.h"
 #include "Support/Serialization/Serialization_Light.h"
 #include "Support/StringAux.h"
-
-#include <string>
+#include "Support/prealloc_pool.h"
 
 
 class CBE_Light : public CBaseEntity
 {
 protected:
 
+	prealloc_pool<CLightHolder> m_DirectionalLightPool;
+	prealloc_pool<CLightHolder> m_PointLightPool;
+	prealloc_pool<CLightHolder> m_HSDirectionalLightPool;
+	prealloc_pool<CLightHolder> m_HSPointLightPool;
+//	prealloc_pool<CTriPointLight> m_TriPointLightPool;
+//	prealloc_pool<CTriDirctionalLight> m_TriDirectionalLightPool;
+
 	unsigned int m_TypeFlag;
 
 	float m_afBaseColor[3];
+
+	SFloatRGBAColor m_aBaseColor[3];
 
 protected:
 
@@ -50,49 +60,20 @@ public:
 
 */
 
-	inline CBE_Light();
+	CBE_Light();
 	virtual ~CBE_Light() {}
 
-	virtual bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
-	{
-		std::string light_type;
+	virtual void Init();
 
-		if( scanner.TryScanLine( "LIGHT_TYPE", light_type ) )
-		{
-			// separate the string
-			std::vector<std::string> vecFlag;
-			SeparateStrings( vecFlag, light_type.c_str(), " |\n");
+	virtual void InitCopyEntity( CCopyEntity* pCopyEnt );
 
-			size_t i, num_strings = vecFlag.size();
-			for( i=0; i<num_strings; i++ )
-			{
-				if( vecFlag[i] == "STATIC" )		m_TypeFlag |= TYPE_STATIC;
-				else if( vecFlag[i] == "DYNAMIC" )	m_TypeFlag |= TYPE_DYNAMIC;
-				else if( vecFlag[i] == "FADEOUT" )	m_TypeFlag |= TYPE_FADEOUT;
-				else if( vecFlag[i] == "TIMER" )	m_TypeFlag |= TYPE_TIMER;
-				else if( vecFlag[i] == "GLARE" )	m_TypeFlag |= TYPE_GLARE;
-			};
-			
-			return true;
-		}
+	virtual bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 
-		if( scanner.TryScanLine( "BASE_COLOR", m_afBaseColor[0], m_afBaseColor[1], m_afBaseColor[2] ) ) return true;
+	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-		return false;
-	}
+	CLightHolder *GetPooledLight( CLight::Type light_type );
 
-	virtual void Serialize( IArchive& ar, const unsigned int version )
-	{
-		CBaseEntity::Serialize( ar, version );
-
-		ar & m_TypeFlag;
-
-//		if( ar.GetMode() == IArchive::MODE_INPUT )
-//			MsgBoxFmt( "loaded light type for %s: %d", m_strName.c_str(), m_TypeFlag );
-
-		for( int i=0; i<3; i++ )
-            ar & m_afBaseColor[i];
-	}
+	void ReleasePooledLight( CLightHolder *pLightHolder );
 
 	static inline void SetAttenuationFactors( CCopyEntity *pEntity, float a0, float a1, float a2 )
 	{
@@ -103,12 +84,4 @@ public:
 };
 
 
-inline CBE_Light::CBE_Light()
-{
-	m_TypeFlag = 0;
-
-	m_afBaseColor[0] = m_afBaseColor[1] = m_afBaseColor[2] = 1.0f;
-}
-
-
-#endif  /*  __BE_LIGHT_H__  */
+#endif  /*  __BE_Light_H__  */

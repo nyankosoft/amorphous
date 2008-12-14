@@ -321,18 +321,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\LightEntity.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Stage\LightEntityManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Stage\LightEntityManager.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Stage\OverlapTestAABB.h"
 					>
 				</File>
@@ -832,6 +820,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\gds\Stage\BE_Light.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Stage\BE_Light.h"
 						>
 					</File>
@@ -1053,6 +1045,14 @@
 					</File>
 					<File
 						RelativePath="..\..\gds\Stage\CopyEntityDescFileArchive.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Stage\LightEntity.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Stage\LightEntity.h"
 						>
 					</File>
 				</Filter>
