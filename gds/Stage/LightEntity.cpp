@@ -142,6 +142,9 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 		if( m_pLightHolder )
 			m_pLightHolder->pLight->Accept( initializer );
 	}
+
+	// link to the tree
+	GetStage()->GetEntitySet()->LinkLightEntity( this );
 }
 
 

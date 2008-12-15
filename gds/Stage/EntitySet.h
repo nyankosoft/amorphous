@@ -13,13 +13,13 @@
 #include "EntityNode.h"
 #include "EntityFactory.h"
 #include "BaseEntityHandle.h"
-//#include "LightEntityManager.h"
 #include "EntityRenderManager.h"
 #include "OverlapTestAABB.h"
 
 #include "3DCommon/Camera.h"
 
 class CBSPTree;
+
 
 
 
@@ -132,11 +132,12 @@ public:
 	void Render( CCamera& rCam );
 
 	//============ functions for lighting control============
+	inline void LinkLightEntity(CLightEntity *pLightEntity)	{ m_paEntityTree->LinkLightEntity_r(pLightEntity, m_paEntityTree); }
+
 /*	inline int RegisterLight( CCopyEntity& rLightEntity, short sLightType );
 	inline void DeleteLight( int light_index, short sLightType );
 	inline CLightEntity *GetLightEntity( int light_index );
 	inline void SetLightsForEntity( CCopyEntity *pEntity )	{ m_pLightEntityManager->SetLightsForEntity( pEntity ); }
-	inline void LinkLightEntity(CLightEntity *pLightEntity)	{ m_paEntityTree->LinkLightEntity_r(pLightEntity, m_paEntityTree); }
 	inline void EnableLightForEntity();
 	inline void DisableLightForEntity();
 	void UpdateLightForEntity(CCopyEntity *pEntity);

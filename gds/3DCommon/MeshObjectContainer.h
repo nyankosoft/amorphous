@@ -3,6 +3,7 @@
 
 #include "TextureHandle.h"
 #include "MeshObjectHandle.h"
+#include "ShaderHandle.h"
 #include "Shader/ShaderTechniqueHandle.h"
 #include "Shader/Serialization_ShaderTechniqueHandle.h"
 #include "Support/2DArray.h"
@@ -30,6 +31,10 @@ public:
 	/// - column: corresponds to resolution (intended to be shader version of LOD)
 	C2DArray<CShaderTechniqueHandle> m_ShaderTechnique;
 
+	std::string m_ShaderFilepath;
+
+	CShaderHandle m_ShaderHandle;
+
 	std::vector<std::string> m_vecExtraTextureFilepath;
 
 	/// holds textures used for any purposes other than
@@ -49,6 +54,7 @@ public:
 		ar & m_MeshDesc;
 		ar & m_ShaderTechnique;
 		ar & m_vecExtraTextureFilepath;
+		ar & m_ShaderFilepath;
 	}
 };
 

@@ -153,6 +153,10 @@ protected:
 	/// \retval higher_values shader for lower resolution model
 	virtual int CalcShaderLOD( CCopyEntity* pCopyEnt ) { return 0; }
 
+	void SetLightsToShader( CCopyEntity& entity );
+
+	void SetLights( CCopyEntity& entity );
+
 protected:
 
 	/// flag that defines various attributes of a base entity

@@ -596,19 +596,19 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 
 
 /// Update light-related shader variables
-void /*CBaseEntity::*/SetLightsToShader( CCopyEntity *pCopyEnt )
+void CBaseEntity::SetLightsToShader( CCopyEntity& entity )
 {
 	CShaderManager *pShaderMgr = NULL;
 	shared_ptr<CShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
 
-	int i, num_current_lights = pCopyEnt->GetNumLights();
+	int i, num_current_lights = entity.GetNumLights();
 	CLightEntity *pLightEntity = NULL;
 
 	CShaderLightParamsWriter light_params_writer( pShaderLightMgr.get() );
 
 	for( i=0; i<num_current_lights; i++ )
 	{
-		CEntityHandle<CLightEntity>& light_entity = pCopyEnt->GetLight( i );
+		CEntityHandle<CLightEntity>& light_entity = entity.GetLight( i );
 		CLightEntity *pLightEntity = light_entity.GetRawPtr();
 		if( !pLightEntity )
 			continue;
@@ -619,4 +619,29 @@ void /*CBaseEntity::*/SetLightsToShader( CCopyEntity *pCopyEnt )
 	}
 
 	pShaderLightMgr->CommitChanges();
+}
+
+
+void CBaseEntity::SetLights( CCopyEntity& entity )
+{
+	if( entity.Lighting() )
+	{
+		if( entity.sState & CESTATE_LIGHT_INFORMATION_INVALID )
+		{
+			// need to update light information - find lights that reaches to this entity
+			entity.ClearLights();
+//			m_pStage->GetEntitySet()->UpdateLightInfo( entity );
+			entity.sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
+		}
+
+		SetLightsToShader( entity );
+
+		// turn on lights that reach 'pCopyEnt'
+//		m_pEntitySet->EnableLightForEntity();
+//		m_pEntitySet->SetLightsForEntity( pEntity );
+	}
+	else
+	{	// turn off lights
+//		m_pEntitySet->DisableLightForEntity();
+	}
 }
