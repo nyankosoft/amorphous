@@ -224,6 +224,18 @@ void CBaseEntity::Init3DModel()
 
 	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 
+	// shader
+	// - load shader of its own if the shader filepath has been specified.
+	// - borrow the fallback shader of entity render manager if no shader
+	//   filepath has been specified.
+
+	if( 0 < m_MeshProperty.m_ShaderFilepath.length() )
+		m_MeshProperty.m_ShaderHandle.Load( m_MeshProperty.m_ShaderFilepath );
+	else
+		m_MeshProperty.m_ShaderHandle = m_pStage->GetEntitySet()->GetRenderManager()->GetFallbackShader();
+
+	// alpha blending
+
 	if( pMesh && (m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS) )
 	{
 		const float error_for_alpha = 0.0001f;

@@ -171,6 +171,8 @@ public:
 
 	bool LoadFallbackShader();
 
+	const CShaderHandle& GetFallbackShader() { return m_FallbackShader; }
+
     void UpdateEntityTree( CEntityNode* pRootNode, int num_nodes );
 
 	void AddSweepRenderEntity( CBaseEntity* pBaseEntity );

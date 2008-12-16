@@ -309,6 +309,8 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 		return;
 	}
 
+	SetLights( *pCopyEnt );
+
 //	set render states and the world matrix for the fixed function pipeline
 
 //	HRESULT hr;
@@ -598,7 +600,7 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 /// Update light-related shader variables
 void CBaseEntity::SetLightsToShader( CCopyEntity& entity )
 {
-	CShaderManager *pShaderMgr = NULL;
+	CShaderManager *pShaderMgr = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	shared_ptr<CShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
 
 	int i, num_current_lights = entity.GetNumLights();
