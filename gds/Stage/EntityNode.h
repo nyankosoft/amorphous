@@ -75,7 +75,7 @@ public:
 
 	/// checks if the light is reaching the entity
 	/// if it is true, registers the light index to the entity
-//	void CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree );
+	void CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree );
 
 	friend class CEntityRenderManager;
 	friend class CEntitySet;

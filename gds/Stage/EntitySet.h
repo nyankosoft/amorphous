@@ -141,9 +141,9 @@ public:
 	inline void EnableLightForEntity();
 	inline void DisableLightForEntity();
 	void UpdateLightForEntity(CCopyEntity *pEntity);
-	inline void UpdateLightInfo( CCopyEntity *pEntity )		{ UpdateLightForEntity(pEntity); }//m_paEntityTree->CheckLight_r( pEntity, m_paEntityTree ); }
 	CLightEntityManager *GetLightEntityManager() { return m_pLightEntityManager; }
 */
+	void UpdateLights( CCopyEntity *pEntity ) { m_paEntityTree->CheckLight_r( pEntity, m_paEntityTree ); }
 
 	bool MakeEntityTree( CBSPTree* pSrcBSPTree );
 

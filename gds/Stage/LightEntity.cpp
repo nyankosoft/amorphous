@@ -208,6 +208,14 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	}*/
 }
 
+
+void CLightEntity::AddLightIfReachesEntity( CCopyEntity *pEntity )
+{
+	if( ReachesEntity( pEntity ) )
+		pEntity->AddLight( CEntityHandle<CLightEntity>( m_pLightEntitySelf ) );
+}
+
+
 void CLightEntity::TerminateDerived()
 {
 	m_LightEntityLink.Unlink();

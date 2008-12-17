@@ -291,136 +291,6 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 
 }
 
-/*
-static float s_DirLightCheckDist = 100.0f;
-
-static short s_asEntityNodeStack[256];
-
-void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
-{
-	PROFILE_FUNCTION();
-
-//	if( 1 ) // disable lights for entities
-//		return;
-
-
-	int iNumStackedNodes = 0;
-//	static short s_asEntityNodeStack[256];
-
-	CEntityNode *pEntityNode = m_paEntityTree;
-	CLightEntity* pLightEntity;
-
-	STrace tr;
-	tr.bvType = BVTYPE_DOT;
-	tr.pvGoal = &pEntity->Position();
-//	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
-	tr.sTraceType = TRACETYPE_IGNORE_ALL_ENTITIES;
-//	tr.pSourceEntity = pEntity;
-
-	Vector3 vLightCenterPos, vLightToEntity, vLightRefPos;
-	float r, d;
-
-	CLinkNode<CLightEntity> *pLinkNode = NULL;
-	while(1)
-	{
-		for( pLinkNode = pEntityNode->m_LightEntityLinkHead.pNext;
-			 pLinkNode != NULL;
-			 pLinkNode = pLinkNode->pNext )
-//		for( pLightEntity = pEntityNode->m_LightEntityLinkHead.pNext;
-//			 pLightEntity != NULL;
-//			 pLightEntity = pLightEntity->GetNext() )
-		{
-			pLightEntity = pLinkNode->pOwner;
-
-			// find lights that reach 'pEntity'
-			bool lit = pLightEntity->ReachesEntity( pEntity );
-
-			if( lit )
-			{
-				// register light to the entity
-				pEntity->AddLight( CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() ) );
-			}
-
-//			tr.pTouchedEntity = NULL;
-//			tr.fFraction = 1.0f;
-//
-//			if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
-//			{
-//				vLightCenterPos = pLightEntity->GetPosition();
-//				tr.pvStart = &vLightCenterPos;
-//			}
-//			else if( pLightEntity->GetLightType() == D3DLIGHT_DIRECTIONAL )
-//			{
-//				vLightRefPos = pEntity->Position() - pLightEntity->GetHemisphericDirLight().vDirection * s_DirLightCheckDist;
-//				tr.pvStart = &vLightRefPos;
-//			}
-//			else
-//			{
-//				MsgBox( "CEntitySet::UpdateLightForEntity() - invalid light entity" );
-//				continue;
-//			}
-//
-//			if( !IsSensible(vLightCenterPos) )
-//				int iError = 1;
-//
-//			GetStage()->ClipTrace( tr );
-//
-////			if( tr.pTouchedEntity != pEntity )
-//			if( tr.fFraction < 1.0f )
-//				continue;	// static geometry obstacle between light and entity
-//
-//			if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
-//			{
-//				fMaxRangeSq = pLightEntity->GetRadius() + pEntity->local_aabb.vMax.x;
-//				fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
-//				vLightToEntity = pEntity->Position() - vLightCenterPos;
-//				if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
-//					continue;	// out of the light range
-//			}
-//
-//			// register light to the entity
-//			pEntity->AddLightIndex( pLightEntity->GetIndex() );
-
-		}
-
-		if( pEntityNode->leaf )
-		{
-			if( 0 < iNumStackedNodes )
-			{	// see if there is any unchecked entity node left in stack
-				iNumStackedNodes--;
-				pEntityNode = &m_paEntityTree[ s_asEntityNodeStack[iNumStackedNodes] ];
-				continue;
-			}
-			else
-				break;
-		}
-
-		r = pEntity->local_aabb.vMax.x;
-
-		d = pEntityNode->m_Plane.GetDistanceFromPoint( pEntity->Position() );
-
-		if( r < d )
-		{
-			pEntityNode = &m_paEntityTree[pEntityNode->sFrontChild];
-			continue;
-		}	
-		else if( d < -r )
-		{
-			pEntityNode = &m_paEntityTree[pEntityNode->sBackChild];
-			continue;
-		}
-		else
-		{	// need check both nodes
-
-			// 1. store the index to the back child into stack - this will be handled later
-			s_asEntityNodeStack[iNumStackedNodes++] = pEntityNode->sBackChild;
-
-			// 2. recurse down to the front child 
-			pEntityNode = &m_paEntityTree[pEntityNode->sFrontChild];
-		}
-	}
-}
-*/
 
 //==========================================================================
 //
@@ -1294,6 +1164,137 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 	fclose(fp);
 }
 
+
+/*
+static float s_DirLightCheckDist = 100.0f;
+
+static short s_asEntityNodeStack[256];
+
+void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
+{
+	PROFILE_FUNCTION();
+
+//	if( 1 ) // disable lights for entities
+//		return;
+
+
+	int iNumStackedNodes = 0;
+//	static short s_asEntityNodeStack[256];
+
+	CEntityNode *pEntityNode = m_paEntityTree;
+	CLightEntity* pLightEntity;
+
+	STrace tr;
+	tr.bvType = BVTYPE_DOT;
+	tr.pvGoal = &pEntity->Position();
+//	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
+	tr.sTraceType = TRACETYPE_IGNORE_ALL_ENTITIES;
+//	tr.pSourceEntity = pEntity;
+
+	Vector3 vLightCenterPos, vLightToEntity, vLightRefPos;
+	float r, d;
+
+	CLinkNode<CLightEntity> *pLinkNode = NULL;
+	while(1)
+	{
+		for( pLinkNode = pEntityNode->m_LightEntityLinkHead.pNext;
+			 pLinkNode != NULL;
+			 pLinkNode = pLinkNode->pNext )
+//		for( pLightEntity = pEntityNode->m_LightEntityLinkHead.pNext;
+//			 pLightEntity != NULL;
+//			 pLightEntity = pLightEntity->GetNext() )
+		{
+			pLightEntity = pLinkNode->pOwner;
+
+			// find lights that reach 'pEntity'
+			bool lit = pLightEntity->ReachesEntity( pEntity );
+
+			if( lit )
+			{
+				// register light to the entity
+				pEntity->AddLight( CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() ) );
+			}
+
+//			tr.pTouchedEntity = NULL;
+//			tr.fFraction = 1.0f;
+//
+//			if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
+//			{
+//				vLightCenterPos = pLightEntity->GetPosition();
+//				tr.pvStart = &vLightCenterPos;
+//			}
+//			else if( pLightEntity->GetLightType() == D3DLIGHT_DIRECTIONAL )
+//			{
+//				vLightRefPos = pEntity->Position() - pLightEntity->GetHemisphericDirLight().vDirection * s_DirLightCheckDist;
+//				tr.pvStart = &vLightRefPos;
+//			}
+//			else
+//			{
+//				MsgBox( "CEntitySet::UpdateLightForEntity() - invalid light entity" );
+//				continue;
+//			}
+//
+//			if( !IsSensible(vLightCenterPos) )
+//				int iError = 1;
+//
+//			GetStage()->ClipTrace( tr );
+//
+////			if( tr.pTouchedEntity != pEntity )
+//			if( tr.fFraction < 1.0f )
+//				continue;	// static geometry obstacle between light and entity
+//
+//			if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
+//			{
+//				fMaxRangeSq = pLightEntity->GetRadius() + pEntity->local_aabb.vMax.x;
+//				fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
+//				vLightToEntity = pEntity->Position() - vLightCenterPos;
+//				if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
+//					continue;	// out of the light range
+//			}
+//
+//			// register light to the entity
+//			pEntity->AddLightIndex( pLightEntity->GetIndex() );
+
+		}
+
+		if( pEntityNode->leaf )
+		{
+			if( 0 < iNumStackedNodes )
+			{	// see if there is any unchecked entity node left in stack
+				iNumStackedNodes--;
+				pEntityNode = &m_paEntityTree[ s_asEntityNodeStack[iNumStackedNodes] ];
+				continue;
+			}
+			else
+				break;
+		}
+
+		r = pEntity->local_aabb.vMax.x;
+
+		d = pEntityNode->m_Plane.GetDistanceFromPoint( pEntity->Position() );
+
+		if( r < d )
+		{
+			pEntityNode = &m_paEntityTree[pEntityNode->sFrontChild];
+			continue;
+		}	
+		else if( d < -r )
+		{
+			pEntityNode = &m_paEntityTree[pEntityNode->sBackChild];
+			continue;
+		}
+		else
+		{	// need check both nodes
+
+			// 1. store the index to the back child into stack - this will be handled later
+			s_asEntityNodeStack[iNumStackedNodes++] = pEntityNode->sBackChild;
+
+			// 2. recurse down to the front child 
+			pEntityNode = &m_paEntityTree[pEntityNode->sFrontChild];
+		}
+	}
+}
+*/
 
 
 /*

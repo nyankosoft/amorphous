@@ -145,6 +145,8 @@ public:
 
 	bool ReachesEntity( CCopyEntity *pEntity );
 
+	void AddLightIfReachesEntity( CCopyEntity *pEntity );
+
 	inline CLightEntity *GetNextLight() { return m_LightEntityLink.pNext->pOwner; }
 
 	void TerminateDerived();

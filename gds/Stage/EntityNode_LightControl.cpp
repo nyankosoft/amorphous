@@ -31,65 +31,44 @@ void CEntityNode::LinkLightEntity_r( CLightEntity *pLightEntity, CEntityNode* pa
 	}
 }
 
-/*
-void CEntityNode::CheckLight_r(CCopyEntity *pEntity, CEntityNode* paEntTree)
+
+void CEntityNode::CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree )
 {
-	if( m_LightEntityHead.GetNext() )
-	{	// check trace from light to entity
-		STrace tr;
-		tr.bvType = BVTYPE_DOT;
-		tr.pvGoal = &pEntity->Position();
-//		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
-		tr.sTraceType = TRACETYPE_IGNORE_ALL_ENTITIES;
-//		tr.pSourceEntity = pEntity;
+	float fMaxRange, fMaxRangeSq;
+	Vector3 vLightToEntity;
 
-		Vector3 vLightCenterPos, vLightToEntity;
+	CLinkNode<CLightEntity> *pLinkNode;
+	CLightEntity* pLightEntity;
+	for( pLinkNode = m_LightEntityLinkHead.pNext;
+		 pLinkNode;
+		 pLinkNode = pLinkNode->pNext )
+	{
+		pLightEntity = pLinkNode->pOwner;
 
-		CLightEntity* pLightEntity;
-		for( pLightEntity = m_LightEntityHead.GetNext();
-			 pLightEntity != NULL;
-			 pLightEntity = pLightEntity->GetNext() )
-		{	// find lights that reach 'pEntity'
-			tr.pTouchedEntity = NULL;
-			tr.fFraction = 1.0f;
-			vLightCenterPos = pLightEntity->GetPosition();
-			tr.pvStart = &vLightCenterPos;
-
-			m_pEntitySet->GetStage()->ClipTrace( tr );
-
-//			if( tr.pTouchedEntity != pEntity )
-			if( tr.fFraction < 1.0f )
-				continue;	// static geometry obstacle between light and entity
-
-			float fMaxRangeSq = pLightEntity->GetRadius() + pEntity->local_aabb.vMax.x;
-			fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
-			vLightToEntity = pEntity->Position() - vLightCenterPos;
+		if( pLightEntity->GetLightType() == CLight::POINT
+		 || pLightEntity->GetLightType() == CLight::HEMISPHERIC_POINT
+		 || pLightEntity->GetLightType() == CLight::TRI_POINT )
+		{
+			fMaxRange = pLightEntity->GetRadius() + pEntity->GetRadius();
+			fMaxRangeSq = fMaxRange * fMaxRange;
+			vLightToEntity = pEntity->Position() - pLightEntity->Position();
 			if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
 				continue;	// out of the light range
-
-			// light is reaching the entity - register its index
-//			pEntity->AddLightIndex( pLightEntity->GetIndex() );
-
-			int light_type = pLightEntity->GetLightEntityType();
-			CLightEntityManager *pLightManager = m_pEntitySet->GetLightEntityManager();
-			if( light_type == D3DLIGHT_POINT )
-			{
-				// point light - simply add to the end of the index array
-				pEntity->AddLightIndex( pLightEntity->GetIndex() );
-			}
-			else if( light_type == D3DLIGHT_DIRECTIONAL )
-			{
-				// directional light - must come before point lights
-			//	pEntity->InsertLightIndex( 0, pLightEntity->GetIndex() );
-			}
-
 		}
+
+//		bool light_reaches_entity
+//			= pLightEntity->ReachesEntity( pEntity );
+
+//		if( light_reaches_entity )
+//			pEntity->AddLight( pLightEntity->... ) /// how can I get the weak_ptr of pLightEntity???
+
+		pLightEntity->AddLightIfReachesEntity( pEntity );
 	}
 
 	if( this->leaf )
 		return;
 
-	float r = pEntity->local_aabb.vMax.x;
+	float r = pEntity->GetRadius();
 
 	float d = m_Plane.GetDistanceFromPoint( pEntity->Position() );
 
@@ -98,10 +77,11 @@ void CEntityNode::CheckLight_r(CCopyEntity *pEntity, CEntityNode* paEntTree)
 	else if( d < -r )
 		paEntTree[sBackChild].CheckLight_r( pEntity, paEntTree );
 	else
-	{	// need check both nodes
+	{
+		// need to check both nodes
 		paEntTree[sFrontChild].CheckLight_r( pEntity, paEntTree );
 		paEntTree[sBackChild].CheckLight_r( pEntity, paEntTree );
 	}
 
 }
-*/
+
