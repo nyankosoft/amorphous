@@ -6,7 +6,6 @@
 
 #include "Serialization_BaseEntityHandle.h"
 
-#include  "3DCommon/Shader/Shader.h"
 #include  "3DCommon/Shader/ShaderManager.h"
 #include  "3DCommon/D3DXMeshObject.h"
 

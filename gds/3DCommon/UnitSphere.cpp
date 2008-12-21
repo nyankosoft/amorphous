@@ -1,8 +1,7 @@
-
 #include "UnitSphere.h"
+#include "3DCommon/Direct3D9.h"
+#include "3DCommon/FVF_ColorVertex.h"
 
-#include "../3DCommon/Direct3D9.h"
-#include "../3DCommon/FVF_ColorVertex.h"
 
 CUnitSphere::CUnitSphere()
 {

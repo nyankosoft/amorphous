@@ -658,12 +658,6 @@ void CScreenEffectManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 //	m_pSimpleMotionBlur - graphics component
 }
 
-/*
-void CScreenEffectManager::SetShaderManager()
-{
-	CShader::Get()->SetShaderManager( m_pShaderManager );
-}*/
-
 
 /// add render tasks that are done after the scene is rendered
 /// make sure render tasks for scene are already registered

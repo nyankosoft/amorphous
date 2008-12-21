@@ -1,5 +1,5 @@
-
 #include "Skybox.h"
+#include "3DCommon/Direct3D9.h"
 
 CSkybox::CSkybox()
 {
@@ -11,7 +11,7 @@ CSkybox::~CSkybox()
 }
 
 
-void CSkybox::Render( D3DXVECTOR3& rvOffset )
+void CSkybox::Render( Vector3& rvOffset )
 {
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );

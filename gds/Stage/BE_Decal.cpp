@@ -6,7 +6,6 @@
 
 #include "3DCommon/FVF_TextureVertex.h"
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
 #include "GameCommon/MTRand.h"
 

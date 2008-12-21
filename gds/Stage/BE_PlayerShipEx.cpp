@@ -1,16 +1,12 @@
 #include "BE_PlayerShip.h"
 #include "EntitySet.h"
 #include "Stage.h"
-//#include "../Game_Common/WeaponSystem.h"
-//#include "../Stage/ScreenEffectManager.h"
-//#include "GameMessage.h"
-
-//#include "../Stage/BE_LaserDot.h"
-
-#include "../3DCommon/Direct3D9.h"
-//#include "../3DCommon/D3DXMeshObject.h"
-//#include "../Support/memory_helpers.h"
 #include "trace.h"
+#include "3DCommon/Direct3D9.h"
+
+
+using namespace std;
+
 
 void CBE_PlayerShip::MoveEx(CCopyEntity *pEntity)
 {

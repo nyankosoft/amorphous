@@ -1,7 +1,6 @@
 #ifndef  __SKYBOX_H__
 #define  __SKYBOX_H__
 
-#include "../3DCommon/Direct3D9.h"
 #include "BSPStaticGeometry.h"
 
 #define  MAX_SKYBOXPOLYGONS	6
@@ -19,7 +18,7 @@ public:
 	~CSkybox();
 
 	/// render skybox with fixed function shader
-	void Render( D3DXVECTOR3& rvOffset = D3DXVECTOR3(0,0,0) );
+	void Render( Vector3& rvOffset = D3DXVECTOR3(0,0,0) );
 
 	/// render skybox with HLSL
 //	void Render_Effect( D3DXVECTOR3& rvOffset = D3DXVECTOR3(0,0,0) );

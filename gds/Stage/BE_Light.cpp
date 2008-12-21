@@ -3,7 +3,6 @@
 #include "GameMessage.h"
 #include "Stage.h"
 #include "../3DCommon/Camera.h"
-#include "../3DCommon/Shader/Shader.h"
 #include "../3DCommon/Shader/ShaderManager.h"
 #include "../3DMath/MathMisc.h"
 

@@ -5,7 +5,6 @@
 #include "CopyEntity.h"
 #include "trace.h"
 #include "Stage.h"
-#include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
 #include "3DCommon/D3DXMeshObjectBase.h"
 #include "Support/memory_helpers.h"

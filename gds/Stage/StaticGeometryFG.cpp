@@ -1,7 +1,6 @@
 #include "StaticGeometryFG.h"
 #include "StaticGeometryArchiveFG.h"
 
-#include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/Camera.h"
@@ -236,10 +235,6 @@ void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
 
 bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int EffectFlag )
 {
-	// the shader manager is not set to the shader singleton
-	// since it is used only by the CStaticGeometryFG and not by any ohter entities, etc.
-//	CShader::Get()->SetShaderManager( m_pShaderManager );
-
 	D3DXMATRIX matWorld, matCamera, matProj;
 	D3DXMatrixIdentity( &matWorld );
 	rCamera.GetCameraMatrix( matCamera );

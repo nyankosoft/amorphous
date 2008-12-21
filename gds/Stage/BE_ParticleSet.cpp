@@ -5,7 +5,6 @@
 #include "ScreenEffectManager.h"
 
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
 #include "3DCommon/BillboardArrayMesh.h"
 

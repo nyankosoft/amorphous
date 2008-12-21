@@ -1,6 +1,6 @@
 #include "PseudoNoiseEffect.h"
-#include "../3DCommon/Direct3D9.h"
-#include "../3DCommon/D3DMisc.h"
+#include "3DCommon/Direct3D9.h"
+#include "3DCommon/D3DMisc.h"
 //#include "../3DCommon/Shader/ShaderManager.h"
 #include "../GameCommon/MTRand.h"
 

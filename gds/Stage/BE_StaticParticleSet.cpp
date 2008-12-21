@@ -7,7 +7,6 @@
 #include "ScreenEffectManager.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/RectTriListIndex.h"
-#include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
 #include "GameCommon/MTRand.h"
 
@@ -235,10 +234,10 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 	// don't wirte to z-buffer so that smoke should be painted on one another
 	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
 
-	CShaderManager *pShaderManager = NULL;
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
 	UINT pass, cPasses;
-	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
+	if( pShaderManager &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
 		pEffect->SetMatrix( "WorldRot", &matWorld );

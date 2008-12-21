@@ -3,9 +3,9 @@
 
 #include "BE_Light.h"
 #include "BEC_Billboard.h"
-#include "../3DCommon/FVF_TextureVertex.h"
-#include "../3DCommon/TextureHandle.h"
-#include "../3DCommon/HemisphericLight.h"
+#include "3DCommon/FVF_TextureVertex.h"
+#include "3DCommon/TextureHandle.h"
+#include "3DCommon/HemisphericLight.h"
 
 #include <string>
 

@@ -12,7 +12,6 @@
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DXMeshObject.h"
 #include "3DCommon/3DGameMath.h"
-#include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManager.h"
 
 #include "Sound/SoundManager.h"
