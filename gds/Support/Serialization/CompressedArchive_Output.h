@@ -1,11 +1,9 @@
-
 #ifndef  __CompressedArchive_Output_H__
 #define  __CompressedArchive_Output_H__
 
 #include <vector>
 #include <iostream>
 #include <fstream>
-using namespace std;
 
 #include "BinaryArchive_Output.h"
 #include "ArchiveObjectBase.h"
@@ -40,20 +38,20 @@ public:
 	/// load archive objects saved in binary format file
 	bool operator<< ( IArchiveObjectBase& obj )
 	{
-		m_Buffer.buffer().reserve( 0xffff );
-		m_Buffer.reset_pos();
+		m_Stream.m_Buffer.buffer().reserve( 0xffff );
+		m_Stream.m_Buffer.reset_pos();
 
-		// serialize to temporary buffer (m_Buffer)
+		// serialize to temporary buffer (m_Stream.m_Buffer)
 		(*this) & obj;
 
 		// reset the pointer position of the buffer
-		m_Buffer.reset_pos();
+		m_Stream.m_Buffer.reset_pos();
 
-		stream_buffer compressed_buffer;
-		compressed_buffer.buffer().reserve( m_Buffer.buffer().size() );
+		CSerializableStream compressed_buffer;
+		compressed_buffer.m_Buffer.buffer().reserve( m_Stream.m_Buffer.buffer().size() );
 
 		// compress data
-		z_def( m_Buffer, compressed_buffer );
+		z_def( m_Stream.m_Buffer, compressed_buffer.m_Buffer );
 
 		// save compressed data as a binary archive
 		CBinaryArchive_Output archive( m_Filename );
@@ -81,7 +79,7 @@ public:
 */
 	virtual void HandleData( void *pData, const int size )
 	{
-		m_Buffer.write( pData, size );
+		m_Stream.m_Buffer.write( pData, size );
 	}
 
 
@@ -89,7 +87,7 @@ protected:
 
 	std::string m_Filename;
 
-	stream_buffer m_Buffer;	///< buffer to temporarily hold uncompressed data
+	CSerializableStream m_Stream;	///< buffer to temporarily hold uncompressed data
 
 //	ofstream m_OutputFileStream;
 

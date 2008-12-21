@@ -1,6 +1,8 @@
 #include "OpenALSoundSourceImpl.h"
+#include "Support/Log/DefaultLog.h"
 #include "Support/SafeDelete.h"
 #include "Support/thread_starter.h"
+#include "Support/SerializableStream.hpp"
 #include "../base.h"
 
 #include "OpenALSoundManagerImpl.h"
@@ -37,7 +39,7 @@ extern bool GetFormatFrequencyChannelsBufferSize( OggVorbis_File& ogg_vorbis_fil
 extern bool LoadOggVorbisSoundFromDisk( const std::string& resource_path, OggVorbis_File& sOggVorbisFile );
 
 extern bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
-					                    stream_buffer& src_buffer,
+					                    CSerializableStream& src_stream,
 						                OggVorbis_File& sOggVorbisFile );
 
 extern unsigned long DecodeOggVorbis(OggVorbis_File *psOggVorbisFile, char *pDecodeBuffer, unsigned long ulBufferSize, unsigned long ulChannels);
@@ -251,13 +253,13 @@ void COpenALStreamedSoundSourceImpl::StartStreamThread()
 
 bool COpenALStreamedSoundSourceImpl::OpenOrLoadOggResource( const std::string& resource_path,
 														    OggVorbis_File& sOggVorbisFile,
-															stream_buffer& src_buffer )
+															CSerializableStream& src_stream )
 {
 	bool resource_loaded = false;
 	switch( m_StreamMethod )
 	{
 	case StreamFromDisk:   resource_loaded = LoadOggVorbisSoundFromDisk( resource_path, sOggVorbisFile ); break;
-	case StreamFromMemory: resource_loaded = LoadOggVorbisSoundFromDisk( resource_path, src_buffer, sOggVorbisFile ); break;
+	case StreamFromMemory: resource_loaded = LoadOggVorbisSoundFromDisk( resource_path, src_stream, sOggVorbisFile ); break;
 	default:
 		resource_loaded = false;
 	}
@@ -297,12 +299,12 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 	m_NumTotalBuffersProcessed = 0;
 
 	// Open Ogg Stream
-	stream_buffer src_buffer;
+	CSerializableStream src_stream;
 	OggVorbis_File sOggVorbisFile;
 
 	bool resource_loaded = false;
 
-	resource_loaded = OpenOrLoadOggResource( resource_path, sOggVorbisFile, src_buffer );
+	resource_loaded = OpenOrLoadOggResource( resource_path, sOggVorbisFile, src_stream );
 
 	// sound data is decoded from either src_buffer or a file
 
@@ -442,7 +444,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 				// - reached the end of the resource
 				// - start again from the beginning
 				ov_clear( &sOggVorbisFile );
-				OpenOrLoadOggResource( resource_path, sOggVorbisFile, src_buffer );
+				OpenOrLoadOggResource( resource_path, sOggVorbisFile, src_stream );
 				ulBytesWritten = DecodeOggVorbis( &sOggVorbisFile, pDecodeBuffer, ulBufferSize, ulChannels );
 				if( ulBytesWritten )
 				{

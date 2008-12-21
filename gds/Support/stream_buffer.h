@@ -1,21 +1,15 @@
-#ifndef  __stream_buffer_H__
-#define  __stream_buffer_H__
+#ifndef  __stream_buffer_HPP__
+#define  __stream_buffer_HPP__
 
-
-#include <stdio.h>
 
 #include <string>
 #include <vector>
 #include <fstream>
 
-#include "Support/fnop.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
-using namespace GameLib1::Serialization;
+#include "fnop.h"
 
 
-class stream_buffer : public IArchiveObjectBase
+class stream_buffer
 {
 protected:
 
@@ -50,8 +44,6 @@ public:
 	inline int get_current_pos() const { return m_pos; }
 
 	inline void reset_pos() { seek_pos(0); }
-
-	virtual void Serialize( IArchive& ar, const unsigned int version ) { ar & m_buffer; }
 };
 
 
@@ -60,7 +52,6 @@ inline bool stream_buffer::LoadBinaryStream( const std::string& filepath )
 	FILE *fp = fopen( filepath.c_str(), "rb" );
 	if( !fp )
 	{
-		LOG_PRINT_ERROR( "Failed to open a file: " + filepath );
 		return false;
 	}
 
@@ -117,7 +108,6 @@ inline bool stream_buffer::LoadTextFile( const std::string& filepath )
 
 	if ( !testfile.is_open() ) 
 	{
-		LOG_PRINT_ERROR( "Failed to open a file: " + filepath );
 		return false;
 	}
 
@@ -136,4 +126,4 @@ inline bool stream_buffer::LoadTextFile( const std::string& filepath )
 }
 
 
-#endif		/*  __stream_buffer_H__  */
+#endif		/*  __stream_buffer_HPP__  */

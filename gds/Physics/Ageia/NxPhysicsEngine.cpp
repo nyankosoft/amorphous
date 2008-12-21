@@ -7,7 +7,6 @@
 
 #include "Support/Log/DefaultLog.h"
 #include "Support/SafeDelete.h"
-#include "Support/MsgBox.h"
 
 using namespace physics;
 
@@ -148,7 +147,7 @@ void CNxPhysicsEngine::ReleaseScene( CScene*& pScene )
 
 CTriangleMesh *CNxPhysicsEngine::CreateTriangleMesh( physics::CStream& phys_stream )
 {
-	CNxPhysStream nx_stream( &phys_stream, true );
+	CNxPhysStream nx_stream( &(phys_stream.m_Buffer), true );
 
 	NxTriangleMesh *pNxMesh = m_pPhysicsSDK->createTriangleMesh( nx_stream );
 

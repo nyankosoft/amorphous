@@ -1,9 +1,8 @@
 #ifndef  __SCRIPTARCHIVE_H__
 #define  __SCRIPTARCHIVE_H__
 
-#include "Support/stream_buffer.h"
-using namespace std;
 
+#include "Support/SerializableStream.hpp"
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/Serialization_3DMath.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
@@ -26,7 +25,7 @@ public:
 	std::vector<std::string> m_vecSourceFilename;
 
 	// each element stores a script file
-	std::vector<stream_buffer> m_vecBuffer;
+	std::vector<CSerializableStream> m_vecBuffer;
 
 	CScriptArchive() {}
 	~CScriptArchive() {}

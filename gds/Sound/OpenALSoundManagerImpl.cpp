@@ -1,6 +1,6 @@
 #include "OpenALSoundManagerImpl.h"
 #include "Support/Macro.h"
-#include "Support/stream_buffer.h"
+#include "Support/SerializableStream.hpp"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
@@ -266,10 +266,10 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path, OggVorbis_Fil
 
 
 /// Loads the sound resource from the disk and stores it on memory
-/// \param [out] src_buffer buffer to store the loaded sound
+/// \param [out] sound_stream buffer to store the loaded sound
 /// \param [out] sOggVorbisFile contains callback function and pointer to src_buffer. They get registered for decoding the ogg file
 bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
-					             stream_buffer& src_buffer,
+					             CSerializableStream& sound_stream,
 						         OggVorbis_File& sOggVorbisFile )
 {
 	if( is_db_filepath_and_keyname(resource_path) )
@@ -284,7 +284,7 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 			return false;
 		}
 
-		bool retrieved = db.GetData( keyname, src_buffer );
+		bool retrieved = db.GetData( keyname, sound_stream );
 		if( !retrieved )
 		{
 			LOG_PRINT_ERROR( "Could not find data with the key: " + keyname );
@@ -294,7 +294,7 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 	else
 	{
 		// load from a single file
-		bool loaded = src_buffer.LoadBinaryStream( resource_path );
+		bool loaded = sound_stream.LoadBinaryStream( resource_path );
 		if( !loaded )
 		{
 			LOG_PRINT_ERROR( "Failed to load a file as a binary stream: " + resource_path );
@@ -309,7 +309,7 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 	sCallbacks.close_func = ov_close_buffer;
 	sCallbacks.tell_func  = ov_tell_on_buffer;
 
-	void *pDataSource = &src_buffer;
+	void *pDataSource = &sound_stream.m_Buffer;
 
 	// Create an OggVorbis file stream from file
 	int result = ov_open_callbacks( pDataSource, &sOggVorbisFile, NULL, 0, sCallbacks );
@@ -381,7 +381,7 @@ bool CSoundBuffer::LoadFromDisk( const std::string& resource_path )
 bool CSoundBuffer::LoadOggVorbisSoundFromDisk( const std::string& resource_path )
 {
 	// create as a single buffer and a single source
-	stream_buffer src_buffer;
+	CSerializableStream src_buffer;
 	OggVorbis_File ogg_vorbis_file;
 
 	// load on memory

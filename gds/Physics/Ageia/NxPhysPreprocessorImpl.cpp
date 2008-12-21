@@ -100,7 +100,7 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 	{
 		LOG_SCOPE( "NxCookingInterface::NxCookTriangleMesh()" );
 //		m_pCooking->NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
-		bool trimesh_cooked = NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
+		bool trimesh_cooked = NxCookTriangleMesh( meshDesc, CNxPhysStream( &(phys_stream.m_Buffer), false ) );
 
 		LOG_PRINT_OK_OR_FAILED( "NxCookTriangleMesh()", trimesh_cooked );
 	}

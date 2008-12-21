@@ -1,11 +1,9 @@
-
 #ifndef  __ARCHIVE_OUTPUT_H__
 #define  __ARCHIVE_OUTPUT_H__
 
 #include <vector>
 #include <iostream>
 #include <fstream>
-using namespace std;
 
 #include "Archive.h"
 #include "ArchiveObjectBase.h"

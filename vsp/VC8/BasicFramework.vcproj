@@ -1302,7 +1302,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Support\SerializableStream.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Support\Singleton.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\stream_buffer.h"
 				>
 			</File>
 			<File

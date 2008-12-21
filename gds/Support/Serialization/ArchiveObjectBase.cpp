@@ -1,4 +1,3 @@
-
 #include "ArchiveObjectBase.h"
 #include "BinaryArchive_Input.h"
 #include "BinaryArchive_Output.h"

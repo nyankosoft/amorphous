@@ -266,7 +266,7 @@ bool CScriptManager::LoadScriptArchiveFile( const string& filename )
 
 		m_vecEventScript.push_back( CEventScript() );
 
-		if( !LoadScript( script_archive.m_vecBuffer[i], m_vecEventScript.back() ) )
+		if( !LoadScript( script_archive.m_vecBuffer[i].m_Buffer, m_vecEventScript.back() ) )
 		{
 			// ReleaseScripts();
 			LOG_PRINT_ERROR( "invalid script file: [" + to_string((int)i) + "] " + script_filename );

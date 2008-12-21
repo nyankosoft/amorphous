@@ -1,6 +1,5 @@
 #include "ScriptArchive.h"
 #include <iostream>
-using namespace std;
 
 #include "Support/fnop.h"
 #include "Support/Log/DefaultLog.h"
@@ -9,6 +8,7 @@ using namespace std;
 #include "boost/filesystem/path.hpp"
 namespace fs = boost::filesystem;
 using namespace fs;
+using namespace std;
 
 
 /**
@@ -54,7 +54,7 @@ void UpdateScriptArchives( const path & dir_path,
 //			MsgBox( string("script file: ") + (*script_itr).string() );
 
 			// load script file
-			script_archive.m_vecBuffer.push_back( stream_buffer() );
+			script_archive.m_vecBuffer.push_back( CSerializableStream() );
 			script_archive.m_vecBuffer.back().LoadTextFile( (*script_itr).string() );
 
 			script_archive.m_vecSourceFilename.push_back( (*script_itr).string() );

@@ -1,5 +1,3 @@
-
-//#include "stdafx.h"
 #include "BinaryArchive_Input.h"
 #include "ArchiveObjectBase.h"
 

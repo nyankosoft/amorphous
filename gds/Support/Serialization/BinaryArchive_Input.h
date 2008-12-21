@@ -1,11 +1,9 @@
-
 #ifndef  __BINARYARCHIVE_INPUT_H__
 #define  __BINARYARCHIVE_INPUT_H__
 
 #include <vector>
 #include <iostream>
 #include <fstream>
-using namespace std;
 
 #include "Archive.h"
 #include "ArchiveObjectBase.h"

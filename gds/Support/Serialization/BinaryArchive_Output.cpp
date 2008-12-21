@@ -1,8 +1,9 @@
-
 #include "BinaryArchive_Output.h"
 #include "ArchiveObjectBase.h"
 
 using namespace GameLib1::Serialization;
+
+using namespace std;
 
 
 /*CBinaryArchive_Output::CBinaryArchive_Output( const char *pcFilename,

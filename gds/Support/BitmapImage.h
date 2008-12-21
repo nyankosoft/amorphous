@@ -410,7 +410,7 @@ inline bool CBitmapImage::CreateFromImageArchive( CImageArchive& img_archive )
 
 //	lock
 
-	ImageStreamBufferHolder().m_pStreamBuffer = &img_archive;
+	ImageStreamBufferHolder().m_pStreamBuffer = &(img_archive.m_Buffer);
 	FreeImageIO img_io;
 	img_io.read_proc  = ImageReadProc;
 	img_io.write_proc = ImageWriteProc;

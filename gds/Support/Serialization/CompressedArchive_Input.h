@@ -1,14 +1,13 @@
-
 #ifndef  __CompressedArchive_Input_H__
 #define  __CompressedArchive_Input_H__
 
 #include <vector>
 #include <iostream>
 #include <fstream>
-using namespace std;
 
 #include "BinaryArchive_Input.h"
 #include "ArchiveObjectBase.h"
+#include "../SerializableStream.hpp"
 
 #include "../Zlib/zpipe_stream.h"
 
@@ -39,7 +38,7 @@ public:
 	/// load archive objects saved in binary format file
 	bool operator>> ( IArchiveObjectBase& obj )
 	{
-		stream_buffer compressed_buffer;
+		CSerializableStream compressed_buffer;
 
 		// load compressed data
 		CBinaryArchive_Input archive( m_Filename );
@@ -48,13 +47,13 @@ public:
 		if( !res )
 			return false;
 
-		compressed_buffer.reset_pos();
-		m_Buffer.reset_pos();
+		compressed_buffer.m_Buffer.reset_pos();
+		m_Stream.m_Buffer.reset_pos();
 
 		// decompress data
-		z_inf( compressed_buffer, m_Buffer );
+		z_inf( compressed_buffer.m_Buffer, m_Stream.m_Buffer );
 
-		m_Buffer.reset_pos();
+		m_Stream.m_Buffer.reset_pos();
 
 		// serialize decompressed data
 		(*this) & obj;
@@ -83,7 +82,7 @@ public:
 */
 	virtual void HandleData( void *pData, const int size )
 	{
-		m_Buffer.read( pData, size );
+		m_Stream.m_Buffer.read( pData, size );
 	}
 
 
@@ -91,7 +90,7 @@ protected:
 
 	std::string m_Filename;
 
-	stream_buffer m_Buffer;	///< buffer to temporarily hold uncompressed data
+	CSerializableStream m_Stream;	///< buffer to temporarily hold uncompressed data
 
 //	ifstream m_InputFileStream;
 };

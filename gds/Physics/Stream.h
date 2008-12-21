@@ -4,7 +4,7 @@
 
 #include <string>
 #include "3DMath/Matrix34.h"
-#include "Support/stream_buffer.h"
+#include "Support/SerializableStream.hpp"
 
 #include "fwd.h"
 
@@ -13,7 +13,7 @@ namespace physics
 {
 
 
-class CStream : public stream_buffer//IArchiveObjectBase
+class CStream : public CSerializableStream
 {
 	/// name of physics engine
 	std::string m_PhysicsEngine;
@@ -28,7 +28,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		stream_buffer::Serialize( ar, version );
+		CSerializableStream::Serialize( ar, version );
 
 		ar & m_PhysicsEngine;
 	}

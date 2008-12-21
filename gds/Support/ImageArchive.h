@@ -5,9 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "Support/stream_buffer.h"
+#include "Support/SerializableStream.hpp"
 #include "Support/fnop.h"
-//#include "Support/Log/DefaultLog.h"
 
 
 /**
@@ -15,7 +14,7 @@
    - Uses an FreeImage library to retrieve the width and height of the image
 
 */
-class CImageArchive : public stream_buffer
+class CImageArchive : public CSerializableStream
 {
 public:
 
@@ -78,7 +77,7 @@ m_Format(IMGFMT_INVALID)
 		return;
 
 	// load image data to buffer
-	stream_buffer::LoadBinaryStream(image_filename);
+	CSerializableStream::LoadBinaryStream(image_filename);
 }
 
 
@@ -104,13 +103,13 @@ inline bool CImageArchive::SetFormatFromFileExtension( const std::string& image_
 
 inline bool CImageArchive::IsValid()
 {
-	return (m_Format != IMGFMT_INVALID) && ( 0 < m_buffer.size() );
+	return (m_Format != IMGFMT_INVALID) && ( 0 < m_Buffer.buffer().size() );
 }
 
 
 inline void CImageArchive::Serialize( IArchive& ar, const unsigned int version )
 {
-	stream_buffer::Serialize( ar, version );
+	CSerializableStream::Serialize( ar, version );
 
 	ar & (int&)m_Format;
 

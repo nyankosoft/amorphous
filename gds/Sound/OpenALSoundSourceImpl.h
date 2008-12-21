@@ -5,7 +5,7 @@
 #include "fwd.h"
 #include "SoundSource.h"
 #include "Sound/SoundManagerImpl.h"
-#include "Support/stream_buffer.h"
+#include "Support/SerializableStream.hpp"
 #include "Support/prealloc_pool.h"
 #include "Support/Macro.h"
 #include <boost/shared_ptr.hpp>
@@ -172,7 +172,7 @@ private:
 
 	bool OpenOrLoadOggResource( const std::string& resource_path,
 								OggVorbis_File& sOggVorbisFile,
-								stream_buffer& src_buffer );
+								CSerializableStream& src_buffer );
 
 	inline CSoundSource::State GetRequestedState();
 
