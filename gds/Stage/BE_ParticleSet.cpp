@@ -516,7 +516,7 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	matRot.GetRowMajorMatrix44( (Scalar *)&matBillboard );
 	CShaderManager *pShaderManager = NULL;
 	LPD3DXEFFECT pEffect = NULL;
-	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
+	if( (pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager()) &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
 		pEffect->SetMatrix( "ParticleWorldRot", &matBillboard );

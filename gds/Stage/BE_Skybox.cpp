@@ -106,7 +106,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 
 	bool shift_camera_height = true;
 
-	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
+	if( (pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager()) &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
 		if( shift_camera_height )

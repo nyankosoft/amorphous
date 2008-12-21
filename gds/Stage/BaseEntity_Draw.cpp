@@ -178,7 +178,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 
 //	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	CShaderManager *pShaderManager = NULL;
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 
 	// set the world transform
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
@@ -192,7 +192,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 	bool bSingleTechnique
 		= ( m_MeshProperty.m_PropertyFlags & CBE_MeshObjectProperty::PF_USE_SINGLE_TECHNIQUE_FOR_ALL_MATERIALS );
 
-	if( pShaderManager = CShader::Get()->GetCurrentShaderManager() )
+	if( pShaderManager )
 	{
 		// render the mesh with an HLSL shader
 
@@ -328,8 +328,8 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 	pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (float *)&matWorld );
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
-	CShaderManager *pShaderManager;
-	if( pShaderManager = CShader::Get()->GetCurrentShaderManager() )
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	if( pShaderManager )
 	{
 		if( m_MeshProperty.m_SpecTex.GetTexture() )
 //		if( 0 < m_MeshProperty.m_vecExtraTexture.size()

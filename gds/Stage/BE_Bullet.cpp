@@ -522,22 +522,7 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 
 void CBE_Bullet::Draw3DObjectBullet(CCopyEntity* pCopyEnt)
 {
-	CShaderManager *pShaderManager = NULL;
-//	LPD3DXEFFECT pEffect = NULL;
-	if( pShaderManager = CShader::Get()->GetCurrentShaderManager() )
-	{
-//		D3DXMATRIX matWorld;
-//		pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (float *)&matWorld );
-
-//		if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PSEUDO_NIGHT_VISION )
-//			;
-
-//		DrawMeshObject( pCopyEnt->GetWorldPose(),
-//			            SHADER_TECH_BULLET,
-//						m_MeshProperty.m_MeshObjectHandle.GetMesh() );
-
-		Draw3DModel( pCopyEnt );
-	}
+	Draw3DModel( pCopyEnt );
 }
 
 

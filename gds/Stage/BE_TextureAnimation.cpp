@@ -155,11 +155,11 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 
 
 	// use the texture color only
-	CShaderManager *pShaderManager = NULL;
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
 	UINT cPasses;
 
-	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
+	if( pShaderManager &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
 /*		if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PseudoNightVision )

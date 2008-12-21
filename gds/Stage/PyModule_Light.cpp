@@ -84,7 +84,11 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
         return NULL;
 }
 
-
+/*
+PyObject* gsf::py::light::LoadDirectionalLight( PyObject* self, PyObject* args )
+{
+}
+*/
 
 PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args )
 {
@@ -156,8 +160,11 @@ PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args )
 	Py_INCREF( Py_None );
 	return Py_None;
 }
-
-
+/*
+PyObject* gsf::py::light::LoadHSDirectionalLight( PyObject* self, PyObject* args )
+{
+}
+*/
 PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args )
 {
 	char *light_name = "";
@@ -390,32 +397,17 @@ PyMethodDef gsf::py::light::g_PyModuleLightMethod[] =
 };
 
 
-/*
-PyObject* EndCameraScript( PyObject* self, PyObject* args )
+void CreateDirectionalLight( const std::string& name,
+                             const Vector3& vDirection,
+							 const SFloatRGBAColor& color,
+							 float intensity )
 {
-	RETURN_PYNONE_IF_NO_STAGE()
-
-	char *camera_entity_name;
-	int result = PyArg_ParseTuple( args, "s", &camera_entity_name );
-
-	// set motion path (pos & orientation)
-	SGameMessage msg( GM_SET_MOTION_PATH );
-	msg.pUserData = &g_EntityMotionPathRequest;
-
-	g_Log.Print( "EndCameraScript() - sending motion path to camera entity (%d key poses)", (int)g_EntityMotionPathRequest.vecKeyPose.size() );
-
-	SendGameMessageTo( msg, g_EntityMotionPathRequest.pTargetEntity );
-
-	// set camera-related effects
-	// camera property: fov, nearclip, farclip, etc.
-	// effect property: blur, glare, etc.
-	msg = SGameMessage( GM_SET_SCRIPTCAMERAKEYFRAMES );
-	msg.pUserData = &gs_ScriptCameraKeyFrames;
-
-	g_Log.Print( "EndCameraScript() - sending camera effects to script camera entity" );
-
-	SendGameMessageTo( msg, g_EntityMotionPathRequest.pTargetEntity );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}*/
+	
+}
+/*
+BOOST_PYTHON_MODULE(Light)
+{
+    using namespace boost::python;
+    def( "CreateDirectionalLight", CreateDirectionalLight );
+}
+*/

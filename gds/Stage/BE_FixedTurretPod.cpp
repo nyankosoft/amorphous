@@ -101,9 +101,8 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 */
 //	shader_tech_id = m_MeshProperty.m_ShaderTechniqueID;
 
-	CShaderManager *pShaderManager = NULL;
-	LPD3DXEFFECT pEffect = NULL;
-	if( pShaderManager = CShader::Get()->GetCurrentShaderManager() )
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	if( pShaderManager )
 	{
 		if( m_MeshProperty.m_SpecTex.GetTexture() )
 		{

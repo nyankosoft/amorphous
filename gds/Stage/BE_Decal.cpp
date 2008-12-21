@@ -202,11 +202,11 @@ void CBE_Decal::SweepRender()
 	D3DXMatrixIdentity( &matWorld );
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
-	CShaderManager *pShaderManager = NULL;
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
 	UINT cPasses;
 
-	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
+	if( pShaderManager &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
 		pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );

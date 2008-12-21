@@ -147,11 +147,11 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 //	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_INVSRCALPHA );
 
 
-	CShaderManager *pShaderManager = NULL;
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
 	UINT cPasses;
 
-	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
+	if( pShaderManager &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
 		pShaderManager->SetWorldTransform( matWorld );
