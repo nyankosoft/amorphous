@@ -4,6 +4,7 @@
 
 class CInputHandler;
 
+class CInputDevice;
 class CStdKeyboard;        /// for Windows platform
 class CStdMouseInput;      /// for Windows platform
 class CDIKeyboard;         /// for Windows platform (DirectInput)

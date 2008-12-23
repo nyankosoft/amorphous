@@ -70,8 +70,8 @@ void CGameTask::ProcessTaskTransitionRequest()
 		StartFadeout();
 
 		// Don't accept input after this point
-		if( INPUTHUB.GetInputHandler() == m_pInputHandler )
-			INPUTHUB.PopInputHandler();
+		if( InputHub().GetInputHandler() == m_pInputHandler )
+			InputHub().PopInputHandler();
 
 		// raise the flag to ensure this routine is executed only once
 		m_bTaskTransitionStarted = true;

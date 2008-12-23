@@ -104,7 +104,7 @@ void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 		break;
 	}
 
-	INPUTHUB.SetInputHandler( m_pInputHandler );
+	InputHub().SetInputHandler( m_pInputHandler );
 }
 
 void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )

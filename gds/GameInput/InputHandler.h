@@ -223,13 +223,72 @@ inline bool SInputData::IsGamepadInput() const
 
 class CInputHandler
 {
+	bool m_bActive;
+
+	bool m_bAutoRepeat;
 
 public:
-	CInputHandler() {};
-	virtual ~CInputHandler() {};
+
+	CInputHandler()
+		:
+	m_bActive(true),
+	m_bAutoRepeat(false)
+	{}
+
+	virtual ~CInputHandler() {}
+
+	void SetActive( bool active ) { m_bActive = active; }
+
+	inline void ProcessInputBase(SInputData& input);
+
+	void EnableAutoRepeat( bool enable_auto_repeat ) { m_bAutoRepeat = enable_auto_repeat; }
+
+	bool IsAutoRepeatEnabled() const { return m_bAutoRepeat; }
 
 	virtual void ProcessInput(SInputData& input) = 0;
 };
+
+
+inline void CInputHandler::ProcessInputBase(SInputData& input)
+{
+	if( m_bActive )
+		ProcessInput( input );
+}
+
+class CInputState
+{
+public:
+
+	enum Name
+	{
+		PRESSED,
+		RELEASED,
+		NUM_STATES
+	};
+
+public:
+
+//	unsigned long m_LastPressedTimeMS;
+	unsigned long m_NextAutoRepeatTimeMS; ///< the absolute time when the next auto repeat event is scheduled to be sent
+
+	Name m_State;
+
+	float m_fPressedState;
+
+public:
+
+	CInputState()
+		:
+	m_NextAutoRepeatTimeMS(0),
+	m_State(RELEASED),
+	m_fPressedState(0)
+	{}
+
+	void Update( unsigned long current_time_ms )
+	{
+	}
+};
+
 
 
 #endif		/*  __INPUTHANDLER_H__  */

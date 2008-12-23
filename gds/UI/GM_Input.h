@@ -72,6 +72,10 @@ public:
 //	int x,y;
 	SPoint pos;
 
+	/// Retain the original general input code so that each control
+	/// can interpret the input data for its own purpose.
+	int GeneralInputCode;
+
 	enum eType
 	{
 		TYPE_PRESSED,
@@ -91,7 +95,8 @@ public:
 	code(0),
 	type(0),
 	fParam(0),
-	pos( SPoint( MIN_VALID_MOUSE_COORD, MIN_VALID_MOUSE_COORD ) )
+	pos( SPoint( MIN_VALID_MOUSE_COORD, MIN_VALID_MOUSE_COORD ) ),
+	GeneralInputCode(-1)
 	{}
 
 	bool IsMouseInput() { return ( MIN_VALID_MOUSE_COORD < pos.x && MIN_VALID_MOUSE_COORD < pos.y ); }

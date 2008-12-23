@@ -37,17 +37,17 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 		if( msg == WM_LBUTTONDOWN || msg == WM_LBUTTONUP )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_L;
-			INPUTHUB.UpdateInput( input );
+			InputHub().UpdateInput( input );
 		}
 		else if( msg == WM_RBUTTONDOWN || msg == WM_RBUTTONUP )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_R;
-			INPUTHUB.UpdateInput( input );
+			InputHub().UpdateInput( input );
 		}
 		else if( msg == WM_MBUTTONDOWN )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_M;
-			INPUTHUB.UpdateInput( input );
+			InputHub().UpdateInput( input );
 		}
 
 		break;
@@ -68,14 +68,14 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 		{
 			input.iGICode = GIC_MOUSE_AXIS_X;
 			input.fParam1 = (float)iMouseMoveX;
-			INPUTHUB.UpdateInput( input );
+			InputHub().UpdateInput( input );
 		}
 
 		if( iMouseMoveY != 0 )
 		{
 			input.iGICode = GIC_MOUSE_AXIS_Y;
 			input.fParam1 = (float)iMouseMoveY;
-			INPUTHUB.UpdateInput( input );
+			InputHub().UpdateInput( input );
 		}
 
 		m_iPosX = iNewPosX;

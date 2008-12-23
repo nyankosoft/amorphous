@@ -9,9 +9,6 @@
 #include <math.h>
 
 
-class CGM_DialogManager;
-
-
 /**
  * converts gamepad input into keyboard input
  */
@@ -120,13 +117,14 @@ inline SInputData GPD2KBDInputConverter::Convert( const SInputData& gpd_input )
 
 
 /**
- * CInputHandler_Dialog
- * send input data to dialog manager
+ CInputHandler_Dialog
+ - Sends input data to dialog manager
+ - Auto repeat is enabled by default
  */
 class CInputHandler_Dialog : public CInputHandler
 {
-	/// ui manager that uses inputs sent from this input handler.
-	/// (borrowed reference)
+	/// UI manager that uses inputs sent from this input handler.
+	/// - borrowed reference
 	CGM_DialogManager *m_pDialogManager;
 
 	GPD2KBDInputConverter m_GPD2KBDInputConterter;

@@ -7,6 +7,9 @@
 #include <dinput.h>
 #include "../base.h"
 
+#include "InputDevice.h"
+
+
 #pragma comment( lib, "dinput8.lib" )
 
 
@@ -15,7 +18,7 @@
  * - customizable threshold for analog to digital conversion
  *
  */
-class CDirectInputGamepad// : public CInputDevice
+class CDirectInputGamepad : public CInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pDIJoystick;
 
@@ -70,6 +73,8 @@ private:
 
 	HRESULT InitDIGamepad( HWND hWnd );
 
+	HRESULT ReadBufferedData();
+
 public:
 
 	CDirectInputGamepad();
@@ -84,11 +89,7 @@ public:
 
 	void Unacquire() { m_pDIJoystick->Unacquire(); }
 
-//	float GetSensitivity( int iMouseAxis ) { return m_afMouseSensitivity[iMouseAxis]; }
-//	void SetSensitivity( int iMouseAxis, float fSensitivity ) { m_afMouseSensitivity[iMouseAxis] = fSensitivity; }
-
-	HRESULT UpdateInput();
-
+	Result::Name SendBufferedInputToInputHandlers();
 };
 
 #endif		/*  __DIRECTINPUTGAMEPAD_H__  */

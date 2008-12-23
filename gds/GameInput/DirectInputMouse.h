@@ -6,6 +6,7 @@
 
 #include <dinput.h>
 #include "../base.h"
+#include "InputDevice.h"
 
 #pragma comment( lib, "dinput8.lib" )
 
@@ -26,7 +27,7 @@ enum eMouseAction
 #define NUM_MOUSE_BUTTONS 8
 #define DIMOUSE_BUFFER_SIZE 32	//size of the buffer to hold input data from mouse (DirectInput)
 
-class CDirectInputMouse// : public CInputDevice
+class CDirectInputMouse : public CInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pDIMouse;
 
@@ -72,6 +73,7 @@ public:
 
 	HRESULT UpdateInput();
 
+	Result::Name SendBufferedInputToInputHandlers();
 };
 
 

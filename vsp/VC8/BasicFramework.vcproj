@@ -970,6 +970,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\GameInput\InputDevice.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\GameInput\InputDevice.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\GameInput\InputHandler.h"
 				>
 			</File>

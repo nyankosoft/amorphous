@@ -7,7 +7,6 @@
 #include "Support/DebugOutput.h"
 #include "Support/BitmapImage.h"
 #include "Support/MiscAux.h"
-#include "Support/msgbox.h"
 #include "3DCommon/GraphicsResourceManager.h"
 #include "3DCommon/AsyncResourceLoader.h"
 #include "3DCommon/LogOutput_OnScreen.h"
@@ -102,7 +101,7 @@ void CApplicationBase::Release()
 	SafeDelete( m_pDIKeyboard );
 	SafeDelete( m_pDIGamepad );
 
-	INPUTHUB.PopInputHandler( 3 );
+	InputHub().PopInputHandler( 3 );
 	SafeDelete( m_pGlobalInputHandler );
 
 	// release any singleton class that inherits CGraphicsComponent
@@ -242,7 +241,7 @@ bool CApplicationBase::InitBase()
 	}
 
 	m_pGlobalInputHandler = new CGlobalInputHandler;
-	INPUTHUB.PushInputHandler( 3, m_pGlobalInputHandler );
+	InputHub().PushInputHandler( 3, m_pGlobalInputHandler );
 
 	CGameTask::AddTaskNameToTaskIDMap( "Stage",             CGameTask::ID_STAGE );
 	CGameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", CGameTask::ID_GLOBALSTAGELOADER );
@@ -342,26 +341,28 @@ void CApplicationBase::Execute()
 
 			frametime = GlobalTimer().GetFrameTime();
 
-			// process input from input devices
-			// input data are sent to an InputHandler currently set to the InputHub
 			if( g_pDIMouse )
 			{
-				g_pDIMouse->UpdateInput();
-
 				MouseCursor.UpdateCursorPosition(
 					g_pDIMouse->GetCurrentPositionX(),
 					g_pDIMouse->GetCurrentPositionY() );
 			}
 
-			if( m_pDIGamepad )
-				m_pDIGamepad->UpdateInput();
+			/// Update input
 
-			m_pDIKeyboard->ReadBufferedData();
+			// Send input data to the active input handlers
+			InputDeviceHub().SendInputToInputHandlers();
 
-			// do the current task
+			/// Update the task, stage, entities and all the other subsystems
+
+			// Do the current task
 			m_pTaskManager->Update( frametime );
 
+
+			/// Render
+
 			m_pTaskManager->Render();
+
 
 			AsyncResourceLoader().ProcessGraphicsDeviceRequests();
 

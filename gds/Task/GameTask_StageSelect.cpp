@@ -138,7 +138,7 @@ m_iNumStages(0)
 
 	// set input handler for dialog menu
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogManager );
-	INPUTHUB.PushInputHandler( m_pInputHandler );
+	InputHub().PushInputHandler( m_pInputHandler );
 
 
 //	MessageBox( NULL, "load stage", "message", MB_OK );
@@ -189,7 +189,7 @@ void CGameTask_StageSelect::InitMenu()
 
 CGameTask_StageSelect::~CGameTask_StageSelect()
 {
-	INPUTHUB.PopInputHandler();
+	InputHub().PopInputHandler();
 	SafeDelete( m_pInputHandler );
 }
 

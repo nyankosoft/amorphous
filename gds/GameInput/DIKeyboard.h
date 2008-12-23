@@ -3,6 +3,7 @@
 
 #include "DirectInput.h"
 #include "InputHandler.h"
+#include "InputDevice.h"
 #include "../base.h"
 
 #include <dinput.h>
@@ -11,7 +12,7 @@
 #pragma comment( lib, "dinput8.lib" )
 
 
-class CDIKeyboard// : public CInputDevice
+class CDIKeyboard : public CInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pKeyboard; // The keyboard device
 
@@ -34,8 +35,13 @@ public:
 	Result::Name Init();
 
 	void InitKeyCodeMap();
+
 	HRESULT GetKeyState( BYTE *pacKeyboardStateBuffer );
+
 	HRESULT ReadBufferedData();
+
+	Result::Name SendBufferedInputToInputHandlers();
+
 	void Acquire();
 
 	void Release();

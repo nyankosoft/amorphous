@@ -269,10 +269,9 @@ HRESULT CDIKeyboard::GetKeyState( BYTE *pacKeyboardStateBuffer )
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: ReadBufferedData()
-// Desc: Read the input device's state when in buffered mode and display it.
-//-----------------------------------------------------------------------------
+/**
+ Read the input device's state from the buffer and send the input data to the input handlers through InputHub()
+*/
 HRESULT CDIKeyboard::ReadBufferedData()
 {
     DIDEVICEOBJECTDATA didod[ DIKEYBOARD_SAMPLE_BUFFER_SIZE ];  // Receives buffered data 
@@ -356,11 +355,37 @@ HRESULT CDIKeyboard::ReadBufferedData()
 			input.fParam1 = 0.0f;
 		}
 
-		// send input to input hub
-		INPUTHUB.UpdateInput(input);
+		// send a pressed/released event to input hub
+		InputHub().UpdateInput(input);
+
+		UpdateInputState( input );
+
+/*
+		// update the input state
+		CInputState& key = InputState( input.iGICode );
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			key.m_State = ;
+
+			// schedule the time for the first auto repeat event
+			key.m_NextAutoRepeatTimeMS = GlobalTimer().GetTimeMS() + ???;
+		}
+		else
+			;
+*/
     }
 
     return S_OK;
+}
+
+
+Result::Name CDIKeyboard::SendBufferedInputToInputHandlers()
+{
+	 HRESULT hr = ReadBufferedData();
+	 if( SUCCEEDED(hr) )
+		 return Result::SUCCESS;
+	 else
+		 return Result::UNKNOWN_ERROR;
 }
 
 

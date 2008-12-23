@@ -95,7 +95,7 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		m_pStage->GetEntitySet()->SetCameraEntity( pCopyEnt );
 
 		if( m_bUseCutsceneInputHandler )
-            INPUTHUB.PushInputHandler( m_pInputHandler );
+            InputHub().PushInputHandler( m_pInputHandler );
 	}
 	else if( !camera_active && pCurrentCameraEntity == pCopyEnt )
 	{
@@ -219,7 +219,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 	if( m_bUseCutsceneInputHandler )
 	{
 		// set the previous input handler
-		INPUTHUB.PopInputHandler();
+		InputHub().PopInputHandler();
 	}
 
 	m_CutsceneEndStartedTime = 0;

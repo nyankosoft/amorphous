@@ -7,11 +7,9 @@
 #include "Support/Log/StateLog.h"
 #include "Support/Log/DefaultLog.h"
 
+#include "../base.h"
+
 #include <math.h>
-
-
-#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
-
 
 
 //-----------------------------------------------------------------------------
@@ -331,8 +329,8 @@ HRESULT CDirectInputGamepad::Acquire()
 }
 
 
-//read input data from buffer
-HRESULT CDirectInputGamepad::UpdateInput()
+/// Read input data from buffer
+HRESULT CDirectInputGamepad::ReadBufferedData()
 {
 	m_pDIJoystick->Poll();
 
@@ -408,8 +406,25 @@ HRESULT CDirectInputGamepad::UpdateInput()
 		if( DIJOFS_BUTTON0 <= didod[i].dwOfs && didod[i].dwOfs <= DIJOFS_BUTTON11 )
 		{
 			input.iGICode = GIC_GPD_BUTTON_00 + ( didod[i].dwOfs - DIJOFS_BUTTON0 );
-			INPUTHUB.UpdateInput(input);
+			InputHub().UpdateInput(input);
 
+			UpdateInputState( input );
+/*
+			// access the input state holder in InputHub()()
+			CInputState& button = InputState( input.iGICode );
+
+			if( input.iType == ITYPE_KEY_PRESSED )
+			{
+				button.m_State = CInputState::PRESSED;
+
+				// schedule the first auto repeat event
+				button.m_NextAutoRepeatTimeMS = GlobalTimer().GetTimeMS() + GPD_FIRST_AUTO_REPEAT_INTERVAL_MS;
+			}
+			else
+			{
+				button.m_State = CInputState::RELEASED;
+			}
+*/
 			StateLog.Update(14, "gpd.button: " + to_string(input.iGICode - GIC_GPD_BUTTON_00) );
 		}
 		else
@@ -461,19 +476,19 @@ HRESULT CDirectInputGamepad::UpdateInput()
 
 	input.iGICode = GIC_GPD_AXIS_X;
 	input.fParam1 = m_afAxisPosition[AXIS_X];
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 
 	input.iGICode = GIC_GPD_AXIS_Y;
 	input.fParam1 = m_afAxisPosition[AXIS_Y];
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 
 	input.iGICode = GIC_GPD_AXIS_Z;
 	input.fParam1 = m_afAxisPosition[AXIS_Z];
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 
 	input.iGICode = GIC_GPD_ROTATION_Z;
 	input.fParam1 = m_afAxisPosition[ROTATION_Z];
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 
 	if( m_bSendExtraDigitalInputFromAnalogInput )
         SendAnalogInputAsDigitalInput();
@@ -489,6 +504,17 @@ HRESULT CDirectInputGamepad::UpdateInput()
 	StateLog.Update(13, "gpd.rotation-z: " + to_string(m_afAxisPosition[ROTATION_Z]) );
 
     return S_OK;
+}
+
+
+Result::Name CDirectInputGamepad::SendBufferedInputToInputHandlers()
+{
+	HRESULT hr = ReadBufferedData();
+
+	if( SUCCEEDED(hr) )
+		return Result::SUCCESS;
+	else
+		return Result::UNKNOWN_ERROR;
 }
 
 
@@ -516,18 +542,24 @@ void CDirectInputGamepad::SendAnalogInputAsDigitalInput()
 
 		input.iGICode = s_GICodeForBinarizedAnalogInput[i];
 
+		// send pressed/released event
+
 		if( !prev_hold && hold )
 		{
 			input.iType = ITYPE_KEY_PRESSED;
 			input.fParam1 = 1.0f;
-			INPUTHUB.UpdateInput(input);
+			InputHub().UpdateInput(input);
 		}
 		else if( prev_hold && !hold )
 		{
 			input.iType = ITYPE_KEY_RELEASED;
 			input.fParam1 = 0.0f;
-			INPUTHUB.UpdateInput(input);
+			InputHub().UpdateInput(input);
 		}
+
+		// update input state
+
+		UpdateInputState( input );
 	}
 }
 
@@ -555,14 +587,14 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 			input.iGICode = GetGICodeFromPOV( m_aPOV[i] );
 			input.iType = ITYPE_KEY_PRESSED;
 			input.fParam1 = 1.0f;
-			INPUTHUB.UpdateInput(input);
+			InputHub().UpdateInput(input);
 		}
 		else if( m_aPrevPOV[i] != -1 && m_aPOV[i] == -1 )
 		{
 			input.iGICode = GetGICodeFromPOV( m_aPrevPOV[i] );
 			input.iType = ITYPE_KEY_RELEASED;
 			input.fParam1 = 0.0f;
-			INPUTHUB.UpdateInput(input);
+			InputHub().UpdateInput(input);
 		}
 	}
 

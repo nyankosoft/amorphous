@@ -97,7 +97,7 @@ void CStdKeyboard::NotifyKeyDown( int iVK_Code )
 	input.fParam1 = 1.0f;
 
 	// send input to input hub
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 }
 
 
@@ -114,7 +114,7 @@ void CStdKeyboard::NotifyKeyUp( int iVK_Code )
 	input.fParam1 = 0.0f;
 
 	// send input to input hub
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 }
 
 

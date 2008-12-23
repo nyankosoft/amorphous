@@ -8,8 +8,6 @@
 #include "App/GameWindowManager_Win32.h"
 
 
-//#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
-
 /*
 class CInputDeviceFactory
 {
@@ -182,7 +180,7 @@ void CDirectInputMouse::Release()
 }
 
 
-//read input data from buffer
+/// Read input data from buffer and send them to the input handlers
 HRESULT CDirectInputMouse::UpdateInput()
 {
 	PROFILE_FUNCTION();
@@ -265,15 +263,15 @@ HRESULT CDirectInputMouse::UpdateInput()
         {
             case DIMOFS_BUTTON0:
 				input.iGICode = GIC_MOUSE_BUTTON_L;	
-				INPUTHUB.UpdateInput(input);
+				InputHub().UpdateInput(input);
 				break;
             case DIMOFS_BUTTON1:
 				input.iGICode = GIC_MOUSE_BUTTON_R;
-				INPUTHUB.UpdateInput(input);
+				InputHub().UpdateInput(input);
 				break;
             case DIMOFS_BUTTON2:
 				input.iGICode = GIC_MOUSE_BUTTON_M;	
-				INPUTHUB.UpdateInput(input);
+				InputHub().UpdateInput(input);
 				break;
 
             case DIMOFS_X:
@@ -287,7 +285,7 @@ HRESULT CDirectInputMouse::UpdateInput()
 					input.iGICode = GIC_MOUSE_WHEEL_UP;
 				else
 					input.iGICode = GIC_MOUSE_WHEEL_DOWN;
-				INPUTHUB.UpdateInput(input);
+				InputHub().UpdateInput(input);
 				break;
         }			
 
@@ -313,14 +311,25 @@ HRESULT CDirectInputMouse::UpdateInput()
 
 	input.iGICode = GIC_MOUSE_AXIS_X;
 	input.fParam1 = (float)iMoveX;	//	fNewMove_X
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 
 	input.iGICode = GIC_MOUSE_AXIS_Y;
 	input.fParam1 = (float)iMoveY;	//	fNewMove_Y
-	INPUTHUB.UpdateInput(input);
+	InputHub().UpdateInput(input);
 
 ///	g_PerformanceCheck.fMouseNewMoveX = fNewMove_X;
 ///	g_PerformanceCheck.fMouseNewMoveY = fNewMove_Y;
 
     return S_OK;
+}
+
+
+Result::Name CDirectInputMouse::SendBufferedInputToInputHandlers()
+{
+	HRESULT hr = UpdateInput();
+
+	if( SUCCEEDED(hr) )
+		return Result::SUCCESS;
+	else
+		return Result::UNKNOWN_ERROR;
 }

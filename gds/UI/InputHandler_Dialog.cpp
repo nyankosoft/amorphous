@@ -12,6 +12,8 @@ CInputHandler_Dialog::CInputHandler_Dialog( CGM_DialogManager *pDialogManager )
 	m_bPrevInputProcessed = false;
 
 	SetDefaultKeyBindsForGeneralInputCodes();
+
+	EnableAutoRepeat( true );
 }
 
 
@@ -22,6 +24,8 @@ CInputHandler_Dialog::CInputHandler_Dialog( CGM_DialogManagerSharedPtr pDialogMa
 	m_bPrevInputProcessed = false;
 
 	SetDefaultKeyBindsForGeneralInputCodes();
+
+	EnableAutoRepeat( true );
 }
 
 

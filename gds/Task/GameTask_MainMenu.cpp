@@ -60,13 +60,13 @@ CGameTask_MainMenu::CGameTask_MainMenu()
 
 	// set input handler for dialog menu
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogManager );
-	INPUTHUB.SetInputHandler( m_pInputHandler );
+	InputHub().SetInputHandler( m_pInputHandler );
 }
 
 
 CGameTask_MainMenu::~CGameTask_MainMenu()
 {
-	INPUTHUB.SetInputHandler( NULL );
+	InputHub().SetInputHandler( NULL );
 
 	SafeDelete( m_pInputHandler );
 //	SafeDelete( m_pFlowCaptionRenderRoutine );
@@ -545,7 +545,7 @@ void CGameTask_MainMenu::LoadGraphicsResources( const CGraphicsParameters& rPara
 	// input handler also has to be updated.
 	SafeDelete( m_pInputHandler );
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogManager );
-	INPUTHUB.SetInputHandler( m_pInputHandler );
+	InputHub().SetInputHandler( m_pInputHandler );
 }
 
 

@@ -2,26 +2,33 @@
 #define __INPUTHUB_H__
 
 #include <vector>
+#include "fwd.h"
 #include "InputHandler.h"
 
-#include "../Support/SafeDelete.h"
-
-
-#define INPUTHUB ( CInputHub::GetInstance() )
+#include "../base.h"
+#include "Support/SafeDelete.h"
+#include "Support/FixedVector.h"
 
 
 /**
- * holds one or more input handlers
- * - input handlers can either be managed by stack (PushInputHandler/PopInputHandler) or by single container (SetInputHandler)
- *   - Be careful when you use stack: all the input handlers in the stack must not be released until they are popped
- * - user can register input handlers up to the number of NUM_MAX_INPUT_HANDLERS
- *   - all the registered input handlers receive input data
+  Holds stacks of input handlers
+  - There are total of NUM_MAX_INPUT_HANDLERS stacks.
+    - Developer can simultaneously register input handlers up to the number of NUM_MAX_INPUT_HANDLERS
+	- Developer can use stacks to proecess different inputs
+	    - Input handler on stack 0 - for processing game inputs (player movement, etc.)
+		- Input handler on stack 1 - debug input (turning on/off log screen, etc.)
+    - All the registered input handlers at the top of each stack receive the same input data
+  - Input handlers can either be managed by stack (PushInputHandler/PopInputHandler) or by single container (SetInputHandler)
+    - Be careful when you use stack: all the input handlers in the stack must not be released until they are popped
  */
 class CInputHub
 {
 	enum params
 	{
-		NUM_MAX_INPUT_HANDLERS = 8
+		NUM_MAX_INPUT_HANDLERS = 8,
+
+		NUM_MAX_SIMULTANEOUS_PRESSES  = 4,
+		AUTO_REPEAT_INTERVAL_MS       = 200,
 	};
 
 //	CInputHandler *m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
@@ -30,9 +37,18 @@ class CInputHub
 	/// - borrowed reference?
 	std::vector<CInputHandler *> m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
 
+	CInputState m_aInputState[NUM_GENERAL_INPUT_CODES];
+
+	TCFixedVector<int,NUM_MAX_SIMULTANEOUS_PRESSES> m_PressedKeyList;
+
 //	int m_NumInputHandlers;
 
 	static CInputHub ms_InputHub_Instance_;		// singleton instance
+
+private:
+
+	/// Used by input device classes
+//	inline void SetInputState( int gi_code, CInputState::Name state ) { m_aInputState[gi_code].m_State = state; }
 
 protected:
 
@@ -65,6 +81,14 @@ public:
 	inline CInputHandler *PopInputHandler( int index );
 
 	inline void UpdateInput( SInputData& input );
+
+	inline void SendAutoRepeatInputToInputHandlers( SInputData& input );
+
+	CInputState::Name GetInputState( int gi_code ) const { return m_aInputState[gi_code].m_State; }
+
+	void SendAutoRepeat();
+
+	friend class CInputDevice;
 };
 
 
@@ -76,6 +100,20 @@ inline void CInputHub::UpdateInput( SInputData& input )
 			continue;
 
 		if( m_vecpInputHandler[i].back() )
+            m_vecpInputHandler[i].back()->ProcessInput( input );
+	}
+}
+
+
+inline void CInputHub::SendAutoRepeatInputToInputHandlers( SInputData& input )
+{
+	for( int i=0; i<NUM_MAX_INPUT_HANDLERS; i++ )
+	{
+		if( m_vecpInputHandler[i].size() == 0 )
+			continue;
+
+		if( m_vecpInputHandler[i].back()
+		 && m_vecpInputHandler[i].back()->IsAutoRepeatEnabled() )
             m_vecpInputHandler[i].back()->ProcessInput( input );
 	}
 }
@@ -150,6 +188,13 @@ inline CInputHandler *CInputHub::PopInputHandler( int index )
 
 	return pTop;
 
+}
+
+
+inline CInputHub& InputHub()
+{
+//	return (*CInputHub::Get());
+	return CInputHub::GetInstance();
 }
 
 
