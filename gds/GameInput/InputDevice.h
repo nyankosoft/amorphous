@@ -81,7 +81,7 @@ public:
 		}
 
 		// Send key press input data (auto repeat)
-		// InputHub().SendAutoRepeat();
+		InputHub().SendAutoRepeat();
 	}
 };
 

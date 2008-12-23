@@ -28,7 +28,7 @@ class CInputHub
 		NUM_MAX_INPUT_HANDLERS = 8,
 
 		NUM_MAX_SIMULTANEOUS_PRESSES  = 4,
-		AUTO_REPEAT_INTERVAL_MS       = 200,
+		AUTO_REPEAT_INTERVAL_MS       = 150,
 	};
 
 //	CInputHandler *m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
