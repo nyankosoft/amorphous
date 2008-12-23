@@ -78,13 +78,17 @@ public:
 
 	SFloatRGBAColor aColor[3];
 
+	float afAttenuation[3]; /// for point lights
+
 	int LightGroup;
 
 public:
 
-	CLightEntityDesc()
+	CLightEntityDesc( CLight::Type light_type = CLight::DIRECTIONAL )
 		:
-	LightGroup(0)
+	LightType(light_type),
+	LightGroup(0),
+	fIntensity(1.0f)
 	{
 		TypeID = CCopyEntityTypeID::LIGHT_ENTITY;
 	}
