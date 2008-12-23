@@ -38,6 +38,8 @@ public:
 	/// incompatible with insert() in stl vector. but added for convenience
 	inline void insert_at( int pos, const CArrayType& val = CArrayType() );
 
+	inline void erase_at( int pos );
+
 	inline CArrayType& at( int i ) { return m_Array[i]; }
 
 };
@@ -90,7 +92,7 @@ inline void TCFixedVector<CArrayType, iArraySize>::insert_at( int pos, const CAr
 {
 	int i, size = this->size();
 
-	push_back( CArrayType() );
+	push_back( CArrayType() ); // m_iIndex is incremented in this call
 
 	for( i=size; i<=pos+1; i-- )
 	{
@@ -98,6 +100,23 @@ inline void TCFixedVector<CArrayType, iArraySize>::insert_at( int pos, const CAr
 	}
 
 	m_Array[pos] = val;
+}
+
+
+template <class CArrayType, int iArraySize>
+inline void TCFixedVector<CArrayType, iArraySize>::erase_at( int pos )
+{
+	int i, size = this->size();
+
+	if( size <= pos )
+		return;
+
+	for( i=pos; i<size-1; i++ )
+	{
+		m_Array[i] = m_Array[i+1];
+	}
+
+	m_iIndex--;
 }
 
 /*
