@@ -34,9 +34,11 @@ public:
 
 	~CProfileTimer_Win32() {}
 
-	virtual double GetExactTime() { return m_Timer.GetTime(); }
+	double GetExactTime() { return m_Timer.GetTime(); }
 
-	virtual double GetFrameTime() { return m_Timer.GetFrameTime(); }
+	double GetFrameTime() { return m_Timer.GetFrameTime(); }
+
+	void UpdateFrameTime() { m_Timer.UpdateFrameTime(); }
 };
 
 
@@ -65,10 +67,16 @@ typedef struct
 
 
 #define NUM_PROFILE_SAMPLES 50
+
+
+/// static global variable
 static ProfileSample g_samples[NUM_PROFILE_SAMPLES];
 static ProfileSampleHistory g_history[NUM_PROFILE_SAMPLES];
 static float g_startProfile = 0.0f;
 static float g_endProfile = 0.0f;
+
+static bool g_ProfileEnabled = true;
+static bool g_ProfileRequestedState = true;
 
 static vector<string> g_vecstrProfileText;
 
@@ -144,6 +152,9 @@ void ProfileInit( void )
 
 void ProfileBegin( const char* name )
 {
+	if( !g_ProfileEnabled )
+		return;
+
    unsigned int i = 0;
 
    while( i < NUM_PROFILE_SAMPLES && g_samples[i].bValid == true ) {
@@ -175,6 +186,9 @@ void ProfileBegin( const char* name )
 
 void ProfileEnd( const char* name )
 {
+	if( !g_ProfileEnabled )
+		return;
+
    unsigned int i = 0;
    unsigned int numParents = 0;
 
@@ -295,9 +309,17 @@ void ProfileDumpOutputToBuffer( void )
       }
       g_startProfile = GetExactTime();
    }
+
+   // update the state
+   // - avoid changing the state between BeginProfile() and EndProfile() calls
+   g_ProfileEnabled = g_ProfileRequestedState;
 }
 
 
+void ProfileEnable( bool enable )
+{
+	g_ProfileRequestedState = enable;
+}
 
 
 void StoreProfileInHistory( char* name, float percent )

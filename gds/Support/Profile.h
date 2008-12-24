@@ -21,11 +21,14 @@ class CProfileTimer
 public:
 
 	CProfileTimer() {}
+
 	virtual ~CProfileTimer() {}
 
 	virtual double GetExactTime() = 0;
 
 	virtual double GetFrameTime() = 0;
+
+	virtual void UpdateFrameTime() = 0;
 };
 
 
@@ -36,6 +39,8 @@ void ProfileBegin( const char* name );
 void ProfileEnd( const char* name );
 
 void ProfileDumpOutputToBuffer( void );
+
+void ProfileEnable( bool enable );
 
 void StoreProfileInHistory( char* name, float percent );
 
