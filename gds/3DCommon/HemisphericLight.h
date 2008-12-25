@@ -15,17 +15,17 @@ class CHemisphericLightAttribute : public IArchiveObjectBase
 {
 public:
 
-	SFloatRGBAColor UpperColor;
-	SFloatRGBAColor LowerColor;
+	SFloatRGBAColor UpperDiffuseColor;
+	SFloatRGBAColor LowerDiffuseColor;
 
 public:
 
 	inline SFloatRGBColor CalcHSLightAmount( float d )
 	{
-		return ToRGBColor( UpperColor * d + LowerColor * ( 1.0f - d ) );
+		return ToRGBColor( UpperDiffuseColor * d + LowerDiffuseColor * ( 1.0f - d ) );
 	}
 
-	virtual void Serialize( IArchive& ar, const unsigned int version ) { ar & UpperColor & LowerColor; }
+	virtual void Serialize( IArchive& ar, const unsigned int version ) { ar & UpperDiffuseColor & LowerDiffuseColor; }
 };
 
 /*
@@ -63,17 +63,19 @@ public:
 
 	Type GetLightType() const { return CLight::HEMISPHERIC_POINT; }
 
-	inline virtual void Serialize( IArchive& ar, const unsigned int version );
-
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericPointLight( *this ); }
-
 	SFloatRGBColor CalcPointLightFactor( float NdotL )
 	{
 		return Attribute.CalcHSLightAmount( ( NdotL + 1.0f ) * 0.5f );
 	}
 
-	SFloatRGBAColor& UpperColor() { return Attribute.UpperColor; }
-	SFloatRGBAColor& LowerColor() { return Attribute.LowerColor; }
+	void SetDiffuseColor( int index, SFloatRGBColor& diffuse_color ) { SetDiffuseColor( index, diffuse_color ); }
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericPointLight( *this ); }
+
+	SFloatRGBAColor& UpperColor() { return Attribute.UpperDiffuseColor; }
+	SFloatRGBAColor& LowerColor() { return Attribute.LowerDiffuseColor; }
 };
 
 
@@ -97,12 +99,14 @@ public:
 		return Attribute.CalcHSLightAmount( d );
 	}
 
+	void SetDiffuseColor( int index, SFloatRGBColor& diffuse_color ) { SetDiffuseColor( index, diffuse_color ); }
+
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericDirectionalLight( *this ); }
 
-	SFloatRGBAColor& UpperColor() { return Attribute.UpperColor; }
-	SFloatRGBAColor& LowerColor() { return Attribute.LowerColor; }
+	SFloatRGBAColor& UpperColor() { return Attribute.UpperDiffuseColor; }
+	SFloatRGBAColor& LowerColor() { return Attribute.LowerDiffuseColor; }
 };
 
 

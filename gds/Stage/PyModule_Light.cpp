@@ -50,6 +50,9 @@ public:
 	boost::weak_ptr<CStage> m_pStage;
 
 	CBaseEntityHandle m_aBaseEntityHandle[NUM_DEFAULT_BASE_ENTITY_HANDLES];
+
+	/// target light entity
+	CEntityHandle<CLightEntity> m_LightEntity;
 };
 
 
@@ -169,7 +172,7 @@ PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args
 }
 
 
-PyObject* LoadDirectionalLight( PyObject* self, PyObject* args )
+PyObject* gsf::py::light::LoadDirectionalLight( PyObject* self, PyObject* args )
 {
 	return GenerateDirectionalLight( self, args, CScriptGenMode::LOAD );
 }
@@ -206,16 +209,20 @@ PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args )
 }
 
 
+PyObject* gsf::py::light::LoadPointLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
 PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args )
 {
 	Py_INCREF( Py_None );
 	return Py_None;
 }
-/*
-PyObject* gsf::py::light::LoadHSDirectionalLight( PyObject* self, PyObject* args )
-{
-}
-*/
+
+
 PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args )
 {
 	char *light_name = "";
@@ -263,6 +270,27 @@ PyObject* gsf::py::light::CreateHSSpotlight( PyObject* self, PyObject* args )
 }
 
 
+PyObject* gsf::py::light::LoadHSDirectionalLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::LoadHSPointLight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+
+/*
+PyObject* gsf::py::light::LoadHSSpotlight( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+	return Py_None;
+}
+*/
+/*
 PyObject* gsf::py::light::CreateTriDirectionalLight( PyObject* self, PyObject* args )
 {
 	Py_INCREF( Py_None );
@@ -282,7 +310,7 @@ PyObject* gsf::py::light::CreateTriSpotlight( PyObject* self, PyObject* args )
 	Py_INCREF( Py_None );
 	return Py_None;
 }
-
+*/
 
 PyObject* SetAttenuationFactors( PyObject* self, PyObject* args )
 {
@@ -318,13 +346,13 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 	if( !GetStageForScriptCallback() )
 		return;
 
-	CLightEntity *pLightEntity = NULL;
+	CLightEntity *pLightEntity = NULL;//m_LightEntity.Get();
 //		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
 
 	if( pLightEntity )
 		pLightEntity->SetColor( index, color );
 
-	const Vector3 vColor = Vector3( color.fRed, color.fGreen, color.fBlue );
+/*	const Vector3 vColor = Vector3( color.fRed, color.fGreen, color.fBlue );
 
 	switch( index )
 	{
@@ -332,8 +360,8 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 	case 1: GetEntityForLight()->v2 = vColor; break;
 	case 2: GetEntityForLight()->v3 = vColor; break;
 	default:
-		g_Log.Print( WL_ERROR, "SetColor() - invalid light color index: %d. Must be [0,2]" );
-	}
+		g_Log.Print( WL_ERROR, "SetLightColor() - invalid light color index: %d. Must be [0,2]" );
+	}*/
 }
 
 
@@ -381,18 +409,13 @@ PyObject* gsf::py::light::SetTargetEntity( PyObject* self, PyObject* args )
 
 	CCopyEntity* pEntityForLight = GetEntityByName( entity_name );
 
-	// TODO: what if the focus target entity is created later
-	if( IsValidEntity(pEntityForLight) )
-	{
-		SetEntityForLight( pEntityForLight );
-	}
-	else
-	{
-//		g_Log.Print( "" );
-		Py_INCREF( Py_None );
-		return Py_None;
-	}
+	CLightEntity *pLightEntity = dynamic_cast<CLightEntity *>(pEntityForLight);
 
+	// TODO: what if the focus target entity is created later
+	if( IsValidEntity(pLightEntity) )
+	{
+//		m_LightEntity = CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() );
+	}
 
 	Py_INCREF( Py_None );
 	return Py_None;
@@ -421,15 +444,26 @@ PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
 
 PyMethodDef gsf::py::light::g_PyModuleLightMethod[] =
 {
-	{ "CreatePointLight",          gsf::py::light::CreatePointLight,             METH_VARARGS, "" },
 	{ "CreateDirectionalLight",    gsf::py::light::CreateDirectionalLight,       METH_VARARGS, "" },
+	{ "CreatePointLight",          gsf::py::light::CreatePointLight,             METH_VARARGS, "" },
 	{ "CreateSpotlight",           gsf::py::light::CreateSpotlight,              METH_VARARGS, "" },
-	{ "CreateHSPointLight",        gsf::py::light::CreateHSPointLight,           METH_VARARGS, "" },
 	{ "CreateHSDirectionalLight",  gsf::py::light::CreateHSDirectionalLight,     METH_VARARGS, "" },
+	{ "CreateHSPointLight",        gsf::py::light::CreateHSPointLight,           METH_VARARGS, "" },
 	{ "CreateHSSpotlight",         gsf::py::light::CreateHSSpotlight,            METH_VARARGS, "" },
-	{ "CreateTriPointLight",       gsf::py::light::CreateTriPointLight,          METH_VARARGS, "" },
-	{ "CreateTriDirectionalLight", gsf::py::light::CreateTriDirectionalLight,    METH_VARARGS, "" },
-	{ "CreateTriSpotlight",        gsf::py::light::CreateTriSpotlight,           METH_VARARGS, "" },
+//	{ "CreateTriPointLight",       gsf::py::light::CreateTriPointLight,          METH_VARARGS, "" },
+//	{ "CreateTriDirectionalLight", gsf::py::light::CreateTriDirectionalLight,    METH_VARARGS, "" },
+//	{ "CreateTriSpotlight",        gsf::py::light::CreateTriSpotlight,           METH_VARARGS, "" },
+
+	{ "LoadDirectionalLight",      gsf::py::light::LoadDirectionalLight,         METH_VARARGS, "" },
+	{ "LoadPointLight",            gsf::py::light::LoadPointLight,               METH_VARARGS, "" },
+//	{ "LoadSpotlight",             gsf::py::light::LoadSpotlight,                METH_VARARGS, "" },
+	{ "LoadHSDirectionalLight",    gsf::py::light::LoadHSDirectionalLight,       METH_VARARGS, "" },
+	{ "LoadHSPointLight",          gsf::py::light::LoadHSPointLight,             METH_VARARGS, "" },
+//	{ "LoadHSSpotlight",           gsf::py::light::LoadHSSpotlight,              METH_VARARGS, "" },
+//	{ "LoadTriPointLight",         gsf::py::light::LoadTriPointLight,            METH_VARARGS, "" },
+//	{ "LoadTriDirectionalLight",   gsf::py::light::LoadTriDirectionalLight,      METH_VARARGS, "" },
+//	{ "LoadTriSpotlight",          gsf::py::light::LoadTriSpotlight,             METH_VARARGS, "" },
+
 //	{ "RemoveLight",               gsf::py::light::RemoveLight,                  METH_VARARGS, "" },
 //	{ "RemoveNamedLight",          gsf::py::light::RemoveNamedLight,             METH_VARARGS, "" },
 
@@ -455,6 +489,7 @@ void CreateDirectionalLight( const std::string& name,
 {
 	
 }
+
 /*
 BOOST_PYTHON_MODULE(Light)
 {

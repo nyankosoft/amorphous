@@ -21,8 +21,8 @@ CBE_PointLight::CBE_PointLight()
 {
 	m_bNoClip = true;
 
-	m_PointLight.Attribute.UpperColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	m_PointLight.Attribute.LowerColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_PointLight.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	m_PointLight.Attribute.LowerDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	m_PointLight.vPosition = Vector3( 1.0f, 1.0f, 1.0f );
 	m_PointLight.SetAttenuation( 0.1f, 0.1f, 0.1f );
 
@@ -454,13 +454,13 @@ bool CBE_PointLight::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 	if( scanner.TryScanLine( "UPPER_COLOR", r, g, b ) )
 	{
-		m_PointLight.Attribute.UpperColor.SetRGB( r,g,b );
+		m_PointLight.Attribute.UpperDiffuseColor.SetRGB( r,g,b );
 		return true;
 	}
 
 	if( scanner.TryScanLine( "LOWER_COLOR", r, g, b ) )
 	{
-		m_PointLight.Attribute.LowerColor.SetRGB( r,g,b );
+		m_PointLight.Attribute.LowerDiffuseColor.SetRGB( r,g,b );
 		return true;
 	}
 

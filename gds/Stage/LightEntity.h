@@ -37,6 +37,41 @@ class CLightHolderInitializer
 };
 
 
+class CLightColorVisitor : public CLightVisitor
+{
+	int m_Index;
+	SFloatRGBAColor m_Color;
+
+	void SetHSLightColor( CHemisphericLightAttribute& dest )
+	{
+		switch( m_Index )
+		{
+		case 0: dest.UpperDiffuseColor = m_Color; break;
+		case 2: dest.LowerDiffuseColor = m_Color; break;
+		default:
+			break;
+		}
+	}
+
+public:
+
+	CLightColorVisitor( int index, const SFloatRGBAColor& color )
+	:
+	m_Index(index),
+	m_Color(color)
+	{}
+
+//	void VisitLight( CLight& light ) {}
+	void VisitAmbientLight( CAmbientLight& ambient_light ) { ambient_light.DiffuseColor = m_Color.GetRGBColor(); }
+	void VisitPointLight( CPointLight& point_light ) { point_light.DiffuseColor = m_Color.GetRGBColor(); }
+	void VisitDirectionalLight( CDirectionalLight& directional_light ) { directional_light.DiffuseColor = m_Color.GetRGBColor(); }
+	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { SetHSLightColor( hs_point_light.Attribute ); }
+	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { SetHSLightColor( hs_directional_light.Attribute ); }
+//	void VisitTriPointLight( CTriPointLight& tri_point_light ) {}
+//	void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) {}
+};
+
+
 class CLightDesc
 {
 public:
@@ -223,41 +258,10 @@ inline void CLightEntity::SetColor( int index, const SFloatRGBColor& color )
 }
 
 
-class CLightColorVisitor : public CLightVisitor
-{
-	int m_Index;
-	SFloatRGBAColor m_Color;
-
-	void SetHSLightColor( CHemisphericLightAttribute& dest )
-	{
-		switch( m_Index )
-		{
-		case 0: dest.UpperColor = m_Color; break;
-		case 2: dest.LowerColor = m_Color; break;
-		default:
-			break;
-		}
-	}
-
-public:
-
-	CLightColorVisitor( int index, const SFloatRGBAColor& color );
-
-//	void VisitLight( CLight& light ) {}
-	void VisitAmbientLight( CAmbientLight& ambient_light ) { ambient_light.Color = m_Color.GetRGBColor(); }
-	void VisitPointLight( CPointLight& point_light ) { point_light.Color = m_Color.GetRGBColor(); }
-	void VisitDirectionalLight( CDirectionalLight& directional_light ) { directional_light.Color = m_Color.GetRGBColor(); }
-	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { SetHSLightColor( hs_point_light.Attribute ); }
-	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { SetHSLightColor( hs_directional_light.Attribute ); }
-//	void VisitTriPointLight( CTriPointLight& tri_point_light ) {}
-//	void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) {}
-};
-
-
 inline void CLightEntity::SetColor( int index, const SFloatRGBAColor& color )
 {
-//	CLightColorVisitor visitor( index, color );
-//	m_pLight->Accept( visitor );
+	CLightColorVisitor visitor( index, color );
+	m_pLight->Accept( visitor );
 
 	// or
 

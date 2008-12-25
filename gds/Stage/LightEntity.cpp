@@ -19,8 +19,8 @@ class CLightInitializer : public CLightVisitor
 
 	void InitHSLightAttribute( CHemisphericLightAttribute& hs_attrib )
 	{
-		hs_attrib.UpperColor = m_pDesc->aColor[0];
-		hs_attrib.LowerColor = m_pDesc->aColor[1];
+		hs_attrib.UpperDiffuseColor = m_pDesc->aColor[0];
+		hs_attrib.LowerDiffuseColor = m_pDesc->aColor[1];
 	}
 
 public:
@@ -29,8 +29,8 @@ public:
 
 	void VisitLight( CLight& light )
 	{
-		light.Color      = m_pDesc->aColor[0].GetRGBColor();
-		light.fIntensity = m_pDesc->fIntensity;
+		light.DiffuseColor = m_pDesc->aColor[0].GetRGBColor();
+		light.fIntensity   = m_pDesc->fIntensity;
 	}
 
 //	void VisitAmbientLight( CAmbientLight& ambient_light ) {}

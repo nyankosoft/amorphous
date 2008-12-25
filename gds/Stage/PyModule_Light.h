@@ -33,9 +33,19 @@ extern PyObject* CreateSpotlight( PyObject* self, PyObject* args );
 extern PyObject* CreateHSPointLight( PyObject* self, PyObject* args );      
 extern PyObject* CreateHSDirectionalLight( PyObject* self, PyObject* args );
 extern PyObject* CreateHSSpotlight( PyObject* self, PyObject* args );       
-extern PyObject* CreateTriPointLight( PyObject* self, PyObject* args );     
-extern PyObject* CreateTriDirectionalLight( PyObject* self, PyObject* args );
-extern PyObject* CreateTriSpotlight( PyObject* self, PyObject* args );      
+//extern PyObject* CreateTriPointLight( PyObject* self, PyObject* args );     
+//extern PyObject* CreateTriDirectionalLight( PyObject* self, PyObject* args );
+//extern PyObject* CreateTriSpotlight( PyObject* self, PyObject* args );      
+
+extern PyObject* LoadPointLight( PyObject* self, PyObject* args );        
+extern PyObject* LoadDirectionalLight( PyObject* self, PyObject* args );  
+//extern PyObject* LoadSpotlight( PyObject* self, PyObject* args );         
+extern PyObject* LoadHSPointLight( PyObject* self, PyObject* args );      
+extern PyObject* LoadHSDirectionalLight( PyObject* self, PyObject* args );
+//extern PyObject* LoadHSSpotlight( PyObject* self, PyObject* args );       
+//extern PyObject* LoadTriPointLight( PyObject* self, PyObject* args );
+//extern PyObject* LoadTriDirectionalLight( PyObject* self, PyObject* args );
+//extern PyObject* LoadTriSpotlight( PyObject* self, PyObject* args );
 
 }  /* light */
 

@@ -52,7 +52,8 @@ public:
 
 	std::string strName;
 
-	SFloatRGBColor Color;
+	/// Not used by hemispheric lights
+	SFloatRGBColor DiffuseColor;
 
 	float fIntensity;
 
@@ -92,7 +93,7 @@ public:
 
 	Type GetLightType() const { return CLight::AMBIENT; }
 
-	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal ) { return Color; }
+	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal ) { return DiffuseColor; }
 
 //	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
@@ -118,7 +119,7 @@ public:
 		float d = Vec3Dot( -vDirection, normal );
 
 		if( 0 < d )
-			return Color * d;
+			return DiffuseColor * d;
 		else
 			return SFloatRGBColor(0,0,0);
 	}
@@ -173,7 +174,7 @@ public:
 	{
 		if( 0.0f < NdotL )
 		{
-			return Color * NdotL;
+			return DiffuseColor * NdotL;
 		}
 		else
 			return SFloatRGBColor(0,0,0);
@@ -215,7 +216,7 @@ public:
 
 inline CLight::CLight()
 :
-Color(SFloatRGBColor(0,0,0)),
+DiffuseColor(SFloatRGBColor(0,0,0)),
 fIntensity(1.0f),
 fRange(FLT_MAX)
 {
@@ -225,7 +226,7 @@ fRange(FLT_MAX)
 inline void CLight::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & strName;
-	ar & Color;
+	ar & DiffuseColor;
 	ar & fIntensity;
 	ar & fRange;
 }
