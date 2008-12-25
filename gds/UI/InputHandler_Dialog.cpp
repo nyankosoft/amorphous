@@ -72,6 +72,10 @@ void CInputHandler_Dialog::SetDefaultKeyBindsForGeneralInputCodes()
 	m_aGICodeToGMInputCode[GIC_SPACE]            = CGM_Input::OK;
 	m_aGICodeToGMInputCode[GIC_GPD_BUTTON_00]    = CGM_Input::OK;
 
+	m_aGICodeToGMInputCode[GIC_MOUSE_BUTTON_L]   = CGM_Input::MOUSE_BUTTON_L;
+	m_aGICodeToGMInputCode[GIC_MOUSE_AXIS_X]     = CGM_Input::MOUSE_AXIS_X;
+	m_aGICodeToGMInputCode[GIC_MOUSE_AXIS_Y]     = CGM_Input::MOUSE_AXIS_Y;
+
 	m_aGICodeToGMInputCode[GIC_BACK]             = CGM_Input::CANCEL;
 //	m_aGICodeToGMInputCode[GIC_ESC]              = CGM_Input::CANCEL;
 	m_aGICodeToGMInputCode[GIC_GPD_BUTTON_01]    = CGM_Input::CANCEL;
