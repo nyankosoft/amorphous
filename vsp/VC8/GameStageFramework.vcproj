@@ -1653,59 +1653,59 @@
 				Name="Script"
 				>
 				<File
-					RelativePath="..\..\gds\GameEvent\GameEvent.cpp"
+					RelativePath="..\..\gds\Script\GameEvent.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GameEvent.h"
+					RelativePath="..\..\gds\Script\GameEvent.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GameEventManager.cpp"
+					RelativePath="..\..\gds\Script\GameEventManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GameEventManager.h"
+					RelativePath="..\..\gds\Script\GameEventManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GameEventTypes.h"
+					RelativePath="..\..\gds\Script\GameEventTypes.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GE_SpawnEvent.cpp"
+					RelativePath="..\..\gds\Script\GE_SpawnEvent.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GE_SpawnEvent.h"
+					RelativePath="..\..\gds\Script\GE_SpawnEvent.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GE_TextEvent.cpp"
+					RelativePath="..\..\gds\Script\GE_TextEvent.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\GE_TextEvent.h"
+					RelativePath="..\..\gds\Script\GE_TextEvent.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\PyModules.h"
+					RelativePath="..\..\gds\Script\PyModules.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\ScriptArchive.cpp"
+					RelativePath="..\..\gds\Script\ScriptArchive.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\ScriptArchive.h"
+					RelativePath="..\..\gds\Script\ScriptArchive.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\ScriptManager.cpp"
+					RelativePath="..\..\gds\Script\ScriptManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameEvent\ScriptManager.h"
+					RelativePath="..\..\gds\Script\ScriptManager.h"
 					>
 				</File>
 			</Filter>
