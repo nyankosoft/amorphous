@@ -22,7 +22,7 @@
 #include "GameCommon/GlobalParams.h"
 #include "GameCommon/GameStageFrameworkGlobalParams.h"
 #include "GameCommon/MouseCursor.h"
-#include "GameEvent/ScriptArchive.h"
+#include "Script/ScriptArchive.h"
 #include "Task/GameTask.h"
 #include "Task/GameTaskManager.h"
 #include "Task/GameTaskFactoryBase.h"

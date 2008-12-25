@@ -6,7 +6,7 @@
 #include "../Stage/HUD_PlayerBase.h"
 
 #include "../GameTextSystem/GameTextSet.h"
-#include "../GameEvent/GameEventTypes.h"
+#include "../Script/GameEventTypes.h"
 
 #include "BE_EventTrigger.h"
 

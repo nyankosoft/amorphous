@@ -7,7 +7,7 @@
 ///#include "../Stage/GameMessage.h"
 
 ///#include "../GameTextSystem/GameTextSet.h"
-///#include "../GameEvent/GameEventTypes.h"
+///#include "../Script/GameEventTypes.h"
 
 #include "BE_AreaSensor.h"
 
