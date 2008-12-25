@@ -326,9 +326,6 @@ void CGameTask_MainMenu::CreateMenu()
 	apSubDlgButton[i] = (CGM_SubDialogButton *)pRootDialog->AddControl( &subdlg_button );
 	apSubDlgButton[i]->SetSubDialog( CreateDebugMenu() );
 #endif /* CREATE_DEBUG_SUBMENU */
-
-	// re-scale UI for the current resolution
-	m_pDialogManager->ChangeScale( (float)GetScreenWidth() / 800.0f );
 }
 
 
