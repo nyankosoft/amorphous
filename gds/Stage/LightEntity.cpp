@@ -136,7 +136,7 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 
 		// get pooled light object from the base entity
 
-		m_pLightHolder = pBaseEntity->GetPooledLight( GetLightType() );
+		m_pLightHolder = pBaseEntity->GetPooledLight( light_desc.LightType );
 
 		CLightInitializer initializer( light_desc );
 		if( m_pLightHolder )

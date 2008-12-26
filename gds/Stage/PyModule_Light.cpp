@@ -99,17 +99,6 @@ void gsf::py::light::SetEntityForLight( CCopyEntity* pEntity )
 
 using namespace gsf::py::light;
 
-/*
-struct NamedEntityCache
-{
-	string name;
-	CCopyEntity *pEntity;
-};
-
-#define NAMED_ENTITY_CACHE_SIZE	4
-static NamedEntityCache g_NamedEntityCache[NAMED_ENTITY_CACHE_SIZE];
-*/
-
 
 static CCopyEntity *GetEntityByName( const char* entity_name )
 {
@@ -130,8 +119,8 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, CScriptGenMo
 	SFloatRGBAColor color = SFloatRGBAColor(1,1,1,1);
 
 	int result = 0;
-	
-	CBaseEntityHandle basehandle( "DiretionalLight" );
+
+	CBaseEntityHandle basehandle( "__DiretionalLight__" );
 	if( mode == CScriptGenMode::LOAD )
 	{
 		PyArg_ParseTuple( args, "s|sfffffffdd",
@@ -178,26 +167,48 @@ PyObject* gsf::py::light::LoadDirectionalLight( PyObject* self, PyObject* args )
 }
 
 
-PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args )
+PyObject* GeneratePointLight( PyObject* self, PyObject* args, CScriptGenMode::Name mode )
 {
 	CLightEntityDesc desc( CLight::POINT );
+	char *base_name = "";
 	char *light_name = "";
-	int shadow_for_light = 1; // true(1) by default
+	int shadow_for_light = 1;     // true(1) by default
 	Vector3 pos = Vector3(0,2,0); // default position = 2m above the world origin
 	SFloatRGBAColor color = SFloatRGBAColor(1,1,1,1);
 	float *pAttenu = desc.afAttenuation;
 
-	int result = PyArg_ParseTuple( args, "|sfffffffdd",
-		&light_name, &pos.x, &pos.y, &pos.z,
-		&color.fRed, &color.fGreen, &color.fBlue,
-		&desc.fIntensity,
-		&pAttenu[0],
-		&pAttenu[1],
-		&pAttenu[2],
-		&desc.LightGroup, &shadow_for_light );
+	int result = 0;
+
+	CBaseEntityHandle basehandle( "__PointLight__" );
+	if( mode == CScriptGenMode::LOAD )
+	{
+		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
+			&base_name,
+			&light_name, &pos.x, &pos.y, &pos.z,
+			&color.fRed, &color.fGreen, &color.fBlue,
+			&desc.fIntensity,
+			&pAttenu[0],
+			&pAttenu[1],
+			&pAttenu[2],
+			&desc.LightGroup,
+			&shadow_for_light );
+	}
+	else
+	{
+		result = PyArg_ParseTuple( args, "|sffffffffffdd",
+			&light_name, &pos.x, &pos.y, &pos.z,
+			&color.fRed, &color.fGreen, &color.fBlue,
+			&desc.fIntensity,
+			&pAttenu[0],
+			&pAttenu[1],
+			&pAttenu[2],
+			&desc.LightGroup,
+			&shadow_for_light );
+	}
 
 	color.fAlpha = 1.0f;
 
+	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
 	desc.WorldPose.vPosition = pos;
 	desc.aColor[0] = color;
@@ -209,10 +220,15 @@ PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args )
 }
 
 
+PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args )
+{
+	return GeneratePointLight( self, args, CScriptGenMode::CREATE );
+}
+
+
 PyObject* gsf::py::light::LoadPointLight( PyObject* self, PyObject* args )
 {
-	Py_INCREF( Py_None );
-	return Py_None;
+	return GeneratePointLight( self, args, CScriptGenMode::LOAD );
 }
 
 
@@ -223,28 +239,47 @@ PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args )
 }
 
 
-PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args )
+PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGenMode::Name mode )
 {
+	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
+	char *base_name = "";
 	char *light_name = "";
 	int light_group = 0;
 	int shadow_for_light = 1; // true(1) by default
 	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
 	SFloatRGBAColor uc = SFloatRGBAColor(1,1,1,1);
 	SFloatRGBAColor lc = SFloatRGBAColor(0,0,0,1);
-	float fIntensity = 1.0f;
 
-	int result = PyArg_ParseTuple( args, "|sffffffffffdd",
-		&light_name, &dir.x, &dir.y, &dir.z,
-		&uc.fRed, uc.fGreen, &uc.fBlue,  &lc.fRed, lc.fGreen, &lc.fBlue,
-		&light_group, &shadow_for_light );
+	int result = 0;
+
+	CBaseEntityHandle basehandle( "__HemisphericDiretionalLight__" );
+	if( mode == CScriptGenMode::LOAD )
+	{
+		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
+			&base_name,
+			&light_name, &dir.x, &dir.y, &dir.z,
+			&uc.fRed, uc.fGreen, &uc.fBlue,
+			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&desc.fIntensity,
+			&desc.LightGroup,
+			&shadow_for_light );
+	}
+	else
+	{
+		result = PyArg_ParseTuple( args, "|sffffffffffdd",
+			&base_name,
+			&light_name, &dir.x, &dir.y, &dir.z,
+			&uc.fRed, uc.fGreen, &uc.fBlue,
+			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&desc.fIntensity,
+			&desc.LightGroup,
+			&shadow_for_light );
+	}
 
 	uc.fAlpha = lc.fAlpha = 1.0f;
 
-	CLightEntityDesc desc;
-	desc.LightType = CLight::HEMISPHERIC_DIRECTIONAL;
+	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
-	desc.LightGroup = light_group;
-	desc.fIntensity = fIntensity;
 	desc.WorldPose.matOrient.SetColumn( 2, dir );
 	desc.aColor[0] = uc;
 	desc.aColor[1] = lc;
@@ -255,11 +290,80 @@ PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* ar
 	return Py_None;
 }
 
+PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args )
+{
+	return GenerateHSDirectionalLight( self, args, CScriptGenMode::CREATE );
+}
+
+PyObject* gsf::py::light::LoadHSDirectionalLight( PyObject* self, PyObject* args )
+{
+	return GenerateHSDirectionalLight( self, args, CScriptGenMode::LOAD );
+}
+
+
+PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::Name mode )
+{
+	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
+	char *base_name = "";
+	char *light_name = "";
+	int shadow_for_light = 1;      // true(1) by default
+	Vector3 pos = Vector3(0,2,0);  // default position = 2m above the world origin
+	SFloatRGBAColor uc = SFloatRGBAColor(1,1,1,1);
+	SFloatRGBAColor lc = SFloatRGBAColor(0,0,0,1);
+	float *pAttenu = desc.afAttenuation;
+
+	int result = 0;
+
+	CBaseEntityHandle basehandle( "__HemisphericPointLight__" );
+	if( mode == CScriptGenMode::LOAD )
+	{
+		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
+			&base_name,
+			&light_name, &pos.x, &pos.y, &pos.z,
+			&uc.fRed, uc.fGreen, &uc.fBlue,
+			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&desc.fIntensity,
+			&pAttenu[0],
+			&pAttenu[1],
+			&pAttenu[2],
+			&desc.LightGroup,
+			&shadow_for_light );
+	}
+	else
+	{
+		result = PyArg_ParseTuple( args, "|sffffffffffdd",
+			&light_name, &pos.x, &pos.y, &pos.z,
+			&uc.fRed, uc.fGreen, &uc.fBlue,
+			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&desc.fIntensity,
+			&pAttenu[0],
+			&pAttenu[1],
+			&pAttenu[2],
+			&desc.LightGroup,
+			&shadow_for_light );
+	}
+
+	uc.fAlpha = lc.fAlpha = 1.0f;
+
+	desc.strName = light_name;
+	desc.WorldPose.vPosition = pos;
+	desc.aColor[0] = uc;
+	desc.aColor[1] = lc;
+
+	CreateEntityFromDesc( desc );
+
+	Py_INCREF( Py_None );
+	return Py_None;
+}
 
 PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args )
 {
-	Py_INCREF( Py_None );
-	return Py_None;
+	return GenerateHSPointLight( self, args, CScriptGenMode::CREATE );
+}
+
+PyObject* gsf::py::light::LoadHSPointLight( PyObject* self, PyObject* args )
+{
+	return GenerateHSPointLight( self, args, CScriptGenMode::LOAD );
 }
 
 
@@ -269,19 +373,6 @@ PyObject* gsf::py::light::CreateHSSpotlight( PyObject* self, PyObject* args )
 	return Py_None;
 }
 
-
-PyObject* gsf::py::light::LoadHSDirectionalLight( PyObject* self, PyObject* args )
-{
-	Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* gsf::py::light::LoadHSPointLight( PyObject* self, PyObject* args )
-{
-	Py_INCREF( Py_None );
-	return Py_None;
-}
 
 /*
 PyObject* gsf::py::light::LoadHSSpotlight( PyObject* self, PyObject* args )
