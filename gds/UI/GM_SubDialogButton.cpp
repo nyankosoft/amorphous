@@ -217,34 +217,3 @@ void CGM_SubDialogButton::SetSoundPlayer( CGM_GlobalSoundPlayerSharedPtr pGlobal
 {
 	m_pSoundPlayer = pGlobalSoundPlayer->GetSubDialogButtonSoundPlayer();
 }
-
-
-
-
-
-/**
-void CGM_SubDialogButton::Render()
-{
-//	if( m_pSubDialog && m_pSubDialog->IsOpen() )
-//		m_pSubDialog->Render();
-
-///	m_pRenderManager->RenderSubDialogButton( *this );
-}
-
-
-void CGM_SubDialogButton::RenderSubDialog()
-{
-//	if( m_pSubDialog && m_pSubDialog->IsOpen() )
-//		m_pSubDialog->Render();
-}
-*/
-
-/*
-void CGM_SubDialogButton::Render()
-{
-	if( m_pSubDialog && m_pSubDialog->IsOpen() )
-		m_pSubDialog->Render();
-
-	m_pSubDialog->GetDialogManager()->RenderControl( this );
-//	CGM_Button::Render();
-}*/

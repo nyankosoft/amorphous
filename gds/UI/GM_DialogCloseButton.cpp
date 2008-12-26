@@ -36,34 +36,3 @@ void CGM_DialogCloseButton::SetSoundPlayer( CGM_GlobalSoundPlayerSharedPtr pGlob
 {
 	m_pSoundPlayer = pGlobalSoundPlayer->GetDialogCloseButtonSoundPlayer();
 }
-
-
-
-
-
-/*
-void CGM_DialogCloseButton::OnFocusOut()
-{
-	CGM_Control::OnFocusOut();
-
-	// if the button is marked as currenly being pressed
-	// even if its focus is about to be taken away,
-	// set it to 'not pressed'
-	if( IsPressed() )
-		m_bPressed = false;
-}*/
-
-/**
-void CGM_DialogCloseButton::Render()
-{
-	m_pRenderManager->RenderDialogCloseButton( *this );
-}
-*/
-
-/*
-unsigned int CGM_DialogCloseButton::GetState() const
-{
-	if( IsPressed() )	return STATE_PRESSED;
-	else return CGM_Control::GetState();
-}*/
-

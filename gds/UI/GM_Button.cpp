@@ -173,12 +173,6 @@ void CGM_Button::OnFocusOut()
 		m_bPressed = false;
 }
 
-/*
-void CGM_Button::Render()
-{
-//	m_pRenderManager->RenderButton( *this );
-}
-*/
 
 unsigned int CGM_Button::GetState() const
 {
