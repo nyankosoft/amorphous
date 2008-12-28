@@ -269,10 +269,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityNode_LightControl.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Stage\EntityRenderManager.cpp"
 					>
 				</File>
