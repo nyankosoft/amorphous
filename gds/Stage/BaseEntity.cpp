@@ -1,12 +1,12 @@
 #include "BaseEntity.h"
 #include "CopyEntity.h"
 #include "CopyEntityDesc.h"
+#include "AlphaEntity.h"
 #include "trace.h"
 #include "EntitySet.h"
 #include "Stage.h"
 #include "bsptree.h"
 #include "ScreenEffectManager.h"
-
 
 #include "GameCommon/GameMathMisc.h"
 #include "GameCommon/MeshBoneControllerBase.h"
@@ -24,7 +24,6 @@
 #include "Support/StringAux.h"
 #include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"
-#include "Support/msgbox.h"
 
 #include "Physics/ActorDesc.h"
 

@@ -1,8 +1,10 @@
 #include "EntityFactory.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-
+#include "Stage/CopyEntity.h"
+#include "Stage/CopyEntityDesc.h"
+#include "Stage/LightEntity.h"
+#include "Stage/AlphaEntity.h"
 #include "Support/memory_helpers.h"
+
 
 using namespace std;
 using namespace boost;

@@ -36,6 +36,7 @@ CBE_PointLight::CBE_PointLight()
 
 void CBE_PointLight::Init()
 {
+	CBE_Light::Init();
 
 /*	if( 0 < m_GlareTextureFilepath.length() )
 		m_GlareTexture.Load( m_GlareTextureFilepath );

@@ -10,8 +10,6 @@
 #include "3DMath/aabb3.h"
 #include "CopyEntity.h"
 #include "EntityGroupHandle.h"
-#include "EntityNode.h"
-#include "EntityFactory.h"
 #include "BaseEntityHandle.h"
 #include "EntityRenderManager.h"
 #include "OverlapTestAABB.h"
@@ -200,16 +198,6 @@ public:
 
 
 // ================================ inline implementations ================================ 
-
-
-/*
-// Note: This function doesn't unlink 'pCpyEnt' from the 'm_pEntityInUse' list
-// It only link 'pCpyEnts' to the 'm_pEmptyEntity' list
-inline void CEntitySet::ReleaseEntity( CCopyEntity* pEntity )
-{
-	m_pEntityFactory->ReleaseEntity( pEntity );
-}
-*/
 
 inline void CEntitySet::UpdateLink( CCopyEntity* pEntity )
 {

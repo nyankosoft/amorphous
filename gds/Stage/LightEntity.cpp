@@ -112,7 +112,8 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 
 	if( pLightDesc->pLight )
 	{
-		m_pLight = pLightDesc->pLight;
+		LOG_PRINT_ERROR( " Init by a shared_ptr light object - Not supported yet." );
+//		m_pLight = pLightDesc->pLight;
 	}
 //	else if( pLightDesc->pLightRawPtr )
 //	{

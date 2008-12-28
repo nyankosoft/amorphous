@@ -7,8 +7,6 @@
 
 #include "Support/shared_prealloc_pool.h"
 #include "Stage/fwd.h"
-#include "Stage/AlphaEntity.h"
-#include "Stage/LightEntity.h"
 
 
 class CEntityFactory

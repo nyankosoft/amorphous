@@ -632,7 +632,7 @@ void CBaseEntity::SetLights( CCopyEntity& entity )
 		{
 			// need to update light information - find lights that reaches to this entity
 			entity.ClearLights();
-//			m_pStage->GetEntitySet()->UpdateLightInfo( entity );
+			m_pStage->GetEntitySet()->UpdateLights( &entity );
 			entity.sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
 		}
 

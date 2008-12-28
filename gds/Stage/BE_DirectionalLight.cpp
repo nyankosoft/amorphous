@@ -26,6 +26,7 @@ CBE_DirectionalLight::CBE_DirectionalLight()
 
 void CBE_DirectionalLight::Init()
 {
+	CBE_Light::Init();
 }
 
 

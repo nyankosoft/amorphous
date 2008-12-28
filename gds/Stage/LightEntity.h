@@ -28,6 +28,8 @@ public:
 template<class TLight>
 class CLightHolderInitializer
 {
+public:
+
 	/// Called in prealloc_pool<CLightHolder>::init()
 	/// to create a pool of light objects.
 	void operator()( CLightHolder *pHolder )
@@ -126,6 +128,9 @@ public:
 	fIntensity(1.0f)
 	{
 		TypeID = CCopyEntityTypeID::LIGHT_ENTITY;
+		afAttenuation[0] = 0.1f;
+		afAttenuation[1] = 0.1f;
+		afAttenuation[2] = 0.1f;
 	}
 };
 
@@ -173,14 +178,15 @@ public:
 
 //	inline float *GetColor() { return (float *)&m_Light.Diffuse; }
 
-	inline CLight::Type GetLightType() const { return m_pLight->GetLightType(); } 
+	CLight::Type GetLightType() const { return m_pLightHolder->pLight->GetLightType(); } 
 
 	inline void SetColor( int index, const SFloatRGBAColor& color );
 	inline void SetColor( int index, const SFloatRGBColor& color );
 
 	inline void SetAttenuationFactors( float a0, float a1, float a2 );
 
-	boost::shared_ptr<CLight>& GetLightObject() { return m_pLight; }
+//	boost::shared_ptr<CLight>& GetLightObject() { return m_pLight; }
+	CLight *GetLightObject() { return m_pLightHolder ? m_pLightHolder->pLight : NULL; }
 
 	bool ReachesEntity( CCopyEntity *pEntity );
 
@@ -228,7 +234,9 @@ inline void CLightEntity::SetPosition( const Vector3& rvPosition )
 //	CCopyEntity::SetPosition( rvPosition );
 	CCopyEntity::Position() = rvPosition;
 
-	m_pLight->SetPosition( rvPosition );
+	CLight *pLight = GetLightObject();
+	if( pLight )
+		pLight->SetPosition( rvPosition );
 }
 
 /*

@@ -157,7 +157,7 @@ public:
 			m_vecpStock[i]->SetStockIndex( i );
 			m_vecpStock[i]->SetStockID( -1 );
 
-			default_pooled_object_initializer<CElementType>()( m_vecpStock[i] );
+			T()( m_vecpStock[i] );
 		}
 
 		m_VacantSlotPos = num_stocks - 1;
