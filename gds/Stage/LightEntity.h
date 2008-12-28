@@ -254,9 +254,13 @@ inline void CLightEntity::SetDiffuseColor( float *pafColor )
 */
 inline void CLightEntity::SetAttenuationFactors( float a0, float a1, float a2 )
 {
-//	m_HemisphericLight.fAttenuation[0] = a0;
-//	m_HemisphericLight.fAttenuation[1] = a1;
-//	m_HemisphericLight.fAttenuation[2] = a2;
+	CPointLight *pPointLight = dynamic_cast<CPointLight *>(GetLightObject());
+	if( pPointLight )
+	{
+		pPointLight->fAttenuation[0] = a0;
+		pPointLight->fAttenuation[1] = a1;
+		pPointLight->fAttenuation[2] = a2;
+	}
 }
 
 
@@ -269,7 +273,7 @@ inline void CLightEntity::SetColor( int index, const SFloatRGBColor& color )
 inline void CLightEntity::SetColor( int index, const SFloatRGBAColor& color )
 {
 	CLightColorVisitor visitor( index, color );
-	m_pLight->Accept( visitor );
+	GetLightObject()->Accept( visitor );
 
 	// or
 

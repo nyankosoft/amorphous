@@ -547,6 +547,14 @@
 						RelativePath="..\..\gds\Stage\Input\InputHandler_PlayerShip.h"
 						>
 					</File>
+					<File
+						RelativePath="..\..\gds\Stage\Input\InputHandler_StageDebug.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Stage\Input\InputHandler_StageDebug.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="PyModules"

@@ -19,13 +19,13 @@ namespace light
 
 extern PyMethodDef g_PyModuleLightMethod[];
 
-//extern void SetStageForEntityScriptCallback( CStage* pStage );
 extern void SetEntityForLight( CCopyEntity* pEntity );
+
 
 extern PyObject* SetColor( PyObject* self, PyObject* args );
 extern PyObject* SetColorU32( PyObject* self, PyObject* args );
 extern PyObject* SetPosition( PyObject* self, PyObject* args );
-extern PyObject* SetTargetEntity( PyObject* self, PyObject* args );
+extern PyObject* SetTargetLight( PyObject* self, PyObject* args );
 
 extern PyObject* CreatePointLight( PyObject* self, PyObject* args );        
 extern PyObject* CreateDirectionalLight( PyObject* self, PyObject* args );  

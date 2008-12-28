@@ -76,6 +76,8 @@ public:
 	/// returns true on success
 	bool Initialize( const std::string& script_archive_filename );
 
+	const std::string& GetScriptName() const { return m_ScriptArchiveFilename; }
+
 
 	//
 	// Rendering

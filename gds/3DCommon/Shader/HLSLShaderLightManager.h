@@ -90,6 +90,8 @@ public:
 
 	void ReleaseGraphicsResources();
 
+	void ClearLights() { m_LightCache.Clear(); }
+
 	friend class CShaderLightManager;
 
 private:

@@ -135,6 +135,9 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 		light_desc.vDirection = pLightDesc->WorldPose.matOrient(2);
 		light_desc.fIntensity = pLightDesc->fIntensity;
 
+		for( int i=0; i<numof(light_desc.afAttenuation); i++ )
+			light_desc.afAttenuation[i] = pLightDesc->afAttenuation[i];
+
 		// get pooled light object from the base entity
 
 		m_pLightHolder = pBaseEntity->GetPooledLight( light_desc.LightType );
@@ -143,6 +146,25 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 		if( m_pLightHolder )
 			m_pLightHolder->pLight->Accept( initializer );
 	}
+
+	float r = 1.0f;
+	switch( pLightDesc->LightType )
+	{
+	case CLight::POINT:
+	case CLight::HEMISPHERIC_POINT:
+		r = 100.0f;
+		break;
+	case CLight::AMBIENT:
+	case CLight::DIRECTIONAL:
+	case CLight::HEMISPHERIC_DIRECTIONAL:
+		r = FLT_MAX;
+		break;
+	default:
+		break;
+	}
+	this->fRadius = r;
+	this->local_aabb.vMin = -Vector3(r,r,r);
+	this->local_aabb.vMax =  Vector3(r,r,r);
 
 	// link to the tree
 	GetStage()->GetEntitySet()->LinkLightEntity( this );
@@ -164,7 +186,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 
 	Vector3 vLightCenterPos, vLightToEntity, vLightRefPos;
 
-	const CLight::Type light_type = m_pLight->GetLightType();
+	const CLight::Type light_type = GetLightType();
 
 	if( light_type == CLight::POINT
 	 || light_type == CLight::HEMISPHERIC_POINT

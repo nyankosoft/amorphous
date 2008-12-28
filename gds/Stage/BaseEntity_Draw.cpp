@@ -606,6 +606,9 @@ void CBaseEntity::SetLightsToShader( CCopyEntity& entity )
 	int i, num_current_lights = entity.GetNumLights();
 	CLightEntity *pLightEntity = NULL;
 
+	// clear any lights currenly stored in the shader light manager
+	pShaderLightMgr->ClearLights();
+
 	CShaderLightParamsWriter light_params_writer( pShaderLightMgr.get() );
 
 	for( i=0; i<num_current_lights; i++ )
@@ -617,6 +620,7 @@ void CBaseEntity::SetLightsToShader( CCopyEntity& entity )
 
 //		pLightEntity->SetLightToShader( pShaderLightMgr );
 
+		// copy light properties to the shader registers
 		pLightEntity->GetLightObject()->Accept( light_params_writer );
 	}
 

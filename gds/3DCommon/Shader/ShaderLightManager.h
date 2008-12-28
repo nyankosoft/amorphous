@@ -22,6 +22,16 @@ public:
 	fixed_vector<CPointLight,8> vecPointLight;
 	fixed_vector<CHemisphericDirectionalLight,8> vecHSDirecitonalLight;
 	fixed_vector<CHemisphericPointLight,8> vecHSPointLight;
+
+public:
+
+	void Clear()
+	{
+		vecDirecitonalLight.resize(0);
+		vecPointLight.resize(0);
+		vecHSDirecitonalLight.resize(0);
+		vecHSPointLight.resize(0);
+	}
 };
 
 
@@ -39,6 +49,8 @@ public:
 	virtual void SetHemisphericPointLight( const CHemisphericPointLight& light ) {}
 //	virtual void SetTriDirectionalLight( const CTriDirectionalLight& light ) {}
 //	virtual void SetTriPointLight( const CTriPointLight& light ) {}
+
+	virtual void ClearLights() {}
 
 	virtual void CommitChanges() {}
 

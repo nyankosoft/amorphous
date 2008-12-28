@@ -47,8 +47,6 @@ CSystemInputHandler_Debug::~CSystemInputHandler_Debug()
 
 void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 {
-//	static bool s_bMouseAcquired = false;
-
 	switch( input.iGICode )
 	{
 	case GIC_ESC:
@@ -57,12 +55,6 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 			g_bAppExitRequested = true;
 		}
 //		else if( input.iType == ITYPE_KEY_RELEASED ) {}
-		break;
-
-	case GIC_F4:
-		if( input.iType == ITYPE_KEY_PRESSED )
-			if( g_pStage.get() )
-                WriteEntityTreeToFile( g_pStage.get() );
 		break;
 
 	case GIC_F5:	// quick save
@@ -117,25 +109,4 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 void CSystemInputHandler_Debug::ChangeScreenSize()
 {
 	GameWindowManager().ChangeScreenSize( m_aiScreenWidth[m_iScreenSize], m_aiScreenHeight[m_iScreenSize], m_abFullscreen[m_iScreenSize] );
-}
-
-
-void CSystemInputHandler_Debug::WriteEntityTreeToFile(CStage* pStage)
-{
-	char acFilename[128], acTime[64];
-	static DWORD dwLastOutputTime = 0;
-
-	if( 1000 < (timeGetTime() - dwLastOutputTime) )	// don't output more than once in a second
-	{
-		CEntitySet* pEntSet = pStage->GetEntitySet();
-		sprintf( acTime, "%.3f", ((float)(timeGetTime() / 1000.0f)) );
-//		ftos((float)(timeGetTime() / 1000.0f), 3, acTime);
-
-		strcpy( acFilename, "entity_tree[" );
-		strcat( acFilename, acTime );
-		strcat( acFilename, "].txt" );
-
-		pEntSet->WriteEntityTreeToFile(acFilename);
-		dwLastOutputTime = timeGetTime();
-	}
 }

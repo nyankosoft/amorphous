@@ -126,8 +126,32 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 }
 
 
+/// Support only the following types of lights
+/// - hemispheric directional lights
+/// - hemispheric point lights
 void CHLSLShaderLightManager::CommitChanges()
 {
+	int i;
+
+	const int num_directional_lights = (int)m_LightCache.vecHSDirecitonalLight.size();
+	const int num_point_lights       = (int)m_LightCache.vecHSPointLight.size();
+
+	SetDirectionalLightOffset( 0 );
+	SetNumDirectionalLights( num_directional_lights );
+
+	for( i=0; i<num_directional_lights; i++ )
+	{
+		SetLight( i, m_LightCache.vecHSDirecitonalLight[i] );
+	}
+
+	SetPointLightOffset( num_directional_lights );
+	SetNumPointLights( num_point_lights );
+
+	for( i=0; i<num_point_lights; i++ )
+	{
+		SetLight( num_directional_lights + i, m_LightCache.vecHSPointLight[i] );
+	}
+
 	m_pEffect->CommitChanges();
 }
 

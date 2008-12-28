@@ -1,13 +1,13 @@
 #include "Stage/Stage.h"
 #include "Stage/BSPMap.h"
 #include "Stage/StaticGeometry.h"
-//#include "Stage/StaticGeometryFG.h"
 #include "Stage/EntitySet.h"
 #include "Stage/trace.h"
 #include "Stage/ViewFrustumTest.h"
 #include "Stage/CopyEntityDesc.h"
 #include "Stage/ScreenEffectManager.h"
 #include "Stage/SurfaceMaterialManager.h"
+#include "Stage/Input/InputHandler_StageDebug.h"
 #include "Script/PyModules.h"
 #include "Script/ScriptManager.h"
 #include "Support/Timer.h"
@@ -23,8 +23,11 @@ using namespace fnop;
 #include "Physics/Scene.h"
 #include "Physics/MaterialDesc.h"
 #include "Physics/Material.h"
-
 #include "Sound/SoundManager.h"
+#include "GameInput/InputHub.h"
+
+
+static uint gs_DebugInputHandlerIndex = 2;
 
 
 using namespace physics;
@@ -83,6 +86,10 @@ CStage::~CStage()
 	SafeDelete( m_pMaterialManager );
 
 //	SafeDelete( m_pPhysicsVisualizer );
+
+	// release the input handler registered for debugging
+	CInputHandler *pStageDebugInputHandler = InputHub().PopInputHandler( gs_DebugInputHandlerIndex );
+	SafeDelete( pStageDebugInputHandler );
 
 	SafeDelete( m_pTimer );
 }
@@ -610,6 +617,9 @@ bool CStage::Initialize( const string& script_archive_filename )
 	// load the binary material file that has the same body filename as the stage file
 	// and different suffix "mat"
 	LoadMaterial();
+
+	// register input handler for debugging stage
+	InputHub().PushInputHandler( gs_DebugInputHandlerIndex, new CInputHandler_StageDebug( m_pSelf ) );
 
 	// stage has been initialized - start the timer
 	ResumeTimer();

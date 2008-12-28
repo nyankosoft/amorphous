@@ -19,6 +19,7 @@
 #include "../base.h"
 
 using namespace std;
+using namespace boost;
 
 
 class  CScriptGenMode
@@ -33,7 +34,7 @@ public:
 };
 
 
-class CStageAttributeHolder
+class CStageLightAttributeHolder
 {
 	enum DefaultBaseEntityHandleIndex
 	{
@@ -52,8 +53,11 @@ public:
 	CBaseEntityHandle m_aBaseEntityHandle[NUM_DEFAULT_BASE_ENTITY_HANDLES];
 
 	/// target light entity
-	CEntityHandle<CLightEntity> m_LightEntity;
+	CEntityHandle<CLightEntity> m_TargetLightEntity;
 };
+
+
+CStageLightAttributeHolder gs_StageLightAttribute;
 
 
 CCopyEntity *CreateEntityFromDesc( CCopyEntityDesc& desc )
@@ -82,18 +86,12 @@ int init_light_groups()
 }
 
 
-#define RETURN_PYNONE_IF_NO_STAGE()	 if( !GetStageForScriptCallback() )        { Py_INCREF( Py_None );	return Py_None;	}
-#define RETURN_PYNONE_IF_NO_TARGET() if( !IsValidEntity(GetEntityForLight()) ) { Py_INCREF( Py_None );	return Py_None;	}
+//#define RETURN_PYNONE_IF_NO_STAGE()	 if( !GetStageForScriptCallback() )        { Py_INCREF( Py_None );	return Py_None;	}
+//#define RETURN_PYNONE_IF_NO_TARGET() if( !IsValidEntity(GetEntityForLight()) ) { Py_INCREF( Py_None );	return Py_None;	}
 
-
-CCopyEntity *gs_pEntityForLight = NULL;
-
-inline CCopyEntity *GetEntityForLight() { return gs_pEntityForLight; }
-
-
-void gsf::py::light::SetEntityForLight( CCopyEntity* pEntity )
+inline static shared_ptr<CLightEntity> GetTargetLightEntity()
 {
-	gs_pEntityForLight = pEntity;
+	return gs_StageLightAttribute.m_TargetLightEntity.Get();
 }
 
 
@@ -258,8 +256,8 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
 			&base_name,
 			&light_name, &dir.x, &dir.y, &dir.z,
-			&uc.fRed, uc.fGreen, &uc.fBlue,
-			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&uc.fRed, &uc.fGreen, &uc.fBlue,
+			&lc.fRed, &lc.fGreen, &lc.fBlue,
 			&desc.fIntensity,
 			&desc.LightGroup,
 			&shadow_for_light );
@@ -269,8 +267,8 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 		result = PyArg_ParseTuple( args, "|sffffffffffdd",
 			&base_name,
 			&light_name, &dir.x, &dir.y, &dir.z,
-			&uc.fRed, uc.fGreen, &uc.fBlue,
-			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&uc.fRed, &uc.fGreen, &uc.fBlue,
+			&lc.fRed, &lc.fGreen, &lc.fBlue,
 			&desc.fIntensity,
 			&desc.LightGroup,
 			&shadow_for_light );
@@ -320,8 +318,8 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::
 		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
 			&base_name,
 			&light_name, &pos.x, &pos.y, &pos.z,
-			&uc.fRed, uc.fGreen, &uc.fBlue,
-			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&uc.fRed, &uc.fGreen, &uc.fBlue,
+			&lc.fRed, &lc.fGreen, &lc.fBlue,
 			&desc.fIntensity,
 			&pAttenu[0],
 			&pAttenu[1],
@@ -333,8 +331,8 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::
 	{
 		result = PyArg_ParseTuple( args, "|sffffffffffdd",
 			&light_name, &pos.x, &pos.y, &pos.z,
-			&uc.fRed, uc.fGreen, &uc.fBlue,
-			&lc.fRed, lc.fGreen, &lc.fBlue,
+			&uc.fRed, &uc.fGreen, &uc.fBlue,
+			&lc.fRed, &lc.fGreen, &lc.fBlue,
 			&desc.fIntensity,
 			&pAttenu[0],
 			&pAttenu[1],
@@ -345,6 +343,7 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::
 
 	uc.fAlpha = lc.fAlpha = 1.0f;
 
+	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
 	desc.WorldPose.vPosition = pos;
 	desc.aColor[0] = uc;
@@ -405,22 +404,17 @@ PyObject* gsf::py::light::CreateTriSpotlight( PyObject* self, PyObject* args )
 
 PyObject* SetAttenuationFactors( PyObject* self, PyObject* args )
 {
-	g_Log.Print( "Light.SetAttenuFactors() - called" );
+	LOG_FUNCTION_SCOPE();
 
 	float a[3];
 
 	int result = PyArg_ParseTuple( args, "fff", &a[0], &a[1], &a[2] );
 
-	RETURN_PYNONE_IF_NO_TARGET()
-	RETURN_PYNONE_IF_NO_STAGE()
-
-	CLightEntity *pLightEntity = NULL;
-//		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
-
+	shared_ptr<CLightEntity> pLightEntity = GetTargetLightEntity();
 	if( pLightEntity )
+	{
 		pLightEntity->SetAttenuationFactors( a[0], a[1], a[2] );
-
-	CBE_Light::SetAttenuationFactors( GetEntityForLight(), a[0], a[1], a[2] );
+	}
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -437,11 +431,11 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 	if( !GetStageForScriptCallback() )
 		return;
 
-	CLightEntity *pLightEntity = NULL;//m_LightEntity.Get();
-//		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
-
+	shared_ptr<CLightEntity> pLightEntity = GetTargetLightEntity();
 	if( pLightEntity )
+	{
 		pLightEntity->SetColor( index, color );
+	}
 
 /*	const Vector3 vColor = Vector3( color.fRed, color.fGreen, color.fBlue );
 
@@ -465,8 +459,6 @@ PyObject* gsf::py::light::SetColorU32( PyObject* self, PyObject* args )
 	SFloatRGBColor dest_color;
 	dest_color.SetARGB32( color );
 
-	RETURN_PYNONE_IF_NO_TARGET()
-
 	SetLightColor( index, dest_color );
 
     Py_INCREF( Py_None );
@@ -480,8 +472,6 @@ PyObject* gsf::py::light::SetColor( PyObject* self, PyObject* args )
 	SFloatRGBColor color;
 	int result = PyArg_ParseTuple( args, "ifff", &index, &color.fRed, &color.fGreen, &color.fBlue );
 
-	RETURN_PYNONE_IF_NO_TARGET()
-
 	SetLightColor( index, color );
 
     Py_INCREF( Py_None );
@@ -489,11 +479,25 @@ PyObject* gsf::py::light::SetColor( PyObject* self, PyObject* args )
 }
 
 
-PyObject* gsf::py::light::SetTargetEntity( PyObject* self, PyObject* args )
+PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
 {
-	g_Log.Print( "Light.SetTargetEntity() - called" );
+	Vector3 pos;
+	int result = PyArg_ParseTuple( args, "fff", &pos.x, &pos.y, &pos.z );
 
-	RETURN_PYNONE_IF_NO_STAGE()
+	shared_ptr<CLightEntity> pLightEntity = GetTargetLightEntity();
+	if( pLightEntity )
+	{
+		pLightEntity->SetPosition( pos );
+	}
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* gsf::py::light::SetTargetLight( PyObject* self, PyObject* args )
+{
+	LOG_FUNCTION_SCOPE();
 
 	char *entity_name;
 	int result = PyArg_ParseTuple( args, "s", &entity_name );
@@ -505,30 +509,11 @@ PyObject* gsf::py::light::SetTargetEntity( PyObject* self, PyObject* args )
 	// TODO: what if the focus target entity is created later
 	if( IsValidEntity(pLightEntity) )
 	{
-//		m_LightEntity = CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() );
+		gs_StageLightAttribute.m_TargetLightEntity
+			= CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() );
 	}
 
 	Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
-{
-	Vector3 pos;
-	int result = PyArg_ParseTuple( args, "fff", &pos.x, &pos.y, &pos.z );
-
-	RETURN_PYNONE_IF_NO_TARGET()
-	RETURN_PYNONE_IF_NO_STAGE()
-
-	CLightEntity *pLightEntity = NULL;
-//		= GetStageForScriptCallback()->GetEntitySet()->GetLightEntity( GetEntityForLight()->iExtraDataIndex );
-
-	if( pLightEntity )
-        pLightEntity->SetPosition( pos );
-	GetEntityForLight()->SetPosition( pos );
-
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
@@ -559,7 +544,7 @@ PyMethodDef gsf::py::light::g_PyModuleLightMethod[] =
 //	{ "RemoveNamedLight",          gsf::py::light::RemoveNamedLight,             METH_VARARGS, "" },
 
 	// used to set/change light properies after creating the light
-	{ "SetTargetEntity",        gsf::py::light::SetTargetEntity, METH_VARARGS, "" },
+	{ "SetTargetLight",         gsf::py::light::SetTargetLight,  METH_VARARGS, "" },
 	{ "SetColor",               gsf::py::light::SetColor,        METH_VARARGS, "" },
 //	{ "SetUpperColor",          gsf::py::light::SetUpperColor,   METH_VARARGS, "" },
 //	{ "SetLowerColor",          gsf::py::light::SetLowerColor,   METH_VARARGS, "" },

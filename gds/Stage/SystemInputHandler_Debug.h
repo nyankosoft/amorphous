@@ -2,10 +2,10 @@
 #define  __SYSTEMINPUTHANDLER_DEBUG_H__
 
 #include "GameInput/InputHandler.h"
+#include "fwd.h"
 
 extern bool g_bAppExitRequested;
 
-class CStage;
 
 class CSystemInputHandler_Debug : public CInputHandler
 {
@@ -24,10 +24,7 @@ public:
 
 	void ProcessInput(SInputData& input);
 
-
 	void ChangeScreenSize();
-	void WriteEntityTreeToFile(CStage* pStage);
-
 };
 
 
