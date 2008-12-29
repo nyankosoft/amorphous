@@ -1,4 +1,5 @@
 #include "XMLDocumentLoader.h"
+#include "Support/SafeDelete.h"
 #include "Support/StringAux.h"
 #include "Support/Log/DefaultLog.h"
 
@@ -6,21 +7,79 @@
 #include "xmlch2x.h"
 
 using namespace std;
+using namespace boost;
 
 
-CXMLDocumentLoader::CXMLDocumentLoader( const std::string& src_fileapth, xercesc::DOMDocument** ppDoc )
+//=======================================================================
+// CXMLDocument
+//=======================================================================
+
+CXMLDocument::CXMLDocument( xercesc::DOMDocument *pDocument,
+						    xercesc::XercesDOMParser *pParser )
+:
+m_pParser(pParser),
+m_pDocument(pDocument)
 {
-	Load( src_fileapth, ppDoc );
+}
+
+CXMLDocument::CXMLDocument()
+:
+m_pParser(NULL),
+m_pDocument(NULL)
+{
+}
+
+CXMLDocument::~CXMLDocument()
+{
+//	SafeDelete( m_pDocument );
+	SafeDelete( m_pParser );
 }
 
 
-bool CXMLDocumentLoader::Load( const std::string& src_fileapth, xercesc::DOMDocument** ppDoc )
+CXMLNodeReader CXMLDocument::GetRootNodeReader()
 {
-	return Load( XercesString(src_fileapth.c_str()), ppDoc );
+	DOMNode *pRootNode = GetRootNode( m_pDocument );
+
+	return CXMLNodeReader( pRootNode );
 }
 
 
-bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc )
+
+//=======================================================================
+// CXMLDocumentLoader
+//=======================================================================
+
+CXMLDocumentLoader::CXMLDocumentLoader()
+{
+}
+
+
+/// Deprecated. Use shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
+CXMLDocumentLoader::CXMLDocumentLoader( const std::string& src_fileapth,
+									   xercesc::DOMDocument** ppDoc,
+									   xercesc::XercesDOMParser **ppParser )
+{
+	Load( src_fileapth, ppDoc, ppParser );
+}
+
+
+CXMLDocumentLoader::~CXMLDocumentLoader()
+{
+//	SafeDelete( m_pParser );
+}
+
+
+bool CXMLDocumentLoader::Load( const std::string& src_fileapth,
+							  xercesc::DOMDocument** ppDoc,
+							  xercesc::XercesDOMParser **ppParser )
+{
+	return Load( XercesString(src_fileapth.c_str()), ppDoc, ppParser );
+}
+
+
+bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth,
+							   xercesc::DOMDocument** ppDoc,
+							   xercesc::XercesDOMParser **pParser )
 {
 	bool bSuccess = false;
 	//DOMString strMessage;
@@ -86,12 +145,33 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth, xercesc::DOMDocument**
 		}
 		// did the input document parse okay?
 		if (bSuccess)
-		  *ppDoc = parser->getDocument();
+		{
+			*ppDoc = parser->getDocument();
+			if( pParser )
+				*pParser = parser;
+		}
 
 		xercesc::XMLString::release(&strSrc);
+
 	}
 	return bSuccess;
 }
+
+
+shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
+{
+	xercesc::DOMDocument *pDoc = NULL;
+	xercesc::XercesDOMParser *pParser = NULL;
+	bool loaded = Load( filepath, &pDoc, &pParser );
+
+	if( !loaded )
+		return shared_ptr<CXMLDocument>();
+
+	shared_ptr<CXMLDocument> pDocument = shared_ptr<CXMLDocument>( new CXMLDocument( pDoc, pParser ) );
+
+	return pDocument;
+}
+
 
 /*
 

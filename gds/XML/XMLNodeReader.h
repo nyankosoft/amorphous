@@ -52,6 +52,21 @@ using namespace Graphics;
 	light_loader.GetTextContentRGB( "Color/Lower", hs_point_light.Attribute.UpperColor );
 */
 
+
+//
+// Global Functions (defined in XMLDocumentLoader.cpp)
+//
+extern xercesc::DOMNode *GetRootNode( xercesc::DOMDocument *pXMLDocument );
+extern xercesc::DOMNode *GetChildNode( xercesc::DOMNode *pParentNode, const std::string& node_name );
+extern std::vector<xercesc::DOMNode *> GetImmediateChildNodes( xercesc::DOMNode *pParentNode,
+										  const std::string& child_node_name );
+extern std::string GetTextContentOfImmediateChildNode( xercesc::DOMNode *pParentNode,
+												const std::string& child_node_name );
+extern std::vector<std::string> GetTextContentsOfImmediateChildNodes( xercesc::DOMNode *pParentNode,
+													 const std::string& child_node_name );
+extern std::string GetAttributeText( xercesc::DOMNode *pNode, const std::string& attrib_name );
+
+
 class CXMLNodeReader
 {
 	/// borrowed reference

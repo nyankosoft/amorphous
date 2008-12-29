@@ -4,7 +4,6 @@
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
-//#include <xercesc/dom/DOMWriter.hpp>
 #include <xercesc/dom/DOMNode.hpp>
 #include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
@@ -16,6 +15,9 @@
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <vector>
 #include <string>
+#include <boost/shared_ptr.hpp>
+
+#include "XMLNodeReader.h"
 
 #ifdef _DEBUG
 	#pragma comment( lib, "xerces-c_static_3D.lib" )
@@ -28,22 +30,22 @@
 
 
 
-//
-// Global Functions
-//
-extern xercesc::DOMNode *GetRootNode( xercesc::DOMDocument *pXMLDocument );
-extern xercesc::DOMNode *GetChildNode( xercesc::DOMNode *pParentNode, const std::string& node_name );
-extern std::vector<xercesc::DOMNode *> GetImmediateChildNodes( xercesc::DOMNode *pParentNode,
-										  const std::string& child_node_name );
-extern std::string GetTextContentOfImmediateChildNode( xercesc::DOMNode *pParentNode,
-												const std::string& child_node_name );
-extern std::vector<std::string> GetTextContentsOfImmediateChildNodes( xercesc::DOMNode *pParentNode,
-													 const std::string& child_node_name );
-extern std::string GetAttributeText( xercesc::DOMNode *pNode, const std::string& attrib_name );
+class  CXMLDocument
+{
+	xercesc::XercesDOMParser *m_pParser;
 
-//
-// Global Functions (inline)
-//
+	xercesc::DOMDocument *m_pDocument;
+
+public:
+
+	CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::XercesDOMParser *pParser );
+
+	CXMLDocument();
+
+	~CXMLDocument();
+
+	CXMLNodeReader GetRootNodeReader();
+};
 
 
 /**
@@ -62,16 +64,20 @@ class CXMLDocumentLoader
 {
 public:
 
-	CXMLDocumentLoader() {}
+	CXMLDocumentLoader();
 
-	CXMLDocumentLoader( const std::string& src_fileapth, xercesc::DOMDocument** ppDoc );
+	CXMLDocumentLoader( const std::string& src_fileapth,
+		xercesc::DOMDocument** ppDoc,
+		xercesc::XercesDOMParser **ppParser = NULL );
 
-	~CXMLDocumentLoader() {}
+	~CXMLDocumentLoader();
 
 	/// Returns true on success
-	bool Load( const std::string& filepath, xercesc::DOMDocument** ppDoc );
+	bool Load( const std::string& filepath, xercesc::DOMDocument** ppDoc, xercesc::XercesDOMParser **ppParser );
 
-	bool Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc );
+	bool Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc, xercesc::XercesDOMParser **ppParser );
+
+	boost::shared_ptr<CXMLDocument> Load( const std::string& filepath );
 
 //	xercesc::DOMNode *GetRootNode();
 };

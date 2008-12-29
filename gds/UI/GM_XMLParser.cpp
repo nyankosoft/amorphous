@@ -18,7 +18,7 @@
 using namespace std;
 using namespace boost;
 
-
+/*
 xercesc::DOMDocument *LoadXMLDocument( const std::string& xml_filepath )
 {
 	xercesc::DOMDocument* pXMLDocument = NULL;
@@ -31,7 +31,7 @@ xercesc::DOMDocument *LoadXMLDocument( const std::string& xml_filepath )
 	else
 		return pXMLDocument;
 }
-
+*/
 
 //========================================================================================
 // CGM_XMLParser
@@ -204,26 +204,30 @@ CGM_Dialog *CGM_XMLParser::LoadDialog( CXMLNodeReader& reader, bool root_dialog 
 
 CGM_Dialog *CGM_XMLParser::LoadDialogFromXMLFile( const std::string& xml_filename, bool root_dialog )
 {
-	xercesc::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
+	CXMLDocumentLoader xml_doc_loader;
+	shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( xml_filename );
 
 	if( !pXMLDocument )
 		return false;
 
-	CXMLNodeReader dlgnode = CXMLNodeReader( pXMLDocument->getFirstChild() );
+//	CXMLNodeReader dlgnode = CXMLNodeReader( pXMLDocument->getFirstChild() );
+	CXMLNodeReader dlgnode = pXMLDocument->GetRootNodeReader();
 	return LoadDialog( dlgnode, root_dialog );
 }
 
 
 bool CGM_XMLParser::LoadFromXMLFile( const std::string& xml_filename )
 {
-	xercesc::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
+	CXMLDocumentLoader xml_loader;
+	shared_ptr<CXMLDocument> pXMLDocument = xml_loader.Load( xml_filename );
+//	xercesc::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
 
 	if( !pXMLDocument )
 		return false;
 
 	fnop::dir_stack dir_stk( fnop::get_path(xml_filename) );
 
-	CXMLNodeReader rootnode = CXMLNodeReader( pXMLDocument->getFirstChild() );
+	CXMLNodeReader rootnode = pXMLDocument->GetRootNodeReader();
 
 	// get elements for root dialogs
 	vector<CXMLNodeReader> vecRootDlgNodes = rootnode.GetImmediateChildren( "Dialog" );

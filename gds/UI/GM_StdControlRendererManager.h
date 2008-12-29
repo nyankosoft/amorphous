@@ -7,10 +7,12 @@
 
 class CGM_StdControlRendererManager : public CGM_ControlRendererManager
 {
+//	std::string m_PrimaryFontName;
 
 public:
 
 	CGM_StdControlRendererManager();
+
 	virtual ~CGM_StdControlRendererManager() {}
 
 //	virtual void OnControlCreated( CGM_Control *pControl );
@@ -28,6 +30,8 @@ public:
 	virtual CGM_ControlRenderer *CreateCaptionRenderer();
 
 	virtual int GetNumGraphicsLayersPerUILayer() { return 8; } ///< called by control renderers
+
+//	void SetPrimaryFontName( const std::string& font_name ) { m_PrimaryFontName = font_name; }
 
 //	virtual int CalcUILayerIndex( CGM_ControlRenderer *pControlRenderer );
 

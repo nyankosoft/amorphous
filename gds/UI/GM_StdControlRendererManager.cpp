@@ -1,4 +1,3 @@
-
 #include "3DCommon/GraphicsElementManager.h"
 #include "GM_StdControlRendererManager.h"
 #include "GM_StdControlRenderer.h"
@@ -16,7 +15,26 @@ CGM_ControlRenderer *CGM_StdControlRendererManager::InitRenderer( CGM_StdControl
 {
 }
 */
+/*
+void CGM_StdControlRendererManager::LoadPrimaryFont( const std::string& font_name, int font_type = -1 )
+{
+	if( font_type == -1 )
+	{
+		if( font_name.rfind( ".ttf" ) == font_name.length() - 4
+		 || font_name.rfind( ".TTF" ) == font_name.length() - 4 )
+		{
+			font_type = CFontBase::FONTTYPE_TRUETYPETEXTURE;
+		}
+		else
+		{
+			font_type = CFontBase::FONTTYPE_NORMAL;
+		}
+	}
 
+	m_pGraphicsElementManager->LoadFont( 0, m_PrimaryFontName, CFontBase::FONTTYPE_TRUETYPETEXTURE, 20, 32, 0, 0 );
+
+}
+*/
 
 CGM_ControlRenderer *CGM_StdControlRendererManager::CreateStaticRenderer( CGM_Static *pStatic )
 {
