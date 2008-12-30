@@ -558,7 +558,6 @@ void CDirectInputGamepad::SendAnalogInputAsDigitalInput()
 		}
 
 		// update input state
-
 		UpdateInputState( input );
 	}
 }
@@ -596,6 +595,9 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 			input.fParam1 = 0.0f;
 			InputHub().UpdateInput(input);
 		}
+
+		// update input state
+		UpdateInputState( input );
 	}
 
 	// save the current pov indicator values

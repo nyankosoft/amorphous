@@ -46,7 +46,19 @@ inline void CInputDevice::UpdateInputState( const SInputData& input_data )
 		key.m_NextAutoRepeatTimeMS = GlobalTimer().GetTimeMS() + FIRST_AUTO_REPEAT_INTERVAL_MS;
 
 		if( pressed_key_list.size() < CInputHub::NUM_MAX_SIMULTANEOUS_PRESSES )
+		{
+			// Return if the key has already been registered as a 'pressed' key
+			// because the same key cannot be pressed again before it is released
+			// - This sould not happen, but does happen with gamepad. Why?
+			for( int i=0; i<pressed_key_list.size(); i++ )
+			{
+				if( pressed_key_list[i] == input_data.iGICode )
+					return;
+			}
+
+			// register this key as a 'pressed' key
 			pressed_key_list.push_back( input_data.iGICode );
+		}
 	}
 	else // ( input_data.iType == ITYPE_KEY_RELEASED )
 	{
