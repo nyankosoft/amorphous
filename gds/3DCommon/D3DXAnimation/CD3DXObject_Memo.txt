@@ -1,7 +1,0 @@
-CD3DXObjectの行列変換
-
-pD3DDevice->SetTransform()で設定されているワールド行列
-　→ CD3DXObjectのメンバ関数では操作しない。C3DXObject型のオブジェクトはこのワールド変換行列の影響を受けない。ワールド座標系への変換行列は、メンバ変数のmatWorldに設定する。
-
-CD3DXObjectのメンバ matWorld
-　→ キャラクタの位置・姿勢を制御するために使う。CD3DXObject::SetMatrix()で設定する。
