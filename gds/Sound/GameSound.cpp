@@ -1,12 +1,10 @@
-
 #include <windows.h>
-//#include <mmsystem.h>
 #include <dxerr9.h>
 
 #include "GameSound.h"
 #include "WaveFile.h"
-
-#include "../3DCommon/dxutil.h"
+#include "../base.h"
+#include "Support/Macro.h"
 
 
 //-----------------------------------------------------------------------------

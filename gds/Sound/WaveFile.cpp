@@ -1,7 +1,7 @@
-
 #include "WaveFile.h"
 #include <dxerr9.h>
-#include "../3DCommon/dxutil.h"
+#include "Support/Macro.h"
+
 
 //-----------------------------------------------------------------------------
 // Name: CWaveFile::CWaveFile()
