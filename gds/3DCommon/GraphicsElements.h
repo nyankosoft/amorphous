@@ -14,7 +14,7 @@
 #include "3DCommon/2DTriangle.h"
 #include "3DCommon/TextureCoord.h"
 #include "3DCommon/FloatRGBAColor.h"
-#include "3DCommon/FontBase.h"
+#include "3DCommon/Font/FontBase.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/TextureHandle.h"
 

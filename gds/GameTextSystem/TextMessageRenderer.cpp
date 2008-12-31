@@ -1,6 +1,6 @@
 #include "TextMessageRenderer.h"
 
-#include "../3DCommon/Font.h"
+#include "../3DCommon/Font/Font.h"
 #include "../3DCommon/GraphicsEffectManager.h"
 #include "../Support/memory_helpers.h"
 #include "../Support/Log/DefaultLog.h"

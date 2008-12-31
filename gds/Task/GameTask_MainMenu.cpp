@@ -5,7 +5,7 @@
 
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/2DRect.h"
-#include "3DCommon/font.h"
+#include "3DCommon/Font/Font.h"
 #include "3DCommon/GraphicsElementManager.h"
 
 #include "UI.h"

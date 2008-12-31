@@ -6,10 +6,10 @@
 #include "2DTriangle.h"
 
 // fonts
-#include "Font.h"
-#include "FontBase.h"
-#include "TextureFont.h"
-#include "TrueTypeTextureFont.h"
+#include "Font/Font.h"
+#include "Font/FontBase.h"
+#include "Font/TextureFont.h"
+#include "Font/TrueTypeTextureFont.h"
 
 // others
 #include "3DGameMath.h"
@@ -34,7 +34,6 @@
 #include "LightStructs.h"
 #include "LogOutput_OnScreen.h"
 #include "MeshObjectContainer.h"
-#include "MultipassTexFont.h"
 //#include "PointLight.h"
 #include "PostProcessManager.h"
 #include "RectTriListIndex.h"

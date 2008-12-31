@@ -1,6 +1,6 @@
 #include "PlayerInfo.h"
 
-#include "3DCommon/FontBase.h"
+#include "3DCommon/Font/FontBase.h"
 #include "GameInput/InputHub.h"
 #include "Input/InputHandler_PlayerShip.h"
 #include "Input/InputHandler_PlayerPAC.h"

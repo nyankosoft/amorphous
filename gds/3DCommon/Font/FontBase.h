@@ -2,9 +2,9 @@
 #define __FONTBASE_H__
 
 
-#include "../base.h"
-#include "../3DMath/Vector2.h"
-#include "../3DCommon/FloatRGBAColor.h"
+#include "../../base.h"
+#include "3DMath/Vector2.h"
+#include "3DCommon/FloatRGBAColor.h"
 
 #include <string>
 

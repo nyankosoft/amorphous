@@ -1,7 +1,7 @@
 
 #include "GameTextSet.h"
 
-#include "3DCommon/font.h"
+#include "3DCommon/Font/Font.h"
 
 
 //===========================================================================

@@ -7,7 +7,7 @@
 #include "3DCommon/fwd.h"
 #include "3DCommon/TextureHandle.h"
 #include "3DCommon/FloatRGBAColor.h"
-#include "3DCommon/TextureFont.h"
+#include "3DCommon/Font/TextureFont.h"
 #include "GameTextSystem/fwd.h"
 #include "GameCommon/PseudoAircraftHUD.h"
 

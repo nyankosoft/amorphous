@@ -7,7 +7,7 @@
 #include "3DCommon/2DRect.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DMisc.h"
-#include "3DCommon/TextureFont.h"
+#include "3DCommon/Font/TextureFont.h"
 #include "Support/memory_helpers.h"
 #include "PseudoAircraftSimulator.h"
 

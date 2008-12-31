@@ -3,8 +3,8 @@
 #include "Support/SafeDelete.h"
 #include "Support/StringAux.h"
 #include "3DMath/MathMisc.h"
-#include "3DCommon/TextureFont.h"
-#include "3DCommon/Font.h"
+#include "3DCommon/Font/TextureFont.h"
+#include "3DCommon/Font/Font.h"
 #include "3DCommon/2DRect.h"
 
 using namespace std;

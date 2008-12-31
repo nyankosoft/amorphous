@@ -1,8 +1,8 @@
 #include "DebugOutput.h"
 
 #include "3DCommon/2DRect.h"
-#include "3DCommon/Font.h"
-#include "3DCommon/TextureFont.h"
+#include "3DCommon/Font/Font.h"
+#include "3DCommon/Font/TextureFont.h"
 #include "3DCommon/LogOutput_OnScreen.h"
 #include "3DCommon/GraphicsResourceManager.h"
 #include "Support/Timer.h"

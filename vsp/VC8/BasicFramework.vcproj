@@ -713,31 +713,31 @@
 				Name="Font"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font.cpp"
+					RelativePath="..\..\gds\3DCommon\Font\Font.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font.h"
+					RelativePath="..\..\gds\3DCommon\Font\Font.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\FontBase.h"
+					RelativePath="..\..\gds\3DCommon\Font\FontBase.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\TextureFont.cpp"
+					RelativePath="..\..\gds\3DCommon\Font\TextureFont.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\TextureFont.h"
+					RelativePath="..\..\gds\3DCommon\Font\TextureFont.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\TrueTypeTextureFont.cpp"
+					RelativePath="..\..\gds\3DCommon\Font\TrueTypeTextureFont.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\TrueTypeTextureFont.h"
+					RelativePath="..\..\gds\3DCommon\Font\TrueTypeTextureFont.h"
 					>
 				</File>
 			</Filter>

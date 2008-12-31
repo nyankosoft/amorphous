@@ -1,7 +1,7 @@
 #include "TextMessageManager.h"
 #include "TextMessageRenderer.h"
 
-#include "../3DCommon/font.h"
+#include "../3DCommon/Font/Font.h"
 #include "../Support/memory_helpers.h"
 #include "../Support/Log/DefaultLog.h"
 #include "../Support/StringAux.h"

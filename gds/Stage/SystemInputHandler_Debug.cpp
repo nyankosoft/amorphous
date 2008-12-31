@@ -1,13 +1,12 @@
 #include "SystemInputHandler_Debug.h"
-//#include <mmsystem.h>
 #include <direct.h>
 
 #include "App/GameWindowManager_Win32.h"
 #include "App/ApplicationBase.h"
 #include "Task/GameTaskManager.h"
 
-#include "3DCommon/font.h"
-#include "3DCommon/TextureFont.h"
+#include "3DCommon/Font/Font.h"
+#include "3DCommon/Font/TextureFont.h"
 #include "Stage/PlayerInfo.h"
 #include "Stage/EntitySet.h"
 #include "Stage/BE_PlayerShip.h"

@@ -9,8 +9,8 @@
 
 #include "3DCommon/2DRect.h"
 #include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/font.h"
-#include "3DCommon/TextureFont.h"
+#include "3DCommon/Font/Font.h"
+#include "3DCommon/Font/TextureFont.h"
 #include "3DCommon/TextureHandle.h"
 
 #include "../Support/FixedVector.h"

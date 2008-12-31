@@ -11,7 +11,7 @@
 #include "Support/DebugOutput.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/2DRect.h"
-#include "3DCommon/Font.h"
+#include "3DCommon/Font/Font.h"
 #include "3DCommon/GraphicsEffectManager.h"
 #include "Stage/Stage.h"
 #include "Stage/EntitySet.h"

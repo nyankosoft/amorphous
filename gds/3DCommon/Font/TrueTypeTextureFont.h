@@ -2,9 +2,8 @@
 #define  __TrueTypeTextureFont_H__
 
 
-#include "3DCommon/TextureFont.h"
+#include "TextureFont.h"
 #include "Support/2DArray.h"
-
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;

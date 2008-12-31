@@ -3,7 +3,7 @@
 
 
 #include "3DCommon/2DRect.h"
-#include "3DCommon/TextureFont.h"
+#include "3DCommon/Font/TextureFont.h"
 
 #include "QuickMenuManager.h"
 

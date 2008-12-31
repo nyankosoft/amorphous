@@ -7,8 +7,8 @@ using namespace NS_KGL;
 
 #include "../base.h"
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/Font.h"
-#include "3DCommon/TextureFont.h"
+#include "3DCommon/Font/Font.h"
+#include "3DCommon/Font/TextureFont.h"
 #include "3DCommon/2DRect.h"
 #include "3DCommon/2DFrameRect.h"
 #include "3DCommon/TextureHandle.h"
