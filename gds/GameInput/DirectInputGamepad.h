@@ -22,6 +22,8 @@ class CDirectInputGamepad : public CInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pDIJoystick;
 
+	DIJOYSTATE2 m_InputState;
+
 	enum param
 	{
 		DIJOYSTICK_BUFFER_SIZE = 32, ///< size of the buffer to hold input data from mouse (DirectInput)
@@ -74,6 +76,14 @@ private:
 	HRESULT InitDIGamepad( HWND hWnd );
 
 	HRESULT ReadBufferedData();
+
+protected:
+
+	virtual bool IsKeyPressed( int gi_code );
+
+	virtual bool IsReleventInput( int gi_code ) { return IsGamepadInputCode( gi_code ); }
+
+	virtual void RefreshKeyStates();
 
 public:
 

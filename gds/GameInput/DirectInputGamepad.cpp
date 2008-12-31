@@ -507,6 +507,66 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 }
 
 
+bool CDirectInputGamepad::IsKeyPressed( int gi_code )
+{
+	DWORD& pov0 = m_InputState.rgdwPOV[0];
+	switch( gi_code )
+	{
+	case GIC_GPD_BUTTON_00: return 0 < (m_InputState.rgbButtons[ 0] & 0x80);
+	case GIC_GPD_BUTTON_01: return 0 < (m_InputState.rgbButtons[ 1] & 0x80);
+	case GIC_GPD_BUTTON_02: return 0 < (m_InputState.rgbButtons[ 2] & 0x80);
+	case GIC_GPD_BUTTON_03: return 0 < (m_InputState.rgbButtons[ 3] & 0x80);
+	case GIC_GPD_BUTTON_04: return 0 < (m_InputState.rgbButtons[ 4] & 0x80);
+	case GIC_GPD_BUTTON_05: return 0 < (m_InputState.rgbButtons[ 5] & 0x80);
+	case GIC_GPD_BUTTON_06: return 0 < (m_InputState.rgbButtons[ 6] & 0x80);
+	case GIC_GPD_BUTTON_07: return 0 < (m_InputState.rgbButtons[ 7] & 0x80);
+	case GIC_GPD_BUTTON_08: return 0 < (m_InputState.rgbButtons[ 8] & 0x80);
+	case GIC_GPD_BUTTON_09: return 0 < (m_InputState.rgbButtons[ 9] & 0x80);
+	case GIC_GPD_BUTTON_10: return 0 < (m_InputState.rgbButtons[10] & 0x80);
+	case GIC_GPD_BUTTON_11: return 0 < (m_InputState.rgbButtons[11] & 0x80);
+
+	case GIC_GPD_UP:
+		return ( 0 <= pov0 && pov0 <= 4500 ) || ( 31500 <= pov0 && pov0 < 36000 );
+	case GIC_GPD_RIGHT:
+		return ( m_InputState.rgdwPOV[0] == 9000 );
+	case GIC_GPD_DOWN:
+		return ( m_InputState.rgdwPOV[0] == 18000 );
+	case GIC_GPD_LEFT:
+		return ( m_InputState.rgdwPOV[0] == 27000 );
+	default:
+		return false;
+	}
+
+	return false;
+}
+
+
+void CDirectInputGamepad::RefreshKeyStates()
+{
+    if( NULL == m_pDIJoystick ) 
+        return;// S_OK;
+    
+    // Get the input's device state, and put the state in dims
+	HRESULT hr = m_pDIJoystick->GetDeviceState( sizeof(DIJOYSTATE2), &m_InputState );
+
+	if( m_InputState.rgbButtons[0] & 0x80
+	 || m_InputState.rgbButtons[1] & 0x80
+	 || m_InputState.rgbButtons[2] & 0x80
+	 || m_InputState.rgbButtons[3] & 0x80
+	 || m_InputState.rgbButtons[4] & 0x80
+	 || m_InputState.rgbButtons[5] & 0x80
+	 || m_InputState.rgbButtons[6] & 0x80
+	 || m_InputState.rgbButtons[7] & 0x80
+	 || m_InputState.rgbButtons[8] & 0x80
+	 || m_InputState.rgbButtons[9] & 0x80 )
+	{
+		int break_here = 1;
+	}
+
+    return;// S_OK;
+}
+
+
 Result::Name CDirectInputGamepad::SendBufferedInputToInputHandlers()
 {
 	HRESULT hr = ReadBufferedData();
@@ -587,6 +647,9 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 			input.iType = ITYPE_KEY_PRESSED;
 			input.fParam1 = 1.0f;
 			InputHub().UpdateInput(input);
+
+			// update input state
+			UpdateInputState( input );
 		}
 		else if( m_aPrevPOV[i] != -1 && m_aPOV[i] == -1 )
 		{
@@ -594,10 +657,10 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 			input.iType = ITYPE_KEY_RELEASED;
 			input.fParam1 = 0.0f;
 			InputHub().UpdateInput(input);
-		}
 
-		// update input state
-		UpdateInputState( input );
+			// update input state
+			UpdateInputState( input );
+		}
 	}
 
 	// save the current pov indicator values

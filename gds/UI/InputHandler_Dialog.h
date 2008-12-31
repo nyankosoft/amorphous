@@ -73,7 +73,7 @@ inline SInputData GPD2KBDInputConverter::Convert( const SInputData& gpd_input )
 
 	switch( gpd_input.iGICode )
 	{
-	case GIC_GPD_UP:
+/*	case GIC_GPD_UP:
 		kbd_input.iGICode = GIC_UP;
 		break;
 	case GIC_GPD_DOWN:
@@ -84,7 +84,7 @@ inline SInputData GPD2KBDInputConverter::Convert( const SInputData& gpd_input )
 		break;
 	case GIC_GPD_LEFT:
 		kbd_input.iGICode = GIC_LEFT;
-		break;
+		break;*/
 	case GIC_GPD_BUTTON_01:
 	case GIC_GPD_BUTTON_03:
 		kbd_input.iGICode = GIC_ENTER;

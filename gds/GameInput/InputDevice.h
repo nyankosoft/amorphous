@@ -15,6 +15,14 @@ class CInputDevice
 		FIRST_AUTO_REPEAT_INTERVAL_MS = 300,
 	};
 
+protected:
+
+	virtual bool IsKeyPressed( int gi_code ) { return false; }
+
+	virtual bool IsReleventInput( int gi_code ) { return false; }
+
+	virtual void RefreshKeyStates() {}
+
 public:
 
 	CInputDevice();
@@ -28,6 +36,8 @@ public:
 	virtual Result::Name Init() { return Result::SUCCESS; }
 
 	virtual Result::Name SendBufferedInputToInputHandlers() = 0;
+
+	void CheckPressedKeys();
 };
 
 
@@ -85,16 +95,7 @@ public:
 
 	void UnregisterInputHandler( CInputDevice *pDevice );
 
-	void SendInputToInputHandlers()
-	{
-		for( size_t i=0; i<m_vecpInputDevice.size(); i++ )
-		{
-			m_vecpInputDevice[i]->SendBufferedInputToInputHandlers();
-		}
-
-		// Send key press input data (auto repeat)
-		InputHub().SendAutoRepeat();
-	}
+	void SendInputToInputHandlers();
 };
 
 

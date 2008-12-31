@@ -14,7 +14,10 @@
 
 class CDIKeyboard : public CInputDevice
 {
-	LPDIRECTINPUTDEVICE8 m_pKeyboard; // The keyboard device
+	LPDIRECTINPUTDEVICE8 m_pKeyboard; ///< The DirectX Input keyboard device
+
+	/// Stores key states. Refreshed by RefreshKeyState(). Used to detect missed release events
+	BYTE m_DIKs[256];
 
 	enum param
 	{
@@ -27,16 +30,23 @@ private:
 
 	HRESULT InitDIKeyboard( HWND hWnd );
 
+protected:
+
+	void RefreshKeyStates();
+
+	bool IsReleventInput( int gi_code ) { return IsKeyboardInputCode( gi_code ); }
+
+	bool IsKeyPressed( int gi_code );
+
 public:
 
 	CDIKeyboard();
+
 	~CDIKeyboard();
 
 	Result::Name Init();
 
 	void InitKeyCodeMap();
-
-	HRESULT GetKeyState( BYTE *pacKeyboardStateBuffer );
 
 	HRESULT ReadBufferedData();
 
