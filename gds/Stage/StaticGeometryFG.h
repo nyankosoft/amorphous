@@ -9,11 +9,11 @@
 #include "Stage/StaticGeometryBase.h"
 #include "Stage/StaticGeometryArchiveFG.h"
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/MeshObjectHandle.h"
-#include "3DCommon/TextureHandle.h"
+#include "Graphics/fwd.h"
+#include "Graphics/MeshObjectHandle.h"
+#include "Graphics/TextureHandle.h"
 
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
 
 

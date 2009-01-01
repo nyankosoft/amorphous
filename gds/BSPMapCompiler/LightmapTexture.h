@@ -6,10 +6,10 @@
 
 #include "3DMath/Vector3.h"
 #include "Support/2DArray.h"
-#include "../3DCommon/FloatRGBColor.h"
-#include "../3DCommon/LightStructs.h"
-#include "../3DCommon/IndexedPolygon.h"
-#include "../3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "../Graphics/FloatRGBColor.h"
+#include "../Graphics/LightStructs.h"
+#include "../Graphics/IndexedPolygon.h"
+#include "../Graphics/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
 
 #include "Graphics/Rect.h"

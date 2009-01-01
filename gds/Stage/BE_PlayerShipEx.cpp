@@ -2,7 +2,7 @@
 #include "EntitySet.h"
 #include "Stage.h"
 #include "trace.h"
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/Direct3D9.h"
 
 
 using namespace std;

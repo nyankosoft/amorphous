@@ -4,8 +4,8 @@
 #include "GM_DialogManager.h"
 #include "GM_ControlRendererManager.h"
 
-#include "3DCommon/GraphicsElementManager.h"
-#include "3DCommon/GraphicsEffectManager.h"
+#include "Graphics/GraphicsElementManager.h"
+#include "Graphics/GraphicsEffectManager.h"
 
 using namespace std;
 

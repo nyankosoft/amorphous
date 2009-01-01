@@ -1,7 +1,7 @@
 
 #include "BaseFace.h"
 
-#include "3DCommon/FloatRGBColor.h"
+#include "Graphics/FloatRGBColor.h"
 
 #include "Stage/bspstructs.h"
 

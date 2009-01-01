@@ -8,8 +8,8 @@
 #include "Stage.h"
 #include "Serialization_BaseEntityHandle.h"
 
-#include "../3DCommon/Direct3D9.h"
-#include "../3DCommon/D3DXMeshObject.h"
+#include "../Graphics/Direct3D9.h"
+#include "../Graphics/D3DXMeshObject.h"
 #include "../Stage/ScreenEffectManager.h"
 
 #include "../Sound/SoundManager.h"

@@ -5,8 +5,8 @@
 #include "fwd.h"
 
 #include "3DMath/Matrix34.h"
-#include "3DCommon/IndexedPolygon.h"
-#include "3DCommon/FloatRGBColor.h"
+#include "Graphics/IndexedPolygon.h"
+#include "Graphics/FloatRGBColor.h"
 #include "Support/2DArray.h"
 #include "Graphics/Rect.h"
 using namespace Graphics;

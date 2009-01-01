@@ -3,7 +3,7 @@
 #include "Stage/PlayerInfo.h"
 #include "Stage/Input/InputHandler_PlayerShip.h"
 
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/Direct3D9.h"
 #include "Item/WeaponSystem.h"
 #include "GameInput/3DActionCode.h"
 #include "GameTextSystem/GameTextWindow.h"

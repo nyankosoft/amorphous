@@ -2,9 +2,9 @@
 #include "StatusDisplayRenderer_D3DX.h"
 #include "StatusDisplay.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Font.h"
-#include "3DCommon/2DRect.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Font.h"
+#include "Graphics/2DRect.h"
 
 #include "Support/memory_helpers.h"
 

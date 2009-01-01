@@ -5,8 +5,8 @@
 #include "CopyEntity.h"
 #include "LightEntity.h"
 
-#include "3DCommon/FloatRGBAColor.h"
-#include "3DCommon/HemisphericLight.h"
+#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/HemisphericLight.h"
 #include "Support/Serialization/Serialization_Light.h"
 #include "Support/StringAux.h"
 #include "Support/prealloc_pool.h"

@@ -24,12 +24,12 @@
 #include "GameCommon/MeshBoneController_Aircraft.h"
 
 // added for laser dot casting test
-#include "3DCommon/3DGameMath.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/D3DXSMeshObject.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/3DGameMath.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/GraphicsComponentCollector.h"
+#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/D3DXSMeshObject.h"
+#include "Graphics/Shader/ShaderManager.h"
 #include "Support/memory_helpers.h"
 #include "trace.h"
 #include "OverlapTestAABB.h"

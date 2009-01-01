@@ -1,4 +1,3 @@
-
 #include "BSPMapData_LW.h"
 
 #include "../BSPMapCompiler/mapcompiler.h"
@@ -7,7 +6,7 @@
 #include "LightWaveSceneLoader.h"
 #include "3DMeshModelBuilder_LW.h"
 
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
 
 #include "Support/FilenameOperation.h"

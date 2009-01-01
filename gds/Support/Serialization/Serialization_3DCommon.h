@@ -1,9 +1,8 @@
-
 #ifndef __KGL_3DCOMMON_SERIALIZATION_H__
 #define __KGL_3DCOMMON_SERIALIZATION_H__
 
 
-#include "../../3DCommon/TextureCoord.h"
+#include "../../Graphics/TextureCoord.h"
 
 #include "Archive.h"
 

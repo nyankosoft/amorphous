@@ -2,7 +2,7 @@
 #include "GM_FlowTextCaption.h"
 #include "GM_DialogManager.h"
 
-#include "3DCommon/Font.h"
+#include "Graphics/Font.h"
 
 #include "assert.h"
 

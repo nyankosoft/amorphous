@@ -5,7 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "LightWave/LightWaveObject.h"
-#include "3DCommon/MeshModel/CompositeMesh.h"
+#include "Graphics/MeshModel/CompositeMesh.h"
 
 
 //==========================================================================

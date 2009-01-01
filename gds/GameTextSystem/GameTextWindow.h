@@ -7,11 +7,11 @@
 
 #include "3DMath/aabb2.h"
 
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/Font/Font.h"
-#include "3DCommon/Font/TextureFont.h"
-#include "3DCommon/TextureHandle.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/GraphicsComponentCollector.h"
+#include "Graphics/Font/Font.h"
+#include "Graphics/Font/TextureFont.h"
+#include "Graphics/TextureHandle.h"
 
 #include "../Support/FixedVector.h"
 

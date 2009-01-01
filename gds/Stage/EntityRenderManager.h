@@ -14,9 +14,9 @@
 #include "LightEntityManager.h"
 #include "ScreenEffectManager.h"
 
-#include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/CubeMapManager.h"
-#include "3DCommon/ShaderHandle.h"
+#include "Graphics/GraphicsComponentCollector.h"
+#include "Graphics/CubeMapManager.h"
+#include "Graphics/ShaderHandle.h"
 
 
 class CShadowMapManager;

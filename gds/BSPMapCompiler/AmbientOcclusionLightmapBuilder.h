@@ -12,12 +12,12 @@
 #include "Lightmap.h"
 //#include "MapFace.h"
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/FloatRGBColor.h"
-#include "3DCommon/LightStructs.h"
-#include "3DCommon/ShaderHandle.h"
-#include "3DCommon/MeshObjectHandle.h"
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/fwd.h"
+#include "Graphics/FloatRGBColor.h"
+#include "Graphics/LightStructs.h"
+#include "Graphics/ShaderHandle.h"
+#include "Graphics/MeshObjectHandle.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
 
 //#include "3DMath/PolygonMesh.h"

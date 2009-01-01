@@ -2,8 +2,8 @@
 
 #include "GameMessage.h"
 #include "Stage.h"
-#include "../3DCommon/Camera.h"
-#include "../3DCommon/Shader/ShaderManager.h"
+#include "../Graphics/Camera.h"
+#include "../Graphics/Shader/ShaderManager.h"
 #include "../3DMath/MathMisc.h"
 
 #include "Support/Log/DefaultLog.h"

@@ -334,8 +334,8 @@ void CGM_Dialog::ClearFocus()
 
 // ====================== draw the boundary with wireframe for debug ======================
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/2DRect.h"
 
 
 void CGM_Dialog::Render( float fElapsedTime )

@@ -5,7 +5,7 @@
 
 #include "GM_Control.h"
 
-#include "3DCommon/FloatRGBAColor.h"
+#include "Graphics/FloatRGBAColor.h"
 
 
 class CGM_Dialog;

@@ -2,8 +2,8 @@
 #define __BE_STATICPARTICLESET_H__
 
 #include "BE_ParticleSet.h"
-#include "3DCommon/FVF_BillboardVertex.h"
-#include "3DCommon/TextureHandle.h"
+#include "Graphics/FVF_BillboardVertex.h"
+#include "Graphics/TextureHandle.h"
 #include "Support/FixedVector.h"
 
 

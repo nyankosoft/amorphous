@@ -8,8 +8,8 @@
 #include "BEC_Billboard.h"
 #include "Stage.h"
 
-#include "3DCommon/FVF_TextureVertex.h"
-#include "3DCommon/FloatRGBColor.h"
+#include "Graphics/FVF_TextureVertex.h"
+#include "Graphics/FloatRGBColor.h"
 
 #include "Support/FloatLookUpTable.h"
 #include "Support/SafeDelete.h"

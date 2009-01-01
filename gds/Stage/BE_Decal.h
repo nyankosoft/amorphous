@@ -4,7 +4,7 @@
 
 #include "BaseEntity.h"
 
-#include "../3DCommon/FVF_TextureVertex.h"
+#include "../Graphics/FVF_TextureVertex.h"
 
 #include <d3d9.h>
 #include <d3dx9.h>

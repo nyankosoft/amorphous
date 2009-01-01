@@ -5,8 +5,8 @@
 #include "App/ApplicationBase.h"
 #include "Task/GameTaskManager.h"
 
-#include "3DCommon/Font/Font.h"
-#include "3DCommon/Font/TextureFont.h"
+#include "Graphics/Font/Font.h"
+#include "Graphics/Font/TextureFont.h"
 #include "Stage/PlayerInfo.h"
 #include "Stage/EntitySet.h"
 #include "Stage/BE_PlayerShip.h"

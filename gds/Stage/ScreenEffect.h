@@ -2,9 +2,9 @@
 #define  __FADEEFFECT_H__
 
 #include "../base.h"
-#include "../3DCommon/2DPrimitive/2DRect.h"
-#include "../3DCommon/FVF_TLVertex.h"
-#include "../3DCommon/GraphicsComponentCollector.h"
+#include "../Graphics/2DPrimitive/2DRect.h"
+#include "../Graphics/FVF_TLVertex.h"
+#include "../Graphics/GraphicsComponentCollector.h"
 
 #define SCREENEFFECT_FADE_OUT 0
 #define SCREENEFFECT_FADE_IN  1

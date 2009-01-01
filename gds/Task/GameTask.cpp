@@ -4,9 +4,9 @@
 #include "GameInput/InputHandler.h"
 #include "GameInput/DirectInputMouse.h"
 #include "GameCommon/MouseCursor.h"
-#include "3DCommon/GraphicsEffectManager.h"
-#include "3DCommon/PyModule_GraphicsElement.h"
-#include "3DCommon/RenderTaskProcessor.h"
+#include "Graphics/GraphicsEffectManager.h"
+#include "Graphics/PyModule_GraphicsElement.h"
+#include "Graphics/RenderTaskProcessor.h"
 #include "Support/DebugOutput.h"
 #include "Support/Profile.h"
 

@@ -3,11 +3,11 @@
 
 
 #include "fwd.h"
-#include "3DCommon/fwd.h"
+#include "Graphics/fwd.h"
 #include "Physics/fwd.h"
 #include "Sound/fwd.h"
 
-#include "3DCommon/Camera.h"
+#include "Graphics/Camera.h"
 #include "Support/Timer.h"
 
 #include "CopyEntity.h"

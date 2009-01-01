@@ -6,11 +6,11 @@
 #include "trace.h"
 #include "Stage.h"
 
-#include "3DCommon/FVF_ColorVertex.h"
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/FVF_ColorVertex.h"
+#include "Graphics/Direct3D9.h"
 
 
-#include "3DCommon/UnitCube.h"
+#include "Graphics/UnitCube.h"
 #include "Support/SafeDelete.h"
 
 

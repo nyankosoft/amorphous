@@ -4,7 +4,7 @@
 #include "GM_DialogManager.h"
 #include "GM_ControlRendererManager.h"
 
-#include "3DCommon/GraphicsEffectManager.h"
+#include "Graphics/GraphicsEffectManager.h"
 
 #include "Support/Log/DefaultLog.h"
 #include "Support/Macro.h"

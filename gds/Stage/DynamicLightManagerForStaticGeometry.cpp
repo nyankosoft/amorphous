@@ -1,10 +1,10 @@
 #include "DynamicLightManagerForStaticGeometry.h"
 #include "LightEntityManager.h"
 #include "BSPMap.h"
-#include "../3DCommon/FVF_MapVertex.h"
-#include "../3DCommon/Direct3D9.h"
-#include "../3DCommon/Shader/Shader.h"
-#include "../3DCommon/Shader/ShaderManager.h"
+#include "../Graphics/FVF_MapVertex.h"
+#include "../Graphics/Direct3D9.h"
+#include "../Graphics/Shader/Shader.h"
+#include "../Graphics/Shader/ShaderManager.h"
 
 
 CDynamicLightManagerForStaticGeometry::CDynamicLightManagerForStaticGeometry()

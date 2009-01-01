@@ -2,7 +2,7 @@
 #include "PyModule_Stage.h"
 
 #include "3DMath/Vector3.h"
-#include "3DCommon/3DGameMath.h"
+#include "Graphics/3DGameMath.h"
 #include "Support/Vec3_StringAux.h"
 
 #include "Stage.h"

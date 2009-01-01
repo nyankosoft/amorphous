@@ -3,8 +3,8 @@
 #include "trace.h"
 #include "Stage.h"
 #include "GameMessage.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/D3DXMeshObject.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/D3DXMeshObject.h"
 #include "Sound/SoundManager.h"
 
 //#include "JigLib/JL_PhysicsActor.h"

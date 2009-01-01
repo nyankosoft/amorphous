@@ -4,7 +4,7 @@
 #include "CopyEntity.h"
 #include "BE_Explosive.h"
 #include "BaseEntityHandle.h"
-#include "3DCommon/camera.h"
+#include "Graphics/camera.h"
 
 
 inline short& MissileState( CCopyEntity* pCopyEnt ) { return pCopyEnt->s1; }

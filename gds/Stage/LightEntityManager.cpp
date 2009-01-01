@@ -1,7 +1,7 @@
 w#include "LightEntityManager.h"
 #include "EntitySet.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
 #include "Support/memory_helpers.h"
 
 

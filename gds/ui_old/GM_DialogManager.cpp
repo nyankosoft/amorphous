@@ -9,9 +9,9 @@
 
 //#include "GameInput/InputHandler.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/font.h"
-#include "3DCommon/TextureFont.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/font.h"
+#include "Graphics/TextureFont.h"
 
 #include "Support/memory_helpers.h"
 //#include "Support/.h"

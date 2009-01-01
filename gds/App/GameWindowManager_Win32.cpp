@@ -1,6 +1,6 @@
 #include "GameWindowManager_Win32.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/GraphicsComponentCollector.h"
 #include <math.h>
 
 #include "Support/WindowMisc_Win32.h"

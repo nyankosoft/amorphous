@@ -4,9 +4,9 @@
 #include "GameTask_StageSelect.h"
 #include "Stage/Stage.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/Font/Font.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/Font/Font.h"
 
 #include "Support/Timer.h"
 

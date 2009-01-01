@@ -4,10 +4,10 @@
 #include <vector>
 using namespace std;
 
-#include "../3DCommon/Direct3D9.h"
+#include "../Graphics/Direct3D9.h"
 #include "../Stage/CopyEntity.h"
 
-#include "../3DCommon/Shader/ShaderLightManager.h"
+#include "../Graphics/Shader/ShaderLightManager.h"
 
 #include "LightEntity.h"
 

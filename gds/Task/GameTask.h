@@ -7,13 +7,13 @@
 #include "../base.h"
 #include "3DMath/MathMisc.h"
 #include "Support/Timer.h"
-#include "3DCommon/fwd.h"
-#include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/D3DMisc.h"
+#include "Graphics/fwd.h"
+#include "Graphics/GraphicsComponentCollector.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/D3DMisc.h"
 #include "Support/SafeDelete.h"
 
-#include "3DCommon/RenderTask.h"
+#include "Graphics/RenderTask.h"
 
 #include <map>
 

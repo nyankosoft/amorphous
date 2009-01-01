@@ -5,8 +5,8 @@
 
 #include "GM_Control.h"
 
-#include "3DCommon/FloatRGBAColor.h"
-#include "3DCommon/2DRect.h"
+#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/2DRect.h"
 
 
 class CGM_Dialog;

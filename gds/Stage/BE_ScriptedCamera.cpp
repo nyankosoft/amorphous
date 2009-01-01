@@ -7,8 +7,8 @@
 #include "Stage.h"
 #include "ScreenEffectManager.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/3DGameMath.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/3DGameMath.h"
 
 #include "Support/Log/DefaultLog.h"
 #include "Support/Vec3_StringAux.h"

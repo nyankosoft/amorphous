@@ -7,7 +7,7 @@
 //using namespace std;
 
 
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "Graphics/GraphicsComponentCollector.h"
 
 
 class CJL_PhysicsManager;

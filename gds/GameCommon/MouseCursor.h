@@ -6,13 +6,12 @@
 using namespace NS_KGL;
 
 #include "../base.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Font/Font.h"
-#include "3DCommon/Font/TextureFont.h"
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/2DPrimitive/2DFrameRect.h"
-#include "3DCommon/TextureHandle.h"
-
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Font/Font.h"
+#include "Graphics/Font/TextureFont.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/2DPrimitive/2DFrameRect.h"
+#include "Graphics/TextureHandle.h"
 #include "Graphics/Rect.h"
 using namespace Graphics;
 

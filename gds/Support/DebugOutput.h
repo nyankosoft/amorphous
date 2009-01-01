@@ -7,9 +7,9 @@
 #include <string>
 
 #include "base.h"
-#include "3DCommon/fwd.h"
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "Graphics/fwd.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/GraphicsComponentCollector.h"
 
 
 template<class T>

@@ -9,10 +9,10 @@
 #include "SurfaceMaterial.h"
 #include "Serialization_BaseEntityHandle.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/3DGameMath.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/3DGameMath.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "Sound/SoundManager.h"
 

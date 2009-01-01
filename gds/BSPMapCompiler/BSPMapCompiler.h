@@ -9,8 +9,8 @@
 #include "LightmapBuilder.h"
 
 #include "Stage/bspstructs.h"
-#include "3DCommon/FloatRGBColor.h"
-#include "3DCommon/LightStructs.h"
+#include "Graphics/FloatRGBColor.h"
+#include "Graphics/LightStructs.h"
 #include "Support/TextFileScanner.h"
 
 #include <string>

@@ -5,7 +5,7 @@
 #include "GM_Dialog.h"
 #include "GameInput/InputHandler.h"
 
-#include "3DCommon/2DFrameRect.h"
+#include "Graphics/2DFrameRect.h"
 
 
 //========================================================================================
@@ -68,9 +68,9 @@ bool CGM_Button::HandleMouseInput( SInputData& input )
 
 //========================= debug ==============================//
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
-#include "3DCommon/font.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/2DRect.h"
+#include "Graphics/font.h"
 
 
 void SetTextureStageStatesForFont()

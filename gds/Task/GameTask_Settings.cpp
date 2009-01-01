@@ -3,9 +3,9 @@
 #include "GameTask_Stage.h"
 #include "App/ApplicationBase.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
-#include "3DCommon/font.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/2DRect.h"
+#include "Graphics/font.h"
 
 #include "Stage/stage.h"
 //#include "Stage/EntitySet.h"

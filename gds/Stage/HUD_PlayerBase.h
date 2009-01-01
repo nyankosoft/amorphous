@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/GraphicsEffectManager.h"
+#include "Graphics/GraphicsComponentCollector.h"
+#include "Graphics/GraphicsEffectManager.h"
 #include "GameCommon/HUD_TimerDisplay.h"
 
 

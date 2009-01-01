@@ -4,7 +4,7 @@
 
 #include "3DMath/Vector3.h"
 #include "3DMath/Matrix34.h"
-#include "3DCommon/FloatRGBColor.h"
+#include "Graphics/FloatRGBColor.h"
 
 #include "BE_DirectionalLight.h"
 #include "BE_PointLight.h"

@@ -3,7 +3,7 @@
 #include "WeaponSystem.h"
 
 #include "3DMath/MathMisc.h"
-#include "3DCommon/3DGameMath.h"
+#include "Graphics/3DGameMath.h"
 #include "GameInput/3DActionCode.h"
 #include "GameInput/InputHandler.h"
 #include "GameCommon/BasicGameMath.h"

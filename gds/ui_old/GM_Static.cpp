@@ -30,8 +30,8 @@ CGM_Static::CGM_Static( CGM_Dialog *pDialog, CGM_StaticDesc* pDesc )
 
 //========================= debug ==============================//
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/font.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/font.h"
 
 void CGM_Static::Render( float fElapsedTime )
 {

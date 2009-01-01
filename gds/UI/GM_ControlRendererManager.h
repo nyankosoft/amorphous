@@ -7,7 +7,7 @@
 
 #include "fwd.h"
 #include "GM_ControlRenderer.h"
-#include "3DCommon/fwd.h"
+#include "Graphics/fwd.h"
 
 
 /**

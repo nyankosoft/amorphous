@@ -2,7 +2,7 @@
 #include "CameraController_Win32.h"
 
 #include "GameInput/InputHandler.h"
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/Direct3D9.h"
 
 
 int ConvertGICodeToWin32VKCode( int general_input_code )

@@ -4,10 +4,10 @@
 
 #include "3DMath/Vector3.h"
 #include "3DMath/aabb3.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
-#include "3DCommon/UnitCube.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/UnitCube.h"
 #include "Support/memory_helpers.h"
 #include "Support/LineSegmentRenderer.h"
 

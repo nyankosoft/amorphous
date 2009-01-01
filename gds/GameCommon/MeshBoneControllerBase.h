@@ -7,7 +7,7 @@
 
 #include "3DMath/Vector3.h"
 #include "3DMath/Matrix34.h"
-#include "3DCommon/fwd.h"
+#include "Graphics/fwd.h"
 
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"

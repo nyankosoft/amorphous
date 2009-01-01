@@ -6,7 +6,7 @@
 #include "3DMath/Matrix34.h"
 #include "3DMath/3DStructs.h"
 #include "Support/FixedVector.h"
-#include "3DCommon/MeshObjectHandle.h"
+#include "Graphics/MeshObjectHandle.h"
 #include "Physics/fwd.h"
 
 #include "EntityHandle.h"

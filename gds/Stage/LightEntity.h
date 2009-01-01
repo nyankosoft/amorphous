@@ -4,8 +4,8 @@
 
 #include "Support/prealloc_pool.h"
 #include "3DMath/3DStructs.h"
-#include "3DCommon/HemisphericLight.h"
-#include "3DCommon/FloatRGBColor.h"
+#include "Graphics/HemisphericLight.h"
+#include "Graphics/FloatRGBColor.h"
 #include "CopyEntity.h"
 #include "CopyEntityDesc.h"
 

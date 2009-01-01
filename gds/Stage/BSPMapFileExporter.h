@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "../3DCommon/FVF_MapVertex.h"
+#include "../Graphics/FVF_MapVertex.h"
 
 #include "BSPStaticGeometry.h"
 

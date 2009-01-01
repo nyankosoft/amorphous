@@ -1,4 +1,3 @@
-
 #include "BSPMap.h"
 
 #include "Stage/stage.h"
@@ -11,11 +10,11 @@
 
 #include "DynamicLightManagerForStaticGeometry.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/TextureTool.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/TextureTool.h"
 
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "ShaderTechniqueIDs.h"
 

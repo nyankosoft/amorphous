@@ -4,10 +4,10 @@
 #include "Stage.h"
 #include "ScreenEffectManager.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
-#include "3DCommon/RectTriListIndex.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/RectTriListIndex.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"

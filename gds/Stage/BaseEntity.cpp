@@ -11,11 +11,11 @@
 #include "GameCommon/GameMathMisc.h"
 #include "GameCommon/MeshBoneControllerBase.h"
 
-#include "3DCommon/3DGameMath.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/D3DXSMeshObject.h"
+#include "Graphics/3DGameMath.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/D3DXSMeshObject.h"
 
 #include "App/ApplicationBase.h"
 #include "Task/GameTaskManager.h"

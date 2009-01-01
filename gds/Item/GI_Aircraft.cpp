@@ -7,7 +7,7 @@
 #include "GameInput/3DActionCode.h"
 #include "GameInput/InputHandler.h"
 #include "GameCommon/MeshBoneController_Aircraft.h"
-#include "3DCommon/D3DXSMeshObject.h"
+#include "Graphics/D3DXSMeshObject.h"
 
 
 using namespace std;

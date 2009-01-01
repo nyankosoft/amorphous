@@ -1,5 +1,5 @@
 
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/Direct3D9.h"
 #include "GameCommon/BasicGameMath.h"
 #include "GameCommon/MTRand.h"
 #include "CopyEntity.h"

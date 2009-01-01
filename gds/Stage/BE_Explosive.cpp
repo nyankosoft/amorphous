@@ -8,10 +8,10 @@
 #include "Serialization_BaseEntityHandle.h"
 #include "../Stage/ScreenEffectManager.h"
 
-#include "../3DCommon/3DGameMath.h"
-#include "../3DCommon/D3DXMeshObject.h"
-#include "../3DCommon/Direct3D9.h"
-#include "../3DCommon/Camera.h"
+#include "../Graphics/3DGameMath.h"
+#include "../Graphics/D3DXMeshObject.h"
+#include "../Graphics/Direct3D9.h"
+#include "../Graphics/Camera.h"
 
 #include "GameCommon/BasicGameMath.h"
 #include "GameCommon/MTRand.h"

@@ -4,10 +4,10 @@
 
 #include "HUD_PlayerBase.h"
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/TextureHandle.h"
-#include "3DCommon/FloatRGBAColor.h"
-#include "3DCommon/Font/TextureFont.h"
+#include "Graphics/fwd.h"
+#include "Graphics/TextureHandle.h"
+#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/Font/TextureFont.h"
 #include "GameTextSystem/fwd.h"
 #include "GameCommon/PseudoAircraftHUD.h"
 

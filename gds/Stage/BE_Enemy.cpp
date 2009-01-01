@@ -9,9 +9,9 @@
 
 #include "Stage/PlayerInfo.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/D3DXSMeshObject.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/D3DXSMeshObject.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "GameCommon/BasicGameMath.h"
 #include "GameCommon/MTRand.h"

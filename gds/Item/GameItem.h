@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/MeshObjectContainer.h"
+#include "Graphics/fwd.h"
+#include "Graphics/MeshObjectContainer.h"
 #include "GameCommon/LangID.h"
 #include "Stage/fwd.h"
 #include "XML/fwd.h"

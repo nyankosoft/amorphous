@@ -6,7 +6,7 @@
 //=================================================================================
 
 #include "ImageCapture.h"
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/Direct3D9.h"
 
 
 CImageCapture::CImageCapture()

@@ -4,9 +4,9 @@
 
 #include <vector>
 
-#include "3DCommon/LightStructs.h"
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
-#include "3DCommon/MeshModel/General3DMesh.h"
+#include "Graphics/LightStructs.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/General3DMesh.h"
 using namespace MeshModel;
 
 #include "3DMath/Matrix34.h"

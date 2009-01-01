@@ -6,8 +6,8 @@
 #include "Stage.h"
 #include "BaseEntityHandle.h"
 
-#include "3DCommon/FVF_TextureVertex.h"
-#include "3DCommon/TextureHandle.h"
+#include "Graphics/FVF_TextureVertex.h"
+#include "Graphics/TextureHandle.h"
 
 
 class CBE_Bullet : public CBaseEntity

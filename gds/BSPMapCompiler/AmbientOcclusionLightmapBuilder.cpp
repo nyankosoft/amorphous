@@ -2,10 +2,10 @@
 #include "AmbientOcclusionLightmapBuilder.h"
 #include "lightmapbuilder.h"
 
-#include "3DCommon/Camera.h"
-#include "3DCommon/TextureRenderTarget.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Camera.h"
+#include "Graphics/TextureRenderTarget.h"
+#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "3DMath/Vector3.h"
 #include "3DMath/Plane.h"

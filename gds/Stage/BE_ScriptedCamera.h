@@ -7,8 +7,8 @@
 
 #include "EntityMotionPathRequest.h"
 
-#include "3DCommon/FloatRGBColor.h"
-#include "3DCommon/Camera.h"
+#include "Graphics/FloatRGBColor.h"
+#include "Graphics/Camera.h"
 
 #include "3DMath/Vector2.h"
 #include "3DMath/Quaternion.h"

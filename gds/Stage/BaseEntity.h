@@ -6,17 +6,17 @@
 #include <string>
 
 #include "fwd.h"
-#include "3DCommon/fwd.h"
+#include "Graphics/fwd.h"
 #include "Physics/fwd.h"
 
 #include "EntityGroupHandle.h"
 #include "3DMath/aabb3.h"
 #include "3DMath/Matrix34.h"
-#include "3DCommon/TextureHandle.h"
-#include "3DCommon/MeshObjectHandle.h"
-#include "3DCommon/MeshObjectContainer.h"
-#include "3DCommon/Shader/ShaderTechniqueHandle.h"
-#include "3DCommon/Shader/Serialization_ShaderTechniqueHandle.h"
+#include "Graphics/TextureHandle.h"
+#include "Graphics/MeshObjectHandle.h"
+#include "Graphics/MeshObjectContainer.h"
+#include "Graphics/Shader/ShaderTechniqueHandle.h"
+#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.h"
 #include "Support/TextFileScanner.h"
 
 #include "Support/Serialization/Serialization.h"

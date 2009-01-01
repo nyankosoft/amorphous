@@ -10,8 +10,8 @@ using namespace std;
 #include <boost/shared_ptr.hpp>
 
 
-#include "3DCommon/MeshModel/3DMeshModelBuilder.h"
-#include "3DCommon/MeshModel/General3DMesh.h"
+#include "Graphics/MeshModel/3DMeshModelBuilder.h"
+#include "Graphics/MeshModel/General3DMesh.h"
 
 #include "LightWave/LWO2_Layer.h"
 

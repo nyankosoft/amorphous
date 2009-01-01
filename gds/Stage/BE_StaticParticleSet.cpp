@@ -5,9 +5,9 @@
 #include "trace.h"
 #include "Stage.h"
 #include "ScreenEffectManager.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/RectTriListIndex.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/RectTriListIndex.h"
+#include "Graphics/Shader/ShaderManager.h"
 #include "GameCommon/MTRand.h"
 
 #include "Support/memory_helpers.h"

@@ -3,9 +3,9 @@
 #include "ScreenEffectManager.h"
 
 #include "3DMath/MathMisc.h"
-#include "3DCommon/3DGameMath.h"
-#include "3DCommon/RenderTask.h"
-#include "3DCommon/RenderTaskProcessor.h"
+#include "Graphics/3DGameMath.h"
+#include "Graphics/RenderTask.h"
+#include "Graphics/RenderTaskProcessor.h"
 #include "Support/SafeDeleteVector.h"
 
 

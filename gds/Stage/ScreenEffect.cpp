@@ -1,6 +1,6 @@
 #include "ScreenEffect.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 
 CFadeEffect::CFadeEffect()

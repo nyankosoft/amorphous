@@ -9,5 +9,5 @@
 #include "GameTextSystem/PyModule_TextMessage.h"
 #include "Sound/PyModule_Sound.h"
 #include "GameCommon/PyModule_Shop.h"
-#include "3DCommon/PyModule_GraphicsElement.h"
+#include "Graphics/PyModule_GraphicsElement.h"
 #include "Task/PyModule_Task.h"

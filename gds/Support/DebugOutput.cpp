@@ -1,10 +1,10 @@
 #include "DebugOutput.h"
 
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/Font/Font.h"
-#include "3DCommon/Font/TextureFont.h"
-#include "3DCommon/LogOutput_OnScreen.h"
-#include "3DCommon/GraphicsResourceManager.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/Font/Font.h"
+#include "Graphics/Font/TextureFont.h"
+#include "Graphics/LogOutput_OnScreen.h"
+#include "Graphics/GraphicsResourceManager.h"
 #include "Support/Timer.h"
 #include "Sound/SoundManager.h"
 

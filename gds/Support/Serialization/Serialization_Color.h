@@ -1,10 +1,9 @@
-
 #ifndef __KGL_COLOR_SERIALIZATION_H__
 #define __KGL_COLOR_SERIALIZATION_H__
 
 
-#include "../../3DCommon/FloatRGBColor.h"
-#include "../../3DCommon/FloatRGBAColor.h"
+#include "../../Graphics/FloatRGBColor.h"
+#include "../../Graphics/FloatRGBAColor.h"
 
 #include "Archive.h"
 

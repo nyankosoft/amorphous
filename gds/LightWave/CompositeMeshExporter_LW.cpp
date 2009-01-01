@@ -6,7 +6,7 @@
 
 #include "LightWave/3DMeshModelBuilder_LW.h"
 
-#include "3DCommon/MeshModel/ShadowVolumeMeshGenerator.h"
+#include "Graphics/MeshModel/ShadowVolumeMeshGenerator.h"
 
 using namespace std;
 using namespace boost;

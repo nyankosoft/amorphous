@@ -5,7 +5,7 @@
 #include "Task/GameTaskManager.h"
 #include "Task/GameTask.h"
 
-#include "3DCommon/GraphicsresourceManager.h"
+#include "Graphics/GraphicsresourceManager.h"
 #include "GameCommon/ImageCapture.h"
 #include "GameCommon/ScreenShotManager.h"
 

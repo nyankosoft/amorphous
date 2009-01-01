@@ -6,9 +6,9 @@
 #include "GM_ControlRenderer.h"
 #include "GM_Control.h"
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/FloatRGBAColor.h"
-#include "3DCommon/GraphicsEffectHandle.h"
+#include "Graphics/fwd.h"
+#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/GraphicsEffectHandle.h"
 #include "Graphics/Point.h"
 #include "Graphics/Rect.h"
 using namespace Graphics;

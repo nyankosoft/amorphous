@@ -1,5 +1,5 @@
-#include "3DCommon/FVF_ColorVertex.h"
-#include "3DCommon/UnitCube.h"
+#include "Graphics/FVF_ColorVertex.h"
+#include "Graphics/UnitCube.h"
 
 #include "BVHBone.h"
 #include <string.h>

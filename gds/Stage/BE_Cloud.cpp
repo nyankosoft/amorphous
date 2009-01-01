@@ -3,7 +3,7 @@
 #include "CopyEntity.h"
 #include "trace.h"
 #include "Stage.h"
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/Direct3D9.h"
 #include "Support/memory_helpers.h"
 #include "GameCommon/MTRand.h"
 

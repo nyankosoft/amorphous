@@ -2,10 +2,10 @@
 #include "BSPTree.h"
 #include "Stage.h" // used in CStaticGeometry::CreateCollisionGeometry() and dtor
 
-#include "3DCommon/Shader/ShaderManager.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Camera.h"
-#include "3DCommon/D3DXMeshObject.h"
+#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Camera.h"
+#include "Graphics/D3DXMeshObject.h"
 
 #include "Physics/PhysicsEngine.h"
 #include "Physics/Stream.h"

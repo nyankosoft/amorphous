@@ -1,7 +1,7 @@
 
 #include "MeshBoneControllerBase.h"
 
-#include "3DCommon/D3DXSMeshObject.h"
+#include "Graphics/D3DXSMeshObject.h"
 
 
 void CMeshBoneControllerBase::UpdateTargetMeshTransforms()

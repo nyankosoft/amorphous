@@ -18,8 +18,8 @@
 #include "Support/Profile.h"
 
 
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "ShaderTechniqueIDs.h"
 

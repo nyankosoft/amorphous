@@ -3,9 +3,9 @@
 
 
 #include "fwd.h"
-#include "3DCommon/fwd.h"
-#include "3DCommon/FloatRGBAColor.h"
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "Graphics/fwd.h"
+#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/GraphicsComponentCollector.h"
 #include "3DMath/Vector3.h"
 #include "3DMath/AABB3.h"
 #include "Physics/fwd.h"

@@ -150,310 +150,310 @@
 			Name="3DCommon"
 			>
 			<File
-				RelativePath="..\..\gds\3DCommon\BillboardArrayMesh.cpp"
+				RelativePath="..\..\gds\Graphics\BillboardArrayMesh.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\BillboardArrayMesh.h"
+				RelativePath="..\..\gds\Graphics\BillboardArrayMesh.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\Camera.cpp"
+				RelativePath="..\..\gds\Graphics\Camera.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\Camera.h"
+				RelativePath="..\..\gds\Graphics\Camera.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\CubeMapManager.cpp"
+				RelativePath="..\..\gds\Graphics\CubeMapManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\CubeMapManager.h"
+				RelativePath="..\..\gds\Graphics\CubeMapManager.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DMisc.h"
+				RelativePath="..\..\gds\Graphics\D3DMisc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXMeshObject.cpp"
+				RelativePath="..\..\gds\Graphics\D3DXMeshObject.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXMeshObject.h"
+				RelativePath="..\..\gds\Graphics\D3DXMeshObject.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXMeshObjectBase.cpp"
+				RelativePath="..\..\gds\Graphics\D3DXMeshObjectBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXMeshObjectBase.h"
+				RelativePath="..\..\gds\Graphics\D3DXMeshObjectBase.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXPMeshObject.cpp"
+				RelativePath="..\..\gds\Graphics\D3DXPMeshObject.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXPMeshObject.h"
+				RelativePath="..\..\gds\Graphics\D3DXPMeshObject.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXSMeshObject.cpp"
+				RelativePath="..\..\gds\Graphics\D3DXSMeshObject.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\D3DXSMeshObject.h"
+				RelativePath="..\..\gds\Graphics\D3DXSMeshObject.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\Direct3D9.cpp"
+				RelativePath="..\..\gds\Graphics\Direct3D9.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\Direct3D9.h"
+				RelativePath="..\..\gds\Graphics\Direct3D9.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FloatRGBAColor.h"
+				RelativePath="..\..\gds\Graphics\FloatRGBAColor.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FloatRGBAColor.inl"
+				RelativePath="..\..\gds\Graphics\FloatRGBAColor.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FloatRGBColor.h"
+				RelativePath="..\..\gds\Graphics\FloatRGBColor.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FloatRGBColor.inl"
+				RelativePath="..\..\gds\Graphics\FloatRGBColor.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_BumpVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_BumpVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_BumpWeightVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_BumpWeightVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_ColorVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_ColorVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_MapVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_MapVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_NormalVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_NormalVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_ShadowVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_ShadowVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_TextureVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_TextureVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_TextureVertex2.h"
+				RelativePath="..\..\gds\Graphics\FVF_TextureVertex2.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_TLVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_TLVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\FVF_WeightVertex.h"
+				RelativePath="..\..\gds\Graphics\FVF_WeightVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\General3DVertex.h"
+				RelativePath="..\..\gds\Graphics\General3DVertex.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\GraphicsComponentCollector.cpp"
+				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\GraphicsComponentCollector.h"
+				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\HemisphericLight.h"
+				RelativePath="..\..\gds\Graphics\HemisphericLight.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\IndexedPolygon.cpp"
+				RelativePath="..\..\gds\Graphics\IndexedPolygon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\IndexedPolygon.h"
+				RelativePath="..\..\gds\Graphics\IndexedPolygon.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\LensFlare.cpp"
+				RelativePath="..\..\gds\Graphics\LensFlare.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\LensFlare.h"
+				RelativePath="..\..\gds\Graphics\LensFlare.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\LightStructs.h"
+				RelativePath="..\..\gds\Graphics\LightStructs.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\LogOutput_OnScreen.cpp"
+				RelativePath="..\..\gds\Graphics\LogOutput_OnScreen.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\LogOutput_OnScreen.h"
+				RelativePath="..\..\gds\Graphics\LogOutput_OnScreen.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\PostProcessManager.cpp"
+				RelativePath="..\..\gds\Graphics\PostProcessManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\PostProcessManager.h"
+				RelativePath="..\..\gds\Graphics\PostProcessManager.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\RenderTask.h"
+				RelativePath="..\..\gds\Graphics\RenderTask.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\RenderTaskProcessor.cpp"
+				RelativePath="..\..\gds\Graphics\RenderTaskProcessor.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\RenderTaskProcessor.h"
+				RelativePath="..\..\gds\Graphics\RenderTaskProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\ShadowMapManager.cpp"
+				RelativePath="..\..\gds\Graphics\ShadowMapManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\ShadowMapManager.h"
+				RelativePath="..\..\gds\Graphics\ShadowMapManager.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\ShadowMaps.cpp"
+				RelativePath="..\..\gds\Graphics\ShadowMaps.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\ShadowMaps.h"
+				RelativePath="..\..\gds\Graphics\ShadowMaps.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\SimpleMotionBlur.cpp"
+				RelativePath="..\..\gds\Graphics\SimpleMotionBlur.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\SimpleMotionBlur.h"
+				RelativePath="..\..\gds\Graphics\SimpleMotionBlur.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\TextureCoord.h"
+				RelativePath="..\..\gds\Graphics\TextureCoord.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\TextureRenderTarget.cpp"
+				RelativePath="..\..\gds\Graphics\TextureRenderTarget.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\TextureRenderTarget.h"
+				RelativePath="..\..\gds\Graphics\TextureRenderTarget.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\TextureTool.cpp"
+				RelativePath="..\..\gds\Graphics\TextureTool.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\TextureTool.h"
+				RelativePath="..\..\gds\Graphics\TextureTool.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\UnitCube.cpp"
+				RelativePath="..\..\gds\Graphics\UnitCube.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\UnitCube.h"
+				RelativePath="..\..\gds\Graphics\UnitCube.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\UnitSphere.cpp"
+				RelativePath="..\..\gds\Graphics\UnitSphere.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\UnitSphere.h"
+				RelativePath="..\..\gds\Graphics\UnitSphere.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\VarianceShadowMapManager.cpp"
+				RelativePath="..\..\gds\Graphics\VarianceShadowMapManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DCommon\VarianceShadowMapManager.h"
+				RelativePath="..\..\gds\Graphics\VarianceShadowMapManager.h"
 				>
 			</File>
 			<Filter
 				Name="Shader"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\HLSLShaderLightManager.cpp"
+					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\HLSLShaderLightManager.h"
+					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\Serialization_ShaderTechniqueHandle.h"
+					RelativePath="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\Shader.cpp"
+					RelativePath="..\..\gds\Graphics\Shader\Shader.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\Shader.h"
+					RelativePath="..\..\gds\Graphics\Shader\Shader.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\ShaderLightManager.cpp"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderLightManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\ShaderLightManager.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderLightManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\ShaderManager.cpp"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\ShaderManager.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\ShaderManagerHub.cpp"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderManagerHub.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\ShaderManagerHub.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderManagerHub.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Shader\ShaderTechniqueHandle.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderTechniqueHandle.h"
 					>
 				</File>
 			</Filter>
@@ -461,63 +461,63 @@
 				Name="Mesh"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\3DMeshModelArchive.cpp"
+					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\3DMeshModelArchive.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\3DMeshModelBuilder.cpp"
+					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\3DMeshModelBuilder.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\D3DXMeshModel.cpp"
+					RelativePath="..\..\gds\Graphics\MeshModel\D3DXMeshModel.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\D3DXMeshModel.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\D3DXMeshModel.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\MeshBone.cpp"
+					RelativePath="..\..\gds\Graphics\MeshModel\MeshBone.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\MeshBone.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\MeshBone.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\NVMeshMender.cpp"
+					RelativePath="..\..\gds\Graphics\MeshModel\NVMeshMender.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\NVMeshMender.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\NVMeshMender.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\ShadowVolumeMeshGenerator.cpp"
+					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\ShadowVolumeMeshGenerator.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\TangentSpace.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\TangentSpace.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\TerrainMeshGenerator.cpp"
+					RelativePath="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshModel\TerrainMeshGenerator.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.h"
 					>
 				</File>
 			</Filter>
@@ -525,83 +525,83 @@
 				Name="GraphicsResourceManager"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\AsyncResourceLoader.cpp"
+					RelativePath="..\..\gds\Graphics\AsyncResourceLoader.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\AsyncResourceLoader.h"
+					RelativePath="..\..\gds\Graphics\AsyncResourceLoader.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResource.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResource.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceCacheManager.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceCacheManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceCacheManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceCacheManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceDescs.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceDescs.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceEntries.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceEntries.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceEntries.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceEntries.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceHandle.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceHandle.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceHandle.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceHandle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceLoaders.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceLoaders.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceLoaders.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceLoaders.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceManager.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsResourceManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshObjectHandle.cpp"
+					RelativePath="..\..\gds\Graphics\MeshObjectHandle.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\MeshObjectHandle.h"
+					RelativePath="..\..\gds\Graphics\MeshObjectHandle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\ShaderHandle.cpp"
+					RelativePath="..\..\gds\Graphics\ShaderHandle.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\ShaderHandle.h"
+					RelativePath="..\..\gds\Graphics\ShaderHandle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\TextureHandle.cpp"
+					RelativePath="..\..\gds\Graphics\TextureHandle.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\TextureHandle.h"
+					RelativePath="..\..\gds\Graphics\TextureHandle.h"
 					>
 				</File>
 			</Filter>
@@ -609,63 +609,63 @@
 				Name="2DPrimitives"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DFrameRect.cpp"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DFrameRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DFrameRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DFrameRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPolygon.cpp"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPolygon.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPolygon.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPolygon.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPrimitive.cpp"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitive.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPrimitive.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitive.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRect.cpp"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRectSet.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRectSet.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRoundRect.cpp"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRoundRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRoundRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRoundRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTexRect.cpp"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTexRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTexRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTexRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTriangle.cpp"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTriangle.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTriangle.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTriangle.h"
 					>
 				</File>
 			</Filter>
@@ -673,39 +673,39 @@
 				Name="2D Graphics Elements &amp; Effects"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsEffectHandle.h"
+					RelativePath="..\..\gds\Graphics\GraphicsEffectHandle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsEffectManager.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsEffectManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsEffectManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsEffectManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsElementManager.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsElementManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsElementManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsElementManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsElements.cpp"
+					RelativePath="..\..\gds\Graphics\GraphicsElements.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\GraphicsElements.h"
+					RelativePath="..\..\gds\Graphics\GraphicsElements.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\PyModule_GraphicsElement.cpp"
+					RelativePath="..\..\gds\Graphics\PyModule_GraphicsElement.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\PyModule_GraphicsElement.h"
+					RelativePath="..\..\gds\Graphics\PyModule_GraphicsElement.h"
 					>
 				</File>
 			</Filter>
@@ -713,31 +713,31 @@
 				Name="Font"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font\Font.cpp"
+					RelativePath="..\..\gds\Graphics\Font\Font.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font\Font.h"
+					RelativePath="..\..\gds\Graphics\Font\Font.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font\FontBase.h"
+					RelativePath="..\..\gds\Graphics\Font\FontBase.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font\TextureFont.cpp"
+					RelativePath="..\..\gds\Graphics\Font\TextureFont.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font\TextureFont.h"
+					RelativePath="..\..\gds\Graphics\Font\TextureFont.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font\TrueTypeTextureFont.cpp"
+					RelativePath="..\..\gds\Graphics\Font\TrueTypeTextureFont.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\Font\TrueTypeTextureFont.h"
+					RelativePath="..\..\gds\Graphics\Font\TrueTypeTextureFont.h"
 					>
 				</File>
 			</Filter>
@@ -745,11 +745,11 @@
 				Name="Debug"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\LinePrimitives.cpp"
+					RelativePath="..\..\gds\Graphics\LinePrimitives.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\LinePrimitives.h"
+					RelativePath="..\..\gds\Graphics\LinePrimitives.h"
 					>
 				</File>
 			</Filter>

@@ -3,7 +3,6 @@
 
 
 #include "../BSPMapCompiler/BSPMapData.h"
-
 #include "LWO2_Object.h"
 
 

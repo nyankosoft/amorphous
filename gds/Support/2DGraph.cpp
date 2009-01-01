@@ -4,8 +4,8 @@
 //===============================================================================
 
 #include "2DGraph.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Font.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Font.h"
 
 #include "Support/memory_helpers.h"
 

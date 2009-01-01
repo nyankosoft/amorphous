@@ -6,7 +6,7 @@
 #include "Stage/bspstructs.h"
 #include "Stage/BSPStaticGeometry.h"
 
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
 
 

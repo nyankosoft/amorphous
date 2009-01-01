@@ -14,7 +14,7 @@
 #include "EntityRenderManager.h"
 #include "OverlapTestAABB.h"
 
-#include "3DCommon/Camera.h"
+#include "Graphics/Camera.h"
 
 class CBSPTree;
 

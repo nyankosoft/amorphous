@@ -4,11 +4,11 @@
 #include "Stage.h"
 #include "ScreenEffectManager.h"
 
-#include "3DCommon/Camera.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/D3DXSMeshObject.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Camera.h"
+#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/D3DXSMeshObject.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "Support/Profile.h"
 #include "Support/Log/DefaultLog.h"

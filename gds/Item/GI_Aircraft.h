@@ -7,7 +7,7 @@
 #include "Stage/BaseEntityHandle.h"
 #include "Stage/Serialization_BaseEntityHandle.h"
 
-#include "3DCommon/fwd.h"
+#include "Graphics/fwd.h"
 #include "GameCommon/PseudoAircraftSimulator.h"
 #include "GameCommon/NozzleFlameParams.h"
 #include "GameCommon/MeshBoneController_Aircraft.h"

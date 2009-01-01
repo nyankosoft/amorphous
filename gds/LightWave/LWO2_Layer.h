@@ -7,7 +7,7 @@
 
 #include "3DMath/Vector3.h"
 
-#include "3DCommon/FloatRGBAColor.h"
+#include "Graphics/FloatRGBAColor.h"
 
 #include "Support/memory_helpers.h"
 

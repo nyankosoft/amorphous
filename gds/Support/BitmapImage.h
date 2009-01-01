@@ -6,8 +6,8 @@
 #include <boost/shared_ptr.hpp>
 #include "FreeImage.h"
 
-#include "3DCommon/FloatRGBColor.h"
-#include "3DCommon/FloatRGBAColor.h"
+#include "Graphics/FloatRGBColor.h"
+#include "Graphics/FloatRGBAColor.h"
 #include "Support/ImageArchive.h"
 #include "Support/2DArray.h"
 #include "Support/Macro.h"

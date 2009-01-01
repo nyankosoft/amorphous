@@ -18,7 +18,7 @@
 */
 
 
-#include "3DCommon/fwd.h"
+#include "Graphics/fwd.h"
 #include "3DMath/Vector2.h"
 
 #include "fwd.h"

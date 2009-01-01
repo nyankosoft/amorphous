@@ -5,7 +5,7 @@
 #include <boost/weak_ptr.hpp>
 
 #include "3DMath/Matrix34.h"
-#include "3DCommon/UnitCube.h"
+#include "Graphics/UnitCube.h"
 #include "MotionSynthesis/Skeleton.h"
 #include "MotionSynthesis/MotionPrimitive.h"
 

@@ -3,8 +3,8 @@
 #include "CopyEntityDesc.h"
 #include "trace.h"
 #include "Stage.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "GameCommon/BasicGameMath.h"
 #include "GameCommon/MTRand.h"

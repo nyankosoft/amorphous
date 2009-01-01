@@ -2,7 +2,7 @@
 #define __GTS_GAMETEXTSET_H__
 
 
-//#include "3DCommon/32BITCOLOR.h"
+//#include "Graphics/32BITCOLOR.h"
 
 #include "Support/Serialization/Serialization.h"
 using namespace GameLib1::Serialization;

@@ -9,7 +9,7 @@
 #include "PlayerInfo.h"
 #include "BE_HomingMissile.h"
 
-#include "3DCommon/D3DXMeshObjectBase.h"
+#include "Graphics/D3DXMeshObjectBase.h"
 #include "3DMath/MathMisc.h"
 //#include "JigLib/JL_PhysicsActor.h"
 #include "Physics/Actor.h"

@@ -4,10 +4,10 @@
 
 #include <d3dx9.h>
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/FVF_ColorVertex.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/FVF_ColorVertex.h"
 
-#include "3DCommon/FVF_TLVertex.h"
+#include "Graphics/FVF_TLVertex.h"
 
 class CLineSegmentRenderer
 {

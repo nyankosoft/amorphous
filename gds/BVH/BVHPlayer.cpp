@@ -1,6 +1,6 @@
 #include "BVHPlayer.h"
 
-#include "3DCommon/FVF_ColorVertex.h"
+#include "Graphics/FVF_ColorVertex.h"
 #include "Support/memory_helpers.h"
 
 using namespace std;

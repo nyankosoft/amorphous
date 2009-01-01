@@ -13,7 +13,7 @@
 #include "BE_PhysicsBaseEntity.h"
 #include "CopyEntityDescFileArchive.h"
 
-#include "3DCommon/3DGameMath.h"
+#include "Graphics/3DGameMath.h"
 //#include "JigLib/JL_PhysicsManager.h"
 //#include "JigLib/JL_PhysicsActorDesc.h"
 #include "Physics/Actor.h"

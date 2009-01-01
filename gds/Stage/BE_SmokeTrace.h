@@ -4,7 +4,7 @@
 
 #include "BE_ParticleSet.h"
 
-#include "../3DCommon/FVF_TextureVertex.h"
+#include "../Graphics/FVF_TextureVertex.h"
 
 
 class CBE_SmokeTrace : public CBE_ParticleSet

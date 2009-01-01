@@ -7,10 +7,10 @@
 
 #include "DynamicLightManagerForStaticGeometry.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/TextureTool.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/TextureTool.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "JigLib/JL_PhysicsManager.h"
 #include "JigLib/JL_ShapeDesc_TriangleMesh.h"

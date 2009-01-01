@@ -2,7 +2,7 @@
 #include "GM_ControlRenderer.h"
 #include "GM_ControlRendererManager.h"
 #include "GM_ControlRendererManager.h"
-#include "3DCommon/GraphicsEffectManager.h"
+#include "Graphics/GraphicsEffectManager.h"
 #include "Support/SafeDelete.h"
 
 using namespace std;

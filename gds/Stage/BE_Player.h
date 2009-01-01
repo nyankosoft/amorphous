@@ -6,8 +6,8 @@
 #include "BaseEntityHandle.h"
 #include "CopyEntity.h"
 #include "GameMessage.h"
-#include "3DCommon/Camera.h"
-#include "3DCommon/fwd.h"
+#include "Graphics/Camera.h"
+#include "Graphics/fwd.h"
 
 #include "GameInput/3DActionCode.h"
 

@@ -3,12 +3,12 @@
 
 #include <map>
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/TextureRenderTarget.h"
-#include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/Shader/ShaderTechniqueHandle.h"
+#include "Graphics/fwd.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/TextureRenderTarget.h"
+#include "Graphics/GraphicsComponentCollector.h"
+#include "Graphics/Shader/ShaderTechniqueHandle.h"
 #include "ScreenEffect.h"
 #include "PseudoNoiseEffect.h"
 

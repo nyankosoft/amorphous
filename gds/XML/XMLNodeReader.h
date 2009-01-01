@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include "3DMath/Vector3.h"
-#include "3DCommon/FloatRGBColor.h"
-#include "3DCommon/FloatRGBAColor.h"
+#include "Graphics/FloatRGBColor.h"
+#include "Graphics/FloatRGBAColor.h"
 #include "Graphics/Rect.h"
 using namespace Graphics;
 

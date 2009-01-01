@@ -1,7 +1,7 @@
 
 #include "BSPMapData.h"
 //#include "lightmapbuilder.h"
-#include "../3DCommon/LightStructs.h"
+#include "../Graphics/LightStructs.h"
 #include "../Stage/StaticGeometry.h"
 
 #include "Support/Log/DefaultLog.h"

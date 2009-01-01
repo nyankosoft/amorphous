@@ -2,8 +2,8 @@
 #define  __2DGraph_H__
 
 #include <vector>
-#include "3DCommon/fwd.h"
-#include "3DCommon/2DRect.h"
+#include "Graphics/fwd.h"
+#include "Graphics/2DRect.h"
 
 
 enum {GRAPHTYPE_POINT, GRAPHTYPE_LINE};

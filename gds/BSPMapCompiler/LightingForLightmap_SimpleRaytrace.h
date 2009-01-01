@@ -7,8 +7,8 @@
 using namespace std;
 
 #include "3DMath/AABTree.h"
-#include "3DCommon/FloatRGBColor.h"
-#include "3DCommon/LightStructs.h"
+#include "Graphics/FloatRGBColor.h"
+#include "Graphics/LightStructs.h"
 #include "Support/StatusDisplay/StatusDisplay.h"
 #include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.h"
 

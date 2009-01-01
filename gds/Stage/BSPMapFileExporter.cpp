@@ -2,7 +2,7 @@
 #include "Stage/Skybox.h"
 #include "BSPMapCompiler/BSPMapCompiler.h"
 #include "BSPMapCompiler/lightmapbuilder.h"
-#include "3DCommon/FloatRGBColor.h"
+#include "Graphics/FloatRGBColor.h"
 
 #include "Support/fnop.h"
 #include "Support/StatusDisplay/StatusDisplay.h"

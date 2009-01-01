@@ -1,16 +1,16 @@
 
 #include "ScreenEffectManager.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Camera.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
-#include "3DCommon/PostProcessManager.h"
-#include "3DCommon/SimpleMotionBlur.h"
-#include "3DCommon/D3DMisc.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Camera.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/PostProcessManager.h"
+#include "Graphics/SimpleMotionBlur.h"
+#include "Graphics/D3DMisc.h"
 
-#include "3DCommon/RenderTask.h"
-#include "3DCommon/RenderTaskProcessor.h"
+#include "Graphics/RenderTask.h"
+#include "Graphics/RenderTaskProcessor.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/Log/DefaultLog.h"

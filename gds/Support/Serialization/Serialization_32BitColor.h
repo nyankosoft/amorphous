@@ -1,9 +1,8 @@
-
 #ifndef __KGL_32BITCOLOR_SERIALIZATION_H__
 #define __KGL_32BITCOLOR_SERIALIZATION_H__
 
 
-#include "../../3DCommon/32BitColor.h"
+#include "../../Graphics/32BitColor.h"
 
 #include "Archive.h"
 

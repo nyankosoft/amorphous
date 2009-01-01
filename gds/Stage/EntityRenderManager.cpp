@@ -3,14 +3,14 @@
 #include "trace.h"
 #include "ViewFrustumTest.h"
 
-#include "3DCommon/ShadowMapManager.h"
-#include "3DCommon/VarianceShadowMapManager.h"
-#include "3DCommon/CubeMapManager.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManagerHub.h"
+#include "Graphics/ShadowMapManager.h"
+#include "Graphics/VarianceShadowMapManager.h"
+#include "Graphics/CubeMapManager.h"
+#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderManagerHub.h"
 
-#include "3DCommon/RenderTask.h"
-#include "3DCommon/RenderTaskProcessor.h"
+#include "Graphics/RenderTask.h"
+#include "Graphics/RenderTaskProcessor.h"
 
 #include "Support/memory_helpers.h"
 #include "Support/Profile.h"

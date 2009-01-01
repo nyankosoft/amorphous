@@ -47,8 +47,8 @@ void CGM_Control::UpdateRects()
 
 // draw the boundary with wireframe for debug
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/2DRect.h"
 
 void CGM_Control::Render( float fElapsedTime )
 {

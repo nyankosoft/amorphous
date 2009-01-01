@@ -20,9 +20,9 @@
 #include "Stage/BE_LaserDot.h"
 
 // added for laser dot casting test
-#include "3DCommon/3DGameMath.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/D3DXMeshObject.h"
+#include "Graphics/3DGameMath.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/D3DXMeshObject.h"
 #include "Support/memory_helpers.h"
 #include "Support/Log/StateLog.h"
 #include "Support/StringAux.h"

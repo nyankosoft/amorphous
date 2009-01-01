@@ -3,10 +3,10 @@
 #include "App/ApplicationBase.h"
 #include "App/GameWindowManager_Win32.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/Font/Font.h"
-#include "3DCommon/GraphicsElementManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/Font/Font.h"
+#include "Graphics/GraphicsElementManager.h"
 
 #include "UI.h"
 #include "UI/InputHandler_Dialog.h"

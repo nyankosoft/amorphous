@@ -5,7 +5,7 @@
 #include "../base.h"
 
 #include "fwd.h"
-#include "3DCommon/fwd.h"
+#include "Graphics/fwd.h"
 #include "CopyEntity.h"
 #include "OverlapTestAABB.h"
 

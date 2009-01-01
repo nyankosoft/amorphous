@@ -1,7 +1,7 @@
 
 #include "DynamicResourceManager.h"
 
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/Direct3D9.h"
 
 #include "Support/memory_helpers.h"
 #include "Support//TextFileScanner.h"

@@ -5,10 +5,10 @@
 #include <vector>
 #include <string>
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/2DPrimitive/2DRect.h"
-#include "3DCommon/TextureHandle.h"
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "Graphics/fwd.h"
+#include "Graphics/2DPrimitive/2DRect.h"
+#include "Graphics/TextureHandle.h"
+#include "Graphics/GraphicsComponentCollector.h"
 #include "Support/memory_helpers.h"
 #include "Graphics/Rect.h"
 using namespace Graphics;

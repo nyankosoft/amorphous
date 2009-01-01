@@ -1,8 +1,8 @@
 #include "GameTaskManager.h"
 #include "GameTask.h"
 
-#include "3DCommon/RenderTask.h"
-#include "3DCommon/RenderTaskProcessor.h"
+#include "Graphics/RenderTask.h"
+#include "Graphics/RenderTaskProcessor.h"
 #include "GameTask.h"
 #include "GameTaskFactoryBase.h"
 #include "Support/SafeDelete.h"

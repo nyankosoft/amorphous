@@ -1,4 +1,4 @@
-#include "3DCommon/GraphicsElementManager.h"
+#include "Graphics/GraphicsElementManager.h"
 #include "GM_StdControlRendererManager.h"
 #include "GM_StdControlRenderer.h"
 #include "ui.h"

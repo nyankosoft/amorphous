@@ -3,7 +3,7 @@
 
 
 #include "3DMath/Matrix34.h"
-#include "3DCommon/MeshObjectHandle.h"
+#include "Graphics/MeshObjectHandle.h"
 
 #include "fwd.h"
 #include "EntityGroupHandle.h"

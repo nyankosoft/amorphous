@@ -1,10 +1,6 @@
-
 #include "GameItem.h"
-//#include "3DCommon/D3DXStillObject.h"
-
-#include <string.h>
-
 #include "Support/memory_helpers.h"
+#include <string.h>
 
 
 CGameItem::~CGameItem()

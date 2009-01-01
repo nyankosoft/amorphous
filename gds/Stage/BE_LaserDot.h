@@ -2,7 +2,7 @@
 #define __BE_LaserDot_H__
 
 #include "BaseEntity.h"
-#include "3DCommon/3DRect.h"
+#include "Graphics/3DRect.h"
 #include "BaseEntity.h"
 
 

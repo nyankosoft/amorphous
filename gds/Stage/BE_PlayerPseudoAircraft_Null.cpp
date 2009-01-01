@@ -18,9 +18,9 @@
 #include "GameCommon/ShockWaveCameraEffect.h"
 #include "GameCommon/PseudoAircraftSimulator.h"
 
-#include "3DCommon/3DGameMath.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/D3DXMeshObject.h"
+#include "Graphics/3DGameMath.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/D3DXMeshObject.h"
 #include "Support/memory_helpers.h"
 #include "trace.h"
 

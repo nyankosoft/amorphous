@@ -1,4 +1,3 @@
-
 #ifndef  __JL_PHYSICSVISUALIZER_D3D_H__
 #define  __JL_PHYSICSVISUALIZER_D3D_H__
 
@@ -7,7 +6,7 @@
 //using namespace std;
 
 
-#include "3DCommon/GraphicsComponentCollector.h"
+#include "Graphics/GraphicsComponentCollector.h"
 
 
 class CJL_PhysicsManager;

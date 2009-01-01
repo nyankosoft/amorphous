@@ -6,7 +6,7 @@
 #include "3DMath/Vector3.h"
 #include "3DMath/Matrix34.h"
 
-#include "3DCommon/Camera.h"
+#include "Graphics/Camera.h"
 #include "Stage/fwd.h"
 #include "Stage/ViewFrustumTest.h"
 #include "../base.h"

@@ -7,8 +7,8 @@
 #include <boost/shared_ptr.hpp>
 #include "3DMath/Matrix34.h"
 #include "3DMath/Quaternion.h"
-#include "3DCommon/fwd.h"
-#include "3DCommon/Direct3D9.h"
+#include "Graphics/fwd.h"
+#include "Graphics/Direct3D9.h"
 
 #include "fwd.h"
 

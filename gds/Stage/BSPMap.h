@@ -10,9 +10,9 @@
 
 #include "BSPMap_Collision/BSPTree_CollisionModel.h"
 
-#include "3DCommon/fwd.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/Shader/ShaderTechniqueHandle.h"
+#include "Graphics/fwd.h"
+#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/Shader/ShaderTechniqueHandle.h"
 
 #include "Support/FixedVector.h"
 #include "Support/Log/DefaultLog.h"

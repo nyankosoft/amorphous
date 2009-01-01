@@ -1,11 +1,11 @@
 #ifndef  __STATICGEOMETRYARCHIVEFG_H__
 #define  __STATICGEOMETRYARCHIVEFG_H__
 
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.h"
 using namespace MeshModel;
 
-#include "3DCommon/Shader/ShaderTechniqueHandle.h"
-#include "3DCommon/Shader/Serialization_ShaderTechniqueHandle.h"
+#include "Graphics/Shader/ShaderTechniqueHandle.h"
+#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.h"
 
 #include "Support/Serialization/SerializationEx.h"
 using namespace GameLib1::Serialization;

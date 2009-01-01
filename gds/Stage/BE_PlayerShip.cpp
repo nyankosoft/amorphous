@@ -16,8 +16,8 @@
 #include "Stage/BE_LaserDot.h"
 
 // added for laser dot casting test
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/D3DXMeshObject.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/D3DXMeshObject.h"
 
 //#include "Sound/SoundManager.h"
 

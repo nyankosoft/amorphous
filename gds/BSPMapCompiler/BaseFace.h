@@ -4,7 +4,7 @@
 
 #include "fwd.h"
 
-#include "3DCommon/FVF_MapVertex.h"
+#include "Graphics/FVF_MapVertex.h"
 
 #include "3DMath/Plane.h"
 #include "3DMath/aabb3.h"

@@ -3,9 +3,9 @@
 #include "CopyEntity.h"
 #include "trace.h"
 #include "Stage.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Camera.h"
-#include "3DCommon/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Camera.h"
+#include "Graphics/Shader/ShaderManager.h"
 
 #include "Stage/LightEntity.h"
 

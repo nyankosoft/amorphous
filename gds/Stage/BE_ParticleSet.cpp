@@ -4,9 +4,9 @@
 #include "Stage.h"
 #include "ScreenEffectManager.h"
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/Shader/ShaderManager.h"
-#include "3DCommon/BillboardArrayMesh.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/BillboardArrayMesh.h"
 
 #include "GameCommon/BasicGameMath.h"
 #include "GameCommon/MTRand.h"
