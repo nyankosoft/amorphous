@@ -5,8 +5,8 @@
 #include "3DMath/Matrix22.h"
 #include "3DMath/AABB2.h"
 
-#include "3DCommon/2DFrameRect.h"
-#include "3DCommon/2DTriangle.h"
+#include "3DCommon/2DPrimitive/2DFrameRect.h"
+#include "3DCommon/2DPrimitive/2DTriangle.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DMisc.h"
 #include "3DCommon/GraphicsEffectManager.h"

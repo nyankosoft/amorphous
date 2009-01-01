@@ -3,7 +3,7 @@
 #include "3DCommon/Font/Font.h"
 #include "3DCommon/Font/TextureFont.h"
 #include "3DCommon/Font/TrueTypeTextureFont.h"
-#include "3DCommon/2DPolygon.h"
+#include "3DCommon/2DPrimitive/2DPolygon.h"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Profile.h"

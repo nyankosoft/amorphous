@@ -1,9 +1,9 @@
 // 2D primitives
-#include "2DRect.h"
-#include "2DFrameRect.h"
-#include "2DRoundRect.h"
-#include "2DRectSet.h"
-#include "2DTriangle.h"
+#include "2DPrimitive/2DRect.h"
+#include "2DPrimitive/2DFrameRect.h"
+#include "2DPrimitive/2DRoundRect.h"
+#include "2DPrimitive/2DRectSet.h"
+#include "2DPrimitive/2DTriangle.h"
 
 // fonts
 #include "Font/Font.h"

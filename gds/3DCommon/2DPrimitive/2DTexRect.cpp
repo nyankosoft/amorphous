@@ -1,4 +1,3 @@
-
 #include "2DTexRect.h"
 
 

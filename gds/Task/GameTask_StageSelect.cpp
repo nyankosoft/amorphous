@@ -14,7 +14,7 @@
 #include "UI/InputHandler_Dialog.h"
 #include "UI/GM_StdControlRendererManager.h"
 #include "3DCommon/Font/Font.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/GraphicsElementManager.h"
 #include "Support/memory_helpers.h"

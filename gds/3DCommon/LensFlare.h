@@ -8,7 +8,7 @@
 #include "3DCommon/FloatRGBAColor.h"
 #include "3DCommon/FVF_TLVertex.h"
 #include "3DCommon/TextureHandle.h"
-#include "3DCommon/2DRectSet.h"
+#include "3DCommon/2DPrimitive/2DRectSet.h"
 
 #include <vector>
 #include <string>

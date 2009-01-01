@@ -7,7 +7,7 @@
 
 #include "3DMath/aabb2.h"
 
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DCommon/Font/Font.h"
 #include "3DCommon/Font/TextureFont.h"

@@ -5,8 +5,8 @@
 #include "Support/memory_helpers.h"
 #include "Support/msgbox.h"
 
-#include "3DCommon/2DRect.h"
-#include "3DCommon/2DFrameRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
+#include "3DCommon/2DPrimitive/2DFrameRect.h"
 
 
 CAircraftCapsDisplay::CAircraftCapsDisplay()

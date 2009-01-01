@@ -2,14 +2,14 @@
 #define  __2DRECTSET_H__
 
 
-#include "../base.h"
+#include "../../base.h"
 #include "3DMath/Vector2.h"
 #include "3DMath/Vector3.h"
-#include "FVF_TLVertex.h"
-#include "RectTriListIndex.h"
-#include "Direct3D9.h"
-#include "2DPrimitive.h"
-#include "TextureHandle.h"
+#include "3DCommon/FVF_TLVertex.h"
+#include "3DCommon/RectTriListIndex.h"
+#include "3DCommon/Direct3D9.h"
+#include "3DCommon/2DPrimitive/2DPrimitive.h"
+#include "3DCommon/TextureHandle.h"
 
 #include <vector>
 

@@ -1,5 +1,5 @@
 #include "ShadowMaps.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/LightStructs.h"
 #include "3DCommon/CubeMapManager.h"

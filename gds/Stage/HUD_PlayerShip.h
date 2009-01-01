@@ -2,7 +2,7 @@
 #define __HUD_PLAYERSHIP_H__
 
 
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/Font/TextureFont.h"
 
 #include "QuickMenuManager.h"

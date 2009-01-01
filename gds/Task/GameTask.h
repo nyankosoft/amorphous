@@ -9,7 +9,7 @@
 #include "Support/Timer.h"
 #include "3DCommon/fwd.h"
 #include "3DCommon/GraphicsComponentCollector.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/D3DMisc.h"
 #include "Support/SafeDelete.h"
 

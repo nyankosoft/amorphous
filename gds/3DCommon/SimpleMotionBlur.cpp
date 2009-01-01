@@ -3,7 +3,7 @@
 
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DMisc.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "Support/SafeDelete.h"
 #include "Support/Macro.h"
 #include "Support/StringAux.h"

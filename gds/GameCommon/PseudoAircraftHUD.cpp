@@ -4,7 +4,7 @@
 #include "3DMath/Matrix34.h"
 #include "3DMath/Matrix22.h"
 #include "3DMath/MathMisc.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/Direct3D9.h"
 #include "3DCommon/D3DMisc.h"
 #include "3DCommon/Font/TextureFont.h"

@@ -2,16 +2,15 @@
 #define  __2DTEXRECT_H__
 
 
-#include "Direct3D9.h"
-#include "FVF_TLVertex.h"
-#include "TextureCoord.h"
+#include "3DCommon/Direct3D9.h"
+#include "3DCommon/FVF_TLVertex.h"
+#include "3DCommon/TextureCoord.h"
+#include "Graphics/Rect.h"
+using namespace::Graphics;
 
 #include "3DMath/Vector2.h"
 #include "3DMath/Matrix22.h"
 #include "3DMath/Vector3.h"
-
-#include "Graphics/Rect.h"
-using namespace::Graphics;
 
 
 /**

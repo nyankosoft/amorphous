@@ -2,7 +2,7 @@
 #define  __PSEUDOAIRCRAFT_HUD_H__
 
 
-#include "3DCommon/2DRectSet.h"
+#include "3DCommon/2DPrimitive/2DRectSet.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "3DMath/Vector2.h"
 #include "3DMath/Vector3.h"

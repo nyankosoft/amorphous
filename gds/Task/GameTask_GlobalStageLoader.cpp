@@ -5,7 +5,7 @@
 #include "Stage/Stage.h"
 
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/Font/Font.h"
 
 #include "Support/Timer.h"

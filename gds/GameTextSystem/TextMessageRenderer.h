@@ -6,7 +6,7 @@
 #include <string>
 
 #include "3DCommon/fwd.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/TextureHandle.h"
 #include "3DCommon/GraphicsComponentCollector.h"
 #include "Support/memory_helpers.h"

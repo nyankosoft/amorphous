@@ -4,7 +4,7 @@
 #include "App/GameWindowManager_Win32.h"
 
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/Font/Font.h"
 #include "3DCommon/GraphicsElementManager.h"
 

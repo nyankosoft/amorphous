@@ -1,5 +1,4 @@
 #include "2DRect.h"
-#include "3DCommon/Direct3D9.h"
 
 
 C2DRect::~C2DRect()

@@ -1,4 +1,3 @@
-
 #include "2DTriangle.h"
 #include "3DMath/aabb2.h"
 

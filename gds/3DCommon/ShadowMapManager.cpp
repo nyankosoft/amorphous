@@ -1,9 +1,9 @@
 #include "ShadowMapManager.h"
 #include "3DCommon/Direct3D9.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 #include "3DCommon/Shader/Shader.h"
 #include "3DCommon/Shader/ShaderManagerHub.h"
-#include "3DCommon/2DTexRect.h"
+#include "3DCommon/2DPrimitive/2DTexRect.h"
 #include "3DCommon/LightStructs.h"
 #include "Support/Log/DefaultLog.h"
 

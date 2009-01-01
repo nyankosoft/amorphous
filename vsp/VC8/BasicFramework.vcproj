@@ -609,63 +609,63 @@
 				Name="2DPrimitives"
 				>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DFrameRect.cpp"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DFrameRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DFrameRect.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DFrameRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPolygon.cpp"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPolygon.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPolygon.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPolygon.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive.cpp"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPrimitive.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DPrimitive.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DPrimitive.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DRect.cpp"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DRect.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DRectSet.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRectSet.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DRoundRect.cpp"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRoundRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DRoundRect.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DRoundRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DTexRect.cpp"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTexRect.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DTexRect.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTexRect.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DTriangle.cpp"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTriangle.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\3DCommon\2DTriangle.h"
+					RelativePath="..\..\gds\3DCommon\2DPrimitive\2DTriangle.h"
 					>
 				</File>
 			</Filter>

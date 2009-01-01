@@ -5,7 +5,7 @@
 #include "3DMath/MathMisc.h"
 #include "3DCommon/Font/TextureFont.h"
 #include "3DCommon/Font/Font.h"
-#include "3DCommon/2DRect.h"
+#include "3DCommon/2DPrimitive/2DRect.h"
 
 using namespace std;
 
