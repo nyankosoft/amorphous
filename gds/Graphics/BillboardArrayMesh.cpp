@@ -175,6 +175,7 @@ void CBillboardArrayMeshGenerator::SetIndices( int num_particles )
 	rvecVertIndex.resize( num_indices );
 	for( int i=0; i<num_particles; i++ )
 	{
+		// indices for triangle lists
 		index_offset = i * 4;
 		rvecVertIndex[i*6]   = index_offset + 0;
 		rvecVertIndex[i*6+1] = index_offset + 1;
