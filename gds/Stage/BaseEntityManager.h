@@ -3,19 +3,14 @@
 
 #include <vector>
 #include <map>
+#include "fwd.h"
 
 #include "Support/Singleton.h"
 using namespace NS_KGL;
-
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
-
-#include "fwd.h"
-
-// for quick access to the singleton instance
-#define BaseEntityManager ( *CBaseEntityManager::Get() )
 
 
 
@@ -86,6 +81,13 @@ inline void CBaseEntityManager::AddBaseEntityClassNameToIDMap( const std::string
 															   int base_entity_id )
 {
 	m_mapIDtoClassName[base_entity_name] = base_entity_id;
+}
+
+
+//============================== global function ==============================
+inline CBaseEntityManager& BaseEntityManager()
+{
+	return *(CBaseEntityManager::Get());
 }
 
 

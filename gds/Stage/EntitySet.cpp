@@ -815,7 +815,7 @@ bool CEntitySet::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
 	}
 
 	// not loaded yet - load the base entity and set the base entity pointer to the handle
-	pBaseEntity = BaseEntityManager.LoadBaseEntity( base_entity_name );
+	pBaseEntity = BaseEntityManager().LoadBaseEntity( base_entity_name );
 
 	if( !pBaseEntity )
 	{

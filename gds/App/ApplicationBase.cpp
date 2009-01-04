@@ -50,8 +50,8 @@ void UpdateBaseEntityDatabase()
 	{
 		CScopeLog sl( "- Initializing & updating the base entity database" );
 
-		BaseEntityManager.UpdateDatabase( "../resources/entity/BaseEntity.txt" );
-		BaseEntityManager.OpenDatabase( "./System/BaseEntity.bin" );
+		BaseEntityManager().UpdateDatabase( "../resources/entity/BaseEntity.txt" );
+		BaseEntityManager().OpenDatabase( "./System/BaseEntity.bin" );
 		s_bBaseEntityDatabase_Initialized = true;
 	}
 }

@@ -1,9 +1,5 @@
-
 #include "BaseEntityFactory.h"
 #include "Support/Log/DefaultLog.h"
-
-using namespace std;
-
 
 #include "BaseEntity.h"
 #include "BE_AreaSensor.h"
@@ -45,6 +41,8 @@ using namespace std;
 #include "BE_CameraController.h"			// 20070909
 #include "BE_ScriptedCamera.h"				// 20070909
 #include "BE_IndividualEntity.h"				// 20070909
+
+using namespace std;
 
 
 CBaseEntityFactory::CBaseEntityFactory()
@@ -138,7 +136,7 @@ CBaseEntityManager::RegisterUserDefinedBaseEntityFactory( CBaseEntityFactoryShar
 
 void SomeAppInitFunctionInUserApp()
 {
-	BaseEntityManager.RegisterBaseEntityFactory( CBaseEntityFactorySharedPtr( new CUserBaseEntityFactory() );
+	BaseEntityManager().RegisterBaseEntityFactory( CBaseEntityFactorySharedPtr( new CUserBaseEntityFactory() );
 }
 
 
