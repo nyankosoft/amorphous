@@ -40,7 +40,12 @@ inline bool to_bool( const XMLCh *pChar, const std::string& true_str = "true", c
 inline std::string to_string( const XMLCh *pChar )
 {
 	if( pChar )
-		return xercesc::XMLString::transcode( XercesString(pChar) );
+	{
+		char *transcoded = xercesc::XMLString::transcode( XercesString(pChar) );
+		std::string ret( transcoded );
+		xercesc::XMLString::release( &transcoded );
+		return ret;
+	}
 	else
 		return std::string("");
 }
