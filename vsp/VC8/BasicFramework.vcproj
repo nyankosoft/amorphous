@@ -147,7 +147,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="3DCommon"
+			Name="Graphics"
 			>
 			<File
 				RelativePath="..\..\gds\Graphics\BillboardArrayMesh.cpp"
@@ -750,6 +750,26 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\LinePrimitives.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="2D"
+				>
+				<File
+					RelativePath="..\..\gds\Graphics\Point.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Rect.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\RectTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\RectTree.h"
 					>
 				</File>
 			</Filter>
@@ -1557,26 +1577,6 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Graphics"
-			>
-			<File
-				RelativePath="..\..\gds\Graphics\Point.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\Rect.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\RectTree.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\RectTree.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Sound"

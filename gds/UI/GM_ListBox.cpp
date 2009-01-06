@@ -662,8 +662,8 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 
 	case CGM_Input::SHIFT_FOCUS_UP:
 	case CGM_Input::SHIFT_FOCUS_DOWN:
-	case CGM_Input::SHIFT_FOCUS_RIGHT:
-	case CGM_Input::SHIFT_FOCUS_LEFT:
+//	case CGM_Input::SHIFT_FOCUS_RIGHT:
+//	case CGM_Input::SHIFT_FOCUS_LEFT:
 		if( input.type == CGM_InputData::TYPE_PRESSED )
 		{
 			// If no item exists, do nothing.
