@@ -1,59 +1,30 @@
 #include "Direct3D9.h"
 
-#include <d3dx9.h>
 #include "../base.h"
 #include "TextureFormat.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/Macro.h"
 
 
-void CDirect3D9::EnumAdapterModesForDefaultAdapter()
+using namespace std;
+
+
+inline const char *hr_d3d_error_to_string(HRESULT hr)
 {
-	const D3DFORMAT allowable_formats[] =
+	switch(hr)
 	{
-		D3DFMT_A1R5G5B5,
-//		D3DFMT_A2R10G10B10,
-		D3DFMT_A8R8G8B8,
-		D3DFMT_R5G6B5,
-		D3DFMT_X1R5G5B5,
-		D3DFMT_X8R8G8B8
-	};
-
-	for(int i=0; i<numof(allowable_formats); i++)
-	{
-		m_vecAdapterMode.push_back( CAdapterMode(FromD3DSurfaceFormat(allowable_formats[i])) );
-		CAdapterMode& adapter_mode = m_vecAdapterMode.back();
-
-		uint num_adapter_modes = m_pD3D->GetAdapterModeCount( D3DADAPTER_DEFAULT, allowable_formats[i] );
-
-		for(uint j=0;j<num_adapter_modes;j++)
-		{
-			D3DDISPLAYMODE mode;
-			m_pD3D->EnumAdapterModes( D3DADAPTER_DEFAULT, allowable_formats[i], j, &mode );
-
-			// add to the list
-			adapter_mode.vecDisplayMode.push_back( CDisplayMode(
-			mode.Width,
-			mode.Height,
-			mode.RefreshRate,
-			FromD3DSurfaceFormat(mode.Format) )
-			);
-
-			// check if this is the current display mode
-			if( IsCurrentDisplayMode( adapter_mode.vecDisplayMode.back() ) )
-				adapter_mode.vecDisplayMode.back().Current = true;
-				
-		}
+	case D3DERR_DEVICELOST:          return "D3DERR_DEVICELOST";
+	case D3DERR_DRIVERINTERNALERROR: return "D3DERR_DRIVERINTERNALERROR";
+	case D3DERR_INVALIDCALL:         return "D3DERR_INVALIDCALL";
+	case D3DERR_OUTOFVIDEOMEMORY:    return "D3DERR_OUTOFVIDEOMEMORY";
+	case E_OUTOFMEMORY:              return "E_OUTOFMEMORY";
+	case D3DXERR_INVALIDDATA:        return "D3DXERR_INVALIDDATA";
+//	case : return "";
+//	case : return "";
+	default: return "Unknown";
 	}
-}
 
-
-CDirect3D9 CDirect3D9::ms_CDirect3D9_;
-
-
-CDirect3D9::CDirect3D9()
-: m_pD3D( NULL ), m_pD3DDevice( NULL )
-{
+	return "Unknown";
 }
 
 
@@ -78,15 +49,38 @@ static const char *GetVertexProcessingTypeString( DWORD behavior_flags )
 }
 
 
+
+//========================================================================
+// CDirect3D9
+//========================================================================
+
+// definition of singleton instance
+CDirect3D9 CDirect3D9::ms_CDirect3D9_;
+
+
+CDirect3D9::CDirect3D9()
+:
+m_pD3D( NULL ),
+m_pD3DDevice( NULL ),
+m_DeviceType(D3DDEVTYPE_HAL),
+m_BehaviorFlags(0)
+{
+}
+
+
 bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int screen_mode )
 {
 	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
+	{
+		LOG_PRINT_ERROR( "Direct3DCreate9() failed." );
 		return false;
+	}
 
 	// create D3D device
 
 	D3DDISPLAYMODE d3ddm;
-	if( FAILED( m_pD3D->GetAdapterDisplayMode( D3DADAPTER_DEFAULT, &d3ddm ) ) ){
+	if( FAILED( m_pD3D->GetAdapterDisplayMode( D3DADAPTER_DEFAULT, &d3ddm ) ) )
+	{
 		return false;
 	}
 
@@ -120,43 +114,13 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
 
 	// create D3D device
 
-	HRESULT hr;
-
-	m_DeviceType    = D3DDEVTYPE_HAL;
-	m_BehaviorFlags = D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED;
-
-	hr = m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, m_DeviceType, hWnd, m_BehaviorFlags,
-					  &D3DPresentParam, &m_pD3DDevice );
-
-	if( FAILED(hr) )
-	{
-		LOG_PRINT_WARNING( " - Hardware vertex processing is not available." );
-
-		m_BehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED;
-
-		hr = m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, m_DeviceType, hWnd, m_BehaviorFlags,
-						  &D3DPresentParam, &m_pD3DDevice );
-
-		if( FAILED(hr) )
-		{
-			// try the reference rasterizer
-			m_DeviceType = D3DDEVTYPE_REF;
-			hr = m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, m_DeviceType, hWnd, m_BehaviorFlags,
-						  &D3DPresentParam, &m_pD3DDevice );
-
-			if( FAILED(hr) )
-                return false;
-		}
-	}
-
-	g_Log.Print( "CDirect3D9::InitD3D() - created D3D device. device type: %s / vertex processing: %s",
-		GetDeviceTypeString(m_DeviceType),
-		GetVertexProcessingTypeString(m_BehaviorFlags) );
-
+	bool res;
+	res = CreateD3DDevice( D3DPresentParam, hWnd );
+	if( !res )
+		return false;
 
 	// set up default render states
 	SetDefaultRenderStates();
-
 
 	// set up default camera matrix
 	D3DXMATRIXA16 matView;
@@ -172,9 +136,70 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
     D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 500.0f );
     m_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
 
-	EnumAdapterModesForDefaultAdapter();
-
 	return true;
+}
+
+
+bool CDirect3D9::CreateD3DDevice( D3DPRESENT_PARAMETERS& present_params, HWND hWnd )
+{
+	SAFE_RELEASE( m_pD3DDevice );
+
+	const int num_params_sets_to_try = 3;
+
+	D3DDEVTYPE device_types[] =
+	{
+		D3DDEVTYPE_HAL, // most desirable
+		D3DDEVTYPE_HAL,
+		D3DDEVTYPE_REF  // least desirable
+	};
+
+	DWORD behavior_flags[] =
+	{
+		D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, // most desirable
+		D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
+		D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED  // least desirable
+	};
+
+	HRESULT hr;
+
+	// Start with the most desirable settings
+	for( int i=0; i<num_params_sets_to_try; i++ )
+	{
+		hr = m_pD3D->CreateDevice( D3DADAPTER_DEFAULT,
+		device_types[i],
+		hWnd,
+		behavior_flags[i],
+		&present_params,
+		&m_pD3DDevice );
+		
+		if( SUCCEEDED(hr) )
+		{
+			LOG_PRINT( fmt_string( "Created a D3D device. device type: %s / vertex processing: %s",
+			GetDeviceTypeString(m_DeviceType),
+			GetVertexProcessingTypeString(m_BehaviorFlags) ) );
+
+			// save params
+			m_DeviceType    = device_types[i];
+			m_BehaviorFlags = behavior_flags[i];
+			m_CurrentPresentParameters = present_params;
+
+			// update adapter modes
+			EnumAdapterModesForDefaultAdapter();
+
+			return true;
+		}
+		else
+		{
+			LOG_PRINT_WARNING( fmt_string( "CreateDevice() failed with the next params: device type = %s, behavior flags = %s. Error: %s",
+			GetDeviceTypeString(m_DeviceType),
+			GetVertexProcessingTypeString(m_BehaviorFlags),
+			hr_d3d_error_to_string(hr) ) );
+		}
+	}
+
+	// LOG_PRINT_WARNING( " - Hardware vertex processing is not available." );
+
+	return false;
 }
 
 
@@ -197,40 +222,7 @@ bool CDirect3D9::ResetD3DDevice( HWND hWnd, int iWindowWidth, int iWindowHeight,
 	// reset D3D device
 //	HRESULT hr = m_pD3DDevice->Reset(&present_param);
 
-	SAFE_RELEASE( m_pD3DDevice );
-
-	if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
-					  D3DCREATE_HARDWARE_VERTEXPROCESSING,
-					  &present_param, &m_pD3DDevice ) ) )
-	{
-//		MessageBox(NULL, "Hardware vertex processing is not available.", "Bad News", MB_ICONWARNING|MB_OK);
-		if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
-						  D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-						  &present_param, &m_pD3DDevice ) ) )
-		{
-			return false;
-		}
-	}
-	
-/*	if( hr == D3DERR_DEVICELOST )
-		return false;
-	else if( hr == D3DERR_DRIVERINTERNALERROR )
-		return false;
-	else if( hr == D3DERR_INVALIDCALL )
-		return false;
-	else if( hr == D3DERR_OUTOFVIDEOMEMORY )
-		return false;
-	else if( hr == E_OUTOFMEMORY )
-		return false;
-
-	if( FAILED(hr) )
-		return false;*/
-
-	m_CurrentPresentParameters = present_param;
-
-	SetDefaultRenderStates();
-
-	return true;
+	return CreateD3DDevice( present_param, hWnd );
 }
 
 
@@ -280,5 +272,46 @@ bool CDirect3D9::IsCurrentDisplayMode( const CDisplayMode& display_mode )
 	else
 	{
 		return false;
+	}
+}
+
+
+void CDirect3D9::EnumAdapterModesForDefaultAdapter()
+{
+	const D3DFORMAT allowable_formats[] =
+	{
+		D3DFMT_A1R5G5B5,
+//		D3DFMT_A2R10G10B10,
+		D3DFMT_A8R8G8B8,
+		D3DFMT_R5G6B5,
+		D3DFMT_X1R5G5B5,
+		D3DFMT_X8R8G8B8
+	};
+
+	for(int i=0; i<numof(allowable_formats); i++)
+	{
+		m_vecAdapterMode.push_back( CAdapterMode(FromD3DSurfaceFormat(allowable_formats[i])) );
+		CAdapterMode& adapter_mode = m_vecAdapterMode.back();
+
+		uint num_adapter_modes = m_pD3D->GetAdapterModeCount( D3DADAPTER_DEFAULT, allowable_formats[i] );
+
+		for(uint j=0;j<num_adapter_modes;j++)
+		{
+			D3DDISPLAYMODE mode;
+			m_pD3D->EnumAdapterModes( D3DADAPTER_DEFAULT, allowable_formats[i], j, &mode );
+
+			// add to the list
+			adapter_mode.vecDisplayMode.push_back( CDisplayMode(
+			mode.Width,
+			mode.Height,
+			mode.RefreshRate,
+			FromD3DSurfaceFormat(mode.Format) )
+			);
+
+			// check if this is the current display mode
+			if( IsCurrentDisplayMode( adapter_mode.vecDisplayMode.back() ) )
+				adapter_mode.vecDisplayMode.back().Current = true;
+				
+		}
 	}
 }

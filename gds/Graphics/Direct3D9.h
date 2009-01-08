@@ -85,6 +85,8 @@ private:
 	/// and store them to m_vecAdapterMode. Called in InitD3D().
 	void EnumAdapterModesForDefaultAdapter();
 
+	bool CreateD3DDevice( D3DPRESENT_PARAMETERS& present_params, HWND hWnd );
+
 protected:
 
 	CDirect3D9();	// singleton
