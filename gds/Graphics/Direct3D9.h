@@ -20,6 +20,13 @@ public:
 	uint RefreshRate;
 	TextureFormat::Format Format;
 
+	// true if this is the current display mode.
+	// - Invalidated after the graphics device settings are changed
+	//   (e.g., resolution, fullscreen/window mode changes).
+	// - Call CDirect3D9::GetAdapterModesForDefaultAdapter() to get updated info
+	//   after chaging the settings.
+	bool Current;
+
 public:
 
 	CDisplayMode( uint w=0, uint h=0, uint r=0, TextureFormat::Format fmt = TextureFormat::X8R8G8B8)
@@ -27,7 +34,8 @@ public:
 	Width(w),
 	Height(h),
 	RefreshRate(r),
-	Format(fmt)
+	Format(fmt),
+	Current(false)
 	{}
 };
 
@@ -105,6 +113,8 @@ public:
 
 	/// experimental: Could this be a platform-independent way to retrieve resolutions
 	void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer );
+
+	bool IsCurrentDisplayMode( const CDisplayMode& display_mode );
 
 	enum mode
 	{

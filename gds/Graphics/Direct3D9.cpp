@@ -38,6 +38,11 @@ void CDirect3D9::EnumAdapterModesForDefaultAdapter()
 			mode.RefreshRate,
 			FromD3DSurfaceFormat(mode.Format) )
 			);
+
+			// check if this is the current display mode
+			if( IsCurrentDisplayMode( adapter_mode.vecDisplayMode.back() ) )
+				adapter_mode.vecDisplayMode.back().Current = true;
+				
 		}
 	}
 }
@@ -259,4 +264,21 @@ void CDirect3D9::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& de
 		LOG_PRINT_WARNING( "No adapeter modes are in m_vecAdapterMode." );
 
 	dest_buffer = m_vecAdapterMode;
+}
+
+
+bool CDirect3D9::IsCurrentDisplayMode( const CDisplayMode& display_mode )
+{
+	D3DPRESENT_PARAMETERS present_params = m_CurrentPresentParameters;
+	if( display_mode.Width  == present_params.BackBufferWidth
+	 && display_mode.Height == present_params.BackBufferHeight
+	 && display_mode.Format == present_params.BackBufferFormat )
+	{
+		// What about refresh rates?
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
