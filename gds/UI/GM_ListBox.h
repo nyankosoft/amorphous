@@ -10,7 +10,7 @@
 
 
 /** 
- * item owned by CGM_ListBox
+  item owned by CGM_ListBox
  */
 class CGM_ListBoxItem
 {
@@ -128,7 +128,6 @@ public:
 
 	int GetPageSize();
 
-//	void SetEventHandler( CGM_ListBoxEventHandler *pEventHandler ) { m_pEventHandler = pEventHandler; }
 	void SetEventHandler( CGM_ListBoxEventHandlerSharedPtr pEventHandler ) { m_pEventHandler = pEventHandler; }
 
 	void OnItemTextChanged( CGM_ListBoxItem& item );
@@ -143,7 +142,7 @@ public:
 
 	enum STYLE
 	{
-		MULTISELECTION					= (1 << 0),
+		MULTISELECTION					= (1 << 0), ///< NOT IMPLEMENTED YET.
 		CLOSE_DIALOG_ON_ITEM_SELECTION	= (1 << 1), ///< close the owner dialog right after an item is selected
 	};
 
@@ -198,16 +197,18 @@ inline void CGM_ListBoxItem::SetDesc( const std::string& new_desc )
 
 
 /**
- * base class of event handler for each button
- *
+  base class of event handler for listbox
+
  */
 class CGM_ListBoxEventHandler
 {
 public:
 	CGM_ListBoxEventHandler() {}
 	virtual ~CGM_ListBoxEventHandler() {}
-	virtual void OnItemSelected( CGM_ListBoxItem& item ) {}
-	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item ) {}
+	virtual void OnItemSelected( CGM_ListBoxItem& item, int item_index ) {}
+	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item, int item_index ) {}
+	virtual void OnItemAdded( CGM_ListBoxItem& item, int item_index ) {}
+	virtual void OnItemInserted( CGM_ListBoxItem& item, int item_index ) {}
 };
 
 
@@ -221,8 +222,10 @@ class UserListBoxEventHandler : public CGM_ListBoxEventHandler
 public:
 	UserListBoxEventHandler() {}
 	virtual ~UserListBoxEventHandler() {}
-	virtual void OnItemSelected( CGM_ListBoxItem& item ) {}
-	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item ) {}
+	virtual void OnItemSelected( CGM_ListBoxItem& item, int item_index ) {}
+	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item, int item_index ) {}
+	virtual void OnItemAdded( CGM_ListBoxItem& item, int item_index ) {}
+	virtual void OnItemInserted( CGM_ListBoxItem& item, int item_index ) {}
 };
 */
 

@@ -121,8 +121,8 @@ public:
 	CGM_ListBoxSoundPlayer() {}
 	virtual ~CGM_ListBoxSoundPlayer() {}
 
-	virtual void OnItemSelected( CGM_ListBoxItem& item );
-	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item );
+	virtual void OnItemSelected( CGM_ListBoxItem& item, int item_index );
+	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item, int item_index );
 
 	void SetSoundOnItemFocusShifted( const std::string& resource_name )         { m_SoundOnItemFocusShifted.SetResourceName( resource_name ); }
 	void SetSoundOnItemSelected( const std::string& resource_name )             { m_SoundOnItemSelected.SetResourceName( resource_name ); }

@@ -148,7 +148,7 @@ void CGM_ListBox::OnItemSelectionChanged()
 	// send notification to event handler
 	if( m_pEventHandler )
 	{
-		m_pEventHandler->OnItemSelectionChanged( *pItem );
+		m_pEventHandler->OnItemSelectionChanged( *pItem, GetSelectedIndex() );
 	}
 
 	// also notify the event handler of the dialog
@@ -160,7 +160,7 @@ void CGM_ListBox::OnItemSelectionChanged()
 
 	// play sound
 	if( m_pSoundPlayer.get() )
-		m_pSoundPlayer->OnItemSelectionChanged( *pItem );
+		m_pSoundPlayer->OnItemSelectionChanged( *pItem, GetSelectedIndex() );
 }
 
 
@@ -199,6 +199,9 @@ bool CGM_ListBox::AddItem( const string& text, void *pUserData, int user_data_id
 	// send notification to control renderer
 	if( m_pRenderer.get() )
 		m_pRenderer->OnItemAdded( *this, added_item_index );
+	
+	if( m_pEventHandler )
+		m_pEventHandler->OnItemAdded( *GetSelectedItem(), added_item_index );
 
 	return true;
 }
@@ -227,6 +230,9 @@ bool CGM_ListBox::InsertItem( int nIndex, const string& text, void *pUserData )
 	// send notification to control renderer
 	if( m_pRenderer.get() )
 		m_pRenderer->OnItemInserted( *this, nIndex );
+
+	if( m_pEventHandler )
+		m_pEventHandler->OnItemInserted( *pNewItem, nIndex );
 
 	return true;//hr;
 }
@@ -643,7 +649,7 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 			if( GetSelectedItem() )
 			{
 				if( m_pEventHandler )
-					m_pEventHandler->OnItemSelected( *GetSelectedItem() );
+					m_pEventHandler->OnItemSelected( *GetSelectedItem(), GetSelectedIndex() );
 
 				m_pDialog->SendEvent( CGM_Event::LISTBOX_ITEM_SELECTED, true, this );
 
@@ -651,7 +657,7 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 					m_pRenderer->OnItemSelected( *this );
 
 				if( m_pSoundPlayer.get() )
-					m_pSoundPlayer->OnItemSelected( *GetSelectedItem() );
+					m_pSoundPlayer->OnItemSelected( *GetSelectedItem(), GetSelectedIndex() );
 
 				if( m_Style & CLOSE_DIALOG_ON_ITEM_SELECTION )
 					m_pDialog->Close();

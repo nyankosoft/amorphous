@@ -76,14 +76,14 @@ void CGM_ButtonSoundPlayer::OnReleased()
 // CGM_ListBoxSoundPlayer
 //=================================================================================
 
-void CGM_ListBoxSoundPlayer::OnItemSelected( CGM_ListBoxItem& item )
+void CGM_ListBoxSoundPlayer::OnItemSelected( CGM_ListBoxItem& item, int item_index )
 {
 	if( 0 < m_SoundOnItemSelected.GetResourceName().length() )
 		SoundManager().Play( m_SoundOnItemSelected );
 }
 
 
-void CGM_ListBoxSoundPlayer::OnItemSelectionChanged( CGM_ListBoxItem& item )
+void CGM_ListBoxSoundPlayer::OnItemSelectionChanged( CGM_ListBoxItem& item, int item_index )
 {
 	if( 0 < m_SoundOnItemFocusShifted.GetResourceName().length() )
 		SoundManager().Play( m_SoundOnItemFocusShifted );
