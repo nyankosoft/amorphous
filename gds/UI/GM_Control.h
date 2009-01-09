@@ -2,14 +2,12 @@
 #define  __GM_CONTROL_H__
 
 
+#include "fwd.h"
 #include "Graphics/Point.h"
 #include "Graphics/Rect.h"
 using namespace Graphics;
 
 #include <string>
-
-
-#include "fwd.h"
 
 
 /**
@@ -176,10 +174,10 @@ public:
 
 	bool HasFocus() const { return m_bHasFocus; }
 
-	virtual void SetEnabled( bool bEnabled ) { m_bEnabled = bEnabled; }
+	virtual void SetEnabled( bool bEnabled );
 	virtual bool IsEnabled() const { return m_bEnabled; }
 
-	virtual void SetVisible( bool bVisible ) { m_bVisible = bVisible; }
+	virtual void SetVisible( bool bVisible );
 	virtual bool IsVisible() const { return m_bVisible; }
 
 	bool IsMouseOver() const { return m_bMouseOver; }
@@ -196,9 +194,6 @@ public:
 	virtual void SetSoundPlayer( CGM_GlobalSoundPlayerSharedPtr pGlobalSoundPlayer ) {}
 
 	void SetCaptionText( const std::string& caption_text ) { m_strCaption = caption_text; }
-
-	/// \param pRenderer owned reference
-//	virtual void RegisterRenderer( CGM_ControlRenderer* pRenderer );
 
 public:
 

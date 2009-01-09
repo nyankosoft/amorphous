@@ -1,10 +1,12 @@
-
 #include "GM_Control.h"
 #include "GM_ControlDescBase.h"
 #include "GM_Dialog.h"
 #include "GM_DialogManager.h"
 #include "GM_ControlRenderer.h"
 #include "GM_ControlRendererManager.h"
+
+using namespace std;
+using namespace boost;
 
 
 //========================================================================================
@@ -37,7 +39,7 @@ CGM_ControlBase::~CGM_ControlBase()
 
 void CGM_ControlBase::UpdateGraphicsProperties()
 {
-	if( m_pRenderer.get() )
+	if( m_pRenderer )
 	{
 		// set rendering order of graphics elements
 		m_pRenderer->UpdateGraphicsLayerSettings();
@@ -54,7 +56,7 @@ void CGM_ControlBase::ChangeScale( float factor )
 {
 	m_BoundingBox *= factor;
 
-	if( m_pRenderer.get() )
+	if( m_pRenderer )
 		m_pRenderer->ChangeScale( factor );
 }
 
@@ -135,6 +137,34 @@ void CGM_Control::OnFocusOut()
 }
 
 
+void CGM_Control::SetEnabled( bool bEnabled )
+{
+	m_bEnabled = bEnabled;
+
+	if( m_pRenderer )
+	{
+		if( m_bEnabled )
+			m_pRenderer->OnEnabled( *this );
+		else
+			m_pRenderer->OnDisabled( *this );
+	}
+}
+
+
+void CGM_Control::SetVisible( bool bVisible )
+{
+	m_bVisible = bVisible;
+
+	if( m_pRenderer )
+	{
+		if( m_bVisible )
+			m_pRenderer->OnVisibleSetToTrue( *this );
+		else
+			m_pRenderer->OnVisibleSetToFalse( *this );
+	}
+}
+
+
 unsigned int CGM_Control::GetState() const
 {
 	if( !IsVisible() )		return STATE_HIDDEN;
@@ -143,10 +173,3 @@ unsigned int CGM_Control::GetState() const
 	else if ( IsMouseOver() ) return STATE_MOUSEOVER;
 	else return STATE_NORMAL;
 }
-
-/*
-void CGM_Control::RegisterRenderer( CGM_ControlRenderer* pRenderer )
-{
-//	m_pDialog->GetDalogManager()->GetControlRendererManager()->RegisterControlRenderer( pRenderer, this );
-}
-*/

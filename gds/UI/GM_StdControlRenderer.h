@@ -77,6 +77,12 @@ public:
 	virtual void OnMouseCursorEntered( CGM_Control& control );
 	virtual void OnMouseCursorLeft( CGM_Control& control );
 
+	virtual void OnEnabled( CGM_Control& control );
+	virtual void OnDisabled( CGM_Control& control );
+
+	virtual void OnVisibleSetToTrue( CGM_Control& control );
+	virtual void OnVisibleSetToFalse( CGM_Control& control );
+
 	/// for list box renderer
 	virtual void OnItemSelectionFocusCreated( CGM_ListBox& listbox );
 	virtual void OnItemSelectionChanged( CGM_ListBox& listbox );

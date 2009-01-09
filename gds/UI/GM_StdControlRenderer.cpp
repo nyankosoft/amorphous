@@ -95,8 +95,29 @@ void CGM_StdControlRenderer::OnMouseCursorEntered( CGM_Control& control )
 	ChangeColorToCurrentState();
 }
 
-
 void CGM_StdControlRenderer::OnMouseCursorLeft( CGM_Control& control )
+{
+	ChangeColorToCurrentState();
+}
+
+
+void CGM_StdControlRenderer::OnEnabled( CGM_Control& control )
+{
+	ChangeColorToCurrentState();
+}
+
+void CGM_StdControlRenderer::OnDisabled( CGM_Control& control )
+{
+	ChangeColorToCurrentState();
+}
+
+
+void CGM_StdControlRenderer::OnVisibleSetToTrue( CGM_Control& control )
+{
+	ChangeColorToCurrentState();
+}
+
+void CGM_StdControlRenderer::OnVisibleSetToFalse( CGM_Control& control )
 {
 	ChangeColorToCurrentState();
 }
@@ -149,8 +170,8 @@ void CGM_StdControlRenderer::ChangeColorToCurrentState()
 	if( !pControl )
 		return;
 
-	if( !pControl->GetOwnerDialog()->IsOpen() )
-		return;
+//	if( !pControl->GetOwnerDialog()->IsOpen() )
+//		return;
 
 	int color_index = 0;
 	int state = pControl->GetState();

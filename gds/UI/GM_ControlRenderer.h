@@ -199,6 +199,12 @@ public:
 	virtual void OnMouseCursorEntered( CGM_Control& control ) {}
 	virtual void OnMouseCursorLeft( CGM_Control& control ) {}
 
+	virtual void OnEnabled( CGM_Control& control ) {}
+	virtual void OnDisabled( CGM_Control& control ) {}
+
+	virtual void OnVisibleSetToTrue( CGM_Control& control ) {}
+	virtual void OnVisibleSetToFalse( CGM_Control& control ) {}
+
 	/// for list box renderer
 	/// - changes to text & desc are notified automatically
 	/// - if you want to notify other changes to control renderer of listbox, call CGM_ListBoxItem::OnItemUpdated()
