@@ -104,6 +104,14 @@ public:
 	/// TODO: should change function name to GetFocusedItemIndex() ?
 	int GetSelectedIndex( int nPreviousSelected = -1 );
 
+	/// How is this different from the above
+	int GetSelectedItemIndex() const { return m_nSelected; }
+
+	/// returns the index of the item last selected.
+	/// - Returns -1 if no item has been selected so far.
+	/// - Only valid with the single selection listbox
+	int GetLastSelectedItemIndex() const { return m_nLastSelected; }
+
 	/// returns index to the currently focusd index
 	/// - used by the renderer
 	/// \return the local index of the focused item in the currently displayed page.
@@ -123,8 +131,6 @@ public:
 	int GetTextHeight() const { return m_nTextHeight; }
 	int GetBorderWidth() const { return m_nBorder; }
 	int GetMargin() const { return m_nMargin; }
-
-	int GetSelectedItemIndex() const { return m_nSelected; }
 
 	int GetPageSize();
 
@@ -165,6 +171,8 @@ protected:
 	int m_nSelected;	///< Index of the selected item for single selection list box
 	int m_nSelStart;	///< Index of the item where selection starts (for handling multi-selection)
 	bool m_bDrag;		///< Whether the user is dragging the mouse to select
+
+	int m_nLastSelected; ///< item which was selected most recently.
 
 	std::vector<CGM_ListBoxItem *> m_vecItem;
 

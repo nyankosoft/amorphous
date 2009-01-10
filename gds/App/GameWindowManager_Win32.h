@@ -58,7 +58,7 @@ public:
 	inline int GetScreenWidth() { return m_iCurrentScreenWidth; }
 	inline int GetScreenHeight() { return m_iCurrentScreenHeight; }
 
-	inline int IsFullscreen() { return m_iCurrentScreenMode == SMD_FULLSCREEN ? true : false; }
+	inline bool IsFullscreen() { return m_iCurrentScreenMode == SMD_FULLSCREEN ? true : false; }
 
 	HWND GetWindowHandle() { return m_hWnd; }
 

@@ -7,6 +7,7 @@
 #include "../base.h"
 #include "3DMath/MathMisc.h"
 #include "Support/Timer.h"
+#include "GameInput/fwd.h"
 #include "Graphics/fwd.h"
 #include "Graphics/GraphicsComponentCollector.h"
 #include "Graphics/2DPrimitive/2DRect.h"
@@ -16,8 +17,6 @@
 #include "Graphics/RenderTask.h"
 
 #include <map>
-
-class CInputHandler;
 
 
 class CGameTask : public CGraphicsComponent

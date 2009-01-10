@@ -648,8 +648,10 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 		{
 			if( GetSelectedItem() )
 			{
+				const int selected_item_index = GetSelectedIndex();
+
 				if( m_pEventHandler )
-					m_pEventHandler->OnItemSelected( *GetSelectedItem(), GetSelectedIndex() );
+					m_pEventHandler->OnItemSelected( *GetSelectedItem(), selected_item_index );
 
 				m_pDialog->SendEvent( CGM_Event::LISTBOX_ITEM_SELECTED, true, this );
 
@@ -657,10 +659,12 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 					m_pRenderer->OnItemSelected( *this );
 
 				if( m_pSoundPlayer.get() )
-					m_pSoundPlayer->OnItemSelected( *GetSelectedItem(), GetSelectedIndex() );
+					m_pSoundPlayer->OnItemSelected( *GetSelectedItem(), selected_item_index );
 
 				if( m_Style & CLOSE_DIALOG_ON_ITEM_SELECTION )
 					m_pDialog->Close();
+
+				m_nLastSelected = selected_item_index;
 			}
 			return true;
 		}
@@ -745,105 +749,20 @@ bool CGM_ListBox::HandleKeyboardInput( CGM_InputData& input )
 
 void CGM_ListBox::OnItemTextChanged( CGM_ListBoxItem& item )
 {
-	if( m_pRenderer.get() )
+	if( m_pRenderer )
 		m_pRenderer->OnItemTextChanged( *this, item );
 }
 
 
 void CGM_ListBox::OnItemDescChanged( CGM_ListBoxItem& item )
 {
-	if( m_pRenderer.get() )
+	if( m_pRenderer )
 		m_pRenderer->OnItemDescChanged( *this, item );
 }
 
 
 void CGM_ListBox::OnItemUpdated( CGM_ListBoxItem& item )
 {
-	if( m_pRenderer.get() )
+	if( m_pRenderer )
 		m_pRenderer->OnItemUpdated( *this, item );
 }
-
-
-
-/*	switch( uMsg )
-	{
-		case WM_KEYDOWN:
-			switch( wParam )
-			{
-				case VK_UP:
-				case VK_DOWN:
-				case VK_NEXT:
-				case VK_PRIOR:
-				case VK_HOME:
-				case VK_END:
-
-					// If no item exists, do nothing.
-					if( m_vecItem.size() == 0 )
-						return true;
-
-					int nOldSelected = m_nSelected;
-
-					// Adjust m_nSelected
-					switch( wParam )
-					{
-						case VK_UP: --m_nSelected; break;
-						case VK_DOWN: ++m_nSelected; break;
-						case VK_NEXT: m_nSelected += m_pScrollBar->GetPageSize() - 1; break;
-						case VK_PRIOR: m_nSelected -= m_pScrollBar->GetPageSize() - 1; break;
-						case VK_HOME: m_nSelected = 0; break;
-						case VK_END: m_nSelected = m_vecItem.size() - 1; break;
-					}
-
-					// Perform capping
-					if( m_nSelected < 0 )
-						m_nSelected = 0;
-					if( m_nSelected >= (int)m_vecItem.size() )
-						m_nSelected = m_vecItem.size() - 1;
-
-					if( nOldSelected != m_nSelected )
-					{
-						if( m_Style & MULTISELECTION )
-						{
-							// Multiple selection
-
-							// Clear all selection
-							for( int i = 0; i < (int)m_vecItem.size(); ++i )
-							{
-								CGM_ListBoxItem *pItem = m_vecItem[i];
-								pItem->selected = false;
-							}
-
-							if( GetKeyState( VK_SHIFT ) < 0 )
-							{
-								// Select all items from m_nSelStart to
-								// m_nSelected
-								int nEnd = max( m_nSelStart, m_nSelected );
-
-								for( int n = min( m_nSelStart, m_nSelected ); n <= nEnd; ++n )
-									m_vecItem[n]->bSelected = true;
-							}
-							else
-							{
-								m_vecItem[m_nSelected]->bSelected = true;
-
-								// Update selection start
-								m_nSelStart = m_nSelected;
-							}
-						} else
-							m_nSelStart = m_nSelected;
-
-						// Adjust scroll bar
-
-						m_pScrollBar->ShowItem( m_nSelected );
-
-						// Send notification
-
-						m_pDialog->SendEvent( CGM_Event::LISTBOX_SELECTION, true, this );
-					}
-					return true;
-			}
-			break;
-	}
-
-	return false;
-}*/
