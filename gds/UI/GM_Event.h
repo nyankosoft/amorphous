@@ -3,19 +3,18 @@
 
 
 #include <stdlib.h>
-
-class CGM_ControlBase;
+#include "fwd.h"
 
 
 class CGM_SubEvent
 {
 public:
 
-	enum eSubEvent
+	enum Type
 	{
 		NONE,
 
-		// sub events for dialog close event
+		// sub events about closing dialog box
 		DC_CANCELED,
 		DC_LISTBOXITEM_SELECTED,
 		DC_DLGCLOSEBUTTON_PRESSED,
@@ -30,15 +29,7 @@ class CGM_Event
 {
 public:
 
-	unsigned int Type;
-
-	unsigned int SubType;
-
-	CGM_ControlBase *pControl;	/* 070225 - dialog is set when a DIALOG_CLOSED event is reported */
-
-public:
-
-	enum eEvent
+	enum EventType
 	{
 		INVALID = 0,
 		BUTTON_CLICKED,
@@ -62,9 +53,19 @@ public:
 		NUM_EVENTS
 	};
 
+public:
+
+	EventType Type;
+
+	CGM_SubEvent::Type SubType;
+
+	CGM_ControlBase *pControl;	/* 070225 - dialog is set when a DIALOG_CLOSED event is reported */
+
+public:
+
 	CGM_Event() : Type(INVALID), SubType(CGM_SubEvent::NONE), pControl(NULL) {}
 
-	CGM_Event( unsigned int event_type, CGM_ControlBase* _pControl )	/* 070225 */
+	CGM_Event( EventType event_type, CGM_ControlBase* _pControl )	/* 070225 */
 		: Type(event_type), SubType(CGM_SubEvent::NONE), pControl(_pControl) {}
 
 	~CGM_Event() {}

@@ -714,7 +714,7 @@ CGM_Control* CGM_Dialog::GetControl( const std::string& string_id )
 }
 
 
-void CGM_Dialog::SendEvent( unsigned int event_type, bool bTriggeredByUser, CGM_ControlBase* pControl, unsigned int sub_event )
+void CGM_Dialog::SendEvent( CGM_Event::EventType event_type, bool bTriggeredByUser, CGM_ControlBase* pControl, CGM_SubEvent::Type sub_event )
 {
 	CGM_Event event( event_type, pControl );
 	event.SubType = sub_event;
@@ -771,7 +771,7 @@ void CGM_Dialog::Open()
 }
 
 
-void CGM_Dialog::Close( unsigned int sub_event )
+void CGM_Dialog::Close( CGM_SubEvent::Type sub_event )
 {
 	LOG_PRINT( " (" + m_strTitle + ")" );
 

@@ -184,14 +184,14 @@ public:
 	///   - Dialog received input code 'CGM_Input::NEXT_DIALOG_*', and there is a valid dialog
 	///     in the specified direction.
 	///   - A list box has style flag 'CLOSE_DIALOG_ON_ITEM_SELECTION' and its item is selected.
-	void Close( unsigned int sub_event = CGM_SubEvent::NONE );
+	void Close( CGM_SubEvent::Type sub_event = CGM_SubEvent::NONE );
 
 	/// close all the sub dialogs belonging to this dialog
 	void CloseSubDialogs();
 
 	bool HandleInput( CGM_InputData& input );
 
-	void SendEvent( unsigned int event, bool bTriggeredByUser, CGM_ControlBase* pControl, unsigned int sub_event = CGM_SubEvent::NONE );
+	void SendEvent( CGM_Event::EventType event_type, bool bTriggeredByUser, CGM_ControlBase* pControl, CGM_SubEvent::Type sub_event = CGM_SubEvent::NONE );
 
     void RequestFocus( CGM_Control* pControl );
 
