@@ -264,7 +264,7 @@ bool CDirect3D9::IsCurrentDisplayMode( const CDisplayMode& display_mode )
 	D3DPRESENT_PARAMETERS present_params = m_CurrentPresentParameters;
 	if( display_mode.Width  == present_params.BackBufferWidth
 	 && display_mode.Height == present_params.BackBufferHeight
-	 && display_mode.Format == present_params.BackBufferFormat )
+	 && display_mode.Format == FromD3DSurfaceFormat( present_params.BackBufferFormat ) )
 	{
 		// What about refresh rates?
 		return true;
