@@ -49,14 +49,14 @@ inline long GetNonClientAreaHeight( HWND hWnd )
  * call this function after CreateWindow() to adjust the resolution of the client area
  * in windowed mode.
  */
-inline void ChagneClientAreaSize( HWND hWnd, int new_width, int new_height )
+inline void ChangeClientAreaSize( HWND hWnd, int new_width, int new_height )
 {
 	long frame_width = 0, frame_height = 0;
 
 	GetNonClientAreaSize( hWnd, frame_width, frame_height );
 
 	// change window size
-	SetWindowPos( hWnd, HWND_TOP, 0, 0, new_width + frame_width, new_height + frame_height, SWP_NOMOVE );
+	BOOL b = SetWindowPos( hWnd, HWND_TOP, 0, 0, new_width + frame_width, new_height + frame_height, SWP_NOMOVE );
 }
 
 

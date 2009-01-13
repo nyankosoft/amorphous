@@ -82,7 +82,7 @@ bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHe
 						   NULL );
 
 	if( screen_mode == SMD_WINDOWED )
-		ChagneClientAreaSize( m_hWnd, iScreenWidth, iScreenHeight );
+		ChangeClientAreaSize( m_hWnd, iScreenWidth, iScreenHeight );
 
 	LOG_PRINT( fmt_string("Created a window (size: %d x %d)", iScreenWidth, iScreenHeight ) );
 
@@ -121,8 +121,8 @@ void CGameWindowManager_Win32::ChangeScreenSize( int iNewScreenWidth,
 {
 	// check if the requested window size has a valid aspect ratio
 	// (width : height) must be 4:3
-	if( 0.01f < fabs( (float)iNewScreenHeight / (float)iNewScreenWidth - 0.75f ) )
-		return;
+//	if( 0.01f < fabs( (float)iNewScreenHeight / (float)iNewScreenWidth - 0.75f ) )
+//		return;
 
 
 	// release all the graphic resources ( textures, vertex buffers, mesh models, and so on )
@@ -152,16 +152,21 @@ void CGameWindowManager_Win32::ChangeScreenSize( int iNewScreenWidth,
 	// notify changes to all the game components
 //	GAMECOMPONENTCOLLECTOR.AdaptToNewScreenSize();
 
+	if( m_iCurrentScreenMode == SMD_WINDOWED )
+	{
+		ChangeClientAreaSize( m_hWnd, m_iCurrentScreenWidth, m_iCurrentScreenHeight );
+	}
+
 	// adjust the position of the window so that the game screen appear in the middle of the display
 	int iDesktopWidth, iDesktopHeight;
 	GetCurrentResolution( &iDesktopWidth, &iDesktopHeight );
-	int iResult = ::SetWindowPos(m_hWnd, HWND_TOP,
+/*	int iResult = ::SetWindowPos(m_hWnd, HWND_TOP,
 		                         (iDesktopWidth  - m_iCurrentScreenWidth ) / 2,
 							     (iDesktopHeight - m_iCurrentScreenHeight) / 2,
 							     m_iCurrentScreenWidth  + GetNonClientAreaWidth(m_hWnd),
 							     m_iCurrentScreenHeight + GetNonClientAreaHeight(m_hWnd),
 							     0 );
-
+*/
 }
 
 
