@@ -52,6 +52,7 @@ m_bShowMouseCursor(true)
 
 CGameTask::~CGameTask()
 {
+	InputHub().PopInputHandler();
 	SafeDelete( m_pInputHandler );
 
 //	SafeDelete( ms_pAnimatedGraphicsManager );
@@ -70,8 +71,11 @@ void CGameTask::ProcessTaskTransitionRequest()
 		StartFadeout();
 
 		// Don't accept input after this point
-		if( InputHub().GetInputHandler() == m_pInputHandler )
-			InputHub().PopInputHandler();
+		if( InputHub().GetInputHandler() == m_pInputHandler
+		 && m_pInputHandler )
+		{
+			m_pInputHandler->SetActive( false );
+		}
 
 		// raise the flag to ensure this routine is executed only once
 		m_bTaskTransitionStarted = true;
