@@ -21,6 +21,9 @@ using namespace std;
 using namespace boost;
 
 
+int gs_InputHandlerIndex = 1;
+
+
 // definition of the singleton instance
 CSingleton<CSinglePlayerInfo> CSinglePlayerInfo::m_obj;
 
@@ -104,7 +107,7 @@ void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 		break;
 	}
 
-	InputHub().SetInputHandler( m_pInputHandler );
+	InputHub().SetInputHandler( gs_InputHandlerIndex, m_pInputHandler );
 }
 
 void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )

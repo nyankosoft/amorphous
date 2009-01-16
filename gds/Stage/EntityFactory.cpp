@@ -3,6 +3,7 @@
 #include "Stage/CopyEntityDesc.h"
 #include "Stage/LightEntity.h"
 #include "Stage/AlphaEntity.h"
+#include "Stage/BE_ScriptedCamera.h"
 #include "Support/memory_helpers.h"
 
 
@@ -26,6 +27,7 @@ void CEntityFactory::Init()
 	m_CopyEntityPool.init( DEFAULT_MAX_NUM_ENTITIES );
 	m_AlphaEntityPool.init( DEFAULT_MAX_NUM_ALPHA_ENTITIES );
 	m_LightEntityPool.init( DEFAULT_MAX_NUM_LIGHT_ENTITIES );
+	m_ScriptedCameraEntityPool.init( DEFAULT_MAX_NUM_SCRIPTED_CAMERA_ENTITIES );
 }
 
 
@@ -43,6 +45,8 @@ shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_i
 		pLightEntity->m_pLightEntitySelf = pLightEntity;
 		return pLightEntity;
 	}
+	case CCopyEntityTypeID::SCRIPTED_CAMERA_ENTITY:
+		return m_ScriptedCameraEntityPool.get_new_object();
 
 	// if your derived entity does not require memory pool, you can
 	// simply allocate them on heap with default 'new' and return

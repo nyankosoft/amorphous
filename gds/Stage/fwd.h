@@ -7,6 +7,7 @@ class CCopyEntity;
 class CCopyEntityDesc;
 class CLightEntity;
 class CAlphaEntity;
+class CScriptedCameraEntity;
 class CEntityFactory;
 class CCopyEntityDescFileData;
 class CBaseEntity;

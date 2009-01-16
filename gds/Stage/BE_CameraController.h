@@ -3,6 +3,7 @@
 
 #include "BaseEntity.h"
 #include "BaseEntityHandle.h"
+#include "EntityHandle.h"
 
 #include "EntityMotionPathRequest.h"
 
@@ -23,7 +24,7 @@ private:
 //	CCamera m_Camera;
 
 	// TODO: stack is probably better
-	CCopyEntity* m_pPrevCameraEntity;
+	CEntityHandle<> m_PrevCameraEntity;
 
 	/// handles input during the cutscene.
 	/// e.g.) skipping the cutscene by start button

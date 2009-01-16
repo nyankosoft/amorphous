@@ -4,11 +4,8 @@
 
 #include "3DMath/Matrix34.h"
 #include "Graphics/MeshObjectHandle.h"
-
-#include "fwd.h"
 #include "EntityGroupHandle.h"
-
-//#include <d3dx9.h>
+#include "fwd.h"
 
 #include <string>
 
@@ -21,6 +18,7 @@ public:
 		DEFAULT = 0,
 		ALPHA_ENTITY,
 		LIGHT_ENTITY,
+		SCRIPTED_CAMERA_ENTITY,
 		USE_ID_OFFSET
 	};
 };

@@ -335,6 +335,11 @@ public:
 	/// - called from CCopyEntity::Terminate()
 	virtual void TerminateDerived() {}
 
+	virtual void RenderStage() {}
+
+	/// called when the entity is used as a camera entity
+	virtual void CreateRenderTasks() {}
+
 	// Lighting
 	inline bool Lighting() { return ( (EntityFlag & BETYPE_LIGHTING) != 0 ); }
 	inline int GetNumLights() const { return m_vecLight.size(); }

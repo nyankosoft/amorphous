@@ -41,7 +41,7 @@ public:
 	inline Matrix34 GetPose( float time );
 
 	/// returns if a path exist at a given time
-	inline bool IsAvailable( float time );
+	inline bool IsAvailable( float time ) const;
 
 	inline void ReleaseMotionPath() { m_vecKeyPose.resize(0); }
 
@@ -141,7 +141,7 @@ inline Matrix34 CBEC_MotionPath::GetPose( float time )
 }
 
 
-inline bool CBEC_MotionPath::IsAvailable( float time )
+inline bool CBEC_MotionPath::IsAvailable( float time ) const
 {
 	size_t num_key_poses = m_vecKeyPose.size();
 	if( num_key_poses == 0 )

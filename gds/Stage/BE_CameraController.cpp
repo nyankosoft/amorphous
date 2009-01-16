@@ -1,4 +1,3 @@
-
 #include "BE_CameraController.h"
 #include "BE_ScriptedCamera.h"
 
@@ -14,6 +13,10 @@
 #include "Input/InputHandler_Cutscene.h"
 
 #include "Support/Log/DefaultLog.h"
+
+
+using namespace std;
+using namespace boost;
 
 
 static const U32 gs_FadeoutTimeMS = 500;
@@ -45,8 +48,6 @@ void CBE_CameraController::Init()
 //	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 //	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
 
-	m_pPrevCameraEntity = NULL;
-
 	m_pInputHandler = new CInputHandler_Cutscene( this );
 }
 
@@ -66,30 +67,34 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 	bool camera_active = false;
 	for( i=0; i<num_cameras; i++ )
 	{
-		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[i].GetRawPtr();
+		shared_ptr<CCopyEntity> pCameraEntity = pCopyEnt->m_aChild[i].Get();
 
-		if( !IsValidEntity(pCameraEntity) )
+		if( !pCameraEntity )
 			continue;
 
 		if( pCameraEntity->pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_SCRIPTEDCAMERA )
 			continue;
 
 		// update camera
-		pCameraEntity->pBaseEntity->Act( pCameraEntity );
+		pCameraEntity->pBaseEntity->Act( pCameraEntity.get() );
 
-		CBE_ScriptedCamera *pCameraBaseEntity = (CBE_ScriptedCamera *)(pCameraEntity->pBaseEntity);
-		CBEC_ScriptedCameraExtraData& ex = pCameraBaseEntity->GetExtraData(pCameraEntity);
+		shared_ptr<CScriptedCameraEntity> pScriptedCamEntity
+			= boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
-		camera_active |= ex.Path.IsAvailable( (float)m_pStage->GetElapsedTime() );
+//		CBE_ScriptedCamera *pCameraBaseEntity = (CBE_ScriptedCamera *)(pCameraEntity->pBaseEntity);
+//		CBEC_ScriptedCameraExtraData& ex = pCameraBaseEntity->GetExtraData(pCameraEntity);
+
+		camera_active |= pScriptedCamEntity->GetPath().IsAvailable( (float)m_pStage->GetElapsedTime() );
 	}
 
 	CCopyEntity *pCurrentCameraEntity = m_pStage->GetEntitySet()->GetCameraEntity();
 	if( camera_active && pCurrentCameraEntity != pCopyEnt )
 	{
-		// start the cut scene
+		// The controller has one more cameras that should be activated
+		// - start the cut scene
 		LOG_PRINT( "- Starting a cut scene" );
 
-		m_pPrevCameraEntity = pCurrentCameraEntity;
+		m_PrevCameraEntity = CEntityHandle<>( pCurrentCameraEntity->Self() );
 
 		// set the camera controller entity as the camera entity of the stage
 		m_pStage->GetEntitySet()->SetCameraEntity( pCopyEnt );
@@ -99,12 +104,15 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 	}
 	else if( !camera_active && pCurrentCameraEntity == pCopyEnt )
 	{
+		// All the camera should be deactivated now
+		// and the controller has been a current camera entity.
 		EndCutscene( pCopyEnt );
 	}
 	else if( 0 < m_CutsceneEndStartedTime
 		&& gs_FadeoutTimeMS < m_pStage->GetElapsedTimeMS() - m_CutsceneEndStartedTime )
 	{
-		// player has chosen to skip the cutscene
+		// Player has chosen to skip the cutscene
+		// and the fade out effect is complete.
 		EndCutscene( pCopyEnt );
 	}
 }
@@ -196,11 +204,15 @@ void CBE_CameraController::SkipCutscene( CCopyEntity* pCopyEnt )
 void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 {
 	// end the cut scene
-	g_Log.Print( "CBE_CameraController::EndCutscene() - ending a cut scene" );
+	LOG_PRINT( " Ending a cut scene" );
 
-	// set the previous camera entity
-	m_pStage->GetEntitySet()->SetCameraEntity( m_pPrevCameraEntity );
-	m_pPrevCameraEntity = NULL;
+	CCopyEntity *pPrevCamEntity = m_PrevCameraEntity.GetRawPtr();
+	if( pPrevCamEntity )
+	{
+		// set the previous camera entity
+		m_pStage->GetEntitySet()->SetCameraEntity( pPrevCamEntity );
+		m_PrevCameraEntity = CEntityHandle<>();
+	}
 
 	// terminate all the camera entities
 	const int num_cameras = pCopyEnt->GetNumChildren();
@@ -208,7 +220,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 	{
 		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[i].GetRawPtr();
 
-		if( !IsValidEntity(pCameraEntity) )
+		if( !pCameraEntity )
 			continue;
 
 		m_pStage->TerminateEntity( pCameraEntity );

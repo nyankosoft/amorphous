@@ -25,98 +25,99 @@ void FocusTargetFrameSet::UpdateFocusTargetEntities( CEntitySet *pEntitySet )
 		{
 			CCopyEntity* pTarget = pEntitySet->GetEntityByName( m_vecKeyFrame[i].val.m_TargetName.c_str() );
 			if( IsValidEntity( pTarget ) )
-				m_vecKeyFrame[i].val.m_pTarget = pTarget;
+				m_vecKeyFrame[i].val.m_Target = CEntityHandle<>( pTarget->Self() );
 		}
 	}
 }
 
-/*
-void CBEC_ScriptedCameraExtraData::InitializedAtCutsceneStart()
+
+void CScriptedCameraEntity::Update( float dt )
 {
-	FocusTargetFrameSet& rFocusTarget = KeyFrames.Camera.FocusTarget;
-
-	rFocusTarget.UpdateForcusTargetEntities( ms_pS);
-}*/
-
-
-//===============================================================================================
-// 
-//===============================================================================================
-
-CBE_ScriptedCamera::CBE_ScriptedCamera()
-{
-	m_bLighting = false;
-	m_bNoClip = true;
-}
-
-
-void CBE_ScriptedCamera::Init()
-{
-//	Init3DModel();
-
-//	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
-//	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
-
-	m_vecExtraData.reserve( 4 );
-}
-
-
-void CBE_ScriptedCamera::InitCopyEntity(CCopyEntity* pCopyEnt)
-{
-	pCopyEnt->iExtraDataIndex = GetNewExtraDataIndex();
-
-	CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt);
-
-//	D3DXCreateTexture( DIRECT3D9.GetDevice(),
-//	ex.pSceneTexture;
-}
-
-
-
-void CBE_ScriptedCamera::Act(CCopyEntity* pCopyEnt)
-{
-	CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt);
-
-	if( ex.Path.IsAvailable( (float)m_pStage->GetElapsedTime() ) )
+	if( m_Path.IsAvailable( (float)GetStage()->GetElapsedTime() ) )
 	{
-		if( !ex.m_InitializedAtCutsceneStart )
+		if( !m_InitializedAtCutsceneStart )
 		{
-			ex.KeyFrames.Camera.FocusTarget.UpdateFocusTargetEntities( m_pStage->GetEntitySet() );
-			ex.m_InitializedAtCutsceneStart = true;
+			m_KeyFrames.Camera.FocusTarget.UpdateFocusTargetEntities( GetStage()->GetEntitySet() );
+			m_InitializedAtCutsceneStart = true;
 		}
 
-		UpdateScriptedMotionPath( pCopyEnt, ex.Path );
-		PERIODICAL( 100, g_Log.Print( "CBE_ScriptedCamera::Act() - updated motion path ... pos: " +
-			to_string(pCopyEnt->Position(), 2) ) );
+		pBaseEntity->UpdateScriptedMotionPath( this, m_Path );
 
-		ex.Camera.SetPose( pCopyEnt->GetWorldPose() );
-		ex.Camera.UpdateVFTreeForWorldSpace();
+		PERIODICAL( 100, g_Log.Print( "CScriptedCameraEntity::Update() - updated motion path ... pos: " +
+			to_string(this->Position(), 2) ) );
 
-		UpdateCameraParams( pCopyEnt );
+		m_Camera.SetPose( this->GetWorldPose() );
+		m_Camera.UpdateVFTreeForWorldSpace();
+
+		UpdateCameraParams();
 	}
 
-//	if( m_pStage->GetEntitySet()->GetCameraEntity() == pCopyEnt )
+//	if( m_pStage->GetEntitySet()->GetCameraEntity() == this )
 //	{
-//		m_Camera.SetPose( pCopyEnt->GetWorldPose() );
+//		m_Camera.SetPose( this->GetWorldPose() );
 //	}
 }
 
 
-void CBE_ScriptedCamera::RenderStage(CCopyEntity* pCopyEnt)
+//void CBE_ScriptedCamera::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CScriptedCameraEntity::HandleMessage( SGameMessage& msg )
 {
-	CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt);
+	switch( msg.iEffect )
+	{
+	case GM_SET_MOTION_PATH:
+	  {
+		// set motion path
+		EntityMotionPathRequest *pReq = (EntityMotionPathRequest *)msg.pUserData;
+		m_Path.SetKeyPoses( pReq->vecKeyPose );
+		m_Path.SetMotionPathType( pReq->MotionPathType );
 
-	PERIODICAL( 100, LOG_PRINT( "Camera pos: " + to_string(ex.Camera.GetPosition(), 2) ) );
+		LOG_PRINT( " - added motion path to scripted camera" );
 
-	CScreenEffectManager *pScreenEffectManager = m_pStage->GetScreenEffectManager();
+//		MsgBoxFmt( "set motion path for enemy entity: %s", pCopyEnt_Self->GetName().c_str() );
+		return;
+	  }
+
+	case GM_SET_DEFAULT_CAMERA_PARAM:
+	  {
+		// set motion path
+		CameraParam *pParam = (CameraParam *)msg.pUserData;
+		m_DefaultParam = *pParam;
+
+		// TODO: change camera params dynamically
+		m_Camera.SetNearClip( m_DefaultParam.nearclip );
+		m_Camera.SetFarClip( m_DefaultParam.farclip );
+		m_Camera.SetFOV( m_DefaultParam.fov );
+		m_Camera.SetAspectRatio( m_DefaultParam.aspect_ratio );
+
+		LOG_PRINT( " - set default camera params" );
+
+//		MsgBoxFmt( "set motion path for enemy entity: %s", pCopyEnt_Self->GetName().c_str() );
+		return;
+	  }
+
+	case GM_SET_SCRIPTCAMERAKEYFRAMES:
+		// set camera effects
+		m_KeyFrames = *(CScriptCameraKeyFrames *)msg.pUserData;
+
+		LOG_PRINT( " - set camera effect params" );
+
+		return;
+	}
+}
+
+void CScriptedCameraEntity::RenderStage()
+{
+	PERIODICAL( 100, LOG_PRINT( "Camera pos: " + to_string(m_Camera.GetPosition(), 2) ) );
+
+	CScreenEffectManager *pScreenEffectManager = GetStage()->GetScreenEffectManager();
 
 	// save the original settings
 	int orig_effect_flag = pScreenEffectManager->GetEffectFlag();
 
-	if( 7.5f < m_pStage->GetElapsedTime() )
+	if( 7.5f < GetStage()->GetElapsedTime() )
 		int break_here = 1;
 
-	const CPPEffectParams& effect = ex.PPEffectParams;
+	const CPPEffectParams& effect = m_PPEffectParams;
 	int effect_flag = effect.flag;
 //	int effect_flag = effect.flag | ScreenEffect::MonochromeColor;
 	pScreenEffectManager->SetEffectFlag( effect_flag );
@@ -130,70 +131,10 @@ void CBE_ScriptedCamera::RenderStage(CCopyEntity* pCopyEnt)
 
 //	pScreenEffectManager->SetGlareLuminanceThreshold( effect.glare_threshold );
 
-//	m_pStage->Render( m_Camera );
-	m_pStage->Render( ex.Camera );
+	GetStage()->Render( m_Camera );
 
 	// restore the original effect settings
 	pScreenEffectManager->SetEffectFlag( orig_effect_flag );
-}
-
-
-void CBE_ScriptedCamera::CreateRenderTasks(CCopyEntity* pCopyEnt)
-{
-	// add render tasks necessary to render the stage
-	m_pStage->CreateStageRenderTasks( GetCamera() );
-}
-
-
-void CBE_ScriptedCamera::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
-{
-	switch( rGameMessage.iEffect )
-	{
-	case GM_SET_MOTION_PATH:
-	  {
-		// set motion path
-		EntityMotionPathRequest *pReq = (EntityMotionPathRequest *)rGameMessage.pUserData;
-		CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt_Self);
-		ex.Path.SetKeyPoses( pReq->vecKeyPose );
-		ex.Path.SetMotionPathType( pReq->MotionPathType );
-
-		LOG_PRINT( " - added motion path to scripted camera" );
-
-//		MsgBoxFmt( "set motion path for enemy entity: %s", pCopyEnt_Self->GetName().c_str() );
-		return;
-	  }
-
-	case GM_SET_DEFAULT_CAMERA_PARAM:
-	  {
-		// set motion path
-		CameraParam *pParam = (CameraParam *)rGameMessage.pUserData;
-		CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt_Self);
-		ex.DefaultParam = *pParam;
-
-		// TODO: change camera params dynamically
-		ex.Camera.SetNearClip( ex.DefaultParam.nearclip );
-		ex.Camera.SetFarClip( ex.DefaultParam.farclip );
-		ex.Camera.SetFOV( ex.DefaultParam.fov );
-		ex.Camera.SetAspectRatio( ex.DefaultParam.aspect_ratio );
-
-		LOG_PRINT( " - set default camera params" );
-
-//		MsgBoxFmt( "set motion path for enemy entity: %s", pCopyEnt_Self->GetName().c_str() );
-		return;
-	  }
-
-	case GM_SET_SCRIPTCAMERAKEYFRAMES:
-	  {
-		CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt_Self);
-
-		// set camera effects
-		ex.KeyFrames = *(CScriptCameraKeyFrames *)rGameMessage.pUserData;
-
-		LOG_PRINT( " - set camera effect params" );
-
-		return;
-	  }
-	}
 }
 
 /*
@@ -211,94 +152,95 @@ void CBE_ScriptedCamera::Serialize( IArchive& ar, const unsigned int version )
 */
 
 
-void CBE_ScriptedCamera::AddExtraData()
+void CScriptedCameraEntity::CreateRenderTasks()
 {
-	m_vecExtraData.push_back( CBEC_ScriptedCameraExtraData() );
-	CBEC_ScriptedCameraExtraData& ex = m_vecExtraData.back();
-
-	ex.m_bInUse = true;
-
+	// add render tasks necessary to render the stage
+	GetStage()->CreateStageRenderTasks( &m_Camera );
 }
 
 
-void CBE_ScriptedCamera::UpdateCameraParams( CCopyEntity* pCopyEnt )
+void CScriptedCameraEntity::UpdateCameraOrientationByFocusTarget( float current_time )
 {
-	CBEC_ScriptedCameraExtraData& ex = GetExtraData(pCopyEnt);
+	CCameraProperty& cam = m_KeyFrames.Camera;
 
-	float current_time = (float)m_pStage->GetElapsedTime();
+	if( !cam.FocusTarget.IsAvailable( current_time ) )
+		return; // no focus target is set for the current time
+
+	cam.FocusTarget.UpdateFocusTargetPositions( current_time );
+
+//	Vector3 vPosToLookAt = Vector3(0,0,0);
+	CameraTargetHolder cam_target;
+	bool res = cam.FocusTarget.CalcFrame( current_time, cam_target );
+	if( res )
+	{
+		if( true /* shake */ )
+		{
+			Vector3 vPosToLookAt
+				= cam_target.m_vTargetPos;
+				//+ Vec3RandDir() * ;
+			Vector3 vCamDir = vPosToLookAt - m_Camera.GetPosition();
+			Vec3Normalize( vCamDir, vCamDir );
+
+			float frametime = GetStage()->GetFrameTime();
+
+			Matrix33 orient
+				= CreateOrientFromFwdDir( vCamDir )
+				* Matrix33RotationX( RangedRand(-0.1f, 0.1f) )
+				* Matrix33RotationY( RangedRand(-0.1f, 0.1f) );
+
+			m_CamOrient.target = orient;
+
+			m_CamOrient.Update( frametime );
+
+			m_CamOrient.current.Orthonormalize();
+
+			m_Camera.SetOrientation( m_CamOrient.current );
+//				m_Camera.SetOrientation( orient );
+		}
+		else
+		{
+			Vector3 vPosToLookAt = cam_target.m_vTargetPos;
+			Vector3 vCamDir = vPosToLookAt - m_Camera.GetPosition();
+			Vec3Normalize( vCamDir, vCamDir );
+
+			m_Camera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) );
+		}
+	}
+}
+
+
+void CScriptedCameraEntity::UpdateCameraParams()
+{
+	float current_time = (float)GetStage()->GetElapsedTime();
 	bool res;
 
 	// camera params
-	CCameraProperty& cam = ex.KeyFrames.Camera;
+	CCameraProperty& cam = m_KeyFrames.Camera;
 
 	// camera pose (focus target)
 	// overwrite camera orientation if it's focusing on an entity / a position
-	if( cam.FocusTarget.IsAvailable( current_time ) )
-	{
-		cam.FocusTarget.UpdateFocusTargetPositions( current_time );
+	UpdateCameraOrientationByFocusTarget( current_time );
 
-//		Vector3 vPosToLookAt = Vector3(0,0,0);
-		CameraTargetHolder cam_target;
-		res = cam.FocusTarget.CalcFrame( current_time, cam_target );
-		if( res )
-		{
-			if( true /* shake */ )
-			{
-				Vector3 vPosToLookAt
-					= cam_target.m_vTargetPos;
-					//+ Vec3RandDir() * ;
-				Vector3 vCamDir = vPosToLookAt - ex.Camera.GetPosition();
-				Vec3Normalize( vCamDir, vCamDir );
-
-				float frametime = m_pStage->GetFrameTime();
-
-				Matrix33 orient
-					= CreateOrientFromFwdDir( vCamDir )
-					* Matrix33RotationX( RangedRand(-0.1f, 0.1f) )
-					* Matrix33RotationY( RangedRand(-0.1f, 0.1f) );
-
-				ex.m_CamOrient.target = orient;
-
-				ex.m_CamOrient.Update( frametime );
-
-				ex.m_CamOrient.current.Orthonormalize();
-
-				ex.Camera.SetOrientation( ex.m_CamOrient.current );
-//				ex.Camera.SetOrientation( orient );
-			}
-			else
-			{
-				Vector3 vPosToLookAt = cam_target.m_vTargetPos;
-				Vector3 vCamDir = vPosToLookAt - ex.Camera.GetPosition();
-				Vec3Normalize( vCamDir, vCamDir );
-
-				ex.Camera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) );
-			}
-		}
-	}
-
-//	float current_time = m_pStage->GetElapsedTime();
-//	bool res
 	float fov, nc, fc;
 	res = cam.fov.CalcFrame( current_time, fov );
 	if( res )
-		ex.Camera.SetFOV( fov );
+		m_Camera.SetFOV( fov );
 
 	res = cam.nearclip.CalcFrame( current_time, nc );
 	if( res )
-		ex.Camera.SetNearClip( nc );
+		m_Camera.SetNearClip( nc );
 
 	res = cam.farclip.CalcFrame( current_time, fc );
 	if( res )
-		ex.Camera.SetFarClip( fc );
+		m_Camera.SetFarClip( fc );
 
 
 	//
 	// update effect params
 	//
 
-	CScreenEffectProperty& effect = ex.KeyFrames.Effect;
-	CPPEffectParams& rEffectParams = ex.PPEffectParams;
+	CScreenEffectProperty& effect = m_KeyFrames.Effect;
+	CPPEffectParams& rEffectParams = m_PPEffectParams;
 
 	rEffectParams.Clear();
 
@@ -346,3 +288,55 @@ void CBE_ScriptedCamera::UpdateCameraParams( CCopyEntity* pCopyEnt )
 //	Noise;
 //	Stripe;
 }
+
+//===============================================================================================
+// 
+//===============================================================================================
+
+CBE_ScriptedCamera::CBE_ScriptedCamera()
+{
+	m_bLighting = false;
+	m_bNoClip = true;
+}
+
+
+void CBE_ScriptedCamera::Init()
+{
+//	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
+//	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
+}
+
+
+void CBE_ScriptedCamera::InitCopyEntity(CCopyEntity* pCopyEnt)
+{
+
+//	D3DXCreateTexture( DIRECT3D9.GetDevice(),
+//	ex.pSceneTexture;
+}
+
+
+void CBE_ScriptedCamera::Act( CCopyEntity* pCopyEnt )
+{
+	pCopyEnt->Update( (float)m_pStage->GetElapsedTime() );
+}
+
+
+void CBE_ScriptedCamera::RenderStage( CCopyEntity* pCopyEnt )
+{
+	pCopyEnt->RenderStage();
+}
+
+void CBE_ScriptedCamera::CreateRenderTasks( CCopyEntity* pCopyEnt )
+{
+	pCopyEnt->CreateRenderTasks();
+}
+
+
+/*
+void CBEC_ScriptedCameraExtraData::InitializedAtCutsceneStart()
+{
+	FocusTargetFrameSet& rFocusTarget = KeyFrames.Camera.FocusTarget;
+
+	rFocusTarget.UpdateForcusTargetEntities( ms_pS);
+}*/
+

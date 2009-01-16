@@ -1,6 +1,7 @@
 #ifndef __BE_ScriptedCamera_H__
 #define __BE_ScriptedCamera_H__
 
+#include "fwd.h"
 #include "BaseEntity.h"
 #include "BaseEntityHandle.h"
 #include "CopyEntity.h"
@@ -23,26 +24,31 @@ class CameraTargetHolder
 {
 public:
 
-	string m_TargetName;	///< name of the target to focus. used when the target is not found when a keyframe is created
+	std::string m_TargetName;	///< name of the target to focus. used when the target does not exist when a keyframe is created
 
-	CCopyEntity* m_pTarget;	///< target to focus
+	CEntityHandle<> m_Target;	///< entity to focus
 
 	Vector3 m_vTargetPos;
 
 public:
 
-	CameraTargetHolder() : m_pTarget(NULL), m_vTargetPos(Vector3(0,0,0)) {}
-	CameraTargetHolder( Vector3 vTargetPos ) : m_pTarget(NULL), m_vTargetPos(vTargetPos) {}
-	CameraTargetHolder( CCopyEntity* pTarget ) : m_pTarget(pTarget), m_vTargetPos(Vector3(0,0,0)) {}
+	CameraTargetHolder() : m_vTargetPos(Vector3(0,0,0)) {}
 
-	CameraTargetHolder( const std::string& target_name ) : m_TargetName(target_name), m_pTarget(NULL), m_vTargetPos(Vector3(0,0,0)) {}
+	CameraTargetHolder( Vector3 vTargetPos ) : m_vTargetPos(vTargetPos) {}
+
+	CameraTargetHolder( CCopyEntity* pTarget )
+		:
+	m_Target(pTarget->Self()),
+	m_vTargetPos(Vector3(0,0,0))
+	{}
+
+	CameraTargetHolder( const std::string& target_name ) : m_TargetName(target_name), m_vTargetPos(Vector3(0,0,0)) {}
 
 	inline CameraTargetHolder operator+( const CameraTargetHolder& v ) const { return CameraTargetHolder(this->m_vTargetPos + v.m_vTargetPos); }
 	inline CameraTargetHolder operator-( const CameraTargetHolder& v ) const { return CameraTargetHolder(this->m_vTargetPos - v.m_vTargetPos); }
 
 	inline CameraTargetHolder operator*( const float f ) const { return CameraTargetHolder(m_vTargetPos * f); }
 	inline CameraTargetHolder operator/( const float f ) const { return CameraTargetHolder(m_vTargetPos / f); }
-
 };
 
 
@@ -89,34 +95,28 @@ public:
 	{
 		size_t i, num_key_frames = m_vecKeyFrame.size();
 
-		if( num_key_frames == 0 )
+		if( !IsAvailable( time ) )
 			return false;
-		else if( num_key_frames == 1 )
-			return false;
-		else if( time < m_vecKeyFrame[0].time || m_vecKeyFrame.back().time < time )
-			return false;
-		else
-		{
-			// linear interpolation
-			// TODO: support some ohter interpolations (e.g. TCB spilne)
-			for( i=0; i<num_key_frames-1; i++ )
-			{
-				if( m_vecKeyFrame[i].time <= time && time < m_vecKeyFrame[i+1].time )
-				{
-					const T& value0 = m_vecKeyFrame[i].val;
-					const T& value1 = m_vecKeyFrame[i+1].val;
-					const float t0 = m_vecKeyFrame[i].time;
-					const float t1 = m_vecKeyFrame[i+1].time;
-					dest = ( (t1 - time) * value0 + (time - t0) * value1 ) / (t1 - t0);
-					return true;
-				}
-			}
 
-			return false;
+		// linear interpolation
+		// TODO: support some ohter interpolations (e.g., TCB spilne)
+		for( i=0; i<num_key_frames-1; i++ )
+		{
+			if( m_vecKeyFrame[i].time <= time && time < m_vecKeyFrame[i+1].time )
+			{
+				const T& value0 = m_vecKeyFrame[i].val;
+				const T& value1 = m_vecKeyFrame[i+1].val;
+				const float t0 = m_vecKeyFrame[i].time;
+				const float t1 = m_vecKeyFrame[i+1].time;
+				dest = ( (t1 - time) * value0 + (time - t0) * value1 ) / (t1 - t0);
+				return true;
+			}
 		}
+
+		return false;
 	}
 
-	bool IsAvailable( float time )
+	bool IsAvailable( float time ) const
 	{
 		if( m_vecKeyFrame.size() <= 1 )
 			return false;
@@ -150,6 +150,8 @@ public:
 	float noise;
 	float stripe;
 	float motion_blur_strength;
+
+public:
 
 	CPPEffectParams()
 		:
@@ -190,7 +192,7 @@ public:
 
 	CPPEffectParams pp;
 
-	CCopyEntity* pFocusTarget;
+	CEntityHandle<> FocusTarget;
 
 public:
 
@@ -201,18 +203,16 @@ public:
 	nearclip(0.05f),
 	farclip(200.0f),
 //	aspect_ratio(4.0f / 3.0f),
-	aspect_ratio( CGraphicsComponent::GetAspectRatio() ),
-	pFocusTarget(NULL)
+	aspect_ratio( CGraphicsComponent::GetAspectRatio() )
 	{}
 };
 
-
-class CEntitySet;
 
 class FocusTargetFrameSet : public KeyFrameSet<CameraTargetHolder>
 {
 public:
 
+	/// get the positions of the target entities of the current key frames
 	bool UpdateFocusTargetPositions( float time )
 	{
 		if( !IsAvailable( time ) )
@@ -220,27 +220,22 @@ public:
 
 		size_t i, num_key_frames = m_vecKeyFrame.size();
 
-		if( num_key_frames == 0 )
-			return false;
-		else if( num_key_frames == 1 )
-			return false;
-		else
+		// linear interpolation
+		// TODO: support some ohter interpolations (e.g. TCB spilne)
+		for( i=0; i<num_key_frames-1; i++ )
 		{
-			// linear interpolation
-			// TODO: support some ohter interpolations (e.g. TCB spilne)
-			for( i=0; i<num_key_frames-1; i++ )
+			if( m_vecKeyFrame[i].time <= time && time < m_vecKeyFrame[i+1].time )
 			{
-				if( m_vecKeyFrame[i].time <= time && time < m_vecKeyFrame[i+1].time )
+				for( int j=0; j<2; j++ )
 				{
-					for( int j=0; j<2; j++ )
+					CCopyEntity *pTarget = m_vecKeyFrame[i+j].val.m_Target.GetRawPtr();
+
+					if( pTarget )
 					{
-						if( IsValidEntity(m_vecKeyFrame[i+j].val.m_pTarget) )
-						{
-							m_vecKeyFrame[i+j].val.m_vTargetPos = m_vecKeyFrame[i+j].val.m_pTarget->Position();
-						}
+						m_vecKeyFrame[i+j].val.m_vTargetPos = pTarget->Position();
 					}
-					return true;
 				}
+				return true;
 			}
 		}
 
@@ -316,23 +311,19 @@ public:
 };
 
 
-class CBEC_ScriptedCameraExtraData
+class CScriptedCameraEntity : public CCopyEntity
 {
-public:
+	CCamera m_Camera;
 
-	CBEC_MotionPath Path;
+	CBEC_MotionPath m_Path;
 
-	CameraParam DefaultParam;
+	CameraParam m_DefaultParam;
 
-	CPPEffectParams PPEffectParams;
+	CPPEffectParams m_PPEffectParams;
 
-	CCamera Camera;
-
-	CScriptCameraKeyFrames KeyFrames;
+	CScriptCameraKeyFrames m_KeyFrames;
 
 	bool m_InitializedAtCutsceneStart;
-
-	bool m_bInUse;
 
 //	cdv<Vector3> m_vCamPos;
 
@@ -340,10 +331,15 @@ public:
 
 //	LPDIRECT3DTEXTURE9 pSceneTexture;
 
-	CBEC_ScriptedCameraExtraData()
+private:
+
+	void UpdateCameraOrientationByFocusTarget( float current_time );
+
+public:
+
+	CScriptedCameraEntity()
 		:
-	m_InitializedAtCutsceneStart(false),
-	m_bInUse(false)
+	m_InitializedAtCutsceneStart(false)
 	{
 		m_CamOrient.target  = Matrix33Identity();
 		m_CamOrient.current = Matrix33Identity();//.FromRotationMatrix( Matrix33Identity() );
@@ -351,6 +347,17 @@ public:
 		m_CamOrient.smooth_time = 0.3f;
 	}
 
+	void Update( float dt );
+
+	void RenderStage();
+
+	void CreateRenderTasks();
+
+	void HandleMessage( SGameMessage& msg );
+
+	void UpdateCameraParams();
+
+	const CBEC_MotionPath& GetPath() const { return m_Path; }
 };
 
 
@@ -358,31 +365,18 @@ class CBE_ScriptedCamera : public CBaseEntity
 {
 private:
 
-	CCamera m_Camera;
-
-//	CBEC_MotionPath m_Path;
-
-	std::vector<CBEC_ScriptedCameraExtraData> m_vecExtraData;
-
-private:
-
-	void AddExtraData();
-
-	inline int GetNewExtraDataIndex();
-
-	inline CBEC_ScriptedCameraExtraData& GetExtraData( CCopyEntity *pCopyEnt ) { return m_vecExtraData[pCopyEnt->iExtraDataIndex]; }
-
 	void UpdateCameraParams( CCopyEntity* pCopyEnt );
 
 public:
 
 	CBE_ScriptedCamera();
+
 	~CBE_ScriptedCamera() {}
 
 	void Init();
 	void InitCopyEntity( CCopyEntity* pCopyEnt );
 
-	void Act(CCopyEntity* pCopyEnt);	//behavior in in one frame
+	void Act( CCopyEntity* pCopyEnt );	//behavior in in one frame
 
 //	void Draw(CCopyEntity* pCopyEnt);
 
@@ -390,7 +384,7 @@ public:
 
 	void CreateRenderTasks(CCopyEntity* pCopyEnt);
 
-    virtual void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+    void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) { pCopyEnt_Self->HandleMessage( rGameMessage ); }
 
 
 //	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
@@ -400,26 +394,10 @@ public:
 //	virtual void Serialize( IArchive& ar, const unsigned int version );
 	
 	virtual void UpdateCamera( CCopyEntity *pCopyEnt ) {}
-	virtual CCamera *GetCamera() { return &m_Camera; }
+//	virtual CCamera *GetCamera() { return &m_Camera; }
 
 	friend CBE_CameraController;
 };
-
-
-inline int CBE_ScriptedCamera::GetNewExtraDataIndex()
-{
-	size_t i, num_extra_data = m_vecExtraData.size();
-	for( i=0; i<num_extra_data; i++ )
-	{
-		if( !m_vecExtraData[i].m_bInUse )
-			return (int)i;
-	}
-
-	// add new extra data
-	AddExtraData();
-
-	return (int)num_extra_data;
-}
 
 
 #endif  /*  __BE_ScriptedCamera_H__  */
