@@ -95,6 +95,7 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
 	else
 	{
 		strTextFile = fmt_string( "mesh%02d.txt", s_MeshNum );
+		s_MeshNum++;
 	}
 
 	m_MeshModelArchive.WriteToTextFile( strTextFile.c_str() );
