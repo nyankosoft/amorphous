@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <string>
 
 #include "3DMath/Vector3.h"
 #include "3DMath/AABB3.h"
@@ -109,6 +110,8 @@ inline void CAABNode::Serialize( IArchive& ar, const unsigned int version )
 // CAABTree
 //===============================================================================
 
+extern void  WriteNodeToFile_r( int node_index, vector<CAABNode>& nodes, int depth, FILE *fp );
+
 template<class TGeometry>
 class CAABTree : public IArchiveObjectBase
 {
@@ -192,14 +195,16 @@ public:
 	// creates the tree from 'm_vecGeometry'
 	virtual void Build() = 0;
 
-	/// set tree position in world space
-	void SetWorldPosition( const Vector3& rvWorldPos ) { m_vWorldPos = rvWorldPos; }
-
 	const CAABNode& GetNode( int index ) const { return m_vecNode[index]; }
 
 	int GetNumNodes() const { return (int)m_vecNode.size(); }
 
 	std::vector<CAABNode>& GetNodeBuffer() { return m_vecNode; }
+
+	int GetTreeDepth() const { return m_TreeDepth; }
+
+	/// set tree position in world space
+	void SetWorldPosition( const Vector3& rvWorldPos ) { m_vWorldPos = rvWorldPos; }
 
 	void SetGeometry( const std::vector<TGeometry>& geometry ) { m_vecGeometry = geometry; }
 
@@ -275,6 +280,23 @@ public:
 //	virtual void ClipTrace( const CLineSegment& line_segment, CLineSegmentHit& results ) = 0;
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+
+	void WriteToFile( const std::string& filepath )
+	{
+		FILE* fp = fopen( filepath.c_str(), "w" );
+		if( !fp )
+			return;
+
+		fprintf( fp, "Depth: %d\n", GetTreeDepth() );
+		fprintf( fp, "Nodes: %d\n", GetNumNodes() );
+		fprintf( fp, "\n" );
+
+		if( 0 < m_vecNode.size() )
+			WriteNodeToFile_r( 0, m_vecNode, 0, fp );
+
+		fclose(fp);
+	}
 };
 
 
