@@ -7,7 +7,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "3DMath/BSPTreeForTriangleMesh.h"
-#include "3DCommon/MeshModel/TerrainMeshGenerator.h"
+#include "Graphics/MeshModel/TerrainMeshGenerator.h"
 #include "Support/Serialization/BinaryDatabase.h"
 #include "LightWave/fwd.h"
 

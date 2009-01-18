@@ -11,13 +11,13 @@
 
 using namespace boost;
 
-
+/*
 class CXMLDocument
 {
 public:
 };
 
-/*	CXMLDocument xml_doc( "" );
+	CXMLDocument xml_doc( "" );
 	if( !xml_doc.IsValid() )
 		return false;
 
@@ -51,13 +51,13 @@ bool LoadGeometryFilter( DOMNode *pParentNode, CGeometryFilter& rDestFilter )
 	if( !pFilterNode )
 		LOG_ERR_RETURN_FALSE( "A geometry filter node is missing." );
 
-	CXMLDocumentLoader xml_document;
-	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-	if( !xml_document.Load( to_string(pFilterNode->getTextContent()), &pXMLDocument )
-	 || !pXMLDocument )
+	CXMLDocumentLoader xml_doc_loader;
+	shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( to_string(pFilterNode->getTextContent()) );
+	if( !pXMLDocument )
 		return false;
 
-	DOMNode *pFilterRootNode = GetRootNode( pXMLDocument );
+	DOMNode *pFilterRootNode = pXMLDocument->GetRootNodeReader().GetDOMNode();
+//	DOMNode *pFilterRootNode = GetRootNode( pXMLDocument );
 	if( !pFilterRootNode )
 		return false;
 
@@ -189,13 +189,14 @@ bool CStaticGeometryDesc::LoadSurfaceDescs( DOMNode *pSurfaceNode )
 	string surfdesc_filepath
 		= GetTextContentOfImmediateChildNode( pSurfaceNode, "SurfaceDescFile" );
 
-	CXMLDocumentLoader xml_document;
-	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-	if( !xml_document.Load( surfdesc_filepath, &pXMLDocument )
-	 || !pXMLDocument )
+	CXMLDocumentLoader xml_doc_loader;
+	shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( surfdesc_filepath );
+	if( !pXMLDocument )
 		return false;
 
-	DOMNode *pRootNode = GetRootNode( pXMLDocument );
+	CXMLNodeReader root_node_reader = pXMLDocument->GetRootNodeReader();
+	DOMNode *pRootNode = root_node_reader.GetDOMNode();
+//	DOMNode *pRootNode = GetRootNode( pXMLDocument );
 	if( !pRootNode )
 		return false;
 
@@ -233,13 +234,14 @@ bool CStaticGeometryDesc::LoadShaderParamsFromFile( const std::string& shaderpar
 {
 	static const int max_texture_stages = 8;
 
-	CXMLDocumentLoader xml_document;
-	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-	if( !xml_document.Load( shaderparam_filepath, &pXMLDocument )
-	 || !pXMLDocument )
+	CXMLDocumentLoader xml_doc_loader;
+	shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( shaderparam_filepath );
+	if( !pXMLDocument )
 		return false;
 
-	DOMNode *pRootNode = GetRootNode( pXMLDocument );
+	CXMLNodeReader root_node_reader = pXMLDocument->GetRootNodeReader();
+	DOMNode *pRootNode = root_node_reader.GetDOMNode();
+//	DOMNode *pRootNode = GetRootNode( pXMLDocument );
 	if( !pRootNode )
 		return false;
 
@@ -311,11 +313,11 @@ void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 {
 //	vector<shared_ptr<CLight>> vecpLight;
 
-	xercesc_2_8::DOMNodeList *pNodeList = pLightsNode->getChildNodes();
+	xercesc::DOMNodeList *pNodeList = pLightsNode->getChildNodes();
 	const int num_nodes = (int)pNodeList->getLength();
 	for( int i=0; i<num_nodes; i++ )
 	{
-		xercesc_2_8::DOMNode *pNode = pNodeList->item(i);
+		xercesc::DOMNode *pNode = pNodeList->item(i);
 		CXMLNodeReader node( pNode );
 
 		string light_type = to_string(pNode->getNodeName());
@@ -323,13 +325,13 @@ void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 		if( light_type == "AmbientLight" )
 		{
 			CAmbientLight amb_light;
-			node.GetChildElementTextContentRGB( "Color", amb_light.Color );
+			node.GetChildElementTextContentRGB( "Color", amb_light.DiffuseColor );
 			m_vecpLight.push_back( shared_ptr<CLight>( new CAmbientLight(amb_light) ) );
 		}
 		else if( light_type == "DirectionalLight" )
 		{
 			CDirectionalLight dir_light;
-			node.GetChildElementTextContentRGB( "Color",     dir_light.Color );
+			node.GetChildElementTextContentRGB( "Color",     dir_light.DiffuseColor );
 			node.GetChildElementTextContent( "Direction", dir_light.vDirection );
 
 			m_vecpLight.push_back( shared_ptr<CLight>( new CDirectionalLight(dir_light) ) );
@@ -337,7 +339,7 @@ void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 		else if( light_type == "PointLight" )
 		{
 			CPointLight pnt_light;
-			node.GetChildElementTextContentRGB( "Color",    pnt_light.Color );
+			node.GetChildElementTextContentRGB( "Color",    pnt_light.DiffuseColor );
 			node.GetChildElementTextContent( "Position", pnt_light.vPosition );
 
 			Vector3 vAttenu;
@@ -374,13 +376,13 @@ bool CStaticGeometryDesc::LoadLightingDesc( DOMNode *pLightingNode )
 	if( 0 < light_filepath.length() )
 	{
 		// load lights from custom lights file
-		CXMLDocumentLoader xml_document;
-		xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-		if( !xml_document.Load( light_filepath, &pXMLDocument )
-		 || !pXMLDocument )
+		CXMLDocumentLoader xml_doc_loader;
+		shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( light_filepath );
+		if( !pXMLDocument )
 			return false;
 
-		DOMNode *pRootNode = GetRootNode( pXMLDocument );
+		DOMNode *pRootNode = pXMLDocument->GetRootNodeReader().GetDOMNode();
+//		DOMNode *pRootNode = GetRootNode( pXMLDocument );
 		if( !pRootNode )
 			return false;
 
@@ -431,12 +433,12 @@ bool CStaticGeometryDesc::LoadTextureSubdivisionOptions( DOMNode *pNode )
 	if( pFileNode )
 	{
 		CXMLDocumentLoader xml_doc_loader;
-		xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-		bool bSuccess = xml_doc_loader.Load( to_string(pFileNode->getTextContent()), &pXMLDocument );
-		if( !bSuccess )
+		shared_ptr<CXMLDocument> pXMLDocument
+			= xml_doc_loader.Load( to_string(pFileNode->getTextContent()) );
+		if( !pXMLDocument )
 			return false;
 
-		CXMLNodeReader node_reader( GetRootNode( pXMLDocument ) );
+		CXMLNodeReader node_reader = pXMLDocument->GetRootNodeReader();//( GetRootNode( pXMLDocument ) );
 		m_TextureSubdivisionOptions.Load( node_reader ); // "TextureSubdivision"
 	}
 
@@ -450,12 +452,12 @@ bool CStaticGeometryDesc::LoadMeshTreeOptions( DOMNode *pNode )
 	if( pFileNode )
 	{
 		CXMLDocumentLoader xml_doc_loader;
-		xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-		bool bSuccess = xml_doc_loader.Load( to_string(pFileNode->getTextContent()), &pXMLDocument );
-		if( !bSuccess )
+		shared_ptr<CXMLDocument> pXMLDocument
+			= xml_doc_loader.Load( to_string(pFileNode->getTextContent()) );
+		if( !pXMLDocument )
 			return false;
 
-		CXMLNodeReader node_reader( GetRootNode( pXMLDocument ) );
+		CXMLNodeReader node_reader = pXMLDocument->GetRootNodeReader();//( GetRootNode( pXMLDocument ) );
 		m_MeshTreeOptions.Load( node_reader ); // "TextureSubdivision"
 	}
 
@@ -477,18 +479,18 @@ bool CStaticGeometryDesc::LoadCollisionDesc( DOMNode *pNode )
 
 bool CStaticGeometryDesc::LoadFromXML( const std::string& xml_filepath )
 {
-	xercesc_2_8::DOMDocument *pXMLDocument = NULL;
-
 	CXMLDocumentLoader xml_doc_loader;
-	bool bSuccess = xml_doc_loader.Load( xml_filepath, &pXMLDocument );
-	if( !bSuccess )
+	shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( xml_filepath );
+	if( !pXMLDocument )
 		return false;
 
 	// set the working directory to the directory path of the xml file
 	fnop::dir_stack dir_stk;
 	dir_stk.setdir( fnop::get_path(xml_filepath) );
 
-	xercesc_2_8::DOMNode *pRootNode = GetRootNode( pXMLDocument );
+	CXMLNodeReader root_node_reader = pXMLDocument->GetRootNodeReader();
+	xercesc::DOMNode *pRootNode = root_node_reader.GetDOMNode();
+//	xercesc::DOMNode *pRootNode = GetRootNode( pXMLDocument );
 
 	// get input file
 
@@ -551,17 +553,17 @@ bool CStaticGeometryDesc::LoadFromXML( const std::string& xml_filepath )
 */
 /*
 
-//	xercesc_2_8::DOMXPathEvaluator evaluator;
+//	xercesc::DOMXPathEvaluator evaluator;
 
 
 
 
-//	const xercesc_2_8::DOMXPathNSResolver *pNSResolver = pXMLDocument->createNSResolver( pRootNode ); // error
-	const xercesc_2_8::DOMXPathNSResolver *pNSResolver = pXMLDocument->createNSResolver( NULL ); // error
+//	const xercesc::DOMXPathNSResolver *pNSResolver = pXMLDocument->createNSResolver( pRootNode ); // error
+	const xercesc::DOMXPathNSResolver *pNSResolver = pXMLDocument->createNSResolver( NULL ); // error
 
 	XercesString xpath( "/root/Input/LightWave/File" );
-//	const xercesc_2_8::DOMXPathExpression *pExpression = pXMLDocument->createExpression( xpath.begin(), NULL ); // error
-	const xercesc_2_8::DOMXPathExpression *pExpression = pXMLDocument->createExpression( xpath.begin(), pNSResolver ); // error
+//	const xercesc::DOMXPathExpression *pExpression = pXMLDocument->createExpression( xpath.begin(), NULL ); // error
+	const xercesc::DOMXPathExpression *pExpression = pXMLDocument->createExpression( xpath.begin(), pNSResolver ); // error
 	void *pResult;
 
 	pExpression->evaluate( pRootNode, 0, pResult )

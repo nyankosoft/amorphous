@@ -1,5 +1,5 @@
 #include "StaticGeometryCompiler.h"
-#include "3DCommon/MeshModel/TerrainMeshGenerator.h"
+#include "Graphics/MeshModel/TerrainMeshGenerator.h"
 #include "Support/Serialization/BinaryDatabase.h"
 #include "Support/StringAux.h"
 #include "Support/fnop.h"
@@ -187,7 +187,7 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 
 	// collision geometry stream for physics engine
 	// - stream data of triangle mesh
-	if( 0 < m_CollisionMeshStream.buffer().size() )
+	if( 0 < m_CollisionMeshStream.m_Buffer.buffer().size() )
 		db.AddData( CStaticGeometryDBKey::CollisionGeometryStream, m_CollisionMeshStream );
 }
 
@@ -652,6 +652,8 @@ void CStaticGeometryCompiler::UpdateSurfaceNameToSurfaceGroupIndexMapping()
 
 bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_filepath )
 {
+	LOG_FUNCTION_SCOPE();
+
 	bool loaded = m_Desc.LoadFromXML( xml_filepath );
 
 	// set relative directory path

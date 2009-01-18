@@ -4,8 +4,8 @@
 
 #include <boost/shared_ptr.hpp>
 #include "StaticGeometryDesc.h"
-#include "3DCommon/MeshModel/3DMeshModelArchive.h"
-#include "3DCommon/MeshModel/General3DMesh.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/General3DMesh.h"
 #include "Stage/StaticGeometry.h"
 #include "Stage/StaticGeometryArchiveFG.h"
 #include "3DMath/AABTree.h"

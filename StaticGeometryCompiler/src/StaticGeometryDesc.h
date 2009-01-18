@@ -6,13 +6,13 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "3DCommon/MeshModel/General3DMesh.h"
-#include "3DCommon/LightStructs.h"
-#include "3DCommon/Shader/ShaderParameter.h"
+#include "Graphics/MeshModel/General3DMesh.h"
+#include "Graphics/LightStructs.h"
+#include "Graphics/Shader/ShaderParameter.h"
 #include "BSPMapCompiler/LightmapBuilder.h"
 #include "XML/XMLDocumentLoader.h"
 #include "XML/XMLNodeReader.h"
-using namespace xercesc_2_8;
+using namespace xercesc;
 
 
 class CGeometryGroupParams

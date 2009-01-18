@@ -7,17 +7,14 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include "3DCommon/all.h"
-#include "3DCommon/LogOutput_OnScreen.h"
-
-#include "GameCommon/Timer.h"
+#include "Graphics/all.h"
+#include "Graphics/LogOutput_OnScreen.h"
 #include "Support.h"
 #include "Support/FileOpenDialog_Win32.h"
 #include "Support/MiscAux.h"
+#include "Support/Timer.h"
 #include "GameInput.h"
-
 #include "Stage/StaticGeometry.h"
-
 #include "XML/XMLDocumentLoader.h"
 
 #include "StaticGeometryCompilerFG.h"
@@ -124,9 +121,9 @@ VOID Render()
 
 	// rendering
 	char acStr[256];
-	sprintf( acStr, "%f", TIMER.GetFPS() );
+	sprintf( acStr, "%f", GlobalTimer().GetFPS() );
 	g_pFont->DrawText( acStr, Vector2(20,20), 0xFFFFFFFF );
-//	g_pFont->DrawText( to_string(TIMER.GetFPS()), D3DXVECTOR2(20,20), 0xFFFFFFFF );
+//	g_pFont->DrawText( to_string(GlobalTimer().GetFPS()), D3DXVECTOR2(20,20), 0xFFFFFFFF );
 
 	int i=0;
 	const vector<string>& vecProfileResults = GetProfileText();
@@ -431,9 +428,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
         }
         else
 		{
-			TIMER.UpdateFrameTime();
+			GlobalTimer().UpdateFrameTime();
 
-			g_CameraController.UpdateCameraPosition( TIMER.GetFrameTime() );
+			g_CameraController.UpdateCameraPosition( GlobalTimer().GetFrameTime() );
 			g_CameraController.SetCameraMatrix();
 
 			Render();

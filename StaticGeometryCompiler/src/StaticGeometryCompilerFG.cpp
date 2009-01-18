@@ -1,4 +1,3 @@
-
 #include "StaticGeometryCompilerFG.h"
 #include "Support/memory_helpers.h"
 #include "Support/ParamLoader.h"
@@ -7,8 +6,8 @@
 #include "Support/Serialization/BinaryDatabase.h"
 #include "Support/Log/DefaultLog.h"
 
-#include "3DCommon/Shader/ShaderTechniqueHandle.h"
-#include "3DCommon/MeshModel/TerrainMeshGenerator.h"
+#include "Graphics/Shader/ShaderTechniqueHandle.h"
+#include "Graphics/MeshModel/TerrainMeshGenerator.h"
 
 #include "LightWave/LightWaveObject.h"
 #include "LightWave/3DMeshModelBuilder_LW.h"
