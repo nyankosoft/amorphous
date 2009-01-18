@@ -386,6 +386,11 @@ bool CreateGeneral3DMesh( const std::string& model_filepath,
 	{
 		pLoader = shared_ptr<C3DModelLoader>( new C3DMeshModelBuilder_LW() );
 	}
+	else
+	{
+		LOG_PRINT_ERROR( "Only the '.lwo' files are supported." );
+		return false;
+	}
 
 	bool loaded = pLoader->LoadFromFile( model_filepath, geometry_filter );
 
@@ -402,9 +407,9 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 {
 	// create collision mesh
 	bool mesh_created = CreateGeneral3DMesh(
-		m_Desc.m_InputFilepath, // [in] .lwo, .3ds, etc.
+		m_Desc.m_InputFilepath,           // [in] .lwo, .3ds, etc.
 		m_Desc.m_CollisionGeometryFilter, // [in] filter that specifies target layers, surfaces, etc.
-		m_CollisionMesh // [out] general 3d mesh that holds collision mesh
+		m_CollisionMesh                   // [out] general 3d mesh that holds collision mesh
 		);
 
 	if( !mesh_created )
@@ -550,7 +555,7 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 	bool mesh_created = CreateGeneral3DMesh(
 		m_Desc.m_InputFilepath, // [in] .lwo, .3ds, etc.
 		m_Desc.m_GraphcisGeometryFilter, // [in] filter that specifies target layers, surfaces, etc.
-		*m_pGraphicsMesh // [out] general 3d mesh that holds collision mesh
+		*m_pGraphicsMesh // [out] general 3d mesh that holds graphics mesh
 		);
 
 	if( !mesh_created )
