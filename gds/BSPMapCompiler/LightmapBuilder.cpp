@@ -12,7 +12,7 @@
 using namespace std;
 
 
-bool CLightmapDesc::Load( xercesc_2_8::DOMNode *pNode )
+bool CLightmapDesc::Load( xercesc::DOMNode *pNode )
 {
 	if( pNode )
 		m_Enabled = true;
@@ -27,7 +27,7 @@ bool CLightmapDesc::Load( xercesc_2_8::DOMNode *pNode )
 	if( 0 < texel_size.length() )
 		m_Option.fTexelSize = to_float( texel_size );
 
-	xercesc_2_8::DOMNode *pTexNode = GetChildNode( pNode, "Texture" );
+	xercesc::DOMNode *pTexNode = GetChildNode( pNode, "Texture" );
 	if( pTexNode )
 	{
 		string tex_width  = GetTextContentOfImmediateChildNode( pTexNode, "Width" );

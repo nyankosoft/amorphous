@@ -114,7 +114,7 @@ void CLightmapLightingManager::ScaleIntensityAndAddAmbientLight()
 			}
 	}
 
-	SFloatRGBColor ambcolor = this->m_AmbientLight.Color * this->m_AmbientLight.fIntensity;
+	SFloatRGBColor ambcolor = this->m_AmbientLight.DiffuseColor * this->m_AmbientLight.fIntensity;
 	float contrast = m_fContrast;
 	float scaleR = ( maxintensityR - minintensityR ) * contrast;
 	float scaleG = ( maxintensityG - minintensityG ) * contrast;
