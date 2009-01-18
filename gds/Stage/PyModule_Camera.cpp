@@ -58,6 +58,13 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
         return NULL;
 }
 
+static CCopyEntity *CreateEntity( CCopyEntityDesc& desc )
+{
+	if( GetStage() )
+        return GetStage()->CreateEntity( desc );
+	else
+        return NULL;
+}
 
 //CCopyEntity *g_pMotionPathTargetEntity = NULL;
 
@@ -71,12 +78,14 @@ static CScriptCameraKeyFrames gs_ScriptCameraKeyFrames;
 
 PyObject* CreateCameraController( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
+	return Py_None;
+
 	char *camera_controller_name;
 	char *base_entity_name = "CutsceneCameraController"; // TODO: check whether this is safe or not
 
 	int result = PyArg_ParseTuple( args, "s|s", &camera_controller_name, &base_entity_name );
-
-	RETURN_PYNONE_IF_NO_STAGE()
 
 	CBaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( base_entity_name );
@@ -87,19 +96,26 @@ PyObject* CreateCameraController( PyObject* self, PyObject* args )
 	desc.strName = camera_controller_name;
 	desc.WorldPose.Identity();
 
-	CCopyEntity* pEntity = GetStage()->CreateEntity( desc );
+	CCopyEntity* pEntity = CreateEntity( desc );
+	if( !pEntity )
+	{
+		LOG_PRINT_WARNING( "Failed to create camera controller: " + string(camera_controller_name) );
+	}
 
 //	if( !pEntity )
 //		MsgBoxFmt( "" );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 PyObject* CreateCamera( PyObject* self, PyObject* args )
 {
-	g_Log.Print( "CreateCamera() - called" );
+	LOG_FUNCTION_SCOPE();
+
+	Py_INCREF( Py_None );
+
+	return Py_None;
 
 	char *camera_entity_name = NULL;
 	char *camera_controller_name = NULL;
@@ -118,27 +134,25 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	baseentity_handle.SetBaseEntityName( "ScriptedCamera" );
 
 	CCopyEntityDesc desc;
+	desc.TypeID = CCopyEntityTypeID::SCRIPTED_CAMERA_ENTITY;
 	desc.SetDefault();
 	desc.pBaseEntityHandle = &baseentity_handle;
 	desc.strName = camera_entity_name;
 	desc.WorldPose.vPosition = Vector3(0,0,0);
 
-	CCopyEntity *pCameraController = GetStage()->GetEntitySet()->GetEntityByName( camera_controller_name );
+	CCopyEntity *pCameraController = GetEntityByName( camera_controller_name );
 	if( !IsValidEntity(pCameraController) )
 	{
 		g_Log.Print( "CreateCamera() - cannot find camera controller entity: '%s'", camera_controller_name );
-		Py_INCREF( Py_None );
 		return Py_None;
 	}
 
 	desc.pParent = pCameraController;
 
-	CCopyEntity* pEntity = GetStage()->CreateEntity( desc );
-
+	CCopyEntity* pEntity = CreateEntity( desc );
 	if( !pEntity )
 	{
 		g_Log.Print( "CreateCamera() - cannot create camera entity: '%s'", camera_entity_name );
-		Py_INCREF( Py_None );
 		return Py_None;
 	}
 
@@ -147,7 +161,6 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	msg.pUserData = &param;
 	SendGameMessageTo( msg, pEntity );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
@@ -155,9 +168,11 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 // paths for multiple entities to be set at the same time
 PyObject* StartCameraScript( PyObject* self, PyObject* args )
 {
-	g_Log.Print( "StartCameraScript() - called" );
+	LOG_FUNCTION_SCOPE();
 
-	RETURN_PYNONE_IF_NO_STAGE()
+	Py_INCREF( Py_None );
+
+	return Py_None;
 
 	char *camera_entity_name = NULL;
 	int path_track_mode = EntityMotionPathRequest::SET_POSITION;
@@ -165,11 +180,10 @@ PyObject* StartCameraScript( PyObject* self, PyObject* args )
 
 	g_Log.Print( "StartCameraScript() - acquiring target camera entity: %s", camera_entity_name );
 
-	CCopyEntity *pCameraEntity = GetStage()->GetEntitySet()->GetEntityByName( camera_entity_name );
+	CCopyEntity *pCameraEntity = GetEntityByName( camera_entity_name );
 
 	if( !pCameraEntity )
 	{
-		Py_INCREF( Py_None );
 		return Py_None;
 	}
 
@@ -183,7 +197,6 @@ PyObject* StartCameraScript( PyObject* self, PyObject* args )
 
 //	MsgBoxFmt( "starting to set motion path for entity: %s", entity_name );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
@@ -272,7 +285,8 @@ PyObject* FadeOutTo_C32( PyObject* self, PyObject* args )
 
 PyObject* EndCameraScript( PyObject* self, PyObject* args )
 {
-	RETURN_PYNONE_IF_NO_STAGE()
+    Py_INCREF( Py_None );
+	return Py_None;
 
 	char *camera_entity_name;
 	int result = PyArg_ParseTuple( args, "s", &camera_entity_name );
@@ -302,6 +316,8 @@ PyObject* EndCameraScript( PyObject* self, PyObject* args )
 
 PyObject* gsf::py::cam::SetPose( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	if( !GetStage() )
 		return Py_None;
 
@@ -319,7 +335,6 @@ PyObject* gsf::py::cam::SetPose( PyObject* self, PyObject* args )
 	pose.matOrient = Matrix33RotationZ(deg_to_rad(bank)) * Matrix33RotationX(deg_to_rad(pitch)) * Matrix33RotationY(deg_to_rad(heading));
     g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose(time,pose) );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
@@ -345,9 +360,12 @@ PyObject* SetTarget( PyObject* self, PyObject* args )
 {
 	g_Log.Print( "cam.SetTarget() - called" );
 
+	Py_INCREF( Py_None );
+
+	return Py_None;
+
 	if( !GetStage() || !g_EntityMotionPathRequest.pTargetEntity )
 	{
-		Py_INCREF( Py_None );
 		return Py_None;
 	}
 
@@ -356,7 +374,7 @@ PyObject* SetTarget( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "fs", &time, &focus_target_entity_name );
 
-	CCopyEntity* pFocusTarget = GetStage()->GetEntitySet()->GetEntityByName( focus_target_entity_name );
+	CCopyEntity* pFocusTarget = GetEntityByName( focus_target_entity_name );
 
 	// TODO: what if the focus target entity is created later
 	if( pFocusTarget )
@@ -372,17 +390,15 @@ PyObject* SetTarget( PyObject* self, PyObject* args )
 	}
 
 
-	Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 PyObject* SetBlendWeight( PyObject* self, PyObject* args )
 {
-	if( !GetStage() )
-		return Py_None;
+	Py_INCREF( Py_None );
 
-	if( !g_EntityMotionPathRequest.pTargetEntity )
+	if( !GetStage() || !g_EntityMotionPathRequest.pTargetEntity )
 		return Py_None;
 
 	float time, blend_weight;
@@ -391,7 +407,6 @@ PyObject* SetBlendWeight( PyObject* self, PyObject* args )
 
 //	g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose(time,pose) );
 
-	Py_INCREF( Py_None );
 	return Py_None;
 }
 
