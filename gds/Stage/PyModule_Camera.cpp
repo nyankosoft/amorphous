@@ -12,7 +12,6 @@
 
 #include "CopyEntityDesc.h"
 
-#include "Support/msgbox.h"
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.h"
 #include "Support/Log/DefaultLog.h"
@@ -22,19 +21,8 @@
 using namespace std;
 
 
-#define RETURN_PYNONE_IF_NO_STAGE()	if( !GetStage() )	{	Py_INCREF( Py_None );	return Py_None;	}
-
-
-//static CStage *GetStage() = NULL;
-
 inline static CStage *GetStage() { return GetStageForScriptCallback(); }
 
-/*
-void gsf::py::cam::SetStageForScriptCallback( CStage* pStage )
-{
-	GetStage() = pStage;
-}
-*/
 
 using namespace gsf::py::cam;
 
@@ -80,8 +68,6 @@ PyObject* CreateCameraController( PyObject* self, PyObject* args )
 {
     Py_INCREF( Py_None );
 
-	return Py_None;
-
 	char *camera_controller_name;
 	char *base_entity_name = "CutsceneCameraController"; // TODO: check whether this is safe or not
 
@@ -115,8 +101,6 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 
 	Py_INCREF( Py_None );
 
-	return Py_None;
-
 	char *camera_entity_name = NULL;
 	char *camera_controller_name = NULL;
 	CameraParam param;
@@ -128,14 +112,15 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 		&camera_entity_name, &camera_controller_name,
 		&param.nearclip, &param.farclip, &param.fov, &param.aspect_ratio );
 
-	RETURN_PYNONE_IF_NO_STAGE()
+	if( !GetStage() )
+		return Py_None;
 
 	CBaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( "ScriptedCamera" );
 
 	CCopyEntityDesc desc;
-	desc.TypeID = CCopyEntityTypeID::SCRIPTED_CAMERA_ENTITY;
 	desc.SetDefault();
+	desc.TypeID = CCopyEntityTypeID::SCRIPTED_CAMERA_ENTITY;
 	desc.pBaseEntityHandle = &baseentity_handle;
 	desc.strName = camera_entity_name;
 	desc.WorldPose.vPosition = Vector3(0,0,0);
@@ -171,8 +156,6 @@ PyObject* StartCameraScript( PyObject* self, PyObject* args )
 	LOG_FUNCTION_SCOPE();
 
 	Py_INCREF( Py_None );
-
-	return Py_None;
 
 	char *camera_entity_name = NULL;
 	int path_track_mode = EntityMotionPathRequest::SET_POSITION;
@@ -286,7 +269,6 @@ PyObject* FadeOutTo_C32( PyObject* self, PyObject* args )
 PyObject* EndCameraScript( PyObject* self, PyObject* args )
 {
     Py_INCREF( Py_None );
-	return Py_None;
 
 	char *camera_entity_name;
 	int result = PyArg_ParseTuple( args, "s", &camera_entity_name );
@@ -309,7 +291,6 @@ PyObject* EndCameraScript( PyObject* self, PyObject* args )
 
 	SendGameMessageTo( msg, g_EntityMotionPathRequest.pTargetEntity );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
