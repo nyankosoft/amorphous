@@ -398,8 +398,8 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
 		m_vecNodesToCheck.pop_back();
 
-//		if( true )
-		if( rCam.ViewFrustumIntersectsWith( node.aabb ) )
+		if( true )
+//		if( rCam.ViewFrustumIntersectsWith( node.aabb ) )
 		{
 			const size_t num_subsets = node.veciGeometryIndex.size();
 			for( size_t i=0; i<num_subsets; i++ )
