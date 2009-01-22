@@ -4,7 +4,6 @@
 #include <map>
 
 #include "Graphics/fwd.h"
-#include "Graphics/Direct3D9.h"
 #include "Graphics/2DPrimitive/2DRect.h"
 #include "Graphics/TextureRenderTarget.h"
 #include "Graphics/GraphicsComponentCollector.h"
@@ -140,8 +139,6 @@ private:
 	CFadeEffect m_aFadeEffect[NUM_MAX_SIMULTANEOUS_FADES];
 	
 	C2DRect m_ScreenColor;
-
-//	CShaderManager* m_pShaderManager;
 
 	/// manages post-process effects
 	CPostProcessManager *m_pPPManager;

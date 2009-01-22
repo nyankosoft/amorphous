@@ -569,34 +569,6 @@ void CScreenEffectManager::FadeInFrom( U32 dwColor, float fTime, AlphaBlend::Mod
 	SetFadeEffect( SCREENEFFECT_FADE_IN, dwColor, fTime, alpha_blend_mode );
 }
 
-/*
-bool CScreenEffectManager::LoadShader()
-{
-	m_pShaderManager = new CShaderManager;
-
-	if( !m_pShaderManager->LoadShaderFromFile( ms_DefaultShaderFilename ) )
-///	if( !m_pShaderManager->LoadShaderFromFile( (LPCTSTR)"Shader\\Default.fx" ) )
-//	if( !m_pShaderManager->LoadShaderFromFile( "Shader\\Default.fx" ) )
-//	if( !m_pShaderManager->LoadShaderFromFile( "Shader\\SGViewerFG.fx" ) )
-	{
-		SafeDelete( m_pShaderManager );
-		return false;
-	}
-
-	CShader::Get()->SetShaderManager( m_pShaderManager );
-
-	// check if the shader file has been properly loaded
-	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
-	
-	if( !pEffect )
-	{
-		SafeDelete( m_pShaderManager );
-		return false;
-	}
-
-	return true;
-}*/
-
 
 void CScreenEffectManager::UpdateMotionBlurParams()
 {
