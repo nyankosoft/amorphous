@@ -343,8 +343,6 @@ PyObject* SetTarget( PyObject* self, PyObject* args )
 
 	Py_INCREF( Py_None );
 
-	return Py_None;
-
 	if( !GetStage() || !g_EntityMotionPathRequest.pTargetEntity )
 	{
 		return Py_None;
