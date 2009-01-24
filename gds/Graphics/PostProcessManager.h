@@ -1,24 +1,14 @@
-#ifndef  __POSTPROCESSMANAGER_H__
-#define  __POSTPROCESSMANAGER_H__
+#ifndef  __PostProcessManager_H__
+#define  __PostProcessManager_H__
 
-
-//--------------------------------------------------------------------------------------
-// File: PostProcess.cpp
-//
-// Starting point for new Direct3D applications
-//
-// Copyright (c) Microsoft Corporation. All rights reserved.
-//--------------------------------------------------------------------------------------
-#include <stdio.h>
-#include <assert.h>
-
-#include <d3d9.h>
-#include <d3dx9.h>
-#include "Graphics/Direct3D9.h"
-#include "Graphics/GraphicsComponentCollector.h"
 
 #include <string>
 #include <vector>
+#include <d3dx9.h>
+#include "../base.h"
+#include "Graphics/Direct3D9.h"
+#include "Graphics/GraphicsComponentCollector.h"
+
 
 //#define DEBUG_VS   // Uncomment this line to debug vertex shaders 
 //#define DEBUG_PS   // Uncomment this line to debug pixel shaders 
@@ -123,24 +113,26 @@ struct CPostProcess
 	/// Render target channel this PP outputs
     int          m_nRenderTarget;
 
-    D3DXHANDLE   m_hTexSource[4];        /// Handle to the post-process source textures
+    D3DXHANDLE   m_hTexSource[4];        ///< Handle to the post-process source textures
 
-    D3DXHANDLE   m_hTexScene[4];         /// Handle to the saved scene texture
+    D3DXHANDLE   m_hTexScene[4];         ///< Handle to the saved scene texture
 
-    bool         m_bWrite[4];            /// Indicates whether the post-process technique
-                                         ///   outputs data for this render target.
+	/// Indicates whether the post-process technique
+	///   outputs data for this render target.
+    bool         m_bWrite[4];            
+                                         
 
-    WCHAR        m_awszParamName[NUM_PARAMS][MAX_PATH]; /// Names of changeable parameters
+    WCHAR        m_awszParamName[NUM_PARAMS][MAX_PATH]; ///< Names of changeable parameters
 
-    WCHAR        m_awszParamDesc[NUM_PARAMS][MAX_PATH]; /// Description of parameters
+    WCHAR        m_awszParamDesc[NUM_PARAMS][MAX_PATH]; ///< Description of parameters
 
-    D3DXHANDLE   m_ahParam[NUM_PARAMS];  /// Handles to the changeable parameters
+    D3DXHANDLE   m_ahParam[NUM_PARAMS];  ///< Handles to the changeable parameters
 
-    int          m_anParamSize[NUM_PARAMS];/// Size of the parameter. Indicates
-                                           /// how many components of float4
-                                           /// are used.
+	/// Size of the parameter. Indicates how many
+	/// components of float4 are used.
+    int          m_anParamSize[NUM_PARAMS];
 
-    D3DXVECTOR4  m_avParamDef[NUM_PARAMS]; /// Parameter default
+    D3DXVECTOR4  m_avParamDef[NUM_PARAMS]; ///< Parameter default
 
 public:
 
@@ -162,51 +154,15 @@ public:
 
 	HRESULT Init( LPDIRECT3DDEVICE9 pDev, const std::string& filename );
 
-    inline void Cleanup()
-    {
-        SAFE_RELEASE( m_pEffect );
-    }
-
-    HRESULT OnLostDevice()
-    {
-        assert( m_pEffect );
-        m_pEffect->OnLostDevice();
-        return S_OK;
-    }
+    inline void Cleanup() { SAFE_RELEASE( m_pEffect ); }
 
 	LPD3DXEFFECT GetEffect() { return m_pEffect; }
 
-    HRESULT OnResetDevice( DWORD dwWidth, DWORD dwHeight );
+	HRESULT OnLostDevice();
+
+	HRESULT OnResetDevice( DWORD dwWidth, DWORD dwHeight );
 
 	HRESULT SetScale( float scale_x, float scale_y );
-/*	{
-		if( !m_pEffect )
-			return E_FAIL;
-
-		HRESULT hr;
-        UINT cPasses, p;
-        hr = m_pEffect->SetTechnique( "PostProcess" );
-        hr = m_pEffect->Begin( &cPasses, 0 );
-        for( p = 0; p < cPasses; ++p )
-		{
-			D3DXHANDLE hPass = m_pEffect->GetPass( m_hTPostProcess, p );
-
-			D3DXHANDLE hExtentScaleX = m_pEffect->GetAnnotationByName( hPass, "fScaleX" );
-			if( hExtentScaleX )
-				m_pEffect->SetFloat( hExtentScaleX, scale_x );
-			else
-				hr = m_pEffect->SetFloat( "fScaleX", scale_x );
-
-			D3DXHANDLE hExtentScaleY = m_pEffect->GetAnnotationByName( hPass, "fScaleY" );
-			if( hExtentScaleY )
-				m_pEffect->SetFloat( hExtentScaleY, scale_y );
-			else
-				hr = m_pEffect->SetFloat( "fScaleY", scale_y );
-		}
-        hr = m_pEffect->End();
-
-		return S_OK;
-	}*/
 };
 
 
@@ -458,4 +414,4 @@ public:
 };
 
 
-#endif  /* __POSTPROCESSMANAGER_H__ */
+#endif  /* __PostProcessManager_H__ */

@@ -1,12 +1,5 @@
-/*===========================================================
-  PostProcessManager.cpp
-
-
-===========================================================*/
-
-#include "Graphics/Direct3D9.h"
-#include "Graphics/2DPrimitive/2DRect.h"
 #include "PostProcessManager.h"
+#include "Graphics/2DPrimitive/2DRect.h"
 
 #include "Support/StringAux.h"
 #include "Support/Log/DefaultLog.h"
@@ -147,6 +140,14 @@ HRESULT CPostProcess::Init( LPDIRECT3DDEVICE9 pDev, const std::string& filename 
     }
 
     return S_OK;
+}
+
+
+HRESULT CPostProcess::OnLostDevice()
+{
+	assert( m_pEffect );
+	m_pEffect->OnLostDevice();
+	return S_OK;
 }
 
 
