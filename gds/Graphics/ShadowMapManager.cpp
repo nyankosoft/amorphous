@@ -543,7 +543,7 @@ void CShadowMapManager::BeginSceneDepthMap()
 
 	pEffect->SetInt( "g_ShadowMapSize", m_ShadowMapSize );
 
-	pd3dDev->BeginScene();
+//	pd3dDev->BeginScene();
 }
 
 
@@ -552,7 +552,7 @@ void CShadowMapManager::EndSceneDepthMap()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	pd3dDev->EndScene();
+//	pd3dDev->EndScene();
 
 //	ShaderManagerHub.PopViewAndProjectionMatrices();
 
@@ -574,13 +574,13 @@ void CShadowMapManager::BeginScene()
 {
 	m_SceneRenderTarget.SetRenderTarget();
 
-	DIRECT3D9.GetDevice()->BeginScene();
+//	DIRECT3D9.GetDevice()->BeginScene();
 }
 
 
 void CShadowMapManager::EndScene()
 {
-	DIRECT3D9.GetDevice()->EndScene();
+//	DIRECT3D9.GetDevice()->EndScene();
 
 	m_SceneRenderTarget.ResetRenderTarget();
 }

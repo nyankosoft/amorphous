@@ -935,7 +935,7 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 	}
 
 	//==================== render the polygons ====================
-	pd3dDev->BeginScene();
+//	pd3dDev->BeginScene();
 
 	// draw texture sorted polygons
 	if( pEffect )
@@ -959,7 +959,7 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 
 
 	//==================== end of polygon rendering routine ====================
-	pd3dDev->EndScene();
+//	pd3dDev->EndScene();
 
 
 	if( m_pDynamicLightManager )

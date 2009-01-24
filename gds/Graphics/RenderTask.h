@@ -38,7 +38,7 @@ inline void CRenderTask::RenderBase()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	HRESULT hr;
+//	HRESULT hr;
 
 	if( m_TypeFlags & DO_NOT_CALL_BEGINSCENE_AND_ENDSCENE )
 	{
@@ -48,20 +48,20 @@ inline void CRenderTask::RenderBase()
 	{
 		// call BeginScene() and EndScene() pair before and after the rendering
 
-		hr = pd3dDev->BeginScene();
+//		hr = pd3dDev->BeginScene();
 
 //		if( FAILED(hr) )
 //			LOG_PRINT_ERROR( "IDirect3DDevice9::BeginScene() failed." );
 
 		Render();
 
-		pd3dDev->EndScene();
+//		pd3dDev->EndScene();
 	}
 
 	if( m_TypeFlags & RENDER_TO_BACKBUFFER )
 	{
 		// present the backbuffer contents to the display
-		pd3dDev->Present( NULL, NULL, NULL, NULL );
+//		pd3dDev->Present( NULL, NULL, NULL, NULL );
 	}
 }
 

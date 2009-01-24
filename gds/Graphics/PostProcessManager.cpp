@@ -655,7 +655,7 @@ HRESULT CPostProcessManager::PerformSinglePostProcess( IDirect3DDevice9 *pd3dDev
             PP.m_pEffect->SetVector( PP.m_ahParam[i], &Inst.m_avParam[i] );
 
     // Render the quad
-    if( SUCCEEDED( pd3dDevice->BeginScene() ) )
+    if( true /*SUCCEEDED( pd3dDevice->BeginScene() )*/ )
     {
         V( PP.m_pEffect->SetTechnique( "PostProcess" ) );
 
@@ -784,7 +784,7 @@ HRESULT CPostProcessManager::PerformSinglePostProcess( IDirect3DDevice9 *pd3dDev
         PP.m_pEffect->End();
 
         // End scene
-        pd3dDevice->EndScene();
+        // pd3dDevice->EndScene();
     }
 
     return S_OK;

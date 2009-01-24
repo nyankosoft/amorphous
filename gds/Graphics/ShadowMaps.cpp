@@ -167,7 +167,7 @@ void CFlatShadowMap::BeginSceneShadowMap()
 
 	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF80FF80, 1.0f, 0 );
 
-	pd3dDev->BeginScene();
+//	pd3dDev->BeginScene();
 }
 
 
@@ -175,7 +175,7 @@ void CFlatShadowMap::EndSceneShadowMap()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	pd3dDev->EndScene();
+//	pd3dDev->EndScene();
 }
 
 

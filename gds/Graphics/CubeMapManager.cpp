@@ -235,7 +235,7 @@ void CCubeMapManager::RenderToCubeMap()
 			hr = pd3dDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER, 0x000000ff, 1.0f, 0L );
 
 			// Begin the scene
-			if( SUCCEEDED( pd3dDevice->BeginScene() ) )
+			if( true /*SUCCEEDED( pd3dDevice->BeginScene() )*/ )
 			{
 				ShaderManagerHub.PushViewAndProjectionMatrices( m_Camera );
 
@@ -248,7 +248,7 @@ void CCubeMapManager::RenderToCubeMap()
                     ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
 
 				// End the scene.
-				pd3dDevice->EndScene();
+				// pd3dDevice->EndScene();
 			}
 		}
 	}
