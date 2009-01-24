@@ -228,14 +228,14 @@ void CBE_PlayerPseudoAircraft::SetVisionMode( int vision_mode )
 	default:
 		pScreenEffectManager->ClearEffectFlag( ScreenEffect::PseudoNightVision );
 		pScreenEffectManager->ClearEffectFlag( ScreenEffect::MonochromeColor );
-		pScreenEffectManager->SetMonochromeColorOffset( 0.0f, 0.0f, 0.0f );
+		pScreenEffectManager->SetMonochromeEffect( 0.0f, 0.0f, 0.0f );
 		break;
 
 	case CPlayerVisionMode::NightVision:
 		pScreenEffectManager->FadeInFrom( 0xFF000000, 0.6f, AlphaBlend::One );
 		pScreenEffectManager->RaiseEffectFlag( ScreenEffect::PseudoNightVision );
 		pScreenEffectManager->RaiseEffectFlag( ScreenEffect::MonochromeColor );
-		pScreenEffectManager->SetMonochromeColorOffset( -0.1f, 0.3f, -0.1f );
+		pScreenEffectManager->SetMonochromeEffect( -0.1f, 0.3f, -0.1f );
 		break;
 
 	case CPlayerVisionMode::Thermal:

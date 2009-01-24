@@ -11,8 +11,6 @@
 #include "Support/Log/DefaultLog.h"
 #include "Support/Macro.h"
 
-#include "ScreenEffectManager.h"
-
 using namespace std;
 
 

@@ -6,15 +6,11 @@
 #include "EntitySet.h"
 #include "Stage.h"
 #include "bsptree.h"
-#include "ScreenEffectManager.h"
 
 #include "GameCommon/GameMathMisc.h"
 #include "GameCommon/MeshBoneControllerBase.h"
 
 #include "Graphics/3DGameMath.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Graphics/D3DXMeshObject.h"
 #include "Graphics/D3DXSMeshObject.h"
 
 #include "App/ApplicationBase.h"
@@ -212,43 +208,6 @@ int CBaseEntity::GetEntityGroupID( CEntityGroupHandle& entity_group_handle )
 int CBaseEntity::GetEntityGroupID()
 {
 	return GetEntityGroupID( m_EntityGroup );
-}
-
-
-void CBaseEntity::Init3DModel()
-{
-	m_MeshProperty.Release();
-
-	m_MeshProperty.LoadMeshObject();
-
-	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
-
-	// shader
-	// - load shader of its own if the shader filepath has been specified.
-	// - borrow the fallback shader of entity render manager if no shader
-	//   filepath has been specified.
-
-	if( 0 < m_MeshProperty.m_ShaderFilepath.length() )
-		m_MeshProperty.m_ShaderHandle.Load( m_MeshProperty.m_ShaderFilepath );
-	else
-		m_MeshProperty.m_ShaderHandle = m_pStage->GetEntitySet()->GetRenderManager()->GetFallbackShader();
-
-	// alpha blending
-
-	if( pMesh && (m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS) )
-	{
-		const float error_for_alpha = 0.0001f;
-		const int num_materials = pMesh->GetNumMaterials();
-		for( int i=0; i<num_materials; i++ )
-		{
-			const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial( i );
-
-			if( 1.0f - error_for_alpha < mat.fMinVertexDiffuseAlpha )
-			{
-				m_MeshProperty.m_vecTargetMaterialIndex.push_back( i );
-			}
-		}
-	}
 }
 
 

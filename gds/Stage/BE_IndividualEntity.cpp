@@ -2,6 +2,7 @@
 #include "GameMessage.h"
 #include "CopyEntityDesc.h"
 #include "CopyEntity.h"
+#include "EntityRenderManager.h"
 #include "trace.h"
 #include "Stage.h"
 #include "Physics/Actor.h"

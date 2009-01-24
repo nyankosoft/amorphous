@@ -6,6 +6,7 @@
 
 #include "BaseEntityManager.h"
 #include "BaseEntity.h"
+#include "EntityRenderManager.h"
 #include "bsptree.h"
 #include "trace.h"
 #include "ViewFrustumTest.h"

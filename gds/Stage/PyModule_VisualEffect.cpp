@@ -390,6 +390,42 @@ PyObject* ClearBlur( PyObject* self, PyObject* args )
 }
 
 
+PyObject* SetMonochrome( PyObject* self, PyObject* args )
+{
+	float r, g, b;
+	float blend_ratio = 1.0f;
+	int priority_id = gs_DefaultEffectPriorityIDforScript;
+	int result = PyArg_ParseTuple( args, "fff|fi", &r, &g, &b, &blend_ratio, &priority_id );
+
+	RETURN_PYNONE_IF_NO_STAGE()
+
+	CStage *pStage = GetStageForScriptCallback();
+	CScreenEffectManager* pEffectMgr = pStage->GetScreenEffectManager();
+
+	pEffectMgr->SetMonochromeEffect( r, g, b, blend_ratio, priority_id );
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* ClearMonochrome( PyObject* self, PyObject* args )
+{
+	int priority_id = gs_DefaultEffectPriorityIDforScript;
+	int result = PyArg_ParseTuple( args, "|i", &priority_id );
+
+	RETURN_PYNONE_IF_NO_STAGE()
+
+	CStage *pStage = GetStageForScriptCallback();
+	CScreenEffectManager* pEffectMgr = pStage->GetScreenEffectManager();
+
+	pEffectMgr->ClearMonochromeEffect( priority_id );
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
 
 PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 {
@@ -410,6 +446,8 @@ PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 	{ "ClearMotionBlur",            ClearMotionBlur,            METH_VARARGS, "" },
 	{ "SetBlur",                    SetBlur,                    METH_VARARGS, "" },
 	{ "ClearBlur",                  ClearBlur,                  METH_VARARGS, "" },
+	{ "SetMonochrome",              SetMonochrome,              METH_VARARGS, "" },
+	{ "ClearMonochrome",            ClearMonochrome,            METH_VARARGS, "" },
 	{NULL, NULL}
 };
 

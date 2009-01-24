@@ -377,13 +377,18 @@ void CScreenEffectManager::UpdateGlareEffect()
 
 void CScreenEffectManager::UpdateMonochromeColorEffect()
 {
+	if( m_mapMonochromeColor.size() == 0 )
+		return;
+
 	vector<CPProcInstance>& rPostProcessInstance = m_pPPManager->GetPostProcessInstance();
 
 	rPostProcessInstance.push_back( CPProcInstance( PP_COLOR_MONOCHROME ) );
 
 	LPD3DXEFFECT pEffect = m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_MONOCHROME]).GetEffect();
 
-	pEffect->SetFloatArray( "ColorOffset", m_MonochromeColorOffset, 4 );
+	const SFloatRGBColor color = m_mapMonochromeColor.begin()->second;
+	const float rgba[4] = { color.fRed, color.fGreen, color.fBlue, 1.0f }; // always set alpha to 1.0
+	pEffect->SetFloatArray( "ColorOffset", rgba, 4 );
 }
 
 /*

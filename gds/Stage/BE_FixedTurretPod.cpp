@@ -2,7 +2,6 @@
 #include "CopyEntity.h"
 #include "CopyEntityDesc.h"
 #include "Stage.h"
-#include "ScreenEffectManager.h"
 
 #include "Serialization_BaseEntityHandle.h"
 

@@ -9,9 +9,9 @@
 
 #include "3DMath/aabb3.h"
 #include "CopyEntity.h"
+#include "EntityNode.h"
 #include "EntityGroupHandle.h"
 #include "BaseEntityHandle.h"
-#include "EntityRenderManager.h"
 #include "OverlapTestAABB.h"
 
 #include "Graphics/Camera.h"

@@ -2,6 +2,7 @@
 #include "Stage/BSPMap.h"
 #include "Stage/StaticGeometry.h"
 #include "Stage/EntitySet.h"
+#include "Stage/EntityRenderManager.h"
 #include "Stage/trace.h"
 #include "Stage/ViewFrustumTest.h"
 #include "Stage/CopyEntityDesc.h"

@@ -168,9 +168,11 @@ private:
 
 	std::map<int,float,std::greater<int>> m_mapMotionBlurStrength;
 
+	std::map<int,SFloatRGBColor,std::greater<int>> m_mapMonochromeColor;
+
 	float m_fGlareLuminanceThreshold;
 
-	float m_MonochromeColorOffset[4];
+//	float m_MonochromeColorOffset[4];
 
 	CScreenEffectTargetSceneRenderer *m_pTargetSceneRenderer;
 
@@ -242,7 +244,9 @@ public:
 	void SetMotionBlurWeight( float motion_blur_weight, int priority_id = MIN_EFFECT_PRIORITY_ID );
 	inline void ClearMotionBlur( int priority_id = MIN_EFFECT_PRIORITY_ID );
 
-	inline void SetMonochromeColorOffset( float r, float g, float b);
+	/// \param blend_ratio (NOT IMPLEMENTED YET) How much monochrome you want to make the rendered image
+	inline void SetMonochromeEffect( float r, float g, float b, float blend_ratio = 1.0f, int priority_id = MIN_EFFECT_PRIORITY_ID );
+	inline void ClearMonochromeEffect( int priority_id = MIN_EFFECT_PRIORITY_ID );
 
 //	inline void SetGlareLuminanceThreshold( float fLuminance ) { m_fGlareLuminanceThreshold = fLuminance; }
 
@@ -322,12 +326,27 @@ inline void CScreenEffectManager::ClearMotionBlur( int priority_id )
 }
 
 
-inline void CScreenEffectManager::SetMonochromeColorOffset( float r, float g, float b)
+inline void CScreenEffectManager::SetMonochromeEffect( float r, float g, float b, float blend_ratio, int priority_id )
 {
-	m_MonochromeColorOffset[0] = r;
+	if( m_mapMonochromeColor.size() < NUM_MAX_PARAM_SETS_PER_EFFECT )
+	{
+		m_mapMonochromeColor[priority_id] = SFloatRGBColor( r, g, b );
+		RaiseEffectFlag( ScreenEffect::MonochromeColor );
+	}
+
+/*	m_MonochromeColorOffset[0] = r;
 	m_MonochromeColorOffset[1] = g;
 	m_MonochromeColorOffset[2] = b;
-	m_MonochromeColorOffset[3] = 1.0f;
+	m_MonochromeColorOffset[3] = 1.0f;*/
+}
+
+
+inline void CScreenEffectManager::ClearMonochromeEffect( int priority_id )
+{
+	m_mapMonochromeColor.erase( priority_id );
+
+	if( m_mapMonochromeColor.size() == 0 )
+		ClearEffectFlag( ScreenEffect::MonochromeColor );
 }
 
 
