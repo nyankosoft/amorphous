@@ -110,6 +110,9 @@ inline void CCopyEntity::Terminate()
 	// - does nothing by default
 	TerminateDerived();
 
+	if( 0 < iNumChildren || m_pParent )
+		DisconnectFromParentAndChildren();
+
 	// mark this as not in use
 	this->inuse = false;
 
@@ -139,9 +142,6 @@ inline void CCopyEntity::Terminate()
 	sState = 0;
 
 	Unlink();
-
-	if( 0 < iNumChildren || m_pParent )
-		DisconnectFromParentAndChildren();
 
 	if( pPhysicsActor )
 		ReleasePhysicsActor();
@@ -215,7 +215,7 @@ inline void CCopyEntity::InsertLight( int pos, CEntityHandle<CLightEntity>& ligh
 
 inline CCopyEntity *CCopyEntity::GetChild( int i )
 {
-	if( i <= 0 || iNumChildren <= i )
+	if( i < 0 || iNumChildren <= i )
 		return NULL;
 
 	return m_aChild[i].GetRawPtr();

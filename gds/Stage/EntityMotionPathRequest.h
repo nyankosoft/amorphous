@@ -43,6 +43,8 @@ public:
 	/// returns if a path exist at a given time
 	inline bool IsAvailable( float time ) const;
 
+	inline bool IsExpired( float time ) const;
+
 	inline void ReleaseMotionPath() { m_vecKeyPose.resize(0); }
 
 //	inline void Init( std::vector<KeyPose>& vecKeyPose, int motion_path_type );
@@ -173,6 +175,37 @@ inline bool CBEC_MotionPath::IsAvailable( float time ) const
 	}
 
 	return false;
+}
+
+
+inline bool CBEC_MotionPath::IsExpired( float time ) const
+{
+	size_t num_key_poses = m_vecKeyPose.size();
+	if( num_key_poses == 0 )
+		return true;
+
+	switch( GetMotionPathType() )
+	{
+	case MPTYPE_DEFAULT:
+		if( num_key_poses == 1 )
+			return true; // only has one pose - Does this make the behavior consistent with IsAvailable()?
+		else
+		{
+			return ( m_fEndTime < time );
+		}
+		break;
+
+	case MPTYPE_LOOP:
+		return false;
+
+	case MPTYPE_WAIT_INFINITELY_AT_END_POSE:
+		return false;
+
+	default:
+		break;
+	}
+
+	return true;
 }
 
 

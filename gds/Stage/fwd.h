@@ -28,6 +28,7 @@ class CSurfaceMaterialManager;
 class CTextMessageManager;
 struct SGameMessage;
 class CBEC_MotionPath;
+class EntityMotionPathRequest;
 //class CDynamicLightManagerForStaticGeometry;
 
 class CScriptManager;

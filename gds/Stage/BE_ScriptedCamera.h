@@ -311,6 +311,11 @@ public:
 };
 
 
+/**
+ Scripted camera entities are terminated when they finish following the given path
+
+
+*/
 class CScriptedCameraEntity : public CCopyEntity
 {
 	CCamera m_Camera;
@@ -324,6 +329,12 @@ class CScriptedCameraEntity : public CCopyEntity
 	CScriptCameraKeyFrames m_KeyFrames;
 
 	bool m_InitializedAtCutsceneStart;
+
+	/// set to true after 'm_Path' set
+	/// - e.g., through a game message
+	/// - prevent the base entity treating this as expired before receiving motion path
+	/// - What about m_KeyFrames?
+	bool m_Initialized;
 
 //	cdv<Vector3> m_vCamPos;
 
@@ -339,7 +350,8 @@ public:
 
 	CScriptedCameraEntity()
 		:
-	m_InitializedAtCutsceneStart(false)
+	m_InitializedAtCutsceneStart(false),
+	m_Initialized(false)
 	{
 		m_CamOrient.target  = Matrix33Identity();
 		m_CamOrient.current = Matrix33Identity();//.FromRotationMatrix( Matrix33Identity() );

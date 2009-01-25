@@ -16,6 +16,9 @@
 #include "Support/VectorRand.h"
 
 
+inline static short& HasExpired(CCopyEntity* pCameraEntity) { return pCameraEntity->s1; };
+
+
 void FocusTargetFrameSet::UpdateFocusTargetEntities( CEntitySet *pEntitySet )
 {
 	size_t i, num_key_frames = m_vecKeyFrame.size();
@@ -51,6 +54,10 @@ void CScriptedCameraEntity::Update( float dt )
 
 		UpdateCameraParams();
 	}
+	else if( m_Path.IsExpired( (float)GetStage()->GetElapsedTime() ) )
+	{
+		HasExpired(this) = 1;
+	}
 
 //	if( m_pStage->GetEntitySet()->GetCameraEntity() == this )
 //	{
@@ -70,6 +77,8 @@ void CScriptedCameraEntity::HandleMessage( SGameMessage& msg )
 		EntityMotionPathRequest *pReq = (EntityMotionPathRequest *)msg.pUserData;
 		m_Path.SetKeyPoses( pReq->vecKeyPose );
 		m_Path.SetMotionPathType( pReq->MotionPathType );
+
+		m_Initialized = true;
 
 		LOG_PRINT( " - added motion path to scripted camera" );
 
@@ -318,6 +327,10 @@ void CBE_ScriptedCamera::InitCopyEntity(CCopyEntity* pCopyEnt)
 void CBE_ScriptedCamera::Act( CCopyEntity* pCopyEnt )
 {
 	pCopyEnt->Update( (float)m_pStage->GetElapsedTime() );
+
+	// commented out - the camera controller terminates scripted cameras in its loop to update child entities
+//	if( HasExpired(pCopyEnt) )
+//		m_pStage->TerminateEntity( pCopyEnt );
 }
 
 

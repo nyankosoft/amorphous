@@ -62,10 +62,11 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 {
 	m_pInputHandler->SetEntity( pCopyEnt );
 
-	int i, num_cameras = pCopyEnt->GetNumChildren();
+	int i=0;
 
+	float time_in_stage = (float)m_pStage->GetElapsedTime(); // [sec]
 	bool camera_active = false;
-	for( i=0; i<num_cameras; i++ )
+	while( i < pCopyEnt->GetNumChildren() ) // i.e. i < num_cameras
 	{
 		shared_ptr<CCopyEntity> pCameraEntity = pCopyEnt->m_aChild[i].Get();
 
@@ -81,10 +82,20 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		shared_ptr<CScriptedCameraEntity> pScriptedCamEntity
 			= boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
-//		CBE_ScriptedCamera *pCameraBaseEntity = (CBE_ScriptedCamera *)(pCameraEntity->pBaseEntity);
-//		CBEC_ScriptedCameraExtraData& ex = pCameraBaseEntity->GetExtraData(pCameraEntity);
+		if( pScriptedCamEntity->GetPath().IsExpired( time_in_stage ) )
+		{
+			// remove the scripted camera
+			// - pCopyEnt->GetNumChildren() is decremented.
+			CCopyEntity *pCameraRawPtr = pCameraEntity.get();
+			m_pStage->TerminateEntity( pCameraRawPtr );
+		}
+		else
+		{
+			// the scripted camera still has some path to follow
+			camera_active |= pScriptedCamEntity->GetPath().IsAvailable( time_in_stage );
+			i++;
+		}
 
-		camera_active |= pScriptedCamEntity->GetPath().IsAvailable( (float)m_pStage->GetElapsedTime() );
 	}
 
 	CCopyEntity *pCurrentCameraEntity = m_pStage->GetEntitySet()->GetCameraEntity();
@@ -94,7 +105,10 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		// - start the cut scene
 		LOG_PRINT( "- Starting a cut scene" );
 
-		m_PrevCameraEntity = CEntityHandle<>( pCurrentCameraEntity->Self() );
+		if( pCurrentCameraEntity )
+			m_PrevCameraEntity = CEntityHandle<>( pCurrentCameraEntity->Self() );
+		else
+			m_PrevCameraEntity = CEntityHandle<>();
 
 		// set the camera controller entity as the camera entity of the stage
 		m_pStage->GetEntitySet()->SetCameraEntity( pCopyEnt );

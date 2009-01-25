@@ -51,6 +51,8 @@ void CCopyEntity::DisconnectFromParentAndChildren()
 				for( j=i; j<m_pParent->iNumChildren-1; j++ )
 					m_pParent->m_aChild[j] = m_pParent->m_aChild[j+1];
 				m_pParent->iNumChildren--;
+
+				break;
 			}
 		}
 	}

@@ -417,6 +417,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Stage\StageUtility.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Stage\StageUtility.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Stage\StaticGeometry.cpp"
 					>
 				</File>
