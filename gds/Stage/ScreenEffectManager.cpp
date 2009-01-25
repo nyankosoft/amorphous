@@ -145,7 +145,6 @@ bool CScreenEffectManager::Init()
 {
 	m_vecExtraTexEffect.resize( 1 );
 
-//	LoadShader();
 	UpdateScreenSize();
 
 	m_NoiseEffect.LoadNoiseTextures();
@@ -391,68 +390,13 @@ void CScreenEffectManager::UpdateMonochromeColorEffect()
 	pEffect->SetFloatArray( "ColorOffset", rgba, 4 );
 }
 
-/*
-void CScreenEffectManager::RenderPostProcessEffects()
-{
-	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
-
-	if( m_EffectFlag & ScreenEffect::PostProcessEffects )
-	{
-		// perform post-processes on the scene
-		m_pPPManager->PerformPostProcess( pd3dDev );
-
-		// removed 18:42 2008-02-11
-		// original render target is restored in m_pPPManager->RenderPostProcess() call below
-
-		// render the result of the post-processed image
-		// to the restored render target
-		m_pPPManager->RenderPostProcess( pd3dDev );
-	}
-
-	if( pEffect )
-	{
-		UINT cPasses;
-//		m_pShaderManager->SetTechnique( SHADER_TECH_DEFAULT );
-		m_pShaderManager->SetTechnique( m_DefaultShaderTechnique );
-		pEffect->Begin( &cPasses, 0);
-		pEffect->BeginPass(0);	// set to default pass
-	}
-
-	int i;
-
-	if( m_pSimpleMotionBlur && GetEffectFlag() & ScreenEffect::PseudoMotionBlur )
-	{
-		m_pSimpleMotionBlur->End();
-		m_pSimpleMotionBlur->Render();
-	}
-
-	for( i=0; i<NUM_MAX_SIMULTANEOUS_FADES; i++ )
-	{
-		if( !m_aFadeEffect[i].IsInUse() )
-			continue;
-
-		m_aFadeEffect[i].Draw();
-	}
-
-	if( m_EffectFlag & ScreenEffect::PseudoNightVision )
-	{
-		m_NoiseEffect.RenderNoiseEffect();
-		m_vecExtraTexEffect[0].Rect.Draw( m_vecExtraTexEffect[0].m_Texture );
-	}
-
-	if( pEffect )
-	{
-		pEffect->EndPass();
-		pEffect->End();
-	}
-
-}*/
-
 
 void CScreenEffectManager::RenderOverlayEffects()
 {
+	HRESULT hr;
+	hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
+	hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+
 	int i;
 	for( i=0; i<NUM_MAX_SIMULTANEOUS_FADES; i++ )
 	{
@@ -466,71 +410,6 @@ void CScreenEffectManager::RenderOverlayEffects()
 	{
 		m_NoiseEffect.RenderNoiseEffect();
 		m_vecExtraTexEffect[0].Rect.Draw( m_vecExtraTexEffect[0].m_Texture );
-	}
-}
-
-
-void CScreenEffectManager::RenderPostProcessEffects()
-{
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
-
-	if( m_EffectFlag & ScreenEffect::PostProcessEffects )
-	{
-		hr = m_pPPManager->DrawSceneWithPostProcessEffects();
-	}
-
-	if( m_pSimpleMotionBlur && GetEffectFlag() & ScreenEffect::PseudoMotionBlur )
-	{
-		// render the fullscreen-sized rectangle of the blurred scene
-		m_pSimpleMotionBlur->Render();
-	}
-
-	LPD3DXEFFECT pEffect = NULL;//m_pShaderManager->GetEffect();
-	if( pEffect )
-	{
-		UINT cPasses;
-//		m_pShaderManager->SetTechnique( m_DefaultShaderTechnique );
-		pEffect->Begin( &cPasses, 0 );
-
-		// assumes that the shader technique for overlay effects
-		// uses fixed function vertex and pixel shader
-		pEffect->BeginPass(0);	// set to default pass
-		RenderOverlayEffects();
-		pEffect->EndPass();
-
-		pEffect->End();
-	}
-	else
-	{
-		RenderOverlayEffects();
-	}
-}
-
-
-void CScreenEffectManager::EndRender()
-{
-}
-
-
-void CScreenEffectManager::Render( CCamera &rCam )
-{
-	if( m_bPseudoMotionBlurEnabled )
-	{
-		m_pSimpleMotionBlur->End();
-		m_pSimpleMotionBlur->Render();
-	}
-	else if( m_bPostProcessEffectEnabled )
-	{
-		// restore the original render target
-		// and draw the post processed scene as a textured rect
-		m_pPPManager->DrawSceneWithPostProcessEffects();
-	}
-	else
-	{
-		// no effects that use texture render target
-		if( m_pTargetSceneRenderer )
-			m_pTargetSceneRenderer->RenderSceneForScreenEffect( rCam );
 	}
 }
 
@@ -608,13 +487,7 @@ void CScreenEffectManager::UpdateScreenSize()
 
 void CScreenEffectManager::ReleaseGraphicsResources()
 {
-//	SafeDelete( m_pShaderManager );
-
 	SafeDelete( m_pPPManager );
-
-//	int i, num_tex_effects = m_vecExtraTexEffect.size();
-//	for( i=0; i<num_tex_effects; i++ )
-//		m_vecExtraTexEffect[i].ReleaseTexture();
 
 //	m_pSimpleMotionBlur - graphics component
 }
@@ -624,26 +497,14 @@ void CScreenEffectManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 {
 //	m_NoiseEffect.LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-//	LoadShader();
-
 	UpdateScreenSize();
-
-//	int i, num_tex_effects = m_vecExtraTexEffect.size();
-//	for( i=0; i<num_tex_effects; i++ )
-//		m_vecExtraTexEffect[i].LoadTexture();
 
 //	m_pSimpleMotionBlur - graphics component
 }
 
-
-/// add render tasks that are done after the scene is rendered
-/// make sure render tasks for scene are already registered
-void CScreenEffectManager::CreateRenderTasks()
+void CScreenEffectManager::DoPseudoNightVisionEffectSettings()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = NULL;//m_pShaderManager->GetEffect();
-
-	bool bExtraRenderTarget = false;
 
 	if( pEffect )
 	{
@@ -652,6 +513,244 @@ void CScreenEffectManager::CreateRenderTasks()
 		else
 			pEffect->SetBool( "g_bNightVision", false );
 	}
+}
+
+
+void CScreenEffectManager::BeginRender( const CCamera &rCam )
+{
+	DoPseudoNightVisionEffectSettings();
+
+	m_bPseudoMotionBlurEnabled
+		= GetEffectFlag() & ScreenEffect::PseudoMotionBlur 
+		&& m_pSimpleMotionBlur;
+
+	unsigned int pp_effect_flag_ors
+		= ScreenEffect::Glare
+		| ScreenEffect::MonochromeColor
+		| ScreenEffect::PseudoBlur;
+
+	m_bPostProcessEffectEnabled
+		= m_EffectFlag & ScreenEffect::PostProcessEffects
+		&& m_EffectFlag & pp_effect_flag_ors
+		&& m_pPPManager;
+
+	// the two bool variables above are also used later in Render()
+
+	if( m_bPseudoMotionBlurEnabled )
+	{
+		// set motion blur strength
+		UpdateMotionBlurParams();
+
+		// set texture render target for psedo motion blur
+		m_pSimpleMotionBlur->Begin();
+		// TODO: save flag for effect flag changes during BeginRender() & RenderPostProcessEffects()
+//		m_bMotionBlurOn = true;
+	}
+
+	if( m_bPostProcessEffectEnabled )
+	{
+		// clear all the previous post process effects
+		m_pPPManager->GetPostProcessInstance().resize( 0 );
+
+		if( m_EffectFlag & ScreenEffect::PseudoBlur )//&& 0 < m_fBlurWidth && 0 < m_fBlurHeight )
+			UpdateBlurEffect();
+
+		// set post-process instances for glare effect
+		if( m_EffectFlag & ScreenEffect::Glare )
+			UpdateGlareEffect();
+
+		// set post-process instances for monochrome color effect
+		if( m_EffectFlag & ScreenEffect::MonochromeColor )
+			UpdateMonochromeColorEffect();
+
+		// save the current render target and
+		// set the texture render target for post process effect
+		m_pPPManager->SetTextureRenderTarget( 0 );
+	}
+}
+
+
+void CScreenEffectManager::EndRender()
+{
+}
+
+
+void CScreenEffectManager::Render( CCamera &rCam )
+{
+	BeginRender( rCam );
+
+		if( m_pTargetSceneRenderer )
+			m_pTargetSceneRenderer->RenderSceneForScreenEffect( rCam );
+
+	EndRender();
+
+	RenderPostProcessEffects();
+}
+
+
+void CScreenEffectManager::RenderPostProcessEffects()
+{
+	if( m_bPostProcessEffectEnabled )
+	{
+		// perform post-processes on the scene
+		m_pPPManager->PerformPostProcess();
+
+		m_pPPManager->ResetTextureRenderTarget();
+
+		// restore the original render target
+		// and draw the post processed scene as a textured rect
+		// to the restored render target
+		m_pPPManager->DrawSceneWithPostProcessEffects();
+	}
+
+	if( m_bPseudoMotionBlurEnabled )
+	{
+		m_pSimpleMotionBlur->End();
+		m_pSimpleMotionBlur->Render();
+	}
+
+	// Now the original back buffer is the render target
+	// - render some simple fullscreen quad effects
+
+	RenderOverlayEffects();
+}
+
+
+//======================================================================
+// Implementation for CRenderTask version
+//======================================================================
+
+/*
+void CScreenEffectManager::Render( CCamera &rCam )
+{
+	if( m_bPseudoMotionBlurEnabled )
+	{
+		m_pSimpleMotionBlur->End();
+		m_pSimpleMotionBlur->Render();
+	}
+	else if( m_bPostProcessEffectEnabled )
+	{
+		// restore the original render target
+		// and draw the post processed scene as a textured rect
+		m_pPPManager->DrawSceneWithPostProcessEffects();
+	}
+	else
+	{
+		// no effects that use texture render target
+		if( m_pTargetSceneRenderer )
+			m_pTargetSceneRenderer->RenderSceneForScreenEffect( rCam );
+	}
+}
+
+
+void CScreenEffectManager::RenderPostProcessEffects()
+{
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr;
+
+	if( m_EffectFlag & ScreenEffect::PostProcessEffects )
+	{
+		hr = m_pPPManager->DrawSceneWithPostProcessEffects();
+	}
+
+	if( m_pSimpleMotionBlur && GetEffectFlag() & ScreenEffect::PseudoMotionBlur )
+	{
+		// render the fullscreen-sized rectangle of the blurred scene
+		m_pSimpleMotionBlur->Render();
+	}
+
+	LPD3DXEFFECT pEffect = NULL;//m_pShaderManager->GetEffect();
+	if( pEffect )
+	{
+		UINT cPasses;
+//		m_pShaderManager->SetTechnique( m_DefaultShaderTechnique );
+		pEffect->Begin( &cPasses, 0 );
+
+		// assumes that the shader technique for overlay effects
+		// uses fixed function vertex and pixel shader
+		pEffect->BeginPass(0);	// set to default pass
+		RenderOverlayEffects();
+		pEffect->EndPass();
+
+		pEffect->End();
+	}
+	else
+	{
+		RenderOverlayEffects();
+	}
+}
+*/
+
+
+/*
+void CScreenEffectManager::RenderPostProcessEffects()
+{
+	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr;
+
+	if( m_EffectFlag & ScreenEffect::PostProcessEffects )
+	{
+		// perform post-processes on the scene
+		m_pPPManager->PerformPostProcess();
+
+		// removed 18:42 2008-02-11
+		// original render target is restored in m_pPPManager->RenderPostProcess() call below
+
+		// render the result of the post-processed image
+		// to the restored render target
+		m_pPPManager->DrawSceneWithPostProcessEffects();
+	}
+//
+//	if( pEffect )
+//	{
+//		UINT cPasses;
+///		m_pShaderManager->SetTechnique( SHADER_TECH_DEFAULT );
+//		m_pShaderManager->SetTechnique( m_DefaultShaderTechnique );
+//		pEffect->Begin( &cPasses, 0);
+//		pEffect->BeginPass(0);	// set to default pass
+//	}
+
+	int i;
+
+	if( m_pSimpleMotionBlur && GetEffectFlag() & ScreenEffect::PseudoMotionBlur )
+	{
+		m_pSimpleMotionBlur->End();
+		m_pSimpleMotionBlur->Render();
+	}
+
+	for( i=0; i<NUM_MAX_SIMULTANEOUS_FADES; i++ )
+	{
+		if( !m_aFadeEffect[i].IsInUse() )
+			continue;
+
+		m_aFadeEffect[i].Draw();
+	}
+
+	if( m_EffectFlag & ScreenEffect::PseudoNightVision )
+	{
+		m_NoiseEffect.RenderNoiseEffect();
+		m_vecExtraTexEffect[0].Rect.Draw( m_vecExtraTexEffect[0].m_Texture );
+	}
+
+	if( pEffect )
+	{
+		pEffect->EndPass();
+		pEffect->End();
+	}
+
+}*/
+
+
+/// add render tasks that are done after the scene is rendered
+/// make sure render tasks for scene are already registered
+void CScreenEffectManager::CreateRenderTasks()
+{
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+
+	DoPseudoNightVisionEffectSettings();
+
+	bool bExtraRenderTarget = false;
 
 	m_bPseudoMotionBlurEnabled
 		= GetEffectFlag() & ScreenEffect::PseudoMotionBlur 
@@ -729,9 +828,4 @@ void CScreenEffectManager::CreateRenderTasks()
 
 		RenderTaskProcessor.AddRenderTask( new CSimpleMotionBlurRenderTask( m_pSimpleMotionBlur ) );
 	}
-}
-
-
-void CScreenEffectManager::BeginRender( const CCamera &rCam )
-{
 }

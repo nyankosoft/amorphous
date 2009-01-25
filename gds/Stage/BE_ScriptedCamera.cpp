@@ -109,15 +109,15 @@ void CScriptedCameraEntity::RenderStage()
 {
 	PERIODICAL( 100, LOG_PRINT( "Camera pos: " + to_string(m_Camera.GetPosition(), 2) ) );
 
+	if( 7.5f < GetStage()->GetElapsedTime() )
+		int break_here = 1;
+
 	CScreenEffectManager *pScreenEffectManager = GetStage()->GetScreenEffectManager();
 
 	// save the original settings
 	int orig_effect_flag = pScreenEffectManager->GetEffectFlag();
 
-	if( 7.5f < GetStage()->GetElapsedTime() )
-		int break_here = 1;
-
-	const CPPEffectParams& effect = m_PPEffectParams;
+/*	const CPPEffectParams& effect = m_PPEffectParams;
 	int effect_flag = effect.flag;
 //	int effect_flag = effect.flag | ScreenEffect::MonochromeColor;
 	pScreenEffectManager->SetEffectFlag( effect_flag );
@@ -130,7 +130,7 @@ void CScriptedCameraEntity::RenderStage()
 		PERIODICAL( 10, g_Log.Print( "blur: %f, %f", effect.blur_x, effect.blur_y ) );
 
 //	pScreenEffectManager->SetGlareLuminanceThreshold( effect.glare_threshold );
-
+*/
 	GetStage()->Render( m_Camera );
 
 	// restore the original effect settings

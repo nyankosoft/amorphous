@@ -198,6 +198,8 @@ private:
 
 	void RenderOverlayEffects();
 
+	void DoPseudoNightVisionEffectSettings();
+
 public:
 
 	CScreenEffectManager();

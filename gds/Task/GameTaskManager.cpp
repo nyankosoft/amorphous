@@ -1,6 +1,7 @@
 #include "GameTaskManager.h"
 #include "GameTask.h"
 
+#include "Graphics/Direct3D9.h"
 #include "Graphics/RenderTask.h"
 #include "Graphics/RenderTaskProcessor.h"
 #include "GameTask.h"
@@ -91,11 +92,26 @@ void CGameTaskManager::Render()
 {
 	if( m_pCurrentTask )
 	{
-		// create list of non-hierarchical render operations
-		m_pCurrentTask->CreateRenderTasks();
+		const bool use_render_task = false;
+		if( use_render_task )
+		{
+/*			// create list of non-hierarchical render operations
+			m_pCurrentTask->CreateRenderTasks();
 
-		RenderTaskProcessor.Render();
+			RenderTaskProcessor.Render();
+*/
+		}
+		else
+		{
+			// BeginScene() here if render task system is NOT used
+			HRESULT hr = DIRECT3D9.GetDevice()->BeginScene();
 
-//		m_pCurrentTask->Render();
+			m_pCurrentTask->RenderBase();
+
+			// EndScene() and Present() here if render task system is NOT used
+			hr = DIRECT3D9.GetDevice()->EndScene();
+
+			hr = DIRECT3D9.GetDevice()->Present( NULL, NULL, NULL, NULL );
+		}
 	}
 }
