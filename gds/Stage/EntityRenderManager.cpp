@@ -979,6 +979,14 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	/// set view and projection matrices of all shader managers
 	ShaderManagerHub.PushViewAndProjectionMatrices( rCam );
 
+
+	// create env map texture based no the current camera pose
+	bool do_not_use_render_task = true;
+	if( do_not_use_render_task )
+	{
+		UpdateEnvironmentMapTextures();
+	}
+
 	if( m_pShadowManager )
 	{
 		// render the scene as fullscreen rect with
