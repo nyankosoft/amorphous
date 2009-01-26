@@ -50,6 +50,11 @@ void CCopyEntity::DisconnectFromParentAndChildren()
 				// push the parent's children forward to fill the vacant space in the array
 				for( j=i; j<m_pParent->iNumChildren-1; j++ )
 					m_pParent->m_aChild[j] = m_pParent->m_aChild[j+1];
+
+				// set null entity handle to the unused entry
+				// - not a required operation. Just to make things clear
+				m_pParent->m_aChild[ m_pParent->iNumChildren-1 ] = CEntityHandle<>();
+
 				m_pParent->iNumChildren--;
 
 				break;

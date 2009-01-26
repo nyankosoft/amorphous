@@ -78,6 +78,9 @@ void CEntityFactory::ReleaseEntity( shared_ptr<CCopyEntity> pEntity )
 //	case CCopyEntityTypeID::LIGHT_ENTITY:
 //		???
 //		break;
+	case CCopyEntityTypeID::SCRIPTED_CAMERA_ENTITY:
+		m_ScriptedCameraEntityPool.release<CCopyEntity>( pEntity );
+		break;
 //	case CCopyEntityTypeID::ANOTHER_ENTITY:
 //		pEntity.reset();
 		break;
