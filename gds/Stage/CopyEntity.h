@@ -70,12 +70,16 @@ enum eEntityFlag
 */
 class CCopyEntity
 {
+public:
+
 	enum FixedParams
 	{
 		NUM_MAX_LIGHTS_AT_ENTITY         = 4,
 		NUM_MAX_CHILDREN_PER_ENTITY      = 4,
 		NUM_MAX_ENTITY_TOUCHES_PER_FRAME = 4,
 	};
+
+private:
 
 	std::string strName;	///< individual name for entity
 

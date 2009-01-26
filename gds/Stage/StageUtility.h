@@ -18,7 +18,11 @@ public:
 	m_pStage(pStage)
 	{}
 
-	CEntityHandle<> CreateCameraController( const std::string& camera_controller_name );
+	/// \param cutscene_input_handler_index input index of the handler during cutscene.
+	///        Set a navative value to create camera controller not for cutscene.
+	///        default: -1 (Don't create the camera controller for cutscene)
+	CEntityHandle<> CreateCameraController( const std::string& camera_controller_name,
+		                                    int cutscene_input_handler_index = -1 );
 
 	CScriptedCameraEntity *CreateScriptedCamera( const std::string& camera_name,
 		                                         const std::string& camera_controller_name,

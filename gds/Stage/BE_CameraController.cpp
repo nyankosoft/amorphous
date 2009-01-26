@@ -8,6 +8,7 @@
 #include "Stage.h"
 #include "ScreenEffectManager.h"
 #include "Serialization_BaseEntityHandle.h"
+#include "EntityMotionPathRequest.h"
 
 #include "GameInput/InputHub.h"
 #include "Input/InputHandler_Cutscene.h"
@@ -20,6 +21,13 @@ using namespace boost;
 
 
 static const U32 gs_FadeoutTimeMS = 500;
+
+
+CTextureRenderTarget CBE_CameraController::ms_aTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
+
+bool CBE_CameraController::ms_TextureRenderTargetsInitialized = false;
+
+uint CBE_CameraController::ms_NumAvailableTextureRenderTargets = 0;
 
 
 CBE_CameraController::CBE_CameraController()
@@ -43,12 +51,23 @@ CBE_CameraController::~CBE_CameraController()
 
 void CBE_CameraController::Init()
 {
-//	Init3DModel();
-
 //	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 //	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
 
 	m_pInputHandler = new CInputHandler_Cutscene( this );
+
+	// create texture render targets
+	// TODO: Do this only if necessary
+
+	if( ms_TextureRenderTargetsInitialized == false )
+	{
+		for( int i=0; i<NUM_MAX_ACTIVE_CAMERAS; i++ )
+		{
+			bool res = ms_aTextureRenderTarget[i].InitScreenSizeRenderTarget();
+			if( res )
+				ms_NumAvailableTextureRenderTargets++;
+		}
+	}
 }
 
 
@@ -56,6 +75,23 @@ void CBE_CameraController::InitCopyEntity(CCopyEntity* pCopyEnt)
 {
 }
 
+
+/// returns the number of cameras that should be rendering the stage right now.
+void CBE_CameraController::GetActiveCameraIndices( CCopyEntity* pCopyEnt,
+												   TCFixedVector<uint,CCopyEntity::NUM_MAX_CHILDREN_PER_ENTITY>& active_cam_indices )
+{
+	const float time_in_stage = (float)m_pStage->GetElapsedTime(); // [sec]
+	for( int i=0; i<pCopyEnt->GetNumChildren(); i++ )
+	{
+		shared_ptr<CCopyEntity> pCameraEntity = pCopyEnt->m_aChild[i].Get();
+
+		shared_ptr<CScriptedCameraEntity> pScriptedCamEntity
+			= boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
+
+		if( pScriptedCamEntity->GetPath().IsAvailable( time_in_stage ) )
+			active_cam_indices.push_back( (uint)i );
+	}
+}
 
 
 void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
@@ -152,7 +188,7 @@ void CBE_CameraController::MessageProcedure(SGameMessage& rGameMessage, CCopyEnt
 
 void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 {
-	int num_cameras = pCopyEnt->GetNumChildren();
+/*	int num_cameras = pCopyEnt->GetNumChildren();
 
 	if( num_cameras == 0 )
 	{
@@ -161,19 +197,48 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 	}
 
 	num_cameras = 1;
+*/
+	TCFixedVector<uint,CCopyEntity::NUM_MAX_CHILDREN_PER_ENTITY> active_cam_indices;
 
-	for( int i=0; i<num_cameras; i++ )
+	GetActiveCameraIndices( pCopyEnt, active_cam_indices );
+	uint num_active_cameras = (uint)active_cam_indices.size();
+
+	if( NUM_MAX_ACTIVE_CAMERAS < num_active_cameras )
+		num_active_cameras = NUM_MAX_ACTIVE_CAMERAS;
+
+	if( 0 < num_active_cameras /*num_active_cameras == 1*/ )
+	{
+		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[active_cam_indices[0]].GetRawPtr();
+		if( IsValidEntity(pCameraEntity) )
+			pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
+	}
+	else if( 2 <= num_active_cameras )
+	{
+		// render the stage to different texture render targets
+		for( uint i=0; i<num_active_cameras; i++ )
+		{
+			CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[active_cam_indices[i]].GetRawPtr();
+
+			if( !IsValidEntity(pCameraEntity) )
+				continue;
+
+			ms_aTextureRenderTarget[i].SetRenderTarget();
+
+			pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
+
+			ms_aTextureRenderTarget[i].ResetRenderTarget();
+		}
+	}
+/*
+	for( uint i=0; i<num_active_cameras; i++ )
 	{
 		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[i].GetRawPtr();
-
-		if( !IsValidEntity(pCameraEntity) )
-			continue;
 
 		// render stage with the camera
 //		pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
 
 		pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
-	}
+	}*/
 }
 
 

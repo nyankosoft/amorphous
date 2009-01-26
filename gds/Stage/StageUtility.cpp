@@ -7,13 +7,18 @@ using namespace std;
 using namespace boost;
 
 
-CEntityHandle<> CStageUtility::CreateCameraController( const std::string& camera_controller_name )
+CEntityHandle<> CStageUtility::CreateCameraController( const std::string& camera_controller_name,
+													   int cutscene_input_handler_index )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
 		return CEntityHandle<>();
 
-	char *base_entity_name = "CutsceneCameraController"; // TODO: check whether this is safe or not
+	char *base_entity_name = NULL;
+	if( 0 <= cutscene_input_handler_index )
+		base_entity_name = "CutsceneCameraController";
+	else
+		base_entity_name = "CameraController";
 
 //	int result = PyArg_ParseTuple( args, "s|s", &camera_controller_name, &base_entity_name );
 

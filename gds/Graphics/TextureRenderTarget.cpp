@@ -92,11 +92,11 @@ bool CTextureRenderTarget::Init( const CTextureResourceDesc& texture_desc )
 }
 
 
-void CTextureRenderTarget::InitScreenSizeRenderTarget()
+bool CTextureRenderTarget::InitScreenSizeRenderTarget()
 {
 	m_bScreenSizeRenderTarget = true;
 
-	Init( GetScreenWidth(), GetScreenHeight(), TextureFormat::A8R8G8B8, 0 );
+	return Init( GetScreenWidth(), GetScreenHeight(), TextureFormat::A8R8G8B8, 0 );
 }
 
 

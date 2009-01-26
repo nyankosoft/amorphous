@@ -85,9 +85,10 @@ public:
 
 	bool Init( const CTextureResourceDesc& texture_desc );
 
-	// The texture size is automatically resized to screen size (viewport size)
-	// in LoadGraphicsResources()
-	void InitScreenSizeRenderTarget();
+	/// Creates the render target of the current screen size
+	/// - The texture size is automatically resized to screen size (viewport size)
+	///   in LoadGraphicsResources().
+	bool InitScreenSizeRenderTarget();
 
 
 //	void SetTextureWidth( const int width, const int height );

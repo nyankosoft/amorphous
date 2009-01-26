@@ -3,9 +3,10 @@
 
 #include "BaseEntity.h"
 #include "BaseEntityHandle.h"
+#include "CopyEntity.h"
 #include "EntityHandle.h"
-
-#include "EntityMotionPathRequest.h"
+#include "Graphics/TextureRenderTarget.h"
+#include "Support/FixedVector.h"
 
 #include "../base.h"
 
@@ -20,6 +21,11 @@ class CInputHandler_Cutscene;
 class CBE_CameraController : public CBaseEntity
 {
 private:
+
+	enum Params
+	{
+		NUM_MAX_ACTIVE_CAMERAS = 2
+	};
 
 //	CCamera m_Camera;
 
@@ -36,11 +42,20 @@ private:
 
 	U32 m_CutsceneEndStartedTime;
 
+	static CTextureRenderTarget ms_aTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
+
+	static bool ms_TextureRenderTargetsInitialized;
+
+	static uint ms_NumAvailableTextureRenderTargets;
+
 private:
 
 	void EndCutscene( CCopyEntity* pCopyEnt );
 
 	void SkipCutscene( CCopyEntity* pCopyEnt );
+
+	void GetActiveCameraIndices( CCopyEntity* pCopyEnt,
+		TCFixedVector<uint,CCopyEntity::NUM_MAX_CHILDREN_PER_ENTITY>& active_cam_indices );
 
 public:
 
