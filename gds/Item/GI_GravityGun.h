@@ -2,13 +2,14 @@
 #define  __WEAPON_GRAVITYGUN_H__
 
 #include "Stage/fwd.h"
+#include "Stage/EntityHandle.h"
 #include "GI_Weapon.h"
 
 
 class CGI_GravityGun : public CGI_Weapon
 {
 
-	CCopyEntity *m_pTarget;	// item the gravity gun is grasping
+	CEntityHandle<> m_Target;	/// item the gravity gun is currently holding
 
 	int m_iHoldingTargetToggle;
 
@@ -19,6 +20,8 @@ class CGI_GravityGun : public CGI_Weapon
 
 	float m_fPosGain;
 	float m_fSpeedGain;
+
+private:
 
     bool GraspObjectInAimDirection();
 
@@ -42,8 +45,9 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CItemDatabaseBuilder;
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
+	friend class CItemDatabaseBuilder;
 };
 
 //----------------------------- inline implementations -----------------------------
@@ -51,7 +55,6 @@ public:
 
 inline CGI_GravityGun::CGI_GravityGun()
 {
-	m_pTarget = NULL;
 	m_iHoldingTargetToggle = 0;
 
 	m_fPosGain   = 5.5f;
@@ -78,7 +81,7 @@ inline void CGI_GravityGun::Serialize( IArchive& ar, const unsigned int version 
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
-		m_pTarget = NULL;
+		m_Target = CEntityHandle<>();
 		m_iHoldingTargetToggle = 0;
 	}
 }

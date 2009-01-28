@@ -9,6 +9,7 @@
 #include "GameCommon/BasicGameMath.h"
 #include "GameCommon/MTRand.h"
 #include "Sound/SoundManager.h"
+#include "XML/XMLNodeReader.h"
 
 #include "Stage/Stage.h"
 #include "Stage/CopyEntity.h"

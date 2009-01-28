@@ -1,9 +1,5 @@
 #include "ItemDatabaseBuilder.h"
 
-using namespace std;
-
-#include "Support/TextFileScanner.h"
-
 #include "Item/GameItemObjectFactory.h"
 #include "Item/GameItem.h"
 #include "Item/GI_Weapon.h"
@@ -14,8 +10,11 @@ using namespace std;
 #include "Item/GI_Aircraft.h"
 #include "Item/GameItemDatabase.h"
 
-#include "GameCommon/MeshBoneController_Aircraft.h"
+#include "XML/XMLDocumentLoader.h"
+#include "XML/XMLNodeReader.h"
 
+#include "GameCommon/MeshBoneController_Aircraft.h"
+#include "Support/TextFileScanner.h"
 #include "Support/Log/DefaultLog.h"
 #include "Support/SafeDeleteVector.h"
 #include "Support/fnop.h"
@@ -24,6 +23,9 @@ using namespace fnop;
 #include "Support/Serialization/ArchiveObjectFactory.h"
 #include "Support/Serialization/BinaryDatabase.h"
 using namespace GameLib1::Serialization;
+
+using namespace std;
+using namespace boost;
 
 
 CItemDatabaseBuilder::CItemDatabaseBuilder()
@@ -325,11 +327,11 @@ void CItemDatabaseBuilder::LoadAircraft( CTextFileScanner& scanner, CGI_Aircraft
 }
 
 
-bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string filename )
+bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 {
 	CTextFileScanner scanner;
-	
-	if( !scanner.OpenFile( filename ) )
+
+	if( !scanner.OpenFile( filepath ) )
 		return false;
 
 	CGameItem *pObject = NULL;
@@ -421,33 +423,63 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string filename )
 	return true;
 }
 
+
+bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
+{
+	CXMLDocumentLoader doc_loader;
+	shared_ptr<CXMLDocument> pDoc
+		= doc_loader.Load( filepath );
+
+	if( !pDoc )
+		return false;
+
+	CXMLNodeReader root_node_reader = pDoc->GetRootNodeReader();
+
+	CXMLNodeReader items_node = root_node_reader.GetChild( "Items" );
+
+	vector<CXMLNodeReader> vecItemNodeReader = items_node.GetImmediateChildren( "Item" );
+
+	CGameItemObjectFactory factory;
+	string classname;
+	for( size_t i=0; i<vecItemNodeReader.size(); i++ )
+	{
+		CXMLNodeReader item_node_reader = vecItemNodeReader[i];
+
+		classname.clear();
+		item_node_reader.GetChildElementTextContent( "ClassName", classname );
+
+		int id = GetItemID( classname );
+
+		CGameItem *pObject = dynamic_cast<CGameItem *>(factory.CreateObject( id ));
+
+		if( !pObject )
+			continue;
+
+		m_vecpItem.push_back( pObject );
+		m_vecpItem.back()->LoadFromXMLNode( item_node_reader );
+	}
+
+
+	return true;
+}
+
+
 int CItemDatabaseBuilder::GetItemID( const string& class_name )
 {
-/*	if( !strcmp(class_name.c_str(),"Firearm") )			return CGameItem::ID_FIREARMS;
-	else if( !strcmp(class_name.c_str(),"Ammunition") )	return CGameItem::ID_AMMUNITION;
-	else if( !strcmp(class_name.c_str(),"GravityGun") )	return CGameItem::ID_GRAVITY_GUN;
-	else if( !strcmp(class_name.c_str(),"Binocular") )	return CGameItem::ID_BINOCULAR;
-	else if( !strcmp(class_name.c_str(),"NightVision") )	return CGameItem::ID_NIGHT_VISION;
-	else if( !strcmp(class_name.c_str(),"Key") )			return CGameItem::ID_KEY;
-	else if( !strcmp(class_name.c_str(),"CamouflageDevice") )		return CGameItem::ID_CAMFLOUGE_DEVICE;
-	else if( !strcmp(class_name.c_str(),"Suppressor") )	return CGameItem::ID_SUPPRESSOR;
-	else if( !strcmp(class_name.c_str(),"Aircraft") )		return CGameItem::ID_AIRCRAFT;
-	else if( !strcmp(class_name.c_str(),"MissileLauncher") )		return CGameItem::ID_MISSILELAUNCHER;
-*/
-	if( class_name == "Firearm" )			return CGameItem::ID_FIREARMS;
-	else if( class_name == "Ammunition" )	return CGameItem::ID_AMMUNITION;
-	else if( class_name == "GravityGun" )	return CGameItem::ID_GRAVITY_GUN;
-	else if( class_name == "Binocular" )	return CGameItem::ID_BINOCULAR;
-	else if( class_name == "NightVision" )	return CGameItem::ID_NIGHT_VISION;
-	else if( class_name == "Key" )			return CGameItem::ID_KEY;
-	else if( class_name == "CamouflageDevice" )		return CGameItem::ID_CAMFLOUGE_DEVICE;
-	else if( class_name == "Suppressor" )	return CGameItem::ID_SUPPRESSOR;
-	else if( class_name == "Aircraft" )		return CGameItem::ID_AIRCRAFT;
-	else if( class_name == "MissileLauncher" )		return CGameItem::ID_MISSILELAUNCHER;
+	if( class_name == "Firearm" )                return CGameItem::ID_FIREARMS;
+	else if( class_name == "Ammunition" )        return CGameItem::ID_AMMUNITION;
+	else if( class_name == "GravityGun" )        return CGameItem::ID_GRAVITY_GUN;
+	else if( class_name == "Binocular" )         return CGameItem::ID_BINOCULAR;
+	else if( class_name == "NightVision" )       return CGameItem::ID_NIGHT_VISION;
+	else if( class_name == "Key" )               return CGameItem::ID_KEY;
+	else if( class_name == "CamouflageDevice" )  return CGameItem::ID_CAMFLOUGE_DEVICE;
+	else if( class_name == "Suppressor" )        return CGameItem::ID_SUPPRESSOR;
+	else if( class_name == "Aircraft" )          return CGameItem::ID_AIRCRAFT;
+	else if( class_name == "MissileLauncher" )   return CGameItem::ID_MISSILELAUNCHER;
 
 	else
 	{
-		g_Log.Print( "invalid item name:" + class_name );
+		LOG_PRINT_WARNING( "An unknown item name: " + class_name );
 		return IArchiveObjectBase::INVALID_ID;
 	}
 }	

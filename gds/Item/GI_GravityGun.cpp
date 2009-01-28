@@ -6,6 +6,7 @@
 #include "Stage/CopyEntity.h"
 #include "Stage/trace.h"
 #include "Stage/Stage.h"
+#include "XML/XMLNodeReader.h"
 
 #include "Physics/Actor.h"
 
@@ -28,37 +29,45 @@ void CGI_GravityGun::Update( float dt )
 
     Vector3 vOwnerMuzzlePos = m_MuzzleEndWorldPose.vPosition;
 
-	if( m_pTarget )
+	CCopyEntity *pTarget = m_Target.GetRawPtr();
+	if( pTarget )
 	{
 		// calc the translation from the center of the target to the muzzle position
-		Vector3 vDist = vOwnerMuzzlePos - m_pTarget->Position();
+		Vector3 vDist = vOwnerMuzzlePos - pTarget->Position();
 
 		float fDistSq = Vec3LengthSq(vDist);
 		if( m_fMaxRange * m_fMaxRange < fDistSq )
 		{
 			m_iHoldingTargetToggle = 0;
 //			m_pTarget->pPhysicsActor->SetAllowFreezing( true );
-			m_pTarget = NULL;
+			m_Target.Reset();
 			return;
 		}
 
 		STrace tr;
 		tr.bvType = BVTYPE_DOT;
 		tr.pvStart = &vOwnerMuzzlePos;
-		tr.pvGoal = &m_pTarget->Position();
+		tr.pvGoal = &pTarget->Position();
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
-
+/*
+		CTrace tr;
+		tr.BVType    = BVTYPE_DOT;
+		tr.vStart    = &vOwnerMuzzlePos;
+		tr.vGoal     = &pTarget->Position();
+		tr.TypeFlags = CTrace::FLAG_IGNORE_NOCLIP_ENTITIES;//TRACETYPE_IGNORE_NOCLIP_ENTITIES;
+*/
 		// check trace
 		CStageSharedPtr pStage = m_pStage.lock();
 		if( pStage )
 			pStage->ClipTrace( tr );
 
-		if( tr.pTouchedEntity != m_pTarget )
-		{	// found obstacle between the player and the target object
+		if( tr.pTouchedEntity != pTarget )
+		{
+			// found an obstacle between the player and the target object
 			// - unable to hold the target any more
 			m_iHoldingTargetToggle = 0;
 //			m_pTarget->pPhysicsActor->SetAllowFreezing( true );
-			m_pTarget = NULL;
+			m_Target.Reset();
 			return;
 		}
 
@@ -69,11 +78,11 @@ void CGI_GravityGun::Update( float dt )
 			// account for the target object's size so that it does not bump into the shooter
 			float fDist = sqrtf(fDistSq);
 			Vector3 vDir = vDist / fDist;		// normalization
-			fDist -= ( m_pTarget->fRadius + 0.2f );
+			fDist -= ( pTarget->fRadius + 0.2f );
 			vDist = vDir * fDist;
 
 			// calc relative velocity
-			Vector3 vRVel = m_pTarget->Velocity() - m_vMuzzleEndVelocity;
+			Vector3 vRVel = pTarget->Velocity() - m_vMuzzleEndVelocity;
 
 			Vector3 vForce;
 //			vForce = m_fPosGain * vDist - m_fSpeedGain * vRVel;
@@ -90,7 +99,7 @@ void CGI_GravityGun::Update( float dt )
 
 			vForce += m_vMuzzleEndVelocity;
 
-			m_pTarget->pPhysicsActor->SetLinearVelocity( vForce );
+			pTarget->pPhysicsActor->SetLinearVelocity( vForce );
 
 /*			Vector3 vPos = m_pTarget->pPhysicsActor->GetPosition();
 			Vector3 vVel = m_pTarget->pPhysicsActor->GetVelocity();
@@ -137,7 +146,7 @@ void CGI_GravityGun::ReleaseObject()
 //	if( m_pTarget && m_pTarget->pPhysicsActor )
 //		m_pTarget->pPhysicsActor->SetAllowFreezing( true );
 
-	m_pTarget = NULL;
+	m_Target.Reset();
 }
 
 
@@ -163,13 +172,13 @@ bool CGI_GravityGun::GraspObjectInAimDirection()
 		(tr.pTouchedEntity->pPhysicsActor->GetMass() < 1000000.0f ) )
 	{
 		// locked a target
-		m_pTarget = tr.pTouchedEntity;
+		m_Target = CEntityHandle<>( tr.pTouchedEntity->Self() );
 //		m_pTarget->pPhysicsActor->SetAllowFreezing( false );
 		return true;
 	}
 	else
 	{
-		m_pTarget = NULL;
+		m_Target.Reset();
 		return true;	// input is treated as being processed even if no object is locked
 	}
 }
@@ -186,9 +195,10 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 		{
 			m_aTriggerState[0] = 1;
 
-			if( m_pTarget )
+			CCopyEntity *pTarget = m_Target.GetRawPtr();
+			if( pTarget )
 			{
-				Vector3 vDist = vOwnerMuzzlePos - m_pTarget->Position();
+				Vector3 vDist = vOwnerMuzzlePos - pTarget->Position();
 
 				float fDistSq = Vec3LengthSq(vDist);
 				if( fDistSq < m_fGraspRange * m_fGraspRange )
@@ -196,12 +206,12 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 					Vector3 vImpulse = m_MuzzleEndLocalPose.matOrient.GetColumn(2) * m_fPower;
 
 					// shoot object
-//					m_pTarget->ApplyWorldImpulse( vImpulse, m_pTarget->Position() );
-					m_pTarget->pPhysicsActor->SetLinearVelocity( vImpulse );
+//					pTarget->ApplyWorldImpulse( vImpulse, m_pTarget->Position() );
+					pTarget->pPhysicsActor->SetLinearVelocity( vImpulse );
 
 					// release object
 //					m_pTarget->pPhysicsActor->SetAllowFreezing( true );
-					m_pTarget = NULL;
+					m_Target.Reset();
 					m_iHoldingTargetToggle = 0;
 					return true;
 				}
@@ -223,7 +233,8 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 			// the owner pulled the second trigger
 			m_iHoldingTargetToggle = ~m_iHoldingTargetToggle;
 
-			if( !m_pTarget )
+			CCopyEntity *pTarget = m_Target.GetRawPtr();
+			if( !pTarget )
 			{
 				// trigger is pulled and the gravity gun is not holding any object right now
 				// - check if there is an object in the aim direction
@@ -248,4 +259,17 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 	}
 
 	return false;
+}
+
+
+void CGI_GravityGun::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	CGI_Weapon::LoadFromXMLNode( reader );
+
+	reader.GetChildElementTextContent( "PosGain",   m_fPosGain );
+	reader.GetChildElementTextContent( "SpeedGain", m_fSpeedGain );
+
+	reader.GetChildElementTextContent( "MaxRange",   m_fMaxRange );
+	reader.GetChildElementTextContent( "GraspRange", m_fGraspRange );
+	reader.GetChildElementTextContent( "Power",      m_fPower );
 }

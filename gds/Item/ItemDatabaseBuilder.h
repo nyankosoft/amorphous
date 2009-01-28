@@ -50,21 +50,23 @@ class CItemDatabaseBuilder
 		                                   std::vector<CMeshBoneController_AircraftBase *>& vecpMeshController );
 
 public:
+
 	CItemDatabaseBuilder();
+
 	~CItemDatabaseBuilder();
 
 //	void SetOutputPath( const char *pcPath ) { m_strOutputPath = pcPath; }
 //	void SetItemFilePath( const char *pcPath ) { m_strItemFilePath = pcPath; }
 
-	bool LoadItemsFromTextFile( const std::string filename );
+	bool LoadItemsFromTextFile( const std::string& filenpath );
+
+	bool LoadFromXMLFile( const std::string& filepath );
 
 	bool CreateItemDatabaseFile( const std::string& src_filename );
 
 //	unsigned int GetItemID( string& strClassName );
 	int GetItemID( const std::string& class_name );
-
 };
-
 
 
 #endif		/*  __ITEMDATABASEBUILDER_H__  */
