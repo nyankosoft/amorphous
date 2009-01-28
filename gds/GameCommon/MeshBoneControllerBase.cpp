@@ -1,7 +1,37 @@
-
 #include "MeshBoneControllerBase.h"
 
 #include "Graphics/D3DXSMeshObject.h"
+#include "XML/XMLNodeReader.h"
+
+using namespace std;
+
+
+//=================================================================================
+// CBoneControlParam
+//=================================================================================
+
+void CMeshBoneControllerBase::CBoneControlParam::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	reader.GetChildElementTextContent( "Name", Name );
+}
+
+
+//=================================================================================
+// CMeshBoneControllerBase
+//=================================================================================
+
+void CMeshBoneControllerBase::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	vector<CXMLNodeReader> param_reader = reader.GetImmediateChildren( "ControlParam" );
+
+	for( size_t i=0; i<param_reader.size(); i++ )
+	{
+		CBoneControlParam param;
+		param.LoadFromXMLNode( param_reader[i] );
+
+		m_vecBoneControlParam.push_back( param );
+	}
+}
 
 
 void CMeshBoneControllerBase::UpdateTargetMeshTransforms()

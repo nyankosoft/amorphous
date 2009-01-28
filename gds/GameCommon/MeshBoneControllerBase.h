@@ -8,6 +8,7 @@
 #include "3DMath/Vector3.h"
 #include "3DMath/Matrix34.h"
 #include "Graphics/fwd.h"
+#include "XML/fwd.h"
 
 #include "Support/Serialization/Serialization.h"
 #include "Support/Serialization/ArchiveObjectFactory.h"
@@ -39,7 +40,9 @@ protected:
 
 		CBoneControlParam() : vRotationAxis(Vector3(1,0,0)), /*pBone(NULL),*/ MatrixIndex(-1) {}
 
-		inline virtual void Serialize( IArchive& ar, const unsigned int version )
+		void LoadFromXMLNode( CXMLNodeReader& reader );
+
+		virtual void Serialize( IArchive& ar, const unsigned int version )
 		{
 			ar & Name;//& vRotationAxis & MatrixIndex;	/// values for these vars are taken from mesh
 		}
@@ -75,6 +78,8 @@ public:
 	void SetTargetMesh( CD3DXSMeshObject *pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
 
 	void UpdateTargetMeshTransforms();
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version )
 	{

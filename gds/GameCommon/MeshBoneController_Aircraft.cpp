@@ -1,8 +1,12 @@
-
 #include "MeshBoneController_Aircraft.h"
 #include "Graphics/D3DXSMeshObject.h"
 #include "PseudoAircraftSimulator.h"
+#include "XML/XMLNodeReader.h"
 
+
+//============================================================================
+// CMeshBoneController_VFlap
+//============================================================================
 
 void CMeshBoneController_Flap::Init()
 {
@@ -75,6 +79,23 @@ void CMeshBoneController_Flap::UpdateTransforms()
 }
 
 
+void CMeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	CMeshBoneControllerBase::LoadFromXMLNode( reader );
+
+	reader.GetChildElementTextContent( "AnglePerPitchAccel", m_fAnglePerPitchAccel );
+	reader.GetChildElementTextContent( "AnglePerRollAccel",  m_fAnglePerRollAccel );
+
+	m_vecBoneControlParam.resize( 2 );
+	reader.GetChildElementTextContent( "Names/R", m_vecBoneControlParam[0].Name );
+	reader.GetChildElementTextContent( "Names/L", m_vecBoneControlParam[1].Name );
+}
+
+
+
+//============================================================================
+// CMeshBoneController_VFlap
+//============================================================================
 
 void CMeshBoneController_VFlap::Init()
 {
@@ -114,7 +135,7 @@ void CMeshBoneController_VFlap::UpdateTransforms()
 {
 	const float current_yaw_accel = m_pSimulator->GetYawAccel();
 
-	const float factor = m_fAnglePerAccel;
+	const float factor = m_fAnglePerYawAccel;
 	const float angle = - current_yaw_accel * factor;
 
 	size_t i, num_bones = m_vecBoneControlParam.size();
@@ -130,6 +151,38 @@ void CMeshBoneController_VFlap::UpdateTransforms()
 		}
 	}
 }
+
+
+void CMeshBoneController_VFlap::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	CMeshBoneControllerBase::LoadFromXMLNode( reader );
+
+	reader.GetChildElementTextContent( "AnglePerYawAccel",  m_fAnglePerYawAccel );
+
+	string vflap_type;
+	reader.GetChildElementTextContent( "Type", vflap_type );
+	if( vflap_type == "Single" )
+	{
+		m_vecBoneControlParam.resize( 1 );
+		reader.GetChildElementTextContent( "Name", m_vecBoneControlParam[0].Name );
+	}
+	else if( vflap_type == "Twin" )
+	{
+		m_vecBoneControlParam.resize( 2 );
+		reader.GetChildElementTextContent( "Names/R", m_vecBoneControlParam[0].Name );
+		reader.GetChildElementTextContent( "Names/L", m_vecBoneControlParam[1].Name );
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " An invalid vertical flap type: " + vflap_type );
+	}
+}
+
+
+
+//============================================================================
+// CMeshBoneController_Rotor
+//============================================================================
 
 /*
 void CMeshBoneController_Rotor::Update( float dt )
@@ -178,4 +231,19 @@ void CMeshBoneController_Rotor::UpdateTransforms()
 //		m_pTargetMesh->SetLocalTransformToCache( rParam.MatrixIndex, Matrix34( Vector3(0,0,0), matRot ) );
 		rParam.LocalTransform = Matrix34( Vector3(0,0,0), matRot );
 	}
+}
+
+
+void CMeshBoneController_Rotor::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	CMeshBoneControllerBase::LoadFromXMLNode( reader );
+
+	string rot_dir;
+	reader.GetChildElementTextContent( "RotationDirection", rot_dir );
+	if( rot_dir == "CW" )       m_RotationDirection = DIR_CW;
+	else if( rot_dir == "CCW" ) m_RotationDirection = DIR_CCW;
+	else m_RotationDirection = DIR_CW;
+
+	m_vecBoneControlParam.resize( 1 );
+	reader.GetChildElementTextContent( "Name", m_vecBoneControlParam[0].Name );
 }

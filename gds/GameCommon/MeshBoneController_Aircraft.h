@@ -138,6 +138,8 @@ public:
 
 	virtual void Init();
 
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_FLAP; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
@@ -159,7 +161,7 @@ class CMeshBoneController_VFlap : public CMeshBoneController_AircraftBase
 		NUM_VFLAPS
 	};
 
-	float m_fAnglePerAccel;
+	float m_fAnglePerYawAccel;
 
 	int m_Type;
 
@@ -172,23 +174,25 @@ public:
 		NUM_VFLAP_TYPES
 	};
 
-	CMeshBoneController_VFlap() : m_fAnglePerAccel(0.5f), m_Type(TYPE_SINGLE) {}
+	CMeshBoneController_VFlap() : m_fAnglePerYawAccel(0.5f), m_Type(TYPE_SINGLE) {}
 
 	CMeshBoneController_VFlap( CD3DXSMeshObject *pTargetMesh,
 		                       CPseudoAircraftSimulator *pSimulator,
 							   int type = TYPE_SINGLE )
-		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_Type(type) { m_fAnglePerAccel = 0.7f; }
+		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_Type(type) { m_fAnglePerYawAccel = 0.7f; }
 
 	virtual void UpdateTransforms();
 
 	virtual void Init();
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_VFLAP; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
 		CMeshBoneController_AircraftBase::Serialize( ar, version );
-		ar & m_fAnglePerAccel & m_Type;
+		ar & m_fAnglePerYawAccel & m_Type;
 	}
 
 	friend class CItemDatabaseBuilder;
@@ -221,6 +225,8 @@ public:
 
 	virtual void Init();
 
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_ROTOR; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
@@ -247,6 +253,8 @@ public:
 
 	virtual void UpdateTransforms() {}
 
+//	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
 		CMeshBoneController_AircraftBase::Serialize( ar, version );
@@ -266,6 +274,8 @@ public:
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
 
 	virtual void UpdateTransforms() {}
+
+//	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
