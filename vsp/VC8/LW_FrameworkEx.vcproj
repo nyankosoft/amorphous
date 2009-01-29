@@ -152,7 +152,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\LightWave\3DMeshModelBuilder_LW.h"
+				RelativePath="..\..\gds\LightWave\3DMeshModelBuilder_LW.hpp"
 				>
 			</File>
 			<File
@@ -160,7 +160,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\LightWave\3DMeshModelExportManager_LW.h"
+				RelativePath="..\..\gds\LightWave\3DMeshModelExportManager_LW.hpp"
 				>
 			</File>
 			<File
@@ -168,7 +168,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\LightWave\CompositeMeshExporter_LW.h"
+				RelativePath="..\..\gds\LightWave\CompositeMeshExporter_LW.hpp"
 				>
 			</File>
 			<File
@@ -176,7 +176,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\LightWave\MassSpringExporter_LW.h"
+				RelativePath="..\..\gds\LightWave\MassSpringExporter_LW.hpp"
 				>
 			</File>
 		</Filter>

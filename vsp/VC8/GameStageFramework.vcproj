@@ -153,7 +153,7 @@
 				Name="Stage"
 				>
 				<File
-					RelativePath="..\..\gds\Stage\BinaryNode.h"
+					RelativePath="..\..\gds\Stage\BinaryNode.hpp"
 					>
 				</File>
 				<File
@@ -161,7 +161,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\BSPMap.h"
+					RelativePath="..\..\gds\Stage\BSPMap.hpp"
 					>
 				</File>
 				<File
@@ -185,7 +185,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\BSPMapFileExporter.h"
+					RelativePath="..\..\gds\Stage\BSPMapFileExporter.hpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -209,7 +209,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\bspstructs.h"
+					RelativePath="..\..\gds\Stage\bspstructs.hpp"
 					>
 				</File>
 				<File
@@ -217,7 +217,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\bsptree.h"
+					RelativePath="..\..\gds\Stage\bsptree.hpp"
 					>
 				</File>
 				<File
@@ -225,7 +225,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\DynamicLightManagerForStaticGeometry.h"
+					RelativePath="..\..\gds\Stage\DynamicLightManagerForStaticGeometry.hpp"
 					>
 				</File>
 				<File
@@ -233,11 +233,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EnemyState.h"
+					RelativePath="..\..\gds\Stage\EnemyState.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityCollisionGroups.h"
+					RelativePath="..\..\gds\Stage\EntityCollisionGroups.hpp"
 					>
 				</File>
 				<File
@@ -245,19 +245,19 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityFactory.h"
+					RelativePath="..\..\gds\Stage\EntityFactory.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityFile.h"
+					RelativePath="..\..\gds\Stage\EntityFile.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityGroupHandle.h"
+					RelativePath="..\..\gds\Stage\EntityGroupHandle.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityMotionPathRequest.h"
+					RelativePath="..\..\gds\Stage\EntityMotionPathRequest.hpp"
 					>
 				</File>
 				<File
@@ -265,7 +265,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityNode.h"
+					RelativePath="..\..\gds\Stage\EntityNode.hpp"
 					>
 				</File>
 				<File
@@ -273,7 +273,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntityRenderManager.h"
+					RelativePath="..\..\gds\Stage\EntityRenderManager.hpp"
 					>
 				</File>
 				<File
@@ -281,11 +281,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\EntitySet.h"
+					RelativePath="..\..\gds\Stage\EntitySet.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\fwd.h"
+					RelativePath="..\..\gds\Stage\fwd.hpp"
 					>
 				</File>
 				<File
@@ -293,7 +293,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\GameMessage.h"
+					RelativePath="..\..\gds\Stage\GameMessage.hpp"
 					>
 				</File>
 				<File
@@ -301,11 +301,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\HUD_PlayerAircraft.h"
+					RelativePath="..\..\gds\Stage\HUD_PlayerAircraft.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\HUD_PlayerBase.h"
+					RelativePath="..\..\gds\Stage\HUD_PlayerBase.hpp"
 					>
 				</File>
 				<File
@@ -313,11 +313,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\HUD_PlayerShip.h"
+					RelativePath="..\..\gds\Stage\HUD_PlayerShip.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\OverlapTestAABB.h"
+					RelativePath="..\..\gds\Stage\OverlapTestAABB.hpp"
 					>
 				</File>
 				<File
@@ -325,7 +325,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\ParticleThreadManager.h"
+					RelativePath="..\..\gds\Stage\ParticleThreadManager.hpp"
 					>
 				</File>
 				<File
@@ -333,7 +333,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\PlayerInfo.h"
+					RelativePath="..\..\gds\Stage\PlayerInfo.hpp"
 					>
 				</File>
 				<File
@@ -341,7 +341,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\PseudoNoiseEffect.h"
+					RelativePath="..\..\gds\Stage\PseudoNoiseEffect.hpp"
 					>
 				</File>
 				<File
@@ -349,7 +349,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\QuickMenuManager.h"
+					RelativePath="..\..\gds\Stage\QuickMenuManager.hpp"
 					>
 				</File>
 				<File
@@ -357,7 +357,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\ScreenEffect.h"
+					RelativePath="..\..\gds\Stage\ScreenEffect.hpp"
 					>
 				</File>
 				<File
@@ -365,11 +365,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\ScreenEffectManager.h"
+					RelativePath="..\..\gds\Stage\ScreenEffectManager.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\Serialization_BaseEntityHandle.h"
+					RelativePath="..\..\gds\Stage\Serialization_BaseEntityHandle.hpp"
 					>
 				</File>
 				<File
@@ -377,7 +377,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\Skybox.h"
+					RelativePath="..\..\gds\Stage\Skybox.hpp"
 					>
 				</File>
 				<File
@@ -385,7 +385,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\Stage.h"
+					RelativePath="..\..\gds\Stage\Stage.hpp"
 					>
 				</File>
 				<File
@@ -393,7 +393,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StageEntryPoint.h"
+					RelativePath="..\..\gds\Stage\StageEntryPoint.hpp"
 					>
 				</File>
 				<File
@@ -401,7 +401,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StageGraph.h"
+					RelativePath="..\..\gds\Stage\StageGraph.hpp"
 					>
 				</File>
 				<File
@@ -409,11 +409,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StageLoader.h"
+					RelativePath="..\..\gds\Stage\StageLoader.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StageLog.h"
+					RelativePath="..\..\gds\Stage\StageLog.hpp"
 					>
 				</File>
 				<File
@@ -421,7 +421,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StageUtility.h"
+					RelativePath="..\..\gds\Stage\StageUtility.hpp"
 					>
 				</File>
 				<File
@@ -429,7 +429,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StaticGeometry.h"
+					RelativePath="..\..\gds\Stage\StaticGeometry.hpp"
 					>
 				</File>
 				<File
@@ -437,11 +437,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StaticGeometryArchiveFG.h"
+					RelativePath="..\..\gds\Stage\StaticGeometryArchiveFG.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StaticGeometryBase.h"
+					RelativePath="..\..\gds\Stage\StaticGeometryBase.hpp"
 					>
 				</File>
 				<File
@@ -449,7 +449,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StaticGeometryFG.h"
+					RelativePath="..\..\gds\Stage\StaticGeometryFG.hpp"
 					>
 				</File>
 				<File
@@ -457,7 +457,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\SubDisplay.h"
+					RelativePath="..\..\gds\Stage\SubDisplay.hpp"
 					>
 				</File>
 				<File
@@ -465,7 +465,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\SurfaceMaterial.h"
+					RelativePath="..\..\gds\Stage\SurfaceMaterial.hpp"
 					>
 				</File>
 				<File
@@ -473,7 +473,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\SurfaceMaterialManager.h"
+					RelativePath="..\..\gds\Stage\SurfaceMaterialManager.hpp"
 					>
 				</File>
 				<File
@@ -481,7 +481,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\SystemInputHandler_Debug.h"
+					RelativePath="..\..\gds\Stage\SystemInputHandler_Debug.hpp"
 					>
 				</File>
 				<File
@@ -489,11 +489,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\trace.h"
+					RelativePath="..\..\gds\Stage\trace.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\ViewFrustumTest.h"
+					RelativePath="..\..\gds\Stage\ViewFrustumTest.hpp"
 					>
 				</File>
 				<Filter
@@ -504,7 +504,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BSPMap_Collision\BSPTree_CollisionModel.h"
+						RelativePath="..\..\gds\Stage\BSPMap_Collision\BSPTree_CollisionModel.hpp"
 						>
 					</File>
 					<File
@@ -516,7 +516,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BSPMap_Collision\BSPTree_CollisionModel_Exporter.h"
+						RelativePath="..\..\gds\Stage\BSPMap_Collision\BSPTree_CollisionModel_Exporter.hpp"
 						>
 					</File>
 				</Filter>
@@ -528,11 +528,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\Input\InputHandler_Cutscene.h"
+						RelativePath="..\..\gds\Stage\Input\InputHandler_Cutscene.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\Input\InputHandler_PlayerBase.h"
+						RelativePath="..\..\gds\Stage\Input\InputHandler_PlayerBase.hpp"
 						>
 					</File>
 					<File
@@ -540,7 +540,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\Input\InputHandler_PlayerPAC.h"
+						RelativePath="..\..\gds\Stage\Input\InputHandler_PlayerPAC.hpp"
 						>
 					</File>
 					<File
@@ -548,7 +548,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\Input\InputHandler_PlayerShip.h"
+						RelativePath="..\..\gds\Stage\Input\InputHandler_PlayerShip.hpp"
 						>
 					</File>
 					<File
@@ -556,7 +556,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\Input\InputHandler_StageDebug.h"
+						RelativePath="..\..\gds\Stage\Input\InputHandler_StageDebug.hpp"
 						>
 					</File>
 				</Filter>
@@ -568,7 +568,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\PyModule_Camera.h"
+						RelativePath="..\..\gds\Stage\PyModule_Camera.hpp"
 						>
 					</File>
 					<File
@@ -576,7 +576,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\PyModule_Entity.h"
+						RelativePath="..\..\gds\Stage\PyModule_Entity.hpp"
 						>
 					</File>
 					<File
@@ -584,7 +584,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\PyModule_HUD.h"
+						RelativePath="..\..\gds\Stage\PyModule_HUD.hpp"
 						>
 					</File>
 					<File
@@ -592,7 +592,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\PyModule_Light.h"
+						RelativePath="..\..\gds\Stage\PyModule_Light.hpp"
 						>
 					</File>
 					<File
@@ -600,7 +600,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\PyModule_Player.h"
+						RelativePath="..\..\gds\Stage\PyModule_Player.hpp"
 						>
 					</File>
 					<File
@@ -608,7 +608,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\PyModule_Stage.h"
+						RelativePath="..\..\gds\Stage\PyModule_Stage.hpp"
 						>
 					</File>
 					<File
@@ -616,7 +616,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\PyModule_VisualEffect.h"
+						RelativePath="..\..\gds\Stage\PyModule_VisualEffect.hpp"
 						>
 					</File>
 				</Filter>
@@ -628,7 +628,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BaseEntity.h"
+						RelativePath="..\..\gds\Stage\BaseEntity.hpp"
 						>
 					</File>
 					<File
@@ -636,7 +636,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BaseEntity_Draw.h"
+						RelativePath="..\..\gds\Stage\BaseEntity_Draw.hpp"
 						>
 					</File>
 					<File
@@ -648,11 +648,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BaseEntityFactory.h"
+						RelativePath="..\..\gds\Stage\BaseEntityFactory.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BaseEntityHandle.h"
+						RelativePath="..\..\gds\Stage\BaseEntityHandle.hpp"
 						>
 					</File>
 					<File
@@ -660,7 +660,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BaseEntityManager.h"
+						RelativePath="..\..\gds\Stage\BaseEntityManager.hpp"
 						>
 					</File>
 					<File
@@ -668,7 +668,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_AreaSensor.h"
+						RelativePath="..\..\gds\Stage\BE_AreaSensor.hpp"
 						>
 					</File>
 					<File
@@ -676,7 +676,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Blast.h"
+						RelativePath="..\..\gds\Stage\BE_Blast.hpp"
 						>
 					</File>
 					<File
@@ -684,7 +684,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Bullet.h"
+						RelativePath="..\..\gds\Stage\BE_Bullet.hpp"
 						>
 					</File>
 					<File
@@ -692,7 +692,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_CameraController.h"
+						RelativePath="..\..\gds\Stage\BE_CameraController.hpp"
 						>
 					</File>
 					<File
@@ -700,7 +700,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Cloud.h"
+						RelativePath="..\..\gds\Stage\BE_Cloud.hpp"
 						>
 					</File>
 					<File
@@ -708,7 +708,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Decal.h"
+						RelativePath="..\..\gds\Stage\BE_Decal.hpp"
 						>
 					</File>
 					<File
@@ -716,7 +716,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_DirectionalLight.h"
+						RelativePath="..\..\gds\Stage\BE_DirectionalLight.hpp"
 						>
 					</File>
 					<File
@@ -724,7 +724,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Door.h"
+						RelativePath="..\..\gds\Stage\BE_Door.hpp"
 						>
 					</File>
 					<File
@@ -732,7 +732,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_DoorController.h"
+						RelativePath="..\..\gds\Stage\BE_DoorController.hpp"
 						>
 					</File>
 					<File
@@ -740,7 +740,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Enemy.h"
+						RelativePath="..\..\gds\Stage\BE_Enemy.hpp"
 						>
 					</File>
 					<File
@@ -748,7 +748,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_EnemyAircraft.h"
+						RelativePath="..\..\gds\Stage\BE_EnemyAircraft.hpp"
 						>
 					</File>
 					<File
@@ -756,7 +756,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_EnemyShip.h"
+						RelativePath="..\..\gds\Stage\BE_EnemyShip.hpp"
 						>
 					</File>
 					<File
@@ -764,7 +764,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_EventTrigger.h"
+						RelativePath="..\..\gds\Stage\BE_EventTrigger.hpp"
 						>
 					</File>
 					<File
@@ -772,7 +772,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_ExplosionSmoke.h"
+						RelativePath="..\..\gds\Stage\BE_ExplosionSmoke.hpp"
 						>
 					</File>
 					<File
@@ -780,7 +780,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Explosive.h"
+						RelativePath="..\..\gds\Stage\BE_Explosive.hpp"
 						>
 					</File>
 					<File
@@ -788,7 +788,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_FixedTurretPod.h"
+						RelativePath="..\..\gds\Stage\BE_FixedTurretPod.hpp"
 						>
 					</File>
 					<File
@@ -796,7 +796,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Floater.h"
+						RelativePath="..\..\gds\Stage\BE_Floater.hpp"
 						>
 					</File>
 					<File
@@ -804,7 +804,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_GeneralEntity.h"
+						RelativePath="..\..\gds\Stage\BE_GeneralEntity.hpp"
 						>
 					</File>
 					<File
@@ -812,7 +812,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_HomingMissile.h"
+						RelativePath="..\..\gds\Stage\BE_HomingMissile.hpp"
 						>
 					</File>
 					<File
@@ -820,7 +820,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_IndividualEntity.h"
+						RelativePath="..\..\gds\Stage\BE_IndividualEntity.hpp"
 						>
 					</File>
 					<File
@@ -828,7 +828,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_LaserDot.h"
+						RelativePath="..\..\gds\Stage\BE_LaserDot.hpp"
 						>
 					</File>
 					<File
@@ -836,7 +836,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Light.h"
+						RelativePath="..\..\gds\Stage\BE_Light.hpp"
 						>
 					</File>
 					<File
@@ -844,7 +844,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_MuzzleFlash.h"
+						RelativePath="..\..\gds\Stage\BE_MuzzleFlash.hpp"
 						>
 					</File>
 					<File
@@ -852,7 +852,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_NozzleExhaust.h"
+						RelativePath="..\..\gds\Stage\BE_NozzleExhaust.hpp"
 						>
 					</File>
 					<File
@@ -860,7 +860,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_ParticleSet.h"
+						RelativePath="..\..\gds\Stage\BE_ParticleSet.hpp"
 						>
 					</File>
 					<File
@@ -868,7 +868,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_PhysicsBaseEntity.h"
+						RelativePath="..\..\gds\Stage\BE_PhysicsBaseEntity.hpp"
 						>
 					</File>
 					<File
@@ -876,7 +876,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Platform.h"
+						RelativePath="..\..\gds\Stage\BE_Platform.hpp"
 						>
 					</File>
 					<File
@@ -884,7 +884,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Player.h"
+						RelativePath="..\..\gds\Stage\BE_Player.hpp"
 						>
 					</File>
 					<File
@@ -892,7 +892,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_PlayerPseudoAircraft.h"
+						RelativePath="..\..\gds\Stage\BE_PlayerPseudoAircraft.hpp"
 						>
 					</File>
 					<File
@@ -900,7 +900,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_PlayerPseudoLeggedVehicle.h"
+						RelativePath="..\..\gds\Stage\BE_PlayerPseudoLeggedVehicle.hpp"
 						>
 					</File>
 					<File
@@ -908,7 +908,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_PlayerShip.h"
+						RelativePath="..\..\gds\Stage\BE_PlayerShip.hpp"
 						>
 					</File>
 					<File
@@ -920,7 +920,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_PointLight.h"
+						RelativePath="..\..\gds\Stage\BE_PointLight.hpp"
 						>
 					</File>
 					<File
@@ -928,7 +928,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_ScriptedCamera.h"
+						RelativePath="..\..\gds\Stage\BE_ScriptedCamera.hpp"
 						>
 					</File>
 					<File
@@ -936,7 +936,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Skybox.h"
+						RelativePath="..\..\gds\Stage\BE_Skybox.hpp"
 						>
 					</File>
 					<File
@@ -944,7 +944,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_SmokeTrace.h"
+						RelativePath="..\..\gds\Stage\BE_SmokeTrace.hpp"
 						>
 					</File>
 					<File
@@ -952,7 +952,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_StaticGeometry.h"
+						RelativePath="..\..\gds\Stage\BE_StaticGeometry.hpp"
 						>
 					</File>
 					<File
@@ -960,7 +960,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_StaticParticleSet.h"
+						RelativePath="..\..\gds\Stage\BE_StaticParticleSet.hpp"
 						>
 					</File>
 					<File
@@ -968,7 +968,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_SupplyItem.h"
+						RelativePath="..\..\gds\Stage\BE_SupplyItem.hpp"
 						>
 					</File>
 					<File
@@ -976,7 +976,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_TextureAnimation.h"
+						RelativePath="..\..\gds\Stage\BE_TextureAnimation.hpp"
 						>
 					</File>
 					<File
@@ -984,7 +984,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BE_Turret.h"
+						RelativePath="..\..\gds\Stage\BE_Turret.hpp"
 						>
 					</File>
 					<File
@@ -992,11 +992,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BEC_Billboard.h"
+						RelativePath="..\..\gds\Stage\BEC_Billboard.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BEC_BillboardSerialization.h"
+						RelativePath="..\..\gds\Stage\BEC_BillboardSerialization.hpp"
 						>
 					</File>
 					<File
@@ -1004,7 +1004,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\BEC_PseudoAircraft.h"
+						RelativePath="..\..\gds\Stage\BEC_PseudoAircraft.hpp"
 						>
 					</File>
 					<Filter
@@ -1015,7 +1015,7 @@
 							>
 						</File>
 						<File
-							RelativePath="..\..\gds\Stage\BEC_Destruction.h"
+							RelativePath="..\..\gds\Stage\BEC_Destruction.hpp"
 							>
 						</File>
 					</Filter>
@@ -1028,7 +1028,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\AlphaEntity.h"
+						RelativePath="..\..\gds\Stage\AlphaEntity.hpp"
 						>
 					</File>
 					<File
@@ -1036,7 +1036,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\CopyEntity.h"
+						RelativePath="..\..\gds\Stage\CopyEntity.hpp"
 						>
 					</File>
 					<File
@@ -1044,11 +1044,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\CopyEntityCallback.h"
+						RelativePath="..\..\gds\Stage\CopyEntityCallback.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\CopyEntityDesc.h"
+						RelativePath="..\..\gds\Stage\CopyEntityDesc.hpp"
 						>
 					</File>
 					<File
@@ -1056,7 +1056,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\CopyEntityDescFileArchive.h"
+						RelativePath="..\..\gds\Stage\CopyEntityDescFileArchive.hpp"
 						>
 					</File>
 					<File
@@ -1064,7 +1064,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Stage\LightEntity.h"
+						RelativePath="..\..\gds\Stage\LightEntity.hpp"
 						>
 					</File>
 				</Filter>
@@ -1077,7 +1077,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTask.h"
+					RelativePath="..\..\gds\Task\GameTask.hpp"
 					>
 				</File>
 				<File
@@ -1085,7 +1085,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTask_AsyncStageLoader.h"
+					RelativePath="..\..\gds\Task\GameTask_AsyncStageLoader.hpp"
 					>
 				</File>
 				<File
@@ -1093,7 +1093,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTask_GlobalStageLoader.h"
+					RelativePath="..\..\gds\Task\GameTask_GlobalStageLoader.hpp"
 					>
 				</File>
 				<File
@@ -1101,7 +1101,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTask_MainMenu.h"
+					RelativePath="..\..\gds\Task\GameTask_MainMenu.hpp"
 					>
 				</File>
 				<File
@@ -1109,7 +1109,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTask_Stage.h"
+					RelativePath="..\..\gds\Task\GameTask_Stage.hpp"
 					>
 				</File>
 				<File
@@ -1117,7 +1117,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTask_StageSelect.h"
+					RelativePath="..\..\gds\Task\GameTask_StageSelect.hpp"
 					>
 				</File>
 				<File
@@ -1125,7 +1125,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTaskFactoryBase.h"
+					RelativePath="..\..\gds\Task\GameTaskFactoryBase.hpp"
 					>
 				</File>
 				<File
@@ -1133,7 +1133,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTaskManager.h"
+					RelativePath="..\..\gds\Task\GameTaskManager.hpp"
 					>
 				</File>
 				<File
@@ -1141,7 +1141,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\MainMenuEventHandler.h"
+					RelativePath="..\..\gds\Task\MainMenuEventHandler.hpp"
 					>
 				</File>
 				<File
@@ -1149,7 +1149,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\PyModule_Task.h"
+					RelativePath="..\..\gds\Task\PyModule_Task.hpp"
 					>
 				</File>
 			</Filter>
@@ -1161,27 +1161,27 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\AircraftCapsDisplay.h"
+					RelativePath="..\..\gds\GameCommon\AircraftCapsDisplay.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\AssaultRecord.h"
+					RelativePath="..\..\gds\GameCommon\AssaultRecord.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\BasicGameMath.h"
+					RelativePath="..\..\gds\GameCommon\BasicGameMath.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\CombatRecord.h"
+					RelativePath="..\..\gds\GameCommon\CombatRecord.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\CriticalDamping.h"
+					RelativePath="..\..\gds\GameCommon\CriticalDamping.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\fwd.h"
+					RelativePath="..\..\gds\GameCommon\fwd.hpp"
 					>
 				</File>
 				<File
@@ -1189,11 +1189,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\GameItemShop.h"
+					RelativePath="..\..\gds\GameCommon\GameItemShop.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\GameMathMisc.h"
+					RelativePath="..\..\gds\GameCommon\GameMathMisc.hpp"
 					>
 				</File>
 				<File
@@ -1201,7 +1201,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\GameStageFrameworkGlobalParams.h"
+					RelativePath="..\..\gds\GameCommon\GameStageFrameworkGlobalParams.hpp"
 					>
 				</File>
 				<File
@@ -1209,7 +1209,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\GlobalInputHandler.h"
+					RelativePath="..\..\gds\GameCommon\GlobalInputHandler.hpp"
 					>
 				</File>
 				<File
@@ -1217,7 +1217,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\GlobalParams.h"
+					RelativePath="..\..\gds\GameCommon\GlobalParams.hpp"
 					>
 				</File>
 				<File
@@ -1225,7 +1225,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\HUD_TimerDisplay.h"
+					RelativePath="..\..\gds\GameCommon\HUD_TimerDisplay.hpp"
 					>
 				</File>
 				<File
@@ -1233,15 +1233,15 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\ImageCapture.h"
+					RelativePath="..\..\gds\GameCommon\ImageCapture.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\KeyBind.h"
+					RelativePath="..\..\gds\GameCommon\KeyBind.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\LangID.h"
+					RelativePath="..\..\gds\GameCommon\LangID.hpp"
 					>
 				</File>
 				<File
@@ -1249,7 +1249,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\MeshBoneController_Aircraft.h"
+					RelativePath="..\..\gds\GameCommon\MeshBoneController_Aircraft.hpp"
 					>
 				</File>
 				<File
@@ -1257,7 +1257,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\MeshBoneControllerBase.h"
+					RelativePath="..\..\gds\GameCommon\MeshBoneControllerBase.hpp"
 					>
 				</File>
 				<File
@@ -1265,7 +1265,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\MeshBoneControllerFactory.h"
+					RelativePath="..\..\gds\GameCommon\MeshBoneControllerFactory.hpp"
 					>
 				</File>
 				<File
@@ -1273,11 +1273,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\NozzleFlameParams.h"
+					RelativePath="..\..\gds\GameCommon\NozzleFlameParams.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\PlayTime.h"
+					RelativePath="..\..\gds\GameCommon\PlayTime.hpp"
 					>
 				</File>
 				<File
@@ -1285,7 +1285,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\PseudoAircraftHUD.h"
+					RelativePath="..\..\gds\GameCommon\PseudoAircraftHUD.hpp"
 					>
 				</File>
 				<File
@@ -1293,7 +1293,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\PseudoAircraftSimulator.h"
+					RelativePath="..\..\gds\GameCommon\PseudoAircraftSimulator.hpp"
 					>
 				</File>
 				<File
@@ -1301,7 +1301,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\PyModule_Shop.h"
+					RelativePath="..\..\gds\GameCommon\PyModule_Shop.hpp"
 					>
 				</File>
 				<File
@@ -1309,11 +1309,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\RandomDirectionTable.h"
+					RelativePath="..\..\gds\GameCommon\RandomDirectionTable.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\RangedSet.h"
+					RelativePath="..\..\gds\GameCommon\RangedSet.hpp"
 					>
 				</File>
 				<File
@@ -1321,7 +1321,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\SaveDataManager.h"
+					RelativePath="..\..\gds\GameCommon\SaveDataManager.hpp"
 					>
 				</File>
 				<File
@@ -1329,7 +1329,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\ScreenShotManager.h"
+					RelativePath="..\..\gds\GameCommon\ScreenShotManager.hpp"
 					>
 				</File>
 				<File
@@ -1337,7 +1337,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\ShockWaveCameraEffect.h"
+					RelativePath="..\..\gds\GameCommon\ShockWaveCameraEffect.hpp"
 					>
 				</File>
 			</Filter>
@@ -1345,7 +1345,7 @@
 				Name="JigLib"
 				>
 				<File
-					RelativePath="..\..\gds\JigLib\fwd.h"
+					RelativePath="..\..\gds\JigLib\fwd.hpp"
 					>
 				</File>
 				<File
@@ -1353,11 +1353,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\GravityFunction.h"
+					RelativePath="..\..\gds\JigLib\GravityFunction.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JigLib.h"
+					RelativePath="..\..\gds\JigLib\JigLib.hpp"
 					>
 				</File>
 				<File
@@ -1365,7 +1365,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_CollisionDetect.h"
+					RelativePath="..\..\gds\JigLib\JL_CollisionDetect.hpp"
 					>
 				</File>
 				<File
@@ -1393,19 +1393,19 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_CollisionFunctor.h"
+					RelativePath="..\..\gds\JigLib\JL_CollisionFunctor.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ContactInfo.h"
+					RelativePath="..\..\gds\JigLib\JL_ContactInfo.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ContactPair.h"
+					RelativePath="..\..\gds\JigLib\JL_ContactPair.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_LineSegment.h"
+					RelativePath="..\..\gds\JigLib\JL_LineSegment.hpp"
 					>
 				</File>
 				<File
@@ -1413,7 +1413,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_PhysicsActor.h"
+					RelativePath="..\..\gds\JigLib\JL_PhysicsActor.hpp"
 					>
 				</File>
 				<File
@@ -1425,7 +1425,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_PhysicsActorDesc.h"
+					RelativePath="..\..\gds\JigLib\JL_PhysicsActorDesc.hpp"
 					>
 				</File>
 				<File
@@ -1433,7 +1433,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_PhysicsManager.h"
+					RelativePath="..\..\gds\JigLib\JL_PhysicsManager.hpp"
 					>
 				</File>
 				<File
@@ -1441,7 +1441,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_PhysicsVisualizer_D3D.h"
+					RelativePath="..\..\gds\JigLib\JL_PhysicsVisualizer_D3D.hpp"
 					>
 				</File>
 				<File
@@ -1449,7 +1449,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_Shape_Box.h"
+					RelativePath="..\..\gds\JigLib\JL_Shape_Box.hpp"
 					>
 				</File>
 				<File
@@ -1457,7 +1457,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_Shape_Capsule.h"
+					RelativePath="..\..\gds\JigLib\JL_Shape_Capsule.hpp"
 					>
 				</File>
 				<File
@@ -1465,7 +1465,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_Shape_Sphere.h"
+					RelativePath="..\..\gds\JigLib\JL_Shape_Sphere.hpp"
 					>
 				</File>
 				<File
@@ -1473,27 +1473,27 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ShapeBase.h"
+					RelativePath="..\..\gds\JigLib\JL_ShapeBase.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ShapeDesc.h"
+					RelativePath="..\..\gds\JigLib\JL_ShapeDesc.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_Box.h"
+					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_Box.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_Capsule.h"
+					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_Capsule.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_Sphere.h"
+					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_Sphere.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_TriangleMesh.h"
+					RelativePath="..\..\gds\JigLib\JL_ShapeDesc_TriangleMesh.hpp"
 					>
 				</File>
 				<File
@@ -1501,15 +1501,15 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_ShapeDescFactory.h"
+					RelativePath="..\..\gds\JigLib\JL_ShapeDescFactory.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\JL_SurfaceMaterial.h"
+					RelativePath="..\..\gds\JigLib\JL_SurfaceMaterial.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\rand_util.h"
+					RelativePath="..\..\gds\JigLib\rand_util.hpp"
 					>
 				</File>
 				<File
@@ -1517,14 +1517,14 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\JigLib\TriangleMesh.h"
+					RelativePath="..\..\gds\JigLib\TriangleMesh.hpp"
 					>
 				</File>
 				<Filter
 					Name="Geometry"
 					>
 					<File
-						RelativePath="..\..\gds\JigLib\Geometry\Box.h"
+						RelativePath="..\..\gds\JigLib\Geometry\Box.hpp"
 						>
 					</File>
 					<File
@@ -1536,7 +1536,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\JigLib\Geometry\JL_Box.h"
+						RelativePath="..\..\gds\JigLib\Geometry\JL_Box.hpp"
 						>
 					</File>
 					<File
@@ -1557,7 +1557,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\App\ApplicationBase.h"
+					RelativePath="..\..\gds\App\ApplicationBase.hpp"
 					>
 				</File>
 				<File
@@ -1565,7 +1565,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\App\GameWindowManager_Win32.h"
+					RelativePath="..\..\gds\App\GameWindowManager_Win32.hpp"
 					>
 				</File>
 			</Filter>
@@ -1577,7 +1577,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GameItem.h"
+					RelativePath="..\..\gds\Item\GameItem.hpp"
 					>
 				</File>
 				<File
@@ -1585,7 +1585,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GameItemDatabase.h"
+					RelativePath="..\..\gds\Item\GameItemDatabase.hpp"
 					>
 				</File>
 				<File
@@ -1593,7 +1593,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GameItemObjectFactory.h"
+					RelativePath="..\..\gds\Item\GameItemObjectFactory.hpp"
 					>
 				</File>
 				<File
@@ -1601,7 +1601,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GI_Aircraft.h"
+					RelativePath="..\..\gds\Item\GI_Aircraft.hpp"
 					>
 				</File>
 				<File
@@ -1609,7 +1609,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GI_Ammunition.h"
+					RelativePath="..\..\gds\Item\GI_Ammunition.hpp"
 					>
 				</File>
 				<File
@@ -1617,7 +1617,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GI_GravityGun.h"
+					RelativePath="..\..\gds\Item\GI_GravityGun.hpp"
 					>
 				</File>
 				<File
@@ -1625,7 +1625,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GI_MissileLauncher.h"
+					RelativePath="..\..\gds\Item\GI_MissileLauncher.hpp"
 					>
 				</File>
 				<File
@@ -1633,7 +1633,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\GI_Weapon.h"
+					RelativePath="..\..\gds\Item\GI_Weapon.hpp"
 					>
 				</File>
 				<File
@@ -1641,7 +1641,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\ItemDatabaseBuilder.h"
+					RelativePath="..\..\gds\Item\ItemDatabaseBuilder.hpp"
 					>
 				</File>
 				<File
@@ -1649,7 +1649,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\ItemDatabaseManager.h"
+					RelativePath="..\..\gds\Item\ItemDatabaseManager.hpp"
 					>
 				</File>
 				<File
@@ -1657,7 +1657,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Item\WeaponSystem.h"
+					RelativePath="..\..\gds\Item\WeaponSystem.hpp"
 					>
 				</File>
 			</Filter>
@@ -1669,7 +1669,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\GameEvent.h"
+					RelativePath="..\..\gds\Script\GameEvent.hpp"
 					>
 				</File>
 				<File
@@ -1677,11 +1677,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\GameEventManager.h"
+					RelativePath="..\..\gds\Script\GameEventManager.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\GameEventTypes.h"
+					RelativePath="..\..\gds\Script\GameEventTypes.hpp"
 					>
 				</File>
 				<File
@@ -1689,7 +1689,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\GE_SpawnEvent.h"
+					RelativePath="..\..\gds\Script\GE_SpawnEvent.hpp"
 					>
 				</File>
 				<File
@@ -1697,11 +1697,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\GE_TextEvent.h"
+					RelativePath="..\..\gds\Script\GE_TextEvent.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\PyModules.h"
+					RelativePath="..\..\gds\Script\PyModules.hpp"
 					>
 				</File>
 				<File
@@ -1709,7 +1709,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\ScriptArchive.h"
+					RelativePath="..\..\gds\Script\ScriptArchive.hpp"
 					>
 				</File>
 				<File
@@ -1717,7 +1717,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Script\ScriptManager.h"
+					RelativePath="..\..\gds\Script\ScriptManager.hpp"
 					>
 				</File>
 			</Filter>
@@ -1729,7 +1729,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameTextSystem\GameTextSet.h"
+					RelativePath="..\..\gds\GameTextSystem\GameTextSet.hpp"
 					>
 				</File>
 				<File
@@ -1737,7 +1737,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameTextSystem\GameTextSystem.h"
+					RelativePath="..\..\gds\GameTextSystem\GameTextSystem.hpp"
 					>
 				</File>
 				<File
@@ -1745,7 +1745,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameTextSystem\GameTextWindow.h"
+					RelativePath="..\..\gds\GameTextSystem\GameTextWindow.hpp"
 					>
 				</File>
 				<File
@@ -1753,7 +1753,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameTextSystem\PyModule_TextMessage.h"
+					RelativePath="..\..\gds\GameTextSystem\PyModule_TextMessage.hpp"
 					>
 				</File>
 				<File
@@ -1761,7 +1761,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameTextSystem\TextMessageManager.h"
+					RelativePath="..\..\gds\GameTextSystem\TextMessageManager.hpp"
 					>
 				</File>
 				<File
@@ -1769,7 +1769,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameTextSystem\TextMessageRenderer.h"
+					RelativePath="..\..\gds\GameTextSystem\TextMessageRenderer.hpp"
 					>
 				</File>
 			</Filter>

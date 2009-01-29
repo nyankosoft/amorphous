@@ -150,7 +150,7 @@
 				Name="modeler"
 				>
 				<File
-					RelativePath="..\..\gds\LightWave\LightWaveObject.h"
+					RelativePath="..\..\gds\LightWave\LightWaveObject.hpp"
 					>
 				</File>
 				<File
@@ -158,7 +158,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\LightWave\LWO2_Common.h"
+					RelativePath="..\..\gds\LightWave\LWO2_Common.hpp"
 					>
 				</File>
 				<File
@@ -166,7 +166,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\LightWave\LWO2_Layer.h"
+					RelativePath="..\..\gds\LightWave\LWO2_Layer.hpp"
 					>
 				</File>
 				<File
@@ -174,7 +174,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\LightWave\LWO2_Object.h"
+					RelativePath="..\..\gds\LightWave\LWO2_Object.hpp"
 					>
 				</File>
 				<File
@@ -182,7 +182,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\LightWave\LWO2_Surface.h"
+					RelativePath="..\..\gds\LightWave\LWO2_Surface.hpp"
 					>
 				</File>
 			</Filter>
@@ -194,7 +194,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\LightWave\LightWaveSceneLoader.h"
+					RelativePath="..\..\gds\LightWave\LightWaveSceneLoader.hpp"
 					>
 				</File>
 				<File
@@ -202,7 +202,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\LightWave\LWS_Items.h"
+					RelativePath="..\..\gds\LightWave\LWS_Items.hpp"
 					>
 				</File>
 			</Filter>
