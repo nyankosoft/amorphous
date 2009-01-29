@@ -154,7 +154,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\BillboardArrayMesh.h"
+				RelativePath="..\..\gds\Graphics\BillboardArrayMesh.hpp"
 				>
 			</File>
 			<File
@@ -162,7 +162,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\Camera.h"
+				RelativePath="..\..\gds\Graphics\Camera.hpp"
 				>
 			</File>
 			<File
@@ -170,11 +170,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\CubeMapManager.h"
+				RelativePath="..\..\gds\Graphics\CubeMapManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\D3DMisc.h"
+				RelativePath="..\..\gds\Graphics\D3DMisc.hpp"
 				>
 			</File>
 			<File
@@ -182,7 +182,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\D3DXMeshObject.h"
+				RelativePath="..\..\gds\Graphics\D3DXMeshObject.hpp"
 				>
 			</File>
 			<File
@@ -190,7 +190,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\D3DXMeshObjectBase.h"
+				RelativePath="..\..\gds\Graphics\D3DXMeshObjectBase.hpp"
 				>
 			</File>
 			<File
@@ -198,7 +198,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\D3DXPMeshObject.h"
+				RelativePath="..\..\gds\Graphics\D3DXPMeshObject.hpp"
 				>
 			</File>
 			<File
@@ -206,7 +206,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\D3DXSMeshObject.h"
+				RelativePath="..\..\gds\Graphics\D3DXSMeshObject.hpp"
 				>
 			</File>
 			<File
@@ -214,11 +214,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\Direct3D9.h"
+				RelativePath="..\..\gds\Graphics\Direct3D9.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\FloatRGBAColor.h"
+				RelativePath="..\..\gds\Graphics\FloatRGBAColor.hpp"
 				>
 			</File>
 			<File
@@ -226,7 +226,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\FloatRGBColor.h"
+				RelativePath="..\..\gds\Graphics\FloatRGBColor.hpp"
 				>
 			</File>
 			<File
@@ -274,7 +274,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\General3DVertex.h"
+				RelativePath="..\..\gds\Graphics\General3DVertex.hpp"
 				>
 			</File>
 			<File
@@ -282,11 +282,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.h"
+				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\HemisphericLight.h"
+				RelativePath="..\..\gds\Graphics\HemisphericLight.hpp"
 				>
 			</File>
 			<File
@@ -294,7 +294,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\IndexedPolygon.h"
+				RelativePath="..\..\gds\Graphics\IndexedPolygon.hpp"
 				>
 			</File>
 			<File
@@ -302,11 +302,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\LensFlare.h"
+				RelativePath="..\..\gds\Graphics\LensFlare.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\LightStructs.h"
+				RelativePath="..\..\gds\Graphics\LightStructs.hpp"
 				>
 			</File>
 			<File
@@ -314,7 +314,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\LogOutput_OnScreen.h"
+				RelativePath="..\..\gds\Graphics\LogOutput_OnScreen.hpp"
 				>
 			</File>
 			<File
@@ -322,11 +322,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\PostProcessManager.h"
+				RelativePath="..\..\gds\Graphics\PostProcessManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\RenderTask.h"
+				RelativePath="..\..\gds\Graphics\RenderTask.hpp"
 				>
 			</File>
 			<File
@@ -334,7 +334,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\RenderTaskProcessor.h"
+				RelativePath="..\..\gds\Graphics\RenderTaskProcessor.hpp"
 				>
 			</File>
 			<File
@@ -342,7 +342,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\ShadowMapManager.h"
+				RelativePath="..\..\gds\Graphics\ShadowMapManager.hpp"
 				>
 			</File>
 			<File
@@ -350,7 +350,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\ShadowMaps.h"
+				RelativePath="..\..\gds\Graphics\ShadowMaps.hpp"
 				>
 			</File>
 			<File
@@ -358,11 +358,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\SimpleMotionBlur.h"
+				RelativePath="..\..\gds\Graphics\SimpleMotionBlur.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\TextureCoord.h"
+				RelativePath="..\..\gds\Graphics\TextureCoord.hpp"
 				>
 			</File>
 			<File
@@ -370,7 +370,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\TextureRenderTarget.h"
+				RelativePath="..\..\gds\Graphics\TextureRenderTarget.hpp"
 				>
 			</File>
 			<File
@@ -378,7 +378,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\TextureTool.h"
+				RelativePath="..\..\gds\Graphics\TextureTool.hpp"
 				>
 			</File>
 			<File
@@ -386,7 +386,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\UnitCube.h"
+				RelativePath="..\..\gds\Graphics\UnitCube.hpp"
 				>
 			</File>
 			<File
@@ -394,7 +394,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\UnitSphere.h"
+				RelativePath="..\..\gds\Graphics\UnitSphere.hpp"
 				>
 			</File>
 			<File
@@ -402,7 +402,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\VarianceShadowMapManager.h"
+				RelativePath="..\..\gds\Graphics\VarianceShadowMapManager.hpp"
 				>
 			</File>
 			<Filter
@@ -413,11 +413,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.h"
+					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.h"
+					RelativePath="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp"
 					>
 				</File>
 				<File
@@ -425,7 +425,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\Shader.h"
+					RelativePath="..\..\gds\Graphics\Shader\Shader.hpp"
 					>
 				</File>
 				<File
@@ -433,7 +433,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\ShaderLightManager.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderLightManager.hpp"
 					>
 				</File>
 				<File
@@ -441,7 +441,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\ShaderManager.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderManager.hpp"
 					>
 				</File>
 				<File
@@ -449,11 +449,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\ShaderManagerHub.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderManagerHub.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\ShaderTechniqueHandle.h"
+					RelativePath="..\..\gds\Graphics\Shader\ShaderTechniqueHandle.hpp"
 					>
 				</File>
 			</Filter>
@@ -465,7 +465,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.hpp"
 					>
 				</File>
 				<File
@@ -473,7 +473,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.hpp"
 					>
 				</File>
 				<File
@@ -481,7 +481,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\D3DXMeshModel.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\D3DXMeshModel.hpp"
 					>
 				</File>
 				<File
@@ -489,7 +489,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\MeshBone.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\MeshBone.hpp"
 					>
 				</File>
 				<File
@@ -497,7 +497,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\NVMeshMender.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\NVMeshMender.hpp"
 					>
 				</File>
 				<File
@@ -505,11 +505,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\TangentSpace.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\TangentSpace.hpp"
 					>
 				</File>
 				<File
@@ -517,7 +517,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.h"
+					RelativePath="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.hpp"
 					>
 				</File>
 			</Filter>
@@ -529,11 +529,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\AsyncResourceLoader.h"
+					RelativePath="..\..\gds\Graphics\AsyncResourceLoader.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResource.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResource.hpp"
 					>
 				</File>
 				<File
@@ -541,11 +541,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResourceCacheManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceCacheManager.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResourceDescs.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceDescs.hpp"
 					>
 				</File>
 				<File
@@ -553,7 +553,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResourceEntries.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceEntries.hpp"
 					>
 				</File>
 				<File
@@ -561,7 +561,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResourceHandle.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceHandle.hpp"
 					>
 				</File>
 				<File
@@ -569,7 +569,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResourceLoaders.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceLoaders.hpp"
 					>
 				</File>
 				<File
@@ -577,7 +577,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResourceManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsResourceManager.hpp"
 					>
 				</File>
 				<File
@@ -585,7 +585,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\MeshObjectHandle.h"
+					RelativePath="..\..\gds\Graphics\MeshObjectHandle.hpp"
 					>
 				</File>
 				<File
@@ -593,7 +593,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\ShaderHandle.h"
+					RelativePath="..\..\gds\Graphics\ShaderHandle.hpp"
 					>
 				</File>
 				<File
@@ -601,7 +601,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\TextureHandle.h"
+					RelativePath="..\..\gds\Graphics\TextureHandle.hpp"
 					>
 				</File>
 			</Filter>
@@ -613,7 +613,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DFrameRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DFrameRect.hpp"
 					>
 				</File>
 				<File
@@ -621,7 +621,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPolygon.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPolygon.hpp"
 					>
 				</File>
 				<File
@@ -629,7 +629,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitive.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitive.hpp"
 					>
 				</File>
 				<File
@@ -637,11 +637,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRect.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRectSet.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRectSet.hpp"
 					>
 				</File>
 				<File
@@ -649,7 +649,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRoundRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRoundRect.hpp"
 					>
 				</File>
 				<File
@@ -657,7 +657,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTexRect.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTexRect.hpp"
 					>
 				</File>
 				<File
@@ -665,7 +665,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTriangle.h"
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DTriangle.hpp"
 					>
 				</File>
 			</Filter>
@@ -673,7 +673,7 @@
 				Name="2D Graphics Elements &amp; Effects"
 				>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsEffectHandle.h"
+					RelativePath="..\..\gds\Graphics\GraphicsEffectHandle.hpp"
 					>
 				</File>
 				<File
@@ -681,7 +681,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsEffectManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsEffectManager.hpp"
 					>
 				</File>
 				<File
@@ -689,7 +689,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsElementManager.h"
+					RelativePath="..\..\gds\Graphics\GraphicsElementManager.hpp"
 					>
 				</File>
 				<File
@@ -697,7 +697,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsElements.h"
+					RelativePath="..\..\gds\Graphics\GraphicsElements.hpp"
 					>
 				</File>
 				<File
@@ -705,7 +705,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\PyModule_GraphicsElement.h"
+					RelativePath="..\..\gds\Graphics\PyModule_GraphicsElement.hpp"
 					>
 				</File>
 			</Filter>
@@ -717,11 +717,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Font\Font.h"
+					RelativePath="..\..\gds\Graphics\Font\Font.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Font\FontBase.h"
+					RelativePath="..\..\gds\Graphics\Font\FontBase.hpp"
 					>
 				</File>
 				<File
@@ -729,7 +729,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Font\TextureFont.h"
+					RelativePath="..\..\gds\Graphics\Font\TextureFont.hpp"
 					>
 				</File>
 				<File
@@ -737,7 +737,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Font\TrueTypeTextureFont.h"
+					RelativePath="..\..\gds\Graphics\Font\TrueTypeTextureFont.hpp"
 					>
 				</File>
 			</Filter>
@@ -749,7 +749,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\LinePrimitives.h"
+					RelativePath="..\..\gds\Graphics\LinePrimitives.hpp"
 					>
 				</File>
 			</Filter>
@@ -757,11 +757,11 @@
 				Name="2D"
 				>
 				<File
-					RelativePath="..\..\gds\Graphics\Point.h"
+					RelativePath="..\..\gds\Graphics\Point.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\Rect.h"
+					RelativePath="..\..\gds\Graphics\Rect.hpp"
 					>
 				</File>
 				<File
@@ -769,7 +769,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\RectTree.h"
+					RelativePath="..\..\gds\Graphics\RectTree.hpp"
 					>
 				</File>
 			</Filter>
@@ -782,11 +782,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\3DStructs.h"
+				RelativePath="..\..\gds\3DMath\3DStructs.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\aabb2.h"
+				RelativePath="..\..\gds\3DMath\aabb2.hpp"
 				>
 			</File>
 			<File
@@ -794,7 +794,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\aabb3.h"
+				RelativePath="..\..\gds\3DMath\aabb3.hpp"
 				>
 			</File>
 			<File
@@ -802,7 +802,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\AABTree.h"
+				RelativePath="..\..\gds\3DMath\AABTree.hpp"
 				>
 			</File>
 			<File
@@ -814,7 +814,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\BSPTreeForBox.h"
+				RelativePath="..\..\gds\3DMath\BSPTreeForBox.hpp"
 				>
 			</File>
 			<File
@@ -822,7 +822,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\BSPTreeForTriangleMesh.h"
+				RelativePath="..\..\gds\3DMath\BSPTreeForTriangleMesh.hpp"
 				>
 			</File>
 			<File
@@ -830,35 +830,35 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\ConvexPolygon.h"
+				RelativePath="..\..\gds\3DMath\ConvexPolygon.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\D3DX_Adapter.h"
+				RelativePath="..\..\gds\3DMath\D3DX_Adapter.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\D3DX_Matrix33_Adapter.h"
+				RelativePath="..\..\gds\3DMath\D3DX_Matrix33_Adapter.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\D3DXVec3Adapter.h"
+				RelativePath="..\..\gds\3DMath\D3DXVec3Adapter.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\index.h"
+				RelativePath="..\..\gds\3DMath\index.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\IndexedTriangle.h"
+				RelativePath="..\..\gds\3DMath\IndexedTriangle.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\MathMisc.h"
+				RelativePath="..\..\gds\3DMath\MathMisc.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Matrix22.h"
+				RelativePath="..\..\gds\3DMath\Matrix22.hpp"
 				>
 			</File>
 			<File
@@ -866,7 +866,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Matrix33.h"
+				RelativePath="..\..\gds\3DMath\Matrix33.hpp"
 				>
 			</File>
 			<File
@@ -874,7 +874,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Matrix34.h"
+				RelativePath="..\..\gds\3DMath\Matrix34.hpp"
 				>
 			</File>
 			<File
@@ -882,7 +882,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Plane.h"
+				RelativePath="..\..\gds\3DMath\Plane.hpp"
 				>
 			</File>
 			<File
@@ -890,7 +890,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Quaternion.h"
+				RelativePath="..\..\gds\3DMath\Quaternion.hpp"
 				>
 			</File>
 			<File
@@ -898,27 +898,27 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\ray.h"
+				RelativePath="..\..\gds\3DMath\ray.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Sphere.h"
+				RelativePath="..\..\gds\3DMath\Sphere.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\stream.h"
+				RelativePath="..\..\gds\3DMath\stream.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Triangle.h"
+				RelativePath="..\..\gds\3DMath\Triangle.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Vector2.h"
+				RelativePath="..\..\gds\3DMath\Vector2.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Vector2_Gen.h"
+				RelativePath="..\..\gds\3DMath\Vector2_Gen.hpp"
 				>
 			</File>
 			<File
@@ -926,11 +926,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Vector3.h"
+				RelativePath="..\..\gds\3DMath\Vector3.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\3DMath\Vector3_Gen.h"
+				RelativePath="..\..\gds\3DMath\Vector3_Gen.hpp"
 				>
 			</File>
 			<File
@@ -942,7 +942,7 @@
 			Name="GameInput"
 			>
 			<File
-				RelativePath="..\..\gds\GameInput\3DActionCode.h"
+				RelativePath="..\..\gds\GameInput\3DActionCode.hpp"
 				>
 			</File>
 			<File
@@ -950,7 +950,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DIKeyboard.h"
+				RelativePath="..\..\gds\GameInput\DIKeyboard.hpp"
 				>
 			</File>
 			<File
@@ -958,7 +958,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInput.h"
+				RelativePath="..\..\gds\GameInput\DirectInput.hpp"
 				>
 			</File>
 			<File
@@ -966,7 +966,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInputGamepad.h"
+				RelativePath="..\..\gds\GameInput\DirectInputGamepad.hpp"
 				>
 			</File>
 			<File
@@ -974,19 +974,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInputMouse.h"
+				RelativePath="..\..\gds\GameInput\DirectInputMouse.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\fwd.h"
+				RelativePath="..\..\gds\GameInput\fwd.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\GameInput.h"
+				RelativePath="..\..\gds\GameInput\GameInput.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\GICodeTitle.h"
+				RelativePath="..\..\gds\GameInput\GICodeTitle.hpp"
 				>
 			</File>
 			<File
@@ -994,11 +994,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputDevice.h"
+				RelativePath="..\..\gds\GameInput\InputDevice.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputHandler.h"
+				RelativePath="..\..\gds\GameInput\InputHandler.hpp"
 				>
 			</File>
 			<File
@@ -1006,7 +1006,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputHub.h"
+				RelativePath="..\..\gds\GameInput\InputHub.hpp"
 				>
 			</File>
 			<File
@@ -1014,7 +1014,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\StdKeyboard.h"
+				RelativePath="..\..\gds\GameInput\StdKeyboard.hpp"
 				>
 			</File>
 			<File
@@ -1022,7 +1022,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\StdMouseInput.h"
+				RelativePath="..\..\gds\GameInput\StdMouseInput.hpp"
 				>
 			</File>
 		</Filter>
@@ -1034,7 +1034,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Aux.h"
+				RelativePath="..\..\gds\UI\GM_Aux.hpp"
 				>
 			</File>
 			<File
@@ -1042,15 +1042,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Button.h"
+				RelativePath="..\..\gds\UI\GM_Button.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_CaptionParameters.h"
+				RelativePath="..\..\gds\UI\GM_CaptionParameters.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_CaptionRenderRoutine.h"
+				RelativePath="..\..\gds\UI\GM_CaptionRenderRoutine.hpp"
 				>
 			</File>
 			<File
@@ -1058,7 +1058,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Control.h"
+				RelativePath="..\..\gds\UI\GM_Control.hpp"
 				>
 			</File>
 			<File
@@ -1066,7 +1066,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlDescBase.h"
+				RelativePath="..\..\gds\UI\GM_ControlDescBase.hpp"
 				>
 			</File>
 			<File
@@ -1074,7 +1074,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlRenderer.h"
+				RelativePath="..\..\gds\UI\GM_ControlRenderer.hpp"
 				>
 			</File>
 			<File
@@ -1082,11 +1082,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlRendererManager.h"
+				RelativePath="..\..\gds\UI\GM_ControlRendererManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Controls.h"
+				RelativePath="..\..\gds\UI\GM_Controls.hpp"
 				>
 			</File>
 			<File
@@ -1094,7 +1094,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Dialog.h"
+				RelativePath="..\..\gds\UI\GM_Dialog.hpp"
 				>
 			</File>
 			<File
@@ -1102,7 +1102,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogCloseButton.h"
+				RelativePath="..\..\gds\UI\GM_DialogCloseButton.hpp"
 				>
 			</File>
 			<File
@@ -1110,7 +1110,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogDesc.h"
+				RelativePath="..\..\gds\UI\GM_DialogDesc.hpp"
 				>
 			</File>
 			<File
@@ -1118,15 +1118,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogManager.h"
+				RelativePath="..\..\gds\UI\GM_DialogManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Event.h"
+				RelativePath="..\..\gds\UI\GM_Event.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_EventHandlerBase.h"
+				RelativePath="..\..\gds\UI\GM_EventHandlerBase.hpp"
 				>
 			</File>
 			<File
@@ -1134,11 +1134,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_GraphicElement.h"
+				RelativePath="..\..\gds\UI\GM_GraphicElement.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Input.h"
+				RelativePath="..\..\gds\UI\GM_Input.hpp"
 				>
 			</File>
 			<File
@@ -1146,11 +1146,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ListBox.h"
+				RelativePath="..\..\gds\UI\GM_ListBox.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ListBoxDesc.h"
+				RelativePath="..\..\gds\UI\GM_ListBoxDesc.hpp"
 				>
 			</File>
 			<File
@@ -1158,11 +1158,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ScrollBar.h"
+				RelativePath="..\..\gds\UI\GM_ScrollBar.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ScrollBarDesc.h"
+				RelativePath="..\..\gds\UI\GM_ScrollBarDesc.hpp"
 				>
 			</File>
 			<File
@@ -1170,7 +1170,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Slider.h"
+				RelativePath="..\..\gds\UI\GM_Slider.hpp"
 				>
 			</File>
 			<File
@@ -1178,7 +1178,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_SoundPlayer.h"
+				RelativePath="..\..\gds\UI\GM_SoundPlayer.hpp"
 				>
 			</File>
 			<File
@@ -1186,7 +1186,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Static.h"
+				RelativePath="..\..\gds\UI\GM_Static.hpp"
 				>
 			</File>
 			<File
@@ -1194,7 +1194,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_StdControlRenderer.h"
+				RelativePath="..\..\gds\UI\GM_StdControlRenderer.hpp"
 				>
 			</File>
 			<File
@@ -1202,7 +1202,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_StdControlRendererManager.h"
+				RelativePath="..\..\gds\UI\GM_StdControlRendererManager.hpp"
 				>
 			</File>
 			<File
@@ -1210,7 +1210,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_SubDialogButton.h"
+				RelativePath="..\..\gds\UI\GM_SubDialogButton.hpp"
 				>
 			</File>
 			<File
@@ -1218,7 +1218,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_XMLParser.h"
+				RelativePath="..\..\gds\UI\GM_XMLParser.hpp"
 				>
 			</File>
 			<File
@@ -1226,15 +1226,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\InputHandler_Dialog.h"
+				RelativePath="..\..\gds\UI\InputHandler_Dialog.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\ui.h"
+				RelativePath="..\..\gds\UI\ui.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\ui_fwd.h"
+				RelativePath="..\..\gds\UI\ui_fwd.hpp"
 				>
 			</File>
 		</Filter>
@@ -1242,7 +1242,7 @@
 			Name="GameCommon"
 			>
 			<File
-				RelativePath="..\..\gds\GameCommon\BasicGameMath.h"
+				RelativePath="..\..\gds\GameCommon\BasicGameMath.hpp"
 				>
 			</File>
 			<File
@@ -1250,7 +1250,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameCommon\MTRand.h"
+				RelativePath="..\..\gds\GameCommon\MTRand.hpp"
 				>
 			</File>
 		</Filter>
@@ -1258,7 +1258,7 @@
 			Name="Support"
 			>
 			<File
-				RelativePath="..\..\gds\Support\BitmapImage.h"
+				RelativePath="..\..\gds\Support\BitmapImage.hpp"
 				>
 			</File>
 			<File
@@ -1266,7 +1266,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\BMPImageExporter.h"
+				RelativePath="..\..\gds\Support\BMPImageExporter.hpp"
 				>
 			</File>
 			<File
@@ -1274,7 +1274,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\CameraController_Win32.h"
+				RelativePath="..\..\gds\Support\CameraController_Win32.hpp"
 				>
 			</File>
 			<File
@@ -1282,19 +1282,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\DebugOutput.h"
+				RelativePath="..\..\gds\Support\DebugOutput.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\fnop.h"
+				RelativePath="..\..\gds\Support\fnop.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\ImageArchive.h"
+				RelativePath="..\..\gds\Support\ImageArchive.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\Macro.h"
+				RelativePath="..\..\gds\Support\Macro.hpp"
 				>
 			</File>
 			<File
@@ -1302,7 +1302,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\ParamLoader.h"
+				RelativePath="..\..\gds\Support\ParamLoader.hpp"
 				>
 			</File>
 			<File
@@ -1310,7 +1310,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\PrecisionTimer.h"
+				RelativePath="..\..\gds\Support\PrecisionTimer.hpp"
 				>
 			</File>
 			<File
@@ -1318,15 +1318,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\Profile.h"
+				RelativePath="..\..\gds\Support\Profile.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\SafeDelete.h"
+				RelativePath="..\..\gds\Support\SafeDelete.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\SafeDeleteVector.h"
+				RelativePath="..\..\gds\Support\SafeDeleteVector.hpp"
 				>
 			</File>
 			<File
@@ -1334,15 +1334,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\Singleton.h"
+				RelativePath="..\..\gds\Support\Singleton.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\stream_buffer.h"
+				RelativePath="..\..\gds\Support\stream_buffer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\StringAux.h"
+				RelativePath="..\..\gds\Support\StringAux.hpp"
 				>
 			</File>
 			<File
@@ -1350,7 +1350,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\TextFileScanner.h"
+				RelativePath="..\..\gds\Support\TextFileScanner.hpp"
 				>
 			</File>
 			<File
@@ -1358,11 +1358,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\Timer.h"
+				RelativePath="..\..\gds\Support\Timer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\Vec3_StringAux.h"
+				RelativePath="..\..\gds\Support\Vec3_StringAux.hpp"
 				>
 			</File>
 			<Filter
@@ -1373,11 +1373,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Log\DefaultLog.h"
+					RelativePath="..\..\gds\Support\Log\DefaultLog.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Log\Log.h"
+					RelativePath="..\..\gds\Support\Log\Log.hpp"
 					>
 				</File>
 				<File
@@ -1385,7 +1385,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Log\LogInputBase.h"
+					RelativePath="..\..\gds\Support\Log\LogInputBase.hpp"
 					>
 				</File>
 				<File
@@ -1393,7 +1393,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Log\LogOutputBase.h"
+					RelativePath="..\..\gds\Support\Log\LogOutputBase.hpp"
 					>
 				</File>
 				<File
@@ -1401,7 +1401,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Log\StateLog.h"
+					RelativePath="..\..\gds\Support\Log\StateLog.hpp"
 					>
 				</File>
 			</Filter>
@@ -1409,7 +1409,7 @@
 				Name="Serialization"
 				>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Archive.h"
+					RelativePath="..\..\gds\Support\Serialization\Archive.hpp"
 					>
 				</File>
 				<File
@@ -1417,7 +1417,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\ArchiveObjectBase.h"
+					RelativePath="..\..\gds\Support\Serialization\ArchiveObjectBase.hpp"
 					>
 				</File>
 				<File
@@ -1425,7 +1425,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\BinaryArchive_Input.h"
+					RelativePath="..\..\gds\Support\Serialization\BinaryArchive_Input.hpp"
 					>
 				</File>
 				<File
@@ -1433,7 +1433,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\BinaryArchive_Output.h"
+					RelativePath="..\..\gds\Support\Serialization\BinaryArchive_Output.hpp"
 					>
 				</File>
 				<File
@@ -1441,39 +1441,39 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\BinaryDatabase.h"
+					RelativePath="..\..\gds\Support\Serialization\BinaryDatabase.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization_2DArray.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization_2DArray.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization_32BitColor.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization_32BitColor.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization_3DCommon.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization_3DCommon.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization_3DMath.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization_3DMath.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization_Color.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization_Color.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization_FixedVector.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization_FixedVector.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\Serialization\Serialization_Light.h"
+					RelativePath="..\..\gds\Support\Serialization\Serialization_Light.hpp"
 					>
 				</File>
 			</Filter>
@@ -1493,7 +1493,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\ZLib\crc32.h"
+					RelativePath="..\..\gds\Support\ZLib\crc32.hpp"
 					>
 				</File>
 				<File
@@ -1501,7 +1501,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Support\ZLib\deflate.h"
+					RelativePath="..\..\gds\Support\ZLib\deflate.hpp"
 					>
 				</File>
 				<File
@@ -1582,7 +1582,7 @@
 			Name="Sound"
 			>
 			<File
-				RelativePath="..\..\gds\Sound\fwd.h"
+				RelativePath="..\..\gds\Sound\fwd.hpp"
 				>
 			</File>
 			<File
@@ -1590,7 +1590,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\GameSound.h"
+				RelativePath="..\..\gds\Sound\GameSound.hpp"
 				>
 			</File>
 			<File
@@ -1598,7 +1598,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\OpenALSoundManagerImpl.h"
+				RelativePath="..\..\gds\Sound\OpenALSoundManagerImpl.hpp"
 				>
 			</File>
 			<File
@@ -1606,7 +1606,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\OpenALSoundSourceImpl.h"
+				RelativePath="..\..\gds\Sound\OpenALSoundSourceImpl.hpp"
 				>
 			</File>
 			<File
@@ -1614,19 +1614,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\PyModule_Sound.h"
+				RelativePath="..\..\gds\Sound\PyModule_Sound.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\Serialization_SoundHandle.h"
+				RelativePath="..\..\gds\Sound\Serialization_SoundHandle.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\SoundDesc.h"
+				RelativePath="..\..\gds\Sound\SoundDesc.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\SoundHandle.h"
+				RelativePath="..\..\gds\Sound\SoundHandle.hpp"
 				>
 			</File>
 			<File
@@ -1634,15 +1634,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\SoundManager.h"
+				RelativePath="..\..\gds\Sound\SoundManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\SoundManagerImpl.h"
+				RelativePath="..\..\gds\Sound\SoundManagerImpl.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\SoundSource.h"
+				RelativePath="..\..\gds\Sound\SoundSource.hpp"
 				>
 			</File>
 			<File
@@ -1650,7 +1650,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\WaveFile.h"
+				RelativePath="..\..\gds\Sound\WaveFile.hpp"
 				>
 			</File>
 		</Filter>
@@ -1662,7 +1662,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\BVH\BVHBone.h"
+				RelativePath="..\..\gds\BVH\BVHBone.hpp"
 				>
 			</File>
 			<File
@@ -1670,11 +1670,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\BVH\BVHPlayer.h"
+				RelativePath="..\..\gds\BVH\BVHPlayer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\BVH\fwd.h"
+				RelativePath="..\..\gds\BVH\fwd.hpp"
 				>
 			</File>
 		</Filter>
@@ -1686,11 +1686,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\XML\XercesString.h"
+				RelativePath="..\..\gds\XML\XercesString.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\XML\xmlch2x.h"
+				RelativePath="..\..\gds\XML\xmlch2x.hpp"
 				>
 			</File>
 			<File
@@ -1698,11 +1698,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\XML\XMLDocumentLoader.h"
+				RelativePath="..\..\gds\XML\XMLDocumentLoader.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\XML\XMLNodeReader.h"
+				RelativePath="..\..\gds\XML\XMLNodeReader.hpp"
 				>
 			</File>
 		</Filter>
@@ -1730,7 +1730,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Actor.h"
+				RelativePath="..\..\gds\Physics\Actor.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1752,7 +1752,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\ActorDesc.h"
+				RelativePath="..\..\gds\Physics\ActorDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1763,7 +1763,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\BodyDesc.h"
+				RelativePath="..\..\gds\Physics\BodyDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1774,7 +1774,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\BoxShapeDesc.h"
+				RelativePath="..\..\gds\Physics\BoxShapeDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1785,7 +1785,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\CapsuleShapeDesc.h"
+				RelativePath="..\..\gds\Physics\CapsuleShapeDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1796,7 +1796,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Cloth.h"
+				RelativePath="..\..\gds\Physics\Cloth.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1807,7 +1807,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\ClothDesc.h"
+				RelativePath="..\..\gds\Physics\ClothDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1818,7 +1818,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\DescImplFactory.h"
+				RelativePath="..\..\gds\Physics\DescImplFactory.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1829,7 +1829,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Enums.h"
+				RelativePath="..\..\gds\Physics\Enums.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1840,7 +1840,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\fwd.h"
+				RelativePath="..\..\gds\Physics\fwd.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1851,7 +1851,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Joint.h"
+				RelativePath="..\..\gds\Physics\Joint.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1862,7 +1862,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\JointDesc.h"
+				RelativePath="..\..\gds\Physics\JointDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1873,7 +1873,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Material.h"
+				RelativePath="..\..\gds\Physics\Material.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1884,7 +1884,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\MaterialDesc.h"
+				RelativePath="..\..\gds\Physics\MaterialDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1899,7 +1899,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\PhysicsEngine.h"
+				RelativePath="..\..\gds\Physics\PhysicsEngine.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1914,7 +1914,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Preprocessor.h"
+				RelativePath="..\..\gds\Physics\Preprocessor.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1925,7 +1925,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\RawTriangleMeshShapeDesc.h"
+				RelativePath="..\..\gds\Physics\RawTriangleMeshShapeDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1936,7 +1936,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Ray.h"
+				RelativePath="..\..\gds\Physics\Ray.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1947,7 +1947,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\RaycastHit.h"
+				RelativePath="..\..\gds\Physics\RaycastHit.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1958,7 +1958,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\RevoluteJoint.Desc.h"
+				RelativePath="..\..\gds\Physics\RevoluteJoint.Desc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1969,7 +1969,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\RevoluteJoint.h"
+				RelativePath="..\..\gds\Physics\RevoluteJoint.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1980,7 +1980,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Scene.h"
+				RelativePath="..\..\gds\Physics\Scene.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1991,7 +1991,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\SceneDesc.h"
+				RelativePath="..\..\gds\Physics\SceneDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2002,7 +2002,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Shape.h"
+				RelativePath="..\..\gds\Physics\Shape.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2013,7 +2013,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\ShapeDesc.h"
+				RelativePath="..\..\gds\Physics\ShapeDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2024,7 +2024,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\ShapeDescFactory.h"
+				RelativePath="..\..\gds\Physics\ShapeDescFactory.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2035,7 +2035,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\ShapeEnums.h"
+				RelativePath="..\..\gds\Physics\ShapeEnums.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2046,7 +2046,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\ShapeImpl.h"
+				RelativePath="..\..\gds\Physics\ShapeImpl.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2057,7 +2057,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\SphereShapeDesc.h"
+				RelativePath="..\..\gds\Physics\SphereShapeDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2068,7 +2068,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\SphericalJoint.h"
+				RelativePath="..\..\gds\Physics\SphericalJoint.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2079,7 +2079,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\SphericalJointDesc.h"
+				RelativePath="..\..\gds\Physics\SphericalJointDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2090,7 +2090,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\SpringDesc.h"
+				RelativePath="..\..\gds\Physics\SpringDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2101,7 +2101,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\Stream.h"
+				RelativePath="..\..\gds\Physics\Stream.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2112,7 +2112,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\TriangleMesh.h"
+				RelativePath="..\..\gds\Physics\TriangleMesh.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2123,7 +2123,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\TriangleMeshDesc.h"
+				RelativePath="..\..\gds\Physics\TriangleMeshDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2134,7 +2134,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\gds\Physics\TriangleMeshShapeDesc.h"
+				RelativePath="..\..\gds\Physics\TriangleMeshShapeDesc.hpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2163,7 +2163,7 @@
 					Name="Ageia"
 					>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\fwd.h"
+						RelativePath="..\..\gds\Physics\Ageia\fwd.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2174,7 +2174,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxMathConv.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxMathConv.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2185,7 +2185,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysActor.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysActor.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2196,7 +2196,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysCloth.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysCloth.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2207,7 +2207,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysConv.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysConv.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2222,7 +2222,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysicsEngine.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysicsEngine.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2233,7 +2233,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysJoint.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysJoint.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2244,7 +2244,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysMaterial.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysMaterial.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2255,7 +2255,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysOutputStream.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysOutputStream.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2270,7 +2270,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2285,7 +2285,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysScene.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysScene.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2296,7 +2296,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysShape.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysShape.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2311,7 +2311,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2322,7 +2322,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeFactory.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeFactory.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2333,7 +2333,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeImpl.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysShapeImpl.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2344,7 +2344,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysStream.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysStream.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2355,7 +2355,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxPhysTriangleMesh.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysTriangleMesh.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -2366,7 +2366,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath="..\..\gds\Physics\Ageia\NxShapeDescImplFactory.h"
+						RelativePath="..\..\gds\Physics\Ageia\NxShapeDescImplFactory.hpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
