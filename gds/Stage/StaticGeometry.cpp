@@ -12,6 +12,7 @@
 #include "Physics/TriangleMeshShapeDesc.hpp"
 #include "Physics/Scene.hpp"
 #include "Physics/Actor.hpp"
+#include "Physics/RaycastHit.hpp"
 
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/memory_helpers.hpp"
@@ -523,16 +524,43 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 
 int CStaticGeometry::ClipTrace( STrace& tr )
 {
+	if( !m_pTriangleMeshActor )
+		return 0;
+
 	physics::CRay ray;
 	ray.Origin = *tr.pvStart;
 	Vector3 vStoG = *tr.pvGoal- *tr.pvStart;
 	Vec3Normalize( ray.Direction, vStoG );
+	float ray_length = Vec3Dot( ray.Direction, vStoG );
 
-/*	physics::CRaycastHit rayhit;
-	rayhit;
-	CShape *pShape m_pStage->GetPhysicsScene()->RaycastClosestShape( ray, rayhit, 0, FLT_MAX );
-	if( pShape->GetType() == PhysShape::TriangleMesh );
-*/
+	// For now, assume that the static geometry actor is always composed of a single triangle mesh shape
+	if( 0 == m_pTriangleMeshActor->GetNumShapes() )
+		return 0;
+	
+	physics::CShape *pShape = m_pTriangleMeshActor->GetShape( 0 );
+	bool interested_in_only_the_first_hit = true;
+
+	physics::CRaycastHit rayhit;
+	bool hit = pShape->Raycast( ray, ray_length, 0, rayhit, interested_in_only_the_first_hit );
+
+	if( !hit )
+		return 0;
+
+	const float fraction = Vec3Dot( ray.Direction, rayhit.WorldImpactPos - *tr.pvStart ) / ray_length;
+	if( 1.0f <= fraction )
+		return 0;
+
+	// the ray hit the static geometry
+
+	tr.vEnd         = rayhit.WorldImpactPos;
+	tr.fFraction    = fraction;
+	tr.plane.normal = rayhit.WorldNormal;
+	tr.plane.dist   = Vec3Dot( rayhit.WorldNormal, rayhit.WorldImpactPos );
+
+//	rayhit;
+//	CShape *pShape m_pStage->GetPhysicsScene()->RaycastClosestShape( ray, rayhit, 0, FLT_MAX );
+//	if( pShape->GetType() == PhysShape::TriangleMesh );
+
 	return 0;
 }
 

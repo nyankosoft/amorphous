@@ -123,10 +123,13 @@ public:
 
 bool CNxPhysTriangleMeshShape::Raycast ( const CRay &world_ray,
 										   Scalar max_dist,
-										   U32 hint_flags, 
+										   U32 hint_flags,
 										   CRaycastHit &hit, bool first_hit ) const
 {
-	return m_pTriangleMesh->raycast( ToNxRay(world_ray), max_dist, hint_flags, ToNxRaycastHit(hit), first_hit );
+	NxRaycastHit nx_hit = ToNxRaycastHit(hit);
+	bool res = m_pTriangleMesh->raycast( ToNxRay(world_ray), max_dist, hint_flags, nx_hit, first_hit );
+	hit = FromNxRaycastHit( nx_hit );
+	return res;
 }
 
 
