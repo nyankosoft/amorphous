@@ -1,16 +1,15 @@
-#ifndef  __GRAPHICSCOMPONENTCOLLECTOR_H__
-#define  __GRAPHICSCOMPONENTCOLLECTOR_H__
+#ifndef  __GraphicsComponentCollector_H__
+#define  __GraphicsComponentCollector_H__
 
 
 #include <vector>
 
+#include "Graphics/fwd.hpp"
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
-
-#include <stdlib.h>
 
 
 //===============================================================================
@@ -48,6 +47,8 @@ public:
 
 class CGraphicsComponent
 {
+	bool m_RegisteredToGraphicsResourceManager;
+
 public:
 
 	enum Params
@@ -129,6 +130,8 @@ public:
 	{
 		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, GetReferenceScreenHeight() - height - bottom_margin, width, height );
 	}
+
+	friend class CGraphicsComponentCollector;
 };
 
 
@@ -154,7 +157,7 @@ public:
 	~CGraphicsComponentCollector();
 
 	void AddComponent( CGraphicsComponent* pComponent );
-	bool DeleteComponent( CGraphicsComponent* pComponent );
+	bool RemoveComponent( CGraphicsComponent* pComponent );
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
@@ -168,4 +171,4 @@ public:
 
 
 
-#endif		/*  __GRAPHICSCOMPONENTCOLLECTOR_H__  */
+#endif		/*  __GraphicsComponentCollector_H__  */

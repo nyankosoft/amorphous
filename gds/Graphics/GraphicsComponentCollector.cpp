@@ -1,4 +1,3 @@
-
 #include "GraphicsComponentCollector.hpp"
 
 using namespace std;
@@ -9,13 +8,22 @@ using namespace std;
 //=====================================================================================
 
 CGraphicsComponent::CGraphicsComponent()
+:
+m_RegisteredToGraphicsResourceManager(false)
 {
 	CGraphicsComponentCollector::Get()->AddComponent( this );
+
+	m_RegisteredToGraphicsResourceManager = true;
 }
 
 CGraphicsComponent::~CGraphicsComponent()
 {
-	CGraphicsComponentCollector::Get()->DeleteComponent( this );
+	if( m_RegisteredToGraphicsResourceManager )
+	{
+		CGraphicsComponentCollector::Get()->RemoveComponent( this );
+
+		m_RegisteredToGraphicsResourceManager = false;
+	}
 }
 
 
@@ -45,6 +53,15 @@ CGraphicsComponentCollector::CGraphicsComponentCollector()
 
 CGraphicsComponentCollector::~CGraphicsComponentCollector()
 {
+	// Remove all the graphics components to avoid instanciating the singleton instance
+	// of this class in the dtor of derived classes of CGraphicsComponent
+	size_t i, num_components = m_vecpGraphicsComponent.size();
+	for( i=0; i<num_components; i++ )
+	{
+		m_vecpGraphicsComponent[i]->m_RegisteredToGraphicsResourceManager = false;
+	}
+
+	m_vecpGraphicsComponent.clear();
 }
 
 
@@ -54,7 +71,7 @@ void CGraphicsComponentCollector::AddComponent( CGraphicsComponent* pComponent )
 }
 
 
-bool CGraphicsComponentCollector::DeleteComponent( CGraphicsComponent* pComponent )
+bool CGraphicsComponentCollector::RemoveComponent( CGraphicsComponent* pComponent )
 {
 	size_t i, num_components = m_vecpGraphicsComponent.size();
 	for( i=0; i<num_components; i++ )
