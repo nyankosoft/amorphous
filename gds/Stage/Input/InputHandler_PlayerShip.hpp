@@ -1,7 +1,7 @@
 #ifndef  __INPUTHANDLER_PLAYERSHIP_H__
 #define  __INPUTHANDLER_PLAYERSHIP_H__
 
-#include "InputHandler_PlayerBase.h"
+#include "InputHandler_PlayerBase.hpp"
 
 
 //#define NUM_PLAYERSHIP_ACTIONS 256

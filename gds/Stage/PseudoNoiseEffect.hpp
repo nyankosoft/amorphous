@@ -2,10 +2,10 @@
 #define  __PSEUDONOISEEFFECT_H__
 
 
-#include "Graphics/3DRect.h"
+#include "Graphics/3DRect.hpp"
 #include "Graphics/FVF_TLVertex.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/TextureHandle.h"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/TextureHandle.hpp"
 
 
 #define NUM_NVNOISE_TEXTURES 4

@@ -1,8 +1,8 @@
 
-#include "GM_Static.h"
+#include "GM_Static.hpp"
 
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
 
 
 //========================================================================================
@@ -30,7 +30,7 @@ CGM_Static::CGM_Static( CGM_Dialog *pDialog, CGM_StaticDesc* pDesc )
 
 //========================= debug ==============================//
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 #include "Graphics/font.h"
 
 void CGM_Static::Render( float fElapsedTime )

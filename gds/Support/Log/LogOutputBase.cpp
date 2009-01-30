@@ -1,8 +1,8 @@
 
-#include "LogOutputBase.h"
+#include "LogOutputBase.hpp"
 
-#include "../SafeDelete.h"
-#include "3DMath/MathMisc.h"
+#include "../SafeDelete.hpp"
+#include "3DMath/MathMisc.hpp"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 //=========================================================
-//    bsptree.h
+//    bsptree.hpp
 //
 //=========================================================
 
@@ -8,9 +8,9 @@
 
 #include <stdlib.h>
 
-#include "3DMath/Plane.h"
-#include "BinaryNode.h"
-#include "trace.h"
+#include "3DMath/Plane.hpp"
+#include "BinaryNode.hpp"
+#include "trace.hpp"
 
 
 class CBSPTree

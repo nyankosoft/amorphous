@@ -1,5 +1,5 @@
 
-#include "TextFileScanner.h"
+#include "TextFileScanner.hpp"
 
 using namespace std;
 

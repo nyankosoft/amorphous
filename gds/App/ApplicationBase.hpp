@@ -3,8 +3,8 @@
 
 
 #include <string>
-#include "GameInput/fwd.h"
-#include "Task/fwd.h"
+#include "GameInput/fwd.hpp"
+#include "Task/fwd.hpp"
 
 class CGlobalInputHandler;
 class CApplicationBase;

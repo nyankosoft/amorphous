@@ -1,10 +1,10 @@
 #ifndef  __JL_SHAPE_BOX_H__
 #define  __JL_SHAPE_BOX_H__
 
-#include "JL_ShapeBase.h"
+#include "JL_ShapeBase.hpp"
 
 
-#include "Stage/bsptree.h"
+#include "Stage/bsptree.hpp"
 
 class CTriangle;
 

@@ -2,7 +2,7 @@
 #define  __NamedResourceHandle_H__
 
 
-#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 #include <string>

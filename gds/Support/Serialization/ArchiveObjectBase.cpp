@@ -1,8 +1,8 @@
-#include "ArchiveObjectBase.h"
-#include "BinaryArchive_Input.h"
-#include "BinaryArchive_Output.h"
-#include "CompressedArchive_Input.h"
-#include "CompressedArchive_Output.h"
+#include "ArchiveObjectBase.hpp"
+#include "BinaryArchive_Input.hpp"
+#include "BinaryArchive_Output.hpp"
+#include "CompressedArchive_Input.hpp"
+#include "CompressedArchive_Output.hpp"
 
 using namespace GameLib1::Serialization;
 

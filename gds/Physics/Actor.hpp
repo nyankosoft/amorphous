@@ -3,13 +3,13 @@
 
 
 #include <vector>
-#include "3DMath.h"
-#include "Support/SafeDeleteVector.h"
+#include "3DMath.hpp"
+#include "Support/SafeDeleteVector.hpp"
 
-#include "fwd.h"
-#include "Enums.h"
-#include "ActorDesc.h"
-#include "Shape.h"
+#include "fwd.hpp"
+#include "Enums.hpp"
+#include "ActorDesc.hpp"
+#include "Shape.hpp"
 
 
 namespace physics

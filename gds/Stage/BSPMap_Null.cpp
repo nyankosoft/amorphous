@@ -1,26 +1,26 @@
-#include "BSPMap.h"
+#include "BSPMap.hpp"
 
 #include "Stage/stage.h"
-#include "Stage/EntitySet.h"
-#include "Stage/trace.h"
-#include "Stage/ScreenEffectManager.h"
+#include "Stage/EntitySet.hpp"
+#include "Stage/trace.hpp"
+#include "Stage/ScreenEffectManager.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 #include "PerformanceCheck.h"
 
-#include "DynamicLightManagerForStaticGeometry.h"
+#include "DynamicLightManagerForStaticGeometry.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/TextureTool.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/TextureTool.hpp"
 
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 #include "ShaderTechniqueIDs.h"
 
-#include "JigLib/JL_PhysicsManager.h"
-#include "JigLib/JL_ShapeDesc_TriangleMesh.h"
-#include "JigLib/JL_PhysicsActor.h"
+#include "JigLib/JL_PhysicsManager.hpp"
+#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
+#include "JigLib/JL_PhysicsActor.hpp"
 #include <direct.h>
 
 

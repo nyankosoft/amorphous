@@ -3,17 +3,17 @@
 
 #include <map>
 
-#include "Graphics/fwd.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/TextureRenderTarget.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/Shader/ShaderTechniqueHandle.h"
-#include "ScreenEffect.h"
-#include "PseudoNoiseEffect.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "ScreenEffect.hpp"
+#include "PseudoNoiseEffect.hpp"
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
-#include "../base.h"
+#include "../base.hpp"
 
 
 class CScreenEffectTargetSceneRenderer : public CGraphicsComponent

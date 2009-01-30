@@ -1,10 +1,10 @@
-#include "TextMessageRenderer.h"
+#include "TextMessageRenderer.hpp"
 
-#include "../Graphics/Font/Font.h"
-#include "../Graphics/GraphicsEffectManager.h"
-#include "../Support/memory_helpers.h"
-#include "../Support/Log/DefaultLog.h"
-#include "../Support/StringAux.h"
+#include "../Graphics/Font/Font.hpp"
+#include "../Graphics/GraphicsEffectManager.hpp"
+#include "../Support/memory_helpers.hpp"
+#include "../Support/Log/DefaultLog.hpp"
+#include "../Support/StringAux.hpp"
 
 using namespace std;
 using namespace boost;

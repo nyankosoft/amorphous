@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 class CGameTaskFactoryBase

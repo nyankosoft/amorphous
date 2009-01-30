@@ -1,9 +1,9 @@
 #ifndef  __WEAPON_GRAVITYGUN_H__
 #define  __WEAPON_GRAVITYGUN_H__
 
-#include "Stage/fwd.h"
-#include "Stage/EntityHandle.h"
-#include "GI_Weapon.h"
+#include "Stage/fwd.hpp"
+#include "Stage/EntityHandle.hpp"
+#include "GI_Weapon.hpp"
 
 
 class CGI_GravityGun : public CGI_Weapon

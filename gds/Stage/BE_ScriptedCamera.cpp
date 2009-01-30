@@ -1,19 +1,19 @@
-#include "BE_ScriptedCamera.h"
+#include "BE_ScriptedCamera.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntityDesc.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "ScreenEffectManager.h"
+#include "GameMessage.hpp"
+#include "CopyEntityDesc.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "ScreenEffectManager.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/3DGameMath.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/3DGameMath.hpp"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"
-#include "Support/VectorRand.h"
+#include "Support/VectorRand.hpp"
 
 
 inline static short& HasExpired(CCopyEntity* pCameraEntity) { return pCameraEntity->s1; };

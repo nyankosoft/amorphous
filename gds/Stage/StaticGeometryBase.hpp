@@ -2,13 +2,13 @@
 #define __STATICGEOMETRYBASE_H__
 
 
-#include "fwd.h"
-#include "Graphics/fwd.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "3DMath/Vector3.h"
-#include "3DMath/AABB3.h"
-#include "Physics/fwd.h"
+#include "fwd.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/AABB3.hpp"
+#include "Physics/fwd.hpp"
 
 #include <vector>
 #include <string>

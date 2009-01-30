@@ -2,9 +2,9 @@
 #define __GAMELIB1_SOUNDHANDLE_SERIALIZATION_H__
 
 
-#include "SoundHandle.h"
+#include "SoundHandle.hpp"
 
-#include "Support/Serialization/Archive.h"
+#include "Support/Serialization/Archive.hpp"
 
 
 namespace GameLib1

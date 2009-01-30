@@ -1,11 +1,11 @@
-#include "GameWindowManager_Win32.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/GraphicsComponentCollector.h"
+#include "GameWindowManager_Win32.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
 #include <math.h>
 
-#include "Support/WindowMisc_Win32.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/StringAux.h"
+#include "Support/WindowMisc_Win32.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/StringAux.hpp"
 
 
 LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM ) = NULL;

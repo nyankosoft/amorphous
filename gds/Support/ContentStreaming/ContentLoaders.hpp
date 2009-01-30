@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------
-// File: ContentLoaders.h
+// File: ContentLoaders.hpp
 //
 // Illustrates streaming content using Direct3D 9/10
 //
@@ -7,8 +7,8 @@
 //--------------------------------------------------------------------------------------
 
 //#include "DXUT.h"
-#include "AsyncLoader.h"
-#include "ResourceReuseCache.h"
+#include "AsyncLoader.hpp"
+#include "ResourceReuseCache.hpp"
 
 //--------------------------------------------------------------------------------------
 // Forward declarations

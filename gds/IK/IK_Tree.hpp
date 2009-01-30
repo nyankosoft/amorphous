@@ -3,7 +3,7 @@
 
 
 #include "Math64/LinearR3.h"
-#include "IK_Node.h"
+#include "IK_Node.hpp"
 
 
 class CIK_Tree {

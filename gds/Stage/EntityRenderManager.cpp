@@ -1,24 +1,24 @@
-#include "EntityRenderManager.h"
-#include "EntitySet.h"
-#include "trace.h"
-#include "ViewFrustumTest.h"
+#include "EntityRenderManager.hpp"
+#include "EntitySet.hpp"
+#include "trace.hpp"
+#include "ViewFrustumTest.hpp"
 
-#include "Graphics/ShadowMapManager.h"
-#include "Graphics/VarianceShadowMapManager.h"
-#include "Graphics/CubeMapManager.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManagerHub.h"
+#include "Graphics/ShadowMapManager.hpp"
+#include "Graphics/VarianceShadowMapManager.hpp"
+#include "Graphics/CubeMapManager.hpp"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManagerHub.hpp"
 
-#include "Graphics/RenderTask.h"
-#include "Graphics/RenderTaskProcessor.h"
+#include "Graphics/RenderTask.hpp"
+#include "Graphics/RenderTaskProcessor.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Profile.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Profile.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"
 
-#include "ScreenEffectManager.h"
+#include "ScreenEffectManager.hpp"
 
 
 class CEntityShadowMapRenderer : public CShadowMapSceneRenderer

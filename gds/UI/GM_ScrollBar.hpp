@@ -2,7 +2,7 @@
 #define __GM_CONTROL_SCROLLBAR__
 
 
-#include "GM_Control.h"
+#include "GM_Control.hpp"
 
 
 /** Scrollbar

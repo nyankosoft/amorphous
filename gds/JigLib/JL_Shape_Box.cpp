@@ -1,11 +1,11 @@
 
-#include "JL_Shape_Box.h"
+#include "JL_Shape_Box.hpp"
 
-#include "JL_ShapeDesc_Box.h"
-#include "TriangleMesh.h"
-#include "JL_PhysicsActor.h"
+#include "JL_ShapeDesc_Box.hpp"
+#include "TriangleMesh.hpp"
+#include "JL_PhysicsActor.hpp"
 
-#include "GameCommon/BasicGameMath.h"
+#include "GameCommon/BasicGameMath.hpp"
 
 
 const SEdgeIndex CJL_Shape_Box::ms_aEdgeIndex[12] =

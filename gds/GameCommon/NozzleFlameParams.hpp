@@ -2,9 +2,9 @@
 #define __NozzleFlameParams_H__
 
 
-#include "Support/TextFileScanner.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "Support/TextFileScanner.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 /*

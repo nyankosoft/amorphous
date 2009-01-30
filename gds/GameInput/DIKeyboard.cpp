@@ -1,9 +1,9 @@
-#include "DIKeyboard.h"
+#include "DIKeyboard.hpp"
 
-#include "../base.h"
-#include "DirectInput.h"
-#include "InputHub.h"
-#include "App/GameWindowManager_Win32.h"
+#include "../base.hpp"
+#include "DirectInput.hpp"
+#include "InputHub.hpp"
+#include "App/GameWindowManager_Win32.hpp"
 
 
 #define DIKEYBOARD_BUFFER_SIZE 32  // arbitrary number of buffer elements

@@ -9,7 +9,7 @@
 #else  /*  DISABLE_DEFAULT_LOG  */
 
 #include <string>
-#include "Log.h"
+#include "Log.hpp"
 
 extern CLogInput_Default g_Log;
 
@@ -20,7 +20,7 @@ extern CLogInput_Default g_Log;
 #define LOG_PRINT_WARNING( text ) g_Log.Print( WL_WARNING, std::string(__FUNCTION__) + " " + std::string(text) )
 #define LOG_PRINT_ERROR( text )   g_Log.Print( WL_ERROR,   std::string(__FUNCTION__) + " " + std::string(text) )
 
-#include "ScopeLog.h"
+#include "ScopeLog.hpp"
 
 
 #endif  /*  DISABLE_DEFAULT_LOG  */

@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "LogInputBase.h"
-#include "LogOutputBase.h"
+#include "LogInputBase.hpp"
+#include "LogOutputBase.hpp"
 
-#include "../Timer.h"
-#include "../SafeDelete.h"
-#include "../StringAux.h"
+#include "../Timer.hpp"
+#include "../SafeDelete.hpp"
+#include "../StringAux.hpp"
 
 
 using namespace std;

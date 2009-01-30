@@ -1,19 +1,19 @@
 #ifndef __GAMEITEM_AIRCRAFT_H__
 #define __GAMEITEM_AIRCRAFT_H__
 
-#include "GameItem.h"
-#include "WeaponSystem.h"
+#include "GameItem.hpp"
+#include "WeaponSystem.hpp"
 
-#include "Stage/BaseEntityHandle.h"
-#include "Stage/Serialization_BaseEntityHandle.h"
+#include "Stage/BaseEntityHandle.hpp"
+#include "Stage/Serialization_BaseEntityHandle.hpp"
 
-#include "Graphics/fwd.h"
-#include "GameCommon/PseudoAircraftSimulator.h"
-#include "GameCommon/NozzleFlameParams.h"
-#include "GameCommon/MeshBoneController_Aircraft.h"
-#include "GameCommon/MeshBoneControllerFactory.h"
-#include "GameCommon/RangedSet.h"
-#include "XML/fwd.h"
+#include "Graphics/fwd.hpp"
+#include "GameCommon/PseudoAircraftSimulator.hpp"
+#include "GameCommon/NozzleFlameParams.hpp"
+#include "GameCommon/MeshBoneController_Aircraft.hpp"
+#include "GameCommon/MeshBoneControllerFactory.hpp"
+#include "GameCommon/RangedSet.hpp"
+#include "XML/fwd.hpp"
 
 
 //class CMeshBoneController_AircraftBase;

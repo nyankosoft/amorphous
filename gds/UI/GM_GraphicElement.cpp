@@ -1,6 +1,6 @@
 
-#include "GM_GraphicElement.h"
-#include "GM_Dialog.h"
+#include "GM_GraphicElement.hpp"
+#include "GM_Dialog.hpp"
 
 #include <math.h>
 

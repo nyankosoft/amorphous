@@ -1,13 +1,13 @@
-#include "GraphicsResourceEntries.h"
+#include "GraphicsResourceEntries.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DXMeshObjectBase.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Support/SafeDelete.h"
-#include "Support/fnop.h"
-#include "Support/ImageArchive.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Serialization/BinaryDatabase.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXMeshObjectBase.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/fnop.hpp"
+#include "Support/ImageArchive.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 using namespace std;

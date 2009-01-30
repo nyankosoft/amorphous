@@ -9,11 +9,11 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread.hpp>
 
-#include "fwd.h"
-#include "GraphicsResource.h"
-#include "GraphicsResourceDescs.h"
+#include "fwd.hpp"
+#include "GraphicsResource.hpp"
+#include "GraphicsResourceDescs.hpp"
 
-#include "Support/Serialization/BinaryDatabase.h"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 //template<class T>class CBinaryDatabase<T>;

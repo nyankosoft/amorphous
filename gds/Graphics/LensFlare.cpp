@@ -1,8 +1,8 @@
 
-#include "LensFlare.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DMisc.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "LensFlare.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DMisc.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 using namespace std;
 

@@ -1,20 +1,20 @@
 #ifndef __BE_ScriptedCamera_H__
 #define __BE_ScriptedCamera_H__
 
-#include "fwd.h"
-#include "BaseEntity.h"
-#include "BaseEntityHandle.h"
-#include "CopyEntity.h"
+#include "fwd.hpp"
+#include "BaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
+#include "CopyEntity.hpp"
 
-#include "EntityMotionPathRequest.h"
+#include "EntityMotionPathRequest.hpp"
 
-#include "Graphics/FloatRGBColor.h"
-#include "Graphics/Camera.h"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/Camera.hpp"
 
-#include "3DMath/Vector2.h"
-#include "3DMath/Quaternion.h"
+#include "3DMath/Vector2.hpp"
+#include "3DMath/Quaternion.hpp"
 
-#include "GameCommon/CriticalDamping.h"
+#include "GameCommon/CriticalDamping.hpp"
 
 
 class CBE_CameraController;

@@ -2,7 +2,7 @@
 #define  __JL_CONTACTPAIR_H__
 
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 class CJL_PhysicsActor;
 

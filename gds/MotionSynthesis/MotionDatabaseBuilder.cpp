@@ -1,15 +1,15 @@
 #include <boost/foreach.hpp>
-#include "BVH/BVHPlayer.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/StringAux.h"
-#include "Support/fnop.h"
-#include "XML/xmlch2x.h"
-#include "XML/XercesString.h"
-#include "XML/XMLDocumentLoader.h"
+#include "BVH/BVHPlayer.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/fnop.hpp"
+#include "XML/xmlch2x.hpp"
+#include "XML/XercesString.hpp"
+#include "XML/XMLDocumentLoader.hpp"
 namespace xer = xercesc_2_8;
 //#define xer xercesc_2_8;
 
-#include "MotionDatabaseBuilder.h"
+#include "MotionDatabaseBuilder.hpp"
 
 using namespace msynth;
 

@@ -2,14 +2,14 @@
 #define  __Skeleton_H__
 
 
-#include "3DMath/Vector3.h"
-#include "BVH/fwd.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "3DMath/Vector3.hpp"
+#include "BVH/fwd.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
-#include "fwd.h"
-#include "TransformNode.h"
+#include "fwd.hpp"
+#include "TransformNode.hpp"
 
 
 /// set a blend weight for a particular bone

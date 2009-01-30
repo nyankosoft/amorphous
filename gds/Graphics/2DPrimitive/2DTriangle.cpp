@@ -1,5 +1,5 @@
-#include "2DTriangle.h"
-#include "3DMath/aabb2.h"
+#include "2DTriangle.hpp"
+#include "3DMath/aabb2.hpp"
 
 
 void C2DTriangle::SetPosition( const Vector2& vMin, const Vector2& vMax )

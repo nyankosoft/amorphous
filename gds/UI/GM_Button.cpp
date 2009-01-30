@@ -1,12 +1,12 @@
 
-#include "GM_Button.h"
+#include "GM_Button.hpp"
 
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
-#include "GM_ControlRenderer.h"
-#include "GM_Input.h"
-#include "GM_SoundPlayer.h"
-#include "Support/SafeDelete.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "GM_Input.hpp"
+#include "GM_SoundPlayer.hpp"
+#include "Support/SafeDelete.hpp"
 
 
 //========================================================================================

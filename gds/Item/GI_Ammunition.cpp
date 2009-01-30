@@ -1,6 +1,6 @@
-#include "GI_Ammunition.h"
-#include "Stage/Serialization_BaseEntityHandle.h"
-#include "XML/XMLNodeReader.h"
+#include "GI_Ammunition.hpp"
+#include "Stage/Serialization_BaseEntityHandle.hpp"
+#include "XML/XMLNodeReader.hpp"
 
 
 //======================================================================================

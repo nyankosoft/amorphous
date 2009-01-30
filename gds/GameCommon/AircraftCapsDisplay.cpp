@@ -1,12 +1,12 @@
 
-#include "AircraftCapsDisplay.h"
-#include "Item/GI_Aircraft.h"
+#include "AircraftCapsDisplay.hpp"
+#include "Item/GI_Aircraft.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/msgbox.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/msgbox.hpp"
 
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/2DPrimitive/2DFrameRect.h"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/2DPrimitive/2DFrameRect.hpp"
 
 
 CAircraftCapsDisplay::CAircraftCapsDisplay()

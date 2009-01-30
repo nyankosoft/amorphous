@@ -1,6 +1,6 @@
-#include "PyModule_TextMessage.h"
-#include "TextMessageManager.h"
-//#include "Support/msgbox.h"
+#include "PyModule_TextMessage.hpp"
+#include "TextMessageManager.hpp"
+//#include "Support/msgbox.hpp"
 
 #include <map>
 #include <boost/shared_ptr.hpp>

@@ -5,17 +5,17 @@
 #include <stdio.h>
 #include <memory.h>
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "GameItem.h"
-#include "GI_Weapon.h"
-#include "GI_Ammunition.h"
-#include "Graphics/fwd.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Stage/fwd.h"
-//#include "Stage/BaseEntityHandle.h"
-#include "Stage/EntityGroupHandle.h"
-#include "Support/Log/DefaultLog.h"
+#include "GameItem.hpp"
+#include "GI_Weapon.hpp"
+#include "GI_Ammunition.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Stage/fwd.hpp"
+//#include "Stage/BaseEntityHandle.hpp"
+#include "Stage/EntityGroupHandle.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 // forward declerations

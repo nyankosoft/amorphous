@@ -1,7 +1,7 @@
 
-#include "StdKeyboard.h"
+#include "StdKeyboard.hpp"
 
-#include "InputHub.h"
+#include "InputHub.hpp"
 
 #include <windows.h>
 

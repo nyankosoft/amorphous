@@ -1,12 +1,12 @@
-#include "NxPhysPreprocessorImpl.h"
-#include "NxMathConv.h"
-#include "NxPhysStream.h"
-#include "../TriangleMeshDesc.h"
+#include "NxPhysPreprocessorImpl.hpp"
+#include "NxMathConv.hpp"
+#include "NxPhysStream.hpp"
+#include "../TriangleMeshDesc.hpp"
 
 // PhysX header
 #include "NxCooking.h"
 
-#include "Support/SafeDelete.h"
+#include "Support/SafeDelete.hpp"
 
 using namespace physics;
 

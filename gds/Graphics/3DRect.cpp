@@ -1,5 +1,5 @@
-#include "3DRect.h"
-#include "Graphics/Direct3D9.h"
+#include "3DRect.hpp"
+#include "Graphics/Direct3D9.hpp"
 
 
 /*

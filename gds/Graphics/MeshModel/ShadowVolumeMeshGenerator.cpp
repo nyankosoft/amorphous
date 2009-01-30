@@ -1,8 +1,8 @@
 
-#include "ShadowVolumeMeshGenerator.h"
+#include "ShadowVolumeMeshGenerator.hpp"
 
 
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 //--------------------------------------------------------------------------------------

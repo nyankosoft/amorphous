@@ -1,8 +1,8 @@
-#include "GraphicsResourceHandle.h"
-#include "GraphicsResourceEntries.h"
+#include "GraphicsResourceHandle.hpp"
+#include "GraphicsResourceEntries.hpp"
 
-//#include "Support/Log/DefaultLog.h"
-#include "Support/Serialization/Serialization.h"
+//#include "Support/Log/DefaultLog.hpp"
+#include "Support/Serialization/Serialization.hpp"
 
 using namespace std;
 using namespace boost;

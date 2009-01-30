@@ -3,7 +3,7 @@
 #define  __GAMETASK_SETTINGS_H__
 
 
-#include "GameTask.h"
+#include "GameTask.hpp"
 
 class CStage;
 class CInputHandler;

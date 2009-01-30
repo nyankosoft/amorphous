@@ -7,9 +7,9 @@
 
 #include <string>
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "TextFileScanner.h"
+#include "TextFileScanner.hpp"
 
 
 /*  --- template 1 (inside a function) ---

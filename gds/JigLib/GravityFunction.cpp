@@ -1,6 +1,6 @@
 
-#include "GravityFunction.h"
-#include "3DMath/D3DX_Adapter.h"
+#include "GravityFunction.hpp"
+#include "3DMath/D3DX_Adapter.hpp"
 
 
 //float g_fGFreeMaxRadius = 8.0f;

@@ -2,7 +2,7 @@
 #ifndef  __GM_BUTTON_H__
 #define  __GM_BUTTON_H__
 
-#include "GM_Static.h"
+#include "GM_Static.hpp"
 
 
 //========================================================================================

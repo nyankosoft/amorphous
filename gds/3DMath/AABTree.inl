@@ -1,7 +1,7 @@
 //============================ inline implementations ============================
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 template<class TGeometry>
 inline CAABTree<TGeometry>::CAABTree()
 :

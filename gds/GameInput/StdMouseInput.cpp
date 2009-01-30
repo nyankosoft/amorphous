@@ -1,6 +1,6 @@
 
-#include "StdMouseInput.h"
-#include "GameInput/InputHub.h"
+#include "StdMouseInput.hpp"
+#include "GameInput/InputHub.hpp"
 
 
 CStdMouseInput::CStdMouseInput()

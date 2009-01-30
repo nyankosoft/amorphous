@@ -8,10 +8,10 @@
 #include <string>
 #include <map>
 
-#include "Archive.h"
-#include "ArchiveObjectBase.h"
+#include "Archive.hpp"
+#include "ArchiveObjectBase.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 
 namespace GameLib1

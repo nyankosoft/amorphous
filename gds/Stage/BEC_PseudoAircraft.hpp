@@ -5,7 +5,7 @@
 #include <memory.h>
 #include <string.h>
 
-#include "BaseEntityHandle.h"
+#include "BaseEntityHandle.hpp"
 
 class CCopyEntity;
 class CGI_Aircraft;

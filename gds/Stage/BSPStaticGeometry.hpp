@@ -2,18 +2,18 @@
 #define  __BSPSTATICGEOMETRY_H__
 
 
-#include "3DMath/3DStructs.h"
-#include "3DMath/AABTree.h"
-#include "Graphics/fwd.h"
-#include "Graphics/FloatRGBColor.h"
-#include "Graphics/MeshObjectHandle.h"
-#include "Graphics/ShaderHandle.h"
-#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.h"
-#include "Physics/fwd.h"
-#include "Support/StringAux.h"
-#include "fwd.h"
-#include "StaticGeometryBase.h"
-#include "StaticGeometryArchiveFG.h"
+#include "3DMath/3DStructs.hpp"
+#include "3DMath/AABTree.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/ShaderHandle.hpp"
+#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "Physics/fwd.hpp"
+#include "Support/StringAux.hpp"
+#include "fwd.hpp"
+#include "StaticGeometryBase.hpp"
+#include "StaticGeometryArchiveFG.hpp"
 
 #include <vector>
 #include <list>
@@ -269,7 +269,7 @@ public:
 
 
 //----------------------------------- cut here -----------------------------------
-//#include "StaticGeometry.h"
+//#include "StaticGeometry.hpp"
 
 
 

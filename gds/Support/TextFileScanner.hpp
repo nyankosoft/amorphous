@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 
 class CTextFileScanner

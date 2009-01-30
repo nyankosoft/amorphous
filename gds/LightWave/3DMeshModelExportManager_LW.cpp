@@ -1,13 +1,13 @@
 
-#include "3DMeshModelExportManager_LW.h"
-#include "3DMeshModelBuilder_LW.h"
+#include "3DMeshModelExportManager_LW.hpp"
+#include "3DMeshModelBuilder_LW.hpp"
 using namespace MeshModel;
 
-#include "LWO2_Common.h"
-#include "LWO2_Object.h"
+#include "LWO2_Common.hpp"
+#include "LWO2_Object.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/fnop.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/fnop.hpp"
 
 using namespace boost;
 

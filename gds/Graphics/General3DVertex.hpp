@@ -4,12 +4,12 @@
 
 //#include <vector>
 //using namespace std;
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "Graphics/TextureCoord.h"
-#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/TextureCoord.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
 
 
 //=========================================================================================

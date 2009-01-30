@@ -1,10 +1,10 @@
-#include "PyModule_Player.h"
-#include "PlayerInfo.h"
-#include "BE_Player.h"
-#include "Item/WeaponSystem.h"
+#include "PyModule_Player.hpp"
+#include "PlayerInfo.hpp"
+#include "BE_Player.hpp"
+#include "Item/WeaponSystem.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
 
 #include <string>
 

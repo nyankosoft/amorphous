@@ -2,7 +2,7 @@
 #define __STAGELOADER_H__
 
 #include <string>
-#include "fwd.h"
+#include "fwd.hpp"
 
 #include <boost/thread/thread.hpp>
 

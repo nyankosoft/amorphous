@@ -1,21 +1,21 @@
 
-#include "BE_SupplyItem.h"
+#include "BE_SupplyItem.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Serialization_BaseEntityHandle.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
 
-#include "../Graphics/Direct3D9.h"
-#include "../Graphics/D3DXMeshObject.h"
-#include "../Stage/ScreenEffectManager.h"
+#include "../Graphics/Direct3D9.hpp"
+#include "../Graphics/D3DXMeshObject.hpp"
+#include "../Stage/ScreenEffectManager.hpp"
 
-#include "../Sound/SoundManager.h"
+#include "../Sound/SoundManager.hpp"
 
-#include "Sound/Serialization_SoundHandle.h"
-#include "Sound/SoundManager.h"
+#include "Sound/Serialization_SoundHandle.hpp"
+#include "Sound/SoundManager.hpp"
 
 
 CBE_SupplyItem::CBE_SupplyItem()

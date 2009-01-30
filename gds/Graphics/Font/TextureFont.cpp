@@ -1,8 +1,8 @@
-#include "TextureFont.h"
-#include "Graphics/Direct3D9.h"
+#include "TextureFont.hpp"
+#include "Graphics/Direct3D9.hpp"
 
 #include <string.h>
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 

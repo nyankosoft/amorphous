@@ -2,10 +2,10 @@
 #define  __PhysCapsuleShapeDesc_H__
 
 
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 
-#include "fwd.h"
-#include "ShapeDesc.h"
+#include "fwd.hpp"
+#include "ShapeDesc.hpp"
 
 
 namespace physics

@@ -1,7 +1,7 @@
-#include "MeshBoneControllerBase.h"
+#include "MeshBoneControllerBase.hpp"
 
-#include "Graphics/D3DXSMeshObject.h"
-#include "XML/XMLNodeReader.h"
+#include "Graphics/D3DXSMeshObject.hpp"
+#include "XML/XMLNodeReader.hpp"
 
 using namespace std;
 

@@ -1,7 +1,7 @@
 #ifndef  __BSPTREEFORBOX_H__
 #define  __BSPTREEFORBOX_H__
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 
 class CBSPTreeForBox

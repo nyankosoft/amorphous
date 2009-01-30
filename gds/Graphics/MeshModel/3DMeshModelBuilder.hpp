@@ -6,16 +6,16 @@ using namespace std;
 
 #include <boost/shared_ptr.hpp>
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "Graphics/IndexedPolygon.h"
-#include "Graphics/TextureCoord.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/General3DVertex.h"
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
-#include "Graphics/MeshModel/General3DMesh.h"
+#include "Graphics/IndexedPolygon.hpp"
+#include "Graphics/TextureCoord.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/General3DVertex.hpp"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/MeshModel/General3DMesh.hpp"
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
 
 namespace MeshModel

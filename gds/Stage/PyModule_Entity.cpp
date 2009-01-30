@@ -1,19 +1,19 @@
 
-#include "PyModule_Entity.h"
+#include "PyModule_Entity.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "EntityMotionPathRequest.h"
-#include "GameMessage.h"
-#include "Stage.h"
-#include "EntitySet.h"
+#include "EntityMotionPathRequest.hpp"
+#include "GameMessage.hpp"
+#include "Stage.hpp"
+#include "EntitySet.hpp"
 
-#include "CopyEntityDesc.h"
-#include "BE_StaticParticleSet.h"
+#include "CopyEntityDesc.hpp"
+#include "BE_StaticParticleSet.hpp"
 
-#include "Support/msgbox.h"
+#include "Support/msgbox.hpp"
 #include "Support/Macro.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/Vec3_StringAux.hpp"
 
 using namespace std;
 

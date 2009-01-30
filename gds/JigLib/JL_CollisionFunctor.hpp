@@ -3,9 +3,9 @@
 #define  __JK_COLLISIONFUNCTOR_H__
 
 
-#include "JL_ContactInfo.h"
-#include "JL_ShapeBase.h"
-#include "JL_PhysicsActor.h"
+#include "JL_ContactInfo.hpp"
+#include "JL_ShapeBase.hpp"
+#include "JL_PhysicsActor.hpp"
 
 #include <vector>
 using namespace std;

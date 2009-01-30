@@ -3,8 +3,8 @@
 
 
 #include <stdio.h>
-#include "Support/ParamLoader.h"
-#include "Support/Log/LogOutputBase.h"
+#include "Support/ParamLoader.hpp"
+#include "Support/Log/LogOutputBase.hpp"
 
 
 //>>>========================== default config file ==========================

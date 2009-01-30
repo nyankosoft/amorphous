@@ -1,20 +1,20 @@
 
-#include "GM_Dialog.h"
+#include "GM_Dialog.hpp"
 
-#include "GM_DialogDesc.h"
-#include "GM_DialogManager.h"
-#include "GM_ControlDescBase.h"
-#include "GM_Static.h"
-#include "GM_Button.h"
-#include "GM_Slider.h"
-#include "GM_SubDialogButton.h"
+#include "GM_DialogDesc.hpp"
+#include "GM_DialogManager.hpp"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Static.hpp"
+#include "GM_Button.hpp"
+#include "GM_Slider.hpp"
+#include "GM_SubDialogButton.hpp"
 
 #ifdef UI_EXTENSION_EDIT
-#include "GM_PaintBar.h"
+#include "GM_PaintBar.hpp"
 #endif
 
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
 
 CGM_Control* CGM_Dialog::ms_pControlFocus   = NULL;      // The control which has focus
@@ -334,8 +334,8 @@ void CGM_Dialog::ClearFocus()
 
 // ====================== draw the boundary with wireframe for debug ======================
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/2DRect.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/2DRect.hpp"
 
 
 void CGM_Dialog::Render( float fElapsedTime )

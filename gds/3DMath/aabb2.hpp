@@ -2,7 +2,7 @@
 #define  __AXISALIGNEDBOUNDINGBOX_2D_H__
 
 
-#include "Vector2.h"
+#include "Vector2.hpp"
 
 
 class AABB2

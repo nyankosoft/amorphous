@@ -2,7 +2,7 @@
 #define __BE_SMOKETRACE_H__
 
 
-#include "BE_ParticleSet.h"
+#include "BE_ParticleSet.hpp"
 
 #include "../Graphics/FVF_TextureVertex.h"
 

@@ -3,9 +3,9 @@
 #define  __GM_GRAPHICELEMENT_H__
 
 
-#include "GM_Control.h"
+#include "GM_Control.hpp"
 
-#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/FloatRGBAColor.hpp"
 
 
 class CGM_Dialog;

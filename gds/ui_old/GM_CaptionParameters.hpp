@@ -2,7 +2,7 @@
 #define  __GM_CAPTIONPARAMETERS_H__
 
 
-#include "GM_GraphicElement.h"
+#include "GM_GraphicElement.hpp"
 
 #include <vector>
 using namespace std;

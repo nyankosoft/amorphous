@@ -2,8 +2,8 @@
 #define  __AXISALIGNEDBOUNDINGBOX_3D_H__
 
 
-#include "Plane.h"
-#include "Sphere.h"
+#include "Plane.hpp"
+#include "Sphere.hpp"
 
 
 class AABB3

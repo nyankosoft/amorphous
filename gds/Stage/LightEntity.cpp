@@ -1,13 +1,13 @@
-#include "LightEntity.h"
+#include "LightEntity.hpp"
 
-#include "Stage/BE_Light.h"
-#include "Stage/Stage.h"
-#include "Stage/EntitySet.h"
-#include "Stage/CopyEntityDesc.h"
-#include "Stage/GameMessage.h"
-#include "Stage/Trace.h"
-#include "Support/Log/StateLog.h"
-#include "Support/memory_helpers.h"
+#include "Stage/BE_Light.hpp"
+#include "Stage/Stage.hpp"
+#include "Stage/EntitySet.hpp"
+#include "Stage/CopyEntityDesc.hpp"
+#include "Stage/GameMessage.hpp"
+#include "Stage/Trace.hpp"
+#include "Support/Log/StateLog.hpp"
+#include "Support/memory_helpers.hpp"
 
 using namespace std;
 using namespace boost;

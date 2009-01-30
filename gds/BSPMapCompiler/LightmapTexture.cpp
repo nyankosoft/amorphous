@@ -1,8 +1,8 @@
-#include "Lightmap.h"
-#include "LightmapTexture.h"
+#include "Lightmap.hpp"
+#include "LightmapTexture.hpp"
 
-#include "Support/BitmapImage.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/BitmapImage.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 

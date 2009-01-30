@@ -1,5 +1,5 @@
-#include "Camera.h"
-#include "./Support/Log/DefaultLog.h"
+#include "Camera.hpp"
+#include "./Support/Log/DefaultLog.hpp"
 
 
 CCamera::CCamera( float fov, float aspectratio, float farclip, float nearclip )

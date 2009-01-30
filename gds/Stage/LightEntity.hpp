@@ -2,12 +2,12 @@
 #define  __LightEntity_H__
 
 
-#include "Support/prealloc_pool.h"
-#include "3DMath/3DStructs.h"
-#include "Graphics/HemisphericLight.h"
-#include "Graphics/FloatRGBColor.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
+#include "Support/prealloc_pool.hpp"
+#include "3DMath/3DStructs.hpp"
+#include "Graphics/HemisphericLight.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
 
 
 class CBE_Light;

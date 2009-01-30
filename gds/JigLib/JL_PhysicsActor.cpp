@@ -1,12 +1,12 @@
 
-#include "JL_PhysicsActor.h"
-#include "JL_PhysicsManager.h"
+#include "JL_PhysicsActor.hpp"
+#include "JL_PhysicsManager.hpp"
 
-#include "JL_Shape_Box.h"
+#include "JL_Shape_Box.hpp"
 
-#include "3DMath/MathMisc.h"
+#include "3DMath/MathMisc.hpp"
 
-#include "Support/MsgBox.h"
+#include "Support/MsgBox.hpp"
 
 
 

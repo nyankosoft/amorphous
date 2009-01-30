@@ -1,7 +1,7 @@
 #ifndef  __BOUNDINGVOLUME_SPHERE_H__
 #define  __BOUNDINGVOLUME_SPHERE_H__
 
-#include "Vector3.h"
+#include "Vector3.hpp"
 
 
 class Sphere

@@ -1,5 +1,5 @@
 
-#include "GM_DialogDesc.h"
+#include "GM_DialogDesc.hpp"
 
 using namespace std;
 

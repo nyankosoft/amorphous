@@ -1,3 +1,3 @@
-#include "GameEvent.h"
-#include "GE_TextEvent.h"
-#include "GE_SpawnEvent.h"
+#include "GameEvent.hpp"
+#include "GE_TextEvent.hpp"
+#include "GE_SpawnEvent.hpp"

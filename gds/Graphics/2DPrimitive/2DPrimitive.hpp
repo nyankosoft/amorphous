@@ -2,19 +2,19 @@
 #define  __2DPrimitive_H__
 
 
-#include "../../base.h"
-#include "Graphics/Direct3D9.h"
+#include "../../base.hpp"
+#include "Graphics/Direct3D9.hpp"
 #include "Graphics/FVF_TLVertex.h"
-#include "Graphics/TextureCoord.h"
-#include "Graphics/AlphaBlend.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/Rect.h"
+#include "Graphics/TextureCoord.hpp"
+#include "Graphics/AlphaBlend.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/Rect.hpp"
 using namespace::Graphics;
 
-#include "3DMath/Vector2.h"
-#include "3DMath/Matrix22.h"
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector2.hpp"
+#include "3DMath/Matrix22.hpp"
+#include "3DMath/Vector3.hpp"
 
 
 /**

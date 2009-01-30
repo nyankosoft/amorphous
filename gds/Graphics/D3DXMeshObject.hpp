@@ -2,9 +2,9 @@
 #define __D3DXMESHOBJECT_H__
 
 
-#include "../base.h"
-#include "Graphics/Direct3D9.h"
-#include "D3DXMeshObjectBase.h"
+#include "../base.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "D3DXMeshObjectBase.hpp"
 
 
 class CD3DXMeshObject : public CD3DXMeshObjectBase

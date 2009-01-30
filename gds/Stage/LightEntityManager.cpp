@@ -1,8 +1,8 @@
-w#include "LightEntityManager.h"
-#include "EntitySet.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Support/memory_helpers.h"
+w#include "LightEntityManager.hpp"
+#include "EntitySet.hpp"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Support/memory_helpers.hpp"
 
 
 int g_iNumDynamicLights = 0;

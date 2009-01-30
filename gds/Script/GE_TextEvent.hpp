@@ -2,8 +2,8 @@
 #define __GE_TEXTEVENT_H__
 
 
-#include "GameEvent.h"
-#include "../GameTextSystem/GameTextSet.h"
+#include "GameEvent.hpp"
+#include "../GameTextSystem/GameTextSet.hpp"
 
 
 class CGE_TextEvent : public CGameEvent

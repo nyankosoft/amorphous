@@ -6,7 +6,7 @@
 #include <string>
 #include <Python.h>
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

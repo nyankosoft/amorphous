@@ -3,10 +3,10 @@
 
 #include <string>
 #include <vector>
-#include "3DMath/Vector3.h"
-#include "Graphics/FloatRGBColor.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/Rect.h"
+#include "3DMath/Vector3.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <xercesc/dom/DOM.hpp>
@@ -15,8 +15,8 @@ using namespace Graphics;
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-#include "XMLDocumentLoader.h"
-#include "xmlch2x.h"
+#include "XMLDocumentLoader.hpp"
+#include "xmlch2x.hpp"
 
 /*
 	<AABB3>

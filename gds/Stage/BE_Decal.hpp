@@ -2,7 +2,7 @@
 #ifndef	__BASEENTITYDECAL_H__
 #define __BASEENTITYDECAL_H__
 
-#include "BaseEntity.h"
+#include "BaseEntity.hpp"
 
 #include "../Graphics/FVF_TextureVertex.h"
 

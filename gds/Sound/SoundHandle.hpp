@@ -3,10 +3,10 @@
 
 
 #include <string>
-#include "fwd.h"
-#include "Support/prealloc_pool.h"
-#include "Support/Serialization/ArchiveObjectBase.h"
-#include "Support/Serialization/Archive.h"
+#include "fwd.hpp"
+#include "Support/prealloc_pool.hpp"
+#include "Support/Serialization/ArchiveObjectBase.hpp"
+#include "Support/Serialization/Archive.hpp"
 using namespace GameLib1;
 using namespace Serialization;
 

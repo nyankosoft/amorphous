@@ -1,10 +1,10 @@
 
-#include "TriangleMesh.h"
-#include "JL_Shape_Box.h"
-#include "JL_CollisionFunctor.h"
-#include "Support/FixedVector.h"
+#include "TriangleMesh.hpp"
+#include "JL_Shape_Box.hpp"
+#include "JL_CollisionFunctor.hpp"
+#include "Support/FixedVector.hpp"
 
-#include "3DMath/BSPTreeForBox.h"
+#include "3DMath/BSPTreeForBox.hpp"
 
 #include <vector>
 using namespace std;

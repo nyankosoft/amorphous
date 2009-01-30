@@ -1,51 +1,51 @@
-#include "BE_PlayerPseudoAircraft.h"
-#include <Stage/PlayerInfo.h>
-#include <Stage/EntitySet.h>
-#include <Stage/CopyEntityDesc.h>
-#include <Stage/Stage.h>
-#include <Stage/ScreenEffectManager.h>
-#include <Stage/HUD_PlayerAircraft.h>
-#include <Stage/GameMessage.h>
-#include "Input/InputHandler_PlayerPAC.h"
-#include "Item/WeaponSystem.h"
-#include "Item/GI_MissileLauncher.h"
-#include "ViewFrustumTest.h"
+#include "BE_PlayerPseudoAircraft.hpp"
+#include <Stage/PlayerInfo.hpp>
+#include <Stage/EntitySet.hpp>
+#include <Stage/CopyEntityDesc.hpp>
+#include <Stage/Stage.hpp>
+#include <Stage/ScreenEffectManager.hpp>
+#include <Stage/HUD_PlayerAircraft.hpp>
+#include <Stage/GameMessage.hpp>
+#include "Input/InputHandler_PlayerPAC.hpp"
+#include "Item/WeaponSystem.hpp"
+#include "Item/GI_MissileLauncher.hpp"
+#include "ViewFrustumTest.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/MathMisc.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/MathMisc.hpp"
 
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/GameMathMisc.h"
-#include "GameCommon/MTRand.h"
-#include "GameCommon/RandomDirectionTable.h"
-#include "GameCommon/ShockWaveCameraEffect.h"
-#include "Support/Timer.h"
-#include "GameCommon/PseudoAircraftSimulator.h"
-#include "GameCommon/MeshBoneController_Aircraft.h"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/GameMathMisc.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "GameCommon/RandomDirectionTable.hpp"
+#include "GameCommon/ShockWaveCameraEffect.hpp"
+#include "Support/Timer.hpp"
+#include "GameCommon/PseudoAircraftSimulator.hpp"
+#include "GameCommon/MeshBoneController_Aircraft.hpp"
 
 // added for laser dot casting test
-#include "Graphics/3DGameMath.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/D3DXMeshObject.h"
-#include "Graphics/D3DXSMeshObject.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Support/memory_helpers.h"
-#include "trace.h"
-#include "OverlapTestAABB.h"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Support/memory_helpers.hpp"
+#include "trace.hpp"
+#include "OverlapTestAABB.hpp"
 
-//#include "JigLib/JL_PhysicsActor.h"
-//#include "JigLib/JL_LineSegment.h"
-#include "Physics/Actor.h"
+//#include "JigLib/JL_PhysicsActor.hpp"
+//#include "JigLib/JL_LineSegment.hpp"
+#include "Physics/Actor.hpp"
 
-#include "UI.h"
+#include "UI.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/Vec3_StringAux.hpp"
 
-#include "../../../GameProjects/FlightGame/src/srcroot/Stage/FG_AIAircraftEntityDesc.h"
-#include "../../../GameProjects/FlightGame/src/srcroot/EntityGroups.h"
+#include "../../../GameProjects/FlightGame/src/srcroot/Stage/FG_AIAircraftEntityDesc.hpp"
+#include "../../../GameProjects/FlightGame/src/srcroot/EntityGroups.hpp"
 
 using namespace std;
 using namespace boost;

@@ -1,13 +1,13 @@
-#include "GI_Aircraft.h"
-#include "GI_MissileLauncher.h"
-#include "Stage/Serialization_BaseEntityHandle.h"
-#include "3DMath/MathMisc.h"
-#include "Support/memory_helpers.h"
-#include "XML/XMLNodeReader.h"
-#include "GameInput/3DActionCode.h"
-#include "GameInput/InputHandler.h"
-#include "GameCommon/MeshBoneController_Aircraft.h"
-#include "Graphics/D3DXSMeshObject.h"
+#include "GI_Aircraft.hpp"
+#include "GI_MissileLauncher.hpp"
+#include "Stage/Serialization_BaseEntityHandle.hpp"
+#include "3DMath/MathMisc.hpp"
+#include "Support/memory_helpers.hpp"
+#include "XML/XMLNodeReader.hpp"
+#include "GameInput/3DActionCode.hpp"
+#include "GameInput/InputHandler.hpp"
+#include "GameCommon/MeshBoneController_Aircraft.hpp"
+#include "Graphics/D3DXSMeshObject.hpp"
 
 
 using namespace std;

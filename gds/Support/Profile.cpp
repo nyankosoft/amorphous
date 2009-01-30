@@ -9,15 +9,15 @@
  */
 
 
-#include "Profile.h"
+#include "Profile.hpp"
 //#include "custom_time.h"
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
 #include <boost/shared_ptr.hpp>
 
-#include "SafeDelete.h"
-#include "Support/Timer.h"
+#include "SafeDelete.hpp"
+#include "Support/Timer.hpp"
 
 using namespace std;
 using namespace boost;

@@ -4,17 +4,17 @@
 // base class for game task classes
 
 
-#include "../base.h"
-#include "3DMath/MathMisc.h"
-#include "Support/Timer.h"
-#include "GameInput/fwd.h"
-#include "Graphics/fwd.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/D3DMisc.h"
-#include "Support/SafeDelete.h"
+#include "../base.hpp"
+#include "3DMath/MathMisc.hpp"
+#include "Support/Timer.hpp"
+#include "GameInput/fwd.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/D3DMisc.hpp"
+#include "Support/SafeDelete.hpp"
 
-#include "Graphics/RenderTask.h"
+#include "Graphics/RenderTask.hpp"
 
 #include <map>
 

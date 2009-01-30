@@ -4,8 +4,8 @@
 #include <vector>
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "../base.h"
-#include "TextureFormat.h"
+#include "../base.hpp"
+#include "TextureFormat.hpp"
 
 //#pragma comment( lib, "d3dx9dt.lib" )
 #pragma comment( lib, "d3d9.lib" )

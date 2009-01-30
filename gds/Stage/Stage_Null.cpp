@@ -1,33 +1,33 @@
 #include "bspmap.h"
-#include "EntitySet.h"
-#include "trace.h"
-#include "ViewFrustumTest.h"
+#include "EntitySet.hpp"
+#include "trace.hpp"
+#include "ViewFrustumTest.hpp"
 
-#include "Sound/GameSoundManager.h"
-#include "Stage/CopyEntityDesc.h"
-#include "Stage/StageEntryPoint.h"
-#include "Stage/ScreenEffectManager.h"
-#include "GameEvent/GameEventManager.h"
+#include "Sound/GameSoundManager.hpp"
+#include "Stage/CopyEntityDesc.hpp"
+#include "Stage/StageEntryPoint.hpp"
+#include "Stage/ScreenEffectManager.hpp"
+#include "GameEvent/GameEventManager.hpp"
 
-#include "Item/WeaponSystem.h"
-//#include "GameCommon/WeaponDatabase.h"
-//#include "GameCommon/AmmoDatabase.h"
+#include "Item/WeaponSystem.hpp"
+//#include "GameCommon/WeaponDatabase.hpp"
+//#include "GameCommon/AmmoDatabase.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 #include "Support/FileNameOperation.h"
-#include "Support/Profile.h"
+#include "Support/Profile.hpp"
 
 
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 #include "ShaderTechniqueIDs.h"
 
 
-#include "JigLib/JL_PhysicsManager.h"
-#include "JigLib/JL_SurfaceMaterial.h"
+#include "JigLib/JL_PhysicsManager.hpp"
+#include "JigLib/JL_SurfaceMaterial.hpp"
 
-#include "SurfaceMaterialManager.h"
+#include "SurfaceMaterialManager.hpp"
 
 #include "stage.h"
 

@@ -1,4 +1,4 @@
-#include "DirectInput.h"
+#include "DirectInput.hpp"
 
 // definition of the singleton instance
 CDirectInput CDirectInput::ms_SingletonInstance_;

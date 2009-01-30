@@ -2,9 +2,9 @@
 #define __ENTITYMOTIONPATHREQUEST_H__
 
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/Quaternion.h"
-#include "Support/memory_helpers.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/Quaternion.hpp"
+#include "Support/memory_helpers.hpp"
 #include <vector>
 
 class CCopyEntity;

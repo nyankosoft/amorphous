@@ -1,6 +1,6 @@
-#include "PyModule_Sound.h"
-#include "Sound/SoundManager.h"
-#include "Support/Log/DefaultLog.h"
+#include "PyModule_Sound.hpp"
+#include "Sound/SoundManager.hpp"
+#include "Support/Log/DefaultLog.hpp"
 #include <string>
 #include <map>
 

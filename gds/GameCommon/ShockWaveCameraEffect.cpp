@@ -1,10 +1,10 @@
-#include "ShockWaveCameraEffect.h"
+#include "ShockWaveCameraEffect.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "GameCommon/BasicGameMath.h"
-#include "Support/VectorRand.h"
-#include "GameCommon/MTRand.h"
+#include "GameCommon/BasicGameMath.hpp"
+#include "Support/VectorRand.hpp"
+#include "GameCommon/MTRand.hpp"
 
 
 CShockWaveCameraEffect::CShockWaveCameraEffect()

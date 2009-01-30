@@ -2,8 +2,8 @@
 #define __MEMHELPERS_H__
 
 
-#include "SafeDelete.h"
-#include "SafeDeleteVector.h"
+#include "SafeDelete.hpp"
+#include "SafeDeleteVector.hpp"
 
 
 template< class T1, class T2 >

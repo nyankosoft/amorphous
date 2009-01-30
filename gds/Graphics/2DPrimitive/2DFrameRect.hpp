@@ -2,7 +2,7 @@
 #define  __2DFRAMERECT_H__
 
 
-#include "2DPrimitive.h"
+#include "2DPrimitive.hpp"
 
 
 class C2DFrameRect : public C2DPrimitive

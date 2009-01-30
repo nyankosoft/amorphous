@@ -2,7 +2,7 @@
 #define  __GRAPHICS_RECT_H__
 
 
-#include "Point.h"
+#include "Point.hpp"
 
 
 namespace Graphics

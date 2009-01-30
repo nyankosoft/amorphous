@@ -2,7 +2,7 @@
 #define  __FreeTypeAux_H__
 
 
-#include "Support/2DArray.h"
+#include "Support/2DArray.hpp"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

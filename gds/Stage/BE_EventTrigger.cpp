@@ -1,14 +1,14 @@
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "trace.h"
-#include "Stage.h"
-#include "../Stage/PlayerInfo.h"
-#include "../Stage/HUD_PlayerBase.h"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "../Stage/PlayerInfo.hpp"
+#include "../Stage/HUD_PlayerBase.hpp"
 
-#include "../GameTextSystem/GameTextSet.h"
-#include "../Script/GameEventTypes.h"
+#include "../GameTextSystem/GameTextSet.hpp"
+#include "../Script/GameEventTypes.hpp"
 
-#include "BE_EventTrigger.h"
+#include "BE_EventTrigger.hpp"
 
 
 CBE_EventTrigger::CBE_EventTrigger()

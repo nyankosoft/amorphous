@@ -1,6 +1,6 @@
-#include "BSPTreeForTriangleMesh.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "BSPTreeForTriangleMesh.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"
 
 

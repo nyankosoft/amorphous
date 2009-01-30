@@ -2,9 +2,9 @@
 #define  __PhysRawTriangleMeshShapeDesc_H__
 
 
-#include "fwd.h"
-#include "ShapeDesc.h"
-#include "Shape.h"
+#include "fwd.hpp"
+#include "ShapeDesc.hpp"
+#include "Shape.hpp"
 
 
 namespace physics

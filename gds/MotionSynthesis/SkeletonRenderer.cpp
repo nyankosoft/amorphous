@@ -1,7 +1,7 @@
 
 #include <boost/foreach.hpp>
-#include "SkeletonRenderer.h"
-#include "Graphics/Direct3D9.h"
+#include "SkeletonRenderer.hpp"
+#include "Graphics/Direct3D9.hpp"
 
 using namespace msynth;
 

@@ -2,12 +2,12 @@
 #define __BASEFACE_H__
 
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 #include "Graphics/FVF_MapVertex.h"
 
-#include "3DMath/Plane.h"
-#include "3DMath/aabb3.h"
+#include "3DMath/Plane.hpp"
+#include "3DMath/aabb3.hpp"
 
 
 #include <d3dx9.h>

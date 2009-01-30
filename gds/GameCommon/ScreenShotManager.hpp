@@ -1,7 +1,7 @@
 #ifndef  __SCREENSHOTMANAGER_H__
 #define  __SCREENSHOTMANAGER_H__
 
-#include "../base.h"
+#include "../base.hpp"
 #include <string>
 
 

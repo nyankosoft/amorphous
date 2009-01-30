@@ -2,11 +2,11 @@
 #define  __PhysScene_H__
 
 
-#include "../base.h"
-#include "3DMath/Vector3.h"
-#include "fwd.h"
-#include "Ray.h"
-#include "Enums.h"
+#include "../base.hpp"
+#include "3DMath/Vector3.hpp"
+#include "fwd.hpp"
+#include "Ray.hpp"
+#include "Enums.hpp"
 
 
 namespace physics

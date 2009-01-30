@@ -3,16 +3,16 @@
 
 #include <string>
 
-#include "../Stage/bspstructs.h"
-#include "../BSPMapCompiler/BSPTreeBuilder.h"
-#include "../BSPMapCompiler/CellBuilder.h"
-#include "../BSPMapCompiler/BSPMapData.h"
+#include "../Stage/bspstructs.hpp"
+#include "../BSPMapCompiler/BSPTreeBuilder.hpp"
+#include "../BSPMapCompiler/CellBuilder.hpp"
+#include "../BSPMapCompiler/BSPMapData.hpp"
 
-#include "../LightWave/LWO2_Object.h"
+#include "../LightWave/LWO2_Object.hpp"
 
-#include "JigLib/TriangleMesh.h"
+#include "JigLib/TriangleMesh.hpp"
 
-#include "Support/Vec3_StringAux.h"
+#include "Support/Vec3_StringAux.hpp"
 
 
 #define DEFAULT_NUM_VERTICES	4096

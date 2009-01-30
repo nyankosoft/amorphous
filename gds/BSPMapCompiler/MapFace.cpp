@@ -1,7 +1,7 @@
 
-#include "MapFace.h"
+#include "MapFace.hpp"
 
-#include "Graphics/MeshModel/NVMeshMender.h"
+#include "Graphics/MeshModel/NVMeshMender.hpp"
 
 #include <assert.h>
 

@@ -1,4 +1,4 @@
-#include "BMPImageExporter.h"
+#include "BMPImageExporter.hpp"
 
 #include <stdio.h>
 #include <wingdi.h>

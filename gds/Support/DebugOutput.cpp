@@ -1,17 +1,17 @@
-#include "DebugOutput.h"
+#include "DebugOutput.hpp"
 
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Font/Font.h"
-#include "Graphics/Font/TextureFont.h"
-#include "Graphics/LogOutput_OnScreen.h"
-#include "Graphics/GraphicsResourceManager.h"
-#include "Support/Timer.h"
-#include "Sound/SoundManager.h"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/LogOutput_OnScreen.hpp"
+#include "Graphics/GraphicsResourceManager.hpp"
+#include "Support/Timer.hpp"
+#include "Sound/SoundManager.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/StringAux.h"
-#include "Support/Profile.h"
-#include "Support/Log/StateLog.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/Profile.hpp"
+#include "Support/Log/StateLog.hpp"
 
 using namespace std;
 

@@ -1,9 +1,9 @@
 #ifndef  __GAMEMESSAGE_H__
 #define  __GAMEMESSAGE_H__
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "CopyEntity.h"
+#include "CopyEntity.hpp"
 
 
 enum eGameMessageEffect

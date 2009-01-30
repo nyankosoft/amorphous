@@ -2,10 +2,10 @@
 #define  __CopyEntityDesc_H__
 
 
-#include "3DMath/Matrix34.h"
-#include "Graphics/MeshObjectHandle.h"
-#include "EntityGroupHandle.h"
-#include "fwd.h"
+#include "3DMath/Matrix34.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
+#include "EntityGroupHandle.hpp"
+#include "fwd.hpp"
 
 #include <string>
 

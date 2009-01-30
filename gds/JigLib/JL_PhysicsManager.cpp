@@ -1,13 +1,13 @@
 
-#include "JL_PhysicsManager.h"
+#include "JL_PhysicsManager.hpp"
 
-#include "JL_CollisionFunctor.h"
-#include "JL_CollisionDetect.h"
+#include "JL_CollisionFunctor.hpp"
+#include "JL_CollisionDetect.hpp"
 
-#include "JL_ShapeDesc_TriangleMesh.h"
-#include "JL_PhysicsActorDesc.h"
+#include "JL_ShapeDesc_TriangleMesh.hpp"
+#include "JL_PhysicsActorDesc.hpp"
 
-#include "GravityFunction.h"
+#include "GravityFunction.hpp"
 
 using namespace std;
 

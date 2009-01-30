@@ -4,9 +4,9 @@
 
 #include <memory.h>
 #include <string>
-#include "fwd.h"
-#include "Graphics/TextureFormat.h"
-#include "Graphics/FloatRGBAColor.h"
+#include "fwd.hpp"
+#include "Graphics/TextureFormat.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
 
 
 class GraphicsResourceType

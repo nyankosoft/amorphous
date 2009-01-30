@@ -3,8 +3,8 @@
 //		- a collection of collision detection functions using BSP-Tree 
 //========================================================================
 
-#include "bsptree.h"
-#include "Support/memory_helpers.h"
+#include "bsptree.hpp"
+#include "Support/memory_helpers.hpp"
 
 #include <assert.h>
 

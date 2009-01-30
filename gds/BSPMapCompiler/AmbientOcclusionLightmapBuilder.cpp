@@ -1,17 +1,17 @@
 
-#include "AmbientOcclusionLightmapBuilder.h"
+#include "AmbientOcclusionLightmapBuilder.hpp"
 #include "lightmapbuilder.h"
 
-#include "Graphics/Camera.h"
-#include "Graphics/TextureRenderTarget.h"
-#include "Graphics/D3DXMeshObject.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Camera.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Plane.h"
-#include "Support/SafeDeleteVector.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Plane.hpp"
+#include "Support/SafeDeleteVector.hpp"
 #include "Support/macro.h"
-#include "Support/BMPImageExporter.h"
+#include "Support/BMPImageExporter.hpp"
 
 
 AmbientOcclusionLightmapBuilder::~AmbientOcclusionLightmapBuilder()

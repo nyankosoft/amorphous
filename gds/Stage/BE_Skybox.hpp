@@ -1,7 +1,7 @@
 #ifndef __BE_Skybox_H__
 #define __BE_Skybox_H__
 
-#include "BaseEntity.h"
+#include "BaseEntity.hpp"
 
 #include <vector>
 #include <string>

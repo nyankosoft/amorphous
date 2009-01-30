@@ -1,13 +1,13 @@
-#include "BE_Platform.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "GameMessage.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DXMeshObject.h"
-#include "Sound/SoundManager.h"
-#include "3DMath/Vector3.h"
-#include "Physics/Actor.h"
+#include "BE_Platform.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "GameMessage.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Sound/SoundManager.hpp"
+#include "3DMath/Vector3.hpp"
+#include "Physics/Actor.hpp"
 
 using namespace physics;
 

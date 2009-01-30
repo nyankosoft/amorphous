@@ -1,7 +1,7 @@
-#include "HLSLShaderLightManager.h"
+#include "HLSLShaderLightManager.hpp"
 
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 #include <assert.h>
 

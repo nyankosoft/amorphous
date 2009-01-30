@@ -1,13 +1,13 @@
 
-#include "QuickMenuManager.h"
+#include "QuickMenuManager.hpp"
 
-#include "Graphics/Font/Font.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Direct3D9.hpp"
 
-#include "GameInput/3DActionCode.h"
+#include "GameInput/3DActionCode.hpp"
 
-#include "Item/WeaponSystem.h"
+#include "Item/WeaponSystem.hpp"
 
 using namespace boost;
 

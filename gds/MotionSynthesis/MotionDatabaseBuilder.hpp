@@ -11,17 +11,17 @@
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/Serialization/BinaryDatabase.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
-#include "fwd.h"
-#include "MotionPrimitive.h"
-#include "MotionDatabase.h"
-#include "Skeleton.h"
-#include "HumanoidMotionTable.h"
+#include "fwd.hpp"
+#include "MotionPrimitive.hpp"
+#include "MotionDatabase.hpp"
+#include "Skeleton.hpp"
+#include "HumanoidMotionTable.hpp"
 
 
 namespace msynth

@@ -2,8 +2,8 @@
 #define  __SHOCKWAVECAMERAEFFECT_H__
 
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix33.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix33.hpp"
 
 
 class CShockWaveCameraEffect

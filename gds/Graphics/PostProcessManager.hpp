@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 #include <d3dx9.h>
-#include "../base.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/GraphicsComponentCollector.h"
+#include "../base.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
 
 
 //#define DEBUG_VS   // Uncomment this line to debug vertex shaders 

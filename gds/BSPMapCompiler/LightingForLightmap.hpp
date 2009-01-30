@@ -7,10 +7,10 @@ using namespace std;
 
 class CBaseLight;
 
-#include "Lightmap.h"
-#include "MapFace.h"
+#include "Lightmap.hpp"
+#include "MapFace.hpp"
 
-//#include "3DMath/PolygonMesh.h"
+//#include "3DMath/PolygonMesh.hpp"
 
 //==========================================================================================
 // CLightingForLightmap

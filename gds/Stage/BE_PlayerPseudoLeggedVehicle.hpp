@@ -1,12 +1,12 @@
 #ifndef  __BE_PLAYERPSEUDOLEGGEDVEHICLE_H__
 #define  __BE_PLAYERPSEUDOLEGGEDVEHICLE_H__
 
-#include "BE_Player.h"
-#include "BaseEntityHandle.h"
-#include "CopyEntity.h"
-#include "GameMessage.h"
-#include "Graphics/camera.h"
-#include "fwd.h"
+#include "BE_Player.hpp"
+#include "BaseEntityHandle.hpp"
+#include "CopyEntity.hpp"
+#include "GameMessage.hpp"
+#include "Graphics/Camera.hpp"
+#include "fwd.hpp"
 
 
 #define PLAYERPLV_ROTATION_YAW		0

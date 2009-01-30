@@ -1,12 +1,8 @@
-#include "font.h"
+#include "Font.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/StringAux.hpp"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "Graphics/Direct3D9.h"
-
-#include "Support/Log/DefaultLog.h"
-#include "Support/StringAux.h"
 
 using namespace std;
 

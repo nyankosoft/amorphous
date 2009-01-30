@@ -4,7 +4,7 @@
 
 #include <string>
 #include <Python.h>
-#include "Stage/fwd.h"
+#include "Stage/fwd.hpp"
 
 
 namespace gsf

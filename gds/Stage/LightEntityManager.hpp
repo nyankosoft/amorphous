@@ -4,12 +4,12 @@
 #include <vector>
 using namespace std;
 
-#include "../Graphics/Direct3D9.h"
-#include "../Stage/CopyEntity.h"
+#include "../Graphics/Direct3D9.hpp"
+#include "../Stage/CopyEntity.hpp"
 
-#include "../Graphics/Shader/ShaderLightManager.h"
+#include "../Graphics/Shader/ShaderLightManager.hpp"
 
-#include "LightEntity.h"
+#include "LightEntity.hpp"
 
 
 extern int g_iNumDynamicLights;

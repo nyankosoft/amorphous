@@ -1,5 +1,5 @@
-#include "InputHandler_StageDebug.h"
-#include "Stage/Stage.h"
+#include "InputHandler_StageDebug.hpp"
+#include "Stage/Stage.hpp"
 
 using namespace std;
 using namespace boost;

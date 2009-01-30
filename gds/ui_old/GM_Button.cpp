@@ -1,11 +1,11 @@
 
-#include "GM_Button.h"
+#include "GM_Button.hpp"
 
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
-#include "GameInput/InputHandler.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
+#include "GameInput/InputHandler.hpp"
 
-#include "Graphics/2DFrameRect.h"
+#include "Graphics/2DFrameRect.hpp"
 
 
 //========================================================================================
@@ -68,8 +68,8 @@ bool CGM_Button::HandleMouseInput( SInputData& input )
 
 //========================= debug ==============================//
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/2DRect.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/2DRect.hpp"
 #include "Graphics/font.h"
 
 

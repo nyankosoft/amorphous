@@ -2,7 +2,7 @@
 #define  __GM_CAPTIONRENDERROUTINE_H__
 
 
-#include "GM_CaptionParameters.h"
+#include "GM_CaptionParameters.hpp"
 
 #include <string>
 using namespace std;

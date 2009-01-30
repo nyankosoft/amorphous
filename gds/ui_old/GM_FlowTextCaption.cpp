@@ -1,8 +1,8 @@
 
-#include "GM_FlowTextCaption.h"
-#include "GM_DialogManager.h"
+#include "GM_FlowTextCaption.hpp"
+#include "GM_DialogManager.hpp"
 
-#include "Graphics/Font.h"
+#include "Graphics/Font.hpp"
 
 #include "assert.h"
 

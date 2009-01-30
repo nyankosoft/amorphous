@@ -1,15 +1,15 @@
 
-///#include "CopyEntity.h"
-///#include "CopyEntityDesc.h"
-///#include "trace.h"
-///#include "Stage.h"
-///#include "../Stage/PlayerInfo.h"
-///#include "../Stage/GameMessage.h"
+///#include "CopyEntity.hpp"
+///#include "CopyEntityDesc.hpp"
+///#include "trace.hpp"
+///#include "Stage.hpp"
+///#include "../Stage/PlayerInfo.hpp"
+///#include "../Stage/GameMessage.hpp"
 
-///#include "../GameTextSystem/GameTextSet.h"
-///#include "../Script/GameEventTypes.h"
+///#include "../GameTextSystem/GameTextSet.hpp"
+///#include "../Script/GameEventTypes.hpp"
 
-#include "BE_AreaSensor.h"
+#include "BE_AreaSensor.hpp"
 
 
 CBE_AreaSensor::CBE_AreaSensor()

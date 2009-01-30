@@ -1,7 +1,7 @@
 #ifndef  __SKYBOX_H__
 #define  __SKYBOX_H__
 
-#include "BSPStaticGeometry.h"
+#include "BSPStaticGeometry.hpp"
 
 #define  MAX_SKYBOXPOLYGONS	6
 

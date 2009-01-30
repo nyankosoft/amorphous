@@ -3,9 +3,9 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "Graphics/TextureFormat.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/GraphicsResourceDescs.h"
+#include "Graphics/TextureFormat.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/GraphicsResourceDescs.hpp"
 
 /*
 // TODO: rename this to CTextureRenderTarget

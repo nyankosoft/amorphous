@@ -4,13 +4,13 @@
 #include <vector>
 using namespace std;
 
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
-#include "Graphics/MeshModel/D3DXMeshModel.h"
-//#include "Graphics/MeshModel/MeshBone.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/MeshModel/D3DXMeshModel.hpp"
+//#include "Graphics/MeshModel/MeshBone.hpp"
 using namespace MeshModel;
 
 
-#include "PhysicsSim/MassSpringSim.h"
+#include "PhysicsSim/MassSpringSim.hpp"
 
 
 

@@ -2,9 +2,9 @@
 #define  __SoundDesc_H__
 
 
-#include "fwd.h"
-#include "SoundSource.h"
-#include "3DMath/Vector3.h"
+#include "fwd.hpp"
+#include "SoundSource.hpp"
+#include "3DMath/Vector3.hpp"
 #include <string>
 
 

@@ -1,7 +1,7 @@
 
-#include "JL_CollisionDetect.h"
-#include "JL_Shape_Capsule.h"
-#include "JL_CollisionFunctor.h"
+#include "JL_CollisionDetect.hpp"
+#include "JL_Shape_Capsule.hpp"
+#include "JL_CollisionFunctor.hpp"
 
 #include "JigLib/Geometry/line.hpp"
 #include "JigLib/Geometry/distance.hpp"

@@ -4,20 +4,20 @@
 #include <vector>
 #include <string>
 
-#include "3DMath/Vector3.h"
-#include "Support/2DArray.h"
-#include "../Graphics/FloatRGBColor.h"
-#include "../Graphics/LightStructs.h"
-#include "../Graphics/IndexedPolygon.h"
-#include "../Graphics/MeshModel/3DMeshModelArchive.h"
+#include "3DMath/Vector3.hpp"
+#include "Support/2DArray.hpp"
+#include "../Graphics/FloatRGBColor.hpp"
+#include "../Graphics/LightStructs.hpp"
+#include "../Graphics/IndexedPolygon.hpp"
+#include "../Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
-#include "Graphics/Rect.h"
-#include "Graphics/RectTree.h"
+#include "Graphics/Rect.hpp"
+#include "Graphics/RectTree.hpp"
 using namespace Graphics;
 
-#include "fwd.h"
-#include "Lightmap.h"
+#include "fwd.hpp"
+#include "Lightmap.hpp"
 
 
 //==========================================================================================

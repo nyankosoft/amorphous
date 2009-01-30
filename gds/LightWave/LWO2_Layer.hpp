@@ -2,14 +2,14 @@
 #define __LWO2_LAYER_H__
 
 
-#include "fwd.h"
-#include "LWO2_Surface.h"
+#include "fwd.hpp"
+#include "LWO2_Surface.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "Graphics/FloatRGBAColor.h"
+#include "Graphics/FloatRGBAColor.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 
 #include <vector>

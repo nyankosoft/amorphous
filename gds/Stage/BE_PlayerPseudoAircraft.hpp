@@ -1,18 +1,18 @@
 #ifndef  __BE_PLAYERPSEUDOAIRCRAFT_H__
 #define  __BE_PLAYERPSEUDOAIRCRAFT_H__
 
-#include <Stage/BE_Player.h>
-#include <Stage/BaseEntityHandle.h>
-#include <Stage/CopyEntity.h>
-#include <Stage/GameMessage.h>
-#include <Stage/BEC_PseudoAircraft.h>
-#include <Stage/HUD_PlayerAircraft.h>
-#include <Stage/SubDisplay.h>
+#include <Stage/BE_Player.hpp>
+#include <Stage/BaseEntityHandle.hpp>
+#include <Stage/CopyEntity.hpp>
+#include <Stage/GameMessage.hpp>
+#include <Stage/BEC_PseudoAircraft.hpp>
+#include <Stage/HUD_PlayerAircraft.hpp>
+#include <Stage/SubDisplay.hpp>
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
-#include "GameCommon/PseudoAircraftSimulator.h"
-#include "Item/GI_Aircraft.h"
+#include "GameCommon/PseudoAircraftSimulator.hpp"
+#include "Item/GI_Aircraft.hpp"
 
 
 class CSubDisplayType

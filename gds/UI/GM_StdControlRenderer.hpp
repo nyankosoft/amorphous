@@ -2,15 +2,15 @@
 #define  __GM_STDCONTROLRENDERER_H__
 
 
-#include "fwd.h"
-#include "GM_ControlRenderer.h"
-#include "GM_Control.h"
+#include "fwd.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "GM_Control.hpp"
 
-#include "Graphics/fwd.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/GraphicsEffectHandle.h"
-#include "Graphics/Point.h"
-#include "Graphics/Rect.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/GraphicsEffectHandle.hpp"
+#include "Graphics/Point.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <string>

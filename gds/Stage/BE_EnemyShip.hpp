@@ -1,9 +1,9 @@
 #ifndef __BE_EnemyShip_H__
 #define __BE_EnemyShip_H__
 
-#include "BE_Enemy.h"
-#include "CopyEntity.h"
-#include "EntityMotionPathRequest.h"
+#include "BE_Enemy.hpp"
+#include "CopyEntity.hpp"
+#include "EntityMotionPathRequest.hpp"
 
 
 class CGI_Weapon;

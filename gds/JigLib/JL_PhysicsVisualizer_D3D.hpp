@@ -6,7 +6,7 @@
 //using namespace std;
 
 
-#include "Graphics/GraphicsComponentCollector.h"
+#include "Graphics/GraphicsComponentCollector.hpp"
 
 
 class CJL_PhysicsManager;

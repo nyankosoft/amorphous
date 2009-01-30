@@ -3,9 +3,9 @@
 #define __GAMELIB1_BEHANDLE_SERIALIZATION_H__
 
 
-#include "BaseEntityHandle.h"
+#include "BaseEntityHandle.hpp"
 
-#include "Support/Serialization/Archive.h"
+#include "Support/Serialization/Archive.hpp"
 
 
 namespace GameLib1

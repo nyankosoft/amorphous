@@ -1,8 +1,8 @@
-#include "GraphicsEffectManager.h"
-#include "GraphicsElementManager.h"
-#include "Support/Timer.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "GraphicsEffectManager.hpp"
+#include "GraphicsElementManager.hpp"
+#include "Support/Timer.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
 #include <algorithm>
 using namespace std;

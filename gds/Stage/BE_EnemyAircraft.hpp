@@ -1,13 +1,13 @@
 #ifndef __BE_EnemyAircraft_H__
 #define __BE_EnemyAircraft_H__
 
-#include "BE_Enemy.h"
-#include "CopyEntity.h"
-#include "EntityMotionPathRequest.h"
+#include "BE_Enemy.hpp"
+#include "CopyEntity.hpp"
+#include "EntityMotionPathRequest.hpp"
 
-#include "BEC_PseudoAircraft.h"
-#include "Item/GI_Aircraft.h"
-#include "GameCommon/MTRand.h"
+#include "BEC_PseudoAircraft.hpp"
+#include "Item/GI_Aircraft.hpp"
+#include "GameCommon/MTRand.hpp"
 
 
 class CGI_Weapon;

@@ -6,12 +6,12 @@ using namespace std;
 
 #include <boost/shared_ptr.hpp>
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
-#include "Stage/PlayerInfo.h"
+#include "Stage/PlayerInfo.hpp"
 
-#include "Item/GameItem.h"
-#include "Item/WeaponSystem.h"
+#include "Item/GameItem.hpp"
+#include "Item/WeaponSystem.hpp"
 
 #include <windows.h>
 

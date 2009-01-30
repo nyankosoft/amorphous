@@ -1,7 +1,7 @@
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
-#include "RectTree.h"
+#include "RectTree.hpp"
 using namespace Graphics;
 
 //==================================================================================

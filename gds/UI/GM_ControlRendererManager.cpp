@@ -1,9 +1,9 @@
 
-#include "GM_ControlRenderer.h"
-#include "GM_ControlRendererManager.h"
-#include "GM_ControlRendererManager.h"
-#include "Graphics/GraphicsEffectManager.h"
-#include "Support/SafeDelete.h"
+#include "GM_ControlRenderer.hpp"
+#include "GM_ControlRendererManager.hpp"
+#include "GM_ControlRendererManager.hpp"
+#include "Graphics/GraphicsEffectManager.hpp"
+#include "Support/SafeDelete.hpp"
 
 using namespace std;
 

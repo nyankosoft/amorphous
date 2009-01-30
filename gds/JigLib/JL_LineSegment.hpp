@@ -3,8 +3,8 @@
 #define __JL_LINESEGMENT_H__
 
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Plane.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Plane.hpp"
 
 
 class CJL_LineSegment

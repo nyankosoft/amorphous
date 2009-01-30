@@ -1,19 +1,19 @@
-#include "GM_XMLParser.h"
-#include "GM_Control.h"
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
-#include "GM_DialogManager.h"
-#include "GM_ControlRenderer.h"
-#include "GM_ControlRendererManager.h"
+#include "GM_XMLParser.hpp"
+#include "GM_Control.hpp"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_DialogManager.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "GM_ControlRendererManager.hpp"
 
-#include "XML/XercesString.h"
-#include "XML/xmlch2x.h"
-#include "XML/XMLDocumentLoader.h"
-#include "XML/XMLNodeReader.h"
-#include "Support/SafeDelete.h"
-#include "Support/fnop.h"
+#include "XML/XercesString.hpp"
+#include "XML/xmlch2x.hpp"
+#include "XML/XMLDocumentLoader.hpp"
+#include "XML/XMLNodeReader.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/fnop.hpp"
 
-#include "UI.h"
+#include "UI.hpp"
 
 using namespace std;
 using namespace boost;

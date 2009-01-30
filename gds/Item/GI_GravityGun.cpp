@@ -1,14 +1,14 @@
-#include "GI_GravityGun.h"
-#include "WeaponSystem.h"
-#include "GameInput/3DActionCode.h"
-#include "GameInput/InputHandler.h"
-#include "GameCommon/CriticalDamping.h"
-#include "Stage/CopyEntity.h"
-#include "Stage/trace.h"
-#include "Stage/Stage.h"
-#include "XML/XMLNodeReader.h"
+#include "GI_GravityGun.hpp"
+#include "WeaponSystem.hpp"
+#include "GameInput/3DActionCode.hpp"
+#include "GameInput/InputHandler.hpp"
+#include "GameCommon/CriticalDamping.hpp"
+#include "Stage/CopyEntity.hpp"
+#include "Stage/trace.hpp"
+#include "Stage/Stage.hpp"
+#include "XML/XMLNodeReader.hpp"
 
-#include "Physics/Actor.h"
+#include "Physics/Actor.hpp"
 
 using namespace physics;
 

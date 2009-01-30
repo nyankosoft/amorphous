@@ -1,5 +1,5 @@
 
-#include "GE_SpawnEvent.h"
+#include "GE_SpawnEvent.hpp"
 
 
 void CGE_SpawnEvent::Serialize( IArchive& ar, const unsigned int version )

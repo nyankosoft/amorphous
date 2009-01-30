@@ -1,9 +1,9 @@
-#include "GraphicsResourceLoaders.h"
-#include "GraphicsResourceCacheManager.h"
-#include "AsyncResourceLoader.h"
-#include "D3DXMeshObjectBase.h"
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
-#include "Support/Profile.h"
+#include "GraphicsResourceLoaders.hpp"
+#include "GraphicsResourceCacheManager.hpp"
+#include "AsyncResourceLoader.hpp"
+#include "D3DXMeshObjectBase.hpp"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Support/Profile.hpp"
 
 using namespace std;
 using namespace boost;

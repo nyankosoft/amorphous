@@ -1,8 +1,8 @@
 #ifndef  __SYSTEMINPUTHANDLER_DEBUG_H__
 #define  __SYSTEMINPUTHANDLER_DEBUG_H__
 
-#include "GameInput/InputHandler.h"
-#include "fwd.h"
+#include "GameInput/InputHandler.hpp"
+#include "fwd.hpp"
 
 extern bool g_bAppExitRequested;
 

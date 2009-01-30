@@ -5,8 +5,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "BinaryArchive_Input.h"
-#include "ArchiveObjectBase.h"
+#include "BinaryArchive_Input.hpp"
+#include "ArchiveObjectBase.hpp"
 #include "../SerializableStream.hpp"
 
 #include "../Zlib/zpipe_stream.h"

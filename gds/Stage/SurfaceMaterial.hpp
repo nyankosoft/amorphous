@@ -7,12 +7,12 @@
 using namespace std;
 
 
-#include "Sound/SoundHandle.h"
-#include "BaseEntityHandle.h"
-#include "Support/FixedVector.h"
-#include "GameCommon/MTRand.h"
+#include "Sound/SoundHandle.hpp"
+#include "BaseEntityHandle.hpp"
+#include "Support/FixedVector.hpp"
+#include "GameCommon/MTRand.hpp"
 
-#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

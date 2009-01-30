@@ -1,6 +1,5 @@
-
-#include "ui.h"
-#include "GM_Aux.h"
+#include "UI.hpp"
+#include "GM_Aux.hpp"
 
 
 CGM_Dialog *Create2ChoiceDialog( CGM_DialogManager* pDlgMgr, bool root_dialog,

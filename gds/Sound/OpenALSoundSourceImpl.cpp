@@ -1,11 +1,11 @@
-#include "OpenALSoundSourceImpl.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
-#include "Support/thread_starter.h"
+#include "OpenALSoundSourceImpl.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/thread_starter.hpp"
 #include "Support/SerializableStream.hpp"
-#include "../base.h"
+#include "../base.hpp"
 
-#include "OpenALSoundManagerImpl.h"
+#include "OpenALSoundManagerImpl.hpp"
 
 using namespace std;
 using namespace boost;

@@ -2,9 +2,9 @@
 #ifndef __KGL_FIXEDVECTOR_SERIALIZATION_H__
 #define __KGL_FIXEDVECTOR_SERIALIZATION_H__
 
-#include "../FixedVector.h"
+#include "../FixedVector.hpp"
 
-#include "Archive.h"
+#include "Archive.hpp"
 
 
 namespace GameLib1

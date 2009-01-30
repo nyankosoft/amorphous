@@ -1,21 +1,21 @@
 
-#include "ScreenEffectManager.h"
+#include "ScreenEffectManager.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Camera.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Graphics/PostProcessManager.h"
-#include "Graphics/SimpleMotionBlur.h"
-#include "Graphics/D3DMisc.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/PostProcessManager.hpp"
+#include "Graphics/SimpleMotionBlur.hpp"
+#include "Graphics/D3DMisc.hpp"
 
-#include "Graphics/RenderTask.h"
-#include "Graphics/RenderTaskProcessor.h"
+#include "Graphics/RenderTask.hpp"
+#include "Graphics/RenderTaskProcessor.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "3DMath/MathMisc.h"
+#include "3DMath/MathMisc.hpp"
 
 #include <algorithm>
 

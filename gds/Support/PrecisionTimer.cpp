@@ -1,4 +1,4 @@
-#include "PrecisionTimer.h"
+#include "PrecisionTimer.hpp"
 
 
 //---------------------- default constructor ------------------------------

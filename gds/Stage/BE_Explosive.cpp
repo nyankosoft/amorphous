@@ -1,24 +1,24 @@
-#include "BE_Explosive.h"
+#include "BE_Explosive.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Serialization_BaseEntityHandle.h"
-#include "../Stage/ScreenEffectManager.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
+#include "../Stage/ScreenEffectManager.hpp"
 
-#include "../Graphics/3DGameMath.h"
-#include "../Graphics/D3DXMeshObject.h"
-#include "../Graphics/Direct3D9.h"
-#include "../Graphics/Camera.h"
+#include "../Graphics/3DGameMath.hpp"
+#include "../Graphics/D3DXMeshObject.hpp"
+#include "../Graphics/Direct3D9.hpp"
+#include "../Graphics/Camera.hpp"
 
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/MTRand.h"
-#include "Support/VectorRand.h"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "Support/VectorRand.hpp"
 
-#include "Sound/SoundManager.h"
-#include "Sound/Serialization_SoundHandle.h"
+#include "Sound/SoundManager.hpp"
+#include "Sound/Serialization_SoundHandle.hpp"
 
 
 CBE_Explosive::CBE_Explosive()

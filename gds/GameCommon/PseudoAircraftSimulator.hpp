@@ -2,14 +2,14 @@
 #define  __PSEUDOAIRCRAFTSIMULATOR_H__
 
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/MathMisc.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/MathMisc.hpp"
 
 #include <vector>
 #include <string>
 
 
-#include "GameCommon/CriticalDamping.h"
+#include "GameCommon/CriticalDamping.hpp"
 
 
 class CPseudoAircraftSimulator

@@ -1,6 +1,6 @@
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
 
 /*
 void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pEntity )

@@ -1,5 +1,5 @@
 
-#include "BSPTreeForBox.h"
+#include "BSPTreeForBox.hpp"
 
 
 CBSPTreeForBox::CBSPTreeForBox()

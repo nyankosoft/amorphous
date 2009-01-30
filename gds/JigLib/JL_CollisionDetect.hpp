@@ -1,7 +1,7 @@
 #ifndef  __JL_COLLISIONDETECT_H__
 #define  __JL_COLLISIONDETECT_H__
 
-#include "Support/PreAllocDynamicLinkList.h"
+#include "Support/PreAllocDynamicLinkList.hpp"
 
 class CJL_PhysicsActor;
 class CJL_Shape_Box;

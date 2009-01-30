@@ -4,23 +4,23 @@
 
 #include <vector>
 
-#include "Graphics/LightStructs.h"
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
-#include "Graphics/MeshModel/General3DMesh.h"
+#include "Graphics/LightStructs.hpp"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/MeshModel/General3DMesh.hpp"
 using namespace MeshModel;
 
-#include "3DMath/Matrix34.h"
-#include "Graphics/Rect.h"
-#include "Graphics/RectTree.h"
+#include "3DMath/Matrix34.hpp"
+#include "Graphics/Rect.hpp"
+#include "Graphics/RectTree.hpp"
 using namespace Graphics;
 
-#include "Support/TextFileScanner.h"
-#include "Support/FixedVector.h"
-#include "Support/Serialization/BinaryDatabase.h"
-#include "XML/XMLDocumentLoader.h"
+#include "Support/TextFileScanner.hpp"
+#include "Support/FixedVector.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
+#include "XML/XMLDocumentLoader.hpp"
 
-#include "fwd.h"
-#include "LightmapTexture.h"
+#include "fwd.hpp"
+#include "LightmapTexture.hpp"
 
 
 #define LMB_NUM_MAX_LIGHTMAPTEXTURES	64

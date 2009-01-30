@@ -1,4 +1,4 @@
-#include "2DTexRect.h"
+#include "2DTexRect.hpp"
 
 
 void C2DTexRect::SetDefault()

@@ -5,11 +5,11 @@
 //
 //=================================================================================
 
-#include "ScreenShotManager.h"
+#include "ScreenShotManager.hpp"
 //#include <wingdi.h>
 #include <direct.h>
-#include "Support/BitmapImage.h"
-#include "Support/StringAux.h"
+#include "Support/BitmapImage.hpp"
+#include "Support/StringAux.hpp"
 
 using namespace std;
 

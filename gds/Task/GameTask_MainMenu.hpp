@@ -2,9 +2,9 @@
 #define  __GAMETASK_MAINMENU_H__
 
 
-#include "GameTask.h"
-#include "MainMenuEventHandler.h"
-#include "UI/fwd.h"
+#include "GameTask.hpp"
+#include "MainMenuEventHandler.hpp"
+#include "UI/fwd.hpp"
 
 
 class CInputHandler;

@@ -2,7 +2,7 @@
 #define __SAFE_DELETE_VECTOR_H__
 
 
-#include "SafeDelete.h"
+#include "SafeDelete.hpp"
 #include <vector>
 
 

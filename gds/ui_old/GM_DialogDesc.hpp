@@ -3,7 +3,7 @@
 #define  __GM_DIALOGDESC_H__
 
 
-#include "GM_Dialog.h"
+#include "GM_Dialog.hpp"
 
 
 class CGM_TextureRectElement;

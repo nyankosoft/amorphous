@@ -6,10 +6,10 @@
 #include <vector>
 #include <string>
 
-#include "base.h"
-#include "Graphics/fwd.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/GraphicsComponentCollector.h"
+#include "base.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
 
 
 template<class T>
@@ -232,8 +232,8 @@ public:
 
 
 
-#include "Support/SafeDelete.h"
-#include "Support/Singleton.h"
+#include "Support/SafeDelete.hpp"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 #define GlobalDebugOutput (*CGlobalDebugOutput::Get())

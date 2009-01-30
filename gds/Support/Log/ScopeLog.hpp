@@ -3,9 +3,9 @@
 
 
 #include <string>
-#include "../../base.h"
-#include "../StringAux.h"
-#include "DefaultLog.h"
+#include "../../base.hpp"
+#include "../StringAux.hpp"
+#include "DefaultLog.hpp"
 
 
 class CScopeLog

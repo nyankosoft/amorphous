@@ -1,19 +1,19 @@
 
-#include "BE_Door.h"
-#include "BE_DoorController.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "Stage.h"
-#include "GameMessage.h"
+#include "BE_Door.hpp"
+#include "BE_DoorController.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "Stage.hpp"
+#include "GameMessage.hpp"
 
-#include "Serialization_BaseEntityHandle.h"
-#include "Support/Serialization/Serialization_FixedVector.h"
-#include "Sound/Serialization_SoundHandle.h"
+#include "Serialization_BaseEntityHandle.hpp"
+#include "Support/Serialization/Serialization_FixedVector.hpp"
+#include "Sound/Serialization_SoundHandle.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
 
-#include "JigLib/JL_PhysicsActor.h"
+#include "JigLib/JL_PhysicsActor.hpp"
 
 
 CBE_DoorController::SDoorComponentSet::SDoorComponentSet()

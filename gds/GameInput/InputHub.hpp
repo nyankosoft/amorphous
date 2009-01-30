@@ -2,12 +2,12 @@
 #define __INPUTHUB_H__
 
 #include <vector>
-#include "fwd.h"
-#include "InputHandler.h"
+#include "fwd.hpp"
+#include "InputHandler.hpp"
 
-#include "../base.h"
-#include "Support/SafeDelete.h"
-#include "Support/FixedVector.h"
+#include "../base.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/FixedVector.hpp"
 
 
 /**

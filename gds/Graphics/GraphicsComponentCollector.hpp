@@ -4,10 +4,10 @@
 
 #include <vector>
 
-#include "Graphics/Rect.h"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 #include <stdlib.h>

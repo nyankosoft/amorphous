@@ -2,9 +2,9 @@
 #define __StageUtility_H__
 
 
-#include "Stage/Stage.h"
-#include "Stage/EntityHandle.h"
-#include "Stage/BE_ScriptedCamera.h"
+#include "Stage/Stage.hpp"
+#include "Stage/EntityHandle.hpp"
+#include "Stage/BE_ScriptedCamera.hpp"
 
 
 class CStageUtility

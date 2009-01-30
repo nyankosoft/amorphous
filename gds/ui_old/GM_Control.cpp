@@ -1,8 +1,8 @@
 
-#include "GM_Control.h"
-#include "GM_ControlDescBase.h"
+#include "GM_Control.hpp"
+#include "GM_ControlDescBase.hpp"
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
 
 //========================================================================================
@@ -47,8 +47,8 @@ void CGM_Control::UpdateRects()
 
 // draw the boundary with wireframe for debug
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/2DRect.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/2DRect.hpp"
 
 void CGM_Control::Render( float fElapsedTime )
 {

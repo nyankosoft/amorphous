@@ -2,7 +2,7 @@
 #define  __SurfaceMaterialHandle_H__
 
 
-#include "Support/NamedResourceHandle.h"
+#include "Support/NamedResourceHandle.hpp"
 
 class CSurfaceMaterialManager;
 

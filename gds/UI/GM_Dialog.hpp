@@ -1,15 +1,15 @@
 #ifndef  __GM_DIALOG_H__
 #define  __GM_DIALOG_H__
 
-#include "fwd.h"
-#include "GM_Event.h"
-#include "GM_GraphicElement.h"
-#include "GM_EventHandlerBase.h"
+#include "fwd.hpp"
+#include "GM_Event.hpp"
+#include "GM_GraphicElement.hpp"
+#include "GM_EventHandlerBase.hpp"
 
 #include <vector>
 #include <string>
 
-#include "Graphics/Point.h"
+#include "Graphics/Point.hpp"
 using namespace Graphics;
 
 

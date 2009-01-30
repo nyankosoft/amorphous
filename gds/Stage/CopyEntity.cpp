@@ -1,9 +1,9 @@
-#include "CopyEntity.h"
-#include "BaseEntity.h"
-//#include "EntitySet.h"
+#include "CopyEntity.hpp"
+#include "BaseEntity.hpp"
+//#include "EntitySet.hpp"
 
-//#include "JigLib/JL_PhysicsActor.h"
-#include "Physics/Actor.h"
+//#include "JigLib/JL_PhysicsActor.hpp"
+#include "Physics/Actor.hpp"
 using namespace physics;
 
 using namespace std;

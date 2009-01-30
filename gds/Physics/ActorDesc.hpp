@@ -4,15 +4,15 @@
 
 #include <vector>
 
-#include "3DMath/Matrix34.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "3DMath/Matrix34.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
-#include "fwd.h"
-#include "BodyDesc.h"
+#include "fwd.hpp"
+#include "BodyDesc.hpp"
 
-#include "ShapeDescFactory.h"
+#include "ShapeDescFactory.hpp"
 
 
 namespace physics

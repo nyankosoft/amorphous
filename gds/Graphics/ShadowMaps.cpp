@@ -1,12 +1,12 @@
-#include "ShadowMaps.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/LightStructs.h"
-#include "Graphics/CubeMapManager.h"
-#include "Graphics/Shader/ShaderManagerHub.h"
-#include "Graphics/3DGameMath.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "ShadowMaps.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/LightStructs.hpp"
+#include "Graphics/CubeMapManager.hpp"
+#include "Graphics/Shader/ShaderManagerHub.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
 using namespace std;
 using namespace boost;

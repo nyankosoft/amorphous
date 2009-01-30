@@ -2,7 +2,7 @@
 #define  __CORRELATIONGRAPH_H__
 
 
-#include "2DGraph.h"
+#include "2DGraph.hpp"
 
 
 class CCorrelationGraph : public C2DGraph

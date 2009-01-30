@@ -2,11 +2,11 @@
 #define  __MeshObjectHandle_H__
 
 
-#include "fwd.h"
-#include "GraphicsResourceHandle.h"
-#include "GraphicsResourceManager.h"
+#include "fwd.hpp"
+#include "GraphicsResourceHandle.hpp"
+#include "GraphicsResourceManager.hpp"
 
-#include "Support/Serialization/ArchiveObjectBase.h"
+#include "Support/Serialization/ArchiveObjectBase.hpp"
 using namespace GameLib1::Serialization;
 
 

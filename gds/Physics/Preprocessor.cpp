@@ -1,8 +1,8 @@
-#include "Ageia/NxPhysPreprocessorImpl.h"
-#include "PhysicsEngine.h"
-#include "Stream.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
+#include "Ageia/NxPhysPreprocessorImpl.hpp"
+#include "PhysicsEngine.hpp"
+#include "Stream.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDelete.hpp"
 
 using namespace std;
 using namespace physics;

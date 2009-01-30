@@ -1,10 +1,10 @@
-#include "GameStageFrameworkGlobalParams.h"
+#include "GameStageFrameworkGlobalParams.hpp"
 
-#include "Support/ParamLoader.h"
+#include "Support/ParamLoader.hpp"
 
-#include "Stage/EntitySet.h"
-#include "Stage/ScreenEffectManager.h"
-#include "App/ApplicationBase.h"
+#include "Stage/EntitySet.hpp"
+#include "Stage/ScreenEffectManager.hpp"
+#include "App/ApplicationBase.hpp"
 
 
 CGameStageFrameworkGlobalParams::CGameStageFrameworkGlobalParams()

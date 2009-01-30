@@ -6,19 +6,19 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/Quaternion.h"
-#include "Graphics/Camera.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DMisc.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/TextureRenderTarget.h"
-#include "GameCommon/CriticalDamping.h"
-//#include "Graphics/GraphicsComponentCollector.h"
-#include "Support/SafeDelete.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/Quaternion.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DMisc.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "GameCommon/CriticalDamping.hpp"
+//#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Support/SafeDelete.hpp"
 
-#include "fwd.h"
-#include "CopyEntity.h"
+#include "fwd.hpp"
+#include "CopyEntity.hpp"
 
 
 class SubMonitor

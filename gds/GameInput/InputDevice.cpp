@@ -1,5 +1,5 @@
-#include "InputDevice.h"
-#include "Support/Profile.h"
+#include "InputDevice.hpp"
+#include "Support/Profile.hpp"
 
 
 CInputDevice::CInputDevice()

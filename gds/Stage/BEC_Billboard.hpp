@@ -2,13 +2,13 @@
 #define  __BEC_BILLBOARD_H__
 
 
-#include "Graphics/TextureHandle.h"
+#include "Graphics/TextureHandle.hpp"
 #include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/FVF_BillboardVertex.h"
-#include "Graphics/BillboardArrayMesh.h"
-#include "Graphics/Shader/ShaderTechniqueHandle.h"
+#include "Graphics/BillboardArrayMesh.hpp"
+#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 
-#include "Support/Serialization/Archive.h"
+#include "Support/Serialization/Archive.hpp"
 using namespace GameLib1::Serialization;
 
 

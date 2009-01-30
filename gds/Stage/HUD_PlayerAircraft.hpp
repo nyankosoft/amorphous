@@ -2,14 +2,14 @@
 #define __HUD_PlayerAircraft_H__
 
 
-#include "HUD_PlayerBase.h"
+#include "HUD_PlayerBase.hpp"
 
-#include "Graphics/fwd.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/Font/TextureFont.h"
-#include "GameTextSystem/fwd.h"
-#include "GameCommon/PseudoAircraftHUD.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "GameTextSystem/fwd.hpp"
+#include "GameCommon/PseudoAircraftHUD.hpp"
 
 
 class CBE_PlayerPseudoAircraft;

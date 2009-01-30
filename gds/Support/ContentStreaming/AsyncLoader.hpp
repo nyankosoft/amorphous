@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------
-// File: AsyncLoader.h
+// File: AsyncLoader.hpp
 //
 // Illustrates streaming content using Direct3D 9/10
 //
@@ -10,7 +10,7 @@
 #define ASYNC_LOADER_H
 
 //#include "DXUT.h"
-#include "ResourceReuseCache.h"
+#include "ResourceReuseCache.hpp"
 
 #include <vector>
 

@@ -1,23 +1,23 @@
-#include "StaticGeometry.h"
-#include "BSPTree.h"
-#include "Stage.h" // used in CStaticGeometry::CreateCollisionGeometry() and dtor
+#include "StaticGeometry.hpp"
+#include "bsptree.hpp"
+#include "Stage.hpp" // used in CStaticGeometry::CreateCollisionGeometry() and dtor
 
-#include "Graphics/Shader/ShaderManager.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Camera.h"
-#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
 
-#include "Physics/PhysicsEngine.h"
-#include "Physics/Stream.h"
-#include "Physics/TriangleMeshShapeDesc.h"
-#include "Physics/Scene.h"
-#include "Physics/Actor.h"
+#include "Physics/PhysicsEngine.hpp"
+#include "Physics/Stream.hpp"
+#include "Physics/TriangleMeshShapeDesc.hpp"
+#include "Physics/Scene.hpp"
+#include "Physics/Actor.hpp"
 
-#include "Support/Serialization/BinaryDatabase.h"
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/StringAux.h"
-#include "Support/fnop.h"
+#include "Support/Serialization/BinaryDatabase.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/fnop.hpp"
 #include "Support/macro.h"
 
 using namespace std;

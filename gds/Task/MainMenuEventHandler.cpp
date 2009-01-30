@@ -1,21 +1,21 @@
 
-#include "GameTask_MainMenu.h"
-#include "MainMenuEventHandler.h"
-#include "UI.h"
+#include "GameTask_MainMenu.hpp"
+#include "MainMenuEventHandler.hpp"
+#include "UI.hpp"
 
-#include "App/GameWindowManager_Win32.h"
-#include "Sound/SoundManager.h"
+#include "App/GameWindowManager_Win32.hpp"
+#include "Sound/SoundManager.hpp"
 
-#include "GameTask_Stage.h"
+#include "GameTask_Stage.hpp"
 
-#include "Stage/PlayerInfo.h"
-#include "Stage/BE_PlayerShip.h"
-//#include "Stage/ScreenEffectManager.h"
-#include "Stage/Stage.h"
+#include "Stage/PlayerInfo.hpp"
+#include "Stage/BE_PlayerShip.hpp"
+//#include "Stage/ScreenEffectManager.hpp"
+#include "Stage/Stage.hpp"
 
-#include "JigLib/JL_PhysicsVisualizer_D3D.h"
+#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 
 

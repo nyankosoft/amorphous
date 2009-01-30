@@ -1,14 +1,14 @@
 
-#include "PyModule_Stage.h"
+#include "PyModule_Stage.hpp"
 
-#include "3DMath/Vector3.h"
-#include "Graphics/3DGameMath.h"
-#include "Support/Vec3_StringAux.h"
+#include "3DMath/Vector3.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
-#include "Stage.h"
-#include "CopyEntityDesc.h"
-#include "StaticGeometryFG.h"	// used by SetFogColor()
-#include "BE_Skybox.h"	// used by SetFogColor()
+#include "Stage.hpp"
+#include "CopyEntityDesc.hpp"
+#include "StaticGeometryFG.hpp"	// used by SetFogColor()
+#include "BE_Skybox.hpp"	// used by SetFogColor()
 
 using namespace std;
 

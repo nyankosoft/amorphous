@@ -9,13 +9,13 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/MathMisc.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/BinaryDatabase.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/MathMisc.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
-#include "MotionPrimitive.h"
+#include "MotionPrimitive.hpp"
 
 
 namespace msynth

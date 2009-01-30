@@ -3,9 +3,9 @@
 #define __BASEENTITYDOOR_H__
 
 
-#include "BE_PhysicsBaseEntity.h"
+#include "BE_PhysicsBaseEntity.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 
 class CBE_Door : public CBE_PhysicsBaseEntity

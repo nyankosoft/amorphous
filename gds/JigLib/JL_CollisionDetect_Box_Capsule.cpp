@@ -1,8 +1,8 @@
 
-#include "JL_Shape_Box.h"
-#include "JL_Shape_Capsule.h"
-#include "JL_CollisionFunctor.h"
-#include "Geometry/Box.h"
+#include "JL_Shape_Box.hpp"
+#include "JL_Shape_Capsule.hpp"
+#include "JL_CollisionFunctor.hpp"
+#include "Geometry/Box.hpp"
 #include "Geometry/distance.hpp"
 
 

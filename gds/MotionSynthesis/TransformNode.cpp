@@ -1,5 +1,5 @@
-#include "BVH/BVHBone.h"
-#include "TransformNode.h"
+#include "BVH/BVHBone.hpp"
+#include "TransformNode.hpp"
 
 using namespace msynth;
 

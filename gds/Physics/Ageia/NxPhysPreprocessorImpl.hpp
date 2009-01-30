@@ -7,11 +7,11 @@
 
 // my library headers
 #include "3DMath/precision.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "fwd.h"
-#include "NxPhysOutputStream.h"
-#include "../Preprocessor.h"
+#include "fwd.hpp"
+#include "NxPhysOutputStream.hpp"
+#include "../Preprocessor.hpp"
 
 
 #pragma comment( lib, "NxCooking.lib" )

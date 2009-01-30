@@ -2,7 +2,7 @@
 #define  __2DTRIANGLE_H__
 
 
-#include "2DPrimitive.h"
+#include "2DPrimitive.hpp"
 
 
 class C2DTriangle : public C2DPrimitive

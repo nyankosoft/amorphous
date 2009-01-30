@@ -2,12 +2,12 @@
 #define  __GM_SoundPlayer_H__
 
 
-#include "fwd.h"
-#include "GM_Event.h"
-#include "GM_EventHandlerBase.h"
-#include "GM_ListBox.h"
-#include "GM_Button.h"
-#include "Sound/SoundHandle.h"
+#include "fwd.hpp"
+#include "GM_Event.hpp"
+#include "GM_EventHandlerBase.hpp"
+#include "GM_ListBox.hpp"
+#include "GM_Button.hpp"
+#include "Sound/SoundHandle.hpp"
 
 
 // >>>==================================== template ====================================

@@ -11,7 +11,7 @@
  * support for ancient computers. I know, I know, I should add
  * support, but hey, I have shares in AMD and Intel... Go upgrade ;o)
  *
- *  Name: PrecisionTimer.h
+ *  Name: PrecisionTimer.hpp
  *  Author: Mat Buckland 2002
  *
  */

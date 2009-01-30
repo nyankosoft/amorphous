@@ -4,8 +4,8 @@
 #include <vector>
 using namespace std;
 
-#include "GM_Control.h"
-#include "GM_GraphicElement.h"
+#include "GM_Control.hpp"
+#include "GM_GraphicElement.hpp"
 
 
 class CGM_PaintBarDesc;

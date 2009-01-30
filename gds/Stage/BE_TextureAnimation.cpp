@@ -1,15 +1,15 @@
 
-#include "BE_TextureAnimation.h"
+#include "BE_TextureAnimation.hpp"
 
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
 
-#include "ScreenEffectManager.h"
+#include "ScreenEffectManager.hpp"
 
 #include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 
 CBE_TextureAnimation::CBE_TextureAnimation()

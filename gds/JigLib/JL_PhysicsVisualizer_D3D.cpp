@@ -1,21 +1,21 @@
-#include "JL_PhysicsVisualizer_D3D.h"
+#include "JL_PhysicsVisualizer_D3D.hpp"
 
-#include "JL_PhysicsManager.h"
+#include "JL_PhysicsManager.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/aabb3.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/aabb3.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-//#include "Support/memory_helpers.h"
-#include "Support/LineSegmentRenderer.h"
+//#include "Support/memory_helpers.hpp"
+#include "Support/LineSegmentRenderer.hpp"
 
-#include "Graphics/UnitCube.h"
-#include "Support/SafeDelete.h"
+#include "Graphics/UnitCube.hpp"
+#include "Support/SafeDelete.hpp"
 
-#include "Support/msgbox.h"
+#include "Support/msgbox.hpp"
 
 #include <d3d9.h>
 #include <d3dx9.h>

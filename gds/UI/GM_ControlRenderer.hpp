@@ -18,20 +18,20 @@
 */
 
 
-#include "Graphics/fwd.h"
-#include "3DMath/Vector2.h"
+#include "Graphics/fwd.hpp"
+#include "3DMath/Vector2.hpp"
 
-#include "fwd.h"
-#include "GM_Static.h"
-#include "GM_Button.h"
-#include "GM_ListBox.h"
-#include "GM_Slider.h"
-#include "GM_ScrollBar.h"
-#include "GM_SubDialogButton.h"
-#include "GM_Dialog.h"
+#include "fwd.hpp"
+#include "GM_Static.hpp"
+#include "GM_Button.hpp"
+#include "GM_ListBox.hpp"
+#include "GM_Slider.hpp"
+#include "GM_ScrollBar.hpp"
+#include "GM_SubDialogButton.hpp"
+#include "GM_Dialog.hpp"
 
-#include "Graphics/Point.h"
-#include "Graphics/Rect.h"
+#include "Graphics/Point.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <string>

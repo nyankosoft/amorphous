@@ -11,7 +11,7 @@
 
 
 /**
- fnop.h
+ fnop.hpp
    - functions for File & fileName OPerations
 */
 

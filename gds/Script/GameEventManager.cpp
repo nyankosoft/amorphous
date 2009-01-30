@@ -1,7 +1,7 @@
 
-#include "GameEventManager.h"
+#include "GameEventManager.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 
 CGameEventManager::CGameEventManager()

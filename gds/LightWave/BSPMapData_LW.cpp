@@ -1,12 +1,12 @@
-#include "BSPMapData_LW.h"
+#include "BSPMapData_LW.hpp"
 
-#include "../BSPMapCompiler/mapcompiler.h"
+#include "../BSPMapCompiler/mapcompiler.hpp"
 #include "../BSPMapCompiler/lightmapbuilder.h"
-#include "../Stage/StaticGeometry.h"
-#include "LightWaveSceneLoader.h"
-#include "3DMeshModelBuilder_LW.h"
+#include "../Stage/StaticGeometry.hpp"
+#include "LightWaveSceneLoader.hpp"
+#include "3DMeshModelBuilder_LW.hpp"
 
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 #include "Support/FilenameOperation.h"

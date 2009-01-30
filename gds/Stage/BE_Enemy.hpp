@@ -1,18 +1,18 @@
 #ifndef __BE_ENEMY_H__
 #define __BE_ENEMY_H__
 
-#include "BE_PhysicsBaseEntity.h"
-#include "BaseEntityHandle.h"
-#include "Serialization_BaseEntityHandle.h"
+#include "BE_PhysicsBaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
 
-#include "EnemyState.h"
+#include "EnemyState.hpp"
 
-#include "Sound/SoundHandle.h"
-#include "GameCommon/RangedSet.h"
+#include "Sound/SoundHandle.hpp"
+#include "GameCommon/RangedSet.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
-// "Support\Serialization\ArchiveObjectFactory.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
+// "Support\Serialization\ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 

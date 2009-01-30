@@ -2,7 +2,7 @@
 #ifndef  __TANGENTSPACE_H__
 #define  __TANGENTSPACE_H__
 
-#include "3DMeshModelBuilder.h"
+#include "3DMeshModelBuilder.hpp"
 
 #include <vector>
 using namespace std;
@@ -39,7 +39,7 @@ public:
 
 ----------------------------------- cut here -----------------------------------
 
-#include "TangentSpace.h"
+#include "TangentSpace.hpp"
 
 CTangentSpace::CTangentSpace()
 {

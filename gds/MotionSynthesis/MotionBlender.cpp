@@ -1,10 +1,10 @@
-#include "MotionBlender.h"
-#include "MotionPrimitiveBlender.h"
-#include "MotionDatabase.h"
-#include "HumanoidMotionTable.h"
+#include "MotionBlender.hpp"
+#include "MotionPrimitiveBlender.hpp"
+#include "MotionDatabase.hpp"
+#include "HumanoidMotionTable.hpp"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/memory_helpers.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/memory_helpers.hpp"
 
 #include <boost/foreach.hpp>
 

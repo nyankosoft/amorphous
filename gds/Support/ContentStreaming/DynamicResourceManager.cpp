@@ -1,12 +1,12 @@
 
-#include "DynamicResourceManager.h"
+#include "DynamicResourceManager.hpp"
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support//TextFileScanner.h"
-#include "Support/ContentStreaming/AsyncLoader.h"
-#include "Support/ContentStreaming/ContentLoaders.h"
+#include "Support/memory_helpers.hpp"
+#include "Support//TextFileScanner.hpp"
+#include "Support/ContentStreaming/AsyncLoader.hpp"
+#include "Support/ContentStreaming/ContentLoaders.hpp"
 
 
 CSingleton<CDynamicResourceManager> CDynamicResourceManager::m_obj;

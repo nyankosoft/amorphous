@@ -2,7 +2,7 @@
 #define __NxMathConv_H__
 
 
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 #include "NxPhysics.h"
 
 

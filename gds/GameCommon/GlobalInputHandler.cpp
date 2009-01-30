@@ -1,15 +1,15 @@
-#include "GlobalInputHandler.h"
+#include "GlobalInputHandler.hpp"
 
-#include "App/GameWindowManager_Win32.h"
-#include "App/ApplicationBase.h"
-#include "Task/GameTaskManager.h"
-#include "Task/GameTask.h"
+#include "App/GameWindowManager_Win32.hpp"
+#include "App/ApplicationBase.hpp"
+#include "Task/GameTaskManager.hpp"
+#include "Task/GameTask.hpp"
 
-#include "Graphics/GraphicsresourceManager.h"
-#include "GameCommon/ImageCapture.h"
-#include "GameCommon/ScreenShotManager.h"
+#include "Graphics/GraphicsresourceManager.hpp"
+#include "GameCommon/ImageCapture.hpp"
+#include "GameCommon/ScreenShotManager.hpp"
 
-#include "Support/DebugOutput.h"
+#include "Support/DebugOutput.hpp"
 
 
 CGlobalInputHandler::CGlobalInputHandler()

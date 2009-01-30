@@ -1,8 +1,8 @@
 
-#include "StageGraph.h"
+#include "StageGraph.hpp"
 
-#include "3DMath/Vector3.h"
-#include "Support/memory_helpers.h"
+#include "3DMath/Vector3.hpp"
+#include "Support/memory_helpers.hpp"
 
 
 using namespace std;

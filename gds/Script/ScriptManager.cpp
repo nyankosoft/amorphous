@@ -1,10 +1,10 @@
 
-#include "ScriptManager.h"
-#include "ScriptArchive.h"
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Profile.h"
-#include "Support/fnop.h"
+#include "ScriptManager.hpp"
+#include "ScriptArchive.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Profile.hpp"
+#include "Support/fnop.hpp"
 
 
 using namespace std;

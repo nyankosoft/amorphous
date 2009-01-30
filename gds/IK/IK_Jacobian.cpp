@@ -14,7 +14,7 @@ using namespace std;
 #include <GL/glut.h>
 #include <GL/glui.h>
 **/
-#include "IK_Jacobian.h"
+#include "IK_Jacobian.hpp"
 
 ///void Arrow(const VectorR3& tail, const VectorR3& head);
 

@@ -1,7 +1,7 @@
 #ifndef __BE_CLOUD_H__
 #define __BE_CLOUD_H__
 
-#include "BE_ParticleSet.h"
+#include "BE_ParticleSet.hpp"
 
 #include <vector>
 #include <string>

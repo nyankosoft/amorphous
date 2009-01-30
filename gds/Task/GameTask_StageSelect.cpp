@@ -1,27 +1,27 @@
-#include "GameTask_Stage.h"
-#include "GameTask_StageSelect.h"
+#include "GameTask_Stage.hpp"
+#include "GameTask_StageSelect.hpp"
 
-#include "Stage/Stage.h"
-#include "Stage/StageLoader.h"
-#include "Stage/PlayerInfo.h"
+#include "Stage/Stage.hpp"
+#include "Stage/StageLoader.hpp"
+#include "Stage/PlayerInfo.hpp"
 
-#include "Item/GI_Aircraft.h"
-#include "Item/GI_Ammunition.h"
-#include "Item/GI_Weapon.h"
+#include "Item/GI_Aircraft.hpp"
+#include "Item/GI_Ammunition.hpp"
+#include "Item/GI_Weapon.hpp"
 
-#include "GameInput/InputHub.h"
-#include "UI.h"
-#include "UI/InputHandler_Dialog.h"
-#include "UI/GM_StdControlRendererManager.h"
-#include "Graphics/Font/Font.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/GraphicsElementManager.h"
-#include "Support/memory_helpers.h"
+#include "GameInput/InputHub.hpp"
+#include "UI.hpp"
+#include "UI/InputHandler_Dialog.hpp"
+#include "UI/GM_StdControlRendererManager.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/GraphicsElementManager.hpp"
+#include "Support/memory_helpers.hpp"
 
-#include "App/ApplicationBase.h"
+#include "App/ApplicationBase.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 //#include <direct.h>
 //#include <assert.h>

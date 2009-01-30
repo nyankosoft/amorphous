@@ -1,4 +1,4 @@
-#include "WaveFile.h"
+#include "WaveFile.hpp"
 #include <dxerr9.h>
 #include "Support/Macro.h"
 

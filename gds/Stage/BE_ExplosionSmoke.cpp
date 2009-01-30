@@ -1,13 +1,13 @@
 
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Graphics/Direct3D9.h"
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/MTRand.h"
-#include "Support/VectorRand.h"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "Support/VectorRand.hpp"
 
-#include "BE_ExplosionSmoke.h"
+#include "BE_ExplosionSmoke.hpp"
 
 
 

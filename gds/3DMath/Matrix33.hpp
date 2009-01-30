@@ -1,9 +1,9 @@
 #ifndef __3DMATH_MATRIX33_H__
 #define __3DMATH_MATRIX33_H__
 
-#include "../base.h"
+#include "../base.hpp"
 #include "precision.h"
-#include "Vector3.h"
+#include "Vector3.hpp"
 #include <math.h>
 
 

@@ -5,22 +5,22 @@
 #include <vector>
 #include <string>
 
-#include "fwd.h"
-#include "Graphics/fwd.h"
-#include "Physics/fwd.h"
+#include "fwd.hpp"
+#include "Graphics/fwd.hpp"
+#include "Physics/fwd.hpp"
 
-#include "EntityGroupHandle.h"
-#include "3DMath/aabb3.h"
-#include "3DMath/Matrix34.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/MeshObjectHandle.h"
-#include "Graphics/MeshObjectContainer.h"
-#include "Graphics/Shader/ShaderTechniqueHandle.h"
-#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.h"
-#include "Support/TextFileScanner.h"
+#include "EntityGroupHandle.hpp"
+#include "3DMath/aabb3.hpp"
+#include "3DMath/Matrix34.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/MeshObjectContainer.hpp"
+#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "Support/TextFileScanner.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 

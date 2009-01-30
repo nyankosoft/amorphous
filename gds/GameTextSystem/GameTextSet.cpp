@@ -1,7 +1,7 @@
 
-#include "GameTextSet.h"
+#include "GameTextSet.hpp"
 
-#include "Graphics/Font/Font.h"
+#include "Graphics/Font/Font.hpp"
 
 
 //===========================================================================

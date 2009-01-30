@@ -3,9 +3,9 @@
 
 #include <math.h>
 
-#include "../Actor.h"
-#include "NxMathConv.h"
-#include "NxPhysConv.h"
+#include "../Actor.hpp"
+#include "NxMathConv.hpp"
+#include "NxPhysConv.hpp"
 
 
 #include "NxPhysics.h"

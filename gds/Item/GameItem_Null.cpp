@@ -1,5 +1,5 @@
-#include "GameItem.h"
-#include "Support/memory_helpers.h"
+#include "GameItem.hpp"
+#include "Support/memory_helpers.hpp"
 #include <string.h>
 
 

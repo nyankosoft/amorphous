@@ -1,19 +1,19 @@
 
-#include "GM_DialogManager.h"
+#include "GM_DialogManager.hpp"
 
-#include "GM_DialogDesc.h"
-#include "GM_Dialog.h"
+#include "GM_DialogDesc.hpp"
+#include "GM_Dialog.hpp"
 
-#include "GM_FontDesc.h"
-#include "GM_CaptionRenderRoutine.h"
+#include "GM_FontDesc.hpp"
+#include "GM_CaptionRenderRoutine.hpp"
 
-//#include "GameInput/InputHandler.h"
+//#include "GameInput/InputHandler.hpp"
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 #include "Graphics/font.h"
-#include "Graphics/TextureFont.h"
+#include "Graphics/TextureFont.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 //#include "Support/.h"
 //#include "Support/.h"
 

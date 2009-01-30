@@ -2,11 +2,11 @@
 #define  __PhysSpringDesc_H__
 
 #include "3DMath/precision.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 namespace physics

@@ -1,12 +1,12 @@
-#include "BE_IndividualEntity.h"
-#include "GameMessage.h"
-#include "CopyEntityDesc.h"
-#include "CopyEntity.h"
-#include "EntityRenderManager.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Physics/Actor.h"
-#include "Support/Log/DefaultLog.h"
+#include "BE_IndividualEntity.hpp"
+#include "GameMessage.hpp"
+#include "CopyEntityDesc.hpp"
+#include "CopyEntity.hpp"
+#include "EntityRenderManager.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Physics/Actor.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace physics;
 

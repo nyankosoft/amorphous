@@ -1,5 +1,5 @@
 
-#include "MassSpringExporter.h"
+#include "MassSpringExporter.hpp"
 
 CMassSpringExporter::CMassSpringExporter()
 {

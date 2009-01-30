@@ -2,9 +2,9 @@
 #define  __GM_DIALOGDESC_H__
 
 
-#include "fwd.h"
-#include "GM_ControlDescBase.h"
-#include "Graphics/Rect.h"
+#include "fwd.hpp"
+#include "GM_ControlDescBase.hpp"
+#include "Graphics/Rect.hpp"
 
 
 //========================================================================================

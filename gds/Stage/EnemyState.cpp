@@ -1,6 +1,6 @@
-#include "EnemyState.h"
-#include "BE_Enemy.h"
-#include "CopyEntity.h"
+#include "EnemyState.hpp"
+#include "BE_Enemy.hpp"
+#include "CopyEntity.hpp"
 
 
 CEnemyState::CEnemyState()

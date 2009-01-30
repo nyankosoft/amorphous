@@ -6,10 +6,10 @@
 #include <string>
 using namespace std;
 
-#include "fwd.h"
+#include "fwd.hpp"
 
-#include "3DMath/3DStructs.h"
-#include "Stage/bspstructs.h"
+#include "3DMath/3DStructs.hpp"
+#include "Stage/bspstructs.hpp"
 
 
 class CCellBuilder

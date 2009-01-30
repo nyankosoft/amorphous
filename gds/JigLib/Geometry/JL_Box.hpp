@@ -2,8 +2,8 @@
 #define  __JL_BOX__
 
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
 
 
 class CJL_Box

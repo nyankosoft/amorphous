@@ -2,10 +2,10 @@
 #define  __2DRoundRect_H__
 
 
-#include "2DPrimitive.h"
+#include "2DPrimitive.hpp"
 
-#include "3DMath/aabb2.h"
-#include "Support/SafeDelete.h"
+#include "3DMath/aabb2.hpp"
+#include "Support/SafeDelete.hpp"
 
 #include <vector>
 

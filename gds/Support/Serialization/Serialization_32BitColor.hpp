@@ -2,9 +2,9 @@
 #define __KGL_32BITCOLOR_SERIALIZATION_H__
 
 
-#include "../../Graphics/32BitColor.h"
+#include "../../Graphics/32BitColor.hpp"
 
-#include "Archive.h"
+#include "Archive.hpp"
 
 
 namespace GameLib1

@@ -1,7 +1,7 @@
-#include "StageUtility.h"
-#include "CopyEntityDesc.h"
-#include "GameMessage.h"
-#include "Support/Log/DefaultLog.h"
+#include "StageUtility.hpp"
+#include "CopyEntityDesc.hpp"
+#include "GameMessage.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 using namespace boost;

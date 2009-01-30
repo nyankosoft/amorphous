@@ -2,8 +2,8 @@
 #define  __NxPhysShapeImpl_H__
 
 
-#include "fwd.h"
-#include "../ShapeImpl.h"
+#include "fwd.hpp"
+#include "../ShapeImpl.hpp"
 #include "NxPhysics.h"
 
 

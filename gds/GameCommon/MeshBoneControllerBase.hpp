@@ -5,13 +5,13 @@
 #include <vector>
 #include <string>
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
-#include "Graphics/fwd.h"
-#include "XML/fwd.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
+#include "Graphics/fwd.hpp"
+#include "XML/fwd.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 

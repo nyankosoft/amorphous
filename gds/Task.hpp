@@ -1,2 +1,2 @@
-#include "Task/GameTaskManager.h"
-#include "Task/GameTask_GlobalStageLoader.h"
+#include "Task/GameTaskManager.hpp"
+#include "Task/GameTask_GlobalStageLoader.hpp"

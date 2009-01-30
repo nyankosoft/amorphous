@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 
-#include "fwd.h"
-#include "GM_ControlRenderer.h"
-#include "Graphics/fwd.h"
+#include "fwd.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "Graphics/fwd.hpp"
 
 
 /**

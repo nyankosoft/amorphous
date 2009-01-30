@@ -10,15 +10,15 @@ using namespace std;
 
 #include <d3dx9.h>
 
-#include "Graphics/TextureHandle.h"
+#include "Graphics/TextureHandle.hpp"
 
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
-#include "3DMeshModelArchive.h"
-#include "MeshBone.h"
+#include "3DMeshModelArchive.hpp"
+#include "MeshBone.hpp"
 
 
 //namespace GameLib1

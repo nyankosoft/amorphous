@@ -2,16 +2,16 @@
 #define __BSPMAPCOMPILER_H__
 
 
-#include "fwd.h"
-#include "BSPMapData.h"
-#include "MapCompiler.h"
+#include "fwd.hpp"
+#include "BSPMapData.hpp"
+#include "MapCompiler.hpp"
 
-#include "LightmapBuilder.h"
+#include "LightmapBuilder.hpp"
 
-#include "Stage/bspstructs.h"
-#include "Graphics/FloatRGBColor.h"
-#include "Graphics/LightStructs.h"
-#include "Support/TextFileScanner.h"
+#include "Stage/bspstructs.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/LightStructs.hpp"
+#include "Support/TextFileScanner.hpp"
 
 #include <string>
 
@@ -20,7 +20,7 @@ struct SFog;
 class CTriangleMesh;
 
 
-//#include "3DMath/PolygonMesh.h"
+//#include "3DMath/PolygonMesh.hpp"
 /*
 template<class CMapFace>
 class CPolygonMesh;

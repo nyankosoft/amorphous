@@ -1,5 +1,5 @@
 
-#include "LWO2_Object.h"
+#include "LWO2_Object.hpp"
 
 
 //================================================================================
@@ -17,7 +17,7 @@ CLWO2_TAGChunk::CLWO2_TAGChunk(const CLWO2_TAGChunk& tagchunk)
 }
 
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
 
 void CLWO2_TAGChunk::AllocateTAGStrings(UINT4 tagchunksize, FILE* fp)

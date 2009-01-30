@@ -2,8 +2,8 @@
 #define __NxPhysShapeFactory_H__
 
 // wrapper headers
-#include "fwd.h"
-#include "NxPhysShape.h"
+#include "fwd.hpp"
+#include "NxPhysShape.hpp"
 
 // ageia header
 #include "NxPhysics.h"

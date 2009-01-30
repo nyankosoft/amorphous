@@ -2,15 +2,15 @@
 #define __PhysShapeDescFactory_H__
 
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
-#include "ShapeDesc.h"
-#include "BoxShapeDesc.h"
-//#include "ShpereShapeDesc.h"
-#include "CapsuleShapeDesc.h"
-#include "TriangleMeshShapeDesc.h"
+#include "ShapeDesc.hpp"
+#include "BoxShapeDesc.hpp"
+//#include "ShpereShapeDesc.hpp"
+#include "CapsuleShapeDesc.hpp"
+#include "TriangleMeshShapeDesc.hpp"
 
 
 namespace physics

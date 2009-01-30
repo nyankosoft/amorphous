@@ -1,14 +1,14 @@
-#include "GM_DialogManager.h"
-#include "GM_DialogDesc.h"
-#include "GM_Dialog.h"
-#include "GM_ControlRenderer.h"
-#include "GM_ControlRendererManager.h"
-#include "GM_StdControlRendererManager.h"
-#include "GM_SoundPlayer.h"
-#include "GM_XMLParser.h"
+#include "GM_DialogManager.hpp"
+#include "GM_DialogDesc.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "GM_ControlRendererManager.hpp"
+#include "GM_StdControlRendererManager.hpp"
+#include "GM_SoundPlayer.hpp"
+#include "GM_XMLParser.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 #include <algorithm>
 using namespace std;

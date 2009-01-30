@@ -1,7 +1,7 @@
 #ifndef  __DirectSoundManager_H__
 #define  __DirectSoundManager_H__
 
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 
 #include <string>
 
@@ -13,9 +13,9 @@
 
 #include <dsound.h>
 
-#include "SoundManagerImpl.h"
-#include "SoundHandle.h"
-#include "GameSound.h"
+#include "SoundManagerImpl.hpp"
+#include "SoundHandle.hpp"
+#include "GameSound.hpp"
 
 #pragma comment( lib, "dsound.lib" )
 #pragma comment( lib, "dxerr9.lib" )

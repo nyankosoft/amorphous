@@ -6,12 +6,12 @@
 #include <boost/shared_ptr.hpp>
 #include "FreeImage.h"
 
-#include "Graphics/FloatRGBColor.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Support/ImageArchive.h"
-#include "Support/2DArray.h"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Support/ImageArchive.hpp"
+#include "Support/2DArray.hpp"
 #include "Support/Macro.h"
-//#include "Support/Log/DefaultLog.h"
+//#include "Support/Log/DefaultLog.hpp"
 
 #pragma comment( lib, "FreeImage.lib" )
 

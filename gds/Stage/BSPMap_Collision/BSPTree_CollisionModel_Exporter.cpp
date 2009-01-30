@@ -1,12 +1,12 @@
 
-#include "BSPTree_CollisionModel_Exporter.h"
+#include "BSPTree_CollisionModel_Exporter.hpp"
 
-#include "../bspstructs.h"
-#include "BSPMapCompiler/BSPMapCompiler.h"
+#include "../bspstructs.hpp"
+#include "BSPMapCompiler/BSPMapCompiler.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
-#include "3DMath/ConvexPolygon.h"
+#include "3DMath/ConvexPolygon.hpp"
 
 #include <vector>
 using namespace std;

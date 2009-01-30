@@ -2,9 +2,9 @@
 #ifndef  __GM_STATIC_H__
 #define  __GM_STATIC_H__
 
-#include "GM_Control.h"
+#include "GM_Control.hpp"
 
-#include "GM_GraphicElement.h"
+#include "GM_GraphicElement.hpp"
 
 //========================================================================================
 // CGM_Static

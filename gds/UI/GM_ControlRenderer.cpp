@@ -1,11 +1,11 @@
-#include "GM_ControlRenderer.h"
-#include "GM_Control.h"
-#include "GM_Dialog.h"
-#include "GM_DialogManager.h"
-#include "GM_ControlRendererManager.h"
+#include "GM_ControlRenderer.hpp"
+#include "GM_Control.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_DialogManager.hpp"
+#include "GM_ControlRendererManager.hpp"
 
-#include "Graphics/GraphicsElementManager.h"
-#include "Graphics/GraphicsEffectManager.h"
+#include "Graphics/GraphicsElementManager.hpp"
+#include "Graphics/GraphicsEffectManager.hpp"
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-#include "2DPrimitive.h"
+#include "2DPrimitive.hpp"
 
 
 void C2DPrimitive::SetTextureCoords( int stretch_x, int stretch_y,

@@ -1,8 +1,8 @@
 
-#include "JL_Shape_Capsule.h"
+#include "JL_Shape_Capsule.hpp"
 
-#include "JL_ShapeDesc_Capsule.h"
-#include "JL_PhysicsActor.h"
+#include "JL_ShapeDesc_Capsule.hpp"
+#include "JL_PhysicsActor.hpp"
 
 
 

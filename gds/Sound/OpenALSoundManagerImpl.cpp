@@ -1,8 +1,8 @@
-#include "OpenALSoundManagerImpl.h"
+#include "OpenALSoundManagerImpl.hpp"
 #include "Support/Macro.h"
 #include "Support/SerializableStream.hpp"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Serialization/BinaryDatabase.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 #include <string.h>

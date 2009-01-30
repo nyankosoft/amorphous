@@ -2,7 +2,7 @@
 #define  __TextureFormat_H__
 
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 
 class TextureFormat

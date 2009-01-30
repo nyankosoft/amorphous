@@ -1,14 +1,14 @@
-#include "EntityNode.h"
-#include "EntitySet.h"
-#include "EntityRenderManager.h"
-#include "BaseEntity.h"
-#include "bsptree.h"
-#include "trace.h"
-#include "ViewFrustumTest.h"
-#include "Stage.h"
-#include "LightEntity.h"
+#include "EntityNode.hpp"
+#include "EntitySet.hpp"
+#include "EntityRenderManager.hpp"
+#include "BaseEntity.hpp"
+#include "bsptree.hpp"
+#include "trace.hpp"
+#include "ViewFrustumTest.hpp"
+#include "Stage.hpp"
+#include "LightEntity.hpp"
 
-#include "Support/Profile.h"
+#include "Support/Profile.hpp"
 
 
 int CEntityNode::ms_NumRenderedEntities = 0;

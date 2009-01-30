@@ -1,5 +1,5 @@
 //=====================================================================
-//  TVector2_Gen.h
+//  TVector2_Gen.hpp
 //     - generic 2-dimensional vector class
 //
 //                                                  by Takashi Kuamgai

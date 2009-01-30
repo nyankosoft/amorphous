@@ -2,17 +2,17 @@
 #define __MouseCursor_SINGLETON_H__
 
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
-#include "../base.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Font/Font.h"
-#include "Graphics/Font/TextureFont.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/2DPrimitive/2DFrameRect.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/Rect.h"
+#include "../base.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/2DPrimitive/2DFrameRect.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <string>

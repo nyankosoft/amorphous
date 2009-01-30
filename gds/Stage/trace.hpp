@@ -2,8 +2,8 @@
 #define __TRACE_H__
 
 
-#include "3DMath/Vector3.h"
-#include "3DMath/3DStructs.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/3DStructs.hpp"
 
 #include <vector>
 

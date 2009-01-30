@@ -1,4 +1,4 @@
-#include "2DRect.h"
+#include "2DRect.hpp"
 
 
 C2DRect::~C2DRect()

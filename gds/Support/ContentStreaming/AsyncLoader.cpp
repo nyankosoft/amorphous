@@ -7,11 +7,11 @@
 //--------------------------------------------------------------------------------------
 //#include "DXUT.h"
 //#include "SDKMisc.h"
-#include "AsyncLoader.h"
-#include "ContentLoaders.h"
+#include "AsyncLoader.hpp"
+#include "ContentLoaders.hpp"
 #include <process.h>
 
-#include "../SafeDelete.h"
+#include "../SafeDelete.hpp"
 
 using namespace std;
 

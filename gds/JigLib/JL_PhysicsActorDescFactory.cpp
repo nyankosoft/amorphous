@@ -1,8 +1,8 @@
 
-#include "CJL_PhysicsActorDescFactory.h"
+#include "CJL_PhysicsActorDescFactory.hpp"
 
 
-#include "CJL_PhysicsActorDesc.h"
+#include "CJL_PhysicsActorDesc.hpp"
 
 
 

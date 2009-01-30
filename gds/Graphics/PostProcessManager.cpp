@@ -1,8 +1,8 @@
-#include "PostProcessManager.h"
-#include "Graphics/2DPrimitive/2DRect.h"
+#include "PostProcessManager.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
 
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 using namespace std;

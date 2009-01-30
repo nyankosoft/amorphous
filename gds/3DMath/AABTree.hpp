@@ -5,12 +5,12 @@
 #include <vector>
 #include <string>
 
-#include "3DMath/Vector3.h"
-#include "3DMath/AABB3.h"
-#include "3DMath/ray.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/AABB3.hpp"
+#include "3DMath/ray.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 

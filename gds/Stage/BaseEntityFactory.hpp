@@ -4,10 +4,10 @@
 
 #include <string>
 
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 /**
@@ -46,7 +46,7 @@ public:
 #define  __UserBaseEntityFactory_H__
 
 
-#include <gsf/Stage/BaseEntityFactory.h>
+#include <gsf/Stage/BaseEntityFactory.hpp>
 
 class CUserBaseEntityFactory : public CBaseEntityFactory
 {
@@ -68,7 +68,7 @@ public:
 
 // implementation
 //------------------------------------------------------------------------
-#include "UserBaseEntityFactory.h"
+#include "UserBaseEntityFactory.hpp"
 #include "UserDefinedBaseEntity00.h"
 #include "UserDefinedBaseEntity01.h"
 #include "UserDefinedBaseEntity02.h"

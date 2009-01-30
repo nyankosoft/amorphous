@@ -7,10 +7,10 @@
 #include <queue>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
-#include "GraphicsResourceDescs.h"
-#include "GraphicsResourceManager.h"
+#include "GraphicsResourceDescs.hpp"
+#include "GraphicsResourceManager.hpp"
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

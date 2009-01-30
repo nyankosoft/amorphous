@@ -1,20 +1,20 @@
 #ifndef  __BE_PLAYER_H__
 #define  __BE_PLAYER_H__
 
-#include "../base.h"
-#include "BE_PhysicsBaseEntity.h"
-#include "BaseEntityHandle.h"
-#include "CopyEntity.h"
-#include "GameMessage.h"
-#include "Graphics/Camera.h"
-#include "Graphics/fwd.h"
+#include "../base.hpp"
+#include "BE_PhysicsBaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
+#include "CopyEntity.hpp"
+#include "GameMessage.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/fwd.hpp"
 
-#include "GameInput/3DActionCode.h"
+#include "GameInput/3DActionCode.hpp"
 
-#include "GameCommon/CombatRecord.h"
-#include "../UI/fwd.h" // Need to use the relative path to include the UI/fwd.h of GameStageFramework. Otherwise the DefaultKeyBindFG.cpp of the FlightGame project include UI/fwd.h of its project
+#include "GameCommon/CombatRecord.hpp"
+#include "../UI/fwd.hpp" // Need to use the relative path to include the UI/fwd.hpp of GameStageFramework. Otherwise the DefaultKeyBindFG.cpp of the FlightGame project include UI/fwd.hpp of its project
 
-#include "Sound/SoundHandle.h"
+#include "Sound/SoundHandle.hpp"
 
 class CShockWaveCameraEffect;
 class HUD_PlayerBase;

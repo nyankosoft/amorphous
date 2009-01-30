@@ -10,10 +10,10 @@ using namespace std;
 #include <boost/shared_ptr.hpp>
 
 
-#include "Graphics/MeshModel/3DMeshModelBuilder.h"
-#include "Graphics/MeshModel/General3DMesh.h"
+#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
+#include "Graphics/MeshModel/General3DMesh.hpp"
 
-#include "LightWave/LWO2_Layer.h"
+#include "LightWave/LWO2_Layer.hpp"
 
 
 namespace MeshModel

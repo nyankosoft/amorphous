@@ -1,16 +1,16 @@
 
-#include "BEC_Billboard.h"
+#include "BEC_Billboard.hpp"
 
-#include "Stage.h"
-#include "ScreenEffectManager.h"
+#include "Stage.hpp"
+#include "ScreenEffectManager.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Graphics/RectTriListIndex.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/RectTriListIndex.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Profile.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Profile.hpp"
 
 #include <string>
 using namespace std;

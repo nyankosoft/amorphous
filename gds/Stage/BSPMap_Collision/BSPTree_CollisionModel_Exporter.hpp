@@ -1,7 +1,7 @@
 #ifndef __BSPTREE_COLLISIONMODEL_EXPORTER_H__
 #define __BSPTREE_COLLISIONMODEL_EXPORTER_H__
 
-#include "BSPTree_CollisionModel.h"
+#include "BSPTree_CollisionModel.hpp"
 
 class CBSPMapCompiler;
 class CMapFace;

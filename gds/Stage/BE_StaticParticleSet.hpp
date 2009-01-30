@@ -1,10 +1,10 @@
 #ifndef __BE_STATICPARTICLESET_H__
 #define __BE_STATICPARTICLESET_H__
 
-#include "BE_ParticleSet.h"
+#include "BE_ParticleSet.hpp"
 #include "Graphics/FVF_BillboardVertex.h"
-#include "Graphics/TextureHandle.h"
-#include "Support/FixedVector.h"
+#include "Graphics/TextureHandle.hpp"
+#include "Support/FixedVector.hpp"
 
 
 #include <vector>

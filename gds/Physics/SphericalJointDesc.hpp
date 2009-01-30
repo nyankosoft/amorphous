@@ -2,10 +2,10 @@
 #define  __PhysSphericalJointDesc_H__
 
 
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 
-#include "fwd.h"
-#include "JointDesc.h"
+#include "fwd.hpp"
+#include "JointDesc.hpp"
 
 
 namespace physics

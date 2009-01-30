@@ -2,9 +2,9 @@
 #define __ImageClipper_H__
 
 
-#include "Support/BitmapImage.h"
-#include "Support/thread_starter.h"
-#include "Graphics/Rect.h"
+#include "Support/BitmapImage.hpp"
+#include "Support/thread_starter.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 

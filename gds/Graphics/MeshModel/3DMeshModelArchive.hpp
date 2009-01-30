@@ -5,18 +5,18 @@
 #include <string>
 #include <vector>
 
-#include "3DMath/Vector3.h"
-#include "Graphics/fwd.h"
-#include "Graphics/TextureCoord.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/32BitColor.h"
+#include "3DMath/Vector3.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/TextureCoord.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/32BitColor.hpp"
 
-#include "Support/Serialization/SerializationEx.h"
-#include "Support/Serialization/BinaryDatabase.h"
+#include "Support/Serialization/SerializationEx.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 
-#include "Support/2DArray.h"
+#include "Support/2DArray.hpp"
 
 
 //namespace GameLib1

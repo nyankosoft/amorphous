@@ -1,16 +1,16 @@
-#include "BE_GeneralEntity.h"
+#include "BE_GeneralEntity.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntityDesc.h"
-#include "CopyEntity.h"
-#include "EntityRenderManager.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Serialization_BaseEntityHandle.h"
+#include "GameMessage.hpp"
+#include "CopyEntityDesc.hpp"
+#include "CopyEntity.hpp"
+#include "EntityRenderManager.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
 
-#include "Physics/Actor.h"
+#include "Physics/Actor.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 
 CBE_GeneralEntity::CBE_GeneralEntity()

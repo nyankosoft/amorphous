@@ -2,16 +2,16 @@
 #ifndef __GAMELIB1_3DMATH_SERIALIZATION_H__
 #define __GAMELIB1_3DMATH_SERIALIZATION_H__
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix33.h"
-#include "3DMath/Matrix34.h"
-#include "3DMath/Quaternion.h"
-#include "3DMath/aabb3.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix33.hpp"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/Quaternion.hpp"
+#include "3DMath/aabb3.hpp"
 
-#include "3DMath/Vector2.h"
-#include "3DMath/aabb2.h"
+#include "3DMath/Vector2.hpp"
+#include "3DMath/aabb2.hpp"
 
-#include "Archive.h"
+#include "Archive.hpp"
 
 
 namespace GameLib1

@@ -2,8 +2,8 @@
 #define  __GAMETASK_STAGE_H__
 
 
-#include "GameTask.h"
-#include "Stage/fwd.h"
+#include "GameTask.hpp"
+#include "Stage/fwd.hpp"
 
 class CStage;
 class CInputHandler;

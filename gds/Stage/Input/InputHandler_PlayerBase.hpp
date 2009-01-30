@@ -1,8 +1,8 @@
 #ifndef  __INPUTHANDLER_PLAYERBASE_H__
 #define  __INPUTHANDLER_PLAYERBASE_H__
 
-#include "GameInput/InputHandler.h"
-#include "GameInput/3DActionCode.h"
+#include "GameInput/InputHandler.hpp"
+#include "GameInput/3DActionCode.hpp"
 
 
 class CSystemInputHandler_Debug;

@@ -2,8 +2,8 @@
 #define  __GM_DIALOGMANAGER_H__
 
 
-#include "fwd.h"
-#include "GM_CaptionParameters.h"
+#include "fwd.hpp"
+#include "GM_CaptionParameters.hpp"
 
 #include <vector>
 #include <string>

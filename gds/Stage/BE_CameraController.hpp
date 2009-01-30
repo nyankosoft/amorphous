@@ -1,14 +1,14 @@
 #ifndef __BE_CameraController_H__
 #define __BE_CameraController_H__
 
-#include "BaseEntity.h"
-#include "BaseEntityHandle.h"
-#include "CopyEntity.h"
-#include "EntityHandle.h"
-#include "Graphics/TextureRenderTarget.h"
-#include "Support/FixedVector.h"
+#include "BaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
+#include "CopyEntity.hpp"
+#include "EntityHandle.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "Support/FixedVector.hpp"
 
-#include "../base.h"
+#include "../base.hpp"
 
 
 class CInputHandler_Cutscene;

@@ -6,8 +6,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
 //#include "../../DXUT/DXUT.h"
-#include "PackedFile.h"
-#include "../SafeDelete.h"
+#include "PackedFile.hpp"
+#include "../SafeDelete.hpp"
 
 //#include "SDKMisc.h"
 

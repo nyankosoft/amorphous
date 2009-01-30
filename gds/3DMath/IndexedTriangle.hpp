@@ -1,9 +1,9 @@
 #ifndef __INDEXEDTRIANGLE_H__
 #define __INDEXEDTRIANGLE_H__
 
-#include "AABB3.h"
+#include "AABB3.hpp"
 
-#include "Support/Serialization/SerializationEx.h"
+#include "Support/Serialization/SerializationEx.hpp"
 using namespace GameLib1::Serialization;
 
 

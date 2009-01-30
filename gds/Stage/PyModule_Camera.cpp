@@ -1,22 +1,22 @@
-#include "PyModule_Camera.h"
-#include "PyModule_Stage.h"
+#include "PyModule_Camera.hpp"
+#include "PyModule_Stage.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
 
-#include "BE_ScriptedCamera.h"
-#include "EntityMotionPathRequest.h"
-#include "GameMessage.h"
-#include "Stage.h"
-#include "EntitySet.h"
+#include "BE_ScriptedCamera.hpp"
+#include "EntityMotionPathRequest.hpp"
+#include "GameMessage.hpp"
+#include "Stage.hpp"
+#include "EntitySet.hpp"
 
-#include "CopyEntityDesc.h"
+#include "CopyEntityDesc.hpp"
 
 #include "Support/Macro.h"
-#include "Support/Vec3_StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/Vec3_StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "../base.h"
+#include "../base.hpp"
 
 using namespace std;
 

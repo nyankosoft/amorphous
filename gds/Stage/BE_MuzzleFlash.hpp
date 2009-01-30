@@ -1,9 +1,9 @@
 #ifndef __BE_MUZZLEFLASH_H__
 #define __BE_MUZZLEFLASH_H__
 
-#include "BE_ParticleSet.h"
+#include "BE_ParticleSet.hpp"
 
-#include "BaseEntityHandle.h"
+#include "BaseEntityHandle.hpp"
 
 #define CBE_MUZZLEFLASH_NUM_RAND_POSITIONS	32
 #define CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS	32

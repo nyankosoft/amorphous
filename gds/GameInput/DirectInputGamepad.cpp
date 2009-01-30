@@ -1,13 +1,13 @@
-#include "DirectInputGamepad.h"
-#include "DirectInput.h"
-#include "InputHub.h"
-#include "App/GameWindowManager_Win32.h"
+#include "DirectInputGamepad.hpp"
+#include "DirectInput.hpp"
+#include "InputHub.hpp"
+#include "App/GameWindowManager_Win32.hpp"
 
-#include "Support/StringAux.h"
-#include "Support/Log/StateLog.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/StringAux.hpp"
+#include "Support/Log/StateLog.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "../base.h"
+#include "../base.hpp"
 
 #include <math.h>
 

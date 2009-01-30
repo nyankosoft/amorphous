@@ -1,4 +1,4 @@
-#include "LinePrimitives.h"
+#include "LinePrimitives.hpp"
 
 using namespace std;
 

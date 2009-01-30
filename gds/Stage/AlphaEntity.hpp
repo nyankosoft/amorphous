@@ -2,10 +2,10 @@
 #define  __AlphaEntity_H__
 
 
-#include "Stage/fwd.h"
-#include "Stage/CopyEntity.h"
-#include "Stage/EntityMotionPathRequest.h"
-#include "Support/shared_prealloc_pool.h"
+#include "Stage/fwd.hpp"
+#include "Stage/CopyEntity.hpp"
+#include "Stage/EntityMotionPathRequest.hpp"
+#include "Support/shared_prealloc_pool.hpp"
 
 
 class CAlphaEntityDesc;

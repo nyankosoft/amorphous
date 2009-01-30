@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

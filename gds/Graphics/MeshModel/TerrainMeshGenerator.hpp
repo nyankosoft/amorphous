@@ -6,10 +6,10 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "../fwd.h"
-#include "../IndexedPolygon.h"
-#include "3DMath/aabb3.h"
-#include "3DMeshModelArchive.h"
+#include "../fwd.hpp"
+#include "../IndexedPolygon.hpp"
+#include "3DMath/aabb3.hpp"
+#include "3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

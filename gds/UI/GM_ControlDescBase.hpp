@@ -1,7 +1,7 @@
 #ifndef  __GM_CONTROLDESC_H__
 #define  __GM_CONTROLDESC_H__
 
-#include "GM_Control.h"
+#include "GM_Control.hpp"
 
 class CGM_Dialog;
 

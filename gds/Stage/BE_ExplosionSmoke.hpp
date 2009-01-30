@@ -1,7 +1,7 @@
 #ifndef __BE_EXPLOSIONSMOKE_H__
 #define __BE_EXPLOSIONSMOKE_H__
 
-#include "BE_ParticleSet.h"
+#include "BE_ParticleSet.hpp"
 
 #define TYPE_SMOKE_NORMAL		1
 #define TYPE_SMOKE_DIRECTIONAL	2

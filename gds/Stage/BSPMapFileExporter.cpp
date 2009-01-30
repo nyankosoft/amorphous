@@ -1,16 +1,16 @@
 
-#include "Stage/Skybox.h"
-#include "BSPMapCompiler/BSPMapCompiler.h"
+#include "Stage/Skybox.hpp"
+#include "BSPMapCompiler/BSPMapCompiler.hpp"
 #include "BSPMapCompiler/lightmapbuilder.h"
-#include "Graphics/FloatRGBColor.h"
+#include "Graphics/FloatRGBColor.hpp"
 
-#include "Support/fnop.h"
-#include "Support/StatusDisplay/StatusDisplay.h"
-#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.h"
+#include "Support/fnop.hpp"
+#include "Support/StatusDisplay/StatusDisplay.hpp"
+#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
 
-#include "BSPMapFileExporter.h"
+#include "BSPMapFileExporter.hpp"
 
-#include "BSPMap_Collision/BSPTree_CollisionModel_Exporter.h"
+#include "BSPMap_Collision/BSPTree_CollisionModel_Exporter.hpp"
 
 #include <algorithm>
 

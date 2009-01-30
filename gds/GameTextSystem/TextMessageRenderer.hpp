@@ -5,12 +5,12 @@
 #include <vector>
 #include <string>
 
-#include "Graphics/fwd.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Support/memory_helpers.h"
-#include "Graphics/Rect.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #define GTC_NUM_MAXLETTERS_PER_LINE 64

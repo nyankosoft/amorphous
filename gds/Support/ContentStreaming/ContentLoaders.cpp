@@ -7,12 +7,12 @@
 //--------------------------------------------------------------------------------------
 
 //#include "DXUT.h"
-#include "ContentLoaders.h"
-#include "AsyncLoader.h"
-#include "PackedFile.h"
+#include "ContentLoaders.hpp"
+#include "AsyncLoader.hpp"
+#include "PackedFile.hpp"
 #include "ddraw.h"
 
-#include "../SafeDelete.h"
+#include "../SafeDelete.hpp"
 
 extern bool g_bUseMemoryMappedIO;
 extern bool g_bWarmIOCache;

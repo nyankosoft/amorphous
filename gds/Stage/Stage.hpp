@@ -2,17 +2,17 @@
 #define __STAGE_H__
 
 
-#include "fwd.h"
-#include "Graphics/fwd.h"
-#include "Physics/fwd.h"
-#include "Sound/fwd.h"
+#include "fwd.hpp"
+#include "Graphics/fwd.hpp"
+#include "Physics/fwd.hpp"
+#include "Sound/fwd.hpp"
 
-#include "Graphics/Camera.h"
-#include "Support/Timer.h"
+#include "Graphics/Camera.hpp"
+#include "Support/Timer.hpp"
 
-#include "CopyEntity.h"
-#include "EntitySet.h"
-#include "EntityCollisionGroups.h"
+#include "CopyEntity.hpp"
+#include "EntitySet.hpp"
+#include "EntityCollisionGroups.hpp"
 
 
 class CStage

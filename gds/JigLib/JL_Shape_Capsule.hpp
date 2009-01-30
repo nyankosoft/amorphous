@@ -1,7 +1,7 @@
 #ifndef  __JL_SHAPE_CAPSULE_H__
 #define  __JL_SHAPE_CAPSULE_H__
 
-#include "JL_ShapeBase.h"
+#include "JL_ShapeBase.hpp"
 
 #include "Geometry/line.hpp"
 

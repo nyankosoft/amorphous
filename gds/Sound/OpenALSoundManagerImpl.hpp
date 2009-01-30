@@ -2,7 +2,7 @@
 #define  __OpenALSoundManagerImpl_H__
 
 
-#include "Sound/OpenALSoundSourceImpl.h"
+#include "Sound/OpenALSoundSourceImpl.hpp"
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <al.h>
@@ -10,7 +10,7 @@
 #include <list>
 #include <map>
 
-#include "Support/prealloc_pool.h"
+#include "Support/prealloc_pool.hpp"
 
 
 #pragma comment( lib, "OpenAL32.lib" )

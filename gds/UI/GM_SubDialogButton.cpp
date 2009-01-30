@@ -1,10 +1,10 @@
-#include "GM_SubDialogButton.h"
+#include "GM_SubDialogButton.hpp"
 
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
-#include "GM_ControlRenderer.h"
-#include "GM_SoundPlayer.h"
-#include "Support/Log/DefaultLog.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "GM_SoundPlayer.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 //========================================================================================

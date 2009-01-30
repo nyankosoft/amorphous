@@ -1,10 +1,10 @@
-#include "BaseEntity.h"
-#include "CopyEntity.h"
-#include "Stage.h"
-#include "EntityMotionPathRequest.h"
-#include "Support/Log/DefaultLog.h"
+#include "BaseEntity.hpp"
+#include "CopyEntity.hpp"
+#include "Stage.hpp"
+#include "EntityMotionPathRequest.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "Physics/Actor.h"
+#include "Physics/Actor.hpp"
 
 using namespace physics;
 

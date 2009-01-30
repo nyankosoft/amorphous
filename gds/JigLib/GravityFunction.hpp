@@ -3,7 +3,7 @@
 #define __GRAVITYFUNCTION_H__
 
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 
 //extern float g_fGFreeMaxRadius;

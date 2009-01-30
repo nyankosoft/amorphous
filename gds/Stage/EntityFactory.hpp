@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "Support/shared_prealloc_pool.h"
-#include "Stage/fwd.h"
+#include "Support/shared_prealloc_pool.hpp"
+#include "Stage/fwd.hpp"
 
 
 class CEntityFactory
@@ -68,7 +68,7 @@ public:
 #ifndef  __DerivedEntityFactory_H__
 #define  __DerivedEntityFactory_H__
 
-#include "EntityFactory.h"
+#include "EntityFactory.hpp"
 
 class CDerivedEntityFactory : public CEntityFactory
 {
@@ -139,7 +139,7 @@ public:
 
 /// cpp
 
-#include "DerivedEntityFactory.h"
+#include "DerivedEntityFactory.hpp"
 
 CCopyEntity *CDerivedEntityFactory::CreateDerivedEntity( unsigned int entity_type_id )
 {

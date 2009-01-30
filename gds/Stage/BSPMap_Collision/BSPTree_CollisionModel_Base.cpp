@@ -1,8 +1,8 @@
 
-#include "BSPTree_CollisionModel.h"
+#include "BSPTree_CollisionModel.hpp"
 
-#include "Support/memory_helpers.h"
-#include "3DMath/ConvexPolygon.h"
+#include "Support/memory_helpers.hpp"
+#include "3DMath/ConvexPolygon.hpp"
 
 
 CBSPTree_CollisionModel::CBSPTree_CollisionModel()

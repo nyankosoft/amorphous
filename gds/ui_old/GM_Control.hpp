@@ -3,8 +3,8 @@
 #define  __GM_CONTROL_H__
 
 
-#include "Graphics/Point.h"
-#include "Graphics/Rect.h"
+#include "Graphics/Point.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 

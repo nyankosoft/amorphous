@@ -2,7 +2,7 @@
 #define  __GM_LISTBOXDESC_H__
 
 
-#include "GM_ControlDescBase.h"
+#include "GM_ControlDescBase.hpp"
 
 
 class CGM_ListBoxDesc : public CGM_ControlDesc

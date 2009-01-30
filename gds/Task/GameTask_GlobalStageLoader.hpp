@@ -3,7 +3,7 @@
 #define  __GAMETASK_GLOBALSTAGELOADER_H__
 
 
-#include "GameTask.h"
+#include "GameTask.hpp"
 
 class CInputHandler;
 class CGM_DialogManager;

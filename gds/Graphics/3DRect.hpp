@@ -6,7 +6,7 @@
 
 #include "FVF_NormalVertex.h"
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 
 
 class C3DRect

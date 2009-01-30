@@ -1,14 +1,14 @@
-#include "BE_Door.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "GameMessage.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DXMeshObject.h"
-#include "Sound/SoundManager.h"
+#include "BE_Door.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "GameMessage.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Sound/SoundManager.hpp"
 
-//#include "JigLib/JL_PhysicsActor.h"
-#include "Physics/Actor.h"
+//#include "JigLib/JL_PhysicsActor.hpp"
+#include "Physics/Actor.hpp"
 
 using namespace physics;
 

@@ -1,7 +1,7 @@
 
 #include <boost/foreach.hpp>
-#include "BVH/BVHBone.h"
-#include "MotionPrimitive.h"
+#include "BVH/BVHBone.hpp"
+#include "MotionPrimitive.hpp"
 
 using namespace msynth;
 

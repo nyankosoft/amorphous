@@ -1,7 +1,7 @@
 
-#include "GameItemShop.h"
-#include "Item/ItemDatabaseManager.h"
-#include "PyModule_Shop.h"
+#include "GameItemShop.hpp"
+#include "Item/ItemDatabaseManager.hpp"
+#include "PyModule_Shop.hpp"
 
 using namespace std;
 

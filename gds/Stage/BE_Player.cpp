@@ -1,46 +1,46 @@
-#include "BE_Player.h"
-#include "PlayerInfo.h"
-#include "EntitySet.h"
-#include "CopyEntityDesc.h"
-#include "Stage.h"
-#include "Input/InputHandler_PlayerShip.h"
-#include "Item/WeaponSystem.h"
-#include "Stage/ScreenEffectManager.h"
-#include "GameMessage.h"
-#include "trace.h"
+#include "BE_Player.hpp"
+#include "PlayerInfo.hpp"
+#include "EntitySet.hpp"
+#include "CopyEntityDesc.hpp"
+#include "Stage.hpp"
+#include "Input/InputHandler_PlayerShip.hpp"
+#include "Item/WeaponSystem.hpp"
+#include "Stage/ScreenEffectManager.hpp"
+#include "GameMessage.hpp"
+#include "trace.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/MTRand.h"
-#include "Support/VectorRand.h"
-#include "GameCommon/ShockWaveCameraEffect.h"
-#include "Support/Timer.h"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "Support/VectorRand.hpp"
+#include "GameCommon/ShockWaveCameraEffect.hpp"
+#include "Support/Timer.hpp"
 
-#include "Stage/BE_LaserDot.h"
+#include "Stage/BE_LaserDot.hpp"
 
-#include "HUD_PlayerBase.h"
-#include "SubDisplay.h"
+#include "HUD_PlayerBase.hpp"
+#include "SubDisplay.hpp"
 
 // added for laser dot casting test
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DXMeshObject.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
 
-#include "Sound/SoundManager.h"
+#include "Sound/SoundManager.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Vec3_StringAux.h"
-#include "Support/Log/StateLog.h"
-#include "Support/Profile.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Vec3_StringAux.hpp"
+#include "Support/Log/StateLog.hpp"
+#include "Support/Profile.hpp"
 
-#include "UI/GM_DialogManager.h"
-#include "UI/GM_ControlRendererManager.h"
-#include "UI/InputHandler_Dialog.h"
-
-
+#include "UI/GM_DialogManager.hpp"
+#include "UI/GM_ControlRendererManager.hpp"
+#include "UI/InputHandler_Dialog.hpp"
 
 
-#include "JigLib/JL_PhysicsActor.h"
+
+
+#include "JigLib/JL_PhysicsActor.hpp"
 
 
 //#define APPLY_PHYSICS_TO_PLAYER_SHIP

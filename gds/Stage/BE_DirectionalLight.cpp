@@ -1,13 +1,13 @@
-#include "BE_DirectionalLight.h"
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Camera.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "BE_DirectionalLight.hpp"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-#include "Stage/LightEntity.h"
+#include "Stage/LightEntity.hpp"
 
 
 

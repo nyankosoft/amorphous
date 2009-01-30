@@ -1,12 +1,12 @@
 
-#include "BaseFace.h"
+#include "BaseFace.hpp"
 
-#include "Graphics/FloatRGBColor.h"
+#include "Graphics/FloatRGBColor.hpp"
 
-#include "Stage/bspstructs.h"
+#include "Stage/bspstructs.hpp"
 
-#include "3DMath/ray.h"
-#include "3DMath/Triangle.h"
+#include "3DMath/ray.hpp"
+#include "3DMath/Triangle.hpp"
 
 
 //=====================================================================================

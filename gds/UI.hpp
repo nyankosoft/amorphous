@@ -1,39 +1,39 @@
-#include "UI/fwd.h"
+#include "UI/fwd.hpp"
 
-#include "UI/GM_DialogManager.h"
+#include "UI/GM_DialogManager.hpp"
 
-#include "UI/GM_Dialog.h"
-#include "UI/GM_DialogDesc.h"
+#include "UI/GM_Dialog.hpp"
+#include "UI/GM_DialogDesc.hpp"
 
-#include "UI/GM_ControlDescBase.h"
-#include "UI/GM_ListBoxDesc.h"
-#include "UI/GM_ScrollBarDesc.h"
+#include "UI/GM_ControlDescBase.hpp"
+#include "UI/GM_ListBoxDesc.hpp"
+#include "UI/GM_ScrollBarDesc.hpp"
 
-#include "UI/GM_Control.h"
-#include "UI/GM_Button.h"
-#include "UI/GM_SubDialogButton.h"
-#include "UI/GM_DialogCloseButton.h"
-#include "UI/GM_Slider.h"
-#include "UI/GM_ListBox.h"
-#include "UI/GM_ScrollBar.h"
+#include "UI/GM_Control.hpp"
+#include "UI/GM_Button.hpp"
+#include "UI/GM_SubDialogButton.hpp"
+#include "UI/GM_DialogCloseButton.hpp"
+#include "UI/GM_Slider.hpp"
+#include "UI/GM_ListBox.hpp"
+#include "UI/GM_ScrollBar.hpp"
 
-#include "UI/GM_EventHandlerBase.h"
+#include "UI/GM_EventHandlerBase.hpp"
 
-#include "UI/GM_Aux.h"
+#include "UI/GM_Aux.hpp"
 
-#include "UI/GM_ControlRenderer.h"
-#include "UI/GM_ControlRendererManager.h"
-#include "UI/GM_StdControlRenderer.h"
-#include "UI/GM_StdControlRendererManager.h"
+#include "UI/GM_ControlRenderer.hpp"
+#include "UI/GM_ControlRendererManager.hpp"
+#include "UI/GM_StdControlRenderer.hpp"
+#include "UI/GM_StdControlRendererManager.hpp"
 
-#include "UI/GM_SoundPlayer.h"
+#include "UI/GM_SoundPlayer.hpp"
 
-#include "UI/InputHandler_Dialog.h"
+#include "UI/InputHandler_Dialog.hpp"
 
 
 #ifdef UI_EXTENSION_EDIT
 
-#include "UI/GM_PaintBar.h"
-#include "UI/GM_PaintBarDesc.h"
+#include "UI/GM_PaintBar.hpp"
+#include "UI/GM_PaintBarDesc.hpp"
 
 #endif

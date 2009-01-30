@@ -1,10 +1,10 @@
 #ifndef  __KeyBind_H__
 #define  __KeyBind_H__
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 

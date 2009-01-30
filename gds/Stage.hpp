@@ -1,4 +1,4 @@
-#include "Stage/fwd.h"
-#include "Stage/Stage.h"
-#include "Stage/BaseEntityManager.h"
-#include "Stage/BaseEntityFactory.h"
+#include "Stage/fwd.hpp"
+#include "Stage/Stage.hpp"
+#include "Stage/BaseEntityManager.hpp"
+#include "Stage/BaseEntityFactory.hpp"

@@ -1,9 +1,9 @@
 #ifndef __CLASS_IK_JACOBIAN_H__
 #define __CLASS_IK_JACOBIAN_H__
 
-#include "IK_Node.h"
-#include "IK_Tree.h"
-#include "Math64/MathMisc.h"
+#include "IK_Node.hpp"
+#include "IK_Tree.hpp"
+#include "Math64/MathMisc.hpp"
 #include "Math64/LinearR3.h"
 #include "Math64/VectorRn.h"
 #include "Math64/MatrixRmn.h"

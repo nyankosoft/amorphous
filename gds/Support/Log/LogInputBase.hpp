@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "LogOutputBase.h"
-#include "../TimeFormats.h"
+#include "LogOutputBase.hpp"
+#include "../TimeFormats.hpp"
 
 
 class CLogOutputBase;

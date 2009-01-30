@@ -1,10 +1,10 @@
 #ifndef  __DIKEYBOARD_H__
 #define  __DIKEYBOARD_H__
 
-#include "DirectInput.h"
-#include "InputHandler.h"
-#include "InputDevice.h"
-#include "../base.h"
+#include "DirectInput.hpp"
+#include "InputHandler.hpp"
+#include "InputDevice.hpp"
+#include "../base.hpp"
 
 #include <dinput.h>
 #include <windows.h>

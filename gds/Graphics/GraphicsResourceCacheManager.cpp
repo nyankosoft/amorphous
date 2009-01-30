@@ -1,4 +1,4 @@
-#include "GraphicsResourceCacheManager.h"
+#include "GraphicsResourceCacheManager.hpp"
 
 using namespace std;
 using namespace boost;

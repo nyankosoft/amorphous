@@ -1,7 +1,7 @@
 #ifndef __BE_DIRECTIONALLIGHT_H__
 #define __BE_DIRECTIONALLIGHT_H__
 
-#include "BE_Light.h"
+#include "BE_Light.hpp"
 
 
 class CBE_DirectionalLight : public CBE_Light

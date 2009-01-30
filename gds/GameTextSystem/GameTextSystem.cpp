@@ -1,8 +1,8 @@
-#include "GameTextSystem.h"
+#include "GameTextSystem.hpp"
 
 #include <stdlib.h>
-#include "../Graphics/Font/Font.h"
-#include "../Support/memory_helpers.h"
+#include "../Graphics/Font/Font.hpp"
+#include "../Support/memory_helpers.hpp"
 
 //===========================================================================
 // CGameTextComponent

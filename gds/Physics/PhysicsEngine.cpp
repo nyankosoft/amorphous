@@ -1,7 +1,7 @@
-#include "Ageia/NxPhysicsEngine.h"
-#include "PhysicsEngine.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
+#include "Ageia/NxPhysicsEngine.hpp"
+#include "PhysicsEngine.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDelete.hpp"
 
 using namespace std;
 using namespace physics;

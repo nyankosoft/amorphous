@@ -1,5 +1,5 @@
-#include "bspstructs.h"
-#include "../Graphics/FloatRGBColor.h"
+#include "bspstructs.hpp"
+#include "../Graphics/FloatRGBColor.hpp"
 
 float g_fEpsilon = 0.001f;
 D3DXVECTOR3 g_vEpsilon(0.001f, 0.001f, 0.001f);

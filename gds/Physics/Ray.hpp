@@ -2,8 +2,8 @@
 #define  __PhysRay_H__
 
 
-#include "3DMath/Matrix34.h"
-#include "fwd.h"
+#include "3DMath/Matrix34.hpp"
+#include "fwd.hpp"
 
 
 namespace physics

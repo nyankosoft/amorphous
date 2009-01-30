@@ -1,7 +1,7 @@
 #ifndef  __GlobalInputHandler_H__
 #define  __GlobalInputHandler_H__
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
 extern bool g_bAppExitRequested;
 

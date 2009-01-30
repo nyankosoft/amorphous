@@ -1,10 +1,10 @@
-#include "BE_Floater.h"
-#include "BE_Turret.h"
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Sound/SoundManager.h"
+#include "BE_Floater.hpp"
+#include "BE_Turret.hpp"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Sound/SoundManager.hpp"
 
 
 CBE_Floater::CBE_Floater()

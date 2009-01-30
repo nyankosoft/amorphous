@@ -2,8 +2,8 @@
 #ifndef __GEOMETRY_BOX_H__
 #define __GEOMETRY_BOX_H__
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix33.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix33.hpp"
 
 
 

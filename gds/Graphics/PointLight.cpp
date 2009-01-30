@@ -1,6 +1,6 @@
 
-#include "PointLight.h"
-#include "../Graphics/Direct3D9.h"
+#include "PointLight.hpp"
+#include "../Graphics/Direct3D9.hpp"
 
 void CPointLight::SetLight(int i)
 {

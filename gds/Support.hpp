@@ -2,87 +2,87 @@
 
 /// helper functions for window-related operations
 /// availability: Windows
-#include <Support/WindowMisc_Win32.h>
+#include <Support/WindowMisc_Win32.hpp>
 
-#include <Support/2DArray.h>
-//#include <Support/2DGraph.h>
-//#include <Support/BMPImageExporter.h>
+#include <Support/2DArray.hpp>
+//#include <Support/2DGraph.hpp>
+//#include <Support/BMPImageExporter.hpp>
 
 // 3D camera related operations
 // - should be moved to 3DCommon
-#include <Support/CameraController_Win32.h>
-//#include <Support/CorrelationGraph.h>
-#include <Support/DebugOutput.h>
+#include <Support/CameraController_Win32.hpp>
+//#include <Support/CorrelationGraph.hpp>
+#include <Support/DebugOutput.hpp>
 
-//#include <Support/FileOpenDialog_Win32.h>
-//#include <Support/FileOpenDialog_Win32_VC8.h>
-//#include <Support/FileSaveDialog_Win32.h>
+//#include <Support/FileOpenDialog_Win32.hpp>
+//#include <Support/FileOpenDialog_Win32_VC8.hpp>
+//#include <Support/FileSaveDialog_Win32.hpp>
 
-//#include <Support/fixed_prealloc_pool.h>
-#include <Support/FixedStackVector.h>
-#include <Support/FixedVector.h>
-#include <Support/FloatLookUpTable.h>
+//#include <Support/fixed_prealloc_pool.hpp>
+#include <Support/FixedStackVector.hpp>
+#include <Support/FixedVector.hpp>
+#include <Support/FloatLookUpTable.hpp>
 
 /// functions for simple filename and file/directory-related operations
-#include <Support/fnop.h>
+#include <Support/fnop.hpp>
 
-#include <Support/ImageArchive.h>
-//#include <Support/LineSegmentRenderer.h>
+#include <Support/ImageArchive.hpp>
+//#include <Support/LineSegmentRenderer.hpp>
 
 /// basic macros
 /// - should move this to root directory
 #include <Support/Macro.h>
 
-#include <Support/memory_helpers.h>
+#include <Support/memory_helpers.hpp>
 
 //#include <Support/MinMax.h>
 
 /// print a message in a message box
 /// availability: Windows
-#include <Support/msgbox.h>
+#include <Support/msgbox.hpp>
 //#include <Support/namedresourcehandle.h>
 //#include <Support/OgreBitwise.h>
 
-#include <Support/ParamLoader.h>
+#include <Support/ParamLoader.hpp>
 
 /// used to load values and text data from text
-#include <Support/TextFileScanner.h>
+#include <Support/TextFileScanner.hpp>
 
-#include <Support/prealloc_pool.h>
+#include <Support/prealloc_pool.hpp>
 
-#include <Support/Profile.h>
+#include <Support/Profile.hpp>
 
 /// checked delete functions
-#include <Support/SafeDelete.h>
-#include <Support/SafeDeleteVector.h>
+#include <Support/SafeDelete.hpp>
+#include <Support/SafeDeleteVector.hpp>
 
-//#include <Support/Singleton.h>
+//#include <Support/Singleton.hpp>
 
 /// general purpose stream buffers
 /// - inherits IArchiveObjectBase (serializable)
-#include <Support/stream_buffer.h>
+#include <Support/stream_buffer.hpp>
 
-#include <Support/StringAux.h>
+#include <Support/StringAux.hpp>
 
-#include <Support/Vec3_StringAux.h>
+#include <Support/Vec3_StringAux.hpp>
 
 
 ///
 /// Log
 /// 
-#include <Support/Log/DefaultLog.h>
+#include <Support/Log/DefaultLog.hpp>
 
 
 ///
 /// Serialization
 /// 
-#include <Support/Serialization/Serialization.h>
-#include <Support/Serialization/ArchiveObjectFactory.h>
+#include <Support/Serialization/Serialization.hpp>
+#include <Support/Serialization/ArchiveObjectFactory.hpp>
 using namespace GameLib1::Serialization;
 
 
 /// deprecated headers
 
-//#include <Support/PreAllocDynamicLinkList.h>
+//#include <Support/PreAllocDynamicLinkList.hpp>
 
-//#include <Support/PrecisionTimer.h>
+//#include <Support/PrecisionTimer.hpp>

@@ -2,7 +2,7 @@
 #define  __GM_EVENTHANDLERBASE_H__
 
 
-#include "GM_Event.h"
+#include "GM_Event.hpp"
 
 class GM_Event;
 
@@ -24,7 +24,7 @@ public:
 #ifndef  __UserEventHandler_H__
 #define  __UserEventHandler_H__
 
-#include "UI/GM_EventHandlerBase.h"
+#include "UI/GM_EventHandlerBase.hpp"
 
 /
  *
@@ -51,7 +51,7 @@ public:
 
 
 #include "UserEventHandler.h"
-#include "UI.h"
+#include "UI.hpp"
 
 
 CUserEventHandler::CUserEventHandler() {}

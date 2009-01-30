@@ -3,7 +3,7 @@
 
 
 #include <NxStream.h>
-#include "Support/stream_buffer.h"
+#include "Support/stream_buffer.hpp"
 
 
 namespace physics

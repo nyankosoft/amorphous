@@ -2,7 +2,7 @@
 #ifndef  __GM_DialogCloseButton_H__
 #define  __GM_DialogCloseButton_H__
 
-#include "GM_Button.h"
+#include "GM_Button.hpp"
 
 
 class CGM_DialogCloseButtonDesc;

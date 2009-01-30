@@ -1,17 +1,17 @@
 #ifndef  __TEXTUREFONT_H__
 #define  __TEXTUREFONT_H__
 
-#include "FontBase.h"
+#include "FontBase.hpp"
 #include "Graphics/FVF_TLVertex.h"
-#include "Graphics/AlphaBlend.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/TextureCoord.h"
-#include "3DMath/AABB2.h"
+#include "Graphics/AlphaBlend.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/TextureCoord.hpp"
+#include "3DMath/AABB2.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DCommon.h"
-#include "Support/Serialization/Serialization_3DMath.h"
-#include "Support/Serialization/BinaryDatabase.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DCommon.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 

@@ -2,10 +2,10 @@
 #define __NxPhysJoint_H__
 
 
-#include "fwd.h"
-#include "3DMath/all.h"
+#include "fwd.hpp"
+#include "3DMath/all.hpp"
 
-#include "NxPhysJointDesc.h"
+#include "NxPhysJointDesc.hpp"
 
 #include <vector>
 using namespace std;

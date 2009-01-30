@@ -1,15 +1,15 @@
 
-#include "JL_CollisionDetect.h"
+#include "JL_CollisionDetect.hpp"
 
-#include "JL_Shape_Box.h"
-#include "JL_PhysicsActor.h"
-#include "JL_CollisionFunctor.h"
+#include "JL_Shape_Box.hpp"
+#include "JL_PhysicsActor.hpp"
+#include "JL_CollisionFunctor.hpp"
 
-#include "Geometry/JL_Box.h"
+#include "Geometry/JL_Box.hpp"
 
-#include "3DMath/BSPTreeForBox.h"
+#include "3DMath/BSPTreeForBox.hpp"
 
-//#include "Stage/bsptree.h"
+//#include "Stage/bsptree.hpp"
 // static bool SepAxisTest( float& rfDepth, Vector3& rvAxis, CJL_Shape_Box& rBox0, CJL_Shape_Box& rBox1 ){}
 
 

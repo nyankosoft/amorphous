@@ -2,12 +2,12 @@
 #define __HUD_PLAYERSHIP_H__
 
 
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Font/TextureFont.h"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Font/TextureFont.hpp"
 
-#include "QuickMenuManager.h"
+#include "QuickMenuManager.hpp"
 
-#include "HUD_PlayerBase.h"
+#include "HUD_PlayerBase.hpp"
 
 
 class CGameTextWindow;

@@ -1,10 +1,10 @@
-#include "ItemDatabaseManager.h"
-#include "ItemDatabaseBuilder.h"
-#include "GameItem.h"
-#include "GameItemObjectFactory.h"
+#include "ItemDatabaseManager.hpp"
+#include "ItemDatabaseBuilder.hpp"
+#include "GameItem.hpp"
+#include "GameItemObjectFactory.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 

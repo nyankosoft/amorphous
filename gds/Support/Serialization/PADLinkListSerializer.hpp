@@ -2,8 +2,8 @@
 #ifndef  __PREALLOCDYNAMICLINKLIST_SERIALIZER_H__
 #define  __PREALLOCDYNAMICLINKLIST_SERIALIZER_H__
 
-#include "Support/PreAllocDynamicLinkList.h"
-#include "Support/Serialization/ArchiveObjectBase.h"
+#include "Support/PreAllocDynamicLinkList.hpp"
+#include "Support/Serialization/ArchiveObjectBase.hpp"
 
 using namespace GameLib1;
 
@@ -44,7 +44,7 @@ public:
 //----------------------------------- cut here -----------------------------------
 
 /*
-#include "PADLinkListSerializer.h"
+#include "PADLinkListSerializer.hpp"
 
 TCPADLinkListSerializer::TCPADLinkListSerializer( TCPreAllocDynamicLinkList<T>& linklist )
 {

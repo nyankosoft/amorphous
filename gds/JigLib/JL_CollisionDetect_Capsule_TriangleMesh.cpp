@@ -1,9 +1,9 @@
 
-#include "JL_CollisionDetect.h"
+#include "JL_CollisionDetect.hpp"
 
-#include "TriangleMesh.h"
-#include "JL_Shape_Capsule.h"
-#include "JL_CollisionFunctor.h"
+#include "TriangleMesh.hpp"
+#include "JL_Shape_Capsule.hpp"
+#include "JL_CollisionFunctor.hpp"
 #include "Geometry/distance.hpp"
 
 #include <vector>

@@ -5,14 +5,14 @@
 #include <vector>
 #include <string>
 
-#include "3DMath/aabb3.h"
-#include "3DMath/Sphere.h"
-#include "Graphics/fwd.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/Shader/ShaderTechniquehandle.h"
+#include "3DMath/aabb3.hpp"
+#include "3DMath/Sphere.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/Shader/ShaderTechniquehandle.hpp"
 
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

@@ -1,14 +1,14 @@
 #ifndef  __ShaderManagerHub_H__
 #define  __ShaderManagerHub_H__
 
-#include "../Camera.h"
-#include "../Direct3D9.h"
-#include "ShaderManager.h"
+#include "../Camera.hpp"
+#include "../Direct3D9.hpp"
+#include "ShaderManager.hpp"
 
 #include <vector>
 
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

@@ -1,5 +1,5 @@
 //====================================================================
-//  FileOpenDialog_Win32.h
+//  FileOpenDialog_Win32.hpp
 //  standard file selection dialog by windows API
 //====================================================================
 

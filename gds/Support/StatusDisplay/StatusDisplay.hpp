@@ -3,18 +3,18 @@
 #define __STATUSDISPLAY_SINGLETON_H__
 
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 
 #include <vector>
 #include <string>
 using namespace std;
 
-#include "Graphics/Point.h"
-#include "Graphics/Rect.h"
+#include "Graphics/Point.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 
-#include "StatusDisplayRenderer.h"
+#include "StatusDisplayRenderer.hpp"
 //class CStatusDisplayRenderer;
 
 

@@ -1,15 +1,15 @@
-#include "BE_FixedTurretPod.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "Stage.h"
+#include "BE_FixedTurretPod.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "Stage.hpp"
 
-#include "Serialization_BaseEntityHandle.h"
+#include "Serialization_BaseEntityHandle.hpp"
 
-#include  "Graphics/Shader/ShaderManager.h"
-#include  "Graphics/D3DXMeshObject.h"
+#include  "Graphics/Shader/ShaderManager.hpp"
+#include  "Graphics/D3DXMeshObject.hpp"
 
-#include  "Support/memory_helpers.h"
-#include  "Support/Log/DefaultLog.h"
+#include  "Support/memory_helpers.hpp"
+#include  "Support/Log/DefaultLog.hpp"
 
 
 CBE_FixedTurretPod::CBE_FixedTurretPod()

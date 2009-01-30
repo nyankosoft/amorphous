@@ -1,9 +1,9 @@
 
-#include "LightingForLightmap_SimpleRaytrace.h"
+#include "LightingForLightmap_SimpleRaytrace.hpp"
 
-#include "Graphics/LightStructs.h"
+#include "Graphics/LightStructs.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Plane.h"
-#include "3DMath/ray.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Plane.hpp"
+#include "3DMath/ray.hpp"
 

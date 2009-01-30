@@ -1,5 +1,5 @@
 
-#include "LWO2_Common.h"
+#include "LWO2_Common.hpp"
 
 
 UINT4 ReadVLIndex(FILE* fp, int *pIndexSize)

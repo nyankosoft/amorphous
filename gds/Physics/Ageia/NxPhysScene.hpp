@@ -4,8 +4,8 @@
 
 #include "NxPhysics.h"
 
-#include "../Scene.h"
-#include "NxMathConv.h"
+#include "../Scene.hpp"
+#include "NxMathConv.hpp"
 
 
 namespace physics

@@ -2,8 +2,8 @@
 #define __GM_CONTROL_LISTBOX__
 
 
-#include "fwd.h"
-#include "GM_Control.h"
+#include "fwd.hpp"
+#include "GM_Control.hpp"
 
 #include <vector>
 #include <string>

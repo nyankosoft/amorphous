@@ -1,9 +1,9 @@
 
 #include <stdlib.h>
 
-#include "LWS_Items.h"
+#include "LWS_Items.hpp"
 
-#include "Support/TextFileScanner.h"
+#include "Support/TextFileScanner.hpp"
 
 
 #define MAX_LINE_LENGTH	512

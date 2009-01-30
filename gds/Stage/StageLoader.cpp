@@ -1,5 +1,5 @@
-#include "StageLoader.h"
-#include "Stage.h"
+#include "StageLoader.hpp"
+#include "Stage.hpp"
 
 using namespace std;
 

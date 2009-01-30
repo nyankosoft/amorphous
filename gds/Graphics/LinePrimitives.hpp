@@ -3,8 +3,8 @@
 
 
 #include <vector>
-#include "Graphics/all.h"
-#include "3DMath/Matrix34.h"
+#include "Graphics/all.hpp"
+#include "3DMath/Matrix34.hpp"
 
 
 /**

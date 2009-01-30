@@ -2,7 +2,7 @@
 #define  __NxPhysMaterial_H__
 
 #include "3DMath/precision.h"
-#include "../Material.h"
+#include "../Material.hpp"
 #include "NxPhysics.h"
 
 

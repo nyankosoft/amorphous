@@ -1,31 +1,31 @@
-#include "BE_Enemy.h"
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "trace.h"
-#include "Stage.h"
+#include "BE_Enemy.hpp"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
 
-#include "EntityMotionPathRequest.h"
+#include "EntityMotionPathRequest.hpp"
 
-#include "Stage/PlayerInfo.h"
+#include "Stage/PlayerInfo.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DXSMeshObject.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/MTRand.h"
-#include "Support/VectorRand.h"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "Support/VectorRand.hpp"
 
-#include "Sound/Serialization_SoundHandle.h"
-#include "Sound/SoundManager.h"
+#include "Sound/Serialization_SoundHandle.hpp"
+#include "Sound/SoundManager.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/msgbox.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/msgbox.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
-#include "Physics/Actor.h"
+#include "Physics/Actor.hpp"
 
 using namespace physics;
 

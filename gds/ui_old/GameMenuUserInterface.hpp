@@ -1,19 +1,19 @@
 
-#include "GM_DialogManager.h"
-#include "GM_Dialog.h"
-#include "GM_Control.h"
-#include "GM_DialogDesc.h"
-#include "GM_ControlDescBase.h"
+#include "GM_DialogManager.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_Control.hpp"
+#include "GM_DialogDesc.hpp"
+#include "GM_ControlDescBase.hpp"
 
-#include "GM_Button.h"
-#include "GM_Slider.h"
+#include "GM_Button.hpp"
+#include "GM_Slider.hpp"
 
-#include "GM_FontDesc.h"
+#include "GM_FontDesc.hpp"
 
 
 #ifdef UI_EXTENSION_EDIT
 
-#include "GM_PaintBar.h"
-#include "GM_PaintBarDesc.h"
+#include "GM_PaintBar.hpp"
+#include "GM_PaintBarDesc.hpp"
 
 #endif

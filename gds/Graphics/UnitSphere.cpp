@@ -1,5 +1,5 @@
-#include "UnitSphere.h"
-#include "Graphics/Direct3D9.h"
+#include "UnitSphere.hpp"
+#include "Graphics/Direct3D9.hpp"
 #include "Graphics/FVF_ColorVertex.h"
 
 

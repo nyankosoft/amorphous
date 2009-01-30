@@ -5,9 +5,9 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 
-//#include "GameInput/InputHandler.h"
+//#include "GameInput/InputHandler.hpp"
 
 
 

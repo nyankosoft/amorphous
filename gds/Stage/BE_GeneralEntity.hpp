@@ -1,10 +1,10 @@
 #ifndef __BE_GENERALENTITY_H__
 #define __BE_GENERALENTITY_H__
 
-#include "BaseEntity.h"
-#include "BaseEntityHandle.h"
-#include "Serialization_BaseEntityHandle.h"
-#include "BE_PhysicsBaseEntity.h"
+#include "BaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
+#include "BE_PhysicsBaseEntity.hpp"
 
 
 #define GETYPE_LIFETIMER	1

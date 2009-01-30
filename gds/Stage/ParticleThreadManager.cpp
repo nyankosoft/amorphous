@@ -1,7 +1,7 @@
 
-#include "ParticleThreadManager.h"
+#include "ParticleThreadManager.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 //#include "yaneSDK/Thread/index.h"
 

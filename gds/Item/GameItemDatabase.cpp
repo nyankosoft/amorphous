@@ -1,7 +1,7 @@
 
-#include "Item/GameItem.h"
-#include "Item/GameItemObjectFactory.h"
-#include "GameItemDatabase.h"
+#include "Item/GameItem.hpp"
+#include "Item/GameItemObjectFactory.hpp"
+#include "GameItemDatabase.hpp"
 
 #include <assert.h>
 

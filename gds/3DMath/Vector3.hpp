@@ -8,12 +8,12 @@
 #ifdef USE_D3DXVECTOR
 
 // use D3DXVECTOR3 class as Vector3
-#include "D3DX_Adapter.h"
+#include "D3DX_Adapter.hpp"
 
 #else /* USE_D3DXVECTOR */
 
 // use the original Vector3
-#include "Vector3_Gen.h"
+#include "Vector3_Gen.hpp"
 
 #endif /* USE_D3DXVECTOR */
 

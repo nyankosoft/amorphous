@@ -2,12 +2,12 @@
 #ifndef	__BASEENTITYBULLET_H__
 #define __BASEENTITYBULLET_H__
 
-#include "BaseEntity.h"
-#include "Stage.h"
-#include "BaseEntityHandle.h"
+#include "BaseEntity.hpp"
+#include "Stage.hpp"
+#include "BaseEntityHandle.hpp"
 
 #include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/TextureHandle.h"
+#include "Graphics/TextureHandle.hpp"
 
 
 class CBE_Bullet : public CBaseEntity

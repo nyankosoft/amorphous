@@ -2,9 +2,9 @@
 #define  __PhysRevoluteJoint_H__
 
 
-#include "3DMath/Matrix34.h"
-#include "fwd.h"
-#include "Joint.h"
+#include "3DMath/Matrix34.hpp"
+#include "fwd.hpp"
+#include "Joint.hpp"
 
 
 namespace physics

@@ -4,10 +4,10 @@
 
 #include <string>
 
-#include "GameCommon/MTRand.h"
-#include "Graphics/D3DXMeshObject.h"
+#include "GameCommon/MTRand.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
 #include "Graphics/FVF_BillboardVertex.h"
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

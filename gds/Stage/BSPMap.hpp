@@ -2,20 +2,20 @@
 #define __STATICGEOMETRY_BSPMAP_H__
 
 
-#include "Stage/fwd.h"
-#include "Stage/StaticGeometryBase.h"
-#include "Stage/BSPStaticGeometry.h"
-#include "Stage/bspstructs.h"
-#include "Stage/bsptree.h"
+#include "Stage/fwd.hpp"
+#include "Stage/StaticGeometryBase.hpp"
+#include "Stage/BSPStaticGeometry.hpp"
+#include "Stage/bspstructs.hpp"
+#include "Stage/bsptree.hpp"
 
-#include "BSPMap_Collision/BSPTree_CollisionModel.h"
+#include "BSPMap_Collision/BSPTree_CollisionModel.hpp"
 
-#include "Graphics/fwd.h"
-#include "Graphics/D3DXMeshObject.h"
-#include "Graphics/Shader/ShaderTechniqueHandle.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 
-#include "Support/FixedVector.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/FixedVector.hpp"
+#include "Support/Log/DefaultLog.hpp"
 #include "Support/macro.h"
 
 #define NUM_MAX_LIGHTSOURCEPOLYGONS 512

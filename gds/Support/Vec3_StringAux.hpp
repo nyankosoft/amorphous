@@ -2,10 +2,10 @@
 #define __VEC3_STRINGAUX_H__
 
 
-#include "StringAux.h"
+#include "StringAux.hpp"
 
-#include "3DMath/aabb3.h"
-#include "3DMath/aabb2.h"
+#include "3DMath/aabb3.hpp"
+#include "3DMath/aabb2.hpp"
 
 
 inline std::string to_string( const Vector3& v, int precision = 3, int num_zfills = 0 )

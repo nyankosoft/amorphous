@@ -1,10 +1,10 @@
-#include "TextMessageManager.h"
-#include "TextMessageRenderer.h"
+#include "TextMessageManager.hpp"
+#include "TextMessageRenderer.hpp"
 
-#include "../Graphics/Font/Font.h"
-#include "../Support/memory_helpers.h"
-#include "../Support/Log/DefaultLog.h"
-#include "../Support/StringAux.h"
+#include "../Graphics/Font/Font.hpp"
+#include "../Support/memory_helpers.hpp"
+#include "../Support/Log/DefaultLog.hpp"
+#include "../Support/StringAux.hpp"
 
 
 using namespace std;

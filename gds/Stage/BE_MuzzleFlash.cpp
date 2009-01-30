@@ -1,13 +1,13 @@
 
-#include "Graphics/Direct3D9.h"
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/MTRand.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "Stage.h"
-#include "Serialization_BaseEntityHandle.h"
+#include "Graphics/Direct3D9.hpp"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "Stage.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
 
-#include "BE_MuzzleFlash.h"
+#include "BE_MuzzleFlash.hpp"
 
 
 CBE_MuzzleFlash::CBE_MuzzleFlash()

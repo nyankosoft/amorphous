@@ -1,8 +1,8 @@
 #ifndef  __GM_BUTTON_H__
 #define  __GM_BUTTON_H__
 
-#include "fwd.h"
-#include "GM_Static.h"
+#include "fwd.hpp"
+#include "GM_Static.hpp"
 
 
 /**

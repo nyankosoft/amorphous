@@ -13,7 +13,7 @@
 //#include "../maths/include/precision.hpp"
 //#include "../maths/include/vector3.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 
 namespace JigLib

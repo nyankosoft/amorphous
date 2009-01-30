@@ -7,9 +7,9 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 
-#include "fwd.h"
-#include "Support/memory_helpers.h"
-#include "Graphics/Rect.h"
+#include "fwd.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 

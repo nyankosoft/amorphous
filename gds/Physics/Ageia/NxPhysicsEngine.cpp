@@ -1,12 +1,12 @@
-#include "NxPhysicsEngine.h"
-#include "NxPhysScene.h"
-#include "NxPhysTriangleMesh.h"
-#include "NxPhysStream.h"
-#include "../Stream.h"
-#include "../SceneDesc.h"
+#include "NxPhysicsEngine.hpp"
+#include "NxPhysScene.hpp"
+#include "NxPhysTriangleMesh.hpp"
+#include "NxPhysStream.hpp"
+#include "../Stream.hpp"
+#include "../SceneDesc.hpp"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDelete.hpp"
 
 using namespace physics;
 

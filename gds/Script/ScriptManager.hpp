@@ -1,7 +1,7 @@
 #ifndef  __GSF_ScriptManager_H__
 #define  __GSF_ScriptManager_H__
 
-#include "ScriptArchive.h"
+#include "ScriptArchive.hpp"
 
 #include <vector>
 #include <string>

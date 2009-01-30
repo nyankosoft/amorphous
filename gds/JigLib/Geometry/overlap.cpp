@@ -8,7 +8,7 @@
 //==============================================================
 //#include "overlap.hpp"
 #include "distance.hpp"
-#include "3DMath/Triangle.h"
+#include "3DMath/Triangle.hpp"
 #include <limits>
 using namespace JigLib;
 

@@ -1,12 +1,12 @@
 
-#include "GameItemObjectFactory.h"
+#include "GameItemObjectFactory.hpp"
 
-#include "GameItem.h"
-#include "GI_Weapon.h"
-#include "GI_Ammunition.h"
-#include "GI_GravityGun.h"
-#include "GI_Aircraft.h"
-#include "GI_MissileLauncher.h"
+#include "GameItem.hpp"
+#include "GI_Weapon.hpp"
+#include "GI_Ammunition.hpp"
+#include "GI_GravityGun.hpp"
+#include "GI_Aircraft.hpp"
+#include "GI_MissileLauncher.hpp"
 
 
 IArchiveObjectBase *CGameItemObjectFactory::CreateObject( const unsigned int id )

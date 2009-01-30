@@ -1,7 +1,7 @@
 #ifndef  __GM_SUBDIALOGBUTTON_H__
 #define  __GM_SUBDIALOGBUTTON_H__
 
-#include "GM_Button.h"
+#include "GM_Button.hpp"
 
 
 /**

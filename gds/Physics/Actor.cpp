@@ -1,6 +1,6 @@
 
-#include "Actor.h"
-#include "3DMath/MathMisc.h"
+#include "Actor.hpp"
+#include "3DMath/MathMisc.hpp"
 
 
 using namespace physics;

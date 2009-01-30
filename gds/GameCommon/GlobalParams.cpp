@@ -1,5 +1,5 @@
-#include "GlobalParams.h"
-#include "Support/Log/DefaultLog.h"
+#include "GlobalParams.hpp"
+#include "Support/Log/DefaultLog.hpp"
 #include <string>
 
 using namespace std;

@@ -1,9 +1,9 @@
 #include <windows.h>
 #include <dxerr9.h>
 
-#include "GameSound.h"
-#include "WaveFile.h"
-#include "../base.h"
+#include "GameSound.hpp"
+#include "WaveFile.hpp"
+#include "../base.hpp"
 #include "Support/Macro.h"
 
 

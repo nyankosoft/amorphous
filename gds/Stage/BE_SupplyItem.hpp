@@ -2,9 +2,9 @@
 #ifndef	__BASEENTITYSUPPLYITEM_H__
 #define __BASEENTITYSUPPLYITEM_H__
 
-#include "BaseEntity.h"
-#include "BaseEntityHandle.h"
-#include "Sound/SoundHandle.h"
+#include "BaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
+#include "Sound/SoundHandle.hpp"
 
 
 class CBE_SupplyItem : public CBaseEntity

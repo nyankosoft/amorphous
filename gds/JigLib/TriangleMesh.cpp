@@ -1,17 +1,17 @@
 
-#include "TriangleMesh.h"
+#include "TriangleMesh.hpp"
 
-#include "JL_PhysicsActor.h"
-#include "JL_ShapeDesc_TriangleMesh.h"
-#include "JL_LineSegment.h"
+#include "JL_PhysicsActor.hpp"
+#include "JL_ShapeDesc_TriangleMesh.hpp"
+#include "JL_LineSegment.hpp"
 
-#include "Stage/trace.h"
+#include "Stage/trace.hpp"
 
-#include "3DMath/Plane.h"
+#include "3DMath/Plane.hpp"
 
-#include "Support/Serialization/BinaryDatabase.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/Serialization/BinaryDatabase.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
 #include <assert.h>
 

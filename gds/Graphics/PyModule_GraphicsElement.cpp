@@ -1,16 +1,16 @@
-#include "PyModule_GraphicsElement.h"
+#include "PyModule_GraphicsElement.hpp"
 
-#include "GraphicsEffectManager.h"
+#include "GraphicsEffectManager.hpp"
 
-#include "../base.h"
-#include "Graphics/3DGameMath.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/3DGameMath.h"
-#include "Graphics/TextureHandle.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Vec3_StringAux.h"
+#include "../base.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
-#include "Graphics/Rect.h"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <vector>

@@ -2,9 +2,9 @@
 #define  __PhysShapeImpl_H__
 
 
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 namespace physics

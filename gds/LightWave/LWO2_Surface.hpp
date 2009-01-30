@@ -2,7 +2,7 @@
 #define __LWO2_SURFACE_H__
 
 
-#include "LWO2_Common.h"
+#include "LWO2_Common.hpp"
 
 
 #include <vector>

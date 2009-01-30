@@ -1,11 +1,11 @@
 
-#include "BVH/BVHPlayer.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/StringAux.h"
+#include "BVH/BVHPlayer.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/StringAux.hpp"
 
-#include "MotionBlender.h"
-#include "MotionDatabase.h"
-#include "HumanoidMotionTable.h"
+#include "MotionBlender.hpp"
+#include "MotionDatabase.hpp"
+#include "HumanoidMotionTable.hpp"
 
 using namespace msynth;
 

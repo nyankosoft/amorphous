@@ -1,7 +1,7 @@
 #ifndef __BE_AREASENSOR_H__
 #define __BE_AREASENSOR_H__
 
-#include "BaseEntity.h"
+#include "BaseEntity.hpp"
 
 
 class CBE_AreaSensor : public CBaseEntity

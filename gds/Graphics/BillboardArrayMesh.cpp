@@ -1,5 +1,5 @@
-#include "BillboardArrayMesh.h"
-#include "Support/SafeDelete.h"
+#include "BillboardArrayMesh.hpp"
+#include "Support/SafeDelete.hpp"
 #include "Support/Macro.h"
 
 #include <d3dx9.h>

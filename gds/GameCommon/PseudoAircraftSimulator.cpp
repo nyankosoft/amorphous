@@ -1,7 +1,7 @@
 
-#include "PseudoAircraftSimulator.h"
+#include "PseudoAircraftSimulator.hpp"
 
-#include "GameCommon/GameMathMisc.h"
+#include "GameCommon/GameMathMisc.hpp"
 #include "Support/Macro.h"
 
 using namespace std;

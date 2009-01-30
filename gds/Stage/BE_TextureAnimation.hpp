@@ -2,10 +2,10 @@
 #ifndef	__BASEENTITY_TEXTUREANIMATION_H__
 #define __BASEENTITY_TEXTUREANIMATION_H__
 
-#include "BaseEntity.h"
+#include "BaseEntity.hpp"
 
 #include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/TextureHandle.h"
+#include "Graphics/TextureHandle.hpp"
 
 
 class CBE_TextureAnimation : public CBaseEntity

@@ -1,9 +1,9 @@
 
-#include "TextureRenderTarget.h"
+#include "TextureRenderTarget.hpp"
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 
-#include "Support/BMPImageExporter.h"
+#include "Support/BMPImageExporter.hpp"
 
 
 CTextureRenderTarget::CTextureRenderTarget()

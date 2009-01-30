@@ -1,5 +1,5 @@
 
-#include "MouseCursor.h"
+#include "MouseCursor.hpp"
 
 
 CSingleton<CMouseCursor> CMouseCursor::m_obj;

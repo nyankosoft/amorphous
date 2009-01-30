@@ -2,7 +2,7 @@
 #define  __GRAPHICS_POINT_H__
 
 
-#include "../3DMath/Vector2_Gen.h"
+#include "../3DMath/Vector2_Gen.hpp"
 
 
 namespace Graphics

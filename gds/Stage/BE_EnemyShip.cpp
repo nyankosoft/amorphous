@@ -1,24 +1,24 @@
-#include "BE_EnemyShip.h"
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "trace.h"
-#include "Stage.h"
-#include "PlayerInfo.h"
+#include "BE_EnemyShip.hpp"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "PlayerInfo.hpp"
 
-#include "3DMath/MathMisc.h"
-#include "Physics/Actor.h"
-#include "Item/ItemDatabaseManager.h"
+#include "3DMath/MathMisc.hpp"
+#include "Physics/Actor.hpp"
+#include "Item/ItemDatabaseManager.hpp"
 
-#include "GameCommon/MTRand.h"
+#include "GameCommon/MTRand.hpp"
 
-#include "Item/GI_Weapon.h"
-#include "Item/GI_Ammunition.h"
+#include "Item/GI_Weapon.hpp"
+#include "Item/GI_Ammunition.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Log/StateLog.h"
-#include "Support/StringAux.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Log/StateLog.hpp"
+#include "Support/StringAux.hpp"
 
 using namespace physics;
 

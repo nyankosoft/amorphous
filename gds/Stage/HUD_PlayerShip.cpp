@@ -1,15 +1,15 @@
-#include "HUD_PlayerShip.h"
-#include "BE_PlayerShip.h"
-#include "Stage/PlayerInfo.h"
-#include "Stage/Input/InputHandler_PlayerShip.h"
+#include "HUD_PlayerShip.hpp"
+#include "BE_PlayerShip.hpp"
+#include "Stage/PlayerInfo.hpp"
+#include "Stage/Input/InputHandler_PlayerShip.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Item/WeaponSystem.h"
-#include "GameInput/3DActionCode.h"
-#include "GameTextSystem/GameTextWindow.h"
-#include "Support/memory_helpers.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Item/WeaponSystem.hpp"
+#include "GameInput/3DActionCode.hpp"
+#include "GameTextSystem/GameTextWindow.hpp"
+#include "Support/memory_helpers.hpp"
 
-#include "App/GameWindowManager_Win32.h"
+#include "App/GameWindowManager_Win32.hpp"
 
 #include <stdio.h>
 

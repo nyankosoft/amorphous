@@ -2,13 +2,13 @@
 #define __MAPCOMPILER_LIGHTMAP_H__
 
 
-#include "fwd.h"
+#include "fwd.hpp"
 
-#include "3DMath/Matrix34.h"
-#include "Graphics/IndexedPolygon.h"
-#include "Graphics/FloatRGBColor.h"
-#include "Support/2DArray.h"
-#include "Graphics/Rect.h"
+#include "3DMath/Matrix34.hpp"
+#include "Graphics/IndexedPolygon.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Support/2DArray.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 

@@ -5,15 +5,15 @@
 #include <vector>
 #include <string>
 
-#include "Stage/fwd.h"
-#include "Stage/StaticGeometryBase.h"
-#include "Stage/StaticGeometryArchiveFG.h"
+#include "Stage/fwd.hpp"
+#include "Stage/StaticGeometryBase.hpp"
+#include "Stage/StaticGeometryArchiveFG.hpp"
 
-#include "Graphics/fwd.h"
-#include "Graphics/MeshObjectHandle.h"
-#include "Graphics/TextureHandle.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/TextureHandle.hpp"
 
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

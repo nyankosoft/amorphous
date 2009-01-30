@@ -1,5 +1,5 @@
-#include "GameItemShop.h"
-#include "PyModule_Shop.h"
+#include "GameItemShop.hpp"
+#include "PyModule_Shop.hpp"
 
 
 CGameItemShop::CGameItemShop()

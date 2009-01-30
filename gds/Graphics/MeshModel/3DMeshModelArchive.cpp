@@ -1,10 +1,10 @@
-#include "3DMeshModelArchive.h"
+#include "3DMeshModelArchive.hpp"
 
 #include <fstream>
 
-#include "Graphics/General3DVertex.h"
-#include "Support/Vec3_StringAux.h"
-#include "Support/ImageArchive.h"
+#include "Graphics/General3DVertex.hpp"
+#include "Support/Vec3_StringAux.hpp"
+#include "Support/ImageArchive.hpp"
 
 using namespace GameLib1::Serialization;
 using namespace MeshModel;

@@ -2,10 +2,10 @@
 #define  __NxPhysicsEngine_H__
 
 
-#include "../PhysicsEngine.h"
-#include "../fwd.h"
-#include "fwd.h"
-#include "NxPhysOutputStream.h"
+#include "../PhysicsEngine.hpp"
+#include "../fwd.hpp"
+#include "fwd.hpp"
+#include "NxPhysOutputStream.hpp"
 
 #include "NxPhysics.h"
 

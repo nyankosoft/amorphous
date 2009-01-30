@@ -3,8 +3,8 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "ShadowMapManager.h"
-#include "Graphics/ShaderHandle.h"
+#include "ShadowMapManager.hpp"
+#include "Graphics/ShaderHandle.hpp"
 
 
 typedef CShaderParameter< std::vector<float> > CShaderParamFloatArray;

@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "AABTree.h"
-#include "IndexedTriangle.h"
+#include "AABTree.hpp"
+#include "IndexedTriangle.hpp"
 
 
 class CBSPTreeForTriangleMesh : public CLeafyAABTree<CIndexedTriangle>

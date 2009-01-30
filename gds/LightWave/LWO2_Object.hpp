@@ -2,8 +2,8 @@
 #define __LWO2_OBJECT_H__
 
 
-#include "LWO2_Surface.h"
-#include "LWO2_Layer.h"
+#include "LWO2_Surface.hpp"
+#include "LWO2_Layer.hpp"
 
 
 //=========================================================================================

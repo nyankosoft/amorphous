@@ -1,8 +1,8 @@
-#include "Direct3D9.h"
+#include "Direct3D9.hpp"
 
-#include "../base.h"
-#include "TextureFormat.h"
-#include "Support/Log/DefaultLog.h"
+#include "../base.hpp"
+#include "TextureFormat.hpp"
+#include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
 

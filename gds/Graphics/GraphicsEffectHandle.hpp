@@ -2,8 +2,8 @@
 #define __GraphicsEffectHandle_H__
 
 
-#include "Graphics/fwd.h"
-#include "Graphics/TextureCoord.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/TextureCoord.hpp"
 
 
 class CGraphicsEffectHandle

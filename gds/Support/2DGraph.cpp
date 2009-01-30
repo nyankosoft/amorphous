@@ -3,11 +3,11 @@
 //   - draw graphs using Direct3D
 //===============================================================================
 
-#include "2DGraph.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Font.h"
+#include "2DGraph.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Font.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 #include <stdlib.h>
 

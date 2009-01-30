@@ -1,4 +1,4 @@
-#include "HUD_TimerDisplay.h"
+#include "HUD_TimerDisplay.hpp"
 
 
 void HUD_TimerDisplay::Render( CFontBase *pFont, int sx, int sy )

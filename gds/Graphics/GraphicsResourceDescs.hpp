@@ -5,9 +5,9 @@
 #include <string>
 #include <boost/weak_ptr.hpp>
 
-#include "fwd.h"
-#include "GraphicsResource.h"
-#include "Support/Serialization/Serialization.h"
+#include "fwd.hpp"
+#include "GraphicsResource.hpp"
+#include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

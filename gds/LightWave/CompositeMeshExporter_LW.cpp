@@ -1,12 +1,12 @@
 
-#include "CompositeMeshExporter_LW.h"
-#include "MassSpringExporter_LW.h"
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "CompositeMeshExporter_LW.hpp"
+#include "MassSpringExporter_LW.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "LightWave/3DMeshModelBuilder_LW.h"
+#include "LightWave/3DMeshModelBuilder_LW.hpp"
 
-#include "Graphics/MeshModel/ShadowVolumeMeshGenerator.h"
+#include "Graphics/MeshModel/ShadowVolumeMeshGenerator.hpp"
 
 using namespace std;
 using namespace boost;

@@ -1,8 +1,8 @@
 
-#include "MotionPrimitiveBlender.h"
+#include "MotionPrimitiveBlender.hpp"
 
 #include "Support/Macro.h"
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 using namespace msynth;
 
@@ -564,8 +564,8 @@ void CPVC_MotionPrimitivePlayManager::PlayInterpolaitonMotion( float dt )
 */
 
 
-#include "Support/StringAux.h"
-#include "Support/Vec3_StringAux.h"
+#include "Support/StringAux.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
 void CMotionPrimitiveBlenderStatistics::Update()
 {

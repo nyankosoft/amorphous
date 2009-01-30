@@ -7,8 +7,8 @@
 //                     
 //==============================================================
 #include "distance.hpp"
-#include "3DMath/Triangle.h"
-#include "Box.h"
+#include "3DMath/Triangle.hpp"
+#include "Box.hpp"
 #include <limits>
 using namespace JigLib;
 

@@ -2,12 +2,12 @@
 #define  __gsf_shared_prealloc_pool_H__
 
 
-#include "prealloc_pool.h"
+#include "prealloc_pool.hpp"
 #include <boost/shared_ptr.hpp>
 
 
 /**
-  See comments at prealloc_pool.h
+  See comments at prealloc_pool.hpp
 */
 template <class CElementType>
 class shared_prealloc_pool

@@ -1,4 +1,4 @@
-#include "XercesString.h"
+#include "XercesString.hpp"
 #include <stddef.h>
 #include <stdlib.h>
 

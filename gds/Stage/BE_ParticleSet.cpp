@@ -1,25 +1,25 @@
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "ScreenEffectManager.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "ScreenEffectManager.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Graphics/BillboardArrayMesh.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/BillboardArrayMesh.hpp"
 
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/MTRand.h"
-#include "GameCommon/CriticalDamping.h"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "GameCommon/CriticalDamping.hpp"
 
-#include "3DMath/MathMisc.h"
+#include "3DMath/MathMisc.hpp"
 
-#include "Support/SafeDelete.h"
-#include "Support/Profile.h"
-#include "Support/Serialization/Serialization_Color.h"
+#include "Support/SafeDelete.hpp"
+#include "Support/Profile.hpp"
+#include "Support/Serialization/Serialization_Color.hpp"
 
 
-#include "BE_ParticleSet.h"
+#include "BE_ParticleSet.hpp"
 
 
 class CParticleThreadStarter

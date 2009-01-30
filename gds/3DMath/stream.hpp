@@ -4,7 +4,7 @@
 
 #include <ostream>
 
-#include "aabb3.h"
+#include "aabb3.hpp"
 
 
 inline std::ostream& operator << ( std::ostream& o, const AABB3& aabb )

@@ -2,9 +2,9 @@
 #define  __SoundManagerImpl_H__
 
 
-#include "SoundHandle.h"
-#include "SoundDesc.h"
-#include "3DMath/Matrix34.h"
+#include "SoundHandle.hpp"
+#include "SoundDesc.hpp"
+#include "3DMath/Matrix34.hpp"
 
 
 class CSoundSourceImpl;

@@ -1,7 +1,7 @@
 #ifndef __FONT_H__
 #define __FONT_H__
 
-#include "FontBase.h"
+#include "FontBase.hpp"
 
 #include <d3d9.h>
 #include <d3dx9.h>

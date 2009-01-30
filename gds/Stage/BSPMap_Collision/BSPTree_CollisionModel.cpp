@@ -1,10 +1,10 @@
-#include "BSPTree_CollisionModel.h"
-#include "3DMath/ConvexPolygon.h"
+#include "BSPTree_CollisionModel.hpp"
+#include "3DMath/ConvexPolygon.hpp"
 
-#include "Stage/BinaryNode.h"
-#include "Stage/trace.h"
+#include "Stage/BinaryNode.hpp"
+#include "Stage/trace.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 #include <d3d9.h>
 #include <d3dx9.h>

@@ -1,8 +1,8 @@
-#include "PyModule_HUD.h"
+#include "PyModule_HUD.hpp"
 
-#include "3DMath/Vector3.h"
-#include "PlayerInfo.h"
-#include "HUD_PlayerBase.h"
+#include "3DMath/Vector3.hpp"
+#include "PlayerInfo.hpp"
+#include "HUD_PlayerBase.hpp"
 
 using namespace std;
 

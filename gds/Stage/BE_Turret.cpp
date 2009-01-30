@@ -1,10 +1,10 @@
 
-#include "BE_Turret.h"
+#include "BE_Turret.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
 
 #include <math.h>
 

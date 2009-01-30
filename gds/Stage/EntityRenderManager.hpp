@@ -5,18 +5,18 @@
 #include <vector>
 #include <string>
 
-#include "../base.h"
-#include "3DMath/aabb3.h"
+#include "../base.hpp"
+#include "3DMath/aabb3.hpp"
 
-#include "fwd.h"
-#include "CopyEntity.h"
-#include "EntityNode.h"
-#include "LightEntityManager.h"
-#include "ScreenEffectManager.h"
+#include "fwd.hpp"
+#include "CopyEntity.hpp"
+#include "EntityNode.hpp"
+#include "LightEntityManager.hpp"
+#include "ScreenEffectManager.hpp"
 
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/CubeMapManager.h"
-#include "Graphics/ShaderHandle.h"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/CubeMapManager.hpp"
+#include "Graphics/ShaderHandle.hpp"
 
 
 class CShadowMapManager;

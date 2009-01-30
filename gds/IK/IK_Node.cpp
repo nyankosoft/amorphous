@@ -11,8 +11,8 @@
 #include <GL/glui.h>
 **/
 #include "Math64/LinearR3.h"
-#include "Math64/MathMisc.h"
-#include "IK_Node.h"
+#include "Math64/MathMisc.hpp"
+#include "IK_Node.hpp"
 
 extern int RotAxesOn;
 

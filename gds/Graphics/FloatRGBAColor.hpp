@@ -2,7 +2,7 @@
 #define __FLOATRGBACOLOR_H__
 
 
-#include "FloatRGBColor.h"
+#include "FloatRGBColor.hpp"
 
 
 /**

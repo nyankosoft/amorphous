@@ -7,12 +7,12 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "ShaderTechniqueHandle.h"
-#include "ShaderParameter.h"
+#include "ShaderTechniqueHandle.hpp"
+#include "ShaderParameter.hpp"
 
-#include "../../base.h"
-#include "Graphics/fwd.h"
-#include "Graphics/TextureHandle.h"
+#include "../../base.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/TextureHandle.hpp"
 
 
 typedef D3DXMATRIX Matrix44;

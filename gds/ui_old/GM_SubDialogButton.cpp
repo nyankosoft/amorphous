@@ -1,10 +1,10 @@
 
-#include "GM_SubDialogButton.h"
+#include "GM_SubDialogButton.hpp"
 
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
 
 

@@ -1,9 +1,9 @@
 
-#include "GM_PaintBar.h"
-#include "GM_PaintBarDesc.h"
-#include "GM_Dialog.h"
+#include "GM_PaintBar.hpp"
+#include "GM_PaintBarDesc.hpp"
+#include "GM_Dialog.hpp"
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
 #include <algorithm>
 

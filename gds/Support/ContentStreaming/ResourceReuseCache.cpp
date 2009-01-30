@@ -6,10 +6,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
 //#include "DXUT.h"
-#include "ResourceReuseCache.h"
+#include "ResourceReuseCache.hpp"
 
-#include "../SafeDelete.h"
-#include "../TextFileScanner.h"
+#include "../SafeDelete.hpp"
+#include "../TextFileScanner.hpp"
 
 using namespace std;
 

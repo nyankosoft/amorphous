@@ -1,6 +1,6 @@
 
-#include "TextureTool.h"
-#include "Direct3D9.h"
+#include "TextureTool.hpp"
+#include "Direct3D9.hpp"
 
 
 bool CTextureTool::CreateTexture( DWORD *padwTexelData, int iWidth, int iHeight, LPDIRECT3DTEXTURE9 *ppTexture )

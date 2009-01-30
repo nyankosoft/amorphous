@@ -1,28 +1,28 @@
-#include "GameTask_MainMenu.h"
-#include "GameTask_Stage.h"
-#include "App/ApplicationBase.h"
-#include "App/GameWindowManager_Win32.h"
+#include "GameTask_MainMenu.hpp"
+#include "GameTask_Stage.hpp"
+#include "App/ApplicationBase.hpp"
+#include "App/GameWindowManager_Win32.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Font/Font.h"
-#include "Graphics/GraphicsElementManager.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/GraphicsElementManager.hpp"
 
-#include "UI.h"
-#include "UI/InputHandler_Dialog.h"
-#include "UI/GM_StdControlRendererManager.h"
-//#include "UI/GM_FlowTextCaption.h"
+#include "UI.hpp"
+#include "UI/InputHandler_Dialog.hpp"
+#include "UI/GM_StdControlRendererManager.hpp"
+//#include "UI/GM_FlowTextCaption.hpp"
 
-#include "GameInput/InputHub.h"
+#include "GameInput/InputHub.hpp"
 
-#include "Stage/Stage.h"
-#include "JigLib/JL_PhysicsVisualizer_D3D.h"
+#include "Stage/Stage.hpp"
+#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
 
-//#include "Sound/SoundManager.h"
+//#include "Sound/SoundManager.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
-//#include "Support/Profile.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
+//#include "Support/Profile.hpp"
 
 
 #define CONFIG_STATE_RETURN_TO_GAME	0

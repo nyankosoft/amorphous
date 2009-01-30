@@ -4,9 +4,9 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/Camera.h"
-#include "TextureFormat.h"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/Camera.hpp"
+#include "TextureFormat.hpp"
 
 
 class STATUS

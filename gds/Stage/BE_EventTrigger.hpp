@@ -1,7 +1,7 @@
 #ifndef __BE_EVENTTRIGGER_H__
 #define __BE_EVENTTRIGGER_H__
 
-#include "BaseEntity.h"
+#include "BaseEntity.hpp"
 
 
 class CBE_EventTrigger : public CBaseEntity

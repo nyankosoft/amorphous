@@ -1,12 +1,12 @@
-#include "GM_StdControlRenderer.h"
-#include "GM_Control.h"
-#include "GM_Dialog.h"
-#include "GM_DialogManager.h"
-#include "GM_ControlRendererManager.h"
+#include "GM_StdControlRenderer.hpp"
+#include "GM_Control.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_DialogManager.hpp"
+#include "GM_ControlRendererManager.hpp"
 
-#include "Graphics/GraphicsEffectManager.h"
+#include "Graphics/GraphicsEffectManager.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
 using namespace std;

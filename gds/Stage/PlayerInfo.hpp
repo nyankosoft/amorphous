@@ -1,22 +1,22 @@
 #ifndef  __PLAYERINFO_H__
 #define  __PLAYERINFO_H__
 
-#include "Task/GameTask.h"
-#include "fwd.h"
-#include "BE_Player.h"
-#include "GameCommon/KeyBind.h"
-#include "GameCommon/SaveDataManager.h"
-#include "GameCommon/PlayTime.h"
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Singleton.h"
+#include "Task/GameTask.hpp"
+#include "fwd.hpp"
+#include "BE_Player.hpp"
+#include "GameCommon/KeyBind.hpp"
+#include "GameCommon/SaveDataManager.hpp"
+#include "GameCommon/PlayTime.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 #include <boost/shared_ptr.hpp>
 
 
-//#include "Support/Serialization/Serialization.h"
-//#include "Support/Serialization/ArchiveObjectFactory.h"
+//#include "Support/Serialization/Serialization.hpp"
+//#include "Support/Serialization/ArchiveObjectFactory.hpp"
 //using namespace GameLib1::Serialization;
 
 

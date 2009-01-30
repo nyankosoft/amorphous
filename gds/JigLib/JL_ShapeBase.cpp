@@ -1,5 +1,5 @@
 
-#include "JL_ShapeBase.h"
+#include "JL_ShapeBase.hpp"
 
 
 CJL_ShapeBase::CJL_ShapeBase()

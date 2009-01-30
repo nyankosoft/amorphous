@@ -3,8 +3,8 @@
 #define __KGL_LIGHT_SERIALIZATION_H__
 
 
-#include "Serialization_3DMath.h"
-#include "Serialization_Color.h"
+#include "Serialization_3DMath.hpp"
+#include "Serialization_Color.hpp"
 
 
 namespace GameLib1

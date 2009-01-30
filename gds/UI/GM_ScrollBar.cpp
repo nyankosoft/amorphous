@@ -1,8 +1,8 @@
 
-#include "GM_ScrollBar.h"
+#include "GM_ScrollBar.hpp"
 
-#include "GM_ScrollBarDesc.h"
-#include "GM_ControlRenderer.h"
+#include "GM_ScrollBarDesc.hpp"
+#include "GM_ControlRenderer.hpp"
 
 
 // Minimum scroll bar thumb size

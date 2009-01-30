@@ -5,7 +5,7 @@
 // BUMPVERTEX
 //  for objects that use normal maps
 
-#include "TextureCoord.h"
+#include "TextureCoord.hpp"
 
 #include <d3dx9.h>
 

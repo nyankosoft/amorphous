@@ -2,7 +2,7 @@
 #define __PYMODULE_TEXTMESSAGE_H__
 
 
-#include "fwd.h"
+#include "fwd.hpp"
 #include <Python.h>
 
 

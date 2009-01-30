@@ -1,9 +1,9 @@
-#include "GM_DialogCloseButton.h"
+#include "GM_DialogCloseButton.hpp"
 
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
-#include "GM_ControlRenderer.h"
-#include "GM_SoundPlayer.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "GM_SoundPlayer.hpp"
 
 
 CGM_DialogCloseButton::CGM_DialogCloseButton( CGM_Dialog *pDialog, CGM_DialogCloseButtonDesc *pDesc )

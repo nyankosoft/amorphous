@@ -2,32 +2,32 @@
 #define  __GraphicsElements_H__
 
 
-#include "../base.h"
-#include "3DMath/Vector2.h"
-#include "3DMath/Vector3.h"
-#include "3DMath/aabb2.h"
-#include "Graphics/fwd.h"
-#include "Graphics/3DGameMath.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/2DPrimitive/2DFrameRect.h"
-#include "Graphics/2DPrimitive/2DRoundRect.h"
-#include "Graphics/2DPrimitive/2DTriangle.h"
-#include "Graphics/TextureCoord.h"
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/Font/FontBase.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/TextureHandle.h"
+#include "../base.hpp"
+#include "3DMath/Vector2.hpp"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/aabb2.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/2DPrimitive/2DFrameRect.hpp"
+#include "Graphics/2DPrimitive/2DRoundRect.hpp"
+#include "Graphics/2DPrimitive/2DTriangle.hpp"
+#include "Graphics/TextureCoord.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/Font/FontBase.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/TextureHandle.hpp"
 
 // This will load all headers includeing this file...
-// How to avoid including "GraphicsEffectManager.h"?
-//#include "Graphics/all.h"
+// How to avoid including "GraphicsEffectManager.hpp"?
+//#include "Graphics/all.hpp"
 
 
-#include "GameCommon/CriticalDamping.h"
+#include "GameCommon/CriticalDamping.hpp"
 
-#include "Support/FixedVector.h"
-#include "Support/Vec3_StringAux.h"
-#include "Support/memory_helpers.h"
+#include "Support/FixedVector.hpp"
+#include "Support/Vec3_StringAux.hpp"
+#include "Support/memory_helpers.hpp"
 
 #include <vector>
 #include <list>

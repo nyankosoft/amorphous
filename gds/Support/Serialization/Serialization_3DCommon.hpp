@@ -2,9 +2,9 @@
 #define __KGL_3DCOMMON_SERIALIZATION_H__
 
 
-#include "../../Graphics/TextureCoord.h"
+#include "../../Graphics/TextureCoord.hpp"
 
-#include "Archive.h"
+#include "Archive.hpp"
 
 
 namespace GameLib1

@@ -11,7 +11,7 @@
 #ifndef __3DMATH_QUATERNION_H__
 #define __3DMATH_QUATERNION_H__
 
-#include "Matrix33.h"
+#include "Matrix33.hpp"
 
 class Quaternion
 {

@@ -2,8 +2,8 @@
 #define  __PhysBoxShapeDesc_H__
 
 
-#include "fwd.h"
-#include "ShapeDesc.h"
+#include "fwd.hpp"
+#include "ShapeDesc.hpp"
 
 
 namespace physics

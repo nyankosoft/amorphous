@@ -1,7 +1,7 @@
 #ifndef __3DMATH_RAY_H__
 #define __3DMATH_RAY_H__
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 struct CRayHit
 {

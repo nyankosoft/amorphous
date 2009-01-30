@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 
 
 class CSoundSourceImpl;

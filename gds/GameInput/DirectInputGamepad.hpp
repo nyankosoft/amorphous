@@ -5,9 +5,9 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
-#include "../base.h"
+#include "../base.hpp"
 
-#include "InputDevice.h"
+#include "InputDevice.hpp"
 
 
 #pragma comment( lib, "dinput8.lib" )

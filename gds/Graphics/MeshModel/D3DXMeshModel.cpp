@@ -1,9 +1,9 @@
 
-#include "D3DXMeshModel.h"
+#include "D3DXMeshModel.hpp"
 
 #include <assert.h>
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 #include "Graphics/FVF_BumpVertex.h"
 #include "Graphics/FVF_BumpWeightVertex.h"
 #include "Graphics/FVF_ColorVertex.h"
@@ -11,17 +11,17 @@
 #include "Graphics/FVF_NormalVertex.h"
 #include "Graphics/FVF_WeightVertex.h"
 #include "Graphics/FVF_ShadowVertex.h"
-#include "Graphics/TextureTool.h"
+#include "Graphics/TextureTool.hpp"
 
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/fnop.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/fnop.hpp"
 
-#include "Graphics/D3DXVec3Copy.h"
+#include "Graphics/D3DXVec3Copy.hpp"
 
 #include <iostream>
 #include <fstream>

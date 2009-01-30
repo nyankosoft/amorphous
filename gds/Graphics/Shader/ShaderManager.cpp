@@ -1,9 +1,9 @@
-#include "ShaderManager.h"
-#include "ShaderManagerHub.h"
-#include "HLSLShaderLightManager.h"
-#include "Graphics/Direct3D9.h"
+#include "ShaderManager.hpp"
+#include "ShaderManagerHub.hpp"
+#include "HLSLShaderLightManager.hpp"
+#include "Graphics/Direct3D9.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 

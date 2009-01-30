@@ -1,5 +1,5 @@
 
-#include "HUD_PlayerAircraft.h"
+#include "HUD_PlayerAircraft.hpp"
 
 
 HUD_PlayerAircraft::HUD_PlayerAircraft()

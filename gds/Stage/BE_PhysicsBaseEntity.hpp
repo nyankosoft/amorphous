@@ -1,8 +1,8 @@
 #ifndef __BE_PHYSICSBASEENTITY_H__
 #define __BE_PHYSICSBASEENTITY_H__
 
-#include "BaseEntity.h"
-#include "Physics/ActorDesc.h"
+#include "BaseEntity.hpp"
+#include "Physics/ActorDesc.hpp"
 
 
 class CBE_PhysicsBaseEntity : public CBaseEntity

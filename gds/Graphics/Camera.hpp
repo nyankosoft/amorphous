@@ -2,10 +2,10 @@
 #define __CAMERA_H__
 
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/Plane.h"
-#include "3DMath/Sphere.h"
-#include "3DMath/aabb3.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/Plane.hpp"
+#include "3DMath/Sphere.hpp"
+#include "3DMath/aabb3.hpp"
 
 #include <math.h>
 

@@ -1,14 +1,14 @@
 #ifndef  __LensFlare_H__
 #define  __LensFlare_H__
 
-#include "../base.h"
-#include "3DMath/Vector3.h"
-#include "Graphics/fwd.h"
-#include "Graphics/GraphicsResourceManager.h"
-#include "Graphics/FloatRGBAColor.h"
+#include "../base.hpp"
+#include "3DMath/Vector3.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/GraphicsResourceManager.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/FVF_TLVertex.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/2DPrimitive/2DRectSet.h"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/2DPrimitive/2DRectSet.hpp"
 
 #include <vector>
 #include <string>

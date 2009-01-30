@@ -1,12 +1,12 @@
-#include "NxPhysShapeDescFactory.h"
-#include "NxMathConv.h"
-#include "../ShapeDesc.h"
-#include "../BoxShapeDesc.h"
-#include "../SphereShapeDesc.h"
-#include "../CapsuleShapeDesc.h"
-#include "../TriangleMeshDesc.h"
-#include "../TriangleMeshShapeDesc.h"
-#include "NxPhysTriangleMesh.h"
+#include "NxPhysShapeDescFactory.hpp"
+#include "NxMathConv.hpp"
+#include "../ShapeDesc.hpp"
+#include "../BoxShapeDesc.hpp"
+#include "../SphereShapeDesc.hpp"
+#include "../CapsuleShapeDesc.hpp"
+#include "../TriangleMeshDesc.hpp"
+#include "../TriangleMeshShapeDesc.hpp"
+#include "NxPhysTriangleMesh.hpp"
 
 
 namespace physics

@@ -9,9 +9,9 @@
 using namespace std;
 
 
-#include "GameTextSet.h"
+#include "GameTextSet.hpp"
 
-#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization.hpp"
 
 
 //----------------------------------------------------------------

@@ -1,8 +1,8 @@
-#include "PseudoNoiseEffect.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DMisc.h"
-//#include "../Graphics/Shader/ShaderManager.h"
-#include "../GameCommon/MTRand.h"
+#include "PseudoNoiseEffect.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DMisc.hpp"
+//#include "../Graphics/Shader/ShaderManager.hpp"
+#include "../GameCommon/MTRand.hpp"
 
 
 //============================================================================================

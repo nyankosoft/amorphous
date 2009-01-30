@@ -4,10 +4,10 @@
 
 #include <vector>
 #include <string>
-#include "UI/GM_StdControlRendererManager.h"
-#include "CriticalDamping.h"
+#include "UI/GM_StdControlRendererManager.hpp"
+#include "CriticalDamping.hpp"
 
-#include "Graphics/Rect.h"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 

@@ -17,7 +17,7 @@ inline void Vec3Copy( D3DXVECTOR3& dest, const D3DXVECTOR3& src )
 
 #else /* USE_D3DXVECTOR */
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 inline void Vec3Copy( D3DXVECTOR3& dest, const Vector3& src )
 {

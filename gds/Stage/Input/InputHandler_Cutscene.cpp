@@ -1,10 +1,10 @@
-#include "InputHandler_Cutscene.h"
-#include "GameInput/3DActionCode.h"
-#include "../SystemInputHandler_Debug.h"
-#include "../BE_CameraController.h"
+#include "InputHandler_Cutscene.hpp"
+#include "GameInput/3DActionCode.hpp"
+#include "../SystemInputHandler_Debug.hpp"
+#include "../BE_CameraController.hpp"
 
 
-#include "Task/GameTask.h"
+#include "Task/GameTask.hpp"
 
 
 //CInputHandler_Cutscene::CInputHandler_Cutscene()

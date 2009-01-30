@@ -2,7 +2,7 @@
 #ifndef  __GAMEEVENT_SPAWNEVENT_H__
 #define  __GAMEEVENT_SPAWNEVENT_H__
 
-#include "GameEvent.h"
+#include "GameEvent.hpp"
 
 
 class CGE_SpawnEvent : public CGameEvent

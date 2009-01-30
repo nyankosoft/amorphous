@@ -1,11 +1,11 @@
 #ifndef __BE_PointLight_H__
 #define __BE_PointLight_H__
 
-#include "BE_Light.h"
-#include "BEC_Billboard.h"
+#include "BE_Light.hpp"
+#include "BEC_Billboard.hpp"
 #include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/TextureHandle.h"
-#include "Graphics/HemisphericLight.h"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/HemisphericLight.hpp"
 
 #include <string>
 

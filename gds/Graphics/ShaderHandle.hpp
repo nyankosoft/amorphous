@@ -2,8 +2,8 @@
 #define  __ShaderHandle_H__
 
 
-#include "GraphicsResourceHandle.h"
-#include "GraphicsResourceManager.h"
+#include "GraphicsResourceHandle.hpp"
+#include "GraphicsResourceManager.hpp"
 
 
 class CShaderHandle : public CGraphicsResourceHandle

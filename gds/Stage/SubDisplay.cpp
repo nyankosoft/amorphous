@@ -1,12 +1,12 @@
-#include "SubDisplay.h"
-#include "Stage.h"
-#include "ScreenEffectManager.h"
+#include "SubDisplay.hpp"
+#include "Stage.hpp"
+#include "ScreenEffectManager.hpp"
 
-#include "3DMath/MathMisc.h"
-#include "Graphics/3DGameMath.h"
-#include "Graphics/RenderTask.h"
-#include "Graphics/RenderTaskProcessor.h"
-#include "Support/SafeDeleteVector.h"
+#include "3DMath/MathMisc.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/RenderTask.hpp"
+#include "Graphics/RenderTaskProcessor.hpp"
+#include "Support/SafeDeleteVector.hpp"
 
 
 class CSubMonitorRenderTask : public CRenderTask

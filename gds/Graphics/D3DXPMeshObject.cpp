@@ -1,8 +1,8 @@
-#include "D3DXPMeshObject.h"
+#include "D3DXPMeshObject.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/memory_helpers.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/memory_helpers.hpp"
 
 
 CD3DXPMeshObject::CD3DXPMeshObject()

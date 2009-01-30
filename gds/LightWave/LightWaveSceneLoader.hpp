@@ -1,5 +1,5 @@
 
-#include "LWS_Items.h"
+#include "LWS_Items.hpp"
 
 
 class CTextFileScanner;

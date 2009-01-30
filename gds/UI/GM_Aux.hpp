@@ -4,10 +4,10 @@
 
 #include <string>
 
-#include "Graphics/Rect.h"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 extern CGM_Dialog *Create2ChoiceDialog( CGM_DialogManager* pDlgMgr, bool root_dialog,

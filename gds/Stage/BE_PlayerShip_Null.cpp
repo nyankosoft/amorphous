@@ -1,30 +1,30 @@
 
-#include "BE_PlayerShip.h"
-#include "PlayerInfo.h"
-#include "EntitySet.h"
-#include "CopyEntityDesc.h"
+#include "BE_PlayerShip.hpp"
+#include "PlayerInfo.hpp"
+#include "EntitySet.hpp"
+#include "CopyEntityDesc.hpp"
 #include "stage.h"
-#include "Input/InputHandler_PlayerShip.h"
-#include "Item/WeaponSystem.h"
-#include "Stage/ScreenEffectManager.h"
-#include "GameMessage.h"
+#include "Input/InputHandler_PlayerShip.hpp"
+#include "Item/WeaponSystem.hpp"
+#include "Stage/ScreenEffectManager.hpp"
+#include "GameMessage.hpp"
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "GameCommon/BasicGameMath.h"
-#include "GameCommon/MTRand.h"
-#include "GameCommon/RandomDirectionTable.h"
-#include "GameCommon/ShockWaveCameraEffect.h"
+#include "GameCommon/BasicGameMath.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "GameCommon/RandomDirectionTable.hpp"
+#include "GameCommon/ShockWaveCameraEffect.hpp"
 
-#include "Stage/BE_LaserDot.h"
+#include "Stage/BE_LaserDot.hpp"
 
 // added for laser dot casting test
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DXMeshObject.h"
-#include "Support/memory_helpers.h"
-#include "trace.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Support/memory_helpers.hpp"
+#include "trace.hpp"
 
-#include "JigLib/JL_PhysicsActor.h"
+#include "JigLib/JL_PhysicsActor.hpp"
 
 
 

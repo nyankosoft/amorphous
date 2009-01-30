@@ -1,20 +1,20 @@
 #ifndef  __MAPCOMPILER_LIGHTINGFORLIGHTMAP_SIMPLERAYTRACE_H__
 #define  __MAPCOMPILER_LIGHTINGFORLIGHTMAP_SIMPLERAYTRACE_H__
 
-//#include "LightingForLightmap.h"
+//#include "LightingForLightmap.hpp"
 
 #include <vector>
 using namespace std;
 
-#include "3DMath/AABTree.h"
-#include "Graphics/FloatRGBColor.h"
-#include "Graphics/LightStructs.h"
-#include "Support/StatusDisplay/StatusDisplay.h"
-#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.h"
+#include "3DMath/AABTree.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/LightStructs.hpp"
+#include "Support/StatusDisplay/StatusDisplay.hpp"
+#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
 
-#include "Lightmap.h"
+#include "Lightmap.hpp"
 
-//#include "3DMath/PolygonMesh.h"
+//#include "3DMath/PolygonMesh.hpp"
 
 //class CLight;
 

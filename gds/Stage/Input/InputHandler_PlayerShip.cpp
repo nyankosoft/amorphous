@@ -1,15 +1,15 @@
 
-#include "InputHandler_PlayerShip.h"
+#include "InputHandler_PlayerShip.hpp"
 
-#include "Stage/PlayerInfo.h"
-#include "Stage/HUD_PlayerBase.h"
-#include "Stage/BE_Player.h"
-//#include "Stage/BE_PlayerShip.h"
-#include "Item/WeaponSystem.h"
+#include "Stage/PlayerInfo.hpp"
+#include "Stage/HUD_PlayerBase.hpp"
+#include "Stage/BE_Player.hpp"
+//#include "Stage/BE_PlayerShip.hpp"
+#include "Item/WeaponSystem.hpp"
 
-#include "Task/GameTask.h"
+#include "Task/GameTask.hpp"
 
-#include "Stage/SystemInputHandler_Debug.h"
+#include "Stage/SystemInputHandler_Debug.hpp"
 
 
 

@@ -1,8 +1,8 @@
 
-#include "GM_Loader.h"
+#include "GM_Loader.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/TextFileScanner.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/TextFileScanner.hpp"
 
 #include "UI/ui.h"
 

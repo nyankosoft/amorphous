@@ -1,6 +1,6 @@
-#include "StaticGeometryArchiveFG.h"
+#include "StaticGeometryArchiveFG.hpp"
 
-#include "Support/StringAux.h"
+#include "Support/StringAux.hpp"
 
 
 const std::string CStaticGeometryArchiveFG::ms_CollisionMeshTreeKey = "CollisionMeshTree";
@@ -55,7 +55,7 @@ void CStaticGeometryArchiveFG::Scale( float factor )
 */
 
 
-#include "3DMath/stream.h"
+#include "3DMath/stream.hpp"
 
 
 void CStaticGeometryArchiveFG::WriteToTextFile( const string& filename )

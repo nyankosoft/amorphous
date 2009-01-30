@@ -2,7 +2,7 @@
 #define  __XMLCH2X_H__
 
 
-#include "XercesString.h"
+#include "XercesString.hpp"
 #include <string>
 
 

@@ -3,17 +3,17 @@
 
 
 #include <float.h>
-#include "fwd.h"
-#include "Enums.h"
+#include "fwd.hpp"
+#include "Enums.hpp"
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/aabb3.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/aabb3.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 
-#include "Support/msgbox.h"
+#include "Support/msgbox.hpp"
 
 
 namespace physics

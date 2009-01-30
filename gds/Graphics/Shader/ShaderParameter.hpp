@@ -3,9 +3,9 @@
 
 
 #include <string>
-#include "../fwd.h"
-#include "Graphics/TextureHandle.h"
-#include "Support/Serialization/Serialization.h"
+#include "../fwd.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

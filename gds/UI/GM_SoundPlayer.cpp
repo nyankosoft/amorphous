@@ -1,6 +1,6 @@
 
-#include "GM_SoundPlayer.h"
-#include "Sound/SoundManager.h"
+#include "GM_SoundPlayer.hpp"
+#include "Sound/SoundManager.hpp"
 
 
 //=================================================================================

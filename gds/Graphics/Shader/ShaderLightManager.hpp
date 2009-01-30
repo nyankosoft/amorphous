@@ -4,11 +4,11 @@
 
 #include <d3dx9.h>
 
-#include "../fwd.h"
-#include "../HemisphericLight.h"
+#include "../fwd.hpp"
+#include "../HemisphericLight.hpp"
 
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
 
 //typedef TCFixedVector<class A, int B> fixed_vector<A,B>;

@@ -1,10 +1,10 @@
 #ifndef __GAMEITEM_AMMUNITION_H__
 #define __GAMEITEM_AMMUNITION_H__
 
-#include "GameItem.h"
+#include "GameItem.hpp"
 
-#include "Stage/BaseEntityHandle.h"
-#include "Stage/Serialization_BaseEntityHandle.h"
+#include "Stage/BaseEntityHandle.hpp"
+#include "Stage/Serialization_BaseEntityHandle.hpp"
 
 
 //======================================================================================

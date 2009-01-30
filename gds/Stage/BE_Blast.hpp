@@ -1,7 +1,7 @@
 #ifndef __BASEENTITYBLAST_H__
 #define __BASEENTITYBLAST_H__
 
-#include "BaseEntity.h"
+#include "BaseEntity.hpp"
 
 
 class CUnitCube;

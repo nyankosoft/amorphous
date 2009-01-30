@@ -2,9 +2,9 @@
 #define  __VectorRand_H__
 
 
-#include "3DMath/Vector2.h"
-#include "3DMath/Vector3.h"
-#include "GameCommon/MTRand.h"
+#include "3DMath/Vector2.hpp"
+#include "3DMath/Vector3.hpp"
+#include "GameCommon/MTRand.hpp"
 
 
 /// used by Vec3GetRandDir() & Vec3GetRandDir()

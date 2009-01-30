@@ -1,11 +1,11 @@
-#include "GameTaskFactoryBase.h"
+#include "GameTaskFactoryBase.hpp"
 
-#include "GameTask.h"
-#include "GameTask_Stage.h"
-#include "GameTask_StageSelect.h"
-#include "GameTask_MainMenu.h"
-#include "GameTask_GlobalStageLoader.h"
-#include "GameTask_AsyncStageLoader.h"
+#include "GameTask.hpp"
+#include "GameTask_Stage.hpp"
+#include "GameTask_StageSelect.hpp"
+#include "GameTask_MainMenu.hpp"
+#include "GameTask_GlobalStageLoader.hpp"
+#include "GameTask_AsyncStageLoader.hpp"
 
 
 CGameTaskFactoryBase::~CGameTaskFactoryBase()

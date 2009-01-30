@@ -1,10 +1,10 @@
-#include "XMLDocumentLoader.h"
-#include "Support/SafeDelete.h"
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "XMLDocumentLoader.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "XercesString.h"
-#include "xmlch2x.h"
+#include "XercesString.hpp"
+#include "xmlch2x.hpp"
 
 using namespace std;
 using namespace boost;

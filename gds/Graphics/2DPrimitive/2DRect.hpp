@@ -2,7 +2,7 @@
 #define  __2DRECT_H__
 
 
-#include "2DPrimitive.h"
+#include "2DPrimitive.hpp"
 
 
 /**

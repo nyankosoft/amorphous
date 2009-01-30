@@ -3,9 +3,9 @@
 #define __Serialization_ShaderTechniqueHandle_H__
 
 
-#include "ShaderTechniqueHandle.h"
+#include "ShaderTechniqueHandle.hpp"
 
-#include "Support/Serialization/Archive.h"
+#include "Support/Serialization/Archive.hpp"
 
 
 namespace GameLib1

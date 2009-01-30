@@ -13,8 +13,8 @@ using namespace std;
 */
 
 #include "Math64/LinearR3.h"
-#include "IK_Tree.h"
-#include "IK_Node.h"
+#include "IK_Tree.hpp"
+#include "IK_Node.hpp"
 
 
 CIK_Tree::CIK_Tree()

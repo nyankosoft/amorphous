@@ -7,7 +7,7 @@
 
 #include <d3dx9.h>
 
-#include "TextureCoord.h"
+#include "TextureCoord.hpp"
 
 
 struct MAPVERTEX

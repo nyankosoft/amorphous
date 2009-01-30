@@ -1,9 +1,9 @@
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
-#include "MassSpringSim.h"
+#include "MassSpringSim.hpp"
 
 int g_Counter = 0;
 

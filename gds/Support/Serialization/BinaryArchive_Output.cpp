@@ -1,5 +1,5 @@
-#include "BinaryArchive_Output.h"
-#include "ArchiveObjectBase.h"
+#include "BinaryArchive_Output.hpp"
+#include "ArchiveObjectBase.hpp"
 
 using namespace GameLib1::Serialization;
 

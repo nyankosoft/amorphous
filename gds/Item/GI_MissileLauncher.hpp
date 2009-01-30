@@ -1,15 +1,15 @@
 #ifndef  __GAMEITEM_MISSILELAUNCHER_H__
 #define  __GAMEITEM_MISSILELAUNCHER_H__
 
-#include "GI_Weapon.h"
+#include "GI_Weapon.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
 
-#include "Graphics/Camera.h"
-#include "Stage/fwd.h"
-#include "Stage/ViewFrustumTest.h"
-#include "../base.h"
+#include "Graphics/Camera.hpp"
+#include "Stage/fwd.hpp"
+#include "Stage/ViewFrustumTest.hpp"
+#include "../base.hpp"
 
 
 class CWeaponSystem;

@@ -1,9 +1,9 @@
 #ifndef  __TRIANGLE_H__
 #define  __TRIANGLE_H__
 
-#include "3DMath/3DStructs.h"
-#include "3DMath/Vector3.h"
-#include "GameCommon/BasicGameMath.h"
+#include "3DMath/3DStructs.hpp"
+#include "3DMath/Vector3.hpp"
+#include "GameCommon/BasicGameMath.hpp"
 
 
 class CTriangle

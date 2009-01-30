@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------
-// File: PackedFile.h
+// File: PackedFile.hpp
 //
 // Illustrates streaming content using Direct3D 9/10
 //

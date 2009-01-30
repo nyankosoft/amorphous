@@ -4,10 +4,10 @@
 
 #include <string>
 
-#include "fwd.h"
-#include "GraphicsResource.h"
-#include "GraphicsResourceDescs.h"
-#include "GraphicsResourceEntries.h"
+#include "fwd.hpp"
+#include "GraphicsResource.hpp"
+#include "GraphicsResourceDescs.hpp"
+#include "GraphicsResourceEntries.hpp"
 
 
 class CGraphicsResourceHandle

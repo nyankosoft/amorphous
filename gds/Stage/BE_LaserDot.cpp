@@ -1,12 +1,12 @@
 
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "../Graphics/Direct3D9.h"
-#include "../Graphics/D3DXMeshObject.h"
-#include "../Graphics/Shader/ShaderManager.h"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "../Graphics/Direct3D9.hpp"
+#include "../Graphics/D3DXMeshObject.hpp"
+#include "../Graphics/Shader/ShaderManager.hpp"
 
-#include "BE_LaserDot.h"
+#include "BE_LaserDot.hpp"
 
 
 

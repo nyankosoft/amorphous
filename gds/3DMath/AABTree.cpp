@@ -1,6 +1,6 @@
-#include "AABTree.h"
+#include "AABTree.hpp"
 
-#include "Support/StringAux.h"
+#include "Support/StringAux.hpp"
 
 
 int CAABNode::ms_DefaultReserveSize = 1024;

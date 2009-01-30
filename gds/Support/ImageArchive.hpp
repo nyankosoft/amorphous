@@ -6,7 +6,7 @@
 #include <string>
 
 #include "Support/SerializableStream.hpp"
-#include "Support/fnop.h"
+#include "Support/fnop.hpp"
 
 
 /**

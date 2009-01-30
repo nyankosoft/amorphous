@@ -1,10 +1,10 @@
 
-#include "CubeMapManager.h"
+#include "CubeMapManager.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Shader/ShaderManagerHub.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/ShaderManagerHub.hpp"
 
 
 CCubeMapManager::CCubeMapManager()

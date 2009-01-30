@@ -2,7 +2,7 @@
 #define  __GM_INPUT_H__
 
 
-#include "Graphics/Point.h"
+#include "Graphics/Point.hpp"
 using namespace Graphics;
 
 

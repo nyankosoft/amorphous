@@ -3,7 +3,7 @@
 
 #include "3DMath/precision.h"
 
-#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

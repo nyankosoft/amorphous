@@ -4,11 +4,11 @@
 
 #include <string>
 #include "3DMath/precision.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Singleton.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 namespace physics

@@ -1,8 +1,8 @@
-#include "CellBuilder.h"
+#include "CellBuilder.hpp"
 #include "MapCompiler.h"
 #include <algorithm>
 
-#include "Stage/BinaryNode.h"
+#include "Stage/BinaryNode.hpp"
 
 
 CCellBuilder::CCellBuilder(CBSPTreeBuilder* pBSPTBuilder)

@@ -1,7 +1,7 @@
-#include "TextureHandle.h"
-#include "GraphicsResourceManager.h"
+#include "TextureHandle.hpp"
+#include "GraphicsResourceManager.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 

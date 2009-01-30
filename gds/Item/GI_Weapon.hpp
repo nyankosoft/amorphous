@@ -1,14 +1,14 @@
 #ifndef  __GAMEITEM_WEAPON_H__
 #define  __GAMEITEM_WEAPON_H__
 
-#include "GameItem.h"
+#include "GameItem.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
-#include "Sound/SoundHandle.h"
-#include "Sound/Serialization_SoundHandle.h"
-#include "Stage/fwd.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
+#include "Sound/SoundHandle.hpp"
+#include "Sound/Serialization_SoundHandle.hpp"
+#include "Stage/fwd.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 
 class CWeaponSystem;
 struct SWeaponSlot;

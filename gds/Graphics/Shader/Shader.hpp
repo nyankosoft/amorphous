@@ -3,7 +3,7 @@
 #define __SHADER_SINGLETON_H__
 
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 #include <stdlib.h>

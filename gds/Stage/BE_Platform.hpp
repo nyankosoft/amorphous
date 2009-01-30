@@ -3,14 +3,14 @@
 #define __BE_PLATFORM_H__
 
 
-#include "BaseEntity.h"
-#include "BaseEntityHandle.h"
-#include "BE_PhysicsBaseEntity.h"
+#include "BaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
+#include "BE_PhysicsBaseEntity.hpp"
 
-#include "Support/FixedVector.h"
-#include "3DMath/Matrix34.h"
+#include "Support/FixedVector.hpp"
+#include "3DMath/Matrix34.hpp"
 
-#include "Sound/SoundHandle.h"
+#include "Sound/SoundHandle.hpp"
 
 #include <string>
 using namespace std;

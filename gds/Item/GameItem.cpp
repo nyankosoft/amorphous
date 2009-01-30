@@ -1,6 +1,6 @@
-#include "GameItem.h"
-#include "XML/XMLNodeReader.h"
-#include "Support/memory_helpers.h"
+#include "GameItem.hpp"
+#include "XML/XMLNodeReader.hpp"
+#include "Support/memory_helpers.hpp"
 #include <string.h>
 
 
@@ -69,15 +69,15 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 // CGI_Binocular
 //===========================================================================
 
-#include "3DMath/MathMisc.h"
-#include "Graphics/Font/Font.h"
-#include "Graphics/Camera.h"
-#include "GameCommon/CriticalDamping.h"
-#include "Stage/PlayerInfo.h"
-#include "Stage/Stage.h"
-#include "Stage/ScreenEffectManager.h"
-#include "GameInput/3DActionCode.h"
-#include "GameInput/InputHandler.h"
+#include "3DMath/MathMisc.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/Camera.hpp"
+#include "GameCommon/CriticalDamping.hpp"
+#include "Stage/PlayerInfo.hpp"
+#include "Stage/Stage.hpp"
+#include "Stage/ScreenEffectManager.hpp"
+#include "GameInput/3DActionCode.hpp"
+#include "GameInput/InputHandler.hpp"
 
 
 CGI_Binocular::CGI_Binocular()
@@ -199,9 +199,9 @@ void CGI_Binocular::GetStatus( std::string& dest_buffer )
 // CGI_NightVision
 //===========================================================================
 
-#include "Task/GameTask_Stage.h"
-#include "Stage/Stage.h"
-#include "Stage/ScreenEffectManager.h"
+#include "Task/GameTask_Stage.hpp"
+#include "Stage/Stage.hpp"
+#include "Stage/ScreenEffectManager.hpp"
 
 
 void CGI_NightVision::OnSelected()

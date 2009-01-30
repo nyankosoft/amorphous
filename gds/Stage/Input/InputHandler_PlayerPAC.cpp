@@ -1,16 +1,16 @@
-#include "InputHandler_PlayerPAC.h"
+#include "InputHandler_PlayerPAC.hpp"
 
-#include "Stage/PlayerInfo.h"
-#include "Stage/BE_Player.h"
-#include "Item/WeaponSystem.h"
+#include "Stage/PlayerInfo.hpp"
+#include "Stage/BE_Player.hpp"
+#include "Item/WeaponSystem.hpp"
 
-#include "Task/GameTask.h"
+#include "Task/GameTask.hpp"
 #include "../../../../GameProjects/FlightGame/src/srcroot/Task/GameTaskFG.h"
 
-#include "Stage/SystemInputHandler_Debug.h"
+#include "Stage/SystemInputHandler_Debug.hpp"
 
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 CInputHandler_PlayerPAC::CInputHandler_PlayerPAC()

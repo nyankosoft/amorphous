@@ -1,7 +1,7 @@
-#include "D3DXMeshObject.h"
+#include "D3DXMeshObject.hpp"
 
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 #include "Graphics/FVF_BumpVertex.h"
 #include "Graphics/FVF_BumpWeightVertex.h"
@@ -11,10 +11,10 @@
 #include "Graphics/FVF_WeightVertex.h"
 #include "Graphics/FVF_ShadowVertex.h"
 
-#include "Graphics/MeshModel/MeshBone.h"
+#include "Graphics/MeshModel/MeshBone.hpp"
 using namespace MeshModel;
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 
 CD3DXMeshObject::CD3DXMeshObject()

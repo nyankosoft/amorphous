@@ -7,13 +7,13 @@ using namespace std;
 #include "Graphics/FVF_BumpWeightVertex.h"
 #include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/FVF_TextureVertex.h"
-#include "Support/fnop.h"
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/fnop.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "NVMeshMender.h"
-#include "3DMeshModelBuilder.h"
-#include "ShadowVolumeMeshGenerator.h"
+#include "NVMeshMender.hpp"
+#include "3DMeshModelBuilder.hpp"
+#include "ShadowVolumeMeshGenerator.hpp"
 using namespace MeshModel;
 
 

@@ -5,13 +5,13 @@
 #include <boost/shared_ptr.hpp>
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "3DMath/Vector3.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Graphics/TextureRenderTarget.h"
-#include "Graphics/Camera.h"
-#include "Graphics/3DGameMath.h"
-#include "ShadowMaps.h"
+#include "3DMath/Vector3.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "ShadowMaps.hpp"
 
 
 /**

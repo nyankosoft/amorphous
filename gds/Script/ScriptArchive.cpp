@@ -1,8 +1,8 @@
-#include "ScriptArchive.h"
+#include "ScriptArchive.hpp"
 #include <iostream>
 
-#include "Support/fnop.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/fnop.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"

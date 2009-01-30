@@ -4,7 +4,7 @@
 
 #include "NxPhysics.h"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 
 namespace physics

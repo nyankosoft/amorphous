@@ -2,8 +2,8 @@
 #define  __GAMETASK_STAGESELECT_H__
 
 
-#include "GameTask.h"
-#include "UI/fwd.h"
+#include "GameTask.hpp"
+#include "UI/fwd.hpp"
 
 #include <vector>
 #include <string>

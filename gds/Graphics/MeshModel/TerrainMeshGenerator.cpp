@@ -1,14 +1,14 @@
-#include "TerrainMeshGenerator.h"
-#include "General3DMesh.h"
+#include "TerrainMeshGenerator.hpp"
+#include "General3DMesh.hpp"
 
 
 #include <boost/filesystem.hpp>
 #include <stdio.h>
 #include "ImageStone.h"
 
-#include "Support/StringAux.h"
-#include "Support/fnop.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/StringAux.hpp"
+#include "Support/fnop.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 using namespace boost;

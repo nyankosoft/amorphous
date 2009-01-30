@@ -2,10 +2,10 @@
 #define __KGL_COLOR_SERIALIZATION_H__
 
 
-#include "../../Graphics/FloatRGBColor.h"
-#include "../../Graphics/FloatRGBAColor.h"
+#include "../../Graphics/FloatRGBColor.hpp"
+#include "../../Graphics/FloatRGBAColor.hpp"
 
-#include "Archive.h"
+#include "Archive.hpp"
 
 
 namespace GameLib1

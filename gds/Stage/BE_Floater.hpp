@@ -1,7 +1,7 @@
 #ifndef __BE_Floater_H__
 #define __BE_Floater_H__
 
-#include "BE_Enemy.h"
+#include "BE_Enemy.hpp"
 
 class CBE_Floater : public CBE_Enemy
 {

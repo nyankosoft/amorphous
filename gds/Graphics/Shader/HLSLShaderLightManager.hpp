@@ -3,7 +3,7 @@
 
 
 #include <d3d9.h>
-#include "ShaderLightManager.h"
+#include "ShaderLightManager.hpp"
 
 
 class CHLSLShaderLightManager : public CShaderLightManager

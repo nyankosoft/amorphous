@@ -1,5 +1,5 @@
 
-#include "LightmapLightingManager.h"
+#include "LightmapLightingManager.hpp"
 
 using namespace std;
 using namespace boost;

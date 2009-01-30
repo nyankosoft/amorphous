@@ -2,8 +2,8 @@
 #define  __D3DLightManager_H__
 
 
-#include "fwd.h"
-#include "ShaderLightManager.h"
+#include "fwd.hpp"
+#include "ShaderLightManager.hpp"
 
 
 inline D3DVECTOR ToD3DVECTOR( const Vector3& src )

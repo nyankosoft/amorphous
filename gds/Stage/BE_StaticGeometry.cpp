@@ -1,17 +1,17 @@
-#include "BE_StaticGeometry.h"
+#include "BE_StaticGeometry.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-//#include "Graphics/Direct3D9.h"
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+//#include "Graphics/Direct3D9.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
-#include "Support/Profile.h"
+#include "Support/Profile.hpp"
 
-#include "StaticGeometryBase.h"
-#include "ScreenEffectManager.h"
+#include "StaticGeometryBase.hpp"
+#include "ScreenEffectManager.hpp"
 
 using namespace std;
 

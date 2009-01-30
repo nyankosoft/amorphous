@@ -1,12 +1,12 @@
 #ifndef _BSPMAPDATA_H__
 #define _BSPMAPDATA_H__
 
-#include "fwd.h"
+#include "fwd.hpp"
 
-#include "Stage/bspstructs.h"
-#include "Stage/BSPStaticGeometry.h"
+#include "Stage/bspstructs.hpp"
+#include "Stage/BSPStaticGeometry.hpp"
 
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

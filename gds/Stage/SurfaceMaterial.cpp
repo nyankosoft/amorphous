@@ -1,10 +1,10 @@
 
-#include "SurfaceMaterial.h"
+#include "SurfaceMaterial.hpp"
 
-#include "Serialization_BaseEntityHandle.h"
-#include "Sound/Serialization_SoundHandle.h"
-#include "Support/TextFileScanner.h"
-#include "Support/Serialization/SerializationEx.h"
+#include "Serialization_BaseEntityHandle.hpp"
+#include "Sound/Serialization_SoundHandle.hpp"
+#include "Support/TextFileScanner.hpp"
+#include "Support/Serialization/SerializationEx.hpp"
 
 
 

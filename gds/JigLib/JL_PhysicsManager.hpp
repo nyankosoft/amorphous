@@ -4,25 +4,25 @@
 //#include "constraint.hpp"
 
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix33.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix33.hpp"
 
-#include "Support/PreAllocDynamicLinkList.h"
+#include "Support/PreAllocDynamicLinkList.hpp"
 
 #include <assert.h>
 #include <vector>
 
-#include "JL_PhysicsActorDesc.h"
-#include "JL_PhysicsActor.h"
+#include "JL_PhysicsActorDesc.hpp"
+#include "JL_PhysicsActor.hpp"
 
-#include "JL_Shape_Box.h"
-#include "JL_Shape_Capsule.h"
-#include "TriangleMesh.h"
+#include "JL_Shape_Box.hpp"
+#include "JL_Shape_Capsule.hpp"
+#include "TriangleMesh.hpp"
 //#include "JL_Shape_.h"
 //#include "JL_Shape_.h"
 
-#include "JL_ContactInfo.h"
-#include "JL_SurfaceMaterial.h"
+#include "JL_ContactInfo.hpp"
+#include "JL_SurfaceMaterial.hpp"
 
 #define NUM_MAX_COLLISIONS_PER_FRAME	512
 //#define NUM_MAX_RIGID_BODIES			512

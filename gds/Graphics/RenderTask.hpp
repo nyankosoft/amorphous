@@ -2,8 +2,8 @@
 #define  __RenderTask_H__
 
 
-#include "Direct3D9.h"
-#include "Support/Log/DefaultLog.h"
+#include "Direct3D9.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 class CRenderTask

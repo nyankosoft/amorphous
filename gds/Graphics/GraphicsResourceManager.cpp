@@ -1,14 +1,14 @@
-#include "Graphics/GraphicsResourceManager.h"
-#include "Graphics/GraphicsResourceCacheManager.h"
-#include "Graphics/GraphicsResourceHandle.h"
-#include "Graphics/AsyncResourceLoader.h"
-#include "Graphics/Direct3D9.h"
+#include "Graphics/GraphicsResourceManager.hpp"
+#include "Graphics/GraphicsResourceCacheManager.hpp"
+#include "Graphics/GraphicsResourceHandle.hpp"
+#include "Graphics/AsyncResourceLoader.hpp"
+#include "Graphics/Direct3D9.hpp"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
-#include "Support/SafeDeleteVector.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/SafeDeleteVector.hpp"
 
-#include "Support/Serialization/BinaryDatabase.h"
+#include "Support/Serialization/BinaryDatabase.hpp"
 
 using namespace std;
 using namespace boost;

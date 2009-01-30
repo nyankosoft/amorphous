@@ -5,11 +5,11 @@
 #include <vector>
 using namespace std;
 
-#include "3DMath/Vector3.h"
-#include "3DMath/AABTree.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/AABTree.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 

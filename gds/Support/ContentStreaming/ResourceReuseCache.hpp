@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------
-// File: ResourceReuseCache.h
+// File: ResourceReuseCache.hpp
 //
 // Illustrates streaming content using Direct3D 9/10
 //
@@ -40,7 +40,7 @@
 #include <string>
 
 
-#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

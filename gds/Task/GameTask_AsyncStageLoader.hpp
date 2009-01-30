@@ -2,11 +2,11 @@
 #define  __GameTask_AsyncStageLoader_H__
 
 
-#include "GameTask.h"
-#include "UI/fwd.h"
-#include "Stage/fwd.h"
-#include "Stage/StageLoader.h"
-#include "Support/Timer.h"
+#include "GameTask.hpp"
+#include "UI/fwd.hpp"
+#include "Stage/fwd.hpp"
+#include "Stage/StageLoader.hpp"
+#include "Support/Timer.hpp"
 
 class CFontBase;
 

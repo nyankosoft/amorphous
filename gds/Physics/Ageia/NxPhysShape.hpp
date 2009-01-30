@@ -2,9 +2,9 @@
 #define  __NxPhysShape_H__
 
 
-#include "fwd.h"
-#include "../Shape.h"
-#include "NxPhysConv.h"
+#include "fwd.hpp"
+#include "../Shape.hpp"
+#include "NxPhysConv.hpp"
 
 #include "NxPhysics.h"
 

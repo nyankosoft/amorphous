@@ -1,12 +1,12 @@
 
-#include "StatusDisplayRenderer_D3DX.h"
-#include "StatusDisplay.h"
+#include "StatusDisplayRenderer_D3DX.hpp"
+#include "StatusDisplay.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Font.h"
-#include "Graphics/2DRect.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Font.hpp"
+#include "Graphics/2DRect.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 
 CStatusDisplayRenderer_D3DX::CStatusDisplayRenderer_D3DX()

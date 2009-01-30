@@ -2,8 +2,8 @@
 #define  __GM_CONTROL_PAINTBARDESC_H__
 
 
-#include "GM_ControlDescBase.h"
-#include "GM_PaintBar.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_PaintBar.hpp"
 
 
 class CGM_PaintBarDesc : public CGM_ControlDesc

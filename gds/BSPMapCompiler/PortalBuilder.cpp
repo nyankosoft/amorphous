@@ -1,7 +1,7 @@
 
 #include "MapCompiler.h"
 
-#include "Stage/BinaryNode.h"
+#include "Stage/BinaryNode.hpp"
 
 
 void CPortalBuilder::ConstructFrom( CBSPTreeBuilder* pBSPTBuilder,

@@ -1,13 +1,13 @@
 
-#include "BSPMapData.h"
+#include "BSPMapData.hpp"
 //#include "lightmapbuilder.h"
-#include "../Graphics/LightStructs.h"
-#include "../Stage/StaticGeometry.h"
+#include "../Graphics/LightStructs.hpp"
+#include "../Stage/StaticGeometry.hpp"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/memory_helpers.h"
-#include "Support/Vec3_StringAux.h"
-#include "Support/fnop.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Vec3_StringAux.hpp"
+#include "Support/fnop.hpp"
 using namespace fnop;
 
 

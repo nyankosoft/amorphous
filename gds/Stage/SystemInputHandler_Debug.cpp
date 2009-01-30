@@ -1,22 +1,22 @@
-#include "SystemInputHandler_Debug.h"
+#include "SystemInputHandler_Debug.hpp"
 #include <direct.h>
 
-#include "App/GameWindowManager_Win32.h"
-#include "App/ApplicationBase.h"
-#include "Task/GameTaskManager.h"
+#include "App/GameWindowManager_Win32.hpp"
+#include "App/ApplicationBase.hpp"
+#include "Task/GameTaskManager.hpp"
 
-#include "Graphics/Font/Font.h"
-#include "Graphics/Font/TextureFont.h"
-#include "Stage/PlayerInfo.h"
-#include "Stage/EntitySet.h"
-#include "Stage/BE_PlayerShip.h"
-#include "Stage/Stage.h"
-#include "Stage/ScreenEffectManager.h"
-#include "GameCommon/ImageCapture.h"
-#include "GameCommon/ScreenShotManager.h"
-#include "Item/WeaponSystem.h"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Stage/PlayerInfo.hpp"
+#include "Stage/EntitySet.hpp"
+#include "Stage/BE_PlayerShip.hpp"
+#include "Stage/Stage.hpp"
+#include "Stage/ScreenEffectManager.hpp"
+#include "GameCommon/ImageCapture.hpp"
+#include "GameCommon/ScreenShotManager.hpp"
+#include "Item/WeaponSystem.hpp"
 
-#include "Task/GameTask_Stage.h"
+#include "Task/GameTask_Stage.hpp"
 
 bool g_bAppExitRequested = false;
 

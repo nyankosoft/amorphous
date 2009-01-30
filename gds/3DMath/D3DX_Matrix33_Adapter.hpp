@@ -2,7 +2,7 @@
 #ifndef __D3DX_MATRIX33_ADAPTER_H__
 #define __D3DX_MATRIX33_ADAPTER_H__
 
-#include "Matrix33.h"
+#include "Matrix33.hpp"
 
 #include <d3dx9.h>
 

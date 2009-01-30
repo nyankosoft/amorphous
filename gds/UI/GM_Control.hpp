@@ -2,9 +2,9 @@
 #define  __GM_CONTROL_H__
 
 
-#include "fwd.h"
-#include "Graphics/Point.h"
-#include "Graphics/Rect.h"
+#include "fwd.hpp"
+#include "Graphics/Point.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <string>

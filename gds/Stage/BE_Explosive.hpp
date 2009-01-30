@@ -1,10 +1,10 @@
 #ifndef __BE_EXPLOSIVE_H__
 #define __BE_EXPLOSIVE_H__
 
-#include "BE_PhysicsBaseEntity.h"
+#include "BE_PhysicsBaseEntity.hpp"
 
-#include "BaseEntityHandle.h"
-#include "Sound/SoundHandle.h"
+#include "BaseEntityHandle.hpp"
+#include "Sound/SoundHandle.hpp"
 
 
 class CBE_Explosive : public CBE_PhysicsBaseEntity

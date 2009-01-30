@@ -1,23 +1,23 @@
-#include "PyModule_VisualEffect.h"
-#include "PyModule_Stage.h"
+#include "PyModule_VisualEffect.hpp"
+#include "PyModule_Stage.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix34.h"
-#include "Graphics/FloatRGBColor.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix34.hpp"
+#include "Graphics/FloatRGBColor.hpp"
 
-#include "BE_DirectionalLight.h"
-#include "BE_PointLight.h"
-#include "CopyEntityDesc.h"
-#include "Stage.h"
-#include "EntitySet.h"
-#include "EntityRenderManager.h"
-#include "ScreenEffectManager.h"
+#include "BE_DirectionalLight.hpp"
+#include "BE_PointLight.hpp"
+#include "CopyEntityDesc.hpp"
+#include "Stage.hpp"
+#include "EntitySet.hpp"
+#include "EntityRenderManager.hpp"
+#include "ScreenEffectManager.hpp"
 
 #include "Support/Macro.h"
-#include "Support/Vec3_StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/Vec3_StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "../base.h"
+#include "../base.hpp"
 
 using namespace std;
 

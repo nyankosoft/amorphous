@@ -1,6 +1,6 @@
-#include "Lightmap.h"
-#include "Support/Vec3_StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "Lightmap.hpp"
+#include "Support/Vec3_StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 //================================================================================

@@ -3,9 +3,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "../../base.h"
-#include "Stage/fwd.h"
-#include "GameInput/InputHandler.h"
+#include "../../base.hpp"
+#include "Stage/fwd.hpp"
+#include "GameInput/InputHandler.hpp"
 
 
 class CInputHandler_StageDebug : public CInputHandler

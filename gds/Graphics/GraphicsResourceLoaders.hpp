@@ -2,14 +2,14 @@
 #define  __GraphicsResourceLoaders_H__
 
 
-#include "Graphics/fwd.h"
+#include "Graphics/fwd.hpp"
 using namespace MeshModel;
-#include "GraphicsResource.h"
-#include "GraphicsResourceEntries.h"
-#include "Support/fnop.h"
-#include "Support/SafeDelete.h"
-#include "Support/BitmapImage.h"
-#include "Support/Serialization/BinaryDatabase.h"
+#include "GraphicsResource.hpp"
+#include "GraphicsResourceEntries.hpp"
+#include "Support/fnop.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/BitmapImage.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 

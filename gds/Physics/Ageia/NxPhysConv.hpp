@@ -2,11 +2,11 @@
 #define __NxPhysConv_H__
 
 
-#include "3DMath/Matrix34.h"
-#include "../Actor.h"
-#include "../Ray.h"
-#include "../Enums.h"
-#include "../RaycastHit.h"
+#include "3DMath/Matrix34.hpp"
+#include "../Actor.hpp"
+#include "../Ray.hpp"
+#include "../Enums.hpp"
+#include "../RaycastHit.hpp"
 
 #include "NxPhysics.h"
 

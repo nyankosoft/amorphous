@@ -1,5 +1,5 @@
-#include "InputHub.h"
-#include "Support/Timer.h"
+#include "InputHub.hpp"
+#include "Support/Timer.hpp"
 
 
 CInputHub CInputHub::ms_InputHub_Instance_;

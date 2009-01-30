@@ -10,8 +10,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "../base.h"
-#include "TimeFormats.h"
+#include "../base.hpp"
+#include "TimeFormats.hpp"
 
 
 inline std::string to_string( int num )

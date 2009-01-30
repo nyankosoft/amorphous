@@ -17,7 +17,7 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "XMLNodeReader.h"
+#include "XMLNodeReader.hpp"
 
 #ifdef _DEBUG
 	#pragma comment( lib, "xerces-c_static_3D.lib" )

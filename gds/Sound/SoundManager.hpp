@@ -4,11 +4,11 @@
 #include <string>
 #include <map>
 
-#include "../base.h"
-#include "SoundHandle.h"
-#include "SoundDesc.h"
-#include "SoundManagerImpl.h"
-#include "Support/Singleton.h"
+#include "../base.hpp"
+#include "SoundHandle.hpp"
+#include "SoundDesc.hpp"
+#include "SoundManagerImpl.hpp"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

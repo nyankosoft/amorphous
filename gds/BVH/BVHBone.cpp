@@ -1,7 +1,7 @@
 #include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/UnitCube.h"
+#include "Graphics/UnitCube.hpp"
 
-#include "BVHBone.h"
+#include "BVHBone.hpp"
 #include <string.h>
 
 using namespace std;

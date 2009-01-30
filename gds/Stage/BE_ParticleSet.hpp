@@ -4,15 +4,15 @@
 
 #include <boost/thread/thread.hpp>
 
-#include "BaseEntity.h"
-#include "BEC_Billboard.h"
-#include "Stage.h"
+#include "BaseEntity.hpp"
+#include "BEC_Billboard.hpp"
+#include "Stage.hpp"
 
 #include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/FloatRGBColor.h"
+#include "Graphics/FloatRGBColor.hpp"
 
-#include "Support/FloatLookUpTable.h"
-#include "Support/SafeDelete.h"
+#include "Support/FloatLookUpTable.hpp"
+#include "Support/SafeDelete.hpp"
 
 
 // comment out the next line to draw particles without using vertex buffer and index buffer

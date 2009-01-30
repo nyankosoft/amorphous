@@ -1,31 +1,31 @@
 
-#include "GameTask_Settings.h"
-#include "GameTask_Stage.h"
-#include "App/ApplicationBase.h"
+#include "GameTask_Settings.hpp"
+#include "GameTask_Stage.hpp"
+#include "App/ApplicationBase.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/2DRect.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/2DRect.hpp"
 #include "Graphics/font.h"
 
 #include "Stage/stage.h"
-//#include "Stage/EntitySet.h"
-#include "Stage/PlayerInfo.h"
-#include "Stage/BE_PlayerShip.h"
-//#include "Stage/ScreenEffectManager.h"
-//#include "Stage/ScreenEffectManager.h"
+//#include "Stage/EntitySet.hpp"
+#include "Stage/PlayerInfo.hpp"
+#include "Stage/BE_PlayerShip.hpp"
+//#include "Stage/ScreenEffectManager.hpp"
+//#include "Stage/ScreenEffectManager.hpp"
 
 #include "UI/ui.h"
 
-#include "GameInput/InputHub.h"
-#include "GameInput/InputHandler_Dialog.h"
-#include "GameInput/DirectInputMouse.h"
+#include "GameInput/InputHub.hpp"
+#include "GameInput/InputHandler_Dialog.hpp"
+#include "GameInput/DirectInputMouse.hpp"
 
-#include "JigLib/PhysicsManager_Visualizer.h"
+#include "JigLib/PhysicsManager_Visualizer.hpp"
 
-//#include "Sound/GameSoundManager.h"
+//#include "Sound/GameSoundManager.hpp"
 
-#include "Support/memory_helpers.h"
-//#include "Support/Profile.h"
+#include "Support/memory_helpers.hpp"
+//#include "Support/Profile.hpp"
 
 #define CONFIG_STATE_RETURN_TO_GAME	0
 #define CONFIG_STATE_IN_MENU		1

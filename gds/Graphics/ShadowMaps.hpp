@@ -4,14 +4,14 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include <boost/shared_ptr.hpp>
-#include "fwd.h"
-#include "3DMath/Vector3.h"
-#include "Graphics/ShaderHandle.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "Graphics/TextureRenderTarget.h"
-#include "Graphics/Camera.h"
-#include "Graphics/CubeMapManager.h"
+#include "fwd.hpp"
+#include "3DMath/Vector3.hpp"
+#include "Graphics/ShaderHandle.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/CubeMapManager.hpp"
 
 
 class CShadowMapSceneRenderer

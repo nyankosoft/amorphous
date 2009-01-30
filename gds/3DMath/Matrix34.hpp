@@ -2,8 +2,8 @@
 #define __MATRIX34_H__
 
 
-#include "Vector3.h"
-#include "Matrix33.h"
+#include "Vector3.hpp"
+#include "Matrix33.hpp"
 
 
 class Matrix34

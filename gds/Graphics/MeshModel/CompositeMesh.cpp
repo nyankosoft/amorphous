@@ -1,7 +1,7 @@
 
-#include "CompositeMesh.h"
+#include "CompositeMesh.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 
 #include "Graphics/FVF_NormalVertex.h"
@@ -10,10 +10,10 @@
 #include "Graphics/FVF_BumpWeightVertex.h"
 
 #include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 
 //==========================================================-

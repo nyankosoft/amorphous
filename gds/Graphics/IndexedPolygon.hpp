@@ -4,14 +4,14 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 
-#include "3DMath/ray.h"
-#include "3DMath/aabb3.h"
-#include "3DMath/Plane.h"
-#include "3DMath/Triangle.h"
-#include "Graphics/General3DVertex.h"
+#include "3DMath/ray.hpp"
+#include "3DMath/aabb3.hpp"
+#include "3DMath/Plane.hpp"
+#include "3DMath/Triangle.hpp"
+#include "Graphics/General3DVertex.hpp"
 
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 

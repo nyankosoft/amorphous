@@ -5,8 +5,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "Archive.h"
-#include "ArchiveObjectBase.h"
+#include "Archive.hpp"
+#include "ArchiveObjectBase.hpp"
 
 
 namespace GameLib1

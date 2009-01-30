@@ -1,7 +1,7 @@
 #ifndef  __INPUTHANDLER_PLAYERPSEUDOAIRCRAFT_H__
 #define  __INPUTHANDLER_PLAYERPSEUDOAIRCRAFT_H__
 
-#include "InputHandler_PlayerBase.h"
+#include "InputHandler_PlayerBase.hpp"
 
 
 class CSystemInputHandler_Debug;

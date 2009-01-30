@@ -1,9 +1,9 @@
 #ifndef __3DMATH_MATRIX22_H__
 #define __3DMATH_MATRIX22_H__
 
-#include "../base.h"
+#include "../base.hpp"
 #include "precision.h"
-#include "Vector2.h"
+#include "Vector2.hpp"
 #include <math.h>
 
 

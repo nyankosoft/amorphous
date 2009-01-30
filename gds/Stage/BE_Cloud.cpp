@@ -1,13 +1,13 @@
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "Graphics/Direct3D9.h"
-#include "Support/memory_helpers.h"
-#include "GameCommon/MTRand.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Support/memory_helpers.hpp"
+#include "GameCommon/MTRand.hpp"
 
-#include "BE_Cloud.h"
+#include "BE_Cloud.hpp"
 
 using namespace std;
 

@@ -2,12 +2,12 @@
 #define __ENTITYNODE_H__
 
 
-#include "../base.h"
+#include "../base.hpp"
 
-#include "fwd.h"
-#include "Graphics/fwd.h"
-#include "CopyEntity.h"
-#include "OverlapTestAABB.h"
+#include "fwd.hpp"
+#include "Graphics/fwd.hpp"
+#include "CopyEntity.hpp"
+#include "OverlapTestAABB.hpp"
 
 
 /**

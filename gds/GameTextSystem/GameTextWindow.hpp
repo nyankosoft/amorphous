@@ -5,15 +5,15 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include "3DMath/aabb2.h"
+#include "3DMath/aabb2.hpp"
 
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/Font/Font.h"
-#include "Graphics/Font/TextureFont.h"
-#include "Graphics/TextureHandle.h"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/TextureHandle.hpp"
 
-#include "../Support/FixedVector.h"
+#include "../Support/FixedVector.hpp"
 
 /*
 enum eGameTextWindowState

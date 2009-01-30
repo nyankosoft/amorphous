@@ -1,9 +1,9 @@
 
-#include "SurfaceMaterialManager.h"
+#include "SurfaceMaterialManager.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/TextFileScanner.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/TextFileScanner.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 CSurfaceMaterialManager::CSurfaceMaterialManager()

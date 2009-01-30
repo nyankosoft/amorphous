@@ -1,12 +1,12 @@
-#include "GameTaskManager.h"
-#include "GameTask.h"
+#include "GameTaskManager.hpp"
+#include "GameTask.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/RenderTask.h"
-#include "Graphics/RenderTaskProcessor.h"
-#include "GameTask.h"
-#include "GameTaskFactoryBase.h"
-#include "Support/SafeDelete.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/RenderTask.hpp"
+#include "Graphics/RenderTaskProcessor.hpp"
+#include "GameTask.hpp"
+#include "GameTaskFactoryBase.hpp"
+#include "Support/SafeDelete.hpp"
 
 
 CGameTask *CGameTaskManager::CreateTask( int iTaskID )

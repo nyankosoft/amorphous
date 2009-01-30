@@ -1,12 +1,12 @@
 
 
-#include "BEC_PseudoAircraft.h"
-#include "CopyEntityDesc.h"
-#include "CopyEntity.h"
-#include "BaseEntity.h"
-#include "Stage.h"
-#include "Item/GI_Aircraft.h"
-#include "Stage.h"
+#include "BEC_PseudoAircraft.hpp"
+#include "CopyEntityDesc.hpp"
+#include "CopyEntity.hpp"
+#include "BaseEntity.hpp"
+#include "Stage.hpp"
+#include "Item/GI_Aircraft.hpp"
+#include "Stage.hpp"
 
 
 CBEC_AircraftNozzleFlames::CBEC_AircraftNozzleFlames()

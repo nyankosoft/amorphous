@@ -1,5 +1,5 @@
 //=====================================================================
-//  Vector3_Gen.h
+//  Vector3_Gen.hpp
 //     - generic 3-dimensional vector class
 //
 //                                                  by Takashi Kuamgai

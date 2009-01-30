@@ -5,8 +5,8 @@
 #include <string>
 using namespace std;
 
-#include "3DMath/3DStructs.h"
-#include "../Stage/bspstructs.h"
+#include "3DMath/3DStructs.hpp"
+#include "../Stage/bspstructs.hpp"
 
 
 #define DEFAULT_ONPLANE_WEIGHT	4

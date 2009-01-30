@@ -1,8 +1,8 @@
-#include "BE_PlayerShip.h"
-#include "EntitySet.h"
-#include "Stage.h"
-#include "trace.h"
-#include "Graphics/Direct3D9.h"
+#include "BE_PlayerShip.hpp"
+#include "EntitySet.hpp"
+#include "Stage.hpp"
+#include "trace.hpp"
+#include "Graphics/Direct3D9.hpp"
 
 
 using namespace std;

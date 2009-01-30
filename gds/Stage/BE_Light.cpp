@@ -1,12 +1,12 @@
-#include "BE_Light.h"
+#include "BE_Light.hpp"
 
-#include "GameMessage.h"
-#include "Stage.h"
-#include "../Graphics/Camera.h"
-#include "../Graphics/Shader/ShaderManager.h"
-#include "../3DMath/MathMisc.h"
+#include "GameMessage.hpp"
+#include "Stage.hpp"
+#include "../Graphics/Camera.hpp"
+#include "../Graphics/Shader/ShaderManager.hpp"
+#include "../3DMath/MathMisc.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 

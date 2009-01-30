@@ -1,5 +1,5 @@
 
-#include "GraphicsComponentCollector.h"
+#include "GraphicsComponentCollector.hpp"
 
 using namespace std;
 

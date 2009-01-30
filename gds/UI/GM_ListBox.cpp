@@ -1,14 +1,14 @@
-#include "GM_ListBox.h"
+#include "GM_ListBox.hpp"
 
-#include "GM_ListBoxDesc.h"
-#include "GM_ScrollBarDesc.h"
-#include "GM_ScrollBar.h"
-#include "GM_Dialog.h"
-#include "GM_ControlRenderer.h"
-#include "GM_Input.h"
-#include "GM_SoundPlayer.h"
+#include "GM_ListBoxDesc.hpp"
+#include "GM_ScrollBarDesc.hpp"
+#include "GM_ScrollBar.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_ControlRenderer.hpp"
+#include "GM_Input.hpp"
+#include "GM_SoundPlayer.hpp"
 
-#include "Support/SafeDeleteVector.h"
+#include "Support/SafeDeleteVector.hpp"
 
 using namespace std;
 

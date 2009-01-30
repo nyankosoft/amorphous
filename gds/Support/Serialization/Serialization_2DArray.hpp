@@ -2,9 +2,9 @@
 #ifndef __KGL_2DARRAY_SERIALIZATION_H__
 #define __KGL_2DARRAY_SERIALIZATION_H__
 
-#include "../2DArray.h"
+#include "../2DArray.hpp"
 
-#include "Archive.h"
+#include "Archive.hpp"
 
 
 namespace GameLib1

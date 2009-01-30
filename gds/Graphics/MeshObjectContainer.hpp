@@ -1,18 +1,18 @@
 #ifndef __MeshObjectContainer_H__
 #define __MeshObjectContainer_H__
 
-#include "TextureHandle.h"
-#include "MeshObjectHandle.h"
-#include "ShaderHandle.h"
-#include "Shader/ShaderTechniqueHandle.h"
-#include "Shader/Serialization_ShaderTechniqueHandle.h"
-#include "Support/2DArray.h"
+#include "TextureHandle.hpp"
+#include "MeshObjectHandle.hpp"
+#include "ShaderHandle.hpp"
+#include "Shader/ShaderTechniqueHandle.hpp"
+#include "Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "Support/2DArray.hpp"
 
 #include <string>
 
 
-#include "Support/Serialization/Serialization_2DArray.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/Serialization_2DArray.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 

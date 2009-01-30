@@ -1,7 +1,7 @@
 #ifndef __BSPMAP_COLLISIONMODEL_H__
 #define __BSPMAP_COLLISIONMODEL_H__
 
-#include "3DMath/3DStructs.h"
+#include "3DMath/3DStructs.hpp"
 
 
 struct SBSPNode

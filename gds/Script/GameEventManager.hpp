@@ -1,7 +1,7 @@
 #ifndef  __GAMEEVENTMANAGER_H__
 #define  __GAMEEVENTMANAGER_H__
 
-#include "GameEvent.h"
+#include "GameEvent.hpp"
 
 #include <vector>
 using namespace std;

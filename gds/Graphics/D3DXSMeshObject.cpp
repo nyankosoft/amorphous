@@ -1,8 +1,8 @@
-#include "D3DXSMeshObject.h"
+#include "D3DXSMeshObject.hpp"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/memory_helpers.h"
-#include "Support/fnop.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/fnop.hpp"
 using namespace fnop;
 
 

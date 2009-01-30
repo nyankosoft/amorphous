@@ -1,5 +1,5 @@
-#include "BVH/BVHBone.h"
-#include "Skeleton.h"
+#include "BVH/BVHBone.hpp"
+#include "Skeleton.hpp"
 
 using namespace msynth;
 

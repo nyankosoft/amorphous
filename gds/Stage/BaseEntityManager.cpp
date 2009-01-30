@@ -1,10 +1,10 @@
-#include "BaseEntityManager.h"
-#include "BaseEntity.h"
-#include "BaseEntityFactory.h"
+#include "BaseEntityManager.hpp"
+#include "BaseEntity.hpp"
+#include "BaseEntityFactory.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/fnop.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/fnop.hpp"
 using namespace fnop;
 
 

@@ -1,5 +1,5 @@
 
-#include "InputHandler_PlayerShip.h"
+#include "InputHandler_PlayerShip.hpp"
 
 
 CInputHandler_PlayerShip::CInputHandler_PlayerShip()

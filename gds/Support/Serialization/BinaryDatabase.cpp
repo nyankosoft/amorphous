@@ -1,8 +1,8 @@
 
-#include "BinaryDatabase.h"
+#include "BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 /*
 template<class KeyType>

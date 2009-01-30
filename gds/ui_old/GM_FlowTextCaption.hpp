@@ -2,7 +2,7 @@
 #define  __GM_FLOWTEXTCAPTION_H__
 
 
-#include "GM_CaptionRenderRoutine.h"
+#include "GM_CaptionRenderRoutine.hpp"
 
 #include <string>
 using namespace std;

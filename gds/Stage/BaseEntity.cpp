@@ -1,27 +1,27 @@
-#include "BaseEntity.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "AlphaEntity.h"
-#include "trace.h"
-#include "EntitySet.h"
-#include "Stage.h"
-#include "bsptree.h"
+#include "BaseEntity.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "AlphaEntity.hpp"
+#include "trace.hpp"
+#include "EntitySet.hpp"
+#include "Stage.hpp"
+#include "bsptree.hpp"
 
-#include "GameCommon/GameMathMisc.h"
-#include "GameCommon/MeshBoneControllerBase.h"
+#include "GameCommon/GameMathMisc.hpp"
+#include "GameCommon/MeshBoneControllerBase.hpp"
 
-#include "Graphics/3DGameMath.h"
-#include "Graphics/D3DXSMeshObject.h"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/D3DXSMeshObject.hpp"
 
-#include "App/ApplicationBase.h"
-#include "Task/GameTaskManager.h"
+#include "App/ApplicationBase.hpp"
+#include "Task/GameTaskManager.hpp"
 
-#include "Support/memory_helpers.h"
-#include "Support/StringAux.h"
-#include "Support/Profile.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/memory_helpers.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/Profile.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "Physics/ActorDesc.h"
+#include "Physics/ActorDesc.hpp"
 
 using namespace std;
 

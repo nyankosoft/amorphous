@@ -4,10 +4,10 @@
 #include <vector>
 #include <boost/weak_ptr.hpp>
 
-#include "3DMath/Matrix34.h"
-#include "Graphics/UnitCube.h"
-#include "MotionSynthesis/Skeleton.h"
-#include "MotionSynthesis/MotionPrimitive.h"
+#include "3DMath/Matrix34.hpp"
+#include "Graphics/UnitCube.hpp"
+#include "MotionSynthesis/Skeleton.hpp"
+#include "MotionSynthesis/MotionPrimitive.hpp"
 
 
 namespace msynth

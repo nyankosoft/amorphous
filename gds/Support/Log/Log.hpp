@@ -1,3 +1,3 @@
 
-#include "LogInputBase.h"
-#include "LogOutputBase.h"
+#include "LogInputBase.hpp"
+#include "LogOutputBase.hpp"

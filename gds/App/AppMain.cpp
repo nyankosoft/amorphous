@@ -1,12 +1,12 @@
 
-#include "ApplicationBase.h"
+#include "ApplicationBase.hpp"
 
 #include <windows.h>
 #include <mmsystem.h>
 
 #include <vld.h>
 
-#include "GameWindowManager_Win32.h"
+#include "GameWindowManager_Win32.hpp"
 
 
 /*

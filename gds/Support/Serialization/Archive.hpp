@@ -11,7 +11,7 @@ using namespace std;
 
 #include <assert.h>
 
-#include "ArchiveObjectFactory.h"
+#include "ArchiveObjectFactory.hpp"
 
 
 namespace GameLib1

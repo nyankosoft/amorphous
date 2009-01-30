@@ -1,9 +1,9 @@
 #ifndef  __HEMISPHERICLIGHT_H__
 #define  __HEMISPHERICLIGHT_H__
 
-#include "3DMath/Vector3.h"
-#include "FloatRGBColor.h"
-#include "LightStructs.h"
+#include "3DMath/Vector3.hpp"
+#include "FloatRGBColor.hpp"
+#include "LightStructs.hpp"
 
 inline SFloatRGBColor ToRGBColor( const SFloatRGBAColor& src )
 {

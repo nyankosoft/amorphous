@@ -10,9 +10,9 @@ using namespace std;
 
 #include <d3dx9.h>
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
-#include "3DMeshModelArchive.h"
+#include "3DMeshModelArchive.hpp"
 
 
 //namespace GameLib1

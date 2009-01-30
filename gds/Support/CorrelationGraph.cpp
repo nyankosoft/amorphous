@@ -1,7 +1,7 @@
-#include "CorrelationGraph.h"
+#include "CorrelationGraph.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Support/memory_helpers.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Support/memory_helpers.hpp"
 
 
 void CCorrelationGraph::SetData(vector<float> *pvecfData, U32 dwColor)

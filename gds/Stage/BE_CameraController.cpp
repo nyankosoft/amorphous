@@ -1,19 +1,19 @@
-#include "BE_CameraController.h"
-#include "BE_ScriptedCamera.h"
+#include "BE_CameraController.hpp"
+#include "BE_ScriptedCamera.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntityDesc.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
-#include "ScreenEffectManager.h"
-#include "Serialization_BaseEntityHandle.h"
-#include "EntityMotionPathRequest.h"
+#include "GameMessage.hpp"
+#include "CopyEntityDesc.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "ScreenEffectManager.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
+#include "EntityMotionPathRequest.hpp"
 
-#include "GameInput/InputHub.h"
-#include "Input/InputHandler_Cutscene.h"
+#include "GameInput/InputHub.hpp"
+#include "Input/InputHandler_Cutscene.hpp"
 
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
 
 using namespace std;

@@ -1,7 +1,7 @@
 #ifndef  __INPUTHANDLER_CUTSCENE_H__
 #define  __INPUTHANDLER_CUTSCENE_H__
 
-#include "GameInput/InputHandler.h"
+#include "GameInput/InputHandler.hpp"
 
 
 class CSystemInputHandler_Debug;

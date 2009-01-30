@@ -3,7 +3,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "Archive.h"
+#include "Archive.hpp"
 
 
 namespace GameLib1

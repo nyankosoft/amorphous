@@ -6,10 +6,10 @@
 using namespace std;
 
 
-#include "3DMath/Vector3.h"
-#include "3DMath/aabb3.h"
-#include "3DMath/ray.h"
-#include "3DMath/AABTree.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/aabb3.hpp"
+#include "3DMath/ray.hpp"
+#include "3DMath/AABTree.hpp"
 
 
 template <class TCPolygon>

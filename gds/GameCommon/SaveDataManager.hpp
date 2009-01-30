@@ -5,14 +5,14 @@
 #include <vector>
 #include <string>
 
-#include "Support/StringAux.h"
+#include "Support/StringAux.hpp"
 
-#include "Support/Serialization/BinaryDatabase.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Support/Serialization/BinaryDatabase.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

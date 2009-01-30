@@ -1,5 +1,5 @@
-#include "AsyncResourceLoader.h"
-#include "../base.h"
+#include "AsyncResourceLoader.hpp"
+#include "../base.hpp"
 #include <boost/thread/xtime.hpp>
 
 using namespace std;

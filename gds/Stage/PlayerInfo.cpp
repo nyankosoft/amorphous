@@ -1,21 +1,21 @@
-#include "PlayerInfo.h"
+#include "PlayerInfo.hpp"
 
-#include "Graphics/Font/FontBase.h"
-#include "GameInput/InputHub.h"
-#include "Input/InputHandler_PlayerShip.h"
-#include "Input/InputHandler_PlayerPAC.h"
-#include "Item/GameItem.h"
-#include "Item/GI_Ammunition.h"
-#include "Item/GI_Aircraft.h"
-#include "Item/ItemDatabaseManager.h"
-#include "Item/GameItemObjectFactory.h"
-#include "Item/WeaponSystem.h"
-#include "HUD_PlayerShip.h"
-#include "HUD_PlayerAircraft.h"
+#include "Graphics/Font/FontBase.hpp"
+#include "GameInput/InputHub.hpp"
+#include "Input/InputHandler_PlayerShip.hpp"
+#include "Input/InputHandler_PlayerPAC.hpp"
+#include "Item/GameItem.hpp"
+#include "Item/GI_Ammunition.hpp"
+#include "Item/GI_Aircraft.hpp"
+#include "Item/ItemDatabaseManager.hpp"
+#include "Item/GameItemObjectFactory.hpp"
+#include "Item/WeaponSystem.hpp"
+#include "HUD_PlayerShip.hpp"
+#include "HUD_PlayerAircraft.hpp"
 
-#include "Support/Serialization/Serialization_BoostSmartPtr.h"
+#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
-#include "BE_Player.h"
+#include "BE_Player.hpp"
 
 using namespace std;
 using namespace boost;

@@ -1,7 +1,7 @@
-#include "BVHPlayer.h"
+#include "BVHPlayer.hpp"
 
 #include "Graphics/FVF_ColorVertex.h"
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 using namespace std;
 

@@ -4,8 +4,8 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "Graphics/GraphicsComponentCollector.h"
-#include "Graphics/TextureRenderTarget.h"
+#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
 
 
 /**

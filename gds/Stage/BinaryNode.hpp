@@ -2,7 +2,7 @@
 #define __BINARYNODE_H__
 
 
-#include "3DMath/aabb3.h"
+#include "3DMath/aabb3.hpp"
 
 
 #define CONTENTS_SOLID	-1

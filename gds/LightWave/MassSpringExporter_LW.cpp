@@ -1,9 +1,9 @@
 
-#include "MassSpringExporter_LW.h"
+#include "MassSpringExporter_LW.hpp"
 
-#include "LightWave/3DMeshModelBuilder_LW.h"
+#include "LightWave/3DMeshModelBuilder_LW.hpp"
 
-#include "PhysicsSim/MassSpringSim.h"
+#include "PhysicsSim/MassSpringSim.hpp"
 
 #include "assert.h"
 

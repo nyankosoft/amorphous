@@ -1,16 +1,16 @@
-#include "NxPhysScene.h"
-#include "NxPhysActor.h"
-//#include "NxPhysJoint.h"
-#include "NxPhysMaterial.h"
-#include "NxPhysConv.h"
-#include "NxPhysShapeDescFactory.h"
-#include "NxPhysShapeFactory.h"
+#include "NxPhysScene.hpp"
+#include "NxPhysActor.hpp"
+//#include "NxPhysJoint.hpp"
+#include "NxPhysMaterial.hpp"
+#include "NxPhysConv.hpp"
+#include "NxPhysShapeDescFactory.hpp"
+#include "NxPhysShapeFactory.hpp"
 
-#include "../MaterialDesc.h"
-#include "../RaycastHit.h"
+#include "../MaterialDesc.hpp"
+#include "../RaycastHit.hpp"
 
-#include "Support/Log/DefaultLog.h"
-#include "Support/memory_helpers.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/memory_helpers.hpp"
 
 using namespace physics;
 

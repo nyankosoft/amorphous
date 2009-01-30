@@ -1,5 +1,5 @@
 
-#include "IndexedPolygon.h"
+#include "IndexedPolygon.hpp"
 
 using namespace std;
 

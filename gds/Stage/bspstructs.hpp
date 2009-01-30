@@ -6,11 +6,11 @@
 #include <list>
 using namespace std;
 
-#include "3DMath/3DStructs.h"
+#include "3DMath/3DStructs.hpp"
 
 
-#include "BSPMapCompiler/BaseFace.h"
-#include "BSPMapCompiler/MapFace.h"
+#include "BSPMapCompiler/BaseFace.hpp"
+#include "BSPMapCompiler/MapFace.hpp"
 
 
 #define OUTSIDE_NODE -32767

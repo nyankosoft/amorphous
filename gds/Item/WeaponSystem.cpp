@@ -1,12 +1,12 @@
-#include "WeaponSystem.h"
+#include "WeaponSystem.hpp"
 
-#include "GameInput/3DActionCode.h"
-#include "Stage/Stage.h"
-#include "Stage/CopyEntity.h"
-#include "Stage/CopyEntityDesc.h"
-//#include "Stage/PlayerInfo.h"
+#include "GameInput/3DActionCode.hpp"
+#include "Stage/Stage.hpp"
+#include "Stage/CopyEntity.hpp"
+#include "Stage/CopyEntityDesc.hpp"
+//#include "Stage/PlayerInfo.hpp"
 
-#include "GameCommon/BasicGameMath.h"
+#include "GameCommon/BasicGameMath.hpp"
 
 
 //======================================================================================

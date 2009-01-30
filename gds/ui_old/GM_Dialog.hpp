@@ -5,13 +5,13 @@
 
 #include <d3dx9.h>
 
-#include "GM_GraphicElement.h"
+#include "GM_GraphicElement.hpp"
 
 #include <vector>
 #include <string>
 using namespace std;
 
-#include "Graphics/Point.h"
+#include "Graphics/Point.hpp"
 using namespace Graphics;
 
 

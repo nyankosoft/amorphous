@@ -1,27 +1,27 @@
-#include "ItemDatabaseBuilder.h"
+#include "ItemDatabaseBuilder.hpp"
 
-#include "Item/GameItemObjectFactory.h"
-#include "Item/GameItem.h"
-#include "Item/GI_Weapon.h"
-#include "Item/GI_Ammunition.h"
-#include "Item/GI_GravityGun.h"
+#include "Item/GameItemObjectFactory.hpp"
+#include "Item/GameItem.hpp"
+#include "Item/GI_Weapon.hpp"
+#include "Item/GI_Ammunition.hpp"
+#include "Item/GI_GravityGun.hpp"
 //#include "Item/GI_NightVision.h"
-#include "Item/GI_MissileLauncher.h"
-#include "Item/GI_Aircraft.h"
-#include "Item/GameItemDatabase.h"
+#include "Item/GI_MissileLauncher.hpp"
+#include "Item/GI_Aircraft.hpp"
+#include "Item/GameItemDatabase.hpp"
 
-#include "XML/XMLDocumentLoader.h"
-#include "XML/XMLNodeReader.h"
+#include "XML/XMLDocumentLoader.hpp"
+#include "XML/XMLNodeReader.hpp"
 
-#include "GameCommon/MeshBoneController_Aircraft.h"
-#include "Support/TextFileScanner.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDeleteVector.h"
-#include "Support/fnop.h"
+#include "GameCommon/MeshBoneController_Aircraft.hpp"
+#include "Support/TextFileScanner.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDeleteVector.hpp"
+#include "Support/fnop.hpp"
 using namespace fnop;
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
-#include "Support/Serialization/BinaryDatabase.h"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 using namespace std;
@@ -202,7 +202,7 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 		sscanf( current_line.c_str(), "%s %s %f %s %s",
 			_tag, _type, &angle_per_accel, vflap0_name, vflap1_name );
 		CMeshBoneController_VFlap* pFlapControl = new CMeshBoneController_VFlap();
-		pFlapControl->m_fAnglePerAccel = angle_per_accel;
+		pFlapControl->m_fAnglePerYawAccel = angle_per_accel;
 		pFlapControl->m_vecBoneControlParam.resize( 2 );
 		pFlapControl->m_vecBoneControlParam[0].Name = vflap0_name;
 		pFlapControl->m_vecBoneControlParam[1].Name = vflap1_name;
@@ -213,7 +213,7 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 //		scanner.ScanLine( tag, type, angle_per_accel, vflap0_name );
 		sscanf( current_line.c_str(), "%s %s %f %s", _tag, _type, &angle_per_accel, vflap0_name );
 		CMeshBoneController_VFlap* pFlapControl = new CMeshBoneController_VFlap();
-		pFlapControl->m_fAnglePerAccel = angle_per_accel;
+		pFlapControl->m_fAnglePerYawAccel = angle_per_accel;
 		pFlapControl->m_vecBoneControlParam.resize( 1 );
 		pFlapControl->m_vecBoneControlParam[0].Name = vflap0_name;
 		aircraft.m_vecpMeshController.push_back( pFlapControl );

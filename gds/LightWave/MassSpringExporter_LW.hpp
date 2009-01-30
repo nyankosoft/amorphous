@@ -3,9 +3,9 @@
 #define  __MASSSPRINGEXPORTER_LW_H__
 
 
-#include "PhysicsSim/MassSpringExporter.h"
+#include "PhysicsSim/MassSpringExporter.hpp"
 
-#include "LightWave/LightWaveObject.h"
+#include "LightWave/LightWaveObject.hpp"
 
 
 //==========================================================================

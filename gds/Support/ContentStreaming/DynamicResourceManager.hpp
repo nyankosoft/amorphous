@@ -7,10 +7,10 @@
 
 #include <d3dx9.h>
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
-//#include "PackedFile.h"
+//#include "PackedFile.hpp"
 
 class CAsyncLoader;
 class CResourceReuseCache;

@@ -1,8 +1,8 @@
-#include "SoundManager.h"
-#include "OpenALSoundManagerImpl.h"
-#include "Support/TextFileScanner.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
+#include "SoundManager.hpp"
+#include "OpenALSoundManagerImpl.hpp"
+#include "Support/TextFileScanner.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDelete.hpp"
 
 using namespace std;
 

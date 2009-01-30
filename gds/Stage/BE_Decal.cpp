@@ -1,15 +1,15 @@
-#include "BE_Decal.h"
+#include "BE_Decal.hpp"
 
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
 
 #include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Shader/ShaderManager.h"
-#include "GameCommon/MTRand.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "GameCommon/MTRand.hpp"
 
-#include "Support/Profile.h"
+#include "Support/Profile.hpp"
 
 //int CBE_Decal::ms_iNumTotalUsedDecals = 0;
 

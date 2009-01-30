@@ -6,7 +6,7 @@
 using namespace std;
 
 
-#include "PhysicsSim/MassSpringSim.h"
+#include "PhysicsSim/MassSpringSim.hpp"
 
 
 class CMassSpringExporter

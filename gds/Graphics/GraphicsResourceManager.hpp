@@ -6,13 +6,13 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 
-#include "GraphicsComponentCollector.h"
-#include "GraphicsResource.h"
-#include "GraphicsResourceDescs.h"
-#include "GraphicsResourceEntries.h"
-#include "GraphicsResourceLoaders.h"
+#include "GraphicsComponentCollector.hpp"
+#include "GraphicsResource.hpp"
+#include "GraphicsResourceDescs.hpp"
+#include "GraphicsResourceEntries.hpp"
+#include "GraphicsResourceLoaders.hpp"
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

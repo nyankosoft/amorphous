@@ -2,7 +2,7 @@
 #define  __MeshBoneController_Aircraft_H__
 
 
-#include "MeshBoneControllerBase.h"
+#include "MeshBoneControllerBase.hpp"
 
 
 /**

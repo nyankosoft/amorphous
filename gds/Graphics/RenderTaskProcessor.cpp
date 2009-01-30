@@ -1,9 +1,9 @@
 
-#include "RenderTaskProcessor.h"
-#include "RenderTask.h"
-#include "Support/SafeDeleteVector.h"
+#include "RenderTaskProcessor.hpp"
+#include "RenderTask.hpp"
+#include "Support/SafeDeleteVector.hpp"
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 
 using namespace std;
 

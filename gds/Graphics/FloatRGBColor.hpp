@@ -2,7 +2,7 @@
 #define __FLOATRGBCOLOR_H__
 
 
-#include "../base.h"
+#include "../base.hpp"
 
 
 struct SFloatRGBColor

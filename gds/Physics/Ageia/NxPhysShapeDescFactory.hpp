@@ -6,9 +6,9 @@
 #include "NxPhysics.h"
 
 // wrapper headers
-#include "../fwd.h"
-#include "../ShapeDesc.h"
-#include "fwd.h"
+#include "../fwd.hpp"
+#include "../ShapeDesc.hpp"
+#include "fwd.hpp"
 
 
 namespace physics

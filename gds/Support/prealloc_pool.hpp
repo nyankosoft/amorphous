@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "SafeDeleteVector.h"
+#include "SafeDeleteVector.hpp"
 
 
 template <class CElementType>

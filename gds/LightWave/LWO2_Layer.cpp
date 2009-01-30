@@ -1,6 +1,6 @@
 
-#include "LWO2_Layer.h"
-#include "LWO2_Object.h"
+#include "LWO2_Layer.hpp"
+#include "LWO2_Object.hpp"
 
 #include "assert.h"
 #include <algorithm>
@@ -362,7 +362,7 @@ void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 }
 
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
 
 

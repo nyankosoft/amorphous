@@ -1,12 +1,12 @@
 
-#include "SimpleMotionBlur.h"
+#include "SimpleMotionBlur.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DMisc.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Support/SafeDelete.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DMisc.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Support/SafeDelete.hpp"
 #include "Support/Macro.h"
-#include "Support/StringAux.h"
+#include "Support/StringAux.hpp"
 
 #include <string>
 using namespace std;

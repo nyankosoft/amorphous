@@ -1,8 +1,8 @@
 
-#include "GM_Slider.h"
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
-#include "GameInput/InputHandler.h"
+#include "GM_Slider.hpp"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
+#include "GameInput/InputHandler.hpp"
 
 
 //========================================================================================

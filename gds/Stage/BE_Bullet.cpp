@@ -1,20 +1,20 @@
 
-#include "BE_Bullet.h"
+#include "BE_Bullet.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "CopyEntityDesc.h"
-#include "trace.h"
-#include "Stage.h"
-#include "SurfaceMaterial.h"
-#include "Serialization_BaseEntityHandle.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
+#include "SurfaceMaterial.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
 
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DXMeshObject.h"
-#include "Graphics/3DGameMath.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-#include "Sound/SoundManager.h"
+#include "Sound/SoundManager.hpp"
 
 
 inline float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }

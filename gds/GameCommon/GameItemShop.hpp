@@ -8,9 +8,9 @@ class CGameItem;
 class CCustomer;
 
 
-#include "Item/GameItem.h"
-#include "Item/ItemDatabaseManager.h"
-#include "Support/SafeDeleteVector.h"
+#include "Item/GameItem.hpp"
+#include "Item/ItemDatabaseManager.hpp"
+#include "Support/SafeDeleteVector.hpp"
 
 
 class CCustomer

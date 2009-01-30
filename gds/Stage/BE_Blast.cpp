@@ -1,17 +1,17 @@
 
-#include "BE_Blast.h"
+#include "BE_Blast.hpp"
 
-#include "GameMessage.h"
-#include "CopyEntity.h"
-#include "trace.h"
-#include "Stage.h"
+#include "GameMessage.hpp"
+#include "CopyEntity.hpp"
+#include "trace.hpp"
+#include "Stage.hpp"
 
 #include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 
 
-#include "Graphics/UnitCube.h"
-#include "Support/SafeDelete.h"
+#include "Graphics/UnitCube.hpp"
+#include "Support/SafeDelete.hpp"
 
 
 float& CurrentBlastTime( CCopyEntity *pEntity ) { return pEntity->f2; }

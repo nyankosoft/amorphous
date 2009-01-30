@@ -1,11 +1,11 @@
-#include "AlphaEntity.h"
+#include "AlphaEntity.hpp"
 
-#include "Stage/Stage.h"
-#include "Stage/CopyEntityDesc.h"
-#include "Stage/GameMessage.h"
-#include "Support/Log/StateLog.h"
-#include "Support/memory_helpers.h"
-#include "GameCommon/MTRand.h"
+#include "Stage/Stage.hpp"
+#include "Stage/CopyEntityDesc.hpp"
+#include "Stage/GameMessage.hpp"
+#include "Support/Log/StateLog.hpp"
+#include "Support/memory_helpers.hpp"
+#include "GameCommon/MTRand.hpp"
 
 using namespace std;
 using namespace boost;

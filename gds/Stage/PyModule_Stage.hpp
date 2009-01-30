@@ -4,8 +4,8 @@
 
 #include <string>
 #include <Python.h>
-#include "Stage/fwd.h"
-#include "3DMath/Vector3.h"
+#include "Stage/fwd.hpp"
+#include "3DMath/Vector3.hpp"
 
 
 extern PyMethodDef g_PyModuleStageMethod[];

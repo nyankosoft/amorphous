@@ -1,18 +1,18 @@
 
 #include <algorithm>
 
-#include "JL_CollisionDetect.h"
+#include "JL_CollisionDetect.hpp"
 
-#include "JL_ShapeBase.h"
-#include "JL_PhysicsActor.h"
-#include "JL_PhysicsManager.h"
-#include "JL_CollisionFunctor.h"
+#include "JL_ShapeBase.hpp"
+#include "JL_PhysicsActor.hpp"
+#include "JL_PhysicsManager.hpp"
+#include "JL_CollisionFunctor.hpp"
 
 class CJL_Shape_Box;
 class CTriangleMesh;
 
-#include "3DMath/Vector2.h"
-#include "3DMath/aabb2.h"
+#include "3DMath/Vector2.hpp"
+#include "3DMath/aabb2.hpp"
 
 bool g_DoContactPointReduction = false;
 

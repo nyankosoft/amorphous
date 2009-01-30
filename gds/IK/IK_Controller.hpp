@@ -4,7 +4,7 @@
 
 #include "Math64/LinearR3.h"
 
-#include "IK_Jacobian.h"
+#include "IK_Jacobian.hpp"
 
 #include <vector>
 using namespace std;

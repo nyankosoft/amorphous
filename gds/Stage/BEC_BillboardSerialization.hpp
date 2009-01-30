@@ -2,11 +2,11 @@
 #define  __BEC_BILLBOARD_SERIALIZATION_H__
 
 
-#include "Support/Serialization/Serialization.h"
+#include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 
-#include "BEC_Billboard.h"
+#include "BEC_Billboard.hpp"
 
 
 inline IArchive& operator & ( IArchive& ar, CBEC_Billboard& billboard )

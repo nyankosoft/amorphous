@@ -1,5 +1,5 @@
 
-#include "GM_ControlDescBase.h"
+#include "GM_ControlDescBase.hpp"
 
 
 void CGM_ControlDescBase::SetDefault()

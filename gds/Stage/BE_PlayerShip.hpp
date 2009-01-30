@@ -1,13 +1,13 @@
 #ifndef  __BE_PLAYERSHIP_H__
 #define  __BE_PLAYERSHIP_H__
 
-#include "BE_Player.h"
-#include "BaseEntityHandle.h"
-#include "CopyEntity.h"
-#include "GameMessage.h"
-#include "Graphics/fwd.h"
-#include "Graphics/Camera.h"
-#include "fwd.h"
+#include "BE_Player.hpp"
+#include "BaseEntityHandle.hpp"
+#include "CopyEntity.hpp"
+#include "GameMessage.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/Camera.hpp"
+#include "fwd.hpp"
 
 class CShockWaveCameraEffect;
 

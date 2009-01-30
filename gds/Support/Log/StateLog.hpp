@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "../Singleton.h"
+#include "../Singleton.hpp"
 using namespace NS_KGL;
 
 

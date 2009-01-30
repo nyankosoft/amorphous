@@ -5,10 +5,10 @@
 #include <queue>
 #include <boost/thread.hpp>
 #include <boost/weak_ptr.hpp>
-#include "fwd.h"
-#include "GraphicsResourceManager.h"
+#include "fwd.hpp"
+#include "GraphicsResourceManager.hpp"
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

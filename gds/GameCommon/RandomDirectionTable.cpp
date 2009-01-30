@@ -1,5 +1,5 @@
 
-#include "RandomDirectionTable.h"
+#include "RandomDirectionTable.hpp"
 
 // definition of the singleton instance
 CRandomDirectionTable CRandomDirectionTable::ms_SingletonInstance_;

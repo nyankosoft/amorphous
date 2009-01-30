@@ -1,18 +1,18 @@
 
-#include "BSPMapCompiler.h"
+#include "BSPMapCompiler.hpp"
 #include "BSPMapCompiler/lightmapbuilder.h"
-#include "Stage/StaticGeometry.h"
-#include "Stage/BSPMapFileExporter.h"
+#include "Stage/StaticGeometry.hpp"
+#include "Stage/BSPMapFileExporter.hpp"
 
-#include "LightWave/BSPMapData_LW.h"
+#include "LightWave/BSPMapData_LW.hpp"
 
-#include "Support/TextFileScanner.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/fnop.h"
+#include "Support/TextFileScanner.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/fnop.hpp"
 using namespace fnop;
 
-#include "3DMath/3DStructs.h"
-//#include "3DMath/PolygonMesh.h"
+#include "3DMath/3DStructs.hpp"
+//#include "3DMath/PolygonMesh.hpp"
 
 #include <direct.h>
 

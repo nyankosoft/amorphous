@@ -2,19 +2,19 @@
 #define __COPYENTITY_H__
 
 
-#include "../base.h"
-#include "3DMath/Matrix34.h"
-#include "3DMath/3DStructs.h"
-#include "Support/FixedVector.h"
-#include "Graphics/MeshObjectHandle.h"
-#include "Physics/fwd.h"
+#include "../base.hpp"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/3DStructs.hpp"
+#include "Support/FixedVector.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
+#include "Physics/fwd.hpp"
 
-#include "EntityHandle.h"
-#include "CopyEntityCallback.h"
-#include "LinkNode.h"
+#include "EntityHandle.hpp"
+#include "CopyEntityCallback.hpp"
+#include "LinkNode.hpp"
 
-#include "fwd.h"
-#include "BaseEntity.h"
+#include "fwd.hpp"
+#include "BaseEntity.hpp"
 
 
 

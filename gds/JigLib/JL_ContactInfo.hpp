@@ -2,9 +2,9 @@
 #define __JL_CONTACTINFO_H__
 
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
-#include "Support/FixedVector.h"
+#include "Support/FixedVector.hpp"
 
 class CJL_ShapeBase;
 

@@ -1,6 +1,6 @@
 
-#include "StatusDisplay.h"
-#include "StatusDisplayRenderer.h"
+#include "StatusDisplay.hpp"
+#include "StatusDisplayRenderer.hpp"
 
 
 

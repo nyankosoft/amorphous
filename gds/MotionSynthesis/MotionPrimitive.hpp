@@ -6,16 +6,16 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/Quaternion.h"
-#include "BVH/fwd.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/Serialization_3DMath.h"
-#include "Support/Serialization/Serialization_BoostSmartPtr.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/Quaternion.hpp"
+#include "BVH/fwd.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 using namespace GameLib1::Serialization;
 
-#include "fwd.h"
-#include "Skeleton.h"
+#include "fwd.hpp"
+#include "Skeleton.hpp"
 
 
 namespace msynth

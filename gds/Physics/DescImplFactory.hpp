@@ -2,7 +2,7 @@
 #define __PhysDescImplFactory_H__
 
 
-#include "Support/Singleton.h"
+#include "Support/Singleton.hpp"
 
 
 #define PhysDescImplFactoryHolder (CDescImplFactoryHolder::Get())

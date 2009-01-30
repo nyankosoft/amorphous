@@ -1,11 +1,11 @@
-#include "DirectInputMouse.h"
+#include "DirectInputMouse.hpp"
 
-#include "Support/Profile.h"
-#include "Support/Log/DefaultLog.h"
-#include "GameInput/DirectInput.h"
-#include "GameInput/InputHub.h"
+#include "Support/Profile.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "GameInput/DirectInput.hpp"
+#include "GameInput/InputHub.hpp"
 
-#include "App/GameWindowManager_Win32.h"
+#include "App/GameWindowManager_Win32.hpp"
 
 
 /*

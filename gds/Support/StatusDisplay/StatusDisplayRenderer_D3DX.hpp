@@ -2,7 +2,7 @@
 #ifndef  __STATUSDISPLAYRENDERER_D3DX_H__
 #define  __STATUSDISPLAYRENDERER_D3DX_H__
 
-#include "StatusDisplayRenderer.h"
+#include "StatusDisplayRenderer.hpp"
 
 
 class CFont;

@@ -1,7 +1,7 @@
 
-#include "ConvexPolygon.h"
+#include "ConvexPolygon.hpp"
 
-#include "Support/memory_helpers.h"
+#include "Support/memory_helpers.hpp"
 
 
 CConvexPolygon::CConvexPolygon()

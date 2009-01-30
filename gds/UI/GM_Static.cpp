@@ -1,9 +1,9 @@
 
-#include "GM_Static.h"
+#include "GM_Static.hpp"
 
-#include "GM_ControlDescBase.h"
-#include "GM_Dialog.h"
-#include "GM_ControlRenderer.h"
+#include "GM_ControlDescBase.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_ControlRenderer.hpp"
 
 
 //========================================================================================

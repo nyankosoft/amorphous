@@ -2,7 +2,7 @@
 #define  __GAMESOUND_H__
 
 
-#include "3DMath/Vector3.h"
+#include "3DMath/Vector3.hpp"
 
 
 // define 'DWORD_PTR' for "dsound.h" in DX9 SDK Summer 2004

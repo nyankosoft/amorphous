@@ -1,7 +1,7 @@
-#include "MeshBoneController_Aircraft.h"
-#include "Graphics/D3DXSMeshObject.h"
-#include "PseudoAircraftSimulator.h"
-#include "XML/XMLNodeReader.h"
+#include "MeshBoneController_Aircraft.hpp"
+#include "Graphics/D3DXSMeshObject.hpp"
+#include "PseudoAircraftSimulator.hpp"
+#include "XML/XMLNodeReader.hpp"
 
 
 //============================================================================

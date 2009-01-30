@@ -1,5 +1,5 @@
-#include "Skybox.h"
-#include "Graphics/Direct3D9.h"
+#include "Skybox.hpp"
+#include "Graphics/Direct3D9.hpp"
 
 CSkybox::CSkybox()
 {

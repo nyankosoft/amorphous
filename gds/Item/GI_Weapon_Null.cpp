@@ -1,11 +1,11 @@
 
-#include "GI_Weapon.h"
-#include "GI_Ammunition.h"
-#include "WeaponSystem.h"
+#include "GI_Weapon.hpp"
+#include "GI_Ammunition.hpp"
+#include "WeaponSystem.hpp"
 
-#include "Stage/Stage.h"
-#include "Stage/CopyEntityDesc.h"
-#include "GameCommon/BasicGameMath.h"
+#include "Stage/Stage.hpp"
+#include "Stage/CopyEntityDesc.hpp"
+#include "GameCommon/BasicGameMath.hpp"
 
 
 //======================================================================================

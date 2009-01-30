@@ -6,9 +6,9 @@
 
 #include "../Graphics/FVF_MapVertex.h"
 
-#include "BSPStaticGeometry.h"
+#include "BSPStaticGeometry.hpp"
 
-#include "BinaryNode.h"
+#include "BinaryNode.hpp"
 
 class CBSPMapCompiler;
 class CSkybox;

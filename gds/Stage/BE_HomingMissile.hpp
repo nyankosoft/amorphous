@@ -1,10 +1,10 @@
 #ifndef __BE_HOMINGMISSILE_H__
 #define __BE_HOMINGMISSILE_H__
 
-#include "CopyEntity.h"
-#include "BE_Explosive.h"
-#include "BaseEntityHandle.h"
-#include "Graphics/camera.h"
+#include "CopyEntity.hpp"
+#include "BE_Explosive.hpp"
+#include "BaseEntityHandle.hpp"
+#include "Graphics/Camera.hpp"
 
 
 inline short& MissileState( CCopyEntity* pCopyEnt ) { return pCopyEnt->s1; }

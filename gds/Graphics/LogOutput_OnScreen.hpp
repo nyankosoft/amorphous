@@ -4,10 +4,10 @@
 #include <vector>
 #include <string>
 
-#include "../base.h"
-#include "Support/Log/LogOutputBase.h"
-#include "Support/2DArray.h"
-#include "3DMath/Vector2.h"
+#include "../base.hpp"
+#include "Support/Log/LogOutputBase.hpp"
+#include "Support/2DArray.hpp"
+#include "3DMath/Vector2.hpp"
 
 
 /**

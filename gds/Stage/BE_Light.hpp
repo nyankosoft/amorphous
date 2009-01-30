@@ -1,15 +1,15 @@
 #ifndef __BE_Light_H__
 #define __BE_Light_H__
 
-#include "BaseEntity.h"
-#include "CopyEntity.h"
-#include "LightEntity.h"
+#include "BaseEntity.hpp"
+#include "CopyEntity.hpp"
+#include "LightEntity.hpp"
 
-#include "Graphics/FloatRGBAColor.h"
-#include "Graphics/HemisphericLight.h"
-#include "Support/Serialization/Serialization_Light.h"
-#include "Support/StringAux.h"
-#include "Support/prealloc_pool.h"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/HemisphericLight.hpp"
+#include "Support/Serialization/Serialization_Light.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/prealloc_pool.hpp"
 
 
 class CBE_Light : public CBaseEntity

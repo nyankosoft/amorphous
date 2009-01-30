@@ -1,7 +1,7 @@
 #ifndef	__BASEENTITYTURRET_H__
 #define __BASEENTITYTURRET_H__
 
-#include "BE_Enemy.h"
+#include "BE_Enemy.hpp"
 
 
 class CBE_Turret : public CBE_Enemy

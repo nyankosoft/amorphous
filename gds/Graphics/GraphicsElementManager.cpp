@@ -1,12 +1,12 @@
-#include "Graphics/GraphicsElementManager.h"
-#include "Graphics/Font/Font.h"
-#include "Graphics/Font/TextureFont.h"
-#include "Graphics/Font/TrueTypeTextureFont.h"
-#include "Graphics/2DPrimitive/2DPolygon.h"
-#include "GraphicsElementManager.h"
+#include "Graphics/GraphicsElementManager.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/Font/TrueTypeTextureFont.hpp"
+#include "Graphics/2DPrimitive/2DPolygon.hpp"
+#include "GraphicsElementManager.hpp"
 #include "Support/Macro.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Profile.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Profile.hpp"
 
 #include <algorithm>
 using namespace std;

@@ -2,12 +2,12 @@
 #include <windows.h>
 #include <dxerr9.h>
 
-#include "Support/TextFileScanner.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
+#include "Support/TextFileScanner.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/SafeDelete.hpp"
 
-#include "DirectSoundManager.h"
-#include "WaveFile.h"
+#include "DirectSoundManager.hpp"
+#include "WaveFile.hpp"
 
 using namespace std;
 

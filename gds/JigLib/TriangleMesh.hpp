@@ -6,14 +6,14 @@
 #include <vector>
 using namespace std;
 
-#include "JL_ShapeBase.h"
+#include "JL_ShapeBase.hpp"
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Triangle.h"
-#include "3DMath/IndexedTriangle.h"
-#include "3DMath/BSPTreeForTriangleMesh.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Triangle.hpp"
+#include "3DMath/IndexedTriangle.hpp"
+#include "3DMath/BSPTreeForTriangleMesh.hpp"
 
-//#include "Support/Serialization/SerializationEx.h"
+//#include "Support/Serialization/SerializationEx.hpp"
 //using namespace GameLib1::Serialization;
 
 

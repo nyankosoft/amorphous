@@ -3,7 +3,7 @@
 
 
 #include <stdlib.h>
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 class CGM_SubEvent

@@ -4,7 +4,7 @@
 
 #include <d3dx9.h>
 
-#include "Graphics/Direct3D9.h"
+#include "Graphics/Direct3D9.hpp"
 #include "Graphics/FVF_ColorVertex.h"
 
 #include "Graphics/FVF_TLVertex.h"

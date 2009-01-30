@@ -2,8 +2,8 @@
 #define  __SurfaceMaterialManager_H__
 
 
-#include "SurfaceMaterial.h"
-#include "SurfaceMaterialHandle.h"
+#include "SurfaceMaterial.hpp"
+#include "SurfaceMaterialHandle.hpp"
 
 
 class CSurfaceMaterialManager : public IArchiveObjectBase

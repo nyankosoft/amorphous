@@ -1,11 +1,11 @@
-#include "VarianceShadowMapManager.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/ShaderManagerHub.h"
-#include "Graphics/2DPrimitive/2DTexRect.h"
-#include "Graphics/TextureRenderTarget.h"
-#include "Support/Log/DefaultLog.h"
+#include "VarianceShadowMapManager.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManagerHub.hpp"
+#include "Graphics/2DPrimitive/2DTexRect.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 using namespace boost;

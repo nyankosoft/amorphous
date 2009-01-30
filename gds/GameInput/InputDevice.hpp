@@ -2,10 +2,10 @@
 #define __InputDevice_H__
 
 
-#include "InputHub.h"
+#include "InputHub.hpp"
 
 /// auto repeat control requires the timer
-#include "Support/Timer.h"
+#include "Support/Timer.hpp"
 
 
 class CInputDevice

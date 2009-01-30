@@ -2,8 +2,8 @@
 #define  __HUD_TimerDisplay_H__
 
 
-#include "Graphics/Font/FontBase.h"
-#include "../base.h"
+#include "Graphics/Font/FontBase.hpp"
+#include "../base.hpp"
 
 
 class HUD_TimerDisplay

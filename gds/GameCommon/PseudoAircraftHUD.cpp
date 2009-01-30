@@ -1,15 +1,15 @@
 
-#include "PseudoAircraftHUD.h"
+#include "PseudoAircraftHUD.hpp"
 
-#include "3DMath/Matrix34.h"
-#include "3DMath/Matrix22.h"
-#include "3DMath/MathMisc.h"
-#include "Graphics/2DPrimitive/2DRect.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/D3DMisc.h"
-#include "Graphics/Font/TextureFont.h"
-#include "Support/memory_helpers.h"
-#include "PseudoAircraftSimulator.h"
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/Matrix22.hpp"
+#include "3DMath/MathMisc.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DMisc.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Support/memory_helpers.hpp"
+#include "PseudoAircraftSimulator.hpp"
 
 
 CPseudoAircraftHUD::CPseudoAircraftHUD()

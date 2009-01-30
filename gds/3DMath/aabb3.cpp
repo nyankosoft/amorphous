@@ -1,5 +1,5 @@
-#include "aabb3.h"
-#include "Sphere.h"
+#include "aabb3.hpp"
+#include "Sphere.hpp"
 
 
 Sphere AABB3::CreateBoundingSphere() const

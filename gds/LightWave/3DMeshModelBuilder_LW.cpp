@@ -1,12 +1,12 @@
-#include "LightWave/LWO2_Object.h"
-#include "LightWave/LWO2_Layer.h"
+#include "LightWave/LWO2_Object.hpp"
+#include "LightWave/LWO2_Layer.hpp"
 
-#include "Support/fnop.h"
-#include "Support/StringAux.h"
+#include "Support/fnop.hpp"
+#include "Support/StringAux.hpp"
 #include "Support/Macro.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "3DMeshModelBuilder_LW.h"
+#include "3DMeshModelBuilder_LW.hpp"
 using namespace MeshModel;
 
 using namespace boost;

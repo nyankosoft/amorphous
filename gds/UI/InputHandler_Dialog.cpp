@@ -1,8 +1,8 @@
 
-#include "InputHandler_Dialog.h"
+#include "InputHandler_Dialog.hpp"
 
-#include "UI/GM_DialogManager.h"
-#include "Support/Log/DefaultLog.h"
+#include "UI/GM_DialogManager.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 CInputHandler_Dialog::CInputHandler_Dialog( CGM_DialogManager *pDialogManager )

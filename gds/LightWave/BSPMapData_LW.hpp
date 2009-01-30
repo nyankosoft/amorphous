@@ -2,8 +2,8 @@
 #define __BSPMAPDATA_LW_H__
 
 
-#include "../BSPMapCompiler/BSPMapData.h"
-#include "LWO2_Object.h"
+#include "../BSPMapCompiler/BSPMapData.hpp"
+#include "LWO2_Object.hpp"
 
 
 //==================================================================================

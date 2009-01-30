@@ -1,26 +1,26 @@
 #ifndef  __AMBIENTOCCLUSIONLIGHTMAPBUILDER_H__
 #define  __AMBIENTOCCLUSIONLIGHTMAPBUILDER_H__
 
-//#include "LightingForLightmap.h"
+//#include "LightingForLightmap.hpp"
 
 
-//#include "Support/StatusDisplay/StatusDisplay.h"
-//#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.h"
+//#include "Support/StatusDisplay/StatusDisplay.hpp"
+//#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
 
 #include <vector>
 
-#include "Lightmap.h"
-//#include "MapFace.h"
+#include "Lightmap.hpp"
+//#include "MapFace.hpp"
 
-#include "Graphics/fwd.h"
-#include "Graphics/FloatRGBColor.h"
-#include "Graphics/LightStructs.h"
-#include "Graphics/ShaderHandle.h"
-#include "Graphics/MeshObjectHandle.h"
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/LightStructs.hpp"
+#include "Graphics/ShaderHandle.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
-//#include "3DMath/PolygonMesh.h"
+//#include "3DMath/PolygonMesh.hpp"
 
 class LightmapDesc;
 //class CPolygonMesh;

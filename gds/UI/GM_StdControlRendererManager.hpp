@@ -2,7 +2,7 @@
 #define  __GM_STDCONTROLRENDERERMANAGER_H__
 
 
-#include "GM_ControlRendererManager.h"
+#include "GM_ControlRendererManager.hpp"
 
 
 class CGM_StdControlRendererManager : public CGM_ControlRendererManager

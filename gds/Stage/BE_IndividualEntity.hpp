@@ -2,9 +2,9 @@
 #define __BE_IndividualEntity_H__
 
 
-#include "fwd.h"
-#include "CopyEntity.h"
-#include "BE_PhysicsBaseEntity.h"
+#include "fwd.hpp"
+#include "CopyEntity.hpp"
+#include "BE_PhysicsBaseEntity.hpp"
 
 
 class CBE_IndividualEntity : public CBE_PhysicsBaseEntity

@@ -8,7 +8,7 @@ using namespace std;
 
 #include <boost/shared_ptr.hpp>
 
-#include "LightWave/fwd.h"
+#include "LightWave/fwd.hpp"
 
 
 namespace MeshModel

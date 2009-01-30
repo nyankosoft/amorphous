@@ -1,7 +1,7 @@
 
-#include "JL_PhysicsActorDesc.h"
-#include "JL_ShapeDesc.h"
-#include "JL_ShapeDescFactory.h"
+#include "JL_PhysicsActorDesc.hpp"
+#include "JL_ShapeDesc.hpp"
+#include "JL_ShapeDescFactory.hpp"
 
 void CJL_PhysicsActorDesc::CalculateMassProperties()
 {

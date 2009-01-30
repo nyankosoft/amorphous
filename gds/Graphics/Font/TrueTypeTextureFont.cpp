@@ -1,14 +1,14 @@
-#include "TrueTypeTextureFont.h"
-#include "Graphics/Direct3D9.h"
-#include "Graphics/Rect.h"
+#include "TrueTypeTextureFont.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <string.h>
-#include "Support/fnop.h"
-#include "Support/FreeTypeAux.h"
-#include "Support/BitmapImage.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/ImageArchive.h"
+#include "Support/fnop.hpp"
+#include "Support/FreeTypeAux.hpp"
+#include "Support/BitmapImage.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/ImageArchive.hpp"
 
 
 #ifdef _DEBUG

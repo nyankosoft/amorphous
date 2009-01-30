@@ -1,5 +1,5 @@
-#include "trace.h"
-#include "CopyEntity.h"
+#include "trace.hpp"
+#include "CopyEntity.hpp"
 
 
 //int CTrace::ms_iTouchEntityIndex = 0;

@@ -1,8 +1,8 @@
 #ifndef __BE_FIXEDTURRETPOD_H__
 #define __BE_FIXEDTURRETPOD_H__
 
-#include "BaseEntity.h"
-#include "BaseEntityHandle.h"
+#include "BaseEntity.hpp"
+#include "BaseEntityHandle.hpp"
 
 #include <string>
 

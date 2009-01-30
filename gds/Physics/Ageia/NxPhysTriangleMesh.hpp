@@ -2,11 +2,11 @@
 #define __NxPhysTriangleMesh_H__
 
 
-#include "fwd.h"
-#include "3DMath.h"
+#include "fwd.hpp"
+#include "3DMath.hpp"
 
-//#include "NxPhysTriangleMeshDesc.h"
-#include "../TriangleMesh.h"
+//#include "NxPhysTriangleMeshDesc.hpp"
+#include "../TriangleMesh.hpp"
 
 
 namespace physics

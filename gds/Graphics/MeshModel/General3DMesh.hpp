@@ -12,10 +12,10 @@ valid combinations of geometry filters
 #include <list>
 #include <boost/shared_ptr.hpp>
 
-#include "../fwd.h"
-#include "../General3DVertex.h"
-#include "../IndexedPolygon.h"
-#include "3DMeshModelArchive.h"
+#include "../fwd.hpp"
+#include "../General3DVertex.hpp"
+#include "../IndexedPolygon.hpp"
+#include "3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

@@ -1,5 +1,5 @@
 
-#include "GM_PaintBarDesc.h"
+#include "GM_PaintBarDesc.hpp"
 
 
 void CGM_PaintBarDesc::SetDefault()

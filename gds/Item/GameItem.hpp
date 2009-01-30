@@ -4,16 +4,16 @@
 
 #include <string>
 
-#include "Graphics/fwd.h"
-#include "Graphics/MeshObjectContainer.h"
-#include "GameCommon/LangID.h"
-#include "Stage/fwd.h"
-#include "XML/fwd.h"
-#include "Support/Serialization/Serialization.h"
-#include "Support/Serialization/ArchiveObjectFactory.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/MeshObjectContainer.hpp"
+#include "GameCommon/LangID.hpp"
+#include "Stage/fwd.hpp"
+#include "XML/fwd.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 /**

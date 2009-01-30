@@ -1,10 +1,10 @@
-#include "EntityFactory.h"
-#include "Stage/CopyEntity.h"
-#include "Stage/CopyEntityDesc.h"
-#include "Stage/LightEntity.h"
-#include "Stage/AlphaEntity.h"
-#include "Stage/BE_ScriptedCamera.h"
-#include "Support/memory_helpers.h"
+#include "EntityFactory.hpp"
+#include "Stage/CopyEntity.hpp"
+#include "Stage/CopyEntityDesc.hpp"
+#include "Stage/LightEntity.hpp"
+#include "Stage/AlphaEntity.hpp"
+#include "Stage/BE_ScriptedCamera.hpp"
+#include "Support/memory_helpers.hpp"
 
 
 using namespace std;

@@ -2,11 +2,11 @@
 #define  __OpenALSoundSourceImpl_H__
 
 
-#include "fwd.h"
-#include "SoundSource.h"
-#include "Sound/SoundManagerImpl.h"
+#include "fwd.hpp"
+#include "SoundSource.hpp"
+#include "Sound/SoundManagerImpl.hpp"
 #include "Support/SerializableStream.hpp"
-#include "Support/prealloc_pool.h"
+#include "Support/prealloc_pool.hpp"
 #include "Support/Macro.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>

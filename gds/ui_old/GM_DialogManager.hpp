@@ -2,8 +2,8 @@
 #define  __GM_DIALOGMANAGER_H__
 
 
-#include "GM_CaptionParameters.h"
-#include "GM_CaptionRenderRoutine.h"
+#include "GM_CaptionParameters.hpp"
+#include "GM_CaptionRenderRoutine.hpp"
 
 #include <d3dx9.h>
 

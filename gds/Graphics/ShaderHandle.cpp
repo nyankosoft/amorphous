@@ -1,5 +1,5 @@
-#include "ShaderHandle.h"
-#include "Support/Log/DefaultLog.h"
+#include "ShaderHandle.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 

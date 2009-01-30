@@ -1,4 +1,4 @@
-#include "2DPolygon.h"
+#include "2DPolygon.hpp"
 
 
 const float gs_fDefaultRadius = 100.0f;

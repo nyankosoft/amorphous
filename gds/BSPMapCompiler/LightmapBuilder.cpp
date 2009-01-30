@@ -1,13 +1,13 @@
-#include "LightmapBuilder.h"
+#include "LightmapBuilder.hpp"
 #include <direct.h>
 
-#include "3DMath/AABTree.h"
-#include "Support/SafeDelete.h"
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
+#include "3DMath/AABTree.hpp"
+#include "Support/SafeDelete.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-#include "LightmapLightingManager.h"
-//#include "AmbientOcclusionLightmapBuilder.h"
+#include "LightmapLightingManager.hpp"
+//#include "AmbientOcclusionLightmapBuilder.hpp"
 
 using namespace std;
 

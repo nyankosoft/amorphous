@@ -3,10 +3,10 @@
 
 
 #include <string>
-#include "3DMath/Matrix34.h"
+#include "3DMath/Matrix34.hpp"
 #include "Support/SerializableStream.hpp"
 
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 namespace physics

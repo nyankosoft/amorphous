@@ -1,5 +1,5 @@
 //====================================================================
-//  FileOpenDialog_Win32.h
+//  FileOpenDialog_Win32.hpp
 //  opens a dialog box for specifying a file to save
 //====================================================================
 

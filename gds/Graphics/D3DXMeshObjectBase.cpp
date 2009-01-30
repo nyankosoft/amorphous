@@ -1,6 +1,6 @@
-#include "D3DXMeshObjectBase.h"
+#include "D3DXMeshObjectBase.hpp"
 
-#include "../base.h"
+#include "../base.hpp"
 #include "Graphics/FVF_BumpVertex.h"
 #include "Graphics/FVF_BumpWeightVertex.h"
 #include "Graphics/FVF_ColorVertex.h"
@@ -8,15 +8,15 @@
 #include "Graphics/FVF_NormalVertex.h"
 #include "Graphics/FVF_WeightVertex.h"
 #include "Graphics/FVF_ShadowVertex.h"
-#include "Graphics/Camera.h"
-#include "Graphics/Shader/ShaderManager.h"
+#include "Graphics/Camera.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
-#include "Support/StringAux.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/Profile.h"
-#include "Support/memory_helpers.h"
+#include "Support/StringAux.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Profile.hpp"
+#include "Support/memory_helpers.hpp"
 #include "Support/Macro.h"
-#include "Support/fnop.h"
+#include "Support/fnop.hpp"
 using namespace fnop;
 
 
@@ -906,8 +906,8 @@ bool CD3DXMeshObjectBase::UnlockAttributeBuffer()
 }
 
 
-#include "D3DXMeshObject.h"
-#include "D3DXSMeshObject.h"
+#include "D3DXMeshObject.hpp"
+#include "D3DXSMeshObject.hpp"
 
 
 

@@ -2,9 +2,9 @@
 #define  __D3DXSMESHOBJECT_H__
 
 
-#include "Graphics/fwd.h"
-#include "Graphics/D3DXPMeshObject.h"
-#include "Graphics/MeshModel/MeshBone.h"
+#include "Graphics/fwd.hpp"
+#include "Graphics/D3DXPMeshObject.hpp"
+#include "Graphics/MeshModel/MeshBone.hpp"
 using namespace MeshModel;
 
 

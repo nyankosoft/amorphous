@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "fwd.h"
+#include "fwd.hpp"
 
 
 // m_p = new CGameTaskManager( new CGameTaskFactoryCustomized, init_task_id );

@@ -1,8 +1,8 @@
 #ifndef  __GM_SCROLLBARDESC_H__
 #define  __GM_SCROLLBARDESC_H__
 
-#include "fwd.h"
-#include "GM_ControlDescBase.h"
+#include "fwd.hpp"
+#include "GM_ControlDescBase.hpp"
 
 
 class CGM_ScrollBarDesc : public CGM_ControlDesc
