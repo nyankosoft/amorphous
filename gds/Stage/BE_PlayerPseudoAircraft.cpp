@@ -6,36 +6,27 @@
 #include <Stage/ScreenEffectManager.hpp>
 #include <Stage/HUD_PlayerAircraft.hpp>
 #include <Stage/GameMessage.hpp>
-#include "Input/InputHandler_PlayerPAC.hpp"
+#include <Stage/Input/InputHandler_PlayerPAC.hpp>
+#include <Stage/ViewFrustumTest.hpp>
+
 #include "Item/WeaponSystem.hpp"
 #include "Item/GI_MissileLauncher.hpp"
-#include "ViewFrustumTest.hpp"
 
-#include "3DMath/Vector3.hpp"
 #include "3DMath/MathMisc.hpp"
 
-#include "GameCommon/BasicGameMath.hpp"
-#include "GameCommon/GameMathMisc.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "GameCommon/RandomDirectionTable.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
-#include "Support/Timer.hpp"
 #include "GameCommon/PseudoAircraftSimulator.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
 
 // added for laser dot casting test
 #include "Graphics/3DGameMath.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/memory_helpers.hpp"
 #include "trace.hpp"
 #include "OverlapTestAABB.hpp"
 
-//#include "JigLib/JL_PhysicsActor.hpp"
-//#include "JigLib/JL_LineSegment.hpp"
 #include "Physics/Actor.hpp"
 
 #include "UI.hpp"
@@ -44,8 +35,6 @@
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.hpp"
 
-#include "../../../GameProjects/FlightGame/src/srcroot/Stage/FG_AIAircraftEntityDesc.hpp"
-#include "../../../GameProjects/FlightGame/src/srcroot/EntityGroups.hpp"
 
 using namespace std;
 using namespace boost;
@@ -89,6 +78,13 @@ static void SetDefaultGMInputCodesForActionCodes()
 //================================================================================
 // CBE_PlayerPseudoAircraft
 //================================================================================
+
+map<int,int> CBE_PlayerPseudoAircraft::ms_mapEntityTypeIDtoTargetTypeFlag;
+
+map<int,int> CBE_PlayerPseudoAircraft::ms_mapEntityGroupToTargetGroupFlag;
+
+vector<int> CBE_PlayerPseudoAircraft::ms_vecFocusTargetEntityGroup;
+
 
 CBE_PlayerPseudoAircraft::CBE_PlayerPseudoAircraft()
 :
@@ -471,7 +467,9 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 
 		num_valid_entities++;
 
-		if( vecpEntityBuffer[i]->GroupIndex == CE_GROUP_ENEMY )
+		
+//		if( vecpEntityBuffer[i]->GroupIndex == CE_GROUP_ENEMY )
+		if( IsFocusTargetEntity( vecpEntityBuffer[i]->GroupIndex ) )
 		{
             m_vecFocusCandidate.push_back( FocusCandidate( vecpEntityBuffer[i], 1.0f ) );
 		}
@@ -607,26 +605,24 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 			break;
 
 		default:
-			switch( pEntity->GroupIndex )
+			map<int,int>::iterator itr_group
+				= ms_mapEntityGroupToTargetGroupFlag.find( pEntity->GroupIndex );
+
+			if( itr_group != ms_mapEntityGroupToTargetGroupFlag.end() )
 			{
-			case CE_GROUP_PLAYER:      tgt_type |= HUD_TargetInfo::PLAYER; break;
-			case CE_GROUP_PLAYER_ALLY: tgt_type |= HUD_TargetInfo::ALLY;   break;
-			case CE_GROUP_ENEMY:       tgt_type |= HUD_TargetInfo::ENEMY;  break;
-			default:
-				break;
+				// set the target type
+				// - HUD_TargetInfo::PLAYER, ALLY or ENEMY
+				tgt_type |= itr_group->second;
 			}
 
-			switch( pEntity->GetEntityTypeID() )
+			map<int,int>::iterator itr_type
+				= ms_mapEntityTypeIDtoTargetTypeFlag.find( pEntity->GetEntityTypeID() );
+
+			if( itr_type != ms_mapEntityTypeIDtoTargetTypeFlag.end() )
 			{
-			case CFG_EntityTypeID::AI_AIRCRAFT:
-				tgt_type |= HUD_TargetInfo::TGT_AIR;
-				break;
-			case CFG_EntityTypeID::AI_VEHICLE:
-			case CFG_EntityTypeID::AI_SHIP:
-				tgt_type |= HUD_TargetInfo::TGT_SURFACE;
-				break;
-			default:
-				break;
+				// set the target group
+				// - UD_TargetInfo::TGT_AIR or TGT_SURFACE
+				tgt_type |= itr_type->second;
 			}
 
 			break;
@@ -1126,17 +1122,6 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 	}*/
 
 	return false;
-}
-
-
-void CBE_PlayerPseudoAircraft::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	Init3DModel();
-}
-
-
-void CBE_PlayerPseudoAircraft::ReleaseGraphicsResources()
-{
 }
 
 

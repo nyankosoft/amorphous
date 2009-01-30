@@ -212,6 +212,14 @@ private:
 
 	HUD_PlayerAircraft *m_pPlayerAircraftHUD;
 
+	// static properties
+
+	static std::map<int,int> ms_mapEntityTypeIDtoTargetTypeFlag;
+
+	static std::map<int,int> ms_mapEntityGroupToTargetGroupFlag;
+
+	static std::vector<int> ms_vecFocusTargetEntityGroup;
+
 private:
 
 	void InitSubDisplay();
@@ -219,6 +227,8 @@ private:
 	bool SetAircraft();
 
 	void UpdateObjectsInSight( CCopyEntity* pCopyEnt );
+
+	inline bool IsFocusTargetEntity( int entity_group );
 
 	/**
 	 * updates candidates which can be focused on
@@ -269,10 +279,6 @@ public:
 	virtual void UpdatePhysics( CCopyEntity *pCopyEnt, float dt );
 
 //	void PlayerDead(CCopyEntity* pCopyEnt);
-
-//	void AdaptToNewScreenSize() {}
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
-	virtual void ReleaseGraphicsResources();
 
 	virtual unsigned int GetArchiveObjectID() const { return BE_PLAYERPSEUDOAIRCRAFT; }
 
@@ -334,6 +340,12 @@ public:
 
 	const Matrix34& GetWorldPoseOnMissionFailed() const { return m_WorldPoseOnMissionFailed; }
 
+	static std::map<int,int>& EntityTypeIDtoTargetTypeFlagMap() { return  ms_mapEntityTypeIDtoTargetTypeFlag; }
+
+	static std::map<int,int>& EntityGroupToTargetGroupFlagMap() { return  ms_mapEntityGroupToTargetGroupFlag; }
+
+	static std::vector<int>& FocusTargetEntityGroup() { return ms_vecFocusTargetEntityGroup; }
+
 //	const std::vector<CCopyEntity *>& GetVisibleEntity() const { return m_vecpVisibleEntity; }
 
 //	void ToggleHeadLight();
@@ -360,12 +372,17 @@ void InitPlayerAircraft()
 
 // ================================ inline implementations ================================ 
 
-/*
-inline void CBE_PlayerPseudoAircraft::SetAccel( float accel )
+
+inline bool CBE_PlayerPseudoAircraft::IsFocusTargetEntity( int entity_group )
 {
-	m_AircraftSimulator.SetAccel( accel );
+	vector<int>::iterator itr
+		= std::find( ms_vecFocusTargetEntityGroup.begin(),
+		             ms_vecFocusTargetEntityGroup.end(),
+			         entity_group );
+
+	return ( itr != ms_vecFocusTargetEntityGroup.end() );
 }
-*/
+
 
 inline bool CBE_PlayerPseudoAircraft::IsOnGround()
 {
