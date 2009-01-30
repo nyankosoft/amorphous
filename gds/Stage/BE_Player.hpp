@@ -1,6 +1,7 @@
 #ifndef  __BE_PLAYER_H__
 #define  __BE_PLAYER_H__
 
+
 #include "../base.hpp"
 #include "BE_PhysicsBaseEntity.hpp"
 #include "BaseEntityHandle.hpp"
@@ -16,8 +17,9 @@
 
 #include "Sound/SoundHandle.hpp"
 
-class CShockWaveCameraEffect;
+class CInputHandler_PlayerBase;
 class HUD_PlayerBase;
+class CShockWaveCameraEffect;
 
 
 enum eThrustDirection
@@ -78,6 +80,8 @@ protected:
 
 	CCopyEntity* m_pPlayerCopyEntity;
 
+	CInputHandler_PlayerBase *m_pInputHandler;
+
 	/// ENTITY_GROUP_MIN is set by default
 	CEntityGroupHandle m_ProjectileEntityGroup;
 
@@ -126,6 +130,8 @@ protected:
 	/// returns the camera position modified by the camera related effect,
 	/// and requests screen effects to screen effect manager if necessary
 	void UpdateCameraEffect( Vector3& vNewCameraPos, CCopyEntity* pCopyEnt );
+
+	virtual CInputHandler_PlayerBase *CreatePlayerInputHandler() { return NULL; }
 
 public:
 

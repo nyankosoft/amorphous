@@ -43,6 +43,10 @@ class CBE_PlayerShip : public CBE_Player
 //	CCopyEntity *m_pHeadLightEntity;
 //	bool m_bHeadLightOn;
 
+private:
+
+	CInputHandler_PlayerBase *CreatePlayerInputHandler();
+
 public:
 
 	CBE_PlayerShip();
@@ -62,10 +66,6 @@ public:
 	void MoveEx( CCopyEntity *pEntity );	// rigid body simulation is applied when MoveEx() is used
 
 //	void PlayerDead(CCopyEntity* pCopyEnt);
-
-//	void AdaptToNewScreenSize() {}
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-//	void ReleaseGraphicsResources();
 
 	inline void SetThrust( int iThrustDirection, float fValue );
 	inline void SetRotationSpeedGain( int iRotDirection, float fSpeedGain );

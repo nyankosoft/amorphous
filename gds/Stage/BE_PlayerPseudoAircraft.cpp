@@ -162,8 +162,8 @@ void CBE_PlayerPseudoAircraft::Init()
 	float near_clip	= 1.0f;
 	float far_clip	= 50000.0f;
 
-	m_Camera.SetFOV( D3DX_PI / 4.0f );
-//	m_Camera.SetFOV( D3DX_PI / 8.0f );
+	m_Camera.SetFOV( (float)PI / 4.0f );
+//	m_Camera.SetFOV( (float)PI / 8.0f );
 	m_Camera.SetNearClip( near_clip );
 	m_Camera.SetFarClip( far_clip );
 	m_Camera.SetAspectRatio( CGraphicsComponent::GetAspectRatio() );
@@ -214,6 +214,12 @@ void CBE_PlayerPseudoAircraft::CreateNozzleFlames( CCopyEntity* pCopyEnt )
 
 		m_pStage->CreateEntity( desc );
 	}*/
+}
+
+
+CInputHandler_PlayerBase *CBE_PlayerPseudoAircraft::CreatePlayerInputHandler()
+{
+	return new CInputHandler_PlayerPAC();
 }
 
 

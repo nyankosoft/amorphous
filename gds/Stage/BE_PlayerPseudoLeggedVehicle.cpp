@@ -550,3 +550,9 @@ void CBE_PlayerPseudoLeggedVehicle::Serialize( IArchive& ar, const unsigned int 
 
 //	ar & m_aVehicleLeg
 }
+
+
+CInputHandler_PlayerBase *CBE_PlayerPseudoLeggedVehicle::CreatePlayerInputHandler()
+{
+	return new CInputHandler_PlayerShip();
+}

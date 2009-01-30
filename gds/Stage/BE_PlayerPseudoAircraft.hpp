@@ -238,6 +238,8 @@ private:
 
 	HUD_PlayerBase *GetHUD() { return m_pPlayerAircraftHUD; }
 
+	CInputHandler_PlayerBase *CreatePlayerInputHandler();
+
 //	void EnableNightVision( bool enable );
 
 //	void ToggleNightVision();

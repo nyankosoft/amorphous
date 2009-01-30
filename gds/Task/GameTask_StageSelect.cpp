@@ -18,13 +18,9 @@
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/GraphicsElementManager.hpp"
 #include "Support/memory_helpers.hpp"
-
-#include "App/ApplicationBase.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
 
-//#include <direct.h>
-//#include <assert.h>
+#include "App/ApplicationBase.hpp"
 
 
 using namespace std;
@@ -91,7 +87,7 @@ CGameTask_StageSelect::CGameTask_StageSelect()
 m_pInputHandler(NULL),
 m_iNumStages(0)
 {
-//	MessageBox( NULL, "initializing stage select task", "message", MB_OK );
+//	LOG_PRINT( NULL, "Initializing stage select task..." );
 
 	gs_iState = STAGE_NOT_LOADED;
 
@@ -112,7 +108,7 @@ m_iNumStages(0)
 	FILE* fp = fopen("Stage\\StageFileSelector.txt", "r");
 	if(!fp)
 	{
-		MessageBox( NULL, "stage list not found", "message", MB_OK );
+		LOG_PRINT( "Stage list not found" );
 		return;
 	}
 	int iNumStageFiles = 0;

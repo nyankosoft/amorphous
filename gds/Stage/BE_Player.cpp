@@ -4,30 +4,25 @@
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
 #include "Input/InputHandler_PlayerShip.hpp"
-#include "Item/WeaponSystem.hpp"
 #include "Stage/ScreenEffectManager.hpp"
+#include "Stage/BE_LaserDot.hpp"
 #include "GameMessage.hpp"
 #include "trace.hpp"
-
-#include "3DMath/Vector3.hpp"
-
-#include "GameCommon/BasicGameMath.hpp"
-#include "GameCommon/MTRand.hpp"
-#include "Support/VectorRand.hpp"
-#include "GameCommon/ShockWaveCameraEffect.hpp"
-#include "Support/Timer.hpp"
-
-#include "Stage/BE_LaserDot.hpp"
-
 #include "HUD_PlayerBase.hpp"
 #include "SubDisplay.hpp"
 
-// added for laser dot casting test
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
+#include "GameInput/InputHub.hpp"
+#include "GameCommon/MTRand.hpp"
+#include "GameCommon/ShockWaveCameraEffect.hpp"
+#include "Item/WeaponSystem.hpp"
 
 #include "Sound/SoundManager.hpp"
 
+// added for laser dot casting test
+#include "Graphics/D3DXMeshObject.hpp"
+
+#include "Support/VectorRand.hpp"
+#include "Support/Timer.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/StateLog.hpp"
@@ -38,12 +33,13 @@
 #include "UI/InputHandler_Dialog.hpp"
 
 
-
-
 #include "JigLib/JL_PhysicsActor.hpp"
 
 
 //#define APPLY_PHYSICS_TO_PLAYER_SHIP
+
+
+int gs_InputHandlerIndex = 1;
 
 
 CBE_Player::CBE_Player()
@@ -61,9 +57,14 @@ CBE_Player::CBE_Player()
 	m_pLaserDotEntity = NULL;
 	m_pHeadLightEntity = NULL;
 	m_bHeadLightOn = false;
+	
+	m_pInputHandler = NULL;
 
 	m_ProjectileEntityGroup.SetID( ENTITY_GROUP_MIN_ID );
 
+	m_pShockWaveEffect = NULL;
+
+	m_CameraLocalPose.Identity();
 
 /*
 #ifdef APPLY_PHYSICS_TO_PLAYER_SHIP 
@@ -82,15 +83,14 @@ CBE_Player::CBE_Player()
 
 #endif
 */
-	m_pShockWaveEffect = NULL;
-
-	m_CameraLocalPose.Identity();
 }
 
 
 CBE_Player::~CBE_Player()
 {
 	SafeDelete( m_pShockWaveEffect );
+
+	SafeDelete( m_pInputHandler );
 }
 
 
@@ -136,7 +136,12 @@ void CBE_Player::InitCopyEntity(CCopyEntity* pCopyEnt)
 
 //	m_pStage->SetState( CStage::PLAYER_IN_STAGE );
 
-	SinglePlayerInfo().SetInputHandlerForPlayerShip();
+	// set the input handler for the player entity operations
+	SafeDelete( m_pInputHandler );
+	m_pInputHandler = CreatePlayerInputHandler();
+	InputHub().SetInputHandler( gs_InputHandlerIndex, m_pInputHandler );
+
+//	SinglePlayerInfo().SetInputHandlerForPlayerShip();
 }
 
 
@@ -185,8 +190,9 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 ///	else
 //		LaserAimingDevice( false );
 
-	CInputHandler_PlayerBase *pInputHandler = SinglePlayerInfo().GetInputHandler();
-	if( 0 < pInputHandler->GetActionState(ACTION_ATK_UNLOCK_TRIGGER_SAFETY) )
+	CInputHandler_PlayerBase *pInputHandler = m_pInputHandler;
+	if( pInputHandler
+	 && 0 < pInputHandler->GetActionState(ACTION_ATK_UNLOCK_TRIGGER_SAFETY) )
 		LaserAimingDevice( true );
 	else
 		LaserAimingDevice( false );
@@ -411,6 +417,12 @@ void CBE_Player::OnEntityDestroyed(CCopyEntity* pCopyEnt)
 {
 	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity() == this )
 		SinglePlayerInfo().SetPlayerBaseEntity( NULL );
+
+	if( m_pInputHandler )
+	{
+		InputHub().SetInputHandler( gs_InputHandlerIndex, NULL );
+		SafeDelete( m_pInputHandler );
+	}
 }
 
 /*

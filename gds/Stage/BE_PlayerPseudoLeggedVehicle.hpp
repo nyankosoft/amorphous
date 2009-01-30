@@ -59,6 +59,10 @@ class CBE_PlayerPseudoLeggedVehicle : public CBE_Player
 
 	CVehicleLeg m_aVehicleLeg[NUM_VEHICLE_LEGS];
 
+private:
+
+	CInputHandler_PlayerBase *CreatePlayerInputHandler();
+
 public:
 
 	CBE_PlayerPseudoLeggedVehicle();

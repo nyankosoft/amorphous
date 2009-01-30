@@ -4,8 +4,6 @@
 #include "InputHandler_PlayerBase.hpp"
 
 
-class CSystemInputHandler_Debug;
-
 class CInputHandler_PlayerPAC : public CInputHandler_PlayerBase
 {
 

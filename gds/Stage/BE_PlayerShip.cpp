@@ -568,23 +568,14 @@ void CBE_PlayerShip::Draw(CCopyEntity *pCopyEnt)
 }
 */
 
-/*
-void CBE_PlayerShip::ReleaseGraphicsResources()
-{
-	CBaseEntity::ReleaseGraphicsResources();
-
-//	SafeDelete( m_pLaserDotX );
-
-}
-
-
-void CBE_PlayerShip::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	CBaseEntity::LoadGraphicsResources( rParam );
-}*/
-
 
 void CBE_PlayerShip::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_Player::Serialize( ar, version );
+}
+
+
+CInputHandler_PlayerBase *CBE_PlayerShip::CreatePlayerInputHandler()
+{
+	return new CInputHandler_PlayerShip();
 }

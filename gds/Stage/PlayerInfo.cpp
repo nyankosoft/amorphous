@@ -3,7 +3,6 @@
 #include "Graphics/Font/FontBase.hpp"
 #include "GameInput/InputHub.hpp"
 #include "Input/InputHandler_PlayerShip.hpp"
-#include "Input/InputHandler_PlayerPAC.hpp"
 #include "Item/GameItem.hpp"
 #include "Item/GI_Ammunition.hpp"
 #include "Item/GI_Aircraft.hpp"
@@ -21,9 +20,6 @@ using namespace std;
 using namespace boost;
 
 
-int gs_InputHandlerIndex = 1;
-
-
 // definition of the singleton instance
 CSingleton<CSinglePlayerInfo> CSinglePlayerInfo::m_obj;
 
@@ -33,8 +29,6 @@ CSinglePlayerInfo::CSinglePlayerInfo()
 	m_pCurrentPlayerBaseEntity = NULL;
 
 	m_TaskID = CGameTask::ID_INVALID;
-
-	m_pInputHandler = NULL;
 
 	m_pWeaponSystem = new CWeaponSystem;
 	m_pWeaponSystem->SetProjectileGroup( ENTITY_GROUP_MIN_ID );// CE_GROUP_PLAYER_PROJECTILE );
@@ -56,7 +50,6 @@ CSinglePlayerInfo::~CSinglePlayerInfo()
 
 void CSinglePlayerInfo::Release()
 {
-	SafeDelete( m_pInputHandler );
 	SafeDelete( m_pWeaponSystem );
 
 	m_vecpItem.resize( 0 );
@@ -83,7 +76,7 @@ CCopyEntity *CSinglePlayerInfo::GetCurrentPlayerEntity()
 		return NULL;
 }
 
-
+/*
 void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 {
 
@@ -107,8 +100,8 @@ void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 		break;
 	}
 
-	InputHub().SetInputHandler( gs_InputHandlerIndex, m_pInputHandler );
 }
+*/
 
 void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )
 {
@@ -297,7 +290,6 @@ void CSinglePlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
 		m_pCurrentPlayerBaseEntity = NULL;
-		SafeDelete( m_pInputHandler );
 //		m_pWeaponSystem;
 
 		m_TaskID = -1;

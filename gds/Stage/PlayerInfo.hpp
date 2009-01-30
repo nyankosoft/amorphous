@@ -21,7 +21,6 @@ using namespace NS_KGL;
 
 
 // forward declerations
-class CInputHandler_PlayerBase;
 class CGameItem;
 class CWeaponSystem;
 
@@ -67,8 +66,6 @@ private:
 	CBE_Player *m_pCurrentPlayerBaseEntity;
 
 	boost::weak_ptr<CStage> m_pCurrentStage;
-
-	CInputHandler_PlayerBase *m_pInputHandler;
 
 	CWeaponSystem *m_pWeaponSystem;
 
@@ -135,10 +132,6 @@ public:
 	// request a task change
 //	inline void RequestTaskChange( CGameTask::eGameTask task_id ) { m_TaskID = task_id; }
 	inline void RequestTaskChange( int task_id ) { m_TaskID = task_id; }
-
-	void SetInputHandlerForPlayerShip();
-//	inline CInputHandler_PlayerBase *GetInputHandlerForPlayerShip() { return m_pInputHandler; }
-	inline CInputHandler_PlayerBase *GetInputHandler() { return m_pInputHandler; }
 
 	/// --- item control ---
 
