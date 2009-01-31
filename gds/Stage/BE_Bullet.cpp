@@ -230,6 +230,9 @@ void CBE_Bullet::PenetrationMove(CCopyEntity* pCopyEnt)
 
 void CBE_Bullet::PenetrationIteration( CCopyEntity* pCopyEnt, float fFrameTime_Left )
 {
+	if( pCopyEnt->touch_plane.normal == Vector3(0,0,0) )
+		pCopyEnt->touch_plane.normal = Vector3(0,1,0);
+
 	float fDeltaTime = - CBE_BULLET_PENETRATION_CALC_STEP / Vec3Dot( pCopyEnt->Velocity(), pCopyEnt->touch_plane.normal );
 	pCopyEnt->fSpeed = Vec3Length( pCopyEnt->Velocity() );			// update current speed
 	pCopyEnt->SetDirection( pCopyEnt->Velocity() / pCopyEnt->fSpeed );	// update current direction

@@ -533,6 +533,9 @@ int CStaticGeometry::ClipTrace( STrace& tr )
 	Vec3Normalize( ray.Direction, vStoG );
 	float ray_length = Vec3Dot( ray.Direction, vStoG );
 
+	if( ray_length < 0.000001f )
+		return 0;
+
 	// For now, assume that the static geometry actor is always composed of a single triangle mesh shape
 	if( 0 == m_pTriangleMeshActor->GetNumShapes() )
 		return 0;
@@ -551,6 +554,13 @@ int CStaticGeometry::ClipTrace( STrace& tr )
 		return 0;
 
 	// the ray hit the static geometry
+
+	if( 1000000.0f < fabs(rayhit.WorldImpactPos.x)
+	 || 1000000.0f < fabs(rayhit.WorldImpactPos.y)
+	 || 1000000.0f < fabs(rayhit.WorldImpactPos.z) )
+	{
+		int sth_wrong_with_impact_pos_is = 1;
+	}
 
 	tr.vEnd         = rayhit.WorldImpactPos;
 	tr.fFraction    = fraction;
