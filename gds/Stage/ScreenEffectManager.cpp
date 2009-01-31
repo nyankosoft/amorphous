@@ -579,6 +579,11 @@ void CScreenEffectManager::Render( CCamera &rCam )
 {
 	BeginRender( rCam );
 
+	if( m_EffectFlag & ScreenEffect::MonochromeColor )
+	{
+		int monochrome_pp_effect_is_enabled = 1;
+	}
+
 		if( m_pTargetSceneRenderer )
 			m_pTargetSceneRenderer->RenderSceneForScreenEffect( rCam );
 

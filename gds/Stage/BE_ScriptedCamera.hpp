@@ -257,6 +257,9 @@ public:
 
 	FocusTargetFrameSet FocusTarget;
 
+	/// valid only when 2 cameras are active at the same time
+//	KeyFrameSet<float> BlendWeight;
+
 public:
 
 	void Reset()
@@ -266,6 +269,7 @@ public:
 		farclip.Reset();
 		aspect_ratio.Reset();
 		FocusTarget.Reset();
+//		BlendWeight.Reset();
 	}
 };
 
@@ -301,11 +305,37 @@ public:
 };
 
 
+class CCamOption
+{
+public:
+	enum Flag
+	{
+		/// Calculates the blend weight of the cameras if 2 or more cameras are simultaneously activated.
+		SET_BLEND_WEIGHT_FOR_FADE_IN_AND_OUT = (1 << 0),
+//		ANOTHER_OPTION_FLAG                  = (1 << 1),
+//		YET_ANOTHER_OPTION_FLAG              = (1 << 2),
+	};
+};
+
+
 class CScriptCameraKeyFrames
 {
 public:
+
 	CCameraProperty Camera;
 	CScreenEffectProperty Effect;
+
+	U32 OptionFlags; ///< See CCamOption::Flag
+
+public:
+
+	CScriptCameraKeyFrames()
+		:
+	OptionFlags(0)
+	{
+		// set default flag(s)
+		OptionFlags = CCamOption::SET_BLEND_WEIGHT_FOR_FADE_IN_AND_OUT;
+	}
 
 	void Reset() { Camera.Reset(); Effect.Reset(); }
 };
@@ -368,6 +398,8 @@ public:
 	void HandleMessage( SGameMessage& msg );
 
 	void UpdateCameraParams();
+
+	const CScriptCameraKeyFrames& GetKeyFrames() const { return m_KeyFrames; }
 
 	const CBEC_MotionPath& GetPath() const { return m_Path; }
 };

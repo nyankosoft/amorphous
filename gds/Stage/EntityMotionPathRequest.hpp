@@ -32,7 +32,7 @@ class CBEC_MotionPath
 	int m_MPType;
 
 public:
-	
+
 	CBEC_MotionPath() : m_MPType(MPTYPE_DEFAULT), m_fStartTime(0), m_fEndTime(0) { m_vecKeyPose.reserve(8); }
 
 //	void SetKeyPoses( std::vector<KeyPose>& vecKeyPose ) { m_vecKeyPose = vecKeyPose; }
@@ -46,6 +46,10 @@ public:
 	inline bool IsExpired( float time ) const;
 
 	inline void ReleaseMotionPath() { m_vecKeyPose.resize(0); }
+
+	float GetStartTime() const { return m_fStartTime; }
+
+	float GetEndTime() const { return m_fEndTime; }
 
 //	inline void Init( std::vector<KeyPose>& vecKeyPose, int motion_path_type );
 

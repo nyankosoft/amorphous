@@ -10,9 +10,10 @@
 #include "Serialization_BaseEntityHandle.hpp"
 #include "EntityMotionPathRequest.hpp"
 
+#include "3DMath/MathMisc.hpp"
+#include "Graphics/2DPrimitive/2DTexRect.hpp"
 #include "Input/InputHub.hpp"
 #include "Input/InputHandler_Cutscene.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
 
 
@@ -206,27 +207,80 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 	if( NUM_MAX_ACTIVE_CAMERAS < num_active_cameras )
 		num_active_cameras = NUM_MAX_ACTIVE_CAMERAS;
 
-	if( 0 < num_active_cameras /*num_active_cameras == 1*/ )
+	shared_ptr<CScriptedCameraEntity> apCameraEntity[NUM_MAX_ACTIVE_CAMERAS];
+
+	if( num_active_cameras == 1
+	 || 2 <= num_active_cameras && ms_NumAvailableTextureRenderTargets < 2 )
 	{
 		CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[active_cam_indices[0]].GetRawPtr();
 		if( IsValidEntity(pCameraEntity) )
 			pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
 	}
-	else if( 2 <= num_active_cameras )
+	else if( 2 <= num_active_cameras && 2 <= ms_NumAvailableTextureRenderTargets )
 	{
 		// render the stage to different texture render targets
 		for( uint i=0; i<num_active_cameras; i++ )
 		{
-			CCopyEntity *pCameraEntity = pCopyEnt->m_aChild[active_cam_indices[i]].GetRawPtr();
+			shared_ptr<CCopyEntity> pCameraEntity = pCopyEnt->m_aChild[active_cam_indices[i]].Get();
 
-			if( !IsValidEntity(pCameraEntity) )
+			if( !IsValidEntity(pCameraEntity.get()) )
 				continue;
+
+			apCameraEntity[i] = boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
 			ms_aTextureRenderTarget[i].SetRenderTarget();
 
-			pCameraEntity->pBaseEntity->RenderStage( pCameraEntity );
+			pCameraEntity->pBaseEntity->RenderStage( pCameraEntity.get() );
 
 			ms_aTextureRenderTarget[i].ResetRenderTarget();
+		}
+
+		if( apCameraEntity[0]->GetKeyFrames().OptionFlags & CCamOption::SET_BLEND_WEIGHT_FOR_FADE_IN_AND_OUT
+		 && apCameraEntity[1]->GetKeyFrames().OptionFlags & CCamOption::SET_BLEND_WEIGHT_FOR_FADE_IN_AND_OUT )
+		{
+			// calculate the blend weights
+			// - This is the default settings.
+			float et0, et1;
+			int front, back;
+			et0 = apCameraEntity[0]->GetPath().GetEndTime();
+			et1 = apCameraEntity[1]->GetPath().GetEndTime();
+			if( et0 < et1 )
+				front = 1;
+			else
+				front = 0;
+
+			back = front^1;
+
+			const float current_time = (float)m_pStage->GetElapsedTime();
+			const float overlap_time
+				= apCameraEntity[back]->GetPath().GetEndTime()
+				- apCameraEntity[front]->GetPath().GetStartTime();
+
+			float front_weight = ( current_time - apCameraEntity[front]->GetPath().GetStartTime() ) / overlap_time;
+
+			Limit( front_weight, 0.0f, 1.0f );
+
+			// draw the fullscreen rect
+/*	
+			C2DTexRect rect;
+			rect.SetPositionLTWH( 0, 0, CGraphicsComponent::GetScreenWidth(), CGraphicsComponent::GetScreenHeight() );
+			rect.SetColor( 0xFFFFFFFF );
+			rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+			rect.Draw(
+				ms_aTextureRenderTarget[0].GetRenderTargetTexture(),
+				ms_aTextureRenderTarget[1].GetRenderTargetTexture() );
+*/
+			C2DRect rect;
+			rect.SetPositionLTWH( 0, 0, CGraphicsComponent::GetScreenWidth(), CGraphicsComponent::GetScreenHeight() );
+			rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+
+			// image on the back side - opaque
+			rect.SetColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
+			rect.Draw( ms_aTextureRenderTarget[back].GetRenderTargetTexture() );
+
+			// image on the front side - use alpha blend
+			rect.SetColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, front_weight ) );
+			rect.Draw( ms_aTextureRenderTarget[front].GetRenderTargetTexture() );
 		}
 	}
 /*
