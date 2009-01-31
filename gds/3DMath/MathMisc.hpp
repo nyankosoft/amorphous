@@ -12,4 +12,32 @@ void Limit( T& val, const T& min, const T& max )
 }
 
 
+template<typename T>
+inline float TakeMax( T a, T b )
+{
+	return (b < a) ? a : b;
+}
+
+
+template<typename T>
+inline float TakeMin( T a, T b )
+{
+	return (a < b) ? a : b;
+}
+
+
+template<typename T>
+inline float TakeMax( T a, T b, T c )
+{
+	return TakeMax( TakeMax(a,b), c );
+}
+
+
+template<typename T>
+inline float TakeMin( T a, T b, T c )
+{
+	return TakeMin( TakeMin(a,b), c );
+}
+
+
 #endif		/*  __MATHMISC_H__  */

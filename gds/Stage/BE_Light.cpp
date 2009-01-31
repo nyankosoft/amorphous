@@ -4,7 +4,6 @@
 #include "Stage.hpp"
 #include "../Graphics/Camera.hpp"
 #include "../Graphics/Shader/ShaderManager.hpp"
-#include "../3DMath/MathMisc.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 

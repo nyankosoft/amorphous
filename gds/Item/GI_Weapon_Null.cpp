@@ -5,7 +5,6 @@
 
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntityDesc.hpp"
-#include "GameCommon/BasicGameMath.hpp"
 
 
 //======================================================================================

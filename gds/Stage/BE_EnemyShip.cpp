@@ -6,7 +6,6 @@
 #include "Stage.hpp"
 #include "PlayerInfo.hpp"
 
-#include "3DMath/MathMisc.hpp"
 #include "Physics/Actor.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 

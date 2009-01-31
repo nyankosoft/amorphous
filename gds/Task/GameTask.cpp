@@ -1,4 +1,5 @@
 #include "GameTask.hpp"
+#include "3DMath/MathMisc.hpp"
 #include "App/ApplicationBase.hpp"
 #include "Input/InputHub.hpp"
 #include "Input/InputHandler.hpp"

@@ -3,7 +3,7 @@
 
 #include "3DMath/3DStructs.hpp"
 #include "3DMath/Vector3.hpp"
-#include "GameCommon/BasicGameMath.hpp"
+#include "3DMath/MathMisc.hpp"
 
 
 class CTriangle
@@ -67,8 +67,8 @@ inline void CTriangle::GetSpan( float& rfMin, float& rfMax, Vector3 vAxis ) cons
 	d0 = Vec3Dot( m_avVertex[0], vAxis );
 	d1 = Vec3Dot( m_avVertex[1], vAxis );
 	d2 = Vec3Dot( m_avVertex[2], vAxis );
-	rfMin = fmin( d0, d1, d2 );
-	rfMax = fmax( d0, d1, d2 );
+	rfMin = TakeMin( d0, d1, d2 );
+	rfMax = TakeMax( d0, d1, d2 );
 }
 
 

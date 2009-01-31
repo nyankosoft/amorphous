@@ -1,4 +1,3 @@
-
 #include "BE_PlayerShip.hpp"
 #include "PlayerInfo.hpp"
 #include "EntitySet.hpp"
@@ -11,7 +10,6 @@
 
 #include "3DMath/Vector3.hpp"
 
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "GameCommon/RandomDirectionTable.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"

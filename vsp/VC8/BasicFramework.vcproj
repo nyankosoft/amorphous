@@ -1238,10 +1238,6 @@
 			Name="GameCommon"
 			>
 			<File
-				RelativePath="..\..\gds\GameCommon\BasicGameMath.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\GameCommon\MTRand.cpp"
 				>
 			</File>

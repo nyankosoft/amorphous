@@ -1,11 +1,8 @@
-
 #include "JL_Shape_Box.hpp"
 
 #include "JL_ShapeDesc_Box.hpp"
 #include "TriangleMesh.hpp"
 #include "JL_PhysicsActor.hpp"
-
-#include "GameCommon/BasicGameMath.hpp"
 
 
 const SEdgeIndex CJL_Shape_Box::ms_aEdgeIndex[12] =
@@ -106,11 +103,11 @@ bool CJL_Shape_Box::SepAxisTest( Scalar& depth, Vector3& rvAxis, CTriangle& rTri
 
 	if( min0 < min1 && max1 < max0 )
 	{	// edge in the box
-		depth = fmin( max1 - min0, max0 - min1 );
+		depth = TakeMin( max1 - min0, max0 - min1 );
 	}
 	else if( min1 < min0 && max0 < max1 )
 	{	// box in the edge
-		depth = fmin( max1 - min0, max0 - min1 );
+		depth = TakeMin( max1 - min0, max0 - min1 );
 	}
 	else
 	{
