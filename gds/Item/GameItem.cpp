@@ -76,8 +76,8 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 #include "Stage/PlayerInfo.hpp"
 #include "Stage/Stage.hpp"
 #include "Stage/ScreenEffectManager.hpp"
-#include "GameInput/3DActionCode.hpp"
-#include "GameInput/InputHandler.hpp"
+#include "GameCommon/3DActionCode.hpp"
+#include "Input/InputHandler.hpp"
 
 
 CGI_Binocular::CGI_Binocular()

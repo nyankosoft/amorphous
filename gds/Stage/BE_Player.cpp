@@ -11,7 +11,7 @@
 #include "HUD_PlayerBase.hpp"
 #include "SubDisplay.hpp"
 
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 #include "Item/WeaponSystem.hpp"

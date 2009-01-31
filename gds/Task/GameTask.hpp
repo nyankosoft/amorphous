@@ -7,7 +7,7 @@
 #include "../base.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Support/Timer.hpp"
-#include "GameInput/fwd.hpp"
+#include "Input/fwd.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"

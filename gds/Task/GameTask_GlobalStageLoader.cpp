@@ -10,7 +10,7 @@
 
 #include "Support/Timer.hpp"
 
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 
 //#include "Sound/SoundManager.hpp"
 

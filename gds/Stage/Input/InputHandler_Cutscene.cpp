@@ -1,5 +1,5 @@
 #include "InputHandler_Cutscene.hpp"
-#include "GameInput/3DActionCode.hpp"
+#include "GameCommon/3DActionCode.hpp"
 #include "../SystemInputHandler_Debug.hpp"
 #include "../BE_CameraController.hpp"
 

@@ -9,7 +9,7 @@
 #include "Item/GI_Ammunition.hpp"
 #include "Item/GI_Weapon.hpp"
 
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 #include "UI.hpp"
 #include "UI/InputHandler_Dialog.hpp"
 #include "UI/GM_StdControlRendererManager.hpp"

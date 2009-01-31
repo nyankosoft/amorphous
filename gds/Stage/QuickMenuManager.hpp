@@ -6,7 +6,7 @@ using namespace std;
 
 #include <boost/shared_ptr.hpp>
 
-#include "GameInput/InputHandler.hpp"
+#include "Input/InputHandler.hpp"
 
 #include "Stage/PlayerInfo.hpp"
 

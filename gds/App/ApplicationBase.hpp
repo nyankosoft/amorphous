@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include "GameInput/fwd.hpp"
+#include "Input/fwd.hpp"
 #include "Task/fwd.hpp"
 
 class CGlobalInputHandler;

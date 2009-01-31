@@ -25,7 +25,7 @@ using namespace fnop;
 #include "Physics/MaterialDesc.hpp"
 #include "Physics/Material.hpp"
 #include "Sound/SoundManager.hpp"
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 
 
 static uint gs_DebugInputHandlerIndex = 2;

@@ -4,7 +4,7 @@
 
 #include "fwd.hpp"
 #include "GM_Input.hpp"
-#include "../GameInput/InputHandler.hpp"
+#include "../Input/InputHandler.hpp"
 
 #include <math.h>
 

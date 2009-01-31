@@ -5,7 +5,7 @@
 
 #include "Graphics/Direct3D9.hpp"
 #include "Item/WeaponSystem.hpp"
-#include "GameInput/3DActionCode.hpp"
+#include "GameCommon/3DActionCode.hpp"
 #include "GameTextSystem/GameTextWindow.hpp"
 #include "Support/memory_helpers.hpp"
 

@@ -7,7 +7,7 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
 
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 
 #include "Support/fnop.hpp"
 #include "Support/memory_helpers.hpp"

@@ -13,7 +13,7 @@
 #include "UI/GM_StdControlRendererManager.hpp"
 //#include "UI/GM_FlowTextCaption.hpp"
 
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 
 #include "Stage/Stage.hpp"
 #include "JigLib/JL_PhysicsVisualizer_D3D.hpp"

@@ -17,7 +17,7 @@
 #include "Stage/EntitySet.hpp"
 #include "Stage/ScreenEffectManager.hpp"
 #include "Stage/PlayerInfo.hpp"
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 #include "Item/WeaponSystem.hpp"
 #include "Sound/SoundManager.hpp"
 

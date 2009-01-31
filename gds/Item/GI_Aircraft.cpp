@@ -4,8 +4,8 @@
 #include "3DMath/MathMisc.hpp"
 #include "Support/memory_helpers.hpp"
 #include "XML/XMLNodeReader.hpp"
-#include "GameInput/3DActionCode.hpp"
-#include "GameInput/InputHandler.hpp"
+#include "GameCommon/3DActionCode.hpp"
+#include "Input/InputHandler.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
 

@@ -939,90 +939,86 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="GameInput"
+			Name="Input"
 			>
 			<File
-				RelativePath="..\..\gds\GameInput\3DActionCode.hpp"
+				RelativePath="..\..\gds\Input\DIKeyboard.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DIKeyboard.cpp"
+				RelativePath="..\..\gds\Input\DIKeyboard.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DIKeyboard.hpp"
+				RelativePath="..\..\gds\Input\DirectInput.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInput.cpp"
+				RelativePath="..\..\gds\Input\DirectInput.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInput.hpp"
+				RelativePath="..\..\gds\Input\DirectInputGamepad.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInputGamepad.cpp"
+				RelativePath="..\..\gds\Input\DirectInputGamepad.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInputGamepad.hpp"
+				RelativePath="..\..\gds\Input\DirectInputMouse.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInputMouse.cpp"
+				RelativePath="..\..\gds\Input\DirectInputMouse.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\DirectInputMouse.hpp"
+				RelativePath="..\..\gds\Input\fwd.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\fwd.hpp"
+				RelativePath="..\..\gds\Input\GameInput.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\GameInput.hpp"
+				RelativePath="..\..\gds\Input\GICodeTitle.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\GICodeTitle.hpp"
+				RelativePath="..\..\gds\Input\InputDevice.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputDevice.cpp"
+				RelativePath="..\..\gds\Input\InputDevice.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputDevice.hpp"
+				RelativePath="..\..\gds\Input\InputHandler.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputHandler.hpp"
+				RelativePath="..\..\gds\Input\InputHub.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputHub.cpp"
+				RelativePath="..\..\gds\Input\InputHub.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\InputHub.hpp"
+				RelativePath="..\..\gds\Input\StdKeyboard.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\StdKeyboard.cpp"
+				RelativePath="..\..\gds\Input\StdKeyboard.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\StdKeyboard.hpp"
+				RelativePath="..\..\gds\Input\StdMouseInput.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GameInput\StdMouseInput.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\GameInput\StdMouseInput.hpp"
+				RelativePath="..\..\gds\Input\StdMouseInput.hpp"
 				>
 			</File>
 		</Filter>

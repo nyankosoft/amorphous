@@ -5,7 +5,7 @@
 #include <boost/weak_ptr.hpp>
 #include "../../base.hpp"
 #include "Stage/fwd.hpp"
-#include "GameInput/InputHandler.hpp"
+#include "Input/InputHandler.hpp"
 
 
 class CInputHandler_StageDebug : public CInputHandler

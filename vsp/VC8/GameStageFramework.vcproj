@@ -1157,6 +1157,10 @@
 				Name="GameCommon"
 				>
 				<File
+					RelativePath="..\..\gds\GameCommon\3DActionCode.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\GameCommon\AircraftCapsDisplay.cpp"
 					>
 				</File>

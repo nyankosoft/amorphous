@@ -2,8 +2,8 @@
 
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "GameInput/DirectInput.hpp"
-#include "GameInput/InputHub.hpp"
+#include "Input/DirectInput.hpp"
+#include "Input/InputHub.hpp"
 
 #include "App/GameWindowManager_Win32.hpp"
 

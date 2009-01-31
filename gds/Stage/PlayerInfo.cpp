@@ -1,7 +1,7 @@
 #include "PlayerInfo.hpp"
 
 #include "Graphics/Font/FontBase.hpp"
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 #include "Input/InputHandler_PlayerShip.hpp"
 #include "Item/GameItem.hpp"
 #include "Item/GI_Ammunition.hpp"

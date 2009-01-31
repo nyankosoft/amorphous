@@ -1,6 +1,6 @@
 #include "WeaponSystem.hpp"
 
-#include "GameInput/3DActionCode.hpp"
+#include "GameCommon/3DActionCode.hpp"
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntity.hpp"
 #include "Stage/CopyEntityDesc.hpp"

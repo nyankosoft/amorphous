@@ -10,7 +10,7 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/fwd.hpp"
 
-#include "GameInput/3DActionCode.hpp"
+#include "GameCommon/3DActionCode.hpp"
 
 #include "GameCommon/CombatRecord.hpp"
 #include "../UI/fwd.hpp" // Need to use the relative path to include the UI/fwd.hpp of GameStageFramework. Otherwise the DefaultKeyBindFG.cpp of the FlightGame project include UI/fwd.hpp of its project

@@ -10,7 +10,7 @@
 #include "Serialization_BaseEntityHandle.hpp"
 #include "EntityMotionPathRequest.hpp"
 
-#include "GameInput/InputHub.hpp"
+#include "Input/InputHub.hpp"
 #include "Input/InputHandler_Cutscene.hpp"
 
 #include "Support/Log/DefaultLog.hpp"

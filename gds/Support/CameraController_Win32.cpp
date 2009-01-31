@@ -1,7 +1,7 @@
 
 #include "CameraController_Win32.hpp"
 
-#include "GameInput/InputHandler.hpp"
+#include "Input/InputHandler.hpp"
 #include "Graphics/Direct3D9.hpp"
 
 
