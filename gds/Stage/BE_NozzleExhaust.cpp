@@ -1,13 +1,10 @@
-
-#include "Graphics/Direct3D9.hpp"
-#include "GameCommon/BasicGameMath.hpp"
+#include "BE_NozzleExhaust.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 
-#include "BE_NozzleExhaust.hpp"
 
 
 CBE_NozzleExhaust::CBE_NozzleExhaust()
@@ -34,7 +31,7 @@ void CBE_NozzleExhaust::Init()
 	// suppose a circle on xy-plane
 	for( i=0; i<CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS; i++ )
 	{
-		t = D3DX_PI * (float)i / (float)CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS;
+		t = (float)PI * (float)i / (float)CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS;
 		m_avRandDir_Circle[i] = Vector3( (float)cos(t), (float)sin(t), 0 );
 	}
 

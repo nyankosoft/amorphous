@@ -1,14 +1,9 @@
-
+#include "BE_ExplosionSmoke.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "Support/VectorRand.hpp"
-
-#include "BE_ExplosionSmoke.hpp"
-
 
 
 CBE_ExplosionSmoke::CBE_ExplosionSmoke()

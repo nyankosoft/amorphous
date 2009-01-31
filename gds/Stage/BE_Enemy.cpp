@@ -13,7 +13,6 @@
 #include "Graphics/D3DXSMeshObject.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 

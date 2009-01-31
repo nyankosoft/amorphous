@@ -13,7 +13,6 @@
 #include "../Graphics/Direct3D9.hpp"
 #include "../Graphics/Camera.hpp"
 
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 

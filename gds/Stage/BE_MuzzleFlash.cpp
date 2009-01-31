@@ -1,13 +1,10 @@
+#include "BE_MuzzleFlash.hpp"
 
-#include "Graphics/Direct3D9.hpp"
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-
-#include "BE_MuzzleFlash.hpp"
 
 
 CBE_MuzzleFlash::CBE_MuzzleFlash()

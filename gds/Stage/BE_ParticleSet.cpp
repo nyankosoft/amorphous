@@ -1,3 +1,4 @@
+#include "BE_ParticleSet.hpp"
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
@@ -8,7 +9,6 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/BillboardArrayMesh.hpp"
 
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "GameCommon/CriticalDamping.hpp"
 
@@ -17,9 +17,6 @@
 #include "Support/SafeDelete.hpp"
 #include "Support/Profile.hpp"
 #include "Support/Serialization/Serialization_Color.hpp"
-
-
-#include "BE_ParticleSet.hpp"
 
 
 class CParticleThreadStarter

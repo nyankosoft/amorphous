@@ -6,7 +6,6 @@
 #include "Graphics/3DGameMath.hpp"
 #include "GameInput/3DActionCode.hpp"
 #include "GameInput/InputHandler.hpp"
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "Sound/SoundManager.hpp"
 #include "XML/XMLNodeReader.hpp"

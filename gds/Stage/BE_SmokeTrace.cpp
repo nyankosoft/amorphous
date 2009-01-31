@@ -1,17 +1,15 @@
+#include "BE_SmokeTrace.hpp"
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
-#include "GameCommon/BasicGameMath.hpp"
 #include "GameCommon/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 #include "Support/Profile.hpp"
 
-#include "BE_SmokeTrace.hpp"
 
 
 

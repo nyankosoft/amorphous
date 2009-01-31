@@ -4,9 +4,6 @@
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntity.hpp"
 #include "Stage/CopyEntityDesc.hpp"
-//#include "Stage/PlayerInfo.hpp"
-
-#include "GameCommon/BasicGameMath.hpp"
 
 
 //======================================================================================
