@@ -2,7 +2,6 @@
 
 #include "GameTask.hpp"
 #include "GameTask_Stage.hpp"
-#include "GameTask_StageSelect.hpp"
 #include "GameTask_MainMenu.hpp"
 #include "GameTask_GlobalStageLoader.hpp"
 #include "GameTask_AsyncStageLoader.hpp"
@@ -29,9 +28,6 @@ CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
 	case CGameTask::ID_MAIN_MENU:
 		return new CGameTask_MainMenu;
 
-	case CGameTask::ID_STAGE_SELECT:
-		return new CGameTask_StageSelect;
-
 	case CGameTask::ID_GLOBALSTAGELOADER:
 		return new CGameTask_GlobalStageLoader;
 
@@ -39,12 +35,6 @@ CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
 		return new CGameTask_AsyncStageLoader;
 
 	case CGameTask::ID_TITLE:
-		return NULL;
-
-	case CGameTask::ID_SETTINGS:
-		return NULL;
-
-	case CGameTask::ID_CREDIT:
 		return NULL;
 
 	default:

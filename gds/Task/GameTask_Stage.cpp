@@ -1,7 +1,5 @@
 #include "GameTask_Stage.hpp"
-#include "GameTask_StageSelect.hpp"
 
-#include "Support/Timer.hpp"
 #include "Support/macro.h"
 #include "Support/memory_helpers.hpp"
 #include "Support/Profile.hpp"
@@ -9,11 +7,11 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/DebugOutput.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "Stage/Stage.hpp"
+#include "Stage/StageLoader.hpp"
 #include "Stage/EntitySet.hpp"
 #include "Stage/ScreenEffectManager.hpp"
 #include "Stage/PlayerInfo.hpp"
@@ -37,6 +35,50 @@ void SetGlobalStageScriptFilename( const string& filename )
 const string& GetGlobalStageScriptFilename()
 {
 	return gs_NextGlobalStageScript;
+}
+
+
+static int gs_iState = CGameTask_Stage::STAGE_NOT_LOADED;
+
+
+void LoadStage( const string& strStageScriptFilename )
+{
+	// update the database of base entity before intitializing the stage
+	// 070223 moved to ctor in CGameTask_TitleFG
+//	UpdateBaseEntityDatabase();
+
+	// old version that uses raw pointer for stage
+//	SafeDelete( g_pStage );
+//	g_pStage = new CStage;
+//	bool bResult = g_pStage->Initialize( strStageScriptFilename );
+
+	g_pStage.reset();
+
+	CStageLoader stage_loader;
+	g_pStage = stage_loader.LoadStage( strStageScriptFilename );
+
+	bool bResult = false;
+	if( g_pStage.get() )
+		bResult = true;
+
+	if( bResult )
+	{
+		gs_iState = CGameTask_Stage::STAGE_LOADED;
+		LOG_PRINT_ERROR( "loaded the stage: " + strStageScriptFilename );
+	}
+	else
+	{
+		gs_iState = CGameTask_Stage::STAGE_NOT_LOADED;
+		LOG_PRINT_ERROR( "cannot load the stage: " + strStageScriptFilename );
+	}
+
+//	if( gs_iState != CGameTask_StageSelect::STAGE_LOADED )
+//		LOG_PRINT_ERROR( "unable to load stage" + strStageScriptFilename
+
+	// do not start the stage timer until the stage task is initiated
+	g_pStage->PauseTimer();
+
+//	LOG_PRINT( "stage loaded" );
 }
 
 

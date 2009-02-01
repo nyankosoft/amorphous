@@ -1,25 +1,14 @@
-
 #include "GameTask_GlobalStageLoader.hpp"
 #include "GameTask_Stage.hpp"
-#include "GameTask_StageSelect.hpp"
 #include "Stage/Stage.hpp"
 
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
-
-#include "Support/Timer.hpp"
-
 #include "Input/InputHub.hpp"
-
-//#include "Sound/SoundManager.hpp"
-
+#include "UI.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
-
-#include "UI.hpp"
-#include "UI/InputHandler_Dialog.hpp"
 
 
 std::string CGameTask_GlobalStageLoader::ms_strStageTask = "Stage";
@@ -40,10 +29,6 @@ CGameTask_GlobalStageLoader::CGameTask_GlobalStageLoader()
 CGameTask_GlobalStageLoader::~CGameTask_GlobalStageLoader()
 {
 	SafeDelete( m_pFont );
-
-//	INPUTHUB.PopInputHandler();
-//	SafeDelete( m_pInputHandler );
-//	SafeDelete( m_pEventHandler );
 }
 
 

@@ -5,8 +5,6 @@
 #include "GameTask.hpp"
 #include "Stage/fwd.hpp"
 
-class CStage;
-class CInputHandler;
 class CFont;
 class CDebugOutput;
 
@@ -14,6 +12,7 @@ extern CStageSharedPtr g_pStage;
 
 extern void SetGlobalStageScriptFilename( const std::string& filename );
 extern const std::string& GetGlobalStageScriptFilename();
+extern void LoadStage( const std::string& strStageScriptFilename );
 
 
 /**
@@ -46,6 +45,12 @@ public:
 		STATE_PLAYER_IN_STAGE,
 		STATE_PLAYER_LEFT_STAGE,
 		NUM_STATES
+	};
+
+	enum StageSelectState
+	{
+		STAGE_LOADED = 0,
+		STAGE_NOT_LOADED
 	};
 };
 

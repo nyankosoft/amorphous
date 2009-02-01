@@ -1113,14 +1113,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\GameTask_StageSelect.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Task\GameTask_StageSelect.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Task\GameTaskFactoryBase.cpp"
 					>
 				</File>

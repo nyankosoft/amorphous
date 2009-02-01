@@ -1,21 +1,15 @@
 #include "GameTask_AsyncStageLoader.hpp"
 #include "GameTask_Stage.hpp"
-#include "GameTask_StageSelect.hpp"
 #include "Stage/Stage.hpp"
 
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
-
 #include "Input/InputHub.hpp"
-
+#include "UI.hpp"
 #include "Support/fnop.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
-#include "UI.hpp"
-#include "UI/InputHandler_Dialog.hpp"
 
 using namespace std;
 
