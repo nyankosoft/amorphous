@@ -119,7 +119,7 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 void CBE_PointLight::DeleteDynamicLight( CCopyEntity* pCopyEnt )
 {
-//	MsgBoxFmt( "removing dynamic light - index: %d", pCopyEnt->iExtraDataIndex );
+//	LOG_PRINT( "Removing a light entity - id: " to_string(pCopyEnt->iExtraDataIndex) );
 /*
 	if( 0 <= pCopyEnt->iExtraDataIndex )
 	{

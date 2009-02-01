@@ -286,10 +286,16 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 			// 'pEntity' is crossing the dividing plane.
 			// - link the entity to this diverging-node
 			rThisEntityNode.Link(pEntity);
-			return;
+			break;
 		}
 	}
 
+	// Added for light entity
+	// - Link the light entity to the light entity list of an entity node
+	if( pEntity->GetEntityTypeID() != CCopyEntityTypeID::DEFAULT )
+	{
+		pEntity->LinkDerivedEntity();
+	}
 }
 
 
@@ -1139,11 +1145,11 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 
 			fprintf( fp, "--------------------------------------------------------\n" );
 
-			fprintf( fp, "name:      %s\n", pEntity->GetName().c_str() );
-
-			fprintf( fp, "id:        %d\n", pEntity->GetID() );
-
-			fprintf( fp, "base name: %s\n", pEntity->pBaseEntity->GetName() );
+			fprintf( fp, "name:         %s\n", pEntity->GetName().c_str() );
+			fprintf( fp, "id:           %d\n", pEntity->GetID() );
+			fprintf( fp, "type id:      %d\n", pEntity->GetEntityTypeID() );
+			fprintf( fp, "base name:    %s\n", pEntity->pBaseEntity->GetName() );
+			fprintf( fp, "created time: %f\n", pEntity->GetCreatedTime() );
 
 			strPos = to_string(pEntity->Position() );
 			strDir = to_string(pEntity->GetDirection() );

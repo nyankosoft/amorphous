@@ -174,6 +174,10 @@ public:
 
 	inline void SetPosition( const Vector3& rvPosition );
 
+	void Unlink();
+
+	void LinkDerivedEntity();
+
 	void Init( CCopyEntityDesc& desc );
 
 //	inline float *GetColor() { return (float *)&m_Light.Diffuse; }

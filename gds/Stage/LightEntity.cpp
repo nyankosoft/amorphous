@@ -89,6 +89,20 @@ CLightEntity::~CLightEntity()
 }
 
 
+void CLightEntity::Unlink()
+{
+	CCopyEntity::Unlink();
+
+	UnlinkFromLightEntityList();
+}
+
+
+void CLightEntity::LinkDerivedEntity()
+{
+	GetStage()->GetEntitySet()->LinkLightEntity( this );
+}
+
+
 void CLightEntity::Init( CCopyEntityDesc& desc )
 {
 	// link the entity to the light entity list on the entity node
@@ -165,6 +179,11 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 	this->fRadius = r;
 	this->local_aabb.vMin = -Vector3(r,r,r);
 	this->local_aabb.vMax =  Vector3(r,r,r);
+
+	// Manually update the world aabb at initialization
+	// - needed because world aabb update is done before calling CopyEntity::Init()
+	//   in CEntitySet::CreateEntity()
+	this->world_aabb.TransformCoord( this->local_aabb, this->Position() );
 
 	// link to the tree
 	GetStage()->GetEntitySet()->LinkLightEntity( this );

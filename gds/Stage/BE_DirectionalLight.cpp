@@ -3,12 +3,9 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Stage/LightEntity.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
-#include "Stage/LightEntity.hpp"
-
 
 
 CBE_DirectionalLight::CBE_DirectionalLight()
@@ -34,43 +31,9 @@ void CBE_DirectionalLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
 /*
-	short light_type;
-	if( m_TypeFlag & TYPE_STATIC )
-	{
-		// register static light to the stage
-		light_type = CLE_LIGHT_STATIC;
-	}
-	else if( m_TypeFlag & TYPE_DYNAMIC )
-	{
-		// register dynamic light to the stage
-		light_type = CLE_LIGHT_DYNAMIC;
-	}
-	else
-	{
-		// neither static or dynamic - invalid
-		m_pStage->TerminateEntity( pCopyEnt );
-		return;
-	}
-
-	// set light properties
-	CHemisphericDirectionalLight light = m_DirLight;
-	if( pCopyEnt->GetDirection() != Vector3(0,0,0) )
-		light.vDirection = pCopyEnt->GetDirection();
-
-//	if( pCopyEnt->v1 != Vector3(0,0,0) )	// if color is not specified
-//		memcpy( pCopyEnt->v1, m_afBaseColor, sizeof(float) * 3 );	// use the base color 
-
-	// register light
-	CLightEntityManager* pLightManager = m_pStage->GetEntitySet()->GetLightEntityManager();
-
-	int light_index = pLightManager->RegisterHemisphericDirLight( light, light_type );
-
 //	MsgBoxFmt( "created a directional light (index: %d)", light_index );
 
 //	CheckEntitiesInLightRange(pCopyEnt, light_index);
-
-	// save the index. index will be used later to remove the light
-	pCopyEnt->iExtraDataIndex = light_index;
 */
 }
 

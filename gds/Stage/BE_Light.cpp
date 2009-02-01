@@ -2,8 +2,8 @@
 
 #include "GameMessage.hpp"
 #include "Stage.hpp"
-#include "../Graphics/Camera.hpp"
-#include "../Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 

@@ -244,7 +244,9 @@ public:
 	/// updates entity - called once every frame
 	inline void Act() { pBaseEntity->Act(this); }
 
-	inline void Unlink();	//Do not call this from 'CEntityNode'
+	inline virtual void Unlink();	// Do not call this from 'CEntityNode'
+
+	virtual void LinkDerivedEntity() {}
 
 	inline void Terminate();
 
