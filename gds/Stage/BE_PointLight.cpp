@@ -1,7 +1,7 @@
 #include "BE_PointLight.hpp"
 
+#include "LightEntity.hpp"
 #include "GameMessage.hpp"
-#include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "Graphics/Direct3D9.hpp"
@@ -9,10 +9,8 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "3DMath/MathMisc.hpp"
 
-#include "../Stage/LightEntity.hpp"
-
-#include "Support/msgbox.hpp"
 #include "Support/Log/DefaultLog.hpp"
+
 
 using namespace std;
 
@@ -88,9 +86,6 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 	float& rfFadeoutTime = FadeoutTime(pCopyEnt);
 	rfFadeoutTime = 0.0f;
 /*
-	if( pCopyEnt->v1 == Vector3(0,0,0) )	// if color is not specified
-		memcpy( pCopyEnt->v1, m_afBaseColor, sizeof(float) * 3 );	// use the base color 
-
 	if( !(m_TypeFlag & (TYPE_STATIC|TYPE_DYNAMIC)) )
 	{	// neither static nor dynamic
 		// - created only for pseudo glare effect. mainly put together with items
@@ -101,54 +96,12 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 	else if( m_TypeFlag & TYPE_STATIC )
 	{
 		// register static light to the stage
-		short light_type = CLE_LIGHT_STATIC;
-//		int light_index = m_pStage->GetEntitySet()->RegisterLight( *pCopyEnt, sLightType );
-
-		CHemisphericPointLight light = m_PointLight;
-		light.vPosition = pCopyEnt->Position();
-
-		Vector3 vColor;
-		vColor = pCopyEnt->v1;
-		light.Attribute.UpperColor = SFloatRGBAColor( vColor.x, vColor.y, vColor.z, 1.0f );
-		vColor = pCopyEnt->v3;
-		light.Attribute.LowerColor = SFloatRGBAColor( vColor.x, vColor.y, vColor.z, 1.0f );
-
-		CLightEntityManager* pLightManager = m_pStage->GetEntitySet()->GetLightEntityManager();
-		int light_index = pLightManager->RegisterHemisphericPointLight( light, light_type );
-
-		CheckEntitiesInLightRange(pCopyEnt, light_index);
-
-//		MsgBoxFmt( "registered static light - index: %d", light_index );
+		...
 	}
 	else
 	{
 		// register dynamic light to the stage
-		short light_type = CLE_LIGHT_DYNAMIC;
-//		int light_index = m_pStage->GetEntitySet()->RegisterLight( *pCopyEnt, light_type );
-
-		CHemisphericPointLight light = m_PointLight;
-		light.vPosition = pCopyEnt->Position();
-		CLightEntityManager* pLightManager = m_pStage->GetEntitySet()->GetLightEntityManager();
-		int light_index = pLightManager->RegisterHemisphericPointLight( light, light_type );
-		if( light_index == CE_INVALID_LIGHT_INDEX )
-		{
-			g_Log.Print( WL_WARNING, "cannot create dynamic light - index: %d", light_index );
-
-			// set invalid light index and remove the entity in the next Act() call
-			pCopyEnt->iExtraDataIndex = -1;
-			return;
-		}
-		else
-		{
-			// received a valid index - now a couple more steps to register the light
-
-			CheckEntitiesInLightRange(pCopyEnt, light_index);
-
-			// save the index. index will be used later to delete the light
-			pCopyEnt->iExtraDataIndex = light_index;
-
-//			MsgBoxFmt( "registered dynamic light - index: %d", pCopyEnt->iExtraDataIndex );
-		}
+		...
 	}
 
 	if( m_TypeFlag & TYPE_TIMER )

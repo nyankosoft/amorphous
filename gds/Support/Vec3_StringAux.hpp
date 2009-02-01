@@ -14,7 +14,8 @@ inline std::string to_string( const Vector3& v, int precision = 3, int num_zfill
 	std::string fmt_buffer = "( " + fmt_float + ", " + fmt_float + ", " + fmt_float + " )";
 
 	char buffer[64];
-	sprintf( buffer, fmt_buffer.c_str(), v.x, v.y, v.z );
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), v.x, v.y, v.z );
 
 	return std::string(buffer);
 }

@@ -128,6 +128,8 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, CScriptGenMo
 			&desc.fIntensity,
 			&desc.LightGroup,
 			&shadow_for_light );
+
+		basehandle.SetBaseEntityName( base_name );
 	}
 	else
 	{
@@ -190,6 +192,8 @@ PyObject* GeneratePointLight( PyObject* self, PyObject* args, CScriptGenMode::Na
 			&pAttenu[2],
 			&desc.LightGroup,
 			&shadow_for_light );
+
+		basehandle.SetBaseEntityName( base_name );
 	}
 	else
 	{
@@ -261,11 +265,12 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 			&desc.fIntensity,
 			&desc.LightGroup,
 			&shadow_for_light );
+
+		basehandle.SetBaseEntityName( base_name );
 	}
 	else
 	{
 		result = PyArg_ParseTuple( args, "|sffffffffffdd",
-			&base_name,
 			&light_name, &dir.x, &dir.y, &dir.z,
 			&uc.fRed, &uc.fGreen, &uc.fBlue,
 			&lc.fRed, &lc.fGreen, &lc.fBlue,
@@ -326,6 +331,8 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::
 			&pAttenu[2],
 			&desc.LightGroup,
 			&shadow_for_light );
+
+		basehandle.SetBaseEntityName( base_name );
 	}
 	else
 	{

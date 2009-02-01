@@ -12,12 +12,14 @@
 
 #include "../base.hpp"
 #include "TimeFormats.hpp"
+#include "Macro.h"
 
 
 inline std::string to_string( int num )
 {
 	char buffer[32];
-	sprintf( buffer, "%d", num );
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, "%d", num );
 	return std::string(buffer);
 }
 
@@ -25,7 +27,8 @@ inline std::string to_string( int num )
 inline std::string to_string( unsigned int num )
 {
 	char buffer[32];
-	sprintf( buffer, "%u", num );
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, "%u", num );
 	return std::string(buffer);
 }
 
@@ -40,7 +43,8 @@ inline std::string to_string( size_t num )
 inline std::string to_string( long num )
 {
 	char buffer[32];
-	sprintf( buffer, "%d", num );
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, "%d", num );
 	return std::string(buffer);
 }
 
@@ -48,7 +52,8 @@ inline std::string to_string( long num )
 inline std::string to_string( double num )
 {
 	char buffer[32];
-	sprintf( buffer, "%.3f", num );
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, "%.3f", num );
 	return std::string(buffer);
 }
 
@@ -62,7 +67,8 @@ inline std::string to_string( float num, int precision = 3, int num_zfills = 0 )
 	std::string fmt_buffer = "%" + to_string(num_zfills) + "." + to_string(precision) + "f";
 
 	char buffer[32];
-	sprintf( buffer, fmt_buffer.c_str(), num );
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), num );
 	return std::string(buffer);
 }
 
