@@ -1,9 +1,9 @@
 #include "PyModule_Light.hpp"
 #include "PyModule_Stage.hpp"
 
-#include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/3DGameMath.hpp"
 
 #include "BE_DirectionalLight.hpp"
 #include "BE_PointLight.hpp"
@@ -283,7 +283,7 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 
 	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
-	desc.WorldPose.matOrient.SetColumn( 2, dir );
+	desc.WorldPose.matOrient = CreateOrientFromFwdDir( dir );
 	desc.aColor[0] = uc;
 	desc.aColor[1] = lc;
 

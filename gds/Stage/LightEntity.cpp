@@ -46,7 +46,7 @@ public:
 	void VisitDirectionalLight( CDirectionalLight& directional_light )
 	{
 		VisitLight( directional_light );
-		directional_light.vDirection = m_pDesc->vPosition;
+		directional_light.vDirection = m_pDesc->vDirection;
 	}
 
 	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light )
