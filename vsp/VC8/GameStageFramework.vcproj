@@ -1137,6 +1137,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Task\GUIGameTask.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Task\GUIGameTask.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Task\MainMenuEventHandler.cpp"
 					>
 				</File>
