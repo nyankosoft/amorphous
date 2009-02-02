@@ -1,7 +1,7 @@
 #ifndef  __MAINMENUEVENTHANDLER_H__
 #define  __MAINMENUEVENTHANDLER_H__
 
-#include "UI/GM_EventHandlerBase.hpp"
+#include "GUI/GM_EventHandlerBase.hpp"
 #include "Sound/SoundHandle.hpp"
 
 

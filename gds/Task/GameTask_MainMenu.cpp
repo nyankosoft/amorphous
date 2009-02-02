@@ -9,9 +9,9 @@
 #include "Graphics/GraphicsElementManager.hpp"
 
 #include "UI.hpp"
-#include "UI/InputHandler_Dialog.hpp"
-#include "UI/GM_StdControlRendererManager.hpp"
-//#include "UI/GM_FlowTextCaption.hpp"
+#include "GUI/InputHandler_Dialog.hpp"
+#include "GUI/GM_StdControlRendererManager.hpp"
+//#include "GUI/GM_FlowTextCaption.hpp"
 
 #include "Input/InputHub.hpp"
 

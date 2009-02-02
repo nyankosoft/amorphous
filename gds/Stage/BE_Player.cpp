@@ -28,9 +28,9 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/Profile.hpp"
 
-#include "UI/GM_DialogManager.hpp"
-#include "UI/GM_ControlRendererManager.hpp"
-#include "UI/InputHandler_Dialog.hpp"
+#include "GUI/GM_DialogManager.hpp"
+#include "GUI/GM_ControlRendererManager.hpp"
+#include "GUI/InputHandler_Dialog.hpp"
 
 
 #include "JigLib/JL_PhysicsActor.hpp"

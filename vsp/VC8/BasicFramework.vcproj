@@ -1023,214 +1023,214 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="UI"
+			Name="GUI"
 			>
 			<File
-				RelativePath="..\..\gds\UI\GM_Aux.cpp"
+				RelativePath="..\..\gds\GUI\GM_Aux.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Aux.hpp"
+				RelativePath="..\..\gds\GUI\GM_Aux.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Button.cpp"
+				RelativePath="..\..\gds\GUI\GM_Button.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Button.hpp"
+				RelativePath="..\..\gds\GUI\GM_Button.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_CaptionParameters.hpp"
+				RelativePath="..\..\gds\GUI\GM_CaptionParameters.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_CaptionRenderRoutine.hpp"
+				RelativePath="..\..\gds\GUI\GM_CaptionRenderRoutine.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Control.cpp"
+				RelativePath="..\..\gds\GUI\GM_Control.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Control.hpp"
+				RelativePath="..\..\gds\GUI\GM_Control.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlDescBase.cpp"
+				RelativePath="..\..\gds\GUI\GM_ControlDescBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlDescBase.hpp"
+				RelativePath="..\..\gds\GUI\GM_ControlDescBase.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlRenderer.cpp"
+				RelativePath="..\..\gds\GUI\GM_ControlRenderer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlRenderer.hpp"
+				RelativePath="..\..\gds\GUI\GM_ControlRenderer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlRendererManager.cpp"
+				RelativePath="..\..\gds\GUI\GM_ControlRendererManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ControlRendererManager.hpp"
+				RelativePath="..\..\gds\GUI\GM_ControlRendererManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Controls.hpp"
+				RelativePath="..\..\gds\GUI\GM_Controls.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Dialog.cpp"
+				RelativePath="..\..\gds\GUI\GM_Dialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Dialog.hpp"
+				RelativePath="..\..\gds\GUI\GM_Dialog.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogCloseButton.cpp"
+				RelativePath="..\..\gds\GUI\GM_DialogCloseButton.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogCloseButton.hpp"
+				RelativePath="..\..\gds\GUI\GM_DialogCloseButton.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogDesc.cpp"
+				RelativePath="..\..\gds\GUI\GM_DialogDesc.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogDesc.hpp"
+				RelativePath="..\..\gds\GUI\GM_DialogDesc.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogManager.cpp"
+				RelativePath="..\..\gds\GUI\GM_DialogManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_DialogManager.hpp"
+				RelativePath="..\..\gds\GUI\GM_DialogManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Event.hpp"
+				RelativePath="..\..\gds\GUI\GM_Event.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_EventHandlerBase.hpp"
+				RelativePath="..\..\gds\GUI\GM_EventHandlerBase.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_GraphicElement.cpp"
+				RelativePath="..\..\gds\GUI\GM_GraphicElement.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_GraphicElement.hpp"
+				RelativePath="..\..\gds\GUI\GM_GraphicElement.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Input.hpp"
+				RelativePath="..\..\gds\GUI\GM_Input.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ListBox.cpp"
+				RelativePath="..\..\gds\GUI\GM_ListBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ListBox.hpp"
+				RelativePath="..\..\gds\GUI\GM_ListBox.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ListBoxDesc.hpp"
+				RelativePath="..\..\gds\GUI\GM_ListBoxDesc.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ScrollBar.cpp"
+				RelativePath="..\..\gds\GUI\GM_ScrollBar.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ScrollBar.hpp"
+				RelativePath="..\..\gds\GUI\GM_ScrollBar.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_ScrollBarDesc.hpp"
+				RelativePath="..\..\gds\GUI\GM_ScrollBarDesc.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Slider.cpp"
+				RelativePath="..\..\gds\GUI\GM_Slider.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Slider.hpp"
+				RelativePath="..\..\gds\GUI\GM_Slider.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_SoundPlayer.cpp"
+				RelativePath="..\..\gds\GUI\GM_SoundPlayer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_SoundPlayer.hpp"
+				RelativePath="..\..\gds\GUI\GM_SoundPlayer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Static.cpp"
+				RelativePath="..\..\gds\GUI\GM_Static.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_Static.hpp"
+				RelativePath="..\..\gds\GUI\GM_Static.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_StdControlRenderer.cpp"
+				RelativePath="..\..\gds\GUI\GM_StdControlRenderer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_StdControlRenderer.hpp"
+				RelativePath="..\..\gds\GUI\GM_StdControlRenderer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_StdControlRendererManager.cpp"
+				RelativePath="..\..\gds\GUI\GM_StdControlRendererManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_StdControlRendererManager.hpp"
+				RelativePath="..\..\gds\GUI\GM_StdControlRendererManager.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_SubDialogButton.cpp"
+				RelativePath="..\..\gds\GUI\GM_SubDialogButton.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_SubDialogButton.hpp"
+				RelativePath="..\..\gds\GUI\GM_SubDialogButton.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_XMLParser.cpp"
+				RelativePath="..\..\gds\GUI\GM_XMLParser.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\GM_XMLParser.hpp"
+				RelativePath="..\..\gds\GUI\GM_XMLParser.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\InputHandler_Dialog.cpp"
+				RelativePath="..\..\gds\GUI\InputHandler_Dialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\InputHandler_Dialog.hpp"
+				RelativePath="..\..\gds\GUI\InputHandler_Dialog.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\ui.hpp"
+				RelativePath="..\..\gds\GUI\ui.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\UI\ui_fwd.hpp"
+				RelativePath="..\..\gds\GUI\ui_fwd.hpp"
 				>
 			</File>
 		</Filter>

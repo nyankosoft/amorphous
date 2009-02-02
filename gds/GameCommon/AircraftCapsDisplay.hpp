@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include "UI/GM_StdControlRendererManager.hpp"
+#include "GUI/GM_StdControlRendererManager.hpp"
 #include "CriticalDamping.hpp"
 
 #include "Graphics/Rect.hpp"

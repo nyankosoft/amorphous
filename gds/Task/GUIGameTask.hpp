@@ -3,7 +3,7 @@
 
 
 #include "GameTask.hpp"
-#include "UI/fwd.hpp"
+#include "GUI/fwd.hpp"
 
 
 class CGUIGameTask : public CGameTask

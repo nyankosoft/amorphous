@@ -4,7 +4,7 @@
 
 #include "GameTask.hpp"
 #include "MainMenuEventHandler.hpp"
-#include "UI/fwd.hpp"
+#include "GUI/fwd.hpp"
 
 
 class CInputHandler;

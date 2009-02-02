@@ -1,7 +1,7 @@
 
 #include "InputHandler_Dialog.hpp"
 
-#include "UI/GM_DialogManager.hpp"
+#include "GUI/GM_DialogManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 

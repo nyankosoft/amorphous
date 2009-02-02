@@ -24,7 +24,7 @@ public:
 #ifndef  __UserEventHandler_H__
 #define  __UserEventHandler_H__
 
-#include "UI/GM_EventHandlerBase.hpp"
+#include "GUI/GM_EventHandlerBase.hpp"
 
 /
  *
