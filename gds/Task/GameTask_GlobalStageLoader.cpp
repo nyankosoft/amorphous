@@ -5,7 +5,7 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Input/InputHub.hpp"
-#include "UI.hpp"
+#include "GUI.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"

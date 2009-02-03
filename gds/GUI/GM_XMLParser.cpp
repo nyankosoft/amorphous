@@ -13,7 +13,7 @@
 #include "Support/SafeDelete.hpp"
 #include "Support/fnop.hpp"
 
-#include "UI.hpp"
+#include "GUI.hpp"
 
 using namespace std;
 using namespace boost;

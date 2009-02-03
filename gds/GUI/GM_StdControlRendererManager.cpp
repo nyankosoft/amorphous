@@ -1,7 +1,7 @@
 #include "Graphics/GraphicsElementManager.hpp"
 #include "GM_StdControlRendererManager.hpp"
 #include "GM_StdControlRenderer.hpp"
-#include "UI.hpp"
+#include "GUI.hpp"
 
 
 CGM_StdControlRendererManager::CGM_StdControlRendererManager()

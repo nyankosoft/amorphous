@@ -107,9 +107,9 @@ bool CBE_Light::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 		size_t i, num_strings = vecFlag.size();
 		for( i=0; i<num_strings; i++ )
 		{
-			if( vecFlag[i] == "STATIC" )		m_TypeFlag |= TYPE_STATIC;
-			else if( vecFlag[i] == "DYNAMIC" )	m_TypeFlag |= TYPE_DYNAMIC;
-			else if( vecFlag[i] == "FADEOUT" )	m_TypeFlag |= TYPE_FADEOUT;
+//			if( vecFlag[i] == "STATIC" )		m_TypeFlag |= TYPE_STATIC;
+//			else if( vecFlag[i] == "DYNAMIC" )	m_TypeFlag |= TYPE_DYNAMIC;
+			if( vecFlag[i] == "FADEOUT" )	m_TypeFlag |= TYPE_FADEOUT;
 			else if( vecFlag[i] == "TIMER" )	m_TypeFlag |= TYPE_TIMER;
 			else if( vecFlag[i] == "GLARE" )	m_TypeFlag |= TYPE_GLARE;
 		};

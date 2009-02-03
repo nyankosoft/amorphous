@@ -1,6 +1,6 @@
 #include "GUIGameTask.hpp"
 
-#include "UI.hpp"
+#include "GUI.hpp"
 #include "Graphics/GraphicsElementManager.hpp"
 #include "Input/InputHub.hpp"
 #include "Support/memory_helpers.hpp"

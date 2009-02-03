@@ -1,7 +1,7 @@
 
 #include "GameTask_MainMenu.hpp"
 #include "MainMenuEventHandler.hpp"
-#include "UI.hpp"
+#include "GUI.hpp"
 
 #include "App/GameWindowManager_Win32.hpp"
 #include "Sound/SoundManager.hpp"

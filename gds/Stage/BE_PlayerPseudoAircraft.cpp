@@ -29,7 +29,7 @@
 
 #include "Physics/Actor.hpp"
 
-#include "UI.hpp"
+#include "GUI.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"

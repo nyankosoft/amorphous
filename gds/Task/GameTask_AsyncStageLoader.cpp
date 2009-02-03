@@ -4,7 +4,7 @@
 
 #include "Graphics/Font/Font.hpp"
 #include "Input/InputHub.hpp"
-#include "UI.hpp"
+#include "GUI.hpp"
 #include "Support/fnop.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/StateLog.hpp"

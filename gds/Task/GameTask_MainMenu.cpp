@@ -8,7 +8,7 @@
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/GraphicsElementManager.hpp"
 
-#include "UI.hpp"
+#include "GUI.hpp"
 #include "GUI/InputHandler_Dialog.hpp"
 #include "GUI/GM_StdControlRendererManager.hpp"
 //#include "GUI/GM_FlowTextCaption.hpp"

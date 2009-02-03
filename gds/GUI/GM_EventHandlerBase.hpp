@@ -51,7 +51,7 @@ public:
 
 
 #include "UserEventHandler.h"
-#include "UI.hpp"
+#include "GUI.hpp"
 
 
 CUserEventHandler::CUserEventHandler() {}

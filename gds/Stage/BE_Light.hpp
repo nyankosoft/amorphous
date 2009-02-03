@@ -39,8 +39,8 @@ public:
 
 	enum eLightTypeFlag
 	{
-		TYPE_STATIC		= (1 << 0),
-		TYPE_DYNAMIC	= (1 << 1),
+//		TYPE_STATIC		= (1 << 0),
+//		TYPE_DYNAMIC	= (1 << 1),
 		TYPE_TIMER		= (1 << 2),
 		TYPE_FADEOUT	= (1 << 3),
 		TYPE_GLARE		= (1 << 4),

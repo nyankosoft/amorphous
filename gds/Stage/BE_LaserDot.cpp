@@ -1,13 +1,10 @@
-
+#include "BE_LaserDot.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "../Graphics/Direct3D9.hpp"
 #include "../Graphics/D3DXMeshObject.hpp"
 #include "../Graphics/Shader/ShaderManager.hpp"
-
-#include "BE_LaserDot.hpp"
-
 
 
 CBE_LaserDot::CBE_LaserDot()

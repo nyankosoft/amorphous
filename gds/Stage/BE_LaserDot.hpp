@@ -1,9 +1,9 @@
 #ifndef __BE_LaserDot_H__
 #define __BE_LaserDot_H__
 
+
 #include "BaseEntity.hpp"
 #include "Graphics/3DRect.hpp"
-#include "BaseEntity.hpp"
 
 
 //#define BE_LASERDOT_OFF	0
