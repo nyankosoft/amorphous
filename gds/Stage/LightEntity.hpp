@@ -3,7 +3,6 @@
 
 
 #include "Support/prealloc_pool.hpp"
-#include "3DMath/3DStructs.hpp"
 #include "Graphics/HemisphericLight.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "CopyEntity.hpp"
@@ -132,6 +131,9 @@ public:
 		afAttenuation[1] = 0.1f;
 		afAttenuation[2] = 0.1f;
 	}
+
+	void SetHSUpperColor( SFloatRGBAColor color ) { aColor[0] = color; }
+	void SetHSLowerColor( SFloatRGBAColor color ) { aColor[1] = color; }
 };
 
 
@@ -158,7 +160,6 @@ class CLightEntity : public CCopyEntity
 	CLinkNode<CLightEntity> m_LightEntityLink;
 
 //	int m_LightType;
-//	int m_Index;
 
 private:
 

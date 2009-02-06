@@ -86,13 +86,26 @@ int init_light_groups()
 }
 
 
-//#define RETURN_PYNONE_IF_NO_STAGE()	 if( !GetStageForScriptCallback() )        { Py_INCREF( Py_None );	return Py_None;	}
-//#define RETURN_PYNONE_IF_NO_TARGET() if( !IsValidEntity(GetEntityForLight()) ) { Py_INCREF( Py_None );	return Py_None;	}
-
 inline static shared_ptr<CLightEntity> GetTargetLightEntity()
 {
 	return gs_StageLightAttribute.m_TargetLightEntity.Get();
 }
+
+
+inline static void GetInvalidDesc( CLightEntityDesc& desc )
+{
+	// set all colors to invalid values
+	desc.aColor[0] = CBE_Light::ms_InvalidColor;
+	desc.aColor[1] = CBE_Light::ms_InvalidColor;
+	desc.aColor[2] = CBE_Light::ms_InvalidColor;
+	desc.LightGroup = CBE_Light::ms_InvalidLightGroup;
+
+	// attenuation (for point lights)
+	desc.afAttenuation[0] = desc.afAttenuation[0];
+	desc.afAttenuation[1] = desc.afAttenuation[1];
+	desc.afAttenuation[2] = desc.afAttenuation[2];
+}
+
 
 
 using namespace gsf::py::light;
@@ -121,6 +134,12 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, CScriptGenMo
 	CBaseEntityHandle basehandle( "__DiretionalLight__" );
 	if( mode == CScriptGenMode::LOAD )
 	{
+		GetInvalidDesc( desc );
+		dir = CBE_Light::ms_vInvalidDirection;
+		desc.WorldPose.matOrient.SetColumn( 0, dir );
+		desc.WorldPose.matOrient.SetColumn( 1, dir );
+		desc.WorldPose.matOrient.SetColumn( 2, dir );
+
 		PyArg_ParseTuple( args, "s|sfffffffdd",
 			&base_name,
 			&light_name, &dir.x, &dir.y, &dir.z,
@@ -182,6 +201,8 @@ PyObject* GeneratePointLight( PyObject* self, PyObject* args, CScriptGenMode::Na
 	CBaseEntityHandle basehandle( "__PointLight__" );
 	if( mode == CScriptGenMode::LOAD )
 	{
+		GetInvalidDesc( desc );
+
 		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
 			&base_name,
 			&light_name, &pos.x, &pos.y, &pos.z,
@@ -244,19 +265,30 @@ PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args )
 PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGenMode::Name mode )
 {
 	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
+
+	// alias
+	SFloatRGBAColor& uc = desc.aColor[0];
+	SFloatRGBAColor& lc = desc.aColor[1];
+
 	char *base_name = "";
 	char *light_name = "";
-	int light_group = 0;
 	int shadow_for_light = 1; // true(1) by default
 	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
-	SFloatRGBAColor uc = SFloatRGBAColor(1,1,1,1);
-	SFloatRGBAColor lc = SFloatRGBAColor(0,0,0,1);
 
 	int result = 0;
 
-	CBaseEntityHandle basehandle( "__HemisphericDiretionalLight__" );
+	CBaseEntityHandle basehandle;
 	if( mode == CScriptGenMode::LOAD )
 	{
+		// 'load' mode
+		// set invalid values to see which default values the caller
+		// intends to override
+		GetInvalidDesc( desc );
+		dir = CBE_Light::ms_vInvalidDirection;
+		desc.WorldPose.matOrient.SetColumn( 0, dir );
+		desc.WorldPose.matOrient.SetColumn( 1, dir );
+		desc.WorldPose.matOrient.SetColumn( 2, dir );
+
 		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
 			&base_name,
 			&light_name, &dir.x, &dir.y, &dir.z,
@@ -270,6 +302,15 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 	}
 	else
 	{
+		// 'create' mode
+		// user is responsible for settings all the necessary values
+
+		basehandle.SetBaseEntityName( "__HemisphericDiretionalLight__" );
+
+		// set default colors
+		uc = SFloatRGBAColor(1,1,1,1); // default color
+		lc = SFloatRGBAColor(0,0,0,1); // default color
+
 		result = PyArg_ParseTuple( args, "|sffffffffffdd",
 			&light_name, &dir.x, &dir.y, &dir.z,
 			&uc.fRed, &uc.fGreen, &uc.fBlue,
@@ -277,15 +318,12 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 			&desc.fIntensity,
 			&desc.LightGroup,
 			&shadow_for_light );
-	}
 
-	uc.fAlpha = lc.fAlpha = 1.0f;
+		desc.WorldPose.matOrient = CreateOrientFromFwdDir( dir );
+	}
 
 	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
-	desc.WorldPose.matOrient = CreateOrientFromFwdDir( dir );
-	desc.aColor[0] = uc;
-	desc.aColor[1] = lc;
 
 	CreateEntityFromDesc( desc );
 
@@ -307,19 +345,29 @@ PyObject* gsf::py::light::LoadHSDirectionalLight( PyObject* self, PyObject* args
 PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::Name mode )
 {
 	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
+
+	// alias
+	Vector3& pos = desc.WorldPose.vPosition;
+	SFloatRGBAColor& uc = desc.aColor[0];
+	SFloatRGBAColor& lc = desc.aColor[1];
+
+	// default value settings
 	char *base_name = "";
 	char *light_name = "";
 	int shadow_for_light = 1;      // true(1) by default
-	Vector3 pos = Vector3(0,2,0);  // default position = 2m above the world origin
-	SFloatRGBAColor uc = SFloatRGBAColor(1,1,1,1);
-	SFloatRGBAColor lc = SFloatRGBAColor(0,0,0,1);
+	pos = Vector3(0,2,0);  // default position = 2m above the world origin
 	float *pAttenu = desc.afAttenuation;
 
 	int result = 0;
 
-	CBaseEntityHandle basehandle( "__HemisphericPointLight__" );
+	CBaseEntityHandle basehandle;
 	if( mode == CScriptGenMode::LOAD )
 	{
+		// pos = ???
+		// position must always be specified.
+		// This is true for 'load' mode as well as 'create' mode
+		GetInvalidDesc( desc );
+
 		result = PyArg_ParseTuple( args, "s|sffffffffffdd",
 			&base_name,
 			&light_name, &pos.x, &pos.y, &pos.z,
@@ -336,6 +384,12 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::
 	}
 	else
 	{
+		basehandle.SetBaseEntityName( "__HemisphericPointLight__" );
+
+		// set default colors
+		uc = SFloatRGBAColor(1,1,1,1);
+		lc = SFloatRGBAColor(0,0,0,1);
+
 		result = PyArg_ParseTuple( args, "|sffffffffffdd",
 			&light_name, &pos.x, &pos.y, &pos.z,
 			&uc.fRed, &uc.fGreen, &uc.fBlue,
@@ -348,13 +402,8 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, CScriptGenMode::
 			&shadow_for_light );
 	}
 
-	uc.fAlpha = lc.fAlpha = 1.0f;
-
 	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
-	desc.WorldPose.vPosition = pos;
-	desc.aColor[0] = uc;
-	desc.aColor[1] = lc;
 
 	CreateEntityFromDesc( desc );
 

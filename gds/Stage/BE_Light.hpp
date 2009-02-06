@@ -25,9 +25,7 @@ protected:
 
 	unsigned int m_TypeFlag;
 
-	float m_afBaseColor[3];
-
-	SFloatRGBAColor m_aBaseColor[3];
+	CLightEntityDesc m_DefaultDesc;
 
 protected:
 
@@ -61,6 +59,7 @@ public:
 */
 
 	CBE_Light();
+
 	virtual ~CBE_Light() {}
 
 	virtual void Init();
@@ -75,12 +74,15 @@ public:
 
 	void ReleasePooledLight( CLightHolder *pLightHolder );
 
-	static inline void SetAttenuationFactors( CCopyEntity *pEntity, float a0, float a1, float a2 )
-	{
-		pEntity->f1 = a0;
-		pEntity->f2 = a1;
-		pEntity->f3 = a2;
-	}
+	const CLightEntityDesc& GetDefaultDesc() const { return m_DefaultDesc; }
+
+public:
+
+	static const SFloatRGBAColor ms_InvalidColor;
+	static const Vector3 ms_vInvalidDirection;
+	static const int ms_InvalidLightGroup;
+	static const float ms_fInvalidIntensity;
+	static const float ms_fInvalidAttenuation;
 };
 
 

@@ -2,7 +2,6 @@
 #define __PyModule_Light_H__
 
 
-#include <string>
 #include <Python.h>
 #include "Stage/fwd.hpp"
 

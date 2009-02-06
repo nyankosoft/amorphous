@@ -53,10 +53,6 @@ public:
 	bool CheckRayToCamera(CCopyEntity* pCopyEnt);
 
 	void DeleteDynamicLight(CCopyEntity* pCopyEnt);
-
-
-//	void ReleaseGraphicsResources();
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
 
 #endif  /*  __BE_PointLight_H__  */

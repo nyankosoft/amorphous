@@ -2,12 +2,11 @@
 #include "PlayerInfo.hpp"
 #include "BE_Player.hpp"
 #include "Item/WeaponSystem.hpp"
-
-#include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix34.hpp"
 
 #include <string>
 
+using namespace std;
 
 #define PlayerBaseEntity	(*SinglePlayerInfo().GetCurrentPlayerBaseEntity())
 #define PlayerEntity		(*SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity())
@@ -67,7 +66,7 @@ PyObject* AddLife( PyObject* self, PyObject* args )
 //	PlayerEntity.AddLife( amount );
 	PlayerEntity.fLife += amount;
 
-    Py_INCREF( Py_None );
+	Py_INCREF( Py_None );
 	return Py_None;
 }
 
@@ -108,6 +107,8 @@ PyObject* MountWeapon( PyObject* self, PyObject* args )
 
 PyObject* LoadAmmo( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	int weapon_slot_index;
 	char *ammo_name;
     PyArg_ParseTuple( args, "is", &weapon_slot_index, &ammo_name );

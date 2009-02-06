@@ -1,16 +1,11 @@
-#ifndef __PYMODULE_PLAYER_H__
-#define __PYMODULE_PLAYER_H__
+#ifndef __PyModule_Player_H__
+#define __PyModule_Player_H__
 
-
-#include <string>
-using namespace std;
 
 #include <Python.h>
 
 
 extern PyMethodDef g_PyModulePlayerMethod[];
 
-class CPlayerInfo;
-extern CPlayerInfo PlayerEntity;
 
-#endif  /*  __PYMODULE_PLAYER_H__  */
+#endif  /*  __PyModule_Player_H__  */

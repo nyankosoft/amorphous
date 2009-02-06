@@ -2,8 +2,6 @@
 #define __PYMODULE_ENTITY_H__
 
 
-#include <string>
-
 #include <Python.h>
 
 

@@ -1,17 +1,11 @@
-
 #include "PyModule_Entity.hpp"
-
-#include "3DMath/Vector3.hpp"
-
 #include "EntityMotionPathRequest.hpp"
 #include "GameMessage.hpp"
 #include "Stage.hpp"
 #include "EntitySet.hpp"
-
 #include "CopyEntityDesc.hpp"
 #include "BE_StaticParticleSet.hpp"
 
-#include "Support/msgbox.hpp"
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.hpp"
 
@@ -77,6 +71,8 @@ PyObject* EntityStartPath( PyObject* self, PyObject* args )
 
 PyObject* EntityEndPath( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
 		return Py_None;
 
@@ -85,13 +81,14 @@ PyObject* EntityEndPath( PyObject* self, PyObject* args )
 
 	SendGameMessageTo( msg, g_EntityMotionPathRequest.pTargetEntity );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 PyObject* EntityAddPath( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
 		return Py_None;
 
@@ -109,13 +106,14 @@ PyObject* EntityAddPath( PyObject* self, PyObject* args )
 	pose.matOrient = Matrix33RotationZ(bank) * Matrix33RotationX(pitch) * Matrix33RotationY(heading);
     g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose(time,pose) );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 PyObject* CreateStaticParticleSet( PyObject* self, PyObject* args )
 {
+    Py_INCREF( Py_None );
+
 	char *entity_name;
 	char *base_entity_name;
 	Vector3 v0, v1;
@@ -130,7 +128,6 @@ PyObject* CreateStaticParticleSet( PyObject* self, PyObject* args )
 
 	if( !gs_pTargetStage )
 	{
-		Py_INCREF( Py_None );
 		return Py_None;
 	}
 
@@ -148,18 +145,18 @@ PyObject* CreateStaticParticleSet( PyObject* self, PyObject* args )
 	CCopyEntity* pEntity = gs_pTargetStage->CreateEntity( desc );
 
 	if( !pEntity )
-		MsgBoxFmt( "cannot create static clouds" );
+		LOG_PRINT_WARNING( " Cannot create static clouds" );
 
-    Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
 PyObject* CommitStaticParticleSet( PyObject* self, PyObject* args )
 {
+	Py_INCREF( Py_None );
+
 	if( !gs_pTargetStage )
 	{
-		Py_INCREF( Py_None );
 		return Py_None;
 	}
 
@@ -171,14 +168,14 @@ PyObject* CommitStaticParticleSet( PyObject* self, PyObject* args )
 
 	if( pBaseEntity && pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_STATICPARTICLESET )
 	{
-		CBE_StaticParticleSet *p = (CBE_StaticParticleSet *)pBaseEntity;
+		CBE_StaticParticleSet *p = dynamic_cast<CBE_StaticParticleSet *>(pBaseEntity);
 		p->CommitStaticParticles();	// create vertex buffers and copy particles
-//		MsgBox( "copied particle set to vertex buffer" );
+//		LOG_PRINT_WARNING( "copied particle set to vertex buffer" );
 		return Py_None;	//true;
 	}
 	else
 	{
-		MsgBox( "cannot find particle set" );
+		LOG_PRINT_WARNING( "cannot find particle set" );
 		return Py_None;	//false;
 	}
 }

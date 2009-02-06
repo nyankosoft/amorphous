@@ -1,11 +1,11 @@
 #include "BE_DirectionalLight.hpp"
 #include "GameMessage.hpp"
-#include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "Stage/LightEntity.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/3DGameMath.hpp"
 
 
 CBE_DirectionalLight::CBE_DirectionalLight()
@@ -98,6 +98,7 @@ bool CBE_DirectionalLight::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 	if( scanner.TryScanLine( "DEFAULT_DIRECTION", m_DirLight.vDirection ) )
 	{
 		Vec3Normalize( m_DirLight.vDirection, m_DirLight.vDirection );
+		m_DefaultDesc.WorldPose.matOrient = CreateOrientFromFwdDir( m_DirLight.vDirection );
 		return true;
 	}
 

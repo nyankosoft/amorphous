@@ -9,12 +9,16 @@
 
 using namespace std;
 
+const SFloatRGBAColor CBE_Light::ms_InvalidColor = SFloatRGBAColor(0,0,0,-1000);
+const Vector3 CBE_Light::ms_vInvalidDirection = Vector3(0,0,0);
+const int CBE_Light::ms_InvalidLightGroup = -1;
+const float CBE_Light::ms_fInvalidIntensity = -1000;
+const float CBE_Light::ms_fInvalidAttenuation = -1000;
+
 
 CBE_Light::CBE_Light()
 {
 	m_TypeFlag = 0;
-
-	m_afBaseColor[0] = m_afBaseColor[1] = m_afBaseColor[2] = 1.0f;
 
 	m_bNoClip = true;
 }
@@ -113,11 +117,23 @@ bool CBE_Light::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 			else if( vecFlag[i] == "TIMER" )	m_TypeFlag |= TYPE_TIMER;
 			else if( vecFlag[i] == "GLARE" )	m_TypeFlag |= TYPE_GLARE;
 		};
-		
+
 		return true;
 	}
 
-	if( scanner.TryScanLine( "BASE_COLOR", m_afBaseColor[0], m_afBaseColor[1], m_afBaseColor[2] ) ) return true;
+	if( scanner.TryScanLine( "BASE_COLOR",   m_DefaultDesc.aColor[0] ) ) return true;
+	if( scanner.TryScanLine( "BASE_COLOR_0", m_DefaultDesc.aColor[0] ) ) return true;
+	if( scanner.TryScanLine( "BASE_COLOR_1", m_DefaultDesc.aColor[1] ) ) return true;
+	if( scanner.TryScanLine( "BASE_COLOR_2", m_DefaultDesc.aColor[2] ) ) return true;
+
+	// HS lights
+	if( scanner.TryScanLine( "UPPER_COLOR",  m_DefaultDesc.aColor[0] ) ) return true;
+	if( scanner.TryScanLine( "LOWER_COLOR",  m_DefaultDesc.aColor[1] ) ) return true;
+
+	if( scanner.TryScanLine( "BASE_ATTENU_FACTORS",
+		m_DefaultDesc.afAttenuation[0],
+		m_DefaultDesc.afAttenuation[1],
+		m_DefaultDesc.afAttenuation[2] ) ) return true;
 
 	return false;
 }
@@ -132,6 +148,18 @@ void CBE_Light::Serialize( IArchive& ar, const unsigned int version )
 //	if( ar.GetMode() == IArchive::MODE_INPUT )
 //		MsgBoxFmt( "loaded light type for %s: %d", m_strName.c_str(), m_TypeFlag );
 
-	for( int i=0; i<3; i++ )
-        ar & m_afBaseColor[i];
+	ar & (int&)m_DefaultDesc.LightType;
+
+	for( int i=0; i<numof(m_DefaultDesc.aColor); i++ )
+		ar & m_DefaultDesc.aColor[i];
+
+	for( int i=0; i<numof(m_DefaultDesc.afAttenuation); i++ )
+		ar & m_DefaultDesc.afAttenuation[i];
+
+	ar & m_DefaultDesc.fIntensity;
+
+	ar & m_DefaultDesc.LightGroup;
+
+	// world pose contains direction for directional light
+	ar & m_DefaultDesc.WorldPose;
 }

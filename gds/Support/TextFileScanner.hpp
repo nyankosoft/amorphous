@@ -1,4 +1,3 @@
-
 #ifndef  __TEXTFILESCANNER_H__
 #define  __TEXTFILESCANNER_H__
 
@@ -8,6 +7,7 @@
 #include <string>
 
 #include "3DMath/Vector3.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
 
 
 class CTextFileScanner
@@ -100,6 +100,8 @@ public:
 	void ScanLine( std::string& strTag, std::string& strEntry, int &i );
 	void ScanLine( std::string& strTag, std::string& strEntry, int &i0, int &i1 );
 
+	void ScanLine( std::string& strTag, SFloatRGBAColor& color );
+
 	bool ScanBool( std::string& strTag, const std::string& bool_str, bool& b );
 
 	bool ScanSentence( std::string& strTag, std::string& text );
@@ -140,6 +142,8 @@ public:
 
 	bool TryScanLine( const char *tag, std::string& str, int &i );
 	bool TryScanLine( const char *tag, std::string& str, int &i0, int &i1 );
+
+	bool TryScanLine( const char *tag, SFloatRGBAColor& color );
 
 	bool TryScanBool( const char *tag, const std::string& bool_str, bool& b );
 

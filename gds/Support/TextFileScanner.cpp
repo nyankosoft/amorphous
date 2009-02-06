@@ -282,6 +282,12 @@ void CTextFileScanner::ScanLine( std::string& strTag, std::string& str, int &i )
 }
 
 
+void CTextFileScanner::ScanLine( std::string& strTag, SFloatRGBAColor& color )
+{
+	sscanf( m_acCurrentLine, "%s %f %f %f %f\n", m_acTag, &color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha );
+}
+
+
 bool CTextFileScanner::ScanBool( std::string& strTag, const std::string& bool_tag_str, bool& b )
 {
 	string tag_true, tag_false, bool_tag;
@@ -651,6 +657,19 @@ bool CTextFileScanner::TryScanLine( const char *tag, string& str, int &i )
 	{
 		string str_tag;
 		ScanLine( str_tag, str, i );
+		return true;
+	}
+	else
+		return false;
+}
+
+
+bool CTextFileScanner::TryScanLine( const char *tag, SFloatRGBAColor& color )
+{
+	if( !strcmp( GetTagStr(), tag ) )
+	{
+		string str_tag;
+		ScanLine( str_tag, color );
 		return true;
 	}
 	else

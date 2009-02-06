@@ -137,20 +137,45 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 	{
 		// fill in the light desc
 
-		const Vector3& vLightPos = pLightDesc->WorldPose.vPosition;
-		const Vector3& vLightDir = pLightDesc->WorldPose.matOrient(2);
-		const float& fLightIntensity = pLightDesc->fIntensity;
-
 		CLightDesc light_desc;
-		light_desc.LightType = pLightDesc->LightType;
-		for( int i=0; i<numof(light_desc.aColor); i++ )
-			light_desc.aColor[i] = pLightDesc->aColor[i];
-		light_desc.vPosition = pLightDesc->WorldPose.vPosition;
-		light_desc.vDirection = pLightDesc->WorldPose.matOrient(2);
-		light_desc.fIntensity = pLightDesc->fIntensity;
 
+		const CLightEntityDesc& default_desc = pBaseEntity->GetDefaultDesc();
+		light_desc.LightType = pLightDesc->LightType;
+
+		// colors
+		for( int i=0; i<numof(light_desc.aColor); i++ )
+		{
+			if( fabs(pLightDesc->aColor[i].fAlpha - CBE_Light::ms_InvalidColor.fAlpha) < 0.001f )
+				light_desc.aColor[i] = default_desc.aColor[i];
+			else
+				light_desc.aColor[i] = pLightDesc->aColor[i];
+		}
+
+		// direction (for directional lights)
+		if( pLightDesc->WorldPose.matOrient.GetColumn(2) == CBE_Light::ms_vInvalidDirection )
+			light_desc.vDirection = default_desc.WorldPose.matOrient(2);
+		else
+			light_desc.vDirection = pLightDesc->WorldPose.matOrient(2);
+
+		// intensity
+		if( fabs(pLightDesc->fIntensity - CBE_Light::ms_fInvalidIntensity) < 0.001f )
+			light_desc.fIntensity = default_desc.fIntensity;
+		else
+			light_desc.fIntensity = pLightDesc->fIntensity;
+
+		// attenuation factors (for point lights)
 		for( int i=0; i<numof(light_desc.afAttenuation); i++ )
-			light_desc.afAttenuation[i] = pLightDesc->afAttenuation[i];
+		{
+			if( fabs(pLightDesc->afAttenuation[i] - CBE_Light::ms_fInvalidAttenuation) < 0.001f )
+				light_desc.afAttenuation[i] = default_desc.afAttenuation[i];
+			else
+				light_desc.afAttenuation[i] = pLightDesc->afAttenuation[i];
+		}
+
+		light_desc.vPosition = pLightDesc->WorldPose.vPosition;
+
+		//if( 
+		// m_LightGroup = pLightDesc->LightGroup;
 
 		// get pooled light object from the base entity
 

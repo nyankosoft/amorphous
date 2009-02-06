@@ -440,6 +440,5 @@ void CBE_PointLight::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fGlareDiameter;
 	ar & m_GlareTextureFilepath;
 	ar & m_fTimer;
-	ar & m_afBaseColor[0] & m_afBaseColor[1] & m_afBaseColor[2];
 	ar & m_PointLight;
 }
