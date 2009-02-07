@@ -16,6 +16,23 @@ using namespace std;
 // player status interfaces for python scripts
 //======================================================================
 
+PyObject* IsInStage( PyObject* self, PyObject* args )
+{
+	int res = 0;
+	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity()
+	 && SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() )
+	{
+		res = 1;
+	}
+	else
+	{
+		res = 0;
+	}
+
+	return Py_BuildValue( "i", res );
+}
+
+
 PyObject* GetPositionY( PyObject* self, PyObject* args )
 {
 	return Py_BuildValue( "f", PlayerEntity.Position().y );
@@ -140,5 +157,6 @@ PyMethodDef g_PyModulePlayerMethod[] =
     { "SupplyItem",		SupplyItem,		METH_VARARGS, "gives the player a specified amount of an item" },
     { "MountWeapon",	MountWeapon,	METH_VARARGS, "sets an weapon to slot[n]" },
     { "LoadAmmo",		LoadAmmo,		METH_VARARGS, "loads ammo to slot[n]" },
+    { "IsInStage",		IsInStage,		METH_VARARGS, "Returns true if the single player entity is in the stage." },
     {NULL, NULL}
 };
