@@ -1,12 +1,9 @@
-
 #include "BE_Turret.hpp"
 
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-
-#include <math.h>
 
 
 CBE_Turret::CBE_Turret()
@@ -31,12 +28,11 @@ void CBE_Turret::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	CBE_Enemy::InitCopyEntity(pCopyEnt);
 
-	float& rfDesiredDeltaYaw = pCopyEnt->f3;	//angle of rotation (relative)
-	rfDesiredDeltaYaw = 0;
-	float& rfFireCycleTime	 = pCopyEnt->f4;
-	rfFireCycleTime = 0;
-	float& rfLastFireTime	 = pCopyEnt->f5;
-	rfLastFireTime = 0;
+	DesiredDeltaYaw(pCopyEnt) = 0;
+
+	FireCycleTime(pCopyEnt) = 0;
+
+	LastFireTime(pCopyEnt) = 0;
 
 	DesiredDirection(pCopyEnt) = pCopyEnt->GetRightDirection();
 

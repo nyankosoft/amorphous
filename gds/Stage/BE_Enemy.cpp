@@ -4,23 +4,20 @@
 #include "CopyEntityDesc.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-
 #include "EntityMotionPathRequest.hpp"
 
 #include "Stage/PlayerInfo.hpp"
 
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 #include "GameCommon/MTRand.hpp"
-#include "Support/VectorRand.hpp"
 
 #include "Sound/Serialization_SoundHandle.hpp"
 #include "Sound/SoundManager.hpp"
 
+#include "Support/VectorRand.hpp"
 #include "Support/memory_helpers.hpp"
-#include "Support/msgbox.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
 
@@ -377,12 +374,15 @@ bool CBE_Enemy::CheckRayToPlayer( CCopyEntity* pCopyEnt )
 }
 
 
+// [in] rvDesiredDirection
+// [out] desired delta yaw
+// [out] desired pitch
 void CBE_Enemy::UpdateDesiredYawAndPitch(CCopyEntity* pCopyEnt, Vector3& rvDesiredDirection)
 {
-	float& rfDesiredDeltaYaw	= pCopyEnt->f2;	//ideal angle of yaw rotation (relative) 
-	float& rfDesiredPitch		= pCopyEnt->f3; //ideal angle of pitch rotation (absolute) 
-	Vector3& rvDesiredDirection_H = pCopyEnt->v2;	//horizontal desired direction
-	Vector3& rvCurrentDirection_H = pCopyEnt->v3;	//horizontal current direction
+	float& rfDesiredDeltaYaw	= pCopyEnt->f2;		// ideal angle of yaw rotation (relative) 
+	float& rfDesiredPitch		= pCopyEnt->f3;		// ideal angle of pitch rotation (absolute) 
+	Vector3& rvDesiredDirection_H = pCopyEnt->v2;	// horizontal desired direction
+	Vector3& rvCurrentDirection_H = pCopyEnt->v3;	// horizontal current direction
 
 
 	// normalze the unit vector to prevent the problem
@@ -404,18 +404,18 @@ void CBE_Enemy::UpdateDesiredYawAndPitch(CCopyEntity* pCopyEnt, Vector3& rvDesir
 	// update desired yaw (yaw to cover in order to aim the player)
 	float fDotProduct = Vec3Dot( rvCurrentDirection_H, rvDesiredDirection_H );
 	if( fabs(1.0 - fDotProduct) < 0.0001 )
-		rfDesiredDeltaYaw = 0;
+		DesiredDeltaYaw(pCopyEnt) = 0;
 	else
-		rfDesiredDeltaYaw = (float)acos(fDotProduct);
+		DesiredDeltaYaw(pCopyEnt) = (float)acos(fDotProduct);
 
 	// check the direction of yaw
 	Vector3 vDirY;
-	D3DXVec3Cross( &vDirY, &rvCurrentDirection_H, &rvDesiredDirection_H );
+	Vec3Cross( vDirY, rvCurrentDirection_H, rvDesiredDirection_H );
 	if( vDirY.y < 0 )
 		rfDesiredDeltaYaw *= (-1);
 
 	// update desired pitch
-	rfDesiredPitch = (float)acos( D3DXVec3Dot( &rvDesiredDirection, &rvDesiredDirection_H ) );
+	rfDesiredPitch = (float)acos( Vec3Dot( rvDesiredDirection, rvDesiredDirection_H ) );
 
 	// when the pitch is upward, the rotation angle is negative (in left-hand coordinate)
 	if( 0 < rvDesiredDirection.y - pCopyEnt->GetDirection().y )
@@ -428,14 +428,16 @@ void CBE_Enemy::AimAlong(CCopyEntity* pCopyEnt, Vector3& rvDesiredDirection)
 	if( rvDesiredDirection == Vector3(0,0,0) )
 		return;
 
-	float& rfDesiredDeltaYaw	= pCopyEnt->f2;	//ideal angle of yaw rotation (relative) 
-	float& rfDesiredPitch		= pCopyEnt->f3; //ideal angle of pitch rotation (absolute) 
-	Vector3& rvDesiredDirection_H = pCopyEnt->v2;	//horizontal desired direction
-	Vector3& rvCurrentDirection_H = pCopyEnt->v3;	//horizontal current direction
+	const float frametime = m_pStage->GetFrameTime();
+
+	float& rfDesiredDeltaYaw	= pCopyEnt->f2;   // ideal angle of yaw rotation (relative) 
+	float& rfDesiredPitch		= pCopyEnt->f3;   // ideal angle of pitch rotation (absolute) 
+	Vector3& rvDesiredDirection_H = pCopyEnt->v2; // horizontal desired direction
+	Vector3& rvCurrentDirection_H = pCopyEnt->v3; // horizontal current direction
 
 	//========================== Yaw ==========================
 	float fDeltaYaw;
-	fDeltaYaw = m_fYawSpeed * m_pStage->GetFrameTime();
+	fDeltaYaw = m_fYawSpeed * frametime;
 
 	if( rfDesiredDeltaYaw < 0 )
 		fDeltaYaw *= (-1);
@@ -465,14 +467,15 @@ void CBE_Enemy::AimAlong(CCopyEntity* pCopyEnt, Vector3& rvDesiredDirection)
 	//========================== Pitch ==========================
 	Vector3 vDirection = pCopyEnt->GetDirection();
 	float fDeltaPitch, fCurrentPitch, fDesiredDeltaPitch;
-	fDeltaPitch = m_fPitchSpeed * m_pStage->GetFrameTime();
+	fDeltaPitch = m_fPitchSpeed * frametime;
 	fCurrentPitch = (float)acos( Vec3Dot( rvCurrentDirection_H, vDirection ) );
 	if( 0 < vDirection.y )
 		fCurrentPitch *= (-1);
 
 	fDesiredDeltaPitch = rfDesiredPitch - fCurrentPitch;
 	if( vDirection.y <= rvDesiredDirection.y )
-	{	// pitch rotation is upward - rotation angle must be
+	{
+		// pitch rotation is upward - rotation angle must be
 		// negative in the left hand coordinate
 		fDeltaPitch *= (-1);
 	}
@@ -481,18 +484,16 @@ void CBE_Enemy::AimAlong(CCopyEntity* pCopyEnt, Vector3& rvDesiredDirection)
 
 	fCurrentPitch += fDeltaPitch;
 
+	// limit the pitch
 	// pitch must be between -45 and 85 degrees
-	if( fCurrentPitch < -1.48f )
-		fCurrentPitch = -1.48f;	 // do not look up higher than 85 degrees
-	else if( 0.785f < fCurrentPitch )
-		fCurrentPitch =  0.785f; // do not look down lower than -45 degrees
+	Limit( fCurrentPitch, -1.48f, 0.785f );
 
 	// get rotation matrix around the axis
 	D3DXMatrixRotationAxis( &matRot, &vRight, fCurrentPitch );
 	D3DXVec3TransformCoord( &vDirection, &rvCurrentDirection_H, &matRot );
 	Vector3 vUp;
 //	D3DXVec3Cross( &vUp, &pCopyEnt->GetDirection(), &pCopyEnt->GetRightDirection() );
-	D3DXVec3Cross( &vUp, &vDirection, &vRight );
+	Vec3Cross( vUp, vDirection, vRight );
 
 	pCopyEnt->SetDirection_Right( vRight );
 	pCopyEnt->SetDirection_Up( vUp );
@@ -527,30 +528,27 @@ void CBE_Enemy::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPath
 
 void CBE_Enemy::FireAtPlayer(CCopyEntity* pCopyEnt)
 {
-	float& rfFireCycleTime		= pCopyEnt->f4;
-
-	if( rfFireCycleTime <= m_fFireKeepDuration + m_fFireCeaseInterval )
-	{	// keep firing for a couple of seconds and then rest for a moment(repeat this)
+	if( FireCycleTime(pCopyEnt) <= m_fFireKeepDuration + m_fFireCeaseInterval )
+	{
+		// keep firing for a couple of seconds and then rest for a moment(repeat this)
 		//                   0 <= rfFiringCycleTime <= m_fFireKeepDuration : fire
 		// m_fFireKeepDuration <  rfFiringCycleTime <= m_fFireKeepDuration + m_fFireCeaseInterval : hold fire
-		rfFireCycleTime += m_pStage->GetFrameTime();
-		if( rfFireCycleTime <= m_fFireKeepDuration )
+		FireCycleTime(pCopyEnt) += m_pStage->GetFrameTime();
+		if( FireCycleTime(pCopyEnt) <= m_fFireKeepDuration )
 		{	// open fire
 			Fire( pCopyEnt );
 		}
 	}
 	else
-		rfFireCycleTime = 0;
+		FireCycleTime(pCopyEnt) = 0;
 }
 
 
 void CBE_Enemy::Fire( CCopyEntity* pCopyEnt )
 {
-	float& rfLastFireTime		= pCopyEnt->f5;
-
-	if( m_fFiringRate <= rfLastFireTime )
+	if( m_fFiringRate <= LastFireTime(pCopyEnt) )
 	{
-		rfLastFireTime = 0;
+		LastFireTime(pCopyEnt) = 0;
 
 		Vector3 vMuzzleVelocity = pCopyEnt->GetDirection() * m_fBulletSpeed;
 
@@ -604,7 +602,7 @@ void CBE_Enemy::Fire( CCopyEntity* pCopyEnt )
 
 	}
 	else
-		rfLastFireTime += m_pStage->GetFrameTime();
+		LastFireTime(pCopyEnt) += m_pStage->GetFrameTime();
 }
 
 void CBE_Enemy::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other)
@@ -637,7 +635,7 @@ void CBE_Enemy::OnDestroyed( CCopyEntity* pCopyEnt )
 	g_Log.Print( "An enemy entity destroyed - vel%s", to_string(pCopyEnt->Velocity()).c_str() );
 
 	CCopyEntity* pFragEntity;
-//			MsgBoxFmt( "%s destroyed - creating %d fragments", pCopyEnt->GetName().c_str(), m_iNumFragments );
+//	MsgBoxFmt( "%s destroyed - creating %d fragments", pCopyEnt->GetName().c_str(), m_iNumFragments );
 	const int num_fragments = m_iNumFragments;
 	for(int i=0; i<num_fragments; i++)
 	{
@@ -647,8 +645,8 @@ void CBE_Enemy::OnDestroyed( CCopyEntity* pCopyEnt )
 		rFrag.pBaseEntityHandle = &m_aFragment[i].BaseEntity;
 
 		rFrag.SetWorldPosition( pCopyEnt->GetWorldPose() * frag.vOffset );
-//				D3DXVec3TransformCoord( &vWorldFragmentOffset, &m_avFragmentOffset[i], &pCopyEnt->GetOrientation() );
-//				rFrag.vPosition  = pCopyEnt->Position() + vWorldFragmentOffset;
+//		D3DXVec3TransformCoord( &vWorldFragmentOffset, &m_avFragmentOffset[i], &pCopyEnt->GetOrientation() );
+//		rFrag.vPosition  = pCopyEnt->Position() + vWorldFragmentOffset;
 
 		rFrag.SetWorldOrient( pCopyEnt->GetWorldPose().matOrient );
 

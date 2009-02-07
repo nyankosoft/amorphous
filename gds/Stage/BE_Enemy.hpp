@@ -1,9 +1,10 @@
-#ifndef __BE_ENEMY_H__
-#define __BE_ENEMY_H__
+#ifndef __BE_Enemy_H__
+#define __BE_Enemy_H__
 
 #include "BE_PhysicsBaseEntity.hpp"
 #include "BaseEntityHandle.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
+#include "CopyEntity.hpp"
 
 #include "EnemyState.hpp"
 
@@ -12,7 +13,6 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-// "Support\Serialization\ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 
@@ -90,10 +90,11 @@ protected:
 	CBaseEntityHandle m_Bullet[NUM_BULLET_TYPES];
 	float m_fBulletPower;
 	float m_fBulletSpeed;
-	float m_fFiringRate;	// sec per shot
+	float m_fFiringRate;	///, intervals between each shot [sec]
 	float m_fFireKeepDuration;
 	float m_fFireCeaseInterval;
 	float m_fRandomFireDirection;
+
 	CSoundHandle m_FireSound;
 
 	/// muzzle position in local space
@@ -195,6 +196,11 @@ public:
 	}
 
 	inline SBE_EnemyExtraData* GetExtraData(int iIndex) { return (m_aExtraData + iIndex); }
+
+	static float& DesiredDeltaYaw(CCopyEntity *pEntity) { return pEntity->f2; }
+	static float& FireCycleTime(CCopyEntity *pEntity)   { return pEntity->f4; }
+	static float& LastFireTime(CCopyEntity *pEntity)    { return pEntity->f5; }
 };
 
-#endif  /*  __BE_ENEMY_H__  */
+
+#endif  /*  __BE_Enemy_H__  */

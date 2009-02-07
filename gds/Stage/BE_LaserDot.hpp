@@ -43,4 +43,5 @@ public:
 
 };
 
+
 #endif  /*  __BE_LaserDot_H__  */

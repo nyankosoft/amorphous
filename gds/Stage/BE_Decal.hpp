@@ -1,13 +1,9 @@
-
-#ifndef	__BASEENTITYDECAL_H__
-#define __BASEENTITYDECAL_H__
+#ifndef	__BE_Decal_H__
+#define __BE_Decal_H__
 
 #include "BaseEntity.hpp"
 
 #include "../Graphics/FVF_TextureVertex.h"
-
-#include <d3d9.h>
-#include <d3dx9.h>
 
 
 class CBE_Decal : public CBaseEntity
@@ -52,4 +48,4 @@ public:
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
 
-#endif /*  __BASEENTITYDECAL_H__  */
+#endif /*  __BE_Decal_H__  */

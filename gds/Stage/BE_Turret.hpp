@@ -1,5 +1,5 @@
-#ifndef	__BASEENTITYTURRET_H__
-#define __BASEENTITYTURRET_H__
+#ifndef	__BE_Turret_H__
+#define __BE_Turret_H__
 
 #include "BE_Enemy.hpp"
 
@@ -10,6 +10,7 @@ class CBE_Turret : public CBE_Enemy
 public:
 	CBE_Turret();
 	// ~CBE_Turret();
+
 	void Init();
 	void InitCopyEntity( CCopyEntity* pCopyEnt );
 	// void Act(CCopyEntity* pCopyEnt);
@@ -26,4 +27,5 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
 
-#endif /*  __BASEENTITYTURRET_H__  */
+
+#endif /*  __BE_Turret_H__  */

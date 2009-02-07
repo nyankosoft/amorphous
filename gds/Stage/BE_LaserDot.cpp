@@ -2,9 +2,10 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "../Graphics/Direct3D9.hpp"
-#include "../Graphics/D3DXMeshObject.hpp"
-#include "../Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/3DGameMath.hpp"
 
 
 CBE_LaserDot::CBE_LaserDot()
@@ -77,7 +78,8 @@ void CBE_LaserDot::Act(CCopyEntity* pCopyEnt)
 	m_pStage->ClipTrace( tr );
 
 	if( tr.fFraction == 1.0f )
-	{	// laser is not reaching any surface
+	{
+		// laser is not reaching any surface
 		pCopyEnt->s1 |= BE_LASERDOT_OFF_SURFACE;
 		return;
 	}
@@ -87,24 +89,10 @@ void CBE_LaserDot::Act(CCopyEntity* pCopyEnt)
 	pCopyEnt->Position()  = tr.vEnd;
 	pCopyEnt->touch_plane = tr.plane;
 
-	D3DXVECTOR3 vRight, vUp;
-	if( 0.01 < 1.0 - fabs(tr.plane.normal.y) )
-	{
-		D3DXVec3Cross( &vRight, &D3DXVECTOR3(0,1,0), &tr.plane.normal );
-		D3DXVec3Normalize( &vRight, &vRight );
-		D3DXVec3Cross( &vUp, &tr.plane.normal, &vRight );
-	}
-	else
-	{	// the normal of the contacted surface is almost along the y-axis (contact surface is probably floor or ground)
-		vRight = D3DXVECTOR3(1,0,0);
-		D3DXVec3Cross( &vUp, &tr.plane.normal, &vRight );
-		D3DXVec3Normalize( &vUp, &vUp );
-		D3DXVec3Cross( &vRight, &vUp, &tr.plane.normal );
-	}
+	Matrix33 matOrient = CreateOrientFromFwdDir( tr.plane.normal );
+	matOrient.Orthonormalize();
 
-	pCopyEnt->SetDirection_Right( vRight );
-	pCopyEnt->SetDirection_Up( vUp );
-	pCopyEnt->SetDirection( tr.plane.normal );
+	pCopyEnt->SetOrientation( matOrient );
 }
 
 
