@@ -1621,6 +1621,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Item\GI_LaserGun.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\GI_LaserGun.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Item\GI_MissileLauncher.cpp"
 					>
 				</File>

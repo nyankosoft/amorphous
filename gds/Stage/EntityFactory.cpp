@@ -52,7 +52,7 @@ shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_i
 	// simply allocate them on heap with default 'new' and return
 	// the shared pointer of it
 	// e.g., because they are created before the stage starts and not likely
-	// to impact performance during gameplay
+	// to impact performance from memory allocation during gameplay
 	// CEntitySet needs to set stock id to -2 after this to mark this entity as non-pooled object
 //	case CCopyEntityTypeID::ANOTHER_ENTITY:
 //		return shared_ptr<CCopyEntity>( new CAnotherEntity );
