@@ -1,4 +1,3 @@
-
 #include "SaveDataManager.hpp"
 #include <sys/stat.h>
 
@@ -10,14 +9,18 @@ using namespace std;
 //======================================================================================
 
 CSaveDataComponent::CSaveDataComponent()
+:
+m_IsRegisteredToSaveDataManager(false)
 {
-//	SaveDataManager.AddComponent( this );
+	SaveDataManager().AddComponent( this );
+	m_IsRegisteredToSaveDataManager = true;
 }
 
 
 CSaveDataComponent::~CSaveDataComponent()
 {
-//	SaveDataManager.DeleteComponent( this );
+	if( m_IsRegisteredToSaveDataManager )
+		SaveDataManager().RemoveComponent( this );
 }
 
 
@@ -39,6 +42,18 @@ void CSaveDataComponent::SaveTo( CBinaryDatabase<std::string>& db )
 //======================================================================================
 
 CSingleton<CSaveDataManager> CSaveDataManager::m_obj;
+
+
+CSaveDataManager::~CSaveDataManager()
+{
+	const size_t num = m_vecpComponent.size();
+	for( size_t i=0; i<num; i++ )
+	{
+		m_vecpComponent[i]->m_IsRegisteredToSaveDataManager = false;
+	}
+
+	m_vecpComponent.clear();
+}
 
 
 /**
@@ -140,5 +155,3 @@ bool CSaveDataManager::RemoveComponent( CSaveDataComponent* pComponent )
 	}
 	return false;
 }
-
-

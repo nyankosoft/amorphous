@@ -30,7 +30,7 @@
 
 
 
-class  CXMLDocument
+class CXMLDocument
 {
 	xercesc::XercesDOMParser *m_pParser;
 
