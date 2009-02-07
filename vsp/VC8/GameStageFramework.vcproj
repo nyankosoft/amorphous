@@ -1152,6 +1152,14 @@
 					RelativePath="..\..\gds\Task\PyModule_Task.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\Task\SingleStageGameTask.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Task\SingleStageGameTask.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="GameCommon"

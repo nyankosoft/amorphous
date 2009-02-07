@@ -2,3 +2,4 @@
 #include "Stage/Stage.hpp"
 #include "Stage/BaseEntityManager.hpp"
 #include "Stage/BaseEntityFactory.hpp"
+#include "Stage/StageLoader.hpp"

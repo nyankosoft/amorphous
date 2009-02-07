@@ -1,2 +1,2 @@
-#include "GameEvent/ScriptManager.hpp"
-#include "GameEvent/PyModules.hpp"
+#include "Script/ScriptManager.hpp"
+#include "Script/PyModules.hpp"

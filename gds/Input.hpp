@@ -1,10 +1,10 @@
-#include "GameInput/InputHub.hpp"
-#include "GameInput/InputHandler.hpp"
-#include "GameInput/3DActionCode.hpp"
+#include "Input/InputHub.hpp"
+#include "Input/InputHandler.hpp"
+#include "Input/DirectInput.hpp"
+#include "Input/DIKeyboard.hpp"
+#include "Input/DirectInputMouse.hpp"
+#include "Input/DirectInputGamepad.hpp"
 
-#include "GameInput/DirectInput.hpp"
-#include "GameInput/DIKeyboard.hpp"
-#include "GameInput/DirectInputMouse.hpp"
-#include "GameInput/DirectInputGamepad.hpp"
-
-#include "GameInput/StdKeyboard.hpp" // for Windows platform
+#ifdef _MSC_VER
+#include "Input/StdKeyboard.hpp" // for Windows platform
+#endif

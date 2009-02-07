@@ -1,5 +1,5 @@
-#ifndef  __GAMETASK_H__
-#define  __GAMETASK_H__
+#ifndef  __GameTask_H__
+#define  __GameTask_H__
 
 // base class for game task classes
 
@@ -161,8 +161,6 @@ public:
 		ID_STAGE_SELECT,
 		ID_GLOBALSTAGELOADER,
 		ID_ASYNCSTAGELOADER,
-		ID_SETTINGS,
-		ID_CREDIT,
 		USER_GAMETASK_ID_OFFSET
 	};
 
@@ -231,4 +229,4 @@ public:
 };
 
 
-#endif		/*  __GAMETASK_H__  */
+#endif		/*  __GameTask_H__  */
