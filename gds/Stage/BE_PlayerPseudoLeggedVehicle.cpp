@@ -9,7 +9,7 @@
 #include "GameMessage.hpp"
 
 #include "GameCommon/GameMathMisc.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "GameCommon/RandomDirectionTable.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 

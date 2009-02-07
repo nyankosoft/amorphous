@@ -6,7 +6,6 @@
 #include "Graphics/3DGameMath.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "Input/InputHandler.hpp"
-#include "GameCommon/MTRand.hpp"
 #include "Sound/SoundManager.hpp"
 #include "XML/XMLNodeReader.hpp"
 
@@ -17,6 +16,7 @@
 #include "Stage/BE_HomingMissile.hpp"
 #include "Stage/PlayerInfo.hpp"
 
+#include "Support/MTRand.hpp"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
 

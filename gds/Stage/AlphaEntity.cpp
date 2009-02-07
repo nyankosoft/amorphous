@@ -5,7 +5,7 @@
 #include "Stage/GameMessage.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/memory_helpers.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 using namespace std;
 using namespace boost;

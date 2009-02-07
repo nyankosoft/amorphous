@@ -7,7 +7,7 @@
 
 #include "BEC_PseudoAircraft.hpp"
 #include "Item/GI_Aircraft.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 
 class CGI_Weapon;

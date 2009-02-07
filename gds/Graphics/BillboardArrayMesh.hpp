@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "Graphics/D3DXMeshObject.hpp"
 #include "Graphics/FVF_BillboardVertex.h"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"

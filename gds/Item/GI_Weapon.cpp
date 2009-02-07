@@ -5,7 +5,7 @@
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "GameCommon/3DActionCode.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "Sound/SoundManager.hpp"
 #include "XML/XMLNodeReader.hpp"
 

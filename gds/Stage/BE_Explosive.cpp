@@ -13,7 +13,7 @@
 #include "../Graphics/Direct3D9.hpp"
 #include "../Graphics/Camera.hpp"
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 
 #include "Sound/SoundManager.hpp"

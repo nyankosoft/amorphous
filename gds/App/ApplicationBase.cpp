@@ -17,7 +17,7 @@
 #include "Sound/SoundManager.hpp"
 #include "Physics/PhysicsEngine.hpp"
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "GameCommon/GlobalInputHandler.hpp"
 #include "GameCommon/GlobalParams.hpp"
 #include "GameCommon/GameStageFrameworkGlobalParams.hpp"

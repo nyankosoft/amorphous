@@ -15,7 +15,7 @@
 #include "Physics/Actor.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"

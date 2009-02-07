@@ -10,7 +10,7 @@ using namespace std;
 #include "Sound/SoundHandle.hpp"
 #include "BaseEntityHandle.hpp"
 #include "Support/FixedVector.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 #include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;

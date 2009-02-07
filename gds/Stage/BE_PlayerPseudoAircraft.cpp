@@ -14,7 +14,7 @@
 
 #include "3DMath/MathMisc.hpp"
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "GameCommon/RandomDirectionTable.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 #include "GameCommon/PseudoAircraftSimulator.hpp"

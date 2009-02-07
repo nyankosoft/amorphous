@@ -9,7 +9,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/BillboardArrayMesh.hpp"
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "GameCommon/CriticalDamping.hpp"
 
 #include "3DMath/MathMisc.hpp"

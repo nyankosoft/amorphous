@@ -1,11 +1,10 @@
-
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Support/memory_helpers.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 #include "BE_Cloud.hpp"
 

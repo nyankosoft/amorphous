@@ -8,7 +8,7 @@
 #include "Stage/ScreenEffectManager.hpp"
 #include "GameMessage.hpp"
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 

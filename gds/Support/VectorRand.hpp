@@ -4,7 +4,7 @@
 
 #include "3DMath/Vector2.hpp"
 #include "3DMath/Vector3.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 
 /// used by Vec3GetRandDir() & Vec3GetRandDir()

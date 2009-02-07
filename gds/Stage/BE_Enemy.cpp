@@ -11,8 +11,6 @@
 #include "Graphics/D3DXSMeshObject.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
-#include "GameCommon/MTRand.hpp"
-
 #include "Sound/Serialization_SoundHandle.hpp"
 #include "Sound/SoundManager.hpp"
 
@@ -20,6 +18,7 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
+#include "Support/MTRand.hpp"
 
 #include "Physics/Actor.hpp"
 

@@ -2,7 +2,7 @@
 
 #include "3DMath/Vector3.hpp"
 #include "Support/VectorRand.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 
 CShockWaveCameraEffect::CShockWaveCameraEffect()

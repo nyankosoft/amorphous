@@ -7,8 +7,7 @@
 #include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "GameCommon/MTRand.hpp"
-
+#include "Support/MTRand.hpp"
 #include "Support/Profile.hpp"
 
 //int CBE_Decal::ms_iNumTotalUsedDecals = 0;

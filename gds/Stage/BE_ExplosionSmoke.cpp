@@ -2,7 +2,7 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 
 

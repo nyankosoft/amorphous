@@ -1235,18 +1235,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="GameCommon"
-			>
-			<File
-				RelativePath="..\..\gds\GameCommon\MTRand.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\GameCommon\MTRand.hpp"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Support"
 			>
 			<File
@@ -1287,6 +1275,14 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\Support\Macro.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\MTRand.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\MTRand.hpp"
 				>
 			</File>
 			<File

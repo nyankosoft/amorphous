@@ -9,7 +9,7 @@
 #include "Physics/Actor.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 #include "Item/GI_Weapon.hpp"
 #include "Item/GI_Ammunition.hpp"

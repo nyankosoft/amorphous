@@ -8,7 +8,7 @@
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 
 #include "Support/memory_helpers.hpp"
 #include "Support/msgbox.hpp"

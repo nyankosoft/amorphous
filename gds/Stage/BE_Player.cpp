@@ -12,7 +12,7 @@
 #include "SubDisplay.hpp"
 
 #include "Input/InputHub.hpp"
-#include "GameCommon/MTRand.hpp"
+#include "Support/MTRand.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 #include "Item/WeaponSystem.hpp"
 
