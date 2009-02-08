@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="GameStageFramework_VC8"
+	Name="GameStageFramework"
 	ProjectGUID="{A647F5C6-E14D-408F-8D01-AD55A86772B3}"
 	RootNamespace="GameStageFramework_VC8"
 	Keyword="Win32Proj"

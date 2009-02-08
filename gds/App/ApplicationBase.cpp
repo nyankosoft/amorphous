@@ -31,8 +31,6 @@
 #include "Stage/SurfaceMaterialManager.hpp"
 #include "App/GameWindowManager_Win32.hpp"
 
-#include <windows.h>
-
 
 // ================================ global variables ================================
 
