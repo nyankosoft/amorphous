@@ -2,6 +2,7 @@
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 
+#include "Graphics/Direct3D9.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/RenderTask.hpp"
@@ -213,7 +214,7 @@ m_fTargetRadius(0)
 //	Matrix34 local_pose = Matrix34( Vector3( 0.0f, 0.0f, -20.0f ), Matrix33RotationY( 3.141592f ) );
 //	m_pMonitor = new SubMonitor_FixedView( pEntity, local_pose );
 
-	m_CurrentMonitor = 0;
+	m_CurrentMonitor = CSubDisplayType::NONE;
 }
 
 
@@ -225,23 +226,24 @@ CSubDisplay::~CSubDisplay()
 void CSubDisplay::Render()
 {
 //	if( !m_pMonitor )
-	if( !GetCurrentMonitor() )
+	if( !GetCurrentMonitor()
+		|| GetCurrentMonitor()->GetType() == SubMonitor::TYPE_NULL )
 		return;
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-/*
+
 	m_TextureRenderTarget.SetRenderTarget();
 
 	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
-	pd3dDev->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+	pd3dDev->SetRenderState( D3DRS_ZENABLE,  D3DZB_TRUE );
 	pd3dDev->SetRenderState( D3DRS_LIGHTING, FALSE );
 
 	// render the stage to texture
 	GetCurrentMonitor()->Render();
 
 	m_TextureRenderTarget.ResetRenderTarget();
-*/
+
 //	pd3dDevice->SetVertexShader( NULL );
 //	pd3dDevice->SetPixelShader( NULL );
 

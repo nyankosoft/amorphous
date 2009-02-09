@@ -252,6 +252,8 @@ void CBE_PlayerPseudoAircraft::SetSubDisplayType( CSubDisplayType::Name type )
 	if( !m_pPlayerAircraftHUD )
 		return;
 
+	m_pPlayerAircraftHUD->GetSubDisplay()->SetMonitor( type );
+/*
 //	HUD_SubDisplay* pSubDisplay = m_pPlayerAircraftHUD->GetSubDisplay();
 
 	switch(type)
@@ -269,7 +271,7 @@ void CBE_PlayerPseudoAircraft::SetSubDisplayType( CSubDisplayType::Name type )
 		break;
 	default:
 		break;
-	}
+	}*/
 }
 
 
@@ -364,9 +366,13 @@ void CBE_PlayerPseudoAircraft::InitSubDisplay()
 	submonitor[CSubDisplayType::REAR_VIEW]              = shared_ptr<SubMonitor>( new SubMonitor_FixedView( rear_local_pose ) );
 	submonitor[CSubDisplayType::MISSILE_VIEW]           = shared_ptr<SubMonitor>( new SubMonitor_Null() );
 	submonitor[CSubDisplayType::FOCUSED_TARGET_TRACKER] = shared_ptr<SubMonitor>( new SubMonitor_EntityTracker() );
-	m_SubDisplay.SetMonitorIndex( CSubDisplayType::NONE );
+
+	m_SubDisplay.SetMonitor( CSubDisplayType::NONE );
 
 	m_SubDisplay.SetStage( m_pStageWeakPtr );
+
+	// set borrowed reference
+	m_pPlayerAircraftHUD->SetSubDisplay( &m_SubDisplay );
 
 	CCopyEntity* pPlayerEntity = GetPlayerCopyEntity();
 	Vector3 vPos = pPlayerEntity->Position() + pPlayerEntity->GetWorldPose().matOrient.GetColumn(2) * 1000.0f;

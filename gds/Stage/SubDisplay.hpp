@@ -9,7 +9,6 @@
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/D3DMisc.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
@@ -19,6 +18,22 @@
 
 #include "fwd.hpp"
 #include "CopyEntity.hpp"
+
+
+class CSubDisplayType
+{
+public:
+	enum Name
+	{
+		NONE,
+		AUTO,
+		FRONT_VIEW,
+		REAR_VIEW,
+		MISSILE_VIEW,
+		FOCUSED_TARGET_TRACKER,
+		NUM_TYPES
+	};
+};
 
 
 class SubMonitor
@@ -75,6 +90,8 @@ class SubMonitor_Null : public SubMonitor
 public:
 
 	virtual int GetType() const { return TYPE_NULL; }
+
+	void Render() {}
 };
 
 
@@ -144,7 +161,7 @@ class CSubDisplay// : public CGraphicsComponent
 	// owned reference
 	std::vector< boost::shared_ptr<SubMonitor> > m_vecpMonitor;
 
-	int m_CurrentMonitor;
+	CSubDisplayType::Name m_CurrentMonitor;
 
 public:
 
@@ -158,7 +175,7 @@ public:
 
 	inline SubMonitor *GetCurrentMonitor();
 
-	void SetMonitorIndex( int index ) { m_CurrentMonitor = index; }
+	void SetMonitor( CSubDisplayType::Name name ) { m_CurrentMonitor = name; }
 
 	void Render();
 

@@ -15,22 +15,6 @@
 #include "Item/GI_Aircraft.hpp"
 
 
-class CSubDisplayType
-{
-public:
-	enum Name
-	{
-		NONE,
-		AUTO,
-		FRONT_VIEW,
-		REAR_VIEW,
-		MISSILE_VIEW,
-		FOCUSED_TARGET_TRACKER,
-		NUM_TYPES
-	};
-};
-
-
 class CPlayerVisionMode
 {
 public:

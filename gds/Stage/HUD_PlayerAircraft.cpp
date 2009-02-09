@@ -293,7 +293,7 @@ void HUD_PlayerAircraft::RenderImpl()
 {
 	PROFILE_FUNCTION();
 
-	CBaseEntity *pBaseEntity = PLAYERINFO.GetCurrentPlayerBaseEntity();
+	CBaseEntity *pBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
 
 	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
 		return;
@@ -301,7 +301,7 @@ void HUD_PlayerAircraft::RenderImpl()
 	if( !m_pGraphicsEffectManager )
 		return;
 
-	CBE_PlayerPseudoAircraft *plane = (CBE_PlayerPseudoAircraft *)pBaseEntity;
+	CBE_PlayerPseudoAircraft *plane = dynamic_cast<CBE_PlayerPseudoAircraft *>(pBaseEntity);
 
 	int state = plane->GetAircraftState();
 	SFloatRGBAColor hud_color;
