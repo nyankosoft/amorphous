@@ -140,7 +140,7 @@ void HUD_PlayerAircraft::Init()
 		m_apContainer[i] = pElementMgr->CreateFrameRect( RectLTWH( 0, 0, m_ContainerSize, m_ContainerSize ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), 4.0f, base_layer );
 
 
-	m_pTextMessageManager = new CTextMessageManager( "fg_radio" );
+	m_pTextMessageManager = new CTextMessageManager( "radio_pac" );
 	m_pTextMessageManager->SetRenderer( new CDefaultTextMessageRenderer( m_pGraphicsEffectManager, 0, 10 ) );
 }
 
