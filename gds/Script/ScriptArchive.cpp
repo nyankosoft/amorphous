@@ -1,28 +1,88 @@
 #include "ScriptArchive.hpp"
-#include <iostream>
 
 #include "Support/fnop.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Support/TextFileScanner.hpp"
 
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
-namespace fs = boost::filesystem;
-using namespace fs;
-using namespace std;
 
+using namespace std;
+using namespace boost::filesystem;
+
+
+static void CreateScriptFileListFromListFile( path script_dir_path,
+						                      vector<string>& script_file_list )
+{
+	CTextFileScanner scanner( script_dir_path.string() + "/list" );
+	if( !scanner.IsReady() )
+	{
+		LOG_PRINT_ERROR( "Invalid directory path: " + script_dir_path.string() );
+		return;
+	}
+
+	string line;
+	for( ; !scanner.End(); scanner.NextLine() )
+	{
+		scanner.GetCurrentLine( line );
+
+		// skip the rest of the string if '#' is found in the line
+		size_t comment_start_pos = line.find( "#" );
+		if( comment_start_pos != string::npos )
+			line = line.substr( 0, comment_start_pos );
+
+		// remove the newline char
+		size_t nl_pos = line.find( "\n" );
+		if( nl_pos != string::npos )
+			line = line.substr( 0, nl_pos );
+
+		string script_filepath = script_dir_path.string() + "/" + line;
+
+		if( fnop::path_exists(script_filepath)
+		 && fnop::get_ext(script_filepath) == "py" )
+		{
+			script_file_list.push_back( script_filepath );
+		}
+	}
+}
+
+
+static void CreateScriptFileListBySearchingDirectory( path script_dir_path,
+													  vector<string>& script_file_list )
+{
+	directory_iterator end_itr;
+	for ( directory_iterator script_itr( script_dir_path );
+	      script_itr != end_itr;
+	      ++script_itr )
+	{
+		if( is_directory( *script_itr ) )
+			continue;
+
+		// load the python script files
+		if( fnop::get_ext((*script_itr).string()) != "py" )
+			continue;
+
+		script_file_list.push_back( (*script_itr).string() );
+
+//		MsgBox( string("script file: ") + (*script_itr).string() );
+	}
+
+}
+
+
+bool g_LoadScriptFilesFromListFile = true;
 
 /**
  * \param dir_path root directory for script directory
  */
-void UpdateScriptArchives( const path & dir_path,
+void UpdateScriptArchives( const std::string & src_dir_path,
 						   const std::string & output_dir_path )
 {
-	vector<string> script_files;
-
 	CScriptArchive script_archive;
+	vector<string> script_file_list;
 
 	directory_iterator end_itr;
-	for ( directory_iterator itr( dir_path );
+	for ( directory_iterator itr( src_dir_path );
 	      itr != end_itr;
 	      ++itr )
 	{
@@ -34,30 +94,38 @@ void UpdateScriptArchives( const path & dir_path,
 		if( (*itr).string().find(".svn") != string::npos )
 			continue;
 
-//		MsgBox( string("script_dir_path: ") + (*itr).string() );
-
-		// found a directory for a script set
-		script_archive.m_vecBuffer.resize(0);
-		script_archive.m_vecSourceFilename.resize(0);
 		path script_dir_path = *itr;
-		for ( directory_iterator script_itr( script_dir_path );
-		      script_itr != end_itr;
-		      ++script_itr )
+
+//		MsgBox( string("script_dir_path: ") + script_dir_path.string() );
+
+		// found a directory that is supposed contain a set of scripts for a stage
+
+		script_file_list.resize( 0 );
+
+		if( g_LoadScriptFilesFromListFile )
 		{
-			if ( is_directory( *script_itr ) )
-				continue;
+			// load the script filepaths from the simple text file with the name 'list'
+			// in each subdirectory.
+			CreateScriptFileListFromListFile( script_dir_path, script_file_list );
+		}
+		else
+		{
+			// search each subdirectory and collect all files under it (non-recursive).
+			CreateScriptFileListBySearchingDirectory( script_dir_path, script_file_list );
+		}
 
-			// load the python script files
-			if( fnop::get_ext((*script_itr).string()) != "py" )
-				continue;
+		// create an archive of script files and save it to disk
 
-//			MsgBox( string("script file: ") + (*script_itr).string() );
-
+		script_archive.m_vecBuffer.resize( 0 );
+		script_archive.m_vecSourceFilename.resize( 0 );
+		for( size_t i=0; i<script_file_list.size(); i++ )
+		{
 			// load script file
 			script_archive.m_vecBuffer.push_back( CSerializableStream() );
-			script_archive.m_vecBuffer.back().LoadTextFile( (*script_itr).string() );
+			script_archive.m_vecBuffer.back().LoadTextFile( script_file_list[i] );
 
-			script_archive.m_vecSourceFilename.push_back( (*script_itr).string() );
+			// save the filepath to let the system reload scripts at runtime for debugging
+			script_archive.m_vecSourceFilename.push_back( script_file_list[i] );
 		}
 
 		if( 0 < script_archive.m_vecBuffer.size() )
@@ -67,6 +135,6 @@ void UpdateScriptArchives( const path & dir_path,
 			script_archive.SaveToFile( output_filename );
 		}
 		else
-			g_Log.Print( "no script file found in '%s'", script_dir_path.string().c_str() );
+			LOG_PRINT( "no script file found in " + script_dir_path.string() );
 	}
 }

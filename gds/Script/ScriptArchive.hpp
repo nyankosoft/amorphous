@@ -1,16 +1,8 @@
-#ifndef  __SCRIPTARCHIVE_H__
-#define  __SCRIPTARCHIVE_H__
+#ifndef  __ScriptArchive_H__
+#define  __ScriptArchive_H__
 
 
 #include "Support/SerializableStream.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
-
-#include "boost/filesystem/operations.hpp"
-#include "boost/filesystem/path.hpp"
-namespace fs = boost::filesystem;
 
 
 /**
@@ -34,16 +26,15 @@ public:
 	{
 		ar & m_vecBuffer & m_vecSourceFilename;
 	}
-
 };
 
 
 /**
  * \param dir_path root directory for script directory
  */
-void UpdateScriptArchives( const fs::path & dir_path,
+void UpdateScriptArchives( const std::string & src_dir_path,
 						   const std::string & output_dir_path );
 
 
 
-#endif  /*  __SCRIPTARCHIVE_H__  */
+#endif  /*  __ScriptArchive_H__  */
