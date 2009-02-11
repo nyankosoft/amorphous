@@ -51,7 +51,7 @@ void CTextMessageWindow::UpdateTextMessageSet( int index )
 	// set the first message unit
 	TextMessageSet& msgset = m_pManager->GetMessageSet( m_CurrentTextMsgSetIndex );
 //	TextMessageBase& msgtext = *(msgset.m_vecpMessage[m_CurrentMessageUnit]);
-	TextMessageBase* pTextMsg = msgset.m_vecpMessage[m_CurrentMessageUnit];
+	shared_ptr<TextMessageBase> pTextMsg = msgset.m_vecpMessage[m_CurrentMessageUnit];
 
 	m_pRenderer->UpdateSpeaker( pTextMsg->GetSpeaker() );
 	m_pRenderer->UpdateText( pTextMsg->GetText() );
@@ -62,7 +62,7 @@ void CTextMessageWindow::UpdateTextMessageSet( int index )
 }
 
 
-void CTextMessageWindow::Update( float dt )
+void CTextMessageWindow::UpdateTextMessages( float dt )
 {
 	if( m_CurrentTextMsgSetIndex < 0 )
 		return;	// no text message is supposed to be displayed right now
@@ -84,6 +84,7 @@ void CTextMessageWindow::Update( float dt )
 			m_CurrentMessageUnit = 0;
 			m_pRenderer->UpdateSpeaker( "" );
 			m_pRenderer->UpdateText( "" );
+			m_pRenderer->OnTextMessageCleared();
 			return;
 		}
 
@@ -94,6 +95,14 @@ void CTextMessageWindow::Update( float dt )
 		m_pRenderer->UpdateSpeaker( next_msgtext.GetSpeaker() );
 		m_pRenderer->UpdateText( next_msgtext.GetText() );
 	}
+}
+
+
+void CTextMessageWindow::Update( float dt )
+{
+	UpdateTextMessages( dt );
+
+	m_pRenderer->Update( dt );
 }
 
 
@@ -190,6 +199,11 @@ int CTextMessageManager::StartLoadMessage()
 
 	LOG_PRINT( fmt_string("Starting to load a text message... (index:%d)",index) );
 
+	if( 50 <= index )
+	{
+		int break_here = 1;
+	}
+
 	return index;
 }
 
@@ -199,7 +213,7 @@ void CTextMessageManager::AddMessageRef( const char *speaker, const char *messag
 	if( waittime < 0.0f )
 		waittime = 3.0f;
 
-	m_vecTextMessageSet.back().m_vecpMessage.push_back( new TextMessageRef( speaker, message, waittime ) );
+	m_vecTextMessageSet.back().m_vecpMessage.push_back( shared_ptr<TextMessageRef>( new TextMessageRef( speaker, message, waittime ) ) );
 
 	LOG_PRINT( string("Added a text message reference: ") + string(message) );
 }

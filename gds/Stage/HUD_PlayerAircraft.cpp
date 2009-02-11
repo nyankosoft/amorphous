@@ -259,8 +259,9 @@ void HUD_PlayerAircraft::Update( float  dt )
 	for()
 */
 	// update flip state for the container on focused target
-	g_FlipVar.Update(dt);
+	g_FlipVar.Update( dt );
 
+	m_pTextMessageManager->Update( dt );
 }
 
 

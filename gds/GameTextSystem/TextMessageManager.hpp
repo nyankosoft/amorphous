@@ -64,9 +64,9 @@ public:
 };
 
 /**
- * reference to a text message unit
- * meant to be used when the user has already loaded text message on memory
- * and doesn't want copy operation
+ reference to a text message unit
+ Use this when you already has text data on some memory and don't need extra
+ memory to copy the data to but only the reference to the data.
  */
 class TextMessageRef : public TextMessageBase
 {
@@ -83,7 +83,7 @@ public:
 };
 
 /**
- * stores a copy of text message in its own memory
+ Stores a copy of text message on its own memory
  */
 class TextMessage : public TextMessageBase
 {
@@ -105,18 +105,18 @@ public:
 
 
 /**
- * stores a collection of text message units
+ Stores a collection of text message units
  */
 class TextMessageSet
 {
 public:
 
 	/// Owned references
-	std::vector<TextMessageBase *> m_vecpMessage;
+	std::vector< boost::shared_ptr<TextMessageBase> > m_vecpMessage;
 
 	TextMessageSet() {}
 
-	~TextMessageSet() { SafeDeleteVector( m_vecpMessage ); }
+	~TextMessageSet() {}
 };
 
 
@@ -141,6 +141,10 @@ class CTextMessageWindow
 	CTextMessageManager *m_pManager;
 
     CTextMessageRenderer *m_pRenderer;
+
+private:
+
+	void UpdateTextMessages( float dt );
 
 public:
 

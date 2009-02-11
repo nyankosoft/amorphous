@@ -8,7 +8,7 @@
 #include "Graphics/fwd.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/TextureHandle.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/GraphicsEffectManager.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
@@ -41,6 +41,8 @@ public:
 	virtual void UpdateSpeaker( const char *pSpeaker ) {}
 
 	virtual void UpdateText( const char *pText ) {}
+
+	virtual void OnTextMessageCleared() {}
 
 	virtual void Update( float dt );
 
@@ -86,6 +88,10 @@ class CDefaultTextMessageRenderer : public CTextMessageRenderer
 
 	C2DRect m_TexturedIcon;
 
+	CGraphicsEffectHandle m_BGRectFade;
+
+	float m_fBGRectAlpha;
+
 
 //	TCFixedVector< CTextureHandle, NUM_MAX_ICONTEXTURES > m_IconTexture;
 
@@ -112,13 +118,15 @@ public:
 
 	inline bool NoMessage();
 
-	void Update( float dt ) {}
+	void Update( float dt );
 
 	void Render();
 
 	void UpdateSpeaker( const char *pSpeaker );
 
 	void UpdateText( const char *pText );
+
+	void OnTextMessageCleared();
 
 //	void UpdateScreenSize();
 	void ReleaseGraphicsResources();

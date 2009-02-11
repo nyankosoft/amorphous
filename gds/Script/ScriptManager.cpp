@@ -1,4 +1,3 @@
-
 #include "ScriptManager.hpp"
 #include "ScriptArchive.hpp"
 #include "Support/StringAux.hpp"
@@ -370,6 +369,8 @@ void CScriptManager::ReloadUpdatedScriptFiles()
 		if( script.m_LastModifiedTime < script_file_stat.st_mtime )
 		{
 			// script has been updated - try to reload it
+
+			LOG_PRINT( "Reloading a script: " + script.filename );
 
 			script.m_LastModifiedTime = script_file_stat.st_mtime;
 

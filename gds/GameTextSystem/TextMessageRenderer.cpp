@@ -61,11 +61,12 @@ CTextMessageRenderer(pEffectMgr)
 	m_aFontID[FONT_TEXT]    = offset;
 	m_aFontID[FONT_SPEAKER] = offset + 1;
 
-	pGraphicsMgr->LoadFont( m_aFontID[FONT_TEXT],    "‚l‚r ‚oƒSƒVƒbƒN", CFontBase::FONTTYPE_NORMAL, 24, 48 );
+	pGraphicsMgr->LoadFont( m_aFontID[FONT_TEXT],    "‚l‚r ‚oƒSƒVƒbƒN", CFontBase::FONTTYPE_NORMAL, 20, 40 );
 	pGraphicsMgr->LoadFont( m_aFontID[FONT_SPEAKER], "Arial",           CFontBase::FONTTYPE_NORMAL, 12, 24 );
 
+	m_fBGRectAlpha = 0.3f;
 	SRect bg_rect = RectAtCenterTop( 1000, 110, 45 );
-	SFloatRGBAColor color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.3f );
+	SFloatRGBAColor color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, m_fBGRectAlpha );
 	m_pWindowBGRect = pGraphicsMgr->CreateRect( bg_rect, color, top_layer + 3 );
 
 	LoadGraphicsResources( GetCurrentGraphicsParams() );
@@ -78,8 +79,8 @@ CTextMessageRenderer(pEffectMgr)
 	SFloatRGBAColor font_color = SFloatRGBAColor( 0.9f, 0.9f, 0.9f, 1.0f );
 	int w=0,h=0;
 	int layer = 0;
-	m_pText    = pGraphicsMgr->CreateText( m_aFontID[FONT_TEXT],   "", (float)bg_rect.left, (float)bg_rect.top,      font_color, w, h, layer );
-	m_pSpeaker = pGraphicsMgr->CreateText( m_aFontID[FONT_SPEAKER],"", (float)bg_rect.left, (float)bg_rect.top - 32, font_color, w, h, layer  );
+	m_pText    = pGraphicsMgr->CreateText( m_aFontID[FONT_TEXT],   "", (float)bg_rect.left + 4, (float)bg_rect.top + 4,  font_color, w, h, layer );
+	m_pSpeaker = pGraphicsMgr->CreateText( m_aFontID[FONT_SPEAKER],"", (float)bg_rect.left,     (float)bg_rect.top - 32, font_color, w, h, layer  );
 }
 
 
@@ -89,12 +90,18 @@ CDefaultTextMessageRenderer::~CDefaultTextMessageRenderer()
 }
 
 
+void CDefaultTextMessageRenderer::Update( float dt )
+{
+	CTextMessageRenderer::Update( dt );
+}
+
+
 void CDefaultTextMessageRenderer::Render()
 {
 	if( NoMessage() )
 		return;
 
-	if( /*m_ManageElementManager*/ true )
+	if( /* call Render() of m_ManageElementManager */ false )
 		m_pEffectManager->GetGraphicsElementManager()->Render();
 
 //	m_aFontID[FONT_TEXT]->SetText( m_acText, m_vTextPos.x, m_vTextPos.y, 0xFFC0C0C0 );
@@ -111,6 +118,22 @@ void CDefaultTextMessageRenderer::UpdateSpeaker( const char *pSpeaker )
 void CDefaultTextMessageRenderer::UpdateText( const char *pText )
 {
 	m_pText->SetText( pText );
+
+	if( 0 < strlen(pText) )
+	{
+		// cancel the fadeout effect of the background rect
+		m_pEffectManager->CancelEffect( m_BGRectFade );
+		m_pWindowBGRect->SetAlpha( 0, m_fBGRectAlpha );
+	}
+}
+
+
+void CDefaultTextMessageRenderer::OnTextMessageCleared()
+{
+	// no message to display - hide rect for text message
+	m_pEffectManager->SetTimeOffset();
+	m_BGRectFade = m_pEffectManager->ChangeAlphaTo( m_pWindowBGRect,
+		0.5, 1.0, 0, 0.0f, CGraphicsElementEffect::TRANS_LINEAR );
 }
 
 
