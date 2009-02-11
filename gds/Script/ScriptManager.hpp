@@ -36,7 +36,7 @@ public:
 
 	static CPythonUserCount* Get() { return m_obj.get(); }
 
-	void AddRefCount()
+	void IncRefCount()
 	{
 		boost::mutex::scoped_lock scoped_lock(m_Mutex);
 

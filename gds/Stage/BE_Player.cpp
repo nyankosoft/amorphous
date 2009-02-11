@@ -139,7 +139,7 @@ void CBE_Player::InitCopyEntity(CCopyEntity* pCopyEnt)
 	// set the input handler for the player entity operations
 	SafeDelete( m_pInputHandler );
 	m_pInputHandler = CreatePlayerInputHandler();
-	InputHub().SetInputHandler( gs_InputHandlerIndex, m_pInputHandler );
+	InputHub().PushInputHandler( gs_InputHandlerIndex, m_pInputHandler );
 
 //	SinglePlayerInfo().SetInputHandlerForPlayerShip();
 }
@@ -420,7 +420,7 @@ void CBE_Player::OnEntityDestroyed(CCopyEntity* pCopyEnt)
 
 	if( m_pInputHandler )
 	{
-		InputHub().SetInputHandler( gs_InputHandlerIndex, NULL );
+		InputHub().RemoveInputHandler( gs_InputHandlerIndex, m_pInputHandler );
 		SafeDelete( m_pInputHandler );
 	}
 }

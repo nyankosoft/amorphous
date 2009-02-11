@@ -1,5 +1,5 @@
-#ifndef __INPUTHUB_H__
-#define __INPUTHUB_H__
+#ifndef __InputHub_H__
+#define __InputHub_H__
 
 #include <vector>
 #include "fwd.hpp"
@@ -66,19 +66,34 @@ public:
 //	inline void ReleaseInputtHandler( int index );
 
 	/// sets an input handler in the slot 0
-	inline void SetInputHandler( CInputHandler *pInputHandler );// { m_vecpInputHandler[0] = pInputHandler; }
 	inline void SetInputHandler( int index, CInputHandler *pInputHandler );
+
+	/// sets an input handler in the slot 0
+	inline void SetInputHandler( CInputHandler *pInputHandler );// { m_vecpInputHandler[0] = pInputHandler; }
+
 
 	/// returns a borrowed reference to the input handler currently at the top of the stack
 	/// - Never release the returned pointer
-	inline const CInputHandler *GetInputHandler() const { return GetInputHandler(0); }
 	inline const CInputHandler *GetInputHandler( int index ) const;
 
-	inline void PushInputHandler( CInputHandler *pInputHandler );
+	inline const CInputHandler *GetInputHandler() const { return GetInputHandler(0); }
+
+
 	inline void PushInputHandler( int index, CInputHandler *pInputHandler );
 
-	inline CInputHandler *PopInputHandler();
+	inline void PushInputHandler( CInputHandler *pInputHandler );
+
+
 	inline CInputHandler *PopInputHandler( int index );
+
+	inline CInputHandler *PopInputHandler();
+
+	/// Removes an input handler from the stack.
+	/// Does not release it from the memory.
+	inline void RemoveInputHandler( int index, CInputHandler *pInputHandler );
+
+	inline void RemoveInputHandler( CInputHandler *pInputHandler ) { RemoveInputHandler( 0, pInputHandler ); }
+
 
 	inline void UpdateInput( SInputData& input );
 
@@ -152,6 +167,9 @@ inline void CInputHub::ReleaseInputHandler( int index )
 
 inline const CInputHandler *CInputHub::GetInputHandler( int index ) const
 {
+	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
+		return NULL;
+
 	if( m_vecpInputHandler[index].size() == 0 )
 		return NULL;
 	else
@@ -179,6 +197,9 @@ inline CInputHandler *CInputHub::PopInputHandler()
 
 inline CInputHandler *CInputHub::PopInputHandler( int index )
 {
+	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
+		return NULL;
+
 	if( m_vecpInputHandler[index].size() == 0 )
 		return NULL;	// no input handler in the stack
 
@@ -191,6 +212,22 @@ inline CInputHandler *CInputHub::PopInputHandler( int index )
 }
 
 
+inline void CInputHub::RemoveInputHandler( int index, CInputHandler *pInputHandler )
+{
+	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
+		return;
+
+	for( size_t i=0; i<m_vecpInputHandler[index].size(); i++ )
+	{
+		if( m_vecpInputHandler[index][i] == pInputHandler )
+		{
+			m_vecpInputHandler[index].erase(  m_vecpInputHandler[index].begin() + i );
+			return;
+		}
+	}
+}
+
+
 inline CInputHub& InputHub()
 {
 //	return (*CInputHub::Get());
@@ -199,4 +236,4 @@ inline CInputHub& InputHub()
 
 
 
-#endif  /*  __INPUTHUB_H__  */
+#endif  /*  __InputHub_H__  */

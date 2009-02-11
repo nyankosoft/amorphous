@@ -2,8 +2,11 @@
 #include "Support/Timer.hpp"
 
 
-CInputHub CInputHub::ms_InputHub_Instance_;
+//===================================================================
+// CInputHub
+//===================================================================
 
+CInputHub CInputHub::ms_InputHub_Instance_;
 
 CInputHub::CInputHub()
 {

@@ -156,7 +156,7 @@ m_bLoadFromNonArchivedFiles(false)
 {
 	g_pScriptManager = this;
 
-	Py_Initialize();
+	PythonUserCount().IncRefCount();
 
 	// make a module for setting callbacks
 	AddModule( "ScriptBase", g_ScriptBaseMethod );
@@ -166,7 +166,7 @@ m_bLoadFromNonArchivedFiles(false)
 
 CScriptManager::~CScriptManager()
 {
-	Py_Finalize();
+	PythonUserCount().DecRefCount();
 
 	g_pScriptManager = NULL;
 }
