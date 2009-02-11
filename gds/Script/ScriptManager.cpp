@@ -9,6 +9,19 @@
 using namespace std;
 
 
+//=========================================================================
+// CPythonUserCount
+//=========================================================================
+
+CSingleton<CPythonUserCount> CPythonUserCount::m_obj;
+
+
+
+//=========================================================================
+// Global Functions
+//=========================================================================
+
+
 static CScriptManager *g_pScriptManager = NULL;
 
 //static CScriptManager::CEventScript *gs_pTargetScript = NULL;

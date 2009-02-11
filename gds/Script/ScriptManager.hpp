@@ -5,11 +5,75 @@
 
 #include <vector>
 #include <string>
-
 #include <sys/stat.h>
-
 #include <Python.h>
 
+
+#include "Support/Singleton.hpp"
+using namespace NS_KGL;
+
+
+//=========================================================================
+// CPythonUserCount
+//=========================================================================
+
+class CPythonUserCount
+{
+	int m_RefCount;
+
+	boost::mutex m_Mutex;
+
+protected:
+
+	static CSingleton<CPythonUserCount> m_obj;
+
+public:
+
+	CPythonUserCount()
+	:
+	m_RefCount(0)
+	{}
+
+	static CPythonUserCount* Get() { return m_obj.get(); }
+
+	void AddRefCount()
+	{
+		boost::mutex::scoped_lock scoped_lock(m_Mutex);
+
+		m_RefCount++;
+
+		if( m_RefCount == 1 )
+			Py_Initialize();
+	}
+
+	void DecRefCount()
+	{
+		boost::mutex::scoped_lock scoped_lock(m_Mutex);
+
+		m_RefCount--;
+		
+		if( m_RefCount == 0 )
+			Py_Finalize();
+		else if( m_RefCount < 0 )
+		{
+			LOG_PRINT( " An invalid call. ref count was attempted to be decremented below zero." );
+			Py_Finalize();
+		}
+	}
+};
+
+
+inline CPythonUserCount& PythonUserCount()
+{
+	return (*CPythonUserCount::Get());
+}
+
+
+
+
+//=========================================================================
+// CScriptManager
+//=========================================================================
 
 class CScriptManager
 {
