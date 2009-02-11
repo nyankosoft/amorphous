@@ -1150,6 +1150,7 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 			fprintf( fp, "type id:      %d\n", pEntity->GetEntityTypeID() );
 			fprintf( fp, "base name:    %s\n", pEntity->pBaseEntity->GetName() );
 			fprintf( fp, "created time: %f\n", pEntity->GetCreatedTime() );
+			fprintf( fp, "group:        %d\n", pEntity->GroupIndex );
 
 			strPos = to_string(pEntity->Position() );
 			strDir = to_string(pEntity->GetDirection() );

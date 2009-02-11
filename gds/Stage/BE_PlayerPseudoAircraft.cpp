@@ -8,32 +8,25 @@
 #include <Stage/GameMessage.hpp>
 #include <Stage/Input/InputHandler_PlayerPAC.hpp>
 #include <Stage/ViewFrustumTest.hpp>
-
-#include "Item/WeaponSystem.hpp"
-#include "Item/GI_MissileLauncher.hpp"
+#include <Stage/trace.hpp>
+#include <Stage/OverlapTestAABB.hpp>
 
 #include "3DMath/MathMisc.hpp"
-
+#include "Support/memory_helpers.hpp"
 #include "Support/MTRand.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Macro.h"
+#include "Support/Vec3_StringAux.hpp"
+#include "Item/WeaponSystem.hpp"
+#include "Item/GI_MissileLauncher.hpp"
 #include "GameCommon/RandomDirectionTable.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 #include "GameCommon/PseudoAircraftSimulator.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
-
-// added for laser dot casting test
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
-#include "Support/memory_helpers.hpp"
-#include "trace.hpp"
-#include "OverlapTestAABB.hpp"
-
 #include "Physics/Actor.hpp"
-
 #include "GUI.hpp"
-
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Macro.h"
-#include "Support/Vec3_StringAux.hpp"
 
 
 using namespace std;
