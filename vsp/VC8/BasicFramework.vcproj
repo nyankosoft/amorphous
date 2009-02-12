@@ -1250,11 +1250,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Support\CameraController.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\CameraController.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Support\CameraController_Win32.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\gds\Support\CameraController_Win32.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\CameraControllerBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\CameraControllerBase.hpp"
 				>
 			</File>
 			<File
