@@ -42,7 +42,8 @@ PyObject* StartLoadMessage( PyObject* self, PyObject* args )
 	if( !GetTextMessageManager() )
 		RETURN_PYNONE();
 
-	int index = GetTextMessageManager()->StartLoadMessage();
+	int priority = 0;
+	int index = GetTextMessageManager()->StartLoadMessage( priority );
 
 	return Py_BuildValue( "i", index );
 }
@@ -103,9 +104,10 @@ PyObject* StartPreloadedTextMessage( PyObject* self, PyObject* args )
 //		return Py_BuildValue( "i", TextMessageBase::REQ_REJECTED );
 
 	int mode, index;
+	int priority = 0;
 	int result = PyArg_ParseTuple( args, "ii", &mode, &index );
 
-	int req_result = GetTextMessageManager()->StartTextMessage( mode, index );
+	int req_result = GetTextMessageManager()->StartTextMessage( mode, index, priority );
 
 	return Py_BuildValue( "i", req_result );
 }

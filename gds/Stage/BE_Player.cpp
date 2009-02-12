@@ -303,6 +303,22 @@ void CBE_Player::ToggleHeadLight()
 }
 
 
+void CBE_Player::OnDestroyingEnemyEntity( const SGameMessage& msg )
+{
+	if( msg.pSenderEntity )
+	{
+		CCopyEntity& destroyed_entity = *msg.pSenderEntity;
+		KillReport rep;
+		rep.base_name    = destroyed_entity.pBaseEntity->GetName();
+		rep.entity_name  = destroyed_entity.GetName();
+		rep.vWorldPos    = destroyed_entity.Position();
+		rep.time         = m_pStage->GetElapsedTimeMS();
+		rep.score        = (int)(msg.fParam1);
+		m_CombatRecord.m_vecKillReport.push_back( rep );
+	}
+}
+
+
 void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	float& rfLife = pCopyEnt_Self->fLife;
@@ -372,17 +388,7 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 		break;
 
 	case GM_DESTROYED:
-		if( rGameMessage.pSenderEntity )
-		{
-			CCopyEntity& destroyed_entity = *rGameMessage.pSenderEntity;
-			KillReport rep;
-			rep.base_name = destroyed_entity.pBaseEntity->GetName();
-			rep.entity_name = destroyed_entity.GetName();
-			rep.vWorldPos = destroyed_entity.Position();
-			rep.time = m_pStage->GetElapsedTimeMS();
-			rep.score = (int)(rGameMessage.fParam1);
-			m_CombatRecord.m_vecKillReport.push_back( rep );
-		}
+		OnDestroyingEnemyEntity( rGameMessage );
 		break;
 
 /*	case GM_DOORKEYITEM:

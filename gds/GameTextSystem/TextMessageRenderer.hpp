@@ -9,8 +9,8 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
-#include "Support/memory_helpers.hpp"
 #include "Graphics/Rect.hpp"
+#include "Support/memory_helpers.hpp"
 using namespace Graphics;
 
 #define GTC_NUM_MAXLETTERS_PER_LINE 64

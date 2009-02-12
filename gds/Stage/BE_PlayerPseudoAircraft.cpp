@@ -26,6 +26,7 @@
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
 #include "Physics/Actor.hpp"
+#include "GameTextSystem/TextMessageManager.hpp"
 #include "GUI.hpp"
 
 
@@ -171,6 +172,23 @@ void CBE_PlayerPseudoAircraft::Init()
 
 	m_pPlayerAircraftHUD = new HUD_PlayerAircraft;
 	m_pPlayerAircraftHUD->Init();
+
+	CTextMessageManager* pTextMsgMgr = m_pPlayerAircraftHUD->GetTextMessageManager();
+	int msg_priority = 0;
+
+	const char *msgs[] =
+	{
+		"Way to go, captain!",
+		"That was dead on!",
+	};
+
+	for( int i=0; i<numof(msgs); i++ )
+	{
+		int msg_index = pTextMsgMgr->StartLoadMessage( msg_priority );
+		pTextMsgMgr->AddMessageRef( "Somebody", msgs[i] );
+
+		m_vecMessageIndex[TM_DESTROYED_ENEMY].push_back( msg_index );
+	}
 }
 
 
@@ -710,6 +728,23 @@ void CBE_PlayerPseudoAircraft::Act( CCopyEntity* pCopyEnt )
 			pNozzleFlame->EntityFlag |= BETYPE_VISIBLE;
 	}
 */
+}
+
+
+void CBE_PlayerPseudoAircraft::OnDestroyingEnemyEntity( const SGameMessage& msg )
+{
+	CBE_Player::OnDestroyingEnemyEntity( msg );
+
+	if( m_pPlayerAircraftHUD )
+	{
+		CTextMessageManager* pTextMsgMgr = m_pPlayerAircraftHUD->GetTextMessageManager();
+		if( pTextMsgMgr )
+		{
+			int msg_index = RangedRand( 0, (int)m_vecMessageIndex[TM_DESTROYED_ENEMY].size() - 1 );
+			pTextMsgMgr->ScheduleTextMessage( msg_index, 1.0, true, 5.0 );
+//			pTextMsgMgr->StartTextMessage( 
+		}
+	}
 }
 
 

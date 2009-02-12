@@ -196,6 +196,17 @@ private:
 
 	HUD_PlayerAircraft *m_pPlayerAircraftHUD;
 
+	enum TextMessageType
+	{
+		TM_DESTROYED_ENEMY,
+		TM_FIRED_MISSILE,
+		TM_RELEASED_BOMB,
+		TM_CRASHED,
+		NUM_TEXT_MESSAGE_TYPES,
+	};
+
+	std::vector<int> m_vecMessageIndex[NUM_TEXT_MESSAGE_TYPES];
+
 	// static properties
 
 	static std::map<int,int> ms_mapEntityTypeIDtoTargetTypeFlag;
@@ -234,7 +245,9 @@ private:
 
 	CInputHandler_PlayerBase *CreatePlayerInputHandler();
 
-//	void EnableNightVision( bool enable );
+	void OnDestroyingEnemyEntity( const SGameMessage& msg );
+
+	//	void EnableNightVision( bool enable );
 
 //	void ToggleNightVision();
 

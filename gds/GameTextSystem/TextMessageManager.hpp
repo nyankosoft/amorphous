@@ -7,10 +7,10 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 
+#include "../base.hpp"
 #include "fwd.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Graphics/Rect.hpp"
-using namespace Graphics;
+//#include "Graphics/Rect.hpp"
+//using namespace Graphics;
 
 
 #define GTC_NUM_MAXLETTERS_PER_LINE 64
@@ -111,10 +111,14 @@ class TextMessageSet
 {
 public:
 
+	int m_Priority;
+
 	/// Owned references
 	std::vector< boost::shared_ptr<TextMessageBase> > m_vecpMessage;
 
-	TextMessageSet() {}
+public:
+
+	TextMessageSet() : m_Priority(0) {}
 
 	~TextMessageSet() {}
 };
@@ -170,6 +174,30 @@ public:
 };
 
 
+
+class CTextMessageRequest
+{
+public:
+	int m_MessageIndex;
+	int m_Priority;
+	ulong m_TimeMS;
+	ulong m_MaxTimeMS;
+
+	/// display of the text message was attempted or not
+	bool m_StartAttempted;
+
+	/// retry when the message was rejected until the max delay time passes
+	bool m_Retry;
+
+public:
+
+	CTextMessageRequest()
+		:
+	m_StartAttempted(false)
+	{}
+};
+
+
 /**
  * provides the user with interfaces to load text messages.
  * Stores a collection of text message sets
@@ -189,6 +217,20 @@ class CTextMessageManager
 		NUM_DEFAULT_TEXT_MESSAGE_SETS = 64,
 	};
 
+	/// Don't use timer
+	/// - rationale:
+	///   Needs to synchronize with the time in stage
+	///   Time in stage is paused, resumed and scaled,
+	///   so supply the elased time of the stage directly
+	/// - metric: milliseconds
+	ulong m_ElapsedTimeMS;
+
+	std::vector<CTextMessageRequest> m_vecTextMessageRequest;
+
+private:
+
+	void ProcessTextMessageRequests();
+
 public:
 
 //	CTextMessageManager();
@@ -207,11 +249,18 @@ public:
 
 	/// takes request to display registered text message
 	/// returns result for the request
-	int StartTextMessage( int index, int mode );
+	int StartTextMessage( int index, int mode, int priority );
+
+	int ScheduleTextMessage( int index,
+		                     double delay,
+							 bool retry = false,
+							 double max_delay = 0.0,
+							 int priority = -0xFFFF );
 
 	/// returns index to the registered text message set
 	/// TODO: support MT
-	int StartLoadMessage();
+	/// - Caller is responsible for saving the returned index to specify the message later.
+	int StartLoadMessage( int priority );
 
 	void AddMessageRef( const char *speaker, const char *message, float waittime = -1.0f );
 
@@ -220,9 +269,13 @@ public:
 	// TODO: provide safe accesss to vector elements
 	TextMessageSet &GetMessageSet( int index );
 
-	void Update( float dt ) { m_pWindow->Update(dt); }
+	void Update( float dt );
 
 	void Render() { m_pWindow->Render(); }
+
+	void SetElapsedTimeMS( ulong elapsed_time ) { m_ElapsedTimeMS = elapsed_time; }
+
+	void SetElapsedTime( double elapsed_time ) { SetElapsedTimeMS( (ulong)(elapsed_time * 1000.0) ); }
 };
 
 

@@ -143,6 +143,9 @@ public:
 
 	void SetSubDisplay( CSubDisplay* pSubDisplay ) { m_pSubDisplay = pSubDisplay; }
 
+	CTextMessageManager *GetTextMessageManager() { return m_pTextMessageManager; }
+	
+
 //	CGameTextSet *GetCurrentTextSetInTextWindow();
 };
 

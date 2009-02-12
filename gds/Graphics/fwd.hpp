@@ -1,5 +1,5 @@
-#ifndef __FWD_3DCommon_H__
-#define __FWD_3DCommon_H__
+#ifndef __FWD_Graphics_H__
+#define __FWD_Graphics_H__
 
 
 class CGraphicsParameters;
@@ -152,4 +152,4 @@ public:
 };
 
 
-#endif /* __FWD_3DCommon_H__ */
+#endif /* __FWD_Graphics_H__ */
