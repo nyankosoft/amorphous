@@ -371,7 +371,6 @@ void CApplicationBase::Execute()
 	ReleaseDebugItems();
 
 	CGameTask::ReleaseAnimatedGraphicsManager();
-	MouseCursor().ReleaseGraphicsResources();
 
 //	MessageBox( NULL, "exit the main loop", "msg", MB_OK );
 
