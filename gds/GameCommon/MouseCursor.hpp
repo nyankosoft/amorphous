@@ -6,19 +6,12 @@
 using namespace NS_KGL;
 
 #include "../base.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/Font/Font.hpp"
-#include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/2DPrimitive/2DFrameRect.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <string>
-
-
-#define MouseCursor	(*(CMouseCursor::Get()))
 
 
 class CMouseCursor
@@ -86,6 +79,12 @@ public:
 		}
 	}
 };
+
+
+inline CMouseCursor& MouseCursor()
+{
+	return (*(CMouseCursor::Get()));
+}
 
 
 #endif  /*  __MouseCursor_SINGLETON_H__  */

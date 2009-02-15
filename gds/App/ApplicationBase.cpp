@@ -7,17 +7,14 @@
 #include "Support/DebugOutput.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/MiscAux.hpp"
+#include "Support/MTRand.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
-#include "Input/DirectInputMouse.hpp"
-#include "Input/DIKeyboard.hpp"
-#include "Input/DirectInputGamepad.hpp"
-#include "Input/InputHub.hpp"
+#include "Input.hpp"
 #include "Sound/SoundManager.hpp"
 #include "Physics/PhysicsEngine.hpp"
 
-#include "Support/MTRand.hpp"
 #include "GameCommon/GlobalInputHandler.hpp"
 #include "GameCommon/GlobalParams.hpp"
 #include "GameCommon/GameStageFrameworkGlobalParams.hpp"
@@ -109,11 +106,11 @@ void CApplicationBase::Release()
 
 void CApplicationBase::InitDebugItems()
 {
-	const string font_name = "‚l‚r ƒSƒVƒbƒN";
+	const string font_name = "DotumChe";
 
 	// set debug items and output to the screen
 	// (graphics component)
-	GlobalDebugOutput.Init( font_name, 6, 12 );
+	GlobalDebugOutput.Init( font_name, 6, 14 );
 
 	DebugOutput.AddDebugItem( "perf", new CDebugItem_Profile() );
 
@@ -341,7 +338,7 @@ void CApplicationBase::Execute()
 
 			if( g_pDIMouse )
 			{
-				MouseCursor.UpdateCursorPosition(
+				MouseCursor().UpdateCursorPosition(
 					g_pDIMouse->GetCurrentPositionX(),
 					g_pDIMouse->GetCurrentPositionY() );
 			}
@@ -374,7 +371,7 @@ void CApplicationBase::Execute()
 	ReleaseDebugItems();
 
 	CGameTask::ReleaseAnimatedGraphicsManager();
-	MouseCursor.ReleaseGraphicsResources();
+	MouseCursor().ReleaseGraphicsResources();
 
 //	MessageBox( NULL, "exit the main loop", "msg", MB_OK );
 

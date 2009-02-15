@@ -257,7 +257,7 @@ void CGameTask::GetCurrentMousePosition( int& x, int& y )
 
 void CGameTask::DrawMouseCursor()
 {
-	MouseCursor.Draw();
+	MouseCursor().Draw();
 }
 
 
