@@ -10,6 +10,8 @@
 
 class CSingleStageGameTask : public CGUIGameTask
 {
+protected:
+
 	boost::shared_ptr<CStage> m_pStage;
 
 public:

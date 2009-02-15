@@ -1160,6 +1160,14 @@
 					RelativePath="..\..\gds\Task\SingleStageGameTask.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\Task\StageViewerGameTask.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Task\StageViewerGameTask.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="GameCommon"
