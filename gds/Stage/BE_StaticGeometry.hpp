@@ -1,20 +1,16 @@
 #ifndef __BE_StaticGeometry_H__
 #define __BE_StaticGeometry_H__
 
+#include "fwd.hpp"
 #include "BaseEntity.hpp"
 
-#include <vector>
-#include <string>
-
-
-class CStaticGeometryBase;
 
 class CBE_StaticGeometry : public CBaseEntity
 {
 private:
 
 	/// borrowed reference
-	/// owned reference managed by CStage
+	/// - owned reference is managed by CStage
 	std::vector<CStaticGeometryBase *> m_vecpStaticGeometry;
 
 	enum Params
@@ -43,5 +39,6 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+
 
 #endif  /*  __BE_StaticGeometry_H__  */

@@ -33,7 +33,6 @@ CPseudoNoiseEffect::CPseudoNoiseEffect()
 
 CPseudoNoiseEffect::~CPseudoNoiseEffect()
 {
-	ReleaseGraphicsResources();
 }
 
 
@@ -44,8 +43,6 @@ void CPseudoNoiseEffect::ReleaseGraphicsResources()
 
 void CPseudoNoiseEffect::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	LoadNoiseTextures();
-	
 	UpdateScreenSize();
 }
 
@@ -54,24 +51,16 @@ bool CPseudoNoiseEffect::LoadNoiseTextures()
 {
 	ReleaseGraphicsResources();
 
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	HRESULT hr;
-
 	// load textures used for noise
 	char acFilename[256];
 	int i;
 	for(i=0; i<NUM_NVNOISE_TEXTURES; i++)
 	{
-		sprintf( acFilename, "Texture\\pntex%d.dds", i );
+		sprintf( acFilename, "./Texture/pntex%d.dds", i );
 
 		bool res = m_aNoiseTexture[i].Load( acFilename );
 		if( !res )
 			return false;
-
-//		hr = D3DXCreateTextureFromFileA(pd3dDev, acFilename, &m_apNVNoiseTexture[i]);
-
-//		if( FAILED(hr) )
-//			return false;
 	}
 
 	return true;

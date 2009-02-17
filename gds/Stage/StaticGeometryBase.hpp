@@ -1,5 +1,5 @@
-#ifndef __STATICGEOMETRYBASE_H__
-#define __STATICGEOMETRYBASE_H__
+#ifndef __StaticGeometryBase_H__
+#define __StaticGeometryBase_H__
 
 
 #include "fwd.hpp"
@@ -31,20 +31,7 @@ protected:
 	/// stage object that uses this static geometry
 	CStage* m_pStage;
 
-	// collision detection
-/*	CBSPTree m_BSPTree;		//2 pointers, 'm_paNode' and 'm_paPlane' is connected to 'm_BSPTree', which itself doesn't do any memory allocation such as new/delete
-
-	int m_iNumTriangleSets;
-	CSG_TriangleSet *m_paTriangleSet;
-
-	int m_iNumCells;
-	CSG_Cell* m_paCellData;
-
-	short* m_pasVisibleCellIndex;
-	char* m_pacCurrentlyVisibleCell;	// used to store cell visibility at runtime
-
-
-	enum eExtraTextureType
+/*	enum eExtraTextureType
 	{
 		EXTRA_TEX_TRANSPARENT,
 		EXTRA_TEX_TRANSLUCENT,
@@ -133,4 +120,4 @@ public:
 };
 
 
-#endif  /*  __STATICGEOMETRYBASE_H__  */
+#endif  /*  __StaticGeometryBase_H__  */

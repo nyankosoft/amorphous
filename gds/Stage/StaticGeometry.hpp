@@ -1,21 +1,19 @@
-#ifndef  __SG_STATICGEOMETRY_H__
-#define  __SG_STATICGEOMETRY_H__
+#ifndef  __StaticGeometry_H__
+#define  __StaticGeometry_H__
 
+
+#include "StaticGeometryBase.hpp"
+#include "StaticGeometryArchiveFG.hpp"
 
 #include "3DMath/3DStructs.hpp"
 #include "3DMath/AABTree.hpp"
-#include "Graphics/fwd.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
 #include "Graphics/Shader/ShaderParameter.hpp"
-#include "Physics/fwd.hpp"
 #include "Support/StringAux.hpp"
-#include "fwd.hpp"
-#include "StaticGeometryBase.hpp"
-#include "StaticGeometryArchiveFG.hpp"
 
 
 class CStaticGeometryDBKey
@@ -30,7 +28,7 @@ public:
 };
 
 
-inline string GetGraphicsMeshArchiveKey( int index )
+inline std::string GetGraphicsMeshArchiveKey( int index )
 {
 	return std::string(CStaticGeometryDBKey::GraphicsMeshArchive) + fmt_string( "[%d]", index );
 }
@@ -60,6 +58,8 @@ public:
 		ar & m_ParamGroup;
 	}
 
+	/// - load the shader from the desc
+	/// - load the textures from m_ParamGroup
 	bool Load();
 
 	void SetParams();
@@ -144,13 +144,6 @@ public:
 
 class CStaticGeometry : public CStaticGeometryBase
 {
-//	std::vector<boost::shared_ptr<CShaderManager>> m_vecpShaderManager;
-//	CNonLeafyAABTree<CMeshSubset> m_MeshSubsetTree;
-
-//	std::vector<CStaticGeometryMeshHolder> m_vecMesh;
-
-//	std::vector<CShaderContainer> m_vecShaderContainer;
-
 	CStaticGeometryArchive m_Archive;
 
 	int m_PrevShaderIndex;
@@ -204,13 +197,8 @@ public:
 
 	/// \param [in] dest scene
 	virtual physics::CActor *CreateCollisionGeometry( physics::CScene& physics_scene );
-
-	virtual void ReleaseGraphicsResources() {}
-
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
-
 };
 
 
 
-#endif		/*  __SG_STATICGEOMETRY_H__  */
+#endif		/*  __StaticGeometry_H__  */

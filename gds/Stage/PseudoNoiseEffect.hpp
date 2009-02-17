@@ -1,8 +1,7 @@
-#ifndef  __PSEUDONOISEEFFECT_H__
-#define  __PSEUDONOISEEFFECT_H__
+#ifndef  __PseudoNoiseEffect_H__
+#define  __PseudoNoiseEffect_H__
 
 
-#include "Graphics/3DRect.hpp"
 #include "Graphics/FVF_TLVertex.h"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureHandle.hpp"
@@ -29,7 +28,7 @@ public:
 	CPseudoNoiseEffect();
 	~CPseudoNoiseEffect();
 
-//	void SetPosition( D3DXVECTOR3& rvMin, D3DXVECTOR3& rvMax );
+//	void SetPosition( Vector2& rvMin, Vector2& rvMax );
 
 	bool LoadNoiseTextures();
 
@@ -43,9 +42,7 @@ public:
 	void ReleaseGraphicsResources();
 
 	void UpdateScreenSize();
-
-
 };
 
 
-#endif  /*  __PSEUDONOISEEFFECT_H__  */
+#endif  /*  __PseudoNoiseEffect_H__  */

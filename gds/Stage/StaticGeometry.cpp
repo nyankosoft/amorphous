@@ -362,16 +362,14 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 {
 	this->UpdateResources( rCam );
 
-	// reset world transform
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-
 //	SetGlobalParams();
 
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 		m_Archive.m_vecShaderContainer[i].SetParams();
-	
 
+	// reset world transform
+	D3DXMATRIX matWorld;
+	D3DXMatrixIdentity( &matWorld );
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
 //		m_Archive.m_vecShaderContainer[i].m_pShaderManager->SetWorldTransform( matWorld );
@@ -393,6 +391,8 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 	/// - Holds indices of nodes to check for visibility
 	std::vector<int> m_vecNodesToCheck;
 	m_vecNodesToCheck.push_back(0);
+
+	vector<int> vecVisibleMatIndex;
 
 	while( 0 < m_vecNodesToCheck.size() )
 	{
@@ -421,7 +421,18 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 
 				shader_mgr.SetTechnique( shader_container.m_vecTechniqueHandle[subset.ShaderTechniqueIndex] );
 
+				// render all the materials in the subset
 				pMesh->RenderSubsets( shader_mgr, subset.vecMaterialIndex );
+
+				// collect visible materials(surfaces or triangle sets) of the mesh
+/*				vecVisibleMatIndex.resize( 0 );
+				for( size_t j=0; j<subset.vecMaterialIndex.size(); j++ )
+				{
+					if( rCam.ViewFrustumIntersectsWith( pMesh->GetAABB( subset.vecMaterialIndex[j] ) ) )
+						vecVisibleMatIndex.push_back( subset.vecMaterialIndex[j] );
+				}
+
+				pMesh->RenderSubset( shader_mgr, vecVisibleMatIndex );*/
 			}
 		}
 
