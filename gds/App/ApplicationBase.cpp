@@ -283,8 +283,6 @@ bool CApplicationBase::InitTaskManager()
 	return true;
 }
 
-#define APPBASE_TIMER_RESOLUTION	1
-
 
 void CApplicationBase::AcquireInputDevices()
 {
@@ -299,12 +297,46 @@ void CApplicationBase::AcquireInputDevices()
 }
 
 
+void CApplicationBase::UpdateFrame()
+{
+	// update the timer
+	GlobalTimer().UpdateFrameTime();
+
+	const float frametime = GlobalTimer().GetFrameTime();
+
+	if( g_pDIMouse )
+	{
+		MouseCursor().UpdateCursorPosition(
+			g_pDIMouse->GetCurrentPositionX(),
+			g_pDIMouse->GetCurrentPositionY() );
+	}
+
+	/// Update input
+
+	// Send input data to the active input handlers
+	InputDeviceHub().SendInputToInputHandlers();
+
+	/// Update the task, stage, entities and all the other subsystems
+
+	// Do the current task
+	m_pTaskManager->Update( frametime );
+
+
+	/// Render
+
+	m_pTaskManager->Render();
+
+
+	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
+
+	Sleep( ms_DefaultSleepTimeMS );
+//	PERIODICAL( 2, Sleep(5) );
+}
+
+
 void CApplicationBase::Execute()
 {
 //	MSGBOX_FUNCTION_SCOPE();
-
-	// timer resolution for timeGetTime()
-	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
 
 	if( !InitBase() )
 		return;
@@ -318,53 +350,7 @@ void CApplicationBase::Execute()
 	// initialize rand generator
 	InitRand( timeGetTime() );
 
-    // Enter the message loop
-	float frametime;
-    MSG msg;
-    ZeroMemory( &msg, sizeof(msg) );
-    while( msg.message!=WM_QUIT )
-    {
-        if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
-        {
-            TranslateMessage( &msg );
-            DispatchMessage( &msg );
-        }
-        else
-		{
-			// update the timer
-			GlobalTimer().UpdateFrameTime();
-
-			frametime = GlobalTimer().GetFrameTime();
-
-			if( g_pDIMouse )
-			{
-				MouseCursor().UpdateCursorPosition(
-					g_pDIMouse->GetCurrentPositionX(),
-					g_pDIMouse->GetCurrentPositionY() );
-			}
-
-			/// Update input
-
-			// Send input data to the active input handlers
-			InputDeviceHub().SendInputToInputHandlers();
-
-			/// Update the task, stage, entities and all the other subsystems
-
-			// Do the current task
-			m_pTaskManager->Update( frametime );
-
-
-			/// Render
-
-			m_pTaskManager->Render();
-
-
-			AsyncResourceLoader().ProcessGraphicsDeviceRequests();
-
-			Sleep( ms_DefaultSleepTimeMS );
-//			PERIODICAL( 2, Sleep(5) );
-		}
-	}
+	::MainLoop( this );
 
 	// Release graphics resources before the graphics device is released
 
@@ -373,8 +359,6 @@ void CApplicationBase::Execute()
 	CGameTask::ReleaseAnimatedGraphicsManager();
 
 //	MessageBox( NULL, "exit the main loop", "msg", MB_OK );
-
-	timeEndPeriod( APPBASE_TIMER_RESOLUTION );
 }
 
 

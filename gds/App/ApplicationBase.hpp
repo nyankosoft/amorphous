@@ -19,6 +19,10 @@ extern CDirectInputMouse *g_pDIMouse;		// referenced from CGameTask classes
 //extern CDirectInputGamepad *g_pDIGamepad;
 
 
+// =============================== function externs ===============================
+extern void MainLoop( CApplicationBase *pApp );
+
+// =============================== variable externs ===============================
 extern CApplicationBase *g_pAppBase;
 
 /**
@@ -69,6 +73,8 @@ private:
 
 	void ReleaseDebugItems();
 
+	void UpdateFrame();
+
 public:
 
 	CApplicationBase();
@@ -88,6 +94,8 @@ public:
 	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
 
 	void Run();
+
+	friend void MainLoop( CApplicationBase *pApp );
 };
 
 

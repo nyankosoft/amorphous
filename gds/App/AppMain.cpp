@@ -1,12 +1,17 @@
-
 #include "ApplicationBase.hpp"
 
+// Windows headers
 #include <windows.h>
 #include <mmsystem.h>
 
+// Visual Leak Detector
+// - Works only if you run the App in 1)Debug Mode (default: F5) of 2)Debug build
 #include <vld.h>
 
 #include "GameWindowManager_Win32.hpp"
+
+
+#define APPBASE_TIMER_RESOLUTION	1
 
 
 /*
@@ -21,6 +26,26 @@ extern CApplicationBase *CreateApplicationInstance() { return new CUserDefinedAp
 
 
 extern CApplicationBase *CreateApplicationInstance();
+
+
+void MainLoop( CApplicationBase *pApp )
+{
+    // Enter the message loop
+    MSG msg;
+    ZeroMemory( &msg, sizeof(msg) );
+    while( msg.message!=WM_QUIT )
+    {
+        if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
+        {
+            TranslateMessage( &msg );
+            DispatchMessage( &msg );
+        }
+        else
+		{
+			pApp->UpdateFrame();
+		}
+	}
+}
 
 
 
@@ -68,10 +93,15 @@ void StartApp()
 
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 {
+	// timer resolution for timeGetTime()
+	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
+
 	// set the message procedure for the game window
 	g_pMessageProcedureForGameWindow = MsgProc;
 
 	StartApp();
+
+	timeEndPeriod( APPBASE_TIMER_RESOLUTION );
 
 	return 0;
 }
@@ -80,7 +110,18 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 
 #if 0
 
-AppMain_X.cpp
+AppMain_Gen.cpp
+
+
+// in AppMain_Gen.cpp
+void MainLoop( CApplicationBase *pApp )
+{
+	while( !g_QuitApp )
+	{
+		pApp->UpdateFrame();
+	}
+}
+
 
 int main()
 {
