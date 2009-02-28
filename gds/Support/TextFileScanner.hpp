@@ -3,7 +3,6 @@
 
 
 #include <stdio.h>
-
 #include <string>
 
 #include "3DMath/Vector3.hpp"
@@ -12,7 +11,7 @@
 
 class CTextFileScanner
 {
-	enum param { MAX_TAG_LENGTH = 128, MAX_LINE_LENGTH = 2048 };
+	enum param { MAX_TAG_LENGTH = 256, MAX_LINE_LENGTH = 2048 };
 
 	FILE* m_fp;
 
@@ -26,7 +25,7 @@ class CTextFileScanner
 
 	void Init();
 
-	void UpdateTagStr() { sscanf( m_acCurrentLine, "%s", m_acTag ); m_strTag = m_acTag; }
+	inline void UpdateTagStr();
 
 	bool GetBoolTagStr( std::string& tag_true, std::string& tag_false, const std::string& bool_tag_str );
 

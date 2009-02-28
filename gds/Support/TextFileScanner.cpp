@@ -1,7 +1,29 @@
-
 #include "TextFileScanner.hpp"
 
 using namespace std;
+
+
+/* ================== template ==================
+int ProcessTextFile( std::string& filepath )
+{
+	CTextFileScanner scanner( filepath );
+
+	if( !scanner.IsReady() )
+	{
+//		printf( "Failed to open file: %s\n", filepath.c_str() );
+		return -1;
+	}
+
+	string line;
+	for( ; !scanner.End(); scanner.NextLine() )
+	{
+		scanner.GetCurrentLine( line );
+		sscanf( line.c_str(), "%d", &id );
+	}
+
+	return 0;
+}
+*/
 
 
 bool CTextFileScanner::GetBoolTagStr( std::string& tag_true,  std::string& tag_false,  const std::string& bool_tag_str )
@@ -23,6 +45,13 @@ void CTextFileScanner::Init()
 	m_fp = NULL;
 	memset( m_acTag, 0, sizeof(char) * MAX_TAG_LENGTH );
 	memset( m_acCurrentLine, 0, sizeof(char) * MAX_LINE_LENGTH );
+}
+
+
+inline void CTextFileScanner::UpdateTagStr()
+{
+	sscanf( m_acCurrentLine, "%s", m_acTag );
+	m_strTag = m_acTag;
 }
 
 
