@@ -4,6 +4,9 @@
 
 #include <vector>
 #include <string>
+#include <boost/shared_ptr.hpp>
+#include "XML/fwd.hpp"
+
 
 class CGameItem;
 class CTextFileScanner;
@@ -47,7 +50,9 @@ class CItemDatabaseBuilder
 
     void AddMeshBoneControllerForAircraft( CGI_Aircraft& aircraft, 
 		                                   CTextFileScanner& scanner,
-		                                   std::vector<CMeshBoneController_AircraftBase *>& vecpMeshController );
+										   std::vector< boost::shared_ptr<CMeshBoneController_AircraftBase> >& vecpMeshController );
+
+	void LoadItems( CXMLNodeReader& items_node_reader );
 
 public:
 

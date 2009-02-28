@@ -1,14 +1,17 @@
 #include "MeshBoneControllerBase.hpp"
-
 #include "Graphics/D3DXSMeshObject.hpp"
 #include "XML/XMLNodeReader.hpp"
 
 using namespace std;
+using namespace boost;
 
 
 //=================================================================================
 // CBoneControlParam
 //=================================================================================
+
+CMeshBoneControllerBase::CBoneControlParam CMeshBoneControllerBase::CBoneControlParam::ms_NullObject;
+
 
 void CMeshBoneControllerBase::CBoneControlParam::LoadFromXMLNode( CXMLNodeReader& reader )
 {

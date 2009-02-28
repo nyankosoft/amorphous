@@ -1,4 +1,3 @@
-
 #include "GameItemObjectFactory.hpp"
 
 #include "GameItem.hpp"
@@ -9,7 +8,7 @@
 #include "GI_MissileLauncher.hpp"
 
 
-IArchiveObjectBase *CGameItemObjectFactory::CreateObject( const unsigned int id )
+CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
 {
 	switch( id )
 	{
@@ -26,4 +25,9 @@ IArchiveObjectBase *CGameItemObjectFactory::CreateObject( const unsigned int id 
 //	case CGameItem::ID_:				return new CGI_;
 	default:	return NULL;
 	}
+}
+
+IArchiveObjectBase *CGameItemObjectFactory::CreateObject( const unsigned int id )
+{
+	return CreateGameItem( id );
 }

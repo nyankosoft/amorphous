@@ -3,6 +3,8 @@
 
 
 #include "MeshBoneControllerBase.hpp"
+#include "GameCommon/RangedSet.hpp"
+#include "GameCommon/CriticalDamping.hpp"
 
 
 /**
@@ -85,6 +87,37 @@ public:
 
 
 class CPseudoAircraftSimulator;
+class CMeshBoneController_AircraftBase;
+class CMeshBoneController_GearUnit;
+class CMeshBoneController_Cover;
+
+
+class CConstraintComponent : public IArchiveObjectBase
+{
+public:
+
+	/// name of the component that constrains the motions of owner component
+	string Name;
+
+	boost::shared_ptr<CMeshBoneController_Cover> m_pComponent;
+
+	/// range of angle in which the constrained component can move
+	RangedSet<float> AllowedAngleRange;
+
+public:
+
+	void LoadFromXMLNode( CXMLNodeReader& reader );
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & Name;
+		ar & AllowedAngleRange;
+
+		if( ar.GetMode() == IArchive::MODE_INPUT )
+			m_pComponent.reset();
+	}
+};
+
 
 class CMeshBoneController_AircraftBase : public CMeshBoneControllerBase
 {
@@ -92,21 +125,43 @@ protected:
 
 	CPseudoAircraftSimulator *m_pSimulator;
 
+	double m_CurrentTime;
+
+//	boost::shared_ptr<CMeshBoneController_AircraftBase> m_pParent;
+
 public:
 
-	CMeshBoneController_AircraftBase() : CMeshBoneControllerBase(NULL), m_pSimulator(NULL) {}
+	CMeshBoneController_AircraftBase()
+		:
+	CMeshBoneControllerBase(boost::shared_ptr<CD3DXSMeshObject>()),
+	m_pSimulator(NULL)
+	{}
 
-	CMeshBoneController_AircraftBase( CD3DXSMeshObject *pTargetMesh, CPseudoAircraftSimulator *pSimulator )
-		: CMeshBoneControllerBase( pTargetMesh ), m_pSimulator( pSimulator ) {}
+	CMeshBoneController_AircraftBase( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh,
+		CPseudoAircraftSimulator *pSimulator,
+		boost::shared_ptr<CMeshBoneController_AircraftBase> pParent = boost::shared_ptr<CMeshBoneController_AircraftBase>() )
+		:
+	CMeshBoneControllerBase( pTargetMesh ),
+	m_pSimulator( pSimulator )//,
+//	m_pParent(pParent)
+	{}
 
 	virtual ~CMeshBoneController_AircraftBase() {}
 
+	virtual void Init();
+
 	void SetPseudoAircraftSimulator( CPseudoAircraftSimulator *pSimulator ) { m_pSimulator = pSimulator; }
+
+//	void SetParent( boost::shared_ptr<CMeshBoneController_AircraftBase> pParent ) { m_pParent = pParent; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
 		CMeshBoneControllerBase::Serialize( ar, version );
 	}
+
+	virtual void Update( float dt ) {}
+
+	void SetCurrentTime( double current_time ) { m_CurrentTime = current_time; }
 
 	friend class CItemDatabaseBuilder;
 };
@@ -131,7 +186,7 @@ public:
 
 	CMeshBoneController_Flap() : m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
 
-	CMeshBoneController_Flap( CD3DXSMeshObject *pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+	CMeshBoneController_Flap( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
 
 	virtual void UpdateTransforms();
@@ -176,7 +231,7 @@ public:
 
 	CMeshBoneController_VFlap() : m_fAnglePerYawAccel(0.5f), m_Type(TYPE_SINGLE) {}
 
-	CMeshBoneController_VFlap( CD3DXSMeshObject *pTargetMesh,
+	CMeshBoneController_VFlap( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh,
 		                       CPseudoAircraftSimulator *pSimulator,
 							   int type = TYPE_SINGLE )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_Type(type) { m_fAnglePerYawAccel = 0.7f; }
@@ -201,7 +256,9 @@ public:
 
 class CMeshBoneController_Rotor : public CMeshBoneController_AircraftBase
 {
-//	CPseudoAircraftSimulator *m_pSimulator;
+	float m_fRotationSpeed;
+	float m_fAngle;
+	float m_fAngleOffset;
 
 	int m_RotationDirection;
     
@@ -216,14 +273,16 @@ class CMeshBoneController_Rotor : public CMeshBoneController_AircraftBase
 
 public:
 
-	CMeshBoneController_Rotor() : m_RotationDirection(DIR_CW) {}
+	CMeshBoneController_Rotor() : m_fRotationSpeed(5.0f), m_fAngle(0), m_fAngleOffset(0), m_RotationDirection(DIR_CW) {}
 
-	CMeshBoneController_Rotor( CD3DXSMeshObject *pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+	CMeshBoneController_Rotor( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_RotationDirection(DIR_CW) {}
 
 	virtual void UpdateTransforms();
 
 	virtual void Init();
+
+	void Update( float dt );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
@@ -232,6 +291,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
 		CMeshBoneController_AircraftBase::Serialize( ar, version );
+
+		ar & m_fRotationSpeed & m_fAngle & m_fAngleOffset;
 		ar & m_RotationDirection;
 	}
 
@@ -241,25 +302,175 @@ public:
 };
 
 
-class CMeshBoneController_Gear : public CMeshBoneController_AircraftBase
+class CAircraftComponentState
 {
+public:
+
+	enum Name
+	{
+		OPEN,
+		OPENING,
+		CLOSED,
+		CLOSING,
+		NUM_STATES
+	};
+};
+
+
+
+class CMeshBoneController_Cover : public CMeshBoneController_AircraftBase
+{
+public:
+
+	float m_fOpenAngle;
+
+	/// Used by shaft and cover components
+	std::vector<CConstraintComponent> m_vecConstraint;
+
+//	float m_fCurrentAngle;
+
+	// TODO: Use revolute joint of the physics engine
+	cdv<float> m_Angle;
+
+//	Vector3 m_vLocalRotationAxis;
+//	Matrix34 m_LocalPose;
+
+	CAircraftComponentState::Name m_State;
+
+	// CPhysJoint *m_pJoint
+
+	CMeshBoneController_GearUnit *m_pParent;
+
+private:
+
+	void Open();
+
+	void Close();
 
 public:
 
-	CMeshBoneController_Gear() {}
+	CMeshBoneController_Cover()
+		:
+	m_fOpenAngle(0),
+	m_pParent(NULL)
+	{
+		m_Angle.current = 0;
+		m_Angle.target = 0;
+		m_Angle.vel = 1.0f;
+	}
 
-	CMeshBoneController_Gear( CD3DXSMeshObject *pTargetMesh, CPseudoAircraftSimulator *pSimulator )
-		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
+	void Init();
 
-	virtual void UpdateTransforms() {}
+	void Update( float dt );
 
-//	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	void UpdateTransforms();
 
-	virtual void Serialize( IArchive& ar, const unsigned int version )
+	bool SatisfyConstraints();
+
+	float GetCurrentAngle() const { return m_Angle.current; }
+
+	void SetParent( CMeshBoneController_GearUnit *pParent ) { m_pParent = pParent; }
+
+	const std::string GetName();
+
+	void LoadFromXMLNode( CXMLNodeReader& reader );
+
+	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_COVER; }
+
+	void Serialize( IArchive& ar, const unsigned int version )
 	{
 		CMeshBoneController_AircraftBase::Serialize( ar, version );
-//		ar & m_RotationDirection;
+
+		ar & m_fOpenAngle;
 	}
+};
+
+
+class CMeshBoneController_Tire : public CMeshBoneController_AircraftBase
+{
+public:
+};
+
+
+class CMeshBoneController_Shaft: public CMeshBoneController_Cover
+{
+	boost::shared_ptr<CMeshBoneController_Tire> m_pTire;
+public:
+
+	CMeshBoneController_Shaft() {}
+
+	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_SHAFT; }
+};
+
+
+class CMeshBoneController_GearUnit : public CMeshBoneController_AircraftBase
+{
+	/// first component is always the main shaft with tire
+//	std::vector<CMeshBoneController_Cover> m_vecComponent;
+	std::vector< boost::shared_ptr<CMeshBoneController_Cover> > m_vecpComponent;
+
+	CAircraftComponentState::Name m_State;
+
+	/// requested state (open or closed)
+	CAircraftComponentState::Name m_RequestedState;
+
+	//
+	// holds default pose of each component
+	//
+
+//	Matrix34 m_TirePose;
+//	Matrix34 m_ShaftPose;
+
+	/// covers of the gearbox that moves separately from the shaft and the tire
+//	std::vector<Matrix34> m_vecCoverPose;
+
+//	float m_fShaftClosedAngle; // always 0
+//	float m_fShaftOpenAngle;
+
+	//
+	// holds states
+	//
+
+//	double m_OpenStartTime;
+//	double m_CloseStartTime;
+
+//	cdv<float> m_ShaftAngle;
+//	float m_fTireAngle;
+//	Vector3 m_vRotationAxis;
+//	std::vector< cdv<float> > m_vecfCoverAngle;
+
+//	CBoneControlParam& Shaft() { return m_vecBoneControlParam[0]; }
+//	CBoneControlParam& Tire() { return m_vecBoneControlParam[1]; }
+//	CBoneControlParam& Tire() { return 2 <= m_vecBoneControlParam.size() ? m_vecBoneControlParam[1] : CBoneControlParam::NullObject(); }
+
+public:
+
+	CMeshBoneController_GearUnit() {}
+
+	CMeshBoneController_GearUnit( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
+
+	virtual void UpdateTransforms();
+
+	virtual void SetTargetMesh( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh );
+
+	void Init();
+
+	void Update( float dt );
+
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+
+	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_GEAR_UNIT; }
+
+	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	CAircraftComponentState::Name GetRequestedState() { return m_RequestedState; }
+
+	void Open();
+
+	void Close();
+
+	boost::shared_ptr<CMeshBoneController_Cover> GetComponent( const std::string& component_name );
 
 	friend class CItemDatabaseBuilder;
 };
@@ -270,7 +481,7 @@ class CMeshBoneController_CockpitCanopy : public CMeshBoneController_AircraftBas
 
 public:
 
-	CMeshBoneController_CockpitCanopy( CD3DXSMeshObject *pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+	CMeshBoneController_CockpitCanopy( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
 
 	virtual void UpdateTransforms() {}

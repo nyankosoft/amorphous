@@ -428,7 +428,9 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
 	{
 		m_pAircraft->ResetMeshController();
-		m_pAircraft->InitMeshController( dynamic_cast<CD3DXSMeshObject *>(m_MeshProperty.m_MeshObjectHandle.GetMesh().get()) );
+		shared_ptr<CD3DXMeshObjectBase> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+		shared_ptr<CD3DXSMeshObject> pSkeletalMesh = boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pBaseMesh);
+		m_pAircraft->InitMeshController( pSkeletalMesh );
 	}
 
 	// set mesh bone controller (experimental)

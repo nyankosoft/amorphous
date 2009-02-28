@@ -65,7 +65,10 @@ enum eActionCode
 	ACTION_MISC_CYCLE_VIEWPOINTS,
 	ACTION_MISC_CYCLE_TARGET_FOCUS,
 
-	// experimental action codes for pseudo aircraft control
+	// action code for pseudo aircraft control
+	ACTION_MISC_TOGGLE_LANDING_GEAR,
+
+	// action codes for pseudo aircraft control
 	ACTION_MOV_ACCEL,
 	ACTION_MOV_BRAKE,
 	ACTION_MOV_YAW_ACCEL,

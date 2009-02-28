@@ -16,6 +16,8 @@ public:
 
 	void Limit( T& x ) const { x = min < x ? x : min; x = max < x ? max : x; }
 
+	bool IsInRange( const T& x ) const { return min <= x && x <= max; }
+
 	/// returns a random value in the range of [min,max]
 	/// - availability: int, float
 	T GetRangedRand() const { return RangedRand( min, max ); }

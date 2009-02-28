@@ -51,10 +51,10 @@ protected:
 	/// - 2d array of shader technique handles
 	CMeshObjectContainer m_MeshObjectContainer;
 
-	/// holds how many(much) units player can carry
+	/// holds how many(much) units the owner can carry
 	int m_iMaxQuantity;
 
-	/// holds how many(much) units player is carrying
+	/// holds how many(much) units the owner is carrying
 	int m_iCurrentQuantity;
 
 	int m_Price;
@@ -96,6 +96,7 @@ public:
 
 	virtual bool HandleInput( int input_code, int input_type, float fParam ) { return false; }
 
+	/// Call this when the item exists in a stage
 	virtual void Update( float dt ) {}
 
 
@@ -154,7 +155,6 @@ public:
 	friend class CItemDatabaseBuilder;
 	friend class CGameItemInfo;
 	friend class CItemDatabaseManager;
-
 };
 
 

@@ -1,14 +1,11 @@
-#ifndef  __PSEUDOAIRCRAFTSIMULATOR_H__
-#define  __PSEUDOAIRCRAFTSIMULATOR_H__
+#ifndef  __PseudoAircraftSimulator_H__
+#define  __PseudoAircraftSimulator_H__
 
-
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/MathMisc.hpp"
 
 #include <vector>
 #include <string>
-
-
+#include "3DMath/Matrix34.hpp"
+#include "3DMath/MathMisc.hpp"
 #include "GameCommon/CriticalDamping.hpp"
 
 
@@ -45,6 +42,8 @@ class CPseudoAircraftSimulator
 	Vector3 m_vLastValidHrzFwdDir;
 
 	Vector3 m_vLastValidHrzRightDir;
+
+	float m_fForwardWindage;
 
 private:
 
@@ -102,6 +101,8 @@ public:
 	inline void SetRollAccel( float accel ) { m_Roll.TargetAccel() = accel; }
 
 	inline void SetYawAccel( float accel ) { m_Yaw.TargetAccel() = accel; }
+
+	void SetForwardWindage( float forward_friction ) { m_fForwardWindage = forward_friction; }
 
 	/// resets simulator
 	/// - set world pose to identity
@@ -185,4 +186,4 @@ inline void CPseudoAircraftSimulator::SetForwardVelocity( const Vector3& velocit
 }
 
 
-#endif		/*  __PSEUDOAIRCRAFTSIMULATOR_H__  */
+#endif		/*  __PseudoAircraftSimulator_H__  */

@@ -8,6 +8,7 @@
 #include "Support/BitmapImage.hpp"
 #include "Support/MiscAux.hpp"
 #include "Support/MTRand.hpp"
+#include "XML/XMLDocumentLoader.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
@@ -221,7 +222,7 @@ bool CApplicationBase::InitBase()
 
 	// update & load the item database
 //	ItemDatabaseManager().Update( "..." );
-	CItemDatabaseManager::Get()->Update( "../resources/item/item.mkx" );
+	CItemDatabaseManager::Get()->Update( "../resources/items/items.xml" );
 	CItemDatabaseManager::Get()->LoadFromFile( "./Item/item.gid" );
 
 	LOG_PRINT( " - Loaded the item database." );
@@ -384,6 +385,9 @@ inline void SetFreeImageErrorHandler()
 void CApplicationBase::Run()
 {
 //	MSGBOX_FUNCTION_SCOPE();
+
+	// initialize the XML module here and release at the end of this function
+	CXMLParserInitReleaseManager xml_module;
 
 	// set log output device
 //	boost::filesystem::complete( "./debug" );

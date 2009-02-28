@@ -4,14 +4,13 @@
 
 #include <vector>
 #include <string>
+#include <boost/shared_ptr.hpp>
 
-#include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/fwd.hpp"
 #include "XML/fwd.hpp"
 
 #include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 
@@ -21,6 +20,8 @@ protected:
 
 	class CBoneControlParam : public IArchiveObjectBase
 	{
+		static CBoneControlParam ms_NullObject;
+
 	public:
 
 		std::string Name;
@@ -44,16 +45,18 @@ protected:
 
 		virtual void Serialize( IArchive& ar, const unsigned int version )
 		{
-			ar & Name;//& vRotationAxis & MatrixIndex;	/// values for these vars are taken from mesh
+			ar & Name;
+			// ar & vRotationAxis & MatrixIndex;	/// values for these vars are taken from mesh
 		}
+
+		static const CBoneControlParam& NullObject() { return ms_NullObject; }
 	};
 
-//	CBoneControlParam m_aBoneControlParam[NUM_CONTROL_BONES];
 	std::vector<CBoneControlParam> m_vecBoneControlParam;
 
 
 	/// borrowed reference
-	CD3DXSMeshObject *m_pTargetMesh;
+	boost::shared_ptr<CD3DXSMeshObject> m_pTargetMesh;
 
 //	std::vector<std::string> m_vecTargetBoneName;
 
@@ -64,10 +67,15 @@ public:
 		ID_AIRCRAFT_FLAP,
 		ID_AIRCRAFT_VFLAP,
 		ID_AIRCRAFT_ROTOR,
+		ID_AIRCRAFT_COVER,
+		ID_AIRCRAFT_SHAFT,
+		ID_AIRCRAFT_GEAR_UNIT,
 		NUM_IDS
 	};
 
-	CMeshBoneControllerBase( CD3DXSMeshObject *pTargetMesh = NULL ) : m_pTargetMesh(pTargetMesh) {}
+	CMeshBoneControllerBase( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh = boost::shared_ptr<CD3DXSMeshObject>() )
+		:
+	m_pTargetMesh(pTargetMesh) {}
 
 	virtual ~CMeshBoneControllerBase() {}
 
@@ -75,7 +83,7 @@ public:
 
 	virtual void UpdateTransforms() = 0;
 
-	void SetTargetMesh( CD3DXSMeshObject *pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
+	virtual void SetTargetMesh( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
 
 	void UpdateTargetMeshTransforms();
 

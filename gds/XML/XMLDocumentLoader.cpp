@@ -18,6 +18,15 @@ CXMLDocument::CXMLDocument( xercesc::DOMDocument *pDocument,
 						    xercesc::XercesDOMParser *pParser )
 :
 m_pParser(pParser),
+m_pLSParser(NULL),
+m_pDocument(pDocument)
+{
+}
+
+CXMLDocument::CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::DOMLSParser *pParser )
+:
+m_pParser(NULL),
+m_pLSParser(pParser),
 m_pDocument(pDocument)
 {
 }
@@ -25,6 +34,7 @@ m_pDocument(pDocument)
 CXMLDocument::CXMLDocument()
 :
 m_pParser(NULL),
+m_pLSParser(NULL),
 m_pDocument(NULL)
 {
 }
@@ -33,6 +43,14 @@ CXMLDocument::~CXMLDocument()
 {
 //	SafeDelete( m_pDocument );
 	SafeDelete( m_pParser );
+
+	if( m_pLSParser )
+	{
+		m_pLSParser->release();
+		SafeDelete( m_pParser );
+//		m_pDocument->release();
+//		SafeDelete( m_pDocument );
+	}
 }
 
 
@@ -93,6 +111,7 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth,
 		parser->setDoNamespaces(false);
 		parser->setDoSchema(false);
 		parser->setCreateEntityReferenceNodes(false);
+		parser->setDoXInclude(true);
 		//parser->setToCreateXMLDeclTypeNode(true);
 		try
 		{
@@ -154,12 +173,17 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth,
 		xercesc::XMLString::release(&strSrc);
 
 	}
+
 	return bSuccess;
 }
 
 
 shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
 {
+	// test
+	// - How to use XInclude with Xerces C++ ???
+	return LoadWithLSParser( filepath );
+
 	xercesc::DOMDocument *pDoc = NULL;
 	xercesc::XercesDOMParser *pParser = NULL;
 	bool loaded = Load( filepath, &pDoc, &pParser );
@@ -170,6 +194,203 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
 	shared_ptr<CXMLDocument> pDocument = shared_ptr<CXMLDocument>( new CXMLDocument( pDoc, pParser ) );
 
 	return pDocument;
+}
+
+/*
+// ---------------------------------------------------------------------------
+//  Simple error handler deriviative to install on parser
+// ---------------------------------------------------------------------------
+class XIncludeErrorHandler : public DOMErrorHandler
+{
+public:
+    // -----------------------------------------------------------------------
+    //  Constructors and Destructor
+    // -----------------------------------------------------------------------
+    XIncludeErrorHandler()
+		:
+    fSawErrors(false) 
+	{}
+
+	~XIncludeErrorHandler() {}
+
+
+    // -----------------------------------------------------------------------
+    //  Getter methods
+    // -----------------------------------------------------------------------
+    bool getSawErrors() const;
+
+
+    // -----------------------------------------------------------------------
+    //  Implementation of the DOM ErrorHandler interface
+    // -----------------------------------------------------------------------
+    bool handleError(const DOMError& domError);
+    void resetErrors();
+
+
+private :
+    // -----------------------------------------------------------------------
+    //  Unimplemented constructors and operators
+    // -----------------------------------------------------------------------
+    XIncludeErrorHandler(const XIncludeErrorHandler&);
+    void operator=(const XIncludeErrorHandler&);
+
+
+    // -----------------------------------------------------------------------
+    //  Private data members
+    //
+    //  fSawErrors
+    //      This is set if we get any errors, and is queryable via a getter
+    //      method. Its used by the main code to suppress output if there are
+    //      errors.
+    // -----------------------------------------------------------------------
+    bool    fSawErrors;
+};
+
+
+// ---------------------------------------------------------------------------
+//  XIncludeHandlers: Overrides of the DOM ErrorHandler interface
+// ---------------------------------------------------------------------------
+bool XIncludeErrorHandler::handleError(const DOMError& domError)
+{
+	bool continueParsing = true;
+    if (domError.getSeverity() == DOMError::DOM_SEVERITY_WARNING)
+        XERCES_STD_QUALIFIER cerr << "\nWarning at file ";
+    else if (domError.getSeverity() == DOMError::DOM_SEVERITY_ERROR)
+    {
+        XERCES_STD_QUALIFIER cerr << "\nError at file ";
+        fSawErrors = true;
+    }
+	else {
+        XERCES_STD_QUALIFIER cerr << "\nFatal Error at file ";
+		continueParsing = false;
+        fSawErrors = true;
+	}
+
+    XERCES_STD_QUALIFIER cerr << StrX(domError.getLocation()->getURI())
+         << ", line " << domError.getLocation()->getLineNumber()
+         << ", char " << domError.getLocation()->getColumnNumber()
+         << "\n  Message: " << StrX(domError.getMessage()) << XERCES_STD_QUALIFIER endl;
+
+    return continueParsing;
+}
+
+void XIncludeErrorHandler::resetErrors()
+{
+    fSawErrors = false;
+}
+
+bool XIncludeErrorHandler::getSawErrors() const
+{
+    return fSawErrors;
+}
+*/
+
+shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string& filepath )
+{
+
+	//============================================================================
+	// Instantiate the DOM parser to use for the source documents
+	//============================================================================
+	static const XMLCh gLS[] = { chLatin_L, chLatin_S, chNull };
+	DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(gLS);
+	DOMLSParser       *parser = ((DOMImplementationLS*)impl)->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0);
+	DOMConfiguration  *config = parser->getDomConfig();
+
+	config->setParameter(XMLUni::fgDOMNamespaces, true);
+	config->setParameter(XMLUni::fgXercesSchema, true);
+	config->setParameter(XMLUni::fgXercesSchemaFullChecking, true);
+
+	if(config->canSetParameter(XMLUni::fgXercesDoXInclude, true)){
+		config->setParameter(XMLUni::fgXercesDoXInclude, true);
+	}
+
+	// enable datatype normalization - default is off
+	//config->setParameter(XMLUni::fgDOMDatatypeNormalization, true);
+
+	// And create our error handler and install it
+//	XIncludeErrorHandler errorHandler;
+//	config->setParameter(XMLUni::fgDOMErrorHandler, &errorHandler);
+
+	XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *doc = 0;
+
+	try
+	{
+        // load up the test source document
+//		XERCES_STD_QUALIFIER cerr << "Parse " << filepath.c_str() << " in progress ...";
+        parser->resetDocumentPool();
+		doc = parser->parseURI( filepath.c_str() );
+//		XERCES_STD_QUALIFIER cerr << " finished." << XERCES_STD_QUALIFIER endl;
+	}
+	catch (const XMLException& toCatch)
+	{
+		LOG_PRINT_ERROR( " Error during parsing: " + to_string(toCatch.getMessage()) );
+//		XERCES_STD_QUALIFIER cerr << "\nError during parsing: '" << testFileName << "'\n"
+//				<< "Exception message is:  \n"
+//				<< StrX(toCatch.getMessage()) << "\n" << XERCES_STD_QUALIFIER endl;
+	}
+	catch (const DOMException& toCatch)
+	{
+/*		const unsigned int maxChars = 2047;
+		XMLCh errText[maxChars + 1];
+
+		XERCES_STD_QUALIFIER cerr << "\nDOM Error during parsing: '" << testFileName << "'\n"
+				<< "DOMException code is:  " << toCatch.code << XERCES_STD_QUALIFIER endl;
+
+		if (DOMImplementation::loadDOMExceptionMsg(toCatch.code, errText, maxChars))
+				XERCES_STD_QUALIFIER cerr << "Message is: " << StrX(errText) << XERCES_STD_QUALIFIER endl;
+*/
+	}
+	catch (...)
+	{
+//		XERCES_STD_QUALIFIER cerr << "\nUnexpected exception during parsing: '" << testFileName << "'\n";
+	}
+/*
+	if (!errorHandler.getSawErrors() && doc) {
+		DOMLSSerializer	*writer = ((DOMImplementationLS*)impl)->createLSSerializer();
+		DOMLSOutput     *theOutputDesc = ((DOMImplementationLS*)impl)->createLSOutput();
+
+		try {
+			// write out the results
+//			XERCES_STD_QUALIFIER cerr << "Writing result to: " << outputFileName << XERCES_STD_QUALIFIER endl;
+
+			XMLFormatTarget *myFormTarget = new LocalFileFormatTarget(outputFileName);
+			theOutputDesc->setByteStream(myFormTarget);
+			writer->write(doc, theOutputDesc);
+			delete myFormTarget;
+		}
+		catch (const XMLException& toCatch)
+		{
+//			XERCES_STD_QUALIFIER cerr << "\nXMLException during writing: '" << testFileName << "'\n"
+//				<< "Exception message is:  \n"
+//				<< StrX(toCatch.getMessage()) << "\n" << XERCES_STD_QUALIFIER endl;
+		}
+		catch (const DOMException& toCatch)
+		{
+//			const unsigned int maxChars = 2047;
+//			XMLCh errText[maxChars + 1];
+
+//			XERCES_STD_QUALIFIER cerr << "\nDOM Error during writing: '" << testFileName << "'\n"
+//				<< "DOMException code is:  " << toCatch.code << XERCES_STD_QUALIFIER endl;
+
+//			if (DOMImplementation::loadDOMExceptionMsg(toCatch.code, errText, maxChars))
+//				XERCES_STD_QUALIFIER cerr << "Message is: " << StrX(errText) << XERCES_STD_QUALIFIER endl;
+		}
+		catch (...)
+		{
+//			XERCES_STD_QUALIFIER cerr << "\nUnexpected exception during writing: '" << testFileName << "'\n";
+		}
+		writer->release();
+		theOutputDesc->release();
+	}
+*/
+	//
+	//  Delete the parser itself.  Must be done prior to calling Terminate, below.
+	//
+//	parser->release();
+
+	shared_ptr<CXMLDocument> pDoc = shared_ptr<CXMLDocument>( new CXMLDocument( doc, parser ) );
+
+	return pDoc;
 }
 
 

@@ -4,10 +4,11 @@
 #include "3DMath/MathMisc.hpp"
 #include "Support/memory_helpers.hpp"
 #include "XML/XMLNodeReader.hpp"
-#include "GameCommon/3DActionCode.hpp"
 #include "Input/InputHandler.hpp"
+#include "GameCommon/3DActionCode.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
+#include "Stage/Stage.hpp"
 
 
 using namespace std;
@@ -25,6 +26,7 @@ void CBE_PseudoAircraft::Init()
 */
 
 
+
 template<typename T>
 const T& GetLimited( const T& val, const T& min = 0.0f, const T& max = 1.0f )
 {
@@ -36,6 +38,18 @@ const T& GetLimited( const T& val, const T& min = 0.0f, const T& max = 1.0f )
 	return val;
 }
 
+
+/*
+<Gear00_Shaft>
+<Gear00_Tire>,
+*/
+/*
+void CPseudoAircraftGear::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	reader.GetChildElementTextContent( "Tire/Pose/Pos", m_TirePose.vPosition );
+	reader.GetChildElementTextContent( "Shaft/Pose/Pos", m_ShaftPose.vPosition );
+}
+*/
 
 void CGI_Aircraft::AmmoPayload::LoadFromXMLNode( CXMLNodeReader& reader )
 {
@@ -64,6 +78,8 @@ CGI_Aircraft::CGI_Aircraft()
 	//m_PitchRange;
 	//m_RollRange;
 
+	m_fDefaultForwardAirFriction = 0.2f;
+
 	float m_fMaxPitchAccel = 5.0f;
 	float m_fMaxRollAccel = 5.0f;
 	float m_fMaxYawAccel = 5.0f;
@@ -84,7 +100,6 @@ CGI_Aircraft::CGI_Aircraft()
 
 CGI_Aircraft::~CGI_Aircraft()
 {
-	SafeDeleteVector( m_vecpMeshController );
 }
 
 
@@ -224,6 +239,10 @@ void CGI_Aircraft::InitWeaponSystem()
 
 void CGI_Aircraft::Update( float dt )
 {
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
 	CPseudoAircraftSimulator& sim = PseudoSimulator();
 
 	WeaponSystem().UpdateWorldProperties( sim.GetWorldPose(), sim.GetVelocity(), Vector3(0,0,0)/*sim.GetAngVelocity()*/ );
@@ -236,20 +255,24 @@ void CGI_Aircraft::Update( float dt )
 	sim.SetAccel( accel );
 
 	// update rotor(s)
-	size_t i, num = m_vecRotor.size();
+/*	size_t i, num = m_vecRotor.size();
 	for( i=0; i<num; i++ )
 	{
 		CAircraftRotor& rotor = m_vecRotor[i];
 		rotor.fAngle += rotor.fRotationSpeed * dt;
 	}
-
+*/
 	// udpate mesh controllers
-	num = m_vecpMeshController.size();
-	for( i=0; i<num; i++ )
+	const size_t num = m_vecpMeshController.size();
+	for( size_t i=0; i<num; i++ )
 	{
-		if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_AIRCRAFT_ROTOR
-		 && 0 < m_vecRotor.size() )
-			((CMeshBoneController_Rotor *)m_vecpMeshController[i])->SetRotationAngle( m_vecRotor[0].fAngle );
+		m_vecpMeshController[i]->SetCurrentTime( pStage->GetElapsedTime() );
+
+		m_vecpMeshController[i]->Update( dt );
+
+//		if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_AIRCRAFT_ROTOR
+//		 && 0 < m_vecRotor.size() )
+//			((CMeshBoneController_Rotor *)m_vecpMeshController[i])->SetRotationAngle( m_vecRotor[0].fAngle );
 
 		m_vecpMeshController[i]->UpdateTransforms();
 	}
@@ -330,12 +353,12 @@ int CGI_Aircraft::GetPayloadForAmmunition( const CGI_Ammunition& ammo, int weapo
 }
 
 
-bool CGI_Aircraft::InitMeshController( CD3DXSMeshObject* pMesh )
+bool CGI_Aircraft::InitMeshController( shared_ptr<CD3DXSMeshObject> pMesh )
 {
 	// determine the target mesh
 	// - This is either mesh of this aircraft or the argument 'pMesh'.
 	// - The target mesh has to be a skeletal mesh (i.e. mesh type must be CD3DXMeshObjectBase::TYPE_SMESH )
-	CD3DXSMeshObject* pTargetMesh = NULL;
+	shared_ptr<CD3DXSMeshObject> pTargetMesh;
 	if( pMesh )
 	{
 		// init mesh controller with external mesh object
@@ -345,10 +368,10 @@ bool CGI_Aircraft::InitMeshController( CD3DXSMeshObject* pMesh )
 	}
 	else
 	{
-		CD3DXMeshObjectBase *pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh().get();
+		shared_ptr<CD3DXMeshObjectBase> pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh();
 		if( pMeshObject && pMeshObject->GetMeshType() == CMeshType::SKELETAL )
 		{
-			pTargetMesh = dynamic_cast<CD3DXSMeshObject *>(pMeshObject);
+			pTargetMesh = boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pMeshObject);
 		}
 	}
 
@@ -376,7 +399,7 @@ void CGI_Aircraft::ResetMeshController()
 
 	size_t i, num = m_vecpMeshController.size();
 	for( i=0; i<num; i++ )
-		m_vecpMeshController[i]->SetTargetMesh( NULL );
+		m_vecpMeshController[i]->SetTargetMesh( shared_ptr<CD3DXSMeshObject>() );
 }
 
 
@@ -388,6 +411,20 @@ void CGI_Aircraft::UpdateTargetMeshTransforms()
 	size_t i, num = m_vecpMeshController.size();
 	for( i=0; i<num; i++ )
 		m_vecpMeshController[i]->UpdateTargetMeshTransforms();
+}
+
+
+void CGI_Aircraft::DeployGears()
+{
+	for( size_t i=0; i<m_vecpGear.size(); i++ )
+		m_vecpGear[i]->Open();
+}
+
+
+void CGI_Aircraft::RetractGears()
+{
+	for( size_t i=0; i<m_vecpGear.size(); i++ )
+		m_vecpGear[i]->Close();
 }
 
 
@@ -442,7 +479,7 @@ void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 		}
 	}
 
-	ar & m_vecRotor;
+//	ar & m_vecRotor;
 
 	ar & m_PrevUsedAmmo;
 }
@@ -476,6 +513,40 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 	{
 		m_vecSupportedAmmo[i].LoadFromXMLNode( payloads[i] );
 	}
-	
+
+	std::vector<CXMLNodeReader> components = reader.GetImmediateChildren( "Components" );
+	for( size_t i = 0; i<components.size(); i++ )
+	{
+		shared_ptr<CMeshBoneController_AircraftBase> pComponent;
+		if( reader.GetName() == "Flap" )
+		{
+			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_Flap() );
+		}
+		else if( reader.GetName() == "VFlap" )
+		{
+			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_VFlap() );
+		}
+		else if( reader.GetName() == "Rotor" )
+		{
+			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_Rotor() );
+		}
+		else if( reader.GetName() == "GearUnit" )
+		{
+			// store to the gear unit array to open/close the gear box(es)
+			shared_ptr<CMeshBoneController_GearUnit> pGearUnit;
+			pGearUnit = shared_ptr<CMeshBoneController_GearUnit>( new CMeshBoneController_GearUnit() );
+			m_vecpGear.push_back( pGearUnit );
+
+			pComponent = pGearUnit;
+		}
+
+		if( pComponent )
+		{
+			pComponent->LoadFromXMLNode( reader );
+
+			m_vecpMeshController.push_back( pComponent );
+		}
+	}
+
 }
 

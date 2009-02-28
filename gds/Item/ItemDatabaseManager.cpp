@@ -22,7 +22,10 @@ bool CItemDatabaseManager::Update( const std::string& filename )
 {
 	CItemDatabaseBuilder item_db_builder;
 
-	return item_db_builder.CreateItemDatabaseFile( filename );
+	if( filename.rfind( "xml" ) == filename.length() - 3 )
+		return item_db_builder.LoadFromXMLFile( filename );
+	else
+		return item_db_builder.CreateItemDatabaseFile( filename );
 }
 
 

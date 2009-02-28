@@ -1,6 +1,7 @@
 #ifndef __GAMEITEM_AIRCRAFT_H__
 #define __GAMEITEM_AIRCRAFT_H__
 
+#include <boost/shared_ptr.hpp>
 #include "GameItem.hpp"
 #include "WeaponSystem.hpp"
 
@@ -29,28 +30,10 @@ public:
 };*/
 
 
-class CAircraftRotor : public IArchiveObjectBase
-{
-public:
-	float fRotationSpeed;
-	float fAngle;
-	float fAngleOffset;
-
-//	Matrix34 Pose;
-
-	CAircraftRotor() : fRotationSpeed(5.0f), fAngle(0), fAngleOffset(0) {}
-
-	inline virtual void Serialize( IArchive& ar, const unsigned int version )
-	{
-		ar & fRotationSpeed & fAngle & fAngleOffset;
-	}
-
-};
-
 
 /**
- * CGI_Aircraft
- *
+  CGI_Aircraft
+
 */
 class CGI_Aircraft : public CGameItem
 {
@@ -148,10 +131,13 @@ class CGI_Aircraft : public CGameItem
 //	CBaseEntityHandle m_EngineNozzleFlame;
 //	CBaseEntityHandle m_MuzzleFlashBaseEntity;
 
-//	std::vector<CMeshBoneControllerBase *> m_vecpMeshController;
-	std::vector<CMeshBoneController_AircraftBase *> m_vecpMeshController;
+	std::vector< boost::shared_ptr<CMeshBoneController_AircraftBase> > m_vecpMeshController;
 
-	std::vector<CAircraftRotor> m_vecRotor;
+//	std::vector< boost::shared_ptr<CMeshBoneController_Rotor> > m_vecpRotor;
+
+	std::vector< boost::shared_ptr<CMeshBoneController_GearUnit> > m_vecpGear;
+
+	float m_fDefaultForwardAirFriction;
 
 public:
 
@@ -200,8 +186,8 @@ public:
 
 	float GetArmorScaled() const;
 
-	int GetNumRotors() const { return (int)m_vecRotor.size(); }
-	const CAircraftRotor& GetRotor( int index ) const { return m_vecRotor[index]; }
+//	int GetNumRotors() const { return (int)m_vecRotor.size(); }
+//	const CAircraftRotor& GetRotor( int index ) const { return m_vecRotor[index]; }
 
 
 	void UpdateAvailableAmmoCache(int num_weapon_slots, std::vector< boost::shared_ptr<CGI_Ammunition> >& vecpAmmo);
@@ -226,7 +212,7 @@ public:
 	/// In the latter case, the mesh is maintained as a simple borrowed reference,
 	/// and the user is responsible for calling ResetMeshController(),
 	/// before the mesh is destroyed
-	bool InitMeshController( CD3DXSMeshObject* pMesh = NULL);
+	bool InitMeshController( boost::shared_ptr<CD3DXSMeshObject> pMesh = boost::shared_ptr<CD3DXSMeshObject>() );
 
 	/// disconnet the target mesh from the mesh bone controllers.
 	/// The target mesh object is held as borrowed reference
@@ -236,6 +222,10 @@ public:
 	// update local transforms of the target mesh controlled by mesh bone controllers
 	// usually called before rendering the mesh
 	void UpdateTargetMeshTransforms();
+
+	void DeployGears();
+
+	void RetractGears();
 
 	unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT; }
 

@@ -20,11 +20,9 @@
 #include "XMLNodeReader.hpp"
 
 #ifdef _DEBUG
-	#pragma comment( lib, "xerces-c_static_3D.lib" )
-//	#pragma comment( lib, "xerces-depdom_3D.lib" )
+	#pragma comment( lib, "xerces-c_3D.lib" )
 #else // _DEBUG
-	#pragma comment( lib, "xerces-c_static_3.lib" )
-//	#pragma comment( lib, "xerces-depdom_3.lib" )
+	#pragma comment( lib, "xerces-c_3.lib" )
 #endif // _DEBUG
 
 
@@ -34,11 +32,15 @@ class CXMLDocument
 {
 	xercesc::XercesDOMParser *m_pParser;
 
+	xercesc::DOMLSParser *m_pLSParser;
+
 	xercesc::DOMDocument *m_pDocument;
 
 public:
 
 	CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::XercesDOMParser *pParser );
+
+	CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::DOMLSParser *pParser );
 
 	CXMLDocument();
 
@@ -62,6 +64,9 @@ public:
 
 class CXMLDocumentLoader
 {
+	// test
+	boost::shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string& filepath );
+
 public:
 
 	CXMLDocumentLoader();

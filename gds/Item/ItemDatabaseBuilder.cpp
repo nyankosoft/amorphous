@@ -170,7 +170,7 @@ void CItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, CGI_M
 
 void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircraft,
 															 CTextFileScanner& scanner,
-						                                     vector<CMeshBoneController_AircraftBase *>& vecpMeshController )
+						                                     vector< shared_ptr<CMeshBoneController_AircraftBase> >& vecpMeshController )
 {
 	string tag, type;
 	char _tag[32], _type[32];
@@ -194,7 +194,7 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 		pFlapControl->m_vecBoneControlParam.resize( 2 );
 		pFlapControl->m_vecBoneControlParam[0].Name = flapR_name;
 		pFlapControl->m_vecBoneControlParam[1].Name = flapL_name;
-		aircraft.m_vecpMeshController.push_back( pFlapControl );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pFlapControl) );
 	}
 	else if( type == "tvflap" )
 	{
@@ -206,7 +206,7 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 		pFlapControl->m_vecBoneControlParam.resize( 2 );
 		pFlapControl->m_vecBoneControlParam[0].Name = vflap0_name;
 		pFlapControl->m_vecBoneControlParam[1].Name = vflap1_name;
-		aircraft.m_vecpMeshController.push_back( pFlapControl );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pFlapControl) );
 	}
 	else if( type == "svflap" )
 	{
@@ -216,7 +216,7 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 		pFlapControl->m_fAnglePerYawAccel = angle_per_accel;
 		pFlapControl->m_vecBoneControlParam.resize( 1 );
 		pFlapControl->m_vecBoneControlParam[0].Name = vflap0_name;
-		aircraft.m_vecpMeshController.push_back( pFlapControl );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pFlapControl) );
 	}
 	else if( type == "rotor" )
 	{
@@ -229,7 +229,7 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 		pRotorControl->m_RotationDirection = dir;
 		pRotorControl->m_vecBoneControlParam.resize( 1 );
 		pRotorControl->m_vecBoneControlParam[0].Name = rotor_name;
-		aircraft.m_vecpMeshController.push_back( pRotorControl );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pRotorControl) );
 	}
 }
 
@@ -321,9 +321,9 @@ void CItemDatabaseBuilder::LoadAircraft( CTextFileScanner& scanner, CGI_Aircraft
 		AddMeshBoneControllerForAircraft( *pItem, scanner, pItem->m_vecpMeshController );
 	}
 
-	CAircraftRotor rotor = CAircraftRotor();
-	if( scanner.TryScanLine( "rotor", rotor.fRotationSpeed, rotor.fAngleOffset ) )
-		pItem->m_vecRotor.push_back( rotor );
+//	CAircraftRotor rotor = CAircraftRotor();
+//	if( scanner.TryScanLine( "rotor", rotor.fRotationSpeed, rotor.fAngleOffset ) )
+//		pItem->m_vecRotor.push_back( rotor );
 }
 
 
@@ -423,21 +423,9 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 	return true;
 }
 
-
-bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
+void CItemDatabaseBuilder::LoadItems( CXMLNodeReader& items_node_reader )
 {
-	CXMLDocumentLoader doc_loader;
-	shared_ptr<CXMLDocument> pDoc
-		= doc_loader.Load( filepath );
-
-	if( !pDoc )
-		return false;
-
-	CXMLNodeReader root_node_reader = pDoc->GetRootNodeReader();
-
-	CXMLNodeReader items_node = root_node_reader.GetChild( "Items" );
-
-	vector<CXMLNodeReader> vecItemNodeReader = items_node.GetImmediateChildren( "Item" );
+	vector<CXMLNodeReader> vecItemNodeReader = items_node_reader.GetImmediateChildren( "Item" );
 
 	CGameItemObjectFactory factory;
 	string classname;
@@ -450,7 +438,7 @@ bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 
 		int id = GetItemID( classname );
 
-		CGameItem *pObject = dynamic_cast<CGameItem *>(factory.CreateObject( id ));
+		CGameItem *pObject = factory.CreateGameItem( id );
 
 		if( !pObject )
 			continue;
@@ -459,7 +447,51 @@ bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 		m_vecpItem.back()->LoadFromXMLNode( item_node_reader );
 	}
 
+	// recursively load the items from the child <Items> nodes
+	vector<CXMLNodeReader> vecItemNodesReader = items_node_reader.GetImmediateChildren( "Items" );
+	for( size_t i=0; i<vecItemNodesReader.size(); i++ )
+		LoadItems( vecItemNodesReader[i] );
+}
 
+
+bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
+{
+	fnop::dir_stack dirstk( fnop::get_path(filepath) );
+	string base_filepath = fnop::get_nopath(filepath);
+
+	CXMLDocumentLoader doc_loader;
+	shared_ptr<CXMLDocument> pDoc
+//		= doc_loader.Load( filepath );
+		= doc_loader.Load( base_filepath );
+
+	if( !pDoc )
+	{
+		dirstk.prevdir();
+		return false;
+	}
+
+	CXMLNodeReader root_node_reader = pDoc->GetRootNodeReader();
+
+	// The root node may contain <Item> nodes
+	LoadItems( root_node_reader );
+
+//	CXMLNodeReader items_node = root_node_reader.GetChild( "Items" );
+	vector<CXMLNodeReader> vecItemsNodes = root_node_reader.GetImmediateChildren( "Items" );
+
+	DOMNodeList *pChildNodesList = root_node_reader.GetDOMNode()->getChildNodes();
+	XMLSize_t num_children = pChildNodesList->getLength();
+	for( XMLSize_t i=0; i<num_children; i++ )
+	{
+		string node_name = to_string( pChildNodesList->item(i)->getNodeName() );
+		string text_content = to_string( pChildNodesList->item(i)->getTextContent() );
+	}
+
+	for( size_t i=0; i<vecItemsNodes.size(); i++ )
+	{
+		LoadItems( vecItemsNodes[i] );
+	}
+
+	dirstk.prevdir();
 	return true;
 }
 

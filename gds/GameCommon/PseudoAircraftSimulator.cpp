@@ -1,4 +1,3 @@
-
 #include "PseudoAircraftSimulator.hpp"
 
 #include "GameCommon/GameMathMisc.hpp"
@@ -26,6 +25,8 @@ CPseudoAircraftSimulator::CPseudoAircraftSimulator()
 	m_Yaw.m_Accel.smooth_time = 0.10f;
 	m_Pitch.m_Accel.smooth_time = 0.08f;
 	m_Roll.m_Accel.smooth_time = 0.08f;
+
+	m_fForwardWindage = 0.2f;
 }
 
 
@@ -51,7 +52,7 @@ void CPseudoAircraftSimulator::Update( float dt )
 
 	m_Forward.m_fSpeed += m_Forward.GetCurrentAccel() * dt;
 
-	ApplyQFriction( m_Forward.m_fSpeed, dt, 0.2f, QFRIC_EPSILON );
+	ApplyQFriction( m_Forward.m_fSpeed, dt, m_fForwardWindage, QFRIC_EPSILON );
 
 	m_WorldPose.vPosition += prev_pose.matOrient.GetColumn(2) * m_Forward.m_fSpeed * dt;
 

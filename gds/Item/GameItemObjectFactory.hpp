@@ -1,11 +1,13 @@
-
-#ifndef __GAMEITEMOBJECTFACTORY_H__
-#define __GAMEITEMOBJECTFACTORY_H__
+#ifndef __GameItemObjectFactory_H__
+#define __GameItemObjectFactory_H__
 
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
+
+
+class CGameItem;
 
 
 //===========================================================================
@@ -15,8 +17,11 @@ using namespace GameLib1::Serialization;
 class CGameItemObjectFactory : public IArchiveObjectFactory
 {
 public:
+
+	CGameItem *CreateGameItem( const unsigned int id );
+
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 };
 
 
-#endif  /* __GAMEITEMOBJECTFACTORY_H__   */
+#endif  /* __GameItemObjectFactory_H__   */

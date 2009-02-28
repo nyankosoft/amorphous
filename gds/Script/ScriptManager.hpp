@@ -131,6 +131,8 @@ class CScriptManager
 	/// - they are reloaded when modified at runtime
 	bool m_bLoadFromNonArchivedFiles;
 
+private:
+
 	bool LoadScriptFromFile( const std::string& filename );
 
     bool LoadScript( const stream_buffer& buffer, CEventScript& dest_script );
