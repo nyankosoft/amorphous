@@ -39,6 +39,11 @@ int ConvertGICodeToWin32VKCode( int general_input_code )
 }
 
 
+
+//================================================================================
+// CPlatformDependentCameraController
+//================================================================================
+
 bool CPlatformDependentCameraController::IsKeyPressed( int general_input_code )
 {
 	if( !IsValidGeneralInputCode( general_input_code ) )

@@ -10,9 +10,9 @@ class CPlatformDependentCameraController : public CCameraControllerBase
 {
 public:
 
-	CPlatformDependentCameraController();
+	CPlatformDependentCameraController() {}
 
-	~CPlatformDependentCameraController();
+	~CPlatformDependentCameraController() {}
 
 	bool IsKeyPressed( int general_input_code );
 
