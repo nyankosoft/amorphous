@@ -2,20 +2,22 @@
 // File: .cpp
 //-----------------------------------------------------------------------------
 
-#include "Support/FileOpenDialog_Win32.h"
-#include "Support/CameraController_Win32.h"
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support/FileOpenDialog_Win32.hpp"
+#include "Support/CameraController_Win32.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Timer.hpp"
 
-#include "3DCommon/MeshModel/3DMeshModelBuilder.h"
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/MeshObjectHandle.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/Shader/Shader.h"
-#include "3DCommon/Shader/ShaderManager.h"
-#include "LightWave/3DMeshModelExportManager_LW.h"
+#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Shader/Shader.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "LightWave/3DMeshModelExportManager_LW.hpp"
 
-#include "GameCommon/Timer.h"
+#include <vld.h>
+
 
 
 using namespace MeshModel;
@@ -27,7 +29,7 @@ using namespace MeshModel;
 
 CMeshObjectHandle g_MeshObject;
 
-CCameraController_Win32 g_CameraController;
+CPlatformDependentCameraController g_CameraController;
 
 CShaderManager g_ShaderManager;
 
@@ -37,38 +39,49 @@ CShaderManager g_ShaderManager;
 // Global functions
 //-----------------------------------------------------------------------------
 
-void UpdateHLSLMatrices()
+void UpdateCameraMatrix()
 {
-	D3DXMATRIX matTrans, matWorldView, matWorld, matView, matProj;
-//	DIRECT3D9.GetDevice()->GetTransform( D3DTS_WORLD,      &matWorld );
+	D3DXMATRIX matWorld, matView, matProj;
+
+	//
+	// calc matrices
+	//
+
+	// world - always set identity matrix
 	D3DXMatrixIdentity( &matWorld );
-	DIRECT3D9.GetDevice()->GetTransform( D3DTS_VIEW,       &matView );
-	DIRECT3D9.GetDevice()->GetTransform( D3DTS_PROJECTION, &matProj );
 
-	CShaderManager *pShaderManager = CShader::Get()->GetCurrentShaderManager();
+	// view - take from camera controller
+	g_CameraController.GetCameraMatrix( matView );
 
-	LPD3DXEFFECT pEffect = pShaderManager->GetEffect();
+	// projection - use the fixed values for now
+	float fov    = D3DX_PI / 4;
+	float aspect = 16.0f / 9.0f;
+	float z_near = 0.1f;
+	float z_far  = 500.0f;
+	D3DXMatrixPerspectiveFovLH( &matProj, fov, aspect, z_near, z_far );
 
-	pShaderManager->SetWorldViewProjectionTransform( matWorld, matView, matProj );
+	//
+	// set matrices to fixed function shader
+	//
+	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW,       &matWorld );
+	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW,       &matView );
+	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 
-	pEffect->CommitChanges();
+	//
+	// set matrices to programmable shader
+	//
+	CShaderManager &rShaderMgr = g_ShaderManager;
+	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
+	if( pEffect )
+	{
+		rShaderMgr.SetWorldViewProjectionTransform( matWorld, matView, matProj );
 
-/*	matTrans = matWorld * matView * matProj;
-	pEffect->SetMatrix( "WorldViewProj", &matTrans);
+		pEffect->CommitChanges();
+	}
 
-	matWorldView = matWorld * matView;
-	pEffect->SetMatrix( "WorldView", &matWorldView );
-
-	pEffect->SetMatrix( "World", &matWorld );
-	pEffect->SetMatrix( "View", &matView );
-	pEffect->SetMatrix( "Proj", &matProj );
-
-	D3DXMATRIX matWorldView_ = matWorldView;	// save the original world view for test
-
-	pEffect->CommitChanges();
-
-
-	D3DXMatrixTranspose( &matWorldView, &matWorldView );*/
+/*
+	D3DXMatrixTranspose( &matWorldView, &matWorldView );
+*/
 }
 
 
@@ -298,13 +311,11 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR	 lpCmdLi
 			/**/
 		}
 
-		TIMER.UpdateFrameTime();
+		GlobalTimer().UpdateFrameTime();
 
-		g_CameraController.SetCameraMatrix();
+		UpdateCameraMatrix();
 
-		UpdateHLSLMatrices();
-
-		g_CameraController.UpdateCameraPosition( TIMER.GetFrameTime() );
+		g_CameraController.UpdateCameraPose( GlobalTimer().GetFrameTime() );
 
         Render();
     }
