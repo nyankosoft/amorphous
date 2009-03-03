@@ -6,7 +6,6 @@
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
-#include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
@@ -33,7 +32,7 @@ public:
 
 	void Release();
 
-	bool Update( const std::string& filename );
+	bool Update( const std::string& filename, const std::string& default_output_filename );
 
 	bool LoadFromFile( const std::string& filename );
 

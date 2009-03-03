@@ -18,12 +18,12 @@ void CItemDatabaseManager::Release()
 }
 
 
-bool CItemDatabaseManager::Update( const std::string& filename )
+bool CItemDatabaseManager::Update( const std::string& filename, const std::string& default_output_filename )
 {
 	CItemDatabaseBuilder item_db_builder;
 
 	if( filename.rfind( "xml" ) == filename.length() - 3 )
-		return item_db_builder.LoadFromXMLFile( filename );
+		return item_db_builder.CreateItemDatabaseFileFromXMLFile( filename, default_output_filename );
 	else
 		return item_db_builder.CreateItemDatabaseFile( filename );
 }

@@ -99,6 +99,21 @@ void CGI_Weapon::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGameItem::LoadFromXMLNode( reader );
 
+	reader.GetChildElementTextContent( "AmmoType",           m_strAmmoType );
+	reader.GetChildElementTextContent( "FireInterval",       m_fFireInterval );
+	reader.GetChildElementTextContent( "Grouping",           m_fGrouping );	// grouping in 10[m]
+	reader.GetChildElementTextContent( "MuzzleSpeedFactor",  m_fMuzzleSpeedFactor );
+	reader.GetChildElementTextContent( "LocalRecoilForce",   m_vLocalRecoilForce );
+
+	string fire_sound_name;
+	reader.GetChildElementTextContent( "FireSound",          fire_sound_name );
+	m_FireSound.SetResourceName( fire_sound_name );
+
+	reader.GetChildElementTextContent( "NumBursts",          m_iNumBursts );
+
+//	reader.GetChildElementTextContent( "fBurstInterval;", m_fBurstInterval );
+
+	reader.GetChildElementTextContent( "MuzzleEndLocalPos", m_MuzzleEndLocalPose.vPosition );
 	
 }
 

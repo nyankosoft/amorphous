@@ -11,8 +11,8 @@ void ItemDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	int lang_index = 0;
 	CXMLNodeReader text_node_reader = reader.GetChild( "Text" );
-	text_node_reader.GetChildElementTextContent( "Jp", text[Lang::Japanese] );
-	text_node_reader.GetChildElementTextContent( "En", text[Lang::English] );
+	text_node_reader.GetChildElementTextContent( "Japanese", text[Lang::Japanese] );
+	text_node_reader.GetChildElementTextContent( "English",  text[Lang::English] );
 }
 
 
@@ -60,7 +60,8 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "Price",       m_Price );
 	reader.GetChildElementTextContent( "MaxQuantity", m_iMaxQuantity );
 
-	m_Desc.LoadFromXMLNode( reader );
+	m_MeshObjectContainer.LoadFromXMLNode( reader.GetChild( "Model" ) );
+	m_Desc.LoadFromXMLNode( reader.GetChild( "Desc" ) );
 }
 
 

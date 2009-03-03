@@ -222,8 +222,8 @@ bool CApplicationBase::InitBase()
 
 	// update & load the item database
 //	ItemDatabaseManager().Update( "..." );
-	CItemDatabaseManager::Get()->Update( "../resources/items/items.xml" );
-	CItemDatabaseManager::Get()->LoadFromFile( "./Item/item.gid" );
+	ItemDatabaseManager().Update( "../resources/items/items.xml", "./Item/item.gid" );
+	ItemDatabaseManager().LoadFromFile( "./Item/item.gid" );
 
 	LOG_PRINT( " - Loaded the item database." );
 

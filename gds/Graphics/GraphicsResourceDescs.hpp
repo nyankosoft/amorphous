@@ -7,6 +7,7 @@
 
 #include "fwd.hpp"
 #include "GraphicsResource.hpp"
+#include "XML/fwd.hpp"
 #include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
@@ -88,6 +89,8 @@ public:
 		ar & ResourcePath;
 	}
 
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+
 	friend class CGraphicsResourceCacheManager;
 };
 
@@ -153,6 +156,8 @@ public:
 		ar & Width & Height & MipLevels;
 		ar & (int&)Format;
 	}
+
+	void LoadFromXMLNode( CXMLNodeReader& reader );
 };
 
 
@@ -215,6 +220,8 @@ public:
 		ar & LoadOptionFlags;
 		ar & NumVertices & NumIndices & VertexFormatFlags;
 	}
+
+	void LoadFromXMLNode( CXMLNodeReader& reader );
 };
 
 

@@ -487,6 +487,8 @@ void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 
 void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 {
+	CGameItem::LoadFromXMLNode( reader );
+
 	reader.GetChildElementTextContent( "Armor",           m_fArmor );
 	reader.GetChildElementTextContent( "Ceiling",         m_fCeiling );
 	reader.GetChildElementTextContent( "CockpitLocalPos", m_CockpitLocalPose.vPosition );

@@ -496,6 +496,19 @@ bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 }
 
 
+bool CItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string& filepath, const std::string& output_filepath )
+{
+	bool res = LoadFromXMLFile( filepath );
+	if( !res )
+	{
+		LOG_PRINT_ERROR( "Failed to load game items data from the xml file: " + filepath );
+		return false;
+	}
+
+	return OutputDatabaseFile( output_filepath );
+}
+
+
 int CItemDatabaseBuilder::GetItemID( const string& class_name )
 {
 	if( class_name == "Firearm" )                return CGameItem::ID_FIREARMS;
@@ -515,19 +528,6 @@ int CItemDatabaseBuilder::GetItemID( const string& class_name )
 		return IArchiveObjectBase::INVALID_ID;
 	}
 }	
-
-
-/*
-== operator of stl::string class does not return true if the numbers of null characters are different
-unsigned int CItemDatabaseBuilder::GetItemID( string& strClassName )
-{
-	if( strClassName == "Firearms" )			return CGameItem::ID_FIREARMS;
-	else if( strClassName == "Ammunition" )		return CGameItem::ID_AMMUNITION;
-	else if( strClassName == "GravityGun" )		return CGameItem::ID_GRAVITY_GUN;
-	else if( strClassName == "Binocular" )		return CGameItem::ID_BINOCULAR;
-	else if( strClassName == "NightVision" )	return CGameItem::ID_NIGHT_VISION;
-	else return -1;
-}*/
 
 
 bool CItemDatabaseBuilder::OutputDatabaseFile( const std::string output_filename )

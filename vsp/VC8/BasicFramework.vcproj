@@ -545,6 +545,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\GraphicsResourceDescs.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\GraphicsResourceDescs.hpp"
 					>
 				</File>

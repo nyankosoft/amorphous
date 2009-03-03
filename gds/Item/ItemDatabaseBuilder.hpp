@@ -54,6 +54,8 @@ class CItemDatabaseBuilder
 
 	void LoadItems( CXMLNodeReader& items_node_reader );
 
+	bool LoadFromXMLFile( const std::string& filepath );
+
 public:
 
 	CItemDatabaseBuilder();
@@ -63,9 +65,9 @@ public:
 //	void SetOutputPath( const char *pcPath ) { m_strOutputPath = pcPath; }
 //	void SetItemFilePath( const char *pcPath ) { m_strItemFilePath = pcPath; }
 
-	bool LoadItemsFromTextFile( const std::string& filenpath );
+	bool CreateItemDatabaseFileFromXMLFile( const std::string& filepath, const std::string& output_filepath );
 
-	bool LoadFromXMLFile( const std::string& filepath );
+	bool LoadItemsFromTextFile( const std::string& filenpath );
 
 	bool CreateItemDatabaseFile( const std::string& src_filename );
 

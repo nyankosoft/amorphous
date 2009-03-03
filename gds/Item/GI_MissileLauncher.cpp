@@ -146,18 +146,18 @@ void CGI_MissileLauncher::LoadFromXMLNode( CXMLNodeReader& reader )
 	InitStates();
 
 	CGI_Weapon::LoadFromXMLNode( reader );
-/*
-	reader.GetChildNodeTextContent( "ValidSensorAngle",    m_fValidSensorAngle );
-	reader.GetChildNodeTextContent( "MaxSensorRange",      m_fMaxSensorRange );
 
-	reader.GetChildNodeTextContent( "NumMaxSimulTargets",  m_NumMaxSimulTargets );
+	reader.GetChildElementTextContent( "ValidSensorAngle",    m_fValidSensorAngle );
+	reader.GetChildElementTextContent( "MaxSensorRange",      m_fMaxSensorRange );
+
+	reader.GetChildElementTextContent( "NumMaxSimulTargets",  m_NumMaxSimulTargets );
 
 //	reader.GetChildNodeTextContent( "NumReleasePositions", m_NumReleasePositions );
 
-	size_t num_release_positions = 0;
-	reader.GetChildNodeTextContent( "NumReleasePositions", num_release_positions );
+	int num_release_positions = 0;
+	reader.GetChildElementTextContent( "NumReleasePositions", num_release_positions );
 	SetNumReleasePositions( num_release_positions );
-
+/*
 	vector<CXMLNodeReader> = reader.GetImmediateChildren( "Holder" );
 	for(;;)
 	{
