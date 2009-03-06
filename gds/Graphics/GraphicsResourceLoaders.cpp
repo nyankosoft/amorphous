@@ -99,6 +99,18 @@ void CGraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsRes
 bool CDiskTextureLoader::LoadFromFile( const std::string& filepath )
 {
 	return m_Image.LoadFromFile( GetSourceFilepath() );
+
+	//>>> async loading debug
+/*	bool loaded = m_Image.LoadFromFile( GetSourceFilepath() );
+	if( loaded )
+	{
+		// See if the image is properly loaded
+		string dest_filepath = GetSourceFilepath();
+		fnop::append_to_body( dest_filepath, "_loaded" );
+		m_Image.SaveToFile( dest_filepath );
+	}
+	return loaded;*/
+	//<<< async loading debug
 }
 
 

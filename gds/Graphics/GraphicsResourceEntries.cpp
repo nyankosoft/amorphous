@@ -377,6 +377,8 @@ bool CTextureResource::Create()
 	HRESULT hr;
 	DWORD usage = 0;
 	D3DPOOL pool = D3DPOOL_MANAGED;
+//	DWORD usage = D3DUSAGE_DYNAMIC;
+//	D3DPOOL pool = D3DPOOL_DEFAULT;
 	{
 		char title[1024];
 		sprintf( title, "D3DXCreateTexture (%dx%d)", desc.Width, desc.Height );

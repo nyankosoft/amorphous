@@ -218,7 +218,13 @@ public:
 
 	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
 
-	inline LPDIRECT3DTEXTURE9 GetTexture() { return m_pTexture; }
+	inline LPDIRECT3DTEXTURE9 GetTexture()
+	{
+		if( GetState() == GraphicsResourceState::LOADED )
+			return m_pTexture;
+		else
+			return NULL;
+	}
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
 
