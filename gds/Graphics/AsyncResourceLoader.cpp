@@ -70,8 +70,7 @@ void CAsyncResourceLoader::IOThreadMain()
 }
 
 
-/// called by file IO thread
-void CAsyncResourceLoader::ProcessResourceLoadRequests()
+void CAsyncResourceLoader::ProcessResourceLoadRequest()
 {
 	bool copied = false;
 	bool res = false;
@@ -79,6 +78,82 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 	shared_ptr<CGraphicsResourceLoader> pLoader;
 	CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, shared_ptr<CGraphicsResourceLoader>(), weak_ptr<CGraphicsResourceEntry>() );
 
+	if( 0 < m_ResourceLoadRequestQueue.size() )
+	{
+		mutex::scoped_lock scoped_lock(m_IOMutex);
+		req = m_ResourceLoadRequestQueue.front();
+		m_ResourceLoadRequestQueue.pop();
+	}
+	else
+		return;
+
+	switch( req.GetRequestType() )
+	{
+	case CResourceLoadRequest::LoadFromDisk:
+		pLoader = req.m_pLoader;
+		// load the resource from the disk
+/*			res = pLoader->LoadFromDisk();
+		switch(res)
+		{
+		case LoadResult::SUCCESS:
+			break;
+		case LoadResult::RESOURCE_NOT_FOUND:
+			continue;
+			break;
+		case LoadResult::RESOURCE_IN_USE:
+			m_ResourceLoadRequestQueue.push( req );
+			continue;
+			// try again later
+			break;
+		default:
+			break;
+		}*/
+
+		// load the resource from disk or memory
+		// - texture and mesh resources
+		//   -> loaded from the disk
+		// - sub resources of the mesh (i.e., vertices, indices, etc.)
+		//   -> loaded from mesh archive on memory
+		res = pLoader->Load();
+
+		if( res )
+		{
+			// Fills out resource desc (texture & mesh)
+			// Creates a lock request (texture)
+			// Create load requests for sub resources (mesh)
+			pLoader->OnLoadingCompleted( pLoader );
+		}
+		else
+		{
+			int failed_to_load_a_resource = 1;
+		}
+		break;
+
+	case CResourceLoadRequest::CopyToGraphicsMemory:
+		// copy loaded data to locked graphics memory
+		copied = req.m_pLoader->CopyLoadedContentToGraphicsResource();
+		if( copied )
+		{
+			AddGraphicsDeviceRequest( 
+				CGraphicsDeviceRequest( CGraphicsDeviceRequest::Unlock, req.m_pLoader, req.m_pResourceEntry.lock() )
+				);
+		}
+		else
+		{
+			int failed_to_copy_a_resource_to_locked_graphics_memory = 1;
+		}
+		
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+/// called by file IO thread
+void CAsyncResourceLoader::ProcessResourceLoadRequests()
+{
 	boost::xtime xt;
 	boost::xtime_get(&xt, boost::TIME_UTC);
 	xt.sec += 1; // 1 [sec]
@@ -87,72 +162,7 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 	{
 		boost::thread::sleep(xt);
 
-		if( 0 < m_ResourceLoadRequestQueue.size() )
-		{
-			mutex::scoped_lock scoped_lock(m_IOMutex);
-			req = m_ResourceLoadRequestQueue.front();
-			m_ResourceLoadRequestQueue.pop();
-		}
-		else
-			continue;
-
-		switch( req.GetRequestType() )
-		{
-		case CResourceLoadRequest::LoadFromDisk:
-			pLoader = req.m_pLoader;
-			// load the resource from the disk
-/*			res = pLoader->LoadFromDisk();
-			switch(res)
-			{
-			case LoadResult::SUCCESS:
-				break;
-			case LoadResult::RESOURCE_NOT_FOUND:
-				continue;
-				break;
-			case LoadResult::RESOURCE_IN_USE:
-				m_ResourceLoadRequestQueue.push( req );
-				continue;
-				// try again later
-				break;
-			default:
-				break;
-			}*/
-
-			// load the resource from disk or memory
-			// - texture and mesh resources
-			//   -> loaded from the disk
-			// - sub resources of the mesh (i.e., vertices, indices, etc.)
-			//   -> loaded from mesh archive on memory
-			res = pLoader->Load();
-
-			if( res )
-			{
-				// Fills out resource desc (texture & mesh)
-				// Creates a lock request (texture)
-				// Create load requests for sub resources (mesh)
-				pLoader->OnLoadingCompleted( pLoader );
-			}
-			else
-			{
-				int failed_to_load_a_resource = 1;
-			}
-			break;
-
-		case CResourceLoadRequest::CopyToGraphicsMemory:
-			// copy loaded data to locked graphics memory
-			copied = req.m_pLoader->CopyLoadedContentToGraphicsResource();
-			if( copied )
-			{
-				AddGraphicsDeviceRequest( 
-					CGraphicsDeviceRequest( CGraphicsDeviceRequest::Unlock, req.m_pLoader, req.m_pResourceEntry.lock() )
-					);
-			}
-			
-			break;
-
-		default:
-			break;
-		}
+		ProcessResourceLoadRequest();
 	}
 }
 

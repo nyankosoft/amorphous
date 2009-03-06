@@ -154,6 +154,13 @@ public:
 
 	/// Called by the render thread
 	void ProcessGraphicsDeviceRequests();
+
+
+	/// Processes a single request
+	/// - Called by the system when the async loading is enabled.
+	///   - The user must not call this method.
+	/// - The user is responsible for calling this method in the main loop if the async loading is disabled.
+	void ProcessResourceLoadRequest();
 };
 
 
