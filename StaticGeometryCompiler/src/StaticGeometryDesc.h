@@ -2,16 +2,12 @@
 #define  __StaticGeometryDesc_H__
 
 
-#include <vector>
-#include <string>
-#include <boost/shared_ptr.hpp>
-
-#include "Graphics/MeshModel/General3DMesh.h"
-#include "Graphics/LightStructs.h"
-#include "Graphics/Shader/ShaderParameter.h"
-#include "BSPMapCompiler/LightmapBuilder.h"
-#include "XML/XMLDocumentLoader.h"
-#include "XML/XMLNodeReader.h"
+#include "Graphics/MeshModel/General3DMesh.hpp"
+#include "Graphics/LightStructs.hpp"
+#include "Graphics/Shader/ShaderParameter.hpp"
+#include "BSPMapCompiler/LightmapBuilder.hpp"
+#include "XML/XMLDocumentLoader.hpp"
+#include "XML/XMLNodeReader.hpp"
 using namespace xercesc;
 
 

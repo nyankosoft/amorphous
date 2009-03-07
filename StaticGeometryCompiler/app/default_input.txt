@@ -1,1 +1,1 @@
-input    ../../../App/FlightGame/resources/sg/swampy/desc.rd
+input    ../../../GameProjects/FlightGame/resources/sg/mountainssnowy/desc.xml

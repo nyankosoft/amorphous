@@ -4,12 +4,12 @@
 
 #include <boost/shared_ptr.hpp>
 #include "StaticGeometryDesc.h"
-#include "Graphics/MeshModel/3DMeshModelArchive.h"
-#include "Graphics/MeshModel/General3DMesh.h"
-#include "Stage/StaticGeometry.h"
-#include "Stage/StaticGeometryArchiveFG.h"
-#include "3DMath/AABTree.h"
-#include "Physics/Stream.h"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/MeshModel/General3DMesh.hpp"
+#include "Stage/StaticGeometry.hpp"
+#include "Stage/StaticGeometryArchiveFG.hpp"
+#include "3DMath/AABTree.hpp"
+#include "Physics/Stream.hpp"
 
 using namespace MeshModel;
 

@@ -2,20 +2,19 @@
 // File: D3DAppTestMain.cpp
 //-----------------------------------------------------------------------------
 
-#include <vld.h>
+//#include <vld.h>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include "Graphics/all.h"
-#include "Graphics/LogOutput_OnScreen.h"
-#include "Support.h"
-#include "Support/FileOpenDialog_Win32.h"
-#include "Support/MiscAux.h"
-#include "Support/Timer.h"
-#include "GameInput.h"
-#include "Stage/StaticGeometry.h"
-#include "XML/XMLDocumentLoader.h"
+#include "Graphics/all.hpp"
+#include "Graphics/LogOutput_OnScreen.hpp"
+#include "Support.hpp"
+#include "Support/FileOpenDialog_Win32.hpp"
+#include "Support/MiscAux.hpp"
+#include "Input.hpp"
+#include "Stage/StaticGeometry.hpp"
+#include "XML/XMLDocumentLoader.hpp"
 
 #include "StaticGeometryCompilerFG.h"
 #include "StaticGeometryCompiler.h"
@@ -63,7 +62,7 @@ CStdKeyboard g_StdKeyboard;
 
 boost::shared_ptr<CFontBase> g_pFont;
 
-CCameraController_Win32 g_CameraController;
+CPlatformDependentCameraController g_CameraController;
 
 CCamera g_Camera;
 
@@ -152,7 +151,7 @@ VOID Render()
 //-----------------------------------------------------------------------------
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	g_CameraController.HandleMessage( hWnd, msg, wParam, lParam );
+	g_CameraController.HandleMessage( msg, wParam, lParam );
 
 	switch( msg )
 	{
@@ -268,37 +267,9 @@ bool CompileStaticGeometry( const std::string& filename )
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: WinMain()
-// Desc: The application's entry point
-//-----------------------------------------------------------------------------
-
-INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
+int RunApp( const std::string& cmd_line )
 {
 	string initial_working_directory = fnop::get_cwd();
-
-	string cmd_line = lpCmdLine;
-
-    // Register the window class
-    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
-                      GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
-                      "D3D Test", NULL };
-
-    RegisterClassEx( &wc );
-
-    // Create the application's window
-    HWND hWnd = CreateWindow( "D3D Test", "Static Geometry Compiler",
-                              WS_OVERLAPPEDWINDOW, 200, 200, 800, 600,
-                              GetDesktopWindow(), NULL, wc.hInstance, NULL );
-
-
-    // Show the window
-    ShowWindow( hWnd, SW_SHOWDEFAULT );
-    UpdateWindow( hWnd );
-
-	// Initialize Direct3D
-	if( !DIRECT3D9.InitD3D( hWnd ) )
-		return 0;
 
 	// init font
 	boost::shared_ptr<CFont> pFont = boost::shared_ptr<CFont>( new CFont() );
@@ -311,6 +282,18 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 //	g_pLogOutput->SetTopLeftPos( Vector2(8,16) );
 
 //	SetDefaultSkyboxMesh( compiler_fg );
+
+
+	if( initial_working_directory.find( "StaticGeometryCompiler\\vsp" ) != string::npos )
+	{
+		// the working directory is the same with the project file directory
+		// - Happens when the app is run from the Visual Studio
+		// - Change the working directory to the directory of the application binary.
+		fnop::set_wd( "../../app" );
+	}
+
+	// File open dialog is not working. Why???
+	bool win32_file_open_dialog_is_available = false;
 
 	string filename;
 	if( 0 < cmd_line.length() )
@@ -336,7 +319,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	else
 	{
 		// no command line arguments
-		if( /* Win32 file open dialog is available == */ true )
+		if( win32_file_open_dialog_is_available )
 		{
 			// select a desc file from OpenFile dialog
 			if( !GetFilename(filename, NULL) )
@@ -396,7 +379,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 			}
 			else
 			{
-				ReleaseMain( wc );
 				return 0;
 			}
 		}
@@ -409,7 +391,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	// exit the app here if the input file given as a command line argument
 	if( cmd_line.length() )
 	{
-		ReleaseMain( wc );
 		return 0;
 	}
 
@@ -430,8 +411,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		{
 			GlobalTimer().UpdateFrameTime();
 
-			g_CameraController.UpdateCameraPosition( GlobalTimer().GetFrameTime() );
-			g_CameraController.SetCameraMatrix();
+			g_CameraController.UpdateCameraPose( GlobalTimer().GetFrameTime() );
+
+//			g_CameraController.SetCameraMatrix();
 
 			Render();
 		}
@@ -441,7 +423,51 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	LOG_PRINT( " Cleaning up..." );
 
+    return 0;
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: WinMain()
+// Desc: The application's entry point
+//-----------------------------------------------------------------------------
+
+INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
+{
+	string initial_working_directory = fnop::get_cwd();
+
+	string cmd_line = lpCmdLine;
+
+    // Register the window class
+    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
+                      GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
+                      "D3D Test", NULL };
+
+    RegisterClassEx( &wc );
+
+    // Create the application's window
+    HWND hWnd = CreateWindow( "D3D Test", "Static Geometry Compiler",
+                              WS_OVERLAPPEDWINDOW, 200, 200, 800, 600,
+                              GetDesktopWindow(), NULL, wc.hInstance, NULL );
+
+    // Show the window
+    ShowWindow( hWnd, SW_SHOWDEFAULT );
+    UpdateWindow( hWnd );
+
+	// Initialize Direct3D
+	if( !DIRECT3D9.InitD3D( hWnd ) )
+		return 0;
+
+	try
+	{
+		int ret = RunApp( cmd_line );
+	}
+	catch( exception& e )
+	{
+		g_Log.Print( WL_ERROR, "exception: %s", e.what() );
+	}
+
 	ReleaseMain( wc );
 
-    return 0;
+	return 0;
 }

@@ -1,17 +1,17 @@
 #include "StaticGeometryCompiler.h"
-#include "Graphics/MeshModel/TerrainMeshGenerator.h"
-#include "Support/Serialization/BinaryDatabase.h"
-#include "Support/StringAux.h"
-#include "Support/fnop.h"
-#include "Stage/StaticGeometry.h"
-#include "BSPMapCompiler/LightmapBuilder.h"
+#include "Graphics/MeshModel/TerrainMeshGenerator.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
+#include "Support/StringAux.hpp"
+#include "Support/fnop.hpp"
+#include "Stage/StaticGeometry.hpp"
+#include "BSPMapCompiler/LightmapBuilder.hpp"
 
-#include "LightWave/3DMeshModelBuilder_LW.h"
+#include "LightWave/3DMeshModelBuilder_LW.hpp"
 
-
-#include "Physics/PhysicsEngine.h"
-#include "Physics/Preprocessor.h"
-#include "Physics/TriangleMeshDesc.h"
+// physics engine - used to save triangle mesh as geometry for collision detection
+#include "Physics/PhysicsEngine.hpp"
+#include "Physics/Preprocessor.hpp"
+#include "Physics/TriangleMeshDesc.hpp"
 
 using namespace boost;
 

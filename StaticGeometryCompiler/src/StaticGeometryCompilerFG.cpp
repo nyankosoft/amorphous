@@ -1,26 +1,16 @@
 #include "StaticGeometryCompilerFG.h"
-#include "Support/memory_helpers.h"
-#include "Support/ParamLoader.h"
-#include "Support/fnop.h"
-#include "Support/StringAux.h"
-#include "Support/Serialization/BinaryDatabase.h"
-#include "Support/Log/DefaultLog.h"
+#include "Support.hpp"
 
-#include "Graphics/Shader/ShaderTechniqueHandle.h"
-#include "Graphics/MeshModel/TerrainMeshGenerator.h"
+#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 
-#include "LightWave/LightWaveObject.h"
-#include "LightWave/3DMeshModelBuilder_LW.h"
+#include "LightWave/LightWaveObject.hpp"
+#include "LightWave/3DMeshModelBuilder_LW.hpp"
 using namespace MeshModel;
 
-#include "JigLib/TriangleMesh.h"
+#include "JigLib/TriangleMesh.hpp"
 
 using namespace std;
 using namespace boost;
-
-
-#include <direct.h>
-#include <sys/stat.h>
 
 
 // default size of the each split texture

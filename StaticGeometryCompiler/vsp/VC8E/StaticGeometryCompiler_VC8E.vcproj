@@ -62,10 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libcollada14dom21.lib"
 				OutputFile="$(OutDir)/StaticGeometryCompiler_VC8E_Debug.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="D:\R&amp;D\Library\colladadom\dom\build\vc8-1.4-d"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/StaticGeometryCompiler_VC8E_Debug.pdb"
 				SubSystem="2"
@@ -200,7 +199,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\gds\Stage\bsptree.h"
+					RelativePath="..\..\..\..\Project1\gds\Stage\bsptree.hpp"
 					>
 				</File>
 				<File
@@ -208,7 +207,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\StaticGeometryCompiler.h"
+					RelativePath="..\..\src\StaticGeometryCompiler.hpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -223,7 +222,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\StaticGeometryCompilerFG.h"
+					RelativePath="..\..\src\StaticGeometryCompilerFG.hpp"
 					>
 				</File>
 				<File
@@ -231,14 +230,14 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\StaticGeometryDesc.h"
+					RelativePath="..\..\src\StaticGeometryDesc.hpp"
 					>
 				</File>
 				<Filter
 					Name="BSPMapCompiler"
 					>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\fwd.h"
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\fwd.hpp"
 						>
 					</File>
 					<File
@@ -246,7 +245,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\Lightmap.h"
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\Lightmap.hpp"
 						>
 					</File>
 					<File
@@ -254,7 +253,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapBuilder.h"
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapBuilder.hpp"
 						>
 					</File>
 					<File
@@ -262,7 +261,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapLightingManager.h"
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapLightingManager.hpp"
 						>
 					</File>
 					<File
@@ -270,7 +269,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapTexture.h"
+						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapTexture.hpp"
 						>
 					</File>
 				</Filter>
@@ -324,7 +323,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometry.h"
+				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometry.hpp"
 				>
 			</File>
 			<File
@@ -332,7 +331,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.h"
+				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.hpp"
 				>
 			</File>
 		</Filter>

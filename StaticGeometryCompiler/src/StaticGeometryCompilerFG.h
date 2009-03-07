@@ -2,16 +2,14 @@
 #define  __STATICGEOMETRYCOMPILERFG_H__
 
 
-#include <vector>
-#include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "3DMath/BSPTreeForTriangleMesh.h"
-#include "Graphics/MeshModel/TerrainMeshGenerator.h"
-#include "Support/Serialization/BinaryDatabase.h"
-#include "LightWave/fwd.h"
+#include "3DMath/BSPTreeForTriangleMesh.hpp"
+#include "Graphics/MeshModel/TerrainMeshGenerator.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
+#include "LightWave/fwd.hpp"
 
-#include "Stage/StaticGeometryArchiveFG.h"
+#include "Stage/StaticGeometryArchiveFG.hpp"
 
 
 

@@ -1,11 +1,8 @@
 #include "StaticGeometryDesc.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/fnop.h"
-#include "XML/XMLDocumentLoader.h"
-#include "XML/XercesString.h"
-#include "XML/XMLNodeReader.h"
-#include "XML/xmlch2x.h"
-#include "3DMath/AABTree.h"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/fnop.hpp"
+#include "XML.hpp"
+#include "3DMath/AABTree.hpp"
 
 //#include <dae.h>
 
@@ -218,7 +215,10 @@ bool CStaticGeometryDesc::LoadSurfaceDescs( DOMNode *pSurfaceNode )
 bool CStaticGeometryDesc::LoadShaderOptions( DOMNode *pShaderNode )
 {
 	if( !pShaderNode )
+	{
 		LOG_ERR_RETURN_FALSE( "A shader node is missing." );
+		return false;
+	}
 
 	string shaderparam_filepath
 		= GetTextContentOfImmediateChildNode( pShaderNode, "ShaderParamFile" );
@@ -227,6 +227,8 @@ bool CStaticGeometryDesc::LoadShaderOptions( DOMNode *pShaderNode )
 	{
 		LoadShaderParamsFromFile( shaderparam_filepath );
 	}
+
+	return true;
 }
 
 
