@@ -1,4 +1,5 @@
 #include "ApplicationBase.hpp"
+#include "Support/fnop.hpp"
 
 // Windows headers
 #include <windows.h>
@@ -6,9 +7,12 @@
 
 // Visual Leak Detector
 // - Works only if you run the App in 1)Debug Mode (default: F5) of 2)Debug build
-#include <vld.h>
+// - Commented out: Xerces 3.0.1 (XML parser) crashes when the vld is used.
+//#include <vld.h>
 
 #include "GameWindowManager_Win32.hpp"
+
+using namespace std;
 
 
 #define APPBASE_TIMER_RESOLUTION	1
@@ -91,6 +95,14 @@ void StartApp()
 }
 
 
+string GetExeFilepath()
+{
+	char exe_filepath[512];
+	GetModuleFileName( NULL, exe_filepath, sizeof(exe_filepath)-1 );
+	return string(exe_filepath);
+}
+
+
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 {
 	// timer resolution for timeGetTime()
@@ -98,6 +110,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 
 	// set the message procedure for the game window
 	g_pMessageProcedureForGameWindow = MsgProc;
+
+	fnop::set_wd( fnop::get_path(GetExeFilepath()) );
 
 	StartApp();
 

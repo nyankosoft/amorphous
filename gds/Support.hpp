@@ -5,14 +5,15 @@
 #include <Support/WindowMisc_Win32.hpp>
 
 #include <Support/2DArray.hpp>
-//#include <Support/2DGraph.hpp>
-//#include <Support/BMPImageExporter.hpp>
+#include <Support/BitmapImage.hpp>
 
 // 3D camera related operations
 // - should be moved to 3DCommon
 #include <Support/CameraController_Win32.hpp>
-//#include <Support/CorrelationGraph.hpp>
 #include <Support/DebugOutput.hpp>
+
+//#include <Support/2DGraph.hpp>
+//#include <Support/CorrelationGraph.hpp>
 
 //#include <Support/FileOpenDialog_Win32.hpp>
 //#include <Support/FileOpenDialog_Win32_VC8.hpp>
@@ -27,7 +28,6 @@
 #include <Support/fnop.hpp>
 
 #include <Support/ImageArchive.hpp>
-//#include <Support/LineSegmentRenderer.hpp>
 
 #include <Support/Timer.hpp>
 
@@ -43,7 +43,6 @@
 /// availability: Windows
 #include <Support/msgbox.hpp>
 //#include <Support/namedresourcehandle.h>
-//#include <Support/OgreBitwise.h>
 
 #include <Support/ParamLoader.hpp>
 

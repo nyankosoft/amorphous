@@ -1,11 +1,8 @@
 #include "ApplicationBase.hpp"
 
-#include "Support/Timer.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Profile.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/DebugOutput.hpp"
-#include "Support/BitmapImage.hpp"
+#include <boost/filesystem.hpp>
+#include <boost/exception/get_error_info.hpp>
+#include "Support.hpp"
 #include "Support/MiscAux.hpp"
 #include "Support/MTRand.hpp"
 #include "XML/XMLDocumentLoader.hpp"
@@ -28,6 +25,9 @@
 #include "Stage/BaseEntityManager.hpp"
 #include "Stage/SurfaceMaterialManager.hpp"
 #include "App/GameWindowManager_Win32.hpp"
+
+using namespace std;
+using namespace boost;
 
 
 // ================================ global variables ================================
@@ -160,6 +160,12 @@ bool CApplicationBase::InitBase()
 {
 	LOG_FUNCTION_SCOPE();
 
+	// create basic directories
+	boost::filesystem::create_directory( "./System" );
+	boost::filesystem::create_directory( "./Item" );
+	boost::filesystem::create_directory( "./Script" );
+	boost::filesystem::create_directory( "./SaveData" );
+
 	CGameStageFrameworkGlobalParams gsf_params;
 	bool loaded = gsf_params.LoadFromTextFile( "../resources/gsf_params" );
 	if( loaded )
@@ -231,7 +237,7 @@ bool CApplicationBase::InitBase()
 	{
 		UpdateScriptArchives( "../resources/scripts", "Script/" );
 	}
-	catch( exception& e )
+	catch( std::exception& e )
 	{
 		g_Log.Print( WL_WARNING, "exception: %s", e.what() );
 	}
@@ -400,8 +406,18 @@ void CApplicationBase::Run()
 	{
 		Execute();
 	}
-	catch( exception& e )
+	catch( std::exception& e )
 	{
 		g_Log.Print( WL_ERROR, "exception: %s", e.what() );
+	}
+	catch( boost::exception& e )
+	{
+		shared_ptr<throw_line::value_type const> pLine          = get_error_info<throw_line>(e);
+		shared_ptr<throw_file::value_type const> pFile         = get_error_info<throw_file>(e);
+		shared_ptr<throw_function::value_type const> pFunction = get_error_info<throw_function>(e);
+		int line             = *pLine.get();
+		const char *file     = *pFile.get();
+		const char *function = *pFunction.get();
+		g_Log.Print( WL_ERROR, "exception: at %s (%s, L%d)", function, file, line );
 	}
 }
