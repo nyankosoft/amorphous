@@ -320,6 +320,73 @@ void CGI_MissileLauncher::UpdateWorldProperties( const Matrix34& rShooterWorldPo
 static bool SafetyOff() { return true; }
 
 
+void CGI_MissileLauncher::UpdateAmmunitions( CStage *pStage )
+{
+	// update ammunitions poses and load them if necessary
+	// - note that these routines are executed whether the launcher is selected or not
+	// - i.e. executed regardless of the result of IsWeaonSelected()
+	// - also note that loading an ammo means creating a new entity in the stage
+
+	// update the world poses of the loaded ammos
+	size_t i, num_release_positions = m_vecMissileHolder.size();
+	for( i=0; i<num_release_positions; i++ )
+	{
+		if( m_vecMissileHolder[i].pLoadedAmmo )
+			m_vecMissileHolder[i].pLoadedAmmo->SetWorldPose( m_vecMissileHolder[i].ReleaseWorldPose );
+	}
+
+	const Vector3& rvMuzzleEndPosition	= m_MuzzleEndWorldPose.vPosition;
+
+	// return if no ammo is charged
+	if( !m_pWeaponSlot->pChargedAmmo )
+		return;
+
+	// reload ammo if certain time has passed since the last ammo was launched
+	// from an ammo release position
+
+	CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
+
+	for( i=0; i<num_release_positions; i++ )
+	{
+		if( !m_vecMissileHolder[i].pLoadedAmmo
+		 && 4000 < pStage->GetElapsedTimeMS() - m_vecMissileHolder[i].LastFireTimeMS )
+		{
+			if( rCurrentAmmo.GetCurrentQuantity() == 0 )
+				break;	// no ammo
+
+			CCopyEntityDesc missile_entity;
+			CCopyEntity *pMissile = NULL;
+
+			// set pointer to the base entity which serves as the bullet of this weapon
+			missile_entity.pBaseEntityHandle = &rCurrentAmmo.GetBaseEntityHandle();
+
+//				m_ReloadPosIndex = ( m_ReloadPosIndex + 1 ) % m_NumReleasePositions;
+
+			missile_entity.SetWorldPose( m_vecMissileHolder[i].ReleaseWorldPose );
+			missile_entity.vVelocity = Vector3(0,0,0);
+
+			missile_entity.s1 = CBE_HomingMissile::MS_LOADED;
+
+			// projectile fired by the player is marked as 'CE_GROUP_ID_PLAYERSIDE'
+			// this is used when the bullet is a homing missile to differentiate targets
+			missile_entity.sGroupID = m_pWeaponSlot->ProjectileGroup;
+
+			// 3D mesh object for the entity
+			missile_entity.MeshObjectHandle = rCurrentAmmo.GetMeshObjectContainer().m_MeshObjectHandle;
+
+			pMissile = pStage->CreateEntity( missile_entity );
+
+			ONCE( g_Log.Print( "CGI_MissileLauncher::Update() - loaded a missile" ) );
+
+			if( pMissile )
+			{
+				m_vecMissileHolder[i].pLoadedAmmo = pMissile;
+			}
+		}
+	}
+}
+
+
 /// standard update - fire if both triggers are pulled
 void CGI_MissileLauncher::Update( float dt )
 {
@@ -349,63 +416,7 @@ void CGI_MissileLauncher::Update( float dt )
 	}
 	else if( m_LauncherType == TYPE_LOAD_AND_RELEASE )
 	{
-		// update ammunitions poses and load them if necessary
-		// - note that these routines are executed whether the launcher is selected or not
-		// - i.e. executed regardless of the result of IsWeaonSelected()
-		// - also note that loading an ammo means creating a new entity in the stage
-
-		// update the world poses of the loaded ammos
-		size_t i, num_release_positions = m_vecMissileHolder.size();
-		for( i=0; i<num_release_positions; i++ )
-		{
-			if( m_vecMissileHolder[i].pLoadedAmmo )
-				m_vecMissileHolder[i].pLoadedAmmo->SetWorldPose( m_vecMissileHolder[i].ReleaseWorldPose );
-		}
-
-		const Vector3& rvMuzzleEndPosition	= m_MuzzleEndWorldPose.vPosition;
-
-		// reload ammo if certain time has passed since the last ammo was launched
-		// from an ammo release position
-		CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
-
-		for( i=0; i<num_release_positions; i++ )
-		{
-			if( !m_vecMissileHolder[i].pLoadedAmmo
-			 && 4000 < pStage->GetElapsedTimeMS() - m_vecMissileHolder[i].LastFireTimeMS )
-			{
-				if( rCurrentAmmo.GetCurrentQuantity() == 0 )
-					break;	// no ammo
-
-				CCopyEntityDesc missile_entity;
-				CCopyEntity *pMissile = NULL;
-
-				// set pointer to the base entity which serves as the bullet of this weapon
-				missile_entity.pBaseEntityHandle = &rCurrentAmmo.GetBaseEntityHandle();
-
-//				m_ReloadPosIndex = ( m_ReloadPosIndex + 1 ) % m_NumReleasePositions;
-
-				missile_entity.SetWorldPose( m_vecMissileHolder[i].ReleaseWorldPose );
-				missile_entity.vVelocity = Vector3(0,0,0);
-
-				missile_entity.s1 = CBE_HomingMissile::MS_LOADED;
-
-				// projectile fired by the player is marked as 'CE_GROUP_ID_PLAYERSIDE'
-				// this is used when the bullet is a homing missile to differentiate targets
-				missile_entity.sGroupID = m_pWeaponSlot->ProjectileGroup;
-
-				// 3D mesh object for the entity
-				missile_entity.MeshObjectHandle = rCurrentAmmo.GetMeshObjectContainer().m_MeshObjectHandle;
-
-				pMissile = pStage->CreateEntity( missile_entity );
-	
-				ONCE( g_Log.Print( "CGI_MissileLauncher::Update() - loaded a missile" ) );
-
-				if( pMissile )
-				{
-					m_vecMissileHolder[i].pLoadedAmmo = pMissile;
-				}
-			}
-		}
+		UpdateAmmunitions( pStage.get() );
 	}
 	else
 		ONCE( g_Log.Print( "CGI_MissileLauncher::Update() - invalid launcher type" ) );

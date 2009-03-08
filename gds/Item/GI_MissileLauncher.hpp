@@ -104,6 +104,8 @@ protected:
 
 	inline void SetTargetForMissile( CCopyEntity *pMissileEntity );
 
+	void UpdateAmmunitions( CStage *pStage );
+
 	bool ReleaseAmmo();
 
 public:
