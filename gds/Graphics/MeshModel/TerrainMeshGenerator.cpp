@@ -503,7 +503,8 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 		return false;
 	}
 
-	const int src_tex_width = src_img.GetWidth();
+	const int src_tex_width  = src_img.GetWidth();
+	const int src_tex_height = src_img.GetHeight();
 	const int dest_tex_width = m_TextureWidth;
 
 	int num_edge_splits = m_NumTexEdgeSplits = src_tex_width / dest_tex_width;
@@ -512,7 +513,8 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 
 //	string image_format = m_OutputTextureImageFormat;
 
-	const int num_color_bits = 32;
+//	const int num_color_bits = 32; // FreeImage fails to save the image. Why?
+	const int num_color_bits = 24;
 
 	string dest_filename;
 //	FCObjImage dest_img;
@@ -530,8 +532,12 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 			for( x=0; x<dest_tex_width; x++ )
 			{
 //				dest_img.SetPixelData( x, y, src_img.GetPixelData( offset_x + x, offset_y + y ) );
-				src_img.GetPixel( offset_x + x, offset_y + y, r, g, b, a );
-				dest_img.SetPixel( x, y, r, g, b, a );
+
+//				src_img.GetPixel( offset_x + x, offset_y + y, r, g, b, a );
+				src_img.GetPixel( offset_x + x, offset_y + y, r, g, b );
+
+//				dest_img.SetPixel( x, y, r, g, b, a );
+				dest_img.SetPixel( x, y, r, g, b );
 			}
 		}
 
