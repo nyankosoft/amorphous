@@ -29,6 +29,8 @@
 #include <Support/ImageArchive.hpp>
 //#include <Support/LineSegmentRenderer.hpp>
 
+#include <Support/Timer.hpp>
+
 /// basic macros
 /// - should move this to root directory
 #include <Support/Macro.h>
