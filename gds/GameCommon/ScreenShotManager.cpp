@@ -6,18 +6,19 @@
 //=================================================================================
 
 #include "ScreenShotManager.hpp"
+#include <boost/filesystem.hpp>
 //#include <wingdi.h>
-#include <direct.h>
 #include "Support/BitmapImage.hpp"
 #include "Support/StringAux.hpp"
 
 using namespace std;
+using namespace boost;
 
 
 CScreenShotManager::CScreenShotManager()
 :
 m_ImageFileExtension("bmp"),
-m_ImageOutputDirectoryPath("./screenshots/")
+m_ImageOutputDirectoryPath("./Screenshots/")
 {
 }
 
@@ -46,7 +47,7 @@ int CScreenShotManager::GetScreenshotFileIndex()
 		if( !fp )
 		{
 			// probably the directory 'screenshots' does not exist
-			mkdir( dir_path.c_str() );
+			filesystem::create_directory( dir_path );
 			fp = fopen( screenshot_record_file.c_str(), "wb" );
 			if(!fp)
 				return -1;
@@ -65,8 +66,9 @@ int CScreenShotManager::GetScreenshotFileIndex()
 	fwrite( &next_index, sizeof(int), 1, fp );
 	fclose(fp);
 
-	if( 9999 < current_index )
-		current_index %= 10000;
+	const int num_max_screenshot_image_files = 10000;
+	if( num_max_screenshot_image_files <= current_index )
+		current_index %= num_max_screenshot_image_files;
 
 	return current_index;
 }
