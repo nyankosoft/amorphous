@@ -132,13 +132,17 @@ public:
 
 	inline bool CreateFromImageArchive( CImageArchive& img_archive );
 
+	inline void FillColor( const SFloatRGBAColor& color );
+
 	inline U32 GetPixelARGB32( int x, int y );
+
+	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b );
 
 	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a );
 
-	inline void FillColor( const SFloatRGBAColor& color );
-
 	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
+
+	inline void SetPixel( int x, int y, U8 r, U8 g, U8 b );
 
 	inline void SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a );
 
@@ -216,6 +220,18 @@ inline U32 CBitmapImage::GetPixelARGB32( int x, int y )
 }
 
 
+inline void CBitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b )
+{
+	RGBQUAD quad;
+	memset( &quad, 0, sizeof(RGBQUAD) );
+
+	FreeImage_GetPixelColor( m_pFreeImageBitMap, x, GetHeight() - y - 1, &quad );
+	r = quad.rgbRed;
+	g = quad.rgbGreen;
+	b = quad.rgbBlue;
+}
+
+
 inline void CBitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a )
 {
 	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
@@ -267,20 +283,40 @@ inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 	quad.rgbGreen = color.GetGreenByte();
 	quad.rgbBlue  = color.GetBlueByte();
 
-	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, y, &quad );
+	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, GetHeight() - y - 1, &quad );
+}
+
+
+inline void CBitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b )
+{
+	RGBQUAD quad;
+	quad.rgbRed   = r;
+	quad.rgbGreen = g;
+	quad.rgbBlue  = b;
+
+	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, GetHeight() - y - 1, &quad );
 }
 
 
 inline void CBitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a )
 {
-	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
+	if( m_BitsPerPixel == 24 )
+	{
+		SetPixel( x, y, r, g, b );
+	}
+	else
+	{
+		// This code causes crash when the bpp is 32. Why?
 
-	bits[FI_RGBA_RED]   = r;
-	bits[FI_RGBA_GREEN] = g;
-	bits[FI_RGBA_BLUE]  = b;
+		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
 
-	if( m_BitsPerPixel == 32 )
-		bits[FI_RGBA_ALPHA] = a;
+		bits[FI_RGBA_RED]   = r;
+		bits[FI_RGBA_GREEN] = g;
+		bits[FI_RGBA_BLUE]  = b;
+
+		if( m_BitsPerPixel == 32 )
+			bits[FI_RGBA_ALPHA] = a;
+	}
 }
 
 
