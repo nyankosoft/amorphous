@@ -210,6 +210,8 @@ bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest
 	// set script holder object that will be the target for registering callback functions
 	m_pTargetScript = &dest_script;
 
+	PyErr_Clear();
+
 	// run  the script and register the callback function(s)
 	PyObject* pRunResult = PyRun_String( (const char *)(&buffer.get_buffer()[0]),
 		                                 Py_file_input, pMainDictionary, pMainDictionary );
@@ -219,13 +221,17 @@ bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest
 	if( !dest_script.m_pEventCallback )
 	{
 		dest_script.m_bIsDone = true;
+		LOG_PRINT_ERROR( " No callback function has been found in the script or PyRun_String() returned NULL. Error: " + GetExtraErrorInfo() );
 //		g_Log.Print( "no callback has been found set for script[%02d]", m_vecEventScript.size() - 1 );
 		return false;
 	}
 
 	if( pRunResult == NULL )
+	{
 		return false;
 //		PrintLog( "an exception raised during the execution of the script, '" + filename + "'");
+		LOG_PRINT_ERROR( " PyRun_String() returned NULL. Error: " + GetExtraErrorInfo() );
+	}
 	else
 	{
 		dest_script.m_bIsDone = false;
