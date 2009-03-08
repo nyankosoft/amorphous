@@ -28,6 +28,19 @@
 
 
 
+/**
+ - create an instance of this as a local variable in main() before using any XML parser classes
+*/
+class CXMLParserInitReleaseManager
+{
+public:
+
+	CXMLParserInitReleaseManager();
+
+	~CXMLParserInitReleaseManager() { xercesc::XMLPlatformUtils::Terminate(); }
+};
+
+
 class CXMLDocument
 {
 	xercesc::XercesDOMParser *m_pParser;
@@ -47,18 +60,6 @@ public:
 	~CXMLDocument();
 
 	CXMLNodeReader GetRootNodeReader();
-};
-
-
-/**
- - create an instance of this as a local variable in main() before using any XML parser classes
-*/
-class CXMLParserInitReleaseManager
-{
-public:
-
-	CXMLParserInitReleaseManager() { xercesc::XMLPlatformUtils::Initialize(); }
-	~CXMLParserInitReleaseManager() { xercesc::XMLPlatformUtils::Terminate(); }
 };
 
 

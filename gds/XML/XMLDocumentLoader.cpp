@@ -11,6 +11,28 @@ using namespace boost;
 
 
 //=======================================================================
+// CXMLParserInitReleaseManager
+//=======================================================================
+
+CXMLParserInitReleaseManager::CXMLParserInitReleaseManager()
+{
+	try
+	{
+		XMLPlatformUtils::Initialize();
+	}
+	catch (const xercesc::XMLException& toCatch)
+	{
+		char *pMessage = xercesc::XMLString::transcode(toCatch.getMessage());
+		LOG_PRINT_ERROR( "Error during XMLPlatformUtils::Initialize(). Message: " + string(pMessage) );
+		xercesc::XMLString::release(&pMessage);
+	}
+
+	//xercesc::XMLPlatformUtils::Initialize();
+}
+
+
+
+//=======================================================================
 // CXMLDocument
 //=======================================================================
 
