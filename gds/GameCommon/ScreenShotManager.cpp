@@ -80,15 +80,13 @@ void CScreenShotManager::OutputImageDataToFile( U32 *pdwImageData, int iImageWid
 	CBitmapImage img( iImageWidth, iImageHeight, depth );
 	int x,y;
 	for( y=0; y<iImageHeight; y++ )
-//	for( y=iImageHeight-1; 0<=y; y-- )
 	{
 		for( x=0; x<iImageWidth; x++ )
 		{
-			int ry = iImageHeight - y - 1;
 			SFloatRGBColor pixel;
-			pixel.fRed   = (float)( 0x000000FF & (pdwImageData[ry * iImageWidth + x] >> 16) ) / 256.0f;
-			pixel.fGreen = (float)( 0x000000FF & (pdwImageData[ry * iImageWidth + x] >>  8) ) / 256.0f;
-			pixel.fBlue  = (float)( 0x000000FF &  pdwImageData[ry * iImageWidth + x] )        / 256.0f;
+			pixel.fRed   = (float)( 0x000000FF & (pdwImageData[y * iImageWidth + x] >> 16) ) / 256.0f;
+			pixel.fGreen = (float)( 0x000000FF & (pdwImageData[y * iImageWidth + x] >>  8) ) / 256.0f;
+			pixel.fBlue  = (float)( 0x000000FF &  pdwImageData[y * iImageWidth + x] )        / 256.0f;
 
 			img.SetPixel( x, y, pixel );
 		}
@@ -99,7 +97,7 @@ void CScreenShotManager::OutputImageDataToFile( U32 *pdwImageData, int iImageWid
 /*
 	// create bmp image from scratch
 	// - Maybe slightly faster than the above
-	// - Could be of some use if one has to take screenshots in rapid succession
+	// - Could be of some use if one has to take many screenshots in a rapid succession
 
 	// init bitmap info header
 	BITMAPINFOHEADER bmih;
