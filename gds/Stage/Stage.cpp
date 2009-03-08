@@ -497,7 +497,12 @@ bool CStage::LoadStaticGeometryFromFile( const std::string filename )
 
 	m_pEntitySet->WriteEntityTreeToFile( "debug/entity_tree - loaded static geometry.txt" );
 
-	return m_pStaticGeometry->LoadFromFile( filename );
+	// load the static geometry from file
+	this->PauseTimer();
+	bool loaded = m_pStaticGeometry->LoadFromFile( filename );
+	this->ResumeTimer();
+
+	return loaded;
 }
 
 

@@ -450,8 +450,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 {
 	// load resources from database
 
-	m_pStage->PauseTimer();
-	double elapsed_time_in_stage_at_start = m_pStage->GetElapsedTime();
+//	double elapsed_time_in_stage_at_start = m_pStage->GetElapsedTime();
 
 	CBinaryDatabase<string> db;
 	bool db_open = db.Open( db_filename );
@@ -522,12 +521,15 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 
 	// register mesh collision to physics simulator
 	// loaded from a separate archive in the db
-	CreateCollisionGeometry( *(m_pStage->GetPhysicsScene()) );
+	// - Do NULL check for 'm_pStage' since the stage is not set in CStaticGeometryCompiler.
+	if( m_pStage )
+	{
+		CreateCollisionGeometry( *(m_pStage->GetPhysicsScene()) );
+	}
 
 	m_Archive.m_MeshSubsetTree.WriteToFile( "./debug/sg_aabtree-" + fnop::get_nopathfilename(db_filename) + ".txt" );
 
-	m_pStage->ResumeTimer();
-	double elapsed_time_in_stage_at_end = m_pStage->GetElapsedTime();
+//	double elapsed_time_in_stage_at_end = m_pStage->GetElapsedTime();
 
 	return true;
 }
