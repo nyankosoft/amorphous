@@ -6,6 +6,7 @@
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/GraphicsResourceCacheManager.hpp"
 
 #include "Physics/PhysicsEngine.hpp"
 #include "Physics/Stream.hpp"
@@ -31,6 +32,42 @@ const char *CStaticGeometryDBKey::CollisionGeometryStream = "CollisionGeometrySt
 const char *CStaticGeometryDBKey::GraphicsMeshArchive     = "GraphicsMeshArchive";
 //const char *CStaticGeometryDBKey::Shaders               = "Shaders";
 //const char *CStaticGeometryDBKey::MeshSubsetTree        = "MeshSubsetTree";
+
+
+
+void CreateCachedResources()
+{
+	CTextureResourceDesc tex_desc;
+	tex_desc.Format    = TextureFormat::A8R8G8B8;
+	tex_desc.Width     = 1024;
+	tex_desc.Height    = 1024;
+
+	tex_desc.MipLevels = 1;//gs_TextureMipLevels;
+
+	const int num_textures_to_preload = 8;
+	for( int i=0; i<num_textures_to_preload; i++ )
+	{
+		GraphicsResourceCacheManager().AddCache( tex_desc );
+	}
+}
+
+
+// temporary measure to avoid D3DXFilterTexture() calls in async loading at runtime
+static void ForceTextureMipMapLevelsToOne( shared_ptr<CD3DXMeshObjectBase> pMesh )
+{
+	if( !pMesh )
+		return;
+
+	for( int i=0; i<pMesh->GetNumMaterials(); i++ )
+	{
+		CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(i);
+
+		for( size_t j=0; j<mat.TextureDesc.size(); j++ )
+		{
+			mat.TextureDesc[j].MipLevels = 1;
+		}
+	}
+}
 
 
 
@@ -196,15 +233,67 @@ void CStaticGeometryBase::MakeEntityTree( CBSPTree& bsptree )
 // CStaticGeometry
 //================================================================================
 
+static float gs_fDistMarginFactor = 1.5f;
+
+void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCamera& rCam, const Sphere& cam_sphere )
+{
+	CStaticGeometryMeshHolder& mesh_holder = m_Archive.m_vecMesh[subset.MeshIndex];
+
+	GraphicsResourceState::Name state = mesh_holder.m_Mesh.GetEntryState();
+	if( state == GraphicsResourceState::RELEASED )
+	{
+		// load the mesh
+//		mesh_holder.m_Mesh.LoadAsync( mesh_holder.m_Desc );
+	}
+	else if( state == GraphicsResourceState::LOADED )
+	{
+		CD3DXMeshObjectBase *pMesh = mesh_holder.m_Mesh.GetMesh().get();
+		if( !pMesh )
+			return;
+
+		for( size_t j=0; j<subset.vecMaterialIndex.size(); j++ )
+		{
+			// mesh is loaded
+			// see if the textures on the mesh are loaded
+
+			const AABB3& mesh_subset_aabb = pMesh->GetAABB( subset.vecMaterialIndex[j] );
+			const float mesh_subset_radius = mesh_subset_aabb.CreateBoundingSphere().radius;
+			Vector3 vMeshSubsetCenterPos = mesh_subset_aabb.GetCenterPosition();
+			float mesh_subset_dist = Vec3Length( vMeshSubsetCenterPos - rCam.GetPosition() );
+
+			if( mesh_subset_dist < ( cam_sphere.radius + mesh_subset_radius ) * gs_fDistMarginFactor// )
+			 && rCam.GetPosition().y < 3000 )
+			{
+				// load the texture
+				CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
+				const size_t num_textures = mat.Texture.size();
+				for( size_t k=0; k<num_textures; k++ )
+				{
+					if( mat.Texture[k].GetEntryState() == GraphicsResourceState::RELEASED )
+						mat.LoadTextureAsync( k );
+				}
+			}
+			else if( 3000 < rCam.GetPosition().y )
+			{
+				CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
+				const size_t num_textures = mat.Texture.size();
+				for( size_t k=0; k<num_textures; k++ )
+				{
+					if( mat.Texture[k].GetEntryState() == GraphicsResourceState::LOADED )
+						mat.Texture[k].Release();
+				}
+			}
+		}
+	}
+}
+
 
 void CStaticGeometry::UpdateResources( const CCamera& rCam )
 {
 	CNonLeafyAABTree<CMeshSubset>& mesh_subset_tree = m_Archive.m_MeshSubsetTree;
 
-	float dist_margin_factor = 1.5f;
-
 	// compute a sphere that contains camera with some margin
-	float r = rCam.GetFarClip() / cos( rCam.GetFOV() * 0.5f ) * dist_margin_factor;
+	float r = rCam.GetFarClip() / cos( rCam.GetFOV() * 0.5f ) * gs_fDistMarginFactor;
 	Sphere cam_sphere = Sphere(rCam.GetPosition(),r);
 
 	/// Used during runtime
@@ -219,51 +308,15 @@ void CStaticGeometry::UpdateResources( const CCamera& rCam )
 		const float node_radius = node.aabb.CreateBoundingSphere().radius;
 		const Vector3 vNodeCenterPos = node.aabb.GetCenterPosition();
 		float dist = Vec3Length( vNodeCenterPos - rCam.GetPosition() );
-		if( dist < ( cam_sphere.radius + node_radius ) * dist_margin_factor )
+		if( dist < ( cam_sphere.radius + node_radius ) * gs_fDistMarginFactor )
 		{
 			const size_t num_subsets = node.veciGeometryIndex.size();
 			for( size_t i=0; i<num_subsets; i++ )
 			{
-				const CMeshSubset& subset
+				CMeshSubset& subset
 					= mesh_subset_tree.GetGeometryBuffer()[node.veciGeometryIndex[i]];
 
-				CStaticGeometryMeshHolder& mesh_holder = m_Archive.m_vecMesh[subset.MeshIndex];
-
-				GraphicsResourceState::Name state = mesh_holder.m_Mesh.GetEntryState();
-				if( state == GraphicsResourceState::RELEASED )
-				{
-					// load the mesh
-//					mesh_holder.m_Mesh.LoadAsync( mesh_holder.m_Desc );
-				}
-				else if( state == GraphicsResourceState::LOADED )
-				{
-					CD3DXMeshObjectBase *pMesh = mesh_holder.m_Mesh.GetMesh().get();
-					if( !pMesh )
-						continue;
-
-					for( size_t j=0; j<subset.vecMaterialIndex.size(); j++ )
-					{
-						// mesh is loaded
-						// see if the textures on the mesh are loaded
-
-						const AABB3& mesh_subset_aabb = pMesh->GetAABB( subset.vecMaterialIndex[j] );
-						const float mesh_subset_radius = mesh_subset_aabb.CreateBoundingSphere().radius;
-						Vector3 vMeshSubsetCenterPos = mesh_subset_aabb.GetCenterPosition();
-						float mesh_subset_dist = Vec3Length( vMeshSubsetCenterPos - rCam.GetPosition() );
-
-						if( mesh_subset_dist < ( cam_sphere.radius + mesh_subset_radius ) * dist_margin_factor )
-						{
-							// load the texture
-							CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
-							const size_t num_textures = mat.Texture.size();
-							for( size_t k=0; k<num_textures; k++ )
-							{
-								if( mat.Texture[k].GetEntryState() == GraphicsResourceState::RELEASED )
-									mat.LoadTextureAsync( k );
-							}
-						}
-					}
-				}
+				UpdateMeshSubsetResources( subset, rCam, cam_sphere );
 			}
 		}
 
@@ -280,6 +333,28 @@ void CStaticGeometry::UpdateResources( const CCamera& rCam )
 	}
 }
 
+
+void CStaticGeometry::UpdateResources_NonHierarchical( const CCamera& rCam )
+{
+	vector<CMeshSubset>& vecMeshSubset = m_Archive.m_MeshSubsetTree.GetGeometryBuffer();
+
+	// compute a sphere that contains camera with some margin
+	float r = rCam.GetFarClip() / cos( rCam.GetFOV() * 0.5f ) * gs_fDistMarginFactor;
+	Sphere cam_sphere = Sphere(rCam.GetPosition(),r);
+
+	int i, index, num_mesh_subsets = (int)vecMeshSubset.size();
+	int num_mesh_subsets_to_check_per_frame = 2;
+	for( i=0; i<num_mesh_subsets_to_check_per_frame; i++ )
+	{
+		index = (m_MeshSubsetToCheckNext + i) % num_mesh_subsets;
+
+		UpdateMeshSubsetResources( vecMeshSubset[index], rCam, cam_sphere );
+	}
+
+	m_MeshSubsetToCheckNext = index;
+}
+
+
 /*
 void IsReadyToDisplay()
 {
@@ -288,7 +363,7 @@ void IsReadyToDisplay()
 	std::vector<int> m_vecNodesToCheck;
 	m_vecNodesToCheck.push_back(0);
 
-	float dist_margin_factor = 1.5f;
+	float gs_fDistMarginFactor = 1.5f;
 
 	while( 0 < m_vecNodesToCheck.size() )
 	{
@@ -296,7 +371,7 @@ void IsReadyToDisplay()
 		m_vecNodesToCheck.pop_back();
 
 		float dist = Vec3Length( vMeshCenterPos - rCam.GetPosition() );
-		if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+		if( dist < ( rCam.GetFarClip() + mesh_radius ) * gs_fDistMarginFactor )
 		{
 			const size_t num_subsets = node.veciGeometryIndex.size();
 			for( size_t i=0; i<num_subsets; i++ )
@@ -313,7 +388,7 @@ void IsReadyToDisplay()
 
 				dist = Vec3Length( vSubsetCenterPos - rCam.GetPosition() );
 
-				if( dist < ( rCam.GetFarClip() + mesh_radius ) * dist_margin_factor )
+				if( dist < ( rCam.GetFarClip() + mesh_radius ) * gs_fDistMarginFactor )
 					return false;
 			}
 		}
@@ -336,7 +411,8 @@ CStaticGeometryBase( pStage ),
 m_PrevShaderIndex(-1),
 m_PrevShaderTechinqueIndex(-1),
 m_pTriangleMesh(NULL),
-m_pTriangleMeshActor(NULL)
+m_pTriangleMeshActor(NULL),
+m_MeshSubsetToCheckNext(0)
 {}
 
 
@@ -360,7 +436,11 @@ void CStaticGeometry::SetGlobalParams()
 
 bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag )
 {
-	this->UpdateResources( rCam );
+//	this->UpdateResources( rCam );
+
+	// AABBs of nodes are not correct
+	// - Use AABBs of mesh subsets
+	this->UpdateResources_NonHierarchical( rCam );
 
 //	SetGlobalParams();
 
@@ -422,17 +502,17 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 				shader_mgr.SetTechnique( shader_container.m_vecTechniqueHandle[subset.ShaderTechniqueIndex] );
 
 				// render all the materials in the subset
-				pMesh->RenderSubsets( shader_mgr, subset.vecMaterialIndex );
+/*				pMesh->RenderSubsets( shader_mgr, subset.vecMaterialIndex );*/
 
 				// collect visible materials(surfaces or triangle sets) of the mesh
-/*				vecVisibleMatIndex.resize( 0 );
+				vecVisibleMatIndex.resize( 0 );
 				for( size_t j=0; j<subset.vecMaterialIndex.size(); j++ )
 				{
 					if( rCam.ViewFrustumIntersectsWith( pMesh->GetAABB( subset.vecMaterialIndex[j] ) ) )
 						vecVisibleMatIndex.push_back( subset.vecMaterialIndex[j] );
 				}
 
-				pMesh->RenderSubset( shader_mgr, vecVisibleMatIndex );*/
+				pMesh->RenderSubsets( shader_mgr, vecVisibleMatIndex );
 			}
 		}
 
@@ -498,7 +578,9 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	}
 
 	// load meshes
-	bool load_all_meshes_at_startup_time = true;
+
+
+	bool load_all_meshes_at_startup_time = false;
 	if( load_all_meshes_at_startup_time )
 	{
 		for( size_t i=0; i<m_Archive.m_vecMesh.size(); i++ )
@@ -510,12 +592,19 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 	{
 		// modify mesh and textures desc to make them async resources
 
+//		create cached textures only once
+		ONCE( CreateCachedResources() );
+
 		// load the meshes synchronously and textures asynchronously
 		for( size_t i=0; i<m_Archive.m_vecMesh.size(); i++ )
 		{
 //			m_Archive.m_vecMesh[i].m_Desc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
 			m_Archive.m_vecMesh[i].m_Desc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
 			m_Archive.m_vecMesh[i].Load();
+
+			// temporary measure to avoid D3DXFilterTexture() calls at runtime
+			shared_ptr<CD3DXMeshObjectBase> pMesh = m_Archive.m_vecMesh[i].m_Mesh.GetMesh();
+			ForceTextureMipMapLevelsToOne( pMesh );
 		}
 	}
 
