@@ -5,8 +5,12 @@
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
 #include "Support/BitmapImage.hpp"
+#include "Support/fnop.hpp"
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
+
+
+class CTBBImageSplitterImpl;
 
 
 class CSplitImageFilepathPrinter
@@ -17,14 +21,30 @@ public:
 };
 
 
-// Use tbb?
+class CStdSplitImageFilepathPrinter : public CSplitImageFilepathPrinter
+{
+	std::string m_SrcFilepath;
+
+public:
+
+	CStdSplitImageFilepathPrinter( std::string& src_filepath )
+		:
+	m_SrcFilepath(src_filepath)
+	{}
+
+	std::string Print( int index )
+	{
+		std::string dest = m_SrcFilepath;
+		fnop::append_to_body( dest, fmt_string( "_%03d", index ) );
+		return dest;
+	}
+};
+
+
 class CImageSplitter
 {
 	int m_NumSplitsX;
 	int m_NumSplitsY;
-
-	int m_DestImageWidth;
-	int m_DestImageHeight;
 
 	boost::shared_ptr<CBitmapImage> m_pBitmapImage;
 
@@ -32,53 +52,72 @@ class CImageSplitter
 
 	CSplitImageFilepathPrinter *m_pSplitImageFilepathPrinter;
 
+	inline void Clip( int index ) const;
+
 public:
 
 	CImageSplitter(
 		int num_splits_x,
 		int num_splits_y,
-		int dest_image_width,
-		int dest_image_height,
+		const std::string& base_dest_filepath,
+		const std::string& src_image_filepath,
+		CSplitImageFilepathPrinter *pDestFilepathPrinter )
+		:
+	m_NumSplitsX(num_splits_x),
+	m_NumSplitsY(num_splits_y),
+	m_BaseDestFilepath(base_dest_filepath),
+	m_pSplitImageFilepathPrinter(pDestFilepathPrinter)
+	{
+		m_pBitmapImage = boost::shared_ptr<CBitmapImage>( new CBitmapImage() );
+		bool loaded = m_pBitmapImage->LoadFromFile( src_image_filepath );
+		if( !loaded )
+		{
+			LOG_PRINT_ERROR( "Cannot load the source image file: " + src_image_filepath );
+		}
+	}
+
+	CImageSplitter(
+		int num_splits_x,
+		int num_splits_y,
 		const std::string& base_dest_filepath,
 		boost::shared_ptr<CBitmapImage> pBitmapImage,
 		CSplitImageFilepathPrinter *pDestFilepathPrinter )
 		:
 	m_NumSplitsX(num_splits_x),
 	m_NumSplitsY(num_splits_y),
-	m_DestImageWidth(dest_image_width),
-	m_DestImageHeight(dest_image_height),
 	m_BaseDestFilepath(base_dest_filepath),
 	m_pBitmapImage(pBitmapImage),
 	m_pSplitImageFilepathPrinter(pDestFilepathPrinter)
-	{}
+	{
+	}
 
 	virtual ~CImageSplitter() {}
 
-	inline void operator() ( const tbb::blocked_range<int>& r ) const;
+//	inline void operator() ( const tbb::blocked_range<int>& r ) const;
 
 	std::string CreateSubdividedTextureFilepath( int index );
 
-	inline void Clip( int index ) const;
+	inline void SplitMT();
+
+	inline void SplitST();
+
+	/// CTBBImageSplitterImpl needs to call CImageSplitter::Clip()
+	friend class CTBBImageSplitterImpl;
 };
 
 
-class CSGSplitTextureFilepathPrinter : public CSplitImageFilepathPrinter
+class CTBBImageSplitterImpl
 {
-	std::string m_SrcFilepath;
+	const CImageSplitter *m_pSplitter;
 
 public:
 
-	CSGSplitTextureFilepathPrinter( std::string& src_filepath )
+	CTBBImageSplitterImpl( const CImageSplitter *pSplitter )
 		:
-	m_SrcFilepath(src_filepath)
+	m_pSplitter(pSplitter)
 	{}
 
-	virtual std::string Print( int index )
-	{
-		char dest[1024];
-		sprintf( dest, "%s%03d", m_SrcFilepath.c_str(), index );
-		return string(dest);
-	}
+	inline void operator() ( const tbb::blocked_range<int>& r ) const;
 };
 
 //----------------------- inline implementations -----------------------
@@ -86,8 +125,11 @@ public:
 
 inline void CImageSplitter::Clip( int index ) const
 {
-	int dest_tex_width  = m_DestImageWidth;
-	int dest_tex_height = m_DestImageHeight;
+	if( !m_pBitmapImage )
+		return;
+
+	int dest_tex_width  = m_pBitmapImage->GetWidth()  / m_NumSplitsX;
+	int dest_tex_height = m_pBitmapImage->GetHeight() / m_NumSplitsY;
 
 	int num_color_bits = 24;
 
@@ -116,11 +158,31 @@ inline void CImageSplitter::Clip( int index ) const
 }
 
 
-inline void CImageSplitter::operator() ( const tbb::blocked_range<int>& r ) const
+inline void CImageSplitter::SplitMT()
+{
+	tbb::parallel_for( tbb::blocked_range<int>(
+		0,
+		m_NumSplitsX * m_NumSplitsY
+		/*grainsize*/ ),
+		CTBBImageSplitterImpl(this) );
+}
+
+
+inline void CImageSplitter::SplitST()
+{
+	const int num_images = m_NumSplitsX * m_NumSplitsY;
+	for( int i=0; i<num_images; i++ )
+	{
+		Clip( i );
+	}
+}
+
+
+inline void CTBBImageSplitterImpl::operator() ( const tbb::blocked_range<int>& r ) const
 {
 	for( int I = r.begin(); I != r.end(); ++I )
 	{
-		Clip( I );
+		m_pSplitter->Clip( I );
 	}
 }
 
