@@ -9,9 +9,34 @@
 #include "Support/fnop.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/BitmapImage.hpp"
+#include "Support/ImageSplitter.hpp"
 
 using namespace std;
 using namespace boost;
+
+
+/// filepath printer for Mesh Generator
+class CMGSplitImageFilepathPrinter : public CSplitImageFilepathPrinter
+{
+	std::string m_SrcFilepath;
+
+	/// borrowed reference
+	TerrainMeshTree *m_pMeshTree;
+
+public:
+
+	CMGSplitImageFilepathPrinter( const std::string& src_filepath, TerrainMeshTree *pMeshTree )
+		:
+	m_SrcFilepath(src_filepath),
+	m_pMeshTree(pMeshTree)
+	{}
+
+	std::string Print( int index )
+	{
+		return m_pMeshTree->CreateSubdividedTextureFilepath( m_SrcFilepath, index );
+	}
+};
+
 
 
 TerrainMeshTree::TerrainMeshTree()
@@ -494,64 +519,31 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 		return false;
 	}
 
-//	FCObjImage src_img;
-//	if (!src_img.Load (src_tex_filename.c_str()))
-	CBitmapImage src_img;
-	if( !src_img.LoadFromFile( src_tex_filename ) )
+	shared_ptr<CBitmapImage> pSrcImg = shared_ptr<CBitmapImage>( new CBitmapImage() );
+	if( !pSrcImg->LoadFromFile( src_tex_filename ) )
 	{
 		LOG_PRINT_ERROR( " - cannot load file: " + src_tex_filename );
 		return false;
 	}
 
-	const int src_tex_width  = src_img.GetWidth();
-	const int src_tex_height = src_img.GetHeight();
+	const int src_tex_width  = pSrcImg->GetWidth();
+	const int src_tex_height = pSrcImg->GetHeight();
 	const int dest_tex_width = m_TextureWidth;
 
 	int num_edge_splits = m_NumTexEdgeSplits = src_tex_width / dest_tex_width;
 
+	CMGSplitImageFilepathPrinter filepath_printer( src_tex_filename, &m_MeshTree );
+	CImageSplitter is(
+		num_edge_splits,
+		num_edge_splits,
+		"",
+		pSrcImg,
+		&filepath_printer
+		);
+
+	is.SplitMT();
+
 	LOG_PRINT( fmt_string( " - src_tex_width: %d, dest_tex_width: %d", src_tex_width, dest_tex_width ) );
-
-//	string image_format = m_OutputTextureImageFormat;
-
-//	const int num_color_bits = 32; // FreeImage fails to save the image. Why?
-	const int num_color_bits = 24;
-
-	string dest_filename;
-//	FCObjImage dest_img;
-	CBitmapImage dest_img( dest_tex_width, dest_tex_width, num_color_bits );
-
-	U8 r=0,g=0,b=0,a=0;
-//	dest_img.Create( dest_tex_width, dest_tex_width, num_color_bits );
-	int i,x,y,offset_x,offset_y;
-	for( i=0; i<num_edge_splits*num_edge_splits; i++ )
-	{
-		offset_x = (i % num_edge_splits) * dest_tex_width;
-		offset_y = (i / num_edge_splits) * dest_tex_width;
-		for( y=0; y<dest_tex_width; y++ )
-		{
-			for( x=0; x<dest_tex_width; x++ )
-			{
-//				dest_img.SetPixelData( x, y, src_img.GetPixelData( offset_x + x, offset_y + y ) );
-
-//				src_img.GetPixel( offset_x + x, offset_y + y, r, g, b, a );
-				src_img.GetPixel( offset_x + x, offset_y + y, r, g, b );
-
-//				dest_img.SetPixel( x, y, r, g, b, a );
-				dest_img.SetPixel( x, y, r, g, b );
-			}
-		}
-
-		dest_filename = m_MeshTree.CreateSubdividedTextureFilepath( src_tex_filename, i );
-
-		g_Log.Print( "saving image: %s", dest_filename.c_str() );
-
-		// save the split texture into file
-//		sprintf( dest_filename, "%s%02d.bmp", "dest/dest", i );
-		dest_img.SaveToFile( dest_filename );
-
-		// save output texture filename
-//		m_vecOutputTextureFilename.push_back( dest_filename );
-	}
 
 //	g_Log.Print( "texture has been split into %d files", num_edge_splits*num_edge_splits );
 
