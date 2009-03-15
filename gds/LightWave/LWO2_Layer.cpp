@@ -1,6 +1,6 @@
-
 #include "LWO2_Layer.hpp"
 #include "LWO2_Object.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 #include "assert.h"
 #include <algorithm>
@@ -559,6 +559,8 @@ void CLWO2_Layer::ReadPTAG(UINT4& ptagsize, CLWO2_Object& rObject, FILE* fp)
 
 void CLWO2_Layer::ComputeFaceNormals()
 {
+	LOG_FUNCTION_SCOPE();
+
 	int i, iFace, iNumPoints;
 	int iNumFaces = m_vecFace.size();
 	Vector3 vEdge0, vEdge1, vNormal;
@@ -590,6 +592,8 @@ void CLWO2_Layer::ComputeFaceNormals()
 
 void CLWO2_Layer::ComputeVertexNormals()
 {
+	LOG_FUNCTION_SCOPE();
+
 /*	CLWO2_Face temp;
 
 	Vector3 vNormal;
