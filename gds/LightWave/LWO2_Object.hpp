@@ -50,7 +50,7 @@ public:
 
 	UINT4 GetClipIndex() { return uiClipIndex; }
 //	const char *GetName() { return strName.c_str(); }
-	string& GetName() { return strName; }
+	std::string& GetName() { return strName; }
 };
 
 
@@ -65,7 +65,7 @@ public:
 		NUM_MATCH_CONDITIONS
 	};
 
-	static bool meet_cond( int cond, const string& keyword, const string& input_str )
+	static bool meet_cond( int cond, const std::string& keyword, const std::string& input_str )
 	{
 		switch( cond )
 		{
@@ -74,7 +74,7 @@ public:
 		case START_WITH:
 			return input_str.find( keyword ) == 0;
 		case SUBSTRING:
-			return input_str.find( keyword ) != string::npos;
+			return input_str.find( keyword ) != std::string::npos;
 		default:
 			return false;
 		}
@@ -107,9 +107,9 @@ public:
 
 	std::string& GetFilename() { return m_strFilename; }
 
-	list<CLWO2_Layer>& GetLayer() { return m_lstLayer; }
+	std::list<CLWO2_Layer>& GetLayer() { return m_lstLayer; }
 
-	vector<CLWO2_Surface>& GetSurface() { return m_vecSurface; }
+	std::vector<CLWO2_Surface>& GetSurface() { return m_vecSurface; }
 
 	CLWO2_Surface& FindSurfaceFromTAG(UINT2 wSurfIndex);
 
@@ -130,7 +130,7 @@ public:
 
 	CLWO2_StillClip& GetStillClip(int i) { return m_vecStillClip[i]; }
 
-	vector<CLWO2_StillClip>& GetStillClip() { return m_vecStillClip; }
+	std::vector<CLWO2_StillClip>& GetStillClip() { return m_vecStillClip; }
 
 	void ComputeFaceNormals();
 

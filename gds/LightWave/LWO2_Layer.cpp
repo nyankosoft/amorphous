@@ -5,6 +5,8 @@
 #include "assert.h"
 #include <algorithm>
 
+using namespace std;
+
 
 //================================================================================
 // SVertexColor_LWO2::Methods()                               - SVertexColor_LWO2
@@ -245,7 +247,11 @@ void CLWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
 	case ID_PICK:	// point selection set
 	{
 		if( wDimension != 0 )
-		{	assert(0); AdvanceFP(fp, chunksize - bytesread); break; }
+		{
+			assert(0);
+			AdvanceFP(fp, chunksize - bytesread);
+			break;
+		}
 
 		m_vecPointSelectionSet.push_back( CLWO2_PointSelectionSet() );
 		CLWO2_PointSelectionSet& rPointSet = m_vecPointSelectionSet.back();

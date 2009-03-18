@@ -15,7 +15,6 @@
 #include <vector>
 #include <list>
 #include <string>
-using namespace std;
 
 
 // TODO: support multiple PNTS / POLS chunks in a layer
@@ -80,7 +79,7 @@ class CLWO2_VertexColorMap
 {
 public:
 
-	string strName;
+	std::string strName;
 
 	int iNumIndices;
 
@@ -94,7 +93,7 @@ public:
 
 	void Release() { iNumIndices = 0; SafeDelete(paVertexColor); }
 
-	string& GetName() { return strName; }
+	std::string& GetName() { return strName; }
 
 	inline bool FindVertexColor( UINT4 pnt_index, SFloatRGBAColor& rDestColor );
 
@@ -112,9 +111,9 @@ class CLWO2_TextureUVMap
 {
 public:
 
-	string strName;
+	std::string strName;
 
-	vector<SIndexAndUV> vecIndexUV;
+	std::vector<SIndexAndUV> vecIndexUV;
 
 	CLWO2_TextureUVMap() {}
 
@@ -130,16 +129,16 @@ public:
 
 class CLWO2_PointSelectionSet
 {
-	string m_strName;
-	vector<UINT4> m_vecPointIndex;
+	std::string m_strName;
+	std::vector<UINT4> m_vecPointIndex;
 
 public:
 
 	CLWO2_PointSelectionSet() {}
 
-	const string& GetName() const { return m_strName; }
+	const std::string& GetName() const { return m_strName; }
 
-	vector<UINT4>& GetPointIndex() { return m_vecPointIndex; }
+	std::vector<UINT4>& GetPointIndex() { return m_vecPointIndex; }
 
 	int GetNumPoints() const { return (int)m_vecPointIndex.size(); }
 
@@ -154,7 +153,7 @@ public:
  */
 class CLWO2_Face
 {
-	vector<UINT4> m_vecPointIndex;
+	std::vector<UINT4> m_vecPointIndex;
 
 	int m_iSurfaceIndex;
 
@@ -171,7 +170,7 @@ public:
 
 	inline int GetNumPoints() const { return (int)m_vecPointIndex.size(); }
 
-	inline vector<UINT4>& GetVertexIndex() { return m_vecPointIndex; }
+	inline std::vector<UINT4>& GetVertexIndex() { return m_vecPointIndex; }
 
 	inline UINT4 GetVertexIndex( int i ) const { return m_vecPointIndex[i]; }
 
@@ -190,13 +189,13 @@ class CLWO2_PolygonGroup
 {
 public:
 
-//	string m_strName;
+//	std::string m_strName;
 
 	/// indices to the faces in the most recent POLS chunk
-	vector<UINT4> m_vecPolygonIndex;
+	std::vector<UINT4> m_vecPolygonIndex;
 
 	/// tag indices
-	vector<UINT2> m_vecTag;
+	std::vector<UINT2> m_vecTag;
 
 //	CLWO2_PolygonGroup() {}
 //	string& GetName() { return m_strName; }
@@ -207,14 +206,14 @@ public:
 
 class CLWO2_WeightMap
 {
-	string m_strName;
+	std::string m_strName;
 
-	vector<int> m_vecPntIndex;
-	vector<float> m_vecfWeight;
+	std::vector<int> m_vecPntIndex;
+	std::vector<float> m_vecfWeight;
 
 public:
 
-	const string& GetName() const { return m_strName; }
+	const std::string& GetName() const { return m_strName; }
 
 	int GetNumMaps() const { return (int)m_vecPntIndex.size(); }
 
@@ -229,12 +228,12 @@ public:
 
 class CLWO2_Bone
 {
-	string m_strName;
+	std::string m_strName;
 	UINT4 m_aiPointIndex[2];
 
 public:
 
-	const string& GetName() const { return m_strName; }
+	const std::string& GetName() const { return m_strName; }
 	UINT4 GetVertexIndex( int i ) { return m_aiPointIndex[i]; }
 
 	friend class CLWO2_Layer;
@@ -257,31 +256,31 @@ class CLWO2_Layer
 {
 	int m_iLayerIndex;
 
-	string m_strLayerName;
+	std::string m_strLayerName;
 
 	/// buffer to store vertices
-	vector<Vector3> m_vecPoint;
+	std::vector<Vector3> m_vecPoint;
 
-	vector<CLWO2_Face> m_vecFace;
+	std::vector<CLWO2_Face> m_vecFace;
 
-	vector<CLWO2_TextureUVMap> m_vecTexuvmap;
+	std::vector<CLWO2_TextureUVMap> m_vecTexuvmap;
 
-	vector<CLWO2_TextureUVMap> m_vecTexVMAD;
+	std::vector<CLWO2_TextureUVMap> m_vecTexVMAD;
 
-	vector<CLWO2_VertexColorMap> m_vecVertexColorMap;
+	std::vector<CLWO2_VertexColorMap> m_vecVertexColorMap;
 
-	vector<CLWO2_PointSelectionSet> m_vecPointSelectionSet;
+	std::vector<CLWO2_PointSelectionSet> m_vecPointSelectionSet;
 
-	vector<CLWO2_PolygonGroup> m_vecPolygonGroup;
+	std::vector<CLWO2_PolygonGroup> m_vecPolygonGroup;
 
-	vector<CLWO2_WeightMap> m_vecVertexWeightMap;
+	std::vector<CLWO2_WeightMap> m_vecVertexWeightMap;
 
-	vector<CLWO2_Bone> m_vecBone;
+	std::vector<CLWO2_Bone> m_vecBone;
 
 	/// binds bone indices and tag indices of the correspnding weight maps
-	vector<CLWO2_BoneWeightMap> m_vecBoneWeightMap;
+	std::vector<CLWO2_BoneWeightMap> m_vecBoneWeightMap;
 
-	vector<Vector3> m_vecVertexNormal;
+	std::vector<Vector3> m_vecVertexNormal;
 
 public:
 
@@ -312,35 +311,35 @@ public:
 	void ComputeVertexNormals();
 
 
-	string& GetName() { return m_strLayerName; }
+	std::string& GetName() { return m_strLayerName; }
 
 	int GetLayerIndex() const { return m_iLayerIndex; }
 
-	vector<Vector3>& GetVertex() { return m_vecPoint; }
+	std::vector<Vector3>& GetVertex() { return m_vecPoint; }
 
-	vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
+	std::vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
 
-	vector<CLWO2_Face>& GetFace() { return m_vecFace; }
+	std::vector<CLWO2_Face>& GetFace() { return m_vecFace; }
 
-	vector<CLWO2_PolygonGroup>& GetPolygonGroup() { return m_vecPolygonGroup; }
+	std::vector<CLWO2_PolygonGroup>& GetPolygonGroup() { return m_vecPolygonGroup; }
 
 	const std::string& GetPolygonGroupName();
 
-	vector<CLWO2_TextureUVMap>& GetTextureUVMap() { return m_vecTexuvmap; }
+	std::vector<CLWO2_TextureUVMap>& GetTextureUVMap() { return m_vecTexuvmap; }
 
-	vector<CLWO2_VertexColorMap>& GetVertexColorMap() { return m_vecVertexColorMap; }
+	std::vector<CLWO2_VertexColorMap>& GetVertexColorMap() { return m_vecVertexColorMap; }
 
-	vector<CLWO2_WeightMap>& GetVertexWeightMap() { return m_vecVertexWeightMap; }
+	std::vector<CLWO2_WeightMap>& GetVertexWeightMap() { return m_vecVertexWeightMap; }
 
-	vector<CLWO2_PointSelectionSet>& GetPointSelectionSet() { return m_vecPointSelectionSet; }
+	std::vector<CLWO2_PointSelectionSet>& GetPointSelectionSet() { return m_vecPointSelectionSet; }
 
 	bool GetVertexColor( SFloatRGBAColor& color, const int iPntIndex, CLWO2_Surface& rSurf );
 
-	vector<CLWO2_Bone>& GetBone() { return m_vecBone; }
+	std::vector<CLWO2_Bone>& GetBone() { return m_vecBone; }
 
-//	vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
+//	std::vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
 
-	vector<CLWO2_BoneWeightMap>& GetBoneWeightMap() { return m_vecBoneWeightMap; }
+	std::vector<CLWO2_BoneWeightMap>& GetBoneWeightMap() { return m_vecBoneWeightMap; }
 
 	bool operator==(CLWO2_Layer& layer){ return ( m_iLayerIndex == layer.m_iLayerIndex ); }
 	bool operator<(CLWO2_Layer& layer){return ( m_iLayerIndex < layer.m_iLayerIndex );}

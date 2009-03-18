@@ -1,5 +1,6 @@
-
 #include "LWO2_Object.hpp"
+
+using namespace std;
 
 
 //================================================================================
@@ -291,7 +292,6 @@ void CLWO2_Object::WriteDebug( const std::string& filename )
 		_itoa(p->GetFace().size(), acStr, 10);
 		fputs(acStr, fp);
 		fputs(" faces\n", fp);
-		
 	}
 
 

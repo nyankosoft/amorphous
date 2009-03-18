@@ -2,13 +2,9 @@
 #define __LWO2_SURFACE_H__
 
 
-#include "LWO2_Common.hpp"
-
-
 #include <vector>
 #include <string>
-using namespace std;
-
+#include "LWO2_Common.hpp"
 
 
 // SBSP : Structure of Basic Surface Parameters
@@ -22,7 +18,7 @@ struct SBSP_VertexColorMap
 	float fIntensity;
 	int iEnvelope;
 	UINT4 uiVMapType;
-	string strName;
+	std::string strName;
 
 	SBSP_VertexColorMap()
 	{
@@ -42,14 +38,14 @@ class CLWO2_SurfaceBlock
 {
 public:
 
-	string m_strOrdinalString;
+	std::string m_strOrdinalString;
 
 	/// holds a texture channel ID
 	UINT4 m_Channel;
 
 	UINT4 m_ImageTag;
 
-	string m_strUVMapName;
+	std::string m_strUVMapName;
 
 public:
 
@@ -80,14 +76,14 @@ public:
 
 private:
 
-	string m_strName;
+	std::string m_strName;
 
 //	string m_strUVMapName;
 //	UINT4 imagetag;
 
-	vector<CLWO2_SurfaceBlock> m_vecSurfaceBlock;
+	std::vector<CLWO2_SurfaceBlock> m_vecSurfaceBlock;
 
-	string m_strComment;
+	std::string m_strComment;
 
 	SBSP_VertexColorMap VMap;
 
@@ -112,24 +108,23 @@ public:
 
 	float GetMaxSmoothingAngle() { return m_fMaxSmoothingAngle; }	// returns angle below which smoothing should be applied to adjacent polygons 
 
-	string& GetName() { return m_strName; }
+	std::string& GetName() { return m_strName; }
 
 //	string& GetUVMapName() { return m_strUVMapName; }
 
 //	UINT4 GetImageTag() { return imagetag; }
 
-	vector<CLWO2_SurfaceBlock>& GetSurfaceBlock() { return m_vecSurfaceBlock; }
+	std::vector<CLWO2_SurfaceBlock>& GetSurfaceBlock() { return m_vecSurfaceBlock; }
 
 	CLWO2_SurfaceBlock *GetSurfaceBlockByChannel( UINT4 uiChannelID );
 
-	string& GetComment() { return m_strComment; }
+	std::string& GetComment() { return m_strComment; }
 
 	SBSP_VertexColorMap& GetVertexColorMap() { return VMap; }
 
 	float GetBaseShadingValue( int iType ) { return m_afBaseShadingValue[iType]; }
 
 };
-
 
 
 #endif  /*  __LWO2_SURFACE_H__  */

@@ -4,18 +4,12 @@
 //=====================================================================
 
 
+#include <vector>
+#include <list>
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix33.hpp"
 #include "3DMath/Matrix34.hpp"
 
-#include <d3d9.h>
-#include <d3dx9.h>
-
-
-#include <stdio.h>
-
-#include <vector>
-#include <list>
 using namespace std;
 
 
