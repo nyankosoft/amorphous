@@ -10,6 +10,9 @@ using namespace std;
 // CMeshObjectHandle
 //==================================================================================================
 
+const CMeshObjectHandle CMeshObjectHandle::ms_NullHandle;
+
+
 boost::shared_ptr<CMeshResource> CMeshObjectHandle::GetMeshResource()
 {
 	if( GetEntry() )

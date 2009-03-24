@@ -14,6 +14,8 @@ class CMeshObjectHandle : public CGraphicsResourceHandle
 {
 protected:
 
+	static const CMeshObjectHandle ms_NullHandle;
+
 public:
 
 	inline CMeshObjectHandle() {}
@@ -33,6 +35,8 @@ public:
 	boost::shared_ptr<CMeshResource> GetMeshResource();
 
 	inline virtual const CMeshObjectHandle &operator=( const CMeshObjectHandle& handle );
+
+	static const CMeshObjectHandle& Null() { return ms_NullHandle; }
 };
 
 

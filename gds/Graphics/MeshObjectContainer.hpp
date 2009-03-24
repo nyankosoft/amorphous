@@ -7,21 +7,34 @@
 #include "ShaderHandle.hpp"
 #include "Shader/ShaderTechniqueHandle.hpp"
 #include "Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "XML.hpp"
+#include "3DMath/Matrix34.hpp"
+#include "XML/fwd.hpp"
 #include "Support/2DArray.hpp"
 #include "Support/Serialization/Serialization_2DArray.hpp"
 using namespace GameLib1::Serialization;
 
 
+/**
+ See comments in MeshObjectContainer for details
+*/
 class CMeshObjectContainer : public IArchiveObjectBase
 {
 public:
+
+	//
+	// mesh
+	//
 
 	CMeshResourceDesc m_MeshDesc;
 
 	/// Used during runtime
 	/// - Not serialized
 	CMeshObjectHandle m_MeshObjectHandle;
+
+
+	//
+	// shader
+	//
 
 	/// table of shader techniques
 	/// - row:    corresponds to mesh materials
@@ -31,6 +44,11 @@ public:
 	std::string m_ShaderFilepath;
 
 	CShaderHandle m_ShaderHandle;
+
+
+	//
+	// extra textures
+	//
 
 	std::vector<std::string> m_vecExtraTextureFilepath;
 
@@ -47,89 +65,67 @@ public:
 
 	virtual ~CMeshObjectContainer() {}
 
-	virtual void Serialize( IArchive& ar, const unsigned int version )
-	{
-		ar & m_MeshDesc;
-		ar & m_ShaderTechnique;
-		ar & m_vecExtraTextureFilepath;
-		ar & m_ShaderFilepath;
-	}
+	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader )
-	{
-		m_MeshDesc.LoadFromXMLNode( reader.GetChild( "MeshDesc" ) );
-
-		reader.GetChildElementTextContent( "ShaderFilepath", m_ShaderFilepath );
-		
-		string shader_technique;
-		if( reader.GetChildElementTextContent( "SingleShaderTechnique", shader_technique ) )
-		{
-			m_ShaderTechnique.resize( 1, 1 );
-			m_ShaderTechnique(0,0).SetTechniqueName( shader_technique.c_str() );
-		}
-	}
+	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 };
 
 
-/*
---------------------------------------------------
- XML format for shader technique
---------------------------------------------------
+class CMeshContainerNode : public IArchiveObjectBase
+{
+	Matrix34 m_LocalPose; /// local pose of the node
 
-no LOD, single technique
+	std::vector< boost::shared_ptr<CMeshObjectContainer> > m_vecpMeshContainer;
 
-<SingleShaderTechnique>HSLighting</SingleShaderTechnique>
+	std::vector<Matrix34> m_vecMeshLocalPose;
 
+	std::vector< boost::shared_ptr<CMeshContainerNode> > m_vecpChild;
 
-no LOD, multiple materials (Not implemented yet)
+public:
 
-<ShaderTechniques>
-	<Material index="0">EnvMap</Material>
-	<Material index="1">HSLighting</Material>
-	<Material index="2">HSLighting</Material>
-</ShaderTechniques>
+	CMeshContainerNode() {}
 
+	~CMeshContainerNode() {}
 
-LOD, multiple materials (Not implemented yet)
-
-<ShaderTechniques>
-	<Material index="0">
-		<High>EnvMap</High>
-		<Mid>EnvMap</Mid>
-		<Low>Default</Low>
-	</Material>
-	<Material index="1">
-		<High>HSLighting</High>
-		<Mid>HSLighting</Mid>
-		<Low>Default</Low>
-	</Material>
-	<Material index="2">
-		<High>HSLighting</High>
-		<Mid>HSLighting</Mid>
-		<Low>Default</Low>
-	</Material>
-</ShaderTechniques>
-
-*/
+	void AddMeshContainer( boost::shared_ptr<CMeshObjectContainer> pMeshContainer, Matrix34& local_pose )
+	{
+		m_vecpMeshContainer.push_back( pMeshContainer );
+		m_vecMeshLocalPose.push_back( local_pose );
+	}
 
 
+	// 
+	// mesh containers of this node
+	// 
+
+	int GetNumMeshContainers() const { return (int)m_vecpMeshContainer.size(); }
+
+	const boost::shared_ptr<CMeshObjectContainer> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
+
+	boost::shared_ptr<CMeshObjectContainer> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 
 
-//  old text desc file (deprecated. Use the XML format instead)
-/*
+	//
+	// child nodes
+	//
 
-How to load from text file?
+	int GetNumChildren() { return (int)m_vecpChild.size(); }
 
-text file
-MeshContainer.MeshObjectFilename	plane.msh
+	const boost::shared_ptr<CMeshContainerNode> GetChild( int index ) const { return m_vecpChild[index]; }
 
-begin: MeshContainer
-	filename	models/plane.msh
-	extra_tex	0 textures/specular.msh
-	shader_tech 0 VertexBlend_1HSDL_Specular_CTS  SingleHSDL_Specular_CTS     VertLights
-	shader_tech 1 SpecularMembrane_1HSDL_CTS      SpecularMembrane_1HSDL_CTS  VertLights
-end: MeshContainer
-*/
+	/// Returns non-const pointer
+	boost::shared_ptr<CMeshContainerNode> Child( int index ) { return m_vecpChild[index]; }
+
+	void AddChild( boost::shared_ptr<CMeshContainerNode> pChild ) { m_vecpChild.push_back( pChild ); }
+
+	/// Recursively load all meshes on the nodes of the tree
+	bool LoadMeshesFromDesc();
+
+	void Serialize( IArchive& ar, const unsigned int version );
+
+	void LoadFromXMLNode( CXMLNodeReader& reader );
+};
+
 
 
 #endif /* __MeshObjectContainer_H__ */
