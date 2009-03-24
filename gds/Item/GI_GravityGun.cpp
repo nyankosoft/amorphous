@@ -99,7 +99,9 @@ void CGI_GravityGun::Update( float dt )
 
 			vForce += m_vMuzzleEndVelocity;
 
-			pTarget->pPhysicsActor->SetLinearVelocity( vForce );
+			physics::CActor *pPhysicsActor = pTarget->GetPrimaryPhysicsActor();
+			if( pPhysicsActor )
+				pPhysicsActor->SetLinearVelocity( vForce );
 
 /*			Vector3 vPos = m_pTarget->pPhysicsActor->GetPosition();
 			Vector3 vVel = m_pTarget->pPhysicsActor->GetVelocity();
@@ -166,14 +168,22 @@ bool CGI_GravityGun::GraspObjectInAimDirection()
 	if( pStage )
 		pStage->ClipTrace( tr );
 
-	if( tr.pTouchedEntity &&
-		tr.pTouchedEntity->EntityFlag & BETYPE_RIGIDBODY &&
-//		!(tr.pTouchedEntity->pPhysicsActor->GetActorFlag() & JL_ACTOR_KINEMATIC) )
-		(tr.pTouchedEntity->pPhysicsActor->GetMass() < 1000000.0f ) )
+	if( tr.pTouchedEntity
+	 && tr.pTouchedEntity->EntityFlag & BETYPE_RIGIDBODY )
 	{
-		// locked a target
-		m_Target = CEntityHandle<>( tr.pTouchedEntity->Self() );
-//		m_pTarget->pPhysicsActor->SetAllowFreezing( false );
+//		physics::CActor *pPhysicsActor = tr.pTouchedEntity->pPhysicsActor;
+		physics::CActor *pPhysicsActor = tr.pTouchedEntity->GetPrimaryPhysicsActor();
+		const float max_weight = 1000000.0f;
+
+		if( pPhysicsActor
+//		 && !(pPhysicsActor->GetActorFlag() & JL_ACTOR_KINEMATIC)
+		 && pPhysicsActor->GetMass() < max_weight )
+		{
+			// locked a target
+			m_Target = CEntityHandle<>( tr.pTouchedEntity->Self() );
+//			m_pTarget->pPhysicsActor->SetAllowFreezing( false );
+		}
+
 		return true;
 	}
 	else
@@ -198,6 +208,7 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 			CCopyEntity *pTarget = m_Target.GetRawPtr();
 			if( pTarget )
 			{
+				physics::CActor *pPhysicsActor = pTarget->GetPrimaryPhysicsActor();
 				Vector3 vDist = vOwnerMuzzlePos - pTarget->Position();
 
 				float fDistSq = Vec3LengthSq(vDist);
@@ -207,7 +218,7 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 
 					// shoot object
 //					pTarget->ApplyWorldImpulse( vImpulse, m_pTarget->Position() );
-					pTarget->pPhysicsActor->SetLinearVelocity( vImpulse );
+					pPhysicsActor->SetLinearVelocity( vImpulse );
 
 					// release object
 //					m_pTarget->pPhysicsActor->SetAllowFreezing( true );

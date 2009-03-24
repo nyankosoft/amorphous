@@ -4,6 +4,7 @@
 
 #include <string>
 
+#include "Item/ItemEntity.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/MeshObjectContainer.hpp"
 #include "GameCommon/LangID.hpp"
@@ -49,7 +50,7 @@ protected:
 	/// holds mesh related properties
 	/// - mesh object handle
 	/// - 2d array of shader technique handles
-	CMeshObjectContainer m_MeshObjectContainer;
+	CMeshContainerNode m_MeshContainerRootNode;
 
 	/// holds how many(much) units the owner can carry
 	int m_iMaxQuantity;
@@ -65,6 +66,8 @@ protected:
 
 	CStageWeakPtr m_pStage;
 
+	CEntityHandle<CItemEntity> m_Entity;
+
 public:
 
 	CGameItem();
@@ -78,11 +81,23 @@ public:
 	// mesh object
 	//
 
-	const CMeshObjectContainer& GetMeshObjectContainer() const { return m_MeshObjectContainer; }
+//	const CMeshObjectContainer& GetMeshObjectContainer() const { return m_MeshObjectContainer; }
  
-	const std::string& GetMeshObjectFilename() const { return m_MeshObjectContainer.m_MeshDesc.ResourcePath; }
+//	const std::string& GetMeshObjectFilename() const { return m_MeshObjectContainer.m_MeshDesc.ResourcePath; }
 
-	const CMeshObjectHandle& GetMeshObjectHandle() const { return m_MeshObjectContainer.m_MeshObjectHandle; }
+//	const CMeshObjectHandle& GetMeshObjectHandle() const { return m_MeshObjectContainer.m_MeshObjectHandle; }
+/*	const CMeshObjectHandle& GetMeshObjectHandle() const
+	{
+		if( 0 < m_MeshContainerRootNode.GetNumChildren() )
+			return m_MeshContainerRootNode.GetChild(0)->m_MeshObjectHandle;
+		else
+			return CMeshObjectHandle::Null();
+	}
+*/
+
+	const CMeshContainerNode& GetMeshContainerRootNode() const { return m_MeshContainerRootNode; }
+
+	CMeshContainerNode& MeshContainerRootNode() { return m_MeshContainerRootNode; }
 
 	bool LoadMeshObject();
 
@@ -120,6 +135,23 @@ public:
 	inline const std::string& GetDesc( int lang_id ) const { return m_Desc.text[lang_id]; }
 
 	void SetStageWeakPtr( CStageWeakPtr pStage ) { m_pStage = pStage; }
+
+	inline void SetWorldPose( const Matrix34& rSrcWorldPose )
+	{
+		boost::shared_ptr<CItemEntity> pEntity = m_Entity.Get();
+		if( pEntity )
+			pEntity->SetWorldPose( rSrcWorldPose );
+	}
+
+	void SetWorldPosition( const Vector3& vPosition ) { SetWorldPose( Matrix34( vPosition, Matrix33Identity() ) ); }
+
+	inline void SetLinearVelocity( const Vector3& vLinearVelocity )
+	{
+		boost::shared_ptr<CItemEntity> pEntity = m_Entity.Get();
+		if( pEntity )
+			pEntity->SetVelocity( vLinearVelocity );
+	}
+
 
 	enum eTypeFlag
 	{

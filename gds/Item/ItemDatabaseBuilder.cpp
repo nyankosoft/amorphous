@@ -50,7 +50,7 @@ void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner
 	scanner.TryScanSentence( "desc_jp",			pItem->m_Desc.text[Lang::Japanese] );
 	scanner.TryScanSentence( "desc_en",			pItem->m_Desc.text[Lang::English] );
 
-	scanner.TryScanLine( "model_file",		pItem->m_MeshObjectContainer.m_MeshDesc.ResourcePath );
+/*	scanner.TryScanLine( "model_file",		pItem->m_MeshObjectContainer.m_MeshDesc.ResourcePath );
 
 	string type_str;
 	if( scanner.TryScanLine( "mesh_type",	type_str ) )
@@ -60,7 +60,7 @@ void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner
 		else if( type_str == "progressive" ) mesh_type = CMeshType::PROGRESSIVE;
 		else if( type_str == "normal" )      mesh_type = CMeshType::BASIC;
 		pItem->m_MeshObjectContainer.m_MeshDesc.MeshType = mesh_type;
-	}
+	}*/
 }
 
 

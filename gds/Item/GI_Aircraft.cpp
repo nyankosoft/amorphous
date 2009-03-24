@@ -368,7 +368,11 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<CD3DXSMeshObject> pMesh )
 	}
 	else
 	{
-		shared_ptr<CD3DXMeshObjectBase> pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh();
+//		shared_ptr<CD3DXMeshObjectBase> pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh();
+		shared_ptr<CD3DXMeshObjectBase> pMeshObject;
+		if( 0 < m_MeshContainerRootNode.GetNumMeshContainers() )
+			pMeshObject = m_MeshContainerRootNode.MeshContainer(0)->m_MeshObjectHandle.GetMesh();
+
 		if( pMeshObject && pMeshObject->GetMeshType() == CMeshType::SKELETAL )
 		{
 			pTargetMesh = boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pMeshObject);
@@ -394,7 +398,13 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<CD3DXSMeshObject> pMesh )
 // 
 void CGI_Aircraft::ResetMeshController()
 {
-	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMesh() )
+//	CMeshObjectContainer& mesh_container = m_MeshObjectContainer;
+
+	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
+		return;
+
+	CMeshObjectContainer& mesh_container = *(m_MeshContainerRootNode.MeshContainer(0).get());
+	if( !mesh_container.m_MeshObjectHandle.GetMesh() )
 		return;
 
 	size_t i, num = m_vecpMeshController.size();
@@ -405,7 +415,8 @@ void CGI_Aircraft::ResetMeshController()
 
 void CGI_Aircraft::UpdateTargetMeshTransforms()
 {
-	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMesh() )
+//	if( !m_MeshObjectContainer.m_MeshObjectHandle.GetMesh() )
+	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
 		return;
 
 	size_t i, num = m_vecpMeshController.size();

@@ -5,6 +5,7 @@
 
 
 using namespace std;
+using namespace boost;
 
 
 void ItemDesc::LoadFromXMLNode( CXMLNodeReader& reader )
@@ -27,6 +28,12 @@ m_iMaxQuantity(1),
 m_Price(1),
 m_TypeFlag(0)
 {
+	// create a mesh container in the root node
+	// - used as a default mesh container
+	shared_ptr<CMeshObjectContainer> pMeshContainer
+		= shared_ptr<CMeshObjectContainer>( new CMeshObjectContainer() );
+
+	m_MeshContainerRootNode.AddMeshContainer( pMeshContainer, Matrix34Identity() );
 }
 
 
@@ -38,7 +45,7 @@ CGameItem::~CGameItem()
 void CGameItem::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_strName;
-	ar & m_MeshObjectContainer;
+	ar & m_MeshContainerRootNode;
 	ar & m_iMaxQuantity;
 	ar & m_iCurrentQuantity;
 	ar & m_Price;
@@ -50,7 +57,8 @@ void CGameItem::Serialize( IArchive& ar, const unsigned int version )
 
 bool CGameItem::LoadMeshObject()
 {
-	return m_MeshObjectContainer.m_MeshObjectHandle.Load( m_MeshObjectContainer.m_MeshDesc );
+//	return m_MeshObjectContainer.m_MeshObjectHandle.Load( m_MeshObjectContainer.m_MeshDesc );
+	return m_MeshContainerRootNode.LoadMeshesFromDesc();
 }
 
 
@@ -60,7 +68,7 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "Price",       m_Price );
 	reader.GetChildElementTextContent( "MaxQuantity", m_iMaxQuantity );
 
-	m_MeshObjectContainer.LoadFromXMLNode( reader.GetChild( "Model" ) );
+	m_MeshContainerRootNode.LoadFromXMLNode( reader.GetChild( "Model/MeshNode" ) );
 	m_Desc.LoadFromXMLNode( reader.GetChild( "Desc" ) );
 }
 

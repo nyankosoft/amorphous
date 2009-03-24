@@ -346,6 +346,10 @@ void CGI_MissileLauncher::UpdateAmmunitions( CStage *pStage )
 
 	CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
 
+	CMeshObjectHandle mesh_handle;
+	if( 0 < rCurrentAmmo.GetMeshContainerRootNode().GetNumMeshContainers() )
+		mesh_handle = rCurrentAmmo.GetMeshContainerRootNode().GetMeshContainer( 0 )->m_MeshObjectHandle;
+
 	for( i=0; i<num_release_positions; i++ )
 	{
 		if( !m_vecMissileHolder[i].pLoadedAmmo
@@ -372,7 +376,8 @@ void CGI_MissileLauncher::UpdateAmmunitions( CStage *pStage )
 			missile_entity.sGroupID = m_pWeaponSlot->ProjectileGroup;
 
 			// 3D mesh object for the entity
-			missile_entity.MeshObjectHandle = rCurrentAmmo.GetMeshObjectContainer().m_MeshObjectHandle;
+//			missile_entity.MeshObjectHandle = rCurrentAmmo.GetMeshObjectContainer().m_MeshObjectHandle;
+			missile_entity.MeshObjectHandle = mesh_handle;
 
 			pMissile = pStage->CreateEntity( missile_entity );
 
