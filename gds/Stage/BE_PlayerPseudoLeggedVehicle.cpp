@@ -51,13 +51,19 @@ CBE_PlayerPseudoLeggedVehicle::~CBE_PlayerPseudoLeggedVehicle()
 
 void CVehicleLeg::Update( CCopyEntity *pEntity, float dt )
 {
-	if( !pEntity->pPhysicsActor )
+//	if( !pEntity->pPhysicsActor )
+//		return;
+
+	if( pEntity->m_vecpPhysicsActor.size() == 0
+	 || pEntity->m_vecpPhysicsActor[0] == NULL )
 		return;
+
+	physics::CActor *pPhysicsActor = pEntity->m_vecpPhysicsActor[0];
 
 //	const Matrix34& rWorldPose = pEntity->GetWorldPose();
 
 	Matrix34 world_pose;
-	pEntity->pPhysicsActor->GetWorldPose( world_pose );
+	pPhysicsActor->GetWorldPose( world_pose );
 
 	Vector3 vWorldPos, vWorldDir;
 
@@ -91,7 +97,7 @@ void CVehicleLeg::Update( CCopyEntity *pEntity, float dt )
 		if( 0 < depth )
 		{
 //			Vector3 vVelLegDir = Vec3Dot( vWorldDir, pEntity->Velocity() ) * vWorldDir;
-			Vector3 vVelLegDir = Vec3Dot( vWorldDir, pEntity->pPhysicsActor->GetLinearVelocity() ) * vWorldDir;
+			Vector3 vVelLegDir = Vec3Dot( vWorldDir, pPhysicsActor->GetLinearVelocity() ) * vWorldDir;
 
 			// reduce force when the leg is perpendicular to the contacted surface
 			float slope = fabsf( Vec3Dot( vWorldDir, segment.plane.normal ) );
@@ -103,8 +109,8 @@ void CVehicleLeg::Update( CCopyEntity *pEntity, float dt )
 			// apply damping
 			vForce -= vVelLegDir * m_fDamper;
 
-			pEntity->pPhysicsActor->AddWorldForceAtWorldPos( vForce, vWorldPos );
-//			pEntity->pPhysicsActor->ApplyWorldImpulse( vForce, vWorldPos );
+			pPhysicsActor->AddWorldForceAtWorldPos( vForce, vWorldPos );
+//			pPhysicsActor->ApplyWorldImpulse( vForce, vWorldPos );
 		}
 	}
 	else
@@ -183,7 +189,8 @@ void CBE_PlayerPseudoLeggedVehicle::Init()
 
 void CBE_PlayerPseudoLeggedVehicle::LimitOrientation( CCopyEntity *pCopyEnt )
 {
-	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+//	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+	CActor& rPhysicsActor = *(pCopyEnt->m_vecpPhysicsActor[0]);
 
 	float dp = Vec3Dot( pCopyEnt->GetUpDirection(), Vector3(0,1,0) );
 	float max_pitch_cos = (float)cos(rad_to_deg(MAX_PITCH));
@@ -220,13 +227,17 @@ void CBE_PlayerPseudoLeggedVehicle::LimitOrientation( CCopyEntity *pCopyEnt )
 
 void CBE_PlayerPseudoLeggedVehicle::Move( CCopyEntity *pCopyEnt )
 {
-	if( !pCopyEnt->pPhysicsActor )
+//	if( !pCopyEnt->pPhysicsActor )
+	if( pCopyEnt->m_vecpPhysicsActor.size() == 0
+	 || pCopyEnt->m_vecpPhysicsActor[0] == NULL )
 	{
-		assert( pCopyEnt->pPhysicsActor );
+//		assert( pCopyEnt->pPhysicsActor );
+		ONCE( LOG_PRINT_ERROR( "No physics actor" ) );
 		return;
 	}
 
-	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+//	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+	CActor& rPhysicsActor = *(pCopyEnt->m_vecpPhysicsActor[0]);
 
 	// If player is in solid, try to get out of there.
 //	NudgePosition( pCopyEnt );
@@ -271,13 +282,17 @@ void CBE_PlayerPseudoLeggedVehicle::UpdateCamera(CCopyEntity* pCopyEnt)
 
 void CBE_PlayerPseudoLeggedVehicle::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 {
-	if( !pCopyEnt->pPhysicsActor )
+//	if( !pCopyEnt->pPhysicsActor )
+	if( pCopyEnt->m_vecpPhysicsActor.size() == 0
+	 || pCopyEnt->m_vecpPhysicsActor[0] == NULL )
 	{
-		assert( pCopyEnt->pPhysicsActor );
+//		assert( pCopyEnt->pPhysicsActor );
+		ONCE( LOG_PRINT_ERROR( " No physics actor" ) );
 		return;
 	}
 
-	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+//	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+	CActor& rPhysicsActor = *pCopyEnt->m_vecpPhysicsActor[0];
 
 	// wake up the actor if it's sleeping
 //	if( rPhysicsActor.GetActivityState() == CJL_PhysicsActor::FROZEN )
@@ -424,19 +439,19 @@ void CBE_PlayerPseudoLeggedVehicle::UpdatePhysics( CCopyEntity *pCopyEnt, float 
 
 ///	Accelerate( pCopyEnt, vWishdir, fWishspeed, 10.0f );
 
-//	pCopyEnt->pPhysicsActor->SetVelocity( pCopyEnt->Velocity() );
-//	pCopyEnt->pPhysicsActor->SetVelocity( vWishdir );
-	pCopyEnt->pPhysicsActor->AddWorldForce( vWishdir * 800.0f );
+//	rPhysicsActor.SetVelocity( pCopyEnt->Velocity() );
+//	rPhysicsActor.SetVelocity( vWishdir );
+	rPhysicsActor.AddWorldForce( vWishdir * 800.0f );
 
 	Vector3 vCounterForce;
-	vCounterForce = - pCopyEnt->pPhysicsActor->GetLinearVelocity() * 30.0f;
-	pCopyEnt->pPhysicsActor->AddWorldForce( vCounterForce );
+	vCounterForce = - rPhysicsActor.GetLinearVelocity() * 30.0f;
+	rPhysicsActor.AddWorldForce( vCounterForce );
 
 //	pCopyEnt->pPhysicsActor->ApplyWorldImpulse( m_vJumpThrust );
 	if( m_fJumpThrustTime < 0.2f )
 	{
-//		pCopyEnt->pPhysicsActor->AddWorldForce( m_vJumpThrust * 10.0f );
-		pCopyEnt->pPhysicsActor->AddWorldForce( m_vJumpThrust * 3.0f );
+//		rPhysicsActor.AddWorldForce( m_vJumpThrust * 10.0f );
+		rPhysicsActor.AddWorldForce( m_vJumpThrust * 3.0f );
 		m_fJumpThrustTime += dt;
 	}
 	else

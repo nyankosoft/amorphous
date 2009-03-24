@@ -84,7 +84,7 @@ inline CCopyEntity::CCopyEntity()
 //	for( int i=0; i<NUM_MAX_CHILDREN_PER_ENTITY; i++ )
 //		apChild[i] = NULL;
 
-	pPhysicsActor = NULL;
+//	pPhysicsActor = NULL;
 
 	pUserData = NULL;
 }
@@ -143,7 +143,8 @@ inline void CCopyEntity::Terminate()
 
 	Unlink();
 
-	if( pPhysicsActor )
+//	if( pPhysicsActor )
+	if( 0 < m_vecpPhysicsActor.size() )
 		ReleasePhysicsActor();
 
 	pUserData = NULL;
@@ -260,6 +261,15 @@ inline void CCopyEntity::UpdateMesh()
 {
 	if( EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
 		pBaseEntity->CreateAlphaEntities( this );
+}
+
+
+inline physics::CActor *CCopyEntity::GetPrimaryPhysicsActor()
+{
+	if( 0 < m_vecpPhysicsActor.size() )
+		return m_vecpPhysicsActor[0];
+	else
+		return NULL;
 }
 
 

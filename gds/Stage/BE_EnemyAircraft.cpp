@@ -344,9 +344,11 @@ void CBE_EnemyAircraft::Act( CCopyEntity* pCopyEnt )
 
 void CBE_EnemyAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 {
-	if( !pCopyEnt->pPhysicsActor )
+//	if( !pCopyEnt->pPhysicsActor )
+	physics::CActor *pPhysicsActor = pCopyEnt->GetPrimaryPhysicsActor();
+	if( !pPhysicsActor )
 	{
-		assert( pCopyEnt->pPhysicsActor );
+		ONCE( LOG_PRINT_ERROR( " No physics actor" ) );
 		return;
 	}
 
@@ -368,7 +370,8 @@ void CBE_EnemyAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	{
 		// entity is controlled by the pseudo aircraft simulator
 
-		CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+//		CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+		CActor& rPhysicsActor = *pPhysicsActor;
 
 		pseudo_sim.Update( dt );
 
@@ -377,8 +380,8 @@ void CBE_EnemyAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 		pCopyEnt->SetVelocity( pseudo_sim.GetVelocity() );
 		pCopyEnt->fSpeed = Vec3Length( pCopyEnt->Velocity() );
 
-		pCopyEnt->pPhysicsActor->SetWorldPose( pseudo_sim.GetWorldPose() );
-		pCopyEnt->pPhysicsActor->SetLinearVelocity( pseudo_sim.GetVelocity() );
+		rPhysicsActor.SetWorldPose( pseudo_sim.GetWorldPose() );
+		rPhysicsActor.SetLinearVelocity( pseudo_sim.GetVelocity() );
 	}
 }
 

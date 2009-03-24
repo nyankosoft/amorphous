@@ -405,11 +405,12 @@ void CBE_HomingMissile::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	 && MissileState(pCopyEnt) == MS_IGNITED )
         MissileMove( pCopyEnt, dt );
 
-	if( pCopyEnt->pPhysicsActor )
+	physics::CActor *pPhysicsActor = pCopyEnt->GetPrimaryPhysicsActor();
+	if( pPhysicsActor )
 	{
-		pCopyEnt->pPhysicsActor->SetWorldPose( pCopyEnt->GetWorldPose() );
-//		pCopyEnt->pPhysicsActor->SetVelocity( pCopyEnt->Velocity() );
-		pCopyEnt->pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
+		pPhysicsActor->SetWorldPose( pCopyEnt->GetWorldPose() );
+//		pPhysicsActor->SetVelocity( pCopyEnt->Velocity() );
+		pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 	}
 }
 

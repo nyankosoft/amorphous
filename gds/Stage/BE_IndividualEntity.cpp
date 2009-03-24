@@ -43,7 +43,6 @@ void CBE_IndividualEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 		pCopyEnt->EntityFlag |= BETYPE_ENVMAPTARGET;
 		m_pStage->GetEntitySet()->GetRenderManager()->EnableEnvironmentMap();
 		m_pStage->GetEntitySet()->GetRenderManager()->AddEnvMapTarget( pCopyEnt );
-
 	}
 }
 
@@ -58,10 +57,7 @@ void CBE_IndividualEntity::Draw(CCopyEntity* pCopyEnt)
 {
 	pCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 
-	if( m_MeshProperty.m_MeshObjectHandle.IsLoaded() )
-	{
-		Draw3DModel(pCopyEnt);
-	}
+	pCopyEnt->Draw();
 }
 
 
@@ -70,16 +66,6 @@ void CBE_IndividualEntity::Serialize( IArchive& ar, const unsigned int version )
 	CBE_PhysicsBaseEntity::Serialize( ar, version );
 }
 
-
-/*
-void CBE_IndividualEntity::ReleaseGraphicsResources()
-{
-}
-
-void CBE_IndividualEntity::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-}
-*/
 
 /*
 bool CBE_IndividualEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )

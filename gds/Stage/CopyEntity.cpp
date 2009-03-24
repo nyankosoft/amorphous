@@ -12,11 +12,17 @@ using namespace boost;
 
 void CCopyEntity::ApplyWorldImpulse( Vector3& vImpulse, Vector3& vContactPoint )
 {
-	if( !pPhysicsActor )
+/*	if( !pPhysicsActor )
 		return;	// entity must have a corresponding physics actor to apply impulse
 
 //	pPhysicsActor->ApplyWorldImpulse( vImpulse, vContactPoint );
 	pPhysicsActor->AddWorldForceAtWorldPos( vImpulse, vContactPoint, ForceMode::Impulse );
+*/
+
+	for( size_t i=0; i<m_vecpPhysicsActor.size(); i++ )
+	{
+		m_vecpPhysicsActor[i]->AddWorldForceAtWorldPos( vImpulse, vContactPoint, ForceMode::Impulse );
+	}
 }
 
 
@@ -67,13 +73,33 @@ void CCopyEntity::DisconnectFromParentAndChildren()
 
 void CCopyEntity::ReleasePhysicsActor()
 {
-	pPhysicsActor = NULL;
+//	pPhysicsActor = NULL;
+
+	for( size_t i=0; i<m_vecpPhysicsActor.size(); i++ )
+	{
+		m_vecpPhysicsActor[i] = NULL;
+	}
+	m_vecpPhysicsActor.resize( 0 );
+
+	for( size_t i=0; i<m_vecpPhysicsJoint.size(); i++ )
+	{
+		m_vecpPhysicsJoint[i] = NULL;
+	}
+	m_vecpPhysicsJoint.resize( 0 );
+
 }
 
 
 void CCopyEntity::UpdatePhysics()
 {
+/*
 	pPhysicsActor->GetWorldPose( WorldPose );
+*/
+	if( m_vecpPhysicsActor.size() == 0 )
+		return;
+
+	for( size_t i=0; i<m_vecpPhysicsActor.size(); i++ )
+		m_vecpPhysicsActor[i]->GetWorldPose( WorldPose );
 
 	int i;
 	for( i=0; i<9; i++ )
@@ -83,8 +109,12 @@ void CCopyEntity::UpdatePhysics()
 	}
 	if( i == 9 )
 		int error = 1;
-
+/*
 //	Position() = pPhysicsActor->GetPosition();
 	Velocity() = pPhysicsActor->GetLinearVelocity();
 	AngularVelocity() = pPhysicsActor->GetAngularVelocity();
+*/
+
+	Velocity()        = m_vecpPhysicsActor[0]->GetLinearVelocity();
+	AngularVelocity() = m_vecpPhysicsActor[0]->GetAngularVelocity();
 }

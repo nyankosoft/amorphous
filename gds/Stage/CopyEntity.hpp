@@ -200,7 +200,9 @@ public:
 	/// directional lights have to be placed before point lights
 	TCFixedVector<CEntityHandle<CLightEntity>,NUM_MAX_LIGHTS_AT_ENTITY> m_vecLight;
 
-	physics::CActor *pPhysicsActor;
+	std::vector<physics::CActor *> m_vecpPhysicsActor;
+
+	std::vector<physics::CJoint *> m_vecpPhysicsJoint;
 
 	/// borrowed reference
 	std::vector<CCopyEntityCallbackBase *> vecpCallback;
@@ -367,6 +369,8 @@ public:
 
 	/// Release and create alpha entities if BETYPE_SUPPORT_TRANSPARENT_PARTS is on.
 	inline void UpdateMesh();
+
+	inline physics::CActor *GetPrimaryPhysicsActor();
 
 	friend class CBaseEntity;
 	friend class CEntityHandleBase;

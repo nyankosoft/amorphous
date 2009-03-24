@@ -133,8 +133,6 @@ protected:
 
 protected:
 
-	void UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPath& rPath );
-
 	void Fire( CCopyEntity* pCopyEnt );
 
 	bool CheckRayToPlayer( CCopyEntity* pCopyEnt );

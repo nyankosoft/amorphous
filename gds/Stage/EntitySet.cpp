@@ -247,6 +247,11 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 	float fRadius, d=0;
 	Vector3 vExtents;
 
+	if(pEntity->bvType != BVTYPE_DOT)
+		fRadius = pEntity->fRadius;
+	else
+		fRadius = 0;
+
 	while(1)
 	{
 		CEntityNode& rThisEntityNode = paEntNode[ sEntNodeIndex ];
@@ -262,13 +267,11 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 
 		d = rPlane.GetDistanceFromPoint( pEntity->Position() );
 
-		if(pEntity->bvType != BVTYPE_DOT)
-//			fRadius = pEntity->local_aabb.GetRadiusForPlane( rPlane );
-///			fRadius = pEntity->local_aabb.vMax.x * 1.4142f;
-			fRadius = pEntity->fRadius;
+/*		if(pEntity->bvType != BVTYPE_DOT)
+			fRadius = pEntity->local_aabb.GetRadiusForPlane( rPlane );
 		else
 			fRadius = 0;
-			
+*/			
 		if(fRadius < d)
 		{
 			// recurse down to front
@@ -489,6 +492,99 @@ short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
 }
 
 
+void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCopyEntity *pParent, CBaseEntity *pBaseEntity )
+{
+	CCopyEntity* pNewCopyEnt = pNewCopyEntPtr.get();
+
+	// Mark the entity as in use
+	pNewCopyEnt->inuse = true;
+
+	pNewCopyEnt->m_pSelf = pNewCopyEntPtr;
+
+	pNewCopyEnt->pBaseEntity = pBaseEntity;
+	CBaseEntity& rBaseEntity = (*pBaseEntity);
+
+	pNewCopyEnt->m_pStage = m_pStage;
+
+	// set id and increment the counter
+	pNewCopyEnt->m_ID = m_EntityIDConter++;
+
+	// z-sort is disabled by default initialization
+	// Entities that have translucent polygons have to turn on their copy entities'
+	// 'BETYPE_USE_ZSORT' in InitCopyEntity()
+	if( pNewCopyEnt->m_TypeID == CCopyEntityTypeID::ALPHA_ENTITY )
+	{
+		// For alpha entity, always use the  z-sorting
+		pNewCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	}
+	else
+	{
+		// Otherwise, disable z-sorting by default
+		pNewCopyEnt->EntityFlag &= ~BETYPE_USE_ZSORT;
+	}
+
+	// set the glare type
+	if( rBaseEntity.m_EntityFlag | BETYPE_GLARESOURCE )
+	{
+		pNewCopyEnt->EntityFlag |= BETYPE_GLARESOURCE;
+	}
+	else if( rBaseEntity.m_EntityFlag | BETYPE_GLAREHINDER )
+	{
+		pNewCopyEnt->EntityFlag |= BETYPE_GLAREHINDER;
+	}
+
+	// update world aabb
+	pNewCopyEnt->world_aabb.TransformCoord( pNewCopyEnt->local_aabb, pNewCopyEnt->Position() );
+
+
+	// link the new copy-entity to the top of 'm_pEntityInUse'
+	if( m_pEntityInUse )
+		pNewCopyEnt->SetNext( m_pEntityInUse );
+	else
+		pNewCopyEnt->SetNextToNull(); // first entity in the link list
+
+	m_pEntityInUse = pNewCopyEntPtr;
+
+
+	// set the created time of the entity
+	pNewCopyEnt->m_CreatedTime = m_pStage->GetElapsedTime();
+
+	// set parent entity
+	pNewCopyEnt->m_pParent = pParent;
+	if( pNewCopyEnt->m_pParent )
+	{
+		// 'pNewCopyEnt' is being created as a child of another copy entity
+		pNewCopyEnt->m_pParent->AddChild( pNewCopyEnt->m_pSelf );	// establish link from the parent to this entity
+	}
+
+//	LOG_PRINT( "linking a copy entity of " + rBaseEntity.GetNameString() + " to the tree" );
+
+	// link the new copy-entity to the entity-tree
+	Link( pNewCopyEnt );
+
+	// update light information
+	if( pNewCopyEnt->Lighting() )
+	{
+		pNewCopyEnt->ClearLights();
+//		UpdateLightInfo( pNewCopyEnt );
+
+		pNewCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
+	}
+}
+
+/// T must be a derived class of CCopyEntity
+template<class T>
+CEntityHandle<T> CEntitySet::CreateEntity( shared_ptr<T> pEntity )
+{
+	CEntityHandle<T> entity_handle( pEntity );
+
+	InitEntity( pEntity, NULL, NULL );
+
+
+	return entity_handle;
+}
+
+
 CCopyEntity *CEntitySet::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
 									   const Vector3& rvPosition,
 							           const Vector3& rvVelocity,
@@ -545,7 +641,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 	CBaseEntity& rBaseEntity = *(pBaseEntity);
 
-//	PrintLog( "checking the initial position of " + rBaseEntity.GetNameString() );
+//	LOG_PRINT( "checking the initial position of " + rBaseEntity.GetNameString() );
 
 	// determine the entity group id
 	// priority (higher to lower):
@@ -596,15 +692,6 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 	CCopyEntity *pNewCopyEnt = pNewEntitySharedPtr.get();
 
-	pNewCopyEnt->m_pSelf = pNewEntitySharedPtr;
-
-	pNewCopyEnt->pBaseEntity = pBaseEntity;
-
-	pNewCopyEnt->m_pStage = m_pStage;
-
-	// set id and increment the counter
-	pNewCopyEnt->m_ID = m_EntityIDConter++;
-
 	pNewCopyEnt->m_TypeID    = rCopyEntityDesc.TypeID;
 	pNewCopyEnt->SetName( rCopyEntityDesc.strName );
 
@@ -639,11 +726,10 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 	// set other properties
 	pNewCopyEnt->EntityFlag = rBaseEntity.m_EntityFlag;
-	pNewCopyEnt->inuse = true;
-	pNewCopyEnt->fRadius = rBaseEntity.m_fRadius;
+	pNewCopyEnt->fRadius    = rBaseEntity.m_fRadius;
 	pNewCopyEnt->local_aabb = rBaseEntity.m_aabb;
 
-	pNewCopyEnt->touch_plane.dist = 0;
+	pNewCopyEnt->touch_plane.dist   = 0;
 	pNewCopyEnt->touch_plane.normal = Vector3(0,0,0);
 
 	if( rBaseEntity.m_bLighting )
@@ -651,62 +737,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 //	pNewCopyEnt->bLighting = rBaseEntity.m_bLighting;
 
-	// z-sort is disabled by default initialization
-	// Entities that have translucent polygons have to turn on their copy entities'
-	// 'BETYPE_USE_ZSORT' in InitCopyEntity()
-	if( pNewCopyEnt->m_TypeID == CCopyEntityTypeID::ALPHA_ENTITY )
-	{
-		// For alpha entity, always use the  z-sorting
-		pNewCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
-	}
-	else
-	{
-		// Otherwise, disable z-sorting by default
-		pNewCopyEnt->EntityFlag &= ~BETYPE_USE_ZSORT;
-	}
-
-	// set the glare type
-	if( rBaseEntity.m_EntityFlag | BETYPE_GLARESOURCE )
-	{
-		pNewCopyEnt->EntityFlag |= BETYPE_GLARESOURCE;
-	}
-	else if( rBaseEntity.m_EntityFlag | BETYPE_GLAREHINDER )
-	{
-		pNewCopyEnt->EntityFlag |= BETYPE_GLAREHINDER;
-	}
-
-	// update world aabb
-	pNewCopyEnt->world_aabb.TransformCoord( pNewCopyEnt->local_aabb, pNewCopyEnt->Position() );
-
-	// link the new copy-entity to the top of 'm_pEntityInUse'
-	if( m_pEntityInUse )
-		pNewCopyEnt->SetNext( m_pEntityInUse );
-	else
-		pNewCopyEnt->SetNextToNull(); // first entity in the link list
-
-	m_pEntityInUse = pNewEntitySharedPtr;
-
-	pNewCopyEnt->m_pParent = rCopyEntityDesc.pParent;
-
-	if( pNewCopyEnt->m_pParent )
-	{
-		// 'pNewCopyEnt' is being created as a child of another copy entity
-		pNewCopyEnt->m_pParent->AddChild( pNewCopyEnt->m_pSelf );	// establish link from the parent to this entity
-	}
-
-//	PrintLog( "linking a copy entity of " + rBaseEntity.GetNameString() + " to the tree" );
-
-	// link the new copy-entity to the entity-tree
-	Link( pNewCopyEnt );
-
-	// update light information
-	if( pNewCopyEnt->Lighting() )
-	{
-		pNewCopyEnt->ClearLights();
-//		UpdateLightInfo( pNewCopyEnt );
-
-		pNewCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
-	}
+	InitEntity( pNewEntitySharedPtr, rCopyEntityDesc.pParent, pBaseEntity );
 
 	// create object for physics simulation
 	if( pNewCopyEnt->EntityFlag & BETYPE_RIGIDBODY )
@@ -719,11 +750,11 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 			actor_desc.WorldPose.vPosition = pNewCopyEnt->Position();
 			actor_desc.BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
 			pNewCopyEnt->GetOrientation( actor_desc.WorldPose.matOrient );
-			pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+//			pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+			pNewCopyEnt->m_vecpPhysicsActor.resize( 1 );
+			pNewCopyEnt->m_vecpPhysicsActor[0] = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
 		}
 	}
-
-	pNewCopyEnt->m_CreatedTime = m_pStage->GetElapsedTime();
 
 	// When all the basic properties are copied, InitCopyEntity() is called to 
 	// do additional initialization specific to each base entity.
@@ -912,7 +943,8 @@ void CEntitySet::UpdatePhysics( float frametime )
 			if( pEntity->EntityFlag & BETYPE_COPY_PARENT_POSE )
 				pEntity->CopyParentPose();
 
-			if( pEntity->inuse && pEntity->pPhysicsActor )
+//			if( pEntity->inuse && pEntity->pPhysicsActor )
+			if( pEntity->inuse && 0 < pEntity->m_vecpPhysicsActor.size() )
                 pEntity->pBaseEntity->UpdatePhysics( pEntity, timestep );
 		}
 
@@ -1026,7 +1058,8 @@ void CEntitySet::UpdateAllEntities( float dt )
 
 		// set the results of physics simulation to
 		// pose, velocity and angular velocity of the entity
-		if( pEntity->pPhysicsActor && pEntity->EntityFlag & BETYPE_USE_PHYSSIM_RESULTS )
+//		if( pEntity->pPhysicsActor && pEntity->EntityFlag & BETYPE_USE_PHYSSIM_RESULTS )
+		if( 0 < pEntity->m_vecpPhysicsActor.size() && pEntity->EntityFlag & BETYPE_USE_PHYSSIM_RESULTS )
 			pEntity->UpdatePhysics();
 
 		if( pEntity->sState & CESTATE_ATREST )

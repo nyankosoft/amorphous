@@ -91,6 +91,9 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 	Vector3& rvClosedPosition      = pCopyEnt->v2;
 	Vector3& rvFullOpenPosition    = pCopyEnt->v3;
 	float&		 rfOpenTime		= pCopyEnt->f1;
+//	physics::CActor *pPhysicsActor = pCopyEnt->pPhysicsActor;
+	physics::CActor *pPhysicsActor
+		= 0 < pCopyEnt->m_vecpPhysicsActor.size() ? pCopyEnt->m_vecpPhysicsActor[0] : NULL;
 
 	Vector3 vToCover, vImpulse;
 	Vector3 vCovered, vForce;
@@ -127,7 +130,7 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 ///		vImpulse = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->ApplyWorldImpulse( vImpulse, rvDoorPosition );
 		pCopyEnt->SetVelocity( vImpulse );
-		pCopyEnt->pPhysicsActor->SetLinearVelocity( vImpulse );
+		pPhysicsActor->SetLinearVelocity( vImpulse );
 
 //		vForce = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->pPhysicsActor->AddWorldForce( vForce ); 
@@ -154,8 +157,8 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 			|| Vec3Dot( vToCover, rvOpenMotionDirection ) < 0 )
 		{
 			rvDoorPosition = rvFullOpenPosition;
-			pCopyEnt->pPhysicsActor->SetWorldPosition(rvDoorPosition);
-			pCopyEnt->pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
+			pPhysicsActor->SetWorldPosition(rvDoorPosition);
+			pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			sDoorState = DOOR_OPEN;
 ///			this->SoundManager().PlayAt( m_acStopSound, rvFullOpenPosition );
@@ -173,11 +176,11 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 ///		vImpulse = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->ApplyWorldImpulse( vImpulse, rvDoorPosition );
 		pCopyEnt->SetVelocity( vImpulse );
-		pCopyEnt->pPhysicsActor->SetLinearVelocity( vImpulse );
+		pPhysicsActor->SetLinearVelocity( vImpulse );
 
 //		vForce = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
-//		pCopyEnt->pPhysicsActor->AddWorldForce( vForce );
-//		pCopyEnt->pPhysicsActor->ApplyWorldImpulse( Vector3(0,0,0) );	// wake up
+//		pPhysicsActor->AddWorldForce( vForce );
+//		pPhysicsActor->ApplyWorldImpulse( Vector3(0,0,0) );	// wake up
 		break;
 	}
 

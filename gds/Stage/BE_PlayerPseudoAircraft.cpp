@@ -314,12 +314,17 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 //	Matrix34 init_pose( Vector3( 0,1200, -100 ), Matrix33Identity() );
 //	pCopyEnt->SetWorldPose( init_pose );
 
-	if( pCopyEnt->pPhysicsActor )
+//	physics::CActor *pPhysicsActor = pCopyEnt->pPhysicsActor;
+	physics::CActor *pPhysicsActor = NULL;
+	if( 0 < pCopyEnt->m_vecpPhysicsActor.size() )
+		pPhysicsActor = pCopyEnt->m_vecpPhysicsActor[0];
+
+	if( pPhysicsActor )
 	{
-		pCopyEnt->pPhysicsActor->SetWorldPose( pCopyEnt->GetWorldPose() );
-		pCopyEnt->pPhysicsActor->SetLinearVelocity( pCopyEnt->Velocity() );
-//		pCopyEnt->pPhysicsActor->SetPosition( init_pose.vPosition );
-//		pCopyEnt->pPhysicsActor->SetOrientation( init_pose.matOrient );
+		pPhysicsActor->SetWorldPose( pCopyEnt->GetWorldPose() );
+		pPhysicsActor->SetLinearVelocity( pCopyEnt->Velocity() );
+//		pPhysicsActor->SetPosition( init_pose.vPosition );
+//		pPhysicsActor->SetOrientation( init_pose.matOrient );
 //		pCopyEnt->SetVelocity( vInitVelocity );
 	}
 
@@ -354,13 +359,17 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 void CBE_PlayerPseudoAircraft::Move( CCopyEntity *pCopyEnt )
 {
-	if( !pCopyEnt->pPhysicsActor )
+//	if( !pCopyEnt->pPhysicsActor )
+	if( pCopyEnt->m_vecpPhysicsActor.size() == 0
+	 || pCopyEnt->m_vecpPhysicsActor[0] == NULL )
 	{
-		assert( pCopyEnt->pPhysicsActor );
+//		assert( pCopyEnt->pPhysicsActor );
+		ONCE( LOG_PRINT_ERROR( " No physics actor" ) );
 		return;
 	}
 
-	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+//	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+	CActor& rPhysicsActor = *(pCopyEnt->m_vecpPhysicsActor[0]);
 }
 
 
@@ -414,12 +423,14 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	// get mesh filename from the aircraft item and load the mesh
 	m_MeshProperty.Release();
 
-	const CMeshObjectContainer &mesh_container = pAircraft->GetMeshObjectContainer();
+//	const CMeshObjectContainer &mesh_container = pAircraft->GetMeshObjectContainer();
+	const CMeshObjectContainer &mesh_container = *(pAircraft->MeshContainerRootNode().MeshContainer(0).get());
 	if( !mesh_container.m_MeshObjectHandle.IsLoaded() )
 		pAircraft->LoadMeshObject(); // load the mesh of the aircraft item - the mesh controller uses it
 
 	// copy mesh related stuff from item to base entity...
-	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
+//	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
+	m_MeshProperty.m_MeshDesc         = mesh_container.m_MeshDesc;
 
 	// Set target material indices to create alpha entity
 	Init3DModel();
@@ -937,13 +948,17 @@ void CBE_PlayerPseudoAircraft::UpdateCamera( CCopyEntity* pCopyEnt )
 
 void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 {
-	if( !pCopyEnt->pPhysicsActor )
+//	if( !pCopyEnt->pPhysicsActor )
+	if( pCopyEnt->m_vecpPhysicsActor.size() == 0
+	 || pCopyEnt->m_vecpPhysicsActor[0] == NULL )
 	{
-		assert( pCopyEnt->pPhysicsActor );
+//		assert( pCopyEnt->pPhysicsActor );
+		ONCE( LOG_PRINT_ERROR( " No physics actor" ) );
 		return;
 	}
 
-	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+//	CActor& rPhysicsActor = *pCopyEnt->pPhysicsActor;
+	CActor& rPhysicsActor = *(pCopyEnt->m_vecpPhysicsActor[0]);
 
 	// wake up the actor if it's sleeping
 //	if( rPhysicsActor.GetActivityState() == CJL_PhysicsActor::FROZEN )
@@ -1001,8 +1016,11 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	pCopyEnt->SetVelocity( pseudo_simulator.GetVelocity() );
 	pCopyEnt->fSpeed = Vec3Length( pCopyEnt->Velocity() );
 
-	pCopyEnt->pPhysicsActor->SetWorldPose( pseudo_simulator.GetWorldPose() );
-	pCopyEnt->pPhysicsActor->SetLinearVelocity( pseudo_simulator.GetVelocity() );
+//	physics::CActor *pPhysicsActor = pCopyEnt->pPhysicsActor;
+	physics::CActor *pPhysicsActor = pCopyEnt->m_vecpPhysicsActor[0];
+
+	pPhysicsActor->SetWorldPose( pseudo_simulator.GetWorldPose() );
+	pPhysicsActor->SetLinearVelocity( pseudo_simulator.GetVelocity() );
 
 	// update camera state - not a physics, but it requires dt
 	// should be placed somewhere else

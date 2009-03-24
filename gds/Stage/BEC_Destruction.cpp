@@ -56,8 +56,12 @@ void CBEC_Destruction::CreateFragments( CCopyEntity& entity,
 
 		pFragEntity = pStage->CreateEntity( desc );
 
-		if( pFragEntity && pFragEntity->pPhysicsActor )
-			pFragEntity->pPhysicsActor->SetAngularVelocity( Vec3RandDir() * RangedRand( 0.5f, 8.0f ) );
+		if( pFragEntity )//&& pFragEntity->pPhysicsActor )
+		{
+			physics::CActor *pPhysicsActor = pFragEntity->GetPrimaryPhysicsActor();
+			if( pPhysicsActor )
+				pPhysicsActor->SetAngularVelocity( Vec3RandDir() * RangedRand( 0.5f, 8.0f ) );
+		}
 	}
 }
 

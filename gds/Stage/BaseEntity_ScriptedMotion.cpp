@@ -21,8 +21,16 @@ void CBaseEntity::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPa
 		// follow the scripted path
 		Matrix34 world_pose = path.GetPose( time_in_stage );
 		pCopyEnt->SetWorldPose( world_pose );
-		if( pCopyEnt->pPhysicsActor )
-			pCopyEnt->pPhysicsActor->SetWorldPose( world_pose );
+
+		// update the pose of the physics actor
+//		if( pCopyEnt->pPhysicsActor )
+//			pCopyEnt->pPhysicsActor->SetWorldPose( world_pose );
+
+		if( 0 < pCopyEnt->m_vecpPhysicsActor.size()
+		 && pCopyEnt->m_vecpPhysicsActor[0] )
+		{
+			pCopyEnt->m_vecpPhysicsActor[0]->SetWorldPose( world_pose );
+		}
 
 		// calc velocity - used when the entity is destroyed
 		// and the vel of the frags have to be calculated
@@ -33,6 +41,10 @@ void CBaseEntity::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPa
 	{
 		const vector<KeyPose>& vecKeyPose = path.GetKeyPose();
 		if( 0 < vecKeyPose.size() && vecKeyPose.back().time < time_in_stage )
-            path.ReleaseMotionPath();	// done with the scripted motion
+		{
+			// Not available && end_time < time_in_stage
+			// - Done with the scripted motion
+            path.ReleaseMotionPath();
+		}
 	}
 }

@@ -500,31 +500,6 @@ void CBE_Enemy::AimAlong(CCopyEntity* pCopyEnt, Vector3& rvDesiredDirection)
 }
 
 
-void CBE_Enemy::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPath& rPath )
-{
-	const float time_in_stage = (float)m_pStage->GetElapsedTime();
-
-	if( rPath.IsAvailable(time_in_stage) )
-	{
-		// follow the scripted path
-		Matrix34 world_pose = rPath.GetPose( time_in_stage );
-		pCopyEnt->SetWorldPose( world_pose );
-		if( pCopyEnt->pPhysicsActor )
-			pCopyEnt->pPhysicsActor->SetWorldPose( world_pose );
-
-		// calc velocity - used when the entity is destroyed
-		// and the vel of the frags have to be calculated
-		float dt = m_pStage->GetFrameTime();
-		pCopyEnt->Velocity() = ( pCopyEnt->Position() - pCopyEnt->vPrevPosition ) / dt;
-	}
-	else
-	{
-		// done with the scripted motion
-		rPath.ReleaseMotionPath();
-	}
-}
-
-
 void CBE_Enemy::FireAtPlayer(CCopyEntity* pCopyEnt)
 {
 	if( FireCycleTime(pCopyEnt) <= m_fFireKeepDuration + m_fFireCeaseInterval )
@@ -657,8 +632,14 @@ void CBE_Enemy::OnDestroyed( CCopyEntity* pCopyEnt )
 				        + pCopyEnt->Velocity();
 
 		pFragEntity = this->m_pStage->CreateEntity( rFrag );
-		if( pFragEntity && pFragEntity->pPhysicsActor )
-			pFragEntity->pPhysicsActor->SetAngularVelocity( Vec3RandDir() * RangedRand( 0.5f, 8.0f ) );
+		if( pFragEntity )
+		{
+			physics::CActor *pPhysicsActor = pFragEntity->GetPrimaryPhysicsActor();
+			if( pPhysicsActor )
+			{
+				pPhysicsActor->SetAngularVelocity( Vec3RandDir() * RangedRand( 0.5f, 8.0f ) );
+			}
+		}
 	}
 
 /*

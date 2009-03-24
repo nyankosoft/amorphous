@@ -32,9 +32,6 @@ public:
 
 	virtual void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) { pCopyEnt_Self->HandleMessage( rGameMessage ); }
 
-//	void ReleaseGraphicsResources();
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-
 //	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 
 	virtual unsigned int GetArchiveObjectID() const { return BE_INDIVIDUALENTITY; }

@@ -179,9 +179,12 @@ void CBE_EnemyShip::Act( CCopyEntity* pCopyEnt )
 
 void CBE_EnemyShip::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 {
-	if( !pCopyEnt->pPhysicsActor )
+//	if( !pCopyEnt->pPhysicsActor )
+	physics::CActor *pPhysicsActor = pCopyEnt->GetPrimaryPhysicsActor();
+	if( !pPhysicsActor )
 	{
 //		assert( pCopyEnt->pPhysicsActor );
+		ONCE( LOG_PRINT_ERROR( " No physics actor" ) );
 		return;
 	}
 

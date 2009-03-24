@@ -127,8 +127,8 @@ protected:
 
     int GetRenderMode();
 
-	/// draws a mesh object
-	/// this would suffice for most entities that has a single mesh object
+	/// draws a mesh object.
+	/// For entities that have a single mesh object as their 3D model
 	inline void Draw3DModel( CCopyEntity* pCopyEnt )
 	{
 		Draw3DModel( pCopyEnt, m_MeshProperty.m_ShaderTechnique );

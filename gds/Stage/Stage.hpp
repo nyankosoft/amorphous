@@ -133,6 +133,13 @@ public:
 	inline CCopyEntity *CreateEntity( CBaseEntityHandle& rBaseEntityHandle, Vector3& rvPosition,
 	                      	          Vector3& rvVelocity, Vector3& rvDirection = Vector3(0,0,0));
 
+	template<class T>
+	CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity )
+	{
+		CEntityHandle<T> entity_handle = m_pEntitySet->CreateEntity( pEntity );
+		return entity_handle;
+	}
+
 	/// removes an entity from the stage
 	inline void TerminateEntity( CCopyEntity*& pEntity );
 
@@ -224,6 +231,13 @@ inline CCopyEntity *CStage::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	return m_pEntitySet->CreateEntity( rCopyEntityDesc );
 }
 
+/*
+template<class T>
+inline CEntityHandle<T> CStage::CreateEntity( shared_ptr<CCopyEntity> pEntity )
+{
+	return m_pEntitySet->CreateEntity( pEntity );
+}
+*/
 
 inline CCopyEntity *CStage::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
 								          Vector3& rvPosition,
@@ -240,11 +254,19 @@ inline void CStage::TerminateEntity( CCopyEntity*& pEntity )
 
 	pEntity->pBaseEntity->OnEntityDestroyed( pEntity );
 
-	if( pEntity->pPhysicsActor )
+/*	if( pEntity->pPhysicsActor )
 	{
 		ReleasePhysicsActor( pEntity->pPhysicsActor );
 		pEntity->pPhysicsActor = NULL;
+	}*/
+
+	// Release physics actors from the physics scene
+	for( size_t i=0; i<pEntity->m_vecpPhysicsActor.size(); i++ )
+	{
+		ReleasePhysicsActor( pEntity->m_vecpPhysicsActor[i] );
+		pEntity->m_vecpPhysicsActor[i] = NULL;
 	}
+	pEntity->m_vecpPhysicsActor.resize( 0 );
 
 	if( pEntity->GetName().length() != 0 )
 		NotifyEntityTerminationToEventManager( pEntity );

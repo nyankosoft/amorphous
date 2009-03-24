@@ -72,6 +72,7 @@ void CBE_Platform::Act(CCopyEntity* pCopyEnt)
 
 	Vector3 vDestPos, vDestDir;
 
+	physics::CActor *pPhysicsActor = pCopyEnt->GetPrimaryPhysicsActor();
 
 	switch( rState )
 	{
@@ -89,8 +90,11 @@ void CBE_Platform::Act(CCopyEntity* pCopyEnt)
 //			|| 0 < Vec3Dot( vToCover, rvOpenMotionDirection ) )
 		{	// almost reached or passed the closed position
 			pCopyEnt->Position() = vDestPos;
-			pCopyEnt->pPhysicsActor->SetWorldPosition( vDestPos );
-			pCopyEnt->pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
+			if( pPhysicsActor )
+			{
+				pPhysicsActor->SetWorldPosition( vDestPos );
+				pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
+			}
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
 			rState = CBE_Platform::STATE_REST;
 ///			SoundManager.PlayAt( m_acStopSound, rvClosedPosition );
@@ -113,7 +117,8 @@ void CBE_Platform::Act(CCopyEntity* pCopyEnt)
 //		pCopyEnt->ApplyWorldImpulse( vImpulse, rvDoorPosition );
 
 		pCopyEnt->SetVelocity( vImpulse );
-		pCopyEnt->pPhysicsActor->SetLinearVelocity( vImpulse );
+		if( pPhysicsActor )
+			pPhysicsActor->SetLinearVelocity( vImpulse );
 
 //		vForce = m_fSpring * vToCover - m_fDamper * pCopyEnt->Velocity();
 //		pCopyEnt->pPhysicsActor->AddWorldForce( vForce ); 
