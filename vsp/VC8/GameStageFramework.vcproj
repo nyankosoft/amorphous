@@ -1684,6 +1684,18 @@
 					RelativePath="..\..\gds\Item\WeaponSystem.hpp"
 					>
 				</File>
+				<Filter
+					Name="Entity"
+					>
+					<File
+						RelativePath="..\..\gds\Item\ItemEntity.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Item\ItemEntity.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Script"

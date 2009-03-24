@@ -318,6 +318,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\MeshObjectContainer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\MeshObjectContainer.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\PostProcessManager.cpp"
 				>
 			</File>
