@@ -169,13 +169,20 @@ inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_n
 
 inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren( const std::string& name )
 {
-	std::vector<xercesc::DOMNode *> vecpChild = GetImmediateChildNodes( m_pNode, name );
 	std::vector<CXMLNodeReader> children;
+
+	if( !m_pNode )
+		return children;
+
+	std::vector<xercesc::DOMNode *> vecpChild = GetImmediateChildNodes( m_pNode, name );
+
 	const size_t num = vecpChild.size();
+	children.reserve( num );
 	for( size_t i=0; i<num; i++ )
 	{
 		children.push_back( CXMLNodeReader( vecpChild[i] ) );
 	}
+
 	return children;
 }
 
