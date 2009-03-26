@@ -634,7 +634,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 		}
 		else
 		{
-			LOG_PRINT( " - unable to create a copy entity: " + string(rBaseEntityHandle.GetBaseEntityName()) );
+			LOG_PRINT( " - unable to create a copy entity (base entity: " + string(rBaseEntityHandle.GetBaseEntityName()) + ")" );
 			return NULL;
 		}
 	}
@@ -840,6 +840,9 @@ CBaseEntity* CEntitySet::FindBaseEntity( const char* pcBaseEntityName )
 bool CEntitySet::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
 {
 	const string base_entity_name = base_entity_handle.GetBaseEntityName();
+
+	if( base_entity_name.length() == 0 )
+		return false; // base entity name has to be specified.
 
 	// find the base entity from the current list
 	CBaseEntity *pBaseEntity = FindBaseEntity( base_entity_name.c_str() );

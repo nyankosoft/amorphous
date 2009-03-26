@@ -27,18 +27,6 @@ void CBE_PseudoAircraft::Init()
 
 
 
-template<typename T>
-const T& GetLimited( const T& val, const T& min = 0.0f, const T& max = 1.0f )
-{
-	if( val < min )
-		return min;
-	else if( max < val )
-		return max;
-
-	return val;
-}
-
-
 /*
 <Gear00_Shaft>
 <Gear00_Tire>,
@@ -176,6 +164,9 @@ std::string CGI_Aircraft::GetPrevUsedAmmoName( int weapon_slot_index )
 }
 
 
+/// Returns the index of the ammunition previouly loaded the specified weapon slot.
+/// The returned index is the index to the current cached ammunition.
+/// Returns -1 if no previouly loaded ammunition was found.
 int CGI_Aircraft::GetPrevUsedAmmoIndex( int weapon_slot_index )
 {
 	if( (int)m_vecpAvailableAmmoCache.size() <= weapon_slot_index )
@@ -337,6 +328,8 @@ void CGI_Aircraft::ResetAircraftControls()
 }
 
 
+/// Returns the maximum number of ammunitions that can be loaded
+/// to the weapon slot specified by the index.
 int CGI_Aircraft::GetPayloadForAmmunition( const CGI_Ammunition& ammo, int weapon_slot_index ) const
 {
 	size_t i, num_supported_types = m_vecSupportedAmmo.size();

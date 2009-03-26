@@ -26,6 +26,18 @@ public:
 };
 
 
+template<typename T>
+const T& GetLimited( const T& val, const T& min = 0.0f, const T& max = 1.0f )
+{
+	if( val < min )
+		return min;
+	else if( max < val )
+		return max;
+
+	return val;
+}
+
+
 /*
 template <class T>
 inline IArchive& operator & ( IArchive& ar, RangedSet<T>& range )

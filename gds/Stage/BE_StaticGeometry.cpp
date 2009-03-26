@@ -101,4 +101,5 @@ bool CBE_StaticGeometry::LoadSpecificPropertiesFromFile( CTextFileScanner& scann
 
 void CBE_StaticGeometry::Serialize( IArchive& ar, const unsigned int version )
 {
+	CBaseEntity::Serialize( ar, version );
 }

@@ -100,7 +100,7 @@ class CGI_Aircraft : public CGameItem
 
 		std::string AmmoName;
 		int WeaponSlot;			///< weapon slot index where the ammo can be loaded
-		int MaxQuantity;		///< how many waepons can be loaded
+		int MaxQuantity;		///< how many ammunitions can be loaded to the weapon slot
 
 	public:
 
@@ -120,10 +120,12 @@ class CGI_Aircraft : public CGameItem
 	/// list of ammo that can be fired from this aircraft
 	std::vector<AmmoPayload> m_vecSupportedAmmo;
 
-	/// cached ammunition items
+	/// List of ammunitions that can be loaded to weapon slots
+	/// - For example, m_vecpAvailableAmmoCache[i] holds ammunition items that can be loaded to the i-th weapon slot.
+	/// - Call UpdateAvailableAmmoCache() to update the cache
 	/// - Borrowed reference. Owned reference needs to be maintained by the owner of the aircraft item
 	/// - Not serialized.
-	std::vector<std::vector<boost::weak_ptr<CGI_Ammunition>>> m_vecpAvailableAmmoCache;
+	std::vector< std::vector< boost::weak_ptr<CGI_Ammunition> > > m_vecpAvailableAmmoCache;
 
 	/// weapon slot index : name of the previously used ammunition
 	std::map<int,std::string> m_PrevUsedAmmo;
@@ -190,6 +192,8 @@ public:
 //	const CAircraftRotor& GetRotor( int index ) const { return m_vecRotor[index]; }
 
 
+	/// Updates the list of ammunitions that can be loaded to the weapon slots of the aircraft.
+	/// All the previous cache is cleared when this function is called.
 	void UpdateAvailableAmmoCache(int num_weapon_slots, std::vector< boost::shared_ptr<CGI_Ammunition> >& vecpAmmo);
 
 	std::vector< std::vector< boost::weak_ptr<CGI_Ammunition> > >& AvailableAmmoCache() { return m_vecpAvailableAmmoCache; }
@@ -204,7 +208,7 @@ public:
 
 	boost::shared_ptr<CGI_Ammunition> GetAvailableAmmoFromCache( int weapon_slot_index, int ammo_index );
 
-	/// initializes mesh bone controller
+	/// Initializes mesh bone controller.
 	/// If called without an argument, the mesh bone controllers use the mesh
 	/// of the aircraft item for their target mesh
 	/// If a mesh is given as the argument, the mesh bone controllers use it
