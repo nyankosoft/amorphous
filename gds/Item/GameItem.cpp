@@ -68,7 +68,8 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "Price",       m_Price );
 	reader.GetChildElementTextContent( "MaxQuantity", m_iMaxQuantity );
 
-	m_MeshContainerRootNode.LoadFromXMLNode( reader.GetChild( "Model/MeshNode" ) );
+//	m_MeshContainerRootNode.LoadFromXMLNode( reader.GetChild( "Model/MeshNode" ) );
+	m_MeshContainerRootNode.LoadFromXMLNode( (reader.GetChild( "Model" )).GetChild( "MeshNode" ) );
 	m_Desc.LoadFromXMLNode( reader.GetChild( "Desc" ) );
 }
 

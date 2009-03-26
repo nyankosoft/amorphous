@@ -501,22 +501,26 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 	CGameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "Armor",           m_fArmor );
+	reader.GetChildElementTextContent( "RCS",             m_fRCS );
 	reader.GetChildElementTextContent( "Ceiling",         m_fCeiling );
 	reader.GetChildElementTextContent( "CockpitLocalPos", m_CockpitLocalPose.vPosition );
 
-	reader.GetChildElementTextContent( "ThirdPersonViewOffset", m_vThirdPersonViewOffset );
+	reader.GetChildElementTextContent( "ThirdPersonView/CameraPosition", m_vThirdPersonViewOffset );
 
 //	reader.GetChildElementTextContent( m_vecNozzleFlameParams,  );
 
-	reader.GetChildElementTextContent( "Accel",           m_fAccel );
-	reader.GetChildElementTextContent( "BoostAccel",      m_fBoostAccel );
-	reader.GetChildElementTextContent( "BrakeAccel",      m_fBrakeAccel );
+	CXMLNodeReader accels_reader = reader.GetChild( "Accel" );
+	accels_reader.GetChildElementTextContent( "Default",    m_fAccel );
+	accels_reader.GetChildElementTextContent( "Boost",      m_fBoostAccel );
+	accels_reader.GetChildElementTextContent( "Brake",      m_fBrakeAccel );
 
 //	reader.m_PitchRange reader.m_RollRange;
 
 	reader.GetChildElementTextContent(  "MaxPitchAccel",  m_fMaxPitchAccel );
 	reader.GetChildElementTextContent(  "MaxRollAccel",   m_fMaxRollAccel );
 	reader.GetChildElementTextContent(  "MaxYawAccel",    m_fMaxYawAccel );
+
+	reader.GetChildElementTextContent( "GunMuzzleEndPos", m_vGunMuzzleEndLocalPos );
 
 	std::vector<CXMLNodeReader> payloads = reader.GetImmediateChildren( "AmmoPayload" );
 
