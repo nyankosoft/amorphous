@@ -548,22 +548,22 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCop
 	if( pNewCopyEnt->m_TypeID == CCopyEntityTypeID::ALPHA_ENTITY )
 	{
 		// For alpha entity, always use the  z-sorting
-		pNewCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+		pNewCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 	}
 	else
 	{
 		// Otherwise, disable z-sorting by default
-		pNewCopyEnt->EntityFlag &= ~BETYPE_USE_ZSORT;
+		pNewCopyEnt->ClearEntityFlags( BETYPE_USE_ZSORT );
 	}
 
 	// set the glare type
 	if( rBaseEntity.m_EntityFlag | BETYPE_GLARESOURCE )
 	{
-		pNewCopyEnt->EntityFlag |= BETYPE_GLARESOURCE;
+		pNewCopyEnt->RaiseEntityFlags( BETYPE_GLARESOURCE );
 	}
 	else if( rBaseEntity.m_EntityFlag | BETYPE_GLAREHINDER )
 	{
-		pNewCopyEnt->EntityFlag |= BETYPE_GLAREHINDER;
+		pNewCopyEnt->RaiseEntityFlags( BETYPE_GLAREHINDER );
 	}
 
 	// update world aabb
@@ -603,20 +603,6 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCop
 
 		pNewCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 	}
-}
-
-/// T must be a derived class of CCopyEntity
-template<class T>
-CEntityHandle<T> CEntitySet::CreateEntity( shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle )
-{
-	CEntityHandle<T> entity_handle( pEntity );
-
-	CBaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
-
-	InitEntity( pEntity, NULL, pBaseEntity );
-
-
-	return entity_handle;
 }
 
 
@@ -737,7 +723,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 //	pNewCopyEnt->GroupIndex = rCopyEntityDesc.sGroupID;
 
 	// set other properties
-	pNewCopyEnt->EntityFlag = rBaseEntity.m_EntityFlag;
+	pNewCopyEnt->SetEntityFlags( rBaseEntity.m_EntityFlag );
 	pNewCopyEnt->fRadius    = rBaseEntity.m_fRadius;
 	pNewCopyEnt->local_aabb = rBaseEntity.m_aabb;
 
@@ -745,14 +731,14 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	pNewCopyEnt->touch_plane.normal = Vector3(0,0,0);
 
 	if( rBaseEntity.m_bLighting )
-		pNewCopyEnt->EntityFlag |= BETYPE_LIGHTING;
+		pNewCopyEnt->RaiseEntityFlags( BETYPE_LIGHTING );
 
 //	pNewCopyEnt->bLighting = rBaseEntity.m_bLighting;
 
 	InitEntity( pNewEntitySharedPtr, rCopyEntityDesc.pParent, pBaseEntity );
 
 	// create object for physics simulation
-	if( pNewCopyEnt->EntityFlag & BETYPE_RIGIDBODY )
+	if( pNewCopyEnt->GetEntityFlags() & BETYPE_RIGIDBODY )
 	{
 //		CJL_PhysicsActorDesc& rActorDesc
 //			= ((CBE_PhysicsBaseEntity *)pNewCopyEnt->pBaseEntity)->m_ActorDesc;
@@ -955,7 +941,7 @@ void CEntitySet::UpdatePhysics( float frametime )
 			 pEntity != NULL;
 			 pEntity = pEntity->m_pNextRawPtr )
 		{
-			if( pEntity->EntityFlag & BETYPE_COPY_PARENT_POSE )
+			if( pEntity->GetEntityFlags() & BETYPE_COPY_PARENT_POSE )
 				pEntity->CopyParentPose();
 
 //			if( pEntity->inuse && pEntity->pPhysicsActor )
@@ -1073,8 +1059,8 @@ void CEntitySet::UpdateAllEntities( float dt )
 
 		// set the results of physics simulation to
 		// pose, velocity and angular velocity of the entity
-//		if( pEntity->pPhysicsActor && pEntity->EntityFlag & BETYPE_USE_PHYSSIM_RESULTS )
-		if( 0 < pEntity->m_vecpPhysicsActor.size() && pEntity->EntityFlag & BETYPE_USE_PHYSSIM_RESULTS )
+//		if( pEntity->pPhysicsActor && pEntity->GetEntityFlags() & BETYPE_USE_PHYSSIM_RESULTS )
+		if( 0 < pEntity->m_vecpPhysicsActor.size() && pEntity->GetEntityFlags() & BETYPE_USE_PHYSSIM_RESULTS )
 			pEntity->UpdatePhysics();
 
 		if( pEntity->sState & CESTATE_ATREST )

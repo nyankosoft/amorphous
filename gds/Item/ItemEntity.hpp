@@ -39,6 +39,10 @@ public:
 
 //	virtual void UpdatePhysics( float dt );
 
+	const boost::shared_ptr<CGameItem> GetItem() const { return m_pItem; }
+
+	boost::shared_ptr<CGameItem> Item() { return m_pItem; }
+
 	void Draw();
 
 	virtual void HandleMessage( SGameMessage& msg );
@@ -63,28 +67,37 @@ public:
 	}
 
 	CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+												 CBaseEntityHandle& attributes_base_entity_handle,
 		                                         const Matrix34& pose,
 		                                         const Vector3& vLinearVelocity  = Vector3(0,0,0),
 												 const Vector3& vAngularVelocity = Vector3(0,0,0) );
 
-	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem, const Vector3& vPosition );
-	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem, const Vector3& vPosition, float heading );
+	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+		                                                CBaseEntityHandle& attributes_base_entity_handle,
+														const Vector3& vPosition );
+
+	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+		                                                CBaseEntityHandle& attributes_base_entity_handle,
+		                                                const Vector3& vPosition,
+														float heading );
 };
 
 
 inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+																	   CBaseEntityHandle& attributes_base_entity_handle,
 													                   const Vector3& vPosition )
 {
-	return CreateItemEntity( pItem, Matrix34( vPosition, Matrix33Identity() ) );
+	return CreateItemEntity( pItem, attributes_base_entity_handle, Matrix34( vPosition, Matrix33Identity() ) );
 }
 
 
 /// \param heading heading angle [deg]
 inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+																	   CBaseEntityHandle& attributes_base_entity_handle,
 													                   const Vector3& vPosition,
 													                   float heading )
 {
-	return CreateItemEntity( pItem, Matrix34( vPosition, Matrix33RotationY(deg_to_rad(heading)) ) );
+	return CreateItemEntity( pItem, attributes_base_entity_handle, Matrix34( vPosition, Matrix33RotationY(deg_to_rad(heading)) ) );
 }
 
 

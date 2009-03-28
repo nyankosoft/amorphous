@@ -378,7 +378,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 //			pShaderManager->SetTexture( 2, m_MeshProperty.m_vecExtraTexture[0].GetTexture() );
 		}
 
-		if( pCopyEnt->EntityFlag & BETYPE_ENVMAPTARGET )
+		if( pCopyEnt->GetEntityFlags() & BETYPE_ENVMAPTARGET )
 		{
 			pShaderManager->SetCubeTexture( 0, m_pStage->GetEntitySet()->GetRenderManager()->GetEnvMapTexture(pCopyEnt->GetID()) );
 		}

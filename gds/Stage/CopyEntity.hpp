@@ -104,6 +104,9 @@ private:
 
 	CLinkNode<CCopyEntity> m_EntityLink; ///< next & prev entity in the chain linked to entity tree-node 'CEntityNode'
 
+	/// represents various attributes of the entity
+	U32 m_EntityFlags;
+
 	/// next entity in the link list for z-sorting (used to render transparent entities)
 	CCopyEntity* m_pNextEntityInZSortTable;
 
@@ -136,9 +139,6 @@ public:
 	CBaseEntity* pBaseEntity;
 
 	boost::weak_ptr<CCopyEntity>& Self() { return m_pSelf; }
-
-	/// represents various attributes of the entity
-	unsigned int EntityFlag;
 
 	char bvType;
 
@@ -346,8 +346,13 @@ public:
 	/// called when the entity is used as a camera entity
 	virtual void CreateRenderTasks() {}
 
+	inline U32 GetEntityFlags() const { return m_EntityFlags; }
+	inline void SetEntityFlags( U32 flags ) { m_EntityFlags = flags; }
+	inline void RaiseEntityFlags( U32 flags_to_raise ) { m_EntityFlags |= flags_to_raise; }
+	inline void ClearEntityFlags( U32 flags_to_clear ) { m_EntityFlags &= ~flags_to_clear; }
+
 	// Lighting
-	inline bool Lighting() { return ( (EntityFlag & BETYPE_LIGHTING) != 0 ); }
+	inline bool Lighting() { return ( (m_EntityFlags & BETYPE_LIGHTING) != 0 ); }
 	inline int GetNumLights() const { return m_vecLight.size(); }
 	inline CEntityHandle<CLightEntity>& GetLight(int i) { return m_vecLight[i]; }
 	inline void AddLight( CEntityHandle<CLightEntity>& light_entity );

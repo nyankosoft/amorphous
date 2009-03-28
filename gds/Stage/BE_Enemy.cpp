@@ -147,7 +147,7 @@ void CBE_Enemy::InitCopyEntity(CCopyEntity* pCopyEnt)
 	pExtraData->vTargetPosition   = pCopyEnt->Position();
 
 	if( m_AttribFlag & ATTRIB_OPTCAM )
-		pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+		pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 //		pCopyEnt->bUseZSort = true;
 }
 

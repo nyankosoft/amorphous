@@ -471,11 +471,11 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 
 		SendGameMessageTo( msg, pCopyEnt_Other );
 
-		if( pCopyEnt_Other->EntityFlag & BETYPE_RIGIDBODY )
+		if( pCopyEnt_Other->GetEntityFlags() & BETYPE_RIGIDBODY )
 		{	// apply impulse to the entity hit by this bullet
 			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() / 50.0f, pCopyEnt->Position() );
 		}
-		else if( pCopyEnt_Other->EntityFlag & BETYPE_PLAYER )
+		else if( pCopyEnt_Other->GetEntityFlags() & BETYPE_PLAYER )
 		{
 			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() * m_pStage->GetFrameTime(), pCopyEnt->Position() );
 		}

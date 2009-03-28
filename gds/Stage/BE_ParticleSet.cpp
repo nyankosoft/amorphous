@@ -269,7 +269,7 @@ void CBE_ParticleSet::InitCopyEntity(CCopyEntity* pCopyEnt)
 	}
 	rParticleSet.iNumParticles = num_particles;
 
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 //	pCopyEnt->bUseZSort = true;
 }
 

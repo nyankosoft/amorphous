@@ -794,7 +794,7 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 				m_WorldPoseOnMissionFailed = pCopyEnt_Self->GetWorldPose();
 
 				// player no longer has control over the aircraft
-				pCopyEnt_Self->EntityFlag |= BETYPE_USE_PHYSSIM_RESULTS;
+				pCopyEnt_Self->RaiseEntityFlags( BETYPE_USE_PHYSSIM_RESULTS );
 
 				// create flame & smoke trail
 				for( int i=0; i<pCopyEnt_Self->GetNumChildren(); i++ )

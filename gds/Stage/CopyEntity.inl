@@ -27,8 +27,8 @@ inline CCopyEntity::CCopyEntity()
 
 	m_CreatedTime = 0.0;
 
-	EntityFlag = 0;
-	EntityFlag |= BETYPE_FLOATING;
+	m_EntityFlags = 0;
+	m_EntityFlags |= BETYPE_FLOATING;
 
 	pBaseEntity = NULL;
 
@@ -132,8 +132,8 @@ inline void CCopyEntity::Terminate()
 
 	m_Target.Reset();
 
-	EntityFlag = 0;
-	EntityFlag |= BETYPE_FLOATING;
+	m_EntityFlags = 0;
+	m_EntityFlags |= BETYPE_FLOATING;
 
 	iExtraDataIndex = CE_INVALID_EXTRA_DATA_INDEX;
 
@@ -242,7 +242,7 @@ inline void CCopyEntity::CopyParentPose()
 
 inline void CCopyEntity::UpdateMesh()
 {
-	if( EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
+	if( GetEntityFlags() & BETYPE_SUPPORT_TRANSPARENT_PARTS )
 		pBaseEntity->CreateAlphaEntities( this );
 }
 

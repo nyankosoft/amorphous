@@ -45,7 +45,7 @@ void CBE_LaserDot::Init()
 
 void CBE_LaserDot::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 //	pCopyEnt->bUseZSort = true;
 }
 

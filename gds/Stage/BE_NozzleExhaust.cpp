@@ -77,7 +77,7 @@ void CBE_NozzleExhaust::InitCopyEntity( CCopyEntity* pCopyEnt )
 	rfCurrentTime = 0.0f;
 
 //	pCopyEnt->bUseZSort = true;
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 

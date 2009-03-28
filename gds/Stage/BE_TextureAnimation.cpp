@@ -65,7 +65,7 @@ void CBE_TextureAnimation::InitCopyEntity( CCopyEntity* pCopyEnt )
 	// animation itme must be set explicitly before this function
 
 //	pCopyEnt->bUseZSort = true;
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 
 	float& rfRotAngle = pCopyEnt->f2;
 	rfRotAngle = 2.0f * 3.141592f * (float)rand() / (float)RAND_MAX;

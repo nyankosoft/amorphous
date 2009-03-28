@@ -82,7 +82,7 @@ void CBEC_AircraftNozzleFlames::ShowNozzleFlames( CCopyEntity* pCopyEnt,
 		if( !IsValidEntity( pNozzleFlame ) )
 			continue;
 
-		pNozzleFlame->EntityFlag |= BETYPE_VISIBLE;
+		pNozzleFlame->RaiseEntityFlags( BETYPE_VISIBLE );
 	}
 }
 
@@ -98,6 +98,6 @@ void CBEC_AircraftNozzleFlames::HideNozzleFlames( CCopyEntity* pCopyEnt,
 		if( !IsValidEntity( pNozzleFlame ) )
 			continue;
 
-		pNozzleFlame->EntityFlag &= ~BETYPE_VISIBLE;	// don't render muzzle flash
+		pNozzleFlame->ClearEntityFlags( BETYPE_VISIBLE );	// don't render muzzle flash
 	}
 }

@@ -81,7 +81,7 @@ void CBE_PointLight::Init()
 
 void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 
 	float& rfFadeoutTime = FadeoutTime(pCopyEnt);
 	rfFadeoutTime = 0.0f;
@@ -211,7 +211,7 @@ void CBE_PointLight::CheckEntitiesInLightRange( CCopyEntity* pCopyEnt, int light
 	{
 		pTargetEntity = tr.GetTouchEntity(i);
 
-		if( !(pTargetEntity->EntityFlag & BETYPE_LIGHTING) )
+		if( !(pTargetEntity->GetEntityFlags() & BETYPE_LIGHTING) )
 			continue;	// no need to update lighting for this entity
 
 		if( pTargetEntity == pCopyEnt )

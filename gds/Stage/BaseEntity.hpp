@@ -127,17 +127,6 @@ protected:
 
     int GetRenderMode();
 
-	/// draws a mesh object.
-	/// For entities that have a single mesh object as their 3D model
-	inline void Draw3DModel( CCopyEntity* pCopyEnt )
-	{
-		Draw3DModel( pCopyEnt, m_MeshProperty.m_ShaderTechnique );
-	}
-
-	/// draws a mesh object
-	/// - override the default shader technique table
-	void Draw3DModel( CCopyEntity* pCopyEnt, C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable, int ShaderLOD = 0 );
-
 	void DrawMeshObject( const Matrix34& world_pose,
 						 CD3DXMeshObjectBase *pMeshObject,
 						 const std::vector<int>& vecTargetMaterialIndex,
@@ -197,6 +186,14 @@ public:
 
 	// made public since alpha entity needs to call this
 	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, CShaderTechniqueHandle& shader_tech );
+
+	/// draws a mesh object.
+	/// For entities that have a single mesh object as their 3D model
+	inline void Draw3DModel( CCopyEntity* pCopyEnt ) { Draw3DModel( pCopyEnt, m_MeshProperty.m_ShaderTechnique ); }
+
+	/// draws a mesh object
+	/// - override the default shader technique table
+	void Draw3DModel( CCopyEntity* pCopyEnt, C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable, int ShaderLOD = 0 );
 
 	const char* GetName() const { return m_strName.c_str(); }
 

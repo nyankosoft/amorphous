@@ -76,7 +76,7 @@ void CBE_SmokeTrace::InitCopyEntity(CCopyEntity* pCopyEnt)
 		rParticleSet.pafAnimationTime[i] = 0.0f;
 	}
 
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 
 	Vector3& rvEmitterPrevPos = pCopyEnt->v1;	// this is supposed to be set by emitter entity
 	Vector3& rvLastUpdatePos  = pCopyEnt->v2;

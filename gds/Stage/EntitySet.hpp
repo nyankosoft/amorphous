@@ -166,7 +166,7 @@ public:
 							   const Vector3& rvDirection = Vector3(0,0,0) );
 
 	template<class T>
-	CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle );
+	inline CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle );
 
 	/// get entity with a specified individual name
 	/// returns NULL if not found
@@ -213,6 +213,21 @@ inline void CEntitySet::UpdateLink( CCopyEntity* pEntity )
 
 	// update world aabb
 	pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->Position() );
+}
+
+
+/// T must be a derived class of CCopyEntity
+template<class T>
+inline CEntityHandle<T> CEntitySet::CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle )
+{
+	CEntityHandle<T> entity_handle( pEntity );
+
+	CBaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
+
+	InitEntity( pEntity, NULL, pBaseEntity );
+
+
+	return entity_handle;
 }
 
 

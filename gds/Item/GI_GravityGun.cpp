@@ -169,7 +169,7 @@ bool CGI_GravityGun::GraspObjectInAimDirection()
 		pStage->ClipTrace( tr );
 
 	if( tr.pTouchedEntity
-	 && tr.pTouchedEntity->EntityFlag & BETYPE_RIGIDBODY )
+	 && tr.pTouchedEntity->GetEntityFlags() & BETYPE_RIGIDBODY )
 	{
 //		physics::CActor *pPhysicsActor = tr.pTouchedEntity->pPhysicsActor;
 		physics::CActor *pPhysicsActor = tr.pTouchedEntity->GetPrimaryPhysicsActor();

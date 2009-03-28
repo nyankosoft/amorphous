@@ -115,7 +115,7 @@ PyObject* AddEnvMapTarget( PyObject* self, PyObject* args )
 	bool res = false;
 	if( IsValidEntity(pEntity) )
 	{
-		pEntity->EntityFlag |= BETYPE_ENVMAPTARGET;
+		pEntity->RaiseEntityFlags( BETYPE_ENVMAPTARGET );
 		res = pStage->GetEntitySet()->GetRenderManager()->AddEnvMapTarget( pEntity );
 	}
 
@@ -155,7 +155,7 @@ PyObject* RemoveEnvMapTarget( PyObject* self, PyObject* args )
 	bool res = false;
 	if( IsValidEntity(pEntity) )
 	{
-		pEntity->EntityFlag &= (~BETYPE_ENVMAPTARGET);
+		pEntity->ClearEntityFlags( BETYPE_ENVMAPTARGET );
 		res = pStage->GetEntitySet()->GetRenderManager()->RemoveEnvMapTarget( pEntity );
 	}
 

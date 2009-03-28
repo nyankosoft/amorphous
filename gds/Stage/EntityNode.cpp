@@ -85,10 +85,10 @@ void CEntityNode::Render( CCamera& rCam )
 	{
 		pEntity = pLinkNode->pOwner;
 
-		if( !(pEntity->EntityFlag & BETYPE_VISIBLE) )
+		if( !(pEntity->GetEntityFlags() & BETYPE_VISIBLE) )
 			continue;
 
-		if( pEntity->EntityFlag & BETYPE_USE_ZSORT )
+		if( pEntity->GetEntityFlags() & BETYPE_USE_ZSORT )
 		{	// 'pEntity' includes transparent polygons
 			this->m_pEntitySet->GetRenderManager()->SendToZSortTable( pEntity );
 		}
@@ -137,8 +137,8 @@ void CEntityNode::RenderShadowCasters( CCamera& rCam )
 	{
 		pEntity = pLinkNode->pOwner;
 
-		if( (pEntity->EntityFlag & BETYPE_VISIBLE)
-		 && (pEntity->EntityFlag & BETYPE_SHADOW_CASTER) )
+		if( (pEntity->GetEntityFlags() & BETYPE_VISIBLE)
+		 && (pEntity->GetEntityFlags() & BETYPE_SHADOW_CASTER) )
 		{
 			// render the entity as a shadow caster
 			pEntity->pBaseEntity->RenderAsShaderCaster( pEntity );
@@ -162,8 +162,8 @@ void CEntityNode::RenderShadowReceivers( CCamera& rCam )
 	{
 		pEntity = pLinkNode->pOwner;
 
-		if( (pEntity->EntityFlag & BETYPE_VISIBLE)
-		 && (pEntity->EntityFlag & BETYPE_SHADOW_RECEIVER) )
+		if( (pEntity->GetEntityFlags() & BETYPE_VISIBLE)
+		 && (pEntity->GetEntityFlags() & BETYPE_SHADOW_RECEIVER) )
 		{
 			// render the entity as a shadow receiver
 			pEntity->pBaseEntity->RenderAsShaderReceiver( pEntity );
@@ -188,7 +188,7 @@ void CEntityNode::RenderAllButEnvMapTraget( CCamera& rCam, U32 target_entity_id 
 		pEntity = pLinkNode->pOwner;
 
 		if( pEntity->GetID() == target_entity_id
-		 && pEntity->EntityFlag  & BETYPE_ENVMAPTARGET )
+		 && pEntity->GetEntityFlags() & BETYPE_ENVMAPTARGET )
 		{
 			// envmap target
 			// - should no be rendered to the cube texture of its own envmap

@@ -189,7 +189,7 @@ void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	NumParticles(pCopyEnt) = num_particls_per_set;
 
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 }
 
 

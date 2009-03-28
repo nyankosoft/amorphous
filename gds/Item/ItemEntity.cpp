@@ -13,9 +13,6 @@ using namespace boost;
 
 
 
-
-
-
 /**
 
 - Placing an item in the stage
@@ -88,7 +85,16 @@ void CItemEntity::Draw()
 		m_ShaderTechnique
 		);
 */
-//	m_pItem->Draw();
+	bool single_mesh = true;
+	if( single_mesh
+	 && 0 < m_pItem->GetMeshContainerRootNode().GetNumMeshContainers() )
+	{
+		CMeshObjectContainer& mesh_container
+			= *(m_pItem->GetMeshContainerRootNode().GetMeshContainer(0).get());
+
+//		pBaseEntity->Draw3DModel( this );
+		pBaseEntity->Draw3DModel( this, mesh_container.m_ShaderTechnique );
+	}
 }
 
 
@@ -114,6 +120,7 @@ void CItemEntity::TerminateDerived()
 /// Place an item in the stage
 /// \return handle to the item entity that contains the item given as the argument
 CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGameItem> pItem,
+															    CBaseEntityHandle& attributes_base_entity_handle,
 													            const Matrix34& pose,
                                                                 const Vector3& vLinearVelocity,
                                                                 const Vector3& vAngularVelocity )
@@ -123,7 +130,13 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 //	CEntityHandle<CItemEntity> entity_handle( pEntity );
 	CEntityHandle<CItemEntity> entity_handle;
 
-	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, m_BaseEntityHandle );
+	CBaseEntityHandle *pAttribBaseEntityHandle;
+	if( 0 < strlen(attributes_base_entity_handle.GetBaseEntityName()) )
+		pAttribBaseEntityHandle = &attributes_base_entity_handle;
+	else
+		pAttribBaseEntityHandle = &m_BaseEntityHandle;
+
+	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, *pAttribBaseEntityHandle );
 
 	return entity_handle;
 /*

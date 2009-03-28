@@ -76,9 +76,9 @@ m_pLightBaseEntity(NULL)
 
 	m_LightEntityLink.pOwner = this;
 
-	EntityFlag |= BETYPE_USE_ZSORT;
+	RaiseEntityFlags( BETYPE_USE_ZSORT );
 
-	EntityFlag |= BETYPE_COPY_PARENT_POSE;
+	RaiseEntityFlags( BETYPE_COPY_PARENT_POSE );
 
 //	m_Attrib |= DESTROY_IF_PARENT_IS_GONE;
 }

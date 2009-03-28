@@ -55,11 +55,11 @@ void CBE_GeneralEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 	pCopyEnt->fLife = m_fLife;
 
 	if( m_EntityFlag & BETYPE_USE_ZSORT )
-		pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+		pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 
 	if( m_EntityFlag & BETYPE_ENVMAPTARGET )
 	{
-		pCopyEnt->EntityFlag |= BETYPE_ENVMAPTARGET;
+		pCopyEnt->RaiseEntityFlags( BETYPE_ENVMAPTARGET );
 		m_pStage->GetEntitySet()->GetRenderManager()->EnableEnvironmentMap();
 		m_pStage->GetEntitySet()->GetRenderManager()->AddEnvMapTarget( pCopyEnt );
 
@@ -151,7 +151,7 @@ void CBE_GeneralEntity::Act(CCopyEntity* pCopyEnt)
 	}
 
 	if( pCopyEnt->bNoClip
-	 && !(pCopyEnt->EntityFlag & BETYPE_RIGIDBODY) )
+	 && !(pCopyEnt->GetEntityFlags() & BETYPE_RIGIDBODY) )
 	{
 		// TODO: pose update for collidable enitity
 		pCopyEnt->Position() += pCopyEnt->Velocity() * frametime;
@@ -169,7 +169,7 @@ void CBE_GeneralEntity::Act(CCopyEntity* pCopyEnt)
 		}
 	}
 
-	if( pCopyEnt->EntityFlag & BETYPE_ENVMAPTARGET )
+	if( pCopyEnt->GetEntityFlags() & BETYPE_ENVMAPTARGET )
 	{
 	}
 

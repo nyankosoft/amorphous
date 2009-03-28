@@ -29,7 +29,7 @@ void CBE_DirectionalLight::Init()
 
 void CBE_DirectionalLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-	pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 /*
 //	MsgBoxFmt( "created a directional light (index: %d)", light_index );
 

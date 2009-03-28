@@ -147,13 +147,13 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 			SendGameMessageTo( msg, pTouchedEntity );
 
 
-		if( pTouchedEntity->EntityFlag & BETYPE_RIGIDBODY )
+		if( pTouchedEntity->GetEntityFlags() & BETYPE_RIGIDBODY )
 		{
 //			pTouchedEntity->ApplyWorldImpulse( vBlastCenterToTarget * 10.0f, tr2.GetEndPosition() );
 //			pTouchedEntity->ApplyWorldImpulse( vBlastCenterToTarget * 10.0f, tr2.vEnd );
 			pTouchedEntity->ApplyWorldImpulse( vBlastCenterToTarget * m_fImpulse * fBlastFrameTime, tr2.vEnd );
 		}
-		else if( pTouchedEntity->EntityFlag & BETYPE_PLAYER )
+		else if( pTouchedEntity->GetEntityFlags() & BETYPE_PLAYER )
 		{
 //			pTouchedEntity->ApplyWorldImpulse( vBlastCenterToTarget * msg.fParam1 * 0.1f, tr2.GetEndPosition() );
 			pTouchedEntity->ApplyWorldImpulse( vBlastCenterToTarget * msg.fParam1 * 0.1f, tr2.vEnd );

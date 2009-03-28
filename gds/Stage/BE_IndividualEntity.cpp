@@ -36,11 +36,11 @@ void CBE_IndividualEntity::Init()
 void CBE_IndividualEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 {
 	if( m_EntityFlag & BETYPE_USE_ZSORT )
-		pCopyEnt->EntityFlag |= BETYPE_USE_ZSORT;
+		pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 
 	if( m_EntityFlag & BETYPE_ENVMAPTARGET )
 	{
-		pCopyEnt->EntityFlag |= BETYPE_ENVMAPTARGET;
+		pCopyEnt->RaiseEntityFlags( BETYPE_ENVMAPTARGET );
 		m_pStage->GetEntitySet()->GetRenderManager()->EnableEnvironmentMap();
 		m_pStage->GetEntitySet()->GetRenderManager()->AddEnvMapTarget( pCopyEnt );
 	}
