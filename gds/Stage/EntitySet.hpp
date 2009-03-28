@@ -73,6 +73,8 @@ private:
 
 	void LoadCopyEntityFromDesc_r( CCopyEntityDescFileData& desc, CCopyEntity *pParentEntity );
 
+	inline CBaseEntity *GetBaseEntity( CBaseEntityHandle& rBaseEntityHandle );
+
 	void InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCopyEntity *pParent, CBaseEntity *pBaseEntity );
 
 	void UpdatePhysics( float frametime );
@@ -164,7 +166,7 @@ public:
 							   const Vector3& rvDirection = Vector3(0,0,0) );
 
 	template<class T>
-	CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity );
+	CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle );
 
 	/// get entity with a specified individual name
 	/// returns NULL if not found

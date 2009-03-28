@@ -1,4 +1,3 @@
-
 #ifndef	__BASEENTITY_TEXTUREANIMATION_H__
 #define __BASEENTITY_TEXTUREANIMATION_H__
 
@@ -70,5 +69,6 @@ public:
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
 };
+
 
 #endif /*  __BASEENTITY_TEXTUREANIMATION_H__  */

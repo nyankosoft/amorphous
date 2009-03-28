@@ -60,6 +60,7 @@ CBaseEntityManager::CBaseEntityManager()
 	m_mapIDtoClassName["CBE_Skybox"]			= CBaseEntity::BE_SKYBOX;
 	m_mapIDtoClassName["CBE_ScriptedCamera"]	= CBaseEntity::BE_SCRIPTEDCAMERA;
 	m_mapIDtoClassName["CBE_CameraController"]	= CBaseEntity::BE_CAMERACONTROLLER;
+	m_mapIDtoClassName["CBE_IndividualEntity"]	= CBaseEntity::BE_INDIVIDUALENTITY;
 }
 
 

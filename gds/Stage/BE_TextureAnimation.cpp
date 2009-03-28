@@ -1,15 +1,14 @@
-
 #include "BE_TextureAnimation.hpp"
-
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-
 #include "ScreenEffectManager.hpp"
 
 #include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+
+using namespace std;
 
 
 CBE_TextureAnimation::CBE_TextureAnimation()
@@ -106,7 +105,8 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 	}
 	else // i.e. animation of arbitrary direction
 	{
-		pCopyEnt->GetOrientation( matWorld ); 
+		pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (Scalar *)&matWorld );
+//		pCopyEnt->GetOrientation( matWorld );
 	}
 
 

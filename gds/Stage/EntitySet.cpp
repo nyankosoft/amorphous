@@ -492,6 +492,39 @@ short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
 }
 
 
+inline CBaseEntity *CEntitySet::GetBaseEntity( CBaseEntityHandle& rBaseEntityHandle )
+{
+	CBaseEntity *pBaseEntity = NULL;
+	if( rBaseEntityHandle.GetBaseEntityPointer() )
+	{
+		// already loaded
+		pBaseEntity = rBaseEntityHandle.GetBaseEntityPointer();
+	}
+	else if( rBaseEntityHandle.GetState() == CBaseEntityHandle::STATE_INVALID )
+	{
+		// invalid base entity handle
+		// - already tried to load the base entity before but it was not found in the database
+		return NULL;
+	}
+	else // i.e. rBaseEntityHandle.GetState() == CBaseEntityHandle::STATE_UNINITIALIZED
+	{
+		// get pointer to the base entity
+		// if the base entity has not been loaded yet, load it
+		if( LoadBaseEntity( rBaseEntityHandle ) )
+		{
+			pBaseEntity = rBaseEntityHandle.GetBaseEntityPointer();
+		}
+		else
+		{
+			LOG_PRINT( " - unable to create a copy entity (base entity: " + string(rBaseEntityHandle.GetBaseEntityName()) + ")" );
+			return NULL;
+		}
+	}
+
+	return pBaseEntity;
+}
+
+
 void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCopyEntity *pParent, CBaseEntity *pBaseEntity )
 {
 	CCopyEntity* pNewCopyEnt = pNewCopyEntPtr.get();
@@ -574,11 +607,13 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCop
 
 /// T must be a derived class of CCopyEntity
 template<class T>
-CEntityHandle<T> CEntitySet::CreateEntity( shared_ptr<T> pEntity )
+CEntityHandle<T> CEntitySet::CreateEntity( shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle )
 {
 	CEntityHandle<T> entity_handle( pEntity );
 
-	InitEntity( pEntity, NULL, NULL );
+	CBaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
+
+	InitEntity( pEntity, NULL, pBaseEntity );
 
 
 	return entity_handle;
@@ -612,32 +647,9 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 //	PrintLog( "creating a copy entity of " + string(rBaseEntityHandle.GetBaseEntityName()) );
 
-	CBaseEntity *pBaseEntity = NULL;
-	if( rBaseEntityHandle.GetBaseEntityPointer() )
-	{
-		// already loaded
-		pBaseEntity = rBaseEntityHandle.GetBaseEntityPointer();
-	}
-	else if( rBaseEntityHandle.GetState() == CBaseEntityHandle::STATE_INVALID )
-	{
-		// invalid base entity handle
-		// - already tried to load the base entity before but it was not found in the database
+	CBaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
+	if( !pBaseEntity )
 		return NULL;
-	}
-	else // i.e. rBaseEntityHandle.GetState() == CBaseEntityHandle::STATE_UNINITIALIZED
-	{
-		// get pointer to the base entity
-		// if the base entity has not been loaded yet, load it
-		if( LoadBaseEntity( rBaseEntityHandle ) )
-		{
-			pBaseEntity = rBaseEntityHandle.GetBaseEntityPointer();
-		}
-		else
-		{
-			LOG_PRINT( " - unable to create a copy entity (base entity: " + string(rBaseEntityHandle.GetBaseEntityName()) + ")" );
-			return NULL;
-		}
-	}
 
 	CBaseEntity& rBaseEntity = *(pBaseEntity);
 

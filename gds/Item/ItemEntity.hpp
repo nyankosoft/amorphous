@@ -5,6 +5,7 @@
 #include "Stage/fwd.hpp"
 #include "Stage/CopyEntity.hpp"
 #include "Stage/EntityMotionPathRequest.hpp"
+#include "Stage/BaseEntityHandle.hpp"
 
 
 class CGameItem;
@@ -50,12 +51,16 @@ class CItemStageUtility
 {
 	boost::shared_ptr<CStage> m_pStage;
 
+	CBaseEntityHandle m_BaseEntityHandle;
+
 public:
 
 	CItemStageUtility( boost::shared_ptr<CStage> pStage )
 		:
 	m_pStage(pStage)
-	{}
+	{
+		m_BaseEntityHandle.SetBaseEntityName( "__ForItemEntity__" );
+	}
 
 	CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
 		                                         const Matrix34& pose,

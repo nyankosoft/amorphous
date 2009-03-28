@@ -123,7 +123,7 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 //	CEntityHandle<CItemEntity> entity_handle( pEntity );
 	CEntityHandle<CItemEntity> entity_handle;
 
-	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity );
+	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, m_BaseEntityHandle );
 
 	return entity_handle;
 /*

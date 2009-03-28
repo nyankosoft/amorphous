@@ -166,23 +166,6 @@ inline void CCopyEntity::AddTouchedEntity( CCopyEntity* pCopyEnt )
 }
 
 
-inline void CCopyEntity::GetOrientation( D3DXMATRIX& rmatOut ) const
-{
-	WorldPose.GetRowMajorMatrix44( (float *)&rmatOut );
-	rmatOut._41 = 0;
-	rmatOut._42 = 0;
-	rmatOut._43 = 0;
-	rmatOut._44 = 1;
-}
-
-/*
-inline void CCopyEntity::GetWorldTransform(D3DXMATRIX& rmatWorld )
-{
-	rmatWorld = matRot;
-	rmatWorld._41 = vPosition.x; rmatWorld._42 = vPosition.y; rmatWorld._43 = vPosition.z; rmatWorld._44 = 1;
-}*/
-
-
 inline void CCopyEntity::GetPointVelocity(Vector3& rvPointVelocity, Vector3& rvPoint)
 {
 	Vector3 vOut = rvPoint - WorldPose.vPosition;

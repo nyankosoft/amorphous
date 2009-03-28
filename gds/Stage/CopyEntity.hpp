@@ -30,16 +30,16 @@ enum eEntityState
 
 enum eEntityFlag
 {
-	BETYPE_PLAYER                      = (1 << 0), ///< The entity is the single player object in the stage
-	BETYPE_TERRESTRIAL                 = (1 << 1),
-	BETYPE_FLOATING                    = (1 << 2),
-	BETYPE_ENEMY                       = (1 << 3),
-	BETYPE_ITEM                        = (1 << 4),
-	BETYPE_RIGIDBODY                   = (1 << 5),
-	BETYPE_INDESTRUCTIBLE              = (1 << 6),
-	BETYPE_LIGHTING                    = (1 << 7),  ///< Apply lighting to entity (rendering)
-	BETYPE_NOCLIP                      = (1 << 8),
-	BETYPE_NOCLIP_WITH_STATIC_GEOMETRY = (1 << 9),
+	BETYPE_PLAYER                      = (1 <<  0), ///< The entity is the single player object in the stage
+	BETYPE_TERRESTRIAL                 = (1 <<  1),
+	BETYPE_FLOATING                    = (1 <<  2),
+	BETYPE_ENEMY                       = (1 <<  3),
+	BETYPE_ITEM                        = (1 <<  4),
+	BETYPE_RIGIDBODY                   = (1 <<  5),
+	BETYPE_INDESTRUCTIBLE              = (1 <<  6),
+	BETYPE_LIGHTING                    = (1 <<  7),  ///< Apply lighting to entity (rendering)
+	BETYPE_NOCLIP                      = (1 <<  8),
+	BETYPE_NOCLIP_WITH_STATIC_GEOMETRY = (1 <<  9),
 	BETYPE_GLARESOURCE                 = (1 << 10), ///< Deprecated
 	BETYPE_GLAREHINDER                 = (1 << 11), ///< Deprecated
 	BETYPE_USE_ZSORT                   = (1 << 12), ///< Use z-sort for tranparent entities (rendering)
@@ -47,9 +47,9 @@ enum eEntityFlag
 	BETYPE_VISIBLE                     = (1 << 14), ///< The entity is rendered by Draw() method of its base entity (rendering)
 	BETYPE_USE_PHYSSIM_RESULTS         = (1 << 15), ///< The entity pose & velocity is determined by physics simulator (physics)
 	BETYPE_ENVMAPTARGET                = (1 << 16),
-	BETYPE_SHADOW_CASTER               = (1 << 17), ///< If the entity casts shadows to other entities
-	BETYPE_SHADOW_RECEIVER             = (1 << 18), ///< If the entity receives shadows cast by other entities  others
-	BETYPE_COPY_PARENT_POSE            = (1 << 19), ///< If the entity has a parent entity, it automatically copies the pose of the parent
+	BETYPE_SHADOW_CASTER               = (1 << 17), ///< The entity casts shadows to other entities
+	BETYPE_SHADOW_RECEIVER             = (1 << 18), ///< The entity receives shadows cast by other entities  others
+	BETYPE_COPY_PARENT_POSE            = (1 << 19), ///< The entity has a parent entity, it automatically copies the pose of the parent
 };
 
 /*
@@ -268,8 +268,6 @@ public:
 	inline Vector3& Velocity() { return vVelocity; }
 	inline Vector3& AngularVelocity() { return vAngularVelocity; }
 	inline float GetSpeed() const { return fSpeed; }
-
-	inline void GetOrientation( D3DXMATRIX& rmatOut ) const;
 
 	inline void GetOrientation( Matrix33& matDestOrient ) const { matDestOrient = WorldPose.matOrient; }
 
