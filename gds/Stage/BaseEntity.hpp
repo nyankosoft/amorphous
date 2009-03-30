@@ -103,9 +103,15 @@ protected:
 
 	std::string m_strName;
 
+	/// stage that owns this base entity
+	CStageWeakPtr m_pStageWeakPtr;
+
+	/// raw pointer for the stage for quick access
+	CStage *m_pStage;
+
 	CBE_MeshObjectProperty m_MeshProperty;
 
-	/// used temporary array to hold shader techniques for mesh materials
+	/// used as a temporary array to hold shader techniques for mesh materials
 	/// - See CBaseEntity::DrawMeshObject()
 	std::vector<CShaderTechniqueHandle> m_vecShaderTechniqueHolder;
 
@@ -116,37 +122,6 @@ protected:
 	/// and implement SweepRender() function (e.g. bullet hole decals)
 	bool m_bSweepRender;
 	std::vector<CCopyEntity *> m_vecpSweepRenderTable;
-
-	/// stage that owns this base entity
-	CStageWeakPtr m_pStageWeakPtr;
-
-	/// raw pointer for the stage for quick access
-	CStage *m_pStage;
-
-protected:
-
-    int GetRenderMode();
-
-	void DrawMeshObject( const Matrix34& world_pose,
-						 CD3DXMeshObjectBase *pMeshObject,
-						 const std::vector<int>& vecTargetMaterialIndex,
-						 C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
-						 int ShaderLOD = 0 );
-
-	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
-		                   CD3DXSMeshObject *pSkeletalMesh,
-		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
-						   int ShaderLOD = 0 );
-
-	/// \retval 0 shader for highest resolution mesh
-	/// \retval higher_values shader for lower resolution model
-	virtual int CalcShaderLOD( CCopyEntity* pCopyEnt ) { return 0; }
-
-	void SetLightsToShader( CCopyEntity& entity );
-
-	void SetLights( CCopyEntity& entity );
-
-protected:
 
 	/// flag that defines various attributes of a base entity
 	unsigned int m_EntityFlag;
@@ -171,13 +146,49 @@ protected:
 	/// indicates whether lighting should be applied to entity
 	bool m_bLighting;
 
+protected:
+
+	//
+	// Rendering
+	//
+
+	void DrawMeshObject( const Matrix34& world_pose,
+						 CD3DXMeshObjectBase *pMeshObject,
+						 const std::vector<int>& vecTargetMaterialIndex,
+						 C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
+						 int ShaderLOD = 0 );
+
+	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
+		                   CD3DXSMeshObject *pSkeletalMesh,
+		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
+						   int ShaderLOD = 0 );
+
+	/// \retval 0 shader for highest resolution mesh
+	/// \retval higher_values shader for lower resolution model
+	virtual int CalcShaderLOD( CCopyEntity* pCopyEnt ) { return 0; }
+
+	void SetLightsToShader( CCopyEntity& entity );
+
+	void SetLights( CCopyEntity& entity );
+
+//	int GetRenderMode();
+
 public:
 
 	CBaseEntity();
 
 	virtual ~CBaseEntity();
 
+	const char* GetName() const { return m_strName.c_str(); }
+
+	const std::string& GetNameString() const { return m_strName; }
+
 	void SetStagePtr( CStageWeakPtr pStage );
+
+
+	//
+	// Rendering
+	//
 
 	void Init3DModel();
 
@@ -195,9 +206,7 @@ public:
 	/// - override the default shader technique table
 	void Draw3DModel( CCopyEntity* pCopyEnt, C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable, int ShaderLOD = 0 );
 
-	const char* GetName() const { return m_strName.c_str(); }
-
-	const std::string& GetNameString() const { return m_strName; }
+	CBE_MeshObjectProperty& MeshProperty() { return m_MeshProperty; }
 
 	/// loads a base entity on the memory from the disk
 	/// base entities that use other base entities during runtime should
@@ -234,8 +243,6 @@ public:
 	void AirAccelerate(CCopyEntity* pCopyEnt, Vector3& vWishdir, float& fWishspeed, float fAccel);
 
 	inline  void ClearSweepRenderTable() { m_vecpSweepRenderTable.resize(0); }
-
-	CBE_MeshObjectProperty& MeshProperty() { return m_MeshProperty; }
 
 	virtual void Init() {}
 

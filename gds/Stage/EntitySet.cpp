@@ -840,7 +840,10 @@ bool CEntitySet::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
 	const string base_entity_name = base_entity_handle.GetBaseEntityName();
 
 	if( base_entity_name.length() == 0 )
+	{
+		base_entity_handle.SetState( CBaseEntityHandle::STATE_INVALID );
 		return false; // base entity name has to be specified.
+	}
 
 	// find the base entity from the current list
 	CBaseEntity *pBaseEntity = FindBaseEntity( base_entity_name.c_str() );

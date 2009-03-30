@@ -9,6 +9,7 @@
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Physics/fwd.hpp"
 
+#include "CopyEntityDesc.hpp"
 #include "EntityHandle.hpp"
 #include "CopyEntityCallback.hpp"
 #include "LinkNode.hpp"
@@ -217,7 +218,7 @@ public:
 
 public:
 
-	inline CCopyEntity();
+	inline CCopyEntity( int type_id = CCopyEntityTypeID::DEFAULT );
 
 	inline bool IsInUse() const { return inuse; }
 

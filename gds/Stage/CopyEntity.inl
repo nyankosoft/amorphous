@@ -4,18 +4,21 @@
 //
 
 
-inline CCopyEntity::CCopyEntity()
+inline CCopyEntity::CCopyEntity( int type_id )
+:
+m_TypeID(type_id)
 {
-	m_ID = 0; // 0 == invalid id
+	m_ID          = 0; // 0 == invalid id
 
-	m_TypeID = 0; // TODO: set CCopyEntityTypeID::DEFAULT
+	inuse         = false;
 
-	inuse = false;
+	m_StockIndex  = 0;
+	m_StockID     = -2; // init as non-pooled entity
 
-//	m_pStage = NULL;
+//	m_pStage      = NULL;
 
-	bInSolid = false;
-	bNoClip = false;
+	bInSolid      = false;
+	bNoClip       = false;
 
 	m_pNextRawPtr = NULL;
 
@@ -25,31 +28,31 @@ inline CCopyEntity::CCopyEntity()
 
 	fZinCameraSpace = 0;
 
-	m_CreatedTime = 0.0;
+	m_CreatedTime   = 0.0;
 
-	m_EntityFlags = 0;
-	m_EntityFlags |= BETYPE_FLOATING;
+	m_EntityFlags   = 0;
+	m_EntityFlags   |= BETYPE_FLOATING;
 
-	pBaseEntity = NULL;
+	pBaseEntity     = NULL;
 
 	const Vector3 vZero = Vector3(0,0,0);
 
-	touch_plane.dist = 0;
-	touch_plane.normal = vZero;
-	sState = 0;
-	fRadius = 0;
+	touch_plane.dist    = 0;
+	touch_plane.normal  = vZero;
+	sState              = 0;
+	fRadius             = 0;
 	local_aabb.SetMaxAndMin( vZero, vZero );
 	world_aabb.SetMaxAndMin( vZero, vZero );
 
 	WorldPose.Identity();
 
-	vPrevPosition = vZero;
-//	vDirection = vZero;
-	vVelocity = vZero;
-	fSpeed = 0;
+	vPrevPosition      = vZero;
+//	vDirection         = vZero;
+	vVelocity          = vZero;
+	fSpeed             = 0;
 
-	vForce = vZero;
-	vTorque = vZero;
+	vForce             = vZero;
+	vTorque            = vZero;
 
 	fLife = 0;
 

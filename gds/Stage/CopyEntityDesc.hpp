@@ -19,7 +19,14 @@ public:
 		ALPHA_ENTITY,
 		LIGHT_ENTITY,
 		SCRIPTED_CAMERA_ENTITY,
-		USE_ID_OFFSET
+
+		/// id offset of the entity types which are defined by other module(s) of the GameStageFramework.
+		/// - e.g., CItemEntity uses this offset
+		/// - What if 2 or more modules define their entities?
+		SYSTEM_ENTITY_ID_OFFSET,
+
+		/// id offset of the entity types which are defined by the user.
+		USER_ID_OFFSET = 0x0100
 	};
 };
 
