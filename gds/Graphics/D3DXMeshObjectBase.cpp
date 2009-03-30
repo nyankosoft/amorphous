@@ -736,7 +736,8 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 		if( m_bViewFrustumTest && !IsMeshVisible(mat) )
 			continue;
 
-		if( !single_shader_technique )
+		if( !single_shader_technique
+		 && i < vecShaderTechnique.size() )
 			rShaderMgr.SetTechnique( vecShaderTechnique[i] );
 
 		const int num_textures_for_material = (int)m_vecMaterial[mat].Texture.size();
