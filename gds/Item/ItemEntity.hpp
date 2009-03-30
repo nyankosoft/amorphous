@@ -4,11 +4,22 @@
 
 #include "Stage/fwd.hpp"
 #include "Stage/CopyEntity.hpp"
+#include "Stage/CopyEntityDesc.hpp"
 #include "Stage/EntityMotionPathRequest.hpp"
 #include "Stage/BaseEntityHandle.hpp"
 
 
 class CGameItem;
+
+
+class CItemModuleEntityTypeID
+{
+public:
+	enum TypeID
+	{
+		ITEM_ENTITY = CCopyEntityTypeID::SYSTEM_ENTITY_ID_OFFSET
+	};
+};
 
 
 /**
@@ -43,7 +54,7 @@ public:
 
 	boost::shared_ptr<CGameItem> Item() { return m_pItem; }
 
-	void Draw();
+	virtual void Draw();
 
 	virtual void HandleMessage( SGameMessage& msg );
 
