@@ -761,6 +761,8 @@ void CGM_Dialog::Open()
 	if( m_pRenderer )
 		m_pRenderer->OnDialogOpened( *this );
 
+	SendEvent( CGM_Event::DIALOG_OPENED, true, this );
+
 	// the first control in this dialog will be given the focus
 	// changed - after opening the dialog, focus will be given
 	//           from the owner sub-dialog button

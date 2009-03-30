@@ -46,6 +46,7 @@ public:
 		LISTBOX_SELECTION,		///< item selection in list box was changed
 		LISTBOX_ITEM_SELECTED,	///< a focused item in list box was selected
 //		FOCUS_CHANGED,
+		DIALOG_OPENED,
 		DIALOG_CLOSED,          ///< 
 //		ROOTDIALOG_CLOSED,
 		OPENDIALOG_ATTEMPTED_TO_CLOSE, ///< dialog with CGM_Dialog::STYLE_ALWAYS_OPEN flags was attempted to close
