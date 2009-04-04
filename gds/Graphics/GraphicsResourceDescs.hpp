@@ -29,7 +29,7 @@ class UsageFlag
 public:
 	enum Name
 	{
-		RENDER_TARGET           = (1 << 0),
+		RENDER_TARGET          = (1 << 0),
 //		ANOTHER_USAGE_FLAG     = (1 << 1),
 //		YET_ANOTHER_USAGE_FLAG = (1 << 2),
 	};
@@ -68,9 +68,10 @@ public:
 	virtual bool CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const { return false; }
 
 	/// Returns the score that shows how much the cache is preferable to be used as the requested resource.
-	/// 0 means the cache cannot be used for a requested resource
+	/// 0 means the cache cannot be used for a requested resource.
+	/// These CanBeUsedAsXXXCache() should actually be CanUseAsXXXCache()?
 	virtual int CanBeUsedAsTextureCache( const CTextureResourceDesc& desc ) const { return 0; }
-	virtual int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const { return 0; }
+	virtual int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const { return 0; } // CanUseAsMeshCache
 	virtual int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
 
 	/// Copy attributes to the desc of the cached resource
@@ -163,12 +164,22 @@ public:
 
 class CMeshResourceDesc : public CGraphicsResourceDesc
 {
+public:
+
 	/// Set after the mesh archive is loaded from the desc
-	/// or an empty mesh is created.
-	/// Used in asynchronous loading.
+	/// or used to create an empty mesh as cached resource
+	/// in asynchronous loading.
 	int NumVertices;
 	int NumIndices;
-	int VertexFormatFlags;
+
+	U32 VertexFormatFlags;
+
+	//
+	// Used by Direct3D
+	//
+
+	int VertexSize;
+	std::vector<D3DVERTEXELEMENT9> vecVertElement;
 
 public:
 
@@ -198,14 +209,7 @@ public:
 			return false;
 	}
 
-	int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const
-	{
-		if( MeshType        != desc.MeshType
-		 || LoadOptionFlags != desc.LoadOptionFlags )
-			return 0;
-
-		return 0;
-	}
+	int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const;
 
 	void UpdateCachedTextureResourceDesc( CMeshResourceDesc& desc ) const
 	{
@@ -267,7 +271,8 @@ MeshType(CMeshType::BASIC),
 NumVertices(0),
 NumIndices(0),
 VertexFormatFlags(0),
-LoadOptionFlags(0)
+LoadOptionFlags(0),
+VertexSize(0)
 {}
 
 

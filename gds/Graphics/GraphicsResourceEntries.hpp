@@ -259,11 +259,26 @@ public:
 };
 
 
+class CMeshSubResource
+{
+public:
+	enum Name
+	{
+		VERTEX,
+		INDEX,
+		ATTRIBUTE_TABLE,
+		NUM_SUBRESOURCES,
+	};
+};
+
+
 class CMeshResource : public CGraphicsResource
 {
 	boost::shared_ptr<CD3DXMeshObjectBase> m_pMeshObject;
 
 	CMeshResourceDesc m_MeshDesc;
+
+	GraphicsResourceState::Name m_aSubResourceState[CMeshSubResource::NUM_SUBRESOURCES];
 
 protected:
 
@@ -299,7 +314,9 @@ public:
 
 //	bool Unlock();
 
-//	bool Create();
+	bool Create();
+
+	void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
 	friend class CGraphicsResourceManager;
 };

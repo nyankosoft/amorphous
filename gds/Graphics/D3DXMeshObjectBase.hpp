@@ -16,6 +16,12 @@
 using namespace MeshModel;
 
 
+extern void LoadVerticesForD3DXMesh( const CMMA_VertexSet& rVertexSet,                // [in]
+									 std::vector<D3DVERTEXELEMENT9>& vecVertElement,  // [out]
+						             int &vertex_size,                                // [out]
+						             void*& pVBData                                   // [out]
+							         );
+
 class MeshLoadOption
 {
 public:

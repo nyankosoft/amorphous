@@ -67,6 +67,11 @@ public:
 	/// add a lock request to the graphics device request queue of the async resource loader
 	virtual void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf );
 
+	/// - Called by async resource loader when the resource is loaded on locked graphics memory
+	///   and the memory is successfully unlocked.
+	/// - By default, this method set the resource state to GraphicsResourceState::LOADED.
+	virtual void OnResourceLoadedOnGraphicsMemory();
+
 	/// Used to fill out desc properties that can be obtained
 	/// only after the resource is loaded from disk
 	/// - e.g., width and height of image files for textures
@@ -146,6 +151,8 @@ public:
 
 	void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf );
 
+	void OnResourceLoadedOnGraphicsMemory();
+
 	void FillResourceDesc();
 
 	const CGraphicsResourceDesc *GetDesc() const { return &m_MeshDesc; }
@@ -177,6 +184,8 @@ public:
 	bool Load() { return LoadFromArchive(); }
 
 	virtual bool LoadFromArchive() = 0;
+
+	inline void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
 	friend class CMeshLoader;
 };
@@ -214,6 +223,8 @@ public:
 	bool Lock();
 
 	bool Unlock();
+
+	void OnResourceLoadedOnGraphicsMemory();
 };
 
 
@@ -247,6 +258,8 @@ public:
 
 	bool CopyLoadedContentToGraphicsResource();
 
+	void OnResourceLoadedOnGraphicsMemory();
+
 	// Lock the index buffer and save the pointer to the locked buffer
 	bool Lock();
 
@@ -277,6 +290,8 @@ public:
 	virtual bool LoadFromArchive() { return true; }
 
 	bool CopyLoadedContentToGraphicsResource();
+
+	void OnResourceLoadedOnGraphicsMemory();
 
 	// Lock the index buffer and save the pointer to the locked buffer
 	bool Lock();
@@ -341,6 +356,15 @@ inline CD3DXMeshObjectBase *CD3DXMeshLoaderBase::GetMesh()
 		return NULL;
 }
 
+inline void CD3DXMeshLoaderBase::SetSubResourceState( CMeshSubResource::Name subresource,
+													  GraphicsResourceState::Name state )
+{
+	if( GetResourceEntry()
+	 && GetResourceEntry()->GetMeshResource() )
+	{
+		GetResourceEntry()->GetMeshResource()->SetSubResourceState( subresource, state );
+	}
+}
 
 
 

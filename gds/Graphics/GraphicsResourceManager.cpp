@@ -163,7 +163,7 @@ shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoad
 
 
 /// Not implemented yet.
-/// - Just returns -1 to indicate that there are no saharable resoureces
+/// - Just returns -1 to indicate that there are no sharable resoureces
 shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::FindSameLoadedResource( const CGraphicsResourceDesc& desc )
 {
 	const size_t num_entries = m_vecpResourceEntry.size();
@@ -184,7 +184,7 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::FindSameLoadedResou
 // 1. see if the requested resource has already been loaded
 //    true -> see if it is sharable
 //      true -> share the resource.
-//    false (not found) -> send load request
+//    false (not found) -> send a load request to the resource I/O thread
 shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 {
 	if( desc.IsDiskResource() )

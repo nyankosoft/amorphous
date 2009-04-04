@@ -92,6 +92,13 @@ void CGraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsRes
 }
 
 
+void CGraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory()
+{
+	if( GetResource() )
+		GetResource()->SetState( GraphicsResourceState::LOADED );
+}
+
+
 //===================================================================================
 // CDiskTextureLoader
 //===================================================================================
@@ -288,6 +295,8 @@ bool CMeshLoader::CopyLoadedContentToGraphicsResource()
 
 void CMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
 {
+	FillResourceDesc();
+
 	shared_ptr<CD3DXMeshLoaderBase> apLoader[3];
 	apLoader[0] = shared_ptr<CD3DXMeshVerticesLoader>( new CD3DXMeshVerticesLoader(GetResourceEntry()) );
 	apLoader[1] = shared_ptr<CD3DXMeshIndicesLoader>( new CD3DXMeshIndicesLoader(GetResourceEntry()) );
@@ -303,15 +312,56 @@ void CMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader>
 }
 
 
-void CMeshLoader::FillResourceDesc()
+void CMeshLoader::OnResourceLoadedOnGraphicsMemory()
 {
-	LOG_PRINT_ERROR( "Not implemented." );
+	// Do nothing
+	// - Avoid setting the resource state to GraphicsResourceState::LOADED
+	// - Need to wait until all the subresources are locked, copied, and unlocked.
 }
 
+
+void CMeshLoader::FillResourceDesc()
+{
+	if( m_pArchive )
+	{
+		m_MeshDesc.NumVertices = m_pArchive->GetVertexSet().GetNumVertices();
+		m_MeshDesc.NumIndices  = (int)m_pArchive->GetNumVertexIndices();
+
+		m_MeshDesc.VertexFormatFlags = m_pArchive->GetVertexSet().m_VertexFormatFlag;
+
+		vector<D3DVERTEXELEMENT9> vecVertElement; // buffer to temporarily hold vertex elements
+
+		void *pVertexBufferContent = NULL;
+
+		LoadVerticesForD3DXMesh(
+			m_pArchive->GetVertexSet(),
+			m_MeshDesc.vecVertElement,
+			m_MeshDesc.VertexSize,
+			pVertexBufferContent
+			);
+
+		SafeDelete( pVertexBufferContent );
+	}
+}
+
+
+
+//===================================================================================
+// CD3DXMeshVerticesLoader
+//===================================================================================
 
 bool CD3DXMeshVerticesLoader::LoadFromArchive()
 {
 	GetMesh()->LoadVertices( m_pVertexBufferContent, *(m_pArchive.get()) );
+
+	return true;
+}
+
+
+bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
+{
+	if( m_pLockedVertexBuffer )
+		memcpy( m_pLockedVertexBuffer, m_pVertexBufferContent, GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
 
 	return true;
 }
@@ -332,14 +382,16 @@ bool CD3DXMeshVerticesLoader::Unlock()
 }
 
 
-bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
+void CD3DXMeshVerticesLoader::OnResourceLoadedOnGraphicsMemory()
 {
-	if( m_pLockedVertexBuffer )
-		memcpy( m_pLockedVertexBuffer, m_pVertexBufferContent, GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
-
-	return true;
+	SetSubResourceState( CMeshSubResource::VERTEX, GraphicsResourceState::LOADED );
 }
 
+
+
+//===================================================================================
+// CD3DXMeshIndicesLoader
+//===================================================================================
 
 bool CD3DXMeshIndicesLoader::LoadFromArchive()
 {
@@ -373,6 +425,17 @@ bool CD3DXMeshIndicesLoader::CopyLoadedContentToGraphicsResource()
 	return true;
 }
 
+
+void CD3DXMeshIndicesLoader::OnResourceLoadedOnGraphicsMemory()
+{
+	SetSubResourceState( CMeshSubResource::INDEX, GraphicsResourceState::LOADED );
+}
+
+
+
+//===================================================================================
+// CD3DXMeshAttributeTableLoader
+//===================================================================================
 
 bool CD3DXMeshAttributeTableLoader::Lock()
 {
@@ -415,4 +478,10 @@ bool CD3DXMeshAttributeTableLoader::CopyLoadedContentToGraphicsResource()
 	}
 
 	return true;
+}
+
+
+void CD3DXMeshAttributeTableLoader::OnResourceLoadedOnGraphicsMemory()
+{
+	SetSubResourceState( CMeshSubResource::ATTRIBUTE_TABLE, GraphicsResourceState::LOADED );
 }

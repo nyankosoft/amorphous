@@ -62,10 +62,10 @@ void CMMA_VertexSet::Clear()
 }
 
 
-void CMMA_VertexSet::GetBlendMatrixIndices_4Bytes( int iVertexIndex, unsigned char *pIndices )
+void CMMA_VertexSet::GetBlendMatrixIndices_4Bytes( int iVertexIndex, unsigned char *pIndices ) const
 {
 	int i;
-	TCFixedVector<int,NUM_MAX_BLEND_MATRICES_PER_VERTEX>& rMatIndex = veciMatrixIndex[iVertexIndex];
+	const TCFixedVector<int,NUM_MAX_BLEND_MATRICES_PER_VERTEX>& rMatIndex = veciMatrixIndex[iVertexIndex];
 //	vector<int>& rMatIndex = veciMatrixIndex[iVertexIndex];
 	int iNumMatrices = rMatIndex.size();
 
@@ -83,10 +83,10 @@ void CMMA_VertexSet::GetBlendMatrixIndices_4Bytes( int iVertexIndex, unsigned ch
 }
 
 
-void CMMA_VertexSet::GetBlendMatrixWeights_4Floats( int iVertexIndex, float *pWeight )
+void CMMA_VertexSet::GetBlendMatrixWeights_4Floats( int iVertexIndex, float *pWeight ) const
 {
 	int i;
-	TCFixedVector<float,NUM_MAX_BLEND_MATRICES_PER_VERTEX>& rMatWeight = vecfMatrixWeight[iVertexIndex];
+	const TCFixedVector<float,NUM_MAX_BLEND_MATRICES_PER_VERTEX>& rMatWeight = vecfMatrixWeight[iVertexIndex];
 //	vector<float>& rMatWeight = vecfMatrixWeight[iVertexIndex];
 	int iNumMatrices = rMatWeight.size();
 

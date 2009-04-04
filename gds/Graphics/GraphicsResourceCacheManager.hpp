@@ -99,7 +99,7 @@ inline CGraphicsResourceFactory& GraphicsResourceFactory()
 */
 class CGraphicsResourceCacheManager : public CGraphicsComponent
 {
-	std::vector<boost::shared_ptr<CGraphicsResource>> m_vecpResurceCache;
+	std::vector< boost::shared_ptr<CGraphicsResource> > m_vecpResurceCache;
 
 protected:
 

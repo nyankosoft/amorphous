@@ -90,23 +90,27 @@ void CGraphicsResourceCacheManager::AddCache( CGraphicsResourceDesc& desc )
 }
 
 
+/// find preloaded cached resource that best matches the argument description
 shared_ptr<CGraphicsResource> CGraphicsResourceCacheManager::GetCachedResource( const CGraphicsResourceDesc& desc )
 {
-	/// find preloaded resource that matches the description
-
-	const size_t num_resources = m_vecpResurceCache.size();
-	for( size_t i=0; i<num_resources; i++ )
+	const int num_resources = (int)m_vecpResurceCache.size();
+	int max_score = 0;
+	int max_score_resource_index = -1;
+	for( int i=0; i<num_resources; i++ )
 	{
 		shared_ptr<CGraphicsResource> pResource = m_vecpResurceCache[i];
-		if( pResource->CanBeUsedAsCache( desc ) )
+		int score = pResource->CanBeUsedAsCache( desc );
+		if( max_score < score )
 		{
-			// copy some desc attributes pResource
-			// - Need this to set attributes that are unique to each resource
-			//   - e.g., resource path
-			pResource->UpdateDescForCachedResource( desc );
-
-			return pResource;
+			max_score = score;
+			max_score_resource_index = i;
 		}
+	}
+
+	if( 0 <= max_score_resource_index )
+	{
+		// found a resource that can be used as cache
+		return m_vecpResurceCache[ max_score_resource_index ];
 	}
 
 	return shared_ptr<CGraphicsResource>();

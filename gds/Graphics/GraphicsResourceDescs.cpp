@@ -2,6 +2,11 @@
 #include "XML.hpp"
 
 
+
+//================================================================================
+// CGraphicsResourceDesc
+//================================================================================
+
 void CGraphicsResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	reader.GetChildElementTextContent( "Path", ResourcePath );
@@ -9,9 +14,64 @@ void CGraphicsResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 
+
+//================================================================================
+// CTextureResourceDesc
+//================================================================================
+
 void CTextureResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGraphicsResourceDesc::LoadFromXMLNode( reader );
+}
+
+
+
+//================================================================================
+// CMeshResourceDesc
+//================================================================================
+
+int CMeshResourceDesc::CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const
+{
+	if( MeshType        != desc.MeshType
+	 || LoadOptionFlags != desc.LoadOptionFlags )
+		return 0;
+
+/*	if( this->NumVertices <= desc.NumVertices
+	 && this->NumIndices  <= desc.NumIndices )
+		return 1;
+	else
+		return 0;
+*/
+
+	if( desc.NumVertices < this->NumVertices
+	 || desc.NumIndices  < this->NumIndices )
+	{
+		// not enough vertices / indices
+		return 0;
+	}
+
+	// use as cache only if all the vertex elements exactly match
+
+	if( desc.vecVertElement.size() != this->vecVertElement.size() )
+		return 0; // different vertex elements
+
+	for( size_t i=0; i<this->vecVertElement.size(); i++ )
+	{
+		if( desc.vecVertElement[i].Stream     != this->vecVertElement[i].Stream    
+		 || desc.vecVertElement[i].Offset     != this->vecVertElement[i].Offset    
+		 || desc.vecVertElement[i].Type       != this->vecVertElement[i].Type      
+		 || desc.vecVertElement[i].Method     != this->vecVertElement[i].Method    
+		 || desc.vecVertElement[i].Usage      != this->vecVertElement[i].Usage     
+		 || desc.vecVertElement[i].UsageIndex != this->vecVertElement[i].UsageIndex
+		 )
+			return 0;
+	}
+
+	int score
+		= (desc.NumVertices - this->NumVertices + 1)
+		* (desc.NumIndices  - this->NumIndices  + 1);
+
+	return score;
 }
 
 

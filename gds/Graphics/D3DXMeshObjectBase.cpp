@@ -250,6 +250,7 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 
 bool CD3DXMeshObjectBase::CreateVertexDeclaration()
 {
+//	if( m_paVertexElements )
 	if( m_paVertexElements )
 	{
 		HRESULT hr = DIRECT3D9.GetDevice()->CreateVertexDeclaration( m_paVertexElements, &m_pVertexDecleration );
@@ -334,16 +335,53 @@ static inline D3DVERTEXELEMENT9 D3DVertexElement(
 	return elem;
 }
 
+/*
+void GetD3DVertexDeclaration( U32 src_vertex_format_flags,
+							  D3DVERTEXELEMENT9* pDestD3DVertElems,
+							  int num_max_dest_elems )
+{
+	typedef CMMA_VertexSet VFF;
+	const U32 vf_flags = src_vertex_format_flags;
+	const int max_elems = num_max_dest_elems;
+	D3DVERTEXELEMENT9 aVertDec[NUM_MAX_VERTEX_ELEMENTS];
+	int i = 0;
+	if( vf_flags & VFF::VF_POSITION      && i < max_elems )
+		aVertDec[i++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION,     0 );
+
+	if( vf_flags & VFF::VF_NORMAL        && i < max_elems )
+		aVertDec[i++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,       0 );
+
+	if( vf_flags & VFF::VF_BUMPMAP       && i < max_elems )
+	{
+		aVertDec[i++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT,	0 );
+		aVertDec[i++] = D3DVertexElement( 0, vert_size, D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL,0 );
+	}
+
+	if( vf_flags & VFF::VF_DIFFUSE_COLOR && i < max_elems )
+		pDestD3DVertElems[i++] = 
+
+	if( vert_fmt_flags & CMMA_VertexSet:: && i < max_elems ) pDestD3DVertElems[i++] = 
+	if( vert_fmt_flags & CMMA_VertexSet:: && i < max_elems ) pDestD3DVertElems[i++] = 
+	if( vert_fmt_flags & CMMA_VertexSet:: && i < max_elems ) pDestD3DVertElems[i++] = 
+	if( vert_fmt_flags & CMMA_VertexSet:: && i < max_elems ) pDestD3DVertElems[i++] = 
+	if( vert_fmt_flags & CMMA_VertexSet:: && i < max_elems ) pDestD3DVertElems[i++] = 
+}
+*/
+
+
 /**
- \param pVBData [in,out] reference to the pointer that points to the address of the buffer to hold vertex data
- \param pVertexElements [in,out] pointer to the buffer for vertex element declarations
+ \param rVertexSet      [in] source vertex set
+ \param pVBData         [in,out] reference to the pointer that points to the address of the buffer to hold vertex data
+ \param vecVertElement  [in,out] the buffer for vertex element declarations
+ \param vertex_size     [in,out] the size of the each vertex (in bytes)
 
 */
-void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
-								        C3DMeshModelArchive& archive )
+void LoadVerticesForD3DXMesh( const CMMA_VertexSet& rVertexSet,           // [in]
+						      vector<D3DVERTEXELEMENT9>& vecVertElement,  // [out]
+						      int &vertex_size,                           // [out]
+						      void*& pVBData                              // [out]
+							  )
 {
-	CMMA_VertexSet& rVertexSet = archive.GetVertexSet();
-
 	int i;
 	const int iNumVertices = rVertexSet.GetNumVertices();
 
@@ -423,9 +461,6 @@ void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
 
 //	DIRECT3D9.GetDevice()->CreateVertexDeclaration( aVertexDeclaration, &m_pVertexDecleration );
 
-	// the size of the each vertex (in bytes)
-	m_iVertexSize = vert_size;
-
 	// allocate memory to store all the vertices of the specified format
 	unsigned char *pBuffer = new unsigned char [vert_size * iNumVertices];
 
@@ -487,12 +522,39 @@ void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
 		}
 	}
 
+
+	//
+	// copy the data to the dest variables
+	//
+
+	vertex_size = vert_size;
+
 	pVBData = pBuffer;
+
+	vecVertElement.resize( num_vertex_decs );
+	for( int i = 0; i<num_vertex_decs; i++ )
+	{
+		vecVertElement[i] = aVertexDeclaration[i];
+	}
+}
+
+
+void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
+								        C3DMeshModelArchive& archive )
+{
+	vector<D3DVERTEXELEMENT9> vecVertElement; // buffer to temporarily hold vertex elements
+
+	LoadVerticesForD3DXMesh(
+		archive.GetVertexSet(), // [in]
+		vecVertElement,         // [out]
+		m_iVertexSize,          // [out]
+		pVBData                 // [out]
+		);
 
 	// update vertex elements
 	SafeDeleteArray( m_paVertexElements );
-	m_paVertexElements = new D3DVERTEXELEMENT9 [num_vertex_decs];
-	memcpy( m_paVertexElements, aVertexDeclaration, sizeof(D3DVERTEXELEMENT9) * num_vertex_decs );
+	m_paVertexElements = new D3DVERTEXELEMENT9 [vecVertElement.size()];
+	memcpy( m_paVertexElements, &vecVertElement[0], sizeof(D3DVERTEXELEMENT9) * vecVertElement.size() );
 }
 
 

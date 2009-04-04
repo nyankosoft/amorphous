@@ -72,9 +72,9 @@ public:
 
 	void RaiseVertexFormatFlag( const unsigned int flag ) { m_VertexFormatFlag |= flag; }
 
-	void GetBlendMatrixIndices_4Bytes( int iVertexIndex, unsigned char *pIndices );
+	void GetBlendMatrixIndices_4Bytes( int iVertexIndex, unsigned char *pIndices ) const;
 
-	void GetBlendMatrixWeights_4Floats( int iVertexIndex, float *pWeight );
+	void GetBlendMatrixWeights_4Floats( int iVertexIndex, float *pWeight ) const;
 
 	void Resize( int i );
 

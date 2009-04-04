@@ -561,6 +561,9 @@ CMeshResource::CMeshResource( const CMeshResourceDesc *pDesc )
 		LOG_PRINT_ERROR( "An incompatible resource desc" );
 
 	m_IsCachedResource = pDesc->IsCachedResource();
+
+	for( int i=0; i<numof(m_aSubResourceState); i++ )
+		m_aSubResourceState[i] = GraphicsResourceState::RELEASED;
 }
 
 
@@ -648,6 +651,46 @@ IDAndString g_MeshTypes[] =
 	ID_AND_STRING(CMeshType::SKELETAL)
 };
 */
+
+
+bool CMeshResource::Create()
+{
+	LPD3DXMESH pMesh;
+
+	HRESULT hr;
+	hr = D3DXCreateMesh(
+			m_MeshDesc.NumIndices / 3,  // DWORD NumFaces,
+			m_MeshDesc.NumVertices,     // DWORD NumVertices,
+			0,                          // DWORD Options,
+			NULL,                       // CONST LPD3DVERTEXELEMENT9 * pDeclaration,
+			DIRECT3D9.GetDevice(),      // LPDIRECT3DDEVICE9 pD3DDevice,
+			&pMesh
+		);
+
+	return false;
+}
+
+
+void CMeshResource::SetSubResourceState( CMeshSubResource::Name subresource,
+										 GraphicsResourceState::Name state )
+{
+	m_aSubResourceState[subresource] = state;
+
+	bool loaded_so_far = true;
+	for( int i=0; i<numof(m_aSubResourceState); i++ )
+	{
+		if( m_aSubResourceState[i] != GraphicsResourceState::LOADED )
+		{
+			loaded_so_far = false;
+			break;
+		}
+	}
+
+	// mark the resource loaded only if all the subresource are loaded
+	if( loaded_so_far )
+		SetState( GraphicsResourceState::LOADED );
+}
+
 
 void CMeshResource::GetStatus( char *pDestBuffer )
 {
