@@ -1,9 +1,9 @@
-
 #include "GameItemShop.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 #include "PyModule_Shop.hpp"
 
 using namespace std;
+using namespace boost;
 
 CSingleton<CGameItemShopList> CGameItemShopList::m_obj;
 
@@ -77,7 +77,7 @@ PyObject* AddItem( PyObject* self, PyObject* args )
 
 	if( pShop )
 	{
-		CGameItem* pItem = ItemDatabaseManager().GetItemRawPtr( item_name, 1 );
+		shared_ptr<CGameItem> pItem = ItemDatabaseManager().GetItem<CGameItem>( item_name, 1 );
 
 		if( pItem )
 			pShop->AddItem( pItem );

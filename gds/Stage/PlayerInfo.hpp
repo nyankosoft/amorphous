@@ -149,6 +149,12 @@ public:
 	/// \return actual supplied quantity
 	int SupplyItem( CGameItem* pItem );
 
+	/// Add an owned reference of an item to the item list
+	/// - The argument pItem is not stored to the item array of the player.
+	/// - A copy of the item is drawn from game item database and stored in the item array
+	///   of the player.
+	int SupplyItem( boost::shared_ptr<CGameItem> pItem );
+
 	const std::vector<boost::shared_ptr<CGameItem>>& GetItemList() { return m_vecpItem; }
 
 	template<class CItemType>

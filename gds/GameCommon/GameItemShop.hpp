@@ -20,7 +20,7 @@ class CCustomer
 public:
 
 	/// \return actual added quantity
-	virtual int AddItem( CGameItem* pItem ) = 0;
+	virtual int AddItem( boost::shared_ptr<CGameItem> pItem ) = 0;
 
 	virtual bool Pay( int amount ) = 0;
 
@@ -30,7 +30,7 @@ public:
 
 class CGameItemShop
 {
-	std::vector<CGameItem *> m_vecpItem;
+	std::vector< boost::shared_ptr<CGameItem> > m_vecpItem;
 
 public:
 
@@ -44,7 +44,8 @@ public:
 
 	void Release()
 	{
-		SafeDeleteVector( m_vecpItem );
+		m_vecpItem.resize( 0 );
+		//SafeDeleteVector( m_vecpItem );
 	}
 
 /*	int LoadItems( const std::vector<std::string>& m_vecItemName );
@@ -65,7 +66,7 @@ public:
 		return num_loaded_items;
 	}*/
 
-	bool AddItem( CGameItem* pItem )
+	bool AddItem( boost::shared_ptr<CGameItem> pItem )
 	{
 		if( !pItem )
 			return false;
@@ -95,7 +96,8 @@ public:
 
 		if( true/*paid*/ )
 		{
-			CGameItem *pItemCopy = ItemDatabaseManager().GetItemRawPtr( m_vecpItem[index]->GetName(), quantity );
+			boost::shared_ptr<CGameItem> pItemCopy
+				= ItemDatabaseManager().GetItem<CGameItem>( m_vecpItem[index]->GetName(), quantity );
 
 			int num_items_received = customer.AddItem( pItemCopy );
 
@@ -114,10 +116,10 @@ public:
 		}
 	}
 
-	const CGameItem *GetItem( int index )
+	const boost::shared_ptr<CGameItem> GetItem( int index )
 	{
 		if( index < 0 || (int)m_vecpItem.size() <= index )
-			return NULL;
+			return boost::shared_ptr<CGameItem>();
 
 		return m_vecpItem[index];
 	}

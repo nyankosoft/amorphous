@@ -161,6 +161,17 @@ int CSinglePlayerInfo::SupplyItem( CGameItem* pItem )
 }
 
 
+int CSinglePlayerInfo::SupplyItem( boost::shared_ptr<CGameItem> pItem )
+{
+	if( !pItem )
+		return false;
+
+	int supplied_quantity = SupplyItem( pItem->GetName().c_str(), pItem->GetCurrentQuantity() );
+
+	return supplied_quantity;
+}
+
+
 int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
 //int CSinglePlayerInfo::SupplyItem( CGameItem*& rpItem )/// \param owned reference
 {
