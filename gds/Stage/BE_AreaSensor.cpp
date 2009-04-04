@@ -45,7 +45,7 @@ void CBE_AreaSensor::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 void CBE_AreaSensor::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other)
 {/*
-	if( pCopyEnt_Other->pBaseEntity != PLAYERINFO.GetCurrentPlayerBaseEntity() )
+	if( pCopyEnt_Other->pBaseEntity != SinglePlayerInfo().GetCurrentPlayerBaseEntity() )
 		return;	// only the player can trigger events
 
 

@@ -128,7 +128,7 @@ void CMainMenuEventHandler::HandleEvent( CGM_Event &event )
 
 			// release player's properties
 			// - items, etc.
-			PLAYERINFO.Release();
+			SinglePlayerInfo().Release();
 
 			PostMessage( GameWindowManager().GetWindowHandle(), WM_QUIT, 0, 0 );
 		}

@@ -170,7 +170,7 @@ void CBE_EnemyShip::Act( CCopyEntity* pCopyEnt )
 		return;
 	}
 
-	CCopyEntity* pPlayerEntity = PLAYERINFO.GetCurrentPlayerEntity();
+	CCopyEntity* pPlayerEntity = SinglePlayerInfo().GetCurrentPlayerEntity();
 
 	if( !pPlayerEntity )
 		return;

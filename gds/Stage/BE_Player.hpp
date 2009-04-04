@@ -69,7 +69,7 @@ public:
    of a player in a stage. It does not store permanent information
    about the player data 
    - e.g.) items owned by the player, levels, etc.
- - Such information is stored in PLAYERINFO singleton class,
+ - Such information is stored in CSinglePlayerInfo singleton class,
    and accessed dynamically or linked as borrowed reference
  */
 class CBE_Player : public CBE_PhysicsBaseEntity

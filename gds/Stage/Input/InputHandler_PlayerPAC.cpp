@@ -38,7 +38,7 @@ CInputHandler_PlayerPAC::~CInputHandler_PlayerPAC()
 void CInputHandler_PlayerPAC::UpdateKeyBind()
 {
 	for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
-		m_aiActionForGICode[i] = PLAYERINFO.KeyBind().GetActionCode(i);
+		m_aiActionForGICode[i] = SinglePlayerInfo().KeyBind().GetActionCode(i);
 }
 
 
@@ -113,7 +113,7 @@ void CInputHandler_PlayerPAC::SetDefaultKeyBind()
 
 void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 {
-	CBE_Player* pPlayerBaseEntity = PLAYERINFO.GetCurrentPlayerBaseEntity();
+	CBE_Player* pPlayerBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
 
 	if( !pPlayerBaseEntity )
 		return;
@@ -122,8 +122,8 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 		return;
 
 //	int action_code = m_aiActionForGICode[input.iGICode];
-	int action_code           = PLAYERINFO.KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_PRIMARY );
-	int secondary_action_code = PLAYERINFO.KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_SECONDARY );
+	int action_code           = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_PRIMARY );
+	int secondary_action_code = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_SECONDARY );
 
 	float fParam = input.fParam1;
 
@@ -180,19 +180,19 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 	}
 
 	// check if there is an item the player is using right now
-/*	if( PLAYERINFO.GetFocusedItem() )
+/*	if( SinglePlayerInfo().GetFocusedItem() )
 	{
-		if( PLAYERINFO.GetFocusedItem()->HandleInput( action_code, input.iType, input.fParam1 ) )
+		if( SinglePlayerInfo().GetFocusedItem()->HandleInput( action_code, input.iType, input.fParam1 ) )
 			return;
 	}*/
 
 	// let the player entity handle the input
-	if( PLAYERINFO.GetCurrentPlayerBaseEntity()->HandleInput( action_input ) )
+	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity()->HandleInput( action_input ) )
 		return;
 
 	// input has not been handled yet
 
-	CWeaponSystem *pWeaponSystem = PLAYERINFO.GetWeaponSystem();
+	CWeaponSystem *pWeaponSystem = SinglePlayerInfo().GetWeaponSystem();
 
 	// let the currently selected weapon handle the input
 	if( pWeaponSystem && pWeaponSystem->HandleInput( action_code, input.iType, input.fParam1 ) )
@@ -240,8 +240,8 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 	case GIC_GPD_BUTTON_08:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-//			PLAYERINFO.RequestTaskChange( CGameTask::ID_MAIN_MENU );
-			PLAYERINFO.RequestTaskChange( CGameTaskFG::ID_INSTAGEMENU_FG );
+//			SinglePlayerInfo().RequestTaskChange( CGameTask::ID_MAIN_MENU );
+			SinglePlayerInfo().RequestTaskChange( CGameTaskFG::ID_INSTAGEMENU_FG );
 		}
 		break;
 	}

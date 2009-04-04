@@ -260,7 +260,4 @@ inline CSinglePlayerInfo& SinglePlayerInfo()
 }
 
 
-#define PLAYERINFO (SinglePlayerInfo())
-
-
 #endif		/*  __PLAYERINFO_H__  */

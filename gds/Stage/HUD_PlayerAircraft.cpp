@@ -219,7 +219,7 @@ void HUD_PlayerAircraft::Update( float  dt )
 	HUD_PlayerBase::Update( dt );
 
 	// update the center position of the HUD
-	CBaseEntity *pBaseEntity = PLAYERINFO.GetCurrentPlayerBaseEntity();
+	CBaseEntity *pBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
 	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
 		return;
 
@@ -790,7 +790,7 @@ void HUD_PlayerAircraft::CreateRenderTasks()
 	m_StatusBackGround.Draw();
 
 	// display current life by color
-	float fLife = PLAYERINFO.GetCurrentPlayerBaseEntity()->GetCurrentLife();
+	float fLife = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetCurrentLife();
 	float fOrigLife = fLife;
 	float fMaxGreenLife = 100.0f; //PlayerShip.GetMaxLife()
 	if( fMaxGreenLife < fLife )

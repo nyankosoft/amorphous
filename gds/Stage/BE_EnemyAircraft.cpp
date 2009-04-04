@@ -237,7 +237,7 @@ void CBE_EnemyAircraft::UpdateTarget( CCopyEntity* pCopyEnt )
 	switch( targeting_policy )
 	{
 	case TP_ALWAYS_TARGET_PLAYER:
-		pTargetEntity = PLAYERINFO.GetCurrentPlayerEntity();
+		pTargetEntity = SinglePlayerInfo().GetCurrentPlayerEntity();
 		if( IsValidEntity( pTargetEntity ) )
 			ex.m_pCurrentTarget = pTargetEntity;
 		else
@@ -274,7 +274,7 @@ void CBE_EnemyAircraft::Act( CCopyEntity* pCopyEnt )
 		return;
 	}
 
-//	CCopyEntity* pPlayerEntity = PLAYERINFO.GetCurrentPlayerEntity();
+//	CCopyEntity* pPlayerEntity = SinglePlayerInfo().GetCurrentPlayerEntity();
 
 	ex.m_fTargetSensorElapsedTime += frametime;
 	if( ex.m_fTargetSensoringInterval <= ex.m_fTargetSensorElapsedTime )

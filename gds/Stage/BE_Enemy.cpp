@@ -195,7 +195,7 @@ void CBE_Enemy::SearchPlayer(CCopyEntity* pCopyEnt, short& rsMode,
 
 
 	Vector3 vStart, vMyselfToPlayer;
-	CCopyEntity* pPlayer = PLAYERINFO.GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
+	CCopyEntity* pPlayer = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
 
 	vStart = pCopyEnt->Position() + pCopyEnt->GetDirection() * 1.42f;
 	vMyselfToPlayer = pPlayer->Position() - vStart;
@@ -243,7 +243,7 @@ void CBE_Enemy::CheckRayToPlayer(CCopyEntity* pCopyEnt)
 		return;
 
 	float fFrametime = m_pStage->GetFrameTime();
-	CCopyEntity* pPlayer = PLAYERINFO.GetCurrentPlayerBaseEntity->GetPlayerCopyEntity();
+	CCopyEntity* pPlayer = SinglePlayerInfo().GetCurrentPlayerBaseEntity->GetPlayerCopyEntity();
 ///	CCopyEntity* pPlayer = PlayerShip.GetPlayerCopyEntity();
 
 	if( pCopyEnt->bInSolid )
@@ -299,7 +299,7 @@ void CBE_Enemy::CheckRayToPlayer(CCopyEntity* pCopyEnt)
 
 bool CBE_Enemy::CheckRayToPlayer( CCopyEntity* pCopyEnt )
 {
-	CCopyEntity* pPlayer = PLAYERINFO.GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
+	CCopyEntity* pPlayer = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
 ///	CCopyEntity* pPlayer = PlayerShip.GetPlayerCopyEntity();
 	STrace tr;
 	Vector3 vCurrentPos = pCopyEnt->Position();
@@ -691,7 +691,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 			SGameMessage msg( GM_DESTROYED );
 			msg.pSenderEntity = pCopyEnt_Self;
 			msg.fParam1 = 100.0f;	// score ?
-			SendGameMessageTo( msg, PLAYERINFO.GetCurrentPlayerEntity() );
+			SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerEntity() );
 /*
 			KillReport rep;
 			rep.base_name = GetName();

@@ -116,7 +116,7 @@ void HUD_PlayerShip::RenderImpl()
 	m_StatusBackGround.Draw();
 
 	// display current life by color
-	float fLife = PLAYERINFO.GetCurrentPlayerBaseEntity()->GetCurrentLife();
+	float fLife = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetCurrentLife();
 	float fOrigLife = fLife;
 	float fMaxGreenLife = 100.0f; //PlayerShip.GetMaxLife()
 	if( fMaxGreenLife < fLife )
@@ -161,11 +161,11 @@ void HUD_PlayerShip::RenderImpl()
 	rect.SetDestAlphaBlendMode( AlphaBlend::One );
 	rect.DrawWireframe();
 
-	const int iSlot = PLAYERINFO.GetWeaponSystem()->GetPrimaryWeaponSlotIndex();
+	const int iSlot = SinglePlayerInfo().GetWeaponSystem()->GetPrimaryWeaponSlotIndex();
 	char str[2][64];
 	memset( str, 0, sizeof(str) );
 
-	CGI_Weapon *pWeapon = PLAYERINFO.GetWeaponSystem()->GetWeaponSlot(iSlot).pWeapon;
+	CGI_Weapon *pWeapon = SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(iSlot).pWeapon;
 	if( pWeapon )
         sprintf( str[0], "[%d] %s", iSlot, pWeapon->GetName().c_str() );
 //	sprintf( str[1], %03d / %03d", );

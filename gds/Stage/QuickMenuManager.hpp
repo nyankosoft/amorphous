@@ -199,7 +199,7 @@ inline void CQM_Menu::GetItemInfo( int item_index, char* pItemName, int& quantit
 	}
 	else if( GetMenuType() == QMENU_WEAPON )
 	{
-		SWeaponSlot& rWeaponSlot = PLAYERINFO.GetWeaponSystem()->GetWeaponSlot( item_index );
+		SWeaponSlot& rWeaponSlot = SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot( item_index );
 		if( rWeaponSlot.pWeapon )
             sprintf( pItemName, "%d %s", item_index, rWeaponSlot.pWeapon->GetName().c_str() );
 		else
@@ -208,7 +208,7 @@ inline void CQM_Menu::GetItemInfo( int item_index, char* pItemName, int& quantit
 	}
 	else
 	{
-		boost::shared_ptr<CGameItem> pItem = PLAYERINFO.GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] )[item_index];
+		boost::shared_ptr<CGameItem> pItem = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] )[item_index];
 
 		assert( strlen(pItem->GetName().c_str()) <= 32 );
 
@@ -227,11 +227,11 @@ inline boost::shared_ptr<CGameItem> CQM_Menu::GetCurrentItem()
 	else if( GetMenuType() == QMENU_WEAPON )
 	{
 		return boost::shared_ptr<CGameItem>();
-//		PLAYERINFO.GetWeaponSystem()->GetWeaponSlot( m_iCurrentItem ).pWeapon;
+//		SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot( m_iCurrentItem ).pWeapon;
 	}
 	else
 	{
-		vector<boost::shared_ptr<CGameItem>>& rvecpItemList = PLAYERINFO.GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
+		vector<boost::shared_ptr<CGameItem>>& rvecpItemList = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
 		if( m_iCurrentItem < (int)rvecpItemList.size() )	// check if the item index is valid
 			return rvecpItemList[m_iCurrentItem];
 		else
@@ -250,7 +250,7 @@ inline int CQM_Menu::GetNumMaxItems()
 	}
 	else
 	{
-		return (int)PLAYERINFO.GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] ).size();
+		return (int)SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] ).size();
 	}
 }
 

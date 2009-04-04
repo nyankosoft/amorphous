@@ -148,14 +148,14 @@ bool CQuickMenuManager::SelectCurrentItem()
 	else if( m_iCurrentMenu == CQM_Menu::QMENU_WEAPON )
 	{
 		// select the highlighted weapon slot
-		PLAYERINFO.GetWeaponSystem()->SelectPrimaryWeapon( m_aQuickMenu[m_iCurrentMenu].GetCurrentItemIndex() );
+		SinglePlayerInfo().GetWeaponSystem()->SelectPrimaryWeapon( m_aQuickMenu[m_iCurrentMenu].GetCurrentItemIndex() );
 		// close weapon select menu
 		m_iCurrentMenu = -1;
 	}
 	else if( m_aQuickMenu[m_iCurrentMenu].GetTypeFlag() & CQM_Menu::TYPE_AMMUNITION )
 	{
 		// select the highlighted weapon slot
-		PLAYERINFO.GetWeaponSystem()->GetPrimaryWeaponSlot().Load( (CGI_Ammunition *)m_aQuickMenu[m_iCurrentMenu].GetCurrentItem().get() );
+		SinglePlayerInfo().GetWeaponSystem()->GetPrimaryWeaponSlot().Load( (CGI_Ammunition *)m_aQuickMenu[m_iCurrentMenu].GetCurrentItem().get() );
 		// close ammo select menu
 		m_iCurrentMenu = -1;
 	}
@@ -178,7 +178,7 @@ bool CQuickMenuManager::SelectCurrentItem()
 // select a list of ammo which has the same caliber as the current weapon
 int OpenAmmoSelectMenu()
 {
-	const std::string& ammo_type = PLAYERINFO.GetWeaponSystem()->GetPrimaryWeaponSlot().pWeapon->GetAmmoType();
+	const std::string& ammo_type = SinglePlayerInfo().GetWeaponSystem()->GetPrimaryWeaponSlot().pWeapon->GetAmmoType();
 	if( ammo_type == "7.62x51")		return CQM_Menu::QMENU_AMMO_762X51;
 	else if( ammo_type == "12GS")	return CQM_Menu::QMENU_AMMO_12GAUGE;
 	else if( ammo_type == "40MMG")	return CQM_Menu::QMENU_AMMO_40MMGRENADE;

@@ -169,7 +169,7 @@ int CGameTask_Stage::FrameMove( float dt )
 	}
 
 	// update player info (includes update routines for items)
-	PLAYERINFO.Update( dt );
+	SinglePlayerInfo().Update( dt );
 
 	ONCE( g_Log.Print( "CGameTask_Stage::FrameMove() - updated player info" ) );
 
@@ -177,13 +177,13 @@ int CGameTask_Stage::FrameMove( float dt )
 	// 0:40 2007/05/06 - moved to CStage::Update()
 //	GetTextMessageManager().Update( dt );
 
-	if( PLAYERINFO.GetTaskRequest() != CGameTask::ID_INVALID )
+	if( SinglePlayerInfo().GetTaskRequest() != CGameTask::ID_INVALID )
 	{
 		g_pStage->PauseTimer();
 
-//		CGameTask::eGameTask next_task = PLAYERINFO.GetTaskRequest();
-		int next_task = PLAYERINFO.GetTaskRequest();
-		PLAYERINFO.RequestTaskChange( CGameTask::ID_INVALID );
+//		CGameTask::eGameTask next_task = SinglePlayerInfo().GetTaskRequest();
+		int next_task = SinglePlayerInfo().GetTaskRequest();
+		SinglePlayerInfo().RequestTaskChange( CGameTask::ID_INVALID );
 		return next_task;
 	}
 	else

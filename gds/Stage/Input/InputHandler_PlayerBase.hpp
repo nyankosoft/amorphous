@@ -16,7 +16,7 @@ protected:
 	/// - need to be updated when the keybinds are changed by the player
 	///   - should be saved with the game save data
 	/// - CInputHandler_PlayerPAC does not use this mapping
-	///   - uses keybinds stored in PLAYERINFO::m_KeyBind
+	///   - uses keybinds stored in SinglePlayerInfo()::m_KeyBind
 	int m_aiActionForGICode[NUM_GENERAL_INPUT_CODES];
 
 	/// holds the time of last inputs
