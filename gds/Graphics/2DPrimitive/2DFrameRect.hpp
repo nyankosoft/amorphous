@@ -38,14 +38,16 @@ public:
 //	virtual void Draw( const CTextureHandle& texture );
 //	virtual void Draw() { C2DPrimitive::Draw(); }
 
-//	inline D3DXVECTOR2 GetCornerPos2D( int vert_index ) const;
+//	inline Vector2 GetCornerPos2D( int vert_index ) const;
 
 	inline virtual Vector2 GetPosition2D( int vert_index ) const;
 
 	int GetBorderWidth() const { return m_BorderWidth; }
 
 	/// Sets an outer boundary of the frame rect
-	inline void SetPosition( const D3DXVECTOR2& rvMin, const D3DXVECTOR2& rvMax);
+	inline void SetPosition( const Vector2& rvMin, const Vector2& rvMax);
+
+	inline virtual void SetVertexPosition( int vert_index, const Vector2& rvPosition );
 
 	inline void SetPositionLTRB( float left, float top, float right, float bottom );
 
@@ -149,7 +151,7 @@ inline Vector2 C2DFrameRect::GetPosition2D( int vert_index ) const
 }
 
 
-inline void C2DFrameRect::SetPosition( const D3DXVECTOR2& rvMin, const D3DXVECTOR2& rvMax )
+inline void C2DFrameRect::SetPosition( const Vector2& rvMin, const Vector2& rvMax )
 {
 	float bw = (float)m_BorderWidth;
 	float z = m_avRectVertex[0].vPosition.z;
@@ -189,6 +191,50 @@ inline void C2DFrameRect::SetPosition( const D3DXVECTOR2& rvMin, const D3DXVECTO
 		// outer
 		pVert[i*2+1].tu = 0.0f;
 		pVert[i*2+1].tv = 0.0f;
+	}
+}
+
+
+inline void C2DFrameRect::SetVertexPosition( int vert_index, const Vector2& rvPosition )
+{
+	const float bw = (float)m_BorderWidth;
+	const float z = m_avRectVertex[0].vPosition.z;
+
+	TLVERTEX* pVert = m_avRectVertex;
+
+	const float x = rvPosition.x;
+	const float y = rvPosition.y;
+	switch( vert_index )
+	{
+	case 0:
+		// top-left corner
+		pVert[0].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3( bw, bw, 0); // inner
+		pVert[1].vPosition = D3DXVECTOR3( x, y, z );                           // outer
+		// wrapping at the top-left corner (same as pVert[0] & pVert[1])
+		pVert[8].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3( bw, bw, 0); // inner
+		pVert[9].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		break;
+
+	case 1:
+		// top-right corner
+		pVert[2].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3(-bw, bw, 0); // inner
+		pVert[3].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		break;
+
+	case 2:
+		// bottom-right corner
+		pVert[4].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3(-bw,-bw, 0); // inner
+		pVert[5].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		break;
+
+	case 3:
+		// bottom-left corner
+		pVert[6].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3( bw,-bw, 0); // inner
+		pVert[7].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		break;
+
+	default:
+		break;
 	}
 }
 

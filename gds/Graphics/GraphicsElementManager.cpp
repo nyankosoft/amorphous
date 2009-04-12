@@ -185,7 +185,7 @@ CGE_Triangle *CGraphicsElementManager::InitTriangleElement( int element_index, i
 {
 	CGE_Triangle *pTriangleElement = new CGE_Triangle( color, pTrianglePrimitive, non_scaled_rect );
 
-	pTriangleElement->m_AABB = AABB2( Vector2((float)non_scaled_rect.left,(float)non_scaled_rect.top), Vector2((float)non_scaled_rect.right,(float)non_scaled_rect.bottom) );
+	pTriangleElement->m_LocalAABB = AABB2( Vector2((float)non_scaled_rect.left,(float)non_scaled_rect.top), Vector2((float)non_scaled_rect.right,(float)non_scaled_rect.bottom) );
 
 	InitPrimitiveElement( pTriangleElement, pTrianglePrimitive, non_scaled_rect, color, element_index, layer_index );
 

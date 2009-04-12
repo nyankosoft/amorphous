@@ -3,7 +3,7 @@
 
 
 #include "../base.hpp"
-#include "3DMath/Vector2.hpp"
+#include "3DMath/Matrix23.hpp"
 #include "3DMath/Vector3.hpp"
 #include "3DMath/aabb2.hpp"
 #include "Graphics/fwd.hpp"
@@ -53,7 +53,12 @@ inline AABB2 AABB2Null()
    - group elements do not belong to any layer
 
 
-
+ translation and rotation
+ - To apply translation to an element
+   - Move the element or set a local transform
+ - To apply rotation
+   - Set a local translation to an element
+ - Rotation needs to be applied through local transforms
 
 */
 class CGraphicsElement
@@ -79,9 +84,10 @@ protected:
 
 	float m_fScale;
 
-	/// holds non-scaled rect
-	/// - m_AABB.vMin == non-scaled global top-left position
-	AABB2 m_AABB;
+	/// holds non-scaled rect in local coordinates.
+	/// - holds global coordinates even if the element is owned by a group element
+	/// - m_LocalAABB.vMin == non-scaled global top-left position
+	AABB2 m_LocalAABB;
 
 	int m_GroupID; ///< group id to which the element belongs. -1 if the element does not belong to any group element
 
@@ -94,6 +100,14 @@ protected:
 	/// - not used by group elements
 	Vector2 m_vLocalTopLeftPos;
 
+//	float m_fRotationAngle; ///< angle of local rotation [deg]
+
+	/// global transform of the element that owns this element
+	/// - usu. a group element
+	Matrix23 m_ParentTransform;
+
+	Matrix23 m_LocalTransform;
+
 protected:
 
 	/// can only be created by CGraphicsElementManager
@@ -103,13 +117,16 @@ protected:
 	CGraphicsElement( const AABB2& non_scaled_aabb = AABB2Null() )
 		:
 	m_pManager(NULL),
-	m_AABB(non_scaled_aabb),
+	m_LocalAABB(non_scaled_aabb),
 	m_TextureID(-1),
 	m_fScale(1.0f),
 	m_GroupID(-1),
 	m_ElementIndex(-1),
 	m_LayerIndex(-1),
-	m_vLocalTopLeftPos(Vector2(0,0))
+	m_vLocalTopLeftPos(Vector2(0,0)),
+//	m_vLocalRotationCenterPos(Vector2(0,0)),
+	m_LocalTransform(Matrix23Identity()),
+	m_ParentTransform(Matrix23Identity())
 	{
 		for( int i=0; i<NUM_COLORS; i++ )
 			m_aColor[i] = SFloatRGBAColor(1,1,1,1);
@@ -119,11 +136,17 @@ protected:
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos ) {}
 
+	virtual void UpdatePositionsInternal( const Matrix23& global_transform ) {}
+
+	virtual void UpdatePositionsInternalForNonRotatedElement( const Vector2& vGlobalTranslation ) {}
+
+	virtual void UpdateTransform( const Matrix23& parent_transform );
+
+	Matrix23 CalculateGlobalTransform();
+
 private:
 
 	void SetElementIndex( int element_index ) { m_ElementIndex = element_index; }
-
-	void UpdateTopLeftPos( Vector2 vPos );
 
 public:
 
@@ -132,21 +155,25 @@ public:
 	virtual void SetTexture( int texture_id ) { m_TextureID = texture_id; }
 
 	/// TODO: Decide whether this really has to be virtual
-	virtual Vector2 GetTopLeftPos() const { return m_AABB.vMin; }
+	virtual Vector2 GetTopLeftPos() const { return m_LocalAABB.vMin; }
 
-	virtual Vector2 GetLocalTopLeftPos() const { return m_vLocalTopLeftPos; }
+	Vector2 GetLocalTopLeftPos() const { return m_vLocalTopLeftPos; }
 
-	const AABB2& GetAABB() const { return m_AABB; }
+	const AABB2& GetAABB() const { return m_LocalAABB; }
 
 	/// calls SetTopLeftPosInternal() to run routines
 	/// specific to each element
 	/// - The user should use SetLocalTopLeftPos() if the element is grouped.
 	///   The result is undefined if this is called when the local origin of the group element is being changed
 	/// \param vPos non-scaled global pos
-	void SetTopLeftPos( Vector2 vPos );
+//	void SetTopLeftPos( Vector2 vGlobalPos );
 
-	void SetTopLeftPos( SPoint pos ) { SetTopLeftPos( Vector2((float)pos.x,(float)pos.y) ); }
+//	void SetTopLeftPos( SPoint pos ) { SetTopLeftPos( Vector2((float)pos.x,(float)pos.y) ); }
 
+	/// Sets the top left corner position of the element
+	/// - Moves the element.
+	/// - Does not change the local transform.
+	/// - Updates the poses of all the descendants.
 	void SetLocalTopLeftPos( Vector2 vPos );
 
 	void SetLocalTopLeftPos( SPoint pos ) { SetLocalTopLeftPos(Vector2((float)pos.x,(float)pos.y) ); }
@@ -157,18 +184,52 @@ public:
 		SetLocalTopLeftPos( local_rect.GetTopLeftCorner() );
 	}
 
-	/// Called when the element belongs to a group element and its local origin is changed
-	/// \param vLocalOrigin local origin of the group represented in global coordinates
-	virtual void UpdateGlobalPositions( Vector2 vLocalOrigin )
-	{
-		UpdateTopLeftPos( vLocalOrigin + m_vLocalTopLeftPos );
-	}
-
 	virtual void ChangeScale( float scale ) {}
 
 	virtual void ChangeElementScale( float scale ) {}
 
-	virtual void SetSizeLTRB( const Vector2& vMin, const Vector2& vMax ) {}
+	void SetSizeLTRB( const Vector2& vLocalMin, const Vector2& vLocalMax );
+
+//	void SetLocalRotationCenterPos( const Vector2& vLocalRotationCenterPos ) { m_vLocalRotationCenterPos = vLocalRotationCenterPos; }
+
+//	Vector2 GetLocalRotationCenterPos() const { return m_vLocalRotationCenterPos; }
+
+	/// set the local rotation angle
+	/// - Rotates the element locally from 0 to 'angle'
+	/// \param angle angle of rotation [deg]
+	/// \param vCenter center of roation (local or global?)
+	void SetRotationAngle( const float angle, Vector2 vCenter )
+	{
+	}
+	
+	void SetLocalTransform( const Matrix23& local_transform )
+	{
+		m_LocalTransform = local_transform;
+		UpdateTransform( m_ParentTransform );
+	}
+
+	/// Overwrites local orientation
+	void SetLocalRotationAngle( const float angle_in_deg )
+	{
+		m_LocalTransform.matOrient = Matrix22( deg_to_rad( angle_in_deg ) );
+/*		CGE_Group *pParent = GetParent();
+		if( pParent )
+		{
+			m_fRotationAngle = pParent->GetRotationAngle() + angle;
+		}
+		else
+		{*/
+			//m_fRotationAngle = angle;
+/*		}*/
+
+		UpdateTransform( m_ParentTransform );
+	}
+
+//	float GetRotationAngle() const { return m_fRotationAngle; }
+
+	virtual void Rotate( const float angle ) {}
+
+	virtual void Rotate( const float angle, Vector2 vCenter ) {}
 
 	virtual const SFloatRGBAColor& GetColor( int color_index ) const { return m_aColor[color_index]; }
 
@@ -264,6 +325,8 @@ protected:
 
 	inline void SetBlendedColorToPrimitive();
 
+	void UpdatePositionsInternalForNonRotatedElement( const Vector2& global_transform );
+
 public:
 
 	/// \param non_scaled_aabb represents a non-scaled rectangular region of the element
@@ -281,18 +344,9 @@ public:
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
-	virtual void ChangeScale( float scale )
-	{
-		m_fScale = scale;
-		m_pPrimitive->SetPosition( m_AABB.vMin * scale, m_AABB.vMax * scale );
-	}
+	virtual void ChangeScale( float scale );
 
-	virtual void SetSizeLTRB( const Vector2& vMin, const Vector2& vMax )
-	{
-		m_AABB.vMin = vMin;
-		m_AABB.vMax = vMax;
-		m_pPrimitive->SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
-	}
+//	virtual void SetSizeLTRB( const Vector2& vLocalMin, const Vector2& vLocalMax );
 
 	void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) { m_pPrimitive->SetDestAlphaBlendMode( mode ); }
 
@@ -327,6 +381,10 @@ class CGE_Rect : public CGE_Primitive
 	/// blended with CGraphicsElement::m_aColor[]
 	SFloatRGBAColor m_aCornerColor[4];
 
+private:
+
+	void UpdatePositionsInternal( const Matrix23& global_transform );
+
 public:
 
 
@@ -334,6 +392,8 @@ public:
 	CGE_Rect( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive );
 
 	virtual void Draw();
+
+	virtual void SetLocalTransform( const Matrix23& local_transform );
 
 //	void SetHFrameTextureCoord();
 //	void SetVFrameTextureCoord();
@@ -353,6 +413,13 @@ class CGE_Triangle : public CGE_Primitive
 	C2DFrameTriangle *m_pFTriangle;
 	C2DRoundFrameTriangle *m_RFpTriangle;
 
+	/// non-scaled vertex positions in local coord
+	Vector2 m_avVertexPosition[3];
+
+private:
+
+	void UpdatePositionsInternal( const Matrix23& global_transform );
+
 public:
 
 	CGE_Triangle( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect );
@@ -360,6 +427,8 @@ public:
 	virtual void Draw();
 
 	virtual int GetElementType() const { return TYPE_TRIANGLE; }
+
+	virtual void SetVertexPosition( int index, const Vector2& vPos );
 };
 
 
@@ -402,8 +471,6 @@ public:
 
 	virtual void Draw();
 
-//	virtual Vector2 GetTopLeftPos() const { return ???; }
-
 	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{
 	}
@@ -412,7 +479,7 @@ public:
 	{
 	}
 
-	virtual void SetSizeLTRB( const Vector2& vMin, const Vector2& vMax )
+	virtual void SetSizeLTRB( const Vector2& vLocalMin, const Vector2& vLocalMax )
 	{
 	}
 
@@ -439,6 +506,8 @@ class CGE_Text : public CGraphicsElement
 
 	Vector2 m_vScaledPos;
 
+	Vector2 m_vLocalTextOffset;
+
 	/// scaled font size. when set to 0, size of the font obtained by 'font_id' is used
 	int m_ScaledWidth, m_ScaledHeight;
 
@@ -450,14 +519,24 @@ class CGE_Text : public CGraphicsElement
 
 	AlphaBlend::Mode m_DestAlphaBlendMode;
 
+protected:
+
+	void UpdatePositionsInternal( const Matrix23& global_transform );
+
+	void UpdatePositionsInternalForNonRotatedElement( const Vector2& vGlobalTranslation );
+
+	void UpdateLocalTextOffset();
+
 public:
 
 	enum eTextAlignment { TAL_LEFT, TAL_TOP, TAL_CENTER, TAL_RIGHT, TAL_BOTTOM, NUM_TEXT_ALIGNMENTS };
 
 	CGE_Text( int font_id, const std::string& text, const AABB2& textbox, int align_h, int align_v, const SFloatRGBAColor& color0 )
-		: m_FontID(font_id), m_Text(text), m_vTextPos(textbox.vMin), m_DestAlphaBlendMode(AlphaBlend::InvSrcAlpha)
+		: m_FontID(font_id), m_Text(text), m_vTextPos(textbox.vMin),
+		m_vLocalTextOffset(Vector2(0,0)),
+		m_DestAlphaBlendMode(AlphaBlend::InvSrcAlpha)
 	{
-		m_AABB = textbox;
+		m_LocalAABB = textbox;
 		m_TextAlignH = align_h;
 		m_TextAlignV = align_v;
 		m_aColor[0] = color0;
@@ -487,17 +566,7 @@ public:
 		m_ScaledHeight = (int)(m_FontHeight * scale);
 	}
 
-	virtual void SetSizeLTRB( const Vector2& vMin, const Vector2& vMax )
-	{
-		m_AABB.vMin = vMin;
-		m_AABB.vMax = vMax;
-		m_vTextPos = vMin;
-		Vector2 vSpan = vMax - vMin;
-		m_FontWidth = (int)( vSpan.x / (float)m_Text.length() ); 
-		m_FontHeight =(int)vSpan.y;// vSpan.x / (float)GetNumRows(m_Text)
-
-		m_vScaledPos = m_vTextPos * m_fScale;
-	}
+//	virtual void SetSizeLTRB( const Vector2& vLocalMin, const Vector2& vLocalMax );
 
 	void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) { m_DestAlphaBlendMode = mode; }
 
@@ -533,6 +602,8 @@ private:
 
 	inline void UpdateAABB();
 
+	void UpdateTransform( const Matrix23& parent_transform );
+
 public:
 
 //	CGE_Group( std::vector<CGraphicsElement *>& rvecpElement );
@@ -551,18 +622,14 @@ public:
 
 	void SetLocalTopLeftPos( SPoint pos ) { SetLocalTopLeftPos( Vector2((float)pos.x,(float)pos.y) ); }
 
-	Vector2 GetLocalOriginInLocalCoord() const { return m_vLocalTopLeftPos;/* m_vLocalOrigin;*/ }
-
 	Vector2 GetLocalOriginInGlobalCoord() const;
-
-	void UpdateGlobalPositions( Vector2 vLocalOrigin );
 
 	/// Updates the global coordinates of grouped elements in this call or later?
 	/// - in this call: not good for performance
 	/// - later: you need to set a flag such as 'm_bNeedToUpdateGlobalPositionsOfGroupedElements' to true.
 	///   Later, before the rendering begins, update global positions of the grouped elements if the flag is true
 	/// NOTE: Called from ctor
-	inline void SetLocalOrigin( Vector2 vLocalOrigin );
+	void SetLocalOrigin( Vector2 vLocalOrigin );
 
 	void SetLocalOrigin( SPoint local_origin ) { SetLocalOrigin( Vector2((float)local_origin.x,(float)local_origin.y) ); }
 
@@ -590,24 +657,11 @@ public:
 
 inline void CGE_Group::UpdateAABB()
 {
-	m_AABB.Nullify();
+	m_LocalAABB.Nullify();
 	vector<CGraphicsElement *>::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
-		m_AABB.MergeAABB( (*itr)->GetAABB() );
-	}
-}
-
-
-inline void CGE_Group::SetLocalOrigin( Vector2 vLocalOrigin )
-{
-//	m_vLocalOrigin = vLocalOrigin;
-	m_vLocalTopLeftPos = vLocalOrigin;
-
-	vector<CGraphicsElement *>::iterator itr;
-	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
-	{
-		(*itr)->UpdateGlobalPositions( GetLocalOriginInGlobalCoord() );
+		m_LocalAABB.MergeAABB( (*itr)->GetAABB() );
 	}
 }
 
@@ -649,7 +703,7 @@ public:
 	CGE_FrameRect( const C2DFrameRect& framerect, const SFloatRGBAColor& color0 )
 		: m_FrameRect(framerect)
 	{
-		m_AABB = AABB2(framerect.GetCornerPos2D(0),framerect.GetCornerPos2D(2));
+		m_LocalAABB = AABB2(framerect.GetCornerPos2D(0),framerect.GetCornerPos2D(2));
 		m_OrigBorderWidth = framerect.GetBorderWidth();
 		m_aColor[0] = color0;
 		ChangeScale( m_fScale );
@@ -666,25 +720,25 @@ public:
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos )
 	{
-		Vector2 vSpan = m_AABB.vMax - m_AABB.vMin;
-		m_AABB.vMin = vPos;
-		m_AABB.vMax = vPos + vSpan;
-		m_FrameRect.SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
+		Vector2 vSpan = m_LocalAABB.vMax - m_LocalAABB.vMin;
+		m_LocalAABB.vMin = vPos;
+		m_LocalAABB.vMax = vPos + vSpan;
+		m_FrameRect.SetPosition( m_LocalAABB.vMin * m_fScale, m_LocalAABB.vMax * m_fScale );
 	}
 
 	virtual void ChangeScale( float scale )
 	{
 		m_fScale = scale;
-		m_FrameRect.SetPosition( m_AABB.vMin * scale, m_AABB.vMax * scale );
+		m_FrameRect.SetPosition( m_LocalAABB.vMin * scale, m_LocalAABB.vMax * scale );
 		m_FrameRect.SetBorderWidth( (int)(m_OrigBorderWidth * scale) );
 	}
 
 	/// does not change border width
 	virtual void SetSizeLTRB( const Vector2& vMin, const Vector2& vMax )
 	{
-		m_AABB.vMin = vMin;
-		m_AABB.vMax = vMax;
-		m_FrameRect.SetPosition( m_AABB.vMin * m_fScale, m_AABB.vMax * m_fScale );
+		m_LocalAABB.vMin = vMin;
+		m_LocalAABB.vMax = vMax;
+		m_FrameRect.SetPosition( m_LocalAABB.vMin * m_fScale, m_LocalAABB.vMax * m_fScale );
 	}
 
 	virtual int GetElementType() const { return TYPE_FRAMERECT; }

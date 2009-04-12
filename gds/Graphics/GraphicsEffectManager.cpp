@@ -110,7 +110,7 @@ void CE_Translate::Update( double current_time, double dt )
 	{
 		if( !m_bAppliedAtEndTime )
 		{
-			GetElement()->SetTopLeftPos( m_vEnd );
+			GetElement()->SetLocalTopLeftPos( m_vEnd );
 			m_bAppliedAtEndTime = true;
 		}
 		return;
@@ -118,7 +118,7 @@ void CE_Translate::Update( double current_time, double dt )
 
 	// currently in the animation time frame
 
-	GetElement()->SetTopLeftPos( m_vStart + (m_vEnd - m_vStart) * (float)GetFraction_Linear( current_time ) );
+	GetElement()->SetLocalTopLeftPos( m_vStart + (m_vEnd - m_vStart) * (float)GetFraction_Linear( current_time ) );
 }
 
 
@@ -226,7 +226,7 @@ void CE_TranslateNonLinear::Update( double current_time, double dt )
 
 //	LOG_PRINT_CAUTION( to_string(current_time) + " - " + to_string(m_Pos.current) );
 
-	GetElement()->SetTopLeftPos( m_Pos.current );
+	GetElement()->SetLocalTopLeftPos( m_Pos.current );
 }
 
 

@@ -142,6 +142,18 @@ inline Matrix22 Matrix22::operator-(const Matrix22 & rhs) const
 }
 
 
+inline bool Matrix22::operator==(const Matrix22 & rhs) const
+{
+	for( int i=0; i<4; i++ )
+	{
+		if( data[i] != rhs.data[i] )
+			return false;
+	}
+
+	return true;
+}
+
+
 inline void Matrix22::SetIdentity()
 {
 	*this = Matrix22Identity();
@@ -326,63 +338,4 @@ inline Scalar trace(const Matrix22 & rhs)
 {
   return rhs(0,0) + rhs(1,1) + rhs(2,2);
 }
-
-
-// Some useful rotation Matrix3's
-//inline Matrix22 m3alpha(Scalar alpha)
-inline Matrix22 Matrix22RotationX( Scalar alpha )
-{
-  Matrix22 result(0);
-  Scalar s = (Scalar) sin(alpha);
-  Scalar c = (Scalar) cos(alpha);
-  
-  result(0,0) = 1;
-  result(1,1) = c;
-  result(2,2) = c;
-  result(2,1) = s;
-  result(1,2) = -s;
-  
-  return result;
-}
-
-//inline Matrix22 m3beta(Scalar beta)
-inline Matrix22 Matrix22RotationY( Scalar beta )
-{
-  Matrix22 result(0);
-  Scalar s = (Scalar) sin(beta);
-  Scalar c = (Scalar) cos(beta);
-  
-  result(1,1) = 1;
-  result(2,2) = c;
-  result(0,0) = c;
-  result(0,2) = s;
-  result(2,0) = -s;
-  
-  return result;
-}
-
-//inline Matrix22 m3gamma(Scalar gamma)
-inline Matrix22 Matrix22RotationZ( Scalar gamma )
-{
-  Matrix22 result(0);
-  Scalar s = (Scalar) sin(gamma);
-  Scalar c = (Scalar) cos(gamma);
-  
-  result(2,2) = 1;
-  result(0,0) = c;
-  result(1,1) = c;
-  result(1,0) = s;
-  result(0,1) = -s;
-  
-  return result;
-}
-
-
-inline Matrix22 Matrix22RotationAxis( Scalar angle, const Vector2& axis )
-{
-	Matrix22 s(       0,  axis.z, -axis.y,
-		        -axis.z,       0,  axis.x,
-				 axis.y, -axis.x,       0 );
-
-	return Matrix22Identity() + (Scalar)sin(angle) * s + (1.0f - (Scalar)cos(angle)) * s * s;
-}*/
+*/

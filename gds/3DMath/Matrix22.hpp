@@ -64,6 +64,8 @@ public:
 	inline Matrix22 operator+(const Matrix22 & rhs) const;
 	inline Matrix22 operator-(const Matrix22 & rhs) const;
 
+	inline bool operator==(const Matrix22 & rhs) const;
+
 	inline void SetIdentity();
 /*
 	/// sets a rotation matrix that rotates a point around x-axis

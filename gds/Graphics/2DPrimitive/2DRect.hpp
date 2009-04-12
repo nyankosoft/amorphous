@@ -53,7 +53,9 @@ public:
 
 	inline void SetPosition( const Vector2& vMin, const Vector2& vMax);
 
-	inline void SetPosition( int vert_index, const D3DXVECTOR2& rvPosition );
+	inline void SetPosition( int vert_index, const Vector2& rvPosition );
+
+	virtual void SetVertexPosition( int vert_index, const Vector2& rvPosition ) { SetPosition( vert_index, rvPosition ); }
 
 	/// set values for left, top, right and bottom of the rectangle
 	inline void SetPositionLTRB( float l, float t, float r, float b );
@@ -106,7 +108,7 @@ inline C2DRect::C2DRect( float min_x, float min_y, float max_x, float max_y, U32
 }
 
 
-inline C2DRect::C2DRect( const D3DXVECTOR2& vMin, const D3DXVECTOR2& vMax, U32 color )
+inline C2DRect::C2DRect( const Vector2& vMin, const Vector2& vMax, U32 color )
 {
 	SetDefault();
 	SetPosition( vMin, vMax );
@@ -150,7 +152,7 @@ inline void C2DRect::draw()
 }
 
 
-inline void C2DRect::SetPosition( const D3DXVECTOR2& vMin, const D3DXVECTOR2& vMax )
+inline void C2DRect::SetPosition( const Vector2& vMin, const Vector2& vMax )
 {
 	TLVERTEX* pVert = m_avRectVertex;
 
@@ -168,7 +170,7 @@ inline void C2DRect::SetPosition( const D3DXVECTOR2& vMin, const D3DXVECTOR2& vM
 }
 
 
-inline void C2DRect::SetPosition( int vert_index, const D3DXVECTOR2& rvPosition )
+inline void C2DRect::SetPosition( int vert_index, const Vector2& rvPosition )
 {
 	m_avRectVertex[vert_index].vPosition.x = rvPosition.x;
 	m_avRectVertex[vert_index].vPosition.y = rvPosition.y;
@@ -177,7 +179,7 @@ inline void C2DRect::SetPosition( int vert_index, const D3DXVECTOR2& rvPosition 
 
 inline void C2DRect::SetPositionLTRB( float l, float t, float r, float b )
 {
-	SetPosition( D3DXVECTOR2(l,t), D3DXVECTOR2(r,b) );
+	SetPosition( Vector2(l,t), Vector2(r,b) );
 }
 
 

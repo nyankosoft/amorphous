@@ -69,7 +69,9 @@ public:
 
 	inline virtual void Draw( const CTextureHandle& texture );
 
-	inline virtual Vector2 GetPosition2D( int vert_index ) const { return Vector2(0,0); }
+	virtual Vector2 GetPosition2D( int vert_index ) const { return Vector2(0,0); }
+
+	virtual void SetVertexPosition( int vert_index, const Vector2& rvPosition ) {}
 
 	/// set the position of the rect through top-left and bottom-right corner positions
 	virtual void SetPosition( const Vector2& vMin, const Vector2& vMax) {}

@@ -121,7 +121,7 @@ void HUD_PlayerAircraft::Init()
 
 	CGraphicsElement *apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
 	m_pGlobalRadar = pElementMgr->CreateGroup( apElement, numof(apElement), m_GlobalRadarRect.GetTopLeftCorner() );
-	m_pGlobalRadar->SetTopLeftPos( m_GlobalRadarRect.GetTopLeftCorner() );
+	m_pGlobalRadar->SetLocalTopLeftPos( m_GlobalRadarRect.GetTopLeftCorner() );
 
 	// small white cross on the center
 	pElementMgr->CreateRect( RectLTRB( x-r, y-w, x+r, y+w ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );

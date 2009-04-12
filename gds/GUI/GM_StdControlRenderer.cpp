@@ -639,7 +639,7 @@ void CGM_StdDialogRenderer::OnDialogOpened( CGM_Dialog& dialog )
 	{
 		const SRect& rect = dialog.GetBoundingBox();
 		Vector2 vDestPos = Vector2( (float)rect.left, (float)rect.top );
-		m_pGroupElement->SetTopLeftPos( vDestPos + Vector2( -50, 0 ) );
+		m_pGroupElement->SetLocalTopLeftPos( vDestPos + Vector2( -50, 0 ) );
 //		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vDestPos, 0, 0 );
 		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateNonLinear( m_pGroupElement, 0.0f, vDestPos, Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 	}
@@ -665,7 +665,7 @@ void CGM_StdDialogRenderer::OnDialogClosed( CGM_Dialog& dialog )
 	{
 		const SRect& rect = dialog.GetBoundingBox();
 		Vector2 vStartPos = Vector2( (float)rect.left, (float)rect.top );
-		m_pGroupElement->SetTopLeftPos( vStartPos );
+		m_pGroupElement->SetLocalTopLeftPos( vStartPos );
 //		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateTo( m_pGroupElement, 0.0f, 0.2f, vStartPos + Vector2( -50, 0 ), 0, 0 );
 		m_PrevSlideEffect = m_pGraphicsEffectManager->TranslateNonLinear( m_pGroupElement, 0.0f, vStartPos + Vector2( -50, 0 ), -Vector2( 50.0f, 0.0f ), 0.15f, 0 );
 	}
