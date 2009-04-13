@@ -10,6 +10,7 @@
 #include <Stage/ViewFrustumTest.hpp>
 #include <Stage/trace.hpp>
 #include <Stage/OverlapTestAABB.hpp>
+#include <Stage/BE_HomingMissile.hpp>
 
 #include "3DMath/MathMisc.hpp"
 #include "Support/memory_helpers.hpp"
@@ -631,7 +632,8 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 			break;
 
 		case BE_HOMINGMISSILE:
-			tgt_type = HUD_TargetInfo::MISSILE;
+			if( MissileState(pEntity) == CBE_HomingMissile::MS_IGNITED )
+				tgt_type = HUD_TargetInfo::MISSILE;
 			break;
 
 		default:
