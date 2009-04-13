@@ -878,6 +878,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\3DMath\Matrix23.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\3DMath\Matrix33.hpp"
 				>
 			</File>
