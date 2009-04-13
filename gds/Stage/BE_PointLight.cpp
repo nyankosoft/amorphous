@@ -103,12 +103,6 @@ void CBE_PointLight::InitCopyEntity( CCopyEntity* pCopyEnt )
 		// register dynamic light to the stage
 		...
 	}
-
-	if( m_TypeFlag & TYPE_TIMER )
-	{
-		float& rfTimeLeft = TimeLeft(pCopyEnt);;
-		rfTimeLeft = m_fTimer;
-	}
 */
 	if( pCopyEnt->GetParent() )
 	{
@@ -143,26 +137,26 @@ void CBE_PointLight::Act( CCopyEntity* pCopyEnt )
 			DeleteDynamicLight( pCopyEnt );
 			return;
 		}
-
+*/
 		if( m_TypeFlag & TYPE_TIMER )
 		{
-			float& rfTimeLeft = TimeLeft(pCopyEnt);
-			rfTimeLeft -= m_pStage->GetFrameTime();
-
-			if( rfTimeLeft <= 0 )
+			if( m_fTimer < m_pStage->GetElapsedTime() - pCopyEnt->GetCreatedTime() )
 			{
-				DeleteDynamicLight( pCopyEnt );
+				m_pStage->TerminateEntity( pCopyEnt );
 				return;
 			}
 
-			//if( m_TypeFlag & TYPE_FADEOUT )
-			//{
-			//	Vector3 vColor = pCopyEnt->v1 * rfTimeLeft / m_fTimer;
+/*			if( m_TypeFlag & TYPE_FADEOUT )
+			{
+				float time_left = m_fTimer - (m_pStage->GetElapsedTime() - pCopyEnt->GetCreatedTime());
+				Limit( timeleft, 0.0, 1000.0 );
+				Vector3 vColor = pCopyEnt->v1 * rfTimeLeft / m_fTimer;
+				???pLightEntity->SetDiffuseColor( (float *)&vColor );
 			//	short sLightIndex = (short)pCopyEnt->iExtraDataIndex;
 			//	m_pStage->GetEntitySet()->GetLightEntity( sLightIndex )->SetDiffuseColor( (float *)&vColor );
-			//}
+			}*/
 		}
-
+/*
 		if( pCopyEnt->s1 & CEDL_HAS_PARENT && !pCopyEnt->GetParent() )
 		{	// terminate this dynamic light
 			DeleteDynamicLight( pCopyEnt );
