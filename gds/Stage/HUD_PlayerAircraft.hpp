@@ -36,6 +36,8 @@ private:
 	{
 		NUM_MAX_RECTS = 64,
 		NUM_MAX_TGT_INFO = 32,
+		NUM_MAX_ICONS_ON_LOCAL_RADAR = 64,
+		NUM_MAX_ICONS_ON_GLOBAL_RADAR = 128,
 
 		// properties of graphics elements
 		CONTAINER_SIZE = 48,
@@ -55,9 +57,10 @@ private:
 		NUM_HUD_FONTS
 	};
 
-	enum TEXTURE_INDEX
+	enum TEXTURE_IDS
 	{
-		GLOBAL_RADAR_TEXTURE_INDEX = 0,
+		TEX_GLOBAL_RADAR = 0,
+		TEX_RADAR_ICON,
 		NUM_HUD_TEXTURES
 	};
 
@@ -71,6 +74,14 @@ private:
 	CGE_Group *m_pGlobalRadar;
 
 	CGE_Rect *m_pGlobalRadarBG;
+
+	CGE_Rect *m_apIconOnGlobalRadar[NUM_MAX_ICONS_ON_GLOBAL_RADAR];
+
+	CGE_Rect *m_apIconOnLocalRadar[NUM_MAX_ICONS_ON_LOCAL_RADAR];
+
+	int m_NumLastRenderedLocalRadarIcons;
+
+	int m_LastRenderedIconsOnGlobalRadar;
 
 	SRect m_LocalRadarRect;
 
@@ -128,7 +139,7 @@ public:
 	void RenderImpl();
 
 	/// turns on/off the global radar
-	void DisplayGlobalRadar( bool display ) { m_bDisplayGlobalRadar = display; }
+	void DisplayGlobalRadar( bool display );
 
 	bool OpenTextWindow( CGameTextSet *pTextSet );
 
