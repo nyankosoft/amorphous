@@ -46,9 +46,23 @@ struct SFloatRGBAColor
 	/// \param [in] 32-bit integer that represents ARGB color using 8 bits for each component
 	inline void SetARGB32( U32 color );
 
-	// deprecated
-//	void CopyFromD3DCOLOR(D3DCOLOR color);
-//	D3DCOLOR ConvertToD3DCOLOR();
+	void SetToWhite()   { *this = White(); }
+	void SetToBlack()   { *this = Black(); }
+	void SetToRed()     { *this = Red(); }
+	void SetToGreen()   { *this = Green(); }
+	void SetToBlue()    { *this = Blue(); }
+	void SetToYellow()  { *this = Yellow(); }
+	void SetToMagenta() { *this = Magenta(); }
+	void SetToAqua()    { *this = Aqua(); }
+
+	static const SFloatRGBAColor White()   { return SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ); }
+	static const SFloatRGBAColor Black()   { return SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 1.0f ); }
+	static const SFloatRGBAColor Red()     { return SFloatRGBAColor( 1.0f, 0.0f, 0.0f, 1.0f ); }
+	static const SFloatRGBAColor Green()   { return SFloatRGBAColor( 0.0f, 1.0f, 0.0f, 1.0f ); }
+	static const SFloatRGBAColor Blue()    { return SFloatRGBAColor( 0.0f, 0.0f, 1.0f, 1.0f ); }
+	static const SFloatRGBAColor Yellow()  { return SFloatRGBAColor( 1.0f, 1.0f, 0.0f, 1.0f ); }
+	static const SFloatRGBAColor Magenta() { return SFloatRGBAColor( 1.0f, 0.0f, 1.0f, 1.0f ); }
+	static const SFloatRGBAColor Aqua()    { return SFloatRGBAColor( 0.0f, 1.0f, 1.0f, 1.0f ); }
 };
 
 

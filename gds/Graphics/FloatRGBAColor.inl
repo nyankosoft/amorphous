@@ -57,7 +57,7 @@ inline SFloatRGBColor SFloatRGBAColor::GetRGBColor() const
 }
 
 
-inline unsigned long SFloatRGBAColor::GetARGB32() const
+inline U32 SFloatRGBAColor::GetARGB32() const
 {
 	return ( ((int)(fAlpha * 255.0f)) << 24 ) & 0xFF000000 |
 		   ( ((int)(fRed   * 255.0f)) << 16 ) & 0x00FF0000 |
@@ -66,7 +66,7 @@ inline unsigned long SFloatRGBAColor::GetARGB32() const
 }
 
 
-inline void SFloatRGBAColor::SetARGB32( unsigned long color )
+inline void SFloatRGBAColor::SetARGB32( U32 color )
 {
 	fAlpha	= (float)( (color >> 24) & 0x000000FF ) / 256.0f;
 	fRed	= (float)( (color >> 16) & 0x000000FF ) / 256.0f;

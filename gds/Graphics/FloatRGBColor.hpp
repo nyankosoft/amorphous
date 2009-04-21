@@ -39,7 +39,23 @@ struct SFloatRGBColor
 
 	inline void SetRGB( float r, float g, float b );
 
-	void SetBlack();
+	void SetToWhite()   { *this = White(); }
+	void SetToBlack()   { *this = Black(); }
+	void SetToRed()     { *this = Red(); }
+	void SetToGreen()   { *this = Green(); }
+	void SetToBlue()    { *this = Blue(); }
+	void SetToYellow()  { *this = Yellow(); }
+	void SetToMagenta() { *this = Magenta(); }
+	void SetToAqua()    { *this = Aqua(); }
+
+	static const SFloatRGBColor White()   { return SFloatRGBColor( 1.0f, 1.0f, 1.0f ); }
+	static const SFloatRGBColor Black()   { return SFloatRGBColor( 0.0f, 0.0f, 0.0f ); }
+	static const SFloatRGBColor Red()     { return SFloatRGBColor( 1.0f, 0.0f, 0.0f ); }
+	static const SFloatRGBColor Green()   { return SFloatRGBColor( 0.0f, 1.0f, 0.0f ); }
+	static const SFloatRGBColor Blue()    { return SFloatRGBColor( 0.0f, 0.0f, 1.0f ); }
+	static const SFloatRGBColor Yellow()  { return SFloatRGBColor( 1.0f, 1.0f, 0.0f ); }
+	static const SFloatRGBColor Magenta() { return SFloatRGBColor( 1.0f, 0.0f, 1.0f ); }
+	static const SFloatRGBColor Aqua()    { return SFloatRGBColor( 0.0f, 1.0f, 1.0f ); }
 };
 
 
