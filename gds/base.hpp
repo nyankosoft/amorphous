@@ -73,11 +73,10 @@ public:
 // platform-dependent settings
 //==========================================================================
 
-//#if WINDOWS
+#ifdef _MSC_VER
 
 #define NOMINMAX // avoid error in nxmath.h of Ageia PhysX SDK
 #include <windows.h>
-
 
 //
 // platform-dependent typedefs
@@ -88,10 +87,14 @@ typedef WORD  U16;
 typedef DWORD U32;
 //typedef ????? U64;
 
+#else // _MSC_VER - non-Win32 platform. How to typedef the variables above?
 
-//#else
+typedef unsigned char  U8;
+typedef unsigned short U16;
+typedef unsigned int   U32;
 
-//#endif
+
+#endif // _MSC_VER
 
 
 #endif  /* __BASETYPES_H__ */
