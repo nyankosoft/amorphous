@@ -90,6 +90,7 @@ void CCopyEntity::ReleasePhysicsActor()
 }
 
 
+// This should be ApplyPhysSimResults(), or some name like that.
 void CCopyEntity::UpdatePhysics()
 {
 /*
@@ -98,8 +99,16 @@ void CCopyEntity::UpdatePhysics()
 	if( m_vecpPhysicsActor.size() == 0 )
 		return;
 
-	for( size_t i=0; i<m_vecpPhysicsActor.size(); i++ )
-		m_vecpPhysicsActor[i]->GetWorldPose( WorldPose );
+	physics::CActor *pPhysActor = GetPrimaryPhysicsActor();
+	if( !pPhysActor )
+		return;
+
+	// update the world pose of the entity
+	// - copy the world pose of the primary physics actor to that of the entity
+	pPhysActor->GetWorldPose( WorldPose );
+
+//	for( size_t i=0; i<m_vecpPhysicsActor.size(); i++ )
+//		m_vecpPhysicsActor[i]->GetWorldPose( WorldPose );
 
 	int i;
 	for( i=0; i<9; i++ )

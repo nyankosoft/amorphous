@@ -11,6 +11,7 @@
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderLightManager.hpp"
+#include "Graphics/MeshGenerators.hpp"
 
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -688,5 +689,26 @@ void CBaseEntity::SetLights( CCopyEntity& entity )
 	else
 	{	// turn off lights
 //		m_pEntitySet->DisableLightForEntity();
+	}
+}
+
+
+void CBaseEntity::CreateMeshGenerator( CTextFileScanner& scanner )
+{
+//	if( scanner.GetTagString != "GENERATED_3DMODEL" )
+//		return;
+
+	string tag;
+	string type;
+	scanner.ScanLine( tag, type );
+	if( type == "Box" )
+	{
+		float x=1,y=1,z=1;
+		scanner.ScanLine( tag, type, x, y, z );
+		shared_ptr<CBoxMeshGenerator> pBoxGenerator( new CBoxMeshGenerator() );
+		pBoxGenerator->SetDiffuseColor( SFloatRGBAColor(0.1f,0.1f,0.1f,1.0f) );
+		pBoxGenerator->SetEdgeLengths( Vector3(x,y,z) );
+
+		m_MeshProperty.m_MeshDesc.pMeshGenerator = pBoxGenerator;
 	}
 }

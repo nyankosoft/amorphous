@@ -1008,6 +1008,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 				else if( flag_str == "ENEMY" )                       m_EntityFlag |= BETYPE_ENEMY;
 				else if( flag_str == "ITEM" )                        m_EntityFlag |= BETYPE_ITEM;
 				else if( flag_str == "RIGIDBODY" )                   m_EntityFlag |= BETYPE_RIGIDBODY;
+				else if( flag_str == "PHYSICS_SIM" )                 m_EntityFlag |= BETYPE_RIGIDBODY;
 				else if( flag_str == "INDESTRUCTIBLE" )              m_EntityFlag |= BETYPE_INDESTRUCTIBLE;
 				else if( flag_str == "LIGHTING" )                    m_EntityFlag |= BETYPE_LIGHTING;
 				else if( flag_str == "NOCLIP" )                      m_EntityFlag |= BETYPE_NOCLIP;
@@ -1044,6 +1045,15 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 
 		if( scanner.TryScanLine( "3DMODEL",  m_MeshProperty.m_MeshDesc.ResourcePath ) )
 			continue;
+
+		string model_to_generate;
+		model_to_generate.clear();
+		if( scanner.TryScanLine( "GENERATED_3DMODEL",  model_to_generate ) )
+//		if( scanner.GetCurrentLine().find( "GENERATED_3DMODEL" ) ==  )
+		{
+			if( 0 < model_to_generate.length() )
+				CreateMeshGenerator( scanner );
+		}
 
 		string alpha_mat_name;
 		if( scanner.TryScanLine( "ALPHA_MATERIAL", alpha_mat_name ) )

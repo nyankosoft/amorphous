@@ -4,12 +4,29 @@
 #include "Item/WeaponSystem.hpp"
 #include "3DMath/Matrix34.hpp"
 
-#include <string>
-
 using namespace std;
 
 #define PlayerBaseEntity	(*SinglePlayerInfo().GetCurrentPlayerBaseEntity())
 #define PlayerEntity		(*SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity())
+
+
+static CCopyEntity *GetPlayerEntity()
+{
+	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity() )
+		return SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
+	else
+		return NULL;
+}
+
+
+static Vector3 GetPlayerPosition()
+{
+	CCopyEntity *pPlayer = GetPlayerEntity();
+	if( pPlayer )
+		return pPlayer->Position();
+	else
+		return Vector3(0,0,0);
+}
 
 
 //======================================================================
@@ -19,8 +36,7 @@ using namespace std;
 PyObject* IsInStage( PyObject* self, PyObject* args )
 {
 	int res = 0;
-	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity()
-	 && SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() )
+	if( GetPlayerEntity() )
 	{
 		res = 1;
 	}
@@ -33,9 +49,21 @@ PyObject* IsInStage( PyObject* self, PyObject* args )
 }
 
 
+PyObject* GetPositionX( PyObject* self, PyObject* args )
+{
+	return Py_BuildValue( "f", GetPlayerPosition().x );
+}
+
+
 PyObject* GetPositionY( PyObject* self, PyObject* args )
 {
-	return Py_BuildValue( "f", PlayerEntity.Position().y );
+	return Py_BuildValue( "f", GetPlayerPosition().y );
+}
+
+
+PyObject* GetPositionZ( PyObject* self, PyObject* args )
+{
+	return Py_BuildValue( "f", GetPlayerPosition().z );
 }
 
 
@@ -147,7 +175,9 @@ PyObject* LoadAmmo( PyObject* self, PyObject* args )
 
 PyMethodDef g_PyModulePlayerMethod[] =
 {
+    { "GetPositionX",	GetPositionX,	METH_VARARGS, "Returns x component of the player's position" },
     { "GetPositionY",	GetPositionY,	METH_VARARGS, "Returns y(altimeter) component of the player's position" },
+    { "GetPositionZ",	GetPositionZ,	METH_VARARGS, "Returns z component of the player's position" },
     { "GetPosition",	GetPosition,	METH_VARARGS, "Returns Position" },
     { "GetPose",		GetPose,		METH_VARARGS, "Returns Pose" },
     { "GetVelocity",	GetVelocity,	METH_VARARGS, "Returns Velocity" },

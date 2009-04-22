@@ -360,6 +360,8 @@ void HUD_PlayerAircraft::RenderImpl()
 	pCamera->GetCameraMatrix( matCamera );
 	pCamera->GetProjectionMatrix( matProj );
 	matCameraProj = matCamera * matProj;
+
+	const Vector3 vCurrentPlayerPosition = pCamera->GetPosition();
 	
 //	vector<CCopyEntity *> vecpVisibleEntity = plane->GetVisibleEntity();
 	const RadarInfo& radar_info = plane->GetRadarInfo();
@@ -372,12 +374,18 @@ void HUD_PlayerAircraft::RenderImpl()
 
 //	float screen_width, screen_height;
 //	GetViewportSize( screen_width, screen_height );
-	size_t i, num_container_rects = radar_info.GetNumVisibleTargets() < NUM_MAX_CONTAINER_RECTS ? radar_info.GetNumVisibleTargets() : NUM_MAX_CONTAINER_RECTS;
-	for( i=0; i<num_container_rects; i++ )
+	int i;
+	const int num_displayable_targets = (int)radar_info.GetNumVisibleTargets() < NUM_MAX_CONTAINER_RECTS ? (int)radar_info.GetNumVisibleTargets() : NUM_MAX_CONTAINER_RECTS;
+	const float container_max_dist = 30000;
+	int target_index = 0;
+	for( i=0; i<num_displayable_targets; i++ )
 	{
 		const HUD_TargetInfo& target = radar_info.GetVisibleTarget((int)i);
 //		D3DXVECTOR3 vWorldPos = vecpVisibleEntity[i]->Position();
 		D3DXVECTOR3 vWorldPos = target.position;
+
+		if( container_max_dist * container_max_dist < Vec3LengthSq( vCurrentPlayerPosition - vWorldPos ) )
+			continue;
 
 		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
 
@@ -398,14 +406,16 @@ void HUD_PlayerAircraft::RenderImpl()
 			color = m_aHUDColor[COLOR_NORMAL];
 		}
 
-		m_apContainer[i]->SetColor( 0, color );
+		m_apContainer[target_index]->SetColor( 0, color );
 
 //		rect.SetPositionLTRB( x-r, y-r, x+r, y+r );
-		m_apContainer[i]->SetLocalTopLeftPos( Vector2(x-r,y-r) );
+		m_apContainer[target_index]->SetLocalTopLeftPos( Vector2(x-r,y-r) );
+
+		target_index++;
 	}
 
 	// set the rest of the rects to transparent
-	for( ; i<NUM_MAX_CONTAINER_RECTS; i++ )
+	for( i=target_index; i<NUM_MAX_CONTAINER_RECTS; i++ )
 	{
 		m_apContainer[i]->SetColor( 0, SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ) );
 	}
@@ -544,10 +554,9 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 	float x,y,r;
 	x = (float)local_radar_rect.GetCenterX();
 	y = (float)local_radar_rect.GetCenterY();
-	r = radar_rect_size / 2.0f;
-	AABB2 radar_aabb = AABB2( Vector2(-r,-r), Vector2(r,r) );
-
 	Vector2 radar_offset = Vector2( x, y );
+	r = radar_rect_size / 2.0f;
+	AABB2 radar_aabb = AABB2( Vector2(-r,-r) + radar_offset, Vector2(r,r) + radar_offset );
 
 	C2DRect radar_rect;
 
@@ -573,9 +582,6 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 		Vector3 local_pos = (vecTargetInfo[i].position - vPlayerPos);
 
 		Vector2 offset = Vector2( local_pos.x, local_pos.z * (-1) ) * 0.01f;
-
-//		if( !radar_aabb.IsPointInside(offset) )
-//			continue;
 
 		const int tgt_type = vecTargetInfo[i].type;
 		if( tgt_type & HUD_TargetInfo::MISSILE )
@@ -614,6 +620,9 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 			= Matrix23( radar_offset, matInvPlayerOrient )
 			* Matrix23( offset, matTgtOrient * Matrix22Scaling(r) );
 
+		if( !radar_aabb.IsPointInside(transform * Vector2(0,0)) )
+			continue; // not on the local radar
+
 		m_apIconOnLocalRadar[num_icons_to_render]->SetLocalTransform( transform );
 
 		SFloatRGBAColor dest_color;
@@ -632,7 +641,6 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 							 + radar_offset;
 
 			radar_rect.SetPosition( j, dest_pos );
-				j, dest_pos );
 		}
 */
 	}
@@ -853,8 +861,14 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 		pFont->SetFontSize( (int)(24*scale), (int)(40*scale) );
 
 //		m_pAircraftSetText( 
-		pFont->DrawText( to_string(fLife, 0, 3).c_str(), D3DXVECTOR2( 1260*scale, 944*scale ), dwColor );
+		pFont->DrawText( to_string(fLife, 0, 3).c_str(), Vector2( 1260*scale, 944*scale ), dwColor );
 	}
+
+	// debug - display current position
+	Vector3 vPos = pEntity->Position();
+	pFont->DrawText( fmt_string("x: %f", vPos.x).c_str(), Vector2(1200*scale, 800*scale) );
+	pFont->DrawText( fmt_string("y: %f", vPos.y).c_str(), Vector2(1200*scale, 845*scale) );
+	pFont->DrawText( fmt_string("z: %f", vPos.z).c_str(), Vector2(1200*scale, 890*scale) );
 
 	// restore the font size
 	pFont->SetFontSize( orig_font_w, orig_font_h );

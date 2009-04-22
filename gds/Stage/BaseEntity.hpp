@@ -192,6 +192,8 @@ public:
 
 	void Init3DModel();
 
+	void CreateMeshGenerator( CTextFileScanner& scanner );
+
 	// made public since alpha entity needs to call this
 	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD );
 

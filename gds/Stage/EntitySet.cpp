@@ -603,6 +603,27 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCop
 
 		pNewCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 	}
+
+	// create object for physics simulation
+	if( pNewCopyEnt->GetEntityFlags() & BETYPE_RIGIDBODY )
+	{
+//		CJL_PhysicsActorDesc& rActorDesc
+//			= ((CBE_PhysicsBaseEntity *)pNewCopyEnt->pBaseEntity)->m_ActorDesc;
+		CActorDesc actor_desc = pBaseEntity->GetPhysicsActorDesc();
+		if( actor_desc.IsValid() )
+		{
+			actor_desc.WorldPose.vPosition = pNewCopyEnt->Position();
+			actor_desc.BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
+			pNewCopyEnt->GetOrientation( actor_desc.WorldPose.matOrient );
+//			pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+			pNewCopyEnt->m_vecpPhysicsActor.resize( 1 );
+			pNewCopyEnt->m_vecpPhysicsActor[0] = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+		}
+	}
+
+	// When all the basic properties are copied, InitCopyEntity() is called to 
+	// do additional initialization specific to each base entity.
+	rBaseEntity.InitCopyEntity( pNewCopyEnt );
 }
 
 
@@ -736,27 +757,6 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 //	pNewCopyEnt->bLighting = rBaseEntity.m_bLighting;
 
 	InitEntity( pNewEntitySharedPtr, rCopyEntityDesc.pParent, pBaseEntity );
-
-	// create object for physics simulation
-	if( pNewCopyEnt->GetEntityFlags() & BETYPE_RIGIDBODY )
-	{
-//		CJL_PhysicsActorDesc& rActorDesc
-//			= ((CBE_PhysicsBaseEntity *)pNewCopyEnt->pBaseEntity)->m_ActorDesc;
-		CActorDesc actor_desc = pBaseEntity->GetPhysicsActorDesc();
-		if( actor_desc.IsValid() )
-		{
-			actor_desc.WorldPose.vPosition = pNewCopyEnt->Position();
-			actor_desc.BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
-			pNewCopyEnt->GetOrientation( actor_desc.WorldPose.matOrient );
-//			pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
-			pNewCopyEnt->m_vecpPhysicsActor.resize( 1 );
-			pNewCopyEnt->m_vecpPhysicsActor[0] = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
-		}
-	}
-
-	// When all the basic properties are copied, InitCopyEntity() is called to 
-	// do additional initialization specific to each base entity.
-	rBaseEntity.InitCopyEntity( pNewCopyEnt );
 
 	pNewCopyEnt->Init( rCopyEntityDesc );
 

@@ -582,8 +582,8 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 	static vector<CCopyEntity *> s_vecpEntityBuffer;
 	s_vecpEntityBuffer.resize( 0 );
 
-	float effective_radar_radius = 100000.0f;
-	const float r = effective_radar_radius;//200000.0f;
+	float effective_radar_radius = 200000.0f; // 200[km]
+	const float r = effective_radar_radius;
 
 	// cube with each edge 400[km]
 	// TODO: use a proper bounding-box that contains the entire stage
