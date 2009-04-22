@@ -100,15 +100,20 @@ class CTextureResourceDesc : public CGraphicsResourceDesc
 {
 public:
 
+	/// Used together with the texture loader (CTextureResourceDesc::pLoader).
+	/// If you load texture from disk (i.e. file or database(CBinaryDatabase)),
+	/// there is nothing you have to do with these variables (Width and Height).
 	int Width;
 	int Height;
-	int MipLevels; ///< 0 is set to create complete mipmap chain. (default: 0)
+
+	/// 0 is set to create complete mipmap chain (default: 0).
+	int MipLevels;
 
 	TextureFormat::Format Format;
 
 	uint UsageFlags;
 
-	boost::weak_ptr<CTextureLoader> pLoader;
+	boost::weak_ptr<CTextureFillingAlgorithm> pLoader;
 
 public:
 
@@ -174,6 +179,8 @@ public:
 
 	U32 VertexFormatFlags;
 
+	boost::shared_ptr<CMeshGenerator> pMeshGenerator;
+
 	//
 	// Used by Direct3D
 	//
@@ -200,7 +207,8 @@ public:
 		if( MeshType        == desc.MeshType
 		 && LoadOptionFlags == desc.LoadOptionFlags )
 		{
-			if( ResourcePath == desc.ResourcePath )
+			if( 0 < ResourcePath.length()
+			 && ResourcePath == desc.ResourcePath )
 				return true;
 			else
 				return false;

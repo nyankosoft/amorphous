@@ -52,20 +52,6 @@ public:
 };
 
 
-/// Used to fill the texture content when
-/// - A texture resource is created.
-/// - A texture resource is released and recreated after the graphics device is lost
-class CTextureLoader
-{
-public:
-
-	virtual ~CTextureLoader() {}
-
-	/// called by the system after the texture resource is created
-	virtual void FillTexture( CLockedTexture& texture ) = 0;
-};
-
-
 class CLockedTexture
 {
 	void *m_pBits;
@@ -78,7 +64,7 @@ public:
 
 	CLockedTexture() : m_pBits(NULL) {}
 
-//	int GetWidth();
+	int GetWidth();
 
 	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) { ((U32 *)m_pBits)[ y * m_Width + x ] = argb_color; }
 
@@ -112,6 +98,49 @@ public:
 	virtual void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
 
 	friend class CTextureResource;
+};
+
+
+/// Used to fill the texture content when
+/// - A texture resource is created.
+/// - A texture resource is released and recreated after the graphics device is lost
+class CTextureFillingAlgorithm
+{
+public:
+
+	virtual ~CTextureFillingAlgorithm() {}
+
+	/// called by the system after the texture resource is created
+	virtual void FillTexture( CLockedTexture& texture ) = 0;
+};
+
+
+class CSignleColorTextureFilling : public CTextureFillingAlgorithm
+{
+	SFloatRGBAColor m_Color;
+
+public:
+
+	CSignleColorTextureFilling( const SFloatRGBAColor& color )
+		:
+	m_Color(color)
+	{
+	}
+
+	void FillTexture( CLockedTexture& texture )
+	{
+		texture.Clear( m_Color );
+
+/*		const int w = texture.GetWidth();
+		const int h = texture.GetHeight();
+		for( int y=0; y<h; y++ )
+		{
+			for( int x=0; x<w; x++ )
+			{
+				texture.SetPixelColor( x, y, m_Color );
+			}
+		}*/
+	}
 };
 
 

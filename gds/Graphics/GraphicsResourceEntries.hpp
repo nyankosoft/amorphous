@@ -286,6 +286,12 @@ protected:
 	/// called only from this class and CMeshObjectManager
 	virtual void Release();
 
+	/// returns false if there is a mesh generator
+	bool IsDiskResource() const;
+
+	/// create a mesh from a mesh generator
+	bool CreateFromDesc();
+
 public:
 
 	CMeshResource( const CMeshResourceDesc *pDesc );

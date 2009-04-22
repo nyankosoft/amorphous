@@ -2,6 +2,7 @@
 
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/D3DXMeshObjectBase.hpp"
+#include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/fnop.hpp"
@@ -415,7 +416,7 @@ bool CTextureResource::CreateFromDesc()
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
-		shared_ptr<CTextureLoader> pLoader = desc.pLoader.lock();
+		shared_ptr<CTextureFillingAlgorithm> pLoader = desc.pLoader.lock();
 		if( pLoader )
 		{
 			pLoader->FillTexture( *(m_pLockedTexture.get()) );
@@ -616,6 +617,43 @@ void CMeshResource::Release()
 	m_pMeshObject.reset();
 
 	SetState( GraphicsResourceState::RELEASED );
+}
+
+
+bool CMeshResource::IsDiskResource() const
+{
+	if( m_MeshDesc.pMeshGenerator )
+	{
+		return false;
+	}
+	else
+		return true;
+}
+
+
+bool CMeshResource::CreateFromDesc()
+{
+	if( !m_MeshDesc.pMeshGenerator )
+		return false;
+
+	Result::Name res = m_MeshDesc.pMeshGenerator->Generate();
+	if( res != Result::SUCCESS )
+		return false;
+
+	CMeshObjectFactory factory;
+	CD3DXMeshObjectBase *pMeshObject
+		= factory.LoadMeshObjectFromArchive( m_MeshDesc.pMeshGenerator->MeshArchive(),
+		                                     m_MeshDesc.ResourcePath,
+											 m_MeshDesc.LoadOptionFlags,
+											 m_MeshDesc.MeshType );
+
+	if( pMeshObject )
+	{
+		m_pMeshObject = shared_ptr<CD3DXMeshObjectBase>( pMeshObject );
+		return true;
+	}
+	else
+		return false;
 }
 
 

@@ -58,7 +58,7 @@ public:
 };
 
 
-class CFontTextureLoader : public CTextureLoader
+class CFontTextureLoader : public CTextureFillingAlgorithm
 {
 	CTrueTypeTextureFont *m_pFont;
 

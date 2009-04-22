@@ -501,6 +501,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\MeshGenerators.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\MeshGenerators.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\NVMeshMender.cpp"
 					>
 				</File>

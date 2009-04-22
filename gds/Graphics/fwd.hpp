@@ -28,6 +28,7 @@ class CGraphicsResourceManager;
 class CGraphicsResourceCacheManager;
 class CTextureLoader;
 class CLockedTexture;
+class CMeshGenerator;
 
 class CLight;
 class CAmbientLight;

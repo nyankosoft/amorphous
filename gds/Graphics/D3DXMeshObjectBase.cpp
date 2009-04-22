@@ -200,7 +200,8 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 
 		for( size_t tex=0; tex<num_textures; tex++ )
 		{
-			tex_filename = rvecSrcMaterial[i].vecTexture[tex].strFilename;
+			CMMA_Texture& texture_archive = rvecSrcMaterial[i].vecTexture[tex];
+			tex_filename = texture_archive.strFilename;
 			if( 0 < tex_filename.length() )
 			{
 				string tex_filepath;
