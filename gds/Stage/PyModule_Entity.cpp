@@ -103,7 +103,11 @@ PyObject* EntityAddPath( PyObject* self, PyObject* args )
 
 	Matrix34 pose;
 	pose.vPosition = pos;
-	pose.matOrient = Matrix33RotationZ(bank) * Matrix33RotationX(pitch) * Matrix33RotationY(heading);
+	pose.matOrient
+		= Matrix33RotationZ( deg_to_rad(bank) )
+		* Matrix33RotationX( deg_to_rad(pitch) )
+		* Matrix33RotationY( deg_to_rad(heading) );
+
     g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose(time,pose) );
 
 	return Py_None;
