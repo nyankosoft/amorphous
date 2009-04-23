@@ -123,7 +123,8 @@ inline void CD3DXSMeshObject::SetLocalTransformToCache( int index, const Matrix3
 
 inline void CD3DXSMeshObject::SetLocalTransformsFromCache()
 {
-	SetLocalTransforms( &m_vecLocalTransformCache[0] );
+	if( 0 < m_vecLocalTransformCache.size() )
+		SetLocalTransforms( &m_vecLocalTransformCache[0] );
 }
 
 
