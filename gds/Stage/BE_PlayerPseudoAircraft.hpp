@@ -10,9 +10,9 @@
 #include <Stage/SubDisplay.hpp>
 
 #include "Support/FixedVector.hpp"
-
 #include "GameCommon/PseudoAircraftSimulator.hpp"
 #include "Item/GI_Aircraft.hpp"
+#include "Item/Radar.hpp"
 
 
 class CPlayerVisionMode
@@ -26,87 +26,6 @@ public:
 		NumVisionTypes
 	};
 };
-
-
-class HUD_TargetInfo
-{
-public:
-	enum param { MAX_TITLE_LENGTH = 20 };
-	enum type_flag
-	{
-		TGT_AIR		= (1 << 0),
-		TGT_SURFACE	= (1 << 1),
-		PLAYER		= (1 << 2),
-		ENEMY		= (1 << 3),
-		ALLY		= (1 << 4),
-		MISSILE		= (1 << 5),
-		NEUTRAL		= (1 << 6),
-		FOCUSED		= (1 << 7),
-		LOCKED_ON	= (1 << 8),
-		NOT_LOCKABLE= (1 << 9),
-	};
-
-	HUD_TargetInfo() {}
-
-	HUD_TargetInfo( const Vector3& pos, char* _title, int _type )
-		: position(pos), title(_title), type(_type) {}
-
-	Vector3 position;
-
-	Vector3 direction;
-
-	float radius;
-
-	char *title;
-
-	int type;
-};
-
-
-class RadarInfo
-{
-	std::vector<HUD_TargetInfo> m_vecTargetInfo;
-
-	std::vector<int> m_vecVisibleTargetIndex;
-
-	std::vector<int> m_vecLocalTargetIndex;
-
-	int m_FocusedTargetIndex;
-
-public:
-
-	RadarInfo() : m_FocusedTargetIndex(-1) {}
-	~RadarInfo() {}
-
-	const std::vector<HUD_TargetInfo>& GetAllTargetInfo() const { return m_vecTargetInfo; }
-
-	size_t GetNumLocalTargets() const { return m_vecLocalTargetIndex.size(); }
-
-	const HUD_TargetInfo& GetLocalTarget( int index ) const { return m_vecTargetInfo[ m_vecLocalTargetIndex[index] ]; }
-
-	size_t GetNumVisibleTargets() const { return m_vecVisibleTargetIndex.size(); }
-
-	const HUD_TargetInfo& GetVisibleTarget( int index ) const { return m_vecTargetInfo[ m_vecVisibleTargetIndex[index] ]; }
-
-	inline void ClearTargetInfo();
-
-	const HUD_TargetInfo *GetFocusedTarget() const { return 0 <= m_FocusedTargetIndex ? &m_vecTargetInfo[m_FocusedTargetIndex] : NULL; }
-
-//	void Update( float frametime );
-
-	friend class CBE_PlayerPseudoAircraft;
-	friend class HUD_PlayerAircraft;
-};
-
-
-inline void RadarInfo::ClearTargetInfo()
-{
-	m_vecTargetInfo.resize(0);
-	m_vecVisibleTargetIndex.resize(0);
-	m_vecLocalTargetIndex.resize(0);
-
-	m_FocusedTargetIndex = -1;
-}
 
 
 class CBEC_ExtraBaseEntity : public IArchiveObjectBase
@@ -157,7 +76,7 @@ private:
 
 	std::vector<CCopyEntity *> m_vecpVisibleEntity;
 
-	RadarInfo m_RadarInfo;
+//	RadarInfo m_RadarInfo;
 
 	CSubDisplay m_SubDisplay;
 
@@ -196,6 +115,10 @@ private:
 
 	HUD_PlayerAircraft *m_pPlayerAircraftHUD;
 
+	boost::shared_ptr<CRadar> m_pShortRangeRadar;
+
+	boost::shared_ptr<CRadar> m_pLongRangeRadar;
+
 	enum TextMessageType
 	{
 		TM_DESTROYED_ENEMY,
@@ -233,7 +156,7 @@ private:
 	/**
 	 * focus candidates are updated together
 	 */
-	void UpdateRadarInfo( CCopyEntity* pCopyEnt );
+	void UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt );
 
 	void CreateNozzleFlames( CCopyEntity* pCopyEnt );
 
@@ -307,7 +230,11 @@ public:
 
 	void SetSubDisplayType( CSubDisplayType::Name type );
 
-	const RadarInfo& GetRadarInfo() const { return m_RadarInfo; }
+//	const CRadarInfo& GetRadarInfo() const { return m_RadarInfo; }
+
+	boost::shared_ptr<CRadar> ShortRangeRadar() { return m_pShortRangeRadar; }
+
+	boost::shared_ptr<CRadar> LongRangeRadar() { return m_pLongRangeRadar; }
 
 	void SetAircraftState( int aircraft_state ) { m_State = aircraft_state; }
 	int GetAircraftState() const { return m_State; }

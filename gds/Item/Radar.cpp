@@ -1,0 +1,233 @@
+#include "Radar.hpp"
+#include "Stage/EntitySet.hpp"
+#include "Stage/Stage.hpp"
+#include "Stage/BE_PlayerPseudoAircraft.hpp"
+#include "Stage/BE_HomingMissile.hpp"
+#include "Stage/OverlapTestAABB.hpp"
+#include "Stage/HUD_PlayerAircraft.hpp"
+#include "XML/XMLNodeReader.hpp"
+
+using namespace std;
+using namespace boost;
+
+
+CRadar::CRadar()
+:
+m_fEffectiveRangeRadius( 500000.0f ),
+m_SensoringFrequency( 5 ),
+m_TargetInfoUpdateFrequency( 10 ),
+m_fNextSensoringTime(0),
+m_fNextTargetUpdateTime(0)
+{
+}
+
+
+void CRadar::Update( float dt )
+{
+	boost::shared_ptr<CStage> pStage = m_pStage.lock();
+
+	if( !pStage )
+		return;
+
+	double sensoring_time_rand_offset[2] = { 0.035, 0.012 };
+
+	double fSensoringInterval = 1.0 / (double)m_SensoringFrequency;
+	const double current_time_in_stage = pStage->GetElapsedTime();
+	if( m_fNextSensoringTime < current_time_in_stage )
+	{
+		m_fNextSensoringTime
+			= current_time_in_stage
+			- fmod( current_time_in_stage, fSensoringInterval )
+			+ fSensoringInterval
+			+ sensoring_time_rand_offset[0];
+
+		UpdateEntitiesList();
+	}
+
+	double fUpdateInterval = 1.0 / (double)m_TargetInfoUpdateFrequency;
+	if( m_fNextTargetUpdateTime < current_time_in_stage )
+	{
+		m_fNextTargetUpdateTime
+			= current_time_in_stage
+			- fmod( current_time_in_stage, fUpdateInterval )
+			+ fUpdateInterval
+			+ sensoring_time_rand_offset[1];
+
+		UpdateTargetInfo();
+	}
+}
+
+
+/// list of entities that are in the radar range
+void CRadar::UpdateEntitiesList()
+{
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
+	// clear all the previous entities
+	m_vecEntityBuffer.resize( 0 );
+	m_vecpEntityBuffer.resize( 0 );
+
+	float effective_radar_radius = m_fEffectiveRangeRadius;//500000.0f; // 500[km]
+	const float r = effective_radar_radius;
+
+	Matrix34 radar_world_pose = GetRadarWorldPose();
+
+	// cube with each edge 1000[km]
+	// TODO: use a proper bounding-box that contains the entire stage
+	AABB3 aabb = AABB3(
+		Vector3(-1,-1,-1) * effective_radar_radius + radar_world_pose.vPosition,
+		Vector3( 1, 1, 1) * effective_radar_radius + radar_world_pose.vPosition );	// m_pStage->GetAABB();
+
+	COverlapTestAABB overlap_test( aabb, &m_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
+
+	pStage->GetEntitySet()->GetOverlappingEntities( overlap_test );
+
+	const size_t num_entities = m_vecpEntityBuffer.size();
+	m_vecEntityBuffer.resize( num_entities );
+	for( size_t i=0; i<num_entities; i++ )
+	{
+		m_vecEntityBuffer[i] = CEntityHandle<>( m_vecpEntityBuffer[i]->Self() );
+	}
+}
+
+
+void CRadar::UpdateTargetInfo()
+{
+	// clear all the previous target info
+	m_RadarInfo.ClearTargetInfo();
+
+	std::map<int,int>& entity_type_id_to_target_type_flag = CBE_PlayerPseudoAircraft::EntityTypeIDtoTargetTypeFlagMap();
+	std::map<int,int>& entity_group_to_target_group_flag  = CBE_PlayerPseudoAircraft::EntityGroupToTargetGroupFlagMap();
+//	std::map<int,int>& entity_type_id_to_target_type_flag = ms_mapEntityTypeIDtoTargetTypeFlag;
+//	std::map<int,int>& entity_group_to_target_group_flag  = ms_mapEntityGroupToTargetGroupFlag;
+
+	const Matrix34 radar_world_pose = GetRadarWorldPose();
+	Vector3 vCamFwdDir = radar_world_pose.matOrient.GetColumn(2);//m_Camera.GetFrontDirection();// pCopyEnt->GetDirection();
+
+	size_t i, num_entities = m_vecEntityBuffer.size();
+	for( i=0; i<num_entities; i++ )
+	{
+		shared_ptr<CCopyEntity> pEntity = m_vecEntityBuffer[i].Get();
+
+		if( !pEntity )
+			continue;
+
+		CBaseEntity* pBaseEntity = pEntity->pBaseEntity;
+
+		unsigned int id = pBaseEntity->GetArchiveObjectID();
+		int tgt_type = 0;
+
+		switch(id)
+		{
+		case CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT:
+			tgt_type = HUD_TargetInfo::PLAYER | HUD_TargetInfo::TGT_AIR;
+			break;
+
+		case CBaseEntity::BE_HOMINGMISSILE:
+			if( MissileState(pEntity.get()) == CBE_HomingMissile::MS_IGNITED )
+				tgt_type = HUD_TargetInfo::MISSILE;
+			break;
+
+		default:
+			map<int,int>::iterator itr_group
+				= entity_group_to_target_group_flag.find( pEntity->GroupIndex );
+
+			if( itr_group != entity_group_to_target_group_flag.end() )
+			{
+				// set the target type
+				// - HUD_TargetInfo::PLAYER, ALLY or ENEMY
+				tgt_type |= itr_group->second;
+			}
+
+			map<int,int>::iterator itr_type
+				= entity_type_id_to_target_type_flag.find( pEntity->GetEntityTypeID() );
+
+			if( itr_type != entity_type_id_to_target_type_flag.end() )
+			{
+				// set the target group
+				// - UD_TargetInfo::TGT_AIR or TGT_SURFACE
+				tgt_type |= itr_type->second;
+			}
+
+			break;
+		}
+
+		if( tgt_type != 0 )
+		{
+/*			if( pEntity == m_pFocusedTarget )
+			{
+				tgt_type |= HUD_TargetInfo::FOCUSED;
+				m_RadarInfo.m_FocusedTargetIndex = m_RadarInfo.m_vecTargetInfo.size();
+			}
+
+			if( pLauncher && pLauncher->IsLockingOn( pEntity.get() ) )
+			{
+				tgt_type |= HUD_TargetInfo::LOCKED_ON;
+			}
+*/
+			m_RadarInfo.m_vecTargetInfo.push_back( HUD_TargetInfo( pEntity->Position(), "", tgt_type ) );
+			m_RadarInfo.m_vecTargetInfo.back().direction = pEntity->GetDirection();
+			m_RadarInfo.m_vecTargetInfo.back().radius    = pEntity->fRadius * 1.5f;
+			m_RadarInfo.m_vecTargetInfo.back().entity_id = pEntity->GetID();
+
+			Vector3 vPlayerToTargetDir = Vec3GetNormalized( pEntity->Position() - radar_world_pose.vPosition );
+
+			// mark as visible if the target is in the view frustum
+			if( acos(Vec3Dot(vCamFwdDir,vPlayerToTargetDir)) < deg_to_rad(30.0f) 
+			&& tgt_type != HUD_TargetInfo::MISSILE )
+				m_RadarInfo.m_vecVisibleTargetIndex.push_back( (int)m_RadarInfo.m_vecTargetInfo.size() - 1 );
+		}
+	}
+}
+
+/*
+void CRadar::UpdateRadarInfo( CCopyEntity* pCopyEnt )
+{
+
+	m_State = STATE_NORMAL;
+	for( i=0; i<num_entities; i++ )
+	{
+		CCopyEntity *pEntity = m_vecEntityBuffer[i].Get();
+
+		if( pEntity )
+			continue;
+
+		if( pEntity->pBaseEntity->GetArchiveObjectID() == BE_HOMINGMISSILE )
+		{
+			if( pEntity->m_Target.GetRawPtr() == pCopyEnt )
+				m_State = STATE_MISSILE_APPROACHING;
+		}
+	}
+}*/
+
+
+void CRadar::Serialize( IArchive& ar, const unsigned int version )
+{
+	CGameItem::Serialize( ar, version );
+
+	ar & m_fEffectiveRangeRadius;
+	ar & m_SensoringFrequency;
+	ar & m_TargetInfoUpdateFrequency;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		m_fNextSensoringTime    = 0;
+		m_fNextTargetUpdateTime = 0;
+		m_vecEntityBuffer.resize( 0 );
+		m_vecpEntityBuffer.resize( 0 );
+		m_RadarInfo.m_vecTargetInfo.resize( 0 );
+		m_RadarInfo.m_vecVisibleTargetIndex.resize( 0 );
+	}
+}
+
+
+void CRadar::LoadFromXMLNode( CXMLNodeReader& reader )
+{
+	CGameItem::LoadFromXMLNode( reader );
+
+	reader.GetChildElementTextContent( "EffectiveRangeRadius",      m_fEffectiveRangeRadius );
+	reader.GetChildElementTextContent( "SensoingFrequency",         m_SensoringFrequency );
+	reader.GetChildElementTextContent( "TargetInfoUpdateFrequency", m_TargetInfoUpdateFrequency );
+}

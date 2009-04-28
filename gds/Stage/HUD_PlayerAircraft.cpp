@@ -363,8 +363,12 @@ void HUD_PlayerAircraft::RenderImpl()
 
 	const Vector3 vCurrentPlayerPosition = pCamera->GetPosition();
 	
-//	vector<CCopyEntity *> vecpVisibleEntity = plane->GetVisibleEntity();
-	const RadarInfo& radar_info = plane->GetRadarInfo();
+//	const CRadarInfo& radar_info = plane->GetRadarInfo();
+	shared_ptr<CRadar> pShortRangeRadar = plane->ShortRangeRadar();
+	if( !pShortRangeRadar )
+		return;
+
+	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
 
 	// render containers on targets
 	D3DXVECTOR3 pos;
@@ -537,10 +541,15 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 	Matrix22 matInvPlayerOrient = Matrix22Rotation( -heading );
 	Matrix22 matPlayerOrient = Matrix22Rotation( heading );
 
-	float scale = GetScreenWidth() / 1600.0f;
+//	float scale = GetScreenWidth() / 1600.0f;
 
 	// display targets on radar
-	const RadarInfo& radar_info = plane->GetRadarInfo();
+//	const CRadarInfo& radar_info = plane->GetRadarInfo();
+	shared_ptr<CRadar> pShortRangeRadar = plane->ShortRangeRadar();
+	if( !pShortRangeRadar )
+		return;
+
+	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
 
 	const vector<HUD_TargetInfo>& vecTargetInfo = radar_info.GetAllTargetInfo();
 
@@ -667,10 +676,15 @@ void HUD_PlayerAircraft::RenderGlobalRadar( CBE_PlayerPseudoAircraft *plane )
 	float dp = Vec2Dot( Vector2(0,1), Vector2(vFwdDir.x, vFwdDir.z) );
 	float heading = (float)acos(dp) * ( 0 < vFwdDir.x ? 1.0f : -1.0f );
 
-	float scale = GetScreenWidth() / 800.0f;
+//	float scale = GetScreenWidth() / 800.0f;
 
 	// display targets on radar
-	const RadarInfo& radar_info = plane->GetRadarInfo();
+//	const CRadarInfo& radar_info = plane->GetRadarInfo();
+	shared_ptr<CRadar> pLongRangeRadar = plane->LongRangeRadar();
+	if( !pLongRangeRadar )
+		return;
+
+	const CRadarInfo& radar_info = pLongRangeRadar->RadarInfo();
 
 	const vector<HUD_TargetInfo>& vecTargetInfo = radar_info.GetAllTargetInfo();
 

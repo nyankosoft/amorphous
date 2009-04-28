@@ -6,6 +6,7 @@
 #include "GI_GravityGun.hpp"
 #include "GI_Aircraft.hpp"
 #include "GI_MissileLauncher.hpp"
+#include "Radar.hpp"
 
 
 CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
@@ -22,6 +23,7 @@ CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
 	case CGameItem::ID_CAMFLOUGE_DEVICE:return new CGI_CamouflageDevice;
 	case CGameItem::ID_AIRCRAFT:		return new CGI_Aircraft;
 	case CGameItem::ID_MISSILELAUNCHER:	return new CGI_MissileLauncher;
+	case CGameItem::ID_RADAR:			return new CRadar;
 //	case CGameItem::ID_:				return new CGI_;
 	default:	return NULL;
 	}

@@ -18,8 +18,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.hpp"
+#include "Support/Profile.hpp"
 #include "Item/WeaponSystem.hpp"
 #include "Item/GI_MissileLauncher.hpp"
+#include "Item/ItemDatabaseManager.hpp"
 #include "GameCommon/RandomDirectionTable.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 #include "GameCommon/PseudoAircraftSimulator.hpp"
@@ -121,8 +123,6 @@ m_pPlayerAircraftHUD(NULL)
 
 	m_Viewpoint = FIRST_PERSON_VIEW;
 
-	m_pFocusedTarget = NULL;
-
 	m_CurrentTargetFocusIndex = 0;
 
 	SetAircraftState( STATE_NORMAL );
@@ -190,6 +190,21 @@ void CBE_PlayerPseudoAircraft::Init()
 
 		m_vecMessageIndex[TM_DESTROYED_ENEMY].push_back( msg_index );
 	}
+
+	m_pShortRangeRadar = ItemDatabaseManager().GetItem<CRadar>( "ShortRangeRadar", 1 );
+	m_pLongRangeRadar  = ItemDatabaseManager().GetItem<CRadar>( "LongRangeRadar", 1 );
+	if( m_pShortRangeRadar )
+		m_pShortRangeRadar->SetStageWeakPtr( m_pStage->GetWeakPtr() );
+	if( m_pLongRangeRadar )
+		m_pLongRangeRadar->SetStageWeakPtr( m_pStage->GetWeakPtr() );
+
+	// supply radar items to the single player info
+	// - stage weak ptr is set by the system
+/*	SinglePlayerInfo().SupplyItem( "ShortRangeRadar", 1 );
+	SinglePlayerInfo().SupplyItem( "LongRangeRadar", 1 );
+	m_pShortRangeRadar = SinglePlayerInfo().GetItemByName( "ShortRangeRadar" );
+	m_pLongRangeRadar  = SinglePlayerInfo().GetItemByName( "LongRangeRadar" );
+*/
 }
 
 
@@ -574,18 +589,14 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 }
 
 
-void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
+void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt )
 {
-//	std::map<int,int> m_EntityGroupIndexToTargetInfoFlag;
-//	std::map<int,int> m_EntityTypeIDtoTargetInfoFlag;
+	PROFILE_FUNCTION();
 
-	static vector<CCopyEntity *> s_vecpEntityBuffer;
-	s_vecpEntityBuffer.resize( 0 );
-
-	float effective_radar_radius = 200000.0f; // 200[km]
+/*	float effective_radar_radius = 500000.0f; // 500[km]
 	const float r = effective_radar_radius;
 
-	// cube with each edge 400[km]
+	// cube with each edge 1000[km]
 	// TODO: use a proper bounding-box that contains the entire stage
 	AABB3 aabb = AABB3(
 		Vector3(-1,-1,-1) * effective_radar_radius + pCopyEnt->Position(),
@@ -594,14 +605,25 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 	COverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
 
 	m_pStage->GetEntitySet()->GetOverlappingEntities( overlap_test );
+*/
+//	UpdateFocusCandidateTargets( s_vecpEntityBuffer );
 
-	UpdateFocusCandidateTargets( s_vecpEntityBuffer );
+	if( !m_pLongRangeRadar || !m_pShortRangeRadar )
+		return;
+
+	m_pLongRangeRadar->SetRadarWorldPose( pCopyEnt->GetWorldPose() );
+	m_pLongRangeRadar->Update( dt );
+
+	m_pShortRangeRadar->SetRadarWorldPose( pCopyEnt->GetWorldPose() );
+	m_pShortRangeRadar->Update( dt );
+
+	UpdateFocusCandidateTargets( m_pShortRangeRadar->EntityRawPtrBuffer() );
 
 	// clear all the previous target info
-	m_RadarInfo.ClearTargetInfo();
+/*	m_RadarInfo.ClearTargetInfo();
 
 	Vector3 vCamFwdDir = m_Camera.GetFrontDirection();// pCopyEnt->GetDirection();
-
+*/
 	// get missile laucnher on the current aircraft
 	CGI_Weapon *pPrimaryWeapon = m_pAircraft->WeaponSystem().GetPrimaryWeapon();
 	CGI_MissileLauncher* pLauncher = NULL;
@@ -611,7 +633,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 	// set primary target to lock-on
 	if( pLauncher && IsValidEntity(m_pFocusedTarget) )
 		pLauncher->SetPrimaryTarget( m_pFocusedTarget );
-
+/*
 	size_t i, num_entities = s_vecpEntityBuffer.size();
 	for( i=0; i<num_entities; i++ )
 	{
@@ -684,10 +706,23 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 			&& tgt_type != HUD_TargetInfo::MISSILE )
 				m_RadarInfo.m_vecVisibleTargetIndex.push_back( m_RadarInfo.m_vecTargetInfo.size() - 1 );
 		}
-	}
+	}*/
 
+	if( pLauncher )
+	{
+		vector<HUD_TargetInfo>& target_info
+			= m_pShortRangeRadar->RadarInfo().TargetInfo();
+
+		const size_t num_targets = target_info.size();
+		for( size_t i=0; i<num_targets; i++ )
+		{
+			if( pLauncher->IsLockingOn( target_info[i].entity_id ) )
+				target_info[i].type |= HUD_TargetInfo::LOCKED_ON;
+		}
+	}
+/*
 	m_State = STATE_NORMAL;
-	for( i=0; i<num_entities; i++ )
+	for( size_t i=0; i<num_entities; i++ )
 	{
 		CCopyEntity *pEntity = s_vecpEntityBuffer[i];
 
@@ -699,7 +734,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 			if( pEntity->m_Target.GetRawPtr() == pCopyEnt )
 				m_State = STATE_MISSILE_APPROACHING;
 		}
-	}
+	}*/
 }
 
 
@@ -719,7 +754,7 @@ void CBE_PlayerPseudoAircraft::Act( CCopyEntity* pCopyEnt )
 		return;
 	}
 
-	UpdateRadarInfo( pCopyEnt );
+	UpdateRadarInfo( pCopyEnt, m_pStage->GetFrameTime() );
 
 	int nozzle_frame_entity_offset = m_pLaserDotEntity ? 1 : 0;
 

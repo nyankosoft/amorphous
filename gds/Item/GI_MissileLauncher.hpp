@@ -84,7 +84,7 @@ protected:
 	CCopyEntity *m_pFocusedEntity;
 
 	/// list of targets locked on by the missile launcher
-	std::vector<CCopyEntity *> m_vecpCurrentTarget;
+	std::vector< CEntityHandle<> > m_vecCurrentTarget;
 
 	int m_FireTargetIndex;
 
@@ -124,9 +124,11 @@ public:
 
 	virtual void Fire();
 
-	std::vector<CCopyEntity *>& GetCurrentTargetList() { return m_vecpCurrentTarget; }
+	std::vector< CEntityHandle<> >& GetCurrentTargetList() { return m_vecCurrentTarget; }
 
 	bool IsLockingOn( CCopyEntity *pEntity );
+
+	bool IsLockingOn( U32 entity_id );
 
 	/// set an entity for a primary target to lock on
 	/// \return true entity has been registered as focused target

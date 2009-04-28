@@ -181,6 +181,7 @@ public:
 //		ID_LIFE_SUPPLY,
 		ID_MISSILELAUNCHER,
 		ID_AIRCRAFT,
+		ID_RADAR,
 		NUM_IDS,
 	};
 

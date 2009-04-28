@@ -20,6 +20,9 @@
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
 
+using namespace std;
+using namespace boost;
+
 
 CMissileHolder::CMissileHolder()
 :
@@ -104,7 +107,7 @@ void CGI_MissileLauncher::InitStates()
 	// initialize states
 	m_CurrentReleasePoseIndex = 0;
 	m_pFocusedEntity          = NULL;
-	m_vecpCurrentTarget.resize( 0 );
+	m_vecCurrentTarget.resize( 0 );
 	m_FireTargetIndex         = 0;
 
 	for( size_t i=0; i<m_vecMissileHolder.size(); i++ )
@@ -180,7 +183,7 @@ void CGI_MissileLauncher::SetNumMaxSimultaneousTargets( int num_targets )
 {
 	m_NumMaxSimulTargets = num_targets;
 
-//	m_vecpCurrentTarget.resize( m_NumMaxSimulTargets, NULL );
+//	m_vecCurrentTarget.resize( m_NumMaxSimulTargets, NULL );
 //	m_ReleaseLocalPose.resize( num_targets );
 //	m_ReleaseWorldPose.resize( num_targets );
 }
@@ -212,7 +215,7 @@ void CGI_MissileLauncher::UpdateTargets()
 
 	float range_sq = m_pWeaponSlot->pChargedAmmo->GetRangeSq();
 
-	m_vecpCurrentTarget.resize( 0 );
+	m_vecCurrentTarget.resize( 0 );
 
 	if( IsValidEntity(m_pFocusedEntity) )
 	{
@@ -223,12 +226,12 @@ void CGI_MissileLauncher::UpdateTargets()
 		float dp = Vec3Dot( vToTarget / sqrtf(dist_to_target_sq), m_SensorCamera.GetFrontDirection() );
 
 		if( acos(dp) < m_fValidSensorAngle && dist_to_target_sq < range_sq )
-            m_vecpCurrentTarget.push_back( m_pFocusedEntity ); // still locking on it
+            m_vecCurrentTarget.push_back( m_pFocusedEntity->Self() ); // still locking on it
 		else
-			m_vecpCurrentTarget.push_back( NULL ); // lost it
+			m_vecCurrentTarget.push_back( CEntityHandle<>() ); // lost it
 	}
 
-	if( m_NumMaxSimulTargets <= (int)m_vecpCurrentTarget.size() )
+	if( m_NumMaxSimulTargets <= (int)m_vecCurrentTarget.size() )
 		return;	// cannot lock-on any more than one target
 
 	m_SensorCamera.SetFarClip( m_fMaxSensorRange );
@@ -249,7 +252,7 @@ void CGI_MissileLauncher::UpdateTargets()
 
 	int i, iNumVisibleEntities = vf_test.GetNumVisibleEntities();
 	for( i=0;
-	     i<iNumVisibleEntities && m_vecpCurrentTarget.size() < m_NumMaxSimulTargets;
+	     i<iNumVisibleEntities && m_vecCurrentTarget.size() < m_NumMaxSimulTargets;
 		 i++ )
 	{
 		CCopyEntity *pTarget = vf_test.GetEntity(i);
@@ -274,7 +277,7 @@ void CGI_MissileLauncher::UpdateTargets()
 		if( range_sq < dist_to_target_sq )
 			continue;
 
-		m_vecpCurrentTarget.push_back( pTarget );
+		m_vecCurrentTarget.push_back( pTarget->Self() );
 //		pCopyEnt->pTarget = vf_test.GetEntity(i);
 
 	}
@@ -526,13 +529,13 @@ bool CGI_MissileLauncher::HandleInput( int input_code, int input_type, float fPa
 
 inline void CGI_MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntity )
 {
-	if( m_FireTargetIndex < m_vecpCurrentTarget.size()
-	 && IsValidEntity(m_vecpCurrentTarget[m_FireTargetIndex]) )
+	if( m_FireTargetIndex < m_vecCurrentTarget.size()
+	 && IsValidEntity(m_vecCurrentTarget[m_FireTargetIndex].GetRawPtr()) )
 	{
 		SGameMessage msg;
 		msg.iEffect = GM_SET_TARGET;
-//		msg.pUserData = m_vecpCurrentTarget[i];
-        msg.pUserData = m_vecpCurrentTarget[m_FireTargetIndex];
+//		msg.pUserData = m_vecCurrentTarget[i];
+        msg.pUserData = m_vecCurrentTarget[m_FireTargetIndex].GetRawPtr();
 
 		SendGameMessageTo( msg, pMissileEntity );
 	}
@@ -586,7 +589,7 @@ void CGI_MissileLauncher::Fire()
 //	pStage->PlaySound3D( m_FireSound, rvMuzzleEndPosition );
 	SoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
 
-	if( m_vecpCurrentTarget.size() <= m_FireTargetIndex )
+	if( m_vecCurrentTarget.size() <= m_FireTargetIndex )
 		m_FireTargetIndex = 0;
 
 	Vector3 vFireDirection;
@@ -596,7 +599,7 @@ void CGI_MissileLauncher::Fire()
 	missile_entity.SetWorldPosition( rvMuzzleEndPosition );
 
 	CCopyEntity *pMissile = NULL;
-	size_t i, num_current_targets = m_vecpCurrentTarget.size();
+	size_t i, num_current_targets = m_vecCurrentTarget.size();
 //	for( i=0; i<num_current_targets; i++ )
 	for( i=0; i<1; i++ )
 	{
@@ -673,11 +676,26 @@ void CGI_MissileLauncher::Fire()
 
 bool CGI_MissileLauncher::IsLockingOn( CCopyEntity *pEntity )
 {
-	size_t i, num_current_targets = m_vecpCurrentTarget.size();
+	size_t i, num_current_targets = m_vecCurrentTarget.size();
 	for( i=0; i<num_current_targets; i++ )
 	{
-		if( m_vecpCurrentTarget[i] == pEntity )
+		if( m_vecCurrentTarget[i].GetRawPtr() == pEntity )
 			return true;
+	}
+	return false;
+}
+
+
+bool CGI_MissileLauncher::IsLockingOn( U32 entity_id )
+{
+	size_t i, num_current_targets = m_vecCurrentTarget.size();
+	for( i=0; i<num_current_targets; i++ )
+	{
+		shared_ptr<CCopyEntity> pEntity = m_vecCurrentTarget[i].Get();
+		if( pEntity && pEntity->GetID() == entity_id )
+		{
+			return true;
+		}
 	}
 	return false;
 }
