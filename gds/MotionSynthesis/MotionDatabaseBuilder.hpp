@@ -113,24 +113,24 @@ private:
 	// create motion data from descs
 	void CreateMotionPrimitives();
 
-	void CreateMotionPrimitiveDesc( xercesc_2_8::DOMNode *pMotionNode );
+	void CreateMotionPrimitiveDesc( xercesc::DOMNode *pMotionNode );
 
 	/// called once for every bvh file
-	void CreateMotionPrimitiveDescGroup( xercesc_2_8::DOMNode *pRootNode );
+	void CreateMotionPrimitiveDescGroup( xercesc::DOMNode *pRootNode );
 
 	void CreateMotionPrimitive( const CMotionPrimitiveDesc& desc, const CMotionPrimitiveDescGroup& desc_group, CBVHPlayer& bvh_player );
 
-	void CreateMotionTableEntry( xercesc_2_8::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry );
+	void CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry );
 
-	void CreateMotionTable( xercesc_2_8::DOMNode *pMotionTableNode );
+	void CreateMotionTable( xercesc::DOMNode *pMotionTableNode );
 
-	void ProcessXMLFile( xercesc_2_8::DOMNode *pFileNode );
+	void ProcessXMLFile( xercesc::DOMNode *pFileNode );
 
 	bool CreateMotionPrimitivesFromScriptFile( const std::string& script_filename );
 
-	bool CreateAnnotationTable( xercesc_2_8::DOMNode *pAnnotTableNode );
+	bool CreateAnnotationTable( xercesc::DOMNode *pAnnotTableNode );
 
-	void ProcessRootNodeHorizontalElementOptions( xercesc_2_8::DOMNode *RootJointNode, CMotionPrimitiveDesc& desc );
+	void ProcessRootNodeHorizontalElementOptions( xercesc::DOMNode *RootJointNode, CMotionPrimitiveDesc& desc );
 
 //	void ProcessFiles();
 
