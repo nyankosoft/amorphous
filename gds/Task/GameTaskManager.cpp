@@ -6,6 +6,7 @@
 #include "Graphics/RenderTaskProcessor.hpp"
 #include "GameTask.hpp"
 #include "GameTaskFactoryBase.hpp"
+#include "Support/Profile.hpp"
 #include "Support/SafeDelete.hpp"
 
 
@@ -46,6 +47,8 @@ CGameTaskManager::~CGameTaskManager()
 
 void CGameTaskManager::Update( float dt )
 {
+	PROFILE_FUNCTION();
+
 	// get the prev task id if it has been requested
 	int next_task_id;
 	if( m_NextTaskID == CGameTask::ID_PREVTASK )
@@ -90,6 +93,8 @@ void CGameTaskManager::Update( float dt )
 
 void CGameTaskManager::Render()
 {
+	PROFILE_FUNCTION();
+
 	if( m_pCurrentTask )
 	{
 		const bool use_render_task = false;

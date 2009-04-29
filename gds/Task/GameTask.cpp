@@ -236,8 +236,6 @@ void CGameTask::RenderBase()
 	// render fade-out effect if the task is starting / terminating
 	RenderFadeEffect();
 
-	ProfileDumpOutputToBuffer();
-
 	DebugOutput.Render();
 }
 

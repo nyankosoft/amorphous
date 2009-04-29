@@ -336,6 +336,8 @@ void CApplicationBase::UpdateFrame()
 
 	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
 
+	ProfileDumpOutputToBuffer();
+
 	Sleep( ms_DefaultSleepTimeMS );
 //	PERIODICAL( 2, Sleep(5) );
 }

@@ -1,4 +1,5 @@
 #include "AsyncResourceLoader.hpp"
+#include "Support/Profile.hpp"
 #include "../base.hpp"
 #include <boost/thread/xtime.hpp>
 
@@ -169,6 +170,8 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 
 void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 {
+	PROFILE_FUNCTION();
+
 	bool resource_locked = false;
 	shared_ptr<CGraphicsResourceEntry> pSrcEntry, pEntry;
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, shared_ptr<CGraphicsResourceLoader>(), weak_ptr<CGraphicsResourceEntry>() );

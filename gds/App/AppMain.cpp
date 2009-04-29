@@ -1,5 +1,6 @@
 #include "ApplicationBase.hpp"
 #include "Support/fnop.hpp"
+#include "Support/Profile.hpp"
 
 // Windows headers
 #include <windows.h>
@@ -41,6 +42,8 @@ void MainLoop( CApplicationBase *pApp )
     {
         if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
         {
+			CScopeProfile sp( "Windows message translation and dispatch" );
+
             TranslateMessage( &msg );
             DispatchMessage( &msg );
         }
