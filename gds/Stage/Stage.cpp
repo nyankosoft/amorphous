@@ -51,17 +51,16 @@ m_pScriptManager(NULL),
 m_pStaticGeometry(NULL),
 m_pCamera(NULL)
 {
+//	m_pTimer = new PrecisionTimer();
+	m_pTimer = new CTimer();
+	PauseTimer();	// don't start until the initialization is complete
+
 	m_pScreenEffectManager = new CScreenEffectManager;
 	m_pScreenEffectManager->Init();
 
 	m_pEntitySet = new CEntitySet( this );
-//	m_pEntitySet->InitLightEntityManager();
 
 	m_pScreenEffectManager->SetTargetSceneRenderer( m_pEntitySet->GetRenderManager() );
-
-//	m_pTimer = new PrecisionTimer();
-	m_pTimer = new CTimer();
-	PauseTimer();	// don't start until the initialization is complete
 
 	CBSPTreeForAABB::Initialize();
 

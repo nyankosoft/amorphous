@@ -1150,7 +1150,8 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 	int i;
 	string strPlaneNormal, strPos, strDir;
 
-	fprintf(fp, "total entity nodes: %d\n\n", m_NumEntityNodes);
+	fprintf(fp, "time: %f s\n", m_pStage->GetElapsedTime() );
+	fprintf(fp, "total entity nodes: %d\n\n", m_NumEntityNodes );
 	for(i=0; i<m_NumEntityNodes; i++)
 	{
 		//Write an entity node
@@ -1186,7 +1187,7 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 			fprintf( fp, "id:           %d\n", pEntity->GetID() );
 			fprintf( fp, "type id:      %d\n", pEntity->GetEntityTypeID() );
 			fprintf( fp, "base name:    %s\n", pEntity->pBaseEntity->GetName() );
-			fprintf( fp, "created time: %f\n", pEntity->GetCreatedTime() );
+			fprintf( fp, "created time: %f s\n", pEntity->GetCreatedTime() );
 			fprintf( fp, "group:        %d\n", pEntity->GroupIndex );
 
 			strPos = to_string(pEntity->Position() );
@@ -1337,52 +1338,6 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 			// 2. recurse down to the front child 
 			pEntityNode = &m_paEntityTree[pEntityNode->sFrontChild];
 		}
-	}
-}
-*/
-
-
-/*
-void CEntitySet::SaveCurrentCopyEntities(FILE *fp)
-{
-	CCopyEntity* pCopyEntity = m_pEntityInUse;
-	SCopyEntitySaveData copyentity_savedata;
-
-	int iNumEngagedCopyEntities = 0;
-	while( pCopyEntity )	// count the number of the current engaged copy entities
-	{
-		pCopyEntity = pCopyEntity->pNext;
-		iNumEngagedCopyEntities++;
-	}
-
-	// save the number of the engaged copy entites - used in loading this save data
-	fwrite( &iNumEngagedCopyEntities, sizeof(int), 1, fp );
-	
-	pCopyEntity = m_pEntityInUse;
-	while( pCopyEntity )	{
-		strcpy( copyentity_savedata.acBaseEntityName, pCopyEntity->pBaseEntity->GetName() );
-		copyentity_savedata.copy_entity = *pCopyEntity;
-		fwrite( &copyentity_savedata, sizeof(SCopyEntitySaveData), 1, fp );
-
-		pCopyEntity = pCopyEntity->pNext;
-	}
-}
-
-void CEntitySet::LoadCopyEntitiesFromSavedData(FILE *fp)
-{
-	// clear all the copy entities currently in the stage
-	Reset();
-
-	SCopyEntitySaveData copyentity_savedata;
-
-	int i, iNumEngagedCopyEntities;
-	fread( &iNumEngagedCopyEntities, sizeof(int), 1, fp );
-	for(i=0; i<iNumEngagedCopyEntities; i++)
-	{
-		fread( &copyentity_savedata, sizeof(SCopyEntitySaveData), 1, fp );
-		copyentity_savedata.copy_entity.pBaseEntity = FindBaseEntity( copyentity_savedata.acBaseEntityName );
-
-//		CreateEntity( copyentity_savedata.copy_entity );
 	}
 }
 */
