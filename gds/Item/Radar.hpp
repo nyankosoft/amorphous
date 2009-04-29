@@ -79,6 +79,9 @@ public:
 
 	const HUD_TargetInfo *GetFocusedTarget() const { return 0 <= m_FocusedTargetIndex ? &m_vecTargetInfo[m_FocusedTargetIndex] : NULL; }
 
+	/// Returns true on success
+	inline bool SetFocusedTargetIndex( int index );
+
 //	void Update( float frametime );
 
 	friend class CBE_PlayerPseudoAircraft;
@@ -94,6 +97,18 @@ inline void CRadarInfo::ClearTargetInfo()
 //	m_vecLocalTargetIndex.resize(0);
 
 	m_FocusedTargetIndex = -1;
+}
+
+
+inline bool CRadarInfo::SetFocusedTargetIndex( int index )
+{
+	if( index < 0 || (int)m_vecTargetInfo.size() <= index )
+		return false;
+
+	m_vecTargetInfo[index].type |= HUD_TargetInfo::FOCUSED;
+	m_FocusedTargetIndex = index;
+
+	return true;
 }
 
 

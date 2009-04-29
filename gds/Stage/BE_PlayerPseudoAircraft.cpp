@@ -517,7 +517,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 //		if( vecpEntityBuffer[i]->GroupIndex == CE_GROUP_ENEMY )
 		if( IsFocusTargetEntity( vecpEntityBuffer[i]->GroupIndex ) )
 		{
-            m_vecFocusCandidate.push_back( FocusCandidate( vecpEntityBuffer[i], 1.0f ) );
+            m_vecFocusCandidate.push_back( FocusCandidate( vecpEntityBuffer[i]->Self(), 1.0f ) );
 		}
 
 //		score = target.pos
@@ -528,16 +528,17 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 	{
 		// no candidate entities to focus on
 		m_CurrentTargetFocusIndex = -1;
-		m_pFocusedTarget = NULL;
+		m_FocusedTarget = CEntityHandle<>();
 		return;
 	}
 	else
 	{
 		// if there is at least one target on radar and no focus is set on any target
 		// right now, set the focus on the first target in m_vecFocusCandidate
-		if( !IsValidEntity(m_pFocusedTarget) /*&& 0 < m_vecFocusCandidate.size()*/ )
+		shared_ptr<CCopyEntity> pEntity = m_FocusedTarget.Get();
+		if( !pEntity /*&& 0 < m_vecFocusCandidate.size()*/ )
 		{
-			m_pFocusedTarget = m_vecFocusCandidate[0].pEntity;
+			m_FocusedTarget = m_vecFocusCandidate[0].entity;
 			m_CurrentTargetFocusIndex = 0;
 		}
 		else
@@ -545,7 +546,9 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 			size_t num_focus_candidates = m_vecFocusCandidate.size();
 			for( i=0; i<num_focus_candidates; i++ )
 			{
-				if( m_pFocusedTarget == m_vecFocusCandidate[i].pEntity )
+				pEntity = m_vecFocusCandidate[i].entity.Get();
+				shared_ptr<CCopyEntity> pFocusedEntity = m_FocusedTarget.Get();
+				if( pFocusedEntity == pEntity )
 				{
 					// keep the current focused target
 					m_CurrentTargetFocusIndex = (int)i;
@@ -556,7 +559,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 			{
 //				MsgBoxFmt( "changing target focus (entities: %d, valid: %d, candidates: %d)", num_entities, num_valid_entities, num_focus_candidates );
 				// set a new target focus
-				m_pFocusedTarget = m_vecFocusCandidate[0].pEntity;
+				m_FocusedTarget = m_vecFocusCandidate[0].entity;
 				m_CurrentTargetFocusIndex = 0;
 			}
 		}
@@ -584,7 +587,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 		CGI_MissileLauncher *pLauncher = dynamic_cast<CGI_MissileLauncher *>(pWeapon); // should always succeed
 
 		// set primary target to lock-on
-		pLauncher->SetPrimaryTarget( m_pFocusedTarget );
+		pLauncher->SetPrimaryTarget( m_FocusedTarget );
 	}
 }
 
@@ -631,8 +634,9 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 		pLauncher = dynamic_cast<CGI_MissileLauncher *>(pPrimaryWeapon); // should always succeed
 
 	// set primary target to lock-on
-	if( pLauncher && IsValidEntity(m_pFocusedTarget) )
-		pLauncher->SetPrimaryTarget( m_pFocusedTarget );
+	shared_ptr<CCopyEntity> pFocusedTarget = m_FocusedTarget.Get();
+	if( pLauncher && pFocusedTarget )
+		pLauncher->SetPrimaryTarget( m_FocusedTarget );
 /*
 	size_t i, num_entities = s_vecpEntityBuffer.size();
 	for( i=0; i<num_entities; i++ )
@@ -708,12 +712,24 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 		}
 	}*/
 
+	vector<HUD_TargetInfo>& target_info
+		= m_pShortRangeRadar->RadarInfo().TargetInfo();
+	const size_t num_targets = target_info.size();
+
+	// set the 'focused' flag
+	pFocusedTarget = m_FocusedTarget.Get();
+	if( pFocusedTarget )
+	{
+		for( size_t i=0; i<num_targets; i++ )
+		{
+			if( pFocusedTarget->GetID() == target_info[i].entity_id )
+				m_pShortRangeRadar->RadarInfo().SetFocusedTargetIndex( i );
+		}
+	}
+
+	// set the 'locked on' flag
 	if( pLauncher )
 	{
-		vector<HUD_TargetInfo>& target_info
-			= m_pShortRangeRadar->RadarInfo().TargetInfo();
-
-		const size_t num_targets = target_info.size();
 		for( size_t i=0; i<num_targets; i++ )
 		{
 			if( pLauncher->IsLockingOn( target_info[i].entity_id ) )

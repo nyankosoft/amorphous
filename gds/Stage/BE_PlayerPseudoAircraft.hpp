@@ -82,18 +82,18 @@ private:
 
 	struct FocusCandidate
 	{
-		CCopyEntity *pEntity;
+		CEntityHandle<> entity;
 		float score;
 
-		FocusCandidate() : pEntity(NULL), score(0.0f) {}
-		FocusCandidate( CCopyEntity *entity, float _score ) : pEntity(entity), score(_score) {}
+		FocusCandidate() : score(0.0f) {}
+		FocusCandidate( CEntityHandle<> _entity, float _score ) : entity(_entity), score(_score) {}
 	};
 
 	TCFixedVector<FocusCandidate, NUM_MAX_FOCUS_CANDIDATES> m_vecFocusCandidate;
 
 	int m_CurrentTargetFocusIndex;
 
-	CCopyEntity* m_pFocusedTarget;
+	CEntityHandle<> m_FocusedTarget;
 
 	int m_State;
 
@@ -343,7 +343,7 @@ inline void CBE_PlayerPseudoAircraft::CycleTargetFocus()
 	int num_focus_candidates = (int)m_vecFocusCandidate.size();
 	m_CurrentTargetFocusIndex = ( m_CurrentTargetFocusIndex + 1 ) % num_focus_candidates;
 
-	m_pFocusedTarget = m_vecFocusCandidate[m_CurrentTargetFocusIndex].pEntity;
+	m_FocusedTarget = m_vecFocusCandidate[m_CurrentTargetFocusIndex].entity;
 }
 
 /*

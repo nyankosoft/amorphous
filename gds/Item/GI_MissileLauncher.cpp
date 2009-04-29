@@ -89,8 +89,6 @@ CGI_MissileLauncher::CGI_MissileLauncher()
 
 	m_CurrentReleasePoseIndex = 0;
 
-	m_pFocusedEntity = NULL;
-
 	m_FireTargetIndex = 0;
 
 	m_LauncherType = TYPE_LOAD_AND_RELEASE;
@@ -106,7 +104,7 @@ void CGI_MissileLauncher::InitStates()
 {
 	// initialize states
 	m_CurrentReleasePoseIndex = 0;
-	m_pFocusedEntity          = NULL;
+	m_FocusedEntity          = CEntityHandle<>();
 	m_vecCurrentTarget.resize( 0 );
 	m_FireTargetIndex         = 0;
 
@@ -217,16 +215,17 @@ void CGI_MissileLauncher::UpdateTargets()
 
 	m_vecCurrentTarget.resize( 0 );
 
-	if( IsValidEntity(m_pFocusedEntity) )
+	shared_ptr<CCopyEntity> pFocusedEntity = m_FocusedEntity.Get();
+	if( pFocusedEntity )
 	{
 		// lock on the focused entity only if it is in the effective zone of the sensor
 		// and in the range of the missile
-		Vector3 vToTarget = m_pFocusedEntity->Position() - m_SensorCamera.GetPosition();
+		Vector3 vToTarget = pFocusedEntity->Position() - m_SensorCamera.GetPosition();
 		float dist_to_target_sq = Vec3LengthSq(vToTarget);
 		float dp = Vec3Dot( vToTarget / sqrtf(dist_to_target_sq), m_SensorCamera.GetFrontDirection() );
 
 		if( acos(dp) < m_fValidSensorAngle && dist_to_target_sq < range_sq )
-            m_vecCurrentTarget.push_back( m_pFocusedEntity->Self() ); // still locking on it
+            m_vecCurrentTarget.push_back( m_FocusedEntity ); // still locking on it
 		else
 			m_vecCurrentTarget.push_back( CEntityHandle<>() ); // lost it
 	}
@@ -259,7 +258,7 @@ void CGI_MissileLauncher::UpdateTargets()
 		if( pTarget->bNoClip )
 			continue;	// don't target a no-clip entity
 
-		if( pTarget == m_pFocusedEntity )
+		if( pTarget == pFocusedEntity.get() )
 			continue;	// already regsitered
 
 		if( !IsValidEntity(pTarget) )
@@ -284,12 +283,12 @@ void CGI_MissileLauncher::UpdateTargets()
 }
 
 
-bool CGI_MissileLauncher::SetPrimaryTarget( CCopyEntity* target_entity )
+bool CGI_MissileLauncher::SetPrimaryTarget( CEntityHandle<>& target_entity )
 {
-	if( !IsValidEntity(target_entity) )
+	if( !target_entity.Get() )
 		return false;
 
-	m_pFocusedEntity = target_entity;
+	m_FocusedEntity = target_entity;
 
 	return true;
 }
