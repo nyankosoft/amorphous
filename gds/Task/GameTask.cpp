@@ -11,9 +11,16 @@
 #include "Support/DebugOutput.hpp"
 #include "Support/Profile.hpp"
 
-
-
 using namespace std;
+
+//draft
+class CTaskTransitionRequest
+{
+public:
+	int NextTaskID;
+	int Priority;
+};
+
 
 CAnimatedGraphicsManager *CGameTask::ms_pAnimatedGraphicsManager = NULL;
  
@@ -34,7 +41,10 @@ m_DefaultFadeinTimeMS(800),
 m_DefaultFadeoutTimeMS(800),
 m_FadeoutTimeMS(0),
 m_Rendered(false),
-m_bShowMouseCursor(true)
+m_bShowMouseCursor(true),
+m_RequestedNextTaskPriority(0),
+m_TaskTransitionMinimumAllowedPriority(0),
+m_PrevTaskID(CGameTask::ID_INVALID)
 //ms_pAnimatedGraphicsManager(NULL)
 {
 	m_Timer.Start();
@@ -66,6 +76,9 @@ void CGameTask::ProcessTaskTransitionRequest()
 	 && m_TaskTransitionTimeMS <= m_Timer.GetTimeMS()
 	 && !m_bTaskTransitionStarted )
 	{
+		if( m_RequestedNextTaskPriority < m_TaskTransitionMinimumAllowedPriority )
+			return;
+
 		// a task transition has been requested
 		// and the fade-out effect should be starting
 
@@ -128,11 +141,21 @@ void CGameTask::RenderFadeEffect()
 
 
 void CGameTask::RequestTaskTransitionMS( int next_task_id,
+										 int priority,
 									     int delay_in_ms,
 		                                 int fade_out_time_in_ms,
 									     int fade_in_time_in_ms )
 {
+	if( next_task_id == CGameTask::ID_PREVTASK
+	 && m_PrevTaskID == CGameTask::ID_INVALID )
+		return; // There is no previous task. The task stack is empty
+
+	if( m_RequestedNextTaskPriority < m_TaskTransitionMinimumAllowedPriority )
+		return;
+
 	m_RequestedNextTaskID = next_task_id;
+
+	m_RequestedNextTaskPriority = priority;
 
 	if( fade_out_time_in_ms < 0 )
 		m_FadeoutTimeMS = m_DefaultFadeoutTimeMS; // not specified or the user deliberately chose to use the default fade out time
@@ -147,6 +170,7 @@ void CGameTask::RequestTaskTransitionMS( int next_task_id,
 
 
 void CGameTask::RequestTaskTransitionMS( const std::string& next_task_name,
+										 int priority,
 		                                 int delay_in_ms,
 		                                 int fade_out_time_in_ms,
 									     int fade_in_time_in_ms )
@@ -154,16 +178,18 @@ void CGameTask::RequestTaskTransitionMS( const std::string& next_task_name,
 	map<string,int>::iterator itr = ms_TaskNameStringToTaskID.find( next_task_name );
 
 	if( itr != ms_TaskNameStringToTaskID.end() )
-		RequestTaskTransitionMS( itr->second, delay_in_ms, fade_out_time_in_ms, fade_in_time_in_ms );
+		RequestTaskTransitionMS( itr->second, priority, delay_in_ms, fade_out_time_in_ms, fade_in_time_in_ms );
 }
 
 
 void CGameTask::RequestTaskTransition( int next_task_id,
+									   int priority,
 									   float delay_in_sec,
 		                               float fade_out_time_in_sec,
 									   float fade_in_time_in_sec )
 {
 	RequestTaskTransitionMS( next_task_id,
+		priority,
 		int(delay_in_sec * 1000.0f),
 		int(fade_out_time_in_sec * 1000.0f),
 		int(fade_in_time_in_sec * 1000.0f) );
@@ -171,11 +197,13 @@ void CGameTask::RequestTaskTransition( int next_task_id,
 
 
 void CGameTask::RequestTaskTransition( const std::string& next_task_name,
+									   int priority,
 		                               float delay_in_sec,
 		                               float fade_out_time_in_sec,
 									   float fade_in_time_in_sec )
 {
 	RequestTaskTransitionMS( next_task_name,
+		priority,
 		int(delay_in_sec * 1000.0f),
 		int(fade_out_time_in_sec * 1000.0f),
 		int(fade_in_time_in_sec * 1000.0f) );

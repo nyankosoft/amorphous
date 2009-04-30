@@ -6,7 +6,6 @@
 #include "Graphics/RenderTaskProcessor.hpp"
 #include "GameTask.hpp"
 #include "GameTaskFactoryBase.hpp"
-#include "Support/Profile.hpp"
 #include "Support/SafeDelete.hpp"
 
 
@@ -47,8 +46,6 @@ CGameTaskManager::~CGameTaskManager()
 
 void CGameTaskManager::Update( float dt )
 {
-	PROFILE_FUNCTION();
-
 	// get the prev task id if it has been requested
 	int next_task_id;
 	if( m_NextTaskID == CGameTask::ID_PREVTASK )
@@ -79,7 +76,13 @@ void CGameTaskManager::Update( float dt )
 			delete m_pCurrentTask;
 		}
 
+		// create a new task
 		m_pCurrentTask = CreateTask( next_task_id );
+
+		// init
+		m_pCurrentTask->SetPrevTaskID( 0 < m_vecTaskIDStack.size() ? m_vecTaskIDStack.back() : CGameTask::ID_INVALID );
+
+		// save the current task id
 		m_CurrentTaskID = next_task_id;
 	}
 
@@ -93,8 +96,6 @@ void CGameTaskManager::Update( float dt )
 
 void CGameTaskManager::Render()
 {
-	PROFILE_FUNCTION();
-
 	if( m_pCurrentTask )
 	{
 		const bool use_render_task = false;

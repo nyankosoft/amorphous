@@ -69,7 +69,7 @@ int CGameTask_GlobalStageLoader::FrameMove( float dt )
 	//
 
 	// move on to the stage task
-	RequestTaskTransition( ms_strStageTask, 0.0f, 0.0f, 0.0f );
+	RequestTaskTransition( ms_strStageTask, 0, 0.0f, 0.0f, 0.0f );
 
 	return CGameTask::ID_INVALID;
 }

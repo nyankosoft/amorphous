@@ -44,6 +44,14 @@ class CGameTask : public CGraphicsComponent
 	/// but no input should be processed during the transition
 	int m_RequestedNextTaskID;
 
+	int m_RequestedNextTaskPriority;
+
+	/// Any task transition request with priority lower than this threshold is blocked.
+	/// - default: 0 (=any request with priority 0 or higher is accepted)
+	int m_TaskTransitionMinimumAllowedPriority;
+
+	int m_PrevTaskID;
+
 	/// time to spend on fade-in effect
 	unsigned int m_FadeinTimeMS;
 
@@ -126,30 +134,38 @@ public:
 	///        or the argument is omitted.
 	/// \param fade_in_time [in] time spent on fade in when the next task started [sec].
 	virtual void RequestTaskTransition( int next_task_id,
+										int priority = 0,
 										float delay_in_sec = 0,
 		                                float fade_out_time = -1.0f,
 										float fade_in_time = -1.0f );
 
 	virtual void RequestTaskTransition( const std::string& next_task_name,
+										int priority = 0,
 		                                float delay_in_sec = 0,
 		                                float fade_out_time_in_sec = -1.0f,
 										float fade_in_time_in_sec = -1.0f );
 
 	virtual void RequestTaskTransitionMS( int next_task_id,
+										  int priority = 0,
 										  int delay_in_ms = 0,
 		                                  int fade_out_time_in_ms = -1,
 										  int fade_in_time_in_ms = -1 );
 
 	virtual void RequestTaskTransitionMS( const std::string& next_task_name,
+										  int priority = 0,
 		                                  int delay_in_ms = 0,
 		                                  int fade_out_time_in_ms = -1,
 										  int fade_in_time_in_ms = -1 );
 
+	void SetTaskTransitionMinimumAllowedPriority( int priority ) { m_TaskTransitionMinimumAllowedPriority = priority; }
 
 	/// If tasks are executed sequencially and you want to define one as a 'next task' of another,
 	/// override this to call RequestTaskTransition() with a valid task id to establish
 	/// a sequence of tasks.
 	virtual void RequestTransitionToNextTask() { RequestTaskTransition(ID_INVALID); }
+
+	/// Set by the task manager during the init phase
+	void SetPrevTaskID( int prev_task_id ) { m_PrevTaskID = prev_task_id; }
 
 	enum eGameTask
 	{
