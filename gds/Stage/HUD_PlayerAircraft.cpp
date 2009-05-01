@@ -376,19 +376,31 @@ void HUD_PlayerAircraft::RenderImpl()
 	SFloatRGBAColor color;
 //	rect.SetDestAlphaBlendMode( D3DBLEND_ONE );
 
+	const Vector3 vCamFwdDir = pCamera->GetFrontDirection();
+	const Vector3 vCamPos    = pCamera->GetPosition();
+
 //	float screen_width, screen_height;
 //	GetViewportSize( screen_width, screen_height );
 	int i;
-	const int num_displayable_targets = (int)radar_info.GetNumVisibleTargets() < NUM_MAX_CONTAINER_RECTS ? (int)radar_info.GetNumVisibleTargets() : NUM_MAX_CONTAINER_RECTS;
+	const int num_targets = (int)radar_info.GetTargetInfo().size();
+	const int num_displayable_targets = num_targets < NUM_MAX_CONTAINER_RECTS ? num_targets : NUM_MAX_CONTAINER_RECTS;
 	const float container_max_dist = 30000;
 	int target_index = 0;
 	for( i=0; i<num_displayable_targets; i++ )
 	{
-		const HUD_TargetInfo& target = radar_info.GetVisibleTarget((int)i);
+		const HUD_TargetInfo& target = radar_info.GetTargetInfo()[i];
 //		D3DXVECTOR3 vWorldPos = vecpVisibleEntity[i]->Position();
 		D3DXVECTOR3 vWorldPos = target.position;
 
+		// skip if it's not visible
+		Vector3 vCamToTargetDir = Vec3GetNormalized( vWorldPos - vCamPos );
+		if( deg_to_rad(30.0f) < acos(Vec3Dot(vCamFwdDir,vCamToTargetDir)) )
+			continue;
+
 		if( container_max_dist * container_max_dist < Vec3LengthSq( vCurrentPlayerPosition - vWorldPos ) )
+			continue;
+
+		if( target.type & HUD_TargetInfo::MISSILE )
 			continue;
 
 		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );

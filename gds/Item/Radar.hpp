@@ -67,6 +67,8 @@ public:
 
 	std::vector<HUD_TargetInfo>& TargetInfo() { return m_vecTargetInfo; }
 
+	const std::vector<HUD_TargetInfo>& GetTargetInfo() const { return m_vecTargetInfo; }
+
 //	size_t GetNumLocalTargets() const { return m_vecLocalTargetIndex.size(); }
 
 //	const HUD_TargetInfo& GetLocalTarget( int index ) const { return m_vecTargetInfo[ m_vecLocalTargetIndex[index] ]; }
