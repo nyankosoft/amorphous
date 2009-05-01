@@ -4,18 +4,16 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
+#include "EntityRenderManager.hpp"
 
+#include "3DMath/MathMisc.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/BillboardArrayMesh.hpp"
-
-#include "Support/MTRand.hpp"
 #include "GameCommon/CriticalDamping.hpp"
-
-#include "3DMath/MathMisc.hpp"
-
 #include "Support/SafeDelete.hpp"
 #include "Support/Profile.hpp"
+#include "Support/MTRand.hpp"
 #include "Support/Serialization/Serialization_Color.hpp"
 
 
@@ -175,6 +173,8 @@ void CBE_ParticleSet::Init()
 		for( i=0; i<1; i++ )
 			m_ParticleThreadGroup.add_thread( new boost::thread(CParticleThreadStarter(this)) );
 	}
+
+	m_MeshProperty.m_ShaderHandle = m_pStage->GetEntitySet()->GetRenderManager()->GetFallbackShader();
 }
 
 
@@ -379,8 +379,9 @@ void CBE_ParticleSet::UpdateVertexBuffer(CCopyEntity* pCopyEnt)
 
 	ProfileBegin( "CBE_ParticleSet::UpdateVB() - lock VB" );
 
+	HRESULT hr;
 //	TEXTUREVERTEX *pParticleVertex = m_avBillboardRect;
-	BILLBOARDVERTEX *pParticleVertex;// = m_avBillboardRect_S;
+	BILLBOARDVERTEX *pParticleVertex = NULL;// = m_avBillboardRect_S;
 	switch( m_Type )
 	{
 	case TYPE_BILLBOARDARRAYMESH:
@@ -388,9 +389,12 @@ void CBE_ParticleSet::UpdateVertexBuffer(CCopyEntity* pCopyEnt)
 			LPD3DXMESH pMesh = m_pBillboardArrayMesh->GetMesh();
 			void *pBuffer;
 //			pMesh->LockVertexBuffer( 0, &pBuffer );
-			pMesh->LockVertexBuffer( D3DLOCK_NOSYSLOCK, &pBuffer );
-			pParticleVertex = (BILLBOARDVERTEX *)pBuffer;
-			pParticleVertex = pParticleVertex + pCopyEnt->iExtraDataIndex * m_MaxNumParticlesPerSet;
+			hr = pMesh->LockVertexBuffer( D3DLOCK_NOSYSLOCK, &pBuffer );
+			if( SUCCEEDED(hr) )
+			{
+				pParticleVertex = (BILLBOARDVERTEX *)pBuffer;
+				pParticleVertex = pParticleVertex + pCopyEnt->iExtraDataIndex * m_MaxNumParticlesPerSet;
+			}
 		}
 		break;
 	case TYPE_BILLBOARDARRAYMESH_SHARED:
@@ -398,13 +402,21 @@ void CBE_ParticleSet::UpdateVertexBuffer(CCopyEntity* pCopyEnt)
 			LPD3DXMESH pMesh = m_pBillboardArrayMesh->GetMesh();
 			void *pBuffer;
 //			pMesh->LockVertexBuffer( 0, &pBuffer );
-			pMesh->LockVertexBuffer( D3DLOCK_NOSYSLOCK, &pBuffer );
-			pParticleVertex = (BILLBOARDVERTEX *)pBuffer;
+			hr = pMesh->LockVertexBuffer( D3DLOCK_NOSYSLOCK, &pBuffer );
+			if( SUCCEEDED(hr) )
+			{
+				pParticleVertex = (BILLBOARDVERTEX *)pBuffer;
+			}
 		}
 		break;
 	case TYPE_RECT_ARRAY_AND_INDICES:
+	{
 		pParticleVertex = m_avBillboardRect_S;
+		// Limit( num_particles, 0, (int)(numof(m_avBillboardRect_S) / 4) );
+		if( numof(m_avBillboardRect_S) / 4 < num_particles )
+			int too_many_particles = 1;
 		break;
+	}
 	default:
 		pParticleVertex = NULL;
 		break;
@@ -412,6 +424,18 @@ void CBE_ParticleSet::UpdateVertexBuffer(CCopyEntity* pCopyEnt)
 
 	ProfileEnd( "CBE_ParticleSet::UpdateVB() - lock VB" );
 
+	if( !pParticleVertex )
+	{
+		// TODO: lock / unlock if the particles use vertex buffers
+		if( m_Type == TYPE_BILLBOARDARRAYMESH
+		 || m_Type == TYPE_BILLBOARDARRAYMESH_SHARED )
+		{
+			LPD3DXMESH pMesh = m_pBillboardArrayMesh->GetMesh();
+			if( pMesh )
+				pMesh->UnlockVertexBuffer();
+		}
+		return;
+	}
 
 	ProfileBegin( "CBE_ParticleSet::UpdateVB() - VB setup" );
 
@@ -497,7 +521,7 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	if( m_Type != TYPE_BILLBOARDARRAYMESH )
 	{
 		// particle vertices are shared by copy entities of this base entity
-		// to save memory - need update VB in rendering routine
+		// to save memory - need to update VB in rendering routine
 		UpdateVertexBuffer( pCopyEnt );
 	}
 
@@ -512,10 +536,11 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	matRot.GetRowMajorMatrix44( (Scalar *)&matBillboard );
 	CShaderManager *pShaderManager = NULL;
 	LPD3DXEFFECT pEffect = NULL;
+	HRESULT hr = S_OK;
 	if( (pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager()) &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
-		pEffect->SetMatrix( "ParticleWorldRot", &matBillboard );
+		hr = pEffect->SetMatrix( "ParticleWorldRot", &matBillboard );
 	}
 
 	ProfileEnd( "DrawParticles(): pEffect->SetMatrix(), etc." );

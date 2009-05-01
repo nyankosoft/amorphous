@@ -2,6 +2,7 @@
 #define  __BEC_BILLBOARD_H__
 
 
+#include "Graphics/AlphaBlend.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/FVF_BillboardVertex.h"
@@ -37,7 +38,8 @@ protected:
 
 	BILLBOARDVERTEX m_avBillboardRect_S[NUM_MAX_BILLBOARDS_PER_ENTITY * 4];
 
-	DWORD m_DestAlphaBlendMode;
+//	DWORD m_DestAlphaBlendMode;
+	AlphaBlend::Mode m_DestAlphaBlendMode;
 
 	CBillboardArrayMesh *m_pBillboardArrayMesh;
 
@@ -81,9 +83,9 @@ public:
 
 //	inline TEXTUREVERTEX*& GetBillboardRect() { return m_avBillboardRect; }
 
-	inline DWORD GetDestAlphaBlendMode() const { return m_DestAlphaBlendMode; }
+	inline AlphaBlend::Mode GetDestAlphaBlendMode() const { return m_DestAlphaBlendMode; }
 
-	inline void SetDestAlphaBlendMode( DWORD& mode ) { m_DestAlphaBlendMode = mode; }
+	inline void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) { m_DestAlphaBlendMode = mode; }
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

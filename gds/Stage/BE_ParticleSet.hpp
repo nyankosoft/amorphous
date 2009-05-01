@@ -10,7 +10,6 @@
 
 #include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/FloatRGBColor.hpp"
-
 #include "Support/FloatLookUpTable.hpp"
 #include "Support/SafeDelete.hpp"
 

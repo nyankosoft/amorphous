@@ -1,4 +1,3 @@
-
 #include "BEC_Billboard.hpp"
 
 #include "Stage.hpp"
@@ -8,17 +7,16 @@
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/RectTriListIndex.hpp"
-
 #include "Support/memory_helpers.hpp"
 #include "Support/Profile.hpp"
+#include "Support/msgbox.hpp"
 
-#include <string>
 using namespace std;
 
 
 CBEC_Billboard::CBEC_Billboard()
 :
-m_DestAlphaBlendMode(D3DBLEND_INVSRCALPHA),
+m_DestAlphaBlendMode(AlphaBlend::InvSrcAlpha),
 m_Type(TYPE_BILLBOARDARRAYMESH),
 m_pBillboardArrayMesh(NULL)
 {
@@ -33,6 +31,11 @@ CBEC_Billboard::~CBEC_Billboard()
 }
 
 
+/**
+ Creates billboard array mesh archive if the billboard type is
+ either TYPE_BILLBOARDARRAYMESH or TYPE_BILLBOARDARRAYMESH_SHARED
+
+*/
 void CBEC_Billboard::LoadBillboardArrayMesh( float billboard_radius,
 											 int num_groups,
 											 int num_billboards_par_groups,
@@ -60,8 +63,7 @@ void CBEC_Billboard::Init()
 {
 	bool b = m_BillboardTexture.Load( m_BillboardTextureFilepath );
 
-//	if( b )
-//		MessageBox( NULL, m_strTextureFilename.c_str(), "texture loaded", MB_OK|MB_ICONWARNING );
+//	LOG_PRINT( "Loaded a billboard texture: " + m_strTextureFilename );
 
 /*	HRESULT hr;
 	switch( m_Type )
@@ -156,7 +158,7 @@ void CBEC_Billboard::DrawBillboards( int num_rects, int group, int num_rects_per
 
 	if( NUM_MAX_BILLBOARDS_PER_ENTITY < num_rects )
 	{
-		MessageBox( NULL, "too many billboards", "error", MB_OK|MB_ICONWARNING );
+		MsgBoxFmt( "Too many billboards (num_rects: %d)", num_rects );
 		return;
 	}
 
@@ -183,9 +185,9 @@ void CBEC_Billboard::DrawBillboards( int num_rects, int group, int num_rects_per
 		int tech;
 		switch( m_DestAlphaBlendMode )
 		{
-		case D3DBLEND_INVSRCALPHA:	tech = 0;	break;
-		case D3DBLEND_ONE:			tech = 1;	break;
-		default:					tech = 1;	break;
+		case AlphaBlend::InvSrcAlpha:  tech = 0; break;
+		case AlphaBlend::One:          tech = 1; break;
+		default:                       tech = 1; break;
 		}
 
 		if( pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PseudoNightVision )
@@ -202,8 +204,8 @@ void CBEC_Billboard::DrawBillboards( int num_rects, int group, int num_rects_per
 		}
 
 		pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-		pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-		pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_DestAlphaBlendMode );
+		pd3dDev->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_SRCALPHA );
+		pd3dDev->SetRenderState( D3DRS_DESTBLEND, g_dwD3DBlendMode[m_DestAlphaBlendMode] );
 
 		pEffect->Begin( &cPasses, 0 );
 
@@ -231,7 +233,7 @@ void CBEC_Billboard::DrawBillboards( int num_rects, int group, int num_rects_per
 
 		pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 		pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-		pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_DestAlphaBlendMode );
+		pd3dDev->SetRenderState( D3DRS_DESTBLEND, g_dwD3DBlendMode[m_DestAlphaBlendMode] );
 
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
@@ -272,8 +274,8 @@ bool CBEC_Billboard::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 	if( scanner.TryScanLine( "ALPHABLEND", blend_mode ) )
 	{
-		if( blend_mode == "INVSRCALPHA" )	m_DestAlphaBlendMode = D3DBLEND_INVSRCALPHA;
-		else if( blend_mode == "ONE")		m_DestAlphaBlendMode = D3DBLEND_ONE;
+		if( blend_mode == "INVSRCALPHA" )	m_DestAlphaBlendMode = AlphaBlend::InvSrcAlpha; // D3DBLEND_INVSRCALPHA;
+		else if( blend_mode == "ONE")		m_DestAlphaBlendMode = AlphaBlend::One; // D3DBLEND_ONE;
 		else								return false;
 
 		return true;
@@ -287,7 +289,7 @@ void CBEC_Billboard::SerializeBillboardProperty( IArchive& ar, const unsigned in
 {
 	ar & m_Type;
 	ar & m_BillboardTextureFilepath;
-	ar & m_DestAlphaBlendMode;
+	ar & (unsigned int&)m_DestAlphaBlendMode;
 }
 
 
