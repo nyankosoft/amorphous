@@ -400,7 +400,8 @@ void HUD_PlayerAircraft::RenderImpl()
 		if( container_max_dist * container_max_dist < Vec3LengthSq( vCurrentPlayerPosition - vWorldPos ) )
 			continue;
 
-		if( target.type & HUD_TargetInfo::MISSILE )
+		if( target.type & HUD_TargetInfo::MISSILE
+		 || target.type & HUD_TargetInfo::PLAYER )
 			continue;
 
 		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
