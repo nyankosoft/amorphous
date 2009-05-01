@@ -24,6 +24,7 @@ extern void SetStageForEntityScriptCallback( CStage* pStage );
 
 extern PyObject* SetTarget( PyObject* self, PyObject* args );
 extern PyObject* SetPosition( PyObject* self, PyObject* args );
+extern PyObject* SetTimeOffset( PyObject* self, PyObject* args );
 
 
 }  /* entity */

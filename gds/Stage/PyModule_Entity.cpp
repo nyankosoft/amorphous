@@ -14,6 +14,8 @@ using namespace std;
 
 static CStage *gs_pTargetStage = NULL;
 
+double g_fTimeOffset = 0.0f;
+
 void gsf::py::entity::SetStageForEntityScriptCallback( CStage* pStage )
 {
 	gs_pTargetStage = pStage;
@@ -108,7 +110,28 @@ PyObject* EntityAddPath( PyObject* self, PyObject* args )
 		* Matrix33RotationX( deg_to_rad(pitch) )
 		* Matrix33RotationY( deg_to_rad(heading) );
 
-    g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose(time,pose) );
+    g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose( time + g_fTimeOffset, pose ) );
+
+	return Py_None;
+}
+
+
+PyObject* gsf::py::entity::SetTimeOffset( PyObject* self, PyObject* args )
+{
+    Py_INCREF( Py_None );
+
+	double time = -1000000.0f;
+	int result = PyArg_ParseTuple( args, "|d", &time );
+
+	if( time < 0 )
+	{
+		// Consider this no-argument call
+		// - Set the current time in the stage as the offset
+		if( gs_pTargetStage )
+			g_fTimeOffset = gs_pTargetStage->GetElapsedTime();
+	}
+	else
+		g_fTimeOffset = time;
 
 	return Py_None;
 }
@@ -245,14 +268,15 @@ PyObject* gsf::py::entity::SetPosition( PyObject* self, PyObject* args )
 
 PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
 {
-	{ "StartPath",				 EntityStartPath,              METH_VARARGS, "notify the start of motion path set routine" },
-	{ "EndPath",				 EntityEndPath,                METH_VARARGS, "notify the end of motion path set routine" },
-	{ "AddPath",				 EntityAddPath,                METH_VARARGS, "add a way point for motion path" },
-//	{ "GetVelocity",			 GetVelocity,                  METH_VARARGS, "" },
-//	{ "GetSpeed",				 GetSpeed,                     METH_VARARGS, "" },
-	{ "CreateStaticParticleSet", CreateStaticParticleSet,	   METH_VARARGS, "" },
-	{ "CommitStaticParticleSet", CommitStaticParticleSet,	   METH_VARARGS, "" },
-	{ "SetTarget",               gsf::py::entity::SetTarget,   METH_VARARGS, "find and lock the target entity for the subsequent calls" },
-	{ "SetPosition",             gsf::py::entity::SetPosition, METH_VARARGS, "" },
+	{ "StartPath",				 EntityStartPath,                 METH_VARARGS, "notify the start of motion path set routine" },
+	{ "EndPath",				 EntityEndPath,                   METH_VARARGS, "notify the end of motion path set routine" },
+	{ "AddPath",				 EntityAddPath,                   METH_VARARGS, "add a way point for motion path" },
+	{ "SetTimeOffset",			 gsf::py::entity::SetTimeOffset,  METH_VARARGS, "set the offset of the time argument of AddPath()" },
+//	{ "GetVelocity",			 GetVelocity,                     METH_VARARGS, "" },
+//	{ "GetSpeed",				 GetSpeed,                        METH_VARARGS, "" },
+	{ "CreateStaticParticleSet", CreateStaticParticleSet,	      METH_VARARGS, "" },
+	{ "CommitStaticParticleSet", CommitStaticParticleSet,	      METH_VARARGS, "" },
+	{ "SetTarget",               gsf::py::entity::SetTarget,      METH_VARARGS, "find and lock the target entity for the subsequent calls" },
+	{ "SetPosition",             gsf::py::entity::SetPosition,    METH_VARARGS, "" },
 	{NULL, NULL}
 };
