@@ -350,96 +350,23 @@ void HUD_PlayerAircraft::RenderImpl()
 //	m_HUD.SetColor( m_State );
 	m_HUD.Render( plane->PseudoSimulator() );
 
+	RenderTargetContainerRects( plane );
+
+	//
+	// render focused target position indicator
+	//
+
 	CCamera* pCamera = pBaseEntity->GetCamera();
 	if( !pCamera )
 		return;
 
 	float scale = GetScreenWidth() / 800.0f;
 
-	D3DXMATRIX matCamera, matProj, matCameraProj;
-	pCamera->GetCameraMatrix( matCamera );
-	pCamera->GetProjectionMatrix( matProj );
-	matCameraProj = matCamera * matProj;
-
-	const Vector3 vCurrentPlayerPosition = pCamera->GetPosition();
-	
-//	const CRadarInfo& radar_info = plane->GetRadarInfo();
 	shared_ptr<CRadar> pShortRangeRadar = plane->ShortRangeRadar();
 	if( !pShortRangeRadar )
 		return;
 
 	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
-
-	// render containers on targets
-	D3DXVECTOR3 pos;
-	float x,y,r = (float)m_ContainerSize * 0.5f - 0.5f;
-	SFloatRGBAColor color;
-//	rect.SetDestAlphaBlendMode( D3DBLEND_ONE );
-
-	const Vector3 vCamFwdDir = pCamera->GetFrontDirection();
-	const Vector3 vCamPos    = pCamera->GetPosition();
-
-//	float screen_width, screen_height;
-//	GetViewportSize( screen_width, screen_height );
-	int i;
-	const int num_targets = (int)radar_info.GetTargetInfo().size();
-	const int num_displayable_targets = num_targets < NUM_MAX_CONTAINER_RECTS ? num_targets : NUM_MAX_CONTAINER_RECTS;
-	const float container_max_dist = 30000;
-	int target_index = 0;
-	for( i=0; i<num_displayable_targets; i++ )
-	{
-		const HUD_TargetInfo& target = radar_info.GetTargetInfo()[i];
-//		D3DXVECTOR3 vWorldPos = vecpVisibleEntity[i]->Position();
-		D3DXVECTOR3 vWorldPos = target.position;
-
-		// skip if it's not visible
-		Vector3 vCamToTargetDir = Vec3GetNormalized( vWorldPos - vCamPos );
-		if( deg_to_rad(30.0f) < acos(Vec3Dot(vCamFwdDir,vCamToTargetDir)) )
-			continue;
-
-		if( container_max_dist * container_max_dist < Vec3LengthSq( vCurrentPlayerPosition - vWorldPos ) )
-			continue;
-
-		if( target.type & HUD_TargetInfo::MISSILE
-		 || target.type & HUD_TargetInfo::PLAYER )
-			continue;
-
-		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
-
-		x = (  pos.x + 1.0f ) * 0.5f * GetReferenceScreenWidth();// screen_width;
-		y = ( -pos.y + 1.0f ) * 0.5f * GetReferenceScreenHeight();// screen_height;
-
-		// set color for container
-		if( (target.type & HUD_TargetInfo::LOCKED_ON) )
-		{
-			color = m_aHUDColor[COLOR_LOCKED_ON];	// locked-on - red
-		}
-		else if( (target.type & HUD_TargetInfo::FOCUSED) && !g_FlipVar.current )
-		{
-			color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f );
-		}
-		else
-		{
-			color = m_aHUDColor[COLOR_NORMAL];
-		}
-
-		m_apContainer[target_index]->SetColor( 0, color );
-
-//		rect.SetPositionLTRB( x-r, y-r, x+r, y+r );
-		m_apContainer[target_index]->SetLocalTopLeftPos( Vector2(x-r,y-r) );
-
-		target_index++;
-	}
-
-	// set the rest of the rects to transparent
-	for( i=target_index; i<NUM_MAX_CONTAINER_RECTS; i++ )
-	{
-		m_apContainer[i]->SetColor( 0, SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ) );
-	}
-
-	//
-	// render focused target position indicator
-	//
 
 	// a triangle that indicates the position of the currently focused target
 	Vector2 focus_indicator[3]
@@ -451,6 +378,9 @@ void HUD_PlayerAircraft::RenderImpl()
 	float arrow_base_len = 40.0f*scale;
 	Vector2 focus_indicator_offset = Vector2(0,-120*scale);
 	Vector2 screen_center = m_HUD.GetScreenCenter();
+	D3DXVECTOR3 pos;
+	D3DXMATRIX matCamera;
+	pCamera->GetCameraMatrix( matCamera );
 
 	const HUD_TargetInfo* pTarget = radar_info.GetFocusedTarget();
 	if( pTarget )
@@ -498,12 +428,12 @@ void HUD_PlayerAircraft::RenderImpl()
 	if( m_bDisplayGlobalRadar )
 	{
 		m_pGlobalRadar->SetAlpha( 1, 1.0f );
-		for( i=0; i<NUM_MAX_ICONS_ON_GLOBAL_RADAR; i++ ) m_apIconOnGlobalRadar[i]->SetAlpha( 1, 1.0f );
+		for( int i=0; i<NUM_MAX_ICONS_ON_GLOBAL_RADAR; i++ ) m_apIconOnGlobalRadar[i]->SetAlpha( 1, 1.0f );
 	}
 	else
 	{
 		m_pGlobalRadar->SetAlpha( 1, 0.0f );
-		for( i=0; i<NUM_MAX_ICONS_ON_GLOBAL_RADAR; i++ ) m_apIconOnGlobalRadar[i]->SetAlpha( 1, 0.0f );
+		for( int i=0; i<NUM_MAX_ICONS_ON_GLOBAL_RADAR; i++ ) m_apIconOnGlobalRadar[i]->SetAlpha( 1, 0.0f );
 	}
 
 	if( m_bDisplayGlobalRadar )
@@ -512,6 +442,95 @@ void HUD_PlayerAircraft::RenderImpl()
 	if( m_pSubDisplay )
 	{
 		m_pSubDisplay->Render();
+	}
+}
+
+
+void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *plane )
+{
+	CCamera* pCamera = plane->GetCamera();
+	if( !pCamera )
+		return;
+
+//	const CRadarInfo& radar_info = plane->GetRadarInfo();
+	shared_ptr<CRadar> pShortRangeRadar = plane->ShortRangeRadar();
+	if( !pShortRangeRadar )
+		return;
+
+//	float scale = GetScreenWidth() / 800.0f;
+
+	D3DXMATRIX matCamera, matProj, matCameraProj;
+	pCamera->GetCameraMatrix( matCamera );
+	pCamera->GetProjectionMatrix( matProj );
+	matCameraProj = matCamera * matProj;
+
+	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
+
+	// render containers on targets
+	D3DXVECTOR3 pos;
+	float x,y,r = (float)m_ContainerSize * 0.5f - 0.5f;
+	SFloatRGBAColor color;
+//	rect.SetDestAlphaBlendMode( D3DBLEND_ONE );
+
+	const Vector3 vCamFwdDir = pCamera->GetFrontDirection();
+	const Vector3 vCamPos    = pCamera->GetPosition();
+
+//	float screen_width, screen_height;
+//	GetViewportSize( screen_width, screen_height );
+	int i;
+	const int num_targets = (int)radar_info.GetTargetInfo().size();
+	const int num_displayable_targets = num_targets < NUM_MAX_CONTAINER_RECTS ? num_targets : NUM_MAX_CONTAINER_RECTS;
+	const float container_max_dist = 30000;
+	int target_index = 0;
+	for( i=0; i<num_displayable_targets; i++ )
+	{
+		const HUD_TargetInfo& target = radar_info.GetTargetInfo()[i];
+//		D3DXVECTOR3 vWorldPos = vecpVisibleEntity[i]->Position();
+		D3DXVECTOR3 vWorldPos = target.position;
+
+		// skip if it's not visible
+		Vector3 vCamToTargetDir = Vec3GetNormalized( vWorldPos - vCamPos );
+		if( deg_to_rad(30.0f) < acos(Vec3Dot(vCamFwdDir,vCamToTargetDir)) )
+			continue;
+
+		if( container_max_dist * container_max_dist < Vec3LengthSq( vCamPos - vWorldPos ) )
+			continue;
+
+		if( target.type & HUD_TargetInfo::MISSILE
+		 || target.type & HUD_TargetInfo::PLAYER )
+			continue;
+
+		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
+
+		x = (  pos.x + 1.0f ) * 0.5f * GetReferenceScreenWidth();// screen_width;
+		y = ( -pos.y + 1.0f ) * 0.5f * GetReferenceScreenHeight();// screen_height;
+
+		// set color for container
+		if( (target.type & HUD_TargetInfo::LOCKED_ON) )
+		{
+			color = m_aHUDColor[COLOR_LOCKED_ON];	// locked-on - red
+		}
+		else if( (target.type & HUD_TargetInfo::FOCUSED) && !g_FlipVar.current )
+		{
+			color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f );
+		}
+		else
+		{
+			color = m_aHUDColor[COLOR_NORMAL];
+		}
+
+		m_apContainer[target_index]->SetColor( 0, color );
+
+//		rect.SetPositionLTRB( x-r, y-r, x+r, y+r );
+		m_apContainer[target_index]->SetLocalTopLeftPos( Vector2(x-r,y-r) );
+
+		target_index++;
+	}
+
+	// set the rest of the rects to transparent
+	for( i=target_index; i<NUM_MAX_CONTAINER_RECTS; i++ )
+	{
+		m_apContainer[i]->SetColor( 0, SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ) );
 	}
 }
 
@@ -553,8 +572,6 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 //	float heading = (float)acos(dp);
 	Matrix22 matInvPlayerOrient = Matrix22Rotation( -heading );
 	Matrix22 matPlayerOrient = Matrix22Rotation( heading );
-
-//	float scale = GetScreenWidth() / 1600.0f;
 
 	// display targets on radar
 //	const CRadarInfo& radar_info = plane->GetRadarInfo();
@@ -654,17 +671,6 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 		m_apIconOnLocalRadar[num_icons_to_render]->SetTextureCoord( vMin, vMax );
 
 		num_icons_to_render++;
-
-		// set vertex positions
-/*		for( int j=0; j<4; j++ )
-		{
-			Vector2 dest_pos = matInvPlayerOrient
-				             * ( matTgtOrient * (base_pos[j] * r) + offset )
-							 + radar_offset;
-
-			radar_rect.SetPosition( j, dest_pos );
-		}
-*/
 	}
 
 	for( i=0; i<num_icons_to_render; i++ )
@@ -688,8 +694,6 @@ void HUD_PlayerAircraft::RenderGlobalRadar( CBE_PlayerPseudoAircraft *plane )
 	const Vector3 vFwdDir = plane->PseudoSimulator().GetHorizontalForwardDirection();
 	float dp = Vec2Dot( Vector2(0,1), Vector2(vFwdDir.x, vFwdDir.z) );
 	float heading = (float)acos(dp) * ( 0 < vFwdDir.x ? 1.0f : -1.0f );
-
-//	float scale = GetScreenWidth() / 800.0f;
 
 	// display targets on radar
 //	const CRadarInfo& radar_info = plane->GetRadarInfo();

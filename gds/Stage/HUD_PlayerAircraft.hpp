@@ -108,6 +108,8 @@ private:
 
 private:
 
+	void RenderTargetContainerRects( CBE_PlayerPseudoAircraft *plane );
+
 	void RenderLocalRadar( CBE_PlayerPseudoAircraft *plane );
 
 	void RenderGlobalRadar( CBE_PlayerPseudoAircraft *plane );
