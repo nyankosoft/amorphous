@@ -52,8 +52,6 @@ class CRadarInfo
 {
 	std::vector<HUD_TargetInfo> m_vecTargetInfo;
 
-	std::vector<int> m_vecVisibleTargetIndex;
-
 //	std::vector<int> m_vecLocalTargetIndex;
 
 	int m_FocusedTargetIndex;
@@ -73,10 +71,6 @@ public:
 
 //	const HUD_TargetInfo& GetLocalTarget( int index ) const { return m_vecTargetInfo[ m_vecLocalTargetIndex[index] ]; }
 
-	size_t GetNumVisibleTargets() const { return m_vecVisibleTargetIndex.size(); }
-
-	const HUD_TargetInfo& GetVisibleTarget( int index ) const { return m_vecTargetInfo[ m_vecVisibleTargetIndex[index] ]; }
-
 	inline void ClearTargetInfo();
 
 	const HUD_TargetInfo *GetFocusedTarget() const { return 0 <= m_FocusedTargetIndex ? &m_vecTargetInfo[m_FocusedTargetIndex] : NULL; }
@@ -95,7 +89,6 @@ public:
 inline void CRadarInfo::ClearTargetInfo()
 {
 	m_vecTargetInfo.resize(0);
-	m_vecVisibleTargetIndex.resize(0);
 //	m_vecLocalTargetIndex.resize(0);
 
 	m_FocusedTargetIndex = -1;

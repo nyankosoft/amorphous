@@ -173,11 +173,6 @@ void CRadar::UpdateTargetInfo()
 			m_RadarInfo.m_vecTargetInfo.back().entity_id = pEntity->GetID();
 
 			Vector3 vPlayerToTargetDir = Vec3GetNormalized( pEntity->Position() - radar_world_pose.vPosition );
-
-			// mark as visible if the target is in the view frustum
-			if( acos(Vec3Dot(vCamFwdDir,vPlayerToTargetDir)) < deg_to_rad(30.0f) 
-			&& tgt_type != HUD_TargetInfo::MISSILE )
-				m_RadarInfo.m_vecVisibleTargetIndex.push_back( (int)m_RadarInfo.m_vecTargetInfo.size() - 1 );
 		}
 	}
 }
@@ -218,7 +213,6 @@ void CRadar::Serialize( IArchive& ar, const unsigned int version )
 		m_vecEntityBuffer.resize( 0 );
 		m_vecpEntityBuffer.resize( 0 );
 		m_RadarInfo.m_vecTargetInfo.resize( 0 );
-		m_RadarInfo.m_vecVisibleTargetIndex.resize( 0 );
 	}
 }
 
