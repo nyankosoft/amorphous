@@ -114,7 +114,7 @@ public:
 	int GetParentType() const { return m_iParentType; }
 	int GetParentIndex() const { return m_iParentIndex; }
 
-	int GetNumChildren() const { return m_vecChildType.size(); }
+	int GetNumChildren() const { return (int)m_vecChildType.size(); }
 	int GetChildType( int i ) const { return m_vecChildType[i]; }
 	int GetChildIndex( int i ) const { return m_vecChildIndex[i]; }
 

@@ -1,4 +1,3 @@
-
 #ifndef __LIGHTWAVE_OBJECT_H__
 #define __LIGHTWAVE_OBJECT_H__
 

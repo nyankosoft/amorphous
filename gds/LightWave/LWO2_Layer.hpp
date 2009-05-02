@@ -6,9 +6,7 @@
 #include "LWO2_Surface.hpp"
 
 #include "3DMath/Vector3.hpp"
-
 #include "Graphics/FloatRGBAColor.hpp"
-
 #include "Support/memory_helpers.hpp"
 
 

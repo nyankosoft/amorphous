@@ -36,7 +36,7 @@ public:
 
 	bool LoadFromFile( const char* pcLWS_Filename );
 
-	int GetNumObjectLayers() { return m_vecObjectLayer.size(); }
+	int GetNumObjectLayers() { return (int)m_vecObjectLayer.size(); }
 
 	CLWS_ObjectLayer* GetObjectLayer(int i);
 
@@ -44,6 +44,6 @@ public:
 
 	float* GetAmbientColor() { return m_afAmbientColor; }
 	float GetAmbientIntensity() { return m_fAmbientIntensity; }
-	int GetNumLights() { return m_vecLight.size(); }
+	int GetNumLights() { return (int)m_vecLight.size(); }
 	CLWS_Light* GetLight(int i);
 };

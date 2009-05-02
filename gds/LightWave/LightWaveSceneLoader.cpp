@@ -141,7 +141,7 @@ bool CLightWaveSceneLoader::LoadFromFile( const char* pcLWS_Filename )
 
 void CLightWaveSceneLoader::AddParentToChildLinks()
 {
-	int i, num_object_layers = m_vecObjectLayer.size();
+	int i, num_object_layers = (int)m_vecObjectLayer.size();
 
 	for( i=0; i<num_object_layers; i++ )
 	{
@@ -165,7 +165,7 @@ void CLightWaveSceneLoader::AddParentToChildLinks()
 		}
 	}
 
-	int num_lights = m_vecLight.size();
+	int num_lights = (int)m_vecLight.size();
 	for( i=0; i<num_lights; i++ )
 	{
 		if( m_vecLight[i].HasParent() )
@@ -261,7 +261,7 @@ bool CLightWaveSceneLoader::LoadFogDataBlock( CTextFileScanner& scanner )
 
 CLWS_ObjectLayer* CLightWaveSceneLoader::GetObjectLayer(int i)
 {
-	if( i<0 || m_vecObjectLayer.size()<=i )
+	if( i<0 || (int)m_vecObjectLayer.size()<=i )
 		return NULL;
 
 	return &m_vecObjectLayer[i];
@@ -269,7 +269,7 @@ CLWS_ObjectLayer* CLightWaveSceneLoader::GetObjectLayer(int i)
 
 CLWS_Light* CLightWaveSceneLoader::GetLight(int i)
 {
-	if( i<0 || m_vecLight.size()<=i )
+	if( i<0 || (int)m_vecLight.size()<=i )
 		return NULL;
 
 	return &m_vecLight[i];
