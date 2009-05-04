@@ -154,7 +154,10 @@ void HUD_PlayerAircraft::Init()
 	m_pTimeText->SetDestAlphaBlendMode( AlphaBlend::One );
 
 	for( size_t i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
+	{
 		m_apContainer[i] = pElementMgr->CreateFrameRect( RectLTWH( 0, 0, m_ContainerSize, m_ContainerSize ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), 4.0f, base_layer );
+		m_apContainer[i]->SetDestAlphaBlendMode( AlphaBlend::One );
+	}
 
 	for( size_t i=0; i<NUM_MAX_ICONS_ON_LOCAL_RADAR; i++ )
 	{

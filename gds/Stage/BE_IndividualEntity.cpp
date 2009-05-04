@@ -53,6 +53,8 @@ void CBE_IndividualEntity::Act(CCopyEntity* pCopyEnt)
 }
 
 
+/// Does not draw.
+/// - Assumes CCopyEntity::Draw() is overridden.
 void CBE_IndividualEntity::Draw(CCopyEntity* pCopyEnt)
 {
 	pCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;

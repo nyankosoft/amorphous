@@ -761,14 +761,14 @@ void CBE_PlayerPseudoAircraft::Act( CCopyEntity* pCopyEnt )
 	if( !m_pAircraft )
 		return;
 
-	if( pCopyEnt->fLife <= 0 )
-	{
+//	if( pCopyEnt->fLife <= 0 )
+//	{
 		// player aircraft is destroyed - call update routines of child entities
 		for( int i=0; i<pCopyEnt->GetNumChildren(); i++ )
 			pCopyEnt->GetChild(i)->Act();
 
-		return;
-	}
+//		return;
+//	}
 
 	UpdateRadarInfo( pCopyEnt, m_pStage->GetFrameTime() );
 
