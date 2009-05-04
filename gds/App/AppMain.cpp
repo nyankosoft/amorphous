@@ -101,12 +101,13 @@ void StartApp()
 string GetExeFilepath()
 {
 	char exe_filepath[512];
+	memset( exe_filepath, 0, sizeof(exe_filepath) );
 	GetModuleFileName( NULL, exe_filepath, sizeof(exe_filepath)-1 );
 	return string(exe_filepath);
 }
 
 
-INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
+INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
 	// timer resolution for timeGetTime()
 	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
