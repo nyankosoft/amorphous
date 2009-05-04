@@ -10,6 +10,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/ImageSplitter.hpp"
+#include "tbb/task_scheduler_init.h"
 
 using namespace std;
 using namespace boost;
@@ -531,6 +532,10 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 	const int dest_tex_width = m_TextureWidth;
 
 	int num_edge_splits = m_NumTexEdgeSplits = src_tex_width / dest_tex_width;
+
+	// init tbb
+	// - Should be done by the system
+	tbb::task_scheduler_init init;
 
 	CMGSplitImageFilepathPrinter filepath_printer( src_tex_filename, &m_MeshTree );
 	CImageSplitter is(
