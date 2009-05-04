@@ -5,7 +5,6 @@
 #include <list>
 #include <string>
 #include <vector>
-using namespace std;
 
 #include <boost/shared_ptr.hpp>
 

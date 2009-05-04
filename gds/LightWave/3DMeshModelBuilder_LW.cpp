@@ -9,6 +9,7 @@
 #include "3DMeshModelBuilder_LW.hpp"
 using namespace MeshModel;
 
+using namespace std;
 using namespace boost;
 
 

@@ -1,4 +1,3 @@
-
 #include "CompositeMeshExporter_LW.hpp"
 #include "MassSpringExporter_LW.hpp"
 #include "Support/StringAux.hpp"
