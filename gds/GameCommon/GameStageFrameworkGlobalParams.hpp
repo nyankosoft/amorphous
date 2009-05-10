@@ -39,6 +39,8 @@ class CGameStageFrameworkGlobalParams : public IArchiveObjectBase
 
 	int m_DefaultSleepTimeMS;
 
+	std::string m_StartupDebugWindow;
+
 public:
 
 	CGameStageFrameworkGlobalParams();
