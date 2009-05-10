@@ -218,13 +218,7 @@ public:
 
 	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
 
-	inline LPDIRECT3DTEXTURE9 GetTexture()
-	{
-		if( GetState() == GraphicsResourceState::LOADED )
-			return m_pTexture;
-		else
-			return NULL;
-	}
+	inline LPDIRECT3DTEXTURE9 GetTexture();
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
 
@@ -308,7 +302,9 @@ public:
 
 	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
 
-	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh() { return m_pMeshObject; }
+	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh();
+
+	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMeshInLoading();
 
 	CMeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
@@ -323,6 +319,8 @@ public:
 	bool Create();
 
 	void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
+
+	void CreateMeshAndLoadNonAsyncResources( MeshModel::C3DMeshModelArchive& archive );
 
 	friend class CGraphicsResourceManager;
 };
@@ -454,6 +452,41 @@ inline GraphicsResourceState::Name CGraphicsResource::GetState()
 
 	return current_state;
 }
+
+
+
+//================================================================================
+// CGraphicsResource
+//================================================================================
+
+inline LPDIRECT3DTEXTURE9 CTextureResource::GetTexture()
+{
+	if( GetState() == GraphicsResourceState::LOADED )
+		return m_pTexture;
+	else
+		return NULL;
+}
+
+
+
+//================================================================================
+// CGraphicsResource
+//================================================================================
+
+inline boost::shared_ptr<CD3DXMeshObjectBase> CMeshResource::GetMesh()
+{
+	if( GetState() == GraphicsResourceState::LOADED )
+		return m_pMeshObject;
+	else
+		return boost::shared_ptr<CD3DXMeshObjectBase>();
+}
+
+
+inline boost::shared_ptr<CD3DXMeshObjectBase> CMeshResource::GetMeshInLoading()
+{
+	return m_pMeshObject;
+}
+
 
 
 #endif  /* __GraphicsResourceEntry_H__ */

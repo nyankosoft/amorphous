@@ -122,6 +122,7 @@ void CAsyncResourceLoader::ProcessResourceLoadRequest()
 			// Fills out resource desc (texture & mesh)
 			// Creates a lock request (texture)
 			// Create load requests for sub resources (mesh)
+			// - Load subresources and send lock requests for each subresource (mesh)
 			pLoader->OnLoadingCompleted( pLoader );
 		}
 		else

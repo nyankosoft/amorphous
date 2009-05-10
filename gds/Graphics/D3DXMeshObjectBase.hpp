@@ -22,6 +22,11 @@ extern void LoadVerticesForD3DXMesh( const CMMA_VertexSet& rVertexSet,          
 						             void*& pVBData                                   // [out]
 							         );
 
+extern bool LoadIndices( C3DMeshModelArchive& archive, vector<U16>& vecIBData );
+
+extern void GetAttributeTableFromTriangleSet( const vector<CMMA_TriangleSet>& vecTriangleSet,
+									          std::vector<D3DXATTRIBUTERANGE>& vecAttributeRange );
+
 class MeshLoadOption
 {
 public:
@@ -29,8 +34,9 @@ public:
 	{
 		DO_NOT_LOAD_TEXTURES = ( 1 << 0 ), ///< specify this to load textures later. e.g., for asynchronous loading
 		LOAD_ASYNC           = ( 1 << 1 ), ///< asynchronously load the mesh
-//		ANOTHER_OPTION       = ( 1 << 2 ),
-//		YET_ANOTHER_OPTION   = ( 1 << 3 ),
+		LOAD_TEXTURES_ASYNC  = ( 1 << 2 ), ///< asynchronously load the textures of the mesh
+//		ANOTHER_OPTION       = ( 1 << 3 ),
+//		YET_ANOTHER_OPTION   = ( 1 << 4 ),
 	};
 };
 
@@ -125,8 +131,6 @@ protected:
 
 	virtual void LoadVertices( void*& pVBData, C3DMeshModelArchive& archive );
 
-	bool LoadIndices( unsigned short*& pIBData, C3DMeshModelArchive& archive );
-
 	HRESULT LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num_materials );
 
 	HRESULT LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags );
@@ -179,6 +183,10 @@ public:
 	virtual void Release();
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return NULL; }
+
+	bool LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags );
+
+	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return false; }
 
 	/// added to call LockAttributeBuffer() during asynchrnous loading
 	/// - LockAttributeBuffer() is not a member of LPD3DXBASEMESH
@@ -272,6 +280,8 @@ public:
 
 	CMeshObjectFactory() {}
 	virtual ~CMeshObjectFactory() {}
+
+	boost::shared_ptr<CD3DXMeshObjectBase> CreateMesh( CMeshType::Name mesh_type = CMeshType::SKELETAL );
 
 	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filepath,
 		                                         U32 load_option_flags = 0,

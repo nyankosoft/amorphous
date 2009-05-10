@@ -150,8 +150,12 @@ shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoad
 		pLoader = shared_ptr<CGraphicsResourceLoader>( new CDiskTextureLoader(pEntry,*dynamic_cast<const CTextureResourceDesc *>(&desc)) );
 		break;
 	case GraphicsResourceType::Mesh:
-		pLoader = shared_ptr<CGraphicsResourceLoader>( new CMeshLoader(pEntry,*dynamic_cast<const CMeshResourceDesc *>(&desc)) );
+	{
+		shared_ptr<CMeshLoader> pMeshLoader( new CMeshLoader(pEntry,*dynamic_cast<const CMeshResourceDesc *>(&desc)) );
+		pMeshLoader->SetWeakPtr( pMeshLoader );
+		pLoader = pMeshLoader;
 		break;
+	}
 //	case GraphicsResourceType::Shader:
 //		pLoader = shared_ptr<CGraphicsResourceLoader>( new CShaderLoader(pEntry,) );
 	default:

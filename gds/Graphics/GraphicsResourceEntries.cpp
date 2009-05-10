@@ -693,19 +693,29 @@ IDAndString g_MeshTypes[] =
 
 bool CMeshResource::Create()
 {
-	LPD3DXMESH pMesh;
+/*	LPD3DXMESH pMesh;
 
 	HRESULT hr;
 	hr = D3DXCreateMesh(
-			m_MeshDesc.NumIndices / 3,  // DWORD NumFaces,
-			m_MeshDesc.NumVertices,     // DWORD NumVertices,
-			0,                          // DWORD Options,
-			NULL,                       // CONST LPD3DVERTEXELEMENT9 * pDeclaration,
-			DIRECT3D9.GetDevice(),      // LPDIRECT3DDEVICE9 pD3DDevice,
+			m_MeshDesc.NumIndices / 3,       // DWORD NumFaces,
+			m_MeshDesc.NumVertices,          // DWORD NumVertices,
+			0,                               // DWORD Options,
+			&(m_MeshDesc.vecVertElement[0]), // CONST LPD3DVERTEXELEMENT9 * pDeclaration,
+			DIRECT3D9.GetDevice(),           // LPDIRECT3DDEVICE9 pD3DDevice,
 			&pMesh
 		);
+*/
+	CMeshObjectFactory factory;
+	m_pMeshObject = factory.CreateMesh( m_MeshDesc.MeshType );
 
-	return false;
+	bool mesh_created = m_pMeshObject->CreateMesh(
+		m_MeshDesc.NumVertices,
+		m_MeshDesc.NumIndices,
+		0,
+		m_MeshDesc.vecVertElement
+		);
+
+	return mesh_created;
 }
 
 
@@ -727,6 +737,21 @@ void CMeshResource::SetSubResourceState( CMeshSubResource::Name subresource,
 	// mark the resource loaded only if all the subresource are loaded
 	if( loaded_so_far )
 		SetState( GraphicsResourceState::LOADED );
+}
+
+
+void CMeshResource::CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive )
+{
+	fnop::dir_stack dirstk( fnop::get_path(m_MeshDesc.ResourcePath) );
+
+	if( m_pMeshObject )
+		m_pMeshObject->LoadNonAsyncResources( archive, m_MeshDesc.LoadOptionFlags );
+//		m_pMeshObject->LoadNonAsyncResources( archive, MeshLoadOption::LOAD_TEXTURES_ASYNC, m_MeshDesc.vecpGroup );
+
+	dirstk.prevdir();
+
+
+//	m_pMeshObject->GetTexture( 0, 0 ).GetEntry()->GetMeshDesc
 }
 
 

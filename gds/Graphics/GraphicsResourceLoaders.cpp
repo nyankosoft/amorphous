@@ -56,6 +56,37 @@ bool CGraphicsResourceLoader::LoadFromDisk()
 }
 
 
+bool CGraphicsResourceLoader::AcquireResource()
+{
+	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+
+	if( !pHolder )
+		return false;
+
+	shared_ptr<CGraphicsResource> pResource = GraphicsResourceCacheManager().GetCachedResource( *GetDesc() );
+
+	if( pResource )
+	{
+		// set resource to entry (holder)
+		pHolder->SetResource( pResource );
+
+		return true;
+	}
+	else
+	{
+		// create resource instance from desc
+		// - Actual resource creation is not done in this call
+		pResource = GraphicsResourceFactory().CreateGraphicsResource( *GetDesc() );
+
+		pHolder->SetResource( pResource );
+
+		// desc has been set to the resource object
+		//  - create the actual resource from the desc
+		return pResource->Create();
+	}
+}
+
+
 bool CGraphicsResourceLoader::Lock()
 {
 	LOG_FUNCTION_SCOPE();
@@ -97,6 +128,7 @@ void CGraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory()
 	if( GetResource() )
 		GetResource()->SetState( GraphicsResourceState::LOADED );
 }
+
 
 
 //===================================================================================
@@ -167,37 +199,6 @@ void CDiskTextureLoader::FillResourceDesc()
 }
 
 
-bool CDiskTextureLoader::AcquireResource()
-{
-	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
-
-	if( !pHolder )
-		return false;
-
-	shared_ptr<CGraphicsResource> pResource = GraphicsResourceCacheManager().GetCachedResource( m_TextureDesc );
-
-	if( pResource )
-	{
-		// set texture resource to entry (holder)
-		pHolder->SetResource( pResource );
-
-		return true;
-	}
-	else
-	{
-		// create resource instance from desc
-		// - Actual resource creation is not done in this call
-		pResource = GraphicsResourceFactory().CreateGraphicsResource( m_TextureDesc );
-
-		pHolder->SetResource( pResource );
-
-		// desc has been set to the resource object
-		//  - create the actual resource from the desc
-		return pResource->Create();
-	}
-}
-
-
 void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
 {
 //	if( !m_Image.IsLoaded() )
@@ -248,18 +249,38 @@ void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
 CMeshLoader::CMeshLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CMeshResourceDesc& desc )
 :
 CGraphicsResourceLoader(pEntry),
-m_MeshDesc(desc)
+m_MeshDesc(desc),
+m_MeshLoaderStateFlags(0),
+m_pVertexBufferContent(NULL)
 {
 	m_pArchive = boost::shared_ptr<C3DMeshModelArchive>( new C3DMeshModelArchive() );
 }
 
 
+CMeshLoader::~CMeshLoader()
+{
+	SafeDelete( m_pVertexBufferContent );
+}
+
+
 bool CMeshLoader::LoadFromFile( const std::string& filepath )
 {
+	// load mesh archive from file
+	bool res = false;
 	if( m_pArchive )
-		return m_pArchive->LoadFromFile( GetSourceFilepath() );
-	else
+		res = m_pArchive->LoadFromFile( GetSourceFilepath() );
+
+	if( !res )
 		return false;
+
+	// load vertices, vertex size, vertex elements
+	// from the vertex set of the mesh archive
+
+	// load indices
+
+	LoadMeshSubresources();
+
+	return true;
 }
 
 
@@ -293,10 +314,29 @@ bool CMeshLoader::CopyLoadedContentToGraphicsResource()
 }
 
 
+bool CMeshLoader::AcquireResource()
+{
+	bool res = CGraphicsResourceLoader::AcquireResource();
+	if( !res )
+		return false;
+
+	GetResourceEntry()->GetMeshResource()->CreateMeshAndLoadNonAsyncResources( *(m_pArchive.get()) );
+
+	return true;
+}
+
+
+/// Called by I/O thread after the mesh archive is loaded and stored to 'm_pArchive'
+/// - Usually loaded from disk
 void CMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
 {
-	FillResourceDesc();
+	// - send a lock request
+	//   - Actually does not lock. Send the lock request to call AcquireResource.
+	//   - Must be processed before the lock requrests of the subresources below.
+	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, pSelf, GetResourceEntry() );
+	AsyncResourceLoader().AddGraphicsDeviceRequest( req );
 
+	// create subresource loaders
 	shared_ptr<CD3DXMeshLoaderBase> apLoader[3];
 	apLoader[0] = shared_ptr<CD3DXMeshVerticesLoader>( new CD3DXMeshVerticesLoader(GetResourceEntry()) );
 	apLoader[1] = shared_ptr<CD3DXMeshIndicesLoader>( new CD3DXMeshIndicesLoader(GetResourceEntry()) );
@@ -304,11 +344,25 @@ void CMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader>
 
 	for( int i=0; i<3; i++ )
 	{
+		// set the pointer to mesh archive to each subresource loader
 		apLoader[i]->m_pArchive   = m_pArchive;
 //		apLoader[i]->m_pMeshEntry = m_pMeshEntry;
-		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
-		AsyncResourceLoader().AddResourceLoadRequest( req );
+
+		apLoader[i]->m_pMeshLoader = m_pSelf.lock();
+
+		// add requests to load subresource from the mesh archive
+//		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
+//		AsyncResourceLoader().AddResourceLoadRequest( req );
+
+		// subresources have been loaded
+		// - send lock requests for each mesh sub resource
+		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, apLoader[i], GetResourceEntry() );
+		AsyncResourceLoader().AddGraphicsDeviceRequest( req );
 	}
+
+	// create mesh instance
+	// load resources that needs to be loaded synchronously
+//	GetResourceEntry()->GetMeshResource()->CreateMeshAndLoadNonAsyncResources( *(m_pArchive.get()) );
 }
 
 
@@ -320,7 +374,7 @@ void CMeshLoader::OnResourceLoadedOnGraphicsMemory()
 }
 
 
-void CMeshLoader::FillResourceDesc()
+void CMeshLoader::LoadMeshSubresources()
 {
 	if( m_pArchive )
 	{
@@ -329,21 +383,41 @@ void CMeshLoader::FillResourceDesc()
 
 		m_MeshDesc.VertexFormatFlags = m_pArchive->GetVertexSet().m_VertexFormatFlag;
 
-		vector<D3DVERTEXELEMENT9> vecVertElement; // buffer to temporarily hold vertex elements
-
-		void *pVertexBufferContent = NULL;
-
 		LoadVerticesForD3DXMesh(
 			m_pArchive->GetVertexSet(),
 			m_MeshDesc.vecVertElement,
 			m_MeshDesc.VertexSize,
-			pVertexBufferContent
+			m_pVertexBufferContent
 			);
 
-		SafeDelete( pVertexBufferContent );
+//		SafeDelete( pVertexBufferContent );
+
+		LoadIndices( *(m_pArchive.get()), m_vecIndexBufferContent );
+
+		GetAttributeTableFromTriangleSet( m_pArchive->GetTriangleSet(), m_vecAttributeRange );
 	}
 }
 
+
+void CMeshLoader::RaiseStateFlags( U32 flags )
+{
+	m_MeshLoaderStateFlags |= flags;
+}
+
+
+void CMeshLoader::SendLockRequestIfAllSubresourcesHaveBeenLoaded()
+{
+	if( m_MeshLoaderStateFlags & VERTICES_LOADED
+	 && m_MeshLoaderStateFlags & INDICES_LOADED
+	 && m_MeshLoaderStateFlags & ATTRIB_TABLES_LOADED )
+	{
+		return;
+	}
+	else
+	{
+		return;
+	}
+}
 
 
 //===================================================================================
@@ -352,8 +426,15 @@ void CMeshLoader::FillResourceDesc()
 
 bool CD3DXMeshVerticesLoader::LoadFromArchive()
 {
+/*	// load the vertices from the mesh archive (m_pArchive), and store it
+	// to the buffer (m_pVertexBufferContent).
 	GetMesh()->LoadVertices( m_pVertexBufferContent, *(m_pArchive.get()) );
 
+//	LoadVerticesForD3DXMesh( m_pArchive->GetVertexSet(), elems, size, dest_buffer );
+
+	m_pMeshLoader->RaiseStateFlags( CMeshLoader::VERTICES_LOADED );
+	m_pMeshLoader->SendLockRequestIfAllSubresourcesHaveBeenLoaded();
+*/
 	return true;
 }
 
@@ -361,7 +442,13 @@ bool CD3DXMeshVerticesLoader::LoadFromArchive()
 bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
 {
 	if( m_pLockedVertexBuffer )
-		memcpy( m_pLockedVertexBuffer, m_pVertexBufferContent, GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
+	{
+//		memcpy( m_pLockedVertexBuffer, m_pVertexBufferContent, GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
+
+		memcpy( m_pLockedVertexBuffer,
+			m_pMeshLoader->VertexBufferContent(),
+			GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
+	}
 
 	return true;
 }
@@ -369,8 +456,11 @@ bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
 
 bool CD3DXMeshVerticesLoader::Lock()
 {
-	bool locked = GetMesh()->LockVertexBuffer( m_pLockedVertexBuffer );
-	return locked;
+	CD3DXMeshObjectBase *pMesh = GetMesh();
+	if( pMesh )
+		return pMesh->LockVertexBuffer( m_pLockedVertexBuffer );
+	else
+		return false;
 }
 
 
@@ -395,17 +485,24 @@ void CD3DXMeshVerticesLoader::OnResourceLoadedOnGraphicsMemory()
 
 bool CD3DXMeshIndicesLoader::LoadFromArchive()
 {
-	unsigned short *pIBData;
+/*	unsigned short *pIBData;
 	GetMesh()->LoadIndices( pIBData, *(m_pArchive.get()) );
 	m_pIndexBufferContent = (void *)pIBData;
+
+	m_pMeshLoader->RaiseStateFlags( CMeshLoader::INDICES_LOADED );
+	m_pMeshLoader->SendLockRequestIfAllSubresourcesHaveBeenLoaded();
+*/
 	return true;
 }
 
 
 bool CD3DXMeshIndicesLoader::Lock()
 {
-	bool locked = GetMesh()->LockIndexBuffer( m_pLockedIndexBuffer );
-	return locked;
+	CD3DXMeshObjectBase *pMesh = GetMesh();
+	if( pMesh )
+		return pMesh->LockIndexBuffer( m_pLockedIndexBuffer );
+	else
+		return false;
 }
 
 
@@ -420,7 +517,14 @@ bool CD3DXMeshIndicesLoader::Unlock()
 bool CD3DXMeshIndicesLoader::CopyLoadedContentToGraphicsResource()
 {
 	if( m_pLockedIndexBuffer )
-		memcpy( m_pLockedIndexBuffer, m_pIndexBufferContent, m_IndexBufferSize );
+	{
+//		memcpy( m_pLockedIndexBuffer, m_pIndexBufferContent, m_IndexBufferSize );
+
+		memcpy( m_pLockedIndexBuffer,
+			&(m_pMeshLoader->IndexBufferContent()[0]),
+			m_pMeshLoader->IndexBufferContent().size() );
+	}
+
 
 	return true;
 }
@@ -439,9 +543,9 @@ void CD3DXMeshIndicesLoader::OnResourceLoadedOnGraphicsMemory()
 
 bool CD3DXMeshAttributeTableLoader::Lock()
 {
-//	HRESULT hr = GetMesh()->SetAttributeTable( paAttribTable, GetMesh()->GetNumMaterials() );
-
-//	SafeDeleteArray( paAttribTable );
+	HRESULT hr = GetMesh()->GetMesh()->SetAttributeTable(
+		&(m_pMeshLoader->AttributeTable()[0]),
+		(DWORD)(m_pMeshLoader->AttributeTable().size()) );
 
 	bool locked = GetMesh()->LockAttributeBuffer( m_pLockedAttributeBuffer );
 	return locked;
@@ -465,7 +569,8 @@ bool CD3DXMeshAttributeTableLoader::CopyLoadedContentToGraphicsResource()
 
 	DWORD *pdwBuffer = m_pLockedAttributeBuffer;
 	DWORD face = 0;
-	for( int i=0; i<GetMesh()->GetNumMaterials(); i++ )
+	const int num_materials = GetMesh()->GetNumMaterials();
+	for( int i=0; i<num_materials; i++ )
 	{
 		const CMMA_TriangleSet& triangle_set = vecTriangleSet[i];
 
@@ -484,4 +589,25 @@ bool CD3DXMeshAttributeTableLoader::CopyLoadedContentToGraphicsResource()
 void CD3DXMeshAttributeTableLoader::OnResourceLoadedOnGraphicsMemory()
 {
 	SetSubResourceState( CMeshSubResource::ATTRIBUTE_TABLE, GraphicsResourceState::LOADED );
+}
+
+
+/// Cannot create an empty shader object and copy the content to it.
+/// - Load from file
+bool CShaderLoader::AcquireResource()
+{
+	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+
+	if( !pHolder )
+		return false;
+
+	pHolder->SetResource( GraphicsResourceFactory().CreateGraphicsResource( m_ShaderDesc ) );
+
+	shared_ptr<CShaderResource> pShaderResource = pHolder->GetShaderResource();
+	if( !pShaderResource )
+		return false;
+
+	bool loaded = pShaderResource->LoadFromFile( m_ShaderDesc.ResourcePath );
+
+	return loaded;
 }

@@ -50,7 +50,7 @@ public:
 	/// - copy the loaded resource to locked buffer
 	virtual bool CopyLoadedContentToGraphicsResource() { return false; }
 
-	virtual bool AcquireResource() { return false; }
+	virtual bool AcquireResource();
 
 	/// Called by the rendering thread
 	/// - Why virtual ?
@@ -75,7 +75,7 @@ public:
 	/// Used to fill out desc properties that can be obtained
 	/// only after the resource is loaded from disk
 	/// - e.g., width and height of image files for textures
-	virtual void FillResourceDesc() {};
+	virtual void FillResourceDesc() {}
 
 	/// sub resource loaders of mesh don't have descs
 	virtual const CGraphicsResourceDesc *GetDesc() const { return NULL; }
@@ -116,8 +116,6 @@ public:
 
 	const CGraphicsResourceDesc *GetDesc() const { return &m_TextureDesc; }
 
-	bool AcquireResource();
-
 	/// called by the system
 	/// - called inside CopyTo()
 	void FillTexture( CLockedTexture& texture );
@@ -130,15 +128,29 @@ class CMeshLoader : public CGraphicsResourceLoader
 
 	boost::shared_ptr<C3DMeshModelArchive> m_pArchive;
 
+	U32 m_MeshLoaderStateFlags;
+
+	boost::weak_ptr<CMeshLoader> m_pSelf;
+
+	void *m_pVertexBufferContent;
+
+	std::vector<U16> m_vecIndexBufferContent;
+
+	std::vector<D3DXATTRIBUTERANGE> m_vecAttributeRange;
+
 public:
 
 	CMeshLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CMeshResourceDesc& desc );
+
+	~CMeshLoader();
 
 	bool LoadFromFile( const std::string& filepath );
 
 	bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
 	bool CopyLoadedContentToGraphicsResource();
+
+	bool AcquireResource();
 
 	/// Does not lock the mesh resource
 	/// - Loaders for each component of the mesh (vertices, indices, and attribute buffers)
@@ -153,9 +165,28 @@ public:
 
 	void OnResourceLoadedOnGraphicsMemory();
 
-	void FillResourceDesc();
+	void LoadMeshSubresources();
+
+	void SetWeakPtr( boost::weak_ptr<CMeshLoader> pSelf ) { m_pSelf = pSelf; }
 
 	const CGraphicsResourceDesc *GetDesc() const { return &m_MeshDesc; }
+
+	void RaiseStateFlags( U32 flags );
+
+	void SendLockRequestIfAllSubresourcesHaveBeenLoaded();
+
+	vector<U16>& IndexBufferContent() { return m_vecIndexBufferContent; }
+
+	void *VertexBufferContent() { return m_pVertexBufferContent; }
+
+	std::vector<D3DXATTRIBUTERANGE>& AttributeTable() { return m_vecAttributeRange; }
+
+	enum SubResouceLoadingStateFlag
+	{
+		VERTICES_LOADED      = ( 1 << 0 ),
+		INDICES_LOADED       = ( 1 << 1 ),
+		ATTRIB_TABLES_LOADED = ( 1 << 2 ),
+	};
 };
 
 
@@ -164,11 +195,15 @@ class CD3DXMeshLoaderBase : public CGraphicsResourceLoader
 protected:
 
 	/// entry to that stores the loaded resource
-//	boost::weak_ptr<CMeshObjectEntry> m_pMeshEntry;
+//	boost::weak_ptr<CGraphicsResourceEntry> m_pMeshEntry;
 
 //	CMeshResourceDesc m_Desc;
 
 	boost::shared_ptr<C3DMeshModelArchive> m_pArchive;
+
+	/// Store the shared_ptr of the mesh loader so that it do not get released
+	/// after loading mesh archive.
+	boost::shared_ptr<CMeshLoader> m_pMeshLoader;
 
 public:
 
@@ -178,6 +213,8 @@ public:
 	{}
 
 	virtual ~CD3DXMeshLoaderBase() {}
+
+	bool AcquireResource() { return true; }
 
 	inline CD3DXMeshObjectBase *GetMesh();
 
@@ -348,7 +385,7 @@ inline CD3DXMeshObjectBase *CD3DXMeshLoaderBase::GetMesh()
 		boost::shared_ptr<CMeshResource> pMesh = pEntry->GetMeshResource();
 
 		if( pMesh )
-			return pMesh->GetMesh().get();
+			return pMesh->GetMeshInLoading().get();
 		else
 			return NULL;
 	}
@@ -367,40 +404,43 @@ inline void CD3DXMeshLoaderBase::SetSubResourceState( CMeshSubResource::Name sub
 }
 
 
-
-
-/*
-/// loads a texture from disk
+/// loads a shader from disk
 class CShaderLoader : public CGraphicsResourceLoader
 {
-	/// entry that stores the loaded resource
-	boost::weak_ptr<CShaderManagerEntry> m_pShaderEntry;
+	/// Stores filepath
+	CShaderResourceDesc m_ShaderDesc;
 
-protected:
-
-	boost::shared_ptr<CShaderManagerEntry> GetResourceEntry() { return m_pShaderEntry.lock(); }
+	/// Stores shader contents
+//	stream_buffer m_ShaderTextBuffer;
 
 public:
 
-	CShaderLoader( boost::weak_ptr<CShaderManagerEntry> pShaderEntry )
+	CShaderLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CShaderResourceDesc& desc )
 		:
-	m_pShaderEntry(pShaderEntry)
+	CGraphicsResourceLoader(pEntry),
+	m_ShaderDesc(desc)
 	{}
 
 	bool LoadFromFile( const std::string& filepath );
 
 	/// load image from the db as an image archive
-	bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
+//	bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
 	/// copy the bitmap image to the locked texture surface
-	bool CopyTo( CGraphicsResourceEntry *pDestEntry );
+//	bool CopyLoadedContentToGraphicsResource();
 
-	bool Lock();
+//	void FillResourceDesc();
 
-	bool Unlock();
+	const CGraphicsResourceDesc *GetDesc() const { return &m_ShaderDesc; }
 
+	bool CopyLoadedContentToGraphicsResource() { return true; }
+
+	bool AcquireResource();
+
+	bool Lock() { return true; }
+
+	bool Unlock() { return true; }
 };
-*/
 
 
 #endif  /* __GraphicsResourceLoaders_H__ */

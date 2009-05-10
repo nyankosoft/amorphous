@@ -29,6 +29,8 @@ public:
 
 	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags );
 
+	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement );
+
 	virtual LPD3DXBASEMESH GetBaseMesh() { return m_pMesh; }
 
 	virtual LPD3DXMESH GetMesh() { return m_pMesh; }

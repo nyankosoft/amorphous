@@ -153,3 +153,20 @@ bool CD3DXMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::
 
 	return true;
 }
+
+
+bool CD3DXMeshObject::CreateMesh( int num_vertices, int num_indices, U32 option_flags,
+								  std::vector<D3DVERTEXELEMENT9>& vecVertexElement )
+{
+	HRESULT hr;
+	hr = D3DXCreateMesh(
+			num_indices / 3,         // DWORD NumFaces,
+			num_vertices,            // DWORD NumVertices,
+			option_flags,            // DWORD Options,
+			&(vecVertexElement[0]),  // CONST LPD3DVERTEXELEMENT9 * pDeclaration,
+			DIRECT3D9.GetDevice(),   // LPDIRECT3DDEVICE9 pD3DDevice,
+			&m_pMesh
+		);
+
+	return (m_pMesh != NULL);
+}

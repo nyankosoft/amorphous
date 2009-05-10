@@ -145,6 +145,13 @@ void CD3DXMeshObjectBase::InitMaterials( int num_materials )
 }
 
 
+bool CD3DXMeshObjectBase::LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags )
+{
+	HRESULT hr = LoadMaterialsFromArchive( rArchive, option_flags );
+	return SUCCEEDED(hr) ? true : false;
+}
+
+
 HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags )
 {
 	m_AABB = rArchive.GetAABB();
@@ -220,7 +227,17 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 
 				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
 
-				if( !(option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES) )
+				if( option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES )
+				{
+				}
+				else if( option_flags & MeshLoadOption::LOAD_TEXTURES_ASYNC )
+				{
+					// start the asynchronous loading now
+//					m_vecMaterial[i].TextureDesc[tex].vecpGroup = vecpGroup;
+					m_vecMaterial[i].TextureDesc[tex].LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
+					m_vecMaterial[i].Texture[tex].Load( m_vecMaterial[i].TextureDesc[tex] );
+				}
+				else
 				{
 					// load texture(s) now
 					loaded = m_vecMaterial[i].Texture[tex].Load( tex_filepath );
@@ -645,18 +662,16 @@ HRESULT CD3DXMeshObjectBase::LoadD3DXMeshAndMaterialsFromXFile( const std::strin
 /// This doesn't have to be a member of CD3DXMeshObjectBase, does it?
 /// - CD3DXMeshObjectBase may want right to choose index format (U16 / U32). This is always U16 for now.
 ///   - Then, the argument type has to be void
-bool CD3DXMeshObjectBase::LoadIndices( unsigned short*& pIBData, C3DMeshModelArchive& archive )
+///   - Changed: always use U16
+bool LoadIndices( C3DMeshModelArchive& archive, vector<U16>& vecIBData )
 {
-	if( !pIBData )
-		return false;
-
 	const vector<unsigned int>& rvecVertexIndex = archive.GetVertexIndex();
 	const int num_indices = archive.GetNumVertexIndices();
 
-	pIBData = new unsigned short [num_indices];
+	vecIBData.resize( num_indices );
 
 	for( int i=0; i<num_indices; i++ )
-		pIBData[i] = (unsigned short)rvecVertexIndex[i];
+		vecIBData[i] = (U16)rvecVertexIndex[i];
 
 	return true;
 }
@@ -686,28 +701,38 @@ bool CD3DXMeshObjectBase::FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive
 }
 
 
+/// \param vecTriangleSet [in]
+/// \param vecAttributeRange [out]
+void GetAttributeTableFromTriangleSet( const vector<CMMA_TriangleSet>& vecTriangleSet,
+									   std::vector<D3DXATTRIBUTERANGE>& vecAttributeRange )
+{
+	vecAttributeRange.resize( vecTriangleSet.size() );
+
+	const int num_materials = (int)vecTriangleSet.size();
+	for( int i=0; i<num_materials; i++ )
+	{
+		const CMMA_TriangleSet& triangle_set = vecTriangleSet[i]; // src
+		D3DXATTRIBUTERANGE& attrib_range = vecAttributeRange[i];  // dest
+
+		attrib_range.AttribId		= i;
+//		attrib_range.AttribId		= i + 1;
+//		attrib_range.FaceStart		= triangle_set.m_iStartIndex;
+		attrib_range.FaceStart		= triangle_set.m_iStartIndex / 3;
+		attrib_range.FaceCount		= triangle_set.m_iNumTriangles;
+		attrib_range.VertexStart	= triangle_set.m_iMinIndex;
+		attrib_range.VertexCount	= triangle_set.m_iNumVertexBlocksToCover;
+	}
+}
+
+
 HRESULT CD3DXMeshObjectBase::SetAttributeTable( LPD3DXMESH pMesh,
 											     const vector<CMMA_TriangleSet>& vecTriangleSet )
 {
 	// convert triangle sets to attribute ranges
-	D3DXATTRIBUTERANGE *paAttribTable = new D3DXATTRIBUTERANGE [ m_NumMaterials ];
+	vector<D3DXATTRIBUTERANGE> vecAttributeRange;
+	GetAttributeTableFromTriangleSet( vecTriangleSet, vecAttributeRange );
 
-	for( int i=0; i<m_NumMaterials; i++ )
-	{
-		const CMMA_TriangleSet& triangle_set = vecTriangleSet[i];
-
-		paAttribTable[i].AttribId		= i;
-//		paAttribTable[i].AttribId		= i + 1;
-//		paAttribTable[i].FaceStart		= triangle_set.m_iStartIndex;
-		paAttribTable[i].FaceStart		= triangle_set.m_iStartIndex / 3;
-		paAttribTable[i].FaceCount		= triangle_set.m_iNumTriangles;
-		paAttribTable[i].VertexStart	= triangle_set.m_iMinIndex;
-		paAttribTable[i].VertexCount	= triangle_set.m_iNumVertexBlocksToCover;
-	}
-
-	HRESULT hr = pMesh->SetAttributeTable( paAttribTable, m_NumMaterials );
-
-	SafeDeleteArray( paAttribTable );
+	HRESULT hr = pMesh->SetAttributeTable( &(vecAttributeRange[0]), m_NumMaterials );
 
 	// set attribute IDs for each face
 	DWORD *pdwBuffer = NULL;
@@ -973,6 +998,7 @@ bool CD3DXMeshObjectBase::UnlockAttributeBuffer()
 #include "D3DXMeshObject.hpp"
 #include "D3DXSMeshObject.hpp"
 
+using namespace boost;
 
 
 static CD3DXMeshObjectBase* CreateMeshInstance( CMeshType::Name mesh_type )
@@ -990,6 +1016,13 @@ static CD3DXMeshObjectBase* CreateMeshInstance( CMeshType::Name mesh_type )
 	}
 
 	return NULL;
+}
+
+
+shared_ptr<CD3DXMeshObjectBase> CMeshObjectFactory::CreateMesh( CMeshType::Name mesh_type )
+{
+	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
+	return pMesh;
 }
 
 
