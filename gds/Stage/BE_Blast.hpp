@@ -2,9 +2,8 @@
 #define __BASEENTITYBLAST_H__
 
 #include "BaseEntity.hpp"
+#include "Graphics/fwd.hpp"
 
-
-class CUnitCube;
 
 class CBE_Blast : public CBaseEntity
 {
@@ -12,12 +11,22 @@ class CBE_Blast : public CBaseEntity
 	float m_fMaxBlastRadius;	///< how large the blast expands. blast is a spherical volume
 	float m_fBlastDuration;		///< how long the blast lasts. longer duration means that the blast expands more slowly
 
+	/// The speed at which the blast radius expand up to m_fMaxBlastRadius
+	float m_fLinearExpansionSpeed;
+/*
+	enum ExpansionType
+	{
+		ET_LINEAR,
+		ET_EXPONENTIAL,     ///< expansion speed slows down exponentially?
+		NUM_EXPANSION_TYPES
+	};
+*/
 	/// impulse given to the entity hit by the blast
 	/// Impulse is calculated every frame as m_vImpulse * frametime
 	/// and applied to the entity if it overlaps with the blast volume
 	float m_fImpulse;
 
-	CUnitCube *m_pUnitCube;	// draw boundary for debug
+	boost::shared_ptr<CUnitCube> m_pUnitCube;	// draw boundary for debug
 
 public:
 	CBE_Blast();

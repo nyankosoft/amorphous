@@ -1,4 +1,3 @@
-
 #include "BE_Blast.hpp"
 
 #include "GameMessage.hpp"
@@ -8,10 +7,14 @@
 
 #include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/Direct3D9.hpp"
-
-
 #include "Graphics/UnitCube.hpp"
 #include "Support/SafeDelete.hpp"
+#include "3DMath/MathMisc.hpp"
+
+using namespace boost;
+
+
+#define LOG_PRINTF(x) LOG_PRINT( string(" ") + fmt_string x )
 
 
 float& CurrentBlastTime( CCopyEntity *pEntity ) { return pEntity->f2; }
@@ -26,19 +29,24 @@ CBE_Blast::CBE_Blast()
 
 	m_fImpulse = 100.0f;
 
-	m_pUnitCube = NULL;
+	m_fBaseDamage = 1000.0f;
+
+	m_fMaxBlastRadius = 1.0f;
+
+	m_fBlastDuration = 0.1f;
+
+	m_fLinearExpansionSpeed = 1000000.0f;
 }
 
 
 CBE_Blast::~CBE_Blast()
 {
-	SafeDelete( m_pUnitCube );
 }
 
 
 void CBE_Blast::Init()
 {
-	m_pUnitCube = new CUnitCube;
+	m_pUnitCube = shared_ptr<CUnitCube>( new CUnitCube );
 	m_pUnitCube->Init();
 //	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
 }
@@ -72,8 +80,12 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 		rfCurrentBlastTime = m_fBlastDuration;
 	}
 
+//	float fCurrentBlastRadius
+//		= m_fMaxBlastRadius * rfCurrentBlastTime / m_fBlastDuration;
+
 	float fCurrentBlastRadius
-		= m_fMaxBlastRadius * rfCurrentBlastTime / m_fBlastDuration;
+		= m_fLinearExpansionSpeed * rfCurrentBlastTime;
+	Limit( fCurrentBlastRadius, 0.0f, m_fMaxBlastRadius );
 
 	// save blast radius
 	pCopyEnt->f3 = fCurrentBlastRadius;
@@ -83,7 +95,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 	CTrace tr;
 	STrace tr2;
 	static vector<CCopyEntity *> s_vecpEntityBuffer;
-	
+
 	s_vecpEntityBuffer.resize( 0 );
 	tr.SetTouchEntityBuffer( &s_vecpEntityBuffer );
 	tr.SetSphere( pCopyEnt->Position(), fCurrentBlastRadius );
@@ -99,6 +111,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 	size_t iNumOvelappingEntities = tr.GetNumTouchEntities();
 	CCopyEntity* pTouchedEntity;
 
+	LOG_PRINTF(( " entity id: %d - Checking overlapping entities (%d) ", pCopyEnt->GetID(), iNumOvelappingEntities ));
 
 //	tr2.SetTraceType( TRACETYPE_IGNORE_NOCLIP_ENTITIES );
 	tr2.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
@@ -195,10 +208,11 @@ void CBE_Blast::Draw(CCopyEntity* pCopyEnt)
 
 bool CBE_Blast::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
-	if( scanner.TryScanLine( "BASEDAMAGE",	m_fBaseDamage ) ) return true;
-	if( scanner.TryScanLine( "MAX_RADIUS",	m_fMaxBlastRadius ) ) return true;
-	if( scanner.TryScanLine( "DURATION",	m_fBlastDuration ) ) return true;
-	if( scanner.TryScanLine( "IMPULSE",		m_fImpulse ) ) return true;
+	if( scanner.TryScanLine( "BASEDAMAGE",      m_fBaseDamage ) ) return true;
+	if( scanner.TryScanLine( "MAX_RADIUS",      m_fMaxBlastRadius ) ) return true;
+	if( scanner.TryScanLine( "DURATION",        m_fBlastDuration ) ) return true;
+	if( scanner.TryScanLine( "EXPANSION_SPEED",	m_fLinearExpansionSpeed) ) return true;
+	if( scanner.TryScanLine( "IMPULSE",         m_fImpulse ) ) return true;
 
 	return false;
 }
@@ -211,5 +225,6 @@ void CBE_Blast::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fBaseDamage;
 	ar & m_fMaxBlastRadius;
 	ar & m_fBlastDuration;
+	ar & m_fLinearExpansionSpeed;
 	ar & m_fImpulse;
 }
