@@ -126,6 +126,8 @@ void CApplicationBase::InitDebugItems()
 
 	DebugOutput.SetTopLeftPos( Vector2(16,32) );
 
+	DebugOutput.Hide();
+
 //	DebugOutput.SetBackgroundColor( 0x80000000 );
 
 
@@ -165,17 +167,6 @@ bool CApplicationBase::InitBase()
 	boost::filesystem::create_directory( "./Item" );
 	boost::filesystem::create_directory( "./Script" );
 	boost::filesystem::create_directory( "./SaveData" );
-
-	CGameStageFrameworkGlobalParams gsf_params;
-	bool loaded = gsf_params.LoadFromTextFile( "../resources/gsf_params" );
-	if( loaded )
-	{
-		// update binary file
-		gsf_params.SaveToFile( "./System/gsf.bin" );
-	}
-
-	gsf_params.LoadFromFile( "./System/gsf.bin" );
-	gsf_params.UpdateParams();
 
 	// update material file
 	CSurfaceMaterialManager surf_mat_mgr;
@@ -249,6 +240,19 @@ bool CApplicationBase::InitBase()
 	CGameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", CGameTask::ID_GLOBALSTAGELOADER );
 
 	InitDebugItems();
+
+	// load and update global params of the framework
+	CGameStageFrameworkGlobalParams gsf_params;
+	bool loaded = gsf_params.LoadFromTextFile( "../resources/gsf_params" );
+	if( loaded )
+	{
+		// update binary file
+		// - used in a release version of the software
+		gsf_params.SaveToFile( "./System/gsf.bin" );
+	}
+
+	gsf_params.LoadFromFile( "./System/gsf.bin" );
+	gsf_params.UpdateParams();
 
 	// start the timer
 //	GlobalTimer.Start();
