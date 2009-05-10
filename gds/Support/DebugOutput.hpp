@@ -117,6 +117,9 @@ public:
 	void PrevDebugItem() { SetPrevIndex( m_ItemIndex, m_vecpDebugItem ); }
 	void NextDebugItem() { SetNextIndex( m_ItemIndex, m_vecpDebugItem ); }
 
+	/// Returns true on success
+	bool SetDebugItem( const std::string& item_name );
+
 	void Show() { m_bDisplay = true; }
 	void Hide() { m_bDisplay = false; }
 	void ToggleDisplay() { m_bDisplay = !m_bDisplay; }

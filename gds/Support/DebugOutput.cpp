@@ -317,6 +317,22 @@ void CDebugOutput::SetDebugItemIndex( int index )
 }
 
 
+bool CDebugOutput::SetDebugItem( const std::string& item_name )
+{
+	size_t i, num_items = m_vecpDebugItem.size();
+	for( i=0; i<num_items; i++ )
+	{
+		if( m_vecpDebugItem[i]->GetName() == item_name )
+		{
+			SetDebugItemIndex( (int)i );
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 void CDebugOutput::ReleaseGraphicsResources()
 {
 	m_pFont->Release();
