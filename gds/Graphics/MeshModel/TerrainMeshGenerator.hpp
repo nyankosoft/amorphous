@@ -32,8 +32,6 @@ public:
 
 	int m_TextureIndex;
 
-	bool IsLeaf() const { return ( m_child.size() == 0 ); }
-
 public:
 
 	TerrainMeshNode()
@@ -41,7 +39,23 @@ public:
 	m_Axis(-1)
 	{
 	}
+
+	bool IsLeaf() const { return ( m_child.size() == 0 ); }
+
+	inline int GetNumNodes_r();
 };
+
+
+inline int TerrainMeshNode::GetNumNodes_r()
+{
+	int num_child_nodes = 0;
+	for( size_t i=0; i<m_child.size(); i++ )
+		num_child_nodes += m_child[i].GetNumNodes_r();
+
+	return num_child_nodes + 1;
+}
+
+
 
 /**
  * creates a binary tree that stores polygons in its root nodes
@@ -120,6 +134,8 @@ public:
 	void SetTerrainTexCoordShiftV( double shift_v ) { m_TexCoordShiftV = shift_v; }
 
 	TerrainMeshNode& GetRootNode() { return m_RootNode; }
+
+	int GetNumNodes() { return m_RootNode.GetNumNodes_r(); }
 
 	boost::shared_ptr<CGeneral3DMesh> GetDestMesh() { return m_pDestMesh; }
 

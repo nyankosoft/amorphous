@@ -16,6 +16,12 @@ using namespace std;
 using namespace boost;
 
 
+double log2( double scalar )
+{
+	return log( scalar ) / log( 2.0 );
+}
+
+
 /// filepath printer for Mesh Generator
 class CMGSplitImageFilepathPrinter : public CSplitImageFilepathPrinter
 {
@@ -395,14 +401,18 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 		CScopeLog sl( " Scaling texture coords..." );
 
 		// leaf node
-		double min_u = 0.000007, max_u = 0.999996;		// taken from arctic2/test30.07.lwo
-		double tex_scale_u = 1.0 / ( max_u - min_u );
+//		double min_u = 0.000007, max_u = 0.999996;		// taken from arctic2/test30.07.lwo
+//		double tex_scale_u = 1.0 / ( max_u - min_u );
 
 		AABB3 &root_aabb = m_RootNode.m_AABB;
-		const double mesh_side_length = root_aabb.vMax.x - root_aabb.vMin.x;
-		const double num_segs_x = (double)(m_TargetDepth - 1);
+		const double mesh_length_x = root_aabb.vMax.x - root_aabb.vMin.x;
+		const double mesh_length_z = root_aabb.vMax.z - root_aabb.vMin.z;
+//		const double num_segs_x = (double)(m_TargetDepth - 1);
+		const double num_segs_x = exp( (double)(m_TargetDepth - 1) / 2.0 * log(2.0) );
 		size_t i, num_pols = node.m_vecPolygonIndex.size();
 		size_t j, num_verts;
+		ONCE( g_Log.Print( "mesh_side_length: %f, root_aabb.vMin.x: %f, root_aabb.vMax.x: %f, num_segs_x: %f",
+			mesh_length_x, root_aabb.vMin.x, root_aabb.vMax.x, num_segs_x ) );
 		for( i=0; i<num_pols; i++ )
 		{
 			CIndexedPolygon& polygon = vecPolygonBuffer[node.m_vecPolygonIndex[i]];
@@ -419,9 +429,17 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 
 //				u = ( u - min_u ) * tex_scale_u;	// original tex coord is slightly shifted inward - reverse the offset
 
-				u = ( ( u - (  node.m_AABB.vMin.x / mesh_side_length + 0.5 ) ) * num_segs_x );
-				v = ( ( v - (- node.m_AABB.vMax.z / mesh_side_length + 0.5 ) ) * num_segs_x );
+//				u = ( ( u - (  node.m_AABB.vMin.x / mesh_side_length + 0.5 ) ) * num_segs_x );
+//				v = ( ( v - (- node.m_AABB.vMax.z / mesh_side_length + 0.5 ) ) * num_segs_x );
 
+				// offset
+				u = u - (   node.m_AABB.vMin.x - root_aabb.vMin.x  ) / mesh_length_x;
+				v = v - (- (node.m_AABB.vMax.z - root_aabb.vMax.z) ) / mesh_length_z;
+
+				// scaling
+				u = u * num_segs_x;
+				v = v * num_segs_x;
+/*
 //				u -= 0.0078757f;
 //				v += 0.0078757f;
 				u += m_TexCoordShiftU;
@@ -433,7 +451,7 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 //				tex.v = ( tex.v * ( tex_width - 1.0f ) / tex_width ) + delta * 0.5f;
 				u = ( u * ( 1.0 - delta ) ) + delta * 0.5;
 				v = ( v * ( 1.0 - delta ) ) + delta * 0.5;
-
+*/
 				tex.u = u;
 				tex.v = v;
 
@@ -560,7 +578,8 @@ void CTerrainMeshGenerator::CreateMeshTree()
 {
 	LOG_FUNCTION_SCOPE();
 
-	int tree_depth = m_NumTexEdgeSplits + 1;
+//	int tree_depth = m_NumTexEdgeSplits + 1;
+	int tree_depth = 2 * (int)log2( m_NumTexEdgeSplits ) + 1;
 
 	m_MeshTree.Build( m_pSrcMesh, tree_depth );
 
@@ -648,6 +667,10 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<CGeneral3DMesh> 
 
 	/// create mesh archives
 	m_MeshTree.MakeMesh();
-	
+
+	LOG_PRINT( fmt_string( " Created a mesh tree. num nodes: %d / dest mesh - num materials: %d",
+		m_MeshTree.GetNumNodes(),
+		m_MeshTree.GetDestMesh() ? m_MeshTree.GetDestMesh()->GetNumMaterials() : -1 ) );
+
 	return true;
 }
