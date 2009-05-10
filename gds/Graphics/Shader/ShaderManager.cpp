@@ -104,39 +104,26 @@ void CShaderManager::Reload()
 }
 
 
-bool CShaderManager::LoadShaderFromFile( const string& filename )
+void CShaderManager::PrintCompilerErrors( LPD3DXBUFFER pCompileErrors )
 {
-	Release();
-
-	m_strFilename = filename;
-
-	CD3DXInclude d3dx_include;
-	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
-
-	HRESULT hr;	
-	LPD3DXBUFFER pCompileErrors;
-	hr = D3DXCreateEffectFromFile( DIRECT3D9.GetDevice(), filename.c_str(), NULL, pD3DXInclude, 0, 
-                                        NULL, &m_pEffect, &pCompileErrors );
-
-	if( FAILED(hr) )
+	if( pCompileErrors )
 	{
-		LOG_PRINT_ERROR( " - Cannot create an effect object from the HLSL effect file: " + filename );
-
-		if( pCompileErrors )
-		{
-			char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
-			g_Log.Print( WL_ERROR, "CShaderManager::LoadShaderFromFile() - %s", pBuffer );
-			pCompileErrors->Release();
-		}
-
-		if(hr == D3DERR_INVALIDCALL)			return false;
-		else if(hr == D3DXERR_INVALIDDATA)		return false;
-		else if(hr == E_OUTOFMEMORY)			return false;
-		else									return false;
-
-		return false;
+		char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
+		g_Log.Print( WL_ERROR, "CShaderManager::LoadShaderFromFile() - %s", pBuffer );
+		pCompileErrors->Release();
 	}
+/*
+	if(hr == D3DERR_INVALIDCALL)			return;
+	else if(hr == D3DXERR_INVALIDDATA)		return;
+	else if(hr == E_OUTOFMEMORY)			return;
+	else									return;
+*/
+	return;
+}
 
+
+bool CShaderManager::Init()
+{
 	m_aMatrixHandle[MATRIX_WORLD]           = m_pEffect->GetParameterBySemantic( NULL, "WORLD" );
 	m_aMatrixHandle[MATRIX_VIEW]            = m_pEffect->GetParameterBySemantic( NULL, "VIEW" );
 	m_aMatrixHandle[MATRIX_PROJ]            = m_pEffect->GetParameterBySemantic( NULL, "PROJ" );
@@ -166,6 +153,65 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 	m_vecParamHandle.reserve( 8 );
 
 	return true;
+}
+
+
+bool CShaderManager::LoadShaderFromFile( const string& filename )
+{
+	LOG_FUNCTION_SCOPE();
+
+	Release();
+
+	m_strFilename = filename;
+
+	CD3DXInclude d3dx_include;
+	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
+
+	HRESULT hr;	
+	LPD3DXBUFFER pCompileErrors;
+	hr = D3DXCreateEffectFromFile( DIRECT3D9.GetDevice(), filename.c_str(),
+		                           NULL, pD3DXInclude, 0, 
+                                   NULL, &m_pEffect, &pCompileErrors );
+
+	if( FAILED(hr) )
+	{
+		LOG_PRINT_ERROR( " - Failed create an effect object from the HLSL effect file from: " + filename );
+		PrintCompilerErrors( pCompileErrors );
+		return false;
+	}
+
+	return Init();
+}
+
+
+bool CShaderManager::LoadShaderFromText( const stream_buffer& buffer )
+{
+	LOG_FUNCTION_SCOPE();
+
+	Release();
+
+	m_strFilename = "";
+
+	if( buffer.get_buffer().size() == 0 )
+		return false;
+
+	CD3DXInclude d3dx_include;
+	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
+
+	HRESULT hr;	
+	LPD3DXBUFFER pCompileErrors;
+	hr = D3DXCreateEffect( DIRECT3D9.GetDevice(), &(buffer.get_buffer()[0]),
+		                               (UINT)buffer.get_buffer().size(),
+		                               NULL, pD3DXInclude, 0, 
+                                       NULL, &m_pEffect, &pCompileErrors );
+
+	if( FAILED(hr) )
+	{
+		PrintCompilerErrors( pCompileErrors );
+		return false;
+	}
+
+	return Init();
 }
 
 

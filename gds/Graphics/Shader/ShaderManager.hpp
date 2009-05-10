@@ -14,6 +14,8 @@
 #include "Graphics/fwd.hpp"
 #include "Graphics/TextureHandle.hpp"
 
+#include "Support/stream_buffer.hpp"
+
 
 typedef D3DXMATRIX Matrix44;
 
@@ -99,6 +101,10 @@ private:
 
 	void UpdateVacantTechniqueIndex();
 
+	void PrintCompilerErrors( LPD3DXBUFFER pCompileErrors );
+
+	bool Init();
+
 public:
 
 	CShaderManager();
@@ -106,6 +112,8 @@ public:
 	~CShaderManager();
 
 	bool LoadShaderFromFile( const std::string& filename );
+
+	bool LoadShaderFromText( const stream_buffer& buffer );
 
 	void Release();
 
