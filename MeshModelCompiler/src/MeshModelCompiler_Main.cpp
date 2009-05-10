@@ -226,6 +226,10 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR	 lpCmdLi
                               WS_OVERLAPPEDWINDOW, 200, 200, 640, 480,
                               GetDesktopWindow(), NULL, wc.hInstance, NULL );
 
+	string init_wd( fnop::get_cwd() );
+	if( init_wd.find( "\\app" ) != init_wd.length() - 4 )
+		fnop::set_wd( "../app" );
+
     // Initialize Direct3D
 	if( !DIRECT3D9.InitD3D(hWnd) )
 		return 0;
