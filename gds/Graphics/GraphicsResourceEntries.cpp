@@ -650,6 +650,7 @@ bool CMeshResource::CreateFromDesc()
 	if( pMeshObject )
 	{
 		m_pMeshObject = shared_ptr<CD3DXMeshObjectBase>( pMeshObject );
+		SetState( GraphicsResourceState::LOADED );
 		return true;
 	}
 	else

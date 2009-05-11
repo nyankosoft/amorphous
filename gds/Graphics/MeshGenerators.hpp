@@ -2,6 +2,7 @@
 #define __MeshGenerator_H__
 
 
+#include "Graphics/MeshModel/PrimitiveShapeMeshes.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
@@ -61,6 +62,20 @@ public:
 		const SFloatRGBAColor& diffuse_color = SFloatRGBAColor(1.0f, 1.0f, 1.0f, 1.0f) );
 };
 
+
+class CConeMeshGenerator : public CMeshGenerator
+{
+	CConeDesc m_Desc;
+
+public:
+
+	CConeMeshGenerator( CConeDesc& desc )
+		:
+	m_Desc(desc)
+	{}
+
+	Result::Name Generate();
+};
 
 
 #endif  /* __MeshGenerator_H__ */

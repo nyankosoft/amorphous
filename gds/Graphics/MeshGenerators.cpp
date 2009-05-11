@@ -90,3 +90,11 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 
 	return Result::SUCCESS;
 }
+
+
+Result::Name CConeMeshGenerator::Generate()
+{
+	CreateConeMeshArchive( m_Desc, m_MeshArchive );
+
+	return Result::SUCCESS;
+}
