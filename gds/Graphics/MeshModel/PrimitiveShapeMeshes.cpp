@@ -45,7 +45,7 @@ void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
 	float segment_height = desc.body_height / (float)desc.num_segments;
 
 
-	Vector3 vBaseNormal = Vec3GetNormalized( Vector3( 0.0f, desc.radius, desc.cone_height ) );
+	const Vector3 vBaseNormal = Vec3GetNormalized( Vector3( 0.0f, desc.cone_height, desc.radius ) );
 
 	// calculate the cone along the positive direction of the z-axis
 	// - vertices in clockwise order
@@ -61,10 +61,10 @@ void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
 		{
 			float angle = - ( 2.0f * (float)PI ) * (float)j / (float)desc.num_sides + (float)PI * 0.5f;
 //			angle *= -1;
-			vecVertex[vert_index].m_vPosition = Vector3( cos( angle ) * r, -sin( angle ) * r, z );
+			vecVertex[vert_index].m_vPosition = Vector3( cos( angle ) * r, sin( angle ) * r, z );
 //			vecVertex[vert_index] =
 
-			vecVertex[vert_index].m_vNormal = Matrix33RotationZ( angle ) * vBaseNormal;
+			vecVertex[vert_index].m_vNormal = Matrix33RotationZ( -angle + (float)PI * 0.5f ) * vBaseNormal;
 
 			vecVertex[vert_index].m_TextureCoord.resize( 1 );
 			vecVertex[vert_index].m_TextureCoord[0].u = (float)i / (float)desc.num_segments;
