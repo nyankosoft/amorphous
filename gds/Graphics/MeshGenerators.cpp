@@ -4,6 +4,20 @@ using namespace std;
 using namespace boost;
 
 
+void CMeshGenerator::SetMiscMeshAttributes()
+{
+	if( 0 < m_TexturePath.length() )
+	{
+		vector<CMMA_Material>& material_buffer = m_MeshArchive.GetMaterial();
+		if( 0 < material_buffer.size() )
+		{
+			material_buffer[0].vecTexture.resize( 1 );
+			material_buffer[0].vecTexture[0].strFilename = m_TexturePath;
+		}
+	}
+}
+
+
 Result::Name CBoxMeshGenerator::Generate()
 {
 	return Generate( m_vEdgeLengths,
@@ -15,11 +29,20 @@ Result::Name CBoxMeshGenerator::Generate()
 Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, const SFloatRGBAColor& diffuse_color )
 {
 	const int num_vertices = 24;
-	CMMA_VertexSet& vertex_set = m_MeshArchive.GetVertexSet();
+	const int num_faces = 6;
 
-	vertex_set.Resize( num_vertices );
+//	CMMA_VertexSet& vertex_set = m_MeshArchive.GetVertexSet();
 
-    vector<Vector3>& vecPosition = vertex_set.vecPosition;
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	pMesh->SetVertexFormatFlags( vertex_flags );
+
+	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = pMesh->GetVertexBuffer();
+
+	pVertexBuffer->resize( num_vertices );
+	vector<CGeneral3DVertex>& vecVertex = (*pVertexBuffer.get());
+
+//	vertex_set.Resize( num_vertices );
+//	vector<Vector3>& vecPosition = vertex_set.vecPosition;
 
 	int iAxis, i;
 
@@ -28,40 +51,40 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 	const float z = vLengths.z * 0.5f;
 
 	// top
-	vecPosition[ 0] = Vector3( -x,  y,  z );
-	vecPosition[ 1] = Vector3(  x,  y,  z );
-	vecPosition[ 2] = Vector3(  x,  y, -z );
-	vecPosition[ 3] = Vector3( -x,  y, -z );
+	vecVertex[ 0].m_vPosition = Vector3( -x,  y,  z );
+	vecVertex[ 1].m_vPosition = Vector3(  x,  y,  z );
+	vecVertex[ 2].m_vPosition = Vector3(  x,  y, -z );
+	vecVertex[ 3].m_vPosition = Vector3( -x,  y, -z );
 
 	// bottom
-	vecPosition[ 4] = Vector3(  x, -y,  z );
-	vecPosition[ 5] = Vector3( -x, -y,  z );
-	vecPosition[ 6] = Vector3( -x, -y,  z );
-	vecPosition[ 7] = Vector3(  x, -y,  z );
+	vecVertex[ 4].m_vPosition = Vector3(  x, -y,  z );
+	vecVertex[ 5].m_vPosition = Vector3( -x, -y,  z );
+	vecVertex[ 6].m_vPosition = Vector3( -x, -y,  z );
+	vecVertex[ 7].m_vPosition = Vector3(  x, -y,  z );
 
 	// near
-	vecPosition[ 8] = Vector3( -x,  y, -z );
-	vecPosition[ 9] = Vector3(  x,  y, -z );
-	vecPosition[10] = Vector3(  x, -y, -z );
-	vecPosition[11] = Vector3( -x, -y, -z );
+	vecVertex[ 8].m_vPosition = Vector3( -x,  y, -z );
+	vecVertex[ 9].m_vPosition = Vector3(  x,  y, -z );
+	vecVertex[10].m_vPosition = Vector3(  x, -y, -z );
+	vecVertex[11].m_vPosition = Vector3( -x, -y, -z );
 
 	// far
-	vecPosition[12] = Vector3(  x,  y,  z );
-	vecPosition[13] = Vector3( -x,  y,  z );
-	vecPosition[14] = Vector3( -x, -y,  z );
-	vecPosition[15] = Vector3(  x, -y,  z );
+	vecVertex[12].m_vPosition = Vector3(  x,  y,  z );
+	vecVertex[13].m_vPosition = Vector3( -x,  y,  z );
+	vecVertex[14].m_vPosition = Vector3( -x, -y,  z );
+	vecVertex[15].m_vPosition = Vector3(  x, -y,  z );
 
 	// right
-	vecPosition[16] = Vector3(  x,  y, -z );
-	vecPosition[17] = Vector3(  x,  y,  z );
-	vecPosition[18] = Vector3(  x, -y,  z );
-	vecPosition[19] = Vector3(  x, -y, -z );
+	vecVertex[16].m_vPosition = Vector3(  x,  y, -z );
+	vecVertex[17].m_vPosition = Vector3(  x,  y,  z );
+	vecVertex[18].m_vPosition = Vector3(  x, -y,  z );
+	vecVertex[19].m_vPosition = Vector3(  x, -y, -z );
 
 	// left
-	vecPosition[20] = Vector3( -x,  y,  z );
-	vecPosition[21] = Vector3( -x,  y, -z );
-	vecPosition[22] = Vector3( -x, -y, -z );
-	vecPosition[23] = Vector3( -x, -y,  z );
+	vecVertex[20].m_vPosition = Vector3( -x,  y,  z );
+	vecVertex[21].m_vPosition = Vector3( -x,  y, -z );
+	vecVertex[22].m_vPosition = Vector3( -x, -y, -z );
+	vecVertex[23].m_vPosition = Vector3( -x, -y,  z );
 
 	for( iAxis=0; iAxis<3; iAxis++ )
 	{
@@ -69,24 +92,60 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 		vConstAxis[iAxis] = 1;
 		for(i=0; i<4; i++)
 		{
-			vertex_set.vecNormal[iAxis*8 + i    ] = vConstAxis;// * 10.0f;
-			vertex_set.vecNormal[iAxis*8 + i + 4] = vConstAxis * (-1);
+			vecVertex[iAxis*8 + i    ].m_vNormal = vConstAxis;// * 10.0f;
+			vecVertex[iAxis*8 + i + 4].m_vNormal = vConstAxis * (-1);
 		}
 	}
+
+	// indices
+	vector<CIndexedPolygon>& polygon_buffer = pMesh->GetPolygonBuffer();
+	polygon_buffer.resize( num_faces );
+	for( i=0; i<num_faces; i++ )
+	{
+		polygon_buffer[i].m_index.resize( 4 );
+		for( int j=0; j<4; j++ )
+			polygon_buffer[i].m_index[j] = i*4+j;
+	}
+
+
+	//
+	// additional vertex attributes
+	//
 
 	if( vertex_flags & CMMA_VertexSet::VF_DIFFUSE_COLOR )
 	{
 		for(i=0; i<num_vertices; i++)
-			vertex_set.vecDiffuseColor[i] = diffuse_color;
+			vecVertex[i].m_DiffuseColor = diffuse_color;
 	}
 
 	if( vertex_flags & CMMA_VertexSet::VF_2D_TEXCOORD0 )
 	{
-		vertex_set.vecTex.resize( 1 );
-		vertex_set.vecTex[0].resize( num_vertices, TEXCOORD2(0,0) );
-//		for(i=0; i<num_vertices; i++)
-//			vertex_set.vecTex[0][i] = ???;
+//		vertex_set.vecTex.resize( 1 );
+
+//	if( m_TexturePath.length() )
+//	{
+//		vector<TEXCOORD2>& vecTex = vertex_set.vecTex[0];
+		// 1 tex uv for each vertex
+		for( int i=0; i<num_vertices; i++ )
+			vecVertex[i].m_TextureCoord.resize( 1 );
+
+		for( int i=0; i<num_faces; i++ )
+		{
+			vecVertex[i*4+0].m_TextureCoord[0] = TEXCOORD2(0,0);
+			vecVertex[i*4+1].m_TextureCoord[0] = TEXCOORD2(1,0);
+			vecVertex[i*4+2].m_TextureCoord[0] = TEXCOORD2(1,1);
+			vecVertex[i*4+3].m_TextureCoord[0] = TEXCOORD2(0,1);
+		}
 	}
+
+	pMesh->GetMaterialBuffer().resize( 1 );
+
+	// Create mesh archive from the mesh
+	C3DMeshModelBuilder mesh_builder;
+	mesh_builder.BuildMeshModelArchive( pMesh );
+	m_MeshArchive = mesh_builder.GetArchive();
+
+	SetMiscMeshAttributes();
 
 	return Result::SUCCESS;
 }
@@ -95,6 +154,8 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 Result::Name CConeMeshGenerator::Generate()
 {
 	CreateConeMeshArchive( m_Desc, m_MeshArchive );
+
+	SetMiscMeshAttributes();
 
 	return Result::SUCCESS;
 }

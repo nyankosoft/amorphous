@@ -48,6 +48,19 @@ public:
 };
 
 
+class CBoxDesc
+{
+	Vector3 vLengths;
+
+public:
+
+	CBoxDesc()
+		:
+	vLengths( Vector3(1,1,1) )
+	{}
+};
+
+
 extern void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh );
 
 

@@ -17,9 +17,21 @@ protected:
 
 	U32 m_RequestedVertexFormatFlags;
 
+	std::string m_TexturePath;
+
+protected:
+
+	/// Generate() of subclasses need to call this after creating mesh
+	/// and store it to m_MeshArchive
+	void SetMiscMeshAttributes();
+
 public:
 
-	CMeshGenerator() {}
+	CMeshGenerator()
+		:
+	m_DiffuseColor( SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f) )
+	{}
+
 	virtual ~CMeshGenerator() {}
 
 	const C3DMeshModelArchive& GetMeshArchive() const { return m_MeshArchive; }
@@ -29,6 +41,8 @@ public:
 	void SetVertexFormatFlags( U32 vert_flags ) { m_RequestedVertexFormatFlags = vert_flags; }
 
 	void SetDiffuseColor( const SFloatRGBAColor &diffuse_color ) { m_DiffuseColor = diffuse_color; }
+
+	void SetTexturePath( const std::string& texture_path ) { m_TexturePath = texture_path; }
 
 	virtual Result::Name Generate() = 0;
 };
