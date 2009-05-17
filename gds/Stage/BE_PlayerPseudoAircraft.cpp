@@ -172,23 +172,26 @@ void CBE_PlayerPseudoAircraft::Init()
 	SinglePlayerInfo().SetStage( m_pStage->GetWeakPtr() );
 
 	m_pPlayerAircraftHUD = new HUD_PlayerAircraft;
-	m_pPlayerAircraftHUD->Init();
-
-	CTextMessageManager* pTextMsgMgr = m_pPlayerAircraftHUD->GetTextMessageManager();
-	int msg_priority = 0;
-
-	const char *msgs[] =
+	if( m_pPlayerAircraftHUD )
 	{
-		"Way to go, captain!",
-		"That was dead on!",
-	};
+		m_pPlayerAircraftHUD->Init();
 
-	for( int i=0; i<numof(msgs); i++ )
-	{
-		int msg_index = pTextMsgMgr->StartLoadMessage( msg_priority );
-		pTextMsgMgr->AddMessageRef( "Somebody", msgs[i] );
+		CTextMessageManager* pTextMsgMgr = m_pPlayerAircraftHUD->GetTextMessageManager();
+		int msg_priority = 0;
 
-		m_vecMessageIndex[TM_DESTROYED_ENEMY].push_back( msg_index );
+		const char *msgs[] =
+		{
+			"Way to go, captain!",
+			"That was dead on!",
+		};
+
+		for( int i=0; i<numof(msgs); i++ )
+		{
+			int msg_index = pTextMsgMgr->StartLoadMessage( msg_priority );
+			pTextMsgMgr->AddMessageRef( "Somebody", msgs[i] );
+
+			m_vecMessageIndex[TM_DESTROYED_ENEMY].push_back( msg_index );
+		}
 	}
 
 	m_pShortRangeRadar = ItemDatabaseManager().GetItem<CRadar>( "ShortRangeRadar", 1 );
@@ -408,7 +411,8 @@ void CBE_PlayerPseudoAircraft::InitSubDisplay()
 	m_SubDisplay.SetStage( m_pStageWeakPtr );
 
 	// set borrowed reference
-	m_pPlayerAircraftHUD->SetSubDisplay( &m_SubDisplay );
+	if( m_pPlayerAircraftHUD )
+		m_pPlayerAircraftHUD->SetSubDisplay( &m_SubDisplay );
 
 	CCopyEntity* pPlayerEntity = GetPlayerCopyEntity();
 	Vector3 vPos = pPlayerEntity->Position() + pPlayerEntity->GetWorldPose().matOrient.GetColumn(2) * 1000.0f;
