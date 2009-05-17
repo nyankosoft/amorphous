@@ -244,6 +244,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 	{
 		// load the mesh
 //		mesh_holder.m_Mesh.LoadAsync( mesh_holder.m_Desc );
+//		m_setResourcesToLoad.insert( mesh_holder.m_Mesh.GetEntry() );
 	}
 	else if( state == GraphicsResourceState::LOADED )
 	{
@@ -260,9 +261,10 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 			const float mesh_subset_radius = mesh_subset_aabb.CreateBoundingSphere().radius;
 			Vector3 vMeshSubsetCenterPos = mesh_subset_aabb.GetCenterPosition();
 			float mesh_subset_dist = Vec3Length( vMeshSubsetCenterPos - rCam.GetPosition() );
+			float dbg_tex_load_height = 30000.0f;//3000.0f;
 
 			if( mesh_subset_dist < ( cam_sphere.radius + mesh_subset_radius ) * gs_fDistMarginFactor// )
-			 && rCam.GetPosition().y < 3000 )
+			 && rCam.GetPosition().y < dbg_tex_load_height )
 			{
 				// load the texture
 				CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
@@ -270,17 +272,23 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 				for( size_t k=0; k<num_textures; k++ )
 				{
 					if( mat.Texture[k].GetEntryState() == GraphicsResourceState::RELEASED )
+					{
 						mat.LoadTextureAsync( k );
+//						m_setResourcesToLoad.insert( mat.Texture[k].GetEntry() );
+					}
 				}
 			}
-			else if( 3000 < rCam.GetPosition().y )
+			else if( dbg_tex_load_height < rCam.GetPosition().y )
 			{
 				CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
 				const size_t num_textures = mat.Texture.size();
 				for( size_t k=0; k<num_textures; k++ )
 				{
 					if( mat.Texture[k].GetEntryState() == GraphicsResourceState::LOADED )
+					{
 						mat.Texture[k].Release();
+//						m_setReleasedResources.insert( mat.Texture[k].GetEntry() );
+					}
 				}
 			}
 		}
@@ -337,12 +345,16 @@ void CStaticGeometry::UpdateResources( const CCamera& rCam )
 void CStaticGeometry::UpdateResources_NonHierarchical( const CCamera& rCam )
 {
 	vector<CMeshSubset>& vecMeshSubset = m_Archive.m_MeshSubsetTree.GetGeometryBuffer();
+	const int num_mesh_subsets = (int)vecMeshSubset.size();
+
+	if( num_mesh_subsets == 0 )
+		return; // no mesh subsets - happens when the static geometry was not properly load.
 
 	// compute a sphere that contains camera with some margin
 	float r = rCam.GetFarClip() / cos( rCam.GetFOV() * 0.5f ) * gs_fDistMarginFactor;
 	Sphere cam_sphere = Sphere(rCam.GetPosition(),r);
 
-	int i, index, num_mesh_subsets = (int)vecMeshSubset.size();
+	int i, index;
 	int num_mesh_subsets_to_check_per_frame = 2;
 	for( i=0; i<num_mesh_subsets_to_check_per_frame; i++ )
 	{
