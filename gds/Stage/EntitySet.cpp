@@ -950,6 +950,9 @@ void CEntitySet::UpdatePhysics( float frametime )
 //			if( pEntity->inuse && pEntity->pPhysicsActor )
 			if( pEntity->inuse && 0 < pEntity->m_vecpPhysicsActor.size() )
                 pEntity->pBaseEntity->UpdatePhysics( pEntity, timestep );
+
+			UpdateEntityAfterMoving( pEntity );
+
 		}
 
 		ProfileEnd( "Entity Update (Physics)" );
@@ -1002,6 +1005,28 @@ void CEntitySet::SetCollisionGroup( int group, bool collision )
 
 //		this->m_pStage->GetPhysicsManager()->SetCollisionGroupState( group0, group1, collision );
 	}
+}
+
+
+void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
+{
+	PROFILE_FUNCTION();
+
+	if( pEntity->PrevPosition() != pEntity->Position() )
+	{
+		//'pEntity' has moved during this frame
+		pEntity->sState |= CESTATE_MOVED_DURING_LAST_FRAME;
+		pEntity->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
+
+		// update the link in the entity tree
+		pEntity->Unlink();
+		Link( pEntity );
+
+		// update world aabb
+		pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->Position() );
+	}
+	else
+		pEntity->sState &= ~CESTATE_MOVED_DURING_LAST_FRAME;
 }
 
 
@@ -1075,6 +1100,11 @@ void CEntitySet::UpdateAllEntities( float dt )
 			pEntity->pBaseEntity->Act( pEntity );
 		}
 
+		if( !pEntity->inuse )
+			continue; // terminated in its own update routine
+
+		UpdateEntityAfterMoving( pEntity );
+
 		// deal with entities touched during this frame
 		for(int i=0; i<pEntity->vecpTouchedEntity.size(); i++)
 		{
@@ -1092,7 +1122,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - updated active entities" ) );
 
 	// unlink and link the entity in the entity tree if it changed its position
-
+/*
 	for( pEntity = m_pEntityInUse.get();
 		 pEntity != NULL;
 		 pPrevEntity = pEntity, pEntity = pEntity->m_pNextRawPtr )
@@ -1100,27 +1130,9 @@ void CEntitySet::UpdateAllEntities( float dt )
 		if( !pEntity->inuse )
 			continue;
 
-		if( pEntity->PrevPosition() != pEntity->Position() )
-		{
-			ProfileBegin( "Entity Link Update" );
-
-			//'pEntity' has moved during this frame
-			pEntity->sState |= CESTATE_MOVED_DURING_LAST_FRAME;
-			pEntity->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
-
-			// update the link in the entity tree
-			pEntity->Unlink();
-			Link( pEntity );
-
-			// update world aabb
-			pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->Position() );
-
-			ProfileEnd( "Entity Link Update" );
-		}
-		else
-			pEntity->sState &= ~CESTATE_MOVED_DURING_LAST_FRAME;
+		UpdateEntityAfterMoving();
 	}
-
+*/
 }
 
 

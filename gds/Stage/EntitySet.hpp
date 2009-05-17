@@ -79,6 +79,8 @@ private:
 
 	void UpdatePhysics( float frametime );
 
+	inline void UpdateEntityAfterMoving( CCopyEntity *pEntity );
+
 	/// release entities that have been terminated and 'inuse' is false
 	inline void ReleaseTerminatedEntities();
 
