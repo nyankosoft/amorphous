@@ -110,7 +110,68 @@ PyObject* EntityAddPath( PyObject* self, PyObject* args )
 		* Matrix33RotationX( deg_to_rad(pitch) )
 		* Matrix33RotationY( deg_to_rad(heading) );
 
-    g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose( time + g_fTimeOffset, pose ) );
+    g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose( time + (float)g_fTimeOffset, pose ) );
+
+	return Py_None;
+}
+
+
+PyObject* SetCurrentPoseAsKeyframe( PyObject* self, PyObject* args )
+{
+    Py_INCREF( Py_None );
+
+	if( !gs_pTargetStage )
+		return Py_None;
+
+	if( !g_EntityMotionPathRequest.pTargetEntity )
+		return Py_None;
+
+	float time = 0;
+
+	int result = PyArg_ParseTuple( args, "|f", &time );
+
+	const Matrix34 pose = g_EntityMotionPathRequest.pTargetEntity->GetWorldPose();
+
+    g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose( time + (float)g_fTimeOffset, pose ) );
+
+	return Py_None;
+}
+
+
+/// Calculates and adds a keyframe from the specified speed and delta time.
+/// - The functions calculates the velocity from the current pose of the entity
+///   and the specified speed.
+/// - Then, it sets the pose as the keyframe by the following calculation
+/// - time of the keyframe is calculated by adding the specified delta time
+///   to the last keyframe.
+/// - The current orientation of the entity is set to the keyframe. 
+PyObject* CalculateNextKeyframeFromDeltaTimeAndSpeed( PyObject* self, PyObject* args )
+{
+    Py_INCREF( Py_None );
+
+	if( !gs_pTargetStage )
+		return Py_None;
+
+	if( !g_EntityMotionPathRequest.pTargetEntity )
+		return Py_None;
+
+	float delta_time, speed;
+
+	int result = PyArg_ParseTuple( args, "ff", &delta_time, &speed );
+
+	const Matrix34 current_pose = g_EntityMotionPathRequest.pTargetEntity->GetWorldPose();
+
+	Vector3 vVelocity = current_pose.matOrient.GetColumn(2) * speed;
+	Vector3 vDestPos = current_pose.vPosition + vVelocity * delta_time;
+
+	// pose
+	const Matrix34 pose = Matrix34( vDestPos, current_pose.matOrient );
+
+	// time
+	float base_time = 0 < g_EntityMotionPathRequest.vecKeyPose.size() ? g_EntityMotionPathRequest.vecKeyPose.back().time : 0;
+	float time = base_time + delta_time;
+
+    g_EntityMotionPathRequest.vecKeyPose.push_back( KeyPose( time + (float)g_fTimeOffset, pose ) );
 
 	return Py_None;
 }
@@ -268,15 +329,17 @@ PyObject* gsf::py::entity::SetPosition( PyObject* self, PyObject* args )
 
 PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
 {
-	{ "StartPath",				 EntityStartPath,                 METH_VARARGS, "notify the start of motion path set routine" },
-	{ "EndPath",				 EntityEndPath,                   METH_VARARGS, "notify the end of motion path set routine" },
-	{ "AddPath",				 EntityAddPath,                   METH_VARARGS, "add a way point for motion path" },
-	{ "SetTimeOffset",			 gsf::py::entity::SetTimeOffset,  METH_VARARGS, "set the offset of the time argument of AddPath()" },
-//	{ "GetVelocity",			 GetVelocity,                     METH_VARARGS, "" },
-//	{ "GetSpeed",				 GetSpeed,                        METH_VARARGS, "" },
-	{ "CreateStaticParticleSet", CreateStaticParticleSet,	      METH_VARARGS, "" },
-	{ "CommitStaticParticleSet", CommitStaticParticleSet,	      METH_VARARGS, "" },
-	{ "SetTarget",               gsf::py::entity::SetTarget,      METH_VARARGS, "find and lock the target entity for the subsequent calls" },
-	{ "SetPosition",             gsf::py::entity::SetPosition,    METH_VARARGS, "" },
+	{ "StartPath",				  EntityStartPath,                 METH_VARARGS, "notify the start of motion path set routine" },
+	{ "EndPath",				  EntityEndPath,                   METH_VARARGS, "notify the end of motion path set routine" },
+	{ "AddPath",				  EntityAddPath,                   METH_VARARGS, "add a way point (keyframe) for motion path" },
+	{ "SetCurrentPoseAsKeyframe", SetCurrentPoseAsKeyframe,        METH_VARARGS, "" },
+	{ "CalculateNextKeyframeFromDeltaTimeAndSpeed", CalculateNextKeyframeFromDeltaTimeAndSpeed,        METH_VARARGS, "" },
+	{ "SetTimeOffset",			  gsf::py::entity::SetTimeOffset,  METH_VARARGS, "set the offset of the time argument of AddPath()" },
+//	{ "GetVelocity",			  GetVelocity,                     METH_VARARGS, "" },
+//	{ "GetSpeed",				  GetSpeed,                        METH_VARARGS, "" },
+	{ "CreateStaticParticleSet",  CreateStaticParticleSet,         METH_VARARGS, "" },
+	{ "CommitStaticParticleSet",  CommitStaticParticleSet,         METH_VARARGS, "" },
+	{ "SetTarget",                gsf::py::entity::SetTarget,      METH_VARARGS, "find and lock the target entity for the subsequent calls" },
+	{ "SetPosition",              gsf::py::entity::SetPosition,    METH_VARARGS, "" },
 	{NULL, NULL}
 };
