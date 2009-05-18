@@ -517,6 +517,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp"
 					>
 				</File>
