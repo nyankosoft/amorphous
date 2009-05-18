@@ -111,16 +111,17 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 	size_t iNumOvelappingEntities = tr.GetNumTouchEntities();
 	CCopyEntity* pTouchedEntity;
 
-	LOG_PRINTF(( " entity id: %d - Checking overlapping entities (%d) ", pCopyEnt->GetID(), iNumOvelappingEntities ));
+//	LOG_PRINTF(( " entity id: %d - Checking overlapping entities (%d) ", pCopyEnt->GetID(), iNumOvelappingEntities ));
 
 //	tr2.SetTraceType( TRACETYPE_IGNORE_NOCLIP_ENTITIES );
 	tr2.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 	tr2.bvType = BVTYPE_DOT;
+//	tr2.GroupIndex = pCopyEnt->GroupIndex;
 
 	for(int i=0; i<iNumOvelappingEntities; i++)
 	{
-//		Release Mode: At least reached here
-//		MessageBox( NULL, "found entity in blast range", "Blast::Act()", MB_OK );
+//		Release Build: At least reached here
+//		LOG_PRINT( "Found an entity in blast range." );
 
 		if( tr.GetTouchEntity(i) == pCopyEnt )
 			continue;	// myself
@@ -139,7 +140,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 		if( tr2.pTouchedEntity == 0 )
 			continue;
 
-///		MessageBox( NULL, "entity in valid blast range", "Blast::Act()", MB_OK );
+//		LOG_PRINT( "entity in valid blast range" );
 
 		pTouchedEntity = tr2.pTouchedEntity;
 
@@ -149,7 +150,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 		if( pTouchedEntity->bNoClip )
 			continue;	// blast gives no damage to no-clip entities
 
-///		MessageBox( NULL, "sending blast damge", "Blast::Act()", MB_OK );
+//		LOG_PRINTF(( " Sending blast damge to an entity (name: %s)", pTouchedEntity->GetName().c_str() ));
 
 		// no oblstacle covering the entity from the blast
 		Vector3 vBlastCenterToTarget = pTouchedEntity->Position() - pCopyEnt->Position();
