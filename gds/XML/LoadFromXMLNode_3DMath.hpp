@@ -1,0 +1,52 @@
+#ifndef __LoadFromXMLNode_3DMath_H__
+#define __LoadFromXMLNode_3DMath_H__
+
+
+#include "3DMath/Matrix34.hpp"
+#include "XML/XMLNodeReader.hpp"
+
+
+/*
+goal
+<Pose>
+	<Position>0.0 2.0 1.0</Position>
+	<Rotation>
+		<Heading>30</Heading>
+		<Pitch>20</Pitch>
+		<Bank>0</Bank>
+	</Rotation>
+</Pose>
+*/
+inline void LoadFromXMLNode( CXMLNodeReader& reader, Vector3& dest )
+{
+	std::string pos_str;
+	reader.GetChildElementTextContent( "Position", pos_str );
+	sscanf( pos_str.c_str(), "%f %f %f", &dest.x, &dest.y, &dest.z );
+}
+
+
+// TODO: support rotation orders
+inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix33& dest )
+{
+	float heading = 0, pitch = 0, bank = 0;
+	Matrix33 matRotation = Matrix33Identity();
+
+	if( reader.GetChildElementTextContent( "Heading", heading ) )
+		matRotation = Matrix33RotationY( deg_to_rad(heading) );
+
+	reader.GetChildElementTextContent( "Pitch", pitch );
+		matRotation = Matrix33RotationX( deg_to_rad(pitch) );
+
+	reader.GetChildElementTextContent( "Bank", bank );
+		matRotation = Matrix33RotationZ( deg_to_rad(bank) );
+}
+
+
+inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix34& dest )
+{
+	LoadFromXMLNode( reader, dest.vPosition );
+	LoadFromXMLNode( reader.GetChild( "Rotation" ), dest.matOrient );
+}
+
+
+#endif /* __LoadFromXMLNode_3DMath_H__ */
