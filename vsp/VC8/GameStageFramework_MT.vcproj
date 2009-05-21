@@ -1685,6 +1685,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Item\RotatableTurret.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\RotatableTurret.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Item\WeaponSystem.cpp"
 					>
 				</File>
