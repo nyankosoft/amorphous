@@ -62,6 +62,8 @@ public:
 
 	void Update( float dt );
 
+	unsigned int GetArchiveObjectID() const { return ID_ROTATABLE_TURRET; }
+
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );

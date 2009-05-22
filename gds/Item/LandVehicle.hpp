@@ -45,6 +45,8 @@ public:
 
 	virtual void Update( float dt );
 
+	unsigned int GetArchiveObjectID() const { return ID_LAND_VEHICLE; }
+
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
@@ -99,6 +101,8 @@ public:
 	void UpdateTarget();
 
 	void Update( float dt );
+
+	unsigned int GetArchiveObjectID() const { return ID_ARMED_VEHICLE; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 

@@ -522,6 +522,9 @@ int CItemDatabaseBuilder::GetItemID( const string& class_name )
 	else if( class_name == "Aircraft" )          return CGameItem::ID_AIRCRAFT;
 	else if( class_name == "MissileLauncher" )   return CGameItem::ID_MISSILELAUNCHER;
 	else if( class_name == "Radar" )             return CGameItem::ID_RADAR;
+	else if( class_name == "RotatableTurret" )   return CGameItem::ID_ROTATABLE_TURRET;
+	else if( class_name == "LandVehicle" )       return CGameItem::ID_LAND_VEHICLE;
+	else if( class_name == "ArmedVehicle" )      return CGameItem::ID_ARMED_VEHICLE;
 
 	else
 	{

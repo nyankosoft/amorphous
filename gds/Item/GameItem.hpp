@@ -184,7 +184,10 @@ public:
 		ID_MISSILELAUNCHER,
 		ID_AIRCRAFT,
 		ID_RADAR,
-		NUM_IDS,
+		ID_ROTATABLE_TURRET,
+		ID_LAND_VEHICLE,
+		ID_ARMED_VEHICLE,
+		NUM_IDS
 	};
 
 	friend class CItemDatabaseBuilder;
