@@ -46,8 +46,11 @@ public:
 	/// get data in the form of 4x4 row major matrix
 	inline void GetRowMajorMatrix44( Scalar *pDest ) const;
 
-	friend Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs);
+	inline bool operator==( const Matrix34& rhs ) const;
 
+	bool operator!=( const Matrix34& rhs ) const { return !(*this == rhs); }
+
+	friend Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs);
 };
 
 
@@ -130,6 +133,12 @@ inline void Matrix34::GetRowMajorMatrix44( Scalar *pDest ) const
 	*(pDest + 4 * 3 + 0) = vPosition.x;
 	*(pDest + 4 * 3 + 1) = vPosition.y;
 	*(pDest + 4 * 3 + 2) = vPosition.z;
+}
+
+
+inline bool Matrix34::operator==( const Matrix34& rhs ) const
+{
+	return ( (vPosition == rhs.vPosition) && (matOrient == rhs.matOrient) );
 }
 
 

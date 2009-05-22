@@ -189,6 +189,18 @@ inline void Matrix33::SetRotationZ( const Scalar angle )
 }
 
 
+inline bool Matrix33::operator==( const Matrix33& rhs ) const
+{
+	for (uint i = 9 ; i-- != 0 ;)
+	{
+		if( data[i] != rhs.data[i] )
+			return false;
+	}
+
+	return true;
+}
+
+
 inline void Matrix33::Orthonormalize()
 {
 	Vector3 u1(operator()(0, 0), operator()(1, 0), operator()(2, 0));

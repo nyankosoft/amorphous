@@ -77,6 +77,10 @@ public:
 	/// sets a rotation matrix that rotates a point around z-axis
 	inline void SetRotationZ( const Scalar angle );
 
+	inline bool operator==( const Matrix33& rhs ) const;
+
+	bool operator!=( const Matrix33& rhs ) const { return !(*this == rhs); }
+
 	friend Matrix33 operator*(const Matrix33 & lhs, const Scalar rhs);
 	friend Matrix33 operator*(const Scalar lhs, const Matrix33 & rhs);
 	friend Matrix33 operator*(const Matrix33 & lhs, const Matrix33 & rhs);
