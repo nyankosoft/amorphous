@@ -12,6 +12,13 @@
 class CGI_Weapon;
 class CGI_Ammunition;
 
+/*
+class CMagazine : public CGameItem
+{
+	std::vector< boost::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
+};
+*/
+
 
 class CRotatableTurret : public CGameItem
 {
@@ -32,16 +39,20 @@ class CRotatableTurret : public CGameItem
 //	cdv<Quaternion> m_LocalGunTubeOrient;
 	cdv<float> m_LocalGunTubePitchAngle;
 
-//	cdv<Quaternion> m_TurnTableRotation;
-//	cdv<float> m_TurnTableAngle;
-
 	boost::shared_ptr<CGI_Weapon> m_pWeapon;
 
-	boost::shared_ptr<CGI_Ammunition> m_pAmmunition;
+//	boost::shared_ptr<CGI_Ammunition> m_pAmmunition;
+	std::vector< boost::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
 
 	CEntityHandle<> m_Target;
 
 	Vector3 m_vAimDirection;
+
+/*	enum StyleFlags
+	{
+		SF_USE_ENTITY_AS_PARENT_OBJECT = (1 << 0), ///< Use obtain parent world pose from the entity
+	}
+*/
 
 protected:
 
@@ -57,6 +68,7 @@ public:
 
 	void SetTarget( CEntityHandle<> target ) { m_Target = target; }
 
+	void SetParentWorldPose( const Matrix34& pose ) { m_ParentWorldPose = pose; }
 };
 
 

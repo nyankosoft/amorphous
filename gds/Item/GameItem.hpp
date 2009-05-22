@@ -136,6 +136,8 @@ public:
 
 	void SetStageWeakPtr( CStageWeakPtr pStage ) { m_pStage = pStage; }
 
+	void SetItemEntity( CEntityHandle<CItemEntity>& entity ) { m_Entity = entity; }
+
 	inline void SetWorldPose( const Matrix34& rSrcWorldPose )
 	{
 		boost::shared_ptr<CItemEntity> pEntity = m_Entity.Get();

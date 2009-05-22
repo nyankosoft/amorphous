@@ -7,6 +7,7 @@
 #include "Stage/Stage.hpp"
 #include "XML/XMLNodeReader.hpp"
 #include "XML/LoadFromXMLNode_3DMath.hpp"
+#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
 using namespace std;
 using namespace boost;
@@ -122,27 +123,58 @@ void CRotatableTurret::Update( float dt )
 
 void CRotatableTurret::Serialize( IArchive& ar, const unsigned int version )
 {
+	CGameItem::Serialize( ar, version );
+
+	ar & m_MountLocalPose;
+	ar & m_GunLocalPose;
+	ar & m_pWeapon;
+	ar & m_vecpAmmunition;
+
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		// load ammo?
+	}
 }
 
 
 void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 {
+	CGameItem::LoadFromXMLNode( reader );
+
 	string weapon_name, ammo_name, ammo_quantity;
 
 	reader.GetChildElementTextContent( "Weapon",      weapon_name );
 	m_pWeapon = ItemDatabaseManager().GetItem<CGI_Weapon>( weapon_name, 1 );
 
-	reader.GetChildElementTextContent( "Ammunition",  ammo_name );
-	ammo_quantity = reader.GetChild( "Ammunition" ).GetAttributeText( "quantity" );
-	if( ammo_quantity == "" )
-		ammo_quantity = "infinite";
-	if( ammo_quantity == "infinite" )
+	vector<CXMLNodeReader> vecAmmo = reader.GetImmediateChildren( "Ammunition" );
+	m_vecpAmmunition.resize( vecAmmo.size() );
+	for( size_t i=0; i<vecAmmo.size(); i++ )
 	{
-		// TODO: set infinite
-		ammo_quantity = "100000000";
+		ammo_quantity = vecAmmo[i].GetAttributeText( "quantity" );
+		if( ammo_quantity == "" )
+			ammo_quantity = "infinite";
+		if( ammo_quantity == "infinite" )
+		{
+			// TODO: set infinite
+			ammo_quantity = "100000000";
+		}
+		ammo_name = vecAmmo[i].GetTextContent();
+		m_vecpAmmunition[i] = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo_name, to_int(ammo_quantity) );
 	}
-	m_pAmmunition = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo_name, to_int(ammo_quantity) );
-
-	::LoadFromXMLNode( reader.GetChild( "MountLocalPose" ), m_MountLocalPose );
-	::LoadFromXMLNode( reader.GetChild( "GunLocalPose" ),   m_GunLocalPose );
+/*
+	vector<CXMLNodeReader> vecAmmoLoading = reader.GetChildElementTextContent( "AmmunitionLoading/Name",  ammo_name );
+	const size_t num_loadings = vecAmmoLoading.size();
+	m_vecpAmmunitionLoading.reserve( 8 );
+	for( size_t i=0; i<num_loadings; i++ )
+	{
+		ammo_name = vecAmmoLoading[i].GetTextContent();
+		num_loads = vecAmmoLoading[i].GetAttributeText();
+		shared_ptr<CGI_Ammunition> pAmmunition = get_ammo( ammo_name );
+		for( int j=0; j<num_loads; j++ )
+			m_vecpAmmunitionLoading.push_back( pAmmunition );
+	}
+*/
+	::LoadFromXMLNode( reader.GetChild( "Mount/LocalPose" ), m_MountLocalPose );
+	::LoadFromXMLNode( reader.GetChild( "Gun/LocalPose" ),   m_GunLocalPose );
 }
