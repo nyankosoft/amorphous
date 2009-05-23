@@ -1010,6 +1010,7 @@ void CEntitySet::SetCollisionGroup( int group, bool collision )
 
 void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
 {
+  {
 	PROFILE_FUNCTION();
 
 	if( pEntity->PrevPosition() != pEntity->Position() )
@@ -1027,6 +1028,17 @@ void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
 	}
 	else
 		pEntity->sState &= ~CESTATE_MOVED_DURING_LAST_FRAME;
+
+  }
+	if( true /*pEntity->GetEntityFlags() & AUTOMATICALLY_UPDATE_CHILDREN*/ )
+	{
+		const int num_children = pEntity->GetNumChildren();
+		for( int i=0; i<num_children; i++ )
+		{
+			if( IsValidEntity( pEntity->GetChild(i) ) )
+				UpdateEntityAfterMoving( pEntity->GetChild(i) );
+		}
+	}
 }
 
 
