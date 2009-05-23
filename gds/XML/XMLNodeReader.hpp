@@ -154,7 +154,7 @@ inline std::string CXMLNodeReader::GetName()
 
 inline CXMLNodeReader CXMLNodeReader::GetChild( const std::string& name )
 {
-	return CXMLNodeReader( GetChildNode( m_pNode, name ) );
+	return CXMLNodeReader( GetTargetElementNode( name ) );
 }
 
 

@@ -20,6 +20,7 @@ goal
 inline void LoadFromXMLNode( CXMLNodeReader& reader, Vector3& dest )
 {
 	std::string pos_str;
+	dest = Vector3(0,0,0);
 	reader.GetChildElementTextContent( "Position", pos_str );
 	sscanf( pos_str.c_str(), "%f %f %f", &dest.x, &dest.y, &dest.z );
 }
@@ -34,11 +35,13 @@ inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix33& dest )
 	if( reader.GetChildElementTextContent( "Heading", heading ) )
 		matRotation = Matrix33RotationY( deg_to_rad(heading) );
 
-	reader.GetChildElementTextContent( "Pitch", pitch );
+	if( reader.GetChildElementTextContent( "Pitch", pitch ) )
 		matRotation = Matrix33RotationX( deg_to_rad(pitch) );
 
-	reader.GetChildElementTextContent( "Bank", bank );
+	if( reader.GetChildElementTextContent( "Bank", bank ) )
 		matRotation = Matrix33RotationZ( deg_to_rad(bank) );
+
+	dest = matRotation;
 }
 
 
