@@ -14,7 +14,7 @@ using namespace boost;
 CRadar::CRadar()
 :
 m_fEffectiveRangeRadius( 500000.0f ),
-m_SensoringFrequency( 5 ),
+m_fSensoringFrequency( 5 ),
 m_TargetInfoUpdateFrequency( 10 ),
 m_fNextSensoringTime(0),
 m_fNextTargetUpdateTime(0)
@@ -31,7 +31,7 @@ void CRadar::Update( float dt )
 
 	double sensoring_time_rand_offset[2] = { 0.035, 0.012 };
 
-	double fSensoringInterval = 1.0 / (double)m_SensoringFrequency;
+	double fSensoringInterval = 1.0 / m_fSensoringFrequency;
 	const double current_time_in_stage = pStage->GetElapsedTime();
 	if( m_fNextSensoringTime < current_time_in_stage )
 	{
@@ -203,7 +203,7 @@ void CRadar::Serialize( IArchive& ar, const unsigned int version )
 	CGameItem::Serialize( ar, version );
 
 	ar & m_fEffectiveRangeRadius;
-	ar & m_SensoringFrequency;
+	ar & m_fSensoringFrequency;
 	ar & m_TargetInfoUpdateFrequency;
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
@@ -222,6 +222,6 @@ void CRadar::LoadFromXMLNode( CXMLNodeReader& reader )
 	CGameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "EffectiveRangeRadius",      m_fEffectiveRangeRadius );
-	reader.GetChildElementTextContent( "SensoingFrequency",         m_SensoringFrequency );
+	reader.GetChildElementTextContent( "SensoingFrequency",         m_fSensoringFrequency );
 	reader.GetChildElementTextContent( "TargetInfoUpdateFrequency", m_TargetInfoUpdateFrequency );
 }

@@ -101,14 +101,35 @@ void CLandVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 
 void CArmedVehicle::CTurretHolder::Serialize( IArchive& ar, const unsigned int version )
 {
+	ar & TurretName;
 	ar & pTurret;
 	ar & LocalPose;
+	ar & UseInvLocalTransformForMeshTransform;
+}
+
+
+void CArmedVehicle::Init()
+{
+	m_pRadar = ItemDatabaseManager().GetItem<CRadar>( m_RadarName, 1 );
+	m_pLandVehicleItem = ItemDatabaseManager().GetItem<CLandVehicle>( m_LandVehicleName, 1 );
+
+	for( size_t i=0; i<m_vecTurret.size(); i++ )
+	{
+		m_vecTurret[i].pTurret
+			= ItemDatabaseManager().GetItem<CRotatableTurret>( m_vecTurret[i].TurretName, 1 );
+		if( m_vecTurret[i].pTurret )
+		{
+			if( m_vecTurret[i].UseInvLocalTransformForMeshTransform )
+				m_vecTurret[i].pTurret->SetMeshTransform( m_vecTurret[i].LocalPose.GetInverseROT() );
+		}
+	}
 }
 
 
 void CArmedVehicle::Update( float dt )
 {
-	m_pLandVehicleItem->Update( dt );
+	if( m_pLandVehicleItem )
+		m_pLandVehicleItem->Update( dt );
 
 	if( !m_pRadar )
 		return;
@@ -127,7 +148,8 @@ void CArmedVehicle::Render()
 		m_vecTurret[i].pTurret->Render();
 	}
 
-	m_pLandVehicleItem->Render();
+	if( m_pLandVehicleItem )
+		m_pLandVehicleItem->Render();
 }
 
 
@@ -186,8 +208,21 @@ void CArmedVehicle::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGameItem::Serialize( ar, version );
 
+	ar & m_RadarName;
+	ar & m_pRadar;
+
+	ar & m_LandVehicleName;
 	ar & m_pLandVehicleItem;
+
 	ar & m_vecTurret;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+		m_Target = CEntityHandle<>();
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		Init();
+	}
 }
 
 
@@ -195,21 +230,21 @@ void CArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGameItem::LoadFromXMLNode( reader );
 
-	string land_vehicle_name;
+	reader.GetChildElementTextContent( "Radar", m_RadarName );
 
-	reader.GetChildElementTextContent( "LandVehicle", land_vehicle_name );
-	m_pLandVehicleItem = ItemDatabaseManager().GetItem<CLandVehicle>( land_vehicle_name, 1 );
+	reader.GetChildElementTextContent( "LandVehicle", m_LandVehicleName );
 
 	vector<CXMLNodeReader> vecTurret = reader.GetImmediateChildren( "Turret" );
 	m_vecTurret.resize( vecTurret.size() );
 	for( size_t i=0; i<vecTurret.size(); i++ )
 	{
-		m_vecTurret[i].pTurret = ItemDatabaseManager().GetItem<CRotatableTurret>( vecTurret[i].GetChild( "Name" ).GetTextContent(), 1 );
-		if( !m_vecTurret[i].pTurret )
-			continue;
+		m_vecTurret[i].TurretName = vecTurret[i].GetChild( "Name" ).GetTextContent();
+//		m_vecTurret[i].pTurret = ItemDatabaseManager().GetItem<CRotatableTurret>( m_vecTurret[i].TurretName, 1 );
+//		if( !m_vecTurret[i].pTurret )
+//			continue;
 
 		::LoadFromXMLNode( vecTurret[i].GetChild( "LocalPose" ), m_vecTurret[i].LocalPose );
-		m_vecTurret[i].pTurret->LoadFromXMLNode( vecTurret[i] );
+//		m_vecTurret[i].pTurret->LoadFromXMLNode( vecTurret[i] );
 
 		bool use_inv_local_pose_for_mesh_transform = true;
 		string yes_or_no = vecTurret[i].GetAttributeText( "use_inv_local_pose_for_mesh_transform" );
@@ -218,8 +253,11 @@ void CArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 		else if( yes_or_no == "no" )
 			use_inv_local_pose_for_mesh_transform = false;
 
-		if( use_inv_local_pose_for_mesh_transform )
-			m_vecTurret[i].pTurret->SetMeshTransform( m_vecTurret[i].LocalPose.GetInverseROT() );
+		m_vecTurret[i].UseInvLocalTransformForMeshTransform
+			= use_inv_local_pose_for_mesh_transform;
+
+//		if( use_inv_local_pose_for_mesh_transform )
+//			m_vecTurret[i].pTurret->SetMeshTransform( m_vecTurret[i].LocalPose.GetInverseROT() );
 	}
 }
 

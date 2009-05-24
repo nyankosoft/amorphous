@@ -123,7 +123,7 @@ protected:
 
 //	CEntityHandle<> m_FocusedTarget;
 
-	int m_SensoringFrequency;
+	double m_fSensoringFrequency;
 
 	int m_TargetInfoUpdateFrequency;
 

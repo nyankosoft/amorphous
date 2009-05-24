@@ -67,10 +67,12 @@ public:
 
 class CArmedVehicle : public CGameItem
 {
+	std::string m_RadarName;
 	boost::shared_ptr<CRadar> m_pRadar;
 
 //	std::vector< boost::shared_ptr<CWeapon> > m_vecpWeapon;
 
+	std::string m_LandVehicleName;
 	boost::shared_ptr<item::CLandVehicle> m_pLandVehicleItem;
 
 	// current target
@@ -81,8 +83,14 @@ class CArmedVehicle : public CGameItem
 	class CTurretHolder : public IArchiveObjectBase
 	{
 	public:
+		std::string TurretName;
 		boost::shared_ptr<CRotatableTurret> pTurret;
 		Matrix34 LocalPose;
+		bool UseInvLocalTransformForMeshTransform;
+
+	public:
+		CTurretHolder()
+			: UseInvLocalTransformForMeshTransform(true) {}
 
 		void Serialize( IArchive& ar, const unsigned int version );
 	};
@@ -99,6 +107,8 @@ public:
 	~CArmedVehicle() {}
 
 	void UpdateTarget();
+
+	void Init();
 
 	void Update( float dt );
 
