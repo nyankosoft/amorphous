@@ -13,20 +13,42 @@ namespace Serialization
 {
 
 
+/// Works only when the shared_ptr is not shared.
 template <class T>
 inline IArchive& operator & ( IArchive& ar, boost::shared_ptr<T>& ptr )
 {
+	int saved = 0;
 	if( ar.GetMode() == IArchive::MODE_OUTPUT )
 	{
-		ar & *(ptr.get());
+		if( ptr )
+		{
+			// save the object
+			saved = 1;
+			ar & saved;
+			ar & *(ptr.get());
+		}
+		else
+		{
+			// ptr is NULL - do not serialize
+			saved = 0;
+			ar & saved;
+		}
 	}
 	else // i.e. input mode
 	{
 		ptr.reset();
 
-		ptr = boost::shared_ptr<T>( new T() );
+		ar & saved;
 
-		ar & *(ptr.get());
+		// load only if the object is in the stream
+		if( saved == 1 )
+		{
+			// load the object
+			ptr = boost::shared_ptr<T>( new T() );
+			ar & *(ptr.get());
+		}
+
+
 	}
 
 	return ar;
