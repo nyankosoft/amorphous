@@ -32,6 +32,8 @@ class CRotatableTurret : public CGameItem
 	Matrix34 m_GunLocalPose;
 
 	Matrix34 m_ParentWorldPose;
+	Matrix34 m_MountWorldPose;
+	Matrix34 m_GunWorldPose;
 
 //	Matrix33 m_matTurnTableRotation;
 
@@ -48,6 +50,13 @@ class CRotatableTurret : public CGameItem
 
 	Vector3 m_vAimDirection;
 
+	// used when the meshes of mount/gun are not placed at the origin
+	// but are in the local space of the owner item mesh.
+	// - Used to ease the modeling work.
+	Matrix34 m_MeshTransform;
+	Matrix34 m_MountMeshTransform;
+	Matrix34 m_GunMeshTransform;
+
 /*	enum StyleFlags
 	{
 		SF_USE_ENTITY_AS_PARENT_OBJECT = (1 << 0), ///< Use obtain parent world pose from the entity
@@ -60,7 +69,13 @@ protected:
 
 public:
 
+	CRotatableTurret();
+
+	virtual ~CRotatableTurret() {}
+
 	void Update( float dt );
+
+	void Render();
 
 	unsigned int GetArchiveObjectID() const { return ID_ROTATABLE_TURRET; }
 
@@ -71,6 +86,9 @@ public:
 	void SetTarget( CEntityHandle<> target ) { m_Target = target; }
 
 	void SetParentWorldPose( const Matrix34& pose ) { m_ParentWorldPose = pose; }
+
+	void SetMeshTransform( Matrix34& transform );
+//	void SetGunMeshTransform( Matrix34& transform ) { m_GunMeshTransform = transform; }
 };
 
 

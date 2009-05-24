@@ -34,6 +34,8 @@ class CItemEntity : public CCopyEntity
 {
 	boost::shared_ptr<CGameItem> m_pItem;
 
+	U32 m_ItemEntityFlags;
+
 public:
 
 	CItemEntity();
@@ -59,6 +61,15 @@ public:
 	virtual void HandleMessage( SGameMessage& msg );
 
 	virtual void TerminateDerived();
+
+	void SetItemEntityFlags( U32 flags ) { m_ItemEntityFlags = flags; }
+
+	enum ItemEntityFlags
+	{
+		SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING = (1 << 0),
+//		SF_ANOTHER_FLAG                        = (1 << 1),
+//		SF_YET_ANOTHER_FLAG                    = (1 << 2),
+	};
 };
 
 

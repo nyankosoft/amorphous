@@ -102,6 +102,8 @@ public:
 
 	void Update( float dt );
 
+	void Render();
+
 	unsigned int GetArchiveObjectID() const { return ID_ARMED_VEHICLE; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );

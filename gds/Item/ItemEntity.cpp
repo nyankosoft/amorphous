@@ -35,6 +35,8 @@ using namespace boost;
 */
 
 CItemEntity::CItemEntity()
+:
+m_ItemEntityFlags(0)
 {
 //	m_Attrib |= DESTROY_IF_PARENT_IS_GONE;
 }
@@ -43,7 +45,8 @@ CItemEntity::CItemEntity()
 CItemEntity::CItemEntity( boost::shared_ptr<CGameItem> pItem )
 :
 CCopyEntity(CItemModuleEntityTypeID::ITEM_ENTITY),
-m_pItem(pItem)
+m_pItem(pItem),
+m_ItemEntityFlags(0)
 {
 }
 
@@ -76,28 +79,25 @@ void CItemEntity::UpdatePhysics( float dt )
 
 void CItemEntity::Draw()
 {
-/*	CCopyEntity *pParent = m_pParent;
-	if( !pParent )
-		return;
-
-	pParent->pBaseEntity->DrawMeshMaterial(
-		pParent->GetWorldPose(),
-		m_AlphaMaterialIndex,
-		m_ShaderTechnique
-		);
-*/
-	bool single_mesh = true;
-	if( single_mesh
-	 && 0 < m_pItem->GetMeshContainerRootNode().GetNumMeshContainers() )
+	if( m_ItemEntityFlags )
 	{
-		CMeshObjectContainer& mesh_container
-			= *(m_pItem->GetMeshContainerRootNode().GetMeshContainer(0).get());
+		bool single_mesh = true;
+		if( single_mesh
+		 && 0 < m_pItem->GetMeshContainerRootNode().GetNumMeshContainers() )
+		{
+			CMeshObjectContainer& mesh_container
+				= *(m_pItem->GetMeshContainerRootNode().GetMeshContainer(0).get());
 
-		this->MeshObjectHandle = mesh_container.m_MeshObjectHandle;
+			this->MeshObjectHandle = mesh_container.m_MeshObjectHandle;
 
-//		pBaseEntity->Draw3DModel( this );
-//		pBaseEntity->Draw3DModel( this, mesh_container.m_ShaderTechnique );
-		pBaseEntity->Draw3DModel( this, pBaseEntity->MeshProperty().m_ShaderTechnique );
+//			pBaseEntity->Draw3DModel( this );
+//			pBaseEntity->Draw3DModel( this, mesh_container.m_ShaderTechnique );
+			pBaseEntity->Draw3DModel( this, pBaseEntity->MeshProperty().m_ShaderTechnique );
+		}
+	}
+	else
+	{
+		m_pItem->Render();
 	}
 }
 

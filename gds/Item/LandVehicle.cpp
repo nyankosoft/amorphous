@@ -119,6 +119,18 @@ void CArmedVehicle::Update( float dt )
 }
 
 
+void CArmedVehicle::Render()
+{
+	const size_t num_turrets = m_vecTurret.size();
+	for( size_t i=0; i<num_turrets; i++ )
+	{
+		m_vecTurret[i].pTurret->Render();
+	}
+
+	m_pLandVehicleItem->Render();
+}
+
+
 void CArmedVehicle::UpdateTarget()
 {
 	shared_ptr<CCopyEntity> pMyEntity = m_Entity.Get();
@@ -193,8 +205,21 @@ void CArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 	for( size_t i=0; i<vecTurret.size(); i++ )
 	{
 		m_vecTurret[i].pTurret = ItemDatabaseManager().GetItem<CRotatableTurret>( vecTurret[i].GetChild( "Name" ).GetTextContent(), 1 );
+		if( !m_vecTurret[i].pTurret )
+			continue;
+
 		::LoadFromXMLNode( vecTurret[i].GetChild( "LocalPose" ), m_vecTurret[i].LocalPose );
 		m_vecTurret[i].pTurret->LoadFromXMLNode( vecTurret[i] );
+
+		bool use_inv_local_pose_for_mesh_transform = true;
+		string yes_or_no = vecTurret[i].GetAttributeText( "use_inv_local_pose_for_mesh_transform" );
+		if( yes_or_no == "yes" )
+			use_inv_local_pose_for_mesh_transform = true;
+		else if( yes_or_no == "no" )
+			use_inv_local_pose_for_mesh_transform = false;
+
+		if( use_inv_local_pose_for_mesh_transform )
+			m_vecTurret[i].pTurret->SetMeshTransform( m_vecTurret[i].LocalPose.GetInverseROT() );
 	}
 }
 

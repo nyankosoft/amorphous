@@ -62,6 +62,12 @@ bool CGameItem::LoadMeshObject()
 }
 
 
+void CGameItem::Render()
+{
+	m_MeshContainerRootNode.Render( Matrix34Identity() );
+}
+
+
 void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	reader.GetChildElementTextContent( "Name",        m_strName );

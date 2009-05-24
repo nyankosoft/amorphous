@@ -13,6 +13,17 @@ using namespace std;
 using namespace boost;
 
 
+CRotatableTurret::CRotatableTurret()
+:
+m_MountLocalPose(Matrix34Identity()),
+m_GunLocalPose(Matrix34Identity()),
+m_MeshTransform(Matrix34Identity()),
+m_GunMeshTransform(Matrix34Identity()),
+m_MountMeshTransform(Matrix34Identity())
+{
+}
+
+
 void CRotatableTurret::UpdateAimInfo()
 {
 	shared_ptr<CCopyEntity> pMyEntity = m_Entity.Get();
@@ -80,44 +91,26 @@ void CRotatableTurret::Update( float dt )
 //	local_gun_tube_pose = Matrix34( m_GunLocalPose.vPosition,   Matrix33RotationAxis( m_LocalGunTubePitchAngle.current, vLocalTTableRightDir ) );
 	local_gun_tube_pose = Matrix34( m_GunLocalPose.vPosition,   Matrix33RotationAxis( m_LocalGunTubePitchAngle.current, m_GunLocalPose.matOrient.GetColumn(0) ) );
 
-	Matrix34 world_mount_pose    = m_ParentWorldPose * local_mount_pose;
-	Matrix34 world_gun_tube_pose = world_mount_pose * local_gun_tube_pose;
+	m_MountWorldPose = m_ParentWorldPose * local_mount_pose;
+	m_GunWorldPose   = m_MountWorldPose * local_gun_tube_pose;
+}
 
-/*
-	Matrix33 matLocalGTubeTgtRotation = CreateOrientFromFwdDir( vLocalTargetDir );
 
-	m_LocalGunTubeOrient.target.FromRotationMatrix( matLocalGTubeTgtRotation );
-*/
-/*
-	Vector3 vTurnTableAxis = init_world_pose.matOrient.GetColumn(1); // y-axis
+void CRotatableTurret::Render()
+{
+	// local & parent transforms are already combined - apply only the mesh transform to the mesh container
+	if( 0 < m_MeshContainerRootNode.GetNumMeshContainers() )
+	{
+		m_MeshContainerRootNode.MeshContainer(0)->m_MeshTransform = m_MountMeshTransform;
+		m_MeshContainerRootNode.Render( m_MountWorldPose );
+	}
 
-	Vector3 vTargetDirection = GetCurrentTargetDirection();
-
-	// project the target direction to the plane of the turn table
-	Vector3 vTargetDirOnTTable
-		= vTargetDirection - vTurnTableAxis * Vec3Dot( vTurnTableAxis, vTargetDirection );
-
-	Vec3Normalize( vTargetDirOnTTable, vTargetDirOnTTable );
-
-//	float angle_to_turn = acos( Vec3Dot( m_matTurnTableRotation.GetColumn(2), vTargetDirOnTTable ) );
-	float target_angle  = acos( Vec3Dot( init_world_pose.matOrient.GetColumn(2), vTargetDirOnTTable ) );
-
-	Vector3 vCross = Vec3Dot( m_matTurnTableRotation.GetColumn(2), vTargetDirOnTTable );
-	float turn_direction = 1.0f;
-	if( Vec3Dot( vTurnTableAxis, vCross ) < 0 )
-		turn_direction = -1.0f; // angle to rotate to direct the turntable to the target direction
-
-	delta_angle = deg_to_rad(turn_speed) * dt;
-	Limit( delta_angle, 0, angle_to_turn );
-
-	m_TurnTableAngle.target = 
-
-	Matrix33 matTTableTgtRotation;
-	matTTableTgtRotation.SetColumn( 0, Vec3Cross( vTurnTableAxis, vTargetDirOnTTable ) );
-	matTTableTgtRotation.SetColumn( 1, vTurnTableAxis );
-	matTTableTgtRotation.SetColumn( 2, vTargetDirOnTTable );
-	m_TurnTableRotation.target.FromRotationMatrix( matTTableTgtRotation );
-*/
+	if( m_pWeapon
+	 && 0 < m_pWeapon->MeshContainerRootNode().GetNumMeshContainers() )
+	{
+		m_pWeapon->MeshContainerRootNode().MeshContainer(0)->m_MeshTransform = m_GunMeshTransform;
+		m_pWeapon->MeshContainerRootNode().Render( m_GunWorldPose );
+	}
 }
 
 
@@ -177,4 +170,15 @@ void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 */
 	::LoadFromXMLNode( reader.GetChild( "Mount/LocalPose" ), m_MountLocalPose );
 	::LoadFromXMLNode( reader.GetChild( "Gun/LocalPose" ),   m_GunLocalPose );
+
+	m_MountMeshTransform = m_MeshTransform * m_MountLocalPose.GetInverseROT();
+	m_GunMeshTransform   = m_MeshTransform * m_GunLocalPose.GetInverseROT();
+}
+
+
+void CRotatableTurret::SetMeshTransform( Matrix34& transform )
+{
+	m_MeshTransform = transform;
+	m_MountMeshTransform = m_MeshTransform * m_MountLocalPose.GetInverseROT();
+	m_GunMeshTransform   = m_MeshTransform * m_GunLocalPose.GetInverseROT();
 }

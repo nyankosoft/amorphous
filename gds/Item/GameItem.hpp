@@ -114,6 +114,8 @@ public:
 	/// Call this when the item exists in a stage
 	virtual void Update( float dt ) {}
 
+	virtual void Render();
+
 
 	/// item staus expressed with a text format
 	virtual void GetStatus( std::string& dest_buffer ) {}
