@@ -87,6 +87,7 @@ public:
 	/// get the text content of a child node
 	inline bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest );
 	inline bool GetChildElementTextContent( const std::string& child_element_path, float& dest );
+	inline bool GetChildElementTextContent( const std::string& child_element_path, double& dest );
 	inline bool GetChildElementTextContent( const std::string& child_element_path, int& dest );
 	inline bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest );
 	inline bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest );
@@ -299,6 +300,18 @@ inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child
 }
 
 inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, float& val )
+{
+	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
+	if( pNode )
+	{
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f", &val );
+		return true;
+	}
+	else
+		return false;
+}
+
+inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, double& val )
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
