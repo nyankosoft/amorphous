@@ -45,6 +45,8 @@ public:
 
 	CShaderHandle m_ShaderHandle;
 
+	Matrix34 m_MeshTransform;
+
 
 	//
 	// extra textures
@@ -61,7 +63,10 @@ public:
 
 public:
 
-	CMeshObjectContainer() {}
+	CMeshObjectContainer()
+		:
+	m_MeshTransform( Matrix34Identity() )
+	{}
 
 	virtual ~CMeshObjectContainer() {}
 
@@ -75,15 +80,19 @@ class CMeshContainerNode : public IArchiveObjectBase
 {
 	Matrix34 m_LocalPose; /// local pose of the node
 
+	Matrix34 m_LocalTransform;
+
 	std::vector< boost::shared_ptr<CMeshObjectContainer> > m_vecpMeshContainer;
 
 	std::vector<Matrix34> m_vecMeshLocalPose;
 
 	std::vector< boost::shared_ptr<CMeshContainerNode> > m_vecpChild;
 
+	std::vector<CShaderTechniqueHandle> m_vecShaderTechniqueBuffer;
+
 public:
 
-	CMeshContainerNode() {}
+	CMeshContainerNode();
 
 	~CMeshContainerNode() {}
 
@@ -104,6 +113,7 @@ public:
 
 	boost::shared_ptr<CMeshObjectContainer> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 
+	void Render( const Matrix34& parent_transform );
 
 	//
 	// child nodes

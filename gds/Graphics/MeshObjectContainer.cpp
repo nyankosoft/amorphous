@@ -1,6 +1,9 @@
 #include "MeshObjectContainer.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 #include "XML.hpp"
+#include "XML/LoadFromXMLNode_3DMath.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/D3DXMeshObjectBase.hpp"
 
 using namespace std;
 using namespace boost;
@@ -135,18 +138,60 @@ void CMeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 
-inline void LoadFromXMLNode( CXMLNodeReader& reader, Vector3& dest )
+
+CMeshContainerNode::CMeshContainerNode()
+:
+m_LocalPose(Matrix34Identity()),
+m_LocalTransform(Matrix34Identity())
 {
-	std::string pos_str;
-	reader.GetChildElementTextContent( "Position", pos_str );
-	sscanf( pos_str.c_str(), "%f %f %f", &dest.x, &dest.y, &dest.z );
 }
 
 
-inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix34& dest )
+void CMeshContainerNode::Render( const Matrix34& parent_transform )
 {
-	LoadFromXMLNode( reader, dest.vPosition );
-//	LoadFromXMLNode( reader, dest.matOrient );
+	Matrix34 world_transform
+		= parent_transform * m_LocalPose;
+
+	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
+	{
+		shared_ptr<CD3DXMeshObjectBase> pMesh
+			= m_vecpMeshContainer[i]->m_MeshObjectHandle.GetMesh();
+
+		if( !pMesh )
+			continue;
+
+		CShaderManager *pShaderMgr
+			= m_vecpMeshContainer[i]->m_ShaderHandle.GetShaderManager();
+
+		if( pShaderMgr )
+		{
+			Matrix34 transform
+				= world_transform
+				* m_vecMeshLocalPose[i]
+				* m_LocalTransform
+				* m_vecpMeshContainer[i]->m_MeshTransform;
+//				* m_vecMeshLocalPose[i].GetInverseROT();
+
+			D3DXMATRIX matWorld;
+			transform.GetRowMajorMatrix44( matWorld );
+			pShaderMgr->SetWorldTransform( matWorld );
+			m_vecShaderTechniqueBuffer.resize(0);
+			int res = 0;
+			if( 0 < m_vecpMeshContainer[i]->m_ShaderTechnique.size_y() )
+			{
+				for( int j=0; j<m_vecpMeshContainer[i]->m_ShaderTechnique.size_x(); j++ )
+					m_vecShaderTechniqueBuffer.push_back( m_vecpMeshContainer[i]->m_ShaderTechnique(j,res) );
+			}
+			pMesh->Render( *pShaderMgr, m_vecShaderTechniqueBuffer );
+		}
+		else
+		{
+//			pMesh->Render();
+		}
+	}
+
+	for( size_t i=0; i<m_vecpChild.size(); i++ )
+		m_vecpChild[i]->Render( world_transform );
 }
 
 
@@ -201,7 +246,7 @@ void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 	{
 		m_vecpMeshContainer[i] = shared_ptr<CMeshObjectContainer>( new CMeshObjectContainer() );
 		m_vecpMeshContainer[i]->LoadFromXMLNode( vecReader[i].GetChild( "MeshContainer" ) );
-		::LoadFromXMLNode( vecReader[i].GetChild( "LocalPose" ), m_vecMeshLocalPose[i] );
+		::LoadFromXMLNode( vecReader[i].GetChild( "MeshLocalPose" ), m_vecMeshLocalPose[i] );
 	}
 
 	vector<CXMLNodeReader> vecChild = reader.GetImmediateChildren( "MeshNode" );
