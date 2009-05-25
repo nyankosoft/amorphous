@@ -1677,6 +1677,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Item\LandVehicle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\LandVehicle.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Item\Radar.cpp"
 					>
 				</File>
