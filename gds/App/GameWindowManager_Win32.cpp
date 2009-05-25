@@ -16,7 +16,7 @@ CGameWindowManager_Win32 CGameWindowManager_Win32::ms_SingletonInstance_;
 
 CGameWindowManager_Win32::CGameWindowManager_Win32()
 {
-	m_iCurrentScreenMode = SMD_WINDOWED;
+	m_CurrentScreenMode = GameWindow::WINDOWED;
 }
 
 
@@ -39,7 +39,7 @@ void GetCurrentResolution(int* piDesktopWidth, int* piDesktopHeight)
 }
 
 
-bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHeight, int screen_mode, const std::string& app_title )
+bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -81,13 +81,13 @@ bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHe
 						   m_WindowClassEx.hInstance,
 						   NULL );
 
-	if( screen_mode == SMD_WINDOWED )
+	if( screen_mode == GameWindow::WINDOWED )
 		ChangeClientAreaSize( m_hWnd, iScreenWidth, iScreenHeight );
 
 	LOG_PRINT( fmt_string("Created a window (size: %d x %d)", iScreenWidth, iScreenHeight ) );
 
     // initialize Direct3D & Create the scene geometry
-	int d3d_screen_mode = screen_mode == SMD_WINDOWED ? CDirect3D9::WINDOWED : CDirect3D9::FULLSCREEN;
+	int d3d_screen_mode = screen_mode == GameWindow::WINDOWED ? CDirect3D9::WINDOWED : CDirect3D9::FULLSCREEN;
     if( !DIRECT3D9.InitD3D( m_hWnd, iScreenWidth, iScreenHeight, d3d_screen_mode ) )
 		return false;
 
@@ -107,7 +107,7 @@ bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHe
 	CGraphicsParameters params;
 	params.ScreenWidth  = iScreenWidth;
 	params.ScreenHeight = iScreenHeight;
-	params.bWindowed    = screen_mode == SMD_WINDOWED ? true : false;
+	params.bWindowed    = screen_mode == GameWindow::WINDOWED ? true : false;
 
 	CGraphicsComponentCollector::Get()->SetGraphicsPargams( params );
 
@@ -131,14 +131,14 @@ void CGameWindowManager_Win32::ChangeScreenSize( int iNewScreenWidth,
 	if( !DIRECT3D9.ResetD3DDevice( m_hWnd, iNewScreenWidth, iNewScreenHeight, bFullScreen ) )
 	{
 		// the requested resolution is not available - restore the current settings
-		bool bCurrentModeFullScreen = (m_iCurrentScreenMode == SMD_FULLSCREEN) ? true : false;
+		bool bCurrentModeFullScreen = (m_CurrentScreenMode == GameWindow::FULLSCREEN) ? true : false;
 		DIRECT3D9.ResetD3DDevice( m_hWnd, m_iCurrentScreenWidth, m_iCurrentScreenHeight, bCurrentModeFullScreen );
 	}
 
 	// update the current resolution and the screen mode
 	m_iCurrentScreenWidth  = iNewScreenWidth;
 	m_iCurrentScreenHeight = iNewScreenHeight;
-	m_iCurrentScreenMode   = SMD_WINDOWED; // TODO: use the new screen mode
+	m_CurrentScreenMode   = GameWindow::WINDOWED; // TODO: use the new screen mode
 
 
 	CGraphicsParameters param;
@@ -152,7 +152,7 @@ void CGameWindowManager_Win32::ChangeScreenSize( int iNewScreenWidth,
 	// notify changes to all the game components
 //	GAMECOMPONENTCOLLECTOR.AdaptToNewScreenSize();
 
-	if( m_iCurrentScreenMode == SMD_WINDOWED )
+	if( m_CurrentScreenMode == GameWindow::WINDOWED )
 	{
 		ChangeClientAreaSize( m_hWnd, m_iCurrentScreenWidth, m_iCurrentScreenHeight );
 	}

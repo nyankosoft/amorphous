@@ -130,7 +130,7 @@ void CMainMenuEventHandler::HandleEvent( CGM_Event &event )
 			// - items, etc.
 			SinglePlayerInfo().Release();
 
-			PostMessage( GameWindowManager().GetWindowHandle(), WM_QUIT, 0, 0 );
+			PostMessage( GameWindowManager_Win32().GetWindowHandle(), WM_QUIT, 0, 0 );
 		}
 		break;
 	}

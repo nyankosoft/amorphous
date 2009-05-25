@@ -11,7 +11,10 @@ public:
 		SrcAlpha,
 		InvSrcAlpha,
 		DestAlpha,
-		InvDestAlpha,	
+		InvDestAlpha,
+		DestColor,
+		InvDestColor,
+		SrcAlphaSaturate,
 		NumModes
 	};
 };
@@ -42,7 +45,10 @@ static const DWORD g_dwD3DBlendMode[] =
     D3DBLEND_SRCALPHA,
     D3DBLEND_INVSRCALPHA,
     D3DBLEND_DESTALPHA,
-    D3DBLEND_INVDESTALPHA
+    D3DBLEND_INVDESTALPHA,
+	D3DBLEND_DESTCOLOR,
+	D3DBLEND_INVDESTCOLOR,
+	D3DBLEND_SRCALPHASAT
 };
 
 

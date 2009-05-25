@@ -180,9 +180,10 @@ bool CApplicationBase::InitBase()
 
 	// create the main game window
 	// Direct3D is initialized in this function
-	int mode = global_params.FullScreen ? SMD_FULLSCREEN : SMD_WINDOWED;
+	GameWindow::ScreenMode mode
+		= global_params.FullScreen ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
 	GameWindowManager().CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode, GetApplicationTitle() );
-//	GameWindowManager().CreateGameWindow( 800, 600, SMD_WINDOWED /*SMD_FULLSCREEN*/ );
+//	GameWindowManager().CreateGameWindow( 800, 600, GameWindow::WINDOWED /*GameWindow::FULLSCREEN*/ );
 
 	if( 0 <= global_params.WindowLeftPos && 0 <= global_params.WindowTopPos )
 		GameWindowManager().SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
