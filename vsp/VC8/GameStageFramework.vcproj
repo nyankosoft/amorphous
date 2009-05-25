@@ -1577,6 +1577,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\App\GameWindowManager.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\App\GameWindowManager_Win32.cpp"
 					>
 				</File>
