@@ -278,11 +278,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\GLGraphicsDevice.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\GLGraphicsDevice.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\GraphicsDevice.hpp"
 				>
 			</File>
 			<File

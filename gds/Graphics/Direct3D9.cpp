@@ -1,7 +1,6 @@
 #include "Direct3D9.hpp"
 
 #include "../base.hpp"
-#include "TextureFormat.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
@@ -65,6 +64,7 @@ m_pD3DDevice( NULL ),
 m_DeviceType(D3DDEVTYPE_HAL),
 m_BehaviorFlags(0)
 {
+	m_CurrentDepthBufferType = D3DZB_TRUE;
 }
 
 
@@ -314,4 +314,67 @@ void CDirect3D9::EnumAdapterModesForDefaultAdapter()
 				
 		}
 	}
+}
+
+
+bool ToD3DRenderStateType( RenderStateType::Name type, D3DRENDERSTATETYPE& dest )
+{
+	switch(type)
+	{
+	case RenderStateType::ALPHA_BLEND:               dest = D3DRS_ALPHABLENDENABLE; return true;
+	case RenderStateType::ALPHA_TEST:                dest = D3DRS_ALPHATESTENABLE;  return true;
+	case RenderStateType::LIGHTING:                  dest = D3DRS_LIGHTING;		    return true;
+	case RenderStateType::FOG:                       dest = D3DRS_FOGENABLE;	    return true;
+	case RenderStateType::WRITING_INTO_DEPTH_BUFFER: dest = D3DRS_ZWRITEENABLE;	    return true;
+	default:
+		return false;
+	}
+}
+
+
+Result::Name CDirect3D9::SetRenderState( RenderStateType::Name type, bool enable )
+{
+	if( !m_pD3DDevice )
+		return Result::UNKNOWN_ERROR;
+
+	D3DRENDERSTATETYPE d3d_rst;
+	HRESULT hr = S_OK;
+	bool res = ToD3DRenderStateType( type, d3d_rst );
+	if( res )
+	{
+		hr = m_pD3DDevice->SetRenderState( d3d_rst, enable ? TRUE : FALSE );
+
+		if( SUCCEEDED(hr) )
+			return Result::SUCCESS;
+		else
+			return Result::UNKNOWN_ERROR;
+	}
+
+	switch(type)
+	{
+	case RenderStateType::DEPTH_TEST:
+		if( enable )
+			m_pD3DDevice->SetRenderState( D3DRS_ZENABLE, m_CurrentDepthBufferType );
+		else
+			m_pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
+		break;
+	default:
+		return Result::INVALID_ARGS;
+	}
+
+	return Result::UNKNOWN_ERROR;
+}
+
+
+void CDirect3D9::SetSourceBlendMode( AlphaBlend::Mode src_blend_mode )
+{
+	if( m_pD3DDevice )
+		m_pD3DDevice->SetRenderState( D3DRS_SRCBLEND, g_dwD3DBlendMode[src_blend_mode] );
+}
+
+
+void CDirect3D9::SeDestBlendMode( AlphaBlend::Mode dest_blend_mode )
+{
+	if( m_pD3DDevice )
+		m_pD3DDevice->SetRenderState( D3DRS_DESTBLEND, g_dwD3DBlendMode[dest_blend_mode] );
 }

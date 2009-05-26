@@ -1,8 +1,8 @@
 #ifndef __DIRECT3D9_H__
 #define __DIRECT3D9_H__
 
-#include <vector>
-#include <d3d9.h>
+
+#include "GraphicsDevice.hpp"
 #include <d3dx9.h>
 #include "../base.hpp"
 #include "TextureFormat.hpp"
@@ -12,54 +12,11 @@
 #pragma comment( lib, "d3dx9.lib" )
 
 
-class CDisplayMode
-{
-public:
-	uint Width;
-	uint Height;
-	uint RefreshRate;
-	TextureFormat::Format Format;
-
-	// true if this is the current display mode.
-	// - Invalidated after the graphics device settings are changed
-	//   (e.g., resolution, fullscreen/window mode changes).
-	// - Call CDirect3D9::GetAdapterModesForDefaultAdapter() to get updated info
-	//   after chaging the settings.
-	bool Current;
-
-public:
-
-	CDisplayMode( uint w=0, uint h=0, uint r=0, TextureFormat::Format fmt = TextureFormat::X8R8G8B8)
-		:
-	Width(w),
-	Height(h),
-	RefreshRate(r),
-	Format(fmt),
-	Current(false)
-	{}
-};
-
-class CAdapterMode
-{
-public:
-	TextureFormat::Format Format;
-
-	std::vector<CDisplayMode> vecDisplayMode;
-
-public:
-
-	CAdapterMode( TextureFormat::Format fmt = TextureFormat::X8R8G8B8 )
-		:
-	Format(fmt)
-	{}
-};
-
-
 #define DIRECT3D9 ( CDirect3D9::ms_CDirect3D9_ )
 //#define DIRECT3D9 ( CDirect3D9::GetInstance() )
 
 
-class CDirect3D9
+class CDirect3D9 : public CGraphicsDevice
 {
 private:
 
@@ -76,6 +33,8 @@ private:
 	D3DFORMAT m_AdapterFormat; ///< the surface format of the display mode
 
 	std::vector<CAdapterMode> m_vecAdapterMode;
+
+	D3DZBUFFERTYPE m_CurrentDepthBufferType;
 
 private:
 
@@ -124,6 +83,12 @@ public:
 		WINDOWED
 	};
 
+
+	Result::Name SetRenderState( RenderStateType::Name type, bool enable );
+
+	void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode );
+
+	void SeDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 };
 
 
