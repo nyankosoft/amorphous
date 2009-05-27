@@ -278,11 +278,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\GLGraphicsDevice.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\GLGraphicsDevice.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\GraphicsDevice.hpp"
 				>
 			</File>
 			<File
@@ -557,7 +569,19 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GraphicsResource.hpp"
+					RelativePath="..\..\gds\Graphics\D3DGraphicsResources.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\D3DGraphicsResources.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\GLGraphicsResources.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\GLGraphicsResources.hpp"
 					>
 				</File>
 				<File
@@ -606,6 +630,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\GraphicsResourceManager.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\GraphicsResources.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\GraphicsResources.hpp"
 					>
 				</File>
 				<File
