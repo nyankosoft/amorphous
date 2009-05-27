@@ -5,8 +5,7 @@
 #include <string>
 
 #include "fwd.hpp"
-#include "GraphicsResource.hpp"
-#include "GraphicsResourceDescs.hpp"
+#include "GraphicsResources.hpp"
 #include "GraphicsResourceEntries.hpp"
 
 

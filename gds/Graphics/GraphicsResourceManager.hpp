@@ -7,7 +7,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "GraphicsComponentCollector.hpp"
-#include "GraphicsResource.hpp"
+#include "GraphicsResources.hpp"
 #include "GraphicsResourceDescs.hpp"
 #include "GraphicsResourceEntries.hpp"
 #include "GraphicsResourceLoaders.hpp"

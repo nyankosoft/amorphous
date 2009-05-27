@@ -3,7 +3,7 @@
 
 
 #include "fwd.hpp"
-#include "GraphicsResource.hpp"
+#include "GraphicsResources.hpp"
 #include "GraphicsResourceDescs.hpp"
 #include "GraphicsResourceHandle.hpp"
 #include <boost/weak_ptr.hpp>

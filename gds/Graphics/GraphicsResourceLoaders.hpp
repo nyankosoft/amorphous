@@ -4,7 +4,7 @@
 
 #include "Graphics/fwd.hpp"
 using namespace MeshModel;
-#include "GraphicsResource.hpp"
+#include "GraphicsResources.hpp"
 #include "GraphicsResourceEntries.hpp"
 #include "Support/fnop.hpp"
 #include "Support/SafeDelete.hpp"

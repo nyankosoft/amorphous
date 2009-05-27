@@ -1,4 +1,5 @@
 #include "GraphicsResourceCacheManager.hpp"
+#include "D3DGraphicsResources.hpp"
 
 using namespace std;
 using namespace boost;
@@ -10,7 +11,7 @@ using namespace boost;
 
 shared_ptr<CTextureResource> CD3DGraphicsResourceFactoryImpl::CreateTextureResource( const CTextureResourceDesc& desc )
 {
-	return shared_ptr<CTextureResource>( new CTextureResource(&desc) );
+	return shared_ptr<CD3DTextureResource>( new CD3DTextureResource(&desc) );
 }
 
 shared_ptr<CMeshResource> CD3DGraphicsResourceFactoryImpl::CreateMeshResource( const CMeshResourceDesc& desc )

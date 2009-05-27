@@ -6,10 +6,24 @@
 #include <boost/weak_ptr.hpp>
 
 #include "fwd.hpp"
-#include "GraphicsResource.hpp"
+#include "Graphics/TextureFormat.hpp"
 #include "XML/fwd.hpp"
 #include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
+
+
+class GraphicsResourceType
+{
+public:
+	enum Name
+	{
+		Texture,
+		Mesh,
+		Shader,
+		Font,
+		NumTypes
+	};
+};
 
 
 class CResourceLoadingMode
