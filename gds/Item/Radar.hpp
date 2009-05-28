@@ -141,6 +141,19 @@ protected:
 
 //	float m_fFrameTimeAccumulation;
 
+	enum Params
+	{
+		MAX_ALLOWED_TARGET_GROUP_ID = 64,
+	};
+
+	/// m_vecIsTargetEntityGroup[group_id] == 1: register the entity to the target list
+	/// m_vecIsTargetEntityGroup[group_id] == 0: do not register the entity to the target list
+//	std::vector<int> m_vecIsTargetEntityGroup;
+
+	/// stores if entity group ids(indices) that should be considered target
+	/// m_vecIsTargetEntityGroup[group_id] = 1:
+	std::map<int,int> m_mapTargetEntityGroup;
+
 protected:
 
 	void UpdateEntitiesList();
@@ -178,6 +191,9 @@ public:
 	const Matrix34& GetRadarWorldPose() const { return m_RadarWorldPose; }
 
 	void SetRadarWorldPose( const Matrix34& pose ) { m_RadarWorldPose = pose; }
+
+//	void AddTargetEntityGroup( int group_id );
+//	void ClearTargetEntityGroup
 };
 
 

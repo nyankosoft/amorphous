@@ -43,6 +43,10 @@ public:
  */
 class CGameItem : public IArchiveObjectBase
 {
+private:
+
+	void SetWeakPtr( boost::weak_ptr<CGameItem> pMyself ) { m_pMyself = pMyself; }
+
 protected:
 
 	std::string m_strName;
@@ -67,6 +71,8 @@ protected:
 	CStageWeakPtr m_pStage;
 
 	CEntityHandle<CItemEntity> m_Entity;
+
+	boost::weak_ptr<CGameItem> m_pMyself;
 
 public:
 
@@ -107,6 +113,11 @@ public:
 	// functions that change / update item states
 	//
 
+	/// Called right after the item is loaded (serialized in input mode) from the DB.
+	/// Added for init routines that need 'm_pMyself'.
+	/// See CItemDatabaseManager::GetItem() for details.
+	virtual Result::Name OnLoadedFromDatabase() { return Result::SUCCESS; }
+
 	virtual void OnSelected() {}
 
 	virtual bool HandleInput( int input_code, int input_type, float fParam ) { return false; }
@@ -137,6 +148,8 @@ public:
 	inline const std::string& GetDesc( int lang_id ) const { return m_Desc.text[lang_id]; }
 
 	void SetStageWeakPtr( CStageWeakPtr pStage ) { m_pStage = pStage; }
+
+	CEntityHandle<CItemEntity> GetItemEntity() { return m_Entity; }
 
 	void SetItemEntity( CEntityHandle<CItemEntity>& entity ) { m_Entity = entity; }
 

@@ -21,11 +21,19 @@ using namespace item;
 
 void CLandVehicle::Update( float dt )
 {
-	CCopyEntity *pEntity = m_Entity.GetRawPtr();
+	shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
+
+	if( !pEntity )
+	{
+		// Does not linked to the entity - check the owner's entity
+		if( m_pOwner )
+			pEntity = m_pOwner->GetItemEntity().Get();
+	}
+
 	if( !pEntity )
 		return;
 
-	pEntity->pBaseEntity->UpdateScriptedMotionPath( pEntity, m_Path );
+	pEntity->pBaseEntity->UpdateScriptedMotionPath( pEntity.get(), m_Path );
 
 	float test_trace_length = 50.0f;
 	if( m_PrevPose != pEntity->GetWorldPose() )
@@ -111,7 +119,9 @@ void CArmedVehicle::CTurretHolder::Serialize( IArchive& ar, const unsigned int v
 void CArmedVehicle::Init()
 {
 	m_pRadar = ItemDatabaseManager().GetItem<CRadar>( m_RadarName, 1 );
+
 	m_pLandVehicleItem = ItemDatabaseManager().GetItem<CLandVehicle>( m_LandVehicleName, 1 );
+	m_pLandVehicleItem->SetOwner( m_pMyself.lock() );
 
 	for( size_t i=0; i<m_vecTurret.size(); i++ )
 	{
@@ -119,6 +129,8 @@ void CArmedVehicle::Init()
 			= ItemDatabaseManager().GetItem<CRotatableTurret>( m_vecTurret[i].TurretName, 1 );
 		if( m_vecTurret[i].pTurret )
 		{
+			m_vecTurret[i].pTurret->SetOwner( m_pMyself.lock() );
+
 			if( m_vecTurret[i].UseInvLocalTransformForMeshTransform )
 				m_vecTurret[i].pTurret->SetMeshTransform( m_vecTurret[i].LocalPose.GetInverseROT() );
 		}
@@ -219,10 +231,10 @@ void CArmedVehicle::Serialize( IArchive& ar, const unsigned int version )
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 		m_Target = CEntityHandle<>();
 
-	if( ar.GetMode() == IArchive::MODE_INPUT )
-	{
-		Init();
-	}
+//	if( ar.GetMode() == IArchive::MODE_INPUT )
+//	{
+//		Init();
+//	}
 }
 
 

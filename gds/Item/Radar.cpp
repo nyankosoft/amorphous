@@ -222,6 +222,6 @@ void CRadar::LoadFromXMLNode( CXMLNodeReader& reader )
 	CGameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "EffectiveRangeRadius",      m_fEffectiveRangeRadius );
-	reader.GetChildElementTextContent( "SensoingFrequency",         m_fSensoringFrequency );
+	reader.GetChildElementTextContent( "SensoringFrequency",        m_fSensoringFrequency );
 	reader.GetChildElementTextContent( "TargetInfoUpdateFrequency", m_TargetInfoUpdateFrequency );
 }

@@ -20,6 +20,12 @@ class CItemDatabaseManager
 {
 	CBinaryDatabase<std::string> *m_pItemDatabase;
 
+private:
+
+	/// \return the owned reference of an item object
+	/// \return NULL if the item with the specified name was not found
+	CGameItem *GetItemRawPtr( const std::string& item_name, int quantity );
+
 public:
 
 	static CSingleton<CItemDatabaseManager> m_obj;
@@ -36,10 +42,6 @@ public:
 
 	bool LoadFromFile( const std::string& filename );
 
-	/// \return the owned reference of an item object
-	/// \return NULL if the item with the specified name was not found
-	CGameItem *GetItemRawPtr( const std::string& item_name, int quantity );
-
 	template<class T>
 	inline boost::shared_ptr<T> GetItem( const std::string& item_name, int quantity );
 };
@@ -55,6 +57,10 @@ inline boost::shared_ptr<T> CItemDatabaseManager::GetItem( const std::string& it
 		return  boost::shared_ptr<T>();
 
 	boost::shared_ptr<CGameItem> pBasePtr = boost::shared_ptr<CGameItem>( pRawOwnedPtr );
+
+	pBasePtr->SetWeakPtr( pBasePtr );
+
+	pBasePtr->OnLoadedFromDatabase();
 
 	return boost::dynamic_pointer_cast<T,CGameItem>(pBasePtr);
 }

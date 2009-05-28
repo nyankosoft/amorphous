@@ -131,7 +131,7 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 
 {
 	shared_ptr<CItemEntity> pEntity = shared_ptr<CItemEntity>( new CItemEntity( pItem ) );
-//	CEntityHandle<CItemEntity> entity_handle( pEntity );
+
 	CEntityHandle<CItemEntity> entity_handle;
 
 	CBaseEntityHandle *pAttribBaseEntityHandle;
@@ -139,6 +139,10 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 		pAttribBaseEntityHandle = &attributes_base_entity_handle;
 	else
 		pAttribBaseEntityHandle = &m_BaseEntityHandle;
+
+	pEntity->SetWorldPose( pose );
+	pEntity->SetVelocity( vLinearVelocity );
+	pEntity->SetAngularVelocity( vAngularVelocity );
 
 	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, *pAttribBaseEntityHandle );
 

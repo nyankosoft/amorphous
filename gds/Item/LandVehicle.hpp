@@ -39,6 +39,8 @@ class CLandVehicle : public CGameItem
 	// used for trace test
 	std::vector<CCopyEntity *> m_vecpEntityBuffer;
 
+	boost::shared_ptr<CGameItem> m_pOwner;
+
 public:
 
 	CLandVehicle() {}
@@ -52,6 +54,8 @@ public:
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
 	void Release() {}
+
+	void SetOwner( boost::shared_ptr<CGameItem> pOwner ) { m_pOwner = pOwner; }
 };
 
 
@@ -113,6 +117,8 @@ public:
 	void Update( float dt );
 
 	void Render();
+
+	Result::Name OnLoadedFromDatabase() { Init(); return Result::SUCCESS; }
 
 	unsigned int GetArchiveObjectID() const { return ID_ARMED_VEHICLE; }
 

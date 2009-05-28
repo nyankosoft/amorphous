@@ -57,6 +57,8 @@ class CRotatableTurret : public CGameItem
 	Matrix34 m_MountMeshTransform;
 	Matrix34 m_GunMeshTransform;
 
+	boost::shared_ptr<CGameItem> m_pOwner;
+
 /*	enum StyleFlags
 	{
 		SF_USE_ENTITY_AS_PARENT_OBJECT = (1 << 0), ///< Use obtain parent world pose from the entity
@@ -89,6 +91,8 @@ public:
 
 	void SetMeshTransform( Matrix34& transform );
 //	void SetGunMeshTransform( Matrix34& transform ) { m_GunMeshTransform = transform; }
+
+	void SetOwner( boost::shared_ptr<CGameItem> pOwner ) { m_pOwner = pOwner; }
 };
 
 

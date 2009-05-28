@@ -26,8 +26,15 @@ m_MountMeshTransform(Matrix34Identity())
 
 void CRotatableTurret::UpdateAimInfo()
 {
-	shared_ptr<CCopyEntity> pMyEntity = m_Entity.Get();
-	if( !pMyEntity )
+	shared_ptr<CCopyEntity> pLinkedEntity = m_Entity.Get();
+	if( !pLinkedEntity )
+	{
+		// Does not linked to the entity - check the owner's entity
+		if( m_pOwner )
+			pLinkedEntity = m_pOwner->GetItemEntity().Get();
+	}
+
+	if( !pLinkedEntity )
 		return;
 
 	shared_ptr<CCopyEntity> pTargetEntity = m_Target.Get();
@@ -37,7 +44,7 @@ void CRotatableTurret::UpdateAimInfo()
 	Matrix34 init_mount_world_pose = m_ParentWorldPose * m_MountLocalPose;
 
 	Vector3 vTurretPosition = init_mount_world_pose.vPosition;
-//	Vector3 vTurretPosition = pMyEntity->Position();
+//	Vector3 vTurretPosition = pLinkedEntity->Position();
 
 	// update target pos and dir
 	Vector3 vTargetPos = pTargetEntity->GetWorldPose().vPosition;
