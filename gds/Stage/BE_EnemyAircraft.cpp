@@ -29,7 +29,6 @@ using namespace physics;
 
 void CBEC_EnemyAircraftExtraData::Release()
 {
-	SafeDelete( m_pAircraft );
 	SafeDeleteVector( m_vecpWeapon );
 	SafeDeleteVector( m_vecpAmmo );
 }
@@ -109,7 +108,7 @@ void CBE_EnemyAircraft::InitCopyEntity(CCopyEntity* pCopyEnt)
 	ex.m_dLastFireTime = m_pStage->GetElapsedTime() - RangedRand( 0.0f, 5.0f );
 
 	if( ex.m_pAircraft )
-		m_NozzleFlames.CreateNozzleFlames( pCopyEnt, ex.m_pAircraft, m_pStage );
+		m_NozzleFlames.CreateNozzleFlames( pCopyEnt, ex.m_pAircraft.get(), m_pStage );
 }
 
 /*
@@ -263,7 +262,7 @@ void CBE_EnemyAircraft::Act( CCopyEntity* pCopyEnt )
 	float frametime = m_pStage->GetFrameTime();
 
 	if( ex.m_pAircraft )
-		m_NozzleFlames.UpdateNozzleFlames( pCopyEnt, 0, ex.m_pAircraft );
+		m_NozzleFlames.UpdateNozzleFlames( pCopyEnt, 0, ex.m_pAircraft.get() );
 
 	// if the entity has scripted motion path, update pose for the current time in stage
 	if( ex.m_Path.IsAvailable(0) )
@@ -488,7 +487,7 @@ void CBE_EnemyAircraft::AddExtraData()
 
 	ex.m_bInUse = true;
 
-	CGameItem *pItem = ItemDatabaseManager().GetItemRawPtr( m_strAircraftItemName, 1 );
+	shared_ptr<CGI_Aircraft> pItem = ItemDatabaseManager().GetItem<CGI_Aircraft>( m_strAircraftItemName, 1 );
 
 	if( !pItem )
 	{
@@ -496,16 +495,10 @@ void CBE_EnemyAircraft::AddExtraData()
 		return;
 	}
 
-	if( pItem->GetArchiveObjectID() != CGameItem::ID_AIRCRAFT )
-	{
-		LOG_PRINT_ERROR( "The item is not an aircraft: " + m_strAircraftItemName );
-		return;
-	}
-
 //	CGI_Airfcraft *pAircraftItem = (CGI_Airfcraft *)pItem;
 //	ex.m_pAircraft = CGI_AircraftSharedPtr( pAircraftItem );
 
-    ex.m_pAircraft = (CGI_Aircraft *)pItem;
+    ex.m_pAircraft = pItem;
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
