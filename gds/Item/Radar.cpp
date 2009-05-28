@@ -100,6 +100,8 @@ void CRadar::UpdateTargetInfo()
 
 	std::map<int,int>& entity_type_id_to_target_type_flag = CBE_PlayerPseudoAircraft::EntityTypeIDtoTargetTypeFlagMap();
 	std::map<int,int>& entity_group_to_target_group_flag  = CBE_PlayerPseudoAircraft::EntityGroupToTargetGroupFlagMap();
+	std::map<int,int>& entity_group_to_target_type_flag  = CBE_PlayerPseudoAircraft::EntityGroupToTargetTypeFlagMap();
+	
 //	std::map<int,int>& entity_type_id_to_target_type_flag = ms_mapEntityTypeIDtoTargetTypeFlag;
 //	std::map<int,int>& entity_group_to_target_group_flag  = ms_mapEntityGroupToTargetGroupFlag;
 
@@ -148,6 +150,12 @@ void CRadar::UpdateTargetInfo()
 			{
 				// set the target group
 				// - UD_TargetInfo::TGT_AIR or TGT_SURFACE
+				tgt_type |= itr_type->second;
+			}
+
+			itr_type = entity_group_to_target_type_flag.find( pEntity->GroupIndex );
+			if( itr_type != entity_group_to_target_type_flag.end() )
+			{
 				tgt_type |= itr_type->second;
 			}
 

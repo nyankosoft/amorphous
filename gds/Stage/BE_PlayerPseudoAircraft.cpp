@@ -77,8 +77,8 @@ static void SetDefaultGMInputCodesForActionCodes()
 //================================================================================
 
 map<int,int> CBE_PlayerPseudoAircraft::ms_mapEntityTypeIDtoTargetTypeFlag;
-
 map<int,int> CBE_PlayerPseudoAircraft::ms_mapEntityGroupToTargetGroupFlag;
+map<int,int> CBE_PlayerPseudoAircraft::ms_mapEntityGroupToTargetTypeFlag;
 
 vector<int> CBE_PlayerPseudoAircraft::ms_vecFocusTargetEntityGroup;
 
@@ -258,9 +258,9 @@ void CBE_PlayerPseudoAircraft::SetVisionMode( int vision_mode )
 	{
 	case CPlayerVisionMode::Normal:
 	default:
+		pScreenEffectManager->SetMonochromeEffect( 0.0f, 0.0f, 0.0f );
 		pScreenEffectManager->ClearEffectFlag( ScreenEffect::PseudoNightVision );
 		pScreenEffectManager->ClearEffectFlag( ScreenEffect::MonochromeColor );
-		pScreenEffectManager->SetMonochromeEffect( 0.0f, 0.0f, 0.0f );
 		break;
 
 	case CPlayerVisionMode::NightVision:

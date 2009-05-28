@@ -136,6 +136,8 @@ private:
 
 	static std::map<int,int> ms_mapEntityGroupToTargetGroupFlag;
 
+	static std::map<int,int> ms_mapEntityGroupToTargetTypeFlag;
+
 	static std::vector<int> ms_vecFocusTargetEntityGroup;
 
 private:
@@ -267,6 +269,8 @@ public:
 	static std::map<int,int>& EntityTypeIDtoTargetTypeFlagMap() { return  ms_mapEntityTypeIDtoTargetTypeFlag; }
 
 	static std::map<int,int>& EntityGroupToTargetGroupFlagMap() { return  ms_mapEntityGroupToTargetGroupFlag; }
+
+	static std::map<int,int>& EntityGroupToTargetTypeFlagMap() { return  ms_mapEntityGroupToTargetTypeFlag; }
 
 	static std::vector<int>& FocusTargetEntityGroup() { return ms_vecFocusTargetEntityGroup; }
 
