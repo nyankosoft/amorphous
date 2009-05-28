@@ -308,7 +308,6 @@ PyObject* gsf::py::entity::ReleaseTarget( PyObject* self, PyObject* args )
 */
 
 
-/// \param entity name
 PyObject* gsf::py::entity::SetPosition( PyObject* self, PyObject* args )
 {
 	Vector3 pos;
@@ -327,6 +326,35 @@ PyObject* gsf::py::entity::SetPosition( PyObject* self, PyObject* args )
 }
 
 
+/// \param entity name
+PyObject* SetEntityGroup( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+
+	const char *entity_group_name = NULL;
+	int result = PyArg_ParseTuple( args, "s", &entity_group_name );
+
+	if( !IsValidEntity(gs_pTargetEntity) )
+		return Py_None;
+
+	if( !gs_pTargetStage )
+		return Py_None;
+
+	if( !entity_group_name || string(entity_group_name).length() == 0 )
+		return Py_None;
+
+	int entity_group_id
+		= gs_pTargetStage->GetEntitySet()->GetEntityGroupFromName( entity_group_name );
+
+	if( entity_group_id == ENTITY_GROUP_INVALID_ID )
+		return Py_None;
+
+	gs_pTargetEntity->GroupIndex = entity_group_id;
+
+	return Py_None;
+}
+
+
 PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
 {
 	{ "StartPath",				  EntityStartPath,                 METH_VARARGS, "notify the start of motion path set routine" },
@@ -341,5 +369,6 @@ PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
 	{ "CommitStaticParticleSet",  CommitStaticParticleSet,         METH_VARARGS, "" },
 	{ "SetTarget",                gsf::py::entity::SetTarget,      METH_VARARGS, "find and lock the target entity for the subsequent calls" },
 	{ "SetPosition",              gsf::py::entity::SetPosition,    METH_VARARGS, "" },
+	{ "SetEntityGroup",           SetEntityGroup,                  METH_VARARGS, "Sets an entity group to the entity currently selected as the target" },
 	{NULL, NULL}
 };
