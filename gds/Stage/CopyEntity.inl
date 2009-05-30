@@ -31,7 +31,7 @@ m_TypeID(type_id)
 	m_CreatedTime   = 0.0;
 
 	m_EntityFlags   = 0;
-	m_EntityFlags   |= BETYPE_FLOATING;
+	m_EntityFlags   |= ( BETYPE_FLOATING | BETYPE_VISIBLE );
 
 	pBaseEntity     = NULL;
 
@@ -136,7 +136,6 @@ inline void CCopyEntity::Terminate()
 	m_Target.Reset();
 
 	m_EntityFlags = 0;
-	m_EntityFlags |= BETYPE_FLOATING;
 
 	iExtraDataIndex = CE_INVALID_EXTRA_DATA_INDEX;
 

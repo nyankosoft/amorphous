@@ -641,6 +641,13 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 	shared_ptr<CCopyEntity> pFocusedTarget = m_FocusedTarget.Get();
 	if( pLauncher && pFocusedTarget )
 		pLauncher->SetPrimaryTarget( m_FocusedTarget );
+
+	if( pFocusedTarget )
+	{
+		m_SubDisplay.SetTargetPosition( pFocusedTarget->Position() );
+		m_SubDisplay.SetTargetRadius( pFocusedTarget->GetRadius() );
+	}
+
 /*
 	size_t i, num_entities = s_vecpEntityBuffer.size();
 	for( i=0; i<num_entities; i++ )

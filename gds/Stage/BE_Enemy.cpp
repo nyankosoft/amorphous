@@ -673,7 +673,11 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 	switch( rGameMessage.iEffect )
 	{
 	case GM_DAMAGE:
+	{
+		float prev_life = rfLife;
 		rfLife -= rGameMessage.fParam1;
+
+		g_Log.Print( " An enemy entity (id: %d) took damage - life: %f -> %f", pCopyEnt_Self->GetID(), prev_life, rfLife );
 
 		ex->vLastHitFromThisDirection = rGameMessage.pSenderEntity->GetDirection();
 
@@ -721,6 +725,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 			m_pStage->TerminateEntity( pCopyEnt_Self );
 		}
 		break;
+	}
 
 	case GM_SET_MOTION_PATH:
 		{
