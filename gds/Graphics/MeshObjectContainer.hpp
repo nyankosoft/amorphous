@@ -131,6 +131,8 @@ public:
 	/// Recursively load all meshes on the nodes of the tree
 	bool LoadMeshesFromDesc();
 
+	bool LoadShadersFromDesc();
+
 	void Serialize( IArchive& ar, const unsigned int version );
 
 	void LoadFromXMLNode( CXMLNodeReader& reader );

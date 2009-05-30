@@ -225,6 +225,36 @@ bool CMeshContainerNode::LoadMeshesFromDesc()
 }
 
 
+bool CMeshContainerNode::LoadShadersFromDesc()
+{
+	if( m_vecpMeshContainer.size() == 0
+	 && m_vecpChild.size() == 0 )
+	{
+		// nothing to load
+		return false;
+	}
+
+	bool loaded = false;
+	bool loaded_so_far = true;
+	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
+	{
+		loaded = m_vecpMeshContainer[i]->m_ShaderHandle.Load( m_vecpMeshContainer[i]->m_ShaderFilepath );
+		if( !loaded )
+			loaded_so_far = false;
+	}
+
+	// recursively load the meshses of the child nodes
+	for( size_t i=0; i<m_vecpChild.size(); i++ )
+	{
+		loaded = m_vecpChild[i]->LoadShadersFromDesc();
+		if( !loaded )
+			loaded_so_far = false;
+	}
+
+	return loaded_so_far;
+}
+
+
 void CMeshContainerNode::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecpMeshContainer;
