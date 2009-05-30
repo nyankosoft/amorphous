@@ -75,6 +75,8 @@ private:
 
 	inline CBaseEntity *GetBaseEntity( CBaseEntityHandle& rBaseEntityHandle );
 
+	void SetBasicEntityAttributes( CCopyEntity *pEntity, CBaseEntity& rBaseEntity );
+
 	void InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCopyEntity *pParent, CBaseEntity *pBaseEntity );
 
 	void UpdatePhysics( float frametime );
@@ -225,6 +227,13 @@ inline CEntityHandle<T> CEntitySet::CreateEntity( boost::shared_ptr<T> pEntity, 
 	CEntityHandle<T> entity_handle( pEntity );
 
 	CBaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
+
+	// Do null checks
+	if( !pEntity || !pBaseEntity )
+		return CEntityHandle<T>();
+
+	// Copy attribute values from 'pBaseEntity'
+	SetBasicEntityAttributes( pEntity.get(), *pBaseEntity );
 
 	InitEntity( pEntity, NULL, pBaseEntity );
 

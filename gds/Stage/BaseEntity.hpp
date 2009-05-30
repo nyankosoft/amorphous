@@ -219,6 +219,8 @@ public:
 	inline unsigned int GetEntityFlag() const { return m_EntityFlag; }
 	inline void ClearEntityFlag( const unsigned int flag ) { m_EntityFlag &= (~flag); }
 
+	float GetRadius() const { return m_fRadius; }
+
 	/// returns an id for an arbitrary entity group
     int GetEntityGroupID( CEntityGroupHandle& entity_group_handle );
 

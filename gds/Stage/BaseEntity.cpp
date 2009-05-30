@@ -1156,7 +1156,8 @@ void CBaseEntity::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_strName;
 
-	ar & m_fRadius & m_aabb;
+	ar & m_fRadius;
+	ar & m_aabb;
 	ar & m_BoundingVolumeType;
 
 	ar & m_EntityFlag;
@@ -1166,11 +1167,11 @@ void CBaseEntity::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_bNoClip;
 	ar & m_bNoClipAgainstMap;
 
+	ar & m_fLife;
+
 	ar & m_bLighting;
 
 	ar & m_bSweepRender;
-
-	ar & m_fLife;
 
 	ar & m_MeshProperty;
 }

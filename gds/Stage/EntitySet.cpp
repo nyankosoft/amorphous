@@ -525,6 +525,17 @@ inline CBaseEntity *CEntitySet::GetBaseEntity( CBaseEntityHandle& rBaseEntityHan
 }
 
 
+void CEntitySet::SetBasicEntityAttributes( CCopyEntity *pEntity, CBaseEntity& rBaseEntity )
+{
+	pEntity->bvType        = rBaseEntity.m_BoundingVolumeType;
+	pEntity->bNoClip       = rBaseEntity.m_bNoClip;
+	pEntity->fRadius       = rBaseEntity.m_fRadius;
+	pEntity->local_aabb    = rBaseEntity.m_aabb;
+	pEntity->fLife         = rBaseEntity.m_fLife;
+	pEntity->SetEntityFlags( rBaseEntity.m_EntityFlag );
+}
+
+
 void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCopyEntity *pParent, CBaseEntity *pBaseEntity )
 {
 	CCopyEntity* pNewCopyEnt = pNewCopyEntPtr.get();
@@ -712,10 +723,13 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	CCopyEntity *pNewCopyEnt = pNewEntitySharedPtr.get();
 
 	pNewCopyEnt->m_TypeID    = rCopyEntityDesc.TypeID;
-	pNewCopyEnt->SetName( rCopyEntityDesc.strName );
 
-	pNewCopyEnt->bvType  = rBaseEntity.m_BoundingVolumeType;
-	pNewCopyEnt->bNoClip = rBaseEntity.m_bNoClip;
+	// copy parameter values from base entity (entity attributes set)
+	SetBasicEntityAttributes( pNewCopyEnt, rBaseEntity );
+
+	// copy parameter values from entity desc
+
+	pNewCopyEnt->SetName( rCopyEntityDesc.strName );
 
 	pNewCopyEnt->SetWorldPose( rCopyEntityDesc.WorldPose );
 
@@ -735,18 +749,12 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	pNewCopyEnt->iExtraDataIndex = rCopyEntityDesc.iExtraDataIndex;
 	pNewCopyEnt->pUserData = rCopyEntityDesc.pUserData;
 
-	pNewCopyEnt->fLife    = 0.0f;
 	pNewCopyEnt->sState   = 0;
 	pNewCopyEnt->bInSolid = false;
 
 	pNewCopyEnt->GroupIndex = entity_group_id;
 
 //	pNewCopyEnt->GroupIndex = rCopyEntityDesc.sGroupID;
-
-	// set other properties
-	pNewCopyEnt->SetEntityFlags( rBaseEntity.m_EntityFlag );
-	pNewCopyEnt->fRadius    = rBaseEntity.m_fRadius;
-	pNewCopyEnt->local_aabb = rBaseEntity.m_aabb;
 
 	pNewCopyEnt->touch_plane.dist   = 0;
 	pNewCopyEnt->touch_plane.normal = Vector3(0,0,0);
