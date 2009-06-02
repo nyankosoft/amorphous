@@ -1060,6 +1060,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\gds\Stage\EntityHandle.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Stage\LightEntity.cpp"
 						>
 					</File>
