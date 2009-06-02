@@ -19,11 +19,21 @@ m_MountLocalPose(Matrix34Identity()),
 m_GunLocalPose(Matrix34Identity()),
 m_MeshTransform(Matrix34Identity()),
 m_GunMeshTransform(Matrix34Identity()),
-m_MountMeshTransform(Matrix34Identity())
+m_MountMeshTransform(Matrix34Identity()),
+m_vAimDirection(Vector3(0,0,1))
 {
+	m_LocalTurnTableOrient.smooth_time   = 1.0f;
+	m_LocalGunTubePitchAngle.smooth_time = 1.0f;
+
+	m_LocalTurnTableOrient.current.FromRotationMatrix( Matrix33Identity() );
+	m_LocalTurnTableOrient.target.FromRotationMatrix( Matrix33Identity() );
+	m_LocalTurnTableOrient.vel.FromRotationMatrix( Matrix33Identity() );
+	m_LocalGunTubePitchAngle.SetZeroState();
 }
 
 
+// Calculate and update m_vAimDirection from the current target.
+// Does nothing if the turret has not target.
 void CRotatableTurret::UpdateAimInfo()
 {
 	shared_ptr<CCopyEntity> pLinkedEntity = m_Entity.Get();
@@ -56,8 +66,35 @@ void CRotatableTurret::UpdateAimInfo()
 }
 
 
+bool CRotatableTurret::LoadMeshObject()
+{
+	bool base = CGameItem::LoadMeshObject();
+	bool weapon = false;
+	if( m_pWeapon )
+		weapon = m_pWeapon->LoadMeshObject();
+
+	return (base && weapon);
+}
+
+
+Result::Name CRotatableTurret::OnLoadedFromDatabase()
+{
+	m_pWeapon = ItemDatabaseManager().GetItem<CGI_Weapon>( m_WeaponName, 1 );
+
+	for( size_t i=0; i<m_vecAmmunition.size(); i++ )
+	{
+		CAmmunitionAttributes& ammo = m_vecAmmunition[i];
+		ammo.pItem = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo.m_AmmunitionName, ammo.m_InitQuantity );
+	}
+
+	return Result::SUCCESS;
+}
+
+
 void CRotatableTurret::Update( float dt )
 {
+	UpdateAimInfo();
+
 	Matrix34 init_world_pose
 		= m_ParentWorldPose * m_MountLocalPose;
 
@@ -91,8 +128,13 @@ void CRotatableTurret::Update( float dt )
 
 	m_LocalGunTubePitchAngle.target = target_pitch;
 
+	// update critical damping
+	m_LocalGunTubePitchAngle.Update( dt );
+	m_LocalTurnTableOrient.Update( dt );
+
 //	vLocalTTableRightDir = m_LocalTurnTableOrient.current.ToRotationMatrix().GetColumn(0);
 
+	// update local poses
 	Matrix34 local_mount_pose, local_gun_tube_pose;
 	local_mount_pose    = Matrix34( m_MountLocalPose.vPosition, m_LocalTurnTableOrient.current.ToRotationMatrix() );
 //	local_gun_tube_pose = Matrix34( m_GunLocalPose.vPosition,   Matrix33RotationAxis( m_LocalGunTubePitchAngle.current, vLocalTTableRightDir ) );
@@ -127,8 +169,8 @@ void CRotatableTurret::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_MountLocalPose;
 	ar & m_GunLocalPose;
-	ar & m_pWeapon;
-	ar & m_vecpAmmunition;
+	ar & m_WeaponName;
+	ar & m_vecAmmunition;
 
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
@@ -142,15 +184,19 @@ void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGameItem::LoadFromXMLNode( reader );
 
-	string weapon_name, ammo_name, ammo_quantity;
+	string ammo_name, ammo_quantity;
 
-	reader.GetChildElementTextContent( "Weapon",      weapon_name );
-	m_pWeapon = ItemDatabaseManager().GetItem<CGI_Weapon>( weapon_name, 1 );
+	reader.GetChildElementTextContent( "Weapon",      m_WeaponName );
 
 	vector<CXMLNodeReader> vecAmmo = reader.GetImmediateChildren( "Ammunition" );
-	m_vecpAmmunition.resize( vecAmmo.size() );
+//	m_vecpAmmunition.resize( vecAmmo.size() );
+	m_vecAmmunition.resize( vecAmmo.size() );
 	for( size_t i=0; i<vecAmmo.size(); i++ )
 	{
+		// name
+		m_vecAmmunition[i].m_AmmunitionName = vecAmmo[i].GetTextContent();
+
+		// quantity
 		ammo_quantity = vecAmmo[i].GetAttributeText( "quantity" );
 		if( ammo_quantity == "" )
 			ammo_quantity = "infinite";
@@ -159,8 +205,9 @@ void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 			// TODO: set infinite
 			ammo_quantity = "100000000";
 		}
-		ammo_name = vecAmmo[i].GetTextContent();
-		m_vecpAmmunition[i] = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo_name, to_int(ammo_quantity) );
+		m_vecAmmunition[i].m_InitQuantity = to_int(ammo_quantity);
+
+//		m_vecpAmmunition[i] = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo_name, to_int(ammo_quantity) );
 	}
 /*
 	vector<CXMLNodeReader> vecAmmoLoading = reader.GetChildElementTextContent( "AmmunitionLoading/Name",  ammo_name );

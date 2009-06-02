@@ -41,11 +41,17 @@ class CLandVehicle : public CGameItem
 
 	boost::shared_ptr<CGameItem> m_pOwner;
 
+protected:
+
+	inline boost::shared_ptr<CItemEntity> GetVehicleEntity();
+
 public:
 
 	CLandVehicle() {}
 
 	virtual void Update( float dt );
+
+	virtual void Render();
 
 	unsigned int GetArchiveObjectID() const { return ID_LAND_VEHICLE; }
 
@@ -113,6 +119,8 @@ public:
 	void UpdateTarget();
 
 	void Init();
+
+	bool LoadMeshObject();
 
 	void Update( float dt );
 

@@ -44,7 +44,7 @@ public:
 
 	virtual ~CItemEntity();
 
-//	virtual void Init( CCopyEntityDesc& desc );
+	virtual void Init( CCopyEntityDesc& desc );
 
 //	void Init( CItemEntityDesc& desc );
 

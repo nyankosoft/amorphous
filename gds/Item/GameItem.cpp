@@ -58,7 +58,11 @@ void CGameItem::Serialize( IArchive& ar, const unsigned int version )
 bool CGameItem::LoadMeshObject()
 {
 //	return m_MeshObjectContainer.m_MeshObjectHandle.Load( m_MeshObjectContainer.m_MeshDesc );
-	return m_MeshContainerRootNode.LoadMeshesFromDesc();
+
+	bool meshes_loaded = m_MeshContainerRootNode.LoadMeshesFromDesc();
+	bool shaders_loaded = m_MeshContainerRootNode.LoadShadersFromDesc();
+
+	return ( meshes_loaded && shaders_loaded );
 }
 
 

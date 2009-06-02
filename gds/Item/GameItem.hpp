@@ -105,7 +105,7 @@ public:
 
 	CMeshContainerNode& MeshContainerRootNode() { return m_MeshContainerRootNode; }
 
-	bool LoadMeshObject();
+	virtual bool LoadMeshObject();
 
 //	void RenderMeshObject();
 

@@ -19,9 +19,9 @@ using namespace boost;
 using namespace item;
 
 
-void CLandVehicle::Update( float dt )
+inline shared_ptr<CItemEntity> CLandVehicle::GetVehicleEntity()
 {
-	shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
+	shared_ptr<CItemEntity> pEntity = m_Entity.Get();
 
 	if( !pEntity )
 	{
@@ -29,6 +29,14 @@ void CLandVehicle::Update( float dt )
 		if( m_pOwner )
 			pEntity = m_pOwner->GetItemEntity().Get();
 	}
+
+	return pEntity;
+}
+
+
+void CLandVehicle::Update( float dt )
+{
+	shared_ptr<CItemEntity> pEntity = GetVehicleEntity();
 
 	if( !pEntity )
 		return;
@@ -71,14 +79,28 @@ void CLandVehicle::Update( float dt )
 
 			Matrix33 matEntityOrient = pEntity->GetWorldPose().matOrient;
 			float angle = Vec3GetAngleBetween( vPlaneNormal, matEntityOrient.GetColumn(1) );
-			Vector3 vRotationAxis = Vec3Cross( matEntityOrient.GetColumn(1), vPlaneNormal );
-			pEntity->SetOrientation( Matrix33RotationAxis( angle, vRotationAxis ) * matEntityOrient );
+			if( 0.001f < fabs(angle) )
+			{
+				Vector3 vRotationAxis = Vec3Cross( matEntityOrient.GetColumn(1), vPlaneNormal );
+				pEntity->SetOrientation( Matrix33RotationAxis( angle, vRotationAxis ) * matEntityOrient );
+			}
 		}
 
 		m_vecpEntityBuffer.resize( 0 );
 	}
 
 	m_PrevPose = pEntity->GetWorldPose();
+}
+
+
+void CLandVehicle::Render()
+{
+	shared_ptr<CItemEntity> pEntity = GetVehicleEntity();
+
+	Matrix34 world_pose
+		= pEntity ? pEntity->GetWorldPose() : Matrix34Identity();
+	
+	m_MeshContainerRootNode.Render( world_pose );
 }
 
 
@@ -138,8 +160,36 @@ void CArmedVehicle::Init()
 }
 
 
+bool CArmedVehicle::LoadMeshObject()
+{
+	// CArmedVehicle has no mesh itself - the mesh is a combination of those of land vehicle and turrets.
+//	CGameItem::LoadMeshObject();
+
+	const size_t num_turrets = m_vecTurret.size();
+	for( size_t i=0; i<num_turrets; i++ )
+	{
+		if( m_vecTurret[i].pTurret )
+			m_vecTurret[i].pTurret->LoadMeshObject();
+	}
+
+	if( m_pLandVehicleItem )
+		m_pLandVehicleItem->LoadMeshObject();
+
+	return true;
+}
+
+
 void CArmedVehicle::Update( float dt )
 {
+	shared_ptr<CCopyEntity> pMyEntity = m_Entity.Get();
+	const size_t num_turrets = m_vecTurret.size();
+	for( size_t i=0; i<num_turrets; i++ )
+	{
+		if( pMyEntity )
+			m_vecTurret[i].pTurret->SetParentWorldPose( pMyEntity->GetWorldPose() );
+		m_vecTurret[i].pTurret->Update( dt );
+	}
+
 	if( m_pLandVehicleItem )
 		m_pLandVehicleItem->Update( dt );
 

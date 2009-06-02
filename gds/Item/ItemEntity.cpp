@@ -56,11 +56,14 @@ CItemEntity::~CItemEntity()
 }
 
 
-/*
+
 void CItemEntity::Init( CCopyEntityDesc& desc )
 {
+	RaiseEntityFlags( pBaseEntity->GetEntityFlag() );
+	this->fRadius = pBaseEntity->GetRadius();
 }
 
+/*
 void CItemEntity::Init( CItemEntityDesc& desc )
 {
 }*/

@@ -41,9 +41,34 @@ class CRotatableTurret : public CGameItem
 //	cdv<Quaternion> m_LocalGunTubeOrient;
 	cdv<float> m_LocalGunTubePitchAngle;
 
+	std::string m_WeaponName;
 	boost::shared_ptr<CGI_Weapon> m_pWeapon;
 
 //	boost::shared_ptr<CGI_Ammunition> m_pAmmunition;
+	class CAmmunitionAttributes : public IArchiveObjectBase
+	{
+	public:
+		std::string m_AmmunitionName;
+		int m_InitQuantity;
+		boost::shared_ptr<CGI_Ammunition> pItem;
+
+		CAmmunitionAttributes()
+			:
+		m_InitQuantity(0)
+		{}
+
+		void Serialize( IArchive& ar, const unsigned int version )
+		{
+			ar & m_AmmunitionName;
+			ar & m_InitQuantity;
+
+			if( ar.GetMode() == IArchive::MODE_INPUT )
+				pItem.reset();
+		}
+	};
+
+	std::vector<CAmmunitionAttributes> m_vecAmmunition;
+
 	std::vector< boost::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
 
 	CEntityHandle<> m_Target;
@@ -74,6 +99,10 @@ public:
 	CRotatableTurret();
 
 	virtual ~CRotatableTurret() {}
+
+	bool LoadMeshObject();
+
+	Result::Name OnLoadedFromDatabase();
 
 	void Update( float dt );
 
