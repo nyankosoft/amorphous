@@ -193,6 +193,12 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 		{
 		case CGraphicsDeviceRequest::Lock:
 			{
+				if( !req.m_pLoader->IsReadyToLock() )
+				{
+					AddGraphicsDeviceRequest( req );
+					continue;
+				}
+
 				// Do either of the following
 				// - Draw one from the cache (no need to create a new resource on memory)
 				// - Create a new graphics resource from the desc

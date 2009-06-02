@@ -27,6 +27,8 @@ protected:
 
 	boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry.lock(); }
 
+	const boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() const { return m_pResourceEntry.lock(); }
+
 	inline const std::string& GetSourceFilepath();
 
 public:
@@ -71,6 +73,8 @@ public:
 	///   and the memory is successfully unlocked.
 	/// - By default, this method set the resource state to GraphicsResourceState::LOADED.
 	virtual void OnResourceLoadedOnGraphicsMemory();
+
+	virtual bool IsReadyToLock() const { return true; }
 
 	/// Used to fill out desc properties that can be obtained
 	/// only after the resource is loaded from disk
@@ -173,6 +177,8 @@ public:
 
 	void RaiseStateFlags( U32 flags );
 
+	U32 GetMeshLoaderStateFlags() const { return m_MeshLoaderStateFlags; }
+
 	void SendLockRequestIfAllSubresourcesHaveBeenLoaded();
 
 	vector<U16>& IndexBufferContent() { return m_vecIndexBufferContent; }
@@ -222,6 +228,8 @@ public:
 
 	virtual bool LoadFromArchive() = 0;
 
+	inline GraphicsResourceState::Name GetSubResourceState( CMeshSubResource::Name subresource ) const;
+
 	inline void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
 	friend class CMeshLoader;
@@ -262,6 +270,8 @@ public:
 	bool Unlock();
 
 	void OnResourceLoadedOnGraphicsMemory();
+
+	bool IsReadyToLock() const;
 };
 
 
@@ -295,12 +305,14 @@ public:
 
 	bool CopyLoadedContentToGraphicsResource();
 
-	void OnResourceLoadedOnGraphicsMemory();
-
 	// Lock the index buffer and save the pointer to the locked buffer
 	bool Lock();
 
 	bool Unlock();
+
+	void OnResourceLoadedOnGraphicsMemory();
+
+	bool IsReadyToLock() const;
 };
 
 
@@ -328,12 +340,15 @@ public:
 
 	bool CopyLoadedContentToGraphicsResource();
 
-	void OnResourceLoadedOnGraphicsMemory();
-
 	// Lock the index buffer and save the pointer to the locked buffer
 	bool Lock();
 
 	bool Unlock();
+
+	void OnResourceLoadedOnGraphicsMemory();
+
+	bool IsReadyToLock() const;
+
 };
 
 
@@ -392,6 +407,19 @@ inline CD3DXMeshObjectBase *CD3DXMeshLoaderBase::GetMesh()
 	else
 		return NULL;
 }
+
+
+inline GraphicsResourceState::Name CD3DXMeshLoaderBase::GetSubResourceState( CMeshSubResource::Name subresource ) const
+{
+	if( GetResourceEntry()
+	 && GetResourceEntry()->GetMeshResource() )
+	{
+		return GetResourceEntry()->GetMeshResource()->GetSubResourceState( subresource );
+	}
+	else
+		return GraphicsResourceState::RELEASED;
+}
+
 
 inline void CD3DXMeshLoaderBase::SetSubResourceState( CMeshSubResource::Name subresource,
 													  GraphicsResourceState::Name state )

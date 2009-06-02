@@ -364,6 +364,8 @@ public:
 
 	bool Create();
 
+	GraphicsResourceState::Name GetSubResourceState( CMeshSubResource::Name subresource ) const { return m_aSubResourceState[subresource]; }
+
 	void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
 	void CreateMeshAndLoadNonAsyncResources( MeshModel::C3DMeshModelArchive& archive );

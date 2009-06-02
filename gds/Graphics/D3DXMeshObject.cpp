@@ -168,5 +168,8 @@ bool CD3DXMeshObject::CreateMesh( int num_vertices, int num_indices, U32 option_
 			&m_pMesh
 		);
 
+	if( FAILED(hr) )
+		LOG_PRINT_ERROR( fmt_string( " D3DXCreateMesh() failed. (%d faces, %d vertices, flags: %d)", num_indices / 3, num_vertices, option_flags ) );
+
 	return (m_pMesh != NULL);
 }

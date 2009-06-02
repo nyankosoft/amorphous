@@ -441,6 +441,8 @@ bool CD3DXMeshVerticesLoader::LoadFromArchive()
 
 bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
 {
+	LOG_PRINT( "" );
+
 	if( m_pLockedVertexBuffer )
 	{
 //		memcpy( m_pLockedVertexBuffer, m_pVertexBufferContent, GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
@@ -456,6 +458,8 @@ bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
 
 bool CD3DXMeshVerticesLoader::Lock()
 {
+	LOG_PRINT( "" );
+
 	CD3DXMeshObjectBase *pMesh = GetMesh();
 	if( pMesh )
 		return pMesh->LockVertexBuffer( m_pLockedVertexBuffer );
@@ -466,6 +470,8 @@ bool CD3DXMeshVerticesLoader::Lock()
 
 bool CD3DXMeshVerticesLoader::Unlock()
 {
+	LOG_PRINT( "" );
+
 	bool unlocked = GetMesh()->UnlockVertexBuffer();
 	m_pLockedVertexBuffer = NULL;
 	return unlocked;
@@ -475,6 +481,12 @@ bool CD3DXMeshVerticesLoader::Unlock()
 void CD3DXMeshVerticesLoader::OnResourceLoadedOnGraphicsMemory()
 {
 	SetSubResourceState( CMeshSubResource::VERTEX, GraphicsResourceState::LOADED );
+}
+
+
+bool CD3DXMeshVerticesLoader::IsReadyToLock() const
+{
+	return true;
 }
 
 
@@ -498,6 +510,8 @@ bool CD3DXMeshIndicesLoader::LoadFromArchive()
 
 bool CD3DXMeshIndicesLoader::Lock()
 {
+	LOG_PRINT( "" );
+
 	CD3DXMeshObjectBase *pMesh = GetMesh();
 	if( pMesh )
 		return pMesh->LockIndexBuffer( m_pLockedIndexBuffer );
@@ -508,6 +522,8 @@ bool CD3DXMeshIndicesLoader::Lock()
 
 bool CD3DXMeshIndicesLoader::Unlock()
 {
+	LOG_PRINT( "" );
+
 	bool unlocked = GetMesh()->UnlockIndexBuffer();
 	m_pLockedIndexBuffer = NULL;
 	return unlocked;
@@ -516,6 +532,8 @@ bool CD3DXMeshIndicesLoader::Unlock()
 
 bool CD3DXMeshIndicesLoader::CopyLoadedContentToGraphicsResource()
 {
+	LOG_PRINT( "" );
+
 	if( m_pLockedIndexBuffer )
 	{
 //		memcpy( m_pLockedIndexBuffer, m_pIndexBufferContent, m_IndexBufferSize );
@@ -536,6 +554,12 @@ void CD3DXMeshIndicesLoader::OnResourceLoadedOnGraphicsMemory()
 }
 
 
+bool CD3DXMeshIndicesLoader::IsReadyToLock() const
+{
+	return GetSubResourceState( CMeshSubResource::VERTEX ) == GraphicsResourceState::LOADED;
+}
+
+
 
 //===================================================================================
 // CD3DXMeshAttributeTableLoader
@@ -543,6 +567,8 @@ void CD3DXMeshIndicesLoader::OnResourceLoadedOnGraphicsMemory()
 
 bool CD3DXMeshAttributeTableLoader::Lock()
 {
+	LOG_PRINT( "" );
+
 	HRESULT hr = GetMesh()->GetMesh()->SetAttributeTable(
 		&(m_pMeshLoader->AttributeTable()[0]),
 		(DWORD)(m_pMeshLoader->AttributeTable().size()) );
@@ -554,6 +580,8 @@ bool CD3DXMeshAttributeTableLoader::Lock()
 
 bool CD3DXMeshAttributeTableLoader::Unlock()
 {
+	LOG_PRINT( "" );
+
 	bool unlocked = GetMesh()->UnlockAttributeBuffer();
 	m_pLockedAttributeBuffer = NULL;
 	return unlocked;
@@ -562,6 +590,8 @@ bool CD3DXMeshAttributeTableLoader::Unlock()
 
 bool CD3DXMeshAttributeTableLoader::CopyLoadedContentToGraphicsResource()
 {
+	LOG_PRINT( "" );
+
 	if( !m_pLockedAttributeBuffer )
 		return false;
 
@@ -590,6 +620,13 @@ void CD3DXMeshAttributeTableLoader::OnResourceLoadedOnGraphicsMemory()
 {
 	SetSubResourceState( CMeshSubResource::ATTRIBUTE_TABLE, GraphicsResourceState::LOADED );
 }
+
+
+bool CD3DXMeshAttributeTableLoader::IsReadyToLock() const
+{
+	return GetSubResourceState( CMeshSubResource::INDEX ) == GraphicsResourceState::LOADED;
+}
+
 
 
 /// Cannot create an empty shader object and copy the content to it.

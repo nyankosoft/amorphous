@@ -381,6 +381,12 @@ void CGraphicsResourceManager::Refresh()
 }
 
 
+void CGraphicsResourceManager::AllowAsyncLoading( bool allow )
+{
+	m_AsyncLoadingAllowed = allow;
+}
+
+
 void CGraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, char *pDestBuffer )
 {
 	boost::mutex::scoped_lock scoped_lock(m_ResourceLock);

@@ -701,8 +701,8 @@ bool CD3DXMeshObjectBase::FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive
 }
 
 
-/// \param vecTriangleSet [in]
-/// \param vecAttributeRange [out]
+/// \param [in] vecTriangleSet
+/// \param [out] vecAttributeRange
 void GetAttributeTableFromTriangleSet( const vector<CMMA_TriangleSet>& vecTriangleSet,
 									   std::vector<D3DXATTRIBUTERANGE>& vecAttributeRange )
 {
