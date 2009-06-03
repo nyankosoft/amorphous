@@ -1,13 +1,12 @@
-
 #include "MotionPrimitiveViewer.h"
 
 #include "boost/foreach.hpp"
 
-#include "GameInput.h"
+#include "Input.hpp"
 #include "3DMath/misc.hpp"
-#include "UI/ui.h"
-#include "MotionSynthesis.h"
-#include "Support/memory_helpers.h"
+#include "GUI.hpp"
+#include "MotionSynthesis.hpp"
+#include "Support/memory_helpers.hpp"
 
 
 static const float g_fIndicatorHeight = 0.05f;
@@ -81,7 +80,7 @@ void CMotionPrimitiveViewer::Init()
 {
 	m_pDialogManager = CGM_DialogManagerSharedPtr( new CGM_DialogManager() );
 
-	int dw = 120;
+	int dw = 240;
 	int dh = grof(dw);
 	CGM_Dialog *pDialog = m_pDialogManager->AddRootDialog( 
 		ROOT_DIALOG,
@@ -116,7 +115,7 @@ void CMotionPrimitiveViewer::Init()
 	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
 
 	m_pInputHandler = CInputHandlerSharedPtr( new CGM_DialogInputHandler( m_pDialogManager ) );
-	INPUTHUB.SetInputHandler( 0, m_pInputHandler.get() );
+	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
 
 	// set up guide geometry
 	float h = g_fIndicatorHeight;

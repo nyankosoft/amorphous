@@ -74,7 +74,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib d3d9.lib d3dx9.lib winmm.lib xerces-c_2D.lib"
 				OutputFile="../app/MotionEditor_Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -148,7 +147,7 @@
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/MotionEditor.pch"
 				AssemblerListingLocation=".\Release/"
@@ -207,10 +206,6 @@
 		</Configuration>
 	</Configurations>
 	<References>
-		<ProjectReference
-			ReferencedProjectIdentifier="{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}"
-			RelativePathToProject="..\..\BasicFramework_VC8\BasicFramework.vcproj"
-		/>
 	</References>
 	<Files>
 		<Filter
@@ -849,83 +844,83 @@
 				Name="Motion Synthesis"
 				>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\fwd.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\fwd.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\HumanoidMotionSynthesizer.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\HumanoidMotionSynthesizer.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\HumanoidMotionSynthesizer.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\HumanoidMotionSynthesizer.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\HumanoidMotionTable.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\HumanoidMotionTable.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionBlender.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionBlender.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionBlender.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionBlender.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionDatabase.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionDatabase.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionDatabase.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionDatabase.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionDatabaseBuilder.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionDatabaseBuilder.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionDatabaseBuilder.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionDatabaseBuilder.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionPrimitive.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionPrimitive.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionPrimitive.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionPrimitive.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionPrimitiveBlender.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionPrimitiveBlender.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\MotionPrimitiveBlender.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\MotionPrimitiveBlender.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\Skeleton.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\Skeleton.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\Skeleton.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\Skeleton.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\SkeletonRenderer.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\SkeletonRenderer.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\SkeletonRenderer.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\SkeletonRenderer.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\TransformNode.cpp"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\TransformNode.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\MotionSynthesis\TransformNode.h"
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\TransformNode.hpp"
 					>
 				</File>
 			</Filter>

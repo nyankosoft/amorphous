@@ -5,11 +5,11 @@
 #include <vector>
 #include <string>
 
-#include "GameInput/fwd.h"
-#include "3DCommon/all.h"
-#include "UI/ui_fwd.h"
-#include "MotionSynthesis/fwd.h"
-#include "MotionSynthesis/SkeletonRenderer.h"
+#include "Input/fwd.hpp"
+#include "Graphics/all.hpp"
+#include "GUI/fwd.hpp"
+#include "MotionSynthesis/fwd.hpp"
+#include "MotionSynthesis/SkeletonRenderer.hpp"
 
 
 class CMotionPrimitiveViewer

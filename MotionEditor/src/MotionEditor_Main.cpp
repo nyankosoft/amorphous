@@ -2,20 +2,20 @@
 // File: D3DAppTestMain.cpp
 //-----------------------------------------------------------------------------
 
-#include <vld.h>
+//#include <vld.h>
 
 #include <xercesc/util/PlatformUtils.hpp>
 
-#include "GameInput/StdKeyboard.h"
-#include "3DCommon/all.h"
-#include "GameCommon/Timer.h"
-#include "Support/CameraController_Win32.h"
-#include "Support/FileOpenDialog_Win32.h"
-#include "Support/memory_helpers.h"
-#include "Support/Profile.h"
-#include "XML/XMLDocumentLoader.h"
+#include "Input/StdKeyboard.hpp"
+#include "Graphics/all.hpp"
+#include "Support/Timer.hpp"
+#include "Support/CameraController_Win32.hpp"
+#include "Support/FileOpenDialog_Win32.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Profile.hpp"
+#include "XML/XMLDocumentLoader.hpp"
 
-#include "MotionSynthesis/MotionDatabaseBuilder.h"
+#include "MotionSynthesis/MotionDatabaseBuilder.hpp"
 
 #include "MotionPrimitiveViewer.h"
 
@@ -28,7 +28,7 @@ boost::shared_ptr<CMotionPrimitiveViewer> g_pMotionPrimitiveViewer;
 
 CFont g_Font;
 
-CCameraController_Win32 g_CameraController;
+CPlatformDependentCameraController g_CameraController;
 
 //vector<CD3DXMeshObject *> g_vecpMeshObject;
 
@@ -176,6 +176,11 @@ VOID Render()
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );
 
+	D3DXMATRIX matView;
+	Matrix34 cam_pose = g_CameraController.GetPose();
+	cam_pose.GetInverseROT().GetRowMajorMatrix44( matView );
+
+	pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
 
     // clear the backbuffer to a blue color
     pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(32,32,32), 1.0f, 0 );
@@ -195,7 +200,7 @@ VOID Render()
 */
 	// rendering
 	char acStr[256];
-	sprintf( acStr, "%f", TIMER.GetFPS() );
+	sprintf( acStr, "%f", GlobalTimer().GetFPS() );
 	g_Font.DrawText( acStr, D3DXVECTOR2(20,20), 0xFFFFFFFF );
 
     // end the scene
@@ -208,8 +213,9 @@ VOID Render()
 
 void Update( float dt )
 {
-	g_CameraController.UpdateCameraPosition( dt );
-	g_CameraController.SetCameraMatrix();
+	g_CameraController.UpdateCameraPose( dt );
+
+//	g_CameraController.SetCameraMatrix();
 
 	if( g_pMotionPrimitiveViewer )
 		g_pMotionPrimitiveViewer->Update( dt );
@@ -222,7 +228,7 @@ void Update( float dt )
 //-----------------------------------------------------------------------------
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	g_CameraController.HandleMessage( hWnd, msg, wParam, lParam );
+	g_CameraController.HandleMessage( msg, wParam, lParam );
 
 	D3DXMATRIX matWorld, matProj;
 
@@ -321,7 +327,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
     // Create the application's window
     HWND hWnd = CreateWindow( "D3D Test", "D3D Application",
-                              WS_OVERLAPPEDWINDOW, 100, 100, 800, 600,
+                              WS_OVERLAPPEDWINDOW, 100, 100, 1024, 768,
                               GetDesktopWindow(), NULL, wc.hInstance, NULL );
 
 
@@ -381,9 +387,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
         }
         else
 		{
-			TIMER.UpdateFrameTime();
+			GlobalTimer().UpdateFrameTime();
 
-			Update( TIMER.GetFrameTime() );
+			Update( GlobalTimer().GetFrameTime() );
 
 			Render();
 
