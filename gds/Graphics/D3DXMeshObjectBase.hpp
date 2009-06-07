@@ -62,6 +62,8 @@ public:
 
 		std::vector<CTextureResourceDesc> TextureDesc;
 
+		std::string Name;
+
 		float fMinVertexDiffuseAlpha;
 
 	public:

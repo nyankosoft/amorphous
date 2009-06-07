@@ -1,5 +1,5 @@
-#ifndef __SHADERMANAGER_S_H__
-#define __SHADERMANAGER_S_H__
+#ifndef __HLSLShaderManager_HPP__
+#define __HLSLShaderManager_HPP__
 
 
 #include <d3d9.h>
@@ -7,6 +7,7 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
+#include "3DMath/Matrix34.hpp"
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
 
@@ -19,15 +20,135 @@
 
 typedef D3DXMATRIX Matrix44;
 
+class CHLSLShaderLightManager;
+
+
+class CShaderManager
+{
+/*
+	enum eShaderConstParam
+	{
+		NUM_MAX_TECHNIQUES = 64,
+		NUM_TEXTURE_STAGES = 8,
+		NUM_MAX_CUBETEXTURES = 4
+	};
+
+	enum eHandleID
+	{
+		HANDLE_VIEWER_POS = 0,
+		HANDLE_AMBIENT_COLOR,
+		NUM_HANDLES,
+	};
+
+	enum eMatHandleID
+	{
+		MATRIX_WORLD = 0,
+		MATRIX_VIEW,
+		MATRIX_PROJ,
+		MATRIX_WORLD_VIEW,
+		MATRIX_WORLD_VIEW_PROJ,
+		NUM_MATRIX_HANDLES
+	};
+*/
+	bool m_RegisteredToHub;
+
+private:
+
+	virtual bool Init() { return true; }
+
+protected:
+
+	int GetTechniqueIndex( CShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex(); }
+
+	void SetInvalidTechnique( CShaderTechniqueHandle& tech_handle ) { tech_handle.SetTechniqueIndex( CShaderTechniqueHandle::INVALID_INDEX ); }
+
+	void SetTechniqueIndex( CShaderTechniqueHandle& tech_handle, int index ) { return tech_handle.SetTechniqueIndex( index ); }
+
+	bool IsUninitializedTechnique( CShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex() == CShaderTechniqueHandle::UNINITIALIZED; }
+
+	bool IsInvalidTechnique( CShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex() == CShaderTechniqueHandle::INVALID_INDEX; }
+
+	template<typename T>
+	T GetParameterValue( CShaderParameter<T> param ) { return param.m_Parameter; }
+
+	template<typename T>
+	int GetParameterIndex( CShaderParameter<T> param ) { return param.m_ParameterIndex; }
+
+	template<typename T>
+	void SetParameterIndex( CShaderParameter<T>& param, int index ) { param.m_ParameterIndex = index; }
+
+public:
+
+	CShaderManager();
+
+	virtual ~CShaderManager();
+
+	virtual bool LoadShaderFromFile( const std::string& filename ) { return false; }
+
+	virtual bool LoadShaderFromText( const stream_buffer& buffer ) { return false; }
+
+	virtual LPD3DXEFFECT GetEffect() { return NULL; }
+
+	virtual void Release() {}
+
+	virtual void Reload() {}
+
+	virtual void SetWorldTransform( const Matrix34& world_pose ) {}
+
+	virtual void SetWorldTransform( const Matrix44& matWorld ) {}
+
+	virtual void SetViewTransform( const Matrix44& matView ) {}
+
+	virtual void SetProjectionTransform( const Matrix44& matProj ) {}
+
+	virtual void SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  ) {}
+
+	virtual void SetWorldViewProjectionTransform( const Matrix44& matWorld, const Matrix44& matView, const Matrix44& matProj ) {}
+
+
+	virtual void GetWorldTransform( Matrix44& matWorld ) const {}
+
+	virtual void GetViewTransform( Matrix44& matView ) const {}
+
+
+	virtual inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition ) {}
+
+
+	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
+
+	virtual HRESULT SetTexture( const int iStage, const CTextureHandle& texture ) { return E_FAIL; }
+
+	virtual HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture ) { return E_FAIL; }
+
+//	virtual void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture ) {}
+
+	virtual Result::Name SetTechnique( const unsigned int id ) { return Result::UNKNOWN_ERROR; }
+
+	virtual Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle ) { return Result::UNKNOWN_ERROR; }
+
+//	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
+
+//	D3DXHANDLE GetTechniqueHandle( int id ) { return m_aTechniqueHandle[id]; }
+
+	virtual void SetParam( CShaderParameter< std::vector<float> >& float_param ) {}
+
+//	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
+
+//	void SetTextureParam()
+
+	virtual boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return boost::shared_ptr<CShaderLightManager>(); }
+
+	friend class CShaderManagerHub;
+};
 
 
 /**
- - When created, automatically registers itself to ShaderManagerHub
+ - When created, automatically registers itself to HLSLShaderManagerHub
 
 
 
 */
-class CShaderManager
+class CHLSLShaderManager : public CShaderManager
 {
 	enum eShaderConstParam
 	{
@@ -93,7 +214,7 @@ class CShaderManager
 	/// it indicates no vacancy is left
 	int m_VacantTechniqueEntryIndex;
 
-	boost::shared_ptr<CShaderLightManager> m_pLightManager;
+	boost::shared_ptr<CHLSLShaderLightManager> m_pHLSLShaderLightManager;
 
 private:
 
@@ -107,9 +228,9 @@ private:
 
 public:
 
-	CShaderManager();
+	CHLSLShaderManager();
 
-	~CShaderManager();
+	~CHLSLShaderManager();
 
 	bool LoadShaderFromFile( const std::string& filename );
 
@@ -120,6 +241,8 @@ public:
 	void Reload();
 
 	inline LPD3DXEFFECT GetEffect() { return m_pEffect; }
+
+	inline void SetWorldTransform( const Matrix34& world_pose );
 
 	inline void SetWorldTransform( const Matrix44& matWorld );
 
@@ -162,14 +285,23 @@ public:
 
 //	void SetTextureParam()
 
-	boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
+	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
 };
 
 
 //================================== inline implementations ==================================
 
 
-inline void CShaderManager::SetWorldTransform( const Matrix44& matWorld )
+inline void CHLSLShaderManager::SetWorldTransform( const Matrix34& world_pose )
+{
+	D3DXMATRIX matWorld;
+	world_pose.GetRowMajorMatrix44( matWorld );
+
+	SetWorldTransform( matWorld );
+}
+
+
+inline void CHLSLShaderManager::SetWorldTransform( const Matrix44& matWorld )
 {
 //	m_pEffect->SetMatrix( "World", &matWorld );
 	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
@@ -195,7 +327,7 @@ inline void CShaderManager::SetWorldTransform( const Matrix44& matWorld )
 }
 
 
-inline void CShaderManager::SetViewTransform( const Matrix44& matView )
+inline void CHLSLShaderManager::SetViewTransform( const Matrix44& matView )
 {
 	m_pEffect->SetMatrix( "View", &matView );
 
@@ -215,7 +347,7 @@ inline void CShaderManager::SetViewTransform( const Matrix44& matView )
 	m_pEffect->SetMatrix( "WorldViewProj", &matProj );}
 
 
-inline void CShaderManager::SetProjectionTransform( const Matrix44& matProj )
+inline void CHLSLShaderManager::SetProjectionTransform( const Matrix44& matProj )
 {
 	m_pEffect->SetMatrix( "Proj", &matProj );
 
@@ -228,7 +360,7 @@ inline void CShaderManager::SetProjectionTransform( const Matrix44& matProj )
 }
 
 
-inline void CShaderManager::SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  )
+inline void CHLSLShaderManager::SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  )
 {
 	m_pEffect->SetMatrix( "World", &matWorld );
 
@@ -248,7 +380,7 @@ inline void CShaderManager::SetWorldViewTransform( const Matrix44& matWorld, con
 }
 
 
-inline void CShaderManager::SetWorldViewProjectionTransform( const Matrix44& matWorld,
+inline void CHLSLShaderManager::SetWorldViewProjectionTransform( const Matrix44& matWorld,
 															 const Matrix44& matView,
 															 const Matrix44& matProj )
 {
@@ -282,37 +414,37 @@ inline void CShaderManager::SetWorldViewProjectionTransform( const Matrix44& mat
 }
 
 
-inline void CShaderManager::GetWorldTransform( Matrix44& matWorld ) const
+inline void CHLSLShaderManager::GetWorldTransform( Matrix44& matWorld ) const
 {
 	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
 }
 
 
-inline void CShaderManager::GetViewTransform( Matrix44& matView ) const
+inline void CHLSLShaderManager::GetViewTransform( Matrix44& matView ) const
 {
 	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
 }
 
 
-inline void CShaderManager::SetViewerPosition( const D3DXVECTOR3& vEyePosition )
+inline void CHLSLShaderManager::SetViewerPosition( const D3DXVECTOR3& vEyePosition )
 {
 	m_pEffect->SetValue( m_aHandle[HANDLE_VIEWER_POS], &vEyePosition, sizeof(D3DXVECTOR3) );
 }
 
 
-inline HRESULT CShaderManager::SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture )
+inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture )
 {
 	return m_pEffect->SetTexture( m_aTextureHandle[iStage], pTexture );
 }
 
 
-inline HRESULT CShaderManager::SetTexture( const int iStage, const CTextureHandle& texture )
+inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const CTextureHandle& texture )
 {
 	return m_pEffect->SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
 }
 
 
-inline HRESULT CShaderManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+inline HRESULT CHLSLShaderManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
 {
 	if( m_aCubeTextureHandle[index] )
         return m_pEffect->SetTexture( m_aCubeTextureHandle[index], pCubeTexture );
@@ -321,7 +453,7 @@ inline HRESULT CShaderManager::SetCubeTexture( int index, const LPDIRECT3DCUBETE
 }
 
 
-inline Result::Name CShaderManager::SetTechnique( const unsigned int id )
+inline Result::Name CHLSLShaderManager::SetTechnique( const unsigned int id )
 {
 	HRESULT hr = m_pEffect->SetTechnique( m_aTechniqueHandle[id] );
 
@@ -329,9 +461,9 @@ inline Result::Name CShaderManager::SetTechnique( const unsigned int id )
 }
 
 
-inline Result::Name CShaderManager::SetTechnique( CShaderTechniqueHandle& tech_handle )
+inline Result::Name CHLSLShaderManager::SetTechnique( CShaderTechniqueHandle& tech_handle )
 {
-	const int tech_index = tech_handle.GetTequniqueIndex();
+	const int tech_index = GetTechniqueIndex( tech_handle );
 
 	HRESULT hr;
 	if( 0 <= tech_index )
@@ -346,4 +478,4 @@ inline Result::Name CShaderManager::SetTechnique( CShaderTechniqueHandle& tech_h
 }
 
 
-#endif  /*  __SHADERMANAGER_S_H__  */
+#endif  /*  __HLSLShaderManager_HPP__  */

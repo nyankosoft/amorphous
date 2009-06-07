@@ -386,6 +386,10 @@ protected:
 	/// - Called only from this class and CMeshObjectManager
 	virtual void Release();
 
+	bool IsDiskResource() const;
+
+	virtual bool CreateFromDesc();
+
 public:
 
 	CShaderResource( const CShaderResourceDesc *pDesc );

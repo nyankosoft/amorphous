@@ -87,3 +87,22 @@ void CMeshResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 		else if( mesh_type == "skeletal" )    this->MeshType = CMeshType::SKELETAL;
 	}
 }
+
+
+bool CShaderResourceDesc::IsValid() const
+{
+	if( ShaderType == CShaderType::NON_PROGRAMMABLE )
+		return true;
+	else
+	{
+		// Programmable shader need to have a valid filepath.
+		if( 0 < ResourcePath.length() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}

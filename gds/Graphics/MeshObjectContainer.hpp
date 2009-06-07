@@ -78,7 +78,7 @@ public:
 
 class CMeshContainerNode : public IArchiveObjectBase
 {
-	Matrix34 m_LocalPose; /// local pose of the node
+	Matrix34 m_LocalPose; ///< local pose of the node
 
 	Matrix34 m_LocalTransform;
 

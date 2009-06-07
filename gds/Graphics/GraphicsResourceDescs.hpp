@@ -71,6 +71,8 @@ public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
+	virtual bool IsValid() const { return ( 0 < ResourcePath.length() ); }
+
 	virtual bool IsDiskResource() const { return true; }
 
 	bool IsCachedResource() const { return m_IsCachedResource; }
@@ -251,11 +253,32 @@ public:
 };
 
 
+class CShaderType
+{
+public:
+	enum Name
+	{
+		PROGRAMMABLE,
+		NON_PROGRAMMABLE,
+		NUM_TYPES
+	};
+};
+
+
 class CShaderResourceDesc : public CGraphicsResourceDesc
 {
 public:
 
+	CShaderType::Name ShaderType;
+
+	CShaderResourceDesc()
+		:
+	ShaderType(CShaderType::PROGRAMMABLE)
+	{}
+
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
+
+	virtual bool IsValid() const;
 
 	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CShaderResourceDesc>( new CShaderResourceDesc(*this) ); }
 

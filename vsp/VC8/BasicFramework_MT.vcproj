@@ -429,6 +429,14 @@
 				Name="Shader"
 				>
 				<File
+					RelativePath="..\..\gds\Graphics\Shader\D3DFixedFunctionPipelineManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\D3DFixedFunctionPipelineManager.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.cpp"
 					>
 				</File>
@@ -574,14 +582,6 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\D3DGraphicsResources.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Graphics\GLGraphicsResources.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Graphics\GLGraphicsResources.hpp"
 					>
 				</File>
 				<File

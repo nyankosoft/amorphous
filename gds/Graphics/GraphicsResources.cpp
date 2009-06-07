@@ -4,6 +4,7 @@
 #include "Graphics/D3DXMeshObjectBase.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/fnop.hpp"
 #include "Support/ImageArchive.hpp"
@@ -62,6 +63,7 @@ void CGraphicsResource::Refresh()
 }
 
 
+/// Starting point of the synchronous loading.
 bool CGraphicsResource::Load()
 {
 	if( IsDiskResource() )
@@ -508,7 +510,7 @@ bool CShaderResource::LoadFromFile( const std::string& filepath )
 	SafeDelete( m_pShaderManager );
 
 	// load a shader file
-	m_pShaderManager = new CShaderManager();
+	m_pShaderManager = new CHLSLShaderManager();
 	bool loaded = m_pShaderManager->LoadShaderFromFile( filepath );
 
 	return loaded;
@@ -522,4 +524,33 @@ void CShaderResource::Release()
 	SafeDelete( m_pShaderManager );
 
 	SetState( GraphicsResourceState::RELEASED );
+}
+
+
+bool CShaderResource::IsDiskResource() const
+{
+	if( m_ShaderDesc.ShaderType == CShaderType::PROGRAMMABLE
+	 && 0 < m_ShaderDesc.ResourcePath.length() )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+bool CShaderResource::CreateFromDesc()
+{
+	if( m_ShaderDesc.ShaderType == CShaderType::NON_PROGRAMMABLE )
+	{
+		SafeDelete( m_pShaderManager );
+
+		// create pseudo shader manager for fixed function pipleline.
+		m_pShaderManager = new CD3DFixedFunctionPipelineManager();
+		return true;
+	}
+	else
+		return false;
 }

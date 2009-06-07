@@ -233,7 +233,8 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResourc
 {
 	LOG_FUNCTION_SCOPE();
 
-	if( desc.ResourcePath.length() == 0 )
+//	if( desc.ResourcePath.length() == 0 )
+	if( !desc.IsValid() )
 		return shared_ptr<CGraphicsResourceEntry>();	// invalid filename
 
 	// search if a same resource has been already loaded or is being loaded
@@ -259,7 +260,10 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResourc
 	shared_ptr<CGraphicsResource> pResource = GraphicsResourceFactory().CreateGraphicsResource( desc );
 
 	if( !pResource )
+	{
+		LOG_PRINT_ERROR( " Failed to create a graphics resource." );
 		return shared_ptr<CGraphicsResourceEntry>();
+	}
 
 	pResourceEntry->SetResource( pResource );
 
