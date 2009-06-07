@@ -82,6 +82,8 @@ class CMeshContainerNode : public IArchiveObjectBase
 
 	Matrix34 m_LocalTransform;
 
+	Matrix34 m_WorldTransform; ///< current world transform
+
 	std::vector< boost::shared_ptr<CMeshObjectContainer> > m_vecpMeshContainer;
 
 	std::vector<Matrix34> m_vecMeshLocalPose;
@@ -90,11 +92,17 @@ class CMeshContainerNode : public IArchiveObjectBase
 
 	std::vector<CShaderTechniqueHandle> m_vecShaderTechniqueBuffer;
 
+private:
+
+//	void Render_r( const Matrix34& parent_transform, CMeshContainerNodeRenderMethod& render_method, bool use_fallback_shaders );
+
 public:
 
 	CMeshContainerNode();
 
 	~CMeshContainerNode() {}
+
+	Matrix34 GetMeshContainerWorldTransform( int mesh_container_index );
 
 	void AddMeshContainer( boost::shared_ptr<CMeshObjectContainer> pMeshContainer, Matrix34& local_pose )
 	{
@@ -113,7 +121,9 @@ public:
 
 	boost::shared_ptr<CMeshObjectContainer> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 
-	void Render( const Matrix34& parent_transform );
+	void Render( /*const Matrix34& parent_transform*/ );
+
+	void UpdateWorldTransforms( const Matrix34& parent_transform  );
 
 	//
 	// child nodes

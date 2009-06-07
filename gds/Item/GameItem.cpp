@@ -68,7 +68,8 @@ bool CGameItem::LoadMeshObject()
 
 void CGameItem::Render()
 {
-	m_MeshContainerRootNode.Render( Matrix34Identity() );
+	m_MeshContainerRootNode.UpdateWorldTransforms( Matrix34Identity() );
+	m_MeshContainerRootNode.Render();
 }
 
 

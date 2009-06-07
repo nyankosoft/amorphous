@@ -99,8 +99,9 @@ void CLandVehicle::Render()
 
 	Matrix34 world_pose
 		= pEntity ? pEntity->GetWorldPose() : Matrix34Identity();
-	
-	m_MeshContainerRootNode.Render( world_pose );
+
+	m_MeshContainerRootNode.UpdateWorldTransforms( world_pose );
+	m_MeshContainerRootNode.Render();
 }
 
 

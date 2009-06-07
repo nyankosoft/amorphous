@@ -151,14 +151,16 @@ void CRotatableTurret::Render()
 	if( 0 < m_MeshContainerRootNode.GetNumMeshContainers() )
 	{
 		m_MeshContainerRootNode.MeshContainer(0)->m_MeshTransform = m_MountMeshTransform;
-		m_MeshContainerRootNode.Render( m_MountWorldPose );
+		m_MeshContainerRootNode.UpdateWorldTransforms( m_MountWorldPose );
+		m_MeshContainerRootNode.Render();
 	}
 
 	if( m_pWeapon
 	 && 0 < m_pWeapon->MeshContainerRootNode().GetNumMeshContainers() )
 	{
 		m_pWeapon->MeshContainerRootNode().MeshContainer(0)->m_MeshTransform = m_GunMeshTransform;
-		m_pWeapon->MeshContainerRootNode().Render( m_GunWorldPose );
+		m_pWeapon->MeshContainerRootNode().UpdateWorldTransforms( m_GunWorldPose );
+		m_pWeapon->MeshContainerRootNode().Render();
 	}
 }
 

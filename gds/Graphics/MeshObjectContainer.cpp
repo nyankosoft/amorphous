@@ -142,15 +142,36 @@ void CMeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 CMeshContainerNode::CMeshContainerNode()
 :
 m_LocalPose(Matrix34Identity()),
-m_LocalTransform(Matrix34Identity())
+m_LocalTransform(Matrix34Identity()),
+m_WorldTransform(Matrix34Identity())
 {
 }
 
 
-void CMeshContainerNode::Render( const Matrix34& parent_transform )
+Matrix34 CMeshContainerNode::GetMeshContainerWorldTransform( int mesh_container_index )
 {
-	Matrix34 world_transform
-		= parent_transform * m_LocalPose;
+/*	Matrix34 transform
+		= m_WorldTransform
+		* m_vecMeshLocalPose[mesh_container_index]
+		* m_LocalTransform
+		* m_vecpMeshContainer[mesh_container_index]->m_MeshTransform;
+//		* m_vecMeshLocalPose[i].GetInverseROT();*/
+
+	Matrix34 transform
+		= m_WorldTransform
+		* m_vecMeshLocalPose[mesh_container_index]
+//		* m_vecpMeshContainer[mesh_container_index]->m_LocalTransform;
+		* m_vecpMeshContainer[mesh_container_index]->m_MeshTransform;
+
+	return transform;
+}
+
+
+
+/// Render the meshes with the shaders stored in the mesh containers
+void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
+{
+	Matrix34 world_transform = m_WorldTransform;
 
 	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
 	{
@@ -160,38 +181,58 @@ void CMeshContainerNode::Render( const Matrix34& parent_transform )
 		if( !pMesh )
 			continue;
 
-		CShaderManager *pShaderMgr
-			= m_vecpMeshContainer[i]->m_ShaderHandle.GetShaderManager();
+		Matrix34 mesh_world_transform = GetMeshContainerWorldTransform( (int)i );
 
-		if( pShaderMgr )
-		{
-			Matrix34 transform
-				= world_transform
-				* m_vecMeshLocalPose[i]
-				* m_LocalTransform
-				* m_vecpMeshContainer[i]->m_MeshTransform;
-//				* m_vecMeshLocalPose[i].GetInverseROT();
+		CShaderManager *pShaderMgr = NULL;
 
-			D3DXMATRIX matWorld;
-			transform.GetRowMajorMatrix44( matWorld );
-			pShaderMgr->SetWorldTransform( matWorld );
-			m_vecShaderTechniqueBuffer.resize(0);
-			int res = 0;
-			if( 0 < m_vecpMeshContainer[i]->m_ShaderTechnique.size_y() )
-			{
-				for( int j=0; j<m_vecpMeshContainer[i]->m_ShaderTechnique.size_x(); j++ )
-					m_vecShaderTechniqueBuffer.push_back( m_vecpMeshContainer[i]->m_ShaderTechnique(j,res) );
-			}
-			pMesh->Render( *pShaderMgr, m_vecShaderTechniqueBuffer );
-		}
-		else
+		// Use the shaders stored in the mesh container
+		pShaderMgr = m_vecpMeshContainer[i]->m_ShaderHandle.GetShaderManager();
+//		if( pShaderMgr )
+//			pMesh->Render( *pShaderMgr );
+
+		pShaderMgr->SetWorldTransform( mesh_world_transform );
+
+		m_vecShaderTechniqueBuffer.resize(0);
+		int res = 0;
+		if( 0 < m_vecpMeshContainer[i]->m_ShaderTechnique.size_y() )
 		{
-//			pMesh->Render();
+			for( int j=0; j<m_vecpMeshContainer[i]->m_ShaderTechnique.size_x(); j++ )
+				m_vecShaderTechniqueBuffer.push_back( m_vecpMeshContainer[i]->m_ShaderTechnique(j,res) );
 		}
+		pMesh->Render( *pShaderMgr, m_vecShaderTechniqueBuffer );
 	}
 
 	for( size_t i=0; i<m_vecpChild.size(); i++ )
-		m_vecpChild[i]->Render( world_transform );
+	{
+		m_vecpChild[i]->Render( /*world_transform*/ );
+	}
+}
+
+/*
+void CMeshContainerNode::Render( const Matrix34& parent_transform, CMeshContainerNodeRenderMethod& render_method );
+{
+	Render_r( parent_transform, render_method, false );
+}
+
+
+void CMeshContainerNode::Render( const Matrix34& parent_transform )
+{
+	CMeshContainerNodeRenderMethod null_render_method;
+	Render_r( parent_transform, null_render_method, true );
+}
+*/
+
+void CMeshContainerNode::UpdateWorldTransforms( const Matrix34& parent_transform  )
+{
+	Matrix34 world_transform
+		= parent_transform
+		* m_LocalTransform
+		* m_LocalPose;
+
+	m_WorldTransform = world_transform;
+
+	for( size_t i=0; i<m_vecpChild.size(); i++ )
+		m_vecpChild[i]->UpdateWorldTransforms( world_transform );
 }
 
 

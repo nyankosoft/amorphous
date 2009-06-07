@@ -330,6 +330,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\MeshContainerRenderMethod.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\MeshContainerRenderMethod.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\MeshObjectContainer.cpp"
 				>
 			</File>
