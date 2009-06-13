@@ -1,9 +1,6 @@
-#ifndef __BASEENTITY_H__
-#define __BASEENTITY_H__
+#ifndef __BaseEntity_HPP__
+#define __BaseEntity_HPP__
 
-
-#include <vector>
-#include <string>
 
 #include "fwd.hpp"
 #include "Graphics/fwd.hpp"
@@ -15,6 +12,7 @@
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/MeshObjectContainer.hpp"
+#include "Graphics/MeshContainerRenderMethod.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
 #include "Support/TextFileScanner.hpp"
@@ -28,8 +26,7 @@ using namespace GameLib1::Serialization;
 class CBSPTree;
 struct SNode_f;
 class CMeshBoneControllerBase;
-
-extern void SetBlendMatrices( CD3DXSMeshObject *pSMeshObject );
+class CEntityShaderLightParamsLoader;
 
 
 /**
@@ -44,10 +41,22 @@ public:
 	std::vector<std::string> m_vecTransparentMaterialName;
 
 	/// used by skeletal mesh (not serialized)
-	vector<CMeshBoneControllerBase*> m_vecpMeshBoneController;
+	std::vector<CMeshBoneControllerBase*> m_vecpMeshBoneController;
 
-	std::string m_SpecTexFilepath;
-	CTextureHandle m_SpecTex;
+	boost::shared_ptr<CMeshContainerRenderMethod> m_pMeshRenderMethod;
+
+	std::vector< boost::shared_ptr<CShaderParamsLoader> > m_vecpShaderParamsLoader;
+
+
+	boost::shared_ptr<CEntityShaderLightParamsLoader> m_pShaderLightParamsLoader;
+
+	boost::shared_ptr<CMeshContainerRenderMethod> m_pShadowCasterRenderMethod;
+
+	boost::shared_ptr<CMeshContainerRenderMethod> m_pShadowReceiverRenderMethod;
+
+	boost::shared_ptr<CMeshContainerRenderMethod> m_pSkeletalShadowCasterRenderMethod;
+
+	boost::shared_ptr<CMeshContainerRenderMethod> m_pSkeletalShadowReceiverRenderMethod;
 
 	/// subsets of the mesh that should be rendered by the entity
 	/// - Holds non-transparant materials(subsets) of the mesh
@@ -167,11 +176,11 @@ protected:
 	/// \retval higher_values shader for lower resolution model
 	virtual int CalcShaderLOD( CCopyEntity* pCopyEnt ) { return 0; }
 
-	void SetLightsToShader( CCopyEntity& entity );
+	void UpdateLightInfo( CCopyEntity& entity );
 
-	void SetLights( CCopyEntity& entity );
+	void SetMeshRenderMethod( CCopyEntity& entity );
 
-//	int GetRenderMode();
+	void RenderEntity( CCopyEntity& entity );
 
 public:
 
@@ -202,11 +211,9 @@ public:
 
 	/// draws a mesh object.
 	/// For entities that have a single mesh object as their 3D model
-	inline void Draw3DModel( CCopyEntity* pCopyEnt ) { Draw3DModel( pCopyEnt, m_MeshProperty.m_ShaderTechnique ); }
+	void Draw3DModel( CCopyEntity* pCopyEnt );
 
-	/// draws a mesh object
-	/// - override the default shader technique table
-	void Draw3DModel( CCopyEntity* pCopyEnt, C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable, int ShaderLOD = 0 );
+	void SetAsEnvMapTarget( CCopyEntity& entity );
 
 	CBE_MeshObjectProperty& MeshProperty() { return m_MeshProperty; }
 
@@ -261,9 +268,9 @@ public:
 	/// renders the copy entity
 	virtual void Draw(CCopyEntity* pCopyEnt) {}
 
-	virtual void RenderAsShaderCaster(CCopyEntity* pCopyEnt);
+	virtual void RenderAsShadowCaster(CCopyEntity* pCopyEnt);
 
-	virtual void RenderAsShaderReceiver(CCopyEntity* pCopyEnt);
+	virtual void RenderAsShadowReceiver(CCopyEntity* pCopyEnt);
 
 	virtual void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 
@@ -383,4 +390,4 @@ public:
 };
 
 
-#endif  /*  __BASEENTITY_H__  */
+#endif  /*  __BaseEntity_HPP__  */

@@ -72,7 +72,8 @@ m_TypeID(type_id)
 
 //	pTarget = NULL;
 
-	MeshObjectHandle.Release();
+//	m_pMeshNode.reset();
+//	m_pMeshNodeRenderMethod.reset();
 
 	// initialize light information
 /*	sNumLights = 0;

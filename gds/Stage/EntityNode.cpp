@@ -141,7 +141,7 @@ void CEntityNode::RenderShadowCasters( CCamera& rCam )
 		 && (pEntity->GetEntityFlags() & BETYPE_SHADOW_CASTER) )
 		{
 			// render the entity as a shadow caster
-			pEntity->pBaseEntity->RenderAsShaderCaster( pEntity );
+			pEntity->pBaseEntity->RenderAsShadowCaster( pEntity );
 		}
 	}
 }
@@ -166,7 +166,7 @@ void CEntityNode::RenderShadowReceivers( CCamera& rCam )
 		 && (pEntity->GetEntityFlags() & BETYPE_SHADOW_RECEIVER) )
 		{
 			// render the entity as a shadow receiver
-			pEntity->pBaseEntity->RenderAsShaderReceiver( pEntity );
+			pEntity->pBaseEntity->RenderAsShadowReceiver( pEntity );
 		}
 	}
 }

@@ -736,7 +736,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	pNewCopyEnt->Velocity()  = rCopyEntityDesc.vVelocity;
 	pNewCopyEnt->fSpeed      = rCopyEntityDesc.fSpeed;
 
-	pNewCopyEnt->MeshObjectHandle = rCopyEntityDesc.MeshObjectHandle;
+	pNewCopyEnt->m_MeshHandle = rCopyEntityDesc.MeshObjectHandle;
 
 	pNewCopyEnt->f1 = rCopyEntityDesc.f1;
 	pNewCopyEnt->f2 = rCopyEntityDesc.f2;

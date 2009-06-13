@@ -91,11 +91,11 @@ void CItemEntity::Draw()
 			CMeshObjectContainer& mesh_container
 				= *(m_pItem->GetMeshContainerRootNode().GetMeshContainer(0).get());
 
-			this->MeshObjectHandle = mesh_container.m_MeshObjectHandle;
+			this->m_MeshHandle = mesh_container.m_MeshObjectHandle;
 
-//			pBaseEntity->Draw3DModel( this );
+			pBaseEntity->Draw3DModel( this );
 //			pBaseEntity->Draw3DModel( this, mesh_container.m_ShaderTechnique );
-			pBaseEntity->Draw3DModel( this, pBaseEntity->MeshProperty().m_ShaderTechnique );
+//			pBaseEntity->Draw3DModel( this, pBaseEntity->MeshProperty().m_ShaderTechnique );
 		}
 	}
 	else

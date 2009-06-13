@@ -220,7 +220,7 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 	if( !pMesh )
 	{
-		pMesh = pCopyEnt->MeshObjectHandle.GetMesh().get();
+		pMesh = pCopyEnt->m_MeshHandle.GetMesh().get();
 		if( !pMesh )
 			return;
 	}

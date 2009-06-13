@@ -40,10 +40,10 @@ void CBE_FixedTurretPod::Init()
 	// turret pod does not use 'm_pMeshObject', which is the standard
 	// mesh object for base entity
 	// Therefore, the specular texture needs to be loaded separately
-	if( 0 < m_MeshProperty.m_SpecTexFilepath.length() )
+/*	if( 0 < m_MeshProperty.m_SpecTexFilepath.length() )
 	{
 		m_MeshProperty.m_SpecTex.Load( m_MeshProperty.m_SpecTexFilepath );
-	}
+	}*/
 
 	PrintLog( " CBE_FixedTurretPod::Init() - loaded a texture" );
 
@@ -99,7 +99,7 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 */
 //	shader_tech_id = m_MeshProperty.m_ShaderTechniqueID;
 
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+/*	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
 	{
 		if( m_MeshProperty.m_SpecTex.GetTexture() )
@@ -110,7 +110,7 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 //		else
 //			shader_tech_id = SHADER_TECH_MESH_NOBUMP;
 //		}
-	}
+	}*/
 //	shader_tech_id = SHADER_TECH_DEFAULT;
 
 	const Matrix34& rWorldPose = pCopyEnt->GetWorldPose();

@@ -208,7 +208,13 @@ public:
 	/// borrowed reference
 	std::vector<CCopyEntityCallbackBase *> vecpCallback;
 
-	CMeshObjectHandle MeshObjectHandle;
+//	boost::shared_ptr<CMeshContainerNode> m_pMeshNode;
+
+//	boost::shared_ptr<CMeshContainerNodeRenderMethod> m_pMeshNodeRenderMethod;
+
+	CMeshObjectHandle m_MeshHandle;
+
+	boost::shared_ptr<CMeshContainerRenderMethod> m_pMeshRenderMethod;
 
 public:
 

@@ -8,10 +8,10 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/D3DXMeshObject.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderLightManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
+#include "Graphics/ShadowMapManager.hpp"
 
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -22,29 +22,191 @@ using namespace boost;
 
 
 /*
-int CBaseEntity::GetRenderMode()
-{
-	unsigned int effect_flag = m_pStage->GetScreenEffectManager()->GetEffectFlag();
+Alpha entities and render methods
+- Alpha entities created from different entnties share the same base entity
+  - Each alpha entity need to have its own render method
+  - They cannot share the same render method of base entity
+    - This means dynamic memory allocation is done through shared_ptr<> every time an alpha entity is created in a stage.
+/
 
-	if( effect_flag & ScreenEffect::ShadowMap )
-		return ERM_SMAP;	// shadowmap
-	if( effect_flag & ScreenEffect::CubeEnvMap )
-		return ERM_ENVMAP;	// cubic environment mapping
-//	else if( effect_flag & ScreenEffect::SceneDepthMap )
-//		return ERM_SDMAP;
-	else
-		return ERM_NORMAL;
-}
+
 */
+
+
+class CCubeTextureParamsLoader : public CShaderParamsLoader
+{
+	int m_CubeTexIndex;
+	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
+
+public:
+
+//	CCubeTextureParamsLoader( int stage, CTextureHandle& cube_texture );
+	CCubeTextureParamsLoader( int cube_tex_index = 0, LPDIRECT3DCUBETEXTURE9 pCubeTexture = NULL )
+		:
+	m_CubeTexIndex(cube_tex_index),
+	m_pCubeTexture(pCubeTexture)
+	{}
+
+	void SetCubeTexture( int cube_tex_index, LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+	{
+		m_CubeTexIndex = cube_tex_index;
+		m_pCubeTexture = pCubeTexture;
+	}
+
+	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	{
+		rShaderMgr.SetCubeTexture( m_CubeTexIndex, m_pCubeTexture );
+	}
+};
+
+
+void SetLightsToShader( CCopyEntity& entity,  CShaderManager& rShaderMgr );
+
+
+class CEntityShaderLightParamsLoader : public CShaderParamsLoader
+{
+//	boost::shared_ptr<CCopyEntity> m_pEntity;
+	CEntityHandle<> m_Entity;
+
+public:
+
+	CEntityShaderLightParamsLoader( boost::shared_ptr<CCopyEntity> pEntity = boost::shared_ptr<CCopyEntity>() )
+		:
+	m_Entity(pEntity)
+	{}
+
+//	void SetEntity( boost::shared_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
+	void SetEntity( boost::weak_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
+
+	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	{
+		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
+		if( pEntity )
+			SetLightsToShader( *(pEntity.get()), rShaderMgr );
+	}
+};
+
+
+class COffsetWorldTransformLoader : public CShaderParamsLoader
+{
+public:
+};
+
+
+class CBlendMatricesLoader : public CShaderParamsLoader
+{
+	boost::shared_ptr<CD3DXSMeshObject> m_pSMeshObject;
+
+public:
+
+	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	{
+		//PROFILE_FUNCTION();
+
+		// set blend matrices to the shader
+		LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
+		D3DXMATRIX *paBlendMatrix = m_pSMeshObject->GetBlendMatrices();
+		if( pEffect && paBlendMatrix )
+		{
+			HRESULT hr;
+			char acParam[32];
+			int i, num_bones = m_pSMeshObject->GetNumBones();
+
+			for( i=0; i<num_bones; i++ )
+			{
+				sprintf( acParam, "g_aBlendMatrix[%d]", i );
+				hr = pEffect->SetMatrix( acParam, &paBlendMatrix[i] );
+
+				if( FAILED(hr) ) return;
+			}
+		}
+	}
+};
+
+
+void InitSkeletalMesh(  )
+{
+//	shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader() );
+//	entity.m_pMeshRenderMethod->AddParamsLoaderToAllRenderMethods( pBlendMatricesLoader );
+
+//	if(  )
+}
+
+
+//void SetAsEnvMapTarget( CCopyEntity& entity, const std::string& target_mesh_name, const std::string& target_subset_name )
+
+/// Perhaps this should be a member of CCopyEntity, not CBaseEntity
+/// - m_pStage is the only member of the base entity
+/// - CCopyEnttiy has m_pStage
+void CBaseEntity::SetAsEnvMapTarget( CCopyEntity& entity )
+{
+	if( entity.GetEntityFlags() & BETYPE_ENVMAPTARGET )
+	{
+		shared_ptr<CCubeTextureParamsLoader> pCubeTexLoader( new CCubeTextureParamsLoader() );
+		pCubeTexLoader->SetCubeTexture( 0, m_pStage->GetEntitySet()->GetRenderManager()->GetEnvMapTexture(entity.GetID()) );
+
+//		entity.m_pMeshRenderMethod->AddShaderParamsLoaderToAllRenderMethods( pCubeTexLoader );
+
+/*
+		if( 0 < entity.m_pMeshRenderMethod->MeshRenderMethod().size() )
+		{
+			// shader LOD: fixed to 0
+			entity.m_pMeshRenderMethod->MeshRenderMethod(0).m_vecpShaderParamsLoader.push_back( pCubeTexLoader );
+		}
+		else
+		{
+			// alpha entity?
+		}*/
+	}
+
+}
+
+
+
+void CBaseEntity::RenderEntity( CCopyEntity& entity )
+{
+	// default render states for fixed function pipeline
+//	HRESULT hr;
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+
+	// alpha-blending settings
+	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	D3DBLEND_SRCALPHA );
+	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_INVSRCALPHA );
+//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_SrcAlphaBlend );
+//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
+
+	// light params writer
+	if( m_EntityFlag & BETYPE_LIGHTING
+	 && m_MeshProperty.m_pShaderLightParamsLoader )
+	{
+		UpdateLightInfo( entity );
+
+		// always shared by all the entities
+		m_MeshProperty.m_pShaderLightParamsLoader->SetEntity( entity.Self().lock() );
+	}
+
+	if( entity.m_pMeshRenderMethod )
+	{
+		entity.m_pMeshRenderMethod->RenderMesh( entity.m_MeshHandle, entity.GetWorldPose() );
+	}
+	else if( m_MeshProperty.m_pMeshRenderMethod )
+	{
+		m_MeshProperty.m_pMeshRenderMethod->RenderMesh( entity.m_MeshHandle, entity.GetWorldPose() );
+	}
+
+//	entity.m_pMeshRenderMethod->RenderMeshContainerNode( *(entity.m_pMeshNode.get()), m_vecpShaderParamsWriterBuffer );
+}
+
 
 static D3DXVECTOR3 s_OrigViewTrans;
 static D3DXVECTOR3 s_OrigWorldPos;
 
-static void SetOffsetWorldTransform( CShaderManager *pShaderManager, CCamera *pCamera )
+static void SetOffsetWorldTransform( CShaderManager& rShaderManager, CCamera *pCamera )
 {
 	D3DXMATRIX matWorld, matView;
-	pShaderManager->GetWorldTransform( matWorld );
-	pShaderManager->GetViewTransform( matView );
+	rShaderManager.GetWorldTransform( matWorld );
+	rShaderManager.GetViewTransform( matView );
 	s_OrigWorldPos = D3DXVECTOR3(matWorld._41,matWorld._42,matWorld._43);
 	s_OrigViewTrans = D3DXVECTOR3(matView._41,matView._42,matView._43);
 
@@ -60,16 +222,16 @@ static void SetOffsetWorldTransform( CShaderManager *pShaderManager, CCamera *pC
 
 //	MsgBoxFmt( "world pos offset: ( %f, %f, %f )", matWorld._41, matWorld._42, matWorld._43 );
 
-	pShaderManager->SetWorldTransform( matWorld );
-	pShaderManager->SetViewTransform( matView );
+	rShaderManager.SetWorldTransform( matWorld );
+	rShaderManager.SetViewTransform( matView );
 }
 
 
-static void RestoreOffsetWorldTransform( CShaderManager *pShaderManager )
+static void RestoreOffsetWorldTransform( CShaderManager& rShaderManager )
 {
 	D3DXMATRIX matWorld, matView;
-	pShaderManager->GetWorldTransform( matWorld );
-	pShaderManager->GetViewTransform( matView );
+	rShaderManager.GetWorldTransform( matWorld );
+	rShaderManager.GetViewTransform( matView );
 
 	matWorld._41 = s_OrigWorldPos.x;
 	matWorld._42 = s_OrigWorldPos.y;
@@ -79,52 +241,30 @@ static void RestoreOffsetWorldTransform( CShaderManager *pShaderManager )
 	matView._42 = s_OrigViewTrans.y;
 	matView._43 = s_OrigViewTrans.z;
 
-	pShaderManager->SetWorldTransform( matWorld );
-	pShaderManager->SetViewTransform( matView );
+	rShaderManager.SetWorldTransform( matWorld );
+	rShaderManager.SetViewTransform( matView );
 }
 
 
-static void SetOffsetWorldTransform( CCamera *pCamera )
+void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	D3DXMATRIX matWorld, matView;
-	pd3dDev->GetTransform( D3DTS_WORLD, &matWorld );
-	pd3dDev->GetTransform( D3DTS_VIEW, &matView );
-	s_OrigWorldPos = D3DXVECTOR3(matWorld._41,matWorld._42,matWorld._43);
-	s_OrigViewTrans = D3DXVECTOR3(matView._41,matView._42,matView._43);
+/*	if( m_EntityFlag & SHARE_RENDER_METHODS )
+	{
+		entity.m_pRenderMethod
+			= m_MeshProperty.m_pMeshRenderMethod;
+	}*/
 
-	if( !pCamera )
+	shared_ptr<CD3DXMeshObjectBase> pMesh = entity.m_MeshHandle.GetMesh();
+	if( !pMesh )
 		return;
 
-    matView._41 = matView._42 = matView._43 = 0;
-	
-	D3DXVECTOR3 cam_pos = pCamera->GetPosition();
-	matWorld._41 = s_OrigWorldPos.x - cam_pos.x;
-	matWorld._42 = s_OrigWorldPos.y - cam_pos.y;
-	matWorld._43 = s_OrigWorldPos.z - cam_pos.z;
+	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
+	{
+		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader() );
+//		entity.m_pRenderMethod->SetShaderParamsLoaderToAllRenderMethods( pBlendMatricesLoader );
+	}
 
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-	pd3dDev->SetTransform( D3DTS_VIEW, &matView );
-}
-
-
-static void RestoreOffsetWorldTransform()
-{
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	D3DXMATRIX matWorld, matView;
-	pd3dDev->GetTransform( D3DTS_WORLD, &matWorld );
-	pd3dDev->GetTransform( D3DTS_VIEW, &matView );
-
-	matWorld._41 = s_OrigWorldPos.x;
-	matWorld._42 = s_OrigWorldPos.y;
-	matWorld._43 = s_OrigWorldPos.z;
-
-	matView._41 = s_OrigViewTrans.x;
-	matView._42 = s_OrigViewTrans.y;
-	matView._43 = s_OrigViewTrans.z;
-
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-	pd3dDev->SetTransform( D3DTS_VIEW, &matView );
+//		m_pShaderLightParamsLoader->SetEntity( pCopyEnt->Self() );
 }
 
 
@@ -146,6 +286,11 @@ void CBaseEntity::Init3DModel()
 	else
 		m_MeshProperty.m_ShaderHandle = m_pStage->GetEntitySet()->GetRenderManager()->GetFallbackShader();
 
+	CSubsetRenderMethod render_method;
+	render_method.m_Shader = m_MeshProperty.m_ShaderHandle;
+	m_MeshProperty.m_pMeshRenderMethod
+		= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+
 	// alpha blending
 
 	if( pMesh && (m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS) )
@@ -161,6 +306,24 @@ void CBaseEntity::Init3DModel()
 				m_MeshProperty.m_vecTargetMaterialIndex.push_back( i );
 			}
 		}
+	}
+
+	if( m_EntityFlag & BETYPE_LIGHTING )
+	{
+		// parameters loader for lighting
+		m_MeshProperty.m_pShaderLightParamsLoader
+			= shared_ptr<CEntityShaderLightParamsLoader>( new CEntityShaderLightParamsLoader() );
+
+		m_MeshProperty.m_vecpShaderParamsLoader.push_back( m_MeshProperty.m_pShaderLightParamsLoader );
+	}
+
+	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
+	{
+		// add blend matrices loader to m_MeshProperty.m_pBlendMatricesLoader
+		// if the base entity uses shared render methods
+		// - This is not often the case. Skeletal meshes are usually used by game items
+		//   and each entity has its own separate render method.
+//		m_MeshProperty.m_pBlendMatricesLoader = ;
 	}
 }
 
@@ -202,31 +365,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 							      int ShaderLOD )
 {
 	PROFILE_FUNCTION();
-
-	D3DXMATRIX matWorld;
-	world_pose.GetRowMajorMatrix44( (float *)&matWorld );
-
-	if( !pMeshObject )
-	{
-		ONCE( LOG_PRINT_ERROR( "An invalid mesh object: base entity: " + m_strName ) );
-		return;
-	}
-
-	LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
-	if( !pMesh )
-		return;
-
-//	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-
-	// set the world transform
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-
-	pd3dDev->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
-
-    int i, num_materials = pMeshObject->GetNumMaterials();
-
+/*
 	bool use_offset_world_transform = true;
 
 	bool bSingleTechnique
@@ -290,120 +429,14 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 
 		if( use_offset_world_transform )
 			RestoreOffsetWorldTransform( pShaderManager );
-	}
-	else
-	{
-//		SetOffsetWorldTransform( m_pStage->GetCurrentCamera() );
-
-		pd3dDev->SetVertexShader( NULL );
-
-/*		if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PSEUDO_NIGHT_VISION )
-			... ;
-		else
-			... ;
-*/
-
-		// Meshes are divided into subsets by materials. Render each subset in a loop
-		for( i=0; i<num_materials; i++ )
-		{
-			// Set the material and texture for this subset
-	//		pd3dDev->SetMaterial( &pMeshObject->GetMaterial(i) );
-
-			const int num_textures_per_material = pMeshObject->GetNumTextures( i );
-			for( int tex=0; tex<num_textures_per_material; tex++ )
-				pd3dDev->SetTexture( tex, pMeshObject->GetTexture(i,tex).GetTexture() );
-
-			// Draw the mesh subset
-			pMesh->DrawSubset( i );
-		}
-
-//		RestoreOffsetWorldTransform();
-
-	}
+	}*/
 }
 
 
-//void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt, int shader_tech_id )
-void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
-							   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
-							   int ShaderLOD )
+void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt )
 {
-	PROFILE_FUNCTION();
-
-	CD3DXMeshObjectBase *pMeshObject;
-
-	// first, see if the mesh is set to the copy entity
-	pMeshObject = pCopyEnt->MeshObjectHandle.GetMesh().get();
-
-	if( !pMeshObject )
-		pMeshObject = m_MeshProperty.m_MeshObjectHandle.GetMesh().get(); // try the mesh stored in base entity
-
-	if( !pMeshObject || !(pMeshObject->GetBaseMesh()) )
-	{
-		return;
-	}
-
-	if( rShaderTechHandleTable.size_x() == 0 )
-	{
-		// no shader technique to render the model with
-		return;
-	}
-
-	SetLights( *pCopyEnt );
-
-//	set render states and the world matrix for the fixed function pipeline
-
-//	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	// alpha-blending settings
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_INVSRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_SrcAlphaBlend );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
-
-	// set world transform
-	D3DXMATRIX matWorld;
-	pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (float *)&matWorld );
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	if( pShaderManager )
-	{
-		if( m_MeshProperty.m_SpecTex.GetTexture() )
-//		if( 0 < m_MeshProperty.m_vecExtraTexture.size()
-//		 && m_MeshProperty.m_vecExtraTexture[0].GetTexture() )
-		{
-			pShaderManager->SetTexture( 2, m_MeshProperty.m_SpecTex.GetTexture() );
-//			pShaderManager->SetTexture( 2, m_MeshProperty.m_vecExtraTexture[0].GetTexture() );
-		}
-
-		if( pCopyEnt->GetEntityFlags() & BETYPE_ENVMAPTARGET )
-		{
-			pShaderManager->SetCubeTexture( 0, m_pStage->GetEntitySet()->GetRenderManager()->GetEnvMapTexture(pCopyEnt->GetID()) );
-		}
-	}
-
-	const CMeshType::Name mesh_type = pMeshObject->GetMeshType();
-
-	switch( mesh_type )
-	{
-	case CMeshType::SKELETAL:
-		DrawSkeletalMesh( pCopyEnt, dynamic_cast<CD3DXSMeshObject *>(pMeshObject), rShaderTechHandleTable, ShaderLOD );
-		break;
-
-	case CMeshType::BASIC:
-		DrawMeshObject( pCopyEnt->GetWorldPose(),
-			           m_MeshProperty.m_MeshObjectHandle.GetMesh().get(),
-			           m_MeshProperty.m_vecTargetMaterialIndex,
-					   rShaderTechHandleTable,
-					   ShaderLOD );
-		break;
-
-	default:
-		break;
-	}
+	RenderEntity( *pCopyEnt );
+//	Draw3DModel( pCopyEnt, m_MeshProperty.m_ShaderTechnique );
 }
 
 
@@ -428,7 +461,7 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 
 	pSkeletalMesh->SetLocalTransformsFromCache();
 
-	SetBlendMatrices( pSkeletalMesh );
+//	SetBlendMatrices( pSkeletalMesh );
 
 	DrawMeshObject( pCopyEnt->GetWorldPose(),
 		            pSkeletalMesh,
@@ -442,206 +475,71 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 }
 
 
-void SetBlendMatrices( CD3DXSMeshObject *pSMeshObject )
-{
-//	PROFILE_FUNCTION();
 
-	// set blend matrices to the shader
-	LPD3DXEFFECT pEffect;
-	CShaderManager *pShaderMgr;
-	D3DXMATRIX *paBlendMatrix = pSMeshObject->GetBlendMatrices();
-	if( (pShaderMgr = CShader::Get()->GetCurrentShaderManager())
-	 && (pEffect = pShaderMgr->GetEffect())
-	 && paBlendMatrix )
-	{
-		HRESULT hr;
-		char acParam[32];
-		int i, num_bones = pSMeshObject->GetNumBones();
-
-		for( i=0; i<num_bones; i++ )
-		{
-			sprintf( acParam, "g_aBlendMatrix[%d]", i );
-			hr = pEffect->SetMatrix( acParam, &paBlendMatrix[i] );
-
-			if( FAILED(hr) ) return;
-		}
-	}
-}
-
-
-void CBaseEntity::RenderAsShaderCaster(CCopyEntity* pCopyEnt)
+void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 {
 	PROFILE_FUNCTION();
 
-	CD3DXMeshObjectBase *pMeshObject = NULL;
+	// set option to disable texture settings
 
-	// first, see if the mesh is set to the copy entity
-	pMeshObject = pCopyEnt->MeshObjectHandle.GetMesh().get();
-
-	if( !pMeshObject )
-		pMeshObject = m_MeshProperty.m_MeshObjectHandle.GetMesh().get(); // try the mesh stored in base entity
-
-	if( !pMeshObject || !(pMeshObject->GetBaseMesh()) )
-	{
-		// no mesh object
+	CShadowMapManager *pShadowMgr = m_pStage->GetEntitySet()->GetRenderManager()->GetShadowManager();
+	if( !pShadowMgr )
 		return;
-	}
 
-//	set render states and the world matrix for the fixed function pipeline
+	shared_ptr<CD3DXMeshObjectBase> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
+	if( pMesh )
+		return;
 
-//	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
+	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
+		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowCasterRenderMethod;
+	else
+		pMeshRenderMethod = this->m_MeshProperty.m_pShadowCasterRenderMethod;
 
-	// alpha-blending settings
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_INVSRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_SrcAlphaBlend );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
+	pMeshRenderMethod->MeshRenderMethod().resize( 1 );
+	CSubsetRenderMethod mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
+	mesh_render_method.m_Shader    = pShadowMgr->GetShader();
+	mesh_render_method.m_Technique.SetTechniqueName( "ShadowMap" );
+//	render_method.SetMeshRenderMethod( mesh_render_method, 0 );
 
-	int mesh_type = m_MeshProperty.m_MeshObjectHandle.GetMeshType();
-
-	switch( mesh_type )
-	{
-//	case CMeshType::SKELETAL:
-//		DrawSkeletalMesh( pCopyEnt, rShaderTechHandleTable, ShaderLOD );
-		break;
-
-	case CMeshType::BASIC:
-	case CMeshType::SKELETAL:
-//		DrawMeshObject( pCopyEnt->GetWorldPose(), m_MeshProperty.m_MeshObjectHandle.GetMesh(), rShaderTechHandleTable, ShaderLOD );
-	{
-		LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
-		if( !pMesh )
-			return;
-
-		// set the world transform
-		D3DXMATRIX matWorld;
-		pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (float *)&matWorld );
-		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-
-		bool use_offset_world_transform = false;
-
-//		CShadowMapManager *pShadowMgr = m_pStage->GetEntitySet()->GetRenderManager()->GetShadowManager();
-		CShaderManager *pShaderManager = NULL;
-		LPD3DXEFFECT pEffect = NULL;
-		if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
-			(pEffect = pShaderManager->GetEffect()) )
-		{
-			// render the mesh with an HLSL shader
-
-			pShaderManager->SetWorldTransform( matWorld );
-
-			if( use_offset_world_transform )
-				SetOffsetWorldTransform( pShaderManager, m_pStage->GetCurrentCamera() );
-
-			HRESULT hr;
-			hr = pEffect->SetTechnique( "ShadowMap" );
-
-			// TODO: skip texture settings
-			pMeshObject->Render( *pShaderManager );
-
-			if( use_offset_world_transform )
-				RestoreOffsetWorldTransform( pShaderManager );
-		}
-	}
-		break;
-
-	default:
-		break;
-	}
+	pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
 }
 
 
-void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
+void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 {
 	PROFILE_FUNCTION();
 
-	CD3DXMeshObjectBase *pMeshObject = NULL;
+	// set option to disable texture settings
 
-	// first, see if the mesh is set to the copy entity
-	pMeshObject = pCopyEnt->MeshObjectHandle.GetMesh().get();
-
-	if( !pMeshObject )
-		pMeshObject = m_MeshProperty.m_MeshObjectHandle.GetMesh().get(); // try the mesh stored in base entity
-
-	if( !pMeshObject || !(pMeshObject->GetBaseMesh()) )
-	{
-		// no mesh object
+	CShadowMapManager *pShadowMgr = m_pStage->GetEntitySet()->GetRenderManager()->GetShadowManager();
+	if( !pShadowMgr )
 		return;
-	}
 
-//	set render states and the world matrix for the fixed function pipeline
+	shared_ptr<CD3DXMeshObjectBase> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
+	if( pMesh )
+		return;
 
-//	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
+	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
+		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod;
+	else
+		pMeshRenderMethod = this->m_MeshProperty.m_pShadowReceiverRenderMethod;
 
-	// alpha-blending settings
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_INVSRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_SrcAlphaBlend );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
+	pMeshRenderMethod->MeshRenderMethod().resize( 1 );
+	CSubsetRenderMethod mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
+	mesh_render_method.m_Shader    = pShadowMgr->GetShader();
+	mesh_render_method.m_Technique.SetTechniqueName( "SceneShadowMap" );
+//	render_method.SetMeshRenderMethod( mesh_render_method, 0 );
 
-	int mesh_type = m_MeshProperty.m_MeshObjectHandle.GetMeshType();
-
-	switch( mesh_type )
-	{
-//	case CMeshType::SKELETAL:
-//		DrawSkeletalMesh( pCopyEnt, rShaderTechHandleTable, ShaderLOD );
-		break;
-
-	case CMeshType::BASIC:
-	case CMeshType::SKELETAL:
-//		DrawMeshObject( pCopyEnt->GetWorldPose(), m_MeshProperty.m_MeshObjectHandle.GetMesh(), rShaderTechHandleTable, ShaderLOD );
-	{
-		LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
-		if( !pMesh )
-			return;
-
-		// set the world transform
-		D3DXMATRIX matWorld;
-		pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (float *)&matWorld );
-		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-
-		bool use_offset_world_transform = false;
-
-		CShadowMapManager *pShadowMgr = m_pStage->GetEntitySet()->GetRenderManager()->GetShadowManager();
-		CShaderManager *pShaderManager = NULL;
-		LPD3DXEFFECT pEffect = NULL;
-		if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
-			(pEffect = pShaderManager->GetEffect()) )
-		{
-			// render the mesh with an HLSL shader
-
-			pShaderManager->SetWorldTransform( matWorld );
-
-			if( use_offset_world_transform )
-				SetOffsetWorldTransform( pShaderManager, m_pStage->GetCurrentCamera() );
-
-			pEffect->SetTechnique( "SceneShadowMap" );
-//			m_pStage->GetEntitySet()->GetRenderManager()->SetShaderTechniqueForShadowMap();
-
-			// TODO: skip texture settings
-			pMeshObject->Render( *pShaderManager );
-
-			if( use_offset_world_transform )
-				RestoreOffsetWorldTransform( pShaderManager );
-		}
-	}
-		break;
-
-	default:
-		break;
-	}
+	pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
 }
 
 
 /// Update light-related shader variables
-void CBaseEntity::SetLightsToShader( CCopyEntity& entity )
+void SetLightsToShader( CCopyEntity& entity, CShaderManager& rShaderMgr )
 {
-	CShaderManager *pShaderMgr = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	shared_ptr<CShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
+	shared_ptr<CShaderLightManager> pShaderLightMgr = rShaderMgr.GetShaderLightManager();
 
 	int i, num_current_lights = entity.GetNumLights();
 	CLightEntity *pLightEntity = NULL;
@@ -668,7 +566,7 @@ void CBaseEntity::SetLightsToShader( CCopyEntity& entity )
 }
 
 
-void CBaseEntity::SetLights( CCopyEntity& entity )
+void CBaseEntity::UpdateLightInfo( CCopyEntity& entity )
 {
 	if( entity.Lighting() )
 	{
@@ -679,16 +577,6 @@ void CBaseEntity::SetLights( CCopyEntity& entity )
 			m_pStage->GetEntitySet()->UpdateLights( &entity );
 			entity.sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
 		}
-
-		SetLightsToShader( entity );
-
-		// turn on lights that reach 'pCopyEnt'
-//		m_pEntitySet->EnableLightForEntity();
-//		m_pEntitySet->SetLightsForEntity( pEntity );
-	}
-	else
-	{	// turn off lights
-//		m_pEntitySet->DisableLightForEntity();
 	}
 }
 
