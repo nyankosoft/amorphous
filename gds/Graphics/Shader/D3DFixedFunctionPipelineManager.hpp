@@ -104,6 +104,12 @@ public:
 
 	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
+	inline void Begin();
+
+	inline void End();
+
+//	inline void SetMaterial();
+
 //	inline void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture );
 
 //	inline Result::Name SetTechnique( const unsigned int id );
@@ -194,6 +200,22 @@ inline HRESULT CD3DFixedFunctionPipelineManager::SetCubeTexture( int index, cons
 //	else
 //		return E_FAIL;
 }
+
+
+inline void CD3DFixedFunctionPipelineManager::Begin()
+{
+	HRESULT hr;
+	hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
+	hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+}
+
+
+inline void CD3DFixedFunctionPipelineManager::End()
+{
+}
+
+
+
 
 /*
 inline Result::Name CD3DFixedFunctionPipelineManager::SetTechnique( const unsigned int id )

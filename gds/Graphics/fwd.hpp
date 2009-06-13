@@ -87,6 +87,11 @@ class CD3DXMeshObjectBase;
 class CD3DXMeshObject;
 class CD3DXPMeshObject; // progressive mesh
 class CD3DXSMeshObject; // skeletal mesh
+class CMeshObjectContainer;
+class CMeshContainerNode;
+class CShaderParamsLoader;
+class CMeshContainerRenderMethod;
+class CMeshContainerNodeRenderMethod;
 
 
 class CGraphicsElement;

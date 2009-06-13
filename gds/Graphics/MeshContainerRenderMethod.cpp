@@ -5,21 +5,22 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
 #include "Graphics/D3DXMeshObjectBase.hpp"
+#include <boost/foreach.hpp>
 
 
 using namespace std;
 using namespace boost;
 
 
-class CCubeTextureParamsWriter : public CShaderParamsWriter
+class CCubeTextureParamsLoader : public CShaderParamsLoader
 {
 	int m_CubeTexIndex;
 	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
 
 public:
 
-//	CCubeTextureParamsWriter( int stage, CTextureHandle& cube_texture );
-	CCubeTextureParamsWriter( int cube_tex_index = 0, LPDIRECT3DCUBETEXTURE9 pCubeTexture = NULL )
+//	CCubeTextureParamsLoader( int stage, CTextureHandle& cube_texture );
+	CCubeTextureParamsLoader( int cube_tex_index = 0, LPDIRECT3DCUBETEXTURE9 pCubeTexture = NULL )
 		:
 	m_CubeTexIndex(cube_tex_index),
 	m_pCubeTexture(pCubeTexture)
@@ -198,12 +199,10 @@ void CSubsetRenderMethod::Serialize( IArchive& ar, const unsigned int version )
 static int sg_iPrevShaderManagerID = -1;
 
 
-void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh_container,
-													 const Matrix34& world_transform,
-													 std::vector< boost::shared_ptr<CShaderParamsWriter> >& vecpShaderParamsWriter )
+void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform )
 {
 	shared_ptr<CD3DXMeshObjectBase> pMesh
-		= mesh_container.m_MeshObjectHandle.GetMesh();
+		= mesh.GetMesh();
 
 	if( !pMesh )
 		return;
@@ -211,19 +210,31 @@ void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh
 	uint lod_index = m_LODIndex;
 	if( 0 < m_vecMeshRenderMethod.size() )
 	{
+		// render all the subsets at once
+
+		if( (uint)m_vecMeshRenderMethod.size() <= lod_index )
+			return;
+
 		// Render with a single shader & a single technique 
 		CShaderManager *pShaderMgr = m_vecMeshRenderMethod[lod_index].m_Shader.GetShaderManager();
 		if( pShaderMgr )
 		{
 			pShaderMgr->SetWorldTransform( world_transform );
 
-			if( true /*sg_iPrevShaderManagerID != pShaderMgr->GetShaderManagerID()*/ )
+/*			if( true )//sg_iPrevShaderManagerID != pShaderMgr->GetShaderManagerID() )
 			{
 				for( size_t i=0; i<vecpShaderParamsWriter.size(); i++ )
 					vecpShaderParamsWriter[i]->UpdateShaderParams( *pShaderMgr );
+			}*/
+
+			CSubsetRenderMethod& render_method = m_vecMeshRenderMethod[lod_index];
+
+			for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
+			{
+				render_method.m_vecpShaderParamsLoader[i]->UpdateShaderParams( *pShaderMgr );
 			}
 
-			pShaderMgr->SetTechnique( m_vecMeshRenderMethod[lod_index].m_Technique );
+			pShaderMgr->SetTechnique( render_method.m_Technique );
 			if( m_vecIndicesOfSubsetsToRender.size() == 0 )
 			{
 				// Render all the mesh subsets with a single shader & a single technique 
@@ -239,10 +250,11 @@ void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh
 			}
 		}
 	}
-	else
+	else if( 0 < m_vecSubsetNameToRenderMethod.size() )
 	{
+		// render subsets one by one
+
 		// set different shaders / techniques for each subset
-		uint shader_lod = m_LODIndex;
 		const int num_subsets = pMesh->GetNumMaterials();
 		std::vector<int> *pvecIndicesOfSubsetsToRender = NULL;
 		if( m_vecIndicesOfSubsetsToRender.size() == 0 )
@@ -264,9 +276,9 @@ void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh
 			int index = (*pvecIndicesOfSubsetsToRender)[i];
 
 			map< string, CSubsetRenderMethod >::iterator itr
-				= m_vecSubsetNameToRenderMethod[shader_lod].find( pMesh->GetMaterial(index).Name );
+				= m_vecSubsetNameToRenderMethod[lod_index].find( pMesh->GetMaterial(index).Name );
 
-			if( itr == m_vecSubsetNameToRenderMethod[shader_lod].end() )
+			if( itr == m_vecSubsetNameToRenderMethod[lod_index].end() )
 				continue;
 
 			CShaderManager *pShaderMgr = (*itr).second.m_Shader.GetShaderManager();
@@ -275,9 +287,48 @@ void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh
 
 			pShaderMgr->SetTechnique( (*itr).second.m_Technique );
 
+			for( size_t j=0; j<(*itr).second.m_vecpShaderParamsLoader.size(); j++ )
+			{
+				(*itr).second.m_vecpShaderParamsLoader[j]->UpdateShaderParams( *pShaderMgr );
+			}
+
 			pMesh->RenderSubset( *pShaderMgr, index );
 		}
 	}
+}
+
+
+void CMeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader )
+{
+	for( size_t i=0; i<m_vecMeshRenderMethod.size(); i++ )
+	{
+		m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
+	}
+
+//	typedef pair<string,CSubsetRenderMethod> str_rendermethod;
+	for( size_t i=0; i<m_vecSubsetNameToRenderMethod.size(); i++ )
+	{
+		map<string,CSubsetRenderMethod>::iterator itr;
+		for( itr = m_vecSubsetNameToRenderMethod[i].begin();
+			 itr != m_vecSubsetNameToRenderMethod[i].end();
+			 itr++ )
+		{
+			itr->second.m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
+		}
+/*		BOOST_FOREACH( str_rendermethod& p, m_vecSubsetNameToRenderMethod[i] ) // error
+		{
+			p.second.m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
+		}*/
+	}
+}
+
+
+
+void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh_container,
+													 const Matrix34& world_transform )
+													 //std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter )
+{
+	RenderMesh( mesh_container.m_MeshObjectHandle, world_transform );
 }
 
 
@@ -355,8 +406,8 @@ CMeshContainerNodeRenderMethod::CMeshContainerNodeRenderMethod()
 }
 
 
-void CMeshContainerNodeRenderMethod::RenderMeshContainerNode( CMeshContainerNode& node,
-															  std::vector< boost::shared_ptr<CShaderParamsWriter> >& vecpShaderParamsWriter )
+void CMeshContainerNodeRenderMethod::RenderMeshContainerNode( CMeshContainerNode& node )//,
+															  //std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter )
 {
 	const int num_mesh_containers = node.GetNumMeshContainers();
 	for( int i=0; i<num_mesh_containers; i++ )
@@ -368,8 +419,8 @@ void CMeshContainerNodeRenderMethod::RenderMeshContainerNode( CMeshContainerNode
 
 		m_vecpContainerRenderMethod[i]->RenderMeshContainer(
 			*(node.MeshContainer(i).get()),
-			transform,
-			vecpShaderParamsWriter
+			transform//,
+			//vecpShaderParamsWriter
 			);
 	}
 
@@ -378,7 +429,7 @@ void CMeshContainerNodeRenderMethod::RenderMeshContainerNode( CMeshContainerNode
 		if( node.GetNumChildren() <= (int)i )
 			break;
 
-		m_vecpChild[i]->RenderMeshContainerNode( *(node.Child( i ).get()), vecpShaderParamsWriter );
+		m_vecpChild[i]->RenderMeshContainerNode( *(node.Child( i ).get())/*, vecpShaderParamsWriter*/ );
 	}
 }
 

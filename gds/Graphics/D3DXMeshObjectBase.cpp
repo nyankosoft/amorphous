@@ -801,8 +801,8 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
 	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
-	if( !pEffect )
-		return;
+//	if( !pEffect )
+//		return;
 
 	UINT cPasses;
 //	pEffect->Begin( &cPasses, 0 );
@@ -832,19 +832,29 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 		for( int tex=0; tex<num_textures_for_material; tex++ )
 			rShaderMgr.SetTexture( tex, GetTexture( mat, tex ) );
 
-		pEffect->CommitChanges();
-
-		pEffect->Begin( &cPasses, 0 );
-		for( UINT p = 0; p < cPasses; ++p )
+		if( pEffect )
 		{
-			pEffect->BeginPass( p );
+			pEffect->CommitChanges();
 
-			// Draw the mesh subset
-			pMesh->DrawSubset( mat );
+			pEffect->Begin( &cPasses, 0 );
+			for( UINT p = 0; p < cPasses; ++p )
+			{
+				pEffect->BeginPass( p );
 
-			pEffect->EndPass();
+				// Draw the mesh subset
+				pMesh->DrawSubset( mat );
+
+				pEffect->EndPass();
+			}
+			pEffect->End();
 		}
-		pEffect->End();
+		else
+		{
+			// fixed pipeline
+			rShaderMgr.Begin(); // set vertex & pixel shader to NULL
+
+			pMesh->DrawSubset( mat );
+		}
 	}
 
 //	pEffect->End();

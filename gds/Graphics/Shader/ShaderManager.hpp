@@ -120,6 +120,10 @@ public:
 
 	virtual HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture ) { return E_FAIL; }
 
+	virtual void Begin() {}
+
+	virtual void End() {}
+
 //	virtual void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture ) {}
 
 	virtual Result::Name SetTechnique( const unsigned int id ) { return Result::UNKNOWN_ERROR; }
@@ -214,6 +218,8 @@ class CHLSLShaderManager : public CShaderManager
 	/// it indicates no vacancy is left
 	int m_VacantTechniqueEntryIndex;
 
+//	UINT m_Passes;
+
 	boost::shared_ptr<CHLSLShaderLightManager> m_pHLSLShaderLightManager;
 
 private:
@@ -268,6 +274,10 @@ public:
 	inline HRESULT SetTexture( const int iStage, const CTextureHandle& texture );
 
 	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
+
+	inline void Begin();
+
+	inline void End();
 
 //	inline void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture );
 
@@ -450,6 +460,18 @@ inline HRESULT CHLSLShaderManager::SetCubeTexture( int index, const LPDIRECT3DCU
         return m_pEffect->SetTexture( m_aCubeTextureHandle[index], pCubeTexture );
 	else
 		return E_FAIL;
+}
+
+
+inline void CHLSLShaderManager::Begin()
+{
+//	m_pEffect->Begin( &m_Passes, 0 );
+}
+
+
+inline void CHLSLShaderManager::End()
+{
+//	m_pEffect->End();
 }
 
 

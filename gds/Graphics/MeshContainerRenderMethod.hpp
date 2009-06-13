@@ -15,16 +15,19 @@
 using namespace GameLib1::Serialization;
 
 
-class CShaderParamsWriter
+class CShaderParamsLoader
 {
 public:
 
-	virtual ~CShaderParamsWriter() {}
+	virtual ~CShaderParamsLoader() {}
 
 	virtual void UpdateShaderParams( CShaderManager& rShaderMgr ) = 0;
+
+	virtual void ResetShaderParams( CShaderManager& rShaderMgr ) {};
 };
 
 
+/// Stores params and settings to render all the subsets of a mesh or a subset of a mesh
 class CSubsetRenderMethod : public IArchiveObjectBase
 {
 public:
@@ -33,6 +36,11 @@ public:
 
 	CShaderHandle m_Shader;
 	CShaderTechniqueHandle m_Technique;
+
+	/// Need to be set at runtime
+	std::vector< boost::shared_ptr<CShaderParamsLoader> > m_vecpShaderParamsLoader;
+
+public:
 
 	bool Load();
 
@@ -102,9 +110,16 @@ public:
 
 	virtual ~CMeshContainerRenderMethod() {}
 
+	void RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform );
+
+
 	void RenderMeshContainer( CMeshObjectContainer& mesh_container,
-		                      const Matrix34& world_transform,
-							  std::vector< boost::shared_ptr<CShaderParamsWriter> >& vecpShaderParamsWriter );
+		                      const Matrix34& world_transform );
+							  //std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter );
+
+	std::vector<CSubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
+
+	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
 
 	bool LoadRenderMethodResources();
 
@@ -133,7 +148,7 @@ public:
 
 //	void RenderMeshContainer( CMeshObjectContainer& mesh_container, int index );
 
-	void RenderMeshContainerNode( CMeshContainerNode& node, std::vector< boost::shared_ptr<CShaderParamsWriter> >& vecpShaderParamsWriter );
+	void RenderMeshContainerNode( CMeshContainerNode& node );//, std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter );
 
 	//
 	// child nodes

@@ -149,6 +149,7 @@ void CShadowMapManager::SetSceneRenderer( CShadowMapSceneRenderer *pSceneRendere
 {
 	m_pSceneRenderer = pSceneRenderer;
 
+	// set the scene renderer to all the shadowmap objects
 	for( IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
 		itr != m_mapIDtoShadowMap.end();
 		itr++ )
@@ -338,14 +339,11 @@ bool CShadowMapManager::CreateSceneShadowMapTextures()
 
 void CShadowMapManager::ReleaseGraphicsResources()
 {
-//	m_ShaderManager.Release();
-	ReleaseTextures();
 }
 
 
 void CShadowMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	Init();
 }
 
 
