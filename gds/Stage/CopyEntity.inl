@@ -294,8 +294,11 @@ template<class T>
 inline CEntityHandle<T>::CEntityHandle( boost::shared_ptr<T> pEntity )
 :
 m_pEntity(pEntity),
-m_StockID(pEntity->GetStockID())
-{}
+m_StockID(-1)
+{
+	if( pEntity )
+		m_StockID = pEntity->GetStockID();
+}
 
 
 template<class T>

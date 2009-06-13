@@ -60,33 +60,6 @@ public:
 };
 
 
-void SetLightsToShader( CCopyEntity& entity,  CShaderManager& rShaderMgr );
-
-
-class CEntityShaderLightParamsLoader : public CShaderParamsLoader
-{
-//	boost::shared_ptr<CCopyEntity> m_pEntity;
-	CEntityHandle<> m_Entity;
-
-public:
-
-	CEntityShaderLightParamsLoader( boost::shared_ptr<CCopyEntity> pEntity = boost::shared_ptr<CCopyEntity>() )
-		:
-	m_Entity(pEntity)
-	{}
-
-//	void SetEntity( boost::shared_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
-	void SetEntity( boost::weak_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
-
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
-	{
-		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
-		if( pEntity )
-			SetLightsToShader( *(pEntity.get()), rShaderMgr );
-	}
-};
-
-
 class COffsetWorldTransformLoader : public CShaderParamsLoader
 {
 public:
@@ -286,11 +259,6 @@ void CBaseEntity::Init3DModel()
 	else
 		m_MeshProperty.m_ShaderHandle = m_pStage->GetEntitySet()->GetRenderManager()->GetFallbackShader();
 
-	CSubsetRenderMethod render_method;
-	render_method.m_Shader = m_MeshProperty.m_ShaderHandle;
-	m_MeshProperty.m_pMeshRenderMethod
-		= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-
 	// alpha blending
 
 	if( pMesh && (m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS) )
@@ -308,14 +276,29 @@ void CBaseEntity::Init3DModel()
 		}
 	}
 
+	// create default mesh render method
+
+	CSubsetRenderMethod render_method;
+	render_method.m_Shader = m_MeshProperty.m_ShaderHandle;
+	if( 0 < m_MeshProperty.m_ShaderTechnique.size_x() )
+		render_method.m_Technique = m_MeshProperty.m_ShaderTechnique(0,0);
+
+	m_MeshProperty.m_pMeshRenderMethod
+		= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+
 	if( m_EntityFlag & BETYPE_LIGHTING )
 	{
 		// parameters loader for lighting
 		m_MeshProperty.m_pShaderLightParamsLoader
 			= shared_ptr<CEntityShaderLightParamsLoader>( new CEntityShaderLightParamsLoader() );
 
-		m_MeshProperty.m_vecpShaderParamsLoader.push_back( m_MeshProperty.m_pShaderLightParamsLoader );
+		render_method.m_vecpShaderParamsLoader.push_back( m_MeshProperty.m_pShaderLightParamsLoader );
+
+//		m_MeshProperty.m_vecpShaderParamsLoader.push_back( m_MeshProperty.m_pShaderLightParamsLoader );
 	}
+
+	// set the mesh render method for the first LOD
+	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().push_back( render_method );
 
 	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{

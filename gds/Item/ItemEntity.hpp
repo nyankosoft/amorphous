@@ -64,6 +64,8 @@ public:
 
 	void SetItemEntityFlags( U32 flags ) { m_ItemEntityFlags = flags; }
 
+	void InitMesh();
+
 	enum ItemEntityFlags
 	{
 		SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING = (1 << 0),

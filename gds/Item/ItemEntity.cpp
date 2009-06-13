@@ -3,6 +3,7 @@
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
+#include "Stage/BaseEntity_Draw.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/MTRand.hpp"
@@ -56,6 +57,33 @@ CItemEntity::~CItemEntity()
 }
 
 
+void CItemEntity::InitMesh()
+{
+	if( true /*m_ItemEntityFlags & CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING*/ )
+	{
+		// create mesh render method from shader and shader technique of the base entity
+		CSubsetRenderMethod render_method;
+		CBE_MeshObjectProperty& mesh_property = this->pBaseEntity->MeshProperty();
+		render_method.m_Shader = mesh_property.m_ShaderHandle;
+		if( 0 < mesh_property.m_ShaderTechnique.size_x() )
+		{
+			render_method.m_Technique = mesh_property.m_ShaderTechnique(0,0);
+		}
+
+		this->m_pMeshRenderMethod
+			= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+		this->m_pMeshRenderMethod->MeshRenderMethod().push_back( render_method );
+
+		if( GetEntityFlags() & BETYPE_LIGHTING )
+		{
+			shared_ptr<CEntityShaderLightParamsLoader> pLightParamsLoader( new CEntityShaderLightParamsLoader() );
+			pLightParamsLoader->SetEntity( this->Self() );
+			m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLightParamsLoader );
+		}
+	}
+}
+
+
 
 void CItemEntity::Init( CCopyEntityDesc& desc )
 {
@@ -82,7 +110,7 @@ void CItemEntity::UpdatePhysics( float dt )
 
 void CItemEntity::Draw()
 {
-	if( m_ItemEntityFlags )
+	if( m_ItemEntityFlags & CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
 	{
 		bool single_mesh = true;
 		if( single_mesh
