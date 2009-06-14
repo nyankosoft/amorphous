@@ -6,6 +6,7 @@
 #include "Graphics/FloatRGBColor.hpp"
 
 #include "BE_DirectionalLight.hpp"
+#include "BaseEntity_Draw.hpp"
 #include "BE_PointLight.hpp"
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
@@ -20,6 +21,7 @@
 #include "../base.hpp"
 
 using namespace std;
+using namespace boost;
 
 /**
  - enable shadow mapping

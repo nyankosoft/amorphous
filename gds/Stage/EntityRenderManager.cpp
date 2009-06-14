@@ -21,6 +21,51 @@
 #include "ScreenEffectManager.hpp"
 
 
+using namespace boost;
+
+
+class CCubeTextureParamsLoader : public CShaderParamsLoader
+{
+	int m_CubeTexIndex;
+//	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
+
+	CEntityHandle<> m_Entity; ///< envmap target
+
+	CEntityRenderManager *m_pEntityRenderManager;
+
+public:
+
+	CCubeTextureParamsLoader( boost::shared_ptr<CCopyEntity> pEntity = boost::shared_ptr<CCopyEntity>(),
+		                      CEntityRenderManager *pEntityRenderMgr = NULL,
+							  int cube_tex_index = 0 )
+		:
+	m_Entity(pEntity),
+	m_pEntityRenderManager(pEntityRenderMgr),
+	m_CubeTexIndex(cube_tex_index)
+//	m_pCubeTexture(pCubeTexture)
+	{}
+
+/*	void SetCubeTexture( int cube_tex_index, LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+	{
+		m_CubeTexIndex = cube_tex_index;
+		m_pCubeTexture = pCubeTexture;
+	}*/
+
+	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	{
+//		rShaderMgr.SetCubeTexture( m_CubeTexIndex, m_pCubeTexture );
+		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
+		if( pEntity && m_pEntityRenderManager )
+		{
+			LPDIRECT3DCUBETEXTURE9 pCubeTex
+				= m_pEntityRenderManager->GetEnvMapTexture(pEntity->GetID());
+
+			rShaderMgr.SetCubeTexture( m_CubeTexIndex, pCubeTex );
+		}
+	}
+};
+
+
 class CEntityShadowMapRenderer : public CShadowMapSceneRenderer
 {
 	CEntityRenderManager *m_pRenderer;
@@ -689,6 +734,12 @@ bool CEntityRenderManager::AddEnvMapTarget( CCopyEntity *pEntity )
 	CEnvMapTarget& target = m_vecEnvMapTarget.back();
 	target.m_pEntity  = pEntity;
 	target.m_EntityID = pEntity->GetID();
+	int cube_tex_index = 0;
+	target.m_pCubeMapTextureLoader
+		= shared_ptr<CCubeTextureParamsLoader>( new CCubeTextureParamsLoader( pEntity->Self().lock(), this, cube_tex_index ) );
+
+	if( pEntity->m_pMeshRenderMethod )
+		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( target.m_pCubeMapTextureLoader );
 
 	// init cube map manager if this is the first target
 	if( !m_pCubeMapManager )
@@ -717,7 +768,15 @@ bool CEntityRenderManager::RemoveEnvMapTarget( CCopyEntity *pEntity )
 	{
 		if( m_vecEnvMapTarget[i].m_EntityID == pEntity->GetID() )
 		{
+			if( pEntity->m_pMeshRenderMethod )
+			{
+				pEntity->m_pMeshRenderMethod->RemoveShaderParamsLoaderToAllMeshRenderMethods(
+					m_vecEnvMapTarget[i].m_pCubeMapTextureLoader
+					);
+			}
+
 			m_vecEnvMapTarget.erase( m_vecEnvMapTarget.begin() + i );
+
 			return true;
 		}
 	}

@@ -150,6 +150,10 @@ inline void CCopyEntity::Terminate()
 	if( 0 < m_vecpPhysicsActor.size() )
 		ReleasePhysicsActor();
 
+	// meshes
+	m_MeshHandle.Release();
+	m_pMeshRenderMethod.reset();
+
 	pUserData = NULL;
 }
 

@@ -3,10 +3,18 @@
 
 
 #include "EntityHandle.hpp"
+#include "Stage.hpp"
+#include "EntityRenderManager.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/MeshContainerRenderMethod.hpp"
+#include "Graphics/D3DXSMeshObject.hpp"
 
 
 extern void SetLightsToShader( CCopyEntity& entity,  CShaderManager& rShaderMgr );
+
+extern void CreateMeshRenderMethod( CEntityHandle<>& entity, 
+							        CShaderHandle& shader,
+							        CShaderTechniqueHandle& tech );
 
 
 class CEntityShaderLightParamsLoader : public CShaderParamsLoader
@@ -29,6 +37,44 @@ public:
 		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 		if( pEntity )
 			SetLightsToShader( *(pEntity.get()), rShaderMgr );
+	}
+};
+
+
+class CBlendMatricesLoader : public CShaderParamsLoader
+{
+	boost::shared_ptr<CD3DXSMeshObject> m_pSkeletalMesh;
+
+public:
+
+	CBlendMatricesLoader( boost::shared_ptr<CD3DXSMeshObject> pSkeletalMesh = boost::shared_ptr<CD3DXSMeshObject>() )
+		:
+	m_pSkeletalMesh(pSkeletalMesh)
+	{}
+
+	void SetSkeletalMesh( boost::shared_ptr<CD3DXSMeshObject> pSkeletalMesh ) { m_pSkeletalMesh = pSkeletalMesh; }
+
+	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	{
+		//PROFILE_FUNCTION();
+
+		// set blend matrices to the shader
+		LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
+		D3DXMATRIX *paBlendMatrix = m_pSkeletalMesh->GetBlendMatrices();
+		if( pEffect && paBlendMatrix )
+		{
+			HRESULT hr;
+			char acParam[32];
+			int i, num_bones = m_pSkeletalMesh->GetNumBones();
+
+			for( i=0; i<num_bones; i++ )
+			{
+				sprintf( acParam, "g_aBlendMatrix[%d]", i );
+				hr = pEffect->SetMatrix( acParam, &paBlendMatrix[i] );
+
+				if( FAILED(hr) ) return;
+			}
+		}
 	}
 };
 

@@ -323,6 +323,51 @@ void CMeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( bo
 }
 
 
+void CMeshContainerRenderMethod::RemoveShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader )
+{
+	for( size_t i=0; i<m_vecMeshRenderMethod.size(); i++ )
+	{
+		vector< shared_ptr<CShaderParamsLoader> >::iterator itrParamsLoader
+			= m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.begin();
+		while( itrParamsLoader != m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.end() )
+		{
+			if( (*itrParamsLoader) == pShaderParamsLoader )
+			{
+				itrParamsLoader = m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.erase( itrParamsLoader );
+			}
+			else
+				itrParamsLoader++;
+		}
+	}
+
+//	typedef pair<string,CSubsetRenderMethod> str_rendermethod;
+	for( size_t i=0; i<m_vecSubsetNameToRenderMethod.size(); i++ )
+	{
+		map<string,CSubsetRenderMethod>::iterator itr;
+		for( itr = m_vecSubsetNameToRenderMethod[i].begin();
+			 itr != m_vecSubsetNameToRenderMethod[i].end();
+			 itr++ )
+		{
+			vector< shared_ptr<CShaderParamsLoader> >::iterator itrParamsLoader
+				= itr->second.m_vecpShaderParamsLoader.begin();
+			while( itrParamsLoader != itr->second.m_vecpShaderParamsLoader.end() )
+			{
+				if( (*itrParamsLoader) == pShaderParamsLoader )
+				{
+					itrParamsLoader = itr->second.m_vecpShaderParamsLoader.erase( itrParamsLoader );
+				}
+				else
+					itrParamsLoader++;
+			}
+		}
+/*		BOOST_FOREACH( str_rendermethod& p, m_vecSubsetNameToRenderMethod[i] ) // error
+		{
+			p.second.m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
+		}*/
+	}
+}
+
+
 
 void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh_container,
 													 const Matrix34& world_transform )

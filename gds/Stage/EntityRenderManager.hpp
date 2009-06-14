@@ -24,6 +24,7 @@ class CScreenEffectManager;
 
 class CEntityEnvMapRenderTask;
 class CEntitySceneRenderTask;
+class CCubeTextureParamsLoader;
 
 
 class CEnvMapTarget
@@ -41,6 +42,8 @@ public:
 	U32 m_EntityID; ///< target of the env map
 
 	CTextureHandle m_Texture; ///< stores env map texture
+
+	boost::shared_ptr<CCubeTextureParamsLoader> m_pCubeMapTextureLoader;
 };
 
 

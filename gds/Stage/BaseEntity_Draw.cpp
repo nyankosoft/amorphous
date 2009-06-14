@@ -33,67 +33,9 @@ Alpha entities and render methods
 */
 
 
-class CCubeTextureParamsLoader : public CShaderParamsLoader
-{
-	int m_CubeTexIndex;
-	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
-
-public:
-
-//	CCubeTextureParamsLoader( int stage, CTextureHandle& cube_texture );
-	CCubeTextureParamsLoader( int cube_tex_index = 0, LPDIRECT3DCUBETEXTURE9 pCubeTexture = NULL )
-		:
-	m_CubeTexIndex(cube_tex_index),
-	m_pCubeTexture(pCubeTexture)
-	{}
-
-	void SetCubeTexture( int cube_tex_index, LPDIRECT3DCUBETEXTURE9 pCubeTexture )
-	{
-		m_CubeTexIndex = cube_tex_index;
-		m_pCubeTexture = pCubeTexture;
-	}
-
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
-	{
-		rShaderMgr.SetCubeTexture( m_CubeTexIndex, m_pCubeTexture );
-	}
-};
-
-
 class COffsetWorldTransformLoader : public CShaderParamsLoader
 {
 public:
-};
-
-
-class CBlendMatricesLoader : public CShaderParamsLoader
-{
-	boost::shared_ptr<CD3DXSMeshObject> m_pSMeshObject;
-
-public:
-
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
-	{
-		//PROFILE_FUNCTION();
-
-		// set blend matrices to the shader
-		LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
-		D3DXMATRIX *paBlendMatrix = m_pSMeshObject->GetBlendMatrices();
-		if( pEffect && paBlendMatrix )
-		{
-			HRESULT hr;
-			char acParam[32];
-			int i, num_bones = m_pSMeshObject->GetNumBones();
-
-			for( i=0; i<num_bones; i++ )
-			{
-				sprintf( acParam, "g_aBlendMatrix[%d]", i );
-				hr = pEffect->SetMatrix( acParam, &paBlendMatrix[i] );
-
-				if( FAILED(hr) ) return;
-			}
-		}
-	}
 };
 
 
@@ -106,8 +48,6 @@ void InitSkeletalMesh(  )
 }
 
 
-//void SetAsEnvMapTarget( CCopyEntity& entity, const std::string& target_mesh_name, const std::string& target_subset_name )
-
 /// Perhaps this should be a member of CCopyEntity, not CBaseEntity
 /// - m_pStage is the only member of the base entity
 /// - CCopyEnttiy has m_pStage
@@ -115,8 +55,8 @@ void CBaseEntity::SetAsEnvMapTarget( CCopyEntity& entity )
 {
 	if( entity.GetEntityFlags() & BETYPE_ENVMAPTARGET )
 	{
-		shared_ptr<CCubeTextureParamsLoader> pCubeTexLoader( new CCubeTextureParamsLoader() );
-		pCubeTexLoader->SetCubeTexture( 0, m_pStage->GetEntitySet()->GetRenderManager()->GetEnvMapTexture(entity.GetID()) );
+//		shared_ptr<CCubeTextureParamsLoader> pCubeTexLoader( new CCubeTextureParamsLoader() );
+//		pCubeTexLoader->SetCubeTexture( 0, m_pStage->GetEntitySet()->GetRenderManager()->GetEnvMapTexture(entity.GetID()) );
 
 //		entity.m_pMeshRenderMethod->AddShaderParamsLoaderToAllRenderMethods( pCubeTexLoader );
 
@@ -150,13 +90,15 @@ void CBaseEntity::RenderEntity( CCopyEntity& entity )
 //	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
 
 	// light params writer
-	if( m_EntityFlag & BETYPE_LIGHTING
-	 && m_MeshProperty.m_pShaderLightParamsLoader )
+	if( m_EntityFlag & BETYPE_LIGHTING )
 	{
 		UpdateLightInfo( entity );
 
-		// always shared by all the entities
-		m_MeshProperty.m_pShaderLightParamsLoader->SetEntity( entity.Self().lock() );
+		if( m_MeshProperty.m_pShaderLightParamsLoader )
+		{
+			// The light params loader is shared by all the entities
+			m_MeshProperty.m_pShaderLightParamsLoader->SetEntity( entity.Self().lock() );
+		}
 	}
 
 	if( entity.m_pMeshRenderMethod )
@@ -233,8 +175,11 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 
 	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{
-		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader() );
-//		entity.m_pRenderMethod->SetShaderParamsLoaderToAllRenderMethods( pBlendMatricesLoader );
+		shared_ptr<CD3DXSMeshObject> pSkeletalMesh
+			= boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pMesh);
+
+		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
+		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
 	}
 
 //		m_pShaderLightParamsLoader->SetEntity( pCopyEnt->Self() );
@@ -308,6 +253,19 @@ void CBaseEntity::Init3DModel()
 		//   and each entity has its own separate render method.
 //		m_MeshProperty.m_pBlendMatricesLoader = ;
 	}
+
+/*
+	m_MeshProperty.m_pShadowCasterRenderMethod           = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+	m_MeshProperty.m_pShadowReceiverRenderMethod         = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod   = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+
+	// blend matrices loader for shadow maps of skeletal meshes
+	m_MeshProperty.m_pBlendMatricesLoader
+		= shared_ptr<CBlendMatricesLoader>( new CBlendMatricesLoader() );
+	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
+	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
+	*/
 }
 
 
@@ -479,12 +437,18 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	else
 		pMeshRenderMethod = this->m_MeshProperty.m_pShadowCasterRenderMethod;
 
-	pMeshRenderMethod->MeshRenderMethod().resize( 1 );
-	CSubsetRenderMethod mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
-	mesh_render_method.m_Shader    = pShadowMgr->GetShader();
-	mesh_render_method.m_Technique.SetTechniqueName( "ShadowMap" );
-//	render_method.SetMeshRenderMethod( mesh_render_method, 0 );
-
+	// Do these settings in advance
+	// - Notify if the shadow map manager is changed.
+/*	if( pMeshRenderMethod->MeshRenderMethod().size() )
+	{
+		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
+		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
+		mesh_render_method.m_Technique.SetTechniqueName( "ShadowMap" );
+//		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
+		pMeshRenderMethod->MeshRenderMethod()[0] = mesh_render_method;
+//		pMeshRenderMethod.SetMeshRenderMethod( mesh_render_method, 0 );
+	}
+*/
 	pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
 }
 
@@ -560,6 +524,45 @@ void CBaseEntity::UpdateLightInfo( CCopyEntity& entity )
 			m_pStage->GetEntitySet()->UpdateLights( &entity );
 			entity.sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
 		}
+	}
+}
+
+
+void CreateMeshRenderMethod( CEntityHandle<>& entity, 
+							 CShaderHandle& shader,
+							 CShaderTechniqueHandle& tech )
+{
+	shared_ptr<CCopyEntity> pEntity = entity.Get();
+
+	if( !pEntity )
+		return;
+
+	// create mesh render method from shader and shader technique of the base entity
+	CSubsetRenderMethod render_method;
+
+	render_method.m_Shader = shader;
+	render_method.m_Technique = tech;
+
+	pEntity->m_pMeshRenderMethod
+		= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+
+	pEntity->m_pMeshRenderMethod->MeshRenderMethod().push_back( render_method );
+
+	if( pEntity->GetEntityFlags() & BETYPE_LIGHTING )
+	{
+		shared_ptr<CEntityShaderLightParamsLoader> pLightParamsLoader( new CEntityShaderLightParamsLoader() );
+		pLightParamsLoader->SetEntity( pEntity->Self() );
+		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLightParamsLoader );
+	}
+
+	shared_ptr<CD3DXMeshObjectBase> pMesh = pEntity->m_MeshHandle.GetMesh();
+	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
+	{
+		shared_ptr<CD3DXSMeshObject> pSkeletalMesh
+			= boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pMesh);
+
+		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
+		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
 	}
 }
 

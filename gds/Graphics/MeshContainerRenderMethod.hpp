@@ -121,6 +121,8 @@ public:
 
 	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
 
+	void RemoveShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
+
 	bool LoadRenderMethodResources();
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );

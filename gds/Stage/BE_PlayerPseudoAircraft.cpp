@@ -11,6 +11,7 @@
 #include <Stage/trace.hpp>
 #include <Stage/OverlapTestAABB.hpp>
 #include <Stage/BE_HomingMissile.hpp>
+#include <Stage/BaseEntity_Draw.hpp>
 
 #include "3DMath/MathMisc.hpp"
 #include "Support/memory_helpers.hpp"
@@ -319,6 +320,25 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 	{
 		LOG_PRINT_ERROR( " - no aircraft item" );
 		return;
+	}
+
+	// create mesh render method and set it to pCopyEnt
+	// - use the shader & shader technique stored in m_MeshProperty
+	if( 0 < m_pAircraft->MeshContainerRootNode().GetNumMeshContainers() )
+	{
+		shared_ptr<CMeshObjectContainer> pMeshContainer = m_pAircraft->MeshContainerRootNode().MeshContainer(0);
+//		if( pMeshContainer && pMeshContainer->m_ShaderTechnique.size_x() )
+		if( pMeshContainer && m_MeshProperty.m_ShaderTechnique.size_x() )
+		{
+			pCopyEnt->m_MeshHandle = pMeshContainer->m_MeshObjectHandle;
+			CreateMeshRenderMethod(
+				CEntityHandle<>( pCopyEnt->Self() ),
+//				pMeshContainer->m_ShaderHandle,
+				m_MeshProperty.m_ShaderHandle,
+//				pMeshContainer->m_ShaderTechnique(0,0)
+				m_MeshProperty.m_ShaderTechnique(0,0)
+				);
+		}
 	}
 
 	// create transparent parts of the model as separate entities
