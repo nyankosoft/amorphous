@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../../../Lib/LightWaveFramework"
+			OutputDirectory="../../../Lib/LightWaveFramework"
 			IntermediateDirectory="../../../X_Debug/LWFramework_VC8"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -80,8 +80,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../../../../Lib/LightWaveFramework"
-			IntermediateDirectory="../../../../X_Release/lwf_vc8e"
+			OutputDirectory="../../../Lib/LightWaveFramework"
+			IntermediateDirectory="../../../X_Release/lwf_vc8e"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"

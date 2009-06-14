@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="../../../Lib/LightWaveFramework"
 			IntermediateDirectory="../../../X_Debug/LWFrameworkEx_VC8"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/LW_FrameworkEx.lib"
+				OutputFile="$(OutDir)/lwfex_vc8_d.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -80,8 +80,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../../../../Lib/LightWaveFramework/lwfex_vc8e"
-			IntermediateDirectory="../../../../X_Release/lwf_vc8e"
+			OutputDirectory="../../../Lib/LightWaveFramework"
+			IntermediateDirectory="../../../X_Release/LWFrameworkEx_VC8"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
@@ -122,7 +122,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="winmm.lib"
-				OutputFile="$(OutDir)/LW_FrameworkEx.lib"
+				OutputFile="$(OutDir)/lwfex_vc8.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
