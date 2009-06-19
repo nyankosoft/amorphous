@@ -524,23 +524,26 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 		m_vecSupportedAmmo[i].LoadFromXMLNode( payloads[i] );
 	}
 
-	std::vector<CXMLNodeReader> components = reader.GetImmediateChildren( "Components" );
+	CXMLNodeReader components_reader = reader.GetChild( "Components" );
+	std::vector<CXMLNodeReader> components = components_reader.GetImmediateChildren();
+//	std::vector<CXMLNodeReader> components = reader.GetImmediateChildren( "Components" );
 	for( size_t i = 0; i<components.size(); i++ )
 	{
+		CXMLNodeReader& component_reader = components[i];
 		shared_ptr<CMeshBoneController_AircraftBase> pComponent;
-		if( reader.GetName() == "Flap" )
+		if( component_reader.GetName() == "Flap" )
 		{
 			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_Flap() );
 		}
-		else if( reader.GetName() == "VFlap" )
+		else if( component_reader.GetName() == "VFlap" )
 		{
 			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_VFlap() );
 		}
-		else if( reader.GetName() == "Rotor" )
+		else if( component_reader.GetName() == "Rotor" )
 		{
 			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_Rotor() );
 		}
-		else if( reader.GetName() == "GearUnit" )
+		else if( component_reader.GetName() == "GearUnit" )
 		{
 			// store to the gear unit array to open/close the gear box(es)
 			shared_ptr<CMeshBoneController_GearUnit> pGearUnit;
@@ -552,7 +555,7 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 
 		if( pComponent )
 		{
-			pComponent->LoadFromXMLNode( reader );
+			pComponent->LoadFromXMLNode( component_reader );
 
 			m_vecpMeshController.push_back( pComponent );
 		}

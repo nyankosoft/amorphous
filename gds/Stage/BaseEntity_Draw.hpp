@@ -58,6 +58,11 @@ public:
 	{
 		//PROFILE_FUNCTION();
 
+		// set identity matrix to the root bone since 
+		m_pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );//	< usu.?
+
+		m_pSkeletalMesh->SetLocalTransformsFromCache();
+
 		// set blend matrices to the shader
 		LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
 		D3DXMATRIX *paBlendMatrix = m_pSkeletalMesh->GetBlendMatrices();
