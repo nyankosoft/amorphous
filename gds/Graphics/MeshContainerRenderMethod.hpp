@@ -83,7 +83,7 @@ public:
 	std::vector<CSubsetRenderMethod> m_vecMeshRenderMethod;
 
 	/// Different shader & technique for each mesh subset
-	std::vector< std::map< std::string, CSubsetRenderMethod > > m_vecSubsetNameToRenderMethod;
+	std::vector< std::map<std::string,CSubsetRenderMethod> > m_vecSubsetNameToRenderMethod;
 
 	// shader params
 
@@ -119,11 +119,17 @@ public:
 
 	std::vector<CSubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
 
+	std::vector< std::map<std::string,CSubsetRenderMethod> >& SubsetRenderMethodMaps() { return m_vecSubsetNameToRenderMethod; }
+
 	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
 
 	void RemoveShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
 
+	void BreakMeshRenderMethodsToSubsetRenderMethods( const std::vector<std::string>& vecName );
+
 	bool LoadRenderMethodResources();
+
+	boost::shared_ptr<CMeshContainerRenderMethod> CreateCopy();
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 

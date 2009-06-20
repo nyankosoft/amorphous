@@ -591,6 +591,8 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 	{
 		fprintf( fp, "material[%d]\n", i );
 
+		fprintf( fp, "name: %s\n", m_vecMaterial[i].Name.c_str() );
+
 		const size_t num_textures = m_vecMaterial[i].vecTexture.size();
 		for( size_t tex=0; tex<num_textures; tex++ )
 			fprintf( fp, "texture[%d]: \"%s\"\n", tex, m_vecMaterial[i].vecTexture[tex].strFilename.c_str() );

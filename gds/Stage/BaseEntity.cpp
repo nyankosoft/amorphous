@@ -24,6 +24,7 @@
 #include "Physics/ActorDesc.hpp"
 
 using namespace std;
+using namespace boost;
 
 
 //===============================================================================
@@ -211,55 +212,141 @@ int CBaseEntity::GetEntityGroupID()
 }
 
 
+// How to make a copy if T class has member variables of type shared_ptr
+//template<class T>
+//inline boost::shared_ptr<T> create_copy( shared_ptr<T> p ) { return ; }
+
+
 void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 {
 	if( pCopyEnt->GetEntityTypeID() == CCopyEntityTypeID::ALPHA_ENTITY )
 		return;
 
+	CMeshObjectHandle& mesh = pCopyEnt->m_MeshHandle;
+	if( !mesh.IsLoaded() )
+		return;
+
 	// test with the plane model in the aircraft select menu
-	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+	CD3DXMeshObjectBase *pMesh = mesh.GetMesh().get();//m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 	if( !pMesh )
 	{
-		pMesh = pCopyEnt->m_MeshHandle.GetMesh().get();
-		if( !pMesh )
+//		pMesh = pCopyEnt->m_MeshHandle.GetMesh().get();
+//		if( !pMesh )
 			return;
 	}
 
 	// Got a valid mesh.
 	// Create alpha entities for mesh materials that have transparency
 
+	shared_ptr<CMeshContainerRenderMethod> pContainerRenderMethod
+		= pCopyEnt->m_pMeshRenderMethod;
+
+	if( !pContainerRenderMethod )
+		return;
+
+	const float alpha_tolerance = 0.001f;
+
 	const int num_materials = pMesh->GetNumMaterials();
+	vector<int> subsets_with_transparency; // indices of subsets (material)
 	for( int i=0; i<num_materials; i++ )
 	{
-		const size_t num_target_materials = m_MeshProperty.m_vecTargetMaterialIndex.size();
-		size_t j;
-		for( j=0; j<num_target_materials; j++ )
+		if( pMesh->Material(i).fMinVertexDiffuseAlpha < 1.0 - alpha_tolerance )
 		{
-			if( i == m_MeshProperty.m_vecTargetMaterialIndex[j] )
-				break;
+			// need to create an alpha entity for this subset (material)
+			subsets_with_transparency.push_back( i );
+		}
+	}
+
+	if( subsets_with_transparency.empty() )
+		return; // all the subsets are completely/almost opaque
+
+	bool src_mesh_uses_subset_render_methods = 0 < pContainerRenderMethod->SubsetRenderMethodMaps().size();
+
+	if( !src_mesh_uses_subset_render_methods && pContainerRenderMethod->MeshRenderMethod().empty() )
+		return;
+
+	// support only single LOD for now.
+
+	// if the src mesh container renderer use a single render method to render all of its render subsets
+	// break them into render methods for each subsets
+	if( !src_mesh_uses_subset_render_methods )
+	{
+		// create the list of material names
+		vector<string> vecName;
+		for( int i=0; i<num_materials; i++ )
+			vecName.push_back( pMesh->Material(i).Name );
+
+		pContainerRenderMethod->BreakMeshRenderMethodsToSubsetRenderMethods( vecName );
+		pContainerRenderMethod->MeshRenderMethod().resize( 0 );
+	}
+
+	const int num_alpha_subsets = (int)subsets_with_transparency.size();
+	for( int i=0; i<num_alpha_subsets; i++ )
+	{
+		int mat_index = subsets_with_transparency[i];
+		const string& mat_name = pMesh->Material(mat_index).Name;
+
+		shared_ptr<CMeshContainerRenderMethod> pContainerRenderMethodCopy
+			= pContainerRenderMethod->CreateCopy();
+
+		pContainerRenderMethodCopy->SubsetRenderMethodMaps().resize( 0 );
+
+		CBaseEntityHandle base_entity( "AlphaEntityBase" );
+		CCopyEntityDesc desc;
+		desc.TypeID            = CCopyEntityTypeID::ALPHA_ENTITY;
+		desc.pBaseEntityHandle = &base_entity;
+		desc.WorldPose         = pCopyEnt->GetWorldPose();
+		desc.pParent           = pCopyEnt;
+//		desc.NoCollision( true );
+
+		vector< map<string,CSubsetRenderMethod> >& mapDestSubsetRenderMethodMaps
+			= pContainerRenderMethodCopy->SubsetRenderMethodMaps();
+
+		mapDestSubsetRenderMethodMaps.resize(1); // single LOD
+
+		map<string,CSubsetRenderMethod>::iterator itr;
+		itr = pContainerRenderMethod->SubsetRenderMethodMaps()[0].find( mat_name );
+		if( itr != pContainerRenderMethod->SubsetRenderMethodMaps()[0].end() )
+		{
+			// copy the render method for the subset
+			mapDestSubsetRenderMethodMaps[0][mat_name] = itr->second;
+
+			// this subset is rendered by the alpha entity - remove the subset render method from the parent (pCopyEnt)
+			pContainerRenderMethod->SubsetRenderMethodMaps()[0].erase( itr );
 		}
 
-		if( j == num_target_materials )
+		CAlphaEntity *pEntity = dynamic_cast<CAlphaEntity *>(m_pStage->CreateEntity( desc ));
+		pEntity->m_MeshHandle = pCopyEnt->m_MeshHandle;
+		pEntity->m_pMeshRenderMethod = pContainerRenderMethodCopy;
+
+/*		if( pEntity )
 		{
-			// not marked as a target material
-			// -> includes alpha
+			pEntity->SetAlphaMaterialIndex( i );
+			if( i < m_MeshProperty.m_ShaderTechnique.size_x()
+			 && 0 < m_MeshProperty.m_ShaderTechnique.size_y() )
+			 pEntity->SetShaderTechnique( m_MeshProperty.m_ShaderTechnique( 0, i ) );
+		}*/
 
-			CBaseEntityHandle base_entity( "AlphaEntityBase" );
-			CCopyEntityDesc desc;
-			desc.TypeID            = CCopyEntityTypeID::ALPHA_ENTITY;
-			desc.pBaseEntityHandle = &base_entity;
-			desc.WorldPose         = pCopyEnt->GetWorldPose();
-			desc.pParent           = pCopyEnt;
-//			desc.NoCollision( true );
+		// replace shader params loaders
+		typedef std::pair<string,CSubsetRenderMethod> str_and_rendermethod;
+//		BOOST_FOREACH( str_and_rendermethod& p, mapDestSubsetRenderMethodMaps[0] )
+		for( itr = mapDestSubsetRenderMethodMaps[0].begin();
+			 itr != mapDestSubsetRenderMethodMaps[0].end();
+			 itr++ )
+		{
+			// copy light info from parent entity?
 
-			CAlphaEntity *pEntity = dynamic_cast<CAlphaEntity *>(m_pStage->CreateEntity( desc ));
-			if( pEntity )
-			{
-				pEntity->SetAlphaMaterialIndex( i );
-				if( i < m_MeshProperty.m_ShaderTechnique.size_x()
-				 && 0 < m_MeshProperty.m_ShaderTechnique.size_y() )
-				 pEntity->SetShaderTechnique( m_MeshProperty.m_ShaderTechnique( 0, i ) );
-			}
+/*			vector< shared_ptr<CShaderParamsLoader> >& vecpShaderParamsLoader
+				= p.second.vecpShaderParamsLoader;
+
+			shared_ptr<CEntityShaderLightParamsLoader> pLightParamsLoader
+				= dynamic_pointer_cast<CEntityShaderLightParamsLoader,CShaderParamsLoader>(vecpShaderParamsLoader[i]);
+
+			if( pLightParamsLoader )
+				pLightParamsLoader->SetEntity( pCopyEnt->Self() );
+
+			p.second->
+*/
 		}
 	}
 }

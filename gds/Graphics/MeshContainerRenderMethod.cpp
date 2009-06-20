@@ -285,6 +285,8 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 			if( !pShaderMgr )
 				continue;
 
+			pShaderMgr->SetWorldTransform( world_transform );
+
 			pShaderMgr->SetTechnique( (*itr).second.m_Technique );
 
 			for( size_t j=0; j<(*itr).second.m_vecpShaderParamsLoader.size(); j++ )
@@ -368,6 +370,25 @@ void CMeshContainerRenderMethod::RemoveShaderParamsLoaderToAllMeshRenderMethods(
 }
 
 
+void CMeshContainerRenderMethod::BreakMeshRenderMethodsToSubsetRenderMethods( const vector<string>& vecSubsetName )
+{
+	size_t num_lods = m_vecMeshRenderMethod.size();
+
+	if( num_lods == 0 )
+		return;
+
+	m_vecSubsetNameToRenderMethod.resize( num_lods );
+
+	for( size_t i=0; i<num_lods; i++ )
+//	BOOST_FOREACH( CSubsetRenderMethod& render_method, m_vecMeshRenderMethod )
+	{
+		BOOST_FOREACH( const string& subset_name, vecSubsetName )
+		{
+			m_vecSubsetNameToRenderMethod[i][subset_name] = m_vecMeshRenderMethod[i];
+		}
+	}
+}
+
 
 void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh_container,
 													 const Matrix34& world_transform )
@@ -394,6 +415,25 @@ bool CMeshContainerRenderMethod::LoadRenderMethodResources()
 	}
 
 	return true;
+}
+
+
+/*
+template<class T>
+inline shared_ptr<T> create()
+{
+	shared_ptr<T> p( new T() );
+	return p;
+}
+*/
+
+shared_ptr<CMeshContainerRenderMethod> CMeshContainerRenderMethod::CreateCopy()
+{
+	shared_ptr<CMeshContainerRenderMethod> pCopy( new CMeshContainerRenderMethod() );
+
+	*(pCopy.get()) = (*this);
+
+	return pCopy;
 }
 
 

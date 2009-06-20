@@ -198,6 +198,10 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 		m_pMeshMaterials[i].Ambient.b = 0.25f;
 		m_pMeshMaterials[i].Ambient.a = 1.00f;
 
+		// name
+
+		m_vecMaterial[i].Name = rvecSrcMaterial[i].Name;
+
 		// texture(s)
 
 		const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();

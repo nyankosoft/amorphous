@@ -64,17 +64,17 @@ void CAlphaEntity::Draw()
 	if( !pParent )
 		return;
 
-	pParent->pBaseEntity->DrawMeshMaterial(
+	// copy parent light info
+	m_vecLight = pParent->m_vecLight;
+
+	this->pBaseEntity->Draw3DModel( this );
+
+/*	pParent->pBaseEntity->DrawMeshMaterial(
 		pParent->GetWorldPose(),
 		m_AlphaMaterialIndex,
 		m_ShaderTechnique
 		);
-
-/*(	m_Parent->pBaseEntity->DrawMeshMaterial(
-		m_Parent->GetWorldPose(),
-		m_AlphaMaterialIndex,
-		0
-		);*/
+*/
 }
 
 
