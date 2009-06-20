@@ -33,10 +33,96 @@ Alpha entities and render methods
 */
 
 
+static D3DXVECTOR3 s_OrigViewTrans;
+static D3DXVECTOR3 s_OrigWorldPos;
+
+static void SetOffsetWorldTransform( CShaderManager& rShaderManager, Vector3& vWorldCameraPos )
+{
+	D3DXMATRIX matWorld, matView;
+	rShaderManager.GetWorldTransform( matWorld );
+	rShaderManager.GetViewTransform( matView );
+	s_OrigWorldPos = D3DXVECTOR3(matWorld._41,matWorld._42,matWorld._43);
+	s_OrigViewTrans = D3DXVECTOR3(matView._41,matView._42,matView._43);
+
+//	if( !pCamera )
+//		return;
+
+    matView._41 = matView._42 = matView._43 = 0;
+	
+	D3DXVECTOR3 cam_pos = vWorldCameraPos;//pCamera->GetPosition();
+	matWorld._41 = s_OrigWorldPos.x - cam_pos.x;
+	matWorld._42 = s_OrigWorldPos.y - cam_pos.y;
+	matWorld._43 = s_OrigWorldPos.z - cam_pos.z;
+
+//	MsgBoxFmt( "world pos offset: ( %f, %f, %f )", matWorld._41, matWorld._42, matWorld._43 );
+
+	rShaderManager.SetWorldTransform( matWorld );
+	rShaderManager.SetViewTransform( matView );
+}
+
+
+static void RestoreOffsetWorldTransform( CShaderManager& rShaderManager )
+{
+	D3DXMATRIX matWorld, matView;
+	rShaderManager.GetWorldTransform( matWorld );
+	rShaderManager.GetViewTransform( matView );
+
+	matWorld._41 = s_OrigWorldPos.x;
+	matWorld._42 = s_OrigWorldPos.y;
+	matWorld._43 = s_OrigWorldPos.z;
+
+	matView._41 = s_OrigViewTrans.x;
+	matView._42 = s_OrigViewTrans.y;
+	matView._43 = s_OrigViewTrans.z;
+
+	rShaderManager.SetWorldTransform( matWorld );
+	rShaderManager.SetViewTransform( matView );
+}
+
+
 class COffsetWorldTransformLoader : public CShaderParamsLoader
 {
+	Vector3 m_vCameraPosition;
+
+	bool m_bActive;
+
 public:
+
+	COffsetWorldTransformLoader()
+		:
+	m_bActive(true),
+	m_vCameraPosition( Vector3(0,0,0) )
+	{
+		m_bActive = false;
+	}
+
+	void SetActive( bool active ) { m_bActive = active; }
+
+	void SetCameraPosition( Vector3 vCameraPos ) { m_vCameraPosition = vCameraPos; }
+
+	void UpdateShaderParams( CShaderManager& rShaderMgr );
+	void ResetShaderParams( CShaderManager& rShaderMgr );
 };
+
+
+void COffsetWorldTransformLoader::UpdateShaderParams( CShaderManager& rShaderMgr )
+{
+	if( !m_bActive )
+		return;
+
+	SetOffsetWorldTransform( rShaderMgr, m_vCameraPosition );
+}
+
+
+void COffsetWorldTransformLoader::ResetShaderParams( CShaderManager& rShaderMgr )
+{
+	if( !m_bActive )
+		return;
+
+	RestoreOffsetWorldTransform( rShaderMgr );
+}
+
+static shared_ptr<COffsetWorldTransformLoader> sg_pWorldTransLoader( new COffsetWorldTransformLoader() );
 
 
 void InitSkeletalMesh(  )
@@ -101,6 +187,22 @@ void CBaseEntity::RenderEntity( CCopyEntity& entity )
 		}
 	}
 
+	const float offset_world_transform_threshold = 150000.0f;
+	if( square(offset_world_transform_threshold) < Vec3LengthSq(entity.GetWorldPose().vPosition) )
+	{
+		CCamera* pCam = m_pStage->GetCurrentCamera();
+		if( pCam )
+		{
+			sg_pWorldTransLoader->SetActive( true );
+			sg_pWorldTransLoader->SetCameraPosition( pCam->GetPosition() );
+		}
+		else
+			sg_pWorldTransLoader->SetActive( false );
+
+	}
+	else
+		sg_pWorldTransLoader->SetActive( false );
+
 	if( entity.m_pMeshRenderMethod )
 	{
 		entity.m_pMeshRenderMethod->RenderMesh( entity.m_MeshHandle, entity.GetWorldPose() );
@@ -111,53 +213,6 @@ void CBaseEntity::RenderEntity( CCopyEntity& entity )
 	}
 
 //	entity.m_pMeshRenderMethod->RenderMeshContainerNode( *(entity.m_pMeshNode.get()), m_vecpShaderParamsWriterBuffer );
-}
-
-
-static D3DXVECTOR3 s_OrigViewTrans;
-static D3DXVECTOR3 s_OrigWorldPos;
-
-static void SetOffsetWorldTransform( CShaderManager& rShaderManager, CCamera *pCamera )
-{
-	D3DXMATRIX matWorld, matView;
-	rShaderManager.GetWorldTransform( matWorld );
-	rShaderManager.GetViewTransform( matView );
-	s_OrigWorldPos = D3DXVECTOR3(matWorld._41,matWorld._42,matWorld._43);
-	s_OrigViewTrans = D3DXVECTOR3(matView._41,matView._42,matView._43);
-
-	if( !pCamera )
-		return;
-
-    matView._41 = matView._42 = matView._43 = 0;
-	
-	D3DXVECTOR3 cam_pos = pCamera->GetPosition();
-	matWorld._41 = s_OrigWorldPos.x - cam_pos.x;
-	matWorld._42 = s_OrigWorldPos.y - cam_pos.y;
-	matWorld._43 = s_OrigWorldPos.z - cam_pos.z;
-
-//	MsgBoxFmt( "world pos offset: ( %f, %f, %f )", matWorld._41, matWorld._42, matWorld._43 );
-
-	rShaderManager.SetWorldTransform( matWorld );
-	rShaderManager.SetViewTransform( matView );
-}
-
-
-static void RestoreOffsetWorldTransform( CShaderManager& rShaderManager )
-{
-	D3DXMATRIX matWorld, matView;
-	rShaderManager.GetWorldTransform( matWorld );
-	rShaderManager.GetViewTransform( matView );
-
-	matWorld._41 = s_OrigWorldPos.x;
-	matWorld._42 = s_OrigWorldPos.y;
-	matWorld._43 = s_OrigWorldPos.z;
-
-	matView._41 = s_OrigViewTrans.x;
-	matView._42 = s_OrigViewTrans.y;
-	matView._43 = s_OrigViewTrans.z;
-
-	rShaderManager.SetWorldTransform( matWorld );
-	rShaderManager.SetViewTransform( matView );
 }
 
 
@@ -242,6 +297,9 @@ void CBaseEntity::Init3DModel()
 //		m_MeshProperty.m_vecpShaderParamsLoader.push_back( m_MeshProperty.m_pShaderLightParamsLoader );
 	}
 
+	// offset world transform loader - shared by all the entities
+	render_method.m_vecpShaderParamsLoader.push_back( sg_pWorldTransLoader );
+
 	// set the mesh render method for the first LOD
 	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().push_back( render_method );
 
@@ -254,18 +312,18 @@ void CBaseEntity::Init3DModel()
 //		m_MeshProperty.m_pBlendMatricesLoader = ;
 	}
 
-/*
+
 	m_MeshProperty.m_pShadowCasterRenderMethod           = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
 	m_MeshProperty.m_pShadowReceiverRenderMethod         = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
 	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod   = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
 	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-
+/*
 	// blend matrices loader for shadow maps of skeletal meshes
 	m_MeshProperty.m_pBlendMatricesLoader
 		= shared_ptr<CBlendMatricesLoader>( new CBlendMatricesLoader() );
 	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
 	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
-	*/
+*/
 }
 
 
@@ -319,7 +377,7 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 		pShaderManager->SetWorldTransform( matWorld );
 
 		if( use_offset_world_transform )
-            SetOffsetWorldTransform( pShaderManager, m_pStage->GetCurrentCamera() );
+            SetOffsetWorldTransform( pShaderManager, m_pStage->GetCurrentCamera()->GetPosition() );
 
 		if( bSingleTechnique )
 		{
@@ -439,17 +497,20 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 
 	// Do these settings in advance
 	// - Notify if the shadow map manager is changed.
-/*	if( pMeshRenderMethod->MeshRenderMethod().size() )
+	if( true /*render_all_subsets*/ )
 	{
+		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
 		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
 		mesh_render_method.m_Technique.SetTechniqueName( "ShadowMap" );
 //		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
-		pMeshRenderMethod->MeshRenderMethod()[0] = mesh_render_method;
 //		pMeshRenderMethod.SetMeshRenderMethod( mesh_render_method, 0 );
+		pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
 	}
-*/
-	pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
+	else
+	{
+		// how to render the mesh if each subset is rendered by different render methods
+	}
 }
 
 
@@ -473,13 +534,19 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	else
 		pMeshRenderMethod = this->m_MeshProperty.m_pShadowReceiverRenderMethod;
 
-	pMeshRenderMethod->MeshRenderMethod().resize( 1 );
-	CSubsetRenderMethod mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
-	mesh_render_method.m_Shader    = pShadowMgr->GetShader();
-	mesh_render_method.m_Technique.SetTechniqueName( "SceneShadowMap" );
-//	render_method.SetMeshRenderMethod( mesh_render_method, 0 );
-
-	pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
+	if( true /*render_all_subsets*/ )
+	{
+		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
+		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
+		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
+		mesh_render_method.m_Technique.SetTechniqueName( "SceneShadowMap" );
+//		render_method.SetMeshRenderMethod( mesh_render_method, 0 );
+		pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
+	}
+	else
+	{
+		// how to render the mesh if each subset is rendered by different render methods
+	}
 }
 
 
@@ -564,6 +631,8 @@ void CreateMeshRenderMethod( CEntityHandle<>& entity,
 		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
 		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
 	}
+
+	pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( sg_pWorldTransLoader );
 }
 
 
