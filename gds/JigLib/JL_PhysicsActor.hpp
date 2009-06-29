@@ -8,7 +8,7 @@
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
 
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 
 #include "JL_PhysicsActorDesc.hpp"
 #include "JL_ShapeBase.hpp"

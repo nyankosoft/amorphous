@@ -6,11 +6,15 @@
 #include "Sphere.hpp"
 
 
+/// Axis-Aligned Bounding Box (3D)
 class AABB3
 {
 public:
+
 	Vector3 vMax;
 	Vector3 vMin;
+
+public:
 
 	inline AABB3() { memset(this, 0, sizeof(AABB3)); }
 	inline AABB3( const Vector3& min, const Vector3& max ) : vMin(min), vMax(max) {}
@@ -38,7 +42,7 @@ public:
 
 	inline float GetRadiusForPlane( const SPlane& rPlane ) const;
 
-	inline void TransformCoord(AABB3& raabb, Vector3& rvOrigin);
+	inline void TransformCoord( const AABB3& raabb, const Vector3& rvOrigin );
 
 	/// returns a sphere that contains aabb
 	Sphere CreateBoundingSphere() const;
@@ -123,7 +127,7 @@ inline void AABB3::Nullify()
 }
 
 
-inline void AABB3::TransformCoord( AABB3& raabb, Vector3& rvOrigin )
+inline void AABB3::TransformCoord( const AABB3& raabb, const Vector3& rvOrigin )
 {
 	vMax = rvOrigin + raabb.vMax;
 	vMin = rvOrigin + raabb.vMin;

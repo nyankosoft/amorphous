@@ -11,7 +11,7 @@ enum {BV_FRONT, BV_BACK, BV_CROSS};
 
 #include "3DMath/Plane.hpp"
 
-#include "3DMath/aabb3.hpp"	// axis aligned bounding box
+#include "3DMath/AABB3.hpp"	// axis aligned bounding box
 
 #include "3DMath/Sphere.hpp"	// bounding sphere
 

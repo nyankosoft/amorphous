@@ -4,8 +4,8 @@
 
 #include "StringAux.hpp"
 
-#include "3DMath/aabb3.hpp"
-#include "3DMath/aabb2.hpp"
+#include "3DMath/AABB3.hpp"
+#include "3DMath/AABB2.hpp"
 
 
 inline std::string to_string( const Vector3& v, int precision = 3, int num_zfills = 0 )

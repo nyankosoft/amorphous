@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 #include "3DMath/Sphere.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/Direct3D9.hpp"

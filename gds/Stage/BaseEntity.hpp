@@ -7,7 +7,7 @@
 #include "Physics/fwd.hpp"
 
 #include "EntityGroupHandle.hpp"
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/MeshObjectHandle.hpp"

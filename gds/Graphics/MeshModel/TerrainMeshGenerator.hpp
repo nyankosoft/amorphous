@@ -8,7 +8,7 @@
 
 #include "../fwd.hpp"
 #include "../IndexedPolygon.hpp"
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 #include "3DMeshModelArchive.hpp"
 using namespace MeshModel;
 

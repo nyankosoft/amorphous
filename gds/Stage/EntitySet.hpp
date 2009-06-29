@@ -7,7 +7,7 @@
 #include "fwd.hpp"
 #include "Physics/fwd.hpp"
 
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 #include "CopyEntity.hpp"
 #include "EntityNode.hpp"
 #include "EntityGroupHandle.hpp"

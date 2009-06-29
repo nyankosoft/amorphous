@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"

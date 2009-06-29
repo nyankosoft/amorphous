@@ -6,10 +6,10 @@
 #include "3DMath/Matrix33.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 
 #include "3DMath/Vector2.hpp"
-#include "3DMath/aabb2.hpp"
+#include "3DMath/AABB2.hpp"
 
 #include "Archive.hpp"
 

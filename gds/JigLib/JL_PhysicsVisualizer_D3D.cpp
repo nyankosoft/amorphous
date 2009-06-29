@@ -3,7 +3,7 @@
 #include "JL_PhysicsManager.hpp"
 
 #include "3DMath/Vector3.hpp"
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Shader/Shader.hpp"

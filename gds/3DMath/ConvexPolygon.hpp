@@ -4,7 +4,7 @@
 
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Plane.hpp"
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 
 #include <stdio.h>
 

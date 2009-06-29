@@ -5,7 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "3DMath/ray.hpp"
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 #include "3DMath/Plane.hpp"
 #include "3DMath/Triangle.hpp"
 #include "Graphics/General3DVertex.hpp"

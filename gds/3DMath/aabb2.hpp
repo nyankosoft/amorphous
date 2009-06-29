@@ -5,11 +5,15 @@
 #include "Vector2.hpp"
 
 
+/// Axis-Aligned Bounding Box (2D)
 class AABB2
 {
 public:
+
 	Vector2 vMax;
 	Vector2 vMin;
+
+public:
 
 	AABB2() { memset(this, 0, sizeof(AABB2)); }
 

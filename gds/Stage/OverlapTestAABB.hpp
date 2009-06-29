@@ -1,7 +1,7 @@
 #ifndef  __OverlapTestAABB__H__
 #define  __OverlapTestAABB__H__
 
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 #include <vector>
 
 class CCopyEntity;

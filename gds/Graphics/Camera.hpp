@@ -5,7 +5,7 @@
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Plane.hpp"
 #include "3DMath/Sphere.hpp"
-#include "3DMath/aabb3.hpp"
+#include "3DMath/AABB3.hpp"
 
 #include <math.h>
 
