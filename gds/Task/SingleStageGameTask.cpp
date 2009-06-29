@@ -47,8 +47,9 @@ int CSingleStageGameTask::FrameMove( float dt )
 
 void CSingleStageGameTask::Render()
 {
-	// render stage select dialog
-	m_pStage->Render();
+	// render stage
+	if( m_pStage )
+		m_pStage->Render();
 
 	// render GUI components over the stage
 	CGUIGameTask::Render();

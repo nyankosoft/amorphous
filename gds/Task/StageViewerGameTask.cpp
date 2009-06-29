@@ -10,6 +10,14 @@ using namespace std;
 using namespace boost;
 
 
+class CGameTaskDesc
+{
+public:
+	std::string ScriptName;
+	int InputHandlerIndex;
+};
+
+
 CStageViewerGameTask::CStageViewerGameTask()
 {
 	const int input_handler_index = 1;
@@ -36,8 +44,9 @@ int CStageViewerGameTask::FrameMove( float dt )
 
 void CStageViewerGameTask::Render()
 {
-	// render stage select dialog
-	m_pStage->Render( m_Camera );
+	// render stage
+	if( m_pStage )
+		m_pStage->Render( m_Camera );
 
 	// render GUI components over the stage
 	CGUIGameTask::Render();

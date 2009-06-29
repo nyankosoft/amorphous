@@ -57,7 +57,7 @@ int CGameTask_GlobalStageLoader::FrameMove( float dt )
 	}
 	else
 	{
-		PrintLog( "CGameTask_GlobalStageLoader::CGameTask_Stage() - no global stage has been specified" );
+		LOG_PRINT( "No global stage has been specified" );
 		return CGameTask::ID_PREVTASK;
 	}
 

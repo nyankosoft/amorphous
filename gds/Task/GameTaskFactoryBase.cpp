@@ -5,6 +5,9 @@
 #include "GameTask_MainMenu.hpp"
 #include "GameTask_GlobalStageLoader.hpp"
 #include "GameTask_AsyncStageLoader.hpp"
+#include "GUIGameTask.hpp"
+#include "SingleStageGameTask.hpp"
+#include "StageViewerGameTask.hpp"
 
 
 CGameTaskFactoryBase::~CGameTaskFactoryBase()
@@ -34,8 +37,14 @@ CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
 	case CGameTask::ID_ASYNCSTAGELOADER:
 		return new CGameTask_AsyncStageLoader;
 
-	case CGameTask::ID_TITLE:
-		return NULL;
+	case CGameTask::ID_GUI_TASK:
+		return new CGUIGameTask;
+
+	case CGameTask::ID_SINGLE_STAGE_TASK:
+		return new CSingleStageGameTask;
+
+	case CGameTask::ID_STAGE_VIEWER_TASK:
+		return new CStageViewerGameTask;
 
 	default:
 //		LOG_PRINT_ERROR( "An invalid task id:" + to_string(iTaskID) );

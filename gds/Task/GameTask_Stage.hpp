@@ -35,9 +35,6 @@ public:
 	virtual int FrameMove( float dt );
 	virtual void Render();
 
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-
 	static void SetStageFadeInTimeMS( unsigned int time ) { ms_FadeInTime = time; }
 
 	enum State

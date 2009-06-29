@@ -213,13 +213,3 @@ void CGameTask_Stage::Render()
 	ProfileEnd( "Main Loop" );
 //	ProfileDumpOutputToBuffer();
 }
-
-
-void CGameTask_Stage::ReleaseGraphicsResources()
-{
-}
-
-
-void CGameTask_Stage::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-}
