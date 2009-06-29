@@ -13,6 +13,8 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/CubeMapManager.hpp"
 
+#include <assert.h>
+
 
 class CShadowMapSceneRenderer
 {
@@ -137,9 +139,11 @@ public:
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
-	virtual void UpdateLight( CDirectionalLight& light ) {}
-	virtual void UpdateLight( CPointLight& light ) {}
+	virtual void UpdateDirectionalLight( CDirectionalLight& light ) {}
+	virtual void UpdatePointLight( CPointLight& light ) {}
 //	virtual void UpdateLight( CSpotLight& light ) {}
+
+	virtual LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return NULL; }
 
 	/// For debugging.
 	/// Strings that end with '/' are treated as directory paths
@@ -172,6 +176,8 @@ protected:
 
 	void BeginSceneShadowReceivers();
 
+	void SetWorldToLightSpaceTransformMatrix();
+
 public:
 
 	CFlatShadowMap()
@@ -194,6 +200,8 @@ public:
 
 	std::string CreateTextureFilename();
 
+	LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return m_pShadowMap; }
+
 	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath);
 };
 
@@ -204,14 +212,11 @@ class CDirectionalLightShadowMap : public CFlatShadowMap
 
 public:
 
-	CDirectionalLightShadowMap()
-	{
-		m_LightCamera.SetNearClip( 0.1f );
-		m_LightCamera.SetFarClip( 100.0f );
-		m_LightCamera.SetFOV( (float)PI / 4.0f );
-	}
+	static float ms_fCameraShiftDistance;
 
-	void UpdateLight( CDirectionalLight& light );
+	CDirectionalLightShadowMap();
+
+	void UpdateDirectionalLight( CDirectionalLight& light );
 };
 
 
@@ -263,9 +268,15 @@ public:
 
 	void EndSceneShadowMap();
 
-	void UpdateLight( CPointLight& light );
+	void UpdatePointLight( CPointLight& light );
 
 	std::string CreateTextureFilename();
+
+	LPDIRECT3DTEXTURE9 GetShadowMapTexture()
+	{
+		assert( !"How to set the cube shadowmap texture?" );
+		return NULL;
+	}
 
 	void SaveShadowMapTextureToFileInternal( const std::string& filepath );
 };

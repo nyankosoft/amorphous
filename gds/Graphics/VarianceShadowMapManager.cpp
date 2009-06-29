@@ -315,12 +315,12 @@ void CVarianceShadowMapManager::UpdateLightPositionAndDirection()
 void CVarianceShadowMapManager::BeginSceneDepthMap()
 {
 	CShadowMapManager::BeginSceneDepthMap();
-
+/*
 	CShaderParamFloatArray farclip = CShaderParamFloatArray( "g_fFarClip" );
 	farclip.Parameter().resize( 1 );
 	farclip.Parameter()[0] = m_SceneCamera.GetFarClip();
 
-	m_Shader.GetShaderManager()->SetParam( farclip );
+	m_Shader.GetShaderManager()->SetParam( farclip );*/
 }
 
 

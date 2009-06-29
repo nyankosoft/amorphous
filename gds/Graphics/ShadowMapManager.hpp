@@ -46,7 +46,7 @@ protected:
 
 	IDtoShadowMap m_mapIDtoShadowMap;
 
-	CShadowMapSceneRenderer *m_pSceneRenderer;
+	boost::shared_ptr<CShadowMapSceneRenderer> m_pSceneRenderer;
 
 	int m_IDCounter;
 
@@ -102,9 +102,11 @@ public:
 	/// returns true on success
 	virtual bool Init();
 
-	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer );
+	void SetSceneRenderer( boost::shared_ptr<CShadowMapSceneRenderer> pSceneRenderer );
 
-	int AddShadowForLight( CLight& light );
+	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadwoMap( U32 id, CLight& light );
+
+	Result::Name UpdateLightForShadow( U32 id, CLight& light );
 
 	void RemoveShadowForLight( int shadowmap_id );
 
@@ -147,6 +149,8 @@ public:
 	/// sets the render target texture for the scene
 	void BeginScene();
 	void EndScene();
+
+	bool HasShadowMap() const { return !(m_mapIDtoShadowMap.empty()); }
 
 	void RenderSceneWithShadow();
 

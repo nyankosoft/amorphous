@@ -12,6 +12,9 @@ using namespace std;
 using namespace boost;
 
 
+float g_fShadowMapFarClip = 200.0f;
+
+
 CShadowMap::~CShadowMap()
 {
 	ReleaseTextures();
@@ -59,13 +62,16 @@ bool CFlatShadowMap::CreateShadowMapTextures()
 									1,
 									D3DUSAGE_RENDERTARGET,
 									format, // Color argument of Clear() does not work if D3DFMT_R32F is used?
-									// D3DFMT_A8R8G8B8, // use this to render the shadowmap texture for debugging
+									//D3DFMT_A8R8G8B8, // use this to render the shadowmap texture for debugging
 									D3DPOOL_DEFAULT,
 									&m_pShadowMap,
 									NULL );
 
 	if( FAILED(hr) )
+	{
+		LOG_PRINT_ERROR( " Failed to create shadowmap texture" );
 		return false;
+	}
 
 	// Create the depth-stencil buffer to be used with the shadow map
 	// We do this to ensure that the depth-stencil buffer is large
@@ -93,7 +99,10 @@ bool CFlatShadowMap::CreateShadowMapTextures()
 												NULL );
 
 	if( FAILED(hr) )
+	{
+		LOG_PRINT_ERROR( " Failed to create depth buffer for shadowmap texture" );
 		return false;
+	}
 
 	// Initialize the shadow projection matrix
 //	D3DXMatrixPerspectiveFovLH( &m_mShadowProj, g_fLightFov, 1, 0.01f, 100.0f);
@@ -110,10 +119,9 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
 	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
 
-	bool variance_shadow_mapping = false;
+	bool variance_shadow_mapping = true;
 	if( variance_shadow_mapping )
 	{
-
 		hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vWorldLightPos, 3 );
 		hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vWorldLightDir, 3 );
 	}
@@ -137,6 +145,30 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 }
 
 
+void CFlatShadowMap::SetWorldToLightSpaceTransformMatrix()
+{
+	float fOrigCamFarClip = m_LightCamera.GetFarClip();
+	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
+
+	HRESULT hr = S_OK;
+	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
+	D3DXMATRIX matWorldToLightProj, matView, matProj;
+	m_LightCamera.GetCameraMatrix( matView );
+	m_LightCamera.GetProjectionMatrix( matProj );
+	D3DXMatrixMultiply( &matWorldToLightProj, &matView, &matProj );
+	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
+
+	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
+	D3DVIEWPORT9 vp;
+	DIRECT3D9.GetDevice()->GetViewport( &vp );
+
+
+	m_LightCamera.SetFarClip( fOrigCamFarClip );
+}
+
+
+static float sg_fOrigFarClip = 0;
+
 void CFlatShadowMap::BeginSceneShadowMap()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -153,14 +185,12 @@ void CFlatShadowMap::BeginSceneShadowMap()
 
 	hr = pd3dDev->SetDepthStencilSurface( m_pShadowMapDepthBuffer );
 
+	sg_fOrigFarClip = m_LightCamera.GetFarClip();
+	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
+
 	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
 
-	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-	D3DXMATRIX matWorldToLightProj, matView, matProj;
-	m_LightCamera.GetCameraMatrix( matView );
-	m_LightCamera.GetProjectionMatrix( matProj );
-	D3DXMatrixMultiply( &matWorldToLightProj, &matView, &matProj );
-	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
+//	SetWorldToLightSpaceTransformMatrix();
 
 	// update light position and direction, etc.
 	UpdateLightPositionAndDirection();
@@ -176,6 +206,10 @@ void CFlatShadowMap::EndSceneShadowMap()
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 //	pd3dDev->EndScene();
+
+	ShaderManagerHub.PopViewAndProjectionMatrices();
+
+	m_LightCamera.SetFarClip( sg_fOrigFarClip );
 }
 
 
@@ -187,7 +221,7 @@ void CShadowMap::RenderSceneToShadowMap( CCamera& camera )
 	// set shadow map texture, etc.
 	BeginSceneShadowMap();
 
-	m_pSceneRenderer->RenderSceneToShadowMap( camera );
+	m_pSceneRenderer->RenderSceneToShadowMap( m_LightCamera );
 
 	EndSceneShadowMap();
 }
@@ -218,6 +252,10 @@ void CFlatShadowMap::BeginSceneShadowReceivers()
 	// set the shadow map texture to determine shadowed pixels
 //	m_ShaderManager.SetTexture( 3, m_pShadowMap );
 	m_Shader.GetShaderManager()->GetEffect()->SetTexture( "g_txShadow", m_pShadowMap );
+
+	UpdateLightPositionAndDirection();
+
+	SetWorldToLightSpaceTransformMatrix();
 }
 
 
@@ -256,9 +294,20 @@ void CFlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& file
 // CDirectionalLightShadowMap
 //============================================================================
 
-void CDirectionalLightShadowMap::UpdateLight( CDirectionalLight& light )
+float CDirectionalLightShadowMap::ms_fCameraShiftDistance = 100.0f;
+
+CDirectionalLightShadowMap::CDirectionalLightShadowMap()
 {
-	const float light_cam_shift = 50.0f;
+	m_LightCamera.SetNearClip( 0.1f );
+	m_LightCamera.SetFarClip( 100.0f );
+	m_LightCamera.SetFOV( (float)PI / 4.0f );
+	m_LightCamera.SetAspectRatio( 1.0f );
+}
+
+
+void CDirectionalLightShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
+{
+	const float light_cam_shift = ms_fCameraShiftDistance;
 
 	Vector3 vLightCameraPos = m_pSceneCamera->GetPosition() - light.vDirection * light_cam_shift;
 
@@ -322,7 +371,7 @@ void CPointLightShadowMap::EndSceneShadowMap()
 }
 
 
-void CPointLightShadowMap::UpdateLight( CPointLight& light )
+void CPointLightShadowMap::UpdatePointLight( CPointLight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
 }

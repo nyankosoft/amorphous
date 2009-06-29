@@ -5,6 +5,7 @@
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/2DPrimitive/2DTexRect.hpp"
 #include "Graphics/LightStructs.hpp"
+#include "Graphics/HemisphericLight.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
@@ -28,8 +29,10 @@ public:
 	m_pShadowMap(pShadowMap)
 	{}
 
-	void VisitPointLight( CPointLight& point_light ) { m_pShadowMap->UpdateLight( point_light ); }
-	void VisitDirectionalLight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateLight( directional_light ); }
+	void VisitPointLight( CPointLight& point_light ) { m_pShadowMap->UpdatePointLight( point_light ); }
+	void VisitDirectionalLight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateDirectionalLight( directional_light ); }
+	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { m_pShadowMap->UpdatePointLight( hs_point_light ); }
+	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { m_pShadowMap->UpdateDirectionalLight( hs_directional_light ); }
 };
 
 
@@ -41,8 +44,14 @@ public:
 	{
 		switch( light.GetLightType() )
 		{
-		case CLight::DIRECTIONAL: return shared_ptr<CShadowMap>( new CDirectionalLightShadowMap() );
-		case CLight::POINT:       return shared_ptr<CShadowMap>( new CPointLightShadowMap() );
+		case CLight::DIRECTIONAL:
+		case CLight::HEMISPHERIC_DIRECTIONAL:
+			return shared_ptr<CShadowMap>( new CDirectionalLightShadowMap() );
+
+		case CLight::POINT:
+		case CLight::HEMISPHERIC_POINT:
+			return shared_ptr<CShadowMap>( new CPointLightShadowMap() );
+
 //		case CLight::SPOT:        return shared_ptr<CShadowMap>( new CSpotLightShadowMap() );
 		default:
 			LOG_PRINT_ERROR( " An unsupported type of light was specified. light type id: " + to_string(light.GetLightType()) );
@@ -145,7 +154,7 @@ void CShadowMapManager::ReleaseTextures()
 //	SAFE_RELEASE( m_pDSShadowedView );
 }
 
-void CShadowMapManager::SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer )
+void CShadowMapManager::SetSceneRenderer( shared_ptr<CShadowMapSceneRenderer> pSceneRenderer )
 {
 	m_pSceneRenderer = pSceneRenderer;
 
@@ -154,7 +163,7 @@ void CShadowMapManager::SetSceneRenderer( CShadowMapSceneRenderer *pSceneRendere
 		itr != m_mapIDtoShadowMap.end();
 		itr++ )
 	{
-		itr->second->SetSceneRenderer( m_pSceneRenderer );
+		itr->second->SetSceneRenderer( m_pSceneRenderer.get() );
 	}
 }
 
@@ -162,35 +171,57 @@ void CShadowMapManager::SetSceneRenderer( CShadowMapSceneRenderer *pSceneRendere
 /// returns -1 on failure
 /// \param [in] light must be either directional or point light
 /// TODO: support spotlight
-int CShadowMapManager::AddShadowForLight( CLight& light )
+std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadwoMap( U32 id, CLight& light )
 {
 	if( light.GetLightType() != CLight::DIRECTIONAL
-	 && light.GetLightType() != CLight::POINT )
+	 && light.GetLightType() != CLight::HEMISPHERIC_DIRECTIONAL
+	 && light.GetLightType() != CLight::POINT
+	 && light.GetLightType() != CLight::HEMISPHERIC_POINT )
 	{
-		return -1;
+		return m_mapIDtoShadowMap.end();
 	}
 
 	CShadowMapFactory factory;
 
 	shared_ptr<CShadowMap> pShadowMap = factory.CreateShadowMap( light );
+	if( !pShadowMap )
+		return m_mapIDtoShadowMap.end();
 
-	int shadowmap_id = m_IDCounter++;
-
-	m_mapIDtoShadowMap[shadowmap_id] = pShadowMap;
+	m_mapIDtoShadowMap[id] = pShadowMap;
 
 	pShadowMap->SetShader( m_Shader );
 
 	bool init = pShadowMap->CreateShadowMapTextures();
+	if( !init )
+		return m_mapIDtoShadowMap.end();
 
-	pShadowMap->SetSceneRenderer( m_pSceneRenderer );
+	pShadowMap->SetSceneRenderer( m_pSceneRenderer.get() );
 
 	pShadowMap->SetSceneCamera( &m_SceneCamera );
 
+	return m_mapIDtoShadowMap.find( id );
+}
+
+
+Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, CLight& light )
+{
+	map< int, shared_ptr<CShadowMap> >::iterator itrShadowMap
+		= m_mapIDtoShadowMap.find((int)id);
+
+	if( itrShadowMap == m_mapIDtoShadowMap.end() )
+	{
+		// create a new shadow map
+		itrShadowMap = CreateShadwoMap( id, light );
+
+		if( itrShadowMap == m_mapIDtoShadowMap.end() )
+			return Result::UNKNOWN_ERROR;
+	}
+
 	// update light properties
-	CShadowMapLightVisitor v( pShadowMap.get() );
+	CShadowMapLightVisitor v( itrShadowMap->second.get() );
 	light.Accept( v );
 
-	return shadowmap_id;
+	return Result::SUCCESS;
 }
 
 
@@ -538,6 +569,15 @@ void CShadowMapManager::BeginSceneDepthMap()
 	// set the shadow map texture to determine shadowed pixels
 //	m_ShaderManager.SetTexture( 3, m_pShadowMap );
 //	pEffect->SetTexture( "g_txShadow", m_pShadowMap );
+
+
+	// done in BeginSceneShadowReceivers() of shadowmap classes
+/*	HRESULT hr = S_OK;
+	if( 0 < m_mapIDtoShadowMap.size() )
+	{
+		hr = pEffect->SetTexture( "g_txShadow", (m_mapIDtoShadowMap.begin())->second->GetShadowMapTexture() );
+	}*/
+
 
 	pEffect->SetInt( "g_ShadowMapSize", m_ShadowMapSize );
 
