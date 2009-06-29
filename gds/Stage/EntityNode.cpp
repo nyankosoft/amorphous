@@ -502,9 +502,15 @@ void CEntityNode::GetOverlappingEntities( COverlapTestAABB& overlap_test, CEntit
 
 		// found an overlap of 2 AABBs
 
+		if( 0 <= overlap_test.TargetEntityTypeID
+		 && overlap_test.TargetEntityTypeID != pEntity->GetEntityTypeID() )
+		{
+			continue;
+		}
+
 		// check groups
-//		if( CheckCollisionGroup( pEntity->GroupIndex, overlap_test.vecTargetGroup ) )
-		if( CheckCollisionGroup( overlap_test.GroupIndex, pEntity->GroupIndex ) )
+		if( overlap_test.GroupIndex == -1 /// filter to catch everything (-1)
+		 || CheckCollisionGroup( overlap_test.GroupIndex, pEntity->GroupIndex ) ) /// or collision is enabled between the groups
 			overlap_test.pvecBuffer->push_back( pEntity );
 
 	}

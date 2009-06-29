@@ -11,7 +11,6 @@
 #include "EntityMotionPathRequest.hpp"
 
 #include "3DMath/MathMisc.hpp"
-#include "Graphics/2DPrimitive/2DTexRect.hpp"
 #include "Input/InputHub.hpp"
 #include "Input/InputHandler_Cutscene.hpp"
 #include "Support/Log/DefaultLog.hpp"

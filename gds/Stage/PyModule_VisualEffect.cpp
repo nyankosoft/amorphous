@@ -4,6 +4,7 @@
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/ShadowMaps.hpp"
 
 #include "BE_DirectionalLight.hpp"
 #include "BaseEntity_Draw.hpp"
@@ -229,6 +230,32 @@ PyObject* DisableShadowMap( PyObject* self, PyObject* args )
 }
 
 
+PyObject* SetLightForShadow( PyObject* self, PyObject* args )
+{
+	const char *target_light_name = NULL;
+	int result = PyArg_ParseTuple( args, "|s", &target_light_name );
+
+	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
+	if( pRenderMgr )
+		pRenderMgr->SetLightForShadow( target_light_name );
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* SetShadowMapCameraShiftDistance( PyObject* self, PyObject* args )
+{
+	float shift;
+	int result = PyArg_ParseTuple( args, "f", &shift );
+
+	CDirectionalLightShadowMap::ms_fCameraShiftDistance = shift;
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
 PyObject* SetOverrideShadowMapLight( PyObject* self, PyObject* args )
 {
 	int override_light;
@@ -395,24 +422,32 @@ PyObject* ClearMonochrome( PyObject* self, PyObject* args )
 
 PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 {
-	{ "EnableEnvMap",               EnableEnvMap,               METH_VARARGS, "" },
-	{ "DisableEnvMap",              DisableEnvMap,              METH_VARARGS, "" },
-	{ "AddEnvMapTarget",            AddEnvMapTarget,            METH_VARARGS, "" },
-	{ "RemoveEnvMapTarget",         RemoveEnvMapTarget,         METH_VARARGS, "" },
-	{ "SaveEnvMapTextureToFile",    SaveEnvMapTextureToFile,    METH_VARARGS, "" },
-	{ "EnableShadowMap",            EnableShadowMap,            METH_VARARGS, "" },
-	{ "DisableShadowMap",           DisableShadowMap,           METH_VARARGS, "" },
-	{ "EnableSoftShadow",           EnableSoftShadow,           METH_VARARGS, "" },
-	{ "SetOverrideShadowMapLight",  SetOverrideShadowMapLight,  METH_VARARGS, "" },
-	{ "SetShadowMapLightPosition",  SetShadowMapLightPosition,  METH_VARARGS, "" },
-	{ "SetShadowMapLightDirection", SetShadowMapLightDirection, METH_VARARGS, "" },
-	{ "SetGlare",                   SetGlare,                   METH_VARARGS, "" },
-	{ "ClearGlare",                 ClearGlare,                 METH_VARARGS, "" },
-	{ "SetMotionBlur",              SetMotionBlur,              METH_VARARGS, "" },
-	{ "ClearMotionBlur",            ClearMotionBlur,            METH_VARARGS, "" },
-	{ "SetBlur",                    SetBlur,                    METH_VARARGS, "" },
-	{ "ClearBlur",                  ClearBlur,                  METH_VARARGS, "" },
-	{ "SetMonochrome",              SetMonochrome,              METH_VARARGS, "" },
-	{ "ClearMonochrome",            ClearMonochrome,            METH_VARARGS, "" },
+	{ "EnableEnvMap",                    EnableEnvMap,                    METH_VARARGS, "" },
+	{ "DisableEnvMap",                   DisableEnvMap,                   METH_VARARGS, "" },
+	{ "AddEnvMapTarget",                 AddEnvMapTarget,                 METH_VARARGS, "" },
+	{ "RemoveEnvMapTarget",              RemoveEnvMapTarget,              METH_VARARGS, "" },
+	{ "SaveEnvMapTextureToFile",         SaveEnvMapTextureToFile,         METH_VARARGS, "" },
+
+	{ "EnableShadowMap",                 EnableShadowMap,                 METH_VARARGS, "" },
+	{ "DisableShadowMap",                DisableShadowMap,                METH_VARARGS, "" },
+	{ "EnableSoftShadow",                EnableSoftShadow,                METH_VARARGS, "" },
+//	{ "SetNumMaxLightsForShadow",        SetNumMaxLightsForShadow,        METH_VARARGS, "" },
+	{ "SetLightForShadow",               SetLightForShadow,               METH_VARARGS, "" },
+
+	{ "SetShadowMapCameraShiftDistance", SetShadowMapCameraShiftDistance, METH_VARARGS, "" },
+
+	// removed
+	{ "SetOverrideShadowMapLight",       SetOverrideShadowMapLight,       METH_VARARGS, "" },
+	{ "SetShadowMapLightPosition",       SetShadowMapLightPosition,       METH_VARARGS, "" },
+	{ "SetShadowMapLightDirection",      SetShadowMapLightDirection,      METH_VARARGS, "" },
+
+	{ "SetGlare",                        SetGlare,                        METH_VARARGS, "" },
+	{ "ClearGlare",                      ClearGlare,                      METH_VARARGS, "" },
+	{ "SetMotionBlur",                   SetMotionBlur,                   METH_VARARGS, "" },
+	{ "ClearMotionBlur",                 ClearMotionBlur,                 METH_VARARGS, "" },
+	{ "SetBlur",                         SetBlur,                         METH_VARARGS, "" },
+	{ "ClearBlur",                       ClearBlur,                       METH_VARARGS, "" },
+	{ "SetMonochrome",                   SetMonochrome,                   METH_VARARGS, "" },
+	{ "ClearMonochrome",                 ClearMonochrome,                 METH_VARARGS, "" },
 	{NULL, NULL}
 };

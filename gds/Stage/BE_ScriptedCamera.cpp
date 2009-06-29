@@ -308,7 +308,7 @@ CBE_ScriptedCamera::CBE_ScriptedCamera()
 	m_bNoClip = true;
 }
 
-
+/*
 void CBE_ScriptedCamera::Init()
 {
 //	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
@@ -317,12 +317,8 @@ void CBE_ScriptedCamera::Init()
 
 
 void CBE_ScriptedCamera::InitCopyEntity(CCopyEntity* pCopyEnt)
-{
-
-//	D3DXCreateTexture( DIRECT3D9.GetDevice(),
-//	ex.pSceneTexture;
-}
-
+{}
+*/
 
 void CBE_ScriptedCamera::Act( CCopyEntity* pCopyEnt )
 {
@@ -343,13 +339,3 @@ void CBE_ScriptedCamera::CreateRenderTasks( CCopyEntity* pCopyEnt )
 {
 	pCopyEnt->CreateRenderTasks();
 }
-
-
-/*
-void CBEC_ScriptedCameraExtraData::InitializedAtCutsceneStart()
-{
-	FocusTargetFrameSet& rFocusTarget = KeyFrames.Camera.FocusTarget;
-
-	rFocusTarget.UpdateForcusTargetEntities( ms_pS);
-}*/
-

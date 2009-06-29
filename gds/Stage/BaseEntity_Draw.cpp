@@ -486,7 +486,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 		return;
 
 	shared_ptr<CD3DXMeshObjectBase> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
-	if( pMesh )
+	if( !pMesh )
 		return;
 
 	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
@@ -525,7 +525,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 		return;
 
 	shared_ptr<CD3DXMeshObjectBase> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
-	if( pMesh )
+	if( !pMesh )
 		return;
 
 	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;

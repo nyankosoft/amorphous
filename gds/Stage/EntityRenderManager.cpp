@@ -78,12 +78,20 @@ public:
 	{}
 
 	void RenderSceneToShadowMap( CCamera& camera );
+
+	void RenderShadowReceivers( CCamera& camera );
 };
 
 
 void CEntityShadowMapRenderer::RenderSceneToShadowMap( CCamera& camera )
 {
 	m_pRenderer->RenderShadowCasters( camera );
+}
+
+
+void CEntityShadowMapRenderer::RenderShadowReceivers( CCamera& camera )
+{
+	m_pRenderer->RenderShadowReceivers( camera );
 }
 
 
@@ -188,17 +196,11 @@ m_pCurrentCamera(NULL)
 
 	// load texture for glare effect
 	LoadTextures();
-//	CGraphicsParameters param;
-//	LoadGraphicsResources( param );
 
 	m_fCameraFarClipDist = 1000.0f;
 
-/*	m_pShadowManager = new CShadowMapManager();
-	HREUSLT hr = m_pShadowManager->Init();
 
-	if( FAIELD(hr) )
-		SafeDelete( m_pShadowManager );
-*/
+	m_NumMaxLightsForShadow = 1;
 
 	// environment mapping - turned off by default
 	m_bEnableEnvironmentMap = false;
@@ -211,6 +213,8 @@ m_pCurrentCamera(NULL)
 
 	m_vOverrideShadowMapPosition = Vector3(0,0,0);
 	m_vOverrideShadowMapDirection = Vector3(0,-1,0);
+
+	m_pShadowMapSceneRenderer = shared_ptr<CEntityShadowMapRenderer>( new CEntityShadowMapRenderer(this) );
 
 	LoadFallbackShader();
 }
@@ -598,6 +602,16 @@ void CEntityRenderManager::RenderShadowReceivers( CCamera& rCam )
 }
 
 
+void CEntityRenderManager::SetLightForShadow( const string& light_entity_name )
+{
+	CCopyEntity *pLightEntity = m_pEntitySet->GetEntityByName( light_entity_name.c_str() );
+	if( pLightEntity )
+	{
+		m_vecLightForShadow.push_back( pLightEntity->Self() );
+	}
+}
+
+
 void CEntityRenderManager::RenderSceneToCubeMap( CCamera& camera )
 {
 	RenderAllButEnvMapTarget( camera, m_CurrentEnvMapTargetEntityID );
@@ -791,6 +805,8 @@ bool CEntityRenderManager::EnableSoftShadow( float softness, int shadow_map_size
 
 	m_pShadowManager = new CVarianceShadowMapManager();
 
+	m_pShadowManager->SetSceneRenderer( m_pShadowMapSceneRenderer );
+
 	bool initialized = m_pShadowManager->Init();
 	if( !initialized )
 	{
@@ -811,6 +827,8 @@ bool CEntityRenderManager::EnableShadowMap( int shadow_map_size )
 
 	m_pShadowManager = new CShadowMapManager();
 
+	m_pShadowManager->SetSceneRenderer( m_pShadowMapSceneRenderer );
+
 //	m_pShadowManager->SetShadowMapSize( shadow_map_size );
 
 	bool shadow_map_mgr_initialized = m_pShadowManager->Init();
@@ -830,6 +848,56 @@ bool CEntityRenderManager::EnableShadowMap( int shadow_map_size )
 void CEntityRenderManager::DisableShadowMap()
 {
 	SafeDelete( m_pShadowManager );
+}
+
+
+void CEntityRenderManager::UpdateLightsForShadow()
+{
+	Vector3 vCenter = Vector3(0,0,0);
+	if( m_pCurrentCamera )
+	{
+		vCenter = m_pCurrentCamera->GetPosition();
+	}
+
+	// clear the entity buffer
+	m_vecpEntityBuffer.resize( 0 );
+
+	float r = 200;
+	AABB3 aabb;
+	aabb.vMin = vCenter - Vector3(r,r,r);
+	aabb.vMax = vCenter + Vector3(r,r,r);
+	COverlapTestAABB aabb_test( aabb, &m_vecpEntityBuffer );
+
+	/// collect only the light entities
+	aabb_test.TargetEntityTypeID = CCopyEntityTypeID::LIGHT_ENTITY;
+	aabb_test.GroupIndex = -1;
+
+	// get light entities that are near the camera
+	// and should be considered as lights for shadow
+	m_pEntitySet->GetOverlappingEntities( aabb_test );
+
+//	vector<float> vecLightScore;
+//	vecLightScore.reserve
+
+	const size_t num_entities = m_vecpEntityBuffer.size();
+	for( size_t i=0; i<num_entities; i++ )
+	{
+		if( m_vecpEntityBuffer[i]->GetEntityTypeID() != CCopyEntityTypeID::LIGHT_ENTITY )
+			continue;
+
+		CLightEntity *pLightEntity = dynamic_cast<CLightEntity *>(m_vecpEntityBuffer[i]);
+		if( !pLightEntity )
+			continue;
+
+		CLight *pLight = pLightEntity->GetLightObject();
+		if( !pLight )
+			continue;
+
+		m_pShadowManager->UpdateLightForShadow( pLightEntity->GetID(), *pLight );
+
+		// found a light entity
+//		m_pShadowManager->AddShadowForLight(
+	}
 }
 
 
@@ -905,7 +973,7 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 
 	// render objects that cast shadows to others
 
-	// CEntityRenderManager::RenderShadowCasters() are calld 1 or more times
+	// CEntityRenderManager::RenderShadowCasters() are called 1 or more times
 	m_pShadowManager->RenderShadowCasters( rCam );
 /*
 	// render shadow map
@@ -1046,13 +1114,23 @@ void CEntityRenderManager::Render( CCamera& rCam )
 		UpdateEnvironmentMapTextures();
 	}
 
+	bool rendered_with_shadow = false;
 	if( m_pShadowManager )
 	{
-		// render the scene as fullscreen rect with
-		// scene texture and shadow overlay texture
-		RenderSceneWithShadowMap( rCam );
+		UpdateLightsForShadow();
+
+		if( m_pShadowManager->HasShadowMap() )
+		{
+			RenderForShadowMaps( rCam );
+
+			// render the scene as fullscreen rect with
+			// scene texture and shadow overlay texture
+			RenderSceneWithShadowMap( rCam );
+			rendered_with_shadow = true;
+		}
 	}
-	else
+
+	if( !rendered_with_shadow )
 	{
 		// directly render the scene to the currenet render target
 		CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );

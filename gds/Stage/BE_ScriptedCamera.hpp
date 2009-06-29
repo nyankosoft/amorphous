@@ -370,8 +370,6 @@ class CScriptedCameraEntity : public CCopyEntity
 
 	cdv<Matrix33> m_CamOrient;
 
-//	LPDIRECT3DTEXTURE9 pSceneTexture;
-
 private:
 
 	void UpdateCameraOrientationByFocusTarget( float current_time );
@@ -407,20 +405,16 @@ public:
 
 class CBE_ScriptedCamera : public CBaseEntity
 {
-private:
-
-	void UpdateCameraParams( CCopyEntity* pCopyEnt );
-
 public:
 
 	CBE_ScriptedCamera();
 
 	~CBE_ScriptedCamera() {}
 
-	void Init();
-	void InitCopyEntity( CCopyEntity* pCopyEnt );
+//	void Init();
+//	void InitCopyEntity( CCopyEntity* pCopyEnt );
 
-	void Act( CCopyEntity* pCopyEnt );	//behavior in in one frame
+	void Act( CCopyEntity* pCopyEnt );	// behavior in in one frame
 
 //	void Draw(CCopyEntity* pCopyEnt);
 

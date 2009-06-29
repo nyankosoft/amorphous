@@ -27,6 +27,8 @@ public:
 
 	virtual void Draw(CCopyEntity* pCopyEnt);
 
+	virtual void RenderStage(CCopyEntity* pCopyEnt);
+
 	// void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
 

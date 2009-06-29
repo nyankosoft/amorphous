@@ -63,6 +63,12 @@ void CBE_IndividualEntity::Draw(CCopyEntity* pCopyEnt)
 }
 
 
+void CBE_IndividualEntity::RenderStage( CCopyEntity *pCopyEnt )
+{
+	pCopyEnt->RenderStage();
+}
+
+
 void CBE_IndividualEntity::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_PhysicsBaseEntity::Serialize( ar, version );

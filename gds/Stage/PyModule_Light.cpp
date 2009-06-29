@@ -131,7 +131,7 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, CScriptGenMo
 
 	int result = 0;
 
-	CBaseEntityHandle basehandle( "__DiretionalLight__" );
+	CBaseEntityHandle basehandle( "__DirectionalLight__" );
 	if( mode == CScriptGenMode::LOAD )
 	{
 		GetInvalidDesc( desc );
@@ -148,6 +148,15 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, CScriptGenMo
 			&desc.LightGroup,
 			&shadow_for_light );
 
+		// Leave it if it is CBE_Light::ms_vInvalidDirection
+		if( dir != CBE_Light::ms_vInvalidDirection )
+		{
+			// User wants to overwrite the db value - check if it is a valid direction
+			Vec3Normalize( dir, dir );
+			if( Vec3Length( dir ) < 0.001f )
+				dir = Vector3(0,-1,0);
+		}
+
 		basehandle.SetBaseEntityName( base_name );
 	}
 	else
@@ -158,6 +167,10 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, CScriptGenMo
 			&desc.fIntensity,
 			&desc.LightGroup,
 			&shadow_for_light );
+
+		Vec3Normalize( dir, dir );
+		if( Vec3Length( dir ) < 0.001f )
+			dir = Vector3(0,-1,0);
 	}
 
 	color.fAlpha = 1.0f;
@@ -298,14 +311,23 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 			&desc.LightGroup,
 			&shadow_for_light );
 
+		// Leave it if it is CBE_Light::ms_vInvalidDirection
+		if( dir != CBE_Light::ms_vInvalidDirection )
+		{
+			// User wants to overwrite the db value - check if it is a valid direction
+			Vec3Normalize( dir, dir );
+			if( Vec3Length( dir ) < 0.001f )
+				dir = Vector3(0,-1,0);
+		}
+
 		basehandle.SetBaseEntityName( base_name );
 	}
 	else
 	{
 		// 'create' mode
-		// user is responsible for settings all the necessary values
+		// user is responsible for setting all the necessary values through the script API
 
-		basehandle.SetBaseEntityName( "__HemisphericDiretionalLight__" );
+		basehandle.SetBaseEntityName( "__HemisphericDirectionalLight__" );
 
 		// set default colors
 		uc = SFloatRGBAColor(1,1,1,1); // default color
@@ -319,9 +341,13 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, CScriptGen
 			&desc.LightGroup,
 			&shadow_for_light );
 
-		desc.WorldPose.matOrient = CreateOrientFromFwdDir( dir );
+		Vec3Normalize( dir, dir );
+		if( Vec3Length( dir ) < 0.001f )
+			dir = Vector3(0,-1,0);
+
 	}
 
+	desc.WorldPose.matOrient = CreateOrientFromFwdDir( dir );
 	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
 

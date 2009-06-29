@@ -25,6 +25,7 @@ class CScreenEffectManager;
 class CEntityEnvMapRenderTask;
 class CEntitySceneRenderTask;
 class CCubeTextureParamsLoader;
+class CEntityShadowMapRenderer;
 
 
 class CEnvMapTarget
@@ -98,10 +99,19 @@ private:
 
 	CShadowMapManager *m_pShadowManager;
 
+	boost::shared_ptr<CEntityShadowMapRenderer> m_pShadowMapSceneRenderer;
+
 	bool m_bOverrideShadowMapLight;
 
 	Vector3 m_vOverrideShadowMapPosition;
 	Vector3 m_vOverrideShadowMapDirection;
+
+	std::vector< CEntityHandle<> > m_vecLightForShadow;
+
+	int m_NumMaxLightsForShadow;
+
+	std::vector<CCopyEntity *> m_vecpEntityBuffer;
+
 
 	//
 	// environment mapping
@@ -143,6 +153,8 @@ private:
 	void RenderShadowCasters( CCamera& rCam );
 
 	void RenderShadowReceivers( CCamera& rCam );
+
+	void UpdateLightsForShadow();
 
 	void RenderAllButEnvMapTarget( CCamera& rCam, U32 target_entity_id );
 
@@ -218,6 +230,10 @@ public:
 	bool EnableShadowMap( int shadow_map_size = 512 );
 	bool EnableSoftShadow( float softness = 1.0f, int shadow_map_size = 512 );
 	void DisableShadowMap();
+
+	/// Specify the light for which shadow is rendered
+	void SetLightForShadow( const string& light_entity_name );
+
 	void SetOverrideShadowMapLight( bool override ) { m_bOverrideShadowMapLight = override; } 
 	void SetOverrideShadowMapLightPosition( const Vector3& pos ) { m_vOverrideShadowMapPosition = pos; }
 	void SetOverrideShadowMapLightDirection( const Vector3& dir ) { m_vOverrideShadowMapDirection = dir; }
