@@ -82,7 +82,7 @@ public:
 		ar.Polymorphic( vecpShapeDesc, shapedesc_factory );
 	}
 
-	inline bool IsValid()
+	inline bool IsValid() const
 	{
 		return ( 0 < vecpShapeDesc.size() );
 	}
