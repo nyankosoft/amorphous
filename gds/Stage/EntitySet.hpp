@@ -77,7 +77,12 @@ private:
 
 	void SetBasicEntityAttributes( CCopyEntity *pEntity, CBaseEntity& rBaseEntity );
 
-	void InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCopyEntity *pParent, CBaseEntity *pBaseEntity );
+	void InitEntity(
+		boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
+		CCopyEntity *pParent,
+		CBaseEntity *pBaseEntity,
+		physics::CActorDesc* pPhysActorDesc
+		);
 
 	void UpdatePhysics( float frametime );
 
@@ -170,7 +175,7 @@ public:
 							   const Vector3& rvDirection = Vector3(0,0,0) );
 
 	template<class T>
-	inline CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle );
+	inline CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
 
 	/// get entity with a specified individual name
 	/// returns NULL if not found
@@ -222,7 +227,9 @@ inline void CEntitySet::UpdateLink( CCopyEntity* pEntity )
 
 /// T must be a derived class of CCopyEntity
 template<class T>
-inline CEntityHandle<T> CEntitySet::CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle )
+inline CEntityHandle<T> CEntitySet::CreateEntity( boost::shared_ptr<T> pEntity,
+												  CBaseEntityHandle& rBaseEntityHandle,
+												  physics::CActorDesc *pPhysActorDesc )
 {
 	CEntityHandle<T> entity_handle( pEntity );
 
@@ -235,7 +242,7 @@ inline CEntityHandle<T> CEntitySet::CreateEntity( boost::shared_ptr<T> pEntity, 
 	// Copy attribute values from 'pBaseEntity'
 	SetBasicEntityAttributes( pEntity.get(), *pBaseEntity );
 
-	InitEntity( pEntity, NULL, pBaseEntity );
+	InitEntity( pEntity, NULL, pBaseEntity, pPhysActorDesc );
 
 
 	return entity_handle;

@@ -1,9 +1,9 @@
-
 #include "PyModule_Stage.hpp"
 
 #include "3DMath/Vector3.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Support/Vec3_StringAux.hpp"
+#include "Physics/ActorDesc.hpp"
 
 #include "Stage.hpp"
 #include "CopyEntityDesc.hpp"
@@ -11,6 +11,8 @@
 #include "BE_Skybox.hpp"	// used by SetFogColor()
 
 using namespace std;
+
+using namespace physics;
 
 
 static CStage *gs_pTargetStage = NULL;
@@ -31,12 +33,11 @@ CStage *GetStageForScriptCallback()
 // stage
 //======================================================================
 
-
 CCopyEntity *CreateNamedEntity( const char *entity_name,
 								const char *base_name,
-								const Vector3& pos,
-								const Vector3& dir,
-								const Vector3& vel )
+								const Matrix34& pose,
+								const Vector3& vel,
+								CActorDesc *pPhysActorDesc )
 {
 	if( !gs_pTargetStage )
 		return NULL;
@@ -48,16 +49,12 @@ CCopyEntity *CreateNamedEntity( const char *entity_name,
 	desc.SetDefault();
 	desc.pBaseEntityHandle = &baseentity_handle;
 	desc.strName = entity_name;
-	desc.WorldPose.vPosition  = pos;
-
-	desc.SetWorldOrient( CreateOrientFromFwdDir( dir ) );
+	desc.WorldPose = pose;
+	desc.pPhysActorDesc = pPhysActorDesc;
+//	desc.SetWorldOrient( CreateOrientFromFwdDir( dir ) );
 
 	desc.vVelocity = vel;
 	desc.fSpeed = Vec3Length(vel);
-
-//	desc.vVelocity = desc.vDirection * speed;
-//	desc.fSpeed = speed;
-
 
 	return gs_pTargetStage->CreateEntity( desc );
 }
@@ -169,7 +166,10 @@ PyObject* CreateEntity( PyObject* self, PyObject* args )
 		                                             &dir.x, &dir.y, &dir.z,
 		                                             &vel.x, &vel.y, &vel.z );
 
-	CreateNamedEntity( "", base_name, pos, Vec3GetNormalized(dir), vel );
+	Matrix34 pose;
+	pose.vPosition = pos;
+	pose.matOrient = CreateOrientFromFwdDir( Vec3GetNormalized(dir) );
+	CreateNamedEntity( "", base_name, pose, vel );
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -377,7 +377,10 @@ PyObject* InitPlayer( PyObject* self, PyObject* args )
 		                                             &dir.x, &dir.y, &dir.z,
 		                                             &vel.x, &vel.y, &vel.z );
 
-	CreateNamedEntity( "", base_name, pos, dir, vel );
+	Matrix34 pose;
+	pose.vPosition = pos;
+	pose.matOrient = CreateOrientFromFwdDir( Vec3GetNormalized(dir) );
+	CreateNamedEntity( "", base_name, pose, vel );
 
     Py_INCREF( Py_None );
 	return Py_None;

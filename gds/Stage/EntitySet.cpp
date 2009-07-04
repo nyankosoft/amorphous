@@ -536,7 +536,10 @@ void CEntitySet::SetBasicEntityAttributes( CCopyEntity *pEntity, CBaseEntity& rB
 }
 
 
-void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCopyEntity *pParent, CBaseEntity *pBaseEntity )
+void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
+							 CCopyEntity *pParent,
+							 CBaseEntity *pBaseEntity,
+							 CActorDesc* pPhysActorDesc )
 {
 	CCopyEntity* pNewCopyEnt = pNewCopyEntPtr.get();
 
@@ -618,17 +621,29 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr, CCop
 	// create object for physics simulation
 	if( pNewCopyEnt->GetEntityFlags() & BETYPE_RIGIDBODY )
 	{
-//		CJL_PhysicsActorDesc& rActorDesc
-//			= ((CBE_PhysicsBaseEntity *)pNewCopyEnt->pBaseEntity)->m_ActorDesc;
-		CActorDesc actor_desc = pBaseEntity->GetPhysicsActorDesc();
-		if( actor_desc.IsValid() )
+		CActor *pPhysActor = NULL;
+		if( pPhysActorDesc )
 		{
-			actor_desc.WorldPose.vPosition = pNewCopyEnt->Position();
+			pPhysActorDesc->WorldPose = pNewCopyEnt->GetWorldPose();// * pNewCopyEnt->GetActorLocalPose();
+			pPhysActorDesc->BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
+
+			// each entity has its own actor desc
+			pPhysActor = m_pStage->GetPhysicsScene()->CreateActor( *pPhysActorDesc );
+		}
+		else if( pBaseEntity->GetPhysicsActorDesc().IsValid() )
+		{
+			// actor desc is defined by entity attributes
+			CActorDesc actor_desc = pBaseEntity->GetPhysicsActorDesc();
+			actor_desc.WorldPose = pNewCopyEnt->GetWorldPose();
 			actor_desc.BodyDesc.LinearVelocity = pNewCopyEnt->Velocity();
-			pNewCopyEnt->GetOrientation( actor_desc.WorldPose.matOrient );
 //			pNewCopyEnt->pPhysicsActor = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+			pPhysActor = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+		}
+
+		if( pPhysActor )
+		{
 			pNewCopyEnt->m_vecpPhysicsActor.resize( 1 );
-			pNewCopyEnt->m_vecpPhysicsActor[0] = m_pStage->GetPhysicsScene()->CreateActor( actor_desc );
+			pNewCopyEnt->m_vecpPhysicsActor[0] = pPhysActor;
 		}
 	}
 
@@ -764,7 +779,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 //	pNewCopyEnt->bLighting = rBaseEntity.m_bLighting;
 
-	InitEntity( pNewEntitySharedPtr, rCopyEntityDesc.pParent, pBaseEntity );
+	InitEntity( pNewEntitySharedPtr, rCopyEntityDesc.pParent, pBaseEntity, rCopyEntityDesc.pPhysActorDesc );
 
 	pNewCopyEnt->Init( rCopyEntityDesc );
 

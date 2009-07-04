@@ -134,7 +134,7 @@ public:
 	                      	          Vector3& rvVelocity, Vector3& rvDirection = Vector3(0,0,0));
 
 	template<class T>
-	inline CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle );
+	inline CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
 
 	/// removes an entity from the stage
 	inline void TerminateEntity( CCopyEntity*& pEntity );
@@ -245,9 +245,9 @@ inline CCopyEntity *CStage::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
 
 
 template<class T>
-inline CEntityHandle<T> CStage::CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle )
+inline CEntityHandle<T> CStage::CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc )
 {
-	CEntityHandle<T> entity_handle = m_pEntitySet->CreateEntity( pEntity, rBaseEntityHandle );
+	CEntityHandle<T> entity_handle = m_pEntitySet->CreateEntity( pEntity, rBaseEntityHandle, pPhysActorDesc );
 	return entity_handle;
 }
 

@@ -6,6 +6,7 @@
 #include "Graphics/MeshObjectHandle.hpp"
 #include "EntityGroupHandle.hpp"
 #include "fwd.hpp"
+#include "Physics/fwd.hpp"
 
 #include <string>
 
@@ -69,6 +70,8 @@ public:
 
 	int TypeID;
 
+	physics::CActorDesc *pPhysActorDesc;
+
 public:
 
 	CCopyEntityDesc()
@@ -104,6 +107,8 @@ public:
 		iExtraDataIndex = 0;
 
 		TypeID = CCopyEntityTypeID::DEFAULT;
+
+		pPhysActorDesc = NULL;
 	}
 
 	// set orientation from 4x4 matrix
