@@ -67,7 +67,7 @@ CTextMessageRenderer(pEffectMgr)
 	m_fBGRectAlpha = 0.3f;
 	SRect bg_rect = RectAtCenterTop( 1000, 110, 45 );
 	SFloatRGBAColor color = SFloatRGBAColor( 0.0f, 0.0f, 0.0f, m_fBGRectAlpha );
-	m_pWindowBGRect = pGraphicsMgr->CreateRect( bg_rect, color, top_layer + 3 );
+	m_pWindowBGRect = pGraphicsMgr->CreateFillRect( bg_rect, color, top_layer + 3 );
 
 	LoadGraphicsResources( GetCurrentGraphicsParams() );
 

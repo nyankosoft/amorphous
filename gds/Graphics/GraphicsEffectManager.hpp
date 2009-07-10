@@ -29,8 +29,6 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/memory_helpers.hpp"
 
-#include <boost/shared_ptr.hpp>
-
 #include <vector>
 #include <list>
 #include <string>
@@ -93,7 +91,7 @@ protected:
 
 	CAnimatedGraphicsManager* m_pManager;
 
-	CGraphicsElement *m_pTargetElement;
+	boost::shared_ptr<CGraphicsElement> m_pTargetElement;
 
 	bool m_bInitialized;
 
@@ -103,7 +101,7 @@ protected:
 
 public:
 
-	CGraphicsElementEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CGraphicsElementEffect( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: m_EffectID(-1), m_pTargetElement(pTargetElement), m_fStartTime(start_time), m_fEndTime(end_time), m_bInitialized(false), m_Index(-1) {}
 
 	virtual ~CGraphicsElementEffect() {}
@@ -132,8 +130,8 @@ public:
 
 	virtual void Update( double current_time, double dt ) = 0;
 
-//	CGraphicsElement *GetElement() { m_pManager->GetGraphicsElementManager()->GetElement(m_TargetElementID); }
-	CGraphicsElement *GetElement();
+//	boost::shared_ptr<CGraphicsElement> GetElement() { m_pManager->GetGraphicsElementManager()->GetElement(m_TargetElementID); }
+	boost::shared_ptr<CGraphicsElement> GetElement();
 
 	virtual int GetTransType() const = 0;
 
@@ -169,7 +167,7 @@ protected:
 
 public:
 
-	CGraphicsElementLinearEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CGraphicsElementLinearEffect( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementEffect(pTargetElement, start_time, end_time ), m_bAppliedAtEndTime(false) {}
 
 	virtual ~CGraphicsElementLinearEffect() {}
@@ -196,7 +194,7 @@ protected:
 
 public:
 
-	CGraphicsElementNonLinearEffect( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CGraphicsElementNonLinearEffect( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementEffect(pTargetElement, start_time, end_time ) {}
 
 	virtual ~CGraphicsElementNonLinearEffect() {}
@@ -223,7 +221,7 @@ class CE_ColorShift : public CGraphicsElementLinearEffect
 
 public:
 
-	CE_ColorShift( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_ColorShift( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ),
 		m_ColorIndex(0), m_StartColor(SFloatRGBAColor(1,1,1,1)), m_EndColor(SFloatRGBAColor(1,1,1,1)) {}
 
@@ -251,7 +249,7 @@ class CE_AlphaChange : public CGraphicsElementLinearEffect
 
 public:
 
-	CE_AlphaChange( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_AlphaChange( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ),
 		m_ColorIndex(0), m_fStartAlpha(0), m_fEndAlpha(0) {}
 
@@ -286,7 +284,7 @@ class CE_Translate : public CGraphicsElementLinearEffect
 
 public:
 
-	CE_Translate( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_Translate( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
@@ -302,7 +300,7 @@ class CE_SizeChange : public CGraphicsElementLinearEffect
 
 public:
 
-	CE_SizeChange( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_SizeChange( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
@@ -318,7 +316,7 @@ class CE_Rotate : public CGraphicsElementLinearEffect
 
 public:
 
-	CE_Rotate( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_Rotate( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt )
@@ -351,11 +349,11 @@ class CE_TextDraw : public CGraphicsElementLinearEffect
 
 	std::vector<int> m_vec;
 
-	CGE_Text *m_pTextElement;
+	boost::shared_ptr<CTextElement> m_pTextElement;
 
 public:
 
-	CE_TextDraw( CGE_Text *pTargetElement, double start_time );
+	CE_TextDraw( boost::shared_ptr<CTextElement> pTargetElement, double start_time );
 
 	void SetNumCharsPerSec( int num_chars_per_sec ) { m_CharsPerSec = (float)num_chars_per_sec; }
 
@@ -375,7 +373,7 @@ class CE_Scale : public CGraphicsElementLinearEffect
 
 public:
 
-	CE_Scale( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_Scale( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementLinearEffect( pTargetElement, start_time, end_time ) { m_vCenter = Vector2(0,0); }
 
 	virtual void Update( double current_time, double dt )
@@ -414,11 +412,11 @@ class CE_NonLinearVertexColorShift : public CGraphicsElementNonLinearEffect
 
 	/// The user must not remove polygon element until the effect is done. How's that?
 	/// - How does the user know if the effect is still doing its job or done?
-	CGE_Polygon *m_pPolygonElement;
+	boost::shared_ptr<CPolygonElement> m_pPolygonElement;
 
 public:
 
-	CE_NonLinearVertexColorShift( CGE_Polygon *pTargetElement, double start_time )
+	CE_NonLinearVertexColorShift( boost::shared_ptr<CPolygonElement> pTargetElement, double start_time )
 		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, start_time + 10000.0 ), m_pPolygonElement(pTargetElement) {}
 
 	virtual void Update( double current_time, double dt );
@@ -439,7 +437,7 @@ class CE_TranslateNonLinear : public CGraphicsElementNonLinearEffect
 
 public:
 
-	CE_TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_TranslateNonLinear( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
@@ -459,7 +457,7 @@ class CE_SizeChangeCD : public CGraphicsElementNonLinearEffect
 
 public:
 
-	CE_SizeChangeCD( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_SizeChangeCD( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, end_time ) {}
 
 	virtual void Update( double current_time, double dt );
@@ -478,7 +476,7 @@ class CE_ScaleCD : public CGraphicsElementNonLinearEffect
 
 public:
 
-	CE_ScaleCD( CGraphicsElement *pTargetElement, double start_time, double end_time )
+	CE_ScaleCD( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time )
 		: CGraphicsElementNonLinearEffect( pTargetElement, start_time, end_time ) { m_vCenter = Vector2(0,0); }
 
 	virtual void Update( double current_time, double dt )
@@ -521,7 +519,7 @@ protected:
 
 public:
 
-	CE_Blink( CGraphicsElement *pTargetElement ) : CGraphicsElementNonLinearEffect(pTargetElement, 0.0f, 10000.0f ), m_fAccumulatedTime(0) {}
+	CE_Blink( boost::shared_ptr<CGraphicsElement> pTargetElement ) : CGraphicsElementNonLinearEffect(pTargetElement, 0.0f, 10000.0f ), m_fAccumulatedTime(0) {}
 	~CE_Blink() {}
 
 	friend class CAnimatedGraphicsManager;
@@ -544,7 +542,7 @@ class CE_AlphaBlink : public CE_Blink
 
 public:
 
-	CE_AlphaBlink( CGraphicsElement *pTargetElement )
+	CE_AlphaBlink( boost::shared_ptr<CGraphicsElement> pTargetElement )
 		:
 	CE_Blink( pTargetElement ) 
 	{
@@ -574,24 +572,24 @@ public:
 	virtual CGraphicsElementManager *GetGraphicsElementManager(){ return NULL; }
 	virtual void SetTimeOffset( double time = -1.0 ) {}
 
-	virtual CGraphicsEffectHandle ChangeAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, int color_index, float start_alpha, float end_alpha, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeAlphaTo( CGraphicsElement *pTargetElement, double start_time, double end_time, int color_index, float end_alpha, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeColor( CGraphicsElement *pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeColor( CGraphicsElement *pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeColorTo( CGraphicsElement *pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeColorTo( CGraphicsElement *pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeColorTo( CGraphicsElement *pTargetElement, double start_time, double end_time, int color_index, U32 end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeSize( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestMin, Vector2 vDestMax ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ScaleTo( CGraphicsElement *pTargetElement, double start_time, double end_time, float end_scale ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle TranslateTo( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel = Vector2(0,0), float smooth_time = 0.5f, int coord_type = 0, U32 flags = 0 ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, float start_alpha, float end_alpha, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeAlphaTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, float end_alpha, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, U32 end_color, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeSize( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, Vector2 vDestMin, Vector2 vDestMax ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ScaleTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, float end_scale ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle TranslateTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle TranslateNonLinear( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel = Vector2(0,0), float smooth_time = 0.5f, int coord_type = 0, U32 flags = 0 ) { return CGraphicsEffectHandle::Null(); }
 
-	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double interval, int color_index = 0 ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ) { return CGraphicsEffectHandle::Null(); } 
+	virtual CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double interval, int color_index = 0 ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double interval, float alpha ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ) { return CGraphicsEffectHandle::Null(); } 
 
-	virtual CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle ChangeVertexColorNonLinear( CGE_Polygon *pTargetTextElement, double start_time,
+	virtual CGraphicsEffectHandle DrawText( boost::shared_ptr<CTextElement> pTargetTextElement, double start_time, int num_chars_per_sec ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeVertexColorNonLinear( boost::shared_ptr<CPolygonElement> pTargetTextElement, double start_time,
 		int color_index, int vertex,
 		const SFloatRGBAColor& dest_color, const SFloatRGBAColor& color_change_velocity ) { return CGraphicsEffectHandle::Null(); }
 
@@ -599,9 +597,9 @@ public:
 	virtual void AddElementPath() {}
 	virtual void SetElementPath_End() {}
 
-	virtual CGraphicsEffectHandle SetPosition( CGraphicsElement *pTargetElement, double time, const Vector2& vPos ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle SetColor( CGraphicsElement *pTargetElement, double time, int color_index, const SFloatRGBAColor& color ) { return CGraphicsEffectHandle::Null(); }
-	virtual CGraphicsEffectHandle SetColor( CGraphicsElement *pTargetElement, double time, int color_index, const U32& color ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle SetPosition( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, const Vector2& vPos ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle SetColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, int color_index, const SFloatRGBAColor& color ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle SetColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, int color_index, const U32& color ) { return CGraphicsEffectHandle::Null(); }
 	virtual void UpdateEffects( double dt ) {}
 	virtual bool CancelEffect( CGraphicsEffectHandle& effect_handle ) { return false; }
 };
@@ -657,7 +655,7 @@ public:
 	/// NOTE: Returned pointer is a borrowed reference. Do not delete it.
 	CGraphicsElementManager *GetGraphicsElementManager(){ return m_pGraphicsElementManager; }
 
-	CGraphicsElement *GetElement( int element_id ) { return m_pGraphicsElementManager->GetElement(element_id); }
+	boost::shared_ptr<CGraphicsElement> GetElement( int element_id ) { return m_pGraphicsElementManager->GetElement(element_id); }
 
 	// set the time of this function call as the time origin for subsequent ChangeXXX() calls
 	void SetTimeOffset( double time = -1.0 );
@@ -665,56 +663,56 @@ public:
 //	void AddFadeInEffect( int id, float start, float end, float dest_alpha );
 //	void AddFadeOutEffect( int id, float start, float end, float dest_alpha );
 
-	CGraphicsEffectHandle ChangeAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, int color_index, float start_alpha, float end_alpha, int trans_mode );
-	CGraphicsEffectHandle ChangeAlphaTo( CGraphicsElement *pTargetElement, double start_time, double end_time, int color_index, float end_alpha, int trans_mode );
+	CGraphicsEffectHandle ChangeAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, float start_alpha, float end_alpha, int trans_mode );
+	CGraphicsEffectHandle ChangeAlphaTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, float end_alpha, int trans_mode );
 
-	CGraphicsEffectHandle ChangeColor( CGraphicsElement *pTargetElement, double start_time,  double end_time,
+	CGraphicsEffectHandle ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time,
 					                   int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color,
 					                   int trans_mode );
 
-	CGraphicsEffectHandle ChangeColor( CGraphicsElement *pTargetElement, double start_time,  double end_time,
+	CGraphicsEffectHandle ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time,
 					                   int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color,
 					                   int trans_mode );
 
-	CGraphicsEffectHandle ChangeColorTo( CGraphicsElement *pTargetElement, double start_time, double end_time,
+	CGraphicsEffectHandle ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time,
 						                 int color_index, const SFloatRGBAColor& end_color,
 						                 int trans_mode );
 
-	CGraphicsEffectHandle ChangeColorTo( CGraphicsElement *pTargetElement, double start_time, double end_time,
+	CGraphicsEffectHandle ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time,
 						                 int color_index, const SFloatRGBColor& end_color,
 						                 int trans_mode );
 
-	CGraphicsEffectHandle ChangeColorTo( CGraphicsElement *pTargetElement, double start_time, double end_time,
+	CGraphicsEffectHandle ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time,
 						                 int color_index, U32 end_color,
 						                 int trans_mode );
 
 	/// top-left, bottom-right corner of the dest position
-	CGraphicsEffectHandle ChangeSize( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestMin, Vector2 vDestMax );
+	CGraphicsEffectHandle ChangeSize( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, Vector2 vDestMin, Vector2 vDestMax );
 
-	CGraphicsEffectHandle ScaleTo( CGraphicsElement *pTargetElement, double start_time, double end_time, float end_scale );
+	CGraphicsEffectHandle ScaleTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, float end_scale );
 
 	/// move an element from its current position to a new destination
-	CGraphicsEffectHandle TranslateTo( CGraphicsElement *pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode );
+	CGraphicsEffectHandle TranslateTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, Vector2 vDestPos, int coord_type, int trans_mode );
 
 	/// Translate with Critical Damping (Velocity)
 	/// - Translate the element from the current position to the dest position 'vDestPos'
 	///   with the init velocity 'vInitVel' 
 	/// - Uses critical damping to calculate the position of the target element
-	CGraphicsEffectHandle TranslateNonLinear( CGraphicsElement *pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel, float smooth_time, int coord_type, U32 flags );
+	CGraphicsEffectHandle TranslateNonLinear( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, Vector2 vDestPos, Vector2 vInitVel, float smooth_time, int coord_type, U32 flags );
 
 	/// blink the element by alternating its alpha component between the current value and zero
 	/// - The effect is looped. The user needs cancel the effect explicitly to stop the blink effect
-	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double interval, int color_index );
+	CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double interval, int color_index );
 
-//	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double interval, float alpha ); 
-//	CGraphicsEffectHandle BlinkAlpha( CGraphicsElement *pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ); 
+//	CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double interval, float alpha ); 
+//	CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ); 
 
 	/// Used only by text element.
 	/// - Effect is terminated after the entire text is drawn
 	/// - TODO: Define the behavior when the effect gets canceled before it finish drawing the complete text.
-	CGraphicsEffectHandle DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec );
+	CGraphicsEffectHandle DrawText( boost::shared_ptr<CTextElement> pTargetTextElement, double start_time, int num_chars_per_sec );
 
-	CGraphicsEffectHandle ChangeVertexColorNonLinear( CGE_Polygon *pTargetTextElement, double start_time,
+	CGraphicsEffectHandle ChangeVertexColorNonLinear( boost::shared_ptr<CPolygonElement> pTargetTextElement, double start_time,
 		int color_index, int vertex,
 		const SFloatRGBAColor& dest_color, const SFloatRGBAColor& color_change_velocity );
 
@@ -722,9 +720,9 @@ public:
 //	void AddElementPath();
 //	void SetElementPath_End();
 
-	CGraphicsEffectHandle SetPosition( CGraphicsElement *pTargetElement, double time, const Vector2& vPos );
-	CGraphicsEffectHandle SetColor( CGraphicsElement *pTargetElement, double time, int color_index, const SFloatRGBAColor& color );
-	virtual inline CGraphicsEffectHandle SetColor( CGraphicsElement *pTargetElement, double time, int color_index, const U32& color );
+	CGraphicsEffectHandle SetPosition( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, const Vector2& vPos );
+	CGraphicsEffectHandle SetColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, int color_index, const SFloatRGBAColor& color );
+	virtual inline CGraphicsEffectHandle SetColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, int color_index, const U32& color );
 
 	void UpdateEffects( double dt );
 
@@ -761,7 +759,7 @@ inline void CAnimatedGraphicsManager::RemoveEffect( int effect_index )
 }
 
 
-inline CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( CGraphicsElement *pTargetElement, double time, int color_index, const U32& color )
+inline CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, int color_index, const U32& color )
 {
 	SFloatRGBAColor dest_color;
 	dest_color.SetARGB32( color );

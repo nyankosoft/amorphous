@@ -23,7 +23,7 @@ protected:
 	bool m_bShow;
 
 	/// deprecated
-	/// - Use text elements (CGE_Text) instead.
+	/// - Use text elements (CTextElement) instead.
 	HUD_TimerDisplay m_TimerDisplay;
 
 public:

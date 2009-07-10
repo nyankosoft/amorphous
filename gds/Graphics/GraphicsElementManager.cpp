@@ -10,6 +10,7 @@
 
 #include <algorithm>
 using namespace std;
+using namespace boost;
 
 
 //=====================================================================
@@ -18,7 +19,7 @@ using namespace std;
 
 CGraphicsElementManager::CGraphicsElementManager()
 {
-	m_vecpElement.resize( 256, NULL );
+	m_vecpElement.resize( 256, shared_ptr<CGraphicsElement>() );
 
 	m_fScale = 1.0f;
 
@@ -85,7 +86,7 @@ int CGraphicsElementManager::GetVacantSlotIndex()
 
 //	CGraphicsElemectBase *p = NULL;
 //	m_vecpElement.push_back( p );
-	m_vecpElement.push_back( NULL );
+	m_vecpElement.push_back( shared_ptr<CGraphicsElement>() );
 
 	return index;
 }
@@ -121,25 +122,44 @@ bool CGraphicsElementManager::RegisterToLayer( int element_index, int layer_inde
 }
 
 
-void CGraphicsElementManager::InitElement( CGraphicsElement *pElement, int element_index, int layer_index )
+bool CGraphicsElementManager::InitElement( shared_ptr<CGraphicsElement> pElement, int layer_index )
 {
+	int element_index = GetVacantSlotIndex();
+
+	m_vecpElement[element_index] = pElement;
+
 	m_vecpElement[element_index]->SetGraphicsElementManager( this );
 	m_vecpElement[element_index]->ChangeScale( m_fScale );
 	m_vecpElement[element_index]->SetElementIndex( element_index );
 
-	if( pElement->GetElementType() != CGraphicsElement::TYPE_GROUP )
+	pElement->m_pSelf = pElement;
+
+//	if( pElement->GetElementType() != CGraphicsElement::TYPE_GROUP )
+	if( pElement->BelongsToLayer() )
+	{
+		// CGraphicsElementGroup and CCombinedPrimitiveElement do not belong to layer
+
+		bool res = RegisterToLayer( element_index, layer_index );
+		if( !res )
+			return false;
+
 		m_vecpElement[element_index]->SetLayerIndex( layer_index );
+	}
+
+	return true;
 }
 
 
-void CGraphicsElementManager::InitPrimitiveElement( CGE_Primitive *pElement,
-												    C2DPrimitive *pPrimitive,
+bool CGraphicsElementManager::InitPrimitiveElement( shared_ptr<CPrimitiveElement> pElement,
 													const SRect& non_scaled_rect,
 												    const SFloatRGBAColor& color,
-													int element_index,
 													int layer_index )
 {
-	float z = 0;
+	bool res = InitElement( pElement, layer_index );
+	if( !res )
+		return false;
+
+	pElement->SetColor( 0, color );
 
 	AABB2 non_scaled_aabb;
 	non_scaled_aabb.vMin.x = (float)non_scaled_rect.left;
@@ -152,25 +172,32 @@ void CGraphicsElementManager::InitPrimitiveElement( CGE_Primitive *pElement,
 	// the element is not owned by any group: global coord
 	pElement->SetLocalTopLeftPos( non_scaled_rect.GetTopLeftCorner() );
 
-	pPrimitive->SetTextureUV( TEXCOORD2( 0.0f, 0.0f ), TEXCOORD2( 1.0f, 1.0f ) );
-	pPrimitive->SetZDepth( z );
-	pPrimitive->SetColor( color );
-
-	m_vecpElement[element_index] = pElement;
-
-	InitElement( pElement, element_index, layer_index );
-
 	pElement->SetSizeLTRB( non_scaled_aabb.vMin, non_scaled_aabb.vMax );
+
+	return true;
 }
 
-
-CGE_Rect *CGraphicsElementManager::InitRectElement( int element_index, int layer_index,
+/*
+shared_ptr<CRectElement> CGraphicsElementManager::InitRectElement( int element_index, int layer_index,
 													const SRect& non_scaled_rect,
 													const SFloatRGBAColor& color,
 													C2DPrimitive *pRectPrimitive )
 {
 
-	CGE_Rect *pRectElement = new CGE_Rect( color, pRectPrimitive );
+	shared_ptr<CRectElement> pRectElement( new CRectElement( color, pRectPrimitive ) );
+
+	bool res = InitPrimitiveElement( pRectElement, pRectPrimitive, non_scaled_rect, color, element_index, layer_index );
+
+	return res ? pRectElement : shared_ptr<CRectElement>();
+}
+
+
+shared_ptr<CRectElement> CGraphicsElementManager::InitRoundRectElement( int element_index, int layer_index,
+													const SRect& non_scaled_rect,
+													const SFloatRGBAColor& color,
+													C2DPrimitive *pRectPrimitive )
+{
+	shared_ptr<CRoundRectElement> pRectElement( new CRoundRectElement( color, pRectPrimitive ) );
 
 	InitPrimitiveElement( pRectElement, pRectPrimitive, non_scaled_rect, color, element_index, layer_index );
 
@@ -178,12 +205,12 @@ CGE_Rect *CGraphicsElementManager::InitRectElement( int element_index, int layer
 }
 
 
-CGE_Triangle *CGraphicsElementManager::InitTriangleElement( int element_index, int layer_index,
+shared_ptr<CTriangleElement> CGraphicsElementManager::InitTriangleElement( int element_index, int layer_index,
 														    const SRect& non_scaled_rect,
 															const SFloatRGBAColor& color,
 													        C2DPrimitive *pTrianglePrimitive )
 {
-	CGE_Triangle *pTriangleElement = new CGE_Triangle( color, pTrianglePrimitive, non_scaled_rect );
+	shared_ptr<CTriangleElement> pTriangleElement( new CTriangleElement( color, pTrianglePrimitive, non_scaled_rect ) );
 
 	pTriangleElement->m_LocalAABB = AABB2( Vector2((float)non_scaled_rect.left,(float)non_scaled_rect.top), Vector2((float)non_scaled_rect.right,(float)non_scaled_rect.bottom) );
 
@@ -191,100 +218,194 @@ CGE_Triangle *CGraphicsElementManager::InitTriangleElement( int element_index, i
 
 	return pTriangleElement;
 }
+*/
 
-
-CGE_Rect *CGraphicsElementManager::CreateRect( const SRect& rect, const SFloatRGBAColor& color, int layer )
+shared_ptr<CCombinedRectElement> CGraphicsElementManager::CreateRect( const SRect& rect,
+															  const SFloatRGBAColor& fill_color_0,
+															  const SFloatRGBAColor& frame_color_0,
+															  float frame_width,
+															  int layer )
 {
-	int index = GetVacantSlotIndex();
+/*	int index = GetVacantSlotIndex();
 
 	if( !RegisterToLayer( index, layer ) )
-		return NULL;
+		return shared_ptr<CRectElement>();
+*/
 
-	C2DRect *p2DRect = new C2DRect( rect * m_fScale, color.GetARGB32() );
+	shared_ptr<CFillRectElement> pFill = CreateFillRect( rect, fill_color_0, layer );
+	shared_ptr<CFrameRectElement> pFrame = CreateFrameRect( rect, frame_color_0, frame_width, layer );
 
-	return InitRectElement( index, layer, rect, color, p2DRect );
+//	C2DRect *p2DRect = new C2DRect( rect * m_fScale, fill_color_0.GetARGB32() );
+//	C2DFrameRect *p2DFrameRect = new C2DFrameRect( rect * m_fScale, frame_color_0.GetARGB32() );
+
+//	shared_ptr<CRectElement> pRectElement( new CRectElement( color, pRectPrimitive ) );
+//	shared_ptr<CRectElement> pRectElement( new CRectElement( non_scaled_rect, m_fScale ) );
+	shared_ptr<CCombinedRectElement> pRectElement( new CCombinedRectElement( rect, m_fScale, pFill, pFrame ) );
+
+	bool res = InitElement( pRectElement, 0 );
+
+//	bool res = InitPrimitiveElement( pRectElement, layer_index );
+
+	return res ? pRectElement : shared_ptr<CCombinedRectElement>();
 }
 
 
-CGE_Rect *CGraphicsElementManager::CreateFrameRect( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer )
+shared_ptr<CFillRectElement> CGraphicsElementManager::CreateFillRect( const SRect& rect, const SFloatRGBAColor& color, int layer )
 {
-	int index = GetVacantSlotIndex();
+	shared_ptr<CFillRectElement> pFillRectElement( new CFillRectElement( rect, m_fScale ) );
 
-	if( !RegisterToLayer( index, layer ) )
-		return NULL;
+	bool res = InitPrimitiveElement( pFillRectElement, rect, color, layer );
 
-	C2DFrameRect *p2DFrameRect = new C2DFrameRect( rect * m_fScale, color.GetARGB32(), border_width * m_fScale );
-
-	return InitRectElement( index, layer, rect, color, p2DFrameRect );
+	return res ? pFillRectElement : shared_ptr<CFillRectElement>();
 }
 
 
-CGE_Rect *CGraphicsElementManager::CreateRoundRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, int layer )
+shared_ptr<CFrameRectElement> CGraphicsElementManager::CreateFrameRect( const SRect& rect, const SFloatRGBAColor& color, float frame_width, int layer )
 {
-	int index = GetVacantSlotIndex();
+	shared_ptr<CFrameRectElement> pFrameRectElement( new CFrameRectElement( rect, m_fScale ) );
 
-	if( !RegisterToLayer( index, layer ) )
-		return NULL;
+	bool res = InitPrimitiveElement( pFrameRectElement, rect, color, layer );
 
-	C2DRoundRect *p2DRoundRect = new C2DRoundRect( rect * m_fScale, color.GetARGB32(), (int)(corner_radius * m_fScale) );
+	pFrameRectElement->SetFrameWidth( (int)frame_width );
 
-	return InitRectElement( index, layer, rect, color, p2DRoundRect );
+	return res ? pFrameRectElement : shared_ptr<CFrameRectElement>();
 }
 
 
-CGE_Rect *CGraphicsElementManager::CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float border_width, int layer )
+shared_ptr<CCombinedRoundRectElement> CGraphicsElementManager::CreateRoundRect( const SRect& rect,
+															  const SFloatRGBAColor& fill_color_0,
+															  const SFloatRGBAColor& frame_color_0,
+															  float corner_radius,
+															  float frame_width,
+															  int layer )
 {
-	int index = GetVacantSlotIndex();
+/*	int index = GetVacantSlotIndex();
 
 	if( !RegisterToLayer( index, layer ) )
-		return NULL;
+		return shared_ptr<CRectElement>();*/
 
-	C2DRoundFrameRect *p2DRoundFrameRect = new C2DRoundFrameRect( rect * m_fScale, color.GetARGB32(), (int)(corner_radius * m_fScale), (int)(border_width * m_fScale) );
+//	C2DRect *p2DRect = new C2DRect( rect * m_fScale, fill_color_0.GetARGB32() );
+//	C2DFrameRect *p2DFrameRect = new C2DFrameRect( rect * m_fScale, frame_color_0.GetARGB32() );
 
-	return InitRectElement( index, layer, rect, color, p2DRoundFrameRect );
+	shared_ptr<CRoundFillRectElement> pFill = CreateRoundFillRect( rect, fill_color_0, corner_radius, layer );
+	shared_ptr<CRoundFrameRectElement> pFrame = CreateRoundFrameRect( rect, frame_color_0, corner_radius, frame_width, layer );
+
+	shared_ptr<CCombinedRoundRectElement> pRoundRectElement( new CCombinedRoundRectElement( rect, m_fScale, pFill, pFrame ) );
+
+	bool res = InitElement( pRoundRectElement, layer );
+
+//	InitPrimitiveElement( pRoundRectElement, rect, color, layer );
+
+	return res ? pRoundRectElement : shared_ptr<CCombinedRoundRectElement>();
 }
 
 
-CGE_Triangle *CGraphicsElementManager::CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer )
+boost::shared_ptr<CRoundFillRectElement> CGraphicsElementManager::CreateRoundFillRect( const SRect& rect, const SFloatRGBAColor& fill_color_0, float corner_radius, int layer )
 {
-	int index = GetVacantSlotIndex();
+	shared_ptr<CRoundFillRectElement> pRoundFillRectElement( new CRoundFillRectElement( rect, m_fScale, corner_radius ) );
 
-	if( !RegisterToLayer( index, layer ) )
-		return NULL;
+	bool res = InitPrimitiveElement( pRoundFillRectElement, rect, fill_color_0, layer );
 
-	C2DTriangle *p2DTriangle = new C2DTriangle( dir, rect * m_fScale, color.GetARGB32() );
-
-	return InitTriangleElement( index, layer, rect, color, p2DTriangle );
+	return res ? pRoundFillRectElement : shared_ptr<CRoundFillRectElement>();
 }
 
 
-CGE_Triangle *CGraphicsElementManager::CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer )
+shared_ptr<CRoundFrameRectElement> CGraphicsElementManager::CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float frame_width, int layer )
 {
-	LOG_PRINT_ERROR( "Not implemented yet!" );
-	return NULL;
+/*	int index = GetVacantSlotIndex();
+
+	if( !RegisterToLayer( index, layer ) )
+		return shared_ptr<CRectElement>();*/
+
+	shared_ptr<CRoundFrameRectElement> pRoundFrameRectElement( new CRoundFrameRectElement( rect, m_fScale, corner_radius ) );
+
+	pRoundFrameRectElement->SetCornerRadius( corner_radius );
+	pRoundFrameRectElement->SetFrameWidth( (int)frame_width );
+
+	bool res = InitPrimitiveElement( pRoundFrameRectElement, rect, color, layer );
+
+	return res ? pRoundFrameRectElement : shared_ptr<CRoundFrameRectElement>();
+
+//	return InitRectElement( index, layer, rect, color, p2DRoundFrameRect );
 }
 
 
-CGE_Polygon *CGraphicsElementManager::CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style, const SFloatRGBAColor& color, int layer )
+//shared_ptr<CTriangleElement> CGraphicsElementManager::CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer )
+shared_ptr<CCombinedTriangleElement> CGraphicsElementManager::CreateTriangle( C2DTriangle::Direction dir,
+																	 const SRect& rect,
+																	 const SFloatRGBAColor& fill_color_0,
+																	 const SFloatRGBAColor& frame_color_0,
+																	 float frame_width,
+																	 int layer )
 {
-	int index = GetVacantSlotIndex();
+/*	int index = GetVacantSlotIndex();
 
 	if( !RegisterToLayer( index, layer ) )
-		return NULL;
+		return shared_ptr<CTriangleElement>();*/
 
-	C2DRegularPolygon *p2DRegularPolygon = new C2DRegularPolygon();
-	p2DRegularPolygon->MakeRegularPolygon( num_polygon_vertices, Vector2((float)x, (float)y) * m_fScale, (int)(radius * m_fScale), style );
+	shared_ptr<CFillTriangleElement> pFill = CreateFillTriangle( dir, rect, fill_color_0, layer );
+	shared_ptr<CFrameTriangleElement> pFrame = CreateFrameTriangle( dir, rect, frame_color_0, frame_width, layer );
 
+	shared_ptr<CCombinedTriangleElement> pTriangleElement( new CCombinedTriangleElement( rect, m_fScale, pFill, pFrame ) );
+
+//	pTriangleElement->m_LocalAABB = AABB2( Vector2((float)non_scaled_rect.left,(float)non_scaled_rect.top), Vector2((float)non_scaled_rect.right,(float)non_scaled_rect.bottom) );
+
+//	InitPrimitiveElement( pTriangleElement, non_scaled_rect, color, element_index, layer );
+	bool res = InitElement( pTriangleElement, layer );
+
+	return res ? pTriangleElement : shared_ptr<CCombinedTriangleElement>();
+}
+
+
+shared_ptr<CFillTriangleElement> CGraphicsElementManager::CreateFillTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer )
+{
+	shared_ptr<CFillTriangleElement> pFillTriangleElement( new CFillTriangleElement( dir, rect, m_fScale ) );
+	bool res = InitPrimitiveElement( pFillTriangleElement, rect, color, layer );
+
+	return res ? pFillTriangleElement : shared_ptr<CFillTriangleElement>();
+/*
+	return CreateTriangle(
+		dir,
+		rect,
+		color,
+		SFloatRGBAColor::White(),
+		0, // frame width 0 means no frame
+		layer );*/
+}
+
+
+shared_ptr<CFrameTriangleElement> CGraphicsElementManager::CreateFrameTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, float frame_width, int layer )
+{
+	return shared_ptr<CFrameTriangleElement>();
+/*
+	return CreateTriangle(
+		dir,
+		rect,
+		SFloatRGBAColor::White(),
+		color,
+		frame_width,
+		layer );*/
+}
+
+
+shared_ptr<CFillPolygonElement> CGraphicsElementManager::CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style, const SFloatRGBAColor& color, int layer )
+{
+/*	int index = GetVacantSlotIndex();
+
+	if( !RegisterToLayer( index, layer ) )
+		return shared_ptr<CPolygonElement>();
+*/
 	SRect non_scaled_rect = RectLTRB( x - radius, y - radius, x + radius, y + radius );
-	CGE_Polygon *pPolygonElement = new CGE_Polygon( color, p2DRegularPolygon, non_scaled_rect );
+//	shared_ptr<CPolygonElement> pPolygonElement = new CFillPolygonElement( color, non_scaled_rect );
+	shared_ptr<CFillPolygonElement> pPolygonElement( new CFillPolygonElement( num_polygon_vertices, Vector2((float)x,(float)y), radius, style, m_fScale ) );
 
-	InitPrimitiveElement( pPolygonElement, p2DRegularPolygon, non_scaled_rect, color, index, layer );
+	InitPrimitiveElement( pPolygonElement, non_scaled_rect, color, layer );
 
 	return pPolygonElement;
 }
 
 
-CGE_Text *CGraphicsElementManager::CreateText( int font_id, const string& text, float x, float y,
+shared_ptr<CTextElement> CGraphicsElementManager::CreateText( int font_id, const string& text, float x, float y,
 										       const SFloatRGBAColor& color, int font_w, int font_h, int layer )
 {
 	CFontBase *pFont = this->GetFont(font_id);
@@ -300,22 +421,23 @@ CGE_Text *CGraphicsElementManager::CreateText( int font_id, const string& text, 
 	rect.top    = (int)y;
 	rect.right  = (int)x + font_w * (int)text.length();
 	rect.bottom = (int)y + font_h;
-	return CreateTextBox(
+	return CreateText(
 		font_id,
 		text,
 		rect,
-		CGE_Text::TAL_LEFT,
-		CGE_Text::TAL_TOP,
+		CTextElement::TAL_LEFT,
+		CTextElement::TAL_TOP,
 		color,
 		font_w,
 		font_h,
 		layer );
+
 /*	int index = GetVacantSlotIndex();
 
 	if( !RegisterToLayer( index, layer ) )
 		return NULL;
 
-	CGE_Text *pTextElement = new CGE_Text( font_id, text, x, y, color );
+	shared_ptr<CTextElement>pTextElement = new CTextElement( font_id, text, x, y, color );
 	pTextElement->SetFontSize( font_w, font_h );
 	m_vecpElement[index] = pTextElement;
 
@@ -326,23 +448,24 @@ CGE_Text *CGraphicsElementManager::CreateText( int font_id, const string& text, 
 }
 
 
-CGE_Text *CGraphicsElementManager::CreateTextBox( int font_id, const std::string& text,
+shared_ptr<CTextElement> CGraphicsElementManager::CreateText( int font_id, const std::string& text,
 												  const SRect& textbox, int align_h, int align_v,
 												  const SFloatRGBAColor& color, int font_w, int font_h, int layer )
 {
-	int index = GetVacantSlotIndex();
+/*	int index = GetVacantSlotIndex();
 
 	if( !RegisterToLayer( index, layer ) )
-		return NULL;
-
+		return shared_ptr<CTextElement>();
+*/
 	AABB2 aabb;
 	aabb.vMin = Vector2( (float)textbox.left,  (float)textbox.top );
 	aabb.vMax = Vector2( (float)textbox.right, (float)textbox.bottom );
-	CGE_Text *pTextElement = new CGE_Text( font_id, text, aabb, align_h, align_v, color );
+	shared_ptr<CTextElement> pTextElement( new CTextElement( font_id, text, aabb, align_h, align_v, color ) );
 	pTextElement->SetFontSize( font_w, font_h );
-	m_vecpElement[index] = pTextElement;
 
-	InitElement( pTextElement, index, layer );
+	bool res = InitElement( pTextElement, layer );
+	if( !res )
+		return shared_ptr<CTextElement>();
 
 	// manager must be set to the element before calling SetLocalTopLeftPos()
 	// because it calls UpdateTextAlignment(), which calls CGraphicsElementManager::GetFont()
@@ -356,18 +479,18 @@ CGE_Text *CGraphicsElementManager::CreateTextBox( int font_id, const std::string
 }
 
 
-CGraphicsElement *CGraphicsElementManager::CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer )
+shared_ptr<CGraphicsElement> CGraphicsElementManager::CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer )
 {
 //	if( !RegisterToLayer( index, layer ) )
 //		return -1;
 
-	return NULL;
+	return shared_ptr<CGraphicsElement>();
 }
 
 
-CGE_Group *CGraphicsElementManager::CreateGroup( CGraphicsElement** apElement, int num_elements, const SPoint& local_origin )
+shared_ptr<CGraphicsElementGroup> CGraphicsElementManager::CreateGroup( shared_ptr<CGraphicsElement> *apElement, int num_elements, const SPoint& local_origin )
 {
-	vector<CGraphicsElement *> vecpElement;
+	vector< shared_ptr<CGraphicsElement> > vecpElement;
 	vecpElement.resize(num_elements);
 	for( int i=0; i<num_elements; i++ )
 	{
@@ -378,11 +501,11 @@ CGE_Group *CGraphicsElementManager::CreateGroup( CGraphicsElement** apElement, i
 }
 
 
-CGE_Group *CGraphicsElementManager::CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin )
+shared_ptr<CGraphicsElementGroup> CGraphicsElementManager::CreateGroup( vector< shared_ptr<CGraphicsElement> >& rvecpElement, const SPoint& local_origin )
 {
 	int index = GetVacantSlotIndex();
 
-	CGE_Group *pGroupElement = new CGE_Group( rvecpElement, Vector2((float)local_origin.x,(float)local_origin.y) );
+	shared_ptr<CGraphicsElementGroup> pGroupElement( new CGraphicsElementGroup( rvecpElement, Vector2((float)local_origin.x,(float)local_origin.y) ) );
 	m_vecpElement[index] = pGroupElement;
 
 	// do not register to layer
@@ -511,15 +634,15 @@ int CGraphicsElementManager::LoadTextureFont( const string& font_texture_filenam
 }
 
 
-bool CGraphicsElementManager::RemoveElement( CGE_Group*& pGroupElement )
+bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElementGroup>& pGroupElement )
 {
-	CGraphicsElement *pElement = pGroupElement;
-	pGroupElement = NULL;
+	boost::shared_ptr<CGraphicsElement> pElement = pGroupElement;
+	pGroupElement = shared_ptr<CGraphicsElementGroup>();
 	return RemoveElement( pElement );
 }
 
 
-bool CGraphicsElementManager::RemoveElement( CGraphicsElement*& pElement )
+bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElement>& pElement )
 {
 	if( !pElement )
 		return false;
@@ -548,17 +671,18 @@ bool CGraphicsElementManager::RemoveElement( CGraphicsElement*& pElement )
 
 	// remove the element from the group to which it currently belongs
 	int group_id = pElement->GetGroupID();
-	CGE_Group *pGroup = NULL;
+	shared_ptr<CGraphicsElementGroup> pGroup;
 	if( 0 <= group_id
 	 && GetElement(group_id)->GetElementType() == CGraphicsElement::TYPE_GROUP
-	 && ( pGroup = dynamic_cast<CGE_Group *>(GetElement(group_id)) ) )
+	 && ( pGroup = dynamic_pointer_cast< CGraphicsElementGroup, CGraphicsElement >(GetElement(group_id)) ) )
 	{
 		pGroup->RemoveElementFromGroup( pElement );
 	}
 
-	SAFE_DELETE( m_vecpElement[element_id] );
+//	SAFE_DELETE( m_vecpElement[element_id] );
+	m_vecpElement[element_id].reset();
 
-	pElement = NULL;
+	pElement.reset();
 
 	return true;
 }
@@ -578,7 +702,7 @@ bool CGraphicsElementManager::RemoveAllElements()
 
 // remove an element from its current layer
 // - does not release the element
-void CGraphicsElementManager::RemoveFromLayer( CGraphicsElement *pElement )
+void CGraphicsElementManager::RemoveFromLayer( boost::shared_ptr<CGraphicsElement> pElement )
 {
 	int layer_index = pElement->GetLayerIndex();
 	if( layer_index < 0 || (int)m_vecLayer.size() <= layer_index )
@@ -593,7 +717,7 @@ void CGraphicsElementManager::RemoveFromLayer( CGraphicsElement *pElement )
 }
 
 
-void CGraphicsElementManager::SetElementToLayer( CGraphicsElement *pElement, int layer_index )
+void CGraphicsElementManager::SetElementToLayer( boost::shared_ptr<CGraphicsElement> pElement, int layer_index )
 {
 	if( layer_index < 0 || NUM_MAX_LAYERS <= layer_index )
 		return;

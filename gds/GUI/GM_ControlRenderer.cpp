@@ -18,7 +18,7 @@ CGM_ControlRenderer::~CGM_ControlRenderer()
 }
 
 
-void CGM_ControlRenderer::GetGraphicsElements( vector<CGraphicsElement *>& rvecpDestElement )
+void CGM_ControlRenderer::GetGraphicsElements( vector<boost::shared_ptr<CGraphicsElement> >& rvecpDestElement )
 {
 	size_t i;
 	for( i=0; i<m_vecpElementToRegisterToParentDialog.size(); i++ )
@@ -64,10 +64,10 @@ void CGM_ControlRenderer::GroupGraphicsElements()
 		size_t i, num_controls = rvecpControl.size();
 
 		// collect graphics elements of controls on the dialog
-		vector<CGraphicsElement *> vecpGraphicsElementsToGroup;
+		vector<boost::shared_ptr<CGraphicsElement> > vecpGraphicsElementsToGroup;
 		for( i=0; i<num_controls; i++ )
 		{
-			vector<CGraphicsElement *> vecpGraphicsElements;
+			vector<boost::shared_ptr<CGraphicsElement> > vecpGraphicsElements;
 
 			CGM_ControlRenderer *pRenderer = rvecpControl[i]->GetRenderer();
 			if( pRenderer )
@@ -101,7 +101,7 @@ void CGM_ControlRenderer::AddEffect( int effect_trigger_event, CElementEffectDes
 }
 */
 
-void CGM_ControlRenderer::SetLocalLayerOffset( int local_layer_index, CGraphicsElement *pElement )
+void CGM_ControlRenderer::SetLocalLayerOffset( int local_layer_index, boost::shared_ptr<CGraphicsElement> pElement )
 {
 	m_vecLocalLayerInfo.push_back( CLocalLayerInfo( local_layer_index, pElement ) );
 }
@@ -130,7 +130,7 @@ void CGM_ControlRenderer::ChangeScale( float scale )
 }
 
 
-void CGM_ControlRenderer::RegisterGraphicsElement( int local_layer_index, CGraphicsElement *pElement )
+void CGM_ControlRenderer::RegisterGraphicsElement( int local_layer_index, boost::shared_ptr<CGraphicsElement> pElement )
 {
 	RegisterGraphicsElementToParentDialog( pElement );
 
@@ -151,7 +151,7 @@ public:
 	int m_TextLayoutV;
 	Point m_vTextOffset;
 	std::string m_Text;
-	CGE_TextElement *m_pElement;
+	CTextElementElement *m_pElement;
 
 public:
 

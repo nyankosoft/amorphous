@@ -5,7 +5,9 @@
 #include "Support/Vec3_StringAux.hpp"
 
 #include <algorithm>
+
 using namespace std;
+using namespace boost;
 
 
 /**
@@ -279,15 +281,15 @@ public:
 	CGraphiceEffectManagerCallback( CAnimatedGraphicsManager *pEffectMgr ) : m_pEffectMgr(pEffectMgr) {}
 	virtual ~CGraphiceEffectManagerCallback() {}
 
-//	virtual void OnCreated( CGraphicsElement *pElement ) {}
+//	virtual void OnCreated( boost::shared_ptr<CGraphicsElement> pElement ) {}
 
 	/// delete graphics effects which are currently being apllied to the deleted element
-	virtual void OnDestroyed( CGraphicsElement *pElement );
+	virtual void OnDestroyed( boost::shared_ptr<CGraphicsElement> pElement );
 
 };
 
 
-void CGraphiceEffectManagerCallback::OnDestroyed( CGraphicsElement *pElement )
+void CGraphiceEffectManagerCallback::OnDestroyed( boost::shared_ptr<CGraphicsElement> pElement )
 {
 	if( m_pEffectMgr->m_vecpEffect.size() == 0 )
 		return;
@@ -308,14 +310,14 @@ void CGraphiceEffectManagerCallback::OnDestroyed( CGraphicsElement *pElement )
 }
 
 
-CGraphicsElement *CGraphicsElementEffect::GetElement()
+boost::shared_ptr<CGraphicsElement> CGraphicsElementEffect::GetElement()
 {
 	return m_pTargetElement;
 //	return m_pManager->GetGraphicsElementManager()->GetElement(m_TargetElementID);
 }
 
 
-CE_TextDraw::CE_TextDraw( CGE_Text *pTargetElement, double start_time )
+CE_TextDraw::CE_TextDraw( boost::shared_ptr<CTextElement> pTargetElement, double start_time )
 :
 CGraphicsElementLinearEffect( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
 {
@@ -398,7 +400,7 @@ void CAnimatedGraphicsManager::SetTimeOffset( double time )
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlpha( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											double start_time,  double end_time,
 											int color_index, float start_alpha, float end_alpha,
 											int trans_mode )
@@ -412,7 +414,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlpha( CGraphicsElement *p
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaTo( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, float end_alpha,
 											  int trans_mode )
@@ -425,7 +427,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaTo( CGraphicsElement 
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											int color_index,
 											const SFloatRGBAColor& start_color,
@@ -443,7 +445,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( CGraphicsElement *p
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											int color_index,
 											const SFloatRGBColor& start_color,
@@ -469,7 +471,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( CGraphicsElement *p
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, const SFloatRGBAColor& end_color,
 											  int trans_mode )
@@ -482,7 +484,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( CGraphicsElement 
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, const SFloatRGBColor& end_color,
 											  int trans_mode )
@@ -495,7 +497,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( CGraphicsElement 
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, U32 end_color,
 											  int trans_mode )
@@ -509,7 +511,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( CGraphicsElement 
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											 double start_time,
 											 Vector2 vDestPos,
 											 Vector2 vInitVel,
@@ -541,7 +543,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( CGraphicsEle
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( CGraphicsElement *pTargetElement, double interval, int color_index )
+CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double interval, int color_index )
 {
 	CE_AlphaBlink *pEffect = new CE_AlphaBlink( pTargetElement );
 	pEffect->m_afAlpha[0] = pTargetElement->GetColor(0).fAlpha;
@@ -555,7 +557,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( CGraphicsElement *pT
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											Vector2 vDestPos,
 											int coord_type, int trans_mode )
@@ -584,7 +586,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( CGraphicsElement *p
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeSize( CGraphicsElement *pTargetElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeSize( boost::shared_ptr<CGraphicsElement> pTargetElement,
 										  double start_time, double end_time,
 											 Vector2 vDestMin, Vector2 vDestMax )
 {
@@ -596,7 +598,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeSize( CGraphicsElement *pT
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ScaleTo( CGraphicsElement *pTargetElement, double start_time, double end_time, float end_scale )
+CGraphicsEffectHandle CAnimatedGraphicsManager::ScaleTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, float end_scale )
 {
 	CE_Scale *p = new CE_Scale( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 //	p->m_vStart = pTargetElement->GetTopLeftPos();
@@ -606,13 +608,13 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ScaleTo( CGraphicsElement *pTarg
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::SetPosition( CGraphicsElement *pTargetElement, double time, const Vector2& vPos )
+CGraphicsEffectHandle CAnimatedGraphicsManager::SetPosition( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, const Vector2& vPos )
 {
 	return CGraphicsEffectHandle::Null();
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( CGraphicsElement *pTargetElement, double time, int color_index, const SFloatRGBAColor& color )
+CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, int color_index, const SFloatRGBAColor& color )
 {
 	if( !pTargetElement )
 		return CGraphicsEffectHandle::Null();
@@ -629,7 +631,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( CGraphicsElement *pTar
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( CGE_Text *pTargetTextElement, double start_time, int num_chars_per_sec )
+CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( boost::shared_ptr<CTextElement> pTargetTextElement, double start_time, int num_chars_per_sec )
 {
 	if( !pTargetTextElement )//|| pTargetTextElement->GetType() != CGraphicsElement::TEXT )
 		return CGraphicsEffectHandle::Null();
@@ -644,7 +646,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( CGE_Text *pTargetTextE
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeVertexColorNonLinear( CGE_Polygon *pTargetPolygonElement,
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeVertexColorNonLinear( boost::shared_ptr<CPolygonElement> pTargetPolygonElement,
 																		    double start_time,
 																			int color_index,
 																			int vertex,

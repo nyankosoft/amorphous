@@ -35,7 +35,7 @@ inline Matrix22 Matrix22Scaling( Scalar scaling_factor )
 HUD_PlayerAircraft::HUD_PlayerAircraft()
 :
 m_bDisplayGlobalRadar(false),
-m_pTimeText(NULL),
+//m_pTimeText(NULL),
 m_pSubDisplay(NULL),
 m_pTextMessageManager(NULL),
 m_NumLastRenderedLocalRadarIcons(0),
@@ -54,7 +54,7 @@ m_LastRenderedIconsOnGlobalRadar(0)
 	m_HUD.SetColor( m_aHUDColor[COLOR_NORMAL].GetARGB32() );
 
 	m_TimerDisplay.m_Color = m_aHUDColor[COLOR_NORMAL].GetARGB32();
-
+/*
 	for( int i=0; i<NUM_MAX_CONTAINER_RECTS; i++ )
 		m_apContainer[i] = NULL;
 
@@ -62,7 +62,7 @@ m_LastRenderedIconsOnGlobalRadar(0)
 		m_apIconOnLocalRadar[i] = NULL;
 
 	for( int i=0; i<NUM_MAX_ICONS_ON_GLOBAL_RADAR; i++ )
-		m_apIconOnGlobalRadar[i] = NULL;
+		m_apIconOnGlobalRadar[i] = NULL;*/
 }
 
 
@@ -123,32 +123,32 @@ void HUD_PlayerAircraft::Init()
 	int base_layer = 30;
 
 	// rect elements for local & global radar
-	pElementMgr->CreateRect(      m_LocalRadarRect, m_aHUDColor[COLOR_BG],          local_radar_layer + 5 );
+	pElementMgr->CreateFillRect(      m_LocalRadarRect, m_aHUDColor[COLOR_BG],          local_radar_layer + 5 );
 	pElementMgr->CreateFrameRect( m_LocalRadarRect, m_aHUDColor[COLOR_FRAME], 4.5f, local_radar_layer );
 
-	m_pGlobalRadarBG = pElementMgr->CreateRect(      local_globalradar_rect, m_aHUDColor[COLOR_BG],          global_radar_layer + 5 );
-	CGE_Rect *pFrame = pElementMgr->CreateFrameRect( local_globalradar_rect, m_aHUDColor[COLOR_FRAME], 4.5f, global_radar_layer );
+	m_pGlobalRadarBG = pElementMgr->CreateFillRect(      local_globalradar_rect, m_aHUDColor[COLOR_BG],          global_radar_layer + 5 );
+	shared_ptr<CFrameRectElement> pFrame = pElementMgr->CreateFrameRect( local_globalradar_rect, m_aHUDColor[COLOR_FRAME], 4.5f, global_radar_layer );
 	m_pGlobalRadarBG->SetTextureCoord( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
 	// inner frame rect that represents the area of operation
 	SRect inner_frame_rect = local_globalradar_rect;
 	inner_frame_rect.Inflate( -85, -85 );
-	CGE_Rect *pInnerFrame = pElementMgr->CreateFrameRect( inner_frame_rect, SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.32f ), 4.0f, global_radar_layer );
+	shared_ptr<CFrameRectElement> pInnerFrame = pElementMgr->CreateFrameRect( inner_frame_rect, SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.32f ), 4.0f, global_radar_layer );
 	pInnerFrame->SetDestAlphaBlendMode( AlphaBlend::One );
 
-	CGraphicsElement *apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
+	boost::shared_ptr<CGraphicsElement> apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
 	m_pGlobalRadar = pElementMgr->CreateGroup( apElement, numof(apElement), m_GlobalRadarRect.GetTopLeftCorner() );
 	m_pGlobalRadar->SetLocalTopLeftPos( m_GlobalRadarRect.GetTopLeftCorner() );
 
 	// small white cross on the center
-	pElementMgr->CreateRect( RectLTRB( x-r, y-w, x+r, y+w ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
-	pElementMgr->CreateRect( RectLTRB( x-w, y-r, x+w, y+r ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
+	pElementMgr->CreateFillRect( RectLTRB( x-r, y-w, x+r, y+w ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
+	pElementMgr->CreateFillRect( RectLTRB( x-w, y-r, x+w, y+r ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
 
 	pElementMgr->LoadFont( GLOBAL_FONT_INDEX, "./Texture/BitstreamVeraSansMono_Bold.dds", CFontBase::FONTTYPE_TEXTURE, 30, 40 );
 
 	// text for time display
-	m_pTimeText = pElementMgr->CreateTextBox( 0, "", RectAtRightTop( 200, 50, 50, 32 ),
-		CGE_Text::TAL_TOP, CGE_Text::TAL_CENTER,
+	m_pTimeText = pElementMgr->CreateText( 0, "", RectAtRightTop( 200, 50, 50, 32 ),
+		CTextElement::TAL_TOP, CTextElement::TAL_CENTER,
 		m_aHUDColor[COLOR_NORMAL], 30, 40, base_layer );
 
 	m_pTimeText->SetDestAlphaBlendMode( AlphaBlend::One );
@@ -161,13 +161,13 @@ void HUD_PlayerAircraft::Init()
 
 	for( size_t i=0; i<NUM_MAX_ICONS_ON_LOCAL_RADAR; i++ )
 	{
-		m_apIconOnLocalRadar[i] = pElementMgr->CreateRect( RectLTWH( -1, -1, 3, 3 ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), local_radar_layer - 2 );
+		m_apIconOnLocalRadar[i] = pElementMgr->CreateFillRect( RectLTWH( -1, -1, 3, 3 ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), local_radar_layer - 2 );
 		m_apIconOnLocalRadar[i]->SetTexture( TEX_RADAR_ICON );
 	}
 
 	for( size_t i=0; i<NUM_MAX_ICONS_ON_GLOBAL_RADAR; i++ )
 	{
-		m_apIconOnGlobalRadar[i] = pElementMgr->CreateRect( RectLTWH( -1, -1, 3, 3 ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), global_radar_layer - 2 );
+		m_apIconOnGlobalRadar[i] = pElementMgr->CreateFillRect( RectLTWH( -1, -1, 3, 3 ), SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f), global_radar_layer - 2 );
 		m_apIconOnGlobalRadar[i]->SetTexture( TEX_RADAR_ICON );
 	}
 

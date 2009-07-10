@@ -10,6 +10,7 @@
 #include "Support/Macro.h"
 
 using namespace std;
+using namespace boost;
 
 /*
 class CGraphicsElementHandle
@@ -20,7 +21,7 @@ public:
 
 class CRectElementHandle
 {
-	CGE_Rect *m_pRect;
+	boost::shared_ptr<CFillRectElement> m_pRect;
 
 public:
 };
@@ -28,11 +29,11 @@ public:
 
 class CTextElementHandle
 {
-	CGE_Text *m_pText;
+	boost::shared_ptr<CTextElement> m_pText;
 
 public:
 
-	CGE_Text *operator ->() { return m_pText; };
+	boost::shared_ptr<CTextElement> operator ->() { return m_pText; };
 };
 */
 
@@ -220,8 +221,8 @@ void CGM_StdStaticRenderer::Init( CGM_Static& static_control )
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 
 //	m_pText = m_pGraphicsElementManager->CreateText( 0, static_control.GetText(), x, y, normal_color, w, h );
-	m_pText = m_pGraphicsElementManager->CreateTextBox( 0, static_control.GetText(), static_control.GetLocalRect(),
-		CGE_Text::TAL_CENTER, CGE_Text::TAL_CENTER, normal_color, w, h );
+	m_pText = m_pGraphicsElementManager->CreateText( 0, static_control.GetText(), static_control.GetLocalRect(),
+		CTextElement::TAL_CENTER, CTextElement::TAL_CENTER, normal_color, w, h );
 
 	// render the text on top
 	RegisterGraphicsElement( 0, m_pText );
@@ -236,16 +237,17 @@ void CGM_StdButtonRenderer::Init( CGM_Button& button )
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect      = m_pGraphicsElementManager->CreateRect(      button.GetLocalRect(), bg_color );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( button.GetLocalRect(), normal_color, 2 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      button.GetLocalRect(), bg_color, normal_color, 2 );
+//	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( button.GetLocalRect(), normal_color, 2 );
 
 	// register elements
 	// - set local layer offset to determine rendering order
-	RegisterGraphicsElement( 0, m_pFrameRect );
+//	RegisterGraphicsElement( 0, m_pFrameRect );
 	RegisterGraphicsElement( 1, m_pRect );
 
 	// register elements that chages colors depending on states
-	RegisterColoredElement( m_pFrameRect );
+//	RegisterColoredElement( m_pFrameRect );
+	RegisterColoredElement( m_pRect->FrameElement() );
 }
 
 
@@ -257,7 +259,7 @@ void CGM_StdCheckBoxRenderer::Init( CGM_CheckBox& checkbox )
 
 	m_pText->SetText( ( checkbox.IsChecked() ? " [x] " : " [ ] " ) + m_BaseTitle );
 
-	m_pText->SetTextAlignment( CGE_Text::TAL_LEFT, CGE_Text::TAL_CENTER );
+	m_pText->SetTextAlignment( CTextElement::TAL_LEFT, CTextElement::TAL_CENTER );
 }
 
 
@@ -280,7 +282,7 @@ void CGM_StdRadioButtonRenderer::Init( CGM_RadioButton& radiobutton )
 
 	m_pText->SetText( ( radiobutton.IsChecked() ? " (x) " : " ( ) " ) + m_BaseTitle );
 
-	m_pText->SetTextAlignment( CGE_Text::TAL_LEFT, CGE_Text::TAL_CENTER );
+	m_pText->SetTextAlignment( CTextElement::TAL_LEFT, CTextElement::TAL_CENTER );
 }
 
 
@@ -302,8 +304,8 @@ void CGM_StdListBoxRenderer::Init( CGM_ListBox& listbox )
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
 
-	m_pRect      = m_pGraphicsElementManager->CreateRect(      listbox.GetLocalRect(), bg_color );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( listbox.GetLocalRect(), normal_color, 2 );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      listbox.GetLocalRect(), bg_color, normal_color, 2 );
+//	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( listbox.GetLocalRect(), normal_color, 2 );
 
 	// create empty text elements
 	int x = listbox.GetLocalRect().left;
@@ -328,17 +330,18 @@ void CGM_StdListBoxRenderer::Init( CGM_ListBox& listbox )
 	int num_text_elements = (int)m_vecpText.size();
 	for( i=0; i<num_text_elements; i++ )
 		RegisterGraphicsElement( local_layer_offset, m_vecpText[i] );
-	RegisterGraphicsElement( local_layer_offset,   m_pFrameRect );
+//	RegisterGraphicsElement( local_layer_offset,   m_pFrameRect );
 	RegisterGraphicsElement( local_layer_offset+1, m_pRect );
 
 	// register elements that changes colors depending on states
-	RegisterColoredElement( m_pFrameRect );
+//	RegisterColoredElement( m_pFrameRect );
+	RegisterColoredElement( m_pRect->FrameElement() );
 //	for( i=0; i<num_text_elements; i++ )
 //		RegisterColoredElement( m_vecpText[i] );
 
 	// not visible by default
 	int dlg_color_index = m_DialogFadeColorIndex;
-	m_pFrameRect->SetAlpha( dlg_color_index, 0 );
+//	m_pFrameRect->SetAlpha( dlg_color_index, 0 );
 	m_pRect->SetAlpha( dlg_color_index, 0 );
 	for( i=0; i<num_text_elements; i++ )
 		m_vecpText[i]->SetAlpha( dlg_color_index, 0 );
@@ -346,7 +349,7 @@ void CGM_StdListBoxRenderer::Init( CGM_ListBox& listbox )
 }
 
 /*
-void CGM_StdListBoxRenderer::SetColorToTextElement( CGE_Text& rTextElement, int state )
+void CGM_StdListBoxRenderer::SetColorToTextElement( CTextElement& rTextElement, int state )
 {
 }
 */
@@ -425,17 +428,7 @@ void CGM_StdListBoxRenderer::OnItemRemoved( CGM_ListBox& listbox, int index )
 
 
 CGM_StdScrollBarRenderer::CGM_StdScrollBarRenderer()
-:
-m_pThumbGroup(NULL)
 {
-	for( int i=0; i<NUM_RECT_ELEMENTS; i++ )
-	{
-		m_apRect[i] = NULL;
-		m_apFrameRect[i] = NULL;
-	}
-
-	for( int i=0; i<NUM_TRIANGLE_ELEMENTS; i++ )
-		m_apTriangle[i] = NULL;
 }
 
 
@@ -457,10 +450,12 @@ void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 
 	for( int i=0; i<NUM_RECT_ELEMENTS; i++ )
 	{
-		m_apFrameRect[i] = pElementMgr->CreateFrameRect( src_rect[i], normal_color, 2 );
-		m_apRect[i]      = pElementMgr->CreateRect(      src_rect[i], bg_color );
+//		m_apFrameRect[i] = pElementMgr->CreateFrameRect( src_rect[i], normal_color, 2 );
+//		m_apRect[i]      = pElementMgr->CreateRect(      src_rect[i], bg_color );
+		m_apRect[i]      = pElementMgr->CreateRect(      src_rect[i], bg_color, normal_color, 2 );
 
-		RegisterColoredElement( m_apFrameRect[i] );
+//		RegisterColoredElement( m_apFrameRect[i] );
+		RegisterColoredElement( m_apRect[i]->FillRectElement() );
 	}
 
 	// make the thumb rect brighter than the other so that it can be distinguished
@@ -469,7 +464,7 @@ void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 	// register all except for the thumb rects
 	for( int i=0; i<NUM_RECT_ELEMENTS - 1; i++ )
 	{
-		RegisterGraphicsElement( 2, m_apFrameRect[i] );
+//		RegisterGraphicsElement( 2, m_apFrameRect[i] );
 		RegisterGraphicsElement( 3, m_apRect[i] );
 	}
 
@@ -480,7 +475,8 @@ void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 	{
 		SRect arrow_rect = arrow_src_rect[i];
 		arrow_rect.Inflate( -6, -6 );
-		m_apTriangle[i] = pElementMgr->CreateTriangle( arrow_dir[i], arrow_rect, normal_color );
+//		m_apTriangle[i] = pElementMgr->CreateTriangle( arrow_dir[i], arrow_rect, normal_color );
+		m_apTriangle[i] = pElementMgr->CreateFillTriangle( arrow_dir[i], arrow_rect, normal_color );
 
 		RegisterColoredElement( m_apTriangle[i] );
 		RegisterGraphicsElement( 2, m_apTriangle[i] );
@@ -494,13 +490,13 @@ void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 	// - rendered on top of other elements
 	// - create a subgroup
 	// - local origin: top-left corner of the rect in local coord of the owner dialog (owner dialog coord)
-	CGraphicsElement *apElement[] = { m_apFrameRect[RE_THUMB], m_apRect[RE_THUMB] };
+	boost::shared_ptr<CGraphicsElement> apElement[] = { /*m_apFrameRect[RE_THUMB],*/ m_apRect[RE_THUMB] };
 	SRect thumb_rect_in_owner_dlg_coord = scrollbar.GetLocalThumbButtonRectInOwnerDialogCoord();
 	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement), thumb_rect_in_owner_dlg_coord.GetTopLeftCorner() );
 
 	RegisterGraphicsElementToParentDialog( m_pThumbGroup );
 
-	SetLocalLayerOffset( 0, m_apFrameRect[RE_THUMB] );
+//	SetLocalLayerOffset( 0, m_apFrameRect[RE_THUMB] );
 	SetLocalLayerOffset( 1, m_apRect[RE_THUMB] );
 }
 
@@ -526,30 +522,30 @@ void CGM_StdSliderRenderer::Init( CGM_Slider& slider )
 	// slider frame
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect                  = m_pGraphicsElementManager->CreateRect(      slider.GetLocalRect(), bg_color );
-	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( slider.GetLocalRect(), normal_color, 2 );
+	m_pRect                  = m_pGraphicsElementManager->CreateRect(      slider.GetLocalRect(), bg_color, normal_color, 2 );
+//	m_pFrameRect             = m_pGraphicsElementManager->CreateFrameRect( slider.GetLocalRect(), normal_color, 2 );
 
 	// slider button
 	SRect btn_rect = slider.GetButtonRect();
 	SRect local_btn_rect = RectLTWH( 0, 0, btn_rect.GetWidth(), btn_rect.GetHeight() );
-	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect(      local_btn_rect,  bg_color );
-	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( local_btn_rect,  normal_color, 2 );
+	m_pSliderButtonRect      = m_pGraphicsElementManager->CreateRect(      local_btn_rect,  bg_color, normal_color, 2 );
+//	m_pSliderButtonFrameRect = m_pGraphicsElementManager->CreateFrameRect( local_btn_rect,  normal_color, 2 );
 
 	SRect dot_rect = local_btn_rect;
 	dot_rect.Inflate( -dot_rect.GetWidth() / 4, -dot_rect.GetHeight() / 4 );
-	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateRect( dot_rect, normal_color, 2 );
+	m_pSliderButtonDot       = m_pGraphicsElementManager->CreateFillRect( dot_rect, normal_color, 2 );
 
 	const SRect slider_rect = slider.GetBoundingBox();
 	const SPoint slider_topleft = slider_rect.GetTopLeftCorner(); // global
 	const SPoint btn_local_topleft = slider.GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local coord of owner dialog
 
 	// subgroup for slider button
-	vector<CGraphicsElement *> vecpButtonElement;
+	vector<boost::shared_ptr<CGraphicsElement> > vecpButtonElement;
 	vecpButtonElement.push_back( m_pSliderButtonRect );
-	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
+//	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
 	vecpButtonElement.push_back( m_pSliderButtonDot );
-	m_pSliderButtonRect->SetLocalTopLeftPos( SPoint(0,0) );
-	m_pSliderButtonFrameRect->SetLocalTopLeftPos( SPoint(0,0) );
+	m_pSliderButtonRect->SetLocalTopLeftPos( Vector2(0,0) );
+//	m_pSliderButtonFrameRect->SetLocalTopLeftPos( SPoint(0,0) );
 	m_pSliderButtonDot->SetLocalTopLeftPos( SPoint(0,0) + dot_rect.GetTopLeftCorner() );
 	m_pSliderButton = m_pGraphicsElementManager->CreateGroup( vecpButtonElement, btn_local_topleft );
 
@@ -565,18 +561,20 @@ void CGM_StdSliderRenderer::Init( CGM_Slider& slider )
 
 	// set different local layer offset for each grouped element
 	SetLocalLayerOffset( 0, m_pSliderButtonDot );
-	SetLocalLayerOffset( 0, m_pSliderButtonFrameRect );
+//	SetLocalLayerOffset( 0, m_pSliderButtonFrameRect );
 	SetLocalLayerOffset( 1, m_pSliderButtonRect );
 
 	// register elements and set local layer offset to determine rendering order
 	// - these guys don't belong to any subgroup of the renderer so each of them can be
 	//   registered with a single call of RegisterGraphicsElement()
-	RegisterGraphicsElement( 2, m_pFrameRect );
+//	RegisterGraphicsElement( 2, m_pFrameRect );
 	RegisterGraphicsElement( 3, m_pRect );
 
 	// register elements that chages colors depending on states
-	RegisterColoredElement( m_pFrameRect );
-	RegisterColoredElement( m_pSliderButtonFrameRect );
+//	RegisterColoredElement( m_pFrameRect );
+//	RegisterColoredElement( m_pSliderButtonFrameRect );
+	RegisterColoredElement( m_pRect->FrameElement() );
+	RegisterColoredElement( m_pSliderButtonRect->FrameElement() );
 
 }
 
@@ -601,9 +599,6 @@ void CGM_StdSliderRenderer::OnSliderValueChanged( CGM_Slider& slider )
 //========================================================================
 
 CGM_StdDialogRenderer::CGM_StdDialogRenderer()
-:
-m_pRect(NULL),
-m_pFrameRect(NULL)
 {
 	m_bUseSlideEffects = false;
 }
@@ -613,13 +608,14 @@ void CGM_StdDialogRenderer::Init( CGM_Dialog& dialog )
 {
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
-	m_pRect      = m_pGraphicsElementManager->CreateRect(      dialog.GetLocalRect(), bg_color );
+	m_pRect      = m_pGraphicsElementManager->CreateRect(      dialog.GetLocalRect(), bg_color, normal_color, 4 );
+//	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( dialog.GetLocalRect(), normal_color, 2 );
+
 //	m_pRect      = m_pGraphicsElementManager->CreateRoundRect( dialog.GetLocalRect(), bg_color, 6 );
-	m_pFrameRect = m_pGraphicsElementManager->CreateFrameRect( dialog.GetLocalRect(), normal_color, 2 );
 //	m_pFrameRect = m_pGraphicsElementManager->CreateRoundFrameRect( dialog.GetLocalRect(), normal_color, 6, 6 );
 
 	// render the frame rect on the background rect
-	RegisterGraphicsElement( 0, m_pFrameRect );
+//	RegisterGraphicsElement( 0, m_pFrameRect );
 	RegisterGraphicsElement( 1, m_pRect );
 }
 
@@ -694,13 +690,13 @@ void CGM_StdCaptionRenderer::InitCaptionRenderer()
 
 	SRect caption_rect = m_pGraphicsElementManager->RectAtCenterBottom( 960, 60, 90 );
 
-	CGE_Rect *pRect = m_pGraphicsElementManager->CreateRect(      caption_rect, bg_color );
+	shared_ptr<CFillRectElement> pRect = m_pGraphicsElementManager->CreateFillRect(      caption_rect, bg_color );
 
-	m_pCaptionText = m_pGraphicsElementManager->CreateTextBox(
+	m_pCaptionText = m_pGraphicsElementManager->CreateText(
 		font_id, // font id
 		"",// text - set this null. update the text in OnFocusedControlChanged()
 		caption_rect,
-		CGE_Text::TAL_LEFT, CGE_Text::TAL_CENTER,
+		CTextElement::TAL_LEFT, CTextElement::TAL_CENTER,
 		SFloatRGBAColor(0.9f,0.9f,0.9f,1.0f), w, h );
 
 	// render the text on top

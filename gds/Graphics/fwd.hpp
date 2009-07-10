@@ -93,14 +93,25 @@ class CShaderParamsLoader;
 class CMeshContainerRenderMethod;
 class CMeshContainerNodeRenderMethod;
 
-
 class CGraphicsElement;
-class CGE_Rect;
-class CGE_Triangle;
-class CGE_Polygon;
-class CGE_Text;
-class CGE_Group;
-class CGE_Primitive;
+class CRectElement;
+class CFillRectElement;
+class CFrameRectElement;
+class CCombinedRectElement;
+class CRoundRectElement;
+class CRoundFillRectElement;
+class CRoundFrameRectElement;
+class CCombinedRectElement;
+class CTriangleElement;
+class CFillTriangleElement;
+class CFrameTriangleElement;
+class CCombinedTriangleElement;
+class CPolygonElement;
+class CFillPolygonElement;
+class CFramePolygonElement;
+class CTextElement;
+class CGraphicsElementGroup;
+class CPrimitiveElement;
 class CGraphicsElementManager;	
 class CGraphicsElementManagerCallback;
 

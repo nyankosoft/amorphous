@@ -30,11 +30,11 @@ private:
 	{
 	public:
 
-		CGraphicsElement *m_pElement;
+		boost::shared_ptr<CGraphicsElement> m_pElement;
 		CGraphicsEffectHandle m_PrevEffect;
 
-		ColoredElementHolder() : m_pElement(NULL) {}
-		ColoredElementHolder(CGraphicsElement *pElement) : m_pElement(pElement) {}
+		ColoredElementHolder() {}
+		ColoredElementHolder(boost::shared_ptr<CGraphicsElement> pElement) : m_pElement(pElement) {}
 	};
 
 	std::vector<ColoredElementHolder> m_vecColoredElement;
@@ -53,7 +53,7 @@ protected:
 	/// - focus in/out, mouse cursor entered/left
 	void ChangeColorToCurrentState();
 
-	void RegisterColoredElement(CGraphicsElement *pElement) { m_vecColoredElement.push_back( ColoredElementHolder(pElement) ); }
+	void RegisterColoredElement(boost::shared_ptr<CGraphicsElement> pElement) { m_vecColoredElement.push_back( ColoredElementHolder(pElement) ); }
 
 	virtual void OnGroupElementCreated();
 
@@ -105,11 +105,11 @@ class CGM_StdStaticRenderer : public CGM_StdControlRenderer
 {
 protected:
 
-	CGE_Text *m_pText;
+	boost::shared_ptr<CTextElement> m_pText;
 
 public:
 
-	CGM_StdStaticRenderer() : m_pText(NULL) {}
+	CGM_StdStaticRenderer() {}
 
 	virtual ~CGM_StdStaticRenderer() {}
 
@@ -121,12 +121,13 @@ class CGM_StdButtonRenderer : public CGM_StdStaticRenderer
 {
 protected:
 
-	CGE_Rect *m_pRect;
-	CGE_Rect *m_pFrameRect;
+//	CGE_Rect *m_pRect;
+//	CGE_Rect *m_pFrameRect;
+	boost::shared_ptr<CCombinedRectElement> m_pRect;
 
 public:
 
-	CGM_StdButtonRenderer() : m_pRect(NULL), m_pFrameRect(NULL) {}
+	CGM_StdButtonRenderer() {}
 
 	virtual ~CGM_StdButtonRenderer() {}
 
@@ -215,10 +216,11 @@ class CGM_StdListBoxRenderer : public CGM_StdControlRenderer
 {
 protected:
 
-	CGE_Rect *m_pRect;
-	CGE_Rect *m_pFrameRect;
+//	CGE_Rect *m_pRect;
+//	CGE_Rect *m_pFrameRect;
+	boost::shared_ptr<CCombinedRectElement> m_pRect;
 
-	std::vector<CGE_Text *> m_vecpText;
+	std::vector<boost::shared_ptr<CTextElement> > m_vecpText;
 
 protected:
 
@@ -226,7 +228,7 @@ protected:
 
 public:
 
-	CGM_StdListBoxRenderer() : m_pRect(NULL), m_pFrameRect(NULL) {}
+	CGM_StdListBoxRenderer() {}
 
 	virtual ~CGM_StdListBoxRenderer() {}
 
@@ -262,12 +264,14 @@ protected:
 		NUM_TRIANGLE_ELEMENTS
 	};
 
-	CGE_Rect *m_apRect[NUM_RECT_ELEMENTS];
-	CGE_Rect *m_apFrameRect[NUM_RECT_ELEMENTS];
+//	CGE_Rect *m_apRect[NUM_RECT_ELEMENTS];
+//	CGE_Rect *m_apFrameRect[NUM_RECT_ELEMENTS];
+	boost::shared_ptr<CCombinedRectElement> m_apRect[NUM_RECT_ELEMENTS];
 
-	CGE_Triangle *m_apTriangle[NUM_TRIANGLE_ELEMENTS];
+//	CGE_Triangle *m_apTriangle[NUM_TRIANGLE_ELEMENTS];
+	boost::shared_ptr<CFillTriangleElement> m_apTriangle[NUM_TRIANGLE_ELEMENTS];
 
-	CGE_Group *m_pThumbGroup;
+	boost::shared_ptr<CGraphicsElementGroup> m_pThumbGroup;
 
 protected:
 
@@ -297,26 +301,29 @@ public:
 
 class CGM_StdSliderRenderer : public CGM_StdControlRenderer
 {
-	CGE_Rect *m_pRect;
-	CGE_Rect *m_pFrameRect;
+//	CGE_Rect *m_pRect;
+//	CGE_Rect *m_pFrameRect;
+	boost::shared_ptr<CCombinedRectElement> m_pRect;
 
 	// button
-	CGE_Rect *m_pSliderButtonRect;
-	CGE_Rect *m_pSliderButtonFrameRect;
-	CGE_Rect *m_pSliderButtonDot;
+//	CGE_Rect *m_pSliderButtonRect;
+//	CGE_Rect *m_pSliderButtonFrameRect;
+	boost::shared_ptr<CCombinedRectElement> m_pSliderButtonRect;
+//	CGE_Rect *m_pSliderButtonDot;
+	boost::shared_ptr<CFillRectElement> m_pSliderButtonDot;
 
-	CGE_Group *m_pSliderButton;
+	boost::shared_ptr<CGraphicsElementGroup> m_pSliderButton;
 
 public:
 
 	CGM_StdSliderRenderer()
-		:
-	m_pRect(NULL),
-	m_pFrameRect(NULL),
-	m_pSliderButtonRect(NULL),
-	m_pSliderButtonFrameRect(NULL),
-	m_pSliderButtonDot(NULL),
-	m_pSliderButton(NULL)
+//		:
+//	m_pRect(NULL),
+//	m_pFrameRect(NULL),
+//	m_pSliderButtonRect(NULL),
+//	m_pSliderButtonFrameRect(NULL),
+//	m_pSliderButtonDot(NULL),
+//	m_pSliderButton(NULL)
 	{}
 
 	virtual ~CGM_StdSliderRenderer() {}
@@ -329,8 +336,9 @@ public:
 
 class CGM_StdDialogRenderer : public CGM_StdControlRenderer
 {
-	CGE_Rect *m_pRect;
-	CGE_Rect *m_pFrameRect;
+//	CGE_Rect *m_pRect;
+//	CGE_Rect *m_pFrameRect;
+	boost::shared_ptr<CCombinedRectElement> m_pRect;
 
 	CGraphicsEffectHandle m_PrevSlideEffect;
 
@@ -358,7 +366,7 @@ protected:
 
 	CGraphicsEffectHandle m_PrevTextDrawEffect;
 
-	CGE_Text *m_pCaptionText;
+	boost::shared_ptr<CTextElement> m_pCaptionText;
 
 protected:
 
@@ -366,7 +374,7 @@ protected:
 
 public:
 
-	CGM_StdCaptionRenderer() : m_pCaptionText(NULL) {}
+	CGM_StdCaptionRenderer() {}
 
 	virtual ~CGM_StdCaptionRenderer() {}
 

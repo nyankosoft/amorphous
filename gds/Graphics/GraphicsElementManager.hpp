@@ -30,10 +30,9 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/memory_helpers.hpp"
 
-#include <vector>
 #include <list>
-#include <string>
 #include <algorithm>
+#include <boost/shared_ptr.hpp>
 
 
 class CGraphicsElementManagerBase// : public CGraphicsComponent
@@ -45,19 +44,19 @@ public:
 	virtual void Release() {}
 	virtual void ReleaseGraphicsResources() {}
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
-
-	virtual CGE_Rect *CreateRect( const SRect& rect, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
-	virtual CGE_Rect *CreateFrameRect( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 ) { return NULL; }
-	virtual CGE_Rect *CreateRoundRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, int layer = 0 ) { return NULL; }
-	virtual CGE_Rect *CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float border_width, int layer = 0 ) { return NULL; }
-	virtual CGE_Triangle *CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
-	virtual CGE_Triangle *CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 ) { return NULL; }
-	virtual CGE_Polygon *CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
-	virtual CGE_Text *CreateText( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
-	virtual CGE_Text *CreateTextBox( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
-	virtual CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
-	virtual CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin ) { return NULL; }
-	virtual CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements, const SPoint& local_origin ) { return NULL; }
+/*
+	virtual boost::shared_ptr<CRectElement> CreateRect( const SRect& rect, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CRectElement> CreateFrameRect( const SRect& rect, const SFloatRGBAColor& color, float frame_width, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CRectElement> CreateRoundRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CRectElement> CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float frame_width, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CTriangleElement> CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CTriangleElement> CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float frame_width, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CFillPolygonElement> CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CTextElement>CreateText( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CTextElement>CreateText( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CGraphicsElement> CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
+	virtual boost::shared_ptr<CGraphicsElementGroup>CreateGroup( std::vector< boost::shared_ptr<CGraphicsElement> >& rvecpElement, const SPoint& local_origin ) { return NULL; }
+	virtual boost::shared_ptr<CGraphicsElementGroup>CreateGroup( boost::shared_ptr<CGraphicsElement> *apElement, int num_elements, const SPoint& local_origin ) { return NULL; }
 	virtual int LoadTexture( const std::string& tex_filename ) { return -1; }
 	virtual int LoadFont( const std::string& font_name ) { return -1; }
 	virtual bool LoadFont( int font_id, const std::string& font_name, int font_type, int w, int h, float bold = 0.0f, float italic = 0.0f ) { return false; }
@@ -69,11 +68,11 @@ public:
 	virtual bool RemoveElement( CGraphicsElement*& pElement ) { return false; }
 	virtual bool RemoveAllElements() { return false; }
 	virtual void Render() {}
-	virtual CGraphicsElement *GetElement( int id ) { return NULL; }
+	virtual boost::shared_ptr<CGraphicsElement> GetElement( int id ) { return NULL; }
 	virtual void SetScale( float scale ) {}
 	virtual void SetReferenceResolutionWidth( int res_width ) {}
 
-	void SetCallback( CGraphicsElementManagerCallbackSharedPtr callback_ptr ) {}
+	void SetCallback( CGraphicsElementManagerCallbackSharedPtr callback_ptr ) {}*/
 };
 
 
@@ -98,7 +97,7 @@ class CGraphicsElementManager : public CGraphicsElementManagerBase, public CGrap
 		NUM_MAX_LAYERS = 96,
 	};
 
-	std::vector<CGraphicsElement *> m_vecpElement;
+	std::vector< boost::shared_ptr<CGraphicsElement> > m_vecpElement;
 
 //	std::vector<CTextureEntity> m_vecTexHandle;	CTextureEntity cannot be used with vector<> - relase & reallocation of vector will screw up the release & load mechanism
 	TCFixedVector<CTextureHandle,NUM_MAX_TEXTURES> m_vecTexHandle;
@@ -121,7 +120,7 @@ class CGraphicsElementManager : public CGraphicsElementManagerBase, public CGrap
 		CLayer() {}
 		virtual ~CLayer() {}
 
-		inline bool RemoveElementFromLayer( CGraphicsElement *pElement );
+		inline bool RemoveElementFromLayer( boost::shared_ptr<CGraphicsElement>& pElement );
 
 		friend class CGraphicsElementManager;
 	};
@@ -140,26 +139,19 @@ private:
 
 	bool RegisterToLayer( int element_index, int layer_index );
 
-	void InitElement( CGraphicsElement *pElement, int element_index, int layer_index );
+	bool InitElement( boost::shared_ptr<CGraphicsElement> pElement, int layer_index );
 
-	void RemoveFromLayer( CGraphicsElement *pElement );
+	void RemoveFromLayer( boost::shared_ptr<CGraphicsElement> pElement );
 
-    CGE_Rect *InitRectElement( int element_index, int layer_index, const SRect& non_scaled_rect, const SFloatRGBAColor& color, C2DPrimitive *pRectPrimitive );
+//	boost::shared_ptr<CRectElement> InitRectElement( int element_index, int layer_index, const SRect& non_scaled_rect, const SFloatRGBAColor& color, C2DPrimitive *pRectPrimitive );
 
-    CGE_Triangle *InitTriangleElement( int element_index, int layer_index, const SRect& non_scaled_rect, const SFloatRGBAColor& color, C2DPrimitive *pRectPrimitive );
+//	boost::shared_ptr<CTriangleElement> InitTriangleElement( int element_index, int layer_index, const SRect& non_scaled_rect, const SFloatRGBAColor& color, C2DPrimitive *pRectPrimitive );
 
-	void InitPrimitiveElement( CGE_Primitive *pElement, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect, const SFloatRGBAColor& color, int element_index, int layer_index );
-
-protected:
-
-	// 19:15 2007/07/29 changed to a non-singleton class
-//$	static CSingleton<CGraphicsElementManager> m_obj;
+	bool InitPrimitiveElement( boost::shared_ptr<CPrimitiveElement>, const SRect& non_scaled_rect, const SFloatRGBAColor& color, int layer_index );
 
 public:
 
 	CGraphicsElementManager();
-
-//$	static CGraphicsElementManager* Get() { return m_obj.get(); }
 
 	~CGraphicsElementManager();
 
@@ -170,39 +162,43 @@ public:
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
 	//
-	// functions to reate primitives
+	// functions to create primitives
 	//
 
-	CGE_Rect *CreateRect( const SRect& rect, const SFloatRGBAColor& color, int layer = 0 );
+	boost::shared_ptr<CCombinedRectElement> CreateRect( const SRect& rect, const SFloatRGBAColor& fill_color_0, const SFloatRGBAColor& frame_color_0, float frame_width, int layer = 0 );
+	boost::shared_ptr<CFillRectElement> CreateFillRect( const SRect& rect, const SFloatRGBAColor& fill_color_0, int layer = 0 );
+	boost::shared_ptr<CFrameRectElement> CreateFrameRect( const SRect& rect, const SFloatRGBAColor& frame_color_0, float frame_width, int layer = 0 );
 
-	CGE_Rect *CreateFrameRect( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 );
+	boost::shared_ptr<CCombinedRoundRectElement> CreateRoundRect( const SRect& rect, const SFloatRGBAColor& fill_color_0, const SFloatRGBAColor& frame_color_0, float corner_radius, float frame_width, int layer = 0 );
+	boost::shared_ptr<CRoundFillRectElement> CreateRoundFillRect( const SRect& rect, const SFloatRGBAColor& fill_color_0, float corner_radius, int layer = 0 );
+	boost::shared_ptr<CRoundFrameRectElement> CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& frame_color_0, float corner_radius, float frame_width, int layer = 0 );
 
-	CGE_Rect *CreateRoundRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, int layer = 0 );
+	boost::shared_ptr<CCombinedTriangleElement> CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& fill_color_0, const SFloatRGBAColor& frame_color_0, float frame_width, int layer = 0 );
+	boost::shared_ptr<CFillTriangleElement> CreateFillTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& fill_color_0, int layer = 0 );
+	boost::shared_ptr<CFrameTriangleElement> CreateFrameTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& frame_color_0, float frame_width, int layer = 0 );
 
-	CGE_Rect *CreateRoundFrameRect( const SRect& rect, const SFloatRGBAColor& color, float corner_radius, float border_width, int layer = 0 );
-
-	CGE_Triangle *CreateTriangle( C2DTriangle::Direction dir, const SRect& rect, const SFloatRGBAColor& color, int layer = 0 );
-
-	CGE_Triangle *CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& color, float border_width, int layer = 0 );
+//	boost::shared_ptr<CTriangleElement> CreateTriangle( const SRect& rect, const SFloatRGBAColor& fill_color_0, const SFloatRGBAColor& frame_color_0, float frame_width, int layer = 0 );
+//	boost::shared_ptr<CTriangleElement> CreateFillTriangle( const SRect& rect, const SFloatRGBAColor& fill_color_0, int layer = 0 );
+//	boost::shared_ptr<CTriangleElement> CreateFrameTriangle( const SRect& rect, const SFloatRGBAColor& frame_color_0, float frame_width, int layer = 0 );
 
 	///  NOT IMPLEMENTED
 	/// - Does CreatePolygon() suffice or CreateTriangle() should be available?
-	CGraphicsElement *CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 );
+	boost::shared_ptr<CGraphicsElement> CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 );
 
-	CGE_Polygon *CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style, const SFloatRGBAColor& color, int layer = 0 );
+	boost::shared_ptr<CFillPolygonElement> CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style, const SFloatRGBAColor& color, int layer = 0 );
 
 	/// \param font_w, font_h font size. default size is used when set to zero or omitted.
 	/// Default font size is the size of font obtained from element manager by the font id of the text element
-	CGE_Text *CreateText( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 );
+	boost::shared_ptr<CTextElement> CreateText( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 );
 
 	/// \param font_w, font_h same as CreateText()
-	CGE_Text *CreateTextBox( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 );
+	boost::shared_ptr<CTextElement> CreateText( int font_id, const std::string& text, const SRect& textbox, int align_h, int align_v, const SFloatRGBAColor& color, int font_w = 0, int font_h = 0, int layer = 0 );
 
-	CGE_Group *CreateGroup( std::vector<CGraphicsElement *>& rvecpElement, const SPoint& local_origin );
+	boost::shared_ptr<CGraphicsElementGroup> CreateGroup( std::vector< boost::shared_ptr<CGraphicsElement> >& rvecpElement, const SPoint& local_origin );
 
-	CGE_Group *CreateGroup( CGraphicsElement** apElement, int num_elements, const SPoint& local_origin );
+	boost::shared_ptr<CGraphicsElementGroup>CreateGroup( boost::shared_ptr<CGraphicsElement> *apElement, int num_elements, const SPoint& local_origin );
 
-	inline CGraphicsElement *GetElement( int id );
+	inline boost::shared_ptr<CGraphicsElement> GetElement( int id );
 
 
 	bool LoadTexture( int texture_id, const std::string& tex_filename );
@@ -219,14 +215,16 @@ public:
 	/// \return borrowed reference to a font object
 	inline CFontBase *GetFont( int font_id );
 
-	bool RemoveElement( CGE_Group*& pGroupElement );
-	bool RemoveElement( CGraphicsElement*& pElement );
+//	bool RemoveElement( CGraphicsElementGroup*& pGroupElement );
+	bool RemoveElement( boost::shared_ptr<CGraphicsElementGroup>& pGroupElement );
+
+	bool RemoveElement( boost::shared_ptr<CGraphicsElement>& pElement );
 
 	/// deletes all the graphics elements.
 	/// vector elements are not resized to zero
 	bool RemoveAllElements();
 
-	void SetElementToLayer( CGraphicsElement *pElement, int layer_index );
+	void SetElementToLayer( boost::shared_ptr<CGraphicsElement> pElement, int layer_index );
 
 	void Render();
 
@@ -240,7 +238,7 @@ public:
 
 // ==================================== inline implementations ====================================
 
-inline bool CGraphicsElementManager::CLayer::RemoveElementFromLayer( CGraphicsElement *pElement )
+inline bool CGraphicsElementManager::CLayer::RemoveElementFromLayer( boost::shared_ptr<CGraphicsElement>& pElement )
 {
 	int element_index = pElement->GetElementIndex();
 
@@ -257,7 +255,7 @@ inline bool CGraphicsElementManager::CLayer::RemoveElementFromLayer( CGraphicsEl
 	return false;
 }
 
-inline CGraphicsElement *CGraphicsElementManager::GetElement( int id )
+inline boost::shared_ptr<CGraphicsElement> CGraphicsElementManager::GetElement( int id )
 {
 	return m_vecpElement[id];
 }

@@ -33,6 +33,7 @@
 #include <list>
 #include <string>
 #include <algorithm>
+#include <boost/weak_ptr.hpp>
 
 
 inline AABB2 AABB2Null()
@@ -77,6 +78,8 @@ public:
 protected:
 
 	CGraphicsElementManager *m_pManager;
+
+	boost::weak_ptr<CGraphicsElement> m_pSelf;
 
 	SFloatRGBAColor m_aColor[NUM_COLORS];
 
@@ -150,6 +153,10 @@ private:
 
 public:
 
+	virtual int GetElementType() const = 0;
+
+	virtual bool BelongsToLayer() const { return true; }
+
 	virtual void Draw() = 0;
 
 	virtual void SetTexture( int texture_id ) { m_TextureID = texture_id; }
@@ -174,7 +181,7 @@ public:
 	/// - Moves the element.
 	/// - Does not change the local transform.
 	/// - Updates the poses of all the descendants.
-	void SetLocalTopLeftPos( Vector2 vPos );
+	virtual void SetLocalTopLeftPos( Vector2 vPos );
 
 	void SetLocalTopLeftPos( SPoint pos ) { SetLocalTopLeftPos(Vector2((float)pos.x,(float)pos.y) ); }
 
@@ -212,7 +219,7 @@ public:
 	void SetLocalRotationAngle( const float angle_in_deg )
 	{
 		m_LocalTransform.matOrient = Matrix22( deg_to_rad( angle_in_deg ) );
-/*		CGE_Group *pParent = GetParent();
+/*		CGraphicsElementGroup *pParent = GetParent();
 		if( pParent )
 		{
 			m_fRotationAngle = pParent->GetRotationAngle() + angle;
@@ -242,7 +249,7 @@ public:
 
 	float GetAlpha( int color_index ) const { return m_aColor[color_index].fAlpha; }
 
-	virtual void SetAlpha(  int color_index, float a ) { m_aColor[color_index].fAlpha = a; }
+	virtual void SetAlpha( int color_index, float a ) { m_aColor[color_index].fAlpha = a; }
 
 	virtual void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) {}
 
@@ -250,11 +257,17 @@ public:
 
 	virtual void SetTextureCoord( const TEXCOORD2& vMin, const TEXCOORD2& vMax ) {}
 
+	virtual void SetFillColor( int color_index, const SFloatRGBAColor& color ) {}
+
+	virtual void SetFrameColor( int color_index, const SFloatRGBAColor& color ) {}
+
 	/// \param stretch_x non-scaled value
 	/// \param stretch_y non-scaled value
 	virtual void SetTextureCoord( int stretch_x, int stretch_y,
 		                           const TEXCOORD2& left_top_offset = TEXCOORD2(0,0),
 								   TextureAddress::Mode mode = TextureAddress::Wrap ) {}
+
+	virtual void SetFrameWidth( int width ) {}
 
 	void SetGraphicsElementManager( CGraphicsElementManager *pMgr ) { m_pManager = pMgr; }
 
@@ -273,20 +286,27 @@ public:
 
 	int GetElementIndex() const { return m_ElementIndex; }
 
-	virtual int GetElementType() const = 0;
-
 	enum eType
 	{
-		TYPE_RECT,
-//		TYPE_FRAMERECT,
-		TYPE_TRIANGLE,
-		TYPE_POLYGON,
+		TYPE_COMBINEDRECT,
+		TYPE_FILLRECT,
+		TYPE_FRAMERECT,
+		TYPE_COMBINEDROUNDRECT,
+		TYPE_ROUNDFILLRECT,
+		TYPE_ROUNDFRAMERECT,
+		TYPE_COMBINEDTRIANGLE,
+		TYPE_FILLTRIANGLE,
+		TYPE_FRAMETRIANGLE,
+		TYPE_COMBINEDPOLYGON,
+		TYPE_FILLPOLYGON,
+		TYPE_FRAMEPOLYGON,
 		TYPE_TEXT,
 		TYPE_GROUP,
 		NUM_ELEMENT_TYPES
 	};
 
-	friend class CGE_Group;
+	friend class CCombinedPrimitiveElement;
+	friend class CGraphicsElementGroup;
 	friend class CGraphicsElementManager;
 };
 
@@ -297,7 +317,7 @@ inline SFloatRGBAColor CGraphicsElement::GetBlendedColor() const
 }
 
 
-class CGE_Primitive : public CGraphicsElement
+class CPrimitiveElement : public CGraphicsElement
 {
 protected:
 
@@ -305,7 +325,12 @@ protected:
 	/// - owned reference
 	/// - holds scaled border if it is a frame primitive
 	/// - holds scaled corner radius if it is a round-cornered primitive
-	C2DPrimitive *m_pPrimitive;
+//	C2DPrimitive *m_pFillPrimitive;  ///< Set by derived class. Borrowed reference.
+//	C2DPrimitive *m_pFramePrimitive; ///< Set by derived class. Borrowed reference.
+	C2DPrimitive *m_pPrimitive; ///< Set by derived class. Borrowed reference.
+
+//	SFloatRGBAColor m_aFillColor[NUM_COLORS];
+	SFloatRGBAColor m_aFrameColor[NUM_COLORS];
 
 	/// Holds non-scaled value of frame border width.
 	/// Used by the following primitives
@@ -327,20 +352,22 @@ protected:
 
 	void UpdatePositionsInternalForNonRotatedElement( const Vector2& global_transform );
 
+	void InitPrimitive();
+
 public:
 
 	/// \param non_scaled_aabb represents a non-scaled rectangular region of the element
 	/// \param pPrimitive owned reference to a 2d primitive that holds scaled position
-	CGE_Primitive( C2DPrimitive *pPrimitive )
+	CPrimitiveElement()
 		:
 //	CGraphicsElement(non_scaled_aabb),
-	m_pPrimitive(pPrimitive),
+	m_pPrimitive(NULL),
 	m_OrigBorderWidth(1),
 	m_CornerRadius(0)
 	{
 	}
 
-	virtual ~CGE_Primitive() { SafeDelete( m_pPrimitive ); }
+	virtual ~CPrimitiveElement() {}
 
 	virtual void SetTopLeftPosInternal( Vector2 vPos );
 
@@ -358,12 +385,18 @@ public:
 	{
 		m_pPrimitive->SetTextureCoords( (int)(stretch_x * m_fScale), (int)(stretch_y * m_fScale), left_top_offset, mode );
 	}
+
+	virtual void SetFillColor( int color_index, const SFloatRGBAColor& color );
+
+	virtual void SetFrameColor( int color_index, const SFloatRGBAColor& color );
+
+	virtual void SetVertexColor( int vertex, int color_index, const SFloatRGBAColor& color ) {}
 };
 
 
 //=============================== inline implementations ===============================
 
-inline void CGE_Primitive::SetBlendedColorToPrimitive()
+inline void CPrimitiveElement::SetBlendedColorToPrimitive()
 {
 	// update vertex colors
 	// the same color is set to all the 4 vertices of the primitive
@@ -375,9 +408,8 @@ inline void CGE_Primitive::SetBlendedColorToPrimitive()
 /**
   - graphics element for rectangle
 */
-class CGE_Rect : public CGE_Primitive
+class CRectElement : public CPrimitiveElement
 {
-
 	/// blended with CGraphicsElement::m_aColor[]
 	SFloatRGBAColor m_aCornerColor[4];
 
@@ -387,9 +419,11 @@ private:
 
 public:
 
-
 	/// \param pPrimitive - owned reference
-	CGE_Rect( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive );
+	//CRectElement( C2DRect *pFillRect, C2DFrameRect *pFrameRect );
+	CRectElement( const SRect& non_scaled_rect, float fScale );
+
+	~CRectElement();
 
 	virtual void Draw();
 
@@ -398,23 +432,110 @@ public:
 //	void SetHFrameTextureCoord();
 //	void SetVFrameTextureCoord();
 
-	virtual int GetElementType() const { return TYPE_RECT; }
-
 	/// not available for C2DRoundRect
 	void SetCornerColor( int corner_index, SFloatRGBAColor& color ) { m_aCornerColor[corner_index] = color; }
 };
 
 
-class CGE_Triangle : public CGE_Primitive
-{
-	/// hold one of the following 3 primitives
 
-	C2DTriangle *m_pTriangle;
-	C2DFrameTriangle *m_pFTriangle;
-	C2DRoundFrameTriangle *m_RFpTriangle;
+class CFillRectElement : public CRectElement
+{
+	C2DRect *m_pFillRect;
+
+public:
+
+	CFillRectElement( const SRect& non_scaled_rect, float fScale );
+
+	~CFillRectElement();
+
+	int GetElementType() const { return TYPE_FILLRECT; }
+};
+
+
+class CFrameRectElement : public CRectElement
+{
+	C2DFrameRect *m_pFrameRect;
+
+public:
+
+	CFrameRectElement( const SRect& non_scaled_rect, float fScale );
+
+	~CFrameRectElement();
+
+	int GetElementType() const { return TYPE_FRAMERECT; }
+
+	void SetFrameWidth( int width );
+};
+
+
+class CRoundRectElement : public CPrimitiveElement
+{
+public:
+
+	CRoundRectElement( const SRect& non_scaled_rect, float fScale );
+
+	~CRoundRectElement();
+
+	virtual void Draw();
+
+	void SetCornerRadius( float radius );
+};
+
+
+class CRoundFillRectElement : public CRoundRectElement
+{
+	C2DRoundRect *m_pRoundFillRect;
+
+public:
+
+	CRoundFillRectElement( const SRect& non_scaled_rect, float fScale, float corner_radius );
+
+	~CRoundFillRectElement();
+
+	int GetElementType() const { return TYPE_ROUNDFILLRECT; }
+};
+
+
+class CRoundFrameRectElement : public CRoundRectElement
+{
+	C2DRoundFrameRect *m_pRoundFrameRect;
+
+public:
+
+	CRoundFrameRectElement( const SRect& non_scaled_rect, float fScale, float corner_radius );
+
+	~CRoundFrameRectElement();
+
+	int GetElementType() const { return TYPE_ROUNDFRAMERECT; }
+
+	void SetFrameWidth( int width );
+};
+
+
+class CTriangleElement : public CPrimitiveElement
+{
+protected:
 
 	/// non-scaled vertex positions in local coord
 	Vector2 m_avVertexPosition[3];
+
+public:
+
+	CTriangleElement( const SRect& non_scaled_rect, float fScale );
+
+	virtual ~CTriangleElement() {}
+
+	virtual void Draw();
+
+	virtual void SetVertexPosition( int index, const Vector2& vPos );
+
+	void UpdatePositionsInternal( const Matrix23& global_transform );
+};
+
+
+class CFillTriangleElement : public CTriangleElement
+{
+	C2DTriangle *m_pFillTriangle;
 
 private:
 
@@ -422,28 +543,214 @@ private:
 
 public:
 
-	CGE_Triangle( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect );
+//	CFillTriangleElement( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect );
+	CFillTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale );
 
-	virtual void Draw();
+	~CFillTriangleElement();
 
-	virtual int GetElementType() const { return TYPE_TRIANGLE; }
-
-	virtual void SetVertexPosition( int index, const Vector2& vPos );
+	virtual int GetElementType() const { return TYPE_FILLTRIANGLE; }
 };
 
 
-class CGE_Polygon : public CGE_Primitive
+class CFrameTriangleElement : public CTriangleElement
+{
+	C2DFrameTriangle *m_pFrameTriangle;
+
+private:
+
+	void UpdatePositionsInternal( const Matrix23& global_transform );
+
+public:
+
+//	CFrameTriangleElement( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect );
+	CFrameTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale );
+
+	~CFrameTriangleElement();
+
+	virtual int GetElementType() const { return TYPE_FRAMETRIANGLE; }
+};
+
+
+class CCombinedPrimitiveElement : public CGraphicsElement// CGraphicsElementGroup
+{
+	/// Set by  derived classes
+	boost::shared_ptr<CPrimitiveElement> m_pFillElement;
+	boost::shared_ptr<CPrimitiveElement> m_pFrameElement;
+
+public:
+
+	CCombinedPrimitiveElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CPrimitiveElement> pFill, boost::shared_ptr<CPrimitiveElement> pFrame )
+		:
+	m_pFillElement(pFill),
+	m_pFrameElement(pFrame)
+	{
+		m_fScale = fScale;
+		m_LocalAABB.vMin = Vector2( (float)non_scaled_rect.left,  (float)non_scaled_rect.top );
+		m_LocalAABB.vMax = Vector2( (float)non_scaled_rect.right, (float)non_scaled_rect.bottom );
+	}
+
+	bool BelongsToLayer() const { return false; }
+
+	void SetTopLeftPosInternal( Vector2 vPos )
+	{
+		if( m_pFillElement )
+			m_pFillElement->SetTopLeftPosInternal( vPos );
+		if( m_pFrameElement )
+			m_pFrameElement->SetTopLeftPosInternal( vPos );
+	}
+
+	void ChangeScale( float scale )
+	{
+		m_fScale = scale;
+
+		if( m_pFillElement )
+			m_pFillElement->ChangeScale( scale );
+		if( m_pFrameElement )
+			m_pFrameElement->ChangeScale( scale );
+	}
+
+	void SetColor( int color_index, const SFloatRGBAColor& color )
+	{
+		if( m_pFillElement )
+			m_pFillElement->SetColor( color_index, color );
+		if( m_pFrameElement )
+			m_pFrameElement->SetColor( color_index, color );
+
+	}
+
+	void SetAlpha( int color_index, float a )
+	{
+		if( m_pFillElement )
+			m_pFillElement->SetAlpha( color_index, a );
+		if( m_pFrameElement )
+			m_pFrameElement->SetAlpha( color_index, a );
+
+	}
+
+	/// TODO: Automatically calculate appropriate size of the fill element
+	void SetFrameWidth( float width );
+
+	void SetLocalTopLeftPos( Vector2 vPos )
+	{
+
+		if( m_pFillElement )
+			m_pFillElement->SetLocalTopLeftPos( vPos );
+		if( m_pFrameElement )
+			m_pFrameElement->SetLocalTopLeftPos( vPos );
+	}
+
+	void UpdateTransform( const Matrix23& parent_transform )
+	{
+
+		if( m_pFillElement )
+			m_pFillElement->UpdateTransform( parent_transform );
+		if( m_pFrameElement )
+			m_pFrameElement->UpdateTransform( parent_transform );
+	}
+
+	boost::shared_ptr<CPrimitiveElement>& FillElement() { return m_pFillElement; }
+	boost::shared_ptr<CPrimitiveElement>& FrameElement() { return m_pFrameElement; }
+};
+
+
+class CCombinedRectElement : public CCombinedPrimitiveElement
+{
+	boost::shared_ptr<CFillRectElement> m_pFillRectElement;
+	boost::shared_ptr<CFrameRectElement> m_pFrameRectElement;
+
+public:
+
+	CCombinedRectElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CFillRectElement> pFill, boost::shared_ptr<CFrameRectElement> pFrame )
+		:
+	CCombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
+	m_pFillRectElement(pFill),
+	m_pFrameRectElement(pFrame)
+	{
+	}
+
+	int GetElementType() const { return TYPE_COMBINEDRECT; }
+
+	void Draw() {}
+
+	boost::shared_ptr<CFillRectElement> FillRectElement() { return m_pFillRectElement; }
+	boost::shared_ptr<CFrameRectElement> FrameRectElement() { return m_pFrameRectElement; }
+};
+
+
+class CCombinedRoundRectElement : public CCombinedPrimitiveElement
+{
+	boost::shared_ptr<CRoundFillRectElement> m_pRoundFillRectElement;
+	boost::shared_ptr<CRoundFrameRectElement> m_pRoundFrameRectElement;
+
+public:
+
+	CCombinedRoundRectElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CRoundFillRectElement> pFill, boost::shared_ptr<CRoundFrameRectElement> pFrame )
+		:
+	CCombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
+	m_pRoundFillRectElement(pFill),
+	m_pRoundFrameRectElement(pFrame)
+	{
+	}
+
+	int GetElementType() const { return TYPE_COMBINEDROUNDRECT; }
+
+	void Draw() {}
+
+	boost::shared_ptr<CRoundFillRectElement> RoundFillRectElement() { return m_pRoundFillRectElement; }
+	boost::shared_ptr<CRoundFrameRectElement> RoundFrameRectElement() { return m_pRoundFrameRectElement; }
+};
+
+
+class CCombinedTriangleElement : public CCombinedPrimitiveElement
+{
+	boost::shared_ptr<CFillTriangleElement> m_pFillTriangleElement;
+	boost::shared_ptr<CFrameTriangleElement> m_pFrameTriangleElement;
+
+public:
+
+	CCombinedTriangleElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CFillTriangleElement> pFill, boost::shared_ptr<CFrameTriangleElement> pFrame )
+		:
+	CCombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
+	m_pFillTriangleElement(pFill),
+	m_pFrameTriangleElement(pFrame)
+	{
+	}
+
+	virtual int GetElementType() const { return TYPE_COMBINEDTRIANGLE; }
+
+	void Draw() {}
+
+	boost::shared_ptr<CFillTriangleElement> FillTriangleElement() { return m_pFillTriangleElement; }
+	boost::shared_ptr<CFrameTriangleElement> FrameTriangleElement() { return m_pFrameTriangleElement; }
+};
+
+
+class CPolygonElement : public CPrimitiveElement
+{
+public:
+
+	virtual ~CPolygonElement() {}
+
+	virtual void SetVertexColor( int vertex, int color_index, const SFloatRGBAColor& color ) {}
+};
+
+
+class CFillPolygonElement : public CPolygonElement
 {
 	/// Only the regular polygon is supported
 	C2DRegularPolygon *m_pRegularPolygon;
 
 public:
 
-	CGE_Polygon( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect );
+	CFillPolygonElement( const SFloatRGBAColor& color0, const SRect& non_scaled_rect );
+
+	CFillPolygonElement( int num_polygon_vertices, Vector2 vCenter, int radius, CRegularPolygonStyle::Name style, float fScale );
+
+	~CFillPolygonElement();
+
+	virtual int GetElementType() const { return TYPE_FILLPOLYGON; }
 
 	virtual void Draw();
-
-	virtual int GetElementType() const { return TYPE_POLYGON; }
 
 	/// change radius at each vertex
 	/// - Use this to draw cobweb charts
@@ -455,8 +762,21 @@ public:
 };
 
 
+class CFramePolygonElement : public CPolygonElement
+{
+//	C2DFramePolygon *m_pFramePolygon;
+
+public:
+
+	~CFramePolygonElement() { /*SafeDelete( m_pFramePolygon );*/ }
+
+	virtual int GetElementType() const { return TYPE_FRAMEPOLYGON; }
+};
+
+
+
 /*
-class CGE_Circle : public CGraphicsElement
+class CCircleElement : public CGraphicsElement
 {
 //	C2DCircle *m_pCircle; ???
 	// or
@@ -465,7 +785,7 @@ class CGE_Circle : public CGraphicsElement
 public:
 
 	/// \param pPrimitive - owned reference
-	CGE_Circle( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
+	CCircleElement( C2DPrimitive *pPrimitive, const SFloatRGBAColor& color0 );
 
 	virtual ~CGE_Circle() { SafeDelete( m_pPrimitive ); }
 
@@ -495,7 +815,7 @@ public:
 
 
 
-class CGE_Text : public CGraphicsElement
+class CTextElement : public CGraphicsElement
 {
 	int m_FontID;
 
@@ -531,7 +851,7 @@ public:
 
 	enum eTextAlignment { TAL_LEFT, TAL_TOP, TAL_CENTER, TAL_RIGHT, TAL_BOTTOM, NUM_TEXT_ALIGNMENTS };
 
-	CGE_Text( int font_id, const std::string& text, const AABB2& textbox, int align_h, int align_v, const SFloatRGBAColor& color0 )
+	CTextElement( int font_id, const std::string& text, const AABB2& textbox, int align_h, int align_v, const SFloatRGBAColor& color0 )
 		: m_FontID(font_id), m_Text(text), m_vTextPos(textbox.vMin),
 		m_vLocalTextOffset(Vector2(0,0)),
 		m_DestAlphaBlendMode(AlphaBlend::InvSrcAlpha)
@@ -543,7 +863,9 @@ public:
 		ChangeScale( m_fScale );
 	}
 
-//	CGE_Text( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 );
+//	CTextElement( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 );
+
+	virtual int GetElementType() const { return TYPE_TEXT; }
 
 	/**
 	 draws text
@@ -578,19 +900,17 @@ public:
 
 	void SetFontSize( int w, int h ) { m_FontWidth = w; m_FontHeight = h; }
 
-	/// \param horizontal_alignment CGE_Text::TAL_LEFT, TAL_CENTER or TAL_RIGHT
-	/// \param vertical_alignment CGE_Text::TAL_TOP, TAL_CENTER or TAL_BOTTOM
+	/// \param horizontal_alignment CTextElement::TAL_LEFT, TAL_CENTER or TAL_RIGHT
+	/// \param vertical_alignment CTextElement::TAL_TOP, TAL_CENTER or TAL_BOTTOM
 	void SetTextAlignment( int horizontal_alignment, int vertical_alignment );
 
 	void UpdateTextAlignment();
-
-	virtual int GetElementType() const { return TYPE_TEXT; }
 };
 
 
-class CGE_Group : public CGraphicsElement
+class CGraphicsElementGroup : public CGraphicsElement
 {
-	std::vector<CGraphicsElement *> m_vecpElement;
+	std::vector< boost::shared_ptr<CGraphicsElement> > m_vecpElement;
 
 	/// origin of local top-left positions which are grouped by the group element.
 	/// - Represented in global screen coordinates
@@ -606,18 +926,24 @@ private:
 
 public:
 
-//	CGE_Group( std::vector<CGraphicsElement *>& rvecpElement );
+//	CGraphicsElementGroup( std::vector< boost::shared_ptr<CGraphicsElement> >& rvecpElement );
 
 	/// Calculates the local top-left positions of the specified graphics elements from vLocalOrigin
 	/// \param vLocalOrigin local origin in global screen coordinates
-	CGE_Group( std::vector<CGraphicsElement *>& rvecpElement, Vector2 vLocalOrigin );
+	CGraphicsElementGroup( std::vector< boost::shared_ptr<CGraphicsElement> >& rvecpElement, Vector2 vLocalOrigin );
 
-	virtual ~CGE_Group();
+	virtual ~CGraphicsElementGroup();
+
+	virtual int GetElementType() const { return TYPE_GROUP; }
+
+	bool BelongsToLayer() const { return false; }
 
 	virtual void Draw();
 
 	Vector2 GetTopLeftPos() const { return GetLocalOriginInGlobalCoord(); }
 
+	/// 12:31 2009/07/09 Made virtual since CCombinedPrimitiveElement needs to override this.
+	/// 13:19 2009/07/09 Reverted. CCombinedPrimitiveElement does not inherit CGraphicsElementGroup
 	void SetLocalTopLeftPos( Vector2 vPos );
 
 	void SetLocalTopLeftPos( SPoint pos ) { SetLocalTopLeftPos( Vector2((float)pos.x,(float)pos.y) ); }
@@ -647,18 +973,16 @@ public:
 
 	void SetDestAlphaBlendMode( AlphaBlend::Mode mode );
 
-	virtual int GetElementType() const { return TYPE_GROUP; }
+	inline void RemoveElementFromGroup( boost::shared_ptr<CGraphicsElement> pElement );
 
-	inline void RemoveElementFromGroup( CGraphicsElement *pElement );
-
-	std::vector<CGraphicsElement *>& GetElementBuffer() { return m_vecpElement; }
+	std::vector< boost::shared_ptr<CGraphicsElement> >& GetElementBuffer() { return m_vecpElement; }
 };
 
 
-inline void CGE_Group::UpdateAABB()
+inline void CGraphicsElementGroup::UpdateAABB()
 {
 	m_LocalAABB.Nullify();
-	vector<CGraphicsElement *>::iterator itr;
+	vector< boost::shared_ptr<CGraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		m_LocalAABB.MergeAABB( (*itr)->GetAABB() );
@@ -666,11 +990,11 @@ inline void CGE_Group::UpdateAABB()
 }
 
 
-inline void CGE_Group::RemoveElementFromGroup( CGraphicsElement *pElement )
+inline void CGraphicsElementGroup::RemoveElementFromGroup( boost::shared_ptr<CGraphicsElement> pElement )
 {
 	// remove the arg element from this group
 	// - does not release the element
-	std::vector<CGraphicsElement *>::iterator itr = std::find( m_vecpElement.begin(), m_vecpElement.end(), pElement );
+	std::vector< boost::shared_ptr<CGraphicsElement> >::iterator itr = std::find( m_vecpElement.begin(), m_vecpElement.end(), pElement );
 	if( itr != m_vecpElement.end() )
 		m_vecpElement.erase( itr );
 	else
@@ -686,21 +1010,21 @@ public:
 	CGraphicsElementManagerCallback() {}
 	virtual ~CGraphicsElementManagerCallback() {}
 
-	virtual void OnCreated( CGraphicsElement *pElement ) {}
+	virtual void OnCreated( boost::shared_ptr<CGraphicsElement> pElement ) {}
 
 	/// called right before the element is released in CGraphicsElementManager::RemoveElement()
-	virtual void OnDestroyed( CGraphicsElement *pElement ) {}
+	virtual void OnDestroyed( boost::shared_ptr<CGraphicsElement> pElement ) {}
 };
 
 
 /*
-class CGE_FrameRect : public CGraphicsElement
+class CFrameRectElement: public CGraphicsElement
 {
 	C2DFrameRect m_FrameRect; ///< scaled rect with scaled border width
 
 public:
 
-	CGE_FrameRect( const C2DFrameRect& framerect, const SFloatRGBAColor& color0 )
+	CFrameRectElement( const C2DFrameRect& framerect, const SFloatRGBAColor& color0 )
 		: m_FrameRect(framerect)
 	{
 		m_LocalAABB = AABB2(framerect.GetCornerPos2D(0),framerect.GetCornerPos2D(2));

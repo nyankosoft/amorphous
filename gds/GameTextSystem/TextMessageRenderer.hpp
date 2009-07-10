@@ -77,11 +77,11 @@ class CDefaultTextMessageRenderer : public CTextMessageRenderer
 	/// background rectangle of window
 	C2DRect m_WindowRect;
 
-	CGE_Rect *m_pWindowBGRect;
+	boost::shared_ptr<CFillRectElement> m_pWindowBGRect;
 
-	CGE_Text *m_pText;
+	boost::shared_ptr<CTextElement> m_pText;
 
-	CGE_Text *m_pSpeaker;
+	boost::shared_ptr<CTextElement> m_pSpeaker;
 
 	/// texture for window rectangle
 	CTextureHandle m_WindowTexture;
