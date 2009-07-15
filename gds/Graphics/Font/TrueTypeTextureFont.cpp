@@ -12,9 +12,9 @@ using namespace Graphics;
 
 
 #ifdef _DEBUG
-#pragma comment( lib, "freetype239MT_D.lib" )
+#pragma comment( lib, "freetype239_D.lib" )
 #else
-#pragma comment( lib, "freetype239MT.lib" )
+#pragma comment( lib, "freetype239.lib" )
 #endif
 
 

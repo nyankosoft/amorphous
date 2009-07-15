@@ -18,13 +18,13 @@
 
 
 #ifdef _DEBUG
-	#pragma comment( lib, "ogg_static_d.lib" )
-	#pragma comment( lib, "vorbis_static_d.lib" )
-	#pragma comment( lib, "vorbisfile_static_d.lib" )
+	#pragma comment( lib, "ogg_d.lib" )
+	#pragma comment( lib, "vorbis_d.lib" )
+	#pragma comment( lib, "vorbisfile_d.lib" )
 #else
-	#pragma comment( lib, "ogg_static.lib" )
-	#pragma comment( lib, "vorbis_static.lib" )
-	#pragma comment( lib, "vorbisfile_static.lib" )
+	#pragma comment( lib, "ogg.lib" )
+	#pragma comment( lib, "vorbis.lib" )
+	#pragma comment( lib, "vorbisfile.lib" )
 #endif
 
 /// Can be used by more than one CSoundSource object
