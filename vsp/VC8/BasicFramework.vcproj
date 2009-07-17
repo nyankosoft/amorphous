@@ -210,7 +210,7 @@
 		<Configuration
 			Name="Release DLL|Win32"
 			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="../../../X_TempFiles/BasicFramework/VC8/ReleaseDLL"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
