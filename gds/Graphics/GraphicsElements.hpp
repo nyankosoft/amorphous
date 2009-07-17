@@ -579,6 +579,8 @@ class CCombinedPrimitiveElement : public CGraphicsElement// CGraphicsElementGrou
 
 public:
 
+	CCombinedPrimitiveElement() {}
+
 	CCombinedPrimitiveElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CPrimitiveElement> pFill, boost::shared_ptr<CPrimitiveElement> pFrame )
 		:
 	m_pFillElement(pFill),
@@ -588,6 +590,8 @@ public:
 		m_LocalAABB.vMin = Vector2( (float)non_scaled_rect.left,  (float)non_scaled_rect.top );
 		m_LocalAABB.vMax = Vector2( (float)non_scaled_rect.right, (float)non_scaled_rect.bottom );
 	}
+
+	virtual ~CCombinedPrimitiveElement() {}
 
 	bool BelongsToLayer() const { return false; }
 
@@ -660,6 +664,8 @@ class CCombinedRectElement : public CCombinedPrimitiveElement
 
 public:
 
+	CCombinedRectElement() {}
+
 	CCombinedRectElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CFillRectElement> pFill, boost::shared_ptr<CFrameRectElement> pFrame )
 		:
 	CCombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
@@ -683,6 +689,8 @@ class CCombinedRoundRectElement : public CCombinedPrimitiveElement
 	boost::shared_ptr<CRoundFrameRectElement> m_pRoundFrameRectElement;
 
 public:
+
+	CCombinedRoundRectElement() {}
 
 	CCombinedRoundRectElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CRoundFillRectElement> pFill, boost::shared_ptr<CRoundFrameRectElement> pFrame )
 		:

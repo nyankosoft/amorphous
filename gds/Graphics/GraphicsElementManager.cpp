@@ -654,7 +654,8 @@ bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElement>& pElem
 	if( m_pCallbackPtr.get() )
 		m_pCallbackPtr->OnDestroyed( pElement );
 
-	if( pElement->GetElementType() != CGraphicsElement::TYPE_GROUP )
+//	if( pElement->GetElementType() != CGraphicsElement::TYPE_GROUP )
+	if( pElement->BelongsToLayer() )
 	{
 		// remove the element from the layer
 		int layer_index = pElement->GetLayerIndex();
