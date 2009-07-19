@@ -17,6 +17,7 @@ using namespace boost;
 // CGraphicsElementManager
 //=====================================================================
 
+
 CGraphicsElementManager::CGraphicsElementManager()
 {
 	m_vecpElement.resize( 256, shared_ptr<CGraphicsElement>() );
@@ -555,7 +556,7 @@ int CGraphicsElementManager::LoadTexture( const std::string& tex_filename )
 }
 
 
-bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, int font_type, int w, int h, float bold, float italic )
+bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, int font_type, int w, int h, float bold, float italic, float shadow )
 {
 	CFont *pFont = NULL;
 	CTextureFont *pTexFont = NULL;
@@ -605,9 +606,40 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 }
 
 
+bool CGraphicsElementManager::LoadFont( int font_id, const std::string& font_name, int width, int height, float bold, float italic, float shadow )
+{
+	CFontBase::FontType font_type;
+	if( font_name.rfind( ".ttf" ) == font_name.length() - 4 )
+		font_type = CFontBase::FONTTYPE_TRUETYPETEXTURE;
+	else if( font_name.rfind( ".bmp" ) == font_name.length() - 4
+		|| font_name.rfind( ".jpg" ) == font_name.length() - 4
+		|| font_name.rfind( ".tga" ) == font_name.length() - 4
+		|| font_name.rfind( ".dds" ) == font_name.length() - 4 )
+	{
+		font_type = CFontBase::FONTTYPE_TEXTURE;
+	}
+	else
+	{
+		font_type = CFontBase::FONTTYPE_NORMAL; // D3D Font
+	}
+
+	return LoadFont( font_id, font_name, font_type, width, height, bold, italic, shadow );
+}
+
+
+int CGraphicsElementManager::LoadFont( const std::string& font_name, int width, int height, float bold, float italic, float shadow )
+{
+	int font_id = (int)m_vecpFont.size(); // add a new entry for the new font
+
+	bool res = LoadFont( font_id, font_name, width, height, bold, italic, shadow );
+
+	return res ? font_id : -1;
+}
+
+
 int CGraphicsElementManager::LoadTextureFont( const string& font_texture_filename,
 											  int width, int height,
-											  float bold, float italic )
+											  float bold, float italic, float shadow )
 {
 	LOG_PRINT( " - Loading a texture for font: " + font_texture_filename );
 

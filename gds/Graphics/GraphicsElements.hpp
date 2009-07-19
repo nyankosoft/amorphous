@@ -716,6 +716,8 @@ class CCombinedTriangleElement : public CCombinedPrimitiveElement
 
 public:
 
+	CCombinedTriangleElement() {}
+
 	CCombinedTriangleElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<CFillTriangleElement> pFill, boost::shared_ptr<CFrameTriangleElement> pFrame )
 		:
 	CCombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
@@ -859,6 +861,8 @@ public:
 
 	enum eTextAlignment { TAL_LEFT, TAL_TOP, TAL_CENTER, TAL_RIGHT, TAL_BOTTOM, NUM_TEXT_ALIGNMENTS };
 
+	CTextElement() {}
+
 	CTextElement( int font_id, const std::string& text, const AABB2& textbox, int align_h, int align_v, const SFloatRGBAColor& color0 )
 		: m_FontID(font_id), m_Text(text), m_vTextPos(textbox.vMin),
 		m_vLocalTextOffset(Vector2(0,0)),
@@ -903,6 +907,10 @@ public:
 	void SetFontID( int font_id ) { m_FontID = font_id; }
 	
 	const std::string& GetText() const { return m_Text; }
+
+	/// Returns a copy of the text
+	/// - Exposed to Python as a function 'GetText'
+	std::string GetTextCopy() { return m_Text; }
 
 	void SetText( const std::string& text ) { m_Text = text; }
 

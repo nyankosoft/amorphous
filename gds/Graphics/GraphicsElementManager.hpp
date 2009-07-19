@@ -206,9 +206,23 @@ public:
 	int LoadTexture( const std::string& tex_filename );
 
 	/// load TrueType / texture font
-	bool LoadFont( int font_id, const std::string& font_name, int font_type, int w, int h, float bold = 0.0f, float italic = 0.0f );
+	/// - Not preferable IF since user has to specify font_type
+	/// - Font type should be determined automatically from font_name
+	bool LoadFont( int font_id, const std::string& font_name, int font_type, int w, int h, float bold = 0.0f, float italic = 0.0f, float shadow = 0.0f );
 
-	int LoadTextureFont( const std::string& font_texture_filename, int width, int height, float bold = 0.0f, float italic = 0.0f );
+	/// Load a font
+	/// - Let user specify the id
+	/// - Useful when the user defines enums of font ids and control the id to font mapppings
+	/// - Returns true on success
+	bool LoadFont( int font_id, const std::string& font_name, int width, int height, float bold = 0.0f, float italic = 0.0f, float shadow = 0.0f );
+
+	/// Load a font
+	/// - Let system determine the font id
+	/// - Returns a valid font id on succcess
+	/// - Returns -1 on failure
+	int LoadFont( const std::string& font_name, int width, int height, float bold = 0.0f, float italic = 0.0f, float shadow = 0.0f );
+
+	int LoadTextureFont( const std::string& font_texture_filename, int width, int height, float bold = 0.0f, float italic = 0.0f, float shadow = 0.0f );
 
 	inline const CTextureHandle& GetTexture( int tex_id );
 
