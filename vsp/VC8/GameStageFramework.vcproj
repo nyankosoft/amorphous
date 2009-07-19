@@ -41,6 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4996"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -106,6 +107,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4996"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
@@ -168,6 +170,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4996"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -233,6 +236,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4996"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -1947,6 +1951,34 @@
 					RelativePath="..\..\gds\Script\ScriptManager.hpp"
 					>
 				</File>
+				<Filter
+					Name="Modules"
+					>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_3DMath.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_3DMath.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_Graphics.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_Graphics.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_StageUtility.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_StageUtility.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="GameTextSystem"
