@@ -1,8 +1,12 @@
 #include "PyModule_Graphics.hpp"
+#include <gds/Support/Log/DefaultLog.hpp>
+#include <boost/python.hpp>
 
 
 boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
 boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
+bool (CGraphicsElementManager::*LoadTextureWithID)( int, const std::string& ) = &CGraphicsElementManager::LoadTexture;
+int (CGraphicsElementManager::*LoadTextureWithoutID)( const std::string& ) = &CGraphicsElementManager::LoadTexture;
 bool (CGraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
 int (CGraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
 
@@ -37,7 +41,6 @@ BOOST_PYTHON_MODULE(gfx)
 		.def(self += self)
 		.def(self -= self)
 		.def(self * float())
-		.def(self / float())
 		.def("SetToWhite",      &SFloatRGBAColor::SetToWhite)
 		.def("SetToBlack",      &SFloatRGBAColor::SetToBlack)
 		.def("SetToRed",        &SFloatRGBAColor::SetToRed)
@@ -124,7 +127,8 @@ BOOST_PYTHON_MODULE(gfx)
 
 //		.def("CreateGroup",             &CGraphicsElementManager::CreateRect, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
 
-//		.def("LoadTexture",             &CGraphicsElementManager::LoadTexture, ( python::arg("texture_path") ) )
+		.def("LoadTexture",             LoadTextureWithID,    ( python::arg("texture_id"), python::arg("texture_path") ) )
+		.def("LoadTexture",             LoadTextureWithoutID, (                            python::arg("texture_path") ) )
 
 		.def("LoadFont",                LoadFontWithID,    ( python::arg("font_id"), python::arg("font_name"), python::arg("width") = 16, python::arg("height") = 32, python::arg("bold") = 0.0f, python::arg("italic") = 0.0f, python::arg("shadow") = 0.0f ) )
 		.def("LoadFont",                LoadFontWithoutID, (                         python::arg("font_name"), python::arg("width") = 16, python::arg("height") = 32, python::arg("bold") = 0.0f, python::arg("italic") = 0.0f, python::arg("shadow") = 0.0f ) )
@@ -154,5 +158,9 @@ void RegisterPythonModule_gfx()
 {
 	// Register the module with the interpreter
 	if (PyImport_AppendInittab("gfx", initgfx) == -1)
-		throw std::runtime_error("Failed to add gfx to the interpreter's builtin modules");
+	{
+		const char *msg = "Failed to add gfx to the interpreter's builtin modules";
+		LOG_PRINT_ERROR( msg );
+		throw std::runtime_error( msg );
+	}
 }

@@ -3,6 +3,7 @@
 #include <gds/3DMath/AABB3.hpp>
 #include <gds/3DMath/AABB2.hpp>
 #include <gds/Support/Vec3_StringAux.hpp>
+#include <gds/Support/Log/DefaultLog.hpp>
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>
 #include <iostream>
@@ -45,6 +46,7 @@ BOOST_PYTHON_MODULE(math3d)
 		.def(self + self)
 		.def(self - self)
 		.def(self * self)
+		.def(self * Vector3())
 //		.def("Orthonormalize",       &Matrix33::Orthonormalize )
 		.def("SetIdentity",          &Matrix33::SetIdentity )
 		.def("GetColumn",            &Matrix33::GetColumn )
@@ -55,12 +57,20 @@ BOOST_PYTHON_MODULE(math3d)
 		.def("SetRotationZ",         &Matrix33::SetRotationZ )
 	;
 
+	def( "Matrix33RotationX", Matrix33RotationX );
+	def( "Matrix33RotationY", Matrix33RotationY );
+	def( "Matrix33RotationZ", Matrix33RotationZ );
+
 	class_<Matrix34>("Matrix34")
+		.def(init<Vector3,Matrix33>())
 		.def("SetIdentity",  &Matrix34::Identity )
 		.def(self * self)
+		.def(self * Vector3())
 	;
 
 	def( "Matrix34Identity", Matrix34Identity );
+
+//	def( Matrix34() * Vector3() );
 
 	class_<AABB3>("AABB3")
 		.def(init<Vector3,Vector3>())
@@ -98,5 +108,9 @@ void RegisterPythonModule_math3d()
 {
 	// Register the module with the interpreter
 	if (PyImport_AppendInittab("math3d", initmath3d) == -1)
-		throw std::runtime_error("Failed to add math3d to the interpreter's builtin modules");
+	{
+		const char *msg = "Failed to add math3d to the interpreter's builtin modules";
+		LOG_PRINT_ERROR( msg );
+		throw std::runtime_error( msg );
+	}
 }
