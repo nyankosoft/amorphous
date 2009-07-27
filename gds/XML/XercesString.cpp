@@ -31,8 +31,8 @@ XercesString::~XercesString()
 
 bool XercesString::append(const XMLCh *tail)
 {
-  int iTailLen = XMLString::stringLen(tail);
-  int iWorkLen = XMLString::stringLen(_wstr);
+  int iTailLen = (int)XMLString::stringLen(tail);
+  int iWorkLen = (int)XMLString::stringLen(_wstr);
   XMLCh *result = new XMLCh[ iWorkLen + iTailLen + 1 ];
   bool bOK = result != NULL;
   if (bOK)
@@ -84,7 +84,7 @@ const XMLCh* XercesString::end() const
 
 int XercesString::size() const
 {
-  return XMLString::stringLen(_wstr);
+  return (int)XMLString::stringLen(_wstr);
 }
 
 XMLCh & XercesString::operator [] (const int i)

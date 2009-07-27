@@ -74,7 +74,7 @@ void CBVHPlayer::LoadSkeleton( FILE *fp )
 	this->m_RootBone.LoadFromFile( acLine, fp );
 
 	this->m_RootBone.GetChannelType_r( &m_vecChannelType );
-	int iNumTotalChannels = m_vecChannelType.size();
+	int iNumTotalChannels = (int)m_vecChannelType.size();
 }
 
 
@@ -431,7 +431,7 @@ void CBVHPlayer::Scale( float factor )
 		 || m_vecChannelType[i] == CT_POSITION_Z
 		 )
 		{
-			pos_channels_index.push_back( i );
+			pos_channels_index.push_back( (int)i );
 		}
 	}
 

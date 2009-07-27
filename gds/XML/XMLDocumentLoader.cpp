@@ -10,6 +10,9 @@ using namespace std;
 using namespace boost;
 
 
+boost::shared_ptr<CXMLParserInitReleaseManager> sg_pXMLParserInitReleaseMgr;
+
+
 //=======================================================================
 // CXMLParserInitReleaseManager
 //=======================================================================
@@ -43,6 +46,8 @@ m_pParser(pParser),
 m_pLSParser(NULL),
 m_pDocument(pDocument)
 {
+//	if( !sg_pXMLParserInitReleaseMgr )
+//		sg_pXMLParserInitReleaseMgr = shared_ptr<CXMLParserInitReleaseManager>( new CXMLParserInitReleaseManager() );
 }
 
 CXMLDocument::CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::DOMLSParser *pParser )
@@ -51,6 +56,8 @@ m_pParser(NULL),
 m_pLSParser(pParser),
 m_pDocument(pDocument)
 {
+//	if( !sg_pXMLParserInitReleaseMgr )
+//		sg_pXMLParserInitReleaseMgr = shared_ptr<CXMLParserInitReleaseManager>( new CXMLParserInitReleaseManager() );
 }
 
 CXMLDocument::CXMLDocument()
@@ -59,6 +66,8 @@ m_pParser(NULL),
 m_pLSParser(NULL),
 m_pDocument(NULL)
 {
+//	if( !sg_pXMLParserInitReleaseMgr )
+//		sg_pXMLParserInitReleaseMgr = shared_ptr<CXMLParserInitReleaseManager>( new CXMLParserInitReleaseManager() );
 }
 
 CXMLDocument::~CXMLDocument()
@@ -410,6 +419,9 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string
 	//
 //	parser->release();
 
+	if( !doc || !parser )
+		return shared_ptr<CXMLDocument>();
+
 	shared_ptr<CXMLDocument> pDoc = shared_ptr<CXMLDocument>( new CXMLDocument( doc, parser ) );
 
 	return pDoc;
@@ -438,7 +450,10 @@ xercesc::DOMNode *CXMLDocumentLoader::GetRootNode()
 
 
 DOMNode *GetRootNode( xercesc::DOMDocument *pXMLDocument )
-{	
+{
+	if( !pXMLDocument )
+		return NULL;
+
 	xercesc::DOMElement *pElem = pXMLDocument->getDocumentElement();
 
 	xercesc::DOMNodeIterator *iterator
