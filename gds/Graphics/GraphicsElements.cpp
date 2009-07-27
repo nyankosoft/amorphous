@@ -633,10 +633,10 @@ void CTextElement::UpdateLocalTextOffset()
 	const float scale = m_fScale;
 
 	// non-scaled font width & height
-	int font_width  = 0 < m_FontWidth  ? m_FontWidth  : (int)( pFont->GetFontWidth()  / scale ); 
-	int font_height = 0 < m_FontHeight ? m_FontHeight : (int)( pFont->GetFontHeight() / scale );
+	int font_width   = 0 < m_FontWidth  ? m_FontWidth  : (int)( pFont->GetFontWidth()  / scale ); 
+	int font_height  = 0 < m_FontHeight ? m_FontHeight : (int)( pFont->GetFontHeight() / scale );
+	float font_scale = 0 < m_FontWidth  ? (float)m_FontWidth / ((float)pFont->GetFontWidth() / scale) : 1.0f;
 	const int text_length = (int)m_Text.length();
-	float font_scale = 1.0f;
 	Vector2 vLocalTextOffset = Vector2(0,0);
 
 	switch(m_TextAlignH)
@@ -645,11 +645,11 @@ void CTextElement::UpdateLocalTextOffset()
 		vLocalTextOffset.x = 0;
 		break;
 	case CTextElement::TAL_CENTER:
-		font_scale = font_width / ((float)pFont->GetFontWidth() / scale);
 		vLocalTextOffset.x = (float)( box_width/2  - (pFont->GetTextWidth(m_Text.c_str())/scale) * font_scale / 2 );
 		break;
 	case CTextElement::TAL_RIGHT:
-		// --- NOT IMPLEMENTED ---
+		// --------------- NOT IMPLEMENTED ---------------
+		vLocalTextOffset.x = (float)( box_width  - (pFont->GetTextWidth(m_Text.c_str())/scale) * font_scale );
 		break;
 	default:
 		break;
@@ -665,7 +665,8 @@ void CTextElement::UpdateLocalTextOffset()
 		vLocalTextOffset.y = (float)( box_height/2 - font_height*get_num_rows(m_Text)/2 );
 		break;
 	case CTextElement::TAL_BOTTOM:
-		// --- NOT IMPLEMENTED ---
+		// --------------- NOT IMPLEMENTED ---------------
+		vLocalTextOffset.y = (float)( box_height - font_height*get_num_rows(m_Text) );
 		break;
 	default:
 		break;

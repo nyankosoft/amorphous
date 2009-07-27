@@ -151,6 +151,10 @@ private:
 
 	void SetElementIndex( int element_index ) { m_ElementIndex = element_index; }
 
+	/// sets the layer index
+	/// NOTE: does not move the element from the current layer
+	void SetLayerIndex( int layer_index ) { m_LayerIndex = layer_index; }
+
 public:
 
 	virtual int GetElementType() const = 0;
@@ -272,11 +276,7 @@ public:
 	void SetGraphicsElementManager( CGraphicsElementManager *pMgr ) { m_pManager = pMgr; }
 
 	/// place the element in a layer
-	void SetLayer( int layer_index );
-
-	/// sets the layer index
-	/// NOTE: does not move the element from the current layer
-	void SetLayerIndex( int layer_index ) { m_LayerIndex = layer_index; }
+	virtual void SetLayer( int layer_index );
 
 	int GetLayerIndex() const { return m_LayerIndex; }
 
@@ -619,7 +619,6 @@ public:
 			m_pFillElement->SetColor( color_index, color );
 		if( m_pFrameElement )
 			m_pFrameElement->SetColor( color_index, color );
-
 	}
 
 	void SetAlpha( int color_index, float a )
@@ -628,7 +627,6 @@ public:
 			m_pFillElement->SetAlpha( color_index, a );
 		if( m_pFrameElement )
 			m_pFrameElement->SetAlpha( color_index, a );
-
 	}
 
 	/// TODO: Automatically calculate appropriate size of the fill element
@@ -636,7 +634,6 @@ public:
 
 	void SetLocalTopLeftPos( Vector2 vPos )
 	{
-
 		if( m_pFillElement )
 			m_pFillElement->SetLocalTopLeftPos( vPos );
 		if( m_pFrameElement )
@@ -645,11 +642,19 @@ public:
 
 	void UpdateTransform( const Matrix23& parent_transform )
 	{
-
 		if( m_pFillElement )
 			m_pFillElement->UpdateTransform( parent_transform );
 		if( m_pFrameElement )
 			m_pFrameElement->UpdateTransform( parent_transform );
+	}
+
+	/// place the element in a layer
+	void SetLayer( int layer_index )
+	{
+		if( m_pFillElement )
+			m_pFillElement->SetLayer( layer_index );
+		if( m_pFrameElement )
+			m_pFrameElement->SetLayer( layer_index );
 	}
 
 	boost::shared_ptr<CPrimitiveElement>& FillElement() { return m_pFillElement; }
