@@ -164,28 +164,33 @@ void CGM_ListBox::OnItemSelectionChanged()
 }
 
 
-bool CGM_ListBox::AddItem( const string& text, void *pUserData, int user_data_id, const string& desc )
+CGM_ListBoxItem *CGM_ListBox::CreateNewItem( const string& text, void *pUserData, int user_data_id, const string& desc )
 {
 	CGM_ListBoxItem *pNewItem = new CGM_ListBoxItem;
 
 	if( !pNewItem )
 		return false;
 
-	pNewItem->text       = text;
-	pNewItem->pUserData  = pUserData;
-	pNewItem->UserDataID = user_data_id;
-	pNewItem->desc       = desc;
-//	SetRect( &pNewItem->rcActive, 0, 0, 0, 0 );
+	pNewItem->text            = text;
+	pNewItem->pUserData       = pUserData;
+	pNewItem->UserDataID      = user_data_id;
+	pNewItem->desc            = desc;
+	pNewItem->selected        = false;
+	pNewItem->m_pOwnerListBox = this;
 	pNewItem->rcActive.SetValues( 0, 0, 0, 0 );
-	pNewItem->selected = false;
 
-//	HRESULT hr = m_vecItem.Add( pNewItem );
-//	if( SUCCEEDED( hr ) )
-//		m_pScrollBar->SetTrackRange( 0, m_vecItem.size() );
+	return pNewItem;
+}
+
+
+bool CGM_ListBox::AddItem( const string& text, void *pUserData, int user_data_id, const string& desc )
+{
+	CGM_ListBoxItem *pNewItem = CreateNewItem( text, pUserData, user_data_id, desc );
+
+	if( !pNewItem )
+		return false;
 
 	int added_item_index = (int)m_vecItem.size();
-
-	pNewItem->m_pOwnerListBox = this;
 
 	// add item to the list
 	m_vecItem.push_back( pNewItem );
@@ -207,25 +212,19 @@ bool CGM_ListBox::AddItem( const string& text, void *pUserData, int user_data_id
 }
 
 
-bool CGM_ListBox::InsertItem( int nIndex, const string& text, void *pUserData )
+bool CGM_ListBox::InsertItem( int nIndex, const string& text, void *pUserData, int user_data_id, const string& desc )
 {
-	CGM_ListBoxItem *pNewItem = new CGM_ListBoxItem;
+	CGM_ListBoxItem *pNewItem = CreateNewItem( text, pUserData, user_data_id, desc );
+
 	if( !pNewItem )
 		return false;//E_OUTOFMEMORY;
 
-	pNewItem->text = text;
-	pNewItem->pUserData = pUserData;
-	pNewItem->rcActive.SetValues( 0, 0, 0, 0 );
-	pNewItem->selected = false;
-
-//	HRESULT hr = m_vecItem.Insert( nIndex, pNewItem );
-//	if( SUCCEEDED( hr ) )
-//		m_pScrollBar->SetTrackRange( 0, m_vecItem.size() );
-
-	pNewItem->m_pOwnerListBox = this;
-
 	m_vecItem.insert( m_vecItem.begin() + nIndex, pNewItem );
 	m_pScrollBar->SetTrackRange( 0, (int)m_vecItem.size() );
+
+	// set initial selection focus when the first item is given
+	if( m_vecItem.size() == 1 )
+		SetItemSelectionFocus( 0 );
 
 	// send notification to control renderer
 	if( m_pRenderer.get() )

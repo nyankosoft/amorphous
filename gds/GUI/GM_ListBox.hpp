@@ -59,6 +59,8 @@ protected:
 	/// Send notification to event handler and control renderer
 	void OnItemSelectionChanged();
 
+	CGM_ListBoxItem *CreateNewItem( const std::string& text, void *pUserData, int user_data_id, const std::string& desc );
+
 public:
 
 	CGM_ListBox( CGM_Dialog *pDialog, CGM_ListBoxDesc *pDesc );
@@ -91,7 +93,7 @@ public:
 	void SetBorder( int nBorder, int nMargin ) { m_nBorder = nBorder; m_nMargin = nMargin; }
 
 	bool AddItem( const std::string& text, void *pUserData = NULL, int user_data_id = 0, const std::string& desc = "" );
-	bool InsertItem( int nIndex, const std::string& text, void *pUserData );
+	bool InsertItem( int nIndex, const std::string& text, void *pUserData = NULL, int user_data_id = 0, const std::string& desc = "" );
 
 	void RemoveItem( int nIndex );
 	void RemoveItemByText( const std::string& text );
