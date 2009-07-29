@@ -6,13 +6,16 @@ using namespace std;
 using namespace boost;
 
 using namespace physics;
-using namespace stage_util;
+
+namespace stage_util
+{
 
 
 BOOST_PYTHON_MODULE(stage_util)
 {
 	using namespace boost;
 	using namespace boost::python;
+	namespace py = boost::python;
 
 	class_< CStageLightUtility, shared_ptr<CStageLightUtility> >("StageLightUtility")
 		.def( "CreateHSPointLight",        &CStageLightUtility::CreateHSPointLight )
@@ -22,14 +25,19 @@ BOOST_PYTHON_MODULE(stage_util)
 	;
 
 	class_< CStageMiscUtility, shared_ptr<CStageMiscUtility> >("StageMiscUtility")
-//		.def( "CreateBox",          &CStageMiscUtility::CreateBox,         ( python::arg("pos"), python::arg("edge_lengths"), python::arg("diffuse_color") ) )
-		.def( "CreateBox",          &CStageMiscUtility::CreateBox,         ( python::arg("edge_lengths") = Vector3(1,1,1), python::arg("diffuse_color") = SFloatRGBAColor::White(), python::arg("pose")=Matrix34Identity(), python::arg("mass")=1.0f, python::arg("entity_name")="", python::arg("entity_attributes_name")="" ) )
-		.def( "CreateBoxFromMesh",  &CStageMiscUtility::CreateBoxFromMesh, ( python::arg("mesh_resource_path"),                                                                     python::arg("pose")=Matrix34Identity(), python::arg("mass")=1.0f, python::arg("entity_name")="", python::arg("entity_attributes_name")="" ) )
+//		.def( "CreateBox",          &CStageMiscUtility::CreateBox,         ( py::arg("pos"), python::arg("edge_lengths"), python::arg("diffuse_color") ) )
+		.def( "CreateBox",          &CStageMiscUtility::CreateBox,         ( py::arg("edge_lengths") = Vector3(1,1,1), py::arg("diffuse_color") = SFloatRGBAColor::White(), py::arg("pose")=Matrix34Identity(), py::arg("mass")=1.0f, py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
+		.def( "CreateStaticBox",    &CStageMiscUtility::CreateStaticBox,   ( py::arg("edge_lengths") = Vector3(1,1,1), py::arg("diffuse_color") = SFloatRGBAColor::White(), py::arg("pose")=Matrix34Identity(),                       py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
+		.def( "CreateBoxFromMesh",  &CStageMiscUtility::CreateBoxFromMesh, ( py::arg("mesh_resource_path"),                                                                 py::arg("pose")=Matrix34Identity(), py::arg("mass")=1.0f, py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
 	;
 
-	def( "CreateStageLightUtility", CreateStageLightUtility );
-	def( "CreateStageMiscUtility",  CreateStageMiscUtility );
+	class_< CStageEntityUtility, shared_ptr<CStageEntityUtility> >("StageEntityUtility")
+		.def( "SetShader",          &CStageEntityUtility::SetShader,         ( py::arg("entity"), py::arg("shader_name"), py::arg("subset_name")="" ) )
+	;
 
+	def( "CreateStageLightUtility",   CreateStageLightUtility );
+	def( "CreateStageMiscUtility",    CreateStageMiscUtility );
+	def( "CreateStageEntityUtility",  CreateStageEntityUtility );
 }
 
 
@@ -43,3 +51,6 @@ void RegisterPythonModule_stage_util()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // stage_util

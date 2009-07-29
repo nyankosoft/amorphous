@@ -66,6 +66,13 @@ inline boost::shared_ptr<CStageMiscUtility> CreateStageMiscUtility()
 }
 
 
+inline boost::shared_ptr<CStageEntityUtility> CreateStageEntityUtility()
+{
+	boost::shared_ptr<CStageEntityUtility> pUtil( new CStageEntityUtility( GetStageForScript() ) );
+	return pUtil;
+}
+
+
 
 } // stage_util
 
