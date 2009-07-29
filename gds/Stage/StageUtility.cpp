@@ -4,6 +4,7 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Physics/ActorDesc.hpp"
 #include "Physics/BoxShapeDesc.hpp"
+#include "Physics/Enums.hpp"
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
 #include "Stage/Stage.hpp"
@@ -139,7 +140,8 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
 							  const Vector3& vel,
-							  float mass )
+							  float mass,
+							  bool static_actor )
 {
 
 	CMeshObjectHandle mesh_handle;
@@ -165,6 +167,9 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 	CActorDesc actor_desc;
 	actor_desc.vecpShapeDesc.push_back( &box_desc );
 
+	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
+	actor_desc.BodyDesc.fMass = mass;
+
 	CEntityHandle<> entity = CreateNamedEntity( entity_name, entity_attributes_name, pose, vel, &actor_desc );
 	CCopyEntity *pEntityRawPtr = entity.GetRawPtr();
 	if( !pEntityRawPtr )
@@ -173,6 +178,8 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 	pEntityRawPtr->m_MeshHandle = mesh_handle;
 	pEntityRawPtr->local_aabb = aabb;
 	pEntityRawPtr->world_aabb.TransformCoord( aabb, pEntityRawPtr->GetWorldPose().vPosition );
+
+	return entity;
 }
 
 
@@ -204,7 +211,26 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 
 	Vector3 vel = Vector3(0,0,0);
 
-	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass );
+	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, false );
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
+		SFloatRGBAColor diffuse_color,
+		const Matrix34& pose,
+		const std::string& entity_name,
+		const std::string& entity_attributes_name )
+{
+	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromDimension__";
+
+	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
+
+	Vector3 vel = Vector3(0,0,0);
+
+	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, 0.0f, true );
 }
 
 
@@ -225,9 +251,15 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 
 	Vector3 vel = Vector3(0,0,0);
 
-	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass );
+	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, false );
 }
 
+
+
+
+
+#include "Stage/LightEntity.hpp"
+#include "Graphics/3DGameMath.hpp"
 
 
 //========================================================================================
@@ -238,6 +270,41 @@ void CStageLightUtility::CreateHSPointLight( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 )
 {
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
+	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
+
+	int group = 0;
+
+	bool shadow_for_light = true;
+
+	// alias
+	desc.strName    = name;
+	desc.aColor[0]  = upper_color;
+	desc.aColor[1]  = lower_color;
+	desc.fIntensity = intensity;
+	desc.LightGroup = group;
+
+	desc.afAttenuation[0] = attenu0;
+	desc.afAttenuation[1] = attenu1;
+	desc.afAttenuation[2] = attenu2;
+
+	CBaseEntityHandle basehandle;
+	basehandle.SetBaseEntityName( "__HemisphericPointLight__" );
+	desc.pBaseEntityHandle = &basehandle;
+
+	desc.WorldPose.vPosition = pos;
+	desc.WorldPose.matOrient = Matrix33Identity();
+
+//	int shadow_for_light = 1; // true(1) by default
+//	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
+
+//	CreateEntityFromDesc( desc );
+	pStage->CreateEntity( desc );
+
+//	shared_ptr<CLightEntity> pLightEntity(  );
 }
 
 
@@ -245,4 +312,101 @@ void CStageLightUtility::CreateHSDirectionalLight( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& dir )
 {
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
+	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
+
+	int group = 0;
+
+	bool shadow_for_light = true;
+
+	// alias
+	desc.strName    = name;
+	desc.aColor[0]  = upper_color;
+	desc.aColor[1]  = lower_color;
+	desc.fIntensity = intensity;
+	desc.LightGroup = group;
+
+	CBaseEntityHandle basehandle;
+	basehandle.SetBaseEntityName( "__HemisphericDirectionalLight__" );
+	desc.pBaseEntityHandle = &basehandle;
+
+	Vector3 checked_dir;
+	Vec3Normalize( checked_dir, dir );
+	if( Vec3Length( checked_dir ) < 0.001f )
+		checked_dir = Vector3(0,-1,0);
+
+	desc.WorldPose.matOrient = CreateOrientFromFwdDir( checked_dir );
+	desc.WorldPose.vPosition = Vector3(0,0,0);
+
+//	int shadow_for_light = 1; // true(1) by default
+
+//	CreateEntityFromDesc( desc );
+	pStage->CreateEntity( desc );
 }
+
+
+
+
+
+#include "Graphics/MeshContainerRenderMethod.hpp"
+
+
+Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std::string& shader_name, const std::string& subset_name, int lod )
+{
+	CSubsetRenderMethod subset_render_method;
+	size_t pos = shader_name.find( "::" );
+
+	shared_ptr<CCopyEntity> pEntity = entity.Get();
+	if( !pEntity )
+		return Result::INVALID_ARGS;
+
+	const int max_shader_lod = 16;
+	if( lod < 0 || 16 <= max_shader_lod )
+		return Result::INVALID_ARGS;
+
+	if( pos != string::npos )
+	{
+		string filepath = "";
+		string technique_name = "";
+
+		subset_render_method.m_ShaderFilepath = filepath;
+		subset_render_method.m_Technique.SetTechniqueName( technique_name.c_str() );
+	}
+	else
+	{
+		subset_render_method.m_ShaderFilepath = shader_name;
+	}
+
+	if( !pEntity->m_pMeshRenderMethod )
+	{
+		pEntity->m_pMeshRenderMethod
+			= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod );
+	}
+
+	if( 0 == subset_name.length() )
+	{
+		vector<CSubsetRenderMethod>& vecRenderMethod
+			= pEntity->m_pMeshRenderMethod->MeshRenderMethod();
+
+		while( (int)vecRenderMethod.size() <= lod )
+			vecRenderMethod.push_back( CSubsetRenderMethod() );
+
+			vecRenderMethod[lod] = subset_render_method;
+	}
+	else
+	{
+		vector< map<string,CSubsetRenderMethod> >& mapRenderMethodMap
+			= pEntity->m_pMeshRenderMethod->SubsetRenderMethodMaps();
+
+		while( (int)mapRenderMethodMap.size() <= lod )
+			mapRenderMethodMap.push_back( map<string,CSubsetRenderMethod>() );
+
+		mapRenderMethodMap[lod][subset_name] = subset_render_method;
+	}
+
+	return Result::SUCCESS;
+}
+

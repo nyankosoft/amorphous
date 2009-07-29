@@ -90,7 +90,8 @@ class CStageMiscUtility : public CStageUtility
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
 								  const Vector3& vel,
-								  float mass );
+								  float mass,
+								  bool static_actor );
 
 public:
 
@@ -109,11 +110,34 @@ public:
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
+	CEntityHandle<> CreateStaticBox( Vector3 edge_lengths,
+		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
+		const Matrix34& pose = Matrix34Identity(),
+		const std::string& entity_name = "",
+		const std::string& entity_attributes_name = "" );
+
 	CEntityHandle<> CreateBoxFromMesh( const char *mesh_resource_name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
+};
+
+
+class CStageEntityUtility : public CStageUtility
+{
+public:
+
+	CStageEntityUtility() {}
+
+	CStageEntityUtility( boost::shared_ptr<CStage> pStage )
+		:
+	CStageUtility(pStage)
+	{}
+
+	Result::Name SetShader( CEntityHandle<>& entity, const std::string& shader_name, const std::string& subset_name, int lod );
+
+	Result::Name RemoveAllShaders( CEntityHandle<>& entity );
 };
 
 
