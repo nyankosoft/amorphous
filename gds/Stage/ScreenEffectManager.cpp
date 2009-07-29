@@ -1,4 +1,3 @@
-
 #include "ScreenEffectManager.hpp"
 
 #include "Graphics/Direct3D9.hpp"
@@ -66,6 +65,9 @@ public:
 
 	void Render()
 	{
+		if( !m_pPPMgr )
+			return;
+
 		HRESULT hr;
 
 		// perform post-processes on the scene
@@ -94,6 +96,9 @@ public:
 
 	void Render()
 	{
+		if( !m_pPPMgr )
+			return;
+
 		// render the result of the post-processed image
 		// to the restored render target
 		// render target is restored in this call
@@ -177,8 +182,8 @@ bool CScreenEffectManager::Init()
 
 	m_pPPManager = new CPostProcessManager;
 //	hr = m_pPPManager->OnCreateDevice( pd3dDev, &back_buffer_desc, "Shader\\PostProcess\\PostProcess.fx", NULL );
-	hr = m_pPPManager->OnCreateDevice( "Shader\\PostProcess\\PostProcess.fx" );
-	if( !FAILED(hr) )
+	Result::Name res = m_pPPManager->OnCreateDevice( "Shader\\PostProcess\\PostProcess.fx" );
+	if( res == Result::SUCCESS )
 	{
 //		hr = m_pPPManager->OnResetDevice( pd3dDev, &back_buffer_desc, NULL );
 		hr = m_pPPManager->OnResetDevice();
@@ -196,6 +201,8 @@ bool CScreenEffectManager::Init()
 
 		m_pPPManager->GetPostProcessInstance().reserve( 16 );
 	}
+	else
+		SafeDelete( m_pPPManager );
 
 	m_pSimpleMotionBlur = new CSimpleMotionBlur();
 	m_pSimpleMotionBlur->InitForScreenSize();
@@ -265,6 +272,9 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 
 void CScreenEffectManager::UpdateBlurEffect()
 {
+	if( !m_pPPManager )
+		return;
+
 	if( m_mapBlurStrength.size() == 0 )
 		return;
 
@@ -340,6 +350,9 @@ T& CalcPostProcessEffectParams( map<int,T>& mapParam )
 
 void CScreenEffectManager::UpdateGlareEffect()
 {
+	if( !m_pPPManager )
+		return;
+
 	vector<CPProcInstance>& rPostProcessInstance = m_pPPManager->GetPostProcessInstance();
 
 	rPostProcessInstance.push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
@@ -376,6 +389,9 @@ void CScreenEffectManager::UpdateGlareEffect()
 
 void CScreenEffectManager::UpdateMonochromeColorEffect()
 {
+	if( !m_pPPManager )
+		return;
+
 	if( m_mapMonochromeColor.size() == 0 )
 		return;
 
