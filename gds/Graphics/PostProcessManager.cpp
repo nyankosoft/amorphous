@@ -339,7 +339,7 @@ HRESULT CPostProcessManager::Init( const char *pFilename )
 }*/
 
 
-bool CPostProcessManager::OnCreateDevice( const std::string& shader_filename )
+Result::Name CPostProcessManager::OnCreateDevice( const std::string& shader_filename )
 {
     HRESULT hr;
 
@@ -430,7 +430,7 @@ bool CPostProcessManager::OnCreateDevice( const std::string& shader_filename )
 			char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
 			pCompileErrors->Release();
 		}
-		return false;
+		return Result::UNKNOWN_ERROR;
 	}
 
     // Initialize the postprocess objects
@@ -447,10 +447,10 @@ bool CPostProcessManager::OnCreateDevice( const std::string& shader_filename )
 	// Create vertex declaration for post-process
 	if( FAILED( hr = pd3dDevice->CreateVertexDeclaration( PPVERT::Decl, &m_pVertDeclPP ) ) )
 	{
-		return false;
+		return Result::UNKNOWN_ERROR;
 	}
 
-	return true;
+	return Result::SUCCESS;
 }
 
 

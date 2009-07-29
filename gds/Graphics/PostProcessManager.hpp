@@ -397,7 +397,7 @@ public:
 
 	/// Calls this for initialization
 	/// - Returns true on success
-    bool OnCreateDevice( const std::string& shader_filename );
+    Result::Name OnCreateDevice( const std::string& shader_filename );
 
 	/// Used to release the resources to change the resolution of the back buffer
     void OnDestroyDevice();
