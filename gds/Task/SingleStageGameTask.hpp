@@ -22,7 +22,7 @@ public:
 
 	void LoadStage();
 
-	const std::string GetStageScriptFilepath() { return std::string(""); }
+	const std::string GetStageScriptFilepath() { return std::string("default_stage.bin"); }
 
 	virtual int FrameMove( float dt );
 

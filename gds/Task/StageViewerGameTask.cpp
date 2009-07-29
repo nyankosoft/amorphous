@@ -36,7 +36,13 @@ int CStageViewerGameTask::FrameMove( float dt )
 	if( ret != ID_INVALID )
 		return ret;
 
-	UpdateCameraPose();
+//	UpdateCameraPose();
+
+	if( m_pCameraController )
+	{
+		m_pCameraController->UpdateCameraPose( dt );
+		m_Camera.SetPose( m_pCameraController->GetPose() );
+	}
 
 	return CGameTask::ID_INVALID;
 }

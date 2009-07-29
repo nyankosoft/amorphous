@@ -24,6 +24,8 @@ protected:
 
 	void SetGUIRendererManager( CGM_ControlRendererManagerSharedPtr pRendererManager );
 
+	CGM_ControlRendererManagerSharedPtr GetGUIRendererManager() { return m_pUIRendererManager; }
+
 public:
 
 	CGUIGameTask();
