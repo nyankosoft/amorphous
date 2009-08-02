@@ -6,6 +6,7 @@
 #include "Input/InputHub.hpp"
 
 #include "App/GameWindowManager_Win32.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
 
 
 /*
@@ -241,6 +242,14 @@ HRESULT CDirectInputMouse::UpdateInput()
 	int iMoveX = 0, iMoveY = 0;
 	float fNewMove_X = 0, fNewMove_Y = 0; 
 	SInputData input;
+//	const float factor = (float)REFERENCE_SCREEN_WIDTH / (float)m_ScreenWidth;
+	const float scale = (float)m_ScreenWidth / (float)CGraphicsComponent::REFERENCE_SCREEN_WIDTH;
+
+	// m_iPosX & m_iPosY holds scaled positions (positions in reference screen coordinates)
+//	int non_scaled_pos_x = (int)(m_iPosX / factor);
+//	int non_scaled_pos_y = (int)(m_iPosY / factor);
+	int pos_x = m_iPosX;
+	int pos_y = m_iPosY;
 
     // Study each of the buffer elements and process them.
     for( i = 0; i < dwElements; i++ )
@@ -256,8 +265,8 @@ HRESULT CDirectInputMouse::UpdateInput()
 			input.fParam1 = 0.0f;
 		}
 
-		input.SetParamH16( (short)m_iPosX );
-		input.SetParamL16( (short)m_iPosY );
+		input.SetParamH16( (short)(pos_x / scale) );
+		input.SetParamL16( (short)(pos_y / scale) );
 
 		switch( didod[i].dwOfs )
         {
@@ -291,34 +300,48 @@ HRESULT CDirectInputMouse::UpdateInput()
 
     }
 
-	m_iPosX += iMoveX;
-	m_iPosY += iMoveY;
+	pos_x += iMoveX;
+	pos_y += iMoveY;
 
 	// clamp the cursor position within the window
-	if( m_iPosX < 0 ) m_iPosX = 0;
-	if( m_iPosY < 0 ) m_iPosY = 0;
+	if( pos_x < 0 ) pos_x = 0;
+	if( pos_y < 0 ) pos_y = 0;
 	int w = m_ScreenWidth;
 	int h = m_ScreenHeight;
 //	int w = GameWindowManager().GetScreenWidth();
 //	int h = GameWindowManager().GetScreenHeight();
-	if( w < m_iPosX ) m_iPosX = w;
-	if( h < m_iPosY ) m_iPosY = h;
+	if( w < pos_x ) pos_x = w;
+	if( h < pos_y ) pos_y = h;
 
-	input.SetParamH16( (short)m_iPosX );
-	input.SetParamL16( (short)m_iPosY );
+//	m_iPosX = (int)( pos_x * factor );
+//	m_iPosY = (int)( pos_y * factor );
+	m_iPosX = pos_x;
+	m_iPosY = pos_y;
+
+//	input.SetParamH16( (short)m_iPosX );
+//	input.SetParamL16( (short)m_iPosY );
+	input.SetParamH16( (short)(pos_x / scale) );
+	input.SetParamL16( (short)(pos_y / scale) );
 
 	input.iType = ITYPE_KEY_PRESSED;
 
+//	m_fPrevMoveFractionX = (float)iMoveX * scale;
+//	m_fPrevMoveFractionY = (float)iMoveY * scale;
+
 	input.iGICode = GIC_MOUSE_AXIS_X;
-	input.fParam1 = (float)iMoveX;	//	fNewMove_X
+//	input.fParam1 = (float)iMoveX * factor;	//	fNewMove_X
+	input.fParam1 = (float)iMoveX / scale;
 	InputHub().UpdateInput(input);
 
 	input.iGICode = GIC_MOUSE_AXIS_Y;
-	input.fParam1 = (float)iMoveY;	//	fNewMove_Y
+//	input.fParam1 = (float)iMoveY * factor;	//	fNewMove_Y
+	input.fParam1 = (float)iMoveY / scale;
 	InputHub().UpdateInput(input);
 
-///	g_PerformanceCheck.fMouseNewMoveX = fNewMove_X;
-///	g_PerformanceCheck.fMouseNewMoveY = fNewMove_Y;
+	///	StateLog().Register( "non-scaled mouse move x", iMoveX );
+	///	StateLog().Register( "non-scaled mouse move y", iMoveY );
+	///	StateLog().Register( "scaled mouse pos x", m_iPosX );
+	///	StateLog().Register( "scaled mouse pos y", m_iPosY );
 
     return S_OK;
 }

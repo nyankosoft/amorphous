@@ -21,12 +21,11 @@ enum eMouseAction
 
 };
 
-#define DIMOUSE_AXIS_X 0
-#define DIMOUSE_AXIS_Y 1
 
-#define NUM_MOUSE_BUTTONS 8
-#define DIMOUSE_BUFFER_SIZE 32	//size of the buffer to hold input data from mouse (DirectInput)
-
+/// - Send mouse positions in reference screen coordinates
+/// - When the screen resolution is changed, the mouse device object needs to be notified
+///   by CDirectInputMouse::UpdateScreenSize()
+/// - Internally, CDirectInputMouse stores the cursor position in non-scaled coordinates
 class CDirectInputMouse : public CInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pDIMouse;
@@ -39,6 +38,14 @@ class CDirectInputMouse : public CInputDevice
 
 	int m_ScreenWidth;
 	int m_ScreenHeight;
+
+	enum Params
+	{
+		DIMOUSE_AXIS_X      =  0, ///< ??? (some deprecated param?)
+		DIMOUSE_AXIS_Y      =  1, ///< ??? (some deprecated param?)
+		NUM_MOUSE_BUTTONS   =  8, ///< ??? (some deprecated param?)
+		DIMOUSE_BUFFER_SIZE = 32, ///< size of the buffer to hold input data from mouse (DirectInput)
+	};
 
 private:
 
@@ -66,7 +73,8 @@ public:
 	bool InvertMouse();
 	void SetInvertMouse( bool bEnableInvertMouse );
 */
-	inline void GetCurrentPosition( int& x, int& y ) const { x = m_iPosX; y = m_iPosY; }
+	/// returns the current mouse cursor position in the current screen resolution
+	inline void GetCurrentPosition( int& x, int& y ) const;
 
 	inline int GetCurrentPositionX() const { return m_iPosX; }
 	inline int GetCurrentPositionY() const { return m_iPosY; }
@@ -75,6 +83,15 @@ public:
 
 	Result::Name SendBufferedInputToInputHandlers();
 };
+
+//----------------------- inline implementation -----------------------
+
+inline void CDirectInputMouse::GetCurrentPosition( int& x, int& y ) const
+{
+	x = m_iPosX;
+	y = m_iPosY;
+}
+
 
 
 #endif		/*  __MOUSEINPUT_H__  */
