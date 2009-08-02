@@ -214,6 +214,17 @@ int CGameTask::FrameMove( float dt )
 {
 	m_Timer.UpdateFrameTime();
 
+	if( m_pMouseCursorElement )
+	{
+		if( g_pDIMouse )
+		{
+			int x,y;
+			g_pDIMouse->GetCurrentPosition( x, y );
+			float scale = (float)GetScreenWidth() / (float)REFERENCE_SCREEN_WIDTH;
+			m_pMouseCursorElement->SetLocalTopLeftPos( Vector2(x,y) * scale );
+		}
+	}
+
 	// if the task has received a reuqest to finish and translate
 	// to another task, take appropriate actions
 	// - go into fadeout mode
@@ -281,6 +292,15 @@ void CGameTask::GetCurrentMousePosition( int& x, int& y )
 }
 
 
+/// About mouse cursor
+/// - Should use graphics element
+///   - rationale: can support animation using effect manager
+///     - animation is required to tell the user the state of system when it is, for example, loading something
+/// - Things to remember when you use graphics elements
+///   - You need to specify the coordinates in reference screen coordinates, which is
+///     right now
+///     - width: 1600
+///     - height: [900,1280]
 void CGameTask::DrawMouseCursor()
 {
 	MouseCursor().Draw();

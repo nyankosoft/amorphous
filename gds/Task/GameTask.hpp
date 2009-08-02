@@ -67,6 +67,8 @@ class CGameTask : public CGraphicsComponent
 	/// - If true, the system simply calls MouseCursor.Draw() at the end of the renderering
 	bool m_bShowMouseCursor;
 
+	boost::shared_ptr<CGraphicsElementGroup> m_pMouseCursorElement;
+
 	bool m_bIsAppExitRequested;
 
 	/// shared by all the game tasks
@@ -193,6 +195,8 @@ public:
 
 	void GetCurrentMousePosition( int& x, int& y );
 	void DrawMouseCursor();
+
+	void SetGraphicsElementGroupForMouseCursor( boost::shared_ptr<CGraphicsElementGroup> pElementGroup ) { m_pMouseCursorElement = pElementGroup; }
 
 	static void InitAnimatedGraphicsManager();
 	static CAnimatedGraphicsManager *GetAnimatedGraphicsManager() { return ms_pAnimatedGraphicsManager; }
