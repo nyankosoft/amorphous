@@ -6,15 +6,15 @@ class CTextFileScanner;
 
 class CLightWaveSceneLoader
 {
-	vector<CLWS_ObjectLayer> m_vecObjectLayer;
+	std::vector<CLWS_ObjectLayer> m_vecObjectLayer;
 
-	vector<CLWS_Light> m_vecLight;
+	std::vector<CLWS_Light> m_vecLight;
 
 	//camera;
 
 	//bone;
 
-	vector<CLWS_Item *> m_vecpItem;
+	std::vector<CLWS_Item *> m_vecpItem;
 
 	float m_afAmbientColor[3];	//0:red / 1:green / 2:blue
 

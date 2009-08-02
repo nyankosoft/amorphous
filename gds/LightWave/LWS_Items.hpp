@@ -6,11 +6,7 @@
 
 #include <vector>
 #include <list>
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
 #include "3DMath/Matrix34.hpp"
-
-using namespace std;
 
 
 class CTextFileScanner;
@@ -31,7 +27,7 @@ class CLWS_Channel
 {
 public:
 
-	vector<CLWS_Keyframe> vecKey;
+	std::vector<CLWS_Keyframe> vecKey;
 	int iPreBehavior;
 	int iPostBehavior;
 
@@ -59,8 +55,8 @@ protected:
 	int m_iParentIndex;
 
 	/// child item info
-	vector<int> m_vecChildType;
-	vector<int> m_vecChildIndex;
+	std::vector<int> m_vecChildType;
+	std::vector<int> m_vecChildIndex;
 
 protected:
 
@@ -142,7 +138,7 @@ public:
 
 class CLWS_ObjectLayer : public CLWS_Item
 {
-	string m_strObjectFilename;
+	std::string m_strObjectFilename;
 
 	int m_iLayerNumber;
 
@@ -156,7 +152,7 @@ public:
 
 	bool LoadFromFile( CTextFileScanner& scanner );
 
-	string& GetObjectFilename() { return m_strObjectFilename; }
+	std::string& GetObjectFilename() { return m_strObjectFilename; }
 
 	int GetLayerNumber() const { return m_iLayerNumber; }
 
@@ -175,7 +171,7 @@ public:
 
 class CLWS_Light : public CLWS_Item
 {
-	string m_strLightName;
+	std::string m_strLightName;
 
 	float m_afLightColor[3];
 	float m_fLightIntensity;
@@ -195,7 +191,7 @@ public:
 
 public:
 
-	string& GetName() { return m_strLightName; }
+	std::string& GetName() { return m_strLightName; }
 
 	float* GetColor() { return m_afLightColor; }
 

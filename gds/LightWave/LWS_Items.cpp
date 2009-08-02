@@ -2,7 +2,10 @@
 #include "Support/TextFileScanner.hpp"
 
 
-#define MAX_LINE_LENGTH	512
+#define MAX_LINE_LENGTH	1024
+
+
+using namespace std;
 
 
 void CLWS_Channel::Load( FILE* fp )
@@ -223,9 +226,9 @@ Vector3 CLWS_Item::GetPositionAtKeyframe( int keyframe )
 	Vector3 vPosition;
 
 	if( keyframe < 0 || 
-		m_aChannel[0].vecKey.size() <= keyframe ||
-		m_aChannel[1].vecKey.size() <= keyframe ||
-		m_aChannel[2].vecKey.size() <= keyframe )
+		(int)m_aChannel[0].vecKey.size() <= keyframe ||
+		(int)m_aChannel[1].vecKey.size() <= keyframe ||
+		(int)m_aChannel[2].vecKey.size() <= keyframe )
 		return Vector3(0,0,0);
 
 	vPosition.x = m_aChannel[0].vecKey[keyframe].fValue;
@@ -320,8 +323,8 @@ int CLWS_Item::GetNumKeyFrames()
 	int num_max_keyframes = 0;
 	for( i=0; i<num; i++ )
 	{
-		if( num_max_keyframes < m_aChannel[i].vecKey.size() )
-			num_max_keyframes = m_aChannel[i].vecKey.size();
+		if( num_max_keyframes < (int)m_aChannel[i].vecKey.size() )
+			num_max_keyframes = (int)m_aChannel[i].vecKey.size();
 	}
 
 	return num_max_keyframes;
@@ -330,9 +333,9 @@ int CLWS_Item::GetNumKeyFrames()
 
 Vector3 CLWS_Item::GetPositionAtKeyFrame( int iKeyFrame )
 {
-	if( m_aChannel[0].vecKey.size() <= iKeyFrame ||
-		m_aChannel[1].vecKey.size() <= iKeyFrame ||
-		m_aChannel[2].vecKey.size() <= iKeyFrame )
+	if( (int)m_aChannel[0].vecKey.size() <= iKeyFrame ||
+		(int)m_aChannel[1].vecKey.size() <= iKeyFrame ||
+		(int)m_aChannel[2].vecKey.size() <= iKeyFrame )
 		return Vector3(0,0,0);
 
 	Vector3 vPosition;
@@ -346,7 +349,7 @@ Vector3 CLWS_Item::GetPositionAtKeyFrame( int iKeyFrame )
 
 float CLWS_Item::GetTimeAtKeyFrame( int iKeyFrame )
 {
-	if( m_aChannel[0].vecKey.size() <= iKeyFrame )
+	if( (int)m_aChannel[0].vecKey.size() <= iKeyFrame )
 		return 0;
 
 	return m_aChannel[0].vecKey[iKeyFrame].fTime;

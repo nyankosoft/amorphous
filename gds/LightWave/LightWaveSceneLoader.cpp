@@ -1,7 +1,7 @@
-
 #include "LightWaveSceneLoader.hpp"
-
 #include "Support/TextFileScanner.hpp"
+
+using namespace std;
 
 
 CLightWaveSceneLoader::CLightWaveSceneLoader()
