@@ -137,6 +137,28 @@ void CGM_Control::OnFocusOut()
 }
 
 
+void CGM_Control::OnMouseEnter()
+{
+	m_bMouseOver = true;
+
+	if( m_pRenderer )
+	{
+		m_pRenderer->OnMouseCursorEntered( *this );
+	}
+}
+
+
+void CGM_Control::OnMouseLeave()
+{
+	m_bMouseOver = false;
+
+	if( m_pRenderer )
+	{
+		m_pRenderer->OnMouseCursorLeft( *this );
+	}
+}
+
+
 void CGM_Control::SetEnabled( bool bEnabled )
 {
 	m_bEnabled = bEnabled;

@@ -169,8 +169,8 @@ public:
 	virtual void OnFocusIn();
 	virtual void OnFocusOut();
 
-	virtual void OnMouseEnter() { m_bMouseOver = true; }
-	virtual void OnMouseLeave() { m_bMouseOver = false; }
+	virtual void OnMouseEnter();
+	virtual void OnMouseLeave();
 
 	bool HasFocus() const { return m_bHasFocus; }
 
