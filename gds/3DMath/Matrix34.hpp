@@ -50,6 +50,8 @@ public:
 
 	bool operator!=( const Matrix34& rhs ) const { return !(*this == rhs); }
 
+	inline Vector3 operator*( const Vector3 &rhs ) const;
+
 	friend Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs);
 };
 
@@ -97,26 +99,6 @@ inline Matrix34 Matrix34::GetInverseROT() const
 }
 
 
-// used to calc the combination of two poses
-// usually, 
-//   lhs == world pose
-//   rhs == local pose
-inline Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs)
-{
-	Matrix34 out;
-
-	out.vPosition = lhs.matOrient * rhs.vPosition + lhs.vPosition;
-	out.matOrient = lhs.matOrient * rhs.matOrient;
-	return out;
-}
-
-
-inline Vector3 operator*(const Matrix34 & pose, const Vector3 & pos)
-{
-	return pose.matOrient * pos + pose.vPosition;
-}
-
-
 // copy orientation & translation from 4x4 row major matrix
 inline void Matrix34::CopyFromRowMajorMatrix44( Scalar *pSrcData )
 {
@@ -142,7 +124,35 @@ inline bool Matrix34::operator==( const Matrix34& rhs ) const
 }
 
 
+inline Vector3 Matrix34::operator*( const Vector3 &rhs ) const
+{
+	return matOrient * rhs + vPosition;
+}
+
+
+
+//===================================================================================
+// global operators
+//===================================================================================
+
+// used to calc the combination of two poses
+// usually, 
+//   lhs == world pose
+//   rhs == local pose
+inline Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs)
+{
+	Matrix34 out;
+
+	out.vPosition = lhs.matOrient * rhs.vPosition + lhs.vPosition;
+	out.matOrient = lhs.matOrient * rhs.matOrient;
+	return out;
+}
+
+
+
+//===================================================================================
 // global functions
+//===================================================================================
 
 inline Matrix34 Matrix34Identity()
 {
