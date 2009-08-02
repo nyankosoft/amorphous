@@ -318,9 +318,18 @@ void CApplicationBase::UpdateFrame()
 
 	if( g_pDIMouse )
 	{
+		g_pDIMouse->UpdateScreenSize(
+			GameWindowManager().GetScreenWidth(),
+			GameWindowManager().GetScreenHeight() );
+
+//		float scale
+//			= (float)GameWindowManager().GetScreenWidth()
+//			/ (float)CGraphicsComponent::REFERENCE_SCREEN_WIDTH;
+
+		// MouseCursor() uses non-scaled screen coordinates
 		MouseCursor().UpdateCursorPosition(
-			g_pDIMouse->GetCurrentPositionX(),
-			g_pDIMouse->GetCurrentPositionY() );
+			(int)( g_pDIMouse->GetCurrentPositionX() ),
+			(int)( g_pDIMouse->GetCurrentPositionY() ) );
 	}
 
 	/// Update input
