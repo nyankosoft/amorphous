@@ -561,6 +561,73 @@ public:
 };
 
 
+class CE_SineWave : public CGraphicsElementNonLinearEffect
+{
+protected:
+
+	float m_fPeriod; ///< [sec]
+
+	int m_ColorIndex;
+
+	float CalculateFactor( double current_time, double dt )
+	{
+		double offset = 0.5 * PI; // make alpha0/color0 first appear in full brightness
+		double x = current_time * 2.0 * PI / m_fPeriod + offset;
+		double y = sin( x );
+
+		return (float)( ( y + 1.0 ) * 0.5 );
+	}
+
+public:
+
+	CE_SineWave( boost::shared_ptr<CGraphicsElement> pTargetElement )
+		:
+	CGraphicsElementNonLinearEffect(pTargetElement, 0.0f, 10000.0f )
+	{}
+
+	virtual ~CE_SineWave()
+	{}
+};
+
+
+class CE_SineWaveAlphaChange : public CE_SineWave
+{
+	float m_afAlpha[2];
+
+public:
+
+	CE_SineWaveAlphaChange( boost::shared_ptr<CGraphicsElement> pTargetElement )
+		:
+	CE_SineWave( pTargetElement ) 
+	{
+		m_afAlpha[0] = m_afAlpha[1] = 1.0f;
+	}
+
+	void Update( double current_time, double dt );
+
+	friend class CAnimatedGraphicsManager;
+};
+
+
+class CE_SineWaveColorChange : public CE_SineWave
+{
+	SFloatRGBAColor m_aColor[2];
+
+public:
+
+	CE_SineWaveColorChange( boost::shared_ptr<CGraphicsElement> pTargetElement )
+		:
+	CE_SineWave( pTargetElement ) 
+	{
+		m_aColor[0] = m_aColor[1] = SFloatRGBAColor::White();
+	}
+
+	void Update( double current_time, double dt );
+
+	friend class CAnimatedGraphicsManager;
+};
+
+
 class CAnimatedGraphicsManagerBase
 {
 public:
@@ -587,6 +654,9 @@ public:
 	virtual CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double interval, int color_index = 0 ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double interval, float alpha ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ) { return CGraphicsEffectHandle::Null(); } 
+
+	virtual CGraphicsEffectHandle ChangeAlphaInSineWave( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, float alpha0, float alpha1, int num_periods = -1 ) { return CGraphicsEffectHandle::Null(); }
+	virtual CGraphicsEffectHandle ChangeColorInSineWave( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, const SFloatRGBAColor& color0, const SFloatRGBAColor& color1, int num_periods = -1 ) { return CGraphicsEffectHandle::Null(); }
 
 	virtual CGraphicsEffectHandle DrawText( boost::shared_ptr<CTextElement> pTargetTextElement, double start_time, int num_chars_per_sec ) { return CGraphicsEffectHandle::Null(); }
 	virtual CGraphicsEffectHandle ChangeVertexColorNonLinear( boost::shared_ptr<CPolygonElement> pTargetTextElement, double start_time,
@@ -706,6 +776,10 @@ public:
 
 //	CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double interval, float alpha ); 
 //	CGraphicsEffectHandle BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, double duration0, double duration1, float alpha0, float alpha1 ); 
+
+	CGraphicsEffectHandle ChangeAlphaInSineWave( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, float alpha0, float alpha1, int num_periods );
+
+	CGraphicsEffectHandle ChangeColorInSineWave( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, const SFloatRGBAColor& color0, const SFloatRGBAColor& color1, int num_periods );
 
 	/// Used only by text element.
 	/// - Effect is terminated after the entire text is drawn

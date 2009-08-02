@@ -271,6 +271,26 @@ void CE_AlphaBlink::Update( double current_time, double dt )
 }
 
 
+void CE_SineWaveAlphaChange::Update( double current_time, double dt )
+{
+	const float factor = CalculateFactor( current_time, dt );
+
+	float alpha = m_afAlpha[0] * factor + m_afAlpha[1] * ( 1.0f - factor );
+
+	GetElement()->SetAlpha( m_ColorIndex, alpha );
+}
+
+
+void CE_SineWaveColorChange::Update( double current_time, double dt )
+{
+	const float factor = CalculateFactor( current_time, dt );
+
+	SFloatRGBAColor color = m_aColor[0] * factor + m_aColor[1] * ( 1.0f - factor );
+
+	GetElement()->SetColor( m_ColorIndex, color );
+}
+
+
 class CGraphiceEffectManagerCallback : public CGraphicsElementManagerCallback
 {
 	/// borrowed reference
@@ -552,6 +572,32 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( boost::shared_ptr<CG
 	pEffect->m_afDuration[1] = interval;
 	pEffect->m_ColorIndex = color_index;
 	pEffect->SetFlags( CGraphicsElementEffectFlag::DONT_RELEASE );
+
+	return AddGraphicsEffect( pEffect );
+}
+
+
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaInSineWave( shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, float alpha0, float alpha1, int num_periods )
+{
+	CE_SineWaveAlphaChange *pEffect = new CE_SineWaveAlphaChange( pTargetElement );
+	pEffect->m_afAlpha[0] = alpha0;
+	pEffect->m_afAlpha[1] = alpha1;
+	pEffect->m_ColorIndex = color_index;
+	pEffect->m_fPeriod    = (float)period;
+//	pEffect->SetDurationFromNumPeriods( num_periods );
+
+	return AddGraphicsEffect( pEffect );
+}
+
+
+CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorInSineWave( shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, const SFloatRGBAColor& color0, const SFloatRGBAColor& color1, int num_periods )
+{
+	CE_SineWaveColorChange *pEffect = new CE_SineWaveColorChange( pTargetElement );
+	pEffect->m_aColor[0]  = color0;
+	pEffect->m_aColor[1]  = color1;
+	pEffect->m_ColorIndex = color_index;
+	pEffect->m_fPeriod    = (float)period;
+//	pEffect->SetDurationFromNumPeriods( num_periods );
 
 	return AddGraphicsEffect( pEffect );
 }
