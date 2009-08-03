@@ -74,8 +74,6 @@ public:
 
 	CLWS_Item();
 
-//	virtual void LoadFromFile( char* pcFirstLine, FILE* fp ) {}
-
 	virtual bool LoadFromFile( CTextFileScanner& scanner );
 
 	/// For the moment, this function returns the position at frame 0,
@@ -148,8 +146,6 @@ public:
 
 	CLWS_ObjectLayer();
 
-//	void LoadFromFile( char* pcFirstLine, FILE* fp );
-
 	bool LoadFromFile( CTextFileScanner& scanner );
 
 	std::string& GetObjectFilename() { return m_strObjectFilename; }
@@ -159,6 +155,31 @@ public:
 	void SetNullObject( bool b ) { m_bNullObject = b; }
 
 //	CLWS_ObjectLayer operator=(CLWS_ObjectLayer objectlayer);
+
+	friend class CLightWaveSceneLoader;
+};
+
+
+
+//===============================================================================================
+// CLWS_Bone
+//===============================================================================================
+
+class CLWS_Bone : public CLWS_Item
+{
+	std::string m_strBoneName;
+
+//	int m_iLayerNumber;
+
+//	bool m_bNullObject;
+
+public:
+
+	CLWS_Bone();
+
+	bool LoadFromFile( CTextFileScanner& scanner );
+
+	std::string& GetBoneName() { return m_strBoneName; }
 
 	friend class CLightWaveSceneLoader;
 };
@@ -198,8 +219,6 @@ public:
 	float GetIntensity() const { return m_fLightIntensity; }
 
 	int GetType() const { return m_LightType; }
-
-//	void LoadFromFile( char* pcFirstLine, FILE* fp );
 
 	virtual bool LoadFromFile( CTextFileScanner& scanner );
 

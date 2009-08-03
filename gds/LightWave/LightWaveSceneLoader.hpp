@@ -10,6 +10,8 @@ class CLightWaveSceneLoader
 
 	std::vector<CLWS_Light> m_vecLight;
 
+	std::vector<CLWS_Bone> m_vecBone;
+
 	//camera;
 
 	//bone;
@@ -39,6 +41,8 @@ public:
 	int GetNumObjectLayers() { return (int)m_vecObjectLayer.size(); }
 
 	CLWS_ObjectLayer* GetObjectLayer(int i);
+
+	const std::vector<CLWS_Bone>& GetBones() const{ return m_vecBone; }
 
 	CLWS_Fog *GetFog();
 

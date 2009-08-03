@@ -411,6 +411,49 @@ bool CLWS_ObjectLayer::LoadFromFile( CTextFileScanner& scanner )
 
 
 //=====================================================================================
+// CLWS_Bone
+//=====================================================================================
+
+CLWS_Bone::CLWS_Bone()
+{
+}
+
+
+bool CLWS_Bone::LoadFromFile( CTextFileScanner& scanner )
+{
+	string tag;
+	scanner.GetTagString( tag );
+
+	if( CLWS_Item::LoadFromFile( scanner ) )
+		return true;
+
+	else if( tag == "BoneName" )
+	{
+		scanner.ScanLine( tag, m_strBoneName );
+		return true;
+	}
+
+	else if( tag == "BoneRestPosition" )
+	{
+		return true;
+	}
+
+	else if( tag == "BoneRestDirection" )
+	{
+		return true;
+	}
+
+	else if( tag == "BoneRestLength" )
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+
+//=====================================================================================
 // CLWS_Light
 //=====================================================================================
 
@@ -418,7 +461,6 @@ bool CLWS_ObjectLayer::LoadFromFile( CTextFileScanner& scanner )
 bool CLWS_Light::LoadFromFile( CTextFileScanner& scanner )
 {
 	string tag, strLine;
-
 	scanner.GetTagString( tag );
 
 	if( CLWS_Item::LoadFromFile( scanner ) )

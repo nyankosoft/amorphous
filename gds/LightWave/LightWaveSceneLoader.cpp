@@ -63,6 +63,15 @@ bool CLightWaveSceneLoader::LoadFromFile( const char* pcLWS_Filename )
 			continue;
 		}
 
+		else if( tag == "AddBone" )
+		{
+			m_vecBone.push_back( CLWS_Bone() );
+
+			m_vecpItem.push_back( &m_vecBone.back() );
+
+			continue;
+		}
+
 		else if( tag == "AddLight" )
 		{
 			m_vecLight.push_back( CLWS_Light() );
