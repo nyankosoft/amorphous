@@ -7,7 +7,7 @@
 #include "Stage/PyModule_VisualEffect.hpp"
 #include "Stage/StageGraph.hpp"
 #include "GameTextSystem/PyModule_TextMessage.hpp"
-#include "Sound/PyModule_Sound.hpp"
+#include "Sound/PyModule_SoundMethods.hpp"
 #include "GameCommon/PyModule_Shop.hpp"
 #include "Graphics/PyModule_GraphicsElement.hpp"
 #include "Task/PyModule_Task.hpp"
