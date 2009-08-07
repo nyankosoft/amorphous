@@ -231,7 +231,26 @@ bool CApplicationBase::InitBase()
 	}
 	catch( std::exception& e )
 	{
-		g_Log.Print( WL_WARNING, "exception: %s", e.what() );
+		g_Log.Print( WL_WARNING, "std::exception: %s", e.what() );
+	}
+	catch( boost::exception& e )
+	{
+		// compiled on VisualC++ 2005 Express, error on GCC 4.1.1
+#ifdef _MSC_VER
+		shared_ptr<throw_line::value_type const> pLine         = get_error_info<throw_line>(e);
+		shared_ptr<throw_file::value_type const> pFile         = get_error_info<throw_file>(e);
+		shared_ptr<throw_function::value_type const> pFunction = get_error_info<throw_function>(e);
+		int line             = *pLine.get();
+		const char *file     = *pFile.get();
+		const char *function = *pFunction.get();
+		g_Log.Print( WL_WARNING, "boost::exception: at %s (%s, L%d)\n", function, file, line );
+#else
+		// compiled on GCC 4.1.1, error on VisualC++ 2005 Express
+		const int * const line      = get_error_info<throw_line>(e);
+		const char * const* file     = get_error_info<throw_file>(e);
+		const char * const* function = get_error_info<throw_function>(e);
+		printf( "exception: at %s (%s, L%d)\n", *function, *file, *line );
+#endif /* _MSC_VER */
 	}
 
 	m_pGlobalInputHandler = new CGlobalInputHandler;
