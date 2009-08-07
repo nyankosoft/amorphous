@@ -40,6 +40,8 @@ public:
 
 	inline Matrix34 GetPose( float time );
 
+	inline void AddKeyPose( const KeyPose& key_pose );
+
 	/// returns if a path exist at a given time
 	inline bool IsAvailable( float time ) const;
 
@@ -144,6 +146,31 @@ inline Matrix34 CBEC_MotionPath::GetPose( float time )
 
 		return m_vecKeyPose.back().pose;
 	}
+}
+
+
+inline void CBEC_MotionPath::AddKeyPose( const KeyPose& key_pose )
+{
+	if( m_vecKeyPose.size() == 0 || m_vecKeyPose.back().time <= key_pose.time )
+	{
+		m_vecKeyPose.push_back( key_pose );
+		return;
+	}
+
+//	vector<KeyPose>::reverse_iterator ritr = m_vecKeyPose.end();
+	for( int i=(int)(m_vecKeyPose.size())-1; 0<=i; i-- )
+	{
+		if( m_vecKeyPose[i].time < key_pose.time )
+		{
+			m_vecKeyPose.insert( m_vecKeyPose.begin() + i + 1, key_pose );
+			return;
+		}
+	}
+
+	// not added yet
+	// - key_pose.time is smaller than any time of key_poses in m_vecKeyPose
+	// - insert key_pose at the front of the list
+	m_vecKeyPose.insert( m_vecKeyPose.begin(), key_pose );
 }
 
 

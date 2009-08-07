@@ -6,6 +6,7 @@
 #include "Graphics/fwd.hpp"
 #include "Physics/fwd.hpp"
 #include "Sound/fwd.hpp"
+#include "Input/fwd.hpp"
 
 #include "Graphics/Camera.hpp"
 #include "Support/Timer.hpp"
@@ -28,7 +29,7 @@ class CStage
     /// holds static geometry
 	CStaticGeometryBase *m_pStaticGeometry;
 
-	/// manges entities
+	/// manages entities
 	CEntitySet *m_pEntitySet;
 
 	/// handles physics simulation
@@ -48,6 +49,9 @@ class CStage
 	/// and resumes it when the task gets active again
 	CTimer *m_pTimer;	
 //	PrecisionTimer *m_pTimer;
+
+	/// owned reference
+	CInputHandler *m_pStageDebugInputHandler;
 
 private:
 
@@ -94,7 +98,7 @@ public:
 	/// if you use separate threads for rendering and entity updates, you need to make sure
 	/// the camera is not destroyed during entity updates while CStage::Render() is running
 	/// TODO: make this thread safe
-	/// the same caution applies to the above CStage::Render()
+	/// the same caution applies to the above CStage::Render() as well
 	void Render( CCamera& rCam );
 
 	void CreateRenderTasks();

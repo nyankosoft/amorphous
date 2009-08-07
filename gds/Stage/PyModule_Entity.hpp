@@ -2,7 +2,7 @@
 #define __PYMODULE_ENTITY_H__
 
 
-#include <Python.h>
+#include "Script/PythonHeaders.hpp"
 
 
 class CStage;

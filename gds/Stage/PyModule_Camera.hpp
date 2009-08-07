@@ -2,10 +2,10 @@
 #define __PYMODULE_CAMERA_H__
 
 
-#include <string>
-using namespace std;
+#include "Script/PythonHeaders.hpp"
 
-#include <Python.h>
+#include <string>
+
 
 class CStage;
 

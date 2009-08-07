@@ -1312,11 +1312,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\PyModule_Task.cpp"
+					RelativePath="..\..\gds\Task\PyModule_TaskMethods.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Task\PyModule_Task.hpp"
+					RelativePath="..\..\gds\Task\PyModule_TaskMethods.hpp"
 					>
 				</File>
 				<File
@@ -1480,11 +1480,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\PyModule_Shop.cpp"
+					RelativePath="..\..\gds\GameCommon\PyModule_ShopMethods.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\GameCommon\PyModule_Shop.hpp"
+					RelativePath="..\..\gds\GameCommon\PyModule_ShopMethods.hpp"
 					>
 				</File>
 				<File
@@ -1971,11 +1971,43 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\gds\Script\PyModule_shop.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_shop.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_single_player.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_single_player.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_sound.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_sound.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Script\PyModule_StageUtility.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\..\gds\Script\PyModule_StageUtility.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_task.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_task.hpp"
 						>
 					</File>
 				</Filter>

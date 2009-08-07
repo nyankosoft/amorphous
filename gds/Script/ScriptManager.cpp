@@ -4,9 +4,14 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 #include "Support/fnop.hpp"
+#include <boost/python.hpp>
 
 
 using namespace std;
+using namespace boost;
+
+
+bool CScriptManager::ms_UseBoostPythonModules = true;
 
 
 //=========================================================================
@@ -93,7 +98,7 @@ static PyObject *SetScriptInitCallback( PyObject *dummy, PyObject *args )
 			result = Py_None;
 		}
 	}
-	catch( exception& e )
+	catch( std::exception& e )
 	{
 		g_Log.Print( WL_ERROR, "SetInitCallback() failed - exception: %s", e.what() );
 	}
@@ -158,10 +163,17 @@ m_bLoadFromNonArchivedFiles(false)
 
 	PythonUserCount().IncRefCount();
 
-	// make a module for setting callbacks
-	AddModule( "ScriptBase", g_ScriptBaseMethod );
-//	PyObject *pBaseModule0 = PyImport_AddModule( "ScriptBase" );
-//	PyObject *pBaseModule = Py_InitModule( "ScriptBase", g_ScriptBaseMethod );
+	if( ms_UseBoostPythonModules )
+	{
+		// add script_base module
+	}
+	else
+	{
+		// make a module for setting callbacks
+		AddModule( "ScriptBase", g_ScriptBaseMethod );
+//		PyObject *pBaseModule0 = PyImport_AddModule( "ScriptBase" );
+//		PyObject *pBaseModule = Py_InitModule( "ScriptBase", g_ScriptBaseMethod );
+	}
 }
 
 CScriptManager::~CScriptManager()
@@ -202,21 +214,50 @@ void CScriptManager::AddInitCallback( PyObject* pEventCallback )
 }
 
 
+/// execute the script and register the callback from the script
 bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest_script )
 {
-	PyObject *pMainModule     = PyImport_AddModule( "__main__" );
-	PyObject *pMainDictionary = PyModule_GetDict( pMainModule );
+	boost::thread::id thread_id = boost::this_thread::get_id();
 
-	// set script holder object that will be the target for registering callback functions
-	m_pTargetScript = &dest_script;
+	bool res = false;
+	if( ms_UseBoostPythonModules )
+	{
+		// Retrieve the main module
+		python::object main = python::import("__main__");
 
-	PyErr_Clear();
+		// Retrieve the main module's namespace
+		python::object global(main.attr("__dict__"));
 
-	// run  the script and register the callback function(s)
-	PyObject* pRunResult = PyRun_String( (const char *)(&buffer.get_buffer()[0]),
-		                                 Py_file_input, pMainDictionary, pMainDictionary );
+		// set script holder object that will be the target for registering callback functions
+		m_pTargetScript = &dest_script;
 
-	m_pTargetScript = NULL;
+		PyErr_Clear();
+
+		// run  the script and register the callback function(s)
+		python::object result = python::exec( &(buffer.get_buffer()[0]), global, global );
+
+		res = true;//result
+
+		m_pTargetScript = NULL;
+	}
+	else
+	{
+		PyObject *pMainModule     = PyImport_AddModule( "__main__" );
+		PyObject *pMainDictionary = PyModule_GetDict( pMainModule );
+
+		// set script holder object that will be the target for registering callback functions
+		m_pTargetScript = &dest_script;
+
+		PyErr_Clear();
+
+		// run  the script and register the callback function(s)
+		PyObject* pRunResult = PyRun_String( (const char *)(&buffer.get_buffer()[0]),
+											 Py_file_input, pMainDictionary, pMainDictionary );
+
+		res = pRunResult ? true : false;
+
+		m_pTargetScript = NULL;
+	}
 
 	if( !dest_script.m_pEventCallback )
 	{
@@ -226,7 +267,8 @@ bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest
 		return false;
 	}
 
-	if( pRunResult == NULL )
+//	if( pRunResult == NULL )
+	if( res == false )
 	{
 		return false;
 //		PrintLog( "an exception raised during the execution of the script, '" + filename + "'");
@@ -237,31 +279,6 @@ bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest
 		dest_script.m_bIsDone = false;
 		return true;
 //		PrintLog( "script file, '" + filename + "' loaded");
-	}
-
-	return true;
-}
-
-
-#define MAX_DIR_PATH	1024
-#define MAX_FILE_LENGTH	512
-
-bool CScriptManager::GetScriptFiles( vector<string>& vecDestScriptFilename )
-{
-	char filename[MAX_FILE_LENGTH];
-	int i=0;
-	while( 1 )
-	{
-		sprintf( filename, "script%02d.py", i );
-		LOG_PRINT( "checking a script file, '" + string(filename) + "'...");
-		if( fnop::file_exists( filename ) )
-		{
-			LOG_PRINT( "registering a script file, '" + string(filename) + "'...");
-			vecDestScriptFilename.push_back( filename );
-			i++;
-		}
-		else
-			break;
 	}
 
 	return true;
@@ -309,6 +326,13 @@ bool CScriptManager::LoadScriptArchiveFile( const string& filename )
 	}
 
 	return true;
+}
+
+
+bool CScriptManager::ExecuteScript( const stream_buffer& buffer )
+{
+	CEventScript es;
+	return LoadScript( buffer, es );
 }
 
 
@@ -478,42 +502,3 @@ void CScriptManager::Update()
 		}
 	}
 }
-
-
-
-
-
-
-/*
-bool CScriptManager::LoadScripts( const string& directory )
-{
-	char cwd[MAX_DIR_PATH];
-	GetCurrentDirectory( MAX_DIR_PATH, cwd );
-	if( !SetCurrentDirectory( directory.c_str() ) )
-	{
-		MessageBox( NULL, "an invalid directory", "msg", MB_OK|MB_ICONWARNING );
-
-		return false;
-	}
-
-	vector<string> vecScriptFilename;
-
-	if( !GetScriptFiles( vecScriptFilename ) )
-		return false;
-
-	size_t i, num_scriptfiles = vecScriptFilename.size();
-	for( i=0; i<num_scriptfiles; i++ )
-	{
-		if( !LoadScript( vecScriptFilename[i] ) )
-		{
-			// ReleaseScripts();
-			return false;
-		}
-	}
-
-	// restore the original directory
-	SetCurrentDirectory( cwd );
-
-	return true;
-}
-*/

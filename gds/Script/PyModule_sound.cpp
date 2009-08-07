@@ -165,7 +165,7 @@ BOOST_PYTHON_MODULE(sound)
 //	typedef CSoundManager SndMgr;
 
 	class_<CSoundHandle>("SoundHandle")
-//		.def(init<const std::string&>())
+		.def(init<const std::string&>())
 //		.def("GetResourceName",   &CSoundHandle::GetResourceName) // error
 		.def("SetResourceName",   &CSoundHandle::SetResourceName)
 	;
@@ -192,10 +192,10 @@ BOOST_PYTHON_MODULE(sound)
 	def( "Play",                PlayFHD,  ( python::arg("sound_handle"), python::arg("desc") ) );
 	def( "PlayStream",          PlayStream, ( python::arg("resource_path"), python::arg("fadein_time") = 0, python::arg("looped") = 0, python::arg("sound_group") = 0, python::arg("volume") = 0xFF ) );
 	def( "StopStream",          StopStream, ( python::arg("resource_path"), python::arg("fadeout_time") = 0 ) );
-/*	def( "SetListenerPosition", SetListenerPosition, ( python::arg("pos") ) );
+	def( "SetListenerPosition", SetListenerPosition, ( python::arg("pos") ) );
 	def( "SetListenerPose",     SetListenerPose,     ( python::arg("pose") ) );
 	def( "SetListenerVelocity", SetListenerVelocity, ( python::arg("vel") ) );
-	def( "SetMute",             SetMute );
+/*	def( "SetMute",             SetMute );
 */
 
 /*

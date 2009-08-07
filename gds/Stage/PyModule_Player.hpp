@@ -2,7 +2,7 @@
 #define __PyModule_Player_H__
 
 
-#include <Python.h>
+#include "Script/PythonHeaders.hpp"
 
 
 extern PyMethodDef g_PyModulePlayerMethod[];

@@ -2,7 +2,7 @@
 #define __PyModule_Light_H__
 
 
-#include <Python.h>
+#include "Script/PythonHeaders.hpp"
 #include "Stage/fwd.hpp"
 
 

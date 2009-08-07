@@ -2,7 +2,7 @@
 #define __PYMODULE_SOUND_H__
 
 
-#include <Python.h>
+#include "Script/PythonHeaders.hpp"
 
 
 extern PyMethodDef g_PyModuleSoundMethod[];

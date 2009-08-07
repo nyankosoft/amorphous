@@ -2,7 +2,7 @@
 #define __PyModule_Stage_H__
 
 
-#include <Python.h>
+#include "Script/PythonHeaders.hpp"
 #include "Stage/fwd.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "Physics/fwd.hpp"

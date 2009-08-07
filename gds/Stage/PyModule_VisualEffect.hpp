@@ -2,8 +2,7 @@
 #define __PyModule_VisualEffect_H__
 
 
-#include <string>
-#include <Python.h>
+#include "Script/PythonHeaders.hpp"
 #include "Stage/fwd.hpp"
 
 

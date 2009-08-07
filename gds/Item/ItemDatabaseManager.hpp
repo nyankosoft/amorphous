@@ -3,9 +3,9 @@
 
 
 #include "fwd.hpp"
+#include "GameItem.hpp"
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
-
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;

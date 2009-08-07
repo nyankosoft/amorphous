@@ -1,5 +1,6 @@
 #include <gds/Script/PyModule_StageUtility.hpp>
 #include <gds/Graphics/3DGameMath.hpp>
+#include <gds/Stage/EntityMotionPathRequest.hpp>
 #include <gds/Support/Log/DefaultLog.hpp>
 
 using namespace std;
@@ -38,6 +39,16 @@ BOOST_PYTHON_MODULE(stage_util)
 	def( "CreateStageLightUtility",   CreateStageLightUtility );
 	def( "CreateStageMiscUtility",    CreateStageMiscUtility );
 	def( "CreateStageEntityUtility",  CreateStageEntityUtility );
+
+	class_<KeyPose>("KeyPose")
+		.def_readwrite( "time", &KeyPose::time )
+		.def_readwrite( "pose", &KeyPose::pose )
+		.def(init<float,Matrix34>())
+	;
+
+	class_< CBEC_MotionPath, shared_ptr<CBEC_MotionPath> >("EntityMotionPath")
+		.def( "AddKeyPose", &CBEC_MotionPath::AddKeyPose )
+	;
 }
 
 

@@ -8,6 +8,9 @@ using namespace GameLib1::Serialization;
 #include <string.h>
 #include <vorbis/vorbisfile.h>
 
+using namespace std;
+using namespace boost;
+
 
 
 const IDAndTextPair g_OpenALErrors[6] =
@@ -19,10 +22,6 @@ const IDAndTextPair g_OpenALErrors[6] =
 	ID_AND_TEXT( AL_INVALID_OPERATION ),
 	ID_AND_TEXT( AL_OUT_OF_MEMORY )
 };
-
-
-using namespace std;
-using namespace boost;
 
 
 static inline void Swap(short &s1, short &s2)
@@ -323,6 +322,18 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 	return true;
 }
 
+
+
+inline static void ReportALError( const char *fname )
+{
+	ALenum al_error = alGetError();
+	if( al_error != AL_NO_ERROR )
+	{
+		LOG_PRINT_ERROR( string(fname) + "() An OpenAL error (code: " + to_string(al_error) + ")." );
+	}
+}
+
+#define REPORT_AL_ERROR() ReportALError(__FUNCTION__)
 
 
 //====================================================================================
@@ -847,11 +858,15 @@ void COpenALSoundManagerImpl::SetVolume( int volume_group, uint volume )
 
 void COpenALSoundManagerImpl::SetListenerPosition( const Vector3& vPosition )
 {
+	alGetError();
+
 	float afListenerPos[3];
 	afListenerPos[0] = vPosition.x;
 	afListenerPos[1] = vPosition.y;
 	afListenerPos[2] = vPosition.z;
 	alListenerfv( AL_POSITION, afListenerPos );
+
+	REPORT_AL_ERROR();
 
 	m_ListenerPose.vPosition = vPosition;
 

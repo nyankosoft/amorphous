@@ -1818,11 +1818,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\PyModule_Sound.cpp"
+				RelativePath="..\..\gds\Sound\PyModule_SoundMethods.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\PyModule_Sound.hpp"
+				RelativePath="..\..\gds\Sound\PyModule_SoundMethods.hpp"
 				>
 			</File>
 			<File

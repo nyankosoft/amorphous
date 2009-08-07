@@ -1,14 +1,13 @@
 #ifndef  __GSF_ScriptManager_H__
 #define  __GSF_ScriptManager_H__
 
-#include "ScriptArchive.hpp"
-
+//#include "Script/PythonHeaders.hpp"
 #include <vector>
 #include <string>
 #include <sys/stat.h>
-#include <Python.h>
-
-
+#include <boost/python.hpp>
+#include <boost/thread.hpp>
+#include "ScriptArchive.hpp"
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
@@ -43,7 +42,17 @@ public:
 		m_RefCount++;
 
 		if( m_RefCount == 1 )
-			Py_Initialize();
+		{
+			if( !Py_IsInitialized() )
+			{
+				boost::thread::id thread_id = boost::this_thread::get_id();
+				Py_Initialize();
+			}
+			else
+			{
+				LOG_PRINT( " Skipped Py_Initialize(). Somebody other than the engine has already called Py_Initialize()." );
+			}
+		}
 	}
 
 	void DecRefCount()
@@ -135,7 +144,7 @@ private:
 
 	bool LoadScriptFromFile( const std::string& filename );
 
-    bool LoadScript( const stream_buffer& buffer, CEventScript& dest_script );
+	bool LoadScript( const stream_buffer& buffer, CEventScript& dest_script );
 
 	void ReloadUpdatedScriptFiles();
 
@@ -145,15 +154,13 @@ public:
 
 	virtual ~CScriptManager();
 
-	bool GetScriptFiles( std::vector<std::string>& vecDestScriptFilename );
-
-	/// load script files under the specified directory
-//	bool LoadScripts( const std::string& directory );
-
 //	bool LoadScriptFromArchiveFile( const std::string& filename );
 
 	/// called from CStage::InitEventScriptManager()
 	bool LoadScriptArchiveFile( const std::string& filename );
+
+	/// for debugging
+	bool ExecuteScript( const stream_buffer& buffer );
 
 	void InitScripts();
 
@@ -165,6 +172,8 @@ public:
 	void AddInitCallback( PyObject* pEventCallback );
 
 	void AddModule( const std::string& module_name, PyMethodDef method[] );
+
+	static bool ms_UseBoostPythonModules;
 };
 
 

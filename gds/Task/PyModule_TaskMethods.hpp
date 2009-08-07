@@ -2,9 +2,7 @@
 #define __PYMODULE_TASK_H__
 
 
-#include <string>
-
-#include <Python.h>
+#include "Script/PythonHeaders.hpp"
 
 class CStage;
 

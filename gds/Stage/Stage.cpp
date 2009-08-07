@@ -9,6 +9,10 @@
 #include "Stage/ScreenEffectManager.hpp"
 #include "Stage/SurfaceMaterialManager.hpp"
 #include "Stage/Input/InputHandler_StageDebug.hpp"
+#include "Script/PyModule_3DMath.hpp"
+#include "Script/PyModule_Graphics.hpp"
+#include "Script/PyModule_sound.hpp"
+#include "Script/PyModule_StageUtility.hpp"
 #include "Script/PyModules.hpp"
 #include "Script/ScriptManager.hpp"
 #include "Support/Timer.hpp"
@@ -49,8 +53,12 @@ m_pPhysicsScene(NULL),
 m_pMaterialManager(NULL),
 m_pScriptManager(NULL),
 m_pStaticGeometry(NULL),
-m_pCamera(NULL)
+m_pCamera(NULL),
+m_pStageDebugInputHandler(NULL)
 {
+	// debug - see the thread id
+	boost::thread::id thread_id = boost::this_thread::get_id();
+
 //	m_pTimer = new PrecisionTimer();
 	m_pTimer = new CTimer();
 	PauseTimer();	// don't start until the initialization is complete
@@ -88,8 +96,10 @@ CStage::~CStage()
 //	SafeDelete( m_pPhysicsVisualizer );
 
 	// release the input handler registered for debugging
-	CInputHandler *pStageDebugInputHandler = InputHub().PopInputHandler( gs_DebugInputHandlerIndex );
-	SafeDelete( pStageDebugInputHandler );
+//	CInputHandler *pStageDebugInputHandler = InputHub().PopInputHandler( gs_DebugInputHandlerIndex );
+//	SafeDelete( pStageDebugInputHandler );
+	InputHub().RemoveInputHandler( gs_DebugInputHandlerIndex, m_pStageDebugInputHandler );
+	SafeDelete( m_pStageDebugInputHandler );
 
 	SafeDelete( m_pTimer );
 }
@@ -551,19 +561,30 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 {
 	m_ScriptArchiveFilename = script_archive_filename;
 
-	m_pScriptManager->AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
-	m_pScriptManager->AddModule( "Stage",		g_PyModuleStageMethod );
-	m_pScriptManager->AddModule( "TextMessage",	g_PyModuleTextMessageMethod );
-	m_pScriptManager->AddModule( "Sound",		g_PyModuleSoundMethod );
-	m_pScriptManager->AddModule( "Entity",		gsf::py::entity::g_PyModuleEntityMethod );
-	m_pScriptManager->AddModule( "HUD",			g_PyModuleHUDMethod );
-	m_pScriptManager->AddModule( "cam",			gsf::py::cam::g_PyModuleCameraMethod );
-	m_pScriptManager->AddModule( "StageGraph",	g_PyModuleStageGraphMethod );
-	m_pScriptManager->AddModule( "gr",			g_PyModuleGraphicsElementMethod );
-	m_pScriptManager->AddModule( "gre",			g_PyModuleAnimatedGraphicsMethod );
-	m_pScriptManager->AddModule( "Task",			gsf::py::task::g_PyModuleTaskMethod );
-	m_pScriptManager->AddModule( "Light",		gsf::py::light::g_PyModuleLightMethod );
-	m_pScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
+	if( CScriptManager::ms_UseBoostPythonModules )
+	{
+//		RegisterPythonModule_gfx();
+//		RegisterPythonModule_math3d();
+		RegisterPythonModule_sound();
+//		stage_util::RegisterPythonModule_stage_util();
+	}
+	else
+	{
+		m_pScriptManager->AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
+		m_pScriptManager->AddModule( "Stage",		g_PyModuleStageMethod );
+		m_pScriptManager->AddModule( "TextMessage",	g_PyModuleTextMessageMethod );
+		m_pScriptManager->AddModule( "Sound",		g_PyModuleSoundMethod );
+		m_pScriptManager->AddModule( "Entity",		gsf::py::entity::g_PyModuleEntityMethod );
+		m_pScriptManager->AddModule( "HUD",			g_PyModuleHUDMethod );
+		m_pScriptManager->AddModule( "cam",			gsf::py::cam::g_PyModuleCameraMethod );
+		m_pScriptManager->AddModule( "StageGraph",	g_PyModuleStageGraphMethod );
+		m_pScriptManager->AddModule( "gr",			g_PyModuleGraphicsElementMethod );
+		m_pScriptManager->AddModule( "gre",			g_PyModuleAnimatedGraphicsMethod );
+		m_pScriptManager->AddModule( "Task",			gsf::py::task::g_PyModuleTaskMethod );
+		m_pScriptManager->AddModule( "Light",		gsf::py::light::g_PyModuleLightMethod );
+		m_pScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
+	}
+
 
 	bool res = m_pScriptManager->LoadScriptArchiveFile( script_archive_filename );
 
