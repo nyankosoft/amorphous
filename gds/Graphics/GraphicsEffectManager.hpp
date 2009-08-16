@@ -636,7 +636,7 @@ public:
 	CAnimatedGraphicsManagerBase( CGraphicsElementManager *pElementManager ) {}
 	virtual ~CAnimatedGraphicsManagerBase() { Release(); }
 	virtual void Release() {}
-	virtual CGraphicsElementManager *GetGraphicsElementManager(){ return NULL; }
+	virtual boost::shared_ptr<CGraphicsElementManager> GetGraphicsElementManager() { return boost::shared_ptr<CGraphicsElementManager>(); }
 	virtual void SetTimeOffset( double time = -1.0 ) {}
 
 	virtual CGraphicsEffectHandle ChangeAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, float start_alpha, float end_alpha, int trans_mode ) { return CGraphicsEffectHandle::Null(); }
@@ -691,7 +691,7 @@ class CAnimatedGraphicsManager : public CAnimatedGraphicsManagerBase
 
 	double m_fTimeOffset;
 
-	CGraphicsElementManager *m_pGraphicsElementManager;
+	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
 
 	/// - incremented every time a graphics effect is created.
 	/// - set to graphics effect handle
@@ -723,7 +723,7 @@ public:
 
 	/// returns a borrowed reference to the graphics element manager
 	/// NOTE: Returned pointer is a borrowed reference. Do not delete it.
-	CGraphicsElementManager *GetGraphicsElementManager(){ return m_pGraphicsElementManager; }
+	boost::shared_ptr<CGraphicsElementManager> GetGraphicsElementManager() { return m_pGraphicsElementManager; }
 
 	boost::shared_ptr<CGraphicsElement> GetElement( int element_id ) { return m_pGraphicsElementManager->GetElement(element_id); }
 

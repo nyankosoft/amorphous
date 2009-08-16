@@ -83,7 +83,7 @@ void RemoveGraphicsElementManagerForScript()
 void SetAnimatedGraphicsManagerForScript( CAnimatedGraphicsManager *pManager )
 {
 	gs_pAnimGraphicsManager = pManager;
-	SetGraphicsElementManagerForScript( pManager->GetGraphicsElementManager() );
+	SetGraphicsElementManagerForScript( pManager->GetGraphicsElementManager().get() );
 }
 
 void RemoveAnimatedGraphicsManagerForScript()

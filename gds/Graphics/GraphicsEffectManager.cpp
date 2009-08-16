@@ -374,7 +374,7 @@ CAnimatedGraphicsManager::CAnimatedGraphicsManager()
 
 	SetTimeOffset();
 
-	m_pGraphicsElementManager = new CGraphicsElementManager();
+	m_pGraphicsElementManager = shared_ptr<CGraphicsElementManager>( new CGraphicsElementManager() );
 
 	// register callback that releases the effect when its target element gets released
 	CGraphicsElementManagerCallbackSharedPtr pCallback
@@ -405,7 +405,8 @@ void CAnimatedGraphicsManager::Release()
 		SafeDelete( *itr );
 	}
 
-	SafeDelete( m_pGraphicsElementManager );
+//	SafeDelete( m_pGraphicsElementManager );
+	m_pGraphicsElementManager.reset();
 
 	SafeDelete( m_pTimer );
 }
