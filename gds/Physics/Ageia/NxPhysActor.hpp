@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "../Actor.hpp"
+#include "fwd.hpp"
 #include "NxMathConv.hpp"
 #include "NxPhysConv.hpp"
 
@@ -21,9 +22,16 @@ class CNxPhysActor : public CActor
 
 	unsigned int m_NxActorFlags;
 
+	U32 m_BodyFlags;
+
 public:
 
-	CNxPhysActor( NxActor *pActor ) : m_pActor(pActor), m_NxActorFlags(0) {}
+	CNxPhysActor( NxActor *pActor )
+		:
+	m_pActor(pActor),
+	m_NxActorFlags(0),
+	m_BodyFlags(0)
+	{}
 
 	virtual ~CNxPhysActor() {}
 
@@ -121,6 +129,10 @@ public:
 	int GetActorGroup() { return (int)m_pActor->getGroup(); }
 
 	void SetActorGroup( int actor_group ) { m_pActor->setGroup( (NxActorGroup)actor_group ); }
+
+	U32 GetBodyFlags() const { return m_BodyFlags; }
+	inline void RaiseBodyFlags( U32 flags_to_raise );
+	inline void ClearBodyFlags( U32 flags_to_clear );
 /*
 	enum Activity {ACTIVE, FROZEN};
 
@@ -169,6 +181,8 @@ public:
 	//  bool ClipTrace( const Vector3& vStartPos, const Vector3& vGoalPos, Vector3& vEndPos, float& fFraction );
 
 	NxActor *GetNxActor() { return m_pActor; }
+
+	friend class CNxPhysScene;
 };
 
 
@@ -224,6 +238,33 @@ inline void CNxPhysActor::AddLocalTorque( const Vector3 & torque,
 										  ForceMode::Mode mode )
 {
 	m_pActor->addLocalTorque( ToNxVec3(torque), ToNxForceMode(mode) );
+}
+
+inline void CNxPhysActor::RaiseBodyFlags( U32 flags_to_raise )
+{
+	// nVIDIA PhysX does not allow the user to dynamically change static/non-static properties.
+//	if( flags_to_raise & PhysBodyFlag::Static )
+//		m_pActor->???( ??? );
+
+	m_BodyFlags |= flags_to_raise;
+
+	if( flags_to_raise & PhysBodyFlag::Kinematic )
+		m_pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+
+	if( flags_to_raise & PhysBodyFlag::DisableGravity )
+		m_pActor->raiseBodyFlag( NX_BF_DISABLE_GRAVITY );
+}
+
+
+inline void CNxPhysActor::ClearBodyFlags( U32 flags_to_clear )
+{
+	m_BodyFlags &= (~flags_to_clear);
+
+	if( flags_to_clear & PhysBodyFlag::Kinematic )
+		m_pActor->clearBodyFlag( NX_BF_KINEMATIC );
+
+	if( flags_to_clear & PhysBodyFlag::DisableGravity )
+		m_pActor->clearBodyFlag( NX_BF_DISABLE_GRAVITY );
 }
 
 

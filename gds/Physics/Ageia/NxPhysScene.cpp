@@ -226,6 +226,8 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 	//
 	CNxPhysActor *pPhysActor = new CNxPhysActor( pNxActor );
 
+	pPhysActor->m_BodyFlags = desc.BodyDesc.Flags;
+
 	// retrieve shapes from 'pNxActor' and set them to 'pPhysActor'
 	CNxPhysShapeFactory factory;
 	NxU32 j, num_shapes = pNxActor->getNbShapes();

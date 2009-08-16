@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include "../base.hpp"
 #include "3DMath.hpp"
 #include "Support/SafeDeleteVector.hpp"
 
@@ -22,7 +23,7 @@ class CActor
 	/// - owned reference
 	std::vector<CShape *> m_vecpShape;
 
-	unsigned int m_ActorFlags;
+	U32 m_ActorFlags;
 
 protected:
 
@@ -37,9 +38,6 @@ public:
 
 	enum Flag /// actor type flag
 	{
-//		TF_STATIC                  = ( 1 << 0 ), // moved to body desc
-//		TF_TAKE_NO_GRAVITY         = ( 1 << 1 ), // moved to body desc
-//		TF_KINEMATIC               = ( 1 << 4 ), // moved to body desc
 		DisableResponse            = ( 1 << 0 ),
 		DisableCollision           = ( 1 << 1 ),
 		FluidDisableCollision      = ( 1 << 2 ), ///< Enable/disable collision with fluid
@@ -49,7 +47,10 @@ public:
 
 public:
 
-	CActor() {}
+	CActor()
+		:
+	m_ActorFlags(0)
+	{}
 
 	virtual ~CActor() { SafeDeleteVector( m_vecpShape ); }
 
@@ -152,6 +153,10 @@ public:
 	inline void SetActorFlag( unsigned int flag ) { m_ActorFlags = flag; }
 	inline void AddActorFlag( unsigned int flag ) { m_ActorFlags |= flag; }
 	inline void ClearActorFlag( unsigned int flag ) { m_ActorFlags |= (!flag); }
+
+	virtual U32 GetBodyFlags() const = 0;
+	virtual void RaiseBodyFlags( U32 flags_to_raise ) = 0;
+	virtual void ClearBodyFlags( U32 flags_to_clear ) = 0;
 
 //	enum Activity {ACTIVE, FROZEN};
 
