@@ -55,7 +55,7 @@ CTextMessageRenderer(pEffectMgr)
 	// set graphics components in 800x600 resolution
 //	m_BaseFontSize = SPoint( 12, 24 );
 
-	CGraphicsElementManager *pGraphicsMgr = m_pEffectManager->GetGraphicsElementManager();
+	shared_ptr<CGraphicsElementManager> pGraphicsMgr = m_pEffectManager->GetGraphicsElementManager();
 
 	int offset = 20;
 	m_aFontID[FONT_TEXT]    = offset;
