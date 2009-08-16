@@ -434,7 +434,7 @@ CGM_StdScrollBarRenderer::CGM_StdScrollBarRenderer()
 
 void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 {
-	CGraphicsElementManager *pElementMgr = m_pGraphicsElementManager;
+	shared_ptr<CGraphicsElementManager> pElementMgr = m_pGraphicsElementManager;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);

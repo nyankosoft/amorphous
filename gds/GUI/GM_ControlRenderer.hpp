@@ -81,7 +81,7 @@ public:
 
 protected:
 
-	CGraphicsElementManager *m_pGraphicsElementManager;
+	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
 
 	CAnimatedGraphicsManagerBase *m_pGraphicsEffectManager;
 
