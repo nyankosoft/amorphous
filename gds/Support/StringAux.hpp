@@ -56,7 +56,16 @@ inline std::string to_string( long num )
 {
 	char buffer[32];
 	memset( buffer, 0, sizeof(buffer) );
-	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%d", num );
+	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%ld", num );
+	return std::string(buffer);
+}
+
+
+inline std::string to_string( unsigned long num )
+{
+	char buffer[32];
+	memset( buffer, 0, sizeof(buffer) );
+	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%lu", num );
 	return std::string(buffer);
 }
 

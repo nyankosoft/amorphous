@@ -35,8 +35,24 @@ bool CCameraController::IsKeyPressed( int general_input_code )
 }
 
 
+// Need to avoid calling this when mouse operation is notified by Win32 message
+// - See CameraController_Win32.cpp
 void CCameraControllerInputHandler::ProcessInput(SInputData& input)
 {
 //	if( IsMouseInput(input.iGICode) )
 //		m_pCameraController->
+
+    switch( input.iGICode )
+    {
+		case GIC_MOUSE_AXIS_X:
+			m_pCameraController->AddYaw( input.fParam1 / 500.0f );
+			break;
+
+		case GIC_MOUSE_AXIS_Y:
+			m_pCameraController->AddPitch( input.fParam1 / 500.0f * (-1.0f) );
+			break;
+
+		default:
+			break;
+	}
 }
