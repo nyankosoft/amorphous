@@ -120,7 +120,7 @@ m_MeshFlag(0),
 m_VertexFormatFlag(0)
 {
 	m_pVertexBuffer
-		= boost::shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
+		= boost::shared_ptr< std::vector<CGeneral3DVertex> >( new std::vector<CGeneral3DVertex>() );
 }
 
 

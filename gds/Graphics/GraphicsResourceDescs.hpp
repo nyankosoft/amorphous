@@ -129,7 +129,7 @@ public:
 
 	uint UsageFlags;
 
-	boost::weak_ptr<CTextureFillingAlgorithm> pLoader;
+	boost::shared_ptr<CTextureFillingAlgorithm> pLoader;
 
 public:
 
@@ -215,6 +215,8 @@ public:
 	inline CMeshResourceDesc();
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
+
+	bool IsValid() const;
 
 	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CMeshResourceDesc>( new CMeshResourceDesc(*this) ); }
 

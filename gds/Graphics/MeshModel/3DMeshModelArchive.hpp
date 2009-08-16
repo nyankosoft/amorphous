@@ -176,7 +176,9 @@ public:
 	{
 		FILENAME,
 		ARCHIVE_32BITCOLOR,
-		ARCHIVE_FLOATCOLOR
+		ARCHIVE_FLOATCOLOR,
+		SINGLECOLOR,        ///< store the single pixel data to vecfTexelData
+		NUM_TYPES
 	};
 
 	unsigned int type;
@@ -194,7 +196,6 @@ public:
 	CMMA_Texture() : type(FILENAME) {}
 
 	void Serialize( IArchive& ar, const unsigned int version );
-
 };
 
 

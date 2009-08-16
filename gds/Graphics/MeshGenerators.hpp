@@ -19,6 +19,8 @@ protected:
 
 	std::string m_TexturePath;
 
+	std::string m_ResourceIDString;
+
 protected:
 
 	/// Generate() of subclasses need to call this after creating mesh
@@ -27,9 +29,19 @@ protected:
 
 public:
 
+	enum Params
+	{
+		DEFAULT_VERTEX_FLAGS
+		= CMMA_VertexSet::VF_POSITION
+		|CMMA_VertexSet::VF_NORMAL
+		|CMMA_VertexSet::VF_DIFFUSE_COLOR
+		|CMMA_VertexSet::VF_2D_TEXCOORD0
+	};
+
 	CMeshGenerator()
 		:
-	m_DiffuseColor( SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f) )
+	m_DiffuseColor( SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f) ),
+	m_RequestedVertexFormatFlags( DEFAULT_VERTEX_FLAGS )
 	{}
 
 	virtual ~CMeshGenerator() {}
@@ -53,15 +65,6 @@ class CBoxMeshGenerator : public CMeshGenerator
 	Vector3 m_vEdgeLengths;
 
 public:
-
-	enum Params
-	{
-		DEFAULT_VERTEX_FLAGS
-		= CMMA_VertexSet::VF_POSITION
-		|CMMA_VertexSet::VF_NORMAL
-		|CMMA_VertexSet::VF_DIFFUSE_COLOR
-		|CMMA_VertexSet::VF_2D_TEXCOORD0
-	};
 
 	CBoxMeshGenerator() {}
 	~CBoxMeshGenerator() {}

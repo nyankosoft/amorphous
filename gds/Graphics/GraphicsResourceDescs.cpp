@@ -30,6 +30,12 @@ void CTextureResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 // CMeshResourceDesc
 //================================================================================
 
+bool CMeshResourceDesc::IsValid() const
+{
+	return ( 0 < ResourcePath.length() ) || pMeshGenerator;
+}
+
+
 int CMeshResourceDesc::CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const
 {
 	if( MeshType        != desc.MeshType

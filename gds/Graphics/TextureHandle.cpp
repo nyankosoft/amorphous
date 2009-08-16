@@ -52,7 +52,7 @@ bool CTextureHandle::LoadAsync( const CTextureResourceDesc& desc )
 /// \param weak pointer to an instance of CTextureFillingAlgorithm class that fill the texture content after the graphics device is released and recreated.
 /// Owner of the texture handle is supposed to hold shared_ptr of texture loader and set it to the first argument
 /// This can be set to null as boost::weak_ptr<CTextureFillingAlgorithm>() if you don't have to fill the content of the texture when it is re-created. e.g.) Texture for rendertarget
-bool CTextureHandle::Create( boost::weak_ptr<CTextureFillingAlgorithm> pTextureLoader,
+bool CTextureHandle::Create( boost::shared_ptr<CTextureFillingAlgorithm> pTextureLoader,
 							 const std::string& resource_name,
 							 int width, int height, TextureFormat::Format format, int mip_levels )
 {

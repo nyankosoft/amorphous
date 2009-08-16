@@ -589,6 +589,9 @@ void CTextElement::Draw()
 	if( !pFont )
 		return;
 
+	if( m_Text.length() == 0 )
+		return;
+
 	int orig_font_w=0, orig_font_h=0;
 	if( 0 < m_FontWidth && 0 < m_FontHeight )
 	{

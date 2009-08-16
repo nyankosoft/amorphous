@@ -221,9 +221,10 @@ void CTextureResource::Release()
 
 bool CTextureResource::IsDiskResource() const
 {
-	if( 0 < m_TextureDesc.Width
-	 && 0 < m_TextureDesc.Height
-	 && m_TextureDesc.Format != TextureFormat::Invalid )
+//	if( 0 < m_TextureDesc.Width
+//	 && 0 < m_TextureDesc.Height
+//	 && m_TextureDesc.Format != TextureFormat::Invalid )
+	if( m_TextureDesc.pLoader )
 	{
 		return false;
 	}

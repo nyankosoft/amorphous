@@ -19,6 +19,9 @@
 #include "Support/fnop.hpp"
 using namespace fnop;
 
+using namespace std;
+using namespace boost;
+
 
 /**
 Terms
@@ -230,7 +233,26 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 				}
 
 				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
+			}
+			else if( texture_archive.type == CMMA_Texture::SINGLECOLOR
+				&& 0 < texture_archive.vecfTexelData.size_x() )
+			{
+				m_vecMaterial[i].TextureDesc[tex].pLoader
+					= shared_ptr<CSignleColorTextureFilling>(
+					new CSignleColorTextureFilling( texture_archive.vecfTexelData(0,0) ) );
 
+				m_vecMaterial[i].TextureDesc[tex].Width  = texture_archive.vecfTexelData.size_x();
+				m_vecMaterial[i].TextureDesc[tex].Height = texture_archive.vecfTexelData.size_y();
+
+				// TODO: define a function to set texture resource id string
+				static int s_texcount = 0;
+				m_vecMaterial[i].TextureDesc[tex].ResourcePath
+					= "<Texture>" + to_string(s_texcount);
+
+			}
+
+			if( m_vecMaterial[i].TextureDesc[tex].IsValid() )
+			{
 				if( option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES )
 				{
 				}
@@ -244,7 +266,8 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 				else
 				{
 					// load texture(s) now
-					loaded = m_vecMaterial[i].Texture[tex].Load( tex_filepath );
+					m_vecMaterial[i].TextureDesc[tex].LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
+					loaded = m_vecMaterial[i].Texture[tex].Load( m_vecMaterial[i].TextureDesc[tex] );
 				}
 			}
 		}

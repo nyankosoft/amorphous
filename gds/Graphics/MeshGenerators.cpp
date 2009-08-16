@@ -1,18 +1,40 @@
 #include "MeshGenerators.hpp"
+#include "Support/Vec3_StringAux.hpp"
 
 using namespace std;
 using namespace boost;
 
 
+inline std::string to_string( const SFloatRGBAColor& c, int precision = 3, int num_zfills = 0 )
+{
+	std::string fmt_float = "%" + to_string(num_zfills) + "." + to_string(precision) + "f";
+	std::string fmt_buffer = "( " + fmt_float + ", " + fmt_float + ", " + fmt_float + ", " + fmt_float + " )";
+
+	char buffer[80];
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), c.fRed, c.fGreen, c.fBlue, c.fAlpha );
+
+	return std::string(buffer);
+}
+
+
+
 void CMeshGenerator::SetMiscMeshAttributes()
 {
-	if( 0 < m_TexturePath.length() )
+	vector<CMMA_Material>& material_buffer = m_MeshArchive.GetMaterial();
+	if( 0 < material_buffer.size() )
 	{
-		vector<CMMA_Material>& material_buffer = m_MeshArchive.GetMaterial();
-		if( 0 < material_buffer.size() )
+		material_buffer[0].vecTexture.resize( 1 );
+		CMMA_Texture& tex0 = material_buffer[0].vecTexture[0];
+
+		if( 0 < m_TexturePath.length() )
 		{
-			material_buffer[0].vecTexture.resize( 1 );
-			material_buffer[0].vecTexture[0].strFilename = m_TexturePath;
+			tex0.strFilename = m_TexturePath;
+		}
+		else
+		{
+			tex0.type = CMMA_Texture::SINGLECOLOR;
+			tex0.vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
 		}
 	}
 }
@@ -44,7 +66,10 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 //	vertex_set.Resize( num_vertices );
 //	vector<Vector3>& vecPosition = vertex_set.vecPosition;
 
-	int iAxis, i;
+	vector<Vector3> vecvNormal;
+	vecvNormal.resize( num_faces );
+
+	int i;//, iAxis;
 
 	const float x = vLengths.x * 0.5f;
 	const float y = vLengths.y * 0.5f;
@@ -55,38 +80,46 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 	vecVertex[ 1].m_vPosition = Vector3(  x,  y,  z );
 	vecVertex[ 2].m_vPosition = Vector3(  x,  y, -z );
 	vecVertex[ 3].m_vPosition = Vector3( -x,  y, -z );
+	vecvNormal[0] = Vector3(0,1,0);
 
 	// bottom
 	vecVertex[ 4].m_vPosition = Vector3(  x, -y,  z );
 	vecVertex[ 5].m_vPosition = Vector3( -x, -y,  z );
-	vecVertex[ 6].m_vPosition = Vector3( -x, -y,  z );
-	vecVertex[ 7].m_vPosition = Vector3(  x, -y,  z );
+	vecVertex[ 6].m_vPosition = Vector3( -x, -y, -z );
+	vecVertex[ 7].m_vPosition = Vector3(  x, -y, -z );
+	vecvNormal[1] = Vector3(0,-1,0);
 
 	// near
 	vecVertex[ 8].m_vPosition = Vector3( -x,  y, -z );
 	vecVertex[ 9].m_vPosition = Vector3(  x,  y, -z );
 	vecVertex[10].m_vPosition = Vector3(  x, -y, -z );
 	vecVertex[11].m_vPosition = Vector3( -x, -y, -z );
+	vecvNormal[2] = Vector3(0,0,-1);
 
 	// far
 	vecVertex[12].m_vPosition = Vector3(  x,  y,  z );
 	vecVertex[13].m_vPosition = Vector3( -x,  y,  z );
 	vecVertex[14].m_vPosition = Vector3( -x, -y,  z );
 	vecVertex[15].m_vPosition = Vector3(  x, -y,  z );
+	vecvNormal[3] = Vector3(0,0,1);
 
 	// right
 	vecVertex[16].m_vPosition = Vector3(  x,  y, -z );
 	vecVertex[17].m_vPosition = Vector3(  x,  y,  z );
 	vecVertex[18].m_vPosition = Vector3(  x, -y,  z );
 	vecVertex[19].m_vPosition = Vector3(  x, -y, -z );
+	vecvNormal[4] = Vector3(1,0,0);
 
 	// left
 	vecVertex[20].m_vPosition = Vector3( -x,  y,  z );
 	vecVertex[21].m_vPosition = Vector3( -x,  y, -z );
 	vecVertex[22].m_vPosition = Vector3( -x, -y, -z );
 	vecVertex[23].m_vPosition = Vector3( -x, -y,  z );
+	vecvNormal[5] = Vector3(-1,0,0);
 
-	for( iAxis=0; iAxis<3; iAxis++ )
+	// normal
+
+/*	for( iAxis=0; iAxis<3; iAxis++ )
 	{
 		Vector3 vConstAxis = Vector3(0,0,0);
 		vConstAxis[iAxis] = 1;
@@ -95,6 +128,12 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 			vecVertex[iAxis*8 + i    ].m_vNormal = vConstAxis;// * 10.0f;
 			vecVertex[iAxis*8 + i + 4].m_vNormal = vConstAxis * (-1);
 		}
+	}*/
+
+	for( i=0; i<num_faces; i++ )
+	{
+		for( int j=0; j<4; j++ )
+			vecVertex[i*4+j].m_vNormal = vecvNormal[i];
 	}
 
 	// indices
@@ -146,6 +185,12 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 	m_MeshArchive = mesh_builder.GetArchive();
 
 	SetMiscMeshAttributes();
+
+	// create a string that reprents all the properties of the mesh
+	m_ResourceIDString = "<Mesh>";
+	m_ResourceIDString += "dim=" + to_string(vLengths) + ", ";
+	m_ResourceIDString += "vflags=" + to_string(vertex_flags) + ", ";
+	m_ResourceIDString += "color=" + to_string(diffuse_color);
 
 	return Result::SUCCESS;
 }
