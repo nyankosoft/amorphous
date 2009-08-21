@@ -2,12 +2,12 @@
 #define  __RECTTRILISTINDEX_H__
 
 
-#include <d3d9.h>
+#include "../base.hpp"
 
 
 #define NUM_MAX_2DRECTS 128
 
-static const WORD s_RectTriListIndex[NUM_MAX_2DRECTS * 6] =
+static const U16 s_RectTriListIndex[NUM_MAX_2DRECTS * 6] =
 {
 	  0,   1,   2,    0,   2,   3,
 	  4,   5,   6,    4,   6,   7,
