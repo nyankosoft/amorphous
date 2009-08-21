@@ -229,11 +229,13 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 
 			CSubsetRenderMethod& render_method = m_vecMeshRenderMethod[lod_index];
 
+			// update shader params
 			for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
 			{
 				render_method.m_vecpShaderParamsLoader[i]->UpdateShaderParams( *pShaderMgr );
 			}
 
+			// render
 			pShaderMgr->SetTechnique( render_method.m_Technique );
 			if( m_vecIndicesOfSubsetsToRender.size() == 0 )
 			{
@@ -247,6 +249,12 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 				{
 					pMesh->RenderSubset( *pShaderMgr, m_vecIndicesOfSubsetsToRender[i] );
 				}
+			}
+
+			// reset shader params if necessary
+			for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
+			{
+				render_method.m_vecpShaderParamsLoader[i]->ResetShaderParams( *pShaderMgr );
 			}
 		}
 	}
@@ -295,6 +303,11 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 			}
 
 			pMesh->RenderSubset( *pShaderMgr, index );
+
+			for( size_t j=0; j<(*itr).second.m_vecpShaderParamsLoader.size(); j++ )
+			{
+				(*itr).second.m_vecpShaderParamsLoader[j]->ResetShaderParams( *pShaderMgr );
+			}
 		}
 	}
 }
