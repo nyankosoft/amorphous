@@ -48,6 +48,21 @@ inline void clamp( T& val, const T& min_val, const T& max_val )
 }
 
 
+template<typename T>
+inline T take_min( const T& a, const T& b )
+{
+	return a < b ? a : b;
+}
+
+
+template<typename T>
+inline T take_max( const T& a, const T& b )
+{
+	return a < b ? b : a;
+}
+
+
+
 //
 // function results
 //
