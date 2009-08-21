@@ -136,7 +136,7 @@ void CBE_EnemyAircraft::Fire( CCopyEntity* pCopyEnt, Vector3 vToTarget )
 		{
 			CCopyEntityDesc missile;
 			missile.SetWorldOrient( pCopyEnt->GetWorldPose().matOrient );
-			missile.SetWorldPosition( pCopyEnt->Position() + pCopyEnt->GetDirection() * 50.0f );
+			missile.SetWorldPosition( pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * 50.0f );
 			missile.vVelocity = pCopyEnt->Velocity();
 			missile.pBaseEntityHandle = &m_Missile;
 			missile.sGroupID = GetEntityGroupID( m_ProjectileEntityGroup ); //CE_GROUP_ENEMY_PROJECTILE;
@@ -171,8 +171,8 @@ void CBE_EnemyAircraft::SelectTarget( CCopyEntity* pCopyEnt )
 	// cube with each edge 25[km]
 	effective_radar_radius = 25000.0f;
 	AABB3 aabb = AABB3(
-		Vector3(-1,-1,-1) * effective_radar_radius + pCopyEnt->Position(),
-		Vector3( 1, 1, 1) * effective_radar_radius + pCopyEnt->Position() );
+		Vector3(-1,-1,-1) * effective_radar_radius + pCopyEnt->GetWorldPosition(),
+		Vector3( 1, 1, 1) * effective_radar_radius + pCopyEnt->GetWorldPosition() );
 
 	// set the entity group of the projectile
 	// - Entities that can be hit by a projectile of this entity will be collected
@@ -299,8 +299,8 @@ void CBE_EnemyAircraft::Act( CCopyEntity* pCopyEnt )
 */
 
 	Vector3 vTargetPos;
-	vTargetPos = pTargetEntity->Position() - pTargetEntity->GetDirection() * 500.0f;
-	const Vector3 vToTarget = vTargetPos - pCopyEnt->Position();
+	vTargetPos = pTargetEntity->GetWorldPosition() - pTargetEntity->GetDirection() * 500.0f;
+	const Vector3 vToTarget = vTargetPos - pCopyEnt->GetWorldPosition();
 	
 	float fDistToTarget = Vec3Length( vToTarget );
 	Vector3 vDirToTarget = vToTarget / fDistToTarget;

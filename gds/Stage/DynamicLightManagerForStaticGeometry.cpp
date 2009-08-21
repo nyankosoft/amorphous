@@ -188,7 +188,7 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLights(CBSPMap *pMap)
 
 //		m_veciLitPolygonIndex[i].clear();
 		m_veciLitPolygonIndex[i].resize(0);
-		vLightPos = pLight->Position();
+		vLightPos = pLight->GetWorldPosition();
 		fRadius = pLight->GetRadius();
 		const AABB3& local_aabb = pLight->local_aabb;
 		aabb.vMin = vLightPos + local_aabb.vMin;

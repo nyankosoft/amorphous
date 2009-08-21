@@ -42,7 +42,7 @@ class CStage
 	/// manages scripted events
 	CScriptManager *m_pScriptManager;
 
-	CScreenEffectManager* m_pScreenEffectManager;
+	boost::shared_ptr<CScreenEffectManager> m_pScreenEffectManager;
 
 	/// keeps time elapsed in stage
 	/// CGameTask_Stage() pauses the timer when the stage task is left
@@ -108,7 +108,7 @@ public:
 //	inline CCamera* GetCurrentCamera() { return m_pEntitySet->GetCurrentCamera(); }
 	inline CCamera* GetCurrentCamera() { return m_pCamera; }
 	inline void GetBillboardRotationMatrix( Matrix33& matBillboard ) const;
-	inline CScreenEffectManager *GetScreenEffectManager() { return m_pScreenEffectManager; }
+	inline boost::shared_ptr<CScreenEffectManager> GetScreenEffectManager() { return m_pScreenEffectManager; }
 
 
 	//
@@ -134,8 +134,8 @@ public:
 	/// \return pointer to the created entity
 	inline CCopyEntity *CreateEntity( CCopyEntityDesc& rCopyEntityDesc );
 
-	inline CCopyEntity *CreateEntity( CBaseEntityHandle& rBaseEntityHandle, Vector3& rvPosition,
-	                      	          Vector3& rvVelocity, Vector3& rvDirection = Vector3(0,0,0));
+	inline CCopyEntity *CreateEntity( CBaseEntityHandle& rBaseEntityHandle, const Vector3& rvPosition,
+	                      	          const Vector3& rvVelocity, const Vector3& rvDirection = Vector3(0,0,0));
 
 	template<class T>
 	inline CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
@@ -240,9 +240,9 @@ inline CEntityHandle<T> CStage::CreateEntity( shared_ptr<CCopyEntity> pEntity )
 */
 
 inline CCopyEntity *CStage::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
-								          Vector3& rvPosition,
-		                                  Vector3& rvVelocity,
-								          Vector3& rvDirection )
+								          const Vector3& rvPosition,
+		                                  const Vector3& rvVelocity,
+								          const Vector3& rvDirection )
 {
 	return m_pEntitySet->CreateEntity( rBaseEntityHandle, rvPosition, rvVelocity, rvDirection );
 }

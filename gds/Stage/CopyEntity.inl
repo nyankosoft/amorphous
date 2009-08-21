@@ -44,7 +44,7 @@ m_TypeID(type_id)
 	local_aabb.SetMaxAndMin( vZero, vZero );
 	world_aabb.SetMaxAndMin( vZero, vZero );
 
-	WorldPose.Identity();
+	m_WorldPose.Identity();
 
 	vPrevPosition      = vZero;
 //	vDirection         = vZero;
@@ -130,7 +130,7 @@ inline void CCopyEntity::Terminate()
 	vForce = vTorque = Vector3(0,0,0);
 	vVelocity = vAngularVelocity = Vector3(0,0,0);
 
-	WorldPose.matOrient.SetIdentity();
+	m_WorldPose.matOrient.SetIdentity();
 
 	vecpTouchedEntity.clear();
 
@@ -175,7 +175,7 @@ inline void CCopyEntity::AddTouchedEntity( CCopyEntity* pCopyEnt )
 
 inline void CCopyEntity::GetPointVelocity(Vector3& rvPointVelocity, Vector3& rvPoint)
 {
-	Vector3 vOut = rvPoint - WorldPose.vPosition;
+	Vector3 vOut = rvPoint - m_WorldPose.vPosition;
 	Vec3Cross( rvPointVelocity, vAngularVelocity, vOut );
 	rvPointVelocity += vVelocity;
 }
@@ -355,6 +355,46 @@ inline boost::shared_ptr<T> CEntityHandle<T>::Get()
 			}
 		}
 	}
+}
+
+
+template<class T>
+inline Vector3 CEntityHandle<T>::GetWorldPosition()
+{
+	boost::shared_ptr<T> pEntity = Get();
+	if( pEntity )
+		return pEntity->GetWorldPosition();
+	else
+		return Vector3(0,0,0);
+}
+
+
+template<class T>
+inline Matrix34 CEntityHandle<T>::GetWorldPose()
+{
+	boost::shared_ptr<T> pEntity = Get();
+	if( pEntity )
+		return pEntity->GetWorldPose();
+	else
+		return Matrix34Identity();
+}
+
+
+template<class T>
+inline void CEntityHandle<T>::SetWorldPosition( const Vector3& vPos )
+{
+	boost::shared_ptr<T> pEntity = Get();
+	if( pEntity )
+		pEntity->SetWorldPosition( vPos );
+}
+
+
+template<class T>
+inline void CEntityHandle<T>::SetWorldPose( const Matrix34& pose )
+{
+	boost::shared_ptr<T> pEntity = Get();
+	if( pEntity )
+		pEntity->SetWorldPose( pose );
 }
 
 

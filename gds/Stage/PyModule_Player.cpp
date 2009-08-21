@@ -23,7 +23,7 @@ static Vector3 GetPlayerPosition()
 {
 	CCopyEntity *pPlayer = GetPlayerEntity();
 	if( pPlayer )
-		return pPlayer->Position();
+		return pPlayer->GetWorldPosition();
 	else
 		return Vector3(0,0,0);
 }
@@ -69,7 +69,7 @@ PyObject* GetPositionZ( PyObject* self, PyObject* args )
 
 PyObject* GetPosition( PyObject* self, PyObject* args )
 {
-	Vector3 pos = PlayerEntity.Position();
+	Vector3 pos = PlayerEntity.GetWorldPosition();
 	return Py_BuildValue( "f f f", pos.x, pos.y, pos.z );
 }
 

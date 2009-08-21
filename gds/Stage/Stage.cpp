@@ -12,7 +12,9 @@
 #include "Script/PyModule_3DMath.hpp"
 #include "Script/PyModule_Graphics.hpp"
 #include "Script/PyModule_sound.hpp"
+#include "Script/PyModule_stage.hpp"
 #include "Script/PyModule_StageUtility.hpp"
+#include "Script/PyModule_visual_effect.hpp"
 #include "Script/PyModules.hpp"
 #include "Script/ScriptManager.hpp"
 #include "Support/Timer.hpp"
@@ -35,6 +37,7 @@ using namespace fnop;
 static uint gs_DebugInputHandlerIndex = 2;
 
 
+using namespace boost;
 using namespace physics;
 
 
@@ -63,12 +66,12 @@ m_pStageDebugInputHandler(NULL)
 	m_pTimer = new CTimer();
 	PauseTimer();	// don't start until the initialization is complete
 
-	m_pScreenEffectManager = new CScreenEffectManager;
+	m_pScreenEffectManager = shared_ptr<CScreenEffectManager>( new CScreenEffectManager );
 	m_pScreenEffectManager->Init();
 
 	m_pEntitySet = new CEntitySet( this );
 
-	m_pScreenEffectManager->SetTargetSceneRenderer( m_pEntitySet->GetRenderManager() );
+	m_pScreenEffectManager->SetTargetSceneRenderer( m_pEntitySet->GetRenderManager().get() );
 
 	CBSPTreeForAABB::Initialize();
 
@@ -87,7 +90,7 @@ CStage::~CStage()
 
 	SafeDelete( m_pStaticGeometry );
 	SafeDelete( m_pEntitySet );
-	SafeDelete( m_pScreenEffectManager );
+	m_pScreenEffectManager.reset();
 	SafeDelete( m_pScriptManager );
 //	SafeDelete( m_pPhysicsManager );
 	PhysicsEngine().ReleaseScene( m_pPhysicsScene );
@@ -396,7 +399,7 @@ void CStage::GetVisibleEntities( CViewFrustumTest& vf_test )
 
 	for( i=0; i<iNumPotentiallyVisibles; i++ )
 	{
-		vGoal = vf_test.GetEntity(i)->Position();
+		vGoal = vf_test.GetEntity(i)->GetWorldPosition();
 		tr.fFraction = 1.0f;
 		tr.pTouchedEntity = NULL;
 //		m_pStaticGeometry->ClipTrace( tr );
@@ -563,10 +566,12 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 
 	if( CScriptManager::ms_UseBoostPythonModules )
 	{
-//		RegisterPythonModule_gfx();
-//		RegisterPythonModule_math3d();
+		RegisterPythonModule_math3d();
+		RegisterPythonModule_gfx();
 		RegisterPythonModule_sound();
-//		stage_util::RegisterPythonModule_stage_util();
+		RegisterPythonModule_stage();
+		RegisterPythonModule_visual_effect();
+		stage_util::RegisterPythonModule_stage_util();
 	}
 	else
 	{

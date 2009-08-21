@@ -180,7 +180,7 @@ public:
 	inline short GetTraceType() { return m_sClipType; }
 	inline void SetTraceType( short sClipType ) { m_sClipType |= sClipType; }
 
-	inline void SetSphere( Vector3& rvCenter, float fRadius )
+	inline void SetSphere( const Vector3& rvCenter, float fRadius )
 	{
 		m_AABB.SetMaxAndMin( Vector3( fRadius, fRadius, fRadius),
 					         Vector3(-fRadius,-fRadius,-fRadius) );
@@ -191,7 +191,7 @@ public:
 		m_fRadius = fRadius;
 	}
 
-	inline void SetLineSegment( Vector3& rvStart, Vector3& rvGoal )
+	inline void SetLineSegment( const Vector3& rvStart, const Vector3& rvGoal )
 	{
 		m_cBVType = BVTYPE_DOT;
 		m_vStart = rvStart;

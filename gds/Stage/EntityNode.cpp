@@ -303,7 +303,7 @@ void CEntityNode::CheckPosition_r(CTrace& tr, CEntityNode* paEntTree)
 			break;
 
 		case BVTYPE_SPHERE:
-			vDist = pEntity->Position() - tr.GetSphereCenter();
+			vDist = pEntity->GetWorldPosition() - tr.GetSphereCenter();
 			if( Vec3LengthSq( vDist ) < tr.GetRadius() * tr.GetRadius() )
 				tr.AddTouchEntity( pEntity );
 			break;
@@ -431,7 +431,7 @@ void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
 			{
 				// The trace hit 'pEntity' and needs to be updated
 				tr.pTouchedEntity = pEntity;
-//				tr.vEnd = local_trace.vEnd + pEntity->Position();
+//				tr.vEnd = local_trace.vEnd + pEntity->GetWorldPosition();
 				tr.vEnd		= copy_trace.vEnd;
 				tr.fFraction= copy_trace.fFraction;
 				tr.plane	= copy_trace.plane;
@@ -579,7 +579,7 @@ void CEntityNode::CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree )
 		{
 			fMaxRange = pLightEntity->GetRadius() + pEntity->GetRadius();
 			fMaxRangeSq = fMaxRange * fMaxRange;
-			vLightToEntity = pEntity->Position() - pLightEntity->Position();
+			vLightToEntity = pEntity->GetWorldPosition() - pLightEntity->GetWorldPosition();
 			if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
 				continue;	// out of the light range
 		}
@@ -598,7 +598,7 @@ void CEntityNode::CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree )
 
 	float r = pEntity->GetRadius();
 
-	float d = m_Plane.GetDistanceFromPoint( pEntity->Position() );
+	float d = m_Plane.GetDistanceFromPoint( pEntity->GetWorldPosition() );
 
 	if( r < d )
 		paEntTree[sFrontChild].CheckLight_r( pEntity, paEntTree );

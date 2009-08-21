@@ -53,7 +53,7 @@ void CBE_MuzzleFlash::InitCopyEntity( CCopyEntity* pCopyEnt )
 	float fMaxRadius = m_fMuzzleFlash_MaxRadius;
 
 	Vector3 vPos;
-	Vector3	vBasePos = pCopyEnt->Position();
+	Vector3	vBasePos = pCopyEnt->GetWorldPosition();
 	Vector3 vDir = pCopyEnt->GetDirection();
 	Vector3 vRight = pCopyEnt->GetRightDirection();
 	Vector3	vUp = pCopyEnt->GetUpDirection();
@@ -95,7 +95,7 @@ void CBE_MuzzleFlash::InitCopyEntity( CCopyEntity* pCopyEnt )
 	{
 		CCopyEntityDesc light;
 		light.pBaseEntityHandle = &m_MuzzleFlashLight;
-		light.SetWorldPosition( pCopyEnt->Position() );
+		light.SetWorldPosition( pCopyEnt->GetWorldPosition() );
 		m_pStage->CreateEntity( light );
 	}
 

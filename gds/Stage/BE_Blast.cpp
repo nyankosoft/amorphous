@@ -98,7 +98,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 
 	s_vecpEntityBuffer.resize( 0 );
 	tr.SetTouchEntityBuffer( &s_vecpEntityBuffer );
-	tr.SetSphere( pCopyEnt->Position(), fCurrentBlastRadius );
+	tr.SetSphere( pCopyEnt->GetWorldPosition(), fCurrentBlastRadius );
 	tr.SetTraceType( TRACETYPE_IGNORE_NOCLIP_ENTITIES );	// skip checking the no-clip entities
 	m_pStage->CheckCollision( tr );
 
@@ -130,8 +130,10 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 		tr2.iNumTouches = 0;
 		tr2.pSourceEntity = pCopyEnt;
 		tr2.pTouchedEntity = NULL;
-		tr2.pvStart = &pCopyEnt->Position();
-		tr2.pvGoal = &tr.GetTouchEntity(i)->Position();
+		Vector3 vStart = pCopyEnt->GetWorldPosition();
+		tr2.pvStart = &vStart;
+		Vector3 vGoal = tr.GetTouchEntity(i)->GetWorldPosition();
+		tr2.pvGoal = &vGoal;
 
 
 		// check if there is any obstacle between the blast center and the candidate
@@ -153,7 +155,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 //		LOG_PRINTF(( " Sending blast damge to an entity (name: %s)", pTouchedEntity->GetName().c_str() ));
 
 		// no oblstacle covering the entity from the blast
-		Vector3 vBlastCenterToTarget = pTouchedEntity->Position() - pCopyEnt->Position();
+		Vector3 vBlastCenterToTarget = pTouchedEntity->GetWorldPosition() - pCopyEnt->GetWorldPosition();
 		Vec3Normalize( vBlastCenterToTarget, vBlastCenterToTarget );
 		msg.vParam = vBlastCenterToTarget;
 
@@ -187,7 +189,7 @@ void CBE_Blast::Draw(CCopyEntity* pCopyEnt)
 
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );
-	memcpy( &matWorld._41, &pCopyEnt->Position(), sizeof(D3DXVECTOR3) );
+	memcpy( &matWorld._41, &pCopyEnt->GetWorldPosition(), sizeof(D3DXVECTOR3) );
 
 	// show the center position of the blast ( in black )
 	matWorld._11 = matWorld._22 = matWorld._33 = 0.2f;

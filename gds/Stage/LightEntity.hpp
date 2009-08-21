@@ -10,6 +10,33 @@
 
 
 class CBE_Light;
+class CLightEntity;
+
+
+class CLightEntityHandle : public CEntityHandle<CLightEntity>
+{
+public:
+
+	CLightEntityHandle() {}
+
+	CLightEntityHandle( boost::weak_ptr<CLightEntity> pLightEntity )
+		:
+	CEntityHandle<CLightEntity>( pLightEntity )
+	{}
+
+	// for hemisheric lights
+	void SetUpperColor( const SFloatRGBAColor& color );
+	void SetLowerColor( const SFloatRGBAColor& color );
+
+	// light type     index 0          1           2
+	// -----------------------------------------------------
+	// regular              color      -           -
+	// hemispheric          upper      lower       -
+	// trilight             ?          ?           ?
+	void SetColor( int index, const SFloatRGBAColor& color );
+
+	void SetColor( const SFloatRGBAColor& color );
+};
 
 
 class CLightHolder : public pooled_object
@@ -237,7 +264,7 @@ inline void CLightEntity::Invalidate()
 inline void CLightEntity::SetPosition( const Vector3& rvPosition )
 {
 //	CCopyEntity::SetPosition( rvPosition );
-	CCopyEntity::Position() = rvPosition;
+	CCopyEntity::SetWorldPosition( rvPosition );
 
 	CLight *pLight = GetLightObject();
 	if( pLight )

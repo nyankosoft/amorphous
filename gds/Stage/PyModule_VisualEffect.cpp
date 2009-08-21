@@ -60,7 +60,7 @@ inline static CScreenEffectManager *GetScreenEffectManager()
 {
 	CStage *pStage = GetStageForScriptCallback();
 	if( pStage )
-		return pStage->GetScreenEffectManager();
+		return pStage->GetScreenEffectManager().get();
 	else
 		return NULL;
 }
@@ -70,7 +70,7 @@ inline static CEntityRenderManager *GetEntityRenderManager()
 {
 	CStage *pStage = GetStageForScriptCallback();
 	if( pStage )
-		return pStage->GetEntitySet()->GetRenderManager();
+		return pStage->GetEntitySet()->GetRenderManager().get();
 	else
 		return NULL;
 }

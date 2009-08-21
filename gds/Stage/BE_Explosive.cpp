@@ -78,7 +78,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	// show explosion animation - single
 	CCopyEntityDesc explosion;
 	explosion.pBaseEntityHandle = &m_aExplosionAnimation[AT_EXPLOSION];
-	explosion.SetWorldPosition( pCopyEnt->Position() + pCopyEnt->touch_plane.normal * 0.40f );	// make an explosion at the position a little ahead from the entity to prevent a texture animation from getting in the wall
+	explosion.SetWorldPosition( pCopyEnt->GetWorldPosition() + pCopyEnt->touch_plane.normal * 0.40f );	// make an explosion at the position a little ahead from the entity to prevent a texture animation from getting in the wall
 	explosion.SetWorldOrient( Matrix33Identity() );
 	explosion.vVelocity  = Vector3(0,0,0);
 	m_pStage->CreateEntity( explosion );
@@ -90,7 +90,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	int i;
 	for(i=0; i<2; i++)
 	{
-		vPos = pCopyEnt->Position()
+		vPos = pCopyEnt->GetWorldPosition()
 			+ pCopyEnt->touch_plane.normal * 0.40f
 			+ pCopyEnt->GetRightDirection() * RangedRand( -rfAnimRange, rfAnimRange );
 			+ pCopyEnt->GetUpDirection()    * RangedRand( -rfAnimRange, rfAnimRange );
@@ -108,12 +108,12 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	if( pCopyEnt->touch_plane.normal != Vector3(0,0,0) )
 	{
 		// for missiles that hit a surface
-		shock_wave.SetWorldPosition( pCopyEnt->Position() + pCopyEnt->touch_plane.normal * 0.01f );
+		shock_wave.SetWorldPosition( pCopyEnt->GetWorldPosition() + pCopyEnt->touch_plane.normal * 0.01f );
 		shock_wave.SetWorldOrient( CreateOrientFromFwdDir( - pCopyEnt->touch_plane.normal ) );
 	}
 	else 
 	{	// for explosives placed on the ground
-		shock_wave.SetWorldPosition( pCopyEnt->Position() - Vector3( 0, m_aabb.vMin.y * 0.8f,0) );
+		shock_wave.SetWorldPosition( pCopyEnt->GetWorldPosition() - Vector3( 0, m_aabb.vMin.y * 0.8f,0) );
 		shock_wave.SetWorldOrient( CreateOrientFromFwdDir( Vector3(0,-1,0) ) );
 	}
 
@@ -122,7 +122,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 
 	// show black smoke
 	this->m_pStage->CreateEntity( m_aExplosionAnimation[AT_SMOKE],
-	      pCopyEnt->Position() + pCopyEnt->touch_plane.normal * 0.36f,	// make an explosion at the position a little ahead from the entity to prevent a texture animation from getting in the wall
+	      pCopyEnt->GetWorldPosition() + pCopyEnt->touch_plane.normal * 0.36f,	// make an explosion at the position a little ahead from the entity to prevent a texture animation from getting in the wall
 		  Vector3(0,0,0), Vector3(0,0,0) );
 
 	// show particle animation
@@ -132,11 +132,11 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	else
 		vParticleVelocity = Vector3(0, 2.5f, 0);	// not hitting anything - 'pCopyEnt' is probably a static explosive
 
-	this->m_pStage->CreateEntity( m_aExplosionAnimation[AT_SPARK], pCopyEnt->Position(), vParticleVelocity, Vector3(0,0,0) );
+	this->m_pStage->CreateEntity( m_aExplosionAnimation[AT_SPARK], pCopyEnt->GetWorldPosition(), vParticleVelocity, Vector3(0,0,0) );
 
 
 	// play explosion sound
-	SoundManager().PlayAt( m_ExplosionSound, pCopyEnt->Position() );
+	SoundManager().PlayAt( m_ExplosionSound, pCopyEnt->GetWorldPosition() );
 
 	// if 'pCopyEnt' is a homing missile, target entity has to be cleared
 	pCopyEnt->m_Target.Reset();
@@ -148,7 +148,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	{
 		// create blast entity
 		// the direction of the explosive entity is inherited by the blast entity
-		m_pStage->CreateEntity( m_Blast, pCopyEnt->Position(),
+		m_pStage->CreateEntity( m_Blast, pCopyEnt->GetWorldPosition(),
 						 		 Vector3(0,0,0), pCopyEnt->GetDirection() );
 	}
 
@@ -156,7 +156,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	if( 0 < strlen(m_ExplosionLight.GetBaseEntityName()) )
 	{
 		explosion.pBaseEntityHandle = &m_ExplosionLight;
-		explosion.SetWorldPosition( pCopyEnt->Position() );
+		explosion.SetWorldPosition( pCopyEnt->GetWorldPosition() );
 		explosion.vVelocity = Vector3(0,0,0);
 		m_pStage->CreateEntity( explosion );
 	}
@@ -171,7 +171,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 
 		for( i=0; i<m_iNumFragments; i++ )
 		{
-			fragment.SetWorldPosition( pCopyEnt->Position() + vDir * 0.05f );
+			fragment.SetWorldPosition( pCopyEnt->GetWorldPosition() + vDir * 0.05f );
 
 			vDir = Vec3RandDir();
 			fragment.SetWorldOrient( CreateOrientFromFwdDir(vDir) );
@@ -194,12 +194,12 @@ void CBE_Explosive::FlashScreen(CCopyEntity* pCopyEnt)
 	if( !pCamera )
 		return;
 
-	Vector3 vCameraToExp = pCopyEnt->Position() - pCamera->GetPosition();
+	Vector3 vCameraToExp = pCopyEnt->GetWorldPosition() - pCamera->GetPosition();
 
 	// check if there is any obstacle between explosion and camera
 /*	STrace tr;
 	tr.pvStart = &pCamera->GetPosition();
-	tr.pvGoal = &pCopyEnt->Position();
+	tr.pvGoal = &pCopyEnt->GetWorldPosition();
 	tr.bvType = BVTYPE_DOT;
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES
 	tr.pSourceEntity = pCopyEnt;
@@ -255,8 +255,9 @@ void CBE_Explosive::GrenadeMove(CCopyEntity* pCopyEnt)
 //	Vector3 vGravityAccel = this->m_pStage->GetGravityAccel();
 //	pCopyEnt->vVelocity += vGravityAccel * fFrametime * 0.5f;
 
-	tr.pvStart = &pCopyEnt->Position();
-	Vector3 vGoal = pCopyEnt->Position() + pCopyEnt->vVelocity * fFrametime;
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
+	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * fFrametime;
 	tr.pvGoal = &vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
@@ -265,7 +266,7 @@ void CBE_Explosive::GrenadeMove(CCopyEntity* pCopyEnt)
 
 	this->m_pStage->ClipTrace( tr );
 
-	pCopyEnt->Position() = tr.vEnd;
+	pCopyEnt->SetWorldPosition( tr.vEnd );
 	pCopyEnt->touch_plane = tr.plane;
 	pCopyEnt->bInSolid = tr.in_solid;
 
@@ -291,7 +292,7 @@ void CBE_Explosive::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pC
 		float& rfLife = pCopyEnt_Self->fLife;
 		rfLife -= rGameMessage.fParam1;
 
-		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->GetWorldPosition() );
 
 		if( rfLife <= 0 )
 			Explode( pCopyEnt_Self );

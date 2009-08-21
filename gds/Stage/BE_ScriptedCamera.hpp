@@ -232,7 +232,7 @@ public:
 
 					if( pTarget )
 					{
-						m_vecKeyFrame[i+j].val.m_vTargetPos = pTarget->Position();
+						m_vecKeyFrame[i+j].val.m_vTargetPos = pTarget->GetWorldPosition();
 					}
 				}
 				return true;

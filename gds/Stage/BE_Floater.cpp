@@ -45,7 +45,7 @@ void CBE_Floater::SearchManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 
 	if( m_iRandomSearchManeuver != 0 )
 	{
-		Vector3 vFromCurrentPosToDest = rvTargetPosition - pCopyEnt->Position();
+		Vector3 vFromCurrentPosToDest = rvTargetPosition - pCopyEnt->GetWorldPosition();
 		float fDist = D3DXVec3LengthSq( &vFromCurrentPosToDest );
 
 		if( 0.20f < rfCurrentManeuverTime - rfTotalManeuverTime ||
@@ -135,8 +135,9 @@ void CBE_Floater::AttackManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 		tr.bvType = BVTYPE_AABB;
 		tr.aabb   = this->m_aabb;
 		tr.pSourceEntity = pCopyEnt;
-		tr.pvStart       = &pCopyEnt->Position();
-		Vector3 vGoal = pCopyEnt->Position() + pCopyEnt->vVelocity * 1.2f;
+		Vector3 vStart = pCopyEnt->GetWorldPosition();
+		tr.pvStart       = &vStart;
+		Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * 1.2f;
 		tr.pvGoal        = &vGoal;
 		tr.SetAABB();
 		m_pStage->ClipTrace(tr);

@@ -15,6 +15,8 @@
 #include "Support/Macro.h"
 #include "Support/VectorRand.hpp"
 
+using namespace boost;
+
 
 inline static short& HasExpired(CCopyEntity* pCameraEntity) { return pCameraEntity->s1; };
 
@@ -47,7 +49,7 @@ void CScriptedCameraEntity::Update( float dt )
 		pBaseEntity->UpdateScriptedMotionPath( this, m_Path );
 
 		PERIODICAL( 100, g_Log.Print( "CScriptedCameraEntity::Update() - updated motion path ... pos: " +
-			to_string(this->Position(), 2) ) );
+			to_string(this->GetWorldPosition(), 2) ) );
 
 		m_Camera.SetPose( this->GetWorldPose() );
 		m_Camera.UpdateVFTreeForWorldSpace();
@@ -121,7 +123,7 @@ void CScriptedCameraEntity::RenderStage()
 	if( 7.5f < GetStage()->GetElapsedTime() )
 		int break_here = 1;
 
-	CScreenEffectManager *pScreenEffectManager = GetStage()->GetScreenEffectManager();
+	shared_ptr<CScreenEffectManager> pScreenEffectManager = GetStage()->GetScreenEffectManager();
 
 	// save the original settings
 	int orig_effect_flag = pScreenEffectManager->GetEffectFlag();

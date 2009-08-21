@@ -10,8 +10,83 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Profile.hpp"
 #include "Support/msgbox.hpp"
+#include <boost/filesystem.hpp>
 
 using namespace std;
+
+
+/*
+class dbg_out
+{
+	ofstream m_ofs;
+
+public:
+
+	dbg_out() {}
+};
+*/
+
+
+inline ofstream& dbg_out()
+{
+	ONCE( boost::filesystem::create_directories( "./debug/" ) );
+	static ofstream s_ofs("./debug/ofs.txt");
+	return s_ofs;
+}
+
+
+template<typename T>
+ostream& operator<< ( ostream& out, vector<T>& vec )
+{
+	const size_t num = vec.size();
+	for(size_t i=0; i<num; i++)
+	{
+		out << vec[i] << "\n";
+	}
+}
+
+
+ostream& operator<< ( ostream& out, TEXCOORD2& v )
+{
+	return out << "( " << v.u << ", " << v.v << " )";
+}
+
+
+ostream& operator<< ( ostream& out, D3DXVECTOR3& v )
+{
+	return out << "( " << v.x << ", " << v.y << ", " << v.z << " )";
+}
+
+
+ostream& operator<< ( ostream& out, D3DXVECTOR2& v )
+{
+	return out << "( " << v.x << ", " << v.y << " )";
+}
+
+
+ostream& operator<< ( ostream& out, BILLBOARDVERTEX& v )
+{
+	out << "pos: "  << v.vPosition << ", ";
+	out << "l.o.: " << v.local_offset << ", ";
+	out << "tex: "  << v.tex << ", ";
+	out << "factor: "  << v.factor << ", ";
+	out << "color: "  << v.color << ", ";
+	return out;
+}
+
+namespace dbg
+{
+
+template<typename T>
+inline void dump_to_file( T& obj )
+{
+	int s_count = 0;
+	ofstream ofs( fmt_string( "./debug/dbg_dump_%02d.txt", s_count++ ) );
+	if( ofs.is_open() )
+		ofs << obj;
+}
+
+}
 
 
 CBEC_Billboard::CBEC_Billboard()
@@ -22,6 +97,10 @@ m_pBillboardArrayMesh(NULL)
 {
 	m_aShaderTechHandle[0].SetTechniqueName( "Particle" );
 	m_aShaderTechHandle[1].SetTechniqueName( "Particle_AdditiveAlpha" );
+
+	m_avBillboardRect_S.resize( NUM_MAX_BILLBOARDS_PER_ENTITY * 4 );
+
+	DIRECT3D9.GetDevice()->CreateVertexDeclaration(BILLBOARDVERTEX_DECLARATION, &m_pVertexDecleration);
 }
 
 
@@ -137,11 +216,9 @@ inline void CBEC_Billboard::DrawPrimitives( int num_rects, int group, int num_re
 										num_rects * 4,
 										num_rects * 2,
 										s_RectTriListIndex,
-	//									m_awIndex,
 										D3DFMT_INDEX16,
-	//									m_avBillboardRect,
-										m_avBillboardRect_S,
-	//									sizeof(TEXTUREVERTEX) );
+//										m_avBillboardRect_S,
+										&(m_avBillboardRect_S[0]),
 										sizeof(BILLBOARDVERTEX)
 										);
         break;
@@ -166,6 +243,7 @@ void CBEC_Billboard::DrawBillboards( int num_rects, int group, int num_rects_per
 
 //	pd3dDev->SetFVF( TEXTUREVERTEX::FVF );
 	pd3dDev->SetFVF( BILLBOARDVERTEX::FVF );
+	pd3dDev->SetVertexDeclaration( m_pVertexDecleration );
 
 	// don't wirte to z-buffer so that smoke should be painted on one another
 	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
@@ -298,6 +376,8 @@ void CBEC_Billboard::LoadGraphicsComponentResources( const CGraphicsParameters& 
 {
 	m_BillboardTexture.Load( m_BillboardTextureFilepath );
 
+	DIRECT3D9.GetDevice()->CreateVertexDeclaration(BILLBOARDVERTEX_DECLARATION, &m_pVertexDecleration);
+
 	m_pBillboardArrayMesh = new CBillboardArrayMesh();
 	bool loaded = m_pBillboardArrayMesh->LoadFromArchive( m_BillboardArrayMeshArchive, "BillboardArrayMesh", 0 );
 }
@@ -308,4 +388,6 @@ void CBEC_Billboard::ReleaseGraphicsComponentResources()
 	m_BillboardTexture.Release();
 
 	SafeDelete( m_pBillboardArrayMesh );
+
+	SAFE_RELEASE( m_pVertexDecleration );
 }

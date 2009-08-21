@@ -110,7 +110,7 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 	}
 
 
-	D3DXVECTOR3& rvPos =  pCopyEnt->Position();	// current position of this billboard
+	const D3DXVECTOR3& rvPos =  pCopyEnt->GetWorldPosition();	// current position of this billboard
 	matWorld._41 =   rvPos.x; matWorld._42 =   rvPos.y;	matWorld._43 =   rvPos.z; matWorld._44 = 1;
 
 	if( /* random rotation is */ true )

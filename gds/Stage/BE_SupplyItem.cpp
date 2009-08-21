@@ -86,7 +86,7 @@ void CBE_SupplyItem::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 	switch( rGameMessage.iEffect )
 	{
 	case GM_EFFECTACCEPTED:
-		SoundManager().PlayAt( m_Sound, pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( m_Sound, pCopyEnt_Self->GetWorldPosition() );
 
 		// terminate child entity
 		CCopyEntity *pChild;

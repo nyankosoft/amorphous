@@ -2,6 +2,7 @@
 #define  __EntityHandle_H__
 
 
+#include "3DMath/Matrix34.hpp"
 #include <boost/weak_ptr.hpp>
 
 class CCopyEntity;
@@ -63,6 +64,14 @@ public:
 		m_pEntity = boost::weak_ptr<T>();
 		m_StockID = -1;
 	}
+
+	inline Vector3 GetWorldPosition();
+
+	inline Matrix34 GetWorldPose();
+
+	inline void SetWorldPosition( const Vector3& vPos );
+
+	inline void SetWorldPose( const Matrix34& pose );
 
 //	virtual void OnCopyEntityReceivedMessage( CCopyEntity* pEntity, const SGameMessage& msg );
 

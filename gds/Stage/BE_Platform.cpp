@@ -83,13 +83,13 @@ void CBE_Platform::Act(CCopyEntity* pCopyEnt)
 			vDestPos = pCopyEnt->v2;
 
 
-		vToCover = vDestPos - pCopyEnt->Position();
+		vToCover = vDestPos - pCopyEnt->GetWorldPosition();
 //		vCovered = rvDoorPosition - rvFullOpenPosition;
 
 		if( Vec3LengthSq( vToCover ) < 0.0005f )
 //			|| 0 < Vec3Dot( vToCover, rvOpenMotionDirection ) )
 		{	// almost reached or passed the closed position
-			pCopyEnt->Position() = vDestPos;
+			pCopyEnt->SetWorldPosition( vDestPos );
 			if( pPhysicsActor )
 			{
 				pPhysicsActor->SetWorldPosition( vDestPos );
@@ -176,7 +176,7 @@ void CBE_Platform::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCo
 
 			// decide the destination
 			// a destination which is the closest to the sensor will be selected
-			Vector3 vSensorPos = rGameMessage.pSenderEntity->Position();
+			Vector3 vSensorPos = rGameMessage.pSenderEntity->GetWorldPosition();
 			float dist1 = Vec3LengthSq( pCopyEnt_Self->v1 - vSensorPos );
 			float dist2 = Vec3LengthSq( pCopyEnt_Self->v2 - vSensorPos );
 			if( dist1 < dist2 )

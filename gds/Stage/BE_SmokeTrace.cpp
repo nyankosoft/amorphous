@@ -192,17 +192,17 @@ void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
 	}
 
 
-	if( Vec3LengthSq( pSmokeEmitter->Position() - rvLastUpdatePos ) < fParticleInterval * fParticleInterval )
+	if( Vec3LengthSq( pSmokeEmitter->GetWorldPosition() - rvLastUpdatePos ) < fParticleInterval * fParticleInterval )
 		return;	// emitter has not moved enough to generate new smoke particles
 	else
-		rvLastUpdatePos = pSmokeEmitter->Position();
+		rvLastUpdatePos = pSmokeEmitter->GetWorldPosition();
 
 
 //	ProfileBegin( "adding trail" );
 
 	// calculate positions of new particles
 	Vector3& rvEmitterPrevPos = pCopyEnt->v1;
-	Vector3 vLinearTraceDir = pSmokeEmitter->Position() - rvEmitterPrevPos;
+	Vector3 vLinearTraceDir = pSmokeEmitter->GetWorldPosition() - rvEmitterPrevPos;
 	float fTraceLength = Vec3Length( vLinearTraceDir ); // how far the emitter move during this frame
 	Vec3Normalize( vLinearTraceDir, vLinearTraceDir );
 
@@ -275,10 +275,10 @@ void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
 
 //	ProfileEnd( "creating a new trail entity" );
 
-	rvEmitterPrevPos = pSmokeEmitter->Position();
+	rvEmitterPrevPos = pSmokeEmitter->GetWorldPosition();
 
 	// update position - set the center position in the smoke trace
-	pCopyEnt->Position() = (rParticleSet.pavPosition[0] + rParticleSet.pavPosition[iNumCurrentParticles-1]) / 2.0f;
+	pCopyEnt->SetWorldPosition( (rParticleSet.pavPosition[0] + rParticleSet.pavPosition[iNumCurrentParticles-1]) / 2.0f );
 
 	// reset the accumulated frametime
 	rfTotalFrameTime = 0;
@@ -329,12 +329,12 @@ void CBE_SmokeTrace::MakeSmoke( CCopyEntity* pCopyEnt )
 
 		// results in wrong visibility state
 		// not rendered at certain locations
-//		pCopyEnt->Position() = (rParticleSet.pavPosition[0] + rParticleSet.pavPosition[iNumCurrentParticles-1]) / 2.0f;
+//		pCopyEnt->GetWorldPosition() = (rParticleSet.pavPosition[0] + rParticleSet.pavPosition[iNumCurrentParticles-1]) / 2.0f;
 
 		// not a correct position update
 		// used to cope with the visibility problem caused by the above update code
 		if( pSmokeEmitter )
-            pCopyEnt->Position() = pSmokeEmitter->Position();
+            pCopyEnt->SetWorldPosition( pSmokeEmitter->GetWorldPosition() );
 
 		Vector3 vSpan = (rParticleSet.pavPosition[0] - rParticleSet.pavPosition[iNumCurrentParticles-1]) / 2.0f;
 		const float r = m_fParticleRadius;
@@ -351,7 +351,7 @@ void CBE_SmokeTrace::MakeSmoke( CCopyEntity* pCopyEnt )
 		return;	// no need to make any more particles
 	}
 
-	Vector3 vSourcePos = pSmokeEmitter->Position();
+	Vector3 vSourcePos = pSmokeEmitter->GetWorldPosition();
 
 	float frametime_left = rfTotalFrameTime;
 
@@ -395,7 +395,7 @@ void CBE_SmokeTrace::MakeSmoke( CCopyEntity* pCopyEnt )
 		next_smoke.pBaseEntityHandle = &m_SmokeTrace;
 		next_smoke.pParent = pSmokeEmitter;	// connect to the parent (smoke emitter)
 //		next_smoke.vPosition = rParticleSet.pavPosition[m_MaxNumParticlesPerSet - 1];
-		next_smoke.SetWorldPosition( pSmokeEmitter->Position() );
+		next_smoke.SetWorldPosition( pSmokeEmitter->GetWorldPosition() );
 		next_smoke.vVelocity = Vector3(0,0,0);
 		next_smoke.v1 = rParticleSet.pavPosition[m_MaxNumParticlesPerSet - 1];
 		next_smoke.f4 = rfTotalFrameTime;

@@ -50,7 +50,7 @@ void CBE_Skybox::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 //	m_vecpStaticGeometry.push_back( (CStaticGeometryBase *)(pCopyEnt->pUserData) );
 
-	Vector3 vCenterPos = pCopyEnt->Position();
+	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
 
 }
 

@@ -46,7 +46,7 @@ void CBE_ExplosionSmoke::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 			vRandDir = Vec3RandDir();
 
-			rParticleSet.pavPosition[i] = pCopyEnt->Position();
+			rParticleSet.pavPosition[i] = pCopyEnt->GetWorldPosition();
 
 			rParticleSet.pavVelocity[i] = vRandDir * RangedRand( 0.05f, 0.50f) + rvDir * RangedRand( 0.1f, 12.0f);
 
@@ -67,7 +67,7 @@ void CBE_ExplosionSmoke::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 			fDist = RangedRand( fRandPositionMin, fRandPositionMax );
 
-			rParticleSet.pavPosition[i] = pCopyEnt->Position() + vRandDir * fDist + rvDir * (0.8f - fRandSpeed) * 0.3f;
+			rParticleSet.pavPosition[i] = pCopyEnt->GetWorldPosition() + vRandDir * fDist + rvDir * (0.8f - fRandSpeed) * 0.3f;
 
 			rParticleSet.pavVelocity[i] = vRandDir * RangedRand( fRandVelMin, fRandVelMax ) + rvDir * fRandSpeed;
 

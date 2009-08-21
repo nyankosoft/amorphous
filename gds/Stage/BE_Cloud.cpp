@@ -43,7 +43,7 @@ void CBE_Cloud::InitCopyEntity( CCopyEntity* pCopyEnt )
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
-	Vector3 vCenterPos = pCopyEnt->Position();
+	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
 
 	float r = m_fParticleRadius;
 	float x,y,z,w;

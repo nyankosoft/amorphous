@@ -1,5 +1,8 @@
 #include "InputHandler_StageDebug.hpp"
 #include "Stage/Stage.hpp"
+#include <boost/filesystem.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
+
 
 using namespace std;
 using namespace boost;
@@ -17,11 +20,13 @@ inline void replace_chars( std::string& src, char from, char to )
 
 void CInputHandler_StageDebug::WriteEntityTreeToFile( shared_ptr<CStage> pStage )
 {
-	char dest_filepath[512], time_str[64];
+	using namespace gregorian;
+
+	char dest_filename[512], time_str[64];
 
 	ulong current_time_ms = GlobalTimer().GetTimeMS();
 
-	if( 1000 < (current_time_ms - m_EntityTreeFileLastOutputTime) )	// don't output more than once in a second
+	if( 500 < (current_time_ms - m_EntityTreeFileLastOutputTime) )	// don't output more than once in half a second
 	{
 		CEntitySet* pEntSet = pStage->GetEntitySet();
 
@@ -31,9 +36,16 @@ void CInputHandler_StageDebug::WriteEntityTreeToFile( shared_ptr<CStage> pStage 
 		replace_chars( stage_script_name, '/', '-' );
 		replace_chars( stage_script_name, '\\', '-' );
 
-		sprintf( dest_filepath, "entity_tree-%s[%s].txt", stage_script_name.c_str(), time_str );
+		// create the directory for entity tree files (YYYYMMDD)
+		filesystem::path entity_tree_directory = "./debug/entity_trees-" + to_iso_string(day_clock::local_day());
+		boost::filesystem::create_directories( entity_tree_directory );
 
-		pEntSet->WriteEntityTreeToFile(dest_filepath);
+		sprintf( dest_filename, "entity_tree-%s[%s].txt", stage_script_name.c_str(), time_str );
+
+		filesystem::path dest_filepath = entity_tree_directory / dest_filename;
+
+		// save the entity tree to disk
+		pEntSet->WriteEntityTreeToFile(dest_filepath.string());
 
 		m_EntityTreeFileLastOutputTime = current_time_ms;
 	}

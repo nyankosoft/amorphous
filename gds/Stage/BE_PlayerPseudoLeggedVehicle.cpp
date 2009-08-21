@@ -254,7 +254,7 @@ void CBE_PlayerPseudoLeggedVehicle::Move( CCopyEntity *pCopyEnt )
 	matCameraOrient.SetColumn( 2, m_Camera.GetFrontDirection() );
 
 	// update world muzzle pose
-	m_WorldMuzzlePose.vPosition	= pCopyEnt->Position()
+	m_WorldMuzzlePose.vPosition	= pCopyEnt->GetWorldPosition()
 		                        + matCameraOrient.GetColumn(1) * m_vLocalMuzzlePos.y
 		                        + matCameraOrient.GetColumn(2) * m_vLocalMuzzlePos.z;
 
@@ -262,7 +262,7 @@ void CBE_PlayerPseudoLeggedVehicle::Move( CCopyEntity *pCopyEnt )
 
 	// update world aabb here so that collision check would not be performed between the player and his own bullets
 	// when he is stepping back while firing
-	pCopyEnt->world_aabb.TransformCoord( pCopyEnt->local_aabb, pCopyEnt->Position() );
+	pCopyEnt->world_aabb.TransformCoord( pCopyEnt->local_aabb, pCopyEnt->GetWorldPosition() );
 }
 
 

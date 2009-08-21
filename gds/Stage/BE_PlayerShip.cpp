@@ -305,7 +305,7 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 	// update world muzzle pose
 	Vector3 vMuzzlePosition;
 //	Vector3 vLocalMuzzlePos = Vector3(0.0f, -0.35f, 1.45f);
-	vMuzzlePosition	= pCopyEnt->Position()
+	vMuzzlePosition	= pCopyEnt->GetWorldPosition()
 					+ pCopyEnt->GetUpDirection() * m_vLocalMuzzlePos.y
 				    + pCopyEnt->GetDirection() * m_vLocalMuzzlePos.z;
 
@@ -316,7 +316,7 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 
 	// update world aabb here so that collision check would not be performed between the player and his own bullets
 	// when he is stepping back while firing 
-	pCopyEnt->world_aabb.TransformCoord( pCopyEnt->local_aabb, pCopyEnt->Position() );
+	pCopyEnt->world_aabb.TransformCoord( pCopyEnt->local_aabb, pCopyEnt->GetWorldPosition() );
 }
 
 
@@ -538,7 +538,7 @@ void CBE_PlayerShip::PlayerDead(CCopyEntity* pCopyEnt)
 	{
 		rfTimeAfterDeath = -1;
 		pCopyEnt->fLife = 100.0f;
-		pCopyEnt->Position() = D3DXVECTOR3(0,0,0);
+		pCopyEnt->GetWorldPosition() = D3DXVECTOR3(0,0,0);
 		pCopyEnt->SetDirection( D3DXVECTOR3(0,0,1) );
 		pCopyEnt->SetDirection_Right( D3DXVECTOR3(1,0,0) );
 		pCopyEnt->SetDirection_Up( D3DXVECTOR3(0,1,0) );

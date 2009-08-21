@@ -35,7 +35,7 @@ void CBaseEntity::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPa
 		// calc velocity - used when the entity is destroyed
 		// and the vel of the frags have to be calculated
 		float dt = m_pStage->GetFrameTime();
-		pCopyEnt->Velocity() = ( pCopyEnt->Position() - pCopyEnt->vPrevPosition ) / dt;
+		pCopyEnt->Velocity() = ( pCopyEnt->GetWorldPosition() - pCopyEnt->vPrevPosition ) / dt;
 	}
 	else
 	{

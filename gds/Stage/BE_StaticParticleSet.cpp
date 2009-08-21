@@ -121,7 +121,7 @@ void CBE_StaticParticleSet::Init()
 void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	IndexOffset(pCopyEnt) = (float)( m_vecParticleVertex.size() / 4 * 6 );
-	D3DXVECTOR3 vCenterPos = pCopyEnt->Position();
+	D3DXVECTOR3 vCenterPos = pCopyEnt->GetWorldPosition();
 
 	STATICBILLBOARDVERTEX vert[4];
 	float x,y,z;

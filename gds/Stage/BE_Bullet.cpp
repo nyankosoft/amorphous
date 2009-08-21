@@ -70,7 +70,7 @@ void CBE_Bullet::Init()
 void CBE_Bullet::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	Vector3& rvPrevPosition = pCopyEnt->v1;
-	rvPrevPosition = pCopyEnt->Position();
+	rvPrevPosition = pCopyEnt->GetWorldPosition();
 
 	pCopyEnt->fSpeed = Vec3Length( pCopyEnt->Velocity() );
 
@@ -126,8 +126,9 @@ void CBE_Bullet::BulletMove(CCopyEntity* pCopyEnt)
 	float fFrametime = m_pStage->GetFrameTime();
 	//Vector3 vVel = pCopyEnt->GetDirection() * pCopyEnt->fSpeed;
 
-	tr.pvStart = &pCopyEnt->Position();
-	Vector3 vGoal = pCopyEnt->Position() + pCopyEnt->Velocity() * fFrametime;
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
+	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * fFrametime;
 	tr.pvGoal = &vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
@@ -140,7 +141,7 @@ void CBE_Bullet::BulletMove(CCopyEntity* pCopyEnt)
 
 	this->m_pStage->ClipTrace( tr );
 
-	pCopyEnt->Position() = tr.vEnd;
+	pCopyEnt->SetWorldPosition( tr.vEnd );
 	pCopyEnt->touch_plane = tr.plane;
 
 	if( tr.in_solid )
@@ -186,8 +187,9 @@ void CBE_Bullet::PenetrationMove(CCopyEntity* pCopyEnt)
 	// perform line segment check first
 
 	STrace tr;
-	tr.pvStart = &pCopyEnt->Position();
-	Vector3 vGoal = pCopyEnt->Position() + pCopyEnt->Velocity() * fFrametime;
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
+	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * fFrametime;
 	tr.pvGoal = &vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
@@ -200,7 +202,7 @@ void CBE_Bullet::PenetrationMove(CCopyEntity* pCopyEnt)
 
 	this->m_pStage->ClipTrace( tr );
 
-	pCopyEnt->Position() = tr.vEnd;
+	pCopyEnt->SetWorldPosition( tr.vEnd );
 	pCopyEnt->touch_plane = tr.plane;	// save contacted surface
 
 	if( tr.in_solid && tr.plane.normal == Vector3(0,0,0) )
@@ -244,7 +246,7 @@ void CBE_Bullet::PenetrationIteration( CCopyEntity* pCopyEnt, float fFrameTime_L
 	tr.pSourceEntity = pCopyEnt;
 	tr.fFraction = 1.0f;
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
-	Vector3 vPrevPos = pCopyEnt->Position();
+	Vector3 vPrevPos = pCopyEnt->GetWorldPosition();
 
 	while( 0 < fFrameTime_Left )
 	{
@@ -261,7 +263,7 @@ void CBE_Bullet::PenetrationIteration( CCopyEntity* pCopyEnt, float fFrameTime_L
 		pCopyEnt->Velocity() = pCopyEnt->GetDirection() * pCopyEnt->fSpeed;
 
 		// update the bullet position
-		pCopyEnt->Position() = tr.vEnd;
+		pCopyEnt->SetWorldPosition( tr.vEnd );
 
 		pCopyEnt->bInSolid = tr.in_solid;
 
@@ -296,7 +298,10 @@ void CBE_Bullet::PenetrationIteration( CCopyEntity* pCopyEnt, float fFrameTime_L
 //			pCopyEnt->touch_plane.Flip();
 
 			// move a little forward so that bullet can really get out of the wall
-			pCopyEnt->Position() += pCopyEnt->GetDirection() * CBE_BULLET_PENETRATION_CALC_STEP;
+			Vector3 vNewWorldPos
+				= pCopyEnt->GetWorldPosition()
+				+ pCopyEnt->GetDirection() * CBE_BULLET_PENETRATION_CALC_STEP;
+			pCopyEnt->SetWorldPosition( vNewWorldPos );
 			break;
 		}
 
@@ -334,15 +339,16 @@ void CBE_Bullet::ReflectiveMove(CCopyEntity* pCopyEnt)
 	{
 
 		// check the next position
-		tr.pvStart = &pCopyEnt->Position();
-		vGoal = pCopyEnt->Position() + pCopyEnt->vVelocity * fFrameTime_Left;
+		Vector3 vStart = pCopyEnt->GetWorldPosition();
+		tr.pvStart = &vStart;
+		vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * fFrameTime_Left;
 		tr.pvGoal = &vGoal;
 		tr.fFraction = 1.0f;
 		tr.pTouchedEntity = NULL;
 		this->m_pStage->ClipTrace( tr );
 
 		// update position
-		pCopyEnt->Position() = tr.vEnd;
+		pCopyEnt->SetWorldPosition( tr.vEnd );
 		pCopyEnt->touch_plane = tr.plane;
 
 //		if( tr.in_solid )
@@ -394,7 +400,7 @@ void CBE_Bullet::ReflectiveMove(CCopyEntity* pCopyEnt)
 void CBE_Bullet::Move( CCopyEntity* pCopyEnt )
 {
 	// measure the covered distance in this frame
-	Vector3 vStartPos = pCopyEnt->Position();
+	Vector3 vStartPos = pCopyEnt->GetWorldPosition();
 
 	// simulate according to the property of this bullet
 	if( 0 < m_fPenetration )
@@ -410,7 +416,7 @@ void CBE_Bullet::Move( CCopyEntity* pCopyEnt )
 		BulletMove( pCopyEnt );
 	}
 
-	TraveledDist(pCopyEnt) += Vec3Length( pCopyEnt->Position() - vStartPos );
+	TraveledDist(pCopyEnt) += Vec3Length( pCopyEnt->GetWorldPosition() - vStartPos );
 }
 
 
@@ -473,14 +479,14 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 
 		if( pCopyEnt_Other->GetEntityFlags() & BETYPE_RIGIDBODY )
 		{	// apply impulse to the entity hit by this bullet
-			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() / 50.0f, pCopyEnt->Position() );
+			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() / 50.0f, pCopyEnt->GetWorldPosition() );
 		}
 		else if( pCopyEnt_Other->GetEntityFlags() & BETYPE_PLAYER )
 		{
-			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() * m_pStage->GetFrameTime(), pCopyEnt->Position() );
+			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() * m_pStage->GetFrameTime(), pCopyEnt->GetWorldPosition() );
 		}
 
-		this->m_pStage->CreateEntity( m_Spark, pCopyEnt->Position(),
+		this->m_pStage->CreateEntity( m_Spark, pCopyEnt->GetWorldPosition(),
 			pCopyEnt->touch_plane.normal * 1.8f, Vector3(0,0,0) );
 	}
 
@@ -498,7 +504,7 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 			{
 				CCopyEntityDesc entity_desc;
 
-//				entity_desc.vPosition = pCopyEnt->Position() + tr.plane.normal * 0.01f;
+//				entity_desc.vPosition = pCopyEnt->GetWorldPosition() + tr.plane.normal * 0.01f;
 				entity_desc.SetWorldPosition( tr.vEnd + tr.plane.normal * 0.01f );
 
 				// decal/particle entities need the plane normal to decide the direction
@@ -515,7 +521,7 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 			if( mat.HasSoundOf( CSurfaceMaterial::REACTION_TO_HIT ) )
 			{
 				// play hit sound
-				SoundManager().PlayAt( mat.GetSound_Random( CSurfaceMaterial::REACTION_TO_HIT ), pCopyEnt->Position() );
+				SoundManager().PlayAt( mat.GetSound_Random( CSurfaceMaterial::REACTION_TO_HIT ), pCopyEnt->GetWorldPosition() );
 			}
 		}
 	}
@@ -555,7 +561,7 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
 	billboard_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
 
-	Vector3& rvPos =  pCopyEnt->Position();	// current position of this billboard
+	const Vector3& rvPos =  pCopyEnt->GetWorldPosition();	// current position of this billboard
 	matWorld._41 =   rvPos.x; matWorld._42 =   rvPos.y;	matWorld._43 =   rvPos.z; matWorld._44 = 1;
 
 //	if( /* random rotation is */ true )
@@ -678,7 +684,7 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 
 	D3DXVECTOR3& rvPrevPosition = pCopyEnt->v1;
 	avBulletTrace[0].vPosition = rvPrevPosition;
-	avBulletTrace[1].vPosition = pCopyEnt->Position();
+	avBulletTrace[1].vPosition = pCopyEnt->GetWorldPosition();
 
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );
@@ -701,5 +707,5 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 
 	pd3dDev->DrawPrimitiveUP(D3DPT_LINELIST, 1, avBulletTrace, sizeof(COLORVERTEX));
 
-	rvPrevPosition = pCopyEnt->Position();
+	rvPrevPosition = pCopyEnt->GetWorldPosition();
 }*/

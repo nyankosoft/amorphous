@@ -126,7 +126,7 @@ void CBE_Player::InitCopyEntity(CCopyEntity* pCopyEnt)
 	CCopyEntityDesc laser_dot;
 	laser_dot.pBaseEntityHandle = &m_LaserDot;
 	laser_dot.pParent = pCopyEnt;
-	laser_dot.SetWorldPosition( pCopyEnt->Position() );
+	laser_dot.SetWorldPosition( pCopyEnt->GetWorldPosition() );
 	laser_dot.vVelocity = Vector3(0,0,0);
 
 	// generate laser dot entity and store its pointer to 'm_pLaserDotEntity'
@@ -147,7 +147,7 @@ void CBE_Player::InitCopyEntity(CCopyEntity* pCopyEnt)
 
 void UpdateStateLogs(CCopyEntity *pEntity)
 {
-	StateLog.Update( 2, "pos" + to_string(pEntity->Position()) );
+	StateLog.Update( 2, "pos" + to_string(pEntity->GetWorldPosition()) );
 	StateLog.Update( 3, "dir" + to_string(pEntity->Velocity()) );
 //	StateLog.Update(  , "dir" + to_string(pEntity->GetDirection_Right()) );
 	StateLog.Update( 4, "speed: " + to_string(pEntity->fSpeed) + "[m/s]" );
@@ -216,7 +216,7 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 		tr.pSourceEntity = pCopyEnt;
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;//|TRACETYPE_GET_MATERIAL_INFO;
 		tr.bvType = BVTYPE_DOT;
-		vStart = pCopyEnt->Position() + pCopyEnt->GetUpDirection() * fUp;
+		vStart = pCopyEnt->GetWorldPosition() + pCopyEnt->GetUpDirection() * fUp;
 		vGoal = vStart + pCopyEnt->GetDirection() * fForward;
 		tr.pvStart = &vStart;
 		tr.pvGoal = &vGoal;
@@ -233,7 +233,7 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 		else
 			vForward = pCopyEnt->GetDirection() * ( fForward - fMargin );
 
-		m_pHeadLightEntity->Position() = vStart + vForward;
+		m_pHeadLightEntity->SetWorldPosition( vStart + vForward );
 		m_pHeadLightEntity->Act();
 	}
 
@@ -256,7 +256,7 @@ void CBE_Player::Move( CCopyEntity *pCopyEnt )
 {
 	// update world aabb here so that collision check would not be performed between the player and his own bullets
 	// when he is stepping back while firing 
-	pCopyEnt->world_aabb.TransformCoord( pCopyEnt->local_aabb, pCopyEnt->Position() );
+	pCopyEnt->world_aabb.TransformCoord( pCopyEnt->local_aabb, pCopyEnt->GetWorldPosition() );
 }
 
 
@@ -282,7 +282,7 @@ void CBE_Player::ToggleHeadLight()
 		// turn on the light
 		CCopyEntityDesc light;
 		light.pBaseEntityHandle = &m_HeadLight;	// m_pStage->FindBaseEntity( "DynamicLightX" );
-		Vector3 vWorldPos = m_pPlayerCopyEntity->Position()
+		Vector3 vWorldPos = m_pPlayerCopyEntity->GetWorldPosition()
 			              + m_pPlayerCopyEntity->GetDirection()
 					      + m_pPlayerCopyEntity->GetUpDirection() * (-0.35f);
 
@@ -311,7 +311,7 @@ void CBE_Player::OnDestroyingEnemyEntity( const SGameMessage& msg )
 		KillReport rep;
 		rep.base_name    = destroyed_entity.pBaseEntity->GetName();
 		rep.entity_name  = destroyed_entity.GetName();
-		rep.vWorldPos    = destroyed_entity.Position();
+		rep.vWorldPos    = destroyed_entity.GetWorldPosition();
 		rep.time         = m_pStage->GetElapsedTimeMS();
 		rep.score        = (int)(msg.fParam1);
 		m_CombatRecord.m_vecKillReport.push_back( rep );
@@ -332,7 +332,7 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 		// play a damage sound according to the type of damage
 		iVariation = PLYAER_DAMAGESOUND_VARIATION * rand() / RAND_MAX;
 		if( PLYAER_DAMAGESOUND_VARIATION <= iVariation ) iVariation = PLYAER_DAMAGESOUND_VARIATION - 1;
-		SoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->GetWorldPosition() );
 
 		// flash screen with red
 		m_pStage->GetScreenEffectManager()->FadeInFrom( 0x40F82000, 0.20f, AlphaBlend::InvSrcAlpha );
@@ -531,7 +531,7 @@ void CBE_Player::UpdateCameraEffect( Vector3& vNewCameraPos, CCopyEntity* pCopyE
 	else
 		m_pStage->GetScreenEffectManager()->ClearBlurEffect();
 */
-	vNewCameraPos = pCopyEnt->Position()
+	vNewCameraPos = pCopyEnt->GetWorldPosition()
 		          + pCopyEnt->GetUpDirection() * fEyeHeight
 				  + m_pShockWaveEffect->GetPosition();
 
@@ -546,8 +546,8 @@ void CBE_Player::UpdateCamera( CCopyEntity* pCopyEnt )
     UpdateCameraEffect( vNewCameraPos, pCopyEnt );
 
 	// update camera pose
-//	m_Camera.UpdatePosition( pCopyEnt->Position() + pCopyEnt->GetUpDirection() * fEyeHeight,
-/*	m_Camera.UpdatePosition( pCopyEnt->Position() + pCopyEnt->GetUpDirection() * fEyeHeight + m_pShockWaveEffect->GetPosition(),
+//	m_Camera.UpdatePosition( pCopyEnt->GetWorldPosition() + pCopyEnt->GetUpDirection() * fEyeHeight,
+/*	m_Camera.UpdatePosition( pCopyEnt->GetWorldPosition() + pCopyEnt->GetUpDirection() * fEyeHeight + m_pShockWaveEffect->GetPosition(),
 		                     pCopyEnt->GetDirection(),
 							 pCopyEnt->GetRightDirection(),
 							 pCopyEnt->GetUpDirection() );
@@ -572,10 +572,7 @@ void CBE_Player::PlayerDead(CCopyEntity* pCopyEnt)
 	{
 		rfTimeAfterDeath = -1;
 		pCopyEnt->fLife = 100.0f;
-		pCopyEnt->Position() = Vector3(0,0,0);
-		pCopyEnt->SetDirection( Vector3(0,0,1) );
-		pCopyEnt->SetDirection_Right( Vector3(1,0,0) );
-		pCopyEnt->SetDirection_Up( Vector3(0,1,0) );
+		pCopyEnt->SetWorldPose( Matrix34Identity() );
 		pCopyEnt->s1 = 0;
 
 		m_pStage->GetScreenEffectManager()->FadeInFrom( 0xFF000000, 1.0f, AlphaBlend::InvSrcAlpha );

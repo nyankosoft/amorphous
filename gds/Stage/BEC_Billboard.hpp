@@ -26,7 +26,6 @@ protected:
 
 	enum eParams
 	{
-//		NUM_MAX_BILLBOARDS_PER_ENTITY = 64,
 //		NUM_MAX_BILLBOARDS_PER_ENTITY = 128,	// 2:05 2007/05/11
 		NUM_MAX_BILLBOARDS_PER_ENTITY = 1024,
 	};
@@ -36,9 +35,11 @@ protected:
 
 	TEXTUREVERTEX m_avBillboardRect[NUM_MAX_BILLBOARDS_PER_ENTITY * 4];
 
-	BILLBOARDVERTEX m_avBillboardRect_S[NUM_MAX_BILLBOARDS_PER_ENTITY * 4];
+//	BILLBOARDVERTEX m_avBillboardRect_S[NUM_MAX_BILLBOARDS_PER_ENTITY * 4];
+	std::vector<BILLBOARDVERTEX> m_avBillboardRect_S;//[NUM_MAX_BILLBOARDS_PER_ENTITY * 4];
 
-//	DWORD m_DestAlphaBlendMode;
+	LPDIRECT3DVERTEXDECLARATION9 m_pVertexDecleration;
+
 	AlphaBlend::Mode m_DestAlphaBlendMode;
 
 	CBillboardArrayMesh *m_pBillboardArrayMesh;

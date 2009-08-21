@@ -56,13 +56,6 @@ CBE_HomingMissile::CBE_HomingMissile()
 }
 
 
-template<typename T>
-inline T take_max( const T& a, const T& b )
-{
-	return a < b ? b : a;
-}
-
-
 void CBE_HomingMissile::Init()
 {
 	CBE_Explosive::Init();
@@ -97,7 +90,7 @@ void OnTargetLocked( CCopyEntity* pCopyEnt, CCopyEntity* pTarget )
 void CBE_HomingMissile::FindTarget( CCopyEntity* pCopyEnt )
 {
 	float fLength = 5.0f;	// length of the missile
-	Vector3 vCameraPos = pCopyEnt->Position() + pCopyEnt->GetDirection() * (fLength * 0.5f + 0.05f);
+	Vector3 vCameraPos = pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * (fLength * 0.5f + 0.05f);
 
 	// initial sensor camera is used to lock the target
 	m_InitSensorCamera.UpdatePosition( vCameraPos,
@@ -163,7 +156,7 @@ inline void CBE_HomingMissile::CorrectCourse( CCopyEntity* pCopyEnt, float frame
 	// should do orthonormalization?
 //	matCurrentOrient.Orthonormalize();
 
-	pCopyEnt->SetOrientation( matCurrentOrient );
+	pCopyEnt->SetWorldOrientation( matCurrentOrient );
 }
 
 
@@ -175,7 +168,7 @@ void CBE_HomingMissile::Ignite( CCopyEntity* pCopyEnt )
 	MissileState(pCopyEnt) = MS_IGNITED;
 
 	// move a bit in advance at initial velocity to avoid hitting the shooter entity if it is moving foward
-	Vector3 vPrevPos = pCopyEnt->Position();
+	Vector3 vPrevPos = pCopyEnt->GetWorldPosition();
 	MissileMove( pCopyEnt, m_pStage->GetFrameTime() );
 
 	// generate a smoke & flame trail entity
@@ -183,7 +176,7 @@ void CBE_HomingMissile::Ignite( CCopyEntity* pCopyEnt )
 
 	CBaseEntityHandle *pTrailEntityHandle[2] = { &m_SmokeTrail, &m_FlameTrail };
 
-	trail.SetWorldPosition( pCopyEnt->Position() );
+	trail.SetWorldPosition( pCopyEnt->GetWorldPosition() );
 
 	Vector3& rvEmitterPrevPos = trail.v1;
 	rvEmitterPrevPos = vPrevPos;
@@ -319,7 +312,7 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 	// check the distance to the target and see whether the missile is close enough to explode
 	if( 0 < m_fProximityThresholdDistSq && pTarget )
 	{
-		float fDistSq = Vec3LengthSq( pCopyEnt->Position() - pTarget->Position() );
+		float fDistSq = Vec3LengthSq( pCopyEnt->GetWorldPosition() - pTarget->GetWorldPosition() );
 		if( fDistSq <= m_fProximityThresholdDistSq
 		 && /* m_CheckCollisionGroup == false  || */ m_pStage->GetEntitySet()->IsCollisionEnabled( pCopyEnt->GroupIndex, pTarget->GroupIndex ) )
 		 
@@ -341,10 +334,11 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 		// check the target is still in sight
 		rfSensoringTimer = 0.0f;
 
-		Vector3 vStart = pCopyEnt->Position() + pCopyEnt->GetDirection() * (m_aabb.vMax.z * 2.0f);
+		Vector3 vStart = pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * (m_aabb.vMax.z * 2.0f);
 		STrace tr;
 		tr.pvStart = &vStart;	// current missile position
-		tr.pvGoal = &pTarget->Position();	// target position
+		Vector3 vGoal = pTarget->GetWorldPosition();	// target position
+		tr.pvGoal = &vGoal;
 		tr.bvType = BVTYPE_DOT;
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 		tr.GroupIndex = pCopyEnt->GroupIndex;
@@ -369,7 +363,7 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 			float dp;
 			Vector3 vMissileToTarget;
 
-			vMissileToTarget = pTarget->Position() - pCopyEnt->Position();
+			vMissileToTarget = pTarget->GetWorldPosition() - pCopyEnt->GetWorldPosition();
 			Vec3Normalize( vMissileToTarget, vMissileToTarget );
 			dp = Vec3Dot( pCopyEnt->GetDirection(), vMissileToTarget );
 			if( dp < 0.05f ||			// angle too is steep - consider this case as lost target
@@ -454,8 +448,9 @@ void CBE_HomingMissile::MissileMove( CCopyEntity* pCopyEnt, float frametime )
 	// apply gravity
 //	Vector3 vGravityAccel = this->m_pStage->GetGravityAccel();
 //	pCopyEnt->vVelocity += vGravityAccel * fFrametime * 0.5f;
-	tr.pvStart = &pCopyEnt->Position();
-	Vector3 vGoal = pCopyEnt->Position() + pCopyEnt->Velocity() * frametime;
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
+	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * frametime;
 	tr.pvGoal = &vGoal;
 	tr.aabb = this->m_aabb;
 //	tr.bvType = this->m_BoundingVolumeType;
@@ -466,14 +461,14 @@ void CBE_HomingMissile::MissileMove( CCopyEntity* pCopyEnt, float frametime )
 	tr.GroupIndex = pCopyEnt->GroupIndex;
 //	tr.vecTargetGroup.push_back( CE_GROUP_ENEMY );
 
-//	PERIODICAL( 1500, MsgBoxFmt( "start: %s, goal: %s", to_string(pCopyEnt->Position()).c_str(), to_string(vGoal).c_str() ) )
+//	PERIODICAL( 1500, MsgBoxFmt( "start: %s, goal: %s", to_string(pCopyEnt->GetWorldPosition()).c_str(), to_string(vGoal).c_str() ) )
 
 
 	this->m_pStage->ClipTrace( tr );
 
-	TraveledDist(pCopyEnt) += Vec3Length( tr.vEnd - pCopyEnt->Position() );
+	TraveledDist(pCopyEnt) += Vec3Length( tr.vEnd - pCopyEnt->GetWorldPosition() );
 
-	pCopyEnt->Position() = tr.vEnd;
+	pCopyEnt->SetWorldPosition( tr.vEnd );
 	pCopyEnt->touch_plane = tr.plane;
 	pCopyEnt->bInSolid = tr.in_solid;
 

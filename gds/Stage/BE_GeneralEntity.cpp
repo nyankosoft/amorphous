@@ -108,10 +108,10 @@ void CBE_GeneralEntity::SetSmokeTrace(CCopyEntity* pCopyEnt)
 
 //		smoke_trace.pBaseEntityHandle = &m_SmokeTrace;
 		smoke_trace.pBaseEntityHandle = &src_trail.BaseEntity;
-//		smoke_trace.vPosition = pCopyEnt->Position();
-		smoke_trace.SetWorldPosition( pCopyEnt->Position() + src_trail.vLocalPosition );
+//		smoke_trace.vPosition = pCopyEnt->GetWorldPosition();
+		smoke_trace.SetWorldPosition( pCopyEnt->GetWorldPosition() + src_trail.vLocalPosition );
 
-		Vector3 vPrevPos = pCopyEnt->Position() + src_trail.vLocalPosition;
+		Vector3 vPrevPos = pCopyEnt->GetWorldPosition() + src_trail.vLocalPosition;
 
 		Vector3& rvEmitterPrevPos = smoke_trace.v1;
 		rvEmitterPrevPos = vPrevPos;
@@ -144,7 +144,7 @@ void CBE_GeneralEntity::Act(CCopyEntity* pCopyEnt)
 			if( 0 < strlen(m_Explosion.GetBaseEntityName()) )
 			{
 				// create explosion animation
-				m_pStage->CreateEntity( m_Explosion, pCopyEnt->Position(), Vector3(0,0,0), pCopyEnt->GetDirection() );
+				m_pStage->CreateEntity( m_Explosion, pCopyEnt->GetWorldPosition(), Vector3(0,0,0), pCopyEnt->GetDirection() );
 			}
 
 			m_pStage->TerminateEntity( pCopyEnt );
@@ -156,7 +156,7 @@ void CBE_GeneralEntity::Act(CCopyEntity* pCopyEnt)
 	 && !(pCopyEnt->GetEntityFlags() & BETYPE_RIGIDBODY) )
 	{
 		// TODO: pose update for collidable enitity
-		pCopyEnt->Position() += pCopyEnt->Velocity() * frametime;
+		pCopyEnt->SetWorldPosition( pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * frametime );
 	}
 
 //	if( 0 < strlen(m_SmokeTrace.GetBaseEntityName()) )
@@ -185,7 +185,8 @@ void CBE_GeneralEntity::Draw(CCopyEntity* pCopyEnt)
 {
 	pCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 
-	if( m_MeshProperty.m_MeshObjectHandle.IsLoaded() )
+	if( m_MeshProperty.m_MeshObjectHandle.IsLoaded()
+	 || pCopyEnt->m_MeshHandle.IsLoaded() )
 	{
 		Draw3DModel(pCopyEnt);
 	}
@@ -208,7 +209,7 @@ void CBE_GeneralEntity::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity
 			{
 				// create explosion animation
 				PrintLog( "creating an explosion entity: " + string(m_Explosion.GetBaseEntityName()) );
-				m_pStage->CreateEntity( m_Explosion, pCopyEnt_Self->Position(), Vector3(0,0,0), pCopyEnt_Self->GetDirection() );
+				m_pStage->CreateEntity( m_Explosion, pCopyEnt_Self->GetWorldPosition(), Vector3(0,0,0), pCopyEnt_Self->GetDirection() );
 			}
 
 			// terminate myself

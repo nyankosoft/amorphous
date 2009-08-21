@@ -47,7 +47,7 @@ private:
 
 //	CLightEntityManager *m_pLightEntityManager;
 
-	CEntityRenderManager *m_pRenderManager;
+	boost::shared_ptr<CEntityRenderManager> m_pRenderManager;
 
 	float m_PhysTimestep;
 	float m_PhysOverlapTime;
@@ -198,7 +198,7 @@ public:
 	inline CCopyEntity *GetCameraEntity() { return m_pCameraEntity; }
 	void GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const;
 
-	inline CEntityRenderManager *GetRenderManager() { return m_pRenderManager; }
+	inline boost::shared_ptr<CEntityRenderManager> GetRenderManager() { return m_pRenderManager; }
 
 	static void SetDefaultPhysicsTimestep( float timestep ) { ms_DefaultPhysTimestep = timestep; }
 
@@ -221,7 +221,7 @@ inline void CEntitySet::UpdateLink( CCopyEntity* pEntity )
 	Link( pEntity );
 
 	// update world aabb
-	pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->Position() );
+	pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->GetWorldPosition() );
 }
 
 

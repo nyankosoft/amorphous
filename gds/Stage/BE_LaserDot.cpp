@@ -86,13 +86,13 @@ void CBE_LaserDot::Act(CCopyEntity* pCopyEnt)
 
 	pCopyEnt->s1 &= ~BE_LASERDOT_OFF_SURFACE;
 
-	pCopyEnt->Position()  = tr.vEnd;
+	pCopyEnt->SetWorldPosition( tr.vEnd );
 	pCopyEnt->touch_plane = tr.plane;
 
 	Matrix33 matOrient = CreateOrientFromFwdDir( tr.plane.normal );
 	matOrient.Orthonormalize();
 
-	pCopyEnt->SetOrientation( matOrient );
+	pCopyEnt->SetWorldOrientation( matOrient );
 }
 
 
@@ -114,7 +114,7 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 
 	// set up world transformation matrix to place the laser dot at the contact point
 //	D3DXVECTOR3 vPos = tr.vEnd + tr.plane.normal * 0.01f;	// put slightly above the surface to avoid z-fighting
-	D3DXVECTOR3 vPos = pCopyEnt->Position() + pCopyEnt->GetDirection() * 0.012f;	// put slightly above the surface to avoid z-fighting
+	D3DXVECTOR3 vPos = pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * 0.012f;	// put slightly above the surface to avoid z-fighting
 	memcpy( &matWorld._11, &pCopyEnt->GetRightDirection(), sizeof(D3DXVECTOR3) ); matWorld._14 = 0.0f;
 	memcpy( &matWorld._21, &pCopyEnt->GetUpDirection(),    sizeof(D3DXVECTOR3) ); matWorld._24 = 0.0f;
 	memcpy( &matWorld._31, &pCopyEnt->GetDirection(),      sizeof(D3DXVECTOR3) ); matWorld._34 = 0.0f;

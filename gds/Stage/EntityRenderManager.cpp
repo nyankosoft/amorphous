@@ -428,7 +428,7 @@ void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 	const float fMaxRenderDepth = m_fCameraFarClipDist;
 
 	const Vector3 vCameraForwardDirection	= m_CameraPose.matOrient.GetColumn(2);//Vector3( m_matCamera._13, m_matCamera._23, m_matCamera._33 );
-	const Vector3 vCameraToEntity = pCopyEnt->Position() - m_CameraPose.vPosition;
+	const Vector3 vCameraToEntity = pCopyEnt->GetWorldPosition() - m_CameraPose.vPosition;
 
 	fZinCameraSpace = Vec3Dot( vCameraToEntity, vCameraForwardDirection );
 
@@ -799,7 +799,7 @@ bool CEntityRenderManager::RemoveEnvMapTarget( CCopyEntity *pEntity )
 }
 
 
-bool CEntityRenderManager::EnableSoftShadow( float softness, int shadow_map_size )
+bool CEntityRenderManager::EnableSoftShadow( float softness, int shadowmap_size )
 {
 	SafeDelete( m_pShadowManager );
 

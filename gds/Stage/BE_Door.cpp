@@ -60,7 +60,7 @@ void CBE_Door::InitCopyEntity( CCopyEntity* pCopyEnt )
 //	rvOpenMotionDirection = pCopyEnt->Right();
 
 	Vector3& rvClosedPosition		= pCopyEnt->v2;
-	rvClosedPosition = pCopyEnt->Position();
+	rvClosedPosition = pCopyEnt->GetWorldPosition();
 
 	Vector3& rvFullOpenPosition		= pCopyEnt->v3;
 	rvFullOpenPosition = rvClosedPosition + rvOpenMotionDirection * m_fOpenLength;
@@ -86,7 +86,7 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 
 //	short		 sDoorState		= pDoorController->s1;
 	short&	 	 sDoorState		= pCopyEnt->s1;
-	Vector3& rvDoorPosition = pCopyEnt->Position();	//current center position of the door
+	const Vector3& rvDoorPosition = pCopyEnt->GetWorldPosition();	//current center position of the door
 	Vector3& rvOpenMotionDirection = pCopyEnt->v1;
 	Vector3& rvClosedPosition      = pCopyEnt->v2;
 	Vector3& rvFullOpenPosition    = pCopyEnt->v3;
@@ -109,8 +109,10 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 
 		if( Vec3LengthSq( vToCover ) < 0.0001f 
 			|| 0 < Vec3Dot( vToCover, rvOpenMotionDirection ) )
-		{	// almost reached or passed the closed position
-			rvDoorPosition = rvClosedPosition;
+		{
+			// almost reached or passed the closed position
+//			rvDoorPosition = rvClosedPosition;
+			pCopyEnt->SetWorldPosition( rvClosedPosition );
 //			pCopyEnt->pPhysicsActor->SetPosition(rvDoorPosition);
 //			pCopyEnt->pPhysicsActor->SetVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );
@@ -156,7 +158,8 @@ void CBE_Door::Act(CCopyEntity* pCopyEnt)
 		if( Vec3LengthSq( vToCover ) < 0.0001f
 			|| Vec3Dot( vToCover, rvOpenMotionDirection ) < 0 )
 		{
-			rvDoorPosition = rvFullOpenPosition;
+//			rvDoorPosition = rvFullOpenPosition;
+			pCopyEnt->SetWorldPosition( rvFullOpenPosition );
 			pPhysicsActor->SetWorldPosition(rvDoorPosition);
 			pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 			pCopyEnt->SetVelocity( Vector3(0,0,0) );

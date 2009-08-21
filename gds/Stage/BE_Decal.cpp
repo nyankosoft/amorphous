@@ -83,13 +83,13 @@ void CBE_Decal::InitCopyEntity( CCopyEntity* pCopyEnt )
 	pCopyEnt->SetDirection_Up( vUp );
 
 	// put the decal slightly above the surface to avoid z-fighting
-	pCopyEnt->Position() = pCopyEnt->Position() + rvNormal * 0.005f;
+	pCopyEnt->SetWorldPosition( pCopyEnt->GetWorldPosition() + rvNormal * 0.005f );
 
 	float fDecalRadius = m_fDecalRadius;
-	pCopyEnt->v1 =  vRight * fDecalRadius + vUp * fDecalRadius + pCopyEnt->Position();
-	pCopyEnt->v2 =  vRight * fDecalRadius - vUp * fDecalRadius + pCopyEnt->Position();
-	pCopyEnt->v3 = -vRight * fDecalRadius - vUp * fDecalRadius + pCopyEnt->Position();
-	//pCopyEnt->v4 = -rvRight * fDecalRadius - vUp * fDecalRadius + pCopyEnt->Position();
+	pCopyEnt->v1 =  vRight * fDecalRadius + vUp * fDecalRadius + pCopyEnt->GetWorldPosition();
+	pCopyEnt->v2 =  vRight * fDecalRadius - vUp * fDecalRadius + pCopyEnt->GetWorldPosition();
+	pCopyEnt->v3 = -vRight * fDecalRadius - vUp * fDecalRadius + pCopyEnt->GetWorldPosition();
+	//pCopyEnt->v4 = -rvRight * fDecalRadius - vUp * fDecalRadius + pCopyEnt->GetWorldPosition();
 
 	// define texture coodinates
 	const int num_segments = m_iNumSegments;
@@ -100,7 +100,7 @@ void CBE_Decal::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	// check if the decal is actually on some surface
 	// TODO: make this unnecesssary
-	Vector3 vStart = pCopyEnt->Position();
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
 	Vector3 vGoal = vStart - rvNormal * 0.1f;
 	STrace tr;
 	tr.bvType = BVTYPE_DOT;

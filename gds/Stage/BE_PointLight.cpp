@@ -166,16 +166,16 @@ void CBE_PointLight::Act( CCopyEntity* pCopyEnt )
 		{
 			if( pCopyEnt->GetParent() )
 			{	// just follow the parent
-				pCopyEnt->Position() = pCopyEnt->GetParent()->Position() + D3DXVECTOR3(0.0f, 0.5f, 0.0f);
+				pCopyEnt->GetWorldPosition() = pCopyEnt->GetParent()->Position() + D3DXVECTOR3(0.0f, 0.5f, 0.0f);
 
 			}
 
-			if( !IsSensible(pCopyEnt->Position()) )
+			if( !IsSensible(pCopyEnt->GetWorldPosition()) )
 				int iError = 1;
 
 			// update the position of the light entity
 			m_pStage->GetEntitySet()->GetLightEntityManager()->UpdateLightPosition( (short)pCopyEnt->iExtraDataIndex,
-			                                                                  pCopyEnt->Position() );
+			                                                                  pCopyEnt->GetWorldPosition() );
 			CheckEntitiesInLightRange( pCopyEnt, (short)pCopyEnt->iExtraDataIndex );
 		}
 	}*/
@@ -192,7 +192,7 @@ void CBE_PointLight::CheckEntitiesInLightRange( CCopyEntity* pCopyEnt, int light
 	s_vecpEntityBuffer2.resize( 0 );
 
 	tr.SetTouchEntityBuffer( &s_vecpEntityBuffer );
-	tr.SetSphere( pCopyEnt->Position(), 100.0f );
+	tr.SetSphere( pCopyEnt->GetWorldPosition(), 100.0f );
 	m_pStage->CheckCollision( tr );
 
 ///	tr2.SetTraceType( TRACETYPE_IGNORE_NOCLIP_ENTITIES );
@@ -214,7 +214,7 @@ void CBE_PointLight::CheckEntitiesInLightRange( CCopyEntity* pCopyEnt, int light
 		tr2.ClearTouchEntity();
 
 		// check if there is any obstacle between the light center and the target entity
-		tr2.SetLineSegment( pCopyEnt->Position(), pTargetEntity->Position() );
+		tr2.SetLineSegment( pCopyEnt->GetWorldPosition(), pTargetEntity->GetWorldPosition() );
 		m_pStage->CheckCollision( tr2 );
 
 ///		if( tr2.GetNumTouchEntities() == 0 )
@@ -260,13 +260,14 @@ bool CBE_PointLight::CheckRayToCamera( CCopyEntity* pCopyEnt )
 	if( pCamera )
 		vCameraPos = pCamera->GetPosition();
 	else
-		vCameraPos = pCameraEntity->Position();
+		vCameraPos = pCameraEntity->GetWorldPosition();
 
-	if( 0.01f < Vec3Dot( vCameraPos - pCopyEnt->Position(), pCameraEntity->GetDirection() ) )
+	if( 0.01f < Vec3Dot( vCameraPos - pCopyEnt->GetWorldPosition(), pCameraEntity->GetDirection() ) )
 		return false;	// light is not in the view frustum of the camera
 
 	STrace tr;
-	tr.pvStart = &pCopyEnt->Position();
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
 	tr.pvGoal = &vCameraPos;
 	tr.bvType = BVTYPE_DOT;
 	tr.pSourceEntity = pCopyEnt;
@@ -344,7 +345,7 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 
 	int vert_offset = 0;
 	Vector3 vPos;
-	Vector3 vEntityPos = pCopyEnt->Position();
+	Vector3 vEntityPos = pCopyEnt->GetWorldPosition();
 	const Matrix33& rWorldOrient = pCopyEnt->GetWorldPose().matOrient;
 	for( i=0; i<num_rects[0]; i++ )
 	{

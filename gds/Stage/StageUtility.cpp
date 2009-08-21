@@ -42,6 +42,21 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 
 	CCopyEntity *pEntity = pStage->CreateEntity( desc );
 
+	if( !pEntity )
+		return CEntityHandle<>();
+
+	CBE_MeshObjectProperty& mesh_property = pEntity->pBaseEntity->MeshProperty();
+	if( 0 < mesh_property.m_ShaderTechnique.size_x() )
+	{
+/*		pEntity->m_pMeshRenderMethod
+			= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+
+		pEntity->m_pMeshRenderMethod->MeshRenderMethod().push_back( CSubsetRenderMethod() );
+*/
+
+		pEntity->m_pMeshRenderMethod = mesh_property.m_pMeshRenderMethod;
+	}
+
 	return pEntity ? CEntityHandle<>( pEntity->Self() ) : CEntityHandle<>();
 }
 
@@ -266,13 +281,27 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 // CStageLightUtility
 //========================================================================================
 
-void CStageLightUtility::CreateHSPointLight( const std::string& name,
+CLightEntityHandle ReturnLightEntityHandle( CCopyEntity *pEntity )
+{
+	if( pEntity )
+	{
+		shared_ptr<CLightEntity> pLightEntity
+			= dynamic_pointer_cast<CLightEntity,CCopyEntity>( pEntity->Self().lock() );
+
+		return CLightEntityHandle( pLightEntity );
+	}
+	else
+		return CLightEntityHandle();
+}
+
+
+CLightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return;
+		return CLightEntityHandle();
 
 	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
 
@@ -302,19 +331,19 @@ void CStageLightUtility::CreateHSPointLight( const std::string& name,
 //	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
 
 //	CreateEntityFromDesc( desc );
-	pStage->CreateEntity( desc );
+	CCopyEntity *pEntity = pStage->CreateEntity( desc );
 
-//	shared_ptr<CLightEntity> pLightEntity(  );
+	return ReturnLightEntityHandle( pEntity );
 }
 
 
-void CStageLightUtility::CreateHSDirectionalLight( const std::string& name,
+CLightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& dir )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return;
+		return CLightEntityHandle();
 
 	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
 
@@ -324,8 +353,8 @@ void CStageLightUtility::CreateHSDirectionalLight( const std::string& name,
 
 	// alias
 	desc.strName    = name;
-	desc.aColor[0]  = upper_color;
-	desc.aColor[1]  = lower_color;
+	desc.SetHSUpperColor( upper_color );
+	desc.SetHSLowerColor( lower_color );
 	desc.fIntensity = intensity;
 	desc.LightGroup = group;
 
@@ -344,7 +373,9 @@ void CStageLightUtility::CreateHSDirectionalLight( const std::string& name,
 //	int shadow_for_light = 1; // true(1) by default
 
 //	CreateEntityFromDesc( desc );
-	pStage->CreateEntity( desc );
+	CCopyEntity *pEntity = pStage->CreateEntity( desc );
+
+	return ReturnLightEntityHandle( pEntity );
 }
 
 

@@ -4,11 +4,16 @@
 
 #include "Stage/Stage.hpp"
 #include "Stage/EntityHandle.hpp"
-#include "Stage/BE_ScriptedCamera.hpp"
 #include "Physics/fwd.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/AABB3.hpp"
+
+// for CStageCameraUtility
+#include "Stage/BE_ScriptedCamera.hpp"
+
+// for CStageLightUtility
+#include "Stage/LightEntity.hpp"
 
 
 class CStageUtility
@@ -73,11 +78,11 @@ public:
 	CStageUtility(pStage)
 	{}
 
-	void CreateHSPointLight( const std::string& name,
+	CLightEntityHandle CreateHSPointLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 );
 
-	void CreateHSDirectionalLight( const std::string& name,
+	CLightEntityHandle CreateHSDirectionalLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& dir );
 };

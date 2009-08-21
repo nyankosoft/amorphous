@@ -94,7 +94,7 @@ void HUD_PlayerAircraft::Init()
 
 	m_pGraphicsEffectManager = shared_ptr<CAnimatedGraphicsManager>( new CAnimatedGraphicsManager() );
 
-	CGraphicsElementManager *pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
+	shared_ptr<CGraphicsElementManager> pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
 
 	pElementMgr->LoadTexture( TEX_RADAR_ICON, "./Texture/hud_icon.dds" );
 
@@ -606,7 +606,7 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 	// draw icons on local radar
 	//
 	const Vector2 base_pos[4] = { Vector2(-1,-1), Vector2(1,-1), Vector2(1,1), Vector2(-1,1) };
-	Vector3 vPlayerPos = plane->GetPlayerCopyEntity()->Position();
+	Vector3 vPlayerPos = plane->GetPlayerCopyEntity()->GetWorldPosition();
 	r = 12;
 //	DWORD color;
 	Matrix22 matTgtOrient;
@@ -899,7 +899,7 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 	}
 
 	// debug - display current position
-	Vector3 vPos = pEntity->Position();
+	Vector3 vPos = pEntity->GetWorldPosition();
 	pFont->DrawText( fmt_string("x: %f", vPos.x).c_str(), Vector2(1200*scale, 800*scale) );
 	pFont->DrawText( fmt_string("y: %f", vPos.y).c_str(), Vector2(1200*scale, 845*scale) );
 	pFont->DrawText( fmt_string("z: %f", vPos.z).c_str(), Vector2(1200*scale, 890*scale) );

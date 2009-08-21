@@ -182,6 +182,9 @@ public:
 
 	CEntityRenderManager( CEntitySet* pEntitySet );
 
+	/// added default dtor to use the class with boost::python
+	CEntityRenderManager() {}
+
 	~CEntityRenderManager();
 
 	bool LoadFallbackShader();
@@ -228,7 +231,7 @@ public:
 	CShadowMapManager *GetShadowManager() { return m_pShadowManager; }
 
 	bool EnableShadowMap( int shadow_map_size = 512 );
-	bool EnableSoftShadow( float softness = 1.0f, int shadow_map_size = 512 );
+	bool EnableSoftShadow( float softness = 1.0f, int shadowmap_size = 512 );
 	void DisableShadowMap();
 
 	/// Specify the light for which shadow is rendered

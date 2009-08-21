@@ -117,6 +117,9 @@ private:
 	/// the time at which the entity is created in the stage [sec]
 	double m_CreatedTime;
 
+	/// position and orientation in world space
+	Matrix34 m_WorldPose;
+
 private:
 
 	void SetNext( boost::shared_ptr<CCopyEntity> pNext )
@@ -158,9 +161,6 @@ public:
 	
 	/// axis-aligned bounding box of this entity (world space)
 	AABB3 world_aabb;
-
-	/// position and orientation in world space
-	Matrix34 WorldPose;
 
 	Vector3 vPrevPosition;
 
@@ -271,34 +271,34 @@ public:
 
 	inline void AddTouchedEntity( CCopyEntity* pCopyEnt );
 
-	inline Vector3& Position() { return WorldPose.vPosition; }
 	inline Vector3& Velocity() { return vVelocity; }
 	inline Vector3& AngularVelocity() { return vAngularVelocity; }
 	inline float GetSpeed() const { return fSpeed; }
 
-	inline void GetOrientation( Matrix33& matDestOrient ) const { matDestOrient = WorldPose.matOrient; }
 
-	inline Vector3 GetRightDirection()	const { return WorldPose.matOrient.GetColumn(0); }	/// x-axis in this entity's local coord
-	inline Vector3 GetUpDirection()		const { return WorldPose.matOrient.GetColumn(1); }	/// y-axis in this entity's local coord
-	inline Vector3 GetDirection()		const { return WorldPose.matOrient.GetColumn(2); }	/// z-axis in this entity's local coord
+	inline Vector3 GetRightDirection()	const { return m_WorldPose.matOrient.GetColumn(0); }	/// x-axis in this entity's local coord
+	inline Vector3 GetUpDirection()		const { return m_WorldPose.matOrient.GetColumn(1); }	/// y-axis in this entity's local coord
+	inline Vector3 GetDirection()		const { return m_WorldPose.matOrient.GetColumn(2); }	/// z-axis in this entity's local coord
 
-	inline const Matrix34& GetWorldPose() const { return WorldPose; }
-	inline void GetWorldPose( Matrix34& rDestWorldPose ) const { rDestWorldPose = WorldPose; }
+	inline const Matrix34& GetWorldPose() const { return m_WorldPose; }
+	inline void GetWorldPose( Matrix34& rDestWorldPose ) const { rDestWorldPose = m_WorldPose; }
+	inline const Vector3& GetWorldPosition() const { return m_WorldPose.vPosition; }
+	inline void GetWorldOrientation( Matrix33& matDestOrient ) const { matDestOrient = m_WorldPose.matOrient; }
+
 
 	inline Vector3& PrevPosition() { return vPrevPosition; }
 
 
-	inline void SetPosition(const Vector3 &v) { WorldPose.vPosition = v; }
 	inline void SetVelocity(const Vector3 &v) { vVelocity = v; }
 	inline void SetAngularVelocity(const Vector3 &v) { vAngularVelocity = v; }
 
-	void SetDirection_Right( const Vector3& v ) { WorldPose.matOrient.SetColumn(0,v); }	/// x-axis in this entity's local coord
-	void SetDirection_Up( const Vector3& v )    { WorldPose.matOrient.SetColumn(1,v); }	/// y-axis in this entity's local coord
-	void SetDirection( const Vector3& v )       { WorldPose.matOrient.SetColumn(2,v); }	/// z-axis in this entity's local coord
+	void SetDirection_Right( const Vector3& v ) { m_WorldPose.matOrient.SetColumn(0,v); }	/// x-axis in this entity's local coord
+	void SetDirection_Up( const Vector3& v )    { m_WorldPose.matOrient.SetColumn(1,v); }	/// y-axis in this entity's local coord
+	void SetDirection( const Vector3& v )       { m_WorldPose.matOrient.SetColumn(2,v); }	/// z-axis in this entity's local coord
 
-	inline void SetOrientation( const Matrix33& matOrient ) { WorldPose.matOrient = matOrient; }
-
-	inline void SetWorldPose( const Matrix34& rSrcWorldPose ) { WorldPose = rSrcWorldPose; }
+	inline void SetWorldPose( const Matrix34& rSrcWorldPose ) { m_WorldPose = rSrcWorldPose; }
+	inline void SetWorldPosition(const Vector3 &v) { m_WorldPose.vPosition = v; }
+	inline void SetWorldOrientation( const Matrix33& matOrient ) { m_WorldPose.matOrient = matOrient; }
 
 	inline float GetRadius() const { return fRadius; }
 
@@ -306,7 +306,7 @@ public:
 	inline void ClearForces() { vForce = Vector3(0,0,0); vTorque = Vector3(0,0,0); }
 
 	inline void GetPointVelocity(Vector3& rvPointVelocity, Vector3& rvPoint);
-	void ApplyWorldImpulse( Vector3& vImpulse, Vector3& vContactPoint );
+	void ApplyWorldImpulse( const Vector3& vImpulse, const Vector3& vContactPoint );
 	inline void AddWorldForce( Vector3& vF ) { vForce += vF; }
 
 	void ReleasePhysicsActor();

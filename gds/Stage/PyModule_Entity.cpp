@@ -319,7 +319,7 @@ PyObject* gsf::py::entity::SetPosition( PyObject* self, PyObject* args )
 		return Py_None;
 	}
 
-	gs_pTargetEntity->SetPosition( pos );
+	gs_pTargetEntity->SetWorldPosition( pos );
 
     Py_INCREF( Py_None );
 	return Py_None;

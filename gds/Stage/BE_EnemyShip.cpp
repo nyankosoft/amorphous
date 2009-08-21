@@ -117,7 +117,7 @@ void CBE_EnemyShip::Fire( CCopyEntity* pCopyEnt, Vector3 vToTarget )
 		{
 			CCopyEntityDesc missile;
 			missile.SetWorldOrient( pCopyEnt->GetWorldPose().matOrient );
-			missile.SetWorldPosition( pCopyEnt->Position() + pCopyEnt->GetDirection() * 50.0f );
+			missile.SetWorldPosition( pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * 50.0f );
 			missile.vVelocity = pCopyEnt->Velocity();
 			missile.pBaseEntityHandle = &m_Missile;
 			missile.sGroupID = GetEntityGroupID( m_ProjectileEntityGroup ); // CE_GROUP_ENEMY_PROJECTILE;

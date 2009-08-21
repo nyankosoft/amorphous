@@ -66,6 +66,23 @@ public:
 };
 
 
+void CLightEntityHandle::SetUpperColor( const SFloatRGBAColor& color )
+{
+	shared_ptr<CLightEntity> pLight = Get();
+	if( pLight )
+		pLight->SetColor( 0, color );
+}
+
+
+void CLightEntityHandle::SetLowerColor( const SFloatRGBAColor& color )
+{
+	shared_ptr<CLightEntity> pLight = Get();
+	if( pLight )
+		pLight->SetColor( 2, color );
+}
+
+
+
 CLightEntity::CLightEntity()
 :
 m_pLightHolder(NULL),
@@ -208,7 +225,7 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 	// Manually update the world aabb at initialization
 	// - needed because world aabb update is done before calling CopyEntity::Init()
 	//   in CEntitySet::CreateEntity()
-	this->world_aabb.TransformCoord( this->local_aabb, this->Position() );
+	this->world_aabb.TransformCoord( this->local_aabb, this->GetWorldPosition() );
 
 	// link to the tree
 	GetStage()->GetEntitySet()->LinkLightEntity( this );
@@ -223,7 +240,8 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	// check trace from light to entity
 	STrace tr;
 	tr.bvType = BVTYPE_DOT;
-	tr.pvGoal = &pEntity->Position();
+	Vector3 vGoal = pEntity->GetWorldPosition();
+	tr.pvGoal = &vGoal;
 //	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 	tr.sTraceType = TRACETYPE_IGNORE_ALL_ENTITIES;
 //	tr.pSourceEntity = pEntity;
@@ -237,7 +255,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	 || light_type == CLight::TRI_POINT
 	)
 	{
-		vLightCenterPos = this->Position();
+		vLightCenterPos = this->GetWorldPosition();
 		tr.pvStart = &vLightCenterPos;
 	}
 	else if( light_type == CLight::DIRECTIONAL
@@ -245,7 +263,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	      || light_type == CLight::TRI_DIRECTIONAL
 	)
 	{
-		vLightRefPos = pEntity->Position() - this->GetDirection() * s_DirLightCheckDist;
+		vLightRefPos = pEntity->GetWorldPosition() - this->GetDirection() * s_DirLightCheckDist;
 		tr.pvStart = &vLightRefPos;
 	}
 	else
@@ -269,7 +287,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	{
 		fMaxRangeSq = pLightEntity->GetRadius() + pEntity->fRadius;
 		fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
-		vLightToEntity = pEntity->Position() - vLightCenterPos;
+		vLightToEntity = pEntity->GetWorldPosition() - vLightCenterPos;
 		if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
 			continue;	// out of the light range
 	}*/

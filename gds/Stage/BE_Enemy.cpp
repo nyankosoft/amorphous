@@ -143,8 +143,8 @@ void CBE_Enemy::InitCopyEntity(CCopyEntity* pCopyEnt)
 
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
 	SBE_EnemyExtraData *pExtraData = GetExtraData( pCopyEnt->iExtraDataIndex );
-	pExtraData->vOriginalPosition = pCopyEnt->Position();
-	pExtraData->vTargetPosition   = pCopyEnt->Position();
+	pExtraData->vOriginalPosition = pCopyEnt->GetWorldPosition();
+	pExtraData->vTargetPosition   = pCopyEnt->GetWorldPosition();
 
 	if( m_AttribFlag & ATTRIB_OPTCAM )
 		pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
@@ -169,7 +169,7 @@ void CBE_Enemy::Act(CCopyEntity* pCopyEnt)
 			// calc velocity - used when the entity is destroyed
 			// and the vel of the frags have to be calculated
 			float dt = m_pStage->GetFrameTime();
-			pCopyEnt->Velocity() = ( pCopyEnt->Position() - pCopyEnt->vPrevPosition ) / dt;
+			pCopyEnt->Velocity() = ( pCopyEnt->GetWorldPosition() - pCopyEnt->vPrevPosition ) / dt;
 		}
 		else
 		{
@@ -197,8 +197,8 @@ void CBE_Enemy::SearchPlayer(CCopyEntity* pCopyEnt, short& rsMode,
 	Vector3 vStart, vMyselfToPlayer;
 	CCopyEntity* pPlayer = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
 
-	vStart = pCopyEnt->Position() + pCopyEnt->GetDirection() * 1.42f;
-	vMyselfToPlayer = pPlayer->Position() - vStart;
+	vStart = pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * 1.42f;
+	vMyselfToPlayer = pPlayer->GetWorldPosition() - vStart;
 
 	// chehck the distance to the player
 	float fSqDist = Vec3LengthSq( vMyselfToPlayer );
@@ -255,8 +255,8 @@ void CBE_Enemy::CheckRayToPlayer(CCopyEntity* pCopyEnt)
 	// perform line segment check first
 
 	STrace tr;
-	Vector3 vStart = pCopyEnt->Position();
-	Vector3 vGoal =  pPlayer->Position();
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	Vector3 vGoal =  pPlayer->GetWorldPosition();
 	tr.pvStart = &vStart;
 	tr.pvGoal  = &vGoal;
 	tr.bvType = BVTYPE_DOT;
@@ -268,7 +268,7 @@ void CBE_Enemy::CheckRayToPlayer(CCopyEntity* pCopyEnt)
 
 	this->m_pStage->ClipTrace( tr );
 
-	pCopyEnt->Position() = tr.vEnd;
+	pCopyEnt->GetWorldPosition() = tr.vEnd;
 	pCopyEnt->touch_plane = tr.plane;	// save contacted surface
 
 
@@ -302,8 +302,8 @@ bool CBE_Enemy::CheckRayToPlayer( CCopyEntity* pCopyEnt )
 	CCopyEntity* pPlayer = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity();
 ///	CCopyEntity* pPlayer = PlayerShip.GetPlayerCopyEntity();
 	STrace tr;
-	Vector3 vCurrentPos = pCopyEnt->Position();
-	Vector3 vGoal       = pPlayer->Position();
+	Vector3 vCurrentPos = pCopyEnt->GetWorldPosition();
+	Vector3 vGoal       = pPlayer->GetWorldPosition();
 	tr.pvStart       = &vCurrentPos;
 	tr.pvGoal        = &vGoal;
 	tr.bvType        = BVTYPE_DOT;
@@ -320,7 +320,7 @@ bool CBE_Enemy::CheckRayToPlayer( CCopyEntity* pCopyEnt )
 		if( sRadarState == ERS_NOT_IN_SOLID )
 		{	// check trace to the player
 //			tr.pvStart = &vCurrentPos;
-//			vGoal  =  &pPlayer->Position();
+//			vGoal  =  &pPlayer->GetWorldPosition();
 			tr.in_solid = false;
 			tr.fFraction = 1.0f;
 			this->m_pStage->ClipTrace( tr );
@@ -529,7 +529,7 @@ void CBE_Enemy::Fire( CCopyEntity* pCopyEnt )
 		Vector3 vWorldMuzzlePosition;
 		pCopyEnt->GetWorldPose().Transform( vWorldMuzzlePosition, m_vLocalMuzzlePosition );
 
-/*		Vector3 vWorldMuzzlePosition = pCopyEnt->Position() 
+/*		Vector3 vWorldMuzzlePosition = pCopyEnt->GetWorldPosition() 
 			                             + m_vLocalMuzzlePosition.x * pCopyEnt->Right()
 										 + m_vLocalMuzzlePosition.y * pCopyEnt->Up()
 										 + m_vLocalMuzzlePosition.z * pCopyEnt->GetDirection();
@@ -620,7 +620,7 @@ void CBE_Enemy::OnDestroyed( CCopyEntity* pCopyEnt )
 
 		rFrag.SetWorldPosition( pCopyEnt->GetWorldPose() * frag.vOffset );
 //		D3DXVec3TransformCoord( &vWorldFragmentOffset, &m_avFragmentOffset[i], &pCopyEnt->GetOrientation() );
-//		rFrag.vPosition  = pCopyEnt->Position() + vWorldFragmentOffset;
+//		rFrag.vPosition  = pCopyEnt->GetWorldPosition() + vWorldFragmentOffset;
 
 		rFrag.SetWorldOrient( pCopyEnt->GetWorldPose().matOrient );
 
@@ -657,7 +657,7 @@ void CBE_Enemy::OnDestroyed( CCopyEntity* pCopyEnt )
 	*/
 
 	// leave a life item
-//			m_pStage->CreateEntity( "s_Life", pCopyEnt->Position(),
+//			m_pStage->CreateEntity( "s_Life", pCopyEnt->GetWorldPosition(),
 //				Vector3(0,0,0), Vector3(0,0,1) );
 }
 
@@ -686,7 +686,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 			rsCurrentState = CEnemyState::STATE_UNDERATTACK;
 		}
 
-		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->Position() );
+		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->GetWorldPosition() );
 
 		if( rfLife <= 0 )
 		{
@@ -702,7 +702,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 			rep.entity_name = pCopyEnt_Self->GetName();
 			rep.score = ???;
 			rep.time = m_pStage->GetElapsedTime();	ms or s ???
-			rep.vWorldPos = pCopyEnt_Self->Position();
+			rep.vWorldPos = pCopyEnt_Self->GetWorldPosition();
 			rep.kill_type = ;
 			rep.type = ;
 */

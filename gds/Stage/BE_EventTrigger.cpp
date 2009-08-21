@@ -30,13 +30,13 @@ void CBE_EventTrigger::InitCopyEntity( CCopyEntity* pCopyEnt )
 	Vector3 vMin = pCopyEnt->v1;
 	Vector3 vMax = pCopyEnt->v2;
 	pCopyEnt->world_aabb.SetMaxAndMin( vMax, vMin );
-	vMin = pCopyEnt->v1 - pCopyEnt->Position();	// change to local coordinate
-	vMax = pCopyEnt->v2 - pCopyEnt->Position();	// change to local coordinate
+	vMin = pCopyEnt->v1 - pCopyEnt->GetWorldPosition();	// change to local coordinate
+	vMax = pCopyEnt->v2 - pCopyEnt->GetWorldPosition();	// change to local coordinate
 	pCopyEnt->local_aabb.SetMaxAndMin( vMax, vMin );
 
 	pCopyEnt->bNoClip = true;
 
-	pCopyEnt->SetOrientation( Matrix33Identity() );
+	pCopyEnt->SetWorldOrientation( Matrix33Identity() );
 
 	// currently, only text events are supported
 //	pCopyEnt->s1 = ET_SHOWTEXTMESSAGE;

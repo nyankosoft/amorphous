@@ -55,7 +55,7 @@ m_paEntityTree(NULL)
 
 	m_PhysTimestep = ms_DefaultPhysTimestep;
 
-	m_pRenderManager = new CEntityRenderManager( this );
+	m_pRenderManager = shared_ptr<CEntityRenderManager>( new CEntityRenderManager( this ) );
 
 	// enable collision between all the groups
 	memset( m_EntityCollisionTable, 1, sizeof(char) * NUM_MAX_ENTITY_GROUP_IDS * NUM_MAX_ENTITY_GROUP_IDS );
@@ -107,7 +107,7 @@ CEntitySet::~CEntitySet()
 
 //	SafeDelete( m_pLightEntityManager );
 	SafeDelete( m_pEntityFactory );
-	SafeDelete( m_pRenderManager );
+	m_pRenderManager.reset();
 }
 
 
@@ -265,7 +265,7 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 
 		SPlane& rPlane = rThisEntityNode.m_Plane;
 
-		d = rPlane.GetDistanceFromPoint( pEntity->Position() );
+		d = rPlane.GetDistanceFromPoint( pEntity->GetWorldPosition() );
 
 /*		if(pEntity->bvType != BVTYPE_DOT)
 			fRadius = pEntity->local_aabb.GetRadiusForPlane( rPlane );
@@ -581,7 +581,7 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 	}
 
 	// update world aabb
-	pNewCopyEnt->world_aabb.TransformCoord( pNewCopyEnt->local_aabb, pNewCopyEnt->Position() );
+	pNewCopyEnt->world_aabb.TransformCoord( pNewCopyEnt->local_aabb, pNewCopyEnt->GetWorldPosition() );
 
 
 	// link the new copy-entity to the top of 'm_pEntityInUse'
@@ -1036,7 +1036,7 @@ void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
   {
 	PROFILE_FUNCTION();
 
-	if( pEntity->PrevPosition() != pEntity->Position() )
+	if( pEntity->PrevPosition() != pEntity->GetWorldPosition() )
 	{
 		//'pEntity' has moved during this frame
 		pEntity->sState |= CESTATE_MOVED_DURING_LAST_FRAME;
@@ -1047,7 +1047,7 @@ void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
 		Link( pEntity );
 
 		// update world aabb
-		pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->Position() );
+		pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->GetWorldPosition() );
 	}
 	else
 		pEntity->sState &= ~CESTATE_MOVED_DURING_LAST_FRAME;
@@ -1097,7 +1097,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 	     pEntity != NULL;
 	     pEntity = pEntity->m_pNextRawPtr )
 	{
-		pEntity->PrevPosition() = pEntity->Position();
+		pEntity->PrevPosition() = pEntity->GetWorldPosition();
 	}
 
 	// run physics simulator
@@ -1237,7 +1237,7 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 			fprintf( fp, "created time: %f s\n", pEntity->GetCreatedTime() );
 			fprintf( fp, "group:        %d\n", pEntity->GroupIndex );
 
-			strPos = to_string(pEntity->Position() );
+			strPos = to_string(pEntity->GetWorldPosition() );
 			strDir = to_string(pEntity->GetDirection() );
 			fprintf( fp, "  pos%s, dir%s, spd: %.2f\n", strPos.c_str(), strDir.c_str(), pEntity->fSpeed );
 
@@ -1279,7 +1279,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 
 	STrace tr;
 	tr.bvType = BVTYPE_DOT;
-	tr.pvGoal = &pEntity->Position();
+	tr.pvGoal = &pEntity->GetWorldPosition();
 //	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 	tr.sTraceType = TRACETYPE_IGNORE_ALL_ENTITIES;
 //	tr.pSourceEntity = pEntity;
@@ -1318,7 +1318,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 //			}
 //			else if( pLightEntity->GetLightType() == D3DLIGHT_DIRECTIONAL )
 //			{
-//				vLightRefPos = pEntity->Position() - pLightEntity->GetHemisphericDirLight().vDirection * s_DirLightCheckDist;
+//				vLightRefPos = pEntity->GetWorldPosition() - pLightEntity->GetHemisphericDirLight().vDirection * s_DirLightCheckDist;
 //				tr.pvStart = &vLightRefPos;
 //			}
 //			else
@@ -1340,7 +1340,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 //			{
 //				fMaxRangeSq = pLightEntity->GetRadius() + pEntity->local_aabb.vMax.x;
 //				fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
-//				vLightToEntity = pEntity->Position() - vLightCenterPos;
+//				vLightToEntity = pEntity->GetWorldPosition() - vLightCenterPos;
 //				if( fMaxRangeSq < Vec3LengthSq(vLightToEntity) )
 //					continue;	// out of the light range
 //			}
@@ -1364,7 +1364,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 
 		r = pEntity->local_aabb.vMax.x;
 
-		d = pEntityNode->m_Plane.GetDistanceFromPoint( pEntity->Position() );
+		d = pEntityNode->m_Plane.GetDistanceFromPoint( pEntity->GetWorldPosition() );
 
 		if( r < d )
 		{

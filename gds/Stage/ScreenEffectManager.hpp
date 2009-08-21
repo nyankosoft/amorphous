@@ -113,8 +113,6 @@ public:
 		NUM_MAX_PARAM_SETS_PER_EFFECT = 8,
 	};
 
-private:
-
 	/// simple post process effect which render the textured rect over the entire screen
 	class CExtraTextureEffect
 	{
@@ -128,10 +126,12 @@ private:
 
 		CExtraTextureEffect() {}
 
-		void SetTextureFilename( const char *pTexFilename ) { m_TextureFilepath = pTexFilename; }
+		void SetTextureFilename( const std::string& texture_filepath ) { m_TextureFilepath = texture_filepath; }
 		bool LoadTexture();
 //		void ReleaseTexture() { m_Texture.Release(); }
 	};
+
+private:
 
 	/// holds the active effects
 	unsigned int m_EffectFlag;

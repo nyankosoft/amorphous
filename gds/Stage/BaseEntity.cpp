@@ -371,12 +371,12 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 	switch( m_BoundingVolumeType )
 	{
 	case BVTYPE_AABB:
-		vS = *rTrace.pvStart - pMyself->Position();
-		vG = *rTrace.pvGoal  - pMyself->Position();
+		vS = *rTrace.pvStart - pMyself->GetWorldPosition();
+		vG = *rTrace.pvGoal  - pMyself->GetWorldPosition();
 		local_trace.pvStart = &vS;
 		local_trace.pvGoal = &vG;
 		local_trace.fFraction = rTrace.fFraction;
-		local_trace.vEnd = rTrace.vEnd - pMyself->Position();
+		local_trace.vEnd = rTrace.vEnd - pMyself->GetWorldPosition();
 
 		if( m_pBSPTree )
 			m_pBSPTree->ClipTrace( local_trace );
@@ -389,7 +389,7 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 		if( local_trace.fFraction < rTrace.fFraction )
 		{	// update 'rTrace'
 			rTrace.fFraction = local_trace.fFraction;
-			rTrace.vEnd = local_trace.vEnd + pMyself->Position();
+			rTrace.vEnd = local_trace.vEnd + pMyself->GetWorldPosition();
 			rTrace.plane = local_trace.plane;
 			rTrace.in_solid = local_trace.in_solid;
 			rTrace.iMaterialIndex = -1;		// set invalid material index
@@ -455,8 +455,9 @@ void CBaseEntity::FreeFall(CCopyEntity* pCopyEnt)
 
 	vVel += vGravityAccel * fFrametime;	//Update velocity;
 	
-	tr.pvStart = &pCopyEnt->Position();
-	Vector3 vGoal = pCopyEnt->Position() + fFrametime * vVel;
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
+	Vector3 vGoal = pCopyEnt->GetWorldPosition() + fFrametime * vVel;
 	tr.pvGoal = &vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
@@ -481,7 +482,7 @@ void CBaseEntity::FreeFall(CCopyEntity* pCopyEnt)
 			pCopyEnt->fSpeed = 0;
 			pCopyEnt->SetDirection( Vector3(0,0,0) );
 			pCopyEnt->sState |= CESTATE_ATREST;
-			pCopyEnt->Position() = tr.vEnd;
+			pCopyEnt->SetWorldPosition( tr.vEnd );
 			return;
 		}
 		else	//hit steep surface  (vertical wall, etc.)
@@ -493,7 +494,7 @@ void CBaseEntity::FreeFall(CCopyEntity* pCopyEnt)
 
 	pCopyEnt->fSpeed = Vec3Length(vVel);
 	pCopyEnt->SetDirection( vVel / pCopyEnt->fSpeed );
-	pCopyEnt->Position() = tr.vEnd;
+	pCopyEnt->SetWorldPosition( tr.vEnd );
 
 }
 
@@ -528,9 +529,10 @@ char CBaseEntity::SlideMove(CCopyEntity* pCopyEnt)
 
 	for(cBumpCount = 0; cBumpCount < cNumBumps; cBumpCount++)
 	{
-		vGoalPos = pCopyEnt->Position() + fTimeLeft * pCopyEnt->vVelocity;
+		vGoalPos = pCopyEnt->GetWorldPosition() + fTimeLeft * pCopyEnt->vVelocity;
 
-		tr.pvStart = &pCopyEnt->Position();
+		Vector3 vStart = pCopyEnt->GetWorldPosition();
+		tr.pvStart = &vStart;
 		tr.pvGoal = &vGoalPos;
 		tr.aabb = this->m_aabb;
 		tr.bvType = this->m_BoundingVolumeType;
@@ -550,7 +552,7 @@ char CBaseEntity::SlideMove(CCopyEntity* pCopyEnt)
 
 		if(0 < tr.fFraction)
 		{//actually covered some distance
-			pCopyEnt->Position() = tr.vEnd;
+			pCopyEnt->SetWorldPosition( tr.vEnd );
 			numPlanes = 0;		
 		}
 
@@ -667,10 +669,11 @@ void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 
 	//first try moving to the destination
 	//Remember 'vVelocity.y' is 0, so there is no vertical motion
-	vGoal = pCopyEnt->Position() + pCopyEnt->vVelocity * m_pStage->GetFrameTime();
+	vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * m_pStage->GetFrameTime();
 
 	//first try moving to the next spot
-	tr.pvStart = &pCopyEnt->Position();
+	Vector3 vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
 	tr.pvGoal = &vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
@@ -680,29 +683,30 @@ void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 
 	if(tr.fFraction == 1)
 	{	//No collision occured
-		pCopyEnt->Position() = vGoal;
+		pCopyEnt->SetWorldPosition( vGoal );
 		return;
 	}
 
 	//try sliding forward both on ground & up ___ pixels
 	//take the move that goes farthest
-	vOrigPos = pCopyEnt->Position();
+	vOrigPos = pCopyEnt->GetWorldPosition();
 	vOrigVel = pCopyEnt->vVelocity;
 
 	//slide move
 	SlideMove(pCopyEnt);
 
-	vDownDestPos = pCopyEnt->Position();
+	vDownDestPos = pCopyEnt->GetWorldPosition();
 	vDownVel = pCopyEnt->vVelocity;
 
-	pCopyEnt->Position() = vOrigPos;
+	pCopyEnt->SetWorldPosition( vOrigPos );
 	pCopyEnt->vVelocity = vOrigVel;
 
 	//move up a stair height
-	vGoal = pCopyEnt->Position();
+	vGoal = pCopyEnt->GetWorldPosition();
 	vGoal.y += 0.3f;                        //Step Size
 
-	tr.pvStart = &pCopyEnt->Position();
+	vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
 	tr.pvGoal = &vGoal;
 	tr.fFraction = 1;
 	tr.pSourceEntity = pCopyEnt;
@@ -712,15 +716,16 @@ void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 	if(tr.fFraction == 0)
 		goto usedown;
 
-	pCopyEnt->Position() = tr.vEnd;
+	pCopyEnt->SetWorldPosition( tr.vEnd );
 
 	SlideMove(pCopyEnt);  //Velocity.y == 0, so move horizontally
 
 	//press down the stepheight
-	vGoal = pCopyEnt->Position();
+	vGoal = pCopyEnt->GetWorldPosition();
 	vGoal.y -= 0.3f;                        //Step Size
 
-	tr.pvStart = &pCopyEnt->Position();
+	vStart = pCopyEnt->GetWorldPosition();
+	tr.pvStart = &vStart;
 	tr.pvGoal = &vGoal;
 	tr.fFraction = 1;
 	tr.pSourceEntity = pCopyEnt;
@@ -730,22 +735,22 @@ void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 	{
 		if(tr.plane.normal.y < 0.7f)  //Stepped on a steep slope
 			goto usedown;
-		pCopyEnt->Position() = tr.vEnd;
+		pCopyEnt->SetWorldPosition( tr.vEnd );
 	}
 	else
-		pCopyEnt->Position() = tr.vEnd;
+		pCopyEnt->SetWorldPosition( tr.vEnd );
 
 	//decide which one went farther
 	fDowndistSq = (vDownDestPos.x - vOrigPos.x) * (vDownDestPos.x - vOrigPos.x)
 		+ (vDownDestPos.z - vOrigPos.z) * (vDownDestPos.z - vOrigPos.z);
 
-	fUpdistSq = (pCopyEnt->Position().x - vOrigPos.x) * (pCopyEnt->Position().x - vOrigPos.x)
-		+ (pCopyEnt->Position().z - vOrigPos.z) * (pCopyEnt->Position().z - vOrigPos.z);
+	fUpdistSq = (pCopyEnt->GetWorldPosition().x - vOrigPos.x) * (pCopyEnt->GetWorldPosition().x - vOrigPos.x)
+		+ (pCopyEnt->GetWorldPosition().z - vOrigPos.z) * (pCopyEnt->GetWorldPosition().z - vOrigPos.z);
 
 	if(fDowndistSq > fUpdistSq)
 	{
 usedown:
-	pCopyEnt->Position() = vDownDestPos;
+	pCopyEnt->SetWorldPosition( vDownDestPos );
 	pCopyEnt->vVelocity = vDownVel;
 	}
 	else //copy z value from the slide move
@@ -777,7 +782,7 @@ void CBaseEntity::ApplyFriction(CCopyEntity* pCopyEnt, float fFriction)
 
 	Vector3 vOrigVelDir = pCopyEnt->vVelocity / fSpeed;
 
-	vStart = pCopyEnt->Position();
+	vStart = pCopyEnt->GetWorldPosition();
 	//if the leading edge is over a dropoff, increase friction
 /*	if(pCopyEnt->sState & CESTATE_ONGROUND)
 	{
@@ -870,9 +875,10 @@ void CBaseEntity::CategorizePosition(CCopyEntity* pCopyEnt)
 	else
 	{
 		// If copy-entity's point one unit down is solid, it is on the ground.
-		vPoint = pCopyEnt->Position();
+		vPoint = pCopyEnt->GetWorldPosition();
 		vPoint.y -= 0.02f;  //2cm
-		tr.pvStart = &pCopyEnt->Position();
+		Vector3 vStart = pCopyEnt->GetWorldPosition();
+		tr.pvStart = &vStart;
 		tr.pvGoal = &vPoint;
 		tr.aabb = pCopyEnt->local_aabb;
 		tr.pSourceEntity = pCopyEnt;
@@ -888,7 +894,7 @@ void CBaseEntity::CategorizePosition(CCopyEntity* pCopyEnt)
 				pCopyEnt->sState |= CESTATE_ONGROUND;
 
 				if(!tr.in_solid)
-					pCopyEnt->Position() = tr.vEnd;
+					pCopyEnt->SetWorldPosition( tr.vEnd );
 			}
 		}
 		else
@@ -916,7 +922,7 @@ void CBaseEntity::NudgePosition(CCopyEntity* pCopyEnt)
 
 	tr.aabb = pCopyEnt->local_aabb;
 	tr.bvType = pCopyEnt->bvType;
-	tr.vEnd = pCopyEnt->Position();
+	tr.vEnd = pCopyEnt->GetWorldPosition();
 	tr.pSourceEntity = pCopyEnt;
 	Vector3& vPos = tr.vEnd;
 	vPos.x = ((int)(vPos.x * 2500)) * 0.0004f;

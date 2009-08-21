@@ -10,7 +10,7 @@ using namespace std;
 using namespace boost;
 
 
-void CCopyEntity::ApplyWorldImpulse( Vector3& vImpulse, Vector3& vContactPoint )
+void CCopyEntity::ApplyWorldImpulse( const Vector3& vImpulse, const Vector3& vContactPoint )
 {
 /*	if( !pPhysicsActor )
 		return;	// entity must have a corresponding physics actor to apply impulse
@@ -103,9 +103,16 @@ void CCopyEntity::UpdatePhysics()
 	if( !pPhysActor )
 		return;
 
+//	if( pPhysActor->IsStatic() )
+	if( pPhysActor->GetBodyFlags() & PhysBodyFlag::Static
+	 || pPhysActor->GetBodyFlags() & PhysBodyFlag::Kinematic )
+	{
+		return;
+	}
+
 	// update the world pose of the entity
 	// - copy the world pose of the primary physics actor to that of the entity
-	pPhysActor->GetWorldPose( WorldPose );
+	pPhysActor->GetWorldPose( m_WorldPose );
 
 //	for( size_t i=0; i<m_vecpPhysicsActor.size(); i++ )
 //		m_vecpPhysicsActor[i]->GetWorldPose( WorldPose );
@@ -113,7 +120,7 @@ void CCopyEntity::UpdatePhysics()
 	int i;
 	for( i=0; i<9; i++ )
 	{
-		if( WorldPose.matOrient.GetData()[i] != 0.0f )
+		if( m_WorldPose.matOrient.GetData()[i] != 0.0f )
 			break;
 	}
 	if( i == 9 )

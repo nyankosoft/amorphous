@@ -49,7 +49,7 @@ void CES_Search::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt )
 		{	// lost sight of the player
 			if( pExtraData->vLastCheckedPlayerPosition != Vector3(0,0,0) )
 			{
-				Vector3 vDir = pExtraData->vLastCheckedPlayerPosition - rEntity.Position();
+				Vector3 vDir = pExtraData->vLastCheckedPlayerPosition - rEntity.GetWorldPosition();
 				Vec3Normalize( rvDesiredDirection, vDir );
 			}
 		}

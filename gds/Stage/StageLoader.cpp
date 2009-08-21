@@ -1,5 +1,6 @@
 #include "StageLoader.hpp"
 #include "Stage.hpp"
+#include "Script/PyModule_StageUtility.hpp"
 
 using namespace std;
 
@@ -7,6 +8,9 @@ using namespace std;
 CStageSharedPtr CStageLoader::LoadStage( const std::string& script_name )
 {
 	CStageSharedPtr pStage = this->CreateStage();
+
+	if( pStage )
+		stage_util::RegisterStageForScript( pStage );
 
 	bool res = pStage->Initialize( script_name );
 
@@ -18,6 +22,7 @@ CStageSharedPtr CStageLoader::LoadStage( const std::string& script_name )
 	{
 		g_Log.Print( "%s - unable to load a stage: %s", __FUNCTION__, script_name.c_str() );
 		pStage.reset();
+		stage_util::UnregisterStageForScript();
 	}
 
 	return pStage;

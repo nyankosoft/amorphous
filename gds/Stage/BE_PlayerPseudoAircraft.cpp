@@ -253,7 +253,7 @@ CInputHandler_PlayerBase *CBE_PlayerPseudoAircraft::CreatePlayerInputHandler()
 //void CBE_PlayerPseudoAircraft::EnableNightVision( bool enable )
 void CBE_PlayerPseudoAircraft::SetVisionMode( int vision_mode )
 {
-	CScreenEffectManager* pScreenEffectManager = m_pStage->GetScreenEffectManager();
+	shared_ptr<CScreenEffectManager> pScreenEffectManager = m_pStage->GetScreenEffectManager();
 
 	switch( vision_mode )
 	{
@@ -309,7 +309,7 @@ void CBE_PlayerPseudoAircraft::SetSubDisplayType( CSubDisplayType::Name type )
 void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	LOG_PRINT( " - initializing a pseudo aircraft copy entity" );
-	LOG_PRINT( string(" - player aircraft at ") + to_string(pCopyEnt->Position()) );
+	LOG_PRINT( string(" - player aircraft at ") + to_string(pCopyEnt->GetWorldPosition()) );
 
 	CBE_Player::InitCopyEntity( pCopyEnt );
 
@@ -435,7 +435,7 @@ void CBE_PlayerPseudoAircraft::InitSubDisplay()
 		m_pPlayerAircraftHUD->SetSubDisplay( &m_SubDisplay );
 
 	CCopyEntity* pPlayerEntity = GetPlayerCopyEntity();
-	Vector3 vPos = pPlayerEntity->Position() + pPlayerEntity->GetWorldPose().matOrient.GetColumn(2) * 1000.0f;
+	Vector3 vPos = pPlayerEntity->GetWorldPosition() + pPlayerEntity->GetWorldPose().matOrient.GetColumn(2) * 1000.0f;
 	m_SubDisplay.SetTargetPosition( vPos );
 	m_SubDisplay.SetTargetRadius( 45.0f );
 }
@@ -520,7 +520,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 	}
 
 	const float effective_range_sq = effective_range * effective_range;
-	const Vector3 vPlayerPos = m_pPlayerCopyEntity->Position();
+	const Vector3 vPlayerPos = m_pPlayerCopyEntity->GetWorldPosition();
 
 //	size_t num_targets_on_radar = m_RadarInfo.m_vecTargetInfo.size();
 //	size_t num_candidates = NUM_MAX_FOCUS_CANDIDATES < num_entities ? NUM_MAX_FOCUS_CANDIDATES : num_entities;
@@ -532,7 +532,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 		if( !IsValidEntity(vecpEntityBuffer[i]) )
 			continue;
 
-		if( effective_range_sq < Vec3LengthSq( vecpEntityBuffer[i]->Position() - vPlayerPos ) )
+		if( effective_range_sq < Vec3LengthSq( vecpEntityBuffer[i]->GetWorldPosition() - vPlayerPos ) )
 			continue;
 
 		num_valid_entities++;
@@ -626,8 +626,8 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 	// cube with each edge 1000[km]
 	// TODO: use a proper bounding-box that contains the entire stage
 	AABB3 aabb = AABB3(
-		Vector3(-1,-1,-1) * effective_radar_radius + pCopyEnt->Position(),
-		Vector3( 1, 1, 1) * effective_radar_radius + pCopyEnt->Position() );	// m_pStage->GetAABB();
+		Vector3(-1,-1,-1) * effective_radar_radius + pCopyEnt->GetWorldPosition(),
+		Vector3( 1, 1, 1) * effective_radar_radius + pCopyEnt->GetWorldPosition() );	// m_pStage->GetAABB();
 
 	COverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
 
@@ -664,7 +664,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 
 	if( pFocusedTarget )
 	{
-		m_SubDisplay.SetTargetPosition( pFocusedTarget->Position() );
+		m_SubDisplay.SetTargetPosition( pFocusedTarget->GetWorldPosition() );
 		m_SubDisplay.SetTargetRadius( pFocusedTarget->GetRadius() );
 	}
 
@@ -730,11 +730,11 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 				tgt_type |= HUD_TargetInfo::LOCKED_ON;
 			}
 
-			m_RadarInfo.m_vecTargetInfo.push_back( HUD_TargetInfo( pEntity->Position(), "", tgt_type ) );
+			m_RadarInfo.m_vecTargetInfo.push_back( HUD_TargetInfo( pEntity->GetWorldPosition(), "", tgt_type ) );
 			m_RadarInfo.m_vecTargetInfo.back().direction = pEntity->GetDirection();
 			m_RadarInfo.m_vecTargetInfo.back().radius = pEntity->fRadius * 1.5f;
 
-			Vector3 vPlayerToTargetDir = Vec3GetNormalized( pEntity->Position() - pCopyEnt->Position() );
+			Vector3 vPlayerToTargetDir = Vec3GetNormalized( pEntity->GetWorldPosition() - pCopyEnt->GetWorldPosition() );
 
 			// mark as visible if the target is in the view frustum
 			if( acos(Vec3Dot(vCamFwdDir,vPlayerToTargetDir)) < deg_to_rad(30.0f) 
@@ -894,7 +894,7 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 					CCopyEntityDesc desc;
 					desc.SetDefault();
 					desc.SetWorldPose( pCopyEnt_Self->GetWorldPose() );
-					desc.v1 = pCopyEnt_Self->Position();
+					desc.v1 = pCopyEnt_Self->GetWorldPosition();
 					desc.pBaseEntityHandle = &m_aExtraBaseEntity[base_entity_index[i]].Handle;
 					desc.pParent = pCopyEnt_Self;
 
@@ -1053,7 +1053,7 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	if( pCopyEnt->fLife <= 0 && GetMissionState() == MSTATE_CRASHED )
 		return;
 
-	Vector3 vOrigPos = pCopyEnt->Position();
+	Vector3 vOrigPos = pCopyEnt->GetWorldPosition();
 
 	CPseudoAircraftSimulator& pseudo_simulator = PseudoSimulator();
 	pseudo_simulator.Update( dt );

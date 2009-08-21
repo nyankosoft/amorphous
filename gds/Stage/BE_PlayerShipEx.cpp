@@ -83,6 +83,6 @@ void CBE_PlayerShip::MoveEx(CCopyEntity *pEntity)
 
 	// update world aabb here so that collision check would not be performed between the player and his own bullets
 	// when he is stepping back while firing 
-	pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->Position() );
+	pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->GetWorldPosition() );
 
 }

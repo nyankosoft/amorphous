@@ -258,7 +258,7 @@ void CBE_ParticleSet::InitCopyEntity(CCopyEntity* pCopyEnt)
 	int i, num_particles = m_MaxNumParticlesPerSet;
 	for(i=0; i<num_particles; i++)
 	{
-		rParticleSet.pavPosition[i] = pCopyEnt->Position();
+		rParticleSet.pavPosition[i] = pCopyEnt->GetWorldPosition();
 		fRandX = ( 0.5f - RangedRand(0.0f, 1.0f) ) * fRandVelocity_XZ;
 		fRandZ = ( 0.5f - RangedRand(0.0f, 1.0f) ) * fRandVelocity_XZ;
 		fRandY = ( 0.5f - RangedRand(0.0f, 1.0f) ) * fRandVelocity_Y;
@@ -411,7 +411,8 @@ void CBE_ParticleSet::UpdateVertexBuffer(CCopyEntity* pCopyEnt)
 		break;
 	case TYPE_RECT_ARRAY_AND_INDICES:
 	{
-		pParticleVertex = m_avBillboardRect_S;
+//		pParticleVertex = m_avBillboardRect_S;
+		pParticleVertex = &(m_avBillboardRect_S[0]);
 		// Limit( num_particles, 0, (int)(numof(m_avBillboardRect_S) / 4) );
 		if( numof(m_avBillboardRect_S) / 4 < num_particles )
 			int too_many_particles = 1;

@@ -48,7 +48,7 @@ void CBE_StaticGeometry::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	m_vecpStaticGeometry.push_back( (CStaticGeometryBase *)(pCopyEnt->pUserData) );
 
-	Vector3 vCenterPos = pCopyEnt->Position();
+	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
 
 	// static geometry has load been loaded yet.
 	// - called from CStaticGeometry::LoadFromFile()

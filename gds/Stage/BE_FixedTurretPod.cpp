@@ -62,7 +62,7 @@ void CBE_FixedTurretPod::InitCopyEntity(CCopyEntity* pCopyEnt)
 	// create a turret gun that is mounted on the pod
 	CCopyEntityDesc turret;
 	turret.pBaseEntityHandle = &m_TurretGun;
-	turret.SetWorldPosition( pCopyEnt->Position() + m_vTurretGunLocalOffset );
+	turret.SetWorldPosition( pCopyEnt->GetWorldPosition() + m_vTurretGunLocalOffset );
 	turret.SetWorldOrient( pCopyEnt->GetWorldPose().matOrient );
 	turret.vVelocity  = Vector3(0,0,0);
 	turret.pParent = pCopyEnt;
