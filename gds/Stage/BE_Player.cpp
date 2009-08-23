@@ -20,20 +20,20 @@
 
 // added for laser dot casting test
 #include "Graphics/D3DXMeshObject.hpp"
-
 #include "Support/VectorRand.hpp"
 #include "Support/Timer.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/Profile.hpp"
-
 #include "GUI/GM_DialogManager.hpp"
 #include "GUI/GM_ControlRendererManager.hpp"
 #include "GUI/InputHandler_Dialog.hpp"
 
-
 #include "JigLib/JL_PhysicsActor.hpp"
+
+using namespace std;
+using namespace boost;
 
 
 //#define APPLY_PHYSICS_TO_PLAYER_SHIP
@@ -295,7 +295,7 @@ void CBE_Player::ToggleHeadLight()
 	else
 	{	// turn off the light
 		SGameMessage msg;
-		msg.iEffect = GM_TERMINATE;
+		msg.effect = GM_TERMINATE;
 		SendGameMessageTo( msg, m_pHeadLightEntity );
 		m_pHeadLightEntity = NULL;
 		m_bHeadLightOn = false;
@@ -303,11 +303,13 @@ void CBE_Player::ToggleHeadLight()
 }
 
 
-void CBE_Player::OnDestroyingEnemyEntity( const SGameMessage& msg )
+void CBE_Player::OnDestroyingEnemyEntity( SGameMessage& msg )
 {
-	if( msg.pSenderEntity )
+	shared_ptr<CCopyEntity> pSenderEntity = msg.sender.Get();
+
+	if( pSenderEntity )
 	{
-		CCopyEntity& destroyed_entity = *msg.pSenderEntity;
+		CCopyEntity& destroyed_entity = *(pSenderEntity.get());
 		KillReport rep;
 		rep.base_name    = destroyed_entity.pBaseEntity->GetName();
 		rep.entity_name  = destroyed_entity.GetName();
@@ -326,7 +328,7 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 	SGameMessage msg;
 	int iVariation;
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_DAMAGE:
 		// play a damage sound according to the type of damage
@@ -372,18 +374,18 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 			rfLife = 120;
 
 		// notify the item copy-entity that player has consumed it
-		msg.iEffect = GM_EFFECTACCEPTED;
-		msg.pSenderEntity = pCopyEnt_Self;
-		SendGameMessageTo( msg, rGameMessage.pSenderEntity );
+		msg.effect = GM_EFFECTACCEPTED;
+		msg.sender = pCopyEnt_Self->Self();
+		SendGameMessageTo( msg, rGameMessage.sender );
 		break;
 
 	case GM_AMMOSUPPLY:
 //		if( SinglePlayerInfo().GetWeaponSystem()->SupplyAmmunition( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
 		if( SinglePlayerInfo().SupplyItem( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
 		{	// the item was accepted by the player
-			msg.iEffect = GM_EFFECTACCEPTED;
-			msg.pSenderEntity = pCopyEnt_Self;
-			SendGameMessageTo( msg, rGameMessage.pSenderEntity );
+			msg.effect = GM_EFFECTACCEPTED;
+			msg.sender = pCopyEnt_Self->Self();
+			SendGameMessageTo( msg, rGameMessage.sender );
 		}
 		break;
 
@@ -393,8 +395,8 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 
 /*	case GM_DOORKEYITEM:
 		strcpy( m_acDoorKeyCode[m_iNumDoorKeyCodes++], rGameMessage.pcStrParam );
-		msg.iEffect = GM_EFFECTACCEPTED;
-		msg.pSenderEntity = pCopyEnt_Self;
+		msg.effect = GM_EFFECTACCEPTED;
+		msg.sender = pCopyEnt_Self->Self();
 		SendGameMessageTo( msg, rGameMessage.pSenderEntity );
 		break;
 
@@ -404,9 +406,9 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 		{
 			if( strcmp(m_acDoorKeyCode[i], rGameMessage.pcStrParam) == 0 )
 			{
-				msg.iEffect = GM_KEYCODE_INPUT;
+				msg.effect = GM_KEYCODE_INPUT;
 				msg.pcStrParam = m_acDoorKeyCode[i];
-				msg.pSenderEntity = pCopyEnt_Self;
+				msg.sender = pCopyEnt_Self->Self();
 				SendGameMessageTo( msg, rGameMessage.pSenderEntity );
 			}
 		}

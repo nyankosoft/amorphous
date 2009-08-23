@@ -312,7 +312,7 @@ void CGI_Weapon::Fire()
 
 	// recoil effect
 	SGameMessage msg;
-	msg.iEffect = GM_IMPACT;
+	msg.effect = GM_IMPACT;
 	msg.vParam = - vFireDirection * 5.0f;
 
 /*	Vector3 vImpact = m_vLocalRecoilForce;

@@ -426,7 +426,7 @@ void CBE_PlayerShip::ToggleHeadLight()
 	else
 	{	// turn off the light
 		SGameMessage msg;
-		msg.iEffect = GM_TERMINATE;
+		msg.effect = GM_TERMINATE;
 		SendGameMessageTo( msg, m_pHeadLightEntity );
 		m_pHeadLightEntity = NULL;
 		m_bHeadLightOn = false;
@@ -441,7 +441,7 @@ void CBE_PlayerShip::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 	SGameMessage msg;
 	int iVariation;
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_DAMAGE:
 		// play a damage sound according to the type of damage
@@ -487,24 +487,24 @@ void CBE_PlayerShip::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 			rfLife = 120;
 
 		// notify the item copy-entity that player has consumed it
-		msg.iEffect = GM_EFFECTACCEPTED;
-		msg.pSenderEntity = pCopyEnt_Self;
+		msg.effect = GM_EFFECTACCEPTED;
+		msg.sender = pCopyEnt_Self->Self();
 		SendGameMessageTo( msg, rGameMessage.pSenderEntity );
 		break;
 
 	case GM_AMMOSUPPLY:
 		if( WEAPONSYSTEM.SupplyAmmunition( rGameMessage.pcStrParam, rGameMessage.fParam1 ) )
 		{	// the item was accepted by the player
-			msg.iEffect = GM_EFFECTACCEPTED;
-			msg.pSenderEntity = pCopyEnt_Self;
+			msg.effect = GM_EFFECTACCEPTED;
+			msg.sender = pCopyEnt_Self->Self();
 			SendGameMessageTo( msg, rGameMessage.pSenderEntity );
 		}
 		break;
 
 	case GM_DOORKEYITEM:
 		strcpy( m_acDoorKeyCode[m_iNumDoorKeyCodes++], rGameMessage.pcStrParam );
-		msg.iEffect = GM_EFFECTACCEPTED;
-		msg.pSenderEntity = pCopyEnt_Self;
+		msg.effect = GM_EFFECTACCEPTED;
+		msg.sender = pCopyEnt_Self->Self();
 		SendGameMessageTo( msg, rGameMessage.pSenderEntity );
 		break;
 
@@ -514,9 +514,9 @@ void CBE_PlayerShip::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 		{
 			if( strcmp(m_acDoorKeyCode[i], rGameMessage.pcStrParam) == 0 )
 			{
-				msg.iEffect = GM_KEYCODE_INPUT;
+				msg.effect = GM_KEYCODE_INPUT;
 				msg.pcStrParam = m_acDoorKeyCode[i];
-				msg.pSenderEntity = pCopyEnt_Self;
+				msg.sender = pCopyEnt_Self->Self();
 				SendGameMessageTo( msg, rGameMessage.pSenderEntity );
 			}
 		}

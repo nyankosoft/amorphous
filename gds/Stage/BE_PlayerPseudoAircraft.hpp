@@ -170,7 +170,7 @@ private:
 
 	CInputHandler_PlayerBase *CreatePlayerInputHandler();
 
-	void OnDestroyingEnemyEntity( const SGameMessage& msg );
+	void OnDestroyingEnemyEntity( SGameMessage& msg );
 
 	//	void EnableNightVision( bool enable );
 

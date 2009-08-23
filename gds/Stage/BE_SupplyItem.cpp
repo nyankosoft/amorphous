@@ -64,10 +64,10 @@ void CBE_SupplyItem::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Oth
 	if( pCopyEnt_Other )
 	{
 		SGameMessage msg;
-		msg.pSenderEntity = pCopyEnt_Self;
+		msg.sender = pCopyEnt_Self->Self();
 
 		// set the kind of item as basic information
-		msg.iEffect = this->m_iEffect;
+		msg.effect = this->m_iEffect;
 
 		// set the name of the item as additional information so that 'pCopyEnt_Other' can specify what this item is
 		msg.pcStrParam = const_cast<char *> (this->m_strItemName.c_str());
@@ -83,7 +83,7 @@ void CBE_SupplyItem::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Oth
 
 void CBE_SupplyItem::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_EFFECTACCEPTED:
 		SoundManager().PlayAt( m_Sound, pCopyEnt_Self->GetWorldPosition() );

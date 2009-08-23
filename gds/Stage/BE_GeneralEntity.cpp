@@ -195,7 +195,7 @@ void CBE_GeneralEntity::Draw(CCopyEntity* pCopyEnt)
 
 void CBE_GeneralEntity::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_DAMAGE:
 		if( m_EntityFlag & BETYPE_INDESTRUCTIBLE )

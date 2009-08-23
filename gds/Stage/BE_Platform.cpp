@@ -9,6 +9,8 @@
 #include "3DMath/Vector3.hpp"
 #include "Physics/Actor.hpp"
 
+using namespace std;
+using namespace boost;
 using namespace physics;
 
 
@@ -146,8 +148,8 @@ void CBE_Platform::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other
 			return;
 
 		SGameMessage msg;
-		msg.iEffect = GM_DOOR_TOUCHED;
-		msg.pSenderEntity = pCopyEnt_Self;
+		msg.effect = GM_DOOR_TOUCHED;
+		msg.sender = pCopyEnt_Self->Self();
 		msg.pEntity0      = pCopyEnt_Other;
 		// door controller may need access to the entity that touched the door
 		// bacause it may a send key code request to the entity if it is locked
@@ -163,7 +165,7 @@ void CBE_Platform::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCo
 	float& rfTarget = pCopyEnt_Self->f5;
 	float& rfRestTime = pCopyEnt_Self->f4;
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_ENTITY_DETECTED_BY_SENSOR:
 		if( rState == CBE_Platform::STATE_REST &&
@@ -176,7 +178,12 @@ void CBE_Platform::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCo
 
 			// decide the destination
 			// a destination which is the closest to the sensor will be selected
-			Vector3 vSensorPos = rGameMessage.pSenderEntity->GetWorldPosition();
+
+			shared_ptr<CCopyEntity> pSenderEntity = rGameMessage.sender.Get();
+			if( !pSenderEntity )
+				return;
+
+			Vector3 vSensorPos = pSenderEntity->GetWorldPosition();
 			float dist1 = Vec3LengthSq( pCopyEnt_Self->v1 - vSensorPos );
 			float dist2 = Vec3LengthSq( pCopyEnt_Self->v2 - vSensorPos );
 			if( dist1 < dist2 )

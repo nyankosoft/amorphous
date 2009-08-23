@@ -5,11 +5,9 @@
 ///#include "Stage.hpp"
 ///#include "../Stage/PlayerInfo.hpp"
 ///#include "../Stage/GameMessage.hpp"
-
+#include "BE_AreaSensor.hpp"
 ///#include "../GameTextSystem/GameTextSet.hpp"
 ///#include "../Script/GameEventTypes.hpp"
-
-#include "BE_AreaSensor.hpp"
 
 
 CBE_AreaSensor::CBE_AreaSensor()

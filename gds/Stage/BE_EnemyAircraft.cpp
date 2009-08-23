@@ -414,7 +414,7 @@ void CBE_EnemyAircraft::MessageProcedure( SGameMessage& rGameMessage, CCopyEntit
 {
 	CBEC_EnemyAircraftExtraData& ex = GetExtraData(pCopyEnt_Self);
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_SET_MOTION_PATH:
 		{

@@ -133,7 +133,7 @@ protected:
 
 	virtual CInputHandler_PlayerBase *CreatePlayerInputHandler() { return NULL; }
 
-	virtual void OnDestroyingEnemyEntity( const SGameMessage& msg );
+	virtual void OnDestroyingEnemyEntity( SGameMessage& msg );
 
 public:
 

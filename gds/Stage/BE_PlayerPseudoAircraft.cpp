@@ -828,7 +828,7 @@ void CBE_PlayerPseudoAircraft::Act( CCopyEntity* pCopyEnt )
 }
 
 
-void CBE_PlayerPseudoAircraft::OnDestroyingEnemyEntity( const SGameMessage& msg )
+void CBE_PlayerPseudoAircraft::OnDestroyingEnemyEntity( SGameMessage& msg )
 {
 	CBE_Player::OnDestroyingEnemyEntity( msg );
 
@@ -851,7 +851,7 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 	SGameMessage msg;
 	int iVariation;
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_DAMAGE:
 		// play a damage sound according to the type of damage
@@ -928,9 +928,9 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 			rfLife = 120;
 
 		// notify the item copy-entity that player has consumed it
-		msg.iEffect = GM_EFFECTACCEPTED;
-		msg.pSenderEntity = pCopyEnt_Self;
-		SendGameMessageTo( msg, rGameMessage.pSenderEntity );
+		msg.effect = GM_EFFECTACCEPTED;
+		msg.sender = pCopyEnt_Self->Self();
+		SendGameMessageTo( msg, rGameMessage.sender );
 		break;
 
 	case GM_MISSILE_TARGET:
@@ -941,8 +941,8 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCop
 		if( SinglePlayerInfo().SupplyItem( rGameMessage.pcStrParam, (int)(rGameMessage.fParam1) ) )
 		{
 			// the item was accepted by the player
-			msg.iEffect = GM_EFFECTACCEPTED;
-			msg.pSenderEntity = pCopyEnt_Self;
+			msg.effect = GM_EFFECTACCEPTED;
+			msg.sender = pCopyEnt_Self->Self();
 			SendGameMessageTo( msg, rGameMessage.pSenderEntity );
 		}
 		break;*/

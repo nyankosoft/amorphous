@@ -104,8 +104,8 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 
 	// check if the candidates are really taking the blast
 	SGameMessage msg;
-	msg.pSenderEntity = pCopyEnt;	// sender is the blast;
-	msg.iEffect = GM_DAMAGE;
+	msg.sender = pCopyEnt->Self();	// sender is the blast;
+	msg.effect = GM_DAMAGE;
 	msg.s1 = DMG_BLAST;
 	msg.fParam1 = m_fBaseDamage * fBlastFrameTime;	// amount of damage
 	size_t iNumOvelappingEntities = tr.GetNumTouchEntities();

@@ -71,7 +71,7 @@ void CScriptedCameraEntity::Update( float dt )
 //void CBE_ScriptedCamera::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 void CScriptedCameraEntity::HandleMessage( SGameMessage& msg )
 {
-	switch( msg.iEffect )
+	switch( msg.effect )
 	{
 	case GM_SET_MOTION_PATH:
 	  {

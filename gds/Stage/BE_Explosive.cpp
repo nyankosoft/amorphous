@@ -286,7 +286,7 @@ void CBE_Explosive::GrenadeMove(CCopyEntity* pCopyEnt)
 
 void CBE_Explosive::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_DAMAGE:
 		float& rfLife = pCopyEnt_Self->fLife;

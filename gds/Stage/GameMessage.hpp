@@ -2,12 +2,12 @@
 #define  __GAMEMESSAGE_H__
 
 #include "3DMath/Vector3.hpp"
-
 #include "CopyEntity.hpp"
 
 
 enum eGameMessageEffect
 {
+	GM_INVALID = -1,
 	GM_DAMAGE = 0,
 	GM_DESTROYED,
 	GM_IMPACT,
@@ -39,34 +39,55 @@ enum eDamageType
 };
 
 
-class CCopyEntity;
-
 struct SGameMessage
 {
-	int iEffect;
+	int effect;
+	string effect_name;
 	short s1;
 	float fParam1;
 	float fParam2;
 	Vector3 vParam;
 	char *pcStrParam;
 	CCopyEntity* pEntity0;
-	CCopyEntity* pSenderEntity;
+	CEntityHandle<> sender;
+
 	void *pUserData;
 
-	inline SGameMessage() {}
-	inline SGameMessage( int effect ) : iEffect(effect) {}
+	inline SGameMessage( int _effect = GM_INVALID )
+		:
+	effect(_effect),
+	s1(0),
+	fParam1(0),
+	fParam2(0),
+	vParam(Vector3(0,0,0))
+	{}
+
 	inline ~SGameMessage() {}
 };
 
 
 //extern void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt);
 
-inline void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pEntity )
+/// \param target [in] recipient of the message
+inline void SendGameMessageTo(SGameMessage& rGameMessage, CEntityHandle<> target )
 {
-	if( !IsValidEntity(pEntity) )
+	boost::shared_ptr<CCopyEntity> pEntity = target.Get();
+
+	if( pEntity )
+		pEntity->GetBaseEntity()->MessageProcedure( rGameMessage, pEntity.get() );
+}
+
+
+/// This function is deprecated.
+/// \param pTarget [in] recipient of the message
+inline void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pTarget )
+{
+	if( !IsValidEntity(pTarget) )
 		return;
 
-	pEntity->GetBaseEntity()->MessageProcedure( rGameMessage, pEntity );
+	CEntityHandle<> target( pTarget->Self() );
+
+	SendGameMessageTo( rGameMessage, target );
 }
 
 

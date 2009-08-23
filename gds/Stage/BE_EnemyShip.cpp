@@ -203,7 +203,7 @@ void CBE_EnemyShip::MessageProcedure( SGameMessage& rGameMessage, CCopyEntity* p
 {
 	CBEC_EnemyShipExtraData& ex = GetExtraData(pCopyEnt_Self);
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_SET_MOTION_PATH:
 		{

@@ -202,8 +202,8 @@ void CBE_Door::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other)
 			return;
 
 		SGameMessage msg;
-		msg.iEffect = GM_DOOR_TOUCHED;
-		msg.pSenderEntity = pCopyEnt_Self;
+		msg.effect = GM_DOOR_TOUCHED;
+		msg.sender = pCopyEnt_Self->Self();
 		msg.pEntity0      = pCopyEnt_Other;
 		// door controller may need access to the entity that touched the door
 		// bacause it may a send key code request to the entity if it is locked
@@ -217,7 +217,7 @@ void CBE_Door::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEn
 {
 	short& rsDoorState = pCopyEnt_Self->s1;
 
-/*	switch( rGameMessage.iEffect )
+/*	switch( rGameMessage.effect )
 	{
 	case GM_KEYCODE_INPUT:
 		if( rsDoorState == DOOR_OPENING )

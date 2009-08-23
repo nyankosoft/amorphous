@@ -170,7 +170,7 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 
 void CBE_CameraController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_SET_MOTION_PATH:
 		{

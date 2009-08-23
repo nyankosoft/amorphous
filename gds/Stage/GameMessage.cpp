@@ -1,4 +1,3 @@
-
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 

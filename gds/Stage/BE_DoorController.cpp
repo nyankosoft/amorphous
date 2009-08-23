@@ -99,7 +99,7 @@ void CBE_DoorController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 	int i, iNumChildren = pCopyEnt_Self->GetNumChildren();
 	CCopyEntity *pDoor;
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_DOOR_TOUCHED:
 
@@ -119,10 +119,10 @@ void CBE_DoorController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 		else
 		{	// the door is locked - the entity currently tring to open this door has to input valid key code
 			SGameMessage msg;
-			msg.iEffect = GM_KEYCODE_REQUEST;
+			msg.effect = GM_KEYCODE_REQUEST;
 			msg.pcStrParam = &m_strKeyCode.at(0);
 //			msg.pcStrParam = m_strKeyCode.begin();
-			msg.pSenderEntity = pCopyEnt_Self;
+			msg.sender = pCopyEnt_Self->Self();
 			SendGameMessageTo( msg, rGameMessage.pEntity0 );
 		}
 		break;

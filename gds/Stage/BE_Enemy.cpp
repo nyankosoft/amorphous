@@ -22,6 +22,8 @@
 
 #include "Physics/Actor.hpp"
 
+using namespace std;
+using namespace boost;
 using namespace physics;
 
 
@@ -669,8 +671,9 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 
 	float& rfLife = pCopyEnt_Self->fLife;
 	short& rsCurrentState = pCopyEnt_Self->s1;
+	shared_ptr<CCopyEntity> pSenderEntity;
 
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_DAMAGE:
 	{
@@ -679,7 +682,9 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 
 		g_Log.Print( " An enemy entity (id: %d) took damage - life: %f -> %f", pCopyEnt_Self->GetID(), prev_life, rfLife );
 
-		ex->vLastHitFromThisDirection = rGameMessage.pSenderEntity->GetDirection();
+		pSenderEntity = rGameMessage.sender.Get();
+		if( pSenderEntity )
+			ex->vLastHitFromThisDirection = pSenderEntity->GetDirection();
 
 		if( rsCurrentState == CEnemyState::STATE_SEARCH )
 		{
@@ -693,7 +698,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 			OnDestroyed(pCopyEnt_Self);
 
 			SGameMessage msg( GM_DESTROYED );
-			msg.pSenderEntity = pCopyEnt_Self;
+			msg.sender = pCopyEnt_Self->Self();
 			msg.fParam1 = 100.0f;	// score ?
 			SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerEntity() );
 /*

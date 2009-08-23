@@ -466,10 +466,10 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 		// send message to the entity hit by the bullet
 		SGameMessage msg;
 
-		msg.iEffect = GM_DAMAGE;
+		msg.effect = GM_DAMAGE;
 		msg.s1 = DMG_BULLET;
-//		msg.pSenderEntity = pCopyEnt_Self;
-		msg.pSenderEntity = pCopyEnt;
+//		msg.sender = pCopyEnt_Self->Self();
+		msg.sender = pCopyEnt->Self();
 
 		// amount of damage given by this bullet
 		//msg.fParam1 = Vec3LengthSq( pCopyEnt_Self->vVelocity ) * this->m_fBulletPower;

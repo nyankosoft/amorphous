@@ -379,7 +379,7 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 
 void CBE_PointLight::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_TERMINATE:
 		DeleteDynamicLight( pCopyEnt_Self );

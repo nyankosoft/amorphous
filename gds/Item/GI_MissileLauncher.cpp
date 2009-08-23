@@ -532,7 +532,7 @@ inline void CGI_MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntit
 	 && IsValidEntity(m_vecCurrentTarget[m_FireTargetIndex].GetRawPtr()) )
 	{
 		SGameMessage msg;
-		msg.iEffect = GM_SET_TARGET;
+		msg.effect = GM_SET_TARGET;
 //		msg.pUserData = m_vecCurrentTarget[i];
         msg.pUserData = m_vecCurrentTarget[m_FireTargetIndex].GetRawPtr();
 
@@ -656,7 +656,7 @@ void CGI_MissileLauncher::Fire()
 
 	// recoil effect
 	SGameMessage msg;
-	msg.iEffect = GM_IMPACT;
+	msg.effect = GM_IMPACT;
 	msg.vParam = - vFireDirection * 0.0f/*m_RecoilForce*/;
 
 /*	Vector3 vImpact = m_vLocalRecoilForce;

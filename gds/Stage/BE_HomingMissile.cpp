@@ -81,7 +81,7 @@ void CBE_HomingMissile::Init()
 void OnTargetLocked( CCopyEntity* pCopyEnt, CCopyEntity* pTarget )
 {
 	SGameMessage msg( GM_MISSILE_TARGET );
-	msg.pSenderEntity = pCopyEnt;
+	msg.sender = pCopyEnt->Self();
 
 	SendGameMessageTo( msg, pTarget );
 }
@@ -411,7 +411,7 @@ void CBE_HomingMissile::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 
 void CBE_HomingMissile::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
-	switch( rGameMessage.iEffect )
+	switch( rGameMessage.effect )
 	{
 	case GM_SET_TARGET:
 		{
