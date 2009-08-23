@@ -220,7 +220,7 @@ void CGI_MissileLauncher::UpdateTargets()
 	{
 		// lock on the focused entity only if it is in the effective zone of the sensor
 		// and in the range of the missile
-		Vector3 vToTarget = pFocusedEntity->Position() - m_SensorCamera.GetPosition();
+		Vector3 vToTarget = pFocusedEntity->GetWorldPosition() - m_SensorCamera.GetPosition();
 		float dist_to_target_sq = Vec3LengthSq(vToTarget);
 		float dp = Vec3Dot( vToTarget / sqrtf(dist_to_target_sq), m_SensorCamera.GetFrontDirection() );
 
@@ -271,7 +271,7 @@ void CGI_MissileLauncher::UpdateTargets()
 			continue;	// don't target an entity(missile) fired from this missile launcher
 
 		// check if the target is in the range of the missile
-		Vector3 vToTarget = pTarget->Position() - m_SensorCamera.GetPosition();
+		Vector3 vToTarget = pTarget->GetWorldPosition() - m_SensorCamera.GetPosition();
 		float dist_to_target_sq = Vec3LengthSq(vToTarget);
 		if( range_sq < dist_to_target_sq )
 			continue;

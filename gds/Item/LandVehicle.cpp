@@ -75,14 +75,14 @@ void CLandVehicle::Update( float dt )
 				= tr.vEnd
 				+ Vector3(0,1,0) * height_from_ground_to_center / Vec3Dot( vPlaneNormal, Vector3(0,1,0) );
 
-			pEntity->Position() = vEntityPos;
+			pEntity->SetWorldPosition( vEntityPos );
 
 			Matrix33 matEntityOrient = pEntity->GetWorldPose().matOrient;
 			float angle = Vec3GetAngleBetween( vPlaneNormal, matEntityOrient.GetColumn(1) );
 			if( 0.001f < fabs(angle) )
 			{
 				Vector3 vRotationAxis = Vec3Cross( matEntityOrient.GetColumn(1), vPlaneNormal );
-				pEntity->SetOrientation( Matrix33RotationAxis( angle, vRotationAxis ) * matEntityOrient );
+				pEntity->SetWorldOrientation( Matrix33RotationAxis( angle, vRotationAxis ) * matEntityOrient );
 			}
 		}
 
@@ -228,7 +228,7 @@ void CArmedVehicle::UpdateTarget()
 	if( pTargetEntity )
 	{
 		float dist_to_target
-			= Vec3Length( pTargetEntity->Position() - pMyEntity->Position() );
+			= Vec3Length( pTargetEntity->GetWorldPosition() - pMyEntity->GetWorldPosition() );
 
 		if( dist_to_target < max_range )
 		{
@@ -249,7 +249,7 @@ void CArmedVehicle::UpdateTarget()
 			continue;
 
 		float dist_to_target
-			= Vec3Length( pTargetEntity->Position() - pMyEntity->Position() );
+			= Vec3Length( pTargetEntity->GetWorldPosition() - pMyEntity->GetWorldPosition() );
 
 		if( dist_to_target < max_range )
 		{

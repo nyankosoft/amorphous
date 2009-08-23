@@ -33,7 +33,7 @@ void CGI_GravityGun::Update( float dt )
 	if( pTarget )
 	{
 		// calc the translation from the center of the target to the muzzle position
-		Vector3 vDist = vOwnerMuzzlePos - pTarget->Position();
+		Vector3 vDist = vOwnerMuzzlePos - pTarget->GetWorldPosition();
 
 		float fDistSq = Vec3LengthSq(vDist);
 		if( m_fMaxRange * m_fMaxRange < fDistSq )
@@ -47,13 +47,14 @@ void CGI_GravityGun::Update( float dt )
 		STrace tr;
 		tr.bvType = BVTYPE_DOT;
 		tr.pvStart = &vOwnerMuzzlePos;
-		tr.pvGoal = &pTarget->Position();
+		Vector3 vGoal = pTarget->GetWorldPosition();
+		tr.pvGoal = &vGoal;
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 /*
 		CTrace tr;
 		tr.BVType    = BVTYPE_DOT;
 		tr.vStart    = &vOwnerMuzzlePos;
-		tr.vGoal     = &pTarget->Position();
+		tr.vGoal     = &pTarget->GetWorldPosition();
 		tr.TypeFlags = CTrace::FLAG_IGNORE_NOCLIP_ENTITIES;//TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 */
 		// check trace
@@ -86,7 +87,7 @@ void CGI_GravityGun::Update( float dt )
 
 			Vector3 vForce;
 //			vForce = m_fPosGain * vDist - m_fSpeedGain * vRVel;
-//			m_pTarget->ApplyWorldImpulse( vForce, m_pTarget->Position());
+//			m_pTarget->ApplyWorldImpulse( vForce, m_pTarget->GetWorldPosition());
 
 
 			if( 6.0f < fDist )
@@ -209,7 +210,7 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 			if( pTarget )
 			{
 				physics::CActor *pPhysicsActor = pTarget->GetPrimaryPhysicsActor();
-				Vector3 vDist = vOwnerMuzzlePos - pTarget->Position();
+				Vector3 vDist = vOwnerMuzzlePos - pTarget->GetWorldPosition();
 
 				float fDistSq = Vec3LengthSq(vDist);
 				if( fDistSq < m_fGraspRange * m_fGraspRange )
@@ -217,7 +218,7 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 					Vector3 vImpulse = m_MuzzleEndLocalPose.matOrient.GetColumn(2) * m_fPower;
 
 					// shoot object
-//					pTarget->ApplyWorldImpulse( vImpulse, m_pTarget->Position() );
+//					pTarget->ApplyWorldImpulse( vImpulse, m_pTarget->GetWorldPosition() );
 					pPhysicsActor->SetLinearVelocity( vImpulse );
 
 					// release object

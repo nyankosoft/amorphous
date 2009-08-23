@@ -184,7 +184,7 @@ void CGI_Binocular::Update( float dt )
 
 	if( pStage.get() )
 	{
-		CScreenEffectManager* pEffectManager = pStage->GetScreenEffectManager();
+		shared_ptr<CScreenEffectManager> pEffectManager = pStage->GetScreenEffectManager();
 		pEffectManager->SetBlurEffect( m_fFocusDelay );
 	}
 

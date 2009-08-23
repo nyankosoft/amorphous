@@ -175,12 +175,12 @@ void CRadar::UpdateTargetInfo()
 				tgt_type |= HUD_TargetInfo::LOCKED_ON;
 			}
 */
-			m_RadarInfo.m_vecTargetInfo.push_back( HUD_TargetInfo( pEntity->Position(), "", tgt_type ) );
+			m_RadarInfo.m_vecTargetInfo.push_back( HUD_TargetInfo( pEntity->GetWorldPosition(), "", tgt_type ) );
 			m_RadarInfo.m_vecTargetInfo.back().direction = pEntity->GetDirection();
 			m_RadarInfo.m_vecTargetInfo.back().radius    = pEntity->fRadius * 1.5f;
 			m_RadarInfo.m_vecTargetInfo.back().entity_id = pEntity->GetID();
 
-			Vector3 vPlayerToTargetDir = Vec3GetNormalized( pEntity->Position() - radar_world_pose.vPosition );
+			Vector3 vPlayerToTargetDir = Vec3GetNormalized( pEntity->GetWorldPosition() - radar_world_pose.vPosition );
 		}
 	}
 }
