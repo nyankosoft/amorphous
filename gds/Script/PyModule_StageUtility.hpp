@@ -51,6 +51,17 @@ inline void RegisterStageForScript( boost::shared_ptr<CStage> pStage )
 }
 
 
+inline void UnregisterStageForScript()
+{
+	thread_id_to_stage_map::iterator itr = ThreadIDToStageMap().find( boost::this_thread::get_id() );
+
+	if( itr != ThreadIDToStageMap().end() )
+		ThreadIDToStageMap().erase( itr );
+	else
+		LOG_PRINT_WARNING( "The requested stage was not found in the list" );
+}
+
+
 
 inline boost::shared_ptr<CStageLightUtility> CreateStageLightUtility()
 {

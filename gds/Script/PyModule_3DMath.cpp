@@ -9,6 +9,12 @@
 #include <iostream>
 
 
+static Matrix33 Matrix33IdentityForBoostPython()
+{
+	return Matrix33Identity();
+}
+
+
 BOOST_PYTHON_MODULE(math3d)
 {
 	using namespace boost;
@@ -57,6 +63,7 @@ BOOST_PYTHON_MODULE(math3d)
 		.def("SetRotationZ",         &Matrix33::SetRotationZ )
 	;
 
+	def( "Matrix33Identity",  Matrix33IdentityForBoostPython );
 	def( "Matrix33RotationX", Matrix33RotationX );
 	def( "Matrix33RotationY", Matrix33RotationY );
 	def( "Matrix33RotationZ", Matrix33RotationZ );

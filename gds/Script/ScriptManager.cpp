@@ -234,7 +234,26 @@ bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest
 		PyErr_Clear();
 
 		// run  the script and register the callback function(s)
-		python::object result = python::exec( &(buffer.get_buffer()[0]), global, global );
+//		python::object result = python::exec( &(buffer.get_buffer()[0]), global, global );
+
+		try
+		{
+			python::object result = python::exec( &(buffer.get_buffer()[0]), global, global );
+		}
+		catch( std::exception& e )
+		{
+			g_Log.Print( WL_WARNING, "std::exception: %s", e.what() );
+		}
+		catch( boost::exception& e )
+		{
+			// handle exception
+			LOG_PRINT_ERROR( "boost::exception" );
+		}
+		catch( boost::python::error_already_set& e )
+		{
+			// handle exception
+			LOG_PRINT_ERROR( "python::exec() threw an exception 'error_already_set'. Error: " + GetExtraErrorInfo() );
+		}
 
 		res = true;//result
 

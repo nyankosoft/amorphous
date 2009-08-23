@@ -10,6 +10,10 @@ int (CGraphicsElementManager::*LoadTextureWithoutID)( const std::string& ) = &CG
 bool (CGraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
 int (CGraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
 
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode );
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode );
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode );
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode );
 
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(gem_member_overloads, CreateText, 1, 3)
 
@@ -29,6 +33,7 @@ BOOST_PYTHON_MODULE(gfx)
 {
 	using namespace boost;
 	using namespace boost::python;
+	namespace py = boost::python;
 
 	class_<SFloatRGBAColor>("Color")
 		.def(init<float,float,float,float>())
@@ -143,6 +148,29 @@ BOOST_PYTHON_MODULE(gfx)
 	;
 
 	def( "GetGraphicsElementManager", GetGraphicsElementManager );
+
+
+//	class_<CGraphicsEffectHandle>("GraphicsEffectHandle")
+//		.def( ""
+
+//	def( "GetGraphicsEffectManager", GetGraphicsEffectManager );
+
+	class_< CAnimatedGraphicsManager, boost::shared_ptr<CAnimatedGraphicsManager> >("GraphicsEffectManager")
+		.def( "ChangeAlpha",           &CAnimatedGraphicsManager::ChangeAlpha,           (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_alpha"), py::arg("end_alpha"), py::arg("trans_mode") ) )
+		.def( "ChangeAlphaTo",         &CAnimatedGraphicsManager::ChangeAlphaTo,         (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_alpha"), py::arg("trans_mode") ) )
+		.def( "ChangeColor",           ChangeColor_RGBA,                                 (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_color"), py::arg("end_color"), py::arg("trans_mode") ) )
+		.def( "ChangeColorTo",         ChangeColorTo_RGBA,                               (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_color"), py::arg("trans_mode") ) )
+		.def( "ChangeColor",           ChangeColor_RGB,                                  (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_color"), py::arg("end_color"), py::arg("trans_mode") ) )
+		.def( "ChangeColorTo",         ChangeColorTo_RGB,                                (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_color"), py::arg("trans_mode") ) )
+		.def( "TranslateNonLinear",    &CAnimatedGraphicsManager::TranslateNonLinear,    (  py::arg("target"), py::arg("start_time"), py::arg("dest_pos"), py::arg("init_vel"), py::arg("smooth_time"), py::arg("coord_type"), py::arg("flags") ) )
+		.def( "BlinkAlpha",            &CAnimatedGraphicsManager::BlinkAlpha,            (  py::arg("target"), py::arg("interval"), py::arg("color_index") ) )
+		.def( "ChangeAlphaInSineWave", &CAnimatedGraphicsManager::ChangeAlphaInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("alpha0"), py::arg("alpha1"), py::arg("num_periods") ) )
+		.def( "ChangeColorInSineWave", &CAnimatedGraphicsManager::ChangeColorInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("color0"), py::arg("color1"), py::arg("num_periods") ) )
+/*		.def( "DrawText",              &CAnimatedGraphicsManager::DrawText,              (  boost::shared_ptr<CTextElement> pTargetTextElement, double start_time, int num_chars_per_sec ) )
+		.def( "CancelEffect",          &CAnimatedGraphicsManager::CancelEffect,          (  py::arg("effect_handle") ) )
+*/
+	;
+
 
 /*
 	class_<CLight>("Light")

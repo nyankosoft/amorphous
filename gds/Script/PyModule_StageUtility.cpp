@@ -19,8 +19,8 @@ BOOST_PYTHON_MODULE(stage_util)
 	namespace py = boost::python;
 
 	class_< CStageLightUtility, shared_ptr<CStageLightUtility> >("StageLightUtility")
-		.def( "CreateHSPointLight",        &CStageLightUtility::CreateHSPointLight )
-		.def( "CreateHSDirectionalLight",  &CStageLightUtility::CreateHSDirectionalLight )
+		.def( "CreateHSPointLightEntity",        &CStageLightUtility::CreateHSPointLightEntity,       ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("pos") = Vector3(0,0,0), py::arg("attenu0") = 1.0f, py::arg("attenu1") = 1.0f, py::arg("attenu2") = 1.0f ) )
+		.def( "CreateHSDirectionalLightEntity",  &CStageLightUtility::CreateHSDirectionalLightEntity, ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("dir") = Vector3(0,-1,0) ) )
 //		.def( "CreateTriPointLight",       &CStageLightUtility::CreateTriPointLight ) // NOT IMPLEMENTED
 //		.def( "CreateTriirectionalLight",  &CStageLightUtility::CreateTriirectionalLight ) // NOT IMPLEMENTED
 	;

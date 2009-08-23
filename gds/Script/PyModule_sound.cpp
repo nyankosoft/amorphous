@@ -1,4 +1,4 @@
-#include "PyModule_Sound.hpp"
+#include "PyModule_sound.hpp"
 
 #include <Sound/SoundManager.hpp>
 #include <Support/Log/DefaultLog.hpp>

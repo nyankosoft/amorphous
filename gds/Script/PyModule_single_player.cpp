@@ -8,9 +8,6 @@
 using namespace std;
 using namespace boost;
 
-//#define PlayerBaseEntity	(*SinglePlayerInfo().GetCurrentPlayerBaseEntity())
-//#define PlayerEntity		(*SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity())
-
 
 static CCopyEntity *GetPlayerEntity()
 {
@@ -83,7 +80,6 @@ bool HasItem( const std::string& item_name )
 	shared_ptr<CGameItem> pItem = SinglePlayerInfo().GetItemByName<CGameItem>( item_name.c_str() );
 
 	return ( pItem ? true : false );
-//	return Py_BuildValue( "b", SinglePlayerInfo().HasItem() );
 }
 
 
