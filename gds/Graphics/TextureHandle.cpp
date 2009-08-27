@@ -41,6 +41,15 @@ bool CTextureHandle::Load( const std::string& resource_path )
 }
 
 
+bool CTextureHandle::LoadAsync( const std::string& resource_path )
+{
+	CTextureResourceDesc desc;
+	desc.ResourcePath = resource_path;
+	desc.LoadingMode  = CResourceLoadingMode::ASYNCHRONOUS;
+	return Load( desc );
+}
+
+
 /*
 bool CTextureHandle::LoadAsync( const CTextureResourceDesc& desc )
 {

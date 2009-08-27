@@ -43,7 +43,8 @@ public:
 
 	~CASyncStageLoader();
 
-	/// \return false unable to load stage
+	/// \return false if unable to load stage.
+	/// Creates a thread to load the stage, have the thread start loading the stage, and return.
 	bool LoadStage( const std::string& script_name );
 
 	/// creates an empty stage before loading

@@ -63,6 +63,7 @@ public:
 	{
 		Lock,
 		Unlock,
+		LoadToGraphicsMemoryByRenderThread, ///< not a preferred way of async loading. used by mesh loading
 		NumRequestTypes
 	};
 

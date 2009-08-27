@@ -330,6 +330,16 @@ bool CMeshLoader::AcquireResource()
 /// - Usually loaded from disk
 void CMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
 {
+	// change this to true if async loading is fixed
+	bool preferred_async_loading_method = false;
+
+	if( !preferred_async_loading_method )
+	{
+		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread, pSelf, GetResourceEntry() );
+		AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+		return;
+	}
+
 	// - send a lock request
 	//   - Actually does not lock. Send the lock request to call AcquireResource.
 	//   - Must be processed before the lock requrests of the subresources below.
@@ -418,6 +428,36 @@ void CMeshLoader::SendLockRequestIfAllSubresourcesHaveBeenLoaded()
 		return;
 	}
 }
+
+
+bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
+{
+	if( !m_pArchive )
+		return false;
+
+	// Make the system create an empty mesh instance by settings vertices and indices to zeros 
+	m_MeshDesc.NumVertices = 0;
+	m_MeshDesc.NumIndices = 0;
+
+	bool res = CGraphicsResourceLoader::AcquireResource();
+	if( !res )
+		return false;
+
+	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+	if( !pHolder )
+		return false;
+
+	shared_ptr<CMeshResource> pMeshResource = pHolder->GetMeshResource();
+	if( !pMeshResource )
+		return false;
+
+	shared_ptr<CD3DXMeshObjectBase> pMesh = pMeshResource->GetMesh();
+	if( pMesh )
+		return pMesh->LoadFromArchive( *(m_pArchive.get()), m_MeshDesc.ResourcePath );
+	else
+		return false;
+}
+
 
 
 //===================================================================================

@@ -65,6 +65,9 @@ public:
 	/// Used when the resource is loaded from disk
 	std::string ResourcePath;
 
+	/// Register to the resource loading state holder if it exists for the caller thread
+	bool RegisterToLoadingStateHolder;
+
 public:
 
 	inline CGraphicsResourceDesc();
@@ -308,7 +311,8 @@ inline CGraphicsResourceDesc::CGraphicsResourceDesc()
 :
 m_IsCachedResource(false),
 LoadingMode(CResourceLoadingMode::SYNCHRONOUS),
-LoadingPriority(0)
+LoadingPriority(0),
+RegisterToLoadingStateHolder(true)
 {}
 
 

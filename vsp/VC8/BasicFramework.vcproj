@@ -789,6 +789,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\ResourceLoadingStateHolder.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\ResourceLoadingStateHolder.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\ShaderHandle.cpp"
 					>
 				</File>

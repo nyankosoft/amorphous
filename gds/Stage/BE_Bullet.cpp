@@ -1,4 +1,3 @@
-
 #include "BE_Bullet.hpp"
 
 #include "GameMessage.hpp"
@@ -15,6 +14,10 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 
 #include "Sound/SoundManager.hpp"
+
+
+using namespace std;
+using namespace boost;
 
 
 inline float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }

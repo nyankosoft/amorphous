@@ -405,6 +405,14 @@ bool CMeshResource::Create()
 	CMeshObjectFactory factory;
 	m_pMeshObject = factory.CreateMesh( m_MeshDesc.MeshType );
 
+	if( !m_pMeshObject )
+		return false;
+
+	if( m_MeshDesc.NumVertices == 0 || m_MeshDesc.NumIndices == 0 )
+	{
+		return true;
+	}
+
 	bool mesh_created = m_pMeshObject->CreateMesh(
 		m_MeshDesc.NumVertices,
 		m_MeshDesc.NumIndices,

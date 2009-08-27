@@ -249,6 +249,10 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 				}
 			}
 			break;
+
+		case CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread:
+			req.m_pLoader->LoadToGraphicsMemoryByRenderThread();
+			break;
 		}
 	}
 }

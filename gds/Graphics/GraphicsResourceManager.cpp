@@ -2,6 +2,7 @@
 #include "Graphics/GraphicsResourceCacheManager.hpp"
 #include "Graphics/GraphicsResourceHandle.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
+#include "Graphics/ResourceLoadingStateHolder.hpp"
 #include "Graphics/Direct3D9.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
@@ -12,6 +13,50 @@
 
 using namespace std;
 using namespace boost;
+
+
+// draft
+boost::thread::id sg_RenderThreadID;
+boost::thread::id GetRenderThreadID() { return sg_RenderThreadID; }
+void SetCurrentThreadAsRenderThread() { sg_RenderThreadID = boost::this_thread::get_id(); }
+
+static std::map< boost::thread::id, boost::shared_ptr<CResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
+void CreateResourceLoadingStateHolderForCurrentThread()
+{
+	boost::shared_ptr<CResourceLoadingStateHolder> p( new CResourceLoadingStateHolder );
+	sg_ThreadIDToLoadingStateHolder[boost::this_thread::get_id()] = p;
+}
+
+
+boost::shared_ptr<CResourceLoadingStateHolder> GetResourceLoadingStateHolderForCurrentThread()
+{
+	using namespace std;
+	using namespace boost;
+
+	map<thread::id, shared_ptr<CResourceLoadingStateHolder> >::iterator itr
+		= sg_ThreadIDToLoadingStateHolder.find( this_thread::get_id() );
+
+	if( itr == sg_ThreadIDToLoadingStateHolder.end() )
+		return shared_ptr<CResourceLoadingStateHolder>();
+	else
+		return itr->second;
+
+}
+
+
+CResourceLoadingStateSet::Name GetGraphicsResourceLoadingState()
+{
+	boost::shared_ptr<CResourceLoadingStateHolder> pHolder
+		= GetResourceLoadingStateHolderForCurrentThread();
+
+	if( !pHolder )
+		return CResourceLoadingStateSet::NO_RESOURCE_LOADING_STATE_HOLDER;
+
+	if( pHolder->AreAllResourceLoaded() )
+		return CResourceLoadingStateSet::ALL_LOADED;
+	else
+		return CResourceLoadingStateSet::NOT_READY;
+}
 
 
 //==================================================================================================
@@ -222,6 +267,16 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
 		AsyncResourceLoader().AddResourceLoadRequest( req );
 
+		// register to the loading state holder
+		if( desc.RegisterToLoadingStateHolder )
+		{
+			shared_ptr<CResourceLoadingStateHolder> pHolder
+				= GetResourceLoadingStateHolderForCurrentThread();
+
+			if( pHolder )
+				pHolder->AddFromResourceEntry( pEntry );
+		}
+
 		return pEntry;
 	}
 	else
@@ -232,6 +287,11 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc& desc )
 {
 	LOG_FUNCTION_SCOPE();
+
+	if( boost::this_thread::get_id() != GetRenderThreadID() )
+	{
+		return LoadAsync( desc );
+	}
 
 //	if( desc.ResourcePath.length() == 0 )
 	if( !desc.IsValid() )

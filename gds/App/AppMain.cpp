@@ -16,6 +16,10 @@
 using namespace std;
 
 
+// draft
+extern void SetCurrentThreadAsRenderThread();
+
+
 #define APPBASE_TIMER_RESOLUTION	1
 
 
@@ -109,6 +113,8 @@ string GetExeFilepath()
 
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
+	SetCurrentThreadAsRenderThread();
+
 	// timer resolution for timeGetTime()
 	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
 

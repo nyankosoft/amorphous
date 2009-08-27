@@ -26,6 +26,8 @@ public:
 
 	bool Load( const std::string& resource_path );
 
+	bool LoadAsync( const std::string& resource_path );
+
 	bool Load( const CTextureResourceDesc& desc );
 
 //	virtual bool LoadAsync( const CTextureResourceDesc& desc );

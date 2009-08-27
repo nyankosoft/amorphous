@@ -83,6 +83,8 @@ public:
 
 	/// sub resource loaders of mesh don't have descs
 	virtual const CGraphicsResourceDesc *GetDesc() const { return NULL; }
+
+	virtual bool LoadToGraphicsMemoryByRenderThread() { return false; }
 };
 
 
@@ -180,6 +182,8 @@ public:
 	U32 GetMeshLoaderStateFlags() const { return m_MeshLoaderStateFlags; }
 
 	void SendLockRequestIfAllSubresourcesHaveBeenLoaded();
+
+	bool LoadToGraphicsMemoryByRenderThread();
 
 	vector<U16>& IndexBufferContent() { return m_vecIndexBufferContent; }
 

@@ -53,6 +53,9 @@ protected:
 
 	bool m_bTerminateAsyncLoadThread;
 
+	/// for debugging. Set this to false to Load the stage synchronously
+	bool m_LoadStageAsyncronously;
+
 protected:
 
 	int GetState() const { return m_State; }
@@ -66,9 +69,6 @@ public:
 
 	virtual int FrameMove( float dt );
 	virtual void Render();
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
 	static void SetNextTaskName( const std::string& next_task_name ) { ms_strNextTaskName = next_task_name; }
 

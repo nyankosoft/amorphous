@@ -1,8 +1,15 @@
 #include "StageLoader.hpp"
 #include "Stage.hpp"
 #include "Script/PyModule_StageUtility.hpp"
+#include "Graphics/ResourceLoadingStateHolder.hpp"
 
 using namespace std;
+
+
+// draft 
+extern void CreateResourceLoadingStateHolderForCurrentThread();
+extern CResourceLoadingStateSet::Name GetGraphicsResourceLoadingState();
+
 
 
 CStageSharedPtr CStageLoader::LoadStage( const std::string& script_name )
@@ -89,7 +96,10 @@ void CASyncStageLoader::operator()()
 {
 	CStageLoader loader;
 
-	if( !m_pStage.get() )
+	// catch any resource loading calls
+	CreateResourceLoadingStateHolderForCurrentThread();
+
+	if( !m_pStage )
 	{
 		/// stage instance has not been created
 		/// - create an empty stage
@@ -105,6 +115,11 @@ void CASyncStageLoader::operator()()
 		// failed to load stage
 		m_bFailedToLoadStage = true;
 		return;
+	}
+
+	while( GetGraphicsResourceLoadingState() == CResourceLoadingStateSet::NOT_READY )
+	{
+		Sleep( 10 );
 	}
 
 	m_bIsLoaded = true;

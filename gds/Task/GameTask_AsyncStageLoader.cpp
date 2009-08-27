@@ -24,6 +24,8 @@ m_State(STATE_STAGE_NOT_LOADED),
 m_pStageLoader(NULL),
 m_bTerminateAsyncLoadThread(false)
 {
+	m_LoadStageAsyncronously = false;
+
 	m_bRendered = false;
 
 	int w = 16 * GetScreenWidth() / 800;
@@ -117,8 +119,11 @@ int CGameTask_AsyncStageLoader::FrameMove( float dt )
 		break;
 
 	case STATE_LOADING_STAGE:
-//		if( m_AsyncStageLoader.IsStageLoaded() )
-//			m_State = STATE_LOADED_STAGE;
+		if( m_LoadStageAsyncronously )
+		{
+			if( m_AsyncStageLoader.IsStageLoaded() )
+				m_State = STATE_LOADED_STAGE;
+		}
 		break;
 
 	default:
@@ -190,14 +195,3 @@ void CGameTask_AsyncStageLoader::AsyncLoadThreadMain()
 	while( !m_bTerminateAsyncLoadThread )
 		Sleep(20);
 }
-
-
-void CGameTask_AsyncStageLoader::ReleaseGraphicsResources()
-{
-}
-
-
-void CGameTask_AsyncStageLoader::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-}
-

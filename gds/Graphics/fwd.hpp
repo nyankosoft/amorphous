@@ -30,6 +30,7 @@ class CTextureLoader;
 class CLockedTexture;
 class CTextureFillingAlgorithm;
 class CMeshGenerator;
+class CResourceLoadingStateHolder;
 
 class CLight;
 class CAmbientLight;
