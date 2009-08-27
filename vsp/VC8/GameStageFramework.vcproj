@@ -1995,6 +1995,50 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\gds\Script\PyModule_stage.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_stage.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Script\PyModule_StageUtility.cpp"
 						>
 					</File>
@@ -2008,6 +2052,14 @@
 					</File>
 					<File
 						RelativePath="..\..\gds\Script\PyModule_task.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_visual_effect.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Script\PyModule_visual_effect.hpp"
 						>
 					</File>
 				</Filter>
