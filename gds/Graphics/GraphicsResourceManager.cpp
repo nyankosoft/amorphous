@@ -201,8 +201,8 @@ shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoad
 		pLoader = pMeshLoader;
 		break;
 	}
-//	case GraphicsResourceType::Shader:
-//		pLoader = shared_ptr<CGraphicsResourceLoader>( new CShaderLoader(pEntry,) );
+	case GraphicsResourceType::Shader:
+		pLoader = shared_ptr<CGraphicsResourceLoader>( new CShaderLoader(pEntry,*dynamic_cast<const CShaderResourceDesc *>(&desc)) );
 	default:
 		return pLoader;
 	}
@@ -236,6 +236,9 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::FindSameLoadedResou
 //    false (not found) -> send a load request to the resource I/O thread
 shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 {
+	if( !desc.IsValid() )
+		return shared_ptr<CGraphicsResourceEntry>();
+
 	if( desc.IsDiskResource() )
 	{
 		shared_ptr<CGraphicsResourceEntry> ptr;

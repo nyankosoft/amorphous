@@ -47,6 +47,7 @@ CScene *CNxPhysicsEngine::CreateScene( CSceneDesc& desc )
 {
 	if( !m_pPhysicsSDK )
 	{
+		LOG_PRINT_ERROR( "Cannot create scene. Physics SDK has not been initialized." );
 		return NULL;
 	}
 
@@ -120,6 +121,9 @@ CScene *CNxPhysicsEngine::CreateScene( CSceneDesc& desc )
 //	nx_desc.userData = NULL;
 
 	NxScene *pNxScene = m_pPhysicsSDK->createScene( nx_desc );
+
+	if( !pNxScene )
+		LOG_PRINT_ERROR( "NxPhysicsSDK::createScene() failed." );
 
 	CNxPhysScene *pNxPhysScene = new CNxPhysScene( pNxScene, m_pPhysicsSDK );
 

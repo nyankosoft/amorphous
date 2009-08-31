@@ -26,6 +26,7 @@ protected:
 		STATE_STAGE_NOT_LOADED,
 		STATE_FAILED_TO_LOAD_STAGE,
 		STATE_LOADED_STAGE,
+		STATE_LOADED_STAGE_AND_CHANGING_TASKS,
 		STATE_LOADING_STAGE,
 		NUM_STATES
 	};
@@ -77,7 +78,7 @@ public:
 	void AsyncLoadThreadMain();
 };
 
-
+/*
 class CAsyncLoadThreadStarter
 {
 	CGameTask_AsyncStageLoader *m_pAsyncLoaderTask;
@@ -92,6 +93,6 @@ public:
 		m_pAsyncLoaderTask->AsyncLoadThreadMain();
 	}
 };
-
+*/
 
 #endif  /*  __GameTask_AsyncStageLoader_H__  */

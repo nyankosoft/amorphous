@@ -19,8 +19,11 @@
 #include "Support/fnop.hpp"
 using namespace fnop;
 
+#include <boost/filesystem.hpp>
+
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 
 
 /**
@@ -173,7 +176,7 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 	string tex_filename;
 
 	// push the current working directory to the directory stack
-	dir_stack dirstk( get_path(m_strFilename) );
+//	dir_stack dirstk( get_path(m_strFilename) );
 
 	// save the current working directory
 //	string orig_dir = fnop::get_cwd();
@@ -226,10 +229,18 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 					// absolute path
 					tex_filepath = tex_filename;
 				}
+				else if( tex_filename.find( "::" ) != string::npos
+					  && tex_filename.find( "::" ) != 0 )
+				{
+					// database::keyname
+					tex_filepath = tex_filename;
+				}
 				else
 				{
 					// relative apth
-					tex_filepath = fnop::get_cwd() + "/" + tex_filename;
+//					tex_filepath = fnop::get_cwd() + "/" + tex_filename;
+					path filepath = path(m_strFilename).parent_path() / tex_filename;
+					tex_filepath = filepath.string();
 				}
 
 				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
@@ -283,7 +294,7 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 	}
 
 	// back to the original working directory
-	dirstk.prevdir();
+//	dirstk.prevdir();
 //	fnop::set_wd( orig_dir );
 
 	return S_OK;

@@ -22,6 +22,7 @@ using namespace boost;
 
 CGraphicsResource::CGraphicsResource()
 :
+m_OptionFlags(0),
 m_LastModifiedTimeOfFile(0),
 m_State(GraphicsResourceState::RELEASED),
 m_IsCachedResource(false),
@@ -410,6 +411,9 @@ bool CMeshResource::Create()
 
 	if( m_MeshDesc.NumVertices == 0 || m_MeshDesc.NumIndices == 0 )
 	{
+		// Assume that the user requested to make an empty mesh
+		// Also, don't set the state as loaded, since it may be loaded later
+		// from the archive.
 		return true;
 	}
 
@@ -420,7 +424,13 @@ bool CMeshResource::Create()
 		m_MeshDesc.vecVertElement
 		);
 
-	return mesh_created;
+	if( mesh_created )
+	{
+		SetState( GraphicsResourceState::LOADED );
+		return true;
+	}
+	else
+		return false;
 }
 
 
@@ -460,6 +470,32 @@ void CMeshResource::CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& arc
 }
 
 
+bool CMeshResource::LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive )
+{
+	if( GetState() == GraphicsResourceState::LOADED )
+		return false;
+
+	if( m_pMeshObject )
+	{
+		bool res = m_pMeshObject->LoadFromArchive(
+			mesh_archive,
+			m_MeshDesc.ResourcePath,
+			MeshLoadOption::LOAD_TEXTURES_ASYNC
+			);
+
+		if( res )
+			SetState( GraphicsResourceState::LOADED );
+		else
+			LOG_PRINT_ERROR( "Failed to load a mesh '" + m_MeshDesc.ResourcePath + "'from archive." );
+
+		return res;
+	}
+	else
+		return false;
+
+}
+
+
 void CMeshResource::GetStatus( char *pDestBuffer )
 {
 	CGraphicsResource::GetStatus( pDestBuffer );
@@ -473,7 +509,7 @@ void CMeshResource::GetStatus( char *pDestBuffer )
 
 
 //==================================================================================================
-// CShaderManagerEntry
+// CShaderResource
 //==================================================================================================
 
 CShaderResource::CShaderResource( const CShaderResourceDesc *pDesc )
@@ -514,6 +550,15 @@ bool CShaderResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::s
 }
 
 
+bool CShaderResource::Create()
+{
+	SafeDelete( m_pShaderManager );
+	m_pShaderManager = new CHLSLShaderManager;
+
+	return true;
+}
+
+
 bool CShaderResource::LoadFromFile( const std::string& filepath )
 {
 	SafeDelete( m_pShaderManager );
@@ -521,6 +566,9 @@ bool CShaderResource::LoadFromFile( const std::string& filepath )
 	// load a shader file
 	m_pShaderManager = new CHLSLShaderManager();
 	bool loaded = m_pShaderManager->LoadShaderFromFile( filepath );
+
+	if( loaded )
+		SetState( GraphicsResourceState::LOADED );
 
 	return loaded;
 }
@@ -563,3 +611,18 @@ bool CShaderResource::CreateFromDesc()
 	else
 		return false;
 }
+
+
+bool CShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
+{
+	if( !m_pShaderManager )
+		m_pShaderManager = new CHLSLShaderManager();
+
+	bool loaded = m_pShaderManager->LoadShaderFromText( buffer );
+
+	if( loaded )
+		SetState( GraphicsResourceState::LOADED );
+
+	return loaded;
+}
+

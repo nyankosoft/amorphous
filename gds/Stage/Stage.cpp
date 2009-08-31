@@ -562,6 +562,8 @@ CSurfaceMaterial& CStage::GetMaterial( int index )
 
 bool CStage::InitEventScriptManager( const string& script_archive_filename )
 {
+	LOG_FUNCTION_SCOPE();
+
 	m_ScriptArchiveFilename = script_archive_filename;
 
 	if( CScriptManager::ms_UseBoostPythonModules )

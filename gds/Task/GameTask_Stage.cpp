@@ -64,7 +64,7 @@ void LoadStage( const string& strStageScriptFilename )
 	if( bResult )
 	{
 		gs_iState = CGameTask_Stage::STAGE_LOADED;
-		LOG_PRINT_ERROR( "loaded the stage: " + strStageScriptFilename );
+		LOG_PRINT( "loaded the stage: " + strStageScriptFilename );
 	}
 	else
 	{

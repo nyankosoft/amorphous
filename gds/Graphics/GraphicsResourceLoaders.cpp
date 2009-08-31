@@ -3,7 +3,9 @@
 #include "AsyncResourceLoader.hpp"
 #include "D3DXMeshObjectBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/Profile.hpp"
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace boost;
@@ -13,13 +15,13 @@ using namespace boost;
 // CGraphicsResourceLoader
 //===================================================================================
 
-bool CGraphicsResourceLoader::Load()
+Result::Name CGraphicsResourceLoader::Load()
 {
 	return LoadFromDisk();
 }
 
 
-bool CGraphicsResourceLoader::LoadFromDisk()
+Result::Name CGraphicsResourceLoader::LoadFromDisk()
 {
 	bool loaded = false;
 	string target_filepath;
@@ -39,7 +41,14 @@ bool CGraphicsResourceLoader::LoadFromDisk()
 		CBinaryDatabase<string> db;
 		bool db_open = db.Open( db_filename );
 		if( !db_open )
-			return false; // the database is being used by someone else - retry later
+		{
+			LOG_PRINT_ERROR( "Failed to open the database file: " + db_filename );
+
+			if( boost::filesystem::exists( db_filename ) )
+				return Result::RESOURCE_IN_USE; // the database is being used by someone else - retry later
+			else
+				return Result::RESOURCE_NOT_FOUND;
+		}
 
 		loaded = LoadFromDB( db, keyname );
 
@@ -52,7 +61,10 @@ bool CGraphicsResourceLoader::LoadFromDisk()
 		target_filepath = src_filepath;
 	}
 
-	return loaded;
+	if( !loaded )
+		LOG_PRINT_ERROR( "Failed to load a graphics resource: " + src_filepath );
+
+	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
 
@@ -335,6 +347,7 @@ void CMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader>
 
 	if( !preferred_async_loading_method )
 	{
+		LOG_PRINT( "Sending a LoadToGraphicsMemoryByRenderThread request for a mesh: " + m_MeshDesc.ResourcePath );
 		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread, pSelf, GetResourceEntry() );
 		AsyncResourceLoader().AddGraphicsDeviceRequest( req );
 		return;
@@ -432,6 +445,8 @@ void CMeshLoader::SendLockRequestIfAllSubresourcesHaveBeenLoaded()
 
 bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
 {
+	LOG_PRINT( "Loading a mesh: " + m_MeshDesc.ResourcePath );
+
 	if( !m_pArchive )
 		return false;
 
@@ -450,12 +465,27 @@ bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
 	shared_ptr<CMeshResource> pMeshResource = pHolder->GetMeshResource();
 	if( !pMeshResource )
 		return false;
-
+/*
 	shared_ptr<CD3DXMeshObjectBase> pMesh = pMeshResource->GetMesh();
 	if( pMesh )
 		return pMesh->LoadFromArchive( *(m_pArchive.get()), m_MeshDesc.ResourcePath );
 	else
-		return false;
+		return false;*/
+
+	res = pMeshResource->LoadMeshFromArchive( *(m_pArchive.get()) );
+
+	return res;
+}
+
+
+
+//===================================================================================
+// CD3DXMeshVerticesLoader
+//===================================================================================
+
+Result::Name CD3DXMeshLoaderBase::Load()
+{
+	return ( LoadFromArchive() ? Result::SUCCESS : Result::UNKNOWN_ERROR );
 }
 
 
@@ -687,4 +717,48 @@ bool CShaderLoader::AcquireResource()
 	bool loaded = pShaderResource->LoadFromFile( m_ShaderDesc.ResourcePath );
 
 	return loaded;
+}
+
+
+bool CShaderLoader::LoadFromFile( const std::string& filepath )
+{
+	bool res = m_ShaderTextBuffer.LoadTextFile( filepath );
+
+	return res;
+}
+
+
+void CShaderLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
+{
+	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread, pSelf, GetResourceEntry() );
+	AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+	return;
+}
+
+
+bool CShaderLoader::LoadToGraphicsMemoryByRenderThread()
+{
+	bool res = CGraphicsResourceLoader::AcquireResource();
+	if( !res )
+		return false;
+
+	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+	if( !pHolder )
+		return false;
+
+	shared_ptr<CShaderResource> pShaderResource = pHolder->GetShaderResource();
+	if( !pShaderResource )
+		return false;
+
+//	pShaderResource->CreateShaderFromTextBuffer( m_ShaderTextBuffer );
+
+	res = pShaderResource->LoadFromFile( m_ShaderDesc.ResourcePath );
+
+	return res;
+
+/*	CShaderManager *pShader = pShaderResource->GetShaderManager();
+	if( pShader )
+		return pShader->LoadShaderFromText( m_ShaderTextBuffer );
+	else
+		return false;*/
 }

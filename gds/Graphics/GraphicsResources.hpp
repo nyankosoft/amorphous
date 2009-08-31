@@ -9,9 +9,14 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread.hpp>
 #include "fwd.hpp"
+#include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
+#include "Support/fwd.hpp"
+
+
+class stream_buffer;
 
 
 class GraphicsResourceState
@@ -370,6 +375,8 @@ public:
 
 	void CreateMeshAndLoadNonAsyncResources( MeshModel::C3DMeshModelArchive& archive );
 
+	bool LoadMeshFromArchive( MeshModel::C3DMeshModelArchive& mesh_archive );
+
 	friend class CGraphicsResourceManager;
 };
 
@@ -407,6 +414,10 @@ public:
 	inline CShaderManager *GetShaderManager() { return m_pShaderManager; }
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_ShaderDesc; }
+
+	bool Create();
+
+	bool CreateShaderFromTextBuffer( stream_buffer& buffer );
 
 	friend class CGraphicsResourceManager;
 };

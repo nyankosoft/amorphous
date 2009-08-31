@@ -66,6 +66,8 @@ public:
 	}
 
 	void Join();
+
+	friend class CASyncStageLoaderThread;
 };
 
 

@@ -74,8 +74,7 @@ void CAsyncResourceLoader::IOThreadMain()
 void CAsyncResourceLoader::ProcessResourceLoadRequest()
 {
 	bool copied = false;
-	bool res = false;
-//	Result::Name res;
+	Result::Name res = Result::SUCCESS;
 	shared_ptr<CGraphicsResourceLoader> pLoader;
 	CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, shared_ptr<CGraphicsResourceLoader>(), weak_ptr<CGraphicsResourceEntry>() );
 
@@ -92,23 +91,6 @@ void CAsyncResourceLoader::ProcessResourceLoadRequest()
 	{
 	case CResourceLoadRequest::LoadFromDisk:
 		pLoader = req.m_pLoader;
-		// load the resource from the disk
-/*			res = pLoader->LoadFromDisk();
-		switch(res)
-		{
-		case LoadResult::SUCCESS:
-			break;
-		case LoadResult::RESOURCE_NOT_FOUND:
-			continue;
-			break;
-		case LoadResult::RESOURCE_IN_USE:
-			m_ResourceLoadRequestQueue.push( req );
-			continue;
-			// try again later
-			break;
-		default:
-			break;
-		}*/
 
 		// load the resource from disk or memory
 		// - texture and mesh resources
@@ -117,17 +99,31 @@ void CAsyncResourceLoader::ProcessResourceLoadRequest()
 		//   -> loaded from mesh archive on memory
 		res = pLoader->Load();
 
-		if( res )
+		switch(res)
 		{
+		case Result::SUCCESS:
 			// Fills out resource desc (texture & mesh)
 			// Creates a lock request (texture)
 			// Create load requests for sub resources (mesh)
 			// - Load subresources and send lock requests for each subresource (mesh)
 			pLoader->OnLoadingCompleted( pLoader );
-		}
-		else
-		{
-			int failed_to_load_a_resource = 1;
+			break;
+
+		case Result::RESOURCE_NOT_FOUND:
+//			continue;
+			break;
+
+		case Result::RESOURCE_IN_USE:
+			// try again later
+			{
+				mutex::scoped_lock scoped_lock(m_IOMutex);
+				m_ResourceLoadRequestQueue.push( req );
+			}
+//			continue;
+			break;
+
+		default:
+			break;
 		}
 		break;
 
@@ -176,6 +172,7 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 	bool resource_locked = false;
 	shared_ptr<CGraphicsResourceEntry> pSrcEntry, pEntry;
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, shared_ptr<CGraphicsResourceLoader>(), weak_ptr<CGraphicsResourceEntry>() );
+	bool res = false;
 
 	for( int i=0; i<1; i++ )
 	{
@@ -247,11 +244,17 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 //					if( req.m_pLoader->GetResource() )
 //						req.m_pLoader->GetResource()->SetState( GraphicsResourceState::LOADED );
 				}
+				else
+					LOG_PRINT_ERROR( "Failed to unlock a resource: " + req.m_pLoader->GetDesc()->ResourcePath );
 			}
 			break;
 
 		case CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread:
-			req.m_pLoader->LoadToGraphicsMemoryByRenderThread();
+			res = req.m_pLoader->LoadToGraphicsMemoryByRenderThread();
+			if( res = false )
+			{
+				LOG_PRINT_ERROR( "req.m_pLoader->LoadToGraphicsMemoryByRenderThread() failed. Resource: " + req.m_pLoader->GetDesc()->ResourcePath );
+			}
 			break;
 		}
 	}

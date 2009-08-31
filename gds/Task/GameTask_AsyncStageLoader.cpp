@@ -103,14 +103,14 @@ int CGameTask_AsyncStageLoader::FrameMove( float dt )
 	case STATE_LOADED_STAGE:
 		if( m_fWaitTime < GetTaskTimer().GetTime() )
 		{
-//			m_AsyncStageLoader.Join();
-
 			if( m_pStageLoader )
 			{
 				m_bTerminateAsyncLoadThread = true;
 				m_pStageLoader->join();
 				SafeDelete( m_pStageLoader );
 			}
+
+			m_State = STATE_LOADED_STAGE_AND_CHANGING_TASKS;
 
 			// move on to the stage task
 			CGameTask::RequestTaskTransition( ms_strNextTaskName );
@@ -122,7 +122,10 @@ int CGameTask_AsyncStageLoader::FrameMove( float dt )
 		if( m_LoadStageAsyncronously )
 		{
 			if( m_AsyncStageLoader.IsStageLoaded() )
+			{
+				m_AsyncStageLoader.Join();
 				m_State = STATE_LOADED_STAGE;
+			}
 		}
 		break;
 
@@ -160,7 +163,7 @@ void CGameTask_AsyncStageLoader::Render()
 	}
 }
 
-
+/*
 void CGameTask_AsyncStageLoader::AsyncLoadThreadMain()
 {
 	if( !fnop::path_exists( ms_strStageScripName ) )
@@ -195,3 +198,4 @@ void CGameTask_AsyncStageLoader::AsyncLoadThreadMain()
 	while( !m_bTerminateAsyncLoadThread )
 		Sleep(20);
 }
+*/

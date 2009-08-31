@@ -33,6 +33,16 @@ bool CResourceLoadingState::IsLoaded()
 }
 
 
+bool CResourceLoadingState::IsReleased()
+{
+	shared_ptr<CGraphicsResourceEntry> pResourceEntry = m_pResourceEntry.lock();
+	if( !pResourceEntry || pResourceEntry->GetState() == CGraphicsResourceEntry::STATE_RELEASED )
+		return true; // released
+	else
+		return false;
+}
+
+
 bool CTextureLoadingStateHolder::IsLoaded()
 {
 	return CResourceLoadingState::IsLoaded();
@@ -122,19 +132,34 @@ void CResourceLoadingStateHolder::Add( CShaderHandle& shader_handle )
 
 void CResourceLoadingStateHolder::AddFromResourceEntry( shared_ptr<CGraphicsResourceEntry> pEntry )
 {
-	Add( new CResourceLoadingState(  ) );
+	Add( new CResourceLoadingState( pEntry ) );
 }
 
-
-bool CResourceLoadingStateHolder::AreAllResourceLoaded()
+/*
+/// Remove released resources from the list
+bool CResourceLoadingStateHolder::Update()
 {
 	list< shared_ptr<CResourceLoadingState> >::iterator itr;
 		itr = m_lstpResourceLoadingState.begin();
 
-	for( ; itr != m_lstpResourceLoadingState.end();  )
+	for( ; itr != m_lstpResourceLoadingState.end(); )
 	{
-		if( (*itr)->IsLoaded() )
-//		 || (*itr)->Released() )
+		if( 
+	}
+}
+*/
+
+bool CResourceLoadingStateHolder::AreAllResourceLoaded()
+{
+//	Update();
+
+	list< shared_ptr<CResourceLoadingState> >::iterator itr;
+		itr = m_lstpResourceLoadingState.begin();
+
+	for( ; itr != m_lstpResourceLoadingState.end(); /* Don't increment itr since we do it through erase() call or return from the function. */ )
+	{
+		if( (*itr)->IsLoaded()
+		 || (*itr)->IsReleased() )
 		{
 			itr = m_lstpResourceLoadingState.erase( itr );
 		}

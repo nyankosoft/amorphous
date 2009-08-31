@@ -44,6 +44,8 @@ public:
 
 	virtual bool IsLoaded();
 
+	bool IsReleased();
+
 };
 
 

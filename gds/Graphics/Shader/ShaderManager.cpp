@@ -177,7 +177,7 @@ bool CHLSLShaderManager::LoadShaderFromFile( const string& filename )
 	m_strFilename = filename;
 
 	CD3DXInclude d3dx_include;
-	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
+	ID3DXInclude *pD3DXInclude = NULL; // = &d3dx_include;
 
 	HRESULT hr;	
 	LPD3DXBUFFER pCompileErrors;
@@ -208,7 +208,7 @@ bool CHLSLShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 		return false;
 
 	CD3DXInclude d3dx_include;
-	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
+	ID3DXInclude *pD3DXInclude = &d3dx_include;
 
 	HRESULT hr;	
 	LPD3DXBUFFER pCompileErrors;

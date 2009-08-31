@@ -40,9 +40,9 @@ public:
 
 	inline boost::shared_ptr<CGraphicsResource> GetResource();
 
-	virtual bool Load();
+	virtual Result::Name Load();
 
-	bool LoadFromDisk();
+	Result::Name LoadFromDisk();
 
 	virtual bool LoadFromFile( const std::string& filepath ) { return false; }
 
@@ -228,7 +228,7 @@ public:
 
 	inline CD3DXMeshObjectBase *GetMesh();
 
-	bool Load() { return LoadFromArchive(); }
+	Result::Name Load();
 
 	virtual bool LoadFromArchive() = 0;
 
@@ -443,7 +443,7 @@ class CShaderLoader : public CGraphicsResourceLoader
 	CShaderResourceDesc m_ShaderDesc;
 
 	/// Stores shader contents
-//	stream_buffer m_ShaderTextBuffer;
+	stream_buffer m_ShaderTextBuffer;
 
 public:
 
@@ -472,6 +472,10 @@ public:
 	bool Lock() { return true; }
 
 	bool Unlock() { return true; }
+
+	void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf );
+
+	bool LoadToGraphicsMemoryByRenderThread();
 };
 
 

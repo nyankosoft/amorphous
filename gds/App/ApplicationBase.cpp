@@ -455,4 +455,6 @@ void CApplicationBase::Run()
 		const char *function = *pFunction.get();
 		g_Log.Print( WL_ERROR, "exception: at %s (%s, L%d)", function, file, line );
 	}
+
+	g_Log.RemoveLogOutput( &html_log );
 }

@@ -11,6 +11,20 @@ extern void CreateResourceLoadingStateHolderForCurrentThread();
 extern CResourceLoadingStateSet::Name GetGraphicsResourceLoadingState();
 
 
+class CASyncStageLoaderThread
+{
+	CASyncStageLoader *m_pStageLoader;
+
+public:
+
+	CASyncStageLoaderThread( CASyncStageLoader *pStageLoader )
+		:
+	m_pStageLoader(pStageLoader)
+	{}
+
+	void operator()();
+};
+
 
 CStageSharedPtr CStageLoader::LoadStage( const std::string& script_name )
 {
@@ -77,7 +91,8 @@ bool CASyncStageLoader::LoadStage( const std::string& script_name )
 	m_StageScriptName = script_name;
 
 //	m_pLoader = boost::shared_ptr<boost::thread>( new boost::thread( *this ) );
-	m_pLoader = new boost::thread( *this );
+//	m_pLoader = new boost::thread( *this );
+	m_pLoader = new boost::thread( CASyncStageLoaderThread(this) );
 
 	return true;
 }
@@ -91,29 +106,31 @@ void CASyncStageLoader::Join()
 		m_pLoader->join();
 }
 
+static int sg_NumLoaded = 0;
 
-void CASyncStageLoader::operator()()
+
+void CASyncStageLoaderThread::operator()()
 {
 	CStageLoader loader;
 
 	// catch any resource loading calls
 	CreateResourceLoadingStateHolderForCurrentThread();
 
-	if( !m_pStage )
+	if( !m_pStageLoader->m_pStage )
 	{
 		/// stage instance has not been created
 		/// - create an empty stage
-		m_pStage = loader.CreateStage();
+		m_pStageLoader->m_pStage = loader.CreateStage();
 	}
 
 	/// load stage
 	/// - this could take a few seconds
-	bool loaded = m_pStage->Initialize( m_StageScriptName );
+	bool loaded = m_pStageLoader->m_pStage->Initialize( m_pStageLoader->m_StageScriptName );
 	
 	if( !loaded )
 	{
 		// failed to load stage
-		m_bFailedToLoadStage = true;
+		m_pStageLoader->m_bFailedToLoadStage = true;
 		return;
 	}
 
@@ -122,13 +139,16 @@ void CASyncStageLoader::operator()()
 		Sleep( 10 );
 	}
 
-	m_bIsLoaded = true;
+	m_pStageLoader->m_bIsLoaded = true;
 
-	while( !m_bExitLoaderThread )
+	sg_NumLoaded += 1;
+
+
+	while( !m_pStageLoader->m_bExitLoaderThread )
 	{
-		m_StageScriptName = "";
+		m_pStageLoader->m_StageScriptName = "";
 
-		if( !m_bIsLoaded )
+		if( !m_pStageLoader->m_bIsLoaded )
 		{
 			g_Log.Print( "'m_bIsLoaded' changed to false" );
 		}

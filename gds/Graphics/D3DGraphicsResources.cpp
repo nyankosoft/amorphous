@@ -5,7 +5,6 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/SafeDelete.hpp"
-#include "Support/fnop.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
@@ -65,8 +64,6 @@ bool CD3DTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const st
 	string image_archive_key = keyname;
 
 	HRESULT hr;
-
-//	string cwd = fnop::get_cwd();
 
 	CImageArchive img;
 	bool img_found = db.GetData( image_archive_key, img );
