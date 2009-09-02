@@ -118,10 +118,14 @@ HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
     if( FAILED(hr) )
         return hr;
 
+	g_pDITempJoystickDevice = m_pDIJoystick;
+
     // Enumerate the joystick objects. The callback function enabled user
     // interface elements for objects that are found, and sets the min/max
     // values property for discovered axes.
-    if( FAILED( hr = m_pDIJoystick->EnumObjects( EnumObjectsCallback, (VOID*)hWnd, DIDFT_ALL ) ) )
+	hr = m_pDIJoystick->EnumObjects( EnumObjectsCallback, (VOID*)hWnd, DIDFT_ALL );
+	g_pDITempJoystickDevice = NULL;
+	if( FAILED(hr) )
         return hr;
 
     // IMPORTANT STEP TO USE BUFFERED DEVICE DATA!

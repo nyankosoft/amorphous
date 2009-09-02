@@ -27,13 +27,16 @@ CSingleton<CDIInputDeviceMonitor> CDIInputDeviceMonitor::m_obj;
 
 void CDIInputDeviceMonitor::ResetEnumStatus()
 {
-	map<GUID,CDIInputDeviceContainer,less_for_guid>::iterator itr;
+//	map<GUID,CDIInputDeviceContainer,less_for_guid>::iterator itr;
 
-	for( itr = m_mapGUIDtoDIDeviceInstance.begin();
-		 itr != m_mapGUIDtoDIDeviceInstance.end();
+//	for( itr = m_mapGUIDtoDIDeviceInstance.begin();
+//		 itr != m_mapGUIDtoDIDeviceInstance.end();
+	for( vector<CDIInputDeviceContainer>::iterator itr = m_vecDIDeviceInstanceContainer.begin();
+		itr != m_vecDIDeviceInstanceContainer.end();
 		 itr++ )
 	{
-		itr->second.SetAttached( false );
+//		itr->second.SetAttached( false );
+		itr->SetAttached( false );
 	}
 }
 
@@ -60,10 +63,38 @@ bool CDIInputDeviceMonitor::CreateDevice( CDIInputDeviceContainer& container )
 }
 
 
+int CDIInputDeviceMonitor::GetContainerIndex( const GUID& guid )
+{
+	for( size_t i=0; i<m_vecDIDeviceInstanceContainer.size(); i++ )
+	{
+		if( m_vecDIDeviceInstanceContainer[i].m_DeviceInstance.guidInstance == guid )
+			return (int)i;
+	}
+
+	return -1;
+}
+
+
+bool CDIInputDeviceMonitor::AlreadyRequested( const GUID& guid )
+{
+	tbb::concurrent_queue<CDIInputDeviceManagementRequest>::iterator itr;
+	for( itr = m_queDIDeviceRequest.begin();
+		 itr != m_queDIDeviceRequest.end();
+		 itr++ )
+	{
+		if( itr->m_DeviceInstance.guidInstance == guid )
+			return true;
+	}
+
+	return false;
+}
+
 // Enumerate all the input device
-// - Try to create input device objects for all the attached device
+// - Try to create input devicBe objects for all the attached device
 void CDIInputDeviceMonitor::CheckDevices()
 {
+	tbb::mutex::scoped_lock(m_DeviceContainerMutex);
+
 	HRESULT hr;
 
 	m_vecDIDeviceInstanceHolder.resize( 0 );
@@ -81,29 +112,46 @@ void CDIInputDeviceMonitor::CheckDevices()
 	{
 		DIDEVICEINSTANCE &di = m_vecDIDeviceInstanceHolder[i];
 
-		map<GUID,CDIInputDeviceContainer,less_for_guid>::iterator itr = m_mapGUIDtoDIDeviceInstance.find( di.guidInstance );
+		int container_index = GetContainerIndex( di.guidInstance );
+//		map<GUID,CDIInputDeviceContainer,less_for_guid>::iterator itr = m_mapGUIDtoDIDeviceInstance.find( di.guidInstance );
 
-		if( itr == m_mapGUIDtoDIDeviceInstance.end() )
+//		if( itr == m_mapGUIDtoDIDeviceInstance.end() )
+		if( container_index < 0 )
 		{
-			// A new game controller has been enumerated.
-
-			CDIInputDeviceContainer container;
-			container.m_DeviceInstance = di;
-
-			bool created = CreateDevice( container );
-
-			if( created )
+			if( !AlreadyRequested( di.guidInstance ) )
 			{
-				container.SetAttached( true );
-				m_mapGUIDtoDIDeviceInstance[di.guidInstance] = container;
+				// A new game controller has been enumerated.
+				// e.g. A gamepad is plugged at runtime
+
+				CDIInputDeviceManagementRequest req(CDIInputDeviceManagementRequest::CREATE_DEVICE);
+				req.m_DeviceInstance = di;
+
+				m_queDIDeviceRequest.push( req );
 			}
 		}
 		else
 		{
 			// Mark this device as attached
-			itr->second.SetAttached( true );
+//			itr->second.SetAttached( true );
+			m_vecDIDeviceInstanceContainer[container_index].SetAttached( true );
 		}
 	}
+/*
+	map<GUID,CDIInputDeviceContainer,less_for_guid>::iterator itr;
+
+	for( itr = m_mapGUIDtoDIDeviceInstance.begin();
+		 itr != m_mapGUIDtoDIDeviceInstance.end();
+		 itr++ )
+	{
+		if( !itr->second.GetAttached() );
+		{
+			CDIInputDeviceManagementRequest req(CDIInputDeviceManagementRequest::RELEASE_DEVICE);
+			req.m_DeviceInstance = di;
+
+			m_queDIDeviceRequest.push( req c);
+		}
+	}
+*/
 
 	m_vecDIDeviceInstanceHolder.resize( 0 );
 }
@@ -124,17 +172,65 @@ void CDIInputDeviceMonitor::run()
 }
 
 
+// create input device object for gamepad plugged to the computer
+void CDIInputDeviceMonitor::ProcessInputDeviceManagementRequest()
+{
+	if( m_queDIDeviceRequest.empty() )
+		return;
+
+	size_t num_requests = m_queDIDeviceRequest.size();
+
+	CDIInputDeviceManagementRequest req;
+
+	m_queDIDeviceRequest.pop_if_present( req );
+
+	switch( req.m_Type )
+	{
+	case CDIInputDeviceManagementRequest::CREATE_DEVICE:
+	{
+		CDIInputDeviceContainer container;
+		container.m_DeviceInstance = req.m_DeviceInstance;
+
+		bool created = CreateDevice( container );
+
+		if( created )
+		{
+			tbb::mutex::scoped_lock(m_DeviceContainerMutex);
+
+//			container.SetAttached( true );
+//			m_mapGUIDtoDIDeviceInstance[container.m_DeviceInstance.guidInstance] = container;
+			m_vecDIDeviceInstanceContainer.push_back( container );
+		}
+		break;
+	}
+
+	case CDIInputDeviceManagementRequest::RELEASE_DEVICE:
+		break;
+
+	default:
+		break;
+	}
+}
+
+
 void CDIInputDeviceMonitor::AcquireInputDevices()
 {
-	map<GUID,CDIInputDeviceContainer,less_for_guid>::iterator itr;
+	tbb::mutex::scoped_lock( m_DeviceContainerMutex );
 
-	for( itr = m_mapGUIDtoDIDeviceInstance.begin();
-		 itr != m_mapGUIDtoDIDeviceInstance.end();
+//	map<GUID,CDIInputDeviceContainer,less_for_guid>::iterator itr;
+
+//	for( itr = m_mapGUIDtoDIDeviceInstance.begin();
+//		 itr != m_mapGUIDtoDIDeviceInstance.end();
+	for( vector<CDIInputDeviceContainer>::iterator itr = m_vecDIDeviceInstanceContainer.begin();
+		 itr != m_vecDIDeviceInstanceContainer.end();
 		 itr++ )
 	{
-		shared_ptr<CDirectInputGamepad> pGamepad = itr->second.m_pGamepad;
+/*		shared_ptr<CDirectInputGamepad> pGamepad = itr->second.m_pGamepad;
 
 		if( pGamepad )
-			pGamepad->Acquire();
+			pGamepad->Acquire();*/
+
+		if( itr->m_pGamepad )
+			itr->m_pGamepad->Acquire();
 	}
 }

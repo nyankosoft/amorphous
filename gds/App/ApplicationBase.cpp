@@ -205,7 +205,7 @@ bool CApplicationBase::InitBase()
 	if( r != Result::SUCCESS )
 		SafeDelete( m_pDIGamepad );*/
 
-//	DIInputDeviceMonitor().start_thread();
+	DIInputDeviceMonitor().start_thread();
 
 //	LOG_PRINT( " - Initialized the input devices." );
 
@@ -325,7 +325,7 @@ void CApplicationBase::AcquireInputDevices()
 	if( g_pDIMouse && GameWindowManager().IsMouseCursorInClientArea() )
 		g_pDIMouse->AcquireMouse();
 
-//	DIInputDeviceMonitor().AcquireInputDevices();
+	DIInputDeviceMonitor().AcquireInputDevices();
 //	if( m_pDIGamepad )
 //		m_pDIGamepad->Acquire();
 }
@@ -355,6 +355,9 @@ void CApplicationBase::UpdateFrame()
 	}
 
 	/// Update input
+
+	// Create input device object if a new gamdpad has been plugged to the computer
+	DIInputDeviceMonitor().ProcessInputDeviceManagementRequest();
 
 	// Send input data to the active input handlers
 	InputDeviceHub().SendInputToInputHandlers();

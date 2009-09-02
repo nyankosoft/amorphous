@@ -6,6 +6,8 @@
 #include <vector>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <tbb/concurrent_queue.h>
+#include <tbb/mutex.h>
 #include "Input/fwd.hpp"
 #include "Input/DirectInput.hpp"
 #include "Support/thread_starter.hpp"
@@ -39,6 +41,29 @@ public:
 };
 
 
+class CDIInputDeviceManagementRequest
+{
+public:
+	enum Type
+	{
+		CREATE_DEVICE,
+		RELEASE_DEVICE,
+		INVALID,
+		NUM_REQUEST_TYPES
+	};
+
+	Type m_Type;
+	DIDEVICEINSTANCE m_DeviceInstance;
+
+public:
+
+	CDIInputDeviceManagementRequest( Type type = INVALID )
+		:
+	m_Type(type)
+	{}
+};
+
+
 
 class CDIInputDeviceMonitor : public thread_class
 {
@@ -52,9 +77,14 @@ class CDIInputDeviceMonitor : public thread_class
 		}
 	};
 
-	std::map<GUID,CDIInputDeviceContainer,less_for_guid> m_mapGUIDtoDIDeviceInstance;
+//	std::map<GUID,CDIInputDeviceContainer,less_for_guid> m_mapGUIDtoDIDeviceInstance;
+	std::vector<CDIInputDeviceContainer> m_vecDIDeviceInstanceContainer;
+
+	tbb::mutex m_DeviceContainerMutex;
 
 	std::vector<DIDEVICEINSTANCE> m_vecDIDeviceInstanceHolder;
+
+	tbb::concurrent_queue<CDIInputDeviceManagementRequest> m_queDIDeviceRequest;
 
 	bool m_ExitThread;
 
@@ -62,18 +92,22 @@ private:
 
 	bool CreateDevice( CDIInputDeviceContainer& container );
 
+	int GetContainerIndex( const GUID& guid );
+
+	bool AlreadyRequested( const GUID& guid );
+
 protected:
 
 	/// singleton
 	static CSingleton<CDIInputDeviceMonitor> m_obj;
 
 public:
-/*
+
 	CDIInputDeviceMonitor()
 		:
 	m_ExitThread(false)
 	{}
-*/
+
 	void CheckDevices();
 
 //	void ThreadMain();
@@ -89,6 +123,8 @@ public:
 	void run();
 
 	void ExitThread() { m_ExitThread = true; }
+
+	void ProcessInputDeviceManagementRequest();
 
 	void AcquireInputDevices();
 };
