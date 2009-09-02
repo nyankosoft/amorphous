@@ -8,4 +8,5 @@
 #include "Input/DIKeyboard.hpp"
 #include "Input/DirectInputMouse.hpp"
 #include "Input/DirectInputGamepad.hpp"
+#include "Input/DIInputDeviceMonitor.hpp"
 #endif

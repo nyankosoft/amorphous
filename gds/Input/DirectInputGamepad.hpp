@@ -93,6 +93,10 @@ public:
 
 	Result::Name Init();
 
+	Result::Name InitDevice( const DIDEVICEINSTANCE& di );
+
+	Result::Name CreateDevice( const DIDEVICEINSTANCE& di );
+
 	void Release();
 
 	HRESULT Acquire();

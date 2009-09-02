@@ -1154,6 +1154,14 @@
 			Name="Input"
 			>
 			<File
+				RelativePath="..\..\gds\Input\DIInputDeviceMonitor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Input\DIInputDeviceMonitor.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Input\DIKeyboard.cpp"
 				>
 			</File>

@@ -67,7 +67,7 @@ CApplicationBase::CApplicationBase()
 
 	g_pDIMouse = NULL;
 	m_pDIKeyboard = NULL;
-	m_pDIGamepad = NULL;
+//	m_pDIGamepad = NULL;
 }
 
 
@@ -95,7 +95,7 @@ void CApplicationBase::Release()
 
 	SafeDelete( g_pDIMouse );
 	SafeDelete( m_pDIKeyboard );
-	SafeDelete( m_pDIGamepad );
+//	SafeDelete( m_pDIGamepad );
 
 	InputHub().PopInputHandler( 3 );
 	SafeDelete( m_pGlobalInputHandler );
@@ -200,10 +200,12 @@ bool CApplicationBase::InitBase()
 
 //	LOG_PRINT( " - Initialized the direct input keyboard device." );
 
-	m_pDIGamepad = new CDirectInputGamepad;
+/*	m_pDIGamepad = new CDirectInputGamepad;
 	Result::Name r = m_pDIGamepad->Init();
 	if( r != Result::SUCCESS )
-		SafeDelete( m_pDIGamepad );
+		SafeDelete( m_pDIGamepad );*/
+
+//	DIInputDeviceMonitor().start_thread();
 
 //	LOG_PRINT( " - Initialized the input devices." );
 
@@ -323,8 +325,9 @@ void CApplicationBase::AcquireInputDevices()
 	if( g_pDIMouse && GameWindowManager().IsMouseCursorInClientArea() )
 		g_pDIMouse->AcquireMouse();
 
-	if( m_pDIGamepad )
-		m_pDIGamepad->Acquire();
+//	DIInputDeviceMonitor().AcquireInputDevices();
+//	if( m_pDIGamepad )
+//		m_pDIGamepad->Acquire();
 }
 
 
@@ -397,6 +400,8 @@ void CApplicationBase::Execute()
 	// Release graphics resources before the graphics device is released
 
 	ReleaseDebugItems();
+
+	DIInputDeviceMonitor().ExitThread();
 
 	CGameTask::ReleaseAnimatedGraphicsManager();
 

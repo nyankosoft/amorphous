@@ -10,6 +10,8 @@
 #include "../base.hpp"
 
 #include <math.h>
+#include <boost/thread.hpp>
+
 
 
 //-----------------------------------------------------------------------------
@@ -20,6 +22,9 @@ BOOL CALLBACK    EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VO
 
 // used to temporarily hold pointer to joystick device
 static LPDIRECTINPUTDEVICE8 g_pDITempJoystickDevice = NULL;
+//static vector<DIDEVICEOBJECTINSTANCE> g_vecDITempJoystickDeviceInstance;
+static boost::mutex gs_GamepadDeviceCreationMutex;
+static CDirectInputGamepad *sg_pDIGamepad = NULL;
 
 
 CDirectInputGamepad::CDirectInputGamepad()
@@ -67,10 +72,9 @@ void CDirectInputGamepad::Release()
 
 HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
 {
-	LOG_PRINT( " - initializing gamepad..." );
-
-	HRESULT hr;
-
+	if( !m_pDIJoystick )
+		return E_FAIL;
+	
 	bool bExclusive = true;
 	bool bForeground = true;
 	DWORD dwCoopFlags = 0;
@@ -85,29 +89,8 @@ HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
     else
         dwCoopFlags |= DISCL_BACKGROUND;
 
+	HRESULT hr;
 
-	g_pDITempJoystickDevice = NULL;
-
-	LOG_PRINT( " Enumerating input device objects..." );
-
-    // Look for a simple joystick we can use for this sample program.
-	hr = DIRECTINPUT.GetDirectInputObject()->EnumDevices( DI8DEVCLASS_GAMECTRL, 
-		                                                  EnumJoysticksCallback,
-														  NULL, DIEDFL_ATTACHEDONLY );
-    if( FAILED(hr) )
-		return hr;
-    
-    // Make sure we got a joystick
-    if( NULL == g_pDITempJoystickDevice )
-    {
-//		MessageBox( NULL, "Joystick not found.", "DirectInputGamepad::Init()", MB_ICONERROR | MB_OK );
-		return E_FAIL;
-    }
-	else
-	{
-		m_pDIJoystick = g_pDITempJoystickDevice;
-	}
-    
     // Set the data format to "simple joystick" - a predefined data format 
     //
     // A data format specifies which controls on a device we are interested in,
@@ -177,6 +160,50 @@ HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
 
 Result::Name CDirectInputGamepad::Init()
 {
+	boost::mutex::scoped_lock( gs_GamepadDeviceCreationMutex );
+
+	sg_pDIGamepad = this;
+
+	LOG_PRINT( " - initializing gamepad..." );
+
+	HRESULT hr;
+
+//	g_pDITempJoystickDevice = NULL;
+
+	LOG_PRINT( " Enumerating input device objects..." );
+
+    // Look for a simple joystick we can use for this sample program.
+	hr = DIRECTINPUT.GetDirectInputObject()->EnumDevices( DI8DEVCLASS_GAMECTRL, 
+		                                                  EnumJoysticksCallback,
+														  NULL, DIEDFL_ATTACHEDONLY );
+
+	if( FAILED(hr) )
+		return Result::UNKNOWN_ERROR;
+
+	if( !m_pDIJoystick )
+	{
+		LOG_PRINT_ERROR( "Failed to create game controller device" );
+		return Result::UNKNOWN_ERROR;
+	}
+
+	sg_pDIGamepad = NULL;
+
+	hr = InitDIGamepad( GameWindowManager_Win32().GetWindowHandle() );
+
+	if( SUCCEEDED(hr) )
+		return Result::SUCCESS;
+	else
+		return Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirectInputGamepad::InitDevice( const DIDEVICEINSTANCE& di )
+{
+	Result::Name res = CreateDevice( di );
+
+	if( res != Result::SUCCESS )
+		return res;
+
 	HRESULT hr = InitDIGamepad( GameWindowManager_Win32().GetWindowHandle() );
 
 	if( SUCCEEDED(hr) )
@@ -186,6 +213,33 @@ Result::Name CDirectInputGamepad::Init()
 }
 
 
+
+Result::Name CDirectInputGamepad::CreateDevice( const DIDEVICEINSTANCE& di )
+{
+	HRESULT hr;
+	hr = DIRECTINPUT.GetDirectInputObject()->CreateDevice( di.guidInstance, &m_pDIJoystick, NULL );
+
+	if( FAILED(hr) )
+	{
+		LOG_PRINT_ERROR( " IDirectInput8::CreateDevice() failed." );
+		return Result::UNKNOWN_ERROR;
+	}
+    
+    // Make sure we got a joystick
+    if( m_pDIJoystick )
+	{
+		return Result::SUCCESS;
+	}
+	else
+    {
+		LOG_PRINT_ERROR( " IDirectInput8::CreateDevice() didn't fail, but the device was not created." );
+//		MessageBox( NULL, "Joystick not found.", "DirectInputGamepad::Init()", MB_ICONERROR | MB_OK );
+		return Result::UNKNOWN_ERROR;
+    }
+}
+
+
+
 //-----------------------------------------------------------------------------
 // Name: EnumJoysticksCallback()
 // Desc: Called once for each enumerated joystick. If we find one, create a
@@ -193,21 +247,27 @@ Result::Name CDirectInputGamepad::Init()
 //-----------------------------------------------------------------------------
 BOOL CALLBACK EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VOID* pContext )
 {
-	HRESULT hr;
-
 	// Obtain an interface to the enumerated joystick.
-	hr = DIRECTINPUT.GetDirectInputObject()->CreateDevice( pdidInstance->guidInstance, &g_pDITempJoystickDevice, NULL );
+//	hr = DIRECTINPUT.GetDirectInputObject()->CreateDevice( pdidInstance->guidInstance, &g_pDITempJoystickDevice, NULL );
 
-    // If it failed, then we can't use this joystick. (Maybe the user unplugged
-    // it while we were in the middle of enumerating it.)
-    if( FAILED(hr) ) 
+	if( !sg_pDIGamepad )
+		return DIENUM_STOP;
+
+	Result::Name res = sg_pDIGamepad->CreateDevice( *pdidInstance );
+
+	if( res == Result::SUCCESS ) 
+	{
+		// Stop enumeration. Note: we're just taking the first joystick we get. You
+		// could store all the enumerated joysticks and let the user pick.
+		return DIENUM_STOP;
+	}
+	else
+	{
+		// If it failed, then we can't use this joystick. (Maybe the user unplugged
+		// it while we were in the middle of enumerating it.)
         return DIENUM_CONTINUE;
-
-    // Stop enumeration. Note: we're just taking the first joystick we get. You
-    // could store all the enumerated joysticks and let the user pick.
-    return DIENUM_STOP;
+	}
 }
-
 
 
 
