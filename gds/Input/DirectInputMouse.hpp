@@ -57,6 +57,8 @@ public:
 
 	~CDirectInputMouse();
 
+	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_MOUSE; }
+
 	Result::Name Init();
 
 	void Release();

@@ -1,5 +1,5 @@
 #include "CameraController.hpp"
-#include "Input/InputHub.hpp"
+#include "Input/InputDevice.hpp"
 
 using namespace boost;
 
@@ -31,7 +31,8 @@ bool CCameraController::IsKeyPressed( int general_input_code )
 	if( !IsValidGeneralInputCode( general_input_code ) )
 		return false;
 
-	return ( InputHub().GetInputState(general_input_code) == CInputState::PRESSED );
+//	return ( InputHub().GetInputState(general_input_code) == CInputState::PRESSED );
+	return ( InputDeviceHub().GetInputDeviceGroup(0)->GetInputState(general_input_code) == CInputState::PRESSED );
 }
 
 

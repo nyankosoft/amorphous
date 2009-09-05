@@ -34,6 +34,8 @@ m_pDIMouse(NULL)
 	m_fPrevMove_Y = 0;
 
 	m_iPosX = m_iPosY = 0;
+
+	InputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 

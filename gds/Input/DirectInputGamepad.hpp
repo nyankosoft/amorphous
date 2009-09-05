@@ -91,6 +91,8 @@ public:
 
 	~CDirectInputGamepad();
 
+	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_GAMEPAD; }
+
 	Result::Name Init();
 
 	Result::Name InitDevice( const DIDEVICEINSTANCE& di );

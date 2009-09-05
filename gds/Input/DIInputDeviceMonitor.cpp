@@ -95,6 +95,10 @@ void CDIInputDeviceMonitor::CheckDevices()
 {
 	tbb::mutex::scoped_lock(m_DeviceContainerMutex);
 
+//	LOG_PRINT( " Checking input devices..." );
+	static uint s_CallCount = 0;
+	s_CallCount++;
+
 	HRESULT hr;
 
 	m_vecDIDeviceInstanceHolder.resize( 0 );
@@ -127,6 +131,8 @@ void CDIInputDeviceMonitor::CheckDevices()
 				req.m_DeviceInstance = di;
 
 				m_queDIDeviceRequest.push( req );
+
+				LOG_PRINT( fmt_string( " Added an input device creation request for '%s' (%d)", string(di.tszProductName).c_str(), s_CallCount ) );
 			}
 		}
 		else
@@ -178,6 +184,14 @@ void CDIInputDeviceMonitor::ProcessInputDeviceManagementRequest()
 	if( m_queDIDeviceRequest.empty() )
 		return;
 
+	ProcessRequest();
+}
+
+
+void CDIInputDeviceMonitor::ProcessRequest()
+{
+	tbb::mutex::scoped_lock(m_DeviceContainerMutex);
+
 	size_t num_requests = m_queDIDeviceRequest.size();
 
 	CDIInputDeviceManagementRequest req;
@@ -195,7 +209,11 @@ void CDIInputDeviceMonitor::ProcessInputDeviceManagementRequest()
 
 		if( created )
 		{
-			tbb::mutex::scoped_lock(m_DeviceContainerMutex);
+			// Commented out - 11:01 AM 9/5/2009
+			// Duplicate requests may be added to queue if a device enumerated after the req popped
+			// and before the device is created and stored in container
+			// Moved to the beginning of the function
+//			tbb::mutex::scoped_lock(m_DeviceContainerMutex);
 
 //			container.SetAttached( true );
 //			m_mapGUIDtoDIDeviceInstance[container.m_DeviceInstance.guidInstance] = container;

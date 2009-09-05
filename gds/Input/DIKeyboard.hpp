@@ -44,6 +44,8 @@ public:
 
 	~CDIKeyboard();
 
+	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
+
 	Result::Name Init();
 
 	void InitKeyCodeMap();

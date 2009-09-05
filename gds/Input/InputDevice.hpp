@@ -2,10 +2,14 @@
 #define __InputDevice_H__
 
 
+#include <boost/shared_ptr.hpp>
+#include "fwd.hpp"
 #include "InputHub.hpp"
+#include "InputDeviceGroup.hpp"
 
 /// auto repeat control requires the timer
 #include "Support/Timer.hpp"
+#include "Support/FixedVector.hpp"
 
 
 class CInputDevice
@@ -13,7 +17,14 @@ class CInputDevice
 	enum Param
 	{
 		FIRST_AUTO_REPEAT_INTERVAL_MS = 300,
+//		NUM_MAX_SIMULTANEOUS_PRESSES  = 4,
 	};
+
+	void SetGroup( CInputDeviceGroup *pGroup );
+
+protected:
+
+	CInputDeviceGroup *m_pGroup;
 
 protected:
 
@@ -25,63 +36,37 @@ protected:
 
 public:
 
+	enum InputDeviceType
+	{
+		TYPE_GAMEPAD,
+		TYPE_KEYBOARD,
+		TYPE_MOUSE,
+		NUM_INPUT_DEVICE_TYPES
+	};
+
+public:
+
 	CInputDevice();
 
-	~CInputDevice();
+	virtual ~CInputDevice();
 
-	CInputState& InputState( int gi_code ) { return InputHub().m_aInputState[gi_code]; }
+	virtual CInputDevice::InputDeviceType GetInputDeviceType() const = 0;
 
-	inline void UpdateInputState( const SInputData& input_data );
+	TCFixedVector<int,CInputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& PressedKeyList() { return m_pGroup->m_PressedKeyList; }
+
+	CInputState& InputState( int gi_code ) { return m_pGroup->m_aInputState[gi_code]; }
+
+	void UpdateInputState( const SInputData& input_data );
 
 	virtual Result::Name Init() { return Result::SUCCESS; }
 
 	virtual Result::Name SendBufferedInputToInputHandlers() = 0;
 
 	void CheckPressedKeys();
+
+	friend class CInputDeviceHub;
 };
 
-
-inline void CInputDevice::UpdateInputState( const SInputData& input_data )
-{
-	TCFixedVector<int,CInputHub::NUM_MAX_SIMULTANEOUS_PRESSES>& pressed_key_list = InputHub().m_PressedKeyList;
-
-	// access the input state holder in InputHub()
-	CInputState& key = InputState( input_data.iGICode );
-
-	if( input_data.iType == ITYPE_KEY_PRESSED )
-	{
-		key.m_State = CInputState::PRESSED;
-
-		// schedule the first auto repeat event
-		key.m_NextAutoRepeatTimeMS = GlobalTimer().GetTimeMS() + FIRST_AUTO_REPEAT_INTERVAL_MS;
-
-		if( pressed_key_list.size() < CInputHub::NUM_MAX_SIMULTANEOUS_PRESSES )
-		{
-			// Return if the key has already been registered as a 'pressed' key
-			// because the same key cannot be pressed again before it is released
-			// - This sould not happen, but does happen with gamepad. Why?
-			for( int i=0; i<pressed_key_list.size(); i++ )
-			{
-				if( pressed_key_list[i] == input_data.iGICode )
-					return;
-			}
-
-			// register this key as a 'pressed' key
-			pressed_key_list.push_back( input_data.iGICode );
-		}
-	}
-	else // ( input_data.iType == ITYPE_KEY_RELEASED )
-	{
-		key.m_State = CInputState::RELEASED;
-
-		// clear the key from the list of pressed keys
-		for( int i=0; i<pressed_key_list.size(); i++ )
-		{
-			if( pressed_key_list[i] == input_data.iGICode )
-				pressed_key_list.erase_at( i );
-		}
-	}
-}
 
 
 /// Used as a singleton class
@@ -89,13 +74,27 @@ class CInputDeviceHub
 {
 	std::vector<CInputDevice *> m_vecpInputDevice;
 
+	std::vector< boost::shared_ptr<CInputDeviceGroup> > m_vecpGroup;
+
 public:
 
-	void RegisterInputHandler( CInputDevice *pDevice ) { m_vecpInputDevice.push_back( pDevice ); }
+	CInputDeviceHub();
 
-	void UnregisterInputHandler( CInputDevice *pDevice );
+	void RegisterInputDevice( CInputDevice *pDevice );
+
+	void UnregisterInputDevice( CInputDevice *pDevice );
+
+	void RegisterInputDeviceToGroup( CInputDevice *pDevice );
+
+	void UnregisterInputDeviceFromGroup( CInputDevice *pDevice );
 
 	void SendInputToInputHandlers();
+
+	void SendAutoRepeat();
+
+	void SendAutoRepeat( CInputDeviceGroup& group );
+
+	boost::shared_ptr<CInputDeviceGroup> GetInputDeviceGroup( int i ) { return m_vecpGroup[i]; }
 };
 
 

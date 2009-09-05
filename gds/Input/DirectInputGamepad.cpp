@@ -49,6 +49,8 @@ m_pDIJoystick(NULL)
 	m_bSendExtraDigitalInputFromAnalogInput = false;
 
 	m_bSendExtraDigitalInputFromPOVInput = true;
+
+	InputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 

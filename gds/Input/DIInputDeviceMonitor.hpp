@@ -96,6 +96,9 @@ private:
 
 	bool AlreadyRequested( const GUID& guid );
 
+	/// Called by the main thread
+	void ProcessRequest();
+
 protected:
 
 	/// singleton

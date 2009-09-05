@@ -13,6 +13,8 @@ CDIKeyboard::CDIKeyboard()
 : m_pKeyboard(NULL)
 {
 	InitKeyCodeMap();
+
+	InputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 
@@ -340,7 +342,7 @@ void CDIKeyboard::RefreshKeyStates()
         // switching, so just try again later 
         return;// S_OK; 
     }
-    
+   
 /*	if( diks[iKeyIndex] & 0x80 )
 		bKeyIsPressed = true;
 	else
@@ -351,7 +353,10 @@ void CDIKeyboard::RefreshKeyStates()
 
 bool CDIKeyboard::IsKeyPressed( int gi_code )
 {
-	if( InputHub().GetInputState( 'A' ) == CInputState::PRESSED )
+	if( !m_pGroup )
+		return false;
+
+	if( m_pGroup->GetInputState( 'A' ) == CInputState::PRESSED )
 	{
 		int break_here = 1;
 	}

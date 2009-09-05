@@ -23,23 +23,21 @@
  */
 class CInputHub
 {
-	enum params
-	{
-		NUM_MAX_INPUT_HANDLERS = 8,
+public:
 
-		NUM_MAX_SIMULTANEOUS_PRESSES  = 4,
-		AUTO_REPEAT_INTERVAL_MS       = 150,
+	enum Params
+	{
+		NUM_MAX_INPUT_HANDLERS      = 8,
+		AUTO_REPEAT_INTERVAL_MS     = 150,
 	};
+
+private:
 
 //	CInputHandler *m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
 
 	/// stacks of input handelers
 	/// - borrowed reference?
 	std::vector<CInputHandler *> m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
-
-	CInputState m_aInputState[NUM_GENERAL_INPUT_CODES];
-
-	TCFixedVector<int,NUM_MAX_SIMULTANEOUS_PRESSES> m_PressedKeyList;
 
 //	int m_NumInputHandlers;
 
@@ -98,10 +96,6 @@ public:
 	inline void UpdateInput( SInputData& input );
 
 	inline void SendAutoRepeatInputToInputHandlers( SInputData& input );
-
-	CInputState::Name GetInputState( int gi_code ) const { return m_aInputState[gi_code].m_State; }
-
-	void SendAutoRepeat();
 
 	friend class CInputDevice;
 };
