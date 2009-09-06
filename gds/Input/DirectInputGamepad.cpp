@@ -1,6 +1,7 @@
 #include "DirectInputGamepad.hpp"
 #include "DirectInput.hpp"
 #include "InputHub.hpp"
+#include "ForceFeedback/DIForceFeedbackEffectImpl.hpp"
 #include "App/GameWindowManager_Win32.hpp"
 
 #include "Support/StringAux.hpp"
@@ -12,11 +13,15 @@
 #include <math.h>
 #include <boost/thread.hpp>
 
+using namespace std;
+using namespace boost;
+
 
 
 //-----------------------------------------------------------------------------
 // Function-prototypes
 //-----------------------------------------------------------------------------
+BOOL CALLBACK    EnumAxesCallback( const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext );
 BOOL CALLBACK    EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext );
 BOOL CALLBACK    EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VOID* pContext );
 
@@ -157,6 +162,26 @@ HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
     if( FAILED( hr = m_pDIJoystick->SetProperty( DIPROP_AXISMODE, &dipdw.diph ) ) )
         return hr;
 
+	// force feedback related init (draft)
+
+	m_pFFParams = shared_ptr<CDIFFParams>( new CDIFFParams );
+
+	DWORD dwNumForceFeedbackAxis = 0;
+
+	// Enumerate and count the axes of the joystick 
+	if( FAILED( hr = m_pDIJoystick->EnumObjects( EnumAxesCallback,
+												 ( VOID* )&dwNumForceFeedbackAxis, DIDFT_AXIS ) ) )
+	{
+		//
+	}
+
+	// This simple sample only supports one or two axis joysticks
+	if( 2 < dwNumForceFeedbackAxis )
+		dwNumForceFeedbackAxis = 2;
+
+	m_pFFParams->m_NumFFAxes = dwNumForceFeedbackAxis;
+	m_pFFParams->m_pDeviceCopy = m_pDIJoystick;
+
     // Acquire the newly created device
     //m_pDIJoystick->Acquire();
 
@@ -242,6 +267,17 @@ Result::Name CDirectInputGamepad::CreateDevice( const DIDEVICEINSTANCE& di )
 //		MessageBox( NULL, "Joystick not found.", "DirectInputGamepad::Init()", MB_ICONERROR | MB_OK );
 		return Result::UNKNOWN_ERROR;
     }
+}
+
+BOOL CALLBACK EnumAxesCallback( const DIDEVICEOBJECTINSTANCE* pdidoi,
+                                VOID* pContext )
+{
+    DWORD* pdwNumForceFeedbackAxis = (DWORD*)pContext;
+
+    if( ( pdidoi->dwFlags & DIDOI_FFACTUATOR ) != 0 )
+        ( *pdwNumForceFeedbackAxis )++;
+
+    return DIENUM_CONTINUE;
 }
 
 
@@ -734,3 +770,28 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 }
 
 
+CForceFeedbackEffect CDirectInputGamepad::CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc )
+{
+	CForceFeedbackEffect ffe;
+
+	if( !m_pDIJoystick )
+		return ffe;
+
+	shared_ptr<CDIForceFeedbackEffectImpl> pImpl( new CDIForceFeedbackEffectImpl() );
+
+	Result::Name res = pImpl->Init( desc, m_pFFParams );
+	if( res != Result::SUCCESS )
+		return ffe;
+
+	SetImplToForceFeedbackEffect( pImpl, ffe );
+
+	return ffe;
+}
+
+
+Result::Name CDirectInputGamepad::InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl )
+{
+	Result::Name res = impl.Init( m_pFFParams );
+
+	return res;
+}

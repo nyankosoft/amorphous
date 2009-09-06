@@ -10,6 +10,10 @@ using namespace boost;
 static LPDIRECTINPUTDEVICE8 g_pDITempJoystickDevice = NULL;
 
 
+// FIXME: Multiple CDIInputDeviceManagementRequest objects are created for the same gamepad device
+// - Happens especially with small sleep time in CDIInputDeviceMonitor::run()
+// - Second request is created when the first request is being processed and the gamepad device is being initialized.
+
 BOOL CALLBACK EnumGameControllersCallback( const DIDEVICEINSTANCE* pdidInstance, VOID* pContext )
 {
 //	HRESULT hr;
@@ -167,12 +171,12 @@ void CDIInputDeviceMonitor::run()
 {
 	boost::xtime xt;
 	boost::xtime_get(&xt, boost::TIME_UTC);
-	xt.sec += 1; // 1 [sec]
 
 	while( !m_ExitThread )
 	{
 		CheckDevices();
 
+		xt.sec += 2; // 1 [sec]
 		boost::thread::sleep(xt);
 	}
 }

@@ -1,5 +1,6 @@
 #include "InputDevice.hpp"
 #include "InputHub.hpp"
+#include "ForceFeedback/ForceFeedbackEffect.hpp"
 #include "Support/Profile.hpp"
 
 using namespace std;
@@ -123,6 +124,17 @@ void CInputDevice::SetGroup( CInputDeviceGroup *pGroup )
 	m_pGroup = pGroup;
 }
 
+
+CForceFeedbackEffect CInputDevice::CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc )
+{
+	return CForceFeedbackEffect();
+}
+
+
+void CInputDevice::SetImplToForceFeedbackEffect( boost::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe )
+{
+	ffe.m_pImpl = pImpl;
+}
 
 
 //=============================================================================

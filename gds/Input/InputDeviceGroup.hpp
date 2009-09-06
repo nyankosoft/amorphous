@@ -26,6 +26,8 @@ public:
 
 	CInputState::Name GetInputState( int gi_code ) const { return m_aInputState[gi_code].m_State; }
 
+	std::vector<CInputDevice *>& InputDevice() { return m_vecpDevice; }
+
 	friend class CInputDevice;
 	friend class CInputDeviceHub;
 };

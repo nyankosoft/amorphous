@@ -13,6 +13,15 @@
 #pragma comment( lib, "dinput8.lib" )
 
 
+/// direct input force feedback params
+class CDIFFParams
+{
+public:
+	LPDIRECTINPUTDEVICE8 m_pDeviceCopy;
+	uint m_NumFFAxes;
+};
+
+
 /**
  * TODO:
  * - customizable threshold for analog to digital conversion
@@ -23,6 +32,8 @@ class CDirectInputGamepad : public CInputDevice
 	LPDIRECTINPUTDEVICE8 m_pDIJoystick;
 
 	DIJOYSTATE2 m_InputState;
+
+	boost::shared_ptr<CDIFFParams> m_pFFParams;
 
 	enum param
 	{
@@ -106,6 +117,10 @@ public:
 	void Unacquire() { m_pDIJoystick->Unacquire(); }
 
 	Result::Name SendBufferedInputToInputHandlers();
+
+	CForceFeedbackEffect CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc );
+
+	Result::Name InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl );
 };
 
 #endif		/*  __DIRECTINPUTGAMEPAD_H__  */

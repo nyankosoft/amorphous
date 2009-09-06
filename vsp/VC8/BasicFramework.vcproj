@@ -1214,6 +1214,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Input\InputDeviceGroup.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Input\InputHandler.hpp"
 				>
 			</File>
@@ -1241,6 +1245,30 @@
 				RelativePath="..\..\gds\Input\StdMouseInput.hpp"
 				>
 			</File>
+			<Filter
+				Name="ForceFeedback"
+				>
+				<File
+					RelativePath="..\..\gds\Input\ForceFeedback\DIForceFeedbackEffectImpl.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Input\ForceFeedback\DIForceFeedbackEffectImpl.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Input\ForceFeedback\ForceFeedbackEffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Input\ForceFeedback\ForceFeedbackEffect.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Input\ForceFeedback\fwd.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GUI"

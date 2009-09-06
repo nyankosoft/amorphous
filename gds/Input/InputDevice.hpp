@@ -6,6 +6,7 @@
 #include "fwd.hpp"
 #include "InputHub.hpp"
 #include "InputDeviceGroup.hpp"
+#include "ForceFeedback/fwd.hpp"
 
 /// auto repeat control requires the timer
 #include "Support/Timer.hpp"
@@ -34,10 +35,13 @@ protected:
 
 	virtual void RefreshKeyStates() {}
 
+	void SetImplToForceFeedbackEffect( boost::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe );
+
 public:
 
 	enum InputDeviceType
 	{
+		TYPE_INVALID,
 		TYPE_GAMEPAD,
 		TYPE_KEYBOARD,
 		TYPE_MOUSE,
@@ -63,6 +67,10 @@ public:
 	virtual Result::Name SendBufferedInputToInputHandlers() = 0;
 
 	void CheckPressedKeys();
+
+	virtual CForceFeedbackEffect CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc );
+
+	virtual Result::Name InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl ) { return Result::UNKNOWN_ERROR; }
 
 	friend class CInputDeviceHub;
 };
@@ -95,6 +103,8 @@ public:
 	void SendAutoRepeat( CInputDeviceGroup& group );
 
 	boost::shared_ptr<CInputDeviceGroup> GetInputDeviceGroup( int i ) { return m_vecpGroup[i]; }
+
+	int GetNumInputDeviceGroups() const { return (int)m_vecpGroup.size(); }
 };
 
 
