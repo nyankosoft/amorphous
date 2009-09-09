@@ -58,6 +58,10 @@ CStdKeyboard::CStdKeyboard()
 	for( char c='A'; c<='Z'; c++ )
 		m_aiGICodeForVKCode[c] = c;
 
+	// This is also true for '0' to '9'
+	for( char c='0'; c<='9'; c++ )
+		m_aiGICodeForVKCode[c] = c;
+
 	m_aiGICodeForVKCode[VK_NUMPAD0]  = GIC_NUMPAD0;
 	m_aiGICodeForVKCode[VK_NUMPAD1]  = GIC_NUMPAD1;
 	m_aiGICodeForVKCode[VK_NUMPAD2]  = GIC_NUMPAD2;
