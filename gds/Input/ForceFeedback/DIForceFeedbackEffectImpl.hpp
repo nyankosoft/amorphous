@@ -7,6 +7,7 @@
 #include "Input/DirectInput.hpp"
 #include "Input/DirectInputGamepad.hpp"
 #include "ForceFeedbackEffect.hpp"
+#include "ForceFeedbackTargetDevice.hpp"
 
 
 class CDIForceFeedbackEffectImpl : public CForceFeedbackEffectImpl
@@ -17,7 +18,10 @@ class CDIForceFeedbackEffectImpl : public CForceFeedbackEffectImpl
 
 	DIEFFECT m_Effect;
 
-	CForceFeedbackEffectDesc m_Desc;
+//	CForceFeedbackEffectDesc m_Desc;
+	boost::shared_ptr<CForceFeedbackEffectDesc> m_pDesc;
+
+	CForceFeedbackTargetDevice m_Target;
 
 	DWORD m_adwAxis[32];
 
@@ -25,11 +29,17 @@ class CDIForceFeedbackEffectImpl : public CForceFeedbackEffectImpl
 
 	uint m_ID;
 
+private:
+
+	CInputDevice *GetTargetInputDevice();
+
 public:
 
 	CDIForceFeedbackEffectImpl();
 
 //	CDIForceFeedbackEffectImpl( const CForceFeedbackEffectDesc& desc, boost::shared_ptr<CDIFFParams> pFFParams );
+
+	~CDIForceFeedbackEffectImpl();
 
 	Result::Name Init( const CForceFeedbackEffectDesc& desc, boost::shared_ptr<CDIFFParams> pFFParams );
 
@@ -59,6 +69,8 @@ public:
 	Result::Name Stop();
 
 	uint GetID() const { return m_ID; }
+
+	Result::Name OnInputDevicePlugged();
 };
 
 

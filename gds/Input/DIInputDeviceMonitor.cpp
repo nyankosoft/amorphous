@@ -9,6 +9,9 @@ using namespace boost;
 
 static LPDIRECTINPUTDEVICE8 g_pDITempJoystickDevice = NULL;
 
+// draft
+void OnInputDevicePlugged();
+
 
 // FIXME: Multiple CDIInputDeviceManagementRequest objects are created for the same gamepad device
 // - Happens especially with small sleep time in CDIInputDeviceMonitor::run()
@@ -222,6 +225,8 @@ void CDIInputDeviceMonitor::ProcessRequest()
 //			container.SetAttached( true );
 //			m_mapGUIDtoDIDeviceInstance[container.m_DeviceInstance.guidInstance] = container;
 			m_vecDIDeviceInstanceContainer.push_back( container );
+
+			OnInputDevicePlugged();
 		}
 		break;
 	}

@@ -34,13 +34,29 @@ public:
 			}
 		}
 	}
+
+	void OnInputDevicePlugged()
+	{
+		for( size_t i=0; i<m_vecpList.size(); i++ )
+		{
+			m_vecpList[i]->OnInputDevicePlugged();
+		}
+	}
 };
+
 
 
 CDIForceFeedbackEffectImplList& DIForceFeedbackEffectImplList()
 {
 	static CDIForceFeedbackEffectImplList s_obj;
 	return s_obj;
+}
+
+
+// draft
+void OnInputDevicePlugged()
+{
+	DIForceFeedbackEffectImplList().OnInputDevicePlugged();
 }
 
 
