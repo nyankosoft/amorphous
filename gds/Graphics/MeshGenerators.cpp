@@ -40,6 +40,51 @@ void CMeshGenerator::SetMiscMeshAttributes()
 }
 
 
+void CMeshGenerator::GenerateTextureCoords( CGeneral3DMesh& mesh )
+{
+	AABB3 aabb;
+	Result::Name res = CalculateAABB( mesh, aabb );
+	if( res != Result::SUCCESS )
+		return;
+
+	vector<CGeneral3DVertex>& vert_buffer = *(mesh.GetVertexBuffer().get());
+
+	const float margin = 0.01f;
+	if( m_TexCoordStyleFlags & (TexCoordStyle::LINEAR_SHIFT_Y | TexCoordStyle::LINEAR_SHIFT_INV_Y) )
+	{
+		const AABB3& mesh_aabb = aabb;
+		float len_y = mesh_aabb.vMax.y - mesh_aabb.vMin.y;
+		float min_y = mesh_aabb.vMin.y;
+//		float offset_v = mesh_aabb.vMin.y / len_y;
+
+		const size_t num_verts = vert_buffer.size();
+		for( size_t i=0; i<num_verts; i++ )
+		{
+			vert_buffer[i].m_TextureCoord[0].v = (1.0f - 2.0f * margin) * (vert_buffer[i].m_vPosition.y - min_y) / len_y + margin;
+		}
+
+		if( m_TexCoordStyleFlags & TexCoordStyle::LINEAR_SHIFT_INV_Y )
+		{
+			for( size_t i=0; i<num_verts; i++ )
+				vert_buffer[i].m_TextureCoord[0].v = 1.0f - vert_buffer[i].m_TextureCoord[0].v;
+		}
+	}
+}
+
+
+
+//====================================================================================
+// CBoxMeshGenerator
+//====================================================================================
+
+CBoxMeshGenerator::CBoxMeshGenerator()
+:
+m_vEdgeLengths(Vector3(1,1,1)),
+m_PolygonDirection(MeshPolygonDirection::OUTWARD)
+{
+}
+
+
 Result::Name CBoxMeshGenerator::Generate()
 {
 	return Generate( m_vEdgeLengths,
@@ -48,7 +93,7 @@ Result::Name CBoxMeshGenerator::Generate()
 }
 
 
-Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, const SFloatRGBAColor& diffuse_color )
+Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, const SFloatRGBAColor& diffuse_color, MeshPolygonDirection::Type polygon_direction )
 {
 	const int num_vertices = 24;
 	const int num_faces = 6;
@@ -143,7 +188,10 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 	{
 		polygon_buffer[i].m_index.resize( 4 );
 		for( int j=0; j<4; j++ )
-			polygon_buffer[i].m_index[j] = i*4+j;
+		{
+			int local_index = (polygon_direction == MeshPolygonDirection::OUTWARD) ? j : 3-j;
+			polygon_buffer[i].m_index[j] = i*4+local_index;
+		}
 	}
 
 
@@ -175,6 +223,8 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 			vecVertex[i*4+2].m_TextureCoord[0] = TEXCOORD2(1,1);
 			vecVertex[i*4+3].m_TextureCoord[0] = TEXCOORD2(0,1);
 		}
+
+		GenerateTextureCoords( *(pMesh.get()) );
 	}
 
 	pMesh->GetMaterialBuffer().resize( 1 );

@@ -2,9 +2,36 @@
 #define __MeshGenerator_H__
 
 
+#include "../base.hpp"
 #include "Graphics/MeshModel/PrimitiveShapeMeshes.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
+
+
+class MeshPolygonDirection
+{
+public:
+	enum Type
+	{
+		INWARD,
+		OUTWARD,
+		NUM_TYPES
+	};
+};
+
+class TexCoordStyle
+{
+public:
+	enum Flags
+	{
+//		LINEAR_SHIFT_X     = (1 << 0),
+//		LINEAR_SHIFT_INV_X = (1 << 1),
+		LINEAR_SHIFT_Y     = (1 << 2),
+		LINEAR_SHIFT_INV_Y = (1 << 3),
+//		LINEAR_SHIFT_Z     = (1 << 4),
+//		LINEAR_SHIFT_INV_Z = (1 << 5),
+	};
+};
 
 
 class CMeshGenerator
@@ -21,11 +48,17 @@ protected:
 
 	std::string m_ResourceIDString;
 
+	U32 m_TexCoordStyleFlags;
+
 protected:
 
 	/// Generate() of subclasses need to call this after creating mesh
 	/// and store it to m_MeshArchive
 	void SetMiscMeshAttributes();
+
+	/// Derived classes are responsible for calling this function if it wants to
+	/// generate texture coords based on m_TexCoordStyleFlags.
+	void GenerateTextureCoords( CGeneral3DMesh& mesh );
 
 public:
 
@@ -41,7 +74,8 @@ public:
 	CMeshGenerator()
 		:
 	m_DiffuseColor( SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f) ),
-	m_RequestedVertexFormatFlags( DEFAULT_VERTEX_FLAGS )
+	m_RequestedVertexFormatFlags( DEFAULT_VERTEX_FLAGS ),
+	m_TexCoordStyleFlags(0)
 	{}
 
 	virtual ~CMeshGenerator() {}
@@ -56,6 +90,8 @@ public:
 
 	void SetTexturePath( const std::string& texture_path ) { m_TexturePath = texture_path; }
 
+	void SetTexCoordStyleFlags( U32 flags ) { m_TexCoordStyleFlags = flags; }
+
 	virtual Result::Name Generate() = 0;
 };
 
@@ -64,19 +100,25 @@ class CBoxMeshGenerator : public CMeshGenerator
 {
 	Vector3 m_vEdgeLengths;
 
+	MeshPolygonDirection::Type m_PolygonDirection;
+
 public:
 
-	CBoxMeshGenerator() {}
+	CBoxMeshGenerator();
+
 	~CBoxMeshGenerator() {}
 
 	void SetEdgeLengths( Vector3 vEdgeLengths ) { m_vEdgeLengths = vEdgeLengths; }
+
+	void SetPolygonDirection( MeshPolygonDirection::Type polygon_direction ) { m_PolygonDirection = polygon_direction; }
 
 	Result::Name Generate();
 
 	/// \param vLengths full edge lengths
 	Result::Name Generate( Vector3 vLengths,
 		U32 vertex_flags = DEFAULT_VERTEX_FLAGS,
-		const SFloatRGBAColor& diffuse_color = SFloatRGBAColor(1.0f, 1.0f, 1.0f, 1.0f) );
+		const SFloatRGBAColor& diffuse_color = SFloatRGBAColor(1.0f, 1.0f, 1.0f, 1.0f),
+		MeshPolygonDirection::Type polygon_direction = MeshPolygonDirection::OUTWARD );
 };
 
 
