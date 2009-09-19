@@ -178,6 +178,24 @@ inline void CGeneral3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex
 }
 
 
+inline Result::Name CalculateAABB( const CGeneral3DMesh& src_mesh, AABB3& dest_aabb )
+{
+	dest_aabb.Nullify();
+
+	if( !src_mesh.GetVertexBuffer() )
+		return Result::INVALID_ARGS;
+
+	const vector<CGeneral3DVertex>& vert_buffer = *(src_mesh.GetVertexBuffer().get());
+	const size_t num_verts = vert_buffer.size();
+	for( size_t i=0; i<num_verts; i++ )
+	{
+		dest_aabb.AddPoint( vert_buffer[i].m_vPosition );
+	}
+
+	return Result::SUCCESS;
+}
+
+
 
 inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
 {
