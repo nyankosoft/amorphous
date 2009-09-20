@@ -142,9 +142,19 @@ bool CGraphicsResource::LoadFromDisk()
 
 bool CGraphicsResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
-	if( GetResourceType()      == desc.GetResourceType()
-	 && GetDesc().ResourcePath == desc.ResourcePath )
-		return true;
+	if( GetResourceType() == desc.GetResourceType() )
+	{
+		if( 0 < GetDesc().ResourcePath.length()
+		 && 0 < desc.ResourcePath.length()
+		 && GetDesc().ResourcePath == desc.ResourcePath )
+		{
+			// Treat as sharable only if both of the resources have resource paths
+			// and they are the same ones.
+			return true;
+		}
+		else
+			return false;
+	}
 	else
 		return false;
 }
@@ -222,15 +232,24 @@ void CTextureResource::Release()
 
 bool CTextureResource::IsDiskResource() const
 {
-//	if( 0 < m_TextureDesc.Width
-//	 && 0 < m_TextureDesc.Height
-//	 && m_TextureDesc.Format != TextureFormat::Invalid )
-	if( m_TextureDesc.pLoader )
+	if( 0 == m_TextureDesc.ResourcePath.length()
+	 || m_TextureDesc.pLoader )
 	{
+		// Has no resource path or has a loader - non-disk resource
 		return false;
 	}
 	else
 		return true;
+
+//	if( 0 < m_TextureDesc.Width
+//	 && 0 < m_TextureDesc.Height
+//	 && m_TextureDesc.Format != TextureFormat::Invalid )
+/*	if( m_TextureDesc.pLoader )
+	{
+		return false;
+	}
+	else
+		return true;*/
 }
 
 

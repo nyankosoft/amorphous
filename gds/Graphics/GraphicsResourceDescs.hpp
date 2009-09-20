@@ -147,15 +147,11 @@ public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
+	virtual bool IsValid() const;
+
 	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CTextureResourceDesc>( new CTextureResourceDesc(*this) ); }
 
-	bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const
-	{
-		if( ResourcePath == desc.ResourcePath )
-			return true;
-		else
-			return false;
-	}
+	bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const;
 
 	int CanBeUsedAsTextureCache( const CTextureResourceDesc& desc ) const
 	{

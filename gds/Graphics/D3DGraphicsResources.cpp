@@ -173,6 +173,18 @@ bool CD3DTextureResource::Create()
 	D3DPOOL pool = D3DPOOL_MANAGED;
 //	DWORD usage = D3DUSAGE_DYNAMIC;
 //	D3DPOOL pool = D3DPOOL_DEFAULT;
+
+	if( desc.UsageFlags & UsageFlag::RENDER_TARGET )
+	{
+		usage = D3DUSAGE_RENDERTARGET;
+		pool = D3DPOOL_DEFAULT;
+	}
+	else
+	{
+		usage = 0;
+		pool = D3DPOOL_MANAGED;
+	}
+
 	{
 		char title[1024];
 		sprintf( title, "D3DXCreateTexture (%dx%d)", desc.Width, desc.Height );
@@ -203,7 +215,22 @@ bool CD3DTextureResource::CreateFromDesc()
 	const CTextureResourceDesc& desc = m_TextureDesc;
 
 	// create an empty texture
-	Create();
+	bool created = Create();
+
+	if( !created )
+		return false;
+
+	if( desc.UsageFlags & UsageFlag::RENDER_TARGET )
+	{
+		SetState( GraphicsResourceState::LOADED );
+		return true;
+	}
+
+	if( !desc.pLoader )
+	{
+		LOG_PRINT_WARNING( " Created an empty texture that is not a render target and does not have a texture loader." );
+		return true;
+	}
 
 	if( Lock() )
 	{
@@ -215,7 +242,7 @@ bool CD3DTextureResource::CreateFromDesc()
 			pLoader->FillTexture( *(m_pLockedTexture.get()) );
 		}
 
-		Unlock();
+		bool unlocked = Unlock();
 
 		SetState( GraphicsResourceState::LOADED );
 

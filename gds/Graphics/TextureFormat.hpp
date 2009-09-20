@@ -12,6 +12,7 @@ public:
 	{
 		Invalid = -1,
 		R16F = 0,
+		R32F,
 		A16R16G16B16F,
 		A8R8G8B8,
 		X8R8G8B8,
@@ -32,6 +33,7 @@ inline TextureFormat::Format FromD3DSurfaceFormat( D3DFORMAT d3d_fmt )
 	switch(d3d_fmt)
 	{
 	case D3DFMT_R16F:          return TextureFormat::R16F;
+	case D3DFMT_R32F:          return TextureFormat::R32F;
 	case D3DFMT_A16B16G16R16F: return TextureFormat::A16R16G16B16F;
 	case D3DFMT_A8R8G8B8:      return TextureFormat::A8R8G8B8;
 	case D3DFMT_X8R8G8B8:      return TextureFormat::X8R8G8B8;

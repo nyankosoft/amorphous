@@ -19,6 +19,37 @@ void CGraphicsResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 // CTextureResourceDesc
 //================================================================================
 
+bool CTextureResourceDesc::IsValid() const
+{
+	if( 0 < this->ResourcePath.length() )
+	{
+		return true;
+	}
+	else
+	{
+		if( 0 < this->Width
+		 && 0 < this->Height
+		 && this->Format != TextureFormat::Invalid )
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+}
+
+
+bool CTextureResourceDesc::CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const
+{
+	if( 0 < this->ResourcePath.length()
+	 && 0 < desc.ResourcePath.length()
+	 && this->ResourcePath == desc.ResourcePath )
+		return true;
+	else
+		return false;
+}
+
+
 void CTextureResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGraphicsResourceDesc::LoadFromXMLNode( reader );
