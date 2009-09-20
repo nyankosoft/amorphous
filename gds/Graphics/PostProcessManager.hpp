@@ -8,6 +8,7 @@
 #include "../base.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/PostProcessEffect.hpp"
 
 
 //#define DEBUG_VS   // Uncomment this line to debug vertex shaders 
@@ -18,15 +19,6 @@
 //#define PPCOUNT (sizeof(g_aszFxFile) / sizeof(g_aszFxFile[0]))
 
 
-
-// RT_COUNT is the number of simultaneous render targets used in the sample.
-enum eRT_TYPE
-{
-	RT_COLOR = 0,
-//	RT_NORMAL,
-//	RT_POSITION,
-	RT_COUNT
-};
 
 /*
 // Name of the postprocess .fx files

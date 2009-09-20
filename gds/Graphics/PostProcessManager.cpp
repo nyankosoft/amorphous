@@ -50,7 +50,10 @@ HRESULT CPostProcess::Init( LPDIRECT3DDEVICE9 pDev, const std::string& filename 
                                     &m_pEffect,
                                     NULL );
     if( FAILED( hr ) )
+	{
+		LOG_PRINT_ERROR( "D3DXCreateEffectFromFile() failed (file: " + filename + ")" );
         return hr;
+	}
 
     // Get the PostProcess technique handle
     m_hTPostProcess = m_pEffect->GetTechniqueByName( "PostProcess" );
@@ -324,7 +327,8 @@ CPostProcessManager::CPostProcessManager()
 :
 m_iNumPostProcesses(0),
 m_nScene(0),
-m_pEffect(NULL)
+m_pEffect(NULL),
+m_pVertDeclPP(NULL)
 {
 	for( int i=0; i<RT_COUNT; i++ )
 		m_pSceneSave[i] = NULL;
@@ -428,6 +432,7 @@ Result::Name CPostProcessManager::OnCreateDevice( const std::string& shader_file
 		if( pCompileErrors )
 		{
 			char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
+			LOG_PRINT_ERROR( "D3DXCreateEffectFromFile() failed. " + string(pBuffer) );
 			pCompileErrors->Release();
 		}
 		return Result::UNKNOWN_ERROR;
@@ -969,6 +974,9 @@ HRESULT CPostProcessManager::PerformPostProcess()
 /// render the textured rectangle of the scene with post process effects
 HRESULT CPostProcessManager::DrawSceneWithPostProcessEffects()
 {
+	if( !m_pEffect )
+		return E_FAIL;
+
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
 	HRESULT hr;
