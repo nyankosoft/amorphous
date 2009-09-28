@@ -34,6 +34,9 @@ UINT4 SVertexColor_LWO2::GetColor_UINT4_ARGB()
 //================================================================================
 
 CLWO2_VertexColorMap::CLWO2_VertexColorMap(const CLWO2_VertexColorMap& vc_map)
+:
+iNumIndices(0),
+paVertexColor(NULL)
 {
 	strName = vc_map.strName;
 
