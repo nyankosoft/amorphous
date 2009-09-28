@@ -89,7 +89,8 @@ Result::Name CBoxMeshGenerator::Generate()
 {
 	return Generate( m_vEdgeLengths,
 		m_RequestedVertexFormatFlags,
-		m_DiffuseColor );
+		m_DiffuseColor,
+		m_PolygonDirection );
 }
 
 
