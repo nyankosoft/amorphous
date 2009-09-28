@@ -121,6 +121,12 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 
 	CInputHandlerSharedPtr m_pInputHandler;
 
+//	float m_fKeyValue;
+
+	CHDRLightingParams m_HDRLightingParams;
+
+	float m_fBlurStrength;
+
 protected:
 
 	void InitLensFlare( const std::string& strPath );
@@ -141,7 +147,7 @@ public:
 
 	void Release() {};
 
-//	void Update( float dt );
+	void Update( float dt );
 
 	void Render();
 

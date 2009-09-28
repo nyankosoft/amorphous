@@ -2,8 +2,10 @@
 #include "Graphics/D3DXMeshObjectBase.hpp"
 #include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Graphics/SkyboxMisc.hpp"
 #include "Support/CameraController_Win32.hpp"
-
+#include "Support/ParamLoader.hpp"
 
 using namespace std;
 using namespace boost;
@@ -34,7 +36,21 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 {
 	switch( input.iGICode )
 	{
-	case '1':
+	case GIC_F6:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			CFilter::ms_SaveFilterResultsAtThisFrame = 1;
+		}
+		break;
+
+	case GIC_F9:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			GraphicsResourceManager().Refresh();
+//			m_pPostProcessEffectManager->InitHDRLightingFilter();
+		}
+		break;
+
 //	case 'R':
 //		m_pSynthTest->m_pSynthesizer->SetRootPose( Matrix34Identity() );
 		break;
@@ -46,7 +62,15 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 				return;
 
 			if( !m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_HDR_LIGHTING) )
+			{
 				m_pPostProcessEffectManager->EnableHDRLighting( true );
+				m_pPostProcessEffectManager->SetHDRLightingParams(
+					CHDRLightingParams::KEY_VALUE
+				   |CHDRLightingParams::TONE_MAPPING
+				   |CHDRLightingParams::LUMINANCE_ADAPTATION_RATE,
+					m_HDRLightingParams
+					);
+			}
 			else
 				m_pPostProcessEffectManager->EnableHDRLighting( false );
 		}
@@ -62,6 +86,21 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 				m_pPostProcessEffectManager->EnableBlur( true );
 			else
 				m_pPostProcessEffectManager->EnableBlur( false );
+
+			// set the blur effect
+		}
+		break;
+
+	case 'M':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			if( !m_pPostProcessEffectManager )
+				return;
+
+			if( !m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_MONOCHROME_COLOR) )
+				m_pPostProcessEffectManager->EnableEffect( CPostProcessEffect::TF_MONOCHROME_COLOR );
+			else
+				m_pPostProcessEffectManager->DisableEffect( CPostProcessEffect::TF_MONOCHROME_COLOR );
 
 			// set the blur effect
 		}
@@ -148,26 +187,45 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 				m_aPostProcessEffect[i] = 0;
 		}*/
 		break;
-/*
-	case VK_MULTIPLY:
+
+	case GIC_PAGE_UP:
+	case GIC_PAGE_DOWN:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_fBlurFactor += 0.2f;
-			if( 2.0f < m_fBlurFactor )
-				m_fBlurFactor = 2.0f;
+			if( !m_pPostProcessEffectManager )
+				return;
+
+			bool page_up = (input.iGICode == GIC_PAGE_UP);
+
+			float delta = 0.01f;
+			if( m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_HDR_LIGHTING) )
+			{
+				delta *= page_up ? 1.0f : -1.0f;
+				m_HDRLightingParams.key_value += delta;
+				m_pPostProcessEffectManager->SetHDRLightingParams( CHDRLightingParams::KEY_VALUE, m_HDRLightingParams );
+			}
+			else if( m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_BLUR) )
+			{
+				delta = 0.05f;
+				delta *= page_up ? 1.0f : -1.0f;
+				m_fBlurStrength += delta;
+				clamp( m_fBlurStrength, 0.05f, 10.0f );
+				m_pPostProcessEffectManager->SetBlurStrength( m_fBlurStrength );
+			}
 		}
 		break;
 
-	case VK_DIVIDE:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_fBlurFactor -= 0.2f;
-			if( m_fBlurFactor < 0.01f )
-				m_fBlurFactor = 0.01f;
+			if( !m_pPostProcessEffectManager )
+				return;
+
+			m_HDRLightingParams.key_value -= 0.01f;
+			m_pPostProcessEffectManager->SetHDRLightingParams( CHDRLightingParams::KEY_VALUE, m_HDRLightingParams );
 		}
 		break;
 
-	case VK_PRIOR:
+/*	case VK_PRIOR:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			if( m_aPostProcessEffect[PP_BLOOM] )
@@ -199,43 +257,20 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 }
 
 
-void RenderAsSkybox( CMeshObjectHandle& mesh )
-{
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-	pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  FALSE );
-	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-	pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
-
-	shared_ptr<CD3DXMeshObjectBase> pMesh = mesh.GetMesh();
-
-	CD3DFixedFunctionPipelineManager ffp_mgr;
-
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	const Vector3 vCamPos = g_CameraController.GetPosition();
-	matWorld._41 = vCamPos.x;
-	matWorld._42 = vCamPos.y;
-	matWorld._43 = vCamPos.z;
-	ffp_mgr.SetWorldTransform( matWorld );
-
-	if( pMesh )
-		pMesh->Render( ffp_mgr );
-
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-	pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
-}
-
-
-
 CPostProcessEffectTest::CPostProcessEffectTest()
 :
 m_fBlurFactor(2.0f),
 m_fLuminance(0.08f),
-m_PPEffectFlags(0)
+m_PPEffectFlags(0),
+//m_fKeyValue(0.5f)
+m_fBlurStrength(1.0f)
 {
+	m_HDRLightingParams.key_value = 3.5f;
+
+	CParamLoader pl( "params.txt" );
+	pl.LoadParam( "tone_mapping_key_value",    m_HDRLightingParams.key_value );
+	pl.LoadParam( "luminance_adaptation_rate", m_HDRLightingParams.luminance_adaptation_rate );
+//	pl.LoadBoolParam( "tone_mapping", m_HDRLightingParams.tone_mapping );
 }
 
 
@@ -249,6 +284,14 @@ void CPostProcessEffectTest::RenderMeshes()
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
+	for( int i=0; i<4; i++ )
+	{
+		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
+		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR );
+		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSU,  D3DTADDRESS_WRAP );
+		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSV,  D3DTADDRESS_WRAP );
+	}
+
 	// alpha-blending settings 
 //	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
@@ -258,6 +301,7 @@ void CPostProcessEffectTest::RenderMeshes()
 	pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, TRUE );
 	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
 	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
+	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	LPD3DXEFFECT pEffect = pShaderManager->GetEffect();
@@ -280,7 +324,7 @@ void CPostProcessEffectTest::RenderMeshes()
 
 	if( 0 < num_meshes )
 	{
-		RenderAsSkybox( m_vecMesh[0] );
+		RenderAsSkybox( m_vecMesh[0], g_CameraController.GetPosition() );
 	}
 
 	// reset the world transform matrix
@@ -289,60 +333,22 @@ void CPostProcessEffectTest::RenderMeshes()
 	D3DXMatrixIdentity( &matWorld );
 	ffp_mgr.SetWorldTransform( matWorld );
 
+	DWORD fog_colors[] =
+	{
+		0xFFFFFFFF, // place holder
+		0xFFDDDFDE, // terrain mesh
+		0xFF101010  // underground
+	};
+
 	for( i=1; i<num_meshes; i++ )
 	{
 		shared_ptr<CD3DXMeshObjectBase> pMesh = m_vecMesh[i].GetMesh();
 
+		hr = pd3dDevice->SetRenderState( D3DRS_FOGCOLOR, fog_colors[i] );
+
 		if( pMesh )
 			pMesh->Render( ffp_mgr );
 	}
-
-/*
-	UINT cPasses;
-	pEffect->Begin( &cPasses, 0 );
-
-	size_t i, num_meshes = m_vecMesh.size();
-	for( i=0; i<num_meshes; i++ )
-	{
-		CD3DXMeshObject *pMeshObject = m_vecMesh[i];
-
-		if( !pMeshObject )
-			continue;
-
-		LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
-		if( !pMesh )
-			return;
-
-		pd3dDevice->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
-
-		LPDIRECT3DTEXTURE9 pTex;
-
-		// Meshes are divided into subsets by materials. Render each subset in a loop
-		DWORD mat, num_materials = pMeshObject->GetNumMaterials();
-		for( mat=0; mat<num_materials; mat++ )
-		{
-			pTex = pMeshObject->GetTexture(mat);
-			if( pTex )
-                m_pShaderManager->SetTexture( 0, pTex );
-			else
-				m_pShaderManager->SetTexture( 0, m_pDefaultTexture );
-
-			pEffect->CommitChanges();
-
-			for( UINT p = 0; p < cPasses; ++p )
-			{
-				pEffect->BeginPass( p );
-
-				// Draw the mesh subset
-				pMesh->DrawSubset( mat );
-
-				pEffect->EndPass();
-			}
-		}
-	}
-
-	pEffect->End();
-*/
 }
 
 
@@ -414,6 +420,11 @@ void CPostProcessEffectTest::RenderScene()
 }
 
 
+void CPostProcessEffectTest::Update( float dt )
+{
+}
+
+
 //-----------------------------------------------------------------------------
 // Name: Render()
 // Desc: Draws the scene
@@ -441,7 +452,6 @@ void CPostProcessEffectTest::Render()
 
 	RenderScene();
 
-
 	if( m_pPostProcessEffectManager )
 	{
 		m_pPostProcessEffectManager->EndRender();
@@ -452,24 +462,27 @@ void CPostProcessEffectTest::Render()
 //	m_CameraController.GetCameraMatrix( matCamera );
 //	m_pShaderManager->SetViewTransform( matCamera );
 
-/*
+
 	// render the text info
-	char acStr[256];
-	sprintf( acStr, "%f", TIMER.GetFPS() );
-	m_Font.DrawText( acStr, D3DXVECTOR2(20,20), 0xFFFFFFFF );
-*/
+	string text = fmt_string( "gray mid value: %f", m_HDRLightingParams.key_value );
+	m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
+
 	// present the backbuffer contents to the display
 	//	pd3dDevice->Present( NULL, NULL, NULL, NULL );
 }
 
-
+// mesh 0: skybox
+// mesh 1 to n: meshes
 bool CPostProcessEffectTest::LoadModels()
 {
-	m_vecMeshFilepath.resize( 2 );
+	m_vecMeshFilepath.resize( 3 );
 	m_vecMeshFilepath[0] = ""; // skybox
-	m_vecMeshFilepath[1] = "./models/compact_000-r01-low_poly.msh";
+//	m_vecMeshFilepath[1] = "./models/compact_000-r01-low_poly.msh";
+//	m_vecMeshFilepath[1] = "./models/underground_entrance.msh";
+	m_vecMeshFilepath[1] = "./models/uge-terrain.msh";
+	m_vecMeshFilepath[2] = "./models/uge-underground.msh";
 
-	m_vecMesh.resize( 2 );
+	m_vecMesh.resize( 3 );
 	CMeshResourceDesc skybox_mesh_desc;
 	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator = shared_ptr<CBoxMeshGenerator>( new CBoxMeshGenerator );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
@@ -480,7 +493,8 @@ bool CPostProcessEffectTest::LoadModels()
 	skybox_mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 	bool loaded = m_vecMesh[0].Load( skybox_mesh_desc );
 
-	loaded = m_vecMesh[1].Load( m_vecMeshFilepath[1] );
+	for( size_t i=1; i<m_vecMeshFilepath.size(); i++ )
+		loaded = m_vecMesh[i].Load( m_vecMeshFilepath[i] );
 
 	return true;
 }
@@ -576,6 +590,8 @@ int CPostProcessEffectTest::Init()
 
 	// load models
 	loaded = LoadModels();
+
+	m_pFont = shared_ptr<CFont>( new CFont( "Arial", 16, 32 ) );
 
 	return 0;
 }

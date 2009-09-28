@@ -72,13 +72,14 @@ float  g_fMiddleGray;       // The middle gray key value
 float  g_fWhiteCutoff;      // Lowest luminance which is mapped to white
 float  g_fElapsedTime;      // Time in seconds since the last calculation
 
-bool  g_bEnableBlueShift;   // Flag indicates if blue shift is performed
-bool  g_bEnableToneMap;     // Flag indicates if tone mapping is performed
-bool  g_bRenderStar;        // start effect
+bool  g_bEnableBlueShift = false;   // Flag indicates if blue shift is performed
+bool  g_bEnableToneMap = true;      // Flag indicates if tone mapping is performed
+bool  g_bRenderStar = false;        // star effect
 
-float  g_fBloomScale;       // Bloom process multiplier
-float  g_fStarScale;        // Star process multiplier
-
+float  g_fBloomScale;         // Bloom process multiplier
+float  g_fStarScale;          // Star process multiplier
+float  g_fBloomFactor = 1.0f; // Multiply each horizontal / vertical bloom process 
+float  g_fAdaptationRate = 0.02f; // how quickly the camera adjust the brightness. range: (0.0,1.0]
 
 
 //-----------------------------------------------------------------------------
@@ -305,11 +306,15 @@ float4 CalculateAdaptedLumPS
 	float fAdaptedLum = tex2D(s0, float2(0.5f, 0.5f));
 	float fCurrentLum = tex2D(s1, float2(0.5f, 0.5f));
 
+	// >>> comment in original D3D sample
 	// The user's adapted luminance level is simulated by closing the gap between
-	// adapted luminance and current luminance by 2% every frame, based on a
+	// adapted luminance and current luminance by (g_fAdaptationRate*100)% every frame, based on a
 	// 30 fps rate. This is not an accurate model of human adaptation, which can
 	// take longer than half an hour.
-	float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * ( 1 - pow( 0.98f, 30 * g_fElapsedTime ) );
+	// <<< comment in original D3D sample
+	// In the original D3D sample g_fAdaptationRate was hard-coded to 0.02.
+	float f = ( 1 - pow( 1.0f - g_fAdaptationRate, 30 * g_fElapsedTime ) );
+	float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * f;
 	return float4(fNewAdaptation, fNewAdaptation, fNewAdaptation, 1.0f);
 }
 
@@ -364,6 +369,7 @@ float4 FinalScenePassPS
 	vSample += g_fBloomScale * vBloom;
 
 	return vSample;
+//	return float4(fAdaptedLum,fAdaptedLum,fAdaptedLum,1.0f);
 }
 
 
@@ -454,6 +460,7 @@ float4 BrightPassFilterPS
 {
 	float4 vSample = tex2D( s0, vScreenPosition );
 	float  fAdaptedLum = tex2D( s1, float2(0.5f, 0.5f) );
+//	float  fAdaptedLum = 0.03f;
 
 	// Determine what the pixel's value will be after tone-mapping occurs
 	vSample.rgb *= g_fMiddleGray/(fAdaptedLum + 0.001f);
@@ -470,6 +477,7 @@ float4 BrightPassFilterPS
 	vSample.rgb /= (BRIGHT_PASS_OFFSET+vSample);
 
 	return vSample;
+//	return float4(fAdaptedLum,fAdaptedLum,fAdaptedLum,1.0f);
 }
 
 
@@ -501,7 +509,9 @@ float4 BloomPS
 		vSample += g_avSampleWeights[iSample]*vColor;
 	}
 
-	return vSample;
+	return float4( vSample.rgb * g_fBloomFactor, vSample.a );
+//	return float4( vSample.rgb / 2.0f, vSample.a );
+//	return float4( vSample.rgb, vSample.a );
 }
 
 
@@ -723,6 +733,21 @@ float4 MergeTextures_8PS
 	return vColor;
 }
 
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: PostProcessPS
+// Desc: Performs post-processing effect that converts a colored image to
+//       black and white.
+//-----------------------------------------------------------------------------
+float3 g_vLuminanceConv = { 0.2125f, 0.7154f, 0.0721f };
+float4 g_vMonochromeColorOffset= { 0.0f, 0.0f, 0.0f, 0.0f };
+
+float4 MonochromeColorPS( float2 Tex : TEXCOORD0 ) : COLOR0
+{
+	float4 monochrome_color = dot( (float3)tex2D( s0, Tex ), g_vLuminanceConv );
+    return monochrome_color + g_vMonochromeColorOffset;
+}
 
 
 
@@ -1065,4 +1090,19 @@ technique MergeTextures_8
 		PixelShader  = compile ps_2_0 MergeTextures_8PS();
 	}
 
+}
+
+
+//-----------------------------------------------------------------------------
+// Technique: PostProcess
+// Desc: Performs post-processing effect that converts a colored image to
+//       black and white.
+//-----------------------------------------------------------------------------
+technique MonochromeColor
+{
+    pass p0
+    {
+        PixelShader = compile ps_2_0 MonochromeColorPS();
+        ZEnable = false;
+    }
 }
