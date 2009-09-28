@@ -734,6 +734,8 @@ bool CTextFileScanner::TryScanSentence( const char *tag, string& text )
 
 bool CTextFileScanner::FindLineWithTag( const string& tag )
 {
+	if( !m_fp )
+		return false;
 
 	// reset the file pointer
 	// TDOO: check 2nd & 3rd arguments
