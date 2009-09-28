@@ -37,6 +37,7 @@ typedef TPlane2<int> SPlane2;
 
 const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc();
 SPlane2 GetBackBufferWidthAndHeight();
+SPlane2 GetCropWidthAndHeight();
 
 
 class CPostProcessEffect
@@ -44,9 +45,9 @@ class CPostProcessEffect
 public:
 	enum TypeFlag
 	{
-		TF_HDR_LIGHTING = (1 << 0),
-		TF_BLUR         = (1 << 1),
-		TF_MONOCHROME   = (1 << 2),
+		TF_HDR_LIGHTING       = (1 << 0),
+		TF_BLUR               = (1 << 1),
+		TF_MONOCHROME_COLOR   = (1 << 2),
 	};
 };
 
@@ -189,6 +190,8 @@ protected:
 
 	boost::shared_ptr<CRenderTargetTextureCache> m_pCache;
 
+	std::string m_DebugImageFilenameExtraString;
+
 private:
 
 	Result::Name CFilter::SetRenderTarget( CFilter& prev_filter );
@@ -215,6 +218,8 @@ public:
 		TYPE_HDR_BRIGHT_PASS,
 		TYPE_HDR_LIGHTING_FINAL_PASS,
 		TYPE_HDR_LIGHTING,
+		TYPE_FULL_SCREEN_BLUR,
+		TYPE_MONOCHROME_COLOR,
 		TYPE_ORIGINAL_SCENE,
 		NUM_FILTER_TYPES
 	};
@@ -259,9 +264,11 @@ public:
 
 	void SetRenderTargetSurfaceFormat( TextureFormat::Format fmt ) { m_Desc.Format = fmt; }
 
-	void SetRnederTargetSize( int width, int height ) { m_Desc.Width = width; m_Desc.Height = height; }
+	void SetRenderTargetSize( int width, int height ) { m_Desc.Width = width; m_Desc.Height = height; }
 
 	virtual void AddNextFilter( boost::shared_ptr<CFilter> pFilter ) { m_vecpNextFilter.push_back( pFilter ); }
+
+	virtual void ClearNextFilters() { m_vecpNextFilter.resize( 0 ); }
 
 	void SetFilterShader(  boost::shared_ptr<CPostProcessFilterShader> pFilterShader ) { m_pFilterShader = pFilterShader; }
 
@@ -273,6 +280,12 @@ public:
 	virtual void LockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
 
 	virtual void UnlockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
+
+	const std::string& GetDebugImageFilenameExtraString() { return m_DebugImageFilenameExtraString; }
+
+	void SetDebugImageFilenameExtraString( const std::string& str ) { m_DebugImageFilenameExtraString = str; }
+
+	static int ms_SaveFilterResultsAtThisFrame;
 };
 
 
@@ -307,6 +320,8 @@ public:
 	virtual ~CCombinedFilter() {}
 
 	void AddNextFilter( boost::shared_ptr<CFilter> pFilter ) { if(m_pLastFilter) { m_pLastFilter->AddNextFilter( pFilter ); } }
+
+	void ClearNextFilters() { if(m_pLastFilter) { m_pLastFilter->ClearNextFilters(); } }
 };
 
 
@@ -349,6 +364,12 @@ protected:
 
 	virtual void GetSampleOffsets() = 0;
 
+	float m_fDeviation;
+
+	float m_fBloomFactor;
+
+	bool m_UseForBlurFilter;
+
 public:
 
 	CBloomFilter();
@@ -356,6 +377,12 @@ public:
 	virtual ~CBloomFilter() {}
 
 	void Render();
+
+	void SetBloomFactor( float factor ) { m_fBloomFactor = factor; }
+
+	void SetUseForBlurFilter( bool use_for_blur_filter ) { m_UseForBlurFilter = use_for_blur_filter; }
+
+	void SetDeviation( float deviation ) { m_fDeviation = deviation; }
 };
 
 
@@ -389,7 +416,11 @@ class CCombinedBloomFilter : public CCombinedFilter
 	boost::shared_ptr<CHorizontalBloomFilter> m_pHBloomFilter;
 	boost::shared_ptr<CVerticalBloomFilter>   m_pVBloomFilter;
 
+	SPlane2 m_BasePlane;
+
 public:
+
+	CCombinedBloomFilter();
 
 	FilterType GetFilterType() const { return CFilter::TYPE_COMBINED_BLOOM; }
 
@@ -398,7 +429,11 @@ public:
 
 	void RenderBase( CFilter& prev_filter );
 
-//	void Update();
+	void SetBasePlane( SPlane2 base_plane ) { m_BasePlane = base_plane; }
+
+	void UseAsGaussianBlurFilter( bool use_as_gauss_blur );
+
+	void SetBlurStrength( float strength );
 
 //	void AddNextFilter( boost::shared_ptr<CFilter> pFilter );
 };
@@ -497,6 +532,8 @@ class CAdaptationCalcFilter : public CFilter
 
 	float m_fElapsedTime;
 
+	float m_fLuminanceAdaptationRate;
+
 public:
 
 	CAdaptationCalcFilter();
@@ -510,6 +547,8 @@ public:
 	void Render();
 
 	void SetElapsedTime( float fElapsedTime ) { m_fElapsedTime = fElapsedTime; }
+
+	void SetLuminanceAdaptationRate( float fRate ) { m_fLuminanceAdaptationRate = fRate; }
 
 	boost::shared_ptr<CRenderTargetTextureHolder> GetAdaptedLuminanceTexture() { return m_pTexAdaptedLuminanceCur; }
 };
@@ -544,6 +583,8 @@ public:
 
 	float m_fKeyValue;
 
+	bool m_ToneMappingEnabled;
+
 	bool m_StarEffectEnabled;
 
 	CTextureHandle m_BlancTextureForDisabledStarEffect;
@@ -561,6 +602,8 @@ public:
 	void Render();
 
 	void SetToneMappingKeyValue( float fKeyValue ) { m_fKeyValue = fKeyValue; }
+
+	void EnableToneMapping( bool enable ) { m_ToneMappingEnabled = enable; }
 
 	void EnableStarEffect( bool enable ) { m_StarEffectEnabled = enable; }
 };
@@ -605,7 +648,11 @@ public:
 
 	void RenderBase( CFilter& prev_filter );
 
+	void EnableToneMapping( bool enable ) { if(m_pFinalPassFilter) m_pFinalPassFilter->EnableToneMapping( enable ); }
+
 	void SetToneMappingKeyValue( float fKeyValue ) { if(m_pFinalPassFilter) m_pFinalPassFilter->SetToneMappingKeyValue( fKeyValue ); }
+
+	void SetLuminanceAdaptationRate( float fRate ) { if(m_pAdaptationCalcFilter) m_pAdaptationCalcFilter->SetLuminanceAdaptationRate(fRate); }
 
 	void LockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
 
@@ -613,13 +660,46 @@ public:
 };
 
 
-class CMonochromeFilter : public CCombinedFilter
+class CFullScreenBlurFilter : public CCombinedFilter
+{
+	float m_fBlurStrength;
+
+	boost::shared_ptr<CDownScale4x4Filter> m_pDownScale4x4Filter;
+
+//	boost::shared_ptr<CHorizontalBloomFilter> m_apHorizontalBloomFilter[2];
+//	boost::shared_ptr<CVerticalBloomFilter> m_apVerticalBloomFilter[2];
+
+	boost::shared_ptr<CCombinedBloomFilter> m_pBloomFilter;
+
+public:
+
+	CFullScreenBlurFilter();
+
+	FilterType GetFilterType() const { return CFilter::TYPE_FULL_SCREEN_BLUR; }
+
+	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+
+	void RenderBase( CFilter& prev_filter );
+
+	void Render() {}
+
+	void SetBlurStrength( float strength ) { m_fBlurStrength = strength; }
+};
+
+
+class CMonochromeColorFilter : public CFilter
 {
 public:
 
+	CMonochromeColorFilter();
+
+	FilterType GetFilterType() const { return CFilter::TYPE_MONOCHROME_COLOR; }
+
+	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+
 	void SetColorOffset( float* pafRGB ) {}
 
-	void Render() {}
+	void Render();
 };
 
 
@@ -629,14 +709,6 @@ class CGlareFilter : public CCombinedFilter
 public:
 
 	void SetThreashold( float fThreashold ) {}
-
-	void Render();
-};
-
-
-class CHDROverlayEffectFilter : public CCombinedFilter
-{
-public:
 
 	void Render();
 };

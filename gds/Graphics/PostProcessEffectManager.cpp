@@ -48,9 +48,13 @@ public:
 	MultiSampleType(CMultiSampleType::NONE),
 	MultiSampleQuality(0)
 	{}
-
 };
 
+
+
+//========================================================================
+// CPostProcessFilterShader
+//========================================================================
 
 CPostProcessFilterShader::CPostProcessFilterShader()
 :
@@ -75,7 +79,6 @@ Result::Name CPostProcessFilterShader::Init( const std::string& filename )
 
 	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
-
 
 
 Result::Name CFilterShaderContainer::AddShader( const std::string& filepath )
@@ -312,9 +315,36 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
+	shared_ptr<CFilter> pLastFilter;
 	if( m_pHDRLightingFilter && (m_EnabledEffectFlags & CPostProcessEffect::TF_HDR_LIGHTING) )
 	{
+		m_pHDRLightingFilter->ClearNextFilters();
+
 		m_pFilter = m_pHDRLightingFilter;
+
+		pLastFilter = m_pHDRLightingFilter;
+	}
+
+	if( m_pMonochromeColorFilter && (m_EnabledEffectFlags & CPostProcessEffect::TF_MONOCHROME_COLOR) )
+	{
+		m_pMonochromeColorFilter->ClearNextFilters();
+		if( pLastFilter )
+			pLastFilter->AddNextFilter( m_pMonochromeColorFilter );
+		else
+			m_pFilter = m_pMonochromeColorFilter;
+
+		pLastFilter = m_pMonochromeColorFilter;
+	}
+
+	if( m_pFullScreenBlurFilter && (m_EnabledEffectFlags & CPostProcessEffect::TF_BLUR) )
+	{
+		m_pFullScreenBlurFilter->ClearNextFilters();
+		if( pLastFilter )
+			pLastFilter->AddNextFilter( m_pFullScreenBlurFilter );
+		else
+			m_pFilter = m_pFullScreenBlurFilter;
+
+		pLastFilter = m_pFullScreenBlurFilter;
 	}
 
 	if( !m_pFilter )
@@ -331,6 +361,9 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 	m_pFilter->RenderBase( *(m_pOriginalSceneFilter.get()) );
 
 	m_pFilter = shared_ptr<CFilter>();
+
+	// reset the debug setting
+	CFilter::ms_SaveFilterResultsAtThisFrame = 0;
 
 	// If using floating point multi sampling, stretchrect to the rendertarget
 /*	if( m_bUseMultiSampleFloat16 )
@@ -423,6 +456,35 @@ Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
 }
 
 
+Result::Name CPostProcessEffectManager::InitBlurFilter()
+{
+	m_pFullScreenBlurFilter = shared_ptr<CFullScreenBlurFilter>( new CFullScreenBlurFilter );
+	return m_pFullScreenBlurFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
+}
+
+
+Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
+{
+	m_pMonochromeColorFilter = shared_ptr<CMonochromeColorFilter>( new CMonochromeColorFilter );
+	Result::Name res;
+	res = m_pMonochromeColorFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
+
+	const SPlane2 cbb = GetCropWidthAndHeight();
+	m_pMonochromeColorFilter->SetRenderTargetSize( cbb.width, cbb.height );
+
+	CTextureResourceDesc tex_desc;
+	tex_desc.Width  = cbb.width;
+	tex_desc.Height = cbb.height;
+	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
+	int num = m_pTextureCache->GetNumTextures( tex_desc );
+	for( int i=num; i<2; i++ )
+		m_pTextureCache->AddTexture( tex_desc );
+
+	return res;
+}
+
+
 Result::Name CPostProcessEffectManager::EnableHDRLighting( bool enable )
 {
 	if( m_IsRedering )
@@ -443,20 +505,88 @@ Result::Name CPostProcessEffectManager::EnableHDRLighting( bool enable )
 
 Result::Name CPostProcessEffectManager::EnableBlur( bool enable )
 {
-	return Result::UNKNOWN_ERROR;
+	if( m_IsRedering )
+		return Result::UNKNOWN_ERROR;
+
+	if( enable )
+	{
+		m_EnabledEffectFlags |= CPostProcessEffect::TF_BLUR;
+		if( !m_pFullScreenBlurFilter )
+			return InitBlurFilter();
+	}
+	else
+		m_EnabledEffectFlags &= ~(CPostProcessEffect::TF_BLUR);
+
+	return Result::SUCCESS;
 }
 
 
-
-/*
-class HDRParams
+Result::Name CPostProcessEffectManager::EnableEffect( U32 effect_flags )
 {
-public:
-	bool blue_shift;
-	bool tone_mapping;
-	CStarEffectType::Name start_effect;
-};
-*/
+	if( m_IsRedering )
+		return Result::UNKNOWN_ERROR;
+
+	if( true )
+	{
+		m_EnabledEffectFlags |= effect_flags;
+
+		Result::Name res = Result::UNKNOWN_ERROR;
+
+		if( effect_flags & CPostProcessEffect::TF_HDR_LIGHTING )
+		{
+			if( !m_pHDRLightingFilter )
+				res = InitHDRLightingFilter();
+		}
+
+		if( effect_flags & CPostProcessEffect::TF_MONOCHROME_COLOR )
+		{
+			if( !m_pMonochromeColorFilter )
+				res = InitMonochromeColorFilter();
+		}
+
+		if( effect_flags & CPostProcessEffect::TF_BLUR )
+		{
+			if( !m_pFullScreenBlurFilter )
+				res = InitBlurFilter();
+		}
+	}
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CPostProcessEffectManager::DisableEffect( U32 effect_flags )
+{
+	m_EnabledEffectFlags &= ~(effect_flags);
+
+	return Result::SUCCESS;
+}
+
+
+void CPostProcessEffectManager::SetHDRLightingParams( U32 hdr_lighting_param_flags, const CHDRLightingParams& params )
+{
+	if( !m_pHDRLightingFilter )
+		return;
+
+	if( hdr_lighting_param_flags & CHDRLightingParams::KEY_VALUE )
+		m_pHDRLightingFilter->SetToneMappingKeyValue( params.key_value );
+
+	if( hdr_lighting_param_flags & CHDRLightingParams::TONE_MAPPING )
+		m_pHDRLightingFilter->EnableToneMapping( params.tone_mapping );
+
+	if( hdr_lighting_param_flags & CHDRLightingParams::LUMINANCE_ADAPTATION_RATE )
+		m_pHDRLightingFilter->SetLuminanceAdaptationRate( params.luminance_adaptation_rate );
+}
+
+
+void CPostProcessEffectManager::SetBlurStrength( float fBlurStrength )
+{
+	if( !m_pFullScreenBlurFilter )
+		return;
+
+	m_pFullScreenBlurFilter->SetBlurStrength( fBlurStrength );
+}
+
 
 void CPostProcessEffectManager::ReleaseGraphicsResources()
 {

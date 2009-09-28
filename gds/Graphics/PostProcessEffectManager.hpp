@@ -9,6 +9,41 @@
 //class CHDRLightingFilter;
 
 
+class CHDRLightingParams
+{
+public:
+
+	enum Flags
+	{
+		TONE_MAPPING              = (1 << 0),
+		KEY_VALUE                 = (1 << 1),
+		BULE_SHIFT                = (1 << 2),
+		LUMINANCE_ADAPTATION_RATE = (1 << 3),
+//		STAR_EFFECT_TYPE          = (1 << 4),
+	};
+
+	float key_value;
+	bool blue_shift;
+	bool tone_mapping;
+
+	/// How quickly camera adjust the brightness
+	/// - range: (0.0,1.0]
+	/// - brightness is adjusted without delay when this is set to 1.0
+	float luminance_adaptation_rate;
+
+//	CStarEffectType::Name start_effect;
+
+	CHDRLightingParams()
+		:
+	key_value(0.5f),
+	blue_shift(false),
+	tone_mapping(false),
+	luminance_adaptation_rate(0.02f)
+//	start_effect()
+	{}
+};
+
+
 //--------------------------------------------------------------------------------------
 // struct CPostProcess
 // A struct that encapsulates aspects of a render target postprocess
@@ -109,6 +144,11 @@ class CPostProcessEffectManager : public CGraphicsComponent
 {
 	boost::shared_ptr<CHDRLightingFilter> m_pHDRLightingFilter;
 
+	boost::shared_ptr<CFullScreenBlurFilter> m_pFullScreenBlurFilter;
+
+	boost::shared_ptr<CMonochromeColorFilter> m_pMonochromeColorFilter;
+
+
 	boost::shared_ptr<CRenderTargetTextureCache> m_pTextureCache;
 
 	CFilterShaderContainer m_FilterShaderContainer;
@@ -137,63 +177,7 @@ class CPostProcessEffectManager : public CGraphicsComponent
 
 public:
 
-	/// set a texture render target on which the scene is to be rendered.
-	/// Thus, this method must be called before the entire scene is rendered.
-	/// Before calling this method, user is responsible for saving the original render target
-	/// by calling GetRenderTarget()
-/*	inline HRESULT SetTextureRenderTarget( IDirect3DDevice9 *pd3dDevice, UINT pass )
-	{
-		HRESULT hr;
-		// if pass == 0 && m_nRtUsed == 0, this is equal to
-		// pd3dDevice->SetRenderTarget( 0, m_pSceneSave[0] )
-		for( int rt = 0; rt < m_nRtUsed; ++rt )
-		{
-			hr = pd3dDevice->SetRenderTarget( rt, m_aRtTable[pass].pRT[rt] );
-			if( FAILED(hr) )
-				return hr;
-		}
-
-		return S_OK;
-	}*/
-/*
-	inline HRESULT SetTextureRenderTarget( UINT pass )
-	{
-		// removed
-	}
-
-	inline HRESULT ResetTextureRenderTarget()
-	{
-		// removed
-	}
-
-
-	/// after rendering the scene, call this method to apply post process effects
-	HRESULT PerformPostProcess();
-
-	/// output the final result image onto the backbuffer.
-	/// after calling PerformPostProcess(), the user is suppoed to restore the original
-	/// render target and call this method
-	/// 18:37 2008-02-11 changed: restores the original render target
-	/// 22:25 2008-02-11 commented out. replaced by DrawSceneWithPostProcessEffects() below
-	///                  also commented out the BeginScene() & EndScene() pair
-//	HRESULT RenderPostProcess( IDirect3DDevice9 *pd3dDevice );
-	HRESULT DrawSceneWithPostProcessEffects();
-//	HRESULT OnCreateDevice( IDirect3DDevice9* pd3dDevice,
-//							const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
-//							const std::string& shader_filename,
-//							void* pUserContext );
-
-	/// Calls this for initialization
-	/// - Returns true on success
-    Result::Name OnCreateDevice( const std::string& shader_filename );
-	/// Used to release the resources to change the resolution of the back buffer
-    void OnDestroyDevice();
-	void OnLostDevice( void* pUserContext );
-
-//	HRESULT Init( const std::string& filename );
-    HRESULT OnResetDevice();
-*/
-    CPostProcessEffectManager();
+   CPostProcessEffectManager();
 
 	~CPostProcessEffectManager();
 
@@ -219,12 +203,24 @@ public:
 	Result::Name Init( const std::string& base_shader_directory_path = "" );
 
 	Result::Name InitHDRLightingFilter();
+
+	Result::Name InitBlurFilter();
+
+	Result::Name InitMonochromeColorFilter();
 	
 	Result::Name EnableHDRLighting( bool enable );
 
 	Result::Name EnableBlur( bool enable );
 
+	Result::Name EnableEffect( U32 effect_flags );
+
+	Result::Name DisableEffect( U32 effect_flags );
+
 	bool IsEnabled( U32 flag ) const { return (m_EnabledEffectFlags & flag) ? true : false; }
+
+	void SetHDRLightingParams( U32 hdr_lighting_param_flags, const CHDRLightingParams& params );
+
+	void SetBlurStrength( float fBlurStrength );
 
 	void ReleaseGraphicsResources();
 
