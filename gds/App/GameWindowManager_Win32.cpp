@@ -70,8 +70,9 @@ bool CGameWindowManager_Win32::CreateGameWindow( int iScreenWidth, int iScreenHe
 
     // create the application's window
     m_hWnd = CreateWindow( m_ApplicationClassName.c_str(), app_title.c_str(),
- //                          /*WS_OVERLAPPEDWINDOW*/ WS_POPUPWINDOW,
-                           WS_OVERLAPPED,
+                           WS_OVERLAPPEDWINDOW,
+                           //WS_POPUPWINDOW,
+                           //WS_OVERLAPPED,
 						   (iDesktopWidth  - iScreenWidth ) / 2,
 						   (iDesktopHeight - iScreenHeight) / 2,
 						   iScreenWidth,
