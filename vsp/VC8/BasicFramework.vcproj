@@ -538,6 +538,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\SkyboxMisc.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\SkyboxMisc.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\TextureCoord.hpp"
 				>
 			</File>
