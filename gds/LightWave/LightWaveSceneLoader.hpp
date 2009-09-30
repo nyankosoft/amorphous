@@ -38,16 +38,16 @@ public:
 
 	bool LoadFromFile( const char* pcLWS_Filename );
 
-	int GetNumObjectLayers() { return (int)m_vecObjectLayer.size(); }
+	int GetNumObjectLayers() const { return (int)m_vecObjectLayer.size(); }
 
 	CLWS_ObjectLayer* GetObjectLayer(int i);
 
-	const std::vector<CLWS_Bone>& GetBones() const{ return m_vecBone; }
+	const std::vector<CLWS_Bone>& GetBones() const { return m_vecBone; }
 
 	CLWS_Fog *GetFog();
 
 	float* GetAmbientColor() { return m_afAmbientColor; }
-	float GetAmbientIntensity() { return m_fAmbientIntensity; }
-	int GetNumLights() { return (int)m_vecLight.size(); }
+	float GetAmbientIntensity() const { return m_fAmbientIntensity; }
+	int GetNumLights() const { return (int)m_vecLight.size(); }
 	CLWS_Light* GetLight(int i);
 };

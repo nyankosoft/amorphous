@@ -35,6 +35,7 @@ void CLWS_Channel::Load( FILE* fp )
 CLWS_Item::CLWS_Item()
 {
 	m_iNumChannels	= 0;
+	memset( m_aChannel, 0, sizeof(m_aChannel) );
 
 	m_iParentType	= -1;
 	m_iParentIndex	= -1;
@@ -293,7 +294,7 @@ void CLWS_Item::GetPoseAtKeyframe( int keyframe, Matrix34& rDestPose )
 	rDestPose.vPosition = GetPositionAtKeyframe( keyframe );
 }
 
-
+/*
 //Right now, this function returns the rotation marix at frame 0. The value of 'fTime' currently has no effect. 
 D3DXMATRIX CLWS_Item::GetRotationMatrixAt( float fTime )
 {
@@ -315,7 +316,7 @@ D3DXMATRIX CLWS_Item::GetRotationMatrixAt( float fTime )
 
 	return matRotation;
 }
-
+*/
 
 int CLWS_Item::GetNumKeyFrames()
 {
@@ -354,42 +355,6 @@ float CLWS_Item::GetTimeAtKeyFrame( int iKeyFrame )
 
 	return m_aChannel[0].vecKey[iKeyFrame].fTime;
 }
-
-/*
-CLWS_Item CLWS_Item::operator=(CLWS_Item item)
-{
-	m_iNumChannels = item.m_iNumChannels;
-	for(int i=0; i<NUM_MAX_CHANNELS; i++)
-		m_aChannel[i] = item.m_aChannel[i];
-	return *this;
-}
-*/
-
-//=====================================================================================
-// CLWS_ObjectLayer
-//=====================================================================================
-/*
-void CLWS_ObjectLayer::LoadFromFile( char* pcFirstLine, FILE* fp )
-{
-	char acLine[MAX_LINE_LENGTH];
-	char acSlag[128], acName[256];
-	int iNumChannels = 0;
-
-	sscanf( pcFirstLine, "%s %d %s", acSlag, &m_iLayerNumber, acName );
-
-	m_strObjectFilename = acName;
-
-	while( fgets(acLine, MAX_LINE_LENGTH-1, fp) )
-	{
-		if( strncmp( acLine, "NumChannels", 11 ) == 0 )
-		{
-			sscanf( acLine, "%s %d", acSlag, &iNumChannels );
-			LoadChannelBlocksFromFile( iNumChannels, fp );
-			return;
-		}
-	}
-}
-*/
 
 
 CLWS_ObjectLayer::CLWS_ObjectLayer()
@@ -457,6 +422,15 @@ bool CLWS_Bone::LoadFromFile( CTextFileScanner& scanner )
 // CLWS_Light
 //=====================================================================================
 
+CLWS_Light::CLWS_Light()
+:
+m_fLightIntensity(0),
+m_LightType(TYPE_INVALID)
+
+{
+	memset( m_afLightColor, 0, sizeof(m_afLightColor) );
+}
+
 
 bool CLWS_Light::LoadFromFile( CTextFileScanner& scanner )
 {
@@ -493,53 +467,11 @@ bool CLWS_Light::LoadFromFile( CTextFileScanner& scanner )
 	return false;
 }
 
-/*
-void CLWS_Light::LoadFromFile( char* pcFirstLine, FILE* fp )
-{
-	char acLine[MAX_LINE_LENGTH];
-	char acSlag[128], acStr[256];
-	int iNumChannels = 0;
-
-	while( fgets(acLine, MAX_LINE_LENGTH-1, fp) )
-	{
-		if( strncmp( acLine, "LightName", 9 ) == 0 )
-		{
-			sscanf( acLine, "%s %s", acSlag, acStr );
-			m_strLightName = acStr;
-		}
-
-		else if( strncmp( acLine, "NumChannels", 11 ) == 0 )
-		{
-			sscanf( acLine, "%s %d", acSlag, &iNumChannels );
-			LoadChannelBlocksFromFile( iNumChannels, fp );
-		}
-
-		else if( strncmp( acLine, "LightColor", 10 ) == 0 )
-			sscanf( acLine, "%s %f %f %f", acSlag, &m_afLightColor[0], &m_afLightColor[1], &m_afLightColor[2] );
-
-		else if( strncmp( acLine, "LightIntensity", 14 ) == 0 )
-			sscanf( acLine, "%s %f", acSlag, &m_fLightIntensity );
-
-		else if( strncmp( acLine, "LightType", 9 ) == 0 )
-		{
-			sscanf( acLine, "%s %d", acSlag, &m_LightType );
-			return;
-		}
-	}
-}
 
 
-CLWS_Light CLWS_Light::operator=(CLWS_Light light)
-{
-	this->CLWS_Item::operator =(light);
-	m_strLightName, light.m_strLightName;
-	memcpy( m_afLightColor, light.m_afLightColor, sizeof(float) * 3 );
-	m_fLightIntensity = light.m_fLightIntensity;
-	m_LightType = light.m_LightType;
-
-	return *this;
-}
-*/
+//=====================================================================================
+// CLWS_Fog
+//=====================================================================================
 
 CLWS_Fog::CLWS_Fog()
 {

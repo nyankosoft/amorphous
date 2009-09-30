@@ -20,6 +20,17 @@ public:
 	float fTime;
 	int iSpantype;
 	float fCurveParam[6];
+
+public:
+
+	CLWS_Keyframe()
+		:
+	fValue(0),
+	fTime(0),
+	iSpantype(0)
+	{
+		memset( fCurveParam, 0, sizeof(fCurveParam) );
+	}
 };
 
 
@@ -90,7 +101,7 @@ public:
 
 	void GetPoseAtKeyframe( int keyframe, Matrix34& rDestPose );
 
-	D3DXMATRIX GetRotationMatrixAt( float fTime );
+//	D3DXMATRIX GetRotationMatrixAt( float fTime );
 
 	/// returns the number of the keyframes of the item
 	/// returns the maximum number of keyframes if channels have different numbers of keyframes
@@ -154,8 +165,6 @@ public:
 
 	void SetNullObject( bool b ) { m_bNullObject = b; }
 
-//	CLWS_ObjectLayer operator=(CLWS_ObjectLayer objectlayer);
-
 	friend class CLightWaveSceneLoader;
 };
 
@@ -203,6 +212,7 @@ public:
 
 	enum eLWS_LightType
 	{
+		TYPE_INVALID,
 		TYPE_DISTANT,
 		TYPE_POINT,
 		TYPE_SPOT,
@@ -211,6 +221,8 @@ public:
 	};
 
 public:
+
+	CLWS_Light();
 
 	std::string& GetName() { return m_strLightName; }
 
@@ -221,8 +233,6 @@ public:
 	int GetType() const { return m_LightType; }
 
 	virtual bool LoadFromFile( CTextFileScanner& scanner );
-
-//	CLWS_Light operator=(CLWS_Light light);
 };
 
 
