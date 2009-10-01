@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <list>
+#include <boost/shared_ptr.hpp>
 #include "3DMath/Matrix34.hpp"
 
 
@@ -69,6 +70,8 @@ protected:
 	std::vector<int> m_vecChildType;
 	std::vector<int> m_vecChildIndex;
 
+	float m_afPivotRotationAngle[3];
+
 protected:
 
 	void LoadChannelBlocksFromFile( int iNumChannels, FILE* fp );
@@ -117,6 +120,7 @@ public:
 	bool HasParent() { if( 0 <= m_iParentType && 0 <= m_iParentIndex ) return true; else return false; }
 
 	int GetParentType() const { return m_iParentType; }
+
 	int GetParentIndex() const { return m_iParentIndex; }
 
 	int GetNumChildren() const { return (int)m_vecChildType.size(); }
@@ -182,6 +186,16 @@ class CLWS_Bone : public CLWS_Item
 
 //	bool m_bNullObject;
 
+	float m_fBoneRestLength;
+
+	Vector3 m_vBoneRestPosition;
+
+	Vector3 m_vBoneRestDirection;
+
+	std::string m_strBoneWeightMapName;
+
+	std::vector< boost::shared_ptr<CLWS_Bone> > m_vecpChildBone;
+
 public:
 
 	CLWS_Bone();
@@ -189,6 +203,8 @@ public:
 	bool LoadFromFile( CTextFileScanner& scanner );
 
 	std::string& GetBoneName() { return m_strBoneName; }
+
+	std::vector< boost::shared_ptr<CLWS_Bone> >& ChildBone() { return m_vecpChildBone; }
 
 	friend class CLightWaveSceneLoader;
 };

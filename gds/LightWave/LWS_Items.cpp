@@ -1,4 +1,5 @@
 #include "LWS_Items.hpp"
+#include "Support/Macro.h"
 #include "Support/TextFileScanner.hpp"
 
 
@@ -39,6 +40,9 @@ CLWS_Item::CLWS_Item()
 
 	m_iParentType	= -1;
 	m_iParentIndex	= -1;
+
+	for( int i=0; i<numof(m_afPivotRotationAngle); i++ )
+		m_afPivotRotationAngle[i] = 0.0f;
 }
 
 
@@ -158,7 +162,16 @@ bool CLWS_Item::LoadFromFile( CTextFileScanner& scanner )
 
 		strcpy( acItemIndex, strParentItem.c_str() + 1 );
 		sscanf( acItemIndex, "%x", &m_iParentIndex );
+		
+//		m_iParentIndex /= 10000;
 
+		// parent index: 0-origin index for the list of objects of the same type?
+
+		return true;
+	}
+	else if( tag == "PivotRotation" )
+	{
+		scanner.ScanLine( tag, m_afPivotRotationAngle[0], m_afPivotRotationAngle[1], m_afPivotRotationAngle[2] );
 		return true;
 	}
 
@@ -380,6 +393,10 @@ bool CLWS_ObjectLayer::LoadFromFile( CTextFileScanner& scanner )
 //=====================================================================================
 
 CLWS_Bone::CLWS_Bone()
+:
+m_fBoneRestLength(0),
+m_vBoneRestPosition(Vector3(0,0,0)),
+m_vBoneRestDirection(Vector3(0,0,0))
 {
 }
 
@@ -400,16 +417,25 @@ bool CLWS_Bone::LoadFromFile( CTextFileScanner& scanner )
 
 	else if( tag == "BoneRestPosition" )
 	{
+		scanner.ScanLine( tag, m_vBoneRestPosition );
 		return true;
 	}
 
 	else if( tag == "BoneRestDirection" )
 	{
+		scanner.ScanLine( tag, m_vBoneRestDirection );
 		return true;
 	}
 
 	else if( tag == "BoneRestLength" )
 	{
+		scanner.ScanLine( tag, m_fBoneRestLength );
+		return true;
+	}
+
+	else if( tag == "BoneWeightMapName" )
+	{
+		scanner.ScanLine( tag, m_strBoneWeightMapName );
 		return true;
 	}
 

@@ -2,6 +2,7 @@
 #include "Support/TextFileScanner.hpp"
 
 using namespace std;
+using namespace boost;
 
 
 CLightWaveSceneLoader::CLightWaveSceneLoader()
@@ -10,6 +11,23 @@ CLightWaveSceneLoader::CLightWaveSceneLoader()
 	m_afAmbientColor[1] = 0;
 	m_afAmbientColor[2] = 0;
 	m_fAmbientIntensity = 0;
+}
+
+
+void CLightWaveSceneLoader::UpdateItemTrees()
+{
+	const int num_bones = (int)m_vecpBone.size();
+	for( int i=0; i<num_bones; i++ )
+	{
+		CLWS_Bone& bone = *(m_vecpBone[i].get());
+
+		if( bone.GetParentType() != 4 )
+			continue;
+
+		const int parent_index = bone.GetParentIndex();
+		if( 0 <= parent_index && parent_index < num_bones )
+			m_vecpBone[parent_index]->ChildBone().push_back( m_vecpBone[i] );
+	}
 }
 
 
@@ -65,9 +83,9 @@ bool CLightWaveSceneLoader::LoadFromFile( const char* pcLWS_Filename )
 
 		else if( tag == "AddBone" )
 		{
-			m_vecBone.push_back( CLWS_Bone() );
+			m_vecpBone.push_back( shared_ptr<CLWS_Bone>( new CLWS_Bone() ) );
 
-			m_vecpItem.push_back( &m_vecBone.back() );
+			m_vecpItem.push_back( m_vecpBone.back().get() );
 
 			continue;
 		}
@@ -104,6 +122,8 @@ bool CLightWaveSceneLoader::LoadFromFile( const char* pcLWS_Filename )
 
 	}
 
+	UpdateItemTrees();
+
 /*	FILE* fp = fopen( pcLWS_Filename, "r" );
 
 	if(!fp)
@@ -125,15 +145,6 @@ bool CLightWaveSceneLoader::LoadFromFile( const char* pcLWS_Filename )
 			new_light.LoadFromFile(acLine, fp);
 			m_vecLight.push_back( new_light );
 		}
-
-		else if( strncmp( acLine, "AmbientColor", 12 ) == 0 )
-		{
-			sscanf(acLine, "%s %f %f %f", acSlag,
-			&m_afAmbientColor[0], &m_afAmbientColor[1],  &m_afAmbientColor[2] );
-		}
-
-		else if( strncmp( acLine, "AmbientIntensity", 16 ) == 0 )
-			sscanf(acLine, "%s %f", acSlag, &m_fAmbientIntensity );
 
 		TryLoadingFogDataBlock( acLine, fp );
 
@@ -268,6 +279,7 @@ bool CLightWaveSceneLoader::LoadFogDataBlock( CTextFileScanner& scanner )
 	return;*/
 }
 
+
 CLWS_ObjectLayer* CLightWaveSceneLoader::GetObjectLayer(int i)
 {
 	if( i<0 || (int)m_vecObjectLayer.size()<=i )
@@ -276,6 +288,7 @@ CLWS_ObjectLayer* CLightWaveSceneLoader::GetObjectLayer(int i)
 	return &m_vecObjectLayer[i];
 }
 
+
 CLWS_Light* CLightWaveSceneLoader::GetLight(int i)
 {
 	if( i<0 || (int)m_vecLight.size()<=i )
@@ -283,6 +296,16 @@ CLWS_Light* CLightWaveSceneLoader::GetLight(int i)
 
 	return &m_vecLight[i];
 }
+
+
+shared_ptr<CLWS_Bone> CLightWaveSceneLoader::GetBone(int i)
+{
+	if( i<0 || (int)m_vecpBone.size()<=i )
+		return shared_ptr<CLWS_Bone>();
+
+	return m_vecpBone[i];
+}
+
 
 CLWS_Fog* CLightWaveSceneLoader::GetFog()
 {
