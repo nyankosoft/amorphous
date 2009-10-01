@@ -1,10 +1,11 @@
 #include "ScreenEffectManager.hpp"
 
+#include "3DMath/MathMisc.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/Shader/Shader.hpp"
+//#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/PostProcessManager.hpp"
+#include "Graphics/PostProcessEffectManager.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"
 #include "Graphics/D3DMisc.hpp"
 
@@ -14,11 +15,11 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
-#include "3DMath/MathMisc.hpp"
 
 #include <algorithm>
 
 using namespace std;
+using namespace boost;
 
 
 class CSimpleMotionBlurRenderTask : public CRenderTask
@@ -50,11 +51,11 @@ public:
 class CPostProcessPerformRenderTask : public CRenderTask
 {
 	/// borrowed reference
-	CPostProcessManager *m_pPPMgr;
+	CPostProcessEffectManager *m_pPPMgr;
 
 public:
 
-	CPostProcessPerformRenderTask( CPostProcessManager *pPPMgr )
+	CPostProcessPerformRenderTask( CPostProcessEffectManager *pPPMgr )
 		:
 	m_pPPMgr(pPPMgr)
 	{
@@ -68,13 +69,13 @@ public:
 		if( !m_pPPMgr )
 			return;
 
-		HRESULT hr;
+//		HRESULT hr;
 
 		// perform post-processes on the scene
 		// includes BeginScene() & EndScene() calls pair
-		hr = m_pPPMgr->PerformPostProcess();
+//		hr = m_pPPMgr->PerformPostProcess();
 
-		hr = m_pPPMgr->ResetTextureRenderTarget();
+//		hr = m_pPPMgr->ResetTextureRenderTarget();
 	}
 };
 
@@ -82,11 +83,11 @@ public:
 class CPostProcessRenderTask : public CRenderTask
 {
 	/// borrowed reference
-	CPostProcessManager *m_pPPMgr;
+	CPostProcessEffectManager *m_pPPMgr;
 
 public:
 
-	CPostProcessRenderTask( CPostProcessManager *pPPMgr )
+	CPostProcessRenderTask( CPostProcessEffectManager *pPPMgr )
 		:
 	m_pPPMgr(pPPMgr)
 	{
@@ -102,7 +103,8 @@ public:
 		// render the result of the post-processed image
 		// to the restored render target
 		// render target is restored in this call
-		HRESULT hr = m_pPPMgr->DrawSceneWithPostProcessEffects();
+//		HRESULT hr = m_pPPMgr->DrawSceneWithPostProcessEffects();
+		HRESULT hr = m_pPPMgr->RenderPostProcessEffects();
 	}
 };
 
@@ -120,7 +122,7 @@ CScreenEffectManager::CScreenEffectManager()
 :
 m_EffectFlag(0),
 //m_pShaderManager(NULL),
-m_pPPManager(NULL),
+//m_pPPEffectManager(NULL),
 m_pTargetSceneRenderer(NULL)
 {
 	ClearBlurEffect();
@@ -172,7 +174,7 @@ bool CScreenEffectManager::Init()
 
 	// initialize post-process effect manager
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
+//	HRESULT hr;
 
 	// retrieve the back buffer size
 //	D3DSURFACE_DESC back_buffer_desc;
@@ -180,29 +182,34 @@ bool CScreenEffectManager::Init()
 //	pd3dDev->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
 //	pBackBuffer->GetDesc( &back_buffer_desc );
 
-	m_pPPManager = new CPostProcessManager;
-//	hr = m_pPPManager->OnCreateDevice( pd3dDev, &back_buffer_desc, "Shader\\PostProcess\\PostProcess.fx", NULL );
-	Result::Name res = m_pPPManager->OnCreateDevice( "Shader\\PostProcess\\PostProcess.fx" );
+	m_pPPEffectManager = shared_ptr<CPostProcessEffectManager>( new CPostProcessEffectManager );
+	Result::Name res = m_pPPEffectManager->Init( "Shader/PostProcessEffect" );
+
+/*
+	m_pPPEffectManager = new CPostProcessEffectManager;
+//	hr = m_pPPEffectManager->OnCreateDevice( pd3dDev, &back_buffer_desc, "Shader\\PostProcess\\PostProcess.fx", NULL );
+	Result::Name res = m_pPPEffectManager->OnCreateDevice( "Shader\\PostProcess\\PostProcess.fx" );
 	if( res == Result::SUCCESS )
 	{
-//		hr = m_pPPManager->OnResetDevice( pd3dDev, &back_buffer_desc, NULL );
-		hr = m_pPPManager->OnResetDevice();
+//		hr = m_pPPEffectManager->OnResetDevice( pd3dDev, &back_buffer_desc, NULL );
+		hr = m_pPPEffectManager->OnResetDevice();
 
-		m_aPPEffectIndex[PP_COLOR_GBLUR_H]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurH.fx" );
-		m_aPPEffectIndex[PP_COLOR_GBLUR_V]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurV.fx" );
-		m_aPPEffectIndex[PP_COLOR_INVERSE]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorInverse.fx" );
-		m_aPPEffectIndex[PP_COLOR_MONOCHROME]  = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorMonochrome.fx" );
-		m_aPPEffectIndex[PP_COLOR_DOWNFILTER4] = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorDownFilter4.fx" );
-		m_aPPEffectIndex[PP_COLOR_UPFILTER4]   = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorUpFilter4.fx" );
-		m_aPPEffectIndex[PP_COLOR_BLOOM_H]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomH.fx" );
-		m_aPPEffectIndex[PP_COLOR_BLOOM_V]     = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomV.fx" );
-		m_aPPEffectIndex[PP_COLOR_BRIGHTPASS]  = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBrightPass.fx" );
-		m_aPPEffectIndex[PP_COLOR_COMBINE4]    = m_pPPManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorCombine4.fx" );
+		m_aPPEffectIndex[PP_COLOR_GBLUR_H]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurH.fx" );
+		m_aPPEffectIndex[PP_COLOR_GBLUR_V]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurV.fx" );
+		m_aPPEffectIndex[PP_COLOR_INVERSE]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorInverse.fx" );
+		m_aPPEffectIndex[PP_COLOR_MONOCHROME]  = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorMonochrome.fx" );
+		m_aPPEffectIndex[PP_COLOR_DOWNFILTER4] = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorDownFilter4.fx" );
+		m_aPPEffectIndex[PP_COLOR_UPFILTER4]   = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorUpFilter4.fx" );
+		m_aPPEffectIndex[PP_COLOR_BLOOM_H]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomH.fx" );
+		m_aPPEffectIndex[PP_COLOR_BLOOM_V]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomV.fx" );
+		m_aPPEffectIndex[PP_COLOR_BRIGHTPASS]  = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBrightPass.fx" );
+		m_aPPEffectIndex[PP_COLOR_COMBINE4]    = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorCombine4.fx" );
 
-		m_pPPManager->GetPostProcessInstance().reserve( 16 );
+		m_pPPEffectManager->GetPostProcessInstance().reserve( 16 );
 	}
 	else
-		SafeDelete( m_pPPManager );
+		SafeDelete( m_pPPEffectManager );
+*/
 
 	m_pSimpleMotionBlur = new CSimpleMotionBlur();
 	m_pSimpleMotionBlur->InitForScreenSize();
@@ -236,7 +243,7 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 	if( m_EffectFlag & ScreenEffect::PostProcessEffects )
 	{
 		// clear all the previous post process effects
-		m_pPPManager->GetPostProcessInstance().resize( 0 );
+		m_pPPEffectManager->GetPostProcessInstance().resize( 0 );
 
 		if( m_EffectFlag & ScreenEffect::PseudoBlur && 0 < m_fBlurWidth && 0 < m_fBlurHeight )
 		{
@@ -262,7 +269,7 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 //		pd3dDev->GetRenderTarget( 0, &m_pOrigRenderTarget );
 
 		// set the texture render target for post process effect
-		m_pPPManager->SetTextureRenderTarget( 0 );
+		m_pPPEffectManager->SetTextureRenderTarget( 0 );
 	}
 
 //	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0 );
@@ -272,25 +279,27 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 
 void CScreenEffectManager::UpdateBlurEffect()
 {
-	if( !m_pPPManager )
+	if( !m_pPPEffectManager )
 		return;
 
 	if( m_mapBlurStrength.size() == 0 )
 		return;
-
-	m_aFilterIndex[SF_DOWNFILTER_FOR_BLUR] = (int)m_pPPManager->GetPostProcessInstance().size();
-	m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
-	m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_GBLUR_H ) );
-	m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_GBLUR_V ) );
-	m_aFilterIndex[SF_UPFILTER_FOR_BLUR] = (int)m_pPPManager->GetPostProcessInstance().size();
-	m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_UPFILTER4 ) );
-
+/*
+	m_aFilterIndex[SF_DOWNFILTER_FOR_BLUR] = (int)m_pPPEffectManager->GetPostProcessInstance().size();
+	m_pPPEffectManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
+	m_pPPEffectManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_GBLUR_H ) );
+	m_pPPEffectManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_GBLUR_V ) );
+	m_aFilterIndex[SF_UPFILTER_FOR_BLUR] = (int)m_pPPEffectManager->GetPostProcessInstance().size();
+	m_pPPEffectManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_UPFILTER4 ) );
+*/
 	Vector2 blur_strength = m_mapBlurStrength.begin()->second;
 	m_fBlurWidth = blur_strength.x;
 	m_fBlurWidth = blur_strength.y;
 	Limit( m_fBlurWidth,  0.0f, 2.0f );
 	Limit( m_fBlurHeight, 0.0f, 2.0f );
 
+	m_pPPEffectManager->SetBlurStrength( m_fBlurWidth );
+/*
 	float weight[7];
 
 	float x2;
@@ -309,8 +318,8 @@ void CScreenEffectManager::UpdateBlurEffect()
 		weight[i] /= sum;
 
 	LPD3DXEFFECT pEffect[2];
-	pEffect[0] = m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_GBLUR_H]).GetEffect();
-	pEffect[1] = m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_GBLUR_V]).GetEffect();
+	pEffect[0] = m_pPPEffectManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_GBLUR_H]).GetEffect();
+	pEffect[1] = m_pPPEffectManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_GBLUR_V]).GetEffect();
 
 	HRESULT hr;
 	char str[32];
@@ -334,8 +343,9 @@ void CScreenEffectManager::UpdateBlurEffect()
 	float up_scale = ( m_fBlurWidth + 1.0f ) * 2.0f;
 	float down_scale = 1.0f / up_scale;
 
-	m_pPPManager->GetPostProcessInstance()[m_aFilterIndex[SF_DOWNFILTER_FOR_BLUR]].SetScale( down_scale, down_scale );
-	m_pPPManager->GetPostProcessInstance()[m_aFilterIndex[SF_UPFILTER_FOR_BLUR]].SetScale( up_scale, up_scale );
+	m_pPPEffectManager->GetPostProcessInstance()[m_aFilterIndex[SF_DOWNFILTER_FOR_BLUR]].SetScale( down_scale, down_scale );
+	m_pPPEffectManager->GetPostProcessInstance()[m_aFilterIndex[SF_UPFILTER_FOR_BLUR]].SetScale( up_scale, up_scale );
+*/
 }
 
 /*
@@ -350,10 +360,10 @@ T& CalcPostProcessEffectParams( map<int,T>& mapParam )
 
 void CScreenEffectManager::UpdateGlareEffect()
 {
-	if( !m_pPPManager )
+	if( !m_pPPEffectManager )
 		return;
-
-	vector<CPProcInstance>& rPostProcessInstance = m_pPPManager->GetPostProcessInstance();
+/*
+	vector<CPProcInstance>& rPostProcessInstance = m_pPPEffectManager->GetPostProcessInstance();
 
 	rPostProcessInstance.push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
 	rPostProcessInstance.back().SetScale( 0.25f, 0.25f );
@@ -384,26 +394,30 @@ void CScreenEffectManager::UpdateGlareEffect()
 	rPostProcessInstance.back().SetScale( 4.0f, 4.0f );
 	rPostProcessInstance.push_back( CPProcInstance( PP_COLOR_COMBINE4 ) );
 	rPostProcessInstance.back().SetScale( 4.0f, 4.0f );
+*/
 }
 
 
 void CScreenEffectManager::UpdateMonochromeColorEffect()
 {
-	if( !m_pPPManager )
+	if( !m_pPPEffectManager )
 		return;
 
 	if( m_mapMonochromeColor.size() == 0 )
 		return;
-
-	vector<CPProcInstance>& rPostProcessInstance = m_pPPManager->GetPostProcessInstance();
+/*
+	vector<CPProcInstance>& rPostProcessInstance = m_pPPEffectManager->GetPostProcessInstance();
 
 	rPostProcessInstance.push_back( CPProcInstance( PP_COLOR_MONOCHROME ) );
 
-	LPD3DXEFFECT pEffect = m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_MONOCHROME]).GetEffect();
-
+	LPD3DXEFFECT pEffect = m_pPPEffectManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_MONOCHROME]).GetEffect();
+*/
 	const SFloatRGBColor color = m_mapMonochromeColor.begin()->second;
-	const float rgba[4] = { color.fRed, color.fGreen, color.fBlue, 1.0f }; // always set alpha to 1.0
-	pEffect->SetFloatArray( "ColorOffset", rgba, 4 );
+//	const float rgba[4] = { color.fRed, color.fGreen, color.fBlue, 1.0f }; // always set alpha to 1.0
+//	pEffect->SetFloatArray( "ColorOffset", rgba, 4 );
+
+	m_pPPEffectManager->EnableEffect( CPostProcessEffect::TF_MONOCHROME_COLOR );
+	m_pPPEffectManager->SetMonochromeColorOffset( color );
 }
 
 
@@ -501,10 +515,31 @@ void CScreenEffectManager::UpdateScreenSize()
 }
 
 
+Result::Name CScreenEffectManager::SetHDRLightingParams( U32 param_flags, const CHDRLightingParams& params )
+{
+	if( !m_pPPEffectManager )
+		return Result::UNKNOWN_ERROR;
+
+	m_pPPEffectManager->SetHDRLightingParams( param_flags, params );
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CScreenEffectManager::EnableHDRLighting( bool enable )
+{
+	if( !m_pPPEffectManager )
+		return Result::UNKNOWN_ERROR;
+
+	if( enable )
+		m_pPPEffectManager->EnableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
+	else
+		m_pPPEffectManager->DisableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
+}
+
+
 void CScreenEffectManager::ReleaseGraphicsResources()
 {
-	SafeDelete( m_pPPManager );
-
 //	m_pSimpleMotionBlur - graphics component
 }
 
@@ -548,7 +583,7 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 	m_bPostProcessEffectEnabled
 		= m_EffectFlag & ScreenEffect::PostProcessEffects
 		&& m_EffectFlag & pp_effect_flag_ors
-		&& m_pPPManager;
+		&& m_pPPEffectManager;
 
 	// the two bool variables above are also used later in Render()
 
@@ -566,7 +601,7 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 	if( m_bPostProcessEffectEnabled )
 	{
 		// clear all the previous post process effects
-		m_pPPManager->GetPostProcessInstance().resize( 0 );
+//		m_pPPEffectManager->GetPostProcessInstance().resize( 0 );
 
 		if( m_EffectFlag & ScreenEffect::PseudoBlur )//&& 0 < m_fBlurWidth && 0 < m_fBlurHeight )
 			UpdateBlurEffect();
@@ -581,7 +616,9 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 
 		// save the current render target and
 		// set the texture render target for post process effect
-		m_pPPManager->SetTextureRenderTarget( 0 );
+//		m_pPPEffectManager->SetTextureRenderTarget( 0 );
+
+		Result::Name res = m_pPPEffectManager->BeginRender();
 	}
 }
 
@@ -613,15 +650,17 @@ void CScreenEffectManager::RenderPostProcessEffects()
 {
 	if( m_bPostProcessEffectEnabled )
 	{
-		// perform post-processes on the scene
-		m_pPPManager->PerformPostProcess();
+/*		// perform post-processes on the scene
+		m_pPPEffectManager->PerformPostProcess();
 
-		m_pPPManager->ResetTextureRenderTarget();
+		m_pPPEffectManager->ResetTextureRenderTarget();
 
 		// restore the original render target
 		// and draw the post processed scene as a textured rect
 		// to the restored render target
-		m_pPPManager->DrawSceneWithPostProcessEffects();
+		m_pPPEffectManager->DrawSceneWithPostProcessEffects();
+*/
+		m_pPPEffectManager->RenderPostProcessEffects();
 	}
 
 	if( m_bPseudoMotionBlurEnabled )
@@ -653,7 +692,7 @@ void CScreenEffectManager::Render( CCamera &rCam )
 	{
 		// restore the original render target
 		// and draw the post processed scene as a textured rect
-		m_pPPManager->DrawSceneWithPostProcessEffects();
+		m_pPPEffectManager->DrawSceneWithPostProcessEffects();
 	}
 	else
 	{
@@ -671,7 +710,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 
 	if( m_EffectFlag & ScreenEffect::PostProcessEffects )
 	{
-		hr = m_pPPManager->DrawSceneWithPostProcessEffects();
+		hr = m_pPPEffectManager->DrawSceneWithPostProcessEffects();
 	}
 
 	if( m_pSimpleMotionBlur && GetEffectFlag() & ScreenEffect::PseudoMotionBlur )
@@ -713,14 +752,14 @@ void CScreenEffectManager::RenderPostProcessEffects()
 	if( m_EffectFlag & ScreenEffect::PostProcessEffects )
 	{
 		// perform post-processes on the scene
-		m_pPPManager->PerformPostProcess();
+		m_pPPEffectManager->PerformPostProcess();
 
 		// removed 18:42 2008-02-11
-		// original render target is restored in m_pPPManager->RenderPostProcess() call below
+		// original render target is restored in m_pPPEffectManager->RenderPostProcess() call below
 
 		// render the result of the post-processed image
 		// to the restored render target
-		m_pPPManager->DrawSceneWithPostProcessEffects();
+		m_pPPEffectManager->DrawSceneWithPostProcessEffects();
 	}
 //
 //	if( pEffect )
@@ -785,7 +824,7 @@ void CScreenEffectManager::CreateRenderTasks()
 	m_bPostProcessEffectEnabled
 		= m_EffectFlag & ScreenEffect::PostProcessEffects
 		&& m_EffectFlag & pp_effect_flag_ors
-		&& m_pPPManager;
+		&& m_pPPEffectManager;
 
 	// the two bool variables above are also used later in Render()
 
@@ -805,7 +844,7 @@ void CScreenEffectManager::CreateRenderTasks()
 	if( m_bPostProcessEffectEnabled )
 	{
 		// clear all the previous post process effects
-		m_pPPManager->GetPostProcessInstance().resize( 0 );
+//		m_pPPEffectManager->GetPostProcessInstance().resize( 0 );
 
 		if( m_EffectFlag & ScreenEffect::PseudoBlur )//&& 0 < m_fBlurWidth && 0 < m_fBlurHeight )
 			UpdateBlurEffect();
@@ -820,7 +859,7 @@ void CScreenEffectManager::CreateRenderTasks()
 
 		// save the current render target and
 		// set the texture render target for post process effect
-		m_pPPManager->SetTextureRenderTarget( 0 );
+//		m_pPPEffectManager->SetTextureRenderTarget( 0 );
 
 		bExtraRenderTarget = true;
 	}
@@ -835,7 +874,7 @@ void CScreenEffectManager::CreateRenderTasks()
 
 	if( m_bPostProcessEffectEnabled )
 	{
-		RenderTaskProcessor.AddRenderTask( new CPostProcessPerformRenderTask( m_pPPManager ) );
+		RenderTaskProcessor.AddRenderTask( new CPostProcessPerformRenderTask( m_pPPEffectManager.get() ) );
 	}
 
 	if( m_bPseudoMotionBlurEnabled )
@@ -844,7 +883,7 @@ void CScreenEffectManager::CreateRenderTasks()
 		{
 			// render the post processed scene to the texture render target
 			// for the pseudo motion blur module
-			RenderTaskProcessor.AddRenderTask( new CPostProcessRenderTask( m_pPPManager ) );
+			RenderTaskProcessor.AddRenderTask( new CPostProcessRenderTask( m_pPPEffectManager.get() ) );
 		}
 
 		RenderTaskProcessor.AddRenderTask( new CSimpleMotionBlurRenderTask( m_pSimpleMotionBlur ) );

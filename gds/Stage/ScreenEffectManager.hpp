@@ -2,6 +2,7 @@
 #define  __SCREENEFFECTMANAGER_H__
 
 #include <map>
+#include <boost/shared_ptr.hpp>
 
 #include "Graphics/fwd.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
@@ -31,7 +32,7 @@ public:
 
 #define NUM_MAX_SIMULTANEOUS_FADES 8
 
-
+/*
 enum ePPEffectFile
 {
 	PP_COLOR_GBLUR_H,
@@ -57,7 +58,7 @@ enum eSizeFilterType
 	SF_BRIGHTPASS,
 	NUM_FILTERS,
 };
-
+*/
 
 class ScreenEffect
 {
@@ -73,6 +74,7 @@ public:
 		Glare				= (1 << 6),
 		ShadowMap			= (1 << 7),	///< experimental: should not be handled by ScreenEffectManager
 		CubeEnvMap          = (1 << 8),
+		HDRLighting         = (1 << 9),
 	};
 };
 
@@ -137,15 +139,15 @@ private:
 	unsigned int m_EffectFlag;
 
 	CFadeEffect m_aFadeEffect[NUM_MAX_SIMULTANEOUS_FADES];
-	
+
 	C2DRect m_ScreenColor;
 
 	/// manages post-process effects
-	CPostProcessManager *m_pPPManager;
+	boost::shared_ptr<CPostProcessEffectManager> m_pPPEffectManager;
 
-	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
+//	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
 
-	int m_aFilterIndex[NUM_FILTERS];
+//	int m_aFilterIndex[NUM_FILTERS];
 
 	CSimpleMotionBlur *m_pSimpleMotionBlur;
 
@@ -243,7 +245,7 @@ public:
 //	inline void ClearBlurEffect() { m_fBlurWidth = m_fBlurHeight = 0; ClearEffectFlag( ScreenEffect::PseudoBlur ); }
 	inline void ClearBlurEffect( int priority_id = MIN_EFFECT_PRIORITY_ID );
 
-	void SetMotionBlurWeight( float motion_blur_weight, int priority_id = MIN_EFFECT_PRIORITY_ID );
+	inline void SetMotionBlurWeight( float motion_blur_weight, int priority_id = MIN_EFFECT_PRIORITY_ID );
 	inline void ClearMotionBlur( int priority_id = MIN_EFFECT_PRIORITY_ID );
 
 	/// \param blend_ratio (NOT IMPLEMENTED YET) How much monochrome you want to make the rendered image
@@ -254,6 +256,9 @@ public:
 
 	inline void SetGlareLuminanceThreshold( float fLuminance, int priority_id = MIN_EFFECT_PRIORITY_ID );
 	inline void ClearGlareLuminanceThreshold( int priority_id = MIN_EFFECT_PRIORITY_ID );
+
+	Result::Name SetHDRLightingParams( U32 param_flags, const CHDRLightingParams& params );
+	Result::Name EnableHDRLighting( bool enable );
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
