@@ -51,10 +51,14 @@ class CTrueTypeTextureFont;
 class CCamera;
 class CShaderManager;
 class CShaderLightManager;
-class CPostProcessManager;
+
 class CSimpleMotionBlur;
 class CCubeMapManager;
 class CShadowMapManager;
+
+class CPostProcessEffect;
+class CPostProcessEffectManager;
+class CHDRLightingParams;
 
 class CUnitCube;
 class CUnitSphere;

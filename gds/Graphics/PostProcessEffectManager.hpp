@@ -222,6 +222,8 @@ public:
 
 	void SetBlurStrength( float fBlurStrength );
 
+	void SetMonochromeColorOffset( const SFloatRGBColor& color );
+
 	void ReleaseGraphicsResources();
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );

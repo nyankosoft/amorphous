@@ -588,6 +588,11 @@ void CPostProcessEffectManager::SetBlurStrength( float fBlurStrength )
 }
 
 
+void CPostProcessEffectManager::SetMonochromeColorOffset( const SFloatRGBColor& color )
+{
+}
+
+
 void CPostProcessEffectManager::ReleaseGraphicsResources()
 {
 }
