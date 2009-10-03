@@ -2,18 +2,13 @@
 #define  __BUMPMAPTEXTUREMAKER2_LWO2_H__
 
 
-#include "3DMath/Vector3.h"
-#include "3DMath/Matrix33.h"
-#include "3DCommon/TextureHandle.h"
-#include "3DCommon/ShaderHandle.h"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix33.hpp"
+#include "Graphics/fwd.hpp"
+#include "Graphics/TextureHandle.hpp"
+#include "Graphics/ShaderHandle.hpp"
+#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 
-#include <string>
-using namespace std;
-
-
-class CD3DXMeshObject;
-class CD3DXSMeshObject;
-class CShaderManager;
 
 enum eBumpmapTextureMaker_RenderMode
 {
@@ -27,8 +22,6 @@ enum eBumpmapTextureMaker_RenderMode
 
 class CBumpmapTextureMaker2_LWO2
 {
-
-
 	CD3DXMeshObject *m_p3DModel;
 
 	CShaderHandle m_Shader;
@@ -39,11 +32,13 @@ class CBumpmapTextureMaker2_LWO2
 
 	std::string m_PreviewTextureFilepath;
 
+	CShaderTechniqueHandle m_aShaderTechnique[BTM_NUM_RENDERMODES];
+
 	int m_TechniqueID;
 	
 	float m_fViewVolumeWidth;
 
-	string m_strBaseFilename;
+	std::string m_strBaseFilename;
 
 	class CDirectionalLight
 	{

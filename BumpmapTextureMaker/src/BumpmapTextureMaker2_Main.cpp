@@ -7,18 +7,21 @@
 #include <stdlib.h>
 #include <direct.h>
 
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/font.h"
-#include "GameCommon/Timer.h"
-
-#include "Support/FileOpenDialog_Win32.h"
-#include "Support/fnop.h"
-#include "Support/Log/DefaultLog.h"
-#include "Support/SafeDelete.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Font/Font.hpp"
+#include "Support/Timer.hpp"
+#include "Support/FileOpenDialog_Win32.hpp"
+#include "Support/fnop.hpp" // deprecated
+#include "Support/lfs.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/MiscAux.hpp"
 
 #include "BumpmapTextureMaker2_LWO2.h"
 
-#include <vld.h>
+//#include <vld.h>
+
+// draft
+extern void SetCurrentThreadAsRenderThread();
 
 
 #define	WINDOW_WIDTH	(800)
@@ -160,6 +163,8 @@ void GetWindowFrameSize( HWND hWnd, long& frame_width, long& frame_height )
 //-----------------------------------------------------------------------------
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
+	// draft - register the render thread id
+	SetCurrentThreadAsRenderThread();
 
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
@@ -190,11 +195,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	if( !Init(lpCmdLine) )
 		return 1;
 
-	CLogOutput_HTML html_log( "log.html" );
-	g_Log.AddLogOutput( &html_log );
-
-	g_pBumpTexMaker = new CBumpmapTextureMaker2_LWO2;
-
 	// push current directory and move to the directory where the program is placed
 	char exe_filename[1024];
 	memset( exe_filename, 0, sizeof(exe_filename) );
@@ -202,6 +202,11 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	fnop::dir_stack dirstack;
 	dirstack.setdir( fnop::get_path(exe_filename) );
+
+	CLogOutput_HTML html_log( "BumpmpaTextureMaker2_" + string(GetBuildInfo()) + ".html" );
+	g_Log.AddLogOutput( &html_log );
+
+	g_pBumpTexMaker = new CBumpmapTextureMaker2_LWO2;
 
 	string shader_filename = "..\\resources\\Shaders\\bump_tex_maker.fx";
 
@@ -257,7 +262,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
         else
 		{
 			// Update FPS
-			GetGlobalTimer().UpdateFrameTime();
+			GlobalTimer().UpdateFrameTime();
 
 //			g_CameraController.UpdateCameraPosition();
 

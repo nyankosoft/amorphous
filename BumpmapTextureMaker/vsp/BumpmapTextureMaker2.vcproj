@@ -50,7 +50,7 @@
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USE_D3DXVECTOR3"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile="..\..\..\X_Release\BumpmapTextureMaker2/BumpmapTextureMaker2.pch"
 				AssemblerListingLocation="..\..\..\X_Release\BumpmapTextureMaker2/"
@@ -72,8 +72,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib d3d9.lib d3dx9.lib"
-				OutputFile="./BumpmapTextureMaker2.exe"
+				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib"
+				OutputFile="../app/BumpmapTextureMaker2.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile="./BumpmapTextureMaker2.pdb"
@@ -144,7 +144,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;USE_D3DXVECTOR3"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				PrecompiledHeaderFile="..\..\..\X_Debug\BumpmapTextureMaker2/BumpmapTextureMaker2.pch"
 				AssemblerListingLocation="..\..\..\X_Debug\BumpmapTextureMaker2/"
 				ObjectFile="..\..\..\X_Debug\BumpmapTextureMaker2/"

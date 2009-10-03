@@ -1,23 +1,20 @@
-
-#include "3DCommon/Direct3D9.h"
-#include "3DCommon/TextureTool.h"
-#include "3DCommon/TextureRenderTarget.h"
-#include "3DCommon/2DRect.h"
-#include "3DCommon/D3DXSMeshObject.h"
-#include "3DCommon/D3DXMeshObject.h"
-#include "3DCommon/Shader/ShaderManager.h"
-#include "LightWave/LightWaveObject.h"
-#include "LightWave/3DMeshModelBuilder_LW.h"
-
-#include "Support/fnop.h"
-#include "Support/Macro.h"
-#include "Support/BMPImageExporter.h"
-#include "Support/memory_helpers.h"
-#include "Support/Log/DefaultLog.h"
-
-
 #include "BumpmapTextureMaker2_LWO2.h"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/TextureTool.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Support/fnop.hpp"
+#include "Support/Macro.h"
+#include "Support/BMPImageExporter.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "LightWave/LightWaveObject.hpp"
+#include "LightWave/3DMeshModelBuilder_LW.hpp"
 
+using namespace std;
 using namespace boost;
 
 
@@ -36,14 +33,14 @@ bool CBumpmapTextureMaker2_LWO2::LoadShader( const string& shader_filename )
 
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
-	pShaderMgr->RegisterTechnique( BTM_RENDERMODE_NORMALMAP,				"NormalMap" );
-	pShaderMgr->RegisterTechnique( BTM_RENDERMODE_FLAT_TEXTURED_SURFACE,	"FlatTexSurface" );
-	pShaderMgr->RegisterTechnique( BTM_RENDERMODE_BUMPY_TEXTURED_SURFACE,	"BumpyTexturedSurface" );
+	m_aShaderTechnique[BTM_RENDERMODE_NORMALMAP].SetTechniqueName( "NormalMap" );
+	m_aShaderTechnique[BTM_RENDERMODE_FLAT_TEXTURED_SURFACE].SetTechniqueName( "FlatTexSurface" );
+	m_aShaderTechnique[BTM_RENDERMODE_BUMPY_TEXTURED_SURFACE].SetTechniqueName( "BumpyTexturedSurface" );
 
 	if( s_RenderVolumeTexture  == 1 )
 	{
 		// overwrite the second technique
-		pShaderMgr->RegisterTechnique( BTM_RENDERMODE_FLAT_TEXTURED_SURFACE,	"AlphaSurface" );
+		m_aShaderTechnique[BTM_RENDERMODE_FLAT_TEXTURED_SURFACE].SetTechniqueName( "AlphaSurface" );
 	}
 
 
@@ -292,7 +289,7 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 
-	hr = pShaderManager->SetTechnique( m_TechniqueID );
+	hr = pShaderManager->SetTechnique( m_aShaderTechnique[m_TechniqueID] );
 
 //	if( FAILED(hr) )
 //		return;
