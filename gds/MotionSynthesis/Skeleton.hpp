@@ -46,6 +46,10 @@ public:
 
 	const CBone& GetChild( int index ) const { return m_vecChild[index]; }
 
+	CBone& Child( int index ) { return m_vecChild[index]; }
+
+	void AddChildBone( CBone& bone ) { m_vecChild.push_back( bone ); }
+
 	void CopyBones_r( CBVHBone& src_bone );
 
 	void Scale_r( float factor );
@@ -77,6 +81,8 @@ public:
 	void CopyFromBVHSkeleton( CBVHBone& root_bone ) { m_RootBone.CopyBones_r( root_bone ); }
 
 	const CBone& GetRootBone() const { return m_RootBone; }
+
+	void SetBones( const CBone& root_bone ) { m_RootBone = root_bone; }
 
 	void Scale( float scaling_factor ) { m_RootBone.Scale_r( scaling_factor ); }
 
