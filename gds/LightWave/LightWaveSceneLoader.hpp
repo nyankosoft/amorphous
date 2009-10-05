@@ -40,7 +40,7 @@ public:
 
 	CLightWaveSceneLoader();
 
-	bool LoadFromFile( const char* pcLWS_Filename );
+	bool LoadFromFile( const std::string& filepath );
 
 	// object layers
 
@@ -62,8 +62,12 @@ public:
 
 	const std::vector< boost::shared_ptr<CLWS_Bone> >& Bones() const{ return m_vecpBone; }
 
+	std::vector< boost::shared_ptr<CLWS_Bone> > GetRootBones();
+
 	CLWS_Fog *GetFog();
 
 	const float* GetAmbientColor() const { return m_afAmbientColor; }
 	float GetAmbientIntensity() const { return m_fAmbientIntensity; }
+
+	void Clear();
 };

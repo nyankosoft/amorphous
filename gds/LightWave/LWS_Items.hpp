@@ -206,6 +206,12 @@ public:
 
 	std::vector< boost::shared_ptr<CLWS_Bone> >& ChildBone() { return m_vecpChildBone; }
 
+	float GetBoneRestLength() const { return m_fBoneRestLength; }
+
+	Vector3 GetBoneRestPosition() const { return m_vBoneRestPosition; }
+
+	Vector3 GetBoneRestDirection() const { return m_vBoneRestDirection; }
+
 	friend class CLightWaveSceneLoader;
 };
 

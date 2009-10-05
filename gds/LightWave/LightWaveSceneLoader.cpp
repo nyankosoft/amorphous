@@ -31,12 +31,15 @@ void CLightWaveSceneLoader::UpdateItemTrees()
 }
 
 
-bool CLightWaveSceneLoader::LoadFromFile( const char* pcLWS_Filename )
+bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 {
 	CTextFileScanner scanner;
 
-	if( !scanner.OpenFile( pcLWS_Filename ) )
+	if( !scanner.OpenFile( filepath ) )
 		return false;
+
+	// clear the scene currently stored
+	Clear();
 
 	string tag, strLine;
 
@@ -307,10 +310,34 @@ shared_ptr<CLWS_Bone> CLightWaveSceneLoader::GetBone(int i)
 }
 
 
+std::vector< boost::shared_ptr<CLWS_Bone> > CLightWaveSceneLoader::GetRootBones()
+{
+	vector< shared_ptr<CLWS_Bone> > vecpRootBone;
+	vecpRootBone.reserve( 8 );
+	const int num_bones = (int)m_vecpBone.size();
+	for( int i=0; i<num_bones; i++ )
+	{
+		if( m_vecpBone[i]->GetParentType() == 1 )
+			vecpRootBone.push_back( m_vecpBone[i] );
+	}
+
+	return vecpRootBone;
+}
+
+
 CLWS_Fog* CLightWaveSceneLoader::GetFog()
 {
 	if( m_Fog.iType == 0 )
 		return NULL;	//no fog in this scene
 
 	return &m_Fog;
+}
+
+
+void CLightWaveSceneLoader::Clear()
+{
+	m_vecpItem.resize( 0 );
+	m_vecObjectLayer.resize( 0 );
+	m_vecLight.resize( 0 );
+	m_vecpBone.resize( 0 );
 }

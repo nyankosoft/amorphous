@@ -1,12 +1,14 @@
 #include "LWS_Items.hpp"
 #include "Support/Macro.h"
 #include "Support/TextFileScanner.hpp"
+#include "Support/StringAux.hpp"
 
 
 #define MAX_LINE_LENGTH	1024
 
 
 using namespace std;
+using namespace boost;
 
 
 void CLWS_Channel::Load( FILE* fp )
@@ -155,15 +157,11 @@ bool CLWS_Item::LoadFromFile( CTextFileScanner& scanner )
 	{
 		scanner.ScanLine( tag, strParentItem );
 
-		char acItemType[8], acItemIndex[12];
+		m_iParentType = to_int( strParentItem.substr( 0, 1 ) ); // take the first digit
 
-		strncpy( acItemType, strParentItem.c_str(), 1 );
-		sscanf( acItemType, "%x", &m_iParentType );
+		sscanf( strParentItem.substr( 1, 3 ).c_str(), "%x", &m_iParentIndex );
 
-		strcpy( acItemIndex, strParentItem.c_str() + 1 );
-		sscanf( acItemIndex, "%x", &m_iParentIndex );
-		
-//		m_iParentIndex /= 10000;
+//		sscanf( strParentItem.substr( 4 ).c_str(), "%x", &m_iObjectNumberToWhichBoneBelongs );
 
 		// parent index: 0-origin index for the list of objects of the same type?
 
