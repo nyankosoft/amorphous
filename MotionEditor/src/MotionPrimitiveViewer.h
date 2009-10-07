@@ -61,7 +61,7 @@ public:
 
 	void Render();
 
-	void OnItemSelected( const CGM_ListBoxItem& item );
+	void OnItemSelected( const CGM_ListBoxItem& item, int item_index );
 
 	void LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name = "std" );
 };

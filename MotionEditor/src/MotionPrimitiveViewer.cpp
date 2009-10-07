@@ -8,6 +8,9 @@
 #include "MotionSynthesis.hpp"
 #include "Support/memory_helpers.hpp"
 
+using namespace std;
+using namespace boost;
+
 
 static const float g_fIndicatorHeight = 0.05f;
 
@@ -55,7 +58,7 @@ public:
 
 //	virtual ~CGM_ListBoxEventHandler() {}
 
-	virtual void OnItemSelected( CGM_ListBoxItem& item ) { m_pViewer->OnItemSelected( item ); }
+	virtual void OnItemSelected( CGM_ListBoxItem& item, int item_index ) { m_pViewer->OnItemSelected( item, item_index ); }
 
 	virtual void OnItemSelectionChanged( CGM_ListBoxItem& item ) {}
 };
@@ -109,7 +112,7 @@ void CMotionPrimitiveViewer::Init()
 	CGM_ControlRendererManagerSharedPtr pRendererMgr
 		= m_pDialogManager->GetControlRendererManagerSharedPtr();
 
-	CGraphicsElementManager *pGraphicsElementMgr
+	shared_ptr<CGraphicsElementManager> pGraphicsElementMgr
 		= pRendererMgr->GetGraphicsElementManager();
 
 	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
@@ -223,7 +226,7 @@ void CMotionPrimitiveViewer::Render()
 }
 
 
-void CMotionPrimitiveViewer::OnItemSelected( const CGM_ListBoxItem& item )
+void CMotionPrimitiveViewer::OnItemSelected( const CGM_ListBoxItem& item, int item_index )
 {
 	size_t i = 0;
 	const size_t num = m_vecpMotionPrimitive.size();

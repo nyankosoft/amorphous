@@ -4,8 +4,6 @@
 
 //#include <vld.h>
 
-#include <xercesc/util/PlatformUtils.hpp>
-
 #include "Input/StdKeyboard.hpp"
 #include "Graphics/all.hpp"
 #include "Support/Timer.hpp"
@@ -13,6 +11,7 @@
 #include "Support/FileOpenDialog_Win32.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Profile.hpp"
+#include "Support/MiscAux.hpp"
 #include "XML/XMLDocumentLoader.hpp"
 
 #include "MotionSynthesis/MotionDatabaseBuilder.hpp"
@@ -38,12 +37,9 @@ CTextureHandle g_DefaultTexture;
 
 //CShaderLightManager g_ShaderLightManager;
 
-float g_FOV = D3DX_PI / 4.0f;
+//float g_FOV = D3DX_PI / 4.0f;
 
-//CD3DXMeshObject *g_pSkySphere = NULL;
-//LPDIRECT3DTEXTURE9 g_pSkyTexture = NULL;
-
-D3DXVECTOR3 g_vLightPosition;
+//Vector3 g_vLightPosition;
 
 
 CStdKeyboard g_StdKeyboardInput;
@@ -201,7 +197,7 @@ VOID Render()
 	// rendering
 	char acStr[256];
 	sprintf( acStr, "%f", GlobalTimer().GetFPS() );
-	g_Font.DrawText( acStr, D3DXVECTOR2(20,20), 0xFFFFFFFF );
+	g_Font.DrawText( acStr, Vector2(20,20), 0xFFFFFFFF );
 
     // end the scene
     pd3dDevice->EndScene();
@@ -347,7 +343,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		)
 	);
 
-	CLogOutput_HTML html_log( "log.html" );
+	CLogOutput_HTML html_log( "MotionEditor_" + string(GetBuildInfo()) + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
 	/// init the xml parser (calls Initialize() in ctor)
