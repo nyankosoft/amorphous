@@ -1,333 +1,124 @@
 //-----------------------------------------------------------------------------
-// File: .cpp
+// File: MeshModelCompiler_Main.cpp
 //-----------------------------------------------------------------------------
 
+#include <boost/progress.hpp>
 #include "Support/FileOpenDialog_Win32.hpp"
-#include "Support/CameraController_Win32.hpp"
 #include "Support/memory_helpers.hpp"
+#include "Support/progress_display.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Support/lfs.hpp"
+#include "Support/thread_starter.hpp"
 #include "Support/Timer.hpp"
 
 #include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
-#include "Graphics/Shader/Shader.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
 #include "LightWave/3DMeshModelExportManager_LW.hpp"
 
-#include <vld.h>
+//#include <vld.h>
 
 
-
-using namespace MeshModel;
-
-
-//-----------------------------------------------------------------------------
-// Global variables
-//-----------------------------------------------------------------------------
-
-CMeshObjectHandle g_MeshObject;
-
-CPlatformDependentCameraController g_CameraController;
-
-CShaderManager g_ShaderManager;
-
-
-
-//-----------------------------------------------------------------------------
-// Global functions
-//-----------------------------------------------------------------------------
-
-void UpdateCameraMatrix()
+/// task to compiler mesh model from LWO2 (LightWave object) file
+class CLWO2MeshModelCompilerTask : public thread_class
 {
-	D3DXMATRIX matWorld, matView, matProj;
+public:
 
-	//
-	// calc matrices
-	//
+	C3DMeshModelExportManager_LW m_Exporter;
 
-	// world - always set identity matrix
-	D3DXMatrixIdentity( &matWorld );
+	bool m_CompilationFinished;
 
-	// view - take from camera controller
-	g_CameraController.GetCameraMatrix( matView );
+	std::string m_TargetFilepath;
 
-	// projection - use the fixed values for now
-	float fov    = D3DX_PI / 4;
-	float aspect = 16.0f / 9.0f;
-	float z_near = 0.1f;
-	float z_far  = 500.0f;
-	D3DXMatrixPerspectiveFovLH( &matProj, fov, aspect, z_near, z_far );
+public:
 
-	//
-	// set matrices to fixed function shader
-	//
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW,       &matWorld );
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW,       &matView );
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+	CLWO2MeshModelCompilerTask( const std::string& target_filepath )
+		:
+	m_TargetFilepath(target_filepath),
+	m_CompilationFinished(false)
+	{}
 
-	//
-	// set matrices to programmable shader
-	//
-	CShaderManager &rShaderMgr = g_ShaderManager;
-	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
-	if( pEffect )
+	void run()
 	{
-		rShaderMgr.SetWorldViewProjectionTransform( matWorld, matView, matProj );
+		m_Exporter.BuildMeshModels( m_TargetFilepath );
 
-		pEffect->CommitChanges();
+		m_CompilationFinished = true;
 	}
-
-/*
-	D3DXMatrixTranspose( &matWorldView, &matWorldView );
-*/
-}
+};
 
 
-bool InitHLSL()
+int main( int argc, char *argv[] )
 {
-	CShader::Get()->SetShaderManager( &g_ShaderManager );
-
-//	return g_ShaderManager.LoadShaderFromFile( "MeshTest.fx" );
-	return g_ShaderManager.LoadShaderFromFile( "../../_Data/Shader/basic.fx" );
-
-}
-
-
-//-----------------------------------------------------------------------------
-// Name: Render()
-// Desc: Draws the scene
-//-----------------------------------------------------------------------------
-VOID Render()
-{
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-	HRESULT hr;
-
-    // Clear the backbuffer to a blue color
-    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
-
-    // Begin the scene
-    pd3dDevice->BeginScene();
-
-	CShaderManager *pShaderManager = CShader::Get()->GetCurrentShaderManager();
-
-	LPD3DXEFFECT pEffect = pShaderManager->GetEffect();
-
-	if( pEffect )
-	{
-		hr = pEffect->SetVector( "g_vEye", (D3DXVECTOR4 *)&g_CameraController.GetPosition() );
-
-		if( FAILED(hr) )
-			int iFailed = 1;
-
-		hr = pEffect->SetTechnique( "QuickTest" );
-
-		if( FAILED(hr) )
-			int iFailed = 1;
-
-		CD3DXMeshObjectBase *pMesh = g_MeshObject.GetMesh().get();
-
-		// Rendering
-
-		if( pMesh )
-		{
-			pMesh->Render( g_ShaderManager );
-		}
-	}
-/*	else
-	{
-		if( g_pMeshObject )
-			g_pMeshObject->Render();
-//			g_pMeshObject->Render( CD3DXMeshModel::RENDER_USE_FIXED_FUNCTION_SHADER );
-	}
-*/
-	// End the scene
-	pd3dDevice->EndScene();
-
-	// Present the backbuffer contents to the display
-	pd3dDevice->Present( NULL, NULL, NULL, NULL );
-}
-
-
-//-----------------------------------------------------------------------------
-// Name: MsgProc()
-// Desc: The window's message handler
-//-----------------------------------------------------------------------------
-
-LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
-{
-	static int s_iPrevMousePosX = 0, s_iPrevMousePosY = 0;
-	int iMousePosX, iMousePosY, iMouseMoveX, iMouseMoveY;
-
-    switch( msg )
-    {
-		case WM_LBUTTONDOWN:
-		case WM_RBUTTONDOWN:
-			s_iPrevMousePosX = LOWORD(lParam);
-			s_iPrevMousePosY = HIWORD(lParam);
-			break;
-
-		case WM_MOUSEMOVE:
-			if( !(wParam & MK_RBUTTON) && !(wParam & MK_LBUTTON) )
-				break;
-			
-			iMousePosX = LOWORD(lParam);
-			iMousePosY = HIWORD(lParam);
-			iMouseMoveX = iMousePosX - s_iPrevMousePosX;
-			iMouseMoveY = iMousePosY - s_iPrevMousePosY;
-
-			if( wParam & MK_RBUTTON )
-			{	// camera roration
-				g_CameraController.AddYaw( iMouseMoveX / 450.0f );
-				g_CameraController.AddPitch( - iMouseMoveY / 450.0f );
-			}
-			else
-			{	// camera translation
-				g_CameraController.Move( iMouseMoveX / 200.0f, iMouseMoveY / 200.0f, 0.0f );
-			}
-
-			s_iPrevMousePosX = iMousePosX;
-			s_iPrevMousePosY = iMousePosY;
-			break;
-
-		case WM_DESTROY:
-            PostQuitMessage( 0 );
-            return 0;
-    }
-
-    return DefWindowProc( hWnd, msg, wParam, lParam );
-}
-
-
-void ReleaseGraphicsResources()
-{
-	g_ShaderManager.Release();
-}
-
-
-//-----------------------------------------------------------------------------
-// Name: WinMain()
-// Desc: entry point
-//-----------------------------------------------------------------------------
-
-INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR	 lpCmdLine, int nCmdShow )
-{
-    // Register the window class
-    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
-                      GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
-                      "MeshCompiler", NULL };
-
-    RegisterClassEx( &wc );
-
-    // Create the application's window
-    HWND hWnd = CreateWindow( "MeshCompiler", "Mesh Compiler",
-                              WS_OVERLAPPEDWINDOW, 200, 200, 640, 480,
-                              GetDesktopWindow(), NULL, wc.hInstance, NULL );
-
-	string init_wd( fnop::get_cwd() );
+	string init_wd( lfs::get_cwd() );
 	if( init_wd.find( "\\app" ) != init_wd.length() - 4 )
-		fnop::set_wd( "../app" );
+		lfs::set_wd( "../app" );
 
-    // Initialize Direct3D
-	if( !DIRECT3D9.InitD3D(hWnd) )
+	string src_filepath;
+	if( 2 <= argc )
+	{
+		src_filepath = argv[1];
+	}
+	else
+	{
+		GetFilename( src_filepath );
+	}
+
+	if( src_filepath.length() == 0 )
 		return 0;
 
+	CLWO2MeshModelCompilerTask mesh_compiler(src_filepath);
 
-	bool bShaderLoaded;
-	// load the shader before the directory is changed
-	if( !InitHLSL() )
-	{
-		bShaderLoaded = false;
-//		return 0;
-	}
-	else
-	{
-		bShaderLoaded = true;
-	}
+	mesh_compiler.start_thread();
 
-    // Show the window
-    ShowWindow( hWnd, SW_SHOWDEFAULT );
-    UpdateWindow( hWnd );
+	boost::xtime xt;
+	boost::xtime_get(&xt, boost::TIME_UTC);
 
-	char acFilename[512];
-	if( 0 < strlen(lpCmdLine) )
+//	const shared_ptr<morph::progress_display> pLoadingProgress;
+//	while( !pLoadingProgress )
+//		pLoadingProgress = mesh_compiler.m_Exporter.GetSourceObjectLoadingProgress();
+
+	// wait until the progress display is ready
+	while( mesh_compiler.m_Exporter.GetSourceObjectLoadingProgress().get_total_units() <= 1 )
 	{
-		// a filename is specified as an argument
-		// trim the double quotation characters at the beginning and the end of the string
-		strcpy( acFilename, lpCmdLine+1 );
-		acFilename[ strlen(acFilename)-1 ] = '\0';
-	}
-	else
-	{
-		if( !GetFilename(acFilename, NULL) )
+		if( mesh_compiler.m_CompilationFinished )
 			return 0;
 	}
 
-	LOG_PRINT( "Input model file: " + string(acFilename) );
+	const morph::progress_display& loading_progress = mesh_compiler.m_Exporter.GetSourceObjectLoadingProgress();
+	boost::progress_display progress_bar( loading_progress.get_total_units() );
+	int last_units = 0;//pLoadingProgress->get_num_current_units();
+	int added = 0;
 
-	// load a LightWave model and export mesh file(s)
-	C3DMeshModelExportManager_LW exporter;
-	bool mesh_compiled = exporter.BuildMeshModels( acFilename );
-
-
-	if( !bShaderLoaded || !mesh_compiled )
+	while( 1 )
 	{
-		ReleaseGraphicsResources();
-		return 0;
-	}
+//		printf( "checking progress: %d\n", loading_progress.get_current_units() );
 
-	int i = MessageBox( NULL, "Review model file?", "Mesh Model compiled.", MB_OK );
+		int current_units = loading_progress.get_current_units();
+		added += (current_units - last_units);
+		if( last_units < current_units )
+			progress_bar += (current_units - last_units);
+		last_units = current_units;
 
-
-	if( i == IDOK )
-	{
-		g_MeshObject.Load( acFilename );
-	}
-	else
-		return 0;
-
-
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-
-	// set projection matrix
-	D3DXMATRIX matProj;
-	D3DXMatrixPerspectiveFovLH( &matProj, 3.141592f / 3.0f, 4.0f / 3.0f, 0.1f, 1200.0f);
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
-
-
-	// Enter the message loop
-	MSG msg;
-	ZeroMemory( &msg, sizeof(msg) );
-
-	while( msg.message != WM_QUIT )
-	{
-        if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
-        {
-            TranslateMessage( &msg );
-            DispatchMessage( &msg );
-        }
-        else
+		if( mesh_compiler.m_CompilationFinished
+		 && loading_progress.get_total_units() <= loading_progress.get_current_units() )
 		{
-			/**/
+			break;
 		}
 
-		GlobalTimer().UpdateFrameTime();
+		xt.sec += 1; // 1 [sec]
+		boost::thread::sleep(xt);
 
-		UpdateCameraMatrix();
+//		printf( "checking progress - done.\n" );
+	}
 
-		g_CameraController.UpdateCameraPose( GlobalTimer().GetFrameTime() );
+//	printf( "progress: %d / %d\n", loading_progress.get_current_units(), loading_progress.get_total_units() );
 
-        Render();
-    }
+	mesh_compiler.join();
 
+/*
+	// load a LightWave model and export mesh file(s)
+	C3DMeshModelExportManager_LW exporter;
+	bool mesh_compiled = exporter.BuildMeshModels( src_filepath );
 
-//	SafeDelete( g_pMeshObject );
-
-    // Clean up everything and exit the app
-    UnregisterClass( "MeshCompiler", wc.hInstance );
-    return 0;
+	if( !mesh_compiled )
+		LOG_PRINT_ERROR( "Failed to compile mesh" );
+*/
 }
