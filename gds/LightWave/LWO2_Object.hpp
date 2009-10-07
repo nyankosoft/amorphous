@@ -4,6 +4,7 @@
 
 #include "LWO2_Surface.hpp"
 #include "LWO2_Layer.hpp"
+#include "Support/progress_display.hpp"
 
 
 //=========================================================================================
@@ -97,6 +98,9 @@ class CLWO2_Object
 
 	CLWO2_TAGChunk m_tag;
 
+	// should you boost::shared_ptr<>?
+	morph::progress_display m_ProgressDisplay;
+
 public:
 
 	CLWO2_Object(){}
@@ -152,6 +156,8 @@ public:
 	char *GetTagString( int i );
 
 	int GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_Layer& rLayer );
+
+	const morph::progress_display& GetProgressDisplay() const { return m_ProgressDisplay; }
 };
 
 

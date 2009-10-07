@@ -174,7 +174,9 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 
 	// save the original filename
 	m_strFilename = object_filename;
-	
+
+	m_ProgressDisplay.set_total_units( (int)(datasize) );
+
 	while(bytesread < datasize)
 	{
 		// read a primary chunk ID
@@ -243,6 +245,8 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 			break;
 		}
 		bytesread += chunksize;
+
+		m_ProgressDisplay.set_current_units( bytesread );
 
 		uiPrevType = uiRead;
 	}

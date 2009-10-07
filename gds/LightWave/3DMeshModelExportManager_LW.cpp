@@ -1,14 +1,14 @@
-
 #include "3DMeshModelExportManager_LW.hpp"
 #include "3DMeshModelBuilder_LW.hpp"
 using namespace MeshModel;
 
 #include "LWO2_Common.hpp"
 #include "LWO2_Object.hpp"
-
 #include "Support/memory_helpers.hpp"
+#include "Support/progress_display.hpp"
 #include "Support/fnop.hpp"
 
+using namespace std;
 using namespace boost;
 
 
@@ -184,4 +184,14 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 	}
 
 	return true;
+}
+
+
+const morph::progress_display& C3DMeshModelExportManager_LW::GetSourceObjectLoadingProgress() const
+{
+	static morph::progress_display invalid_progress(0);
+	if( m_pObject )
+		return m_pObject->GetProgressDisplay();
+	else
+		return invalid_progress;
 }

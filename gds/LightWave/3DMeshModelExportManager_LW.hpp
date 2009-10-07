@@ -4,11 +4,15 @@
 
 #include <string>
 #include <vector>
-using namespace std;
-
 #include <boost/shared_ptr.hpp>
 
 #include "LightWave/fwd.hpp"
+
+
+namespace morph
+{
+class progress_display;
+};
 
 
 namespace MeshModel
@@ -30,11 +34,11 @@ class C3DMeshModelExportManager_LW
 
 	boost::shared_ptr<CLWO2_Object> m_pObject;
 
-	vector<C3DMeshModelBuilder *> m_vecpModelBuilder;
+	std::vector<C3DMeshModelBuilder *> m_vecpModelBuilder;
 
-	string m_strBaseOutFilename;
+	std::string m_strBaseOutFilename;
 
-	void GetOutputFilename( string& dest_filename, const string& src_layer_name );
+	void GetOutputFilename( std::string& dest_filename, const std::string& src_layer_name );
 
 public:
 
@@ -46,8 +50,9 @@ public:
 
 	/// creates mesh model(s) from a .lwo file
 	/// a valid LWO2 model file has to be specified
-	bool BuildMeshModels( const string& lwo_filename );
+	bool BuildMeshModels( const std::string& lwo_filename );
 
+	const morph::progress_display& GetSourceObjectLoadingProgress() const;
 };
 
 
