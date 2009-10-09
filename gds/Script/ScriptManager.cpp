@@ -3,7 +3,6 @@
 #include "Support/StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
-#include "Support/fnop.hpp"
 #include <boost/python.hpp>
 
 

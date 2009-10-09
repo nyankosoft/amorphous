@@ -1,6 +1,5 @@
 #include "ScriptArchive.hpp"
 
-#include "Support/fnop.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/TextFileScanner.hpp"
 
@@ -38,8 +37,8 @@ static void CreateScriptFileListFromListFile( path script_dir_path,
 
 		string script_filepath = script_dir_path.string() + "/" + line;
 
-		if( fnop::path_exists(script_filepath)
-		 && fnop::get_ext(script_filepath) == "py" )
+		if( exists(script_filepath)
+		 && path(script_filepath).extension() == "py" )
 		{
 			script_file_list.push_back( script_filepath );
 		}
