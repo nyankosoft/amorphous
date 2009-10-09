@@ -64,6 +64,8 @@ public:
 
 	const CTransformNode& GetRootNode() const { return  m_RootNode; }
 
+	CTransformNode& RootNode() { return m_RootNode; }
+
 	float GetTime() const { return m_fTime; }
 
 	void SetTime( float time ) { m_fTime = time; }

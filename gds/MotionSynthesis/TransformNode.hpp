@@ -57,6 +57,16 @@ public:
 
 	Vector3 GetLocalTranslation() const { return m_vTranslation; }
 
+	// setters
+
+	void SetRotation( const Quaternion& rotation ) { m_Rotation = rotation; }
+
+	void SetTranslation( const Vector3& vTranslation ) { m_vTranslation = vTranslation; }
+
+	void SetNumChildren( int num_children ) { m_vecChildNode.resize( num_children ); }
+
+	std::vector<CTransformNode>& Child() { return m_vecChildNode; }
+
 	friend class CKeyframe;
 	friend class CMotionPrimitive;
 };
