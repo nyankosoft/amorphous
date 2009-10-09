@@ -22,8 +22,8 @@ public:
 	inline Quaternion ( Scalar fX, Scalar fY, Scalar fZ, Scalar fW );
 	inline Quaternion ( const Quaternion& q );
 
-    // quaternion for the input rotation matrix
-//	inline Quaternion (const Matrix33& rkRot);
+    /// Creates a quaternion from a rotation matrix
+	inline Quaternion ( const Matrix33& rRot );
 
     // quaternion for the rotation of the axis-angle pair
 //	inline Quaternion (const Vector3& rvAxis, Scalar fAngle);

@@ -29,13 +29,15 @@ Quaternion::Quaternion (const Quaternion& q)
 //	memcpy(this, &q, sizeof(Quaternion));
 }
 
-/*
+
 //----------------------------------------------------------------------------
-Quaternion::Quaternion (const Matrix33& rkRot)
+Quaternion::Quaternion (const Matrix33& rRot)
 {
-	FromRotationMatrix(rkRot);
+	FromRotationMatrix(rRot);
 }
-//----------------------------------------------------------------------------
+
+
+/*//----------------------------------------------------------------------------
  
 Quaternion::Quaternion (const Vector3& rvAxis, Scalar fAngle)
 {
