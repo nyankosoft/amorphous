@@ -90,6 +90,8 @@ public:
 
 	virtual bool LoadFromFile( CTextFileScanner& scanner );
 
+	float GetValueAt( int channel, float fTime );
+
 	/// For the moment, this function returns the position at frame 0,
 	/// and time in keyframes ('fTime') is ignored. 
 	Vector3 GetPositionAt( float fTime );
@@ -97,6 +99,8 @@ public:
 	Vector3 GetPositionAtKeyframe( int keyframe );
 
 	void GetOrientationAt( float fTime, Matrix33& matOrient );
+
+	inline Matrix33 GetOrientationAt( float fTime );
 
 	void GetOrientationAtKeyframe( int keyframe, Matrix33& matOrient );
 
@@ -127,6 +131,9 @@ public:
 	int GetChildType( int i ) const { return m_vecChildType[i]; }
 	int GetChildIndex( int i ) const { return m_vecChildIndex[i]; }
 
+	int GetNumChannels() const { return m_iNumChannels; }
+
+	const CLWS_Channel& GetChannel( int i ) const { return m_aChannel[i]; }
 
 //	Matrix33 GetOrientationAtKeyFrame( int iKeyFrame );
 
@@ -143,6 +150,12 @@ public:
 
 };
 
+inline Matrix33 CLWS_Item::GetOrientationAt( float fTime )
+{
+	Matrix33 matOrient = Matrix33Identity();
+	GetOrientationAt( fTime, matOrient );
+	return matOrient;
+}
 
 
 //===============================================================================================

@@ -218,18 +218,78 @@ void CLWS_Item::CheckChannelBlock( char* pcFirstLine, FILE* fp )
 	}
 }
 
+
+float CLWS_Item::GetValueAt( int channel_index, float fTime )
+{
+//	return GetPositionAtKeyframe( 0 );
+
+//	const size_t num_children = pBone->ChildBone().size();
+//	node.Child().resize( num_children );
+
+	if( m_iNumChannels <= channel_index )
+		return 0;
+
+//	for(int i=0; i<3; i++)
+//	{
+		CLWS_Channel& channel = m_aChannel[channel_index];
+
+//		if( channel.vecKey.size()
+
+		if( channel.vecKey.size() == 0 )
+		{
+			// no keyframe
+			return 0;
+		}
+		else if( channel.vecKey.size() == 1 )
+		{
+			// only one keyframe
+			return channel.vecKey[0].fValue;
+		}
+
+		//
+		// 2 or more keyframes
+		//
+
+		if( fTime <= channel.vecKey[0].fTime )
+		{
+			return channel.vecKey[0].fValue;
+		}
+		else if( channel.vecKey.back().fTime <= fTime )
+		{
+			// fTime is greater than the range of time span of keyframes
+			return channel.vecKey.back().fValue;
+		}
+
+		for( size_t j=0; j<channel.vecKey.size()-1; j++ )
+		{
+			if( fTime <= channel.vecKey[j+1].fTime )
+			{
+				if( fabs( channel.vecKey[j].fTime - fTime ) < 0.001f )
+				{
+					return channel.vecKey[j].fValue;
+				}
+				else
+				{
+					// interpolate
+					// TODO: do proper interpolation
+					float f = (fTime - channel.vecKey[j].fTime) / (channel.vecKey[j+1].fTime - channel.vecKey[j].fTime);
+					return channel.vecKey[j].fValue * (1.0f - f) + channel.vecKey[j].fValue * f;
+				}
+			}
+		}
+
+		return 0;
+//	}
+}
+
+
 Vector3 CLWS_Item::GetPositionAt( float fTime )
 {
-	return GetPositionAtKeyframe( 0 );
+	float x = GetValueAt( 0, fTime );
+	float y = GetValueAt( 1, fTime );
+	float z = GetValueAt( 2, fTime );
 
-/*	Vector3 vPosition;
-
-	for(int i=0; i<3; i++)
-	{
-		vPosition[i] = m_aChannel[i].vecKey[0].fValue;
-	}
-
-	return vPosition;*/
+	return Vector3(x,y,z);
 }
 
 
@@ -256,7 +316,19 @@ void CLWS_Item::GetOrientationAt( float fTime, Matrix33& matOrient )
 	// TODO: support animation time
 	// returns the position at frame 0 for the moment
 
-	GetOrientationAtKeyframe( 0, matOrient );
+//	GetOrientationAtKeyframe( 0, matOrient );
+
+	float fHeading = GetValueAt( 3, fTime );
+	float fPitch   = GetValueAt( 4, fTime );
+	float fBank    = GetValueAt( 5, fTime );
+
+	matOrient
+        //= Matrix33RotationY( fHeading )
+        //* Matrix33RotationX( fPitch )
+        //* Matrix33RotationZ( fBank );
+        = Matrix33RotationZ( fBank )
+        * Matrix33RotationX( fPitch )
+        * Matrix33RotationY( fHeading );
 
 /*	Matrix33 matRotX, matRotY, matRotZ;
 

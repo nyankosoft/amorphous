@@ -18,6 +18,7 @@ class CLWS_Keyframe;
 class CLWS_Channel;
 class CLWS_Item;
 class CLWS_ObjectLayer;
+class CLWS_Bone;
 class CLWS_Light;
 class CLWS_Fog;
 
