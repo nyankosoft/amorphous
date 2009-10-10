@@ -1,11 +1,12 @@
 #include "BaseEntityManager.hpp"
 #include "BaseEntity.hpp"
 #include "BaseEntityFactory.hpp"
-
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/fnop.hpp"
-using namespace fnop;
+#include <boost/filesystem.hpp>
+
+using namespace std;
+using namespace boost;
 
 
 CSingleton<CBaseEntityManager> CBaseEntityManager::m_obj;
@@ -73,6 +74,8 @@ CBaseEntityManager::~CBaseEntityManager()
 bool CBaseEntityManager::LoadAllBaseEntitiesFromRootTextFile( const string& strRootTextFile,
 															  vector<CBaseEntity *>& vecpBaseEntity )
 {
+	using namespace filesystem;
+
 	CTextFileScanner scanner;
 	if( !scanner.OpenFile( strRootTextFile ) )
 	{
@@ -81,7 +84,8 @@ bool CBaseEntityManager::LoadAllBaseEntitiesFromRootTextFile( const string& strR
 	}
 
 	// change to the directory of 'strRootTextFile'
-	dir_stack dir_stk( get_path( strRootTextFile ) );
+//	dir_stack dir_stk( get_path( strRootTextFile ) );
+	path parent_path = path(strRootTextFile).parent_path();
 
 	vector<string> vecSrcTextFile;
 	string tag, filename, database_filename;
@@ -90,7 +94,7 @@ bool CBaseEntityManager::LoadAllBaseEntitiesFromRootTextFile( const string& strR
 		tag = scanner.GetTagString();
 
 		if( scanner.TryScanLine( "input", filename ) )
-			vecSrcTextFile.push_back( filename );
+			vecSrcTextFile.push_back( path(parent_path / filename).string() );
 
 		scanner.TryScanLine( "output", database_filename );
 	}
@@ -104,9 +108,10 @@ bool CBaseEntityManager::LoadAllBaseEntitiesFromRootTextFile( const string& strR
 		LoadAllBaseEntitiesFromTextFile( vecSrcTextFile[i], vecpBaseEntity );
 	}
 
-	OutputDatabaseFile( database_filename, vecpBaseEntity );
+	path db_filepath = parent_path / database_filename;
+	OutputDatabaseFile( db_filepath.string(), vecpBaseEntity );
 
-	dir_stk.prevdir();
+//	dir_stk.prevdir();
 
 	return true;
 }
