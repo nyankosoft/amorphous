@@ -2,8 +2,6 @@
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/memory_helpers.hpp"
-#include "Support/fnop.hpp"
-using namespace fnop;
 
 
 CD3DXSMeshObject::CD3DXSMeshObject()
