@@ -69,24 +69,6 @@ MotionPrimitive  standing		  0            0
 */
 
 
-class CMotionPrimitiveDesc
-{
-public:
-
-	std::string name;
-	int start_frame;
-	int end_frame;
-	std::string root_node_name;
-	bool is_loop_motion;
-
-	CMotionPrimitiveDesc()
-		:
-	start_frame(0),
-	end_frame(0),
-	is_loop_motion(false)
-	{}
-};
-
 
 
 CLWSMotionCompiler::CLWSMotionCompiler()
@@ -261,7 +243,7 @@ void CLWSMotionCompiler::CreateMotionPrimitives( boost::shared_ptr<CLWS_Bone> pR
 		dest_keyframe;
 	}
 
-	int num_motion_primitives = 1;
+	int num_motion_primitives = (int)m_vecMotionPrimitiveDesc.size();
 	for( int i=0; i<num_motion_primitives; i++ )
 	{
 	}
@@ -331,7 +313,7 @@ Result::Name CLWSMotionCompiler::LoadDescFile( const std::string& filepath )
 			desc.end_frame      = end_frame;
 			desc.root_node_name = root_str;*/
 
-			CMotionPrimitiveDesc desc;
+			CLWSMotionPrimitiveDesc desc;
 			desc.name           = strings[1];
 			desc.start_frame    = to_int( strings[2] );
 			desc.end_frame      = to_int( strings[3] );

@@ -47,6 +47,25 @@ public:
 };
 
 
+class CLWSMotionPrimitiveDesc
+{
+public:
+
+	std::string name;
+	int start_frame;
+	int end_frame;
+	std::string root_node_name;
+	bool is_loop_motion;
+
+	CLWSMotionPrimitiveDesc()
+		:
+	start_frame(0),
+	end_frame(0),
+	is_loop_motion(false)
+	{}
+};
+
+
 class CLWSMotionCompiler
 {
 	boost::filesystem::path m_SceneFilepath;
@@ -55,7 +74,7 @@ class CLWSMotionCompiler
 
 	boost::shared_ptr<CLightWaveSceneLoader> m_pScene;
 
-	std::vector<CMotionPrimitiveDesc> m_vecMotionPrmitiveDesc;
+	std::vector<CLWSMotionPrimitiveDesc> m_vecMotionPrimitiveDesc;
 
 private:
 
