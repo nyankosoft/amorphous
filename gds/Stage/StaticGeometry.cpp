@@ -19,8 +19,8 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
-#include "Support/fnop.hpp"
 #include "Support/macro.h"
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace boost;
@@ -628,7 +628,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 		CreateCollisionGeometry( *(m_pStage->GetPhysicsScene()) );
 	}
 
-	m_Archive.m_MeshSubsetTree.WriteToFile( "./debug/sg_aabtree-" + fnop::get_nopathfilename(db_filename) + ".txt" );
+	m_Archive.m_MeshSubsetTree.WriteToFile( "./debug/sg_aabtree-" + filesystem::path(db_filename).leaf() + ".txt" );
 
 //	double elapsed_time_in_stage_at_end = m_pStage->GetElapsedTime();
 
