@@ -210,19 +210,48 @@ void CMotionPrimitiveViewer::Render()
 
 	RenderFloor();
 
-	RenderPoles();
-
 	m_MotionTrace.Draw();
 
 	m_KeyframeCoords.Draw();
 
 	m_SkeletonRenderer.Render();
 
+	RenderPoles();
+
 	// render UI
 
 	pd3dDevice->SetRenderState( D3DRS_ZENABLE,  FALSE );
 
 	m_pDialogManager->Render();
+}
+
+
+void CMotionPrimitiveViewer::UpdateLinestrip()
+{
+	std::vector<Vector3> vecPoint;
+	std::vector<CKeyframe>& vecKeyframe = m_pCurrentMotion->GetKeyframeBuffer();
+	if( vecKeyframe.size() == 0 )
+		return;
+
+	vecPoint.reserve( vecKeyframe.size() );
+	BOOST_FOREACH( const CKeyframe& keyframe, vecKeyframe )
+	{
+		Vector3 vRootPos = keyframe.GetRootPose().vPosition;
+		vRootPos.y = g_fIndicatorHeight;
+
+		vecPoint.push_back( vRootPos );
+	}
+
+	m_MotionTrace.SetPoints( vecPoint, 0xFFF0FF10 );
+
+	// visualize local coordinates of start and end keyframe
+	m_KeyframeCoords.Clear();
+	vector<Matrix34> vecRootPose;
+	vecRootPose.push_back( vecKeyframe.front().GetRootPose() );
+	vecRootPose.push_back( vecKeyframe.back().GetRootPose() );
+	vecRootPose[0].vPosition.y = g_fIndicatorHeight;
+	vecRootPose[1].vPosition.y = g_fIndicatorHeight;
+	GetCoordAxesDisplay( m_KeyframeCoords, vecRootPose, 0.2f );
 }
 
 
@@ -251,28 +280,7 @@ void CMotionPrimitiveViewer::OnItemSelected( const CGM_ListBoxItem& item, int it
 	m_fCurrentPlayTime = 0;
 
 	// update linestrip
-	std::vector<Vector3> vecPoint;
-	std::vector<CKeyframe>& vecKeyframe = m_pCurrentMotion->GetKeyframeBuffer();
-	vecPoint.reserve( vecKeyframe.size() );
-	BOOST_FOREACH( const CKeyframe& keyframe, vecKeyframe )
-	{
-		Vector3 vRootPos = keyframe.GetRootPose().vPosition;
-		vRootPos.y = g_fIndicatorHeight;
-
-		vecPoint.push_back( vRootPos );
-	}
-
-	m_MotionTrace.SetPoints( vecPoint, 0xFFF0FF10 );
-
-	// visualize local coordinates of start and end keyframe
-	m_KeyframeCoords.Clear();
-	vector<Matrix34> vecRootPose;
-	vecRootPose.push_back( vecKeyframe.front().GetRootPose() );
-	vecRootPose.push_back( vecKeyframe.back().GetRootPose() );
-	vecRootPose[0].vPosition.y = g_fIndicatorHeight;
-	vecRootPose[1].vPosition.y = g_fIndicatorHeight;
-	GetCoordAxesDisplay( m_KeyframeCoords, vecRootPose, 0.2f );
-
+	UpdateLinestrip();
 }
 
 

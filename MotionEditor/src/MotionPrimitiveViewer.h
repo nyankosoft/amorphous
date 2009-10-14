@@ -43,6 +43,8 @@ private:
 
 	void RenderPoles();
 
+	void UpdateLinestrip();
+
 public:
 
 	enum UIID

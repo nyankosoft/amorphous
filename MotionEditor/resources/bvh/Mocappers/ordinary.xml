@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <root>
+	<Output>bvh_tests.mdb</Output>
 	<AnnotationTable>
 		<Annotation>Forward</Annotation>
 		<Annotation>Backward</Annotation>

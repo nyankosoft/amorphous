@@ -1,9 +1,11 @@
 //-----------------------------------------------------------------------------
 // File: D3DAppTestMain.cpp
+// NOTE: Press cancel on the open file dialog to compile and siplay test motion data
 //-----------------------------------------------------------------------------
 
 //#include <vld.h>
 
+#include <boost/filesystem.hpp>
 #include "Input/StdKeyboard.hpp"
 #include "Graphics/all.hpp"
 #include "Support/Timer.hpp"
@@ -15,8 +17,13 @@
 #include "XML/XMLDocumentLoader.hpp"
 
 #include "MotionSynthesis/MotionDatabaseBuilder.hpp"
+#include "MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
 
 #include "MotionPrimitiveViewer.h"
+
+using namespace std;
+using namespace boost;
+using namespace boost::filesystem;
 
 
 //-----------------------------------------------------------------------------
@@ -237,9 +244,9 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 		case WM_KEYDOWN:
 			g_StdKeyboardInput.NotifyKeyDown( (int)wParam );
 
-			switch( wParam )
+/*			switch( wParam )
 			{
-/*			case VK_ADD:
+			case VK_ADD:
 				g_FOV -= 0.01f;
 				if( g_FOV <= 0.01f )
 					g_FOV = 0.0f;
@@ -252,8 +259,8 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 				D3DXMatrixPerspectiveFovLH( &matProj, g_FOV, 640.0f / 480.0f, 0.5f, 200.0f );
 				DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 				g_ShaderManager.SetProjectionTransform( matProj );
-				break;*/
-			}
+				break;
+			}*/
 			break;
 
 		case WM_KEYUP:
@@ -314,6 +321,8 @@ bool Init()
 
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
+	string cmdline( lpCmdLine );
+
     // Register the window class
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
@@ -352,19 +361,42 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	if( !Init() )
 		return 0;
 
+	shared_ptr<msynth::CMotionPrimitiveCompilerCreator> pCompilerCreator( new msynth::CBVHMotionPrimitiveCompilerCreator );
+	msynth::RegisterMotionPrimitiveCompilerCreator( pCompilerCreator );
+
 	msynth::CMotionDatabaseBuilder mdb;
-	string output_mdb_filepath = "../resources/mdb.bin";
-	bool built = mdb.Build( "../resources/bvh/Mocappers/ordinary.xml" );
+	string input_filepath;
+	if( 0 < cmdline.length() )
+		input_filepath = cmdline;
+	else
+	{
+		GetFilename( input_filepath );
+		if( input_filepath.length() == 0 )
+			input_filepath = "../resources/bvh/Mocappers/ordinary.xml";
+	}
 
-	bool saved = mdb.SaveMotionDatabaseToFile( output_mdb_filepath );
+	string mdb_filepath;
+	bool built = true;
+	if( path(input_filepath).extension() == ".xml" )
+	{
+	//	string output_mdb_filepath = "../resources/mdb.bin";
+		built = mdb.Build( input_filepath );
 
-	if( built && saved )
+		bool saved = true;//mdb.SaveMotionDatabaseToFile( output_mdb_filepath );
+	
+		mdb_filepath = mdb.GetOutputFilepath();
+	}
+	else
+		mdb_filepath = input_filepath;
+
+
+	if( built )//&& saved )
 	{
 		// successfully built and saved a motion database
 		g_pMotionPrimitiveViewer
 			= boost::shared_ptr<CMotionPrimitiveViewer>( new CMotionPrimitiveViewer() );
 
-		g_pMotionPrimitiveViewer->LoadMotionPrimitivesFromDatabase( output_mdb_filepath/*, tbl_name*/ );
+		g_pMotionPrimitiveViewer->LoadMotionPrimitivesFromDatabase( mdb_filepath/*, tbl_name*/ );
 	}
 
 	// init font
