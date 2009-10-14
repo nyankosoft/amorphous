@@ -15,7 +15,6 @@ using namespace Graphics;
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-#include "XMLDocumentLoader.hpp"
 #include "xmlch2x.hpp"
 
 /*
