@@ -209,6 +209,14 @@
 					Name="MotionSynthesis"
 					>
 					<File
+						RelativePath="..\..\..\Project1\gds\MotionSynthesis\BVHMotionDatabaseCompiler.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\Project1\gds\MotionSynthesis\BVHMotionDatabaseCompiler.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\Project1\gds\MotionSynthesis\fwd.hpp"
 						>
 					</File>

@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 using namespace msynth;
 
 
@@ -69,15 +70,84 @@ MotionPrimitive  standing		  0            0
 */
 
 
+inline void Quantize( float& f, float q )
+{
+	f = f - fmodf( f, q );
+}
+
+inline void Quantize( Vector3& v, float q )
+{
+	Quantize( v.x, q );
+	Quantize( v.y, q );
+	Quantize( v.z, q );
+}
+
+inline void Quantize( Matrix33& mat, float q )
+{
+	for( int i=0; i<3; i++ )
+	{
+		for( int j=0; j<3; j++ )
+			Quantize( mat(i,j), q );
+	}
+}
 
 
-CLWSMotionCompiler::CLWSMotionCompiler()
+CLWSMotionDatabaseCompiler::CLWSMotionDatabaseCompiler()
 {
 }
 
 
-CLWSMotionCompiler::~CLWSMotionCompiler()
+CLWSMotionDatabaseCompiler::~CLWSMotionDatabaseCompiler()
 {
+}
+
+
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGroup& desc_group )
+{
+	bool scene_loaded = LoadLWSceneFile( desc_group.m_Filename );
+	if( !scene_loaded )
+		return;
+
+	shared_ptr<CLWS_Bone> pRootBone = CreateSkeleton();
+
+	if( m_pSkeleton )
+	{
+		path dir_path = path(desc_group.m_Filename).parent_path() / "skeletons";
+		create_directories( dir_path );
+		path filepath = dir_path / path(desc_group.m_Filename + ".txt").leaf();
+		m_pSkeleton->DumpToTextFile( filepath.string() );
+	}
+
+	if( !pRootBone )
+		return;// Result::UNKNOWN_ERROR;
+
+	vector<float> vecfKeyframeTime;
+	vecfKeyframeTime.reserve( 0xFF );
+	CollectKeyFrameTimes( *(pRootBone.get()), vecfKeyframeTime );
+
+	const int fps = m_pScene ? m_pScene->GetSceneInfo().m_FramesPerSecond : 30;
+
+	const int num_keyframes = (int)vecfKeyframeTime.size();
+
+	vector<CKeyframe> vecKeyframe;
+	vecKeyframe.resize( num_keyframes );
+
+	for( int i=0; i<num_keyframes; i++ )
+	{
+		float fTime = vecfKeyframeTime[i];//(float)i / (float)fps;
+
+		CKeyframe& dest_keyframe = vecKeyframe[i];
+		dest_keyframe.SetTime( fTime );
+		CreateKeyframe( pRootBone, fTime, dest_keyframe.RootNode() );
+	}
+
+	const size_t num = desc_group.m_Desc.size();
+	for( size_t i=0; i<num; i++ )
+	{
+		CreateMotionPrimitive( desc_group, desc_group.m_Desc[i], vecKeyframe );
+
+//		CreateMotionPrimitives( pRootBone );
+	}
 }
 
 
@@ -94,7 +164,7 @@ inline bool find_similar_time( float in, vector<float>& vecfRef )
 }
 
 
-void CLWSMotionCompiler::CollectKeyFrameTimes( CLWS_Bone& bone, vector<float>& vecKeyframeTime )
+void CLWSMotionDatabaseCompiler::CollectKeyFrameTimes( CLWS_Bone& bone, vector<float>& vecKeyframeTime )
 {
 //	shared_ptr<CLWS_Bone> pRootBone = ???;
 
@@ -120,36 +190,74 @@ void CLWSMotionCompiler::CollectKeyFrameTimes( CLWS_Bone& bone, vector<float>& v
 }
 
 
-// Recursively copies the bones and creates a skeleton structure
-// composed of CBone class objects
-void CopyBones( shared_ptr<CLWS_Bone> pSrcBone, CBone& dest_bone )
+// Recursively copies the bones and creates a tree which has CBone class objects as its nodes
+void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
+			    const Matrix34& parent_space,
+			    CBone& dest_bone )
 {
+	const string& bone_name = pSrcBone->GetBoneName();
+	Vector3 vRestDir  = pSrcBone->GetBoneRestDirection();
+	Vector3 vRestPos  = pSrcBone->GetBoneRestPosition();
+	float fRestLen    = pSrcBone->GetBoneRestLength();
+	float afRestAngle[3] = 
+	{
+		pSrcBone->GetBoneRestAngle(0),
+		pSrcBone->GetBoneRestAngle(1),
+		pSrcBone->GetBoneRestAngle(2)
+	};
+
+	Vec3Normalize( vRestDir, vRestDir );
+
+	Quantize( vRestDir, 0.000001f );
+	Quantize( vRestPos, 0.000001f );
+	Quantize( fRestLen, 0.000001f );
+	for( int j=0; j<3; j++ )
+		Quantize( afRestAngle[j], 0.000001f );
+
+	Matrix34 local_space;
+	local_space.matOrient
+		= Matrix33Identity()
+		* Matrix33RotationY( afRestAngle[0] ) // heading
+		* Matrix33RotationX( afRestAngle[1] ) // pitch
+		* Matrix33RotationZ( afRestAngle[2] ) // bank
+		* Matrix33Identity();
+
+	Quantize( local_space.matOrient, 0.000001f );
+
+	local_space.vPosition = vRestPos;
+
+
+	Matrix34 world_pose = parent_space * local_space;
+
+	// this makes a parent bone
+	Vector3 vOffset = world_pose.vPosition - parent_space.vPosition;
+
+	Vector3 vAnotherOffset
+		= parent_space
+		* Matrix34( Vector3(0,0,0), local_space.matOrient )
+		* Vector3(0,0,1) * fRestLen;
+
+	dest_bone.SetOffset( vOffset );
+
+	dest_bone.SetName( pSrcBone->GetBoneName() );
+
 	const size_t num_children = pSrcBone->ChildBone().size();
+	dest_bone.Children().resize( num_children );
 	for( size_t i=0; i<num_children; i++ )
 	{
 		shared_ptr<CLWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
-		CBone dest_child_bone;
-
-		const string& bone_name = pSrcChildBone->GetBoneName();
-		const Vector3 vRestDir  = pSrcChildBone->GetBoneRestDirection();
-		const Vector3 vRestPos  = pSrcChildBone->GetBoneRestPosition();
-		const float fRestLen    = pSrcChildBone->GetBoneRestLength();
-
-		dest_child_bone.SetOffset( vRestDir * fRestLen );
-
-		dest_child_bone.SetName( pSrcChildBone->GetBoneName() );
-
-		dest_bone.AddChildBone( dest_child_bone );
+//		CBone dest_child_bone;
+//		dest_bone.AddChildBone( dest_child_bone );
 
 		// recursively copy the bones
-		CopyBones( pSrcChildBone, dest_bone.Child((int)i) );
+		CopyBones( pSrcChildBone, parent_space * local_space, dest_bone.Child((int)i) );
 	}
 }
 
-//void CLWSMotionCompiler::CreateSkeleton()
+//void CLWSMotionDatabaseCompiler::CreateSkeleton()
 
 /// Returns a valid root bone on success
-shared_ptr<CLWS_Bone> CLWSMotionCompiler::CreateSkeleton()
+shared_ptr<CLWS_Bone> CLWSMotionDatabaseCompiler::CreateSkeleton()
 {
 	if( !m_pScene )
 		return shared_ptr<CLWS_Bone>();
@@ -175,16 +283,144 @@ shared_ptr<CLWS_Bone> CLWSMotionCompiler::CreateSkeleton()
 
 	CBone root_bone;
 
-	CopyBones( pRootBone, root_bone );
+	CopyBones( pRootBone, Matrix34Identity(), root_bone );
 
-	shared_ptr<CSkeleton> m_pSkeleton = shared_ptr<CSkeleton>( new CSkeleton );
+	m_pSkeleton = shared_ptr<CSkeleton>( new CSkeleton );
 	m_pSkeleton->SetBones( root_bone );
 
 	return pRootBone;
 }
 
 
-void CLWSMotionCompiler::CreateMotionPrimitive()
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGroup& desc_group,
+													    CMotionPrimitiveDesc& desc,
+													    vector<CKeyframe>& vecSrcKeyframe )
+{
+	// add a new motion primitive and get the reference to it
+	m_vecpMotionPrimitive->push_back( CMotionPrimitive( desc.m_Name ) );
+	CMotionPrimitive& motion = m_vecpMotionPrimitive->back();
+
+	if( !m_pSkeleton )
+		return;
+
+//	motion.SetSkeleton( desc_group.m_Skeleton );
+	motion.SetSkeleton( *(m_pSkeleton.get()) );
+
+	motion.SetLoopedMotion( desc.m_bIsLoopMotion );
+
+	vector<CKeyframe> vecKeyframe;
+	vecKeyframe.resize(0);
+
+	const int fps = m_pScene ? m_pScene->GetSceneInfo().m_FramesPerSecond : 30;
+
+	int start_frame = desc.m_StartFrame;
+	int end_frame   = desc.m_EndFrame;
+
+	if( end_frame < start_frame )
+		return;
+
+	// Find start keyframe.
+	// If vecSrcKeyframe does not have a keyframe at desc.m_StartFrame,
+	// creating a new keyframe by interpolating keyframes in vecSrcKeyframe
+	// before and after desc.m_StartFrame.
+	// 
+	float fStartTime = (float)start_frame / (float)fps;
+	float fEndTime   = (float)end_frame   / (float)fps;
+	const int num_src_keyframes = (int)vecSrcKeyframe.size();
+/*	for( int i=0; i<num_src_keyframes; i++ )
+	{
+		if( vecSrcKeyframe[i].GetTime() < fStartTime )
+			break;
+	}
+
+	CKeyframe start_keyframe;
+	if( i == num_src_keyframes )
+		start_keyframe = vecSrcKeyframe.back();
+	else if( fabs( vecSrcKeyframe[i].GetTime() - fStartTime ) < 0.001 )
+		start_keyframe = vecSrcKeyframe[i];
+	else
+	{
+		// need to interpolate the keyframes before and after desc.m_StartFrame
+		CMotionPrimitive motion;
+		motion.AddKeyframe( 
+		start_keyframe = ;
+	}
+*/
+	for( int i=0; i<num_src_keyframes; i++ )
+	{
+		float fTime = vecSrcKeyframe[i].GetTime();
+		if( fStartTime <= fTime && fTime <= fEndTime )
+		{
+			vecKeyframe.push_back( vecSrcKeyframe[i] );
+		}
+	}
+
+//	clamp( start, 0, (int)vecSrcKeyframe.size() );
+//	clamp( end,   0, (int)vecSrcKeyframe.size() );
+
+
+//	vecKeyframe.assign( vecSrcKeyframe.begin() + start, vecSrcKeyframe.begin() + end);
+
+	if( vecKeyframe.empty() )
+		return;
+
+	CMotionPrimitive m_SourceMotion;
+	for( int i=0; i<num_src_keyframes; i++ )
+		m_SourceMotion.InsertKeyframe( vecSrcKeyframe[i] );
+
+	if( 0.001 < fabs( vecKeyframe.front().GetTime() - fStartTime ) )
+	{
+		// Need to insert an interpolated keyframe at the beginning
+		vecKeyframe.insert( vecKeyframe.begin(), CKeyframe(fStartTime) );
+		m_SourceMotion.GetInterpolatedKeyframe( vecKeyframe.front(), fStartTime );
+	}
+
+	if( 0.001 < fabs( vecKeyframe.front().GetTime() - fEndTime ) )
+	{
+		// Need to insert an interpolated keyframe at the end
+		vecKeyframe.push_back( CKeyframe(fEndTime) );
+		m_SourceMotion.GetInterpolatedKeyframe( vecKeyframe.back(), fEndTime );
+	}
+
+	// modify the time of the copied keyframes so that the motion primitive start at time 0
+
+	float fOrigStartTime = vecKeyframe.front().GetTime();
+	const size_t num_keyframes = vecKeyframe.size();
+	for( size_t i=0; i<num_keyframes; i++ )
+		vecKeyframe[i].SetTime( vecKeyframe[i].GetTime() - fOrigStartTime );
+//		vecKeyframe[i].SetTime( (float)i / (float)fps );
+/*
+	// modify root position
+	if( 0 < vecKeyframe.size() && desc.m_bResetHorizontalRootPos )
+	{
+		Matrix34 root_pose = vecKeyframe[0].GetRootPose();
+		Vector3 vBasePosH = root_pose.vPosition;
+		vBasePosH.y = 0;
+
+		BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
+		{
+			root_pose = keyframe.GetRootPose();
+			root_pose.vPosition = root_pose.vPosition - vBasePosH;
+			keyframe.SetRootPose( root_pose );
+		}
+	}
+
+	if( desc.m_NormalizeOrientation == "AlignLastKeyframe" )
+		AlignLastKeyframe( vecKeyframe );
+
+	if( 0.0001 < abs(1.0 - desc_group.m_fScalingFactor) )
+	{
+		BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
+		{
+			keyframe.Scale( desc_group.m_fScalingFactor );
+		}
+	}
+*/
+	motion.SetKeyframes( vecKeyframe );
+}
+
+
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitive()
 {/*
 	shared_ptr<CLWS_Bone> pRootBone;
 
@@ -206,16 +442,19 @@ void CLWSMotionCompiler::CreateMotionPrimitive()
 }
 
 
-void CLWSMotionCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, float fTime, CTransformNode& dest_node )
+void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, float fTime, CTransformNode& dest_node )
 {
 	const size_t num_children = pBone->ChildBone().size();
 	dest_node.SetNumChildren( (int)num_children );
 
 	// rotation
-	dest_node.SetRotation( Quaternion( pBone->GetOrientationAt( fTime ) ) );
+//	dest_node.SetRotation( Quaternion( pBone->GetOrientationAt( fTime ) ) );
+	dest_node.SetRotation( Quaternion( pBone->GetOffsetOrientationAt( fTime ) ) );
 	
 	// translation
-	dest_node.SetTranslation( pBone->GetPositionAt( fTime ) );
+	Vector3 vTranslation = pBone->GetPositionAt( fTime ) - pBone->GetBoneRestPosition();
+	Quantize( vTranslation, 0.000001f );
+	dest_node.SetTranslation( vTranslation );
 
 	for( size_t i=0; i<num_children; i++ )
 	{
@@ -224,37 +463,20 @@ void CLWSMotionCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, float fTim
 }
 
 
-void CLWSMotionCompiler::CreateMotionPrimitives( boost::shared_ptr<CLWS_Bone> pRootBone )
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( boost::shared_ptr<CLWS_Bone> pRootBone )
 {
-	vector<float> vecfKeyframeTime;
-	vecfKeyframeTime.reserve( 0xFF );
-	CollectKeyFrameTimes( *(pRootBone.get()), vecfKeyframeTime );
-
-	const int fps = 30;
-
-	const int num_keyframes = (int)vecfKeyframeTime.size();
-	for( int i=0; i<num_keyframes; i++ )
-	{
-		float fTime = (float)num_keyframes / (float)fps;
-
-		CKeyframe dest_keyframe;
-		CreateKeyframe( pRootBone, fTime, dest_keyframe.RootNode() );
-
-		dest_keyframe;
-	}
-
-	int num_motion_primitives = (int)m_vecMotionPrimitiveDesc.size();
-	for( int i=0; i<num_motion_primitives; i++ )
-	{
-	}
+//	int num_motion_primitives = (int)m_vecMotionPrimitiveDesc.size();
+//	for( int i=0; i<num_motion_primitives; i++ )
+//	{
+//	}
 }
 
 
-bool CLWSMotionCompiler::LoadLWSceneFile( const std::string& filepath ) //, const CGeometryFilter& geometry_filter )
+bool CLWSMotionDatabaseCompiler::LoadLWSceneFile( const std::string& filepath ) //, const CGeometryFilter& geometry_filter )
 {
 	string filepath_copy = filepath;
 
-	m_SceneFilepath = filepath_copy;
+//	m_SceneFilepath = filepath_copy;
 
 	m_pScene = shared_ptr<CLightWaveSceneLoader>( new CLightWaveSceneLoader() );
 
@@ -264,9 +486,9 @@ bool CLWSMotionCompiler::LoadLWSceneFile( const std::string& filepath ) //, cons
 }
 
 
-Result::Name CLWSMotionCompiler::LoadDescFile( const std::string& filepath )
+Result::Name CLWSMotionDatabaseCompiler::LoadDescFile( const std::string& filepath )
 {
-	using namespace filesystem;
+/*	using namespace filesystem;
 
 	CTextFileScanner scanner( filepath );
 	if( !scanner.IsReady() )
@@ -299,20 +521,6 @@ Result::Name CLWSMotionCompiler::LoadDescFile( const std::string& filepath )
 			if( strings.size() < 4 )
 				continue;
 
-/*			int start_frame = 0, end_frame = 0;
-			memset( tag_str,  0, sizeof(tag_str) );
-			memset( name_str, 0, sizeof(name_str) );
-			memset( root_str, 0, sizeof(root_str) );
-			sscanf( current_line.c_str(),
-				"%s %s %d %d %s",
-				 tag_str, name_str, &start_frame, &end_frame, root_str );
-
-			CMotionPrimitiveDesc desc;
-			desc.name           = name_str;
-			desc.start_frame    = start_frame;
-			desc.end_frame      = end_frame;
-			desc.root_node_name = root_str;*/
-
 			CLWSMotionPrimitiveDesc desc;
 			desc.name           = strings[1];
 			desc.start_frame    = to_int( strings[2] );
@@ -321,16 +529,18 @@ Result::Name CLWSMotionCompiler::LoadDescFile( const std::string& filepath )
 			if( 5 <= strings.size() )
 				desc.root_node_name = strings[4];
 
+			m_vecMotionPrimitiveDesc.push_back( desc );
+
 			continue;
 		}
 	}
-
+*/
 	return Result::SUCCESS;
 }
 
 
-Result::Name CLWSMotionCompiler::BuildFromDescFile( const std::string& filepath )
-{
+Result::Name CLWSMotionDatabaseCompiler::BuildFromDescFile( const std::string& filepath )
+{/*
 	Result::Name res = LoadDescFile( filepath );
 	if( res != Result::SUCCESS )
 		return res;
@@ -343,6 +553,67 @@ Result::Name CLWSMotionCompiler::BuildFromDescFile( const std::string& filepath 
 		return Result::UNKNOWN_ERROR;
 
 	CreateMotionPrimitives( pRootBone );
-
+*/
 	return Result::SUCCESS;
 }
+
+
+/*
+// Recursively copies the bones and creates a skeleton structure
+// composed of CBone class objects
+void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
+			    const Matrix34& parent_space,
+			    CBone& dest_bone )
+{
+	const size_t num_children = pSrcBone->ChildBone().size();
+	for( size_t i=0; i<num_children; i++ )
+	{
+		shared_ptr<CLWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
+		CBone dest_child_bone;
+
+		string& bone_name = pSrcChildBone->GetBoneName();
+		Vector3 vRestDir  = pSrcChildBone->GetBoneRestDirection();
+		Vector3 vRestPos  = pSrcChildBone->GetBoneRestPosition();
+		float fRestLen    = pSrcChildBone->GetBoneRestLength();
+
+		Vec3Normalize( vRestDir, vRestDir );
+
+		Quantize( vRestDir, 0.000001f );
+		Quantize( vRestPos, 0.000001f );
+		Quantize( fRestLen, 0.000001f );
+		Quantize( fRestLen, 0.000001f );
+		float afRestAngle[3] = 
+		{
+			pSrcChildBone->GetBoneRestAngle(0),
+			pSrcChildBone->GetBoneRestAngle(1),
+			pSrcChildBone->GetBoneRestAngle(2)
+		};
+		for( int j=0; j<3; j++ )
+			Quantize( afRestAngle[j], 0.000001f );
+
+		Matrix34 local_space;
+		local_space.matOrient
+			= Matrix33Identity()
+			* Matrix33RotationX( afRestAngle[1] )
+			* Matrix33RotationY( afRestAngle[0] )
+			* Matrix33RotationZ( afRestAngle[2] )
+			* Matrix33Identity();
+
+		local_space.vPosition = vRestPos;
+
+
+		Matrix34 world_pose = parent_space * local_space;
+
+		Vector3 vOffset = world_pose.vPosition - parent_space.vPosition;
+
+		dest_child_bone.SetOffset( vRestDir * fRestLen );
+
+		dest_child_bone.SetName( pSrcChildBone->GetBoneName() );
+
+		dest_bone.AddChildBone( dest_child_bone );
+
+		// recursively copy the bones
+		CopyBones( pSrcChildBone, parent_space * local_space, dest_bone.Child((int)i) );
+	}
+}
+*/

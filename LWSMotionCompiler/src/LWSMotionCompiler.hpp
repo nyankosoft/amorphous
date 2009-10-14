@@ -9,7 +9,7 @@
 #include <boost/filesystem.hpp>
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
-#include "MotionSynthesis/fwd.hpp"
+#include "MotionSynthesis/MotionDatabaseBuilder.hpp"
 
 //#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
 //#include "Graphics/MeshModel/General3DMesh.hpp"
@@ -47,34 +47,18 @@ public:
 };
 
 
-class CLWSMotionPrimitiveDesc
+class CLWSMotionDatabaseCompiler : public msynth::CMotionDatabaseCompiler
+//class CLWSMotionCompiler
 {
-public:
+//	boost::filesystem::path m_SceneFilepath;
 
-	std::string name;
-	int start_frame;
-	int end_frame;
-	std::string root_node_name;
-	bool is_loop_motion;
-
-	CLWSMotionPrimitiveDesc()
-		:
-	start_frame(0),
-	end_frame(0),
-	is_loop_motion(false)
-	{}
-};
-
-
-class CLWSMotionCompiler
-{
-	boost::filesystem::path m_SceneFilepath;
-
-	std::string m_OutputFilepath;
+//	std::string m_OutputFilepath;
 
 	boost::shared_ptr<CLightWaveSceneLoader> m_pScene;
 
-	std::vector<CLWSMotionPrimitiveDesc> m_vecMotionPrimitiveDesc;
+	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
+
+//	std::vector<CLWSMotionPrimitiveDesc> m_vecMotionPrimitiveDesc;
 
 private:
 
@@ -88,11 +72,15 @@ private:
 
 	void CreateKeyframe( boost::shared_ptr<CLWS_Bone> pBone, float fTime, msynth::CTransformNode& dest_node );
 
+	void CreateMotionPrimitive( msynth::CMotionPrimitiveDescGroup& desc_group, msynth::CMotionPrimitiveDesc& desc, std::vector<msynth::CKeyframe>& vecSrcKeyframe );
+
 public:
 
-	CLWSMotionCompiler();
+	CLWSMotionDatabaseCompiler();
 
-	~CLWSMotionCompiler();
+	~CLWSMotionDatabaseCompiler();
+
+	void CreateMotionPrimitives( msynth::CMotionPrimitiveDescGroup& desc_group );
 
 //	void LoadMeshModel();
 
@@ -105,7 +93,36 @@ public:
 
 	Result::Name BuildFromDescFile( const std::string& filepath );
 };
+/*
+class CLWSMotionDatabaseCompiler : public CMotionDatabaseCompiler
+{
+	std::vector<CMotionPrimitiveDescGroup> m_vecDescGroup;
 
+private:
+
+	bool IsValidMotionFile( const std::string& src_filepath );
+
+	void CreateMotionPrimitive( const CMotionPrimitiveDesc& desc, const CMotionPrimitiveDescGroup& desc_group, CBVHPlayer& bvh_player );
+
+	void CreateMotionPrimitives( CMotionPrimitiveDescGroup& desc_group );
+
+public:
+
+};
+*/
+
+class CLWSMotionPrimitiveCompilerCreator : public msynth::CMotionPrimitiveCompilerCreator
+{
+public:
+
+	const char *Extension() const { return "lws"; }
+
+	boost::shared_ptr<msynth::CMotionDatabaseCompiler> Create() const
+	{
+		boost::shared_ptr<CLWSMotionDatabaseCompiler> pCompiler( new CLWSMotionDatabaseCompiler );
+		return pCompiler;
+	}
+};
 
 
 #endif		/*  __LWSMOtionCompiler_HPP__  */

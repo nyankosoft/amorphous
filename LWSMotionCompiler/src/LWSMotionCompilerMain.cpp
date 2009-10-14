@@ -1,4 +1,6 @@
 #include "LWSMotionCompiler.hpp"
+#include "MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
+#include "XML/XMLDocumentLoader.hpp"
 #include "gds/base.hpp"
 #include "gds/Support/lfs.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
@@ -6,6 +8,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace msynth;
 
 
 
@@ -28,6 +31,8 @@ int main( int argc, char *argv[] )
 	if( init_wd.leaf() != "app" )
 		lfs::set_wd( "../app" );
 
+	path app_wd = lfs::get_cwd();
+
 	string filepath;
 	if( 2 <= argc )
 		filepath  = argv[1];
@@ -39,8 +44,20 @@ int main( int argc, char *argv[] )
 	if( filepath.length() == 0 )
 		return 0;
 
-	CLWSMotionCompiler test;
-	test.BuildFromDescFile( filepath );
+	shared_ptr<CMotionPrimitiveCompilerCreator> pBVHCompilerCreator( new CBVHMotionPrimitiveCompilerCreator );
+	RegisterMotionPrimitiveCompilerCreator( pBVHCompilerCreator );
+
+	shared_ptr<CMotionPrimitiveCompilerCreator> pLWSCompilerCreator( new CLWSMotionPrimitiveCompilerCreator );
+	RegisterMotionPrimitiveCompilerCreator( pLWSCompilerCreator );
+
+	/// init the xml parser (calls Initialize() in ctor)
+	CXMLParserInitReleaseManager xml_parser_mgr;
+
+	msynth::CMotionDatabaseBuilder mdb;
+	mdb.Build( filepath );
+
+//	CLWSMotionCompiler test;
+//	test.BuildFromDescFile( filepath );
 
 	return 0;
 }
