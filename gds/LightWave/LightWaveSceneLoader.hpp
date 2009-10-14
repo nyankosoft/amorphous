@@ -4,6 +4,29 @@
 class CTextFileScanner;
 
 
+class CLWSceneInfo
+{
+public:
+	int m_RenderRangeType;
+	int m_FirstFrame;
+	int m_LastFrame;
+	int m_FrameStep;
+//	int m_RenderRangeArbitrary;
+	int m_PreviewFirstFrame;
+	int m_PreviewLastFrame;
+	int m_PreviewFrameStep;
+	int m_CurrentFrame;
+	int m_FramesPerSecond;
+
+	CLWSceneInfo()
+	{
+		memset( this, 0, sizeof(CLWSceneInfo) );
+	}
+
+	bool LoadSceneInfo( CTextFileScanner& scanner );
+};
+
+
 class CLightWaveSceneLoader
 {
 	std::vector<CLWS_ObjectLayer> m_vecObjectLayer;
@@ -24,6 +47,7 @@ class CLightWaveSceneLoader
 
 	CLWS_Fog m_Fog;
 
+	CLWSceneInfo m_SceneInfo;
 
 	bool LoadFogDataBlock( CTextFileScanner& scanner );
 
@@ -68,6 +92,8 @@ public:
 
 	const float* GetAmbientColor() const { return m_afAmbientColor; }
 	float GetAmbientIntensity() const { return m_fAmbientIntensity; }
+
+	const CLWSceneInfo& GetSceneInfo() const { return m_SceneInfo; }
 
 	void Clear();
 };

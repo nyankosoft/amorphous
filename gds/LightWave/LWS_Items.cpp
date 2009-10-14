@@ -311,6 +311,21 @@ Vector3 CLWS_Item::GetPositionAtKeyframe( int keyframe )
 }
 
 
+void CLWS_Bone::GetOffsetOrientationAt( float fTime, Matrix33& matOrient )
+{
+	float fHeading = GetValueAt( 3, fTime ) - m_afBoneRestAngle[0];
+	float fPitch   = GetValueAt( 4, fTime ) - m_afBoneRestAngle[1];
+	float fBank    = GetValueAt( 5, fTime ) - m_afBoneRestAngle[2];
+
+	matOrient
+		= Matrix33Identity()
+        * Matrix33RotationY( fHeading )
+        * Matrix33RotationX( fPitch )
+        * Matrix33RotationZ( fBank )
+		* Matrix33Identity();
+}
+
+
 void CLWS_Item::GetOrientationAt( float fTime, Matrix33& matOrient )
 {
 	// TODO: support animation time
@@ -323,12 +338,11 @@ void CLWS_Item::GetOrientationAt( float fTime, Matrix33& matOrient )
 	float fBank    = GetValueAt( 5, fTime );
 
 	matOrient
-        //= Matrix33RotationY( fHeading )
-        //* Matrix33RotationX( fPitch )
-        //* Matrix33RotationZ( fBank );
-        = Matrix33RotationZ( fBank )
+		= Matrix33Identity()
+        * Matrix33RotationY( fHeading )
         * Matrix33RotationX( fPitch )
-        * Matrix33RotationY( fHeading );
+        * Matrix33RotationZ( fBank )
+		* Matrix33Identity();
 
 /*	Matrix33 matRotX, matRotY, matRotZ;
 
@@ -468,6 +482,7 @@ m_fBoneRestLength(0),
 m_vBoneRestPosition(Vector3(0,0,0)),
 m_vBoneRestDirection(Vector3(0,0,0))
 {
+	for( int i=0; i<3; i++ ) m_afBoneRestAngle[i] = 0;
 }
 
 
@@ -493,7 +508,10 @@ bool CLWS_Bone::LoadFromFile( CTextFileScanner& scanner )
 
 	else if( tag == "BoneRestDirection" )
 	{
-		scanner.ScanLine( tag, m_vBoneRestDirection );
+		float af[3] = { 0, 0, 0 };
+		scanner.ScanLine( tag, af[0], af[1], af[2] );
+		for( int i=0; i<3; i++ ) m_afBoneRestAngle[i] = deg_to_rad( af[i] );
+//		scanner.ScanLine( tag, m_vBoneRestDirection );
 		return true;
 	}
 

@@ -205,6 +205,12 @@ class CLWS_Bone : public CLWS_Item
 
 	Vector3 m_vBoneRestDirection;
 
+	/// rotation angles in radians
+	/// - CLWS_Bone::LoadFromFile() converts the value from degree to radian
+	/// - LWS file stores this value in degrees, even though Key values in rotation channels
+	///   are in radian.
+	float m_afBoneRestAngle[3];
+
 	std::string m_strBoneWeightMapName;
 
 	std::vector< boost::shared_ptr<CLWS_Bone> > m_vecpChildBone;
@@ -215,7 +221,7 @@ public:
 
 	bool LoadFromFile( CTextFileScanner& scanner );
 
-	std::string& GetBoneName() { return m_strBoneName; }
+	const std::string& GetBoneName() const { return m_strBoneName; }
 
 	std::vector< boost::shared_ptr<CLWS_Bone> >& ChildBone() { return m_vecpChildBone; }
 
@@ -224,6 +230,11 @@ public:
 	Vector3 GetBoneRestPosition() const { return m_vBoneRestPosition; }
 
 	Vector3 GetBoneRestDirection() const { return m_vBoneRestDirection; }
+	float GetBoneRestAngle( int i ) const { return m_afBoneRestAngle[i]; }
+
+	void GetOffsetOrientationAt( float fTime, Matrix33& matOrient );
+	Matrix33 GetOffsetOrientationAt( float fTime ) { Matrix33 ret = Matrix33Identity(); GetOffsetOrientationAt(fTime,ret); return ret; }
+
 
 	friend class CLightWaveSceneLoader;
 };

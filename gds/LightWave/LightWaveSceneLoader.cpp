@@ -5,6 +5,23 @@ using namespace std;
 using namespace boost;
 
 
+bool CLWSceneInfo::LoadSceneInfo( CTextFileScanner& scanner )
+{
+	     if( scanner.TryScanLine( "RenderRangeType",      m_RenderRangeType      ) ) return true;
+	else if( scanner.TryScanLine( "FirstFrame",           m_FirstFrame           ) ) return true;
+	else if( scanner.TryScanLine( "LastFrame",            m_LastFrame            ) ) return true;
+	else if( scanner.TryScanLine( "FrameStep",            m_FrameStep            ) ) return true;
+//	else if( scanner.TryScanLine( "RenderRangeArbitrary", m_RenderRangeArbitrary ) ) return true;
+	else if( scanner.TryScanLine( "PreviewFirstFrame",    m_PreviewFirstFrame    ) ) return true;
+	else if( scanner.TryScanLine( "PreviewLastFrame",     m_PreviewLastFrame     ) ) return true;
+	else if( scanner.TryScanLine( "PreviewFrameStep",     m_PreviewFrameStep     ) ) return true;
+	else if( scanner.TryScanLine( "CurrentFrame",         m_CurrentFrame         ) ) return true;
+	else if( scanner.TryScanLine( "FramesPerSecond",      m_FramesPerSecond      ) ) return true;
+	else
+		return false;
+}
+
+
 CLightWaveSceneLoader::CLightWaveSceneLoader()
 {
 	m_afAmbientColor[0] = 0;
@@ -55,6 +72,9 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 		if( 0 < m_vecLight.size() &&
 			m_vecLight.back().LoadFromFile( scanner ) )
 			continue;*/
+
+		if( m_SceneInfo.LoadSceneInfo( scanner ) )
+			continue;
 
 		if( 0 < m_vecpItem.size() && m_vecpItem.back()->LoadFromFile( scanner ) )
 		{
