@@ -21,6 +21,7 @@ class CMotionPrimitiveBlenderStatistics;
 // db and its builder
 class CMotionDatabase;
 class CMotionDatabaseBuilder;
+class CMotionDatabaseCompiler;
 
 class CHumanoidMotionTable;
 

@@ -1,8 +1,8 @@
 #include <boost/foreach.hpp>
-#include "BVH/BVHPlayer.hpp"
+#include <boost/filesystem.hpp>
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
-#include "Support/fnop.hpp"
+//#include "Support/fnop.hpp"
 #include "XML/xmlch2x.hpp"
 #include "XML/XercesString.hpp"
 #include "XML/XMLDocumentLoader.hpp"
@@ -11,16 +11,56 @@
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 using namespace msynth;
 
 
-int CMotionDatabaseBuilder::GetAnnotationIndex( const std::string& annotation_name )
+static std::vector< boost::shared_ptr<CMotionPrimitiveCompilerCreator> > sg_vecpExtAndMotionPrimitiveCompiler;
+
+
+void msynth::RegisterMotionPrimitiveCompilerCreator( shared_ptr<CMotionPrimitiveCompilerCreator> pCreator )
 {
-	return get_str_index( annotation_name, m_vecAnnotationName );
+	if( !pCreator )
+		return;
+
+	sg_vecpExtAndMotionPrimitiveCompiler.push_back( pCreator );
 }
 
 
-static void AlignLastKeyframe( vector<CKeyframe>& vecKeyframe )
+shared_ptr<CMotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::string& filepath )
+{
+	// The extension returned by boost::filesystem::path::extension() includes "."
+	// before the extension.
+	string ext = filesystem::path(filepath).extension();
+
+	BOOST_FOREACH( shared_ptr<CMotionPrimitiveCompilerCreator>& pCreator, sg_vecpExtAndMotionPrimitiveCompiler )
+	{
+		if( string(".") + pCreator->Extension() == ext )
+			return pCreator->Create();
+	}
+
+	LOG_PRINT_ERROR( "No motion compiler for the motion file: " + filepath );
+	return shared_ptr<CMotionDatabaseCompiler>();
+/*
+	sg_vecpExtAndMotionPrimitiveCompiler;
+
+	if( ext == "bvh" )
+	{
+		return new CBVHMotionDatabaseCompiler;
+	}
+	else if( ext == "lws" )
+	{
+		return shared_ptr<CMotionDatabaseCompiler>();
+//		return new CBVHMotionDatabaseCompiler;
+	}
+	else
+		return shared_ptr<CMotionDatabaseCompiler>();
+*/
+}
+
+
+
+void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
 {
 	if( vecKeyframe.size() == 0 )
 		return;
@@ -68,116 +108,36 @@ static void AlignLastKeyframe( vector<CKeyframe>& vecKeyframe )
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionPrimitive( const CMotionPrimitiveDesc& desc,
-												    const CMotionPrimitiveDescGroup& desc_group,
-													CBVHPlayer& bvh_player )
+
+//==============================================================================
+// CMotionDatabaseCompiler
+//==============================================================================
+
+int CMotionDatabaseCompiler::GetAnnotationIndex( const std::string& annotation_name )
 {
-	vector<CKeyframe> vecKeyframe;
-	vecKeyframe.reserve( 64 );
-
-	// add a new motion primitive and get the reference to it
-	m_vecMotionPrimitive.push_back( CMotionPrimitive( desc.m_Name ) );
-	CMotionPrimitive& motion = m_vecMotionPrimitive.back();
-
-	motion.SetSkeleton( desc_group.m_Skeleton );
-
-	motion.SetLoopedMotion( desc.m_bIsLoopMotion );
-
-	vecKeyframe.resize(0);
-
-	int i = 0;
-	int frame = 0;
-	int start = desc.m_StartFrame;
-	int end   = desc.m_EndFrame;
-	float time_per_frame = bvh_player.GetFrameTime();
-
-	// create keyframes
-	for( frame = start, i=0;
-		 frame <= end;
-		 frame++,       i++ )
-	{
-		float frame_time = (float)frame * time_per_frame;
-
-		bvh_player.SetWorldTransformation( frame_time );
-
-		// extract world transforms
-
-		CBVHBone *pRootBone = bvh_player.GetRootBone();
-
-		// create keyframe from frametime and transformation hierarchy
-		vecKeyframe.push_back( CKeyframe( (float)i * time_per_frame, CTransformNode( *pRootBone ) ) );
-	}
-
-	// modify root position
-	if( 0 < vecKeyframe.size() && desc.m_bResetHorizontalRootPos )
-	{
-		Matrix34 root_pose = vecKeyframe[0].GetRootPose();
-		Vector3 vBasePosH = root_pose.vPosition;
-		vBasePosH.y = 0;
-
-		BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
-		{
-			root_pose = keyframe.GetRootPose();
-			root_pose.vPosition = root_pose.vPosition - vBasePosH;
-			keyframe.SetRootPose( root_pose );
-		}
-	}
-
-	if( desc.m_NormalizeOrientation == "AlignLastKeyframe" )
-		AlignLastKeyframe( vecKeyframe );
-
-	if( 0.0001 < abs(1.0 - desc_group.m_fScalingFactor) )
-	{
-		BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
-		{
-			keyframe.Scale( desc_group.m_fScalingFactor );
-		}
-	}
-
-	motion.SetKeyframes( vecKeyframe );
-
-	// set annotations
-	motion.m_vecAnnotation.resize( m_vecAnnotationName.size(), 0 );
-
-	BOOST_FOREACH( const std::string& annot, desc.m_vecAnnotation )
-	{
-		int index = GetAnnotationIndex( annot );
-		if( 0 <= index )
-			motion.m_vecAnnotation[index] = 1;
-	}
+	return get_str_index( annotation_name, *m_vecpAnnotationName );
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionPrimitives()
-{
-	m_vecMotionPrimitive.reserve( 256 );
 
-	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+//==============================================================================
+// CMotionDatabaseBuilder
+//==============================================================================
+
+//bool CMotionDatabaseBuilder::CreateAnnotationTable( xercesc::DOMNode *pAnnotTableNode )
+bool CMotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_node )
+{
+	vector<CXMLNodeReader> vecChild = annot_table_node.GetImmediateChildren( "Annotation" );
+	for( size_t i=0; i<vecChild.size(); i++ )
 	{
-		CBVHPlayer bvh_player;
-		bool loaded = bvh_player.LoadBVHFile( desc_group.m_Filename );
-		if( !loaded )
-		{
-			LOG_PRINT_ERROR( " - Failed to load the bvh file: " + desc_group.m_Filename );
-			return;
-		}
+		CXMLNodeReader& annot_node = vecChild[i];
+		string annot_name = annot_node.GetTextContent();
 
-		// copy skeleton structure
-		desc_group.m_Skeleton.CopyFromBVHSkeleton( *bvh_player.GetRootBone() );
+		LOG_PRINT( " - Found a new annotation: " + annot_name );
 
-		desc_group.m_Skeleton.Scale( desc_group.m_fScalingFactor );
-
-		BOOST_FOREACH( CMotionPrimitiveDesc& desc, desc_group.m_Desc )
-		{
-			CreateMotionPrimitive( desc, desc_group, bvh_player );
-		}
+		m_vecAnnotationName.push_back( annot_name );
 	}
-
-}
-
-
-bool CMotionDatabaseBuilder::CreateAnnotationTable( xercesc::DOMNode *pAnnotTableNode )
-{
+/*
 	for( DOMNode *pNode = pAnnotTableNode->getFirstChild();
 		 pNode;
 		 pNode = pNode->getNextSibling() )
@@ -193,7 +153,7 @@ bool CMotionDatabaseBuilder::CreateAnnotationTable( xercesc::DOMNode *pAnnotTabl
 			m_vecAnnotationName.push_back( annot_name );
 		}
 	}
-
+*/
 	return true;
 }
 
@@ -349,20 +309,22 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( xercesc::DOMNode *p
 	// add a new desc group
 	m_vecDescGroup.push_back( CMotionPrimitiveDescGroup() );
 
-	string bvh_filepath = to_string(pNode->getNodeValue());
+	string src_filename = to_string(pNode->getNodeValue());
 
-	m_vecDescGroup.back().m_Filename = bvh_filepath;
+	path src_filepath = path(m_SourceXMLFilename).parent_path() / src_filename;
 
-	CBVHPlayer bvh_player;
-	bool success = bvh_player.LoadBVHFile( bvh_filepath );
-	if( success )
+	m_vecDescGroup.back().m_Filename = src_filepath.string();
+
+	bool res = IsValidMotionFile( src_filepath.string() );
+	if( res )
 	{
 		// copy the skeleton structure of original bvh file
-		m_vecDescGroup.back().m_Skeleton.CopyFromBVHSkeleton( *bvh_player.GetRootBone() );
+		LOG_PRINT( " - A valid motion file: " + src_filepath.string() );
+//		m_vecDescGroup.back().m_Skeleton.CopyFromBVHSkeleton( *bvh_player.GetRootBone() );
 	}
 	else
 	{
-		LOG_PRINT_ERROR( " - Failed to load a bvh file: " + bvh_filepath );
+		LOG_PRINT_ERROR( " - A source motion file is not valid: " + src_filepath.string() );
 		return;
 	}
 
@@ -470,25 +432,38 @@ void CMotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNo
 }
 
 
-void CMotionDatabaseBuilder::ProcessXMLFile( xercesc::DOMNode *pRootNode )
+void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
+//void CMotionDatabaseBuilder::ProcessXMLFile( xercesc::DOMNode *pRootNode )
 {
+	xercesc::DOMNode *pRootNode = root_node.GetDOMNode();
+
+	string output_filename;
+	root_node.GetChildElementTextContent( "Output", output_filename );
+	m_OutputFilepath = path( path(m_SourceXMLFilename).parent_path() / output_filename ).string();
+
+	if( m_OutputFilepath.length() == 0 )
+	{
+		LOG_PRINT_WARNING( "Output filepath was not found in source XML file. Call SaveMotionDatabaseToFile() to save motion database to disk."  );
+	}
+
 	for( DOMNode *pFileNode = pRootNode->getFirstChild();
 		 pFileNode;
 		 pFileNode = pFileNode->getNextSibling() )
 	{
-		const XercesString node_name = XercesString(pFileNode->getNodeName());
+		const string node_name = to_string(pFileNode->getNodeName());
 
-		if( node_name == XercesString("File") )
+		if( node_name == "File" )
 		{
 			CreateMotionPrimitiveDescGroup( pFileNode );
 		}
-		else if( node_name == XercesString("HumanoidMotionTable") )
+		else if( node_name == "HumanoidMotionTable" )
 		{
 			CreateMotionTable( pFileNode );
 		}
-		else if( node_name == XercesString("AnnotationTable") )
+		else if( node_name == "AnnotationTable" )
 		{
-			CreateAnnotationTable( pFileNode );
+			CXMLNodeReader node(pFileNode);
+			CreateAnnotationTable( node );
 		}
 
 
@@ -497,9 +472,32 @@ void CMotionDatabaseBuilder::ProcessXMLFile( xercesc::DOMNode *pRootNode )
 }
 
 
+void CMotionDatabaseBuilder::CreateMotionPrimitives()
+{
+	m_vecMotionPrimitive.reserve( 256 );
+
+	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	{
+		shared_ptr<CMotionDatabaseCompiler> pCompiler = CreateMotionPrimitiveCompiler( desc_group.m_Filename );
+
+		if( !pCompiler )
+		{
+			continue;
+		}
+
+		pCompiler->m_vecpMotionPrimitive = &m_vecMotionPrimitive;
+		pCompiler->m_vecpAnnotationName  = &m_vecAnnotationName;
+		pCompiler->m_pMotionTable        = &m_MotionTable;
+
+		pCompiler->CreateMotionPrimitives( desc_group );
+	}
+}
+
 
 bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 {
+	m_SourceXMLFilename = source_script_filename;
+
 	shared_ptr<CXMLDocument> pXMLDocument;
 
 	// (S)
@@ -517,20 +515,23 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 
 	// set the working directory to the directory path of source_script_filename
 	// - Do this after (S) - (E), or the exception ocurrs
-	fnop::dir_stack dirstk( fnop::get_path(source_script_filename) );
+//	fnop::dir_stack dirstk( fnop::get_path(source_script_filename) );
 
 	XercesString xer_root_name = XercesString("root");
 	const XMLCh* pCurrentNodeName = pRootNode->getNodeName();
 	if( XercesString(pRootNode->getNodeName()) == xer_root_name )
 	{
-		ProcessXMLFile( pRootNode );
+		ProcessXMLFile( root_node_reader );
 	}
 
 	// create motion primitives from descs
 	CreateMotionPrimitives();
 
 	// restore the original working directory (pop)
-	dirstk.prevdir();
+//	dirstk.prevdir();
+
+	if( 0 < m_OutputFilepath.length() )
+		return SaveMotionDatabaseToFile( m_OutputFilepath );
 
 	return true;
 }
@@ -548,7 +549,7 @@ bool CMotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_fil
 	if( 0 < m_vecAnnotationName.size() )
 		db.m_DB.AddData( "__AnnotationTable__", m_vecAnnotationName );
 
-	/// humanod motion table
+	/// humanoid motion table
 	if( 0 < m_MotionTable.m_Name.length() )
 		db.m_DB.AddData( m_MotionTable.m_Name, m_MotionTable );
 

@@ -1,7 +1,7 @@
-
 #include <boost/foreach.hpp>
 #include "SkeletonRenderer.hpp"
 #include "Graphics/Direct3D9.hpp"
+#include "Support/LineSegmentRenderer.hpp"
 
 using namespace msynth;
 
@@ -33,9 +33,11 @@ inline Vector3 GetBoneSize( const Vector3& vOffset )
 }
 
 
-void CSkeletonRenderer::StoreBonePose_r( const CBone& bone, const CTransformNode& node, const Matrix34& parent_transform )
+void CSkeletonRenderer::RenderSkeletonAsLines()
 {
-	Matrix34 dest_transform;
+	for( size_t i=0; i<m_vecLineSegment.size(); i++ )
+		CLineSegmentRenderer::Draw( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal );
+/*	Matrix34 dest_transform;
 	bone.CalculateWorldTransform( dest_transform, parent_transform, node );
 
 	m_vecBonePose.push_back( dest_transform );
@@ -47,6 +49,31 @@ void CSkeletonRenderer::StoreBonePose_r( const CBone& bone, const CTransformNode
 	for( int i=0; i<num_children; i++ )
 	{
 		StoreBonePose_r( bone.GetChild(i), node.GetChildNode(i), dest_transform );
+	}*/
+}
+
+
+void CSkeletonRenderer::StoreBonePose_r( const CBone& bone, const CTransformNode& node, const Matrix34& parent_transform, int depth )
+{
+	Matrix34 dest_transform;
+	bone.CalculateWorldTransform( dest_transform, parent_transform, node );
+
+	m_vecBonePose.push_back( dest_transform );
+
+	Vector3 vOffset = bone.GetOffset();
+	m_vecBoneSize.push_back( GetBoneSize( vOffset ) );
+
+	if( 0 < depth )
+	{
+		m_vecLineSegment.push_back( CLineSegment() );
+		m_vecLineSegment.back().vStart = parent_transform.vPosition;
+		m_vecLineSegment.back().vGoal  = dest_transform.vPosition;
+	}
+
+	const int num_children = bone.GetNumChildren();
+	for( int i=0; i<num_children; i++ )
+	{
+		StoreBonePose_r( bone.GetChild(i), node.GetChildNode(i), dest_transform, depth + 1 );
 	}
 }
 
@@ -64,6 +91,8 @@ void CSkeletonRenderer::UpdateBonePoses( const CKeyframe& keyframe )
 		m_vecBonePose.resize(0);
 		m_vecBoneSize.resize(0);
 
+		m_vecLineSegment.resize(0);
+
 		Matrix34 root = Matrix34Identity();
 
 		StoreBonePose_r( pSkeleton->GetRootBone(), keyframe.GetRootNode(), root );
@@ -73,7 +102,7 @@ void CSkeletonRenderer::UpdateBonePoses( const CKeyframe& keyframe )
 }
 
 
-void CSkeletonRenderer::Render()
+void CSkeletonRenderer::RenderSkeletonAsBoxes()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	D3DXMATRIX matWorld, matScaling;
@@ -96,4 +125,11 @@ void CSkeletonRenderer::Render()
 //		m_Cube.SetPose( pose );
 		m_Cube.Draw();
 	}
+}
+
+
+void CSkeletonRenderer::Render()
+{
+//	RenderSkeletonAsBoxes();
+	RenderSkeletonAsLines();
 }

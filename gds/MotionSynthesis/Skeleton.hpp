@@ -48,6 +48,8 @@ public:
 
 	CBone& Child( int index ) { return m_vecChild[index]; }
 
+	std::vector<CBone>& Children() { return m_vecChild; }
+
 	void AddChildBone( CBone& bone ) { m_vecChild.push_back( bone ); }
 
 	void CopyBones_r( CBVHBone& src_bone );
@@ -55,6 +57,8 @@ public:
 	void Scale_r( float factor );
 
 	inline void CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const;
+
+	void DumpToTextFile( FILE* fp, int depth );
 
 	void Serialize( IArchive & ar, const unsigned int version );
 };
@@ -85,6 +89,8 @@ public:
 	void SetBones( const CBone& root_bone ) { m_RootBone = root_bone; }
 
 	void Scale( float scaling_factor ) { m_RootBone.Scale_r( scaling_factor ); }
+
+	void DumpToTextFile( const std::string& output_filepath );
 
 	void Serialize( IArchive & ar, const unsigned int version ) { ar & m_RootBone; }
 

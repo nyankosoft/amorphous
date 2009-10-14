@@ -181,7 +181,7 @@ public:
 
 	void SetKeyframes( const std::vector<CKeyframe> &rvecKeyframe ) { m_vecKeyframe = rvecKeyframe; }
 
-	void AddKeyframe( float time, CKeyframe& keyframe );
+	void InsertKeyframe( const CKeyframe& keyframe );
 
 	const CKeyframe& GetFirstKeyframe() const { return m_vecKeyframe.front(); }
 
@@ -220,6 +220,7 @@ public:
 		return ( m_vecAnnotation[annotation.m_Index] == 1 ) ? true : false;
 	}
 
+	friend class CMotionDatabaseCompiler;
 	friend class CMotionDatabaseBuilder;
 };
 

@@ -1,7 +1,6 @@
-
-#include <boost/foreach.hpp>
-#include "BVH/BVHBone.hpp"
 #include "MotionPrimitive.hpp"
+#include "BVH/BVHBone.hpp"
+#include <boost/foreach.hpp>
 
 using namespace msynth;
 
@@ -11,6 +10,8 @@ void CTransformNode::SetInterpolatedTransform_r( float frac, const CTransformNod
 	m_vTranslation = node0.m_vTranslation * ( 1.0f - frac ) + node1.m_vTranslation * frac;
 
 	m_Rotation = node0.m_Rotation * ( 1.0f - frac ) + node1.m_Rotation * frac;
+
+	const Matrix33 mat = m_Rotation.ToRotationMatrix(); // check the rotation for debugging
 
 	const size_t num_children = node0.m_vecChildNode.size();
 
@@ -23,6 +24,33 @@ void CTransformNode::SetInterpolatedTransform_r( float frac, const CTransformNod
 	{
 		m_vecChildNode[i].SetInterpolatedTransform_r( frac, node0.m_vecChildNode[i], node1.m_vecChildNode[i] );
 	}
+}
+
+
+//==========================================================================
+// CMotionPrimitive
+//==========================================================================
+
+void CMotionPrimitive::InsertKeyframe( const CKeyframe& keyframe )
+{
+	if( m_vecKeyframe.empty() )
+	{
+		m_vecKeyframe.push_back( keyframe );
+		return;
+	}
+
+	// find the right position to insert the keyframe
+	const size_t num_keyframes = m_vecKeyframe.size();
+	for( size_t i=0; i<num_keyframes-1; i++ )
+	{
+		if( m_vecKeyframe[i].GetTime() <= keyframe.GetTime() )
+		{
+			m_vecKeyframe.insert( m_vecKeyframe.begin() + i + 1, keyframe );
+			return;
+		}
+	}
+
+	m_vecKeyframe.push_back( keyframe );
 }
 
 
