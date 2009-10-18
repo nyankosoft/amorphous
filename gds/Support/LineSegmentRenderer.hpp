@@ -1,12 +1,10 @@
+#ifndef  __LINESEGMENTRENDERER_HPP__
+#define  __LINESEGMENTRENDERER_HPP__
 
-#ifndef  __LINESEGMENTRENDERER_H__
-#define  __LINESEGMENTRENDERER_H__
 
-#include <d3dx9.h>
-
+#include "3DMath/ray.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/FVF_ColorVertex.h"
-
 #include "Graphics/FVF_TLVertex.h"
 
 class CLineSegmentRenderer
@@ -15,7 +13,8 @@ public:
 	CLineSegmentRenderer() {}
 	~CLineSegmentRenderer() {}
 
-	inline static void Draw( const D3DXVECTOR3& rvStart, const D3DXVECTOR3& rvEnd, DWORD dwColor = 0xFFFFFFFF );
+	inline static void Draw( const Vector3& rvStart, const Vector3& rvEnd, DWORD dwColor = 0xFFFFFFFF );
+	inline static void Draw( const CLineSegment& line_segment, DWORD dwColor = 0xFFFFFFFF );
 };
 
 
@@ -31,7 +30,7 @@ public:
 //CLineSegmentRenderer::~CLineSegmentRenderer(){}
 
 
-inline void CLineSegmentRenderer::Draw( const D3DXVECTOR3& rvStart, const D3DXVECTOR3& rvEnd, DWORD dwColor )
+inline void CLineSegmentRenderer::Draw( const Vector3& rvStart, const Vector3& rvEnd, DWORD dwColor )
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -67,6 +66,11 @@ inline void CLineSegmentRenderer::Draw( const D3DXVECTOR3& rvStart, const D3DXVE
 	pd3dDevice->DrawPrimitiveUP( D3DPT_LINELIST, 1, avLineSegment, sizeof(COLORVERTEX) );
 }
 
+
+inline void CLineSegmentRenderer::Draw( const CLineSegment& line_segment, DWORD dwColor )
+{
+	CLineSegmentRenderer::Draw( line_segment.vStart, line_segment.vGoal, dwColor );
+}
 
 
 
@@ -113,4 +117,4 @@ inline void C2DLineSegment::Draw( const D3DXVECTOR2& rvStart, const D3DXVECTOR2&
 
 }
 
-#endif		/*  __LINESEGMENTRENDERER_H__  */
+#endif		/*  __LINESEGMENTRENDERER_HPP__  */
