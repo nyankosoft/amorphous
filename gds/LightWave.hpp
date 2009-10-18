@@ -1,6 +1,5 @@
 #include "LightWave/3DMeshModelBuilder_LW.hpp"
 #include "LightWave/3DMeshModelExportManager_LW.hpp"
-#include "LightWave/BSPMapData_LW.hpp"
 #include "LightWave/CompositeMeshExporter_LW.hpp"
 #include "LightWave/LightWaveObject.hpp"
 #include "LightWave/LightWaveSceneLoader.hpp"

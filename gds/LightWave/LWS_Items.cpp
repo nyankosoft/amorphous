@@ -311,18 +311,67 @@ Vector3 CLWS_Item::GetPositionAtKeyframe( int keyframe )
 }
 
 
+Matrix33 Matrix33RotationIncHPB( float fHeading, float fPitch, float fBank )
+{
+	Matrix33 matHeading, matPitch, matBank;
+	matBank    = Matrix33RotationZ( fBank );
+	matPitch   = Matrix33RotationAxis( fPitch, matBank * Vector3(1,0,0) );
+	matHeading = Matrix33RotationAxis( fHeading, matPitch * matBank * Vector3(0,1,0) );
+	return matHeading * matPitch * matBank;
+}
+
+
+Matrix33 Matrix33RotationHPB( float fHeading, float fPitch, float fBank )
+{
+	return Matrix33Identity()
+        * Matrix33RotationY( fHeading )
+        * Matrix33RotationX( fPitch )
+        * Matrix33RotationZ( fBank )
+		* Matrix33Identity();
+}
+
+
 void CLWS_Bone::GetOffsetOrientationAt( float fTime, Matrix33& matOrient )
 {
 	float fHeading = GetValueAt( 3, fTime ) - m_afBoneRestAngle[0];
 	float fPitch   = GetValueAt( 4, fTime ) - m_afBoneRestAngle[1];
 	float fBank    = GetValueAt( 5, fTime ) - m_afBoneRestAngle[2];
-
+/*
 	matOrient
 		= Matrix33Identity()
         * Matrix33RotationY( fHeading )
         * Matrix33RotationX( fPitch )
         * Matrix33RotationZ( fBank )
 		* Matrix33Identity();
+*/
+
+/*
+	matOrient = Matrix33RotationIncHPB( fHeading, fPitch, fBank );
+*/
+
+	Matrix33 matBase
+		= Matrix33RotationHPB( m_afBoneRestAngle[0], m_afBoneRestAngle[1], m_afBoneRestAngle[2] );
+
+	matOrient
+		= Matrix33Identity()
+        * Matrix33RotationAxis( fHeading, matBase.GetColumn(1) )
+        * Matrix33RotationAxis( fPitch, matBase.GetColumn(0) )
+        * Matrix33RotationAxis( fBank, matBase.GetColumn(2) )
+		* Matrix33Identity();
+
+/*
+	matOrient
+		= Matrix33RotationHPB( GetValueAt(3,fTime), GetValueAt(4,fTime), GetValueAt(5,fTime) )
+		* Matrix33RotationHPB( -m_afBoneRestAngle[0], -m_afBoneRestAngle[1], -m_afBoneRestAngle[2] );
+*/
+	if( GetBoneName().find( "-elbow" ) != string::npos )
+		int break_here = 1;
+}
+
+
+Matrix33 CLWS_Bone::GetBoneRestOrientation() const
+{
+	return Matrix33RotationHPB( m_afBoneRestAngle[0], m_afBoneRestAngle[1], m_afBoneRestAngle[2] );
 }
 
 

@@ -1,3 +1,7 @@
+#ifndef __LWS_Items_HPP__
+#define __LWS_Items_HPP__
+
+
 //=====================================================================
 // structures and classes to store various items and components
 // in LightWave scene files. (*.lws files)
@@ -47,7 +51,7 @@ public:
 
 };
 
-#define NUM_MAX_CHANNELS	9
+//#define NUM_MAX_CHANNELS	9
 
 
 
@@ -58,6 +62,11 @@ public:
 class CLWS_Item
 {
 protected:
+
+	enum Params
+	{
+		NUM_MAX_CHANNELS = 9,
+	};
 
 	int m_iNumChannels;
 	CLWS_Channel m_aChannel[NUM_MAX_CHANNELS];
@@ -107,8 +116,6 @@ public:
 	void GetPoseAt( float fTime, Matrix34& rDestPose );
 
 	void GetPoseAtKeyframe( int keyframe, Matrix34& rDestPose );
-
-//	D3DXMATRIX GetRotationMatrixAt( float fTime );
 
 	/// returns the number of the keyframes of the item
 	/// returns the maximum number of keyframes if channels have different numbers of keyframes
@@ -235,6 +242,7 @@ public:
 	void GetOffsetOrientationAt( float fTime, Matrix33& matOrient );
 	Matrix33 GetOffsetOrientationAt( float fTime ) { Matrix33 ret = Matrix33Identity(); GetOffsetOrientationAt(fTime,ret); return ret; }
 
+	Matrix33 GetBoneRestOrientation() const;
 
 	friend class CLightWaveSceneLoader;
 };
@@ -310,3 +318,6 @@ public:
 
 	CLWS_Fog();
 };
+
+
+#endif /* __LWS_Items_HPP__ */

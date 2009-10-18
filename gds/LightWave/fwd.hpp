@@ -14,6 +14,7 @@ class CLWO2_Bone;
 class CLWO2_BoneWeightMap;
 class CLWO2_Layer;
 
+class CLightWaveSceneLoader;
 class CLWS_Keyframe;
 class CLWS_Channel;
 class CLWS_Item;
