@@ -1,5 +1,6 @@
 #include "GraphicsResourceCacheManager.hpp"
 #include "D3DGraphicsResources.hpp"
+#include "Graphics/OpenGL/GLGraphicsResources.hpp"
 
 using namespace std;
 using namespace boost;
@@ -25,6 +26,26 @@ shared_ptr<CShaderResource> CD3DGraphicsResourceFactoryImpl::CreateShaderResourc
 }
 
 
+//===============================================================
+// CGLGraphicsResourceFactoryImpl
+//===============================================================
+
+shared_ptr<CTextureResource> CGLGraphicsResourceFactoryImpl::CreateTextureResource( const CTextureResourceDesc& desc )
+{
+	return shared_ptr<CGLTextureResource>( new CGLTextureResource(&desc) );
+}
+
+shared_ptr<CMeshResource> CGLGraphicsResourceFactoryImpl::CreateMeshResource( const CMeshResourceDesc& desc )
+{
+	return shared_ptr<CMeshResource>( new CMeshResource(&desc) );
+}
+
+shared_ptr<CShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource( const CShaderResourceDesc& desc )
+{
+	return shared_ptr<CShaderResource>( new CShaderResource(&desc) );
+}
+
+
 
 
 //===============================================================
@@ -36,17 +57,21 @@ CSingleton<CGraphicsResourceFactory> CGraphicsResourceFactory::m_obj;
 
 
 CGraphicsResourceFactory::CGraphicsResourceFactory()
-:
-m_pImpl(NULL)
 {
-	m_pImpl = new CD3DGraphicsResourceFactoryImpl;
+	m_pImpl = shared_ptr<CD3DGraphicsResourceFactoryImpl>( new CD3DGraphicsResourceFactoryImpl );
 }
 
 
 CGraphicsResourceFactory::~CGraphicsResourceFactory()
 {
-	SafeDelete( m_pImpl );
 }
+
+
+void CGraphicsResourceFactory::Init( CGraphicsResourceFactoryImpl *pFactoryImpl )
+{
+	m_pImpl = shared_ptr<CGraphicsResourceFactoryImpl>( pFactoryImpl );
+}
+
 
 shared_ptr<CGraphicsResource> CGraphicsResourceFactory::CreateGraphicsResource( const CGraphicsResourceDesc &desc )
 {

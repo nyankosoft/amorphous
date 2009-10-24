@@ -30,8 +30,8 @@ public:
 
 //	virtual bool LoadAsync( const CTextureResourceDesc& desc );
 
-	/// Direct access to D3D texture
-	/// - Avoid using this whenever possible
+	/// Returns D3D texture
+	/// - User should not have to use this
 	inline const LPDIRECT3DTEXTURE9 GetTexture() const
 	{
 		if( GetEntry()
@@ -41,6 +41,19 @@ public:
 		}
 		else
 			return NULL;
+	}
+
+	/// Returns OpenGL texture
+	/// - User should not have to use this
+	inline GLuint GetGLTextureID() const
+	{
+		if( GetEntry()
+		 && GetEntry()->GetTextureResource() )
+		{
+			return GetEntry()->GetTextureResource()->GetGLTextureID();
+		}
+		else
+			return 0;
 	}
 
 	/// Creates an empty texture

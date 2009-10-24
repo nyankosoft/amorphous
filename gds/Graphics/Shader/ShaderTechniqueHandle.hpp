@@ -2,6 +2,14 @@
 #define  __ShaderTechniqueHandle_H__
 
 
+/**
+  - Don't use a shader technique handle for different shader managers.
+    even if the shaders have techniques with the same name.
+    - One shader technique handle for one shader
+
+  - Use CShaderTechniqueHandle as member variables, not as a local variable,
+    otherwise caching mechanism does not work.
+*/
 class CShaderTechniqueHandle
 {
 	/// avoid dynamic allocation when the name is short
@@ -20,8 +28,8 @@ class CShaderTechniqueHandle
 
 private:
 
-	void SetTequniqueIndex( int index ) { m_Index = index; }
-	int GetTequniqueIndex() const { return m_Index; }
+	void SetTechniqueIndex( int index ) { m_Index = index; }
+	int GetTechniqueIndex() const { return m_Index; }
 
 public:
 

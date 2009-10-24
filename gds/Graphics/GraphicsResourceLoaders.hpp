@@ -222,7 +222,8 @@ public:
 
 	bool AcquireResource() { return true; }
 
-	inline CD3DXMeshObjectBase *GetMesh();
+//	inline CD3DXMeshObjectBase *GetMesh();
+	inline CBasicMesh *GetMesh();
 
 	bool Load() { return LoadFromArchive(); }
 
@@ -231,6 +232,8 @@ public:
 	inline GraphicsResourceState::Name GetSubResourceState( CMeshSubResource::Name subresource ) const;
 
 	inline void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
+
+	CD3DXMeshObjectBase *GetD3DMeshImpl();
 
 	friend class CMeshLoader;
 };
@@ -392,7 +395,8 @@ inline const std::string& CGraphicsResourceLoader::GetSourceFilepath()
 // CD3DXMeshObjectBase
 //==============================================================================
 
-inline CD3DXMeshObjectBase *CD3DXMeshLoaderBase::GetMesh()
+//inline CD3DXMeshObjectBase *CD3DXMeshLoaderBase::GetMesh()
+inline CBasicMesh *CD3DXMeshLoaderBase::GetMesh()
 {
 	boost::shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( pEntry )

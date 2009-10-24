@@ -88,6 +88,15 @@ class CD3DXMeshObject;
 class CD3DXPMeshObject; // progressive mesh
 class CD3DXSMeshObject; // skeletal mesh
 
+class CD3DXMeshVerticesLoader;
+class CD3DXMeshIndicesLoader;
+
+
+class CBasicMesh;
+class CProgressiveMesh;
+class CSkeletalMesh;
+class CMeshImpl;
+
 
 class CGraphicsElement;
 class CGE_Rect;

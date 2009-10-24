@@ -1,5 +1,7 @@
 #include "GameWindowManager_Win32_GL.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "Graphics/OpenGL/GLExtensions.hpp"
 
 #include "Support/WindowMisc_Win32.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -14,7 +16,7 @@ LRESULT (WINAPI *g_pMessageProcedureForGameWindow_Win32_GL)( HWND, UINT, WPARAM,
 CGameWindowManager_Win32_GL CGameWindowManager_Win32_GL::ms_SingletonInstance_;
 
 
-void ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
+void ReSizeGLScene(GLsizei width, GLsizei height)		// Resize and initialize the GL Window
 {
 	if (height==0)										// Prevent A Divide By Zero By
 	{
@@ -34,6 +36,8 @@ void ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The 
 }
 
 
+// done by CGLGraphicsDevice
+/*
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -42,18 +46,23 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+	glEnable(GL_TEXTURE_2D);
+	LOG_GL_ERROR( "glEnable() failed." );
+
 	return TRUE;										// Initialization Went OK
 }
+*/
 
 
 CGameWindowManager_Win32_GL::CGameWindowManager_Win32_GL()
 {
 	m_CurrentScreenMode = GameWindow::WINDOWED;
 
-	m_hDC=NULL;
-	m_hRC=NULL;
-	m_hWnd=NULL;
-//	m_hInstance=???;
+	m_hDC  = NULL;
+	m_hRC  = NULL;
+	m_hWnd = NULL;
+	m_hInstance = NULL;
 }
 
 
@@ -61,18 +70,6 @@ CGameWindowManager_Win32_GL::~CGameWindowManager_Win32_GL()
 {
 //	DIRECT3D9.Release();
 //	UnregisterClass( m_ApplicationClassName.c_str(), m_WindowClassEx.hInstance );
-}
-
-
-void GetCurrentResolution(int* piDesktopWidth, int* piDesktopHeight)
-{
-	// experiment : check the current resolution
-	RECT desktop_rect;
-	HWND hDesktopWnd = GetDesktopWindow();
-	GetClientRect( hDesktopWnd, &desktop_rect );
-
-	*piDesktopWidth  = desktop_rect.right - desktop_rect.left;
-	*piDesktopHeight = desktop_rect.bottom   - desktop_rect.top;
 }
 
 
@@ -109,7 +106,7 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 
 	m_hInstance			= GetModuleHandle(NULL);				// Grab An Instance For Our Window
 	wc.style			= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc		= (WNDPROC) g_pMessageProcedureForGameWindow_Win32_GL;					// WndProc Handles Messages
+	wc.lpfnWndProc		= (WNDPROC) g_pMessageProcedureForGameWindow;//_Win32_GL;					// WndProc Handles Messages
 	wc.cbClsExtra		= 0;                                    // No Extra Window Data
 	wc.cbWndExtra		= 0;                                    // No Extra Window Data
 	wc.hInstance		= m_hInstance;                          // Set The Instance
@@ -119,9 +116,9 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 	wc.lpszMenuName		= NULL;                                 // We Don't Want A Menu
 	wc.lpszClassName	= class_name.c_str();                   // Set The Class Name
 
-	if (!RegisterClass(&wc))									// Attempt To Register The Window Class
+	if( !RegisterClass(&wc) )									// Attempt To Register The Window Class
 	{
-		MessageBox(NULL,"Failed To Register The Window Class.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		LOG_PRINT_ERROR( "RegisterClass() failed. Failed to register the window class." );
 		return FALSE;											// Return FALSE
 	}
 	
@@ -136,23 +133,14 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 		dmScreenSettings.dmFields=DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
 
 		// Try To Set Selected Mode And Get Results.  NOTE: CDS_FULLSCREEN Gets Rid Of Start Bar.
-		if (ChangeDisplaySettings(&dmScreenSettings,CDS_FULLSCREEN)!=DISP_CHANGE_SUCCESSFUL)
+		if( ChangeDisplaySettings(&dmScreenSettings,CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL )
 		{
-			// If The Mode Fails, Offer Two Options.  Quit Or Use Windowed Mode.
-			if (MessageBox(NULL,"The Requested Fullscreen Mode Is Not Supported By\nYour Video Card. Use Windowed Mode Instead?","NeHe GL",MB_YESNO|MB_ICONEXCLAMATION)==IDYES)
-			{
-				screen_mode = GameWindow::WINDOWED;		// Windowed Mode Selected.
-			}
-			else
-			{
-				// Pop Up A Message Box Letting User Know The Program Is Closing.
-				MessageBox(NULL,"Program Will Now Close.","ERROR",MB_OK|MB_ICONSTOP);
-				return FALSE;									// Return FALSE
-			}
+			// Use the windowed mode
+			screen_mode = GameWindow::WINDOWED;		// Windowed Mode Selected.
 		}
 	}
 
-	if( screen_mode == GameWindow::FULLSCREEN )												// Are We Still In Fullscreen Mode?
+	if( screen_mode == GameWindow::FULLSCREEN )						// Are We Still In Fullscreen Mode?
 	{
 		dwExStyle = WS_EX_APPWINDOW;                                // Window Extended Style
 		dwStyle   = WS_POPUP;		                                // Windows Style
@@ -181,9 +169,9 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 								m_hInstance,						// Instance
 								NULL)))								// Dont Pass Anything To WM_CREATE
 	{
-		KillGLWindow();								// Reset The Display
-		MessageBox(NULL,"Window Creation Error.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-		return FALSE;								// Return FALSE
+		KillGLWindow(); // Reset The Display
+		LOG_PRINT_ERROR( "CreateWindowEx() failed." );
+		return FALSE;
 	}
 
 	static	PIXELFORMATDESCRIPTOR pfd=				// pfd Tells Windows How We Want Things To Be
@@ -211,35 +199,35 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 	if( !(m_hDC=GetDC(m_hWnd)) )                    // Did we get a Device Context?
 	{
 		KillGLWindow();								// Reset The Display
-		MessageBox(NULL,"Can't Create A GL Device Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		LOG_PRINT_ERROR( "Can't create a GL Device Context." );
 		return FALSE;								// Return FALSE
 	}
 
-	if (!(PixelFormat=ChoosePixelFormat(m_hDC,&pfd)))	// Did Windows find a matching pixel format?
+	if( !(PixelFormat=ChoosePixelFormat(m_hDC,&pfd)) )	// Did Windows find a matching pixel format?
 	{
 		KillGLWindow(); // Reset The Display
-		MessageBox(NULL,"Can't Find A Suitable PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		LOG_PRINT_ERROR( "Can't find a suitable PixelFormat." );
 		return FALSE;								// Return FALSE
 	}
 
-	if(!SetPixelFormat(m_hDC,PixelFormat,&pfd))     // Are We Able To Set The Pixel Format?
+	if( !SetPixelFormat(m_hDC,PixelFormat,&pfd) )     // Are We Able To Set The Pixel Format?
 	{
 		KillGLWindow(); // Reset The Display
-		MessageBox(NULL,"Can't Set The PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		LOG_PRINT_ERROR( "Can't set the PixelFormat." );
 		return FALSE;								// Return FALSE
 	}
 
 	if (!(m_hRC=wglCreateContext(m_hDC)))           // Are We Able To Get A Rendering Context?
 	{
 		KillGLWindow();								// Reset The Display
-		MessageBox(NULL,"Can't Create A GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		LOG_PRINT_ERROR( "Can't create a GL Rendering Context." );
 		return FALSE;								// Return FALSE
 	}
 
 	if(!wglMakeCurrent(m_hDC,m_hRC))					// Try To Activate The Rendering Context
 	{
 		KillGLWindow();								// Reset The Display
-		MessageBox(NULL,"Can't Activate The GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		LOG_PRINT_ERROR( "Can't activate the GL Rendering Context." );
 		return FALSE;								// Return FALSE
 	}
 
@@ -248,12 +236,30 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 	SetFocus(m_hWnd);									// Sets Keyboard Focus To The Window
 	ReSizeGLScene(width, height);					// Set Up Our Perspective GL Screen
 
-	if (!InitGL())									// Initialize Our Newly Created GL Window
+//	if (!InitGL())									// Initialize Our Newly Created GL Window
+	if( !GLGraphicsDevice().Init( iScreenWidth, iScreenHeight, (screen_mode == ScreenMode::WINDOWED) ? ::ScreenMode::WINDOWED : ::ScreenMode::FULLSCREEN ) )
 	{
 		KillGLWindow();								// Reset The Display
-		MessageBox(NULL,"Initialization Failed.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		LOG_PRINT_ERROR( "InitGL() failed." );
 		return FALSE;								// Return FALSE
 	}
+
+	// initialize OpenGL extensions
+	initExtensions( m_hDC );
+
+	// save width and height
+	m_iCurrentScreenWidth  = iScreenWidth;
+	m_iCurrentScreenHeight = iScreenHeight;
+
+	// update graphics params
+	CGraphicsParameters params = CGraphicsComponentCollector::Get()->GetGraphicsParams();
+	params.ScreenWidth  = iScreenWidth;
+	params.ScreenHeight = iScreenHeight;
+	params.bWindowed = ( screen_mode == GameWindow::WINDOWED );
+	CGraphicsComponentCollector::Get()->SetGraphicsPargams( params );
+
+	// init 2d primitive renderer
+	PrimitiveRenderer().Init();
 
 	return TRUE;									// Success
 }
@@ -308,41 +314,21 @@ void CGameWindowManager_Win32_GL::ChangeScreenSize( int iNewScreenWidth,
 }
 
 
-bool CGameWindowManager_Win32_GL::IsMouseCursorInClientArea()
+void CGameWindowManager_Win32_GL::OnMainLoopFinished()
 {
-	long frame_w = 0, frame_h = 0;
-	GetNonClientAreaSize( m_hWnd, frame_w, frame_h );
-
-	RECT window_rect;
-	GetWindowRect( m_hWnd, &window_rect );
-
-	// TODO: accurate client rect position
-	RECT offset_window_rect = window_rect;
-	offset_window_rect.top   += frame_h;
-	offset_window_rect.left  += frame_w;
-	offset_window_rect.right -= frame_w;
-
-	POINT pt;
-	GetCursorPos( &pt );
-
-	if( offset_window_rect.top <= pt.y
-	 && pt.y <= offset_window_rect.bottom
-	 && offset_window_rect.left <= pt.x
-	 && pt.x <= offset_window_rect.right )
-	{
-		return true;
-	}
-	else
-		return false;
+	SwapBuffers( m_hDC );
 }
 
 
+/*
 void CGameWindowManager_Win32_GL::SetWindowLeftTopCornerPosition( int left, int top )
 {
 	// set the position
 	// - use SWP_NOSIZE flag to ignore window size parameters
 	::SetWindowPos( m_hWnd, HWND_TOP, left, top, 0, 0, SWP_NOSIZE );
 }
+*/
+
 /*
  *		This Code Was Created By Jeff Molofee 2000
  *		A HUGE Thanks To Fredric Echols For Cleaning Up

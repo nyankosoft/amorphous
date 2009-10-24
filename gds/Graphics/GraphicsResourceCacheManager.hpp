@@ -50,6 +50,20 @@ public:
 	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc );
 };
 
+//=======================================================================================
+// CD3DGraphicsResourceFactoryImpl
+//=======================================================================================
+
+class CGLGraphicsResourceFactoryImpl : public CGraphicsResourceFactoryImpl
+{
+public:
+
+//	CreateGraphicsResource( CGraphicsResourceDesc &desc );
+
+	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc );
+	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc );
+	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc );
+};
 
 
 //=======================================================================================
@@ -58,7 +72,7 @@ public:
 
 class CGraphicsResourceFactory
 {
-	CGraphicsResourceFactoryImpl *m_pImpl;
+	boost::shared_ptr<CGraphicsResourceFactoryImpl> m_pImpl;
 
 protected:
 
@@ -73,6 +87,8 @@ public:
 	static CGraphicsResourceFactory* Get() { return m_obj.get(); }
 
 	static void ReleaseSingleton() { m_obj.Release(); }
+
+	void Init( CGraphicsResourceFactoryImpl *pFactoryImpl );
 
 	boost::shared_ptr<CGraphicsResource> CreateGraphicsResource( const CGraphicsResourceDesc &desc );// { return m_pImpl->CreateGraphicsResource(desc); }
 

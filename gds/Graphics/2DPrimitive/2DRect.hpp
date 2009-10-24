@@ -3,6 +3,7 @@
 
 
 #include "2DPrimitive.hpp"
+#include "2DPrimitiveRenderer.hpp"
 
 
 /**
@@ -12,7 +13,7 @@
  */
 class C2DRect : public C2DPrimitive
 {
-	TLVERTEX m_avRectVertex[4];
+	CGeneral2DVertex m_avRectVertex[4];
 
 public:
 
@@ -67,6 +68,8 @@ public:
 	inline void SetPositionLTWH( int l, int t, int w, int h ) { SetPositionLTRB(l,t,l+w-1,t+h-1); }
 
 	virtual void SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax );
+
+	inline void SetTextureCoord( int vert_index, int tex_coord_index, const TEXCOORD2& t );
 
 	void SetColor( U32 color ) { C2DPrimitive::SetColor(color); }
 
@@ -126,20 +129,21 @@ inline C2DRect::C2DRect( const SRect& rect, U32 color )
 
 inline void C2DRect::SetDefault()
 {
-	ZeroMemory(m_avRectVertex, sizeof(TLVERTEX) * 4);
+	memset( m_avRectVertex, 0, sizeof(m_avRectVertex) );
+
 	for(int i=0; i<4; i++)
 	{
-		m_avRectVertex[i].rhw = 1.0f;
-		m_avRectVertex[i].color = 0xff000000;		//opaque by default
+		m_avRectVertex[i].m_fRHW = 1.0f;
+		m_avRectVertex[i].m_DiffuseColor.SetToBlack(); // opaque by default
 	}
 
-	m_DestAlphaBlend = D3DBLEND_INVSRCALPHA;
+	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;
 }
 
 
 inline Vector2 C2DRect::GetPosition2D( int vert_index ) const
 {
-	const D3DXVECTOR3& pos = m_avRectVertex[vert_index].vPosition;
+	const D3DXVECTOR3& pos = m_avRectVertex[vert_index].m_vPosition;
 	return Vector2( pos.x, pos.y );
 }
 
@@ -147,33 +151,35 @@ inline Vector2 C2DRect::GetPosition2D( int vert_index ) const
 /// Draws the rect without any render state changes
 inline void C2DRect::draw()
 {
-	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
-	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectVertex, sizeof(TLVERTEX) );
+//	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
+//	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectVertex, sizeof(TLVERTEX) );
+
+	PrimitiveRenderer().Render( m_avRectVertex, 4, PrimitiveType::TRIANGLE_FAN );
 }
 
 
 inline void C2DRect::SetPosition( const Vector2& vMin, const Vector2& vMax )
 {
-	TLVERTEX* pVert = m_avRectVertex;
+	CGeneral2DVertex* pVert = m_avRectVertex;
 
-	pVert[0].vPosition.x = vMin.x;		// top-left corner of the rectangle
-	pVert[0].vPosition.y = vMin.y;
+	pVert[0].m_vPosition.x = vMin.x;		// top-left corner of the rectangle
+	pVert[0].m_vPosition.y = vMin.y;
 
-	pVert[1].vPosition.x = vMax.x;
-	pVert[1].vPosition.y = vMin.y;
+	pVert[1].m_vPosition.x = vMax.x;
+	pVert[1].m_vPosition.y = vMin.y;
 
-	pVert[2].vPosition.x = vMax.x;		// bottom-right corner of the rectangle
-	pVert[2].vPosition.y = vMax.y;
+	pVert[2].m_vPosition.x = vMax.x;		// bottom-right corner of the rectangle
+	pVert[2].m_vPosition.y = vMax.y;
 
-	pVert[3].vPosition.x = vMin.x;
-	pVert[3].vPosition.y = vMax.y;
+	pVert[3].m_vPosition.x = vMin.x;
+	pVert[3].m_vPosition.y = vMax.y;
 }
 
 
 inline void C2DRect::SetPosition( int vert_index, const Vector2& rvPosition )
 {
-	m_avRectVertex[vert_index].vPosition.x = rvPosition.x;
-	m_avRectVertex[vert_index].vPosition.y = rvPosition.y;
+	m_avRectVertex[vert_index].m_vPosition.x = rvPosition.x;
+	m_avRectVertex[vert_index].m_vPosition.y = rvPosition.y;
 }
 
 
@@ -189,31 +195,39 @@ inline void C2DRect::SetPositionLTRB( int l, int t, int r, int b )
 }
 
 
+inline void C2DRect::SetTextureCoord( int vert_index, int tex_coord_index, const TEXCOORD2& t )
+{
+	m_avRectVertex[vert_index].m_TextureCoord[tex_coord_index] = t;
+}
+
+
 inline void C2DRect::SetColor( const SFloatRGBAColor& color )
 {
-	U32 c = color.GetARGB32();
+//	U32 c = color.GetARGB32();
 	for(int i=0; i<4; i++)
-		m_avRectVertex[i].color   = c;
+//		m_avRectVertex[i].color   = c;
+		m_avRectVertex[i].m_DiffuseColor   = color;
 }
 
 
 inline void C2DRect::SetCornerColor( int corner, const SFloatRGBAColor& color )
 {
-	U32 c = color.GetARGB32();
+//	U32 c = color.GetARGB32();
 	if( 0 <= corner && corner < 4 )
 	{
 		// set the color for only one vertex specified by 'iVertexNum'
-		m_avRectVertex[corner].color = c;
+//		m_avRectVertex[corner].color = c;
+		m_avRectVertex[corner].m_DiffuseColor = color;
 	}
 }
 
 
 inline void C2DRect::Translate( float dx, float dy )
 {
-	m_avRectVertex[0].vPosition += D3DXVECTOR3( dx, dy, 0 );
-	m_avRectVertex[1].vPosition += D3DXVECTOR3( dx, dy, 0 );
-	m_avRectVertex[2].vPosition += D3DXVECTOR3( dx, dy, 0 );
-	m_avRectVertex[3].vPosition += D3DXVECTOR3( dx, dy, 0 );
+	m_avRectVertex[0].m_vPosition += Vector3( dx, dy, 0 );
+	m_avRectVertex[1].m_vPosition += Vector3( dx, dy, 0 );
+	m_avRectVertex[2].m_vPosition += Vector3( dx, dy, 0 );
+	m_avRectVertex[3].m_vPosition += Vector3( dx, dy, 0 );
 }
 
 
@@ -235,7 +249,7 @@ inline void C2DRect::Rotate( const Matrix22& matOrient )
 
 	for( int i=0; i<4; i++ )
 	{
-		Vector3& vert_pos = m_avRectVertex[i].vPosition;
+		Vector3& vert_pos = m_avRectVertex[i].m_vPosition;
 		v = matOrient * Vector2(vert_pos.x, vert_pos.y);
 
 		vert_pos.x = v.x;

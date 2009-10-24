@@ -3,11 +3,12 @@
 
 
 #include "2DPrimitive.hpp"
+#include "2DPrimitiveRenderer.hpp"
 
 
 class C2DFrameRect : public C2DPrimitive
 {
-	TLVERTEX m_avRectVertex[10];
+	CGeneral2DVertex m_avRectVertex[10];
 
 	/// width of the rect border in pixels
 	int m_BorderWidth;
@@ -94,7 +95,7 @@ inline C2DFrameRect::C2DFrameRect( int min_x, int min_y, int max_x, int max_y, U
 {
 	SetDefault();
 	SetBorderWidth( border_width );
-	SetPosition( D3DXVECTOR2((float)min_x,(float)min_y), D3DXVECTOR2((float)max_x,(float)max_y) );
+	SetPosition( Vector2((float)min_x,(float)min_y), Vector2((float)max_x,(float)max_y) );
 	SetColor( color );
 }
 
@@ -103,7 +104,7 @@ inline C2DFrameRect::C2DFrameRect( float min_x, float min_y, float max_x, float 
 {
 	SetDefault();
 	SetBorderWidth( (int)border_width );
-	SetPosition( D3DXVECTOR2(min_x,min_y), D3DXVECTOR2(max_x,max_y) );
+	SetPosition( Vector2(min_x,min_y), Vector2(max_x,max_y) );
 	SetColor( color );
 }
 
@@ -112,29 +113,31 @@ inline C2DFrameRect::C2DFrameRect( const SRect& rect, U32 color, float border_wi
 {
 	SetDefault();
 	SetBorderWidth( (int)border_width );
-	SetPosition( D3DXVECTOR2((float)rect.left,(float)rect.top), D3DXVECTOR2((float)rect.right,(float)rect.bottom) );
+	SetPosition( Vector2((float)rect.left,(float)rect.top), Vector2((float)rect.right,(float)rect.bottom) );
 	SetColor( color );
 }
 
 
 inline void C2DFrameRect::SetDefault()
 {
-	ZeroMemory(m_avRectVertex, sizeof(TLVERTEX) * 10);
+	memset( m_avRectVertex, 0, sizeof(m_avRectVertex) );
 
 	for(int i=0; i<10; i++)
 	{
-		m_avRectVertex[i].rhw = 1.0f;
-		m_avRectVertex[i].color = 0xff000000;		// opaque by default
+		m_avRectVertex[i].m_fRHW = 1.0f;
+		m_avRectVertex[i].m_DiffuseColor.SetToBlack(); // opaque black by default
 	}
 
-	m_DestAlphaBlend = D3DBLEND_INVSRCALPHA;
+	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;
 }
 
 
 inline void C2DFrameRect::draw()
 {
-	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
-	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 8, m_avRectVertex, sizeof(TLVERTEX) );
+//	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
+//	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 8, m_avRectVertex, sizeof(TLVERTEX) );
+
+	PrimitiveRenderer().Render( m_avRectVertex, 10, PrimitiveType::TRIANGLE_STRIP );
 }
 
 /*
@@ -146,7 +149,7 @@ inline D3DXVECTOR2 C2DFrameRect::GetCornerPos2D( int vert_index ) const
 
 inline Vector2 C2DFrameRect::GetPosition2D( int vert_index ) const
 {
-	const D3DXVECTOR3& vPos = m_avRectVertex[ vert_index * 2 + 1 ].vPosition;
+	const Vector3& vPos = m_avRectVertex[ vert_index * 2 + 1 ].m_vPosition;
 	return Vector2( vPos.x, vPos.y );
 }
 
@@ -154,29 +157,29 @@ inline Vector2 C2DFrameRect::GetPosition2D( int vert_index ) const
 inline void C2DFrameRect::SetPosition( const Vector2& rvMin, const Vector2& rvMax )
 {
 	float bw = (float)m_BorderWidth;
-	float z = m_avRectVertex[0].vPosition.z;
+	float z = m_avRectVertex[0].m_vPosition.z;
 
-	TLVERTEX* pVert = m_avRectVertex;
+	CGeneral2DVertex* pVert = m_avRectVertex;
 
 	// top-left corner
-	pVert[0].vPosition = D3DXVECTOR3( rvMin.x, rvMin.y, z ) + D3DXVECTOR3( bw, bw, 0); // inner
-	pVert[1].vPosition = D3DXVECTOR3( rvMin.x, rvMin.y, z );                           // outer
+	pVert[0].m_vPosition = Vector3( rvMin.x, rvMin.y, z ) + Vector3( bw, bw, 0); // inner
+	pVert[1].m_vPosition = Vector3( rvMin.x, rvMin.y, z );                           // outer
 
 	// top-right corner
-	pVert[2].vPosition = D3DXVECTOR3( rvMax.x, rvMin.y, z ) + D3DXVECTOR3(-bw, bw, 0); // inner
-	pVert[3].vPosition = D3DXVECTOR3( rvMax.x, rvMin.y, z );						   // outer
+	pVert[2].m_vPosition = Vector3( rvMax.x, rvMin.y, z ) + Vector3(-bw, bw, 0); // inner
+	pVert[3].m_vPosition = Vector3( rvMax.x, rvMin.y, z );						   // outer
 
 	// bottom-right corner
-	pVert[4].vPosition = D3DXVECTOR3( rvMax.x, rvMax.y, z ) + D3DXVECTOR3(-bw,-bw, 0); // inner
-	pVert[5].vPosition = D3DXVECTOR3( rvMax.x, rvMax.y, z );						   // outer
+	pVert[4].m_vPosition = Vector3( rvMax.x, rvMax.y, z ) + Vector3(-bw,-bw, 0); // inner
+	pVert[5].m_vPosition = Vector3( rvMax.x, rvMax.y, z );						   // outer
 
 	// bottom-left corner
-	pVert[6].vPosition = D3DXVECTOR3( rvMin.x, rvMax.y, z ) + D3DXVECTOR3( bw,-bw, 0); // inner
-	pVert[7].vPosition = D3DXVECTOR3( rvMin.x, rvMax.y, z );						   // outer
+	pVert[6].m_vPosition = Vector3( rvMin.x, rvMax.y, z ) + Vector3( bw,-bw, 0); // inner
+	pVert[7].m_vPosition = Vector3( rvMin.x, rvMax.y, z );						   // outer
 
 	// wrapping at the top-left corner (same as pVert[0] & pVert[1])
-	pVert[8].vPosition = D3DXVECTOR3( rvMin.x, rvMin.y, z ) + D3DXVECTOR3( bw, bw, 0); // inner
-	pVert[9].vPosition = D3DXVECTOR3( rvMin.x, rvMin.y, z );						   // outer
+	pVert[8].m_vPosition = Vector3( rvMin.x, rvMin.y, z ) + Vector3( bw, bw, 0); // inner
+	pVert[9].m_vPosition = Vector3( rvMin.x, rvMin.y, z );						   // outer
 
 	// set default texture coord
 	// - set u to
@@ -185,12 +188,12 @@ inline void C2DFrameRect::SetPosition( const Vector2& rvMin, const Vector2& rvMa
 	for( int i=0; i<5; i++ )
 	{
 		// inner 
-		pVert[i*2].tu = 1.0f;
-		pVert[i*2].tv = 0.0f;
+		pVert[i*2].m_TextureCoord[0].u = 1.0f;
+		pVert[i*2].m_TextureCoord[0].v = 0.0f;
 
 		// outer
-		pVert[i*2+1].tu = 0.0f;
-		pVert[i*2+1].tv = 0.0f;
+		pVert[i*2+1].m_TextureCoord[0].u = 0.0f;
+		pVert[i*2+1].m_TextureCoord[0].v = 0.0f;
 	}
 }
 
@@ -198,9 +201,9 @@ inline void C2DFrameRect::SetPosition( const Vector2& rvMin, const Vector2& rvMa
 inline void C2DFrameRect::SetVertexPosition( int vert_index, const Vector2& rvPosition )
 {
 	const float bw = (float)m_BorderWidth;
-	const float z = m_avRectVertex[0].vPosition.z;
+	const float z = m_avRectVertex[0].m_vPosition.z;
 
-	TLVERTEX* pVert = m_avRectVertex;
+	CGeneral2DVertex* pVert = m_avRectVertex;
 
 	const float x = rvPosition.x;
 	const float y = rvPosition.y;
@@ -208,29 +211,29 @@ inline void C2DFrameRect::SetVertexPosition( int vert_index, const Vector2& rvPo
 	{
 	case 0:
 		// top-left corner
-		pVert[0].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3( bw, bw, 0); // inner
-		pVert[1].vPosition = D3DXVECTOR3( x, y, z );                           // outer
+		pVert[0].m_vPosition = Vector3( x, y, z ) + Vector3( bw, bw, 0); // inner
+		pVert[1].m_vPosition = Vector3( x, y, z );                           // outer
 		// wrapping at the top-left corner (same as pVert[0] & pVert[1])
-		pVert[8].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3( bw, bw, 0); // inner
-		pVert[9].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		pVert[8].m_vPosition = Vector3( x, y, z ) + Vector3( bw, bw, 0); // inner
+		pVert[9].m_vPosition = Vector3( x, y, z );						   // outer
 		break;
 
 	case 1:
 		// top-right corner
-		pVert[2].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3(-bw, bw, 0); // inner
-		pVert[3].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		pVert[2].m_vPosition = Vector3( x, y, z ) + Vector3(-bw, bw, 0); // inner
+		pVert[3].m_vPosition = Vector3( x, y, z );						   // outer
 		break;
 
 	case 2:
 		// bottom-right corner
-		pVert[4].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3(-bw,-bw, 0); // inner
-		pVert[5].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		pVert[4].m_vPosition = Vector3( x, y, z ) + Vector3(-bw,-bw, 0); // inner
+		pVert[5].m_vPosition = Vector3( x, y, z );						   // outer
 		break;
 
 	case 3:
 		// bottom-left corner
-		pVert[6].vPosition = D3DXVECTOR3( x, y, z ) + D3DXVECTOR3( bw,-bw, 0); // inner
-		pVert[7].vPosition = D3DXVECTOR3( x, y, z );						   // outer
+		pVert[6].m_vPosition = Vector3( x, y, z ) + Vector3( bw,-bw, 0); // inner
+		pVert[7].m_vPosition = Vector3( x, y, z );						   // outer
 		break;
 
 	default:
@@ -241,36 +244,34 @@ inline void C2DFrameRect::SetVertexPosition( int vert_index, const Vector2& rvPo
 
 inline void C2DFrameRect::SetPositionLTRB( float left, float top, float right, float bottom )
 {
-	SetPosition( D3DXVECTOR2(left, top), D3DXVECTOR2(right, bottom) );
+	SetPosition( Vector2(left, top), Vector2(right, bottom) );
 }
 
 
 inline void C2DFrameRect::SetPositionLTWH( float left, float top, float width, float height )
 {
-	SetPosition( D3DXVECTOR2(left, top), D3DXVECTOR2(left + width - 1.0f, top + height - 1.0f) );
+	SetPosition( Vector2(left, top), Vector2(left + width - 1.0f, top + height - 1.0f) );
 }
 
 
 inline void C2DFrameRect::SetColor( const SFloatRGBAColor& color )
 {
-	U32 c = color.GetARGB32();
 	for( int i=0; i<10; i++ )
 	{
-		m_avRectVertex[i].color = c;
+		m_avRectVertex[i].m_DiffuseColor = color;
 	}
 }
 
 
 inline void C2DFrameRect::SetCornerColor( int corner, const SFloatRGBAColor& color )
 {
-	U32 c = color.GetARGB32();
-	m_avRectVertex[corner*2].color   = c;
-	m_avRectVertex[corner*2+1].color = c;
+	m_avRectVertex[corner*2  ].m_DiffuseColor   = color;
+	m_avRectVertex[corner*2+1].m_DiffuseColor = color;
 
 	if( corner == 0 )
 	{
-		m_avRectVertex[8].color = c;
-		m_avRectVertex[9].color = c;
+		m_avRectVertex[8].m_DiffuseColor = color;
+		m_avRectVertex[9].m_DiffuseColor = color;
 	}
 }
 
@@ -279,10 +280,10 @@ void C2DFrameRect::SetBorderWidth( int border_width )
 {
 	m_BorderWidth = border_width;
 
-	TLVERTEX* pVert = m_avRectVertex;
+	CGeneral2DVertex* pVert = m_avRectVertex;
 	SetPosition(
-		D3DXVECTOR2( pVert[1].vPosition.x, pVert[1].vPosition.y ),
-		D3DXVECTOR2( pVert[5].vPosition.x, pVert[5].vPosition.y ) );
+		Vector2( pVert[1].m_vPosition.x, pVert[1].m_vPosition.y ),
+		Vector2( pVert[5].m_vPosition.x, pVert[5].m_vPosition.y ) );
 }
 
 

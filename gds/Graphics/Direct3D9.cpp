@@ -317,6 +317,17 @@ void CDirect3D9::EnumAdapterModesForDefaultAdapter()
 }
 
 
+Result::Name CDirect3D9::SetTexture( int stage, const CTextureHandle& texture )
+{
+	if( !m_pD3DDevice )
+		return Result::UNKNOWN_ERROR;
+
+	HRESULT hr = m_pD3DDevice->SetTexture( stage, texture.GetTexture() );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
 bool ToD3DRenderStateType( RenderStateType::Name type, D3DRENDERSTATETYPE& dest )
 {
 	switch(type)
@@ -373,7 +384,7 @@ void CDirect3D9::SetSourceBlendMode( AlphaBlend::Mode src_blend_mode )
 }
 
 
-void CDirect3D9::SeDestBlendMode( AlphaBlend::Mode dest_blend_mode )
+void CDirect3D9::SetDestBlendMode( AlphaBlend::Mode dest_blend_mode )
 {
 	if( m_pD3DDevice )
 		m_pD3DDevice->SetRenderState( D3DRS_DESTBLEND, g_dwD3DBlendMode[dest_blend_mode] );

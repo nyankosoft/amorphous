@@ -51,21 +51,6 @@ Details
 
 
 //=============================================================================
-// CD3DXMeshObjectBase::CMeshMaterial
-//=============================================================================
-
-void CD3DXMeshObjectBase::CMeshMaterial::LoadTextureAsync( int i )
-{
-	if( i < 0 || (int)Texture.size() <= i )
-		return;
-
-	CTextureResourceDesc desc = TextureDesc[i];
-	desc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
-	Texture[i].Load( desc );
-}
-
-
-//=============================================================================
 // CD3DXMeshObjectBase
 //=============================================================================
 
@@ -87,7 +72,7 @@ void CD3DXMeshObjectBase::Release()
 }
 
 
-bool CD3DXMeshObjectBase::LoadFromFile( const std::string& filename, U32 opiton_flags )
+bool CD3DXMeshObjectBase::LoadFromFile( const std::string& filename, U32 option_flags )
 {
 	Release();
 
@@ -118,7 +103,7 @@ bool CD3DXMeshObjectBase::LoadFromFile( const std::string& filename, U32 opiton_
 		if( !b )
 			return false;
 
-		loaded = LoadFromArchive( archive, filename, opiton_flags );
+		loaded = LoadFromArchive( archive, filename, option_flags );
 	}
 
 //	if( loaded )
@@ -850,6 +835,66 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 //	pEffect->End();
 }
 
+
+//-----------------------------------------------------------------------------
+// Name: Render()
+// Desc: Draws the object
+//-----------------------------------------------------------------------------
+void CD3DXMeshObjectBase::Render()
+{
+	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	LPD3DXMESH pMesh = m_pMesh;
+	LPD3DXBASEMESH pMesh = GetBaseMesh();
+
+	//We use only the first texture stage (stage 0)
+	pd3dDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
+	pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
+
+	// color arguments on texture stage 0
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
+
+	// alpha arguments on texture stage 0
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
+
+	// alpha-blending settings 
+	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+	pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
+	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+
+    // Meshes are divided into subsets by materials. Render each subset in a loop
+//	HRESULT hr;
+	LPDIRECT3DTEXTURE9 pTex = NULL;
+    for( int i=0; i<m_NumMaterials; i++ )
+    {
+        // Set the material and texture for this subset
+		pd3dDevice->SetMaterial( &m_pMeshMaterials[i] );
+
+//		if( FAILED(hr) ) MessageBox(NULL, "SetMaterial() Failed", "Error", MB_OK|MB_ICONWARNING);
+
+		if( pTex = GetTexture(i,0).GetTexture() )
+		{
+			// blend color & alpha of vertex & texture
+			pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
+			pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE );
+		}
+		else
+		{
+			// no texture for this material - use only the vertx color & alpha
+			pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG1 );
+			pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1 );
+		}
+
+		pd3dDevice->SetTexture( 0, pTex );
+
+        // Draw the mesh subset
+        pMesh->DrawSubset( i );
+    }
+
+}
+
+
 /*
 // called by the render thread
 // create mesh
@@ -1000,8 +1045,8 @@ bool CD3DXMeshObjectBase::UnlockAttributeBuffer()
 
 using namespace boost;
 
-
-static CD3DXMeshObjectBase* CreateMeshInstance( CMeshType::Name mesh_type )
+/*
+CMeshImpl* CD3DMeshImplFactory::CreateMeshImpl( CMeshType::Name mesh_type )
 {
 	switch( mesh_type )
 	{
@@ -1017,8 +1062,14 @@ static CD3DXMeshObjectBase* CreateMeshInstance( CMeshType::Name mesh_type )
 
 	return NULL;
 }
+*/
 
 
+CMeshImpl* CD3DMeshImplFactory::CreateBasicMeshImpl()       { return new CD3DXMeshObject(); }
+CMeshImpl* CD3DMeshImplFactory::CreateProgressiveMeshImpl() { return new CD3DXPMeshObject(); }
+CMeshImpl* CD3DMeshImplFactory::CreateSkeletalMeshImpl()    { return new CD3DXSMeshObject(); }
+
+/*
 shared_ptr<CD3DXMeshObjectBase> CMeshObjectFactory::CreateMesh( CMeshType::Name mesh_type )
 {
 	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
@@ -1044,7 +1095,32 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::stri
 }
 
 
-CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
+shared_ptr<CMeshImpl> CD3DMeshImplFactory::CreateMesh( CMeshType::Name mesh_type )
+{
+	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
+	return pMesh;
+}
+
+
+CMeshImpl* CD3DMeshImplFactory::LoadMeshObjectFromFile( const std::string& filepath,
+																 U32 load_option_flags,
+																 CMeshType::Name mesh_type )
+{
+	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
+
+	bool loaded = pMesh->LoadFromFile( filepath, load_option_flags );
+
+	if( loaded )
+		return pMesh;
+	else
+	{
+		SafeDelete( pMesh );
+		return NULL;
+	}
+}
+
+
+CD3DXMeshObjectBase* CD3DMeshImplFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
 																    U32 load_option_flags,
 																	CMeshType::Name mesh_type )
@@ -1060,14 +1136,5 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromArchive( C3DMeshModel
 		SafeDelete( pMesh );
 		return NULL;
 	}
-
-/*	if( mesh_type != CMeshType::BASIC )
-		return false;
-
-	CD3DXMeshObject *pMeshObject = new CD3DXMeshObject();
-
-	U32 load_option_flags = 0;
-	pMeshObject->LoadFromArchive( mesh_archive, filepath, load_option_flags );
-
-	return pMeshObject; */
 }
+*/

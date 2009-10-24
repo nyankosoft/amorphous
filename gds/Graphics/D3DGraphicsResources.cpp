@@ -220,6 +220,9 @@ bool CD3DTextureResource::CreateFromDesc()
 
 		Unlock();
 
+		if( m_TextureDesc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
+			D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+
 		SetState( GraphicsResourceState::LOADED );
 
 		D3DXSaveTextureToFile( string(desc.ResourcePath + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );

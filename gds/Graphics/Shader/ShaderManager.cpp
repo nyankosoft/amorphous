@@ -42,8 +42,26 @@ HRESULT CD3DXInclude::Close( LPCVOID pData )
 }
 
 
-
 CShaderManager::CShaderManager()
+{
+	// register the instance to the shader manager hub
+	ShaderManagerHub.RegisterShaderManager( this );
+
+	m_RegisteredToHub = true;
+}
+
+
+CShaderManager::~CShaderManager()
+{
+	// release from the list in shader manager hub
+	ShaderManagerHub.ReleaseShaderManager( this );
+
+	m_RegisteredToHub = false;
+}
+
+
+
+CHLSLShaderManager::CHLSLShaderManager()
 :
 m_pEffect(NULL)
 {
@@ -64,28 +82,22 @@ m_pEffect(NULL)
 		m_aCubeTextureHandle[i] = NULL;
 
 	m_VacantTechniqueEntryIndex = 0;
-
-	// register the instance to the shader manager hub
-	ShaderManagerHub.RegisterShaderManager( this );
 }
 
 
-CShaderManager::~CShaderManager()
+CHLSLShaderManager::~CHLSLShaderManager()
 {
-	// release from the list in shader manager hub
-	ShaderManagerHub.ReleaseShaderManager( this );
-
 	Release();
 }
 
 
-void CShaderManager::Release()
+void CHLSLShaderManager::Release()
 {
 	SAFE_RELEASE(m_pEffect);
 }
 
 
-void CShaderManager::Reload()
+void CHLSLShaderManager::Reload()
 {
 	LoadShaderFromFile( m_strFilename );
 
@@ -104,12 +116,12 @@ void CShaderManager::Reload()
 }
 
 
-void CShaderManager::PrintCompilerErrors( LPD3DXBUFFER pCompileErrors )
+void CHLSLShaderManager::PrintCompilerErrors( LPD3DXBUFFER pCompileErrors )
 {
 	if( pCompileErrors )
 	{
 		char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
-		g_Log.Print( WL_ERROR, "CShaderManager::LoadShaderFromFile() - %s", pBuffer );
+		g_Log.Print( WL_ERROR, "CHLSLShaderManager::LoadShaderFromFile() - %s", pBuffer );
 		pCompileErrors->Release();
 	}
 /*
@@ -122,7 +134,7 @@ void CShaderManager::PrintCompilerErrors( LPD3DXBUFFER pCompileErrors )
 }
 
 
-bool CShaderManager::Init()
+bool CHLSLShaderManager::Init()
 {
 	m_aMatrixHandle[MATRIX_WORLD]           = m_pEffect->GetParameterBySemantic( NULL, "WORLD" );
 	m_aMatrixHandle[MATRIX_VIEW]            = m_pEffect->GetParameterBySemantic( NULL, "VIEW" );
@@ -148,7 +160,7 @@ bool CShaderManager::Init()
 
 	pD3DShaderLightMgr->Init();
 
-	m_pLightManager = boost::shared_ptr<CHLSLShaderLightManager>( pD3DShaderLightMgr );
+	m_pHLSLShaderLightManager = boost::shared_ptr<CHLSLShaderLightManager>( pD3DShaderLightMgr );
 
 	m_vecParamHandle.reserve( 8 );
 
@@ -156,7 +168,7 @@ bool CShaderManager::Init()
 }
 
 
-bool CShaderManager::LoadShaderFromFile( const string& filename )
+bool CHLSLShaderManager::LoadShaderFromFile( const string& filename )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -165,7 +177,7 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 	m_strFilename = filename;
 
 	CD3DXInclude d3dx_include;
-	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
+	ID3DXInclude *pD3DXInclude = NULL; // = &d3dx_include;
 
 	HRESULT hr;	
 	LPD3DXBUFFER pCompileErrors;
@@ -184,7 +196,7 @@ bool CShaderManager::LoadShaderFromFile( const string& filename )
 }
 
 
-bool CShaderManager::LoadShaderFromText( const stream_buffer& buffer )
+bool CHLSLShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -196,7 +208,7 @@ bool CShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 		return false;
 
 	CD3DXInclude d3dx_include;
-	ID3DXInclude *pD3DXInclude = NULL; //&d3dx_include
+	ID3DXInclude *pD3DXInclude = &d3dx_include;
 
 	HRESULT hr;	
 	LPD3DXBUFFER pCompileErrors;
@@ -215,9 +227,10 @@ bool CShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 }
 
 
-void CShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
+void CHLSLShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
 {
-	int index = float_param.m_ParameterIndex;
+//	int index = float_param.m_ParameterIndex;
+	int index = GetParameterIndex( float_param );
 	if( index < 0 )
 	{
 		// init
@@ -227,7 +240,8 @@ void CShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_par
 		{
 			if( m_vecParamHandle[i].ParameterName == float_param.GetParameterName() )
 			{
-				float_param.m_ParameterIndex = index = (int)i;
+				index = (int)i;
+				SetParameterIndex( float_param, index );
 				break;
 			}
 		}
@@ -238,7 +252,8 @@ void CShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_par
 			D3DXHANDLE param_handle = m_pEffect->GetParameterByName( NULL, float_param.GetParameterName().c_str() );
 			if( param_handle )
 			{
-				float_param.m_ParameterIndex = index = (int)m_vecParamHandle.size();
+				index = (int)m_vecParamHandle.size();
+				SetParameterIndex( float_param, index );
 				m_vecParamHandle.push_back( CD3DShaderParameterHandle(float_param.GetParameterName(),param_handle) );
 			}
 		}
@@ -250,7 +265,13 @@ void CShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_par
 }
 
 
-void CShaderManager::UpdateVacantTechniqueIndex()
+boost::shared_ptr<CShaderLightManager> CHLSLShaderManager::GetShaderLightManager()
+{
+	return m_pHLSLShaderLightManager;
+}
+
+
+void CHLSLShaderManager::UpdateVacantTechniqueIndex()
 {
 	int i, start = m_VacantTechniqueEntryIndex;
 	for( i=start; i<NUM_MAX_TECHNIQUES; i++ )
@@ -266,7 +287,7 @@ void CShaderManager::UpdateVacantTechniqueIndex()
 }
 
 
-bool CShaderManager::RegisterTechnique( const unsigned int id, const char *pcTechnique )
+bool CHLSLShaderManager::RegisterTechnique( const unsigned int id, const char *pcTechnique )
 {
 	if( id < 0 || NUM_MAX_TECHNIQUES <= id )
 		return false;
@@ -289,15 +310,16 @@ bool CShaderManager::RegisterTechnique( const unsigned int id, const char *pcTec
 /// Through the checks in SetTechnique(), the value of tech_index is known to be
 /// either CShaderTechniqueHandle::UNINITIALIZED
 /// or CShaderTechniqueHandle::INVALID_INDEX
-HRESULT CShaderManager::SetNewTechnique( CShaderTechniqueHandle& tech_handle )
+HRESULT CHLSLShaderManager::SetNewTechnique( CShaderTechniqueHandle& tech_handle )
 {
-	const int tech_index = tech_handle.GetTequniqueIndex();
+//	const int tech_index = tech_handle.GetTechniqueIndex();
 
-	if( tech_index == CShaderTechniqueHandle::UNINITIALIZED )
+	if( IsUninitializedTechnique( tech_handle ) )
 	{
 		if( tech_handle.GetTechniqueName() == NULL )
 		{
-			tech_handle.SetTequniqueIndex( CShaderTechniqueHandle::INVALID_INDEX );
+			// The handle has no valid name - return error
+			SetInvalidTechnique( tech_handle );
 			return E_FAIL;
 		}
 
@@ -306,22 +328,26 @@ HRESULT CShaderManager::SetNewTechnique( CShaderTechniqueHandle& tech_handle )
 		{
 			if( m_astrTechniqueName[i] == tech_handle.GetTechniqueName() )
 			{
+				// The technique names matched.
+				// - the technique has already been registered.
+
 				// cache index to avoid search in subsequent calls
-				tech_handle.SetTequniqueIndex( i );
+				SetTechniqueIndex( tech_handle, i );
 
 				return m_pEffect->SetTechnique( m_aTechniqueHandle[i] );
 			}
 		}
 
 		// the requested technique has not been registered to the table yet
-		// - set it as a current techqniue and register it to the table
+		// - Try setting it as a current techqniue.
+		// - If the technique has been set successfully (i.e. the technique is valid), register it to the table
 		LOG_PRINT( " - Registering a new technique: " + string(tech_handle.GetTechniqueName()) );
 		HRESULT hr = m_pEffect->SetTechnique( tech_handle.GetTechniqueName() );
 		if( FAILED(hr) )
 		{
 			// mark the handle as invalid
 			LOG_PRINT_ERROR( " - An invalid technique: " + string(tech_handle.GetTechniqueName()) );
-			tech_handle.SetTequniqueIndex( CShaderTechniqueHandle::INVALID_INDEX );
+			SetInvalidTechnique( tech_handle );
 			return E_FAIL;
 		}
 		else if( m_VacantTechniqueEntryIndex < NUM_MAX_TECHNIQUES )
@@ -337,7 +363,8 @@ HRESULT CShaderManager::SetNewTechnique( CShaderTechniqueHandle& tech_handle )
 			}
 			else
 			{
-				tech_handle.SetTequniqueIndex( CShaderTechniqueHandle::INVALID_INDEX );
+				LOG_PRINT_ERROR( " An unexpected error: succeeded in setting the technique but failed to obtain the handle of the technique. technique name: " + std::string(tech_handle.GetTechniqueName()) );
+				SetInvalidTechnique( tech_handle );
 				return E_FAIL;
 			}
 		}

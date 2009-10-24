@@ -35,9 +35,6 @@ public:
 
 	virtual LPD3DXMESH GetMesh() { return m_pMesh; }
 
-	/// render object by using the fixed function pipeline
-	void Render();
-
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::BASIC; }
 
 };

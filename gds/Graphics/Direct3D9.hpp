@@ -77,18 +77,20 @@ public:
 
 	bool IsCurrentDisplayMode( const CDisplayMode& display_mode );
 
-	enum mode
-	{
-		FULLSCREEN,
-		WINDOWED
-	};
-
+	Result::Name SetTexture( int stage, const CTextureHandle& texture );
 
 	Result::Name SetRenderState( RenderStateType::Name type, bool enable );
 
 	void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode );
 
-	void SeDestBlendMode( AlphaBlend::Mode dest_blend_mode );
+	void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
+
+
+	enum mode
+	{
+		FULLSCREEN,
+		WINDOWED
+	};
 };
 
 

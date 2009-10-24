@@ -12,6 +12,7 @@
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
+#include <gl/gl.h>
 
 
 class GraphicsResourceState
@@ -264,7 +265,11 @@ public:
 
 	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
 
+	/// For Direct3D
 	inline virtual LPDIRECT3DTEXTURE9 GetTexture() { return NULL; }
+
+	/// For OpenGL
+	inline virtual GLuint GetGLTextureID() const { return 0; }
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
 
@@ -314,7 +319,7 @@ public:
 
 class CMeshResource : public CGraphicsResource
 {
-	boost::shared_ptr<CD3DXMeshObjectBase> m_pMeshObject;
+	boost::shared_ptr<CBasicMesh> m_pMeshObject;
 
 	CMeshResourceDesc m_MeshDesc;
 
@@ -348,9 +353,13 @@ public:
 
 	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
 
-	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh();
+	inline boost::shared_ptr<CBasicMesh> GetMesh();
 
-	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMeshInLoading();
+	inline boost::shared_ptr<CBasicMesh> GetMeshInLoading();
+
+//	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh();
+
+//	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMeshInLoading();
 
 	CMeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
@@ -436,16 +445,16 @@ inline GraphicsResourceState::Name CGraphicsResource::GetState()
 // CGraphicsResource
 //================================================================================
 
-inline boost::shared_ptr<CD3DXMeshObjectBase> CMeshResource::GetMesh()
+inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMesh()
 {
 	if( GetState() == GraphicsResourceState::LOADED )
 		return m_pMeshObject;
 	else
-		return boost::shared_ptr<CD3DXMeshObjectBase>();
+		return boost::shared_ptr<CBasicMesh>();
 }
 
 
-inline boost::shared_ptr<CD3DXMeshObjectBase> CMeshResource::GetMeshInLoading()
+inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMeshInLoading()
 {
 	return m_pMeshObject;
 }

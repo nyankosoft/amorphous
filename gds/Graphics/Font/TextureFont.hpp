@@ -2,10 +2,11 @@
 #define  __TEXTUREFONT_H__
 
 #include "FontBase.hpp"
-#include "Graphics/FVF_TLVertex.h"
+//#include "Graphics/FVF_TLVertex.h"
 #include "Graphics/AlphaBlend.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/TextureCoord.hpp"
+#include "Graphics/2DPrimitive/2DRectSet.hpp"
 #include "3DMath/AABB2.hpp"
 
 #include "Support/Serialization/Serialization.hpp"
@@ -62,7 +63,8 @@ protected:
 	int m_NumTexDivisionsX;
 	int m_NumTexDivisionsY;
 
-	TLVERTEX m_avTextBox[NUM_MAX_LETTERS * 6];
+//	TLVERTEX m_avTextBox[NUM_MAX_LETTERS * 6];
+	C2DRectSet m_TextBox;
 
 	/// used to store a group of text and draw them
 	/// with a single DrawPrimitiveUP() call

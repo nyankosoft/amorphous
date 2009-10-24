@@ -26,7 +26,7 @@ public:
 
 	CMeshType::Name GetMeshType();
 
-	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh();
+	inline boost::shared_ptr<CBasicMesh> GetMesh();
 
 	bool Load( const std::string& resource_path );
 
@@ -50,13 +50,13 @@ inline const CMeshObjectHandle &CMeshObjectHandle::operator=( const CMeshObjectH
 }
 
 
-inline boost::shared_ptr<CD3DXMeshObjectBase> CMeshObjectHandle::GetMesh()
+inline boost::shared_ptr<CBasicMesh> CMeshObjectHandle::GetMesh()
 {
 	if( GetEntry()
 	 && GetEntry()->GetMeshResource() )
 		return GetEntry()->GetMeshResource()->GetMesh();
 	else
-		return boost::shared_ptr<CD3DXMeshObjectBase>();
+		return boost::shared_ptr<CBasicMesh>();
 }
 
 

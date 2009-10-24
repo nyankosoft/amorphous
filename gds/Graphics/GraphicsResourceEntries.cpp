@@ -5,7 +5,6 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/SafeDelete.hpp"
-#include "Support/fnop.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
