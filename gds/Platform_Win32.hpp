@@ -19,8 +19,12 @@ inline FILE *fopen_for_win32( const char *filename, const char *mode )
 }
 
 
+//#define strcpy      strcpy_s
 #define strncpy     strncpy_s
+#define strcat      strcat_s
 #define sscanf      sscanf_s
+#define fscanf      fscanf_s
+#define sprintf     sprintf_s
 #define _snprintf   _snprintf_s
 #define _vsnprintfs _vsnprintf_s
 //#define getcwd      _getcwd
