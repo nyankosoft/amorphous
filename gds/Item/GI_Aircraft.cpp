@@ -9,6 +9,7 @@
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
 #include "Graphics/D3DXSMeshObject.hpp"
 #include "Stage/Stage.hpp"
+#include "Input/ForceFeedback/ForceFeedbackEffect.hpp"
 
 
 using namespace std;
@@ -83,6 +84,12 @@ CGI_Aircraft::CGI_Aircraft()
 	m_fArmor = 0.5f;
 	m_fRCS = 1.0f;
 
+	m_pFFBrake = shared_ptr<CForceFeedbackEffect>( new CForceFeedbackEffect );
+	CConstantForceFeedbackEffectDesc ffb;
+	ffb.gain = 10000;
+	ffb.duration = 10000;//CForceFeedbackEffect::INFINITE_DURATION;
+	ffb.magnitude = 5000;
+	m_pFFBrake->Init( ffb );
 }
 
 
@@ -301,7 +308,10 @@ bool CGI_Aircraft::HandleInput( int input_code, int input_type, float fParam )
 
 	case ACTION_MOV_BRAKE:
 		if( input_type == ITYPE_KEY_PRESSED )
+		{
 			m_fCurrentBrake = 1.0f;
+			m_pFFBrake->Start( 1, 0 );
+		}
 		else if( input_type == ITYPE_KEY_RELEASED )
 			m_fCurrentBrake = 0.0f;
 		return true;

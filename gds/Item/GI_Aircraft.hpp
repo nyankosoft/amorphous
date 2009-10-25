@@ -15,6 +15,7 @@
 #include "GameCommon/MeshBoneControllerFactory.hpp"
 #include "GameCommon/RangedSet.hpp"
 #include "XML/fwd.hpp"
+#include "Input/ForceFeedback/fwd.hpp"
 
 
 //class CMeshBoneController_AircraftBase;
@@ -140,6 +141,8 @@ class CGI_Aircraft : public CGameItem
 	std::vector< boost::shared_ptr<CMeshBoneController_GearUnit> > m_vecpGear;
 
 	float m_fDefaultForwardAirFriction;
+
+	boost::shared_ptr<CForceFeedbackEffect> m_pFFBrake;
 
 public:
 

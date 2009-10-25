@@ -6,6 +6,7 @@
 #include "Graphics/3DGameMath.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "Input/InputHandler.hpp"
+#include "Input/ForceFeedback/ForceFeedbackEffect.hpp"
 #include "Sound/SoundManager.hpp"
 #include "XML/XMLNodeReader.hpp"
 
@@ -97,6 +98,16 @@ CGI_MissileLauncher::CGI_MissileLauncher()
 	m_fTargetSensoringInterval = 0.12f;
 
 	m_fFrameTimeAccumulation = 0.0f;
+
+	m_pFFEffect = shared_ptr<CForceFeedbackEffect>( new CForceFeedbackEffect );
+
+	CConstantForceFeedbackEffectDesc desc;
+	desc.duration  = 100;
+	desc.gain      = 100;
+	desc.magnitude = 100;
+
+//	CForceFeedbackEffect m_FFEffect;
+	m_pFFEffect->Init( desc );
 }
 
 
@@ -541,6 +552,17 @@ inline void CGI_MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntit
 }
 
 
+void CGI_MissileLauncher::ApplyForceFeedback()
+{
+	m_pFFEffect->Start( 1, 0 );
+
+//	CForceFeedbackTargetDevice fft;
+//	fft.m_Type = CInputDevice::TYPE_GAMEPAD;
+
+//	m_FFEffect.Init( desc, group, fft );
+}
+
+
 void CGI_MissileLauncher::Fire()
 {
 	CStageSharedPtr pStage = m_pStage.lock();
@@ -666,6 +688,9 @@ void CGI_MissileLauncher::Fire()
 */
 
 	SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() );
+
+	// Need to call in UpdateAmmunitions()
+//	ApplyForceFeedback();
 
 //	if( m_pOwnerEntity )
 //		SendGameMessageTo( msg, m_pOwnerEntity );

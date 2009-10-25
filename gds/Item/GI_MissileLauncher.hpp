@@ -10,6 +10,7 @@
 #include "Stage/fwd.hpp"
 #include "Stage/ViewFrustumTest.hpp"
 #include "../base.hpp"
+#include "Input/ForceFeedback/fwd.hpp"
 
 
 class CWeaponSystem;
@@ -96,6 +97,8 @@ protected:
 
 	float m_fFrameTimeAccumulation;
 
+	boost::shared_ptr<CForceFeedbackEffect> m_pFFEffect;
+
 protected:
 
 	bool ReadyToFire();
@@ -121,6 +124,8 @@ public:
 	virtual void UpdateWorldProperties( const Matrix34& rShooterWorldPose,
 							            const Vector3& rvShooterVelocity,
 								        const Vector3& rvShooterAngVelocity );
+
+	void ApplyForceFeedback();
 
 	virtual void Fire();
 
