@@ -109,82 +109,36 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 	case 'N':
 /*		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			// set the negative effect
-			m_aPostProcessEffect[PP_NEGATIVE] = 1;
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance(PP_COLOR_INVERSE) );
 		}*/
 		break;
 
 	case 'V':
 /*		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			// set the blur effect
-			m_aPostProcessEffect[PP_GBLUR2] = 1;
-			m_aFilterIndex[SF_DOWNFILTER_FOR_BLUR] = m_pPPManager->GetPostProcessInstance().size();
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_GBLUR_H ) );
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_GBLUR_V ) );
-			m_aFilterIndex[SF_UPFILTER_FOR_BLUR] = m_pPPManager->GetPostProcessInstance().size();
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_UPFILTER4 ) );
 		}*/
 		break;
 
 	case 'K':
 /*		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_aPostProcessEffect[PP_COARSE] = 1;
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_UPFILTER4 ) );
 		}*/
 		break;
 
 	case 'L':
 /*		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_aPostProcessEffect[PP_BLOOM] = 1;
-			m_aFilterIndex[SF_BRIGHTPASS] = m_pPPManager->GetPostProcessInstance().size();
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_BRIGHTPASS ) );
 		}*/
 		break;
 
 	case 'G':
 /*		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			// set the bloom effect
-			m_aPostProcessEffect[PP_BLOOM] = 1;
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
-			m_pPPManager->GetPostProcessInstance().back().SetScale( 0.25f, 0.25f );
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_DOWNFILTER4 ) );
-			m_pPPManager->GetPostProcessInstance().back().SetScale( 0.25f, 0.25f );
-
-			m_aFilterIndex[SF_BRIGHTPASS] = m_pPPManager->GetPostProcessInstance().size();
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_BRIGHTPASS ) );
-
-			// set luminance. (smaller luminance value causes more glare)
-			m_pPPManager->GetPostProcessInstance().back().m_avParam[0].x = 0.08f;
-
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_BLOOM_H ) );
-			m_pPPManager->GetPostProcessInstance().back().m_avParam[0].x = 1.5f;
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_BLOOM_V ) );
-			m_pPPManager->GetPostProcessInstance().back().m_avParam[0].x = 1.5f;
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_BLOOM_H ) );
-			m_pPPManager->GetPostProcessInstance().back().m_avParam[0].x = 1.5f;
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_BLOOM_V ) );
-			m_pPPManager->GetPostProcessInstance().back().m_avParam[0].x = 1.5f;
-
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_UPFILTER4 ) );
-			m_pPPManager->GetPostProcessInstance().back().SetScale( 4.0f, 4.0f );
-			m_pPPManager->GetPostProcessInstance().push_back( CPProcInstance( PP_COLOR_COMBINE4 ) );
-			m_pPPManager->GetPostProcessInstance().back().SetScale( 4.0f, 4.0f );
 		}*/
 		break;
 
 	case 'C':
 /*		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_pPPManager->GetPostProcessInstance().resize(0);
-			for( int i=0; i<NUM_PP_EFFECTS; i++ )
-				m_aPostProcessEffect[i] = 0;
 		}*/
 		break;
 
@@ -444,9 +398,6 @@ void CPostProcessEffectTest::Render()
 	//	m_CameraController.GetCameraMatrix( matCamera );
 	//	m_pShaderManager->SetViewTransform( matCamera );
 
-	// clear the backbuffer to a blue color
-	//	pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
-
 	if( m_pPostProcessEffectManager )
 		m_pPostProcessEffectManager->BeginRender();
 
@@ -466,9 +417,6 @@ void CPostProcessEffectTest::Render()
 	// render the text info
 	string text = fmt_string( "gray mid value: %f", m_HDRLightingParams.key_value );
 	m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
-
-	// present the backbuffer contents to the display
-	//	pd3dDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 // mesh 0: skybox

@@ -108,9 +108,6 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 
 	CShaderLightManager m_ShaderLightManager;
 
-	CTextureHandle m_TestTexture;
-	CTextureHandle m_DefaultTexture;
-
 	CUnitSphere m_LightPosIndicator;
 
 //	CShaderLightManager m_ShaderLightManager;
@@ -128,8 +125,6 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 	float m_fBlurStrength;
 
 protected:
-
-	void InitLensFlare( const std::string& strPath );
 
 	void RenderMeshes();
 
