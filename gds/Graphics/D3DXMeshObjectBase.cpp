@@ -1040,6 +1040,13 @@ bool CD3DXMeshObjectBase::UnlockAttributeBuffer()
 }
 
 
+void CD3DXMeshObjectBase::SetVertexDeclaration()
+{
+	DIRECT3D9.GetDevice()->SetVertexDeclaration( GetVertexDeclaration() );
+}
+
+
+
 #include "D3DXMeshObject.hpp"
 #include "D3DXSMeshObject.hpp"
 

@@ -3,8 +3,8 @@
 
 
 #include "fwd.hpp"
-#include "GraphicsResources.hpp"
-#include "GraphicsResourceDescs.hpp"
+#include "Graphics/GraphicsResources.hpp"
+#include "Graphics/GraphicsResourceDescs.hpp"
 #include <gl/gl.h>
 
 #include "Support/2DArray.hpp"

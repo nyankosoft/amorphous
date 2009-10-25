@@ -743,14 +743,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\GLGraphicsResources.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Graphics\GLGraphicsResources.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Graphics\GraphicsResourceCacheManager.cpp"
 					>
 				</File>
@@ -1024,6 +1016,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\OpenGL\GLExtensions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLGraphicsResources.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLGraphicsResources.hpp"
 					>
 				</File>
 				<Filter
@@ -3315,6 +3315,10 @@
 			>
 			<File
 				RelativePath="..\..\gds\App\ApplicationBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\ApplicationBase.hpp"
 				>
 			</File>
 			<File

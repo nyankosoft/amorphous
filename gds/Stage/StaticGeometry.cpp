@@ -53,14 +53,14 @@ void CreateCachedResources()
 
 
 // temporary measure to avoid D3DXFilterTexture() calls in async loading at runtime
-static void ForceTextureMipMapLevelsToOne( shared_ptr<CD3DXMeshObjectBase> pMesh )
+static void ForceTextureMipMapLevelsToOne( shared_ptr<CBasicMesh> pMesh )
 {
 	if( !pMesh )
 		return;
 
 	for( int i=0; i<pMesh->GetNumMaterials(); i++ )
 	{
-		CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(i);
+		CMeshMaterial& mat = pMesh->Material(i);
 
 		for( size_t j=0; j<mat.TextureDesc.size(); j++ )
 		{
@@ -248,7 +248,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 	}
 	else if( state == GraphicsResourceState::LOADED )
 	{
-		CD3DXMeshObjectBase *pMesh = mesh_holder.m_Mesh.GetMesh().get();
+		CBasicMesh *pMesh = mesh_holder.m_Mesh.GetMesh().get();
 		if( !pMesh )
 			return;
 
@@ -267,7 +267,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 			 && rCam.GetPosition().y < dbg_tex_load_height )
 			{
 				// load the texture
-				CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
+				CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
 				const size_t num_textures = mat.Texture.size();
 				for( size_t k=0; k<num_textures; k++ )
 				{
@@ -280,7 +280,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 			}
 			else if( dbg_tex_load_height < rCam.GetPosition().y )
 			{
-				CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
+				CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
 				const size_t num_textures = mat.Texture.size();
 				for( size_t k=0; k<num_textures; k++ )
 				{
@@ -503,7 +503,7 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 				if( !rvecMesh[subset.MeshIndex].m_Mesh.IsLoaded() )
 					continue;
 
-				CD3DXMeshObjectBase *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
+				CBasicMesh *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
 
 				CShaderContainer& shader_container = rvecShaderContainer[subset.ShaderIndex];
 				if( !shader_container.m_ShaderHandle.IsLoaded() )
@@ -615,7 +615,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 			m_Archive.m_vecMesh[i].Load();
 
 			// temporary measure to avoid D3DXFilterTexture() calls at runtime
-			shared_ptr<CD3DXMeshObjectBase> pMesh = m_Archive.m_vecMesh[i].m_Mesh.GetMesh();
+			shared_ptr<CBasicMesh> pMesh = m_Archive.m_vecMesh[i].m_Mesh.GetMesh();
 			ForceTextureMipMapLevelsToOne( pMesh );
 		}
 	}

@@ -12,6 +12,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderLightManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -37,26 +38,32 @@ int CBaseEntity::GetRenderMode()
 }
 */
 
-static D3DXVECTOR3 s_OrigViewTrans;
-static D3DXVECTOR3 s_OrigWorldPos;
+static Vector3 s_OrigViewTrans;
+static Vector3 s_OrigWorldPos;
 
 static void SetOffsetWorldTransform( CShaderManager *pShaderManager, CCamera *pCamera )
 {
-	D3DXMATRIX matWorld, matView;
+	Matrix44 matWorld, matView;
 	pShaderManager->GetWorldTransform( matWorld );
 	pShaderManager->GetViewTransform( matView );
-	s_OrigWorldPos = D3DXVECTOR3(matWorld._41,matWorld._42,matWorld._43);
-	s_OrigViewTrans = D3DXVECTOR3(matView._41,matView._42,matView._43);
+//	s_OrigWorldPos = Vector3(matWorld._41,matWorld._42,matWorld._43);
+//	s_OrigViewTrans = Vector3(matView._41,matView._42,matView._43);
+	s_OrigWorldPos  = Vector3( matWorld(0,3), matWorld(1,3), matWorld(2,3) );
+	s_OrigViewTrans = Vector3( matView(0,3),  matView(1,3),  matView(2,3) );
 
 	if( !pCamera )
 		return;
 
-    matView._41 = matView._42 = matView._43 = 0;
+//	matView._41 = matView._42 = matView._43 = 0;
+	matView(0,3) = matView(1,3) = matView(2,3) = 0;
 	
-	D3DXVECTOR3 cam_pos = pCamera->GetPosition();
-	matWorld._41 = s_OrigWorldPos.x - cam_pos.x;
-	matWorld._42 = s_OrigWorldPos.y - cam_pos.y;
-	matWorld._43 = s_OrigWorldPos.z - cam_pos.z;
+	Vector3 cam_pos = pCamera->GetPosition();
+//	matWorld._41 = s_OrigWorldPos.x - cam_pos.x;
+//	matWorld._42 = s_OrigWorldPos.y - cam_pos.y;
+//	matWorld._43 = s_OrigWorldPos.z - cam_pos.z;
+	matWorld(0,3) = s_OrigWorldPos.x - cam_pos.x;
+	matWorld(1,3) = s_OrigWorldPos.y - cam_pos.y;
+	matWorld(2,3) = s_OrigWorldPos.z - cam_pos.z;
 
 //	MsgBoxFmt( "world pos offset: ( %f, %f, %f )", matWorld._41, matWorld._42, matWorld._43 );
 
@@ -67,17 +74,17 @@ static void SetOffsetWorldTransform( CShaderManager *pShaderManager, CCamera *pC
 
 static void RestoreOffsetWorldTransform( CShaderManager *pShaderManager )
 {
-	D3DXMATRIX matWorld, matView;
+	Matrix44 matWorld, matView;
 	pShaderManager->GetWorldTransform( matWorld );
 	pShaderManager->GetViewTransform( matView );
 
-	matWorld._41 = s_OrigWorldPos.x;
-	matWorld._42 = s_OrigWorldPos.y;
-	matWorld._43 = s_OrigWorldPos.z;
+	matWorld(0,3) = s_OrigWorldPos.x;
+	matWorld(1,3) = s_OrigWorldPos.y;
+	matWorld(2,3) = s_OrigWorldPos.z;
 
-	matView._41 = s_OrigViewTrans.x;
-	matView._42 = s_OrigViewTrans.y;
-	matView._43 = s_OrigViewTrans.z;
+	matView(0,3) = s_OrigViewTrans.x;
+	matView(1,3) = s_OrigViewTrans.y;
+	matView(2,3) = s_OrigViewTrans.z;
 
 	pShaderManager->SetWorldTransform( matWorld );
 	pShaderManager->SetViewTransform( matView );
@@ -134,7 +141,7 @@ void CBaseEntity::Init3DModel()
 
 	m_MeshProperty.LoadMeshObject();
 
-	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+	CBasicMesh *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 
 	// shader
 	// - load shader of its own if the shader filepath has been specified.
@@ -154,7 +161,7 @@ void CBaseEntity::Init3DModel()
 		const int num_materials = pMesh->GetNumMaterials();
 		for( int i=0; i<num_materials; i++ )
 		{
-			const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial( i );
+			const CMeshMaterial& mat = pMesh->GetMaterial( i );
 
 			if( 1.0f - error_for_alpha < mat.fMinVertexDiffuseAlpha )
 			{
@@ -196,7 +203,7 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 
 
 void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
-								  CD3DXMeshObjectBase *pMeshObject,
+								  CBasicMesh *pMeshObject,
 								  const std::vector<int>& vecTargetMaterialIndex,
 							      C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 							      int ShaderLOD )
@@ -223,7 +230,8 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 	// set the world transform
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
-	pd3dDev->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
+//	pd3dDev->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
+	pMeshObject->SetVertexDeclaration();
 
     int i, num_materials = pMeshObject->GetNumMaterials();
 
@@ -330,7 +338,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 {
 	PROFILE_FUNCTION();
 
-	CD3DXMeshObjectBase *pMeshObject;
+	CBasicMesh *pMeshObject;
 
 	// first, see if the mesh is set to the copy entity
 	pMeshObject = pCopyEnt->MeshObjectHandle.GetMesh().get();
@@ -390,7 +398,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
 	switch( mesh_type )
 	{
 	case CMeshType::SKELETAL:
-		DrawSkeletalMesh( pCopyEnt, dynamic_cast<CD3DXSMeshObject *>(pMeshObject), rShaderTechHandleTable, ShaderLOD );
+		DrawSkeletalMesh( pCopyEnt, dynamic_cast<CSkeletalMesh *>(pMeshObject), rShaderTechHandleTable, ShaderLOD );
 		break;
 
 	case CMeshType::BASIC:
@@ -412,7 +420,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt,
  * calling this function
  */
 void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
-								    CD3DXSMeshObject *pSkeletalMesh,
+								    CSkeletalMesh *pSkeletalMesh,
 								    C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 									int ShaderLOD )
 {
@@ -442,7 +450,7 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 }
 
 
-void SetBlendMatrices( CD3DXSMeshObject *pSMeshObject )
+void SetBlendMatrices( CSkeletalMesh *pSMeshObject )
 {
 //	PROFILE_FUNCTION();
 
@@ -473,7 +481,7 @@ void CBaseEntity::RenderAsShaderCaster(CCopyEntity* pCopyEnt)
 {
 	PROFILE_FUNCTION();
 
-	CD3DXMeshObjectBase *pMeshObject = NULL;
+	CBasicMesh *pMeshObject = NULL;
 
 	// first, see if the mesh is set to the copy entity
 	pMeshObject = pCopyEnt->MeshObjectHandle.GetMesh().get();
@@ -557,7 +565,7 @@ void CBaseEntity::RenderAsShaderReceiver(CCopyEntity* pCopyEnt)
 {
 	PROFILE_FUNCTION();
 
-	CD3DXMeshObjectBase *pMeshObject = NULL;
+	CBasicMesh *pMeshObject = NULL;
 
 	// first, see if the mesh is set to the copy entity
 	pMeshObject = pCopyEnt->MeshObjectHandle.GetMesh().get();

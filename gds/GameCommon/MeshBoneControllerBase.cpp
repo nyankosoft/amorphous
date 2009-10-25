@@ -1,5 +1,5 @@
 #include "MeshBoneControllerBase.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "XML/XMLNodeReader.hpp"
 
 using namespace std;

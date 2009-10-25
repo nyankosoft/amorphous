@@ -28,6 +28,13 @@ void CMeshMaterial::LoadTextureAsync( int i )
 // CMeshImpl
 //=============================================================================
 
+CMeshImpl::CMeshImpl()
+:
+m_NumMaterials(0)
+{
+}
+
+
 Result::Name CMeshImpl::LoadMaterials( C3DMeshModelArchive& rArchive, U32 option_flags )
 {
 	m_AABB = rArchive.GetAABB();
@@ -223,9 +230,9 @@ public:
 */
 
 
-#include "GLBasicMeshImpl.hpp"
-#include "GLProgressiveMeshImpl.hpp"
-#include "GLSkeletalMeshImpl.hpp"
+#include "Graphics/OpenGL/Mesh/GLBasicMeshImpl.hpp"
+#include "Graphics/OpenGL/Mesh/GLProgressiveMeshImpl.hpp"
+#include "Graphics/OpenGL/Mesh/GLSkeletalMeshImpl.hpp"
 
 
 //class CMeshFactoryImpl_GL : public CMeshFactoryImpl

@@ -216,7 +216,7 @@ public:
 	/// In the latter case, the mesh is maintained as a simple borrowed reference,
 	/// and the user is responsible for calling ResetMeshController(),
 	/// before the mesh is destroyed
-	bool InitMeshController( boost::shared_ptr<CD3DXSMeshObject> pMesh = boost::shared_ptr<CD3DXSMeshObject>() );
+	bool InitMeshController( boost::shared_ptr<CSkeletalMesh> pMesh = boost::shared_ptr<CSkeletalMesh>() );
 
 	/// disconnet the target mesh from the mesh bone controllers.
 	/// The target mesh object is held as borrowed reference

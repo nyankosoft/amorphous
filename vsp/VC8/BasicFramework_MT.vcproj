@@ -41,6 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4996"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../gds"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -294,6 +295,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\GraphicsDevice.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\GraphicsDevice.hpp"
 				>
 			</File>
@@ -428,6 +433,14 @@
 			<Filter
 				Name="Shader"
 				>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\GLFixedFunctionPipelineManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\GLFixedFunctionPipelineManager.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.cpp"
 					>
@@ -690,6 +703,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitive.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.hpp"
 					>
 				</File>
 				<File
@@ -2450,6 +2471,50 @@
 					>
 				</Filter>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="BasicFramework"
+			>
+			<File
+				RelativePath="..\..\gds\App\ApplicationBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_D3D.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_D3D.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_GL.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_GL.hpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="App"
+			>
 		</Filter>
 	</Files>
 	<Globals>

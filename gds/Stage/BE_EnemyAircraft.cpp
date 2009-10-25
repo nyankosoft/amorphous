@@ -9,7 +9,7 @@
 #include "PlayerInfo.hpp"
 #include "BE_HomingMissile.hpp"
 
-#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "3DMath/MathMisc.hpp"
 //#include "JigLib/JL_PhysicsActor.hpp"
 #include "Physics/Actor.hpp"
@@ -504,8 +504,8 @@ void CBE_EnemyAircraft::AddExtraData()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
 	{
 		ex.m_pAircraft->ResetMeshController();
-		shared_ptr<CD3DXMeshObjectBase> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
-		shared_ptr<CD3DXSMeshObject> pSkeletalMesh = boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pBaseMesh);
+		shared_ptr<CBasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+		shared_ptr<CSkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pBaseMesh);
 		ex.m_pAircraft->InitMeshController( pSkeletalMesh );
 	}
 }

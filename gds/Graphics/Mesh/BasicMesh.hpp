@@ -58,15 +58,23 @@ protected:
 
 	std::string m_strFilename;
 
+	/// bounding box of the mesh
 	AABB3 m_AABB;
 
+	std::vector<AABB3> m_vecAABB;	///< aabb for each triangle subset
+
+	/// Number of materials
 	int m_NumMaterials;
 
 	std::vector<CMeshMaterial> m_vecMaterial;
 
+protected:
+
 	Result::Name LoadMaterials( C3DMeshModelArchive& rArchive, U32 option_flags );
 
 public:
+
+	CMeshImpl();
 
 	/// returns true on success
 	virtual bool LoadFromFile( const std::string& filename, U32 option_flags = 0 );
@@ -107,6 +115,18 @@ public:
 
 	int GetNumMaterials() const { return m_NumMaterials; }
 
+	/// returns const reference to the i-th material
+	const CMeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
+
+	CMeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
+
+	/// the number of textures for the i-th material
+	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
+
+	inline CTextureHandle& GetTexture( int material_index, int tex_index ) { return m_vecMaterial[material_index].Texture[tex_index]; }
+
+	const AABB3& GetAABB( int material_index ) const { return m_vecAABB[material_index]; }
+
 	// methods for skeletal mesh
 	// - implementation class of skeletal mesh has to implement these functions
 
@@ -133,6 +153,9 @@ public:
 //	inline D3DXMATRIX* GetBlendMatrices() { return m_paBoneMatrix; }
 	virtual D3DXMATRIX* GetBlendMatrices() { return NULL; }
 
+	virtual void SetVertexDeclaration() {}
+
+	virtual void UpdateVisibility( const CCamera& cam ) {}
 };
 
 
@@ -192,6 +215,18 @@ public:
 
 	int GetNumMaterials() const { return m_pImpl->GetNumMaterials(); }
 
+	/// returns const reference to the i-th material
+	const CMeshMaterial& GetMaterial( int material_index ) const { return m_pImpl->GetMaterial( material_index ); }
+
+	CMeshMaterial& Material( int material_index ) { return m_pImpl->Material( material_index ); }
+
+	/// the number of textures for the i-th material
+	int GetNumTextures( int material_index ) const { return m_pImpl->GetNumTextures( material_index ); }
+
+	inline CTextureHandle& GetTexture( int material_index, int tex_index ) { return m_pImpl->GetTexture( material_index, tex_index ); }
+
+	const AABB3& GetAABB( int material_index ) const { return m_pImpl->GetAABB( material_index ); }
+
 	// methods for skeletal mesh
 	// - skeletal mesh class has to implement these functions
 /*
@@ -215,6 +250,10 @@ public:
 //	inline D3DXMATRIX* GetBlendMatrices() { return m_paBoneMatrix; }
 	D3DXMATRIX* GetBlendMatrices() { return m_pImpl->GetBlendMatrices(); }
 */
+	// Call this before rendering when you render subsets separately by RenderSubsets()
+	void SetVertexDeclaration() { m_pImpl->SetVertexDeclaration(); }
+
+	void UpdateVisibility( const CCamera& cam ) { m_pImpl->UpdateVisibility( cam ); }
 
 	// Access GetImpl() and dynamic_cast the returned pointer to lock/unlock vertex/index buffer, and to do other operations on mesh
 	friend class CD3DXMeshVerticesLoader;

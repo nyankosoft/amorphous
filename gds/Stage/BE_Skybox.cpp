@@ -62,7 +62,7 @@ void CBE_Skybox::Act(CCopyEntity* pCopyEnt)
 
 void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 {
-	CD3DXMeshObjectBase* pMeshObject = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+	CBasicMesh* pMeshObject = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 	if( !pMeshObject )
 	{
 		ONCE( g_Log.Print( "CBE_Skybox::Draw() - invlid mesh object: base entity '%s'", m_strName.c_str() ) );
@@ -97,7 +97,8 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
 
-	pd3dDev->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
+//	pd3dDev->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
+	pMeshObject->SetVertexDeclaration();
 
     int i, dwNumMaterials = pMeshObject->GetNumMaterials();
 

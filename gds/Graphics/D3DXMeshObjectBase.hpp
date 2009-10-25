@@ -57,17 +57,9 @@ protected:
 
 	std::string m_strFilename;
 
-	// moved to CMeshImpl
-//	std::vector<CMeshMaterial> m_vecMaterial;
-
 	/// bounding sphere in local space of the model
 	/// - Each implementation must properly initialize the sphere
 	Sphere m_LocalShpere;
-
-	/// bounding box of the mesh
-	AABB3 m_AABB;
-
-	std::vector<AABB3> m_vecAABB;	///< aabb for each triangle subset
 
 	/// visibility flag for each triangle set
 	/// 1 visible / 0: not visible
@@ -81,9 +73,6 @@ protected:
 
 
 	// D3D attributes
-
-	/// Number of materials
-	int m_NumMaterials;
 
 	D3DMATERIAL9 *m_pMeshMaterials;
 
@@ -247,6 +236,8 @@ public:
 
 	virtual bool UnlockAttributeBuffer();
 
+	void SetVertexDeclaration();
+
 	virtual CMeshType::Name GetMeshType() const = 0;
 
 	friend class CD3DXMeshVerticesLoader;
@@ -272,7 +263,7 @@ public:
 
 inline CD3DXMeshObjectBase::CD3DXMeshObjectBase()
 :
-m_NumMaterials(0L),
+//m_NumMaterials(0L),
 m_pMeshMaterials(NULL),
 m_iVertexSize(0),
 m_paVertexElements(NULL),

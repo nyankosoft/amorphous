@@ -56,7 +56,7 @@ protected:
 
 
 	/// borrowed reference
-	boost::shared_ptr<CD3DXSMeshObject> m_pTargetMesh;
+	boost::shared_ptr<CSkeletalMesh> m_pTargetMesh;
 
 //	std::vector<std::string> m_vecTargetBoneName;
 
@@ -73,7 +73,7 @@ public:
 		NUM_IDS
 	};
 
-	CMeshBoneControllerBase( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh = boost::shared_ptr<CD3DXSMeshObject>() )
+	CMeshBoneControllerBase( boost::shared_ptr<CSkeletalMesh> pTargetMesh = boost::shared_ptr<CSkeletalMesh>() )
 		:
 	m_pTargetMesh(pTargetMesh) {}
 
@@ -83,7 +83,7 @@ public:
 
 	virtual void UpdateTransforms() = 0;
 
-	virtual void SetTargetMesh( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
+	virtual void SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
 
 	void UpdateTargetMeshTransforms();
 

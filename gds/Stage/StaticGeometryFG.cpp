@@ -170,7 +170,7 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 //			m_vecpMesh[mesh_index]->UpdateVisibility( rCamera );
 //			m_vecpMesh[mesh_index]->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 
-			CD3DXMeshObjectBase *pMesh = m_vecMesh[mesh_index].GetMesh().get();
+			CBasicMesh *pMesh = m_vecMesh[mesh_index].GetMesh().get();
 			pMesh->UpdateVisibility( rCamera );
 //			pMesh->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 			pMesh->Render( *m_pShaderManager );

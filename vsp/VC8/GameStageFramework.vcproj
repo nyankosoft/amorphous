@@ -41,6 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4996"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../;../../gds"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -1572,26 +1573,6 @@
 			<Filter
 				Name="App"
 				>
-				<File
-					RelativePath="..\..\gds\App\ApplicationBase.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\App\ApplicationBase.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\App\GameWindowManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\App\GameWindowManager_Win32.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\App\GameWindowManager_Win32.hpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Item"
