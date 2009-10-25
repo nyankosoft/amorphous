@@ -66,11 +66,21 @@ public:
 
 inline void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const
 {
-	dest_transform
-		= parent_transform
-//		* Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() )
-//		* Matrix34( m_vOffset, Matrix33Identity() );
-		* Matrix34( input_node.GetLocalTranslation() + m_vOffset, input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
+	if( true/*m_TransformStyle & APPLY_LOCAL_ROTATION_TO_OFFSET*/ )
+	{
+		Matrix33 matLocalRot = input_node.GetLocalRotationQuaternion().ToRotationMatrix();
+		Vector3 vLocalTrans = input_node.GetLocalTranslation() + m_vOffset;
+		dest_transform.vPosition = parent_transform.matOrient * matLocalRot * vLocalTrans + parent_transform.vPosition;
+		dest_transform.matOrient = parent_transform.matOrient * matLocalRot;
+	}
+	else
+	{
+		dest_transform
+			= parent_transform
+//			* Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() )
+//			* Matrix34( m_vOffset, Matrix33Identity() );
+			* Matrix34( input_node.GetLocalTranslation() + m_vOffset, input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
+	}
 }
 
 
