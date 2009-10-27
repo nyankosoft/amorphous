@@ -208,7 +208,7 @@ inline void C2DRoundRect::SetDefault()
 		m_vecRectVertex[i].color = 0xFF000000;		// opaque by default
 	}
 
-	m_DestAlphaBlend = D3DBLEND_INVSRCALPHA;
+	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;
 }
 
 

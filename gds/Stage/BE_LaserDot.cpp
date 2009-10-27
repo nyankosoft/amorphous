@@ -138,7 +138,9 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 	if( pShaderManager &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
-		pShaderManager->SetWorldTransform( matWorld );
+		Matrix44 world;
+		world.SetRowMajorMatrix44( (Scalar *)&matWorld );
+		pShaderManager->SetWorldTransform( world );
 
 		pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );
 		pEffect->Begin( &cPasses, 0 );

@@ -11,6 +11,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderLightManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Graphics/ShadowMapManager.hpp"
 
 #include "Support/Profile.hpp"
@@ -33,26 +34,26 @@ Alpha entities and render methods
 */
 
 
-static D3DXVECTOR3 s_OrigViewTrans;
-static D3DXVECTOR3 s_OrigWorldPos;
+static Vector3 s_OrigViewTrans;
+static Vector3 s_OrigWorldPos;
 
 static void SetOffsetWorldTransform( CShaderManager& rShaderManager, Vector3& vWorldCameraPos )
 {
-	D3DXMATRIX matWorld, matView;
+	Matrix44 matWorld, matView;
 	rShaderManager.GetWorldTransform( matWorld );
 	rShaderManager.GetViewTransform( matView );
-	s_OrigWorldPos = D3DXVECTOR3(matWorld._41,matWorld._42,matWorld._43);
-	s_OrigViewTrans = D3DXVECTOR3(matView._41,matView._42,matView._43);
+	s_OrigWorldPos  = Vector3( matWorld(0,3), matWorld(1,3), matWorld(2,3) );
+	s_OrigViewTrans = Vector3( matView(0,3),  matView(1,3),  matView(2,3) );
 
 //	if( !pCamera )
 //		return;
 
-    matView._41 = matView._42 = matView._43 = 0;
+	matView(0,3) = matView(1,3) = matView(2,3) = 0;
 	
-	D3DXVECTOR3 cam_pos = vWorldCameraPos;//pCamera->GetPosition();
-	matWorld._41 = s_OrigWorldPos.x - cam_pos.x;
-	matWorld._42 = s_OrigWorldPos.y - cam_pos.y;
-	matWorld._43 = s_OrigWorldPos.z - cam_pos.z;
+	Vector3 cam_pos = vWorldCameraPos;//pCamera->GetPosition();
+	matWorld(0,3) = s_OrigWorldPos.x - cam_pos.x;
+	matWorld(1,3) = s_OrigWorldPos.y - cam_pos.y;
+	matWorld(2,3) = s_OrigWorldPos.z - cam_pos.z;
 
 //	MsgBoxFmt( "world pos offset: ( %f, %f, %f )", matWorld._41, matWorld._42, matWorld._43 );
 
@@ -63,17 +64,17 @@ static void SetOffsetWorldTransform( CShaderManager& rShaderManager, Vector3& vW
 
 static void RestoreOffsetWorldTransform( CShaderManager& rShaderManager )
 {
-	D3DXMATRIX matWorld, matView;
+	Matrix44 matWorld, matView;
 	rShaderManager.GetWorldTransform( matWorld );
 	rShaderManager.GetViewTransform( matView );
 
-	matWorld._41 = s_OrigWorldPos.x;
-	matWorld._42 = s_OrigWorldPos.y;
-	matWorld._43 = s_OrigWorldPos.z;
+	matWorld(0,3) = s_OrigWorldPos.x;
+	matWorld(1,3) = s_OrigWorldPos.y;
+	matWorld(2,3) = s_OrigWorldPos.z;
 
-	matView._41 = s_OrigViewTrans.x;
-	matView._42 = s_OrigViewTrans.y;
-	matView._43 = s_OrigViewTrans.z;
+	matView(0,3) = s_OrigViewTrans.x;
+	matView(1,3) = s_OrigViewTrans.y;
+	matView(2,3) = s_OrigViewTrans.z;
 
 	rShaderManager.SetWorldTransform( matWorld );
 	rShaderManager.SetViewTransform( matView );
@@ -224,14 +225,14 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 			= m_MeshProperty.m_pMeshRenderMethod;
 	}*/
 
-	shared_ptr<CD3DXMeshObjectBase> pMesh = entity.m_MeshHandle.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return;
 
 	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{
-		shared_ptr<CD3DXSMeshObject> pSkeletalMesh
-			= boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pMesh);
+		shared_ptr<CSkeletalMesh> pSkeletalMesh
+			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
 		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
@@ -247,7 +248,7 @@ void CBaseEntity::Init3DModel()
 
 	m_MeshProperty.LoadMeshObject();
 
-	CD3DXMeshObjectBase *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+	CBasicMesh *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 
 	// shader
 	// - load shader of its own if the shader filepath has been specified.
@@ -267,7 +268,7 @@ void CBaseEntity::Init3DModel()
 		const int num_materials = pMesh->GetNumMaterials();
 		for( int i=0; i<num_materials; i++ )
 		{
-			const CD3DXMeshObjectBase::CMeshMaterial& mat = pMesh->GetMaterial( i );
+			const CMeshMaterial& mat = pMesh->GetMaterial( i );
 
 			if( 1.0f - error_for_alpha < mat.fMinVertexDiffuseAlpha )
 			{
@@ -358,7 +359,7 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 
 
 void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
-								  CD3DXMeshObjectBase *pMeshObject,
+								  CBasicMesh *pMeshObject,
 								  const std::vector<int>& vecTargetMaterialIndex,
 							      C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 							      int ShaderLOD )
@@ -444,7 +445,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt )
  * calling this function
  */
 void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
-								    CD3DXSMeshObject *pSkeletalMesh,
+								    CSkeletalMesh *pSkeletalMesh,
 								    C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 									int ShaderLOD )
 {
@@ -485,7 +486,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	if( !pShadowMgr )
 		return;
 
-	shared_ptr<CD3DXMeshObjectBase> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return;
 
@@ -524,7 +525,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	if( !pShadowMgr )
 		return;
 
-	shared_ptr<CD3DXMeshObjectBase> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return;
 
@@ -622,11 +623,11 @@ void CreateMeshRenderMethod( CEntityHandle<>& entity,
 		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLightParamsLoader );
 	}
 
-	shared_ptr<CD3DXMeshObjectBase> pMesh = pEntity->m_MeshHandle.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
 	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{
-		shared_ptr<CD3DXSMeshObject> pSkeletalMesh
-			= boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pMesh);
+		shared_ptr<CSkeletalMesh> pSkeletalMesh
+			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
 		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
 		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );

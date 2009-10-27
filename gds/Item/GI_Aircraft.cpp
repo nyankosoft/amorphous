@@ -7,7 +7,7 @@
 #include "Input/InputHandler.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Stage/Stage.hpp"
 #include "Input/ForceFeedback/ForceFeedbackEffect.hpp"
 
@@ -356,12 +356,12 @@ int CGI_Aircraft::GetPayloadForAmmunition( const CGI_Ammunition& ammo, int weapo
 }
 
 
-bool CGI_Aircraft::InitMeshController( shared_ptr<CD3DXSMeshObject> pMesh )
+bool CGI_Aircraft::InitMeshController( shared_ptr<CSkeletalMesh> pMesh )
 {
 	// determine the target mesh
 	// - This is either mesh of this aircraft or the argument 'pMesh'.
 	// - The target mesh has to be a skeletal mesh (i.e. mesh type must be CD3DXMeshObjectBase::TYPE_SMESH )
-	shared_ptr<CD3DXSMeshObject> pTargetMesh;
+	shared_ptr<CSkeletalMesh> pTargetMesh;
 	if( pMesh )
 	{
 		// init mesh controller with external mesh object
@@ -372,13 +372,13 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<CD3DXSMeshObject> pMesh )
 	else
 	{
 //		shared_ptr<CD3DXMeshObjectBase> pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh();
-		shared_ptr<CD3DXMeshObjectBase> pMeshObject;
+		shared_ptr<CBasicMesh> pMeshObject;
 		if( 0 < m_MeshContainerRootNode.GetNumMeshContainers() )
 			pMeshObject = m_MeshContainerRootNode.MeshContainer(0)->m_MeshObjectHandle.GetMesh();
 
 		if( pMeshObject && pMeshObject->GetMeshType() == CMeshType::SKELETAL )
 		{
-			pTargetMesh = boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pMeshObject);
+			pTargetMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMeshObject);
 		}
 	}
 
@@ -412,7 +412,7 @@ void CGI_Aircraft::ResetMeshController()
 
 	size_t i, num = m_vecpMeshController.size();
 	for( i=0; i<num; i++ )
-		m_vecpMeshController[i]->SetTargetMesh( shared_ptr<CD3DXSMeshObject>() );
+		m_vecpMeshController[i]->SetTargetMesh( shared_ptr<CSkeletalMesh>() );
 }
 
 

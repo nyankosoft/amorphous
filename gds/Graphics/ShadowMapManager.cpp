@@ -562,7 +562,11 @@ void CShadowMapManager::BeginSceneDepthMap()
 	m_SceneCamera.GetCameraMatrix( matView );
 	m_SceneCamera.GetProjectionMatrix( matProj );
 
-	m_Shader.GetShaderManager()->SetWorldViewProjectionTransform( matWorld, matView, matProj );
+	Matrix44 view, proj;
+	m_SceneCamera.GetCameraMatrix( view );
+	m_SceneCamera.GetProjectionMatrix( proj );
+
+	m_Shader.GetShaderManager()->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
 //	ShaderManagerHub.PushViewAndProjectionMatrices( m_SceneCamera );
 

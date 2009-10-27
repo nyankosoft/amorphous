@@ -28,7 +28,7 @@
 #include "GameCommon/PseudoAircraftSimulator.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
 #include "Graphics/3DGameMath.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Physics/Actor.hpp"
 #include "GameTextSystem/TextMessageManager.hpp"
 #include "GUI.hpp"
@@ -479,8 +479,8 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
 	{
 		m_pAircraft->ResetMeshController();
-		shared_ptr<CD3DXMeshObjectBase> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
-		shared_ptr<CD3DXSMeshObject> pSkeletalMesh = boost::dynamic_pointer_cast<CD3DXSMeshObject,CD3DXMeshObjectBase>(pBaseMesh);
+		shared_ptr<CBasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+		shared_ptr<CSkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pBaseMesh);
 		m_pAircraft->InitMeshController( pSkeletalMesh );
 	}
 

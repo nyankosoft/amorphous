@@ -278,5 +278,6 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 	// render text
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+	m_pFont->SetDestAlphaBlendMode( AlphaBlend::One );
 	m_pFont->DrawCachedText();
 }

@@ -164,13 +164,13 @@ protected:
 	//
 
 	void DrawMeshObject( const Matrix34& world_pose,
-						 CD3DXMeshObjectBase *pMeshObject,
+						 CBasicMesh *pMeshObject,
 						 const std::vector<int>& vecTargetMaterialIndex,
 						 C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 						 int ShaderLOD = 0 );
 
 	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
-		                   CD3DXSMeshObject *pSkeletalMesh,
+		                   CSkeletalMesh *pSkeletalMesh,
 		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 						   int ShaderLOD = 0 );
 

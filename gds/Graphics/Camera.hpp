@@ -3,11 +3,12 @@
 
 
 #include "3DMath/Matrix34.hpp"
+#include "3DMath/Matrix44.hpp"
 #include "3DMath/Plane.hpp"
 #include "3DMath/Sphere.hpp"
 #include "3DMath/AABB3.hpp"
-
 #include <math.h>
+
 
 class CCamera
 {
@@ -105,6 +106,10 @@ public:
 
 	inline void GetProjectionMatrix(D3DXMATRIX& rMat) const;
 
+	inline void GetCameraMatrix( Matrix44& dest ) const;
+
+	inline void GetProjectionMatrix( Matrix44& dest ) const;
+
 	inline bool ViewFrustumIntersectsWith( const Sphere& rSphere )  const;
 
 	inline bool ViewFrustumIntersectsWith( const AABB3& raabb ) const;
@@ -124,7 +129,7 @@ inline void CCamera::GetCameraMatrix(D3DXMATRIX& rMat) const
 	const Vector3& u = m_vRight;
 	const Vector3& v = m_vUp;
 	const Vector3& p = m_vPosition;
-	
+
 	rMat._11=u.x; rMat._12=v.x; rMat._13=w.x; rMat._14=0;
 	rMat._21=u.y; rMat._22=v.y; rMat._23=w.y; rMat._24=0;
 	rMat._31=u.z; rMat._32=v.z; rMat._33=w.z; rMat._34=0;
@@ -138,6 +143,26 @@ inline void CCamera::GetCameraMatrix(D3DXMATRIX& rMat) const
 inline void CCamera::GetProjectionMatrix(D3DXMATRIX& rMat) const
 {
 	D3DXMatrixPerspectiveFovLH(&rMat, m_fFieldOfView, m_fAspectRatio, m_fNearClip, m_fFarClip);
+}
+
+
+inline void CCamera::GetCameraMatrix( Matrix44& dest ) const
+{
+	const Vector3& w = m_vFront;
+	const Vector3& u = m_vRight;
+	const Vector3& v = m_vUp;
+	const Vector3& p = m_vPosition;
+
+	dest(0,0) = u.x; dest(0,1) = u.y; dest(0,2) = u.z; dest(0,3) = -Vec3Dot( u, p );
+	dest(1,0) = v.x; dest(1,1) = v.y; dest(1,2) = v.z; dest(1,3) = -Vec3Dot( v, p );
+	dest(2,0) = w.x; dest(2,1) = w.y; dest(2,2) = w.z; dest(2,3) = -Vec3Dot( w, p );
+	dest(3,0) = 0;   dest(3,1) = 0;   dest(3,2) = 0;   dest(3,3) = 1;
+}
+
+
+inline void CCamera::GetProjectionMatrix( Matrix44& dest ) const
+{
+	dest = Matrix44PerspectiveFoV_LH( m_fFieldOfView, m_fAspectRatio, m_fNearClip, m_fFarClip );
 }
 
 

@@ -257,7 +257,7 @@ void CBEC_Billboard::DrawBillboards( int num_rects, int group, int num_rects_per
 	if( (pShaderManager = CShader::Get()->GetCurrentShaderManager()) &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
-		pShaderManager->SetWorldTransform( matWorld );
+		pShaderManager->SetWorldTransform( Matrix44Identity() );
 		pShaderManager->SetTexture( 0, m_BillboardTexture.GetTexture() );
 
 		int tech;

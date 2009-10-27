@@ -175,7 +175,7 @@ void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 
 	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
 	{
-		shared_ptr<CD3DXMeshObjectBase> pMesh
+		shared_ptr<CBasicMesh> pMesh
 			= m_vecpMeshContainer[i]->m_MeshObjectHandle.GetMesh();
 
 		if( !pMesh )

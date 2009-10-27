@@ -5,6 +5,10 @@
 #include "../base.hpp"
 #include "AlphaBlend.hpp"
 #include "TextureFormat.hpp"
+#include "TextureHandle.hpp"
+
+#include "Support/Singleton.hpp"
+using namespace NS_KGL;
 
 
 class CDisplayMode
@@ -94,6 +98,20 @@ public:
 };
 
 
+class PrimitiveType
+{
+public:
+	enum Name
+	{
+		TRIANGLE_LIST,
+		TRIANGLE_FAN,
+		TRIANGLE_STRIP,
+		INVALID,
+		NUM_PRIMITIVE_TYPES
+	};
+};
+
+
 class CFogDesc
 {
 public:
@@ -118,10 +136,6 @@ private:
 //	void EnumAdapterModesForDefaultAdapter();
 
 
-protected:
-
-	//RenderSystem();	// singleton
-
 public:
 
 	virtual ~CGraphicsDevice() {}
@@ -142,7 +156,7 @@ public:
 //	virtual void SetViewTransform();
 //	virtual void SetProjectionTransform();
 
-//	virtual void SetTexture( int stage, CTextureHandle& texture ) {};
+	virtual Result::Name SetTexture( int stage, const CTextureHandle& texture ) = 0;
 
 	inline Result::Name Enable( RenderStateType::Name type ) { return SetRenderState( type, true ); }
 
@@ -152,8 +166,39 @@ public:
 
 	virtual void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode ) = 0;
 
-	virtual void SeDestBlendMode( AlphaBlend::Mode dest_blend_mode ) = 0;
+	virtual void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode ) = 0;
 };
+
+
+class CGraphicsDeviceHolder
+{
+	CGraphicsDevice *m_pGraphicsDevice;
+
+protected:
+
+	/// singleton
+	static CSingleton<CGraphicsDeviceHolder> m_obj;
+
+public:
+
+	CGraphicsDeviceHolder()
+		:
+	m_pGraphicsDevice(NULL)
+	{}
+
+	static CGraphicsDeviceHolder* Get() { return m_obj.get(); }
+
+	Result::Name SelectGraphicsDevice( const std::string& library_name );
+
+	CGraphicsDevice& GetDevice() { return *m_pGraphicsDevice; }
+};
+
+
+inline CGraphicsDevice& GraphicsDevice()
+{
+	return CGraphicsDeviceHolder::Get()->GetDevice();
+}
+
 
 
 #endif // __GraphicsDevice_HPP__

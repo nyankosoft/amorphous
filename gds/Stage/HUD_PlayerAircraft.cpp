@@ -852,6 +852,7 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 	pFont->SetFontSize( (int)(20*scale), (int)(32*scale) );
 
 	SetRenderStatesForTextureFont( AlphaBlend::One );
+	pFont->SetDestAlphaBlendMode( AlphaBlend::One );
 
 	int current_weapon_index = weapon_system.GetPrimaryWeaponSlotIndex();
 	const int weapon_slot_offset = 0;	// 0: gun / 1: missile / 2: special weapon

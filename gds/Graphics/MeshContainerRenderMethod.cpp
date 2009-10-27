@@ -201,8 +201,7 @@ static int sg_iPrevShaderManagerID = -1;
 
 void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform )
 {
-	shared_ptr<CD3DXMeshObjectBase> pMesh
-		= mesh.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
 	if( !pMesh )
 		return;

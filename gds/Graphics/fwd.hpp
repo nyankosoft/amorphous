@@ -6,10 +6,6 @@ class CGraphicsParameters;
 class CGraphicsComponent;
 class CGraphicsComponentCollector;
 
-// TODO: RenderSystem for cross platform
-class CDirect3D9;
-
-
 class CAsyncResourceLoader;
 class CGraphicsResource;
 class CGraphicsResourceEntry;
@@ -83,21 +79,19 @@ class C3DModelLoader;
 class CGeneral3DMesh;
 
 
-// mesh object classes
-// - TODO: change class names
-//   CD3DXMeshObjectBase -> ???
-//   CD3DXMeshObject -> C3DMeshObject
-//   CD3DXMeshObject -> C3DProgressiveMeshObject
-//   CD3DXMeshObject -> C3DSkeletalMeshObject
-class CD3DXMeshObjectBase;
-class CD3DXMeshObject;
-class CD3DXPMeshObject; // progressive mesh
-class CD3DXSMeshObject; // skeletal mesh
+
 class CMeshObjectContainer;
 class CMeshContainerNode;
 class CShaderParamsLoader;
 class CMeshContainerRenderMethod;
 class CMeshContainerNodeRenderMethod;
+
+
+class CBasicMesh;
+class CProgressiveMesh;
+class CSkeletalMesh;
+class CMeshImpl;
+
 
 class CGraphicsElement;
 class CRectElement;
@@ -147,6 +141,14 @@ typedef boost::shared_ptr<CFontBase> CFontSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManager> CGraphicsElementManagerSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManagerCallback> CGraphicsElementManagerCallbackSharedPtr;
 typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;
+
+
+// D3D Implementation
+class CDirect3D9;
+class CD3DXMeshObjectBase;
+class CD3DXMeshObject;
+class CD3DXPMeshObject; // progressive mesh
+class CD3DXSMeshObject; // skeletal mesh
 
 
 class CMeshType

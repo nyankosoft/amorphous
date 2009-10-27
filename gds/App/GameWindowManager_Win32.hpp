@@ -13,29 +13,28 @@ extern LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, L
 
 class CGameWindowManager_Win32 : public CGameWindowManager
 {
-private:
+protected:
 
-	HWND m_hWnd;
+	HWND m_hWnd; /// Holds our window handle
+
 	WNDCLASSEX m_WindowClassEx;
 
 //	LRESULT WINAPI (*m_pMsgProc)( HWND, UINT, WPARAM, LPARAM );	// this function pointer cannot be used as a pointer to a message procedure
 
 
-protected:
-
-	CGameWindowManager_Win32();		//singleton
-
 public:
 
-	static CGameWindowManager_Win32 ms_SingletonInstance_;	//single instance of 'CGameWindowManager_Win32'
+	CGameWindowManager_Win32();
 
-	~CGameWindowManager_Win32();
+	virtual ~CGameWindowManager_Win32() {}
 
-	bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title );
+//	bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title );
 
-	void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );
+//	void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );
 
 	HWND GetWindowHandle() { return m_hWnd; }
+
+	virtual void OnMainLoopFinished() {}
 
 	bool IsMouseCursorInClientArea();
 
@@ -45,15 +44,13 @@ public:
 };
 
 
+extern CGameWindowManager_Win32 *g_pGameWindowManager_Win32;
+
+
 inline CGameWindowManager_Win32& GameWindowManager_Win32()
 {
-	return CGameWindowManager_Win32::ms_SingletonInstance_;
-}
-
-
-inline CGameWindowManager& GameWindowManager()
-{
-	return GameWindowManager_Win32();
+//	return CGameWindowManager_Win32::ms_SingletonInstance_;
+	return *g_pGameWindowManager_Win32;
 }
 
 

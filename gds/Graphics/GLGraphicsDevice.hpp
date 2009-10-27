@@ -7,6 +7,30 @@
 #include <gl/glu.h>			// Header File For The GLu32 Library
 
 
+#pragma comment( lib, "OpenGL32.lib" )
+#pragma comment( lib, "glu32.lib" )
+
+
+//------------------------------------------------------------------------------
+// Function Externs
+//------------------------------------------------------------------------------
+
+extern void LogGLError( const char *fname, const char *msg );
+
+
+
+//------------------------------------------------------------------------------
+// Macro Definitions
+//------------------------------------------------------------------------------
+
+#define LOG_GL_ERROR( msg ) LogGLError( __FUNCTION__, msg );
+
+
+
+//------------------------------------------------------------------------------
+// Class Definitions
+//------------------------------------------------------------------------------
+
 class CGLGraphicsDevice : public CGraphicsDevice
 {
 private:
@@ -44,12 +68,20 @@ public:
 
 	bool IsCurrentDisplayMode( const CDisplayMode& display_mode );
 
+	Result::Name SetTexture( int stage, const CTextureHandle& texture );
+
 	Result::Name SetRenderState( RenderStateType::Name type, bool enable );
 
 	inline void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode );
 
-	inline void SeDestBlendMode( AlphaBlend::Mode dest_blend_mode );
+	inline void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 };
+
+
+inline CGLGraphicsDevice& GLGraphicsDevice()
+{
+	return (CGLGraphicsDevice::ms_CGLGraphicsDevice_);
+}
 
 
 static const GLenum g_ToGLBlendModeEnum[] =
@@ -66,20 +98,20 @@ static const GLenum g_ToGLBlendModeEnum[] =
 };
 
 
-GLenum ToGLBlendModeEnum( AlphaBlend::Mode mode )
+inline GLenum ToGLBlendModeEnum( AlphaBlend::Mode mode )
 {
 	return g_ToGLBlendModeEnum[mode];
 }
 
 
-void CGLGraphicsDevice::SetSourceBlendMode( AlphaBlend::Mode src_blend_mode )
+inline void CGLGraphicsDevice::SetSourceBlendMode( AlphaBlend::Mode src_blend_mode )
 {
 	m_SourceBlend = ToGLBlendModeEnum( src_blend_mode );
 	glBlendFunc( m_SourceBlend, m_DestBlend );
 }
 
 
-inline void CGLGraphicsDevice::SeDestBlendMode( AlphaBlend::Mode dest_blend_mode )
+inline void CGLGraphicsDevice::SetDestBlendMode( AlphaBlend::Mode dest_blend_mode )
 {
 	m_DestBlend = ToGLBlendModeEnum( dest_blend_mode );
 	glBlendFunc( m_SourceBlend, m_DestBlend );

@@ -2,8 +2,7 @@
 #define  __GameWindowManager_HPP__
 
 #include <string>
-#include <stdio.h>
-#include <stdlib.h>
+#include <gds/base.hpp>
 
 
 class GameWindow
@@ -48,6 +47,17 @@ public:
 	virtual bool IsMouseCursorInClientArea() { return false; }
 };
 
+//extern shared_ptr<CGameWindowManager> g_pGameWindowManager;
+extern CGameWindowManager *g_pGameWindowManager;
+
+
+extern Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name );
+
+
+inline CGameWindowManager& GameWindowManager()
+{
+	return *g_pGameWindowManager;
+}
 
 
 #endif // __GameWindowManager_HPP__

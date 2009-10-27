@@ -1,5 +1,4 @@
 #include "TrueTypeTextureFont.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
 
@@ -120,7 +119,7 @@ void CTrueTypeTextureFont::InitTrueTypeFontInternal()
 	CTextureFont::InitInternal();
 
 	m_BaseHeight = 64;
-	
+
 	m_pTextureLoader = shared_ptr<CFontTextureLoader>( new CFontTextureLoader(this) );
 }
 
@@ -293,7 +292,8 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		// set the string id
 		string texture_name = filename + to_string(resolution);
 
-		return m_FontTexture.Create( m_pTextureLoader, texture_name, 1024, 1024, TextureFormat::A8R8G8B8, 1 );
+		int mip_levels = 0; // Create complete mipmap chain
+		return m_FontTexture.Create( m_pTextureLoader, texture_name, 1024, 1024, TextureFormat::A8R8G8B8, mip_levels );
 
 		// First, create the texture
 //		bool tex_created = CreateFontTextureFromTrueTypeFont();

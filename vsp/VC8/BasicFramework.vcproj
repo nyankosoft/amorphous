@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4996"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../gds;../../"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -426,6 +426,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\GraphicsDevice.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\GraphicsDevice.hpp"
 				>
 			</File>
@@ -601,6 +605,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.cpp"
 					>
 				</File>
@@ -669,6 +681,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Mesh\BasicMesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\BasicMesh.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\D3DXMeshModel.cpp"
 					>
 				</File>
@@ -709,11 +729,27 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Mesh\ProgressiveMesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\ProgressiveMesh.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\SkeletalMesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\SkeletalMesh.hpp"
 					>
 				</File>
 				<File
@@ -865,11 +901,23 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRect.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRect.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\2DPrimitive\2DRectSet.cpp"
 					>
 				</File>
 				<File
@@ -1004,6 +1052,294 @@
 					RelativePath="..\..\gds\Graphics\RectTree.hpp"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="OpenGL"
+				>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\glext.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLExtensions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLExtensions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLGraphicsResources.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLGraphicsResources.hpp"
+					>
+				</File>
+				<Filter
+					Name="2DPrimitive"
+					>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Mesh"
+					>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Shader"
+					>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Direct3D"
+				>
+				<Filter
+					Name="2DPrimitive"
+					>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release DLL|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\2DPrimitive\2DRectSetImpl_D3D.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Shader"
+					>
+				</Filter>
+				<Filter
+					Name="Mesh"
+					>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -3059,6 +3395,54 @@
 					>
 				</Filter>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="BasicFramework"
+			>
+			<File
+				RelativePath="..\..\gds\App\ApplicationBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\ApplicationBase.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_D3D.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_D3D.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_GL.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GameWindowManager_Win32_GL.hpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="App"
+			>
 		</Filter>
 	</Files>
 	<Globals>

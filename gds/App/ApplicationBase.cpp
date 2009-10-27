@@ -178,6 +178,9 @@ bool CApplicationBase::InitBase()
 	CGlobalParams global_params;
 	global_params.LoadFromFile( "config" );
 
+	// init graphics library (Direct3D/OpenGL)
+	SelectGraphicsLibrary( global_params.GraphicsLibraryName );
+
 	// create the main game window
 	// Direct3D is initialized in this function
 	GameWindow::ScreenMode mode

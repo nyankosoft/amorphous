@@ -797,6 +797,10 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 	rCam.GetCameraMatrix(matView);
 	rCam.GetProjectionMatrix(matProj);
 
+	Matrix44 view, proj;
+	rCam.GetCameraMatrix(view);
+	rCam.GetProjectionMatrix(proj);
+
 	CShaderManager *pShaderManager = m_pShaderManager;
 	LPD3DXEFFECT pEffect = NULL;
 	UINT pass, cPasses;
@@ -815,7 +819,7 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 //			pShaderManager->SetTechnique( SHADER_TECH_STATICGEOMETRY );
 		}
 
-		pShaderManager->SetWorldViewProjectionTransform( matWorld, matView, matProj );
+		pShaderManager->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
 		pEffect->SetVector( "g_vEyePos", (D3DXVECTOR4 *)&rCam.GetPosition() );
 

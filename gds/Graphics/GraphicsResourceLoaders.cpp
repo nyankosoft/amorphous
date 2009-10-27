@@ -478,6 +478,15 @@ bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
 }
 
 
+//===================================================================================
+// CD3DXMeshLoaderBase
+//===================================================================================
+
+CD3DXMeshObjectBase *CD3DXMeshLoaderBase::GetD3DMeshImpl()
+{
+	return dynamic_cast<CD3DXMeshObjectBase *>( GetMesh() );
+}
+
 
 //===================================================================================
 // CD3DXMeshVerticesLoader
@@ -519,7 +528,7 @@ bool CD3DXMeshVerticesLoader::CopyLoadedContentToGraphicsResource()
 
 		memcpy( m_pLockedVertexBuffer,
 			m_pMeshLoader->VertexBufferContent(),
-			GetMesh()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
+			GetD3DMeshImpl()->GetVertexSize() * m_pArchive->GetVertexSet().GetNumVertices() );
 	}
 
 	return true;
@@ -530,7 +539,7 @@ bool CD3DXMeshVerticesLoader::Lock()
 {
 	LOG_PRINT( "" );
 
-	CD3DXMeshObjectBase *pMesh = GetMesh();
+	CD3DXMeshObjectBase *pMesh = GetD3DMeshImpl();
 	if( pMesh )
 		return pMesh->LockVertexBuffer( m_pLockedVertexBuffer );
 	else
@@ -542,7 +551,7 @@ bool CD3DXMeshVerticesLoader::Unlock()
 {
 	LOG_PRINT( "" );
 
-	bool unlocked = GetMesh()->UnlockVertexBuffer();
+	bool unlocked = GetD3DMeshImpl()->UnlockVertexBuffer();
 	m_pLockedVertexBuffer = NULL;
 	return unlocked;
 }
@@ -582,7 +591,7 @@ bool CD3DXMeshIndicesLoader::Lock()
 {
 	LOG_PRINT( "" );
 
-	CD3DXMeshObjectBase *pMesh = GetMesh();
+	CD3DXMeshObjectBase *pMesh = GetD3DMeshImpl();
 	if( pMesh )
 		return pMesh->LockIndexBuffer( m_pLockedIndexBuffer );
 	else
@@ -594,7 +603,7 @@ bool CD3DXMeshIndicesLoader::Unlock()
 {
 	LOG_PRINT( "" );
 
-	bool unlocked = GetMesh()->UnlockIndexBuffer();
+	bool unlocked = GetD3DMeshImpl()->UnlockIndexBuffer();
 	m_pLockedIndexBuffer = NULL;
 	return unlocked;
 }
@@ -643,7 +652,7 @@ bool CD3DXMeshAttributeTableLoader::Lock()
 		&(m_pMeshLoader->AttributeTable()[0]),
 		(DWORD)(m_pMeshLoader->AttributeTable().size()) );
 
-	bool locked = GetMesh()->LockAttributeBuffer( m_pLockedAttributeBuffer );
+	bool locked = GetD3DMeshImpl()->LockAttributeBuffer( m_pLockedAttributeBuffer );
 	return locked;
 }
 
@@ -652,7 +661,7 @@ bool CD3DXMeshAttributeTableLoader::Unlock()
 {
 	LOG_PRINT( "" );
 
-	bool unlocked = GetMesh()->UnlockAttributeBuffer();
+	bool unlocked = GetD3DMeshImpl()->UnlockAttributeBuffer();
 	m_pLockedAttributeBuffer = NULL;
 	return unlocked;
 }

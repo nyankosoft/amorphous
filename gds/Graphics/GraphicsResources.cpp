@@ -300,9 +300,9 @@ bool CMeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 	C3DMeshModelArchive mesh_archive;
 	db.GetData( mesh_archive_key, mesh_archive );
 
-	CMeshObjectFactory factory;
-	CD3DXMeshObjectBase *pMesh = factory.LoadMeshObjectFromArchive( mesh_archive, keyname, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
-	m_pMeshObject = boost::shared_ptr<CD3DXMeshObjectBase>( pMesh );
+	CMeshFactory factory;
+	CBasicMesh *pMesh = factory.LoadMeshObjectFromArchive( mesh_archive, keyname, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
+	m_pMeshObject = boost::shared_ptr<CBasicMesh>( pMesh );
 
 	return ( m_pMeshObject ? true : false );
 }
@@ -312,13 +312,13 @@ bool CMeshResource::LoadFromFile( const std::string& filepath )
 {
 	m_pMeshObject.reset();
 
-	CMeshObjectFactory factory;
-	CD3DXMeshObjectBase *pMeshObject
+	CMeshFactory factory;
+	CBasicMesh *pMeshObject
 		= factory.LoadMeshObjectFromFile( filepath, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
 
 	if( pMeshObject )
 	{
-		m_pMeshObject = shared_ptr<CD3DXMeshObjectBase>( pMeshObject );
+		m_pMeshObject = shared_ptr<CBasicMesh>( pMeshObject );
 		return true;
 	}
 	else
@@ -356,8 +356,8 @@ bool CMeshResource::CreateFromDesc()
 	if( res != Result::SUCCESS )
 		return false;
 
-	CMeshObjectFactory factory;
-	CD3DXMeshObjectBase *pMeshObject
+	CMeshFactory factory;
+	CBasicMesh *pMeshObject
 		= factory.LoadMeshObjectFromArchive( m_MeshDesc.pMeshGenerator->MeshArchive(),
 		                                     m_MeshDesc.ResourcePath,
 											 m_MeshDesc.LoadOptionFlags,
@@ -365,7 +365,7 @@ bool CMeshResource::CreateFromDesc()
 
 	if( pMeshObject )
 	{
-		m_pMeshObject = shared_ptr<CD3DXMeshObjectBase>( pMeshObject );
+		m_pMeshObject = shared_ptr<CBasicMesh>( pMeshObject );
 		SetState( GraphicsResourceState::LOADED );
 		return true;
 	}
@@ -422,7 +422,7 @@ bool CMeshResource::Create()
 			&pMesh
 		);
 */
-	CMeshObjectFactory factory;
+	CMeshFactory factory;
 	m_pMeshObject = factory.CreateMesh( m_MeshDesc.MeshType );
 
 	if( !m_pMeshObject )
@@ -644,4 +644,3 @@ bool CShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
 
 	return loaded;
 }
-

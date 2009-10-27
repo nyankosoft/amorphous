@@ -7,7 +7,7 @@
 #include "EntityRenderManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/MeshContainerRenderMethod.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 
 
 extern void SetLightsToShader( CCopyEntity& entity,  CShaderManager& rShaderMgr );
@@ -43,16 +43,16 @@ public:
 
 class CBlendMatricesLoader : public CShaderParamsLoader
 {
-	boost::shared_ptr<CD3DXSMeshObject> m_pSkeletalMesh;
+	boost::shared_ptr<CSkeletalMesh> m_pSkeletalMesh;
 
 public:
 
-	CBlendMatricesLoader( boost::shared_ptr<CD3DXSMeshObject> pSkeletalMesh = boost::shared_ptr<CD3DXSMeshObject>() )
+	CBlendMatricesLoader( boost::shared_ptr<CSkeletalMesh> pSkeletalMesh = boost::shared_ptr<CSkeletalMesh>() )
 		:
 	m_pSkeletalMesh(pSkeletalMesh)
 	{}
 
-	void SetSkeletalMesh( boost::shared_ptr<CD3DXSMeshObject> pSkeletalMesh ) { m_pSkeletalMesh = pSkeletalMesh; }
+	void SetSkeletalMesh( boost::shared_ptr<CSkeletalMesh> pSkeletalMesh ) { m_pSkeletalMesh = pSkeletalMesh; }
 
 	void UpdateShaderParams( CShaderManager& rShaderMgr )
 	{

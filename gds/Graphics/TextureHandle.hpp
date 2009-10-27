@@ -45,6 +45,19 @@ public:
 			return NULL;
 	}
 
+	/// Returns OpenGL texture
+	/// - User should not have to use this
+	inline GLuint GetGLTextureID() const
+	{
+		if( GetEntry()
+		 && GetEntry()->GetTextureResource() )
+		{
+			return GetEntry()->GetTextureResource()->GetGLTextureID();
+		}
+		else
+			return 0;
+	}
+
 	/// Creates an empty texture
 	/// - Created as a shareable resource (Right now resource are always sharable)
 	/// - CGraphicsResourceHandle::filename is used as an id

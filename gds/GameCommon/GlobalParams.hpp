@@ -46,6 +46,8 @@ public:
 
 	std::string AudioLibraryName;
 
+	std::string GraphicsLibraryName;
+
 private:
 
 	void LoadLogVerbosity( CParamLoader& loader );
@@ -63,7 +65,8 @@ public:
 	ScreenshotResolutionWidth( -1 ),
 	ScreenshotResolutionHeight( -1 ),
 	LogVerbosity(WL_WARNING),
-	AudioLibraryName("OpenAL")
+	AudioLibraryName("OpenAL"),
+	GraphicsLibraryName("Direct3D")
 	{}
 
 	bool LoadFromFile( const std::string& filename )

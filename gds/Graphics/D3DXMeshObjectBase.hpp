@@ -11,6 +11,7 @@
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/Shader/ShaderTechniquehandle.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
@@ -44,34 +45,8 @@ public:
 /**
  Base class of the D3D implementation of the mesh class
 */
-class CD3DXMeshObjectBase
+class CD3DXMeshObjectBase : public CMeshImpl
 {
-public:
-	
-	class CMeshMaterial
-	{
-	public:
-
-		// array of textures for a material
-		// - possible usages
-		//   - surface color (most common)
-		//   - normal map
-		//   - specular map (often stored in alpha channel of normal map)
-		// A texture handle will be empty if no texture is used for the stage
-		std::vector<CTextureHandle> Texture;
-
-		std::vector<CTextureResourceDesc> TextureDesc;
-
-		std::string Name;
-
-		float fMinVertexDiffuseAlpha;
-
-	public:
-
-		/// Load the i-th texture asynchronously
-		void LoadTextureAsync( int i );
-	};
-
 private:
 
 	std::vector<int> m_vecFullMaterialIndices;
@@ -82,16 +57,9 @@ protected:
 
 	std::string m_strFilename;
 
-	std::vector<CMeshMaterial> m_vecMaterial;
-
 	/// bounding sphere in local space of the model
 	/// - Each implementation must properly initialize the sphere
 	Sphere m_LocalShpere;
-
-	/// bounding box of the mesh
-	AABB3 m_AABB;
-
-	std::vector<AABB3> m_vecAABB;	///< aabb for each triangle subset
 
 	/// visibility flag for each triangle set
 	/// 1 visible / 0: not visible
@@ -105,9 +73,6 @@ protected:
 
 
 	// D3D attributes
-
-	/// Number of materials
-	int m_NumMaterials;
 
 	D3DMATERIAL9 *m_pMeshMaterials;
 
@@ -176,7 +141,7 @@ public:
 	virtual ~CD3DXMeshObjectBase() { Release(); }
 
 	/// returns true on success
-	bool LoadFromFile( const std::string& filename, U32 opiton_flags = 0 );
+	bool LoadFromFile( const std::string& filename, U32 option_flags = 0 );
 
 	/// load basic mesh properties from a mesh archive
 	/// NOTE: filename is required to get the path for textures files
@@ -248,13 +213,16 @@ public:
 	/// renders the mesh with the current shader technique
 	/// - Assumes that you have already set a valid technique that can be obtained from 'rShaderMgr'
 	/// - the same shader technique is used to render all the materials
-	inline void Render( CShaderManager& rShaderMgr );
+	inline virtual void Render( CShaderManager& rShaderMgr );
 
 	/// Use this when you wanna use different shader techniques for each material
 	/// \param vecShaderTechnique shader techniques for each material
 	/// - What to do if the single shader technique is applied for all materials
 	///   - shader_mgr.SetShaderTechnique() and call CD3DXMeshObjectBase::Render( shader_mgr )
 	inline void Render( CShaderManager& rShaderMgr, std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
+
+	/// render object by using the fixed function pipeline
+	void Render();
 
 	virtual bool LockVertexBuffer( void*& pLockedVertexBuffer );
 
@@ -268,33 +236,24 @@ public:
 
 	virtual bool UnlockAttributeBuffer();
 
+	void SetVertexDeclaration();
+
 	virtual CMeshType::Name GetMeshType() const = 0;
 
 	friend class CD3DXMeshVerticesLoader;
 	friend class CD3DXMeshIndicesLoader;
-
 };
 
 
-class CMeshObjectFactory
+class CD3DMeshImplFactory : public CMeshImplFactory
 {
 public:
 
-	CMeshObjectFactory() {}
-	virtual ~CMeshObjectFactory() {}
+//	CMeshImpl* CreateMeshImpl( CMeshType::Name mesh_type );
 
-	boost::shared_ptr<CD3DXMeshObjectBase> CreateMesh( CMeshType::Name mesh_type = CMeshType::SKELETAL );
-
-	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filepath,
-		                                         U32 load_option_flags = 0,
-		                                         CMeshType::Name mesh_type = CMeshType::SKELETAL );
-
-	/// TODO: support PMesh and SMesh
-	CD3DXMeshObjectBase*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
-		                                             const std::string& filepath,
-													 U32 load_option_flags = 0,
-													 CMeshType::Name mesh_type = CMeshType::SKELETAL );
-
+	CMeshImpl* CreateBasicMeshImpl();
+	CMeshImpl* CreateProgressiveMeshImpl();
+	CMeshImpl* CreateSkeletalMeshImpl();
 };
 
 
@@ -304,7 +263,7 @@ public:
 
 inline CD3DXMeshObjectBase::CD3DXMeshObjectBase()
 :
-m_NumMaterials(0L),
+//m_NumMaterials(0L),
 m_pMeshMaterials(NULL),
 m_iVertexSize(0),
 m_paVertexElements(NULL),

@@ -51,7 +51,7 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 	hr = pd3dDevice->SetVertexShader( NULL );
 	hr = pd3dDevice->SetPixelShader( NULL );
 
-	shared_ptr<CD3DXMeshObjectBase> pMesh = mesh.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
 	CD3DFixedFunctionPipelineManager ffp_mgr;
 
@@ -64,7 +64,7 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 	ffp_mgr.SetWorldTransform( matWorld );
 
 	if( pMesh )
-		pMesh->Render( ffp_mgr );
+		pMesh->Render();
 
 	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
 	hr = pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );

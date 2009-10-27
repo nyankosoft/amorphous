@@ -8,6 +8,41 @@
 using namespace std;
 
 
+const char *get_gl_error_text( GLenum gl_error )
+{
+	switch( gl_error )
+	{
+	case GL_NO_ERROR:          return "GL_NO_ERROR";
+	case GL_INVALID_ENUM:      return "GL_INVALID_ENUM";
+	case GL_INVALID_VALUE:     return "GL_INVALID_VALUE";
+	case GL_INVALID_OPERATION: return "GL_INVALID_OPERATION";
+	case GL_STACK_OVERFLOW:    return "GL_STACK_OVERFLOW";
+	case GL_STACK_UNDERFLOW:   return "GL_STACK_UNDERFLOW";
+	case GL_OUT_OF_MEMORY:     return "GL_OUT_OF_MEMORY";
+	default: return "unknown error";
+	}
+}
+
+
+void LogGLError( const char *fname, const char *msg )
+{
+//	GLenum error_flags[12];
+
+	string errors_text;
+	while(1)
+	{
+		GLenum gl_error = glGetError();
+		if( gl_error == GL_NO_ERROR )
+			break;
+		else
+			errors_text += string( 0 < errors_text.length() ? "|" : "" ) + get_gl_error_text(gl_error);
+	}
+
+	if( 0 < errors_text.length() )
+		LOG_PRINT_ERROR( " OpenGL error(s) in function " + string(fname) + "() - " + string(msg) + " " + errors_text );
+}
+
+
 
 //========================================================================
 // CGLGraphicsDevice
@@ -32,6 +67,9 @@ bool CGLGraphicsDevice::Init( int iWindowWidth, int iWindowHeight, ScreenMode::N
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+	glEnable(GL_TEXTURE_2D);
+	LOG_GL_ERROR( "glEnable() failed." );
 
 	return true;
 }
@@ -68,15 +106,25 @@ void CGLGraphicsDevice::EnumAdapterModesForDefaultAdapter()
 }
 
 
-bool ToGLenum( RenderStateType::Name type, GLenum cap )
+Result::Name CGLGraphicsDevice::SetTexture( int stage, const CTextureHandle& texture )
+{
+	glBindTexture( GL_TEXTURE_2D, texture.GetGLTextureID() );
+
+	LOG_GL_ERROR( "glBindTexture() failed." );
+
+	return Result::SUCCESS;
+}
+
+
+bool ToGLenum( RenderStateType::Name type, GLenum& cap )
 {
 	switch(type)
 	{
 	case RenderStateType::DEPTH_TEST:   cap = GL_DEPTH_TEST; return true;
 	case RenderStateType::ALPHA_BLEND:  cap = GL_BLEND;	    return true;
 	case RenderStateType::ALPHA_TEST:   cap = GL_ALPHA_TEST; return true;
-	case RenderStateType::LIGHTING:	   cap = GL_LIGHTING;   return true;
-	case RenderStateType::FOG:		   cap = GL_FOG;	    return true;
+	case RenderStateType::LIGHTING:	    cap = GL_LIGHTING;   return true;
+	case RenderStateType::FOG:		    cap = GL_FOG;	    return true;
 	case RenderStateType::FACE_CULLING: cap = GL_CULL_FACE;  return true;
 	default:
 		return false;

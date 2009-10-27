@@ -23,6 +23,8 @@ void C2DRect::Draw(	const LPDIRECT3DTEXTURE9 pTexture )
 
 	SetBasicRenderStates();
 
+//	GraphicsDevice().Draw( m_avRectVertex, texture );
+
 //	SetStdRenderStatesForTexture();
 
 	pd3dDev->SetTexture( 0, pTexture );
@@ -70,6 +72,11 @@ void C2DRect::DrawWireframe()
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1 );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 
+//	C2DPrimitiveRenderer_D3D renderer;
+//	renderer.Render( m_avRectVertex, 4, PrimitiveType::LINE_STRIP );
+
+
+/*
 	// draw a rectangle
 //	pd3dDev->SetVertexShader( NULL );
 
@@ -87,33 +94,36 @@ void C2DRect::DrawWireframe()
 	// draw the last fourth line
 	TLVERTEX avLine[2] = { m_avRectVertex[3], m_avRectVertex[0] };
 	pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, 1, avLine, sizeof(TLVERTEX) );
+*/
 }
 
 
-void C2DRect::SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax )
+void C2DRect::SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax/*, int index */)
 {
-	TLVERTEX* pav2DRect = m_avRectVertex;
+	int index = 0;
 
-	pav2DRect[0].tu = rvMin.u;		// top-left corner of the rectangle
-	pav2DRect[0].tv = rvMin.v;
+	CGeneral2DVertex* paVertex= m_avRectVertex;
 
-	pav2DRect[1].tu = rvMax.u;
-	pav2DRect[1].tv = rvMin.v;
+	paVertex[0].m_TextureCoord[index].u = rvMin.u;		// top-left corner of the rectangle
+	paVertex[0].m_TextureCoord[index].v = rvMin.v;
 
-	pav2DRect[2].tu = rvMax.u;		// bottom-right corner of the rectangle
-	pav2DRect[2].tv = rvMax.v;
+	paVertex[1].m_TextureCoord[index].u = rvMax.u;
+	paVertex[1].m_TextureCoord[index].v = rvMin.v;
 
-	pav2DRect[3].tu = rvMin.u;
-	pav2DRect[3].tv = rvMax.v;
+	paVertex[2].m_TextureCoord[index].u = rvMax.u;		// bottom-right corner of the rectangle
+	paVertex[2].m_TextureCoord[index].v = rvMax.v;
+
+	paVertex[3].m_TextureCoord[index].u = rvMin.u;
+	paVertex[3].m_TextureCoord[index].v = rvMax.v;
 }
 
 
 void C2DRect::SetZDepth( float fZValue )
 {
-	m_avRectVertex[0].vPosition.z = fZValue;
-	m_avRectVertex[1].vPosition.z = fZValue;
-	m_avRectVertex[2].vPosition.z = fZValue;
-	m_avRectVertex[3].vPosition.z = fZValue;
+	m_avRectVertex[0].m_vPosition.z = fZValue;
+	m_avRectVertex[1].m_vPosition.z = fZValue;
+	m_avRectVertex[2].m_vPosition.z = fZValue;
+	m_avRectVertex[3].m_vPosition.z = fZValue;
 }
 
 
@@ -121,6 +131,6 @@ void C2DRect::ScalePosition( float fScale )
 {
 	int i;
 	for(i=0; i<4; i++)
-		m_avRectVertex[i].vPosition *= fScale;
+		m_avRectVertex[i].m_vPosition *= fScale;
 
 }

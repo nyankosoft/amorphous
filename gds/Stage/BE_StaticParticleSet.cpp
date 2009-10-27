@@ -242,8 +242,9 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 	{
 		pEffect->SetMatrix( "WorldRot", &matWorld );
 
-		D3DXMatrixIdentity( &matWorld );
-		pShaderManager->SetWorldTransform( matWorld );
+//		D3DXMatrixIdentity( &matWorld );
+//		pShaderManager->SetWorldTransform( matWorld );
+		pShaderManager->SetWorldTransform( Matrix44Identity() );
 		pShaderManager->SetTexture( 0, m_BillboardTexture.GetTexture() );
 
 		if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PseudoNightVision )

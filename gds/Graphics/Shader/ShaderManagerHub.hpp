@@ -1,13 +1,12 @@
 #ifndef  __ShaderManagerHub_H__
 #define  __ShaderManagerHub_H__
 
-#include "../Camera.hpp"
-#include "../Direct3D9.hpp"
+
+#include "Graphics/Camera.hpp"
+#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "3DMath/Matrix44.hpp"
 #include "ShaderManager.hpp"
-
-#include <vector>
-
-
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
 
@@ -24,8 +23,8 @@ class CShaderManagerHub
 {
 	std::vector<CShaderManager *> m_vecpShaderManager;
 
-	std::vector<D3DXMATRIX> m_vecViewMatrix;
-	std::vector<D3DXMATRIX> m_vecProjMatrix;
+	std::vector<Matrix44> m_vecViewMatrix;
+	std::vector<Matrix44> m_vecProjMatrix;
 
 private:
 
@@ -60,7 +59,7 @@ public:
 
 inline void CShaderManagerHub::PushViewAndProjectionMatrices( const CCamera& camera )
 {
-	D3DXMATRIX matView, matProj;
+	Matrix44 matView, matProj;
 
 	camera.GetCameraMatrix( matView );
 	camera.GetProjectionMatrix( matProj );
@@ -76,10 +75,17 @@ inline void CShaderManagerHub::PushViewAndProjectionMatrices( const CCamera& cam
 		m_vecpShaderManager[i]->SetProjectionTransform( matProj );
 	}
 
+	FixedFunctionPipelineManager().SetViewTransform( matView );
+	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
+/*
+	D3DXMATRIX view, proj;
+	matView.SetRowMajorMatrix44( (Scalar *)&view );
+	matProj.SetRowMajorMatrix44( (Scalar *)&proj );
+
 	// update the transforms of fixed function pipeline as well
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	pd3dDev->SetTransform(D3DTS_VIEW, &matView);
-	pd3dDev->SetTransform(D3DTS_PROJECTION, &matProj);
+	pd3dDev->SetTransform(D3DTS_VIEW, &view);
+	pd3dDev->SetTransform(D3DTS_PROJECTION, &proj);*/
 }
 
 
@@ -95,7 +101,7 @@ inline void CShaderManagerHub::PopViewAndProjectionMatrices()
 		return; // stack is empty
 
 	// set the previous transforms
-	D3DXMATRIX matView, matProj;
+	Matrix44 matView, matProj;
 
 	matView = m_vecViewMatrix.back();
 	matProj = m_vecProjMatrix.back();
@@ -107,10 +113,13 @@ inline void CShaderManagerHub::PopViewAndProjectionMatrices()
 		m_vecpShaderManager[i]->SetProjectionTransform( matProj );
 	}
 
+	FixedFunctionPipelineManager().SetViewTransform( matView );
+	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
+
 	// update the transforms of fixed function pipeline as well
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	pd3dDev->SetTransform(D3DTS_VIEW, &matView);
-	pd3dDev->SetTransform(D3DTS_PROJECTION, &matProj);
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	pd3dDev->SetTransform(D3DTS_VIEW, &matView);
+//	pd3dDev->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 
 

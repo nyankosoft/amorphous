@@ -164,7 +164,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 	if( !mesh_loaded )
 		return CEntityHandle<>();
 
-	shared_ptr<CD3DXMeshObjectBase> pMesh = mesh_handle.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
 		return CEntityHandle<>();
 

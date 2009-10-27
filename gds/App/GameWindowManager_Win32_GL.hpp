@@ -2,9 +2,8 @@
 #define  __GameWindowManager_Win32_GL_H__
 
 
-#include "GameWindowManager.hpp"
-#include <windows.h>		// Header File For Windows
-#include <mmsystem.h>
+#include "Graphics/GLGraphicsDevice.hpp"
+#include "GameWindowManager_Win32.hpp"
 #include <gl/gl.h>			// Header File For The OpenGL32 Library
 #include <gl/glu.h>			// Header File For The GLu32 Library
 #include "../base.hpp"
@@ -13,7 +12,7 @@
 extern LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM );
 
 
-class CGameWindowManager_Win32_GL : public CGameWindowManager
+class CGameWindowManager_Win32_GL : public CGameWindowManager_Win32
 {
 private:
 
@@ -21,7 +20,6 @@ private:
 
 	HDC			m_hDC;    /// Private GDI Device Context
 	HGLRC		m_hRC;    /// Permanent Rendering Context
-	HWND		m_hWnd;   /// Holds Our Window Handle
 	HINSTANCE	m_hInstance;   /// Holds The Instance Of The Application
 
 	std::string m_ClassName;
@@ -46,25 +44,13 @@ public:
 
 	void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );
 
-	HWND GetWindowHandle() { return m_hWnd; }
-
-	bool IsMouseCursorInClientArea();
-
-	/// do nothing in full screen mode
-	/// \param top-left corner of the window
-	void SetWindowLeftTopCornerPosition( int left, int top );
+	void OnMainLoopFinished();
 };
 
 
 inline CGameWindowManager_Win32_GL& GameWindowManager_Win32_GL()
 {
 	return CGameWindowManager_Win32_GL::ms_SingletonInstance_;
-}
-
-
-inline CGameWindowManager& GameWindowManager()
-{
-	return GameWindowManager_Win32_GL();
 }
 
 

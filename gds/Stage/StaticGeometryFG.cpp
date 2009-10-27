@@ -101,9 +101,7 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	m_pShaderManager->SetWorldTransform( matWorld );
+	m_pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 	// alpha-blending settings 
 /*	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
@@ -152,9 +150,9 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 	{
 		// bring near & far clip planes slightly forward
 		// to avoid z-fighting with ground objects
-		D3DXMATRIX matProj;
+		Matrix44 matProj;
 		float z_shift = rCamera.GetNearClip() * m_vecMeshGroup[i].m_fDepthShiftFactor; // 0.1f;
-		D3DXMatrixPerspectiveFovLH( &matProj, rCamera.GetFOV(), rCamera.GetAspectRatio(),
+		matProj = Matrix44PerspectiveFoV_LH( rCamera.GetFOV(), rCamera.GetAspectRatio(),
 			rCamera.GetNearClip() - z_shift, rCamera.GetFarClip() - z_shift );
 
 		m_pShaderManager->SetProjectionTransform( matProj );
@@ -170,7 +168,7 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 //			m_vecpMesh[mesh_index]->UpdateVisibility( rCamera );
 //			m_vecpMesh[mesh_index]->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 
-			CD3DXMeshObjectBase *pMesh = m_vecMesh[mesh_index].GetMesh().get();
+			CBasicMesh *pMesh = m_vecMesh[mesh_index].GetMesh().get();
 			pMesh->UpdateVisibility( rCamera );
 //			pMesh->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 			pMesh->Render( *m_pShaderManager );
@@ -200,7 +198,9 @@ void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
 	matWorld._43 = vPos.z;
 	matWorld._44 = 1;
 
-	m_pShaderManager->SetWorldTransform( matWorld );
+	Matrix44 world;
+	world.SetRowMajorMatrix44( (Scalar *)&matWorld );
+	m_pShaderManager->SetWorldTransform( world );
 
 	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
 	if( !pEffect )
@@ -235,12 +235,14 @@ void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
 
 bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int EffectFlag )
 {
-	D3DXMATRIX matWorld, matCamera, matProj;
-	D3DXMatrixIdentity( &matWorld );
-	rCamera.GetCameraMatrix( matCamera );
+	D3DXMATRIX matProj;
 	rCamera.GetProjectionMatrix( matProj );
 
-	m_pShaderManager->SetWorldViewProjectionTransform( matWorld, matCamera, matProj );
+	Matrix44 view, proj;
+	rCamera.GetCameraMatrix( view );
+	rCamera.GetProjectionMatrix( proj );
+
+	m_pShaderManager->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
@@ -267,7 +269,7 @@ bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int Effec
 		RenderTerrainMesh( rCamera );
 //	}
 	
-	m_pShaderManager->SetWorldViewProjectionTransform( matWorld, matCamera, matProj );
+	m_pShaderManager->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
 	return true;
 }

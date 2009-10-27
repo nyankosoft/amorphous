@@ -180,7 +180,10 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 //		else			pEffect->BeginPass( SHADER_PASS_ALPHA_BLEND_DEST_INVSRCALPHA );
 
 		pShaderManager->SetTexture( 0, m_AnimTexture.GetTexture() );
-		pShaderManager->SetWorldTransform( matWorld );
+
+		Matrix44 world;
+		world.SetRowMajorMatrix44( (Scalar *)&matWorld );
+		pShaderManager->SetWorldTransform( world );
 
 		pEffect->CommitChanges();
 	}

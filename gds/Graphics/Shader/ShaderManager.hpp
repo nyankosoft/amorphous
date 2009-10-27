@@ -8,6 +8,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "3DMath/Matrix34.hpp"
+#include "3DMath/Matrix44.hpp"
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
 
@@ -18,7 +19,6 @@
 #include "Support/stream_buffer.hpp"
 
 
-typedef D3DXMATRIX Matrix44;
 
 class CHLSLShaderLightManager;
 
@@ -116,7 +116,7 @@ public:
 
 	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
 
-	virtual HRESULT SetTexture( const int iStage, const CTextureHandle& texture ) { return E_FAIL; }
+	virtual Result::Name SetTexture( const int iStage, const CTextureHandle& texture ) { return Result::UNKNOWN_ERROR; }
 
 	virtual HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture ) { return E_FAIL; }
 
@@ -146,13 +146,99 @@ public:
 };
 
 
+class CD3DShaderManager : public CShaderManager
+{
+public:
+
+	virtual ~CD3DShaderManager() {}
+
+	inline void SetWorldTransform( const Matrix34& world_pose );
+
+	inline void SetWorldTransform( const Matrix44& matWorld ) { D3DXMATRIX m; matWorld.GetRowMajorMatrix44((Scalar *)&m); SetWorldTransform((Scalar *)m); }
+
+	inline void SetViewTransform( const Matrix44& matView ) { D3DXMATRIX m; matView.GetRowMajorMatrix44((Scalar *)&m); SetViewTransform((Scalar *)m); }
+
+	inline void SetProjectionTransform( const Matrix44& matProj ) { D3DXMATRIX m; matProj.GetRowMajorMatrix44((Scalar *)&m); SetProjectionTransform((Scalar *)m); }
+
+	inline void SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView );
+
+	inline void SetWorldViewProjectionTransform( const Matrix44& matWorld, const Matrix44& matView, const Matrix44& matProj );
+
+
+	inline void GetWorldTransform( Matrix44& matWorld ) const;
+
+	inline void GetViewTransform( Matrix44& matView ) const;
+
+
+	virtual void SetWorldTransform( const D3DXMATRIX& matWorld ) = 0;
+
+	virtual void SetViewTransform( const D3DXMATRIX& matView ) = 0;
+
+	virtual void SetProjectionTransform( const D3DXMATRIX& matProj ) = 0;
+
+	virtual void SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  ) = 0;
+
+	virtual void SetWorldViewProjectionTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView, const D3DXMATRIX& matProj ) = 0;
+
+	virtual void GetWorldTransform( D3DXMATRIX& matWorld ) const = 0;
+
+	virtual void GetViewTransform( D3DXMATRIX& matView ) const = 0;
+};
+
+
+//================================== inline implementations ==================================
+
+inline void CD3DShaderManager::SetWorldTransform( const Matrix34& world_pose )
+{
+	D3DXMATRIX matWorld;
+	world_pose.GetRowMajorMatrix44( matWorld );
+
+	SetWorldTransform( matWorld );
+}
+
+
+inline void CD3DShaderManager::SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView )
+{
+	D3DXMATRIX world, view;
+	matWorld.GetRowMajorMatrix44( (Scalar *)&world );
+	matView.GetRowMajorMatrix44( (Scalar *)&view );
+	SetWorldViewTransform( world, view );
+}
+
+
+inline void CD3DShaderManager::SetWorldViewProjectionTransform( const Matrix44& matWorld, const Matrix44& matView, const Matrix44& matProj )
+{
+	D3DXMATRIX world, view, proj;
+	matWorld.GetRowMajorMatrix44( (Scalar *)&world );
+	matView.GetRowMajorMatrix44( (Scalar *)&view );
+	matProj.GetRowMajorMatrix44( (Scalar *)&proj );
+	SetWorldViewProjectionTransform( world, view, proj );
+}
+
+
+inline void CD3DShaderManager::GetWorldTransform( Matrix44& matWorld ) const
+{
+	D3DXMATRIX world;
+	GetWorldTransform( world );
+	matWorld.SetRowMajorMatrix44( (Scalar *)&world );
+}
+
+
+inline void CD3DShaderManager::GetViewTransform( Matrix44& matView ) const
+{
+	D3DXMATRIX view;
+	GetViewTransform( view );
+	matView.SetRowMajorMatrix44( (Scalar *)&view );
+}
+
+
 /**
  - When created, automatically registers itself to HLSLShaderManagerHub
 
 
 
 */
-class CHLSLShaderManager : public CShaderManager
+class CHLSLShaderManager : public CD3DShaderManager
 {
 	enum eShaderConstParam
 	{
@@ -248,30 +334,13 @@ public:
 
 	inline LPD3DXEFFECT GetEffect() { return m_pEffect; }
 
-	inline void SetWorldTransform( const Matrix34& world_pose );
-
-	inline void SetWorldTransform( const Matrix44& matWorld );
-
-	inline void SetViewTransform( const Matrix44& matView );
-
-	inline void SetProjectionTransform( const Matrix44& matProj );
-
-	inline void SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  );
-
-	inline void SetWorldViewProjectionTransform( const Matrix44& matWorld, const Matrix44& matView, const Matrix44& matProj );
-
-
-	inline void GetWorldTransform( Matrix44& matWorld ) const;
-
-	inline void GetViewTransform( Matrix44& matView ) const;
-
 
 	inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition );
 
 
 	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
 
-	inline HRESULT SetTexture( const int iStage, const CTextureHandle& texture );
+	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
 
 	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
@@ -296,22 +365,26 @@ public:
 //	void SetTextureParam()
 
 	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+
+	inline void SetWorldTransform( const D3DXMATRIX& matWorld );
+
+	inline void SetViewTransform( const D3DXMATRIX& matView );
+
+	inline void SetProjectionTransform( const D3DXMATRIX& matProj );
+
+	inline void SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  );
+
+	inline void SetWorldViewProjectionTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView, const D3DXMATRIX& matProj );
+
+	inline void GetWorldTransform( D3DXMATRIX& matWorld ) const;
+
+	inline void GetViewTransform( D3DXMATRIX& matView ) const;
 };
 
 
 //================================== inline implementations ==================================
 
-
-inline void CHLSLShaderManager::SetWorldTransform( const Matrix34& world_pose )
-{
-	D3DXMATRIX matWorld;
-	world_pose.GetRowMajorMatrix44( matWorld );
-
-	SetWorldTransform( matWorld );
-}
-
-
-inline void CHLSLShaderManager::SetWorldTransform( const Matrix44& matWorld )
+inline void CHLSLShaderManager::SetWorldTransform( const D3DXMATRIX& matWorld )
 {
 //	m_pEffect->SetMatrix( "World", &matWorld );
 	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
@@ -337,7 +410,7 @@ inline void CHLSLShaderManager::SetWorldTransform( const Matrix44& matWorld )
 }
 
 
-inline void CHLSLShaderManager::SetViewTransform( const Matrix44& matView )
+inline void CHLSLShaderManager::SetViewTransform( const D3DXMATRIX& matView )
 {
 	m_pEffect->SetMatrix( "View", &matView );
 
@@ -357,7 +430,7 @@ inline void CHLSLShaderManager::SetViewTransform( const Matrix44& matView )
 	m_pEffect->SetMatrix( "WorldViewProj", &matProj );}
 
 
-inline void CHLSLShaderManager::SetProjectionTransform( const Matrix44& matProj )
+inline void CHLSLShaderManager::SetProjectionTransform( const D3DXMATRIX& matProj )
 {
 	m_pEffect->SetMatrix( "Proj", &matProj );
 
@@ -370,7 +443,7 @@ inline void CHLSLShaderManager::SetProjectionTransform( const Matrix44& matProj 
 }
 
 
-inline void CHLSLShaderManager::SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  )
+inline void CHLSLShaderManager::SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  )
 {
 	m_pEffect->SetMatrix( "World", &matWorld );
 
@@ -390,9 +463,9 @@ inline void CHLSLShaderManager::SetWorldViewTransform( const Matrix44& matWorld,
 }
 
 
-inline void CHLSLShaderManager::SetWorldViewProjectionTransform( const Matrix44& matWorld,
-															 const Matrix44& matView,
-															 const Matrix44& matProj )
+inline void CHLSLShaderManager::SetWorldViewProjectionTransform( const D3DXMATRIX& matWorld,
+															 const D3DXMATRIX& matView,
+															 const D3DXMATRIX& matProj )
 {
 	m_pEffect->SetMatrix( "World", &matWorld );
 	m_pEffect->SetMatrix( "View", &matView );
@@ -424,13 +497,13 @@ inline void CHLSLShaderManager::SetWorldViewProjectionTransform( const Matrix44&
 }
 
 
-inline void CHLSLShaderManager::GetWorldTransform( Matrix44& matWorld ) const
+inline void CHLSLShaderManager::GetWorldTransform( D3DXMATRIX& matWorld ) const
 {
 	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
 }
 
 
-inline void CHLSLShaderManager::GetViewTransform( Matrix44& matView ) const
+inline void CHLSLShaderManager::GetViewTransform( D3DXMATRIX& matView ) const
 {
 	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
 }
@@ -448,9 +521,10 @@ inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const LPDIRECT3
 }
 
 
-inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const CTextureHandle& texture )
+inline Result::Name CHLSLShaderManager::SetTexture( const int iStage, const CTextureHandle& texture )
 {
-	return m_pEffect->SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
+	HRESULT hr = m_pEffect->SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
 
@@ -498,6 +572,7 @@ inline Result::Name CHLSLShaderManager::SetTechnique( CShaderTechniqueHandle& te
 
 	return ( SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR );
 }
+
 
 
 #endif  /*  __HLSLShaderManager_HPP__  */

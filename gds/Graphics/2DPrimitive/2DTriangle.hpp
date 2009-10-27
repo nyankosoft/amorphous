@@ -124,7 +124,7 @@ inline void C2DTriangle::SetDefault()
 		m_avVertex[i].color = 0xff000000;		//opaque by default
 	}
 
-	m_DestAlphaBlend = D3DBLEND_INVSRCALPHA;
+	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;
 }
 
 

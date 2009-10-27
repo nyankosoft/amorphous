@@ -1,6 +1,6 @@
 #include "MeshBoneController_Aircraft.hpp"
 #include "MeshBoneControllerFactory.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
+#include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "PseudoAircraftSimulator.hpp"
 #include "XML/XMLNodeReader.hpp"
 
@@ -516,7 +516,7 @@ void CMeshBoneController_GearUnit::UpdateTransforms()
 }
 
 
-void CMeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<CD3DXSMeshObject> pTargetMesh )
+void CMeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh )
 {
 	CMeshBoneControllerBase::SetTargetMesh( pTargetMesh );
 

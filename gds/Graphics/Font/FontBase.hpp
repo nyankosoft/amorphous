@@ -5,6 +5,7 @@
 #include "../../base.hpp"
 #include "3DMath/Vector2.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/AlphaBlend.hpp"
 
 #include <string>
 
@@ -41,6 +42,8 @@ protected:
 
 	int m_TypeFlag;
 
+	AlphaBlend::Mode m_DestAlphaBlend;
+
 public:
 
 	enum FontType
@@ -57,7 +60,7 @@ public:
 		ITALIC	= (1 << 1),
 	};
 
-	CFontBase() : m_FontWidth(1), m_FontHeight(1), m_dwFontColor(0xFFFFFFFF), m_TypeFlag(0) {}
+	CFontBase() : m_FontWidth(1), m_FontHeight(1), m_dwFontColor(0xFFFFFFFF), m_TypeFlag(0), m_DestAlphaBlend(AlphaBlend::InvSrcAlpha) {}
 
 	virtual ~CFontBase() {};
 
@@ -76,6 +79,8 @@ public:
 	inline void SetFontColor( U32 color ) { m_dwFontColor = color; }
 
 	inline void SetFontColor( const SFloatRGBAColor& color ) { m_dwFontColor = color.GetARGB32(); }
+
+	void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) { m_DestAlphaBlend = mode; }
 
 	virtual void DrawText( const char *text, const Vector2& vPos, U32 color ) = 0;
 

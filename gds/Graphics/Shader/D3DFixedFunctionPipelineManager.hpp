@@ -4,14 +4,8 @@
 
 #include <d3dx9.h>
 #include <string>
-#include <boost/shared_ptr.hpp>
-
-#include "ShaderParameter.hpp"
-#include "ShaderManager.hpp"
-
 #include "../../base.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/TextureHandle.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 
 
@@ -25,7 +19,7 @@
 
 
 */
-class CD3DFixedFunctionPipelineManager : public CShaderManager
+class CD3DFixedFunctionPipelineManager : public CD3DShaderManager
 {
 /*	enum eShaderConstParam
 	{
@@ -79,28 +73,12 @@ public:
 
 	void Reload();
 
-	inline void SetWorldTransform( const Matrix44& matWorld );
-
-	inline void SetViewTransform( const Matrix44& matView );
-
-	inline void SetProjectionTransform( const Matrix44& matProj );
-
-	inline void SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  );
-
-	inline void SetWorldViewProjectionTransform( const Matrix44& matWorld, const Matrix44& matView, const Matrix44& matProj );
-
-
-	inline void GetWorldTransform( Matrix44& matWorld ) const;
-
-	inline void GetViewTransform( Matrix44& matView ) const;
-
-
 	inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition );
 
 
 	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
 
-	inline HRESULT SetTexture( const int iStage, const CTextureHandle& texture );
+	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
 
 	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
@@ -122,40 +100,61 @@ public:
 //	void SetTextureParam()
 
 //	boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
+
+	inline void SetWorldTransform( const D3DXMATRIX& matWorld );
+
+	inline void SetViewTransform( const D3DXMATRIX& matView );
+
+	inline void SetProjectionTransform( const D3DXMATRIX& matProj );
+
+	inline void SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  );
+
+	inline void SetWorldViewProjectionTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView, const D3DXMATRIX& matProj );
+
+	inline void GetWorldTransform( D3DXMATRIX& matWorld ) const;
+
+	inline void GetViewTransform( D3DXMATRIX& matView ) const;
 };
+
+
+inline CD3DFixedFunctionPipelineManager& D3DFixedFunctionPipelineManager()
+{
+	static CD3DFixedFunctionPipelineManager s_obj;
+	return s_obj;
+}
 
 
 //================================== inline implementations ==================================
 
 
-inline void CD3DFixedFunctionPipelineManager::SetWorldTransform( const Matrix44& matWorld )
+inline void CD3DFixedFunctionPipelineManager::SetWorldTransform( const D3DXMATRIX& matWorld )
 {
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 }
 
 
-inline void CD3DFixedFunctionPipelineManager::SetViewTransform( const Matrix44& matView )
+inline void CD3DFixedFunctionPipelineManager::SetViewTransform( const D3DXMATRIX& matView )
 {
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW, &matView );
 }
 
 
-inline void CD3DFixedFunctionPipelineManager::SetProjectionTransform( const Matrix44& matProj )
+inline void CD3DFixedFunctionPipelineManager::SetProjectionTransform( const D3DXMATRIX& matProj )
 {
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
 
 
-inline void CD3DFixedFunctionPipelineManager::SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  )
+inline void CD3DFixedFunctionPipelineManager::SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  )
 {
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW, &matView );
 }
 
 
-inline void CD3DFixedFunctionPipelineManager::SetWorldViewProjectionTransform( const Matrix44& matWorld,
-															 const Matrix44& matView,
-															 const Matrix44& matProj )
+inline void CD3DFixedFunctionPipelineManager::SetWorldViewProjectionTransform( const D3DXMATRIX& matWorld,
+															 const D3DXMATRIX& matView,
+															 const D3DXMATRIX& matProj )
 {
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD,      &matWorld );
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW,       &matView );
@@ -163,13 +162,13 @@ inline void CD3DFixedFunctionPipelineManager::SetWorldViewProjectionTransform( c
 }
 
 
-inline void CD3DFixedFunctionPipelineManager::GetWorldTransform( Matrix44& matWorld ) const
+inline void CD3DFixedFunctionPipelineManager::GetWorldTransform( D3DXMATRIX& matWorld ) const
 {
 	DIRECT3D9.GetDevice()->GetTransform( D3DTS_WORLD,      &matWorld );
 }
 
 
-inline void CD3DFixedFunctionPipelineManager::GetViewTransform( Matrix44& matView ) const
+inline void CD3DFixedFunctionPipelineManager::GetViewTransform( D3DXMATRIX& matView ) const
 {
 	DIRECT3D9.GetDevice()->GetTransform( D3DTS_VIEW, &matView );
 }
@@ -187,9 +186,10 @@ inline HRESULT CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, c
 }
 
 
-inline HRESULT CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, const CTextureHandle& texture )
+inline Result::Name CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, const CTextureHandle& texture )
 {
-	return DIRECT3D9.GetDevice()->SetTexture( iStage, texture.GetTexture() );
+	HRESULT hr = DIRECT3D9.GetDevice()->SetTexture( iStage, texture.GetTexture() );
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
 
@@ -213,8 +213,6 @@ inline void CD3DFixedFunctionPipelineManager::Begin()
 inline void CD3DFixedFunctionPipelineManager::End()
 {
 }
-
-
 
 
 /*

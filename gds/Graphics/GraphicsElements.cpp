@@ -604,6 +604,7 @@ void CTextElement::Draw()
 	// set texture stage states
 	// this is not necessary when the font is not a texture font
 	SetRenderStatesForTextureFont( m_DestAlphaBlendMode );
+	pFont->SetDestAlphaBlendMode( m_DestAlphaBlendMode );
 
 	pFont->SetFontColor( GetBlendedColor().GetARGB32() );
 
