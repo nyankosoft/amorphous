@@ -41,6 +41,8 @@ public:
 
 	inline virtual void SetVertexPosition( int vert_index, const float x, const float y );
 
+	inline virtual Vector2 GetRectVertexPosition( int rect_index, int vert_index );
+
 
 	/// texture coord
 
@@ -49,6 +51,10 @@ public:
 	inline virtual void SetTextureCoordMinMax( int rect_index, const TEXCOORD2& vMin, const TEXCOORD2& vMax );
 
 	inline virtual void SetRectVertexTextureCoord( int rect_index, int vert_index, float u, float v );
+
+	inline virtual TEXCOORD2 GetTopLeftTextureCoord( int rect_index );
+
+	inline virtual TEXCOORD2 GetBottomRightTextureCoord( int rect_index );
 
 
 	/// color
@@ -148,6 +154,13 @@ inline void C2DRectSetImpl_D3D::SetVertexPosition( int vert_index, const float x
 }
 
 
+inline Vector2 C2DRectSetImpl_D3D::GetRectVertexPosition( int rect_index, int vert_index )
+{
+	D3DXVECTOR2 v = m_vecRectVertex[rect_index * 4 + vert_index].vPosition;
+	return Vector2( v.x, v.y );
+}
+
+
 inline void C2DRectSetImpl_D3D::SetTextureCoordMinMax( int rect_index, float u_min, float v_min, float u_max, float v_max )
 {
 	const int offset = rect_index * 4;
@@ -176,6 +189,20 @@ inline void C2DRectSetImpl_D3D::SetRectVertexTextureCoord( int rect_index, int v
 	const int index = rect_index*4 + vert_index;
 	m_vecRectVertex[index].tu = u;
 	m_vecRectVertex[index].tv = v;
+}
+
+
+inline TEXCOORD2 C2DRectSetImpl_D3D::GetTopLeftTextureCoord( int rect_index )
+{
+	TLVERTEX v = m_vecRectVertex[rect_index*4];
+	return TEXCOORD2( v.tu, v.tv );
+}
+
+
+inline TEXCOORD2 C2DRectSetImpl_D3D::GetBottomRightTextureCoord( int rect_index )
+{
+	TLVERTEX v = m_vecRectVertex[rect_index*4 + 2]; // 3rd vertex is at the bottom right corner
+	return TEXCOORD2( v.tu, v.tv );
 }
 
 

@@ -66,11 +66,17 @@ protected:
 //	TLVERTEX m_avTextBox[NUM_MAX_LETTERS * 6];
 	C2DRectSet m_TextBox;
 
+	C2DRectSet m_ShadowTextBox;
+
 	/// used to store a group of text and draw them
 	/// with a single DrawPrimitiveUP() call
 	int m_CacheIndex;
 
 	float m_fItalic;	///< 1.0f == a letter slant by the width of one char
+
+	Vector2 m_vShadowShift;
+
+	SFloatRGBAColor m_ShadowColor;
 
 protected:
 
@@ -124,6 +130,13 @@ public:
 	void SetDefaultTextureStageStates();
 
 	void SetItalic( float italic_weight ) { m_fItalic = italic_weight; }
+
+	void SetShadowColor( SFloatRGBAColor shadow_color ) { m_ShadowColor = shadow_color; }
+
+	/// Sets the distance between shadow text and the body text
+	void SetShadowShift( Vector2 vShift ) { m_vShadowShift = vShift; }
+
+	void SetShadowShift( int x, int y ) { m_vShadowShift = Vector2((float)x,(float)y); }
 
 	virtual int GetFontType() const { return FONTTYPE_TEXTURE; }
 };

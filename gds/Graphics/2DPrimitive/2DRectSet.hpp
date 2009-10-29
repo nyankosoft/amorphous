@@ -36,6 +36,8 @@ public:
 
 	virtual void SetVertexPosition( int vert_index, const float x, const float y ) = 0;
 
+	virtual Vector2 GetRectVertexPosition( int rect_index, int vert_index ) = 0;
+
 
 	/// texture coord
 
@@ -44,6 +46,10 @@ public:
 	virtual void SetTextureCoordMinMax( int rect_index, const TEXCOORD2& vMin, const TEXCOORD2& vMax ) = 0;
 
 	virtual void SetRectVertexTextureCoord( int rect_index, int vert_index, float u, float v ) = 0;
+
+	virtual TEXCOORD2 GetTopLeftTextureCoord( int rect_index ) = 0;
+
+	virtual TEXCOORD2 GetBottomRightTextureCoord( int rect_index ) = 0;
 
 
 	/// color
@@ -117,6 +123,8 @@ public:
 
 	inline void SetVertexPosition( int vert_index, const float x, const float y );
 
+	Vector2 GetRectVertexPosition( int rect_index, int vert_index ) { return m_pImpl->GetRectVertexPosition( rect_index, vert_index ); }
+
 
 	/// texture coord
 
@@ -126,10 +134,16 @@ public:
 
 	inline void SetRectVertexTextureCoord( int rect_index, int vert_index, float u, float v );
 
+	TEXCOORD2 GetTopLeftTextureCoord( int rect_index ) { return m_pImpl->GetTopLeftTextureCoord( rect_index ); }
+
+	TEXCOORD2 GetBottomRightTextureCoord( int rect_index ) { return m_pImpl->GetBottomRightTextureCoord( rect_index ); }
+
 
 	/// color
 
 	inline void SetColor( U32 color );
+
+	inline void SetColor( const SFloatRGBAColor& color );
 
 	inline void SetRectColor( int rect_index, U32 color );
 
@@ -227,6 +241,13 @@ inline void C2DRectSet::SetTextureCoordMinMax( int rect_index, const TEXCOORD2& 
 inline void C2DRectSet::SetColor( U32 color )
 {
 	m_pImpl->SetColor( color );
+}
+
+
+inline void C2DRectSet::SetColor( const SFloatRGBAColor& color )
+{
+	U32 argb_color = color.GetARGB32();
+	m_pImpl->SetColor( argb_color );
 }
 
 

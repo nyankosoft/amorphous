@@ -56,8 +56,9 @@ public:
 
 	enum TypeFlag
 	{
-		BOLD	= (1 << 0),
-		ITALIC	= (1 << 1),
+		BOLD    = (1 << 0),
+		ITALIC  = (1 << 1),
+		SHADOW  = (1 << 2),
 	};
 
 	CFontBase() : m_FontWidth(1), m_FontHeight(1), m_dwFontColor(0xFFFFFFFF), m_TypeFlag(0), m_DestAlphaBlend(AlphaBlend::InvSrcAlpha) {}
@@ -127,6 +128,10 @@ public:
 		else
 			return (int)strlen(text) * GetFontWidth();
 	}
+
+	void SetFlags( U32 flags ) { m_TypeFlag = flags; }
+
+	U32 SetFlags() const { return m_TypeFlag; }
 
 	virtual int GetFontType() const = 0;
 };

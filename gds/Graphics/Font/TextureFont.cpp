@@ -67,7 +67,11 @@ void CTextureFont::InitInternal()
 */
 	m_fItalic = 0.0f;
 
+	m_vShadowShift = Vector2(3,3);
+
 	m_CacheIndex = 0;
+
+	SetShadowColor( SFloatRGBAColor::Black() );
 }
 
 
@@ -304,6 +308,32 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 		iVert += 6;
 	}
 
+//	m_vShadowShift = Vector2(3,3);
+	if( m_TypeFlag & CFontBase::SHADOW )
+	{
+		if( m_ShadowTextBox.GetNumRects() < num_total_letters )
+		{
+			m_ShadowTextBox.AddRects( num_total_letters - m_ShadowTextBox.GetNumRects() );
+			m_ShadowTextBox.SetColor( m_ShadowColor );
+		}
+
+		rect_index = m_CacheIndex;
+		const Vector2 vShift = m_vShadowShift;
+		for(int i=0; i<num_letters; i++, rect_index++)
+		{
+			for( int j=0; j<4; j++ )
+			{
+				m_ShadowTextBox.SetRectVertexPosition( rect_index, j,
+					m_TextBox.GetRectVertexPosition(rect_index,j) + Vector2(vShift.x,vShift.y) );
+			}
+
+			m_ShadowTextBox.SetTextureCoordMinMax( rect_index,
+				m_TextBox.GetTopLeftTextureCoord(rect_index),
+				m_TextBox.GetBottomRightTextureCoord(rect_index)
+				);
+		}
+	}
+
 //	for(int i=0; i<iVert; i++)
 //		m_avTextBox[i].color = dwColor;
 
@@ -347,6 +377,10 @@ void CTextureFont::DrawCachedText()
 //	pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLELIST, num_letters * 2, m_avTextBox, sizeof(TLVERTEX) );
 
 	m_TextBox.SetDestAlphaBlendMode( m_DestAlphaBlend );
+
+	if( m_TypeFlag & CFontBase::SHADOW )
+		m_ShadowTextBox.Draw( 0, num_letters, m_FontTexture );
+
 	m_TextBox.Draw( 0, num_letters, m_FontTexture );
 }
 
