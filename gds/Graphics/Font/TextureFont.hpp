@@ -3,6 +3,7 @@
 
 #include "FontBase.hpp"
 //#include "Graphics/FVF_TLVertex.h"
+#include "Graphics/fwd.hpp"
 #include "Graphics/AlphaBlend.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/TextureCoord.hpp"
@@ -82,6 +83,8 @@ protected:
 
 	void InitInternal();
 
+	bool InitCharacterRects();
+
 public:
 
 	CTextureFont();
@@ -100,6 +103,8 @@ public:
 	bool InitFont( const std::string texture_filename,
 		           int font_width, int font_height,
 		           int num_tex_divisions_x = 16, int num_tex_divisions_y = 8 );
+
+	bool InitFont( const CSimpleBitmapFontData& bitmap );
 
 	virtual void SetFontSize(int FontWidth, int FontHeight);
 
@@ -131,7 +136,7 @@ public:
 
 	void SetItalic( float italic_weight ) { m_fItalic = italic_weight; }
 
-	void SetShadowColor( SFloatRGBAColor shadow_color ) { m_ShadowColor = shadow_color; }
+	void SetShadowColor( const SFloatRGBAColor& shadow_color ) { m_ShadowColor = shadow_color; }
 
 	/// Sets the distance between shadow text and the body text
 	void SetShadowShift( Vector2 vShift ) { m_vShadowShift = vShift; }

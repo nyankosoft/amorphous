@@ -1,10 +1,13 @@
 #include "TextureFont.hpp"
+#include "SimpleBitmapFontData.hpp"
+#include "GrayscalePixelDataLoader.hpp"
 #include "Graphics/Direct3D9.hpp"
 
 #include <string.h>
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
+using namespace boost;
 
 
 const std::string CTextureFont::ms_Characters = " !\"#$%&'()*+,-./0123456789:;<=>?`ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~";
@@ -106,6 +109,12 @@ bool CTextureFont::InitFont( const std::string texture_filename,
 
 	SetFontSize( font_width, font_height );
 
+	return InitCharacterRects();
+}
+
+
+bool CTextureFont::InitCharacterRects()
+{
 //	base_char_height = 64;
 
 	float su, sv, eu, ev;
@@ -136,6 +145,43 @@ bool CTextureFont::InitFont( const std::string texture_filename,
 	}
 
 	return true;
+}
+
+
+bool CTextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
+{
+	CTextureResourceDesc desc;
+
+	const int grayscale_levels = 16;
+	desc.pLoader = shared_ptr<CTextureFillingAlgorithm>( new CGrayscaleImageLoader(
+		bitmap.m_Width,
+		bitmap.m_Height, 
+		bitmap.m_StartRow, 
+		bitmap.m_EndRow, 
+		bitmap.m_papTexelRow,
+		grayscale_levels ) );
+
+	string resource_name = "<CSimpleBitmapFontData name=\n" + string(bitmap.m_pName) + "\">";
+
+	desc.ResourcePath = resource_name;
+	desc.Width  = bitmap.m_Width;
+	desc.Height = bitmap.m_Height;
+	desc.Format = TextureFormat::A8R8G8B8;
+
+	bool result = m_FontTexture.Load( desc );
+	if( !result )
+	{
+		LOG_PRINT_ERROR( "Failed to load a font: " + resource_name );
+		return false;
+	}
+
+	m_NumTexDivisionsX = 16;
+	m_NumTexDivisionsY = 8;
+	m_strTextureFilename = resource_name;
+
+	SetFontSize( bitmap.m_Width / m_NumTexDivisionsX, bitmap.m_Height / m_NumTexDivisionsY );
+
+	return InitCharacterRects();
 }
 
 

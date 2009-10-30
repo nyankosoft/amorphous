@@ -133,6 +133,8 @@ public:
 
 	U32 SetFlags() const { return m_TypeFlag; }
 
+	virtual void SetShadowColor( const SFloatRGBAColor& shadow_color ) {}
+
 	virtual int GetFontType() const = 0;
 };
 
