@@ -54,25 +54,48 @@ public:
 };
 
 
+/**
+base class of mesh implementation
+- Derived by implementation classes of Direct3D and OpenGL
+- Platform independent attributes are stored here.
+*/
 class CMeshImpl
 {
 protected:
 
 	std::string m_strFilename;
 
-	/// bounding box of the mesh
-	AABB3 m_AABB;
-
-	std::vector<AABB3> m_vecAABB;	///< aabb for each triangle subset
-
 	/// Number of materials
 	int m_NumMaterials;
 
+	/// materials for each subset
 	std::vector<CMeshMaterial> m_vecMaterial;
+
+	/// Holds material indices
+	/// The values are always set to [0,m_NumMaterials-1]
+	/// Used to avoid dynamic memory allocation in RenderSubsets()
+	std::vector<int> m_vecFullMaterialIndices;
+
+	/// bounding box of the mesh
+	AABB3 m_AABB;
+
+	/// aabb for each subset
+	std::vector<AABB3> m_vecAABB;
+
+	/// enable / disable visibility clipping based on view frustum test.
+	/// If true, user is responsible for calling UpdateVisibility( const CCamera& camera )
+	/// every time the mesh is rendered.
+	bool m_bViewFrustumTest;
+
+	/// visibility flag for the mesh and subsets
+	/// 1 visible / 0: not visible
+	/// All elements are set to 1(visible) by default
+	std::vector<int> m_IsVisible;
 
 protected:
 
-	Result::Name LoadMaterials( C3DMeshModelArchive& rArchive, U32 option_flags );
+	/// Loads materials and aabbs. Also initializes m_IsVisible.
+	Result::Name LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags );
 
 public:
 

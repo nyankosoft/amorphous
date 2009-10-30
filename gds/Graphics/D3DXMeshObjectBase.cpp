@@ -16,8 +16,6 @@
 #include "Support/Profile.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Macro.h"
-#include "Support/fnop.hpp"
-using namespace fnop;
 
 #include <boost/filesystem.hpp>
 
@@ -117,56 +115,41 @@ bool CD3DXMeshObjectBase::LoadFromFile( const std::string& filename, U32 option_
 }
 
 
-void CD3DXMeshObjectBase::InitMaterials( int num_materials )
+bool CD3DXMeshObjectBase::LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags )
 {
-	m_NumMaterials = num_materials;
+	Result::Name res = LoadMaterialsFromArchive( rArchive, option_flags );
+
+	return (res == Result::SUCCESS) ? true : false;
+}
+
+
+#define NUM_MAX_VERTEX_ELEMENTS 64
+
+
+bool CD3DXMeshObjectBase::CreateVertexDeclaration()
+{
+//	if( m_paVertexElements )
+	if( m_paVertexElements )
+	{
+		HRESULT hr = DIRECT3D9.GetDevice()->CreateVertexDeclaration( m_paVertexElements, &m_pVertexDecleration );
+		return SUCCEEDED(hr) ? true : false;
+	}
+	else
+		return false;
+}
+
+
+HRESULT CD3DXMeshObjectBase::LoadD3DMaterialsFromArchive( C3DMeshModelArchive& archive )
+{
+	const vector<CMMA_Material>& rvecSrcMaterial = archive.GetMaterial();
+
+	m_NumMaterials = (int)rvecSrcMaterial.size();
+	if( m_NumMaterials == 0 )
+		return E_FAIL;
 
 	SafeDeleteArray( m_pMeshMaterials );
 	m_pMeshMaterials = new D3DMATERIAL9[m_NumMaterials];
 
-	m_vecMaterial.resize( m_NumMaterials );
-
-	// create list of material indices
-	// - used by Render() to render all the materials in the default order
-	m_vecFullMaterialIndices.resize( m_NumMaterials );
-	for( int i=0; i<m_NumMaterials; i++ )
-		m_vecFullMaterialIndices[i] = i;
-}
-
-
-bool CD3DXMeshObjectBase::LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags )
-{
-	HRESULT hr = LoadMaterialsFromArchive( rArchive, option_flags );
-	return SUCCEEDED(hr) ? true : false;
-}
-
-
-HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags )
-{
-	m_AABB = rArchive.GetAABB();
-	vector<CMMA_Material>& rvecSrcMaterial = rArchive.GetMaterial();
-
-	InitMaterials( (int)rvecSrcMaterial.size() );
-
-	// load AABBs that represent bounding boxes for each triangle set
-	m_vecAABB.resize(m_NumMaterials);
-	for( int mat=0; mat < m_NumMaterials; mat++ )
-		m_vecAABB[mat] = rArchive.GetTriangleSet()[mat].m_AABB;
-
-	// all triangle sets are set visible by default
-	m_IsVisible.resize( m_NumMaterials + 1, 1 );
-
-	string tex_filename;
-
-	// push the current working directory to the directory stack
-//	dir_stack dirstk( get_path(m_strFilename) );
-
-	// save the current working directory
-//	string orig_dir = fnop::get_cwd();
-	// set the abs path of the mesh file as the working directory
-//	fnop::set_wd( fnop::get_path( m_strFilename ) );
-
-	bool loaded = false;
 	for( int i=0; i<m_NumMaterials; i++ )
 	{
 		memset( &m_pMeshMaterials[i], 0, sizeof(D3DMATERIAL9) );
@@ -186,117 +169,9 @@ HRESULT CD3DXMeshObjectBase::LoadMaterialsFromArchive( C3DMeshModelArchive& rArc
 		m_pMeshMaterials[i].Ambient.g = 0.25f;
 		m_pMeshMaterials[i].Ambient.b = 0.25f;
 		m_pMeshMaterials[i].Ambient.a = 1.00f;
-
-		// name
-
-		m_vecMaterial[i].Name = rvecSrcMaterial[i].Name;
-
-		// texture(s)
-
-		const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();
-
-		m_vecMaterial[i].Texture.resize( num_textures );
-		m_vecMaterial[i].TextureDesc.resize( num_textures );
-
-		for( size_t tex=0; tex<num_textures; tex++ )
-		{
-			CMMA_Texture& texture_archive = rvecSrcMaterial[i].vecTexture[tex];
-			tex_filename = texture_archive.strFilename;
-			if( 0 < tex_filename.length() )
-			{
-				string tex_filepath;
-				if( 4 < tex_filename.length() // valid shortest abs. path filename - "C:/a"
-					&& tex_filename[1] == ':'
-					&& tex_filename[2] != ':' ) // rule out database resource name - e.g., "a::b"
-				{
-					// absolute path
-					tex_filepath = tex_filename;
-				}
-				else if( tex_filename.find( "::" ) != string::npos
-					  && tex_filename.find( "::" ) != 0 )
-				{
-					// database::keyname
-					tex_filepath = tex_filename;
-				}
-				else
-				{
-					// relative apth
-//					tex_filepath = fnop::get_cwd() + "/" + tex_filename;
-					path filepath = path(m_strFilename).parent_path() / tex_filename;
-					tex_filepath = filepath.string();
-				}
-
-				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
-			}
-			else if( texture_archive.type == CMMA_Texture::SINGLECOLOR
-				&& 0 < texture_archive.vecfTexelData.size_x() )
-			{
-				m_vecMaterial[i].TextureDesc[tex].pLoader
-					= shared_ptr<CSignleColorTextureFilling>(
-					new CSignleColorTextureFilling( texture_archive.vecfTexelData(0,0) ) );
-
-				m_vecMaterial[i].TextureDesc[tex].Width  = texture_archive.vecfTexelData.size_x();
-				m_vecMaterial[i].TextureDesc[tex].Height = texture_archive.vecfTexelData.size_y();
-
-				// TODO: define a function to set texture resource id string
-				static int s_texcount = 0;
-				m_vecMaterial[i].TextureDesc[tex].ResourcePath
-					= "<Texture>" + to_string(s_texcount);
-
-			}
-
-			if( m_vecMaterial[i].TextureDesc[tex].IsValid() )
-			{
-				if( option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES )
-				{
-				}
-				else if( option_flags & MeshLoadOption::LOAD_TEXTURES_ASYNC )
-				{
-					// start the asynchronous loading now
-//					m_vecMaterial[i].TextureDesc[tex].vecpGroup = vecpGroup;
-					m_vecMaterial[i].TextureDesc[tex].LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
-					m_vecMaterial[i].Texture[tex].Load( m_vecMaterial[i].TextureDesc[tex] );
-				}
-				else
-				{
-					// load texture(s) now
-					m_vecMaterial[i].TextureDesc[tex].LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
-					loaded = m_vecMaterial[i].Texture[tex].Load( m_vecMaterial[i].TextureDesc[tex] );
-				}
-			}
-		}
-
-/*		if( !bLoaded )
-		{	// texture file was not found - create default white texture 
-			DWORD dwColor = 0xFFFFFFFF;
-			CTextureTool::CreateTexture( &dwColor, 1, 1, &(m_paMaterial[i].m_pSurfaceTexture) );
-		}*/
-
-		// set minimum alpha
-		m_vecMaterial[i].fMinVertexDiffuseAlpha = rvecSrcMaterial[i].fMinVertexDiffuseAlpha;
 	}
-
-	// back to the original working directory
-//	dirstk.prevdir();
-//	fnop::set_wd( orig_dir );
 
 	return S_OK;
-}
-
-
-#define NUM_MAX_VERTEX_ELEMENTS 64
-
-
-bool CD3DXMeshObjectBase::CreateVertexDeclaration()
-{
-//	if( m_paVertexElements )
-	if( m_paVertexElements )
-	{
-		HRESULT hr = DIRECT3D9.GetDevice()->CreateVertexDeclaration( m_paVertexElements, &m_pVertexDecleration );
-		return SUCCEEDED(hr) ? true : false;
-	}
-	else
-		return false;
 }
 
 
@@ -350,6 +225,13 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 	SafeDeleteArray( pSrcVBData );
 
 	FillIndexBuffer( pMesh, archive );
+
+	// load materials (platform-independent)
+	// - Need to allocate texturse before calling LoadD3DMaterialsFromArchive().
+	LoadMaterialsFromArchive( archive, 0 );
+
+	// load materials (D3D-specific)
+	LoadD3DMaterialsFromArchive( archive );
 
 	return pMesh;
 }
@@ -600,11 +482,15 @@ void CD3DXMeshObjectBase::LoadVertices( void*& pVBData,
 HRESULT CD3DXMeshObjectBase::LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num_materials )
 {
 	// allocate material buffers, etc.
-	InitMaterials( num_materials );
+//	InitMaterials( num_materials );
 
-	// Change the current directory to the mesh's directory so that we can
-	// find the textures with relative paths.
-	dir_stack dirstk( get_path(m_strFilename) );
+	m_NumMaterials = num_materials;
+
+	if( m_vecMaterial.size() == 0 )
+		m_vecMaterial.resize( num_materials );
+
+	SafeDeleteArray( m_pMeshMaterials );
+	m_pMeshMaterials = new D3DMATERIAL9 [m_NumMaterials];
 
 	// Copy the materials and load the textures
 	for( int i = 0; i < m_NumMaterials; i++ )
@@ -616,13 +502,10 @@ HRESULT CD3DXMeshObjectBase::LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num
 
 		if( d3dxMaterials[i].pTextureFilename )
 		{
-			string tex_filename = d3dxMaterials[i].pTextureFilename;
-			m_vecMaterial[i].Texture[0].Load( tex_filename );
+			path tex_filepath = path(m_strFilename).parent_path() / string(d3dxMaterials[i].pTextureFilename);
+			m_vecMaterial[i].Texture[0].Load( tex_filepath.string() );
 		}
 	}
-
-	// restore the original directory
-	dirstk.prevdir();
 
 	return S_OK;
 }

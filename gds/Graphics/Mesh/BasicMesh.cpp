@@ -1,11 +1,23 @@
 #include "BasicMesh.hpp"
-#include <gds/Support/fnop.hpp>
 #include <gds/Graphics/D3DXMeshObjectBase.hpp>
-using namespace fnop;
-
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
+
+
+void SetSingleColorTextureDesc( CTextureResourceDesc& desc,
+							   const SFloatRGBAColor& color = SFloatRGBAColor::White(),
+							   int tex_width = 1,
+							   int tex_height = 1 )
+{
+	desc.Width  = tex_width;
+	desc.Height = tex_height;
+	desc.Format = TextureFormat::A8R8G8B8;
+	desc.pLoader = shared_ptr<CTextureFillingAlgorithm>( new CSignleColorTextureFilling(SFloatRGBAColor::White()) );
+}
+
 
 
 //=============================================================================
@@ -30,60 +42,45 @@ void CMeshMaterial::LoadTextureAsync( int i )
 
 CMeshImpl::CMeshImpl()
 :
-m_NumMaterials(0)
+m_NumMaterials(0),
+m_bViewFrustumTest(false)
 {
 }
 
 
-Result::Name CMeshImpl::LoadMaterials( C3DMeshModelArchive& rArchive, U32 option_flags )
+Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags )
 {
-	m_AABB = rArchive.GetAABB();
-	vector<CMMA_Material>& rvecSrcMaterial = rArchive.GetMaterial();
+	const vector<CMMA_Material>& rvecSrcMaterial = rArchive.GetMaterial();
+
+//	InitMaterials( (int)rvecSrcMaterial.size() );
 
 	m_NumMaterials = (int)rvecSrcMaterial.size();
 	m_vecMaterial.resize( m_NumMaterials );
 
-/*	InitMaterials( (int)rvecSrcMaterial.size() );
+	// create list of material indices
+	// - used by Render() to render all the materials in the default order
+	m_vecFullMaterialIndices.resize( m_NumMaterials );
+	for( int i=0; i<m_NumMaterials; i++ )
+		m_vecFullMaterialIndices[i] = i;
 
-	// load AABBs that represent bounding boxes for each triangle set
+	// load AABBs
+	m_AABB = rArchive.GetAABB(); // aabb for the mesh
 	m_vecAABB.resize(m_NumMaterials);
 	for( int mat=0; mat < m_NumMaterials; mat++ )
-		m_vecAABB[mat] = rArchive.GetTriangleSet()[mat].m_AABB;
+		m_vecAABB[mat] = rArchive.GetTriangleSet()[mat].m_AABB; // AABBs that represent bounding boxes for each triangle set
 
 	// all triangle sets are set visible by default
 	m_IsVisible.resize( m_NumMaterials + 1, 1 );
-*/
+
 	string tex_filename;
-
-	// push the current working directory to the directory stack
-	dir_stack dirstk( get_path(m_strFilename) );
-
-	// save the current working directory
-//	string orig_dir = fnop::get_cwd();
-	// set the abs path of the mesh file as the working directory
-//	fnop::set_wd( fnop::get_path( m_strFilename ) );
 
 	bool loaded = false;
 	for( int i=0; i<m_NumMaterials; i++ )
 	{
-/*		memset( &m_pMeshMaterials[i], 0, sizeof(D3DMATERIAL9) );
+		// name
 
-		float specular = rvecSrcMaterial[i].fSpecular;
-		m_pMeshMaterials[i].Specular.r = specular;
-		m_pMeshMaterials[i].Specular.g = specular;
-		m_pMeshMaterials[i].Specular.b = specular;
-		m_pMeshMaterials[i].Specular.a = specular;
+		m_vecMaterial[i].Name = rvecSrcMaterial[i].Name;
 
-		m_pMeshMaterials[i].Diffuse.r = 1.0f;
-		m_pMeshMaterials[i].Diffuse.g = 1.0f;
-		m_pMeshMaterials[i].Diffuse.b = 1.0f;
-		m_pMeshMaterials[i].Diffuse.a = 1.0f;
-
-		m_pMeshMaterials[i].Ambient.r = 0.25f;
-		m_pMeshMaterials[i].Ambient.g = 0.25f;
-		m_pMeshMaterials[i].Ambient.b = 0.25f;
-		m_pMeshMaterials[i].Ambient.a = 1.00f;
-*/
 		// texture(s)
 
 		const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();
@@ -93,7 +90,7 @@ Result::Name CMeshImpl::LoadMaterials( C3DMeshModelArchive& rArchive, U32 option
 
 		for( size_t tex=0; tex<num_textures; tex++ )
 		{
-			CMMA_Texture& texture_archive = rvecSrcMaterial[i].vecTexture[tex];
+			const CMMA_Texture& texture_archive = rvecSrcMaterial[i].vecTexture[tex];
 			tex_filename = texture_archive.strFilename;
 			if( 0 < tex_filename.length() )
 			{
@@ -105,14 +102,40 @@ Result::Name CMeshImpl::LoadMaterials( C3DMeshModelArchive& rArchive, U32 option
 					// absolute path
 					tex_filepath = tex_filename;
 				}
+				else if( tex_filename.find( "::" ) != string::npos
+					  && tex_filename.find( "::" ) != 0 )
+				{
+					// database::keyname
+					tex_filepath = tex_filename;
+				}
 				else
 				{
 					// relative apth
-					tex_filepath = fnop::get_cwd() + "/" + tex_filename;
+					path filepath = path(m_strFilename).parent_path() / tex_filename;
+					tex_filepath = filepath.string();
 				}
 
 				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
+			}
+			else if( texture_archive.type == CMMA_Texture::SINGLECOLOR
+				&& 0 < texture_archive.vecfTexelData.size_x() )
+			{
+				m_vecMaterial[i].TextureDesc[tex].pLoader
+					= shared_ptr<CSignleColorTextureFilling>(
+					new CSignleColorTextureFilling( texture_archive.vecfTexelData(0,0) ) );
 
+				m_vecMaterial[i].TextureDesc[tex].Width  = texture_archive.vecfTexelData.size_x();
+				m_vecMaterial[i].TextureDesc[tex].Height = texture_archive.vecfTexelData.size_y();
+
+				// TODO: define a function to set texture resource id string
+				static int s_texcount = 0;
+				m_vecMaterial[i].TextureDesc[tex].ResourcePath
+					= "<Texture>" + to_string(s_texcount);
+
+			}
+
+			if( m_vecMaterial[i].TextureDesc[tex].IsValid() )
+			{
 				if( option_flags & MeshLoadOption::DO_NOT_LOAD_TEXTURES )
 				{
 				}
@@ -126,24 +149,20 @@ Result::Name CMeshImpl::LoadMaterials( C3DMeshModelArchive& rArchive, U32 option
 				else
 				{
 					// load texture(s) now
-					loaded = m_vecMaterial[i].Texture[tex].Load( tex_filepath );
+					m_vecMaterial[i].TextureDesc[tex].LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
+					loaded = m_vecMaterial[i].Texture[tex].Load( m_vecMaterial[i].TextureDesc[tex] );
+/*					if( !loaded )
+					{
+						SetSingleColorTextureDesc( m_vecMaterial[i].TextureDesc[tex], SFloatRGBAColor::White() );
+						m_vecMaterial[i].Texture[tex].Load( m_vecMaterial[i].TextureDesc[tex] );
+					}*/
 				}
 			}
 		}
 
-/*		if( !bLoaded )
-		{	// texture file was not found - create default white texture 
-			DWORD dwColor = 0xFFFFFFFF;
-			CTextureTool::CreateTexture( &dwColor, 1, 1, &(m_paMaterial[i].m_pSurfaceTexture) );
-		}*/
-
 		// set minimum alpha
 		m_vecMaterial[i].fMinVertexDiffuseAlpha = rvecSrcMaterial[i].fMinVertexDiffuseAlpha;
 	}
-
-	// back to the original working directory
-	dirstk.prevdir();
-//	fnop::set_wd( orig_dir );
 
 	return Result::SUCCESS;
 }

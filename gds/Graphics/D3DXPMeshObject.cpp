@@ -135,7 +135,7 @@ bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 
 	LPD3DXMESH pMesh = LoadD3DXMeshFromArchive( archive );
 
-	hr = LoadMaterialsFromArchive( archive, option_flags );
+	Result::Name res = LoadMaterialsFromArchive( archive, option_flags );
 
 	hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
 

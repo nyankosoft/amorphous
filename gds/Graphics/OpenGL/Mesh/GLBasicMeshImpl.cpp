@@ -150,7 +150,7 @@ bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 		return false;
 */
 	// load surface materials & textures
-	LoadMaterials( archive, option_flags );
+	LoadMaterialsFromArchive( archive, option_flags );
 
 /*	hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
 

@@ -2,19 +2,9 @@
 #define  __D3DXMESHOBJECTBASE_H__
 
 
-#include <vector>
-#include <string>
-
-#include "3DMath/AABB3.hpp"
 #include "3DMath/Sphere.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/Shader/ShaderTechniquehandle.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
-
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+#include "Graphics/Direct3D9.hpp"
 
 
 extern void LoadVerticesForD3DXMesh( const CMMA_VertexSet& rVertexSet,                // [in]
@@ -47,29 +37,11 @@ public:
 */
 class CD3DXMeshObjectBase : public CMeshImpl
 {
-private:
-
-	std::vector<int> m_vecFullMaterialIndices;
-
 protected:
-
-	// platform independent attributes
-
-	std::string m_strFilename;
 
 	/// bounding sphere in local space of the model
 	/// - Each implementation must properly initialize the sphere
 	Sphere m_LocalShpere;
-
-	/// visibility flag for each triangle set
-	/// 1 visible / 0: not visible
-	/// all elements set to 1 by default
-	std::vector<int> m_IsVisible;
-
-	/// enable / disable visibility clipping based on view frustum test.
-	/// If true, user is responsible for calling UpdateVisibility( const CCamera& camera )
-	/// every time the mesh is rendered.
-	bool m_bViewFrustumTest;
 
 
 	// D3D attributes
@@ -91,16 +63,11 @@ protected:
 
 private:
 
-	/// allocate material buffers, etc.
-	void InitMaterials( int num_materials );
-
 protected:
 
 	virtual void LoadVertices( void*& pVBData, C3DMeshModelArchive& archive );
 
 	HRESULT LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num_materials );
-
-	HRESULT LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags );
 
 //	virtual const D3DVERTEXELEMENT9 *GetVertexElemenets( CMMA_VertexSet& rVertexSet );
 
@@ -108,6 +75,8 @@ protected:
 
 	/// materials must be loaded before calling this method
 	HRESULT SetAttributeTable( LPD3DXMESH pMesh, const vector<CMMA_TriangleSet>& vecTriangleSet );
+
+	HRESULT LoadD3DMaterialsFromArchive( C3DMeshModelArchive& archive );
 
 	/// Synchronously load D3DXMesh
 	LPD3DXMESH LoadD3DXMeshFromArchive( C3DMeshModelArchive& archive );
@@ -184,8 +153,6 @@ public:
 
 
 	inline bool IsMeshVisible() const { return m_IsVisible[m_NumMaterials]==1 ? true : false; }
-
-	inline CTextureHandle& GetTexture( int material_index, int tex_index );
 
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
@@ -267,15 +234,8 @@ inline CD3DXMeshObjectBase::CD3DXMeshObjectBase()
 m_pMeshMaterials(NULL),
 m_iVertexSize(0),
 m_paVertexElements(NULL),
-m_pVertexDecleration(NULL),
-m_bViewFrustumTest(false)
+m_pVertexDecleration(NULL)
 {
-}
-
-
-inline CTextureHandle& CD3DXMeshObjectBase::GetTexture( int material_index, int tex_index )
-{
-	return m_vecMaterial[material_index].Texture[tex_index];
 }
 
 
