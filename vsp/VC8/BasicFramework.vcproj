@@ -993,6 +993,14 @@
 				Name="Font"
 				>
 				<File
+					RelativePath="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\Font\Font.cpp"
 					>
 				</File>
@@ -1002,6 +1010,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\Font\FontBase.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Font\GrayscalePixelDataLoader.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Font\SimpleBitmapFontData.hpp"
 					>
 				</File>
 				<File
