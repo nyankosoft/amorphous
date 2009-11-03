@@ -174,7 +174,7 @@ public:
 							const std::string& entity_attributes_name = "" );
 */
 	/// Creates a static triangle mesh actor from a graphics mesh file
-	CEntityHandle<> CreateStaticTriangleMeshFromMesh( const char *mesh_resource_name,
+	CEntityHandle<> CreateStaticTriangleMeshFromMesh( const char *mesh_resource_path,
 		                    const char *collision_mesh_name,
 							const Matrix34& pose = Matrix34Identity(),
 							const std::string& material_name = "default",
@@ -182,7 +182,7 @@ public:
 							const std::string& entity_attributes_name = "" );
 
 	/// Creates a triangle mesh actor from a graphics mesh file
-	CEntityHandle<> CreateTriangleMeshFromMesh( const char *mesh_resource_name,
+	CEntityHandle<> CreateTriangleMeshFromMesh( const char *mesh_resource_path,
 		                    const char *collision_mesh_name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,

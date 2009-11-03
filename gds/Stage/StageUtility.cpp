@@ -309,7 +309,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_name,//const std::string& mesh_resource_path,
+CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_path,//const std::string& mesh_resource_path,
 					    const Matrix34& pose,
 						const float mass,
 					    const std::string& material_name,
@@ -323,7 +323,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromMesh__";
 
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.ResourcePath = mesh_resource_name;
+	mesh_desc.ResourcePath = mesh_resource_path;
 
 	Vector3 vel = Vector3(0,0,0);
 
@@ -341,7 +341,7 @@ Result::Name CStageMiscUtility::SetTriangleMeshShapeDesc( const char *collision_
 	if( coll_mesh_loaded )
 	{
 		// copy indices
-/*		uint num_indices = coll_mesh.GetVertexIndex().size();
+		uint num_indices = coll_mesh.GetVertexIndex().size();
 		trimeshdesc.m_vecIndex.resize( num_indices );
 		for( int i=0; i<num_indices; i++ )
 			trimeshdesc.m_vecIndex[i] = (int)coll_mesh.GetVertexIndex()[i];
@@ -352,16 +352,6 @@ Result::Name CStageMiscUtility::SetTriangleMeshShapeDesc( const char *collision_
 //		trimeshdesc.m_vecMaterialIndex = ???
 		int mat_index = 0;
 		trimeshdesc.m_vecMaterialIndex.resize( num_indices / 3, mat_index );
-	*/
-		trimeshdesc.m_vecIndex.resize( 3 );
-		trimeshdesc.m_vecIndex[0] = 0;
-		trimeshdesc.m_vecIndex[1] = 1;
-		trimeshdesc.m_vecIndex[2] = 2;
-		trimeshdesc.m_vecVertex.resize( 3 );
-		trimeshdesc.m_vecVertex[0] = Vector3( 0,0,3);
-		trimeshdesc.m_vecVertex[1] = Vector3( 1,0,0);
-		trimeshdesc.m_vecVertex[2] = Vector3(-1,0,0);
-		trimeshdesc.m_vecMaterialIndex.resize( 1, 0 );
 	}
 
 	shared_ptr<CStage> pStage = m_pStage.lock();
@@ -386,7 +376,7 @@ Result::Name CStageMiscUtility::SetTriangleMeshShapeDesc( const char *collision_
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char *mesh_resource_name,
+CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char *mesh_resource_path,
 						const char *collision_mesh_name,
 						const Matrix34& pose,
 						float mass,
@@ -395,6 +385,15 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char 
 						const std::string& entity_attributes_name,
 						bool static_actor )
 {
+	if( !collision_mesh_name || strlen(collision_mesh_name) == 0 )
+	{
+		if( mesh_resource_path && 0 < strlen(mesh_resource_path) )
+		{
+			// Use the graphisc mesh as the collision geometry
+			collision_mesh_name = mesh_resource_path;
+		}
+	}
+
 	// create shape desc for collision mesh
 	CTriangleMeshShapeDesc trimeshshapedesc;
 	SetTriangleMeshShapeDesc( collision_mesh_name, trimeshshapedesc );
@@ -402,7 +401,7 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char 
 	vecpShapeDesc.push_back( &trimeshshapedesc );
 
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.ResourcePath = mesh_resource_name;
+	mesh_desc.ResourcePath = mesh_resource_path;
 
 	return CreatePhysicsEntity(
 		mesh_desc,
@@ -416,7 +415,7 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char 
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char *mesh_resource_name,
+CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char *mesh_resource_path,
 						const char *collision_mesh_name,
 						const Matrix34& pose,
 						const std::string& material_name,
@@ -426,7 +425,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char 
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__TriangleMeshFromMesh__";
 
 	return CreateTriangleMeshEntityFromMesh(
-		mesh_resource_name,
+		mesh_resource_path,
 		collision_mesh_name,
 		pose,
 		0.0f,
@@ -453,7 +452,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char 
 
 
 /// Creates a triangle mesh actor from a graphics mesh file
-CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_resource_name,
+CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_resource_path,
 						const char *collision_mesh_name,
 						const Matrix34& pose,
 						float mass,
@@ -464,7 +463,7 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__TriangleMeshFromMesh__";
 
 	return CreateTriangleMeshEntityFromMesh(
-		mesh_resource_name,
+		mesh_resource_path,
 		collision_mesh_name,
 		pose,
 		mass,
