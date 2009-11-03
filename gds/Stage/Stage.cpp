@@ -140,6 +140,14 @@ bool CStage::InitPhysicsManager()
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_NOCLIP,		false );
 */
 
+	// Register a material as a default
+	CMaterialDesc mat_desc;
+	mat_desc.StaticFriction  = 1.5f;
+	mat_desc.DynamicFriction = 1.2f;
+	mat_desc.Restitution     = 0.5f;
+	physics::CMaterial *pDefaultMaterial = m_pPhysicsScene->CreateMaterial( mat_desc );
+	int mat_id = pDefaultMaterial->GetMaterialID();
+
 //	MsgBoxFmt( "physics visualizer created: %d", m_pPhysicsVisualizer );
 
 	return true;

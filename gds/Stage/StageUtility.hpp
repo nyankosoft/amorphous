@@ -90,14 +90,35 @@ public:
 
 class CStageMiscUtility : public CStageUtility
 {
-	CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc,
+	CEntityHandle<> CreatePhysicsEntity( CMeshResourceDesc& mesh_desc,
+								  const std::string& entity_name,
+								  const std::string& entity_attributes_name,
+								  const Matrix34& pose,
+								  const Vector3& vel,
+								  std::vector<physics::CShapeDesc *>& vecpShapeDesc,
+								  float mass,
+								  bool static_actor );
+
+	CEntityHandle<> CreateBoxEntity( CMeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
 								  const Vector3& vel,
 								  float mass,
+								  const std::string& material_name,
 								  bool static_actor );
 
+	CEntityHandle<> CreateTriangleMeshEntityFromMesh( const char *mesh_resource_name,
+							const char *collision_mesh_name,
+							const Matrix34& pose,
+							float mass,
+							const std::string& material_name,
+							const std::string& entity_name,
+							const std::string& entity_attributes_name,
+							bool static_actor );
+
+	Result::Name SetTriangleMeshShapeDesc( const char *collision_mesh_name,
+		physics::CTriangleMeshShapeDesc& trimeshshapedesc );
 public:
 
 	/// default ctor. Added to compile this code with boost::python.
@@ -112,18 +133,60 @@ public:
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
 		float mass = 1.0f,
+		const std::string& material_name = "default",
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
 	CEntityHandle<> CreateStaticBox( Vector3 edge_lengths,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
+		const std::string& material_name = "default",
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
 	CEntityHandle<> CreateBoxFromMesh( const char *mesh_resource_name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,
+							const std::string& material_name = "default",
+							const std::string& entity_name = "",
+							const std::string& entity_attributes_name = "" );
+/*
+	CEntityHandle<> CreateBall( float radius,
+		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
+		const Matrix34& pose = Matrix34Identity(),
+		float mass = 1.0f,
+		const std::string& material_name = "default",
+		const std::string& entity_name = "",
+		const std::string& entity_attributes_name = "" );
+
+	CEntityHandle<> CreateStaticBall( float radius,
+		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
+		const Matrix34& pose = Matrix34Identity(),
+		const std::string& material_name = "default",
+		const std::string& entity_name = "",
+		const std::string& entity_attributes_name = "" );
+
+	CEntityHandle<> CreateBallFromMesh( const char *mesh_resource_name,
+							const Matrix34& pose = Matrix34Identity(),
+							float mass = 1.0f,
+							const std::string& material_name = "default",
+							const std::string& entity_name = "",
+							const std::string& entity_attributes_name = "" );
+*/
+	/// Creates a static triangle mesh actor from a graphics mesh file
+	CEntityHandle<> CreateStaticTriangleMeshFromMesh( const char *mesh_resource_name,
+		                    const char *collision_mesh_name,
+							const Matrix34& pose = Matrix34Identity(),
+							const std::string& material_name = "default",
+							const std::string& entity_name = "",
+							const std::string& entity_attributes_name = "" );
+
+	/// Creates a triangle mesh actor from a graphics mesh file
+	CEntityHandle<> CreateTriangleMeshFromMesh( const char *mesh_resource_name,
+		                    const char *collision_mesh_name,
+							const Matrix34& pose = Matrix34Identity(),
+							float mass = 1.0f,
+							const std::string& material_name = "default",
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
 };

@@ -4,6 +4,10 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Physics/ActorDesc.hpp"
 #include "Physics/BoxShapeDesc.hpp"
+#include "Physics/TriangleMeshDesc.hpp"
+#include "Physics/Scene.hpp"
+#include "Physics/PhysicsEngine.hpp"
+#include "Physics/Preprocessor.hpp"
 #include "Physics/Enums.hpp"
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
@@ -150,15 +154,39 @@ CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::str
 // CStageMiscUtility
 //========================================================================================
 
-CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc,
+Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box_desc )
+{
+	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	if( !pMesh || pMesh->GetNumMaterials() == 0 )
+		return Result::UNKNOWN_ERROR;
+
+//	const AABB3 aabb = pMesh->GetAABB();
+	AABB3 aabb;
+	aabb.Nullify();
+	for( int i=0; i<pMesh->GetNumMaterials(); i++ )
+		aabb.MergeAABB( pMesh->GetAABB(i) );
+
+	box_desc.vSideLength = aabb.vMax;
+
+	// TODO: let client code specify a material by name
+//	box_desc.MaterialName = material_name;
+	box_desc.MaterialIndex = 1;
+
+	return Result::SUCCESS;
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( CMeshResourceDesc& mesh_desc,
+						      //CActorDesc& actor_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
 							  const Vector3& vel,
+							  vector<CShapeDesc *>& vecpShapeDesc,
 							  float mass,
+//							  const std::string& material_name,
 							  bool static_actor )
 {
-
 	CMeshObjectHandle mesh_handle;
 	bool mesh_loaded = mesh_handle.Load( mesh_desc );
 	if( !mesh_loaded )
@@ -176,11 +204,10 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 
 	// actor and shape descriptors
 
-	CBoxShapeDesc box_desc;
-	box_desc.vSideLength = aabb.vMax;
 
 	CActorDesc actor_desc;
-	actor_desc.vecpShapeDesc.push_back( &box_desc );
+	actor_desc.vecpShapeDesc = vecpShapeDesc;
+//	actor_desc.vecpShapeDesc.push_back( &box_desc );
 
 	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
 	actor_desc.BodyDesc.fMass = mass;
@@ -198,10 +225,40 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 }
 
 
+CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc,
+							  const std::string& entity_name,
+							  const std::string& entity_attributes_name,
+							  const Matrix34& pose,
+							  const Vector3& vel,
+							  float mass,
+							  const std::string& material_name,
+							  bool static_actor )
+{
+	CMeshObjectHandle mesh;
+	bool loaded = mesh.Load( mesh_desc );
+	if( !loaded )
+		return CEntityHandle<>();
+
+	CBoxShapeDesc box_desc;
+	Result::Name res = SetBoxShapeDesc( mesh, box_desc );
+	if( res != Result::SUCCESS )
+		return CEntityHandle<>();
+
+	vector<CShapeDesc *> vecpShapeDesc;
+	vecpShapeDesc.push_back( &box_desc );
+
+//	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
+//	actor_desc.BodyDesc.fMass = mass;
+
+	return CreatePhysicsEntity( mesh_desc, entity_name, entity_attributes_name, pose, vel, vecpShapeDesc, mass, static_actor );
+}
+
+
 CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 											  SFloatRGBAColor diffuse_color,
 											  const Matrix34& pose,
 											  const float mass,
+					                          const std::string& material_name,
 					                          const std::string& entity_name,
 					                          const std::string& entity_attributes_name
 					                          )
@@ -221,18 +278,20 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 
 	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
+	pBoxMeshGenerator->SetDiffuseColor( diffuse_color );
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 
 	Vector3 vel = Vector3(0,0,0);
 
-	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, false );
+	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
 }
 
 
 CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
 		SFloatRGBAColor diffuse_color,
 		const Matrix34& pose,
+		const std::string& material_name,
 		const std::string& entity_name,
 		const std::string& entity_attributes_name )
 {
@@ -240,18 +299,20 @@ CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
 
 	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
+	pBoxMeshGenerator->SetDiffuseColor( diffuse_color );
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 
 	Vector3 vel = Vector3(0,0,0);
 
-	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, 0.0f, true );
+	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, 0.0f, material_name, true );
 }
 
 
 CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_name,//const std::string& mesh_resource_path,
 					    const Matrix34& pose,
 						const float mass,
+					    const std::string& material_name,
 					    const std::string& entity_name,
 					    const std::string& entity_attributes_name
 						)
@@ -266,7 +327,153 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 
 	Vector3 vel = Vector3(0,0,0);
 
-	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, false );
+	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
+}
+
+
+Result::Name CStageMiscUtility::SetTriangleMeshShapeDesc( const char *collision_mesh_name,
+														  CTriangleMeshShapeDesc& trimeshshapedesc )
+{
+	CTriangleMeshDesc trimeshdesc;
+
+	C3DMeshModelArchive coll_mesh;
+	bool coll_mesh_loaded = coll_mesh.LoadFromFile( collision_mesh_name );
+	if( coll_mesh_loaded )
+	{
+		// copy indices
+/*		uint num_indices = coll_mesh.GetVertexIndex().size();
+		trimeshdesc.m_vecIndex.resize( num_indices );
+		for( int i=0; i<num_indices; i++ )
+			trimeshdesc.m_vecIndex[i] = (int)coll_mesh.GetVertexIndex()[i];
+
+		// copy vertices
+		trimeshdesc.m_vecVertex = coll_mesh.GetVertexSet().vecPosition;
+
+//		trimeshdesc.m_vecMaterialIndex = ???
+		int mat_index = 0;
+		trimeshdesc.m_vecMaterialIndex.resize( num_indices / 3, mat_index );
+	*/
+		trimeshdesc.m_vecIndex.resize( 3 );
+		trimeshdesc.m_vecIndex[0] = 0;
+		trimeshdesc.m_vecIndex[1] = 1;
+		trimeshdesc.m_vecIndex[2] = 2;
+		trimeshdesc.m_vecVertex.resize( 3 );
+		trimeshdesc.m_vecVertex[0] = Vector3( 0,0,3);
+		trimeshdesc.m_vecVertex[1] = Vector3( 1,0,0);
+		trimeshdesc.m_vecVertex[2] = Vector3(-1,0,0);
+		trimeshdesc.m_vecMaterialIndex.resize( 1, 0 );
+	}
+
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+	{
+		return Result::UNKNOWN_ERROR;
+	}
+
+	physics::CStream trimeshstream;
+	physics::Preprocessor().CreateTriangleMeshStream( trimeshdesc, trimeshstream );
+	trimeshstream.m_Buffer.seek_pos( 0 );
+
+//	CTriangleMesh *pTriMesh = pStage->GetPhysicsScene()->CreateTriangleMesh( trimeshdesc );
+	CTriangleMesh *pTriMesh = PhysicsEngine().CreateTriangleMesh( trimeshstream );
+	if( !pTriMesh )
+		return Result::UNKNOWN_ERROR;
+
+//	CTriangleMeshShapeDesc trimeshshapedesc;
+	trimeshshapedesc.pTriangleMesh = pTriMesh;
+
+	return Result::SUCCESS;
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char *mesh_resource_name,
+						const char *collision_mesh_name,
+						const Matrix34& pose,
+						float mass,
+						const std::string& material_name,
+						const std::string& entity_name,
+						const std::string& entity_attributes_name,
+						bool static_actor )
+{
+	// create shape desc for collision mesh
+	CTriangleMeshShapeDesc trimeshshapedesc;
+	SetTriangleMeshShapeDesc( collision_mesh_name, trimeshshapedesc );
+	vector<CShapeDesc *> vecpShapeDesc;
+	vecpShapeDesc.push_back( &trimeshshapedesc );
+
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.ResourcePath = mesh_resource_name;
+
+	return CreatePhysicsEntity(
+		mesh_desc,
+		entity_name,
+		entity_attributes_name,
+		pose,
+		Vector3(0,0,0),
+		vecpShapeDesc,
+		mass,
+		static_actor );
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char *mesh_resource_name,
+						const char *collision_mesh_name,
+						const Matrix34& pose,
+						const std::string& material_name,
+						const std::string& entity_name,
+						const std::string& entity_attributes_name )
+{
+	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__TriangleMeshFromMesh__";
+
+	return CreateTriangleMeshEntityFromMesh(
+		mesh_resource_name,
+		collision_mesh_name,
+		pose,
+		0.0f,
+		material_name,
+		entity_name,
+		actual_entity_attributes_name,
+		true );
+/*
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.ResourcePath = mesh_resource_name;
+	CMeshHandle mesh;
+	bool mesh_loaded = mesh.Load( mesh_resource_name );
+	if( !mesh_loaded )
+		return CEntityHandle<>();
+*/
+/*	CActorDesc actordesc;
+	actordesc.vecpShapeDesc.push_back( &trimeshshapedesc );
+	actordesc.BodyDesc.fMass = mas;*/
+
+//	CreatePhysicsEntity( mesh, vecpShapeDesc, 
+
+	return CEntityHandle<>();
+}
+
+
+/// Creates a triangle mesh actor from a graphics mesh file
+CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_resource_name,
+						const char *collision_mesh_name,
+						const Matrix34& pose,
+						float mass,
+						const std::string& material_name,
+						const std::string& entity_name,
+						const std::string& entity_attributes_name )
+{
+	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__TriangleMeshFromMesh__";
+
+	return CreateTriangleMeshEntityFromMesh(
+		mesh_resource_name,
+		collision_mesh_name,
+		pose,
+		mass,
+		material_name,
+		entity_name,
+		actual_entity_attributes_name,
+		false );
+
+	return CEntityHandle<>();
 }
 
 
