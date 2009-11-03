@@ -38,7 +38,7 @@ static void CreateScriptFileListFromListFile( path script_dir_path,
 		string script_filepath = script_dir_path.string() + "/" + line;
 
 		if( exists(script_filepath)
-		 && path(script_filepath).extension() == "py" )
+		 && path(script_filepath).extension() == ".py" )
 		{
 			script_file_list.push_back( script_filepath );
 		}
