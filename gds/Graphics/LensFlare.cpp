@@ -168,7 +168,7 @@ void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 	pd3dDev->SetVertexShader( NULL );
 	pd3dDev->SetPixelShader( NULL );
 
-	UINT pass, cPasses;
+//	UINT pass, cPasses;
 
 //	LPD3DXEFFECT pEffect = rShaderManager.GetEffect();
 

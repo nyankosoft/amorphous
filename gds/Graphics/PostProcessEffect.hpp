@@ -657,6 +657,9 @@ public:
 	void LockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
 
 	void UnlockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
+
+	/// used to display adapted luminance for debugging
+	boost::shared_ptr<CAdaptationCalcFilter> GetAdaptationCalcFilter() { return m_pAdaptationCalcFilter; }
 };
 
 

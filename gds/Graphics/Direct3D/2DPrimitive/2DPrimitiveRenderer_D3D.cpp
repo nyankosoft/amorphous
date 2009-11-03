@@ -1,4 +1,6 @@
 #include "2DPrimitiveRenderer_D3D.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
 
 
 static LPDIRECT3DVERTEXDECLARATION9 sg_pTLVertDeclaration = NULL;
@@ -95,6 +97,23 @@ int GetNumPrimitivesToDraw( PrimitiveType::Name pt, int num_vertices )
 	}
 }
 
+
+inline void C2DPrimitiveRenderer_D3D::CopyVertices( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+{
+	if( (int)m_vecTLVertex.size() < num_vertices )
+		m_vecTLVertex.resize( num_vertices );
+
+	for( int i=0; i<num_vertices; i++ )
+	{
+		m_vecTLVertex[i].vPosition   = paVertex[i].m_vPosition;
+		m_vecTLVertex[i].color       = paVertex[i].m_DiffuseColor.GetARGB32();
+		m_vecTLVertex[i].rhw         = paVertex[i].m_fRHW;
+		m_vecTLVertex[i].tu          = paVertex[i].m_TextureCoord[0].u;
+		m_vecTLVertex[i].tv          = paVertex[i].m_TextureCoord[0].v;
+	}
+}
+
+
 void C2DPrimitiveRenderer_D3D::Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 	if( !paVertex )
@@ -142,20 +161,10 @@ void C2DPrimitiveRenderer_D3D::Render( CGeneral2DVertex *paVertex, int num_verti
 	hr = pd3dDev->DrawPrimitiveUP( d3d_pt, num_vertices - 2, verts, sizeof(CColored2DVertex) );
 */
 
+	CopyVertices( paVertex, num_vertices, primitive_type );
+
 	// render with the fixed function pipeline
 	// - safe practice in fixed function pipeline mode
-
-	if( m_vecTLVertex.size() < num_vertices )
-		m_vecTLVertex.resize( num_vertices );
-
-	for( int i=0; i<num_vertices; i++ )
-	{
-		m_vecTLVertex[i].vPosition   = paVertex[i].m_vPosition;
-		m_vecTLVertex[i].color       = paVertex[i].m_DiffuseColor.GetARGB32();
-		m_vecTLVertex[i].rhw         = paVertex[i].m_fRHW;
-		m_vecTLVertex[i].tu          = paVertex[i].m_TextureCoord[0].u;
-		m_vecTLVertex[i].tv          = paVertex[i].m_TextureCoord[0].v;
-	}
 
 	// clear programmable shaders
 	hr = pd3dDev->SetVertexShader( NULL );
@@ -168,3 +177,48 @@ void C2DPrimitiveRenderer_D3D::Render( CGeneral2DVertex *paVertex, int num_verti
 }
 
 
+void C2DPrimitiveRenderer_D3D::Render( CShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+{
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	LPD3DXEFFECT pEffect = rShaderManager.GetEffect();
+
+	if( !pEffect )
+		return;
+
+	D3DPRIMITIVETYPE d3d_pt = ToD3DPrimitiveType( primitive_type );
+
+	int num_primitives = GetNumPrimitivesToDraw( primitive_type, num_vertices );
+
+	CopyVertices( paVertex, num_vertices, primitive_type );
+
+//	for( int tex=0; tex<num_textures; tex++ )
+//		rShaderManager.SetTexture( tex, GetTexture( mat, tex ) );
+
+	HRESULT hr = S_OK;
+
+	hr = pEffect->CommitChanges();
+
+	UINT cPasses = 0;
+	hr = pEffect->Begin( &cPasses, 0 );
+	for( UINT p = 0; p < cPasses; ++p )
+	{
+		hr = pEffect->BeginPass( p );
+
+		// Draw the mesh subset
+		hr = pd3dDev->DrawPrimitiveUP( d3d_pt, num_vertices - 2, &m_vecTLVertex[0], sizeof(TLVERTEX) );
+
+		hr = pEffect->EndPass();
+	}
+
+	hr = pEffect->End();
+}
+
+
+void C2DPrimitiveRenderer_D3D::RenderRect( CShaderManager& rShaderManager, const C2DRect& rect )
+{
+	CGeneral2DVertex verts[4];
+	for( int i=0; i<4; i++ )
+		verts[i] = rect.GetVertex( i );
+
+	Render( rShaderManager, verts, 4, PrimitiveType::TRIANGLE_FAN );
+}

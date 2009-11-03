@@ -23,6 +23,10 @@ public:
 	void RenderGL( CGeneral2DVertex *paVertex, int num_vertices, GLenum primitive_type );
 
 	void Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
+
+	void Render( CShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
+
+	void RenderRect( CShaderManager& rShaderManager, const C2DRect& rect );
 };
 
 

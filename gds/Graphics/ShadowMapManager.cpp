@@ -1,6 +1,7 @@
 #include "ShadowMapManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/2DPrimitive/2DTexRect.hpp"
@@ -399,6 +400,9 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 		C2DRect screen_rect( sx, sy + h, sx + w - 1, sy + h*2 - 1, 0xFFFFFFFF );
 		screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 		screen_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture() );
+
+//		CShaderManager *pShaderMgr = 
+//		PrimitiveRenderer().RenderRect( *pShaderMgr, scree_rect );
 
 		C2DTexRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
 		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );

@@ -17,6 +17,10 @@ public:
 	virtual void Release() {}
 
 	virtual void Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
+
+	virtual void Render( CShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
+
+	virtual void RenderRect( CShaderManager& rShaderManager, const C2DRect& rect ) = 0;
 };
 
 

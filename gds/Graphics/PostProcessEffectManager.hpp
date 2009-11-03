@@ -175,6 +175,10 @@ class CPostProcessEffectManager : public CGraphicsComponent
 	PDIRECT3DSURFACE9 m_pSurfLDR; /// Low dynamic range surface for final output (original render target)
 	PDIRECT3DSURFACE9 m_pSurfDS;  /// Low dynamic range depth stencil surface
 
+	/// Displays adapted luminance on a small rectangle at the top-left corner of the display.
+	/// - Used for debugging
+	void DisplayAdaptedLuminance();
+
 public:
 
    CPostProcessEffectManager();

@@ -52,6 +52,9 @@ public:
 
 	inline virtual Vector2 GetPosition2D( int vert_index ) const;
 
+	/// Added to let 2DPrimitiveRender access individual vertices and render them with shader
+	const CGeneral2DVertex& GetVertex( int vert_index ) const { return m_avRectVertex[vert_index]; }
+
 	inline void SetPosition( const Vector2& vMin, const Vector2& vMax);
 
 	inline void SetPosition( int vert_index, const Vector2& rvPosition );

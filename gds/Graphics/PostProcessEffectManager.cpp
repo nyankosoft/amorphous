@@ -1,5 +1,9 @@
 #include "PostProcessEffectManager.hpp"
 #include "PostProcessEffect.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.hpp"
 #include <boost/filesystem.hpp>
 
 
@@ -383,6 +387,12 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 
 	m_IsRedering = false;
 
+	bool debug_hdr_luminance_calc = true;
+	if( debug_hdr_luminance_calc && m_pHDRLightingFilter )
+	{
+		DisplayAdaptedLuminance();
+	}
+
 	return Result::SUCCESS;
 
 /*
@@ -452,7 +462,13 @@ void CPostProcessEffectManager::SetFirstFilterParams()
 Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
 {
 	m_pHDRLightingFilter = shared_ptr<CHDRLightingFilter>( new CHDRLightingFilter );
-	return m_pHDRLightingFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
+	Result::Name res = m_pHDRLightingFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
+	if( res != Result::SUCCESS )
+	{
+		LOG_PRINT_ERROR(( "Failed to initialize HDR filter." ));
+	}
+	
+	return res;
 }
 
 
@@ -600,6 +616,43 @@ void CPostProcessEffectManager::ReleaseGraphicsResources()
 
 void CPostProcessEffectManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
+}
+
+
+void CPostProcessEffectManager::DisplayAdaptedLuminance()
+{
+	// TODO: implement the feature to render 2D rects with programmable shader
+	shared_ptr<CRenderTargetTextureHolder> pRTTexHolder
+		= m_pHDRLightingFilter->GetAdaptationCalcFilter()->GetAdaptedLuminanceTexture();
+
+	shared_ptr<CPostProcessFilterShader> pFilterShader
+		= m_FilterShaderContainer.GetShader( "AdaptedLuminanceDisplay" );
+
+	if( pRTTexHolder && pFilterShader )
+	{
+		const int tex_index = 3;
+
+		CShaderManager *pShader
+			= pFilterShader->GetShader().GetShaderManager();
+//		pShader->SetTexture( tex_index, pRTTexHolder->m_Texture );
+		DIRECT3D9.GetDevice()->SetTexture( tex_index, pRTTexHolder->m_Texture.GetTexture() );
+/*
+		static CTextureHandle s_tex;
+		s_tex.Load( "debug/test_images/Meerkat_256.jpg" );
+		pShader->SetTexture( tex_index, s_tex );
+*/
+		CShaderTechniqueHandle t;
+		t.SetTechniqueName( "AdaptedLuminanceDisplay" );
+		pShader->SetTechnique( t );
+		pShader->GetEffect()->CommitChanges();
+
+		C2DRect rect( RectLTWH( 20, 20, 40, 40 ) );
+		rect.SetColor( SFloatRGBAColor::White() );
+		rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+
+		PrimitiveRenderer().RenderRect( *pShader, rect );
+//		rect.Draw( s_tex );
+	}
 }
 
 

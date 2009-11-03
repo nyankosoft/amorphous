@@ -33,6 +33,16 @@ void C2DPrimitiveRenderer_GL::Render( CGeneral2DVertex *paVertex, int num_vertic
 }
 
 
+void C2DPrimitiveRenderer_GL::Render( CShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+{
+}
+
+
+void C2DPrimitiveRenderer_GL::RenderRect( CShaderManager& rShaderManager, const C2DRect& rect )
+{
+}
+
+
 void C2DPrimitiveRenderer_GL::RenderGL( CGeneral2DVertex *paVertex, int num_vertices, GLenum primitive_type )
 {
 	if( !paVertex )
