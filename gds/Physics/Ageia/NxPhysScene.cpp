@@ -201,6 +201,14 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 	for( size_t i=0; i<desc.vecpShapeDesc.size(); i++ )
 	{
 		nx_actor_desc.shapes.push_back( desc_factory.CreateNxShapeDesc( *(desc.vecpShapeDesc[i]) ) );
+		if( !nx_actor_desc.shapes.back() )
+		{
+			LOG_PRINT_WARNING( "Failed to create a shape." );
+			continue;
+		}
+
+		// set material index
+		nx_actor_desc.shapes.back()->materialIndex = desc.vecpShapeDesc[i]->MaterialIndex;
 //		nx_actor_desc.shapes.push_back = vecpNxShapeDesc[i];
 	}
 

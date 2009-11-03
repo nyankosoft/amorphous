@@ -154,6 +154,8 @@ CTriangleMesh *CNxPhysicsEngine::CreateTriangleMesh( physics::CStream& phys_stre
 	CNxPhysStream nx_stream( &(phys_stream.m_Buffer), true );
 
 	NxTriangleMesh *pNxMesh = m_pPhysicsSDK->createTriangleMesh( nx_stream );
+	if( !pNxMesh )
+		LOG_PRINT_ERROR( " NxPhysicsSDK::createTriangleMesh() failed. Unable create a triangle mesh." );
 
 	return new CNxPhysTriangleMesh( pNxMesh, m_pPhysicsSDK );
 }

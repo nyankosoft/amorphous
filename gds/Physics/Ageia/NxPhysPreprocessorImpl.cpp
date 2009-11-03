@@ -8,6 +8,7 @@
 
 #include "Support/SafeDelete.hpp"
 
+using namespace std;
 using namespace physics;
 
 
@@ -58,6 +59,9 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 	size_t i;
 
+//	typedef NxU32 index_type;
+	typedef NxU16 index_type;
+
 	SetPhysicsEngineName( phys_stream );
 
 	// copy vertices
@@ -69,10 +73,10 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 	// copy indices
 	size_t num_indices = mesh_desc.m_vecIndex.size();
-	vector<NxU32> vecIndex;
+	vector<index_type> vecIndex;
 	vecIndex.resize( num_indices );
 	for( i=0; i<num_indices; i++ )
-		vecIndex[i] = (NxU32)mesh_desc.m_vecIndex[i];
+		vecIndex[i] = (index_type)mesh_desc.m_vecIndex[i];
 
 	// copy material indices
 	size_t num_triangles = num_indices / 3;
@@ -88,7 +92,7 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 	meshDesc.numTriangles               = (NxU32)num_triangles;
 
 	meshDesc.pointStrideBytes           = sizeof(NxVec3);
-	meshDesc.triangleStrideBytes        = 3*sizeof(NxU32);
+	meshDesc.triangleStrideBytes        = 3*sizeof(index_type);
 	meshDesc.materialIndexStride        = sizeof(NxU32);
 
 	meshDesc.points                     = &(vecVertex[0]);
@@ -96,6 +100,12 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 	meshDesc.materialIndices            = &(vecMatIndex[0]);
 
 	meshDesc.flags                      = 0;
+	if( sizeof(index_type) == sizeof(NxU16) )
+		meshDesc.flags                  = NX_MF_16_BIT_INDICES;
+
+	bool valid_desc = meshDesc.isValid();
+	if( !valid_desc )
+		LOG_PRINT_ERROR( " An invalid triangle mesh desc" );
 
 	{
 		LOG_SCOPE( "NxCookingInterface::NxCookTriangleMesh()" );
