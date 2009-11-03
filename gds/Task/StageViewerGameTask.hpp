@@ -14,6 +14,9 @@ class CStageViewerGameTask : public CSingleStageGameTask
 
 	boost::shared_ptr<CCameraController> m_pCameraController;
 
+protected:
+
+	boost::shared_ptr<CCameraController> CameraController() { return m_pCameraController; }
 
 public:
 
