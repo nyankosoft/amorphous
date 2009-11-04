@@ -325,9 +325,15 @@ public:
 
 	std::vector<CLWO2_TextureUVMap>& GetTextureUVMap() { return m_vecTexuvmap; }
 
+	const std::vector<CLWO2_TextureUVMap>& GetTextureUVMap() const { return m_vecTexuvmap; }
+
 	std::vector<CLWO2_VertexColorMap>& GetVertexColorMap() { return m_vecVertexColorMap; }
 
+	const std::vector<CLWO2_VertexColorMap>& GetVertexColorMap() const { return m_vecVertexColorMap; }
+
 	std::vector<CLWO2_WeightMap>& GetVertexWeightMap() { return m_vecVertexWeightMap; }
+
+	const std::vector<CLWO2_WeightMap>& GetVertexWeightMap() const { return m_vecVertexWeightMap; }
 
 	std::vector<CLWO2_PointSelectionSet>& GetPointSelectionSet() { return m_vecPointSelectionSet; }
 
