@@ -321,6 +321,8 @@ public:
 
 	std::vector<CLWO2_PolygonGroup>& GetPolygonGroup() { return m_vecPolygonGroup; }
 
+	const std::vector<CLWO2_PolygonGroup>& GetPolygonGroup() const { return m_vecPolygonGroup; }
+
 	const std::string& GetPolygonGroupName();
 
 	std::vector<CLWO2_TextureUVMap>& GetTextureUVMap() { return m_vecTexuvmap; }
@@ -338,6 +340,8 @@ public:
 	std::vector<CLWO2_PointSelectionSet>& GetPointSelectionSet() { return m_vecPointSelectionSet; }
 
 	bool GetVertexColor( SFloatRGBAColor& color, const int iPntIndex, CLWO2_Surface& rSurf );
+
+	const std::vector<CLWO2_Bone>& GetBone() const { return m_vecBone; }
 
 	std::vector<CLWO2_Bone>& GetBone() { return m_vecBone; }
 

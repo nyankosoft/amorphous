@@ -18,9 +18,6 @@ CLWO2_TAGChunk::CLWO2_TAGChunk(const CLWO2_TAGChunk& tagchunk)
 }
 
 
-#include "Support/FixedVector.hpp"
-
-
 void CLWO2_TAGChunk::AllocateTAGStrings(UINT4 tagchunksize, FILE* fp)
 {
 	char *p;
@@ -28,7 +25,7 @@ void CLWO2_TAGChunk::AllocateTAGStrings(UINT4 tagchunksize, FILE* fp)
 
 	this->tagchunk_size = tagchunksize;
 
-	TCFixedVector<string, 64> m_vecstrTag;
+	vector<string> m_vecstrTag;
 
 	// Copy the content of the TAGS chunk
 	pTAGStrings = new char [tagchunksize];
