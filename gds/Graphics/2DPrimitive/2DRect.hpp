@@ -101,7 +101,7 @@ public:
 inline C2DRect::C2DRect( int min_x, int min_y, int max_x, int max_y, U32 color )
 {
 	SetDefault();
-	SetPosition( D3DXVECTOR2((float)min_x,(float)min_y), D3DXVECTOR2((float)max_x,(float)max_y) );
+	SetPosition( Vector2((float)min_x,(float)min_y), Vector2((float)max_x,(float)max_y) );
 	C2DPrimitive::SetColor( color );
 }
 
@@ -109,7 +109,7 @@ inline C2DRect::C2DRect( int min_x, int min_y, int max_x, int max_y, U32 color )
 inline C2DRect::C2DRect( float min_x, float min_y, float max_x, float max_y, U32 color )
 {
 	SetDefault();
-	SetPosition( D3DXVECTOR2(min_x,min_y), D3DXVECTOR2(max_x,max_y) );
+	SetPosition( Vector2(min_x,min_y), Vector2(max_x,max_y) );
 	C2DPrimitive::SetColor( color );
 }
 
@@ -125,7 +125,7 @@ inline C2DRect::C2DRect( const Vector2& vMin, const Vector2& vMax, U32 color )
 inline C2DRect::C2DRect( const SRect& rect, U32 color )
 {
 	SetDefault();
-	SetPosition( D3DXVECTOR2((float)rect.left,(float)rect.top), D3DXVECTOR2((float)rect.right,(float)rect.bottom) );
+	SetPosition( Vector2((float)rect.left,(float)rect.top), Vector2((float)rect.right,(float)rect.bottom) );
 	C2DPrimitive::SetColor( color );
 }
 
@@ -146,7 +146,7 @@ inline void C2DRect::SetDefault()
 
 inline Vector2 C2DRect::GetPosition2D( int vert_index ) const
 {
-	const D3DXVECTOR3& pos = m_avRectVertex[vert_index].m_vPosition;
+	const Vector3& pos = m_avRectVertex[vert_index].m_vPosition;
 	return Vector2( pos.x, pos.y );
 }
 

@@ -40,7 +40,7 @@ Scalar JigLib::SegmentSegmentDistanceSq(Scalar *t0, Scalar *t1,
   {
     // line segments are not parallel
 //    fB1 = -Vec3Dot(kDiff, seg1.mDelta);
-    fB1 = -Vec3Dot(&kDiff, &seg1.mDelta);
+    fB1 = -Vec3Dot(kDiff, seg1.mDelta);
     fS = fA01*fB1-fA11*fB0;
     fT = fA01*fB0-fA00*fB1;
 
@@ -323,7 +323,7 @@ Scalar JigLib::SegmentSegmentDistanceSq(Scalar *t0, Scalar *t1,
       else
       {
 //        fB1 = -Vec3Dot(kDiff, seg1.mDelta);
-        fB1 = -Vec3Dot(&kDiff, &seg1.mDelta);
+        fB1 = -Vec3Dot(kDiff, seg1.mDelta);
         fS = (Scalar)1.0;
         fTmp = fA00+fB0;
         if ( -fTmp >= fA01 )
@@ -357,7 +357,7 @@ Scalar JigLib::SegmentSegmentDistanceSq(Scalar *t0, Scalar *t1,
       else
       {
 //        fB1 = -Vec3Dot(kDiff, seg1.mDelta);
-        fB1 = -Vec3Dot(&kDiff, &seg1.mDelta);
+        fB1 = -Vec3Dot(kDiff, seg1.mDelta);
         fS = (Scalar)0.0;
         if ( fB0 >= -fA01 )
         {

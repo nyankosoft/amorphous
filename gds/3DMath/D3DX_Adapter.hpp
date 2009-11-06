@@ -14,11 +14,6 @@ typedef D3DXVECTOR2 Vector2;
 typedef D3DXVECTOR3 Vector3;
 
 
-#define Vec3Dot			D3DXVec3Dot
-#define Vec3Cross		D3DXVec3Cross
-#define Vec3Normalize	D3DXVec3Normalize
-#define Vec3Length		D3DXVec3Length
-#define Vec3LengthSq	D3DXVec3LengthSq
 #define Vec3TransformCoord	D3DXVec3TransformCoord
 
 /*
@@ -40,7 +35,7 @@ inline Vector3 Vec3Normalize( Vector3& v )
 
 inline void Vec3Normalize( Vector3& vDest, const Vector3& vSrc )
 {
-	Vec3Normalize( &vDest, &vSrc );
+	D3DXVec3Normalize( &vDest, &vSrc );
 }
 
 
@@ -51,28 +46,28 @@ inline Vector3 Vec3Scalar3( float f ) { return Vector3(f,f,f); }
 inline Vector3 Vec3Cross(const Vector3& v0, const Vector3& v1)
 {
 	Vector3 v;
-	Vec3Cross( &v, &v0, &v1 );
+	D3DXVec3Cross( &v, &v0, &v1 );
 	return v;
 }
 
 inline void Vec3Cross( Vector3& vOut, const Vector3& v0, const Vector3& v1)
 {
-	Vec3Cross( &vOut, &v0, &v1 );
+	D3DXVec3Cross( &vOut, &v0, &v1 );
 }
 
 inline float Vec3Dot(const Vector3& v0, const Vector3& v1)
 {
-	return Vec3Dot( &v0, &v1 );
+	return D3DXVec3Dot( &v0, &v1 );
 }
 
 inline float Vec3Length( const Vector3& v )
 {
-	return Vec3Length( &v );
+	return D3DXVec3Length( &v );
 }
 
 inline float Vec3LengthSq( const Vector3& v )
 {
-	return Vec3LengthSq( &v );
+	return D3DXVec3LengthSq( &v );
 }
 
 inline Vector3 Vec3GetNormalized( const Vector3& v )
@@ -84,7 +79,7 @@ inline Vector3 Vec3GetNormalized( const Vector3& v )
 // Helper for orthonormalise - projection of v2 onto v1
 static inline Vector3 Vec3Project(const Vector3 & v1, const Vector3 & v2)
 {
-  return Vec3Dot(&v1, &v2) * v1 / Vec3LengthSq( &v1 );
+  return Vec3Dot(v1, v2) * v1 / Vec3LengthSq( v1 );
 }
 
 

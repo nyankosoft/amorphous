@@ -23,7 +23,7 @@ public:
 		m_avVertex[0] = v0;
 		m_avVertex[1] = v1;
 		m_avVertex[2] = v2;
-		m_fDist = Vec3Dot( &vNormal, &m_avVertex[0] );
+		m_fDist = Vec3Dot( vNormal, m_avVertex[0] );
 	}
 
 	inline Vector3& GetVertex(int i) { return m_avVertex[i]; }

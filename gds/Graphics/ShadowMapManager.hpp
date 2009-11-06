@@ -3,7 +3,6 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
-#include <d3d9.h>
 #include <d3dx9.h>
 #include "3DMath/Vector3.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"

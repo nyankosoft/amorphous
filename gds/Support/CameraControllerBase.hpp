@@ -135,9 +135,9 @@ inline void CCameraControllerBase::GetCameraMatrix( D3DXMATRIX& rmatCamera ) con
 	rmatCamera._21 = vRight.y;	rmatCamera._22 = vUp.y; rmatCamera._23 = vFwd.y; rmatCamera._24 = 0;
 	rmatCamera._31 = vRight.z;	rmatCamera._32 = vUp.z; rmatCamera._33 = vFwd.z; rmatCamera._34 = 0;
 
-	rmatCamera._41= -Vec3Dot(&vRight, &m_Pose.vPosition);
-	rmatCamera._42= -Vec3Dot(&vUp,    &m_Pose.vPosition);
-	rmatCamera._43= -Vec3Dot(&vFwd,   &m_Pose.vPosition);
+	rmatCamera._41= -Vec3Dot( vRight, m_Pose.vPosition );
+	rmatCamera._42= -Vec3Dot( vUp,    m_Pose.vPosition );
+	rmatCamera._43= -Vec3Dot( vFwd,   m_Pose.vPosition );
 	rmatCamera._44=1;
 }
 

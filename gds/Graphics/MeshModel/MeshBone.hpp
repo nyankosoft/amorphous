@@ -31,7 +31,7 @@ class CMM_Bone
 	/// holds bone name (for debugging)
 	string m_strName;
 
-	D3DXVECTOR3 m_vLocalOffset;
+	Vector3 m_vLocalOffset;
 
 	D3DXMATRIX *m_pWorldTransform;
 

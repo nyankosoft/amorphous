@@ -11,14 +11,14 @@ float CGravityFunction::ms_fOmegaSq = 0.16333333333f;
 
 
 // cylinder is placed along z-axis
-D3DXVECTOR3 GravityAccel_CylindricalColony( D3DXVECTOR3& rvPosition )
+Vector3 GravityAccel_CylindricalColony( Vector3& rvPosition )
 {
-	D3DXVECTOR3 vPosOnZPlane = D3DXVECTOR3( rvPosition.x, rvPosition.y, 0 );
-	float fRadiusSq = Vec3LengthSq( &vPosOnZPlane );
+	Vector3 vPosOnZPlane = Vector3( rvPosition.x, rvPosition.y, 0 );
+	float fRadiusSq = Vec3LengthSq( vPosOnZPlane );
 
 ///	if( fRadiusSq < g_fGFreeMaxRadius * g_fGFreeMaxRadius )
 	if( fRadiusSq < CGravityFunction::ms_fGFreeMaxRadius * CGravityFunction::ms_fGFreeMaxRadius )
-		return D3DXVECTOR3(0,0,0);	// no gravity
+		return Vector3(0,0,0);	// no gravity
 	else
 	{
 //		float fRadius = sqrtf( fRadiusSq );

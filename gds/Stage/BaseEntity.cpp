@@ -824,7 +824,7 @@ void CBaseEntity::Accelerate(CCopyEntity* pCopyEnt,
 	//if(player is dead) return;
 	//if(waterjumping) return;
 
-	fCurrentspeed = Vec3Dot(&pCopyEnt->vVelocity, &vWishdir);  //the length of Velocity in wish direction
+	fCurrentspeed = Vec3Dot(pCopyEnt->vVelocity, vWishdir);  //the length of Velocity in wish direction
 	fAddspeed = fWishspeed - fCurrentspeed;
 	if(fAddspeed < 0)
 		return;

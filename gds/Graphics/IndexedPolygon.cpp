@@ -53,7 +53,7 @@ Vector3 CIndexedPolygon::GetInterpolatedNormal( const Vector3& rvPosition ) cons
 	const CGeneral3DVertex& v1 = GetVertex(i+1);
 	const CGeneral3DVertex& v2 = GetVertex(i+2);
 
-	if( Vec3LengthSq( &(rvPosition - v0.m_vPosition) ) < 0.0001f )
+	if( Vec3LengthSq( rvPosition - v0.m_vPosition ) < 0.0001f )
 		return v0.m_vNormal;	// 'rvPosition' is close to 'v0' - just use the normal of 'v0' as an approximation
 
 	// make a plane which is perpendicular to the triangle and includes 'rvPosition'
