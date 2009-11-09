@@ -11,7 +11,6 @@
 #include "BSPMap_Collision/BSPTree_CollisionModel.hpp"
 
 #include "Graphics/fwd.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 
 #include "Support/FixedVector.hpp"

@@ -7,14 +7,10 @@
 #include "Stage.hpp"
 #include "SurfaceMaterial.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-
 #include "Graphics/Direct3D9.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
 #include "Sound/SoundManager.hpp"
-
 
 using namespace std;
 using namespace boost;

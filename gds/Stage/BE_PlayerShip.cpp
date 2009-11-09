@@ -16,7 +16,6 @@
 
 // added for laser dot casting test
 #include "Graphics/Direct3D9.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
 
 //#include "Sound/SoundManager.hpp"
 

@@ -7,15 +7,12 @@
 #include "Stage.hpp"
 #include "bsptree.hpp"
 
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "GameCommon/GameMathMisc.hpp"
 #include "GameCommon/MeshBoneControllerBase.hpp"
-
-#include "Graphics/3DGameMath.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
-
 #include "App/ApplicationBase.hpp"
 #include "Task/GameTaskManager.hpp"
-
 #include "Support/memory_helpers.hpp"
 #include "Support/StringAux.hpp"
 #include "Support/Profile.hpp"

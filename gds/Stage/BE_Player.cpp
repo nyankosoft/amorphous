@@ -19,7 +19,6 @@
 #include "Sound/SoundManager.hpp"
 
 // added for laser dot casting test
-#include "Graphics/D3DXMeshObject.hpp"
 #include "Support/VectorRand.hpp"
 #include "Support/Timer.hpp"
 #include "Support/memory_helpers.hpp"

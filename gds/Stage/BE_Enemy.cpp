@@ -8,7 +8,6 @@
 
 #include "Stage/PlayerInfo.hpp"
 
-#include "Graphics/D3DXSMeshObject.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 #include "Sound/Serialization_SoundHandle.hpp"

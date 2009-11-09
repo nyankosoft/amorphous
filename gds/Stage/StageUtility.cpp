@@ -1,5 +1,5 @@
 #include "StageUtility.hpp"
-#include "Graphics/D3DXMeshObjectBase.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Physics/ActorDesc.hpp"

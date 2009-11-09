@@ -4,7 +4,6 @@
 #include "Stage.hpp"
 #include "GameMessage.hpp"
 #include "Graphics/Direct3D9.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
 #include "Sound/SoundManager.hpp"
 
 //#include "JigLib/JL_PhysicsActor.hpp"

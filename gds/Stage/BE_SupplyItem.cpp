@@ -1,4 +1,3 @@
-
 #include "BE_SupplyItem.hpp"
 
 #include "GameMessage.hpp"
@@ -9,7 +8,6 @@
 #include "Serialization_BaseEntityHandle.hpp"
 
 #include "../Graphics/Direct3D9.hpp"
-#include "../Graphics/D3DXMeshObject.hpp"
 #include "../Stage/ScreenEffectManager.hpp"
 
 #include "../Sound/SoundManager.hpp"

@@ -2,14 +2,11 @@
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
-
 #include "Serialization_BaseEntityHandle.hpp"
-
 #include  "Graphics/Shader/ShaderManager.hpp"
-#include  "Graphics/D3DXMeshObject.hpp"
-
 #include  "Support/memory_helpers.hpp"
 #include  "Support/Log/DefaultLog.hpp"
+#include  "Support/Serialization/Serialization_3DMath.hpp"
 
 
 CBE_FixedTurretPod::CBE_FixedTurretPod()

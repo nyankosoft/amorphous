@@ -6,8 +6,6 @@
 #include "ScreenEffectManager.hpp"
 
 #include "Graphics/Camera.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderLightManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
