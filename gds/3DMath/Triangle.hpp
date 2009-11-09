@@ -26,14 +26,14 @@ public:
 		m_fDist = Vec3Dot( vNormal, m_avVertex[0] );
 	}
 
-	inline Vector3& GetVertex(int i) { return m_avVertex[i]; }
+	inline const Vector3& GetVertex(int i) const { return m_avVertex[i]; }
 
 	// get edge 0-2 in cyclic order
-	inline Vector3 GetEdge(int i) { return m_avVertex[(i+1)%3] - m_avVertex[i]; }
+	inline Vector3 GetEdge(int i) const { return m_avVertex[(i+1)%3] - m_avVertex[i]; }
 
-	inline Vector3& GetNormal() { return m_vNormal; }
+	inline const Vector3& GetNormal() const { return m_vNormal; }
 
-	inline Vector3 GetCenter() { return ( m_avVertex[0] + m_avVertex[1] + m_avVertex[2] ) * 0.333333333333f; }
+	inline Vector3 GetCenter() const { return ( m_avVertex[0] + m_avVertex[1] + m_avVertex[2] ) * 0.333333333333f; }
 
 	inline void GetSpan( float& rfMin, float& rfMax, Vector3 vAxis ) const;
 
