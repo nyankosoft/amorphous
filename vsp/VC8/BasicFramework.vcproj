@@ -1418,6 +1418,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\3DMath\Cylinder.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\3DMath\D3DX_Adapter.hpp"
 				>
 			</File>
