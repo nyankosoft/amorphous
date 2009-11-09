@@ -381,6 +381,9 @@ inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
 
 inline bool CIndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, CLineSegmentHit& results ) const
 {
+	if( m_index.size() <= 2 )
+		return false;
+
 	// check triangles
 	// - The polygon must be convex
 	bool hit;
@@ -407,6 +410,8 @@ inline bool CIndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, 
 			return true;
 		}
 	}
+
+	return false;
 }
 
 
