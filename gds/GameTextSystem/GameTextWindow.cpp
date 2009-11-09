@@ -1,9 +1,7 @@
 #include "GameTextWindow.hpp"
 #include "GameTextSystem.hpp"
 #include "Support/Timer.hpp"
-
-#include "../Graphics/Direct3D9.hpp"
-#include "../Support/memory_helpers.hpp"
+#include "Support/memory_helpers.hpp"
 
 #include "App/GameWindowManager_Win32.hpp"
 

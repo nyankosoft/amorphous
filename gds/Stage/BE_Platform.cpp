@@ -3,7 +3,6 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "GameMessage.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Sound/SoundManager.hpp"
 #include "3DMath/Vector3.hpp"
 #include "Physics/Actor.hpp"

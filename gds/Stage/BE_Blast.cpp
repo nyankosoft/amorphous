@@ -6,11 +6,11 @@
 #include "Stage.hpp"
 
 #include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/UnitCube.hpp"
 #include "Support/SafeDelete.hpp"
 #include "3DMath/MathMisc.hpp"
 
+using namespace std;
 using namespace boost;
 
 

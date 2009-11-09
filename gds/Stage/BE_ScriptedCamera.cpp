@@ -1,5 +1,4 @@
 #include "BE_ScriptedCamera.hpp"
-
 #include "GameMessage.hpp"
 #include "CopyEntityDesc.hpp"
 #include "CopyEntity.hpp"
@@ -7,9 +6,7 @@
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/3DGameMath.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"

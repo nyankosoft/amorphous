@@ -9,7 +9,6 @@
 #include "../Stage/ScreenEffectManager.hpp"
 
 #include "../Graphics/3DGameMath.hpp"
-#include "../Graphics/Direct3D9.hpp"
 #include "../Graphics/Camera.hpp"
 
 #include "Support/MTRand.hpp"

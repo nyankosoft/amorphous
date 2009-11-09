@@ -7,11 +7,9 @@
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 
-#include "../Graphics/Direct3D9.hpp"
 #include "../Stage/ScreenEffectManager.hpp"
 
-#include "../Sound/SoundManager.hpp"
-
+#include "Sound/SoundManager.hpp"
 #include "Sound/Serialization_SoundHandle.hpp"
 #include "Sound/SoundManager.hpp"
 
