@@ -528,6 +528,53 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 }
 
 
+template<class TGeometry>
+inline void CNonLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, std::vector<int>& rvecDestIndex )
+{
+	size_t i;
+
+	if( m_vecNode.empty() )
+		return;
+
+	m_vecNodeToCheck.resize(0);
+
+	m_vecNodeToCheck.push_back(0);
+
+	while( !m_vecNodeToCheck.empty() )
+	{
+		CAABNode& rNode =  m_vecNode[ m_vecNodeToCheck.back() ];
+		m_vecNodeToCheck.pop_back();
+
+		// check intersection with geometries in this cell
+		for( i=0; i<rNode.veciGeometryIndex.size(); i++ )
+		{
+			const int geom_index = rNode.veciGeometryIndex[i];
+			const TGeometry& geom = m_vecGeometry[ geom_index ];
+
+			if( aabb.IsIntersectingWith( geom.GetAABB() ) )
+				rvecDestIndex.push_back( geom_index );
+		}
+
+		if( !rNode.IsLeaf() )
+		{
+			if( 0 <= rNode.child[1] && rNode.child[1] < (int)m_vecNode.size()
+			 && aabb.IsIntersectingWith( m_vecNode[ rNode.child[0] ].aabb ) )
+			{
+				// 'aabb' is intersecting with the negative half-space
+				m_vecNodeToCheck.push_back( rNode.child[1] );
+			}
+
+			if( 0 <= rNode.child[0] && rNode.child[0] < (int)m_vecNode.size()
+			 && aabb.IsIntersectingWith( m_vecNode[ rNode.child[0] ].aabb ) )
+			{
+				// 'aabb' is intersecting with the positive half-space
+				m_vecNodeToCheck.push_back( rNode.child[0] );
+			}
+		}
+	}
+}
+
+
 /// assums the geometry index has been already detached from tree node
 template<class TGeometry>
 inline void CNonLeafyAABTree<TGeometry>::LinkGeometry( int geom_index )

@@ -31,7 +31,7 @@ void  WriteNodeToFile_r( int node_index, vector<CAABNode>& nodes, int depth, FIL
 	fprintf( fp, "depth: %d, %s\n", depth, to_string(node.aabb).c_str() );
 
 	print_spaces(fp,depth*2);
-	fprintf( fp, "geoms: " );
+	fprintf( fp, "geoms(%d): ", (int)node.veciGeometryIndex.size() );
 	for( size_t i=0; i<node.veciGeometryIndex.size(); i++ )
 	{
 		fprintf( fp, "%d, ", node.veciGeometryIndex[i] );

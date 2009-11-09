@@ -220,14 +220,14 @@ public:
 
 	inline bool ShouldStopRecursion( int depth, float sub_space_volume, int num_triangles_in_cell );
 
-	/// Get a list of geometry indices which intersect with 'raabb'
+	/// Get a list of indices of geometry whose aabb intersects with 'aabb'
 	/// - Checks overlaps between abbb and geometries
 	/// \param [in] aabb
 	/// \param [out] rvecDestIndex dest buffer that holds indices of geometries
 	///              intersecting with aabb
 	inline void GetIntersectingGeometries( const AABB3& aabb, std::vector<int>& rvecDestIndex );
 
-	/// Get a list of geometry indices whose aabb intersect with 'aabb'
+	/// Get a list of indices of geometry whose aabb intersects with 'aabb'
 	/// - Checks overlaps between abbb and geometry aabbs
 	/// - Does not mean geometry itself intersects with the aabb
 	/// - Calls TGeometry::GetAABB() inside
@@ -360,10 +360,7 @@ public:
 	/// \param [in] vecGeometry copied and stored
 	inline void Build();
 
-	inline virtual void GetIntersectingAABBs( const AABB3& aabb, std::vector<int>& rvecDestIndex )
-	{
-		assert( !"Not implemented\n" );
-	}
+	inline virtual void GetIntersectingAABBs( const AABB3& aabb, std::vector<int>& rvecDestIndex );
 
 	inline virtual void LinkGeometry( int geom_index );
 
