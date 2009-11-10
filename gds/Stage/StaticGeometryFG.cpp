@@ -4,7 +4,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Direct3D/Mesh/D3DXMeshObject.hpp"
 
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/memory_helpers.hpp"

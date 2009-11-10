@@ -6,7 +6,7 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/D3DXMeshObjectBase.hpp"
+#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"

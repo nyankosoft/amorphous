@@ -5,7 +5,7 @@
 #include <string>
 
 #include "Support/MTRand.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Direct3D/Mesh/D3DXMeshObject.hpp"
 #include "Graphics/FVF_BillboardVertex.h"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;

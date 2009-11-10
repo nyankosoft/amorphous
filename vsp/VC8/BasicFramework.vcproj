@@ -310,38 +310,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\D3DXMeshObject.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\D3DXMeshObject.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\D3DXMeshObjectBase.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\D3DXMeshObjectBase.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\D3DXPMeshObject.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\D3DXPMeshObject.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\D3DXSMeshObject.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\D3DXSMeshObject.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Graphics\Direct3D9.cpp"
 				>
 			</File>
@@ -1355,6 +1323,38 @@
 				<Filter
 					Name="Mesh"
 					>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObject.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObject.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXPMeshObject.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXPMeshObject.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXSMeshObject.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXSMeshObject.hpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

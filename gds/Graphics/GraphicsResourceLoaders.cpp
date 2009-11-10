@@ -1,7 +1,7 @@
 #include "GraphicsResourceLoaders.hpp"
 #include "GraphicsResourceCacheManager.hpp"
 #include "AsyncResourceLoader.hpp"
-#include "D3DXMeshObjectBase.hpp"
+#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/Profile.hpp"

@@ -5,7 +5,7 @@
 #include "Support/FixedVector.hpp"
 
 //#include "Graphics/GraphicsResourceHandles.h"
-#include "Graphics/D3DXMeshObjectBase.hpp"
+#include "D3DXMeshObjectBase.hpp"
 
 
 class CD3DXPMeshObject : public CD3DXMeshObjectBase

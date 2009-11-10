@@ -1,6 +1,6 @@
 #include "D3DXMeshObjectBase.hpp"
 
-#include "../base.hpp"
+#include <gds/base.hpp>
 #include "Graphics/FVF_BumpVertex.h"
 #include "Graphics/FVF_BumpWeightVertex.h"
 #include "Graphics/FVF_ColorVertex.h"

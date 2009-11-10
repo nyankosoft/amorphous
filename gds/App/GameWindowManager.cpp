@@ -11,7 +11,7 @@
 
 // D3D
 #include "Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.hpp"
-#include "Graphics/D3DXMeshObjectBase.hpp"
+#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
 
 // OpenGL

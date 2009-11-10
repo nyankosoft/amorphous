@@ -4,7 +4,7 @@
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "Graphics/D3DXMeshObjectBase.hpp"
+#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include <boost/foreach.hpp>
 
 
