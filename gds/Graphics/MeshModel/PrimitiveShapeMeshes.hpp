@@ -15,13 +15,33 @@ public:
 	enum Name
 	{
 		POS_X,
-		NEG_X,
 		POS_Y,
-		NEG_Y,
 		POS_Z,
+		NEG_X,
+		NEG_Y,
 		NEG_Z,
 	};
+
+	static Vector3 GetAxis( AxisAndDirection::Name axis_dir )
+	{
+		Vector3 vAxis = Vector3(0,0,0);
+		vAxis[ axis_dir % 3 ] = 1.0f * ( (axis_dir < 3) ? 1 : -1 );
+		return vAxis;
+	}
 };
+
+
+class PrimitivePlacingStyle
+{
+public:
+	enum Name
+	{
+		PLACE_CENTER_AT_ORIGIN,
+		PLACE_ON_PLANE,
+		NUM_STYLES,
+	};
+};
+
 
 class CConeDesc
 {
@@ -59,6 +79,48 @@ public:
 	vLengths( Vector3(1,1,1) )
 	{}
 };
+
+
+class CCylinderDesc
+{
+public:
+
+	float radii[2]; ///< array of radii
+	float height;
+	AxisAndDirection::Name axis;
+
+	int num_sides;
+
+	PrimitivePlacingStyle::Name style;
+
+public:
+
+	CCylinderDesc()
+		:
+	height(1),
+	axis(AxisAndDirection::POS_Y),
+	num_sides(6),
+	style(PrimitivePlacingStyle::PLACE_CENTER_AT_ORIGIN)
+	{
+		for( int i = 0; i<sizeof(float)/sizeof(radii); i++ )
+			radii[i] = 1.0f;
+	}
+
+	bool IsValid() const
+	{
+		if( 0.001f < radii[0]
+		 && 0.001f < radii[1]
+		 && 0.001f < radii[2]
+		 && 0.001f < height
+		 && 0.001f < num_sides )
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+};
+
 
 
 extern void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh );
