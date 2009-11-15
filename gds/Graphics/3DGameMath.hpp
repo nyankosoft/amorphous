@@ -89,6 +89,18 @@ inline void CreateSpaceFromNormal( const Vector3& vNormal, Vector3& vRight, Vect
 }
 
 
+inline Matrix33 CreateOrientFromNormal( Vector3 vNormal )
+{
+	Vector3 vRight = Vector3(1,0,0), vUp = Vector3(0,0,1);
+	CreateSpaceFromNormal( vNormal, vRight, vUp );
+	Matrix33 matOrient;
+	matOrient.SetColumn( 0, vRight );
+	matOrient.SetColumn( 1, vNormal );
+	matOrient.SetColumn( 2, vUp );
+	return matOrient;
+}
+
+
 /**
  * create a 3x3 matrix that represents coordinates space with 3 orthogonal unit vectors
  * NOTE: vFwd must be normalized in advance
