@@ -1482,6 +1482,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\3DMath\PrimitivePolygonModelMaker.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DMath\PrimitivePolygonModelMaker.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\3DMath\Quaternion.hpp"
 				>
 			</File>
