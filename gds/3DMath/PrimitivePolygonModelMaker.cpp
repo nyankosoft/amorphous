@@ -70,6 +70,10 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 	vecDestNormal.resize( 0 );
 	if( style == PrimitiveModelStyle::EDGE_VERTICES_WELDED )
 	{
+		vecDestNormal.resize( vecDestPos.size() );
+		const Vector3 vCenter = ( pose[0].vPosition + pose[1].vPosition ) * 0.5f;
+		for( size_t i=0; i<vecDestPos.size(); i++ )
+			vecDestNormal[i] = Vec3GetNormalized( vecDestPos[i] - vCenter );
 	}
 	else
 	{
@@ -118,7 +122,7 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 
 	// polygons on the enclosing side of the cylinder
 	int top_start    = (style == PrimitiveModelStyle::EDGE_VERTICES_WELDED) ? 1 : (num_segments+1) * 2;
-	int bottom_start = (style == PrimitiveModelStyle::EDGE_VERTICES_WELDED) ? num_segments+1 : (num_segments+1) * 2 + num_segments;
+	int bottom_start = (style == PrimitiveModelStyle::EDGE_VERTICES_WELDED) ? num_segments+2 : (num_segments+1) * 2 + num_segments;
 	for( int i=0; i<num_segments; i++ )
 	{
 		vecDestPoly.push_back( vector<int>() );
