@@ -18,7 +18,7 @@ class CGraphicsTestBase;
 
 extern CGraphicsTestBase *g_pGraphicsTest;
 extern CCamera g_Camera;
-
+extern std::string g_CmdLine;
 
 inline std::string GetCommonShadersDirectoryPath() { return "../../../Shaders/"; }
 

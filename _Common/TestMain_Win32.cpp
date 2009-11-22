@@ -28,6 +28,10 @@ extern const std::string GetAppTitle();
 extern void SetCurrentThreadAsRenderThread();
 
 
+// global variable
+std::string g_CmdLine;
+
+
 /**
   Using testing framework for graphics modules
 
@@ -123,13 +127,20 @@ VOID Render()
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
+//	D3DXMATRIX matWorld;
+//	D3DXMatrixIdentity( &matWorld );
+//	pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 //	g_Camera.SetPose( g_CameraController.GetPose() );
 	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
-
+/*
+	D3DXMATRIX matView, matProj;
+	g_Camera.GetCameraMatrix( matView );
+	g_Camera.GetProjectionMatrix( matProj );
+	pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
+	pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+*/
 	D3DXMATRIX mat;
 	g_Camera.GetCameraMatrix( mat );
 	g_pTest->UpdateViewTransform( mat );
@@ -138,12 +149,23 @@ VOID Render()
 
 
     // clear the backbuffer to a blue color
-    pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, g_pTest->GetBackgroundColor().GetARGB32(), 1.0f, 0 );
+//	GraphicsDevice().SetClearColor( g_pTest->GetBackgroundColor() );
+//	GraphicsDevice().SetClearDepth( 1.0f );
+//	GraphicsDevice().Clear()
+	if( pd3dDevice )
+	{
+		pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, g_pTest->GetBackgroundColor().GetARGB32(), 1.0f, 0 );
+	}
+	else
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	}
 
 	g_pTest->RenderScene();
 
     // begin the scene
-    pd3dDevice->BeginScene();
+	if( pd3dDevice )
+		pd3dDevice->BeginScene();
 
 	g_pTest->Render();
 
@@ -158,11 +180,14 @@ VOID Render()
 		i++;
 	}
 
-    // end the scene
-    pd3dDevice->EndScene();
+	if( pd3dDevice )
+	{
+		// end the scene
+		pd3dDevice->EndScene();
 
-    // present the backbuffer contents to the display
-    pd3dDevice->Present( NULL, NULL, NULL, NULL );
+		// present the backbuffer contents to the display
+		pd3dDevice->Present( NULL, NULL, NULL, NULL );
+	}
 }
 
 
@@ -227,6 +252,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	const std::string app_title = GetAppTitle();
 	const std::string app_class_name = app_title;
 
+	g_CmdLine = lpCmdLine;
+
 	const string iwd = fnop::get_cwd(); // initial working directory
 	if( iwd.substr( iwd.length() - 4 ) != "/_App"
 	 && iwd.substr( iwd.length() - 4 ) != "\\_App" )
@@ -242,33 +269,23 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	g_pMessageProcedureForGameWindow = MsgProc;
 
 /*
-    // Register the window class
-    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
-                      GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
-                      app_class_name.c_str(), NULL };
-
-    RegisterClassEx( &wc );
-
-    // Create the application's window
-    HWND hWnd = CreateWindow( app_class_name.c_str(), app_title.c_str(),
-		                      WS_OVERLAPPEDWINDOW, 100, 100, g_WindowWidth, g_WindowHeight,
-                              GetDesktopWindow(), NULL, wc.hInstance, NULL );
-
-	// fix client area size of the window
-//	ChangeClientAreaSize( hWnd, g_WindowWidth, g_WindowHeight );
-
 	// init xml parser
 	// - released when leaving WinMain()
 //	CXMLParserInitReleaseManager parser_mgr;
-
-    // Show the window
-    ShowWindow( hWnd, SW_SHOWDEFAULT );
-    UpdateWindow( hWnd );
-
-	// Initialize Direct3D
-	if( !DIRECT3D9.InitD3D( hWnd ) )
-		return 0;
 */
+
+	string graphics_library_name = "Direct3D";
+	CParamLoader param_loader( "config" );
+	if( param_loader.IsReady() )
+	{
+		param_loader.LoadParam( "GraphicsLibrary", graphics_library_name );
+		param_loader.CloseFile();
+	}
+
+	Result::Name res = SelectGraphicsLibrary( graphics_library_name );
+	if( res != Result::SUCCESS )
+		return 0;
+
 	CLogOutput_HTML html_log( GetAppTitle() + "_" + string(GetBuildInfo()) + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
 
