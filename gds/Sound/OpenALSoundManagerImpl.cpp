@@ -374,7 +374,7 @@ bool CSoundBuffer::LoadFromDisk( const std::string& resource_path )
 		return false;
 	}
 
-	if( fnop::get_ext(resource_path) == "ogg" )
+	if( lfs::get_ext(resource_path) == "ogg" )
 	{
 		// treat this as either of the following
 		// - An ogg vorbis file

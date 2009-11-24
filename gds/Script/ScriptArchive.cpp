@@ -2,6 +2,7 @@
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/TextFileScanner.hpp"
+#include "Support/lfs.hpp"
 
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
@@ -58,7 +59,7 @@ static void CreateScriptFileListBySearchingDirectory( path script_dir_path,
 			continue;
 
 		// load the python script files
-		if( fnop::get_ext((*script_itr).string()) != "py" )
+		if( lfs::get_ext((*script_itr).string()) != "py" )
 			continue;
 
 		script_file_list.push_back( (*script_itr).string() );
