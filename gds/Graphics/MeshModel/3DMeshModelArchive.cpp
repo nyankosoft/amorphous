@@ -5,6 +5,7 @@
 #include "Graphics/General3DVertex.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ImageArchive.hpp"
+#include "Support/fnop.hpp"
 
 using namespace GameLib1::Serialization;
 using namespace MeshModel;
