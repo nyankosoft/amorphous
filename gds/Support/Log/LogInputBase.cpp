@@ -1,17 +1,15 @@
-
 #include <cstdio>
 #include <cstdarg>
-
 #include <stdio.h>
 #include <stdarg.h>
 
 #include "LogInputBase.hpp"
 #include "LogOutputBase.hpp"
 
-#include "../Timer.hpp"
-#include "../SafeDelete.hpp"
-#include "../StringAux.hpp"
-
+#include <gds/Platform.hpp>
+#include <gds/Support/Timer.hpp>
+#include <gds/Support/SafeDelete.hpp>
+#include <gds/Support/StringAux.hpp>
 
 using namespace std;
 
@@ -153,7 +151,7 @@ void CLogInputBase::SendLogMessageToOutput( int filter_val, const string strText
 }
 
 
-bool CLogInputBase::RemoveLogOutput( CLogOutputBase *pLogOutput )
+bool CLogInputBase::RemoveLogOutputDevice( CLogOutputBase *pLogOutput )
 {
 	vector<CLogOutputBase *>::iterator itr;
 	for( itr = m_vecpLogOutput.begin(); itr != m_vecpLogOutput.end(); itr++ )

@@ -6,7 +6,7 @@
 #include <string>
 
 #include "LogOutputBase.hpp"
-#include "../TimeFormats.hpp"
+#include <gds/Support/TimeFormats.hpp>
 
 
 class CLogOutputBase;
@@ -34,7 +34,12 @@ class CLogInputBase
 
 public:
 
-	CLogInputBase( int buffer_size = 256 );
+	enum Param
+	{
+		MAX_LOG_TEXT_BUFFER_SIZE = 1024
+	};
+
+	CLogInputBase( int buffer_size = MAX_LOG_TEXT_BUFFER_SIZE );
 
 	virtual ~CLogInputBase();
 
@@ -47,12 +52,16 @@ public:
 	void Print( int filter_val, const char *format,... );
 
 	/// add a log output instance to the list
-	inline void AddLogOutput( CLogOutputBase *pLogOutput ) { m_vecpLogOutput.push_back( pLogOutput ); }
+	inline void AddLogOutputDevice( CLogOutputBase *pLogOutput ) { m_vecpLogOutput.push_back( pLogOutput ); }
+	inline void AddLogOutput( CLogOutputBase *pLogOutput ) { AddLogOutputDevice( pLogOutput ); } /// deprecated
 
 	/// removes the specified log output instance from the list
 	/// returns fales if it was not found in the list
 	/// NOTE: does not release the actual memory, just releases the pointer from the list
-	bool RemoveLogOutput( CLogOutputBase *pLogOutput );
+	bool RemoveLogOutputDevice( CLogOutputBase *pLogOutput );
+	bool RemoveLogOutput( CLogOutputBase *pLogOutput ) { return RemoveLogOutputDevice(pLogOutput); } /// deprecated
+
+	void RemoveAllLogOutputDevices() { m_vecpLogOutput.resize( 0 ); }
 
 	virtual bool TestFilter( int filter_val ) { return true; }
 

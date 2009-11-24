@@ -6,7 +6,7 @@
 #include <vector>
 #include <fstream>
 
-#include "fnop.hpp"
+#include "lfs.hpp"
 
 
 class stream_buffer
@@ -55,7 +55,7 @@ inline bool stream_buffer::LoadBinaryStream( const std::string& filepath )
 		return false;
 	}
 
-	int file_size = fnop::get_filesize(filepath);
+	int file_size = lfs::get_filesize(filepath);
 
 	m_buffer.resize( file_size );
 
