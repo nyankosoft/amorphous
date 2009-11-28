@@ -229,7 +229,7 @@ inline void CPointLightRaytrace::CalcLightAmount( CLightmap& rLightmap, int x, i
 ///	line_segment.vGoal  = rLightmap.GetPoint(x,y);
 
 	const Vector3 vToLight = m_pLight->GetPosition() - vLightmapPoint;
-	const float fRealDist = Vec3Length(&vToLight);
+	const float fRealDist = Vec3Length(vToLight);
 	Vector3 vDirToLight = vToLight / fRealDist;
 //	line_segment.vGoal = vLightmapPoint + vToLight_n * m_fSurfaceErrorTolerance;
 	line_segment.vGoal = vLightmapPoint + plane.normal * 0.01f;//m_fSurfaceErrorTolerance;

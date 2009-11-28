@@ -388,7 +388,7 @@ void CLightmapTexture::FillMarginRegions()
 			if( 0 < iNumSamples )
 			{
 //				vNormal /= (float)iNumSamples;
-				Vec3Normalize( &vNormal, &vNormal );
+				Vec3Normalize( vNormal, vNormal );
 				m_vecvLightDirMap(i,j) = vNormal;
 				m_vecTexelState_LightDirMap(i,j) = LMP_TEXEL_PREV_FILLED;
 			}
