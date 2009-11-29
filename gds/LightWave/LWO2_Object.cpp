@@ -525,7 +525,7 @@ int CLWO2_Object::GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_L
 		itrLayer != rlstLayer.end();
 		itrLayer++)
 	{
-		vector<CLWO2_BoneWeightMap>& rBoneWeightMap = (*itrLayer).GetBoneWeightMap();
+		const vector<CLWO2_BoneWeightMap>& rBoneWeightMap = (*itrLayer).GetBoneWeightMap();
 		for( i=0; i<rBoneWeightMap.size(); i++ )
 		{
 			if( rBoneWeightMap[i].iWeightMapTagIndex == tag_index )

@@ -63,8 +63,8 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 private:
 
 	void BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
-		                              vector<CLWO2_Bone>& rvecSrcBone,
-									  CLWO2_Layer& rLayer,
+		                              const vector<CLWO2_Bone>& rvecSrcBone,
+									  const CLWO2_Layer& rLayer,
 //									  const Vector3& vParentOffset,
 									  CMMA_Bone& rDestBone );
 

@@ -232,7 +232,7 @@ class CLWO2_Bone
 public:
 
 	const std::string& GetName() const { return m_strName; }
-	UINT4 GetVertexIndex( int i ) { return m_aiPointIndex[i]; }
+	UINT4 GetVertexIndex( int i ) const { return m_aiPointIndex[i]; }
 
 	friend class CLWO2_Layer;
 };
@@ -315,6 +315,8 @@ public:
 
 	std::vector<Vector3>& GetVertex() { return m_vecPoint; }
 
+	const std::vector<Vector3>& GetVertex() const { return m_vecPoint; }
+
 	std::vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
 
 	std::vector<CLWO2_Face>& GetFace() { return m_vecFace; }
@@ -347,7 +349,7 @@ public:
 
 //	std::vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
 
-	std::vector<CLWO2_BoneWeightMap>& GetBoneWeightMap() { return m_vecBoneWeightMap; }
+	const std::vector<CLWO2_BoneWeightMap>& GetBoneWeightMap() const { return m_vecBoneWeightMap; }
 
 	bool operator==(CLWO2_Layer& layer){ return ( m_iLayerIndex == layer.m_iLayerIndex ); }
 	bool operator<(CLWO2_Layer& layer){return ( m_iLayerIndex < layer.m_iLayerIndex );}

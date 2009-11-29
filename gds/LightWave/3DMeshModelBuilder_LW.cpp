@@ -449,12 +449,12 @@ void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 
 
 void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
-														  vector<CLWO2_Bone>& rvecSrcBone,
-														  CLWO2_Layer& rLayer,
+														  const vector<CLWO2_Bone>& rvecSrcBone,
+														  const CLWO2_Layer& rLayer,
 	//													  const Vector3& vParentOffset,
 														  CMMA_Bone& rDestBone )
 {
-	CLWO2_Bone& rBone = rvecSrcBone[iSrcBoneIndex];
+	const CLWO2_Bone& rBone = rvecSrcBone[iSrcBoneIndex];
 	int next_pnt_index = rBone.GetVertexIndex(1);
 
 	rDestBone.vLocalOffset
@@ -502,7 +502,7 @@ void C3DMeshModelBuilder_LW::BuildBoneTransformsNROT_r(const Vector3& vParentOff
 
 void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 {
-	vector<CLWO2_Bone>& rvecBone = rLayer.GetBone();
+	const vector<CLWO2_Bone>& rvecBone = rLayer.GetBone();
 
 	int i,j;
 	const int num_bones = (int)rvecBone.size();
