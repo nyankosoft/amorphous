@@ -3,16 +3,16 @@
 //-----------------------------------------------------------------------------
 
 #include <boost/progress.hpp>
-#include "Support/FileOpenDialog_Win32.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/progress_display.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/lfs.hpp"
-#include "Support/thread_starter.hpp"
-#include "Support/Timer.hpp"
+#include <gds/Support/FileOpenDialog_Win32.hpp>
+#include <gds/Support/memory_helpers.hpp>
+#include <gds/Support/progress_display.hpp>
+#include <gds/Support/Log/DefaultLog.hpp>
+#include <gds/Support/lfs.hpp>
+#include <gds/Support/thread_starter.hpp>
+#include <gds/Support/Timer.hpp>
 
-#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
-#include "LightWave/3DMeshModelExportManager_LW.hpp"
+#include <gds/Graphics/MeshModel/3DMeshModelBuilder.hpp>
+#include <gds/LightWave/3DMeshModelExportManager_LW.hpp>
 
 //#include <vld.h>
 
