@@ -23,7 +23,13 @@ inline std::string to_string( const Vector3& v, int precision = 3, int num_zfill
 
 inline std::string to_string( const AABB3& aabb )
 {
-	return std::string( "aabb: min" + to_string(aabb.vMin) + " - max" + to_string(aabb.vMax) );
+	return std::string( "[aabb3] min" + to_string(aabb.vMin) + ", max" + to_string(aabb.vMax) );
+}
+
+
+inline std::string to_string( const SPlane& plane )
+{
+	return std::string( "[plane] d: " + to_string(plane.dist) + ", n" + to_string(plane.normal) );
 }
 
 
@@ -41,7 +47,7 @@ inline std::string to_string( const Vector2& v, int precision = 3, int num_zfill
 
 inline std::string to_string( const AABB2& aabb )
 {
-	return std::string( "aabb: min" + to_string(aabb.vMin) + " - max" + to_string(aabb.vMax) );
+	return std::string( "[aabb2] min" + to_string(aabb.vMin) + ", max" + to_string(aabb.vMax) );
 }
 
 
