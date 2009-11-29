@@ -14,10 +14,17 @@
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntityDesc.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace boost;
 using namespace physics;
+
+
+bool resources_exists( const std::string& resource_path )
+{
+	return boost::filesystem::exists( resource_path );
+}
 
 
 CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name,
@@ -341,9 +348,9 @@ Result::Name CStageMiscUtility::SetTriangleMeshShapeDesc( const char *collision_
 	if( coll_mesh_loaded )
 	{
 		// copy indices
-		uint num_indices = coll_mesh.GetVertexIndex().size();
+		size_t num_indices = coll_mesh.GetVertexIndex().size();
 		trimeshdesc.m_vecIndex.resize( num_indices );
-		for( int i=0; i<num_indices; i++ )
+		for( size_t i=0; i<num_indices; i++ )
 			trimeshdesc.m_vecIndex[i] = (int)coll_mesh.GetVertexIndex()[i];
 
 		// copy vertices
@@ -423,6 +430,11 @@ CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char 
 						const std::string& entity_attributes_name )
 {
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__TriangleMeshFromMesh__";
+
+	if( !resources_exists( mesh_resource_path ) )
+	{
+		return CEntityHandle<>();
+	}
 
 	return CreateTriangleMeshEntityFromMesh(
 		mesh_resource_path,
