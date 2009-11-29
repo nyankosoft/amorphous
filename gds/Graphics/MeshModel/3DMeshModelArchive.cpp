@@ -552,7 +552,9 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 
 	if( m_VertexSet.GetVertexFormat() & CMMA_VertexSet::VF_WEIGHT )
 	{
-		fprintf( fp, "============== VERTEX BLEND WEIGHT (w1, w2, w3, ... ) ==============\n" );
+		fprintf( fp, "============== VERTEX BLEND WEIGHT ==============\n" );
+		fprintf( fp, "index[0],  index[1],  index[2],  index[3]...\n" );
+		fprintf( fp, "weight[0], weight[1], weight[2], weight[3]...\n" );
 
 		int j;
 		for( i=0; i<iNumVeritices; i++ )
@@ -640,6 +642,14 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 		fprintf( fp, "min index:    %d\n", tri_set.m_iMinIndex );
 		fprintf( fp, "vert. blocks: %d\n", tri_set.m_iNumVertexBlocksToCover	);
 		fprintf( fp, "aabb:         %s\n", to_string(tri_set.m_AABB).c_str() );
+	}
+
+	if( 0 < m_SkeletonRootBone.vecChild.size() )
+	{
+		fprintf( fp, "\n============== SKELETON ==============\n" );
+		const int num_bones = m_SkeletonRootBone.GetNumBones_r();
+		fprintf( fp, "%d bone%s in total\n", num_bones, 1 < num_bones ? "s" : "" );
+//		m_SkeletonRootBone.WriteToTextFile( fp );
 	}
 
 	fclose(fp);
