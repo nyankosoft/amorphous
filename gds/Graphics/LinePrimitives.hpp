@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "Graphics/all.hpp"
+#include "Graphics.hpp"
 #include "3DMath/Matrix34.hpp"
 
 
