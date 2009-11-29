@@ -56,7 +56,7 @@ public:
 
 	CGlobalParams()
 		:
-	FullScreen(true),
+	FullScreen(false),
 	ScreenWidth(800),
 	ScreenHeight(600),
 	WindowLeftPos(-1),
