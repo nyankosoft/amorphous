@@ -5,11 +5,11 @@
 #include <vector>
 #include <string>
 
-#include "Input/fwd.hpp"
-#include "Graphics/all.hpp"
-#include "GUI/fwd.hpp"
-#include "MotionSynthesis/fwd.hpp"
-#include "MotionSynthesis/SkeletonRenderer.hpp"
+#include <gds/Input/fwd.hpp>
+#include <gds/Graphics/all.hpp>
+#include <gds/GUI/fwd.hpp>
+#include <gds/MotionSynthesis/fwd.hpp>
+#include <gds/MotionSynthesis/SkeletonRenderer.hpp>
 
 
 class CMotionPrimitiveViewer

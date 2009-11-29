@@ -6,18 +6,19 @@
 //#include <vld.h>
 
 #include <boost/filesystem.hpp>
-#include "Input/StdKeyboard.hpp"
-#include "Graphics/all.hpp"
-#include "Support/Timer.hpp"
-#include "Support/CameraController_Win32.hpp"
-#include "Support/FileOpenDialog_Win32.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Profile.hpp"
-#include "Support/MiscAux.hpp"
-#include "XML/XMLDocumentLoader.hpp"
+#include <gds/Input/StdKeyboard.hpp>
+#include <gds/Graphics/all.hpp>
+#include <gds/Support/Timer.hpp>
+#include <gds/Support/CameraController_Win32.hpp>
+#include <gds/Support/FileOpenDialog_Win32.hpp>
+#include <gds/Support/memory_helpers.hpp>
+#include <gds/Support/Profile.hpp>
+#include <gds/Support/MiscAux.hpp>
+#include <gds/XML/XMLDocumentLoader.hpp>
+#include <gds/App/GameWindowManager.hpp>
 
-#include "MotionSynthesis/MotionDatabaseBuilder.hpp"
-#include "MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
+#include <gds/MotionSynthesis/MotionDatabaseBuilder.hpp>
+#include <gds/MotionSynthesis/BVHMotionDatabaseCompiler.hpp>
 
 #include "MotionPrimitiveViewer.h"
 
@@ -357,6 +358,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	/// init the xml parser (calls Initialize() in ctor)
 	CXMLParserInitReleaseManager xml_parser_mgr;
+
+	// init graphics library (Direct3D/OpenGL)
+	SelectGraphicsLibrary( "Direct3D" );
 
 	if( !Init() )
 		return 0;

@@ -1,12 +1,11 @@
 #include "MotionPrimitiveViewer.h"
 
-#include "boost/foreach.hpp"
-
-#include "Input.hpp"
-#include "3DMath/misc.hpp"
-#include "GUI.hpp"
-#include "MotionSynthesis.hpp"
-#include "Support/memory_helpers.hpp"
+#include <boost/foreach.hpp>
+#include <gds/Input.hpp>
+#include <gds/3DMath/misc.hpp>
+#include <gds/GUI.hpp>
+#include <gds/MotionSynthesis.hpp>
+#include <gds/Support/memory_helpers.hpp>
 
 using namespace std;
 using namespace boost;
