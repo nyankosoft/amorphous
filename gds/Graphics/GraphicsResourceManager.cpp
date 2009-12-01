@@ -18,7 +18,13 @@ using namespace boost;
 // draft
 boost::thread::id sg_RenderThreadID;
 boost::thread::id GetRenderThreadID() { return sg_RenderThreadID; }
-void SetCurrentThreadAsRenderThread() { sg_RenderThreadID = boost::this_thread::get_id(); }
+
+static bool sg_bRenderThreadSpecified = false;
+void SetCurrentThreadAsRenderThread()
+{
+	sg_bRenderThreadSpecified = true;
+	sg_RenderThreadID = boost::this_thread::get_id();
+}
 
 static std::map< boost::thread::id, boost::shared_ptr<CResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
 void CreateResourceLoadingStateHolderForCurrentThread()
@@ -290,6 +296,11 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc& desc )
 {
 	LOG_FUNCTION_SCOPE();
+
+	if( !sg_bRenderThreadSpecified )
+	{
+		LOG_PRINT_WARNING( "Using GraphicsResourceManager without specifying render thread." );
+	}
 
 	if( boost::this_thread::get_id() != GetRenderThreadID() )
 	{
