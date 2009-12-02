@@ -1,5 +1,4 @@
 #include "BasicMesh.hpp"
-#include <gds/Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp>
 #include <boost/filesystem.hpp>
 
 using namespace std;

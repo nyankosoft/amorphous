@@ -18,19 +18,6 @@ extern bool LoadIndices( C3DMeshModelArchive& archive, vector<U16>& vecIBData );
 extern void GetAttributeTableFromTriangleSet( const vector<CMMA_TriangleSet>& vecTriangleSet,
 									          std::vector<D3DXATTRIBUTERANGE>& vecAttributeRange );
 
-class MeshLoadOption
-{
-public:
-	enum Flag
-	{
-		DO_NOT_LOAD_TEXTURES = ( 1 << 0 ), ///< specify this to load textures later. e.g., for asynchronous loading
-		LOAD_ASYNC           = ( 1 << 1 ), ///< asynchronously load the mesh
-		LOAD_TEXTURES_ASYNC  = ( 1 << 2 ), ///< asynchronously load the textures of the mesh
-//		ANOTHER_OPTION       = ( 1 << 3 ),
-//		YET_ANOTHER_OPTION   = ( 1 << 4 ),
-	};
-};
-
 
 /**
  Base class of the D3D implementation of the mesh class

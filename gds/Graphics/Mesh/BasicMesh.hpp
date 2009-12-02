@@ -2,19 +2,31 @@
 #define __BasicMesh_HPP__
 
 
-#include <vector>
-#include <boost/shared_ptr.hpp>
 #include <d3dx9.h>
-#include <gds/Graphics/fwd.hpp>
 #include <gds/3DMath/AABB3.hpp>
 #include <gds/base.hpp>
 //#include "MeshImpl.hpp"
 
+#include <gds/Graphics/fwd.hpp>
 #include <gds/Graphics/TextureHandle.hpp>
 #include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
 #include <gds/Graphics/MeshModel/MeshBone.hpp>
 #include <gds/Graphics/MeshModel/3DMeshModelArchive.hpp>
 using namespace MeshModel;
+
+
+class MeshLoadOption
+{
+public:
+	enum Flag
+	{
+		DO_NOT_LOAD_TEXTURES = ( 1 << 0 ), ///< specify this to load textures later. e.g., for asynchronous loading
+		LOAD_ASYNC           = ( 1 << 1 ), ///< asynchronously load the mesh
+		LOAD_TEXTURES_ASYNC  = ( 1 << 2 ), ///< asynchronously load the textures of the mesh
+//		ANOTHER_OPTION       = ( 1 << 3 ),
+//		YET_ANOTHER_OPTION   = ( 1 << 4 ),
+	};
+};
 
 
 class CMaterial
