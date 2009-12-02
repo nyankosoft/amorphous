@@ -6,7 +6,7 @@
 
 CGM_StdControlRendererManager::CGM_StdControlRendererManager()
 {
-	m_pGraphicsElementManager->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 20, 32, 0, 0 );
+	m_pGraphicsElementManager->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono_Bold_256", CFontBase::FONTTYPE_TEXTURE, 20, 32, 0, 0 );
 }
 
 
