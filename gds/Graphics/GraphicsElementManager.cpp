@@ -2,6 +2,7 @@
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/TrueTypeTextureFont.hpp"
+#include "Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
 #include "Graphics/2DPrimitive/2DPolygon.hpp"
 #include "GraphicsElementManager.hpp"
 #include "Support/Macro.h"
@@ -585,8 +586,24 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 		break;
 
 	case CFontBase::FONTTYPE_TEXTURE:
-		pTexFont = new CTextureFont();
-		pTexFont->InitFont( font_name, w_scaled, h_scaled );
+		if( font_name.find( "BuiltinFont::" ) == 0 )
+		{
+			if( font_name == "BuiltinFont::BitstreamVeraSansMono_Bold_256" )
+			{
+				pTexFont = new CTextureFont();
+				pTexFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
+			}
+			else
+				return false;
+
+			pTexFont->SetFontSize( w_scaled, h_scaled );
+		}
+		else
+		{
+			pTexFont = new CTextureFont();
+			pTexFont->InitFont( font_name, w_scaled, h_scaled );
+		}
+
 		pTexFont->SetItalic( italic );
 		m_vecpFont[font_id] = pTexFont;
 		break;
