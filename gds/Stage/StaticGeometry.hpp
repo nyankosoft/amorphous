@@ -159,6 +159,9 @@ class CStaticGeometry : public CStaticGeometryBase
 	/// used in UpdateResources_NonHierarchical()
 	int m_MeshSubsetToCheckNext;
 
+	/// Temporarily hold nodes to check for rendering in Render()
+	std::vector<int> m_vecNodesToCheck;
+
 private:
 
 	void UpdateResources( const CCamera& rCam );

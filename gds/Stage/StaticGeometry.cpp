@@ -446,6 +446,8 @@ void CStaticGeometry::SetGlobalParams()
 }
 */
 
+#define NUM_MAX_VISIBLE_SUBSETS_PER_NODE 24
+
 bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag )
 {
 //	this->UpdateResources( rCam );
@@ -479,10 +481,10 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 
 	/// Used during runtime
 	/// - Holds indices of nodes to check for visibility
-	std::vector<int> m_vecNodesToCheck;
+	m_vecNodesToCheck.resize( 0 );
 	m_vecNodesToCheck.push_back(0);
 
-	vector<int> vecVisibleMatIndex;
+	TCFixedVector<int,NUM_MAX_VISIBLE_SUBSETS_PER_NODE> vecVisibleMatIndex;
 
 	while( 0 < m_vecNodesToCheck.size() )
 	{
@@ -515,14 +517,20 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 /*				pMesh->RenderSubsets( shader_mgr, subset.vecMaterialIndex );*/
 
 				// collect visible materials(surfaces or triangle sets) of the mesh
-				vecVisibleMatIndex.resize( 0 );
+				vecVisibleMatIndex.clear();
 				for( size_t j=0; j<subset.vecMaterialIndex.size(); j++ )
 				{
+					if( NUM_MAX_VISIBLE_SUBSETS_PER_NODE <= vecVisibleMatIndex.size() )
+					{
+						LOG_PRINT_WARNING( "Exceeded the number of maximum allowed subsets at a node." );
+						break;
+					}
+
 					if( rCam.ViewFrustumIntersectsWith( pMesh->GetAABB( subset.vecMaterialIndex[j] ) ) )
 						vecVisibleMatIndex.push_back( subset.vecMaterialIndex[j] );
 				}
 
-				pMesh->RenderSubsets( shader_mgr, vecVisibleMatIndex );
+				pMesh->RenderSubsets( shader_mgr, &vecVisibleMatIndex[0], (int)vecVisibleMatIndex.size() );
 			}
 		}
 
