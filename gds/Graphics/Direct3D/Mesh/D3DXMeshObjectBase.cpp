@@ -681,7 +681,7 @@ void CD3DXMeshObjectBase::UpdateVisibility( const CCamera& cam )
 	}
 }
 
-
+/*
 void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 										 const std::vector<int>& vecMaterialIndex )
 {
@@ -690,13 +690,33 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 	vector<CShaderTechniqueHandle> empty_shader_technique_array;
 	RenderSubsets( rShaderMgr, vecMaterialIndex, empty_shader_technique_array );
 }
+*/
 
+void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+		                        const int *paMaterialIndex /* some option to specify handles for texture */,
+								int num_indices )
+{
+	PROFILE_FUNCTION();
 
+//	vector<CShaderTechniqueHandle> empty_shader_technique_array;
+//	RenderSubsets( rShaderMgr, vecMaterialIndex, empty_shader_technique_array );
+	RenderSubsets( rShaderMgr, paMaterialIndex, NULL, num_indices );
+}
+
+/*
 void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 										 const std::vector<int>& vecMaterialIndex,
 										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+{}
+*/
+
+void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+										 const int *paMaterialIndex,
+										 CShaderTechniqueHandle *paShaderTechnique,
+										 int num_indices )
 {
-	bool single_shader_technique = ( vecShaderTechnique.size() == 0 ) ? true : false;
+//	bool single_shader_technique = ( vecShaderTechnique.size() == 0 ) ? true : false;
+	bool single_shader_technique = ( paShaderTechnique == NULL ) ? true : false;
 
 	if( m_bViewFrustumTest && !IsMeshVisible() )
 		return;
@@ -720,17 +740,20 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 	// Meshes are divided into subsets by materials. Render each subset in a loop
 //	const int num_materials = GetNumMaterials();
 //	for( int mat=0; mat<num_materials; mat++ )
-	const size_t num_materials_to_render = vecMaterialIndex.size();
+	const size_t num_materials_to_render = num_indices;//vecMaterialIndex.size();
 	for( size_t i=0; i<num_materials_to_render; i++ )
 	{
-		int mat = vecMaterialIndex[i];
+		int mat = paMaterialIndex[i];//vecMaterialIndex[i];
 
 		if( m_bViewFrustumTest && !IsMeshVisible(mat) )
 			continue;
 
-		if( !single_shader_technique
-		 && i < vecShaderTechnique.size() )
-			rShaderMgr.SetTechnique( vecShaderTechnique[i] );
+		if( !single_shader_technique )
+//		 && i < vecShaderTechnique.size() )
+		{
+//			rShaderMgr.SetTechnique( vecShaderTechnique[i] );
+			rShaderMgr.SetTechnique( paShaderTechnique[i] );
+		}
 
 		const int num_textures_for_material = (int)m_vecMaterial[mat].Texture.size();
 		for( int tex=0; tex<num_textures_for_material; tex++ )

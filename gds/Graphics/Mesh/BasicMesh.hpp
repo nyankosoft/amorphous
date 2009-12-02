@@ -127,12 +127,31 @@ public:
 
 	virtual void RenderSubset( CShaderManager& rShaderMgr, int material_index ) = 0;
 
+	/// Calls the raw array version by default
 	virtual void RenderSubsets( CShaderManager& rShaderMgr,
 		                        const std::vector<int>& vecMaterialIndex,
-								std::vector<CShaderTechniqueHandle>& vecShaderTechnique ) {}
+								std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+	{
+		if( !vecMaterialIndex.empty() && vecMaterialIndex.size() == vecShaderTechnique.size() )
+			RenderSubsets( rShaderMgr, &vecMaterialIndex[0], &vecShaderTechnique[0], (int)vecMaterialIndex.size() );
+	}
 
 	virtual void RenderSubsets( CShaderManager& rShaderMgr,
-		const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */) {}
+		                        const int *paMaterialIndex,
+								CShaderTechniqueHandle *paShaderTechnique,
+								int num_indices ) {}
+
+	/// Calls the raw array version by default
+	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */)
+	{
+		if( !vecMaterialIndex.empty() )
+			RenderSubsets( rShaderMgr, &vecMaterialIndex[0], (int)vecMaterialIndex.size() );
+	}
+
+	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+		                        const int* paMaterialIndex,
+	                            int num_indices /* some option to specify handles for texture */) {}
 
 	/// D3D-specific feature
 
@@ -232,11 +251,27 @@ public:
 	void RenderSubset( CShaderManager& rShaderMgr, int material_index ) { m_pImpl->RenderSubset( rShaderMgr, material_index ); }
 
 	void RenderSubsets( CShaderManager& rShaderMgr,
-		                        const std::vector<int>& vecMaterialIndex,
-								std::vector<CShaderTechniqueHandle>& vecShaderTechnique ) { m_pImpl->RenderSubsets( rShaderMgr, vecMaterialIndex, vecShaderTechnique ); }
+		                const std::vector<int>& vecMaterialIndex,
+						std::vector<CShaderTechniqueHandle>& vecShaderTechnique ) { m_pImpl->RenderSubsets( rShaderMgr, vecMaterialIndex, vecShaderTechnique ); }
 
+	/// paMaterialIndex [in] pointer to the array of subset indices
+	/// paShaderTechnique [in] pointer to the array of shader techniques. Array size must be the same as paMaterialIndex.
+	/// num_indices [in] the number of indices
+	void RenderSubsets( CShaderManager& rShaderMgr,
+		                const int *paMaterialIndex,
+						CShaderTechniqueHandle *paShaderTechnique,
+						int num_indices ) { m_pImpl->RenderSubsets( rShaderMgr, paMaterialIndex, paShaderTechnique, num_indices ); }
+
+	/// renders subsets of the mesh with the current shader technique
+	/// - the same shader technique is used to render all the materials
 	void RenderSubsets( CShaderManager& rShaderMgr,
 		const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */) { m_pImpl->RenderSubsets( rShaderMgr, vecMaterialIndex ); }
+
+	/// paMaterialIndex [in] pointer to the array of subset indices
+	/// num_indices [in] the number of indices
+	void RenderSubsets( CShaderManager& rShaderMgr,
+		const int* paMaterialIndex,
+		int num_indices /* some option to specify handles for texture */) { m_pImpl->RenderSubsets( rShaderMgr, paMaterialIndex, num_indices ); }
 
 	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return m_pImpl->CreateMesh( num_vertices, num_indices, option_flags, vecVertexElement ); }
 

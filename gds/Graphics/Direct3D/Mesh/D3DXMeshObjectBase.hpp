@@ -168,14 +168,24 @@ public:
 
 	/// renders subsets of the mesh
 	/// - use different shader techniques for each material
-	virtual void RenderSubsets( CShaderManager& rShaderMgr,
-		                        const std::vector<int>& vecMaterialIndex,
-								std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
+//	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+//		                        const std::vector<int>& vecMaterialIndex,
+//								std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
+
+	void RenderSubsets( CShaderManager& rShaderMgr,
+		                const int *paMaterialIndex,
+						CShaderTechniqueHandle *paShaderTechnique,
+						int num_indices );
 
 	/// renders subsets of the mesh with the current shader technique
-	/// - the same shader technique is used to render all the materials
-	virtual void RenderSubsets( CShaderManager& rShaderMgr,
-		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
+	/// - the same shader technique is used to render all the subsets
+//	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+//		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
+
+	void RenderSubsets( CShaderManager& rShaderMgr,
+		                const int *paMaterialIndex,
+						int num_indices
+						/* some option to specify handles for texture */ );
 
 	/// renders the mesh with the current shader technique
 	/// - Assumes that you have already set a valid technique that can be obtained from 'rShaderMgr'
@@ -242,23 +252,24 @@ m_pVertexDecleration(NULL)
 /// \param vecMaterialIndex indices of materials(subsets) to render 
 inline void CD3DXMeshObjectBase::Render( CShaderManager& rShaderMgr )
 {
-	RenderSubsets( rShaderMgr, m_vecFullMaterialIndices );
+	CMeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices );
 }
 
 
 inline void CD3DXMeshObjectBase::Render( CShaderManager& rShaderMgr,
 										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
 {
-	RenderSubsets( rShaderMgr, m_vecFullMaterialIndices, vecShaderTechnique );
+	CMeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices, vecShaderTechnique );
 }
 
 
 inline void CD3DXMeshObjectBase::RenderSubset( CShaderManager& rShaderMgr, int material_index )
 {
-	vector<int> single_index;
-	single_index.push_back( material_index );
+//	vector<int> single_index;
+//	single_index.push_back( material_index );
+//	RenderSubsets( rShaderMgr, single_index );
 
-	RenderSubsets( rShaderMgr, single_index );
+	RenderSubsets( rShaderMgr, &material_index, 1 );
 }
 
 
