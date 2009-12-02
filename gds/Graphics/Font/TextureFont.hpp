@@ -44,7 +44,7 @@ public:
 
 	enum Params
 	{
-		NUM_MAX_LETTERS = 256,
+		NUM_MAX_LETTERS = 1024,
 		CHAR_OFFSET = ' '
 	};
 	

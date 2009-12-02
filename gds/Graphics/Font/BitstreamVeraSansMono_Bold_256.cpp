@@ -203,7 +203,7 @@ static const char *g_apTexelRow[192] =
 
 CSimpleBitmapFontData g_BitstreamVeraSansMono_Bold_256
 = CSimpleBitmapFontData(
-						"BitstreamVeraSansMono_Bold_256",
+						"BuiltinFont::BitstreamVeraSansMono_Bold_256",
 						256, // width
 						256, // height
 						64,  // start row
