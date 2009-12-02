@@ -107,7 +107,7 @@ void CApplicationBase::Release()
 
 void CApplicationBase::InitDebugItems()
 {
-	const string font_name = "DotumChe";
+	const string font_name = "BuiltinFont::BitstreamVeraSansMono_Bold_256";//"DotumChe";
 
 	// set debug items and output to the screen
 	// (graphics component)
