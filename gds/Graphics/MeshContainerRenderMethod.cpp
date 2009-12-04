@@ -199,6 +199,10 @@ void CSubsetRenderMethod::Serialize( IArchive& ar, const unsigned int version )
 static int sg_iPrevShaderManagerID = -1;
 
 
+
+// - Set the world transform 'world_transform' to shader
+// - Update shader params
+// - Set technique
 void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform )
 {
 	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
@@ -216,45 +220,45 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 
 		// Render with a single shader & a single technique 
 		CShaderManager *pShaderMgr = m_vecMeshRenderMethod[lod_index].m_Shader.GetShaderManager();
-		if( pShaderMgr )
+		if( !pShaderMgr )
+			return;
+
+		pShaderMgr->SetWorldTransform( world_transform );
+
+/*		if( true )//sg_iPrevShaderManagerID != pShaderMgr->GetShaderManagerID() )
 		{
-			pShaderMgr->SetWorldTransform( world_transform );
+			for( size_t i=0; i<vecpShaderParamsWriter.size(); i++ )
+				vecpShaderParamsWriter[i]->UpdateShaderParams( *pShaderMgr );
+		}*/
 
-/*			if( true )//sg_iPrevShaderManagerID != pShaderMgr->GetShaderManagerID() )
+		CSubsetRenderMethod& render_method = m_vecMeshRenderMethod[lod_index];
+
+		// update shader params
+		for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
+		{
+			render_method.m_vecpShaderParamsLoader[i]->UpdateShaderParams( *pShaderMgr );
+		}
+
+		// render
+		pShaderMgr->SetTechnique( render_method.m_Technique );
+		if( m_vecIndicesOfSubsetsToRender.size() == 0 )
+		{
+			// Render all the mesh subsets with a single shader & a single technique 
+			pMesh->Render( *pShaderMgr );
+		}
+		else
+		{
+			// render only the specified subsets with a single shader & a single technique
+			for( int i=0; i<(int)m_vecIndicesOfSubsetsToRender.size(); i++ )
 			{
-				for( size_t i=0; i<vecpShaderParamsWriter.size(); i++ )
-					vecpShaderParamsWriter[i]->UpdateShaderParams( *pShaderMgr );
-			}*/
-
-			CSubsetRenderMethod& render_method = m_vecMeshRenderMethod[lod_index];
-
-			// update shader params
-			for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
-			{
-				render_method.m_vecpShaderParamsLoader[i]->UpdateShaderParams( *pShaderMgr );
+				pMesh->RenderSubset( *pShaderMgr, m_vecIndicesOfSubsetsToRender[i] );
 			}
+		}
 
-			// render
-			pShaderMgr->SetTechnique( render_method.m_Technique );
-			if( m_vecIndicesOfSubsetsToRender.size() == 0 )
-			{
-				// Render all the mesh subsets with a single shader & a single technique 
-				pMesh->Render( *pShaderMgr );
-			}
-			else
-			{
-				// render only the specified subsets with a single shader & a single technique
-				for( int i=0; i<(int)m_vecIndicesOfSubsetsToRender.size(); i++ )
-				{
-					pMesh->RenderSubset( *pShaderMgr, m_vecIndicesOfSubsetsToRender[i] );
-				}
-			}
-
-			// reset shader params if necessary
-			for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
-			{
-				render_method.m_vecpShaderParamsLoader[i]->ResetShaderParams( *pShaderMgr );
-			}
+		// reset shader params if necessary
+		for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
+		{
+			render_method.m_vecpShaderParamsLoader[i]->ResetShaderParams( *pShaderMgr );
 		}
 	}
 	else if( 0 < m_vecSubsetNameToRenderMethod.size() )
@@ -268,6 +272,7 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 		{
 			// render all the subsets
 			// - create the full indices list
+			// - For the same mesh, this is done only once.
 			for( int j=(int)m_vecFullIndicesOfSubsets.size(); j<num_subsets; j++ )
 				m_vecFullIndicesOfSubsets.push_back( j );
 			pvecIndicesOfSubsetsToRender = &m_vecFullIndicesOfSubsets;

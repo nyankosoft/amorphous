@@ -80,9 +80,14 @@ public:
 
 	/// Used when m_vecSubsetNameToRenderMethod is empty
 	/// - Applies the same shader and same techniques to all the subsets of the mesh
+	/// - Uses array to support LOD of shader
 	std::vector<CSubsetRenderMethod> m_vecMeshRenderMethod;
 
 	/// Different shader & technique for each mesh subset
+	/// - Uses array to support LOD of shader
+	/// map of string and subset render method
+	/// - string(key) - subset name saved in CMeshMaterial::Name
+	/// - CSubsetRenderMethod - method to render a subset of a mesh
 	std::vector< std::map<std::string,CSubsetRenderMethod> > m_vecSubsetNameToRenderMethod;
 
 	// shader params
@@ -125,6 +130,7 @@ public:
 
 	void RemoveShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
 
+	/// Creates a copy or copies of render methods at each LoD for subsets whose names are specified by the argument.
 	void BreakMeshRenderMethodsToSubsetRenderMethods( const std::vector<std::string>& vecName );
 
 	bool LoadRenderMethodResources();
