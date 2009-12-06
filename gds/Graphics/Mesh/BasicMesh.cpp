@@ -119,17 +119,19 @@ Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive,
 			else if( texture_archive.type == CMMA_Texture::SINGLECOLOR
 				&& 0 < texture_archive.vecfTexelData.size_x() )
 			{
-				m_vecMaterial[i].TextureDesc[tex].pLoader
+				CTextureResourceDesc& current_desc = m_vecMaterial[i].TextureDesc[tex];
+
+				current_desc.pLoader
 					= shared_ptr<CSignleColorTextureFilling>(
 					new CSignleColorTextureFilling( texture_archive.vecfTexelData(0,0) ) );
 
-				m_vecMaterial[i].TextureDesc[tex].Width  = texture_archive.vecfTexelData.size_x();
-				m_vecMaterial[i].TextureDesc[tex].Height = texture_archive.vecfTexelData.size_y();
+				current_desc.Width  = texture_archive.vecfTexelData.size_x();
+				current_desc.Height = texture_archive.vecfTexelData.size_y();
+				current_desc.Format = TextureFormat::A8R8G8B8;
 
 				// TODO: define a function to set texture resource id string
 				static int s_texcount = 0;
-				m_vecMaterial[i].TextureDesc[tex].ResourcePath
-					= "<Texture>" + to_string(s_texcount);
+				current_desc.ResourcePath = "<Texture>" + to_string(s_texcount);
 
 			}
 
