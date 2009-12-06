@@ -3,6 +3,7 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Support/Timer.hpp"
@@ -33,6 +34,19 @@ CFontBase* CFontFactory::CreateFont( const string& font_name, int font_width, in
 	 || font_name.find(".jpg") != string::npos )
 	{
 		return new CTextureFont( font_name, font_width, font_height );
+	}
+	else if( font_name.find( "BuiltinFont::" ) == 0 )
+	{
+		CTextureFont *pFont = NULL;
+		if( font_name == "BuiltinFont::BitstreamVeraSansMono_Bold_256" )
+		{
+			pFont = new CTextureFont;
+			pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
+		}
+
+		if( pFont )
+			pFont->SetFontSize( font_width, font_height );
+		return pFont;
 	}
 	else
 	{
