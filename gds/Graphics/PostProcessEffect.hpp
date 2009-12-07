@@ -7,7 +7,7 @@
 #include "../base.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/TextureHandle.hpp"
-#include "Graphics/TextureFormat.hpp"
+#include "Graphics/SurfaceFormat.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"

@@ -15,6 +15,7 @@
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/fwd.hpp"
 #include <gl/gl.h>
+#include <d3dx9.h>
 
 
 class stream_buffer;

@@ -2,12 +2,8 @@
 #define  __EntityRenderManager_H__
 
 
-#include <vector>
-#include <string>
-
 #include "../base.hpp"
 #include "3DMath/AABB3.hpp"
-
 #include "fwd.hpp"
 #include "CopyEntity.hpp"
 #include "EntityNode.hpp"
@@ -88,7 +84,6 @@ private:
 
 	CTextureHandle m_TransparentTexture;
 	CTextureHandle m_TranslucentTexture;
-	LPDIRECT3DTEXTURE9 m_pBlankTexture;
 
 	std::string m_FallbackShaderFilepath;
 	CShaderHandle m_FallbackShader;

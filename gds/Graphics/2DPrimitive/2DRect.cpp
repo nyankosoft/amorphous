@@ -41,13 +41,18 @@ void C2DRect::Draw(	const LPDIRECT3DTEXTURE9 pTexture )
 	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
 	// draw a rectangle
-	HRESULT hr ;
+//	HRESULT hr ;
 
+	draw();
+/*
+	pd3dDev->SetVertexShader( NULL );
+	pd3dDev->SetPixelShader( NULL );
 	pd3dDev->SetFVF( D3DFVF_TLVERTEX );
 	hr = pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectVertex, sizeof(TLVERTEX) );
 
 	if( FAILED(hr) )
 		MessageBox(NULL, "DrawPrimUP failed.", "Error", MB_OK);
+*/
 }
 
 

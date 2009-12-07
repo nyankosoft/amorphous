@@ -6,7 +6,7 @@
 #include <d3dx9.h>
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/Camera.hpp"
-#include "TextureFormat.hpp"
+#include "SurfaceFormat.hpp"
 
 
 class STATUS

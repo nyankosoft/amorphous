@@ -4,7 +4,7 @@
 #include <vector>
 #include "../base.hpp"
 #include "AlphaBlend.hpp"
-#include "TextureFormat.hpp"
+#include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
 
 #include "Support/Singleton.hpp"

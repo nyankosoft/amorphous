@@ -2,9 +2,7 @@
 #define  __VarianceShadowMapManager_H__
 
 
-#include <boost/shared_ptr.hpp>
 #include "ShadowMapManager.hpp"
-#include "Graphics/ShaderHandle.hpp"
 
 
 typedef CShaderParameter< std::vector<float> > CShaderParamFloatArray;
@@ -40,7 +38,7 @@ class CVarianceShadowMapManager : public CShadowMapManager
 
 private:
 
-	D3DFORMAT GetShadowMapTextureFormat() { return D3DFMT_G16R16F; }
+	TextureFormat::Format GetShadowMapTextureFormat() { return TextureFormat::G16R16F; }
 
 public:
 
@@ -61,9 +59,13 @@ public:
 
 	void BeginSceneDepthMap();
 
+	void PostProcessShadowMap( CShadowMap& shadow_map );
+
 //	void EndSceneDepthMap();
 
 	void UpdateLightPositionAndDirection();
+
+	void PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map );
 
 	void ReleaseGraphicsResources();
 

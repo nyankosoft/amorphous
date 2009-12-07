@@ -1,11 +1,9 @@
 #ifndef  __ShadowMaps_H__
 #define  __ShadowMaps_H__
 
-#include <d3d9.h>
 #include <d3dx9.h>
 #include <boost/shared_ptr.hpp>
 #include "fwd.hpp"
-#include "3DMath/Vector3.hpp"
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -14,6 +12,12 @@
 #include "Graphics/CubeMapManager.hpp"
 
 #include <assert.h>
+
+
+class CShadowMap;
+class CDirectionalLightShadowMap;
+class CPointLightShadowMap;
+class CSpotLightShadowMap;
 
 
 class CShadowMapSceneRenderer
@@ -42,6 +46,18 @@ public:
 	}
 
 	virtual Vector3 GetCameraPosition() { return Vector3(0,0,0); }
+};
+
+
+class CShadowMapVisitor
+{
+public:
+
+	virtual ~CShadowMapVisitor() {}
+
+	virtual void Visit( CDirectionalLightShadowMap& shadow_map ) {}
+	virtual void Visit( CPointLightShadowMap& shadow_map ) {}
+	virtual void Visit( CSpotLightShadowMap& shadow_map ) {}
 };
 
 
@@ -74,6 +90,10 @@ protected:
 
 protected:
 
+	bool m_UseLightPosInWorldSpace;
+
+	TextureFormat::Format m_ShadowMapTextureFormat;
+
 //	void SetDefault();
 
 //	bool CreateSceneShadowMapTextures();
@@ -86,14 +106,20 @@ public:
 	CShadowMap()
 		:
 	m_pSceneRenderer(NULL),
-	m_ShadowMapSize(256),
-	m_DisplayShadowMapTexturesForDebugging(false)
+	m_ShadowMapSize(512),
+	m_ShadowMapTextureFormat(TextureFormat::R32F),
+	m_DisplayShadowMapTexturesForDebugging(false),
+	m_UseLightPosInWorldSpace(true)
 	{}
 
 //	CShadowMap( const CShaderHandle& shader );
 //	CShadowMap( int texture_width, int texture_height );
 
 	virtual ~CShadowMap();
+
+	TextureFormat::Format GetShadowMapTextureFormat() const { return m_ShadowMapTextureFormat; }
+
+	void SetShadowMapTextureFormat( TextureFormat::Format fmt ) { m_ShadowMapTextureFormat = fmt; }
 
 	virtual bool CreateShadowMapTextures() = 0;
 
@@ -112,7 +138,8 @@ public:
 
 //	void Init( int texture_width, int texture_height );
 
-//	void SetTextureWidth( const int width, const int height );
+	/// Set width and height of shadow map texture
+	void SetShadowMapSize( int size ) { m_ShadowMapSize = size; }
 
 	virtual void BeginSceneShadowMap() = 0;
 
@@ -153,6 +180,8 @@ public:
 	virtual std::string CreateTextureFilename() { return string(); }
 
 	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath ) {}
+
+	virtual void Accept( CShadowMapVisitor& v ) {}
 /*
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }
@@ -164,8 +193,12 @@ class CFlatShadowMap : public CShadowMap
 {
 protected:
 
-	LPDIRECT3DTEXTURE9 m_pShadowMap;            ///< Texture to which the shadow map is rendered
-	LPDIRECT3DSURFACE9 m_pShadowMapDepthBuffer; ///< Depth-stencil buffer for rendering to shadow
+	/// Texture to which the shadow map is rendered
+	/// Geometries that cast shadows to others (=shadow casters)
+	/// are rendered to this texture.
+	LPDIRECT3DTEXTURE9 m_pShadowMap;
+
+	LPDIRECT3DSURFACE9 m_pShadowMapDepthBuffer; ///< Depth-stencil buffer for rendering to shadow map
 
 //	LPDIRECT3DTEXTURE9 m_pShadowedView;
 //	LPDIRECT3DSURFACE9 m_pDSShadowedView;
@@ -217,6 +250,8 @@ public:
 	CDirectionalLightShadowMap();
 
 	void UpdateDirectionalLight( CDirectionalLight& light );
+
+	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
 
 
@@ -226,6 +261,8 @@ public:
 
 	CSpotLightShadowMap()
 	{}
+
+	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
 
 
@@ -279,6 +316,8 @@ public:
 	}
 
 	void SaveShadowMapTextureToFileInternal( const std::string& filepath );
+
+	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
 
 

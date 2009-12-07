@@ -1,8 +1,6 @@
-
 #include "TextureRenderTarget.hpp"
-
 #include "Graphics/Direct3D9.hpp"
-
+#include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Support/BMPImageExporter.hpp"
 
 

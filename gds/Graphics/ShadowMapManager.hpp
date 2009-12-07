@@ -4,9 +4,7 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <d3dx9.h>
-#include "3DMath/Vector3.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/3DGameMath.hpp"
@@ -88,7 +86,7 @@ protected:
 
 	bool CreateSceneShadowMapTextures();
 
-	virtual D3DFORMAT GetShadowMapTextureFormat() { return D3DFMT_R32F; }
+	virtual TextureFormat::Format GetShadowMapTextureFormat() { return TextureFormat::R32F; }
 
 public:
 
@@ -137,6 +135,7 @@ public:
 	/// - See CVarianceShadowMapManager
 	virtual void EndSceneShadowMap();
 
+	virtual void PostProcessShadowMap( CShadowMap& shadow_map ) {}
 
 //	virtual void UpdateLightPositionAndDirection();
 
@@ -175,6 +174,9 @@ public:
 
 //	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
 	void SetShadowMapShaderFilename( const std::string& filename ) { m_ShadowMapShaderFilename = filename; }
+
+	/// For debugging
+	void SaveSceneTextureToFile( const std::string& filename );
 };
 
 

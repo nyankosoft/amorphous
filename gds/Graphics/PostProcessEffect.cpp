@@ -1,6 +1,7 @@
 #include "PostProcessEffect.hpp"
 #include "PostProcessEffectManager.hpp"
-#include "Graphics/TextureFormat.hpp"
+#include "Graphics/SurfaceFormat.hpp"
+#include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/Log/DefaultLog.hpp"

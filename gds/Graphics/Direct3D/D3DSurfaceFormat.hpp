@@ -1,32 +1,11 @@
-#ifndef  __TextureFormat_H__
-#define  __TextureFormat_H__
+#ifndef  __D3DSurfaceFormat_HPP__
+#define  __D3DSurfaceFormat_HPP__
 
 
+#include "../SurfaceFormat.hpp"
 #include "Support/Log/DefaultLog.hpp"
-
-
-class TextureFormat
-{
-public:
-	enum Format
-	{
-		Invalid = -1,
-		R16F = 0,
-		R32F,
-		A16R16G16B16F,
-		A8R8G8B8,
-		X8R8G8B8,
-		A1R5G5B5,
-		X1R5G5B5,
-		R5G6B5,
-		G16R16F, ///< For variance shadow map with Direct3D
-		G32R32F, ///< For variance shadow map with Direct3D
-		NumFormats
-	};
-};
-
-
 #include <d3dx9.h>
+
 
 inline TextureFormat::Format FromD3DSurfaceFormat( D3DFORMAT d3d_fmt )
 {
@@ -66,4 +45,5 @@ inline D3DFORMAT ConvertTextureFormatToD3DFORMAT( TextureFormat::Format tex_form
 }
 
 
-#endif		/*  __TextureFormat_H__  */
+
+#endif		/*  __SurfaceFormat_HPP__  */

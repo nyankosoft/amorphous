@@ -518,6 +518,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\SurfaceFormat.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\TextureCoord.hpp"
 				>
 			</File>
@@ -1264,6 +1268,10 @@
 			<Filter
 				Name="Direct3D"
 				>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\D3DSurfaceFormat.hpp"
+					>
+				</File>
 				<Filter
 					Name="2DPrimitive"
 					>

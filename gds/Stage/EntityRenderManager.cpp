@@ -222,7 +222,7 @@ m_pCurrentCamera(NULL)
 
 CEntityRenderManager::~CEntityRenderManager()
 {
-	ReleaseGraphicsResources();
+//	ReleaseGraphicsResources();
 
 	m_vecpSweepRenderBaseEntity.resize( 0 );
 
@@ -853,10 +853,10 @@ void CEntityRenderManager::DisableShadowMap()
 
 void CEntityRenderManager::UpdateLightsForShadow()
 {
-	Vector3 vCenter = Vector3(0,0,0);
+	Vector3 vCamCenter = Vector3(0,0,0);
 	if( m_pCurrentCamera )
 	{
-		vCenter = m_pCurrentCamera->GetPosition();
+		vCamCenter = m_pCurrentCamera->GetPosition();
 	}
 
 	// clear the entity buffer
@@ -864,8 +864,8 @@ void CEntityRenderManager::UpdateLightsForShadow()
 
 	float r = 200;
 	AABB3 aabb;
-	aabb.vMin = vCenter - Vector3(r,r,r);
-	aabb.vMax = vCenter + Vector3(r,r,r);
+	aabb.vMin = vCamCenter - Vector3(r,r,r);
+	aabb.vMax = vCamCenter + Vector3(r,r,r);
 	COverlapTestAABB aabb_test( aabb, &m_vecpEntityBuffer );
 
 	/// collect only the light entities
@@ -903,8 +903,6 @@ void CEntityRenderManager::UpdateLightsForShadow()
 
 void CEntityRenderManager::ReleaseGraphicsResources()	
 {
-	SAFE_RELEASE( m_pBlankTexture );
-
 	size_t i, num_base_entities = m_pEntitySet->m_vecpBaseEntity.size();
 	for(i=0; i<num_base_entities; i++)
 		m_pEntitySet->m_vecpBaseEntity[i]->ReleaseGraphicsResources();
@@ -933,14 +931,6 @@ void CEntityRenderManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 
 void CEntityRenderManager::LoadTextures()
 {
-	// create blank texture (white, opaque) for texture stage 1
-	DIRECT3D9.GetDevice()->CreateTexture( 1, 1, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &m_pBlankTexture, NULL );
-	D3DLOCKED_RECT locked_rect;
-	m_pBlankTexture->LockRect( 0, &locked_rect, NULL, 0);	// Lock and get the pointer to the first texel of the texture
-	DWORD color = 0xFFFFFFFF;
-	memcpy( locked_rect.pBits, &color, sizeof(DWORD) );
-	m_pBlankTexture->UnlockRect(0);
-
 	// load texture for glare effect
 	m_TransparentTexture.Load( "Texture\\TransparentTex.dds" );
 
@@ -1097,9 +1087,6 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	// we use default D3D lights for entities
     pd3dDev->SetRenderState( D3DRS_LIGHTING, TRUE );
 
-	pd3dDev->SetTexture( 1, m_pBlankTexture );
-	pd3dDev->SetTexture( 2, m_pBlankTexture );
-
 	// test - add some ambient light
 //    pd3dDev->SetRenderState( D3DRS_AMBIENT, 0x00202020 );
 
@@ -1138,4 +1125,12 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	}
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
+
+	static int s_SaveSceneTextureOfShadowMapToFile = 0;
+	if( s_SaveSceneTextureOfShadowMapToFile )
+	{
+		if( m_pShadowManager )
+			m_pShadowManager->SaveSceneTextureToFile( "debug/scene_for_shadowmap.bmp" );
+		s_SaveSceneTextureOfShadowMapToFile = 0;
+	}
 }

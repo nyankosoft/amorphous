@@ -1,6 +1,7 @@
 #include "ShadowMaps.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/CubeMapManager.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
@@ -43,7 +44,6 @@ void CShadowMap::SaveShadowMapTextureToFile( const std::string& file_or_director
 }
 
 
-D3DFORMAT GetShadowMapTextureFormat() { return D3DFMT_R32F; }
 
 bool CFlatShadowMap::CreateShadowMapTextures()
 {
@@ -55,7 +55,7 @@ bool CFlatShadowMap::CreateShadowMapTextures()
 //	V_RETURN( m_pEffect->SetVector( "g_vLightDiffuse", (D3DXVECTOR4 *)&m_Light.Diffuse ) );
 //	V_RETURN( m_pEffect->SetFloat( "g_fCosTheta", cosf( g_Light.Theta ) ) );
 
-	D3DFORMAT format = GetShadowMapTextureFormat();
+	D3DFORMAT format = ConvertTextureFormatToD3DFORMAT( GetShadowMapTextureFormat() );
 
 	// Create the shadow map texture
 	hr = pd3dDevice->CreateTexture( m_ShadowMapSize, m_ShadowMapSize,
@@ -119,8 +119,7 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
 	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
 
-	bool variance_shadow_mapping = true;
-	if( variance_shadow_mapping )
+	if( m_UseLightPosInWorldSpace )
 	{
 		hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vWorldLightPos, 3 );
 		hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vWorldLightDir, 3 );

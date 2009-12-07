@@ -196,6 +196,8 @@ void C2DPrimitiveRenderer_D3D::Render( CShaderManager& rShaderManager, CGeneral2
 
 	HRESULT hr = S_OK;
 
+	hr = pd3dDev->SetFVF( TLVERTEX::FVF );
+
 	hr = pEffect->CommitChanges();
 
 	UINT cPasses = 0;

@@ -184,11 +184,19 @@ std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::Crea
 
 	CShadowMapFactory factory;
 
+	// Create a shadow map object
+	// - shadow map texture is not created in this call.
 	shared_ptr<CShadowMap> pShadowMap = factory.CreateShadowMap( light );
 	if( !pShadowMap )
 		return m_mapIDtoShadowMap.end();
 
 	m_mapIDtoShadowMap[id] = pShadowMap;
+
+	pShadowMap->SetShadowMapSize( m_ShadowMapSize );
+
+	pShadowMap->SetShadowMapTextureFormat( GetShadowMapTextureFormat() );
+
+//	pShadowMap->UseLightPosInWorldSpace( m_UseLightPosInWorldSpace );
 
 	pShadowMap->SetShader( m_Shader );
 
@@ -211,7 +219,8 @@ Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, CLight& light )
 
 	if( itrShadowMap == m_mapIDtoShadowMap.end() )
 	{
-		// create a new shadow map
+		// The shadow map for this light does not exist
+		// - create a new shadow map.
 		itrShadowMap = CreateShadwoMap( id, light );
 
 		if( itrShadowMap == m_mapIDtoShadowMap.end() )
@@ -262,6 +271,9 @@ void CShadowMapManager::RenderShadowCasters( CCamera& camera )
 		 itr++ )
 	{
 		itr->second->RenderSceneToShadowMap( camera );
+
+		// variance shadow maps are blurred in this call
+		PostProcessShadowMap( *(itr->second.get()) );
 	}
 
 	EndSceneShadowMap();
@@ -383,6 +395,8 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
+	pd3dDev->SetRenderState( D3DRS_ZENABLE, FALSE );
+
 //	m_DisplayShadowMapTexturesForDebugging = true;
 
 	if( m_DisplayShadowMapTexturesForDebugging )
@@ -416,6 +430,8 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 		tex_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture(), m_aShadowTexture[0].GetRenderTargetTexture() );
 //		tex_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture(), m_pShadowedView );
 	}
+
+	pd3dDev->SetRenderState( D3DRS_ZENABLE, TRUE );
 
 
 /*
@@ -630,6 +646,13 @@ void CShadowMapManager::EndScene()
 
 	m_SceneRenderTarget.ResetRenderTarget();
 }
+
+
+void CShadowMapManager::SaveSceneTextureToFile( const std::string& filename )
+{
+	m_SceneRenderTarget.OutputImageFile( filename.c_str() );
+}
+
 
 
 

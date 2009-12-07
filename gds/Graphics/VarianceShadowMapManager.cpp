@@ -1,14 +1,26 @@
 #include "VarianceShadowMapManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
-#include "Graphics/2DPrimitive/2DTexRect.hpp"
+#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 using namespace boost;
+
+
+class CVSShadowMapPostProcessor : public CShadowMapVisitor
+{
+	CVarianceShadowMapManager *m_pVSShadowMapManager;
+public:
+
+	CVSShadowMapPostProcessor( CVarianceShadowMapManager *pMgr ) { m_pVSShadowMapManager = pMgr; }
+
+	void Visit( CDirectionalLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
+//	void Visit( CPointLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPointLightShadowMap( shadow_map ); }
+//	void Visit( CSpotLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPSpotLightShadowMap( shadow_map ); }
+};
 
 
 inline static float ComputeGaussian( float n )
@@ -157,8 +169,8 @@ bool CVarianceShadowMapManager::Init()
 //	HRESULT hr;
 
 	CTextureResourceDesc desc;
-	desc.Width  = m_ShadowMapSize;// m_iTextureWidth;
-	desc.Height = m_ShadowMapSize;// m_iTextureHeight;
+	desc.Width  = m_ShadowMapSize;
+	desc.Height = m_ShadowMapSize;
 	desc.Format = TextureFormat::G16R16F;
 	desc.UsageFlags = UsageFlag::RENDER_TARGET;
 
@@ -201,101 +213,16 @@ bool CVarianceShadowMapManager::Init()
 }
 
 
+void CVarianceShadowMapManager::PostProcessShadowMap( CShadowMap& shadow_map )
+{
+	CVSShadowMapPostProcessor post_processor( this );
+	shadow_map.Accept( post_processor );
+}
+
+
 void CVarianceShadowMapManager::EndSceneShadowMap()
 {
 	CShadowMapManager::EndSceneShadowMap();
-/*
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
-
-	if( !m_pHBlurredShadowMap || !m_pBlurredShadowMap )
-		return;
-
-	m_pHBlurredShadowMap->SetRenderTarget();
-
-//	pd3dDev->SetVertexShader( NULL );
-//	pd3dDev->SetPixelShader( NULL );
-
-	CShaderManager& rShaderMgr = *(m_BlurShader.GetShaderManager());
-
-	// horizontally blur the shadowmap
-
-	CShaderTechniqueHandle blur_h;
-	blur_h.SetTechniqueName( "GaussianBlurH" );
-	rShaderMgr.SetTechnique( blur_h );
-
-//	rShaderMgr.SetParam( m_SampleWeights );
-//	rShaderMgr.SetParam( m_SampleOffsetsH );
-
-	C2DRect screen_rect( 0, 0, m_ShadowMapSize-1, m_ShadowMapSize-1, 0xFFFFFFFF );
-
-	screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-
-	rShaderMgr.SetTexture( 0, m_pShadowMap );
-
-	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
-
-	pEffect->CommitChanges();
-
-//	screen_rect.Draw( m_pShadowMap ); // test with fixed-function shader. Remeber floating point buffer does not work with this
-
-	UINT passes;
-	pEffect->Begin(&passes,0);
-	for( UINT i=0; i<passes; i++ )
-	{
-		pEffect->BeginPass(i);
-		screen_rect.draw();
-		pEffect->EndPass();
-	}
-	pEffect->End();
-
-	m_pHBlurredShadowMap->ResetRenderTarget();
-
-	// vertically blur the shadowmap
-
-	// save the current RT
-	LPDIRECT3DSURFACE9 pOrigSurf;
-	hr = pd3dDev->GetRenderTarget( 0, &pOrigSurf );
-
-	LPDIRECT3DSURFACE9 pSurf;
-	hr = m_pShadowMap->GetSurfaceLevel( 0, &pSurf );
-
-	hr = pd3dDev->SetRenderTarget( 0, pSurf );
-
-	CShaderTechniqueHandle blur_v;
-	blur_v.SetTechniqueName( "GaussianBlurV" );
-	rShaderMgr.SetTechnique( blur_v );
-
-//	rShaderMgr.SetParam( m_SampleOffsetsV );
-
-	rShaderMgr.SetTexture( 0, m_pHBlurredShadowMap->GetRenderTargetTexture() );
-
-	rShaderMgr.GetEffect()->CommitChanges();
-
-//	screen_rect.Draw( m_pHBlurredShadowMap->GetRenderTargetTexture() ); // test with fixed-function shader
-
-	pEffect->Begin(&passes,0);
-	for( UINT i=0; i<passes; i++ )
-	{
-		pEffect->BeginPass(i);
-		screen_rect.draw();
-		pEffect->EndPass();
-	}
-	pEffect->End();
-
-	// restore the original RT
-	hr = pd3dDev->SetRenderTarget( 0, pOrigSurf );
-
-
-//	m_pBlurredShadowMap->SetRenderTarget();
-
-//	m_pBlurredShadowMap->ResetRenderTarget();
-
-//	pd3dDev->SetRenderTarget( 0, prev_target );
-
-//	if( FAILED(hr) )
-//		return;
-*/
 }
 
 
@@ -311,6 +238,116 @@ void CVarianceShadowMapManager::UpdateLightPositionAndDirection()
 	hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vWorldLightDir, 3 );
 */
 }
+
+
+/// input: shadow map
+/// final output: shadow map (horizontally and vertically blurred)
+void CVarianceShadowMapManager::PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map )
+{
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr;
+
+	if( !m_pHBlurredShadowMap || !m_pBlurredShadowMap )
+		return;
+
+	LPDIRECT3DTEXTURE9 pShadowMap = shadow_map.GetShadowMapTexture();
+
+	m_pHBlurredShadowMap->SetRenderTarget();
+
+//	pd3dDev->SetVertexShader( NULL );
+//	pd3dDev->SetPixelShader( NULL );
+
+	CShaderManager *pShaderMgr = m_BlurShader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	CShaderManager& rShaderMgr = *pShaderMgr;
+
+	// horizontally blur the shadowmap
+
+	CShaderTechniqueHandle blur_h;
+	blur_h.SetTechniqueName( "GaussianBlurH" );
+	rShaderMgr.SetTechnique( blur_h );
+
+//	rShaderMgr.SetParam( m_SampleWeights );
+//	rShaderMgr.SetParam( m_SampleOffsetsH );
+
+	C2DRect screen_rect( 0, 0, m_ShadowMapSize-1, m_ShadowMapSize-1, 0xFFFFFFFF );
+
+	screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+
+	rShaderMgr.SetTexture( 0, pShadowMap );
+
+	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
+	if( !pEffect )
+		return;
+
+	pEffect->CommitChanges();
+
+//	screen_rect.Draw( m_pShadowMap ); // test with fixed-function shader. Remeber floating point buffer does not work with this
+
+	PrimitiveRenderer().RenderRect( rShaderMgr, screen_rect );
+
+/*	UINT passes;
+	pEffect->Begin(&passes,0);
+	for( UINT i=0; i<passes; i++ )
+	{
+		pEffect->BeginPass(i);
+		screen_rect.draw();
+		pEffect->EndPass();
+	}
+	pEffect->End();
+*/
+	m_pHBlurredShadowMap->ResetRenderTarget();
+
+	// vertically blur the shadowmap
+
+	// save the current RT
+	LPDIRECT3DSURFACE9 pOrigSurf;
+	hr = pd3dDev->GetRenderTarget( 0, &pOrigSurf );
+
+	LPDIRECT3DSURFACE9 pSurf;
+	hr = pShadowMap->GetSurfaceLevel( 0, &pSurf );
+
+	hr = pd3dDev->SetRenderTarget( 0, pSurf );
+
+	CShaderTechniqueHandle blur_v;
+	blur_v.SetTechniqueName( "GaussianBlurV" );
+	rShaderMgr.SetTechnique( blur_v );
+
+//	rShaderMgr.SetParam( m_SampleOffsetsV );
+
+	hr = rShaderMgr.SetTexture( 0, m_pHBlurredShadowMap->GetRenderTargetTexture() );
+
+	hr = rShaderMgr.GetEffect()->CommitChanges();
+
+//	screen_rect.Draw( m_pHBlurredShadowMap->GetRenderTargetTexture() ); // test with fixed-function shader
+
+	PrimitiveRenderer().RenderRect( rShaderMgr, screen_rect );
+/*
+	pEffect->Begin(&passes,0);
+	for( UINT i=0; i<passes; i++ )
+	{
+		pEffect->BeginPass(i);
+		screen_rect.draw();
+		pEffect->EndPass();
+	}
+	pEffect->End();
+*/
+	// restore the original RT
+	hr = pd3dDev->SetRenderTarget( 0, pOrigSurf );
+
+
+//	m_pBlurredShadowMap->SetRenderTarget();
+
+//	m_pBlurredShadowMap->ResetRenderTarget();
+
+//	pd3dDev->SetRenderTarget( 0, prev_target );
+
+//	if( FAILED(hr) )
+//		return;
+}
+
 
 void CVarianceShadowMapManager::BeginSceneDepthMap()
 {

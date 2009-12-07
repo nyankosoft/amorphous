@@ -56,8 +56,10 @@ void CGraphicsResource::Refresh()
 	else
 		filepath = resource_path;
 
-	if( m_LastModifiedTimeOfFile < fnop::get_last_modified_time( filepath ) )
+	const time_t current_last_mod_time = fnop::get_last_modified_time( filepath );
+	if( m_LastModifiedTimeOfFile < current_last_mod_time )
 	{
+		LOG_PRINT( " Refreshing " + filepath + "..." );
 		Release();
 		Load();
 	}

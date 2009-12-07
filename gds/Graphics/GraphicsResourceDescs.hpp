@@ -4,9 +4,11 @@
 
 #include <string>
 #include <boost/weak_ptr.hpp>
+#include <d3dx9.h>
 
+#include "../base.hpp"
 #include "fwd.hpp"
-#include "Graphics/TextureFormat.hpp"
+#include "Graphics/SurfaceFormat.hpp"
 #include "XML/fwd.hpp"
 #include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
