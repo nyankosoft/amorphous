@@ -15,6 +15,8 @@
 #include "Stage/GameMessage.hpp"
 #include "Stage/PlayerInfo.hpp"
 
+using namespace std;
+
 
 //======================================================================================
 // CGI_Weapon

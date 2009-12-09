@@ -2,6 +2,8 @@
 #include "Stage/Serialization_BaseEntityHandle.hpp"
 #include "XML/XMLNodeReader.hpp"
 
+using namespace std;
+
 
 //======================================================================================
 // CGI_Ammunition
