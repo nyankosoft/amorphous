@@ -656,12 +656,12 @@ char CBaseEntity::SlideMove(CCopyEntity* pCopyEnt)
 
 void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 {
-	D3DXVECTOR3 vOrigPos, vOrigVel, vDownDestPos, vDownVel, vGoal;
+	Vector3 vOrigPos, vOrigVel, vDownDestPos, vDownVel, vGoal;
 	float fDowndistSq, fUpdistSq;
 	STrace tr;
 
 	pCopyEnt->vVelocity.y = 0;
-	if( pCopyEnt->vVelocity == D3DXVECTOR3(0,0,0) )
+	if( pCopyEnt->vVelocity == Vector3(0,0,0) )
 		return;
 
 	//first try moving to the destination
