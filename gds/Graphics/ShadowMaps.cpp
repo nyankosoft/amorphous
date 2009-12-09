@@ -13,7 +13,7 @@ using namespace std;
 using namespace boost;
 
 
-float g_fShadowMapFarClip = 200.0f;
+float g_fShadowMapFarClip = 100.0f;
 
 
 CShadowMap::~CShadowMap()
@@ -44,6 +44,41 @@ void CShadowMap::SaveShadowMapTextureToFile( const std::string& file_or_director
 }
 
 
+void CShadowMap::RenderSceneToShadowMap( CCamera& camera )
+{
+	if( !m_pSceneRenderer )
+		return;
+
+	// set shadow map texture, etc.
+	BeginSceneShadowMap();
+
+	m_pSceneRenderer->RenderSceneToShadowMap( m_LightCamera );
+
+	EndSceneShadowMap();
+}
+
+
+void CShadowMap::RenderShadowReceivers( CCamera& camera )
+{
+	if( !m_pSceneRenderer )
+		return;
+
+	BeginSceneShadowReceivers();
+
+	m_pSceneRenderer->RenderShadowReceivers( camera );
+}
+
+
+void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
+{
+	CreateShadowMapTextures();
+}
+
+
+
+//============================================================================
+// CFlatShadowMap
+//============================================================================
 
 bool CFlatShadowMap::CreateShadowMapTextures()
 {
@@ -212,40 +247,6 @@ void CFlatShadowMap::EndSceneShadowMap()
 }
 
 
-void CShadowMap::RenderSceneToShadowMap( CCamera& camera )
-{
-	if( !m_pSceneRenderer )
-		return;
-
-	// set shadow map texture, etc.
-	BeginSceneShadowMap();
-
-	m_pSceneRenderer->RenderSceneToShadowMap( m_LightCamera );
-
-	EndSceneShadowMap();
-}
-
-void CShadowMap::RenderShadowReceivers( CCamera& camera )
-{
-	if( !m_pSceneRenderer )
-		return;
-
-	BeginSceneShadowReceivers();
-
-	m_pSceneRenderer->RenderShadowReceivers( camera );
-}
-
-void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	CreateShadowMapTextures();
-}
-
-
-
-//============================================================================
-// CFlatShadowMap
-//============================================================================
-
 void CFlatShadowMap::BeginSceneShadowReceivers()
 {
 	// set the shadow map texture to determine shadowed pixels
@@ -293,11 +294,11 @@ void CFlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& file
 // CDirectionalLightShadowMap
 //============================================================================
 
-float CDirectionalLightShadowMap::ms_fCameraShiftDistance = 100.0f;
+float CDirectionalLightShadowMap::ms_fCameraShiftDistance = 50.0f;
 
 CDirectionalLightShadowMap::CDirectionalLightShadowMap()
 {
-	m_LightCamera.SetNearClip( 0.1f );
+	m_LightCamera.SetNearClip( 0.5f );
 	m_LightCamera.SetFarClip( 100.0f );
 	m_LightCamera.SetFOV( (float)PI / 4.0f );
 	m_LightCamera.SetAspectRatio( 1.0f );

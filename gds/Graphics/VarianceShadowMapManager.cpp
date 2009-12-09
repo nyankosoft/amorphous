@@ -92,6 +92,7 @@ CVarianceShadowMapManager::SetShaderTechniqueForShadowCaster()
 
 
 const char *gs_pDefaultShaderName = "Shader/VarianceShadowMap.fx";
+//const char *gs_pDefaultShaderName = "Shader/PCFShadowMap.fx";
 
 
 Vector2 sampleOffsetsH[15];
