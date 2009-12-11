@@ -283,8 +283,12 @@ public:
 	KeyFrameSet<SFloatRGBColor> MonochromeColorOffset;
 	KeyFrameSet<float> GlareThreshold;
 
+	KeyFrameSet<float> HDRMidGrayValue;
+
 	KeyFrameSet<float> Noise;
 	KeyFrameSet<float> Stripe;
+
+	KeyFrameSet<float> CameraShake;
 
 	KeyFrameSet<SFloatRGBColor> FadeColor;
 
@@ -299,6 +303,8 @@ public:
 
 		Noise.Reset();
 		Stripe.Reset();
+
+		CameraShake.Reset();
 
 		FadeColor.Reset();
 	}
@@ -370,6 +376,8 @@ class CScriptedCameraEntity : public CCopyEntity
 
 	cdv<Matrix33> m_CamOrient;
 
+	float m_fCameraShake;
+
 private:
 
 	void UpdateCameraOrientationByFocusTarget( float current_time );
@@ -400,6 +408,27 @@ public:
 	const CScriptCameraKeyFrames& GetKeyFrames() const { return m_KeyFrames; }
 
 	const CBEC_MotionPath& GetPath() const { return m_Path; }
+
+	void SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength );
+	void SetUniformBlur( float start_time, float end_time, float blur_strength );
+	void SetUniformCameraShake( float start_time, float end_time, float camera_shake );
+};
+
+
+class CScriptedCameraEntityHandle : public CEntityHandle<CScriptedCameraEntity>
+{
+public:
+
+	CScriptedCameraEntityHandle() {}
+
+	CScriptedCameraEntityHandle( boost::weak_ptr<CScriptedCameraEntity> pCameraEntity )
+		:
+	CEntityHandle<CScriptedCameraEntity>( pCameraEntity )
+	{}
+
+	void SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength );
+	void SetUniformBlur( float start_time, float end_time, float blur_strength );
+	void SetUniformCameraShake( float start_time, float end_time, float camera_shake );
 };
 
 

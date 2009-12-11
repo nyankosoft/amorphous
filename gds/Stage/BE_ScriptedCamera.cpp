@@ -181,7 +181,8 @@ void CScriptedCameraEntity::UpdateCameraOrientationByFocusTarget( float current_
 	bool res = cam.FocusTarget.CalcFrame( current_time, cam_target );
 	if( res )
 	{
-		if( true /* shake */ )
+		if( 0 < m_fCameraShake )
+//		if( true /* shake */ )
 		{
 			Vector3 vPosToLookAt
 				= cam_target.m_vTargetPos;
@@ -285,6 +286,13 @@ void CScriptedCameraEntity::UpdateCameraParams()
 
 	rEffectParams.flag = effect_flag;
 
+	float cam_shake = 0;
+	res = effect.CameraShake.CalcFrame( current_time, cam_shake );
+	if( res )
+		m_fCameraShake = cam_shake;
+	else
+		m_fCameraShake = 0; // no camera shake effect
+
 /*	SFloatRGBColor fade_color;
 	res = effect.FadeColor.CalcFrame( current_time, fade_color );
 	if( res )
@@ -297,8 +305,64 @@ void CScriptedCameraEntity::UpdateCameraParams()
 //	Stripe;
 }
 
+
+void CScriptedCameraEntity::SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength )
+{
+	CScreenEffectProperty& effect = m_KeyFrames.Effect;
+	effect.MotionBlurStrength.AddKeyFrame( start_time, motion_blur_strength );
+	effect.MotionBlurStrength.AddKeyFrame( end_time,   motion_blur_strength );
+}
+
+
+void CScriptedCameraEntity::SetUniformBlur( float start_time, float end_time, float blur_strength )
+{
+	CScreenEffectProperty& effect = m_KeyFrames.Effect;
+	const float s = blur_strength;
+	effect.Blur.AddKeyFrame( start_time, Vector2(s,s) );
+	effect.Blur.AddKeyFrame( end_time,   Vector2(s,s) );
+}
+
+
+void CScriptedCameraEntity::SetUniformCameraShake( float start_time, float end_time, float camera_shake )
+{
+	CScreenEffectProperty& effect = m_KeyFrames.Effect;
+	effect.MotionBlurStrength.AddKeyFrame( start_time, camera_shake );
+	effect.MotionBlurStrength.AddKeyFrame( end_time,   camera_shake );
+}
+
+
+
 //===============================================================================================
-// 
+// CScriptedCameraEntityHandle
+//===============================================================================================
+
+void CScriptedCameraEntityHandle::SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength )
+{
+	shared_ptr<CScriptedCameraEntity> pCamera = Get();
+	if( pCamera )
+		pCamera->SetUniformMotionBlur( start_time, end_time, motion_blur_strength );
+}
+
+
+void CScriptedCameraEntityHandle::SetUniformBlur( float start_time, float end_time, float blur_strength )
+{
+	shared_ptr<CScriptedCameraEntity> pCamera = Get();
+	if( pCamera )
+		pCamera->SetUniformBlur( start_time, end_time, blur_strength );
+}
+
+
+void CScriptedCameraEntityHandle::SetUniformCameraShake( float start_time, float end_time, float camera_shake )
+{
+	shared_ptr<CScriptedCameraEntity> pCamera = Get();
+	if( pCamera )
+		pCamera->SetUniformCameraShake( start_time, end_time, camera_shake );
+}
+
+
+
+//===============================================================================================
+// CBE_ScriptedCamera
 //===============================================================================================
 
 CBE_ScriptedCamera::CBE_ScriptedCamera()
