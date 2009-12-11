@@ -1,20 +1,20 @@
-#include "PyModule_stage.hpp"
+#include <gds/Script/PyModule_stage.hpp>
 #include <boost/python.hpp>
 
-#include "3DMath/Matrix34.hpp"
-#include "Stage/Stage.hpp"
-#include "Stage/BE_PointLight.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/EntityHandle.hpp"
-#include "Stage/LightEntity.hpp"
-#include "Stage/EntityRenderManager.hpp"
-#include "Stage/ScreenEffectManager.hpp"
+#include <gds/base.hpp>
+//#include <gds/3DMath/Matrix34.hpp>
+#include <gds/Stage/Stage.hpp>
+#include <gds/Stage/BE_PointLight.hpp>
+#include <gds/Stage/CopyEntityDesc.hpp>
+#include <gds/Stage/EntityHandle.hpp>
+#include <gds/Stage/LightEntity.hpp>
+#include <gds/Stage/BE_ScriptedCamera.hpp>
+#include <gds/Stage/EntityRenderManager.hpp>
+#include <gds/Stage/ScreenEffectManager.hpp>
+#include <gds/Support/Macro.h>
+#include <gds/Support/Vec3_StringAux.hpp>
+#include <gds/Support/Log/DefaultLog.hpp>
 
-#include "Support/Macro.h"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
-
-#include "../base.hpp"
 
 using namespace std;
 using namespace boost;
@@ -28,6 +28,12 @@ BOOST_PYTHON_MODULE(stage)
 	class_< CLightEntityHandle >("LightEntityHandle")
 		.def( "SetUpperColor",    &CLightEntityHandle::SetUpperColor )
 		.def( "SetLowerColor",    &CLightEntityHandle::SetLowerColor )
+	;
+
+	class_< CScriptedCameraEntityHandle >("ScriptedCameraEntityHandle")
+		.def( "SetUniformMotionBlur",     &CScriptedCameraEntityHandle::SetUniformMotionBlur )
+		.def( "SetUniformBlur",           &CScriptedCameraEntityHandle::SetUniformBlur )
+		.def( "SetUniformCameraShake",    &CScriptedCameraEntityHandle::SetUniformCameraShake )
 	;
 
 	class_< CEntityHandle<> >("EntityHandle")

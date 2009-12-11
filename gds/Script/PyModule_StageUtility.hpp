@@ -1,9 +1,9 @@
 #ifndef __PyModule_StageUtility_HPP__
 #define __PyModule_StageUtility_HPP__
 
-#include <gds/Graphics/FloatRGBAColor.hpp>
-#include <gds/3DMath/Matrix34.hpp>
-#include <gds/3DMath/AABB3.hpp>
+//#include <gds/Graphics/FloatRGBAColor.hpp>
+//#include <gds/3DMath/Matrix34.hpp>
+//#include <gds/3DMath/AABB3.hpp>
 #include <gds/Support/Vec3_StringAux.hpp>
 #include <gds/Stage/fwd.hpp>
 #include <gds/Stage/StageUtility.hpp>
@@ -61,6 +61,13 @@ inline void UnregisterStageForScript()
 		LOG_PRINT_WARNING( "The requested stage was not found in the list" );
 }
 
+
+
+inline boost::shared_ptr<CStageCameraUtility> CreateStageCameraUtility()
+{
+	boost::shared_ptr<CStageCameraUtility> pUtil( new CStageCameraUtility( GetStageForScript() ) );
+	return pUtil;
+}
 
 
 inline boost::shared_ptr<CStageLightUtility> CreateStageLightUtility()
