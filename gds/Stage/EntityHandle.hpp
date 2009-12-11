@@ -13,6 +13,8 @@ class CEntityHandleBase
 {
 public:
 
+	virtual ~CEntityHandleBase() {}
+
 	inline bool IsEntityInUse( CCopyEntity *pEntity );
 };
 
