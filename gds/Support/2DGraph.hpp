@@ -2,8 +2,9 @@
 #define  __2DGraph_H__
 
 #include <vector>
+#include "3DMath/AABB2.hpp"
 #include "Graphics/fwd.hpp"
-#include "Graphics/2DRect.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
 
 
 enum {GRAPHTYPE_POINT, GRAPHTYPE_LINE};
@@ -46,7 +47,7 @@ struct CGraphSegment
 	Vector2 m_vIDPosition;
 
     /// font to display the ID (shared by all the segments under the same parent graph)
-	CFont* m_pFont;
+	CFontBase* m_pFont;
 
 public:
 
@@ -59,7 +60,7 @@ public:
 	}
 
 	void SetSegmentID( int iNewSegmentID ) { m_iSegmentID = iNewSegmentID; }
-	void SetSegment( int iSegmentID, int iStart, int iEnd, U32 dwColor, CFont* pFont );
+	void SetSegment( int iSegmentID, int iStart, int iEnd, U32 dwColor, CFontBase* pFont );
 	void UpdatePosition(int iNumData, float sx, float ex, float sy, float ey);
 	void Draw();
 
@@ -95,7 +96,7 @@ protected:
 	// used to hightlight particular portions of the graph
 	std::vector<CGraphSegment> m_vecGraphSegment;
 
-	CFont* m_pGraphSegmentIDFont;
+	CFontBase* m_pGraphSegmentIDFont;
 
 public:
 
@@ -110,6 +111,8 @@ public:
 	virtual void Draw();
 
 	virtual void SetPosition(float sx, float ex, float sy, float ey);
+
+	void SetPosition( const AABB2& aabb );
 
 	void SetIndicatorPosition(int iIndex);
 

@@ -5,11 +5,10 @@
 
 #include "2DGraph.hpp"
 #include "Graphics/Direct3D9.hpp"
-#include "Graphics/Font.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
 
 #include "Support/memory_helpers.hpp"
-
-#include <stdlib.h>
 
 using namespace std;
 
@@ -28,7 +27,7 @@ C2DGraph::C2DGraph()
 	m_vMax = Vector2(0,0);
 
 	m_BackGroundRect.SetColor( 0xAA000000 );
-	m_BackGroundRect.SetZDeppth( 0.1f );
+	m_BackGroundRect.SetZDepth( 0.1f );
 
 	m_iIndicatorPosition = 0;
 	ZeroMemory(m_avIndicator, sizeof(TLVERTEX) * 2);
@@ -38,15 +37,17 @@ C2DGraph::C2DGraph()
 	m_avIndicator[1].rhw = 1.0f;
 
 	// create the font object that is shared by all the graph segments in this graph
-	m_pGraphSegmentIDFont = new CFont;
-	m_pGraphSegmentIDFont->InitFont( "‚l‚r ƒSƒVƒbƒN", 8, 12 );
+	CTextureFont *pFont = new CTextureFont;
+	pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
+	pFont->SetFontSize( 8, 12 );
+	m_pGraphSegmentIDFont = pFont;
 }
 
 C2DGraph::~C2DGraph()
 {
 	SafeDeleteArray( m_paVertex );
 	m_pGraphSegmentIDFont->Release();
-	delete m_pGraphSegmentIDFont;
+	SafeDelete( m_pGraphSegmentIDFont );
 }
 
 C2DGraph::C2DGraph(const C2DGraph& r2DGraph)
@@ -74,9 +75,10 @@ C2DGraph::C2DGraph(const C2DGraph& r2DGraph)
 
 	m_vecGraphSegment.assign( r2DGraph.m_vecGraphSegment.begin(), r2DGraph.m_vecGraphSegment.end() );
 
-	// SafeDelete( m_pGraphSegmentIDFont );	// m_pGraphSegmentIDFont has an unknown value
-	m_pGraphSegmentIDFont = new CFont;
-	m_pGraphSegmentIDFont->InitFont( "‚l‚r ƒSƒVƒbƒN", 8, 12 );
+	CTextureFont *pFont = new CTextureFont;
+	pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
+	pFont->SetFontSize( 8, 12 );
+	m_pGraphSegmentIDFont = pFont;
 }
 
 C2DGraph C2DGraph::operator=(C2DGraph r2DGraph)
@@ -105,17 +107,20 @@ C2DGraph C2DGraph::operator=(C2DGraph r2DGraph)
 	m_vecGraphSegment.assign( r2DGraph.m_vecGraphSegment.begin(), r2DGraph.m_vecGraphSegment.end() );
 
 	SafeDelete( m_pGraphSegmentIDFont );
-	m_pGraphSegmentIDFont = new CFont;
-	m_pGraphSegmentIDFont->InitFont( "‚l‚r ƒSƒVƒbƒN", 8, 12 );
+	CTextureFont *pFont = new CTextureFont;
+	pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
+	pFont->SetFontSize( 8, 12 );
+	m_pGraphSegmentIDFont = pFont;
 
 	return *this;
 }
+
 
 void C2DGraph::SetData(vector<int> *pveciData, U32 dwColor)
 {
 	vector<float> vecfTemp;
 
-	for(int i=0; i<pveciData->size(); i++)
+	for( size_t i=0; i<pveciData->size(); i++ )
 		vecfTemp.push_back( (float)pveciData->at(i) );
 
 	SetData( &vecfTemp );
@@ -129,8 +134,7 @@ void C2DGraph::SetData(vector<float> *pvecfData, U32 dwColor)
 	new_graph.m_dwGraphColor = dwColor;
 
 	// copy the data from the source buffer 'pvecfData'
-	int i,j;
-	for(i=0; i<pvecfData->size(); i++)
+	for(size_t i=0; i<pvecfData->size(); i++)
 	{
 		float fNewDataValue = pvecfData->at(i);
 
@@ -144,35 +148,41 @@ void C2DGraph::SetData(vector<float> *pvecfData, U32 dwColor)
 
 	m_vecGraphData.push_back( new_graph );
 
-	int iNumData = new_graph.m_vecfData.size();
+	const int num_data = (int)new_graph.m_vecfData.size();
 
-	if( m_iMaxNumData < iNumData )
+	if( m_iMaxNumData < num_data )
 	{
-		m_iMaxNumData = iNumData;
+		m_iMaxNumData = num_data;
 		SafeDeleteArray( m_paVertex );
-		m_paVertex = new TLVERTEX [iNumData];
-		ZeroMemory(m_paVertex, sizeof(TLVERTEX) * iNumData);
-		for(j=0; j<iNumData; j++)
+		m_paVertex = new TLVERTEX [num_data];
+		ZeroMemory(m_paVertex, sizeof(TLVERTEX) * num_data);
+		for(int j=0; j<num_data; j++)
 			m_paVertex[j].rhw = 1.0f;
 	}
 }
 
 void C2DGraph::SetData(vector<Vector3> *pvecvData)
 {
-	int i, j;
-	int iNumData = pvecvData->size();
+	const size_t num_data = pvecvData->size();
 	vector<float> vecfTempData;
 	U32 adwColor[3] = { 0xCCFF0000, 0xCC00FF00, 0xCC0000FF };	// rgb for xyz
-	for(i=0; i<3; i++)
+	for(int i=0; i<3; i++)
 	{
 		vecfTempData.clear();
-		for(j=0; j<iNumData; j++)
+		for(size_t j=0; j<num_data; j++)
 		{
 			vecfTempData.push_back( (pvecvData->at(j))[i] );
 		}
 		SetData( &vecfTempData, adwColor[i] );
 	}
 }
+
+
+void C2DGraph::SetPosition( const AABB2& aabb )
+{
+	SetPosition( aabb.vMin.x, aabb.vMax.x, aabb.vMin.y, aabb.vMax.y );
+}
+
 
 void C2DGraph::SetPosition(float sx, float ex, float sy, float ey)
 {
@@ -196,7 +206,7 @@ void C2DGraph::SetPosition(float sx, float ex, float sy, float ey)
 	}
 
 	// set positions of the segment rects
-	for(i=0; i<m_vecGraphSegment.size(); i++)
+	for(i=0; i<(int)m_vecGraphSegment.size(); i++)
 	{
 		m_vecGraphSegment[i].UpdatePosition( iMaxNumData,
 			sx + fWidth  * 0.05f, ex - fWidth  * 0.05f,
@@ -214,7 +224,7 @@ void C2DGraph::SetPosition(float sx, float ex, float sy, float ey)
 
 void C2DGraph::ChangeBackgroundRectColor(U32 dwColor, int iVertexNum)
 {
-	this->m_BackGroundRect.SetColor( dwColor, iVertexNum );
+	this->m_BackGroundRect.SetCornerColor( iVertexNum, dwColor );
 }
 
 
@@ -251,20 +261,20 @@ void C2DGraph::Draw()
 	float fMaxY = m_vMax.y;
 	float fOffsetY = m_fMinValue;
 
-	int i, j, iMaxNumData = m_iMaxNumData;
-	int iNumGraphs = m_vecGraphData.size();
+	int iMaxNumData = m_iMaxNumData;
 
 	// draw segments
-	int iNumGraphSegments = m_vecGraphSegment.size();
-	for(i=0; i<iNumGraphSegments; i++)
+	const size_t num_graph_segs = m_vecGraphSegment.size();
+	for(size_t i=0; i<num_graph_segs; i++)
 		m_vecGraphSegment[i].Draw();
 
-	for(i=0; i<iNumGraphs; i++)
+	const size_t num_graphs = m_vecGraphData.size();
+	for(size_t i=0; i<num_graphs; i++)
 	{
 		// set graph data
-		int iNumData = m_vecGraphData[i].m_vecfData.size();
+		const size_t num_data = m_vecGraphData[i].m_vecfData.size();
 		U32 dwColor = m_vecGraphData[i].m_dwGraphColor;
-		for(j=0; j<iNumData; j++)
+		for(size_t j=0; j<num_data; j++)
 		{
 			// local position
 			m_paVertex[j].vPosition.y
@@ -278,7 +288,7 @@ void C2DGraph::Draw()
 		}
 
 		// draw graph data
-		pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, iNumData - 1, m_paVertex, sizeof(TLVERTEX) );
+		pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, (int)num_data - 1, m_paVertex, sizeof(TLVERTEX) );
 
 		// draw indicator
 		pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, 1, m_avIndicator, sizeof(TLVERTEX) );
@@ -302,7 +312,7 @@ void C2DGraph::AddSegment(int iSegmentID, int iStart, int iEnd, U32 dwColor)
 
 void C2DGraph::SetSegmentID( int iSegmentNum, int iNewSegmentID )
 {
-	if( iSegmentNum < 0 || this->m_vecGraphSegment.size() <= iSegmentNum )
+	if( iSegmentNum < 0 || (int)this->m_vecGraphSegment.size() <= iSegmentNum )
 		return;
 
 	// set new segment ID
@@ -343,17 +353,17 @@ void CGraphSegment::UpdatePosition(int iNumData, float sx, float ex, float sy, f
 }
 
 
-void CGraphSegment::SetSegment(int iSegmentID, int iStart, int iEnd, U32 dwColor, CFont* pFont)
+void CGraphSegment::SetSegment(int iSegmentID, int iStart, int iEnd, U32 dwColor, CFontBase* pFont)
 {
 	m_iSegmentID = iSegmentID;
 	m_iStart     = iStart;
 	m_iEnd       = iEnd;
 //	m_SegmentRect.SetColor( dwColor );
-	m_SegmentRect.SetZDeppth(0.05f);
-	m_SegmentRect.SetColor( D3DCOLOR_ARGB(255, 240, 240, 240), 0 );
-	m_SegmentRect.SetColor( D3DCOLOR_ARGB(255, 200, 200, 200), 1 );
-	m_SegmentRect.SetColor( D3DCOLOR_ARGB(255, 160, 160, 160), 2 );
-	m_SegmentRect.SetColor( D3DCOLOR_ARGB(255, 200, 200, 200), 3 );
+	m_SegmentRect.SetZDepth(0.05f);
+	m_SegmentRect.SetCornerColor( 0, D3DCOLOR_ARGB(255, 240, 240, 240) );
+	m_SegmentRect.SetCornerColor( 1, D3DCOLOR_ARGB(255, 200, 200, 200) );
+	m_SegmentRect.SetCornerColor( 2, D3DCOLOR_ARGB(255, 160, 160, 160) );
+	m_SegmentRect.SetCornerColor( 3, D3DCOLOR_ARGB(255, 200, 200, 200) );
 	m_pFont = pFont;
 
 }
@@ -368,5 +378,5 @@ void CGraphSegment::Draw()
 	// display the ID of this segment
 	_itoa( m_iSegmentID , acSegmentID, 10 );
 //	m_pFont->Print( acSegmentID, m_vIDPosition, 0xFFDDDDDD );
-	m_pFont->Print( acSegmentID, m_vIDPosition, 0xFF000000 );
+	m_pFont->DrawText( acSegmentID, m_vIDPosition, 0xFF000000 );
 }
