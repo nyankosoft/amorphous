@@ -640,7 +640,7 @@ void CTextElement::UpdateLocalTextOffset()
 	int font_width   = 0 < m_FontWidth  ? m_FontWidth  : (int)( pFont->GetFontWidth()  / scale ); 
 	int font_height  = 0 < m_FontHeight ? m_FontHeight : (int)( pFont->GetFontHeight() / scale );
 	float font_scale = 0 < m_FontWidth  ? (float)m_FontWidth / ((float)pFont->GetFontWidth() / scale) : 1.0f;
-	const int text_length = (int)m_Text.length();
+//	const int text_length = (int)m_Text.length();
 	Vector2 vLocalTextOffset = Vector2(0,0);
 
 	switch(m_TextAlignH)

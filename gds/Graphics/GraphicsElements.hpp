@@ -917,7 +917,11 @@ public:
 	/// - Exposed to Python as a function 'GetText'
 	std::string GetTextCopy() { return m_Text; }
 
-	void SetText( const std::string& text ) { m_Text = text; }
+	void SetText( const std::string& text )
+	{
+		m_Text = text;
+		UpdateTextAlignment();
+	}
 
 	void SetFontSize( int w, int h ) { m_FontWidth = w; m_FontHeight = h; }
 
