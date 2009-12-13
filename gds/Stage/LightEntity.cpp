@@ -82,6 +82,14 @@ void CLightEntityHandle::SetLowerColor( const SFloatRGBAColor& color )
 }
 
 
+void CLightEntityHandle::SetAttenuationFactors( float a0, float a1, float a2 )
+{
+	shared_ptr<CLightEntity> pLight = Get();
+	if( pLight )
+		pLight->SetAttenuationFactors( a0, a1, a2 );
+}
+
+
 
 CLightEntity::CLightEntity()
 :

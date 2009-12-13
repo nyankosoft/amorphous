@@ -36,6 +36,8 @@ public:
 	void SetColor( int index, const SFloatRGBAColor& color );
 
 	void SetColor( const SFloatRGBAColor& color );
+
+	void SetAttenuationFactors( float a0, float a1, float a2 );
 };
 
 
