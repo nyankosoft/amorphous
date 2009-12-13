@@ -21,6 +21,7 @@
 #include "Task/GameTask.hpp"
 #include "Task/GameTaskManager.hpp"
 #include "Task/GameTaskFactoryBase.hpp"
+#include "Task/StdInputDeviceStateCallback.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 #include "Stage/BaseEntityManager.hpp"
 #include "Stage/SurfaceMaterialManager.hpp"
@@ -264,6 +265,14 @@ bool CApplicationBase::InitBase()
 	CGameTask::AddTaskNameToTaskIDMap( "Stage",             CGameTask::ID_STAGE );
 	CGameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", CGameTask::ID_GLOBALSTAGELOADER );
 
+	// Create a graphics effect manager used by all game tasks
+	CGameTask::InitAnimatedGraphicsManager();
+
+	shared_ptr<CStdInputDeviceStateCallback> pDeviceStateCallback( new CStdInputDeviceStateCallback(CGameTask::GetAnimatedGraphicsManager()) );
+	pDeviceStateCallback->Init();
+	DIInputDeviceMonitor().RegisterCallback( pDeviceStateCallback );
+	
+
 	InitDebugItems();
 
 	// load and update global params of the framework
@@ -466,6 +475,8 @@ void CApplicationBase::Run()
 		const char *function = *pFunction.get();
 		g_Log.Print( WL_ERROR, "exception: at %s (%s, L%d)", function, file, line );
 	}
+
+	CGameTask::ReleaseAnimatedGraphicsManager();
 
 	g_Log.RemoveLogOutput( &html_log );
 }

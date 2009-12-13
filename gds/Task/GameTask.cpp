@@ -225,6 +225,9 @@ int CGameTask::FrameMove( float dt )
 		}
 	}
 
+	if( GetAnimatedGraphicsManager() )
+		GetAnimatedGraphicsManager()->UpdateEffects( dt );
+
 	// if the task has received a reuqest to finish and translate
 	// to another task, take appropriate actions
 	// - go into fadeout mode
@@ -267,6 +270,9 @@ void CGameTask::RenderBase()
 
 	// render routine of each derived class
 	Render();
+
+	if( GetAnimatedGraphicsManager() )
+		GetAnimatedGraphicsManager()->GetGraphicsElementManager()->Render();
 
 	// render the mouse cursor
 	if( m_bShowMouseCursor )
@@ -316,6 +322,13 @@ void CGameTask::InitAnimatedGraphicsManager()
 	SafeDelete( ms_pAnimatedGraphicsManager );
 
 	ms_pAnimatedGraphicsManager = new CAnimatedGraphicsManager();
+
+	ms_pAnimatedGraphicsManager->GetGraphicsElementManager()->LoadFont(
+		0,
+		"BuiltinFont::BitstreamVeraSansMono_Bold_256",
+		CFontBase::FONTTYPE_TEXTURE,
+		16, 32 // width & height
+		);
 }
 
 

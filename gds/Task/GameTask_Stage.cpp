@@ -88,7 +88,8 @@ CGameTask_Stage::CGameTask_Stage()
 {
 	if( !g_pStage )
 	{
-		InitAnimatedGraphicsManager();
+		// Initialized at app startup in CApplicationBase::InitBase()
+//		InitAnimatedGraphicsManager();
 
 		// set animated graphics manager here
 		// since init routines of the scripts use graphics manager
@@ -140,7 +141,7 @@ int CGameTask_Stage::FrameMove( float dt )
 		{
 			g_pStage->UpdateListener();
 
-			GetAnimatedGraphicsManager()->UpdateEffects( dt );
+//			GetAnimatedGraphicsManager()->UpdateEffects( dt );
 			SetAnimatedGraphicsManagerForScript();
 
 			// update the world and progress by one frame
@@ -151,15 +152,12 @@ int CGameTask_Stage::FrameMove( float dt )
 		break;
 
 	case STATE_PLAYER_LEFT_STAGE:
-		ReleaseAnimatedGraphicsManager();
 		return CGameTask::ID_STAGE_SELECT;
 /*
 	case CStage::MISSION_FAILED:
-		ReleaseAnimatedGraphicsManager();
 //		return CGameTaskFG::ID_ON_MISSIONFAILED;
 
 	case CStage::MISSION_ACCOMPLISHED:
-		ReleaseAnimatedGraphicsManager();
 //		return CGameTaskFG::ID_MAINMENU;
 */
 	default:
@@ -200,9 +198,6 @@ void CGameTask_Stage::Render()
 	// set the camera and draw the scene
 	if( g_pStage )
 		g_pStage->Render();
-
-	if( GetAnimatedGraphicsManager() )
-        GetAnimatedGraphicsManager()->GetGraphicsElementManager()->Render();
 
 	// render text messages
 //	GetTextMessageManager().Render();
