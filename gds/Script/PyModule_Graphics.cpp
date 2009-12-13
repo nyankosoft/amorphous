@@ -1,7 +1,14 @@
 #include "PyModule_Graphics.hpp"
+#include <gds/Graphics/MeshObjectHandle.hpp>
+#include <gds/Graphics/ShaderHandle.hpp>
+#include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
 #include <gds/Support/Log/DefaultLog.hpp>
 #include <boost/python.hpp>
 
+
+bool (CTextureHandle::*LoadTextureFromResourcePath)( const std::string& ) = &CTextureHandle::Load;
+bool (CMeshObjectHandle::*LoadMeshFromResourcePath)( const std::string& ) = &CMeshObjectHandle::Load;
+bool (CShaderHandle::*LoadShaderFromResourcePath)( const std::string& ) = &CShaderHandle::Load;
 
 boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
 boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
@@ -80,6 +87,22 @@ BOOST_PYTHON_MODULE(gfx)
 
 	def( "RectLTWH", RectLTWH );
 	def( "RectLTRB", RectLTRB );
+
+	class_<CTextureHandle>("TextureHandle")
+		.def( "Load", LoadTextureFromResourcePath,      ( python::arg("resource_path") ) )
+	;
+
+	class_<CMeshObjectHandle>("MeshHandle")
+		.def( "Load", LoadMeshFromResourcePath,   ( python::arg("resource_path") ) )
+	;
+
+	class_<CShaderHandle>("ShaderHandle")
+		.def( "Load", LoadShaderFromResourcePath,       ( python::arg("resource_path") ) )
+	;
+
+	class_<CShaderTechniqueHandle>("ShaderTechniqueHandle")
+		.def( "SetTechniqueName", &CShaderTechniqueHandle::SetTechniqueName, ( python::arg("name") ) )
+	;
 
 //	class_< CGraphicsElementWrap, boost::shared_ptr<CGraphicsElement> >( "GraphicsElement" )
 //	class_< CGraphicsElementWrap, boost::noncopyable >( "GraphicsElement" )
