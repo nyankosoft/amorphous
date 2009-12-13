@@ -15,6 +15,19 @@
 using namespace NS_KGL;
 
 
+class CInputDeviceStateCallback
+{
+public:
+
+	virtual ~CInputDeviceStateCallback() {}
+
+	virtual void OnInputDeviceDetected() {}
+	virtual void OnInputDeviceInitialized() {}
+	virtual void OnInputDeviceInitFailed() {}
+	virtual void OnInputDeviceUnplugged() {}
+};
+
+
 class CDIInputDeviceContainer
 {
 public:
@@ -88,6 +101,8 @@ class CDIInputDeviceMonitor : public thread_class
 
 	bool m_ExitThread;
 
+	boost::shared_ptr<CInputDeviceStateCallback> m_pCallback;
+
 private:
 
 	bool CreateDevice( CDIInputDeviceContainer& container );
@@ -130,6 +145,10 @@ public:
 	void ProcessInputDeviceManagementRequest();
 
 	void AcquireInputDevices();
+
+	void RegisterCallback( boost::shared_ptr<CInputDeviceStateCallback> pCallback ) { m_pCallback = pCallback; }
+
+	void UnregisterCallback() { m_pCallback = boost::shared_ptr<CInputDeviceStateCallback>(); }
 };
 
 

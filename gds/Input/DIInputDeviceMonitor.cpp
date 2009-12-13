@@ -63,10 +63,19 @@ bool CDIInputDeviceMonitor::CreateDevice( CDIInputDeviceContainer& container )
 
 		LOG_PRINT_WARNING( log_text );
 		container.m_pGamepad.reset();
+
+		if( m_pCallback )
+			m_pCallback->OnInputDeviceInitFailed();
+
 		return false;
 	}
 	else
+	{
+		if( m_pCallback )
+			m_pCallback->OnInputDeviceInitialized();
+
 		return true;
+	}
 }
 
 
@@ -96,8 +105,9 @@ bool CDIInputDeviceMonitor::AlreadyRequested( const GUID& guid )
 	return false;
 }
 
-// Enumerate all the input device
-// - Try to create input devicBe objects for all the attached device
+// Enumerate all the input devices
+// - Try to create input device objects for all the attached device.
+// - The input device monitor thread keeps calling this at a regular interval to detect input devices plugged at runtime.
 void CDIInputDeviceMonitor::CheckDevices()
 {
 	tbb::mutex::scoped_lock(m_DeviceContainerMutex);
@@ -138,6 +148,9 @@ void CDIInputDeviceMonitor::CheckDevices()
 				req.m_DeviceInstance = di;
 
 				m_queDIDeviceRequest.push( req );
+
+				if( m_pCallback )
+					m_pCallback->OnInputDeviceDetected();
 
 				LOG_PRINT( fmt_string( " Added an input device creation request for '%s' (%d)", string(di.tszProductName).c_str(), s_CallCount ) );
 			}
