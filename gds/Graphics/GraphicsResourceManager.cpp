@@ -3,7 +3,6 @@
 #include "Graphics/GraphicsResourceHandle.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
 #include "Graphics/ResourceLoadingStateHolder.hpp"
-#include "Graphics/Direct3D9.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"

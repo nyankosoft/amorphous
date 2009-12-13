@@ -18,7 +18,6 @@
 
 // added for laser dot casting test
 #include "Graphics/3DGameMath.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/StringAux.hpp"

@@ -7,7 +7,6 @@
 
 #include "Graphics/2DPrimitive/2DFrameRect.hpp"
 #include "Graphics/2DPrimitive/2DTriangle.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/D3DMisc.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "GameTextSystem/TextMessageManager.hpp"

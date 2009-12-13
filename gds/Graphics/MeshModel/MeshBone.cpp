@@ -1,12 +1,7 @@
-
 #include "MeshBone.hpp"
-
-//#include "Graphics/Direct3D9.hpp"
 #include "Graphics/D3DXVec3Copy.hpp"
-
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
-//using namespace GameLib1::MeshModel;
 
 #include "Support/memory_helpers.hpp"
 

@@ -3,7 +3,6 @@
 #include "App/ApplicationBase.hpp"
 #include "App/GameWindowManager_Win32.hpp"
 
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/GraphicsElementManager.hpp"

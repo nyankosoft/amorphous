@@ -1,8 +1,8 @@
 #include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/UnitCube.hpp"
+#include "Graphics/Direct3D9.hpp"
 
 #include "BVHBone.hpp"
-#include <string.h>
 
 using namespace std;
 

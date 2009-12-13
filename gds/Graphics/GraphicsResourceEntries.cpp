@@ -1,6 +1,5 @@
 #include "GraphicsResourceEntries.hpp"
 
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"

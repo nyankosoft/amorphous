@@ -1,6 +1,7 @@
 #include "TextureRenderTarget.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
+#include "Support/Profile.hpp"
 #include "Support/BMPImageExporter.hpp"
 
 
@@ -198,6 +199,8 @@ void CTextureRenderTarget::CopyRenderTarget()
 
 void CTextureRenderTarget::SetRenderTarget()
 {
+	PROFILE_FUNCTION();
+
 	if( !m_pRenderTargetTexture ||
 		!m_pRenderTargetSurface ||
 		!m_pRenderTargetDepthSurface ||
