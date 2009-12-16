@@ -126,6 +126,8 @@ public:
 
 	float GetGraphData( int iGraphNum, int iPosition ) { return m_vecGraphData[iGraphNum].m_vecfData[iPosition]; }
 
+	void Clear();
+
 	void AddSegment( int iSegmentID, int iStart, int iEnd, U32 dwColor );
 	void SetSegmentID( int iSegmentNum, int iNewSegmentID );
 

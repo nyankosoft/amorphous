@@ -20,8 +20,8 @@ using namespace std;
 C2DGraph::C2DGraph()
 {
 	m_paVertex = NULL;
-	m_fMaxValue = -99999;
-	m_fMinValue =  99999;
+	m_fMaxValue = -FLT_MAX;
+	m_fMinValue =  FLT_MAX;
 	m_iMaxNumData = 0;
 	m_vMin = Vector2(0,0);
 	m_vMax = Vector2(0,0);
@@ -177,6 +177,12 @@ void C2DGraph::SetData(vector<Vector3> *pvecvData)
 	}
 }
 
+void C2DGraph::Clear()
+{
+	m_vecGraphData.resize( 0 );
+	m_fMaxValue = -FLT_MAX;
+	m_fMinValue =  FLT_MAX;
+}
 
 void C2DGraph::SetPosition( const AABB2& aabb )
 {
