@@ -231,6 +231,13 @@ void CGM_StdStaticRenderer::Init( CGM_Static& static_control )
 }
 
 
+void CGM_StdStaticRenderer::OnTextChanged( CGM_Static& static_control )
+{
+	if( m_pText )
+		m_pText->SetText( static_control.GetText() );
+}
+
+
 void CGM_StdButtonRenderer::Init( CGM_Button& button )
 {
 	CGM_StdStaticRenderer::Init( button );

@@ -752,6 +752,8 @@ bool CGM_Dialog::IsOpen() const
 }
 
 
+/// When you open a root dialog, call CGM_DialogManager::OpenRootDialog()
+/// instead of calling this function.
 void CGM_Dialog::Open()
 {
 	LOG_PRINT( " (" + m_strTitle + ")" );

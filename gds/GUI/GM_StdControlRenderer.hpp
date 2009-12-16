@@ -114,6 +114,8 @@ public:
 	virtual ~CGM_StdStaticRenderer() {}
 
 	virtual void Init( CGM_Static& static_control );
+
+	virtual void OnTextChanged( CGM_Static& static_control );
 };
 
 
