@@ -418,6 +418,10 @@ void CApplicationBase::Execute()
 
 	DIInputDeviceMonitor().ExitThread();
 
+	// release the ballback object before releasing CGameTask::ms_pAnimatedGraphicsManager
+	// by calling CGameTask::ReleaseAnimatedGraphicsManager()
+	DIInputDeviceMonitor().UnregisterCallback();
+
 	CGameTask::ReleaseAnimatedGraphicsManager();
 
 //	MessageBox( NULL, "exit the main loop", "msg", MB_OK );
