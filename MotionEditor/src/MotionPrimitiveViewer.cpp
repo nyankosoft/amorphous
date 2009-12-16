@@ -47,6 +47,67 @@ using namespace std;
 using namespace msynth;
 
 
+void CSkeletalMeshMotionViewer::Init()
+{
+	LoadSkeletalMesh( "models/make_skinny_young.msh" );
+
+	bool loaded = m_Shader.Load( "shaders/Default.fx" );
+	if( !loaded )
+	{
+		return;
+	}
+}
+
+void CSkeletalMeshMotionViewer::LoadSkeletalMesh( const std::string& mesh_path )
+{
+	CMeshResourceDesc desc;
+	desc.ResourcePath = mesh_path;
+	desc.MeshType = CMeshType::SKELETAL;
+
+	bool loaded = m_SkeletalMesh.Load( desc );
+	if( !loaded )
+	{
+		return;
+	}
+}
+
+
+shared_ptr<CSkeletalMesh> GetSkeletalMesh( CMeshObjectHandle& mesh_handle )
+{
+	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	if( !pMesh )
+		return shared_ptr<CSkeletalMesh>();
+
+	shared_ptr<CSkeletalMesh> pSkeletalMesh
+		= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( pMesh );
+
+	return pSkeletalMesh;
+}
+
+
+void CSkeletalMeshMotionViewer::Render()
+{
+	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetSkeletalMesh( m_SkeletalMesh );
+	if( !pSkeletalMesh )
+		return;
+
+//	GraphicsDevice().SetWorldTransform( Matrix34Identity() );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix34Identity() );
+
+	pSkeletalMesh->Render();
+}
+
+
+void CSkeletalMeshMotionViewer::Update( const msynth::CKeyframe& keyframe )
+{
+	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetSkeletalMesh( m_SkeletalMesh );
+	if( !pSkeletalMesh )
+		return;
+
+}
+
+
+
 class CMotionListBoxEventHandler : public CGM_ListBoxEventHandler
 {
 	CMotionPrimitiveViewer *m_pViewer;
@@ -66,10 +127,13 @@ public:
 CMotionPrimitiveViewer::CMotionPrimitiveViewer()
 :
 m_pMotionPrimitiveListBox(NULL),
-m_fCurrentPlayTime(0)
+m_fCurrentPlayTime(0),
+m_RenderMesh(true)
 {
 	m_pUnitCube = boost::shared_ptr<CUnitCube>( new CUnitCube() );
 	m_pUnitCube->Init();
+
+	m_MeshViewer.Init();
 }
 
 
@@ -114,7 +178,8 @@ void CMotionPrimitiveViewer::Init()
 	shared_ptr<CGraphicsElementManager> pGraphicsElementMgr
 		= pRendererMgr->GetGraphicsElementManager();
 
-	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
+//	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
+	pGraphicsElementMgr->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono_Bold_256", CFontBase::FONTTYPE_TEXTURE, 8, 16, 0, 0 );
 
 	m_pInputHandler = CInputHandlerSharedPtr( new CGM_DialogInputHandler( m_pDialogManager ) );
 	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
@@ -206,6 +271,8 @@ void CMotionPrimitiveViewer::Render()
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 	pd3dDevice->SetRenderState( D3DRS_ZENABLE,  TRUE );
+
+	m_MeshViewer.Render();
 
 	RenderFloor();
 

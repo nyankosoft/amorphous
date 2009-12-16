@@ -6,10 +6,25 @@
 #include <string>
 
 #include <gds/Input/fwd.hpp>
-#include <gds/Graphics/all.hpp>
+#include <gds/Graphics.hpp>
 #include <gds/GUI/fwd.hpp>
 #include <gds/MotionSynthesis/fwd.hpp>
 #include <gds/MotionSynthesis/SkeletonRenderer.hpp>
+
+
+class CSkeletalMeshMotionViewer
+{
+	CMeshObjectHandle m_SkeletalMesh;
+
+	CShaderHandle m_Shader;
+
+public:
+
+	void Init();
+	void LoadSkeletalMesh( const std::string& mesh_path );
+	void Render();
+	void Update( const msynth::CKeyframe& keyframe );
+};
 
 
 class CMotionPrimitiveViewer
@@ -36,6 +51,9 @@ class CMotionPrimitiveViewer
 
 	CLineList m_DirectionGuide;
 
+	bool m_RenderMesh;
+
+	CSkeletalMeshMotionViewer m_MeshViewer;
 
 private:
 
@@ -66,6 +84,8 @@ public:
 	void OnItemSelected( const CGM_ListBoxItem& item, int item_index );
 
 	void LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name = "std" );
+
+	void SetRenderMesh( bool render ) { m_RenderMesh = render; }
 };
 
 
