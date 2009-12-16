@@ -7,7 +7,8 @@
 
 #include <boost/filesystem.hpp>
 #include <gds/Input/StdKeyboard.hpp>
-#include <gds/Graphics/all.hpp>
+#include <gds/Graphics.hpp>
+#include <gds/Support/lfs.hpp>
 #include <gds/Support/Timer.hpp>
 #include <gds/Support/CameraController_Win32.hpp>
 #include <gds/Support/FileOpenDialog_Win32.hpp>
@@ -25,6 +26,12 @@
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
+
+//-----------------------------------------------------------------------------
+// externs
+//-----------------------------------------------------------------------------
+
+void SetCurrentThreadAsRenderThread();
 
 
 //-----------------------------------------------------------------------------
@@ -51,107 +58,6 @@ CTextureHandle g_DefaultTexture;
 
 
 CStdKeyboard g_StdKeyboardInput;
-
-
-/*
-void RenderMeshes()
-{
-	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-	// alpha-blending settings 
-	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-    pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-    pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-
-	pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, TRUE );
-	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
-	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
-
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	g_ShaderManager.SetWorldTransform( matWorld );
-
-	LPD3DXEFFECT pEffect = g_ShaderManager.GetEffect();
-	if( !pEffect )
-		return;
-
-
-	D3DXATTRIBUTERANGE attrib_table[128];
-	DWORD attrib_table_size;
-	if( g_vecpMeshObject[0] && g_vecpMeshObject[0]->GetBaseMesh() )
-		g_vecpMeshObject[0]->GetBaseMesh()->GetAttributeTable( attrib_table, &attrib_table_size );
-
-
-	hr = pEffect->SetValue( "g_vEyePos", &(g_CameraController.GetPosition()), sizeof(float) * 3 );
-
-//	hr = pEffect->SetTechnique( "Default" );
-//	hr = pEffect->SetTechnique( "NullShader" );
-	hr = pEffect->SetTechnique( "QuickTest" );
-
-	if( FAILED(hr) )
-		return;
-
-	UINT cPasses;
-	pEffect->Begin( &cPasses, 0 );
-
-
-	size_t i, num_meshes = g_vecpMeshObject.size();
-	for( i=0; i<num_meshes; i++ )
-	{
-//		CD3DXSMeshObject *pMeshObject = g_vecpMeshObject[i];
-		CD3DXMeshObject *pMeshObject = g_vecpMeshObject[i];
-
-		if( !pMeshObject )
-			continue;
-
-	//	LPD3DXPMESH pPMesh = pMeshObject->GetPMesh();
-		LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
-		if( !pMesh )
-			return;
-
-
-		pMesh->GetAttributeTable( attrib_table, &attrib_table_size );
-
-
-		pd3dDevice->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
-
-		LPDIRECT3DTEXTURE9 pTex;
-
-		// Meshes are divided into subsets by materials. Render each subset in a loop
-		DWORD mat, num_materials = pMeshObject->GetNumMaterials();
-		for( mat=0; mat<num_materials; mat++ )
-		{
-			// Set the material and texture for this subset
-	//		pd3dDevice->SetMaterial( &pMeshObject->GetMaterial(i) );
-
-			pTex = pMeshObject->GetTexture(mat);
-			if( pTex )
-                g_ShaderManager.SetTexture( 0, pTex );
-			else
-				g_ShaderManager.SetTexture( 0, g_DefaultTexture );
-
-//			LPDIRECT3DTEXTURE9 pNMTex = NULL;
-//			if( pNMTex = pMeshObject->GetNormalMapTexture(i) )
-//				g_ShaderManager.SetTexture( 1, pNMTex );
-//
-			pEffect->CommitChanges();
-
-			for( UINT p = 0; p < cPasses; ++p )
-			{
-				pEffect->BeginPass( p );
-
-				// Draw the mesh subset
-				pMesh->DrawSubset( mat );
-
-				pEffect->EndPass();
-			}
-		}
-	}
-
-	pEffect->End();
-}
-*/
 
 
 void ReleaseGraphicsResources()
@@ -324,6 +230,15 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
 	string cmdline( lpCmdLine );
 
+	const string init_wd = lfs::get_cwd();
+	if( init_wd.rfind( "app" ) != init_wd.length() - 3 )
+	{
+		// change directory from the project file directory to the application directory
+		lfs::set_wd( "../app" );
+	}
+
+	const std::string default_wd = lfs::get_cwd();
+
     // Register the window class
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
@@ -362,6 +277,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	// init graphics library (Direct3D/OpenGL)
 	SelectGraphicsLibrary( "Direct3D" );
 
+	SetCurrentThreadAsRenderThread();
+
 	if( !Init() )
 		return 0;
 
@@ -393,6 +310,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	else
 		mdb_filepath = input_filepath;
 
+	// set the working directory to the default for the application
+	// because it may have been changed by user operations on FileOpenDialog.
+	lfs::set_wd( default_wd );
 
 	if( built )//&& saved )
 	{
