@@ -20,6 +20,11 @@ class CStdInputDeviceStateCallback : public CInputDeviceStateCallback
 	boost::shared_ptr<CCombinedRectElement> m_pRect;
 	boost::shared_ptr<CTextElement> m_pText;
 
+	CGraphicsEffectHandle m_TextFadein;
+	CGraphicsEffectHandle m_RectFadein;
+	CGraphicsEffectHandle m_TextFadeout;
+	CGraphicsEffectHandle m_RectFadeout;
+
 public:
 
 	CStdInputDeviceStateCallback(CAnimatedGraphicsManager *pMgr)
@@ -28,20 +33,67 @@ public:
 	{
 	}
 
+	~CStdInputDeviceStateCallback()
+	{
+		using namespace boost;
+
+		if( !m_pEffectMgr )
+			return;
+
+		shared_ptr<CGraphicsElementManager> pElementMgr = m_pEffectMgr->GetGraphicsElementManager();
+
+		shared_ptr<CGraphicsElement> pElems[] = { m_pRect, m_pText };
+		pElementMgr->RemoveElement( pElems[0] );
+		pElementMgr->RemoveElement( pElems[1] );
+	}
+
+	void SetFadeInAndOut()
+	{
+		if( !m_pEffectMgr )
+			return;
+
+		m_pEffectMgr->CancelEffect( m_RectFadein );
+		m_pEffectMgr->CancelEffect( m_TextFadein );
+		m_pEffectMgr->CancelEffect( m_RectFadeout );
+		m_pEffectMgr->CancelEffect( m_TextFadeout );
+
+		m_pEffectMgr->SetTimeOffset();
+
+		if( m_pRect )
+		{
+			m_RectFadein  = m_pEffectMgr->ChangeAlphaTo( m_pRect, 0.0, 0.2, 0, 1.0f, 0 ); // fade in
+			m_RectFadeout = m_pEffectMgr->ChangeAlphaTo( m_pRect, 3.0, 3.2, 0, 0.0f, 0 ); // fade out
+		}
+
+		if( m_pText )
+		{
+			m_TextFadein  = m_pEffectMgr->ChangeAlphaTo( m_pText, 0.0, 0.2, 0, 1.0f, 0 ); // fade in
+			m_TextFadeout = m_pEffectMgr->ChangeAlphaTo( m_pText, 3.0, 3.2, 0, 0.0f, 0 ); // fade out
+
+		}
+
+	}
+
 	void OnInputDeviceDetected()
 	{
+		SetFadeInAndOut();
+
 		if( m_pText )
 			m_pText->SetText( "An input device has been detected." );
 	}
 
 	void OnInputDeviceInitialized()
 	{
+		SetFadeInAndOut();
+
 		if( m_pText )
 			m_pText->SetText( "An input device has been successfuly initialized." );
 	}
 
 	void OnInputDeviceInitFailed()
 	{
+		SetFadeInAndOut();
+
 		if( m_pText )
 			m_pText->SetText( "Initialization of an input device has failed." );
 	}
@@ -81,6 +133,10 @@ public:
 			0, 0, // font width & height - set to 0 to use the default font size
 			layer - 3
 			);
+
+		// Hide the elements - show only when input device events are received.
+		m_pRect->SetAlpha( 0, 0.0f );
+		m_pText->SetAlpha( 0, 0.0f );
 	}
 };
 
