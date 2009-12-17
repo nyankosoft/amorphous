@@ -159,7 +159,7 @@ bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 /// Creates an empty texture
 bool CGLTextureResource::Create()
 {
-	return CreateGLTexture( GL_PROXY_TEXTURE_2D, GL_RGB, GL_UNSIGNED_BYTE, NULL );
+	return CreateGLTexture( GL_PROXY_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
 }
 
 
@@ -237,15 +237,16 @@ bool CGLTextureResource::CreateFromDesc()
 	const CTextureResourceDesc& desc = m_TextureDesc;
 
 	// create an empty texture
-	Create();
+	bool created = Create();
 
-	if( Lock() )
+	if( Lock() && m_pLockedTexture->IsValid() )
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
 		shared_ptr<CTextureFillingAlgorithm> pLoader = desc.pLoader;
 		if( pLoader )
 		{
+			// Let the user-defined routine to fill the texture
 			pLoader->FillTexture( *(m_pLockedTexture.get()) );
 		}
 
@@ -262,6 +263,51 @@ bool CGLTextureResource::CreateFromDesc()
 	}
 }
 
+U32 ARGB32toRGBA32( U32 src )
+{
+	U32 a = src >> 24;
+	U32 rgb = src << 8;
+	return ( rgb | a );
+}
+
+
+class CGLLockedTextureRGBA32 : public CLockedTexture
+{
+	shared_ptr< C2DArray<U32> > m_pImageBuffer;
+
+public:
+
+	CGLLockedTextureRGBA32( shared_ptr< C2DArray<U32> > pImgBuffer )
+		:
+	m_pImageBuffer(pImgBuffer)
+	{}
+
+	int GetWidth() { return (int)m_pImageBuffer->size_x(); };
+
+	bool IsValid() const { return (m_pImageBuffer && 0 < m_pImageBuffer->size_x() && 0 < m_pImageBuffer->size_y()); }
+
+	void SetPixelARGB32( int x, int y, U32 argb_color )
+	{
+//		C2DArray<SFloatRGBAColor>& img_buffer = (*m_pImageBuffer.get());
+		(*m_pImageBuffer)(x,y) = ARGB32toRGBA32( argb_color );
+	}
+
+	void SetAlpha( int x, int y, U8 alpha )
+	{
+//		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
+	}
+
+	void Clear( U32 argb_color )
+	{
+		U32 rgba_color = ARGB32toRGBA32( argb_color );
+
+		C2DArray<U32>& img_buffer = *m_pImageBuffer;
+		img_buffer.resize( img_buffer.size_x(), img_buffer.size_y(), rgba_color );
+	}
+
+	void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
+};
+
 
 class CGLLockedTexture : public CLockedTexture
 {
@@ -274,7 +320,11 @@ public:
 	m_pImageBuffer(pImgBuffer)
 	{}
 
-	virtual void SetPixelARGB32( int x, int y, U32 argb_color )
+	int GetWidth() { return (int)m_pImageBuffer->size_x(); };
+
+	bool IsValid() const { return (m_pImageBuffer && 0 < m_pImageBuffer->size_x() && 0 < m_pImageBuffer->size_y()); }
+
+	void SetPixelARGB32( int x, int y, U32 argb_color )
 	{
 		C2DArray<SFloatRGBAColor>& img_buffer = (*m_pImageBuffer.get());
 
@@ -283,10 +333,21 @@ public:
 		img_buffer(x,y) = color;
 	}
 
-	virtual void SetAlpha( int x, int y, U8 alpha )
+	void SetAlpha( int x, int y, U8 alpha )
 	{
 //		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
 	}
+
+	void Clear( U32 argb_color )
+	{
+		SFloatRGBAColor color;
+		color.SetARGB32( argb_color );
+
+		C2DArray<SFloatRGBAColor>& img_buffer = *m_pImageBuffer;
+		img_buffer.resize( img_buffer.size_x(), img_buffer.size_y(), color );
+	}
+
+	void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
 };
 
 
@@ -296,13 +357,18 @@ bool CGLTextureResource::Lock()
 
 	// CBitmapImage <<< currently has no function to create an empty image?
 
-	m_pLockedTextureImageBuffer = shared_ptr< C2DArray<SFloatRGBAColor> >( new C2DArray<SFloatRGBAColor> );
-
-	m_pLockedTextureImageBuffer->resize( m_TextureDesc.Width, m_TextureDesc.Height );
-
-	boost::shared_ptr<CGLLockedTexture>
-	m_pGLLockedTexture = shared_ptr<CGLLockedTexture>( new CGLLockedTexture(m_pLockedTextureImageBuffer) );
-	m_pLockedTexture = m_pGLLockedTexture;
+	if( true /*format == RGBA32*/ )
+	{
+		m_pLockedTextureRGBA32ImageBuffer = shared_ptr< C2DArray<U32> >( new C2DArray<U32> );
+		m_pLockedTextureRGBA32ImageBuffer->resize( m_TextureDesc.Width, m_TextureDesc.Height );
+		m_pLockedTexture = shared_ptr<CGLLockedTextureRGBA32>( new CGLLockedTextureRGBA32(m_pLockedTextureRGBA32ImageBuffer) );
+	}
+	else
+	{
+		m_pLockedTextureImageBuffer = shared_ptr< C2DArray<SFloatRGBAColor> >( new C2DArray<SFloatRGBAColor> );
+		m_pLockedTextureImageBuffer->resize( m_TextureDesc.Width, m_TextureDesc.Height );
+		m_pLockedTexture = shared_ptr<CGLLockedTexture>( new CGLLockedTexture(m_pLockedTextureImageBuffer) );
+	}
 
 	return true;
 }
@@ -317,6 +383,23 @@ bool CGLTextureResource::Unlock()
 		GLint level = 0;
 //		GLint level = to_gl_mip_level( m_TextureDesc.MipLevels );
 
+		void *pixels = NULL;
+		if( true /*format == RGBA32*/ )
+		{
+			if( m_pLockedTextureRGBA32ImageBuffer )
+				pixels = &((*m_pLockedTextureRGBA32ImageBuffer)(0,0));
+		}
+		else
+		{
+			if( m_pLockedTextureImageBuffer )
+				pixels = &((*m_pLockedTextureImageBuffer)(0,0));
+		}
+
+//		vector<char> dummy;
+//		dummy.resize( m_TextureDesc.Width * m_TextureDesc.Height * sizeof(U32), 0 );
+
+		glBindTexture( GL_TEXTURE_2D, m_TextureID );
+
 		glTexImage2D( GL_TEXTURE_2D,          // GLenum target,
 					  level,                  // GLint level,
 					  GL_RGBA8,               // GLint internalformat,
@@ -324,9 +407,9 @@ bool CGLTextureResource::Unlock()
 					  m_TextureDesc.Height,   // GLsizei height,
 					  0,                      // GLint border,
 					  GL_RGBA,                // GLenum format,
-					  GL_FLOAT,               // GLenum type
-					  &(*m_pLockedTextureImageBuffer.get())(0,0) // const GLvoid *pixels
-					  //&(fake_img_data[0]) // const GLvoid *pixels
+					  GL_UNSIGNED_BYTE,       // GLenum type
+					  pixels                  // const GLvoid *pixels
+					  //&dummy[0]
 					  );
 	}
 

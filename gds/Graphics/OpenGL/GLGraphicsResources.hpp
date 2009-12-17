@@ -22,6 +22,8 @@ class CGLTextureResource : public CTextureResource
 
 	boost::shared_ptr< C2DArray<SFloatRGBAColor> > m_pLockedTextureImageBuffer;
 
+	boost::shared_ptr< C2DArray<U32> > m_pLockedTextureRGBA32ImageBuffer;
+
 protected:
 
 	/// Release texture without changing the reference count
