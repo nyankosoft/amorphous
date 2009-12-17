@@ -1,6 +1,7 @@
 #include "PostProcessEffectTest.hpp"
-#include "Graphics/D3DXMeshObjectBase.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/SkyboxMisc.hpp"
@@ -282,10 +283,8 @@ void CPostProcessEffectTest::RenderMeshes()
 	}
 
 	// reset the world transform matrix
-	CD3DFixedFunctionPipelineManager ffp_mgr;
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	ffp_mgr.SetWorldTransform( matWorld );
+//	CD3DFixedFunctionPipelineManager ffp_mgr;
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 	DWORD fog_colors[] =
 	{
@@ -296,12 +295,12 @@ void CPostProcessEffectTest::RenderMeshes()
 
 	for( i=1; i<num_meshes; i++ )
 	{
-		shared_ptr<CD3DXMeshObjectBase> pMesh = m_vecMesh[i].GetMesh();
+		shared_ptr<CBasicMesh> pMesh = m_vecMesh[i].GetMesh();
 
 		hr = pd3dDevice->SetRenderState( D3DRS_FOGCOLOR, fog_colors[i] );
 
 		if( pMesh )
-			pMesh->Render( ffp_mgr );
+			pMesh->Render();
 	}
 }
 
@@ -491,13 +490,13 @@ int CPostProcessEffectTest::Init()
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-	pShaderManager->SetWorldTransform( matWorld );
+	pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 	// set the projection matrix
     D3DXMATRIX matProj;
     D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
     DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
-	pShaderManager->SetProjectionTransform( matProj );
+	pShaderManager->SetProjectionTransform( Matrix44PerspectiveFoV_LH( D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f ) );
 /*
 	// initialize the light for the shader
 	m_ShaderLightManager.Init();
