@@ -23,6 +23,11 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <string>
+#include <gds/Support/Log/DefaultLog.hpp>
+
+using namespace std;
+
 
 bool GL_ARB_depth_texture_supported        = false;
 bool GL_ARB_draw_buffers_supported         = false;
@@ -1298,6 +1303,7 @@ void initExtensions(){
 #endif
 
 	char *version = (char *) glGetString(GL_VERSION);
+	LOG_PRINT( " GL_VERSION: " + string(version) );
 	GLMajorVersion = atoi(version);
 	version = strchr(version, '.') + 1;
 	GLMinorVersion = atoi(version);
