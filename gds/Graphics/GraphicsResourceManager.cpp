@@ -3,6 +3,7 @@
 #include "Graphics/GraphicsResourceHandle.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
 #include "Graphics/ResourceLoadingStateHolder.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
@@ -295,6 +296,12 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadAsync( const CG
 shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResource( const CGraphicsResourceDesc& desc )
 {
 	LOG_FUNCTION_SCOPE();
+
+	if( GraphicsDevice().GetState() != CGraphicsDevice::STATE_INITIALIZED )
+	{
+		LOG_PRINT_ERROR( "Not ready to load / create graphics resources. Check if a graphics device has been initialized." );
+		return shared_ptr<CGraphicsResourceEntry>();
+	}
 
 	if( !sg_bRenderThreadSpecified )
 	{
