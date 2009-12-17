@@ -6,6 +6,10 @@
 CSingleton<CGraphicsDeviceHolder> CGraphicsDeviceHolder::m_obj;
 
 
+// TODO: make this a member of CGraphicsDevice
+bool g_IsReadyToLoadGraphicsResources = false;
+
+
 Result::Name CGraphicsDeviceHolder::SelectGraphicsDevice( const std::string& library_name )
 {
 	if( library_name == "Direct3D" )

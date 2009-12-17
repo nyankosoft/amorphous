@@ -9,13 +9,14 @@
 using namespace std;
 
 
-inline const char *hr_d3d_error_to_string(HRESULT hr)
+const char *hr_d3d_error_to_string(HRESULT hr)
 {
 	switch(hr)
 	{
 	case D3DERR_DEVICELOST:          return "D3DERR_DEVICELOST";
 	case D3DERR_DRIVERINTERNALERROR: return "D3DERR_DRIVERINTERNALERROR";
 	case D3DERR_INVALIDCALL:         return "D3DERR_INVALIDCALL";
+	case D3DERR_NOTAVAILABLE:        return "D3DERR_NOTAVAILABLE";
 	case D3DERR_OUTOFVIDEOMEMORY:    return "D3DERR_OUTOFVIDEOMEMORY";
 	case E_OUTOFMEMORY:              return "E_OUTOFMEMORY";
 	case D3DXERR_INVALIDDATA:        return "D3DXERR_INVALIDDATA";
@@ -136,6 +137,8 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
     D3DXMATRIXA16 matProj;
     D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 500.0f );
     m_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+
+	m_State = CGraphicsDevice::STATE_INITIALIZED;
 
 	return true;
 }

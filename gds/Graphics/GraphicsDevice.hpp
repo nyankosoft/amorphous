@@ -123,9 +123,21 @@ public:
 
 class CGraphicsDevice
 {
+public:
+
+	enum State
+	{
+		STATE_NOT_INITIALIZED = 0, ///< Not initialized yet.
+		STATE_INITIALIZED,         ///< Has successfully been initialized.
+		STATE_INIT_FAILED,         ///< Initialization has failed.
+		NUM_STATES
+	};
+
 protected:
 
 //	std::vector<CAdapterMode> m_vecAdapterMode;
+
+	State m_State;
 
 private:
 
@@ -137,6 +149,8 @@ private:
 
 
 public:
+
+	CGraphicsDevice() : m_State(STATE_NOT_INITIALIZED) {}
 
 	virtual ~CGraphicsDevice() {}
 	
@@ -167,6 +181,8 @@ public:
 	virtual void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode ) = 0;
 
 	virtual void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode ) = 0;
+
+	State GetState() const { return m_State; }
 };
 
 

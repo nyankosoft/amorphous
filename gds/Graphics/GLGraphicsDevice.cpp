@@ -71,6 +71,8 @@ bool CGLGraphicsDevice::Init( int iWindowWidth, int iWindowHeight, ScreenMode::N
 	glEnable(GL_TEXTURE_2D);
 	LOG_GL_ERROR( "glEnable() failed." );
 
+	m_State = CGraphicsDevice::STATE_INITIALIZED;
+
 	return true;
 }
 
