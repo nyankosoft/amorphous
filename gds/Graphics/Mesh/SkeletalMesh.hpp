@@ -23,7 +23,7 @@ public:
 
 	inline int GetNumBones() const { return m_pImpl->GetNumBones(); }
 
-	inline int GetBoneMatrixIndexByName( const std::string& bone_name ) const { m_pImpl->GetBoneMatrixIndexByName( bone_name ); }
+	inline int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return m_pImpl->GetBoneMatrixIndexByName( bone_name ); }
 
 //	inline const CMM_Bone& GetBone( int index ) const;
 
