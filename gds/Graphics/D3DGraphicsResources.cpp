@@ -163,6 +163,8 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 }
 
 
+extern const char *hr_d3d_error_to_string(HRESULT hr);
+
 bool CD3DTextureResource::Create()
 {
 	SAFE_RELEASE( m_pTexture );
@@ -203,7 +205,7 @@ bool CD3DTextureResource::Create()
 
 	if( FAILED(hr) || !m_pTexture )
 	{
-		LOG_PRINT_ERROR( " D3DXCreateTexture() failed." );
+		LOG_PRINT_ERROR( " D3DXCreateTexture() failed. Error: " + string(hr_d3d_error_to_string(hr)) );
 		return false;
 	}
 	else
