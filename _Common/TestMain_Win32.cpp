@@ -5,20 +5,24 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include "Graphics/all.hpp"
-#include "Support/MiscAux.hpp"
-#include "Support/WindowMisc_Win32.hpp"
-#include "Support/Timer.hpp"
-#include "Support/ParamLoader.hpp"
-#include "Support.hpp"
-#include "Input.hpp"
-#include "XML.hpp"
-#include "../../Project1/gds/App/GameWindowManager_Win32.hpp"
+#include <gds/Graphics.hpp>
+#include <gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp>
+#include <gds/Support/MiscAux.hpp>
+#include <gds/Support/WindowMisc_Win32.hpp>
+#include <gds/Support/Timer.hpp>
+#include <gds/Support/ParamLoader.hpp>
+#include <gds/Support.hpp>
+#include <gds/Input.hpp>
+#include <gds/XML.hpp>
+#include <gds/App/GameWindowManager_Win32.hpp>
 //#include <gl/gl.h>
 
 #include "GraphicsTestBase.hpp"
 
 //#include <vld.h> // Visual Leak Detector - available only in the debugging mode of the debug build
+
+using namespace std;
+using namespace boost;
 
 
 extern CGraphicsTestBase *CreateTestInstance();
@@ -113,7 +117,11 @@ void UpdateCameraMatrices()
 {
 	D3DXMATRIX matView;
 	g_CameraController.GetCameraMatrix( matView );
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW, &matView );
+//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW, &matView );
+
+	Matrix44 view;
+	view.SetRowMajorMatrix44( (Scalar *)&matView );
+	FixedFunctionPipelineManager().SetViewTransform( view );
 }
 
 
@@ -313,10 +321,14 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	ProfileInit();
 
 	// init font
-	string font_name
+/*	string font_name
 //		= "Lucida Console";
 		= "DotumChe";
-	g_pFont = CFontSharedPtr( new CFont( font_name, 8, 16 ) );
+	g_pFont = pTexFontCFontSharedPtr( new CFont( font_name, 8, 16 ) );*/
+	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	pTexFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
+	pTexFont->SetFontSize( 8, 16 );
+	g_pFont = pTexFont;
 
 	// Enter the message loop
 	MSG msg;
