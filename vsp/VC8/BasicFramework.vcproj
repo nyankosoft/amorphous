@@ -534,14 +534,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\TextureTool.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\TextureTool.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Graphics\UnitCube.cpp"
 				>
 			</File>
@@ -569,27 +561,11 @@
 				Name="Shader"
 				>
 				<File
-					RelativePath="..\..\gds\Graphics\Shader\D3DFixedFunctionPipelineManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Graphics\Shader\D3DFixedFunctionPipelineManager.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Graphics\Shader\HLSLShaderLightManager.hpp"
 					>
 				</File>
 				<File
@@ -1272,6 +1248,14 @@
 					RelativePath="..\..\gds\Graphics\Direct3D\D3DSurfaceFormat.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\TextureTool.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\TextureTool.hpp"
+					>
+				</File>
 				<Filter
 					Name="2DPrimitive"
 					>
@@ -1327,6 +1311,30 @@
 				<Filter
 					Name="Shader"
 					>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DShaderManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DShaderManager.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\HLSLShaderLightManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\HLSLShaderLightManager.hpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Mesh"

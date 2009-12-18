@@ -4,8 +4,7 @@
 
 #include <d3dx9.h>
 #include <string>
-#include "../../base.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
+#include "D3DShaderManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 
 

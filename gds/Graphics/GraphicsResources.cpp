@@ -3,7 +3,7 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
+#include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/lfs.hpp"
 #include "Support/ImageArchive.hpp"

@@ -2,7 +2,7 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
+#include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 
 using namespace std;
 using namespace boost;

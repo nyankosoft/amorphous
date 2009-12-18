@@ -8,7 +8,7 @@
 #include "DynamicLightManagerForStaticGeometry.hpp"
 
 #include "Graphics/Direct3D9.hpp"
-#include "Graphics/TextureTool.hpp"
+#include "Graphics/Direct3D/TextureTool.hpp"
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
