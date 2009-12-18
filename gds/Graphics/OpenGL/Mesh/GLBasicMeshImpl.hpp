@@ -40,6 +40,10 @@ private:
 
 	void BuildVBOs( C3DMeshModelArchive& archive );
 
+	void BuildVBOs_ARB( C3DMeshModelArchive& archive );
+
+	void BindBuffers_ARB();
+
 public:
 
 	CGLBasicMeshImpl();

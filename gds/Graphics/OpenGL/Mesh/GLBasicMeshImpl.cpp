@@ -141,7 +141,10 @@ bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 
 	m_strFilename = filename;
 
-	BuildVBOs( archive );
+	if( glGenBuffers )
+		BuildVBOs( archive );
+	else
+		BuildVBOs_ARB( archive );
 
 /*
 //	LPD3DXMESH pMesh = LoadD3DXMeshFromArchive( archive );
@@ -263,6 +266,83 @@ void CGLBasicMeshImpl::BuildVBOs( C3DMeshModelArchive& archive )
 }
 
 
+void CGLBasicMeshImpl::BuildVBOs_ARB( C3DMeshModelArchive& archive )
+{
+//	C3DMeshModelArchive archive;
+	CMMA_VertexSet& vert_set = archive.GetVertexSet();
+	int num_vertices = vert_set.GetNumVertices();
+
+	const U32 vffs = vert_set.GetVertexFormat();
+/*	if( vffs &  )
+	{
+
+	}
+*/
+	// Generate and bind the vertex buffer
+	glGenBuffersARB( 1, &m_PositionBuffer );							// Get A Valid Name
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_PositionBuffer );			// Bind The Buffer
+
+	// Load The Data
+	glBufferDataARB( GL_ARRAY_BUFFER_ARB, num_vertices*3*sizeof(float), &(vert_set.vecPosition[0]), GL_STATIC_DRAW_ARB );
+
+
+	if( vffs & CMMA_VertexSet::VF_NORMAL )
+	{
+		glGenBuffersARB( 1, &m_NormalBuffer );							// Get A Valid Name
+		glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_NormalBuffer );			// Bind The Buffer
+
+		// Load The Data
+		glBufferDataARB( GL_ARRAY_BUFFER_ARB, num_vertices*3*sizeof(float), &(vert_set.vecNormal[0]), GL_STATIC_DRAW_ARB );
+	}
+
+	if( vffs & CMMA_VertexSet::VF_DIFFUSE_COLOR )
+	{
+		glGenBuffersARB( 1, &m_DiffuseColorBuffer );							// Get A Valid Name
+		glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_DiffuseColorBuffer );			// Bind The Buffer
+
+		// Load The Data
+		glBufferDataARB( GL_ARRAY_BUFFER_ARB, num_vertices*4*sizeof(float), &(vert_set.vecDiffuseColor[0]), GL_STATIC_DRAW_ARB );
+	}
+
+	if( vffs & CMMA_VertexSet::VF_2D_TEXCOORD0 )
+	{
+		// Generate And Bind The Texture Coordinate Buffer
+		glGenBuffersARB( 1, &m_TexCoordBuffer );							// Get A Valid Name
+		glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_TexCoordBuffer );		// Bind The Buffer
+
+		// Load The Data
+		glBufferDataARB( GL_ARRAY_BUFFER_ARB, num_vertices*2*sizeof(float), &(vert_set.vecTex[0][0]), GL_STATIC_DRAW_ARB );
+	}
+
+	// Mesh data has been copied to the graphics memory
+
+	m_NumIndices = (int)archive.GetVertexIndex().size();
+
+	// index buffer
+	glGenBuffersARB(1, &m_IndexBuffer);
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, m_IndexBuffer);
+
+	// uint indices
+//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m_NumIndices, &(archive.GetVertexIndex()[0]), GL_STATIC_DRAW);
+
+	// ushort indices
+	vector<ushort> vecUShortIndex;
+	vecUShortIndex.resize( m_NumIndices );
+	for( int i=0; i<m_NumIndices; i++ )
+		vecUShortIndex[i] = (ushort)archive.GetVertexIndex()[i];
+	glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(ushort) * m_NumIndices, &(vecUShortIndex[0]), GL_STATIC_DRAW);
+
+	// when drawing...
+
+	/* setup your gl*Pointers as usual */
+//	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER_ARB, m_IndexBuffer );
+//	glDrawElements( GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_SHORT, 0 );
+
+	// Only call the last glBindBuffer function if you want to disable buffering.
+	// Otherwise, just leave it as it is and bind the new buffers as and when needed.
+}
+
+
 /// renders subsets of the mesh
 /// - use different shader techniques for each material
 void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
@@ -300,6 +380,9 @@ void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
 
 void CGLBasicMeshImpl::Render( CShaderManager& rShaderMgr )
 {
+	rShaderMgr.Begin();
+
+	Render();
 }
 
 
@@ -326,6 +409,8 @@ void CGLBasicMeshImpl::Render()
 	// Set Pointers To Our Data
 	if( m_VBOSupported )
 	{
+		if( glGenBuffers )
+	  {
 		glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_PositionBuffer );
 		glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// Set The Vertex Pointer To The Vertex Buffer
 
@@ -348,6 +433,9 @@ void CGLBasicMeshImpl::Render()
 
 		// index buffer
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER/*_ARB*/, m_IndexBuffer );
+	  }
+	  else
+		  BindBuffers_ARB();
 	}
 /*	else
 	{
@@ -421,6 +509,30 @@ void CGLBasicMeshImpl::Render()
         m_pMesh->DrawSubset( i );
     }
 */
+}
+
+
+void CGLBasicMeshImpl::BindBuffers_ARB()
+{
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_PositionBuffer );
+	glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// Set The Vertex Pointer To The Vertex Buffer
+
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_TexCoordBuffer );
+	glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );		// Set The TexCoord Pointer To The TexCoord Buffer
+
+	// color (diffuse color?)
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_DiffuseColorBuffer );
+	glColorPointer( 4,             // GLint size,
+                    GL_FLOAT,      // GLenum type,
+                    0,             // GLsizei stride, ( 0 == tightly packed color array)
+                    (char *) NULL  // const GLvoid *pointer
+                  );
+
+	// vertex normal?
+	glNormalPointer( GL_FLOAT,     // GLenum type,
+                     0,            // GLsizei	stride,
+                     (char *) NULL // const GLvoid *pointer
+                   );
 }
 
 
