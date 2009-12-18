@@ -373,6 +373,16 @@ float4 FinalScenePassPS
 }
 
 
+/// Used to display a 2D rectangle that shows adapted luminance for debugging
+float4 AdaptedLuminanceDisplayPS
+(
+ in float2 vScreenPosition : TEXCOORD0
+ ) : COLOR
+{
+	float fAdaptedLum = tex2D(s3, float2(0.5f, 0.5f));
+//	return float4(1,0,0,1);
+	return float4(fAdaptedLum,fAdaptedLum,fAdaptedLum,1.0f);
+}
 
 
 //-----------------------------------------------------------------------------
@@ -953,6 +963,20 @@ technique FinalScenePass
 	pass P0
 	{
 		PixelShader  = compile ps_2_0 FinalScenePassPS();
+	}
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: AdaptedLuminanceDisplay
+// Type: Technique                                     
+// Desc: Minimally transform and texture the incoming geometry
+//-----------------------------------------------------------------------------
+technique AdaptedLuminanceDisplay
+{
+	pass P0
+	{
+		PixelShader  = compile ps_2_0 AdaptedLuminanceDisplayPS();
 	}
 }
 
