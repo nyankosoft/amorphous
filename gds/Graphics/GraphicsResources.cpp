@@ -1,11 +1,11 @@
 #include "GraphicsResources.hpp"
 
-#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Support/SafeDelete.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
@@ -55,7 +55,7 @@ void CGraphicsResource::Refresh()
 	else
 		filepath = resource_path;
 
-	const time_t current_last_mod_time = fnop::get_last_modified_time( filepath );
+	const time_t current_last_mod_time = lfs::get_last_modified_time( filepath );
 	if( m_LastModifiedTimeOfFile < current_last_mod_time )
 	{
 		LOG_PRINT( " Refreshing " + filepath + "..." );
@@ -110,7 +110,7 @@ bool CGraphicsResource::LoadFromDisk()
 		string db_filename, keyname;
 		decompose_into_db_filepath_and_keyname( resource_path, db_filename, keyname );
 
-		string cwd = fnop::get_cwd();
+		string cwd = lfs::get_cwd();
 
 		CBinaryDatabase<string> db;
 		bool db_open = db.Open( db_filename );
@@ -134,7 +134,7 @@ bool CGraphicsResource::LoadFromDisk()
 		SetState( GraphicsResourceState::LOADED );
 
 		// record the time of last modification of the texture file
-		m_LastModifiedTimeOfFile = fnop::get_last_modified_time(target_filepath);
+		m_LastModifiedTimeOfFile = lfs::get_last_modified_time(target_filepath);
 	}
 
 	return loaded;
@@ -477,13 +477,13 @@ void CMeshResource::SetSubResourceState( CMeshSubResource::Name subresource,
 
 void CMeshResource::CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive )
 {
-	fnop::dir_stack dirstk( fnop::get_path(m_MeshDesc.ResourcePath) );
+	lfs::dir_stack dirstk( lfs::get_dirpath(m_MeshDesc.ResourcePath) );
 
 	if( m_pMeshObject )
 		m_pMeshObject->LoadNonAsyncResources( archive, m_MeshDesc.LoadOptionFlags );
 //		m_pMeshObject->LoadNonAsyncResources( archive, MeshLoadOption::LOAD_TEXTURES_ASYNC, m_MeshDesc.vecpGroup );
 
-	dirstk.prevdir();
+	dirstk.pop_and_chdir();
 
 
 //	m_pMeshObject->GetTexture( 0, 0 ).GetEntry()->GetMeshDesc

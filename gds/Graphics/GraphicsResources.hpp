@@ -6,7 +6,6 @@
 #include <string>
 #include <sys/stat.h>
 #include <boost/weak_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
 #include <boost/thread.hpp>
 #include "fwd.hpp"
 #include "Graphics/fwd.hpp"
@@ -73,57 +72,6 @@ public:
 		color.SetARGB32( argb_color );
 		Clear( color );
 	}
-};
-
-
-class CD3DLockedTexture : public CLockedTexture
-{
-	void *m_pBits;
-
-	int m_Width;
-
-	int m_Height;
-
-public:
-
-	CD3DLockedTexture() : m_pBits(NULL), m_Width(0), m_Height(0) {}
-
-	int GetWidth() { return m_Width; }
-
-	bool IsValid() const { return (m_pBits != NULL); }
-
-	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) { ((U32 *)m_pBits)[ y * m_Width + x ] = argb_color; }
-
-	/// \param alpha [0,255]
-	void SetAlpha( int x, int y, U8 alpha )
-	{
-		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
-	}
-
-	void Clear( U32 argb_color )
-	{
-		const int num_bytes_per_pixel = sizeof(U32);
-		if( argb_color == 0 )
-			memset( m_pBits, 0, m_Width * m_Height * num_bytes_per_pixel );
-		else if( argb_color == 0xFFFFFFFF )
-			memset( m_pBits, 0xFF, m_Width * m_Height * num_bytes_per_pixel );
-		else
-		{
-			int w = m_Width;
-			int h = m_Height;
-			for( int y=0; y<h; y++ )
-			{
-				for( int x=0; x<w; x++ )
-				{
-					SetPixelARGB32( x, y, argb_color );
-				}
-			}
-		}
-	}
-
-	void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
-
-	friend class CD3DTextureResource;
 };
 
 
