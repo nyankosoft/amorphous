@@ -3480,6 +3480,46 @@
 			Name="App"
 			>
 		</Filter>
+		<File
+			RelativePath="..\..\gds\3DMath.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\base.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\Graphics.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\GUI.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\Input.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\Physics.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\Platform.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\Platform_Win32.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\Support.hpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\gds\XML.hpp"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
