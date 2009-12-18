@@ -1,6 +1,5 @@
 #include "PostProcessEffectTest.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Font/Font.hpp"
