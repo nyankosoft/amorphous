@@ -1,11 +1,11 @@
 #include "AsyncLoadingTest.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Graphics/all.hpp"
-#include "Graphics/AsyncResourceLoader.hpp"
-#include "Support/Timer.hpp"
-#include "Support/Profile.hpp"
-#include "Support/Macro.h"
-#include "GUI.hpp"
+#include <gds/3DMath/Matrix34.hpp>
+#include <gds/Graphics.hpp>
+#include <gds/Graphics/AsyncResourceLoader.hpp>
+#include <gds/Support/Timer.hpp>
+#include <gds/Support/Profile.hpp>
+#include <gds/Support/Macro.h>
+#include <gds/GUI.hpp>
 
 using namespace std;
 using namespace boost;
@@ -100,9 +100,8 @@ bool CAsyncLoadingTest::InitShader()
 //	pShaderLightMgr->SetNumDirectionalLights( 1 );
 	pShaderLightMgr->SetHemisphericDirectionalLight( light );
 
-	D3DXMATRIX matProj;
-    D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-	m_Shader.GetShaderManager()->SetProjectionTransform( matProj );
+	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
+	m_Shader.GetShaderManager()->SetProjectionTransform( proj );
 
 	return true;
 }
@@ -194,7 +193,7 @@ void CAsyncLoadingTest::LoadResourcesAsync( CTestMeshHolder& holder )
 	if( holder.m_LoadingStyle == CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER )
 		return;
 
-	CD3DXMeshObjectBase *pMesh = holder.m_Handle.GetMesh().get();
+	CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
 	if( !pMesh )
 		return;
 
@@ -274,8 +273,8 @@ void CAsyncLoadingTest::RenderMeshes()
 
 	// render the scene
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
+//	D3DXMATRIX matWorld;
+//	D3DXMatrixIdentity( &matWorld );
 
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 
@@ -285,16 +284,15 @@ void CAsyncLoadingTest::RenderMeshes()
 //	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
 	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
 	{
-//		CD3DXMeshObjectBase *pMesh = mesh.GetMesh().get();
+//		CBasicMesh *pMesh = mesh.GetMesh().get();
 
 		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
 		{
 			// set world transform
-			holder.m_Pose.GetRowMajorMatrix44( matWorld );
-			pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
-			pShaderManager->SetWorldTransform( matWorld );
+			FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
+			pShaderManager->SetWorldTransform( holder.m_Pose );
 
-			CD3DXMeshObjectBase *pMesh = holder.m_Handle.GetMesh().get();
+			CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
 
 			if( pMesh )
 				pMesh->Render( *pShaderManager );
@@ -340,7 +338,7 @@ void CAsyncLoadingTest::SaveTexturesAsImageFiles()
 	if( m_vecMesh.size() == 0 || !mesh_handle.GetMesh() )
 		return;
 
-	CD3DXMeshObjectBase *pMesh = mesh_handle.GetMesh().get();
+	CBasicMesh *pMesh = mesh_handle.GetMesh().get();
 
 	const int num_materials = pMesh->GetNumMaterials();
 	for( int i=0; i<num_materials; i++ )
