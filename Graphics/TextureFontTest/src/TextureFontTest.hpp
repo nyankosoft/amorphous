@@ -5,6 +5,7 @@
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <gds/base.hpp>
 #include "Graphics/fwd.hpp"
 #include "Graphics/TextureHandle.hpp"
 
@@ -17,7 +18,14 @@ class CTextureFontTest : public CGraphicsTestBase
 
 private:
 
-	boost::shared_ptr<CTrueTypeTextureFont> m_pFont;
+//	boost::shared_ptr<CTrueTypeTextureFont> m_pFont;
+	boost::shared_ptr<CFontBase> m_pFont;
+
+	U32 m_FontFlags;
+	int m_FontWidth;
+	int m_FontHeight;
+
+	CTextureHandle m_BGTexture;
 
 public:
 
