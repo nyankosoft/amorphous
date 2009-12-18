@@ -190,11 +190,11 @@ bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 	if( !pTexture )
 		return false;
 
-	CLockedTexture locked_texture;
-	bool retrieved = pTexture->GetLockedTexture( locked_texture );
-	if( retrieved )
+	shared_ptr<CLockedTexture> pLockedTexture;
+	bool retrieved = pTexture->GetLockedTexture( pLockedTexture );
+	if( retrieved && pLockedTexture )
 	{
-		FillTexture( locked_texture );
+		FillTexture( *pLockedTexture );
 		return true;
 	}
 	else

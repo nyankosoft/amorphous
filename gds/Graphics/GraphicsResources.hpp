@@ -52,6 +52,32 @@ public:
 
 class CLockedTexture
 {
+public:
+
+	virtual ~CLockedTexture() {}
+
+	virtual int GetWidth() = 0;
+
+	virtual bool IsValid() const  = 0;
+
+	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) = 0;
+
+	/// \param alpha [0,255]
+	virtual void SetAlpha( int x, int y, U8 alpha ) = 0;
+
+	virtual void Clear( const SFloatRGBAColor& color ) = 0;
+
+	virtual void Clear( U32 argb_color )
+	{
+		SFloatRGBAColor color;
+		color.SetARGB32( argb_color );
+		Clear( color );
+	}
+};
+
+
+class CD3DLockedTexture : public CLockedTexture
+{
 	void *m_pBits;
 
 	int m_Width;
@@ -60,19 +86,21 @@ class CLockedTexture
 
 public:
 
-	CLockedTexture() : m_pBits(NULL) {}
+	CD3DLockedTexture() : m_pBits(NULL), m_Width(0), m_Height(0) {}
 
-	int GetWidth();
+	int GetWidth() { return m_Width; }
+
+	bool IsValid() const { return (m_pBits != NULL); }
 
 	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) { ((U32 *)m_pBits)[ y * m_Width + x ] = argb_color; }
 
 	/// \param alpha [0,255]
-	inline void SetAlpha( int x, int y, U8 alpha )
+	void SetAlpha( int x, int y, U8 alpha )
 	{
 		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
 	}
 
-	virtual void Clear( U32 argb_color )
+	void Clear( U32 argb_color )
 	{
 		const int num_bytes_per_pixel = sizeof(U32);
 		if( argb_color == 0 )
@@ -93,7 +121,7 @@ public:
 		}
 	}
 
-	virtual void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
+	void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
 
 	friend class CD3DTextureResource;
 };
@@ -302,7 +330,7 @@ public:
 	/// Returns true on success
 	/// - Succeeds only between a pair of Lock() and Unlock() calls
 	/// - Returns an object that provides access to the locked texture surface
-	bool GetLockedTexture( CLockedTexture& texture );
+	bool GetLockedTexture( boost::shared_ptr<CLockedTexture>& pLockedTexture );
 
 	void GetStatus( char *pDestBuffer );
 

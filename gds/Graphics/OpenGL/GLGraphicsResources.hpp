@@ -79,7 +79,7 @@ public:
 	/// Returns true on success
 	/// - Succeeds only between a pair of Lock() and Unlock() calls
 	/// - Returns an object that provides access to the locked texture surface
-//	bool GetLockedTexture( CLockedTexture& texture );
+//	bool GetLockedTexture( boost::shared_ptr<CLockedTexture>& pLockedTexture );
 
 	friend class CGraphicsResourceManager;
 };

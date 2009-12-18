@@ -66,11 +66,6 @@ public:
 	/// Called by the render thread.
 	bool Create();
 
-	/// Returns true on success
-	/// - Succeeds only between a pair of Lock() and Unlock() calls
-	/// - Returns an object that provides access to the locked texture surface
-	bool GetLockedTexture( CLockedTexture& texture );
-
 	friend class CGraphicsResourceManager;
 };
 

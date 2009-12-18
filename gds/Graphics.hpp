@@ -16,6 +16,7 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Mesh/ProgressiveMesh.hpp"
 #include "Graphics/Mesh/SkeletalMesh.hpp"
+#include "Graphics/MeshGenerators.hpp"
 
 // others
 #include "Graphics/3DGameMath.hpp"

@@ -212,7 +212,7 @@ void CTextureResource::UpdateDescForCachedResource( const CGraphicsResourceDesc&
 }
 
 
-bool CTextureResource::GetLockedTexture( CLockedTexture& texture )
+bool CTextureResource::GetLockedTexture( shared_ptr<CLockedTexture>& pLockedTexture )
 {
 	// TODO: increment the ref count when the async loading process is started
 //	m_iRefCount++;
@@ -220,7 +220,7 @@ bool CTextureResource::GetLockedTexture( CLockedTexture& texture )
 	if( !m_pLockedTexture )
 		return false;
 
-	texture = *m_pLockedTexture;
+	pLockedTexture = m_pLockedTexture;
 	return true;
 }
 

@@ -279,11 +279,12 @@ bool CD3DTextureResource::Lock()
 		return false;
 	}
 
-	m_pLockedTexture = shared_ptr<CLockedTexture>( new CLockedTexture() );
-	CLockedTexture& tex = *(m_pLockedTexture.get());
+	shared_ptr<CD3DLockedTexture> pLockedTexture( new CD3DLockedTexture() );
+	CD3DLockedTexture& tex = *pLockedTexture;
 	tex.m_pBits  = locked_rect.pBits;
 	tex.m_Width  = desc.Width;
 	tex.m_Height = desc.Height;
+	m_pLockedTexture = pLockedTexture;
 
 	return true;
 }
@@ -317,19 +318,6 @@ bool CD3DTextureResource::Unlock()
 	return true;
 }
 
-/*
-bool CD3DTextureResource::GetLockedTexture( CLockedTexture& texture )
-{
-	// TODO: increment the ref count when the async loading process is started
-//	m_iRefCount++;
-
-	if( !m_pLockedTexture )
-		return false;
-
-	texture = *m_pLockedTexture;
-	return true;
-}
-*/
 
 void CD3DTextureResource::Release()
 {
