@@ -3,7 +3,7 @@
 #include "XML.hpp"
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 
 using namespace std;
 using namespace boost;

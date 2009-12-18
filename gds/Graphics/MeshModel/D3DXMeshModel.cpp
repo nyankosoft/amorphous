@@ -11,7 +11,6 @@
 #include "Graphics/FVF_NormalVertex.h"
 #include "Graphics/FVF_WeightVertex.h"
 #include "Graphics/FVF_ShadowVertex.h"
-#include "Graphics/TextureTool.hpp"
 
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 

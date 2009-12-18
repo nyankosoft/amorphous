@@ -1,7 +1,6 @@
 #include "GameTaskManager.hpp"
 #include "GameTask.hpp"
 
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
 #include "GameTask.hpp"
