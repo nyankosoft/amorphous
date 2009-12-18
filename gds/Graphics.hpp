@@ -50,7 +50,6 @@
 #include "Graphics/GraphicsResourceCacheManager.hpp"
 #include "Graphics/GraphicsResourceHandle.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/TextureTool.hpp"
 
 #include "Graphics/LinePrimitives.hpp"
 
