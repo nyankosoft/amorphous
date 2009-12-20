@@ -2,12 +2,8 @@
 #define  __HumanoidMotionSynthesizer_H__
 
 
-#include <vector>
-#include <string>
-#include <boost/array.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include <boost/foreach.hpp>
 
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/MathMisc.hpp"
@@ -46,13 +42,13 @@ class CHumanoidMotionHolder
 {
 public:
 	
-	std::vector<boost::shared_ptr<CMotionPrimitive>> m_vecpMotion;
+	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpMotion;
 };
 
 
 class CHumanoidMotionSynthesizer
 {
-	vector<boost::shared_ptr<CMotionBlender>> m_vecpMotionBlender;
+	std::vector< boost::shared_ptr<CMotionBlender> > m_vecpMotionBlender;
 
 	boost::shared_ptr<CSteeringMotionBlender> m_pSteeringMotionBlender;
 
