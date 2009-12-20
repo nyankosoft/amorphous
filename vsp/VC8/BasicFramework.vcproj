@@ -374,6 +374,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\General2DVertex.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\General3DVertex.hpp"
 				>
 			</File>
