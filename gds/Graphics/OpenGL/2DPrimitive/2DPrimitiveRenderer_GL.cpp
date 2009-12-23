@@ -1,6 +1,7 @@
 #include "2DPrimitiveRenderer_GL.hpp"
 #include "App/GameWindowManager_Win32_GL.hpp"
 #include "3DMath/Matrix44.hpp"
+#include "Graphics/OpenGL/GLExtensions.hpp"
 
 
 GLenum ToGLPrimitiveType( PrimitiveType::Name pt )
@@ -71,6 +72,10 @@ void C2DPrimitiveRenderer_GL::RenderGL( CGeneral2DVertex *paVertex, int num_vert
 	glLoadMatrixf( (GLfloat *)&matIdentity );
 
 	glDisable( GL_CULL_FACE );
+
+	if( glUseProgramObjectARB )
+		glUseProgramObjectARB( 0 );
+
 
 /*
 	glBegin(GL_QUADS);									// Draw A Quad
