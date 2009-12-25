@@ -2,16 +2,8 @@
 #define  __MotionDatabase_H__
 
 
-#include <vector>
-#include <string>
-#include <boost/shared_ptr.hpp>
-
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"
@@ -28,6 +20,8 @@ class CMotionDatabase// : public IArchiveObjectBase
 
 	/// retrieved from database with the reserved keyname "__AnnotationTable__"
 	std::vector<std::string> m_vecAnnotationName;
+
+	std::string m_DatabaseFilepath;
 
 private:
 

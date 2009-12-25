@@ -1,15 +1,17 @@
 #include "MotionDatabase.hpp"
 #include "MotionBlender.hpp"
 #include "HumanoidMotionTable.hpp"
-#include "BVH/BVHPlayer.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
 
-
+using namespace std;
+using namespace boost;
 using namespace msynth;
 
 
 CMotionDatabase::CMotionDatabase( const std::string& database_filename )
+:
+m_DatabaseFilepath(database_filename)
 {
 	LoadFromFile( database_filename );
 }
@@ -24,7 +26,8 @@ boost::shared_ptr<CMotionPrimitive> CMotionDatabase::GetMotionPrimitive( const s
 
 	if( !success )
 	{
-		LOG_PRINT_ERROR( " - failed to get the following motion primitive from database: " + name );
+		string msg = fmt_string( " Failed to get the motion primitive '%s' from database '%s'", name.c_str(), m_DatabaseFilepath.c_str() );
+		LOG_PRINT_WARNING( msg );
 	}
 
 	// How would I go about skeleton data?
@@ -35,6 +38,8 @@ boost::shared_ptr<CMotionPrimitive> CMotionDatabase::GetMotionPrimitive( const s
 
 bool CMotionDatabase::LoadFromFile( const std::string& filepath )
 {
+	m_DatabaseFilepath = filepath;
+
 //	return m_DB.Open( filepath, CBinaryDatabase<string>::DB_MODE_APPEND );
 
 	bool success = m_DB.Open( filepath, CBinaryDatabase<string>::DB_MODE_APPEND );
