@@ -75,6 +75,9 @@ protected:
 	int m_iParentType;
 	int m_iParentIndex;
 
+	/// used by scene file with version 5 or later
+	int m_ItemID;
+
 	/// child item info
 	std::vector<int> m_vecChildType;
 	std::vector<int> m_vecChildIndex;
@@ -96,6 +99,8 @@ protected:
 public:
 
 	CLWS_Item();
+
+	void SetItemID( int item_id ) { m_ItemID = item_id; }
 
 	virtual bool LoadFromFile( CTextFileScanner& scanner );
 

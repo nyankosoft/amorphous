@@ -7,6 +7,7 @@ class CTextFileScanner;
 class CLWSceneInfo
 {
 public:
+	int m_Version;
 	int m_RenderRangeType;
 	int m_FirstFrame;
 	int m_LastFrame;

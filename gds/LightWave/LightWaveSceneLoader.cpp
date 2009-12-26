@@ -1,13 +1,32 @@
 #include "LightWaveSceneLoader.hpp"
 #include "Support/TextFileScanner.hpp"
+#include "Support/StringAux.hpp"
 
 using namespace std;
 using namespace boost;
 
 
+inline int from_hex_to_int( const std::string& hex_int )
+{
+	if( hex_int.length() == 0 )
+		return 0;
+
+	int res = 0;
+	sscanf( hex_int.c_str(), "%x", &res );
+	return res;
+}
+
+
 bool CLWSceneInfo::LoadSceneInfo( CTextFileScanner& scanner )
 {
-	     if( scanner.TryScanLine( "RenderRangeType",      m_RenderRangeType      ) ) return true;
+	if( scanner.GetTagString() == "LWSC" )
+	{
+		// Assume the next line is the version number (expects no empty lines).
+		scanner.NextLine();
+		m_Version = to_int( scanner.GetCurrentLine() );
+		return true;
+	}
+	else if( scanner.TryScanLine( "RenderRangeType",      m_RenderRangeType      ) ) return true;
 	else if( scanner.TryScanLine( "FirstFrame",           m_FirstFrame           ) ) return true;
 	else if( scanner.TryScanLine( "LastFrame",            m_LastFrame            ) ) return true;
 	else if( scanner.TryScanLine( "FrameStep",            m_FrameStep            ) ) return true;
@@ -28,6 +47,10 @@ CLightWaveSceneLoader::CLightWaveSceneLoader()
 	m_afAmbientColor[1] = 0;
 	m_afAmbientColor[2] = 0;
 	m_fAmbientIntensity = 0;
+
+	m_vecObjectLayer.reserve( 64 );
+	m_vecLight.reserve( 64 );
+	m_vecpBone.reserve( 256 );
 }
 
 
@@ -62,6 +85,10 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 
 	for( ; !scanner.End(); scanner.NextLine() )
 	{
+		// used in scene file with version 5 or later
+		string item_id_in_hex;
+//		int item_id = -1;
+
 		scanner.GetTagString( tag );
 		scanner.GetCurrentLine( strLine );
 
@@ -84,11 +111,22 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 		if( tag == "LoadObjectLayer" )
 		{
 			m_vecObjectLayer.push_back( CLWS_ObjectLayer() );
-			scanner.ScanLine( tag,
-				              m_vecObjectLayer.back().m_iLayerNumber,
-							  m_vecObjectLayer.back().m_strObjectFilename );
+			if( 5 <= m_SceneInfo.m_Version )
+			{
+				scanner.ScanLine( tag,
+								  m_vecObjectLayer.back().m_iLayerNumber,
+								  item_id_in_hex,
+								  m_vecObjectLayer.back().m_strObjectFilename );
+			}
+			else
+			{
+				scanner.ScanLine( tag,
+								  m_vecObjectLayer.back().m_iLayerNumber,
+								  m_vecObjectLayer.back().m_strObjectFilename );
+			}
 
 			m_vecpItem.push_back( &m_vecObjectLayer.back() );
+			m_vecpItem.back()->SetItemID( from_hex_to_int(item_id_in_hex) );
 
 			continue;
 		}
@@ -108,7 +146,11 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 		{
 			m_vecpBone.push_back( shared_ptr<CLWS_Bone>( new CLWS_Bone() ) );
 
+			if( 5 <= m_SceneInfo.m_Version )
+				scanner.ScanLine( tag, item_id_in_hex );
+
 			m_vecpItem.push_back( m_vecpBone.back().get() );
+			m_vecpItem.back()->SetItemID( from_hex_to_int(item_id_in_hex) );
 
 			continue;
 		}
@@ -117,14 +159,25 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 		{
 			m_vecLight.push_back( CLWS_Light() );
 
+			if( 5 <= m_SceneInfo.m_Version )
+				scanner.ScanLine( tag, item_id_in_hex );
+
 			m_vecpItem.push_back( &m_vecLight.back() );
+			m_vecpItem.back()->SetItemID( from_hex_to_int(item_id_in_hex) );
 
 			continue;
 		}
 
 /*		else if( tag == "AddCamera" )
 		{
-			m_vecCamera.push_back( CLWS_Camera() );
+			m_vecpCamera.push_back( shared_ptr<CLWS_Camera>( new CLWS_Camera() ) );
+
+			if( 5 <= m_SceneInfo.m_Version )
+				scanner.ScanLine( tag, item_id );
+
+			m_vecpItem.push_back( m_vecpCamera.back().get() );
+			m_vecpItem.back()->SetItemID( item_id );
+
 			continue;
 		}
 */

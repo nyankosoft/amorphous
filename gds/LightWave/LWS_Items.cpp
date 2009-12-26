@@ -36,12 +36,13 @@ void CLWS_Channel::Load( FILE* fp )
 //=====================================================================================
 
 CLWS_Item::CLWS_Item()
+:
+m_iParentType( -1 ),
+m_iParentIndex( -1 ),
+m_ItemID( -1 )
 {
 	m_iNumChannels	= 0;
 	memset( m_aChannel, 0, sizeof(m_aChannel) );
-
-	m_iParentType	= -1;
-	m_iParentIndex	= -1;
 
 	for( int i=0; i<numof(m_afPivotRotationAngle); i++ )
 		m_afPivotRotationAngle[i] = 0.0f;
