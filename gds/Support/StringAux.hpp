@@ -94,6 +94,19 @@ inline std::string to_string( float num, int precision = 3, int num_zfills = 0 )
 }
 
 
+/// Converts a text that represents hexadecimal integer into int type value.
+/// - example: hex_int = "0x000000FF" -> return value = 255
+inline int from_hex_to_int( const std::string& hex_int )
+{
+	if( hex_int.length() == 0 )
+		return 0;
+
+	int res = 0;
+	sscanf( hex_int.c_str(), "%x", &res );
+	return res;
+}
+
+
 inline std::string fmt_string( const char *format,... )
 {
 //	g_LogMutex.lock();
