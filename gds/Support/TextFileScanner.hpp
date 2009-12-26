@@ -93,7 +93,9 @@ public:
 	void ScanLine( std::string& strTag, std::string& str, Vector3& v );
 	void ScanLine( std::string& strTag, std::string& str, Vector3& v1, Vector3& v2 );
 
-	void ScanLine( std::string& strTag, int &i, std::string& strEntry );
+	void ScanLine( std::string& strTag, int &i,           std::string& strEntry );
+	void ScanLine( std::string& strTag, int &i1, int &i2, std::string& strEntry );
+	void ScanLine( std::string& strTag, int &i,           std::string& str1, std::string& str2 );
 	void ScanLine( std::string& strTag, float &f, std::string& strEntry );
 
 	void ScanLine( std::string& strTag, std::string& strEntry, int &i );
@@ -136,7 +138,9 @@ public:
 	bool TryScanLine( const char *tag, std::string& str, Vector3& v );
 	bool TryScanLine( const char *tag, std::string& str, Vector3& v1, Vector3& v2 );
 
-	bool TryScanLine( const char *tag, int &i, std::string& strEntry );
+	bool TryScanLine( const char *tag, int &i,           std::string& strEntry );
+	bool TryScanLine( const char *tag, int &i1, int &i2, std::string& strEntry );
+	bool TryScanLine( const char *tag, int &i,           std::string& str1, std::string& str2 );
 	bool TryScanLine( const char *tag, float &f, std::string& strEntry );
 
 	bool TryScanLine( const char *tag, std::string& str, int &i );

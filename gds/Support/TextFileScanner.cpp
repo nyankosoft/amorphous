@@ -3,7 +3,19 @@
 using namespace std;
 
 
-/* ================== template ==================
+/* =============================== usage ===============================
+
+text file to load
+----------------------------------------------
+
+name xxx
+size 20 30
+height 50
+
+
+C++ source code
+----------------------------------------------
+
 int ProcessTextFile( std::string& filepath )
 {
 	CTextFileScanner scanner( filepath );
@@ -14,11 +26,18 @@ int ProcessTextFile( std::string& filepath )
 		return -1;
 	}
 
+	string name;
+	int size_x=0, size_y=0,
+	int height=0;
+
 	string line;
 	for( ; !scanner.End(); scanner.NextLine() )
 	{
 		scanner.GetCurrentLine( line );
-		sscanf( line.c_str(), "%d", &id );
+
+		scanner.TryScanLine( "name", name );
+		scanner.TryScanLine( "size", size_x, size_y );
+		scanner.TryScanLine( "height", height );
 	}
 
 	return 0;
@@ -267,6 +286,23 @@ void CTextFileScanner::ScanLine( string& strTag, int &i, string& strEntry )
 	char acEntry[512];
 	sscanf( m_acCurrentLine, "%s %d %s\n", m_acTag, &i, acEntry );
 	strEntry = acEntry;
+}
+
+
+void CTextFileScanner::ScanLine( string& strTag, int &i1, int &i2, string& strEntry )
+{
+	char acEntry[512];
+	sscanf( m_acCurrentLine, "%s %d %d %s\n", m_acTag, &i1, &i2, acEntry );
+	strEntry = acEntry;
+}
+
+
+void CTextFileScanner::ScanLine( string& strTag, int &i, string& str1, std::string& str2 )
+{
+	char acEntry1[512], acEntry2[512];
+	sscanf( m_acCurrentLine, "%s %d %s %s\n", m_acTag, &i, acEntry1, acEntry2 );
+	str1 = acEntry1;
+	str2 = acEntry2;
 }
 
 
@@ -647,6 +683,32 @@ bool CTextFileScanner::TryScanLine( const char *tag, int &i, string& strEntry )
 	{
 		string str_tag;
 		ScanLine( str_tag, i, strEntry );
+		return true;
+	}
+	else
+		return false;
+}
+
+
+bool CTextFileScanner::TryScanLine( const char *tag, int &i1, int &i2, string& strEntry )
+{
+	if( !strcmp( GetTagStr(), tag ) )
+	{
+		string str_tag;
+		ScanLine( str_tag, i1, i2, strEntry );
+		return true;
+	}
+	else
+		return false;
+}
+
+
+bool CTextFileScanner::TryScanLine( const char *tag, int &i, string& str1, string& str2 )
+{
+	if( !strcmp( GetTagStr(), tag ) )
+	{
+		string str_tag;
+		ScanLine( str_tag, i, str1, str2 );
 		return true;
 	}
 	else
