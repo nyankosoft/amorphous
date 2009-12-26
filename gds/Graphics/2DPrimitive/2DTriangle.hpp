@@ -3,11 +3,12 @@
 
 
 #include "2DPrimitive.hpp"
+#include "2DPrimitiveRenderer.hpp"
 
 
 class C2DTriangle : public C2DPrimitive
 {
-	TLVERTEX m_avVertex[3];
+	CGeneral2DVertex m_avVertex[3];
 
 public:
 
@@ -120,8 +121,8 @@ inline void C2DTriangle::SetDefault()
 	ZeroMemory(m_avVertex, sizeof(TLVERTEX) * 3);
 	for(int i=0; i<3; i++)
 	{
-		m_avVertex[i].rhw = 1.0f;
-		m_avVertex[i].color = 0xff000000;		//opaque by default
+		m_avVertex[i].m_fRHW = 1.0f;
+		m_avVertex[i].m_DiffuseColor.SetToBlack(); // opaque by default
 	}
 
 	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;
@@ -138,14 +139,15 @@ inline void C2DTriangle::Draw( const CTextureHandle& texture )
 
 inline void C2DTriangle::draw()
 {
-	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
-	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 1, m_avVertex, sizeof(TLVERTEX) );
+//	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
+//	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 1, m_avVertex, sizeof(TLVERTEX) );
+	PrimitiveRenderer().Render( m_avVertex, 3, PrimitiveType::TRIANGLE_FAN );
 }
 
 
 inline Vector2 C2DTriangle::GetPosition2D( int vert_index ) const
 {
-	const D3DXVECTOR3& pos = m_avVertex[vert_index].vPosition;
+	const Vector3& pos = m_avVertex[vert_index].m_vPosition;
 
 	return Vector2( pos.x, pos.y );
 }
@@ -153,8 +155,8 @@ inline Vector2 C2DTriangle::GetPosition2D( int vert_index ) const
 
 inline void C2DTriangle::SetPosition( int vert_index, const Vector2& rvPosition )
 {
-	m_avVertex[vert_index].vPosition.x = rvPosition.x;
-	m_avVertex[vert_index].vPosition.y = rvPosition.y;
+	m_avVertex[vert_index].m_vPosition.x = rvPosition.x;
+	m_avVertex[vert_index].m_vPosition.y = rvPosition.y;
 }
 
 
@@ -184,12 +186,12 @@ inline void C2DTriangle::SetPosition( Direction dir, const SRect& rect )
 
 inline void C2DTriangle::SetPositionCC( float x0, float y0, float x1, float y1, float x2, float y2 )
 {
-	m_avVertex[0].vPosition.x = x0;
-	m_avVertex[0].vPosition.y = y0;
-	m_avVertex[1].vPosition.x = x1;
-	m_avVertex[1].vPosition.y = y1;
-	m_avVertex[2].vPosition.x = x2;
-	m_avVertex[2].vPosition.y = y2;
+	m_avVertex[0].m_vPosition.x = x0;
+	m_avVertex[0].m_vPosition.y = y0;
+	m_avVertex[1].m_vPosition.x = x1;
+	m_avVertex[1].m_vPosition.y = y1;
+	m_avVertex[2].m_vPosition.x = x2;
+	m_avVertex[2].m_vPosition.y = y2;
 }
 
 
@@ -204,31 +206,30 @@ void C2DTriangle::SetVertexColor( U32 color, int vert_num )
 	if( 0 <= vert_num && vert_num < 3 )
 	{
 		// set the color for only one vertex specified by 'iVertexNum'
-		m_avVertex[vert_num].color   = color;
+		m_avVertex[vert_num].m_DiffuseColor.SetARGB32( color );
 	}
 }
 
 
 void C2DTriangle::SetColor( const SFloatRGBAColor& color )
 {
-	U32 c = color.GetARGB32();
 	for(int i=0; i<3; i++)
-		m_avVertex[i].color = c;
+		m_avVertex[i].m_DiffuseColor = color;
 }
 
 
 inline void C2DTriangle::SetZDepth(float fZValue)
 {
-	m_avVertex[0].vPosition.z = fZValue;
-	m_avVertex[1].vPosition.z = fZValue;
-	m_avVertex[2].vPosition.z = fZValue;
+	m_avVertex[0].m_vPosition.z = fZValue;
+	m_avVertex[1].m_vPosition.z = fZValue;
+	m_avVertex[2].m_vPosition.z = fZValue;
 }
 
 
 inline void C2DTriangle::ScalePosition( float fScale )
 {
 	for(int i=0; i<3; i++)
-		m_avVertex[i].vPosition *= fScale;
+		m_avVertex[i].m_vPosition *= fScale;
 }
 
 
@@ -244,7 +245,7 @@ inline void C2DTriangle::Rotate( const Matrix22& matOrient )
 
 	for( int i=0; i<3; i++ )
 	{
-		Vector3& vert_pos = m_avVertex[i].vPosition;
+		Vector3& vert_pos = m_avVertex[i].m_vPosition;
 		v = matOrient * Vector2(vert_pos.x, vert_pos.y);
 
 		vert_pos.x = v.x;
