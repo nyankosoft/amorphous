@@ -1,9 +1,10 @@
-
 #include "MotionPrimitiveBlender.hpp"
 
 #include "Support/Macro.h"
 #include "Support/memory_helpers.hpp"
 
+using namespace std;
+using namespace boost;
 using namespace msynth;
 
 
@@ -53,7 +54,7 @@ m_FlipVal(0)
 	// create an empty motion primitive for interpolation
 	// - interpolation motion is created during runtime
 
-//	m_pInterpolationMotion = CMotionPrimitiveSharedPtr( new CMotionPrimitive() );
+//	m_pInterpolationMotion = shared_ptr<CMotionPrimitive>( new CMotionPrimitive() );
 
 //	vector<CKeyframe>& rvecDestKeyframe = m_pInterpolationMotion->GetKeyframeBuffer();
 //	rvecDestKeyframe.resize( 2 );
@@ -61,13 +62,13 @@ m_FlipVal(0)
 	m_vecpInterpolationMotion.resize( NUM_MAX_INTERPOLATION_MOTION_PRIMITIVES );
 	for( size_t i=0; i<NUM_MAX_INTERPOLATION_MOTION_PRIMITIVES; i++ )
 	{
-		m_vecpInterpolationMotion[i] = CMotionPrimitiveSharedPtr( new CMotionPrimitive() );
+		m_vecpInterpolationMotion[i] = shared_ptr<CMotionPrimitive>( new CMotionPrimitive() );
 		vector<CKeyframe>& rvecDestKeyframe = m_vecpInterpolationMotion[i]->GetKeyframeBuffer();
 		rvecDestKeyframe.resize( 2 );
 	}
 
 	// empty motion primitive
-	m_pNullMotionPrimitive = CMotionPrimitiveSharedPtr( new CMotionPrimitive() );
+	m_pNullMotionPrimitive = shared_ptr<CMotionPrimitive>( new CMotionPrimitive() );
 }
 
 
@@ -87,7 +88,7 @@ void CMotionPrimitiveBlender::Release()
 }
 
 
-void CMotionPrimitiveBlender::AddMotionPrimitive( CMotionPrimitiveSharedPtr pNewMotion, int iFlag )
+void CMotionPrimitiveBlender::AddMotionPrimitive( shared_ptr<CMotionPrimitive> pNewMotion, int iFlag )
 {
 	if( !pNewMotion )
 		return;
@@ -96,7 +97,7 @@ void CMotionPrimitiveBlender::AddMotionPrimitive( CMotionPrimitiveSharedPtr pNew
 	{
 		if( false /*0 < m_vecpInterpolationMotion.size()*/ )
 		{
-			CMotionPrimitiveSharedPtr pInterpolationMotion
+			shared_ptr<CMotionPrimitive> pInterpolationMotion
 				= m_vecpInterpolationMotion.back();
 
 			m_vecpInterpolationMotion.pop_back();
@@ -105,7 +106,7 @@ void CMotionPrimitiveBlender::AddMotionPrimitive( CMotionPrimitiveSharedPtr pNew
 
 			// Wait... there is only one interpolation motion instance.
 			// -> An interpolation moiton must be created later when it is needed
-/*			CMotionPrimitiveSharedPtr pCurrentMotion
+/*			shared_ptr<CMotionPrimitive> pCurrentMotion
 			= m_MotionPrimitiveQueue.front();
 
 			// create a motion primitive for interpolation
@@ -138,26 +139,30 @@ void CMotionPrimitiveBlender::AddMotionPrimitive( CMotionPrimitiveSharedPtr pNew
 }
 
 
-/// cancel the current motion and start a new motion
-/// - create an interpolation motion between the current motion and the new motion
-/// - start the interpolation motion
-void CMotionPrimitiveBlender::StartNewMotionPrimitive( CMotionPrimitiveSharedPtr pNewMotion )
+/// Cancel the current motion and start a new motion.
+/// \param interpolation_motion_length length of interpolation motion [sec].
+///        The interpolation motion is played before pNewMotion.
+/// - Create an interpolation motion between the current motion and the new motion
+/// - Start the interpolation motion
+/// - When the interpolation motion is finished playing, a new motion, pNewMotion, will be played.
+void CMotionPrimitiveBlender::StartNewMotionPrimitive( float interpolation_motion_length,
+													   shared_ptr<CMotionPrimitive> pNewMotion )
 {
 	if( !pNewMotion )
 		return;
 
 	if( 0 < m_MotionPrimitiveQueue.size() )
 	{
-		CMotionPrimitiveSharedPtr pCurrentMotion = m_MotionPrimitiveQueue.front();
+		shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
 
 		// - clear all the previous motion in the queue
 		m_MotionPrimitiveQueue.clear();
 
 		if( false /*0 < m_vecpInterpolationMotion.size()*/ )
 		{
-			// add interpolation motion
+			// add an interpolation motion
 
-			CMotionPrimitiveSharedPtr pInterpolationMotion = m_vecpInterpolationMotion.back();
+			shared_ptr<CMotionPrimitive> pInterpolationMotion = m_vecpInterpolationMotion.back();
 
 			m_vecpInterpolationMotion.pop_back();
 
@@ -170,9 +175,9 @@ void CMotionPrimitiveBlender::StartNewMotionPrimitive( CMotionPrimitiveSharedPtr
 
 			// - end frame: the first frame of the new motion
 			pNewMotion->GetFirstKeyframe( rvecDestKeyframe[1] );
-			rvecDestKeyframe[1].SetTime( m_fInterpolationTime );
+			rvecDestKeyframe[1].SetTime( interpolation_motion_length );
 
-			// add motion primitives to the queue
+			// add the interpolation motion primitive to the queue
 			m_MotionPrimitiveQueue.push_back( pInterpolationMotion );
 
 //			m_LastOriginalRootPose = rvecDestKeyframe[0].GetRootPose();
@@ -192,6 +197,12 @@ void CMotionPrimitiveBlender::StartNewMotionPrimitive( CMotionPrimitiveSharedPtr
 		// reset the play time
 		m_fCurrentTime = 0;
 	}
+}
+
+
+void CMotionPrimitiveBlender::StartNewMotionPrimitive( shared_ptr<CMotionPrimitive> pNewMotion )
+{
+	StartNewMotionPrimitive( m_fInterpolationTime, pNewMotion );
 }
 
 
@@ -217,8 +228,8 @@ void CMotionPrimitiveBlender::SetRootPose( const Matrix34& pose )
 }
 
 
-void CMotionPrimitiveBlender::SetInterpolationMotion( CMotionPrimitiveSharedPtr pCurrentMotion,
-														 CMotionPrimitiveSharedPtr pNextMotion )
+void CMotionPrimitiveBlender::SetInterpolationMotion( shared_ptr<CMotionPrimitive> pCurrentMotion,
+														 shared_ptr<CMotionPrimitive> pNextMotion )
 {
 /*	vector<CKeyframe>& rvecDestKeyframe = m_pInterpolationMotion->GetKeyframeBuffer();
 
@@ -245,7 +256,7 @@ void CMotionPrimitiveBlender::Update( float dt )
 
 	CKeyframe prev_keyframe;
 
-	CMotionPrimitiveSharedPtr pCurrentMotion = m_MotionPrimitiveQueue.front();
+	shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
 	float current_motion_total_time = pCurrentMotion->GetTotalTime();
 
 	while( current_motion_total_time < m_fCurrentTime )
@@ -278,10 +289,25 @@ void CMotionPrimitiveBlender::Update( float dt )
 			AddMotionPrimitive( pCurrentMotion, 0 );
 		}
 
+		if( m_pCallback )
+		{
+			if( 1 < m_MotionPrimitiveQueue.size() )
+			{
+				list< shared_ptr<CMotionPrimitive> >::iterator first = m_MotionPrimitiveQueue.begin();
+				first++;
+				shared_ptr<CMotionPrimitive> pNextMotion = *first;
+				m_pCallback->OnMotionPrimitiveChanged( pCurrentMotion, pNextMotion ); // 2nd argument - hand the element 2nd from the front (= next motion primitive) in the queue
+			}
+			else
+				m_pCallback->OnMotionPrimitiveFinished( pCurrentMotion ); // pCurrentMotion is the only primitive left in the queue
+		}
+
 		m_MotionPrimitiveQueue.pop_front();
 		if( 0 < m_MotionPrimitiveQueue.size() )
 		{
+			shared_ptr<CMotionPrimitive> pPrevMotion = pCurrentMotion;
 			pCurrentMotion = m_MotionPrimitiveQueue.front();
+
 			current_motion_total_time = pCurrentMotion->GetTotalTime();
 		}
 		else
@@ -304,6 +330,27 @@ void CMotionPrimitiveBlender::Update( float dt )
 	const Matrix34 root_pose_at_current_keyframe = current_keyframe.GetRootPose();
 
 	Matrix34 prev_to_current = root_pose_at_current_keyframe * root_pose_at_prev_time.GetInverseROT();
+
+	const Vector3 vTranslaiton = prev_to_current.vPosition;
+	const Vector3 vFwdHorizontal = Vector3( vTranslaiton.x, 0, vTranslaiton.z );
+
+	const Matrix33 matHorizontalOrientation = m_HorizontalCurrentRootPose.matOrient;
+
+	Matrix34 next_pose( Matrix34Identity() );
+
+	// orientation
+	next_pose.matOrient
+		= root_pose_at_current_keyframe.matOrient
+		* m_HorizontalCurrentRootPose.matOrient;
+
+	// x & z of new position
+	next_pose.vPosition
+		= m_HorizontalCurrentRootPose.vPosition
+		+ matHorizontalOrientation * vFwdHorizontal;
+
+	next_pose.vPosition.y = root_pose_at_current_keyframe.vPosition.y;
+
+	// >>> previous code???
 
 //	Vector3 vDist = horizontal( prev_to_current.vPosition );
 	Vector3 vDist = root_pose_at_current_keyframe.vPosition - root_pose_at_prev_time.vPosition;
@@ -361,7 +408,7 @@ void CMotionPrimitiveBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
 	if( m_MotionPrimitiveQueue.size() == 0 )
 		return;
 
-	CMotionPrimitiveSharedPtr pCurrentMotion = m_MotionPrimitiveQueue.front();
+	shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
 
 	if( m_fCurrentTime < pCurrentMotion->GetTotalTime() )
 	{
@@ -374,7 +421,7 @@ void CMotionPrimitiveBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
 	return;
 
 /*
-	CMotionPrimitiveSharedPtr pCurrentMotion = m_MotionPrimitiveQueue.front();
+	shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
 
 	while( pCurrentMotion->GetTotalTime() < m_fCurrentTime )
 	{
@@ -402,7 +449,7 @@ void CMotionPrimitiveBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
 			if( m_MotionPrimitiveQueue.size() == 0 )
 				return; // no more motion to play
 
-			CMotionPrimitiveSharedPtr pNextMotion = m_MotionPrimitiveQueue.front();
+			shared_ptr<CMotionPrimitive> pNextMotion = m_MotionPrimitiveQueue.front();
 
 			m_MotionPrimitiveQueue.pop_front();
 
@@ -446,6 +493,24 @@ void CMotionPrimitiveBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
 
 	dest_keyframe = m_InterpolatedKeyframe[current];*/
 }
+
+
+void CMotionPrimitiveBlender::CalculateKeyframe()
+{
+//	CKeyframe dest_keyframe;
+//	CalculateKeyframe( dest_keyframe );
+
+	if( m_MotionPrimitiveQueue.size() == 0 )
+		return;
+
+	shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
+
+	if( m_fCurrentTime < pCurrentMotion->GetTotalTime() )
+	{
+		pCurrentMotion->CalculateInterpolatedKeyframe( m_fCurrentTime );
+	}
+}
+
 
 /*
 void CPVC_MotionPrimitivePlayManager::PlayMotionPrimitive( float dt )

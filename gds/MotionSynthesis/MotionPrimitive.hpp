@@ -141,10 +141,13 @@ public:
 };
 
 
-/*
+/**
  Stores keyframes
  - all the keyframes in a motion primitive must have the same hierarchical structure
    for transformations
+
+ - Terms
+ -- complete motion primitive: a motion primitive that has the transforms for all the bones
 */
 class CMotionPrimitive : public IArchiveObjectBase
 {
@@ -164,6 +167,16 @@ class CMotionPrimitive : public IArchiveObjectBase
 
 	/// 1: has annotation
 	std::vector<char> m_vecAnnotation;
+
+	/// user id (not serialized)
+	int m_UserID;
+
+	/// Name of the bone which is the root of this motion data
+	/// For , m_StartBoneName == m_pSkeleton->GetRootBone().GetName()
+	std::string m_StartBoneName;
+
+	/// Used at runtime
+	boost::shared_ptr<CBlendNode> m_pStartBlendNode;
 
 public:
 
@@ -199,6 +212,8 @@ public:
 
 	void GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
 
+	void CalculateInterpolatedKeyframe( float time );
+
 //	void ResizeKeyframeBuffer( int num_keyframes );
 
 	/// let the user directly modify keyframe data
@@ -210,7 +225,15 @@ public:
 //	const CSkeleton& GetSkeleton() const { return m_pSkeleton; }
 	const boost::shared_ptr<CSkeleton> GetSkeleton() const { return m_pSkeleton; }
 
+	const std::string& GetStartBoneName() const { return m_StartBoneName; }
+
+	void SetStartsBoneName( const std::string& start_bone_name ) { m_StartBoneName = start_bone_name; }
+
+	void SearchAndSetStartBlendNode( boost::shared_ptr<CBlendNode>& pRootBlendNode );
+
 	void Serialize( IArchive & ar, const unsigned int version );
+
+	unsigned int GetVersion() const { return 1; }
 
 	bool HasAnnotation( const CAnnotation& annotation ) const
 	{
@@ -219,6 +242,10 @@ public:
 
 		return ( m_vecAnnotation[annotation.m_Index] == 1 ) ? true : false;
 	}
+
+	void SetUserID( int user_id ) { m_UserID = user_id; }
+
+	int GetUserID() const { return m_UserID; }
 
 	friend class CMotionDatabaseCompiler;
 	friend class CMotionDatabaseBuilder;

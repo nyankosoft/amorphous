@@ -10,6 +10,7 @@
 #include <boost/foreach.hpp>
 
 using namespace std;
+using namespace boost;
 
 using namespace msynth;
 
@@ -43,12 +44,12 @@ void CHumanoidMotionSynthesizer::ProcessMotionTransitionRequest( HumanoidMotion:
 	if( motion_holder.m_vecpMotion.size() == 0 )
 		return;
 
-	CMotionPrimitiveSharedPtr pTargetMotion = motion_holder.m_vecpMotion[0];
+	shared_ptr<CMotionPrimitive> pTargetMotion = motion_holder.m_vecpMotion[0];
 
 	if( pTargetMotion )
 	{
 		// peek the current motion
-		CMotionPrimitiveSharedPtr pCurrentMotion
+		shared_ptr<CMotionPrimitive> pCurrentMotion
 			= m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 		if( !pCurrentMotion->IsEmpty() &&
@@ -139,7 +140,7 @@ void CHumanoidMotionSynthesizer::LoadMotions( CMotionDatabase& mdb, const std::s
 			
 			BOOST_FOREACH( const std::string& motion_primitive_name, entry.m_vecMotionPrimitiveName )
 			{
-				CMotionPrimitiveSharedPtr pMotion = mdb.GetMotionPrimitive( motion_primitive_name );
+				shared_ptr<CMotionPrimitive> pMotion = mdb.GetMotionPrimitive( motion_primitive_name );
 				if( pMotion )
 					m_aMotion[type_index].m_vecpMotion.push_back( pMotion );
 			}
@@ -229,7 +230,7 @@ void CHumanoidMotionSynthesizer::UpdateKeyframe()
 // const CSkeleton& CHumanoidMotionSynthesizer::GetSkeleton()
 const boost::shared_ptr<CSkeleton> CHumanoidMotionSynthesizer::GetSkeleton()
 {
-	CMotionPrimitiveSharedPtr pCurrentMotion
+	shared_ptr<CMotionPrimitive> pCurrentMotion
 		= m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 	// GetCurrentMotionPrimitive() returns an empty motion primitive
@@ -257,12 +258,12 @@ void CHumanoidMotionSynthesizer::Walk()
 	if( motion_holder.m_vecpMotion.size() == 0 )
 		return;
 
-	CMotionPrimitiveSharedPtr pWalkMotion = motion_holder.m_vecpMotion[0];
+	shared_ptr<CMotionPrimitive> pWalkMotion = motion_holder.m_vecpMotion[0];
 
 	if( pWalkMotion )
 	{
 		// peek the current motion
-		CMotionPrimitiveSharedPtr pCurrentMotion
+		shared_ptr<CMotionPrimitive> pCurrentMotion
 			= m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 		if( !pCurrentMotion->IsEmpty() &&

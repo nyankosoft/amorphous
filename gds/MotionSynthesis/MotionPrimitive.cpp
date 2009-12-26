@@ -1,8 +1,9 @@
 #include "MotionPrimitive.hpp"
+#include "BlendNode.hpp"
 #include "BVH/BVHBone.hpp"
-#include <boost/foreach.hpp>
 
 using namespace msynth;
+using namespace boost;
 
 
 void CTransformNode::SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1 )
@@ -84,6 +85,15 @@ void CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_key
 }
 
 
+void CMotionPrimitive::CalculateInterpolatedKeyframe( float time )
+{
+	CKeyframe m_KeyframeBuffer;
+	GetInterpolatedKeyframe( m_KeyframeBuffer, time );
+
+	m_pStartBlendNode->SetTransformNodes( m_KeyframeBuffer.GetRootNode() );
+}
+
+
 void CMotionPrimitive::Serialize( IArchive & ar, const unsigned int version )
 {
 	ar & m_Name;
@@ -94,4 +104,13 @@ void CMotionPrimitive::Serialize( IArchive & ar, const unsigned int version )
 	ar & m_bIsLoopedMotion;
 
 	ar & m_vecAnnotation;
+
+	if( 1 <= version )
+		ar & m_StartBoneName;
+}
+
+
+void CMotionPrimitive::SearchAndSetStartBlendNode( shared_ptr<CBlendNode>& pRootBlendNode )
+{
+	m_pStartBlendNode = pRootBlendNode->GetBlendNodeByName( m_StartBoneName );
 }

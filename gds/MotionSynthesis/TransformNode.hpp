@@ -53,6 +53,8 @@ public:
 
 	const CTransformNode& GetChildNode(int index) const { return m_vecChildNode[index]; }
 
+	CTransformNode& ChildNode(int index) { return m_vecChildNode[index]; }
+
 	Quaternion GetLocalRotationQuaternion() const { return m_Rotation; }
 
 	Vector3 GetLocalTranslation() const { return m_vTranslation; }

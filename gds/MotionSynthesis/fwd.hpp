@@ -25,8 +25,14 @@ class CMotionDatabaseCompiler;
 
 class CHumanoidMotionTable;
 
-#include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<CMotionPrimitive> CMotionPrimitiveSharedPtr;
+//#include <boost/shared_ptr.hpp>
+//typedef boost::shared_ptr<CMotionPrimitive> CMotionPrimitiveSharedPtr;
+
+
+// later added classes
+class CBlendNode;
+class CMotionPrimitiveNode;
+class CMotionFSM;
 
 
 } // namespace msynth

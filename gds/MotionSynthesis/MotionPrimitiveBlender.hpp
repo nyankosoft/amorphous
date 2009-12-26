@@ -18,6 +18,18 @@ namespace msynth
 #define VCM_PLAY_NEXT		3
 
 
+class CMotionPrimitivePlayCallback
+{
+public:
+
+	/// Called when a motion primitive is finished playing and a new primitive is being started playing
+	virtual void OnMotionPrimitiveChanged( boost::shared_ptr<CMotionPrimitive>& pPrev, boost::shared_ptr<CMotionPrimitive>& pNew ) {}
+
+	/// Called when a motion primitive is finished playing and queue does not have any more primitive to play
+	virtual void OnMotionPrimitiveFinished( boost::shared_ptr<CMotionPrimitive>& pPrev );
+};
+
+
 class CMotionPrimitiveBlender : public CMotionBlender
 {
 //	CVirtualCharacter *m_pCharacter;
@@ -30,7 +42,7 @@ class CMotionPrimitiveBlender : public CMotionBlender
 	float m_fFloorHeight;
 
 	/// stores pointers to motion primitives to play
-	std::list<CMotionPrimitiveSharedPtr> m_MotionPrimitiveQueue;
+	std::list< boost::shared_ptr<CMotionPrimitive> > m_MotionPrimitiveQueue;
 
 	/// root pose at the beginning of the current motion primitive
 	Matrix34 m_RootWorldPoseOffset;
@@ -55,14 +67,16 @@ class CMotionPrimitiveBlender : public CMotionBlender
 	unsigned int m_FlipVal;
 	
 	/// hold temporary motion primitive created for interpolation
-//	CMotionPrimitiveSharedPtr m_pInterpolationMotion;
-	std::vector<CMotionPrimitiveSharedPtr> m_vecpInterpolationMotion;
+//	boost::shared_ptr<CMotionPrimitive> m_pInterpolationMotion;
+	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpInterpolationMotion;
 
 	/// used by GetCurrentMotionPrimitive() to return an empty motion primitive when
 	/// no motion in the queue
 	boost::shared_ptr<CMotionPrimitive> m_pNullMotionPrimitive;
 
 //	boost::shared_ptr<CMotionPrimitive> m_pCurrentMotion;
+
+	boost::shared_ptr<CMotionPrimitivePlayCallback> m_pCallback;
 
 private:
 
@@ -90,11 +104,16 @@ public:
 
 	virtual void CalculateKeyframe( CKeyframe& dest_keyframe );
 
+	void CalculateKeyframe();
+
 	/// play a new motion primitive
 	///  - if a motion primitive is currently being played, it will be overridden
 //	void StartMotion( boost::shared_ptr<CMotionPrimitive> ptr, float delay );
 
 	void AddMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pMotionPrimitive, int iFlag );
+
+	void StartNewMotionPrimitive( float interpolation_motion_length,
+		                          boost::shared_ptr<CMotionPrimitive> pNewMotion );
 
 	void StartNewMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pNewMotion );
 
@@ -102,7 +121,7 @@ public:
 	/// - Does not remove it from queue. Only returns a reference
 	inline boost::shared_ptr<CMotionPrimitive> GetCurrentMotionPrimitive();
 
-	const std::list<CMotionPrimitiveSharedPtr>& GetMotionPrimitiveList() const { return m_MotionPrimitiveQueue; }
+	const std::list< boost::shared_ptr<CMotionPrimitive> >& GetMotionPrimitiveList() const { return m_MotionPrimitiveQueue; }
 
 	void SetDefaultKeyframe( const CKeyframe& keyframe );
 
@@ -113,6 +132,8 @@ public:
 	const Matrix34& GetHorizontalCurrentRootPose() const { return m_HorizontalCurrentRootPose; }
 
 	inline void RotateCurrentPoseHorizontally( Scalar angle_in_radian );
+
+	void SetCallback( boost::shared_ptr<CMotionPrimitivePlayCallback>& pCallback ) { m_pCallback = pCallback; }
 
 	friend CMotionPrimitiveBlenderStatistics;
 
