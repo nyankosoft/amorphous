@@ -73,7 +73,7 @@ CPlatformDependentCameraController g_CameraController;
 
 CCamera g_Camera;
 
-float g_FOV = D3DX_PI / 4.0f;
+float g_FOV = (float)PI / 4.0f;
 
 const int g_WindowWidth  = 800;
 const int g_WindowHeight = 600;
@@ -135,9 +135,6 @@ VOID Render()
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-//	D3DXMATRIX matWorld;
-//	D3DXMatrixIdentity( &matWorld );
-//	pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 //	g_Camera.SetPose( g_CameraController.GetPose() );
@@ -155,6 +152,9 @@ VOID Render()
 	g_Camera.GetProjectionMatrix( mat );
 	g_pTest->UpdateProjectionTransform( mat );
 
+	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, true );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
 
     // clear the backbuffer to a blue color
 //	GraphicsDevice().SetClearColor( g_pTest->GetBackgroundColor() );
@@ -166,6 +166,8 @@ VOID Render()
 	}
 	else
 	{
+		const SFloatRGBAColor c = g_pTest->GetBackgroundColor();
+		glClearColor( c.fRed, c.fGreen, c.fBlue, c.fAlpha );
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
 	}
 
@@ -220,7 +222,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 	case WM_KEYUP:
 		StdWin32Keyboard().NotifyKeyUp( (int)wParam );
 		break;
-			
+
     case WM_ACTIVATE:
         if( WA_INACTIVE != wParam )
         {
@@ -365,7 +367,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 				Render();
 
 			ProfileDumpOutputToBuffer();
-//			GameWindowManager_Win32().OnMainLoopFinished();
+
+			GameWindowManager_Win32().OnMainLoopFinished();
 
 			Sleep( 5 );
 		}
