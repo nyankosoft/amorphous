@@ -6,17 +6,6 @@ using namespace std;
 using namespace boost;
 
 
-inline int from_hex_to_int( const std::string& hex_int )
-{
-	if( hex_int.length() == 0 )
-		return 0;
-
-	int res = 0;
-	sscanf( hex_int.c_str(), "%x", &res );
-	return res;
-}
-
-
 bool CLWSceneInfo::LoadSceneInfo( CTextFileScanner& scanner )
 {
 	if( scanner.GetTagString() == "LWSC" )

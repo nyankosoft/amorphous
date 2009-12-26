@@ -1,3 +1,7 @@
+#ifndef __LightWaveSceneLoader_HPP__
+#define __LightWaveSceneLoader_HPP__
+
+
 #include "LWS_Items.hpp"
 
 
@@ -37,8 +41,6 @@ class CLightWaveSceneLoader
 	std::vector< boost::shared_ptr<CLWS_Bone> > m_vecpBone;
 
 	//camera;
-
-	//bone;
 
 	std::vector<CLWS_Item *> m_vecpItem;
 
@@ -98,3 +100,7 @@ public:
 
 	void Clear();
 };
+
+
+
+#endif /* __LightWaveSceneLoader_HPP__ */
