@@ -6,6 +6,7 @@
 
 #include "3DMath/aabb2.hpp"
 #include "Support/SafeDelete.hpp"
+#include "2DPrimitiveRenderer.hpp"
 
 #include <vector>
 
@@ -21,7 +22,7 @@ protected:
 
 	AABB2 m_AABB;
 
-	std::vector<TLVERTEX> m_vecRectVertex;
+	std::vector<CGeneral2DVertex> m_vecRectVertex;
 
 	/// local vertex positions
 	/// - x: [ -m_CornerRadius, m_CornerRadius ]
@@ -204,8 +205,8 @@ inline void C2DRoundRect::SetDefault()
 
 	for(int i=0; i<num_vertices; i++)
 	{
-		m_vecRectVertex[i].rhw = 1.0f;
-		m_vecRectVertex[i].color = 0xFF000000;		// opaque by default
+		m_vecRectVertex[i].m_fRHW = 1.0f;
+		m_vecRectVertex[i].m_DiffuseColor.SetToBlack();		// opaque by default
 	}
 
 	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;
@@ -220,8 +221,9 @@ inline void C2DRoundRect::draw()
 		UpdateVertexPositions();
 	}
 
-	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
-	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, GetNumVertices() - 2, &m_vecRectVertex[0], sizeof(TLVERTEX) );
+//	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
+//	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, GetNumVertices() - 2, &m_vecRectVertex[0], sizeof(TLVERTEX) );
+	PrimitiveRenderer().Render( &m_vecRectVertex[0], GetNumVertices(), PrimitiveType::TRIANGLE_FAN );
 }
 
 
@@ -269,7 +271,7 @@ inline void C2DRoundRect::Translate( float dx, float dy )
 {
 	const int num_vertices = GetNumVertices();
 	for( int i=0; i<num_vertices; i++ )
-		m_vecRectVertex[i].vPosition += D3DXVECTOR3( dx, dy, 0 );
+		m_vecRectVertex[i].m_vPosition += Vector3( dx, dy, 0 );
 }
 
 
@@ -292,7 +294,7 @@ inline void C2DRoundRect::Rotate( const Matrix22& matOrient )
 	const int num_vertices = GetNumVertices();
 	for( int i=0; i<num_vertices; i++ )
 	{
-		Vector3& vert_pos = m_vecRectVertex[i].vPosition;
+		Vector3& vert_pos = m_vecRectVertex[i].m_vPosition;
 		v = matOrient * Vector2(vert_pos.x, vert_pos.y);
 
 		vert_pos.x = v.x;
@@ -309,12 +311,12 @@ inline void C2DRoundRect::ResizeBuffer()
 		return;
 
 	// buffer for FVF vertices
-	TLVERTEX vert;
-	vert.rhw   = 1.0f;
-	vert.color = 0xFF000000;		// opaque by default
-	vert.tu    = 0.0f;
-	vert.tv    = 0.0f;
-	vert.vPosition = D3DXVECTOR3(0,0,0);
+	CGeneral2DVertex vert;
+	vert.m_DiffuseColor.SetToBlack(); // opaque by default
+	vert.m_fRHW              = 1.0f;
+	vert.m_TextureCoord[0].u = 0.0f;
+	vert.m_TextureCoord[0].v = 0.0f;
+	vert.m_vPosition = Vector3(0,0,0);
 
 	m_vecRectVertex.resize( num_vertices, vert );
 
@@ -327,10 +329,9 @@ inline void C2DRoundRect::ResizeBuffer()
 
 inline void C2DRoundRect::UpdateColor()
 {
-	const U32 argb32 = m_Color.GetARGB32();
 	const int num_vertices = GetNumVertices();
 	for( int i=0; i<num_vertices; i++ )
-		m_vecRectVertex[i].color = argb32;
+		m_vecRectVertex[i].m_DiffuseColor = m_Color;
 }
 
 
@@ -521,11 +522,11 @@ inline void C2DRoundFrameRect::Set1DBorderTextureCoords()
 	for( int i=0; i<num_points; i++ )
 	{
 		int j = i*2;
-		m_vecRectVertex[j].tu   = 1.0f;
-		m_vecRectVertex[j].tv   = 0.0f;
+		m_vecRectVertex[j].m_TextureCoord[0].u   = 1.0f;
+		m_vecRectVertex[j].m_TextureCoord[0].v   = 0.0f;
 
-		m_vecRectVertex[j+1].tu = 0.0f;
-		m_vecRectVertex[j+1].tv = 0.0f;
+		m_vecRectVertex[j+1].m_TextureCoord[0].u = 0.0f;
+		m_vecRectVertex[j+1].m_TextureCoord[0].v = 0.0f;
 	}
 }
 
@@ -538,8 +539,9 @@ inline void C2DRoundFrameRect::draw()
 		UpdateVertexPositions();
 	}
 
-	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
-	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, GetNumVertices() - 2, &m_vecRectVertex[0], sizeof(TLVERTEX) );
+//	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
+//	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, GetNumVertices() - 2, &m_vecRectVertex[0], sizeof(TLVERTEX) );
+	PrimitiveRenderer().Render( &m_vecRectVertex[0], GetNumVertices(), PrimitiveType::TRIANGLE_STRIP );
 }
 
 
@@ -575,20 +577,20 @@ inline void C2DRoundFrameRect::UpdateVertexPositions()
 		for( int j=0; j<(num_segs_per_corner+1)*2; j++, vert_index++ )
 		{
 			global_pos = avCornerCenterPos[i] + m_vecLocalVertexPosition[vert_index];
-			m_vecRectVertex[vert_index].vPosition.x = global_pos.x;
-			m_vecRectVertex[vert_index].vPosition.y = global_pos.y;
+			m_vecRectVertex[vert_index].m_vPosition.x = global_pos.x;
+			m_vecRectVertex[vert_index].m_vPosition.y = global_pos.y;
 		}
 	}
 
 	// need to wrap positions
 	global_pos = avCornerCenterPos[0] + m_vecLocalVertexPosition[0];
-	m_vecRectVertex[vert_index].vPosition.x = global_pos.x;
-	m_vecRectVertex[vert_index].vPosition.y = global_pos.y;
+	m_vecRectVertex[vert_index].m_vPosition.x = global_pos.x;
+	m_vecRectVertex[vert_index].m_vPosition.y = global_pos.y;
 
 	vert_index++;
 	global_pos = avCornerCenterPos[0] + m_vecLocalVertexPosition[1];
-	m_vecRectVertex[vert_index].vPosition.x = global_pos.x;
-	m_vecRectVertex[vert_index].vPosition.y = global_pos.y;
+	m_vecRectVertex[vert_index].m_vPosition.x = global_pos.x;
+	m_vecRectVertex[vert_index].m_vPosition.y = global_pos.y;
 
 	// set default texture coordinates for simple border textures
 	Set1DBorderTextureCoords();
@@ -602,17 +604,15 @@ inline void C2DRoundFrameRect::UpdateColor()
 
 	const int num_segs_per_corner = m_NumSegmentsPerCorner;
 	int vert_index = 0;
-	U32 color;
 	for( int i=0; i<4; i++ )
 	{
-		color = m_aCornerColor[i].GetARGB32();
+		const SFloatRGBAColor color = m_aCornerColor[i];
 		for( int j=0; j<(num_segs_per_corner+1)*2; j++, vert_index++ )
-			m_vecRectVertex[vert_index].color = color;
+			m_vecRectVertex[vert_index].m_DiffuseColor = color;
 	}
 
-	color = m_aCornerColor[0].GetARGB32();
-	m_vecRectVertex[vert_index++].color = color;
-	m_vecRectVertex[vert_index].color   = color;
+	m_vecRectVertex[vert_index++].m_DiffuseColor = m_aCornerColor[0];
+	m_vecRectVertex[vert_index].m_DiffuseColor   = m_aCornerColor[0];
 
 }
 

@@ -51,8 +51,8 @@ void C2DRegularPolygon::UpdateVertexPositions()
 	for( int i=0; i<num_buffer_vertices; i++ )
 	{
 		vGlobalPos = vCenterPos + m_vecLocalVertexPosition[i] * (float)m_vecRadius[i] / gs_fDefaultRadius;
-		m_vecRectVertex[i].vPosition.x = vGlobalPos.x;
-		m_vecRectVertex[i].vPosition.y = vGlobalPos.y;
+		m_vecRectVertex[i].m_vPosition.x = vGlobalPos.x;
+		m_vecRectVertex[i].m_vPosition.y = vGlobalPos.y;
 	}
 }
 
@@ -117,7 +117,7 @@ Vector2 C2DRegularPolygon::GetVertexPos( int vertex )
 	if( vertex < 0 || m_NumPolygonVertices <= vertex )
 		return Vector2(0,0);
 
-	const Vector3& vPos = m_vecRectVertex[vertex+1].vPosition;
+	const Vector3& vPos = m_vecRectVertex[vertex+1].m_vPosition;
 
 	return Vector2(vPos.x,vPos.y);
 }
@@ -131,6 +131,6 @@ void C2DRegularPolygon::SetVertexColor( int vertex, const SFloatRGBAColor& color
 	if( vertex < 0 || m_NumPolygonVertices <= vertex )
 		return;
 
-	m_vecRectVertex[vertex+1].color = color.GetARGB32();
+	m_vecRectVertex[vertex+1].m_DiffuseColor = color;
 }
 

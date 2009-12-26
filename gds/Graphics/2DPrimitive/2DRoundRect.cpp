@@ -62,8 +62,8 @@ void C2DRoundRect::UpdateVertexPositions()
 		for( int j=0; j<=num_segs_per_corner; j++, vert_index++ )
 		{
 			Vector2 global_pos = avCornerCenterPos[i] + m_vecLocalVertexPosition[vert_index];
-			m_vecRectVertex[vert_index].vPosition.x = global_pos.x;
-			m_vecRectVertex[vert_index].vPosition.y = global_pos.y;
+			m_vecRectVertex[vert_index].m_vPosition.x = global_pos.x;
+			m_vecRectVertex[vert_index].m_vPosition.y = global_pos.y;
 		}
 	}
 
@@ -119,20 +119,21 @@ void C2DRoundRect::SetTextureCoords( const TEXCOORD2& rvMin, const TEXCOORD2& rv
 	for(int i=0; i<num_vertices; i++)
 	{
 		Vector2 vLocalPos = m_vecLocalVertexPosition[i];
-		TLVERTEX& v = m_vecRectVertex[i];
+		CGeneral2DVertex& v = m_vecRectVertex[i];
+		TEXCOORD2& tex = v.m_TextureCoord[0];
 
-		v.tu = ( vLocalPos.x + outer_radius ) / outer_diameter;
-		v.tv = ( vLocalPos.y + outer_radius ) / outer_diameter;
+		tex.u = ( vLocalPos.x + outer_radius ) / outer_diameter;
+		tex.v = ( vLocalPos.y + outer_radius ) / outer_diameter;
 
-		// (v.tu,v.tv): [(0.0),(1.1)]
+		// (tex.u,tex.v): [(0.0),(1.1)]
 
-		v.tu = rvMin.u + v.tu * vExtent.u;
-		v.tv = rvMin.v + v.tv * vExtent.v;
+		tex.u = rvMin.u + tex.u * vExtent.u;
+		tex.v = rvMin.v + tex.v * vExtent.v;
 
-		// (v.tu,v.tv): [rMin,rMax]
+		// (tex.u,tex.v): [rMin,rMax]
 
-		v.tu = v.tu + uv_margin / ( 1.0f + uv_margin * 2.0f );
-		v.tv = v.tv + uv_margin / ( 1.0f + uv_margin * 2.0f );
+		tex.u = tex.u + uv_margin / ( 1.0f + uv_margin * 2.0f );
+		tex.v = tex.v + uv_margin / ( 1.0f + uv_margin * 2.0f );
 	}
 }
 
@@ -147,7 +148,7 @@ void C2DRoundRect::SetZDepth(float fZValue)
 
 	const int num_vertices = GetNumVertices();
 	for(int i=0; i<num_vertices; i++)
-		m_vecRectVertex[i].vPosition.z   = fZValue;
+		m_vecRectVertex[i].m_vPosition.z   = fZValue;
 }
 
 
@@ -158,7 +159,7 @@ void C2DRoundRect::ScalePosition( float fScale )
 
 	const int num_vertices = GetNumVertices();
 	for(int i=0; i<num_vertices; i++)
-		m_vecRectVertex[i].vPosition *= fScale;
+		m_vecRectVertex[i].m_vPosition *= fScale;
 }
 
 
@@ -231,8 +232,8 @@ void C2DRoundFrameRect::Set2DCircularBorderTextureCoords( float margin )
 		int seg_offset = i * num_segments_per_corner;
 		for( j=0; j<=num_segments_per_corner; j++ )
 		{
-			TLVERTEX& v_inner = m_vecRectVertex[vert_index];
-			TLVERTEX& v_outer = m_vecRectVertex[vert_index+1];
+			CGeneral2DVertex& v_inner = m_vecRectVertex[vert_index];
+			CGeneral2DVertex& v_outer = m_vecRectVertex[vert_index+1];
 			vert_index += 2;
 			float angle = ( 2.0f * (float)PI ) * ( seg_offset + j ) / (float)num_total_segments - (float)PI;
 			angle *= -1;
@@ -243,17 +244,17 @@ void C2DRoundFrameRect::Set2DCircularBorderTextureCoords( float margin )
 
 			// pos: [(0.0),(1.1)]
 
-			v_inner.tu = inner_pos.x;
-			v_inner.tv = inner_pos.y;
-			v_outer.tu = outer_pos.x;
-			v_outer.tv = outer_pos.y;
+			v_inner.m_TextureCoord[0].u = inner_pos.x;
+			v_inner.m_TextureCoord[0].v = inner_pos.y;
+			v_outer.m_TextureCoord[0].u = outer_pos.x;
+			v_outer.m_TextureCoord[0].v = outer_pos.y;
 		}
 	}
 
-	m_vecRectVertex[vert_index].tu = m_vecRectVertex[0].tu;
-	m_vecRectVertex[vert_index].tv = m_vecRectVertex[0].tv;
+	m_vecRectVertex[vert_index].m_TextureCoord[0].u = m_vecRectVertex[0].m_TextureCoord[0].u;
+	m_vecRectVertex[vert_index].m_TextureCoord[0].v = m_vecRectVertex[0].m_TextureCoord[0].v;
 	vert_index++;
 
-	m_vecRectVertex[vert_index].tu = m_vecRectVertex[1].tu;
-	m_vecRectVertex[vert_index].tv = m_vecRectVertex[1].tv;
+	m_vecRectVertex[vert_index].m_TextureCoord[0].u = m_vecRectVertex[1].m_TextureCoord[0].u;
+	m_vecRectVertex[vert_index].m_TextureCoord[0].v = m_vecRectVertex[1].m_TextureCoord[0].v;
 }
