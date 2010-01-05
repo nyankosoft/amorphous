@@ -34,14 +34,15 @@ public:
 
 class CLightWaveSceneLoader
 {
-	std::vector<CLWS_ObjectLayer> m_vecObjectLayer;
+	std::vector< boost::shared_ptr<CLWS_ObjectLayer> > m_vecObjectLayer;
 
-	std::vector<CLWS_Light> m_vecLight;
+	std::vector< boost::shared_ptr<CLWS_Light> > m_vecLight;
 
 	std::vector< boost::shared_ptr<CLWS_Bone> > m_vecpBone;
 
-	//camera;
+//	std::vector< boost::shared_ptr<CLWS_Camera> > m_vecpCamera;
 
+	// borrowed reference
 	std::vector<CLWS_Item *> m_vecpItem;
 
 	float m_afAmbientColor[3];	//0:red / 1:green / 2:blue
@@ -73,12 +74,14 @@ public:
 
 	int GetNumObjectLayers() { return (int)m_vecObjectLayer.size(); }
 
+//	boost::shared_ptr<CLWS_ObjectLayer> GetObjectLayer(int i);
 	CLWS_ObjectLayer* GetObjectLayer(int i);
 
 	// lights
 
 	int GetNumLights() const { return (int)m_vecLight.size(); }
 
+//	boost::shared_ptr<CLWS_Light> GetLight(int i);
 	CLWS_Light* GetLight(int i);
 
 	// bones
@@ -91,6 +94,8 @@ public:
 
 	std::vector< boost::shared_ptr<CLWS_Bone> > GetRootBones();
 
+	inline CLWS_Item *GetItemByID( int item_id );
+
 	CLWS_Fog *GetFog();
 
 	const float* GetAmbientColor() const { return m_afAmbientColor; }
@@ -100,6 +105,20 @@ public:
 
 	void Clear();
 };
+
+//=============================== inline  implementations ===============================
+
+inline CLWS_Item *CLightWaveSceneLoader::GetItemByID( int item_id )
+{
+	const int num_items = (int)m_vecpItem.size();
+	for( int i=0; i<num_items; i++ )
+	{
+		if( m_vecpItem[i]->GetItemID() == item_id )
+			return m_vecpItem[i];
+	}
+
+	return NULL;
+}
 
 
 

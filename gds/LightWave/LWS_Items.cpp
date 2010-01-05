@@ -31,6 +31,12 @@ void CLWS_Channel::Load( FILE* fp )
 }
 
 
+void CLWS_Channel::Quantize( float q )
+{
+}
+
+
+
 //=====================================================================================
 // CLWS_Item
 //=====================================================================================
@@ -39,7 +45,9 @@ CLWS_Item::CLWS_Item()
 :
 m_iParentType( -1 ),
 m_iParentIndex( -1 ),
-m_ItemID( -1 )
+m_ItemID( -1 ),
+m_ParentID( -1 ),
+m_pParent(NULL)
 {
 	m_iNumChannels	= 0;
 	memset( m_aChannel, 0, sizeof(m_aChannel) );
@@ -165,6 +173,13 @@ bool CLWS_Item::LoadFromFile( CTextFileScanner& scanner )
 //		sscanf( strParentItem.substr( 4 ).c_str(), "%x", &m_iObjectNumberToWhichBoneBelongs );
 
 		// parent index: 0-origin index for the list of objects of the same type?
+
+		const int lws_version = 5;
+		if( 5 <= lws_version )
+		{
+			// version 5 or later
+			sscanf( strParentItem.c_str(), "%x", &m_ParentID );
+		}
 
 		return true;
 	}
@@ -332,6 +347,21 @@ Matrix33 Matrix33RotationHPB( float fHeading, float fPitch, float fBank )
 }
 
 
+Matrix33 CLWS_Bone::GetOrientationFromRestOrientationAt( float fTime )
+{
+	const float fHeading = GetValueAt( 3, fTime ) - m_afBoneRestAngle[0];
+	const float fPitch   = GetValueAt( 4, fTime ) - m_afBoneRestAngle[1];
+	const float fBank    = GetValueAt( 5, fTime ) - m_afBoneRestAngle[2];
+
+	return
+		  Matrix33Identity()
+        * Matrix33RotationY( fHeading )
+        * Matrix33RotationX( fPitch )
+        * Matrix33RotationZ( fBank )
+		* Matrix33Identity();
+}
+
+
 void CLWS_Bone::GetOffsetOrientationAt( float fTime, Matrix33& matOrient )
 {
 	float fHeading = GetValueAt( 3, fTime ) - m_afBoneRestAngle[0];
@@ -373,6 +403,22 @@ void CLWS_Bone::GetOffsetOrientationAt( float fTime, Matrix33& matOrient )
 Matrix33 CLWS_Bone::GetBoneRestOrientation() const
 {
 	return Matrix33RotationHPB( m_afBoneRestAngle[0], m_afBoneRestAngle[1], m_afBoneRestAngle[2] );
+}
+
+
+Matrix33 CLWS_Item::GetDeltaOrientation( float fStartTime, float fEndTime )
+{
+
+	float fHeading = GetValueAt( 3, fEndTime ) - GetValueAt( 3, fStartTime );
+	float fPitch   = GetValueAt( 4, fEndTime ) - GetValueAt( 4, fStartTime );
+	float fBank    = GetValueAt( 5, fEndTime ) - GetValueAt( 5, fStartTime );
+
+	return
+		  Matrix33Identity()
+        * Matrix33RotationY( fHeading )
+        * Matrix33RotationX( fPitch )
+        * Matrix33RotationZ( fBank )
+		* Matrix33Identity();
 }
 
 
@@ -503,6 +549,25 @@ float CLWS_Item::GetTimeAtKeyFrame( int iKeyFrame )
 	return m_aChannel[0].vecKey[iKeyFrame].fTime;
 }
 
+/*
+void CLWS_Item::QuantizeTranslations( float q )
+{
+	for( int channel = 0; channel <= 2; channel++ )
+		QuantizeChannel( channel );
+}
+
+
+void CLWS_Item::QuantizeRotations( float q )
+{
+	for( int channel = 3; channel <= 5; channel++ )
+		QuantizeChannel( channel );
+}
+*/
+
+
+//=====================================================================================
+// CLWS_ObjectLayer
+//=====================================================================================
 
 CLWS_ObjectLayer::CLWS_ObjectLayer()
 {
@@ -529,8 +594,8 @@ bool CLWS_ObjectLayer::LoadFromFile( CTextFileScanner& scanner )
 CLWS_Bone::CLWS_Bone()
 :
 m_fBoneRestLength(0),
-m_vBoneRestPosition(Vector3(0,0,0)),
-m_vBoneRestDirection(Vector3(0,0,0))
+m_vBoneRestPosition(Vector3(0,0,0))
+//m_vBoneRestDirection(Vector3(0,0,0))
 {
 	for( int i=0; i<3; i++ ) m_afBoneRestAngle[i] = 0;
 }

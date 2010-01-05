@@ -49,6 +49,7 @@ public:
 
 	void Load(FILE* fp);
 
+	void Quantize( float q );
 };
 
 //#define NUM_MAX_CHANNELS	9
@@ -75,6 +76,10 @@ protected:
 	int m_iParentType;
 	int m_iParentIndex;
 
+	/// parent id - added for lws files with version 5 or later.
+	/// For prior versions, this id is decomposed into type and index above
+	int m_ParentID;
+
 	/// used by scene file with version 5 or later
 	int m_ItemID;
 
@@ -83,6 +88,9 @@ protected:
 	std::vector<int> m_vecChildIndex;
 
 	float m_afPivotRotationAngle[3];
+
+//	boost::shared_ptr<CLWS_Item> m_pParent;
+	CLWS_Item *m_pParent;
 
 protected:
 
@@ -98,7 +106,22 @@ protected:
 
 public:
 
+	enum ItemType
+	{
+		TYPE_OBJECT,
+		TYPE_LIGHT,
+		TYPE_CAMERA,
+		TYPE_BONE,
+		NUM_ITEM_TYPES
+	};
+
+public:
+
 	CLWS_Item();
+
+	virtual ItemType GetItemType() const = 0;
+
+	int GetItemID() const { return m_ItemID; }
 
 	void SetItemID( int item_id ) { m_ItemID = item_id; }
 
@@ -131,6 +154,9 @@ public:
 	/// when channels have different numbers of keyframes
 	Vector3 GetPositionAtKeyFrame( int iKeyFrame );
 
+	/// calculates differences of each angle component between fStartTime and fEndTime
+	Matrix33 GetDeltaOrientation( float fStartTime, float fEndTime );
+
 	float GetTimeAtKeyFrame( int iKeyFrame );
 
 	bool HasParent() { if( 0 <= m_iParentType && 0 <= m_iParentIndex ) return true; else return false; }
@@ -143,23 +169,18 @@ public:
 	int GetChildType( int i ) const { return m_vecChildType[i]; }
 	int GetChildIndex( int i ) const { return m_vecChildIndex[i]; }
 
+	int GetParentID() const { return m_ParentID; }
+
+	CLWS_Item *GetParent() { return m_pParent; }
+
 	int GetNumChannels() const { return m_iNumChannels; }
 
 	const CLWS_Channel& GetChannel( int i ) const { return m_aChannel[i]; }
 
+	void QuantizeRotations( float q );
+	void QuantizeTranslations( float q );
+
 //	Matrix33 GetOrientationAtKeyFrame( int iKeyFrame );
-
-//	CLWS_Item operator=(CLWS_Item item);
-
-
-	enum eParentItemType
-	{
-		TYPE_OBJECT	= 1,
-		TYPE_LIGHT	= 2,
-		TYPE_CAMERA	= 3,
-		TYPE_BONE	= 4
-	};
-
 };
 
 inline Matrix33 CLWS_Item::GetOrientationAt( float fTime )
@@ -185,6 +206,8 @@ class CLWS_ObjectLayer : public CLWS_Item
 public:
 
 	CLWS_ObjectLayer();
+
+	ItemType GetItemType() const { return TYPE_OBJECT; }
 
 	bool LoadFromFile( CTextFileScanner& scanner );
 
@@ -215,7 +238,7 @@ class CLWS_Bone : public CLWS_Item
 
 	Vector3 m_vBoneRestPosition;
 
-	Vector3 m_vBoneRestDirection;
+//	Vector3 m_vBoneRestDirection;
 
 	/// rotation angles in radians
 	/// - CLWS_Bone::LoadFromFile() converts the value from degree to radian
@@ -227,9 +250,13 @@ class CLWS_Bone : public CLWS_Item
 
 	std::vector< boost::shared_ptr<CLWS_Bone> > m_vecpChildBone;
 
+	boost::shared_ptr<CLWS_Bone> m_pParentBone;
+
 public:
 
 	CLWS_Bone();
+
+	ItemType GetItemType() const { return TYPE_BONE; }
 
 	bool LoadFromFile( CTextFileScanner& scanner );
 
@@ -237,12 +264,17 @@ public:
 
 	std::vector< boost::shared_ptr<CLWS_Bone> >& ChildBone() { return m_vecpChildBone; }
 
+	boost::shared_ptr<CLWS_Bone> GetParentBone() { return m_pParentBone; }
+
 	float GetBoneRestLength() const { return m_fBoneRestLength; }
 
 	Vector3 GetBoneRestPosition() const { return m_vBoneRestPosition; }
 
-	Vector3 GetBoneRestDirection() const { return m_vBoneRestDirection; }
+//	Vector3 GetBoneRestDirection() const { return m_vBoneRestDirection; }
+
 	float GetBoneRestAngle( int i ) const { return m_afBoneRestAngle[i]; }
+
+	Matrix33 GetOrientationFromRestOrientationAt( float fTime );
 
 	void GetOffsetOrientationAt( float fTime, Matrix33& matOrient );
 	Matrix33 GetOffsetOrientationAt( float fTime ) { Matrix33 ret = Matrix33Identity(); GetOffsetOrientationAt(fTime,ret); return ret; }
@@ -282,6 +314,8 @@ public:
 public:
 
 	CLWS_Light();
+
+	ItemType GetItemType() const { return TYPE_LIGHT; }
 
 	std::string& GetName() { return m_strLightName; }
 
