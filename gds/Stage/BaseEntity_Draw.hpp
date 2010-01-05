@@ -12,6 +12,8 @@
 
 extern void SetLightsToShader( CCopyEntity& entity,  CShaderManager& rShaderMgr );
 
+extern void InitMeshRenderMethod( CCopyEntity &entity );
+
 extern void CreateMeshRenderMethod( CEntityHandle<>& entity, 
 							        CShaderHandle& shader,
 							        CShaderTechniqueHandle& tech );

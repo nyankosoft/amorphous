@@ -594,6 +594,43 @@ void CBaseEntity::UpdateLightInfo( CCopyEntity& entity )
 }
 
 
+// sets the following shader params loaders to the render method of an entity
+// - CEntityShaderLightParamsLoader
+//   - Set if the BETYPE_LIGHTING flag is on
+// - CBlendMatricesLoader
+//   - Set if pEntity->m_MeshHandle is a skeletal mesh
+void InitMeshRenderMethod( CCopyEntity &entity )
+{
+	if( !entity.m_pMeshRenderMethod )
+	{
+		entity.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+		entity.m_pMeshRenderMethod->MeshRenderMethod().resize( 1 );
+	}
+
+	if( entity.GetEntityFlags() & BETYPE_LIGHTING )
+	{
+		shared_ptr<CEntityShaderLightParamsLoader> pLightParamsLoader( new CEntityShaderLightParamsLoader() );
+		pLightParamsLoader->SetEntity( entity.Self() );
+		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLightParamsLoader );
+	}
+
+	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
+	{
+		shared_ptr<CSkeletalMesh> pSkeletalMesh
+			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+
+		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
+		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
+	}
+
+	if( true /* world position of entity has large values */ )
+	{
+		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( sg_pWorldTransLoader );
+	}
+}
+
+
 void CreateMeshRenderMethod( CEntityHandle<>& entity, 
 							 CShaderHandle& shader,
 							 CShaderTechniqueHandle& tech )
@@ -614,24 +651,7 @@ void CreateMeshRenderMethod( CEntityHandle<>& entity,
 
 	pEntity->m_pMeshRenderMethod->MeshRenderMethod().push_back( render_method );
 
-	if( pEntity->GetEntityFlags() & BETYPE_LIGHTING )
-	{
-		shared_ptr<CEntityShaderLightParamsLoader> pLightParamsLoader( new CEntityShaderLightParamsLoader() );
-		pLightParamsLoader->SetEntity( pEntity->Self() );
-		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLightParamsLoader );
-	}
-
-	shared_ptr<CBasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
-	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
-	{
-		shared_ptr<CSkeletalMesh> pSkeletalMesh
-			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
-
-		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
-		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
-	}
-
-	pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( sg_pWorldTransLoader );
+	InitMeshRenderMethod( *pEntity );
 }
 
 
