@@ -100,8 +100,19 @@ public:
 		                                                CBaseEntityHandle& attributes_base_entity_handle,
 														const Vector3& vPosition );
 
+	/// \param heading heading angle [deg]
 	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
 		                                                CBaseEntityHandle& attributes_base_entity_handle,
+		                                                const Vector3& vPosition,
+														float heading );
+
+	/// Uses the default base entity for item entity
+	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+														const Vector3& vPosition );
+
+	/// Uses the default base entity for item entity
+	/// \param heading heading angle [deg]
+	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
 		                                                const Vector3& vPosition,
 														float heading );
 };
@@ -115,13 +126,27 @@ inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::sh
 }
 
 
-/// \param heading heading angle [deg]
 inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
 																	   CBaseEntityHandle& attributes_base_entity_handle,
 													                   const Vector3& vPosition,
 													                   float heading )
 {
 	return CreateItemEntity( pItem, attributes_base_entity_handle, Matrix34( vPosition, Matrix33RotationY(deg_to_rad(heading)) ) );
+}
+
+
+inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+													                   const Vector3& vPosition )
+{
+	return CreateItemEntity( pItem, m_BaseEntityHandle, Matrix34( vPosition, Matrix33Identity() ) );
+}
+
+
+inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+													                   const Vector3& vPosition,
+													                   float heading )
+{
+	return CreateItemEntity( pItem, m_BaseEntityHandle, Matrix34( vPosition, Matrix33RotationY(deg_to_rad(heading)) ) );
 }
 
 
