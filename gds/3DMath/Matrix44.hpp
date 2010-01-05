@@ -7,7 +7,7 @@
 #include <math.h>
 
 
-/// A 3x3 matrix
+/// A column-major 4x4 matrix
 class Matrix44
 {
 public:
