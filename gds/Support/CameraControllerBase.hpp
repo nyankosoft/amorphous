@@ -2,10 +2,8 @@
 #define  __CameraControllerBase_H__
 
 
-#include <d3dx9.h>
-#include "3DMath/Matrix34.hpp"
+#include "Graphics/Camera.hpp"
 #include "Input/InputHandler.hpp"
-
 
 
 class CameraControl
@@ -60,7 +58,9 @@ class CCameraControllerBase
 	float m_fYaw;
 	float m_fPitch;
 
-	Matrix34 m_Pose;
+//	Matrix34 m_Pose;
+
+	CCamera m_Camera;
 
 	/// camera translation speed (meter per second)
 	float m_fTranslationSpeed;
@@ -87,30 +87,49 @@ public:
 
 //	void SetCameraMatrix();
 
+	//>>> old D3D-dependent code
+
+	// row major 4x4 matrix
 	inline void GetCameraMatrix( D3DXMATRIX& rmatCamera ) const;
 
-	inline D3DXMATRIX GetCameraMatrix() const;
+	// row major 4x4 matrix
+//	inline D3DXMATRIX GetCameraMatrix() const;
+
+	//<<< old D3D-dependent code
+
+	// column major 4x4 matrix
+	inline void GetCameraMatrix( Matrix44& rmatCamera ) const;
+
+	// column major 4x4 matrix
+	inline Matrix44 GetCameraMatrix() const;
 
 	void AddYaw( float fYaw );
 
 	void AddPitch( float fPitch );
 
-	inline Vector3 GetPosition() const { return m_Pose.vPosition; }
+	inline Vector3 GetPosition() const { return GetPose().vPosition; }
 
-	inline Vector3 GetRightDirection() const   { return m_Pose.matOrient.GetColumn(0); }
-	inline Vector3 GetUpDirection() const      { return m_Pose.matOrient.GetColumn(1); }
-	inline Vector3 GetForwardDirection() const { return m_Pose.matOrient.GetColumn(2); }
+	inline Vector3 GetRightDirection() const   { return GetPose().matOrient.GetColumn(0); }
+	inline Vector3 GetUpDirection() const      { return GetPose().matOrient.GetColumn(1); }
+	inline Vector3 GetForwardDirection() const { return GetPose().matOrient.GetColumn(2); }
 
-	inline void GetPose( Matrix34& rDestPose ) const { rDestPose = m_Pose; }
-	inline const Matrix34& GetPose() const { return m_Pose; }
+	inline void GetPose( Matrix34& rDestPose ) const { rDestPose = m_Camera.GetPose(); }
 
-	inline void SetPosition( const Vector3& vPosition ) { m_Pose.vPosition = vPosition; }
+	inline const Matrix34 GetPose() const { return m_Camera.GetPose(); }
 
-	inline void SetPose( const Matrix34& rSrcPose ) { m_Pose = rSrcPose; }
+	inline void SetPosition( const Vector3& vPosition ) { m_Camera.SetPosition( vPosition ); }
+
+	inline void SetPose( const Matrix34& rSrcPose ) { m_Camera.SetPose( rSrcPose ); }
 
 	inline void Move( float fRight, float fUp, float fDir )
 	{
-		m_Pose.vPosition += m_Pose.matOrient.GetColumn(0) * fRight + m_Pose.matOrient.GetColumn(1) * fUp + m_Pose.matOrient.GetColumn(2) * fDir;
+		Matrix34 current_pose = GetPose();
+		current_pose.vPosition
+			+= current_pose.matOrient.GetColumn(0) * fRight
+			+  current_pose.matOrient.GetColumn(1) * fUp
+			+  current_pose.matOrient.GetColumn(2) * fDir;
+
+		SetPose( current_pose );
 	}
 
 	void AssignKeyForCameraControl( int general_input_code, CameraControl::Operation cam_control_op );
@@ -128,20 +147,22 @@ inline void CCameraControllerBase::GetCameraMatrixRowMajor44( Scalar*& pDest ) c
 
 inline void CCameraControllerBase::GetCameraMatrix( D3DXMATRIX& rmatCamera ) const
 {
-	Vector3 vRight = m_Pose.matOrient.GetColumn(0);
-	Vector3 vUp    = m_Pose.matOrient.GetColumn(1);
-	Vector3 vFwd   = m_Pose.matOrient.GetColumn(2);
+//	const Matrix34& pose = m_Pose;
+	const Matrix34 pose = GetPose();
+	Vector3 vRight = pose.matOrient.GetColumn(0);
+	Vector3 vUp    = pose.matOrient.GetColumn(1);
+	Vector3 vFwd   = pose.matOrient.GetColumn(2);
 	rmatCamera._11 = vRight.x;	rmatCamera._12 = vUp.x; rmatCamera._13 = vFwd.x; rmatCamera._14 = 0;
 	rmatCamera._21 = vRight.y;	rmatCamera._22 = vUp.y; rmatCamera._23 = vFwd.y; rmatCamera._24 = 0;
 	rmatCamera._31 = vRight.z;	rmatCamera._32 = vUp.z; rmatCamera._33 = vFwd.z; rmatCamera._34 = 0;
 
-	rmatCamera._41= -Vec3Dot( vRight, m_Pose.vPosition );
-	rmatCamera._42= -Vec3Dot( vUp,    m_Pose.vPosition );
-	rmatCamera._43= -Vec3Dot( vFwd,   m_Pose.vPosition );
+	rmatCamera._41= -Vec3Dot( vRight, pose.vPosition );
+	rmatCamera._42= -Vec3Dot( vUp,    pose.vPosition );
+	rmatCamera._43= -Vec3Dot( vFwd,   pose.vPosition );
 	rmatCamera._44=1;
 }
 
-
+/*
 inline D3DXMATRIX CCameraControllerBase::GetCameraMatrix() const
 {
 	D3DXMATRIX matCamera;
@@ -150,6 +171,23 @@ inline D3DXMATRIX CCameraControllerBase::GetCameraMatrix() const
 
 	return matCamera;
 }
+*/
+
+/// column major 4x4 matrix
+inline void CCameraControllerBase::GetCameraMatrix( Matrix44& rmatCamera ) const
+{
+	m_Camera.GetCameraMatrix( rmatCamera );
+}
+
+
+/// column major 4x4 matrix
+inline Matrix44 CCameraControllerBase::GetCameraMatrix() const
+{
+	Matrix44 dest;
+	GetCameraMatrix( dest );
+	return dest;
+}
+
 
 
 #endif		/*  __CameraControllerBase_H__  */

@@ -1,9 +1,10 @@
 #include "CameraControllerBase.hpp"
+#include <d3dx9.h>
 
 
 CCameraControllerBase::CCameraControllerBase()
 {
-	m_Pose = Matrix34Identity();
+//s	m_Pose = Matrix34Identity();
 
 	m_fYaw = 0.0f;
 	m_fPitch = 0.0f;
@@ -73,14 +74,19 @@ void CCameraControllerBase::UpdateCameraPose( float dt )
 	D3DXVec3TransformCoord( &vUp,    &vUp,    &matRot);
 	D3DXVec3TransformCoord( &vDir,   &vDir,   &matRot);
 
-	m_Pose.matOrient.SetColumn( 0, vRight );
-	m_Pose.matOrient.SetColumn( 1, vUp );
-	m_Pose.matOrient.SetColumn( 2, vDir );
+	Matrix34 pose = GetPose();
 
-	m_Pose.vPosition
-		+= m_Pose.matOrient.GetColumn(2) * forward
-		+ m_Pose.matOrient.GetColumn(0) * right
-		+ m_Pose.matOrient.GetColumn(1) * up;
+	pose.matOrient.SetColumn( 0, vRight );
+	pose.matOrient.SetColumn( 1, vUp );
+	pose.matOrient.SetColumn( 2, vDir );
+
+	pose.vPosition
+		+= pose.matOrient.GetColumn(2) * forward
+		+  pose.matOrient.GetColumn(0) * right
+		+  pose.matOrient.GetColumn(1) * up;
+
+	SetPose( pose );
+
 //	m_Pose.vPosition += m_vRight * m_fMouseMoveRight + m_vUp * m_fMouseMoveUp;
 //	m_fMouseMoveRight = 0; m_fMouseMoveUp = 0;
 
