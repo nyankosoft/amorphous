@@ -99,6 +99,8 @@ public:
 
 	inline void GetPose( Matrix34& rDestPose ) const;
 
+	inline Matrix34 GetPose() const { Matrix34 pose; GetPose(pose); return pose; }
+
 	inline void GetOrientation( Matrix33& matDestOrient ) const;
 
 
