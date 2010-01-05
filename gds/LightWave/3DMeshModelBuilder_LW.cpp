@@ -23,7 +23,8 @@ static const unsigned int gs_DefaultVertexFlags_LW
 
 C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW()
 :
-m_DefaultVertexFlags(gs_DefaultVertexFlags_LW)
+m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
+m_UseBoneStartAsBoneLocalOrigin(false)
 {
 	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
 
@@ -34,7 +35,8 @@ m_DefaultVertexFlags(gs_DefaultVertexFlags_LW)
 C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW( boost::shared_ptr<CLWO2_Object> pSrcObject )
 :
 m_pSrcObject(pSrcObject),
-m_DefaultVertexFlags(gs_DefaultVertexFlags_LW)
+m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
+m_UseBoneStartAsBoneLocalOrigin(false)
 {
 	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
 
@@ -486,7 +488,10 @@ void C3DMeshModelBuilder_LW::BuildBoneTransformsNROT_r(const Vector3& vParentOff
 	// set transform from model space to bone space
 	Vector3 vOffset = vParentOffset + rDestBone.vLocalOffset;
 ///	Vector3 vOffset = vParentOffset;
-	rDestBone.BoneTransform.vPosition = - vOffset;
+	if( m_UseBoneStartAsBoneLocalOrigin )
+		rDestBone.BoneTransform.vPosition = - vParentOffset;
+	else
+		rDestBone.BoneTransform.vPosition = - vOffset;
 
 	// all the bone transforms are not supposed to have rotations
 	rDestBone.BoneTransform.matOrient.SetIdentity();
@@ -503,6 +508,12 @@ void C3DMeshModelBuilder_LW::BuildBoneTransformsNROT_r(const Vector3& vParentOff
 void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 {
 	const vector<CLWO2_Bone>& rvecBone = rLayer.GetBone();
+
+	const string layer_name = rLayer.GetName();
+	if( layer_name.find( "--bone-local-origin=bone-start-pos" ) != string::npos )
+		m_UseBoneStartAsBoneLocalOrigin = true;
+	else
+		m_UseBoneStartAsBoneLocalOrigin = false;
 
 	int i,j;
 	const int num_bones = (int)rvecBone.size();
@@ -539,13 +550,13 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 	Matrix34 mat;
 	mat.Identity();
 
-	CMMA_Bone& dest_bone = m_pMesh->GetSkeletonRootBoneBuffer();
+	CMMA_Bone& dest_bone_root = m_pMesh->GetSkeletonRootBoneBuffer();
 
 	BuildSkeletonFromSkelegon_r( iRootBoneIndex,
 		                         rvecBone,
 								 rLayer,
 //								 Vector3(0,0,0),
-								 dest_bone );
+								 dest_bone_root );
 
 	bool RootBoneEndsAtWorldOrigin = false;
 
@@ -553,17 +564,26 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 	{
 		// used to create character bones ("female01_x1.9j.lwo")
 
-        dest_bone.vLocalOffset = Vector3(0,0,0);
+        dest_bone_root.vLocalOffset = Vector3(0,0,0);
 	}
 	else
+	{
+		// Use the end position of the root bone as the translation of the root bone transform.
+		// - This allows the root bone to start and end at arbitrary positions in the modeler
+		if( m_UseBoneStartAsBoneLocalOrigin )
+			dest_bone_root.vLocalOffset = rLayer.GetVertex()[rvecBone[iRootBoneIndex].GetVertexIndex(0)];
+		else
+			dest_bone_root.vLocalOffset = rLayer.GetVertex()[rvecBone[iRootBoneIndex].GetVertexIndex(1)];
+	}
+/*	else
 	{
 		// used when the root bone start at the world origin
 		dest_bone.vLocalOffset
 		= rLayer.GetVertex()[rvecBone[iRootBoneIndex].GetVertexIndex(1)]
 		- rLayer.GetVertex()[rvecBone[iRootBoneIndex].GetVertexIndex(0)];
-	}
+	}*/
 
-	BuildBoneTransformsNROT_r( Vector3(0,0,0), dest_bone );
+	BuildBoneTransformsNROT_r( Vector3(0,0,0), dest_bone_root );
 
 	// XXX find the bone which is an immediate child of the root node
 	// XXX skelegon tree does not contains root bone

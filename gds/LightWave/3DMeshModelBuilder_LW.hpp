@@ -60,6 +60,8 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 
 	const unsigned int m_DefaultVertexFlags;
 
+	bool m_UseBoneStartAsBoneLocalOrigin;
+
 private:
 
 	void BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,

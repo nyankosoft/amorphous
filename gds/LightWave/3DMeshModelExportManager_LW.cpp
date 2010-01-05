@@ -85,13 +85,13 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 	string mesh_tag = "CreateMesh";
 	size_t i, j, num_layer_sets = 0;
 
-	vector<CLWO2_Layer *> vecpTargetLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", CLWO2_NameMatchCond::START_WITH );
-	size_t num_tgt_layers = vecpTargetLayer.size();
+	vector<CLWO2_Layer *> vecpMeshLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", CLWO2_NameMatchCond::START_WITH );
+	size_t num_tgt_layers = vecpMeshLayer.size();
 
 	// layers with names that start with "CreateMesh" - registered as mesh layers
 	for( i=0; i<num_tgt_layers; i++ )
 	{
-		CLWO2_Layer *layer = vecpTargetLayer[i];
+		CLWO2_Layer *layer = vecpMeshLayer[i];
 
 		GetOutputFilename( strOutFilename, layer->GetName() );
 
@@ -99,6 +99,8 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 		{
 			if( vecLayerSet[j].strOutputFilename == strOutFilename )
 			{
+				// A layer set with the same output filepath already exists
+				// - add the layer to this layer set.
 				vecLayerSet[j].vecpMeshLayer.push_back( layer );
 				break;
 			}
@@ -113,13 +115,17 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 		}
 	}
 
-	vecpTargetLayer = m_pObject->GetLayersWithKeyword( "Skeleton", CLWO2_NameMatchCond::START_WITH );
-	num_tgt_layers = vecpTargetLayer.size();
+	vector<CLWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", CLWO2_NameMatchCond::START_WITH );
+
+	// for skeletons, target the layers named with either "CreateMesh" or "Skeleton"
+	vecpSkeletonLayer.assign( vecpMeshLayer.begin(), vecpMeshLayer.end() );
+
+	num_tgt_layers = vecpSkeletonLayer.size();
 
 	// collect skelegon layers
 	for( i=0; i<num_tgt_layers; i++ )
 	{
-		CLWO2_Layer *layer = vecpTargetLayer[i];
+		CLWO2_Layer *layer = vecpSkeletonLayer[i];
 
 		// register as a skeleton layer
 		// skelegons for a mesh are supposed to be collected in one layer
@@ -131,6 +137,8 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 		{
 			if( vecLayerSet[j].strOutputFilename == strOutFilename )
 			{
+				// A layer set with the same output filepath already exists
+				// - register the layer as a skeleton layer for this layer set.
 				vecLayerSet[j].pSkelegonLayer = layer;
 				break;
 			}
