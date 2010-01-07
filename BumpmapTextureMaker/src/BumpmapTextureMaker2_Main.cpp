@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <direct.h>
 
+#include "App/GameWindowManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Support/Timer.hpp"
@@ -166,6 +167,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	// draft - register the render thread id
 	SetCurrentThreadAsRenderThread();
 
+	SelectGraphicsLibrary( "Direct3D" );
+
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
                       "D3DTest", NULL };
@@ -181,7 +184,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	long frame_width, frame_height;
 	GetWindowFrameSize( hWnd, frame_width, frame_height );
 
-	// ウインドウサイズの再設定
+	// Adjust window size
 	SetWindowPos(hWnd, HWND_TOP, 0, 0, WINDOW_SIZE + frame_width, WINDOW_SIZE + frame_height, SWP_NOMOVE);
 
     // Initialize Direct3D

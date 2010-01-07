@@ -1,11 +1,11 @@
 #include "BumpmapTextureMaker2_LWO2.h"
 #include "Graphics/Direct3D9.hpp"
-#include "Graphics/TextureTool.hpp"
+#include "Graphics/Direct3D/TextureTool.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/D3DXSMeshObject.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Support/fnop.hpp"
 #include "Support/Macro.h"
 #include "Support/BMPImageExporter.hpp"
@@ -48,15 +48,15 @@ bool CBumpmapTextureMaker2_LWO2::LoadShader( const string& shader_filename )
 	D3DXMATRIX matCamera;
 	D3DXMatrixLookAtLH( &matCamera, &D3DXVECTOR3(0, 0, 5), &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 1, 0) );
 
-	pShaderMgr->SetViewTransform( matCamera );
+	Matrix44 view;
+	view.SetRowMajorMatrix44( (Scalar *)&matCamera );
+	pShaderMgr->SetViewTransform( view );
 
 	return true;
 }
 
 
 CBumpmapTextureMaker2_LWO2::CBumpmapTextureMaker2_LWO2()
-:
-m_p3DModel(NULL)
 {
 
 //	m_fViewVolumeWidth = 1.0f;
@@ -84,7 +84,6 @@ CBumpmapTextureMaker2_LWO2::~CBumpmapTextureMaker2_LWO2()
 
 void CBumpmapTextureMaker2_LWO2::Release()
 {
-	SafeDelete( m_p3DModel );
 }
 
 
@@ -154,13 +153,9 @@ bool CBumpmapTextureMaker2_LWO2::LoadModel( const char *pFilename )
 	pMeshLoader.reset();
 
 	// load a mesh model
-//	m_p3DModel = new CD3DXSMeshObject;
-	m_p3DModel = new CD3DXMeshObject;
-
-	if( !m_p3DModel->LoadFromFile(strMeshFilename) )
+	if( !m_3DModel.Load(strMeshFilename) )
 	{
 		LOG_PRINT_ERROR( "Cannot load a mesh object: " + strMeshFilename );
-		SafeDelete( m_p3DModel );
 		return false;
 	}
 
@@ -193,10 +188,21 @@ void CBumpmapTextureMaker2_LWO2::SetViewWidth( float fViewVolumeWidth )
 					   0.1f,		// zn - Minimum z-value of the view volume which is referred to as z-near
 					   100.0f		// zf - Maximum z-value of the view volume which is referred to as z-far
 					   );
+/*
+	// TODO: Create MatrixOrtho function for Matrix44
+	Matrix44 proj = Matrix44OrthoLH(
+		m_fViewVolumeWidth,
+		m_fViewVolumeWidth,
+		0.1f,
+		100.0f
+		);
+*/
+	Matrix44 proj;
+	proj.SetRowMajorMatrix44( (Scalar *)&matProj );
 
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( pShaderManager )
-		pShaderManager->SetProjectionTransform( matProj );
+		pShaderManager->SetProjectionTransform( proj );
 
 	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
@@ -265,7 +271,8 @@ void CBumpmapTextureMaker2_LWO2::RenderPreview()
 
 void CBumpmapTextureMaker2_LWO2::RenderTexture()
 {
-	if( !m_p3DModel )
+	shared_ptr<CBasicMesh> pMesh = m_3DModel.GetMesh();
+	if( !pMesh )
 		return;
 
 	HRESULT hr;
@@ -281,13 +288,12 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 	// udpate the directional light for the shader
 	UpdateDirectionalLight();
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	pShaderManager->SetWorldTransform( matWorld );
+	pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 	pEffect->CommitChanges();
 
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 
 	hr = pShaderManager->SetTechnique( m_aShaderTechnique[m_TechniqueID] );
 
@@ -320,13 +326,7 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 	UINT cPasses;
 	pEffect->Begin( &cPasses, 0 );
 
-	CD3DXMeshObjectBase *pMeshObject = m_p3DModel;
-
-	if( !pMeshObject )
-		return;
-
-
-	pMeshObject->Render( *pShaderManager );
+	pMesh->Render( *pShaderManager );
 
 
 /*

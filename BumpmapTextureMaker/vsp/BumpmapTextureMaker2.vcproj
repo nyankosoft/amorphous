@@ -48,6 +48,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="../../../Project1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USE_D3DXVECTOR3"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -141,6 +142,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../../Project1"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;USE_D3DXVECTOR3"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

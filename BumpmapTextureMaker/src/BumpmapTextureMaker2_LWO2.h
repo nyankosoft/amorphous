@@ -5,6 +5,7 @@
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix33.hpp"
 #include "Graphics/fwd.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
@@ -22,7 +23,7 @@ enum eBumpmapTextureMaker_RenderMode
 
 class CBumpmapTextureMaker2_LWO2
 {
-	CD3DXMeshObject *m_p3DModel;
+	CMeshObjectHandle m_3DModel;
 
 	CShaderHandle m_Shader;
 
