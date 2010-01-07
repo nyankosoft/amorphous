@@ -13,6 +13,7 @@
 #include "Physics/Preprocessor.hpp"
 #include "Physics/TriangleMeshDesc.hpp"
 
+using namespace std;
 using namespace boost;
 
 
