@@ -44,12 +44,9 @@ CFont g_Font;
 
 CPlatformDependentCameraController g_CameraController;
 
-//vector<CD3DXMeshObject *> g_vecpMeshObject;
-
 CTextureHandle g_DefaultTexture;
 
 //CShaderManager g_ShaderManager;
-
 //CShaderLightManager g_ShaderLightManager;
 
 //float g_FOV = D3DX_PI / 4.0f;
@@ -62,15 +59,6 @@ CStdKeyboard g_StdKeyboardInput;
 
 void ReleaseGraphicsResources()
 {
-/*	size_t i, num_meshes = g_vecpMeshObject.size();
-
-	for( i=0; i<num_meshes; i++ )
-	{
-		SafeDelete( g_vecpMeshObject[i] );
-	}
-
-	g_vecpMeshObject.clear();
-*/
 	g_DefaultTexture.Release();
 }
 
@@ -90,6 +78,10 @@ VOID Render()
 	Matrix34 cam_pose = g_CameraController.GetPose();
 	cam_pose.GetInverseROT().GetRowMajorMatrix44( matView );
 
+	CCamera cam;
+	cam.SetPose( g_CameraController.GetPose() );
+	ShaderManagerHub.PushViewAndProjectionMatrices( cam );
+
 	pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
 
     // clear the backbuffer to a blue color
@@ -99,7 +91,10 @@ VOID Render()
     pd3dDevice->BeginScene();
 
 	if( g_pMotionPrimitiveViewer )
+	{
+		g_pMotionPrimitiveViewer->SetViewerPose( g_CameraController.GetPose() );
 		g_pMotionPrimitiveViewer->Render();
+	}
 
 /*	if( CShader::Get()->GetCurrentShaderManager() )
 	{

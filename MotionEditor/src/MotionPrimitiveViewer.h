@@ -18,12 +18,27 @@ class CSkeletalMeshMotionViewer
 
 	CShaderHandle m_Shader;
 
+	CShaderTechniqueHandle m_Technique;
+
+	Matrix34 m_ViewerPose;
+
+//	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
+	boost::weak_ptr<msynth::CSkeleton> m_pSkeleton;
+
+	void Update_r( const msynth::CBone& bone,
+                                          const msynth::CTransformNode& node,
+										  boost::shared_ptr<CSkeletalMesh>& pMesh );
+
 public:
 
 	void Init();
 	void LoadSkeletalMesh( const std::string& mesh_path );
 	void Render();
 	void Update( const msynth::CKeyframe& keyframe );
+
+	void SetSkeleton( boost::weak_ptr<msynth::CSkeleton> pSkeleton ) { m_pSkeleton = pSkeleton; }
+
+	void SetViewerPose( const Matrix34& viewer_pose ) { m_ViewerPose = viewer_pose; }
 };
 
 
@@ -31,13 +46,15 @@ class CMotionPrimitiveViewer
 {
 	CGM_DialogManagerSharedPtr m_pDialogManager;
 
-	CInputHandlerSharedPtr m_pInputHandler;
+	boost::shared_ptr<CInputHandler> m_pInputHandler;
 
-	std::vector<msynth::CMotionPrimitiveSharedPtr> m_vecpMotionPrimitive;
+	boost::shared_ptr<CInputHandler> m_pDebugInputHandler;
+
+	std::vector< boost::shared_ptr<msynth::CMotionPrimitive> > m_vecpMotionPrimitive;
 
 	CGM_ListBox *m_pMotionPrimitiveListBox;
 
-	msynth::CMotionPrimitiveSharedPtr m_pCurrentMotion;
+	boost::shared_ptr<msynth::CMotionPrimitive> m_pCurrentMotion;
 
 	float m_fCurrentPlayTime;
 
@@ -54,6 +71,10 @@ class CMotionPrimitiveViewer
 	bool m_RenderMesh;
 
 	CSkeletalMeshMotionViewer m_MeshViewer;
+
+	float m_fPlaySpeedFactor;
+
+	bool m_DisplaySkeletalMesh;
 
 private:
 
@@ -86,6 +107,10 @@ public:
 	void LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name = "std" );
 
 	void SetRenderMesh( bool render ) { m_RenderMesh = render; }
+
+	void SetViewerPose( const Matrix34& viewer_pose ) { m_MeshViewer.SetViewerPose( viewer_pose ); }
+
+	void ToggleDisplaySkeletalMesh() { m_DisplaySkeletalMesh = !m_DisplaySkeletalMesh; }
 };
 
 

@@ -1,18 +1,61 @@
 #include "MotionPrimitiveViewer.h"
 
+#include <map>
 #include <boost/foreach.hpp>
 #include <gds/Input.hpp>
 #include <gds/3DMath/misc.hpp>
+#include <gds/3DMath/MathMisc.hpp>
 #include <gds/GUI.hpp>
 #include <gds/MotionSynthesis.hpp>
+//#include <gds/Support/CameraController.hpp>
 #include <gds/Support/memory_helpers.hpp>
 
 using namespace std;
 using namespace boost;
 
 
+class CDebugInputHandler : public CInputHandler
+{
+	CMotionPrimitiveViewer *m_pViewer;
+public:
+	CDebugInputHandler( CMotionPrimitiveViewer *pViewer ) : m_pViewer(pViewer) {}
+	void ProcessInput(SInputData& input)
+	{
+		switch( input.iGICode )
+		{
+		case '0':
+//			if( input.iType == ITYPE_KEY_PRESSED )
+//				m_pViewer->ToggleDisplayHelpText();
+			break;
+		case '2':
+//			if( input.iType == ITYPE_KEY_PRESSED )
+//				m_pViewer->ToggleDisplaySkeleton();
+			break;
+		case '3':
+			if( input.iType == ITYPE_KEY_PRESSED )
+				m_pViewer->ToggleDisplaySkeletalMesh();
+			break;
+		default:
+			break;
+		}
+	}
+};
+
+
+extern int ConvertGICodeToWin32VKCode( int general_input_code );
+
+inline bool IsKeyPressed( int general_input_code )
+{
+	if( !IsValidGeneralInputCode( general_input_code ) )
+		return false;
+
+	return ( ( GetAsyncKeyState( ConvertGICodeToWin32VKCode(general_input_code) ) & 0x8000 ) != 0 );
+}
+
+
 static const float g_fIndicatorHeight = 0.05f;
 
+//extern CCameraController g_CameraController;
 
 // Graphics.SetWorldTransform( Matrix34Identitiy() );
 // Graphics.SetViewTransform( Matrix34Identitiy() );
@@ -46,15 +89,69 @@ class Culling
 using namespace std;
 using namespace msynth;
 
+/*
+class CTransformNodeToMeshBoneMap
+{
+	std::vector< std::pair<int,int> > m_NodeToMeshBoneMatIndexMaps;
+
+public:
+
+	void Create_r( const CBone& bone, CMM_Bone& mesh_bone, CSkeletalMesh& mesh )
+	{
+		for( int i=0; i<bone.GetNumChildren(); i++ )
+		{
+//			for( int j=0; j<mesh_bone.GetNumChildren(); j++ )
+//			{
+//				if( bone.GetChild(i).GetName() == mesh_bone.
+//			}
+
+			int mat_index = mesh.GetBoneMatrixIndexByName( bone.GetChild(i).GetName() );
+			if( 0 <= mat_index )
+			{
+				m_NodeToMeshBoneMatIndexMaps.push_back( std::pair<int,int>( i, mat_index ) );
+			}
+		}
+	}
+
+	void Create( CSkeleton& src_skeleton, CSkeletalMesh& mesh )
+	{
+		const CBone& root_bone = src_skeleton.GetRootBone();
+		CMM_Bone& mesh_bone = mesh.GetBone( root_bone.GetName() );
+
+		if( mesh_bone != mesh.GetRootBone() )
+			return;
+
+		if( mesh_bone == CMM_Bone::NullBone() )
+			return;
+
+		Create_r( root_bone, mesh_bone, mesh );
+	}
+};
+*/
 
 void CSkeletalMeshMotionViewer::Init()
 {
-	LoadSkeletalMesh( "models/make_skinny_young.msh" );
+	LoadSkeletalMesh( "models/male_skinny_young.msh" );
 
-	bool loaded = m_Shader.Load( "shaders/Default.fx" );
+	bool loaded = m_Shader.Load( "shaders/VertexBlend.fx" );
+//	bool loaded = m_Shader.Load( "shaders/VertexBlend.fx:VertBlend_PVL_1HSDL" );
 	if( !loaded )
 	{
 		return;
+	}
+
+	m_Technique.SetTechniqueName( "VertBlend_PVL_1HSDL" );
+
+	shared_ptr<CShaderLightManager> pLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager();
+	if( pLightMgr )
+	{
+		CHemisphericDirectionalLight hsdl;
+		hsdl.Attribute.UpperDiffuseColor = SFloatRGBAColor( 0.6f, 0.6f, 0.6f, 1.0f );
+		hsdl.Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.3f, 0.3f, 0.3f, 1.0f );
+		hsdl.fIntensity = 1.0f;
+		hsdl.vDirection = Vec3GetNormalized( Vector3(-1,-1,-1) );
+		pLightMgr->SetHemisphericDirectionalLight( hsdl );
+		pLightMgr->CommitChanges();
 	}
 }
 
@@ -94,7 +191,72 @@ void CSkeletalMeshMotionViewer::Render()
 //	GraphicsDevice().SetWorldTransform( Matrix34Identity() );
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix34Identity() );
 
-	pSkeletalMesh->Render();
+	pSkeletalMesh->SetLocalTransformsFromCache();
+
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( pShaderMgr && pShaderMgr->GetEffect() )
+	{
+		HRESULT hr = pShaderMgr->GetEffect()->SetFloatArray( "g_vEyePos", (float *)m_ViewerPose.vPosition, 3 );
+		pShaderMgr->SetWorldTransform( Matrix34Identity() );
+		pShaderMgr->SetTechnique( m_Technique );
+
+		int num_max_matrices = 32;
+		int num_bones = pSkeletalMesh->GetNumBones();
+		int num_matrices = take_min( num_bones, num_max_matrices );
+		char acParam[32];
+		D3DXMATRIX *paBlendMatrix = pSkeletalMesh->GetBlendMatrices();
+		for( int i=0; i<num_matrices; i++ )
+		{
+			sprintf( acParam, "g_aBlendMatrix[%d]", i );
+			hr = pShaderMgr->GetEffect()->SetMatrix( acParam, &paBlendMatrix[i] );
+
+			if( FAILED(hr) )
+				return;
+		}
+
+		pSkeletalMesh->Render( *pShaderMgr );
+	}
+	else
+	{
+		// How to do vertex blending in fixed function pipeline?
+		pSkeletalMesh->Render();
+	}
+}
+
+
+/// NOTE: param 'bone' is not used
+void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
+                                          const msynth::CTransformNode& node,
+										  boost::shared_ptr<CSkeletalMesh>& pMesh )//,
+//										  CMM_Bone& mesh_bone )
+{
+	// find the matrix index from the bone name (slow).
+	int index = pMesh->GetBoneMatrixIndexByName( bone.GetName() );
+	if( index == -1 )
+		return;
+
+	Matrix34 local_transform;
+	local_transform.vPosition = node.GetLocalTranslation();
+	local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix();
+	pMesh->SetLocalTransformToCache( index, local_transform );
+
+	const int num_child_bones = bone.GetNumChildren();
+	const int num_child_nodes = node.GetNumChildren();
+	const int num_children = TakeMin( num_child_bones, num_child_nodes );
+	for( int i=0; i<num_children; i++ )
+	{
+		Update_r(
+			bone.GetChild(i),
+			node.GetChildNode(i),
+			pMesh );//,
+//			mesh
+	}
+
+/*	for( int i=0; i<num_child_bones; i++ )
+	{
+		for( int j=0; j<num_child_nodes; j++ )
+			bone.GetImmediateChild( node.Get );
+	}*/
 }
 
 
@@ -104,9 +266,34 @@ void CSkeletalMeshMotionViewer::Update( const msynth::CKeyframe& keyframe )
 	if( !pSkeletalMesh )
 		return;
 
+	shared_ptr<CSkeleton> pSkeleton = m_pSkeleton.lock();
+	if( !pSkeleton )
+		return;
+
+	Update_r( pSkeleton->GetRootBone(), keyframe.GetRootNode(), pSkeletalMesh );
 }
 
 
+/*
+class CRootDialogEventHandler : public CGM_EventHandlerBase
+{
+public:
+
+	void HandleEvent( CGM_Event &event )
+	{
+		if( !event.pControl )
+			return;
+
+		switch( event.pControl->GetID() )
+		{
+		case ID_BUTTON1:
+			if( event.Type == CGM_Event::BUTTON_CLICKED )
+			{
+			}
+			break;
+	}
+};
+*/
 
 class CMotionListBoxEventHandler : public CGM_ListBoxEventHandler
 {
@@ -128,7 +315,9 @@ CMotionPrimitiveViewer::CMotionPrimitiveViewer()
 :
 m_pMotionPrimitiveListBox(NULL),
 m_fCurrentPlayTime(0),
-m_RenderMesh(true)
+m_RenderMesh(true),
+m_fPlaySpeedFactor(1.0f),
+m_DisplaySkeletalMesh(true)
 {
 	m_pUnitCube = boost::shared_ptr<CUnitCube>( new CUnitCube() );
 	m_pUnitCube->Init();
@@ -181,13 +370,17 @@ void CMotionPrimitiveViewer::Init()
 //	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
 	pGraphicsElementMgr->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono_Bold_256", CFontBase::FONTTYPE_TEXTURE, 8, 16, 0, 0 );
 
-	m_pInputHandler = CInputHandlerSharedPtr( new CGM_DialogInputHandler( m_pDialogManager ) );
+	m_pInputHandler = shared_ptr<CInputHandler>( new CGM_DialogInputHandler( m_pDialogManager ) );
 	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
 
 	// set up guide geometry
 	float h = g_fIndicatorHeight;
 	m_DirectionGuide.AddLineSegment( Vector3(-100.0f, h,   0.0f), Vector3( 100.0f, h,  0.0f), 0xFFC0C0C0 );
 	m_DirectionGuide.AddLineSegment( Vector3(0.0f,    h,-100.0f), Vector3( 0.0f,   h,100.0f), 0xFFF0F0F0 );
+
+	// input handler for display options
+	m_pDebugInputHandler = shared_ptr<CInputHandler>( new CDebugInputHandler( this ) );
+	InputHub().SetInputHandler( 1, m_pDebugInputHandler.get() );
 }
 
 
@@ -206,7 +399,26 @@ void CMotionPrimitiveViewer::Update( float dt )
 
 	m_SkeletonRenderer.UpdateBonePoses(keyframe);
 
-	m_fCurrentPlayTime += dt;
+	m_MeshViewer.SetSkeleton( m_pCurrentMotion->GetSkeleton() );
+	m_MeshViewer.Update( keyframe );
+
+	m_fPlaySpeedFactor = 0.0f;
+	if( false )//mode == Play
+	{
+		m_fPlaySpeedFactor = 1.0f;
+	}
+	else
+	{
+		if( IsKeyPressed( GIC_RIGHT ) )
+			m_fPlaySpeedFactor =  1.0f;
+		else if( IsKeyPressed( GIC_LEFT ) )
+			m_fPlaySpeedFactor = -1.0f;
+		else
+			m_fPlaySpeedFactor =  0.0f;
+	}
+
+	m_fCurrentPlayTime += dt * m_fPlaySpeedFactor;
+	clamp( m_fCurrentPlayTime, 0.0f, 50.0f );
 }
 
 
@@ -272,7 +484,8 @@ void CMotionPrimitiveViewer::Render()
 	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 	pd3dDevice->SetRenderState( D3DRS_ZENABLE,  TRUE );
 
-	m_MeshViewer.Render();
+	if( m_DisplaySkeletalMesh )
+		m_MeshViewer.Render();
 
 	RenderFloor();
 
@@ -368,7 +581,7 @@ void CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string
 	{
 		BOOST_FOREACH( const std::string& motion_name, entry.m_vecMotionPrimitiveName )
 		{
-			CMotionPrimitiveSharedPtr pMotion = db.GetMotionPrimitive( motion_name );
+			shared_ptr<CMotionPrimitive> pMotion = db.GetMotionPrimitive( motion_name );
 
 			m_vecpMotionPrimitive.push_back( pMotion );
 		}
@@ -381,7 +594,7 @@ void CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string
 	{
 		m_pMotionPrimitiveListBox->RemoveAllItems();
 
-		BOOST_FOREACH( const CMotionPrimitiveSharedPtr pMotion, m_vecpMotionPrimitive )
+		BOOST_FOREACH( const shared_ptr<CMotionPrimitive> pMotion, m_vecpMotionPrimitive )
 		{
 			m_pMotionPrimitiveListBox->AddItem( pMotion->GetName() );
 		}
