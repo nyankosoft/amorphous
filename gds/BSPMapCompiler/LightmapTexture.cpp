@@ -1,10 +1,8 @@
-#include "Lightmap.hpp"
 #include "LightmapTexture.hpp"
-
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
-
+using namespace std;
 
 
 void CLightmapTexture::Resize( int width, int height )

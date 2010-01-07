@@ -2,17 +2,10 @@
 #define __LIGHTMAPBUILDER_H__
 
 
-#include <vector>
-
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
 using namespace MeshModel;
-
-#include "3DMath/Matrix34.hpp"
-#include "Graphics/Rect.hpp"
-#include "Graphics/RectTree.hpp"
-using namespace Graphics;
 
 #include "Support/TextFileScanner.hpp"
 #include "Support/FixedVector.hpp"

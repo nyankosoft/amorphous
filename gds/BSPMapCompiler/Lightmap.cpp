@@ -2,6 +2,8 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+using namespace std;
+
 
 //================================================================================
 // CLightmap::Methods()                                               - CLightmap

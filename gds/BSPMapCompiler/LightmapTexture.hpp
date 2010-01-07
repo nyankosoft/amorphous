@@ -1,15 +1,12 @@
 #ifndef __MAPCOMPILER_LIGHTMAPTEXTURE_H__
 #define __MAPCOMPILER_LIGHTMAPTEXTURE_H__
 
-#include <vector>
-#include <string>
 
-#include "3DMath/Vector3.hpp"
 #include "Support/2DArray.hpp"
-#include "../Graphics/FloatRGBColor.hpp"
-#include "../Graphics/LightStructs.hpp"
-#include "../Graphics/IndexedPolygon.hpp"
-#include "../Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/LightStructs.hpp"
+#include "Graphics/IndexedPolygon.hpp"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 #include "Graphics/Rect.hpp"
