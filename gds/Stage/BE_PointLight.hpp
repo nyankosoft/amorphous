@@ -7,8 +7,6 @@
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/HemisphericLight.hpp"
 
-#include <string>
-
 
 #define CEDL_HAS_PARENT	1	// TODO: better parent/child control system
 

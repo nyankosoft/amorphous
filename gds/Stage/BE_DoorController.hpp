@@ -1,4 +1,3 @@
-
 #ifndef	__BE_DOORCONTROLLER_H__
 #define __BE_DOORCONTROLLER_H__
 
@@ -11,9 +10,6 @@
 #include "3DMath/Matrix34.hpp"
 
 #include "Sound/SoundHandle.hpp"
-
-#include <string>
-using namespace std;
 
 
 #define NUM_MAX_DOOR_COMPONENTS		8

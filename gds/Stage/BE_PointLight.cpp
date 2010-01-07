@@ -251,11 +251,11 @@ bool CBE_PointLight::CheckRayToCamera( CCopyEntity* pCopyEnt )
 	if( !pCamera )
 		return false;
 
-	D3DXVECTOR3 vCameraPos = pCamera->GetPosition();*/
+	Vector3 vCameraPos = pCamera->GetPosition();*/
 
-///	D3DXVECTOR3 vCameraPos = pCameraEntity->Position();
+///	Vector3 vCameraPos = pCameraEntity->Position();
 
-	D3DXVECTOR3 vCameraPos;
+	Vector3 vCameraPos;
 	CCamera *pCamera = pCameraEntity->pBaseEntity->GetCamera();
 	if( pCamera )
 		vCameraPos = pCamera->GetPosition();

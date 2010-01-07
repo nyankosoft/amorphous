@@ -12,6 +12,8 @@
 
 #include "Support/Log/DefaultLog.hpp"
 
+using namespace std;
+
 
 CBE_GeneralEntity::CBE_GeneralEntity()
 {

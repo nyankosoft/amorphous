@@ -16,6 +16,8 @@
 #include "Support/MTRand.hpp"
 #include "Support/Serialization/Serialization_Color.hpp"
 
+using namespace std;
+
 
 class CParticleThreadStarter
 {

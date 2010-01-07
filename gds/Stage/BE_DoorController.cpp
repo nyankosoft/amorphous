@@ -1,4 +1,3 @@
-
 #include "BE_Door.hpp"
 #include "BE_DoorController.hpp"
 #include "CopyEntity.hpp"
@@ -10,10 +9,9 @@
 #include "Support/Serialization/Serialization_FixedVector.hpp"
 #include "Sound/Serialization_SoundHandle.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix34.hpp"
-
 #include "JigLib/JL_PhysicsActor.hpp"
+
+using namespace std;
 
 
 CBE_DoorController::SDoorComponentSet::SDoorComponentSet()

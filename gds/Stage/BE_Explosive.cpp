@@ -8,14 +8,16 @@
 #include "Serialization_BaseEntityHandle.hpp"
 #include "../Stage/ScreenEffectManager.hpp"
 
-#include "../Graphics/3DGameMath.hpp"
-#include "../Graphics/Camera.hpp"
+#include "Graphics/3DGameMath.hpp"
+#include "Graphics/Camera.hpp"
 
 #include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 
 #include "Sound/SoundManager.hpp"
 #include "Sound/Serialization_SoundHandle.hpp"
+
+using namespace std;
 
 
 CBE_Explosive::CBE_Explosive()
