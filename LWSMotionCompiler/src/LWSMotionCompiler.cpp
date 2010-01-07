@@ -1,16 +1,19 @@
 #include "LWSMotionCompiler.hpp"
 #include "Platform_Win32.hpp"
-#include "gds/LightWave/LightWaveSceneLoader.hpp"
-#include "gds/MotionSynthesis/MotionPrimitive.hpp"
-#include "gds/Support/TextFileScanner.hpp"
-#include "gds/Support/StringAux.hpp"
-#include "gds/base.hpp"
+#include <gds/LightWave/LightWaveSceneLoader.hpp>
+#include <gds/MotionSynthesis/MotionPrimitive.hpp>
+#include <gds/Support/TextFileScanner.hpp>
+#include <gds/Support/StringAux.hpp>
+#include <gds/base.hpp>
 #include <boost/tokenizer.hpp>
 
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
 using namespace msynth;
+
+
+extern int g_htrans_rev;
 
 
 /*
@@ -138,7 +141,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGro
 
 		CKeyframe& dest_keyframe = vecKeyframe[i];
 		dest_keyframe.SetTime( fTime );
-		CreateKeyframe( pRootBone, fTime, dest_keyframe.RootNode() );
+		CreateKeyframe( pRootBone, fTime, Matrix34Identity(), dest_keyframe.RootNode() );
 	}
 
 	const size_t num = desc_group.m_Desc.size();
@@ -196,7 +199,6 @@ void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
 			    CBone& dest_bone )
 {
 	const string& bone_name = pSrcBone->GetBoneName();
-	Vector3 vRestDir  = pSrcBone->GetBoneRestDirection();
 	Vector3 vRestPos  = pSrcBone->GetBoneRestPosition();
 	float fRestLen    = pSrcBone->GetBoneRestLength();
 	float afRestAngle[3] = 
@@ -206,9 +208,6 @@ void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
 		pSrcBone->GetBoneRestAngle(2)
 	};
 
-	Vec3Normalize( vRestDir, vRestDir );
-
-	Quantize( vRestDir, 0.000001f );
 	Quantize( vRestPos, 0.000001f );
 	Quantize( fRestLen, 0.000001f );
 	for( int j=0; j<3; j++ )
@@ -237,7 +236,20 @@ void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
 		* Matrix34( Vector3(0,0,0), local_space.matOrient )
 		* Vector3(0,0,1) * fRestLen;
 
-	dest_bone.SetOffset( vOffset );
+	// prior to r1
+//	dest_bone.SetOffset( vOffset );
+//	dest_bone.SetOffset( Vector3(0,0,1) * fRestLen );
+
+	if( true /* r1 */ )
+	{
+		dest_bone.SetOffset( pSrcBone->GetBoneRestPosition() );
+		dest_bone.SetOrient( pSrcBone->GetBoneRestOrientation() );
+	}
+	else // r2
+	{
+		dest_bone.SetOffset( parent_space.matOrient * local_space.matOrient * pSrcBone->GetBoneRestPosition() );
+		dest_bone.SetOrient( Matrix33Identity() );
+	}
 
 	dest_bone.SetName( pSrcBone->GetBoneName() );
 
@@ -442,24 +454,91 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive()
 }
 
 
-void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, float fTime, CTransformNode& dest_node )
+void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, float fTime, const Matrix34& parent_transform, CTransformNode& dest_node )
 {
 	const size_t num_children = pBone->ChildBone().size();
 	dest_node.SetNumChildren( (int)num_children );
 
+	// debug
+	Matrix33 mat1 = pBone->GetOrientationAt( fTime ) * pBone->GetBoneRestOrientation(); // debug
+	Matrix33 mat2 = pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()); // debug
+
+  if( g_htrans_rev == 1 )
+  {
 	// rotation
-//	dest_node.SetRotation( Quaternion( pBone->GetOrientationAt( fTime ) ) );
-	dest_node.SetRotation( Quaternion( pBone->GetOffsetOrientationAt( fTime ) ) );
-	
+//	Quaternion qRotaiton = Quaternion( pBone->GetOffsetOrientationAt( fTime ) );
+//	Quaternion qRotaiton = Quaternion( parent_transform.matOrient * pBone->GetOffsetOrientationAt( fTime ) );
+	Quaternion qRotaiton = Quaternion( pBone->GetOrientationAt( fTime ) );
+//	Quaternion qRotaiton = Quaternion( pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()) );
+	dest_node.SetRotation( qRotaiton );
+
 	// translation
-	Vector3 vTranslation = pBone->GetPositionAt( fTime ) - pBone->GetBoneRestPosition();
+	bool ignore_bone_rest_pos_for_root_bone = true;
+	Vector3 vTranslation = Vector3(0,0,0);
+//	if( !pBone->GetParent() && ignore_bone_rest_pos_for_root_bone )
+//	{
+		// root bone and the client specified to ignore bone rest position
+		vTranslation = pBone->GetPositionAt( fTime );
+/*	}
+	else
+	{
+		vTranslation = pBone->GetPositionAt( fTime ) - pBone->GetBoneRestPosition();
+	}*/
+
+	CLWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE )
+	{
+		// the parent is not a bone
+		// - Assume this is a root bone and add the parent translation
+		vTranslation += pParent->GetPositionAt( fTime );
+	}
+
 	Quantize( vTranslation, 0.000001f );
 	dest_node.SetTranslation( vTranslation );
 
+	// do recursive calls
+	Matrix34 next_transform = Matrix34Identity();
+	next_transform.matOrient = parent_transform.matOrient * pBone->GetBoneRestOrientation();
 	for( size_t i=0; i<num_children; i++ )
 	{
-		CreateKeyframe( pBone->ChildBone()[i], fTime, dest_node.Child()[i] );
+		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
 	}
+  }
+  else// if( g_htrans_rev == 2 )
+  {
+	// rotation
+	const Matrix33 matRotation0 = pBone->GetOrientationAt( 0 );
+	const Matrix33 matRotation  = pBone->GetOrientationAt( fTime );
+//	const Matrix33 matDeltaRotation = matRotation * Matrix33Transpose(matRotation0);
+	const Matrix33 matDeltaRotation = pBone->GetOrientationFromRestOrientationAt( fTime );
+	const Matrix33 matRestRotation  = pBone->GetBoneRestOrientation();
+	const Matrix33 matWorldRotation = parent_transform.matOrient * matRestRotation;
+	const Matrix33 matDestRotation  = matWorldRotation * matDeltaRotation * Matrix33Transpose(matWorldRotation);
+	Quaternion qRotaiton = Quaternion( matDestRotation );
+//	Quaternion qRotaiton = Quaternion( pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()) );
+	dest_node.SetRotation( qRotaiton );
+
+	// translation
+	Vector3 vTranslation = Vector3(0,0,0);//pBone->GetPositionAt( fTime );
+
+	CLWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE )
+	{
+		// the parent is not a bone
+		// - Assume this is a root bone and add the parent translation
+		vTranslation += pParent->GetPositionAt( fTime );
+	}
+
+	dest_node.SetTranslation( vTranslation );
+
+	// do recursive calls
+	Matrix34 next_transform = Matrix34Identity();
+	next_transform.matOrient = matWorldRotation;
+	for( size_t i=0; i<num_children; i++ )
+	{
+		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
+	}
+  }
 }
 
 

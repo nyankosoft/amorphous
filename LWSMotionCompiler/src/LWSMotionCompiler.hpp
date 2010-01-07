@@ -70,7 +70,7 @@ private:
 
 	void CollectKeyFrameTimes( CLWS_Bone& bone, std::vector<float>& vecKeyframeTime );
 
-	void CreateKeyframe( boost::shared_ptr<CLWS_Bone> pBone, float fTime, msynth::CTransformNode& dest_node );
+	void CreateKeyframe( boost::shared_ptr<CLWS_Bone> pBone, float fTime, const Matrix34& parent_transform, msynth::CTransformNode& dest_node );
 
 	void CreateMotionPrimitive( msynth::CMotionPrimitiveDescGroup& desc_group, msynth::CMotionPrimitiveDesc& desc, std::vector<msynth::CKeyframe>& vecSrcKeyframe );
 
