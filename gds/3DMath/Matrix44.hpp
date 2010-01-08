@@ -57,6 +57,8 @@ public:
 	/// get matrix data in the form of the row major matrix with a stride of 4
 	inline void GetRowMajorMatrix44( Scalar *pDest ) const;
 
+	inline Vector3 TransformCoord( const Vector3& rhs );
+
 	// operators
 	inline Matrix44 & operator+=(const Matrix44 & rhs);
 	inline Matrix44 & operator-=(const Matrix44 & rhs);
@@ -118,7 +120,7 @@ inline Matrix44 Matrix44Transpose(const Matrix44 & rhs);
 
 
 // matrix * vector
-//inline Vector3 operator*(const Matrix44 & lhs, const Vector3 & rhs);
+//inline Vector3 operator*(const Matrix44 & lhs, const Vector4 & rhs);
 
 
 /*

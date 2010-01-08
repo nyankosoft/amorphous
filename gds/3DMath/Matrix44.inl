@@ -294,6 +294,20 @@ inline void Matrix44::GetRowMajorMatrix44( Scalar *pDest ) const
 }
 
 
+inline Vector3 Matrix44::TransformCoord(const Vector3 & rhs)
+{
+//	return Vector4((*this) * Vector4(rhs.x,rhs.y,rhs.z,1.0f)).ToVector3();
+	Matrix44& lhs = *this;
+	Vector3 out;
+	Scalar w = 0.0f;
+	out.x = lhs(0,0) * rhs.x + lhs(0,1) * rhs.y + lhs(0,2) * rhs.z + lhs(0,3);
+	out.y = lhs(1,0) * rhs.x + lhs(1,1) * rhs.y + lhs(1,2) * rhs.z + lhs(1,3);
+	out.z = lhs(2,0) * rhs.x + lhs(2,1) * rhs.y + lhs(2,2) * rhs.z + lhs(2,3);
+	    w = lhs(3,0) * rhs.x + lhs(3,1) * rhs.y + lhs(3,2) * rhs.z + lhs(3,3);
+	return out / w;
+}
+
+
 
 //=============================================================================
 // global operators
@@ -329,20 +343,17 @@ inline Matrix44 operator*(const Matrix44 & lhs, const Matrix44 & rhs)
 
 /*
 // matrix * vector
-inline Vector3 operator*(const Matrix44 & lhs, const Vector3 & rhs)
+inline Vector4 operator*(const Matrix44 & lhs, const Vector4 & rhs)
 {
-  return Vector3(
-    lhs(0,0) * rhs[0] +
-    lhs(0,1) * rhs[1] +
-    lhs(0,2) * rhs[2],
-    lhs(1,0) * rhs[0] +
-    lhs(1,1) * rhs[1] +
-    lhs(1,2) * rhs[2],
-    lhs(2,0) * rhs[0] +
-    lhs(2,1) * rhs[1] +
-    lhs(2,2) * rhs[2]);
+	Vector4 out;
+	out.x = lhs(0,0) * rhs.x + lhs(0,1) * rhs.y + lhs(0,2) * rhs.z + lhs(0,3) * rhs.w;
+	out.y = lhs(1,0) * rhs.x + lhs(1,1) * rhs.y + lhs(1,2) * rhs.z + lhs(1,3) * rhs.w;
+	out.z = lhs(2,0) * rhs.x + lhs(2,1) * rhs.y + lhs(2,2) * rhs.z + lhs(2,3) * rhs.w;
+	out.w = lhs(3,0) * rhs.x + lhs(3,1) * rhs.y + lhs(3,2) * rhs.z + lhs(3,3) * rhs.w;
+	return out;
 }
 */
+
 
 inline Matrix44 Matrix44Transpose(const Matrix44 & rhs)
 {
