@@ -1,6 +1,5 @@
 #include "Direct3D9.hpp"
 
-#include "../base.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"

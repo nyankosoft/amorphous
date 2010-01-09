@@ -1,12 +1,8 @@
 #ifndef  __GENERAL2DVERTEX_H__
 #define  __GENERAL2DVERTEX_H__
 
-//#include <vector>
-//using namespace std;
-#include "Support/FixedVector.hpp"
-
 #include "3DMath/Vector3.hpp"
-
+#include "Support/FixedVector.hpp"
 #include "Graphics/TextureCoord.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 
@@ -44,7 +40,6 @@ public:
 	enum eProperty
 	{
 		NUM_MAX_TEXTURECOORD_SETS = 4,
-		NUM_MAX_BLEND_MATRICES_PER_VERTEX = 4,
 	};
 
 public:

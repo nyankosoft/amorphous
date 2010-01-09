@@ -4,7 +4,6 @@
 
 #include "GraphicsDevice.hpp"
 #include <d3dx9.h>
-#include "../base.hpp"
 
 //#pragma comment( lib, "d3dx9dt.lib" )
 #pragma comment( lib, "d3d9.lib" )

@@ -2,7 +2,6 @@
 #define  __CubeMapManager_H__
 
 
-#include <d3d9.h>
 #include <d3dx9.h>
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/Camera.hpp"
