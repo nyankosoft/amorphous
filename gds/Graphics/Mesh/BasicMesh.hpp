@@ -196,6 +196,8 @@ public:
 
 	virtual const CMM_Bone& GetBone( const std::string& bone_name ) const { return CMM_Bone::NullBone(); }
 
+	virtual const CMM_Bone& GetRootBone() const { return CMM_Bone::NullBone(); }
+
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 	/// calculate hierarchical transforms by handiing an array of matrices
 	/// that represents local transformations at each bone

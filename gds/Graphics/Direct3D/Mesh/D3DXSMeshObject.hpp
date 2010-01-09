@@ -54,6 +54,8 @@ public:
 
 	inline const CMM_Bone& GetBone( const std::string& bone_name ) const;
 
+	inline const CMM_Bone& GetRootBone() const { return m_pRootBone ? *m_pRootBone : CMM_Bone::NullBone(); }
+
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 
 	/// calculate hierarchical transforms by handiing an array of matrices
