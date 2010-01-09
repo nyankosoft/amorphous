@@ -317,6 +317,10 @@ void CMotionPrimitiveBlender::Update( float dt )
 		}
 	}
 
+//	if( m_UpdateRootNodePose )
+//		UpdateWorldNodePose( dt );
+//	void UpdateWorldNodePose( float dt ) {
+
 	// move the root pose from the prev to the current
 
 	Matrix34 next_root_pose;

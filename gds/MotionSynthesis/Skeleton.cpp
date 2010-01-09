@@ -59,7 +59,46 @@ void CBone::Serialize( IArchive & ar, const unsigned int version )
 {
 	ar & m_Name;
 	ar & m_vOffset;
+
+	if( 1 <= version )
+		ar & m_matOrient;
+
 	ar & m_vecChild;
+}
+
+int g_htrans_rev = 2;
+
+void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const
+{
+  if( g_htrans_rev == 1 )
+  {
+	if( true/*m_TransformStyle & APPLY_LOCAL_ROTATION_TO_OFFSET*/ )
+	{
+		const Matrix33 matLocalRot = input_node.GetLocalRotationQuaternion().ToRotationMatrix();
+		const Vector3 vLocalTrans = input_node.GetLocalTranslation() + m_vOffset;
+/*		dest_transform.vPosition = parent_transform.matOrient * matLocalRot * vLocalTrans + parent_transform.vPosition;
+		dest_transform.matOrient = parent_transform.matOrient * matLocalRot;
+*/
+		dest_transform
+			= parent_transform
+			* Matrix34( input_node.GetLocalTranslation(), matLocalRot );
+//			* Matrix34( -m_vOffset, Matrix33Transpose(m_matOrient) );
+//			* Matrix34( m_vOffset, m_matOrient ).GetInverseROT();
+//			* Matrix34( Vector3(0,0,0), m_matOrient );
+	}
+	else
+	{
+		dest_transform
+			= parent_transform
+//			* Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() )
+//			* Matrix34( m_vOffset, Matrix33Identity() );
+			* Matrix34( input_node.GetLocalTranslation() + m_vOffset, input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
+	}
+  }
+  else // if( sg_rev == 2 )
+  {
+	//
+  }
 }
 
 

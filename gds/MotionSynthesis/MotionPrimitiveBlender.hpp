@@ -26,7 +26,7 @@ public:
 	virtual void OnMotionPrimitiveChanged( boost::shared_ptr<CMotionPrimitive>& pPrev, boost::shared_ptr<CMotionPrimitive>& pNew ) {}
 
 	/// Called when a motion primitive is finished playing and queue does not have any more primitive to play
-	virtual void OnMotionPrimitiveFinished( boost::shared_ptr<CMotionPrimitive>& pPrev );
+	virtual void OnMotionPrimitiveFinished( boost::shared_ptr<CMotionPrimitive>& pPrev ) {}
 };
 
 

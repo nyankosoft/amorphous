@@ -254,6 +254,12 @@ void CMotionPrimitiveNode::SetFSM( CMotionFSM *pFSM )
 
 void CMotionPrimitiveNode::AddTransPath( const std::string& dest_motion_name, const mt& trans )
 {
+	if( !m_pFSM )
+	{
+		LOG_PRINT_ERROR( " No FSM" );
+		return;
+	}
+
 	const vector< pair<double,string> >& src_trans = trans.GetTransitions();
 /*
 	// add a new transition pattern, get a non-const reference to it, and update it
@@ -264,6 +270,7 @@ void CMotionPrimitiveNode::AddTransPath( const std::string& dest_motion_name, co
 */
 	shared_ptr< vector<MotionNodeTrans> > pvecTrans( new vector<MotionNodeTrans>() );
 	vector<MotionNodeTrans>& dest_transitions = *pvecTrans;
+	dest_transitions.resize( src_trans.size() );
 
 	for( size_t i=0; i<src_trans.size(); i++ )
 	{
@@ -338,8 +345,9 @@ void CMotionPrimitiveNode::CalculateKeyframe()
 // CMotionFSM
 //===========================================================================
 
-CMotionFSM::CMotionFSM()
+CMotionFSM::CMotionFSM( const string& name )
 :
+m_Name(name),
 m_TransIndex(0)
 {
 	m_pMotionPrimitivePlayer = shared_ptr<CMotionPrimitiveBlender>( new CMotionPrimitiveBlender() );
@@ -436,6 +444,14 @@ void CMotionFSM::AddNode( shared_ptr<CMotionPrimitiveNode> pNode )
 }
 
 
+shared_ptr<CMotionPrimitiveNode> CMotionFSM::AddNode( const string& node_name )
+{
+	shared_ptr<CMotionPrimitiveNode> pNode( new CMotionPrimitiveNode(node_name) );
+	AddNode( pNode );
+	return pNode;
+}
+
+
 void CMotionFSM::CalculateKeyframe()
 {
 	if( !m_pCurrent )
@@ -484,24 +500,24 @@ void CMotionFSM::SetStartBlendNodeToMotionPrimitives( shared_ptr<CBlendNode> pRo
 // CMotionGraphManager
 //=======================================================================================
 
-void CMotionGraphManager::InitForTest()
+void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 {
 	shared_ptr<CMotionFSM> pFSM( new CMotionFSM );
 
 	AddFSM( pFSM );
 
-	pFSM->SetMotionDatabaseFilepath( "motions/default.mdb" );
+	pFSM->SetMotionDatabaseFilepath( motion_db_filepath );
 
 	shared_ptr<CMotionPrimitiveNode> pNodes[16];
-	pNodes[0] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("fwd") );
-	pNodes[1] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("stand") );
-	pNodes[2] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("crouch") );
-	pNodes[3] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("prone") );
-	pNodes[4] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("bkwd") );
-	pNodes[5] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("sidestep-right") );
-	pNodes[6] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("sidestep-left") );
-	pNodes[7] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("crouch-sidestep-right") );
-	pNodes[8] = shared_ptr<CMotionPrimitiveNode>( new CMotionPrimitiveNode("courchsidestep-left") );
+	pNodes[0] = pFSM->AddNode("fwd");
+	pNodes[1] = pFSM->AddNode("stand");
+	pNodes[2] = pFSM->AddNode("crouch");
+	pNodes[3] = pFSM->AddNode("prone");
+	pNodes[4] = pFSM->AddNode("bwd");
+	pNodes[5] = pFSM->AddNode("sidestep-right");
+	pNodes[6] = pFSM->AddNode("sidestep-left");
+	pNodes[7] = pFSM->AddNode("crouch-sidestep-right");
+	pNodes[8] = pFSM->AddNode("courchsidestep-left");
 
 	// moving forward (walk/run)
 	pNodes[0]->AddTransPath( "stand",  mt( 0.1, "stand" ) );
@@ -520,9 +536,6 @@ void CMotionGraphManager::InitForTest()
 	pNodes[3]->AddTransPath( "fwd",    mt( 0.2, "crouch" ) & mt( 0.1, "fwd" ) ); // move forward while crouching
 	pNodes[3]->AddTransPath( "stand",  mt( 0.1, "stand" ) );
 	pNodes[3]->AddTransPath( "crouch", mt( 0.1, "crouch" ) );
-
-	for( int i=0; i<8; i++ )
-		pFSM->AddNode( pNodes[i] );
 /*
 	pFSM->AddNode( "fwd",  );
 	pFSM->AddNode( "stand" );

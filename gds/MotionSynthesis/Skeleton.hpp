@@ -26,11 +26,15 @@ class CBone : public IArchiveObjectBase
 
 	Vector3 m_vOffset;
 
+	/// Orientation of the bone
+	/// - Bones taken from LightWave scene file use this to store rest direction of bone
+	Matrix33 m_matOrient;
+
 	std::vector<CBone> m_vecChild;
 
 public:
 
-	CBone() : m_vOffset(Vector3(0,0,0)) {}
+	CBone() : m_vOffset(Vector3(0,0,0)), m_matOrient(Matrix33Identity()) {}
 
 	CBone( CBVHBone& bvh_bone );
 
@@ -41,6 +45,10 @@ public:
 	Vector3 GetOffset() const { return m_vOffset; }
 
 	void SetOffset( const Vector3& offset ) { m_vOffset = offset; }
+
+	Matrix33 GetOrient() const { return m_matOrient; }
+
+	void SetOrient( const Matrix33& orientation ) { m_matOrient = orientation; }
 
 	int GetNumChildren() const { return (int)m_vecChild.size(); }
 
@@ -56,32 +64,21 @@ public:
 
 	void Scale_r( float factor );
 
-	inline void CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const;
+	/*inline*/ void CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const;
 
 	void DumpToTextFile( FILE* fp, int depth );
 
 	void Serialize( IArchive & ar, const unsigned int version );
+
+	virtual unsigned int GetVersion() const { return 1; }
 };
 
-
+/*
 inline void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const
 {
-	if( true/*m_TransformStyle & APPLY_LOCAL_ROTATION_TO_OFFSET*/ )
-	{
-		Matrix33 matLocalRot = input_node.GetLocalRotationQuaternion().ToRotationMatrix();
-		Vector3 vLocalTrans = input_node.GetLocalTranslation() + m_vOffset;
-		dest_transform.vPosition = parent_transform.matOrient * matLocalRot * vLocalTrans + parent_transform.vPosition;
-		dest_transform.matOrient = parent_transform.matOrient * matLocalRot;
-	}
-	else
-	{
-		dest_transform
-			= parent_transform
-//			* Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() )
-//			* Matrix34( m_vOffset, Matrix33Identity() );
-			* Matrix34( input_node.GetLocalTranslation() + m_vOffset, input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
-	}
+	...
 }
+*/
 
 
 class CSkeleton : public IArchiveObjectBase

@@ -90,7 +90,8 @@ public:
 
 	CMotionPrimitiveNode( const std::string& name )
 		:
-	m_Name(name)
+	m_Name(name),
+	m_pFSM(NULL)
 	{
 	}
 
@@ -222,6 +223,8 @@ public:
 
 class CMotionFSM
 {
+	std::string m_Name;
+
 	typedef std::map< std::string, boost::shared_ptr<CMotionPrimitiveNode> > name_motionnode_map;
 
 	name_motionnode_map m_mapNameToMotionNode;
@@ -242,9 +245,11 @@ class CMotionFSM
 
 public:
 
-	CMotionFSM();
+	CMotionFSM( const std::string& name = "" );
 
 	CMotionFSM::~CMotionFSM();
+
+	const std::string& GetName() const { return m_Name; }
 
 	void StartMotion( const std::string& motion_node_name );
 
@@ -264,7 +269,13 @@ public:
 
 	void AddNode( boost::shared_ptr<CMotionPrimitiveNode> pNode );
 
-	boost::shared_ptr<CMotionPrimitiveNode> GetNode( const std::string& name );
+	boost::shared_ptr<CMotionPrimitiveNode> AddNode( const std::string& node_name );
+
+	boost::shared_ptr<CMotionPrimitiveNode> GetNode( const std::string& name )
+	{
+		name_motionnode_map::iterator itr = m_mapNameToMotionNode.find( name );
+		return itr != m_mapNameToMotionNode.end() ? itr->second : boost::shared_ptr<CMotionPrimitiveNode>();
+	}
 
 	boost::shared_ptr<CMotionPrimitiveBlender>& Player() { return m_pMotionPrimitivePlayer; }
 
@@ -306,27 +317,28 @@ public:
 		m_vecpMotionFSM.push_back( pFSM );
 	}
 
-	void GetCurrentKeyframe( CKeyframe& dest )
+	boost::shared_ptr<CMotionFSM> GetMotionFSM( const std::string& name )
 	{
 		for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		{
-			// Calculate keyframe and store it to blend node tree, m_pBlendNodeRoot
-			m_vecpMotionFSM[i]->CalculateKeyframe();
+			if( name == m_vecpMotionFSM[i]->GetName() )
+				return m_vecpMotionFSM[i];
 		}
 
-		// Combine the keyframes of motion primitives
-		m_pBlendNodeRoot->GetKeyframe( dest );
+		return boost::shared_ptr<CMotionFSM>();
 	}
 
 	inline void Update( float dt );
 
 	inline void CalculateKeyframe();
 
+	inline void GetCurrentKeyframe( CKeyframe& dest );
+
 	void SetMotionDatabaseFilepath( const std::string& filepath ) { m_MotionDatabaseFilepath = filepath; }
 
 	inline void SetStartBlendNodeToMotionPrimitives();
 
-	void InitForTest();
+	void InitForTest( const std::string& motion_db_filepath = "motions/default.mdb" );
 };
 
 
@@ -347,6 +359,19 @@ inline void CMotionGraphManager::CalculateKeyframe()
 		m_vecpMotionFSM[i]->CalculateKeyframe();
 
 	// m_pBlendNodeRoot stores transforms for the current keyframe
+}
+
+
+inline void CMotionGraphManager::GetCurrentKeyframe( CKeyframe& dest )
+{
+	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
+	{
+		// Calculate keyframe and store it to blend node tree, m_pBlendNodeRoot
+		m_vecpMotionFSM[i]->CalculateKeyframe();
+	}
+
+	// Combine the keyframes of motion primitives
+	m_pBlendNodeRoot->GetKeyframe( dest );
 }
 
 
