@@ -59,18 +59,32 @@ CItemEntity::~CItemEntity()
 
 void CItemEntity::InitMesh()
 {
-	if( true /*m_ItemEntityFlags & CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING*/ )
+	if( m_ItemEntityFlags & CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
 	{
 		CBE_MeshObjectProperty& mesh_property = this->pBaseEntity->MeshProperty();
 		if( 0 < mesh_property.m_ShaderTechnique.size_x() )
 		{
+			// Set shader and shader params loaders to this->m_pMeshRenderMethod
+			// - Shader of CBaseEntity::m_MeshProperty is set to this->m_pMeshRenderMethod.
+			// - Current shader of this->m_pMeshRenderMethod will be overwritten. 
 			CreateMeshRenderMethod( CEntityHandle<>( this->Self() ),
 				mesh_property.m_ShaderHandle,
 				mesh_property.m_ShaderTechnique(0,0)
 				);
 		}
+		else
+		{
+			// Set shader params loaders
+			// let's assume that shaders are already set to the render method, this->m_pMeshRenderMethod,
+			// or user want to set them later
+			InitMeshRenderMethod( *this );
+		}
 	}
-
+	else
+	{
+		// Set up shader params loaders without using base entity attributes
+		InitMeshRenderMethod( *this );
+	}
 }
 
 
