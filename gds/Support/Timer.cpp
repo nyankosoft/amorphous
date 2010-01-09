@@ -51,7 +51,7 @@ void CTimer::Reset()
 
     // Get either the current time or the stop time
     LARGE_INTEGER qwTime;
-    if( m_llStopTime != 0 )
+    if( m_llStopTime != 0 || m_bTimerStopped )
         qwTime.QuadPart = m_llStopTime;
     else
         QueryPerformanceCounter( &qwTime );
@@ -124,7 +124,7 @@ double CTimer::GetAbsoluteTime()
 
     // Get either the current time or the stop time
     LARGE_INTEGER qwTime;
-    if( m_llStopTime != 0 )
+    if( m_llStopTime != 0 || m_bTimerStopped )
         qwTime.QuadPart = m_llStopTime;
     else
         QueryPerformanceCounter( &qwTime );
@@ -143,7 +143,7 @@ double CTimer::GetTime() const
 
     // Get either the current time or the stop time
     LARGE_INTEGER qwTime;
-    if( m_llStopTime != 0 )
+    if( m_llStopTime != 0 || m_bTimerStopped )
         qwTime.QuadPart = m_llStopTime;
     else
         QueryPerformanceCounter( &qwTime );
