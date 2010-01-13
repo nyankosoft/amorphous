@@ -2,6 +2,7 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 
 using namespace std;
@@ -39,13 +40,15 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
+	Result::Name res;
 	HRESULT hr;
 
-	hr = pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-	hr = pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  FALSE );
-	hr = pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-	hr = pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	res = GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+	res = GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
+	res = GraphicsDevice().Disable( RenderStateType::LIGHTING );
+	res = GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
+	res = GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
+//	res = GraphicsDevice().SetCullingMode( D3DRS_CULLMODE, D3DCULL_CCW );
 	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 
 	hr = pd3dDevice->SetVertexShader( NULL );
@@ -53,19 +56,18 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 
 	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
-	CD3DFixedFunctionPipelineManager ffp_mgr;
+	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
+	Matrix44 matWorld = Matrix44Identity();
 //	const Vector3 vCamPos = g_CameraController.GetPosition();
-	matWorld._41 = vCamPos.x;
-	matWorld._42 = vCamPos.y;
-	matWorld._43 = vCamPos.z;
+	matWorld(0,3) = vCamPos.x;
+	matWorld(1,3) = vCamPos.y;
+	matWorld(2,3) = vCamPos.z;
 	ffp_mgr.SetWorldTransform( matWorld );
 
 	if( pMesh )
 		pMesh->Render();
 
-	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-	hr = pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
+	res = GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+	res = GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }

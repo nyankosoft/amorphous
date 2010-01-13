@@ -1,4 +1,3 @@
-
 #include "LensFlare.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/D3DMisc.hpp"
@@ -38,14 +37,12 @@ void CLensFlare::Release()
 
 void CLensFlare::UpdateLensFlares()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	// update rect positions
-	D3DXMATRIX matViewProj;
-	D3DXMatrixMultiply( &matViewProj, &m_matView, &m_matProj );
+	Matrix44 matProjView;
+	matProjView = m_matProj * m_matView;
 
-	D3DXVECTOR3 vLightPosSS;	// light position in screen space
-	D3DXVec3TransformCoord( &vLightPosSS, &m_vLightPosition, &matViewProj );
+	Vector3 vLightPosSS;	// light position in screen space
+	vLightPosSS = matProjView.TransformCoord( m_vLightPosition );
 
 	const Vector3 vCenter = Vector3(0,0,0);
 
@@ -60,7 +57,7 @@ void CLensFlare::UpdateLensFlares()
 	const size_t num_groups = m_vecLensFlareGroup.size();
 
 	float screen_width, screen_height;
-//	screen_width  = (float)m_ScreenWidth;
+//	screen_width  = (floa	t)m_ScreenWidth;
 //	screen_height = (float)m_ScreenHeight;
 	GetViewportSize( screen_width, screen_height );
 
@@ -155,15 +152,20 @@ void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	pd3dDev->SetRenderState( D3DRS_LIGHTING, FALSE );
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+//	pd3dDev->SetRenderState( D3DRS_LIGHTING, FALSE );
 
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
+//	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
 	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
 	pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_CCW );
 
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
+//	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+//	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
+//	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
 
 	pd3dDev->SetVertexShader( NULL );
 	pd3dDev->SetPixelShader( NULL );
@@ -196,7 +198,8 @@ void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 
 //	pEffect->End();
 
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+//	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
 	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
 }
 

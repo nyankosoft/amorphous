@@ -3,6 +3,7 @@
 
 #include "../base.hpp"
 #include "3DMath/Vector3.hpp"
+#include "3DMath/Matrix44.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
@@ -86,10 +87,10 @@ class CLensFlare
 //	int m_ScreenHeight;
 
 	/// camera transform matrix
-	D3DXMATRIX m_matView;
+	Matrix44 m_matView;
 
 	/// projection transform matrix
-	D3DXMATRIX m_matProj;
+	Matrix44 m_matProj;
 
 	/// position of the light in world space
 	Vector3 m_vLightPosition;
@@ -110,11 +111,11 @@ public:
 
 //	inline void UpdateScreenSize( int screen_width, int screen_height );
 
-	inline void UpdateViewTransform( const D3DXMATRIX& matView ) { m_matView = matView; }
+	inline void UpdateViewTransform( const Matrix44& matView ) { m_matView = matView; }
 
-	inline void UpdateProjectionTransform( const D3DXMATRIX& matProj ) { m_matProj = matProj; }
+	inline void UpdateProjectionTransform( const Matrix44& matProj ) { m_matProj = matProj; }
 
-	inline void UpdateTransforms( const D3DXMATRIX& matView, const D3DXMATRIX& matProj );
+	inline void UpdateTransforms( const Matrix44& matView, const Matrix44& matProj );
 
 	/// set lens flare positions, dimensions, etc.
 	/// must be called before rendering the flares after all the other updates are done.
@@ -146,7 +147,7 @@ public:
 // -------------------------- inline implementations --------------------------
 
 
-inline void CLensFlare::UpdateTransforms( const D3DXMATRIX& matView, const D3DXMATRIX& matProj )
+inline void CLensFlare::UpdateTransforms( const Matrix44& matView, const Matrix44& matProj )
 {
 	m_matView = matView;
 	m_matProj = matProj;
