@@ -90,7 +90,8 @@ void CMotionPrimitive::CalculateInterpolatedKeyframe( float time )
 	CKeyframe m_KeyframeBuffer;
 	GetInterpolatedKeyframe( m_KeyframeBuffer, time );
 
-	m_pStartBlendNode->SetTransformNodes( m_KeyframeBuffer.GetRootNode() );
+	if( m_pStartBlendNode )
+		m_pStartBlendNode->SetTransformNodes( m_KeyframeBuffer.GetRootNode() );
 }
 
 

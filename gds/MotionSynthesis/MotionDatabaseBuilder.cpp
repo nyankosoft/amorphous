@@ -255,6 +255,10 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( xercesc::DOMNode *pMotio
 					desc.m_bIsLoopMotion = to_bool(pLoop->getNodeValue());
 			}
 		}
+		else if( element_name == "StartBoneName" )
+		{
+			desc.m_StartBoneName = to_string(pNode->getTextContent());
+		}
 		else if( element_name == "AnnotationList" )
 		{
 			for( DOMNode *pAnnotNode = pNode->getFirstChild();

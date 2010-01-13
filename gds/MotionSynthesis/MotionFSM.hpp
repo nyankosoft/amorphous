@@ -7,6 +7,7 @@
 #include <gds/MotionSynthesis/MotionPrimitive.hpp>
 #include <gds/MotionSynthesis/MotionPrimitiveBlender.hpp>
 #include <gds/MotionSynthesis/BlendNode.hpp>
+#include <gds/Input/InputHandler.hpp>
 
 
 namespace msynth
@@ -14,6 +15,7 @@ namespace msynth
 
 // forward declarations of private classes
 class CMotionFSMCallback;
+class CMotionNodeAlgorithm;
 
 
 /// motion transition (used for setup of motion primitive nodes)
@@ -86,6 +88,9 @@ class CMotionPrimitiveNode
 	/// borrowed reference
 	CMotionPrimitiveBlender *m_pBlender;
 
+	/// algorithm for state transitions
+	boost::shared_ptr<CMotionNodeAlgorithm> m_pAlgorithm;
+
 public:
 
 	CMotionPrimitiveNode( const std::string& name )
@@ -93,6 +98,8 @@ public:
 	m_Name(name),
 	m_pFSM(NULL)
 	{
+		// By default, motion name initialized with the name of the node
+		m_MotionName = name;
 	}
 
 /*	CMotionPrimitiveNode( CMotionFSM *pFSM = NULL )
@@ -106,6 +113,8 @@ public:
 	const std::string& GetName() { return m_Name; }
 
 	void SetFSM( CMotionFSM *pFSM );
+
+	void SetMotionName( const std::string& motion_name ) { m_MotionName = motion_name; }
 
 	// steering behavior
 	// - forward(walking/running): change the orientation
@@ -145,7 +154,7 @@ public:
 	virtual void RequestTransition( const std::string& dest_motion_name );
 
 
-	/// \param interpolation_time duration of interpolation motion playged
+	/// \param interpolation_time duration of interpolation motion played
 	///        before starting this motion
 	void StartMotion( float interpolation_time )
 	{
@@ -169,6 +178,10 @@ public:
 	void SetStartBlendNode( boost::shared_ptr<CBlendNode> pRootBlendNode );
 
 	void CalculateKeyframe();
+
+	void SetAlgorithm( boost::shared_ptr<CMotionNodeAlgorithm> pAlgorithm );
+
+	boost::shared_ptr<CMotionNodeAlgorithm>& GetAlgorithm() { return m_pAlgorithm; }
 };
 
 
@@ -220,6 +233,31 @@ public:
 };
 
 
+class CMotionNodeAlgorithm
+{
+	CMotionPrimitiveNode *m_pNode;
+
+public:
+
+	CMotionNodeAlgorithm() : m_pNode(NULL) {}
+
+	~CMotionNodeAlgorithm() {}
+
+	virtual void Update( float dt ) {}
+
+	/// Returns true if the input was handled.
+	virtual bool HandleInput( const SInputData& input ) { return false; }
+
+	void RequestTransition( const std::string& dest_motion_name )
+	{
+		if( m_pNode )
+			m_pNode->RequestTransition( dest_motion_name );
+	}
+
+	friend class CMotionPrimitiveNode;
+};
+
+
 
 class CMotionFSM
 {
@@ -265,6 +303,29 @@ public:
 
 	void SetTransitions( boost::shared_ptr< std::vector<MotionNodeTrans> > pvecTrans );
 
+	void StartNewTransitions( boost::shared_ptr< std::vector<MotionNodeTrans> >& pvecTrans )
+	{
+		ClearNodesToProcess();
+		SetTransitions( pvecTrans );
+		StartNextMotion();
+	}
+
+	// Start playing the motion managed by the motion node indexed by m_TransIndex
+	void StartNextMotion()
+	{
+		if( !m_pvecTransToProcess )
+			return;
+
+//		m_TransIndex++;
+
+		vector<MotionNodeTrans>& tansitions_to_process = *(m_pvecTransToProcess);
+		if( m_TransIndex < (int)tansitions_to_process.size() )
+		{
+			MotionNodeTrans& transition = tansitions_to_process[m_TransIndex];
+			transition.pNode->StartMotion( transition.interpolation_time );
+		}
+	}
+
 //	void AddNodeToProcess( boost::shared_ptr<CMotionPrimitiveNode> pNode ) { m_vecpNodesToProcess.push_back( pNode ); }
 
 	void AddNode( boost::shared_ptr<CMotionPrimitiveNode> pNode );
@@ -291,6 +352,12 @@ public:
 	// and store the result to blend node tree
 	void CalculateKeyframe();
 
+	void HandleInput( const SInputData& input )
+	{
+		if( m_pCurrent )
+			m_pCurrent->GetAlgorithm()->HandleInput( input );
+	}
+
 	friend class CMotionFSMCallback;
 };
 
@@ -309,6 +376,8 @@ class CMotionGraphManager
 	std::string m_MotionDatabaseFilepath;
 
 public:
+
+	CMotionGraphManager();
 
 	void LoadFromDatabase();
 
@@ -330,6 +399,7 @@ public:
 
 	inline void Update( float dt );
 
+	// Transformations are stored in m_pBlendNodeRoot
 	inline void CalculateKeyframe();
 
 	inline void GetCurrentKeyframe( CKeyframe& dest );
@@ -337,6 +407,11 @@ public:
 	void SetMotionDatabaseFilepath( const std::string& filepath ) { m_MotionDatabaseFilepath = filepath; }
 
 	inline void SetStartBlendNodeToMotionPrimitives();
+
+	// Calls SetStartBlendNodeToMotionPrimitives() inside the function.
+	void LoadMotions( CMotionDatabase& mdb );
+
+	inline void HandleInput( const SInputData& input );
 
 	void InitForTest( const std::string& motion_db_filepath = "motions/default.mdb" );
 };
@@ -364,6 +439,11 @@ inline void CMotionGraphManager::CalculateKeyframe()
 
 inline void CMotionGraphManager::GetCurrentKeyframe( CKeyframe& dest )
 {
+	if( !m_pBlendNodeRoot )
+		return;
+
+	m_pBlendNodeRoot->Clear();
+
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 	{
 		// Calculate keyframe and store it to blend node tree, m_pBlendNodeRoot
@@ -380,6 +460,34 @@ inline void CMotionGraphManager::SetStartBlendNodeToMotionPrimitives()
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->SetStartBlendNodeToMotionPrimitives( m_pBlendNodeRoot );
 }
+
+
+inline void CMotionGraphManager::HandleInput( const SInputData& input )
+{
+	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
+		m_vecpMotionFSM[i]->HandleInput( input );
+}
+
+
+class CMotionFSMInputHandler : public CInputHandler
+{
+//	CMotionFSM *m_pFSM;
+	boost::shared_ptr<CMotionGraphManager> m_pMotionGraphManager;
+
+public:
+
+	CMotionFSMInputHandler(boost::shared_ptr<CMotionGraphManager>& pMgr) : m_pMotionGraphManager(pMgr) {}
+
+	inline void ProcessInput(SInputData& input);
+};
+
+
+inline void CMotionFSMInputHandler::ProcessInput(SInputData& input)
+{
+	m_pMotionGraphManager->HandleInput( input );
+}
+
+
 
 } // msynth
 

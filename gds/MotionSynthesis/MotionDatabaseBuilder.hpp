@@ -47,6 +47,8 @@ public:
 
 	std::vector<std::string> m_vecAnnotation;
 
+	std::string m_StartBoneName;
+
 public:
 
 	CMotionPrimitiveDesc()

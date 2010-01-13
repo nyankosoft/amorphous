@@ -119,7 +119,9 @@ public:
 			dest.SetTranslation( m_vecTransformNode[0].t );
 		}
 
-		int num_children = take_min( dest.GetNumChildren(), (int)m_vecpChild.size() );
+//		int num_children = take_min( dest.GetNumChildren(), (int)m_vecpChild.size() );
+		int num_children = (int)m_vecpChild.size();
+		dest.Child().resize( num_children );
 		for( int i=0; i<num_children; i++ )
 			m_vecpChild[i]->GetTransformNode( dest.ChildNode(i) );
 	}
@@ -128,6 +130,15 @@ public:
 	void GetKeyframe( CKeyframe& dest )
 	{
 		GetTransformNode( dest.RootNode() );
+	}
+
+	void Clear()
+	{
+		m_vecTransformNode.resize( 0 );
+
+		int num_children = (int)m_vecpChild.size();
+		for( int i=0; i<num_children; i++ )
+			m_vecpChild[i]->Clear();
 	}
 };
 

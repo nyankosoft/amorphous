@@ -230,6 +230,11 @@ public:
 		MotionNodeTrans trans;
 		pMotionNode->StartMotion( trans.interpolation_time );*/
 
+/*		if( m_pFSM->m_pCurrent
+		 && m_pFSM->m_pCurrent->IsPlayingLoopedMotion() )
+		{
+		}*/
+
 		if( !m_pFSM->m_pvecTransToProcess )
 			return;
 
@@ -308,8 +313,7 @@ void CMotionPrimitiveNode::RequestTransition( const std::string& dest_motion_nam
 		m_pFSM->AddNodeToProcess( transitions[i].pNode );
 	}*/
 
-	m_pFSM->ClearNodesToProcess();
-	m_pFSM->SetTransitions( itr->second );
+	m_pFSM->StartNewTransitions( itr->second );
 
 	// if found
 	
@@ -319,7 +323,15 @@ void CMotionPrimitiveNode::RequestTransition( const std::string& dest_motion_nam
 
 void CMotionPrimitiveNode::LoadMotion( CMotionDatabase& db )
 {
-	m_pMotionPrimitive = db.GetMotionPrimitive( m_MotionName );
+	if( 0 < m_MotionName.length() )
+		m_pMotionPrimitive = db.GetMotionPrimitive( m_MotionName );
+
+	if( m_pMotionPrimitive
+	 && m_pMotionPrimitive->GetKeyframeBuffer().size() == 0 )
+	{
+		// Has no keyframe - an invalid motion primitive
+		m_pMotionPrimitive.reset();
+	}
 }
 
 
@@ -337,6 +349,13 @@ void CMotionPrimitiveNode::CalculateKeyframe()
 
 	// store the transform nodes of the current keyframe to blend node
 	m_pFSM->Player()->CalculateKeyframe();
+}
+
+
+void CMotionPrimitiveNode::SetAlgorithm( boost::shared_ptr<CMotionNodeAlgorithm> pAlgorithm )
+{
+	m_pAlgorithm = pAlgorithm;
+	m_pAlgorithm->m_pNode = this;
 }
 
 
@@ -392,6 +411,9 @@ void CMotionFSM::StartMotion( const std::string& motion_node_name )
 void CMotionFSM::Update( float dt )
 {
 	m_pMotionPrimitivePlayer->Update( dt );
+
+	if( m_pCurrent )
+		m_pCurrent->GetAlgorithm()->Update( dt );
 
 	// This will miss the motion primitive when it's too short or dt is too large
 /*
@@ -500,9 +522,29 @@ void CMotionFSM::SetStartBlendNodeToMotionPrimitives( shared_ptr<CBlendNode> pRo
 // CMotionGraphManager
 //=======================================================================================
 
+CMotionGraphManager::CMotionGraphManager()
+{
+	m_pBlendNodeRoot = shared_ptr<CBlendNode>( new CBlendNode );
+	m_pBlendNodeRoot->SetSelf( m_pBlendNodeRoot );
+}
+
+
+void CMotionGraphManager::LoadMotions( CMotionDatabase& mdb )
+{
+	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
+		m_vecpMotionFSM[i]->LoadMotions( mdb );
+
+	SetStartBlendNodeToMotionPrimitives();
+
+//	shared_ptr<CMotionPrimitive> pMotion = mdb.GetMotionPrimitive( m_CompleteSkeletonName );
+//	if( pMotion )
+//		m_pBlendNodeRoot->CreateFromSkeleton( pMotion->GetSkeleton()->GetRootBone() );
+}
+
+
 void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 {
-	shared_ptr<CMotionFSM> pFSM( new CMotionFSM );
+	shared_ptr<CMotionFSM> pFSM( new CMotionFSM("lower_limbs") );
 
 	AddFSM( pFSM );
 
@@ -510,32 +552,42 @@ void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 
 	shared_ptr<CMotionPrimitiveNode> pNodes[16];
 	pNodes[0] = pFSM->AddNode("fwd");
-	pNodes[1] = pFSM->AddNode("stand");
+	pNodes[1] = pFSM->AddNode("standing");
 	pNodes[2] = pFSM->AddNode("crouch");
 	pNodes[3] = pFSM->AddNode("prone");
 	pNodes[4] = pFSM->AddNode("bwd");
 	pNodes[5] = pFSM->AddNode("sidestep-right");
 	pNodes[6] = pFSM->AddNode("sidestep-left");
 	pNodes[7] = pFSM->AddNode("crouch-sidestep-right");
-	pNodes[8] = pFSM->AddNode("courchsidestep-left");
+	pNodes[8] = pFSM->AddNode("crouch-sidestep-left");
+
+	pNodes[0]->SetMotionName( "walk-legs" );
 
 	// moving forward (walk/run)
-	pNodes[0]->AddTransPath( "stand",  mt( 0.1, "stand" ) );
-	pNodes[0]->AddTransPath( "crouch", mt( 0.1, "crouch" ) );
+	pNodes[0]->AddTransPath( "standing", mt( 0.1, "stand" ) );
+	pNodes[0]->AddTransPath( "crouch",   mt( 0.1, "crouch" ) );
 
 	// standing
-	pNodes[1]->AddTransPath( "fwd",    mt( 0.1, "fwd" ) );
-	pNodes[1]->AddTransPath( "crouch", mt( 0.1, "crouch" ) );
+	pNodes[1]->AddTransPath( "fwd",      mt( 0.1, "fwd" ) );
+	pNodes[1]->AddTransPath( "crouch",   mt( 0.1, "crouch" ) );
 
 	// crouching
-	pNodes[2]->AddTransPath( "fwd",    mt( 0.1, "fwd" ) ); // move forward while crouching
-	pNodes[2]->AddTransPath( "stand",  mt( 0.1, "stand" ) );
-	pNodes[2]->AddTransPath( "prone",  mt( 0.1, "prone" ) );
+	pNodes[2]->AddTransPath( "fwd",      mt( 0.1, "fwd" ) ); // move forward while crouching
+	pNodes[2]->AddTransPath( "standing", mt( 0.1, "stand" ) );
+	pNodes[2]->AddTransPath( "prone",    mt( 0.1, "prone" ) );
 
 	// prone
-	pNodes[3]->AddTransPath( "fwd",    mt( 0.2, "crouch" ) & mt( 0.1, "fwd" ) ); // move forward while crouching
-	pNodes[3]->AddTransPath( "stand",  mt( 0.1, "stand" ) );
-	pNodes[3]->AddTransPath( "crouch", mt( 0.1, "crouch" ) );
+	pNodes[3]->AddTransPath( "fwd",      mt( 0.2, "crouch" ) & mt( 0.1, "fwd" ) ); // move forward while crouching
+	pNodes[3]->AddTransPath( "standing", mt( 0.1, "stand" ) );
+	pNodes[3]->AddTransPath( "crouch",   mt( 0.1, "crouch" ) );
+
+	CMotionDatabase mdb( motion_db_filepath );
+	m_pBlendNodeRoot->CreateFromSkeleton( mdb.GetMotionPrimitive( "standing" )->GetSkeleton()->GetRootBone() );
+
+	SetMotionDatabaseFilepath( motion_db_filepath );
+	// mdb is already open and loaded, so call LoadMotions() to load motions from it
+	// rather than open the file again
+	LoadMotions( mdb );
 /*
 	pFSM->AddNode( "fwd",  );
 	pFSM->AddNode( "stand" );
@@ -557,10 +609,12 @@ void CMotionGraphManager::LoadFromDatabase()
 	if( !db_ready )
 		return;
 
-	shared_ptr<CSkeleton> pSkeleton;// = db.GetSkeleton( m_CompleteSkeletonName );
-	m_pBlendNodeRoot = shared_ptr<CBlendNode>( new CBlendNode );
-	m_pBlendNodeRoot->SetSelf( m_pBlendNodeRoot );
-	m_pBlendNodeRoot->CreateFromSkeleton( pSkeleton->GetRootBone() );
+	LoadMotions( db );
+
+	LOG_PRINT_WARNING( "Need to initialize m_pBlendNodeRoot with a complete skeleton" );
+
+//	shared_ptr<CSkeleton> pSkeleton;// = db.GetSkeleton( m_CompleteSkeletonName );
+//	m_pBlendNodeRoot->CreateFromSkeleton( pSkeleton->GetRootBone() );
 }
 
 
