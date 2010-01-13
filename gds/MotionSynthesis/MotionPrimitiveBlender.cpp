@@ -49,7 +49,8 @@ m_CurrentRootPose( Matrix34Identity() ),
 m_HorizontalCurrentRootPose( Matrix34Identity() ),
 m_LastOriginalRootPose( Matrix34Identity() ),
 m_fInterpolationTime(0.2f),
-m_FlipVal(0)
+m_FlipVal(0),
+m_CurrentHorizontalPose( Matrix34Identity() )
 {
 	// create an empty motion primitive for interpolation
 	// - interpolation motion is created during runtime
@@ -244,6 +245,55 @@ void CMotionPrimitiveBlender::SetInterpolationMotion( shared_ptr<CMotionPrimitiv
 }
 
 
+inline void fix_horizontal_pose( Matrix34& pose )
+{
+	Vector3 vHeadingAxis = pose.matOrient.GetColumn(1);
+//	vHeadingAxis.y = 1;
+//	pose.matOrient.SetColumn( 1, vHeadingAxis );
+	pose.matOrient.SetColumn( 1, Vector3(0,1,0) );
+	pose.matOrient.Orthonormalize();
+}
+
+
+void CMotionPrimitiveBlender::UpdatePoseAndRootNodePose( shared_ptr<CMotionPrimitive>& pMotion,
+														float time_0,
+														float time_1 )
+{
+	Matrix34& current_horizontal_pose = m_CurrentHorizontalPose;
+
+	CKeyframe k0, k1;
+	pMotion->GetInterpolatedKeyframe( k0, time_0 );
+	pMotion->GetInterpolatedKeyframe( k1, time_1 );
+	Matrix34 root_pose_0 = k0.GetRootPose();
+	Matrix34 root_pose_1 = k1.GetRootPose();
+	Matrix34 root_pose_0_to_1 = root_pose_1 * root_pose_0.GetInverseROT();
+
+	// update the horizontal orientation
+/*
+	current_horizontal_pose.matOrient
+		= current_horizontal_pose.matOrient
+		* pCurrentMotion->GetLastOrientation()
+		* Matrix33Transpose( pCurrentMotion->GetOrientation( prev_time ) );
+*/
+	// translation of the pose
+	current_horizontal_pose.vPosition += current_horizontal_pose.matOrient * root_pose_0_to_1.vPosition;
+	current_horizontal_pose.vPosition.y = root_pose_1.vPosition.y;
+
+	fix_horizontal_pose( current_horizontal_pose );
+
+	// update the pose of the root node
+
+	m_CurrentRootPose.matOrient
+		= current_horizontal_pose.matOrient
+		* root_pose_1.matOrient;
+
+	// Use the position the pose for the root node
+	m_CurrentRootPose.vPosition	= current_horizontal_pose.vPosition;
+
+	m_CurrentRootPose.matOrient.Orthonormalize();
+}
+
+
 void CMotionPrimitiveBlender::Update( float dt )
 {
 	float prev_time = m_fCurrentTime;
@@ -256,6 +306,8 @@ void CMotionPrimitiveBlender::Update( float dt )
 
 	CKeyframe prev_keyframe;
 
+	Matrix34& current_horizontal_pose = m_CurrentHorizontalPose;
+
 	shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
 	float current_motion_total_time = pCurrentMotion->GetTotalTime();
 
@@ -263,9 +315,12 @@ void CMotionPrimitiveBlender::Update( float dt )
 	{
 		// dt is crossing the boundary of motion primitives
 
+		float last_keyframe_time = pCurrentMotion->GetKeyframeBuffer().back().GetTime() - 0.001f;
+		UpdatePoseAndRootNodePose( pCurrentMotion, prev_time, last_keyframe_time );
+
 		// move on to the next motion primitive in the queue
 		m_fCurrentTime -= current_motion_total_time;
-
+/*
 		// move the current world pose of the root node
 		pCurrentMotion->GetInterpolatedKeyframe( prev_keyframe, prev_time );
 
@@ -277,10 +332,32 @@ void CMotionPrimitiveBlender::Update( float dt )
 
 		Matrix34 prev_to_end_keyframe = root_pose_at_end_keyframe * root_pose_at_prev_time.GetInverseROT();
 
-		m_CurrentRootPose = prev_to_end_keyframe * m_CurrentRootPose;
+//		m_CurrentRootPose = prev_to_end_keyframe * m_CurrentRootPose;
 
 		m_CurrentRootPose.matOrient.Orthonormalize();
 
+		// update the horizontal orientation
+
+//		current_horizontal_pose.matOrient
+//			= current_horizontal_pose.matOrient
+//			* pCurrentMotion->GetLastOrientation()
+//			* Matrix33Transpose( pCurrentMotion->GetOrientation( prev_time ) );
+
+		// translation of the pose
+		current_horizontal_pose.vPosition += current_horizontal_pose.matOrient * prev_to_end_keyframe.vPosition;
+		current_horizontal_pose.vPosition.y = root_pose_at_end_keyframe.vPosition.y;
+
+		// update the pose of the root node
+
+		m_CurrentRootPose.matOrient
+			= current_horizontal_pose.matOrient
+			* root_pose_at_end_keyframe.matOrient;
+
+		// Use the same positions for the root node
+		m_CurrentRootPose.vPosition	= current_horizontal_pose.vPosition;
+
+//		m_CurrentRootPose = r * m_CurrentRootPose;
+*/
 		prev_time = 0;
 
 		if( pCurrentMotion->IsLoopedMotion() )
@@ -325,6 +402,8 @@ void CMotionPrimitiveBlender::Update( float dt )
 
 	Matrix34 next_root_pose;
 
+	UpdatePoseAndRootNodePose( pCurrentMotion, prev_time, m_fCurrentTime );
+/*
 	pCurrentMotion->GetInterpolatedKeyframe( prev_keyframe, prev_time );
 	const Matrix34 root_pose_at_prev_time = prev_keyframe.GetRootPose();
 
@@ -363,7 +442,7 @@ void CMotionPrimitiveBlender::Update( float dt )
 
 	Matrix33 prev_to_current_horizontal = horizontal( prev_to_current.matOrient );
 
-	if( /* strict == */ true )
+	if( true )// == strict )
 	{
 //		vDist.x *= 0.01f;
 
@@ -398,12 +477,12 @@ void CMotionPrimitiveBlender::Update( float dt )
 
 	m_HorizontalCurrentRootPose = horizontal( m_CurrentRootPose );
 
-	if( false /* m_UserFloorHeightOffset */ )
+	if( false )// m_UserFloorHeightOffset )
 	{
 		m_CurrentRootPose.vPosition.y += m_fFloorHeight;
 	}
 
-	m_CurrentRootPose.matOrient.Orthonormalize();
+	m_CurrentRootPose.matOrient.Orthonormalize();*/
 }
 
 

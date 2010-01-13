@@ -57,6 +57,8 @@ class CMotionPrimitiveBlender : public CMotionBlender
 	/// horizontal
 	Matrix34 m_HorizontalCurrentRootPose;
 
+	Matrix34 m_CurrentHorizontalPose;
+
 	float m_fInterpolationTime;
 
 	/// root pose of the last keyframe
@@ -90,6 +92,8 @@ private:
 	void SetInterpolationMotion( boost::shared_ptr<CMotionPrimitive> pCurrentMotion,
 								 boost::shared_ptr<CMotionPrimitive> pNextMotion );
 
+	void UpdatePoseAndRootNodePose( boost::shared_ptr<CMotionPrimitive>& pMotion, float time_0, float time_1 );
+
 public:
 
 	CMotionPrimitiveBlender();
@@ -99,7 +103,7 @@ public:
 	void Init();
 	void Release();
 
-	/// called by the client to update the pose of the character
+	/// called by the client to update the pose of root node of the character
 	virtual void Update( float dt );
 
 	virtual void CalculateKeyframe( CKeyframe& dest_keyframe );
@@ -134,6 +138,10 @@ public:
 	inline void RotateCurrentPoseHorizontally( Scalar angle_in_radian );
 
 	void SetCallback( boost::shared_ptr<CMotionPrimitivePlayCallback>& pCallback ) { m_pCallback = pCallback; }
+
+	void SetCurrentHorizontalPose( const Matrix34& pose ) { m_CurrentHorizontalPose = pose; }
+
+	const Matrix34& GetCurrentHorizontalPose() const { return m_CurrentHorizontalPose; }
 
 	friend CMotionPrimitiveBlenderStatistics;
 

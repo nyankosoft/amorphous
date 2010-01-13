@@ -83,6 +83,10 @@ public:
 				)
 			);
 		}
+
+		int num_children = take_min( src_node.GetNumChildren(), (int)m_vecpChild.size() );
+		for( int i=0; i<num_children; i++ )
+			m_vecpChild[i]->SetTransformNodes( src_node.GetChildNode(i) );
 	}
 
 	boost::shared_ptr<CBlendNode> GetBlendNodeByName( const std::string& name )
