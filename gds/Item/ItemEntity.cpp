@@ -184,6 +184,8 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 
 	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, *pAttribBaseEntityHandle );
 
+	pItem->SetItemEntity( entity_handle );
+
 	return entity_handle;
 /*
 	if( res == OK )
