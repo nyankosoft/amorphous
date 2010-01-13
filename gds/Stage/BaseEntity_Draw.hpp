@@ -18,6 +18,8 @@ extern void CreateMeshRenderMethod( CEntityHandle<>& entity,
 							        CShaderHandle& shader,
 							        CShaderTechniqueHandle& tech );
 
+extern void UpdateEntityForRendering( CCopyEntity& entity );
+
 
 class CEntityShaderLightParamsLoader : public CShaderParamsLoader
 {

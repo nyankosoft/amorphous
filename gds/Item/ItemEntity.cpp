@@ -132,6 +132,9 @@ void CItemEntity::Draw()
 	}
 	else
 	{
+		// Update lights info, etc.
+		UpdateEntityForRendering( *this );
+
 		m_pItem->Render();
 	}
 }

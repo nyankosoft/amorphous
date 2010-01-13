@@ -84,6 +84,8 @@ class CMeshContainerNode : public IArchiveObjectBase
 
 	Matrix34 m_WorldTransform; ///< current world transform
 
+	/// Mesh Containers
+	/// - Don't do m_vecpMeshContainer.push_back(). See below.
 	std::vector< boost::shared_ptr<CMeshObjectContainer> > m_vecpMeshContainer;
 
 	std::vector<Matrix34> m_vecMeshLocalPose;
@@ -104,7 +106,7 @@ public:
 
 	Matrix34 GetMeshContainerWorldTransform( int mesh_container_index );
 
-	void AddMeshContainer( boost::shared_ptr<CMeshObjectContainer> pMeshContainer, Matrix34& local_pose )
+	void AddMeshContainer( boost::shared_ptr<CMeshObjectContainer> pMeshContainer, const Matrix34& local_pose = Matrix34Identity() )
 	{
 		m_vecpMeshContainer.push_back( pMeshContainer );
 		m_vecMeshLocalPose.push_back( local_pose );
@@ -118,6 +120,8 @@ public:
 	int GetNumMeshContainers() const { return (int)m_vecpMeshContainer.size(); }
 
 	const boost::shared_ptr<CMeshObjectContainer> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
+
+	inline void SetMeshContainer( int index, boost::shared_ptr<CMeshObjectContainer>& pContainer, const Matrix34& local_pose = Matrix34Identity() );
 
 	boost::shared_ptr<CMeshObjectContainer> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 
@@ -148,6 +152,24 @@ public:
 	void LoadFromXMLNode( CXMLNodeReader& reader );
 };
 
+//=============================== inline implementations ===============================
+
+inline void CMeshContainerNode::SetMeshContainer( int index,
+												  boost::shared_ptr<CMeshObjectContainer>& pContainer,
+												  const Matrix34& local_pose )
+{
+	if( index < 0 )
+		return;
+
+	while( (int)m_vecpMeshContainer.size() <= index )
+	{
+		boost::shared_ptr<CMeshObjectContainer> pNewContainer( new CMeshObjectContainer );
+		AddMeshContainer( pNewContainer );
+	}
+
+	m_vecpMeshContainer[index] = pContainer;
+	m_vecMeshLocalPose[index] = local_pose;
+}
 
 
 #endif /* __MeshObjectContainer_H__ */

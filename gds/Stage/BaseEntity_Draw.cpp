@@ -160,36 +160,41 @@ void CBaseEntity::SetAsEnvMapTarget( CCopyEntity& entity )
 }
 
 
-
-void CBaseEntity::RenderEntity( CCopyEntity& entity )
+void UpdateLightInfo( CCopyEntity& entity )
 {
-	// default render states for fixed function pipeline
-//	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	if( entity.Lighting() )
+	{
+		if( entity.sState & CESTATE_LIGHT_INFORMATION_INVALID )
+		{
+			// need to update light information - find lights that reaches to this entity
+			entity.ClearLights();
+			entity.GetStage()->GetEntitySet()->UpdateLights( &entity );
+			entity.sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
+		}
+	}
+}
 
-	// alpha-blending settings
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_INVSRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_SrcAlphaBlend );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
+
+void UpdateEntityForRendering( CCopyEntity& entity )
+{
+	CBaseEntity& base_entity = *(entity.pBaseEntity);
 
 	// light params writer
-	if( m_EntityFlag & BETYPE_LIGHTING )
+	if( entity.GetEntityFlags() & BETYPE_LIGHTING )
 	{
 		UpdateLightInfo( entity );
 
-		if( m_MeshProperty.m_pShaderLightParamsLoader )
+		if( base_entity.MeshProperty().m_pShaderLightParamsLoader )
 		{
 			// The light params loader is shared by all the entities
-			m_MeshProperty.m_pShaderLightParamsLoader->SetEntity( entity.Self().lock() );
+			base_entity.MeshProperty().m_pShaderLightParamsLoader->SetEntity( entity.Self().lock() );
 		}
 	}
 
 	const float offset_world_transform_threshold = 150000.0f;
 	if( square(offset_world_transform_threshold) < Vec3LengthSq(entity.GetWorldPose().vPosition) )
 	{
-		CCamera* pCam = m_pStage->GetCurrentCamera();
+		CCamera* pCam = entity.GetStage()->GetCurrentCamera();
 		if( pCam )
 		{
 			sg_pWorldTransLoader->SetActive( true );
@@ -201,6 +206,21 @@ void CBaseEntity::RenderEntity( CCopyEntity& entity )
 	}
 	else
 		sg_pWorldTransLoader->SetActive( false );
+}
+
+
+void CBaseEntity::RenderEntity( CCopyEntity& entity )
+{
+	UpdateEntityForRendering( entity );
+
+	// default render states for fixed function pipeline
+
+	// alpha-blending settings
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
+//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_SrcAlphaBlend );
+//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
 
 	if( entity.m_pMeshRenderMethod )
 	{
@@ -576,21 +596,6 @@ void SetLightsToShader( CCopyEntity& entity, CShaderManager& rShaderMgr )
 	}
 
 	pShaderLightMgr->CommitChanges();
-}
-
-
-void CBaseEntity::UpdateLightInfo( CCopyEntity& entity )
-{
-	if( entity.Lighting() )
-	{
-		if( entity.sState & CESTATE_LIGHT_INFORMATION_INVALID )
-		{
-			// need to update light information - find lights that reaches to this entity
-			entity.ClearLights();
-			m_pStage->GetEntitySet()->UpdateLights( &entity );
-			entity.sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
-		}
-	}
 }
 
 

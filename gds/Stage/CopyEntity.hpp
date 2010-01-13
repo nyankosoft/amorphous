@@ -134,10 +134,6 @@ private:
 		m_pNextRawPtr = NULL;
 	}
 
-protected:
-
-	CStage *GetStage() { return m_pStage; }
-
 public:
 
 	CBaseEntity* pBaseEntity;
@@ -229,6 +225,8 @@ public:
 	inline bool IsInUse() const { return inuse; }
 
 	CBaseEntity *GetBaseEntity() { return pBaseEntity; }
+
+	CStage *GetStage() { return m_pStage; }
 
 	/// returns the name given to each copy entity.
 	/// copy entity is given a name when it needs individual identification.
