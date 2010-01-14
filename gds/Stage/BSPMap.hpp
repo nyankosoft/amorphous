@@ -11,6 +11,7 @@
 #include "BSPMap_Collision/BSPTree_CollisionModel.hpp"
 
 #include "Graphics/fwd.hpp"
+#include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 
 #include "Support/FixedVector.hpp"
@@ -50,8 +51,6 @@ private:
     /// triangulated mesh for collision (borrowed reference) (experimental)
 	CTriangleMesh *m_pTriangleMesh;
 
-
-	CShaderManager *m_pShaderManager;
 
 	int m_iNumPolygons;
 	CSG_Polygon* m_paPolygon;
@@ -126,6 +125,8 @@ private:
 	LPDIRECT3DTEXTURE9 m_pNormalmap_PL;	// normal map texture for point light
 
 	CShaderTechniqueHandle m_aShaderTechHandle[NUM_SHADER_TECHNIQUE_TYPES];
+
+	CShaderHandle m_Shader;
 
 private:
 

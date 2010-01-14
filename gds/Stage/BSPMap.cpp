@@ -9,12 +9,12 @@
 
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Direct3D/TextureTool.hpp"
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
-#include "JigLib/JL_PhysicsManager.hpp"
-#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
-#include "JigLib/JL_PhysicsActor.hpp"
+//#include "JigLib/JL_PhysicsManager.hpp"
+//#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
+//#include "JigLib/JL_PhysicsActor.hpp"
+#include "JigLib/TriangleMesh.hpp"
 
 #include "Support/memory_helpers.hpp"
 //#include "PerformanceCheck.h"
@@ -30,7 +30,6 @@ CBSPMap::CBSPMap( CStage *pStage )
 :
 CStaticGeometryBase( pStage ),
 m_pTriangleMesh(NULL),
-m_pShaderManager(NULL),
 m_paPolygon(NULL),
 m_paTriangleSet(NULL),
 m_paCellData(NULL),
@@ -474,8 +473,7 @@ bool CBSPMap::LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly 
 
 
 	// load shader
-	m_pShaderManager = new CShaderManager();
-	m_pShaderManager->LoadShaderFromFile( gs_DefaultShaderFilename );
+	m_Shader.Load( gs_DefaultShaderFilename );
 
 	return true;
 }
@@ -801,7 +799,7 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 	rCam.GetCameraMatrix(view);
 	rCam.GetProjectionMatrix(proj);
 
-	CShaderManager *pShaderManager = m_pShaderManager;
+	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
 	UINT pass, cPasses;
 
@@ -1149,7 +1147,10 @@ void CBSPMap::DrawTextureSortedPolygons_Shader()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
 	LPD3DXEFFECT pEffect = pShaderMgr->GetEffect();
 
 
@@ -1230,7 +1231,10 @@ void CBSPMap::DrawTextureSortedPolygons_Shader_TS()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
 	LPD3DXEFFECT pEffect = pShaderMgr->GetEffect();
 
 	// how about using vertex diffuse color alpha to store lightmap intensity?
@@ -1397,7 +1401,10 @@ void CBSPMap::RenderSkybox( const CCamera& rCamera )
 
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	CShaderManager *pShaderManager = CShader::Get()->GetCurrentShaderManager();
+	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	if( !pShaderManager )
+		return;
+
 	LPD3DXEFFECT pEffect = pShaderManager->GetEffect();
 
 	D3DXMATRIX matWorld, matScale;
