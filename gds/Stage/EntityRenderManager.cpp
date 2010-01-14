@@ -308,7 +308,7 @@ void CEntityRenderManager::RenderShadowCastersDownward_r( short sEntNodeIndex, C
 {
 	CEntityNode& rThisEntNode = m_paEntityTree[sEntNodeIndex];
 
-	// TODO: proper culing of shadoe caster objects
+	// TODO: proper culing of shadow caster objects
 //	if( !rCam.ViewFrustumIntersectsWith( rThisEntNode.m_AABB ) )
 //		return;
 
@@ -851,6 +851,7 @@ void CEntityRenderManager::DisableShadowMap()
 }
 
 
+/// Find lights near camera and update shadow map settings for the found lights.
 void CEntityRenderManager::UpdateLightsForShadow()
 {
 	Vector3 vCamCenter = Vector3(0,0,0);
@@ -916,8 +917,6 @@ void CEntityRenderManager::ReleaseGraphicsResources()
 
 void CEntityRenderManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	LoadTextures();
-
 	size_t i, num_base_entities = m_pEntitySet->m_vecpBaseEntity.size();
 	for(i=0; i<num_base_entities; i++)
 		m_pEntitySet->m_vecpBaseEntity[i]->LoadGraphicsResources( rParam );
@@ -947,6 +946,11 @@ void CEntityRenderManager::RenderSceneWithShadowMap( CCamera& rCam )
 }
 
 
+/**
+ - Render the shadow caster entities to shadow map texture(s).
+ - Render the shadow receiver entities.
+ - Render the scene without shadow to render target texture.
+*/
 void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//, 
 //													 CScreenEffectManager *pScreenEffectMgr )
 {
@@ -963,7 +967,7 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 
 	// render objects that cast shadows to others
 
-	// CEntityRenderManager::RenderShadowCasters() are called 1 or more times
+	// CEntityRenderManager::RenderShadowCasters() is called 1 or more times
 	m_pShadowManager->RenderShadowCasters( rCam );
 /*
 	// render shadow map
@@ -978,8 +982,9 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	m_pShadowManager->EndSceneShadowMap();
 */
 
+	float near_clip = 0.001f;
 	m_pShadowManager->SetSceneCamera( rCam );
-	m_pShadowManager->SceneCamera().SetNearClip( 0.001f );
+	m_pShadowManager->SceneCamera().SetNearClip( near_clip );
 	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
 
 	// render that receives shadows
@@ -1065,27 +1070,26 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	rCam.GetPose( m_CameraPose );
 	m_fCameraFarClipDist = rCam.GetFarClip();
 
-	D3DXMATRIX matWorld, matView, matProj;
-	D3DXMatrixIdentity( &matWorld );
+	Matrix44 matView, matProj;
 	rCam.GetCameraMatrix(matView);
 	rCam.GetProjectionMatrix(matProj);
 
-	pd3dDev->SetTransform(D3DTS_WORLD,		&matWorld);
-	pd3dDev->SetTransform(D3DTS_VIEW,		&matView);
-	pd3dDev->SetTransform(D3DTS_PROJECTION,	&matProj);
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+	FixedFunctionPipelineManager().SetViewTransform( matView );
+	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
 
 	// clear dest buffer
     pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
 
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
 	// set alpha test
 	pd3dDev->SetRenderState(D3DRS_ALPHAREF, (DWORD)0x00000001);
     pd3dDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
     pd3dDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 
-	// we use default D3D lights for entities
-    pd3dDev->SetRenderState( D3DRS_LIGHTING, TRUE );
+	// enable lights of graphics device for entities
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, true );
 
 	// test - add some ambient light
 //    pd3dDev->SetRenderState( D3DRS_AMBIENT, 0x00202020 );
