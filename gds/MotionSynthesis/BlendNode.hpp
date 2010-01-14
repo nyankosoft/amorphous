@@ -57,7 +57,8 @@ class CBlendNode
 
 //	std::vector<CBlendNode> m_vecChild;
 
-	/// Stores shared pointers to let motion primitives use this as entry point
+	/// Stores children as shared pointers to let motion primitives hold a pointer
+	/// to a node as entry point
 	std::vector< boost::shared_ptr<CBlendNode> > m_vecpChild;
 
 	// -1: no transform has been set.
@@ -71,7 +72,7 @@ public:
 
 	void CreateFromSkeleton( const CBone& src_bone );
 
-	/// Recursively sets transform nodes
+	/// Recursively sets transform nodes from src_node
 	void SetTransformNodes( const CTransformNode& src_node )
 	{
 		if( m_vecTransformNode.size() < NUM_MAX_BLENDS )
@@ -109,7 +110,9 @@ public:
 		return shared_ptr<CBlendNode>();
 	}
 
-	void GetTransformNode( CTransformNode& dest )
+	/// Recursively sets the transforms to a tree of transform nodes.
+	/// Resizes the child buffers of dest nodes if necessary
+	void GetTransformNode( CTransformNode& dest ) const
 	{
 		// blend transforms?
 /*		for( int i=0; i<m_vecTransformNode.size(); i++ )
@@ -131,7 +134,7 @@ public:
 	}
 
 	/// Extract keyframe
-	void GetKeyframe( CKeyframe& dest )
+	void GetKeyframe( CKeyframe& dest ) const
 	{
 		GetTransformNode( dest.RootNode() );
 	}
