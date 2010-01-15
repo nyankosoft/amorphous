@@ -137,7 +137,11 @@ void CSkeletalCharacter::Update( float dt )
 	if( !pEntity )
 		return;
 
-	pFSM->Player()->SetCurrentHorizontalPose( pEntity->GetWorldPose() );
+	Matrix34 world_pose = pEntity->GetWorldPose();
+
+	world_pose.matOrient = world_pose.matOrient * Matrix33RotationY( GetTurnSpeed() * dt );
+
+	pFSM->Player()->SetCurrentHorizontalPose( world_pose );
 
 	m_pMotionGraphManager->Update( dt );
 
@@ -242,6 +246,14 @@ void CSkeletalCharacter::ProcessInput( const SInputData& input, int action_code 
 */
 
 
+static inline float get_fixed_fparam( float fParam )
+{
+	if( 1.001 < fabs(fParam) )
+		return fParam * 0.001f;
+	else
+		return fParam;
+}
+
 
 bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int action_code )
 {
@@ -250,10 +262,13 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 	case ACTION_MOV_FORWARD:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_pCharacter->SetFwdSpeed(  input.fParam1 );
+			float fParam = get_fixed_fparam(input.fParam1);
+			m_pCharacter->SetFwdSpeed(  fParam );
 //			m_fFwdSpeed =  input.fParam1;
 //			m_pLowerLimbsMotionsFSM->RequestTransition( "fwd" );
 		}
+		else
+			m_pCharacter->SetFwdSpeed( 0 );
 		break;
 	case ACTION_MOV_BACKWARD:
 		if( input.iType == ITYPE_KEY_PRESSED )
@@ -269,6 +284,8 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 			m_pCharacter->SetTurnSpeed(  input.fParam1 );
 //			m_fTurnSpeed =  input.fParam1;
 		}
+		else
+			m_pCharacter->SetTurnSpeed( 0 );
 		break;
 	case ACTION_MOV_TURN_L:
 		if( input.iType == ITYPE_KEY_PRESSED )
@@ -276,6 +293,8 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 			m_pCharacter->SetTurnSpeed( -input.fParam1 );
 //			m_fTurnSpeed = -input.fParam1;
 		}
+		else
+			m_pCharacter->SetTurnSpeed( 0 );
 		break;
 	default:
 		break;
@@ -310,6 +329,13 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 	switch( action_code )
 	{
 	case ACTION_MOV_FORWARD:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			float fParam = get_fixed_fparam(input.fParam1);
+			m_pNode->SetMotionPlaySpeedFactor( fParam * 0.5f );
+		}
+		else
+			m_pCharacter->SetFwdSpeed( 0 );
 		break;
 	case ACTION_MOV_JUMP:
 		RequestTransition( "jump" );
