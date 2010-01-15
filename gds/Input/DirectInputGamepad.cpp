@@ -795,3 +795,24 @@ Result::Name CDirectInputGamepad::InitForceFeedbackEffect( CDIForceFeedbackEffec
 
 	return res;
 }
+
+
+void CDirectInputGamepad::GetStatus( std::vector<std::string>& buffer )
+{
+	buffer.resize( NUM_ANALOG_CONTROLS );
+	char line[64], val[16];
+	for( int i=0; i<NUM_ANALOG_CONTROLS; i+=4 )
+	{
+		int start = i;
+		int end = take_min( i+3, NUM_ANALOG_CONTROLS - 1 );
+		sprintf( line, "[%02d:%02d]", start, end );
+		for( int j=start; j<=end; j++ )
+		{
+			int pos = (int)m_afAxisPosition[j];
+			sprintf( val, " %04d |", pos );
+			strcat( line, val );
+		}
+		strcat( line, "\n" );
+		buffer[i] = line;
+	}
+}

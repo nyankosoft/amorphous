@@ -121,6 +121,8 @@ public:
 	CForceFeedbackEffect CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc );
 
 	Result::Name InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl );
+
+	void GetStatus( std::vector<std::string>& buffer );
 };
 
 #endif		/*  __DIRECTINPUTGAMEPAD_H__  */

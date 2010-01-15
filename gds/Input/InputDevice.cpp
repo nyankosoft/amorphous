@@ -150,6 +150,8 @@ CInputDeviceHub::CInputDeviceHub()
 
 void CInputDeviceHub::RegisterInputDevice( CInputDevice *pDevice )
 {
+	boost::mutex::scoped_lock(m_Mutex);
+
 	m_vecpInputDevice.push_back( pDevice );
 }
 
@@ -210,6 +212,8 @@ void CInputDeviceHub::UnregisterInputDeviceFromGroup( CInputDevice *pDevice )
 
 void CInputDeviceHub::UnregisterInputDevice( CInputDevice *pDevice )
 {
+	boost::mutex::scoped_lock(m_Mutex);
+
 	for( size_t i=0; i<m_vecpInputDevice.size(); i++ )
 	{
 		if( m_vecpInputDevice[i] == pDevice )
@@ -287,5 +291,23 @@ void CInputDeviceHub::SendAutoRepeat( CInputDeviceGroup& group )
 				pressed_key_state.m_NextAutoRepeatTimeMS = current_time + CInputHub::AUTO_REPEAT_INTERVAL_MS;
 			}
 		}
+	}
+}
+
+
+void CInputDeviceHub::GetInputDeviceStatus( std::vector<std::string>& dest_text_buffer )
+{
+	boost::mutex::scoped_lock(m_Mutex);
+
+	dest_text_buffer.resize( 0 );
+
+	vector<string> buffer;
+	for( size_t i=0; i<m_vecpInputDevice.size(); i++ )
+	{
+		buffer.resize( 0 );
+
+		m_vecpInputDevice[i]->GetStatus( buffer );
+
+		dest_text_buffer.insert( dest_text_buffer.end(), buffer.begin(), buffer.end() );
 	}
 }

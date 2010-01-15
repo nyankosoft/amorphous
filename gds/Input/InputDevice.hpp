@@ -3,6 +3,7 @@
 
 
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 #include "fwd.hpp"
 #include "InputHub.hpp"
 #include "InputDeviceGroup.hpp"
@@ -72,6 +73,8 @@ public:
 
 	virtual Result::Name InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl ) { return Result::UNKNOWN_ERROR; }
 
+	virtual void GetStatus( std::vector<std::string>& buffer ) {}
+
 	friend class CInputDeviceHub;
 };
 
@@ -83,6 +86,8 @@ class CInputDeviceHub
 	std::vector<CInputDevice *> m_vecpInputDevice;
 
 	std::vector< boost::shared_ptr<CInputDeviceGroup> > m_vecpGroup;
+
+	boost::mutex m_Mutex;
 
 public:
 
@@ -105,6 +110,8 @@ public:
 	boost::shared_ptr<CInputDeviceGroup> GetInputDeviceGroup( int i ) { return m_vecpGroup[i]; }
 
 	int GetNumInputDeviceGroups() const { return (int)m_vecpGroup.size(); }
+
+	void GetInputDeviceStatus( std::vector<std::string>& dest_text_buffer );
 };
 
 
