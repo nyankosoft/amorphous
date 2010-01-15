@@ -91,12 +91,15 @@ class CMotionPrimitiveNode
 	/// algorithm for state transitions
 	boost::shared_ptr<CMotionNodeAlgorithm> m_pAlgorithm;
 
+	float m_fMotionPlaySpeedFactor;
+
 public:
 
 	CMotionPrimitiveNode( const std::string& name )
 		:
 	m_Name(name),
-	m_pFSM(NULL)
+	m_pFSM(NULL),
+	m_fMotionPlaySpeedFactor(1.0f)
 	{
 		// By default, motion name initialized with the name of the node
 		m_MotionName = name;
@@ -182,6 +185,10 @@ public:
 	void SetAlgorithm( boost::shared_ptr<CMotionNodeAlgorithm> pAlgorithm );
 
 	boost::shared_ptr<CMotionNodeAlgorithm>& GetAlgorithm() { return m_pAlgorithm; }
+
+	float GetMotionPlaySpeedFactor() const { return m_fMotionPlaySpeedFactor; }
+
+	void SetMotionPlaySpeedFactor( float factor ) { m_fMotionPlaySpeedFactor = factor; }
 };
 
 
@@ -235,6 +242,8 @@ public:
 
 class CMotionNodeAlgorithm
 {
+protected:
+
 	CMotionPrimitiveNode *m_pNode;
 
 public:
@@ -321,8 +330,13 @@ public:
 		vector<MotionNodeTrans>& tansitions_to_process = *(m_pvecTransToProcess);
 		if( m_TransIndex < (int)tansitions_to_process.size() )
 		{
+			m_pCurrent->ExitState();
+
 			MotionNodeTrans& transition = tansitions_to_process[m_TransIndex];
-			transition.pNode->StartMotion( transition.interpolation_time );
+			m_pCurrent = transition.pNode;
+
+			m_pCurrent->EnterState();
+			m_pCurrent->StartMotion( transition.interpolation_time );
 		}
 	}
 

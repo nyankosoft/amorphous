@@ -410,9 +410,10 @@ void CMotionFSM::StartMotion( const std::string& motion_node_name )
 /// Checks the motion curently being played.
 void CMotionFSM::Update( float dt )
 {
-	m_pMotionPrimitivePlayer->Update( dt );
+	const float factor = m_pCurrent ? m_pCurrent->GetMotionPlaySpeedFactor() : 1.0f;
+	m_pMotionPrimitivePlayer->Update( dt * factor );
 
-	if( m_pCurrent )
+	if( m_pCurrent && m_pCurrent->GetAlgorithm() )
 		m_pCurrent->GetAlgorithm()->Update( dt );
 
 	// This will miss the motion primitive when it's too short or dt is too large
@@ -564,7 +565,7 @@ void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 	pNodes[0]->SetMotionName( "walk-legs" );
 
 	// moving forward (walk/run)
-	pNodes[0]->AddTransPath( "standing", mt( 0.1, "stand" ) );
+	pNodes[0]->AddTransPath( "standing", mt( 0.1, "standing" ) );
 	pNodes[0]->AddTransPath( "crouch",   mt( 0.1, "crouch" ) );
 
 	// standing
