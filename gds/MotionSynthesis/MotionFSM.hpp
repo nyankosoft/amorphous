@@ -456,13 +456,16 @@ inline void CMotionGraphManager::GetCurrentKeyframe( CKeyframe& dest )
 	// Combine the keyframes of motion primitives
 	m_pBlendNodeRoot->GetKeyframe( dest );
 
+	// Commented out - root node pose is set to identity in CBlendMatricesLoader::UpdateShaderParams().
+	// It is, instead, specified as an argument to CMeshContainerRenderMethod::RenderMeshContainer
+/*
 	// Overwrite the pose of the root node.
 	// The motions of first FSM controls the root node pose.
 	CTransformNode root_node;
 	Matrix34 root_pose( m_vecpMotionFSM.front()->Player()->GetCurrentRootPose() );
 	root_node.SetRotation( Quaternion( root_pose.matOrient ) );
 	root_node.SetTranslation( root_pose.vPosition );
-	m_pBlendNodeRoot->SetTransformNodes( root_node );
+	m_pBlendNodeRoot->SetTransformNodes( root_node );*/
 }
 
 
