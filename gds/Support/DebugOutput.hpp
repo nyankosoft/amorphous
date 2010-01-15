@@ -234,6 +234,18 @@ public:
 };
 
 
+class CDebugItem_InputDevice : public CDebugItem_ResourceManager
+{
+	std::vector<std::string> m_vecTextBuffer;
+
+public:
+
+	CDebugItem_InputDevice() {}
+
+	void GetTextInfo();
+};
+
+
 
 #include "Support/SafeDelete.hpp"
 #include "Support/Singleton.hpp"

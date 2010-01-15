@@ -8,6 +8,7 @@
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Support/Timer.hpp"
 #include "Sound/SoundManager.hpp"
+#include "Input/InputDevice.hpp"
 
 #include "Support/memory_helpers.hpp"
 #include "Support/StringAux.hpp"
@@ -136,7 +137,7 @@ void CDebugItem_Profile::Render()
 	int font_width, font_height;
 	m_pFont->GetFontSize( font_width, font_height );
 
-	const D3DXVECTOR2 vLeftTop = m_vTopLeftPos;
+	const Vector2 vLeftTop = m_vTopLeftPos;
 	C2DRect rect( 
 		vLeftTop,
 		vLeftTop + D3DXVECTOR2( (float)(font_width * (num_max_chars + 2)), (float)(font_height * num_lines) ),
@@ -144,7 +145,7 @@ void CDebugItem_Profile::Render()
 	rect.Draw();
 
 	// draw text
-	D3DXVECTOR2 vPos = m_vTopLeftPos;
+	Vector2 vPos = m_vTopLeftPos;
 	CFontBase *pFont = m_pFont;
 	for( i=0; i<num_lines; i++ )
 	{
@@ -207,6 +208,20 @@ void CDebugItem_SoundManager::GetTextInfo()
 {
 	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
 	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
+}
+
+
+void CDebugItem_InputDevice::GetTextInfo()
+{
+	InputDeviceHub().GetInputDeviceStatus( m_vecTextBuffer );
+
+	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
+	int left = sizeof(m_TextBuffer) - 1;
+	for( size_t i=0; i<m_vecTextBuffer.size() && 0 < left; i++ )
+	{
+		strncat( m_TextBuffer, m_vecTextBuffer[i].c_str(), left );
+		left -= (int)m_vecTextBuffer[i].size();
+	}
 }
 
 
