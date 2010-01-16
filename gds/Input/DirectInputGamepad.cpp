@@ -5,7 +5,7 @@
 #include "App/GameWindowManager_Win32.hpp"
 
 #include "Support/StringAux.hpp"
-#include "Support/Log/StateLog.hpp"
+//#include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 #include "../base.hpp"
@@ -230,6 +230,9 @@ Result::Name CDirectInputGamepad::Init()
 
 Result::Name CDirectInputGamepad::InitDevice( const DIDEVICEINSTANCE& di )
 {
+	m_InstanceName = di.tszInstanceName;
+	m_ProductName  = di.tszProductName;
+
 	Result::Name res = CreateDevice( di );
 
 	if( res != Result::SUCCESS )
@@ -527,7 +530,7 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 				button.m_State = CInputState::RELEASED;
 			}
 */
-			StateLog.Update(14, "gpd.button: " + to_string(input.iGICode - GIC_GPD_BUTTON_00) );
+//			StateLog.Update(14, "gpd.button: " + to_string(input.iGICode - GIC_GPD_BUTTON_00) );
 		}
 		else
 		{
@@ -597,15 +600,15 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 
 	if( m_bSendExtraDigitalInputFromPOVInput )
 		SendPOVInputAsDigitalInput();
-
+/*
 	StateLog.Update( 8, "gpd.axis-x: " + to_string(m_afAxisPosition[AXIS_X]) );
 	StateLog.Update( 9, "gpd.axis-y: " + to_string(m_afAxisPosition[AXIS_Y]) );
 	StateLog.Update(10, "gpd.axis-z: " + to_string(m_afAxisPosition[AXIS_Z]) );
 	StateLog.Update(11, "gpd.rotation-x: " + to_string(m_afAxisPosition[ROTATION_X]) );
 	StateLog.Update(12, "gpd.rotation-y: " + to_string(m_afAxisPosition[ROTATION_Y]) );
 	StateLog.Update(13, "gpd.rotation-z: " + to_string(m_afAxisPosition[ROTATION_Z]) );
-
-    return S_OK;
+*/
+	return S_OK;
 }
 
 
@@ -799,13 +802,16 @@ Result::Name CDirectInputGamepad::InitForceFeedbackEffect( CDIForceFeedbackEffec
 
 void CDirectInputGamepad::GetStatus( std::vector<std::string>& buffer )
 {
-	buffer.resize( NUM_ANALOG_CONTROLS );
+	buffer.reserve( NUM_ANALOG_CONTROLS + 1 );
+
+	buffer.push_back( m_InstanceName + " (" +  m_ProductName + "):\n" );
+
 	char line[64], val[16];
 	for( int i=0; i<NUM_ANALOG_CONTROLS; i+=4 )
 	{
 		int start = i;
 		int end = take_min( i+3, NUM_ANALOG_CONTROLS - 1 );
-		sprintf( line, "[%02d:%02d]", start, end );
+		sprintf( line, "axis[%02d:%02d]", start, end );
 		for( int j=start; j<=end; j++ )
 		{
 			int pos = (int)m_afAxisPosition[j];
@@ -813,6 +819,6 @@ void CDirectInputGamepad::GetStatus( std::vector<std::string>& buffer )
 			strcat( line, val );
 		}
 		strcat( line, "\n" );
-		buffer[i] = line;
+		buffer.push_back( line );
 	}
 }

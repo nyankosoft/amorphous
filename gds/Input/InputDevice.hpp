@@ -26,6 +26,10 @@ class CInputDevice
 
 protected:
 
+	std::string m_InstanceName;
+
+	std::string m_ProductName;
+
 	CInputDeviceGroup *m_pGroup;
 
 protected:

@@ -1,6 +1,7 @@
 #include "InputDevice.hpp"
 #include "InputHub.hpp"
 #include "ForceFeedback/ForceFeedbackEffect.hpp"
+#include "Support/StringAux.hpp"
 #include "Support/Profile.hpp"
 
 using namespace std;
@@ -299,7 +300,9 @@ void CInputDeviceHub::GetInputDeviceStatus( std::vector<std::string>& dest_text_
 {
 	boost::mutex::scoped_lock(m_Mutex);
 
-	dest_text_buffer.resize( 0 );
+	dest_text_buffer.resize( 2 );
+	dest_text_buffer[0] = fmt_string( "Input Device(s) (%d found)\n", (int)m_vecpInputDevice.size() );
+	dest_text_buffer[1] = "----------------------------------------\n";
 
 	vector<string> buffer;
 	for( size_t i=0; i<m_vecpInputDevice.size(); i++ )
