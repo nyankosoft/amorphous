@@ -1,0 +1,24 @@
+
+// screen resolution
+// aspect ratio must be w:h = 4:3
+resolution	800	600
+//resolution	1024	768
+//resolution	1600	900
+
+// full screen mode - yes / no
+fullscreen	no
+
+// specify the top-left corner of the window
+// - window will be placed at the center of the display
+//   if nothing is specified
+window_pos  50 100
+
+// verbosity
+// - valid directive: verbose / caution / warning / error
+// - "error" is set if nothing is specified
+log_verbosity verbose
+
+// audio library
+// - default: OpenAL
+// - specify None to completely disable audio
+audio_library OpenAL
