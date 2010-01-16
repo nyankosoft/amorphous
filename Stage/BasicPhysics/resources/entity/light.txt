@@ -1,0 +1,118 @@
+================= directional light entity ========================== CBE_DirectionalLight
+CLASSNAME	CBE_DirectionalLight
+NAME		Sunlight
+LIGHT_TYPE	STATIC
+UPPER_COLOR	0.9 0.9 0.9
+LOWER_COLOR	0.3 0.3 0.3
+END
+================= directional light entity ========================== CBE_DirectionalLight
+CLASSNAME	CBE_DirectionalLight
+NAME		Sunlight_MediumStrength
+LIGHT_TYPE	STATIC
+UPPER_COLOR	0.6 0.6 0.6
+LOWER_COLOR	0.1 0.1 0.1
+END
+==================================
+CLASSNAME	CBE_DirectionalLight
+NAME		Sunlight_Weak
+LIGHT_TYPE	STATIC
+UPPER_COLOR	0.42 0.42 0.42
+LOWER_COLOR	0.25 0.25 0.25
+DEFAULT_DIRECTION -0.3 -0.7 -0.2
+END
+==================================
+CLASSNAME	CBE_DirectionalLight
+NAME		Moonlight
+LIGHT_TYPE	STATIC
+UPPER_COLOR	0.25 0.25 0.25
+LOWER_COLOR	0.05 0.05 0.05
+END
+
+================= point light entity ================================ CBE_PointLight
+CLASSNAME	CBE_PointLight
+NAME		PointLight
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+TEXTURE		Texture\\PseudoGlare.dds
+ALPHABLEND	ONE
+LIGHT_TYPE	STATIC|GLARE
+UPPER_COLOR	0.65	0.65	0.68
+//UPPER_COLOR	0.60	0.25	0.25
+LOWER_COLOR	0.25	0.25	0.25
+ATTENUATION	0.01	0.01	0.01
+GLARE_DIAMETER	1.2
+END
+=================
+CLASSNAME	CBE_PointLight
+NAME		DynamicLightX
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+//TEX_FILENAME	Texture\\PseudoGlare.dds
+LIGHT_TYPE	DYNAMIC
+//BASE_COLOR	0.30	0.90	0.97
+//BASE_COLOR	0.90	0.95	0.98
+BASE_COLOR	1.50	2.00	2.05
+//GLARE_DIAMETER	1.5
+END
+=================
+CLASSNAME	CBE_PointLight
+NAME		MuzzleFlashLight
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+LIGHT_TYPE	DYNAMIC|TIMER|FADEOUT
+//BASE_COLOR	0.98	0.75	0.18
+//BASE_COLOR	0.90	0.75	0.25
+//BASE_COLOR	2.25	2.05	1.65	// bright but too much flickering
+BASE_COLOR	0.50	0.40	0.10
+LIGHT_TIMER_VAL	0.0499
+END
+=================
+CLASSNAME	CBE_PointLight
+NAME		ExplosionFlashLight
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+LIGHT_TYPE	DYNAMIC|TIMER|FADEOUT
+//BASE_COLOR	0.98	0.75	0.18
+//BASE_COLOR	0.95	0.85	0.75
+//BASE_COLOR	2.25	2.15	2.05
+BASE_COLOR	2.55	2.35	2.15
+LIGHT_TIMER_VAL	0.9
+END
+=================
+CLASSNAME	CBE_PointLight
+NAME		MissileFlame
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+LIGHT_TYPE	DYNAMIC
+BASE_COLOR	1.95	1.75	1.55
+END
+================= pseudo glare for life item
+CLASSNAME	CBE_PointLight
+NAME		BlueLight
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+TEX_FILENAME	Texture\\PseudoGlare.dds
+GLARE_DIAMETER	1.5
+LIGHT_TYPE	GLARE
+END
+================= dynamic light for laser
+CLASSNAME	CBE_PointLight
+NAME		Light_LightGreen
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+LIGHT_TYPE	DYNAMIC
+BASE_COLOR	0.384	1.000	0.750
+END
+
+================= generic static point light for hemispheric lighting
+CLASSNAME	CBE_PointLight
+NAME		StaticPointLight
+AABB		0.10 0.10 0.10
+BV_TYPE		BVTYPE_DOT
+LIGHT_TYPE	STATIC
+UPPER_COLOR	0.85	0.85	0.88
+//UPPER_COLOR	0.60	0.25	0.25
+LOWER_COLOR	0.10	0.10	0.10
+ATTENUATION	0.01	0.01	0.001
+GLARE_DIAMETER	1.2
+END
