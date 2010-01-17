@@ -14,7 +14,13 @@ class CStageViewerGameTask : public CSingleStageGameTask
 
 	boost::shared_ptr<CCameraController> m_pCameraController;
 
+	/// Use the above camera controller to control the camera movement.
+	/// - default: true
+	bool m_EnableCameraController;
+
 protected:
+
+	CCamera& Camera() { return m_Camera; }
 
 	boost::shared_ptr<CCameraController> CameraController() { return m_pCameraController; }
 
@@ -29,6 +35,10 @@ public:
 	virtual int FrameMove( float dt );
 
 	virtual void Render();
+
+	void EnableCameraController( bool enable ) { m_EnableCameraController = enable; }
+
+	bool IsCameraControllerEnabled() const { return m_EnableCameraController; }
 };
 
 

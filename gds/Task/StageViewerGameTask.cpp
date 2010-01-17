@@ -19,6 +19,8 @@ public:
 
 
 CStageViewerGameTask::CStageViewerGameTask()
+:
+m_EnableCameraController(true)
 {
 	const int input_handler_index = 1;
 	m_pCameraController = shared_ptr<CCameraController>( new CCameraController( input_handler_index ) );
@@ -38,7 +40,7 @@ int CStageViewerGameTask::FrameMove( float dt )
 
 //	UpdateCameraPose();
 
-	if( m_pCameraController )
+	if( m_pCameraController && m_EnableCameraController )
 	{
 		m_pCameraController->UpdateCameraPose( dt );
 		m_Camera.SetPose( m_pCameraController->GetPose() );
