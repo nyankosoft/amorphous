@@ -321,6 +321,20 @@ void CMotionPrimitiveNode::RequestTransition( const std::string& dest_motion_nam
 }
 
 
+void CMotionPrimitiveNode::EnterState( /*vector<MotionNodeTrans>& reqs*/ )
+{
+	if( m_pAlgorithm )
+		m_pAlgorithm->EnterState();
+}
+
+
+void CMotionPrimitiveNode::ExitState()
+{
+	if( m_pAlgorithm )
+		m_pAlgorithm->ExitState();
+}
+
+
 void CMotionPrimitiveNode::LoadMotion( CMotionDatabase& db )
 {
 	if( 0 < m_MotionName.length() )

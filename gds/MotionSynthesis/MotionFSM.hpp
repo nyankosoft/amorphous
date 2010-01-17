@@ -128,15 +128,6 @@ public:
 	// add transition to another node
 	// - Client code may specify intermidiate nodes that needs to be covered before reaching the destination node
 	void AddTransPath( const std::string& dest_motion_name, const mt& trans );
-
-	virtual void EnterState( /*vector<MotionNodeTrans>& reqs*/ )
-	{
-//		if( 
-	}
-
-	virtual void ExitState()
-	{
-	}
 /*
 	void ProcessRequest( boost::shared_ptr< std::vector<CMotionTransRequest> > pReq, int index )
 	{
@@ -155,6 +146,10 @@ public:
 	}
 */
 	virtual void RequestTransition( const std::string& dest_motion_name );
+
+	virtual void EnterState( /*vector<MotionNodeTrans>& reqs*/ );
+
+	virtual void ExitState();
 
 
 	/// \param interpolation_time duration of interpolation motion played
@@ -262,6 +257,10 @@ public:
 		if( m_pNode )
 			m_pNode->RequestTransition( dest_motion_name );
 	}
+
+	virtual void EnterState() {}
+
+	virtual void ExitState() {}
 
 	friend class CMotionPrimitiveNode;
 };
