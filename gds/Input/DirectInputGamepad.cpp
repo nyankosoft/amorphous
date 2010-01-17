@@ -40,7 +40,7 @@ m_pDIJoystick(NULL)
 
 	int i;
 	for( i=0; i<NUM_ANALOG_CONTROLS; i++ )
-        m_afAxisPosition[i] = 0.0f;
+        m_aAxisPosition[i] = 0;
 
 	for( i=0; i<NUM_ANALOG_CONTROLS; i++ )
         m_bPrevHold[i] = false;
@@ -443,6 +443,10 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
     DWORD              dwElements;
     DWORD              i;
     HRESULT            hr;
+	int current_analog_values[NUM_ANALOG_CONTROLS];
+
+	for( int i=0; i<NUM_ANALOG_CONTROLS; i++ )
+		current_analog_values[i] = VALUE_NOT_FOUND;
 
     if( NULL == m_pDIJoystick ) 
         return S_OK;
@@ -542,22 +546,22 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 				// before being casted to other types, such as float
 
 				case DIJOFS_X:
-					m_afAxisPosition[AXIS_X] = ((float)(int)didod[i].dwData);
+					current_analog_values[AXIS_X] = (int)didod[i].dwData;
 					break;
 				case DIJOFS_Y:
-					m_afAxisPosition[AXIS_Y] = ((float)(int)didod[i].dwData);
+					current_analog_values[AXIS_Y] = (int)didod[i].dwData;
 					break;
 				case DIJOFS_Z:
-					m_afAxisPosition[AXIS_Z] = ((float)(int)didod[i].dwData);
+					current_analog_values[AXIS_Z] = (int)didod[i].dwData;
 					break;
 				case DIJOFS_RX:
-					m_afAxisPosition[ROTATION_X] = ((float)(int)didod[i].dwData);
+					current_analog_values[ROTATION_X] = (int)didod[i].dwData;
 					break;
 				case DIJOFS_RY:
-					m_afAxisPosition[ROTATION_Y] = ((float)(int)didod[i].dwData);
+					current_analog_values[ROTATION_Y] = (int)didod[i].dwData;
 					break;
 				case DIJOFS_RZ:
-					m_afAxisPosition[ROTATION_Z] = ((float)(int)didod[i].dwData);
+					current_analog_values[ROTATION_Z] = (int)didod[i].dwData;
 					break;
 				case DIJOFS_POV(0):
 					m_aPOV[POV_0] = ((int)didod[i].dwData);
@@ -577,23 +581,34 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 		}
     }
 
-	input.iType = ITYPE_KEY_PRESSED;
+	input.iType = ITYPE_VALUE_CHANGED;
 
-	input.iGICode = GIC_GPD_AXIS_X;
-	input.fParam1 = m_afAxisPosition[AXIS_X];
-	InputHub().UpdateInput(input);
+	static const int gi_codes[NUM_ANALOG_CONTROLS] = {
+		GIC_GPD_AXIS_X,
+		GIC_GPD_AXIS_Y,
+		GIC_GPD_AXIS_Z,
+		GIC_GPD_ROTATION_X,
+		GIC_GPD_ROTATION_Y,
+		GIC_GPD_ROTATION_Z,
+	};
 
-	input.iGICode = GIC_GPD_AXIS_Y;
-	input.fParam1 = m_afAxisPosition[AXIS_Y];
-	InputHub().UpdateInput(input);
+	for( int i=0; i<NUM_ANALOG_CONTROLS; i++ )
+	{
+		if( current_analog_values[i] == VALUE_NOT_FOUND
+		 || current_analog_values[i] == m_aAxisPosition[i] )
+		{
+			continue;
+		}
 
-	input.iGICode = GIC_GPD_AXIS_Z;
-	input.fParam1 = m_afAxisPosition[AXIS_Z];
-	InputHub().UpdateInput(input);
+		m_aAxisPosition[i] = current_analog_values[i]; // update the value
 
-	input.iGICode = GIC_GPD_ROTATION_Z;
-	input.fParam1 = m_afAxisPosition[ROTATION_Z];
-	InputHub().UpdateInput(input);
+		// analog input value has changed
+		input.iGICode = gi_codes[i];
+		input.fParam1 = (float)m_aAxisPosition[i] * 0.001f; // floating point value scaled to [0,1]
+//		input.iParam = m_aAxisPosition[i]; // non-scaled original value (signed integer)
+
+		InputHub().UpdateInput(input);
+	}
 
 	if( m_bSendExtraDigitalInputFromAnalogInput )
         SendAnalogInputAsDigitalInput();
@@ -601,12 +616,12 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 	if( m_bSendExtraDigitalInputFromPOVInput )
 		SendPOVInputAsDigitalInput();
 /*
-	StateLog.Update( 8, "gpd.axis-x: " + to_string(m_afAxisPosition[AXIS_X]) );
-	StateLog.Update( 9, "gpd.axis-y: " + to_string(m_afAxisPosition[AXIS_Y]) );
-	StateLog.Update(10, "gpd.axis-z: " + to_string(m_afAxisPosition[AXIS_Z]) );
-	StateLog.Update(11, "gpd.rotation-x: " + to_string(m_afAxisPosition[ROTATION_X]) );
-	StateLog.Update(12, "gpd.rotation-y: " + to_string(m_afAxisPosition[ROTATION_Y]) );
-	StateLog.Update(13, "gpd.rotation-z: " + to_string(m_afAxisPosition[ROTATION_Z]) );
+	StateLog.Update( 8, "gpd.axis-x: " + to_string(m_aAxisPosition[AXIS_X]) );
+	StateLog.Update( 9, "gpd.axis-y: " + to_string(m_aAxisPosition[AXIS_Y]) );
+	StateLog.Update(10, "gpd.axis-z: " + to_string(m_aAxisPosition[AXIS_Z]) );
+	StateLog.Update(11, "gpd.rotation-x: " + to_string(m_aAxisPosition[ROTATION_X]) );
+	StateLog.Update(12, "gpd.rotation-y: " + to_string(m_aAxisPosition[ROTATION_Y]) );
+	StateLog.Update(13, "gpd.rotation-z: " + to_string(m_aAxisPosition[ROTATION_Z]) );
 */
 	return S_OK;
 }
@@ -698,10 +713,10 @@ void CDirectInputGamepad::SendAnalogInputAsDigitalInput()
 	SInputData input;
 	for( int i=0; i<NUM_ANALOG_CONTROLS; i++ )
 	{
-		const float& dirkey_threshold = 700.0f;
+		const int& dirkey_threshold = 700;
 
 		bool prev_hold = m_bPrevHold[i];
-		bool hold = dirkey_threshold < fabsf(m_afAxisPosition[i]) ? true : false;
+		bool hold = dirkey_threshold < abs(m_aAxisPosition[i]) ? true : false;
 
 		m_bPrevHold[i] = hold;
 
@@ -814,7 +829,7 @@ void CDirectInputGamepad::GetStatus( std::vector<std::string>& buffer )
 		sprintf( line, "axis[%02d:%02d]", start, end );
 		for( int j=start; j<=end; j++ )
 		{
-			int pos = (int)m_afAxisPosition[j];
+			int pos = (int)m_aAxisPosition[j];
 			sprintf( val, " %04d |", pos );
 			strcat( line, val );
 		}

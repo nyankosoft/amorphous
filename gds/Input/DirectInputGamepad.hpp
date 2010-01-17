@@ -37,7 +37,8 @@ class CDirectInputGamepad : public CInputDevice
 
 	enum param
 	{
-		DIJOYSTICK_BUFFER_SIZE = 32, ///< size of the buffer to hold input data from mouse (DirectInput)
+		DIJOYSTICK_BUFFER_SIZE = 32,    ///< size of the buffer to hold input data from mouse (DirectInput)
+		VALUE_NOT_FOUND = -1000000,     ///< used in ReadBufferedData() to mean that input data for an axis was not found
 	};
 
 	/// NOTE: update s_GICodeForBinarizedAnalogInput in DirectInputGamepad.cpp when these enums are modified
@@ -63,7 +64,7 @@ class CDirectInputGamepad : public CInputDevice
 
 	/// holds absolute position of the analog stick
 	/// TODO: change value range from [-1000,1000] to [-1,1]
-	float m_afAxisPosition[NUM_ANALOG_CONTROLS];
+	int m_aAxisPosition[NUM_ANALOG_CONTROLS];
 
 	bool m_bPrevHold[NUM_ANALOG_CONTROLS];
 

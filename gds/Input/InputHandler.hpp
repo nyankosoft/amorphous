@@ -170,6 +170,7 @@ inline bool IsMouseMoveInputCode( int gi_code )
 
 #define ITYPE_KEY_PRESSED  -1
 #define ITYPE_KEY_RELEASED  1
+#define ITYPE_VALUE_CHANGED  0 ///< mouse positions & gamepad axes
 
 
 struct SInputData
