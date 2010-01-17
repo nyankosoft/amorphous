@@ -45,6 +45,7 @@ enum eGeneralInputCode
 	GIC_PAGE_UP,
 	GIC_PAGE_DOWN,
 	
+	GIC_CONVERT,
 	GIC_NOCONVERT,
 
 	GIC_F1,

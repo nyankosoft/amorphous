@@ -157,6 +157,9 @@ void CDIKeyboard::InitKeyCodeMap()
 	gs_aGICodeToDIKCode[GIC_DOWN]      = DIK_DOWN;
 	gs_aGICodeToDIKCode[GIC_RIGHT]     = DIK_RIGHT;
 	gs_aGICodeToDIKCode[GIC_LEFT]      = DIK_LEFT;
+
+	// for Japanese keyboards
+	gs_aGICodeToDIKCode[GIC_CONVERT]   = DIK_CONVERT;
 	gs_aGICodeToDIKCode[GIC_NOCONVERT] = DIK_NOCONVERT;
 
 	gs_aGICodeToDIKCode['A']   = DIK_A;
