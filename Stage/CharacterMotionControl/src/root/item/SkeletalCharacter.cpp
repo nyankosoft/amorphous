@@ -3,6 +3,7 @@
 #include <gds/Graphics/Mesh/SkeletalMesh.hpp>
 #include <gds/MotionSynthesis/MotionDatabase.hpp>
 #include <gds/MotionSynthesis/MotionPrimitiveBlender.hpp>
+#include <gds/Support/DebugOutput.hpp>
 
 using namespace std;
 using namespace boost;
@@ -49,6 +50,22 @@ void UpdateMeshBoneTransforms( const msynth::CKeyframe& keyframe, const msynth::
 	UpdateMeshBoneTransforms_r( skeleton.GetRootBone(), keyframe.GetRootNode(), target_skeletal_mesh );
 }
 
+
+class CDebugItem_MotionFSM : public CDebugItem_ResourceManager
+{
+public:
+	boost::shared_ptr<msynth::CMotionGraphManager> m_pMotionGraphManager;
+public:
+
+	CDebugItem_MotionFSM() {}
+
+	void GetTextInfo()
+	{
+		string buffer;
+		m_pMotionGraphManager->GetDebugInfo( buffer );
+		strncpy( m_TextBuffer, buffer.c_str(), sizeof(m_TextBuffer) - 1 );
+	}
+};
 
 
 CSkeletalCharacter::CSkeletalCharacter()
@@ -108,6 +125,10 @@ m_fTurnSpeed(0.0f)
 	m_pSkeletonSrcMotion = mdb.GetMotionPrimitive("standing");
 
 	m_pMotionGraphManager->GetMotionFSM("lower_limbs")->StartMotion("standing");
+
+	CDebugItem_MotionFSM *pDbgItem = new CDebugItem_MotionFSM;
+	pDbgItem->m_pMotionGraphManager = m_pMotionGraphManager;
+	DebugOutput.AddDebugItem( "motion_graph_mgr", pDbgItem );
 }
 
 /*
@@ -139,6 +160,7 @@ void CSkeletalCharacter::Update( float dt )
 
 	Matrix34 world_pose = pEntity->GetWorldPose();
 
+	// steering
 	world_pose.matOrient = world_pose.matOrient * Matrix33RotationY( GetTurnSpeed() * dt );
 
 	pFSM->Player()->SetCurrentHorizontalPose( world_pose );
@@ -246,15 +268,6 @@ void CSkeletalCharacter::ProcessInput( const SInputData& input, int action_code 
 */
 
 
-static inline float get_fixed_fparam( float fParam )
-{
-	if( 1.001 < fabs(fParam) )
-		return fParam * 0.001f;
-	else
-		return fParam;
-}
-
-
 bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int action_code )
 {
 	switch( action_code )
@@ -262,10 +275,11 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 	case ACTION_MOV_FORWARD:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			float fParam = get_fixed_fparam(input.fParam1);
-			m_pCharacter->SetFwdSpeed(  fParam );
-//			m_fFwdSpeed =  input.fParam1;
-//			m_pLowerLimbsMotionsFSM->RequestTransition( "fwd" );
+			m_pCharacter->SetFwdSpeed(  input.fParam1 );
+		}
+		else if( input.iType == ITYPE_VALUE_CHANGED )
+		{
+			m_pCharacter->SetFwdSpeed(  input.fParam1 );
 		}
 		else
 			m_pCharacter->SetFwdSpeed( 0 );
@@ -307,18 +321,18 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 void CFwdMotionNode::Update( float dt )
 {
 	float fFwdSpeed = m_pCharacter->GetFwdSpeed();
-	if( fFwdSpeed < 0.1f )
+	if( fFwdSpeed < 0.2f )
 	{
 		RequestTransition( "standing" );
 	}
-	else if( fFwdSpeed < 0.5f )
+/*	else if( fFwdSpeed < 0.5f )
 	{
 		RequestTransition( "fwd" ); // walk
 	}
 	else
 	{
-		RequestTransition( "fwd" ); // walk
-	}
+		RequestTransition( "fwd" ); // run
+	}*/
 }
 
 
@@ -331,11 +345,12 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 	case ACTION_MOV_FORWARD:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			float fParam = get_fixed_fparam(input.fParam1);
-			m_pNode->SetMotionPlaySpeedFactor( fParam * 0.5f );
+			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
 		}
-		else
-			m_pCharacter->SetFwdSpeed( 0 );
+		else if( input.iType == ITYPE_VALUE_CHANGED )
+		{
+			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
+		}
 		break;
 	case ACTION_MOV_JUMP:
 		RequestTransition( "jump" );
@@ -349,6 +364,13 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 	}
 
 	return false;
+}
+
+
+void CFwdMotionNode::EnterState()
+{
+	// update the forward speed
+	m_pNode->SetMotionPlaySpeedFactor( m_pCharacter->GetFwdSpeed() );
 }
 
 
@@ -376,7 +398,16 @@ bool CStandingMotionNode::HandleInput( const SInputData& input, int action_code 
 	switch( action_code )
 	{
 	case ACTION_MOV_FORWARD:
-		RequestTransition( "fwd" );
+		if( input.iType == ITYPE_KEY_PRESSED
+		 && 0.2f < input.fParam1 )
+		{
+			RequestTransition( "fwd" );
+		}
+		else if( input.iType == ITYPE_VALUE_CHANGED
+		 && 0.2f < input.fParam1 )
+		{
+			RequestTransition( "fwd" );
+		}
 		break;
 	case ACTION_MOV_JUMP:
 		RequestTransition( "jump" );

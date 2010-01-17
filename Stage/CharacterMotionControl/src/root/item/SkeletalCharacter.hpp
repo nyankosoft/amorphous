@@ -130,15 +130,21 @@ public:
 
 inline bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input )
 {
+	SInputData input_copy = input;
+
 	if( !m_pKeybind )
 		return false;
+
+	if( input.iGICode == GIC_GPD_AXIS_Y )
+		input_copy.fParam1 *= -1.0f;
+
 
 	int action_code = m_pKeybind->GetActionCode( input.iGICode );
 
 	if( action_code == ACTION_NOT_ASSIGNED )
 		return false;
 
-	return HandleInput( input, action_code );
+	return HandleInput( input_copy, action_code );
 }
 
 
@@ -150,6 +156,8 @@ public:
 	void Update( float dt );
 
 	bool HandleInput( const SInputData& input, int action_code );
+
+	void EnterState();
 };
 
 
