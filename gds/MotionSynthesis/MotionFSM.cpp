@@ -484,6 +484,18 @@ void CMotionFSM::CalculateKeyframe()
 }
 
 
+void CMotionFSM::GetDebugInfo( std::string& dest_text_buffer )
+{
+	if( !m_pCurrent )
+	{
+		dest_text_buffer += "current node: <None>\n";
+		return;
+	}
+
+	dest_text_buffer += "current node: " + m_pCurrent->GetName() + "\n";
+}
+
+
 void CMotionFSM::LoadMotions( CMotionDatabase& db )
 {
 	name_motionnode_map::iterator itr;
@@ -540,6 +552,19 @@ void CMotionGraphManager::LoadMotions( CMotionDatabase& mdb )
 //	shared_ptr<CMotionPrimitive> pMotion = mdb.GetMotionPrimitive( m_CompleteSkeletonName );
 //	if( pMotion )
 //		m_pBlendNodeRoot->CreateFromSkeleton( pMotion->GetSkeleton()->GetRootBone() );
+}
+
+
+void CMotionGraphManager::GetDebugInfo( std::string& dest_text_buffer )
+{
+	dest_text_buffer = "motion graph manager\n";
+	dest_text_buffer += "-------------------------\n";
+	dest_text_buffer += to_string( (int)m_vecpMotionFSM.size() ) + "FSM(s) in total\n";
+	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
+	{
+		dest_text_buffer += fmt_string( "[%d] name: %s\n", (int)i, m_vecpMotionFSM[i]->GetName().c_str() );
+		m_vecpMotionFSM[i]->GetDebugInfo( dest_text_buffer );
+	}
 }
 
 

@@ -372,6 +372,8 @@ public:
 			m_pCurrent->GetAlgorithm()->HandleInput( input );
 	}
 
+	void GetDebugInfo( std::string& dest_text_buffer );
+
 	friend class CMotionFSMCallback;
 };
 
@@ -426,6 +428,8 @@ public:
 	void LoadMotions( CMotionDatabase& mdb );
 
 	inline void HandleInput( const SInputData& input );
+
+	void GetDebugInfo( std::string& dest_text_buffer );
 
 	void InitForTest( const std::string& motion_db_filepath = "motions/default.mdb" );
 };
