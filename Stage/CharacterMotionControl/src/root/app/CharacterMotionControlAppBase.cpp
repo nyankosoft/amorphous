@@ -76,6 +76,11 @@ CCharacterMotionControlAppTask::CCharacterMotionControlAppTask()
 	m_pKeyBind->Assign( GIC_RIGHT, ACTION_MOV_TURN_R );
 	m_pKeyBind->Assign( GIC_LEFT,  ACTION_MOV_TURN_L );
 
+	// analog input
+	// - may need to invert the fParam1.
+	// - inversion is currently turned on, and is done in CCharacterMotionNodeAlgorithm::HandleInput()
+	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,  ACTION_MOV_FORWARD );
+
 	CScriptManager::ms_UseBoostPythonModules = true;
 
 	CStageLoader stg_loader;
@@ -98,11 +103,58 @@ CCharacterMotionControlAppTask::CCharacterMotionControlAppTask()
 //		pEntity->pBaseEntity->SetMeshRenderMethod( *pEntity ); // error: cannot access protected member declared in class 'CBaseEntity'
 	}
 
+	m_CharacterItemEntity = entity;
+
 	// set keybind to the character item
 	pCharacter->SetKeyBind( m_pKeyBind );
 
 //	m_pInputHandler.reset( new CCharacterMotionInputHandler(pCharacter,m_pKeyBind) );
 //	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
+
+	m_pInputHandler.reset( new CDelegateInputHandler<CCharacterMotionControlAppTask>( this ) );
+	InputHub().SetInputHandler( 2, m_pInputHandler.get() );
+}
+
+
+int CCharacterMotionControlAppTask::FrameMove( float dt )
+{
+	int ret = CStageViewerGameTask::FrameMove(dt);
+	if( ret != ID_INVALID )
+		return ret;
+
+	if( IsCameraControllerEnabled() )
+	{
+		// let the camera controller control the camera movement
+	}
+	else
+	{
+		shared_ptr<CItemEntity> pEntity = m_CharacterItemEntity.Get();
+		if( pEntity )
+		{
+			Vector3 vPos = pEntity->GetWorldPose().vPosition + Vector3(0.0f, 2.0f, -3.8f);
+			Camera().SetPose( Matrix34( vPos, Matrix33Identity() ) );
+		}
+	}
+
+	return CGameTask::ID_INVALID;
+}
+
+
+void CCharacterMotionControlAppTask::HandleInput( SInputData& input )
+{
+	switch( input.iGICode )
+	{
+	case '1':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			// toggle camera control
+			bool enabled = IsCameraControllerEnabled();
+			EnableCameraController( !enabled );
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 

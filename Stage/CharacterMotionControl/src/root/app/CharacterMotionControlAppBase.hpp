@@ -7,6 +7,7 @@
 #include <gds/Task/GameTaskFactoryBase.hpp>
 #include <gds/Stage.hpp>
 #include <gds/GameCommon/KeyBind.hpp>
+#include <gds/Item/ItemEntity.hpp>
 
 
 enum ShadowAppTaskID
@@ -14,6 +15,20 @@ enum ShadowAppTaskID
 //	GAMETASK_ID_SHADOWS_TEST_STAGE,
 	GAMETASK_ID_BASIC_PHYSICS,
 	NUM_SHADOW_APP_GAMETASK_IDS
+};
+
+
+template<class T>
+class CDelegateInputHandler : public CInputHandler
+{
+	T *m_pTarget;
+public:
+	CDelegateInputHandler(T *pTarget) : m_pTarget(pTarget) {}
+
+	void ProcessInput( SInputData& input )
+	{
+		m_pTarget->HandleInput( input );
+	}
 };
 
 
@@ -29,7 +44,12 @@ class CCharacterMotionControlAppTask : public CStageViewerGameTask
 {
 	boost::shared_ptr<CKeyBind> m_pKeyBind;
 
+
+	boost::shared_ptr< CDelegateInputHandler<CCharacterMotionControlAppTask> > m_pInputHandler;
+
 //	boost::shared_ptr<CCharacterMotionInputHandler> m_pInputHandler;
+
+	CEntityHandle<CItemEntity> m_CharacterItemEntity;
 
 public:
 
@@ -37,6 +57,9 @@ public:
 
 	~CCharacterMotionControlAppTask() {}
 
+	int FrameMove( float dt );
+
+	void HandleInput( SInputData& input );
 };
 
 class CCharacterMotionControlAppGUITask : public CStageViewerGameTask
