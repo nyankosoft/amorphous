@@ -265,7 +265,7 @@ bool CBE_Player::HandleInput( SPlayerEntityAction& input )
 	switch( input.ActionCode )
 	{
 	case ACTION_MISC_TOGGLE_HEADLIGHT:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 			ToggleHeadLight();
 		return true;
 	}

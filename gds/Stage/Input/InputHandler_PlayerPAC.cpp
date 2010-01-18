@@ -128,17 +128,17 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 	float fParam = input.fParam1;
 
 	// process the fixed-keybind(non-configurable) controls
-	const float gpd_margin = 200.0f;
+	const float gpd_margin = 0.2f;
 	if( GIC_GPD_AXIS_X <= input.iGICode && input.iGICode <= GIC_GPD_AXIS_Z ||
 		GIC_GPD_ROTATION_X <= input.iGICode && input.iGICode <= GIC_GPD_ROTATION_Z )
 	{
-		// clamp the analog input from the gamepad to the range [-1,1]
+		// set fParam to 0 if the absolute value of fParam is less that the margin
 		if( fabsf(fParam) < gpd_margin )
 			fParam = 0;
 		else
 		{
 			float param_sign = fParam / fabsf(fParam);
-			fParam	= ( fParam - gpd_margin * param_sign ) / (1000.0f - gpd_margin) * 1.0f;
+			fParam	= ( fParam - gpd_margin * param_sign ) / (1.0f - gpd_margin) * 1.0f;
 		}
 
 	}
@@ -167,16 +167,16 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 	action_input.ActionCode          = action_code;
 	action_input.SecondaryActionCode = secondary_action_code;
 	action_input.fParam              = fParam;
+	action_input.type                = input.iType;
 
-	if( input.iType == ITYPE_KEY_PRESSED )
+	if( input.iType == ITYPE_KEY_PRESSED
+	 || input.iType == ITYPE_VALUE_CHANGED )
 	{
 		m_afActionState[action_code] = fParam;
-		action_input.type = SPlayerEntityAction::KEY_PRESSED;
 	}
 	else if( input.iType == ITYPE_KEY_RELEASED )
 	{
 		m_afActionState[action_code] = 0;
-		action_input.type = SPlayerEntityAction::KEY_RELEASED;
 	}
 
 	// check if there is an item the player is using right now

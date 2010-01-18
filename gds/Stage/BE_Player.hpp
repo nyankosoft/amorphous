@@ -9,6 +9,7 @@
 #include "GameMessage.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/fwd.hpp"
+#include "Input/InputHandler.hpp"
 
 #include "GameCommon/3DActionCode.hpp"
 
@@ -40,13 +41,7 @@ struct SPlayerEntityAction
 	int type;
 	float fParam;
 
-	enum eInputType
-	{
-		KEY_PRESSED = 0,
-		KEY_RELEASED,
-	};
-
-	SPlayerEntityAction() : ActionCode(-1), SecondaryActionCode(-1), type(KEY_PRESSED), fParam(0) {}
+	SPlayerEntityAction() : ActionCode(-1), SecondaryActionCode(-1), type(ITYPE_KEY_PRESSED), fParam(0) {}
 };
 
 

@@ -99,12 +99,12 @@ void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
 	if( input.iType == ITYPE_KEY_PRESSED )
 	{
 		m_afActionState[action_code] = input.fParam1;
-		action_input.type = SPlayerEntityAction::KEY_PRESSED;
+		action_input.type = ITYPE_KEY_PRESSED;
 	}
 	else if( input.iType == ITYPE_KEY_RELEASED )
 	{
 		m_afActionState[action_code] = 0;
-		action_input.type = SPlayerEntityAction::KEY_RELEASED;
+		action_input.type = ITYPE_KEY_RELEASED;
 	}
 
 	action_input.fParam = input.fParam1;

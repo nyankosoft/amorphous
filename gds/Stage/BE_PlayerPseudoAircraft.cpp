@@ -1125,7 +1125,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		return true;	// input has been handled by the parent class 'CBE_Player'
 
 
-	int input_type = input.type == SPlayerEntityAction::KEY_PRESSED ? ITYPE_KEY_PRESSED : ITYPE_KEY_RELEASED;
+	int input_type = input.type;
 
 	// let command menu handle the input
 	// - secondary action is sent to command menu
@@ -1134,7 +1134,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 	{
 		CGM_InputData ui_input;
 		ui_input.code = g_GMInputCodeForActionCode[input.SecondaryActionCode];
-		ui_input.type = input.type == SPlayerEntityAction::KEY_PRESSED ? CGM_InputData::TYPE_PRESSED : CGM_InputData::TYPE_RELEASED;
+		ui_input.type = input.type == ITYPE_KEY_PRESSED ? CGM_InputData::TYPE_PRESSED : CGM_InputData::TYPE_RELEASED;
 		ui_input.fParam = input.fParam;
 		bool handled = m_pCmdMenuDialogManager->HandleInput( ui_input );
 
@@ -1165,7 +1165,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		break;
 
 	case ACTION_MISC_CYCLE_VIEWPOINTS:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 			CycleViewpoint();
 			return true;
@@ -1173,7 +1173,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		break;
 
 	case ACTION_MISC_CYCLE_TARGET_FOCUS:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 			CycleTargetFocus();
 			return true;
@@ -1181,7 +1181,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		break;
 
 	case ACTION_MISC_TOGGLE_NIGHTVISION:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 //			ToggleNightVision();
 			return true;
@@ -1192,7 +1192,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 
 		if(	m_pPlayerAircraftHUD )
 		{
-			if( input.type == SPlayerEntityAction::KEY_PRESSED )
+			if( input.type == ITYPE_KEY_PRESSED )
 			{
 				m_pPlayerAircraftHUD->DisplayGlobalRadar( true );
 			}
@@ -1204,7 +1204,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		break;
 
 	case ACTION_MISC_TOGGLE_HUD:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 			if( m_pPlayerAircraftHUD )
 				m_pPlayerAircraftHUD->ToggleShowHide();
@@ -1212,7 +1212,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 		break;
 
 	case ACTION_MENU_OPEN_MENU_0:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 			// open misc command menu by down key
 			if( m_pCmdMenuDialogManager
@@ -1226,7 +1226,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
         break;
 
 	case ACTION_MENU_OPEN_MENU_1:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 			// open order command menu by up key
 			if( m_pCmdMenuDialogManager
@@ -1247,7 +1247,7 @@ bool CBE_PlayerPseudoAircraft::HandleInput( SPlayerEntityAction& input )
 /*	if( ACTION_MENU_OPEN_MENU_0 <= input.ActionCode
 	 && input.ActionCode <= ACTION_MENU_OPEN_MENU_7 )
 	{
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 			int root_dlg_index = input.ActionCode - ACTION_MENU_OPEN_MENU_0;
 			if( m_pCmdMenuDialogManager.get()

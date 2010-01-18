@@ -470,7 +470,7 @@ bool CBE_PlayerPseudoLeggedVehicle::HandleInput( SPlayerEntityAction& input )
 	{
 	case ACTION_MOV_FORWARD:
 //		StateLog.Update( 15, "fwd: " + to_string(input.type) );
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 		{
 			SetThrust( THRUST_FORWARD, input.fParam );
 			DWORD dwCurrentTime = timeGetTime();
@@ -479,7 +479,7 @@ bool CBE_PlayerPseudoLeggedVehicle::HandleInput( SPlayerEntityAction& input )
 			m_adwLastActionInputTime[input.ActionCode] = dwCurrentTime;
 			return true;
 		}
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
+		else if( input.type == ITYPE_KEY_RELEASED )
 		{
 			SetThrust( THRUST_FORWARD, 0 );
 			SetBoost( 0.0f );
@@ -488,50 +488,50 @@ bool CBE_PlayerPseudoLeggedVehicle::HandleInput( SPlayerEntityAction& input )
 		break;
 
 	case ACTION_MOV_BOOST:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 			SetBoost( input.fParam );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
+		else if( input.type == ITYPE_KEY_RELEASED )
 			SetBoost( 0 );
 		return true;
 
 	case ACTION_MOV_BACKWARD:
 //		StateLog.Update( 16, "bk: " + to_string(input.type) );
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 			SetThrust( THRUST_BACKWARD, input.fParam );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
+		else if( input.type == ITYPE_KEY_RELEASED )
 			SetThrust( THRUST_BACKWARD, 0 );
 		return true;
 
 	case ACTION_MOV_SLIDE_R:
 //		StateLog.Update( 17, "right: " + to_string(input.type) );
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 			SetThrust( THRUST_RIGHT, input.fParam );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
+		else if( input.type == ITYPE_KEY_RELEASED )
 			SetThrust( THRUST_RIGHT, 0 );
 		return true;
 
 	case ACTION_MOV_SLIDE_L:
 //		StateLog.Update( 18, "left: " + to_string(input.type) );
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 			SetThrust( THRUST_LEFT, input.fParam );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
+		else if( input.type == ITYPE_KEY_RELEASED )
 			SetThrust( THRUST_LEFT, 0 );
 		return true;
 
 	case ACTION_MOV_SLIDE_UP:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 //			AddJumpThrust( Vector3(0,10,0) );
 			AddJumpThrust( Vector3(0,1000,0) );
-/*		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+/*		if( input.type == ITYPE_KEY_PRESSED )
 			SetThrust( THRUST_UP, input.fParam );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
+		else if( input.type == ITYPE_KEY_RELEASED )
 			SetThrust( THRUST_UP, 0 );*/
 		return true;
 
 	case ACTION_MOV_SLIDE_DOWN:
-		if( input.type == SPlayerEntityAction::KEY_PRESSED )
+		if( input.type == ITYPE_KEY_PRESSED )
 			SetThrust( THRUST_DOWN, input.fParam );
-		else if( input.type == SPlayerEntityAction::KEY_RELEASED )
+		else if( input.type == ITYPE_KEY_RELEASED )
 			SetThrust( THRUST_DOWN, 0 );
 		return true;
 
