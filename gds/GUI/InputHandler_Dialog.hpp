@@ -41,7 +41,7 @@ inline bool GPD2KBDInputConverter::GetNewAnalogKeyInput( int analog_key,
 														 float param,
 														 SInputData& dest_input )
 {
-	const float& dirkey_threshold = 700.0f;
+	const float& dirkey_threshold = 0.7f;
 
 	bool prev_hold = m_bPrevHold[analog_key];
 	bool hold = dirkey_threshold < fabsf(param) ? true : false;
