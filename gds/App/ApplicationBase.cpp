@@ -125,6 +125,8 @@ void CApplicationBase::InitDebugItems()
 
 	DebugOutput.AddDebugItem( "sound_manager", new CDebugItem_SoundManager() );
 
+	DebugOutput.AddDebugItem( "input_device", new CDebugItem_InputDevice() );
+
 	DebugOutput.SetTopLeftPos( Vector2(16,32) );
 
 	DebugOutput.Hide();
