@@ -7,6 +7,8 @@
 
 #define NUM_MAX_2DRECTS 128
 
+/// fixed sized index buffer for triangle list indices of rectangles
+/// - Use this if you are sure that the number of rectangles to draw is less than or equal to NUM_MAX_2DRECTS
 static const U16 s_RectTriListIndex[NUM_MAX_2DRECTS * 6] =
 {
 	  0,   1,   2,    0,   2,   3,
@@ -137,6 +139,48 @@ static const U16 s_RectTriListIndex[NUM_MAX_2DRECTS * 6] =
 	500, 501, 502,  500, 502, 503,
 	504, 505, 506,  504, 506, 507,
 	508, 509, 510,  508, 510, 511
+};
+
+
+
+#include <vector>
+
+
+/// growable index buffer for triangle list indices of rectangles
+/// - Call SetNumMaxRects() before using the index buffer
+///   CRectTriListIndexBuffer::SetNumMaxRects( num_rects );
+///   DrawIndexedPrimitive( ..., &(CRectTriListIndexBuffer::GetIndexBuffer()[0]) )
+class CRectTriListIndexBuffer
+{
+	static std::vector<U16> ms_vecIndex;
+
+public:
+
+	// Sets the maximum number of rectangles that can be rendered as triangle lists.
+	// Grows the index buffer if necessary.
+	static void SetNumMaxRects( int num_rects )
+	{
+		const int num_orig_indices = (int)ms_vecIndex.size();
+		if( num_rects <= num_orig_indices / 6 )
+			return; // no need for additional indices
+
+		ms_vecIndex.insert( ms_vecIndex.end(), num_rects * 6 - num_orig_indices, 0 );
+		for( int i=num_orig_indices / 6; i<num_rects; i++ )
+		{
+			int index = i*6;
+			int vert_index = i*4;
+
+			ms_vecIndex[index + 0] = vert_index;
+			ms_vecIndex[index + 1] = vert_index + 1;
+			ms_vecIndex[index + 2] = vert_index + 2;
+
+			ms_vecIndex[index + 3] = vert_index;
+			ms_vecIndex[index + 4] = vert_index + 2;
+			ms_vecIndex[index + 5] = vert_index + 3;
+		}
+	}
+
+	static const std::vector<U16>& GetIndexBuffer() { return ms_vecIndex; }
 };
 
 
