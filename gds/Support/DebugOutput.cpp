@@ -200,14 +200,14 @@ void CDebugItem_ResourceManager::Render()
 void CDebugItem_GraphicsResourceManager::GetTextInfo()
 {
 	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
-	SoundManager().GetTextInfo( m_TextBuffer );
+	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 }
 
 
 void CDebugItem_SoundManager::GetTextInfo()
 {
 	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
-	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
+	SoundManager().GetTextInfo( m_TextBuffer );
 }
 
 
