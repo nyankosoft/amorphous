@@ -478,6 +478,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\RectTriListIndex.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\RectTriListIndex.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\RenderTask.hpp"
 				>
 			</File>
