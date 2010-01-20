@@ -175,10 +175,11 @@ protected:
 
 //	int GetAnnotationIndex( const std::string& annotation_name );
 
-	void CreateMotionPrimitiveDesc( xercesc::DOMNode *pMotionNode );
+//	void CreateMotionPrimitiveDesc( xercesc::DOMNode *pMotionNode );
+	void CreateMotionPrimitiveDesc( CXMLNodeReader& node_reader );
 
 	/// called once for every bvh file
-	void CreateMotionPrimitiveDescGroup( xercesc::DOMNode *pRootNode );
+	void CreateMotionPrimitiveDescGroup( CXMLNodeReader& bvh_file_node_reader );
 
 //	void CreateMotionPrimitive( const CMotionPrimitiveDesc& desc, const CMotionPrimitiveDescGroup& desc_group, CBVHPlayer& bvh_player );
 
@@ -187,7 +188,6 @@ protected:
 	void CreateMotionTable( xercesc::DOMNode *pMotionTableNode );
 
 	void ProcessXMLFile( CXMLNodeReader& root_node );
-//	void ProcessXMLFile( xercesc::DOMNode *pRootNode );
 
 	bool CreateMotionPrimitivesFromScriptFile( const std::string& script_filename );
 
