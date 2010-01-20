@@ -175,7 +175,6 @@ protected:
 
 //	int GetAnnotationIndex( const std::string& annotation_name );
 
-//	void CreateMotionPrimitiveDesc( xercesc::DOMNode *pMotionNode );
 	void CreateMotionPrimitiveDesc( CXMLNodeReader& node_reader );
 
 	/// called once for every bvh file
@@ -192,7 +191,6 @@ protected:
 	bool CreateMotionPrimitivesFromScriptFile( const std::string& script_filename );
 
 	bool CreateAnnotationTable( CXMLNodeReader& annot_table_node );
-//	bool CreateAnnotationTable( xercesc::DOMNode *pAnnotTableNode );
 
 	void ProcessRootNodeHorizontalElementOptions( xercesc::DOMNode *RootJointNode, CMotionPrimitiveDesc& desc );
 

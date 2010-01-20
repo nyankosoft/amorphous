@@ -201,21 +201,8 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 {
 	// found <MotionPrimitive> element
 
-/*	const xercesc::DOMNamedNodeMap *pAttrib = pMotionNode->getAttributes();
-
-	if( !pAttrib )
-	{
-		LOG_PRINT_ERROR( " - No attribute for input bvh file" );
-		return; // no attribute - <File> element must have filepath attribute
-	}
-
-	const XercesString attrib_name("name");
-	xercesc::DOMNode *pNameNode = pAttrib->getNamedItem( attrib_name.begin() );
-
-	if( !pNameNode )*/
-
-	string name = node_reader.GetAttributeText( "name" );
-	if( name.length() == 0 )
+	string motion_primitive_name = node_reader.GetAttributeText( "name" );
+	if( motion_primitive_name.length() == 0 )
 	{
 		LOG_PRINT_ERROR( " - No name for motion primitive" );
 		return;
@@ -226,55 +213,22 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 
 	CMotionPrimitiveDesc desc;
 
-	string motion_primitive_name = name;
-//		= xercesc::XMLString::transcode( XercesString(pNameNode->getNodeValue()) );
-
 	// save the name of the motion primitive
 	desc.m_Name = motion_primitive_name;
 
-//	for( DOMNode *pNode = pMotionNode->getFirstChild();
-//		 pNode;
-//		 pNode = pNode->getNextSibling() )
 	vector<CXMLNodeReader> children = node_reader.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
 	{
 		const string element_name = children[i].GetName();
-//			= xercesc::XMLString::transcode( XercesString(pNode->getNodeName()) );
 
 		if( element_name == "Frame" )
 		{
 			desc.m_StartFrame = to_int( children[i].GetAttributeText( "start" ) );
 			desc.m_EndFrame   = to_int( children[i].GetAttributeText( "end" ) );
-
-/*			const xercesc::DOMNamedNodeMap *pFrameAttrib
-				= pNode->getAttributes();
-
-			if( pFrameAttrib )
-			{
-				xercesc::DOMNode *pStart, *pEnd;
-
-				pStart = pFrameAttrib->getNamedItem(XercesString("start"));
-				if( pStart )
-					desc.m_StartFrame = to_int(pStart->getNodeValue());
-
-				pEnd = pFrameAttrib->getNamedItem(XercesString("end"));
-				if( pEnd )
-					desc.m_EndFrame = to_int(pEnd->getNodeValue());
-			}*/
 		}
 		else if( element_name == "Loop" )
 		{
 			desc.m_bIsLoopMotion = to_bool( children[i].GetAttributeText( "loop" ), "true", "false" );
-
-/*			const xercesc::DOMNamedNodeMap *pLoopAttrib
-				= pNode->getAttributes();
-
-			if( pLoopAttrib )
-			{
-				xercesc::DOMNode *pLoop = pLoopAttrib->getNamedItem(XercesString("loop"));
-				if( pLoop )
-					desc.m_bIsLoopMotion = to_bool(pLoop->getNodeValue());
-			}*/
 		}
 		else if( element_name == "StartBoneName" )
 		{
@@ -283,29 +237,18 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 		}
 		else if( element_name == "AnnotationList" )
 		{
-//			for( DOMNode *pAnnotNode = pNode->getFirstChild();
-//				 pAnnotNode;
-//				 pAnnotNode = pAnnotNode->getNextSibling() )
 			vector<CXMLNodeReader> annotations = children[i].GetImmediateChildren();
 			for( size_t j=0; j<annotations.size(); j++ )
 			{
 				if( annotations[j].GetName() == "Annotation" )
 					desc.m_vecAnnotation.push_back( annotations[j].GetTextContent() );
-//				if( to_string(pAnnotNode->getNodeName()) == "Annotation" )
-//				{
-//					desc.m_vecAnnotation.push_back( to_string(pAnnotNode->getTextContent()) );
-//				}
 			}
 		}
 		else if( element_name == "RootJoint" )
 		{
-//			for( DOMNode *pRJNode = pNode->getFirstChild();
-//				 pRJNode;
-//				 pRJNode = pRJNode->getNextSibling() )
 			vector<CXMLNodeReader> root_joints = children[i].GetImmediateChildren();
 			for( size_t j=0; j<root_joints.size(); j++ )
 			{
-//				if( to_string(pRJNode->getNodeName()) == "HorizontalElement" )
 				if( root_joints[j].GetName() == "HorizontalElement" )
 				{
 					ProcessRootNodeHorizontalElementOptions( root_joints[j].GetDOMNode(), desc );
