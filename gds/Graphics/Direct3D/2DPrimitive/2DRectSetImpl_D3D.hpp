@@ -314,13 +314,15 @@ inline void C2DRectSetImpl_D3D::draw( int start_rect_index, int num_rects )
 	if( num_rects == 0 )
 		return;
 
+	CRectTriListIndexBuffer::SetNumMaxRects( num_rects );
+
 	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 
 	DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP( D3DPT_TRIANGLELIST,
 									0,
 									num_rects * 4,
 									num_rects * 2,
-									s_RectTriListIndex,
+									&(CRectTriListIndexBuffer::GetIndexBuffer()[0]),
 									D3DFMT_INDEX16,
 									&(m_vecRectVertex[start_rect_index*4]),
 									sizeof(TLVERTEX) );
