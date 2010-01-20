@@ -3,12 +3,9 @@
 
 
 #include <sys/stat.h>
-#include <vector>
-#include <string>
 #include <boost/shared_ptr.hpp>
 
 #include "XML/XMLNodeReader.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/Serialization/Serialization.hpp"
@@ -192,7 +189,7 @@ protected:
 
 	bool CreateAnnotationTable( CXMLNodeReader& annot_table_node );
 
-	void ProcessRootNodeHorizontalElementOptions( xercesc::DOMNode *RootJointNode, CMotionPrimitiveDesc& desc );
+	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc );
 
 //	void ProcessFiles();
 

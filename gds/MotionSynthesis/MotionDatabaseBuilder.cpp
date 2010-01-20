@@ -1,13 +1,11 @@
+#include "MotionDatabaseBuilder.hpp"
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
-//#include "Support/fnop.hpp"
 #include "XML/xmlch2x.hpp"
 #include "XML/XercesString.hpp"
 #include "XML/XMLDocumentLoader.hpp"
-
-#include "MotionDatabaseBuilder.hpp"
 
 using namespace std;
 using namespace boost;
@@ -169,23 +167,22 @@ bool CMotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_
 }
 
 
-void CMotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( xercesc::DOMNode *RootJointNode, CMotionPrimitiveDesc& desc )
+void CMotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc )
 {
-	for( DOMNode *pNode = RootJointNode->getFirstChild();
-		 pNode;
-		 pNode = pNode->getNextSibling() )
+	vector<CXMLNodeReader> children = root_joint_node.GetImmediateChildren();
+	for( size_t i=0; i<children.size(); i++ )
 	{
-		const string element_name = to_string( pNode->getNodeName() );
+		const string element_name = children[i].GetName();
 
 		if( element_name == "ResetPos" )
 		{
-			desc.m_bResetHorizontalRootPos = to_bool( pNode->getTextContent(), "yes", "no" );
+			desc.m_bResetHorizontalRootPos = to_bool( children[i].GetTextContent(), "yes", "no" );
 
-//			g_Log.Print( "reset horizontal root position: " + true_or_false );
+//			LOG_PRINT( "reset horizontal root position: " + true_or_false );
 		}
 		else if( element_name == "NormalizeOrientation" )
 		{
-			string orient_opt = to_string( pNode->getTextContent() );
+			string orient_opt = children[i].GetTextContent();
 
 			desc.m_NormalizeOrientation = orient_opt;
 
@@ -251,7 +248,7 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 			{
 				if( root_joints[j].GetName() == "HorizontalElement" )
 				{
-					ProcessRootNodeHorizontalElementOptions( root_joints[j].GetDOMNode(), desc );
+					ProcessRootNodeHorizontalElementOptions( root_joints[j], desc );
 				}
 			}
 		}
