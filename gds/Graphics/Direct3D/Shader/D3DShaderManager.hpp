@@ -2,6 +2,7 @@
 #define __D3DShaderManager_HPP__
 
 
+#include "Graphics/Direct3D/fwd.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 
@@ -194,7 +195,11 @@ public:
 	inline LPD3DXEFFECT GetEffect() { return m_pEffect; }
 
 
-	inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition );
+	inline void SetViewerPosition( const Vector3& vEyePosition );
+
+//	inline void SetVertexBlendMatrix( int i, const Matrix34& mat );
+
+//	inline void SetVertexBlendMatrix( int i, const Matrix44& mat );
 
 
 	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
@@ -368,11 +373,37 @@ inline void CHLSLShaderManager::GetViewTransform( D3DXMATRIX& matView ) const
 }
 
 
-inline void CHLSLShaderManager::SetViewerPosition( const D3DXVECTOR3& vEyePosition )
+inline void CHLSLShaderManager::SetViewerPosition( const Vector3& vEyePosition )
 {
 	m_pEffect->SetValue( m_aHandle[HANDLE_VIEWER_POS], &vEyePosition, sizeof(D3DXVECTOR3) );
 }
 
+/*
+inline void CHLSLShaderManager::SetVertexBlendMatrix( int i, const Matrix34& mat )
+{
+	if( i < 0 || (int)m_vecVertBlendMatrixHandle.size() <= i )
+		return;
+
+	const Matrix33& r = mat.matOrient; // rotation
+	const Vector3& t = mat.vPosition; // translation
+	D3DXMATRIX src; // row-major matrix
+	src._11 = r(0,0); src._12 = r(1,0); src._13 = r(2,0); src._14 = 0.0;
+	src._21 = r(0,1); src._22 = r(1,1); src._23 = r(2,1); src._24 = 0.0;
+	src._31 = r(0,2); src._32 = r(1,2); src._33 = r(2,2); src._34 = 0.0;
+	src._41 = t.x;    src._42 = t.y;    src._43 = t.z;    src._44 = 1.0;
+
+	m_pEffect->SetMatrix( m_vecVertBlendMatrixHandle[i], &src );
+}
+
+
+inline void CHLSLShaderManager::SetVertexBlendMatrix( int i, const Matrix44& mat )
+{
+	if( i < 0 || (int)m_vecVertBlendMatrixHandle.size() <= i )
+		return;
+
+	m_pEffect->SetMatrixTranspose( m_vecVertBlendMatrixHandle[i], (D3DXMATRIX*)&mat );
+}
+*/
 
 inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture )
 {
