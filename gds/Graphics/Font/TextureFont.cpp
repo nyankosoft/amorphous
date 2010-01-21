@@ -296,7 +296,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 			// line feed
 			col = 0;
 			current_x = vPos.x;
-			current_y += font_height * factor.y;
+			current_y += font_height;// * factor.y;
 			continue;
 		}
 
