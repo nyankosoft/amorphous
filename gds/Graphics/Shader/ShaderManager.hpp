@@ -3,7 +3,6 @@
 
 
 #include <d3dx9.h>
-#include <string>
 #include <boost/shared_ptr.hpp>
 
 #include "../../base.hpp"
@@ -13,12 +12,7 @@
 #include "ShaderParameter.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/TextureHandle.hpp"
-
 #include "Support/stream_buffer.hpp"
-
-
-
-class CHLSLShaderLightManager;
 
 
 class CShaderManager
@@ -109,7 +103,11 @@ public:
 	virtual void GetViewTransform( Matrix44& matView ) const {}
 
 
-	virtual inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition ) {}
+	virtual void SetViewerPosition( const Vector3& vEyePosition ) {}
+
+	virtual void SetVertexBlendMatrix( int i, const Matrix34& mat ) {}
+
+	virtual void SetVertexBlendMatrix( int i, const Matrix44& mat ) {}
 
 
 	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
@@ -129,8 +127,6 @@ public:
 	virtual Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle ) { return Result::UNKNOWN_ERROR; }
 
 //	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
-
-//	D3DXHANDLE GetTechniqueHandle( int id ) { return m_aTechniqueHandle[id]; }
 
 	virtual void SetParam( CShaderParameter< std::vector<float> >& float_param ) {}
 
