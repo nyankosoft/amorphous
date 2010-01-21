@@ -176,22 +176,25 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth,
 		}
 		catch (const xercesc::XMLException& e)
 		{
-			std::cerr << "XML Exception parsing ";
-			std::cerr << strSrc;
-			std::cerr << " reports: ";
-			std::cerr << e.getMessage() << std::endl;
+			LOG_PRINT_ERROR( fmt_string( "XML Exception parsing '%s'. Reports: %s", strSrc, to_string(e.getMessage()).c_str() ) );
+//			std::cerr << "XML Exception parsing ";
+//			std::cerr << strSrc;
+//			std::cerr << " reports: ";
+//			std::cerr << e.getMessage() << std::endl;
 		}
 		catch (const xercesc::SAXException& e)
 		{
-			std::cerr << "SAX Exception parsing ";
-			std::cerr << strSrc;
-			std::cerr << " reports: ";
-			std::cerr << e.getMessage() << std::endl;
+			LOG_PRINT_ERROR( fmt_string( "SAX Exception parsing '%s'. Reports: %s", strSrc, to_string(e.getMessage()).c_str() ) );
+//			std::cerr << "SAX Exception parsing ";
+//			std::cerr << strSrc;
+//			std::cerr << " reports: ";
+//			std::cerr << e.getMessage() << std::endl;
 		}
 		catch (...)
 		{
-			std::cerr << "An exception parsing ";
-			std::cerr << strSrc << std::endl;
+			LOG_PRINT_ERROR( fmt_string( "An exception parsing '%s'.", strSrc ) );
+//			std::cerr << "An exception parsing ";
+//			std::cerr << strSrc << std::endl;
 		}
 		// did the input document parse okay?
 		if (bSuccess)
@@ -361,6 +364,7 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string
 	}
 	catch (const DOMException& toCatch)
 	{
+		LOG_PRINT_ERROR( fmt_string( "DOM Error during parsing '%s'. DOMException code is '%d'.", filepath.c_str(), toCatch.code ) );
 /*		const unsigned int maxChars = 2047;
 		XMLCh errText[maxChars + 1];
 
@@ -373,6 +377,7 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string
 	}
 	catch (...)
 	{
+		LOG_PRINT_ERROR( fmt_string("Unexpected exception during parsing '%s'", filepath.c_str() ) );
 //		XERCES_STD_QUALIFIER cerr << "\nUnexpected exception during parsing: '" << testFileName << "'\n";
 	}
 /*

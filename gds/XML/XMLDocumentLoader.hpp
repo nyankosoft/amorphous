@@ -89,4 +89,11 @@ public:
 };
 
 
+inline boost::shared_ptr<CXMLDocument> CreateXMLDocument( const std::string& filepath )
+{
+	CXMLDocumentLoader doc_loader;
+	return doc_loader.Load( filepath );
+}
+
+
 #endif /* __XMLDocumentLoader_H__ */
