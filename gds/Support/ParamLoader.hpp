@@ -1,13 +1,6 @@
-
 #ifndef  __PARAMLOADER_H__
 #define  __PARAMLOADER_H__
 
-
-#include <stdio.h>
-
-#include <string>
-
-#include "3DMath/Vector3.hpp"
 
 #include "TextFileScanner.hpp"
 
@@ -105,6 +98,41 @@ public:
 
 	bool LoadBoolParam( const char *tag, const std::string& bool_tag_str, bool& b );
 };
+
+
+
+template<typename T>
+inline void LoadParamFromFile( const std::string& filepath, const char *param_name, T& param )
+{
+	CParamLoader loader( filepath );
+	if( loader.IsReady() )
+		loader.LoadParam( param_name, param );
+}
+
+
+template<typename T>
+inline T LoadParamFromFile( const std::string& filepath, const char *param_name )
+{
+	T param;
+	CParamLoader loader( filepath );
+	if( loader.IsReady() )
+		loader.LoadParam( param_name, param );
+	return param;
+}
+
+
+/// If you use this function, you need to include "Support/lfs.hpp".
+#define UPDATE_PARAM( filepath, param_name, variable ) \
+{\
+	static time_t s_LastModifiedTime = lfs::get_last_modified_time( filepath );\
+	time_t last_modified_time = lfs::get_last_modified_time( filepath );\
+	if( s_LastModifiedTime < last_modified_time )\
+	{\
+		s_LastModifiedTime = last_modified_time;\
+		LoadParamFromFile( filepath, param_name, variable );\
+	}\
+}\
+
 
 
 
