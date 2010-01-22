@@ -318,6 +318,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\DoubleConeScrollEffect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\DoubleConeScrollEffect.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\FloatRGBAColor.hpp"
 				>
 			</File>
