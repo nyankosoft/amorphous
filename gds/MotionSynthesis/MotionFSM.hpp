@@ -184,6 +184,8 @@ public:
 	float GetMotionPlaySpeedFactor() const { return m_fMotionPlaySpeedFactor; }
 
 	void SetMotionPlaySpeedFactor( float factor ) { m_fMotionPlaySpeedFactor = factor; }
+
+	boost::shared_ptr<CMotionPrimitive>& MotionPrimitive() { return m_pMotionPrimitive; }
 };
 
 

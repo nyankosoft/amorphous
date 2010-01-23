@@ -587,7 +587,6 @@ void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 	shared_ptr<CMotionFSM> pFSM( new CMotionFSM("lower_limbs") );
 
 	AddFSM( pFSM );
-
 	pFSM->SetMotionDatabaseFilepath( motion_db_filepath );
 
 	shared_ptr<CMotionPrimitiveNode> pNodes[16];
@@ -628,6 +627,27 @@ void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 	// mdb is already open and loaded, so call LoadMotions() to load motions from it
 	// rather than open the file again
 	LoadMotions( mdb );
+
+	if( pNodes[0]->MotionPrimitive() )
+	{
+		vector<CKeyframe>& keyframes = pNodes[0]->MotionPrimitive()->GetKeyframeBuffer();
+		size_t num_keyframes = keyframes.size();
+		keyframes.erase( keyframes.begin() + num_keyframes * 3 / 4, keyframes.end() );
+	}
+
+	pFSM.reset( new CMotionFSM("upper_body") );
+
+	AddFSM( pFSM );
+	pFSM->SetMotionDatabaseFilepath( motion_db_filepath );
+	pNodes[0] = pFSM->AddNode("arms-down");
+	pNodes[1] = pFSM->AddNode("arms-swinging");
+
+	// arms straight down
+	pNodes[0]->AddTransPath( "arms-swinging", mt( 0.1, "arms-swinging" ) );
+
+	// arms swinging
+	pNodes[1]->AddTransPath( "arms-down", mt( 0.1, "arms-down" ) );
+
 /*
 	pFSM->AddNode( "fwd",  );
 	pFSM->AddNode( "stand" );
