@@ -8,6 +8,7 @@
 #include <gds/Stage.hpp>
 #include <gds/GameCommon/KeyBind.hpp>
 #include <gds/Item/ItemEntity.hpp>
+#include <gds/Graphics/DoubleConeScrollEffect.hpp>
 
 
 enum ShadowAppTaskID
@@ -51,6 +52,10 @@ class CCharacterMotionControlAppTask : public CStageViewerGameTask
 
 	CEntityHandle<CItemEntity> m_CharacterItemEntity;
 
+	CDoubleConeScrollEffect m_ScrollEffect;
+
+	Vector3 m_vPrevCamPos;
+
 public:
 
 	CCharacterMotionControlAppTask();
@@ -58,6 +63,8 @@ public:
 	~CCharacterMotionControlAppTask() {}
 
 	int FrameMove( float dt );
+
+	void Render();
 
 	void HandleInput( SInputData& input );
 };

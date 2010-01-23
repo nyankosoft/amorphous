@@ -68,6 +68,8 @@ public:
 */
 
 CCharacterMotionControlAppTask::CCharacterMotionControlAppTask()
+:
+m_vPrevCamPos( Vector3(0,0,0) )
 {
 	m_pKeyBind = shared_ptr<CKeyBind>( new CKeyBind );
 
@@ -113,6 +115,10 @@ CCharacterMotionControlAppTask::CCharacterMotionControlAppTask()
 
 	m_pInputHandler.reset( new CDelegateInputHandler<CCharacterMotionControlAppTask>( this ) );
 	InputHub().SetInputHandler( 2, m_pInputHandler.get() );
+
+	m_ScrollEffect.SetTextureFilepath( "textures/precipitation_mid-density-512.dds" );
+//	m_ScrollEffect.SetTextureFilepath( "textures/tex1024_red.bmp" );
+	m_ScrollEffect.Init();
 }
 
 
@@ -132,11 +138,29 @@ int CCharacterMotionControlAppTask::FrameMove( float dt )
 		if( pEntity )
 		{
 			Vector3 vPos = pEntity->GetWorldPose().vPosition + Vector3(0.0f, 2.0f, -3.8f);
+			vPos.y = 2.0f;
 			Camera().SetPose( Matrix34( vPos, Matrix33Identity() ) );
 		}
 	}
 
+	m_ScrollEffect.SetCameraPose( Camera().GetPose() );
+	Vector3 vDist = (Camera().GetPosition() - m_vPrevCamPos);
+	if( 0.000001f < Vec3LengthSq( vDist ) )
+		m_ScrollEffect.SetCameraVelocity( vDist / get_clamped( dt, 0.005f, 1.0f ) );
+	else
+		m_ScrollEffect.SetCameraVelocity( Vector3(0,0,0) );
+	m_vPrevCamPos = Camera().GetPosition();
+	m_ScrollEffect.Update( dt );
+
 	return CGameTask::ID_INVALID;
+}
+
+
+void CCharacterMotionControlAppTask::Render()
+{
+	CStageViewerGameTask::Render();
+
+	m_ScrollEffect.Render();
 }
 
 
