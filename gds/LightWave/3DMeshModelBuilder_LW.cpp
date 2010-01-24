@@ -149,7 +149,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 	vector<CLWO2_TextureUVMap>& rTexUVMap = rLayer.GetTextureUVMap();
 	if( 0 < rTexUVMap.size() )
 		RaiseVertexFormatFlags( CMMA_VertexSet::VF_2D_TEXCOORD );
-	
+
 	// every vertex is expected to have one set of uv tex coord
 	TEXCOORD2 tex;
 	tex.u = tex.v = 0;
@@ -628,9 +628,13 @@ void C3DMeshModelBuilder_LW::SetVertexWeights( vector<CGeneral3DVertex>& rDestVe
 		{
 			rWeightMap[i].GetWeightMap( j, pnt_index, fWeight );
 
-			rDestVertexBuffer[ pnt_index ].m_fMatrixWeight.push_back( fWeight );
+			CGeneral3DVertex& dest_vertex = rDestVertexBuffer[ pnt_index ];
 
-			rDestVertexBuffer[ pnt_index ].m_iMatrixIndex.push_back( dest_bone_index );
+			if( dest_vertex.m_fMatrixWeight.size() == CGeneral3DVertex::NUM_MAX_BLEND_MATRICES_PER_VERTEX )
+				continue;
+
+			dest_vertex.m_fMatrixWeight.push_back( fWeight );
+			dest_vertex.m_iMatrixIndex.push_back( dest_bone_index );
 		}
 	}
 
