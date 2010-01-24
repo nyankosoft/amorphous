@@ -1,8 +1,6 @@
-
 #include "LogOutputBase.hpp"
-
-#include "../SafeDelete.hpp"
-#include "3DMath/MathMisc.hpp"
+#include <gds/Support/SafeDelete.hpp>
+#include <gds/base.hpp>
 
 using namespace std;
 
@@ -31,6 +29,11 @@ CLogOutput_TextFile::CLogOutput_TextFile( const string& filename )
 //	m_pFile = fopen( pFilename, "w" );
 
 	m_OutputFileStream.open( filename.c_str(), ios_base::out );
+	if( !m_OutputFileStream.is_open() )
+	{
+		// Failed to open the log file, which we need to log this error. How should we report this error?
+//		printf( "Failed to open a log file: %s\n", filename.c_str() );
+	}
 
 	SetNewLineCharacterOption( NLCO_ADD_ALWAYS );
 }
@@ -148,7 +151,7 @@ void CLogOutput_HTML::Print( const CLogMessage& msg )
 
 
 	int color_index = msg.m_FilterVal & 0x000000FF;	// take out the warning level index from the lowest 8-bits
-	Limit( color_index, 0, NUM_LOGWARNINGLEVELS - 1 );
+	clamp( color_index, 0, NUM_LOGWARNINGLEVELS - 1 );
 	const char *text_color = s_LogTextColor[color_index];
 	string font_tag = "<font color=\"#" + string(text_color) + "\">";
 
