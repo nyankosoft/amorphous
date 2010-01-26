@@ -63,13 +63,13 @@ int Quaternion::CompareArrays (const Quaternion& q) const
     return memcmp(m_afTuple,q.m_afTuple,4*sizeof(Scalar));
 }
 //----------------------------------------------------------------------------
- 
+ */
 bool Quaternion::operator== (const Quaternion& q) const
 {
-    return CompareArrays(q) == 0;
+    return (x == q.x) && (y == q.y) && (z == q.z) && (w == q.w);
 }
 //----------------------------------------------------------------------------
- 
+ /*
 bool Quaternion::operator!= (const Quaternion& q) const
 {
     return CompareArrays(q) != 0;
@@ -608,8 +608,8 @@ inline Quaternion Quaternion::Log () const
     return kResult;
 }
 //----------------------------------------------------------------------------
- 
-inline Vector3 Quaternion::Rotate (const Vector3& rkVector)
+ */
+inline Vector3 Quaternion::Rotate( const Vector3& src )
     const
 {
     // Given a vector u = (x0,y0,z0) and a unit length quaternion
@@ -630,12 +630,12 @@ inline Vector3 Quaternion::Rotate (const Vector3& rkVector)
     // matrix requires less space than the matrix and more time to compute
     // the rotated vector.  Typical space-time tradeoff...
 
-    Matrix3<Real> kRot;
-    ToRotationMatrix(kRot);
-    return kRot*rkVector;
+    Matrix33 rotation;
+    ToRotationMatrix(rotation);
+    return rotation * src;
 }
 //----------------------------------------------------------------------------
- 
+ /*
 inline Quaternion& Quaternion::Slerp (Scalar fT, const Quaternion& rkP,
     const Quaternion& q)
 {

@@ -36,7 +36,7 @@ public:
 //	inline Quaternion& operator= (const Quaternion& q);
 
     // comparison
-//	inline bool operator== (const Quaternion& q) const;
+	inline bool operator== (const Quaternion& q) const;
 //	inline bool operator!= (const Quaternion& q) const;
 //	inline bool operator<  (const Quaternion& q) const;
 //	inline bool operator<= (const Quaternion& q) const;
@@ -89,10 +89,10 @@ public:
 //	inline Quaternion Exp () const;  // apply to quaternion with w = 0
 //	inline Quaternion Log () const;  // apply to unit-length quaternion
 
-/*
-    // rotation of a vector by a quaternion
-    inline Vector3 Rotate (const Vector3& rkVector) const;
 
+    // rotation of a vector by a quaternion
+    inline Vector3 Rotate ( const Vector3& src ) const;
+/*
     // spherical linear interpolation
     inline Quaternion& Slerp (Scalar fT, const Quaternion& rkP, const Quaternion& q);
 
