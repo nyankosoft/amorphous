@@ -1,18 +1,14 @@
+#ifndef  __MeshBone_HPP__
+#define  __MeshBone_HPP__
 
-#ifndef  __MESHBONE_H__
-#define  __MESHBONE_H__
 
-
-//#include <vector>
+#include <vector>
 #include <string>
-using namespace std;
-
-
 #include <d3dx9.h>
-
+#include "Graphics/fwd.hpp"
 #include "Support/memory_helpers.hpp"
-
-#include "3DMeshModelArchive.hpp"
+#include "3DMath/Transform.hpp"
+//#include "3DMeshModelArchive.hpp"
 
 
 //namespace GameLib1
@@ -23,13 +19,13 @@ namespace MeshModel
 
 
 /**
- * bone for mesh that needs hierarchical transformation
- *
+ bone for mesh that needs hierarchical transformation
+
  */
 class CMM_Bone
 {
 	/// holds bone name (for debugging)
-	string m_strName;
+	std::string m_strName;
 
 	Vector3 m_vLocalOffset;
 
@@ -38,11 +34,11 @@ class CMM_Bone
 	int m_MatrixIndex;
 
 	/// tranforms vertices from model space to bone space
-	D3DXMATRIX m_matBoneTransform;
+//	D3DXMATRIX m_matBoneTransform;
 	Matrix34 m_BoneTransform;
 
 	/// bone space to local space
-	D3DXMATRIX m_matLocalTransform;
+//	D3DXMATRIX m_matLocalTransform;
 	Matrix34 m_LocalTransform;
 
 	CMM_Bone *m_paChild;
@@ -55,7 +51,11 @@ class CMM_Bone
 
 public:
 
-	CMM_Bone() : m_iNumChildren(0), m_paChild(NULL), m_pWorldTransform(NULL), m_MatrixIndex(0) {}
+	void CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform );
+
+public:
+
+	inline CMM_Bone();
 
 	~CMM_Bone() { SafeDeleteArray( m_paChild ); }
 
@@ -66,7 +66,9 @@ public:
 	void Transform_Quaternion( float *pafData, int& rIndex );
 
 	/// accepts an array of matrices that represents local transformation at each bone
-	void Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex );
+	void Transform_r( Matrix34 *pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex );
+
+	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );
 
 	int GetBoneMatrixIndexByName_r( const char *pName );
 
@@ -76,7 +78,7 @@ public:
 
 	const CMM_Bone& GetBoneByName_r( const char *pName ) const;
 
-	void SetBoneToArray_r( vector<CMM_Bone *>& vecpDestArray );
+	void SetBoneToArray_r( std::vector<CMM_Bone *>& vecpDestArray );
 
 //	static const CMM_Bone& NullBone() const { return ms_NullBone; }
 	static const CMM_Bone& NullBone() { return ms_NullBone; }
@@ -98,14 +100,27 @@ public:
 	}
 
 //	inline void SetLocalTransform( const Matrix34& local_transform );
-
-//	friend class CD3DXMeshModel;
 };
 
 
-}	/*  3DMesh  */
+//============================= inline implementations =============================
 
-//}	/* GameLib1   */
+inline CMM_Bone::CMM_Bone()
+:
+m_vLocalOffset( Vector3(0,0,0) ),
+m_pWorldTransform(NULL),
+m_MatrixIndex(0),
+m_BoneTransform( Matrix34Identity() ),
+m_LocalTransform( Matrix34Identity() ),
+m_paChild(NULL),
+m_iNumChildren(0)
+{}
 
 
-#endif		/*  __MESHBONE_H__  */
+
+}	//  MeshModel
+
+//}	// GameLib1
+
+
+#endif		/*  __MeshBone_HPP__  */

@@ -1,9 +1,8 @@
 #include "MeshBone.hpp"
-#include "Graphics/D3DXVec3Copy.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
-#include "Support/memory_helpers.hpp"
+using namespace std;
 
 
 //=========================================================================================
@@ -31,7 +30,7 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 	iNumRegisteredMatrices++;
 
 	// get a matrix that transforms vertices from local model space to local bone space
-	rSrcBone.BoneTransform.GetRowMajorMatrix44( (float *)&m_matBoneTransform );
+//	rSrcBone.BoneTransform.GetRowMajorMatrix44( (float *)&m_matBoneTransform );
 
 	m_BoneTransform = rSrcBone.BoneTransform;
 
@@ -39,7 +38,7 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 
 
 	// bone space to local model space
-	D3DXMatrixInverse( &m_matLocalTransform, NULL, &m_matBoneTransform );
+//	D3DXMatrixInverse( &m_matLocalTransform, NULL, &m_matBoneTransform );
 
 	m_BoneTransform.GetInverseROT( m_LocalTransform );
 
@@ -48,6 +47,38 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 	{
 		m_paChild[i].LoadBone_r( rSrcBone.vecChild[i], paBoneTransformMatrix, iNumRegisteredMatrices );
 	}
+}
+
+
+void CMM_Bone::CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform )
+{
+	Matrix34 local_rot = paSrcMatrix[rIndex++];
+	if( pParentMatrix )
+		local_rot.vPosition = Vector3(0,0,0);
+
+	Matrix34 mat;
+
+//	mat = m_LocalTransform * paSrcMatrix[rIndex++] * m_BoneTransform;
+	mat = m_LocalTransform * local_rot * m_BoneTransform;
+
+//----------------------------
+
+	Matrix34 mat2 = m_LocalTransform * ( local_rot * m_BoneTransform );
+	Matrix34 mat3 = m_BoneTransform * local_rot * m_LocalTransform;
+
+	Vector3 v1, v2, v3, v4, v0 = Vector3( 2.1f, 1.0f, -11.0f );
+	v1 = m_BoneTransform * v0;
+	v2 = local_rot * v1;
+	v3 = m_LocalTransform * v2;
+
+	v4 = mat * v0;
+
+//----------------------------
+
+	if( pParentMatrix )
+		mat = (*pParentMatrix) * mat;
+
+	dest_world_transform = mat;
 }
 
 
@@ -92,6 +123,23 @@ void CMM_Bone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int&
 	for( int i=0; i<m_iNumChildren; i++ )
 	{
 		m_paChild[i].Transform_r( &mat, paSrcMatrix, rIndex );
+	}
+}
+
+
+void CMM_Bone::CalculateTransforms_r( const Matrix34 *pParentMatrix,
+									  const Matrix34 *paSrcMatrix,
+									  int& rIndex,
+									  Transform *paDest )
+{
+	Matrix34 world_transform;
+	CalculateWorldTransform( pParentMatrix, paSrcMatrix, rIndex, world_transform );
+
+	paDest[m_MatrixIndex] = Transform( world_transform );
+
+	for( int i=0; i<m_iNumChildren; i++ )
+	{
+		m_paChild[i].CalculateTransforms_r( &world_transform, paSrcMatrix, rIndex, paDest );
 	}
 }
 
@@ -204,5 +252,3 @@ void CMM_Bone::SetBoneToArray_r( vector<CMM_Bone *>& vecpDestArray )
 		m_paChild[i].SetBoneToArray_r( vecpDestArray );
 	}
 }
-
-
