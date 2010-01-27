@@ -4,6 +4,7 @@
 
 #include "Graphics/Direct3D/fwd.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "3DMath/Transform.hpp"
 
 
 class CD3DShaderManager : public CShaderManager
@@ -104,7 +105,8 @@ class CHLSLShaderManager : public CD3DShaderManager
 	{
 		NUM_MAX_TECHNIQUES = 64,
 		NUM_TEXTURE_STAGES = 8,
-		NUM_MAX_CUBETEXTURES = 4
+		NUM_MAX_CUBETEXTURES = 4,
+		NUM_MAX_VERTEX_BLEND_TRANSFORMS = 128,
 	};
 
 	enum eHandleID
@@ -158,6 +160,10 @@ class CHLSLShaderManager : public CD3DShaderManager
 	std::string m_astrTechniqueName[NUM_MAX_TECHNIQUES];
 
 	std::vector<CD3DShaderParameterHandle> m_vecParamHandle;
+
+	D3DXHANDLE m_aVertexBlendTransform[NUM_MAX_VERTEX_BLEND_TRANSFORMS];
+
+	int m_NumBlendTransforms;
 
 	/// the first vacant table entry for registering a technique
 	/// If m_VacantTechniqueEntryIndex = NUM_MAX_TECHNIQUES,
@@ -243,6 +249,12 @@ public:
 	inline void GetWorldTransform( D3DXMATRIX& matWorld ) const;
 
 	inline void GetViewTransform( D3DXMATRIX& matView ) const;
+
+	void InitBlendTransformVariables( const std::string& variable_name );
+
+	void InitBlendTransformVariables();
+
+	void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms );
 };
 
 

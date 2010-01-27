@@ -8,6 +8,7 @@
 #include "../../base.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Matrix44.hpp"
+#include "3DMath/Transform.hpp"
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
 #include "Graphics/fwd.hpp"
@@ -108,6 +109,8 @@ public:
 	virtual void SetVertexBlendMatrix( int i, const Matrix34& mat ) {}
 
 	virtual void SetVertexBlendMatrix( int i, const Matrix44& mat ) {}
+
+	virtual void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms ) {}
 
 
 	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
