@@ -665,6 +665,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\MeshModel\General3DMesh.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\MeshBone.cpp"
 					>
 				</File>
@@ -1551,6 +1555,10 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\3DMath\stream.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DMath\Transform.hpp"
 				>
 			</File>
 			<File
