@@ -66,6 +66,7 @@ public:
 	void Transform_Quaternion( float *pafData, int& rIndex );
 
 	/// accepts an array of matrices that represents local transformation at each bone
+	/// This function actually calculates world transforms
 	void Transform_r( Matrix34 *pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex );
 
 	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );

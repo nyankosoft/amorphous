@@ -75,11 +75,9 @@ public:
 //	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
 	inline D3DXMATRIX* GetBlendMatrices() { return m_paBoneMatrix; }
 
-	LPD3DXMESH m_pMeshForTest;
+	inline void GetBlendTransforms( std::vector<Transform>& dest_transforms );
 
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
-
-//	virtual LPD3DXBASEMESH GetBaseMesh() { return m_pMeshForTest; }
 };
 
 
@@ -135,6 +133,20 @@ inline void CD3DXSMeshObject::ResetLocalTransformsCache()
 	m_vecLocalTransformCache.resize( m_vecLocalTransformCache.size(), Matrix34Identity() );
 }
 
+
+inline void CD3DXSMeshObject::GetBlendTransforms( std::vector<Transform>& dest_transforms )
+{
+	if( !m_pRootBone )
+		return;
+
+	if( m_vecLocalTransformCache.empty() )
+		return;
+
+	dest_transforms.resize( m_iNumBones );
+
+	int index = 0;
+	m_pRootBone->CalculateTransforms_r( NULL, &m_vecLocalTransformCache[0], index, &(dest_transforms[0]) );
+}
 
 
 /*

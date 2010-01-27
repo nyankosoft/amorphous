@@ -50,6 +50,11 @@ public:
 //	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
 	inline D3DXMATRIX* GetBlendMatrices() { return m_pImpl->GetBlendMatrices(); }
 
+	/// Get vertex blend transforms
+	/// - The returned vertex blend transforms are in world coordinates
+	/// - Use the local transforms currently stored in cache.
+	inline void GetBlendTransforms( std::vector<Transform>& dest_transforms ) { m_pImpl->GetBlendTransforms( dest_transforms ); }
+
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
 };
 

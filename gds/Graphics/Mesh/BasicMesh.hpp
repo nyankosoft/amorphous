@@ -4,6 +4,7 @@
 
 #include <d3dx9.h>
 #include <gds/3DMath/AABB3.hpp>
+#include <gds/3DMath/Transform.hpp>
 #include <gds/base.hpp>
 //#include "MeshImpl.hpp"
 
@@ -212,6 +213,8 @@ public:
 //	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
 //	inline D3DXMATRIX* GetBlendMatrices() { return m_paBoneMatrix; }
 	virtual D3DXMATRIX* GetBlendMatrices() { return NULL; }
+
+	virtual void GetBlendTransforms( std::vector<Transform>& dest_transforms ) {}
 
 	virtual void SetVertexDeclaration() {}
 
