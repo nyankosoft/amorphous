@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 
 #include <boost/progress.hpp>
+#include <boost/filesystem.hpp>
 #include <gds/Support/FileOpenDialog_Win32.hpp>
 #include <gds/Support/memory_helpers.hpp>
 #include <gds/Support/progress_display.hpp>
@@ -15,6 +16,10 @@
 #include <gds/LightWave/3DMeshModelExportManager_LW.hpp>
 
 //#include <vld.h>
+
+
+using namespace std;
+using namespace boost::filesystem;
 
 
 /// task to compiler mesh model from LWO2 (LightWave object) file
@@ -60,6 +65,14 @@ int main( int argc, char *argv[] )
 	{
 		GetFilename( src_filepath );
 	}
+
+	// Open a file for logging
+
+	path logfile_dirpath = path(src_filepath).parent_path();
+	path logfile_basepath = logfile_dirpath / ("mesh_model_compiler-" + path(src_filepath).leaf());
+
+	CLogOutput_HTML html_log( logfile_basepath.string() + ".html" );
+	g_Log.AddLogOutput( &html_log );
 
 	if( src_filepath.length() == 0 )
 		return 0;
