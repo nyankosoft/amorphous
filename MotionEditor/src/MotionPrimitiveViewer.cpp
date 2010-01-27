@@ -9,6 +9,7 @@
 #include <gds/MotionSynthesis.hpp>
 //#include <gds/Support/CameraController.hpp>
 #include <gds/Support/memory_helpers.hpp>
+#include <gds/Support/ParamLoader.hpp>
 
 using namespace std;
 using namespace boost;
@@ -129,11 +130,28 @@ public:
 };
 */
 
+
+
+CSkeletalMeshMotionViewer::CSkeletalMeshMotionViewer()
+:
+m_UseQuaternionForBoneTransformation(false)
+{
+	int user_quaternion = LoadParamFromFile<int>( "config", "UseQuaternionForVertexBlending" );
+	m_UseQuaternionForBoneTransformation = (user_quaternion == 1);
+}
+
+
 void CSkeletalMeshMotionViewer::Init()
 {
 	LoadSkeletalMesh( "models/male_skinny_young.msh" );
 
-	bool loaded = m_Shader.Load( "shaders/VertexBlend.fx" );
+	string shader_filepath;
+	if( m_UseQuaternionForBoneTransformation )
+		shader_filepath = "shaders/QVertexBlend.fx";
+	else
+		shader_filepath = "shaders/VertexBlend.fx";
+
+	bool loaded = m_Shader.Load( shader_filepath );
 //	bool loaded = m_Shader.Load( "shaders/VertexBlend.fx:VertBlend_PVL_1HSDL" );
 	if( !loaded )
 	{
@@ -154,6 +172,7 @@ void CSkeletalMeshMotionViewer::Init()
 		pLightMgr->CommitChanges();
 	}
 }
+
 
 void CSkeletalMeshMotionViewer::LoadSkeletalMesh( const std::string& mesh_path )
 {
@@ -182,6 +201,42 @@ shared_ptr<CSkeletalMesh> GetSkeletalMesh( CMeshObjectHandle& mesh_handle )
 }
 
 
+void CSkeletalMeshMotionViewer::UpdateVertexBlendTransforms( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh )
+{
+	if( !shader_mgr.GetEffect() )
+		return;
+
+	vector<Transform> vert_blend_transforms;
+	skeletal_mesh.GetBlendTransforms( vert_blend_transforms );
+	shader_mgr.SetVertexBlendTransforms( vert_blend_transforms );
+}
+
+
+void CSkeletalMeshMotionViewer::UpdateVertexBlendMatrices( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh )
+{
+	if( !shader_mgr.GetEffect() )
+		return;
+
+	HRESULT hr = S_OK;
+
+	skeletal_mesh.SetLocalTransformsFromCache();
+
+	int num_max_matrices = 36;
+	int num_bones = skeletal_mesh.GetNumBones();
+	int num_matrices = take_min( num_bones, num_max_matrices );
+	char acParam[32];
+	D3DXMATRIX *paBlendMatrix = skeletal_mesh.GetBlendMatrices();
+	for( int i=0; i<num_matrices; i++ )
+	{
+		sprintf( acParam, "g_aBlendMatrix[%d]", i );
+		hr = shader_mgr.GetEffect()->SetMatrix( acParam, &paBlendMatrix[i] );
+
+		if( FAILED(hr) )
+			return;
+	}
+}
+
+
 void CSkeletalMeshMotionViewer::Render()
 {
 	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetSkeletalMesh( m_SkeletalMesh );
@@ -191,28 +246,18 @@ void CSkeletalMeshMotionViewer::Render()
 //	GraphicsDevice().SetWorldTransform( Matrix34Identity() );
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix34Identity() );
 
-	pSkeletalMesh->SetLocalTransformsFromCache();
-
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( pShaderMgr && pShaderMgr->GetEffect() )
 	{
 		HRESULT hr = pShaderMgr->GetEffect()->SetFloatArray( "g_vEyePos", (float *)m_ViewerPose.vPosition, 3 );
+
 		pShaderMgr->SetWorldTransform( Matrix34Identity() );
 		pShaderMgr->SetTechnique( m_Technique );
 
-		int num_max_matrices = 32;
-		int num_bones = pSkeletalMesh->GetNumBones();
-		int num_matrices = take_min( num_bones, num_max_matrices );
-		char acParam[32];
-		D3DXMATRIX *paBlendMatrix = pSkeletalMesh->GetBlendMatrices();
-		for( int i=0; i<num_matrices; i++ )
-		{
-			sprintf( acParam, "g_aBlendMatrix[%d]", i );
-			hr = pShaderMgr->GetEffect()->SetMatrix( acParam, &paBlendMatrix[i] );
-
-			if( FAILED(hr) )
-				return;
-		}
+		if( m_UseQuaternionForBoneTransformation )
+			UpdateVertexBlendTransforms( *pShaderMgr, *pSkeletalMesh );
+		else
+			UpdateVertexBlendMatrices( *pShaderMgr, *pSkeletalMesh );
 
 		pSkeletalMesh->Render( *pShaderMgr );
 	}
@@ -224,7 +269,7 @@ void CSkeletalMeshMotionViewer::Render()
 }
 
 
-/// NOTE: param 'bone' is not used
+/// NOTE: param 'bone' is used to calculate num_child_bones
 void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
                                           const msynth::CTransformNode& node,
 										  boost::shared_ptr<CSkeletalMesh>& pMesh )//,
@@ -242,7 +287,7 @@ void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
 
 	const int num_child_bones = bone.GetNumChildren();
 	const int num_child_nodes = node.GetNumChildren();
-	const int num_children = TakeMin( num_child_bones, num_child_nodes );
+	const int num_children = take_min( num_child_bones, num_child_nodes );
 	for( int i=0; i<num_children; i++ )
 	{
 		Update_r(

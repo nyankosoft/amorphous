@@ -2,9 +2,6 @@
 #define  __MotionPrimitiveViewer_H__
 
 
-#include <vector>
-#include <string>
-
 #include <gds/Input/fwd.hpp>
 #include <gds/Graphics.hpp>
 #include <gds/GUI/fwd.hpp>
@@ -25,11 +22,19 @@ class CSkeletalMeshMotionViewer
 //	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
 	boost::weak_ptr<msynth::CSkeleton> m_pSkeleton;
 
+	bool m_UseQuaternionForBoneTransformation;
+
 	void Update_r( const msynth::CBone& bone,
                                           const msynth::CTransformNode& node,
 										  boost::shared_ptr<CSkeletalMesh>& pMesh );
 
+	void UpdateVertexBlendTransforms( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh );
+
+	void UpdateVertexBlendMatrices( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh );
+
 public:
+
+	CSkeletalMeshMotionViewer();
 
 	void Init();
 	void LoadSkeletalMesh( const std::string& mesh_path );
