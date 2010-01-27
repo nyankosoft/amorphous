@@ -8,6 +8,7 @@
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
+#include "GameCommon/CriticalDamping.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
@@ -39,6 +40,9 @@ class CDoubleConeScrollEffect
 	CMeshObjectHandle m_DoubleConeMesh;
 
 	float m_fTexShiftV;
+
+//	cdv<Quaternion> m_qTilt;
+	cdv<float> m_TiltAngle;
 
 public:
 

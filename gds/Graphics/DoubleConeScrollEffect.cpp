@@ -205,11 +205,25 @@ void CDoubleConeScrollEffect::SetTextureFilepath( const std::string& tex_filepat
 void CDoubleConeScrollEffect::Update( float dt )
 {
 	m_fTexShiftV -= ( dt * 1.0f );
+
+//	m_qTilt.Update( dt ); // How can I use critical damping for quaternion?
+	m_TiltAngle.Update( dt );
 }
 
 
 void CDoubleConeScrollEffect::Init()
 {
+	// Quaternion - how can I use critical damping with it?
+//	m_qTilt.target.FromRotationMatrix( Matrix33Identity() );
+//	m_qTilt.current.FromRotationMatrix( Matrix33Identity() );
+//	m_qTilt.vel.FromRotationMatrix( Matrix33Identity() );
+//	m_qTilt.smooth_time = 1.0f;
+
+	m_TiltAngle.target = 0.0f;
+	m_TiltAngle.current = 0.0f;
+	m_TiltAngle.vel = 0.1f;
+	m_TiltAngle.smooth_time = 2.0f;
+
 	// create double cone mesh
 	// - create with unit radius and height, scale at runtime
 
@@ -237,15 +251,26 @@ void CDoubleConeScrollEffect::Render()
 
 	// set up world transform
 
-//	float fTiltPitch = 0.0f;
 	Matrix33 matTilt( Matrix33Identity() );
-	Vector3 vVelDir = Vec3GetNormalized( m_vCameraVelocity );
+	float fCamSpeed = Vec3Length( m_vCameraVelocity );
+	Vector3 vInvDropDir = Vector3(0,1,0); /// The inverse of the direction of precipitation
+	if( 0.001f < fCamSpeed )
+	{
+		const Vector3 vCamVelDir = m_vCameraVelocity / fCamSpeed;
+		const Vector3 vRotAxis = Vec3Cross( vInvDropDir, vCamVelDir );
+		float fTiltAngle = fCamSpeed * 0.1f;
+		m_TiltAngle.target = fTiltAngle;
+		matTilt = Matrix33RotationAxis( m_TiltAngle.current, vRotAxis );
+//		matTilt = Matrix33RotationAxis( fTiltAngle, vRotAxis ); // no smoothing
+//		m_qTilt.target.FromRotationMatrix( matTilt ); // How can I use critical damping for quaternion?
+	}
 
 	Matrix33 matScaling( Matrix33Identity() );
 	matScaling(0,0) =  3.0f;
 	matScaling(1,1) = 10.0f;
 	matScaling(2,2) =  3.0f;
 
+//	matTilt = m_qTilt.current.ToRotationMatrix();
 	const Matrix34 world_transform(
 		m_CameraPose.vPosition, // translation;
 		matTilt * matScaling
