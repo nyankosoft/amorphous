@@ -158,10 +158,6 @@ bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 		return false;
 	}
 
-//	m_pMeshForTest = pMesh;
-//	return hr;
-
-
 /*	hr = D3DXValidMesh( pMesh, pBufferPtr, NULL );
 
 	if( hr == D3DXERR_INVALIDMESH )
