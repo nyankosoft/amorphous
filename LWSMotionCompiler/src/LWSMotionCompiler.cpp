@@ -109,7 +109,10 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGro
 {
 	bool scene_loaded = LoadLWSceneFile( desc_group.m_Filename );
 	if( !scene_loaded )
+	{
+		LOG_PRINT_ERROR( " Failed to load an LWS scene file, " + desc_group.m_Filename );
 		return;
+	}
 
 	shared_ptr<CLWS_Bone> pRootBone = CreateSkeleton();
 
@@ -319,6 +322,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 	motion.SetSkeleton( *(m_pSkeleton.get()) );
 
 	motion.SetLoopedMotion( desc.m_bIsLoopMotion );
+	motion.SetStartsBoneName( desc.m_StartBoneName );
 
 	vector<CKeyframe> vecKeyframe;
 	vecKeyframe.resize(0);
@@ -559,9 +563,9 @@ bool CLWSMotionDatabaseCompiler::LoadLWSceneFile( const std::string& filepath ) 
 
 	m_pScene = shared_ptr<CLightWaveSceneLoader>( new CLightWaveSceneLoader() );
 
-	m_pScene->LoadFromFile( filepath );
+	bool res = m_pScene->LoadFromFile( filepath );
 
-	return true;
+	return res;
 }
 
 

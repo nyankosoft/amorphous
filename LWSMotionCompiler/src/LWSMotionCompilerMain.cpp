@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 using namespace msynth;
 
 
@@ -43,6 +44,12 @@ int main( int argc, char *argv[] )
 
 	if( filepath.length() == 0 )
 		return 0;
+
+	// Open a file for logging
+	path dirpath = path(filepath).parent_path();
+	path html_log_filepath = dirpath / "log.html";
+	CLogOutput_HTML html_log( html_log_filepath.string() );
+	g_Log.AddLogOutput( &html_log );
 
 	shared_ptr<CMotionPrimitiveCompilerCreator> pBVHCompilerCreator( new CBVHMotionPrimitiveCompilerCreator );
 	RegisterMotionPrimitiveCompilerCreator( pBVHCompilerCreator );
