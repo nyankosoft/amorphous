@@ -2,7 +2,7 @@
 #define  __CameraController_Win32_H__
 
 
-#include <d3dx9.h>
+#include <windows.h>
 #include "CameraControllerBase.hpp"
 
 

@@ -1,4 +1,5 @@
 #include "CameraControllerBase.hpp"
+#include "Input/InputHandler.hpp"
 #include <d3dx9.h>
 
 
@@ -21,6 +22,8 @@ CCameraControllerBase::CCameraControllerBase()
 	m_CameraControlCode[CameraControl::Left]     = 'S';
 	m_CameraControlCode[CameraControl::Up]       = 'Q';
 	m_CameraControlCode[CameraControl::Down]     = 'A';
+
+	memset( m_IsMouseButtonPressed, 0, sizeof(m_IsMouseButtonPressed) );
 }
 
 
@@ -111,4 +114,63 @@ void CCameraControllerBase::AssignKeyForCameraControl( int general_input_code, C
 		return;
 
 	m_CameraControlCode[cam_control_op] = general_input_code;
+}
+
+
+void CCameraControllerBase::HandleInput( const SInputData& input )
+{
+	int iMousePosX = 0, iMousePosY = 0, iMouseMoveX = 0, iMouseMoveY = 0;
+
+	switch( input.iGICode )
+    {
+	case GIC_MOUSE_BUTTON_L:
+	case GIC_MOUSE_BUTTON_R:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_iPrevMousePosX = input.GetParamH16();
+			m_iPrevMousePosY = input.GetParamL16();
+			switch( input.iGICode )
+			{
+			case GIC_MOUSE_BUTTON_L: m_IsMouseButtonPressed[MBTN_LEFT]  = 1; break;
+			case GIC_MOUSE_BUTTON_R: m_IsMouseButtonPressed[MBTN_RIGHT] = 1; break;
+			default: break;
+			}
+		}
+		else if( input.iType == ITYPE_KEY_RELEASED )
+		{
+			switch( input.iGICode )
+			{
+			case GIC_MOUSE_BUTTON_L: m_IsMouseButtonPressed[MBTN_LEFT]  = 0; break;
+			case GIC_MOUSE_BUTTON_R: m_IsMouseButtonPressed[MBTN_RIGHT] = 0; break;
+			default: break;
+			}
+		}
+		break;
+	case GIC_MOUSE_AXIS_X:
+	case GIC_MOUSE_AXIS_Y:
+		if( m_IsMouseButtonPressed[MBTN_LEFT] == 0
+		 && m_IsMouseButtonPressed[MBTN_RIGHT] == 0 )
+			break;
+
+		iMousePosX = input.GetParamH16();
+		iMousePosY = input.GetParamL16();
+		iMouseMoveX = iMousePosX - m_iPrevMousePosX;
+		iMouseMoveY = iMousePosY - m_iPrevMousePosY;
+
+		if( m_IsMouseButtonPressed[MBTN_RIGHT] == 1 )
+		{
+			// camera roration
+			AddYaw( (float)iMouseMoveX / 450.0f );
+			AddPitch( - (float)iMouseMoveY / 450.0f );
+		}
+		else
+		{
+			// camera translation
+			Move( (float)iMouseMoveX / 200.0f, (float)iMouseMoveY / 200.0f, 0.0f );
+		}
+
+		m_iPrevMousePosX = iMousePosX;
+		m_iPrevMousePosY = iMousePosY;
+		break;
+	}
 }

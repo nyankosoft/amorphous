@@ -53,17 +53,6 @@ bool CPlatformDependentCameraController::IsKeyPressed( int general_input_code )
 }
 
 
-/*
-void CPlatformDependentCameraController::SetCameraMatrix()
-{
-	D3DXMATRIX matCamera;
-
-	GetCameraMatrix( matCamera );
-
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW, &matCamera );
-}
-*/
-
 void CPlatformDependentCameraController::HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam )
 {
 	int iMousePosX, iMousePosY, iMouseMoveX, iMouseMoveY;

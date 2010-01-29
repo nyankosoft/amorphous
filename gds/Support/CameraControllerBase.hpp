@@ -3,7 +3,7 @@
 
 
 #include "Graphics/Camera.hpp"
-#include "Input/InputHandler.hpp"
+#include "Input/fwd.hpp"
 
 
 class CameraControl
@@ -67,6 +67,15 @@ class CCameraControllerBase
 
 	int m_CameraControlCode[CameraControl::NumOperations];
 
+	enum MouseButton
+	{
+		MBTN_LEFT,
+		MBTN_RIGHT,
+		NUM_MOUSE_BUTTONS
+	};
+
+	int m_IsMouseButtonPressed[NUM_MOUSE_BUTTONS]; ///< 1: pressed / 0: released
+
 protected:
 
 	/// Move these variables CCameraController_Win32 if it's the only one
@@ -85,15 +94,10 @@ public:
 
 	virtual bool IsKeyPressed( int general_input_code ) = 0;
 
-//	void SetCameraMatrix();
-
 	//>>> old D3D-dependent code
 
 	// row major 4x4 matrix
 	inline void GetCameraMatrix( D3DXMATRIX& rmatCamera ) const;
-
-	// row major 4x4 matrix
-//	inline D3DXMATRIX GetCameraMatrix() const;
 
 	//<<< old D3D-dependent code
 
@@ -136,6 +140,11 @@ public:
 
 	/// set the speed of the camera translation (meter per second)
 	inline void SetTranslationSpeed( float meter_per_second ) { m_fTranslationSpeed = meter_per_second; }
+
+	/// Handles mouse movements
+	/// Don't use this with CPlatformDependentCameraController::HandleMessage( UINT, WPARAM, LPARAM ),
+	/// otherwise the mouse input will be processed twice
+	inline void HandleInput( const SInputData& input );
 };
 
 /*
@@ -162,16 +171,6 @@ inline void CCameraControllerBase::GetCameraMatrix( D3DXMATRIX& rmatCamera ) con
 	rmatCamera._44=1;
 }
 
-/*
-inline D3DXMATRIX CCameraControllerBase::GetCameraMatrix() const
-{
-	D3DXMATRIX matCamera;
-
-	GetCameraMatrix( matCamera );
-
-	return matCamera;
-}
-*/
 
 /// column major 4x4 matrix
 inline void CCameraControllerBase::GetCameraMatrix( Matrix44& rmatCamera ) const

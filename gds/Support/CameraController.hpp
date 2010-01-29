@@ -3,6 +3,7 @@
 
 
 #include "CameraControllerBase.hpp"
+#include "Input/InputHandler.hpp"
 #include <boost/shared_ptr.hpp>
 
 
