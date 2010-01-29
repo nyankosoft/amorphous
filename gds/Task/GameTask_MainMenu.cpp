@@ -1,6 +1,6 @@
 #include "GameTask_MainMenu.hpp"
 #include "GameTask_Stage.hpp"
-#include "App/ApplicationBase.hpp"
+#include "App/GameApplicationBase.hpp"
 #include "App/GameWindowManager_Win32.hpp"
 
 #include "Graphics/2DPrimitive/2DRect.hpp"

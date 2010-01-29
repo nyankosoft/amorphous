@@ -1,5 +1,5 @@
-#ifndef  __APPLICATIONBASE_H__
-#define  __APPLICATIONBASE_H__
+#ifndef  __GameApplicationBase_HPP__
+#define  __GameApplicationBase_HPP__
 
 
 #include <string>
@@ -7,7 +7,7 @@
 #include "Task/fwd.hpp"
 
 class CGlobalInputHandler;
-class CApplicationBase;
+class CGameApplicationBase;
 class CLogOutput_ScrolledTextBuffer;
 
 
@@ -20,16 +20,16 @@ extern CDirectInputMouse *g_pDIMouse;		// referenced from CGameTask classes
 
 
 // =============================== function externs ===============================
-extern void MainLoop( CApplicationBase *pApp );
+extern void MainLoop( CGameApplicationBase *pApp );
 
 // =============================== variable externs ===============================
-extern CApplicationBase *g_pAppBase;
+extern CGameApplicationBase *g_pAppBase;
 
 /**
  * base class for 3d game app
  *
  */
-class CApplicationBase
+class CGameApplicationBase
 {
 	CDIKeyboard *m_pDIKeyboard;
 	CDirectInputGamepad *m_pDIGamepad;
@@ -77,8 +77,8 @@ private:
 
 public:
 
-	CApplicationBase();
-	virtual ~CApplicationBase();
+	CGameApplicationBase();
+	virtual ~CGameApplicationBase();
 
 	bool InitBase();
 
@@ -95,8 +95,8 @@ public:
 
 	void Run();
 
-	friend void MainLoop( CApplicationBase *pApp );
+	friend void MainLoop( CGameApplicationBase *pApp );
 };
 
 
-#endif		/*  __APPLICATIONBASE_H__  */
+#endif		/*  __GameApplicationBase_HPP__  */

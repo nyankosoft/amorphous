@@ -1,4 +1,4 @@
-#include "ApplicationBase.hpp"
+#include "GameApplicationBase.hpp"
 
 #include <boost/filesystem.hpp>
 #include <boost/exception/get_error_info.hpp>
@@ -33,7 +33,7 @@ using namespace boost;
 
 // ================================ global variables ================================
 
-CApplicationBase *g_pAppBase = NULL;
+CGameApplicationBase *g_pAppBase = NULL;
 
 CDirectInputMouse *g_pDIMouse = NULL;
 
@@ -55,14 +55,14 @@ void UpdateBaseEntityDatabase()
 
 
 //========================================================================================
-// CApplicationBase
+// CGameApplicationBase
 //========================================================================================
 
 
-int CApplicationBase::ms_DefaultSleepTimeMS = 3;
+int CGameApplicationBase::ms_DefaultSleepTimeMS = 3;
 
 
-CApplicationBase::CApplicationBase()
+CGameApplicationBase::CGameApplicationBase()
 {
 	m_pTaskManager = NULL;
 
@@ -72,25 +72,25 @@ CApplicationBase::CApplicationBase()
 }
 
 
-CApplicationBase::~CApplicationBase()
+CGameApplicationBase::~CGameApplicationBase()
 {
 	Release();
 }
 
 
-int CApplicationBase::GetStartTaskID() const
+int CGameApplicationBase::GetStartTaskID() const
 {
 	return CGameTask::ID_INVALID;
 }
 
 
-CGameTaskFactoryBase *CApplicationBase::CreateGameTaskFactory() const
+CGameTaskFactoryBase *CGameApplicationBase::CreateGameTaskFactory() const
 {
 	return new CGameTaskFactoryBase();
 }
 
 
-void CApplicationBase::Release()
+void CGameApplicationBase::Release()
 {
 	SafeDelete( m_pTaskManager );
 
@@ -106,7 +106,7 @@ void CApplicationBase::Release()
 }
 
 
-void CApplicationBase::InitDebugItems()
+void CGameApplicationBase::InitDebugItems()
 {
 	const string font_name = "BuiltinFont::BitstreamVeraSansMono_Bold_256";//"DotumChe";
 
@@ -145,7 +145,7 @@ void CApplicationBase::InitDebugItems()
 }
 
 
-void CApplicationBase::ReleaseDebugItems()
+void CGameApplicationBase::ReleaseDebugItems()
 {
 	// delete debug output
 	//  - it uses the borrowed reference of screen overlay log (m_pOnScreenLog)
@@ -161,7 +161,7 @@ void CApplicationBase::ReleaseDebugItems()
 }
 
 
-bool CApplicationBase::InitBase()
+bool CGameApplicationBase::InitBase()
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -307,7 +307,7 @@ bool CApplicationBase::InitBase()
 }
 
 
-bool CApplicationBase::InitTaskManager()
+bool CGameApplicationBase::InitTaskManager()
 {
 	const std::string start_task_name = GetStartTaskName();
 
@@ -331,7 +331,7 @@ bool CApplicationBase::InitTaskManager()
 }
 
 
-void CApplicationBase::AcquireInputDevices()
+void CGameApplicationBase::AcquireInputDevices()
 {
 	if( m_pDIKeyboard )
 		m_pDIKeyboard->Acquire();
@@ -345,7 +345,7 @@ void CApplicationBase::AcquireInputDevices()
 }
 
 
-void CApplicationBase::UpdateFrame()
+void CGameApplicationBase::UpdateFrame()
 {
 	// update the timer
 	GlobalTimer().UpdateFrameTime();
@@ -396,7 +396,7 @@ void CApplicationBase::UpdateFrame()
 }
 
 
-void CApplicationBase::Execute()
+void CGameApplicationBase::Execute()
 {
 //	MSGBOX_FUNCTION_SCOPE();
 
@@ -449,7 +449,7 @@ inline void SetFreeImageErrorHandler()
 }
 
 
-void CApplicationBase::Run()
+void CGameApplicationBase::Run()
 {
 //	MSGBOX_FUNCTION_SCOPE();
 

@@ -11,7 +11,7 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "GameCommon/GameMathMisc.hpp"
 #include "GameCommon/MeshBoneControllerBase.hpp"
-#include "App/ApplicationBase.hpp"
+//#include "App/GameApplicationBase.hpp"
 #include "Task/GameTaskManager.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/StringAux.hpp"
@@ -954,7 +954,7 @@ void CBaseEntity::NudgePosition(CCopyEntity* pCopyEnt)
 //	MessageBox(NULL, "NudgePosition: stuck", "Error", MB_OK|MB_ICONWARNING);
 	return;
 }
-
+/*
 static void LogTaskError()
 {
 	if( !g_pAppBase )
@@ -966,7 +966,7 @@ static void LogTaskError()
 	else
 		g_Log.Print( "%s unknown error with app, task manager or task", __FILE__ );
 }
-
+*/
 /*
 void CBaseEntity::RequestTaskTransition( const std::string& next_task_title,
 	                                     float delay_in_sec,

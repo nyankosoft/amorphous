@@ -1,4 +1,4 @@
-#include "ApplicationBase.hpp"
+#include "GameApplicationBase.hpp"
 #include "Support/fnop.hpp"
 #include "Support/Profile.hpp"
 
@@ -34,10 +34,10 @@ extern CApplicationBase *CreateApplicationInstance() { return new CUserDefinedAp
 */
 
 
-extern CApplicationBase *CreateApplicationInstance();
+extern CGameApplicationBase *CreateApplicationInstance();
 
 
-void MainLoop( CApplicationBase *pApp )
+void MainLoop( CGameApplicationBase *pApp )
 {
     // Enter the message loop
     MSG msg;

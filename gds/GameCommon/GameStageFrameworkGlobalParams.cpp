@@ -4,7 +4,7 @@
 
 #include "Stage/EntitySet.hpp"
 #include "Stage/ScreenEffectManager.hpp"
-#include "App/ApplicationBase.hpp"
+#include "App/GameApplicationBase.hpp"
 #include "Support/DebugOutput.hpp"
 
 
@@ -42,7 +42,7 @@ void CGameStageFrameworkGlobalParams::UpdateParams()
 
 //	CScreenEffectManager::SetDefaultShBaderFilename( m_DefaultShaderFilename );
 
-	CApplicationBase::SetDefaultSleepTime( m_DefaultSleepTimeMS );
+	CGameApplicationBase::SetDefaultSleepTime( m_DefaultSleepTimeMS );
 
 	if( m_StartupDebugWindow == "none" )
 		DebugOutput.Hide();

@@ -2,7 +2,7 @@
 #include <direct.h>
 
 #include "App/GameWindowManager_Win32.hpp"
-#include "App/ApplicationBase.hpp"
+#include "App/GameApplicationBase.hpp"
 #include "Task/GameTaskManager.hpp"
 
 #include "Graphics/Font/Font.hpp"

@@ -1,6 +1,6 @@
 #include "PyModule_TaskMethods.hpp"
 
-#include "App/ApplicationBase.hpp"
+#include "App/GameApplicationBase.hpp"
 #include "Task/GameTask.hpp"
 #include "Task/GameTaskManager.hpp"
 

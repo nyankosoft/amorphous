@@ -3480,11 +3480,11 @@
 			Name="BasicFramework"
 			>
 			<File
-				RelativePath="..\..\gds\App\ApplicationBase.cpp"
+				RelativePath="..\..\gds\App\GameApplicationBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\App\ApplicationBase.hpp"
+				RelativePath="..\..\gds\App\GameApplicationBase.hpp"
 				>
 			</File>
 			<File
