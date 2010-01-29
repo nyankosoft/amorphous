@@ -2,6 +2,7 @@
 #define  __GAMEINPUT_FWD_H__
 
 
+struct SInputData;
 class CInputHandler;
 
 class CInputDevice;
