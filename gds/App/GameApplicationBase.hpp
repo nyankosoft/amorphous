@@ -2,9 +2,9 @@
 #define  __GameApplicationBase_HPP__
 
 
-#include <string>
 #include "Input/fwd.hpp"
 #include "Task/fwd.hpp"
+#include "ApplicationBase.hpp"
 
 class CGlobalInputHandler;
 class CGameApplicationBase;
@@ -29,7 +29,7 @@ extern CGameApplicationBase *g_pAppBase;
  * base class for 3d game app
  *
  */
-class CGameApplicationBase
+class CGameApplicationBase : public CApplicationBase
 {
 	CDIKeyboard *m_pDIKeyboard;
 	CDirectInputGamepad *m_pDIGamepad;
