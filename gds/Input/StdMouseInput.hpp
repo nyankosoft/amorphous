@@ -1,11 +1,11 @@
-
 #ifndef  __STDMOUSEINPUT_H__
 #define  __STDMOUSEINPUT_H__
 
+#include "Input/InputDevice.hpp"
 #include <windows.h>
 
 
-class CStdMouseInput
+class CStdMouseInput : public CInputDevice
 {
 	int m_iPosX, m_iPosY;	// current mouse position
 	
@@ -24,6 +24,8 @@ public:
 
 	CStdMouseInput();
 	~CStdMouseInput() {}
+
+	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_MOUSE; }
 
 //	HRESULT Init( HWND hWnd );
 //	void Release();

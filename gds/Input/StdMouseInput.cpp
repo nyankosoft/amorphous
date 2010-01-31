@@ -1,4 +1,3 @@
-
 #include "StdMouseInput.hpp"
 #include "Input/InputHub.hpp"
 
@@ -7,6 +6,8 @@ CStdMouseInput::CStdMouseInput()
 {
 	m_iPosX = 0;
 	m_iPosY = 0;
+
+	InputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 
@@ -37,16 +38,19 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 		if( msg == WM_LBUTTONDOWN || msg == WM_LBUTTONUP )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_L;
+			UpdateInputState( input );
 			InputHub().UpdateInput( input );
 		}
 		else if( msg == WM_RBUTTONDOWN || msg == WM_RBUTTONUP )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_R;
+			UpdateInputState( input );
 			InputHub().UpdateInput( input );
 		}
 		else if( msg == WM_MBUTTONDOWN )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_M;
+			UpdateInputState( input );
 			InputHub().UpdateInput( input );
 		}
 
