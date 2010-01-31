@@ -17,6 +17,7 @@ public:
 	// TODO: how to notidy when the keybinds have been changed
 	void UpdateKeyBind();
 
+	static int ms_TaskOnPause;
 };
 
 

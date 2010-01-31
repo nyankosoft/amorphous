@@ -3,14 +3,13 @@
 #include "Stage/PlayerInfo.hpp"
 #include "Stage/BE_Player.hpp"
 #include "Item/WeaponSystem.hpp"
-
-#include "Task/GameTask.hpp"
-#include "../../../../GameProjects/FlightGame/src/srcroot/Task/GameTaskFG.hpp"
-
 #include "Stage/SystemInputHandler_Debug.hpp"
-
 #include "Support/StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Task/GameTask.hpp"
+
+
+int CInputHandler_PlayerPAC::ms_TaskOnPause = CGameTask::ID_INVALID;
 
 
 CInputHandler_PlayerPAC::CInputHandler_PlayerPAC()
@@ -241,7 +240,8 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 //			SinglePlayerInfo().RequestTaskChange( CGameTask::ID_MAIN_MENU );
-			SinglePlayerInfo().RequestTaskChange( CGameTaskFG::ID_INSTAGEMENU_FG );
+//			SinglePlayerInfo().RequestTaskChange( CGameTaskFG::ID_INSTAGEMENU_FG );
+			SinglePlayerInfo().RequestTaskChange( ms_TaskOnPause );
 		}
 		break;
 	}
