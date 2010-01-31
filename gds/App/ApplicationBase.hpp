@@ -24,6 +24,10 @@ protected:
 
 //	static int ms_DefaultSleepTimeMS;
 
+	bool m_UseDefaultMouse;
+
+	bool m_UseDefaultKeyboard;
+
 protected:
 
 	// Override this to customize the text that appears on the title bar of the applicaiton window.
@@ -36,7 +40,11 @@ private:
 
 public:
 
-	CApplicationBase() {}
+	CApplicationBase()
+		:
+	m_UseDefaultMouse(true),
+	m_UseDefaultKeyboard(true)
+	{}
 
 	virtual ~CApplicationBase() {}
 
@@ -48,6 +56,10 @@ public:
 //	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
 
 	virtual void Run() = 0;
+
+	bool UseDefaultKeyboard() const { return m_UseDefaultKeyboard; }
+
+	bool UseDefaultMouse() const { return m_UseDefaultMouse; }
 
 	friend void MainLoop( CApplicationBase *pApp );
 };

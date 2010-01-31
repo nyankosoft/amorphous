@@ -1,6 +1,8 @@
-#include "GameApplicationBase.hpp"
+#include "ApplicationBase.hpp"
 #include "Support/fnop.hpp"
 #include "Support/Profile.hpp"
+#include "Input/StdKeyboard.hpp"
+#include "Input/StdMouseInput.hpp"
 
 // Windows headers
 #include <windows.h>
@@ -19,6 +21,9 @@ using namespace std;
 // draft
 extern void SetCurrentThreadAsRenderThread();
 
+// global variable(s)
+CApplicationBase *g_pAppBase = NULL;
+
 
 #define APPBASE_TIMER_RESOLUTION	1
 
@@ -34,10 +39,10 @@ extern CApplicationBase *CreateApplicationInstance() { return new CUserDefinedAp
 */
 
 
-extern CGameApplicationBase *CreateApplicationInstance();
+extern CApplicationBase *CreateApplicationInstance();
 
 
-void MainLoop( CGameApplicationBase *pApp )
+void MainLoop( CApplicationBase *pApp )
 {
     // Enter the message loop
     MSG msg;
@@ -64,6 +69,12 @@ void MainLoop( CGameApplicationBase *pApp )
 // message procedure
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
+	static CStdKeyboard s_StdKeyboard;
+	static CStdMouseInput s_StdMouse;
+
+	if( g_pAppBase->UseDefaultMouse() )
+		s_StdMouse.UpdateInput( msg, wParam, lParam );
+
     switch( msg )
     {
         case WM_DESTROY:
@@ -80,9 +91,13 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             break;
 
 		case WM_KEYDOWN:
+			if( g_pAppBase->UseDefaultKeyboard() )
+				s_StdKeyboard.NotifyKeyDown( (int)wParam );
 			break;
 
 		case WM_KEYUP:
+			if( g_pAppBase->UseDefaultKeyboard() )
+				s_StdKeyboard.NotifyKeyUp( (int)wParam );
 			break;
     }
 

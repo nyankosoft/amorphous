@@ -1735,6 +1735,14 @@
 			<Filter
 				Name="App"
 				>
+				<File
+					RelativePath="..\..\gds\App\GameApplicationBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\App\GameApplicationBase.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Item"

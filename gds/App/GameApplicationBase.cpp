@@ -69,6 +69,9 @@ CGameApplicationBase::CGameApplicationBase()
 	g_pDIMouse = NULL;
 	m_pDIKeyboard = NULL;
 //	m_pDIGamepad = NULL;
+
+	m_UseDefaultMouse = false;
+	m_UseDefaultKeyboard = false;
 }
 
 

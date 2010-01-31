@@ -3484,14 +3484,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\App\GameApplicationBase.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\App\GameApplicationBase.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\App\GameWindowManager.cpp"
 				>
 			</File>
@@ -3521,6 +3513,14 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\App\GameWindowManager_Win32_GL.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GraphicsApplicationBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\App\GraphicsApplicationBase.hpp"
 				>
 			</File>
 		</Filter>

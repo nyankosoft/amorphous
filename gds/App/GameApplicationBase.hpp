@@ -20,7 +20,7 @@ extern CDirectInputMouse *g_pDIMouse;		// referenced from CGameTask classes
 
 
 // =============================== function externs ===============================
-extern void MainLoop( CGameApplicationBase *pApp );
+extern void MainLoop( CApplicationBase *pApp );
 
 // =============================== variable externs ===============================
 extern CGameApplicationBase *g_pAppBase;
@@ -95,7 +95,7 @@ public:
 
 	void Run();
 
-	friend void MainLoop( CGameApplicationBase *pApp );
+	friend void MainLoop( CApplicationBase *pApp );
 };
 
 
