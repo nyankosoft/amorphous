@@ -87,6 +87,7 @@ public:
 
 	fixed_string( const std::string& src )
 	{
+		memset( m_buffer, 0, sizeof(m_buffer) );
 		strncpy( m_buffer, src.c_str(), MaxLength - 1 );
 	}
 
