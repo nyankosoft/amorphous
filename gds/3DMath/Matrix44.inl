@@ -10,7 +10,7 @@
 
 //########################################################################
 // 
-//                       Matrix3
+//                       Matrix44
 //
 //########################################################################
 inline Matrix44::Matrix44() {};
@@ -355,6 +355,11 @@ inline Vector4 operator*(const Matrix44 & lhs, const Vector4 & rhs)
 */
 
 
+
+//=============================================================================
+// global functions
+//=============================================================================
+
 inline Matrix44 Matrix44Transpose(const Matrix44 & rhs)
 {
   return Matrix44( rhs(0, 0), rhs(0, 1), rhs(0, 2), rhs(0, 3),
@@ -377,3 +382,44 @@ inline Scalar trace(const Matrix44 & rhs)
   return rhs(0,0) + rhs(1,1) + rhs(2,2);
 }
 */
+
+
+inline Matrix44 Matrix44Scaling( Scalar x, Scalar y, Scalar z )
+{
+	Matrix44 out;
+	out(0,0) = x; out(0,1) = 0; out(0,2) = 0; out(0,3) = 0;
+	out(1,0) = 0; out(1,1) = y; out(1,2) = 0; out(1,3) = 0;
+	out(2,0) = 0; out(2,1) = 0; out(2,2) = z; out(2,3) = 0;
+	out(3,0) = 0; out(3,1) = 0; out(3,2) = 0; out(3,3) = 1;
+	return out;
+}
+
+
+/// Builds a left-handed orthographic projection matrix
+inline void Matrix44OrthoLH( Scalar w,
+                             Scalar h,
+                             Scalar z_near,
+                             Scalar z_far,
+                             Matrix44& dest
+                             )
+{
+	Scalar _22 = 1.0f / (z_far - z_near);
+	Scalar _23 = z_near / (z_near - z_far);
+	dest(0,0) = 2.0f/w; dest(0,1) = 0;      dest(0,2) = 0;   dest(0,3) = 0;
+	dest(1,0) = 0;      dest(1,1) = 2.0f/h; dest(1,2) = 0;   dest(1,3) = 0;
+	dest(2,0) = 0;      dest(2,1) = 0;      dest(2,2) = _22; dest(2,3) = _23;
+	dest(3,0) = 0;      dest(3,1) = 0;      dest(3,2) = 0;   dest(3,3) = 1;
+}
+
+
+inline Matrix44 Matrix44OrthoLH( Scalar w,
+                                 Scalar h,
+                                 Scalar z_near,
+                                 Scalar z_far
+                                 )
+{
+	Matrix44 dest;
+	Matrix44OrthoLH( w, h, z_near, z_far, dest );
+	return dest;
+}
+

@@ -116,7 +116,14 @@ private:
 inline Matrix44 operator*(const Matrix44 & lhs, const Scalar rhs);
 inline Matrix44 operator*(const Scalar lhs, const Matrix44 & rhs) {return rhs * lhs;}
 inline Matrix44 operator*(const Matrix44 & lhs, const Matrix44 & rhs);
+
+
+// global functions
+
 inline Matrix44 Matrix44Transpose(const Matrix44 & rhs);
+inline Matrix44 Matrix44Scaling( Scalar x, Scalar y, Scalar z );
+inline void Matrix44OrthoLH( Scalar w, Scalar h, Scalar z_near, Scalar z_far, Matrix44& dest );
+inline Matrix44 Matrix44OrthoLH( Scalar w, Scalar h, Scalar z_near, Scalar z_far );
 
 
 // matrix * vector
