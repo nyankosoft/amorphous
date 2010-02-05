@@ -137,4 +137,19 @@ public:
 };
 
 
+class CSphereMeshGenerator : public CMeshGenerator
+{
+	CSphereDesc m_Desc;
+
+public:
+
+	CSphereMeshGenerator( CSphereDesc& desc )
+		:
+	m_Desc(desc)
+	{}
+
+	Result::Name Generate();
+};
+
+
 #endif  /* __MeshGenerator_H__ */

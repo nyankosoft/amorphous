@@ -110,9 +110,42 @@ public:
 	{
 		if( 0.001f < radii[0]
 		 && 0.001f < radii[1]
-		 && 0.001f < radii[2]
 		 && 0.001f < height
-		 && 0.001f < num_sides )
+		 && 2 < num_sides )
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+};
+
+
+class CSphereDesc
+{
+public:
+	float radii[3]; ///< array of radii
+	int num_sides;
+	int num_segments;
+
+public:
+
+	CSphereDesc()
+		:
+	num_sides(6),
+	num_segments(12)
+	{
+		for( int i = 0; i<3; i++ )
+			radii[i] = 0.5f;
+	}
+
+	bool IsValid() const
+	{
+		if( 0.001f < radii[0]
+		 && 0.001f < radii[1]
+		 && 0.001f < radii[2]
+		 && 2 < num_sides
+		 && 1 < num_segments )
 		{
 			return true;
 		}
@@ -124,6 +157,7 @@ public:
 
 
 extern void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh );
+extern void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh );
 
 
 inline void CreateConeMeshArchive( const CConeDesc& desc, C3DMeshModelArchive& mesh_archive )

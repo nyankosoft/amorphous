@@ -255,3 +255,20 @@ Result::Name CConeMeshGenerator::Generate()
 
 	return Result::SUCCESS;
 }
+
+
+
+Result::Name CSphereMeshGenerator::Generate()
+{
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+
+	CreateSphereMesh( m_Desc, *pMesh );
+
+	C3DMeshModelBuilder mesh_builder;
+	mesh_builder.BuildMeshModelArchive( pMesh );
+	m_MeshArchive = mesh_builder.GetArchive();
+
+	SetMiscMeshAttributes();
+
+	return Result::UNKNOWN_ERROR;
+}

@@ -131,3 +131,39 @@ void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
 */	
 
 }
+
+
+void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
+{
+	if( !desc.IsValid() )
+		return;
+
+	mesh.SetVertexFormatFlags(
+		 CMMA_VertexSet::VF_POSITION
+		|CMMA_VertexSet::VF_NORMAL
+		|CMMA_VertexSet::VF_DIFFUSE_COLOR
+		|CMMA_VertexSet::VF_2D_TEXCOORD0 );
+
+	// vertices
+
+	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
+	vector<CGeneral3DVertex>& vecVertex = *pVertexBuffer;
+
+	const int num_vertices = desc.num_sides * (desc.num_segments - 1) + 2;
+	vecVertex.resize( num_vertices );
+
+	float y = desc.radii[1];
+	vecVertex[0].m_vPosition = Vector3( 0.0f,  y, 0.0f );
+	vecVertex[1].m_vPosition = Vector3( 0.0f, -y, 0.0f );
+/*
+	for( int i=0; i<desc.num_sides; i++ )
+	{
+		for( int j=0; j<desc.num_segments; j++ )
+		{
+			vecVertex[??? + 1].m_vPosition = ???
+		}
+	}
+*/
+	std::vector<CMMA_Material>& material_buffer = mesh.GetMaterialBuffer();
+	material_buffer.resize( 1 );
+}
