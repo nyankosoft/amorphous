@@ -2,8 +2,10 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/3DGameMath.hpp"
 
 
@@ -12,19 +14,17 @@ CBE_LaserDot::CBE_LaserDot()
 	m_bNoClip = true;
 	m_bLighting = false;
 
-	D3DXVECTOR3 avRectVertex[4];
+	Vector3 avRectVertex[4];
 
-	avRectVertex[0] = D3DXVECTOR3(-0.25f, 0.25f, 0.0f );
-	avRectVertex[1] = D3DXVECTOR3( 0.25f, 0.25f, 0.0f );
-	avRectVertex[2] = D3DXVECTOR3( 0.25f,-0.25f, 0.0f );
-	avRectVertex[3] = D3DXVECTOR3(-0.25f,-0.25f, 0.0f );
-
-
-	D3DXVECTOR3 avNormal[4];
-	memset( avNormal, 0, sizeof(D3DXVECTOR3) * 4 );
+	avRectVertex[0] = Vector3(-0.25f, 0.25f, 0.0f );
+	avRectVertex[1] = Vector3( 0.25f, 0.25f, 0.0f );
+	avRectVertex[2] = Vector3( 0.25f,-0.25f, 0.0f );
+	avRectVertex[3] = Vector3(-0.25f,-0.25f, 0.0f );
 
 	m_LaserDotRect.SetPosition( avRectVertex );
-	m_LaserDotRect.SetNormal( avNormal );
+
+	Vector3 aNormal[] = { Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0) };
+	m_LaserDotRect.SetNormal( aNormal );
 
 	m_LaserDotRect.SetColor( 0xFFFFFFFF );
 
@@ -57,7 +57,7 @@ void CBE_LaserDot::Act(CCopyEntity* pCopyEnt)
 	Vector3 vWorldMuzzlePos;
 	pLaserEmitter->GetWorldPose().Transform( vWorldMuzzlePos, rvLocalMuzzlePos );
 
-/*	D3DXVECTOR3 vWorldMuzzlePos = pLaserEmitter->Position()
+/*	Vector3 vWorldMuzzlePos = pLaserEmitter->Position()
 		                        + pLaserEmitter->GetRightDirection()     * rvLocalMuzzlePos.x
 		                        + pLaserEmitter->GetUpDirection()        * rvLocalMuzzlePos.y
 		                        + pLaserEmitter->Direction() * rvLocalMuzzlePos.z;
@@ -106,29 +106,32 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	D3DXMATRIX matScale, matWorld;
+//	D3DXMATRIX matScale, matWorld;
 
 	// increase the size of the dot to improve visibility
-	D3DXMatrixScaling( &matScale, 5.0f, 5.0f, 1.0f );
+//	D3DXMatrixScaling( &matScale, 5.0f, 5.0f, 1.0f );
+	Matrix44 matScale( Matrix44Scaling( 5.0f, 5.0f, 1.0f ) );
 
 	// set up world transformation matrix to place the laser dot at the contact point
-//	D3DXVECTOR3 vPos = tr.vEnd + tr.plane.normal * 0.01f;	// put slightly above the surface to avoid z-fighting
-	D3DXVECTOR3 vPos = pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * 0.012f;	// put slightly above the surface to avoid z-fighting
-	memcpy( &matWorld._11, &pCopyEnt->GetRightDirection(), sizeof(D3DXVECTOR3) ); matWorld._14 = 0.0f;
-	memcpy( &matWorld._21, &pCopyEnt->GetUpDirection(),    sizeof(D3DXVECTOR3) ); matWorld._24 = 0.0f;
-	memcpy( &matWorld._31, &pCopyEnt->GetDirection(),      sizeof(D3DXVECTOR3) ); matWorld._34 = 0.0f;
-	memcpy( &matWorld._41, &vPos,                          sizeof(D3DXVECTOR3) ); matWorld._44 = 1.0f;
+//	Vector3 vPos = tr.vEnd + tr.plane.normal * 0.01f;	// put slightly above the surface to avoid z-fighting
+	Vector3 vPos = pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * 0.012f;	// put slightly above the surface to avoid z-fighting
 
-	D3DXMatrixMultiply( &matWorld, &matScale, &matWorld );
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
+	Matrix34 rect_pose( Matrix34Identity() );
+	pCopyEnt->GetWorldOrientation( rect_pose.matOrient );
+	rect_pose.vPosition = vPos;
+
+	Matrix44 matWorld;
+	ToMatrix44( rect_pose, matWorld );
+
+	matWorld = matWorld * matScale;
+	FixedFunctionPipelineManager().SetWorldTransform( matWorld );
 
 
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	D3DBLEND_ONE );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_ONE );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	D3DBLEND_SRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_DESTBLEND,	D3DBLEND_INVSRCALPHA );
-
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
+	GraphicsDevice().SetDestBlendMode(   AlphaBlend::One );
+//	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+//	GraphicsDevice().SetDestBlendMode(  AlphaBlend::InvSrcAlpha );
 
 	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
@@ -137,9 +140,7 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 	if( pShaderManager &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
-		Matrix44 world;
-		world.SetRowMajorMatrix44( (Scalar *)&matWorld );
-		pShaderManager->SetWorldTransform( world );
+		pShaderManager->SetWorldTransform( matWorld );
 
 		pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );
 		pEffect->Begin( &cPasses, 0 );
@@ -156,7 +157,6 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 	}
 	else
 	{
-
 		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
 //		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2 );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );

@@ -8,12 +8,15 @@
 #include "SurfaceMaterial.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 #include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Sound/SoundManager.hpp"
 
 using namespace std;
 using namespace boost;
+
+extern void ToMatrix44( const Matrix34& src, Matrix44& dest );
 
 
 inline float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }
@@ -552,16 +555,15 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	// set the world transformation matrix
-	D3DXMATRIX matWorld, matRotZ;
+	Matrix44 matWorld, matRotZ;
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
 //	m_pStage->GetBillboardRotationMatrix( matWorld );
 	Matrix34 billboard_pose;
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
-	billboard_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
+	billboard_pose.vPosition = pCopyEnt->GetWorldPosition();	// current position of this billboard
 
-	const Vector3& rvPos =  pCopyEnt->GetWorldPosition();	// current position of this billboard
-	matWorld._41 =   rvPos.x; matWorld._42 =   rvPos.y;	matWorld._43 =   rvPos.z; matWorld._44 = 1;
+	ToMatrix44( billboard_pose, matWorld );
 
 //	if( /* random rotation is */ true )
 /*	{	// randomly rotates billboards to make them look more diverse
@@ -570,20 +572,21 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 		D3DXMatrixMultiply( &matWorld, &matRotZ, &matWorld );
 	}*/
 
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
+	FixedFunctionPipelineManager().SetWorldTransform( matWorld );
 
 	// use the texture color only
-	pd3dDev->SetTexture( 0, m_BillboardTexture.GetTexture() );
+	FixedFunctionPipelineManager().SetTexture( 0, m_BillboardTexture );
+//	pd3dDev->SetTexture( 0, m_BillboardTexture.GetTexture() );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
 
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_ONE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+//	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
-//	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
+//	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
 //	pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_iDestBlend );
 
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );

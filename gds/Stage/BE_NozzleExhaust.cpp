@@ -5,6 +5,7 @@
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 
+using namespace std;
 
 
 CBE_NozzleExhaust::CBE_NozzleExhaust()

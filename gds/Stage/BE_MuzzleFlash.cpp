@@ -6,6 +6,8 @@
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 
+using namespace std;
+
 
 CBE_MuzzleFlash::CBE_MuzzleFlash()
 {
