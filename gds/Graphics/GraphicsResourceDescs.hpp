@@ -262,6 +262,8 @@ public:
 	enum Name
 	{
 		PROGRAMMABLE,
+		VERTEX_SHADER,
+		PIXEL_SHADER,
 		NON_PROGRAMMABLE,
 		NUM_TYPES
 	};

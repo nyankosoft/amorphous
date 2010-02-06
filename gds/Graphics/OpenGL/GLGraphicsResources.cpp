@@ -3,6 +3,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/GLGraphicsDevice.hpp"
 #include "Graphics/OpenGL/glext.h" // GL_BGR
+#include "Graphics/OpenGL/Shader/GLShader.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/fnop.hpp"
 #include "Support/ImageArchive.hpp"
@@ -141,7 +142,7 @@ bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 		return false;
 	}
 
-	bool res = FreeImage_FlipVertical( pFIBitmap );
+	BOOL res = FreeImage_FlipVertical( pFIBitmap );
 
 	m_TextureDesc.Width  = img.GetWidth();
 	m_TextureDesc.Height = img.GetHeight();
@@ -425,3 +426,48 @@ void CGLTextureResource::Release()
 
 	SetState( GraphicsResourceState::RELEASED );
 }
+
+
+
+//==================================================================================================
+// CGLShaderResource
+//==================================================================================================
+
+CGLShaderResource::CGLShaderResource( const CShaderResourceDesc *pDesc )
+:
+CShaderResource( pDesc )
+{
+}
+
+
+CGLShaderResource::~CGLShaderResource()
+{
+}
+
+
+CShaderManager *CGLShaderResource::CreateShaderManager()
+{
+	switch( m_ShaderDesc.ShaderType )
+	{
+	case CShaderType::VERTEX_SHADER:
+		return new CGLVertexShader;
+	case CShaderType::PIXEL_SHADER:
+		return new CGLFragmentShader;
+	case CShaderType::NON_PROGRAMMABLE:
+		return NULL;//CGLFixedFunctionPipelineManager;
+	case CShaderType::PROGRAMMABLE:
+		return new CGLProgram;
+	default:
+		LOG_PRINT_ERROR( "An invalid shader type: " + to_string( (int)m_ShaderDesc.ShaderType ) );
+		return NULL;
+	}
+
+	return NULL;
+}
+
+/*
+bool CGLShaderResource::LoadFromFile( const std::string& filepath )
+{
+	return false;
+}
+*/

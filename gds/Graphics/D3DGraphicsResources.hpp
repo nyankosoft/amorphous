@@ -141,41 +141,31 @@ public:
 
 	friend class CGraphicsResourceManager;
 };
+*/
 
-
-class CShaderResource : public CGraphicsResource
+class CD3DShaderResource : public CShaderResource
 {
-	CShaderManager *m_pShaderManager;
-
-	CShaderResourceDesc m_ShaderDesc;
-
 protected:
 
 	/// Release the shader manager without changing the reference count
 	/// - Called only from this class and CMeshObjectManager
-	virtual void Release();
+//	virtual void Release();
+
+	CShaderManager *CreateShaderManager();
 
 public:
 
-	CShaderResource( const CShaderResourceDesc *pDesc );
+	CD3DShaderResource( const CShaderResourceDesc *pDesc );
 
-	virtual ~CShaderResource();
-
-	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
-
+	~CD3DShaderResource();
+/*
 	virtual bool LoadFromFile( const std::string& filepath );
-
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
-
 //	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
 
-	inline CShaderManager *GetShaderManager() { return m_pShaderManager; }
-
-	const CGraphicsResourceDesc& GetDesc() const { return m_ShaderDesc; }
-
-	friend class CGraphicsResourceManager;
+	friend class CGraphicsResourceManager;*/
 };
-*/
+
 
 
 //---------------------------- inline implementations ----------------------------

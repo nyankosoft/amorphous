@@ -22,7 +22,7 @@ shared_ptr<CMeshResource> CD3DGraphicsResourceFactoryImpl::CreateMeshResource( c
 
 shared_ptr<CShaderResource> CD3DGraphicsResourceFactoryImpl::CreateShaderResource( const CShaderResourceDesc& desc )
 {
-	return shared_ptr<CShaderResource>( new CShaderResource(&desc) );
+	return shared_ptr<CShaderResource>( new CD3DShaderResource(&desc) );
 }
 
 
@@ -42,7 +42,7 @@ shared_ptr<CMeshResource> CGLGraphicsResourceFactoryImpl::CreateMeshResource( co
 
 shared_ptr<CShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource( const CShaderResourceDesc& desc )
 {
-	return shared_ptr<CShaderResource>( new CShaderResource(&desc) );
+	return shared_ptr<CShaderResource>( new CGLShaderResource(&desc) );
 }
 
 

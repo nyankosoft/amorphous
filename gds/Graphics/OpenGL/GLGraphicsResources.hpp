@@ -86,6 +86,31 @@ public:
 
 
 
+class CGLShaderResource : public CShaderResource
+{
+protected:
+
+	/// Release the shader manager without changing the reference count
+	/// - Called only from this class and CMeshObjectManager
+//	virtual void Release();
+
+	CShaderManager *CreateShaderManager();
+
+public:
+
+	CGLShaderResource( const CShaderResourceDesc *pDesc );
+
+	~CGLShaderResource();
+/*
+	virtual bool LoadFromFile( const std::string& filepath );
+	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
+//	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+
+	friend class CGraphicsResourceManager;*/
+};
+
+
+
 //---------------------------- inline implementations ---------------------------- 
 
 

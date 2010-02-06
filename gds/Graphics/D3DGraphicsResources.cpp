@@ -2,6 +2,7 @@
 
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
+#include "Graphics/Direct3D/Shader/D3DShaderManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/SafeDelete.hpp"
@@ -382,4 +383,27 @@ void CD3DTextureResource::Release()
 	SAFE_RELEASE( m_pTexture );
 
 	SetState( GraphicsResourceState::RELEASED );
+}
+
+
+
+//==================================================================================================
+// CD3DShaderResource
+//==================================================================================================
+
+CD3DShaderResource::CD3DShaderResource( const CShaderResourceDesc *pDesc )
+:
+CShaderResource( pDesc )
+{
+}
+
+
+CD3DShaderResource::~CD3DShaderResource()
+{
+}
+
+
+CShaderManager *CD3DShaderResource::CreateShaderManager()
+{
+	return new CHLSLShaderManager;
 }

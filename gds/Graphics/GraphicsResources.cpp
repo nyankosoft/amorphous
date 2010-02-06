@@ -584,7 +584,7 @@ bool CShaderResource::LoadFromFile( const std::string& filepath )
 	SafeDelete( m_pShaderManager );
 
 	// load a shader file
-	m_pShaderManager = new CHLSLShaderManager();
+	m_pShaderManager = CreateShaderManager();
 	bool loaded = m_pShaderManager->LoadShaderFromFile( filepath );
 
 	if( loaded )
@@ -636,7 +636,7 @@ bool CShaderResource::CreateFromDesc()
 bool CShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
 {
 	if( !m_pShaderManager )
-		m_pShaderManager = new CHLSLShaderManager();
+		m_pShaderManager = CreateShaderManager();
 
 	bool loaded = m_pShaderManager->LoadShaderFromText( buffer );
 

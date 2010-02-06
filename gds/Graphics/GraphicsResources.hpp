@@ -367,6 +367,8 @@ class CShaderResource : public CGraphicsResource
 {
 	CShaderManager *m_pShaderManager;
 
+protected:
+
 	CShaderResourceDesc m_ShaderDesc;
 
 protected:
@@ -378,6 +380,8 @@ protected:
 	bool IsDiskResource() const;
 
 	virtual bool CreateFromDesc();
+
+	virtual CShaderManager *CreateShaderManager() { return NULL; }
 
 public:
 

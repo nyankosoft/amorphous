@@ -1263,6 +1263,14 @@
 						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp"
 						>
 					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLShader.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLShader.hpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
