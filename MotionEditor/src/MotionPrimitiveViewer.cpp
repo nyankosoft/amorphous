@@ -136,8 +136,8 @@ CSkeletalMeshMotionViewer::CSkeletalMeshMotionViewer()
 :
 m_UseQuaternionForBoneTransformation(false)
 {
-	int user_quaternion = LoadParamFromFile<int>( "config", "UseQuaternionForVertexBlending" );
-	m_UseQuaternionForBoneTransformation = (user_quaternion == 1);
+	int use_quaternion = LoadParamFromFile<int>( "config", "UseQuaternionForVertexBlending" );
+	m_UseQuaternionForBoneTransformation = (use_quaternion == 1);
 }
 
 
@@ -380,7 +380,7 @@ void CMotionPrimitiveViewer::Init()
 {
 	m_pDialogManager = CGM_DialogManagerSharedPtr( new CGM_DialogManager() );
 
-	int dw = 240;
+	int dw = 400;
 	int dh = grof(dw);
 	CGM_Dialog *pDialog = m_pDialogManager->AddRootDialog( 
 		ROOT_DIALOG,
