@@ -72,6 +72,37 @@ MotionPrimitive  standing		  0            0
 
 */
 
+/*
+void DumpTransformNodeToTextFile( FILE *fp, const CTransformNode& node )
+{
+//	fprintf( fp, "%f.3 ", node. );
+
+	for( int i=0; i<node.GetNumChildren(); i++ )
+		DumpTransformNodeToTextFile( fp, node.GetChildNode(i) );
+}
+
+
+void DumpKeyframeToTextFile( FILE *fp, CKeyframe& kf )
+{
+	fprintf( fp, "%f.3 ", kf.GetTime() );
+	DumpTransformNodeToTextFile( fp, kf.GetRootNode() );
+}
+
+
+void DumpMotionPrimitiveToTextFile( FILE *fp, CMotionPrimitive& motion )
+{
+	fprintf( fp, "name: %s\n", motion.GetName().c_str() );
+
+	vector<CKeyframe>& keyframes = motion.GetKeyframeBuffer();
+	const int num_keyframes = (int)keyframes.size();
+	fprintf( fp, "%d keyframes:\n", num_keyframes );
+
+	for( int i=0; i<num_keyframes; i++ )
+	{
+		DumpKeyframeToTextFile( fp, keyframes[i] );
+	}
+}*/
+
 
 inline void Quantize( float& f, float q )
 {
@@ -150,6 +181,9 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGro
 	const size_t num = desc_group.m_Desc.size();
 	for( size_t i=0; i<num; i++ )
 	{
+		if( i == 1 )
+			int second_motion = 1;
+
 		CreateMotionPrimitive( desc_group, desc_group.m_Desc[i], vecKeyframe );
 
 //		CreateMotionPrimitives( pRootBone );
@@ -285,6 +319,7 @@ shared_ptr<CLWS_Bone> CLWSMotionDatabaseCompiler::CreateSkeleton()
 	const size_t num_root_bones = vecpRootBones.size();
 	if( num_root_bones == 0 )
 	{
+		LOG_PRINT_ERROR( " No root bone was found." );
 		return shared_ptr<CLWS_Bone>();
 	}
 	if( num_root_bones == 1 )
@@ -460,6 +495,9 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive()
 
 void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, float fTime, const Matrix34& parent_transform, CTransformNode& dest_node )
 {
+	if( 3.0f < fTime )
+		int break_here = 1;
+
 	const size_t num_children = pBone->ChildBone().size();
 	dest_node.SetNumChildren( (int)num_children );
 
