@@ -1,3 +1,25 @@
+/**
+Notes on LWS scene file
+
+Channels
+----------------------------
+0 translation  x
+1 translation  y
+2 translation  z
+3 rotation     heading
+4 rotation     pitch
+5 rotation     bank
+6 scaling      x
+7 scaling      y
+8 scaling      z
+
+Each Line in a Channel
+----------------------------
+Key (value) (time) (span type) (curve params) * 6
+
+*/
+
+
 #include "LWS_Items.hpp"
 #include "Support/Macro.h"
 #include "Support/TextFileScanner.hpp"
@@ -278,7 +300,7 @@ float CLWS_Item::GetValueAt( int channel_index, float fTime )
 
 		for( size_t j=0; j<channel.vecKey.size()-1; j++ )
 		{
-			if( fTime <= channel.vecKey[j+1].fTime )
+			if( fTime < channel.vecKey[j+1].fTime )
 			{
 				if( fabs( channel.vecKey[j].fTime - fTime ) < 0.001f )
 				{
@@ -289,7 +311,7 @@ float CLWS_Item::GetValueAt( int channel_index, float fTime )
 					// interpolate
 					// TODO: do proper interpolation
 					float f = (fTime - channel.vecKey[j].fTime) / (channel.vecKey[j+1].fTime - channel.vecKey[j].fTime);
-					return channel.vecKey[j].fValue * (1.0f - f) + channel.vecKey[j].fValue * f;
+					return channel.vecKey[j].fValue * (1.0f - f) + channel.vecKey[j+1].fValue * f;
 				}
 			}
 		}
@@ -487,29 +509,6 @@ void CLWS_Item::GetPoseAtKeyframe( int keyframe, Matrix34& rDestPose )
 	rDestPose.vPosition = GetPositionAtKeyframe( keyframe );
 }
 
-/*
-//Right now, this function returns the rotation marix at frame 0. The value of 'fTime' currently has no effect. 
-D3DXMATRIX CLWS_Item::GetRotationMatrixAt( float fTime )
-{
-	D3DXMATRIX matRotation, matRotTemp;
-	D3DXMatrixIdentity( &matRotation );
-
-	float fHeading	= m_aChannel[3].vecKey[0].fValue;
-	float fPitch	= m_aChannel[4].vecKey[0].fValue;
-	float fBank		= m_aChannel[5].vecKey[0].fValue;
-
-	D3DXMatrixRotationY( &matRotTemp, fHeading );
-	D3DXMatrixMultiply( &matRotation, &matRotation, &matRotTemp );
-
-	D3DXMatrixRotationX( &matRotTemp, fPitch );
-	D3DXMatrixMultiply( &matRotation, &matRotation, &matRotTemp );
-
-	D3DXMatrixRotationZ( &matRotTemp, fBank );
-	D3DXMatrixMultiply( &matRotation, &matRotation, &matRotTemp );
-
-	return matRotation;
-}
-*/
 
 int CLWS_Item::GetNumKeyFrames()
 {
