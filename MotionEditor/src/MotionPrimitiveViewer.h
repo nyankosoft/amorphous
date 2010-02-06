@@ -109,7 +109,7 @@ public:
 
 	void OnItemSelected( const CGM_ListBoxItem& item, int item_index );
 
-	void LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name = "std" );
+	int LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name = "std" );
 
 	void SetRenderMesh( bool render ) { m_RenderMesh = render; }
 

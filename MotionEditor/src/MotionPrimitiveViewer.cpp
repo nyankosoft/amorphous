@@ -608,14 +608,14 @@ void CMotionPrimitiveViewer::OnItemSelected( const CGM_ListBoxItem& item, int it
 }
 
 
-void CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name )
+int CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name )
 {
 	msynth::CMotionDatabase db;
 	bool success = db.LoadFromFile( filename );
 
 	if( !success )
 	{
-		return;
+		return -1;
 	}
 
 	msynth::CHumanoidMotionTable tbl;
@@ -646,4 +646,6 @@ void CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string
 	}
 
 	m_pDialogManager->OpenRootDialog( ROOT_DIALOG );
+
+	return 0;
 }

@@ -315,7 +315,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		g_pMotionPrimitiveViewer
 			= boost::shared_ptr<CMotionPrimitiveViewer>( new CMotionPrimitiveViewer() );
 
-		g_pMotionPrimitiveViewer->LoadMotionPrimitivesFromDatabase( mdb_filepath/*, tbl_name*/ );
+		int ret = g_pMotionPrimitiveViewer->LoadMotionPrimitivesFromDatabase( mdb_filepath/*, tbl_name*/ );
+		if( ret != 0 )
+			return 0;
 	}
 
 	// init font
