@@ -205,22 +205,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="draft"
-				>
-				<File
-					RelativePath="..\..\..\..\Project1\gds\Graphics\OpenGL\Shader\GLProgram.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\Project1\gds\Graphics\OpenGL\Shader\GLProgram.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\Project1\gds\Graphics\OpenGL\Shader\GLShaderManager.hpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Framework"

@@ -16,8 +16,7 @@ using namespace boost;
 #include <gds/Input/fwd.hpp>
 #include <gds/Input.hpp>
 #include <gds/GUI/fwd.hpp>
-
-#include <gds/Graphics/OpenGL/Shader/GLProgram.hpp>
+#include <gds/Graphics/OpenGL/Shader/GLShader.hpp>
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
@@ -95,10 +94,6 @@ private:
 	void CreateCachedResources();
 
 	void RenderMeshes();
-
-//	void LoadTexturesAsync();
-	void LoadResourcesAsync( CTestMeshHolder& holder );
-//	void SaveTexturesAsImageFiles();
 
 public:
 
