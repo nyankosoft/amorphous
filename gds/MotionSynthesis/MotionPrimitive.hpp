@@ -210,7 +210,7 @@ public:
 
 	void SetLoopedMotion( bool looped ) { m_bIsLoopedMotion = looped; }
 
-	void GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
+	Result::Name GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
 
 	void CalculateInterpolatedKeyframe( float time );
 

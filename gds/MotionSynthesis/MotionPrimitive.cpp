@@ -55,12 +55,12 @@ void CMotionPrimitive::InsertKeyframe( const CKeyframe& keyframe )
 }
 
 
-void CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe,
+Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe,
 												  float time,
 												  Interpolation::Mode mode )
 {
 	if( time < 0 )
-		return;
+		return Result::INVALID_ARGS;
 
 	// find the adjacent two frames which are closest to 'time'
 	int i, iNumFrames = (int)m_vecKeyframe.size();
@@ -71,7 +71,7 @@ void CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_key
 	}
 
 	if( i == 0 || i == iNumFrames )
-		return;
+		return Result::UNKNOWN_ERROR;
 
 	int i0, i1;
 	i0 = i - 1;
@@ -82,6 +82,8 @@ void CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_key
 	float fFrac = ( time - time0 ) / ( time1 - time0 );
 
 	dest_interpolated_keyframe.SetInterpolatedKeyframe( fFrac, m_vecKeyframe[i0], m_vecKeyframe[i1] );
+
+	return Result::SUCCESS;
 }
 
 
