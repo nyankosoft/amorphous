@@ -161,7 +161,6 @@ public:
 	// Game Events (deprecated)
 	//
 
-	void LoadEvents();
 	void NotifyEntityTerminationToEventManager( CCopyEntity* pEntity );
 
 

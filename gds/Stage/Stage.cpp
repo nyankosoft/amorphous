@@ -37,6 +37,7 @@ using namespace fnop;
 static uint gs_DebugInputHandlerIndex = 2;
 
 
+using namespace std;
 using namespace boost;
 using namespace physics;
 
