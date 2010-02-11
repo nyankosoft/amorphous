@@ -95,6 +95,8 @@ private:
 
 	void RenderMeshes();
 
+	void SetLights();
+
 public:
 
 	CGLSLTest();

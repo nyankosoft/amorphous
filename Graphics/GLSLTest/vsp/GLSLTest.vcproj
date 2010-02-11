@@ -207,21 +207,33 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Framework"
+			Name="Shaders"
 			>
-			<File
-				RelativePath="..\..\..\..\Project1\gds\App\GameWindowManager.hpp"
+			<Filter
+				Name="www.lighthouse3d.com"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.hpp"
-				>
-			</File>
+				<File
+					RelativePath="..\app\shaders\www.lighthouse3d.com\dirLightAmbDiffSpecPix.frag"
+					>
+				</File>
+				<File
+					RelativePath="..\app\shaders\www.lighthouse3d.com\dirLightAmbDiffSpecPix.vert"
+					>
+				</File>
+				<File
+					RelativePath="..\app\shaders\www.lighthouse3d.com\pointlight.frag"
+					>
+				</File>
+				<File
+					RelativePath="..\app\shaders\www.lighthouse3d.com\pointlight.vert"
+					>
+				</File>
+			</Filter>
 		</Filter>
+		<File
+			RelativePath="..\app\config"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

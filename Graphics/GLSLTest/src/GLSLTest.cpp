@@ -4,6 +4,7 @@
 #include <gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp>
 #include <gds/Support/Timer.hpp>
 #include <gds/Support/Profile.hpp>
+#include <gds/Support/ParamLoader.hpp>
 #include <gds/Support/Macro.h>
 #include <gds/GUI.hpp>
 
@@ -109,29 +110,62 @@ void CGLSLTest::CreateSampleUI()
 }
 
 
+void CGLSLTest::SetLights()
+{
+//	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	CShaderManager *pShaderMgr = m_pGLProgram.get();
+	if( !pShaderMgr )
+		return;
+
+	CShaderLightManager *pShaderLightMgr = pShaderMgr->GetShaderLightManager().get();
+	if( !pShaderLightMgr )
+		return;
+
+	pShaderLightMgr->ClearLights();
+
+	CDirectionalLight dir_light;
+	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
+	dir_light.fIntensity = 1.0f;
+	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+	pShaderLightMgr->SetDirectionalLight( dir_light );
+
+	bool set_pnt_light = false;
+	if( set_pnt_light )
+	{
+		CPointLight pnt_light;
+		pnt_light.DiffuseColor = SFloatRGBColor(1,1,1);
+		pnt_light.fIntensity = 1.0f;
+		pnt_light.vPosition = Vector3( 2.0f, 2.8f, -1.9f );
+		pnt_light.fAttenuation[0] = 1.0f;
+		pnt_light.fAttenuation[1] = 1.0f;
+		pnt_light.fAttenuation[2] = 1.0f;
+		pShaderLightMgr->SetPointLight( pnt_light );
+	}
+
+/*	CHemisphericDirectionalLight light;
+	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
+	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+	pShaderLightMgr->SetHemisphericDirectionalLight( light );
+*/}
+
+
 bool CGLSLTest::InitShader()
 {
 	// initialize shader
 /*	bool shader_loaded = m_Shader.Load( "shaders/glsl_test.vert|shaders/glsl_test.frag" );
-	
+
 	if( !shader_loaded )
 		return false;
 */
+//	string shader_filepath = "shaders/shader.vert|shaders/shader.frag";
+	string shader_filepath = LoadParamFromFile<string>( "config", "Shader" );
+
 	m_pGLProgram = shared_ptr<CGLProgram>( new CGLProgram );
-	m_pGLProgram->LoadShaderFromFile( "shaders/shader.vert|shaders/shader.frag" );
-/*
-	CShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	m_pGLProgram->LoadShaderFromFile( shader_filepath );
 
-	CHemisphericDirectionalLight light;
-	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
-	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+//	SetLights();
 
-//	pShaderLightMgr->SetLight( 0, light );
-//	pShaderLightMgr->SetDirectionalLightOffset( 0 );
-//	pShaderLightMgr->SetNumDirectionalLights( 1 );
-	pShaderLightMgr->SetHemisphericDirectionalLight( light );
-*/
 	Matrix44 matProj
 		= Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
 
