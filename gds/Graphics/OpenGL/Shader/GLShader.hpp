@@ -3,6 +3,7 @@
 
 
 #include <gds/Graphics/GLGraphicsDevice.hpp>
+#include <gds/Graphics/OpenGL/fwd.hpp>
 #include <gds/Graphics/OpenGL/GLExtensions.hpp>
 #include <gds/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp>
 #include <gds/Graphics/Shader/ShaderManager.hpp>
@@ -22,12 +23,11 @@ protected:
 
 	virtual GLenum GetShaderType() const = 0;
 
+	virtual void InitGLShader() {}
+
 public:
 
-	CGLShader()
-		:
-	m_Shader(0)
-	{}
+	CGLShader();
 
 	GLhandleARB GetGLHandle() { return m_Shader; }
 
@@ -53,10 +53,22 @@ public:
 
 class CGLFragmentShader : public CGLShader
 {
+	enum Params
+	{
+		GLSL_NUM_MAX_TEXTURE_STAGES = 8,
+	};
+
+	int m_aTextureLocation[GLSL_NUM_MAX_TEXTURE_STAGES];
+
+	void InitGLShader();
+
+protected:
+
 	GLenum GetShaderType() const { return GL_FRAGMENT_SHADER_ARB; }
 
 public:
 
+	CGLFragmentShader();
 };
 
 
@@ -74,6 +86,8 @@ class CGLProgram : public CShaderManager
 
 	CShaderHandle m_VertexShader;
 	CShaderHandle m_FragmentShader;
+
+	boost::shared_ptr<CGLSLShaderLightManager> m_pLightManager;
 
 public:
 
@@ -120,11 +134,16 @@ public:
 	virtual void GetWorldTransform( Matrix44& matWorld ) const {}
 
 	virtual void GetViewTransform( Matrix44& matView ) const {}
+*/
+	void SetViewerPosition( const Vector3& vEyePosition );
 
+	void SetVertexBlendMatrix( int i, const Matrix34& mat );
 
-	virtual inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition ) {}
+	void SetVertexBlendMatrix( int i, const Matrix44& mat );
 
+	void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms );
 
+/*
 	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
 */
 	Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
@@ -150,9 +169,9 @@ public:
 //	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
 
 //	void SetTextureParam()
-
-	virtual boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return boost::shared_ptr<CShaderLightManager>(); }
 */
+	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+
 	friend class CShaderManagerHub;
 };
 

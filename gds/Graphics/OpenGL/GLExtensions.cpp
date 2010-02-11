@@ -1312,6 +1312,9 @@ void initExtensions(){
 
 	GL_1_1_supported = GLVER(1,1);
 
+	// Log the list of available extensions
+	LOG_PRINT( " GL_EXTENSIONS: " + string((char *)glGetString(GL_EXTENSIONS)) );
+
 	if (GL_1_2_supported = GLVER(1,2)){
 #ifdef GL_VERSION_1_2_PROTOTYPES
 		glTexImage3D        = (PFNGLTEXIMAGE3DEXTPROC)        wglxGetProcAddress("glTexImage3D");

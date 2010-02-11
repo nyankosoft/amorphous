@@ -1,6 +1,7 @@
 #include "GLShader.hpp"
 #include <gl/gl.h>
-#include <gds/Support/lfs.hpp>
+#include "gds/Graphics/OpenGL/Shader/GLSLShaderLightManager.hpp"
+#include "gds/Support/lfs.hpp"
 
 using namespace std;
 using namespace boost;
@@ -124,9 +125,21 @@ void setShaders()
 #endif /* 0 */
 
 
+CGLShader::CGLShader()
+:
+m_Shader(0)
+{
+}
+
+
 bool CGLShader::LoadFromFile( const std::string& filepath )
 {
-	m_Shader = glCreateShaderObjectARB( GetShaderType() );
+	if( glCreateShader )
+		m_Shader = glCreateShader( GetShaderType() );
+	else if( glCreateShaderObjectARB )
+		m_Shader = glCreateShaderObjectARB( GetShaderType() );
+	else
+		return false;
 
 	vector<char> buffer;
 	int ret = read_text_file( filepath, buffer ); // load .vert or .frag file here
@@ -176,6 +189,29 @@ void CGLShader::Reload()
 }
 
 
+CGLFragmentShader::CGLFragmentShader()
+{
+	for( int i=0; i<GLSL_NUM_MAX_TEXTURE_STAGES; i++ )
+		m_aTextureLocation[i] = 0;
+}
+
+
+void CGLFragmentShader::InitGLShader()
+{
+	if( !glGetUniformLocation ) glGetUniformLocation = glGetUniformLocationARB;
+	if( !glUniform1i )          glUniform1i          = glUniform1iARB;
+
+	char sampler_name[16];
+	memset( sampler_name, 0, sizeof(sampler_name) );
+	for( int i=0; i<GLSL_NUM_MAX_TEXTURE_STAGES; i++ )
+	{
+		sprintf( sampler_name, "tex%d", i );
+		m_aTextureLocation[i] = glGetUniformLocation( m_Shader, sampler_name );
+
+		glUniform1i( m_aTextureLocation[i], i );
+	}
+}
+
 
 //=============================================================================
 // CGLProgram
@@ -185,9 +221,11 @@ bool sg_UseGRM = false;
 
 CGLProgram::CGLProgram()
 :
+m_Program(0),
 m_pVertexShader(NULL),
 m_pFragmentShader(NULL)
 {
+	m_pLightManager.reset( new CGLSLShaderLightManager );
 }
 
 
@@ -209,6 +247,7 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 	const string vs_path = filename.substr( 0, separator_pos );
 	const string fs_path = filename.substr( separator_pos + 1 ); // range is checked by the code above
 
+	bool vs_loaded = false, fs_loaded = false;
 	if( sg_UseGRM )
 	{
 		// use handles
@@ -221,12 +260,12 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 		// vertex program
 		vs_desc.ResourcePath = vs_path;
 		vs_desc.ShaderType = CShaderType::VERTEX_SHADER;
-		bool vs_loaded = m_VertexShader.Load( vs_desc );
+		vs_loaded = m_VertexShader.Load( vs_desc );
 
 		// fragment program
 		fs_desc.ResourcePath = fs_path;
 		vs_desc.ShaderType = CShaderType::PIXEL_SHADER;
-		bool fs_loaded = m_FragmentShader.Load( fs_desc );
+		fs_loaded = m_FragmentShader.Load( fs_desc );
 
 //		m_pVertexShader   = dynamic_pointer_cast<CGLVertexShader,CShaderManager>( m_VertexShader.GetShaderManager() );
 //		m_pFragmentShader = dynamic_pointer_cast<CGLFragmentShader,CShaderManager>( m_FragmentShader.GetShaderManager() );
@@ -247,9 +286,15 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 
 		// how to share vertex & fragment shaders between different shader managers
 
-		m_pVertexShader->LoadFromFile( vs_path );
-		m_pFragmentShader->LoadFromFile( fs_path );
+		vs_loaded = m_pVertexShader->LoadFromFile( vs_path );
+		fs_loaded = m_pFragmentShader->LoadFromFile( fs_path );
 	}
+
+	if( !vs_loaded )
+		LOG_PRINT_ERROR( "Failed to load a vertex shader: " + vs_path );
+
+	if( !fs_loaded )
+		LOG_PRINT_ERROR( "Failed to load a fragment shader: " + fs_path );
 
 	if( !m_pVertexShader || !m_pFragmentShader )
 		return false;
@@ -296,6 +341,33 @@ void CGLProgram::Reload()
 }
 
 
+void CGLProgram::SetViewerPosition( const Vector3& vEyePosition )
+{
+}
+
+
+void CGLProgram::SetVertexBlendMatrix( int i, const Matrix34& mat )
+{
+//	if( m_pVertexShader )
+//		m_pVertexShader
+}
+
+
+void CGLProgram::SetVertexBlendMatrix( int i, const Matrix44& mat )
+{
+//	if( m_pVertexShader )
+//		m_pVertexShader
+}
+
+
+void CGLProgram::SetVertexBlendTransforms( const std::vector<Transform>& src_transforms )
+{
+//	if( m_pVertexShader )
+//		m_pVertexShader
+}
+
+
+
 Result::Name CGLProgram::SetTexture( const int iStage, const CTextureHandle& texture )
 {
 	if( glActiveTexture )
@@ -327,6 +399,11 @@ void CGLProgram::End()
 {
 }
 
+
+boost::shared_ptr<CShaderLightManager> CGLProgram::GetShaderLightManager()
+{
+	return m_pLightManager;
+}
 
 
 /*

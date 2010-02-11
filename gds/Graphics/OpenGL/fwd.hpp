@@ -3,6 +3,7 @@
 
 
 class CGLFixedFunctionPipelineManager;
+class CGLSLShaderLightManager;
 
 
 

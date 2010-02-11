@@ -1264,11 +1264,27 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLShader.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLShader.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLSLShaderLightManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLSLShaderLightManager.hpp"
 						>
 					</File>
 				</Filter>
