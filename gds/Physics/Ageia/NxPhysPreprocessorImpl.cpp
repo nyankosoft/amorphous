@@ -2,6 +2,7 @@
 #include "NxMathConv.hpp"
 #include "NxPhysStream.hpp"
 #include "../TriangleMeshDesc.hpp"
+#include "../ClothMeshDesc.hpp"
 
 // PhysX header
 #include "NxCooking.h"
@@ -12,7 +13,39 @@ using namespace std;
 using namespace physics;
 
 
+//typedef NxU32 index_type;
+typedef NxU16 index_type;
+
+
 #define LOG_PRINT_OK_OR_FAILED( text, succeeded ) if(succeeded) LOG_PRINT(string(text) + "  [  OK  ]"); else LOG_PRINT_ERROR(string(text) + "  [FAILED]");
+
+
+static void FillNxTriangleMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecVertex, vector<index_type>& vecIndex, NxSimpleTriangleMesh& dest )
+{
+	// copy vertices
+	size_t num_verts = src.m_vecVertex.size();
+//	vector<NxVec3> vecVertex;
+	vecVertex.resize( num_verts );
+	for( size_t i=0; i<num_verts; i++ )
+		vecVertex[i] = ToNxVec3( src.m_vecVertex[i] );
+
+	// copy indices
+	size_t num_indices = src.m_vecIndex.size();
+	size_t num_triangles = num_indices / 3;
+//	vector<index_type> vecIndex;
+	vecIndex.resize( num_indices );
+	for( size_t i=0; i<num_indices; i++ )
+		vecIndex[i] = (index_type)src.m_vecIndex[i];
+
+	dest.numVertices                = (NxU32)num_verts;
+	dest.numTriangles               = (NxU32)num_triangles;
+
+	dest.pointStrideBytes           = sizeof(NxVec3);
+	dest.triangleStrideBytes        = 3*sizeof(index_type);
+
+	dest.points                     = &(vecVertex[0]);
+	dest.triangles                  = &(vecIndex[0]);                         
+}
 
 
 bool CNxPhysPreprocessorImpl::Init()
@@ -59,24 +92,17 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 	size_t i;
 
-//	typedef NxU32 index_type;
-	typedef NxU16 index_type;
-
 	SetPhysicsEngineName( phys_stream );
 
-	// copy vertices
-	size_t num_verts = mesh_desc.m_vecVertex.size();
+	NxTriangleMeshDesc meshDesc;
 	vector<NxVec3> vecVertex;
-	vecVertex.resize( num_verts );
-	for( i=0; i<num_verts; i++ )
-		vecVertex[i] = ToNxVec3( mesh_desc.m_vecVertex[i] );
-
-	// copy indices
-	size_t num_indices = mesh_desc.m_vecIndex.size();
 	vector<index_type> vecIndex;
-	vecIndex.resize( num_indices );
-	for( i=0; i<num_indices; i++ )
-		vecIndex[i] = (index_type)mesh_desc.m_vecIndex[i];
+
+	// vertices and points
+	FillNxTriangleMessDesc( mesh_desc, vecVertex, vecIndex, meshDesc );
+
+	// vecIndex now contains indices of triangles
+	const size_t num_indices = vecIndex.size();
 
 	// copy material indices
 	size_t num_triangles = num_indices / 3;
@@ -85,18 +111,8 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 	for( i=0; i<num_triangles; i++ )
 		vecMatIndex[i] = (NxU32)mesh_desc.m_vecMaterialIndex[i];
 
-
-	NxTriangleMeshDesc meshDesc;
-
-	meshDesc.numVertices                = (NxU32)num_verts;
-	meshDesc.numTriangles               = (NxU32)num_triangles;
-
-	meshDesc.pointStrideBytes           = sizeof(NxVec3);
-	meshDesc.triangleStrideBytes        = 3*sizeof(index_type);
 	meshDesc.materialIndexStride        = sizeof(NxU32);
 
-	meshDesc.points                     = &(vecVertex[0]);
-	meshDesc.triangles                  = &(vecIndex[0]);                         
 	meshDesc.materialIndices            = &(vecMatIndex[0]);
 
 	meshDesc.flags                      = 0;
@@ -114,4 +130,26 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 		LOG_PRINT_OK_OR_FAILED( "NxCookTriangleMesh()", trimesh_cooked );
 	}
+}
+
+
+void CNxPhysPreprocessorImpl::CreateClothMeshStream( CClothMeshDesc& desc,
+                                                     CStream& phys_stream )
+{
+	NxClothMeshDesc clothMeshDesc;
+	vector<NxVec3> vecVertex;
+	vector<index_type> vecIndex;
+
+	FillNxTriangleMessDesc( desc, vecVertex, vecIndex, clothMeshDesc );
+
+	clothMeshDesc.vertexMassStrideBytes = sizeof(NxReal);
+	clothMeshDesc.vertexFlagStrideBytes = sizeof(NxReal);
+	clothMeshDesc.vertexMasses = 0;
+	clothMeshDesc.vertexFlags  = 0;
+	clothMeshDesc.flags                 = NX_CLOTH_MESH_WELD_VERTICES;
+	clothMeshDesc.weldingDistance       = 0.0001f;
+
+	bool valid_desc = clothMeshDesc.isValid();
+	if( !valid_desc )
+		LOG_PRINT_ERROR( " An invalid cloth mesh desc" );
 }

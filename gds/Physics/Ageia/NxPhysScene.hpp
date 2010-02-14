@@ -162,6 +162,9 @@ public:
 	/// Writes the scene's array of NxCompartment pointers to a user buffer.  
 	virtual U32 GetCompartmentArray (NxCompartment **userBuffer, U32 bufferSize, U32 &usersIterator) const;
 */
+	void SetGroupCollisionFlag( U16 group1, U16 group2, bool enable );
+
+	bool GetGroupCollisionFlag( U16 group1, U16 group2 ) const;
 
 	virtual CShape *RaycastClosestShape( const CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist );
 };

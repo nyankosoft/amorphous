@@ -34,6 +34,7 @@ class CMaterial;
 class CMaterialDesc;
 
 class CCloth;
+class CClothMeshDesc;
 
 class CTriangleMesh;
 class CTriangleMeshDesc;

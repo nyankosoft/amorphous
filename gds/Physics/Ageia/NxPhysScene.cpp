@@ -352,6 +352,18 @@ void CNxPhysScene::ReleaseMaterial( CMaterial*& pMaterial )
 }
 
 
+void CNxPhysScene::SetGroupCollisionFlag( U16 group1, U16 group2, bool enable )
+{
+	m_pScene->setGroupCollisionFlag( group1, group2, enable );
+}
+
+
+bool CNxPhysScene::GetGroupCollisionFlag( U16 group1, U16 group2 ) const
+{
+	return m_pScene->getGroupCollisionFlag( group1, group2 );
+}
+
+
 CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist )
 {
 	NxRay nx_ray( ToNxVec3(world_ray.Origin), ToNxVec3(world_ray.Direction) );

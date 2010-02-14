@@ -33,6 +33,8 @@ public:
 	/// [out] 
 	virtual void CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream ) = 0;
 
+	virtual void CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream ) = 0;
+
 	virtual const char *GetPhysicsEngineName() const = 0;
 };
 
@@ -80,6 +82,8 @@ public:
 
 	inline void CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream );
 
+	inline void CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream );
+
 //	void SetDefault();
 };
 
@@ -88,6 +92,13 @@ inline void CPreprocessor::CreateTriangleMeshStream( CTriangleMeshDesc& desc,
 													 CStream& phys_stream )
 {
 	m_pImpl->CreateTriangleMeshStream( desc, phys_stream );
+}
+
+
+inline void CPreprocessor::CreateClothMeshStream( CClothMeshDesc& desc,
+												  CStream& phys_stream )
+{
+	m_pImpl->CreateClothMeshStream( desc, phys_stream );
 }
 
 

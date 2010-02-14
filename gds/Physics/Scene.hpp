@@ -189,7 +189,35 @@ public:
 	/// Writes the scene's array of NxCompartment pointers to a user buffer.  
 	virtual U32 GetCompartmentArray (NxCompartment **userBuffer, U32 bufferSize, U32 &usersIterator) const = 0; 
 */
+/*
+	virtual void SetActorPairFlags(NxActor& actorA, NxActor& actorB, NxU32 nxContactPairFlag) = 0;
 
+	virtual U32 GetActorPairFlags(NxActor& actorA, NxActor& actorB) const = 0;
+
+	virtual void SetShapePairFlags(NxShape& shapeA, NxShape& shapeB, NxU32 nxContactPairFlag) = 0;
+
+	virtual U32 GetShapePairFlags(NxShape& shapeA, NxShape& shapeB) const = 0;
+
+	virtual U32 GetNbPairs() const = 0;
+
+	virtual U32 GetPairFlagArray(NxPairFlag* userArray, NxU32 numPairs) const = 0;
+*/
+	virtual void SetGroupCollisionFlag( U16 group1, U16 group2, bool enable ) = 0;
+
+	virtual bool GetGroupCollisionFlag( U16 group1, U16 group2 ) const = 0;
+/*
+	virtual void SetDominanceGroupPair(NxDominanceGroup group1, NxDominanceGroup group2, NxConstraintDominance & dominance) = 0;
+
+	virtual NxConstraintDominance getDominanceGroupPair(NxDominanceGroup group1, NxDominanceGroup group2) const = 0;
+
+	virtual void setActorGroupPairFlags(NxActorGroup group1, NxActorGroup group2, NxU32 flags) = 0;
+
+	virtual U32 getActorGroupPairFlags(NxActorGroup group1, NxActorGroup group2) const = 0;
+
+	virtual U32 getNbActorGroupPairs() const = 0;
+
+	virtual U32 getActorGroupPairArray(NxActorGroupPair * userBuffer, NxU32 bufferSize, NxU32 & userIterator) const = 0;
+ */
 	/// \param coll_group collision group of the ray
 //	virtual CShape *RaycastClosestShape( const CRay& world_ray, shapetype, CRaycastHit& hit, int coll_group, Scalar max_dist ) = 0;
 

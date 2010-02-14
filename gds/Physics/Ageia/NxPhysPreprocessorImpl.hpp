@@ -41,6 +41,9 @@ public:
 	virtual void CreateTriangleMeshStream( CTriangleMeshDesc& desc,
 		                                   CStream& phys_stream );
 
+	virtual void CreateClothMeshStream( CClothMeshDesc& desc,
+                                        CStream& phys_stream );
+
 	virtual const char *GetPhysicsEngineName() const { return "AgeiaPhysX"; }
 };
 
