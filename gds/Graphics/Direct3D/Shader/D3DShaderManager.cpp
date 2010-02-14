@@ -49,23 +49,7 @@ CHLSLShaderManager::CHLSLShaderManager()
 m_pEffect(NULL),
 m_NumBlendTransforms(0)
 {
-	int i;
-	for( i=0; i<NUM_HANDLES; i++ )
-		m_aHandle[i] = NULL;
-
-	for( i=0; i<NUM_MAX_TECHNIQUES; i++ )
-		m_aTechniqueHandle[i] = NULL;
-
-	for( i=0; i<NUM_MATRIX_HANDLES; i++ )
-		m_aMatrixHandle[i] = NULL;
-
-	for( i=0; i<NUM_TEXTURE_STAGES; i++ )
-		m_aTextureHandle[i] = NULL;
-
-	for( i=0; i<NUM_MAX_CUBETEXTURES; i++ )
-		m_aCubeTextureHandle[i] = NULL;
-
-	m_VacantTechniqueEntryIndex = 0;
+	SetHandlesToNULL();
 }
 
 
@@ -77,6 +61,8 @@ CHLSLShaderManager::~CHLSLShaderManager()
 
 void CHLSLShaderManager::Release()
 {
+	SetHandlesToNULL();
+
 	SAFE_RELEASE(m_pEffect);
 }
 
@@ -97,6 +83,28 @@ void CHLSLShaderManager::Reload()
 		m_vecParamHandle[i].Handle
 			= m_pEffect->GetParameterByName( NULL, m_vecParamHandle[i].ParameterName.c_str() );
 	}
+}
+
+
+void CHLSLShaderManager::SetHandlesToNULL()
+{
+	int i;
+	for( i=0; i<NUM_HANDLES; i++ )
+		m_aHandle[i] = NULL;
+
+	for( i=0; i<NUM_MAX_TECHNIQUES; i++ )
+		m_aTechniqueHandle[i] = NULL;
+
+	for( i=0; i<NUM_MATRIX_HANDLES; i++ )
+		m_aMatrixHandle[i] = NULL;
+
+	for( i=0; i<NUM_TEXTURE_STAGES; i++ )
+		m_aTextureHandle[i] = NULL;
+
+	for( i=0; i<NUM_MAX_CUBETEXTURES; i++ )
+		m_aCubeTextureHandle[i] = NULL;
+
+	m_VacantTechniqueEntryIndex = 0;
 }
 
 
@@ -154,6 +162,21 @@ bool CHLSLShaderManager::Init()
 }
 
 
+void CHLSLShaderManager::LoadNullShader()
+{
+	Release();
+
+	static const char *s_pNullShader = "technique NoShader{ pass P0 {VertexShader = NULL;PixelShader = NULL;} }";
+
+	HRESULT hr = D3DXCreateEffect(
+		DIRECT3D9.GetDevice(),
+		s_pNullShader,
+		(UINT)strlen(s_pNullShader),
+		NULL, NULL, 0,
+		NULL, &m_pEffect, NULL );
+}
+
+
 bool CHLSLShaderManager::LoadShaderFromFile( const string& filename )
 {
 	LOG_FUNCTION_SCOPE();
@@ -175,6 +198,7 @@ bool CHLSLShaderManager::LoadShaderFromFile( const string& filename )
 	{
 		LOG_PRINT_ERROR( " - Failed create an effect object from the HLSL effect file from: " + filename );
 		PrintCompilerErrors( pCompileErrors );
+		LoadNullShader();
 		return false;
 	}
 
@@ -206,6 +230,7 @@ bool CHLSLShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 	if( FAILED(hr) )
 	{
 		PrintCompilerErrors( pCompileErrors );
+		LoadNullShader();
 		return false;
 	}
 

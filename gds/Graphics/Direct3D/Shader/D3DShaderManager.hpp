@@ -184,6 +184,8 @@ private:
 
 	bool Init();
 
+	void LoadNullShader();
+
 public:
 
 	CHLSLShaderManager();
@@ -197,6 +199,8 @@ public:
 	void Release();
 
 	void Reload();
+
+	void SetHandlesToNULL();
 
 	inline LPD3DXEFFECT GetEffect() { return m_pEffect; }
 
