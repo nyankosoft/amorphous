@@ -429,8 +429,10 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 	if( 0.001 < fabs( vecKeyframe.front().GetTime() - fEndTime ) )
 	{
 		// Need to insert an interpolated keyframe at the end
-		vecKeyframe.push_back( CKeyframe(fEndTime) );
-		m_SourceMotion.GetInterpolatedKeyframe( vecKeyframe.back(), fEndTime );
+		CKeyframe end_keyframe( fEndTime );
+		Result::Name res = m_SourceMotion.GetInterpolatedKeyframe( end_keyframe, fEndTime );
+		if( res == Result::SUCCESS )
+			vecKeyframe.push_back( end_keyframe );
 	}
 
 	// modify the time of the copied keyframes so that the motion primitive start at time 0
@@ -546,16 +548,21 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
 	}
   }
-  else// if( g_htrans_rev == 2 )
+  else if( g_htrans_rev == 2 )
   {
 	// rotation
-	const Matrix33 matRotation0 = pBone->GetOrientationAt( 0 );
-	const Matrix33 matRotation  = pBone->GetOrientationAt( fTime );
-//	const Matrix33 matDeltaRotation = matRotation * Matrix33Transpose(matRotation0);
 	const Matrix33 matDeltaRotation = pBone->GetOrientationFromRestOrientationAt( fTime );
 	const Matrix33 matRestRotation  = pBone->GetBoneRestOrientation();
 	const Matrix33 matWorldRotation = parent_transform.matOrient * matRestRotation;
-	const Matrix33 matDestRotation  = matWorldRotation * matDeltaRotation * Matrix33Transpose(matWorldRotation);
+	Matrix33 matDestRotation( Matrix33Identity() );
+
+	CLWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE ) // is root bone
+		matDestRotation = matDeltaRotation;
+	else
+		matDestRotation = matWorldRotation * matDeltaRotation * Matrix33Transpose(matWorldRotation);
+
+//	matDestRotation  = matDeltaRotation;
 	Quaternion qRotaiton = Quaternion( matDestRotation );
 //	Quaternion qRotaiton = Quaternion( pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()) );
 	dest_node.SetRotation( qRotaiton );
@@ -563,7 +570,45 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 	// translation
 	Vector3 vTranslation = Vector3(0,0,0);//pBone->GetPositionAt( fTime );
 
+//	CLWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE )
+	{
+		// the parent is not a bone
+		// - Assume this is a root bone and add the parent translation
+		vTranslation += pParent->GetPositionAt( fTime );
+	}
+
+	dest_node.SetTranslation( vTranslation );
+
+	// do recursive calls
+	Matrix34 next_transform = Matrix34Identity();
+	next_transform.matOrient = matWorldRotation;
+	for( size_t i=0; i<num_children; i++ )
+	{
+		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
+	}
+  }
+  else if( g_htrans_rev == 3 )
+  {
+	// rotation
+	const Matrix33 matDeltaRotation = pBone->GetOrientationAt( fTime );// * pBone->GetInvBoneRestOrientation();
+	const Matrix33 matRestRotation  = pBone->GetBoneRestOrientation();
+	const Matrix33 matWorldRotation = parent_transform.matOrient * matRestRotation;
+	Matrix33 matDestRotation( matDeltaRotation );
+
 	CLWS_Item *pParent = pBone->GetParent();
+//	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE ) // is root bone
+//		matDestRotation = matDeltaRotation;
+//	else
+		matDestRotation = parent_transform.matOrient * matDeltaRotation * Matrix33Transpose(matWorldRotation);
+
+	Quaternion qRotaiton = Quaternion( matDestRotation );
+	dest_node.SetRotation( qRotaiton );
+
+	// translation
+	Vector3 vTranslation = Vector3(0,0,0);//pBone->GetPositionAt( fTime );
+
+//	CLWS_Item *pParent = pBone->GetParent();
 	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE )
 	{
 		// the parent is not a bone
