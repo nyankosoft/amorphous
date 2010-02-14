@@ -2,7 +2,7 @@
 #define  __CharacterMotionControlAppBase_HPP__
 
 
-#include <gds/App/ApplicationBase.hpp>
+#include <gds/App/GameApplicationBase.hpp>
 #include <gds/Task/StageViewerGameTask.hpp>
 #include <gds/Task/GameTaskFactoryBase.hpp>
 #include <gds/Stage.hpp>
@@ -110,7 +110,7 @@ public:
 };
 
 
-class CCharacterMotionControlAppBase : public CApplicationBase
+class CCharacterMotionControlAppBase : public CGameApplicationBase
 {
 public:
 

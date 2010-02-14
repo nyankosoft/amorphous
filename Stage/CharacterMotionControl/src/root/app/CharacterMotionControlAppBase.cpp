@@ -42,7 +42,7 @@ void CCharacterEntity::Draw()
 }
 
 
-extern CApplicationBase *CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
+CApplicationBase *CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
 
 /*
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -82,6 +82,8 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	// - may need to invert the fParam1.
 	// - inversion is currently turned on, and is done in CCharacterMotionNodeAlgorithm::HandleInput()
 	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,  ACTION_MOV_FORWARD );
+	m_pKeyBind->Assign( GIC_GPD_AXIS_X,  ACTION_MOV_TURN_R );
+//	m_pKeyBind->Assign( GIC_GPD_AXIS_Z,  ACTION_MOV_TURN_R );
 
 	CScriptManager::ms_UseBoostPythonModules = true;
 
@@ -144,12 +146,12 @@ int CCharacterMotionControlAppTask::FrameMove( float dt )
 	}
 
 	m_ScrollEffect.SetCameraPose( Camera().GetPose() );
-	Vector3 vDist = (Camera().GetPosition() - m_vPrevCamPos);
+/*	Vector3 vDist = (Camera().GetPosition() - m_vPrevCamPos);
 	if( 0.000001f < Vec3LengthSq( vDist ) )
 		m_ScrollEffect.SetCameraVelocity( vDist / get_clamped( dt, 0.005f, 1.0f ) );
 	else
 		m_ScrollEffect.SetCameraVelocity( Vector3(0,0,0) );
-	m_vPrevCamPos = Camera().GetPosition();
+	m_vPrevCamPos = Camera().GetPosition();*/
 	m_ScrollEffect.Update( dt );
 
 	return CGameTask::ID_INVALID;
@@ -283,7 +285,7 @@ bool CCharacterMotionControlAppBase::Init()
 
 	BaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
-	bool base_init = CApplicationBase::Init();
+	bool base_init = CGameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
