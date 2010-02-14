@@ -4,39 +4,11 @@
 
 #include <map>
 #include <gds/3DMath/Quaternion.hpp>
+#include <gds/3DMath/Transform.hpp>
 #include <gds/Support/FixedVector.hpp>
 #include <gds/MotionSynthesis/fwd.hpp>
 #include <gds/MotionSynthesis/MotionPrimitive.hpp>
 #include <gds/MotionSynthesis/MotionPrimitiveBlender.hpp>
-
-
-class Transform
-{
-public:
-
-	Vector3 t;
-	Quaternion q;
-
-public:
-
-	Transform( const Vector3& _t = Vector3(0,0,0), const Quaternion& _q = Quaternion( Matrix33Identity() ) )
-		:
-	t(_t),
-	q(_q)
-	{
-	}
-
-	Matrix34 ToMatrix34() const
-	{
-		return Matrix34( t, q.ToRotationMatrix() );
-	}
-
-	void FromMatrix34( const Matrix34& src )
-	{
-		t = src.vPosition;
-		q.FromRotationMatrix( src.matOrient );
-	}
-};
 
 
 namespace msynth
@@ -79,8 +51,8 @@ public:
 		{
 			m_vecTransformNode.push_back(
 				Transform(
-				src_node.GetLocalTranslation(),
-				src_node.GetLocalRotationQuaternion()
+				src_node.GetLocalRotationQuaternion(),
+				src_node.GetLocalTranslation()
 				)
 			);
 		}
@@ -122,8 +94,8 @@ public:
 
 		if( 0 < m_vecTransformNode.size() )
 		{
-			dest.SetRotation(    m_vecTransformNode[0].q );
-			dest.SetTranslation( m_vecTransformNode[0].t );
+			dest.SetRotation(    m_vecTransformNode[0].qRotation );
+			dest.SetTranslation( m_vecTransformNode[0].vTranslation );
 		}
 
 //		int num_children = take_min( dest.GetNumChildren(), (int)m_vecpChild.size() );
