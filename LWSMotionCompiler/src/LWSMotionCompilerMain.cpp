@@ -3,6 +3,7 @@
 #include "XML/XMLDocumentLoader.hpp"
 #include "gds/base.hpp"
 #include "gds/Support/lfs.hpp"
+#include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 
 
@@ -34,12 +35,19 @@ int main( int argc, char *argv[] )
 
 	path app_wd = lfs::get_cwd();
 
+	// Search an input filepath
+	// 1. command line argument
+	// 2. text file named "params.txt"
+	// 3. File Open dialog
 	string filepath;
 	if( 2 <= argc )
 		filepath  = argv[1];
 	else
 	{
-		GetFilename( filepath );
+		filepath = LoadParamFromFile<string>( "params.txt", "MotionDescFile" );
+
+		if( filepath.length() == 0 )
+			GetFilename( filepath );
 	}
 
 	if( filepath.length() == 0 )
