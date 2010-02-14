@@ -11,6 +11,12 @@ CStdMouseInput::CStdMouseInput()
 }
 
 
+Result::Name CStdMouseInput::SendBufferedInputToInputHandlers()
+{
+	return Result::UNKNOWN_ERROR;
+}
+
+
 void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 {
 	SInputData input;

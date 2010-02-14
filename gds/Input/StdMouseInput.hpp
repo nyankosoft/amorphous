@@ -27,6 +27,8 @@ public:
 
 	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_MOUSE; }
 
+	Result::Name SendBufferedInputToInputHandlers();
+
 //	HRESULT Init( HWND hWnd );
 //	void Release();
 //	void AcquireMouse();
