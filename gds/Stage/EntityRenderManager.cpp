@@ -17,6 +17,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"
+#include "Support/ParamLoader.hpp"
 
 #include "ScreenEffectManager.hpp"
 
@@ -960,9 +961,11 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 //		m_pShadowManager->SetLightDirection( m_vOverrideShadowMapDirection );
 	}
 
+	float near_clip = 0.001f;
+//	UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_scene_cam_nearclip", near_clip );
 	m_pShadowManager->SetCameraPosition( rCam.GetPosition() );
 	m_pShadowManager->SetCameraDirection( rCam.GetFrontDirection() );
-	m_pShadowManager->SceneCamera().SetNearClip( 0.001f );
+	m_pShadowManager->SceneCamera().SetNearClip( near_clip );
 	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
 
 	// render objects that cast shadows to others
@@ -982,7 +985,6 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 	m_pShadowManager->EndSceneShadowMap();
 */
 
-	float near_clip = 0.001f;
 	m_pShadowManager->SetSceneCamera( rCam );
 	m_pShadowManager->SceneCamera().SetNearClip( near_clip );
 	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
