@@ -3,12 +3,14 @@
 
 
 #include "3DMath/Matrix34.hpp"
+#include "3DMath/AABB3.hpp"
 #include "NxPhysics.h"
 
 
 namespace physics
 {
 
+// PhysX to Framework conversions
 
 inline Vector3 ToVector3( const NxVec3& src )
 {
@@ -32,6 +34,15 @@ inline Matrix34 ToMatrix34( const NxMat34& src )
 }
 
 
+inline AABB3 ToAABB3( const NxBounds3& src )
+{
+	return AABB3( ToVector3(src.min), ToVector3(src.max) );
+}
+
+
+
+// Framework to PhysX conversions
+
 inline NxVec3 ToNxVec3( const Vector3& src )
 {
 	return NxVec3( src.x, src.y, src.z );
@@ -51,6 +62,13 @@ inline NxMat34 ToNxMat34( const Matrix34& src )
 	NxMat34 dest;
 	dest.t = ToNxVec3( src.vPosition );
 	dest.M = ToNxMat33( src.matOrient );
+	return dest;
+}
+
+inline NxBounds3 ToNxBounds3( const AABB3& src )
+{
+	NxBounds3 dest;
+	dest.set( ToNxVec3(src.vMin), ToNxVec3(src.vMax) );
 	return dest;
 }
 

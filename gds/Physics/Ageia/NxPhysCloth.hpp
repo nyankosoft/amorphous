@@ -22,115 +22,117 @@ class CNxPhysCloth : public CCloth
 
 public:
 
-	CCloth() {}
+	CNxPhysCloth() : m_pCloth(NULL) {}
 
-	virtual ~CCloth() {}
+	virtual ~CNxPhysCloth() {}
 
 //	bool saveToDesc(ClothDesc& desc ) const;
 
 //	NxClothMesh* GetClothMesh() const;
 
-	void SetBendingStiffness( Scalar stiffness );
+	void SetBendingStiffness( Scalar stiffness ) { m_pCloth->setBendingStiffness( stiffness ); }
 
-	Scalar GetBendingStiffness() const;
+	Scalar GetBendingStiffness() const { return m_pCloth->getBendingStiffness(); }
 
-	void SetStretchingStiffness( Scalar stiffness );
+	void SetStretchingStiffness( Scalar stiffness ) { m_pCloth->setStretchingStiffness( stiffness ); }
 
-	Scalar GetStretchingStiffness() const;
+	Scalar GetStretchingStiffness() const { return m_pCloth->getStretchingStiffness(); }
 
-	void SetDampingCoefficient( Scalar dampingCoefficient );
+	void SetDampingCoefficient( Scalar dampingCoefficient ) { m_pCloth->setDampingCoefficient( dampingCoefficient ); }
 
-	Scalar GetDampingCoefficient() const;
+	Scalar GetDampingCoefficient() const { return m_pCloth->getDampingCoefficient(); }
 
-	void SetFriction( Scalar friction );
+	void SetFriction( Scalar friction ) { m_pCloth->setFriction( friction ); }
 
-	Scalar GetFriction() const;
+	Scalar GetFriction() const { return m_pCloth->getFriction(); }
 
-	void SetPressure( Scalar pressure );
+	void SetPressure( Scalar pressure ) { m_pCloth->setPressure( pressure ); }
 
-	Scalar GetPressure() const;
+	Scalar GetPressure() const { return m_pCloth->getPressure(); }
 
-	void SetTearFactor( Scalar factor );
+	void SetTearFactor( Scalar factor ) { m_pCloth->setTearFactor( factor ); }
 
-	Scalar GetTearFactor() const;
+	Scalar GetTearFactor() const { return m_pCloth->getTearFactor(); }
 
-	void SetAttachmentTearFactor( Scalar factor );
+	void SetAttachmentTearFactor( Scalar factor ) { m_pCloth->setAttachmentTearFactor( factor ); }
 
-	Scalar GetAttachmentTearFactor() const;
+	Scalar GetAttachmentTearFactor() const { return m_pCloth->getAttachmentTearFactor(); }
 
-	void SetThickness( Scalar thickness );
+	void SetThickness( Scalar thickness ) { m_pCloth->setThickness( thickness ); }
 
-	Scalar GetThickness() const;
+	Scalar GetThickness() const { return m_pCloth->getThickness(); }
 
-	Scalar GetDensity() const;
+	Scalar GetDensity() const { return m_pCloth->getDensity(); }
 
-	Scalar GetRelativeGridSpacing() const;
+	Scalar GetRelativeGridSpacing() const { return m_pCloth->getRelativeGridSpacing(); }
 
-	U32 GetSolverIterations() const;
+	U32 GetSolverIterations() const { return m_pCloth->getSolverIterations(); }
 
-	void SetSolverIterations( U32 iterations );
+	void SetSolverIterations( U32 iterations ) { m_pCloth->setSolverIterations( iterations ); }
 
-	void getWorldBounds(NxBounds3& bounds ) const;
+	void GetWorldBounds( AABB3& bounds ) const { NxBounds3 nx_bounds; m_pCloth->getWorldBounds(nx_bounds); bounds = ToAABB3(nx_bounds); }
 
-	void AttachToShape( const NxShape *shape, U32 attachmentFlags );
+	inline void AttachToShape( const CShape *pShape, U32 attachment_flags );
 
-	void AttachToCollidingShapes( U32 attachmentFlags );
+	inline void AttachToCollidingShapes( U32 attachment_flags );
 
-	void detachFromShape( const NxShape *shape );
+	inline void DetachFromShape( const CShape *pShape );
 
-	void AttachVertexToShape( U32 vertexId, const NxShape *shape, const Vector3 &localPos, U32 attachmentFlags );
+	inline void AttachVertexToShape( U32 vertexId, const CShape *pShape, const Vector3 &localPos, U32 attachment_flags );
 
-	void AttachVertexToGlobalPosition( const U32 vertexId, const Vector3 &pos );
+	void AttachVertexToGlobalPosition( const U32 vertexId, const Vector3 &pos ) { m_pCloth->attachVertexToGlobalPosition( vertexId, ToNxVec3(pos) ); }
 
-	void FreeVertex( const U32 vertexId );
+	void FreeVertex( const U32 vertexId ) { m_pCloth->freeVertex( vertexId ); }
 
-	void DominateVertex( U32 vertexId, Scalar expirationTime, Scalar dominanceWeight );
+	void DominateVertex( U32 vertexId, Scalar expiration_time, Scalar dominance_weight ) { m_pCloth->dominateVertex( vertexId, expiration_time, dominance_weight ); }
 
-	NxClothVertexAttachmentStatus GetVertexAttachmentStatus( U32 vertexId ) const;
+//	NxClothVertexAttachmentStatus GetVertexAttachmentStatus( U32 vertexId ) const;
 
-	NxShape* GetVertexAttachmentShape( U32 vertexId ) const;
+//	CShape* GetVertexAttachmentShape( U32 vertexId ) const;
 
-	Vector3 GetVertexAttachmentPosition( U32 vertexId ) const;
+//	Vector3 GetVertexAttachmentPosition( U32 vertexId ) const;
 
-	void AttachToCore(NxActor *actor, Scalar impulseThreshold, Scalar penetrationDepth = 0.0f, Scalar maxDeformationDistance = 0.0f );
+//	void AttachToCore( CActor *actor, Scalar impulseThreshold, Scalar penetrationDepth, Scalar maxDeformationDistance );
 
-	bool TearVertex( const U32 vertexId, const Vector3 &normal );
+	bool TearVertex( const U32 vertexId, const Vector3 &normal ) { return m_pCloth->tearVertex( vertexId, ToNxVec3(normal) ); }
 
-	bool raycast( const NxRay& worldRay, Vector3 &hit, U32 &vertexId );
+//	bool Raycast( const NxRay& worldRay, Vector3 &hit, U32 &vertexId ) { return false; }
 
-	void SetGroup( U16 collisionGroup );
+	void SetGroup( U16 collision_group ) { m_pCloth->setGroup( collision_group ); }
 
-	U16 GetGroup() const;
+	U16 GetGroup() const { return m_pCloth->getGroup(); }
 
-	void SetGroupsMask( const NxGroupsMask& groupsMask );
+//	void SetGroupsMask( const NxGroupsMask& groupsMask );
 
-	const NxGroupsMask GetGroupsMask() const;
+//	const NxGroupsMask GetGroupsMask() const;
 
-	void SetMeshData( NxMeshData& meshData );
+	inline void SetMeshData( CMeshData& mesh_data );
+
+	inline void GetMeshData( CMeshData& mesh_data );
 
 //	NxMeshData GetMeshData();
 
-	void SetValidBounds( const NxBounds3& validBounds );
+	void SetValidBounds( const AABB3& valid_bounds ) { m_pCloth->setValidBounds( ToNxBounds3(valid_bounds) ); }
 
-	void GetValidBounds( NxBounds3& validBounds ) const;
+	void GetValidBounds( AABB3& valid_bounds ) const { NxBounds3 nx_bounds; m_pCloth->getValidBounds( nx_bounds ); valid_bounds = ToAABB3(nx_bounds); }
 
-	void SetPosition( const Vector3& position, U32 vertexId );
+	void SetPosition( const Vector3& position, U32 vertexId ) { m_pCloth->setPosition( ToNxVec3(position), vertexId ); }
 
-	void SetPositions( void* buffer, U32 byteStride = sizeof(Vector3) );
+//	void SetPositions( void* buffer, U32 byteStride = sizeof(Vector3) );
 
-	Vector3 GetPosition( U32 vertexId ) const;
+	Vector3 GetPosition( U32 vertexId ) const { return ToVector3(m_pCloth->getPosition(vertexId)); }
 
-	void GetPositions(void* buffer, U32 byteStride = sizeof(Vector3) );
+//	void GetPositions(void* buffer, U32 byteStride = sizeof(Vector3) );
 
-	void SetVelocity( const Vector3& velocity, U32 vertexId );
+	void SetVelocity( const Vector3& velocity, U32 vertexId ) { m_pCloth->setVelocity( ToNxVec3(velocity), vertexId ); }
 
-	void SetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) );
+//	void SetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) );
 
-	Vector3 GetVelocity( U32 vertexId ) const;
+	Vector3 GetVelocity( U32 vertexId ) const { return ToVector3(m_pCloth->getVelocity(vertexId)); }
 
-	void GetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) );
+//	void GetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) );
 
-	U32 GetNumberOfParticles();
+	U32 GetNumParticles() { return m_pCloth->getNumberOfParticles(); }
 /*
 	virtual U32 queryShapePointers( ) = 0;
 
@@ -208,10 +210,42 @@ public:
 
 	virtual void                    setForceFieldMaterial(NxForceFieldMaterial)  = 0;
 */
+
+	NxCloth *GetNxCloth() { return m_pCloth; }
 };
 
 
 //================================= inline implementations =================================
+
+inline void CNxPhysCloth::AttachToShape( const CShape *pShape, U32 attachment_flags )
+{
+}
+
+
+inline void CNxPhysCloth::AttachToCollidingShapes( U32 attachment_flags )
+{
+}
+
+
+inline void CNxPhysCloth::DetachFromShape( const CShape *pShape )
+{
+}
+
+
+inline void CNxPhysCloth::AttachVertexToShape( U32 vertexId, const CShape *pShape, const Vector3 &localPos, U32 attachment_flags )
+{
+}
+
+
+inline void CNxPhysCloth::SetMeshData( CMeshData& mesh_data )
+{
+}
+
+
+inline void CNxPhysCloth::GetMeshData( CMeshData& mesh_data )
+{
+}
+
 
 
 } // namespace physics

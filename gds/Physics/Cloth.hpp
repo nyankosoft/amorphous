@@ -2,10 +2,8 @@
 #define __PhysCloth_HPP__
 
 
-#include <vector>
 #include "../base.hpp"
 #include "3DMath.hpp"
-#include "Support/SafeDeleteVector.hpp"
 
 #include "fwd.hpp"
 #include "Enums.hpp"
@@ -68,67 +66,67 @@ public:
 
 	virtual void SetSolverIterations( U32 iterations ) = 0;
 
-	virtual void getWorldBounds(NxBounds3& bounds ) const = 0;
+	virtual void GetWorldBounds( AABB3& bounds ) const = 0;
 
-	virtual void AttachToShape( const NxShape *shape, U32 attachmentFlags ) = 0;
+	virtual void AttachToShape( const CShape *pShape, U32 attachmentFlags ) = 0;
 
 	virtual void AttachToCollidingShapes( U32 attachmentFlags ) = 0;
 
-	virtual void detachFromShape( const NxShape *shape ) = 0;
+	virtual void DetachFromShape( const CShape *pShape ) = 0;
 
 	virtual void AttachVertexToShape( U32 vertexId, const NxShape *shape, const Vector3 &localPos, U32 attachmentFlags ) = 0;
 
 	virtual void AttachVertexToGlobalPosition( const U32 vertexId, const Vector3 &pos ) = 0;
 
-	virtual void freeVertex( const U32 vertexId ) = 0;
+	virtual void FreeVertex( const U32 vertexId ) = 0;
 
-	virtual void dominateVertex( U32 vertexId, Scalar expirationTime, Scalar dominanceWeight ) = 0;
+	virtual void DominateVertex( U32 vertexId, Scalar expiration_time, Scalar dominance_weight ) = 0;
 
-	virtual NxClothVertexAttachmentStatus getVertexAttachmentStatus( U32 vertexId ) const = 0;
+//	virtual NxClothVertexAttachmentStatus GetVertexAttachmentStatus( U32 vertexId ) const = 0;
 
-	virtual NxShape* GetVertexAttachmentShape( U32 vertexId ) const = 0;
+//	virtual CShape* GetVertexAttachmentShape( U32 vertexId ) const = 0;
 
-	virtual Vector3 GetVertexAttachmentPosition( U32 vertexId ) const = 0;
+//	virtual Vector3 GetVertexAttachmentPosition( U32 vertexId ) const = 0;
 
-	virtual void AttachToCore(NxActor *actor, Scalar impulseThreshold, Scalar penetrationDepth = 0.0f, Scalar maxDeformationDistance = 0.0f ) = 0;
+//	virtual void AttachToCore( CActor *actor, Scalar impulseThreshold, Scalar penetrationDepth = 0.0f, Scalar maxDeformationDistance = 0.0f ) = 0;
 
 	virtual bool TearVertex( const U32 vertexId, const Vector3 &normal ) = 0;
 
-	virtual bool raycast( const NxRay& worldRay, Vector3 &hit, U32 &vertexId ) = 0;
+//	virtual bool Raycast( const NxRay& worldRay, Vector3 &hit, U32 &vertexId ) = 0;
 
-	virtual void SetGroup( U16 collisionGroup ) = 0;
+	virtual void SetGroup( U16 collision_group ) = 0;
 
 	virtual U16 GetGroup() const = 0;
 
-	virtual void SetGroupsMask( const NxGroupsMask& groupsMask ) = 0;
+//	virtual void SetGroupsMask( const NxGroupsMask& groupsMask ) = 0;
 
-	virtual const NxGroupsMask GetGroupsMask() const = 0;
+//	virtual const NxGroupsMask GetGroupsMask() const = 0;
 
-	virtual void SetMeshData(NxMeshData& meshData ) = 0;
+	virtual void SetMeshData( CMeshData& mesh_data ) = 0;
 
 //	virtual NxMeshData GetMeshData( ) = 0;
 
-	virtual void SetValidBounds( const NxBounds3& validBounds ) = 0;
+	virtual void SetValidBounds( const AABB3& valid_bounds ) = 0;
 
-	virtual void getValidBounds(NxBounds3& validBounds ) const = 0;
+	virtual void GetValidBounds( AABB3& valid_bounds ) const = 0;
 
 	virtual void SetPosition( const Vector3& position, U32 vertexId ) = 0;
 
-	virtual void SetPositions(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
+//	virtual void SetPositions(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
 
 	virtual Vector3 GetPosition( U32 vertexId ) const = 0;
 
-	virtual void GetPositions(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
+//	virtual void GetPositions(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
 
 	virtual void SetVelocity( const Vector3& velocity, U32 vertexId ) = 0;
 
-	virtual void SetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
+//	virtual void SetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
 
 	virtual Vector3 GetVelocity( U32 vertexId ) const = 0;
 
-	virtual void GetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
+//	virtual void GetVelocities(void* buffer, U32 byteStride = sizeof(Vector3) ) = 0;
 
-	virtual U32 GetNumberOfParticles( ) = 0;
+	virtual U32 GetNumParticles() = 0;
 /*
 	virtual U32 queryShapePointers( ) = 0;
 

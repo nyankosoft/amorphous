@@ -1,5 +1,6 @@
 #include "NxPhysScene.hpp"
 #include "NxPhysActor.hpp"
+#include "NxPhysCloth.hpp"
 //#include "NxPhysJoint.hpp"
 #include "NxPhysMaterial.hpp"
 #include "NxPhysConv.hpp"
@@ -7,6 +8,7 @@
 #include "NxPhysShapeFactory.hpp"
 
 #include "../MaterialDesc.hpp"
+#include "../ClothDesc.hpp"
 #include "../RaycastHit.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
@@ -394,10 +396,20 @@ CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRayc
 
 CCloth *CNxPhysScene::CreateCloth( const CClothDesc& desc )
 {
+	NxClothDesc nx_cloth_desc;
+	nx_cloth_desc.globalPose = ToNxMat34(desc.WorldPose);
+	nx_cloth_desc.density    = desc.Density;
+	nx_cloth_desc.thickness  = desc.Thickness;
+//	nx_cloth_desc.clothMesh  = ???;
+//	nx_cloth_desc.meshData   = ???;
+
+	m_pScene->createCloth( nx_cloth_desc );
 	return NULL;
 }
 
 
 void CNxPhysScene::ReleaseCloth( CCloth*& pCloth )
 {
+	CNxPhysCloth *pNxCloth = dynamic_cast<CNxPhysCloth *>(pCloth);
+	m_pScene->releaseCloth( *(pNxCloth->GetNxCloth()) );
 }
