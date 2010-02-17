@@ -536,14 +536,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\Skybox.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Stage\Skybox.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Stage\Stage.cpp"
 					>
 				</File>
