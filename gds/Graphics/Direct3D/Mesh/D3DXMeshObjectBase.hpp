@@ -13,9 +13,9 @@ extern void LoadVerticesForD3DXMesh( const CMMA_VertexSet& rVertexSet,          
 						             void*& pVBData                                   // [out]
 							         );
 
-extern bool LoadIndices( C3DMeshModelArchive& archive, vector<U16>& vecIBData );
+extern bool LoadIndices( C3DMeshModelArchive& archive, std::vector<U16>& vecIBData );
 
-extern void GetAttributeTableFromTriangleSet( const vector<CMMA_TriangleSet>& vecTriangleSet,
+extern void GetAttributeTableFromTriangleSet( const std::vector<CMMA_TriangleSet>& vecTriangleSet,
 									          std::vector<D3DXATTRIBUTERANGE>& vecAttributeRange );
 
 
@@ -61,7 +61,7 @@ protected:
 	bool FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive& archive );
 
 	/// materials must be loaded before calling this method
-	HRESULT SetAttributeTable( LPD3DXMESH pMesh, const vector<CMMA_TriangleSet>& vecTriangleSet );
+	HRESULT SetAttributeTable( LPD3DXMESH pMesh, const std::vector<CMMA_TriangleSet>& vecTriangleSet );
 
 	HRESULT LoadD3DMaterialsFromArchive( C3DMeshModelArchive& archive );
 
