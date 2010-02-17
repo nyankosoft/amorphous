@@ -390,3 +390,14 @@ CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRayc
 	else
 		return NULL;
 }
+
+
+CCloth *CNxPhysScene::CreateCloth( const CClothDesc& desc )
+{
+	return NULL;
+}
+
+
+void CNxPhysScene::ReleaseCloth( CCloth*& pCloth )
+{
+}

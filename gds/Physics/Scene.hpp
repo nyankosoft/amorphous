@@ -237,6 +237,10 @@ public:
 	inline CShape *LineSegmentTestClosestShape( const CLineSegment& world_line_segment, CRaycastHit& hit, int coll_group );
 
 //	virtual U32 RaycastAllShapes( const CRay& world_ray, CRacastReport& report, shapetype, int ray_group,  );
+
+	virtual CCloth *CreateCloth( const CClothDesc& desc ) = 0;
+
+	virtual void ReleaseCloth( CCloth*& pCloth ) = 0; 
 };
 
 //============================== inline implementations ==============================

@@ -167,6 +167,10 @@ public:
 	bool GetGroupCollisionFlag( U16 group1, U16 group2 ) const;
 
 	virtual CShape *RaycastClosestShape( const CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist );
+
+	CCloth *CreateCloth( const CClothDesc& desc );
+
+	void ReleaseCloth( CCloth*& pCloth ); 
 };
 
 
