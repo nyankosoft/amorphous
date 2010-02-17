@@ -11,7 +11,7 @@
 #include "BinaryNode.hpp"
 
 class CBSPMapCompiler;
-class CSkybox;
+//class CSkybox;
 class CBSPTree_CollisionModel_Exporter;
 
 
@@ -31,7 +31,7 @@ class CBSPMapFileExporter
 	list<short> m_asVisibleCellIndex;
 
 
-	CSkybox* m_pSkybox;
+//	CSkybox* m_pSkybox;
 
 	vector<SFixedConvexModel> m_aFCModel;
 
@@ -63,7 +63,7 @@ public:
 	void SetCells();
 	void AddFixedConvexModel_r(short sNodeIndex, vector<SNode>* pBSPTree, CCell& rCell);
 	void WriteLightmapTexture(FILE* fp);
-	void SetSkybox();
+//	void SetSkybox();
 
 	// output triangle mesh used for collision detection
 	void OutputTriangleMesh( FILE *fp );

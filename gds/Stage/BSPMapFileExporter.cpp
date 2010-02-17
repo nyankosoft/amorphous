@@ -45,7 +45,7 @@ void CBSPMapFileExporter::OutputBSPFile( const string filename )
 	SPlane* pFirstPlane = &pPlnBuffer->at( 0 );
 
 	// Set skybox
-	SetSkybox();
+//	SetSkybox();
 
 	SDataTAGLump dtag;
 
@@ -131,7 +131,7 @@ void CBSPMapFileExporter::OutputBSPFile( const string filename )
 		fwrite(&dtag, sizeof(SDataTAGLump), 1, fp);
 		fwrite( pFog, sizeof(SFog), 1, fp );
 	}
-
+/*
 	// Output Skybox
 	if(m_pSkybox)
 	{
@@ -140,7 +140,7 @@ void CBSPMapFileExporter::OutputBSPFile( const string filename )
 		fwrite(&dtag, sizeof(SDataTAGLump), 1, fp);
 		fwrite( this->m_pSkybox, sizeof(CSkybox), 1, fp );
 	}
-
+*/
 
 	CStatusDisplay::Get()->UpdateProgress( "Stage File Export", 0.5f );
 
@@ -647,7 +647,7 @@ void CBSPMapFileExporter::WriteLightmapTexture(FILE* fp)
 
 }
 
-
+/*
 void CBSPMapFileExporter::SetSkybox()
 {
 	vector<CMapFace>* paSkyboxFace = m_pMapCompiler->GetSkyboxFace();
@@ -675,7 +675,7 @@ void CBSPMapFileExporter::SetSkybox()
 
 	return;
 }
-
+*/
 
 void CBSPMapFileExporter::OutputTriangleMesh( FILE *fp )
 {
