@@ -4,7 +4,6 @@
 #include <boost/foreach.hpp>
 #include <gds/Input.hpp>
 #include <gds/3DMath/misc.hpp>
-#include <gds/3DMath/MathMisc.hpp>
 #include <gds/GUI.hpp>
 #include <gds/MotionSynthesis.hpp>
 //#include <gds/Support/CameraController.hpp>
@@ -269,6 +268,8 @@ void CSkeletalMeshMotionViewer::Render()
 }
 
 
+extern int g_htrans_rev;
+
 /// NOTE: param 'bone' is used to calculate num_child_bones
 void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
                                           const msynth::CTransformNode& node,
@@ -280,10 +281,20 @@ void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
 	if( index == -1 )
 		return;
 
-	Matrix34 local_transform;
-	local_transform.vPosition = node.GetLocalTranslation();
-	local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix();
-	pMesh->SetLocalTransformToCache( index, local_transform );
+	if( g_htrans_rev == 2 || g_htrans_rev == 3 )
+	{
+		Matrix34 local_transform;
+		local_transform.vPosition = node.GetLocalTranslation();
+		local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix();
+		pMesh->SetLocalTransformToCache( index, local_transform );
+	}
+/*	else if( g_htrans_rev == 3 )
+	{
+		Matrix34 local_transform;
+		local_transform.vPosition = node.GetLocalTranslation();
+		local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix() * bone.GetOrient();
+		pMesh->SetLocalTransformToCache( index, local_transform );
+	}*/
 
 	const int num_child_bones = bone.GetNumChildren();
 	const int num_child_nodes = node.GetNumChildren();

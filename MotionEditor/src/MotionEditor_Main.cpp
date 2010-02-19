@@ -15,6 +15,7 @@
 #include <gds/Support/memory_helpers.hpp>
 #include <gds/Support/Profile.hpp>
 #include <gds/Support/MiscAux.hpp>
+#include <gds/Support/ParamLoader.hpp>
 #include <gds/XML/XMLDocumentLoader.hpp>
 #include <gds/App/GameWindowManager.hpp>
 
@@ -281,15 +282,26 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	msynth::RegisterMotionPrimitiveCompilerCreator( pCompilerCreator );
 
 	msynth::CMotionDatabaseBuilder mdb;
+
+	// Take a motion database filepath from one of the following (evaluated in the ascending order).
+	// 1. command line string
+	// 2. filepath written in a text file named "params.txt" in the format MotionDatabaseFile path/to/motion_database
+	// 3. "Open File" dialog box
 	string input_filepath;
 	if( 0 < cmdline.length() )
 		input_filepath = cmdline;
 	else
+		input_filepath = LoadParamFromFile<string>( "params.txt", "MotionDatabaseFile" );
+
+	if( input_filepath.length() == 0 )
 	{
 		GetFilename( input_filepath );
-		if( input_filepath.length() == 0 )
-			input_filepath = "../resources/bvh/Mocappers/ordinary.xml";
+//		if( input_filepath.length() == 0 )
+//			input_filepath = "../resources/bvh/Mocappers/ordinary.xml";
 	}
+
+	if( input_filepath.length() == 0 )
+		return 0;
 
 	string mdb_filepath;
 	bool built = true;
