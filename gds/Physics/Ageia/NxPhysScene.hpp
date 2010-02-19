@@ -168,7 +168,7 @@ public:
 
 	virtual CShape *RaycastClosestShape( const CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist );
 
-	CCloth *CreateCloth( const CClothDesc& desc );
+	CCloth *CreateCloth( CClothDesc& desc );
 
 	void ReleaseCloth( CCloth*& pCloth ); 
 };

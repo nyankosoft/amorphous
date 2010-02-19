@@ -238,7 +238,7 @@ public:
 
 //	virtual U32 RaycastAllShapes( const CRay& world_ray, CRacastReport& report, shapetype, int ray_group,  );
 
-	virtual CCloth *CreateCloth( const CClothDesc& desc ) = 0;
+	virtual CCloth *CreateCloth( CClothDesc& desc ) = 0;
 
 	virtual void ReleaseCloth( CCloth*& pCloth ) = 0; 
 };

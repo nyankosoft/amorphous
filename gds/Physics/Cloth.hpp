@@ -74,7 +74,7 @@ public:
 
 	virtual void DetachFromShape( const CShape *pShape ) = 0;
 
-	virtual void AttachVertexToShape( U32 vertexId, const NxShape *shape, const Vector3 &localPos, U32 attachmentFlags ) = 0;
+	virtual void AttachVertexToShape( U32 vertexId, const CShape *pShape, const Vector3 &localPos, U32 attachmentFlags ) = 0;
 
 	virtual void AttachVertexToGlobalPosition( const U32 vertexId, const Vector3 &pos ) = 0;
 

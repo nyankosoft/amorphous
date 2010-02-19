@@ -1,7 +1,8 @@
 #include "NxPhysicsEngine.hpp"
 #include "NxPhysScene.hpp"
-#include "NxPhysTriangleMesh.hpp"
 #include "NxPhysStream.hpp"
+#include "NxPhysTriangleMesh.hpp"
+#include "NxPhysClothMesh.hpp"
 #include "../Stream.hpp"
 #include "../SceneDesc.hpp"
 
@@ -161,6 +162,19 @@ CTriangleMesh *CNxPhysicsEngine::CreateTriangleMesh( physics::CStream& phys_stre
 }
 
 
+//CClothMesh *CNxPhysicsEngine::CreateClothMesh( physics::CStream& phys_stream )
+CTriangleMesh *CNxPhysicsEngine::CreateClothMesh( physics::CStream& phys_stream )
+{
+	CNxPhysStream nx_stream( &(phys_stream.m_Buffer), true );
+
+	NxClothMesh *pNxMesh = m_pPhysicsSDK->createClothMesh( nx_stream );
+	if( !pNxMesh )
+		LOG_PRINT_ERROR( " NxPhysicsSDK::createClothMesh() failed. Unable create a cloth mesh." );
+
+	return new CNxPhysClothMesh( pNxMesh, m_pPhysicsSDK );
+}
+
+
 void CNxPhysicsEngine::ReleaseTriangleMesh( CTriangleMesh*& pTriangleMesh )
 {
 	// m_pPhysicsSDK->releaseTriangleMesh() is called in dtor of CNxPhysTriangleMesh
@@ -175,4 +189,10 @@ void CNxPhysicsEngine::ReleaseTriangleMesh( CTriangleMesh*& pTriangleMesh )
 		LOG_PRINT_ERROR( "Incompatible triangle mesh instance" );
 */
 	SafeDelete( pTriangleMesh );
+}
+
+
+void CNxPhysicsEngine::ReleaseClothMesh( CTriangleMesh*& pClothMesh )
+{
+	SafeDelete( pClothMesh );
 }

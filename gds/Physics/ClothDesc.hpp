@@ -21,7 +21,8 @@ class CClothDesc : public IArchiveObjectBase
 {
 public:
 
-	CClothMesh *pClothMesh;
+//	CClothMesh *pClothMesh;
+	CTriangleMesh *pClothMesh;
 
 	Matrix34 WorldPose;
 
@@ -69,8 +70,25 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-//		ar & ;
-//		ar & ;
+/*		ar & WorldPose;
+		ar & Thickness;
+		ar & Density;
+		ar & BendingStiffness;
+		ar & StretchingStiffness;
+		ar & Friction;
+		ar & Pressure;
+		ar & TearFactor;
+		ar & CollisionResponseCoefficient;
+		ar & AttachmentResponseCoefficient;
+		ar & AttachmentTearFactor;
+		ar & ToFluidResponseCoefficient;
+		ar & FromFluidResponseCoefficient;
+		ar & MinAdhereVelocity;
+		ar & SolverIterations;
+		ar & ExternalAcceleration;
+		ar & WindAcceleration;
+		ar & WakeUpCounter;
+		ar & SleepLinearVelocity;*/
 	}
 
 	inline bool IsValid() const

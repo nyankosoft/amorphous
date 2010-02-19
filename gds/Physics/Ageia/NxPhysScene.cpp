@@ -6,6 +6,7 @@
 #include "NxPhysConv.hpp"
 #include "NxPhysShapeDescFactory.hpp"
 #include "NxPhysShapeFactory.hpp"
+#include "NxPhysClothMesh.hpp"
 
 #include "../MaterialDesc.hpp"
 #include "../ClothDesc.hpp"
@@ -394,17 +395,37 @@ CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRayc
 }
 
 
-CCloth *CNxPhysScene::CreateCloth( const CClothDesc& desc )
+CCloth *CNxPhysScene::CreateCloth( CClothDesc& desc )
 {
-	NxClothDesc nx_cloth_desc;
-	nx_cloth_desc.globalPose = ToNxMat34(desc.WorldPose);
-	nx_cloth_desc.density    = desc.Density;
-	nx_cloth_desc.thickness  = desc.Thickness;
-//	nx_cloth_desc.clothMesh  = ???;
-//	nx_cloth_desc.meshData   = ???;
+	CNxPhysClothMesh *pClothMesh = dynamic_cast<CNxPhysClothMesh *>(desc.pClothMesh);
+	if( !pClothMesh )
+		return NULL;
 
-	m_pScene->createCloth( nx_cloth_desc );
-	return NULL;
+	NxClothMesh *pNxClothMesh = pClothMesh->GetNxClothMesh();
+	if( !pNxClothMesh )
+		return NULL;
+
+	NxClothDesc nx_cloth_desc;
+	nx_cloth_desc.globalPose                   = ToNxMat34(desc.WorldPose);
+	nx_cloth_desc.density                      = desc.Density;
+	nx_cloth_desc.thickness                    = desc.Thickness;
+	nx_cloth_desc.stretchingStiffness          = desc.StretchingStiffness;
+	nx_cloth_desc.bendingStiffness             = desc.BendingStiffness;
+	nx_cloth_desc.friction                     = desc.Friction;
+	nx_cloth_desc.pressure                     = desc.Pressure;
+	nx_cloth_desc.collisionGroup               = 0;//desc.CollisionGroup;
+//	nx_cloth_desc.dampingCoefficient           = desc.DampingCoefficient;
+	nx_cloth_desc.validBounds                  = ToNxBounds3(desc.ValidBounds);
+	nx_cloth_desc.externalAcceleration         = ToNxVec3(desc.ExternalAcceleration);
+	nx_cloth_desc.windAcceleration             = ToNxVec3(desc.WindAcceleration);
+//	nx_cloth_desc.collisionResponseCoefficient = desc.CollisionResponseCoefficient
+	nx_cloth_desc.clothMesh                    = pNxClothMesh;
+//	nx_cloth_desc.meshData             = ???;
+
+	NxCloth *pNxCloth = m_pScene->createCloth( nx_cloth_desc );
+	return new CNxPhysCloth( pNxCloth );
+
+//	return NULL;
 }
 
 

@@ -22,7 +22,8 @@ class CNxPhysCloth : public CCloth
 
 public:
 
-	CNxPhysCloth() : m_pCloth(NULL) {}
+	CNxPhysCloth( NxCloth *pCloth ) : m_pCloth(pCloth) {}
+//	CNxPhysCloth() : m_pCloth(NULL) {}
 
 	virtual ~CNxPhysCloth() {}
 

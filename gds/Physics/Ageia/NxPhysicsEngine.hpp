@@ -48,6 +48,10 @@ public:
 
 	virtual void ReleaseTriangleMesh( CTriangleMesh*& pTriangleMesh );
 
+	virtual CTriangleMesh *CreateClothMesh( physics::CStream& phys_stream );
+
+	virtual void ReleaseClothMesh( CTriangleMesh*& pClothMesh );
+
 //	NxPhysicsSDK* GetPhysicsSDK() { return m_pPhysicsSDK; }
 };
 
