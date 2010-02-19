@@ -8,13 +8,13 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include "Graphics/all.hpp"
-#include "Graphics/LogOutput_OnScreen.hpp"
-#include "Support.hpp"
-#include "Support/FileOpenDialog_Win32.hpp"
-#include "Support/MiscAux.hpp"
-#include "Stage/StaticGeometry.hpp"
-#include "XML/XMLDocumentLoader.hpp"
+#include "gds/Graphics.hpp"
+#include "gds/Graphics/LogOutput_OnScreen.hpp"
+#include "gds/Support.hpp"
+#include "gds/Support/FileOpenDialog_Win32.hpp"
+#include "gds/Support/MiscAux.hpp"
+#include "gds/Stage/StaticGeometry.hpp"
+#include "gds/XML/XMLDocumentLoader.hpp"
 
 #include "StaticGeometryCompilerFG.h"
 #include "StaticGeometryCompiler.h"
@@ -23,7 +23,7 @@
 
 std::string m_OutputFilepath;
 
-CLogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
+//CLogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
 
 
 int RunApp( const std::string& cmd_line )
@@ -62,8 +62,8 @@ int main( int argc, char *argv[] )
 		g_Log.Print( WL_ERROR, "exception: %s", e.what() );
 	}
 
-	g_Log.RemoveLogOutput( g_pLogOutput );
-	SafeDelete( g_pLogOutput );
+//	g_Log.RemoveLogOutput( g_pLogOutput );
+//	SafeDelete( g_pLogOutput );
 
 	return 0;
 }
