@@ -110,7 +110,7 @@ inline void CAABNode::Serialize( IArchive& ar, const unsigned int version )
 // CAABTree
 //===============================================================================
 
-extern void  WriteNodeToFile_r( int node_index, vector<CAABNode>& nodes, int depth, FILE *fp );
+extern void  WriteNodeToFile_r( int node_index, std::vector<CAABNode>& nodes, int depth, FILE *fp );
 
 template<class TGeometry>
 class CAABTree : public IArchiveObjectBase
@@ -214,7 +214,7 @@ public:
 
 	void SetNumMaxGeometriesPerCell( int num_max_triangles ) { m_iNumMaxTrianglesPerCell = num_max_triangles; }
 
-	inline void SetRecursionStopCondition( const string& cond );
+	inline void SetRecursionStopCondition( const std::string& cond );
 
 	inline void SetRecursionStopCondition( RecursionStopCond condition ) { m_RecursionStopCond = condition; }
 

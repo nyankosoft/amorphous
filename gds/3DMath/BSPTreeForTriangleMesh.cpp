@@ -3,6 +3,8 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"
 
+using namespace std;
+
 
 //=================================================================================================================
 // CBSPTreeForTriangleMesh

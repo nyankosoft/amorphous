@@ -2,6 +2,8 @@
 
 #include "Support/StringAux.hpp"
 
+ using namespace std;
+
 
 int CAABNode::ms_DefaultReserveSize = 1024;
 

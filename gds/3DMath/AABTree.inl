@@ -29,7 +29,7 @@ inline void CAABTree<TGeometry>::Release()
 }
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::SetRecursionStopCondition( const string& cond )
+inline void CAABTree<TGeometry>::SetRecursionStopCondition( const std::string& cond )
 {
 	if( cond == "||" || cond == "or" )			m_RecursionStopCond = COND_OR;
 	else if( cond == "&&" || cond == "and" )	m_RecursionStopCond = COND_AND;
