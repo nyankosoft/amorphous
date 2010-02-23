@@ -53,7 +53,7 @@ public:
 
 protected:
 
-	ofstream m_OutputFileStream;
+	std::ofstream m_OutputFileStream;
 
 };
 

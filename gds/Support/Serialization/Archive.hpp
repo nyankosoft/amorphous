@@ -5,7 +5,6 @@
 #include <vector>
 #include <map>
 #include <string>
-using namespace std;
 
 #include <boost/shared_ptr.hpp>
 
@@ -96,7 +95,7 @@ public:
   */
 
 	template<class T>
-	IArchive& operator & (vector<T>& vecData)
+	IArchive& operator & (std::vector<T>& vecData)
 	{
 		size_t n,i;
 
@@ -119,7 +118,7 @@ public:
 
 
 	template<class K, class T>
-	IArchive& operator & (map<K,T>& mapData)
+	IArchive& operator & (std::map<K,T>& mapData)
 	{
 		size_t n,i;
 
@@ -128,7 +127,7 @@ public:
 			n = mapData.size();
 			HandleData( &n, sizeof(size_t) );	// record array size
 
-			typename map<K,T>::iterator itr;
+			typename std::map<K,T>::iterator itr;
 			for( itr=mapData.begin(); itr!=mapData.end(); itr++ )
 			{
 				(*this) & const_cast<K&> (itr->first);
@@ -200,7 +199,7 @@ public:
 
 	// each element of the vector must be a pointer to a single object, not a pointer to an array of objects
 	template<class T>
-	IArchive& PointerVector( vector<T *>& vecpData )
+	IArchive& PointerVector( std::vector<T *>& vecpData )
 	{
 		int n,i;
 
@@ -299,7 +298,7 @@ public:
 
 
 	template<class T>
-	void Polymorphic( vector<boost::shared_ptr<T>>& vecpData, IArchiveObjectFactory& rFactory )
+	void Polymorphic( std::vector< boost::shared_ptr<T> >& vecpData, IArchiveObjectFactory& rFactory )
 	{
 		size_t i, array_size = 0;
 		unsigned int id;
@@ -338,7 +337,7 @@ public:
 
 
 	template<class T>
-	void Polymorphic( vector<T>& vecpData, IArchiveObjectFactory& rFactory )
+	void Polymorphic( std::vector<T>& vecpData, IArchiveObjectFactory& rFactory )
 	{
 		size_t i, array_size = 0;
 		unsigned int id;

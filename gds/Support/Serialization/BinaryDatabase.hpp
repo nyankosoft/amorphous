@@ -260,7 +260,7 @@ public:
 	virtual IArchive& operator & (float& fData)			{ HandleData( &fData, sizeof(float) ); return (*this); }
 	virtual IArchive& operator & (double& dData)		{ HandleData( &dData, sizeof(double) ); return (*this); }
 
-	virtual IArchive& operator & (string& strData)
+	virtual IArchive& operator & (std::string& strData)
 	{
 		int i, num_chars;
 
@@ -320,7 +320,7 @@ public:
 	}
 
 	template<class T>
-	bool AddData( const KeyType& key, vector<T>& vecObject )
+	bool AddData( const KeyType& key, std::vector<T>& vecObject )
 	{
 		if( !SetWritePos(key) )
 			return false;
@@ -346,7 +346,7 @@ public:
 	}
 
 	template<class T>
-	bool AddPolymorphicData( const KeyType& key, vector<T>& vecpObject, IArchiveObjectFactory& rFactory )
+	bool AddPolymorphicData( const KeyType& key, std::vector<T>& vecpObject, IArchiveObjectFactory& rFactory )
 	{
 		if( !SetWritePos(key) )
 			return false;
@@ -369,7 +369,7 @@ public:
 	}
 
 	template<class T>
-	bool GetData( const KeyType& key, vector<T>& vecObject )
+	bool GetData( const KeyType& key, std::vector<T>& vecObject )
 	{
 		if( !SetReadPos(key) )
 			return false;
@@ -392,7 +392,7 @@ public:
 
 
 	template<class T>
-	bool GetPolymorphicData( const KeyType& key, vector<T>& vecpObject, IArchiveObjectFactory& rFactory )
+	bool GetPolymorphicData( const KeyType& key, std::vector<T>& vecpObject, IArchiveObjectFactory& rFactory )
 	{
 		if( !SetReadPos(key) )
 			return false;

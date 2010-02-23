@@ -54,7 +54,7 @@ public:
 
 protected:
 
-	ifstream m_InputFileStream;
+	std::ifstream m_InputFileStream;
 
 };
 
