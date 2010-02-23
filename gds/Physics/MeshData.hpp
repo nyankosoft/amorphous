@@ -31,6 +31,17 @@ public:
 };
 */
 
+
+class CStdMeshData
+{
+public:
+
+	std::vector<Vector3> Positions;
+	std::vector<Vector3> Normals;
+	std::vector<int> Indices;
+};
+
+
 class CMeshData
 {
 public:

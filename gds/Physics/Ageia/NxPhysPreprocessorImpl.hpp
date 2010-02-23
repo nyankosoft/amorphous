@@ -38,11 +38,11 @@ public:
 	/// crates a stream of triangle mesh
 	/// \param desc [in] desc for triangle mesh
 	/// \param desc [out] stream of triangle mesh
-	virtual void CreateTriangleMeshStream( CTriangleMeshDesc& desc,
-		                                   CStream& phys_stream );
+	virtual Result::Name CreateTriangleMeshStream( CTriangleMeshDesc& desc,
+		                                           CStream& phys_stream );
 
-	virtual void CreateClothMeshStream( CClothMeshDesc& desc,
-                                        CStream& phys_stream );
+	virtual Result::Name CreateClothMeshStream( CClothMeshDesc& desc,
+                                                CStream& phys_stream );
 
 	virtual const char *GetPhysicsEngineName() const { return "AgeiaPhysX"; }
 };

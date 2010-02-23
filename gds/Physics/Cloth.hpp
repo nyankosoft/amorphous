@@ -104,6 +104,8 @@ public:
 
 	virtual void SetMeshData( CMeshData& mesh_data ) = 0;
 
+	virtual void GetMeshData( CMeshData& mesh_data ) = 0;
+
 //	virtual NxMeshData GetMeshData( ) = 0;
 
 	virtual void SetValidBounds( const AABB3& valid_bounds ) = 0;

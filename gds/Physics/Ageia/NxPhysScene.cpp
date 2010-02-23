@@ -421,9 +421,19 @@ CCloth *CNxPhysScene::CreateCloth( CClothDesc& desc )
 //	nx_cloth_desc.collisionResponseCoefficient = desc.CollisionResponseCoefficient
 	nx_cloth_desc.clothMesh                    = pNxClothMesh;
 //	nx_cloth_desc.meshData             = ???;
+	nx_cloth_desc.flags                        = NX_CLF_GRAVITY;
+
+	bool is_nx_desc_valid = nx_cloth_desc.isValid();
 
 	NxCloth *pNxCloth = m_pScene->createCloth( nx_cloth_desc );
-	return new CNxPhysCloth( pNxCloth );
+	if( !pNxCloth )
+		return NULL;
+
+	CCloth *pCloth = new CNxPhysCloth( pNxCloth );
+
+	pCloth->SetMeshData( desc.MeshData );
+
+	return pCloth;
 
 //	return NULL;
 }

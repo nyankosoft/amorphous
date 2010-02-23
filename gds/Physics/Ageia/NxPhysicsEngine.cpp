@@ -156,7 +156,7 @@ CTriangleMesh *CNxPhysicsEngine::CreateTriangleMesh( physics::CStream& phys_stre
 
 	NxTriangleMesh *pNxMesh = m_pPhysicsSDK->createTriangleMesh( nx_stream );
 	if( !pNxMesh )
-		LOG_PRINT_ERROR( " NxPhysicsSDK::createTriangleMesh() failed. Unable create a triangle mesh." );
+		LOG_PRINT_ERROR( " NxPhysicsSDK::createTriangleMesh() failed. Cannot create a triangle mesh." );
 
 	return new CNxPhysTriangleMesh( pNxMesh, m_pPhysicsSDK );
 }
@@ -169,7 +169,7 @@ CTriangleMesh *CNxPhysicsEngine::CreateClothMesh( physics::CStream& phys_stream 
 
 	NxClothMesh *pNxMesh = m_pPhysicsSDK->createClothMesh( nx_stream );
 	if( !pNxMesh )
-		LOG_PRINT_ERROR( " NxPhysicsSDK::createClothMesh() failed. Unable create a cloth mesh." );
+		LOG_PRINT_ERROR( " NxPhysicsSDK::createClothMesh() failed. Cannot create a cloth mesh." );
 
 	return new CNxPhysClothMesh( pNxMesh, m_pPhysicsSDK );
 }

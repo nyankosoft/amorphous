@@ -7,6 +7,7 @@
 #include "fwd.hpp"
 #include "NxMathConv.hpp"
 #include "NxPhysConv.hpp"
+#include "NxPhysShape.hpp"
 
 
 #include "NxPhysics.h"
@@ -218,8 +219,30 @@ public:
 
 //================================= inline implementations =================================
 
+inline NxShape *GetNxShape( const CShape *pShape )
+{
+	switch( pShape->GetType() )
+	{
+	case PhysShape::Sphere:  { const CNxPhysSphereShape *pNxSphere   = dynamic_cast<const CNxPhysSphereShape *>(pShape);  return pNxSphere ?  pNxSphere->GetNxShape() : NULL; }
+	case PhysShape::Capsule: { const CNxPhysCapsuleShape *pNxCapsule = dynamic_cast<const CNxPhysCapsuleShape *>(pShape); return pNxCapsule ? pNxCapsule->GetNxShape() : NULL; }
+	case PhysShape::Box:     { const CNxPhysBoxShape    *pNxBox      = dynamic_cast<const CNxPhysBoxShape *>(pShape);     return pNxBox ?     pNxBox->GetNxShape() : NULL; }
+//	case PhysShape::TriangleMesh: { CNxTriangleMeshShapeImpl *pNxBox     = dynamic_cast<CNxPhysBoxShape *>(pShape);     return pNxBox ?     pNxBox->GetNxShape() : NULL; }
+	default:
+		return NULL;
+	}
+
+	return NULL;
+}
+
+
 inline void CNxPhysCloth::AttachToShape( const CShape *pShape, U32 attachment_flags )
 {
+	NxShape *pNxShape = GetNxShape(pShape);
+	if( !pNxShape )
+		return;
+
+	NxU32 nx_flags = (NxU32)attachment_flags;
+	m_pCloth->attachToShape( pNxShape, nx_flags );
 }
 
 
@@ -230,21 +253,60 @@ inline void CNxPhysCloth::AttachToCollidingShapes( U32 attachment_flags )
 
 inline void CNxPhysCloth::DetachFromShape( const CShape *pShape )
 {
+	NxShape *pNxShape = GetNxShape(pShape);
+	if( !pNxShape )
+		return;
+
+	m_pCloth->detachFromShape( pNxShape );
 }
 
 
 inline void CNxPhysCloth::AttachVertexToShape( U32 vertexId, const CShape *pShape, const Vector3 &localPos, U32 attachment_flags )
 {
+	NxShape *pNxShape = GetNxShape(pShape);
+	if( !pNxShape )
+		return;
+
+	NxU32 nx_flags = (NxU32)attachment_flags;
+	m_pCloth->attachVertexToShape( vertexId, pNxShape, ToNxVec3(localPos), nx_flags );
 }
 
 
 inline void CNxPhysCloth::SetMeshData( CMeshData& mesh_data )
 {
+	NxMeshData nx_mesh_data;
+	nx_mesh_data.verticesPosBegin         = mesh_data.pVerticesPosBegin;
+	nx_mesh_data.verticesPosByteStride    = mesh_data.VerticesPosByteStride;
+	nx_mesh_data.verticesNormalBegin      = mesh_data.pVerticesNormalBegin;
+	nx_mesh_data.verticesNormalByteStride = mesh_data.VerticesNormalByteStride;
+	nx_mesh_data.maxVertices              = mesh_data.NumMaxVertices;
+	nx_mesh_data.indicesBegin             = mesh_data.pIndicesBegin;
+	nx_mesh_data.maxIndices               = mesh_data.NumMaxIndices;
+	nx_mesh_data.indicesByteStride        = mesh_data.IndicesByteStride;
+//	nx_mesh_data.flags                    = mesh_data.Flags;
+//	nx_mesh_data.dirtyBufferFlagsPtr      = ???
+	// ...
+
+	m_pCloth->setMeshData( nx_mesh_data );
 }
 
 
 inline void CNxPhysCloth::GetMeshData( CMeshData& mesh_data )
 {
+	NxMeshData nx_mesh_data;
+	nx_mesh_data = m_pCloth->getMeshData();
+
+	mesh_data.pVerticesPosBegin        = nx_mesh_data.verticesPosBegin;
+	mesh_data.VerticesPosByteStride    = nx_mesh_data.verticesPosByteStride;
+	mesh_data.pVerticesNormalBegin     = nx_mesh_data.verticesNormalBegin;
+	mesh_data.VerticesNormalByteStride = nx_mesh_data.verticesNormalByteStride;
+	mesh_data.NumMaxVertices           = nx_mesh_data.maxVertices;
+	mesh_data.pIndicesBegin	           = nx_mesh_data.indicesBegin;
+	mesh_data.NumMaxIndices	           = nx_mesh_data.maxIndices;
+	mesh_data.IndicesByteStride        = nx_mesh_data.indicesByteStride;
+//	mesh_data.Flags                    = nx_mesh_data.flags;
+//	???                                = nx_mesh_data.dirtyBufferFlagsPtr;
+//	...
 }
 
 

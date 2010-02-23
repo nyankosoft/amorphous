@@ -66,6 +66,37 @@ public:
 	inline void SetDefault()
 	{
 		pClothMesh = NULL;
+
+		WorldPose = Matrix34Identity();
+
+		Thickness = 0.01f;
+
+		Density = 1.0f;
+
+		BendingStiffness = 1.0f;
+		StretchingStiffness = 1.0f;
+		Friction = 0.5f;
+		Pressure = 1.0f;
+		TearFactor = 1.5f;
+		CollisionResponseCoefficient = 0.2f;
+		AttachmentResponseCoefficient = 0.2f;
+		AttachmentTearFactor = 1.5f;
+		ToFluidResponseCoefficient = 1.0f;
+		FromFluidResponseCoefficient = 1.0f;
+		MinAdhereVelocity = 1.0f;
+		SolverIterations = 5;
+		ExternalAcceleration = Vector3(0,0,0);
+		WindAcceleration = Vector3(0,0,0);
+		WakeUpCounter = 0;
+		SleepLinearVelocity = 0;
+//		MeshData;
+//		NxCollisionGroup collisionGroup = 0;
+//		NxGroupsMask GroupsMask = 0;
+		ForceFieldMaterial = 0;
+//		ValidBounds = AABB3(-Vector3(FLT_MAX,FLT_MAX,FLT_MAX),Vector3(FLT_MAX,FLT_MAX,FLT_MAX));
+		ValidBounds.Nullify();
+		RelativeGridSpacing = 0.25f;
+		Flags = 0;
 	}
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version )

@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include "../base.hpp"
 #include "3DMath/precision.h"
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
@@ -31,9 +32,9 @@ public:
 
 	/// [in] desc
 	/// [out] 
-	virtual void CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream ) = 0;
+	virtual Result::Name CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream ) = 0;
 
-	virtual void CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream ) = 0;
+	virtual Result::Name CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream ) = 0;
 
 	virtual const char *GetPhysicsEngineName() const = 0;
 };
@@ -80,25 +81,25 @@ public:
 
 	void Release();
 
-	inline void CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream );
+	inline Result::Name CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream );
 
-	inline void CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream );
+	inline Result::Name CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream );
 
 //	void SetDefault();
 };
 
 
-inline void CPreprocessor::CreateTriangleMeshStream( CTriangleMeshDesc& desc,
+inline Result::Name CPreprocessor::CreateTriangleMeshStream( CTriangleMeshDesc& desc,
 													 CStream& phys_stream )
 {
-	m_pImpl->CreateTriangleMeshStream( desc, phys_stream );
+	return m_pImpl->CreateTriangleMeshStream( desc, phys_stream );
 }
 
 
-inline void CPreprocessor::CreateClothMeshStream( CClothMeshDesc& desc,
+inline Result::Name CPreprocessor::CreateClothMeshStream( CClothMeshDesc& desc,
 												  CStream& phys_stream )
 {
-	m_pImpl->CreateClothMeshStream( desc, phys_stream );
+	return m_pImpl->CreateClothMeshStream( desc, phys_stream );
 }
 
 

@@ -22,6 +22,9 @@ typedef NxU16 index_type;
 
 static void FillNxTriangleMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecVertex, vector<index_type>& vecIndex, NxSimpleTriangleMesh& dest )
 {
+	if( sizeof(index_type) == sizeof(NxU16) )
+		dest.flags                  = NX_MF_16_BIT_INDICES;
+
 	// copy vertices
 	size_t num_verts = src.m_vecVertex.size();
 //	vector<NxVec3> vecVertex;
@@ -82,7 +85,7 @@ CNxPhysPreprocessorImpl::~CNxPhysPreprocessorImpl()
 }
 
 
-void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_desc,
+Result::Name CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_desc,
 													    CStream& phys_stream )
 {
 	LOG_FUNCTION_SCOPE();
@@ -115,13 +118,12 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 
 	meshDesc.materialIndices            = &(vecMatIndex[0]);
 
-	meshDesc.flags                      = 0;
-	if( sizeof(index_type) == sizeof(NxU16) )
-		meshDesc.flags                  = NX_MF_16_BIT_INDICES;
-
 	bool valid_desc = meshDesc.isValid();
 	if( !valid_desc )
+	{
 		LOG_PRINT_ERROR( " An invalid triangle mesh desc" );
+		return Result::INVALID_ARGS;
+	}
 
 	{
 		LOG_SCOPE( "NxCookingInterface::NxCookTriangleMesh()" );
@@ -129,11 +131,15 @@ void CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDesc& mesh_
 		bool trimesh_cooked = NxCookTriangleMesh( meshDesc, CNxPhysStream( &(phys_stream.m_Buffer), false ) );
 
 		LOG_PRINT_OK_OR_FAILED( "NxCookTriangleMesh()", trimesh_cooked );
+		if( !trimesh_cooked )
+			return Result::UNKNOWN_ERROR;
 	}
+
+	return Result::SUCCESS;
 }
 
 
-void CNxPhysPreprocessorImpl::CreateClothMeshStream( CClothMeshDesc& desc,
+Result::Name CNxPhysPreprocessorImpl::CreateClothMeshStream( CClothMeshDesc& desc,
                                                      CStream& phys_stream )
 {
 	NxClothMeshDesc clothMeshDesc;
@@ -146,14 +152,14 @@ void CNxPhysPreprocessorImpl::CreateClothMeshStream( CClothMeshDesc& desc,
 	clothMeshDesc.vertexFlagStrideBytes = sizeof(NxReal);
 	clothMeshDesc.vertexMasses = 0;
 	clothMeshDesc.vertexFlags  = 0;
-	clothMeshDesc.flags                 = 0;//NX_CLOTH_MESH_WELD_VERTICES;
+	clothMeshDesc.flags                 |= 0;//NX_CLOTH_MESH_WELD_VERTICES;
 //	clothMeshDesc.weldingDistance       = 0.0001f;
 
 	bool valid_desc = clothMeshDesc.isValid();
 	if( !valid_desc )
 	{
 		LOG_PRINT_ERROR( " An invalid cloth mesh desc" );
-		return;
+		return Result::INVALID_ARGS;
 	}
 
 	{
@@ -162,5 +168,9 @@ void CNxPhysPreprocessorImpl::CreateClothMeshStream( CClothMeshDesc& desc,
 		bool clothmesh_cooked = NxCookClothMesh( clothMeshDesc, CNxPhysStream( &(phys_stream.m_Buffer), false ) );
 
 		LOG_PRINT_OK_OR_FAILED( "NxCookClothMesh()", clothmesh_cooked );
+		if( !clothmesh_cooked )
+			return Result::UNKNOWN_ERROR;
 	}
+
+	return Result::SUCCESS;
 }

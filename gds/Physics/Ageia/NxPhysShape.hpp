@@ -34,6 +34,8 @@ public:
 
 	/// returns radii of the box
 	virtual Vector3 GetDimensions () const { return ToVector3( m_pBox->getDimensions() ); }
+
+	NxShape *GetNxShape() const { return m_pBox; }
 };
 
 
@@ -65,6 +67,8 @@ public:
 	virtual Scalar GetRadius () const { return (Scalar)(m_pSphere->getRadius()); }
 
 	virtual void SetRadius( Scalar radius ) { m_pSphere->setRadius( radius ); }
+
+	NxShape *GetNxShape() const { return m_pSphere; }
 };
 
 
@@ -92,6 +96,8 @@ public:
 
 	virtual void SetRadius( Scalar radius ) { m_pCapsule->setRadius( radius ); }
 	virtual void SetLength( Scalar length ) { m_pCapsule->setHeight( length ); }
+
+	NxShape *GetNxShape() const { return m_pCapsule; }
 };
 
 
@@ -118,6 +124,8 @@ public:
 	virtual ~CNxPhysTriangleMeshShape() {}
 
 	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+
+	NxShape *GetNxShape() const { return m_pTriangleMesh; }
 };
 
 

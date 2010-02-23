@@ -32,6 +32,12 @@ public:
 	virtual CTriangleMesh *CreateTriangleMesh( CStream& phys_stream ) = 0;
 
 	virtual void ReleaseTriangleMesh( CTriangleMesh*& pTriangleMesh ) = 0;
+
+	/// Creates a cloth mesh from a cooked cloth mesh stored in a stream. 
+	virtual CTriangleMesh *CreateClothMesh ( CStream& phys_stream ) = 0;
+ 
+	/// Deletes the specified cloth mesh. The cloth mesh must be in this scene. 
+	virtual void  ReleaseClothMesh ( CTriangleMesh*& pCloth ) = 0;
 };
 
 
@@ -75,10 +81,10 @@ public:
 	inline void ReleaseTriangleMesh( CTriangleMesh*& pTriangleMesh ) { m_pEngine->ReleaseTriangleMesh( pTriangleMesh ); }
 
 	/// Creates a cloth mesh from a cooked cloth mesh stored in a stream. 
-//	virtual CClothMesh *CreateClothMesh ( CStream& phys_stream ) { return m_pEngine->CreateClothMesh(  ); } 
+	inline CTriangleMesh *CreateClothMesh ( CStream& phys_stream ) { return m_pEngine->CreateClothMesh( phys_stream ); } 
  
 	/// Deletes the specified cloth mesh. The cloth mesh must be in this scene. 
-//	virtual void  ReleaseClothMesh ( CClothMesh*& pCloth ) { m_pEngine->ReleaseClothMesh(); }
+	inline void  ReleaseClothMesh ( CTriangleMesh*& pCloth ) { m_pEngine->ReleaseClothMesh( pCloth ); }
 };
 
 
