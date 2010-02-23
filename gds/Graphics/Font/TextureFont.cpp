@@ -254,7 +254,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 	if( !pcStr )
 		return;
 
-	const int num_letters = strlen(pcStr);
+	const int num_letters = (int)strlen(pcStr);
 
 	if( NUM_MAX_LETTERS <= m_CacheIndex + num_letters )
 	{

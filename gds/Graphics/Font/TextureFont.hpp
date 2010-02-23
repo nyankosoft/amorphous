@@ -106,6 +106,8 @@ public:
 
 	bool InitFont( const CSimpleBitmapFontData& bitmap );
 
+	bool InitFont( const CSimpleBitmapFontData *pBitmap ) { return pBitmap ? InitFont(*pBitmap) : false; }
+
 	virtual void SetFontSize(int FontWidth, int FontHeight);
 
 	virtual float GetHorizontalFactor() const { return (float)m_FontWidth; }
