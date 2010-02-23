@@ -1,6 +1,7 @@
 #include "GraphicsResourceDescs.hpp"
 #include "XML.hpp"
 
+using namespace std;
 
 
 //================================================================================

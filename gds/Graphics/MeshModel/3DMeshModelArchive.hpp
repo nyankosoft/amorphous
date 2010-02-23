@@ -100,7 +100,7 @@ public:
 
 	std::vector<SFloatRGBAColor> vecDiffuseColor;
 
-	TCFixedVector< vector<TEXCOORD2>, 4 > vecTex;
+	TCFixedVector< std::vector<TEXCOORD2>, 4 > vecTex;
 
 	std::vector< TCFixedVector<float,NUM_MAX_BLEND_MATRICES_PER_VERTEX> > vecfMatrixWeight;
 
@@ -327,9 +327,9 @@ public:
 
 	void UpdateMinimumVertexDiffuseAlpha();
 
-	void GeneratePointRepresentatives( vector<unsigned short>& rvecusPtRep);
+	void GeneratePointRepresentatives( std::vector<unsigned short>& rvecusPtRep);
 
-	void WriteToTextFile( const string& filename );
+	void WriteToTextFile( const std::string& filename );
 
 
 	void Serialize( IArchive& ar, const unsigned int version );

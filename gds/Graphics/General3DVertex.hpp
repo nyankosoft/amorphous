@@ -1,13 +1,8 @@
-
 #ifndef  __GENERAL3DVERTEX_H__
 #define  __GENERAL3DVERTEX_H__
 
-//#include <vector>
-//using namespace std;
 #include "Support/FixedVector.hpp"
-
 #include "3DMath/Vector3.hpp"
-
 #include "Graphics/TextureCoord.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 

@@ -185,7 +185,7 @@ public:
 
 	bool LoadToGraphicsMemoryByRenderThread();
 
-	vector<U16>& IndexBufferContent() { return m_vecIndexBufferContent; }
+	std::vector<U16>& IndexBufferContent() { return m_vecIndexBufferContent; }
 
 	void *VertexBufferContent() { return m_pVertexBufferContent; }
 

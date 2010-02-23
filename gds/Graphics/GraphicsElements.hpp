@@ -1007,7 +1007,7 @@ public:
 inline void CGraphicsElementGroup::UpdateAABB()
 {
 	m_LocalAABB.Nullify();
-	vector< boost::shared_ptr<CGraphicsElement> >::iterator itr;
+	std::vector< boost::shared_ptr<CGraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		m_LocalAABB.MergeAABB( (*itr)->GetAABB() );

@@ -4,6 +4,8 @@
 
 #include <d3dx9.h>
 
+using namespace std;
+
 
 void CBillboardArrayMesh::CreateVertexElemenets( CMMA_VertexSet& rVertexSet )
 {

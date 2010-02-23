@@ -185,7 +185,7 @@ inline Result::Name CalculateAABB( const CGeneral3DMesh& src_mesh, AABB3& dest_a
 	if( !src_mesh.GetVertexBuffer() )
 		return Result::INVALID_ARGS;
 
-	const vector<CGeneral3DVertex>& vert_buffer = *(src_mesh.GetVertexBuffer().get());
+	const std::vector<CGeneral3DVertex>& vert_buffer = *(src_mesh.GetVertexBuffer().get());
 	const size_t num_verts = vert_buffer.size();
 	for( size_t i=0; i<num_verts; i++ )
 	{

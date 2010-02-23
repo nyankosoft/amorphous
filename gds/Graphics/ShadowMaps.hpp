@@ -177,7 +177,7 @@ public:
 	/// and the function determines the filename for output image
 	void SaveShadowMapTextureToFile( const std::string& file_or_directory_path );
 
-	virtual std::string CreateTextureFilename() { return string(); }
+	virtual std::string CreateTextureFilename() { return std::string(); }
 
 	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath ) {}
 

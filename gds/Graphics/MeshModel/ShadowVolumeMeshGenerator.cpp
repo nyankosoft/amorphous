@@ -1,9 +1,8 @@
-
 #include "ShadowVolumeMeshGenerator.hpp"
-
-
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
+using namespace std;
+
 
 //--------------------------------------------------------------------------------------
 // Takes an array of CEdgeMapping objects, then returns an index for the edge in the

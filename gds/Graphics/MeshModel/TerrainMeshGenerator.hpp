@@ -167,7 +167,7 @@ class CTerrainMeshGenerator
 private:
 
 	/// subdivide textures
-	bool SplitTexture( const string& src_tex_filename );
+	bool SplitTexture( const std::string& src_tex_filename );
 
     void CopyVerticesAndTriangles( C3DMeshModelArchive& src_mesh );
 

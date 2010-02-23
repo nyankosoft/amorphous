@@ -1,10 +1,8 @@
-
 #ifndef __Serialization_ShaderTechniqueHandle_H__
 #define __Serialization_ShaderTechniqueHandle_H__
 
 
 #include "ShaderTechniqueHandle.hpp"
-
 #include "Support/Serialization/Archive.hpp"
 
 
@@ -17,7 +15,7 @@ namespace Serialization
 
 inline IArchive& operator & ( IArchive& ar, CShaderTechniqueHandle& rShaderTechniqueHandle )
 {
-	string strTemp;
+	std::string strTemp;
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
 		// restore the technique name from the archive
