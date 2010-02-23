@@ -12,7 +12,7 @@
 #include <gds/Graphics/Shader/ShaderManagerHub.hpp>
 #include <gds/Graphics/Shader/FixedFunctionPipelineManager.hpp>
 
-//using namespace std;
+using namespace std;
 using namespace boost;
 
 
