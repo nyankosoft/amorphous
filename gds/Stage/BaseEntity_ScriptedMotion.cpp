@@ -6,6 +6,7 @@
 
 #include "Physics/Actor.hpp"
 
+using namespace std;
 using namespace physics;
 
 

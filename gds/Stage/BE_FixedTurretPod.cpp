@@ -8,6 +8,8 @@
 #include  "Support/Log/DefaultLog.hpp"
 #include  "Support/Serialization/Serialization_3DMath.hpp"
 
+using namespace std;
+
 
 CBE_FixedTurretPod::CBE_FixedTurretPod()
 {

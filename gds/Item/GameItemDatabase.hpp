@@ -14,8 +14,8 @@ class CGameItemInfo : public IArchiveObjectBase
 {
 public:
 
-	string strItemName;
-	string strFilename;
+	std::string strItemName;
+	std::string strFilename;
 
 	CGameItem *pItem;
 
@@ -46,7 +46,7 @@ public:
 
 	~CGameItemDatabase();
 
-	void AddItemInfo( const string& strFilename, const string& strItemName );
+	void AddItemInfo( const std::string& strFilename, const std::string& strItemName );
 
 	bool LoadFromFile( const char *pcFilename );
 

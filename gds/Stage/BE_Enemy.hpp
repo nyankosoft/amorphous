@@ -129,7 +129,7 @@ protected:
 	int m_iNumFragments;
 
 	/// items that may be created after the enemy is destroyed by the player
-	vector<CRewardItem> m_vecRewardItem;
+	std::vector<CRewardItem> m_vecRewardItem;
 
 protected:
 

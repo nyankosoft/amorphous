@@ -19,6 +19,8 @@
 #include "Item/WeaponSystem.hpp"
 #include "Sound/SoundManager.hpp"
 
+using namespace std;
+
 
 CStageSharedPtr g_pStage;
 

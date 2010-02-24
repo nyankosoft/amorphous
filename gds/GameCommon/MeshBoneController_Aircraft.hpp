@@ -97,7 +97,7 @@ class CConstraintComponent : public IArchiveObjectBase
 public:
 
 	/// name of the component that constrains the motions of owner component
-	string Name;
+	std::string Name;
 
 	boost::shared_ptr<CMeshBoneController_Cover> m_pComponent;
 

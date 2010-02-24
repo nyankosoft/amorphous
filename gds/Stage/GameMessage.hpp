@@ -42,7 +42,7 @@ enum eDamageType
 struct SGameMessage
 {
 	int effect;
-	string effect_name;
+	std::string effect_name;
 	short s1;
 	float fParam1;
 	float fParam2;

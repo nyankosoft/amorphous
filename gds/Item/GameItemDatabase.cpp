@@ -1,11 +1,10 @@
-
 #include "Item/GameItem.hpp"
 #include "Item/GameItemObjectFactory.hpp"
 #include "GameItemDatabase.hpp"
-
 #include <assert.h>
-
 #include <algorithm>
+
+using namespace std;
 
 
 class CGameItemSerializer : public IArchiveObjectBase

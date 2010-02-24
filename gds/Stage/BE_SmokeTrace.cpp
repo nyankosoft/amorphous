@@ -10,7 +10,7 @@
 #include "Support/VectorRand.hpp"
 #include "Support/Profile.hpp"
 
-
+using namespace std;
 
 
 CBE_SmokeTrace::CBE_SmokeTrace()

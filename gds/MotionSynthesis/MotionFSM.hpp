@@ -328,7 +328,7 @@ public:
 
 //		m_TransIndex++;
 
-		vector<MotionNodeTrans>& tansitions_to_process = *(m_pvecTransToProcess);
+		std::vector<MotionNodeTrans>& tansitions_to_process = *(m_pvecTransToProcess);
 		if( m_TransIndex < (int)tansitions_to_process.size() )
 		{
 			m_pCurrent->ExitState();

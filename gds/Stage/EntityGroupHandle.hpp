@@ -82,7 +82,7 @@ public:
 
 inline void CEntityGroupHandle::Serialize( IArchive& ar, const unsigned int version )
 {
-	string strTemp;
+	std::string strTemp;
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
 		// restore the technique name from the archive

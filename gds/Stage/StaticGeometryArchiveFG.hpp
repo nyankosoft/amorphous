@@ -169,7 +169,7 @@ public:
 
 	void Scale( float factor );
 
-	void WriteToTextFile( const string& filename );
+	void WriteToTextFile( const std::string& filename );
 
 	virtual unsigned int GetVersion() const { return 2; }
 

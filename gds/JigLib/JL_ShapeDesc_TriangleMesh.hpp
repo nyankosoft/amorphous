@@ -44,11 +44,11 @@ public:
 	/// see GPG4 NovodeX article for details
 	bool OptimizeEdgeCollision;
 
-	string RecursionStopCond;	///< "&&"(and) or "||"(or)
+	std::string RecursionStopCond;	///< "&&"(and) or "||"(or)
 
 	/// filename of an archive
 	/// MUST be an archvie of CBSPTreeForTriangleMesh
-	string BSPTreeTriangleMeshArchiveFilename;
+	std::string BSPTreeTriangleMeshArchiveFilename;
 
 	inline CJL_ShapeDesc_TriangleMesh()
 	{

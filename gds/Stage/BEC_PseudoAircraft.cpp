@@ -1,5 +1,3 @@
-
-
 #include "BEC_PseudoAircraft.hpp"
 #include "CopyEntityDesc.hpp"
 #include "CopyEntity.hpp"
@@ -7,6 +5,8 @@
 #include "Stage.hpp"
 #include "Item/GI_Aircraft.hpp"
 #include "Stage.hpp"
+
+using namespace std;
 
 
 CBEC_AircraftNozzleFlames::CBEC_AircraftNozzleFlames()

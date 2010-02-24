@@ -17,7 +17,7 @@ namespace Serialization
 
 inline IArchive& operator & ( IArchive& ar, CBaseEntityHandle& entity_handle )
 {
-	string name;
+	std::string name;
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
 		// restore the entity name from the archive

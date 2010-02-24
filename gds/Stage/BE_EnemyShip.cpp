@@ -19,6 +19,7 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/StringAux.hpp"
 
+using namespace std;
 using namespace physics;
 
 

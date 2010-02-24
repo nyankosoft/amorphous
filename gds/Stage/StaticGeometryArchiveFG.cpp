@@ -2,8 +2,10 @@
 
 #include "Support/StringAux.hpp"
 
+using namespace std;
 
-const std::string CStaticGeometryArchiveFG::ms_CollisionMeshTreeKey = "CollisionMeshTree";
+
+const string CStaticGeometryArchiveFG::ms_CollisionMeshTreeKey = "CollisionMeshTree";
 
 
 CStaticGeometryArchiveFG::CStaticGeometryArchiveFG()

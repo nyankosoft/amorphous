@@ -35,7 +35,7 @@ class CBE_DoorController : public CBaseEntity
 	CSoundHandle m_CloseSound;
 
 	/// passward string to unlock the door
-	string m_strKeyCode;
+	std::string m_strKeyCode;
 
 public:
 

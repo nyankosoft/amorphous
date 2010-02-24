@@ -38,13 +38,13 @@ private:
 
 	CBaseEntity* CreateBaseEntity( const std::string& baseentity_classname );
 
-    bool LoadAllBaseEntitiesFromRootTextFile( const string& strRootTextFile,
+	bool LoadAllBaseEntitiesFromRootTextFile( const std::string& strRootTextFile,
 											  std::vector<CBaseEntity *>& vecpBaseEntity );
 
 	bool LoadAllBaseEntitiesFromTextFile( const std::string& strDestDBFile,
 		                                  std::vector<CBaseEntity *>& vecpBaseEntity );
 
-	bool OutputDatabaseFile( const string& database_filename, std::vector<CBaseEntity *>& vecpBaseEntity );
+	bool OutputDatabaseFile( const std::string& database_filename, std::vector<CBaseEntity *>& vecpBaseEntity );
 
 protected:
 
