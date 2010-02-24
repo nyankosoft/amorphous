@@ -23,7 +23,11 @@ class CNxPhysCloth : public CCloth
 
 public:
 
-	CNxPhysCloth( NxCloth *pCloth ) : m_pCloth(pCloth) {}
+	CNxPhysCloth( NxCloth *pCloth )
+		:
+	m_pCloth(pCloth)
+	{}
+
 //	CNxPhysCloth() : m_pCloth(NULL) {}
 
 	virtual ~CNxPhysCloth() {}
@@ -280,12 +284,16 @@ inline void CNxPhysCloth::SetMeshData( CMeshData& mesh_data )
 	nx_mesh_data.verticesNormalBegin      = mesh_data.pVerticesNormalBegin;
 	nx_mesh_data.verticesNormalByteStride = mesh_data.VerticesNormalByteStride;
 	nx_mesh_data.maxVertices              = mesh_data.NumMaxVertices;
+	nx_mesh_data.numVerticesPtr           = (NxU32 *)mesh_data.pNumVerticesPtr;
 	nx_mesh_data.indicesBegin             = mesh_data.pIndicesBegin;
 	nx_mesh_data.maxIndices               = mesh_data.NumMaxIndices;
+	nx_mesh_data.numIndicesPtr            = (NxU32 *)mesh_data.pNumIndicesPtr;
 	nx_mesh_data.indicesByteStride        = mesh_data.IndicesByteStride;
 //	nx_mesh_data.flags                    = mesh_data.Flags;
 //	nx_mesh_data.dirtyBufferFlagsPtr      = ???
 	// ...
+
+	bool is_valid = nx_mesh_data.isValid();
 
 	m_pCloth->setMeshData( nx_mesh_data );
 }
