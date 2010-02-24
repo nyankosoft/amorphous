@@ -1,4 +1,5 @@
 #include "D3DFixedFunctionPipelineManager.hpp"
+#include "D3DFixedFunctionPipelineLightManager.hpp"
 #include "HLSLShaderLightManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 
@@ -9,6 +10,7 @@ using namespace std;
 
 CD3DFixedFunctionPipelineManager::CD3DFixedFunctionPipelineManager()
 {
+	m_pFFPLightManager.reset( new CD3DFixedFunctionPipelineLightManager );
 }
 
 
@@ -25,38 +27,6 @@ void CD3DFixedFunctionPipelineManager::Release()
 
 void CD3DFixedFunctionPipelineManager::Reload()
 {
-/*	LoadShaderFromFile( m_strFilename );
-
-	// reload techniques
-	for( int i=0; i<NUM_MAX_TECHNIQUES; i++ )
-	{
-		if( 0 < m_astrTechniqueName[i].length() )
-			m_aTechniqueHandle[i] = m_pEffect->GetTechniqueByName( m_astrTechniqueName[i].c_str() );
-	}
-
-	for( size_t i=0; i<m_vecParamHandle.size(); i++ )
-	{
-		m_vecParamHandle[i].Handle
-			= m_pEffect->GetParameterByName( NULL, m_vecParamHandle[i].ParameterName.c_str() );
-	}*/
-}
-
-
-void CD3DFixedFunctionPipelineManager::PrintCompilerErrors( LPD3DXBUFFER pCompileErrors )
-{
-	if( pCompileErrors )
-	{
-		char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
-		g_Log.Print( WL_ERROR, "CD3DFixedFunctionPipelineManager::LoadShaderFromFile() - %s", pBuffer );
-		pCompileErrors->Release();
-	}
-/*
-	if(hr == D3DERR_INVALIDCALL)			return;
-	else if(hr == D3DXERR_INVALIDDATA)		return;
-	else if(hr == E_OUTOFMEMORY)			return;
-	else									return;
-*/
-	return;
 }
 
 
@@ -141,3 +111,8 @@ void CD3DFixedFunctionPipelineManager::SetParam( CShaderParameter< std::vector<f
 */
 }
 
+
+boost::shared_ptr<CShaderLightManager> CD3DFixedFunctionPipelineManager::GetShaderLightManager()
+{
+	return m_pFFPLightManager;
+}

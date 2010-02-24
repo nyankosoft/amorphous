@@ -7,7 +7,7 @@
 #include "D3DShaderManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 
-
+class CD3DFixedFunctionPipelineLightManager;
 
 
 /**
@@ -49,12 +49,10 @@ class CD3DFixedFunctionPipelineManager : public CD3DShaderManager
 	/// If m_VacantTechniqueEntryIndex = NUM_MAX_TECHNIQUES,
 	/// it indicates no vacancy is left
 	int m_VacantTechniqueEntryIndex;
-
-	boost::shared_ptr<CShaderLightManager> m_pLightManager;
 */
-private:
+	boost::shared_ptr<CD3DFixedFunctionPipelineLightManager> m_pFFPLightManager;
 
-	void PrintCompilerErrors( LPD3DXBUFFER pCompileErrors );
+private:
 
 	bool Init();
 
@@ -98,7 +96,7 @@ public:
 
 //	void SetTextureParam()
 
-//	boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
+	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const D3DXMATRIX& matWorld );
 
