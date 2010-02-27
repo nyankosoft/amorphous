@@ -2,7 +2,7 @@
 #define  __LightingAppBase_HPP__
 
 
-#include "App/ApplicationBase.hpp"
+#include "App/GameApplicationBase.hpp"
 #include "Task/StageViewerGameTask.hpp"
 #include "Task/GameTaskFactoryBase.hpp"
 
@@ -66,7 +66,7 @@ public:
 };
 
 
-class CLightingAppBase : public CApplicationBase
+class CLightingAppBase : public CGameApplicationBase
 {
 public:
 

@@ -161,7 +161,7 @@ bool CLightingAppBase::Init()
 
 	BaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
-	bool base_init = CApplicationBase::Init();
+	bool base_init = CGameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
