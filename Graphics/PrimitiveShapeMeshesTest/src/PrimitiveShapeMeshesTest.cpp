@@ -1,8 +1,6 @@
 #include "PrimitiveShapeMeshesTest.hpp"
-#include <gds/3DMath/Matrix34.hpp>
 #include <gds/Graphics.hpp>
 #include <gds/Graphics/AsyncResourceLoader.hpp>
-#include <gds/Graphics/MeshGenerators.hpp>
 #include <gds/Graphics/Shader/ShaderLightManager.hpp>
 #include <gds/Support/Timer.hpp>
 #include <gds/Support/Profile.hpp>
@@ -80,8 +78,10 @@ bool CPrimitiveShapeMeshesTest::InitShader()
 
 int CPrimitiveShapeMeshesTest::Init()
 {
-	m_pFont = shared_ptr<CFontBase>( new CFont( "ÇlÇr ÉSÉVÉbÉN", 6, 12 ) );
-//	m_pFont = shared_ptr<CFontBase>( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
+	shared_ptr<CTextureFont> pTexFont( new CTextureFont() );
+	pTexFont->InitFont( GetBuiltinFontData("BitstreamVeraSansMono-Bold-256") );
+	pTexFont->SetFontSize( 8, 16 );
+	m_pFont = pTexFont;
 
 	m_ConeTexture.Load( "./textures/white.bmp" );
 /*
@@ -131,8 +131,6 @@ void CPrimitiveShapeMeshesTest::Update( float dt )
 
 void CPrimitiveShapeMeshesTest::RenderMeshes()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( !pShaderManager )
 		return;
