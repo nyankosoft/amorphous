@@ -6,7 +6,12 @@
 #include "Physics/Preprocessor.hpp"
 #include "Physics/Scene.hpp"
 #include "Physics/SceneDesc.hpp"
+#include "Physics/MaterialDesc.hpp"
+#include "Physics/Material.hpp"
 #include "Physics/Actor.hpp"
+#include "Physics/BoxShapeDesc.hpp"
+#include "Physics/SphereShapeDesc.hpp"
+#include "Physics/CapsuleShapeDesc.hpp"
 #include "Physics/Cloth.hpp"
 #include "Physics/ClothMeshDesc.hpp"
 

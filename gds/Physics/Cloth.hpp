@@ -157,8 +157,8 @@ public:
 	virtual void SetToFluidResponseCoefficient( Scalar coefficient ) = 0;
 
 	virtual Scalar GetToFluidResponseCoefficient() const = 0;
-
-	virtual void SetExternalAcceleration(Vector3 acceleration ) = 0;
+*/
+	virtual void SetExternalAcceleration( Vector3 acceleration ) = 0;
 
 	virtual Vector3 GetExternalAcceleration() const = 0;
 
@@ -166,10 +166,10 @@ public:
 
 	virtual Scalar GetMinAdhereVelocity() const = 0;
 
-	virtual void SetWindAcceleration(Vector3 acceleration ) = 0;
+	virtual void SetWindAcceleration( Vector3 acceleration ) = 0;
 
 	virtual Vector3 GetWindAcceleration() const = 0;
-
+/*
 	virtual bool isSleeping() const = 0;
 
 	virtual Scalar GetSleepLinearVelocity() const = 0;

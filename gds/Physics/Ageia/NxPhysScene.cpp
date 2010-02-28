@@ -187,7 +187,7 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 //		nx_body_desc.angularDamping       =
 //		nx_body_desc.maxAngularVelocity 
 //		nx_body_desc.CCDMotionThreshold 
-		nx_body_desc.flags                = 0;//ToNxBodyFlags( desc.BodyDesc.Flags );
+		nx_body_desc.flags                = ToNxBodyFlags( desc.BodyDesc.Flags );
 //		nx_body_desc.sleepLinearVelocity 
 //		nx_body_desc.sleepAngularVelocity 
 //		nx_body_desc.solverIterationCount 
@@ -442,5 +442,7 @@ CCloth *CNxPhysScene::CreateCloth( CClothDesc& desc )
 void CNxPhysScene::ReleaseCloth( CCloth*& pCloth )
 {
 	CNxPhysCloth *pNxCloth = dynamic_cast<CNxPhysCloth *>(pCloth);
+	NxMeshData nx_mesh_data;
+	pNxCloth->GetNxCloth()->setMeshData( nx_mesh_data );
 	m_pScene->releaseCloth( *(pNxCloth->GetNxCloth()) );
 }

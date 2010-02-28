@@ -43,10 +43,10 @@ public:
 	virtual CActor &GetActor () const { return *m_pActor; }
 
 	/// Sets which collision group this shape is part of. 
-//	virtual void  SetCollisionGroup ( int group ) = 0;
+	virtual void SetCollisionGroup ( U16 group ) = 0;
 
 	/// Retrieves the value set with setGroup(). 
-//	virtual int GetCollisionGroup() const = 0;
+	virtual U16 GetCollisionGroup() const = 0;
 
 	/// Returns a world space AABB enclosing this shape. 
 //	virtual void  GetWorldAABB ( AABB3 &dest ) const = 0;

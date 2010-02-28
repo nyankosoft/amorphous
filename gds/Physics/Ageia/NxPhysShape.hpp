@@ -28,9 +28,8 @@ public:
 
 	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
-//	virtual void  SetCollisionGroup ( int group ) { m_pBox->setGroup( group ); }
-
-//	virtual int GetCollisionGroup() const { return (int)m_pBox->getGroup(); }
+	void SetCollisionGroup ( U16 group ) { m_pBox->setGroup( group ); }
+	U16 GetCollisionGroup() const { return (U16)m_pBox->getGroup(); }
 
 	/// returns radii of the box
 	virtual Vector3 GetDimensions () const { return ToVector3( m_pBox->getDimensions() ); }
@@ -64,6 +63,9 @@ public:
 
 	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
+	void SetCollisionGroup ( U16 group ) { m_pSphere->setGroup( group ); }
+	U16 GetCollisionGroup() const { return (U16)m_pSphere->getGroup(); }
+
 	virtual Scalar GetRadius () const { return (Scalar)(m_pSphere->getRadius()); }
 
 	virtual void SetRadius( Scalar radius ) { m_pSphere->setRadius( radius ); }
@@ -90,6 +92,9 @@ public:
 	virtual ~CNxPhysCapsuleShape() {}
 
 	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+
+	void SetCollisionGroup ( U16 group ) { m_pCapsule->setGroup( group ); }
+	U16 GetCollisionGroup() const { return (U16)m_pCapsule->getGroup(); }
 
 	virtual Scalar GetRadius () const { return m_pCapsule->getRadius(); }
 	virtual Scalar GetLength () const { return m_pCapsule->getHeight(); }
@@ -124,6 +129,9 @@ public:
 	virtual ~CNxPhysTriangleMeshShape() {}
 
 	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+
+	void SetCollisionGroup ( U16 group ) { m_pTriangleMesh->setGroup( group ); }
+	U16 GetCollisionGroup() const { return (U16)m_pTriangleMesh->getGroup(); }
 
 	NxShape *GetNxShape() const { return m_pTriangleMesh; }
 };

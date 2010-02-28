@@ -146,6 +146,9 @@ public:
 
 	virtual void SetActorGroup( int actor_group ) = 0;
 
+	/// Sets the specified collision group to all the shapes of the actor
+	inline void SetCollisionGroup( U16 collision_group );
+
 	/// indicates if we ever move (change our position - may still have
 	/// a non-zero velocity!)
 
@@ -206,12 +209,19 @@ public:
 };
 
 
-} // namespace physics
-
-
 //================== inline implementations =======================
 
-//#include "Actor.inl"
+inline void CActor::SetCollisionGroup( U16 collision_group )
+{
+	for( size_t i=0; i<m_vecpShape.size(); i++ )
+	{
+		m_vecpShape[i]->SetCollisionGroup( collision_group );
+	}
+}
+
+
+} // namespace physics
+
 
 
 #endif  /*  __PhysActor_H__  */

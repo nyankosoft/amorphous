@@ -167,19 +167,19 @@ public:
 	virtual void SetToFluidResponseCoefficient( Scalar coefficient ) = 0;
 
 	virtual Scalar GetToFluidResponseCoefficient( ) const = 0;
+*/
+	void SetExternalAcceleration(Vector3 acceleration ) { m_pCloth->setExternalAcceleration( ToNxVec3(acceleration) ); }
 
-	virtual void SetExternalAcceleration(Vector3 acceleration ) = 0;
+	Vector3 GetExternalAcceleration() const { return ToVector3(m_pCloth->getExternalAcceleration()); }
 
-	virtual Vector3 GetExternalAcceleration( ) const = 0;
+	void SetMinAdhereVelocity( Scalar velocity ) { m_pCloth->setMinAdhereVelocity( velocity ); }
 
-	virtual void SetMinAdhereVelocity( Scalar velocity ) = 0;
+	Scalar GetMinAdhereVelocity() const { return (Scalar)m_pCloth->getMinAdhereVelocity(); }
 
-	virtual Scalar GetMinAdhereVelocity( ) const = 0;
+	void SetWindAcceleration(Vector3 acceleration ) { m_pCloth->setWindAcceleration( ToNxVec3(acceleration) ); }
 
-	virtual void SetWindAcceleration(Vector3 acceleration ) = 0;
-
-	virtual Vector3 GetWindAcceleration( ) const = 0;
-
+	Vector3 GetWindAcceleration() const { return ToVector3(m_pCloth->getWindAcceleration()); }
+/*
 	virtual bool isSleeping( ) const = 0;
 
 	virtual Scalar GetSleepLinearVelocity( ) const = 0;
