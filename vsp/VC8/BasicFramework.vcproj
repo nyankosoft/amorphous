@@ -657,6 +657,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Mesh\CustomMesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\CustomMesh.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\D3DXMeshModel.cpp"
 					>
 				</File>
@@ -1359,6 +1367,14 @@
 				<Filter
 					Name="Shader"
 					>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.hpp"
+						>
+					</File>
 					<File
 						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.cpp"
 						>
