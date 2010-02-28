@@ -89,7 +89,7 @@ int CPrimitiveShapeMeshesTest::Init()
 	m_DefaultTechnique.SetTechniqueName( "NoShader" );
 */
 
-	CMeshResourceDesc mesh_desc[3];
+	CMeshResourceDesc mesh_desc[4];
 	m_vecMesh.resize( numof(mesh_desc) );
 
 	shared_ptr<CBoxMeshGenerator> pBoxGenerator( new CBoxMeshGenerator() );
@@ -107,14 +107,21 @@ int CPrimitiveShapeMeshesTest::Init()
 	mesh_desc[1].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
 	m_vecMesh[1].Load( mesh_desc[1] );
 
-	CSphereDesc shpere_desc;
-	shared_ptr<CSphereMeshGenerator> pSphereGenerator( new CSphereMeshGenerator(shpere_desc) );
-	mesh_desc[2].pMeshGenerator = pSphereGenerator;
+	CCapsuleDesc capsule_desc;
+	shared_ptr<CCapsuleMeshGenerator> pCapsuleGenerator( new CCapsuleMeshGenerator(capsule_desc) );
+	mesh_desc[2].pMeshGenerator = pCapsuleGenerator;
 	mesh_desc[2].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
-	mesh_desc[2].ResourcePath = "SphereMesh";
+	mesh_desc[2].ResourcePath = "CapsuleMesh";
 	m_vecMesh[2].Load( mesh_desc[2] );
 
-	m_NumPrimitiveMeshes = 2;
+	CSphereDesc shpere_desc;
+	shared_ptr<CSphereMeshGenerator> pSphereGenerator( new CSphereMeshGenerator(shpere_desc) );
+	mesh_desc[3].pMeshGenerator = pSphereGenerator;
+	mesh_desc[3].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
+	mesh_desc[3].ResourcePath = "SphereMesh";
+	m_vecMesh[3].Load( mesh_desc[3] );
+
+	m_NumPrimitiveMeshes = 3;
 
 	InitShader();
 
