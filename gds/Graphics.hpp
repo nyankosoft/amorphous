@@ -10,6 +10,7 @@
 #include "Graphics/Font/FontBase.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/TrueTypeTextureFont.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 
 // mesh
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
