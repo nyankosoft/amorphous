@@ -156,8 +156,44 @@ public:
 
 
 
-extern void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh );
-extern void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh );
+class CCapsuleDesc
+{
+public:
+	float radius;
+	float length;
+	int num_sides;
+	int num_segments; ///< segments of a hemisphere
+
+public:
+
+	CCapsuleDesc()
+		:
+	radius(0.5f),
+	length(2.0f),
+	num_sides(12),
+	num_segments(6)
+	{
+	}
+
+	bool IsValid() const
+	{
+		if( 0.001f < radius
+		 && 0.001f < length - radius * 2.0f
+		 && 2 < num_sides
+		 && 1 < num_segments )
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+};
+
+
+
+extern void CreateConeMesh( const CConeDesc& desc,       CGeneral3DMesh& mesh );
+extern void CreateSphereMesh( const CSphereDesc& desc,   CGeneral3DMesh& mesh );
+extern void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh );
 
 
 inline void CreateConeMeshArchive( const CConeDesc& desc, C3DMeshModelArchive& mesh_archive )

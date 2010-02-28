@@ -272,3 +272,20 @@ Result::Name CSphereMeshGenerator::Generate()
 
 	return Result::UNKNOWN_ERROR;
 }
+
+
+
+Result::Name CCapsuleMeshGenerator::Generate()
+{
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+
+	CreateCapsuleMesh( m_Desc, *pMesh );
+
+	C3DMeshModelBuilder mesh_builder;
+	mesh_builder.BuildMeshModelArchive( pMesh );
+	m_MeshArchive = mesh_builder.GetArchive();
+
+	SetMiscMeshAttributes();
+
+	return Result::SUCCESS;
+}

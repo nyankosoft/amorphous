@@ -167,3 +167,118 @@ void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 	std::vector<CMMA_Material>& material_buffer = mesh.GetMaterialBuffer();
 	material_buffer.resize( 1 );
 }
+
+
+void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
+{
+	if( !desc.IsValid() )
+		return;
+
+	mesh.SetVertexFormatFlags(
+		 CMMA_VertexSet::VF_POSITION
+		|CMMA_VertexSet::VF_NORMAL
+		|CMMA_VertexSet::VF_DIFFUSE_COLOR
+		|CMMA_VertexSet::VF_2D_TEXCOORD0 );
+
+	const int num_segs  = desc.num_segments;
+	const int num_sides = desc.num_sides;
+
+	// vertices
+
+	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
+	vector<CGeneral3DVertex>& vecVertex = *pVertexBuffer;
+
+	const int num_vertices = desc.num_sides * (desc.num_segments * 2) + 2;
+	vecVertex.resize( num_vertices );
+
+//	float z = desc.length * 0.5f;
+//	vecVertex[0].m_vPosition = Vector3( 0.0f, 0.0f,  z );
+//	vecVertex[1].m_vPosition = Vector3( 0.0f, 0.0f, -z );
+
+	float x=0,y=0,z=0;
+	const float radius = desc.radius;
+	float inclination_delta = (float)PI * 0.5f / (float)num_segs;
+	float azimuth_delta = 2.0f * (float)PI / (float)num_sides;
+	for( int n=0; n<2; n++ )
+	{
+		float sign = (n==0) ? 1.0f : -1.0f;
+		int offset = (n==0) ? 0 : 1 + num_segs * num_sides;
+		z = desc.length * 0.5f * sign;
+		vecVertex[offset].m_vPosition = Vector3( 0.0f, 0.0f, z );
+		vecVertex[offset].m_vNormal   = Vector3( 0.0f, 0.0f, sign );
+		Vector3 vCenter = Vector3( 0.0f, 0.0f, z - radius * sign );
+		for( int i=0; i<num_segs; i++ )
+		{
+			const float inclination = inclination_delta * (float)(i+1);
+			z = desc.length * 0.5f - radius + (float)cos( inclination ) * radius;
+			z *= sign;
+			for( int j=0; j<num_sides; j++ )
+			{
+				CGeneral3DVertex& vert = vecVertex[num_sides * i + j + offset + 1];
+
+				float inclination_sin = (float)sin( inclination );
+				x = (float)cos( azimuth_delta * (float)j ) * radius * inclination_sin;
+				y = (float)sin( azimuth_delta * (float)j ) * radius * inclination_sin;
+				vert.m_vPosition = Vector3(x,y,z);
+				vert.m_vNormal   = Vec3GetNormalized( Vector3(x,y,z) - vCenter );
+			}
+		}
+	}
+
+	// polygons
+	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
+
+	int i1=0,i2=0,i3=0;
+	for( int n=0; n<2; n++ )
+	{
+		int offset = (n==0) ? 0 : 1 + num_segs * num_sides;
+
+		i1 = (n==0) ? 1 : 2;
+		i2 = (n==0) ? 2 : 1;
+		// top row - triangles
+		for( int i=0; i<num_sides; i++ )
+		{
+			polygon_buffer.push_back( CIndexedPolygon() );
+			CIndexedPolygon& polygon = polygon_buffer.back();
+			polygon.m_index.resize( 3 );
+			polygon.m_index[0]  = offset;
+			polygon.m_index[i1] = offset + 1 + i;
+			polygon.m_index[i2] = offset + 1 + (i + 1) % num_sides;
+		}
+
+		i1 = (n==0) ? 1 : 3;
+		i3 = (n==0) ? 3 : 1;
+		// the rest of the rows - quads
+		for( int i=0; i<num_segs-1; i++ )
+		{
+			for( int j=0; j<num_sides; j++ )
+			{
+				int start = offset + 1 + i * num_sides;
+				polygon_buffer.push_back( CIndexedPolygon() );
+				CIndexedPolygon& polygon = polygon_buffer.back();
+				polygon.m_index.resize( 4, 0 );
+				polygon.m_index[0]  = start + (j + 1) % num_sides;
+				polygon.m_index[i1] = start + j;
+				polygon.m_index[2]  = start + num_sides + j;
+				polygon.m_index[i3] = start + num_sides + (j + 1) % num_sides;
+			}
+		}
+	}
+
+	// side
+	int offset_0 = num_segs * num_sides + 1 - num_sides;
+	int offset_1 = (num_segs * num_sides + 1) * 2 - num_sides;
+	for( int i=0; i<num_sides; i++ )
+	{
+		polygon_buffer.push_back( CIndexedPolygon() );
+		CIndexedPolygon& polygon = polygon_buffer.back();
+		polygon.m_index.resize( 4 );
+		polygon.m_index[0] = offset_0 + (i + 1) % num_sides;
+		polygon.m_index[1] = offset_0 + i;
+		polygon.m_index[2] = offset_1 + i;
+		polygon.m_index[3] = offset_1 + (i + 1) % num_sides;
+	}
+
+	std::vector<CMMA_Material>& material_buffer = mesh.GetMaterialBuffer();
+	material_buffer.resize( 1 );
+}

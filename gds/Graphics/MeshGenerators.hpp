@@ -152,4 +152,19 @@ public:
 };
 
 
+class CCapsuleMeshGenerator : public CMeshGenerator
+{
+	CCapsuleDesc m_Desc;
+
+public:
+
+	CCapsuleMeshGenerator( CCapsuleDesc& desc )
+		:
+	m_Desc(desc)
+	{}
+
+	Result::Name Generate();
+};
+
+
 #endif  /* __MeshGenerator_H__ */
