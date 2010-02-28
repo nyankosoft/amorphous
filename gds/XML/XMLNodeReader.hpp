@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "Support/StringAux.hpp"
 #include "3DMath/Vector3.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
@@ -113,6 +114,8 @@ public:
 
 	inline std::string GetAttributeText( const std::string& attrib_name );
 
+	inline void GetAttributeValue( const std::string& attrib_name, float& dest );
+
 	inline std::vector<CXMLNodeReader> GetImmediateChildren( const std::string& name );
 
 	inline std::vector<CXMLNodeReader> GetImmediateChildren();
@@ -164,6 +167,19 @@ inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_n
 		return ::GetAttributeText( m_pNode, attrib_name );
 	else
 		return std::string();
+}
+
+
+/// Udpates the values of dest if the attribute with the specified name is found in the node.
+/// If the attribute is not found, or the attribute text is empty, the value of dest is not changed.
+inline void CXMLNodeReader::GetAttributeValue( const std::string& attrib_name, float& dest )
+{
+	if( !m_pNode )
+		return;
+
+	std::string text = ::GetAttributeText( m_pNode, attrib_name );
+	if( 0 < text.length() )
+		dest = to_float( text );
 }
 
 
