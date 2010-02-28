@@ -13,6 +13,7 @@
 #include <gds/Support/ParamLoader.hpp>
 #include <gds/Support.hpp>
 #include <gds/Input.hpp>
+#include <gds/Input/StdMouseInput.hpp>
 #include <gds/XML.hpp>
 #include <gds/App/GameWindowManager_Win32.hpp>
 //#include <gl/gl.h>
@@ -208,6 +209,10 @@ VOID Render()
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
 	g_CameraController.HandleMessage( msg, wParam, lParam );
+
+	static CStdMouseInput s_Mouse;
+
+	s_Mouse.UpdateInput( msg, wParam, lParam );
 
 	switch( msg )
 	{
