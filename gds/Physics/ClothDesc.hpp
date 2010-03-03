@@ -99,9 +99,9 @@ public:
 		Flags = 0;
 	}
 
-	inline virtual void Serialize( IArchive& ar, const unsigned int version )
+	void Serialize( IArchive& ar, const unsigned int version )
 	{
-/*		ar & WorldPose;
+		ar & WorldPose;
 		ar & Thickness;
 		ar & Density;
 		ar & BendingStiffness;
@@ -119,7 +119,14 @@ public:
 		ar & ExternalAcceleration;
 		ar & WindAcceleration;
 		ar & WakeUpCounter;
-		ar & SleepLinearVelocity;*/
+		ar & SleepLinearVelocity;
+//		ar & MeshData;
+//		ar & NxCollisionGroup collisionGroup = 0;
+//		ar & NxGroupsMask GroupsMask = 0;
+		ar & ForceFieldMaterial;
+		ar & ValidBounds;
+		ar & RelativeGridSpacing;
+		ar & Flags;
 	}
 
 	inline bool IsValid() const
