@@ -62,6 +62,20 @@ inline T take_max( const T& a, const T& b )
 }
 
 
+template<typename T>
+inline T take_min( const T& a, const T& b, const T& c )
+{
+	return take_min( take_min( a, b ), c );
+}
+
+
+template<typename T>
+inline T take_max( const T& a, const T& b, const T& c )
+{
+	return take_max( take_max( a, b ), c );
+}
+
+
 
 //
 // function results
