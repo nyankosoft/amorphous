@@ -292,5 +292,19 @@ public:
 };
 
 
+template<class T>
+class CInputDataDelegate : public CInputHandler
+{
+	T *m_pTarget;
+public:
+	CInputDataDelegate(T *pTarget) : m_pTarget(pTarget) {}
+
+	void ProcessInput( SInputData& input )
+	{
+		m_pTarget->HandleInput( input );
+	}
+};
+
+
 
 #endif		/*  __INPUTHANDLER_H__  */

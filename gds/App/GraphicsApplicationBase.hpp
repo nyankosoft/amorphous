@@ -9,21 +9,6 @@
 #include "Support/CameraController.hpp"
 
 
-template<class T>
-class CInputDataDelegate : public CInputHandler
-{
-	T *m_pTarget;
-public:
-	CInputDataDelegate(T *pTarget) : m_pTarget(pTarget) {}
-
-	void ProcessInput( SInputData& input )
-	{
-		m_pTarget->HandleInput( input );
-	}
-};
-
-
-
 /**
  Base class for graphics application
  - This class is for state-less application that uses a window and graphics.
