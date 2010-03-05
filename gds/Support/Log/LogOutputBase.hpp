@@ -4,19 +4,17 @@
 
 #include <vector>
 #include <string>
-
-//#include <stdio.h>
 #include <iostream>
 #include <fstream>
 
 
 enum LogWarningLevel
 {
-	WL_NORMAL,
+	WL_VERBOSE,
 	WL_CAUTION,
 	WL_WARNING,
 	WL_ERROR,
-	WL_CASUAL,	// unimportant
+	WL_INFO,	///< Use this for information that should always be logged
 	NUM_LOGWARNINGLEVELS
 };
 
