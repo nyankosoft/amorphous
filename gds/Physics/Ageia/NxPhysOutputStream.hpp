@@ -52,7 +52,7 @@ class CNxPhysOutputStream : public NxUserOutputStream
 
 	void print (const char *message)
 	{
-		g_Log.Print( WL_NORMAL, "AGEIA PhysX: %s", message );
+		g_Log.Print( WL_INFO, "AGEIA PhysX: %s", message );
 //		printf(ÅgSDK says: %s\nÅh, message);
 //		MessageBox( NULL, "SDK Error", message, MB_OK|MB_ICONWARNING);
 	}
