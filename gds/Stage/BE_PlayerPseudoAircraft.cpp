@@ -1104,7 +1104,9 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	physics::CActor *pPhysicsActor = pCopyEnt->m_vecpPhysicsActor[0];
 
 	pPhysicsActor->SetWorldPose( pseudo_simulator.GetWorldPose() );
-	pPhysicsActor->SetLinearVelocity( pseudo_simulator.GetVelocity() );
+
+	// Commented out - the actor must be (non-kinematic) dynamic to call its SetLinearVelocity()
+//	pPhysicsActor->SetLinearVelocity( pseudo_simulator.GetVelocity() );
 
 	// update camera state - not a physics, but it requires dt
 	// should be placed somewhere else

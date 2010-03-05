@@ -403,8 +403,10 @@ void CBE_HomingMissile::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	if( pPhysicsActor )
 	{
 		pPhysicsActor->SetWorldPose( pCopyEnt->GetWorldPose() );
+
+		// Commented out - the actor must be (non-kinematic) dynamic to call its SetLinearVelocity()
+//		pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 //		pPhysicsActor->SetVelocity( pCopyEnt->Velocity() );
-		pPhysicsActor->SetLinearVelocity( Vector3(0,0,0) );
 	}
 }
 
