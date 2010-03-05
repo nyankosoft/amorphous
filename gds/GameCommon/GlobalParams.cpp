@@ -15,7 +15,7 @@ void CGlobalParams::LoadLogVerbosity( CParamLoader& loader )
 	loader.LoadParam( "log_verbosity", verbosity_title );
 
 	int verbosity = WL_ERROR;
-	if( verbosity_title == "verbose" )      verbosity = WL_NORMAL;
+	if( verbosity_title == "verbose" )      verbosity = WL_VERBOSE;
 	else if( verbosity_title == "caution" ) verbosity = WL_CAUTION;
 	else if( verbosity_title == "warning" ) verbosity = WL_WARNING;
 	else if( verbosity_title == "error" )   verbosity = WL_ERROR;
