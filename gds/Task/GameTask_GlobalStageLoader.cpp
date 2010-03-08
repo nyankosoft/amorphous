@@ -10,6 +10,8 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+using namespace std;
+
 
 std::string CGameTask_GlobalStageLoader::ms_strStageTask = "Stage";
 

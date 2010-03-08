@@ -10,6 +10,8 @@
 #include "GUI.hpp"
 #include <boost/filesystem.hpp>
 
+using namespace std;
+
 
 CSingleStageGameTask::CSingleStageGameTask()
 {

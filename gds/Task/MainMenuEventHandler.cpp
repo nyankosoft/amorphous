@@ -17,6 +17,7 @@
 
 #include "Support/memory_helpers.hpp"
 
+using namespace std;
 
 
 CMainMenuBaseEventHandler::CMainMenuBaseEventHandler()
