@@ -14,9 +14,9 @@ using namespace boost;
 
 inline static bool IsTaskAvailable()
 {
-	if( g_pAppBase
-	 && g_pAppBase->GetTaskManager()
-	 && g_pAppBase->GetTaskManager()->GetCurrentTask() )
+	if( g_pGameAppBase
+	 && g_pGameAppBase->GetTaskManager()
+	 && g_pGameAppBase->GetTaskManager()->GetCurrentTask() )
 		return true;
 	else
 		return false;
@@ -33,7 +33,7 @@ bool RequestTaskTransition( const std::string &task_name, int priority = 0, floa
 	if( !IsTaskAvailable )
 		return false;
 
-	g_pAppBase->GetTaskManager()->GetCurrentTask()->RequestTaskTransition(
+	g_pGameAppBase->GetTaskManager()->GetCurrentTask()->RequestTaskTransition(
 		task_name,
 		priority,
 		delay_in_sec,
