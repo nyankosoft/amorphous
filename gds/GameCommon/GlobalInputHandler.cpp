@@ -76,11 +76,11 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 			image_capture.SetImageSize( screen_width, screen_height );
 			image_capture.EnterCaptureMode();
 
-			if( g_pAppBase
-			 && g_pAppBase->GetTaskManager()
-			 && g_pAppBase->GetTaskManager()->GetCurrentTask() )
+			if( g_pGameAppBase
+			 && g_pGameAppBase->GetTaskManager()
+			 && g_pGameAppBase->GetTaskManager()->GetCurrentTask() )
 			{
-				g_pAppBase->GetTaskManager()->GetCurrentTask()->Render();
+				g_pGameAppBase->GetTaskManager()->GetCurrentTask()->Render();
 			}
 
 			image_capture.ExitCaptureMode();
