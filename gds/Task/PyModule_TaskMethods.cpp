@@ -14,9 +14,9 @@ using namespace std;
 
 inline static bool IsTaskAvailable()
 {
-	if( g_pAppBase
-	 && g_pAppBase->GetTaskManager()
-	 && g_pAppBase->GetTaskManager()->GetCurrentTask() )
+	if( g_pGameAppBase
+	 && g_pGameAppBase->GetTaskManager()
+	 && g_pGameAppBase->GetTaskManager()->GetCurrentTask() )
 		return true;
 	else
 		return false;
@@ -41,7 +41,7 @@ PyObject* RequestTaskTransition( PyObject* self, PyObject* args )
 
 	RETURN_PYNONE_IF_NO_TASK()
 
-	g_pAppBase->GetTaskManager()->GetCurrentTask()->RequestTaskTransition( task_name, priority, delay_in_sec );
+	g_pGameAppBase->GetTaskManager()->GetCurrentTask()->RequestTaskTransition( task_name, priority, delay_in_sec );
 
     Py_INCREF( Py_None );
 	return Py_None;
