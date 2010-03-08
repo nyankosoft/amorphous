@@ -16,20 +16,28 @@ using namespace std;
 using namespace boost;
 
 
+static int sg_CameraControllerInputHandlerIndex = 1;
+static int sg_InputHandlerIndex = 1;
+
+
 CGraphicsApplicationBase::CGraphicsApplicationBase()
 :
 m_UseCameraController(true)
 {
-	int camera_controller_input_handler_index = 3;
-	m_pCameraController.reset( new CCameraController( camera_controller_input_handler_index ) );
+	m_pCameraController.reset( new CCameraController( sg_CameraControllerInputHandlerIndex ) );
 
 	m_pInputHandler.reset( new CInputDataDelegate<CGraphicsApplicationBase>( this ) );
-	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
+
+	if( InputHub().GetInputHandler(sg_InputHandlerIndex) )
+		InputHub().GetInputHandler(sg_InputHandlerIndex)->AddChild( m_pInputHandler.get() );
+	else
+		InputHub().PushInputHandler( sg_InputHandlerIndex, m_pInputHandler.get() );
 }
 
 
 CGraphicsApplicationBase::~CGraphicsApplicationBase()
 {
+	InputHub().RemoveInputHandler( sg_InputHandlerIndex, m_pInputHandler.get() );
 	m_pCameraController.reset();
 }
 

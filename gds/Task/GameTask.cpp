@@ -63,7 +63,7 @@ m_PrevTaskID(CGameTask::ID_INVALID)
 
 CGameTask::~CGameTask()
 {
-	InputHub().PopInputHandler();
+	InputHub().RemoveInputHandler( m_pInputHandler );
 	SafeDelete( m_pInputHandler );
 
 //	SafeDelete( ms_pAnimatedGraphicsManager );
@@ -85,7 +85,8 @@ void CGameTask::ProcessTaskTransitionRequest()
 		StartFadeout();
 
 		// Don't accept input after this point
-		if( InputHub().GetInputHandler() == m_pInputHandler
+		int input_handler_index = 1; // index of the input handlers registered by the framework
+		if( InputHub().GetInputHandler(input_handler_index) == m_pInputHandler
 		 && m_pInputHandler )
 		{
 			m_pInputHandler->SetActive( false );

@@ -1,27 +1,23 @@
 #include "GameTask_MainMenu.hpp"
 #include "GameTask_Stage.hpp"
 #include "App/GameApplicationBase.hpp"
-#include "App/GameWindowManager_Win32.hpp"
-
+#include "App/GameWindowManager.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/GraphicsElementManager.hpp"
-
 #include "GUI.hpp"
-#include "GUI/InputHandler_Dialog.hpp"
 #include "GUI/GM_StdControlRendererManager.hpp"
-//#include "GUI/GM_FlowTextCaption.hpp"
-
 #include "Input/InputHub.hpp"
-
 #include "Stage/Stage.hpp"
-#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
+//#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
 
 //#include "Sound/SoundManager.hpp"
 
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 //#include "Support/Profile.hpp"
+
+using namespace std;
 
 
 #define CONFIG_STATE_RETURN_TO_GAME	0
@@ -49,7 +45,6 @@ CGameTask::eGameTask CGameTask_MainMenu::ms_NextTaskID;
 
 CGameTask_MainMenu::CGameTask_MainMenu()
 {
-	m_pInputHandler = NULL;
 //	m_pFlowCaptionRenderRoutine = NULL;
 	m_pFont = NULL;
 
@@ -59,13 +54,18 @@ CGameTask_MainMenu::CGameTask_MainMenu()
 
 	// set input handler for dialog menu
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogManager );
-	InputHub().SetInputHandler( m_pInputHandler );
+
+	int input_handler_index = 1;
+	if( InputHub().GetInputHandler(input_handler_index) )
+		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler );
+	else
+		InputHub().PushInputHandler( input_handler_index, m_pInputHandler );
 }
 
 
 CGameTask_MainMenu::~CGameTask_MainMenu()
 {
-	InputHub().SetInputHandler( NULL );
+	InputHub().RemoveInputHandler( 1, m_pInputHandler );
 
 	SafeDelete( m_pInputHandler );
 //	SafeDelete( m_pFlowCaptionRenderRoutine );
@@ -539,9 +539,10 @@ void CGameTask_MainMenu::LoadGraphicsResources( const CGraphicsParameters& rPara
 	// Since the screen size change is done from this main menu,
 	// and the dialog manager has been destroyed and re-created
 	// input handler also has to be updated.
+	InputHub().RemoveInputHandler( m_pInputHandler );
 	SafeDelete( m_pInputHandler );
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogManager );
-	InputHub().SetInputHandler( m_pInputHandler );
+	InputHub().PushInputHandler( 1, m_pInputHandler );
 }
 
 

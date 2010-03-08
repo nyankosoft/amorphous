@@ -22,7 +22,11 @@ m_RenderGUI(true)
 
 	// set input handler for dialog menu
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogBoxManager );
-	InputHub().PushInputHandler( m_pInputHandler );
+	int input_handler_index = 1;
+	if( InputHub().GetInputHandler(input_handler_index) )
+		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler );
+	else
+		InputHub().PushInputHandler( input_handler_index, m_pInputHandler );
 }
 
 

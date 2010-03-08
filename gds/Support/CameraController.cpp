@@ -13,16 +13,18 @@ CCameraController::CCameraController( int input_handler_index )
 :
 m_InputHandlerIndex(input_handler_index)
 {
-	m_pInputHandler = shared_ptr<CCameraControllerInputHandler>( new CCameraControllerInputHandler(this) );
+	m_pInputHandler.reset( new CCameraControllerInputHandler(this) );
 
-	InputHub().PushInputHandler( m_InputHandlerIndex, m_pInputHandler.get() );
+	if( InputHub().GetInputHandler(input_handler_index) )
+		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler.get() );
+	else
+		InputHub().PushInputHandler( input_handler_index, m_pInputHandler.get() );
 }
 
 
 CCameraController::~CCameraController()
 {
-//	InputHub().RemoveInputHandler( m_InputHandlerIndex, m_pInputHandler.get() );
-	InputHub().SetInputHandler( m_InputHandlerIndex, NULL );
+	InputHub().RemoveInputHandler( m_InputHandlerIndex, m_pInputHandler.get() );
 }
 
 

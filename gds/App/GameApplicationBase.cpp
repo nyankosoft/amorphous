@@ -33,7 +33,7 @@ using namespace boost;
 
 // ================================ global variables ================================
 
-CGameApplicationBase *g_pAppBase = NULL;
+CGameApplicationBase *g_pGameAppBase = NULL;
 
 CDirectInputMouse *g_pDIMouse = NULL;
 
@@ -101,7 +101,7 @@ void CGameApplicationBase::Release()
 	SafeDelete( m_pDIKeyboard );
 //	SafeDelete( m_pDIGamepad );
 
-	InputHub().PopInputHandler( 3 );
+	InputHub().RemoveInputHandler( 0, m_pGlobalInputHandler );
 	SafeDelete( m_pGlobalInputHandler );
 
 	// release any singleton class that inherits CGraphicsComponent
@@ -265,7 +265,7 @@ bool CGameApplicationBase::InitBase()
 	}
 
 	m_pGlobalInputHandler = new CGlobalInputHandler;
-	InputHub().PushInputHandler( 3, m_pGlobalInputHandler );
+	InputHub().PushInputHandler( 0, m_pGlobalInputHandler );
 
 	CGameTask::AddTaskNameToTaskIDMap( "Stage",             CGameTask::ID_STAGE );
 	CGameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", CGameTask::ID_GLOBALSTAGELOADER );
@@ -455,6 +455,8 @@ inline void SetFreeImageErrorHandler()
 void CGameApplicationBase::Run()
 {
 //	MSGBOX_FUNCTION_SCOPE();
+
+	g_pGameAppBase = dynamic_cast<CGameApplicationBase *>( CApplicationBase::GetInstance() );
 
 	// initialize the XML module here and release at the end of this function
 	CXMLParserInitReleaseManager xml_module;

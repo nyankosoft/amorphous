@@ -23,7 +23,7 @@ extern CDirectInputMouse *g_pDIMouse;		// referenced from CGameTask classes
 extern void MainLoop( CApplicationBase *pApp );
 
 // =============================== variable externs ===============================
-extern CGameApplicationBase *g_pAppBase;
+extern CGameApplicationBase *g_pGameAppBase;
 
 /**
  * base class for 3d game app

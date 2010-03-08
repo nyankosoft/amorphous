@@ -61,8 +61,6 @@ class CGameTask_MainMenu : public CGameTask
 {
 private:
 
-	CInputHandler *m_pInputHandler;
-
 	CGM_DialogManagerSharedPtr m_pDialogManager;
 
 	CGM_ControlRendererManagerSharedPtr m_pUIRenderManager;
