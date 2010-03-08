@@ -116,13 +116,13 @@ const char s_HTMLTemplate[NUM_TEMPLATE_LINES][256] =
 	"</html>"
 };
 
-static const char s_LogTextColor[5][7] =
+static const char *s_LogTextColor[] =
 {
 	"E6E6E6",	// verbose
 	"F8F808",	// caution
 	"FF8F06",	// warning
 	"FF0000",	// error
-	"F8F8F8"	// info
+	"F8F8FF"	// info
 };
 
 
