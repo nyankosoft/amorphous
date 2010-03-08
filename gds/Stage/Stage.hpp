@@ -257,7 +257,7 @@ inline CEntityHandle<T> CStage::CreateEntity( boost::shared_ptr<T> pEntity, CBas
 
 inline void CStage::TerminateEntity( CCopyEntity*& pEntity )
 {
-	LOG_PRINT( " - Terminating an entity: " + pEntity->GetName() );
+	LOG_PRINT_VERBOSE( " - Terminating an entity: " + pEntity->GetName() );
 
 	pEntity->pBaseEntity->OnEntityDestroyed( pEntity );
 

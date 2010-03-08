@@ -783,7 +783,7 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 	pNewCopyEnt->Init( rCopyEntityDesc );
 
-	LOG_PRINT( " - created a copy entity of " + rBaseEntity.GetNameString() );
+	LOG_PRINT_VERBOSE( " - created a copy entity of " + rBaseEntity.GetNameString() );
 
 	return pNewCopyEnt;
 }

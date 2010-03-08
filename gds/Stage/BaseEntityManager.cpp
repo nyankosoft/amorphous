@@ -137,7 +137,7 @@ bool CBaseEntityManager::LoadAllBaseEntitiesFromTextFile( const string& strSrcTe
 		{
 			scanner.ScanLine( tag, classname );
 
-			LOG_PRINT( "loading a base entity: " + classname );
+			LOG_PRINT_VERBOSE( "loading a base entity: " + classname );
 
 			pNewBaseEntity = CreateBaseEntity( classname );
 			if( !pNewBaseEntity )
@@ -195,7 +195,7 @@ CBaseEntity *CBaseEntityManager::LoadBaseEntity( const string& base_entity_name 
 		return NULL;
 	}
 
-	LOG_PRINT( " - loading a base entity '" + base_entity_name + "' from the database: " );
+	LOG_PRINT_VERBOSE( " - loading a base entity '" + base_entity_name + "' from the database: " );
 
 	CBaseEntity *pEntity = NULL;
 	bool res = m_pBaseEntityDatabase->GetPolymorphicData( base_entity_name, pEntity, *m_pBaseEntityFactory );
