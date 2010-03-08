@@ -112,7 +112,7 @@ public:
 
 	bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags );
 
-	void Render() {}
+	void Render();
 
 	void Render( CShaderManager& rShaderMgr ) {}
 

@@ -1,4 +1,5 @@
 #include "CustomMesh.hpp"
+#include "CustomMeshRenderer.hpp"
 #include "gds/Graphics.hpp"
 
 using namespace std;
@@ -114,4 +115,10 @@ bool CCustomMesh::LoadFromFile( const std::string& mesh_archive_filepath )
 	m_strFilename = mesh_archive_filepath;
 
 	return LoadFromArchive( archive );
+}
+
+
+void CCustomMesh::Render()
+{
+	GetCustomMeshRenderer().RenderMesh( *this );
 }
