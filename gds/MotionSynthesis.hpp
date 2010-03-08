@@ -4,3 +4,4 @@
 #include "MotionSynthesis/MotionBlender.hpp"
 #include "MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "MotionSynthesis/MotionDatabaseBuilder.hpp"
+#include "MotionSynthesis/SkeletalMeshTransform.hpp"

@@ -9,6 +9,7 @@ namespace msynth
 // motion primitive and its components
 class CTransformNode;
 class CKeyframe;
+class CBone;
 class CSkeleton;
 class CMotionPrimitive;
 
@@ -33,6 +34,10 @@ class CHumanoidMotionTable;
 class CBlendNode;
 class CMotionPrimitiveNode;
 class CMotionFSM;
+
+// more classes
+class CTransformCacheNode;
+class CTransformCacheTree;
 
 
 } // namespace msynth
