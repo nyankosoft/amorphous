@@ -49,7 +49,11 @@ void CInputHandler_Dialog::ProcessInput(SInputData& input)
 	{
 	case ITYPE_KEY_PRESSED:  gm_input.type = CGM_InputData::TYPE_PRESSED;  break;
 	case ITYPE_KEY_RELEASED: gm_input.type = CGM_InputData::TYPE_RELEASED; break;
-	default: g_Log.Print( WL_ERROR, "%s - invalid input type (input.iType = %d)", __FUNCTION__, input.iType );  break;
+	case ITYPE_VALUE_CHANGED:
+		return;
+	default:
+		LOG_PRINT_ERROR( fmt_string( " An invalid input type (input.iType = %d)", input.iType ) );
+		break;
 	}
 
 	gm_input.fParam = input.fParam1;

@@ -37,6 +37,7 @@ public:
 };
 
 
+/// Returns true if change in analog axis input should be treated as pressing or releasing of a key
 inline bool GPD2KBDInputConverter::GetNewAnalogKeyInput( int analog_key,
 														 float param,
 														 SInputData& dest_input )

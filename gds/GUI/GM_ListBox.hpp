@@ -148,7 +148,7 @@ public:
 
 	virtual bool HasSoundPlayer() const { return ( m_pSoundPlayer.get() != NULL ); }
 
-	enum STYLE
+	enum StyleFlag
 	{
 		MULTISELECTION					= (1 << 0), ///< NOT IMPLEMENTED YET.
 		CLOSE_DIALOG_ON_ITEM_SELECTION	= (1 << 1), ///< close the owner dialog right after an item is selected

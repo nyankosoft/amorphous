@@ -2,6 +2,9 @@
 #include "GM_Aux.hpp"
 
 
+using namespace std;
+
+
 CGM_Dialog *Create2ChoiceDialog( CGM_DialogManager* pDlgMgr, bool root_dialog,
                                  int dlg_id, const string& dlg_title, const SRect& dlg_rect,
                                  int btn1_id, const string& btn1_title, const SRect& btn1_rect,

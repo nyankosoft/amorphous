@@ -139,7 +139,7 @@ CGM_Dialog *CGM_DialogManager::AddDialog( CGM_DialogDesc &rDialogDesc )
 CGM_Dialog *CGM_DialogManager::AddRootDialog( int id,
 										      const SRect& bound_rect,
 										      const std::string& title,
-											  int style_flag,
+											  U32 style_flags,
 										      CGM_ControlRendererSharedPtr pRenderer )
 {
 	CGM_DialogDesc desc;
@@ -147,7 +147,7 @@ CGM_Dialog *CGM_DialogManager::AddRootDialog( int id,
 	desc.bRootDialog = true;
 	desc.ID          = id;
 	desc.strTitle    = title;
-	desc.StyleFlag   = style_flag;
+	desc.StyleFlag   = style_flags;
 	desc.Rect        = bound_rect;
 	desc.pRenderer   = pRenderer;
 
@@ -158,7 +158,7 @@ CGM_Dialog *CGM_DialogManager::AddRootDialog( int id,
 CGM_Dialog *CGM_DialogManager::AddDialog( int id,
 										  const SRect& bound_rect,
 										  const std::string& title,
-										  int style_flag,
+										  U32 style_flags,
 										  CGM_ControlRendererSharedPtr pRenderer )
 {
 	CGM_DialogDesc desc;
@@ -166,7 +166,7 @@ CGM_Dialog *CGM_DialogManager::AddDialog( int id,
 	desc.bRootDialog = false;
 	desc.ID          = id;
 	desc.strTitle    = title;
-	desc.StyleFlag   = style_flag;
+	desc.StyleFlag   = style_flags;
 	desc.Rect        = bound_rect;
 	desc.pRenderer   = pRenderer;
 

@@ -1,13 +1,12 @@
 #ifndef  __GM_DIALOG_H__
 #define  __GM_DIALOG_H__
 
+#include "../base.hpp"
 #include "fwd.hpp"
 #include "GM_Event.hpp"
-#include "GM_GraphicElement.hpp"
+#include "GM_Control.hpp"
 #include "GM_EventHandlerBase.hpp"
-
 #include <vector>
-#include <string>
 
 #include "Graphics/Point.hpp"
 using namespace Graphics;
@@ -21,7 +20,7 @@ class CGM_Dialog : public CGM_ControlBase
 {
 public:
 
-	enum eStyleFlag
+	enum StyleFlag
 	{
 		STYLE_ALWAYS_OPEN        = ( 1 << 0 ), ///< can only be used for root dialogs
 //		STYLE_USE_MOUSE_INPUT    = ( 1 << 1 ),
@@ -29,14 +28,14 @@ public:
 //		STYLE_4                  = ( 1 << 3 ),
 	};
 
-	enum eState
+	enum DialogState
 	{
 		STATE_OPEN,
 		STATE_CLOSED,
 		NUM_STATES
 	};
 	
-	enum eAdjacentDialog
+	enum AdjacentDialog
 	{
 		NEXT_UP,
 		NEXT_DOWN,
@@ -45,7 +44,7 @@ public:
 		NUM_MAX_ADJACENT_DIALOGS
 	};
 
-	enum eParams
+	enum Params
 	{
 		MAX_UI_LAYER_DEPTH = 80
 	};
@@ -134,6 +133,7 @@ protected:
 public:
 
 	CGM_Dialog(	CGM_DialogManager *pDialogManager, CGM_DialogDesc& desc );
+
 	~CGM_Dialog();
 
 	CGM_DialogManager *GetDialogManager() { return m_pDialogManager; }
@@ -162,7 +162,7 @@ public:
 	CGM_RadioButton *AddRadioButton( int id, const SRect& bound_rect, int group, const std::string& title, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 	CGM_SubDialogButton *AddSubDialogButton( int id, const SRect& bound_rect, const std::string& title, CGM_Dialog* pSubDialog = NULL, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 	CGM_DialogCloseButton *AddDialogCloseButton( int id, const SRect& bound_rect, const std::string& title, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
-	CGM_ListBox *AddListBox( int id, const SRect& bound_rect, const std::string& title, int style_flag, int item_text_height, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
+	CGM_ListBox *AddListBox( int id, const SRect& bound_rect, const std::string& title, U32 style_flags, int item_text_height, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 	CGM_Slider *AddSlider( int id, const SRect& bound_rect, int min_val, int max_val, int init_val, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 
 //	CGM_ScrollBar *AddScrollBar( int id, const SRect& bound_rect, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );

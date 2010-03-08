@@ -26,6 +26,9 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+using namespace std;
+
+
 //CGM_Control* CGM_Dialog::m_pDialogManager->ControlFocus()   = NULL;      // The control which has focus
 //CGM_Control* CGM_Dialog::m_pDialogManager->ControlPressed() = NULL;      // The control currently pressed
 
@@ -653,13 +656,13 @@ CGM_DialogCloseButton *CGM_Dialog::AddDialogCloseButton( int id, const SRect& bo
 	return AddControl( &desc );
 }
 
-CGM_ListBox *CGM_Dialog::AddListBox( int id, const SRect& bound_rect, const std::string& title, int style_flag, int item_text_height,
+CGM_ListBox *CGM_Dialog::AddListBox( int id, const SRect& bound_rect, const std::string& title, U32 style_flags, int item_text_height,
 									 CGM_ControlRendererSharedPtr pRenderer )
 {
 	CGM_ListBoxDesc desc;
 	desc.ID          = id;
 	desc.Rect        = bound_rect;
-	desc.Style       = style_flag;
+	desc.Style       = style_flags;
 	desc.nTextHeight = item_text_height;
 	desc.pRenderer   = pRenderer;
 	return AddControl( &desc );
@@ -756,7 +759,7 @@ bool CGM_Dialog::IsOpen() const
 /// instead of calling this function.
 void CGM_Dialog::Open()
 {
-	LOG_PRINT( " (" + m_strTitle + ")" );
+	LOG_PRINT_VERBOSE( " (" + m_strTitle + ")" );
 
 	m_bIsOpen = true;
 
@@ -777,7 +780,7 @@ void CGM_Dialog::Open()
 
 void CGM_Dialog::Close( CGM_SubEvent::Type sub_event )
 {
-	LOG_PRINT( " (" + m_strTitle + ")" );
+	LOG_PRINT_VERBOSE( " (" + m_strTitle + ")" );
 
 	if( !IsOpen() )
 		return; // already closed
@@ -825,7 +828,7 @@ void CGM_Dialog::Close( CGM_SubEvent::Type sub_event )
 // --- NOT PROPERLY IMPLEMENTED ---
 bool CGM_Dialog::OpenNextDialog( unsigned int direction )
 {
-	LOG_PRINT( " (" + m_strTitle + ") direction: " + to_string(direction) );
+	LOG_PRINT_VERBOSE( fmt_string( "(%s) direction: %d", m_strTitle.c_str(), direction ) );
 
 	CGM_Dialog *pNextDialog = m_apNextDialog[direction];
 /*

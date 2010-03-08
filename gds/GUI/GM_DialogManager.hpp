@@ -2,11 +2,9 @@
 #define  __GM_DIALOGMANAGER_H__
 
 
-#include "fwd.hpp"
-#include "GM_CaptionParameters.hpp"
-
+#include "../base.hpp"
+#include "GM_Control.hpp"
 #include <vector>
-#include <string>
 
 
 //===========================================================================
@@ -88,12 +86,13 @@ public:
 
 	CGM_Dialog *AddDialog( CGM_DialogDesc &rDialogDesc );
 
-	/// creates a root dialog
-	CGM_Dialog *AddRootDialog( int id, const SRect& bound_rect, const std::string& title, int style_flag = 0, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
+	/// Creates a root dialog.
+	/// \param [in] style_flags See CGM_Dialog::StyleFlag
+	CGM_Dialog *AddRootDialog( int id, const SRect& bound_rect, const std::string& title, U32 style_flags = 0, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 //	CGM_Dialog *AddRootDialog( const std::string& string_id, const SRect& bound_rect, const std::string& title, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 
 	/// creates a non-root dialog
-	CGM_Dialog *AddDialog( int id, const SRect& bound_rect, const std::string& title, int style_flag = 0, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
+	CGM_Dialog *AddDialog( int id, const SRect& bound_rect, const std::string& title, U32 style_flags = 0, CGM_ControlRendererSharedPtr pRenderer = CGM_ControlRendererSharedPtr() );
 
 	CGM_Dialog *GetDialog( int id );
 
