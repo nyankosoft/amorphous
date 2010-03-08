@@ -665,6 +665,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Mesh\CustomMeshRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\CustomMeshRenderer.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\D3DXMeshModel.cpp"
 					>
 				</File>
@@ -1404,6 +1412,14 @@
 					Name="Mesh"
 					>
 					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObject.cpp"
 						>
 					</File>
@@ -1770,14 +1786,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\GUI\GM_CaptionParameters.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\GUI\GM_CaptionRenderRoutine.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\GUI\GM_Control.cpp"
 				>
 			</File>
@@ -1851,14 +1859,6 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\GUI\GM_EventHandlerBase.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\GUI\GM_GraphicElement.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\GUI\GM_GraphicElement.hpp"
 				>
 			</File>
 			<File
@@ -3523,6 +3523,10 @@
 		<Filter
 			Name="BasicFramework"
 			>
+			<File
+				RelativePath="..\..\gds\App\ApplicationBase.cpp"
+				>
+			</File>
 			<File
 				RelativePath="..\..\gds\App\ApplicationBase.hpp"
 				>
