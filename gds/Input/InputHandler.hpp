@@ -223,11 +223,17 @@ inline bool SInputData::IsGamepadInput() const
 }
 
 
+#include <vector>
+
+
 class CInputHandler
 {
 	bool m_bActive;
 
 	bool m_bAutoRepeat;
+
+	/// borrowed references
+	std::vector<CInputHandler *> m_vecpChild;
 
 public:
 
@@ -247,6 +253,12 @@ public:
 
 	bool IsAutoRepeatEnabled() const { return m_bAutoRepeat; }
 
+	void AddChild( CInputHandler *pInputHandler ) { m_vecpChild.push_back( pInputHandler ); }
+
+	/// Returns true if the input handler is found in the child list and removed.
+	/// NOTE: detach the child and does not release the memory.
+	inline bool RemoveChild( CInputHandler *pInputHandler );
+
 	virtual void ProcessInput(SInputData& input) = 0;
 };
 
@@ -254,8 +266,40 @@ public:
 inline void CInputHandler::ProcessInputBase(SInputData& input)
 {
 	if( m_bActive )
+	{
 		ProcessInput( input );
+
+		for( size_t i=0; i<m_vecpChild.size(); i++ )
+			m_vecpChild[i]->ProcessInputBase( input );
+	}
 }
+
+
+inline bool CInputHandler::RemoveChild( CInputHandler *pInputHandler )
+{
+	for( size_t i=0; i<m_vecpChild.size(); i++ )
+	{
+		if( m_vecpChild[i] == pInputHandler )
+		{
+			m_vecpChild.erase( m_vecpChild.begin() + i );
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+/// Used as a parent of input handlers.
+/// Does not process input for itself.
+class CParentCInputHandler : public CInputHandler
+{
+public:
+
+	void ProcessInput(SInputData& input) {}
+};
+
+
 
 class CInputState
 {

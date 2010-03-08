@@ -9,6 +9,8 @@
 CInputHub CInputHub::ms_InputHub_Instance_;
 
 CInputHub::CInputHub()
+:
+m_CurrentMaxIndex(-1)
 {
 	// all the stacks have NULL at the bottom of the stack
 //	int i, num = NUM_MAX_INPUT_HANDLERS;
