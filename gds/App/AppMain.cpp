@@ -72,7 +72,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 	static CStdKeyboard s_StdKeyboard;
 	static CStdMouseInput s_StdMouse;
 
-	if( g_pAppBase->UseDefaultMouse() )
+	if( CApplicationBase::GetInstance()->UseDefaultMouse() )
 		s_StdMouse.UpdateInput( msg, wParam, lParam );
 
     switch( msg )
@@ -85,18 +85,18 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             if( WA_INACTIVE != wParam )
             {
                 // Make sure the device is acquired, if we are gaining focus.
-				if( g_pAppBase )
-					g_pAppBase->AcquireInputDevices();
+				if( CApplicationBase::GetInstance() )
+					CApplicationBase::GetInstance()->AcquireInputDevices();
             }
             break;
 
 		case WM_KEYDOWN:
-			if( g_pAppBase->UseDefaultKeyboard() )
+			if( CApplicationBase::GetInstance()->UseDefaultKeyboard() )
 				s_StdKeyboard.NotifyKeyDown( (int)wParam );
 			break;
 
 		case WM_KEYUP:
-			if( g_pAppBase->UseDefaultKeyboard() )
+			if( CApplicationBase::GetInstance()->UseDefaultKeyboard() )
 				s_StdKeyboard.NotifyKeyUp( (int)wParam );
 			break;
     }
@@ -108,12 +108,11 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 void StartApp()
 {
 	// Create the instance of application implemented by the user
-	g_pAppBase = CreateApplicationInstance();
+	CApplicationBase::SetInstance( CreateApplicationInstance() );
 
-	g_pAppBase->Run();
+	CApplicationBase::GetInstance()->Run();
 
-	delete g_pAppBase;
-	g_pAppBase = NULL;
+	CApplicationBase::ReleaseInstance();
 }
 
 

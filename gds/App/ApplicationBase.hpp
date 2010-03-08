@@ -10,6 +10,7 @@ class CApplicationBase;
 
 // =============================== function externs ===============================
 extern void MainLoop( CApplicationBase *pApp );
+extern CApplicationBase *CreateApplicationInstance();
 
 // =============================== variable externs ===============================
 //extern CApplicationBase *g_pAppBase;
@@ -38,6 +39,8 @@ private:
 	/// Called by the system in ::MainLoop()
 	virtual void UpdateFrame() {}
 
+	static CApplicationBase *ms_pInstance;
+
 public:
 
 	CApplicationBase()
@@ -61,7 +64,21 @@ public:
 
 	bool UseDefaultMouse() const { return m_UseDefaultMouse; }
 
+	static void SetInstance( CApplicationBase *pApp ) { ms_pInstance = pApp; }
+
+	static CApplicationBase *GetInstance() { return ms_pInstance; }
+
+	static void ReleaseInstance()
+	{
+		if( ms_pInstance )
+		{
+			delete ms_pInstance;
+			ms_pInstance = NULL;
+		}
+	}
+
 	friend void MainLoop( CApplicationBase *pApp );
+	friend CApplicationBase *CreateApplicationInstance();
 };
 
 
