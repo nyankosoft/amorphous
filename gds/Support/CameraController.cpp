@@ -22,6 +22,17 @@ m_InputHandlerIndex(input_handler_index)
 }
 
 
+CCameraController::CCameraController( CInputHandler *pParentInputHandler )
+{
+	m_pInputHandler.reset( new CCameraControllerInputHandler(this) );
+
+	if( !pParentInputHandler )
+		return;
+
+	pParentInputHandler->AddChild( m_pInputHandler.get() );
+}
+
+
 CCameraController::~CCameraController()
 {
 	InputHub().RemoveInputHandler( m_InputHandlerIndex, m_pInputHandler.get() );

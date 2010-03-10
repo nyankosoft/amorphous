@@ -20,6 +20,8 @@ public:
 
 	CCameraController( int input_handler_index );
 
+	CCameraController( CInputHandler *pParentInputHandler );
+
 	~CCameraController();
 
 	bool IsKeyPressed( int general_input_code );
