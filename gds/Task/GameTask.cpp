@@ -23,12 +23,19 @@ public:
 
 
 CAnimatedGraphicsManager *CGameTask::ms_pAnimatedGraphicsManager = NULL;
- 
+
 std::map<std::string,int> CGameTask::ms_TaskNameStringToTaskID;
 
 int CGameTask::ms_FadeinTimeForNextTaskMS = -1;
 
 
+/**
+Creates an input handler that delegates input data to CGameTask::HandleInput(),
+which can be overriden by derived classes.
+The input handler is pushed to the input handler stack of the index
+returned by CGameTask::GetInputHandlerIndex(), which, by default, returns
+CInputHub::MIN_USER_INPUT_HANDLER_INDEX, and can be overriden by derived classes.
+*/
 CGameTask::CGameTask()
 :
 m_RequestedNextTaskID(ID_INVALID),
@@ -58,6 +65,10 @@ m_PrevTaskID(CGameTask::ID_INVALID)
 	}
 	else
 		m_FadeinTimeMS = m_DefaultFadeinTimeMS;
+
+	// Push an input handler on the stack.
+	m_pInputHandler = new CInputDataDelegate<CGameTask>(this);
+	InputHub().PushInputHandler( GetInputHandlerIndex(), m_pInputHandler );
 }
 
 
@@ -222,7 +233,7 @@ int CGameTask::FrameMove( float dt )
 			int x,y;
 			g_pDIMouse->GetCurrentPosition( x, y );
 			float scale = (float)GetScreenWidth() / (float)REFERENCE_SCREEN_WIDTH;
-			m_pMouseCursorElement->SetLocalTopLeftPos( Vector2(x,y) * scale );
+			m_pMouseCursorElement->SetLocalTopLeftPos( Vector2((float)x,(float)y) * scale );
 		}
 	}
 
@@ -249,6 +260,12 @@ int CGameTask::FrameMove( float dt )
 	}
 
 	return ID_INVALID;
+}
+
+
+int CGameTask::GetInputHandlerIndex() const
+{
+	return CInputHub::MIN_USER_INPUT_HANDLER_INDEX;
 }
 
 

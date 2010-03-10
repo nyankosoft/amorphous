@@ -113,6 +113,10 @@ public:
 
 	inline virtual void Render();
 
+	virtual void HandleInput( const SInputData& input ) {}
+
+	virtual int GetInputHandlerIndex() const;
+
 	/// called from game task manager.
 	/// calls Render() of derived class
 	void RenderBase();

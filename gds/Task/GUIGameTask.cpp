@@ -21,17 +21,16 @@ m_RenderGUI(true)
     m_pDialogBoxManager	= CGM_DialogManagerSharedPtr( new CGM_DialogManager() );
 
 	// set input handler for dialog menu
-	m_pInputHandler = new CInputHandler_Dialog( m_pDialogBoxManager );
-	int input_handler_index = 1;
-	if( InputHub().GetInputHandler(input_handler_index) )
-		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler );
-	else
-		InputHub().PushInputHandler( input_handler_index, m_pInputHandler );
+	m_pGUIInputHandler.reset( new CInputHandler_Dialog( m_pDialogBoxManager ) );
+	m_pInputHandler->AddChild( m_pGUIInputHandler.get() );
 }
 
 
 CGUIGameTask::~CGUIGameTask()
 {
+	// Remove the borrowed reference of the GUI input handler
+	// from the list of child input handlers of m_pInputHandler
+	InputHub().RemoveInputHandler( m_pGUIInputHandler.get() );
 }
 
 

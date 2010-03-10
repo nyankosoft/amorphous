@@ -14,6 +14,8 @@ class CGUIGameTask : public CGameTask
 	/// default GUI conponents renderer, 'CFG_StdControlRendererManager' is set in ctor
 	CGM_ControlRendererManagerSharedPtr m_pUIRendererManager;
 
+	boost::shared_ptr<CInputHandler_Dialog> m_pGUIInputHandler;
+
 	bool m_RenderGUI;
 
 protected:

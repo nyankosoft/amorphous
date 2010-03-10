@@ -22,8 +22,8 @@ CStageViewerGameTask::CStageViewerGameTask()
 :
 m_EnableCameraController(true)
 {
-	const int input_handler_index = 1;
-	m_pCameraController = shared_ptr<CCameraController>( new CCameraController( input_handler_index ) );
+	// An input handler for camera control is added as a child of m_pInputHandler.
+	m_pCameraController = shared_ptr<CCameraController>( new CCameraController( m_pInputHandler ) );
 }
 
 
