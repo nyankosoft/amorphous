@@ -1348,6 +1348,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\GameCommon\ClothSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\GameCommon\ClothSystem.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\GameCommon\CombatRecord.hpp"
 					>
 				</File>
@@ -2176,6 +2184,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\MotionSynthesis\SkeletalMeshTransform.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\MotionSynthesis\SkeletalMeshTransform.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\MotionSynthesis\Skeleton.cpp"
 					>
 				</File>
@@ -2189,6 +2205,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\MotionSynthesis\SkeletonRenderer.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\MotionSynthesis\TransformCacheTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\MotionSynthesis\TransformCacheTree.hpp"
 					>
 				</File>
 				<File
