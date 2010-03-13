@@ -613,7 +613,7 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 		return Result::INVALID_ARGS;
 
 	const int max_shader_lod = 16;
-	if( lod < 0 || 16 <= max_shader_lod )
+	if( lod < 0 || max_shader_lod <= lod )
 		return Result::INVALID_ARGS;
 
 	if( pos != string::npos )
