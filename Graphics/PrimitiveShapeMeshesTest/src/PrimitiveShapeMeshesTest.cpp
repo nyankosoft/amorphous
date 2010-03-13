@@ -115,13 +115,14 @@ int CPrimitiveShapeMeshesTest::Init()
 	m_vecMesh[2].Load( mesh_desc[2] );
 
 	CSphereDesc shpere_desc;
+//	shpere_desc.poly_dir = MeshPolygonDirection::INWARD;
 	shared_ptr<CSphereMeshGenerator> pSphereGenerator( new CSphereMeshGenerator(shpere_desc) );
 	mesh_desc[3].pMeshGenerator = pSphereGenerator;
 	mesh_desc[3].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
 	mesh_desc[3].ResourcePath = "SphereMesh";
 	m_vecMesh[3].Load( mesh_desc[3] );
 
-	m_NumPrimitiveMeshes = 3;
+	m_NumPrimitiveMeshes = 4;
 
 	InitShader();
 
