@@ -1,10 +1,8 @@
 #ifndef __BE_Skybox_H__
 #define __BE_Skybox_H__
 
-#include "BaseEntity.hpp"
 
-#include <vector>
-#include <string>
+#include "BaseEntity.hpp"
 
 
 class CBE_Skybox : public CBaseEntity

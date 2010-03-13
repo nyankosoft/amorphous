@@ -1,13 +1,13 @@
 #include "BE_Skybox.hpp"
 #include "BaseEntity_Draw.hpp"
 
-#include "GameMessage.hpp"
+//#include "GameMessage.hpp"
+//#include "trace.hpp"
 #include "CopyEntity.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
-#include "Support/memory_helpers.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
@@ -46,12 +46,7 @@ void CBE_Skybox::Init()
 
 void CBE_Skybox::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-//	pCopyEnt->iExtraDataIndex = (int)m_vecpStaticGeometry.size();//GetNewExtraDataID();
-
-//	m_vecpStaticGeometry.push_back( (CStaticGeometryBase *)(pCopyEnt->pUserData) );
-
 	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
-
 }
 
 
@@ -69,18 +64,8 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 		return;
 	}
 
-	LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
-	if( !pMesh )
-		return;
-
-	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	CShaderManager *pShaderManager = NULL;
-	LPD3DXEFFECT pEffect = NULL;
-
 	// set the world transform
-	D3DXMATRIX matWorld;
-	D3DXMatrixScaling( &matWorld, 10.0f, 10.0f, 10.0f );
+	Matrix44 world( Matrix44Scaling( 10.0f, 10.0f, 10.0f ) );
 
 	Vector3 vPos;
 	CCamera* pCamera = m_pStage->GetCurrentCamera();
@@ -89,22 +74,46 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	else
 		vPos = Vector3(0,0,0);
 
-	matWorld._41 = vPos.x;
-	matWorld._42 = vPos.y;
-	matWorld._43 = vPos.z;
-	matWorld._44 = 1;
+	world(0,3) = vPos.x;
+	world(1,3) = vPos.y;
+	world(2,3) = vPos.z;
+	world(3,3) = 1;
 
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
+	FixedFunctionPipelineManager().SetWorldTransform( world );
 
 
 	pMeshObject->SetVertexDeclaration();
 
-    int i, dwNumMaterials = pMeshObject->GetNumMaterials();
+	int num_materials = pMeshObject->GetNumMaterials();
 
 	bool shift_camera_height = true;
 
-	if( (pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager()) &&
-		(pEffect = pShaderManager->GetEffect()) )
+//	CShaderParameter<float> cam_height_param( "g_CameraHeight" );
+
+	// Disable depth-test and writing to depth buffer.
+	// These 2 settings and restored after rendering skybox because they are changed only when necessary.
+	// This is not required if you are using HLSL effect of Direct3D, and the technique to render
+	// the skybox defines the same render states.
+	// If you are using OpenGL, you have to do this whether you are using GLSL or not?
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
+
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+
+	// save the original texture and temporarily overwrite it with the sky texture
+	CTextureHandle orig_tex;
+	if( 0 < num_materials )
+	{
+		if( pMeshObject->Material(0).Texture.empty() )
+			pMeshObject->Material(0).Texture.resize( 1 );
+
+		orig_tex = pMeshObject->Material(0).Texture[0];
+		pMeshObject->Material(0).Texture[0] = m_SkyboxTexture;
+	}
+
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	if( pShaderManager )
+//	 && pShaderManager->IsValid() ) // check if pEffect is present?
 	{
 		if( shift_camera_height )
 		{
@@ -115,60 +124,36 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 			else
 				fCamHeight = 5.0f;
 
-			pEffect->SetFloat( "g_CameraHeight", fCamHeight );
+			pShaderManager->GetEffect()->SetFloat( "g_CameraHeight", fCamHeight );
 //			pEffect->SetFloat( "g_TexVShiftFactor", 0.000005f );
+
+//			cam_height_param.Parameter() = fCamHeight;
+//			pShaderManager->SetParam( cam_height_param );
 		}
 
 		// render the skybox mesh with an HLSL shader
 
-		Matrix44 world;
-		world.SetRowMajorMatrix44( matWorld );
 		pShaderManager->SetWorldTransform( world );
 
-		hr = pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );
+		Result::Name res = pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );
 
 		// Meshes are divided into subsets by materials. Render each subset in a loop
-		for( i=0; i<dwNumMaterials; i++ )
-		{
-			hr = pShaderManager->SetTexture( 0, m_SkyboxTexture );
-
-			pEffect->CommitChanges();
-
-			UINT p, cPasses;
-			pEffect->Begin( &cPasses, 0 );
-			for( p = 0; p < cPasses; ++p )
-			{
-				pEffect->BeginPass( p );
-
-				// Draw the mesh subset
-				pMesh->DrawSubset( i );
-
-				pEffect->EndPass();
-			}
-			pEffect->End();
-		}
+		pMeshObject->Render( *pShaderManager );
 	}
 	else
 	{
-		pd3dDev->SetVertexShader( NULL );
-		pd3dDev->SetRenderState( D3DRS_ZENABLE, FALSE );
-		pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
-
-		// Meshes are divided into subsets by materials. Render each subset in a loop
-		for( i=0; i<dwNumMaterials; i++ )
-		{
-			// Set the material and texture for this subset
-	//		pd3dDev->SetMaterial( &pMeshObject->GetMaterial(i) );
-
-			pd3dDev->SetTexture( 0, pMeshObject->GetTexture(i,0).GetTexture() );
-
-			// Draw the mesh subset
-			pMesh->DrawSubset( i );
-		}
-
-		pd3dDev->SetRenderState( D3DRS_ZENABLE, TRUE );
-		pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
+		pMeshObject->Render();
 	}
+
+	if( 0 < num_materials
+	 && 0 < pMeshObject->Material(0).Texture.size() )
+	{
+		// restore the original texture
+		pMeshObject->Material(0).Texture[0] = orig_tex;
+	}
+
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
 
 /*
