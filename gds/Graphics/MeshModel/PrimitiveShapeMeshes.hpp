@@ -43,6 +43,18 @@ public:
 };
 
 
+class MeshPolygonDirection
+{
+public:
+	enum Type
+	{
+		INWARD,
+		OUTWARD,
+		NUM_TYPES
+	};
+};
+
+
 class CConeDesc
 {
 public:
@@ -124,16 +136,20 @@ public:
 class CSphereDesc
 {
 public:
+	MeshPolygonDirection::Type poly_dir;
 	float radii[3]; ///< array of radii
 	int num_sides;
 	int num_segments;
+	int axis;
 
 public:
 
 	CSphereDesc()
 		:
-	num_sides(6),
-	num_segments(12)
+	poly_dir(MeshPolygonDirection::OUTWARD),
+	num_sides(12),
+	num_segments(8),
+	axis(2)
 	{
 		for( int i = 0; i<3; i++ )
 			radii[i] = 0.5f;

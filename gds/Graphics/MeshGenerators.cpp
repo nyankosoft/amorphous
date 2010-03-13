@@ -270,7 +270,7 @@ Result::Name CSphereMeshGenerator::Generate()
 
 	SetMiscMeshAttributes();
 
-	return Result::UNKNOWN_ERROR;
+	return Result::SUCCESS;
 }
 
 

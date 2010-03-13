@@ -133,10 +133,24 @@ void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
 }
 
 
+static void RotateVertices( vector<CGeneral3DVertex>& vecVertex, Matrix33 matRotation )
+{
+	const int num_vertices = (int)vecVertex.size();
+	for( int i=0; i<num_vertices; i++ )
+	{
+		vecVertex[i].m_vPosition = matRotation * vecVertex[i].m_vPosition;
+		vecVertex[i].m_vNormal   = matRotation * vecVertex[i].m_vNormal;
+	}
+}
+
+
 void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 {
 	if( !desc.IsValid() )
 		return;
+
+	const int num_segs  = desc.num_segments;
+	const int num_sides = desc.num_sides;
 
 	mesh.SetVertexFormatFlags(
 		 CMMA_VertexSet::VF_POSITION
@@ -149,21 +163,117 @@ void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
 	vector<CGeneral3DVertex>& vecVertex = *pVertexBuffer;
 
-	const int num_vertices = desc.num_sides * (desc.num_segments - 1) + 2;
+	const int num_vertices = num_sides * (num_segs - 1) + 2;
 	vecVertex.resize( num_vertices );
 
-	float y = desc.radii[1];
-	vecVertex[0].m_vPosition = Vector3( 0.0f,  y, 0.0f );
-	vecVertex[1].m_vPosition = Vector3( 0.0f, -y, 0.0f );
-/*
-	for( int i=0; i<desc.num_sides; i++ )
+	vecVertex[0].m_vPosition     = Vector3( 0, 0,  1 );
+	vecVertex[0].m_vNormal       = Vector3( 0, 0,  1 );
+	vecVertex.back().m_vPosition = Vector3( 0, 0, -1 );
+	vecVertex.back().m_vNormal   = Vector3( 0, 0, -1 );
+
+	int vert_index = 1;
+	float seg_delta = (float)PI / (float)num_segs;
+	float side_delta = 2.0f * (float)PI / (float)num_sides;
+	for( int i=0; i<num_segs-1; i++ )
 	{
-		for( int j=0; j<desc.num_segments; j++ )
+		for( int j=0; j<num_sides; j++ )
 		{
-			vecVertex[??? + 1].m_vPosition = ???
+			Vector3 vDir
+				= Matrix33RotationZ( side_delta * (float)j )
+				* Matrix33RotationY( seg_delta * (float)(i+1) )
+				* Vector3(0,0,1);
+
+			vecVertex[vert_index].m_vPosition = vDir;
+
+			vecVertex[vert_index].m_vNormal = vDir;
+
+			vert_index += 1;
 		}
 	}
-*/
+
+	// simple tex coords for Nx1 gradation texture used with skysphere
+	if( mesh.GetVertexFormatFlags() & CMMA_VertexSet::VF_2D_TEXCOORD0 )
+	{
+		for( int i=0; i<num_vertices; i++ )
+		{
+			vecVertex[i].m_TextureCoord.resize( 1 );
+			TEXCOORD2& tex = vecVertex[i].m_TextureCoord[0];
+			tex.u = 0;
+			tex.v = ( vecVertex[i].m_vPosition.z + 1.0f ) * 0.5f;
+			tex.v = tex.v * (1.0f - 0.001f * 2.0f) + 0.001f;
+		}
+	}
+
+	if( desc.poly_dir == MeshPolygonDirection::INWARD )
+	{
+		for( int i=0; i<num_vertices; i++ )
+			vecVertex[i].m_vNormal *= (-1.0f);
+	}
+
+	switch( desc.axis )
+	{
+	case 0:
+		RotateVertices( vecVertex, Matrix33RotationY((float)PI * 0.5f) );
+		break;
+	case 1:
+		RotateVertices( vecVertex, Matrix33RotationX((float)PI * 0.5f) );
+		break;
+	case 2:
+	default:
+		break;
+	}
+
+	for( int i=0; i<num_vertices; i++ )
+	{
+		Vector3& vPos = vecVertex[i].m_vPosition;
+		vPos.x *= desc.radii[0];
+		vPos.y *= desc.radii[1];
+		vPos.z *= desc.radii[2];
+	}
+
+	// polygons
+	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
+	polygon_buffer.resize( num_sides * num_segs );
+	int poly_index = 0;
+
+	// top/bottom row - triangles
+	for( int i=0; i<2; i++ )
+	{
+		int center_vert_index = (i==0) ? 0 : num_vertices-1;//1 + num_sides * (num_segs-1);
+		int vert_index_offset = (i==0) ? 1 : 1 + num_sides * (num_segs-2);
+		int poly_index_offset = (i==0) ? 0 : num_sides * (num_segs-1);
+		int i1=i+1,i2=2-i;
+		for( int j=0; j<num_sides; j++ )
+		{
+			CIndexedPolygon& poly = polygon_buffer[poly_index_offset+j];
+			poly.m_index.resize( 3 );
+			poly.m_index[0]  = center_vert_index;
+			poly.m_index[i1] = vert_index_offset + j;
+			poly.m_index[i2] = vert_index_offset + (j+1) % num_sides;
+		}
+	}
+
+	int mid_pols_index_offset = num_sides;
+	for( int i=0; i<num_segs-2; i++ )
+	{
+		int index_offset_u = 1 + num_sides * i;
+		int index_offset_l = 1 + num_sides * (i+1);
+		for( int j=0; j<num_sides; j++ )
+		{
+			CIndexedPolygon& poly = polygon_buffer[mid_pols_index_offset + i*num_sides + j];
+			poly.m_index.resize( 4 );
+			poly.m_index[0] = index_offset_u + (j+1) % num_sides;
+			poly.m_index[1] = index_offset_u + j;
+			poly.m_index[2] = index_offset_l + j;
+			poly.m_index[3] = index_offset_l + (j+1) % num_sides;
+		}
+	}
+
+	if( desc.poly_dir == MeshPolygonDirection::INWARD )
+	{
+		mesh.FlipPolygons();
+	}
+
 	std::vector<CMMA_Material>& material_buffer = mesh.GetMaterialBuffer();
 	material_buffer.resize( 1 );
 }

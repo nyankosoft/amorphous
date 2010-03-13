@@ -21,7 +21,7 @@ class CIndexedPolygon : public IArchiveObjectBase
 	/// - Usually shared by polygons that belongs to the same polygon buffer
 	/// - When GetVertex() is called, the object will internally
 	///   access this buffer and return the reference to the vertex
-	boost::shared_ptr<std::vector<CGeneral3DVertex>> m_pVertexBuffer;
+	boost::shared_ptr< std::vector<CGeneral3DVertex> > m_pVertexBuffer;
 
 	SPlane m_Plane;
 
@@ -91,6 +91,8 @@ public:
 
 	/// Returns true if the line segment hits the polygon
 	inline bool ClipLineSegment( const CLineSegment& line_segment, CLineSegmentHit& results ) const;
+
+	inline void Flip();
 
 	/// Added to use CIndexedPolygon with CAABTree
 	/// - Not added for actual use
@@ -412,6 +414,23 @@ inline bool CIndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, 
 	}
 
 	return false;
+}
+
+
+inline void CIndexedPolygon::Flip()
+{
+	if( m_index.size() <= 1 )
+		return;
+
+	const size_t num_to_flip = m_index.size() / 2;
+	for( size_t i=0; i<num_to_flip; i++ )
+	{
+		int temp_index = m_index[i];
+		m_index[i] = m_index[m_index.size()-i-1];
+		m_index[m_index.size()-i-1] = temp_index;
+	}
+
+	m_Plane.Flip();
 }
 
 

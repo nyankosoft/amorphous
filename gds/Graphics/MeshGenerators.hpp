@@ -8,17 +8,6 @@
 using namespace MeshModel;
 
 
-class MeshPolygonDirection
-{
-public:
-	enum Type
-	{
-		INWARD,
-		OUTWARD,
-		NUM_TYPES
-	};
-};
-
 class TexCoordStyle
 {
 public:

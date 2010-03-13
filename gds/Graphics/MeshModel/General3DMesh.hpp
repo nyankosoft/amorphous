@@ -106,6 +106,8 @@ public:
 		                             std::vector<int>& vecIndex,
 		                             std::vector<int>& vecMaterialIndex );
 
+	inline void FlipPolygons();
+
 //	void Append( CGeneral3DMesh& mesh );
 
 	friend class C3DModelLoader;
@@ -174,6 +176,16 @@ inline void CGeneral3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex
 		vecIndex[i*3+2] = triangle.m_index[2];
 
 		vecMaterialIndex[i] = triangle.m_MaterialIndex;
+	}
+}
+
+
+inline void CGeneral3DMesh::FlipPolygons()
+{
+	const size_t num_polygons = m_vecPolygon.size();
+	for( size_t i=0; i<num_polygons; i++ )
+	{
+		m_vecPolygon[i].Flip();
 	}
 }
 
