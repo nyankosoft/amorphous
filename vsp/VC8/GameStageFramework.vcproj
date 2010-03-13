@@ -568,10 +568,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\StageLog.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Stage\StageUtility.cpp"
 					>
 				</File>
