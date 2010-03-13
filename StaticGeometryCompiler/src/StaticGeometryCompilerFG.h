@@ -51,7 +51,7 @@ class CStaticGeometryCompilerFG
 
 	/// saved to binary database separately from 'm_Archive'
 	/// - key: "mesh0", "mesh1", ...
-	vector<C3DMeshModelArchive> m_vecMeshArchive;
+	std::vector<C3DMeshModelArchive> m_vecMeshArchive;
 
 	/// added to output db
 	/// - key: "CollisionMesh"
@@ -82,7 +82,7 @@ private:
 	void CreateCollisionMesh();
 
 	/// creates a mesh archive from the layers with a given name
-	bool CreateMeshArchive( const string& target_layer_name,
+	bool CreateMeshArchive( const std::string& target_layer_name,
 		                    C3DMeshModelArchive& dest_mesh );
 
 	/// special static geometry for terrain

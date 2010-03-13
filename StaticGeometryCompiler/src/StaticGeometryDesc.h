@@ -147,7 +147,7 @@ public:
 	CGeometryFilter m_CollisionGeometryFilter;
 	CGeometryFilter m_GraphcisGeometryFilter;
 
-	vector<CGeometrySurfaceDesc> m_vecSurfaceDesc;
+	std::vector<CGeometrySurfaceDesc> m_vecSurfaceDesc;
 
 	std::map<std::string,std::string> m_SurfaceToDesc;
 

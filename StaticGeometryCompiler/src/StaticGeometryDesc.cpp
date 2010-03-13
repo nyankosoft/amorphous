@@ -6,6 +6,7 @@
 
 //#include <dae.h>
 
+using namespace std;
 using namespace boost;
 
 /*
