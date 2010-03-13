@@ -163,7 +163,7 @@ class CLightmapLightingManager
 
 private:
 
-	std::vector<CLightRaytrace *> CreateLightRaytraceTasks( vector<boost::shared_ptr<CLight>> *pvecpLight );
+	std::vector<CLightRaytrace *> CreateLightRaytraceTasks( std::vector<boost::shared_ptr<CLight>> *pvecpLight );
 
 public:
 
@@ -239,7 +239,7 @@ inline void CPointLightRaytrace::CalcLightAmount( CLightmap& rLightmap, int x, i
 	aabb.AddPoint( line_segment.vStart );
 	aabb.AddPoint( line_segment.vGoal );
 
-	vector<int> vecPolygonsToCheck;
+	std::vector<int> vecPolygonsToCheck;
 
 //	m_pGeometry->GetIntersectingAABBs( aabb, vecPolygonsToCheck );
 

@@ -82,13 +82,13 @@ public:
 
 //	void SetLightmapTextureIndexToFaces( int index, vector<CLightmap>& rvecLightmap/*, vector<CMapFace>& rvecFace*/ );
 
-	void SetTextureUV( vector<CLightmap>& rvecLightmap, int tex_coord_index );
+	void SetTextureUV( std::vector<CLightmap>& rvecLightmap, int tex_coord_index );
 
 	void UpdateTexture();
 
 	void UpdateMaterials(
-		 vector<CMMA_Material>& src_material_buffer,
-		 vector<CMMA_Material>& new_material_buffer,
+		 std::vector<CMMA_Material>& src_material_buffer,
+		 std::vector<CMMA_Material>& new_material_buffer,
 		 int texture_archive_index,
 		 const std::string& db_filepath
 	);
