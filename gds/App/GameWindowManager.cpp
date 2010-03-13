@@ -13,6 +13,7 @@
 #include "Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
+#include "Graphics/Direct3D/Mesh/D3DCustomMeshRenderer.hpp"
 
 // OpenGL
 #include "Graphics/OpenGL/2DPrimitive/2DPrimitiveRenderer_GL.hpp"
@@ -36,6 +37,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CD3DMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
+		CCustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
 	}
 	else if( graphics_library_name == "OpenGL" )
 	{
@@ -45,6 +47,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CGLMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
+//		CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
 	}
 	else
 	{
