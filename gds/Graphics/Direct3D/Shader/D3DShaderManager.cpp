@@ -238,6 +238,24 @@ bool CHLSLShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 }
 
 
+void CHLSLShaderManager::SetParam( CShaderParameter<int>& int_param )
+{
+	LOG_PRINT_ERROR( " - Not implemented." );
+}
+
+
+void CHLSLShaderManager::SetParam( CShaderParameter<float>& float_param )
+{
+	LOG_PRINT_ERROR( " - Not implemented." );
+}
+
+
+void CHLSLShaderManager::SetParam( CShaderParameter<Vector3>& float_param )
+{
+	LOG_PRINT_ERROR( " - Not implemented." );
+}
+
+
 void CHLSLShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
 {
 //	int index = float_param.m_ParameterIndex;
@@ -273,6 +291,33 @@ void CHLSLShaderManager::SetParam( CShaderParameter< std::vector<float> >& float
 	HRESULT hr;
 	if( 0 <= index && index < (int)m_vecParamHandle.size() )
 		hr = m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, &(float_param.GetParameter()[0]), (UINT)float_param.GetParameter().size() );
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, int int_param )
+{
+	m_pEffect->SetInt( parameter_name, int_param );
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, float float_param )
+{
+	m_pEffect->SetFloat( parameter_name, float_param );
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector3& vec3_param )
+{
+	LOG_PRINT_ERROR( " - Not implemented." );
+//	ID3DXEffect::SetVector() only takes D3DXVECTOR4 types.
+//	D3DXVECTOR4 v = ???;
+//	m_pEffect->SetVector( parameter_name, &v );
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, const float *float_param, uint num_float_values )
+{
+	m_pEffect->SetFloatArray( parameter_name, float_param, (UINT)num_float_values );
 }
 
 

@@ -131,7 +131,32 @@ public:
 
 //	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 
+	// Sets a single integer value
+	virtual void SetParam( CShaderParameter<int>& int_param ) {}
+
+	// Sets a single float value
+	virtual void SetParam( CShaderParameter<float>& float_param ) {}
+
+	// Sets a single float value
+	virtual void SetParam( CShaderParameter<Vector3>& float_param ) {}
+
+	// Sets one or more float values
 	virtual void SetParam( CShaderParameter< std::vector<float> >& float_param ) {}
+
+	// Sets a single float value
+	virtual void SetParam( const char *parameter_name, int int_param ) {}
+
+	// Sets a single float value
+	virtual void SetParam( const char *parameter_name, float float_param ) {}
+
+	// Sets a single float3 (Vector3) value
+	virtual void SetParam( const char *parameter_name, const Vector3& vec3_param ) {}
+
+	// Sets one or more float values
+	virtual void SetParam( const char *parameter_name, const float *float_param, uint num_float_values ) {}
+
+	// Sets one or more float values
+	inline void SetParam( const char *parameter_name, const std::vector<float>& float_param );
 
 //	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
 
@@ -141,6 +166,17 @@ public:
 
 	friend class CShaderManagerHub;
 };
+
+
+//============================ inline implementations ============================
+
+inline void CShaderManager::SetParam( const char *parameter_name, const std::vector<float>& float_param )
+{
+	if( float_param.empty() )
+		return;
+
+	SetParam( parameter_name, &float_param[0], (uint)float_param.size() );
+}
 
 
 
