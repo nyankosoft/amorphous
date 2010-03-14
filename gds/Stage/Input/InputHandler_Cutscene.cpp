@@ -4,9 +4,6 @@
 #include "../BE_CameraController.hpp"
 
 
-#include "Task/GameTask.hpp"
-
-
 //CInputHandler_Cutscene::CInputHandler_Cutscene()
 CInputHandler_Cutscene::CInputHandler_Cutscene( /*CCopyEntity *pEntity,*/ CBE_CameraController *pCameraController )
 :
@@ -72,36 +69,17 @@ void CInputHandler_Cutscene::ProcessInput( SInputData& input )
 
 	switch( action_code )
 	{
-/*
-	case ACTION_ATK_RAISEWEAPON:
-	case ACTION_ATK_UNLOCK_TRIGGER_SAFETY:
-		if( input.iType == ITYPE_KEY_PRESSED )
-			WEAPONSYSTEM.SetTriggerState( 1, 1 );
-		else if( input.iType == ITYPE_KEY_RELEASED )
-			WEAPONSYSTEM.SetTriggerState( 1, 0 );
-		break;
-*/
-	case ACTION_ARMS_SELECTWEAPON1:
-		break;
-	case ACTION_ARMS_SELECTWEAPON2:
-		break;
-
-	case ACTION_NOT_ASSIGNED:
-		break;	// no action is assigned to this input
-	}
-
-	switch( input.iGICode )
-	{
-	case GIC_ESC:
-	case GIC_GPD_BUTTON_08:
+	case ACTION_CUTSCENE_SKIP:
 		// skip the current cutscene
 //		m_pCameraController->EndCutscene( m_pEntity );
 		m_pCameraController->SkipCutscene( m_pEntity );
 		break;
+
+	case ACTION_NOT_ASSIGNED:
+	default:
+		break;	// no action is assigned to this input
 	}
 
 	if( m_pInputHandler_Debug )
 		m_pInputHandler_Debug->ProcessInput( input );
-
-
 }

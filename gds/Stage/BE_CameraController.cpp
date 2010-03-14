@@ -21,6 +21,7 @@ using namespace boost;
 
 
 static const U32 gs_FadeoutTimeMS = 500;
+static const int gs_InputHandlerIndex = 1;
 
 
 CTextureRenderTarget CBE_CameraController::ms_aTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
@@ -150,7 +151,7 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		m_pStage->GetEntitySet()->SetCameraEntity( pCopyEnt );
 
 		if( m_bUseCutsceneInputHandler )
-            InputHub().PushInputHandler( m_pInputHandler );
+            InputHub().PushInputHandler( gs_InputHandlerIndex, m_pInputHandler );
 	}
 	else if( !camera_active && pCurrentCameraEntity == pCopyEnt )
 	{
@@ -363,7 +364,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 	if( m_bUseCutsceneInputHandler )
 	{
 		// set the previous input handler
-		InputHub().PopInputHandler();
+		InputHub().PopInputHandler( gs_InputHandlerIndex );
 	}
 
 	m_CutsceneEndStartedTime = 0;
