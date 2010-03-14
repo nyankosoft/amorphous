@@ -34,7 +34,7 @@ using namespace fnop;
 #include "Input/InputHub.hpp"
 
 
-static uint gs_DebugInputHandlerIndex = 2;
+static uint gs_DebugInputHandlerIndex = 0;
 
 
 using namespace std;
@@ -100,8 +100,6 @@ CStage::~CStage()
 //	SafeDelete( m_pPhysicsVisualizer );
 
 	// release the input handler registered for debugging
-//	CInputHandler *pStageDebugInputHandler = InputHub().PopInputHandler( gs_DebugInputHandlerIndex );
-//	SafeDelete( pStageDebugInputHandler );
 	InputHub().RemoveInputHandler( gs_DebugInputHandlerIndex, m_pStageDebugInputHandler );
 	SafeDelete( m_pStageDebugInputHandler );
 
@@ -660,8 +658,12 @@ bool CStage::Initialize( const string& script_archive_filename )
 	// and different suffix "mat"
 	LoadMaterial();
 
-	// register input handler for debugging stage
-	InputHub().PushInputHandler( gs_DebugInputHandlerIndex, new CInputHandler_StageDebug( m_pSelf ) );
+	// register input handler for debugging the stage
+	m_pStageDebugInputHandler = new CInputHandler_StageDebug( m_pSelf );
+	if( InputHub().GetInputHandler(gs_DebugInputHandlerIndex) )
+		InputHub().GetInputHandler(gs_DebugInputHandlerIndex)->AddChild( m_pStageDebugInputHandler );
+	else
+		InputHub().PushInputHandler( gs_DebugInputHandlerIndex, m_pStageDebugInputHandler );
 
 	// stage has been initialized - start the timer
 	ResumeTimer();
