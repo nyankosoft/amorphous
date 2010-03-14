@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
-// File: StaticGeometryCompiler_Main.cpp
-// for console application
+// File: StaticGeometryCompiler_Console.cpp
+// static geometry compiler (command line interface)
 //-----------------------------------------------------------------------------
 
 //#include <vld.h>
@@ -28,20 +28,18 @@ std::string m_OutputFilepath;
 
 int RunApp( const std::string& cmd_line )
 {
+	LOG_FUNCTION_SCOPE();
+
 	string initial_working_directory = fnop::get_cwd();
 
 	int ret = RunStaticGeometryCompiler( cmd_line, initial_working_directory );
-
-	LOG_PRINT( " Entering the main message loop..." );
-
-	LOG_PRINT( " Cleaning up..." );
 
     return ret;
 }
 
 
 //-----------------------------------------------------------------------------
-// Name: WinMain()
+// Name: main()
 // Desc: The application's entry point
 //-----------------------------------------------------------------------------
 
