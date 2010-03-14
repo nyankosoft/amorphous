@@ -8,7 +8,6 @@
 #include "NxPhysJointDesc.hpp"
 
 #include <vector>
-using namespace std;
 
 
 namespace physics
