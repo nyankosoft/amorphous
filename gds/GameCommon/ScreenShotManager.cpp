@@ -78,6 +78,8 @@ void CScreenShotManager::OutputImageDataToFile( U32 *pdwImageData, int iImageWid
 {
 	string img_ext = m_ImageFileExtension;
 
+//	FILE *fp = fopen( "dbg_img_content.txt", "w" );
+
 	const int depth = 24;
 	CBitmapImage img( iImageWidth, iImageHeight, depth );
 	int x,y;
@@ -91,8 +93,14 @@ void CScreenShotManager::OutputImageDataToFile( U32 *pdwImageData, int iImageWid
 			pixel.fBlue  = (float)( 0x000000FF &  pdwImageData[y * iImageWidth + x] )        / 256.0f;
 
 			img.SetPixel( x, y, pixel );
+
+//			if( fp )
+//				fprintf( fp, "%.3f, %.3f, %.3f\n", pixel.fRed, pixel.fGreen, pixel.fBlue );
 		}
 	}
+
+//	if( fp )
+//		fclose(fp);
 
 	img.SaveToFile( m_ImageOutputDirectoryPath + fmt_string( "image%04d.", GetScreenshotFileIndex() ) + img_ext );
 	
