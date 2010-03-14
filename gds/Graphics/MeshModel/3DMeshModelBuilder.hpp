@@ -120,7 +120,9 @@ public:
 	void RaiseVertexFormatFlags( unsigned int flags ) { m_pMesh->m_VertexFormatFlag |= flags; }
 
 	/// Returns true on success
-	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter ) = 0;
+	/// If geometry_filter is not provided, or no include/exclude filters were in geometry_filter,
+	/// all the geometry in the model file is processed.
+	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter = CGeometryFilter() ) = 0;
 
 	virtual std::string GetBasePath() { return string(); }
 };
