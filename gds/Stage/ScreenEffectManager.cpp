@@ -532,9 +532,9 @@ Result::Name CScreenEffectManager::EnableHDRLighting( bool enable )
 		return Result::UNKNOWN_ERROR;
 
 	if( enable )
-		m_pPPEffectManager->EnableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
+		return m_pPPEffectManager->EnableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
 	else
-		m_pPPEffectManager->DisableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
+		return m_pPPEffectManager->DisableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
 }
 
 
