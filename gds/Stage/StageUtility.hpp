@@ -189,6 +189,18 @@ public:
 							const std::string& material_name = "default",
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
+
+	void CreateSkybox( const std::string& mesh_resource_path, const std::string& texture_resource_path = "BuiltinTexture::ClearSkyGrad" );
+
+//	void CreateSkysphere( const std::string& texture_resource_path = "BuiltinTexture::ClearSkyGrad" );
+
+	void CreateStaticGeometry( const std::string& resource_path );
+
+	CEntityHandle<> CreateStaticSmokeSource( const Vector3& pos,
+			const SFloatRGBAColor& color, float diameter, float rise_speed, float thickness, float density,
+			const std::string& entity_attributes_name = "" );
+
+//	void CreateSmokeTrailSource( const SFloatRGBAColor& color, const string& target_entity_name );
 };
 
 
@@ -203,11 +215,33 @@ public:
 	CStageUtility(pStage)
 	{}
 
-	Result::Name SetShader( CEntityHandle<>& entity, const std::string& shader_name, const std::string& subset_name, int lod );
+	Result::Name SetShader( CEntityHandle<>& entity, const std::string& shader_name, const std::string& subset_name, int lod = 0 );
 
 	Result::Name RemoveAllShaders( CEntityHandle<>& entity );
 };
 
+
+/*
+class CStageEffectUtility : public CStageUtility
+{
+public:
+
+	/// default ctor. Added to compile this code with boost::python.
+	CStageEffectUtility() {}
+
+	CStageEffectUtility( boost::shared_ptr<CStage> pStage )
+		:
+	CStageUtility(pStage)
+
+	void Rain( float fall_speed ) {}
+
+	void Snow( float fall_speed ) {}
+
+	void SetWind( const AABB3& world_aabb, const Vector3 vForce ) {}
+
+	void AddLensFlareElement( CLightEntityHandle directional_light_entity, const std::string& texture_filepath, float size, float dist ) {}
+};
+*/
 
 
 #endif /* __StageUtility_HPP__ */

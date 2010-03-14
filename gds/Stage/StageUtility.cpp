@@ -156,10 +156,118 @@ CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::str
 }
 
 
+#include "Stage/LightEntity.hpp"
+#include "Graphics/3DGameMath.hpp"
+
+
+//========================================================================================
+// CStageLightUtility
+//========================================================================================
+
+CLightEntityHandle ReturnLightEntityHandle( CCopyEntity *pEntity )
+{
+	if( pEntity )
+	{
+		shared_ptr<CLightEntity> pLightEntity
+			= dynamic_pointer_cast<CLightEntity,CCopyEntity>( pEntity->Self().lock() );
+
+		return CLightEntityHandle( pLightEntity );
+	}
+	else
+		return CLightEntityHandle();
+}
+
+
+CLightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::string& name,
+		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
+		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 )
+{
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return CLightEntityHandle();
+
+	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
+
+	int group = 0;
+
+	bool shadow_for_light = true;
+
+	// alias
+	desc.strName    = name;
+	desc.aColor[0]  = upper_color;
+	desc.aColor[1]  = lower_color;
+	desc.fIntensity = intensity;
+	desc.LightGroup = group;
+
+	desc.afAttenuation[0] = attenu0;
+	desc.afAttenuation[1] = attenu1;
+	desc.afAttenuation[2] = attenu2;
+
+	CBaseEntityHandle basehandle;
+	basehandle.SetBaseEntityName( "__HemisphericPointLight__" );
+	desc.pBaseEntityHandle = &basehandle;
+
+	desc.WorldPose.vPosition = pos;
+	desc.WorldPose.matOrient = Matrix33Identity();
+
+//	int shadow_for_light = 1; // true(1) by default
+//	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
+
+//	CreateEntityFromDesc( desc );
+	CCopyEntity *pEntity = pStage->CreateEntity( desc );
+
+	return ReturnLightEntityHandle( pEntity );
+}
+
+
+CLightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std::string& name,
+		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
+		float intensity, const Vector3& dir )
+{
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return CLightEntityHandle();
+
+	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
+
+	int group = 0;
+
+	bool shadow_for_light = true;
+
+	// alias
+	desc.strName    = name;
+	desc.SetHSUpperColor( upper_color );
+	desc.SetHSLowerColor( lower_color );
+	desc.fIntensity = intensity;
+	desc.LightGroup = group;
+
+	CBaseEntityHandle basehandle;
+	basehandle.SetBaseEntityName( "__HemisphericDirectionalLight__" );
+	desc.pBaseEntityHandle = &basehandle;
+
+	Vector3 checked_dir;
+	Vec3Normalize( checked_dir, dir );
+	if( Vec3Length( checked_dir ) < 0.001f )
+		checked_dir = Vector3(0,-1,0);
+
+	desc.WorldPose.matOrient = CreateOrientFromFwdDir( checked_dir );
+	desc.WorldPose.vPosition = Vector3(0,0,0);
+
+//	int shadow_for_light = 1; // true(1) by default
+
+//	CreateEntityFromDesc( desc );
+	CCopyEntity *pEntity = pStage->CreateEntity( desc );
+
+	return ReturnLightEntityHandle( pEntity );
+}
+
 
 //========================================================================================
 // CStageMiscUtility
 //========================================================================================
+
+#include "Stage/BE_Skybox.hpp"
+
 
 Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box_desc )
 {
@@ -488,117 +596,99 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_
 }
 
 
-
-
-
-#include "Stage/LightEntity.hpp"
-#include "Graphics/3DGameMath.hpp"
-
-
-//========================================================================================
-// CStageLightUtility
-//========================================================================================
-
-CLightEntityHandle ReturnLightEntityHandle( CCopyEntity *pEntity )
-{
-	if( pEntity )
-	{
-		shared_ptr<CLightEntity> pLightEntity
-			= dynamic_pointer_cast<CLightEntity,CCopyEntity>( pEntity->Self().lock() );
-
-		return CLightEntityHandle( pLightEntity );
-	}
-	else
-		return CLightEntityHandle();
-}
-
-
-CLightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::string& name,
-		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
-		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 )
+void CStageMiscUtility::CreateSkybox( const std::string& mesh_resource_path, const std::string& texture_resource_path )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CLightEntityHandle();
+		return;// CEntityHandle<>();
 
-	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
+	if( 0 < mesh_resource_path.length() )
+	{
+		// Load mesh
+	}
 
-	int group = 0;
-
-	bool shadow_for_light = true;
-
-	// alias
-	desc.strName    = name;
-	desc.aColor[0]  = upper_color;
-	desc.aColor[1]  = lower_color;
-	desc.fIntensity = intensity;
-	desc.LightGroup = group;
-
-	desc.afAttenuation[0] = attenu0;
-	desc.afAttenuation[1] = attenu1;
-	desc.afAttenuation[2] = attenu2;
+	CCopyEntityDesc desc;
 
 	CBaseEntityHandle basehandle;
-	basehandle.SetBaseEntityName( "__HemisphericPointLight__" );
+	basehandle.SetBaseEntityName( "skybox" );//"__DefaultSkybox__" );
+	desc.pBaseEntityHandle = &basehandle;
+
+	desc.WorldPose = Matrix34Identity();
+
+	CCopyEntity *pSkyboxEntity = pStage->CreateEntity( desc );
+	if( !pSkyboxEntity )
+		return;
+
+	CBE_Skybox *pSkyboxBaseEntity = dynamic_cast<CBE_Skybox *>(pSkyboxEntity->pBaseEntity);
+	if( pSkyboxBaseEntity )
+		pSkyboxBaseEntity->LoadSkyboxTexture( texture_resource_path );
+}
+
+/*
+void CStageMiscUtility::CreateSkysphere( const std::string& texture_resource_path )
+{
+	CCopyEntityDesc desc;
+
+	CBaseEntityHandle basehandle;
+	basehandle.SetBaseEntityName( "__DefaultSkysphere__" );
+	desc.pBaseEntityHandle = &basehandle;
+
+	desc.WorldPose = Matrix34Identity();
+
+	CSphereDesc sphere_desc;
+	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 5.0f;
+	sphere_desc.num_segments = 6;
+	sphere_desc.num_sides    = 12;
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+	desc.MeshObjectHandle.Load( sphere_desc );
+
+	CCopyEntity *pEntity = pStage->CreateEntity( desc );
+}
+*/
+
+
+void CStageMiscUtility::CreateStaticGeometry( const std::string& resource_path )
+{
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return;// CEntityHandle<>();
+
+	bool loaded = pStage->LoadStaticGeometryFromFile( resource_path );
+}
+
+
+// Creates a particle generator
+// The particle generator keeps generating smoke particles
+CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
+			const SFloatRGBAColor& color, float diameter, float rise_speed, float thickness, float density,
+			const std::string& entity_attributes_name )
+{
+/*	CCopyEntityDesc desc;
+
+	if( entity_attributes_name.length() == 0 )
+		entity_attributes_name = "__StaticSmokeSource__";
+//		entity_attributes_name = "__DefaultSmokeTrail__";
+
+	CBaseEntityHandle basehandle;
+	basehandle.SetBaseEntityName( entity_attributes_name );
 	desc.pBaseEntityHandle = &basehandle;
 
 	desc.WorldPose.vPosition = pos;
-	desc.WorldPose.matOrient = Matrix33Identity();
 
-//	int shadow_for_light = 1; // true(1) by default
-//	Vector3 dir = Vector3(0,-1,0); // default direction = vertically down
-
-//	CreateEntityFromDesc( desc );
 	CCopyEntity *pEntity = pStage->CreateEntity( desc );
 
-	return ReturnLightEntityHandle( pEntity );
-}
-
-
-CLightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std::string& name,
-		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
-		float intensity, const Vector3& dir )
-{
-	shared_ptr<CStage> pStage = m_pStage.lock();
-	if( !pStage )
-		return CLightEntityHandle();
-
-	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
-
-	int group = 0;
-
-	bool shadow_for_light = true;
-
-	// alias
-	desc.strName    = name;
-	desc.SetHSUpperColor( upper_color );
-	desc.SetHSLowerColor( lower_color );
-	desc.fIntensity = intensity;
-	desc.LightGroup = group;
-
-	CBaseEntityHandle basehandle;
-	basehandle.SetBaseEntityName( "__HemisphericDirectionalLight__" );
-	desc.pBaseEntityHandle = &basehandle;
-
-	Vector3 checked_dir;
-	Vec3Normalize( checked_dir, dir );
-	if( Vec3Length( checked_dir ) < 0.001f )
-		checked_dir = Vector3(0,-1,0);
-
-	desc.WorldPose.matOrient = CreateOrientFromFwdDir( checked_dir );
-	desc.WorldPose.vPosition = Vector3(0,0,0);
-
-//	int shadow_for_light = 1; // true(1) by default
-
-//	CreateEntityFromDesc( desc );
-	CCopyEntity *pEntity = pStage->CreateEntity( desc );
-
-	return ReturnLightEntityHandle( pEntity );
+	if( pEntity )
+		return CEntityHandle<>( pEntity->pSelf );
+	else*/
+		return CEntityHandle<>();
 }
 
 
 
-
+//=============================================================================
+// CStageEntityUtility
+//=============================================================================
 
 #include "Graphics/MeshContainerRenderMethod.hpp"
 
@@ -658,4 +748,3 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 
 	return Result::SUCCESS;
 }
-

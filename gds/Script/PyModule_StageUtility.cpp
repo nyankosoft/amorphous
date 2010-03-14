@@ -40,6 +40,8 @@ BOOST_PYTHON_MODULE(stage_util)
 		.def( "CreateBoxFromMesh",  &CStageMiscUtility::CreateBoxFromMesh, ( py::arg("mesh_path"),                                                                          py::arg("pose")=Matrix34Identity(), py::arg("mass")=1.0f, py::arg("material_name")="default", py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
 		.def( "CreateTriangleMeshFromMesh",        &CStageMiscUtility::CreateTriangleMeshFromMesh,       ( py::arg("mesh_path"), py::arg("collision_mesh_path")="",         py::arg("pose")=Matrix34Identity(), py::arg("mass")=1.0f, py::arg("material_name")="",        py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
 		.def( "CreateStaticTriangleMeshFromMesh",  &CStageMiscUtility::CreateStaticTriangleMeshFromMesh, ( py::arg("mesh_path"), py::arg("collision_mesh_path")="",         py::arg("pose")=Matrix34Identity(),                       py::arg("material_name")="",        py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
+		.def( "CreateSkybox",                      &CStageMiscUtility::CreateSkybox, ( py::arg("mesh_path")="", py::arg("texture_path")="" ) )
+		.def( "CreateStaticGeometry",              &CStageMiscUtility::CreateStaticGeometry, ( py::arg("resource_path") ) )
 	;
 
 	class_< CStageEntityUtility, shared_ptr<CStageEntityUtility> >("StageEntityUtility")
