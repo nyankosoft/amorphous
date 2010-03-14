@@ -1018,6 +1018,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp"
 						>
 						<FileConfiguration

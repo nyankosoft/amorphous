@@ -14,6 +14,8 @@ using namespace MeshModel;
 
 class CCustomMesh : public CMeshImpl
 {
+	typedef U16 dest_index_type;
+
 public:
 
 	U32 m_VertexFlags;
@@ -92,6 +94,8 @@ public:
 
 	uint GetNumIndices() const { return (uint)m_IndexBuffer.size() / sizeof(U16); }
 
+	uint GetIndexSize() const { return sizeof(dest_index_type); }
+
 	/// Returns the i-th vertex index
 	U16 GetIndex( int i ) const
 	{
@@ -136,8 +140,6 @@ inline void CCustomMesh::SetVec3Elements( const std::vector<Vector3>& src, VEE::
 template<typename src_index_type>
 inline void CCustomMesh::SetIndices( const std::vector<src_index_type>& src )//, uint dest_index_size )
 {
-	typedef U16 dest_index_type;
-
 	const size_t dest_index_size = sizeof(dest_index_type);
 	const size_t num_indices = src.size();
 	m_IndexBuffer.resize( dest_index_size * num_indices );

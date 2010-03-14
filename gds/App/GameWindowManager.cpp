@@ -19,6 +19,7 @@
 #include "Graphics/OpenGL/2DPrimitive/2DPrimitiveRenderer_GL.hpp"
 #include "Graphics/OpenGL/Mesh/GLBasicMeshImpl.hpp"
 #include "Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
+#include "Graphics/OpenGL/Mesh/GLCustomMeshRenderer.hpp"
 
 using namespace std;
 using namespace boost;
@@ -47,7 +48,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CGLMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
-//		CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
+		CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
 	}
 	else
 	{
