@@ -5,7 +5,6 @@
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix44.hpp"
 #include "Graphics/fwd.hpp"
-#include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/2DPrimitive/2DRectSet.hpp"
