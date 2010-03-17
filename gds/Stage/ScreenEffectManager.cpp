@@ -7,6 +7,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/PostProcessEffectManager.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"
+#include "Graphics/LensFlare.hpp"
 #include "Graphics/D3DMisc.hpp"
 
 #include "Graphics/RenderTask.hpp"
@@ -643,6 +644,12 @@ void CScreenEffectManager::Render( CCamera &rCam )
 	EndRender();
 
 	RenderPostProcessEffects();
+
+	if( m_pLensFlare )
+	{
+		m_pLensFlare->UpdateViewTransform( rCam.GetCameraMatrix() );
+		m_pLensFlare->UpdateProjectionTransform( rCam.GetProjectionMatrix() );
+	}
 }
 
 

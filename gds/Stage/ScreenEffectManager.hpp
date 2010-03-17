@@ -155,6 +155,8 @@ private:
 
 	TCFixedVector< CExtraTextureEffect, NUM_MAX_EXTRA_TEXTURES > m_vecExtraTexEffect;
 
+	boost::shared_ptr<CLensFlare> m_pLensFlare;
+
 //	CTextureRenderTarget m_TexRenderTarget;
 
 	// 0 if no texture is set as a render target
@@ -164,13 +166,13 @@ private:
 	float m_fBlurWidth;
 	float m_fBlurHeight;
 
-	std::map<int,float,std::greater<int>> m_mapGlareLuminanceThreshold;
+	std::map< int,float,std::greater<int> > m_mapGlareLuminanceThreshold;
 
-	std::map<int,Vector2,std::greater<int>> m_mapBlurStrength;
+	std::map< int,Vector2,std::greater<int> > m_mapBlurStrength;
 
-	std::map<int,float,std::greater<int>> m_mapMotionBlurStrength;
+	std::map< int,float,std::greater<int> > m_mapMotionBlurStrength;
 
-	std::map<int,SFloatRGBColor,std::greater<int>> m_mapMonochromeColor;
+	std::map< int,SFloatRGBColor,std::greater<int> > m_mapMonochromeColor;
 
 	float m_fGlareLuminanceThreshold;
 
@@ -259,6 +261,8 @@ public:
 
 	Result::Name SetHDRLightingParams( U32 param_flags, const CHDRLightingParams& params );
 	Result::Name EnableHDRLighting( bool enable );
+
+	boost::shared_ptr<CLensFlare> GetLensFlare() { return m_pLensFlare; }
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
