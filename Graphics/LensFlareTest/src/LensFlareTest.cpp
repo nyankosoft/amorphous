@@ -56,6 +56,14 @@ CLensFlareTest::~CLensFlareTest()
 }
 
 
+static inline SFloatRGBAColor ARGB32toFloatRGBA( U32 argb )
+{
+	SFloatRGBAColor dest;
+	dest.SetARGB32( argb );
+	return dest;
+}
+
+
 void CLensFlareTest::InitLensFlare( const string& strPath )
 {
 	m_pLensFlare = shared_ptr<CLensFlare>( new CLensFlare() );
@@ -66,16 +74,16 @@ void CLensFlareTest::InitLensFlare( const string& strPath )
 	m_pLensFlare->AddTexture( "./textures/flare06.dds", 2, 1, 1 );
 //	m_pLensFlare->AddTexture( "./textures/LensFlareTex/flare07.dds", 2, 1, 1 );
 
-	m_pLensFlare->AddLensFlareRect( 0.09f, 1.0f, 0.70f, 0x40FF5030, 0 );
-	m_pLensFlare->AddLensFlareRect( 0.08f, 1.0f, 1.50f, 0x28FFD040, 0 );
-	m_pLensFlare->AddLensFlareRect( 0.07f, 1.0f, 0.47f, 0x30F03060, 0 );
-	m_pLensFlare->AddLensFlareRect( 0.05f, 1.0f, 1.40f, 0x202040F0, 0 );
-	m_pLensFlare->AddLensFlareRect( 0.04f, 1.0f, 0.80f, 0x3260D080, 0 );
-	m_pLensFlare->AddLensFlareRect( 0.05f, 1.0f, 0.60f, 0x10FF2020, 0 );
-	m_pLensFlare->AddLensFlareRect( 0.04f, 1.0f, 0.42f, 0x302020FF, 0 );
-	m_pLensFlare->AddLensFlareRect( 0.10f, 1.0f, 0.35f, 0x20FFFFFF, 1 );
-	m_pLensFlare->AddLensFlareRect( 0.03f, 1.0f, 1.20f, 0x20C0C0C0, 2 );
-	m_pLensFlare->AddLensFlareRect( 0.04f, 1.0f, 0.19f, 0x30F0F0F0, 2 );
+	m_pLensFlare->AddLensFlareRect( 0.09f, 1.0f, 0.70f, ARGB32toFloatRGBA(0x40FF5030), 0 );
+	m_pLensFlare->AddLensFlareRect( 0.08f, 1.0f, 1.50f, ARGB32toFloatRGBA(0x28FFD040), 0 );
+	m_pLensFlare->AddLensFlareRect( 0.07f, 1.0f, 0.47f, ARGB32toFloatRGBA(0x30F03060), 0 );
+	m_pLensFlare->AddLensFlareRect( 0.05f, 1.0f, 1.40f, ARGB32toFloatRGBA(0x202040F0), 0 );
+	m_pLensFlare->AddLensFlareRect( 0.04f, 1.0f, 0.80f, ARGB32toFloatRGBA(0x3260D080), 0 );
+	m_pLensFlare->AddLensFlareRect( 0.05f, 1.0f, 0.60f, ARGB32toFloatRGBA(0x10FF2020), 0 );
+	m_pLensFlare->AddLensFlareRect( 0.04f, 1.0f, 0.42f, ARGB32toFloatRGBA(0x302020FF), 0 );
+	m_pLensFlare->AddLensFlareRect( 0.10f, 1.0f, 0.35f, ARGB32toFloatRGBA(0x20FFFFFF), 1 );
+	m_pLensFlare->AddLensFlareRect( 0.03f, 1.0f, 1.20f, ARGB32toFloatRGBA(0x20C0C0C0), 2 );
+	m_pLensFlare->AddLensFlareRect( 0.04f, 1.0f, 0.19f, ARGB32toFloatRGBA(0x30F0F0F0), 2 );
 
 //	m_pLensFlare->UpdateScreenSize( GetWindowWidth(), GetWindowHeight() );
 }
@@ -153,19 +161,15 @@ void CLensFlareTest::Render()
 }
 
 
-void CLensFlareTest::UpdateViewTransform( const D3DXMATRIX& matView )
+void CLensFlareTest::UpdateViewTransform( const Matrix44& matView )
 {
-	Matrix44 view;
-	view.SetRowMajorMatrix44( (Scalar *)(&matView) );
-	m_pLensFlare->UpdateViewTransform( view );
+	m_pLensFlare->UpdateViewTransform( matView );
 }
 
 
-void CLensFlareTest::UpdateProjectionTransform( const D3DXMATRIX& matProj )
+void CLensFlareTest::UpdateProjectionTransform( const Matrix44& matProj )
 {
-	Matrix44 proj;
-	proj.SetRowMajorMatrix44( (Scalar *)(&matProj) );
-	m_pLensFlare->UpdateProjectionTransform( proj );
+	m_pLensFlare->UpdateProjectionTransform( matProj );
 }
 
 

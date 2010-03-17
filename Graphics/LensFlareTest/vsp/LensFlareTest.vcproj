@@ -196,18 +196,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="misc (to be moved to BasicFramework)"
-				>
-				<File
-					RelativePath="..\..\..\..\Project1\gds\Graphics\SkyboxMisc.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\Project1\gds\Graphics\SkyboxMisc.hpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

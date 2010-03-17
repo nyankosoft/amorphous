@@ -89,9 +89,9 @@ public:
 
 	void Render();
 
-	void UpdateViewTransform( const D3DXMATRIX& matView );
+	void UpdateViewTransform( const Matrix44& matView );
 
-	void UpdateProjectionTransform( const D3DXMATRIX& matProj );
+	void UpdateProjectionTransform( const Matrix44& matProj );
 
 //	void OnKeyPressed( KeyCode::Code key_code );
 };
