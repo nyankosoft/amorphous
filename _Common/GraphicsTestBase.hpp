@@ -13,6 +13,7 @@
 
 
 class Matrix34;
+class Matrix44;
 class CGraphicsTestBase;
 
 
@@ -69,9 +70,9 @@ public:
 
 	virtual void UpdateCameraPose( const Matrix34& camera_pose ) {}
 
-	virtual void UpdateViewTransform( const D3DXMATRIX& matView ) {}
-	virtual void UpdateProjectionTransform( const D3DXMATRIX& matProj ) {}
-	
+	virtual void UpdateViewTransform( const Matrix44& matView ) {}
+	virtual void UpdateProjectionTransform( const Matrix44& matProj ) {}
+
 	virtual void OnKeyPressed( KeyCode::Code key_code ) {}
 	virtual void OnKeyReleased( KeyCode::Code key_code ) {}
 

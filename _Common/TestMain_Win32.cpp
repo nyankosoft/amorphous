@@ -147,11 +147,8 @@ VOID Render()
 	pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
 	pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
 */
-	D3DXMATRIX mat;
-	g_Camera.GetCameraMatrix( mat );
-	g_pTest->UpdateViewTransform( mat );
-	g_Camera.GetProjectionMatrix( mat );
-	g_pTest->UpdateProjectionTransform( mat );
+	g_pTest->UpdateViewTransform( g_Camera.GetCameraMatrix() );
+	g_pTest->UpdateProjectionTransform( g_Camera.GetProjectionMatrix() );
 
 	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, true );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
