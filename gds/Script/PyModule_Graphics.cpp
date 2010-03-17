@@ -2,6 +2,8 @@
 #include <gds/Graphics/MeshObjectHandle.hpp>
 #include <gds/Graphics/ShaderHandle.hpp>
 #include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
+#include <gds/Graphics/Shader/ShaderVariableLoader.hpp>
+#include <gds/Graphics/LensFlare.hpp>
 #include <gds/Support/Log/DefaultLog.hpp>
 #include <boost/python.hpp>
 
@@ -202,6 +204,27 @@ BOOST_PYTHON_MODULE(gfx)
 		.def_readwrite("fRange",       &CLight::fRange)
 	;
 */
+
+	class_< CLensFlare, boost::shared_ptr<CLensFlare> >("LensFlare")
+		.def( "AddTexture",            &CLensFlare::AddTexture,                          (  py::arg("tex_path"), py::arg("group_index") = 0, py::arg("num_segs_x") = 1, py::arg("num_segs_y") = 1 ) )
+		.def( "AddLensFlareRect",      &CLensFlare::AddLensFlareRect,                    (  py::arg("dim"), py::arg("scale_factor") = 1, py::arg("dist_factor") = 1, py::arg("color") = SFloatRGBAColor::White(), py::arg("group_index") = 0, py::arg("tex_seg_index_x") = 0, py::arg("tex_seg_index_y") = 0 ) )
+	;
+
+	class_< CShaderVariableLoader<float>, boost::shared_ptr< CShaderVariableLoader<float> > >("ShaderFloatLoader")
+		.def( init< const char *, float >() )
+		.def( init< CShaderParameter<float> >() )
+		.def( "UpdateShaderParams",   &CShaderVariableLoader<float>::UpdateShaderParams ) // compile test
+	;
+
+	class_< CShaderVariableLoader<Vector3>, boost::shared_ptr< CShaderVariableLoader<Vector3> > >("ShaderVec3Loader")
+//		.def( init< const char *, Vector3 >() ) // (A) Either (A) or (B) compiles. (B) conforms to the original argument types.
+		.def( init< const char *, const Vector3& >() ) // (B)
+		.def( init< CShaderParameter<Vector3> >() )
+	;
+/*
+	class_< CShaderVariableLoader<SFloatRGBAColor>, boost::shared_ptr< CShaderVariableLoader<SFloatRGBAColor> > >("ShaderColorLoader")
+		.def( init< CShaderParameter<SFloatRGBAColor> >() )
+	;*/
 }
 
 

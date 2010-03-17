@@ -13,6 +13,7 @@
 #include <gds/Stage/EntityRenderManager.hpp>
 #include <gds/Stage/ScreenEffectManager.hpp>
 #include <gds/Stage/BaseEntity_Draw.hpp> // needed to create instance of CEntityShaderLightParamsLoader
+#include <gds/Stage/StageUtility.hpp>
 #include <gds/Support/Macro.h>
 #include <gds/Support/Vec3_StringAux.hpp>
 #include <gds/Support/Log/DefaultLog.hpp>
@@ -98,11 +99,21 @@ BOOST_PYTHON_MODULE(stage)
 
 	def( "SetShaderToEntity",  SetShaderToEntity, ( py::arg("entity"), py::arg("shader"), py::arg("tech") ) );
 
+	def( "SetShaderFloatParamToEntity",  SetShaderFloatParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+//	def( "SetShaderIntParamToEntity",    SetShaderIntParamToEntity,   ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+//	def( "SetShaderVec3ParamToEntity",   SetShaderVec3ParamToEntity,  ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+	def( "SetShaderColorParamToEntity",  SetShaderColorParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+
 //		.def()
 
-//	class_< CStage, boost::shared_ptr<CStage> >("Stage")
-//		.def( "GetEntityByName",   &CStage::GetEntityByName )
-//	;
+//	def( "GetStage",  GetStage, ( py::arg("stage_name") = "" ) );
+
+/*
+	// error C2248: 'CStage::CStage' : cannot access private member declared in class 'CStage'
+	class_< CStage, boost::shared_ptr<CStage> >("Stage")
+//		.def( "GetEntityByName",          &CStage::GetEntityByName )
+		.def( "GetScreenEffectManager",   &CStage::GetScreenEffectManager )
+	;*/
 }
 
 

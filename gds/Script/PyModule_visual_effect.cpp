@@ -21,23 +21,24 @@ using namespace std;
 using namespace boost;
 
 /**
- - enable shadow mapping
+=========================================================================
+ Script Templates
+=========================================================================
 
-	import VisualEffect
-
-	def run():
-		VisualEffect.EnableShadowMap()
-		VisualEffect.SetShadowMapLightPosition( 2.0, 6.0, 1.0 )
-		VisualEffect.SetShadowMapLightDirection( -0.1, -1.0, -0.2 )
-		VisualEffect.SetOverrideShadowMapLight( True )
-
-		Entity.SetShadowCaster( "(name)", True )
-		Entity.SetShadowReceiver( "(name)", True )
-		...
-
-		return 1
+import gfx
+import visual_effect
+import stage_util
 
 
+screen_effect_mgr = visual_effect.GetScreenEffectManager()
+lens_flare = screen_effect_mgr.GetLensFlare()
+
+
+lens_flare.AddTexture( tex_path="textures/lens_flare.jpg", num_segs_x=2, num_segs_y=2 )
+lens_flare.AddLensFlareRect( dim=0, scale_factor=1.0, dist_factor=1.0, color=gfx.Color(1,1,1,1), group_index=0, tex_seg_index_x=0, tex_seg_index_y=0 )
+lens_flare.AddLensFlareRect( dim=0, scale_factor=1.0, dist_factor=1.0, color=gfx.Color(1,1,1,1), group_index=0, tex_seg_index_x=1, tex_seg_index_y=0 )
+lens_flare.AddLensFlareRect( dim=0, scale_factor=1.0, dist_factor=1.0, color=gfx.Color(1,1,1,1), group_index=0, tex_seg_index_x=0, tex_seg_index_y=1 )
+lens_flare.AddLensFlareRect( dim=0, scale_factor=1.0, dist_factor=1.0, color=gfx.Color(1,1,1,1), group_index=0, tex_seg_index_x=1, tex_seg_index_y=1 )
 
 */
 
@@ -65,339 +66,6 @@ inline static shared_ptr<CEntityRenderManager> GetEntityRenderManager()
 	else
 		return shared_ptr<CEntityRenderManager>();
 }
-
-
-/*
-PyObject* EnableEnvMap( PyObject* self, PyObject* args )
-{
-	const char *target_entity_name = NULL;
-	int result = PyArg_ParseTuple( args, "|s", &target_entity_name );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->EnableEnvironmentMap();
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* DisableEnvMap( PyObject* self, PyObject* args )
-{
-	const char *target_entity_name = NULL;
-	int result = PyArg_ParseTuple( args, "|s", &target_entity_name );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->DisableEnvironmentMap();
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* AddEnvMapTarget( PyObject* self, PyObject* args )
-{
-	char *target_entity_name = NULL;
-	int result = PyArg_ParseTuple( args, "s", &target_entity_name );
-
-	RETURN_PYNONE_IF_NO_STAGE()
-
-	CStage *pStage = GetStageForScriptCallback();
-
-	CCopyEntity *pEntity = pStage->GetEntitySet()->GetEntityByName( target_entity_name );
-
-	bool res = false;
-	if( IsValidEntity(pEntity) )
-	{
-		pEntity->RaiseEntityFlags( BETYPE_ENVMAPTARGET );
-		res = pStage->GetEntitySet()->GetRenderManager()->AddEnvMapTarget( pEntity );
-	}
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-/// target_entity_name is ignored.
-/// TODO: support target_entity_name, or multiple envmap textures
-PyObject* SaveEnvMapTextureToFile( PyObject* self, PyObject* args )
-{
-	char *target_entity_name;
-	char *output_image_filename;
-	int result = PyArg_ParseTuple( args, "ss", &target_entity_name, &output_image_filename );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->SaveEnvMapTextureToFile( output_image_filename );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* RemoveEnvMapTarget( PyObject* self, PyObject* args )
-{
-	const char *target_entity_name = NULL;
-	int result = PyArg_ParseTuple( args, "s", &target_entity_name );
-
-	RETURN_PYNONE_IF_NO_STAGE()
-
-	CStage *pStage = GetStageForScriptCallback();
-
-	CCopyEntity *pEntity = pStage->GetEntitySet()->GetEntityByName( target_entity_name );
-
-	bool res = false;
-	if( IsValidEntity(pEntity) )
-	{
-		pEntity->ClearEntityFlags( BETYPE_ENVMAPTARGET );
-		res = pStage->GetEntitySet()->GetRenderManager()->RemoveEnvMapTarget( pEntity );
-	}
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-
-
-
-PyObject* EnableSoftShadow( PyObject* self, PyObject* args )
-{
-	float softness = 1.0f;
-	int shadow_map_size = 512;
-	int result = PyArg_ParseTuple( args, "|fi", &softness, &shadow_map_size );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->EnableSoftShadow( softness, shadow_map_size );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* EnableSoftShadowForLight( PyObject* self, PyObject* args )
-{
-	int light_id;
-	float softness = 1.0f;
-	int shadow_map_size = 512;
-	int result = PyArg_ParseTuple( args, "i|fi", &light_id, &softness, &shadow_map_size );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-//	if( pRenderMgr )
-//		pRenderMgr->EnableSoftShadowForLight( softness, shadow_map_size );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-
-PyObject* EnableShadowMap( PyObject* self, PyObject* args )
-{
-	int shadow_map_size = 512;
-	int result = PyArg_ParseTuple( args, "|i", &shadow_map_size );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->EnableShadowMap( shadow_map_size );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* DisableShadowMap( PyObject* self, PyObject* args )
-{
-	const char *target_entity_name = NULL;
-	int result = PyArg_ParseTuple( args, "|s", &target_entity_name );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->DisableShadowMap();
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetLightForShadow( PyObject* self, PyObject* args )
-{
-	const char *target_light_name = NULL;
-	int result = PyArg_ParseTuple( args, "|s", &target_light_name );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->SetLightForShadow( target_light_name );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetOverrideShadowMapLight( PyObject* self, PyObject* args )
-{
-	int override_light;
-	int result = PyArg_ParseTuple( args, "|i", &override_light );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->SetOverrideShadowMapLight( override_light != 0 ? true : false );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetShadowMapLightPosition( PyObject* self, PyObject* args )
-{
-	float x,y,z;
-	int result = PyArg_ParseTuple( args, "fff", &x, &y, &z );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-		pRenderMgr->SetOverrideShadowMapLightPosition( Vector3(x,y,z) );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetShadowMapLightDirection( PyObject* self, PyObject* args )
-{
-	float x,y,z;
-	int result = PyArg_ParseTuple( args, "fff", &x, &y, &z );
-
-	CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
-	if( pRenderMgr )
-	{
-		Vector3 vDir =  Vector3(x,y,z);
-		Vec3Normalize( vDir, vDir );
-		pRenderMgr->SetOverrideShadowMapLightDirection( vDir );
-	}
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetGlare( PyObject* self, PyObject* args )
-{
-	float threshold;
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "f|i", &threshold, &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->SetGlareLuminanceThreshold( threshold, priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* ClearGlare( PyObject* self, PyObject* args )
-{
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "|i", &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->ClearGlareLuminanceThreshold( priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetMotionBlur( PyObject* self, PyObject* args )
-{
-	float blur_strength;
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "f|i", &blur_strength, &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->SetMotionBlurWeight( blur_strength, priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* ClearMotionBlur( PyObject* self, PyObject* args )
-{
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "|i", &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->ClearMotionBlur( priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetBlur( PyObject* self, PyObject* args )
-{
-	float blur_x, blur_y;
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "ff|i", &blur_x, &blur_y, &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->SetBlurEffect( blur_x, blur_y, priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* ClearBlur( PyObject* self, PyObject* args )
-{
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "|i", &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->ClearBlurEffect( priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* SetMonochrome( PyObject* self, PyObject* args )
-{
-	float r, g, b;
-	float blend_ratio = 1.0f;
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "fff|fi", &r, &g, &b, &blend_ratio, &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->SetMonochromeEffect( r, g, b, blend_ratio, priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-
-
-PyObject* ClearMonochrome( PyObject* self, PyObject* args )
-{
-	int priority_id = gs_DefaultEffectPriorityIDforScript;
-	int result = PyArg_ParseTuple( args, "|i", &priority_id );
-
-	CScreenEffectManager* pEffectMgr = GetScreenEffectManager();
-	if( pEffectMgr )
-		pEffectMgr->ClearMonochromeEffect( priority_id );
-
-    Py_INCREF( Py_None );
-	return Py_None;
-}
-*/
 
 
 void (CScreenEffectManager::*SetBlurEffect)( float fBlurFactor, int priority_id )            = &CScreenEffectManager::SetBlurEffect;
@@ -436,16 +104,23 @@ BOOST_PYTHON_MODULE(visual_effect)
 	// SetX -> EnableX
 	// ClearX -> DisableX
 	class_<CScreenEffectManager, shared_ptr<CScreenEffectManager> >("ScreenEffectManager")
-		.def( "SetGlare",           &CScreenEffectManager::SetGlareLuminanceThreshold,   ( py::arg("threshold"), py::arg("priority_id") = pid ) )
-		.def( "ClearGlare",         &CScreenEffectManager::ClearGlareLuminanceThreshold, ( py::arg("priority_id") = pid ) )
-		.def( "SetMotionBlur",      &CScreenEffectManager::SetMotionBlurWeight,          ( py::arg("motion_blur_weight"), py::arg("priority_id") = pid ) )
-		.def( "ClearMotionBlur",    &CScreenEffectManager::ClearMotionBlur,              ( py::arg("priority_id") = pid ) )
-		.def( "SetBlur",            SetBlurEffect,                                       ( py::arg("blur_factor"), py::arg("priority_id") = pid ) )
-		.def( "SetBlur",            SetBlurEffectIWH,                                    ( py::arg("width"), py::arg("height"), py::arg("priority_id") = pid ) )
-		.def( "SetBlur",            SetBlurEffectFWH,                                    ( py::arg("width"), py::arg("height"), py::arg("priority_id") = pid ) )
-		.def( "ClearBlur",          &CScreenEffectManager::ClearBlurEffect,              ( py::arg("priority_id") = pid ) )
-		.def( "SetMonochrome",      &CScreenEffectManager::SetMonochromeEffect,               ( py::arg("r"), py::arg("g"), py::arg("b"), py::arg("blend_ratio") = 1.0f, py::arg("priority_id") = pid ) )
-		.def( "ClearMonochrome",    &CScreenEffectManager::ClearMonochromeEffect,             ( py::arg("priority_id") = pid ) )
+		.def( "FadeOutTo",              &CScreenEffectManager::FadeOutTo )
+		.def( "FadeInFrom",             &CScreenEffectManager::FadeInFrom )
+//		.def( "SetFadeEffect",          &CScreenEffectManager::SetFadeEffect )
+
+		.def( "SetGlare",               &CScreenEffectManager::SetGlareLuminanceThreshold,   ( py::arg("threshold"), py::arg("priority_id") = pid ) )
+		.def( "ClearGlare",             &CScreenEffectManager::ClearGlareLuminanceThreshold, ( py::arg("priority_id") = pid ) )
+		.def( "SetMotionBlur",          &CScreenEffectManager::SetMotionBlurWeight,          ( py::arg("motion_blur_weight"), py::arg("priority_id") = pid ) )
+		.def( "ClearMotionBlur",        &CScreenEffectManager::ClearMotionBlur,              ( py::arg("priority_id") = pid ) )
+		.def( "SetBlur",                SetBlurEffect,                                       ( py::arg("blur_factor"), py::arg("priority_id") = pid ) )
+		.def( "SetBlur",                SetBlurEffectIWH,                                    ( py::arg("width"), py::arg("height"), py::arg("priority_id") = pid ) )
+		.def( "SetBlur",                SetBlurEffectFWH,                                    ( py::arg("width"), py::arg("height"), py::arg("priority_id") = pid ) )
+		.def( "ClearBlur",              &CScreenEffectManager::ClearBlurEffect,              ( py::arg("priority_id") = pid ) )
+		.def( "SetMonochrome",          &CScreenEffectManager::SetMonochromeEffect,               ( py::arg("r"), py::arg("g"), py::arg("b"), py::arg("blend_ratio") = 1.0f, py::arg("priority_id") = pid ) )
+		.def( "ClearMonochrome",        &CScreenEffectManager::ClearMonochromeEffect,             ( py::arg("priority_id") = pid ) )
+//		.def( "SetHDRLightingParams",   &CScreenEffectManager::SetHDRLightingParams )
+		.def( "EnableHDRLighting",      &CScreenEffectManager::EnableHDRLighting )
+		.def( "GetLensFlare",           &CScreenEffectManager::GetLensFlare )
 	;
 }
 
