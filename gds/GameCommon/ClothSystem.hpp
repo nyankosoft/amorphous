@@ -59,6 +59,11 @@ public:
 };
 */
 
+
+/**
+ Holds a cloth object of physics engine and mesh that represents the graphics of the cloth.
+ - The positions and normals of the mesh are automatically updated by physics engine.
+*/
 class CClothObject : public IArchiveObjectBase
 {
 public:
@@ -83,6 +88,8 @@ public:
 
 	void Init( physics::CScene *pScene );
 
+	void Release( physics::CScene *pScene );
+
 	physics::CCloth *GetCloth() { return m_pCloth; }
 
 	const std::vector<std::string>& GetAttachTargetNames() const { return m_AttachTargetNames; }
@@ -93,6 +100,12 @@ public:
 };
 
 
+/**
+Used as either,
+- object to attach the cloth to
+- collision objects for cloths
+
+*/
 class CClothCollisionObject : public IArchiveObjectBase
 {
 public:
@@ -161,6 +174,10 @@ public:
 
 	Result::Name InitMotionSystem( boost::shared_ptr<msynth::CSkeleton> pSkeleton );
 
+	/**
+	When called without arguments, the cloth system creates a new scene for physics objects.
+	Creates 3 types of physics objects, cloths, collisiotion objects, and attachment objects.
+	*/
 	void InitPhysics( physics::CScene *pScene = NULL );
 
 	void Release();

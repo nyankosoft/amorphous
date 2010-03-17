@@ -101,6 +101,13 @@ void CClothObject::Init( physics::CScene *pScene )
 }
 
 
+void CClothObject::Release( physics::CScene *pScene )
+{
+	if( m_pCloth )
+		pScene->ReleaseCloth( m_pCloth );
+}
+
+
 void CClothObject::LoadFromXMLNode( CXMLNodeReader& node )
 {
 	CXMLNodeReader cloth_params = node.GetChild( "cloth_params" );
@@ -375,7 +382,7 @@ void CClothSystem::Release()
 	size_t num_cloths = m_Cloths.size();
 	for( size_t i=0; i<num_cloths; i++ )
 	{
-		pScene->ReleaseCloth( m_Cloths[i].m_pCloth );
+		m_Cloths[i].Release( pScene );
 	}
 
 	if( m_OwnsScene )
