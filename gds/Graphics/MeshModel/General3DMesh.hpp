@@ -43,15 +43,23 @@ public:
 };
 
 
+/**
+Represents a mesh that comprises vertices and indexed polygons.
+- Polygons may be non-triangulated.
+- Designed for low-level, primitive mesh operations.
+- Not designed for rendering meshes at runtime.
+  To render a mesh in realtime application, convert the mesh
+  to C3DMeshModelArchive with C3DMeshModelBuilder
+
+*/
 class CGeneral3DMesh
 {
 	unsigned int m_MeshFlag;
 
 	unsigned int m_VertexFormatFlag;
 
+	/// shared pointer of the vertex buffer. The pointer is shared by all the polygons in m_vecPolygon
 	boost::shared_ptr< std::vector<CGeneral3DVertex> > m_pVertexBuffer;
-
-//	std::vector<CGeneral3DVertex> m_vecVertexBuffer;
 
 	/// Polygons that hold indices to vertices
 	/// - Can be retrieved later
