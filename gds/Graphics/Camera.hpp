@@ -104,13 +104,17 @@ public:
 	inline void GetOrientation( Matrix33& matDestOrient ) const;
 
 
-	inline void GetCameraMatrix(D3DXMATRIX& rMat) const;
+	inline void GetRowMajorCameraMatrix44( float *pDest ) const;
 
-	inline void GetProjectionMatrix(D3DXMATRIX& rMat) const;
+	inline void GetRowMajorProjectionMatrix44( float *pDest ) const;
 
 	inline void GetCameraMatrix( Matrix44& dest ) const;
 
+	Matrix44 GetCameraMatrix() const { Matrix44 dest; GetCameraMatrix(dest); return dest; }
+
 	inline void GetProjectionMatrix( Matrix44& dest ) const;
+
+	Matrix44 GetProjectionMatrix() const { Matrix44 dest; GetProjectionMatrix(dest); return dest; }
 
 	inline bool ViewFrustumIntersectsWith( const Sphere& rSphere )  const;
 
@@ -124,27 +128,28 @@ public:
 
 // ================================ inline implementations ================================ 
 
-inline void CCamera::GetCameraMatrix(D3DXMATRIX& rMat) const
+inline void CCamera::GetRowMajorCameraMatrix44( float *pDest ) const
 {
-
 	const Vector3& w = m_vFront;
 	const Vector3& u = m_vRight;
 	const Vector3& v = m_vUp;
 	const Vector3& p = m_vPosition;
 
-	rMat._11=u.x; rMat._12=v.x; rMat._13=w.x; rMat._14=0;
-	rMat._21=u.y; rMat._22=v.y; rMat._23=w.y; rMat._24=0;
-	rMat._31=u.z; rMat._32=v.z; rMat._33=w.z; rMat._34=0;
-	rMat._41= -Vec3Dot( u, p );
-	rMat._42= -Vec3Dot( v, p );
-	rMat._43= -Vec3Dot( w, p );
-	rMat._44=1;
+	pDest[4*0+0] = u.x; pDest[4*0+1] = v.x; pDest[4*0+2] = w.x; pDest[4*0+3]=0;
+	pDest[4*1+0] = u.y; pDest[4*1+1] = v.y; pDest[4*1+2] = w.y; pDest[4*1+3]=0;
+	pDest[4*2+0] = u.z; pDest[4*2+1] = v.z; pDest[4*2+2] = w.z; pDest[4*2+3]=0;
+	pDest[4*3+0] = -Vec3Dot( u, p );
+	pDest[4*3+1] = -Vec3Dot( v, p );
+	pDest[4*3+2] = -Vec3Dot( w, p );
+	pDest[4*3+3] = 1;
 }
 
 
-inline void CCamera::GetProjectionMatrix(D3DXMATRIX& rMat) const
+inline void CCamera::GetRowMajorProjectionMatrix44( float *pDest ) const
 {
-	D3DXMatrixPerspectiveFovLH(&rMat, m_fFieldOfView, m_fAspectRatio, m_fNearClip, m_fFarClip);
+	Matrix44 src;
+	GetProjectionMatrix( src );
+	src.GetRowMajorMatrix44( pDest );
 }
 
 
