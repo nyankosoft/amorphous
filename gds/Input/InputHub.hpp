@@ -12,16 +12,28 @@
 
 /**
   Holds stacks of input handlers
+  - This is a singleton class.
+  About Input Handlers and Input Hub
+  - Each input handler is placed in a stack identified by an index.
   - There are total of NUM_MAX_INPUT_HANDLERS stacks.
     - Developer can simultaneously register input handlers up to the number of NUM_MAX_USER_INPUT_HANDLERS
-    - Input handlers registered by developer must be in the range, [MIN_USER_INPUT_HANDLER_INDEX,MAX_USER_INPUT_HANDLER_INDEX]
+    - Index of input handlers registered to the input hub by developer must be in the range [MIN_USER_INPUT_HANDLER_INDEX,MAX_USER_INPUT_HANDLER_INDEX]
 	- Developer can use stacks to proecess different inputs
 	    - Input handler on stack A - for processing game inputs (player movement, etc.)
-		- Input handler on stack B - debug input (turning on/off log screen, etc.)
-    - All the registered input handlers at the top of each stack receive the same input data
-  - The instance of CInputHub class holds input handlers as borrowed reference. Developer is responsible for releasing them.
-  - Input handlers can either be managed by stack (PushInputHandler/PopInputHandler) or by single container (SetInputHandler)
-    - Be careful when you use stack: all the input handlers in the stack must not be released until they are popped
+		- Input handler on stack B - debug input (turning on/off system info as overlay, etc.)
+    - All the registered input handlers at the top of each stack receive the same input data.
+	- Input handlers not on top of their stack do not receive input data.
+  - The input hub holds input handlers as borrowed reference. Developer is responsible for releasing them
+    after removing the borrowed reference from the input hub.
+  - The developer has two ways of registering and unregistering input handlers to the input hub.
+    - 1. Set and remove input handlers to and from the input hub.
+      - Use CInputHandler::SetInputHandler() and CInputHandler::RemoveInputHandler()
+    - 2. Push and pop input handlers to and from the input hub.
+      - Use CInputHandler::PushInputHandler() and CInputHandler::PopInputHandler()
+      - You can pop a pushed input handler with CInputHandler::RemoveInputHandler().
+	    This is usually safer because CInputHandler::RemoveInputHandler() removes
+        the input handler even if another input handler is on top of the stack.
+    - Be careful when you use stack: all the input handlers in the stack must not be released until they are popped or removed.
  */
 class CInputHub
 {
