@@ -2,6 +2,7 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/MeshGenerators.hpp"
+#include "Graphics/Shader/ShaderVariableLoader.hpp"
 #include "Physics/ActorDesc.hpp"
 #include "Physics/BoxShapeDesc.hpp"
 #include "Physics/TriangleMeshDesc.hpp"
@@ -747,4 +748,79 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 	}
 
 	return Result::SUCCESS;
+}
+
+
+template<typename T>
+static void SetShaderParamLoaderToEntity( CEntityHandle<>& entity, const char *parameter_name, T value )
+{
+	CCopyEntity *pEntity = entity.GetRawPtr();
+	if( !pEntity )
+		return;
+
+	shared_ptr<CMeshContainerRenderMethod> pRenderMethod
+		= pEntity->m_pMeshRenderMethod;
+
+	if( !pRenderMethod )
+	{
+		return;
+	}
+
+	bool found_param_loader = false;
+	for( size_t i=0; i<pRenderMethod->m_vecMeshRenderMethod.size(); i++ )
+	{
+		CSubsetRenderMethod& subset_render_method = pRenderMethod->m_vecMeshRenderMethod[i];
+
+		for( size_t j=0; j<subset_render_method.m_vecpShaderParamsLoader.size(); j++ )
+		{
+			if( typeid(*subset_render_method.m_vecpShaderParamsLoader[j]) != typeid(CShaderVariableLoader<T>) )
+				continue;
+
+			// found a shader variable loader
+			CShaderVariableLoader<T> *pLoader
+				= dynamic_cast< CShaderVariableLoader<T> *>( subset_render_method.m_vecpShaderParamsLoader[j].get() );
+
+			if( pLoader
+			 && pLoader->GetParamName() == parameter_name )
+			{
+				pLoader->SetParamValue( value );
+				found_param_loader = true;
+			}
+		}
+
+		pRenderMethod->m_vecMeshRenderMethod.size();
+	}
+
+	if( !found_param_loader )
+	{
+		// no shader variable loader for the parameter with parameter_name was found
+		// - register a new variable loader
+		CShaderParameter<T> param(parameter_name);
+		param.Parameter() = value;
+
+		shared_ptr< CShaderVariableLoader<T> > pVarLoader( new CShaderVariableLoader<T>(param) );
+
+		pRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pVarLoader );
+	}
+}
+
+
+/**
+ Useful if the entity has a single shader, technique, and surface.
+*/
+void SetShaderFloatParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value )
+{
+	SetShaderParamLoaderToEntity( entity, parameter_name, value );
+}
+
+
+void SetShaderColorParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value )
+{
+	SetShaderParamLoaderToEntity( entity, parameter_name, value );
+}
+
+
+void SetShaderTextureParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path )
+{
+//	SetShaderParamLoaderToEntity( entity, parameter_name, tex_path );
 }

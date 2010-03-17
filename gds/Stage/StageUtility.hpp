@@ -244,4 +244,9 @@ public:
 */
 
 
+extern void SetShaderFloatParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value );
+extern void SetShaderColorParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value );
+extern void SetShaderTextureParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path );
+
+
 #endif /* __StageUtility_HPP__ */
