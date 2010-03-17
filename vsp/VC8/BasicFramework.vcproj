@@ -502,6 +502,10 @@
 					RelativePath="..\..\gds\Graphics\Shader\ShaderTechniqueHandle.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\ShaderVariableLoader.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Mesh"
