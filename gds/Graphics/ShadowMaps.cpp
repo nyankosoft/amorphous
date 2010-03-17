@@ -162,8 +162,10 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 	else
 	{
 		// set light pos and dir in scene camera space
+		Matrix44 scene_cam_view;
+		m_pSceneCamera->GetCameraMatrix( scene_cam_view );
 		D3DXMATRIX matSceneCamView;
-		m_pSceneCamera->GetCameraMatrix( matSceneCamView );
+		scene_cam_view.GetRowMajorMatrix44( (float *)&matSceneCamView );
 
 		D3DXVECTOR3 vViewLightPos, vViewLightDir;
 		D3DXVec3TransformCoord( &vViewLightPos, &vWorldLightPos, &matSceneCamView );
@@ -186,11 +188,18 @@ void CFlatShadowMap::SetWorldToLightSpaceTransformMatrix()
 
 	HRESULT hr = S_OK;
 	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-	D3DXMATRIX matWorldToLightProj, matView, matProj;
-	m_LightCamera.GetCameraMatrix( matView );
-	m_LightCamera.GetProjectionMatrix( matProj );
-	D3DXMatrixMultiply( &matWorldToLightProj, &matView, &matProj );
+//	D3DXMATRIX matWorldToLightProj, matView, matProj;
+//	m_LightCamera.GetCameraMatrix( matView );
+//	m_LightCamera.GetProjectionMatrix( matProj );
+//	D3DXMatrixMultiply( &matWorldToLightProj, &matView, &matProj );
+//	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
+	const Matrix44 proj_view
+		= m_LightCamera.GetProjectionMatrix()
+		* m_LightCamera.GetCameraMatrix();
+	D3DXMATRIX matWorldToLightProj;
+	proj_view.GetRowMajorMatrix44( (float *)&matWorldToLightProj );
 	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
+//	hr = pEffect->SetMatrixTranspose( "g_mWorldToLightProj", (D3DXMATRIX *)&proj_view );
 
 	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
 	D3DVIEWPORT9 vp;

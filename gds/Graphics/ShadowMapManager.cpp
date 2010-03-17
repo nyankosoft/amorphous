@@ -579,8 +579,8 @@ void CShadowMapManager::BeginSceneDepthMap()
 	D3DXMATRIX matWorld, matView, matProj;
 
 	D3DXMatrixIdentity( &matWorld );
-	m_SceneCamera.GetCameraMatrix( matView );
-	m_SceneCamera.GetProjectionMatrix( matProj );
+//	m_SceneCamera.GetCameraMatrix( matView );
+//	m_SceneCamera.GetProjectionMatrix( matProj );
 
 	Matrix44 view, proj;
 	m_SceneCamera.GetCameraMatrix( view );
