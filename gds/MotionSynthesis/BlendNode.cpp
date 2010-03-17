@@ -23,4 +23,23 @@ void CBlendNode::CreateFromSkeleton( const CBone& src_bone )
 }
 
 
+shared_ptr<CBlendNode> CBlendNode::GetBlendNodeByName( const std::string& name )
+{
+	if( m_Name == name )
+	{
+		return m_pSelf.lock();
+	}
+
+	for( int i=0; i<(int)m_vecpChild.size(); i++ )
+	{
+		shared_ptr<CBlendNode> pNode = m_vecpChild[i]->GetBlendNodeByName( name );
+
+		if( pNode )
+			return pNode;
+	}
+
+	return shared_ptr<CBlendNode>();
+}
+
+
 } // namespace msynth
