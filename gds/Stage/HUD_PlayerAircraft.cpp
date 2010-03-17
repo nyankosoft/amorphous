@@ -382,7 +382,9 @@ void HUD_PlayerAircraft::RenderImpl()
 	Vector2 screen_center = m_HUD.GetScreenCenter();
 	D3DXVECTOR3 pos;
 	D3DXMATRIX matCamera;
-	pCamera->GetCameraMatrix( matCamera );
+	Matrix44 view;
+	pCamera->GetCameraMatrix( view );
+	view.GetRowMajorMatrix44( (float *)&matCamera );
 
 	const HUD_TargetInfo* pTarget = radar_info.GetFocusedTarget();
 	if( pTarget )
@@ -462,8 +464,11 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 //	float scale = GetScreenWidth() / 800.0f;
 
 	D3DXMATRIX matCamera, matProj, matCameraProj;
-	pCamera->GetCameraMatrix( matCamera );
-	pCamera->GetProjectionMatrix( matProj );
+	Matrix44 view, proj;
+	pCamera->GetCameraMatrix( view );
+	pCamera->GetProjectionMatrix( proj );
+	view.GetRowMajorMatrix44( (float *)&matCamera );
+	proj.GetRowMajorMatrix44( (float *)&matProj );
 	matCameraProj = matCamera * matProj;
 
 	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();

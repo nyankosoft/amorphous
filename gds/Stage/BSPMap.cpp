@@ -10,6 +10,7 @@
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Direct3D/TextureTool.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 //#include "JigLib/JL_PhysicsManager.hpp"
 //#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
@@ -790,14 +791,10 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 
 
 	// set transform
-	D3DXMATRIX matWorld, matView, matProj;
-	D3DXMatrixIdentity( &matWorld );
-	rCam.GetCameraMatrix(matView);
-	rCam.GetProjectionMatrix(matProj);
 
-	Matrix44 view, proj;
-	rCam.GetCameraMatrix(view);
-	rCam.GetProjectionMatrix(proj);
+	const Matrix44 world( Matrix44Identity() );
+	const Matrix44 view = rCam.GetCameraMatrix();
+	const Matrix44 proj = rCam.GetProjectionMatrix();
 
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
@@ -825,9 +822,9 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 	}
 ///	else
 ///	{
-		pd3dDev->SetTransform(D3DTS_PROJECTION, &matProj);
-		pd3dDev->SetTransform(D3DTS_WORLD, &matWorld);
-		pd3dDev->SetTransform(D3DTS_VIEW, &matView);
+		FixedFunctionPipelineManager().SetWorldTransform( world );
+		FixedFunctionPipelineManager().SetViewTransform( view );
+		FixedFunctionPipelineManager().SetProjectionTransform( proj );
 ///	}
 
 

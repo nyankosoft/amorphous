@@ -236,11 +236,11 @@ void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
 bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int EffectFlag )
 {
 	D3DXMATRIX matProj;
-	rCamera.GetProjectionMatrix( matProj );
 
 	Matrix44 view, proj;
 	rCamera.GetCameraMatrix( view );
 	rCamera.GetProjectionMatrix( proj );
+	proj.GetRowMajorMatrix44( (float *)&matProj );
 
 	m_pShaderManager->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
