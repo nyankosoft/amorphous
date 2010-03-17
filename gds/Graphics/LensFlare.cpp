@@ -153,19 +153,14 @@ void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
-//	pd3dDev->SetRenderState( D3DRS_LIGHTING, FALSE );
 
 	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
-//	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 	pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_CCW );
 
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
-//	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
 
 	pd3dDev->SetVertexShader( NULL );
 	pd3dDev->SetPixelShader( NULL );
@@ -199,8 +194,7 @@ void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 //	pEffect->End();
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
-//	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
 
 
@@ -223,7 +217,7 @@ bool CLensFlare::AddTexture( const std::string& texture_filename, int group_inde
 void CLensFlare::AddLensFlareRect( float dim,
 								   float scale_factor,
 								   float dist_factor,
-								   U32 color,
+								   const SFloatRGBAColor& color,
 								   int group_index,
 								   int tex_seg_index_x,
 								   int tex_seg_index_y )
@@ -235,7 +229,7 @@ void CLensFlare::AddLensFlareRect( float dim,
 
 	CLensFlareComponent flare;
 
-	flare.m_Color.SetARGB32( color );
+	flare.m_Color = color;
 	flare.m_fDistFactor	 = dist_factor;
 	flare.m_fScaleFactor = scale_factor;
 	flare.m_fRadius		 = dim;
@@ -250,5 +244,5 @@ void CLensFlare::AddLensFlareRect( float dim,
 	rDestGroup.m_RectGroup.SetTextureCoordMinMax( num_flares, 0,0, 1,1 );
 
 	// vertex colors
-	rDestGroup.m_RectGroup.SetRectColor( num_flares, color );
+	rDestGroup.m_RectGroup.SetRectColor( num_flares, color.GetARGB32() );
 }

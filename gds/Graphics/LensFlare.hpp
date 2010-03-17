@@ -7,7 +7,6 @@
 #include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/FVF_TLVertex.h"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/2DPrimitive/2DRectSet.hpp"
 
@@ -129,7 +128,7 @@ public:
 	void AddLensFlareRect( float dim,
 		        float scale_factor,
 				float dist_factor,
-				U32 color,
+				const SFloatRGBAColor& color,
 				int group_index,
 				int tex_seg_index_x = 0,
 				int tex_seg_index_y = 0 );
