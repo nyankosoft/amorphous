@@ -77,15 +77,6 @@ inline void CShaderManagerHub::PushViewAndProjectionMatrices( const CCamera& cam
 
 	FixedFunctionPipelineManager().SetViewTransform( matView );
 	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
-/*
-	D3DXMATRIX view, proj;
-	matView.SetRowMajorMatrix44( (Scalar *)&view );
-	matProj.SetRowMajorMatrix44( (Scalar *)&proj );
-
-	// update the transforms of fixed function pipeline as well
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	pd3dDev->SetTransform(D3DTS_VIEW, &view);
-	pd3dDev->SetTransform(D3DTS_PROJECTION, &proj);*/
 }
 
 
