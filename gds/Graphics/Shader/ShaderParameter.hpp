@@ -7,6 +7,7 @@
 #include "Graphics/TextureHandle.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
+#include "Support/Serialization/Serialization_Color.hpp"
 using namespace GameLib1::Serialization;
 
 

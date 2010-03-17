@@ -138,7 +138,10 @@ public:
 	virtual void SetParam( CShaderParameter<float>& float_param ) {}
 
 	// Sets a single float value
-	virtual void SetParam( CShaderParameter<Vector3>& float_param ) {}
+	virtual void SetParam( CShaderParameter<Vector3>& vec3_param ) {}
+
+	// Sets a color value as 4 floats in RGBA order
+	virtual void SetParam( CShaderParameter<SFloatRGBAColor>& color_param ) {}
 
 	// Sets one or more float values
 	virtual void SetParam( CShaderParameter< std::vector<float> >& float_param ) {}
@@ -151,6 +154,9 @@ public:
 
 	// Sets a single float3 (Vector3) value
 	virtual void SetParam( const char *parameter_name, const Vector3& vec3_param ) {}
+
+	// Sets a color value as 4 floats in RGBA order
+	virtual void SetParam( const char *parameter_name, const SFloatRGBAColor& color_param ) {}
 
 	// Sets one or more float values
 	virtual void SetParam( const char *parameter_name, const float *float_param, uint num_float_values ) {}

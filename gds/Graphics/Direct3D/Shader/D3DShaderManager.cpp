@@ -8,6 +8,13 @@
 using namespace std;
 using namespace boost;
 
+/*
+inline static void SetRGBAColorAs4Floats( const SFloatRGBAColor& c, D3DXHANDLE handle, LPD3DXEFFECT pEffect )
+{
+	const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+	HRESULT hr = pEffect->SetFloatArray( handle, rgba, 4 );
+}*/
+
 
 class CD3DXInclude : public ID3DXInclude
 {
@@ -240,55 +247,57 @@ bool CHLSLShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 
 void CHLSLShaderManager::SetParam( CShaderParameter<int>& int_param )
 {
-	LOG_PRINT_ERROR( " - Not implemented." );
+	HRESULT hr;
+	int index = GetParameterIndex( int_param );
+	if( index < 0 )
+		index = RegisterHLSLParam( int_param );
+
+	if( 0 <= index && index < (int)m_vecParamHandle.size() )
+		hr = m_pEffect->SetInt( m_vecParamHandle[index].Handle, int_param.GetParameter() );
 }
 
 
 void CHLSLShaderManager::SetParam( CShaderParameter<float>& float_param )
 {
+	HRESULT hr;
+	int index = GetParameterIndex( float_param );
+	if( index < 0 )
+		index = RegisterHLSLParam( float_param );
+
+	if( 0 <= index && index < (int)m_vecParamHandle.size() )
+		hr = m_pEffect->SetFloat( m_vecParamHandle[index].Handle, float_param.GetParameter() );
+}
+
+
+void CHLSLShaderManager::SetParam( CShaderParameter<Vector3>& vec3_param )
+{
 	LOG_PRINT_ERROR( " - Not implemented." );
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter<Vector3>& float_param )
+void CHLSLShaderManager::SetParam( CShaderParameter<SFloatRGBAColor>& color_param )
 {
-	LOG_PRINT_ERROR( " - Not implemented." );
+	int index = GetParameterIndex( color_param );
+	if( index < 0 )
+		index = RegisterHLSLParam( color_param );
+
+	if( 0 <= index && index < (int)m_vecParamHandle.size() )
+	{
+//		SetRGBAColorAs4Floats( color_param.GetParameter(), m_vecParamHandle[index].Handle, m_pEffect );
+		const SFloatRGBAColor& c = color_param.GetParameter();
+		const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+		HRESULT hr = m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, rgba, 4 );
+	}
 }
 
 
 void CHLSLShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
 {
-//	int index = float_param.m_ParameterIndex;
+	HRESULT hr;
 	int index = GetParameterIndex( float_param );
 	if( index < 0 )
-	{
-		// init
+		index = RegisterHLSLParam( float_param );
 
-		size_t i;
-		for( i=0; i<m_vecParamHandle.size(); i++ )
-		{
-			if( m_vecParamHandle[i].ParameterName == float_param.GetParameterName() )
-			{
-				index = (int)i;
-				SetParameterIndex( float_param, index );
-				break;
-			}
-		}
-
-		if( i == m_vecParamHandle.size() )
-		{
-			// not found - get the parameter from the name
-			D3DXHANDLE param_handle = m_pEffect->GetParameterByName( NULL, float_param.GetParameterName().c_str() );
-			if( param_handle )
-			{
-				index = (int)m_vecParamHandle.size();
-				SetParameterIndex( float_param, index );
-				m_vecParamHandle.push_back( CD3DShaderParameterHandle(float_param.GetParameterName(),param_handle) );
-			}
-		}
-	}
-
-	HRESULT hr;
 	if( 0 <= index && index < (int)m_vecParamHandle.size() )
 		hr = m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, &(float_param.GetParameter()[0]), (UINT)float_param.GetParameter().size() );
 }
@@ -312,6 +321,15 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector3& ve
 //	ID3DXEffect::SetVector() only takes D3DXVECTOR4 types.
 //	D3DXVECTOR4 v = ???;
 //	m_pEffect->SetVector( parameter_name, &v );
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, const SFloatRGBAColor& color_param )
+{
+//	SetRGBAColorAs4Floats( color_param, parameter_name, m_pEffect );
+	const SFloatRGBAColor& c = color_param;
+	const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, rgba, 4 );
 }
 
 

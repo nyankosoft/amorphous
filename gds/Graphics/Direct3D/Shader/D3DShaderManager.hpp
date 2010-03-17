@@ -186,6 +186,9 @@ private:
 
 	void LoadNullShader();
 
+	template<typename T>
+	inline int RegisterHLSLParam( CShaderParameter<T>& param );
+
 public:
 
 	CHLSLShaderManager();
@@ -239,7 +242,10 @@ public:
 	void SetParam( CShaderParameter<float>& float_param );
 
 	// Sets a single float value
-	void SetParam( CShaderParameter<Vector3>& float_param );
+	void SetParam( CShaderParameter<Vector3>& vec3_param );
+
+	// Sets a color value as 4 floats in RGBA order
+	void SetParam( CShaderParameter<SFloatRGBAColor>& color_param );
 
 	// Sets one or more float values
 	void SetParam( CShaderParameter< std::vector<float> >& float_param );
@@ -252,6 +258,9 @@ public:
 
 	// Sets a single float3 (Vector3) value
 	void SetParam( const char *parameter_name, const Vector3& vec3_param );
+
+	// Sets a color value as 4 floats in RGBA order
+	void SetParam( const char *parameter_name, const SFloatRGBAColor& color_param );
 
 	// Sets one or more float values
 	void SetParam( const char *parameter_name, const float *float_param, uint num_float_values );
@@ -497,6 +506,43 @@ inline Result::Name CHLSLShaderManager::SetTechnique( CShaderTechniqueHandle& te
 		hr = SetNewTechnique( tech_handle );
 
 	return ( SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR );
+}
+
+
+template<typename T>
+inline int CHLSLShaderManager::RegisterHLSLParam( CShaderParameter<T>& param )
+{
+//	int index = float_param.m_ParameterIndex;
+	int index = GetParameterIndex( param );
+	if( index < 0 )
+	{
+		// init
+
+		size_t i;
+		for( i=0; i<m_vecParamHandle.size(); i++ )
+		{
+			if( m_vecParamHandle[i].ParameterName == param.GetParameterName() )
+			{
+				index = (int)i;
+				SetParameterIndex( param, index );
+				break;
+			}
+		}
+
+		if( i == m_vecParamHandle.size() )
+		{
+			// not found - get the parameter from the name
+			D3DXHANDLE param_handle = m_pEffect->GetParameterByName( NULL, param.GetParameterName().c_str() );
+			if( param_handle )
+			{
+				index = (int)m_vecParamHandle.size();
+				SetParameterIndex( param, index );
+				m_vecParamHandle.push_back( CD3DShaderParameterHandle(param.GetParameterName(),param_handle) );
+			}
+		}
+	}
+
+	return index;
 }
 
 
