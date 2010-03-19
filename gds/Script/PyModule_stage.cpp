@@ -103,6 +103,7 @@ BOOST_PYTHON_MODULE(stage)
 //	def( "SetShaderIntParamToEntity",    SetShaderIntParamToEntity,   ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
 //	def( "SetShaderVec3ParamToEntity",   SetShaderVec3ParamToEntity,  ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
 	def( "SetShaderColorParamToEntity",  SetShaderColorParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+	def( "SetShaderTextureParamToEntity",SetShaderTextureParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("tex_path") ) );
 
 //		.def()
 
