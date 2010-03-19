@@ -4,6 +4,7 @@
 #include "../base.hpp"
 #include "precision.h"
 #include "Vector3.hpp"
+#include "Vector4.hpp"
 #include <math.h>
 
 
@@ -57,7 +58,7 @@ public:
 	/// get matrix data in the form of the row major matrix with a stride of 4
 	inline void GetRowMajorMatrix44( Scalar *pDest ) const;
 
-	inline Vector3 TransformCoord( const Vector3& rhs );
+	inline Vector3 TransformCoord( const Vector3& rhs ) const;
 
 	// operators
 	inline Matrix44 & operator+=(const Matrix44 & rhs);

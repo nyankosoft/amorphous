@@ -294,10 +294,12 @@ inline void Matrix44::GetRowMajorMatrix44( Scalar *pDest ) const
 }
 
 
-inline Vector3 Matrix44::TransformCoord(const Vector3 & rhs)
+/// Produces the same result as the global multiplication operator of Matrix44 * Vector3.
+/// This function requires slightly fewer calculations than the operator version.
+inline Vector3 Matrix44::TransformCoord(const Vector3 & rhs) const
 {
 //	return Vector4((*this) * Vector4(rhs.x,rhs.y,rhs.z,1.0f)).ToVector3();
-	Matrix44& lhs = *this;
+	const Matrix44& lhs = *this;
 	Vector3 out;
 	Scalar w = 0.0f;
 	out.x = lhs(0,0) * rhs.x + lhs(0,1) * rhs.y + lhs(0,2) * rhs.z + lhs(0,3);
@@ -341,8 +343,8 @@ inline Matrix44 operator*(const Matrix44 & lhs, const Matrix44 & rhs)
   return out;
 }
 
-/*
-// matrix * vector
+
+/// Matrix44 * Vector4
 inline Vector4 operator*(const Matrix44 & lhs, const Vector4 & rhs)
 {
 	Vector4 out;
@@ -352,7 +354,14 @@ inline Vector4 operator*(const Matrix44 & lhs, const Vector4 & rhs)
 	out.w = lhs(3,0) * rhs.x + lhs(3,1) * rhs.y + lhs(3,2) * rhs.z + lhs(3,3) * rhs.w;
 	return out;
 }
-*/
+
+
+/// Matrix44 * Vector3
+inline Vector3 operator*(const Matrix44 & lhs, const Vector3 & rhs)
+{
+	const Vector4 out( lhs * Vector4(rhs.x,rhs.y,rhs.z,1.0f) );
+	return Vector3(out.x,out.y,out.z) / out.w;
+}
 
 
 
