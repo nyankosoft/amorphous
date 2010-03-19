@@ -19,7 +19,14 @@ public:
 
 	CTextureHandle m_Handle;
 
+	int m_Stage;
+
 public:
+
+	CTextureParam()
+		:
+	m_Stage(-1)
+	{}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{

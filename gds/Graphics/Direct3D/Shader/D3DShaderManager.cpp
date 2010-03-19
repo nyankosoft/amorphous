@@ -303,6 +303,33 @@ void CHLSLShaderManager::SetParam( CShaderParameter< std::vector<float> >& float
 }
 
 
+void CHLSLShaderManager::SetParam( CShaderParameter<CTextureParam>& tex_param )
+{
+	HRESULT hr;
+	int index = GetParameterIndex( tex_param );
+	if( index < 0 )
+	{
+		index = RegisterHLSLParam( tex_param );
+
+		// Also, check if the tex param is intended to be set to an indexed stage.
+		// If that is the case, update the stage index
+		if( tex_param.GetParameterName().find( "stage:" ) == 0 )
+			tex_param.Parameter().m_Stage = to_int( tex_param.GetParameterName().substr( 6 ) );
+	}
+
+//	if( 0 <= index && index < (int)m_vecParamHandle.size() )
+//		hr = m_pEffect->SetTexture( m_vecParamHandle[index].Handle, tex_param.Parameter().m_Handle.GetTexture() );
+
+	if( 0 <= index && index < (int)m_vecParamHandle.size() )
+	{
+		if( 0 <= tex_param.Parameter().m_Stage )
+			SetTexture( tex_param.Parameter().m_Stage, tex_param.Parameter().m_Handle );
+		else
+			hr = m_pEffect->SetTexture( m_vecParamHandle[index].Handle, tex_param.Parameter().m_Handle.GetTexture() );
+	}
+}
+
+
 void CHLSLShaderManager::SetParam( const char *parameter_name, int int_param )
 {
 	m_pEffect->SetInt( parameter_name, int_param );

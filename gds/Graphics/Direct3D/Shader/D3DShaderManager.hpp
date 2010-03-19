@@ -250,6 +250,8 @@ public:
 	// Sets one or more float values
 	void SetParam( CShaderParameter< std::vector<float> >& float_param );
 
+	void SetParam( CShaderParameter<CTextureParam>& tex_param );
+
 	// Sets a single float value
 	void SetParam( const char *parameter_name, int int_param );
 

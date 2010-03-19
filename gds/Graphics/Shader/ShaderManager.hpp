@@ -146,6 +146,9 @@ public:
 	// Sets one or more float values
 	virtual void SetParam( CShaderParameter< std::vector<float> >& float_param ) {}
 
+	// Sets a texture
+	virtual void SetParam( CShaderParameter<CTextureParam>& tex_param ) {}
+
 	// Sets a single float value
 	virtual void SetParam( const char *parameter_name, int int_param ) {}
 
