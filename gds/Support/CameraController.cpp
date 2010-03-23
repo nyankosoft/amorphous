@@ -59,11 +59,13 @@ void CCameraControllerInputHandler::ProcessInput(SInputData& input)
     switch( input.iGICode )
     {
 		case GIC_MOUSE_AXIS_X:
-			m_pCameraController->AddYaw( input.fParam1 / 500.0f );
+			if( m_pCameraController->IsKeyPressed( GIC_MOUSE_BUTTON_R ) )
+				m_pCameraController->AddYaw( input.fParam1 / 500.0f );
 			break;
 
 		case GIC_MOUSE_AXIS_Y:
-			m_pCameraController->AddPitch( input.fParam1 / 500.0f * (-1.0f) );
+			if( m_pCameraController->IsKeyPressed( GIC_MOUSE_BUTTON_R ) )
+				m_pCameraController->AddPitch( input.fParam1 / 500.0f * (-1.0f) );
 			break;
 
 		default:

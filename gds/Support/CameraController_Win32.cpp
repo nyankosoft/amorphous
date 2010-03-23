@@ -8,15 +8,20 @@ int ConvertGICodeToWin32VKCode( int general_input_code )
 	static int s_GICtoVKC[NUM_GENERAL_INPUT_CODES];
 	if( s_Initialized == 0 )
 	{
-		s_GICtoVKC[GIC_SPACE]   = VK_SPACE;
-		s_GICtoVKC[GIC_TAB]     = VK_TAB;
-		s_GICtoVKC[GIC_UP]      = VK_UP;
-		s_GICtoVKC[GIC_DOWN]    = VK_DOWN;
-		s_GICtoVKC[GIC_RIGHT]   = VK_RIGHT;
-		s_GICtoVKC[GIC_LEFT]    = VK_LEFT;
-		s_GICtoVKC[GIC_DELETE]  = VK_DELETE;
-		s_GICtoVKC[GIC_BACK]    = VK_BACK;
-		s_GICtoVKC[GIC_ESC]     = VK_ESCAPE;
+		s_GICtoVKC[GIC_SPACE]    = VK_SPACE;
+		s_GICtoVKC[GIC_TAB]      = VK_TAB;
+		s_GICtoVKC[GIC_UP]       = VK_UP;
+		s_GICtoVKC[GIC_DOWN]     = VK_DOWN;
+		s_GICtoVKC[GIC_RIGHT]    = VK_RIGHT;
+		s_GICtoVKC[GIC_LEFT]     = VK_LEFT;
+		s_GICtoVKC[GIC_DELETE]   = VK_DELETE;
+		s_GICtoVKC[GIC_BACK]     = VK_BACK;
+		s_GICtoVKC[GIC_ESC]      = VK_ESCAPE;
+		s_GICtoVKC[GIC_ENTER]    = VK_RETURN;
+		s_GICtoVKC[GIC_LSHIFT]   = VK_SHIFT;
+		s_GICtoVKC[GIC_RSHIFT]   = VK_SHIFT;
+		s_GICtoVKC[GIC_LCONTROL] = VK_CONTROL;
+		s_GICtoVKC[GIC_RCONTROL] = VK_CONTROL;
 
 		s_Initialized = 1;
 	}
