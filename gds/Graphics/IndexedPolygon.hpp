@@ -9,9 +9,7 @@
 #include "3DMath/Plane.hpp"
 #include "3DMath/Triangle.hpp"
 #include "Graphics/General3DVertex.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "Support/Serialization/ArchiveObjectBase.hpp"
 using namespace GameLib1::Serialization;
 
 
@@ -97,11 +95,11 @@ public:
 	/// Added to use CIndexedPolygon with CAABTree
 	/// - Not added for actual use
 	/// - m_pVertexBuffer would have to be separately serialized and restored
-	inline void Serialize( IArchive& ar, const unsigned int version );
+	void Serialize( IArchive& ar, const unsigned int version );
 
 	void SetVertexBuffer( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer ) { m_pVertexBuffer = pVertexBuffer; }
 
-	boost::shared_ptr<std::vector<CGeneral3DVertex>> VertexBuffer() { return m_pVertexBuffer; }
+	boost::shared_ptr< std::vector<CGeneral3DVertex> > VertexBuffer() { return m_pVertexBuffer; }
 
 
 //	static std::vector<CGeneral3DVertex>& VertexBuffer() { return (*m_pVertexBuffer); }
@@ -457,19 +455,6 @@ inline float CIndexedPolygon::CalculateArea() const
 	}
 
 	return fArea;
-}
-
-
-inline void CIndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
-{
-	ar & m_Plane;
-
-	ar & m_AABB;
-
-	ar & m_index;
-
-	/// surface property of the polygon
-	ar & m_MaterialIndex;
 }
 
 

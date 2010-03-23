@@ -1,5 +1,7 @@
-
 #include "IndexedPolygon.hpp"
+#include "Support/Serialization/Serialization.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
+
 
 using namespace std;
 
@@ -79,6 +81,18 @@ Vector3 CIndexedPolygon::GetInterpolatedNormal( const Vector3& rvPosition ) cons
 	return vDestNormal;
 }
 
+
+void CIndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_Plane;
+
+	ar & m_AABB;
+
+	ar & m_index;
+
+	/// surface property of the polygon
+	ar & m_MaterialIndex;
+}
 
 
 //
