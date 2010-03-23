@@ -277,7 +277,7 @@ void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
 //	dest_bone.SetOffset( vOffset );
 //	dest_bone.SetOffset( Vector3(0,0,1) * fRestLen );
 
-	if( true /* r1 */ )
+	if( false /* r1 */ )
 	{
 		dest_bone.SetOffset( pSrcBone->GetBoneRestPosition() );
 		dest_bone.SetOrient( pSrcBone->GetBoneRestOrientation() );
