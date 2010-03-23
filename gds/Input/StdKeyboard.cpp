@@ -1,6 +1,4 @@
-
 #include "StdKeyboard.hpp"
-
 #include "InputHub.hpp"
 
 #include <windows.h>
@@ -8,6 +6,8 @@
 
 CStdKeyboard::CStdKeyboard()
 {
+	InputDeviceHub().RegisterInputDeviceToGroup( this );
+
 	for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 		m_aiGICodeForVKCode[i] = GIC_INVALID;
 
@@ -88,6 +88,12 @@ CStdKeyboard::CStdKeyboard()
 }
 
 
+Result::Name CStdKeyboard::SendBufferedInputToInputHandlers()
+{
+	return Result::SUCCESS;
+}
+
+
 void CStdKeyboard::NotifyKeyDown( int iVK_Code )
 {
 	SInputData input;
@@ -102,6 +108,8 @@ void CStdKeyboard::NotifyKeyDown( int iVK_Code )
 
 	// send input to input hub
 	InputHub().UpdateInput(input);
+
+	UpdateInputState( input );
 }
 
 
@@ -119,6 +127,8 @@ void CStdKeyboard::NotifyKeyUp( int iVK_Code )
 
 	// send input to input hub
 	InputHub().UpdateInput(input);
+
+	UpdateInputState( input );
 }
 
 

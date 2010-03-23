@@ -2,7 +2,7 @@
 #define  __STDKEYBOARD_H__
 
 
-#include "InputHandler.hpp"
+#include "Input/InputDevice.hpp"
 
 
 /**
@@ -11,13 +11,17 @@
    and reports it as general input code
 
 */
-class CStdKeyboard// : public CInputDevice
+class CStdKeyboard : public CInputDevice
 {
 	int m_aiGICodeForVKCode[NUM_GENERAL_INPUT_CODES];
 
 public:
 	CStdKeyboard();
 	~CStdKeyboard() {}
+
+	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
+
+	Result::Name SendBufferedInputToInputHandlers();
 
 	void NotifyKeyDown( int iVK_Code );
 	void NotifyKeyUp( int iVK_Code );
