@@ -10,7 +10,8 @@ void CTransformNode::SetInterpolatedTransform_r( float frac, const CTransformNod
 {
 	m_vTranslation = node0.m_vTranslation * ( 1.0f - frac ) + node1.m_vTranslation * frac;
 
-	m_Rotation = node0.m_Rotation * ( 1.0f - frac ) + node1.m_Rotation * frac;
+//	m_Rotation = node0.m_Rotation * ( 1.0f - frac ) + node1.m_Rotation * frac;
+	m_Rotation.Slerp( frac, node0.m_Rotation, node1.m_Rotation );
 
 	const Matrix33 mat = m_Rotation.ToRotationMatrix(); // check the rotation for debugging
 

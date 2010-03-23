@@ -70,9 +70,9 @@ int g_htrans_rev = 3;
 
 void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const
 {
-  if( g_htrans_rev == 1 )
+  if( g_htrans_rev == 3 )
   {
-	if( true/*m_TransformStyle & APPLY_LOCAL_ROTATION_TO_OFFSET*/ )
+	if( false/*m_TransformStyle & APPLY_LOCAL_ROTATION_TO_OFFSET*/ )
 	{
 		const Matrix33 matLocalRot = input_node.GetLocalRotationQuaternion().ToRotationMatrix();
 		const Vector3 vLocalTrans = input_node.GetLocalTranslation() + m_vOffset;
