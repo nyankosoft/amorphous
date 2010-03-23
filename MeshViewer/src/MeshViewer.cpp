@@ -84,6 +84,8 @@ void CMeshViewer::RenderMeshes()
 		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSV,  D3DTADDRESS_WRAP );
 	}
 
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+
 	// alpha-blending settings 
 //	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
@@ -110,9 +112,6 @@ void CMeshViewer::RenderMeshes()
 //	if( FAILED(hr) )
 //		return;
 
-	pd3dDevice->SetVertexShader( NULL );
-	pd3dDevice->SetPixelShader( NULL );
-
 //	size_t i, num_meshes = m_vecMesh.size();
 //	if( 0 < num_meshes )
 //		RenderAsSkybox( m_vecMesh[0], g_CameraController.GetPosition() );
@@ -138,11 +137,10 @@ void CMeshViewer::RenderMeshes()
 			pMesh->Render( ffp_mgr );
 	}*/
 
-//	CD3DFixedFunctionPipelineManager ffpmgr;
 	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 		pMesh->Render();
-//		pMesh->Render( ffpmgr );
+//		pMesh->Render( FixedFunctionPipelineManager() );
 }
 
 
@@ -193,6 +191,8 @@ void CMeshViewer::Render()
 // mesh 1 to n: meshes
 bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 {
+	LOG_PRINT( " Opening a mesh file: " + mesh_filepath );
+
 	bool loaded = m_Mesh.Load( mesh_filepath );
 
 	const path current_mesh_filepath = mesh_filepath;
@@ -244,6 +244,9 @@ int CMeshViewer::Init()
 
 	string input_filepath;// = g_CmdLine;
 
+	if( 0 < ms_CommandLineArguments.size() )
+		input_filepath = ms_CommandLineArguments[0];
+
 	string mesh_filepath;
 	if( 0 < input_filepath.length() )
 		mesh_filepath = input_filepath;
@@ -294,9 +297,6 @@ int CMeshViewer::Init()
 	DIRECT3D9.GetDevice()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
 	pBackBuffer->GetDesc( &back_buffer_desc );
 */
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	HRESULT hr;
-
 	SetDefaultLinearFog();
 
 	m_pFont = shared_ptr<CFont>( new CFont( "Arial", 16, 32 ) );
