@@ -19,6 +19,9 @@
 
 #include "BumpmapTextureMaker2_LWO2.h"
 
+using namespace std;
+
+
 //#include <vld.h>
 
 // draft
@@ -93,7 +96,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 			case VK_F12:
 				if( g_pBumpTexMaker )
 				{
-					g_pBumpTexMaker->SaveImages();
+					g_pBumpTexMaker->SaveImages( 1024, 1024 );
 				}
 				break;
 			}
