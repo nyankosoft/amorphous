@@ -92,10 +92,10 @@ public:
 
     // rotation of a vector by a quaternion
     inline Vector3 Rotate ( const Vector3& src ) const;
-/*
-    // spherical linear interpolation
-    inline Quaternion& Slerp (Scalar fT, const Quaternion& rkP, const Quaternion& q);
 
+    // spherical linear interpolation
+    inline Quaternion& Slerp( Scalar f, const Quaternion& q0, const Quaternion& q1 );
+/*
     inline Quaternion& SlerpExtraSpins (Scalar fT, const Quaternion& rkP,
         const Quaternion& q, int iExtraSpins);
 

@@ -634,29 +634,31 @@ inline Vector3 Quaternion::Rotate( const Vector3& src )
     ToRotationMatrix(rotation);
     return rotation * src;
 }
-//----------------------------------------------------------------------------
- /*
-inline Quaternion& Quaternion::Slerp (Scalar fT, const Quaternion& rkP,
-    const Quaternion& q)
-{
-    Scalar fCos = rkP.Dot(q);
-    Scalar fAngle = Math<Real>::ACos(fCos);
 
-    if ( Math<Real>::FAbs(fAngle) >= Math<Real>::ZERO_TOLERANCE )
+//----------------------------------------------------------------------------
+inline Quaternion& Quaternion::Slerp( Scalar f, const Quaternion& q0, const Quaternion& q1 )
+{
+    Scalar fCos = q0.Dot(q1);
+    Scalar fAngle = acos(fCos);
+
+	const Scalar fZeroTolerance = 0.000001f;
+    if ( fZeroTolerance <= fabs(fAngle) )
     {
-        Scalar fSin = Math<Real>::Sin(fAngle);
+        Scalar fSin = sin(fAngle);
         Scalar fInvSin = ((Scalar)1.0)/fSin;
-        Scalar fCoeff0 = Math<Real>::Sin(((Scalar)1.0-fT)*fAngle)*fInvSin;
-        Scalar fCoeff1 = Math<Real>::Sin(fT*fAngle)*fInvSin;
-        *this = fCoeff0*rkP + fCoeff1*q;
+        Scalar fCoeff0 = sin(((Scalar)1.0-f)*fAngle)*fInvSin;
+        Scalar fCoeff1 = sin(f*fAngle)*fInvSin;
+        *this = fCoeff0*q0 + fCoeff1*q1;
     }
     else
     {
-        *this = rkP;
+        *this = q0;
     }
 
     return *this;
 }
+
+/*
 //----------------------------------------------------------------------------
  
 inline Quaternion& Quaternion::SlerpExtraSpins (Scalar fT,
