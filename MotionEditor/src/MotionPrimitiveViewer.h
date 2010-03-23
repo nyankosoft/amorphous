@@ -51,9 +51,9 @@ class CMotionPrimitiveViewer
 {
 	CGM_DialogManagerSharedPtr m_pDialogManager;
 
-	boost::shared_ptr<CInputHandler> m_pInputHandler;
+	boost::shared_ptr<CInputHandler> m_pGUIInputHandler;
 
-	boost::shared_ptr<CInputHandler> m_pDebugInputHandler;
+	boost::shared_ptr<CInputHandler> m_pInputHandler;
 
 	std::vector< boost::shared_ptr<msynth::CMotionPrimitive> > m_vecpMotionPrimitive;
 
@@ -73,6 +73,8 @@ class CMotionPrimitiveViewer
 
 	CLineList m_DirectionGuide;
 
+	bool m_Playing;
+
 	bool m_RenderMesh;
 
 	CSkeletalMeshMotionViewer m_MeshViewer;
@@ -80,6 +82,8 @@ class CMotionPrimitiveViewer
 	float m_fPlaySpeedFactor;
 
 	bool m_DisplaySkeletalMesh;
+
+	CGM_Static *m_pPlaytimeText;
 
 private:
 
@@ -95,6 +99,7 @@ public:
 	{
 		ROOT_DIALOG,
 		LBX_MOTION_PRIMITIVES,
+		STC_PLAYTIME,
 		NUM_UIIDS
 	};
 
@@ -116,6 +121,10 @@ public:
 	void SetViewerPose( const Matrix34& viewer_pose ) { m_MeshViewer.SetViewerPose( viewer_pose ); }
 
 	void ToggleDisplaySkeletalMesh() { m_DisplaySkeletalMesh = !m_DisplaySkeletalMesh; }
+
+	void UpdatePlayTime( float new_playtime );
+
+	void HandleInput( const SInputData& input );
 };
 
 

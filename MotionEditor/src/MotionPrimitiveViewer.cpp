@@ -13,7 +13,7 @@
 using namespace std;
 using namespace boost;
 
-
+/*
 class CDebugInputHandler : public CInputHandler
 {
 	CMotionPrimitiveViewer *m_pViewer;
@@ -40,7 +40,7 @@ public:
 		}
 	}
 };
-
+*/
 
 extern int ConvertGICodeToWin32VKCode( int general_input_code );
 
@@ -129,6 +129,50 @@ public:
 };
 */
 
+
+static CLineList sg_RotationIndicator;
+
+
+
+void DisplayLocalRotations_r( const CBone& bone, const CTransformNode& node, Matrix34& parent_transform )
+{
+//	Vector3 vWorldPos = vParentPos + bone.GetOrient() * bone.GetOffset();
+
+	Matrix34 world_transform;
+	bone.CalculateWorldTransform( world_transform, parent_transform, node );
+
+	Vector3 vParentPos = parent_transform.vPosition;
+	Vector3 vWorldPos  = world_transform.vPosition;
+	sg_RotationIndicator.AddLineSegment( vParentPos, vWorldPos, SFloatRGBAColor::White().GetARGB32() );
+	Quaternion q( node.GetLocalRotationQuaternion() );
+	Vector3 vRotationIndicator( q.x, q.y, q.z );
+	vRotationIndicator *= q.w;
+	sg_RotationIndicator.AddLineSegment( vWorldPos, vWorldPos + vRotationIndicator, SFloatRGBAColor::Magenta().GetARGB32() );
+
+	const int num_children = take_min( bone.GetNumChildren(), node.GetNumChildren() );
+	for( int i=0; i<num_children; i++ )
+	{
+		DisplayLocalRotations_r( bone.GetChild(i), node.GetChildNode(i), world_transform );
+	}
+}
+
+
+void UpdateLocalRotationIndicators( const CSkeleton& skeleton, const CKeyframe& keyframe )
+{
+	Vector3 vRootPos( 2, 0, 0 );
+	Matrix34 root_pose( vRootPos, Matrix33Identity() );
+	sg_RotationIndicator.Clear();
+	DisplayLocalRotations_r( skeleton.GetRootBone(), keyframe.GetRootNode(), root_pose );
+}
+
+
+void DisplayLocalRotationIndicators()
+{
+	DIRECT3D9.GetDevice()->SetVertexShader( NULL );
+	DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+
+	sg_RotationIndicator.Draw();
+}
 
 
 CSkeletalMeshMotionViewer::CSkeletalMeshMotionViewer()
@@ -265,9 +309,11 @@ void CSkeletalMeshMotionViewer::Render()
 		// How to do vertex blending in fixed function pipeline?
 		pSkeletalMesh->Render();
 	}
+
+	DisplayLocalRotationIndicators();
 }
 
-
+/*
 extern int g_htrans_rev;
 
 /// NOTE: param 'bone' is used to calculate num_child_bones
@@ -288,13 +334,13 @@ void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
 		local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix();
 		pMesh->SetLocalTransformToCache( index, local_transform );
 	}
-/*	else if( g_htrans_rev == 3 )
-	{
-		Matrix34 local_transform;
-		local_transform.vPosition = node.GetLocalTranslation();
-		local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix() * bone.GetOrient();
-		pMesh->SetLocalTransformToCache( index, local_transform );
-	}*/
+//	else if( g_htrans_rev == 3 )
+//	{
+//		Matrix34 local_transform;
+//		local_transform.vPosition = node.GetLocalTranslation();
+//		local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix() * bone.GetOrient();
+//		pMesh->SetLocalTransformToCache( index, local_transform );
+//	}
 
 	const int num_child_bones = bone.GetNumChildren();
 	const int num_child_nodes = node.GetNumChildren();
@@ -307,14 +353,8 @@ void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
 			pMesh );//,
 //			mesh
 	}
-
-/*	for( int i=0; i<num_child_bones; i++ )
-	{
-		for( int j=0; j<num_child_nodes; j++ )
-			bone.GetImmediateChild( node.Get );
-	}*/
 }
-
+*/
 
 void CSkeletalMeshMotionViewer::Update( const msynth::CKeyframe& keyframe )
 {
@@ -326,7 +366,9 @@ void CSkeletalMeshMotionViewer::Update( const msynth::CKeyframe& keyframe )
 	if( !pSkeleton )
 		return;
 
-	Update_r( pSkeleton->GetRootBone(), keyframe.GetRootNode(), pSkeletalMesh );
+	UpdateMeshBoneTransforms( keyframe, *pSkeleton, *pSkeletalMesh );
+
+	UpdateLocalRotationIndicators( *pSkeleton, keyframe );
 }
 
 
@@ -373,7 +415,9 @@ m_pMotionPrimitiveListBox(NULL),
 m_fCurrentPlayTime(0),
 m_RenderMesh(true),
 m_fPlaySpeedFactor(1.0f),
-m_DisplaySkeletalMesh(true)
+m_DisplaySkeletalMesh(true),
+m_pPlaytimeText(NULL),
+m_Playing(false)
 {
 	m_pUnitCube = boost::shared_ptr<CUnitCube>( new CUnitCube() );
 	m_pUnitCube->Init();
@@ -384,6 +428,9 @@ m_DisplaySkeletalMesh(true)
 
 CMotionPrimitiveViewer::~CMotionPrimitiveViewer()
 {
+	m_pGUIInputHandler->RemoveChild( m_pInputHandler.get() );
+//	or InputHub().RemoveInputHandler( m_pInputHandler.get() );
+	InputHub().RemoveInputHandler( m_pGUIInputHandler.get() );
 }
 
 
@@ -426,17 +473,21 @@ void CMotionPrimitiveViewer::Init()
 //	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
 	pGraphicsElementMgr->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono_Bold_256", CFontBase::FONTTYPE_TEXTURE, 8, 16, 0, 0 );
 
-	m_pInputHandler = shared_ptr<CInputHandler>( new CGM_DialogInputHandler( m_pDialogManager ) );
-	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
+	m_pPlaytimeText
+		= pDialog->AddStatic( STC_PLAYTIME, CGraphicsComponent::RectAtLeftBottom( 300, 40, 20, 20 ), "0.0" );
+
+	m_pGUIInputHandler = shared_ptr<CInputHandler>( new CGM_DialogInputHandler( m_pDialogManager ) );
+	InputHub().PushInputHandler( 0, m_pGUIInputHandler.get() );
 
 	// set up guide geometry
 	float h = g_fIndicatorHeight;
 	m_DirectionGuide.AddLineSegment( Vector3(-100.0f, h,   0.0f), Vector3( 100.0f, h,  0.0f), 0xFFC0C0C0 );
 	m_DirectionGuide.AddLineSegment( Vector3(0.0f,    h,-100.0f), Vector3( 0.0f,   h,100.0f), 0xFFF0F0F0 );
 
+
 	// input handler for display options
-	m_pDebugInputHandler = shared_ptr<CInputHandler>( new CDebugInputHandler( this ) );
-	InputHub().SetInputHandler( 1, m_pDebugInputHandler.get() );
+	m_pInputHandler.reset( new CInputDataDelegate<CMotionPrimitiveViewer>( this ) );
+	m_pGUIInputHandler->AddChild( m_pInputHandler.get() );
 }
 
 
@@ -459,22 +510,21 @@ void CMotionPrimitiveViewer::Update( float dt )
 	m_MeshViewer.Update( keyframe );
 
 	m_fPlaySpeedFactor = 0.0f;
-	if( false )//mode == Play
+	if( m_Playing )
 	{
 		m_fPlaySpeedFactor = 1.0f;
 	}
 	else
 	{
-		if( IsKeyPressed( GIC_RIGHT ) )
+		if( IsKeyPressed( GIC_LSHIFT ) && IsKeyPressed( GIC_RIGHT ) )
 			m_fPlaySpeedFactor =  1.0f;
-		else if( IsKeyPressed( GIC_LEFT ) )
+		if( IsKeyPressed( GIC_LSHIFT ) && IsKeyPressed( GIC_LEFT ) )
 			m_fPlaySpeedFactor = -1.0f;
-		else
-			m_fPlaySpeedFactor =  0.0f;
+/*		else
+			m_fPlaySpeedFactor =  0.0f;*/
 	}
 
-	m_fCurrentPlayTime += dt * m_fPlaySpeedFactor;
-	clamp( m_fCurrentPlayTime, 0.0f, 50.0f );
+	UpdatePlayTime( m_fCurrentPlayTime + dt * m_fPlaySpeedFactor );
 }
 
 
@@ -632,7 +682,7 @@ int CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string&
 	msynth::CHumanoidMotionTable tbl;
 
 	db.GetHumanoidMotionTable( motion_table_name, tbl );
-	
+
 	BOOST_FOREACH( const msynth::CHumanoidMotionEntry& entry, tbl.m_vecEntry )
 	{
 		BOOST_FOREACH( const std::string& motion_name, entry.m_vecMotionPrimitiveName )
@@ -659,4 +709,56 @@ int CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string&
 	m_pDialogManager->OpenRootDialog( ROOT_DIALOG );
 
 	return 0;
+}
+
+
+void CMotionPrimitiveViewer::UpdatePlayTime( float new_playtime )
+{
+	clamp( new_playtime, 0.0f, 50.0f );
+	m_fCurrentPlayTime = new_playtime;
+
+	if( m_pPlaytimeText )
+		m_pPlaytimeText->SetText( to_string(m_fCurrentPlayTime) );
+}
+
+
+void CMotionPrimitiveViewer::HandleInput( const SInputData& input )
+{
+	switch( input.iGICode )
+	{
+	case GIC_RIGHT:
+		if( input.iType == ITYPE_KEY_PRESSED
+		 && !m_Playing
+		 && !IsKeyPressed( GIC_LSHIFT ) )
+			UpdatePlayTime( m_fCurrentPlayTime + 1.0f / 60.0f );
+		break;
+	case GIC_LEFT:
+		if( input.iType == ITYPE_KEY_PRESSED
+		 && !m_Playing
+		 && !IsKeyPressed( GIC_LSHIFT ) )
+			UpdatePlayTime( m_fCurrentPlayTime - 1.0f / 60.0f );
+		break;
+	case GIC_SPACE:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_Playing = !m_Playing;
+//			if( 0.0f < m_fPlaySpeedFactor )
+//			m_fCurrentPlayTime += 1.0f / 60.0f;
+		}
+		break;
+	case '0':
+//		if( input.iType == ITYPE_KEY_PRESSED )
+//			m_pViewer->ToggleDisplayHelpText();
+		break;
+	case '2':
+//		if( input.iType == ITYPE_KEY_PRESSED )
+//			m_pViewer->ToggleDisplaySkeleton();
+		break;
+	case '3':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			ToggleDisplaySkeletalMesh();
+		break;
+	default:
+		break;
+	}
 }
