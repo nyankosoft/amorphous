@@ -6,6 +6,7 @@
 #include "ApplicationBase.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/Camera.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
 #include "Support/CameraController.hpp"
 
 
@@ -23,6 +24,8 @@ class CGraphicsApplicationBase : public CApplicationBase
 	boost::shared_ptr<CFontBase> m_pFont;
 
 	boost::shared_ptr<CInputHandler> m_pInputHandler;
+
+	SFloatRGBAColor m_BackgroundColor;
 
 private:
 
@@ -54,6 +57,8 @@ protected:
 	boost::shared_ptr<CCameraControllerBase> GetCameraController() { return m_pCameraController; }
 
 	CCamera& Camera() { return m_Camera; }
+
+	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
 
 public:
 

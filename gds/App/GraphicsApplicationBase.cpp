@@ -22,7 +22,8 @@ static int sg_InputHandlerIndex = 1;
 
 CGraphicsApplicationBase::CGraphicsApplicationBase()
 :
-m_UseCameraController(true)
+m_UseCameraController(true),
+m_BackgroundColor( SFloatRGBAColor::Blue() )
 {
 	m_pCameraController.reset( new CCameraController( sg_CameraControllerInputHandlerIndex ) );
 
@@ -108,16 +109,14 @@ void CGraphicsApplicationBase::RenderBase()
 //	GraphicsDevice().SetClearColor( g_pTest->GetBackgroundColor() );
 //	GraphicsDevice().SetClearDepth( 1.0f );
 //	GraphicsDevice().Clear()
+	const SFloatRGBAColor& bg_color = m_BackgroundColor;
 	if( pd3dDevice )
 	{
-//		pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, g_pTest->GetBackgroundColor().GetARGB32(), 1.0f, 0 );
-		pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF0000FF, 1.0f, 0 );
+		pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, bg_color.GetARGB32(), 1.0f, 0 );
 	}
 	else
 	{
-//		const SFloatRGBAColor c = g_pTest->GetBackgroundColor();
-		const SFloatRGBAColor c( SFloatRGBAColor::Blue() );
-		glClearColor( c.fRed, c.fGreen, c.fBlue, c.fAlpha );
+		glClearColor( bg_color.fRed, bg_color.fGreen, bg_color.fBlue, bg_color.fAlpha );
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
 	}
 

@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include <vector>
 #include "Input/fwd.hpp"
 
 class CApplicationBase;
@@ -76,6 +77,8 @@ public:
 			ms_pInstance = NULL;
 		}
 	}
+
+	static std::vector<std::string> ms_CommandLineArguments;
 
 	friend void MainLoop( CApplicationBase *pApp );
 	friend CApplicationBase *CreateApplicationInstance();

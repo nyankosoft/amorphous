@@ -125,6 +125,24 @@ string GetExeFilepath()
 }
 
 
+static void SetCommandLineArguments( LPSTR lpCmdLine )
+{
+	string cmd_line(lpCmdLine);
+	if( 2 <= cmd_line.length() )
+	{
+		// Remove the first and last double quotes
+		if( cmd_line[0] == '"' )
+			cmd_line = cmd_line.substr( 1 );
+
+		if( cmd_line[ cmd_line.length()-1 ] == '"' )
+			cmd_line = cmd_line.substr( 0, cmd_line.length()-1 );
+	}
+
+	CApplicationBase::ms_CommandLineArguments.resize( 1 );
+	CApplicationBase::ms_CommandLineArguments[0] = cmd_line;
+}
+
+
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
 	SetCurrentThreadAsRenderThread();
@@ -136,6 +154,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	g_pMessageProcedureForGameWindow = MsgProc;
 
 	fnop::set_wd( fnop::get_path(GetExeFilepath()) );
+
+	SetCommandLineArguments( lpCmdLine );
 
 	StartApp();
 
