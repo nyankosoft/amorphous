@@ -1,12 +1,12 @@
 #include "GLSLTest.hpp"
-#include <gds/Graphics.hpp>
-#include <gds/Graphics/AsyncResourceLoader.hpp>
-#include <gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp>
-#include <gds/Support/Timer.hpp>
-#include <gds/Support/Profile.hpp>
-#include <gds/Support/ParamLoader.hpp>
-#include <gds/Support/Macro.h>
-#include <gds/GUI.hpp>
+#include "gds/Graphics.hpp"
+#include "gds/Graphics/AsyncResourceLoader.hpp"
+#include "gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/Macro.h"
+#include "gds/GUI.hpp"
 
 using namespace std;
 using namespace boost;
@@ -24,19 +24,6 @@ extern CGraphicsTestBase *CreateTestInstance()
 extern const std::string GetAppTitle()
 {
 	return string("GLSLTest");
-}
-
-
-static const CSimpleBitmapFontData sg_NullFontData;
-
-const CSimpleBitmapFontData& GetBuiltinFontData( const string& builtin_font_name )
-{
-	if( builtin_font_name == "BitstreamVeraSansMono-Bold-256" )
-	{
-		return g_BitstreamVeraSansMono_Bold_256;
-	}
-	else
-		return sg_NullFontData;
 }
 
 
