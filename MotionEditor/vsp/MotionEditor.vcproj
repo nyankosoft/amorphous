@@ -903,26 +903,12 @@
 			Name="Source Files"
 			>
 			<File
-				RelativePath="..\src\MotionEditor_Main.cpp"
+				RelativePath="..\src\MotionEditorApp.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\src\MotionEditorApp.hpp"
+				>
 			</File>
 			<File
 				RelativePath="..\src\MotionPrimitiveViewer.cpp"
@@ -935,6 +921,14 @@
 			<Filter
 				Name="Motion Synthesis"
 				>
+				<File
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\BlendNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\BlendNode.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\..\Project1\gds\MotionSynthesis\BVHMotionDatabaseCompiler.cpp"
 					>
@@ -1000,6 +994,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\SkeletalMeshTransform.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\Project1\gds\MotionSynthesis\SkeletalMeshTransform.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\Project1\gds\MotionSynthesis\Skeleton.cpp"
 					>
 				</File>
@@ -1024,6 +1026,14 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="Framework Source Files"
+			>
+			<File
+				RelativePath="..\..\..\Project1\gds\App\AppMain.cpp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\app\params.txt"
