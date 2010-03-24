@@ -14,6 +14,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 
 
 double log2( double scalar )
@@ -164,6 +165,10 @@ inline int FindRegisteredIndex( int src_index, const vector<IndexMap>& index_map
 }
 
 
+/// Add a new material to the material buffer of m_pDestMesh
+/// Update the material index of the polygons stored in the argument node, 'node'
+/// to the new material index.
+/// Note that the polygons are actually stored as indices.
 void TerrainMeshTree::AddToDestMesh( TerrainMeshNode& node )
 {
 	int new_mat_index = m_pDestMesh->GetNumMaterials();
@@ -234,6 +239,8 @@ void TerrainMeshTree::MakeMesh_r( TerrainMeshNode& node,
 }
 
 
+/// Add materials to the material buffer of m_pDestMesh
+/// Update the material indices of polygons in m_pDestMesh
 void TerrainMeshTree::MakeMesh()
 {
 	int num_nodes = 0, num_vertices = 0, num_triangles = 0;
@@ -262,9 +269,10 @@ std::string TerrainMeshTree::CreateSubdividedTextureFilepath( const string& src_
 	string dest_filename;
 
 	// make sure that the dest directory exists
-	boost::filesystem::create_directories( m_TextureOutputDirectory );
+	create_directories( m_TextureOutputDirectory );
 
-	dest_filename = m_TextureOutputDirectory + fnop::get_nopath(src_tex_filename);
+	path dest_filepath = path(m_TextureOutputDirectory) / path(src_tex_filename).leaf();
+	dest_filename = dest_filepath.string();
 //	dest_filename = ".\\temp" + fnop::get_nopath(src_tex_filename);
 
 	fnop::append_to_body( dest_filename, fmt_string("%02d",index) );
@@ -514,7 +522,7 @@ CTerrainMeshGenerator::CTerrainMeshGenerator()
 //	m_TextureWidth = 256;
 
 	// set default image format
-	SetOutputTextureFormat( "bmp" );
+	SetOutputTextureFormat( "jpg" );
 
 //	m_pVertexBuffer
 //		= shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
