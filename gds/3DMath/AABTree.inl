@@ -437,6 +437,8 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 	veciNodeToProcess.reserve( 256 );
 	veciNodeToProcess.push_back(0);	// put the root node
 
+	vector<int> veciGeometryIndex;
+	veciGeometryIndex.reserve( m_vecGeometry.size() );
 	size_t j;
 	while( !veciNodeToProcess.empty() )
 	{
@@ -464,20 +466,22 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 
 				// add a new node
 				m_vecNode.push_back( CAABNode() );
+				CAABNode& new_node = m_vecNode.back();
+
+				new_node.veciGeometryIndex.reserve( m_vecNode[iNodeIndex].veciGeometryIndex.size() / 2 );
 
 				// set aabb which represents subspace of the child nodes
-				m_vecNode.back().aabb = m_vecNode[iNodeIndex].aabb;
+				new_node.aabb = m_vecNode[iNodeIndex].aabb;
 				if( i==0 )
-					m_vecNode.back().aabb.vMin[iAxis] = fMidDist;
+					new_node.aabb.vMin[iAxis] = fMidDist;
 				else
-					m_vecNode.back().aabb.vMax[iAxis] = fMidDist;
+					new_node.aabb.vMax[iAxis] = fMidDist;
 
-				m_vecNode.back().iAxis = GetSplitPlaneAxis( m_vecNode.back().aabb );
+				new_node.iAxis = GetSplitPlaneAxis( new_node.aabb );
 
-				m_vecNode.back().fDist = ( m_vecNode.back().aabb.vMin[m_vecNode.back().iAxis]
-					                     + m_vecNode.back().aabb.vMax[m_vecNode.back().iAxis] ) / 2.0f;
+				new_node.fDist = ( new_node.aabb.vMin[new_node.iAxis] + new_node.aabb.vMax[new_node.iAxis] ) / 2.0f;
 
-				 m_vecNode.back().depth = m_vecNode[iNodeIndex].depth + 1;
+				new_node.depth = m_vecNode[iNodeIndex].depth + 1;
 			}
 
 			// added the 2 child nodes
@@ -490,7 +494,7 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 			child_node_index[1] = (int)m_vecNode.size() - 2;
 
 			// copy all indices in the current node
-			vector<int> veciGeometryIndex = m_vecNode[iNodeIndex].veciGeometryIndex;
+			veciGeometryIndex = m_vecNode[iNodeIndex].veciGeometryIndex;
 			m_vecNode[iNodeIndex].veciGeometryIndex.resize( 0 );
 
 			// Move all the triangles of 'm_vecNode[iNodeIndex]' to either of its children.
