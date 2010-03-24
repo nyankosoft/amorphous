@@ -1,4 +1,4 @@
-#include "StaticGeometryDesc.h"
+#include "StaticGeometryDesc.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/fnop.hpp"
 #include "XML.hpp"
@@ -409,8 +409,10 @@ bool CStaticGeometryDesc::LoadGraphicsDesc( DOMNode *pNode )
 	if( !pNode )
 		LOG_ERR_RETURN_FALSE( "A graphics desc node is missing." );
 
-	if( !LoadGeometryFilter( pNode, m_GraphcisGeometryFilter ) )
-		return false;
+	// Try loading a geometry filter.
+	// If geometry filter was not found, the static geometry compiler uses the default geometry filter,
+	// which takes all the geometry in the input file.
+	LoadGeometryFilter( pNode, m_GraphcisGeometryFilter );
 
 	LoadSurfaceDescs( GetChildNode( pNode, "Surface" ) );
 
@@ -473,8 +475,9 @@ bool CStaticGeometryDesc::LoadCollisionDesc( DOMNode *pNode )
 	if( !pNode )
 		LOG_ERR_RETURN_FALSE( "A collision desc node is missing." );
 
-	if( !LoadGeometryFilter( pNode, m_CollisionGeometryFilter ) )
-		return false;
+	// If no geometry is found, the default geometry filter is used.
+	// The default geometry filter takes all the geometry in the input file.
+	LoadGeometryFilter( pNode, m_CollisionGeometryFilter );
 
 	return true;
 }

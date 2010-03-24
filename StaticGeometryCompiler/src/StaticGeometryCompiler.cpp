@@ -1,4 +1,5 @@
 #include "StaticGeometryCompiler.h"
+#include <boost/filesystem.hpp>
 #include "Graphics/MeshModel/TerrainMeshGenerator.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/StringAux.hpp"
@@ -15,6 +16,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 
 
 int get_str_index( const std::string& name, std::vector<CGeometrySurfaceDesc>& vecDesc )
@@ -82,6 +84,9 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 {
 	/// save the static geometry archive
 	CBinaryDatabase<string> db;
+
+	// make sure that the destination directory path exists
+	create_directories( path(db_filename).parent_path() );
 
 	bool db_open = db.Open( db_filename, CBinaryDatabase<string>::DB_MODE_NEW );
 	if( !db_open )
@@ -203,7 +208,7 @@ void CStaticGeometryCompiler::AddDestGraphicsMeshInstance()
 	
 /// Assumes that polygons at each node can be fit in a single mesh instance
 /// - Assumes polygons of src_mesh have been copied to the geometry array inside src_tree
-/// - Subdives src_mesh into multiple meshes if it has too many vertices / polygons
+/// - Subdivides src_mesh into multiple meshes if it has too many vertices / polygons
 ///   - Created meshes are stored to CStaticGeometryCompiler::m_vecpDestGraphicsMesh
 void CStaticGeometryCompiler::CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& src_tree,
 												   int src_node_index,
@@ -622,6 +627,12 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 
 	// set the first graphics mesh instance to m_vecpDestGraphicsMesh
 	AddDestGraphicsMeshInstance();
+
+	if( m_Desc.m_vecSurfaceDesc.empty() )
+	{
+		LOG_PRINT_ERROR( " No surface descs were found." );
+		return false;
+	}
 
 	CreateMeshSubsets_r( tree,
 		                 0, // node index

@@ -53,8 +53,8 @@ public:
 
 	CTextureSubdivisionOptions()
 		:
-	m_Enabled(false),
-	m_SplitSize(0)
+	m_Enabled(true),
+	m_SplitSize(1024)
 	{}
 
 	bool Load( CXMLNodeReader& node_reader );

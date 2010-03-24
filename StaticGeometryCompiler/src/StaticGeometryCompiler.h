@@ -3,7 +3,7 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "StaticGeometryDesc.h"
+#include "StaticGeometryDesc.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
 #include "Stage/StaticGeometry.hpp"
