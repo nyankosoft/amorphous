@@ -21,16 +21,6 @@ inline void ClipVelocity(Vector3& rvOut,
 }
 
 
-inline void GetSkewSymmetricMatrix( D3DXMATRIX* mat, D3DXVECTOR3& v )
-{
-	mat->_11 = 0.0f; mat->_12 = -v.z; mat->_13 =  v.y;
-	mat->_21 =  v.z; mat->_22 = 0.0f; mat->_23 = -v.x;
-	mat->_31 = -v.y; mat->_32 =  v.x; mat->_33 = 0.0f;
-
-	mat->_14 = mat->_24 = mat->_34 =
-	mat->_41 = mat->_42 = mat->_43 = mat->_44 = 0.0f;
-}
-
 /*
 inline bool IsSensible(Vector3& v)
 {
