@@ -274,14 +274,17 @@ HRESULT CDirectInputMouse::UpdateInput()
         {
             case DIMOFS_BUTTON0:
 				input.iGICode = GIC_MOUSE_BUTTON_L;	
+				UpdateInputState( input );
 				InputHub().UpdateInput(input);
 				break;
             case DIMOFS_BUTTON1:
 				input.iGICode = GIC_MOUSE_BUTTON_R;
+				UpdateInputState( input );
 				InputHub().UpdateInput(input);
 				break;
             case DIMOFS_BUTTON2:
 				input.iGICode = GIC_MOUSE_BUTTON_M;	
+				UpdateInputState( input );
 				InputHub().UpdateInput(input);
 				break;
 
@@ -296,6 +299,7 @@ HRESULT CDirectInputMouse::UpdateInput()
 					input.iGICode = GIC_MOUSE_WHEEL_UP;
 				else
 					input.iGICode = GIC_MOUSE_WHEEL_DOWN;
+				UpdateInputState( input );
 				InputHub().UpdateInput(input);
 				break;
         }			
