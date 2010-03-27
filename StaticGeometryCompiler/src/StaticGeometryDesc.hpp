@@ -54,6 +54,7 @@ public:
 	CTextureSubdivisionOptions()
 		:
 	m_Enabled(true),
+	m_OutputImageFormat("jpg"),
 	m_SplitSize(1024)
 	{}
 
