@@ -586,7 +586,11 @@ void CTerrainMeshGenerator::CreateMeshTree()
 {
 	LOG_FUNCTION_SCOPE();
 
-//	int tree_depth = m_NumTexEdgeSplits + 1;
+	// Calculate the tree depth to match the number of the leaf nodes
+	// and the number of the subdivided textures.
+	// example:
+	// If an 8192x8182 texture has been subdivided into 64 1024x1024 textures,
+	// tree_depth is set to 7 so that the tree has 64 leaf nodes.
 	int tree_depth = 2 * (int)log2( m_NumTexEdgeSplits ) + 1;
 
 	m_MeshTree.Build( m_pSrcMesh, tree_depth );
