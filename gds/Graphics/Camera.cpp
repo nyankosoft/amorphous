@@ -90,28 +90,6 @@ void CCamera::UpdatePosition( const Vector3& vPos, const Vector3& vDir,
 
 void CCamera::UpdateVFTreeForWorldSpace()
 {
-/*	D3DXMATRIX mat;
-
-	Vector3& vRight = m_vRight;	// local direction x
-	Vector3& vUp = m_vUp;		// local direction y (up)
-	Vector3& vFront = m_vFront;	// local direction z (forward)
-	Vector3& vPosition = m_vPosition;
-
-	mat._11=vRight.x; mat._12=vRight.y; mat._13=vRight.z; mat._14=0;
-	mat._21=vUp.x;    mat._22=vUp.y;    mat._23=vUp.z;    mat._24=0;
-	mat._31=vFront.x; mat._32=vFront.y; mat._33=vFront.z; mat._34=0;
-	mat._41=0;		  mat._42=0;		mat._43=0;		  mat._44=1;
-
-	SPlane* pWorldVFPlane = m_aWorldVFPlane;
-	SPlane* pOrigVFPlane = m_aLocalVFPlane;
-	char i;
-	for(i=0; i<6; i++)
-	{
-		D3DXVec3TransformCoord( &pWorldVFPlane[i].normal, &pOrigVFPlane[i].normal, &mat );
-		pWorldVFPlane[i].dist = pOrigVFPlane[i].dist
-			+ D3DXVec3Dot( &pWorldVFPlane[i].normal, &vPosition );
-	}*/
-
 	const Vector3& vPosition = m_vPosition;
 
 	Matrix33 matRot;
@@ -136,15 +114,6 @@ void CCamera::UpdateVFTreeForWorldSpace()
 
 void CCamera::RotateYaw(float fYaw)
 {
-/*	D3DXMATRIX matRotYaw;
-	D3DXMatrixRotationAxis( &matRotYaw, &m_vUp, fYaw );
-
-	// rotate right direction and front direction
-	D3DXVec3TransformCoord( &m_vFront, &m_vFront, &matRotYaw );
-	D3DXVec3Normalize( &m_vFront, &m_vFront );
-	D3DXVec3TransformCoord( &m_vRight, &m_vRight, &matRotYaw );
-	D3DXVec3Normalize( &m_vRight, &m_vRight );*/
-
 	Matrix33 matRotYaw = Matrix33RotationAxis( fYaw, m_vUp );
 
 	m_vFront = matRotYaw * m_vFront;
@@ -155,20 +124,10 @@ void CCamera::RotateYaw(float fYaw)
 	// TODO: otrho-nomalize 
 
 	UpdateVFTreeForWorldSpace();
-
 }
 
 void CCamera::RotatePitch(float fPitch)
 {
-/*	D3DXMATRIX matRotPitch;
-	D3DXMatrixRotationAxis( &matRotPitch, &m_vRight, fPitch );
-
-	// rotate front direction up direction
-	D3DXVec3TransformCoord( &m_vFront, &m_vFront, &matRotPitch );
-	D3DXVec3Normalize( &m_vFront, &m_vFront );
-	D3DXVec3TransformCoord( &m_vUp, &m_vUp, &matRotPitch );
-	D3DXVec3Normalize( &m_vUp, &m_vUp );*/
-
 	Matrix33 matRotPitch = Matrix33RotationAxis( fPitch, m_vRight );
 
 	m_vFront = matRotPitch * m_vFront;
@@ -179,6 +138,4 @@ void CCamera::RotatePitch(float fPitch)
 	// TODO: otrho-nomalize 
 
 	UpdateVFTreeForWorldSpace();
-
 }
-
