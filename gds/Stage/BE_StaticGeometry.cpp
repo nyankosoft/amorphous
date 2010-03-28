@@ -92,6 +92,21 @@ void CBE_StaticGeometry::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 }
 
 
+CStaticGeometryBase *CBE_StaticGeometry::GetStaticGeometry( CCopyEntity* pEntity )
+{
+	if( !pEntity )
+		return NULL;
+
+	int index = pEntity->iExtraDataIndex;
+	if( 0 <= index && index < (int)m_vecpStaticGeometry.size() )
+	{
+		return m_vecpStaticGeometry[pEntity->iExtraDataIndex];
+	}
+	else
+		return NULL;
+}
+
+
 bool CBE_StaticGeometry::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
 	return false;

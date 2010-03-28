@@ -32,12 +32,13 @@ public:
 	void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
 	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
+	CStaticGeometryBase *GetStaticGeometry( CCopyEntity* pEntity );
+
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 
 	virtual unsigned int GetArchiveObjectID() const { return BE_STATICGEOMETRY; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
-
 };
 
 
