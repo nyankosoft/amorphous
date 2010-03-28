@@ -68,17 +68,14 @@ inline void CGraphicsResourceHandle::Release()
 
 inline bool CGraphicsResourceHandle::IsLoaded() const
 {
-	if( GetEntry() )
+	if( GetEntry()
+	 && GetEntry()->GetResource()
+	 && GetEntry()->GetResource()->GetState() == GraphicsResourceState::LOADED )
 	{
-		if( GetEntry()->GetResource()->GetState() == GraphicsResourceState::LOADED )
-			return true;
-		else
-			return false;
+		return true;
 	}
 	else
-	{
 		return false;
-	}
 }
 
 
