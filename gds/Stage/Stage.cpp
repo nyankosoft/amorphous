@@ -497,10 +497,13 @@ Vector3 CStage::GetGravityAccel() const
 }
 
 
-bool CStage::LoadStaticGeometryFromFile( const std::string filename )
+CEntityHandle<> CStage::LoadStaticGeometryFromFile( const std::string filename )
 {
 	SafeDelete( m_pStaticGeometry );
 	m_pStaticGeometry = CreateStaticGeometry( this, filename );
+
+	if( !m_pStaticGeometry )
+		return CEntityHandle<>();
 
 	// register the static geometry as an entity
 	// - the entity is used to render the static geometry
@@ -512,7 +515,15 @@ bool CStage::LoadStaticGeometryFromFile( const std::string filename )
 	desc.pBaseEntityHandle = &baseentity_handle;
 	desc.pUserData = m_pStaticGeometry;
 
-	CreateEntity( desc );
+	CCopyEntity *pStaticGeometryEntity = CreateEntity( desc );
+
+	if( !pStaticGeometryEntity )
+		return CEntityHandle<>();
+
+//	shared_ptr<CStaticGeometryEntity> pEntity( new CStaticGeometryEntity );
+//	pEntity->SetStaticGeometry( m_pStaticGeometry );
+//	CEntityHandle<CStaticGeometryEntity> entity
+//		= CreateEntity( pEntity, baseentity_handle );
 
 	m_pEntitySet->WriteEntityTreeToFile( "debug/entity_tree - loaded static geometry.txt" );
 
@@ -521,7 +532,8 @@ bool CStage::LoadStaticGeometryFromFile( const std::string filename )
 	bool loaded = m_pStaticGeometry->LoadFromFile( filename );
 	this->ResumeTimer();
 
-	return loaded;
+	return CEntityHandle<>( pStaticGeometryEntity->Self() );
+//	return entity;
 }
 
 

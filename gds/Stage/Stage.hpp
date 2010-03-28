@@ -172,7 +172,7 @@ public:
 
 	CSurfaceMaterial& GetMaterial( int index );
 
-	bool LoadStaticGeometryFromFile( const std::string filename );
+	CEntityHandle<> LoadStaticGeometryFromFile( const std::string filename );
 
 	CStaticGeometryBase *GetStaticGeometry() { return m_pStaticGeometry; }
 
