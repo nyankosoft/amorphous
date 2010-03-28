@@ -788,6 +788,9 @@ void CD3DXMeshObjectBase::Render()
 //	LPD3DXMESH pMesh = m_pMesh;
 	LPD3DXBASEMESH pMesh = GetBaseMesh();
 
+	pd3dDevice->SetVertexShader( NULL );
+	pd3dDevice->SetPixelShader( NULL );
+
 	//We use only the first texture stage (stage 0)
 	pd3dDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
 	pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
