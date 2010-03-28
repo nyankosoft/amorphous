@@ -309,12 +309,18 @@ void CHLSLShaderManager::SetParam( CShaderParameter<CTextureParam>& tex_param )
 	int index = GetParameterIndex( tex_param );
 	if( index < 0 )
 	{
-		index = RegisterHLSLParam( tex_param );
-
-		// Also, check if the tex param is intended to be set to an indexed stage.
-		// If that is the case, update the stage index
+		// Check if the tex param is intended to be set to an indexed stage.
+		// If the parameter name starts with "stage:", the parameter is supposed to be set
+		// to a texture stage with an index specified by the digit that comes after the colon,
+		// and the stage index of the parameter is updated.
 		if( tex_param.GetParameterName().find( "stage:" ) == 0 )
-			tex_param.Parameter().m_Stage = to_int( tex_param.GetParameterName().substr( 6 ) );
+		{
+			string tex_stage = tex_param.GetParameterName().substr( 6 );
+			tex_param.Parameter().m_Stage = to_int(tex_stage);
+			tex_param.SetParameterName( "Texture" + tex_stage ); // change the parameter name from "stage:?" to "Texture?"
+		}
+
+		index = RegisterHLSLParam( tex_param );
 	}
 
 //	if( 0 <= index && index < (int)m_vecParamHandle.size() )
