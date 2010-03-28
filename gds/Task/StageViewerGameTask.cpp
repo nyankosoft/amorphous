@@ -44,6 +44,7 @@ int CStageViewerGameTask::FrameMove( float dt )
 	{
 		m_pCameraController->UpdateCameraPose( dt );
 		m_Camera.SetPose( m_pCameraController->GetPose() );
+		m_Camera.UpdateVFTreeForWorldSpace();
 	}
 
 	return CGameTask::ID_INVALID;
