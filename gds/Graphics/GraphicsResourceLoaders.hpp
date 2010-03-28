@@ -57,6 +57,7 @@ public:
 	/// Called by the rendering thread
 	/// - Why virtual ?
 	///   -> Mesh resources need separate locks and unlocks for subresources
+	///   -> Texture resources need separate locks for different mipmap levels
 	virtual bool Lock();
 
 	/// Called by the rendering thread
