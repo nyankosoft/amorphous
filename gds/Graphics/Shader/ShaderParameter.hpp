@@ -59,6 +59,8 @@ public:
 
 	const std::string& GetParameterName() const { return m_ParameterName; }
 
+	void SetParameterName( const std::string& parameter_name ) { m_ParameterName = parameter_name; }
+
 	const T& GetParameter() const { return m_Parameter; }
 
 	void Serialize( IArchive& ar, const unsigned int version )
