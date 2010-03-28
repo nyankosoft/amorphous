@@ -97,13 +97,17 @@ BOOST_PYTHON_MODULE(stage)
 		.def( "SetUniformCameraShake",    &CScriptedCameraEntityHandle::SetUniformCameraShake )
 	;
 
+//	class_< CStaticGeometryEntityHandle >("StaticGeometryEntityHandle")
+//		.def( "GetStaticGeometry",        &CStaticGeometryEntityHandle::GetStaticGeometry )
+//	;
+
 	def( "SetShaderToEntity",  SetShaderToEntity, ( py::arg("entity"), py::arg("shader"), py::arg("tech") ) );
 
-	def( "SetShaderFloatParamToEntity",  SetShaderFloatParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
-//	def( "SetShaderIntParamToEntity",    SetShaderIntParamToEntity,   ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
-//	def( "SetShaderVec3ParamToEntity",   SetShaderVec3ParamToEntity,  ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
-	def( "SetShaderColorParamToEntity",  SetShaderColorParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
-	def( "SetShaderTextureParamToEntity",SetShaderTextureParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("tex_path") ) );
+	def( "SetFloatShaderParamToEntity",  SetFloatShaderParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+//	def( "SetIntShaderParamToEntity",    SetIntShaderParamToEntity,   ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+//	def( "SetVec3ShaderParamToEntity",   SetVec3ShaderParamToEntity,  ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+	def( "SetColorShaderParamToEntity",  SetColorShaderParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("value") ) );
+	def( "SetTextureShaderParamToEntity",SetTextureShaderParamToEntity, ( py::arg("entity"), py::arg("param_name"), py::arg("tex_path") ) );
 
 //		.def()
 
