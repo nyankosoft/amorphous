@@ -14,6 +14,8 @@
 #include "Stage/GameMessage.hpp"
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntityDesc.hpp"
+#include "Stage/StaticGeometry.hpp"
+#include "Stage/BE_StaticGeometry.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
 
@@ -649,13 +651,15 @@ void CStageMiscUtility::CreateSkysphere( const std::string& texture_resource_pat
 */
 
 
-void CStageMiscUtility::CreateStaticGeometry( const std::string& resource_path )
+CEntityHandle<> CStageMiscUtility::CreateStaticGeometry( const std::string& resource_path )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return;// CEntityHandle<>();
+		return CEntityHandle<>();
 
-	bool loaded = pStage->LoadStaticGeometryFromFile( resource_path );
+	CEntityHandle<> entity = pStage->LoadStaticGeometryFromFile( resource_path );
+
+	return entity;
 }
 
 
@@ -751,12 +755,60 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 }
 
 
+
+static void SetShaderParamToStaticGeometry( CStaticGeometryBase *pStaticGeometry,
+										    CShaderParameter<float> param )
+{
+	pStaticGeometry->SetFloatShaderParam( param );
+}
+
+
+static void SetShaderParamToStaticGeometry( CStaticGeometryBase *pStaticGeometry,
+										    CShaderParameter<SFloatRGBAColor> param )
+{
+	pStaticGeometry->SetColorShaderParam( param );
+}
+
+
+static void SetShaderParamToStaticGeometry( CStaticGeometryBase *pStaticGeometry,
+										    CShaderParameter<CTextureParam> param )
+{
+	pStaticGeometry->SetTextureShaderParam( param );
+}
+
+
+template<typename T>
+static void SetShaderParamToStaticGeometryEntity( CCopyEntity *pEntity,
+												  const char *parameter_name,
+												  T value )
+{
+	CBE_StaticGeometry *pBaseEntity
+		= dynamic_cast<CBE_StaticGeometry *>(pEntity->pBaseEntity);
+
+	CStaticGeometryBase *pStaticGeometry
+		= pBaseEntity->GetStaticGeometry(pEntity);
+
+	if( !pStaticGeometry )
+		return;
+
+	CShaderParameter<T> param(parameter_name);
+	param.Parameter() = value;
+
+	SetShaderParamToStaticGeometry( pStaticGeometry, param );
+}
+
+
 template<typename T>
 static void SetShaderParamLoaderToEntity( CEntityHandle<>& entity, const char *parameter_name, T value )
 {
 	CCopyEntity *pEntity = entity.GetRawPtr();
 	if( !pEntity )
 		return;
+
+	if( pEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_STATICGEOMETRY )
+	{
+		SetShaderParamToStaticGeometryEntity( pEntity, parameter_name, value );
+	}
 
 	shared_ptr<CMeshContainerRenderMethod> pRenderMethod
 		= pEntity->m_pMeshRenderMethod;
@@ -808,19 +860,24 @@ static void SetShaderParamLoaderToEntity( CEntityHandle<>& entity, const char *p
 /**
  Useful if the entity has a single shader, technique, and surface.
 */
-void SetShaderFloatParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value )
+void SetFloatShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value )
 {
 	SetShaderParamLoaderToEntity( entity, parameter_name, value );
 }
 
 
-void SetShaderColorParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value )
+void SetColorShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value )
 {
 	SetShaderParamLoaderToEntity( entity, parameter_name, value );
 }
 
 
-void SetShaderTextureParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path )
+void SetTextureShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path )
 {
-//	SetShaderParamLoaderToEntity( entity, parameter_name, tex_path );
+//	CShaderParameter<CTextureParam> tex_param( parameter_name );
+//	tex_param.Parameter().m_Desc.ResourcePath = tex_path;
+	CTextureParam tex_param;
+	tex_param.m_Desc.ResourcePath = tex_path;
+	bool tex_loaded = tex_param.m_Handle.Load( tex_param.m_Desc );
+	SetShaderParamLoaderToEntity( entity, parameter_name, tex_param );
 }

@@ -194,7 +194,7 @@ public:
 
 //	void CreateSkysphere( const std::string& texture_resource_path = "BuiltinTexture::ClearSkyGrad" );
 
-	void CreateStaticGeometry( const std::string& resource_path );
+	CEntityHandle<> CreateStaticGeometry( const std::string& resource_path );
 
 	CEntityHandle<> CreateStaticSmokeSource( const Vector3& pos,
 			const SFloatRGBAColor& color, float diameter, float rise_speed, float thickness, float density,
@@ -244,9 +244,9 @@ public:
 */
 
 
-extern void SetShaderFloatParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value );
-extern void SetShaderColorParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value );
-extern void SetShaderTextureParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path );
+extern void SetFloatShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value );
+extern void SetColorShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value );
+extern void SetTextureShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path );
 
 
 #endif /* __StageUtility_HPP__ */
