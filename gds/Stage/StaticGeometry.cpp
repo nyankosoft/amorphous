@@ -99,7 +99,8 @@ void CShaderContainer::SetParams()
 	for( size_t i=0; i<m_ParamGroup.m_Texture.size(); i++ )
 	{
 		if( m_ParamGroup.m_Texture[i].Parameter().m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
-			pMgr->SetTexture( (int)i, m_ParamGroup.m_Texture[i].Parameter().m_Handle );
+			pMgr->SetParam( m_ParamGroup.m_Texture[i] );
+//			pMgr->SetTexture( (int)i, m_ParamGroup.m_Texture[i].Parameter().m_Handle );
 	}
 }
 
@@ -768,6 +769,28 @@ void CStaticGeometry::SetFogEndDist( float dist )
 
 			pMgr->SetParam( param );
 		}
+	}
+}
+
+
+void CStaticGeometry::SetFloatShaderParam( CShaderParameter<float>& tex_param )
+{
+	// NOT IMPLEMENTED
+}
+
+
+void CStaticGeometry::SetColorShaderParam( CShaderParameter<SFloatRGBAColor>& tex_param )
+{
+	// NOT IMPLEMENTED
+}
+
+
+void CStaticGeometry::SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param )
+{
+	// set texture param to all the shaders
+	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
+	{
+		m_Archive.m_vecShaderContainer[i].m_ParamGroup.m_Texture.push_back( tex_param );
 	}
 }
 

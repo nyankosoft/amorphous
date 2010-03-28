@@ -197,6 +197,12 @@ public:
 
 	void SetFogEndDist( float dist );
 
+	void SetFloatShaderParam( CShaderParameter<float>& tex_param );
+
+	void SetColorShaderParam( CShaderParameter<SFloatRGBAColor>& tex_param );
+
+	void SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param );
+
 	virtual void SetDynamicLightManager( CEntitySet* pEntitySet ) {}
 
 	/// used for dynamic lighting

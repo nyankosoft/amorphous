@@ -6,6 +6,7 @@
 #include "Graphics/fwd.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/Shader/ShaderParameter.hpp"
 #include "3DMath/Vector3.hpp"
 #include "3DMath/AABB3.hpp"
 #include "Physics/fwd.hpp"
@@ -80,6 +81,12 @@ public:
 	virtual void SetFogStartDist( float dist ) {}
 
 	virtual void SetFogEndDist( float dist ) {}
+
+	virtual void SetFloatShaderParam( CShaderParameter<float>& tex_param ) {}
+
+	virtual void SetColorShaderParam( CShaderParameter<SFloatRGBAColor>& tex_param ) {}
+
+	virtual void SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param ) {}
 
 	virtual void SetDynamicLightManager( CEntitySet* pEntitySet ) {}
 
