@@ -109,6 +109,33 @@ class CBitmapImage
 
 	int m_BitsPerPixel; ///< the size of one pixel in the bitmap in bits
 
+private:
+
+	CBitmapImage( FIBITMAP *pFreeImageBitMap )
+		:
+	m_pFreeImageBitMap(NULL),
+	m_BitsPerPixel(0)
+	{
+		Reset(pFreeImageBitMap);
+	}
+
+	void Reset( FIBITMAP *pFreeImageBitMap )
+	{
+		Release();
+		m_pFreeImageBitMap = pFreeImageBitMap;
+		if( m_pFreeImageBitMap )
+			m_BitsPerPixel = FreeImage_GetBPP( m_pFreeImageBitMap );
+	}
+
+	void Release()
+	{
+		if( m_pFreeImageBitMap )
+		{
+			FreeImage_Unload( m_pFreeImageBitMap );
+			m_BitsPerPixel = 0;
+		}
+	}
+
 public:
 
 	CBitmapImage() : m_pFreeImageBitMap(NULL), m_BitsPerPixel(0) {}
@@ -124,7 +151,7 @@ public:
 
 //	inline CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
 
-	~CBitmapImage() { FreeImage_Unload( m_pFreeImageBitMap ); }
+	~CBitmapImage() { Release(); }
 
 	inline bool LoadFromFile( const std::string& pathname, int flag = 0 );
 
@@ -157,6 +184,10 @@ public:
 	inline int GetWidth() const;
 
 	inline int GetHeight() const;
+
+	inline bool Rescale( int dest_width, int dest_height/*, CImageFilter::Name filter */ );
+
+	inline boost::shared_ptr<CBitmapImage> GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const;
 };
 
 /*
@@ -357,6 +388,36 @@ inline int CBitmapImage::GetHeight() const
 		return (int)FreeImage_GetHeight(m_pFreeImageBitMap);
 	else
 		return 0;
+}
+
+
+inline bool CBitmapImage::Rescale( int dest_width, int dest_height/*, CImageFilter::Name filter */ )
+{
+	if( m_pFreeImageBitMap )
+	{
+		// FreeImage_Rescale() does not change the image specified as the first argument.
+		// It returns the scaled image.
+		FIBITMAP *pScaledImage = FreeImage_Rescale( m_pFreeImageBitMap, dest_width, dest_height, FILTER_BILINEAR/*filter*/ );
+		Reset( pScaledImage );
+		return false;
+	}
+	else
+		return false;
+}
+
+
+inline boost::shared_ptr<CBitmapImage> CBitmapImage::GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const
+{
+	if( m_pFreeImageBitMap )
+	{
+		// FreeImage_Rescale() does not change the image specified as the first argument.
+		// It returns the scaled image.
+		FIBITMAP *pScaledBitMap = FreeImage_Rescale( m_pFreeImageBitMap, dest_width, dest_height, FILTER_BILINEAR/*filter*/ );
+		boost::shared_ptr<CBitmapImage> pScaledImage( new CBitmapImage( pScaledBitMap ) );
+		return pScaledImage;
+	}
+	else
+		return boost::shared_ptr<CBitmapImage>();
 }
 
 
