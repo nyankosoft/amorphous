@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ShaderParams>
+	<Shader>
+		<File>./Shader/SGViewerFG.fx</File>
+		<Texture stage="2">
+			<File>../_common/textures/ParchedGroundOverlay.jpg</File>
+		</Texture>
+		<!-- overlay texture blend - controlled by the alpha 
+		<Float>
+			<Name></Name>
+			<Value>0.18</Value>
+		</Float>
+		-->
+	</Shader>
+</ShaderParams>
