@@ -138,6 +138,8 @@ m_pTargetSceneRenderer(NULL)
 	m_pSimpleMotionBlur = NULL;
 
 	m_DefaultShaderTechnique.SetTechniqueName( "Default" );
+
+	m_pLensFlare.reset( new CLensFlare );
 }
 
 
@@ -649,6 +651,9 @@ void CScreenEffectManager::Render( CCamera &rCam )
 	{
 		m_pLensFlare->UpdateViewTransform( rCam.GetCameraMatrix() );
 		m_pLensFlare->UpdateProjectionTransform( rCam.GetProjectionMatrix() );
+		m_pLensFlare->UpdateLensFlares();
+
+		m_pLensFlare->Render();
 	}
 }
 
