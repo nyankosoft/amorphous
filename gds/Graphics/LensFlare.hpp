@@ -103,9 +103,12 @@ public:
 //	void Render();
 
 	/// renderes lens flare using a shader technique
+	/// NOT IMPLEMENTED.
 	/// this method assumes that you have set a valid shader technique that renders
 	/// transformed & lit vertices, and uses a texture sampler accessed by 'pTexHandle'
 	void Render( CShaderManager& rShaderManager, int texture_stage = 0 );
+
+	void Render();
 
 //	inline void UpdateScreenSize( int screen_width, int screen_height );
 
@@ -123,7 +126,8 @@ public:
 	/// - returns true on success
 	bool AddTexture( const std::string& texture_filename, int texture_index, int num_segments_x = 1, int num_segments_y = 1 );
 
-	/// \param color 32-bit ARGB format
+	/// Add a billboard of lens flare element
+	/// Use this when you pack multiple lens flare images to a single texture in NxN grid format.
 	void AddLensFlareRect( float dim,
 		        float scale_factor,
 				float dist_factor,
@@ -131,6 +135,15 @@ public:
 				int group_index,
 				int tex_seg_index_x = 0,
 				int tex_seg_index_y = 0 );
+
+	/// Use this when you pack multiple lens flare images of varying sizes into a single texture.
+	void AddLensFlareRectUV( float dim,
+		        float scale_factor,
+				float dist_factor,
+				const SFloatRGBAColor& color,
+				int group_index,
+				TEXCOORD2 tex_min,
+				TEXCOORD2 tex_max );
 
 //	inline void AddLensFlareRect( const C2DRect& rect, float scale_factor, float dist_factor, int tex_index, int tex_seg_index = 0 ) }
 

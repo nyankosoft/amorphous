@@ -8,8 +8,8 @@ using namespace std;
 
 CLensFlareGroup::CLensFlareGroup()
 :
-m_NumTextureSegmentsX(0),
-m_NumTextureSegmentsY(0)
+m_NumTextureSegmentsX(1),
+m_NumTextureSegmentsY(1)
 {
 	m_RectGroup.SetDestAlphaBlendMode( AlphaBlend::One );
 }
@@ -150,6 +150,12 @@ void CLensFlare::Render()
 
 void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 {
+	Render();
+}
+
+
+void CLensFlare::Render()
+{
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
@@ -241,8 +247,24 @@ void CLensFlare::AddLensFlareRect( float dim,
 	rDestGroup.m_RectGroup.AddRects( 1 );
 
 	// TODO: support packed texture
-	rDestGroup.m_RectGroup.SetTextureCoordMinMax( num_flares, 0,0, 1,1 );
+	float su = (float)tex_seg_index_x     / (float)rDestGroup.m_NumTextureSegmentsX;
+	float eu = (float)(tex_seg_index_x+1) / (float)rDestGroup.m_NumTextureSegmentsX;
+	float sv = (float)tex_seg_index_y     / (float)rDestGroup.m_NumTextureSegmentsY;
+	float ev = (float)(tex_seg_index_y+1) / (float)rDestGroup.m_NumTextureSegmentsY;
+	rDestGroup.m_RectGroup.SetTextureCoordMinMax( num_flares, su, sv, eu, ev );
 
 	// vertex colors
 	rDestGroup.m_RectGroup.SetRectColor( num_flares, color.GetARGB32() );
+}
+
+
+void CLensFlare::AddLensFlareRectUV( float dim,
+									 float scale_factor,
+									 float dist_factor,
+									 const SFloatRGBAColor& color,
+									 int group_index,
+									 TEXCOORD2 tex_min,
+									 TEXCOORD2 tex_max )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
 }
