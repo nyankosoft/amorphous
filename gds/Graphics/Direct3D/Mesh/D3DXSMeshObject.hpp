@@ -28,6 +28,8 @@ class CD3DXSMeshObject : public CD3DXPMeshObject
 
 	std::vector<Matrix34> m_vecLocalTransformCache;
 
+//	std::vector<Transform> m_vecLocalTransformCache;
+
 private:
 
 	bool LoadSkeletonFromArchive( C3DMeshModelArchive& archive );
@@ -62,10 +64,12 @@ public:
 	/// that represents local transformations at each bone
 	inline void SetLocalTransforms( Matrix34 *paLocalTransform );
 
-	/// set local transformation for a bone to a cache
-	/// NOTE: do not updates transformation for the bone
-	/// use is responsible for calling SetLocalTransformsFromCache() later to updates the transformations for bones
+	/// Set local transformation for a bone to a cache.
+	/// NOTE: this function does not update the vertex blend matrix of the bone.
+	/// User is responsible for calling SetLocalTransformsFromCache() later to update the vertex blend matrix of the bone.
 	inline void SetLocalTransformToCache( int index, const Matrix34& local_transform );
+
+	inline void SetLocalTransformToCache( int index, const Transform& local_transform );
 
 	inline void SetLocalTransformsFromCache();
 
@@ -121,6 +125,13 @@ inline void CD3DXSMeshObject::SetLocalTransformToCache( int index, const Matrix3
 }
 
 
+inline void CD3DXSMeshObject::SetLocalTransformToCache( int index, const Transform& local_transform )
+{
+//	if( 0 <= index && index < (int)m_vecLocalTransformCache.size() )
+//		m_vecLocalTransformCache[index] = local_transform;
+}
+
+
 inline void CD3DXSMeshObject::SetLocalTransformsFromCache()
 {
 	if( 0 < m_vecLocalTransformCache.size() )
@@ -136,7 +147,7 @@ inline void CD3DXSMeshObject::ResetLocalTransformsCache()
 
 inline void CD3DXSMeshObject::GetBlendTransforms( std::vector<Transform>& dest_transforms )
 {
-	if( !m_pRootBone )
+/*	if( !m_pRootBone )
 		return;
 
 	if( m_vecLocalTransformCache.empty() )
@@ -145,7 +156,7 @@ inline void CD3DXSMeshObject::GetBlendTransforms( std::vector<Transform>& dest_t
 	dest_transforms.resize( m_iNumBones );
 
 	int index = 0;
-	m_pRootBone->CalculateTransforms_r( NULL, &m_vecLocalTransformCache[0], index, &(dest_transforms[0]) );
+	m_pRootBone->CalculateTransforms_r( NULL, &m_vecLocalTransformCache[0], index, &(dest_transforms[0]) );*/
 }
 
 

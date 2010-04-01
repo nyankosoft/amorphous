@@ -16,7 +16,7 @@ CD3DXSMeshObject::CD3DXSMeshObject( const std::string& filename )
 	bool loaded = CD3DXMeshObjectBase::LoadFromFile( filename );
 
 	if( !loaded )
-		LOG_PRINT_ERROR( "Failed to load a mesh object from file" + filename );
+		LOG_PRINT_ERROR( " - Failed to load a mesh object from a file: " + filename );
 }
 
 
