@@ -29,16 +29,15 @@ class CMM_Bone
 
 	Vector3 m_vLocalOffset;
 
+	/// vertex blend matrix
 	D3DXMATRIX *m_pWorldTransform;
 
 	int m_MatrixIndex;
 
 	/// tranforms vertices from model space to bone space
-//	D3DXMATRIX m_matBoneTransform;
 	Matrix34 m_BoneTransform;
 
 	/// bone space to local space
-//	D3DXMATRIX m_matLocalTransform;
 	Matrix34 m_LocalTransform;
 
 	CMM_Bone *m_paChild;
@@ -51,7 +50,7 @@ class CMM_Bone
 
 public:
 
-	void CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform );
+//	void CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform );
 
 public:
 
@@ -63,13 +62,11 @@ public:
 
 //	void Transform_EulerAngle( float *pafData );
 
-	void Transform_Quaternion( float *pafData, int& rIndex );
-
 	/// accepts an array of matrices that represents local transformation at each bone
 	/// This function actually calculates world transforms
 	void Transform_r( Matrix34 *pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex );
 
-	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );
+//	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );
 
 	int GetBoneMatrixIndexByName_r( const char *pName );
 

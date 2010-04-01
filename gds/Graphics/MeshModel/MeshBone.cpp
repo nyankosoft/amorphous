@@ -1,8 +1,28 @@
 #include "MeshBone.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 using namespace std;
+
+
+
+/**
+How to replace D3DXMATRIX CMM_Bone::m_pWorldTransform
+-----------------------------------------------------
+- Replace with Matrix44
+  - pros:
+    - Direct3D and OpenGL implementations may be able to share CMM_Bone.
+  - cons:
+    - ID3DXEffect::SetMatrixTranspose() is slower than ID3DXEffect::SetMatrix()
+Replace with Transform
+  - pros:
+    - Less data to send to shader
+  - cons:
+    - No support for scaling
+	- Need to convert to Matrix34 unless CMM_Bone::m_BoneTransform
+      and CMM_Bone::m_LocalTransform are also Transform.
+*/
 
 
 //=========================================================================================
@@ -13,7 +33,7 @@ const CMM_Bone CMM_Bone::ms_NullBone = CMM_Bone();
 
 
 void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
-						   D3DXMATRIX *paBoneTransformMatrix,
+						   D3DXMATRIX *paBlendMatrix,
 						   int &iNumRegisteredMatrices )
 {
 	m_strName = rSrcBone.strName;
@@ -23,7 +43,7 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 	m_paChild = new CMM_Bone [m_iNumChildren];
 
 	// set pointer to the transform matrix array
-	m_pWorldTransform = paBoneTransformMatrix + iNumRegisteredMatrices;
+	m_pWorldTransform = paBlendMatrix + iNumRegisteredMatrices;
 
 	m_MatrixIndex = iNumRegisteredMatrices;
 
@@ -45,11 +65,11 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 
 	for( int i=0; i<m_iNumChildren; i++ )
 	{
-		m_paChild[i].LoadBone_r( rSrcBone.vecChild[i], paBoneTransformMatrix, iNumRegisteredMatrices );
+		m_paChild[i].LoadBone_r( rSrcBone.vecChild[i], paBlendMatrix, iNumRegisteredMatrices );
 	}
 }
 
-
+/*
 void CMM_Bone::CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform )
 {
 	Matrix34 local_rot = paSrcMatrix[rIndex++];
@@ -80,18 +100,11 @@ void CMM_Bone::CalculateWorldTransform( const Matrix34* pParentMatrix, const Mat
 
 	dest_world_transform = mat;
 }
-
+*/
 
 void CMM_Bone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex )
 {
-	D3DXMATRIX matLocal;
-
-/*	paMatrix[rIndex++].GetRowMajorMatrix44( (float *)&matLocal );
-
-	D3DXMatrixMultiply( matLocal, &m_matBoneTransform, &matLocal );
-	D3DXMatrixMultiply( m_pWorldTransform, &matLocal, &m_matLocalTransform );
-*/
-
+//	Matrix34 local_rot = paSrcMatrix[m_MatrixIndex];
 	Matrix34 local_rot = paSrcMatrix[rIndex++];
 	if( pParentMatrix )
 		local_rot.vPosition = Vector3(0,0,0);
@@ -120,13 +133,15 @@ void CMM_Bone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int&
 
 	mat.GetRowMajorMatrix44( (float *)m_pWorldTransform );
 
+//	ToMatrix44( mat, *m_pWorldTransform );
+
 	for( int i=0; i<m_iNumChildren; i++ )
 	{
 		m_paChild[i].Transform_r( &mat, paSrcMatrix, rIndex );
 	}
 }
 
-
+/*
 void CMM_Bone::CalculateTransforms_r( const Matrix34 *pParentMatrix,
 									  const Matrix34 *paSrcMatrix,
 									  int& rIndex,
@@ -142,52 +157,7 @@ void CMM_Bone::CalculateTransforms_r( const Matrix34 *pParentMatrix,
 		m_paChild[i].CalculateTransforms_r( &world_transform, paSrcMatrix, rIndex, paDest );
 	}
 }
-
-
-void CMM_Bone::Transform_Quaternion( float *pafData, int& rIndex )
-{
-/*	D3DXMATRIX matWorldTrans, matLocalTrans;
-	D3DXMatrixIdentity( &matLocalTrans );
-
-	matLocalTrans.vPosition = m_vLocalOffset;
-
-	if( 0 < m_iNumChildren )
-	{
-		if( !pParentMatrix )
-		{	// root node needs translation
-			matLocalTrans._41 += paframeData[rIndex++];
-			matLocalTrans._42 += paframeData[rIndex++];
-			matLocalTrans._43 += paframeData[rIndex++];
-		}
-
-		D3DXQUATERNION qLocalRot;
-		qLocalRot.x = paframeData[rIndex++];
-		qLocalRot.y = paframeData[rIndex++];
-		qLocalRot.z = paframeData[rIndex++];
-		qLocalRot.w = paframeData[rIndex++];
-
-		// convert quaternion to rotation matrix
-		D3DXMATRIX matLocalRot;
-
-//		qLocalRot.ToRotationMatrix( matLocalRot );
-
-		matLocalTrans = matLocalRot * matLocalTrans;
-	}
-//	else
-//		EndSite - no rotation
-
-	if( pParentMatrix )
-		matWorldTrans = (*pParentMatrix) * matLocalTrans;
-	else
-		matWorldTrans = matLocalTrans;	// root node
-
-	int i;
-	for( i=0; i<m_iNumChildren; i++ )
-	{
-		m_paChild[i]->Transform_Quaternion( &matWorldTrans, pafData, rIndex );
-	}*/
-}
-
+*/
 
 int CMM_Bone::GetBoneMatrixIndexByName_r( const char *pName )
 {
