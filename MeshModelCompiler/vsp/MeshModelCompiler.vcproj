@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="../../../X_Debug/MeshModelCompiler"
+			IntermediateDirectory="../../../.TemporaryFiles/MeshModelCompiler/Debug"
 			ConfigurationType="1"
 			CharacterSet="2"
 			>
@@ -96,7 +96,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="../../../X_Release/MeshModelCompiler"
+			IntermediateDirectory="../../../.TemporaryFiles/MeshModelCompiler/Release"
 			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
