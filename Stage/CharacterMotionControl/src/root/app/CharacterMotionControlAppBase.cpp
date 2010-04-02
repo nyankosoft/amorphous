@@ -116,7 +116,10 @@ m_vPrevCamPos( Vector3(0,0,0) )
 //	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
 
 	m_pInputHandler.reset( new CDelegateInputHandler<CCharacterMotionControlAppTask>( this ) );
-	InputHub().SetInputHandler( 2, m_pInputHandler.get() );
+	if( InputHub().GetInputHandler(2) )
+		InputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
+	else
+		InputHub().PushInputHandler( 2, m_pInputHandler.get() );
 
 	m_ScrollEffect.SetTextureFilepath( "textures/precipitation_mid-density-512.dds" );
 //	m_ScrollEffect.SetTextureFilepath( "textures/tex1024_red.bmp" );

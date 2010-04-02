@@ -1,54 +1,14 @@
 #include "SkeletalCharacter.hpp"
-#include <gds/Input/InputHub.hpp>
-#include <gds/Graphics/Mesh/SkeletalMesh.hpp>
-#include <gds/MotionSynthesis/MotionDatabase.hpp>
-#include <gds/MotionSynthesis/MotionPrimitiveBlender.hpp>
-#include <gds/Support/DebugOutput.hpp>
+#include "gds/Input/InputHub.hpp"
+#include "gds/Graphics/Mesh/SkeletalMesh.hpp"
+#include "gds/MotionSynthesis/MotionDatabase.hpp"
+#include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
+#include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
+#include "gds/Support/DebugOutput.hpp"
 
 using namespace std;
 using namespace boost;
 using namespace msynth;
-
-
-void UpdateMeshBoneTransforms_r( const msynth::CBone& bone,
-                                 const msynth::CTransformNode& node,
-								 CSkeletalMesh& mesh )//,
-//								 CMM_Bone& mesh_bone )
-{
-	// find the matrix index from the bone name (slow).
-	int index = mesh.GetBoneMatrixIndexByName( bone.GetName() );
-	if( index == -1 )
-		return;
-
-	Matrix34 local_transform;
-	local_transform.vPosition = node.GetLocalTranslation();
-	local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix();
-	mesh.SetLocalTransformToCache( index, local_transform );
-
-	const int num_child_bones = bone.GetNumChildren();
-	const int num_child_nodes = node.GetNumChildren();
-	const int num_children = take_min( num_child_bones, num_child_nodes );
-//	const int num_children = node.GetNumChildren();
-	for( int i=0; i<num_children; i++ )
-	{
-		UpdateMeshBoneTransforms_r(
-			bone.GetChild(i),
-			node.GetChildNode(i),
-			mesh );
-	}
-
-/*	for( int i=0; i<num_child_bones; i++ )
-	{
-		for( int j=0; j<num_child_nodes; j++ )
-			bone.GetImmediateChild( node.Get );
-	}*/
-}
-
-
-void UpdateMeshBoneTransforms( const msynth::CKeyframe& keyframe, const msynth::CSkeleton& skeleton, CSkeletalMesh& target_skeletal_mesh )
-{
-	UpdateMeshBoneTransforms_r( skeleton.GetRootBone(), keyframe.GetRootNode(), target_skeletal_mesh );
-}
 
 
 class CDebugItem_MotionFSM : public CDebugItem_ResourceManager
@@ -118,7 +78,10 @@ m_fTurnSpeed(0.0f)
 
 	// Init input handler
 	m_pInputHandler.reset( new CMotionFSMInputHandler(m_pMotionGraphManager) );
-	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
+	if( InputHub().GetInputHandler(2) )
+		InputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
+	else
+		InputHub().PushInputHandler( 2, m_pInputHandler.get() );
 
 	// save a motion primitive to get skeleton info in Render()
 	CMotionDatabase mdb("motions/lws-fwd.mdb");
