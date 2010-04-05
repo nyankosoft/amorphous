@@ -3,11 +3,14 @@
 
 
 #include <map>
-#include <gds/MotionSynthesis/fwd.hpp>
-#include <gds/MotionSynthesis/MotionPrimitive.hpp>
-#include <gds/MotionSynthesis/MotionPrimitiveBlender.hpp>
-#include <gds/MotionSynthesis/BlendNode.hpp>
-#include <gds/Input/InputHandler.hpp>
+#include "gds/MotionSynthesis/fwd.hpp"
+#include "gds/MotionSynthesis/MotionPrimitive.hpp"
+#include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
+#include "gds/MotionSynthesis/BlendNode.hpp"
+#include "gds/Input/InputHandler.hpp"
+#include "gds/XML/fwd.hpp"
+#include "Support/Serialization/Serialization.hpp"
+using namespace GameLib1::Serialization;
 
 
 namespace msynth
@@ -24,6 +27,8 @@ class mt
 	std::vector< std::pair<double,std::string> > m_transitions;
 
 public:
+
+	mt() {}
 
 	mt( double interpolation_duration_in_sec, const std::string& motion_name )
 	{
@@ -42,7 +47,7 @@ public:
 
 
 /// motion transition
-class MotionNodeTrans
+class MotionNodeTrans : public IArchiveObjectBase
 {
 public:
 
@@ -58,13 +63,22 @@ public:
 	name(_name)
 	{
 	}
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & interpolation_time;
+		ar & name;
+
+		if( ar.GetMode() == IArchive::MODE_INPUT )
+			pNode.reset();
+	}
 };
 
 
 
 /// Defines how the root node of a character move in differnt motion primitives
 /// Also control skeletal animations of motion primitives
-class CMotionPrimitiveNode
+class CMotionPrimitiveNode : public IArchiveObjectBase
 {
 	std::string m_Name;
 
@@ -77,7 +91,7 @@ class CMotionPrimitiveNode
 //	typedef std::map< std::string, std::vector<MotionNodeTrans> > name_trans_map;
 	typedef std::map< std::string, boost::shared_ptr< std::vector<MotionNodeTrans> > > name_trans_map;
 
-	// first == second.back().name
+	/// first == second.back().name
 	name_trans_map m_mapTrans;
 
 //	boost::shared_ptr< std::vector<MotionNodeTrans> > m_pTransToProcess;
@@ -95,7 +109,7 @@ class CMotionPrimitiveNode
 
 public:
 
-	CMotionPrimitiveNode( const std::string& name )
+	CMotionPrimitiveNode( const std::string& name = "" )
 		:
 	m_Name(name),
 	m_pFSM(NULL),
@@ -186,6 +200,10 @@ public:
 	void SetMotionPlaySpeedFactor( float factor ) { m_fMotionPlaySpeedFactor = factor; }
 
 	boost::shared_ptr<CMotionPrimitive>& MotionPrimitive() { return m_pMotionPrimitive; }
+
+	void LoadFromXMLDocument( CXMLNodeReader& node );
+
+	void Serialize( IArchive& ar, const unsigned int version );
 };
 
 
@@ -269,7 +287,7 @@ public:
 
 
 
-class CMotionFSM
+class CMotionFSM : public IArchiveObjectBase
 {
 	std::string m_Name;
 
@@ -375,11 +393,15 @@ public:
 
 	void GetDebugInfo( std::string& dest_text_buffer );
 
+	void LoadFromXMLDocument( CXMLNodeReader& node );
+
+	void Serialize( IArchive& ar, const unsigned int version );
+
 	friend class CMotionFSMCallback;
 };
 
 
-class CMotionGraphManager
+class CMotionGraphManager : public IArchiveObjectBase
 {
 	std::vector< boost::shared_ptr<CMotionFSM> > m_vecpMotionFSM;
 
@@ -389,6 +411,10 @@ class CMotionGraphManager
 	// Name of complete skeleton used by this motion synthesizer.
 	// The blend node tree is created from the skeleton.
 	std::string m_CompleteSkeletonName;
+
+	// Name of motion primitive from which the complete skeleton is derived.
+	// Used if above m_CompleteSkeletonName is empty
+	std::string m_CompleteSkeletonSourceMotionName;
 
 	std::string m_MotionDatabaseFilepath;
 
@@ -428,9 +454,18 @@ public:
 	// Calls SetStartBlendNodeToMotionPrimitives() inside the function.
 	void LoadMotions( CMotionDatabase& mdb );
 
+	// Open the motion database specified by m_MotionDatabaseFilepath and load motions.
+	Result::Name LoadMotions();
+
 	inline void HandleInput( const SInputData& input );
 
 	void GetDebugInfo( std::string& dest_text_buffer );
+
+	void LoadFromXMLDocument( CXMLNodeReader& node );
+
+	void LoadFromXMLFile( const std::string& xml_file_path );
+
+	void Serialize( IArchive& ar, const unsigned int version );
 
 	void InitForTest( const std::string& motion_db_filepath = "motions/default.mdb" );
 };

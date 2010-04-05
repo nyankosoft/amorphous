@@ -1,6 +1,6 @@
 #include "MotionFSM.hpp"
 #include "MotionDatabase.hpp"
-#include <map>
+#include "gds/XML.hpp"
 
 using namespace std;
 using namespace boost;
@@ -60,6 +60,47 @@ XML data format
       <interpolation><time>0.2</time></interpolation>
     </path>
 </trans>
+
+
+Or, make it simpler
+
+<motion_database file="misc/motion_database.mdb"/>
+<complete_skeleton name=""/>
+<transitions>
+	<transition from="forward" to="crouch">
+		<trans time="0.2" node="crouch"></trans>
+	</transition>
+	<transition from="forward" to="stand">
+		<trans time="0.2" node="stand"></trans>
+	</transition>
+	<transition from="forward" to="prone">
+		<trans time="0.2" node="crouch"></trans>
+		<trans time="0.2" node="prone"></trans>
+	</transition>
+</transitions>
+
+<motion_fsm>
+	<nodes>
+		<node name="walk">
+		<motion_primitive name="fwd"/>
+		</node>
+	</nodes>
+	<nodes>
+		<node name="run">
+		<motion_primitive name="fwd"/>
+		</node>
+	</nodes>
+</motion_fsm>
+
+
+// load from xml or binary
+void LoadLatestVersionFromFile( obj, "xml_file_path", "binary_file_path" );
+
+
+----------------------------------------------------------
+sour code to set up motion FSMs
+----------------------------------------------------------
+
 mpn  = ???;// Motion Primitive Node
 mpn.AddTrans( "crouch", mt( "crouch", 0.2f) )
 mpn.AddTrans( "prone",  mt( 0.2f, "crouch" ) & mt( 0.2f, "prone" ) )
@@ -109,7 +150,7 @@ Motion primitive nodes and motion variations
   - aiming while courching
   - aiming while prone
 - Should these aiming motions represented by a single motion primitive node or different nodes?
-  - At least, aiming while standing/crouching and aiming while prone should be separate nodes.
+  - At least, aiming while standing/crouching and aiming while proning should be separate nodes.
 
 
 ----------------------------------------------------------
@@ -346,6 +387,27 @@ void CMotionPrimitiveNode::LoadMotion( CMotionDatabase& db )
 		// Has no keyframe - an invalid motion primitive
 		m_pMotionPrimitive.reset();
 	}
+
+	if( !m_pFSM )
+	{
+		LOG_PRINT_ERROR( " No FSM" );
+		return;
+	}
+
+	name_trans_map::iterator itr;
+	for( itr = m_mapTrans.begin();
+		 itr != m_mapTrans.end();
+		 itr++ )
+	{
+		shared_ptr< vector<MotionNodeTrans> > pTrans = itr->second;
+		vector<MotionNodeTrans>& trans = *pTrans;
+
+		for( size_t i=0; i<trans.size(); i++ )
+		{
+			trans[i].pNode = m_pFSM->GetNode( trans[i].name );
+		}
+	}
+
 }
 
 
@@ -372,6 +434,36 @@ void CMotionPrimitiveNode::SetAlgorithm( boost::shared_ptr<CMotionNodeAlgorithm>
 	m_pAlgorithm->m_pNode = this;
 }
 
+
+void CMotionPrimitiveNode::LoadFromXMLDocument( CXMLNodeReader& node )
+{
+	m_Name = node.GetAttributeText( "name" );
+
+	// Use the node name as the name of the motion primitive
+	// unless the user explicitly specifies the motion primitive name.
+	m_MotionName = m_Name;
+
+	string motion_name = node.GetAttributeText( "motion_primitive_name" );
+	if( 0 < motion_name.length() )
+		m_MotionName = motion_name;
+}
+
+
+void CMotionPrimitiveNode::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_Name;
+
+	ar & m_MotionName;
+
+	ar & m_mapTrans;
+
+//	ar & m_pMotionPrimitive; // Not serialized. Separately loaded from motion database
+
+	ar & m_fMotionPlaySpeedFactor;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+		m_pAlgorithm.reset();
+}
 
 
 //===========================================================================
@@ -510,6 +602,74 @@ void CMotionFSM::GetDebugInfo( std::string& dest_text_buffer )
 }
 
 
+void CMotionFSM::LoadFromXMLDocument( CXMLNodeReader& node )
+{
+	m_Name = node.GetAttributeText( "name" );
+
+	vector<CXMLNodeReader> nodes = node.GetChild( "nodes" ).GetImmediateChildren( "node" );
+	for( size_t i=0; i<nodes.size(); i++ )
+	{
+		shared_ptr<CMotionPrimitiveNode> pNode( new CMotionPrimitiveNode("") );
+		pNode->LoadFromXMLDocument( nodes[i] );
+		AddNode( pNode );
+	}
+
+	// transitions
+	vector<CXMLNodeReader> transitions = node.GetChild( "transitions" ).GetImmediateChildren( "transition" );
+	for( size_t i=0; i<transitions.size(); i++ )
+	{
+		string start_motion_name = transitions[i].GetAttributeText( "from" );
+		string end_motion_name   = transitions[i].GetAttributeText( "to" );
+		vector<CXMLNodeReader> trans_nodes = transitions[i].GetImmediateChildren( "trans" );
+
+		if( start_motion_name.length() == 0
+		 || end_motion_name.length() == 0 )
+		{
+			continue;
+		}
+
+		shared_ptr<CMotionPrimitiveNode> pStartNode = GetNode( start_motion_name );
+		if( !pStartNode )
+			continue;
+
+		mt trans;
+		for( size_t j=0; j<trans_nodes.size(); j++ )
+		{
+			float interpolation_length = to_float( trans_nodes[j].GetAttributeText( "time" ) );
+			string goal_node_name = trans_nodes[j].GetAttributeText( "goal" );
+			trans & mt( interpolation_length, goal_node_name );
+		}
+
+		pStartNode->AddTransPath( end_motion_name, trans );
+
+//		name_motionnode_map::iterator itr = m_mapNameToMotionNode.find( start_motion_name );
+//		if( itr == m_mapNameToMotionNode.end() )
+//			continue;
+
+//		itr->second.SetTrans( trans );
+	}
+}
+
+
+void CMotionFSM::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_Name;
+
+	ar & m_mapNameToMotionNode;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+	{
+		name_motionnode_map::iterator itr;
+		for( itr = m_mapNameToMotionNode.begin();
+			 itr != m_mapNameToMotionNode.end();
+			 itr++ )
+		{
+			itr->second->SetFSM( this );
+		}
+	}
+}
+
+
 void CMotionFSM::LoadMotions( CMotionDatabase& db )
 {
 	name_motionnode_map::iterator itr;
@@ -561,11 +721,36 @@ void CMotionGraphManager::LoadMotions( CMotionDatabase& mdb )
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->LoadMotions( mdb );
 
+	if( 0 < m_CompleteSkeletonSourceMotionName.length() )
+	{
+		// create blend node tree from the skeleton of the specified motion primitive
+		shared_ptr<CMotionPrimitive> pMotion
+			= mdb.GetMotionPrimitive( m_CompleteSkeletonSourceMotionName );
+
+		if( pMotion )
+		{
+			m_pBlendNodeRoot->CreateFromSkeleton( pMotion->GetSkeleton()->GetRootBone() );
+		}
+	}
+
 	SetStartBlendNodeToMotionPrimitives();
 
 //	shared_ptr<CMotionPrimitive> pMotion = mdb.GetMotionPrimitive( m_CompleteSkeletonName );
 //	if( pMotion )
 //		m_pBlendNodeRoot->CreateFromSkeleton( pMotion->GetSkeleton()->GetRootBone() );
+}
+
+
+Result::Name CMotionGraphManager::LoadMotions()
+{
+	CMotionDatabase mdb;
+	bool loaded = mdb.LoadFromFile( m_MotionDatabaseFilepath );
+	if( !loaded )
+		return Result::UNKNOWN_ERROR;
+
+	LoadMotions( mdb );
+
+	return Result::SUCCESS;
 }
 
 
@@ -579,6 +764,47 @@ void CMotionGraphManager::GetDebugInfo( std::string& dest_text_buffer )
 		dest_text_buffer += fmt_string( "[%d] name: %s\n", (int)i, m_vecpMotionFSM[i]->GetName().c_str() );
 		m_vecpMotionFSM[i]->GetDebugInfo( dest_text_buffer );
 	}
+}
+
+
+void CMotionGraphManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
+{
+	m_MotionDatabaseFilepath = root_node.GetChild( "motion_database" ).GetAttributeText( "file" );
+	m_CompleteSkeletonName = root_node.GetChild( "complete_skeleton" ).GetAttributeText( "name" );
+	m_CompleteSkeletonSourceMotionName = root_node.GetChild( "complete_skeleton" ).GetAttributeText( "motion_primitive_name" );
+
+	vector<CXMLNodeReader> fsms = root_node.GetChild( "FSMs" ).GetImmediateChildren( "FSM" );
+	m_vecpMotionFSM.resize( fsms.size() );
+	for( size_t i=0; i<fsms.size(); i++ )
+	{
+		m_vecpMotionFSM[i].reset( new CMotionFSM );
+		m_vecpMotionFSM[i]->LoadFromXMLDocument( fsms[i] );
+	}
+}
+
+
+void CMotionGraphManager::LoadFromXMLFile( const string& xml_file_path )
+{
+	shared_ptr<CXMLDocument> pDoc = CreateXMLDocument( xml_file_path );
+	if( !pDoc )
+		return;
+
+	LoadFromXMLDocument( pDoc->GetRootNodeReader() );
+}
+
+
+void CMotionGraphManager::Serialize( IArchive& ar, const unsigned int version )
+{
+	ar & m_vecpMotionFSM;
+
+	// Not serialized: initialized in LoadMotions()
+//	ar & m_pBlendNodeRoot;
+
+	ar & m_CompleteSkeletonName;
+
+	ar & m_CompleteSkeletonSourceMotionName;
+
+	ar & m_MotionDatabaseFilepath;
 }
 
 
