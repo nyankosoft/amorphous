@@ -240,7 +240,7 @@ bool CGLTextureResource::CreateFromDesc()
 	// create an empty texture
 	bool created = Create();
 
-	if( Lock() && m_pLockedTexture->IsValid() )
+	if( Lock( 0 ) && m_pLockedTexture->IsValid() )
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
@@ -352,7 +352,7 @@ public:
 };
 
 
-bool CGLTextureResource::Lock()
+bool CGLTextureResource::Lock( uint mip_level )
 {
 	// allocate buffer
 

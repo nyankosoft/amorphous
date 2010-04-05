@@ -97,19 +97,36 @@ class CDiskTextureLoader : public CGraphicsResourceLoader
 	CTextureResourceDesc m_TextureDesc;
 
 	/// Stores texture data loaded from disk
-	CBitmapImage m_Image;
+//	boost::shared_ptr<CBitmapImage> m_pImage;
+	std::vector< boost::shared_ptr<CBitmapImage> > m_vecpImage;
+
+	boost::weak_ptr<CDiskTextureLoader> m_pSelf;
+
+	int m_CurrentMipLevel;
+
+	boost::shared_ptr<CTextureResource> GetTextureResource();
 
 protected:
 
 //	boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pTextureEntry.lock(); }
+
+	/// Returns true on success
+	bool InitImageArray( boost::shared_ptr<CBitmapImage> pBaseImage );
+
+	/// Creates rescaled images for mipmaps.
+	/// Returns true on success.
+	bool CreateScaledImagesForMipmaps();
 
 public:
 
 	CDiskTextureLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CTextureResourceDesc& desc )
 		:
 	CGraphicsResourceLoader(pEntry),
-	m_TextureDesc(desc)
+	m_TextureDesc(desc),
+	m_CurrentMipLevel(0)
 	{}
+
+	virtual ~CDiskTextureLoader() {}
 
 	bool LoadFromFile( const std::string& filepath );
 
@@ -119,6 +136,8 @@ public:
 	/// copy the bitmap image to the locked texture surface
 	bool CopyLoadedContentToGraphicsResource();
 
+	bool Lock();
+
 	void FillResourceDesc();
 
 	const CGraphicsResourceDesc *GetDesc() const { return &m_TextureDesc; }
@@ -126,6 +145,10 @@ public:
 	/// called by the system
 	/// - called inside CopyTo()
 	void FillTexture( CLockedTexture& texture );
+
+	void OnResourceLoadedOnGraphicsMemory();
+
+	void SetWeakPtr( boost::weak_ptr<CDiskTextureLoader> pSelf ) { m_pSelf = pSelf; }
 };
 
 

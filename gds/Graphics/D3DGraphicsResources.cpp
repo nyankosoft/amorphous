@@ -292,7 +292,7 @@ bool CD3DTextureResource::CreateFromDesc()
 		return true;
 	}
 
-	if( Lock() )
+	if( Lock( 0 ) )
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
@@ -306,7 +306,11 @@ bool CD3DTextureResource::CreateFromDesc()
 
 		SetState( GraphicsResourceState::LOADED );
 
-		D3DXSaveTextureToFile( string(desc.ResourcePath + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
+		HRESULT hr = S_OK;
+
+		hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+
+//		hr = D3DXSaveTextureToFile( string(desc.ResourcePath + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
 
 		return true;
 	}
@@ -320,27 +324,29 @@ bool CD3DTextureResource::CreateFromDesc()
 }
 
 
-bool CD3DTextureResource::Lock()
+bool CD3DTextureResource::Lock( uint mip_level )
 {
 	if( !m_pTexture )
 		return false;
 
 	const CTextureResourceDesc& desc = m_TextureDesc;
 
+	// Lock a surface and get the pointer to the first texel of the texture
 	D3DLOCKED_RECT locked_rect;
-	HRESULT hr = m_pTexture->LockRect( 0, &locked_rect, NULL, 0);	// Lock and get the pointer to the first texel of the texture
+	HRESULT hr = m_pTexture->LockRect( mip_level, &locked_rect, NULL, 0 );
 
 	if( FAILED(hr) )
 	{
-		LOG_PRINT_WARNING( " Failed to lock the texture" );
+		LOG_PRINT_WARNING( " Failed to lock the texture (mip level: %d)" + to_string(mip_level) );
 		return false;
 	}
 
 	shared_ptr<CD3DLockedTexture> pLockedTexture( new CD3DLockedTexture() );
 	CD3DLockedTexture& tex = *pLockedTexture;
 	tex.m_pBits  = locked_rect.pBits;
-	tex.m_Width  = desc.Width;
-	tex.m_Height = desc.Height;
+	int div = (int)pow( 2.0, double(mip_level) );
+	tex.m_Width  = desc.Width  / div;
+	tex.m_Height = desc.Height / div;
 	m_pLockedTexture = pLockedTexture;
 
 	return true;

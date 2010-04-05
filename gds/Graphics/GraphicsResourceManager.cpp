@@ -198,8 +198,12 @@ shared_ptr<CGraphicsResourceLoader> CGraphicsResourceManager::CreateResourceLoad
 	switch(desc.GetResourceType())
 	{
 	case GraphicsResourceType::Texture:
-		pLoader = shared_ptr<CGraphicsResourceLoader>( new CDiskTextureLoader(pEntry,*dynamic_cast<const CTextureResourceDesc *>(&desc)) );
+	{
+		shared_ptr<CDiskTextureLoader> pTexLoader( new CDiskTextureLoader(pEntry,*dynamic_cast<const CTextureResourceDesc *>(&desc)) );
+		pTexLoader->SetWeakPtr( pTexLoader );
+		pLoader = pTexLoader;
 		break;
+	}
 	case GraphicsResourceType::Mesh:
 	{
 		shared_ptr<CMeshLoader> pMeshLoader( new CMeshLoader(pEntry,*dynamic_cast<const CMeshResourceDesc *>(&desc)) );

@@ -267,7 +267,11 @@ public:
 	///         or it will overwrite the original image file
 	virtual bool SaveTextureToImageFile( const std::string& image_filepath ) { return false; }
 
-	virtual bool Lock() { return false; }
+	virtual bool Lock() { return Lock( 0 ); }
+
+	/// Used by texture resources
+	/// \param mip_level the mip level of the texture resource to lock
+	virtual bool Lock( uint mip_level ) { return false; }
 
 	virtual bool Unlock() { return false; }
 

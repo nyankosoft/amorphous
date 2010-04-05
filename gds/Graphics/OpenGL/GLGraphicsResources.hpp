@@ -68,7 +68,8 @@ public:
 	///         or it will overwrite the original image file
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 
-	bool Lock();
+	/// TODO: support mip level
+	bool Lock( uint mip_level );
 
 	bool Unlock();
 

@@ -75,6 +75,14 @@ bool CGraphicsResourceLoader::AcquireResource()
 	if( !pHolder )
 		return false;
 
+	if( pHolder->GetResource() )
+	{
+		// The graphics resource already exists
+		// - Happens when mipmaps of textures are being loaded.
+		// - No need to create a new resource or draw one from cache.
+		return true;
+	}
+
 	shared_ptr<CGraphicsResource> pResource = GraphicsResourceCacheManager().GetCachedResource( *GetDesc() );
 
 	if( pResource )
@@ -147,9 +155,77 @@ void CGraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory()
 // CDiskTextureLoader
 //===================================================================================
 
+static inline double log2( double scalar )
+{
+	return log( scalar ) / log( 2.0 );
+}
+
+
+shared_ptr<CTextureResource> CDiskTextureLoader::GetTextureResource()
+{
+	shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
+	if( !pEntry )
+		return shared_ptr<CTextureResource>();
+
+	return pEntry->GetTextureResource();
+}
+
+
+bool CDiskTextureLoader::InitImageArray( boost::shared_ptr<CBitmapImage> pBaseImage )
+{
+	if( !pBaseImage )
+		return false;
+
+	CTextureResourceDesc& desc = m_TextureDesc;
+	int num_mipmaps = 0;
+	if( desc.MipLevels == 0 ) // complete mipmap chain
+		num_mipmaps = min( (int)log2( (double)pBaseImage->GetWidth() ), (int)log2( (double)pBaseImage->GetHeight() ) );
+	else if( 0 < desc.MipLevels )
+		num_mipmaps = desc.MipLevels;
+	else
+		return false;
+
+	if( num_mipmaps == 0 )
+		return false;
+
+	m_CurrentMipLevel = 0;
+
+	m_vecpImage.resize( num_mipmaps );
+	m_vecpImage[0] = pBaseImage;
+
+	return true;
+}
+
+
+bool CDiskTextureLoader::CreateScaledImagesForMipmaps()
+{
+	int num_mipmaps = (int)m_vecpImage.size();
+	for( int i=0; i<num_mipmaps - 1; i++ )
+	{
+		CBitmapImage& src_img = *m_vecpImage[i];
+		m_vecpImage[i+1] = src_img.GetRescaled( src_img.GetWidth() / 2, src_img.GetHeight() / 2 );
+
+		if( !m_vecpImage[i+1] )
+			return false;
+	}
+
+	return true;
+}
+
+
 bool CDiskTextureLoader::LoadFromFile( const std::string& filepath )
 {
-	return m_Image.LoadFromFile( GetSourceFilepath() );
+	shared_ptr<CBitmapImage> pBaseImage( new CBitmapImage );
+	bool image_loaded = pBaseImage->LoadFromFile( GetSourceFilepath() );
+
+	if( !image_loaded )
+		return false;
+
+	bool res = InitImageArray( pBaseImage );
+	if( !res )
+		return false;
+
+	return CreateScaledImagesForMipmaps();
 
 	//>>> async loading debug
 /*	bool loaded = m_Image.LoadFromFile( GetSourceFilepath() );
@@ -171,8 +247,17 @@ bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std
 	bool retrieved = db.GetData( keyname, img_archive );
 	if( retrieved )
 	{
-		bool image_loaded = m_Image.CreateFromImageArchive( img_archive );
-		return image_loaded;
+		shared_ptr<CBitmapImage> pBaseImage( new CBitmapImage );
+		bool image_loaded = pBaseImage->CreateFromImageArchive( img_archive );
+
+		if( !image_loaded )
+			return false;
+
+		bool res = InitImageArray( pBaseImage );
+		if( !res )
+			return false;
+
+		return CreateScaledImagesForMipmaps();
 	}
 	else
 		return false;
@@ -181,11 +266,7 @@ bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std
 
 bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 {
-	shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
-	if( !pEntry )
-		return false;
-
-	shared_ptr<CTextureResource> pTexture = pEntry->GetTextureResource();
+	shared_ptr<CTextureResource> pTexture = GetTextureResource();
 
 	if( !pTexture )
 		return false;
@@ -202,10 +283,29 @@ bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 }
 
 
+bool CDiskTextureLoader::Lock()
+{
+	shared_ptr<CTextureResource> pTexture = GetTextureResource();
+
+	if( !pTexture )
+		return false;
+
+	if( m_CurrentMipLevel < 0 || (int)m_vecpImage.size() <= m_CurrentMipLevel )
+		return false;
+
+	return pTexture->Lock( (uint)m_CurrentMipLevel );
+}
+
+
 void CDiskTextureLoader::FillResourceDesc()
 {
-	m_TextureDesc.Width  = m_Image.GetWidth();
-	m_TextureDesc.Height = m_Image.GetHeight();
+	if( m_vecpImage.empty() || !m_vecpImage[0] )
+		return;
+
+	CBitmapImage& img = *m_vecpImage[0];
+
+	m_TextureDesc.Width  = img.GetWidth();
+	m_TextureDesc.Height = img.GetHeight();
 
 	m_TextureDesc.Format = TextureFormat::A8R8G8B8;
 }
@@ -213,14 +313,25 @@ void CDiskTextureLoader::FillResourceDesc()
 
 void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
 {
-//	if( !m_Image.IsLoaded() )
+	if( m_vecpImage.empty()
+	 || (int)m_vecpImage.size() <= m_CurrentMipLevel
+	 || !m_vecpImage[m_CurrentMipLevel] )
+	{
+		return;
+	}
+
+	CBitmapImage& img = *m_vecpImage[m_CurrentMipLevel];
+
+//	LOG_PRINT_VERBOSE( fmt_string(" Filling a texture (size: %dx%d)", img.GetWidth(), img.GetHeight() ) );
+
+//	if( !img.IsLoaded() )
 //		return;
 
 //	texture.Clear( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.0f ) );
 
-	const int w = m_Image.GetWidth();
-	const int h = m_Image.GetHeight();
-	if( FreeImage_GetBPP( m_Image.GetFBITMAP() ) == 24 )
+	const int w = img.GetWidth();
+	const int h = img.GetHeight();
+	if( FreeImage_GetBPP( img.GetFBITMAP() ) == 24 )
 	{
 		// probably an image without alpha channel
 		RGBQUAD quad;
@@ -228,8 +339,8 @@ void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
 		{
 			for( int x=0; x<w; x++ )
 			{
-//				FreeImage_GetPixelColor( m_Image.GetFBITMAP(), x, y, &quad );
-				FreeImage_GetPixelColor( m_Image.GetFBITMAP(), x, h - y - 1, &quad );
+//				FreeImage_GetPixelColor( img.GetFBITMAP(), x, y, &quad );
+				FreeImage_GetPixelColor( img.GetFBITMAP(), x, h - y - 1, &quad );
 				U32 argb32
 					= 0xFF000000
 					| quad.rgbRed   << 16
@@ -247,11 +358,30 @@ void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
 		{
 			for( int x=0; x<w; x++ )
 			{
-				texture.SetPixelARGB32( x, y, m_Image.GetPixelARGB32(x,y) );
+				texture.SetPixelARGB32( x, y, img.GetPixelARGB32(x,y) );
 			}
 		}
 	}
 }
+
+
+void CDiskTextureLoader::OnResourceLoadedOnGraphicsMemory()
+{
+	m_CurrentMipLevel += 1;
+
+	if( (int)m_vecpImage.size() <= m_CurrentMipLevel )
+	{
+		// Loaded all the mipmaps
+		CGraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory();
+	}
+	else
+	{
+		// Load the next mipmap
+		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, m_pSelf.lock(), GetResourceEntry() );
+		AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+	}
+}
+
 
 
 //===================================================================================
