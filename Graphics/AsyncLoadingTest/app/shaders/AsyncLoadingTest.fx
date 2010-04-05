@@ -20,21 +20,21 @@ float3 g_vLightDir = { 0.56568f, 0.70711f, 0.42426f };
 #define NUM_MAX_BLEND_MATRICES_PER_VERTEX	2
 
 
-#include "../../../../../Shaders/Matrix.fxh"
-#include "../../../../../Shaders/TexDef.fxh"
+#include "Matrix.fxh"
+#include "TexDef.fxh"
 
 // lights
-#include "../../../../../Shaders/LightDef.fxh"
+#include "LightDef.fxh"
 #define NUM_LIGHTS	5
 CLight g_aLight[NUM_LIGHTS];
 
-//#include "../../../../Shaders/EnvMap.fxh"
-//#include "../../../../Shaders/QuickTest.fxh"
-//#include "../../../../Shaders/SkyBox.fxh"
+//#include "EnvMap.fxh"
+//#include "QuickTest.fxh"
+//#include "SkyBox.fxh"
 
-//#include "../../../../Shaders/VS_ForPerPixelLightsWithSpecular.fxh"
-//#include "../../../../Shaders/PS_Specular.fxh"
-//#include "../../../../Shaders/PerPixelLightingTechniques.fxh"
+//#include "VS_ForPerPixelLightsWithSpecular.fxh"
+//#include "PS_Specular.fxh"
+//#include "PerPixelLightingTechniques.fxh"
 
 
 technique NullShader

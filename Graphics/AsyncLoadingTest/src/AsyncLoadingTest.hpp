@@ -77,6 +77,10 @@ class CAsyncLoadingTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	bool m_TestAsyncLoading;
 
+	bool m_UseCachedResources;
+
+	int m_NumTextureMipmaps;
+
 	char m_TextBuffer[TEXT_BUFFER_SIZE];
 
 private:

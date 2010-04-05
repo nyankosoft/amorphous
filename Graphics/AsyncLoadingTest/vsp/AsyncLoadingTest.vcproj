@@ -207,22 +207,10 @@
 				</File>
 			</Filter>
 		</Filter>
-		<Filter
-			Name="Framework"
+		<File
+			RelativePath="..\app\params.txt"
 			>
-			<File
-				RelativePath="..\..\..\..\Project1\gds\App\GameWindowManager.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.hpp"
-				>
-			</File>
-		</Filter>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

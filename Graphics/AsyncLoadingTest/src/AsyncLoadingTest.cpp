@@ -1,17 +1,15 @@
 #include "AsyncLoadingTest.hpp"
-#include <gds/3DMath/Matrix34.hpp>
-#include <gds/Graphics.hpp>
-#include <gds/Graphics/AsyncResourceLoader.hpp>
-#include <gds/Support/Timer.hpp>
-#include <gds/Support/Profile.hpp>
-#include <gds/Support/Macro.h>
-#include <gds/GUI.hpp>
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics.hpp"
+#include "gds/Graphics/AsyncResourceLoader.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/Macro.h"
+#include "gds/GUI.hpp"
 
 using namespace std;
 using namespace boost;
-
-
-static int gs_TextureMipLevels = 1;
 
 
 CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )
@@ -55,12 +53,20 @@ extern const std::string GetAppTitle()
 
 
 CAsyncLoadingTest::CAsyncLoadingTest()
+:
+m_NumTextureMipmaps( 1 )
 {
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
 	m_TestAsyncLoading = true;
+
+	int enabled = 1;
+	LoadParamFromFile( "params.txt", "cached_resource", enabled );
+	m_UseCachedResources = (enabled == 1);
+
+	LoadParamFromFile( "params.txt", "num_texture_mipmaps", m_NumTextureMipmaps );
 
 	GraphicsResourceManager().AllowAsyncLoading( m_TestAsyncLoading );
 
@@ -114,7 +120,7 @@ void CAsyncLoadingTest::CreateCachedResources()
 	tex_desc.Width     = 1024;
 	tex_desc.Height    = 1024;
 
-	tex_desc.MipLevels = gs_TextureMipLevels;
+	tex_desc.MipLevels = m_NumTextureMipmaps;
 
 	const int num_textures_to_preload = 8;
 	for( int i=0; i<num_textures_to_preload; i++ )
@@ -126,7 +132,11 @@ void CAsyncLoadingTest::CreateCachedResources()
 
 int CAsyncLoadingTest::Init()
 {
-	m_pFont = shared_ptr<CFontBase>( new CFont( "ÇlÇr ÉSÉVÉbÉN", 6, 12 ) );
+	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
+	pTexFont->SetFontSize( 6, 12 );
+	m_pFont = pTexFont;
+//	m_pFont = shared_ptr<CFontBase>( new CFont( "ÇlÇr ÉSÉVÉbÉN", 6, 12 ) );
 //	m_pFont = shared_ptr<CFontBase>( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
 
 /*
@@ -166,7 +176,10 @@ int CAsyncLoadingTest::Init()
 	InitShader();
 
 	if( m_TestAsyncLoading )
+	{
+		if( m_UseCachedResources )
 		CreateCachedResources();
+	}
 
 	return 0;
 }
@@ -221,7 +234,7 @@ void CAsyncLoadingTest::LoadResourcesAsync( CTestMeshHolder& holder )
 				CTextureResourceDesc desc = pMesh->GetMaterial(i).TextureDesc[0];
 				desc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
 				desc.Format = TextureFormat::A8R8G8B8;
-				desc.MipLevels = gs_TextureMipLevels;
+				desc.MipLevels = m_NumTextureMipmaps;
 
 				tex.Load( desc );
 			}
