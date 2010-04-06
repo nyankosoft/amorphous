@@ -30,7 +30,7 @@ private:
 
 	boost::shared_ptr<CGraphicsResourceCacheManager> m_pCacheManager;
 
-	std::vector<boost::shared_ptr<CGraphicsResourceEntry>> m_vecpResourceEntry;
+	std::vector< boost::shared_ptr<CGraphicsResourceEntry> > m_vecpResourceEntry;
 
 	boost::mutex m_ResourceLock;
 
