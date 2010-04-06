@@ -5,6 +5,7 @@
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
 #include "gds/Support/DebugOutput.hpp"
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace boost;
@@ -35,7 +36,30 @@ m_fTurnSpeed(0.0f)
 {
 	m_pMotionGraphManager.reset( new CMotionGraphManager );
 //	m_pMotionGraphManager = shared_new<CMotionGraphManager>();
-	m_pMotionGraphManager->InitForTest( "motions/lws-fwd.mdb" );
+
+	bool load_embedded_test_data = false;
+	if( load_embedded_test_data )
+		m_pMotionGraphManager->InitForTest( "motions/lws-fwd.mdb" );
+	else
+	{
+		// Load FSM from XML file and update the binary file
+		string xml_file = "../resources/misc/test_motion_fsm.xml";
+		if( boost::filesystem::exists(xml_file) )
+		{
+			m_pMotionGraphManager->LoadFromXMLFile( xml_file );
+			m_pMotionGraphManager->SaveToFile( "motions/test_motion_fsm.bin" );
+		}
+
+		// Clear the data loaded from XML
+		m_pMotionGraphManager.reset( new CMotionGraphManager );
+
+		// Load from the binary archive
+		bool loaded_from_archive = m_pMotionGraphManager->LoadFromFile( "motions/test_motion_fsm.bin" );
+
+		if( loaded_from_archive )
+			m_pMotionGraphManager->LoadMotions();
+	}
+
 
 	shared_ptr<CMotionFSM> pLowerLimbsFSM = m_pMotionGraphManager->GetMotionFSM( "lower_limbs" );
 
