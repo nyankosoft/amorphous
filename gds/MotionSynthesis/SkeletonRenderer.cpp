@@ -1,6 +1,5 @@
 #include <boost/foreach.hpp>
 #include "SkeletonRenderer.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Support/LineSegmentRenderer.hpp"
 
 using namespace msynth;
