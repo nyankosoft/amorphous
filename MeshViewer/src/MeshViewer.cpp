@@ -1,4 +1,5 @@
 #include "MeshViewer.hpp"
+#include "gds/3DMath/MatrixConversions.hpp"
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
@@ -30,11 +31,12 @@ m_LastRMouseClickX(0),
 m_LastRMouseClickY(0),
 m_fHeading(0),
 m_fPitch(0),
-m_MeshWorldPose( Matrix34Identity() )
+m_MeshWorldPose( Matrix34Identity() ),
+m_fInitCamShift( 20.0f )
 {
 	m_UseCameraController = false;
 
-	Camera().SetPose( Matrix34( Vector3( 0,0,-20 ), Matrix33Identity() ) );
+	Camera().SetPose( Matrix34( Vector3( 0.0f, 0.0f, -m_fInitCamShift ), Matrix33Identity() ) );
 }
 
 
@@ -110,9 +112,27 @@ void CMeshViewer::RenderMeshes()
 //	if( 0 < num_meshes )
 //		RenderAsSkybox( m_vecMesh[0], g_CameraController.GetPosition() );
 
+	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	if(	!pMesh )
+		return;
+
+	// Calculate the scaling matrix.
+	// Scale the mesh to fit its bounding sphere inside the view frustum.
+	float mesh_radius = Vec3Length( pMesh->GetAABB().GetExtents() );
+	float fov = (float)PI / 4.0f; // For Direct3D, see D3DXMatrixPerspectiveFovLH() call in CDirect3D9::InitD3D()
+	float scale = m_fInitCamShift * tan( fov / 2.0f ) / mesh_radius;
+
+	Matrix34 shift( Matrix34Identity() );
+	shift.vPosition = -pMesh->GetAABB().GetCenterPosition();
+
+	Matrix44 world
+		= ToMatrix44( m_MeshWorldPose )
+		* Matrix44Scaling( scale, scale, scale )
+		* ToMatrix44( shift );
+
 	// reset the world transform matrix
 //	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
-	FixedFunctionPipelineManager().SetWorldTransform( m_MeshWorldPose );
+	FixedFunctionPipelineManager().SetWorldTransform( world );
 
 	DWORD fog_colors[] =
 	{
@@ -131,7 +151,6 @@ void CMeshViewer::RenderMeshes()
 			pMesh->Render( ffp_mgr );
 	}*/
 
-	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 		pMesh->Render();
 //		pMesh->Render( FixedFunctionPipelineManager() );

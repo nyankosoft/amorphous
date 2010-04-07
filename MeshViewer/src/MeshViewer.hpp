@@ -43,6 +43,9 @@ class CMeshViewer : public CGraphicsApplicationBase
 	float m_fHeading;
 	float m_fPitch;
 
+
+	float m_fInitCamShift;
+
 	Matrix34 m_MeshWorldPose;
 
 	const std::string GetApplicationTitle() { return "MeshViewer"; }
