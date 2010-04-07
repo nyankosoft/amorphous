@@ -2,13 +2,13 @@
 
 #include <map>
 #include <boost/foreach.hpp>
-#include <gds/Input.hpp>
-#include <gds/3DMath/misc.hpp>
-#include <gds/GUI.hpp>
-#include <gds/MotionSynthesis.hpp>
-//#include <gds/Support/CameraController.hpp>
-#include <gds/Support/memory_helpers.hpp>
-#include <gds/Support/ParamLoader.hpp>
+#include "gds/Input.hpp"
+#include "gds/3DMath/misc.hpp"
+#include "gds/GUI.hpp"
+#include "gds/MotionSynthesis.hpp"
+//#include "gds/Support/CameraController.hpp"
+#include "gds/Support/memory_helpers.hpp"
+#include "gds/Support/ParamLoader.hpp"
 
 using namespace std;
 using namespace boost;
@@ -607,7 +607,8 @@ void CMotionPrimitiveViewer::Render()
 
 	pd3dDevice->SetRenderState( D3DRS_ZENABLE,  FALSE );
 
-	m_pDialogManager->Render();
+	if( m_pDialogManager )
+		m_pDialogManager->Render();
 }
 
 
@@ -706,7 +707,8 @@ int CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string&
 		}
 	}
 
-	m_pDialogManager->OpenRootDialog( ROOT_DIALOG );
+	if( m_pDialogManager )
+		m_pDialogManager->OpenRootDialog( ROOT_DIALOG );
 
 	return 0;
 }

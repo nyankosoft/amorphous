@@ -2,11 +2,11 @@
 #define  __MotionPrimitiveViewer_H__
 
 
-#include <gds/Input/fwd.hpp>
-#include <gds/Graphics.hpp>
-#include <gds/GUI/fwd.hpp>
-#include <gds/MotionSynthesis/fwd.hpp>
-#include <gds/MotionSynthesis/SkeletonRenderer.hpp>
+#include "gds/Input/fwd.hpp"
+#include "gds/Graphics.hpp"
+#include "gds/GUI/fwd.hpp"
+#include "gds/MotionSynthesis/fwd.hpp"
+#include "gds/MotionSynthesis/SkeletonRenderer.hpp"
 
 
 class CSkeletalMeshMotionViewer
