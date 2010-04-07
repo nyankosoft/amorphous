@@ -42,9 +42,10 @@ static const char *GetDeviceTypeString( D3DDEVTYPE dev_type )
 
 static const char *GetVertexProcessingTypeString( DWORD behavior_flags )
 {
-	if(behavior_flags & D3DCREATE_HARDWARE_VERTEXPROCESSING)      return "HW";
-	else if(behavior_flags & D3DCREATE_SOFTWARE_VERTEXPROCESSING) return "SW";
-	else if(behavior_flags & D3DCREATE_MIXED_VERTEXPROCESSING)    return "mixed";
+	if(behavior_flags & D3DCREATE_PUREDEVICE)                     return "Pure Device";
+	else if(behavior_flags & D3DCREATE_HARDWARE_VERTEXPROCESSING) return "Hardware";
+	else if(behavior_flags & D3DCREATE_SOFTWARE_VERTEXPROCESSING) return "Software";
+	else if(behavior_flags & D3DCREATE_MIXED_VERTEXPROCESSING)    return "Mixed";
 	else return "unkonwn";
 }
 
@@ -177,14 +178,14 @@ bool CDirect3D9::CreateD3DDevice( D3DPRESENT_PARAMETERS& present_params, HWND hW
 		
 		if( SUCCEEDED(hr) )
 		{
-			LOG_PRINT( fmt_string( "Created a D3D device. device type: %s / vertex processing: %s",
-			GetDeviceTypeString(m_DeviceType),
-			GetVertexProcessingTypeString(m_BehaviorFlags) ) );
-
 			// save params
 			m_DeviceType    = device_types[i];
 			m_BehaviorFlags = behavior_flags[i];
 			m_CurrentPresentParameters = present_params;
+
+			LOG_PRINT( fmt_string( "Created a D3D device. device type: %s / vertex processing: %s",
+			GetDeviceTypeString(m_DeviceType),
+			GetVertexProcessingTypeString(m_BehaviorFlags) ) );
 
 			// update adapter modes
 			EnumAdapterModesForDefaultAdapter();
