@@ -147,7 +147,7 @@ inline void CD3DXSMeshObject::ResetLocalTransformsCache()
 
 inline void CD3DXSMeshObject::GetBlendTransforms( std::vector<Transform>& dest_transforms )
 {
-/*	if( !m_pRootBone )
+	if( !m_pRootBone )
 		return;
 
 	if( m_vecLocalTransformCache.empty() )
@@ -156,7 +156,7 @@ inline void CD3DXSMeshObject::GetBlendTransforms( std::vector<Transform>& dest_t
 	dest_transforms.resize( m_iNumBones );
 
 	int index = 0;
-	m_pRootBone->CalculateTransforms_r( NULL, &m_vecLocalTransformCache[0], index, &(dest_transforms[0]) );*/
+	m_pRootBone->CalculateTransforms_r( NULL, &m_vecLocalTransformCache[0], index, &(dest_transforms[0]) );
 }
 
 

@@ -50,7 +50,7 @@ class CMM_Bone
 
 public:
 
-//	void CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform );
+	inline void CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform );
 
 public:
 
@@ -66,7 +66,7 @@ public:
 	/// This function actually calculates world transforms
 	void Transform_r( Matrix34 *pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex );
 
-//	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );
+	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );
 
 	int GetBoneMatrixIndexByName_r( const char *pName );
 
