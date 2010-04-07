@@ -186,6 +186,9 @@ public:
 
 	const AABB3& GetAABB( int material_index ) const { return m_vecAABB[material_index]; }
 
+	// returns the axis-aligned bounding box of the mesh
+	const AABB3& GetAABB() const { return m_AABB; }
+
 	// methods for skeletal mesh
 	// - implementation class of skeletal mesh has to implement these functions
 
@@ -305,6 +308,8 @@ public:
 	int GetNumTextures( int material_index ) const { return m_pImpl->GetNumTextures( material_index ); }
 
 	inline CTextureHandle& GetTexture( int material_index, int tex_index ) { return m_pImpl->GetTexture( material_index, tex_index ); }
+
+	const AABB3& GetAABB() const { return m_pImpl->GetAABB(); }
 
 	const AABB3& GetAABB( int material_index ) const { return m_pImpl->GetAABB( material_index ); }
 
