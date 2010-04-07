@@ -14,34 +14,6 @@
 using namespace std;
 using namespace boost;
 
-/*
-class CDebugInputHandler : public CInputHandler
-{
-	CMotionPrimitiveViewer *m_pViewer;
-public:
-	CDebugInputHandler( CMotionPrimitiveViewer *pViewer ) : m_pViewer(pViewer) {}
-	void ProcessInput(SInputData& input)
-	{
-		switch( input.iGICode )
-		{
-		case '0':
-//			if( input.iType == ITYPE_KEY_PRESSED )
-//				m_pViewer->ToggleDisplayHelpText();
-			break;
-		case '2':
-//			if( input.iType == ITYPE_KEY_PRESSED )
-//				m_pViewer->ToggleDisplaySkeleton();
-			break;
-		case '3':
-			if( input.iType == ITYPE_KEY_PRESSED )
-				m_pViewer->ToggleDisplaySkeletalMesh();
-			break;
-		default:
-			break;
-		}
-	}
-};
-*/
 
 extern int ConvertGICodeToWin32VKCode( int general_input_code );
 
@@ -57,11 +29,6 @@ inline bool IsKeyPressed( int general_input_code )
 static const float g_fIndicatorHeight = 0.05f;
 
 //extern CCameraController g_CameraController;
-
-// Graphics.SetWorldTransform( Matrix34Identitiy() );
-// Graphics.SetViewTransform( Matrix34Identitiy() );
-// Graphics.SetLighting( true );
-// Graphics.SetLight( index, light );
 
 // Graphics.SetDepthBufferMode( DepthBuffer::Z )
 // Graphics.SetDepthBufferMode( DepthBuffer::W )
