@@ -4,6 +4,7 @@
 #include <boost/foreach.hpp>
 #include "gds/Input.hpp"
 #include "gds/3DMath/misc.hpp"
+#include "gds/3DMath/MatrixConversions.hpp"
 #include "gds/GUI.hpp"
 #include "gds/MotionSynthesis.hpp"
 //#include "gds/Support/CameraController.hpp"
@@ -248,6 +249,8 @@ void CSkeletalMeshMotionViewer::UpdateVertexBlendTransforms( CShaderManager& sha
 {
 	if( !shader_mgr.GetEffect() )
 		return;
+
+	skeletal_mesh.SetLocalTransformsFromCache();
 
 	vector<Transform> vert_blend_transforms;
 	skeletal_mesh.GetBlendTransforms( vert_blend_transforms );
@@ -534,7 +537,6 @@ void CMotionPrimitiveViewer::RenderFloor()
 	m_pUnitCube->SetUniformColor( 0.6f, 0.6f, 0.6f, 1.0f );
 
 	Matrix34 pose = Matrix34Identity();
-	D3DXMATRIX matScaling, matWorld;
 
 	int x,z;
 	for( z=-4; z<=4; z++ )
@@ -543,10 +545,8 @@ void CMotionPrimitiveViewer::RenderFloor()
 		{
 			// set world transform
 			pose.vPosition = Vector3( x * 1.0f, 0.0f, z * 1.0f );
-			pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
-			D3DXMatrixScaling( &matScaling, 0.99f, 0.01f, 0.99f );
-			matWorld = matScaling * matWorld;
-			DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+			Matrix44 scaling = Matrix44Scaling( 0.99f, 0.01f, 0.99f );
+			FixedFunctionPipelineManager().SetWorldTransform( ToMatrix44(pose) * scaling );
 
 			m_pUnitCube->Draw();
 		}
@@ -562,7 +562,6 @@ void CMotionPrimitiveViewer::RenderPoles()
 	m_pUnitCube->SetUniformColor( 0.7f, 0.7f, 0.7f, 0.3f );
 
 	Matrix34 pose = Matrix34Identity();
-	D3DXMATRIX matScaling, matWorld;
 
 	const float pole_height = 2.0f;
 
@@ -573,10 +572,8 @@ void CMotionPrimitiveViewer::RenderPoles()
 		{
 			// set world transform
 			pose.vPosition = Vector3( x * 2.0f, pole_height * 0.5f, z * 2.0f );
-			pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
-			D3DXMatrixScaling( &matScaling, 0.02f, pole_height, 0.02f );
-			matWorld = matScaling * matWorld;
-			DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+			Matrix44 scaling = Matrix44Scaling( 0.02f, pole_height, 0.02f );
+			FixedFunctionPipelineManager().SetWorldTransform( ToMatrix44(pose) * scaling );
 
 			m_pUnitCube->Draw();
 		}
@@ -586,9 +583,8 @@ void CMotionPrimitiveViewer::RenderPoles()
 
 void CMotionPrimitiveViewer::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-	pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE,  TRUE );
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
 	if( m_DisplaySkeletalMesh )
 		m_MeshViewer.Render();
@@ -605,7 +601,7 @@ void CMotionPrimitiveViewer::Render()
 
 	// render UI
 
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE,  FALSE );
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 
 	if( m_pDialogManager )
 		m_pDialogManager->Render();
