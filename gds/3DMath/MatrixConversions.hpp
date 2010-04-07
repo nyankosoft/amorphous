@@ -26,6 +26,14 @@ inline void ToMatrix44( const Matrix34& src, Matrix44& dest )
 }
 
 
+inline Matrix44 ToMatrix44( const Matrix34& src )
+{
+	Matrix44 dest;
+	ToMatrix44( src, dest );
+	return dest;
+}
+
+
 inline void Matrix44CameraMatrixFromCameraPose( const Matrix34& src_cam_pose, Matrix44& dest_cam_matrix )
 {
 	Matrix44& dest = dest_cam_matrix;
