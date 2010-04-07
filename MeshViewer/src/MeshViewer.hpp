@@ -3,39 +3,16 @@
 
 
 #include <boost/shared_ptr.hpp>
-using namespace boost;
+#include "gds/App/GraphicsApplicationBase.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/Graphics/TextureHandle.hpp"
+#include "gds/Graphics/ShaderHandle.hpp"
+#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Input/fwd.hpp"
+#include "gds/Input.hpp"
 
-#include <gds/App/GraphicsApplicationBase.hpp>
-#include <gds/Graphics/fwd.hpp>
-#include <gds/Graphics/Camera.hpp>
-#include <gds/Graphics/MeshObjectHandle.hpp>
-#include <gds/Graphics/TextureHandle.hpp>
-#include <gds/Graphics/ShaderHandle.hpp>
-#include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
-#include <gds/Graphics/Shader/ShaderManager.hpp>
-#include <gds/Graphics/Shader/ShaderLightManager.hpp>
-#include <gds/Input/fwd.hpp>
-#include <gds/Input.hpp>
-#include <gds/Graphics/UnitSphere.hpp>
-
-
-/*
-class CMeshViewer;
-
-
-class CMeshViewerInputHandler : public CInputHandler
-{
-	CMeshViewer* m_pTest;
-
-public:
-
-	CMeshViewerInputHandler( CMeshViewer* pTest )
-		:
-	m_pTest(pTest) {}
-
-	virtual void ProcessInput(SInputData& input);
-};
-*/
 
 class CMeshViewer : public CGraphicsApplicationBase
 {
@@ -52,13 +29,7 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	CShaderHandle m_Shader;
 
-//	shared_ptr<CShaderManager> m_pShaderManager;
-
-	CShaderLightManager m_ShaderLightManager;
-
-	CUnitSphere m_LightPosIndicator;
-
-//	CShaderLightManager m_ShaderLightManager;
+//	CUnitSphere m_LightPosIndicator;
 
 	Vector3 m_vLightPosition;
 
@@ -104,8 +75,8 @@ public:
 
 	void RenderScene();
 
-//	void UpdateViewTransform( const D3DXMATRIX& matView );
-//	void UpdateProjectionTransform( const D3DXMATRIX& matProj );
+//	void UpdateViewTransform( const Matrix44& matView );
+//	void UpdateProjectionTransform( const Matrix44& matProj );
 
 	void HandleInput( const SInputData& input );
 };

@@ -1,14 +1,15 @@
 #include "MeshViewer.hpp"
-#include <gds/Graphics/Mesh/BasicMesh.hpp>
-#include <gds/Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp>
-#include <gds/Graphics/MeshGenerators.hpp>
-#include <gds/Graphics/Font/Font.hpp>
-#include <gds/Graphics/GraphicsDevice.hpp>
-#include <gds/Graphics/Shader/FixedFunctionPipelineManager.hpp>
-#include <gds/Graphics/SkyboxMisc.hpp>
-#include <gds/Support/CameraController_Win32.hpp>
-#include <gds/Support/ParamLoader.hpp>
-#include <gds/Support/FileOpenDialog_Win32.hpp>
+#include "gds/Graphics/Mesh/BasicMesh.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/Shader/ShaderManager.hpp"
+#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/Font/Font.hpp"
+#include "gds/Graphics/GraphicsDevice.hpp"
+#include "gds/Graphics/Direct3D9.hpp"
+#include "gds/Graphics/SkyboxMisc.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/FileOpenDialog_Win32.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
