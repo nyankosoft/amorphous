@@ -2,7 +2,6 @@
 #include "LightEntityManager.hpp"
 #include "BSPMap.hpp"
 #include "../Graphics/FVF_MapVertex.h"
-#include "../Graphics/Direct3D9.hpp"
 #include "../Graphics/Shader/Shader.hpp"
 #include "../Graphics/Shader/ShaderManager.hpp"
 
