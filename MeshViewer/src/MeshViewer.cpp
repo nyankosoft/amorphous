@@ -20,13 +20,6 @@ using namespace boost::filesystem;
 CApplicationBase *CreateApplicationInstance() { return new CMeshViewer; }
 
 
-/*
-void CMeshViewerInputHandler::ProcessInput( SInputData& input )
-{
-	m_pTest->ProcessInput( input );
-}
-*/
-
 
 CMeshViewer::CMeshViewer()
 :

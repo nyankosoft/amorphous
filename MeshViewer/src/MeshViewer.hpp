@@ -45,8 +45,6 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	Matrix34 m_MeshWorldPose;
 
-//	CInputHandlerSharedPtr m_pInputHandler;
-
 	const std::string GetApplicationTitle() { return "MeshViewer"; }
 
 protected:
