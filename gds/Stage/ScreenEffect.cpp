@@ -1,5 +1,4 @@
 #include "ScreenEffect.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 
@@ -46,5 +45,5 @@ void CFadeEffect::SetFadeEffect(int iType, U32 dest_color, float fTotalTime, Alp
 
 void CFadeEffect::SetScreenSize( int iScreenWidth, int iScreenHeight )
 {
-	m_ScreenRect.SetPosition( D3DXVECTOR2(0,0), D3DXVECTOR2((float)iScreenWidth,(float)iScreenHeight) );
+	m_ScreenRect.SetPosition( Vector2(0,0), Vector2((float)iScreenWidth,(float)iScreenHeight) );
 }
