@@ -2,17 +2,13 @@
 #define  __STATICGEOMETRYFG_H__
 
 
-#include <vector>
-#include <string>
-
 #include "Stage/fwd.hpp"
 #include "Stage/StaticGeometryBase.hpp"
 #include "Stage/StaticGeometryArchiveFG.hpp"
-
+#include "Physics/fwd.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/TextureHandle.hpp"
-
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
@@ -37,7 +33,7 @@ class CStaticGeometryFG : public CStaticGeometryBase
 
 	/// somewhat deprecated
 	/// - skybox is now loaded as separate entity
-	CD3DXMeshObjectBase *m_pSkyboxMesh;
+	boost::shared_ptr<CBasicMesh> m_pSkyboxMesh;
 
 	CShaderManager *m_pShaderManager;
 
@@ -57,7 +53,7 @@ class CStaticGeometryFG : public CStaticGeometryBase
 	CTextureHandle m_NormalMapForWaterSurface;	/// experimental
 
 	/// holds triangle mesh registered to physics simulator
-	CTriangleMesh* m_pTriangleMesh;
+	physics::CActor *m_pTriangleMesh;
 
 
 private:

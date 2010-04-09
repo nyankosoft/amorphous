@@ -2,10 +2,9 @@
 #include "StaticGeometryArchiveFG.hpp"
 
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/Direct3D/Mesh/D3DXMeshObject.hpp"
-
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -22,10 +21,12 @@
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "JigLib/JL_PhysicsManager.hpp"
-#include "JigLib/JL_PhysicsActor.hpp"
-#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
-#include "JigLib/TriangleMesh.hpp"
+#include "Physics/Actor.hpp"
+#include "Physics/RaycastHit.hpp"
+//#include "JigLib/JL_PhysicsManager.hpp"
+//#include "JigLib/JL_PhysicsActor.hpp"
+//#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
+//#include "JigLib/TriangleMesh.hpp"
 
 #endif /* TEST_STATICGEOMETRY_FG */
 
@@ -35,7 +36,6 @@ using namespace std;
 CStaticGeometryFG::CStaticGeometryFG( CStage *pStage )
 :
 CStaticGeometryBase( pStage ),
-m_pSkyboxMesh(NULL),
 m_pShaderManager(NULL),
 m_pTriangleMesh(NULL),
 m_FogStartDist(0),
@@ -65,7 +65,7 @@ void CStaticGeometryFG::LoadGraphicsResources( const CGraphicsParameters& rParam
 
 void CStaticGeometryFG::Release()
 {
-	SafeDelete( m_pSkyboxMesh );
+	m_pSkyboxMesh.reset();
 	SafeDelete( m_pShaderManager );
 
 	// m_pTriangleMesh is not released here - it is released by physics simulator
@@ -187,20 +187,15 @@ void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	const D3DXVECTOR3 vPos = rCamera.GetPosition();
+	Matrix44 matWorld = Matrix44Scaling( 10.0f, 10.0f, 10.0f );
 
-	D3DXMatrixScaling( &matWorld, 10.0f, 10.0f, 10.0f );
+	const Vector3 vPos = rCamera.GetPosition();
+	matWorld(0,3) = vPos.x;
+	matWorld(1,3) = vPos.y;
+	matWorld(2,3) = vPos.z;
+	matWorld(3,3) = 1.0f;
 
-	matWorld._41 = vPos.x;
-	matWorld._42 = vPos.y;
-	matWorld._43 = vPos.z;
-	matWorld._44 = 1;
-
-	Matrix44 world;
-	world.SetRowMajorMatrix44( (Scalar *)&matWorld );
-	m_pShaderManager->SetWorldTransform( world );
+	m_pShaderManager->SetWorldTransform( matWorld );
 
 	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
 	if( !pEffect )
@@ -223,30 +218,31 @@ void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
 
 //	pd3dDevice->SetFVF( TEXTUREVERTEX::FVF );
 
-	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-	pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
-//	m_pSkyboxMesh->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) ); 
-	m_pSkyboxMesh->Render( *m_pShaderManager ); 
+	if( m_pSkyboxMesh )
+	{
+//		m_pSkyboxMesh->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) ); 
+		m_pSkyboxMesh->Render( *m_pShaderManager ); 
+	}
 
-	pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
 
 
 bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int EffectFlag )
 {
-	D3DXMATRIX matProj;
-
 	Matrix44 view, proj;
 	rCamera.GetCameraMatrix( view );
 	rCamera.GetProjectionMatrix( proj );
-	proj.GetRowMajorMatrix44( (float *)&matProj );
 
 	m_pShaderManager->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
 
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-	pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );	// depth fog needs projection transform info
+	FixedFunctionPipelineManager().SetProjectionTransform( proj );	// depth fog needs projection transform info
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );	// depth fog needs projection transform info
 
 //	m_pShaderManager->SetTechnique( m_aShaderTechID[SHADER_TECH_TERRAIN] );
 //	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
@@ -355,8 +351,6 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 
 //	archive.LoadFromFile( filename );
 
-	HRESULT hr;
-
 	m_AABB = archive.GetAABB();
 
 	// retrieve mesh groups from archive
@@ -375,7 +369,6 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 
 	// load meshes
 
-	CD3DXMeshObject *pMeshObject;
 	C3DMeshModelArchive mesh_archive;
 
 	size_t i, num_meshes = archive.m_vecMeshArchiveKey.size();
@@ -393,12 +386,10 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 	if( 0 < archive.m_SkyboxMeshArchive.GetVertexSet().GetNumVertices() 
 	 && 0 < archive.m_SkyboxMeshArchive.GetMaterial().size() )
 	{
-		pMeshObject= new CD3DXMeshObject;
-		hr = pMeshObject->LoadFromArchive( archive.m_SkyboxMeshArchive, db_filename, 0 );
-		if( SUCCEEDED(hr) )
-			m_pSkyboxMesh = pMeshObject;
-		else
-			SafeDelete( pMeshObject );
+		m_pSkyboxMesh.reset( new CBasicMesh );
+		bool loaded = m_pSkyboxMesh->LoadFromArchive( archive.m_SkyboxMeshArchive, db_filename, 0 );
+		if( !loaded )
+			m_pSkyboxMesh.reset();
 	}
 
 	// load texture for fade
@@ -449,7 +440,13 @@ int CStaticGeometryFG::ClipTrace(STrace& tr)
 	}
 
 	// clip trace using triangle mesh (experiment)
-	m_pTriangleMesh->ClipTrace( tr );
+	// - Not tested since converted from JibLib to Physics module.
+	ONCE( LOG_PRINT_WARNING( " Calling CShape::Raycast(). Not tested since converted from JibLib to Physics module." ) );
+	physics::CRay ray;
+	ray.Origin = *(tr.pvStart);
+	ray.Direction = Vec3GetNormalized( *(tr.pvGoal) - *(tr.pvStart) );
+	physics::CRaycastHit ray_hit;
+	m_pTriangleMesh->GetShape(0)->Raycast( ray, 1000000.0f, 0, ray_hit, true );
 
 #endif  /* TEST_STATICGEOMETRY_FG */
 
