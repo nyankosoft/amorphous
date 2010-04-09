@@ -2114,14 +2114,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Sound\GameSound.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Sound\GameSound.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Sound\OpenALSoundManagerImpl.cpp"
 				>
 			</File>
