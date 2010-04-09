@@ -1,6 +1,7 @@
 #include "GLGraphicsDevice.hpp"
 
 #include "../base.hpp"
+#include "Graphics/FogParams.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
@@ -160,6 +161,37 @@ Result::Name CGLGraphicsDevice::SetRenderState( RenderStateType::Name type, bool
 	default:
 		return Result::INVALID_ARGS;
 	}
+
+	return Result::SUCCESS;
+}
+
+
+static inline int ToGLFogMode( FogMode::Name fog_mode )
+{
+	switch( fog_mode )
+	{
+	case FogMode::LINEAR: return GL_LINEAR;
+	case FogMode::EXP:    return GL_EXP;
+	case FogMode::EXP2:   return GL_EXP2;
+	default: return GL_LINEAR;
+	}
+}
+
+
+Result::Name CGLGraphicsDevice::SetFogParams( const CFogParams& fog_params )
+{
+	glFogi(GL_FOG_MODE, ToGLFogMode(fog_params.Mode) );		// Fog Mode
+
+	float rgba[] = { fog_params.Color.fRed, fog_params.Color.fGreen, fog_params.Color.fBlue, fog_params.Color.fAlpha };
+	glFogfv(GL_FOG_COLOR, rgba );
+
+	glFogf( GL_FOG_START,   (float)fog_params.Start );
+
+	glFogf( GL_FOG_END,     (float)fog_params.End );
+
+	glFogf( GL_FOG_DENSITY, (float)fog_params.Density );
+
+	glHint( GL_FOG_HINT, GL_DONT_CARE ); // or GL_NICEST / GL_FASTEST
 
 	return Result::SUCCESS;
 }

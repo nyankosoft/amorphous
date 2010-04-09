@@ -83,6 +83,7 @@ public:
 
 	void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 
+	Result::Name SetFogParams( const CFogParams& fog_params );
 
 	enum mode
 	{

@@ -1,6 +1,7 @@
 #include "Direct3D9.hpp"
 
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
+#include "Graphics/FogParams.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
@@ -392,4 +393,42 @@ void CDirect3D9::SetDestBlendMode( AlphaBlend::Mode dest_blend_mode )
 {
 	if( m_pD3DDevice )
 		m_pD3DDevice->SetRenderState( D3DRS_DESTBLEND, g_dwD3DBlendMode[dest_blend_mode] );
+}
+
+
+static inline D3DFOGMODE ToD3DFogMode( FogMode::Name fog_mode )
+{
+	switch( fog_mode )
+	{
+	case FogMode::LINEAR: return D3DFOG_LINEAR;
+	case FogMode::EXP:    return D3DFOG_EXP;
+	case FogMode::EXP2:   return D3DFOG_EXP2;
+	default: return D3DFOG_LINEAR;
+	}
+}
+
+
+Result::Name CDirect3D9::SetFogParams( const CFogParams& fog_params )
+{
+	HRESULT hr = S_OK;
+
+	hr = m_pD3DDevice->SetRenderState( D3DRS_FOGTABLEMODE, ToD3DFogMode(fog_params.Mode) );
+
+	D3DCOLOR argb32 = fog_params.Color.GetARGB32();
+	hr = m_pD3DDevice->SetRenderState( D3DRS_FOGCOLOR,   argb32 );
+
+	float start = (float)fog_params.Start; 
+	hr = m_pD3DDevice->SetRenderState( D3DRS_FOGSTART,   *(DWORD *)&start );
+
+	float end = (float)fog_params.End;
+	hr = m_pD3DDevice->SetRenderState( D3DRS_FOGEND,     *(DWORD *)&end );
+
+	float density = (float)fog_params.Density;
+	hr = m_pD3DDevice->SetRenderState( D3DRS_FOGDENSITY, *(DWORD *)&density );
+
+	// Always use pixel fog and do not change params
+//	hr = m_pD3DDevice->SetRenderState( D3DRS_FOGVERTEXMODE, D3DFOG_NONE );
+//	hr = m_pD3DDevice->SetRenderState( D3DRS_RANGEFOGENABLE, FALSE );
+
+	return Result::SUCCESS;
 }

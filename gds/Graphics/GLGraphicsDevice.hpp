@@ -75,6 +75,8 @@ public:
 	inline void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode );
 
 	inline void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
+
+	Result::Name SetFogParams( const CFogParams& fog_params );
 };
 
 

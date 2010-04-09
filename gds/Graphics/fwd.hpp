@@ -63,6 +63,7 @@ class CUnitSphere;
 class CGeneral3DVertex;
 
 class CLensFlare;
+class CFogParams;
 
 
 namespace MeshModel

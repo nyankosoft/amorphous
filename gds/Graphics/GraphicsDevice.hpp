@@ -112,15 +112,6 @@ public:
 };
 
 
-class CFogDesc
-{
-public:
-	float fStartDist;
-	float fEndDist;
-	float fDensity;
-};
-
-
 class CGraphicsDevice
 {
 public:
@@ -181,6 +172,8 @@ public:
 	virtual void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode ) = 0;
 
 	virtual void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode ) = 0;
+
+	virtual Result::Name SetFogParams( const CFogParams& fog_params ) = 0;
 
 	State GetState() const { return m_State; }
 };
