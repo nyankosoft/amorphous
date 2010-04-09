@@ -241,8 +241,6 @@ bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int Effec
 
 
 	FixedFunctionPipelineManager().SetProjectionTransform( proj );	// depth fog needs projection transform info
-//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-//	pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );	// depth fog needs projection transform info
 
 //	m_pShaderManager->SetTechnique( m_aShaderTechID[SHADER_TECH_TERRAIN] );
 //	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();

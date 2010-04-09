@@ -2,7 +2,6 @@
 #include "EntitySet.hpp"
 #include "Stage.hpp"
 #include "trace.hpp"
-#include "Graphics/Direct3D9.hpp"
 
 
 using namespace std;
