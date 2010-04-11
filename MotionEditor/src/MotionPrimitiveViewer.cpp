@@ -154,7 +154,9 @@ m_UseQuaternionForBoneTransformation(false)
 
 void CSkeletalMeshMotionViewer::Init()
 {
-	LoadSkeletalMesh( "models/male_skinny_young.msh" );
+	string mesh_filepath( "models/male_skinny_young.msh" );
+	LoadParamFromFile<string>( "params.txt", "Model", mesh_filepath );
+	LoadSkeletalMesh( mesh_filepath );
 
 	string shader_filepath;
 	if( m_UseQuaternionForBoneTransformation )
