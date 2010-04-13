@@ -6,9 +6,11 @@
 #include "LightDef.fxh"
 
 
-//-----------------------------------------------------------------------------
-// Name: DoHemisphericDirLight()
-// Desc: hemispheric directional light computation
+
+/**
+ \brief hemispheric directional light computation
+ \param N normal in view space???
+*/
 //-----------------------------------------------------------------------------
 COLOR_PAIR DoHemisphericDirLight(float3 N, float3 V, int i)
 {
@@ -35,10 +37,10 @@ COLOR_PAIR DoHemisphericDirLight(float3 N, float3 V, int i)
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: DoHemisphericPointLight()
-// Desc: hemispheric point light computation
-//-----------------------------------------------------------------------------
+/**
+ \brief hemispheric point light computation
+ \param N normal in view space???
+*/
 COLOR_PAIR DoHemisphericPointLight(float3 vWorldPos, float3 N, float3 V, int i)
 {
 	float3 vVertToLight = g_aLight[i].vPos - vWorldPos;
@@ -130,12 +132,11 @@ float4 DoHemisphericDirLight_NoSpecular( float3 NormalWS, int i )
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: DoHemisphericPointLight()
-// Desc: hemispheric point light computation
-//-----------------------------------------------------------------------------
-/// PosWS     vertex position in world space
-/// NormalWS  vertex normal in world space
+/**
+ \brief hemispheric point light computation
+ \param PosWS     vertex position in world space
+ \param NormalWS  vertex normal in world space
+ */
 float4 DoHemisphericPointLight_NoSpecular( float3 PosWS, float3 NormalWS, int i )
 {
 	float3 vVertToLight = g_aLight[i].vPos - PosWS;
