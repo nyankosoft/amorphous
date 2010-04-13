@@ -1,6 +1,10 @@
 #ifndef __QVERTEXBLENDFUNCTIONS_FXH__
 #define __QVERTEXBLENDFUNCTIONS_FXH__
 
+
+#include "Transform.fxh"
+
+
 //===========================================================================================
 // SkinPoint
 // Applies 4 matrix skinning to a single point.  The point passed in is changed as well as returned.
