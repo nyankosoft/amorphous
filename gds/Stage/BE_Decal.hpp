@@ -2,8 +2,9 @@
 #define __BE_Decal_H__
 
 #include "BaseEntity.hpp"
-
-#include "../Graphics/FVF_TextureVertex.h"
+#include "../Graphics/2DPrimitive/2DRect.hpp"
+//#include "../Graphics/2DPrimitive/2DRectSet.hpp"
+#include "../Graphics/Mesh/RectSetMesh.hpp"
 
 
 class CBE_Decal : public CBaseEntity
@@ -16,13 +17,21 @@ class CBE_Decal : public CBaseEntity
 	std::string m_DecalTextureFilepath;
 	CTextureHandle m_DecalTexture;
 
-	TEXTUREVERTEX m_avDecalRect[4];
+	C2DRect m_DecalRect;
+
+//	C2DRectSet m_DecalRectSet;
+
+	CRectSetMesh m_DecalRectsMesh;
 
 	float m_fDecalRadius;
 
 	/// number of segments along each axis on a texture
 	/// used for generating random patterns
 	int m_iNumSegments;
+
+private:
+
+	void UpdateRects();
 
 public:
 
@@ -44,8 +53,8 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+//	void ReleaseGraphicsResources();
+//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
 
 #endif /*  __BE_Decal_H__  */

@@ -1,19 +1,19 @@
 #include "BE_Decal.hpp"
 
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Support/MTRand.hpp"
+#include "Support/Profile.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
 
-#include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/Profile.hpp"
-
-//int CBE_Decal::ms_iNumTotalUsedDecals = 0;
 
 
 CBE_Decal::CBE_Decal()
+:
+m_fDecalRadius(1.0f),
+m_iNumSegments(1)
 {
 	m_bNoClip = true;
 	m_NumTotalUsedDecals = 0;
@@ -37,13 +37,25 @@ void CBE_Decal::Init()
 	m_DecalTexture.Load( m_DecalTextureFilepath );
 
 	// set the local coordinate of the billboard rectangle
-	m_avDecalRect[0].tex = TEXCOORD2(0,0);
-	m_avDecalRect[1].tex = TEXCOORD2(1,0);
-	m_avDecalRect[2].tex = TEXCOORD2(1,1);
-	m_avDecalRect[3].tex = TEXCOORD2(0,1);
+	m_DecalRect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+	m_DecalRect.SetColor( SFloatRGBAColor::White() );
+//	m_DecalRect.SetDestAlphaBlendMode( ??? );
 
-	for(int i=0; i<4; i++)
-		m_avDecalRect[i].color = 0xFFFFFFFF;
+/*	m_DecalRectSet.SetNumRects( NUM_MAX_DECALS );
+	m_DecalRectSet.SetColor( SFloatRGBAColor::White() );
+//	m_DecalRectSet.SetDestAlphaBlendMode( ??? );
+	for(int i=0; i<NUM_MAX_DECALS; i++)
+		m_DecalRectSet.SetTextureCoordMinMax( i, TEXCOORD2(0,0), TEXCOORD2(1,1) );
+*/
+	m_DecalRectsMesh.Init( NUM_MAX_DECALS, VFF::POSITION | VFF::TEXCOORD2_0 );
+	for(int i=0; i<NUM_MAX_DECALS; i++)
+		m_DecalRectsMesh.SetTextureCoordMinMax( i, TEXCOORD2(0,0), TEXCOORD2(1,1) );
+
+	CMeshMaterial& mat = m_DecalRectsMesh.Material(0);
+	mat.TextureDesc.resize( 1 );
+	mat.Texture.resize( 1 );
+	mat.TextureDesc[0].ResourcePath = m_DecalTextureFilepath;
+	mat.Texture[0] = m_DecalTexture;
 }
 
 
@@ -137,86 +149,63 @@ void CBE_Decal::Draw(CCopyEntity* pCopyEnt)
 {
 	m_vecpSweepRenderTable.push_back( pCopyEnt );
 	return;
+}
 
-/**
-	m_avDecalRect[0].vPosition = pCopyEnt->v1;
-	m_avDecalRect[1].vPosition = pCopyEnt->v2;
-	m_avDecalRect[2].vPosition = pCopyEnt->v3;
-	m_avDecalRect[3].vPosition = pCopyEnt->v3 + (pCopyEnt->v1 - pCopyEnt->v2);
 
+void CBE_Decal::UpdateRects()
+{
+	const int num_entities = (int)m_vecpSweepRenderTable.size();
 	float fSegmentLength = 1.0f / m_iNumSegments - 0.001f;
 	float u,v;
-	u = pCopyEnt->f1;
-	v = pCopyEnt->f2;
-	m_avDecalRect[0].vTexture = D3DXVECTOR2( u,                  v );
-	m_avDecalRect[1].vTexture = D3DXVECTOR2( u + fSegmentLength, v );
-	m_avDecalRect[2].vTexture = D3DXVECTOR2( u + fSegmentLength, v + fSegmentLength );
-	m_avDecalRect[3].vTexture = D3DXVECTOR2( u,                  v + fSegmentLength );
-
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-
-	// use the texture color only
-	if( CDIRECTX9.m_pEffect )
+	CCopyEntity *pEntity;
+	for( int i=0; i<num_entities; i++ )
 	{
-		CDIRECTX9.m_pEffect->SetTexture( "Texture0", m_pDecalTexture );
-		CDIRECTX9.m_pEffect->SetMatrix( "World", &matWorld );
-		CDIRECTX9.m_pEffect->CommitChanges();
+		pEntity = m_vecpSweepRenderTable[i];
+
+		// TODO: check the order of vertex indices (2nd arguments)
+//		m_DecalRectSet.SetRectVertexPosition( i, 0, pEntity->v1 );
+//		m_DecalRectSet.SetRectVertexPosition( i, 1, pEntity->v2 );
+//		m_DecalRectSet.SetRectVertexPosition( i, 2, pEntity->v3 );
+//		m_DecalRectSet.SetRectVertexPosition( i, 3, pEntity->v3 + (pEntity->v1 - pEntity->v2) );
+
+		m_DecalRectsMesh.SetRectPosition(
+			i,
+			pEntity->v1,
+			pEntity->v2,
+			pEntity->v3,
+			pEntity->v3 + (pEntity->v1 - pEntity->v2)
+			);
+
+//		Vector3 vNormal = pEntity->GetWorldPose().matOrient.GetColumn( 2 );
+//		m_DecalRectsMesh.SetRectNormal( i, vNormal );
+
+		u = pEntity->f1;
+		v = pEntity->f2;
+//		m_DecalRectSet.SetTextureCoordMinMax( i, TEXCOORD2(u,v), TEXCOORD2(u+fSegmentLength,v+fSegmentLength) );
+		m_DecalRectsMesh.SetTextureCoordMinMax( i, TEXCOORD2(u,v), TEXCOORD2(u+fSegmentLength,v+fSegmentLength) );
+
+//		pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avDecalRect, sizeof(TEXTUREVERTEX) );
 	}
-	else
-		pd3dDev->SetTexture( 0, m_pDecalTexture );
-
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
-
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
-
-	pd3dDev->SetVertexShader( NULL );
-	pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
-	pd3dDev->DrawPrimitiveUP(
-		D3DPT_TRIANGLEFAN, 2,
-		m_avDecalRect, sizeof(TEXTUREVERTEX) );
-**/
 }
 
 
 void CBE_Decal::SweepRender()
 {
-//	ProfileBegin( "Decal" );
+	PROFILE_FUNCTION();
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	if( m_vecpSweepRenderTable.empty() )
+		return;
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	LPD3DXEFFECT pEffect = NULL;
-	UINT cPasses;
+	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
-	if( pShaderManager &&
-		(pEffect = pShaderManager->GetEffect()) )
-	{
-		pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );
-		pEffect->Begin( &cPasses, 0 );
-		pEffect->BeginPass( 0 );
-	}
-	else
-		pd3dDev->SetVertexShader( NULL );
+	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 	// set texture
-	pd3dDev->SetTexture( 0, m_DecalTexture.GetTexture() );
-
+	shader_mgr.SetTexture( 0, m_DecalTexture );
+/*
 	// set render states
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
@@ -229,43 +218,16 @@ void CBE_Decal::SweepRender()
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
 	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
+*/
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
-	pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
-	
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	UpdateRects();
 
-	size_t i, num_entities = m_vecpSweepRenderTable.size();
-	float fSegmentLength = 1.0f / m_iNumSegments - 0.001f;
-	float u,v;
-	CCopyEntity *pEntity;
-	for( i=0; i<num_entities; i++ )
-	{
-		pEntity = m_vecpSweepRenderTable[i];
+//	m_DecalRectsMesh.Render( shader_mgr, (int)m_vecpSweepRenderTable.size() );
+	m_DecalRectsMesh.Render( shader_mgr );
 
-		m_avDecalRect[0].vPosition = pEntity->v1;
-		m_avDecalRect[1].vPosition = pEntity->v2;
-		m_avDecalRect[2].vPosition = pEntity->v3;
-		m_avDecalRect[3].vPosition = pEntity->v3 + (pEntity->v1 - pEntity->v2);
-
-		u = pEntity->f1;
-		v = pEntity->f2;
-		m_avDecalRect[0].tex = TEXCOORD2( u,                  v );
-		m_avDecalRect[1].tex = TEXCOORD2( u + fSegmentLength, v );
-		m_avDecalRect[2].tex = TEXCOORD2( u + fSegmentLength, v + fSegmentLength );
-		m_avDecalRect[3].tex = TEXCOORD2( u,                  v + fSegmentLength );
-
-		pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avDecalRect, sizeof(TEXTUREVERTEX) );
-	}
-
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
-
-	if( pEffect )
-	{
-		pEffect->EndPass();
-		pEffect->End();
-	}
-
-//	ProfileEnd( "Decal" );
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
 
 
@@ -280,18 +242,17 @@ bool CBE_Decal::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 	return false;
 }
 
-
+/*
 void CBE_Decal::ReleaseGraphicsResources()
 {
 	CBaseEntity::ReleaseGraphicsResources();
 }
-	
 
 void CBE_Decal::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	CBaseEntity::LoadGraphicsResources( rParam );
 }
-
+*/
 
 void CBE_Decal::Serialize( IArchive& ar, const unsigned int version )
 {

@@ -1,13 +1,13 @@
-
 #ifndef	__BASEENTITYBULLET_H__
 #define __BASEENTITYBULLET_H__
+
 
 #include "BaseEntity.hpp"
 #include "Stage.hpp"
 #include "BaseEntityHandle.hpp"
 
-#include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/TextureHandle.hpp"
+#include "Graphics/Mesh/RectSetMesh.hpp"
 
 
 class CBE_Bullet : public CBaseEntity
@@ -16,7 +16,9 @@ class CBE_Bullet : public CBaseEntity
 	CTextureHandle m_BillboardTexture;
 
 	float m_fBillboardRadius;
-	TEXTUREVERTEX m_avBillboardRect[4];
+
+	/// Holds a single billboard mesh
+	CRectSetMesh m_BillboardRectMesh;
 
 	/// distance which the bullet can cover
 	float m_fMaxRange;
@@ -46,6 +48,10 @@ private:
 
 	void Move( CCopyEntity* pCopyEnt );
 
+	void DrawBillboradTexture(CCopyEntity* pCopyEnt);
+
+    void Draw3DObjectBullet(CCopyEntity* pCopyEnt);
+
 public:
 
 	CBE_Bullet();
@@ -56,17 +62,11 @@ public:
 	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
 	//void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
-    void Draw3DObjectBullet(CCopyEntity* pCopyEnt);
-
 	/// create decal/spark/smoke entities and make a hit sound
 	/// according to the type of the surface material
 	void OnBulletHit( CCopyEntity* pCopyEnt, STrace& trace );
 
 	void Draw(CCopyEntity* pCopyEnt);
-	void DrawBillboradTexture(CCopyEntity* pCopyEnt);
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

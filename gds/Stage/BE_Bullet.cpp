@@ -7,7 +7,8 @@
 #include "Stage.hpp"
 #include "SurfaceMaterial.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "3DMath/MatrixConversions.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -15,8 +16,6 @@
 
 using namespace std;
 using namespace boost;
-
-extern void ToMatrix44( const Matrix34& src, Matrix44& dest );
 
 
 inline float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }
@@ -50,7 +49,7 @@ void CBE_Bullet::Init()
 	m_BillboardTexture.Load( m_BillboardTextureFilepath );
 
 	float r = m_fBillboardRadius;
-	m_avBillboardRect[0].vPosition = Vector3(-r, r, 0 );
+/*	m_avBillboardRect[0].vPosition = Vector3(-r, r, 0 );
 	m_avBillboardRect[1].vPosition = Vector3( r, r, 0 );
 	m_avBillboardRect[2].vPosition = Vector3( r,-r, 0 );
 	m_avBillboardRect[3].vPosition = Vector3(-r,-r, 0 );
@@ -60,6 +59,18 @@ void CBE_Bullet::Init()
 	m_avBillboardRect[1].tex = TEXCOORD2(1.0f, 0.0f);
 	m_avBillboardRect[2].tex = TEXCOORD2(1.0f, 1.0f);
 	m_avBillboardRect[3].tex = TEXCOORD2(0.0f, 1.0f);
+*/
+	U32 vertex_format_flags = VFF::POSITION | VFF::DIFFUSE_COLOR | VFF::TEXCOORD2_0;
+	m_BillboardRectMesh.Init( 1, vertex_format_flags );
+	m_BillboardRectMesh.SetRectPosition(
+		0,
+		Vector3(-r, r, 0 ),
+		Vector3( r, r, 0 ),
+		Vector3( r,-r, 0 ),
+		Vector3(-r,-r, 0 )
+		);
+
+	m_BillboardRectMesh.SetTextureCoordMinMax( 0, TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
 	m_Spark.SetBaseEntityName( "sprk" );
 
@@ -552,10 +563,9 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 
 void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	// set the world transformation matrix
-	Matrix44 matWorld, matRotZ;
+	Matrix44 matWorld;
+//	Matrix44 matRotZ;
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
 //	m_pStage->GetBillboardRotationMatrix( matWorld );
@@ -576,10 +586,9 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 
 	// use the texture color only
 	FixedFunctionPipelineManager().SetTexture( 0, m_BillboardTexture );
-//	pd3dDev->SetTexture( 0, m_BillboardTexture.GetTexture() );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+//	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
 
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 //	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
@@ -589,20 +598,22 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 //	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
 //	pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_iDestBlend );
 
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
+//	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
 
-	pd3dDev->SetVertexShader( NULL );
-	pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
+//	pd3dDev->SetVertexShader( NULL );
+//	pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
 
 	// disable z-writing
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
-	pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avBillboardRect, sizeof(TEXTUREVERTEX) );
+//	pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avBillboardRect, sizeof(TEXTUREVERTEX) );
 
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
+	m_BillboardRectMesh.Render();
+
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
 
 
@@ -629,18 +640,6 @@ bool CBE_Bullet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 	}
 
 	return false;
-}
-
-
-void CBE_Bullet::ReleaseGraphicsResources()
-{
-	CBaseEntity::ReleaseGraphicsResources();
-}
-
-
-void CBE_Bullet::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	CBaseEntity::LoadGraphicsResources( rParam );
 }
 
 
@@ -688,9 +687,7 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 	avBulletTrace[0].vPosition = rvPrevPosition;
 	avBulletTrace[1].vPosition = pCopyEnt->GetWorldPosition();
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );

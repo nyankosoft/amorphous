@@ -18,7 +18,7 @@ private:
 	std::string m_GlareTextureFilepath;
 	CTextureHandle m_GlareTexture;
 
-	TEXTUREVERTEX m_avGlareRect[4];
+//	TEXTUREVERTEX m_avGlareRect[4];
 
 	float m_fGlareDiameter;
 

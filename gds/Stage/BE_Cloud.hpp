@@ -3,9 +3,6 @@
 
 #include "BE_ParticleSet.hpp"
 
-#include <vector>
-#include <string>
-
 
 class CBE_Cloud : public CBE_ParticleSet
 {

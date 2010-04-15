@@ -1,12 +1,10 @@
+#include "BE_Cloud.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "Support/memory_helpers.hpp"
 #include "Support/MTRand.hpp"
 
-#include "BE_Cloud.hpp"
 
 using namespace std;
 
@@ -25,15 +23,15 @@ void CBE_Cloud::Init()
 {
 	CBE_ParticleSet::Init();
 
-//	const DWORD color = 0xFFFFFFFF;
-	const DWORD color = 0xA0FFFFFF;
+//	const U32 color = 0xFFFFFFFF;
+	const U32 argb_color = 0xA0FFFFFF;
 	int i;
 	for(i=0; i<m_MaxNumParticlesPerSet; i++)
 	{
-		m_avBillboardRect[i*4+0].color = color;
-		m_avBillboardRect[i*4+1].color = color;
-		m_avBillboardRect[i*4+2].color = color;
-		m_avBillboardRect[i*4+3].color = color;
+		m_avBillboardRect[i*4+0].color = argb_color;
+		m_avBillboardRect[i*4+1].color = argb_color;
+		m_avBillboardRect[i*4+2].color = argb_color;
+		m_avBillboardRect[i*4+3].color = argb_color;
 	}
 }
 
@@ -88,17 +86,16 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 	//m_pStage->GetBillboardRotationMatrix( matWorld );
 	//matWorld._44 = 1;
 
-	Matrix34 billboard_pose;
-	D3DXMATRIX matWorld;
+	Matrix34 billboard_pose( Matrix34Identity() );
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
-	billboard_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
+	Matrix44 matWorld = ToMatrix44( billboard_pose );
 
 	// set up the local coords of the particles
-	D3DXVECTOR3 avBasePos[4];
-	avBasePos[0] = D3DXVECTOR3(-fRadius, fRadius, 0 );
-	avBasePos[1] = D3DXVECTOR3( fRadius, fRadius, 0 );
-	avBasePos[2] = D3DXVECTOR3( fRadius,-fRadius, 0 );
-	avBasePos[3] = D3DXVECTOR3(-fRadius,-fRadius, 0 );
+	Vector3 avBasePos[4];
+	avBasePos[0] = Vector3(-fRadius, fRadius, 0 );
+	avBasePos[1] = Vector3( fRadius, fRadius, 0 );
+	avBasePos[2] = Vector3( fRadius,-fRadius, 0 );
+	avBasePos[3] = Vector3(-fRadius,-fRadius, 0 );
 
 	// set transformed particle data to dest buffer 'm_avDestParticle'
 	int vert_offset;
@@ -109,15 +106,16 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 
 		// calc the world position of the particle
 
-		D3DXVECTOR3& rvPos   = rParticleSet.pavPosition[i];	// center position of the billboard in world space
+		Vector3& rvPos   = rParticleSet.pavPosition[i];	// center position of the billboard in world space
 
-//		matWorld._41 =   rvPos.x; matWorld._42 =   rvPos.y;	matWorld._43 =   rvPos.z; matWorld._44 = 1;
-		memcpy( &(matWorld._41), &rvPos, sizeof(D3DXVECTOR3) );
+		matWorld(0,3) = rvPos.x;
+		matWorld(1,3) = rvPos.y;
+		matWorld(2,3) = rvPos.z;
 
-		D3DXVec3TransformCoord( &(pParticleVertex[vert_offset+0].vPosition), &avBasePos[0], &matWorld );
-		D3DXVec3TransformCoord( &(pParticleVertex[vert_offset+1].vPosition), &avBasePos[1], &matWorld );
-		D3DXVec3TransformCoord( &(pParticleVertex[vert_offset+2].vPosition), &avBasePos[2], &matWorld );
-		D3DXVec3TransformCoord( &(pParticleVertex[vert_offset+3].vPosition), &avBasePos[3], &matWorld );
+		pParticleVertex[vert_offset+0].vPosition = matWorld * avBasePos[0];
+		pParticleVertex[vert_offset+1].vPosition = matWorld * avBasePos[1];
+		pParticleVertex[vert_offset+2].vPosition = matWorld * avBasePos[2];
+		pParticleVertex[vert_offset+3].vPosition = matWorld * avBasePos[3];
 
 		// calc color and alpha value of the particle
 //		DWORD dwColor = 0x00FFFFFF | ( ((int)((1.0f - fFraction) * 255.0f)) << 24 );

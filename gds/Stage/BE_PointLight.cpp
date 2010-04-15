@@ -4,9 +4,9 @@
 #include "GameMessage.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "3DMath/MathMisc.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
@@ -60,10 +60,10 @@ void CBE_PointLight::Init()
 	}
 
 /*
-	m_avGlareRect[0].vPosition = D3DXVECTOR3(-r, r, 0);
-	m_avGlareRect[1].vPosition = D3DXVECTOR3( r, r, 0);
-	m_avGlareRect[2].vPosition = D3DXVECTOR3( r,-r, 0);
-	m_avGlareRect[3].vPosition = D3DXVECTOR3(-r,-r, 0);
+	m_avGlareRect[0].vPosition = Vector3(-r, r, 0);
+	m_avGlareRect[1].vPosition = Vector3( r, r, 0);
+	m_avGlareRect[2].vPosition = Vector3( r,-r, 0);
+	m_avGlareRect[3].vPosition = Vector3(-r,-r, 0);
 
 		
 	// set the local coordinate of the billboard rectangle
@@ -166,7 +166,7 @@ void CBE_PointLight::Act( CCopyEntity* pCopyEnt )
 		{
 			if( pCopyEnt->GetParent() )
 			{	// just follow the parent
-				pCopyEnt->GetWorldPosition() = pCopyEnt->GetParent()->Position() + D3DXVECTOR3(0.0f, 0.5f, 0.0f);
+				pCopyEnt->GetWorldPosition() = pCopyEnt->GetParent()->Position() + Vector3(0.0f, 0.5f, 0.0f);
 
 			}
 
@@ -306,10 +306,9 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 	else
 		rfFadeoutTime = BE_PLIGHT_FADEOUTTIME;
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 //	D3DXMATRIX matScale;
-	D3DXMATRIX matWorld;
 
 //	D3DXMatrixScaling( &matScale, rfFadeoutTime / BE_PLIGHT_FADEOUTTIME, rfFadeoutTime / BE_PLIGHT_FADEOUTTIME, 1.0f );
 
@@ -319,7 +318,7 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 
 	Matrix34 billboard_pose;
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
-	billboard_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
+	Matrix44 matWorld = ToMatrix44( billboard_pose );
 
 	int i,j,num_rects[2];
 	float span[2] = { 1.0f, 1.0f };	//{ pCopyEnt->f1, pCopyEnt->f2 };
@@ -337,11 +336,11 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 	// calc the world position of the particle
 //	float fRadius = m_fRadius;
 	float r = m_fGlareDiameter / 2.0f;
-	D3DXVECTOR3 avBasePos[4];
-	avBasePos[0] = D3DXVECTOR3(-r, r, 0 );
-	avBasePos[1] = D3DXVECTOR3( r, r, 0 );
-	avBasePos[2] = D3DXVECTOR3( r,-r, 0 );
-	avBasePos[3] = D3DXVECTOR3(-r,-r, 0 );
+	Vector3 avBasePos[4];
+	avBasePos[0] = Vector3(-r, r, 0 );
+	avBasePos[1] = Vector3( r, r, 0 );
+	avBasePos[2] = Vector3( r,-r, 0 );
+	avBasePos[3] = Vector3(-r,-r, 0 );
 
 	int vert_offset = 0;
 	Vector3 vPos;
@@ -355,24 +354,28 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 				 + rWorldOrient.GetColumn(0) * ( ( fOffset[0] + (float)i ) * delta )
 				 + rWorldOrient.GetColumn(2) * ( ( fOffset[1] + (float)j ) * delta );
 
-			memcpy( &(matWorld._41), &vPos, sizeof(D3DXVECTOR3) );
+			matWorld(0,3) = vPos.x;
+			matWorld(1,3) = vPos.y;
+			matWorld(2,3) = vPos.z;
 
 			// set vertices for billboards
-			D3DXVec3TransformCoord( &(m_avBillboardRect[vert_offset+0].vPosition), &avBasePos[0], &matWorld );
-			D3DXVec3TransformCoord( &(m_avBillboardRect[vert_offset+1].vPosition), &avBasePos[1], &matWorld );
-			D3DXVec3TransformCoord( &(m_avBillboardRect[vert_offset+2].vPosition), &avBasePos[2], &matWorld );
-			D3DXVec3TransformCoord( &(m_avBillboardRect[vert_offset+3].vPosition), &avBasePos[3], &matWorld );
+			m_avBillboardRect[vert_offset+0].vPosition = matWorld * avBasePos[0];
+			m_avBillboardRect[vert_offset+1].vPosition = matWorld * avBasePos[1];
+			m_avBillboardRect[vert_offset+2].vPosition = matWorld * avBasePos[2];
+			m_avBillboardRect[vert_offset+3].vPosition = matWorld * avBasePos[3];
 			vert_offset += 4;
 		}
 	}
 
-	DWORD dwZBufMode;
-	pd3dDev->GetRenderState( D3DRS_ZENABLE, &dwZBufMode );
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
+//	DWORD dwZBufMode;
+//	pd3dDev->GetRenderState( D3DRS_ZENABLE, &dwZBufMode );
+//	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 
 	DrawBillboards( num_rects[0] * num_rects[1], 0, 0, m_pStage );
 
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, dwZBufMode );
+//	pd3dDev->SetRenderState( D3DRS_ZENABLE, dwZBufMode );
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
 }
 
