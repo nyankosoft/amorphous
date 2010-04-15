@@ -1,0 +1,340 @@
+#include "HLSLEffectTest.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics.hpp"
+#include "gds/Graphics/AsyncResourceLoader.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/Macro.h"
+#include "gds/GUI.hpp"
+
+using namespace std;
+using namespace boost;
+
+
+extern CPlatformDependentCameraController g_CameraController;
+
+
+CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )
+:
+m_LoadingStyle(loading_style),
+m_Pose(pose)
+{
+	m_MeshDesc.ResourcePath = filepath;
+
+	if( loading_style == LOAD_MESH_AND_TEX_TOGETHER )
+	{
+		m_MeshDesc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
+		m_MeshDesc.LoadOptionFlags = MeshLoadOption::LOAD_TEXTURES_ASYNC;
+	}
+	else if( loading_style == LOAD_MESH_AND_TEX_SEPARATELY )
+	{
+		m_MeshDesc.LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
+		m_MeshDesc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
+		m_Handle.Load( m_MeshDesc );
+	}
+	else if( loading_style == LOAD_SYNCHRONOUSLY )
+	{
+		m_MeshDesc.LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
+		m_Handle.Load( m_MeshDesc );
+	}
+//	else
+//	{
+//	}
+}
+
+extern CGraphicsTestBase *CreateTestInstance()
+{
+	return new CHLSLEffectTest();
+}
+
+
+extern const std::string GetAppTitle()
+{
+	return string("HLSL Effect Test");
+}
+
+
+CHLSLEffectTest::CHLSLEffectTest()
+:
+m_CurrentShaderIndex( 0 ),
+m_DisplayDebugInfo(false)
+{
+	m_MeshTechnique.SetTechniqueName( "NoLighting" );
+
+	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
+
+	g_CameraController.SetPosition( Vector3( 0, 1, -50 ) );
+}
+
+
+CHLSLEffectTest::~CHLSLEffectTest()
+{
+}
+
+
+void CHLSLEffectTest::CreateSampleUI()
+{
+}
+
+
+bool CHLSLEffectTest::SetShader( int index )
+{
+	if( index < 0 || (int)m_Shaders.size() <= index )
+		return false;
+
+	// initialize shader
+/*	bool shader_loaded = m_Shaders[index].Load( "./shaders/HLSLEffectTest.fx" );
+
+	if( !shader_loaded )
+		return false;
+*/
+	if( !m_Shaders[index].GetShaderManager() )
+		return false;
+
+	CShaderManager& shader_mgr = *(m_Shaders[index].GetShaderManager());
+
+	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+
+	CHemisphericDirectionalLight light;
+	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
+	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+
+	pShaderLightMgr->ClearLights();
+//	pShaderLightMgr->SetLight( 0, light );
+//	pShaderLightMgr->SetDirectionalLightOffset( 0 );
+//	pShaderLightMgr->SetNumDirectionalLights( 1 );
+	pShaderLightMgr->SetHemisphericDirectionalLight( light );
+	pShaderLightMgr->CommitChanges();
+
+	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
+	m_Shaders[index].GetShaderManager()->SetProjectionTransform( proj );
+
+	shader_mgr.SetParam( "g_vEyeVS", g_Camera.GetCameraMatrix() * g_Camera.GetPosition() );
+
+	m_CurrentShaderIndex = index;
+
+	return true;
+}
+
+
+bool CHLSLEffectTest::InitShaders()
+{
+	vector<string> shaders;
+	vector<string> techs;
+	shaders.resize( 3 );
+	techs.resize( shaders.size() );
+
+	shaders[0] = "shaders/PerVertexHSLighting.fx";             techs[0] = "PerVertexHSLighting";
+	shaders[1] = "shaders/PerPixelHSLighting.fx";              techs[1] = "HSLs";
+	shaders[2] = "shaders/PerPixelHSLightingWithSpecular.fx";  techs[2] = "PPL_HSLs_WithSpecular";
+
+	m_Shaders.resize( shaders.size() );
+	m_Techniques.resize( shaders.size() );
+	for( size_t i=0; i<shaders.size(); i++ )
+	{
+		bool loaded = m_Shaders[i].Load( shaders[i] );
+
+		m_Techniques[i].SetTechniqueName( techs[i].c_str() );
+	}
+
+	return true;
+}
+
+
+int CHLSLEffectTest::Init()
+{
+	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
+	pTexFont->SetFontSize( 6, 12 );
+	m_pFont = pTexFont;
+
+/*
+	m_MeshTechnique.SetTechniqueName( "NoLighting" );
+	m_DefaultTechnique.SetTechniqueName( "NoShader" );
+*/
+
+/*	string mesh_file[] =
+	{
+		"./models/sample_level_00.msh", // manually load textures
+		"./models/FlakySlate.msh",      // load mesh and texture asnchronously
+		"./models/HighAltitude.msh",
+		"./models/RustPeel.msh",
+		"./models/SmashedGrayMarble.msh"
+	};
+
+	BOOST_FOREACH( const string& filepath, mesh_file )
+	{
+		m_vecMesh.push_back( CMeshObjectHandle() );
+
+		CMeshResourceDesc desc;
+		desc.ResourcePath = filepath;
+
+		if( m_TestAsyncLoading )
+			desc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
+
+		m_vecMesh.back().Load( desc );
+	}
+*/
+
+	m_vecMesh.push_back( CTestMeshHolder( "./models/fw43.msh",              CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
+//	m_vecMesh.push_back( CTestMeshHolder( "./models/FlakySlate.msh",        CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1, 100), Matrix33Identity() ) ) );
+//	m_vecMesh.push_back( CTestMeshHolder( "./models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
+
+	InitShaders();
+
+	return 0;
+}
+
+
+void CHLSLEffectTest::Update( float dt )
+{
+	if( m_pSampleUI )
+		m_pSampleUI->Update( dt );
+}
+
+
+void CHLSLEffectTest::RenderMeshes()
+{
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+
+	if( m_Shaders.empty()
+	 || m_CurrentShaderIndex < 0
+	 || (int)m_Shaders.size() <= m_CurrentShaderIndex )
+	{
+		return;
+	}
+
+	SetShader( m_CurrentShaderIndex );
+
+	CShaderManager *pShaderManager = m_Shaders[m_CurrentShaderIndex].GetShaderManager();
+	if( !pShaderManager )
+		return;
+
+	// render the scene
+
+	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
+
+	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+
+	Result::Name res = pShaderManager->SetTechnique( m_Techniques[m_CurrentShaderIndex] );
+//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
+	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
+	{
+//		CBasicMesh *pMesh = mesh.GetMesh().get();
+
+		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
+		{
+			// set world transform
+			FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
+			pShaderManager->SetWorldTransform( holder.m_Pose );
+
+			CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
+
+			if( pMesh )
+				pMesh->Render( *pShaderManager );
+		}
+	}
+
+	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+}
+
+
+void CHLSLEffectTest::RenderDebugInfo()
+{
+	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
+
+	Vector2 vTopLeft(     (float)GetWindowWidth() / 4.0f,  16.0f );
+	Vector2 vBottomRight( (float)GetWindowWidth() - 16.0f, (float)GetWindowHeight() * 3.0f / 2.0f );
+	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
+	rect.Draw();
+
+	m_pFont->DrawText( m_TextBuffer, vTopLeft );
+
+	Vector3 vCamPos = g_Camera.GetPosition();
+	m_pFont->DrawText(
+		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
+		Vector2( 20, 300 ) );
+}
+
+
+void CHLSLEffectTest::Render()
+{
+	PROFILE_FUNCTION();
+
+	RenderMeshes();
+
+	if( m_pSampleUI )
+		m_pSampleUI->Render();
+
+//	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
+
+	if( m_DisplayDebugInfo )
+		RenderDebugInfo();
+}
+
+
+void CHLSLEffectTest::HandleInput( const SInputData& input )
+{
+	if( m_pUIInputHandler )
+	{
+//		CInputHandler::ProcessInput() does not take const SInputData&
+		SInputData input_copy = input;
+		m_pUIInputHandler->ProcessInput( input_copy );
+
+		if( m_pUIInputHandler->PrevInputProcessed() )
+			return;
+	}
+
+	switch( input.iGICode )
+	{
+	case GIC_PAGE_DOWN:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			if( m_Shaders.empty() )
+				return;
+
+			m_CurrentShaderIndex = (m_CurrentShaderIndex+1) % (int)m_Shaders.size();
+		}
+		break;
+	case GIC_PAGE_UP:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_CurrentShaderIndex = (m_CurrentShaderIndex + (int)m_Shaders.size() - 1) / (int)m_Shaders.size(); 
+		}
+		break;
+	case GIC_F1:
+		{
+			m_DisplayDebugInfo = !m_DisplayDebugInfo;
+		}
+		break;
+	case GIC_F12:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+		}
+		break;
+	case GIC_SPACE:
+	case GIC_ENTER:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+//			m_pSampleUI->GetDialog(UIID_DLG_RESOLUTION)->Open();
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+
+void CHLSLEffectTest::ReleaseGraphicsResources()
+{
+//	m_pSampleUI.reset();
+}
+
+
+void CHLSLEffectTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+{
+//	CreateSampleUI();
+}
