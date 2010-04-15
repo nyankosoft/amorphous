@@ -8,6 +8,10 @@
 using namespace std;
 using namespace boost;
 
+
+extern const char *hr_d3d_error_to_string(HRESULT hr);
+
+
 /*
 inline static void SetRGBAColorAs4Floats( const SFloatRGBAColor& c, D3DXHANDLE handle, LPD3DXEFFECT pEffect )
 {
@@ -203,7 +207,7 @@ bool CHLSLShaderManager::LoadShaderFromFile( const string& filename )
 
 	if( FAILED(hr) )
 	{
-		LOG_PRINT_ERROR( " - Failed create an effect object from the HLSL effect file from: " + filename );
+		LOG_PRINT_ERROR( " - Failed create an effect object from the HLSL effect file from '" + filename + "' (error: " + string(hr_d3d_error_to_string(hr)) + ")." );
 		PrintCompilerErrors( pCompileErrors );
 		LoadNullShader();
 		return false;
