@@ -522,6 +522,13 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 
 bool CMotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_filename )
 {
+	if( db_filename.length() == 0 )
+		return false;
+
+	path parent_path( path(db_filename).parent_path() );
+	if( !exists(parent_path) )
+		create_directories(parent_path);
+
 	CMotionDatabase db;
 	bool success = db.m_DB.Open( db_filename, CBinaryDatabase<string>::DB_MODE_NEW );
 
