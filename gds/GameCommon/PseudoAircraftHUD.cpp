@@ -1,11 +1,11 @@
-
 #include "PseudoAircraftHUD.hpp"
 
 #include "3DMath/Matrix34.hpp"
+#include "3DMath/Matrix44.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "3DMath/Matrix22.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/D3DMisc.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Support/memory_helpers.hpp"
@@ -118,10 +118,12 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 
 	Matrix22 matRotZ = Matrix22Rotation( craft.GetRoll() );
 
-	D3DXMATRIX matView, matProj, matViewProj;
+//	D3DXMATRIX matView, matProj, matViewProj;
 	float width, height, far_clip = 50000.0f;
 	GetViewportSize( width, height );
-	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4.0f, width / height, 1.0f, far_clip );
+//	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4.0f, width / height, 1.0f, far_clip );
+	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4.0f, width / height, 1.0f, far_clip );
+	Matrix44 view, proj_view;
 
 //	const Vector2 vScreenCenter = Vector2( width, height ) * 0.5f;
 	const Vector2 vScreenCenter = m_vScreenCenter;
@@ -137,8 +139,15 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 	Vector3 vUp = Vec3Cross( vDirProjX, vRight );
 	Vector3 vRefPos;
 
-	D3DXMatrixLookAtLH( &matView, &D3DXVECTOR3(0,0,0), (D3DXVECTOR3 *)&vDirProjX, (D3DXVECTOR3 *)&vUp );
-	D3DXMatrixMultiply( &matViewProj, &matView, &matProj );
+//	D3DXMatrixLookAtLH( &matView, &D3DXVECTOR3(0,0,0), (D3DXVECTOR3 *)&vDirProjX, (D3DXVECTOR3 *)&vUp );
+//	D3DXMatrixMultiply( &matViewProj, &matView, &matProj );
+
+	Matrix34 cam_pose( Matrix34Identity() );
+	cam_pose.matOrient.SetColumn( 0, Vector3( vDirProjX.z, 0, -vDirProjX.x ) );
+	cam_pose.matOrient.SetColumn( 1, vUp );
+	cam_pose.matOrient.SetColumn( 2, vDirProjX );
+	view = Matrix44CameraMatrixFromCameraPose( cam_pose );
+	proj_view = proj * view;
 
 	Matrix33 matRot;
 	Scalar pitch_angle, y, sx, ex, tx, h;
@@ -162,7 +171,8 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 		matRot = Matrix33RotationAxis( pitch_angle, Vector3(1,0,0) );
 		vRefPos = matRot * Vector3(0,0,1) * ( far_clip - 100.0f );
 
-		D3DXVec3TransformCoord( &vRefPos, &vRefPos, &matViewProj );
+//		D3DXVec3TransformCoord( &vRefPos, &vRefPos, &matViewProj );
+		vRefPos = proj_view * vRefPos;
 
 		// calc y as (0,0) center screen space
 		y = ( -vRefPos.y ) * 0.5f * height;
@@ -196,8 +206,14 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 
 	// render heading
 	Vector3 vDirH = craft.GetHorizontalForwardDirection();
-	D3DXMatrixLookAtLH( &matView, &D3DXVECTOR3(0,0,0), (D3DXVECTOR3 *)&vDirH, &D3DXVECTOR3(0,1,0) );
-	D3DXMatrixMultiply( &matViewProj, &matView, &matProj );
+//	D3DXMatrixLookAtLH( &matView, &D3DXVECTOR3(0,0,0), (D3DXVECTOR3 *)&vDirH, &D3DXVECTOR3(0,1,0) );
+//	D3DXMatrixMultiply( &matViewProj, &matView, &matProj );
+
+	cam_pose.matOrient.SetColumn( 0, Vector3( vDirH.z, 0, -vDirH.x ) );
+	cam_pose.matOrient.SetColumn( 1, Vector3(0,1,0) );
+	cam_pose.matOrient.SetColumn( 2, vDirH );
+	view = Matrix44CameraMatrixFromCameraPose( cam_pose );
+	proj_view = proj * view;
 
 	Scalar x, heading_angle, yaw = craft.GetYaw();
 	int heading_start = (int)rad_to_deg(yaw) / 5 - 4;
@@ -212,7 +228,8 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 		matRot = Matrix33RotationY( heading_angle );
 		vRefPos = matRot * Vector3(0,0,1) * ( far_clip - 100.0f );
 
-		D3DXVec3TransformCoord( &vRefPos, &vRefPos, &matViewProj );
+//		D3DXVec3TransformCoord( &vRefPos, &vRefPos, &matViewProj );
+		vRefPos = proj_view * vRefPos;
 
 		// calc y as (0,0) center screen space
 		x = ( vRefPos.x * 0.5f * width ) * 0.5f;
