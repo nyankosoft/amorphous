@@ -603,6 +603,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Mesh\RectSetMesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\RectSetMesh.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp"
 					>
 				</File>
@@ -1367,6 +1375,10 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\3DMath\Matrix44.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DMath\MatrixConversions.hpp"
 				>
 			</File>
 			<File
