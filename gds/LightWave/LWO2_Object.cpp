@@ -43,7 +43,7 @@ void CLWO2_TAGChunk::AllocateTAGStrings(UINT4 tagchunksize, FILE* fp)
 
 
 		temp_indices[i] = n;
-		n += strlen(p+n);		//pTAGStrings[n] indicates the terminating NULL character
+		n += (int)strlen(p+n);		//pTAGStrings[n] indicates the terminating NULL character
 		if(n % 2 == 0)  //We got the double NULL at the end of this tag
 			n++;
 		n++;
@@ -264,71 +264,48 @@ void CLWO2_Object::WriteDebug( const std::string& filename )
 {
 	FILE* fp;
 	fp = fopen(filename.c_str(), "w");
-	char acStr[32];
-	char acStr2[256];
+	if( !fp )
+		return;
 
 	size_t i, num_tags = m_tag.iNumTAGs;
 	for(i=0; i<num_tags; i++)
 	{
-		fputs(m_tag.pTAGStrings + m_tag.piIndex[i], fp);
-		fputs("\n", fp);
+		fprintf( fp, "%s\n", m_tag.pTAGStrings + m_tag.piIndex[i] );
 	}
 
-	_itoa(m_lstLayer.size(), acStr, 10);
-	sprintf(acStr2 ,"\n----- %s Layers -----\n", acStr);
-	fputs(acStr2, fp);
+	fprintf( fp,"\n----- %d Layers -----\n", (int)m_lstLayer.size() );
+
 	list<CLWO2_Layer>::iterator p;
 	for(p = m_lstLayer.begin(); p!=m_lstLayer.end(); p++)
 	{
-		fputs("[", fp);
-		_itoa(p->GetLayerIndex(), acStr, 10);
-		fputs(acStr, fp);
-		fputs("] ", fp);
-		fputs(p->GetName().c_str(), fp);
-		fputs("\n", fp);
-
-		_itoa(p->GetVertex().size(), acStr, 10);
-		fputs(acStr, fp);
-		fputs(" points\n", fp);
-		_itoa(p->GetFace().size(), acStr, 10);
-		fputs(acStr, fp);
-		fputs(" faces\n", fp);
+		fprintf( fp, "[%02d] %s\n", p->GetLayerIndex(), p->GetName().c_str() );
+		fprintf( fp, "%d points\n", (int)p->GetVertex().size() );
+		fprintf( fp, "%d faces\n",  (int)p->GetFace().size() );
 	}
 
 
-	_itoa(m_vecSurface.size(), acStr, 10);
-	sprintf(acStr2, "\n----- %s Surfaces -----\n", acStr);
-	fputs(acStr2, fp);
+	fprintf( fp, "\n----- %d Surfaces -----\n", (int)m_vecSurface.size() );
 
 	size_t iNumSurfs = m_vecSurface.size();
 	for( i=0; i<iNumSurfs; i++ )
 	{
 		CLWO2_Surface& rSurf = m_vecSurface[i];
 
-		fputs("name: ", fp);
-		fputs(rSurf.GetName().c_str(), fp);
-		fputs("\n", fp);
-		fputs("texture uv: ", fp);
-//		fputs(rSurf.GetUVMapName().c_str(), fp);
-		fputs("\n", fp);
+		fprintf( fp, "name: %s\n", rSurf.GetName().c_str() );
+		fprintf( fp, "texture uv: %s\n", "???"/*rSurf.GetUVMapName().c_str()*/ );
 
 	}
 
-	fputs("\nCLIP - STIL\n", fp);
+	fprintf( fp, "\nCLIP - STIL\n" );
 
 	size_t iNumClips = m_vecStillClip.size();
 	for( i=0; i<iNumClips; i++ )
 	{
 		CLWO2_StillClip& clip = m_vecStillClip[i];
-		fputs(" [", fp);
-		_itoa(clip.uiClipIndex, acStr, 10);
-		fputs(acStr, fp);
-		fputs("] ", fp);
-		fputs(clip.strName.c_str(), fp);
-		fputs("\n", fp);
+		fprintf( fp, " [%02d] %s\n", clip.uiClipIndex, clip.strName.c_str() );
 	}
-	fclose(fp);
 
+	fclose(fp);
 }
 
 /*
@@ -430,7 +407,7 @@ CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface( CLWO2_Surface& rS
 													            CLWO2_Layer& rLayer)
 {
 	vector<CLWO2_SurfaceBlock>& rvecSurfBlock = rSurf.GetSurfaceBlock();
-	int i, iNumSurfaceBlocks = rvecSurfBlock.size();
+	int i, iNumSurfaceBlocks = (int)rvecSurfBlock.size();
 	int index;
 	for( i=0; i<iNumSurfaceBlocks; i++ )
 	{
@@ -526,7 +503,7 @@ int CLWO2_Object::GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_L
 		itrLayer++)
 	{
 		const vector<CLWO2_BoneWeightMap>& rBoneWeightMap = (*itrLayer).GetBoneWeightMap();
-		for( i=0; i<rBoneWeightMap.size(); i++ )
+		for( i=0; i<(int)rBoneWeightMap.size(); i++ )
 		{
 			if( rBoneWeightMap[i].iWeightMapTagIndex == tag_index )
 				return rBoneWeightMap[i].iBoneIndex;
