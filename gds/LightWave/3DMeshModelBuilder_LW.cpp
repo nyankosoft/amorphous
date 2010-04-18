@@ -1,7 +1,7 @@
 #include "LightWave/LWO2_Object.hpp"
 #include "LightWave/LWO2_Layer.hpp"
 
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/StringAux.hpp"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
@@ -50,7 +50,7 @@ C3DMeshModelBuilder_LW::~C3DMeshModelBuilder_LW()
 
 const std::string C3DMeshModelBuilder_LW::GetInputDirectoryPath() const
 {
-	return fnop::get_path( m_pSrcObject->GetFilename() );
+	return lfs::get_parent_path( m_pSrcObject->GetFilename() );
 }
 
 
@@ -76,7 +76,7 @@ bool C3DMeshModelBuilder_LW::BuildMeshModel()
 //		return false;
 		// filename is not specified - copy the original filename and change the extension to ".msh"
 		strDestFilename = m_pSrcObject->GetFilename();
-		fnop::change_ext( strDestFilename, "msh" );
+		lfs::change_ext( strDestFilename, "msh" );
 	}
 	else
 	{

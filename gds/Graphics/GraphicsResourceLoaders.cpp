@@ -5,6 +5,7 @@
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/Profile.hpp"
+#include "Support/lfs.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -33,7 +34,7 @@ Result::Name CGraphicsResourceLoader::LoadFromDisk()
 		string db_filename, keyname;
 		decompose_into_db_filepath_and_keyname( src_filepath, db_filename, keyname );
 
-		string cwd = fnop::get_cwd();
+		string cwd = lfs::get_cwd();
 
 		//if( !boost::filesystem::exists(  ) )
 		//	return InvalidPath; db path is invalid - abort

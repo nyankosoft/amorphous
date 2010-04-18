@@ -1,12 +1,6 @@
 #ifndef  __3DMESHMODELBUILDER_H__
 #define  __3DMESHMODELBUILDER_H__
 
-#include <vector>
-using namespace std;
-
-#include <boost/shared_ptr.hpp>
-
-#include "3DMath/Vector3.hpp"
 
 #include "Graphics/IndexedPolygon.hpp"
 #include "Graphics/TextureCoord.hpp"
@@ -14,7 +8,6 @@ using namespace std;
 #include "Graphics/General3DVertex.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
-
 #include "Support/FixedVector.hpp"
 
 
@@ -43,7 +36,7 @@ class CPolygonGroup
 public:
 
 	std::string GroupName;
-	vector<int> vecPolygonIndex;
+	std::vector<int> vecPolygonIndex;
 };
 
 
@@ -69,7 +62,7 @@ protected:
 	TexturePathnameOption::Option m_TextureFilePathOption;
 
 	/// hold a user-defined fixed path for texture filenames
-	string m_strTexPath;
+	std::string m_strTexPath;
 
 //	std::vector<CPolygonGroup> m_vecPolygonGroup;
 
@@ -124,7 +117,7 @@ public:
 	/// all the geometry in the model file is processed.
 	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter = CGeometryFilter() ) = 0;
 
-	virtual std::string GetBasePath() { return string(); }
+	virtual std::string GetBasePath() { return std::string(); }
 };
 
 
@@ -160,10 +153,10 @@ protected:
 	boost::shared_ptr<CGeneral3DMesh> m_pMesh;
 
 	/// file name of the original model data
-	string m_strSrcFilename;
+	std::string m_strSrcFilename;
 
 	/// file name of the ouput mesh model built from the input model data
-	string m_strDestFilename;
+	std::string m_strDestFilename;
 
 	/// holds the mesh models
 	/// these models are serialized and save into files

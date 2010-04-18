@@ -25,7 +25,7 @@
 #include <Support/FloatLookUpTable.hpp>
 
 /// functions for simple filename and file/directory-related operations
-#include <Support/fnop.hpp>
+#include <Support/lfs.hpp>
 
 #include <Support/ImageArchive.hpp>
 

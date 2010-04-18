@@ -9,8 +9,6 @@
 #include "../fwd.hpp"
 #include "../IndexedPolygon.hpp"
 #include "3DMath/AABB3.hpp"
-#include "3DMeshModelArchive.hpp"
-using namespace MeshModel;
 
 
 /**
@@ -169,7 +167,7 @@ private:
 	/// subdivide textures
 	bool SplitTexture( const std::string& src_tex_filename );
 
-    void CopyVerticesAndTriangles( C3DMeshModelArchive& src_mesh );
+	void CopyVerticesAndTriangles( MeshModel::C3DMeshModelArchive& src_mesh );
 
 	void CreateMeshTree();
 

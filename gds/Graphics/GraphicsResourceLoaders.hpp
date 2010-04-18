@@ -6,7 +6,6 @@
 using namespace MeshModel;
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceEntries.hpp"
-#include "Support/fnop.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"

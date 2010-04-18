@@ -22,8 +22,7 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/fnop.hpp"
-using namespace fnop;
+#include "Support/lfs.hpp"
 
 #include "Physics/PhysicsEngine.hpp"
 #include "Physics/SceneDesc.hpp"
@@ -109,7 +108,7 @@ CStage::~CStage()
 
 CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filename )
 {
-	string ext = get_ext( filename );
+	string ext = lfs::get_ext( filename );
 
 	if( ext == "bspx" ) // bsp level file (deprecated)
 		return new CBSPMap( pStage );
@@ -540,7 +539,7 @@ CEntityHandle<> CStage::LoadStaticGeometryFromFile( const std::string filename )
 bool CStage::LoadMaterial( /* const string& material_filename */)
 {
 //	string material_filename = m_strStageFilename;
-//	fnop::change_ext( material_filename, "mat" );
+//	lfs::change_ext( material_filename, "mat" );
 
 	string material_filename = "./Stage/material.bin";
 

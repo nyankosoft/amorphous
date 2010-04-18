@@ -5,7 +5,7 @@
 #include "Graphics/General3DVertex.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ImageArchive.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 
 using namespace GameLib1::Serialization;
 using namespace MeshModel;
@@ -303,7 +303,7 @@ void MeshModel::AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 			string tex_key;
 			
 			if( bUseTextureBasenameForKey )
-				tex_key = fnop::get_nopath(tex_filename);
+				tex_key = lfs::get_leaf(tex_filename);
 			else
 				tex_key = tex_filename;
 

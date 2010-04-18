@@ -1,20 +1,17 @@
-
-#include <assert.h>
-#include <algorithm>
-using namespace std;
-
+#include "3DMeshModelBuilder.hpp"
+#include "NVMeshMender.hpp"
+#include "ShadowVolumeMeshGenerator.hpp"
 #include "Graphics/FVF_BumpVertex.h"
 #include "Graphics/FVF_BumpWeightVertex.h"
 #include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/FVF_TextureVertex.h"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include <assert.h>
+#include <algorithm>
 
-#include "NVMeshMender.hpp"
-#include "3DMeshModelBuilder.hpp"
-#include "ShadowVolumeMeshGenerator.hpp"
-using namespace MeshModel;
+using namespace std;
 
 
 C3DModelLoader::C3DModelLoader()
@@ -82,14 +79,14 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
 	if( 0 < dest_filepath.length() )
 	{
 		strTextFile = dest_filepath;
-		fnop::change_ext( strTextFile, "txt" );
+		lfs::change_ext( strTextFile, "txt" );
 
 		if( src_dirpath.length() )
 		{
 			// place the file to the directory of the source model
 			// to keep the dest directory clean
-//			strTextFile = fnop::get_path(src_dirpath) + fnop::get_nopath(strTextFile);
-			strTextFile = src_dirpath + "/" + fnop::get_nopath(strTextFile);
+//			strTextFile = fnop::get_path(src_dirpath) + lfs::get_leaf(strTextFile);
+			strTextFile = src_dirpath + "/" + lfs::get_leaf(strTextFile);
 		}
 	}
 	else
@@ -514,7 +511,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 				if( 0 < strTextureFilename.length() )
 				{
 //					strTextureFilename = m_strTexPath + "\\" + strTemp;
-					strTextureFilename = m_pModelLoader->GetFixedPathForTextureFilename() + "\\" + fnop::get_nopathfilename(strTextureFilename);
+					strTextureFilename = m_pModelLoader->GetFixedPathForTextureFilename() + "\\" + lfs::get_leaf(strTextureFilename);
 				}
 				break;
 
@@ -522,7 +519,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 				break;
 
 			case TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME:
-				strModelPath = fnop::get_path(basepath);
+				strModelPath = lfs::get_parent_path(basepath);
 				pathlen = strModelPath.length();
 
 				if( pathlen == 0 )

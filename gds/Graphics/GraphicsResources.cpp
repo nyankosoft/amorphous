@@ -477,7 +477,7 @@ void CMeshResource::SetSubResourceState( CMeshSubResource::Name subresource,
 
 void CMeshResource::CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive )
 {
-	lfs::dir_stack dirstk( lfs::get_dirpath(m_MeshDesc.ResourcePath) );
+	lfs::dir_stack dirstk( lfs::get_parent_path(m_MeshDesc.ResourcePath) );
 
 	if( m_pMeshObject )
 		m_pMeshObject->LoadNonAsyncResources( archive, m_MeshDesc.LoadOptionFlags );

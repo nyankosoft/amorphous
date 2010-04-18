@@ -5,7 +5,6 @@
 #include "Graphics/OpenGL/glext.h" // GL_BGR
 #include "Graphics/OpenGL/Shader/GLShader.hpp"
 #include "Support/SafeDelete.hpp"
-#include "Support/fnop.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"

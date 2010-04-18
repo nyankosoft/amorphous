@@ -11,7 +11,7 @@
 #include "XML/XMLDocumentLoader.hpp"
 #include "XML/XMLNodeReader.hpp"
 #include "Support/SafeDelete.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 
 #include "GUI.hpp"
 
@@ -225,7 +225,7 @@ bool CGM_XMLParser::LoadFromXMLFile( const std::string& xml_filename )
 	if( !pXMLDocument )
 		return false;
 
-	fnop::dir_stack dir_stk( fnop::get_path(xml_filename) );
+	lfs::dir_stack dir_stk( lfs::get_parent_path(xml_filename) );
 
 	CXMLNodeReader rootnode = pXMLDocument->GetRootNodeReader();
 
@@ -240,7 +240,7 @@ bool CGM_XMLParser::LoadFromXMLFile( const std::string& xml_filename )
 			m_vecpRootDialog.push_back( pDlg );
 	}
 
-	dir_stk.prevdir();
+	dir_stk.pop_and_chdir();
 
 	return true;
 }

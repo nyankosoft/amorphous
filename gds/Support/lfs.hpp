@@ -55,33 +55,32 @@ inline std::string get_ext( const std::string& filename )
 }
 
 
-/// returns the extension(suffix) of the filename
-inline std::string get_nopathfilename( const std::string& filename )
+inline std::string get_leaf( const std::string& filename )
 {
 	size_t pos = filename.rfind("\\");
 
 	if( pos != std::string::npos
 	 && pos != filename.length() - 1 ) 
-		return filename.substr( pos+1, filename.length() - (pos+1) );
+		return filename.substr( pos+1 );
 	else
 	{
 		pos = filename.rfind("/");
 		if( pos != std::string::npos
 		 && pos != filename.length() - 1 ) 
-			return filename.substr( pos+1, filename.length() - (pos+1) );
+			return filename.substr( pos+1 );
 	}
 
-	return std::string("");
+	return std::string();
 }
 
 
 /// returns the current working directory (absolute path to the current directory)
 inline std::string get_cwd()
 {
-	char strCWD[LFS_MAX_PATH];
-//	GetCurrentDirectory( LFS_MAX_PATH, strCWD );
-	getcwd( strCWD, LFS_MAX_PATH );
-	return std::string(strCWD);
+	char cwd[LFS_MAX_PATH];
+	memset( cwd, 0, sizeof(cwd) );
+	getcwd( cwd, LFS_MAX_PATH );
+	return std::string(cwd);
 }
 
 
@@ -96,49 +95,39 @@ inline bool set_wd( const std::string& workdir )
 }
 
 
-/// Return the directory path of the given path
-/// Returns an empty string if 'filepath' does not include directory path.
-/// Returned directory path does not contain the separator charactor ( '/' or '\\' )
+/// Return the parent path of the given path
+/// The returned path does not contain the separator charactor ( '/' or '\\' )
 /// at the end.
-inline std::string get_dirpath( const std::string& filepath )
+/// Does not check if src_path exists.
+inline std::string get_parent_path( const std::string& src_path )
 {
-	struct stat st;
-	if( stat( filepath.c_str(), &st ) == 0 )
+	if( src_path.length() == 0 )
+		return std::string();
+
+	const char *sep_str[2] = { "\\", "/" };
+
+	// extract the parent path from the filepath
+
+	size_t last_sep_pos = 0;
+	for( int i=0; i<2; i++ )
 	{
-		std::string sep_str[2] = { "\\", "/" };
-		if( st.st_mode == S_IFDIR )
-		{
-			// a directory path
-			for( int i=0; i<2; i++ )
-			{
-				// remove the trailing separator character
-				if( filepath.substr( filepath.length()-1, 1 ) == sep_str[i] )
-					return filepath.substr( 0, filepath.length()-1 );
-			}
-
-			return filepath;
-		}
-
-		// extract directory path from the filepath
-
-		size_t last_sep_pos = 0;
-		for( int i=0; i<2; i++ )
-		{
-			size_t pos = filepath.rfind( sep_str[i] );
-			if( pos != std::string::npos
-			 && last_sep_pos < pos )
-			{
-				last_sep_pos = pos;
-			}
-		}
-
-		if( last_sep_pos == 0 )
-			return std::string(""); // 'filepath' has no directory path - return an empty string
+		size_t pos = std::string::npos;
+		if( src_path[src_path.length()-1] == sep_str[i][0] )
+			pos = src_path.substr( 0, src_path.length()-1 ).rfind( sep_str[i] ); // the last character is '/' or '\\'
 		else
-			return filepath.substr( 0, last_sep_pos );
+			pos = src_path.rfind( sep_str[i] );
+
+		if( pos != std::string::npos
+		 && last_sep_pos < pos )
+		{
+			last_sep_pos = pos;
+		}
 	}
 
-	return std::string("");		 
+	if( last_sep_pos == 0 )
+		return std::string(); // 'filepath' is a leaf - return an empty string
+	else
+		return src_path.substr( 0, last_sep_pos );
 }
 
 

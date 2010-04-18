@@ -6,7 +6,7 @@ using namespace MeshModel;
 #include "LWO2_Object.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/progress_display.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 
 using namespace std;
 using namespace boost;
@@ -72,7 +72,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 	// set the default output filename
 	// if no output filename is specified for the mesh, the original filename
 	// will be used as the body filename
-	fnop::change_ext( strBaseOutFilename, "msh" );
+	lfs::change_ext( strBaseOutFilename, "msh" );
 
 	m_strBaseOutFilename = strBaseOutFilename;
 

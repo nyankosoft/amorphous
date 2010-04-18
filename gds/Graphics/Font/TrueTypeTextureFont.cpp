@@ -3,7 +3,7 @@
 using namespace Graphics;
 
 #include <string.h>
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/FreeTypeAux.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -307,7 +307,7 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 
 		// load character info
 		string charset_archive_filepath( filename );
-		fnop::change_ext( charset_archive_filepath, "tfc" );
+		lfs::change_ext( charset_archive_filepath, "tfc" );
 
 		CTextureFontArchive archive;
 		bool archive_loaded = archive.LoadFromFile( charset_archive_filepath );
@@ -356,7 +356,7 @@ bool CTrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& textur
 	m_FontTexture.SaveTextureToImageFile( texture_filepath );
 
 	string charset_filepath = texture_filepath;
-	fnop::change_ext( charset_filepath, "tfc" );
+	lfs::change_ext( charset_filepath, "tfc" );
 
 	CTextureFontArchive tex_font_archive;
 	tex_font_archive.BaseCharHeight = m_BaseHeight;

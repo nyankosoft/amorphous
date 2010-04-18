@@ -3,16 +3,9 @@
 
 
 #include <list>
-#include <string>
-#include <vector>
-
-#include <boost/shared_ptr.hpp>
-
-
+#include "fwd.hpp"
 #include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
-
-#include "LightWave/LWO2_Layer.hpp"
 
 
 namespace MeshModel
@@ -21,7 +14,7 @@ namespace MeshModel
 
 struct SLayerSet
 {
-	string strOutputFilename;
+	std::string strOutputFilename;
 
 	std::vector<CLWO2_Layer *> vecpMeshLayer;
 
@@ -32,7 +25,7 @@ struct SLayerSet
 	SLayerSet( const std::vector<CLWO2_Layer *>& mesh_layer )
 		: vecpMeshLayer(mesh_layer), pSkelegonLayer(NULL) {}
 
-	SLayerSet(const string& output_filename) : strOutputFilename(output_filename), pSkelegonLayer(NULL) {}
+	SLayerSet(const std::string& output_filename) : strOutputFilename(output_filename), pSkelegonLayer(NULL) {}
 };
 
 
@@ -44,13 +37,13 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 	boost::shared_ptr<CLWO2_Object> m_pSrcObject;
 
 
-	string m_strTargetLayerName;
+	std::string m_strTargetLayerName;
 
 
 	/// store indices from the original skeleton index to the dest bone index
 	/// dest bone indices are in the order of the tree traversal during runtime
 	/// and point to blend matrices
-	vector<int> m_vecDestBoneIndex;
+	std::vector<int> m_vecDestBoneIndex;
 	int m_iNumDestBones;
 
 	/// hold info from which mesh is created
@@ -65,7 +58,7 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 private:
 
 	void BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
-		                              const vector<CLWO2_Bone>& rvecSrcBone,
+		                              const std::vector<CLWO2_Bone>& rvecSrcBone,
 									  const CLWO2_Layer& rLayer,
 //									  const Vector3& vParentOffset,
 									  CMMA_Bone& rDestBone );
@@ -74,7 +67,7 @@ private:
 	/// all the bone transforms are not supposed to have rotations
 	void BuildBoneTransformsNROT_r(const Vector3& vParentOffset, CMMA_Bone& rDestBone );
 
-	void SetVertexWeights( vector<CGeneral3DVertex>& rDestVertexBuffer, CLWO2_Layer& rLayer );
+	void SetVertexWeights( std::vector<CGeneral3DVertex>& rDestVertexBuffer, CLWO2_Layer& rLayer );
 
 	void ProcessLayer( CLWO2_Layer& rLayer );
 
@@ -100,7 +93,7 @@ public:
 
 	virtual const std::string& GetSurfaceMaterialOption( int material_index ) const { return m_vecSurfaceMaterialOption[material_index]; }
 
-	void SetTargetLayerName( string& strName ) { m_strTargetLayerName = strName; }
+	void SetTargetLayerName( std::string& strName ) { m_strTargetLayerName = strName; }
 
 	void LoadMeshModel();
 
@@ -117,7 +110,7 @@ public:
 
 	void BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer );
 
-	vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
+	std::vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
 
 	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter );
 

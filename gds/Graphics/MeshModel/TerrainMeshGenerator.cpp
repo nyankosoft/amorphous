@@ -1,16 +1,15 @@
 #include "TerrainMeshGenerator.hpp"
 #include "General3DMesh.hpp"
-
-
-#include <boost/filesystem.hpp>
-#include <stdio.h>
-
 #include "Support/StringAux.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/ImageSplitter.hpp"
 #include "tbb/task_scheduler_init.h"
+#include <boost/filesystem.hpp>
+
+#include "3DMeshModelArchive.hpp"
+using namespace MeshModel;
 
 using namespace std;
 using namespace boost;
@@ -275,9 +274,9 @@ std::string TerrainMeshTree::CreateSubdividedTextureFilepath( const string& src_
 	dest_filename = dest_filepath.string();
 //	dest_filename = ".\\temp" + fnop::get_nopath(src_tex_filename);
 
-	fnop::append_to_body( dest_filename, fmt_string("%02d",index) );
+	lfs::append_before_ext( dest_filename, fmt_string("%02d",index) );
 
-	fnop::change_ext( dest_filename, m_OutputTextureImageFormat );
+	lfs::change_ext( dest_filename, m_OutputTextureImageFormat );
 
 	return dest_filename;
 }

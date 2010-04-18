@@ -18,7 +18,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 
 #include "Support/memory_helpers.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 
 #include "Graphics/D3DXVec3Copy.hpp"
 
@@ -312,7 +312,7 @@ bool CD3DXMeshModel::LoadFromArchive( C3DMeshModelArchive& rArchive, const strin
 
 	string strOrigFilename;
 	strOrigFilename = m_strFilename;
-	string strPath = fnop::get_path( strOrigFilename );
+	string strPath = lfs::get_parent_path( strOrigFilename );
 	string strFilename;
 
 	bool bLoaded;

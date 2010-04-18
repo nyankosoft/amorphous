@@ -1,5 +1,5 @@
 #include "ApplicationBase.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/Profile.hpp"
 #include "Input/StdKeyboard.hpp"
 #include "Input/StdMouseInput.hpp"
@@ -153,7 +153,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	// set the message procedure for the game window
 	g_pMessageProcedureForGameWindow = MsgProc;
 
-	fnop::set_wd( fnop::get_path(GetExeFilepath()) );
+	lfs::set_wd( lfs::get_parent_path(GetExeFilepath()) );
 
 	SetCommandLineArguments( lpCmdLine );
 
