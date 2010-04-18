@@ -92,6 +92,9 @@ bool CShaderContainer::Load()
 void CShaderContainer::SetParams()
 {
 	CShaderManager *pMgr = m_ShaderHandle.GetShaderManager();
+	if( !pMgr )
+		return;
+
 	for( size_t i=0; i<m_ParamGroup.m_Float.size(); i++ )
 		pMgr->SetParam( m_ParamGroup.m_Float[i] );
 
