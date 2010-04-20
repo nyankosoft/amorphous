@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../app"
-			IntermediateDirectory="../../../../X_TempFiles/StaticGeometryCompiler/VC8/Debug"
+			IntermediateDirectory=".vc/$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
 			>
@@ -81,7 +81,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../app"
-			IntermediateDirectory="../../../../X_TempFiles/StaticGeometryCompiler/VC8/Release"
+			IntermediateDirectory=".vc/$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
 			>
