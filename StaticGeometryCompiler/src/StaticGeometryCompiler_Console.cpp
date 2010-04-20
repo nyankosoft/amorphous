@@ -10,7 +10,6 @@
 
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/LogOutput_OnScreen.hpp"
-#include "gds/Support.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 #include "gds/Support/MiscAux.hpp"
 #include "gds/Stage/StaticGeometry.hpp"
@@ -20,17 +19,19 @@
 #include "StaticGeometryCompiler.h"
 #include "StaticGeometryCompiler_Main.h"
 
+using namespace std;
 
-std::string m_OutputFilepath;
+
+string m_OutputFilepath;
 
 //CLogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
 
 
-int RunApp( const std::string& cmd_line )
+int RunApp( const string& cmd_line )
 {
 	LOG_FUNCTION_SCOPE();
 
-	string initial_working_directory = fnop::get_cwd();
+	string initial_working_directory = lfs::get_cwd();
 
 	int ret = RunStaticGeometryCompiler( cmd_line, initial_working_directory );
 
@@ -45,7 +46,7 @@ int RunApp( const std::string& cmd_line )
 
 int main( int argc, char *argv[] )
 {
-	string initial_working_directory = fnop::get_cwd();
+	string initial_working_directory = lfs::get_cwd();
 
 	string cmd_line;
 	if( 2 <= argc )

@@ -1,6 +1,6 @@
 #include "StaticGeometryDesc.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "XML.hpp"
 #include "3DMath/AABTree.hpp"
 
@@ -491,8 +491,8 @@ bool CStaticGeometryDesc::LoadFromXML( const std::string& xml_filepath )
 		return false;
 
 	// set the working directory to the directory path of the xml file
-	fnop::dir_stack dir_stk;
-	dir_stk.setdir( fnop::get_path(xml_filepath) );
+	lfs::dir_stack dir_stk;
+	dir_stk.push_cwd_and_chdir( lfs::get_parent_path(xml_filepath) );
 
 	CXMLNodeReader root_node_reader = pXMLDocument->GetRootNodeReader();
 	xercesc::DOMNode *pRootNode = root_node_reader.GetDOMNode();
@@ -543,7 +543,7 @@ bool CStaticGeometryDesc::LoadFromXML( const std::string& xml_filepath )
 	if( !LoadCollisionDesc( GetChildNode( pRootNode, "Collision" ) ) )
 		return false;
 
-	dir_stk.prevdir();
+	dir_stk.pop_and_chdir();
 
 	return true;
 

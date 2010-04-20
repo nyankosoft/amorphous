@@ -3,7 +3,7 @@
 #include "Graphics/MeshModel/TerrainMeshGenerator.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/StringAux.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Stage/StaticGeometry.hpp"
 #include "BSPMapCompiler/LightmapBuilder.hpp"
 
@@ -41,7 +41,7 @@ bool AddImageFileToBinaryDatabase( const std::string& image_filepath,
 {
 	string img_key;
 	if( bUseImageFilepathBasenameForKey )
-		img_key = fnop::get_nopath(image_filepath);
+		img_key = lfs::get_leaf(image_filepath);
 	else
 		img_key = image_filepath;
 
@@ -95,12 +95,12 @@ void CStaticGeometryCompiler::SaveToBinaryDatabase( const std::string& db_filena
 		return;
 	}
 
-	string db_file_relative_path = m_DatabaseRelativeDirPathAtRuntime /*+ "/"*/ + fnop::get_nopath(db_filename);
+	string db_file_relative_path = m_DatabaseRelativeDirPathAtRuntime + "/" + lfs::get_leaf(db_filename);
 
 	// add mesh textures to db
 	// - need to change the texture filename of the mesh
 	//   from (texture filepath) to (db name)::(basename of texture filepath)
-	string db_filepath = "./" + fnop::get_nopath(db_filename);
+	string db_filepath = "./" + lfs::get_leaf(db_filename);
 	const size_t num_meshes = m_vecDestGraphicsMeshArchive.size();
 	for( size_t i=0; i<num_meshes; i++ )
 	{
@@ -388,7 +388,7 @@ bool CreateGeneral3DMesh( const std::string& model_filepath,
 	LOG_FUNCTION_SCOPE();
 
 	shared_ptr<C3DModelLoader> pLoader;
-	if( fnop::get_ext( model_filepath ) == "lwo" )
+	if( lfs::get_ext( model_filepath ) == "lwo" )
 	{
 		pLoader = shared_ptr<C3DModelLoader>( new C3DMeshModelBuilder_LW() );
 	}
@@ -462,7 +462,7 @@ bool CStaticGeometryCompiler::CreateLightmaps()
 	m_Desc.m_Lightmap.m_pvecpLight = &m_Desc.m_vecpLight;
 	m_Desc.m_Lightmap.m_pMesh = m_pGraphicsMesh.get();
 	m_Desc.m_Lightmap.m_vecEnableLightmapForSurface.resize( m_pGraphicsMesh->GetMaterialBuffer().size(), 1 );
-	m_Desc.m_Lightmap.m_OutputDatabaseFilepath = fnop::get_nopath( m_Desc.m_OutputFilepath );
+	m_Desc.m_Lightmap.m_OutputDatabaseFilepath = lfs::get_leaf( m_Desc.m_OutputFilepath );
 
 	return lightmap_builder.CreateLightmapTexture( m_Desc.m_Lightmap );
 }
@@ -681,7 +681,7 @@ bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_fil
 	if( pos != string::npos )
 	{
 		m_DatabaseRelativeDirPathAtRuntime
-			= fnop::get_path(m_Desc.m_OutputFilepath).substr( m_Desc.m_ProgramRootDirectoryPath.length() );
+			= lfs::get_parent_path(m_Desc.m_OutputFilepath).substr( m_Desc.m_ProgramRootDirectoryPath.length() );
 
 		if( 0 < m_DatabaseRelativeDirPathAtRuntime.length()
 		 && m_DatabaseRelativeDirPathAtRuntime[0] == '/' )
@@ -689,8 +689,8 @@ bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_fil
 	}
 
 	// set the working directory to the directory path of the xml_filepath
-	fnop::dir_stack dir_stk;
-	dir_stk.setdir( fnop::get_path( xml_filepath ) );
+	lfs::dir_stack dir_stk;
+	dir_stk.push_cwd_and_chdir( lfs::get_parent_path( xml_filepath ) );
 
 	int shader_index_offset = 0;
 	const size_t num_surf_descs = m_Desc.m_vecSurfaceDesc.size();
@@ -727,7 +727,7 @@ bool CStaticGeometryCompiler::CompileFromXMLDescFile( const std::string& xml_fil
 	SaveToBinaryDatabase( m_Desc.m_OutputFilepath );
 
 	// restore the original working directory
-	dir_stk.prevdir();
+	dir_stk.pop_and_chdir();
 
 	return true;
 }

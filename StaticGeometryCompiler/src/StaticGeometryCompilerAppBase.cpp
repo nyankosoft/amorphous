@@ -9,6 +9,7 @@
 #include "gds/Support.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 #include "gds/Support/MiscAux.hpp"
+#include "gds/Support/lfs.hpp"
 #include "gds/Stage/StaticGeometry.hpp"
 #include "gds/XML/XMLDocumentLoader.hpp"
 
@@ -35,16 +36,16 @@ bool CompileStaticGeometry( const string& filename )
 		if( compiled )
 		{
 /*			// go to the directory of the input xml file
-			fnop::set_wd(fnop::get_path(filename));
+			lfs::set_wd(lfs::get_path(filename));
 
 			// go to the directory where a static geometry file was saved
 			string output_filepath = compiler.GetDesc().m_OutputFilepath;
-			fnop::set_wd( fnop::get_path(output_filepath) );
+			lfs::set_wd( lfs::get_path(output_filepath) );
 
 			m_OutputFilepath = output_filepath;
 
 //			g_pTest = boost::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
-//			g_pTest->LoadFromFile( fnop::get_nopath(output_filepath) );*/
+//			g_pTest->LoadFromFile( lfs::get_nopath(output_filepath) );*/
 			return true;
 		}
 		else
@@ -82,7 +83,7 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 		// the working directory is the same with the project file directory
 		// - Happens when the app is run from the Visual Studio
 		// - Change the working directory to the directory of the application binary.
-		fnop::set_wd( "../../app" );
+		lfs::set_wd( "../../app" );
 	}
 
 	// File open dialog is not working. Why???
@@ -105,9 +106,9 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 
 		// set the working directory to the one immediately under the desc file
 
-        fnop::set_wd( fnop::get_path(filename) );
+        lfs::set_wd( lfs::get_parent_path(filename) );
 
-		filename = fnop::get_nopath( filename );
+		filename = lfs::get_leaf( filename );
 	}
 	else
 	{
@@ -128,9 +129,9 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 				loader.LoadParam( "input", filename );
 			}
 
-			fnop::set_wd( fnop::get_path(filename) );
+			lfs::set_wd( lfs::get_parent_path(filename) );
 
-			filename = fnop::get_nopath( filename );
+			filename = lfs::get_leaf( filename );
 		}
 	}
 
@@ -147,13 +148,13 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 
 	g_Log.Print( "initial working directory: " + initial_working_directory );
 
-	g_Log.Print( "current working directory: " + fnop::get_cwd() );
+	g_Log.Print( "current working directory: " + lfs::get_cwd() );
 
 	g_Log.Print( "command line argument string: " + cmd_line );
 
 	g_Log.Print( "Compiling a static geometry from the following desc file: '%s'", filename.c_str() );
 
-//	g_Log.Print( "directory path of exe file: " + fnop::get_path(get_exe_filepath()) );
+//	g_Log.Print( "directory path of exe file: " + lfs::get_path(get_exe_filepath()) );
 
 //	g_Log.Print( "_fullpath( dest, '.', MAX_PATH ) > dest: '%s'", full_path );
 

@@ -1,5 +1,6 @@
 #include "StaticGeometryCompilerFG.h"
 #include "Support.hpp"
+#include "Support/lfs.hpp"
 
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 
@@ -450,7 +451,7 @@ bool CStaticGeometryCompilerFG::Build( const string& desc_filename )
 	m_Archive.m_AmbientColor = ambient_color;
 	m_Archive.m_FogColor = fog_color;
 
-	m_Archive.WriteToTextFile( fnop::get_no_ext(desc_filename) );
+	m_Archive.WriteToTextFile( lfs::get_no_ext(desc_filename) );
 
 	return SaveToFile( output_filename );
 }
@@ -580,7 +581,7 @@ bool CStaticGeometryCompilerFG::SaveToFile( const string& output_filename )
 	{
 		// - create image archives and add them to db
 		// - change the texture file names stored in m_vecMeshArchive
-		string db_filepath = gs_DBFilenameRelativePathForTextureResource + fnop::get_nopath(output_filename);
+		string db_filepath = gs_DBFilenameRelativePathForTextureResource + lfs::get_leaf(output_filename);
 		for( size_t i=0; i<m_vecMeshArchive.size(); i++ )
 			AddTexturesToBinaryDatabase( m_vecMeshArchive[i], db_filepath, db );
 	}
