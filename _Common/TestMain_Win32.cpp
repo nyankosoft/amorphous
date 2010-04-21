@@ -5,17 +5,19 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include <gds/Graphics.hpp>
-#include <gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp>
-#include <gds/Support/MiscAux.hpp>
-#include <gds/Support/WindowMisc_Win32.hpp>
-#include <gds/Support/Timer.hpp>
-#include <gds/Support/ParamLoader.hpp>
-#include <gds/Support.hpp>
-#include <gds/Input.hpp>
-#include <gds/Input/StdMouseInput.hpp>
-#include <gds/XML.hpp>
-#include <gds/App/GameWindowManager_Win32.hpp>
+#include "gds/Graphics.hpp"
+#include "gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "gds/Support/MiscAux.hpp"
+#include "gds/Support/WindowMisc_Win32.hpp"
+#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/lfs.hpp"
+#include "gds/Input.hpp"
+#include "gds/Input/StdMouseInput.hpp"
+#include "gds/XML.hpp"
+#include "gds/App/GameWindowManager_Win32.hpp"
 //#include <gl/gl.h>
 
 #include "GraphicsTestBase.hpp"
@@ -266,7 +268,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	g_CmdLine = lpCmdLine;
 
-	const string iwd = fnop::get_cwd(); // initial working directory
+	const string iwd = lfs::get_cwd(); // initial working directory
 	if( iwd.substr( iwd.length() - 4 ) != "/_App"
 	 && iwd.substr( iwd.length() - 4 ) != "\\_App" )
 	{
