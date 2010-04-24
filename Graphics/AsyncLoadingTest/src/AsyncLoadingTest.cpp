@@ -1,4 +1,5 @@
 #include "AsyncLoadingTest.hpp"
+#include <boost/foreach.hpp>
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/AsyncResourceLoader.hpp"

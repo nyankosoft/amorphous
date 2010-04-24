@@ -2,12 +2,6 @@
 #define  __AsyncLoadingTest_H__
 
 
-#include <vector>
-#include <string>
-#include <boost/foreach.hpp>
-#include <boost/shared_ptr.hpp>
-using namespace boost;
-
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
@@ -67,7 +61,7 @@ class CAsyncLoadingTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	CShaderTechniqueHandle m_MeshTechnique;
 
-	shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
+	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
 	boost::shared_ptr<CFontBase> m_pFont;
 
