@@ -59,13 +59,14 @@ extern const std::string GetAppTitle()
 CHLSLEffectTest::CHLSLEffectTest()
 :
 m_CurrentShaderIndex( 0 ),
+m_CurrentMeshIndex( 0 ),
 m_DisplayDebugInfo(false)
 {
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	g_CameraController.SetPosition( Vector3( 0, 1, -50 ) );
+	g_CameraController.SetPosition( Vector3( 0, 1, -30 ) );
 }
 
 
@@ -98,7 +99,7 @@ bool CHLSLEffectTest::SetShader( int index )
 	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 
 	CHemisphericDirectionalLight light;
-	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 0.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
 
@@ -128,8 +129,9 @@ bool CHLSLEffectTest::InitShaders()
 	techs.resize( shaders.size() );
 
 	shaders[0] = "shaders/PerVertexHSLighting.fx";             techs[0] = "PerVertexHSLighting";
-	shaders[1] = "shaders/PerPixelHSLighting.fx";              techs[1] = "HSLs";
-	shaders[2] = "shaders/PerPixelHSLightingWithSpecular.fx";  techs[2] = "PPL_HSLs_WithSpecular";
+//	shaders[?] = "shaders/PerPixelHSLighting.fx";              techs[?] = "PVL_HSLs_Specular";
+	shaders[1] = "shaders/PerPixelHSLighting.fx";              techs[1] = "PPL_HSLs";
+	shaders[2] = "shaders/PerPixelHSLightingWithSpecular.fx";  techs[2] = "PPL_HSLs_Specular";
 
 	m_Shaders.resize( shaders.size() );
 	m_Techniques.resize( shaders.size() );
@@ -180,7 +182,7 @@ int CHLSLEffectTest::Init()
 */
 
 	m_vecMesh.push_back( CTestMeshHolder( "./models/fw43.msh",              CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/FlakySlate.msh",        CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1, 100), Matrix33Identity() ) ) );
+	m_vecMesh.push_back( CTestMeshHolder( "./models/primitive_meshes.msh",  CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
 //	m_vecMesh.push_back( CTestMeshHolder( "./models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
 
 	InitShaders();
@@ -196,7 +198,7 @@ void CHLSLEffectTest::Update( float dt )
 }
 
 
-void CHLSLEffectTest::RenderMeshes()
+void CHLSLEffectTest::RenderMesh()
 {
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
@@ -219,23 +221,23 @@ void CHLSLEffectTest::RenderMeshes()
 
 	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
 
+	if( m_CurrentMeshIndex < 0 || (int)m_vecMesh.size() <= m_CurrentMeshIndex )
+		return;
+
 	Result::Name res = pShaderManager->SetTechnique( m_Techniques[m_CurrentShaderIndex] );
-//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
-	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
+
+	CTestMeshHolder& holder = m_vecMesh[m_CurrentMeshIndex];
+
+	if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
 	{
-//		CBasicMesh *pMesh = mesh.GetMesh().get();
+		// set world transform
+		FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
+		pShaderManager->SetWorldTransform( holder.m_Pose );
 
-		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
-		{
-			// set world transform
-			FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
-			pShaderManager->SetWorldTransform( holder.m_Pose );
+		CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
 
-			CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
-
-			if( pMesh )
-				pMesh->Render( *pShaderManager );
-		}
+		if( pMesh )
+			pMesh->Render( *pShaderManager );
 	}
 
 	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
@@ -264,7 +266,7 @@ void CHLSLEffectTest::Render()
 {
 	PROFILE_FUNCTION();
 
-	RenderMeshes();
+	RenderMesh();
 
 	if( m_pSampleUI )
 		m_pSampleUI->Render();
@@ -290,7 +292,7 @@ void CHLSLEffectTest::HandleInput( const SInputData& input )
 
 	switch( input.iGICode )
 	{
-	case GIC_PAGE_DOWN:
+	case GIC_DOWN:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			if( m_Shaders.empty() )
@@ -299,15 +301,40 @@ void CHLSLEffectTest::HandleInput( const SInputData& input )
 			m_CurrentShaderIndex = (m_CurrentShaderIndex+1) % (int)m_Shaders.size();
 		}
 		break;
-	case GIC_PAGE_UP:
+	case GIC_UP:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			m_CurrentShaderIndex = (m_CurrentShaderIndex + (int)m_Shaders.size() - 1) / (int)m_Shaders.size(); 
 		}
 		break;
+
+	case GIC_PAGE_DOWN:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			if( m_vecMesh.empty() )
+				return;
+
+			m_CurrentMeshIndex = (m_CurrentMeshIndex+1) % (int)m_vecMesh.size();
+		}
+		break;
+
+	case GIC_PAGE_UP:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_CurrentMeshIndex = (m_CurrentMeshIndex + (int)m_vecMesh.size() - 1) / (int)m_vecMesh.size(); 
+		}
+		break;
+
 	case GIC_F1:
+		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			m_DisplayDebugInfo = !m_DisplayDebugInfo;
+		}
+		break;
+	case GIC_F5:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			GraphicsResourceManager().Refresh();
 		}
 		break;
 	case GIC_F12:

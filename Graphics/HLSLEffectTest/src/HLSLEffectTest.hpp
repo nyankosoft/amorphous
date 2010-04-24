@@ -2,12 +2,6 @@
 #define  __HLSLEffectTest_H__
 
 
-#include <vector>
-#include <string>
-#include <boost/foreach.hpp>
-#include <boost/shared_ptr.hpp>
-using namespace boost;
-
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
@@ -71,7 +65,7 @@ class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	CShaderTechniqueHandle m_MeshTechnique;
 
-	shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
+	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
 	boost::shared_ptr<CFontBase> m_pFont;
 
@@ -83,6 +77,8 @@ class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	bool m_DisplayDebugInfo;
 
+	int m_CurrentMeshIndex;
+
 private:
 
 	void CreateSampleUI();
@@ -93,7 +89,7 @@ private:
 
 	void CreateCachedResources();
 
-	void RenderMeshes();
+	void RenderMesh();
 
 	void RenderDebugInfo();
 
