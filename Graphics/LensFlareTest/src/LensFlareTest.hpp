@@ -2,10 +2,6 @@
 #define  __LensFlareTest_HPP__
 
 
-#include <vector>
-#include <string>
-#include <boost/shared_ptr.hpp>
-
 #include "3DMath/Vector3.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
@@ -17,22 +13,6 @@
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
-/*
-class CLensFlareTest;
-
-class CLensFlareTestInputHandler : public CInputHandler
-{
-	CLensFlareTest* m_pTest;
-
-public:
-
-	CLensFlareTestInputHandler( CLensFlareTest* pTest )
-		:
-	m_pTest(pTest) {}
-
-	virtual void ProcessInput(SInputData& input);
-};
-*/
 
 class CLensFlareTest : public CGraphicsTestBase
 {
@@ -42,7 +22,7 @@ class CLensFlareTest : public CGraphicsTestBase
 
 	CMeshObjectHandle m_TerrainMesh;
 
-//	std::vector<shared_ptr<CD3DXMeshObject>> m_vecpMeshObject;
+//	std::vector<CMeshObjectHandle> m_vecpMeshes;
 
 	CShaderTechniqueHandle m_MeshTechnique;
 
@@ -50,24 +30,17 @@ class CLensFlareTest : public CGraphicsTestBase
 
 	CShaderTechniqueHandle m_DefaultTechnique;
 
-//	shared_ptr<CShaderManager> m_pShaderManager;
 	CShaderHandle m_Shader;
 
 	CTextureHandle m_TestTexture;
 
 	CUnitSphere m_LightPosIndicator;
 
-//	CShaderLightManager m_ShaderLightManager;
-
-//	LPDIRECT3DTEXTURE9 m_pDefaultTexture = NULL;
-
-//	float m_FOV;// = D3DX_PI / 4.0f;
+//	float m_FOV;// = PI / 4.0f;
 
 	Vector3 m_vLightPosition;
 
-	CFontSharedPtr m_pFont;
-
-	CInputHandlerSharedPtr m_pInputHandler;
+	boost::shared_ptr<CFontBase> m_pFont;
 
 protected:
 
