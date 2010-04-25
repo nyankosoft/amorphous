@@ -79,8 +79,8 @@ public:
 	CLightmapOption()
 		:
 	fTexelSize(0.5f),
-	TextureWidth(256),
-	TextureHeight(256),
+	TextureWidth(512),
+	TextureHeight(512),
 	bCreateLightDirectionMap(false),
 	AO_SceneResolution(32)
 	{}
@@ -101,7 +101,7 @@ public:
 	/// controls whether lightmaps are created for a surface or not
 	std::vector<int> m_vecEnableLightmapForSurface;
 
-	std::vector<boost::shared_ptr<CLight>> *m_pvecpLight;
+	std::vector< boost::shared_ptr<CLight> > *m_pvecpLight;
 
 	/// texture coordinates index for lightmap texture
 	/// - valid range: [0,3]
