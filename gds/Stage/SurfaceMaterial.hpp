@@ -4,14 +4,10 @@
 
 #include <vector>
 #include <string>
-using namespace std;
-
-
 #include "Sound/SoundHandle.hpp"
 #include "BaseEntityHandle.hpp"
-#include "Support/FixedVector.hpp"
+//#include "Support/FixedVector.hpp"
 #include "Support/MTRand.hpp"
-
 #include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
@@ -84,11 +80,11 @@ private:
 
 	/// entities that are created when objects hit the material
 //	TCFixedVector<CBaseEntityHandle, CSM_NUM_MAX_REACTION_ENTITIES> m_vecReactionEntity[NUM_REACTION_TYPES]; ///< causes error. why?
-	vector<CBaseEntityHandle> m_vecReactionEntity[NUM_REACTION_TYPES];
+	std::vector<CBaseEntityHandle> m_vecReactionEntity[NUM_REACTION_TYPES];
 
 	/// sound that are played when objects hit the material
 	/// sounds are usually chosen randomly
-	vector<CSoundHandle> m_vecSound[NUM_REACTION_TYPES];
+	std::vector<CSoundHandle> m_vecSound[NUM_REACTION_TYPES];
 
 	bool m_bValid;
 

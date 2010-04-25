@@ -1,11 +1,10 @@
-
 #include "SurfaceMaterial.hpp"
-
 #include "Serialization_BaseEntityHandle.hpp"
 #include "Sound/Serialization_SoundHandle.hpp"
 #include "Support/TextFileScanner.hpp"
 #include "Support/Serialization/SerializationEx.hpp"
 
+using namespace std;
 
 
 //===========================================================================
