@@ -52,7 +52,7 @@ private:
 	boost::shared_ptr<CGraphicsResourceEntry> LoadMesh( const CMeshResourceDesc& desc );
 
 	/// called from handle
-	boost::shared_ptr<CGraphicsResourceEntry> LoadShaderManager( std::string filename );
+	boost::shared_ptr<CGraphicsResourceEntry> LoadShaderManager( const CShaderResourceDesc& desc );
 
 	bool ReleaseResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> ptr );
 

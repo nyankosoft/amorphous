@@ -402,10 +402,8 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadMesh( const CMe
 
 
 /// called from handle
-shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadShaderManager( std::string filename )
+shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadShaderManager( const CShaderResourceDesc& desc )
 {
-	CShaderResourceDesc desc;
-	desc.ResourcePath = filename;
 	return LoadGraphicsResource( desc );
 }
 
