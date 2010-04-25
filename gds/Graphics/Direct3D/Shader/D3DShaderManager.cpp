@@ -354,10 +354,8 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, float float_param
 
 void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector3& vec3_param )
 {
-	LOG_PRINT_ERROR( " - Not implemented." );
-//	ID3DXEffect::SetVector() only takes D3DXVECTOR4 types.
-//	D3DXVECTOR4 v = ???;
-//	m_pEffect->SetVector( parameter_name, &v );
+	const float values[3] = { vec3_param.x, vec3_param.y, vec3_param.z };
+	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, values, 3 );
 }
 
 
