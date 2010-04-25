@@ -3,7 +3,7 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
+#include "Graphics/Shader/ShaderGenerator.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/lfs.hpp"
 #include "Support/ImageArchive.hpp"
@@ -573,7 +573,7 @@ bool CShaderResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::s
 bool CShaderResource::Create()
 {
 	SafeDelete( m_pShaderManager );
-	m_pShaderManager = new CHLSLShaderManager;
+	m_pShaderManager = CreateShaderManager();
 
 	return true;
 }
@@ -620,12 +620,26 @@ bool CShaderResource::IsDiskResource() const
 
 bool CShaderResource::CreateFromDesc()
 {
-	if( m_ShaderDesc.ShaderType == CShaderType::NON_PROGRAMMABLE )
+	if( m_ShaderDesc.pShaderGenerator )
+	{
+		string shader_content;
+		m_ShaderDesc.pShaderGenerator->GetShader( shader_content );
+
+		// Need to convert to stream_buffer
+		stream_buffer buffer;
+
+		// Since stream_buffer is not a null terminated string buffer, but a generic char buffer,
+		// we need to add +1 to the source string size to copy its terminating null char.
+		buffer.write( (void *)shader_content.c_str(), shader_content.length() + 1 );
+
+		return CreateShaderFromTextBuffer( buffer );
+	}
+	else if( m_ShaderDesc.ShaderType == CShaderType::NON_PROGRAMMABLE )
 	{
 		SafeDelete( m_pShaderManager );
 
 		// create pseudo shader manager for fixed function pipleline.
-		m_pShaderManager = new CD3DFixedFunctionPipelineManager();
+		m_pShaderManager = CreateFixedFunctionPipelineManager();
 		return true;
 	}
 	else

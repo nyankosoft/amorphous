@@ -464,6 +464,13 @@ CShaderManager *CGLShaderResource::CreateShaderManager()
 	return NULL;
 }
 
+
+CShaderManager *CGLShaderResource::CreateFixedFunctionPipelineManager()
+{
+	return new CGLFixedFunctionPipelineManager;
+}
+
+
 /*
 bool CGLShaderResource::LoadFromFile( const std::string& filepath )
 {

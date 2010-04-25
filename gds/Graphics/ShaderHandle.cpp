@@ -18,7 +18,7 @@ bool CShaderHandle::Load( const CShaderResourceDesc& desc )
 	// TODO: support asynchronous loading
 	if( true /*desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS*/ )
 	{
-		m_pResourceEntry = GraphicsResourceManager().LoadShaderManager( desc.ResourcePath );
+		m_pResourceEntry = GraphicsResourceManager().LoadShaderManager( desc );
 	}
 	else
 	{

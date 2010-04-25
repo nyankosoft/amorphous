@@ -138,6 +138,10 @@ bool CShaderResourceDesc::IsValid() const
 		{
 			return true;
 		}
+		else if( pShaderGenerator )
+		{
+			return true;
+		}
 		else
 		{
 			return false;

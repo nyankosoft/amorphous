@@ -28,6 +28,8 @@ class CTextureFillingAlgorithm;
 class CMeshGenerator;
 class CBoxMeshGenerator;
 class CResourceLoadingStateHolder;
+class CShaderGenerator;
+class CGenericShaderDesc;
 
 class CLight;
 class CAmbientLight;

@@ -153,6 +153,8 @@ protected:
 
 	CShaderManager *CreateShaderManager();
 
+	CShaderManager *CreateFixedFunctionPipelineManager();
+
 public:
 
 	CD3DShaderResource( const CShaderResourceDesc *pDesc );

@@ -80,6 +80,7 @@ public:
 //	boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
 
 	friend CGLFixedFunctionPipelineManager& GLFixedFunctionPipelineManager();
+	friend class CGLShaderResource;
 };
 
 

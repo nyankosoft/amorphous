@@ -387,6 +387,8 @@ protected:
 
 	virtual CShaderManager *CreateShaderManager() { return NULL; }
 
+	virtual CShaderManager *CreateFixedFunctionPipelineManager() = 0;
+
 public:
 
 	CShaderResource( const CShaderResourceDesc *pDesc );

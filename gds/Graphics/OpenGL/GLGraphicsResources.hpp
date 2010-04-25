@@ -97,6 +97,8 @@ protected:
 
 	CShaderManager *CreateShaderManager();
 
+	CShaderManager *CreateFixedFunctionPipelineManager();
+
 public:
 
 	CGLShaderResource( const CShaderResourceDesc *pDesc );

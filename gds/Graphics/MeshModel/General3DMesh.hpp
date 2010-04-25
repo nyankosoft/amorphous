@@ -40,6 +40,35 @@ public:
 	/// inclusive filter (loose filter)
 	/// - take in any geometry not specified here
 	CTarget Exclude;
+
+	bool IncludeName(
+		const std::string& target_name,
+		const std::vector<std::string>& to_include,
+		const std::vector<std::string>& to_exclude
+		) const
+	{
+		using namespace std;
+
+		if( !to_include.empty()
+		 && find( to_include.begin(), to_include.end(), target_name ) == to_include.end() )
+		{
+			// include filter is present and the target name was not found in the list
+			return false;
+		}
+
+		if( !to_exclude.empty()
+		 && find( to_exclude.begin(), to_exclude.end(), target_name ) != to_exclude.end() )
+		{
+			// exclude filter is present and the target name was found in the list
+			return false;
+		}
+
+		return true;
+	}
+
+	bool IncludeLayer( const std::string& layer_name )                 const { return IncludeName( layer_name,         Include.Layers,        Exclude.Layers ); }
+	bool IncludeSurface( const std::string& surface_name )             const { return IncludeName( surface_name,       Include.Surfaces,      Exclude.Surfaces ); }
+	bool IncludePolygonGroups( const std::string& polygon_group_name ) const { return IncludeName( polygon_group_name, Include.PolygonGroups, Exclude.PolygonGroups ); }
 };
 
 
