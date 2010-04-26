@@ -459,6 +459,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Shader\GenericShaderDesc.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\GenericShaderGenerator.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp"
 					>
 				</File>
@@ -468,6 +476,10 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\Shader\Shader.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\ShaderGenerator.hpp"
 					>
 				</File>
 				<File
@@ -1211,6 +1223,26 @@
 						RelativePath="..\..\gds\Graphics\Direct3D\Shader\HLSLShaderLightManager.hpp"
 						>
 					</File>
+					<Filter
+						Name="Embedded"
+						>
+						<File
+							RelativePath="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.hpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.hpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Mesh"
