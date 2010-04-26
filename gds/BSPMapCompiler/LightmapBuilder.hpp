@@ -93,7 +93,16 @@ class CLightmapDesc
 {
 public:
 
-	bool m_Enabled;
+	enum State
+	{
+		LIGHTMAP_ENABLED,
+		LIGHTMAP_DISABLED,      ///< Do not create lightmaps whether or not light polygons are present in the source model.
+		LIGHTMAP_NOT_SPECIFIED, ///< Create lightmaps if light polygons are present in the source model.
+		NUM_STATES,
+	};
+
+//	bool m_Enabled;
+	State m_State;
 
 	/// target geometry
 	CGeneral3DMesh *m_pMesh;
@@ -131,7 +140,8 @@ public:
 
 	CLightmapDesc()
 		:
-	m_Enabled(false),
+//	m_Enabled(false),
+	m_State(LIGHTMAP_NOT_SPECIFIED),
 	m_LightmapTextureCoordsIndex( 1 ),
 	m_LightmapTextureArchiveIndex( 1 ),
 	m_BaseTextureKeyname("lightmap"),
