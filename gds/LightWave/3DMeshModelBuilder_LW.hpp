@@ -69,7 +69,7 @@ private:
 
 	void SetVertexWeights( std::vector<CGeneral3DVertex>& rDestVertexBuffer, CLWO2_Layer& rLayer );
 
-	void ProcessLayer( CLWO2_Layer& rLayer );
+	void ProcessLayer( CLWO2_Layer& rLayer, const CGeometryFilter& filter = CGeometryFilter() );
 
 	/// create mesh materials from the surfaces of the LightWave object
 	/// - surface texture:    stored in CMMA_Material.vecTexture[0]
@@ -111,6 +111,8 @@ public:
 	void BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer );
 
 	std::vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
+
+	bool LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const CGeometryFilter& geometry_filter );
 
 	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter );
 

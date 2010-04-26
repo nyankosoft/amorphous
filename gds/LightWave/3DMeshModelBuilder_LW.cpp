@@ -119,7 +119,7 @@ bool C3DMeshModelBuilder_LW::BuildMeshModel( SLayerSet& rLayerInfo )
 }
 
 
-void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
+void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryFilter& filter )
 {
 
 	// get the current size of the destination vertex buffer
@@ -188,6 +188,9 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer )
 		CLWO2_Face& rPolygon = rvecPolygon[i];
 
 		CLWO2_Surface& rSurf = m_pSrcObject->FindSurfaceFromTAG( rPolygon.GetSurfaceIndex() );
+
+		if( !filter.IncludeSurface( rSurf.GetName() ) )
+			continue;
 
 		// calc the the surface index counted in the surface array in 'pSrcObject'
 		// this may be different from the surface index used in TAGS chunk
@@ -704,25 +707,14 @@ bool has_string( const std::vector<std::string>& string_buffer, const std::strin
 
 
 /// loads 3d mesh model from geometry filter
-bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter )
+bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const CGeometryFilter& geometry_filter )
 {
 	LOG_FUNCTION_SCOPE();
 
-	if( !m_pSrcObject )
-	{
-		LOG_SCOPE( " - Loading LightWave object from file " );
+	if( !pObject )
+		return false;
 
-		// load the model
-		m_pSrcObject = shared_ptr<CLWO2_Object>( new CLWO2_Object() );
-
-		bool loaded = m_pSrcObject->LoadLWO2Object( model_filepath );
-
-		if( !loaded )
-		{
-			LOG_PRINT_ERROR( " - Failed to load a LightWave object file: " + model_filepath );
-			return false;
-		}
-	}
+	m_pSrcObject = pObject;
 
 	SetVertexFormatFlags( m_DefaultVertexFlags );
 
@@ -763,7 +755,7 @@ bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, co
 				continue; // in the 'exclude' list. skip this layer
 		}
 
-		ProcessLayer( *layer );
+		ProcessLayer( *layer, geometry_filter );
 	}
 
 	m_pMesh->UpdatePolygonBuffer();
@@ -774,6 +766,30 @@ bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, co
 	LoadSurfaceCommentOptions();
 
 	return true;
+}
+
+
+bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter )
+{
+	shared_ptr<CLWO2_Object> pObject;
+
+//	if( !m_pSrcObject )
+	{
+		LOG_SCOPE( " - Loading LightWave object from file " );
+
+		// load the model
+		pObject.reset( new CLWO2_Object() );
+
+		bool loaded = pObject->LoadLWO2Object( model_filepath );
+
+		if( !loaded )
+		{
+			LOG_PRINT_ERROR( " - Failed to load a LightWave object file: " + model_filepath );
+			return false;
+		}
+	}
+
+	return LoadFromLWO2Object( pObject, geometry_filter );
 }
 
 
