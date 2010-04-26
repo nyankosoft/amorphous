@@ -48,6 +48,8 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	Matrix34 m_MeshWorldPose;
 
+	bool m_Lighting;
+
 	const std::string GetApplicationTitle() { return "MeshViewer"; }
 
 protected:
@@ -59,6 +61,8 @@ protected:
 	void UpdateShaderParams();
 
 	bool LoadModel( const std::string& mesh_filepath );
+
+	void SetLights();
 
 public:
 

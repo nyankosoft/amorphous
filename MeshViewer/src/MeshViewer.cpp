@@ -3,11 +3,13 @@
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
+#include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Graphics/MeshGenerators.hpp"
 #include "gds/Graphics/Font/Font.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
 #include "gds/Graphics/Direct3D9.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
+#include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
@@ -32,7 +34,8 @@ m_LastRMouseClickY(0),
 m_fHeading(0),
 m_fPitch(0),
 m_MeshWorldPose( Matrix34Identity() ),
-m_fInitCamShift( 20.0f )
+m_fInitCamShift( 20.0f ),
+m_Lighting(false)
 {
 	m_UseCameraController = false;
 
@@ -64,6 +67,42 @@ void CMeshViewer::RefreshFileList( const std::string& directory_path )
 			m_vecMeshFilepath.push_back( itr->string() );
 		}
 	}
+}
+
+
+void CMeshViewer::SetLights()
+{
+	// change lighting render state
+	// - Needed when fixed function pipeline is used
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, m_Lighting );
+
+	shared_ptr<CShaderLightManager> pLightMgr
+		= FixedFunctionPipelineManager().GetShaderLightManager();
+
+	if( !pLightMgr )
+		return;
+
+	pLightMgr->ClearLights();
+
+	if( !m_Lighting )
+	{
+		pLightMgr->CommitChanges();
+		return;
+	}
+
+	CDirectionalLight dir_light;
+//	CHemisphericDirectionalLight dir_light;
+	dir_light.vDirection = Vec3GetNormalized( Vector3( 1,-3,2 ) );
+	dir_light.fIntensity = 1.0f;
+	dir_light.DiffuseColor = SFloatRGBColor::White();
+//	dir_light.Attribute.UpperDiffuseColor = SFloatRGBAColor::White();
+//	dir_light.Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.1f, 0.1f, 0.1f, 1.0f );
+
+
+	pLightMgr->SetDirectionalLight( dir_light );
+//	pLightMgr->SetHemisphericDirectionalLight( dir_light );
+
+	pLightMgr->CommitChanges();
 }
 
 
@@ -111,6 +150,8 @@ void CMeshViewer::RenderMeshes()
 //	size_t i, num_meshes = m_vecMesh.size();
 //	if( 0 < num_meshes )
 //		RenderAsSkybox( m_vecMesh[0], g_CameraController.GetPosition() );
+
+	SetLights();
 
 	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
 	if(	!pMesh )
@@ -366,22 +407,18 @@ void CMeshViewer::HandleInput( const SInputData& input )
 		}
 		break;
 
+	case 'L':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_Lighting = !m_Lighting;
+		break;
+
 	case 'M':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 		}
 		break;
 
-	case 'N':
-		break;
-
 	case 'V':
-		break;
-
-	case 'K':
-/*		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}*/
 		break;
 
 	case GIC_MOUSE_BUTTON_R:
