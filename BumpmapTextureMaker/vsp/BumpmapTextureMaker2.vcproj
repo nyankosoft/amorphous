@@ -16,7 +16,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../app"
-			IntermediateDirectory="..\..\..\.TemporaryFiles\BumpmapTextureMaker2\Release"
+			IntermediateDirectory=".vc/$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -111,7 +111,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\app\"
-			IntermediateDirectory="..\..\..\.TemporaryFiles\BumpmapTextureMaker2\Debug"
+			IntermediateDirectory=".vc/$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
