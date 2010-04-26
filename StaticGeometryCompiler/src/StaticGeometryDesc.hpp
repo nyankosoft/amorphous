@@ -162,6 +162,8 @@ public:
 
 	CMeshTreeOptions m_MeshTreeOptions;
 
+	static std::string ms_LightPolygonsSurfaceName;
+
 private:
 
 	bool LoadGraphicsDesc( DOMNode *pNode );

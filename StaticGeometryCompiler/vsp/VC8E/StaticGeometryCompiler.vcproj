@@ -162,6 +162,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\MeshOperations.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\MeshOperations.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\StaticGeometryCompiler.cpp"
 					>
 				</File>

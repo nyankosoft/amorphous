@@ -14,6 +14,8 @@
 #include "Physics/Preprocessor.hpp"
 #include "Physics/TriangleMeshDesc.hpp"
 
+#include "MeshOperations.hpp"
+
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
@@ -29,6 +31,16 @@ int get_str_index( const std::string& name, std::vector<CGeometrySurfaceDesc>& v
 
 	return 0;
 }
+
+
+class CLightPolygonSet
+{
+public:
+
+	CConnectedSet m_ConnectedSet;
+
+	AABB3 m_AABB;
+};
 
 
 // TODO: refactor MeshModel::AddTexturesToBinaryDatabase()
@@ -374,6 +386,22 @@ void CStaticGeometryCompiler::CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& sr
 }
 
 
+bool CreateGeneral3DMesh( boost::shared_ptr<CLWO2_Object> pSrcLWO2Object,
+						  const CGeometryFilter& geometry_filter,
+						  CGeneral3DMesh& dest_general_mesh )
+{
+	shared_ptr<C3DMeshModelBuilder_LW> pLoader( new C3DMeshModelBuilder_LW );
+	bool loaded = pLoader->LoadFromLWO2Object( pSrcLWO2Object, geometry_filter );
+
+	if( !loaded )
+		return false;
+
+	pLoader->GetGeneral3DMesh( dest_general_mesh );
+
+	return true;
+}
+
+
 /**
  Creates a general 3d mesh from model file.
  Returns true on success.
@@ -441,10 +469,57 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 }
 
 
+void LoadLightsFromLightPolygons( CGeneral3DMesh& light_polygon_mesh,
+								  std::vector< boost::shared_ptr<CLight> >& dest_lights )
+{
+	vector<CConnectedSet> connected_sets;
+	GetConnectedSets( light_polygon_mesh, connected_sets );
+
+	if( connected_sets.empty() )
+		return;
+
+	vector<CLightPolygonSet> polygons_sets;
+	polygons_sets.resize( connected_sets.size() );
+	for( size_t i=0; i<connected_sets.size(); i++ )
+	{
+		polygons_sets[i].m_ConnectedSet = connected_sets[i];
+	}
+
+	for( size_t i=0; i<connected_sets.size(); i++ )
+	{
+		Sphere sphere;
+		bool spherical = AreVerticesOnSphere( light_polygon_mesh, connected_sets[i].vecPoint, sphere );
+		if( spherical )
+		{
+		}
+	}
+}
+
+
 bool CStaticGeometryCompiler::CreateLightmaps()
 {
-	if( !m_Desc.m_Lightmap.m_Enabled )
+	if( !m_Desc.m_Lightmap.m_State == CLightmapDesc::LIGHTMAP_DISABLED )
 		return false;
+
+	shared_ptr<CGeneral3DMesh> pLightPolygonMesh( new CGeneral3DMesh );
+
+	// Target the surface with the name "light_polygons"
+	CGeometryFilter geom_filter;
+	geom_filter.Include.Surfaces.push_back( "light_polygons" );
+
+	CreateGeneral3DMesh( m_Desc.m_InputFilepath, geom_filter, *pLightPolygonMesh );
+
+	if( pLightPolygonMesh->GetVertexBuffer()->empty()
+	 && m_Desc.m_Lightmap.m_State == CLightmapDesc::LIGHTMAP_NOT_SPECIFIED )
+	{
+		return false;
+	}
+
+	// Try loading lights from mesh
+	LoadLightsFromLightPolygons( *pLightPolygonMesh, m_Desc.m_vecpLight );
+
+//	if( !m_Desc.m_Lightmap.m_Enabled )
+//		return false;
 
 	// create lightmaps
 	// [in] polygons
@@ -465,6 +540,12 @@ bool CStaticGeometryCompiler::CreateLightmaps()
 	m_Desc.m_Lightmap.m_OutputDatabaseFilepath = lfs::get_leaf( m_Desc.m_OutputFilepath );
 
 	return lightmap_builder.CreateLightmapTexture( m_Desc.m_Lightmap );
+}
+
+
+void CollectLightPolygons( CGeneral3DMesh& mesh )
+{
+	vector<CIndexedPolygon>& polygons = mesh.GetPolygonBuffer();
 }
 
 

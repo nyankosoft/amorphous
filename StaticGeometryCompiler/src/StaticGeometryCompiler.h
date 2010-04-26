@@ -56,7 +56,7 @@ class CStaticGeometryCompiler
 	/// subdivided graphics meshes
 	/// - Each mesh meets the limit of vertex and index count of decent graphics cards
 	/// - Created through 
-	std::vector<boost::shared_ptr<CGeneral3DMesh>> m_vecpDestGraphicsMesh;
+	std::vector< boost::shared_ptr<CGeneral3DMesh> > m_vecpDestGraphicsMesh;
 
 	std::vector<C3DMeshModelArchive> m_vecDestGraphicsMeshArchive;
 

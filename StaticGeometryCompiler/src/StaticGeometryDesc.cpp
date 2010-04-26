@@ -158,6 +158,13 @@ bool CGeometrySurfaceDesc::Load( DOMNode *pDescNode )
 }
 
 
+
+//=====================================================================
+// CStaticGeometryDesc
+//=====================================================================
+
+std::string CStaticGeometryDesc::ms_LightPolygonsSurfaceName = "light_polygons";
+
 bool CStaticGeometryDesc::LoadSurfaceToDescMaps( DOMNode *pSurfaceToDescMapsNode )
 {
 	if( !pSurfaceToDescMapsNode )
@@ -413,6 +420,9 @@ bool CStaticGeometryDesc::LoadGraphicsDesc( DOMNode *pNode )
 	// If geometry filter was not found, the static geometry compiler uses the default geometry filter,
 	// which takes all the geometry in the input file.
 	LoadGeometryFilter( pNode, m_GraphcisGeometryFilter );
+
+	// exclude surface for light polygons
+	m_GraphcisGeometryFilter.Exclude.Surfaces.push_back( ms_LightPolygonsSurfaceName );
 
 	LoadSurfaceDescs( GetChildNode( pNode, "Surface" ) );
 
