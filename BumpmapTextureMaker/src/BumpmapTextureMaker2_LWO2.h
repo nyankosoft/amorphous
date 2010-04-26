@@ -27,7 +27,7 @@ class CBumpmapTextureMaker2_LWO2
 
 	CShaderHandle m_Shader;
 
-	LPDIRECT3DTEXTURE9 m_pDefaultTexture;
+//	LPDIRECT3DTEXTURE9 m_pDefaultTexture;
 
 	CTextureHandle m_PreviewTexture;
 

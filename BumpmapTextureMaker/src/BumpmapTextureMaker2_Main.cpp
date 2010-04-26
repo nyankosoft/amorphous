@@ -2,17 +2,12 @@
 // File: BumpmapTextureMaker_Main.cpp
 // Desc: 
 //-----------------------------------------------------------------------------
-#include <windows.h>
-#include <mmsystem.h>
-#include <stdlib.h>
-#include <direct.h>
 
 #include "App/GameWindowManager.hpp"
 #include "Graphics/Direct3D9.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Support/Timer.hpp"
 #include "Support/FileOpenDialog_Win32.hpp"
-#include "Support/fnop.hpp" // deprecated
 #include "Support/lfs.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/MiscAux.hpp"
@@ -206,8 +201,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	memset( exe_filename, 0, sizeof(exe_filename) );
 	GetModuleFileName( NULL, exe_filename, 1023 );
 
-	fnop::dir_stack dirstack;
-	dirstack.setdir( fnop::get_path(exe_filename) );
+	lfs::dir_stack dirstack;
+	dirstack.push_cwd_and_chdir( lfs::get_parent_path(exe_filename) );
 
 	CLogOutput_HTML html_log( "BumpmpaTextureMaker2_" + string(GetBuildInfo()) + ".html" );
 	g_Log.AddLogOutput( &html_log );
@@ -221,7 +216,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		LOG_PRINT_ERROR( " - failed to load shader: " + shader_filename );
 
 	// pop the previous working directory
-	dirstack.prevdir();
+	dirstack.pop_and_chdir();
 
 	char acFilename[1024];
 	if( 0 < strlen(lpCmdLine) )

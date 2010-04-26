@@ -69,9 +69,9 @@ CBumpmapTextureMaker2_LWO2::CBumpmapTextureMaker2_LWO2()
 	this->SetViewWidth( 1.0f );
 
 	// create 1x1 white texture as a default texture
-	m_pDefaultTexture = NULL;
-	DWORD dwTexel = 0xFFFFFFFF;
-	CTextureTool::CreateTexture( &dwTexel, 1, 1, &m_pDefaultTexture );
+//	m_pDefaultTexture = NULL;
+//	DWORD dwTexel = 0xFFFFFFFF;
+//	CTextureTool::CreateTexture( &dwTexel, 1, 1, &m_pDefaultTexture );
 
 }
 
