@@ -1,7 +1,7 @@
 #include "D3DFixedFunctionPipelineManager.hpp"
 #include "D3DFixedFunctionPipelineLightManager.hpp"
 #include "HLSLShaderLightManager.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 

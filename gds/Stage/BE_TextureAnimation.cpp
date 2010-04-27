@@ -5,7 +5,7 @@
 #include "ScreenEffectManager.hpp"
 
 #include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 using namespace std;

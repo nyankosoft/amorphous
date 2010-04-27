@@ -1,7 +1,7 @@
 #include "D3DShaderManager.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/Direct3D/Shader/HLSLShaderLightManager.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 

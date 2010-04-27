@@ -7,7 +7,7 @@
 
 #include "DynamicLightManagerForStaticGeometry.hpp"
 
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/TextureTool.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"

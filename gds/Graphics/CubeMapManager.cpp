@@ -2,7 +2,7 @@
 
 #include "Support/memory_helpers.hpp"
 
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 

@@ -1,7 +1,7 @@
 #include "ScreenEffectManager.hpp"
 
 #include "3DMath/MathMisc.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
 //#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"

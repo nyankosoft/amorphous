@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-#include "../Graphics/Direct3D9.hpp"
+#include "../Graphics/GraphicsDevice.hpp"
 #include "../Stage/CopyEntity.hpp"
 
 #include "../Graphics/Shader/ShaderLightManager.hpp"
@@ -117,13 +117,13 @@ public:
 
 inline void CLightEntityManager::EnableLightForEntity()
 {
-	DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, TRUE );
+	GraphicsDevice().Enable( RenderStateType::LIGHTING );
 }
 
 
 inline void CLightEntityManager::DisableLightForEntity()
 {
-	DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 //	int i;
 //	for( i=0; i<m_iNumPrevLights; i++ )

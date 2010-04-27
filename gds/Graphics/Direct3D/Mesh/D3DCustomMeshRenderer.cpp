@@ -1,6 +1,6 @@
 #include "D3DCustomMeshRenderer.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 
 using namespace std;

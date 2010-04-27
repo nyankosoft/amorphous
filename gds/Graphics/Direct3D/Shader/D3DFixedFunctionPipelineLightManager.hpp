@@ -4,7 +4,7 @@
 
 #include <d3d9.h>
 #include "Graphics/Shader/ShaderLightManager.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 
 class CD3DFixedFunctionPipelineLightManager : public CShaderLightManager

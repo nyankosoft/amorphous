@@ -29,7 +29,7 @@
 #include "Graphics/Direct3D/Mesh/D3DXPMeshObject.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXSMeshObject.hpp"
 #include "Graphics/D3DXVec3Copy.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 

@@ -3,7 +3,7 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "3DMath/MatrixConversions.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/3DGameMath.hpp"

@@ -180,14 +180,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\Direct3D9.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\Direct3D9.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Graphics\DoubleConeScrollEffect.cpp"
 				>
 			</File>
@@ -1144,6 +1136,14 @@
 				>
 				<File
 					RelativePath="..\..\gds\Graphics\Direct3D\D3DSurfaceFormat.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\Direct3D9.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\Direct3D9.hpp"
 					>
 				</File>
 				<File

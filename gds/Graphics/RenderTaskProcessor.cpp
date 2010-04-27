@@ -3,7 +3,7 @@
 #include "RenderTask.hpp"
 #include "Support/SafeDeleteVector.hpp"
 
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 using namespace std;
 

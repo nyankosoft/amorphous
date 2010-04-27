@@ -5,7 +5,7 @@
 #include "../../2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/FVF_TLVertex.h"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 
 class C2DPrimitiveRenderer_D3D : public C2DPrimitiveRenderer

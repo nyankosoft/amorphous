@@ -2,7 +2,7 @@
 #define  __D3DMISC_H__
 
 
-#include "Direct3D9.hpp"
+#include "Direct3D/Direct3D9.hpp"
 
 
 inline void GetViewportSize( int& width, int& height )

@@ -1,5 +1,5 @@
 #include "GameWindowManager_Win32_D3D.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include <math.h>

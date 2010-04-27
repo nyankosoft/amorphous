@@ -1,12 +1,9 @@
 #ifndef  __3DRECT_H__
 #define  __3DRECT_H__
 
-#include <d3d9.h>
-#include <d3dx9.h>
 
 #include "FVF_NormalVertex.h"
-
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 
 class C3DRect

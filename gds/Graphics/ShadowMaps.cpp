@@ -1,6 +1,6 @@
 #include "ShadowMaps.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/CubeMapManager.hpp"

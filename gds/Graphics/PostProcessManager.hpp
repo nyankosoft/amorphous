@@ -6,7 +6,7 @@
 #include <vector>
 #include <d3dx9.h>
 #include "../base.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/PostProcessEffect.hpp"
 

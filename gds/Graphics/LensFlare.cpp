@@ -1,5 +1,5 @@
 #include "LensFlare.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/D3DMisc.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 

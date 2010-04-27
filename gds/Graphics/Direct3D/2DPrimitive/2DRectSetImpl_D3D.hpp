@@ -7,7 +7,7 @@
 #include "3DMath/Vector3.hpp"
 #include "Graphics/FVF_TLVertex.h"
 #include "Graphics/RectTriListIndex.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DPrimitive.hpp"
 #include "Graphics/2DPrimitive/2DRectSet.hpp"
 #include "Graphics/TextureHandle.hpp"

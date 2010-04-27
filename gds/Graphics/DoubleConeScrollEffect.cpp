@@ -1,7 +1,7 @@
 #include "Graphics/DoubleConeScrollEffect.hpp"
 #include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/MeshGenerators.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
