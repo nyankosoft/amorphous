@@ -53,6 +53,10 @@ void CLineList::Draw()
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
+	// turn off programmable shaders
+	pd3dDev->SetVertexShader( NULL );
+	pd3dDev->SetPixelShader( NULL );
+
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity( &matWorld );
 	pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
