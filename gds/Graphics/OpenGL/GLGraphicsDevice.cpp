@@ -1,10 +1,8 @@
 #include "GLGraphicsDevice.hpp"
-
-#include "../base.hpp"
-#include "Graphics/FogParams.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Macro.h"
-
+#include "gds/base.hpp"
+#include "gds/Graphics/FogParams.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/Macro.h"
 
 using namespace std;
 

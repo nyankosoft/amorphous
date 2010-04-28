@@ -252,14 +252,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\GLGraphicsDevice.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\GLGraphicsDevice.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Graphics\GraphicsComponentCollector.cpp"
 				>
 			</File>
@@ -952,6 +944,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\OpenGL\GLExtensions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLGraphicsDevice.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLGraphicsDevice.hpp"
 					>
 				</File>
 				<File

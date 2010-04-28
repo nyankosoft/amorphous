@@ -2,7 +2,7 @@
 #define __GLShader_HPP__
 
 
-#include <gds/Graphics/GLGraphicsDevice.hpp>
+#include <gds/Graphics/OpenGL/GLGraphicsDevice.hpp>
 #include <gds/Graphics/OpenGL/fwd.hpp>
 #include <gds/Graphics/OpenGL/GLExtensions.hpp>
 #include <gds/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp>

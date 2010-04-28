@@ -1,7 +1,7 @@
 #include "GLGraphicsResources.hpp"
 
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/GLGraphicsDevice.hpp"
+#include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "Graphics/OpenGL/glext.h" // GL_BGR
 #include "Graphics/OpenGL/Shader/GLShader.hpp"
 #include "Support/SafeDelete.hpp"

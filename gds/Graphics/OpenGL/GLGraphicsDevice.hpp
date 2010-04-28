@@ -2,7 +2,7 @@
 #define __GLGraphicsDevice_H__
 
 
-#include "GraphicsDevice.hpp"
+#include "gds/Graphics/GraphicsDevice.hpp"
 #include <gl/gl.h>			// Header File For The OpenGL32 Library
 #include <gl/glu.h>			// Header File For The GLu32 Library
 

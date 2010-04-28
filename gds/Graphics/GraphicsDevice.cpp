@@ -1,6 +1,6 @@
 #include "GraphicsDevice.hpp"
 #include "Direct3D/Direct3D9.hpp"
-#include "GLGraphicsDevice.hpp"
+#include "OpenGL/GLGraphicsDevice.hpp"
 
 
 CSingleton<CGraphicsDeviceHolder> CGraphicsDeviceHolder::m_obj;
