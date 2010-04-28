@@ -655,14 +655,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Graphics\D3DGraphicsResources.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Graphics\D3DGraphicsResources.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Graphics\GraphicsResourceCacheManager.cpp"
 					>
 				</File>
@@ -1134,6 +1126,14 @@
 			<Filter
 				Name="Direct3D"
 				>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\D3DGraphicsResources.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\D3DGraphicsResources.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\Direct3D\D3DSurfaceFormat.hpp"
 					>

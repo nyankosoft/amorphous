@@ -1,5 +1,5 @@
 #include "GraphicsResourceCacheManager.hpp"
-#include "D3DGraphicsResources.hpp"
+#include "Graphics/Direct3D/D3DGraphicsResources.hpp"
 #include "Graphics/OpenGL/GLGraphicsResources.hpp"
 
 using namespace std;
