@@ -7,9 +7,10 @@
 #include "gds/Graphics/MeshGenerators.hpp"
 #include "gds/Graphics/Font/Font.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
-#include "gds/Graphics/Direct3D9.hpp"
+#include "gds/Graphics/Direct3D/Direct3D9.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
 #include "gds/Graphics/HemisphericLight.hpp"
+#include "gds/Graphics/FogParams.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
@@ -144,13 +145,6 @@ void CMeshViewer::RenderMeshes()
 	}
 */
 
-//	if( FAILED(hr) )
-//		return;
-
-//	size_t i, num_meshes = m_vecMesh.size();
-//	if( 0 < num_meshes )
-//		RenderAsSkybox( m_vecMesh[0], g_CameraController.GetPosition() );
-
 	SetLights();
 
 	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
@@ -174,23 +168,6 @@ void CMeshViewer::RenderMeshes()
 	// reset the world transform matrix
 //	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 	FixedFunctionPipelineManager().SetWorldTransform( world );
-
-	DWORD fog_colors[] =
-	{
-		0xFFFFFFFF, // place holder
-		0xFFDDDFDE, // terrain mesh
-		0xFF101010  // underground
-	};
-/*
-	for( i=1; i<num_meshes; i++ )
-	{
-		shared_ptr<CBasicMesh> pMesh = m_vecMesh[i].GetMesh();
-
-		hr = pd3dDevice->SetRenderState( D3DRS_FOGCOLOR, fog_colors[i] );
-
-		if( pMesh )
-			pMesh->Render( ffp_mgr );
-	}*/
 
 	if( pMesh )
 		pMesh->Render();
@@ -230,9 +207,7 @@ void CMeshViewer::Update( float dt )
 //-----------------------------------------------------------------------------
 void CMeshViewer::Render()
 {
-//	DIRECT3D9.GetDevice()->BeginScene();
 	UpdateShaderParams();
-//	DIRECT3D9.GetDevice()->EndScene();
 
 	RenderMeshes();
 
@@ -241,8 +216,7 @@ void CMeshViewer::Render()
 //	m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
 }
 
-// mesh 0: skybox
-// mesh 1 to n: meshes
+
 bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 {
 	LOG_PRINT( " Opening a mesh file: " + mesh_filepath );
@@ -267,23 +241,24 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 
 void SetDefaultLinearFog()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	float fStart   = 0.50f;    // For linear mode
+	float fStart   = 0.50f; // For linear mode
 	float fEnd     = 480.0f;//0.95f;
-	float fDensity = 0.66f;   // For exponential modes
+	float fDensity = 0.66f; // For exponential modes
 
-	DWORD fog_color = 0xFFDDDFDE;
+	SFloatRGBAColor fog_color( 0.863f, 0.871f, 0.805f, 1.000f );
 
-	HRESULT hr;
-	hr = pd3dDev->SetRenderState( D3DRS_FOGENABLE, TRUE );
-	hr = pd3dDev->SetRenderState( D3DRS_FOGTABLEMODE, D3DFOG_LINEAR );
-	hr = pd3dDev->SetRenderState( D3DRS_FOGCOLOR, fog_color);
-	hr = pd3dDev->SetRenderState( D3DRS_FOGSTART, *(DWORD *)(&fStart));
-	hr = pd3dDev->SetRenderState( D3DRS_FOGEND,   *(DWORD *)(&fEnd));
+	CFogParams params;
+	params.Start = fStart;
+	params.End   = fEnd;
+	params.Mode  = FogMode::LINEAR;
+	params.Color = fog_color;
 
-//	hr = pd3dDev->SetRenderState( D3DRS_FOGTABLEMODE, D3DFOG_EXP);
-//	hr = pd3dDev->SetRenderState(D3DRS_FOGDENSITY, *(DWORD *)(&fDensity));
+//	params.Density = fDensity;
+//	params.Mode = FogMode::EXP;
+
+	GraphicsDevice().SetFogParams( params );
+
+	GraphicsDevice().Enable( RenderStateType::FOG );
 }
 
 
@@ -321,10 +296,7 @@ int CMeshViewer::Init()
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
 	// set the world matrix to the identity
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-	pShaderManager->SetWorldTransform( matWorld );
+	pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 	// set the projection matrix
     D3DXMATRIX matProj;
@@ -345,12 +317,7 @@ int CMeshViewer::Init()
 	light.vDirection = vDir;
 	m_ShaderLightManager.SetLight( 0, light );
 */
-/*
-	D3DSURFACE_DESC back_buffer_desc;
-	IDirect3DSurface9 *pBackBuffer;
-	DIRECT3D9.GetDevice()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
-	pBackBuffer->GetDesc( &back_buffer_desc );
-*/
+
 	SetDefaultLinearFog();
 
 	m_pFont = shared_ptr<CFont>( new CFont( "Arial", 16, 32 ) );
