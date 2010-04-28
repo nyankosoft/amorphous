@@ -136,9 +136,6 @@ void UpdateLocalRotationIndicators( const CSkeleton& skeleton, const CKeyframe& 
 
 void DisplayLocalRotationIndicators()
 {
-	DIRECT3D9.GetDevice()->SetVertexShader( NULL );
-	DIRECT3D9.GetDevice()->SetPixelShader( NULL );
-
 	sg_RotationIndicator.Draw();
 }
 
