@@ -48,7 +48,7 @@ public:
 	Density(1.0f)
 	{}
 
-	virtual ~CFogParams();
+	virtual ~CFogParams() {}
 
 };
 
