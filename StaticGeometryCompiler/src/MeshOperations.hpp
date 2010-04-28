@@ -5,6 +5,7 @@
 
 #include <vector>
 #include "gds/Graphics/fwd.hpp"
+#include "gds/3DMath/Sphere.hpp"
 
 
 class CConnectedSet
