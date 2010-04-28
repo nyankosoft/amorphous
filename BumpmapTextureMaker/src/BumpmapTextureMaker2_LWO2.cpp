@@ -1,6 +1,5 @@
 #include "BumpmapTextureMaker2_LWO2.h"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/Direct3D/TextureTool.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
@@ -327,53 +326,6 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 	pEffect->Begin( &cPasses, 0 );
 
 	pMesh->Render( *pShaderManager );
-
-
-/*
-//	LPD3DXPMESH pPMesh = pMeshObject->GetPMesh();
-	LPD3DXBASEMESH pMesh = pMeshObject->GetBaseMesh();
-	if( !pMesh )
-		return;
-
-//	pd3dDevice->SetVertexDeclaration( pMeshObject->GetVertexDeclaration() );
-
-	LPDIRECT3DTEXTURE9 pTex;
-
-
-
-
-
-	// Meshes are divided into subsets by materials. Render each subset in a loop
-	DWORD dwNumMaterials = pMeshObject->GetNumMaterials();
-	for( DWORD i=0; i<dwNumMaterials; i++ )
-	{
-		// Set the material and texture for this subset
-//		pd3dDevice->SetMaterial( &pMeshObject->GetMaterial(i) );
-
-		pTex = pMeshObject->GetTexture(i);
-		if( pTex )
-            pShaderManager->SetTexture( 0, pTex );
-		else
-            pShaderManager->SetTexture( 0, m_pDefaultTexture );
-
-		LPDIRECT3DTEXTURE9 pNMTex = NULL;
-		if( pNMTex = pMeshObject->GetNormalMapTexture(i) )
-			pShaderManager->SetTexture( 1, pNMTex );
-
-		pEffect->CommitChanges();
-		for( UINT p = 0; p < cPasses; ++p )
-		{
-			pEffect->BeginPass( p );
-
-			// Draw the mesh subset
-			pMesh->DrawSubset( i );
-
-			pEffect->EndPass();
-		}
-	}
-
-	pEffect->End();
-*/
 }
 
 
