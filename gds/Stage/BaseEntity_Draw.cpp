@@ -4,6 +4,7 @@
 #include "Stage.hpp"
 #include "EntityRenderManager.hpp"
 #include "ScreenEffectManager.hpp"
+#include "LightEntity.hpp"
 
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"

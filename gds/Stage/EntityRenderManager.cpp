@@ -1,5 +1,6 @@
 #include "EntityRenderManager.hpp"
 #include "EntitySet.hpp"
+#include "LightEntity.hpp"
 #include "trace.hpp"
 #include "ViewFrustumTest.hpp"
 

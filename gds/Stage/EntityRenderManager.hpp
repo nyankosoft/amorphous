@@ -7,7 +7,6 @@
 #include "fwd.hpp"
 #include "CopyEntity.hpp"
 #include "EntityNode.hpp"
-#include "LightEntityManager.hpp"
 #include "ScreenEffectManager.hpp"
 
 #include "Graphics/GraphicsComponentCollector.hpp"
@@ -230,7 +229,7 @@ public:
 	void DisableShadowMap();
 
 	/// Specify the light for which shadow is rendered
-	void SetLightForShadow( const string& light_entity_name );
+	void SetLightForShadow( const std::string& light_entity_name );
 
 	void SetOverrideShadowMapLight( bool override ) { m_bOverrideShadowMapLight = override; } 
 	void SetOverrideShadowMapLightPosition( const Vector3& pos ) { m_vOverrideShadowMapPosition = pos; }
