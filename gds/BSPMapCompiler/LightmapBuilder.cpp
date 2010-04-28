@@ -14,11 +14,23 @@ using namespace std;
 
 bool CLightmapDesc::Load( xercesc::DOMNode *pNode )
 {
-	if( pNode )
-		m_Enabled = true;
+	if( !pNode )
+	{
+		m_State = LIGHTMAP_NOT_SPECIFIED;
+		return false;
+	}
+
+	string enabled = GetAttributeText( pNode, "enabled" );
+	if( enabled == "true" )
+		m_State = LIGHTMAP_ENABLED;
+	else if( enabled == "false" )
+	{
+		m_State = LIGHTMAP_DISABLED;
+		return false;
+	}
 	else
 	{
-		m_Enabled = false;
+		m_State = LIGHTMAP_NOT_SPECIFIED;
 		return false;
 	}
 
