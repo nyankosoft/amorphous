@@ -124,7 +124,7 @@ inline T LoadParamFromFile( const std::string& filepath, const char *param_name 
 /// If you use this function, you need to include "Support/lfs.hpp".
 #define UPDATE_PARAM( filepath, param_name, variable ) \
 {\
-	static time_t s_LastModifiedTime = lfs::get_last_modified_time( filepath );\
+	static time_t s_LastModifiedTime = 0;\
 	time_t last_modified_time = lfs::get_last_modified_time( filepath );\
 	if( s_LastModifiedTime < last_modified_time )\
 	{\
