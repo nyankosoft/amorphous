@@ -185,7 +185,7 @@ bool CCompositeMeshExporter_LW::Compile( const char *pcFilename )
 		= shared_ptr<C3DMeshModelBuilder_LW>( new C3DMeshModelBuilder_LW(m_pOrigModel) );//lwo2_model_loader( m_pOrigModel );
 
 	C3DMeshModelBuilder mesh_builder;
-	mesh_builder.BuildMeshModel( pLWO2Loder );
+	mesh_builder.BuildMeshModel( pLWO2Loder, C3DMeshModelBuilder::BOF_OUTPUT_AS_TEXTFILE );
 
 
 	// load skeleton if there is any skelegon layer

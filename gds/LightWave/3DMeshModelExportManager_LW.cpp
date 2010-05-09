@@ -188,7 +188,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 
 		m_vecpModelBuilder.push_back( new C3DMeshModelBuilder() );
 
-		m_vecpModelBuilder.back()->BuildMeshModel(pModelLoader);
+		m_vecpModelBuilder.back()->BuildMeshModel( pModelLoader, C3DMeshModelBuilder::BOF_OUTPUT_AS_TEXTFILE );
 	}
 
 	return true;
