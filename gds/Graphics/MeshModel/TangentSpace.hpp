@@ -1,11 +1,8 @@
-
 #ifndef  __TANGENTSPACE_H__
 #define  __TANGENTSPACE_H__
 
 #include "3DMeshModelBuilder.hpp"
-
 #include <vector>
-using namespace std;
 
 
 class CTangentSpaceInfo
@@ -19,15 +16,15 @@ class CTangentSpaceInfo
 
 class CTangentSpace
 {
-	vector<CGeneral3DVertex>* m_pvecVertexBuffer;
+	std::vector<CGeneral3DVertex>* m_pvecVertexBuffer;
 
-	vector< vector<CTangentSpaceInfo> > m_vecLocalSpace;
+	std::vector< std::vector<CTangentSpaceInfo> > m_vecLocalSpace;
 
 public:
-	CTangentSpace( vector<CGeneral3DVertex>& rvecVertexBuffer ) { m_pvecVertexBuffer = &rvecVertexBuffer; }
+	CTangentSpace( std::vector<CGeneral3DVertex>& rvecVertexBuffer ) { m_pvecVertexBuffer = &rvecVertexBuffer; }
 	~CTangentSpace();
 
-	void Calculate( vector<CIndexedPolygon>& rvecPolygon );
+	void Calculate( std::vector<CIndexedPolygon>& rvecPolygon );
 	void Update();
 
 };
@@ -51,7 +48,7 @@ CTangentSpace::~CTangentSpace()
 }
 
 
-void CTangentSpace::Calculate( vector<CIndexedPolygon>& rvecPolygon, vector<CGeneral3DVertex>& rvecVertexBuffer )
+void CTangentSpace::Calculate( std::vector<CIndexedPolygon>& rvecPolygon, std::vector<CGeneral3DVertex>& rvecVertexBuffer )
 {
 
 	// normalize each light direction vector
@@ -62,14 +59,14 @@ void CTangentSpace::Calculate( vector<CIndexedPolygon>& rvecPolygon, vector<CGen
 	Vector3 vPos01, vPos02, vPos;
 	int i, j, iNumVertices = m_pvecVertexBuffer->size();
 	int iNumPolygons = rvecPolygon.size();
-	vector<CGeneral3DVertex>& rvecVertex = *m_pvecVertexBuffer;
+	std::vector<CGeneral3DVertex>& rvecVertex = *m_pvecVertexBuffer;
 
 	TEXCOORD2 tex01, tex02, tex;
 
 	for( i=0; i<iNumPolygons; i++ )
 	{
 		CIndexedPolygon& rPolygon = rvecPolygon[i];
-		vector<int>& index = rPolygon.m_Index;
+		std::vector<int>& index = rPolygon.m_Index;
 
 		// compute axis[0] (axis along 'u' direction)
 		for(j=1; j<GetNumVertices()-1; j++)
