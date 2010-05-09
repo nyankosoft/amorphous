@@ -41,6 +41,13 @@ void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 		}
 	}
 
+	// The diffuse color element must be defined before texture coords elements
+	if( vertex_format_flags & VFF::DIFFUSE_COLOR )
+	{
+		m_ElementOffsets[VEE::DIFFUSE_COLOR] = vert_size;
+		vert_size += 4;
+	}
+
 	U32 texcoord2_element_flags[] =
 	{
 		VFF::TEXCOORD2_0,
@@ -56,12 +63,6 @@ void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 			m_ElementOffsets[VEE::TEXCOORD2_0 + i] = vert_size;
 			vert_size += sizeof(TEXCOORD2);
 		}
-	}
-
-	if( vertex_format_flags & VFF::DIFFUSE_COLOR )
-	{
-		m_ElementOffsets[VEE::DIFFUSE_COLOR] = vert_size;
-		vert_size += 4;
 	}
 
 	m_VertexBuffer.resize( vert_size * num_vertices );

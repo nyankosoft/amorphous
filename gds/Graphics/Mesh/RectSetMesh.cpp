@@ -5,12 +5,28 @@
 using namespace std;
 
 
+CRectSetMesh::CRectSetMesh()
+:
+m_NumRects(0)
+{}
+
+
 Result::Name CRectSetMesh::Init( uint num_rects, U32 vertex_format_flags )
 {
+	m_NumRects = num_rects;
+
 	InitVertexBuffer( num_rects * 4, vertex_format_flags );
 
 	CRectTriListIndexBuffer::SetNumMaxRects( num_rects );
-	SetIndices( CRectTriListIndexBuffer::GetIndexBuffer() );
+
+	vector<U16> indices;
+	const vector<U16>& src_indices = CRectTriListIndexBuffer::GetIndexBuffer();
+	indices.assign( src_indices.begin(), src_indices.begin() + 6 ); //6 indices => 2 rects
+
+	SetIndices( indices );
+
+	m_vecMaterial.resize( 1 );
+	m_NumMaterials = 1;
 
 	return Result::SUCCESS;
 }
@@ -130,7 +146,7 @@ void CRectSetMesh::SetRectNormal( int rect_index, const Vector3& vNormal )
 
 void CRectSetMesh::SetTextureCoordMinMax( int rect_index, float u_min, float v_min, float u_max, float v_max )
 {
-	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
+	SetTextureCoordMinMax( rect_index, TEXCOORD2(u_min,v_min), TEXCOORD2(u_max,v_max) );
 }
 
 
@@ -144,10 +160,11 @@ void CRectSetMesh::SetTextureCoordMinMax( int rect_index, const TEXCOORD2& vMin,
 	TEXCOORD2 vBottomLeft( TEXCOORD2(vMin.u,vMax.v) );
 
 	uchar *pOffset = &(m_VertexBuffer[0]) + m_VertexSize * (rect_index*4) + element_offset;
-	memcpy( pOffset + vertex_size * 0, &vMin,         sizeof(TEXCOORD2) );
-	memcpy( pOffset + vertex_size * 1, &vTopRight,    sizeof(TEXCOORD2) );
-	memcpy( pOffset + vertex_size * 2, &vMax,         sizeof(TEXCOORD2) );
-	memcpy( pOffset + vertex_size * 3, &vBottomLeft,  sizeof(TEXCOORD2) );
+//	TEXCOORD2 test( 0.5f, 0.5f );
+	memcpy( pOffset + vertex_size * 0, &vMin,        /*&test,*/ sizeof(TEXCOORD2) );
+	memcpy( pOffset + vertex_size * 1, &vTopRight,   /*&test,*/ sizeof(TEXCOORD2) );
+	memcpy( pOffset + vertex_size * 2, &vMax,        /*&test,*/ sizeof(TEXCOORD2) );
+	memcpy( pOffset + vertex_size * 3, &vBottomLeft, /*&test,*/ sizeof(TEXCOORD2) );
 }
 
 
@@ -161,11 +178,63 @@ void CRectSetMesh::SetRectVertexTextureCoord( int rect_index, int vert_index, fl
 
 TEXCOORD2 CRectSetMesh::GetTopLeftTextureCoord( int rect_index )
 {
+	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 	return TEXCOORD2(0,0);
 }
 
 
 TEXCOORD2 CRectSetMesh::GetBottomRightTextureCoord( int rect_index )
 {
+	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 	return TEXCOORD2(0,0);
+}
+
+
+void CRectSetMesh::SetColor( const SFloatRGBAColor& color )
+{
+	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
+}
+
+
+void CRectSetMesh::SetRectColor( int rect_index, const SFloatRGBAColor& color )
+{
+	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
+}
+
+
+void CRectSetMesh::SetRectVertexColor( int rect_index, int vert_index, const SFloatRGBAColor& color )
+{
+	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
+}
+
+
+void CRectSetMesh::SetColorARGB32( U32 color )
+{
+	int element = VEE::DIFFUSE_COLOR;
+	const uint vertex_size = m_VertexSize;
+	const int element_offset = m_ElementOffsets[element];
+	uchar *pFirstElementOffset = &(m_VertexBuffer[0]) + element_offset;
+//	switch( m_DiffuseColorFormat )
+//	{
+//	case CF_ARGB32:
+		for( uint i=0; i<m_NumRects; i++ )
+		{
+			uint rect_index = i;
+			uchar *pOffset = pFirstElementOffset + m_VertexSize * (rect_index*4);
+//			const U32 test = 0xFFFFFF00;
+			memcpy( pOffset + vertex_size * 0, &color,/*&test,*/ sizeof(U32) );
+			memcpy( pOffset + vertex_size * 1, &color,/*&test,*/ sizeof(U32) );
+			memcpy( pOffset + vertex_size * 2, &color,/*&test,*/ sizeof(U32) );
+			memcpy( pOffset + vertex_size * 3, &color,/*&test,*/ sizeof(U32) );
+		}
+//		break;
+//	default:
+//		break;
+//	}
+}
+
+
+void CRectSetMesh::SetRectColorARGB32( int rect_index, U32 color )
+{
+	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }

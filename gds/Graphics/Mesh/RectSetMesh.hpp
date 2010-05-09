@@ -12,11 +12,13 @@ class CRectSetMesh : public CCustomMesh
 {
 protected:
 
+	uint m_NumRects;
+
 //	void CreateVertexElemenets( CMMA_VertexSet& rVertexSet );
 
 public:
 
-	CRectSetMesh() {}
+	CRectSetMesh();
 
 	~CRectSetMesh() {}
 
@@ -69,11 +71,15 @@ public:
 
 	/// color
 
-	void SetColor( U32 color );
+	void SetColor( const SFloatRGBAColor& color );
 
-	void SetRectColor( int rect_index, U32 color );
+	void SetRectColor( int rect_index, const SFloatRGBAColor& color );
 
 	void SetRectVertexColor( int rect_index, int vert_index, const SFloatRGBAColor& color );
+
+	void SetColorARGB32( U32 argb32_color );
+
+	void SetRectColorARGB32( int rect_index, U32 argb32_color );
 
 
 	/// FVF vertex
