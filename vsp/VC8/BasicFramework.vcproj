@@ -316,6 +316,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\NoiseTextureGenerators.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\NoiseTextureGenerators.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\PostProcessEffect.cpp"
 				>
 			</File>
