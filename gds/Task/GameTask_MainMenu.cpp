@@ -1,9 +1,9 @@
 #include "GameTask_MainMenu.hpp"
-#include "GameTask_Stage.hpp"
 #include "App/GameApplicationBase.hpp"
 #include "App/GameWindowManager.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/GraphicsElementManager.hpp"
 #include "GUI.hpp"
 #include "GUI/GM_StdControlRendererManager.hpp"
@@ -46,7 +46,6 @@ CGameTask::eGameTask CGameTask_MainMenu::ms_NextTaskID;
 CGameTask_MainMenu::CGameTask_MainMenu()
 {
 //	m_pFlowCaptionRenderRoutine = NULL;
-	m_pFont = NULL;
 
 	CGameTask_MainMenu::SetNextTaskID( CGameTask::ID_INVALID );
 
@@ -69,7 +68,6 @@ CGameTask_MainMenu::~CGameTask_MainMenu()
 
 	SafeDelete( m_pInputHandler );
 //	SafeDelete( m_pFlowCaptionRenderRoutine );
-	SafeDelete( m_pFont );
 }
 
 
@@ -418,13 +416,13 @@ CGM_Dialog *CGameTask_MainMenu::CreatePhysicsDebugSubDialog()
 	phys_title[1] = " contact normal";	phys_id[1] = ID_UI_PHYSSIM_CONTACT_NORMALS;
 	phys_title[2] = " aabb";			phys_id[2] = ID_UI_PHYSSIM_AABB;
 
-	if( g_pStage )
+/*	if( g_pStage )
 	{
 //		CJL_PhysicsVisualizer_D3D *pVisualizer = g_pStage->GetPhysicsVisualizer();
 //		phys_checked[0] = pVisualizer->GetRenderStateFlag() & JL_VIS_CONTACT_POINTS ? true : false;
 //		phys_checked[1] = pVisualizer->GetRenderStateFlag() & JL_VIS_CONTACT_NORMALS ?  true : false;
 //		phys_checked[2] = pVisualizer->GetRenderStateFlag() & JL_VIS_AABB ? true : false;
-	}
+	}*/
 
 	for( int i=0; i<3; i++ )
 	{
@@ -472,7 +470,7 @@ int CGameTask_MainMenu::FrameMove( float dt )
 void CGameTask_MainMenu::RenderQuickGuide()
 {
 	string strText[20];
-	D3DXVECTOR2 vPos = D3DXVECTOR2(120, 50);
+	Vector2 vPos = Vector2(120, 50);
 
 	strText[0] = "FPS Demo ver 0.xx";
 	strText[1] = "---------------------";
@@ -504,11 +502,6 @@ void CGameTask_MainMenu::Render()
 
 	// draw cursor
 	DrawMouseCursor();
-//	int x,y;
-//	GetCurrentMousePosition( x, y );
-//	C2DRect rect( x-2, y-2, x+5, y+5 );
-//	rect.SetColor( 0xFFFF1010 );
-//	rect.Draw();
 
 //	MsgBox( "main menu UI has been rendered" );
 }
@@ -516,17 +509,19 @@ void CGameTask_MainMenu::Render()
 
 void CGameTask_MainMenu::InitFontForBackgroundText()
 {
-	SafeDelete( m_pFont );
-	m_pFont = new CFont;
+	boost::shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	int w = 16 * GameWindowManager().GetScreenWidth() / 800;
 	int h = w * 2;
-	m_pFont->InitFont( "Arial", w, h );
+	pTexFont->SetFontSize( w, h );
+	
+	m_pFont = pTexFont;
 }
 
 
 void CGameTask_MainMenu::ReleaseGraphicsResources()
 {
-	m_pFont->Release();
+//	m_pFont->Release();
 }
 
 
@@ -534,7 +529,7 @@ void CGameTask_MainMenu::LoadGraphicsResources( const CGraphicsParameters& rPara
 {
 	InitMenu();
 
-	m_pFont->Reload();
+//	m_pFont->Reload();
 
 	// Since the screen size change is done from this main menu,
 	// and the dialog manager has been destroyed and re-created

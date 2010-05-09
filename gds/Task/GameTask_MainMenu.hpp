@@ -72,7 +72,7 @@ private:
 
 //	CGM_FlowTextCaption* m_pFlowCaptionRenderRoutine;
 
-	CFont *m_pFont;
+	boost::shared_ptr<CFontBase> m_pFont;
 
 	static CGameTask::eGameTask ms_NextTaskID;
 
