@@ -2,7 +2,7 @@
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/TrueTypeTextureFont.hpp"
-#include "Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/2DPrimitive/2DPolygon.hpp"
 #include "GraphicsElementManager.hpp"
 #include "Support/Macro.h"
@@ -588,15 +588,19 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 	case CFontBase::FONTTYPE_TEXTURE:
 		if( font_name.find( "BuiltinFont::" ) == 0 )
 		{
-			if( font_name == "BuiltinFont::BitstreamVeraSansMono_Bold_256" )
+			const string builtin_font_name = font_name.substr( strlen("BuiltinFont::") );
+			pTexFont = new CTextureFont;
+			bool initialized = pTexFont->InitFont( GetBuiltinFontData( builtin_font_name ) );
+
+			if( initialized )
 			{
-				pTexFont = new CTextureFont();
-				pTexFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
+				pTexFont->SetFontSize( w_scaled, h_scaled );
 			}
 			else
+			{
+				SafeDelete( pTexFont );
 				return false;
-
-			pTexFont->SetFontSize( w_scaled, h_scaled );
+			}
 		}
 		else
 		{
