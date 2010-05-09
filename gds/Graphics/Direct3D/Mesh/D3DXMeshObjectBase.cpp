@@ -1,13 +1,6 @@
 #include "D3DXMeshObjectBase.hpp"
 
 #include <gds/base.hpp>
-#include "Graphics/FVF_BumpVertex.h"
-#include "Graphics/FVF_BumpWeightVertex.h"
-#include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/FVF_NormalVertex.h"
-#include "Graphics/FVF_WeightVertex.h"
-#include "Graphics/FVF_ShadowVertex.h"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
@@ -714,6 +707,8 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 										 const int *paMaterialIndex,
 										 CShaderTechniqueHandle *paShaderTechnique,
 										 int num_indices )
+										 // Also need CMeshMaterial *pMaterials = NULL?
+										 // rationale: render the same model with different materials
 {
 //	bool single_shader_technique = ( vecShaderTechnique.size() == 0 ) ? true : false;
 	bool single_shader_technique = ( paShaderTechnique == NULL ) ? true : false;
@@ -782,6 +777,9 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 // Name: Render()
 // Desc: Draws the object
 //-----------------------------------------------------------------------------
+// Should change this to 
+//void CD3DXMeshObjectBase::RenderSubsets( int *pSubsetIndices, int num_indices )?
+// rationale: support subset rendering in fixed function pipeline mode.
 void CD3DXMeshObjectBase::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
@@ -805,7 +803,7 @@ void CD3DXMeshObjectBase::Render()
 
 	// alpha-blending settings 
 	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
+	pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_ONE );
 	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
     // Meshes are divided into subsets by materials. Render each subset in a loop

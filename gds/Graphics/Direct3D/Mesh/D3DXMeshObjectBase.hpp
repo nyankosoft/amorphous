@@ -5,6 +5,7 @@
 #include "3DMath/Sphere.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 
 extern void LoadVerticesForD3DXMesh( const CMMA_VertexSet& rVertexSet,                // [in]
@@ -239,7 +240,10 @@ m_pVertexDecleration(NULL)
 /// \param vecMaterialIndex indices of materials(subsets) to render 
 inline void CD3DXMeshObjectBase::Render( CShaderManager& rShaderMgr )
 {
-	CMeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices );
+	if( &rShaderMgr == &FixedFunctionPipelineManager() )
+		Render();
+	else
+		CMeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices );
 }
 
 

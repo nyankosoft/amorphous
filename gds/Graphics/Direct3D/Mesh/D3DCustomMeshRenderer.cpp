@@ -66,11 +66,16 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 //		pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
 	}
 
-	// alpha-blending settings 
-	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-//	pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+	// default alpha-blending settings
+	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+	pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_ONE);
+	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
+	// alpha-blending settings 
+/*	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+//	pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_SRCALPHA );
+//	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+*/
 	for( int i=0; i<num_mats; i++ )
 	{
 		const int num_textures = mesh.GetNumTextures(i);
