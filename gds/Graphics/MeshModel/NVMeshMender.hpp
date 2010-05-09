@@ -89,7 +89,7 @@ How to use MeshMender:
 #pragma warning( disable : 4786)
 #pragma warning( disable : 4100)
 
-#include <d3dx9.h>
+#include "3DMath/Vector3.hpp"
 #include <map>
 #include <set>
 #include <vector>
@@ -104,13 +104,13 @@ class MeshMender
 		class Vertex
 		{
 		public:
-			D3DXVECTOR3 pos;
-			D3DXVECTOR3 normal;
+			Vector3 pos;
+			Vector3 normal;
 			float       s;
 			float       t;
-			D3DXVECTOR3 tangent;
-			D3DXVECTOR3 binormal;
-			enum 
+			Vector3 tangent;
+			Vector3 binormal;
+/*			enum 
 			{
 				FVF = D3DFVF_XYZ |
 					  D3DFVF_NORMAL |
@@ -118,7 +118,7 @@ class MeshMender
 					  D3DFVF_TEXCOORDSIZE2( 0 ) |
 					  D3DFVF_TEXCOORDSIZE3( 1 ) |
 					  D3DFVF_TEXCOORDSIZE3( 2 )
-			};
+			};*/
 			Vertex::Vertex():pos(0.0f ,0.0f ,0.0f )
 										,normal(0.0f ,0.0f ,0.0f )
 										,s(0.0f )
@@ -244,9 +244,9 @@ class MeshMender
 			size_t indices[3];
 
 			//per face values
-			D3DXVECTOR3 normal;
-			D3DXVECTOR3 tangent;
-			D3DXVECTOR3 binormal;
+			Vector3 normal;
+			Vector3 tangent;
+			Vector3 binormal;
 
 			//helper flags
 			bool handled; 
@@ -261,7 +261,7 @@ class MeshMender
 
 		//each vertex has a set of triangles that contain it.
 		//those triangles are considered to be that vertex's children
-		typedef std::map<D3DXVECTOR3, TriangleList > VertexChildrenMap;
+		typedef std::map<Vector3, TriangleList > VertexChildrenMap;
 		VertexChildrenMap m_VertexChildrenMap;
 
 		//a neighbor group is defined to be the list of traingles
@@ -306,8 +306,8 @@ class MeshMender
 		void GetGradients( const MeshMender::Vertex& v0,
                            const MeshMender::Vertex& v1,
                            const MeshMender::Vertex& v2,
-                           D3DXVECTOR3& tangent,
-                           D3DXVECTOR3& binormal) const;
+                           Vector3& tangent,
+                           Vector3& binormal) const;
 
 		void OrthogonalizeTangentsAndBinormals( 
 						std::vector< Vertex >&   theVerts );
@@ -318,11 +318,11 @@ class MeshMender
 										std::vector< unsigned int >& theIndices,
 										std::vector< unsigned int >& mappingNewToOldVert);
 
-		bool TriHasEdge(const D3DXVECTOR3& p0,
-						const D3DXVECTOR3& p1,
-						const D3DXVECTOR3& triA,
-						const D3DXVECTOR3& triB,
-						const D3DXVECTOR3& triC);
+		bool TriHasEdge(const Vector3& p0,
+						const Vector3& p1,
+						const Vector3& triA,
+						const Vector3& triB,
+						const Vector3& triC);
 
 		bool TriHasEdge(const size_t& p0,
 						const size_t& p1,
@@ -333,17 +333,17 @@ class MeshMender
 		void ProcessNormals(TriangleList& possibleNeighbors,
 							std::vector< Vertex >&    theVerts,
 							std::vector< unsigned int >& mappingNewToOldVert,
-							D3DXVECTOR3 workingPosition);
+							Vector3 workingPosition);
 		
 		void ProcessTangents(TriangleList& possibleNeighbors,
 								std::vector< Vertex >&    theVerts,
 								std::vector< unsigned int >& mappingNewToOldVert,
-								D3DXVECTOR3 workingPosition);
+								Vector3 workingPosition);
 		
 		void ProcessBinormals(TriangleList& possibleNeighbors,
 								std::vector< Vertex >&    theVerts,
 								std::vector< unsigned int >& mappingNewToOldVert,
-								D3DXVECTOR3 workingPosition);
+								Vector3 workingPosition);
 
 		
 		//make any triangle that used the oldIndex use the newIndex instead
