@@ -213,7 +213,7 @@ const char *CEmbeddedGenericHLSL::ms_pLightDef =
 	"float3 vSpot;"\
 "};\n"\
 
-"#endif"; /* __LIGHTDEF_FXH__ */
+"#endif\n"; /* __LIGHTDEF_FXH__ */
 
 
 
@@ -379,8 +379,163 @@ const char *CEmbeddedGenericHLSL::ms_pQVertexBlendFunctions =
 	"return io_value;"\
 "}\n"\
 
-"#endif";  /* __QVertexBlendFunctions_FXH__ */
+"#endif\n";  /* __QVertexBlendFunctions_FXH__ */
 
+
+// Vertex blending with 4x4 matrices (still under development)
+// pros
+// - Can support scaling
+// cons
+// - Increase in code size
+// - Does not support vertex blending of meshes that have many bones
+/*
+const char *CEmbeddedGenericHLSL::ms_pVertexBlendFunctions =
+"#ifndef __VertexBlendFunctions_FXH__\n"\
+"#define __VertexBlendFunctions_FXH__\n"\
+
+//===========================================================================================
+// SkinPoint
+// Applies 4 matrix skinning to a single point.  The point passed in is changed as well as returned.
+//
+"float4 SkinPoint( inout float4 io_value, float4x4 blendMats[NUM_MAX_BLEND_MATRICES],  int4 indices, float4 weights)"\
+"{"\
+	"int i;"\
+	"float4 incoming_io_value = io_value;"\
+
+	"if(weights[0] != -1 )"\
+	"{"\
+		"io_value = 0;"\
+		// skin
+//		for(i=0; i <4 ; i++)
+		"for(i=0; i <NUM_MAX_BLEND_MATRICES_PER_VERTEX ; i++)"\
+		"{"\
+			"io_value  += mul( incoming_io_value, blendMats[indices[3-i]]) * weights[i];"\
+//			io_value  += mul( incoming_io_value, blendMats[indices[i]]) * weights[i];
+		"}"\
+	"}"\
+
+	"return io_value;"\
+"}\n"\
+
+//===========================================================================================
+// SkinVector
+// Applies 4 matrix skinning to a vector.  The vector passed in is changed as well as returned.
+//
+"float3 SkinVector( inout float3 io_value, float4x4 blendMats[NUM_MAX_BLEND_MATRICES], int4 indices, float4 weights)"\
+"{"\
+	"int i;"\
+	"float3 incoming_io_value = io_value;"\
+
+	"if(weights[0] != -1 )"\
+	"{"\
+		"io_value = 0;"\
+    
+		// skin
+//		for(i=0; i <4 ; i++)
+		"for(i=0; i <NUM_MAX_BLEND_MATRICES_PER_VERTEX ; i++)"\
+		"{"\
+			"io_value  += mul( incoming_io_value, blendMats[indices[3-i]]) * weights[i];"\
+//			io_value  += mul( incoming_io_value, blendMats[indices[i]]) * weights[i];
+		"}"\
+
+		"io_value = normalize(io_value);"\
+	"}"\
+
+	"return io_value;"\
+"}\n"\
+
+"#endif\n";  // __VertexBlendFunctions_FXH__
+*/
+
+
+const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
+"#ifndef __PerPixelHSLighting_Specular_FXH__\n"\
+"#define __PerPixelHSLighting_Specular_FXH__\n"\
+
+
+/// param vLightDirWS [in] direction of the light ray. i.g. direciton from the light to the vertex
+"float CalculateSpecularComponent( float3 vLightDirWS,"\
+								  "float3 vNormalWS,"\
+								  "float3 vToViewerWS )"\
+"{"\
+	"float3 vReflectionWS = vLightDirWS - 2.0 * dot( vNormalWS, vLightDirWS ) * vNormalWS;"\
+//	vReflectionWS = normalize(vReflectionWS);
+	"float alignment = dot(vReflectionWS,vToViewerWS);"\
+	"if( 0 < alignment )"\
+		"return pow( alignment, g_fSpecularPower );"\
+	"else\n"\
+		"return 0.0f;"\
+"}\n"\
+
+
+//-----------------------------------------------------------------------------
+// Name: DoHemisphericDirLight()
+// Desc: hemispheric directional light computation
+//-----------------------------------------------------------------------------
+"COLOR_PAIR DoHemisphericDirLight_Specular(float3 vNormalWS, float3 vToViewerWS, int i)"\
+"{"\
+	"COLOR_PAIR Out;"\
+	"float NdotL = dot( vNormalWS, -g_aLight[i].vDir );"\
+	"float fUpper = ( NdotL + 1.0 ) / 2.0;"\
+	"Out.Color = g_aLight[i].vAmbient;"\
+	"Out.ColorSpec = 0;"\
+
+	// compute diffuse color
+	"Out.Color += fUpper * g_aLight[i].vDiffuseUpper;"\
+	"Out.Color += (1 - fUpper) * g_aLight[i].vDiffuseLower;"\
+
+	// add specular component
+	"if( 0.0 <= NdotL )"\
+	"{"\
+		"Out.ColorSpec = CalculateSpecularComponent( g_aLight[i].vDir, vNormalWS, vToViewerWS );// * g_aLight[i].vSpecular\n"\
+	"}"\
+
+	"return Out;"\
+"}\n"\
+
+
+//-----------------------------------------------------------------------------
+// Name: DoHemisphericPointLight()
+// Desc: hemispheric point light computation
+//-----------------------------------------------------------------------------
+"COLOR_PAIR DoHemisphericPointLight_Specular(float3 vWorldPos, float3 vNormalWS, float3 vToViewerWS, int i)"\
+"{"\
+	"float3 vVertToLightWS = g_aLight[i].vPos - vWorldPos;"\
+	"float LD = length( vVertToLightWS );"\
+	"float3 vDirToLightWS = vVertToLightWS / LD;"\
+	"COLOR_PAIR Out;"\
+	"float NdotL = dot(vNormalWS, vDirToLightWS);"\
+	"float fUpper = ( NdotL + 1.0 ) / 2.0;"\
+	"Out.Color = g_aLight[i].vAmbient;"\
+	"Out.ColorSpec = 0;"\
+	"float fAtten = 1.f;"\
+
+	// compute diffuse color
+	"Out.Color += fUpper * g_aLight[i].vDiffuseUpper;"\
+	"Out.Color += (1 - fUpper) * g_aLight[i].vDiffuseLower;"\
+
+	// add specular component
+	"if( 0.0 <= NdotL )"\
+	"{"\
+		"Out.ColorSpec = CalculateSpecularComponent( -vDirToLightWS, vNormalWS, vToViewerWS );// * g_aLight[i].vSpecular\n"\
+	"}"\
+
+	"if(LD > g_aLight[i].fRange)"\
+	"{"\
+		"fAtten = 0.0;"\
+	"}"\
+	"else"\
+	"{"\
+		"fAtten *= 1.0 / (g_aLight[i].vAttenuation.x + g_aLight[i].vAttenuation.y*LD + g_aLight[i].vAttenuation.z*LD*LD);"\
+	"}"\
+
+	"Out.Color *= fAtten;"\
+	"Out.ColorSpec *= fAtten;"\
+
+	"return Out;"\
+"}\n"\
+
+"#endif\n";  /* __PerPixelHSLighting_Specular_FXH__ */
 
 
 const char *CEmbeddedGenericHLSL::ms_pTechniqueTemplate =
@@ -404,6 +559,21 @@ const char *CEmbeddedGenericHLSL::ms_pTechniqueTemplate =
 // ??? VS_HSPerVertexLights_QVertexBlend
 
 
+static const char *GetAlphaBlendTypeMacro( CAlphaBlendType::Name alpha_blend )
+{
+	switch( alpha_blend )
+	{
+	case CAlphaBlendType::NONE:                                  return "#define ALPHABLEND__NONE\n";
+//	case CAlphaBlendType::UNIFORM:                               return "#define ALPHABLEND__UNIFORM\n";
+	case CAlphaBlendType::DIFFUSE_ALPHA:                         return "#define ALPHABLEND__DIFFUSE_ALPHA\n";
+	case CAlphaBlendType::DECAL_TEX_ALPHA:                       return "#define ALPHABLEND__DECAL_TEX_ALPHA\n";
+//	case CAlphaBlendType::NORMAL_MAP_ALPHA:                      return "#define ALPHABLEND__NORMAL_MAP_ALPHA\n";
+	case CAlphaBlendType::MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA: return "#define ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n";
+	default: return "#define ALPHABLEND__NONE\n";
+	}
+}
+
+
 void LoadShader_HSPerVeretxLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	// per-vetex without specular reflection
@@ -415,7 +585,7 @@ void LoadShader_HSPerVeretxLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffe
 }
 
 
-void LoadShader_HSPerVeretxLightingWithSpecular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerVeretxLighting_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 /*	switch( desc.num_directional_lights )
 	{
@@ -469,17 +639,43 @@ void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffec
 //	dest.pTechniqueName = "PPL_HSLs";
 }
 
+static const char *GetSpecularTypeMacro( CSpecularSource::Name spec_src )
+{
+	switch( spec_src )
+	{
+	case CSpecularSource::NONE:             return "#define SPECTYPE__NONE\n";
+	case CSpecularSource::UNIFORM:          return "#define SPECTYPE__UNIFORM\n";
+	case CSpecularSource::DECAL_TEX_ALPHA:  return "#define SPECTYPE__DECAL_TEX_ALPHA\n";
+	case CSpecularSource::NORMAL_MAP_ALPHA: return "#define SPECTYPE__NORMAL_MAP_ALPHA\n";
+	default: return "#define SPECTYPE__NONE\n";
+	}
+}
 
 void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular;
 	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
+
+	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
+	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
+
 //	dest.pTechniqueName = "PPL_HSLs_Specular";
 }
 
 
 void LoadShader_HSPerPixelLighting_QVertexBlend( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
+	LOG_PRINT_ERROR( " Not implemented." );
+}
+
+
+void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+{
+	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular;
+	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
+
+	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
+	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
 }
 
 /*
@@ -500,26 +696,39 @@ void LoadHSLightingShader( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& de
 	case CShaderLightingType::PER_VERTEX:
 		if( desc.VertexBlendType == CVertexBlendType::NONE )
 		{
-			if( desc.Specular )
-				LoadShader_HSPerVeretxLightingWithSpecular(desc,dest);
-			else
+			if( desc.Specular == CSpecularSource::NONE )
 				LoadShader_HSPerVeretxLighting(desc,dest);
+			else
+				LoadShader_HSPerVeretxLighting_Specular(desc,dest);
 		}
 		else if( desc.VertexBlendType == CVertexBlendType::QUATERNION_AND_VECTOR3
 		      || desc.VertexBlendType == CVertexBlendType::MATRIX )
 		{
-			if( desc.Specular )
-				LoadShader_HSPerVeretxLighting_QVertexBlend_Specular(desc,dest);
-			else
+			if( desc.Specular == CSpecularSource::NONE )
 				LoadShader_HSPerVeretxLighting_QVertexBlend(desc,dest);
+			else
+				LoadShader_HSPerVeretxLighting_QVertexBlend_Specular(desc,dest);
 		}
 		break;
+
 	case CShaderLightingType::PER_PIXEL:
-		if( desc.Specular )
-			LoadShader_HSPerPixelLighting_Specular(desc,dest);
-		else
-			LoadShader_HSPerPixelLighting(desc,dest);
+		if( desc.VertexBlendType == CVertexBlendType::NONE )
+		{
+			if( desc.Specular == CSpecularSource::NONE )
+				LoadShader_HSPerPixelLighting(desc,dest);
+			else
+				LoadShader_HSPerPixelLighting_Specular(desc,dest);
+		}
+		else if( desc.VertexBlendType == CVertexBlendType::QUATERNION_AND_VECTOR3
+		      || desc.VertexBlendType == CVertexBlendType::MATRIX )
+		{
+			if( desc.Specular == CSpecularSource::NONE )
+				LoadShader_HSPerPixelLighting_QVertexBlend(desc,dest);
+			else
+				LoadShader_HSPerPixelLighting_QVertexBlend_Specular(desc,dest);
+		}
 		break;
+
 	default:
 		break;
 	}
@@ -539,16 +748,21 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 		return Result::UNKNOWN_ERROR;
 
 	hlsl_effect = "";
+	for( size_t i=0; i<hlsl_desc.vs.pDependencies.size(); i++ ) // functions, variables, and macros used in PS
+		hlsl_effect += hlsl_desc.vs.pDependencies[i];
 	hlsl_effect += hlsl_desc.vs.pContent; // vertex shader
+	for( size_t i=0; i<hlsl_desc.ps.pDependencies.size(); i++ ) // functions, variables, and macros used in PS
+		hlsl_effect += hlsl_desc.ps.pDependencies[i];
 	hlsl_effect += hlsl_desc.ps.pContent; // pixel shader
 
-	replace_all( hlsl_effect, "#include \"Matrix.fxh\"",                ms_pMatrix );
-	replace_all( hlsl_effect, "#include \"ColorPair.fxh\"",             ms_pColorPair );
-	replace_all( hlsl_effect, "#include \"TexDef.fxh\"",                ms_pTexDef );
-	replace_all( hlsl_effect, "#include \"LightDef.fxh\"",              ms_pLightDef );
-	replace_all( hlsl_effect, "#include \"Quaternion.fxh\"",            ms_pQuaternion );
-	replace_all( hlsl_effect, "#include \"Transform.fxh\"",             ms_pTransform );
-	replace_all( hlsl_effect, "#include \"QVertexBlendFunctions.fxh\"", ms_pQVertexBlendFunctions);
+	replace_all( hlsl_effect, "#include \"Matrix.fxh\"",                      ms_pMatrix );
+	replace_all( hlsl_effect, "#include \"ColorPair.fxh\"",                   ms_pColorPair );
+	replace_all( hlsl_effect, "#include \"TexDef.fxh\"",                      ms_pTexDef );
+	replace_all( hlsl_effect, "#include \"LightDef.fxh\"",                    ms_pLightDef );
+	replace_all( hlsl_effect, "#include \"Quaternion.fxh\"",                  ms_pQuaternion );
+	replace_all( hlsl_effect, "#include \"Transform.fxh\"",                   ms_pTransform );
+	replace_all( hlsl_effect, "#include \"QVertexBlendFunctions.fxh\"",       ms_pQVertexBlendFunctions );
+	replace_all( hlsl_effect, "#include \"PerPixelHSLighting_Specular.fxh\"", ms_pPerPixelHSLighting_Specular );
 
 	string tech( ms_pTechniqueTemplate );
 
@@ -564,6 +778,14 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 	replace_first( tech, "$PS_VER",   "2_0" );
 
 	hlsl_effect += tech;
+
+	static int s_count = 0;
+	FILE *fp = fopen( fmt_string("mbedded_effect_%03d.fx",s_count++).c_str(),"w");
+	if( fp )
+	{
+		fprintf(fp,hlsl_effect.c_str());
+		fclose(fp);
+	}
 
 	return Result::SUCCESS;
 }

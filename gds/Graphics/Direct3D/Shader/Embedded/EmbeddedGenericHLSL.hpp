@@ -23,6 +23,10 @@ class CEmbeddedGenericHLSL
 
 	static const char *ms_pQVertexBlendFunctions;
 
+//	static const char *ms_pVertexBlendFunctions;
+
+	static const char *ms_pPerPixelHSLighting_Specular;
+
 	static const char *ms_pTechniqueTemplate;
 
 public:

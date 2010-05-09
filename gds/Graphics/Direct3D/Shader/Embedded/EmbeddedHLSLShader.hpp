@@ -2,12 +2,15 @@
 #define __EmbeddedHLSLShader_HPP__
 
 
-#include <string.h>
+//#include <string.h>
+#include <vector>
 
 
 class CEmbeddedHLSLShader
 {
 public:
+	std::vector<const char *> pDependencies;
+//	std::vector<const char *> pArgs;
 	const char *pName;
 	const char *pContent;
 
@@ -54,6 +57,8 @@ public:
 
 	static CEmbeddedHLSLShader ms_VS_PPL_HSLs_Specular;
 	static CEmbeddedHLSLShader ms_PS_PPL_HSLs_Specular;
+
+	static CEmbeddedHLSLShader ms_VS_PPL_HSLs_QVertexBlend_Specular;
 };
 
 

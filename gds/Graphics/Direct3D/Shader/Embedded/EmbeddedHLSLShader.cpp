@@ -167,18 +167,182 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs = CEmbeddedHLSLShader
 CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular = CEmbeddedHLSLShader
 (
 "VS_PPL_HSLs_Specular",
-"VS_PPL_HSLs_Specular()"\
+"#include \"Matrix.fxh\"\n"\
+
+//================================= Vertex Shader =================================
+
+"void VS_PPL_HSLs_Specular("\
+	"float4 vModelSpacePos     : POSITION,"\
+	"float3 vModelSpaceNormal  : NORMAL,"\
+	"float4 vDiffuse           : COLOR0,"\
+	"float2 vTex0              : TEXCOORD0,"\
+	"out float4 oPos      : POSITION,"\
+	"out float4 oDiffuse  : COLOR0,"\
+	"out float2 oTex0     : TEXCOORD0,"\
+	"out float3 oPosWS    : TEXCOORD1,"\
+	"out float3 oNormalWS : TEXCOORD2 )"\
 "{"\
-"}"\
+	"oPos         = mul( vModelSpacePos, WorldViewProj );"\
+	"float4 PosWS = mul( vModelSpacePos, World );"\
+	"oPosWS       = PosWS.xyz / PosWS.w;"\
+	"oNormalWS    = mul( vModelSpaceNormal, (float3x3)World );"\
+	"oDiffuse     = vDiffuse;"\
+	"oTex0        = vTex0;"\
+"}\n"\
 );
 
 
 CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLSLShader
 (
 "PS_PPL_HSLs_Specular",
-"PS_PPL_HSLs_Specular()"\
+"#include \"TexDef.fxh\"\n"\
+"#include \"LightDef.fxh\"\n"\
+"#include \"ColorPair.fxh\"\n"\
+
+"#define NUM_LIGHTS	5\n"\
+"CLight g_aLight[NUM_LIGHTS];"\
+
+"float g_fSpecular = 0.8f;"\
+"float g_fSpecularPower = 8.0f;"\
+
+"\n"\
+"#include \"PerPixelHSLighting_Specular.fxh\"\n"\
+
+
+"float4 g_vAmbientColor = float4(0,0,0,0);"\
+"float3 g_vEyePos = float3(0,0,0);"\
+
+//"#define SPECTYPE__UNIFORM\n"\
+
+// specular types
+"\n"\
+"#ifdef SPECTYPE__NONE\n"\
+"#define GET_SPECULAR 0.0\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__UNIFORM\n"\
+"#define GET_SPECULAR g_fSpecular\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__DECAL_TEX_ALPHA\n"\
+"#define GET_SPECULAR surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__NORMAL_MAP_ALPHA\n"\
+"#define GET_SPECULAR normal_map.a\n"\
+"#endif\n"\
+
+// alpha blend types
+"\n"\
+"#ifdef ALPHABLEND__NONE\n"\
+"#define GET_ALPHA 1.0\n"\
+"#endif\n"\
+
+//"#ifdef ALPHABLEND__UNIFORM\n"\
+//"#define GET_ALPHA g_fAlpha\n"\
+//"#endif\n"\
+
+"#ifdef ALPHABLEND__DIFFUSE_ALPHA\n"\
+"#define GET_ALPHA ColorDiff.a\n"\
+"#endif\n"\
+
+"#ifdef ALPHABLEND__DECAL_TEX_ALPHA\n"\
+"#define GET_ALPHA surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n"\
+"#define GET_ALPHA ColorDiff.a * surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n"\
+"#define GET_ALPHA ColorDiff.a * surface_color.a\n"\
+"#endif\n"\
+
+
+"float4 PS_PPL_HSLs_Specular( float4 ColorDiff : COLOR0,"\
+                "float2 Tex0      : TEXCOORD0,"\
+                "float3 PosWS     : TEXCOORD1,"\
+				"float3 vNormalWS : TEXCOORD2 ) : COLOR0"\
 "{"\
-"}"\
+	"float4 surface_color = tex2D( Sampler0, Tex0 ) * ColorDiff;"\
+
+	// normal in world space
+	"const float3 vNormalizedNormalWS = normalize(vNormalWS);"\
+
+	"COLOR_PAIR Out;"\
+	"Out.Color = 0;"\
+	"Out.ColorSpec = 0;"\
+
+	"float3 vDirToViewerWS = normalize(g_vEyePos - PosWS);"\
+
+	"int i = 0;"\
+
+	// directional lights
+	"[unroll(1)]"\
+	"for(i = 0; i < iLightDirNum; i++)"\
+	"{"\
+		"COLOR_PAIR ColOut = DoHemisphericDirLight_Specular( vNormalizedNormalWS, vDirToViewerWS, i+iLightDirIni );"\
+		"Out.Color     += ColOut.Color;"\
+		"Out.ColorSpec += ColOut.ColorSpec;"\
+	"}"\
+
+	// point lights
+	"[unroll(1)]"\
+	"for(i = 0; i < iLightPointNum; i++)"\
+	"{"\
+		"COLOR_PAIR ColOut = DoHemisphericPointLight_Specular( PosWS, vNormalizedNormalWS, vDirToViewerWS, i+iLightPointIni );"\
+		"Out.Color     += ColOut.Color;"\
+		"Out.ColorSpec += ColOut.ColorSpec;"\
+	"}"\
+
+	"float4 color;"\
+	"color.rgb = surface_color * Out.Color + Out.ColorSpec * GET_SPECULAR + g_vAmbientColor;"\
+	"color.a = GET_ALPHA;"\
+	"return color;"\
+"}\n"
+);
+
+
+CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular = CEmbeddedHLSLShader
+(
+"VS_PPL_HSLs_QVertexBlend_Specular",
+"#define NUM_MAX_BLEND_TRANSFORMS	72\n"\
+"#define NUM_MAX_BLEND_TRANSFORMS_PER_VERTEX	2\n"\
+"#include \"Matrix.fxh\"\n"\
+"#include \"Quaternion.fxh\"\n"\
+"#include \"Transform.fxh\"\n"\
+
+"Transform g_aBlendTransform[NUM_MAX_BLEND_TRANSFORMS];\n"\
+"#include \"QVertexBlendFunctions.fxh\"\n"\
+
+//================================= Vertex Shader =================================
+
+"void VS_PPL_HSLs_QVertexBlend_Specular("\
+	"float4 vModelSpacePos     : POSITION,"\
+	"float3 vModelSpaceNormal  : NORMAL,"\
+	"float4 vDiffuse           : COLOR0,"\
+	"float2 vTex0              : TEXCOORD0,"\
+	"int4   indices            : BLENDINDICES,"\
+	"float4 weights            : BLENDWEIGHT,"\
+	"out float4 oPos      : POSITION,"\
+	"out float4 oDiffuse  : COLOR0,"\
+	"out float2 oTex0     : TEXCOORD0,"\
+	"out float3 oPosWS    : TEXCOORD1,"\
+	"out float3 oNormalWS : TEXCOORD2 )"\
+"{"\
+	// pos is transformed to model space
+	"SkinPoint( vModelSpacePos,     g_aBlendTransform, indices, weights);"\
+
+	// normal is transformed to model space
+	"SkinVector( vModelSpaceNormal, g_aBlendTransform, indices, weights);"\
+
+	"oPos         = mul( vModelSpacePos, WorldViewProj );"\
+	"float4 PosWS = mul( vModelSpacePos, World );"\
+	"oPosWS       = PosWS.xyz / PosWS.w;"\
+	"oNormalWS    = mul( vModelSpaceNormal, (float3x3)World );"\
+	"oDiffuse     = vDiffuse;"\
+	"oTex0        = vTex0;"\
+"}\n"\
 );
 
 
