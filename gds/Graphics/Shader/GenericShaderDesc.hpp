@@ -26,6 +26,29 @@ public:
 };
 
 
+class CAlphaBlendType
+{
+public:
+	enum Name
+	{
+		NONE,
+//		UNIFORM,
+		DIFFUSE_ALPHA,                         ///< use alpha of diffuse color
+		DECAL_TEX_ALPHA,
+//		NORMAL_MAP_ALPHA,
+		MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA, ///< modulate diffuse and decal texture alpha
+//		TEX0_ALPHA,
+//		TEX1_ALPHA,
+//		TEX2_ALPHA,
+//		TEX3_ALPHA,
+//		MOD_DIFFUSE_ALPHA_AND_TEX0_ALPHA,
+//		MOD_DIFFUSE_ALPHA_AND_TEX1_ALPHA,
+//		MOD_DIFFUSE_ALPHA_AND_TEX0_ALPHA_AND_TEX1_ALPHA,
+		NUM_ALPHA_BLEND_TYPES
+	};
+};
+
+
 class CVertexBlendType
 {
 public:
@@ -38,6 +61,19 @@ public:
 	};
 };
 
+class CSpecularSource
+{
+public:
+	enum Name
+	{
+		NONE,
+		UNIFORM,          ///< uniform specularity
+		DECAL_TEX_ALPHA,  ///< alpha channel of decal texture (stage 0)
+		NORMAL_MAP_ALPHA, ///< alpha channel of normal map texture (stage 1)
+		NUM_TYPES
+	};
+};
+
 
 class CGenericShaderDesc
 {
@@ -45,8 +81,9 @@ public:
 
 	CLightingTechnique::Name LightingTechnique;
 	CShaderLightingType::Name ShaderLightingType; // per-vertex / per-pixel
-	bool Specular;
+	CSpecularSource::Name Specular;
 	CVertexBlendType::Name VertexBlendType;
+	CAlphaBlendType::Name AlphaBlend;
 //	bool env_map;
 	int NumPointLights;
 	int NumDirectionalLights;
@@ -57,9 +94,10 @@ public:
 	CGenericShaderDesc()
 		:
 	LightingTechnique(CLightingTechnique::HEMISPHERIC),
-	ShaderLightingType(CShaderLightingType::PER_VERTEX),
-	Specular(false),
+	ShaderLightingType(CShaderLightingType::PER_PIXEL),
+	Specular(CSpecularSource::NONE),
 	VertexBlendType(CVertexBlendType::NONE),
+	AlphaBlend(CAlphaBlendType::NONE),
 //	env_map(false),
 	NumPointLights(-1),
 	NumDirectionalLights(-1),
