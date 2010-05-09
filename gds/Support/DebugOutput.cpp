@@ -3,7 +3,7 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Support/Timer.hpp"
@@ -38,16 +38,20 @@ CFontBase* CFontFactory::CreateFont( const string& font_name, int font_width, in
 	}
 	else if( font_name.find( "BuiltinFont::" ) == 0 )
 	{
-		CTextureFont *pFont = NULL;
-		if( font_name == "BuiltinFont::BitstreamVeraSansMono_Bold_256" )
-		{
-			pFont = new CTextureFont;
-			pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
-		}
+		const string builtin_font_name = font_name.substr( strlen("BuiltinFont::") );
+		CTextureFont *pFont = new CTextureFont;
+		bool initialized = pFont->InitFont( GetBuiltinFontData( builtin_font_name ) );
 
-		if( pFont )
+		if( initialized )
+		{
 			pFont->SetFontSize( font_width, font_height );
-		return pFont;
+			return pFont;
+		}
+		else
+		{
+			SafeDelete( pFont );
+			return NULL;
+		}
 	}
 	else
 	{
@@ -140,7 +144,7 @@ void CDebugItem_Profile::Render()
 	const Vector2 vLeftTop = m_vTopLeftPos;
 	C2DRect rect( 
 		vLeftTop,
-		vLeftTop + D3DXVECTOR2( (float)(font_width * (num_max_chars + 2)), (float)(font_height * num_lines) ),
+		vLeftTop + Vector2( (float)(font_width * (num_max_chars + 2)), (float)(font_height * num_lines) ),
 		0x80000000 );
 	rect.Draw();
 
