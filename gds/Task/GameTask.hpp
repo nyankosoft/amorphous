@@ -10,7 +10,6 @@
 #include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/D3DMisc.hpp"
 #include "Support/SafeDelete.hpp"
 
 #include "Graphics/RenderTask.hpp"
@@ -123,7 +122,7 @@ public:
 
 	virtual void CreateRenderTasks();
 
-	void RenderFadeEffect();
+	inline void RenderFadeEffect();
 
 	int GetRequestedNextTaskID() const { return m_RequestedNextTaskID; }
 

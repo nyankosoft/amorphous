@@ -125,7 +125,7 @@ void CGameTask::ProcessTaskTransitionRequest()
 	// render UI
 
 */
-void CGameTask::RenderFadeEffect()
+inline void CGameTask::RenderFadeEffect()
 {
 	// calc alpha
 	int alpha = 0;
@@ -144,9 +144,9 @@ void CGameTask::RenderFadeEffect()
 	{
 		C2DRect rect;
 		rect.SetColor( alpha << 24 );
-		int w,h;
-		GetViewportSize( w, h );
-		rect.SetPositionLTRB( 0, 0, w, h );
+		uint w,h;
+		GraphicsDevice().GetViewportSize( w, h );
+		rect.SetPositionLTRB( 0, 0, (int)w, (int)h );
 		rect.Draw();
 	}
 }
@@ -224,6 +224,8 @@ void CGameTask::RequestTaskTransition( const std::string& next_task_name,
 
 int CGameTask::FrameMove( float dt )
 {
+	PROFILE_FUNCTION();
+
 	m_Timer.UpdateFrameTime();
 
 	if( m_pMouseCursorElement )
@@ -271,6 +273,8 @@ int CGameTask::GetInputHandlerIndex() const
 
 void CGameTask::RenderBase()
 {
+	PROFILE_FUNCTION();
+
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
 	HRESULT hr;
@@ -280,8 +284,8 @@ void CGameTask::RenderBase()
 ///	D3DCOLOR color = D3DCOLOR_ARGB(255,  0,255,255);
 	hr = pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, color, 1.0f, 0 );
 
-	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE,  D3DZB_TRUE );
-	hr = pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,   false );
 
 	// do the render routine of the base class
 	CGameTask::Render();
