@@ -193,3 +193,54 @@ Result::Name CGLGraphicsDevice::SetFogParams( const CFogParams& fog_params )
 
 	return Result::SUCCESS;
 }
+
+
+Result::Name CGLGraphicsDevice::GetViewport( CViewport& viewport )
+{
+	GLint params[4];
+	glGetIntegerv( GL_VIEWPORT, params );
+	viewport.UpperLeftX = params[0];
+	viewport.UpperLeftY = params[1];
+	viewport.Width      = params[2];
+	viewport.Height     = params[3];
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::SetViewport( const CViewport& viewport )
+{
+	glViewport(
+		viewport.UpperLeftX,
+		viewport.UpperLeftY,
+		viewport.Width,
+		viewport.Height
+		);
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::SetClearColor( const SFloatRGBAColor& color )
+{
+	glClearColor( color.fRed, color.fGreen, color.fBlue, color.fAlpha );
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::SetClearDepth( float depth )
+{
+	glClearDepth( depth );
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::Clear( U32 buffer_mask )
+{
+	GLbitfield mask = 0;
+	if( buffer_mask & BufferMask::COLOR )   mask |= GL_COLOR_BUFFER_BIT;
+	if( buffer_mask & BufferMask::DEPTH )   mask |= GL_DEPTH_BUFFER_BIT;
+	if( buffer_mask & BufferMask::STENCIL ) mask |= GL_STENCIL_BUFFER_BIT;
+	glClear( mask );
+	return Result::SUCCESS;
+}

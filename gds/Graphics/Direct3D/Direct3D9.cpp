@@ -432,3 +432,66 @@ Result::Name CDirect3D9::SetFogParams( const CFogParams& fog_params )
 
 	return Result::SUCCESS;
 }
+
+
+Result::Name CDirect3D9::GetViewport( CViewport& viewport )
+{
+	D3DVIEWPORT9 vp;
+	HRESULT hr = m_pD3DDevice->GetViewport( &vp );
+	viewport.UpperLeftX = (uint)vp.X;
+	viewport.UpperLeftY = (uint)vp.Y;
+	viewport.Width      = (uint)vp.Width;
+	viewport.Height     = (uint)vp.Height;
+	viewport.MinDepth   = vp.MinZ;
+	viewport.MaxDepth   = vp.MaxZ;
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::SetViewport( const CViewport& viewport )
+{
+	D3DVIEWPORT9 vp;
+	vp.X      = (DWORD)viewport.UpperLeftX;
+	vp.Y      = (DWORD)viewport.UpperLeftY;
+	vp.Width  = (DWORD)viewport.Width;
+	vp.Height = (DWORD)viewport.Height;
+	vp.MinZ   = viewport.MinDepth;
+	vp.MaxZ   = viewport.MaxDepth;
+	HRESULT hr = m_pD3DDevice->SetViewport( &vp );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::SetClearColor( const SFloatRGBAColor& color )
+{
+	m_ClearColor = color.GetARGB32();
+	return Result::SUCCESS;
+}
+
+
+Result::Name CDirect3D9::SetClearDepth( float depth )
+{
+	m_fClearDepth = depth;
+	return Result::SUCCESS;
+}
+
+
+Result::Name CDirect3D9::Clear( U32 buffer_mask )
+{
+	DWORD mask = 0;
+	if( buffer_mask & BufferMask::COLOR )   mask |= D3DCLEAR_TARGET;
+	if( buffer_mask & BufferMask::DEPTH )   mask |= D3DCLEAR_ZBUFFER;
+	if( buffer_mask & BufferMask::STENCIL ) mask |= D3DCLEAR_STENCIL;
+
+	HRESULT hr = m_pD3DDevice->Clear(
+		0,
+		NULL,
+		mask,
+		m_ClearColor,
+		m_fClearDepth,
+		0 );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}

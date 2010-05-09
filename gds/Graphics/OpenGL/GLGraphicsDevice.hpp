@@ -77,6 +77,16 @@ public:
 	inline void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 
 	Result::Name SetFogParams( const CFogParams& fog_params );
+
+	Result::Name GetViewport( CViewport& viewport );
+
+	Result::Name SetViewport( const CViewport& viewport );
+
+	Result::Name SetClearColor( const SFloatRGBAColor& color );
+
+	Result::Name SetClearDepth( float depth );
+
+	Result::Name Clear( U32 buffer_mask );
 };
 
 

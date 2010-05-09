@@ -55,6 +55,28 @@ public:
 };
 
 
+class CViewport
+{
+public:
+	uint UpperLeftX;
+	uint UpperLeftY;
+	uint Width;
+	uint Height;
+	float MinDepth;
+	float MaxDepth;
+
+	CViewport()
+		:
+	UpperLeftX(0),
+	UpperLeftY(0),
+	Width(0),
+	Height(0),
+	MinDepth(0.0f),
+	MaxDepth(1.0f)
+	{}
+};
+
+
 class DepthBufferType
 {
 public:
@@ -65,6 +87,18 @@ public:
 		NUM_DEPTH_BUFFER_TYPES
 //		DISABLED,
 //		NUM_DEPTH_BUFFER_STATES
+	};
+};
+
+
+class BufferMask
+{
+public:
+	enum Flag
+	{
+		COLOR   = (1 << 0),
+		DEPTH   = (1 << 1),
+		STENCIL = (1 << 2),
 	};
 };
 
@@ -175,8 +209,32 @@ public:
 
 	virtual Result::Name SetFogParams( const CFogParams& fog_params ) = 0;
 
+	virtual Result::Name GetViewport( CViewport& viewport ) = 0;
+
+	virtual Result::Name SetViewport( const CViewport& viewport ) = 0;
+
+	inline Result::Name GetViewportSize( uint& width, uint& height );
+
+	virtual Result::Name SetClearColor( const SFloatRGBAColor& color ) = 0;
+
+	virtual Result::Name SetClearDepth( float depth ) = 0;
+
+	virtual Result::Name Clear( U32 buffer_mask ) = 0;
+
 	State GetState() const { return m_State; }
 };
+
+//============================== inline implementations ==============================
+
+inline Result::Name CGraphicsDevice::GetViewportSize( uint& width, uint& height )
+{
+	CViewport vp;
+	Result::Name res = GetViewport( vp );
+	width  = vp.Width;
+	height = vp.Height;
+	return res;
+}
+
 
 
 class CGraphicsDeviceHolder
