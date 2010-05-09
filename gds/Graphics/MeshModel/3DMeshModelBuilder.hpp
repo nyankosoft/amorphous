@@ -139,11 +139,18 @@ class C3DMeshModelBuilder
 {
 public:
 
-	enum eMeshFlag
+	enum MeshFlags
 	{
 		MESH_SHADOWVOLUME = (1 << 0),
 //		MESH_ = (1 << 1),
 //		MESH_ = (1 << 2),
+	};
+
+	enum BuildOptionFlags
+	{
+		BOF_OUTPUT_AS_TEXTFILE = (1 << 0), ///< Output the built mesh as a readable text file. Used to examine the content of the created mesh.
+//		BOF_ANOTHER_FLAG       = (1 << 1),
+//		BOF_YET_ANOTHER_FLAG   = (1 << 2),
 	};
 
 protected:
@@ -201,10 +208,10 @@ public:
 
 	/// \param pModelLoader 3D model loader. Must be in a "loaded" state.
 	/// TODO: rename to BuildMeshModelArchive
-	void BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader );
+	void BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader, U32 build_option_flags = 0 );
 
 	/// \param [in] borrowed reference
-	void BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh );
+	void BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh, U32 build_option_flags = 0 );
 
 //	void SetTextureFilenameOption( unsigned int option ) { m_TextureFilenameOption = option; }
 	void SetTextureFilenameOption( TexturePathnameOption::Option option ) { m_pModelLoader->SetTexturePathnameOption( option ); }

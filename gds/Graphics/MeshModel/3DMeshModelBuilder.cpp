@@ -2,7 +2,6 @@
 #include "NVMeshMender.hpp"
 #include "ShadowVolumeMeshGenerator.hpp"
 #include "Graphics/FVF_BumpVertex.h"
-#include "Graphics/FVF_BumpWeightVertex.h"
 #include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/FVF_TextureVertex.h"
 #include "Support/lfs.hpp"
@@ -15,6 +14,8 @@ using namespace std;
 
 
 C3DModelLoader::C3DModelLoader()
+:
+m_TextureFilePathOption(TexturePathnameOption::ORIGINAL_FILENAME)
 {
 }
 
@@ -36,18 +37,19 @@ C3DMeshModelBuilder::~C3DMeshModelBuilder()
 static int s_MeshNum = 0;
 
 
-void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader )
+void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader, U32 build_option_flags )
 {
 	LOG_FUNCTION_SCOPE();
 
 	m_pModelLoader = pModelLoader;
 
-	BuildMeshModelArchive( m_pModelLoader->GetGeneral3DMeshSharedPtr() );
+	BuildMeshModelArchive( m_pModelLoader->GetGeneral3DMeshSharedPtr(), build_option_flags );
 }
 
 
 /// \param [in] borrowed reference
-void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh )
+void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh,
+												 U32 build_option_flags )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -75,27 +77,30 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
         m_MeshModelArchive.SaveToFile( dest_filepath );
 
 	// debug - output text file
-	string strTextFile;
-	if( 0 < dest_filepath.length() )
+	if( build_option_flags & BOF_OUTPUT_AS_TEXTFILE )
 	{
-		strTextFile = dest_filepath;
-		lfs::change_ext( strTextFile, "txt" );
-
-		if( src_dirpath.length() )
+		string strTextFile;
+		if( 0 < dest_filepath.length() )
 		{
-			// place the file to the directory of the source model
-			// to keep the dest directory clean
-//			strTextFile = fnop::get_path(src_dirpath) + lfs::get_leaf(strTextFile);
-			strTextFile = src_dirpath + "/" + lfs::get_leaf(strTextFile);
-		}
-	}
-	else
-	{
-		strTextFile = fmt_string( "mesh%02d.txt", s_MeshNum );
-		s_MeshNum++;
-	}
+			strTextFile = dest_filepath;
+			lfs::change_ext( strTextFile, "txt" );
 
-	m_MeshModelArchive.WriteToTextFile( strTextFile.c_str() );
+			if( src_dirpath.length() )
+			{
+				// place the file to the directory of the source model
+				// to keep the dest directory clean
+//				strTextFile = fnop::get_path(src_dirpath) + lfs::get_leaf(strTextFile);
+				strTextFile = src_dirpath + "/" + lfs::get_leaf(strTextFile);
+			}
+		}
+		else
+		{
+			strTextFile = fmt_string( "mesh%02d.txt", s_MeshNum );
+			s_MeshNum++;
+		}
+
+		m_MeshModelArchive.WriteToTextFile( strTextFile.c_str() );
+	}
 }
 
 
