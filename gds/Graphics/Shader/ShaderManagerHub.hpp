@@ -3,7 +3,7 @@
 
 
 #include "Graphics/Camera.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+//#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "3DMath/Matrix44.hpp"
 #include "ShaderManager.hpp"
