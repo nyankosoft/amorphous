@@ -1,11 +1,9 @@
 #include "GLBasicMeshImpl.hpp"
 #include "../GLExtensions.hpp"
 
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
-#include "Graphics/MeshModel/MeshBone.hpp"
-using namespace MeshModel;
+//#include "Graphics/MeshModel/MeshBone.hpp"
+//using namespace MeshModel;
 
 #include "Support/Log/DefaultLog.hpp"
 
