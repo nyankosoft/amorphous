@@ -1,20 +1,16 @@
-
 #include "GameTask_MainMenu.hpp"
+#include "App/GameWindowManager.hpp"
 #include "MainMenuEventHandler.hpp"
 #include "GUI.hpp"
-
-#include "App/GameWindowManager_Win32.hpp"
 #include "Sound/SoundManager.hpp"
-
 #include "GameTask_Stage.hpp"
 
 #include "Stage/PlayerInfo.hpp"
 #include "Stage/BE_PlayerShip.hpp"
 //#include "Stage/ScreenEffectManager.hpp"
 #include "Stage/Stage.hpp"
-
-#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
-
+//#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
+#include "Support/Log/DefaultLog.hpp"
 #include "Support/memory_helpers.hpp"
 
 using namespace std;
@@ -131,7 +127,9 @@ void CMainMenuEventHandler::HandleEvent( CGM_Event &event )
 			// - items, etc.
 			SinglePlayerInfo().Release();
 
-			PostMessage( GameWindowManager_Win32().GetWindowHandle(), WM_QUIT, 0, 0 );
+			LOG_PRINT_ERROR( " Exit command has not been implemented." );
+//			RequestAppExit();
+//			PostMessage( GameWindowManager_Win32().GetWindowHandle(), WM_QUIT, 0, 0 );
 		}
 		break;
 	}
