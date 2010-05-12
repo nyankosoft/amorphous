@@ -1,6 +1,5 @@
 #include "LensFlare.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/D3DMisc.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 using namespace std;
@@ -56,10 +55,12 @@ void CLensFlare::UpdateLensFlares()
 	float r, fDistFactor, fScaleFactor;
 	const size_t num_groups = m_vecLensFlareGroup.size();
 
-	float screen_width, screen_height;
 //	screen_width  = (floa	t)m_ScreenWidth;
 //	screen_height = (float)m_ScreenHeight;
-	GetViewportSize( screen_width, screen_height );
+	uint w=0,h=0;
+	GraphicsDevice().GetViewportSize( w, h );
+	const float screen_width  = (float)w;
+	const float screen_height = (float)h;
 
 	for( size_t i=0; i<num_groups; i++ )
 	{
