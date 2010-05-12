@@ -3,15 +3,13 @@
 #include "Stage/PlayerInfo.hpp"
 #include "Stage/Input/InputHandler_PlayerShip.hpp"
 
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "Item/WeaponSystem.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "GameTextSystem/GameTextWindow.hpp"
 #include "Support/memory_helpers.hpp"
 
 #include "App/GameWindowManager_Win32.hpp"
-
-#include <stdio.h>
 
 
 HUD_PlayerShip::HUD_PlayerShip()
@@ -94,23 +92,23 @@ void HUD_PlayerShip::LoadTextures()
 void HUD_PlayerShip::RenderImpl()
 {
 	// enable alpha blending
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-    pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-    pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-    pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+	GraphicsDevice().SetDestBlendMode(   AlphaBlend::One );
 
 	// blend texture color and diffuse color
-    pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
-    pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
+//	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
 
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-    pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
+//	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
-	DWORD dwFontColor = 0x7030B030;
+	U32 dwFontColor = 0x7030B030;
 
 	// background for status display
 	m_StatusBackGround.Draw();
@@ -124,7 +122,7 @@ void HUD_PlayerShip::RenderImpl()
 	else if( fLife < 0.0f )
 		fLife = 0.0f;
 
-	DWORD dwColor = D3DCOLOR_XRGB( 250 - (int)(250*fLife/fMaxGreenLife),	// red
+	U32 dwColor = D3DCOLOR_XRGB( 250 - (int)(250*fLife/fMaxGreenLife),	// red
 								  (int)(250*fLife/fMaxGreenLife),			// green
 								  0 );										// blue
 	m_ShipIcon.SetColor(dwColor);
@@ -132,18 +130,19 @@ void HUD_PlayerShip::RenderImpl()
 
 	m_Crosshair.Draw( m_CrosshairTexture );
 
-	// display current life by digit
+	// display current life with digits
 	char acLife[16];
 	sprintf( acLife, "%03d", (int)fOrigLife );
 
-    pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-    pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
+	SetRenderStatesForTextureFont( AlphaBlend::One );
 
 	float fScreenWidth = (float)GameWindowManager().GetScreenWidth();
 	float fRatio = fScreenWidth / 800.0f;
 
-	D3DXVECTOR2 vPos = D3DXVECTOR2( 400 - 15, 547.5f ) * fRatio;
+	Vector2 vPos = Vector2( 400 - 15, 547.5f ) * fRatio;
 	int font_width = (int)(10.0f * fRatio);	// font size 10*20 (when screen width = 800)
 	m_StatusFont.SetFontSize( font_width, font_width*2 );
 	m_StatusFont.SetFontColor( dwColor );
@@ -152,8 +151,8 @@ void HUD_PlayerShip::RenderImpl()
 
 	// draw weapon info - left bottom corner
 	C2DRect rect;
-	rect.SetPosition( D3DXVECTOR2(  80, 530 ) * fRatio,
-		              D3DXVECTOR2( 300, 560 ) * fRatio );
+	rect.SetPosition( Vector2(  80, 530 ) * fRatio,
+		              Vector2( 300, 560 ) * fRatio );
 	rect.SetColor( 0x50000000 );
 	rect.Draw();
 	rect.SetColor( dwFontColor );
@@ -170,11 +169,12 @@ void HUD_PlayerShip::RenderImpl()
         sprintf( str[0], "[%d] %s", iSlot, pWeapon->GetName().c_str() );
 //	sprintf( str[1], %03d / %03d", );
 
-    pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-    pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-    pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
+//	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
+	SetRenderStatesForTextureFont( AlphaBlend::One );
 
-	vPos = D3DXVECTOR2( 85 * fRatio, 535 * fRatio);
+	vPos = Vector2( 85 * fRatio, 535 * fRatio);
 	m_StatusFont.SetFontColor( dwFontColor );
 	m_StatusFont.DrawText( str[0], vPos, dwColor );
 
