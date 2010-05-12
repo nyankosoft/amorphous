@@ -9,12 +9,10 @@
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/D3DMisc.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "GameCommon/CriticalDamping.hpp"
 //#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Support/SafeDelete.hpp"
 
 #include "fwd.hpp"
 #include "CopyEntity.hpp"

@@ -196,8 +196,9 @@ CSubDisplay::CSubDisplay()
 m_vTargetPosition(Vector3(0,0,0)),
 m_fTargetRadius(0)
 {
-	int w,h;
-	GetViewportSize(w,h);
+	uint uw=0,uh=0;
+	GraphicsDevice().GetViewportSize(uw,uh);
+	const int w = (int)uw, h = (int)uh;
 
 	// witdh & height of the subdisplay
 	int dw = (int)(w * 0.2f);
