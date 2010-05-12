@@ -6,6 +6,7 @@
 #include "GameTask.hpp"
 #include "GameTaskFactoryBase.hpp"
 #include "Support/SafeDelete.hpp"
+#include "Support/Profile.hpp"
 
 
 CGameTask *CGameTaskManager::CreateTask( int iTaskID )
@@ -45,6 +46,8 @@ CGameTaskManager::~CGameTaskManager()
 
 void CGameTaskManager::Update( float dt )
 {
+	PROFILE_FUNCTION();
+
 	// get the prev task id if it has been requested
 	int next_task_id;
 	if( m_NextTaskID == CGameTask::ID_PREVTASK )
@@ -88,6 +91,12 @@ void CGameTaskManager::Update( float dt )
 	if( m_pCurrentTask )
 	{
 		m_NextTaskID = m_pCurrentTask->FrameMove( dt );
+
+		// When app exit request is made, should there be a callback which is called after FrameMove()?
+//		if( m_pCurrentTask->IsAppExitRequested() )
+//		{
+//			m_pCurrentTask->OnAppExitRequested();
+//		}
 	}
 
 }
@@ -95,6 +104,8 @@ void CGameTaskManager::Update( float dt )
 
 void CGameTaskManager::Render()
 {
+	PROFILE_FUNCTION();
+
 	if( m_pCurrentTask )
 	{
 		const bool use_render_task = false;
