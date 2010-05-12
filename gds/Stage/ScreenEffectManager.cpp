@@ -1,5 +1,5 @@
 #include "ScreenEffectManager.hpp"
-
+#include <algorithm>
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
@@ -8,16 +8,13 @@
 #include "Graphics/PostProcessEffectManager.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"
 #include "Graphics/LensFlare.hpp"
-#include "Graphics/D3DMisc.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
 
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
-
-
-#include <algorithm>
+#include "Support/Profile.hpp"
 
 using namespace std;
 using namespace boost;
@@ -633,6 +630,8 @@ void CScreenEffectManager::EndRender()
 
 void CScreenEffectManager::Render( CCamera &rCam )
 {
+	PROFILE_FUNCTION();
+
 	BeginRender( rCam );
 
 	if( m_EffectFlag & ScreenEffect::MonochromeColor )
@@ -660,6 +659,8 @@ void CScreenEffectManager::Render( CCamera &rCam )
 
 void CScreenEffectManager::RenderPostProcessEffects()
 {
+	PROFILE_FUNCTION();
+
 	if( m_bPostProcessEffectEnabled )
 	{
 /*		// perform post-processes on the scene
