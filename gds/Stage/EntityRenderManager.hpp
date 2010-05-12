@@ -81,8 +81,8 @@ private:
 
 	std::vector<CBaseEntity *> m_vecpSweepRenderBaseEntity;
 
-	CTextureHandle m_TransparentTexture;
-	CTextureHandle m_TranslucentTexture;
+//	CTextureHandle m_TransparentTexture;
+//	CTextureHandle m_TranslucentTexture;
 
 	std::string m_FallbackShaderFilepath;
 	CShaderHandle m_FallbackShader;

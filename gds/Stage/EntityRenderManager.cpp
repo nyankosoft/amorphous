@@ -9,6 +9,7 @@
 #include "Graphics/CubeMapManager.hpp"
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
+#include "Graphics/Shader/GenericShaderGenerator.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
@@ -238,11 +239,17 @@ CEntityRenderManager::~CEntityRenderManager()
 
 bool CEntityRenderManager::LoadFallbackShader()
 {
-	m_FallbackShaderFilepath = ms_DefaultFallbackShaderFilename;
-	if( !m_FallbackShader.Load( m_FallbackShaderFilepath ) )
-	{
-		return false;
-	}
+//	m_FallbackShaderFilepath = ms_DefaultFallbackShaderFilename;
+//	if( !m_FallbackShader.Load( m_FallbackShaderFilepath ) )
+//	{
+//		return false;
+//	}
+
+	CShaderResourceDesc desc;
+	CGenericShaderDesc shader_desc;
+	shader_desc.Specular = CSpecularSource::UNIFORM;
+	desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_desc) );
+	m_FallbackShader.Load( desc );
 
 	// check if the shader file has been properly loaded
 	LPD3DXEFFECT pEffect = m_FallbackShader.GetShaderManager()->GetEffect();
@@ -489,8 +496,6 @@ void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 
 void CEntityRenderManager::RenderScene( CCamera& rCam )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	//==================== render the entities ====================
 
 	CEntityNode::ms_NumRenderedEntities = 0;
@@ -536,8 +541,6 @@ void CEntityRenderManager::RenderAllButEnvMapTargetDownward_r( short sEntNodeInd
 
 void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_entity_id )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	//==================== render the entities ====================
 
 	CEntityNode::ms_NumRenderedEntities = 0;
@@ -561,8 +564,6 @@ void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_e
 
 void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	//==================== render the entities ====================
 
 	// move the skybox to the head of the list to render it first
@@ -585,8 +586,6 @@ void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
 
 void CEntityRenderManager::RenderShadowReceivers( CCamera& rCam )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	//==================== render the entities ====================
 
 	// render the entity tree by downward traversal
@@ -933,9 +932,9 @@ void CEntityRenderManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 void CEntityRenderManager::LoadTextures()
 {
 	// load texture for glare effect
-	m_TransparentTexture.Load( "Texture\\TransparentTex.dds" );
+//	m_TransparentTexture.Load( "Texture\\TransparentTex.dds" );
 
-	m_TranslucentTexture.Load( "Texture\\TranslucentTex.dds" );
+//	m_TranslucentTexture.Load( "Texture\\TranslucentTex.dds" );
 }
 
 
@@ -962,14 +961,16 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 //		m_pShadowManager->SetLightDirection( m_vOverrideShadowMapDirection );
 	}
 
-	float near_clip = 0.001f;
-//	UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_scene_cam_nearclip", near_clip );
+	static float near_clip = 0.001f;
+	static float far_clip  = 100.0f;
+	UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_scene_cam_nearclip", near_clip );
+	UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_scene_cam_farclip",  far_clip );
 	m_pShadowManager->SetCameraPosition( rCam.GetPosition() );
 	m_pShadowManager->SetCameraDirection( rCam.GetFrontDirection() );
 	m_pShadowManager->SceneCamera().SetNearClip( near_clip );
-	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
+	m_pShadowManager->SceneCamera().SetFarClip( far_clip );
 
-	// render objects that cast shadows to others
+	// render the objects that cast shadows to others
 
 	// CEntityRenderManager::RenderShadowCasters() is called 1 or more times
 	m_pShadowManager->RenderShadowCasters( rCam );
@@ -988,9 +989,9 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 
 	m_pShadowManager->SetSceneCamera( rCam );
 	m_pShadowManager->SceneCamera().SetNearClip( near_clip );
-	m_pShadowManager->SceneCamera().SetFarClip( 100.0f );
+	m_pShadowManager->SceneCamera().SetFarClip( far_clip );
 
-	// render that receives shadows
+	// render the objects that receive shadows
 
 	m_pShadowManager->RenderShadowReceivers( rCam );
 /*
