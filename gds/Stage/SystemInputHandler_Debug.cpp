@@ -1,20 +1,17 @@
 #include "SystemInputHandler_Debug.hpp"
-#include <direct.h>
 
-#include "App/GameWindowManager_Win32.hpp"
+#include "App/GameWindowManager.hpp"
 #include "App/GameApplicationBase.hpp"
 #include "Task/GameTaskManager.hpp"
 
-#include "Graphics/Font/Font.hpp"
-#include "Graphics/Font/TextureFont.hpp"
-#include "Stage/PlayerInfo.hpp"
-#include "Stage/EntitySet.hpp"
-#include "Stage/BE_PlayerShip.hpp"
+//#include "Stage/PlayerInfo.hpp"
+//#include "Stage/EntitySet.hpp"
+//#include "Stage/BE_PlayerShip.hpp"
 #include "Stage/Stage.hpp"
 #include "Stage/ScreenEffectManager.hpp"
-#include "GameCommon/ImageCapture.hpp"
-#include "GameCommon/ScreenShotManager.hpp"
-#include "Item/WeaponSystem.hpp"
+//#include "GameCommon/ImageCapture.hpp"
+//#include "GameCommon/ScreenShotManager.hpp"
+//#include "Item/WeaponSystem.hpp"
 
 #include "Task/GameTask_Stage.hpp"
 
