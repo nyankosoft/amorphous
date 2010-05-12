@@ -1,11 +1,6 @@
 #include "BE_PhysicsBaseEntity.hpp"
 #include "EntityCollisionGroups.hpp"
-
 #include "CopyEntity.hpp"
-#include "3DMath/Matrix33.hpp"
-//#include "JigLib/JL_ShapeDesc_Box.hpp"
-//#include "JigLib/JL_ShapeDesc_Capsule.hpp"
-//#include "JigLib/JL_PhysicsActor.hpp"
 #include "Physics/Enums.hpp"
 
 #include "Support/SafeDeleteVector.hpp"
