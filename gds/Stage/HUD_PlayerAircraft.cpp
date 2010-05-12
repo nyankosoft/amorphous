@@ -7,7 +7,6 @@
 
 #include "Graphics/2DPrimitive/2DFrameRect.hpp"
 #include "Graphics/2DPrimitive/2DTriangle.hpp"
-#include "Graphics/D3DMisc.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "GameTextSystem/TextMessageManager.hpp"
 #include "GameTextSystem/TextMessageRenderer.hpp"
@@ -277,8 +276,10 @@ void HUD_PlayerAircraft::Update( float  dt )
 
 	CBE_PlayerPseudoAircraft *pPlayerAircraft = (CBE_PlayerPseudoAircraft *)pBaseEntity;
 
-	float width, height;
-	GetViewportSize( width, height );
+	uint w=0, h=0;
+	GraphicsDevice().GetViewportSize( w, h );
+	const float width  = (float)w;
+	const float height = (float)h;
 
 	m_HUD.SetScreenCenter( width  * ( 0.5f - pPlayerAircraft->GetCameraHeading() * 0.5f ),
 			               height * ( 0.5f - pPlayerAircraft->GetCameraPitch()   * 0.5f ) );
