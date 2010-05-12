@@ -32,6 +32,13 @@ CGM_ControlRendererManager::~CGM_ControlRendererManager()
 
 void CGM_ControlRendererManager::Release()
 {
+	// Make sure that the element manager is released before effect manager.
+	// When the ctor with no arguments is used, in which case m_pGraphicsElementManager is
+	// a borrowed copy of the element manager stored in m_pGraphicsEffectManager,
+	// omitting this causes crash in CGraphiceEffectManagerCallback::OnDestroyed()
+	// because m_pGraphicsEffectManager is released first.
+	m_pGraphicsElementManager.reset();
+
 //	size_t i, num_renderers = m_vecpControlRenderer.size();
 //	for( i=0; i<num_renderers; i++ )
 //		SafeDelete( m_vecpControlRenderer[i] );
