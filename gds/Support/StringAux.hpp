@@ -257,4 +257,20 @@ inline int get_str_index( const std::string& input_str, const std::vector<std::s
 }
 
 
+/**
+Returns true if the target string has a valid length, its last char is a newline char, and it is successfully removed.
+Returns false otherwise.
+*/
+inline bool remove_newline_char_at_the_end( std::string& target )
+{
+	if( 0 < target.length() && target[target.length() - 1] == '\n' )
+	{
+		target = target.substr( 0, target.length()-1 );
+		return true;
+	}
+	else
+		return false;
+}
+
+
 #endif  /*  __STRINGAUX_H__  */
