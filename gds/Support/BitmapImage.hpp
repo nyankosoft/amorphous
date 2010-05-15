@@ -473,32 +473,50 @@ inline bool CBitmapImage::SaveToFile( const std::string& pathname, int flag )
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	BOOL bSuccess = FALSE;
 
-	if(m_pFreeImageBitMap)
+	if( !m_pFreeImageBitMap )
 	{
-		// try to guess the file format from the file extension
-		fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
-		if(fif != FIF_UNKNOWN )
-		{
-			// check that the plugin has sufficient writing and export capabilities ...
-			WORD bpp = FreeImage_GetBPP(m_pFreeImageBitMap);
-			if(FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp))
-			{
-				// ok, we can save the file
-				bSuccess = FreeImage_Save(fif, m_pFreeImageBitMap, pathname.c_str(), flag);
-				LOG_PRINT( "Saved an image file to disk: " + pathname );
-
-				// unless an abnormal bug, we are done !
-			}
-			else
-			{
-				LOG_PRINT_ERROR( "Cannot save an image to disk: " + pathname );
-			}
-		}
-		else
-			LOG_PRINT_ERROR( "Failed to save an image file to disk: " + pathname );
+		LOG_PRINT_ERROR( " Has no valid bitmap." );
+		return false;
 	}
 
-	return (bSuccess == TRUE) ? true : false;
+	// try to guess the file format from the file extension
+	fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
+	if(fif == FIF_UNKNOWN )
+	{
+		LOG_PRINT_ERROR( " An unsupported image format: " + pathname );
+		return false;
+	}
+
+	// check that the plugin has sufficient writing and export capabilities ...
+	WORD bpp = FreeImage_GetBPP(m_pFreeImageBitMap);
+	BOOL supports_writing = FreeImage_FIFSupportsWriting(fif);
+	if( !supports_writing )
+	{
+		LOG_PRINT_ERROR( " FreeImage_FIFSupportsWriting() returned false. Cannot save the image to disk as " + pathname );
+		return false;
+	}
+
+	BOOL supports_export_bpp = FreeImage_FIFSupportsExportBPP(fif, bpp);
+	if( !supports_export_bpp )
+	{
+		LOG_PRINT_ERROR( " Cannot save an image to disk: " + pathname );
+		return false;
+	}
+
+	// ok, we can save the file
+	bSuccess = FreeImage_Save(fif, m_pFreeImageBitMap, pathname.c_str(), flag);
+
+	// unless an abnormal bug, we are done !
+	if( bSuccess == TRUE )
+	{
+		LOG_PRINT_VERBOSE( " Saved an image file to disk: " + pathname );
+		return true;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " Failed to save an image file to disk: " + pathname );
+		return false;
+	}
 }
 
 
