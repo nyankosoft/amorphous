@@ -1,0 +1,2 @@
+stripe_width   1
+stripe_opacity 0.3
