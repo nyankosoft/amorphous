@@ -348,6 +348,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\PseudoNoiseEffect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\PseudoNoiseEffect.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\RectTriListIndex.cpp"
 				>
 			</File>

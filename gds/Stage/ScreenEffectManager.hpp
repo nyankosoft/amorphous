@@ -3,18 +3,15 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
-
+#include "../base.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "ScreenEffect.hpp"
-#include "PseudoNoiseEffect.hpp"
-
+#include "Graphics/PseudoNoiseEffect.hpp"
 #include "Support/FixedVector.hpp"
-
-#include "../base.hpp"
+#include "ScreenEffect.hpp"
 
 
 class CScreenEffectTargetSceneRenderer : public CGraphicsComponent

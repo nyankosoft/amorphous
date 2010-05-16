@@ -339,14 +339,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\gds\Stage\PseudoNoiseEffect.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\gds\Stage\PseudoNoiseEffect.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\gds\Stage\QuickMenuManager.cpp"
 					>
 				</File>
