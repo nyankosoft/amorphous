@@ -2,6 +2,7 @@
 #define  __PseudoNoiseEffect_H__
 
 
+#include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/FVF_TLVertex.h"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureHandle.hpp"
@@ -9,16 +10,28 @@
 
 #define NUM_NVNOISE_TEXTURES 4
 
+
+// Implementaions of noise effects
+// - Create a noise look-up texture
+//   - No need to use programmable shader
+// - Use rand function in HLSL
+//   - Saves texture memory
 class CPseudoNoiseEffect : public CGraphicsComponent
 {
 	TLVERTEX2 m_avTextureRect[4];
 
 	CTextureHandle m_aNoiseTexture[NUM_NVNOISE_TEXTURES];
 
-//	LPDIRECT3DTEXTURE9 m_apNVNoiseTexture[NUM_NVNOISE_TEXTURES];
+	C2DRect m_FullscreenRect;
+
+	CTextureHandle m_NoiseTexture;
+
+	uint m_NoiseTextureSize;
+
+	uint m_NoisePixelSize;
 
 	/// an extra texture which is rendered with noise effect
-//	LPDIRECT3DTEXTURE9 m_pExtraTexture;
+//	CTextureHandle m_ExtraTexture;
 
 	int m_iScreenWidth;
 	int m_iScreenHeight;
@@ -27,6 +40,8 @@ public:
 
 	CPseudoNoiseEffect();
 	~CPseudoNoiseEffect();
+
+	void Init( float strength, uint noise_pixel_size );
 
 //	void SetPosition( Vector2& rvMin, Vector2& rvMax );
 
