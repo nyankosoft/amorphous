@@ -52,6 +52,11 @@ public:
 	{
 		return (int)m_timeval.tv_sec * 1000 + (int)m_timeval.tv_usec / 1000;
 	}
+
+	int get_microsec() const
+	{
+		return (int)m_timeval.tv_sec * 1000000 + (int)m_timeval.tv_usec;
+	}
 };
 
 
