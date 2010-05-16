@@ -363,11 +363,15 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 
 	STrace local_trace = rTrace;
 	Vector3 vS, vG;
-//	D3DXMATRIX matRot_inv;
 
 	switch( m_BoundingVolumeType )
 	{
+	case BVTYPE_DOT:
+		// No clipping of traces against a dot?
+		break;
+
 	case BVTYPE_AABB:
+//	default:
 		vS = *rTrace.pvStart - pMyself->GetWorldPosition();
 		vG = *rTrace.pvGoal  - pMyself->GetWorldPosition();
 		local_trace.pvStart = &vS;
@@ -1189,7 +1193,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 		*/
 		if( scanner.TryScanLine( "SHADER_TECH", str ) )
 		{
-			g_Log.Print( "setting a shader technique: %s %s", m_strName.c_str(), str.c_str() );
+			LOG_PRINT_VERBOSE( fmt_string("setting a shader technique: %s %s", m_strName.c_str(), str.c_str()) );
 
 			C2DArray<CShaderTechniqueHandle>& rShaderTechTable = m_MeshProperty.m_ShaderTechnique;
 			if( strCurrentLine[ strlen("SHADERTECH") ] != '.' )
