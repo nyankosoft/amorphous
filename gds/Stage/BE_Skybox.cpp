@@ -29,6 +29,7 @@ CBE_Skybox::CBE_Skybox()
 
 	m_BoundingVolumeType = BVTYPE_AABB;
 
+	m_MeshProperty.m_ShaderFilepath = "Shader/HighAltCamSkybox.fx";
 	m_MeshProperty.m_ShaderTechnique.resize(1,1);
 	m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SkySphereFG" );
 }
@@ -138,7 +139,10 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 				fCamHeight = 5.0f;
 
 			pShaderManager->GetEffect()->SetFloat( "g_CameraHeight", fCamHeight );
+//			pShaderManager->SetParam( "g_CameraHeight", fCamHeight );
+
 //			pEffect->SetFloat( "g_TexVShiftFactor", 0.000005f );
+//			pShaderManager->SetParam( "g_TexVShiftFactor", 0.000005f );
 
 //			cam_height_param.Parameter() = fCamHeight;
 //			pShaderManager->SetParam( cam_height_param );
@@ -155,6 +159,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	}
 	else
 	{
+//		RenderAsSkybox( m_MeshProperty.m_MeshObjectHandle, vPos );
 		pMeshObject->Render();
 	}
 
