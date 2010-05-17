@@ -232,6 +232,33 @@ inline bool path_exists( const std::string& pathname )
 }
 
 
+inline std::string connect_path( const std::string& lhs, const std::string& rhs )
+{
+	if( lhs.length() == 0 )
+		return rhs;
+
+	if( rhs.length() == 0 )
+		return lhs;
+
+	char lhs_last_char = lhs[ lhs.length()-1 ];
+	char rhs_first_char = rhs[0];
+	if( lhs_last_char == '\\' || lhs_last_char == '/' )
+	{
+		if( rhs_first_char == '\\' || rhs_first_char == '/' )
+			return lhs + rhs.substr( 1 );
+		else
+			return lhs + rhs;
+	}
+	else
+	{
+		if( rhs_first_char == '\\' || rhs_first_char == '/' )
+			return lhs + rhs;
+		else
+			return lhs + "/" + rhs;
+	}
+}
+
+
 /// returns the last modified time of the file
 inline time_t get_last_modified_time( const std::string& filename )
 {
