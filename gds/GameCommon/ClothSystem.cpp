@@ -3,6 +3,7 @@
 #include "gds/XML.hpp"
 #include "gds/MotionSynthesis/MotionFSM.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/lfs.hpp"
 
 using namespace physics;
 using namespace std;
@@ -351,14 +352,27 @@ void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe
 	if( !m_pSkeleton )
 		return;
 
+	// Update world transforms stored in the cache nodes.
 	m_TransformCacheTree.CalculateWorldTransforms( *m_pSkeleton, keyframe, world_pose );
 
-	// update the poses of the collison objects
+	// Update the poses of the attach objects
+	const size_t num_attach_objects = m_ClothAttachObjects.size();
+	for( size_t i=0; i<num_attach_objects; i++ )
+	{
+		CClothCollisionObject& attach_obj = m_ClothAttachObjects[i];
+
+//		attach_obj.UpdateWorldTransform();
+		Matrix34 world_pose( Matrix34Identity() );
+		attach_obj.m_pActor->SetWorldPose( world_pose );
+	}
+
+	// Update the poses of the collison objects
 	const size_t num_coll_objects = m_ClothCollisionObjects.size();
 	for( size_t i=0; i<num_coll_objects; i++ )
 	{
 		CClothCollisionObject& coll_obj = m_ClothCollisionObjects[i];
 
+//		coll_obj.UpdateWorldTransform();
 		Matrix34 world_pose( Matrix34Identity() );
 		coll_obj.m_pActor->SetWorldPose( world_pose );
 	}
@@ -423,11 +437,43 @@ void CClothSystem::LoadFromXMLNode( CXMLNodeReader& node )
 	for( size_t i=0; i<cloths.size(); i++ )
 		m_Cloths[i].LoadFromXMLNode( cloths[i] );
 
+	// cloth attach objects
+
 	CXMLNodeReader attach_objs_node = node.GetChild( "attach_objects" );
 	vector<CXMLNodeReader> attach_objs = attach_objs_node.GetImmediateChildren( "object" );
 	m_ClothAttachObjects.resize( attach_objs.size() );
 	for( size_t i=0; i<attach_objs.size(); i++ )
 		m_ClothAttachObjects[i].LoadFromXMLNode( attach_objs[i] );
+
+/*	string mesh_filepath = attach_objs_node.GetChild("mesh").GetTextContent();
+	if( 0 < mesh_filepath.length() )
+	{
+//		mesh_filepath = path( path(m_XMLFilepath).parent_path() / mesh_filepath ).string();
+		mesh_filepath = connect_path( lfs::get_parent_path(m_XMLFilepath), mesh_filepath );
+		C3DMeshModelArchive mesh_archive;
+		bool mesh_loaded = mesh_archive.LoadFromFile( mesh_filepath );
+		if( mesh_loaded )
+		{
+			shared_ptr<CGeneral3DMesh> pMesh = ToGeneral3DMesh( mesh_archive );
+			if( pMesh )
+			{
+				connected_sets = GetConnectedSets( pMesh, surface_name );
+				for( int i=0; i<connected_sets.size(); i++ )
+				{
+					if( IsCapsule( connected_sets[i] ) )
+					{
+						// add a capsule shape
+					}
+					else if( IsSphere( connected_sets[i] ) )
+					{
+						// add a sphere shape
+					}
+				}
+			}
+		}
+	}*/
+
+	// cloth collision objects
 
 	CXMLNodeReader coll_objs_node = node.GetChild( "collision_objects" );
 	vector<CXMLNodeReader> coll_objs = coll_objs_node.GetImmediateChildren( "object" );
@@ -436,4 +482,75 @@ void CClothSystem::LoadFromXMLNode( CXMLNodeReader& node )
 		m_ClothCollisionObjects[i].LoadFromXMLNode( coll_objs[i] );
 
 //	node.GetChildElementTextContent( "name",       m_Name );
+}
+
+
+void CClothSystem::RenderObjectsForDebugging()
+{
+	vector<CClothCollisionObject> *pObjs[] = { &m_ClothAttachObjects, &m_ClothCollisionObjects };
+	SFloatRGBAColor colors[] = { SFloatRGBAColor::Blue(), SFloatRGBAColor::Red() };
+
+	for( int i=0; i<2; i++ )
+	{
+		vector<CClothCollisionObject>& objs = *pObjs[i];
+		for( int j=0; j<objs.size(); j++ )
+		{
+			CClothCollisionObject& obj = objs[j];
+			if( !obj.m_pActor )
+				continue;
+
+			for( int k=0; k<obj.m_pActor->GetNumShapes(); k++ )
+			{
+				CShape *pShape = obj.m_pActor->GetShape(k);
+				switch( pShape->GetType() )
+				{
+				case PhysShape::Sphere:
+					{
+						CSphereShape *pSphere = dynamic_cast<CSphereShape *>(pShape);
+						if( !pSphere )
+							break;
+
+//						Get3DPrimitiveRenderer().RenderSphere( pose, pSphere->GetRadius(), colors[i] );
+					}
+					break;
+
+				case PhysShape::Capsule:
+					{
+						CCapsuleShape *pCap = dynamic_cast<CCapsuleShape *>(pShape);
+						if( !pCap )
+							break;
+
+//						Get3DPrimitiveRenderer().RenderCapsule( pose, pCap->GetRadius(), pCap->GetLength(), colors[i] );
+					}
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
+
+
+	}
+
+	const size_t num_attach_objects = m_ClothAttachObjects.size();
+	for( size_t i=0; i<num_attach_objects; i++ )
+	{
+		CClothCollisionObject& attach_obj = m_ClothAttachObjects[i];
+
+//		attach_obj.UpdateWorldTransform();
+		Matrix34 world_pose( Matrix34Identity() );
+		attach_obj.m_pActor->SetWorldPose( world_pose );
+	}
+
+	// Update the poses of the collison objects
+	const size_t num_coll_objects = m_ClothCollisionObjects.size();
+	for( size_t i=0; i<num_coll_objects; i++ )
+	{
+		CClothCollisionObject& coll_obj = m_ClothCollisionObjects[i];
+
+//		coll_obj.UpdateWorldTransform();
+		Matrix34 world_pose( Matrix34Identity() );
+		coll_obj.m_pActor->SetWorldPose( world_pose );
+	}
 }

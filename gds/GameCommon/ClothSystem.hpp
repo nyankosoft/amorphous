@@ -176,7 +176,7 @@ public:
 
 	/**
 	When called without arguments, the cloth system creates a new scene for physics objects.
-	Creates 3 types of physics objects, cloths, collisiotion objects, and attachment objects.
+	Creates 3 types of physics objects: cloths, collision objects, and attachment objects.
 	*/
 	void InitPhysics( physics::CScene *pScene = NULL );
 
@@ -207,6 +207,7 @@ public:
 
 //	unsigned int GetArchiveObjectID() const { return ; }
 
+	void RenderObjectsForDebugging();
 };
 
 
