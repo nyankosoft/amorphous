@@ -8,11 +8,13 @@
 #include "Graphics/3DGameMath.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
+#include "Support/ParamLoader.hpp"
 
 using namespace std;
 using namespace boost;
 
 
+float g_fShadowMapNearClip = 0.1f;
 float g_fShadowMapFarClip = 100.0f;
 
 
@@ -183,7 +185,12 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 
 void CFlatShadowMap::SetWorldToLightSpaceTransformMatrix()
 {
-	float fOrigCamFarClip = m_LightCamera.GetFarClip();
+	float fOrigCamNearClip = m_LightCamera.GetNearClip();
+	float fOrigCamFarClip  = m_LightCamera.GetFarClip();
+
+	UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
+	UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );
+	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
 	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
 
 	HRESULT hr = S_OK;
@@ -206,10 +213,12 @@ void CFlatShadowMap::SetWorldToLightSpaceTransformMatrix()
 	DIRECT3D9.GetDevice()->GetViewport( &vp );
 
 
+	m_LightCamera.SetNearClip( fOrigCamNearClip );
 	m_LightCamera.SetFarClip( fOrigCamFarClip );
 }
 
 
+static float sg_fOrigNearClip = 0;
 static float sg_fOrigFarClip = 0;
 
 void CFlatShadowMap::BeginSceneShadowMap()
@@ -228,7 +237,9 @@ void CFlatShadowMap::BeginSceneShadowMap()
 
 	hr = pd3dDev->SetDepthStencilSurface( m_pShadowMapDepthBuffer );
 
+	sg_fOrigNearClip = m_LightCamera.GetNearClip();
 	sg_fOrigFarClip = m_LightCamera.GetFarClip();
+	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
 	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
 
 	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
@@ -252,6 +263,7 @@ void CFlatShadowMap::EndSceneShadowMap()
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
 
+	m_LightCamera.SetNearClip( sg_fOrigNearClip );
 	m_LightCamera.SetFarClip( sg_fOrigFarClip );
 }
 
@@ -307,8 +319,10 @@ float CDirectionalLightShadowMap::ms_fCameraShiftDistance = 50.0f;
 
 CDirectionalLightShadowMap::CDirectionalLightShadowMap()
 {
-	m_LightCamera.SetNearClip( 0.5f );
-	m_LightCamera.SetFarClip( 100.0f );
+	static float near_clip = 0.5f;
+	static float far_clip = 100.0f;
+	m_LightCamera.SetNearClip( near_clip );
+	m_LightCamera.SetFarClip( far_clip );
 	m_LightCamera.SetFOV( (float)PI / 4.0f );
 	m_LightCamera.SetAspectRatio( 1.0f );
 }

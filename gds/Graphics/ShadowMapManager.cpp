@@ -293,6 +293,7 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
 
+	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::White().GetARGB32() );
 	m_aShadowTexture[0].SetRenderTarget();
 
 	itr->second->RenderShadowReceivers( camera );
