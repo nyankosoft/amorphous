@@ -1,9 +1,9 @@
 #include "ClothTest.hpp"
 #include <boost/foreach.hpp>
 #include "gds/Graphics.hpp"
-#include "gds/Graphics/AsyncResourceLoader.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/VertexFormat.hpp"
+#include "gds/Graphics/Mesh/CustomMeshRenderer.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
@@ -151,9 +151,7 @@ void CClothObject::Render()
 
 	FixedFunctionPipelineManager().SetWorldTransform( pose );
 
-
-	CD3DCustomMeshRenderer mesh_renderer;
-	mesh_renderer.RenderMesh( m_Mesh );
+	GetCustomMeshRenderer().RenderMesh( m_Mesh );
 }
 
 
@@ -212,11 +210,6 @@ m_StartPhysicsSimulation(false)
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
-
-//	m_TestAsyncLoading = true;
-
-//	GraphicsResourceManager().AllowAsyncLoading( m_TestAsyncLoading );
-
 
 	g_Camera.SetPosition( Vector3( 0, 2, -120 ) );
 //	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
@@ -582,7 +575,6 @@ void CClothTest::RenderMeshes()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-//	pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 /*
 //	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
@@ -627,16 +619,10 @@ void CClothTest::Render()
 {
 	PROFILE_FUNCTION();
 
-//	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
-
 	RenderMeshes();
 
 	if( m_pSampleUI )
 		m_pSampleUI->Render();
-
-//	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
-
-//	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
 	Vector2 vTopLeft(     (float)GetWindowWidth() / 4,  (float)16 );
 	Vector2 vBottomRight( (float)GetWindowWidth() - 16, (float)GetWindowHeight() * 3 / 2 );

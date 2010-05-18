@@ -113,11 +113,7 @@ class CClothTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	boost::shared_ptr<CFontBase> m_pFont;
 
-	CInputHandlerSharedPtr m_pInputHandler;
-
 	CGM_DialogManagerSharedPtr m_pSampleUI;
-
-//	bool m_TestAsyncLoading;
 
 	physics::CScene *m_pPhysScene;
 
