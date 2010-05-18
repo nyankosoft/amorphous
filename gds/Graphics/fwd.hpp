@@ -96,6 +96,8 @@ class CProgressiveMesh;
 class CSkeletalMesh;
 class CMeshImpl;
 
+class CCustomMesh;
+
 
 class CGraphicsElement;
 class CRectElement;
