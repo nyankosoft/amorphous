@@ -42,12 +42,13 @@ extern CApplicationBase *CreateApplicationInstance() { return new CUserDefinedAp
 extern CApplicationBase *CreateApplicationInstance();
 
 
+/// Main loop function used on Windows platform
 void MainLoop( CApplicationBase *pApp )
 {
     // Enter the message loop
     MSG msg;
     ZeroMemory( &msg, sizeof(msg) );
-    while( msg.message!=WM_QUIT )
+    while( msg.message!=WM_QUIT && pApp->IsAppExitRequested() == false )
     {
         if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
         {

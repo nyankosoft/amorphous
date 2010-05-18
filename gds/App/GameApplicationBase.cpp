@@ -111,7 +111,7 @@ void CGameApplicationBase::Release()
 
 void CGameApplicationBase::InitDebugItems()
 {
-	const string font_name = "BuiltinFont::BitstreamVeraSansMono_Bold_256";//"DotumChe";
+	const string font_name = "BuiltinFont::BitstreamVeraSansMono-Bold-256";//"DotumChe";
 
 	// set debug items and output to the screen
 	// (graphics component)
@@ -393,6 +393,12 @@ void CGameApplicationBase::UpdateFrame()
 	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
 
 	ProfileDumpOutputToBuffer();
+
+	if( m_pTaskManager->GetCurrentTask()
+	 && m_pTaskManager->GetCurrentTask()->IsAppExitRequested() )
+	{
+		RequestAppExit();
+	}
 
 	Sleep( ms_DefaultSleepTimeMS );
 //	PERIODICAL( 2, Sleep(5) );

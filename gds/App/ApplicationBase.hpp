@@ -30,6 +30,8 @@ protected:
 
 	bool m_UseDefaultKeyboard;
 
+	bool m_IsAppExitRequested;
+
 protected:
 
 	// Override this to customize the text that appears on the title bar of the applicaiton window.
@@ -47,12 +49,17 @@ public:
 	CApplicationBase()
 		:
 	m_UseDefaultMouse(true),
-	m_UseDefaultKeyboard(true)
+	m_UseDefaultKeyboard(true),
+	m_IsAppExitRequested(false)
 	{}
 
 	virtual ~CApplicationBase() {}
 
 //	virtual void Release() {}
+
+	void RequestAppExit() { m_IsAppExitRequested = true; }
+
+	bool IsAppExitRequested() const { return m_IsAppExitRequested; }
 
 	/// Implemented by CGameApplicationBase
 	virtual void AcquireInputDevices() {}
