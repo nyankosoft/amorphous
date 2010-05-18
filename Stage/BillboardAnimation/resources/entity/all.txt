@@ -1,0 +1,622 @@
+================= bullet
+CLASSNAME	CBE_Bullet
+NAME		XBullet
+BV_TYPE		BVTYPE_DOT
+BULLET_POWER	0.001
+PENETRATION		1.6
+3DMODEL		Model\\LaserBullet.x
+END
+================= explosive grenade
+CLASSNAME	CBE_Explosive
+NAME		grnd
+AABB		0.04 0.04 0.04
+BV_TYPE		BVTYPE_AABB
+3DMODEL		Model\\40mmGHead.x
+LIFE		20.0
+BLASTNAME	s_blast
+EXPLOSION_ANIM	qBang
+EXPLOSION_ANIM_TIME_OFFSET	-0.02
+END
+================= homing missile
+CLASSNAME	CBE_HomingMissile
+NAME		mssl
+//AABB_MAX	 0.02  0.02  0.02
+//AABB_MIN	-0.02 -0.02 -0.02
+BV_TYPE		BVTYPE_DOT
+3DMODEL		Model\\Missile.x
+LIFE		5200.0
+BLASTNAME	LBlast
+SENSOR		NO
+SNS_ANGLE	1.2
+MAXRANGE	10000.0
+SNSR_RANGE	2500.0
+ACCEL		450.0
+MAXSPEED	800.0
+SNSR_INTVL	-1
+TURN_SPD	1.2
+PROXIMITY_THRESHOLD	50.0
+//LIGHT_FOR_FLAME	MissileFlame
+EXPLOSION_LIGHT	ExplosionFlashLight
+EXPLOSION_ANIM	LBANG
+EXPLOSION_ANIM_TIME_OFFSET	-0.08
+EXPLOSION_SMOKE	XPBsmk
+EXPLOSION_SPARK	LSpk
+TRACESMOKE		smktrail
+FLAMETRACE		FlameTraceL
+END
+================= homing missile for enemy aircraft which uses the simplified missile fire routine
+CLASSNAME	CBE_HomingMissile
+NAME		enemy_missile
+//AABB_MAX	 0.02  0.02  0.02
+//AABB_MIN	-0.02 -0.02 -0.02
+BV_TYPE		BVTYPE_DOT
+3DMODEL		Model\\Missile.x
+LIFE		5200.0
+BLASTNAME	LBlast
+SENSOR		YES
+SNS_ANGLE	1.2
+MAXRANGE	10000.0
+SNSR_RANGE	250000.0
+ACCEL		450.0
+MAXSPEED	800.0
+SNSR_INTVL	0.3
+TURN_SPD	1.2
+PROXIMITY_THRESHOLD	50.0
+//LIGHT_FOR_FLAME	MissileFlame
+EXPLOSION_LIGHT	ExplosionFlashLight
+EXPLOSION_ANIM	LBANG
+EXPLOSION_ANIM_TIME_OFFSET	-0.08
+EXPLOSION_SMOKE	XPBsmk
+EXPLOSION_SPARK	LSpk
+TRACESMOKE		smktrail_short
+FLAMETRACE		FlameTraceL
+END
+================= blast
+CLASSNAME	CBE_Blast
+NAME		s_blast
+AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_DOT
+3DMODEL		---
+BASEDAMAGE	320.0
+MAX_RADIUS	6.0
+DURATION	0.05
+END
+================= blast
+CLASSNAME	CBE_Blast
+NAME		LBlast
+AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_DOT
+3DMODEL		---
+BASEDAMAGE	10000.0
+MAX_RADIUS	80.0
+DURATION	0.05
+IMPULSE		10.0
+END
+================= Blast
+CLASSNAME	CBE_Blast
+NAME		Blast
+AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_DOT
+3DMODEL		---
+BASEDAMAGE	450.0
+MAX_RADIUS	12.0
+DURATION	0.16
+END
+================= immediate explosion ============================================ CBE_Explosive 
+CLASSNAME	CBE_Explosive
+NAME		imex
+NOCLIP		TRUE
+BV_TYPE		BVTYPE_DOT
+TIMER		0.001
+EXPLOSION_LIGHT	ExplosionFlashLight
+EXPLOSION_ANIM	Bang
+EXPLOSION_ANIM_TIME_OFFSET	-0.08
+END
+================= immediate explosion
+CLASSNAME	CBE_Explosive
+NAME		imex_L
+NOCLIP		TRUE
+BV_TYPE		BVTYPE_DOT
+TIMER		0.001
+EXPLOSION_LIGHT				ExplosionFlashLight
+EXPLOSION_SMOKE				XPBsmk
+EXPLOSION_SPARK				LSpk
+EXPLOSION_ANIM				LBANG
+EXPLOSION_ANIM_TIME_OFFSET	-0.08
+EXPLOSION_ANIMRANGE			0.8
+NUM_EXPLOSION_ANIMS			5
+END
+================= immediate explosion
+CLASSNAME	CBE_Explosive
+NAME		imex_b0
+NOCLIP		TRUE
+BV_TYPE		BVTYPE_DOT
+TIMER		0.001
+BLASTNAME	s_blast
+EXPLOSION_LIGHT	ExplosionFlashLight
+EXPLOSION_ANIM	qBang
+EXPLOSION_ANIM_TIME_OFFSET	-0.02
+//NUM_EXPLOSION_ANIMS		5
+END
+================= explosive1 (static explosives for maps) ========================= CBE_Explosive
+CLASSNAME	CBE_Explosive
+NAME		sE1Pod
+AABB		0.50 1.20 0.50
+BV_TYPE		BVTYPE_AABB
+3DMODEL		Model\\Explosive1.x
+BSPTREE		Model\\Explosive1.bspt
+LIFE		20.0
+BLASTNAME	s_blast
+EXPLOSION_LIGHT	ExplosionFlashLight
+EXPLOSION_ANIM	qBang
+EXPLOSION_ANIM_TIME_OFFSET	-0.02
+END
+================= explosive2
+CLASSNAME	CBE_Explosive
+NAME		ssE1Pod
+AABB		0.50 0.72 0.50
+BV_TYPE		BVTYPE_AABB
+3DMODEL		Model\\Explosive2.x
+LIFE		20.0
+BLASTNAME	s_blast
+EXPLOSION_LIGHT	ExplosionFlashLight
+EXPLOSION_ANIM	qBang
+EXPLOSION_ANIM_TIME_OFFSET	-0.02
+END
+//================= laser dot emitted from another entity
+//CLASSNAME	CBE_LaserDot
+//NAME		ldt
+//AABB		0.20 0.20 0.20
+//BV_TYPE		BVTYPE_DOT
+//3DMODEL		resources\\Model\\LaserDotX.x
+//END
+================= life-up item =================================================== CBE_SupplyItem
+CLASSNAME	CBE_SupplyItem
+NAME		s_Life
+AABB		0.50 0.50 0.50
+BV_TYPE		BVTYPE_AABB
+3DMODEL		Model\\SLife.x
+EFFECT		GM_HEALING
+ITEMNAME	---
+LIGHTING	FALSE
+NOCLIP		TRUE
+AMOUNT		16
+ROT_SPEED	0
+SOUND		Power
+//PSEUDO_GLARE	BlueLight	
+END
+================= fixed turret (stand & turntable) =============================== CBE_Enemy
+CLASSNAME	CBE_FixedTurretPod
+NAME		AAA-00
+AABB		8.0  8.0  8.0
+BV_TYPE		BVTYPE_AABB
+STAND_MESH	Model\\aaa00_pod.msh
+TTBL_MESH	Model\\aaa00_tbl.msh
+//SPEC_TEX	Texture\\TexSpecular01.dds
+TURRETGUN_NAME	AAA-00G
+GUN_OFFSET	 0.00  2.00  1.75
+END
+================= fixed turret (gun)
+CLASSNAME	CBE_Turret
+NAME		AAA-00G
+AABB		5.0  5.0  5.0
+BV_TYPE		BVTYPE_OBB
+3DMODEL		Model\\aaa00_gun.msh
+//SPEC_TEX	Texture\\TexSpecular01.dds
+LIFE		120.0
+YAW_SPD		0.5	//2.5
+PITCH_SPD	2.0
+BLTNAME		XBullet
+BLTPOWER	0.0001
+BLTSPD		95.0
+FIRERATE	0.15
+FIREKPTIME	2.0
+FIREINTVL	1.5
+RANDFIRE	0.02
+MUZZLE_FLASH	mflsh
+FIRE_SND	Fire_ZP
+RANDSEARCH	0
+//FRAGMENT	frag00  0.00  0.35  0.0
+//FRAGMENT	frag01  0.00 -0.20 -0.2
+//FRAGMENT	frag04  0.28 -0.05  0.3
+//FRAGMENT	frag04 -0.28 -0.05  0.3
+//FRAGMENT	frag05  0.00 -0.05  0.9
+END
+================= fixed turret pod (for ceiling)
+CLASSNAME	CBE_FixedTurretPod
+NAME		CTurretPod
+AABB		1.00 1.00 1.00
+BV_TYPE		BVTYPE_AABB
+3DMODEL		Model\\CTurretPod.x
+TURRETHEADNAME	CTurret
+END
+================= fixed turret head (for ceiling)
+CLASSNAME	CBE_Turret
+NAME		CTurret
+AABB		1.60 1.00 1.60
+BV_TYPE		BVTYPE_COMPLEX
+3DMODEL		Model\\CTurret.x
+BSPTREE		Model\\CeilingTurret1.bspt
+LIFE		2200.0
+YAW_SPD		2.5
+PITCH_SPD	2.0
+BLTNAME		XBullet
+BLTPOWER	0.0001
+BLTSPD		85.0
+FIRERATE	0.12
+FIREKPTIME	1.5
+FIREINTVL	1.5
+RANDFIRE	0.02
+LOCAL_MUZZLE_POS	0.0  0.1  1.9
+MUZZLE_FLASH	mflsh
+FIRE_SND	Fire_ZP
+RANDSEARCH	0
+FRAGMENT	frag00  0.00  0.35  0.0
+FRAGMENT	frag01  0.00 -0.20 -0.2
+FRAGMENT	frag04  0.28 -0.05  0.3
+FRAGMENT	frag04 -0.28 -0.05  0.3
+FRAGMENT	frag05  0.00 -0.05  0.9
+END
+================= pod of fixed missile turret (for ceiling)
+CLASSNAME	CBE_FixedTurretPod
+NAME		MissileTurretPod_C
+AABB		1.00 1.00 1.00
+BV_TYPE		BVTYPE_AABB
+3DMODEL		Model\\CTurretPod.x
+TURRETHEADNAME	MissileTurret_C1
+END
+================= fixed missile turret head (for ceiling)
+CLASSNAME	CBE_Turret
+NAME		MissileTurret_C1
+AABB		1.60 1.00 1.60
+BV_TYPE		BVTYPE_COMPLEX
+3DMODEL		Model\\CTurret.x
+BSPTREE		Model\\CeilingTurret1.bspt
+LIFE		3200.0
+YAW_SPD		2.0
+PITCH_SPD	1.6
+BLTNAME		mssl
+BLTPOWER	0.0001
+BLTSPD		85.0
+FIRERATE	3.5
+FIREKPTIME	3.6
+FIREINTVL	1.5
+RANDFIRE	0.02
+LOCAL_MUZZLE_POS	0.0  0.1  2.5
+FIRE_SND	Fire_ZP
+RANDSEARCH	0
+FRAGMENT	frag00  0.00  0.35  0.0
+FRAGMENT	frag01  0.00 -0.20 -0.2
+FRAGMENT	frag04  0.28 -0.05  0.3
+FRAGMENT	frag04 -0.28 -0.05  0.3
+FRAGMENT	frag05  0.00 -0.05  0.9
+END
+================= flyer
+CLASSNAME	CBE_Floater
+NAME		AFtr
+AABB		1.60 1.20 1.60
+BV_TYPE		BVTYPE_COMPLEX
+3DMODEL		Model\\fighter.x
+BSPTREE		Model\\fighter.bspt
+LIFE		120.0
+MOBILITY	1.0
+YAW_SPD		2.2
+PITCH_SPD	1.8
+BLTNAME		XBullet
+BLTPOWER	0.00001
+BLTSPD		110.0
+FIRERATE	0.09
+FIREKPTIME	1.5
+FIREINTVL	1.0
+RANDFIRE	0.01
+LOCAL_MUZZLE_POS	0.00 -0.08  1.05
+MUZZLE_FLASH	mflsh
+FIRE_SND	Fire_ZP
+RANDSEARCH	1
+EXPLOSION	Imex
+FRAGMENT	frag00  0.0  0.35  0.0
+FRAGMENT	frag01  0.0	-0.20  0.0
+FRAGMENT	frag02  0.5  0.00  0.0
+FRAGMENT	frag02 -0.5  0.00  0.0 
+FRAGMENT	frag03  0.1 -0.05  0.5
+FRAGMENT	frag03 -0.1 -0.05  0.5
+OPTCAM	// test effect
+END
+================= flyer
+CLASSNAME	CBE_Floater
+NAME		FighterRed
+AABB		1.80 1.80 1.80
+BV_TYPE		BVTYPE_COMPLEX
+3DMODEL		Model\\FighterRed.x
+BSPTREE		Model\\fighter.bspt
+LIFE		520.0
+MOBILITY	1.2
+YAW_SPD		1.8
+PITCH_SPD	1.6
+BLTNAME		Laser_LightGreen
+BLTPOWER	0.00001
+BLTSPD		50.0
+FIRERATE	0.3
+FIREKPTIME	1.25
+FIREINTVL	1.6
+RANDFIRE	0.01
+LOCAL_MUZZLE_POS	0.00 -0.08  1.08
+FIRE_SND	Fire_ZP
+RANDSEARCH	1
+EXPLOSION	Imex
+FRAGMENT	frag06  0.00  0.16  0.09
+FRAGMENT	frag07  0.65 -0.10  0.20
+FRAGMENT	frag07 -0.65 -0.10  0.20
+FRAGMENT	frag08  0.40  0.34 -0.70
+FRAGMENT	frag08 -0.40  0.34 -0.70
+FRAGMENT	frag09  0.00 -0.11  0.10
+END
+================= flyer
+CLASSNAME	CBE_Floater
+NAME		FighterBrown
+AABB		1.40 1.80 1.80
+//BV_TYPE		BVTYPE_OBB
+BV_TYPE		BVTYPE_COMPLEX
+3DMODEL		Model\\FighterBrown.x
+//BSPTREE		Model\\fighter.bspt
+LIFE		520.0
+MOBILITY	0.8
+YAW_SPD		1.6
+PITCH_SPD	1.3
+BLTNAME		Laser_LightGreen
+BLTPOWER	0.00001
+BLTSPD		50.0
+FIRERATE	0.3
+FIREKPTIME	1.55
+FIREINTVL	1.8
+RANDFIRE	0.01
+LOCAL_MUZZLE_POS	0.00 -0.095  1.58
+FIRE_SND	Fire_ZP
+RANDSEARCH	1
+EXPLOSION	Imex
+FRAGMENT	frag06  0.00  0.16  0.09
+FRAGMENT	frag07  0.70 -0.10  0.20
+FRAGMENT	frag07 -0.70 -0.10  0.20
+FRAGMENT	frag08  0.40  0.34 -0.75
+FRAGMENT	frag08 -0.40  0.34 -0.75
+FRAGMENT	frag09  0.00 -0.11  0.10
+END
+================= flyer
+CLASSNAME	CBE_Floater
+NAME		Fighter02
+AABB		3.00 3.00 3.00
+BV_TYPE		BVTYPE_COMPLEX
+3DMODEL		Model\\Fighter02.x
+BSPTREE		Model\\Fighter02.bspt
+LIFE		650.0
+YAW_SPD		2.2
+PITCH_SPD	1.8
+BLTNAME		XBullet
+BLTPOWER	0.00001
+BLTSPD		110.0
+FIRERATE	0.11
+FIREKPTIME	1.2
+FIREINTVL	2.0
+RANDFIRE	0.01
+LOCAL_MUZZLE_POS	0.00 -0.25  2.20
+MUZZLE_FLASH	mflsh
+FIRE_SND	Fire_ZP
+RANDSEARCH	1
+EXPLOSION	Imex
+FRAGMENT	frag00  0.0  0.35  0.0
+FRAGMENT	frag01  0.0	-0.20  0.0
+FRAGMENT	frag02  0.5  0.00  0.0
+FRAGMENT	frag02 -0.5  0.00  0.0 
+FRAGMENT	frag03  0.1 -0.05  0.5
+FRAGMENT	frag03 -0.1 -0.05  0.5
+END
+================= 
+CLASSNAME	CBE_GeneralEntity
+NAME		frag06
+//LIFE_TIME	8
+LIFE		20
+AABB		0.50 0.50 1.00
+BV_TYPE		BVTYPE_OBB
+RIGIDBODY	TRUE
+MASS		8
+SHAPE_BOX				 0.34	0.23    0.67	// main head part (fighter red)
+SHAPE_LOCAL_POSITION	 0.00  -0.03	0.04
+SHAPE_BOX				 0.12	0.13	0.36
+SHAPE_LOCAL_POSITION	 0.00	0.155  -0.04
+S_FRICTION	1.35
+D_FRICTION	1.2
+EXPLOSION	imex
+SMOKE_TRACE	bsmkt
+3DMODEL		Model\\Fragment06.x
+END
+================= 
+CLASSNAME	CBE_GeneralEntity
+NAME		frag07
+//LIFE_TIME	8
+LIFE		20
+AABB		0.50 0.20 1.00
+BV_TYPE		BVTYPE_OBB
+RIGIDBODY	TRUE
+MASS		8
+SHAPE_BOX				 0.28	0.11    1.02	// fore wing (fighter red)
+SHAPE_LOCAL_POSITION	 0.00   0.045	0.09
+SHAPE_BOX				 0.26	0.05	0.40	// rear wing
+SHAPE_LOCAL_POSITION	 0.25  -0.065  -0.200
+SHAPE_LOCAL_ROT_Z		-30
+SHAPE_BOX				 0.10	0.11	0.39	// box under wing
+SHAPE_LOCAL_POSITION	 0.05  -0.065  -0.195
+S_FRICTION	1.35
+D_FRICTION	1.2
+EXPLOSION	imex
+SMOKE_TRACE	bsmkt
+3DMODEL		Model\\Fragment07.x
+END
+================= 
+CLASSNAME	CBE_GeneralEntity
+NAME		frag08
+//LIFE_TIME	8
+LIFE		20
+AABB		0.20 0.12 0.80
+BV_TYPE		BVTYPE_OBB
+RIGIDBODY	TRUE
+MASS		5
+SHAPE_BOX				 0.05	0.12    0.74	// ear (fighter red)
+S_FRICTION	1.35
+D_FRICTION	1.2
+EXPLOSION	imex
+3DMODEL		Model\\Fragment08.x
+END
+================= 
+CLASSNAME	CBE_GeneralEntity
+NAME		frag09
+//LIFE_TIME	8
+LIFE		20
+AABB		0.24 0.16 0.90
+BV_TYPE		BVTYPE_OBB
+RIGIDBODY	TRUE
+MASS		8
+SHAPE_BOX				0.06   0.10   0.80	// barrel
+SHAPE_LOCALPOSITION		0.0    0.00   0.575
+SHAPE_BOX				0.24   0.16   0.45	// gun box
+SHAPE_LOCALPOSITION		0.0    0.00  -0.05
+S_FRICTION	1.35
+D_FRICTION	1.2
+EXPLOSION	imex
+SMOKE_TRACE	bsmkt
+3DMODEL		Model\\Fragment09.x
+END
+
+================= 
+CLASSNAME	CBE_GeneralEntity
+NAME		MissileItem
+LIFE		600
+AABB		0.10 0.10 1.00
+BV_TYPE		BVTYPE_OBB
+RIGIDBODY	TRUE
+MASS		8
+SHAPE_CAPSULE	0.03	0.94
+SHAPE_BOX				 0.140	0.002	 0.100
+SHAPE_LOCAL_POSITION	 0.000	0.000	-0.400
+SHAPE_BOX				 0.140	0.002 	 0.100
+SHAPE_LOCAL_POSITION	 0.000	0.000	 0.250
+SHAPE_BOX				 0.002	0.140	 0.100
+SHAPE_LOCAL_POSITION	 0.000	0.000	-0.400
+SHAPE_BOX				 0.002	0.140 	 0.100
+SHAPE_LOCAL_POSITION	 0.000	0.000	 0.250
+S_FRICTION	1.35
+D_FRICTION	1.2
+EXPLOSION	imex
+3DMODEL		Model\\Missile.x
+END
+================= 
+CLASSNAME	CBE_GeneralEntity
+NAME		frag04
+LIFE_TIME	6
+AABB		0.36 0.68 0.08
+BV_TYPE		BVTYPE_OBB
+RIGIDBODY	TRUE
+MASS		0.9
+S_FRICTION	1.45
+D_FRICTION	1.2
+3DMODEL		resources\\Model\\Fragment04.x
+END
+================= 
+CLASSNAME	CBE_GeneralEntity
+NAME		frag05
+TIMER		6
+AABB		1.00 0.24 1.60
+BV_TYPE		BVTYPE_OBB
+RIGIDBODY	TRUE
+MASS		1.1
+S_FRICTION	1.45
+D_FRICTION	1.2
+3DMODEL		resources\\Model\\Fragment05.x
+END
+=================
+CLASSNAME	CBE_GeneralEntity
+NAME		TimerGrenade00
+LIFE_TIME	15
+AABB		0.20 0.20 0.40
+BV_TYPE		BVTYPE_OBB
+EXPLOSION	imex_b0
+RIGIDBODY	TRUE
+MASS		22.85
+//SHAPE_CAPSULE		 0.020	 0.035
+//SHAPE_BOX		 0.040	 0.010	 0.040
+//SHAPE_BOX		 0.010	 0.040	 0.040
+//SHAPE_CAPSULE		 0.040	 0.120
+//SHAPE_BOX		 0.090	 0.030	 0.160
+//SHAPE_BOX		 0.030	 0.090	 0.160
+//SHAPE_CAPSULE		 0.060	 0.180
+SHAPE_BOX		 0.120	 0.120	 0.300
+SHAPE_BOX		 0.150	 0.050	 0.240
+SHAPE_BOX		 0.050	 0.150	 0.240
+DISABLE_FREEZING
+S_FRICTION	2.50
+D_FRICTION	2.00
+3DMODEL		Model\\TGrenade00.x
+END
+
+================= event trigger ================================
+CLASSNAME	CBE_EventTrigger
+NAME		EventBox
+AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_AABB
+END
+
+================= static geometry ============================== 
+CLASSNAME	CBE_StaticGeometry
+NAME		StaticGeometry
+//AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_AABB
+END
+
+================= skybox ============================== 
+CLASSNAME	CBE_Skybox
+NAME		skybox
+//AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_AABB
+3DMODEL		./Model/skybox.msh
+END
+
+================= camera controller (cutscene) =================== 
+CLASSNAME	CBE_CameraController
+NAME		CutsceneCameraController
+//AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_AABB
+CUTSCENE	YES
+END
+
+================= camera controller ============================== 
+CLASSNAME	CBE_CameraController
+NAME		CameraController
+//AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_AABB
+CUTSCENE	NO
+END
+
+================= scripted camera ============================== 
+CLASSNAME	CBE_ScriptedCamera
+NAME		ScriptedCamera
+//AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_AABB
+END
+
+================= alpha entity ============================== 
+CLASSNAME	CBE_IndividualEntity
+NAME		AlphaEntityBase
+//AABB		0.00 0.00 0.00
+BV_TYPE		BVTYPE_AABB
+PHYSICS		FALSE
+NOCLIP		TRUE
+FLAGS		SUPPORT_TRANSPARENT_PARTS
+FLAGS		SHADOW_CASTER|SHADOW_RECEIVER
+SHADER_TECH	SingleHSPL_Specular_CTS
+END
+
+================= base entity for item entity ============================== 
+CLASSNAME	CBE_IndividualEntity
+NAME		__ForItemEntity__
+BV_TYPE		BVTYPE_AABB
+END
+

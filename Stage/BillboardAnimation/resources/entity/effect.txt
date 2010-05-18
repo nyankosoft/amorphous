@@ -1,0 +1,395 @@
+====================================== explosion animation
+CLASSNAME	CBE_TextureAnimation
+NAME		Bang
+AABB		2.20 2.20 2.20
+BV_TYPE		BVTYPE_AABB
+TEX_FILE	Texture/Flame1.dds
+TEX_WIDTH	512
+TEX_SEGS	3
+ANIM_TIME	0.75
+BLEND		ONE
+END
+====================================== explosion animation
+CLASSNAME	CBE_TextureAnimation
+NAME		qBang
+AABB		2.20 2.20 2.20
+BV_TYPE		BVTYPE_AABB
+TEX_FILE	Texture/Flame1.dds
+TEX_WIDTH	512
+TEX_SEGS	3
+ANIM_TIME	0.30
+BLEND		ONE
+END
+====================================== explosion animation
+CLASSNAME	CBE_TextureAnimation
+NAME		LBANG
+AABB		32.00 32.00 32.00
+BV_TYPE		BVTYPE_AABB
+TEX_FILE	Texture/Flame1.dds
+TEX_WIDTH	512
+TEX_SEGS	3
+ANIM_TIME	0.80
+BLEND		ONE
+END
+====================================== explosion animation
+CLASSNAME	CBE_TextureAnimation
+NAME		LLBang
+AABB		6.00 6.00 6.00
+BV_TYPE		BVTYPE_AABB
+TEX_FILE	Texture/Flame1.dds
+TEX_WIDTH	512
+TEX_SEGS	3
+ANIM_TIME	0.80
+BLEND		ONE
+END
+====================================== shock wave animation
+CLASSNAME	CBE_TextureAnimation
+NAME		ShockWave
+AABB		2.00 2.00 2.00
+BV_TYPE		BVTYPE_AABB
+TEX_FILE	Texture/ShockWave00.dds
+TEX_WIDTH	128
+TEX_SEGS	1
+ANIM_TIME	0.28
+BLEND		INVSRCALPHA
+EXPANSION	3.8
+TEXANIM_TYPE	TYPE_NON_BILLBOARD
+END
+================= particle for spark animation ======================= Particle Effects
+CLASSNAME	CBE_ParticleSet
+NAME		sprk
+AABB		1.00 1.00 1.00
+BV_TYPE		BVTYPE_DOT
+3DMODEL		---
+PTCL_RADIUS	0.02
+MAX_NUM_PARTICLES_PER_GROUP	8
+DURATION	0.9
+GRAVITY_INFLUENCE	0.25
+RANDVEL_XZ	1.6
+RANDVEL_Y	1.6
+ALPHABLEND	ONE
+TEXTURE		Texture/Particle1.dds
+END
+================= particle for spark animation
+CLASSNAME	CBE_ParticleSet
+NAME		LSpk
+AABB		40.00 40.00 40.00
+BV_TYPE		BVTYPE_DOT
+3DMODEL		---
+PTCL_RADIUS	0.8
+//MAX_NUM_PARTICLES_PER_GROUP	8
+MAX_NUM_PARTICLES_PER_GROUP	24
+DURATION	1.5
+GRAVITY_INFLUENCE	0.3
+RANDVEL_XZ	60.0
+RANDVEL_Y	45.0
+ALPHABLEND	ONE
+TEXTURE		Texture/Particle3.dds
+END
+================== particle for muzzle flash animation
+CLASSNAME	CBE_MuzzleFlash
+NAME		mflsh
+AABB		0.25 0.25 0.25
+BV_TYPE		BVTYPE_DOT
+//PTCL_RADIUS	0.12
+PTCL_RADIUS	0.22
+MAX_NUM_PARTICLES_PER_GROUP	12
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	0.045
+EXPANSION	1.2
+GRAVITY_INFLUENCE	0.0
+ALPHABLEND	ONE
+TEXTURE		Texture/MuzzleFlash.dds
+LIGHT		MuzzleFlashLight
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		smktrail
+AABB		10.00 10.00 10.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	0.56
+MAX_NUM_PARTICLE_GROUPS     12
+MAX_NUM_PARTICLES_PER_GROUP	1024
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	2.0
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	3.0			// how large each smoke particle grows e.g.) 3.0 means particle is 3 times larger at the end of the animation than at the start
+PTCL_INTVL	0.64
+RAND_POS_SHIFT	0.25
+TEXTURE		Texture/SmkTr.dds
+NUM_TEXSEGS	2
+ALPHABLEND	INVSRCALPHA
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		smktrail_short
+AABB		10.00 10.00 10.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	0.80
+MAX_NUM_PARTICLE_GROUPS     16
+MAX_NUM_PARTICLES_PER_GROUP	512
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+//DURATION	1.2
+DURATION	0.8
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	3.5			// how large each smoke particle grows e.g.) 3.0 means particle is 3 times larger at the end of the animation than at the start
+PTCL_INTVL	0.80
+RAND_POS_SHIFT	0.25
+TEXTURE		Texture/SmkTr.dds
+NUM_TEXSEGS	2
+ALPHABLEND	INVSRCALPHA
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		bsmkt
+AABB		4.00 4.00 4.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	0.15
+MAX_NUM_PARTICLES_PER_GROUP	32
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	1.5
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	3.0			// how large each smoke particle grows e.g.) 3.0 means particle is 3 times larger at the end of the animation than at the start
+PTCL_INTVL	0.15
+TEXTURE		Texture/Blk_SmkTr.dds
+NUM_TEXSEGS	2
+ALPHABLEND	INVSRCALPHA
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		bsmkt_L
+AABB		4.00 4.00 4.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	2.2
+MAX_NUM_PARTICLES_PER_GROUP	32
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	1.0
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	3.5			// how large each smoke particle grows e.g.) 3.0 means particle is 3 times larger at the end of the animation than at the start
+PTCL_INTVL	2.20
+RAND_POS_SHIFT	1.35
+TEXTURE		Texture/Blk_SmkTr.dds
+NUM_TEXSEGS	2
+ALPHABLEND	INVSRCALPHA
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		smk_up
+AABB		4.00 4.00 4.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	0.15
+MAX_NUM_PARTICLES_PER_GROUP	32
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	3.0
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	5.0			// how large each smoke particle grows e.g.) 3.0 means particle is 3 times larger at the end of the animation than at the start
+PTCL_INTVL	0.15
+TEXTURE		Texture/SmkTr.dds
+GRAVITY_INFLUENCE	-0.08
+NUM_TEXSEGS	2
+ALPHABLEND	INVSRCALPHA
+SMOKE_TYPE	PARTICLES_PER_TIME
+PTCLS_PER_SEC	8
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		bsmk_up
+AABB		4.00 4.00 4.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	2.50
+MAX_NUM_PARTICLES_PER_GROUP	32
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	12.0
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	5.0			// how large each smoke particle grows e.g.) 3.0 means particle is 3 times larger at the end of the animation than at the start
+PTCL_INTVL	1.25
+TEXTURE		Texture/Blk_SmkTr.dds
+GRAVITY_INFLUENCE	-0.15
+NUM_TEXSEGS	2
+ALPHABLEND	INVSRCALPHA
+SMOKE_TYPE	PARTICLES_PER_TIME
+PTCLS_PER_SEC	8
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		bsmk_up_L
+AABB		10.00 10.00 10.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	2.80
+MAX_NUM_PARTICLES_PER_GROUP	32
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	18.0
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	7.5			// how large each smoke particle grows e.g.) 3.0 means particle is 3 times larger at the end of the animation than at the start
+PTCL_INTVL	1.25
+VERT_COLOR	0.1   0.1   0.1
+TEXTURE		Texture/SmkTr.dds
+GRAVITY_INFLUENCE	-0.04
+NUM_TEXSEGS	2
+ALPHABLEND	INVSRCALPHA
+SMOKE_TYPE	PARTICLES_PER_TIME
+PTCLS_PER_SEC	3
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		FlameTraceL
+AABB		10.00 10.00 10.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	0.60
+MAX_NUM_PARTICLE_GROUPS     24
+MAX_NUM_PARTICLES_PER_GROUP	32
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	0.09
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	2.5
+PTCL_INTVL	0.50
+RAND_POS_SHIFT	0.25
+TEXTURE		Texture/Flame1.dds
+GRAVITY_INFLUENCE	-0.08
+NUM_TEXSEGS	3
+ALPHABLEND	ONE
+END
+================ particle for smoke trace
+CLASSNAME	CBE_SmokeTrace
+NAME		FlameTraceL2
+AABB		10.00 10.00 10.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	4.50
+MAX_NUM_PARTICLE_GROUPS     24
+MAX_NUM_PARTICLES_PER_GROUP	24
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	0.50
+RANDVEL_XZ	0
+RANDVEL_Y	0
+EXPANSION	3.0
+PTCL_INTVL	2.8
+RAND_POS_SHIFT	1.25
+TEXTURE		Texture/Flame1.dds
+GRAVITY_INFLUENCE	-0.08
+NUM_TEXSEGS	3
+ALPHABLEND	ONE
+END
+================= particles for black smoke after explosion
+CLASSNAME	CBE_ExplosionSmoke
+NAME		XPBsmk
+AABB		32.00 32.00 32.00
+BV_TYPE		BVTYPE_AABB
+PTCL_RADIUS	6.0
+MAX_NUM_PARTICLES_PER_GROUP	32
+DURATION	2.2
+EXPANSION	2.4
+GRAVITY_INFLUENCE	-0.06
+TEXTURE		Texture/BlackSmoke_S.dds
+RAND_POS		 5.0	 10.0
+RAND_VEL		 0.3	 0.7
+ANIMTIME_OFFSET	-0.5	-0.1
+ALPHABLEND	INVSRCALPHA
+END
+================= particles for smoke on a surface hit by a bullet
+CLASSNAME	CBE_ExplosionSmoke
+NAME		htsmk
+AABB		1.00 1.00 1.00
+BV_TYPE		BVTYPE_AABB
+//SMOKE_TYPE	TYPE_SHOOTING
+PTCL_RADIUS	0.25
+MAX_NUM_PARTICLES_PER_GROUP	10
+DURATION	1.2
+EXPANSION	2.2
+GRAVITY_INFLUENCE	0.01
+TEXTURE		Texture/HitSmoke.dds
+RAND_POS		0.05	0.08
+RAND_VEL		0.10	0.20
+ANIMTIME_OFFSET	0.10	0.60
+ALPHABLEND	INVSRCALPHA
+END
+================= particles for smoke on bullet penetration
+CLASSNAME	CBE_ExplosionSmoke
+NAME		bpbsmk
+AABB		1.20 1.20 1.20
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	0.45
+MAX_NUM_PARTICLES_PER_GROUP	32
+DURATION	2.2
+EXPANSION	2.4
+GRAVITY_INFLUENCE	-0.06
+TEXTURE		Texture/BlackSmoke_S.dds
+RAND_POS	0.01	0.05
+RAND_VEL	0.30	0.80
+BLEND		INVSRCALPHA
+END
+================= nozzle flame
+CLASSNAME	CBE_NozzleExhaust
+NAME		nozzle_flame
+AABB		1.00 1.00 1.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	0.7
+MAX_NUM_PARTICLE_GROUPS     40
+MAX_NUM_PARTICLES_PER_GROUP	40
+BILLBOARD_TYPE              SHARED_VERTEX_STORAGE
+DURATION	0.04
+EXPANSION	0.8
+TEXTURE		Texture/NozzleFlame00.dds
+RAND_POS	0.01	0.05
+ALPHABLEND	ONE
+END
+================= cloud
+CLASSNAME	CBE_Cloud
+NAME		FGClouds
+AABB		200.00 40.00 200.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	80.0
+MAX_NUM_PARTICLES_PER_GROUP	24
+DURATION	100000.0
+GRAVITY_INFLUENCE	 0.00
+//TEXTURE		Texture/Default.dds
+//TEXTURE		Texture/SmokePattern01.dds
+//NUM_TEXSEGS	4
+TEXTURE		Texture/SmkTr.dds
+NUM_TEXSEGS	2
+BLEND		INVSRCALPHA
+END
+================= cloud
+CLASSNAME	CBE_StaticParticleSet
+NAME		static_clouds
+AABB		200.00 100.00 200.00
+BV_TYPE		BVTYPE_DOT
+PTCL_RADIUS	130.0	// 80.0
+MAX_NUM_PARTICLES_PER_GROUP	32
+DURATION	100000.0
+GRAVITY_INFLUENCE	 0.00
+//TEXTURE		Texture/SmokePattern01.dds
+//NUM_TEXSEGS	4
+TEXTURE		Texture/SmkTr.dds
+NUM_TEXSEGS	2
+BLEND		INVSRCALPHA
+END
+================= decal for a bullet hole
+CLASSNAME	CBE_Decal
+//NAME		BHole
+NAME		_BHole
+AABB		0.12 0.12 0.12
+BV_TYPE		BVTYPE_AABB
+3DMODEL		---
+DCL_RADIUS	0.06
+TEX_FILENAME	Model\\Texture/BulletHoles.dds
+NUM_SEGS	4
+END
+================= decal for a bullet hole on thin metal plates
+CLASSNAME	CBE_Decal
+//NAME		BulletHole_ThinMetal00P
+NAME		BHole
+AABB		0.32 0.32 0.32
+BV_TYPE		BVTYPE_AABB
+3DMODEL		---
+DCL_RADIUS	0.16
+TEX_FILENAME	Texture/BulletHole_ThinMetal00P.dds
+NUM_SEGS	2
+END
