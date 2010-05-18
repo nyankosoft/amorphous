@@ -33,6 +33,8 @@
 #include "GameTextSystem/TextMessageManager.hpp"
 #include "GUI.hpp"
 
+#include "Graphics/Shader/GenericShaderGenerator.hpp"
+
 
 using namespace std;
 using namespace boost;
@@ -474,6 +476,23 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 
 	// Set target material indices to create alpha entity
 	Init3DModel();
+
+	//>>> experiment
+	CShaderResourceDesc shader_desc;
+	CGenericShaderDesc gen_shader_desc;
+	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
+	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
+	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
+
+	m_MeshProperty.m_ShaderHandle.Load( shader_desc ); // Blend transform variables are initilized in this call.
+	m_MeshProperty.m_ShaderTechnique.resize( 1, 1 );
+	m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "Default" );
+	m_MeshProperty.m_pMeshRenderMethod.reset();
+//	m_MeshProperty.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+//	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().resize(1);
+//	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().back().m_Shader.Load( shader_desc );
+//	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().back().m_Technique.SetTechniqueName( "Default" );
+	//<<< experiment
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
