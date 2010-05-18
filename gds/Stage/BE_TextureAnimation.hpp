@@ -3,7 +3,7 @@
 
 #include "BaseEntity.hpp"
 
-#include "Graphics/FVF_TextureVertex.h"
+#include "Graphics/Mesh/RectSetMesh.hpp"
 #include "Graphics/TextureHandle.hpp"
 
 
@@ -31,7 +31,7 @@ private:
 	int m_iTextureWidth;
 
 	/// alpha blend option
-	int m_iDestBlend;
+//	int m_iDestBlend;
 
 	/// how much the texture expands over the course of the animation
 	float m_fExpansionFactor;
@@ -40,8 +40,8 @@ private:
 	unsigned int m_AnimTypeFlag;
 
 	/// use 2 billboards to achieve smooth transition between frames
-	TEXTUREVERTEX m_avRectangle1[4];
-	TEXTUREVERTEX m_avRectangle2[4];
+	CRectSetMesh m_FrontRectMesh;
+	CRectSetMesh m_RearRectMesh;
 
 	CShaderTechniqueHandle m_aShaderTechHandle[2];
 
@@ -55,7 +55,8 @@ public:
 	void Draw(CCopyEntity* pCopyEnt);
 	//void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
 	//void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
-	void SetTextureCoord( TEXTUREVERTEX *pavRactangle, int iCurrentFrame );
+//	void SetTextureCoord( TEXTUREVERTEX *pavRactangle, int iCurrentFrame );
+	void SetTextureCoord( CRectSetMesh& rect_mesh, int iCurrentFrame );
 
 //	void DrawGlare(CCopyEntity* pCopyEnt) { Draw( pCopyEnt ); }
 
@@ -64,10 +65,6 @@ public:
 	virtual unsigned int GetArchiveObjectID() const { return BE_TEXTUREANIMATION; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-
 };
 
 

@@ -1,11 +1,9 @@
 #include "BE_TextureAnimation.hpp"
 #include "CopyEntity.hpp"
-#include "trace.hpp"
+//#include "trace.hpp"
 #include "Stage.hpp"
-#include "ScreenEffectManager.hpp"
-
-#include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/GraphicsDevice.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 using namespace std;
@@ -16,7 +14,7 @@ CBE_TextureAnimation::CBE_TextureAnimation()
 	m_BoundingVolumeType = BVTYPE_AABB;
 	m_bNoClip = true;
 
-	m_iDestBlend = D3DBLEND_ONE;
+//	m_iDestBlend = D3DBLEND_ONE;
 
 	m_AnimTypeFlag = TA_BILLBOARD;
 
@@ -28,7 +26,6 @@ CBE_TextureAnimation::CBE_TextureAnimation()
 
 CBE_TextureAnimation::~CBE_TextureAnimation()
 {
-	ReleaseGraphicsResources();
 }
 
 
@@ -36,25 +33,43 @@ void CBE_TextureAnimation::Init()
 {
 	m_AnimTexture.Load( m_AnimTextureFilepath );
 
-	// set the local coordinate of the billboard rectangle
-	D3DXVECTOR3 vRight = D3DXVECTOR3(1,0,0);
-	D3DXVECTOR3 vUp = D3DXVECTOR3(0,1,0);
-	float fHalfWidth = this->m_aabb.vMax.x;
-	m_avRectangle1[0].vPosition = -vRight * fHalfWidth + vUp * fHalfWidth;
-	m_avRectangle1[1].vPosition =  vRight * fHalfWidth + vUp * fHalfWidth;
-	m_avRectangle1[2].vPosition =  vRight * fHalfWidth - vUp * fHalfWidth;
-	m_avRectangle1[3].vPosition = -vRight * fHalfWidth - vUp * fHalfWidth;
+	for( int i=0; i<2; i++ )
+	{
+		CRectSetMesh& rect_mesh = (i==0) ? m_FrontRectMesh : m_RearRectMesh;
 
-	int i;
+		rect_mesh.Init( 1, VFF::POSITION | VFF::DIFFUSE_COLOR | VFF::TEXCOORD2_0 );
+
+		rect_mesh.SetColor( SFloatRGBAColor::White() );
+
+		CMeshMaterial& mat = rect_mesh.Material(0);
+		mat.TextureDesc.resize( 1 );
+		mat.Texture.resize( 1 );
+		mat.TextureDesc[0].ResourcePath = m_AnimTextureFilepath;
+		mat.Texture[0] = m_AnimTexture;
+
+		Vector3 vRight = Vector3(1,0,0);
+		Vector3 vUp    = Vector3(0,1,0);
+		float fHalfWidth = this->m_aabb.vMax.x;
+//		Vector3 vTest = (i==0) ? Vector3(-1.2f,0,0) : Vector3(1.2f,0,0);
+		rect_mesh.SetRectPosition(
+			0,
+			-vRight * fHalfWidth + vUp * fHalfWidth,// + vTest,
+			 vRight * fHalfWidth + vUp * fHalfWidth,// + vTest,
+			 vRight * fHalfWidth - vUp * fHalfWidth,// + vTest,
+			-vRight * fHalfWidth - vUp * fHalfWidth// + vTest
+			);
+	}
+
+	// set the local coordinate of the billboard rectangle
+	Vector3 vRight = Vector3(1,0,0);
+	Vector3 vUp    = Vector3(0,1,0);
+	float fHalfWidth = this->m_aabb.vMax.x;
+
+//	int i;
 	// secondary billboard - shifted slightly forward to avoid z-fighting
 	// --- corrected 050505 - this is not needed if we disable z-writing during rendering
-	for(i=0; i<4; i++)
-		m_avRectangle2[i].vPosition = m_avRectangle1[i].vPosition /* + D3DXVECTOR3(0, 0, 0.02f) */;
-
-
-	for(i=0; i<4; i++)
-		m_avRectangle1[i].color = m_avRectangle2[i].color = 0xFFFFFFFF;
-
+//	for(i=0; i<4; i++)
+//		m_avRectangle2[i].vPosition = m_avRectangle1[i].vPosition /* + Vector3(0, 0, 0.02f) */;
 }
 
 
@@ -76,7 +91,7 @@ void CBE_TextureAnimation::Act(CCopyEntity* pCopyEnt)
 {
 	float& rfCurrentAnimationTime = pCopyEnt->f1;
 
-	if( m_fTotalAnimationTime <= rfCurrentAnimationTime)
+	if( m_fTotalAnimationTime <= rfCurrentAnimationTime )
 ///		pCopyEnt-Terminate();
 		m_pStage->TerminateEntity( pCopyEnt );
 	else
@@ -90,34 +105,35 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 	if( rfCurrentAnimationTime < 0 || m_fTotalAnimationTime < rfCurrentAnimationTime )
 		return;	// animation hasn't started yet or is already over
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	// set the world transformation matrix
-	D3DXMATRIX matWorld, matRotZ;
+	Matrix33 matRotZ;
+	Matrix34 world_pose( Matrix34Identity() );
 
 	if( m_AnimTypeFlag & TA_BILLBOARD )
 	{
 		// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
-//		m_pStage->GetBillboardRotationMatrix( matWorld );
-		Matrix34 billboard_pose;
-		m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
-		billboard_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
+//		Matrix33 billboard_orient;
+		m_pStage->GetBillboardRotationMatrix( world_pose.matOrient );
 	}
 	else // i.e. animation of arbitrary direction
 	{
-		pCopyEnt->GetWorldPose().GetRowMajorMatrix44( (Scalar *)&matWorld );
-//		pCopyEnt->GetOrientation( matWorld );
+		world_pose = pCopyEnt->GetWorldPose();
 	}
 
 
-	const D3DXVECTOR3& rvPos =  pCopyEnt->GetWorldPosition();	// current position of this billboard
-	matWorld._41 =   rvPos.x; matWorld._42 =   rvPos.y;	matWorld._43 =   rvPos.z; matWorld._44 = 1;
+	const Vector3& rvPos =  pCopyEnt->GetWorldPosition();	// current position of this billboard
+	world_pose.vPosition = rvPos;
+//	matWorld(0,3) = rvPos.x;
+//	matWorld(1,3) = rvPos.y;
+//	matWorld(2,3) = rvPos.z;
+//	matWorld(3,3) = 1;
 
-	if( /* random rotation is */ true )
+//	if( /* random rotation is */ true )
+	if( false )
 	{	// randomly rotates billboards to make them look more diverse
 		float& rfRotAngle = pCopyEnt->f2;
-		D3DXMatrixRotationZ( &matRotZ, rfRotAngle );
-		D3DXMatrixMultiply( &matWorld, &matRotZ, &matWorld );
+		matRotZ = Matrix33RotationZ( rfRotAngle );
+		world_pose.matOrient = world_pose.matOrient * matRotZ;
 	}
 
 	// set animation
@@ -128,39 +144,64 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 
 	float fTimePerFrame = m_fTotalAnimationTime / (float)iNumTotalFrames;
 	float fCurrentFrameTime = ( rfCurrentAnimationTime - fTimePerFrame * (float)iCurrentFrame ) / fTimePerFrame;
-	int i;
-	for(i=0; i<4; i++)
-	{	// set alpha values for smooth animation between frames
-		m_avRectangle1[i].color = D3DCOLOR_ARGB( ((int)(255.0f * (1.0f - fCurrentFrameTime))), 255, 255, 255 );
-		m_avRectangle2[i].color = D3DCOLOR_ARGB( ((int)(255.0f * fCurrentFrameTime         )), 255, 255, 255 );
-	}
+//	int i;
+
+	// set alpha values for smooth animation between frames
+	float fMargin = 0.001f;
+	clamp( fCurrentFrameTime, 0.0f + fMargin, 1.0f + fMargin );
+//	fCurrentFrameTime = 0.5f;
+	float fFrac = fCurrentFrameTime;
+	float fInvFrac = 1.0f - fCurrentFrameTime;
+	const SFloatRGBAColor diffuse_color_front( fInvFrac, fInvFrac, fInvFrac, fInvFrac );
+	const SFloatRGBAColor diffuse_color_rear(  fFrac,    fFrac,    fFrac,    fFrac );
+//	const SFloatRGBAColor diffuse_color_front( 1.0f, 1.0f, 1.0f, 1.0f - fCurrentFrameTime );
+//	const SFloatRGBAColor diffuse_color_rear(  1.0f, 1.0f, 1.0f, fCurrentFrameTime );
+	m_FrontRectMesh.SetColorARGB32( diffuse_color_front.GetARGB32() );
+	m_RearRectMesh.SetColorARGB32( diffuse_color_rear.GetARGB32() );
+
+	// tested with D3DCOLOR_ARGB() - couldn't solve the flickering.
+//	m_FrontRectMesh.SetColorARGB32( D3DCOLOR_ARGB( ((int)(255.0f * (1.0f - fCurrentFrameTime))), 255, 255, 255 ) );
+//	m_RearRectMesh.SetColorARGB32( D3DCOLOR_ARGB( ((int)(255.0f * fCurrentFrameTime         )), 255, 255, 255 ) );
+
+//	for(i=0; i<4; i++)
+//	{
+		// set alpha values for smooth animation between frames
+//		m_avRectangle1[i].color = D3DCOLOR_ARGB( ((int)(255.0f * (1.0f - fCurrentFrameTime))), 255, 255, 255 );
+//		m_avRectangle2[i].color = D3DCOLOR_ARGB( ((int)(255.0f * fCurrentFrameTime         )), 255, 255, 255 );
+//	}
 
 	if( m_fExpansionFactor != 1.0f )
 	{
-		float fRadius = this->m_aabb.vMax.x * ( 1.0f + fCurrentFrameTime * (m_fExpansionFactor - 1.0f) );
-		m_avRectangle2[0].vPosition = m_avRectangle1[0].vPosition = D3DXVECTOR3(-fRadius, fRadius, 0 );
-		m_avRectangle2[1].vPosition = m_avRectangle1[1].vPosition = D3DXVECTOR3( fRadius, fRadius, 0 );
-		m_avRectangle2[2].vPosition = m_avRectangle1[2].vPosition = D3DXVECTOR3( fRadius,-fRadius, 0 );
-		m_avRectangle2[3].vPosition = m_avRectangle1[3].vPosition = D3DXVECTOR3(-fRadius,-fRadius, 0 );
+		float r = this->m_aabb.vMax.x * ( 1.0f + fCurrentFrameTime * (m_fExpansionFactor - 1.0f) );
+		for( int i=0; i<2; i++ )
+		{
+			CRectSetMesh& rect_mesh = (i==0) ? m_FrontRectMesh : m_RearRectMesh;
+			rect_mesh.SetRectPosition(
+				0,
+				Vector3(-r, r, 0 ),
+				Vector3( r, r, 0 ),
+				Vector3( r,-r, 0 ),
+				Vector3(-r,-r, 0 )
+				);
+		}
 	}
 
-	SetTextureCoord( m_avRectangle1, iCurrentFrame );
+	SetTextureCoord( m_FrontRectMesh, iCurrentFrame );
 	if( iCurrentFrame < iNumTotalFrames - 1 )	// if 'iCurrentFrame' is not the last frame of the texture animation
-		SetTextureCoord( m_avRectangle2, iCurrentFrame + 1 );	// set texture for the secondary billboard
+		SetTextureCoord( m_RearRectMesh, iCurrentFrame + 1 );	// set texture for the secondary billboard
 
 	// debug
-	if( 0.99f < fCurrentFrameTime && 0xF0FFFFFF < m_avRectangle1[0].color )
-		int iUnexpected = 1;
+//	if( 0.99f < fCurrentFrameTime && 0xF0FFFFFF < m_avRectangle1[0].color )
+//		int iUnexpected = 1;
 
 
 	// use the texture color only
 	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	LPD3DXEFFECT pEffect = NULL;
-	UINT cPasses;
+	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
-	if( pShaderManager &&
-		(pEffect = pShaderManager->GetEffect()) )
-	{
+	shader_mgr.SetWorldTransform( world_pose );
+
+//	{
 /*		if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PseudoNightVision )
 		{
             pShaderManager->SetTechnique( SHADER_TECH_BILLBOARD_PNV );
@@ -171,32 +212,19 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 			pShaderManager->SetTechnique( SHADER_TECH_BILLBOARD );
 		}*/
 
-		pShaderManager->SetTechnique( m_aShaderTechHandle[0] );
-
-		pEffect->Begin( &cPasses, 0 );
-		pEffect->BeginPass( 0 );
-
 //		if( m_iDestBlend == D3DBLEND_ONE )			pEffect->BeginPass( SHADER_PASS_ALPHA_BLEND_DEST_ADD );
 //		else			pEffect->BeginPass( SHADER_PASS_ALPHA_BLEND_DEST_INVSRCALPHA );
 
-		pShaderManager->SetTexture( 0, m_AnimTexture.GetTexture() );
+		// Supposed to be set by rect mesh.
+		// Remove this after comfirming that the rect mesh sets the texture
+		shader_mgr.SetTexture( 0, m_AnimTexture );
 
-		Matrix44 world;
-		world.SetRowMajorMatrix44( (Scalar *)&matWorld );
-		pShaderManager->SetWorldTransform( world );
-
-		pEffect->CommitChanges();
-	}
-	else
-	{
-		pd3dDev->SetVertexShader( NULL );
-//		iFixedFunctionShader = 1;
-	}
+//		shader_mgr.CommitChanges();
+//	}
 
 //	if( iFixedFunctionShader )
 //	{
-		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-		pd3dDev->SetTexture( 0, m_AnimTexture.GetTexture() );
+/*		pd3dDev->SetTexture( 0, m_AnimTexture.GetTexture() );
 
 		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
@@ -204,39 +232,32 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 
 		pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
 		pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//		pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-//		pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
-		pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_iDestBlend );
+//		pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_iDestBlend );
 
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
 		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
-
-		pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
+*/
+//		pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
 //	}
 
 	// disable z-writing
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
-	if( iCurrentFrame < iNumTotalFrames - 1 )	// if 'iCurrentFrame' is not the last frame of the texture animation
-		pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectangle2, sizeof(TEXTUREVERTEX) );
+	bool lighting = false;
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, lighting );
 
+	if( iCurrentFrame < iNumTotalFrames - 1 ) // if 'iCurrentFrame' is not the last frame of the texture animation
+		m_RearRectMesh.Render();
+	m_FrontRectMesh.Render();
 
-	pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectangle1, sizeof(TEXTUREVERTEX) );
-
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
-
-	if( pEffect )
-	{
-		pEffect->EndPass();
-		pEffect->End();
-	}
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
 
 
 // set texture coordinate for billboard
-void CBE_TextureAnimation::SetTextureCoord( TEXTUREVERTEX *pavRectangle, int iCurrentFrame )
+void CBE_TextureAnimation::SetTextureCoord( CRectSetMesh& rect_mesh, int iCurrentFrame )
 {
 	float fNumTextureSegments = (float)m_iNumTextureSegments;
 
@@ -249,12 +270,10 @@ void CBE_TextureAnimation::SetTextureCoord( TEXTUREVERTEX *pavRectangle, int iCu
 	vTexMax.u = vTexMin.u + fSegmentWidth - 0.001f;
 	vTexMax.v = vTexMin.v + fSegmentWidth - 0.001f;
 
-	pavRectangle[0].tex = vTexMin;
-	pavRectangle[1].tex.u = vTexMax.u;
-	pavRectangle[1].tex.v = vTexMin.v;
-	pavRectangle[2].tex = vTexMax;
-	pavRectangle[3].tex.u = vTexMin.u;
-	pavRectangle[3].tex.v = vTexMax.v;
+	// debug
+//	rect_mesh.SetTextureCoordMinMax( 0, TEXCOORD2(0,0), TEXCOORD2(1,1) );
+
+	rect_mesh.SetTextureCoordMinMax( 0, vTexMin, vTexMax );
 }
 
 
@@ -270,13 +289,13 @@ bool CBE_TextureAnimation::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 
 	if( scanner.TryScanLine( "BLEND", blend_mode ) )
 	{
-		if( blend_mode == "ONE")
+/*		if( blend_mode == "ONE")
 			m_iDestBlend = D3DBLEND_ONE;
 		else if( blend_mode == "INVSRCALPHA" )
 			m_iDestBlend = D3DBLEND_INVSRCALPHA;
 		else
 			m_iDestBlend = D3DBLEND_INVSRCALPHA;
-		return true;
+		return true;*/
 	}
 
 	if( scanner.TryScanLine( "TEXANIM_TYPE", texanim_type ) )
@@ -289,14 +308,6 @@ bool CBE_TextureAnimation::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 	return false;
 }
 
-void CBE_TextureAnimation::ReleaseGraphicsResources()
-{
-}
-
-void CBE_TextureAnimation::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-}
-
 
 void CBE_TextureAnimation::Serialize( IArchive& ar, const unsigned int version )
 {
@@ -306,7 +317,7 @@ void CBE_TextureAnimation::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fTotalAnimationTime;
 	ar & m_iNumTextureSegments;
 	ar & m_iTextureWidth;
-	ar & m_iDestBlend;
+//	ar & m_iDestBlend;
 	ar & m_fExpansionFactor;
 	ar & m_AnimTypeFlag;
 }
