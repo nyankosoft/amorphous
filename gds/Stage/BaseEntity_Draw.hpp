@@ -88,4 +88,47 @@ public:
 };
 
 
+class CBlendTransformsLoader : public CShaderParamsLoader
+{
+	boost::shared_ptr<CSkeletalMesh> m_pSkeletalMesh;
+
+public:
+
+	CBlendTransformsLoader( boost::shared_ptr<CSkeletalMesh> pSkeletalMesh = boost::shared_ptr<CSkeletalMesh>() )
+		:
+	m_pSkeletalMesh(pSkeletalMesh)
+	{}
+
+	void SetSkeletalMesh( boost::shared_ptr<CSkeletalMesh> pSkeletalMesh ) { m_pSkeletalMesh = pSkeletalMesh; }
+
+	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	{
+		//PROFILE_FUNCTION();
+
+		// set identity matrix to the root bone since 
+		m_pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );//	< usu.?
+
+		m_pSkeletalMesh->SetLocalTransformsFromCache();
+
+		D3DXMATRIX *paBlendMatrix = m_pSkeletalMesh->GetBlendMatrices();
+		if( !paBlendMatrix )
+			return;
+
+		int i, num_bones = m_pSkeletalMesh->GetNumBones();
+		std::vector<Transform> src_transforms;
+		src_transforms.resize( num_bones );
+
+		for( i=0; i<num_bones; i++ )
+		{
+			Matrix34 src;
+			src.CopyFromRowMajorMatrix44( (float *)(&paBlendMatrix[i]) );
+			src_transforms[i].FromMatrix34( src );
+		}
+
+		// set blend matrices to the shader
+		rShaderMgr.SetVertexBlendTransforms( src_transforms );
+	}
+};
+
+
 #endif  /*  __BaseEntity_Draw_HPP__  */

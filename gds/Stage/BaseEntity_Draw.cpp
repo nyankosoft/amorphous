@@ -253,7 +253,8 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 		shared_ptr<CSkeletalMesh> pSkeletalMesh
 			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
-		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
+//		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
+		shared_ptr<CBlendTransformsLoader> pBlendMatricesLoader( new CBlendTransformsLoader(pSkeletalMesh) );
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
 	}
 
@@ -626,8 +627,10 @@ void InitMeshRenderMethod( CCopyEntity &entity )
 		shared_ptr<CSkeletalMesh> pSkeletalMesh
 			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
-		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
-		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
+//		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
+//		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
+		shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader( new CBlendTransformsLoader(pSkeletalMesh) );
+		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
 	}
 
 	if( true /* world position of entity has large values */ )
