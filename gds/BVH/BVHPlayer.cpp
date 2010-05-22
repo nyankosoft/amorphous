@@ -26,9 +26,9 @@ void CBVHPlayer::Reset()
 {
 	m_strBVHFilename = "";
 	m_fFrameTime = BVH_DEFAULT_FRAMETIMME;
-	//m_RootBone.Destroy();
 	m_vecFrame.clear();
 	m_vecChannelType.clear();
+	m_RootBone.Reset();
 }
 
 

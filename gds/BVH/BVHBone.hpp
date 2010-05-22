@@ -53,6 +53,8 @@ public:
 
 	~CBVHBone();
 
+	void Reset();
+
 	void LoadFromFile( char* pcTypeAndName, FILE* fp );
 
 	const std::string& GetName() const { return m_strName; }

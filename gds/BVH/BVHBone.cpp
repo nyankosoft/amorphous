@@ -13,12 +13,29 @@ CUnitCube *CBVHBone::ms_pUnitCube = NULL;
 
 
 CBVHBone::CBVHBone()
+:
+m_vOffset( Vector3(0,0,0) ),
+m_iNumChannels(0),
+m_matLocalPose( Matrix34Identity() ),
+m_matWorldPose( Matrix34Identity() ),
+m_qLocalRot( Matrix33Identity() )
 {
 }
 
 
 CBVHBone::~CBVHBone()
 {
+}
+
+
+void CBVHBone::Reset()
+{
+	m_strName = "";
+	m_vOffset = Vector3(0,0,0);
+	m_iNumChannels = 0;
+	m_matLocalPose = Matrix34Identity();
+	m_matWorldPose = Matrix34Identity();
+	m_vecChild.clear();
 }
 
 
