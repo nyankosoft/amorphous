@@ -1,7 +1,5 @@
 #include "BVHMotionDatabaseCompiler.hpp"
 #include "BVH/BVHPlayer.hpp"
-#include "XML/xmlch2x.hpp"
-#include "XML/XercesString.hpp"
 #include "XML/XMLDocumentLoader.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
