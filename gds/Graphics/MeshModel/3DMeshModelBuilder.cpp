@@ -6,11 +6,15 @@
 #include "Graphics/FVF_TextureVertex.h"
 #include "Support/lfs.hpp"
 #include "Support/StringAux.hpp"
+#include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <assert.h>
 #include <algorithm>
+#include <boost/filesystem.hpp>
 
 using namespace std;
+using namespace boost;
+using namespace boost::filesystem;
 
 
 C3DModelLoader::C3DModelLoader()
@@ -75,6 +79,52 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
 	// save mesh model to file
 	if( 0 < dest_filepath.length() )
         m_MeshModelArchive.SaveToFile( dest_filepath );
+
+	// Commented out: decided to do this with AutoResourceArchiver.
+/*	if( build_option_flags && C3DMeshModelBuilder::BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES )
+	{
+//		const int num_materials = (int)m_MeshModelArchive.GetMaterial().size();
+		const int num_materials = (int)m_OrigTextureFilepaths.size();
+		for( int i=0; i<num_materials; i++ )
+		{
+//			const int num_textures = (int)m_MeshModelArchive.GetMaterial()[i].vecTexture.size();
+			const int num_textures = (int)m_OrigTextureFilepaths[i].size();
+			for( int j=0; j<num_textures; j++ )
+			{
+				const CMMA_Texture& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
+				if( tex.type != CMMA_Texture::FILENAME )
+					continue;
+
+//				path src_tex_path = path(src_dirpath) / tex.strFilename;
+				path src_tex_path = path(src_dirpath) / m_OrigTextureFilepaths[i][j];
+				CImageArchive ia( src_tex_path.string() );
+				if( !ia.IsValid() )
+					continue;
+
+				path dest_tex_path = path(dest_filepath).parent_path() / tex.strFilename;
+				create_directories( dest_tex_path.parent_path() );
+				ia.SaveToFile( dest_tex_path.string() );
+			}
+		}
+	}*/
+
+	if( build_option_flags && C3DMeshModelBuilder::BOF_CHANGE_TEXTURE_FILE_EXTENSIONS_TO_IA )
+	{
+		const int num_materials = (int)m_MeshModelArchive.GetMaterial().size();
+		for( int i=0; i<num_materials; i++ )
+		{
+			const int num_textures = (int)m_MeshModelArchive.GetMaterial()[i].vecTexture.size();
+			for( int j=0; j<num_textures; j++ )
+			{
+				CMMA_Texture& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
+				if( tex.type != CMMA_Texture::FILENAME )
+					continue;
+
+				lfs::change_ext( tex.strFilename, "ia" );
+			}
+		}
+
+	}
 
 	// debug - output text file
 	if( build_option_flags & BOF_OUTPUT_AS_TEXTFILE )
@@ -151,6 +201,9 @@ void C3DMeshModelBuilder::CreateMeshArchive()
 
 	// calculate the minimum vertex alpha for each material
 	m_MeshModelArchive.UpdateMinimumVertexDiffuseAlpha();
+
+	// save the filepaths of the textures
+	SaveOrigTextureFilepaths();
 
 	// modify the output texture filenames according to 'm_TextureFilenameOption'
 	ProcessTextureFilenames();
@@ -480,6 +533,29 @@ const char* GetTexFilenameOptionTitle( TexturePathnameOption::Option option )
 }
 
 
+void C3DMeshModelBuilder::SaveOrigTextureFilepaths()
+{
+	if( !m_pModelLoader )
+		return;
+
+	m_OrigTextureFilepaths.clear();
+
+	const vector<CMMA_Material>& rvecMaterial = m_MeshModelArchive.GetMaterial();
+
+	const size_t num_materials = rvecMaterial.size();
+	m_OrigTextureFilepaths.resize( num_materials );
+	for( size_t i=0; i<num_materials; i++ )
+	{
+		const size_t num_textures = rvecMaterial[i].vecTexture.size();
+		m_OrigTextureFilepaths[i].resize( num_textures );
+		for( size_t tex=0; tex<num_textures; tex++ )
+		{
+			m_OrigTextureFilepaths[i][tex] = rvecMaterial[i].vecTexture[tex].strFilename;
+		}
+	}
+}
+
+
 void C3DMeshModelBuilder::ProcessTextureFilenames()
 {
 	if( !m_pModelLoader )
@@ -502,7 +578,6 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 	for( size_t i=0; i<num_materials; i++ )
 	{
 		const size_t num_textures = rvecMaterial[i].vecTexture.size();
-
 		for( size_t tex=0; tex<num_textures; tex++ )
 		{
 			string& strTextureFilename = rvecMaterial[i].vecTexture[tex].strFilename;

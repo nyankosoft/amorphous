@@ -148,9 +148,11 @@ public:
 
 	enum BuildOptionFlags
 	{
-		BOF_OUTPUT_AS_TEXTFILE = (1 << 0), ///< Output the built mesh as a readable text file. Used to examine the content of the created mesh.
-//		BOF_ANOTHER_FLAG       = (1 << 1),
-//		BOF_YET_ANOTHER_FLAG   = (1 << 2),
+		BOF_OUTPUT_AS_TEXTFILE                    = (1 << 0), ///< Output the built mesh as a readable text file. Used to examine the content of the created mesh.
+		BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES       = (1 << 1),
+		BOF_CHANGE_TEXTURE_FILE_EXTENSIONS_TO_IA  = (1 << 2), ///< All the output texture filepaths will be changed to ".ia"
+//		BOF_ANOTHER_FLAG                          = (1 << 3),
+//		BOF_YET_ANOTHER_FLAG                      = (1 << 4),
 	};
 
 protected:
@@ -172,6 +174,12 @@ protected:
 	std::vector<CIndexedPolygon> m_vecNonTriangulatedPolygon;
 
 	std::vector<CIndexedPolygon> m_vecTriangulatedPolygon;
+
+	/// input texture filepath -> output texture filepath
+//	std::map<std::string,std::string> m_DetectedTextureFilepaths;
+
+	// m_OrigTextureFilepaths[i][j] filepath of j-th texture of i-th material
+	std::vector< std::vector<std::string> > m_OrigTextureFilepaths;
 
 protected:
 
@@ -200,6 +208,8 @@ protected:
 
 	void TrimTriangleSetsAndMaterials();
 
+	void SaveOrigTextureFilepaths();
+
 public:
 
 	C3DMeshModelBuilder();
@@ -221,6 +231,8 @@ public:
 
 	std::vector<CIndexedPolygon>& GetNonTriangulatedPolygonBuffer() { return m_vecNonTriangulatedPolygon; }
 
+//	const std::map<std::string,std::string> GetDetectedTextureFilepaths() const { return m_DetectedTextureFilepaths; }
+	const std::vector< std::vector<std::string> >& GetOriginalTextureFilepaths() const { return m_OrigTextureFilepaths; }
 };
 
 
