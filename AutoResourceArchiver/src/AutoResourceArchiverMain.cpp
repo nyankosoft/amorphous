@@ -1,5 +1,6 @@
 #include "gds/Support/AutoResourceArchiver.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
+#include "gds/Support/MiscAux.hpp"
 #include "gds/LightWave.hpp"
 
 using namespace std;
@@ -99,14 +100,21 @@ int main( int argc, char *argv[] )
 		bool res = GetFilename( root_desc_file );
 	}
 
-	if( root_desc_file.length() == 0 )
-		return 0;
-
 	// <<< release
 
 	// >>> test
 //	string root_desc_file( "../../../GameProjects/FlightGame/resources/images/ss_imgs" );
 	// <<< test
+
+	if( root_desc_file.length() == 0 )
+		return 0;
+
+	path log_file_directory( path(root_desc_file).parent_path() );
+	const string app_title( "AutoResourceArchiver" );
+	const string log_filename = app_title + "_" + string(GetBuildInfo()) + "_Log.html";
+	const path log_file_path = log_file_directory / log_filename;
+	CLogOutput_HTML html_log( log_file_path.string() );
+	g_Log.AddLogOutput( &html_log );
 
 	CAutoResourceArchiver ara;
 
