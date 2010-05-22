@@ -11,6 +11,7 @@
 #include "gds/Graphics/SkyboxMisc.hpp"
 #include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Graphics/FogParams.hpp"
+#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
@@ -36,7 +37,8 @@ m_fHeading(0),
 m_fPitch(0),
 m_MeshWorldPose( Matrix34Identity() ),
 m_fInitCamShift( 20.0f ),
-m_Lighting(false)
+m_Lighting(true),
+m_CurrentShaderIndex(0)
 {
 	m_UseCameraController = false;
 
@@ -71,14 +73,14 @@ void CMeshViewer::RefreshFileList( const std::string& directory_path )
 }
 
 
-void CMeshViewer::SetLights()
+void CMeshViewer::SetLights( CShaderManager& shader_mgr )
 {
 	// change lighting render state
 	// - Needed when fixed function pipeline is used
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, m_Lighting );
 
 	shared_ptr<CShaderLightManager> pLightMgr
-		= FixedFunctionPipelineManager().GetShaderLightManager();
+		= shader_mgr.GetShaderLightManager();
 
 	if( !pLightMgr )
 		return;
@@ -91,19 +93,81 @@ void CMeshViewer::SetLights()
 		return;
 	}
 
-	CDirectionalLight dir_light;
-//	CHemisphericDirectionalLight dir_light;
+//	CDirectionalLight dir_light;
+	CHemisphericDirectionalLight dir_light;
 	dir_light.vDirection = Vec3GetNormalized( Vector3( 1,-3,2 ) );
 	dir_light.fIntensity = 1.0f;
-	dir_light.DiffuseColor = SFloatRGBColor::White();
-//	dir_light.Attribute.UpperDiffuseColor = SFloatRGBAColor::White();
-//	dir_light.Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.1f, 0.1f, 0.1f, 1.0f );
+//	dir_light.DiffuseColor = SFloatRGBColor::White();
+	dir_light.Attribute.UpperDiffuseColor = SFloatRGBAColor::White();
+	dir_light.Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.1f, 0.1f, 0.1f, 1.0f );
 
 
-	pLightMgr->SetDirectionalLight( dir_light );
-//	pLightMgr->SetHemisphericDirectionalLight( dir_light );
+//	pLightMgr->SetDirectionalLight( dir_light );
+	pLightMgr->SetHemisphericDirectionalLight( dir_light );
 
 	pLightMgr->CommitChanges();
+}
+
+
+void CMeshViewer::LoadBlankTextures( CBasicMesh& mesh )
+{
+	int num_subsets = mesh.GetNumMaterials();
+	for( int i=0; i<num_subsets; i++ )
+	{
+		CMeshMaterial& mat = mesh.Material(i);
+		if( mat.Texture.empty() )
+		{
+			mat.Texture.resize( 1 );
+			mat.TextureDesc.resize( 1 );
+			mat.TextureDesc[0].Width  = 1;
+			mat.TextureDesc[0].Height = 1;
+			mat.TextureDesc[0].Format = TextureFormat::A8R8G8B8;
+			mat.TextureDesc[0].pLoader.reset( new CSignleColorTextureFilling(SFloatRGBAColor::White()) );
+			mat.Texture[0].Load( mat.TextureDesc[0] );
+		}
+	}
+}
+
+
+void CMeshViewer::LoadShaders()
+{
+	vector<CGenericShaderDesc> shader_descs;
+	shader_descs.resize( 2 );
+
+	CGenericShaderDesc desc;
+
+	shader_descs[0].ShaderLightingType = CShaderLightingType::PER_PIXEL;
+	shader_descs[0].Specular = CSpecularSource::NONE;
+
+	shader_descs[1].ShaderLightingType = CShaderLightingType::PER_PIXEL;
+	shader_descs[1].Specular = CSpecularSource::DECAL_TEX_ALPHA;
+
+	CShaderResourceDesc shader_desc;
+
+//	m_Shaders.resize( shader_descs.size() );
+//	m_Techniques.resize( shader_descs.size() );
+	for( size_t i=0; i<shader_descs.size(); i++ )
+	{
+		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_descs[i]) );
+		CShaderHandle shader;
+		bool loaded = shader.Load( shader_desc );
+
+		if( loaded )
+		{
+			m_Shaders.push_back( shader );
+			m_Techniques.push_back( CShaderTechniqueHandle() );
+			m_Techniques.back().SetTechniqueName( "Default" );
+		}
+
+	}
+
+	// added shader manager that uses fixed function pipeline as a fallback
+	CShaderResourceDesc default_desc;
+	default_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
+	m_Shaders.push_back( CShaderHandle() );
+	m_Shaders.back().Load( default_desc );
+	m_Techniques.push_back( CShaderTechniqueHandle() );
+	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
 }
 
 
@@ -132,20 +196,15 @@ void CMeshViewer::RenderMeshes()
 	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
 	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
 	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
-/*
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	LPD3DXEFFECT pEffect = pShaderManager->GetEffect();
-	if( pEffect )
-	{
-		hr = pEffect->SetValue( "m_vEyePos", &(g_Camera.GetPosition()), sizeof(float) * 3 );
 
-//		hr = pEffect->SetTechnique( "Default" );
-//		hr = pEffect->SetTechnique( "NullShader" );
-		hr = pEffect->SetTechnique( "QuickTest" );
-	}
-*/
+	CShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
+	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
-	SetLights();
+	shader_mgr.SetParam( "g_vEyePos", GetCameraController()->GetPosition() );
+
+	SetLights( shader_mgr );
+
+	shader_mgr.SetTechnique( m_Techniques[m_CurrentShaderIndex] );
 
 	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
 	if(	!pMesh )
@@ -166,12 +225,18 @@ void CMeshViewer::RenderMeshes()
 		* ToMatrix44( shift );
 
 	// reset the world transform matrix
-//	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
-	FixedFunctionPipelineManager().SetWorldTransform( world );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+	shader_mgr.SetWorldTransform( world );
 
+//	if( pMesh )
+//		pMesh->Render( shader_mgr );
 	if( pMesh )
-		pMesh->Render();
-//		pMesh->Render( FixedFunctionPipelineManager() );
+	{
+		if( m_CurrentShaderIndex == (int)m_Shaders.size() - 1 )
+			pMesh->Render();
+		else
+			pMesh->Render( shader_mgr );
+	}
 }
 
 
@@ -223,6 +288,11 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 
 	bool loaded = m_Mesh.Load( mesh_filepath );
 
+	if( loaded && m_Mesh.GetMesh() )
+	{
+		LoadBlankTextures( *m_Mesh.GetMesh() );
+	}
+
 	const path current_mesh_filepath = mesh_filepath;
 
 	m_CurrentFileIndex = -1;
@@ -257,7 +327,6 @@ void SetDefaultLinearFog()
 //	params.Mode = FogMode::EXP;
 
 	GraphicsDevice().SetFogParams( params );
-
 	GraphicsDevice().Enable( RenderStateType::FOG );
 }
 
@@ -266,10 +335,7 @@ int CMeshViewer::Init()
 {
 	GetCameraController()->SetPosition( Vector3(0,0,-10) );
 
-//	bool loaded = m_Shader.Load( "shaders/mesh.fx" );
-
-//	if( !loaded )
-//		return 1;
+	LoadShaders();
 
 	string input_filepath;// = g_CmdLine;
 
@@ -385,7 +451,9 @@ void CMeshViewer::HandleInput( const SInputData& input )
 		}
 		break;
 
-	case 'V':
+	case 'S':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_CurrentShaderIndex = (m_CurrentShaderIndex + 1) % (int)m_Shaders.size();
 		break;
 
 	case GIC_MOUSE_BUTTON_R:

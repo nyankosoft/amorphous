@@ -29,6 +29,12 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	CShaderHandle m_Shader;
 
+	std::vector<CShaderHandle> m_Shaders;
+
+	std::vector<CShaderTechniqueHandle> m_Techniques;
+
+	int m_CurrentShaderIndex;
+
 //	CUnitSphere m_LightPosIndicator;
 
 	Vector3 m_vLightPosition;
@@ -62,7 +68,11 @@ protected:
 
 	bool LoadModel( const std::string& mesh_filepath );
 
-	void SetLights();
+	void LoadShaders();
+
+	void SetLights( CShaderManager& shader_mgr );
+
+	void LoadBlankTextures( CBasicMesh& mesh );
 
 public:
 
