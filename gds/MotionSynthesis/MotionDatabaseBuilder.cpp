@@ -230,7 +230,6 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 		else if( element_name == "StartBoneName" )
 		{
 			desc.m_StartBoneName = children[i].GetTextContent();
-//			desc.m_StartBoneName = to_string(pNode->getTextContent());
 		}
 		else if( element_name == "AnnotationList" )
 		{
@@ -258,34 +257,22 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& bvh_file_node_reader )
+void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& input_file_node_reader )
 {
 	// found a <File> element
 	// - element that contains a bvh file
 
-	const std::string bvh_filepath = bvh_file_node_reader.GetAttributeText( "filepath" );
-/*
-	const xercesc::DOMNamedNodeMap *pAttrib = pBVHFileNode->getAttributes();
-
-	if( !pAttrib )
+	const std::string input_filepath = input_file_node_reader.GetAttributeText( "filepath" );
+	if( input_filepath.length() == 0 )
 	{
-		LOG_PRINT_ERROR( " - No attribute for input bvh file" );
-		return; // no attribute - <File> element must have filepath attribute
-	}
-
-	xercesc::DOMNode *pNode = pAttrib->getNamedItem( XercesString("filepath") );
-
-	if( !pNode )*/
-	if( bvh_filepath.length() == 0 )
-	{
-		LOG_PRINT_ERROR( " - No bvh filepath found" );
+		LOG_PRINT_ERROR( " - No input filepath found" );
 		return;
 	}
 
 	// add a new desc group
 	m_vecDescGroup.push_back( CMotionPrimitiveDescGroup() );
 
-	string src_filename = bvh_filepath;//to_string(pNode->getNodeValue());
+	string src_filename = input_filepath;
 
 	path src_filepath = path(m_SourceXMLFilename).parent_path() / src_filename;
 
@@ -305,28 +292,15 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& bvh
 	}
 
 	// load scaling factor
-//	xercesc::DOMNode *pScalingNode = pAttrib->getNamedItem(  XercesString("scaling") );
-//	if( pScalingNode )
-//		m_vecDescGroup.back().m_fScalingFactor = to_float( to_string(pScalingNode->getNodeValue()) );
+	m_vecDescGroup.back().m_fScalingFactor = to_float( input_file_node_reader.GetAttributeText( "scaling" ) );
 
-	m_vecDescGroup.back().m_fScalingFactor = to_float( bvh_file_node_reader.GetAttributeText( "scaling" ) );
-
-//	for( DOMNode *pNode = pBVHFileNode->getFirstChild();
-//		 pNode;
-//		 pNode = pNode->getNextSibling() )
-	vector<CXMLNodeReader> children = bvh_file_node_reader.GetImmediateChildren();
+	vector<CXMLNodeReader> children = input_file_node_reader.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
 	{
-//		const XercesString node_name(pNode->getNodeName());
-
-//		if( node_name != XercesString("MotionPrimitive") )
 		if( children[i].GetName() != "MotionPrimitive" )
 			continue;
 
-//		CreateMotionPrimitiveDesc( pNode );
 		CreateMotionPrimitiveDesc( children[i] );
-
-//		const XMLCh *pName = pNode->getNodeName();
 	}
 }
 
@@ -415,7 +389,6 @@ void CMotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNo
 
 
 void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
-//void CMotionDatabaseBuilder::ProcessXMLFile( xercesc::DOMNode *pRootNode )
 {
 	xercesc::DOMNode *pRootNode = root_node.GetDOMNode();
 
@@ -448,9 +421,6 @@ void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 			CXMLNodeReader node(pFileNode);
 			CreateAnnotationTable( node );
 		}
-
-
-//		const XMLCh *pName = pNode->getNodeName();
 	}
 }
 
