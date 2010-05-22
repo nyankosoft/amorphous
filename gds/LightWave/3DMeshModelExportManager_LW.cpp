@@ -21,6 +21,8 @@ void C3DMeshModelExportManager_LW::Release()
 	{
 		SafeDelete( m_vecpModelBuilder[i] );
 	}
+
+	m_vecpModelBuilder.clear();
 }
 
 
@@ -54,7 +56,7 @@ void C3DMeshModelExportManager_LW::GetOutputFilename( string& dest_filename, con
 }
 
 
-bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
+bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, U32 build_option_flags )
 {
 	Release();
 
@@ -169,6 +171,8 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 
 	num_layer_sets = vecLayerSet.size();
 
+	m_OutputFilepaths.clear();
+	m_OutputFilepaths.resize( num_layer_sets );
 	for( i=0; i<num_layer_sets; i++ )
 	{
 //		m_vecpModelBuilder.push_back( new C3DMeshModelBuilder_LW( m_pObject ) );
@@ -188,10 +192,39 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename )
 
 		m_vecpModelBuilder.push_back( new C3DMeshModelBuilder() );
 
-		m_vecpModelBuilder.back()->BuildMeshModel( pModelLoader, C3DMeshModelBuilder::BOF_OUTPUT_AS_TEXTFILE );
+		m_vecpModelBuilder.back()->BuildMeshModel( pModelLoader, build_option_flags );
+
+		m_OutputFilepaths[i] = pModelLoader->GetOutputFilePath();
 	}
 
 	return true;
+}
+
+
+C3DMeshModelArchive *C3DMeshModelExportManager_LW::GetBuiltMeshModelArchive( uint model_index )
+{
+	if( model_index<(uint)m_vecpModelBuilder.size() && m_vecpModelBuilder[model_index] )
+		return &m_vecpModelBuilder[model_index]->GetArchive();
+	else
+		return NULL;
+}
+
+
+std::string C3DMeshModelExportManager_LW::GetOutputFilepath( uint model_index )
+{
+	if( model_index<(uint)m_OutputFilepaths.size() )
+		return m_OutputFilepaths[model_index];
+	else
+		return string();
+}
+
+
+vector< vector<string> > C3DMeshModelExportManager_LW::GetOriginalTextureFilepaths( uint model_index )
+{
+	if( model_index<(uint)m_vecpModelBuilder.size() && m_vecpModelBuilder[model_index] )
+		return m_vecpModelBuilder[model_index]->GetOriginalTextureFilepaths();
+	else
+		return vector< vector<string> >();
 }
 
 

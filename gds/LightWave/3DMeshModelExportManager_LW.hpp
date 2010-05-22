@@ -5,8 +5,9 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-
-#include "LightWave/fwd.hpp"
+#include "gds/base.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/LightWave/fwd.hpp"
 
 
 namespace morph
@@ -38,6 +39,8 @@ class C3DMeshModelExportManager_LW
 
 	std::string m_strBaseOutFilename;
 
+	std::vector<std::string> m_OutputFilepaths;
+
 	void GetOutputFilename( std::string& dest_filename, const std::string& src_layer_name );
 
 public:
@@ -50,7 +53,15 @@ public:
 
 	/// creates mesh model(s) from a .lwo file
 	/// a valid LWO2 model file has to be specified
-	bool BuildMeshModels( const std::string& lwo_filename );
+	bool BuildMeshModels( const std::string& lwo_filename, U32 build_option_flags = 0 );
+
+	int GetNumBuiltMeshModelArchives() const { return (int)m_vecpModelBuilder.size(); }
+
+	C3DMeshModelArchive *GetBuiltMeshModelArchive( uint model_index );
+
+	std::string GetOutputFilepath( uint model_index );
+
+	std::vector< std::vector<std::string> > GetOriginalTextureFilepaths( uint model_index );
 
 	const morph::progress_display& GetSourceObjectLoadingProgress() const;
 };
