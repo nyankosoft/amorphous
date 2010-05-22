@@ -26,6 +26,7 @@ public:
 		IMGFMT_TGA,
 		IMGFMT_C8A8,
 		IMGFMT_R32G32B32A32,
+		IMGFMT_DDS,          ///< Direct Draw Surface
 		NUM_IMAGE_FORAMTS
 	};
 
@@ -82,11 +83,11 @@ m_Format(IMGFMT_INVALID)
 /// TODO: do non-case-sensitive comparison
 inline bool CImageArchive::SetFormatFromFileExtension( const std::string& image_ext )
 {
-	if( image_ext == "bmp" )       m_Format = IMGFMT_BMP24; // support 32-bit image
+	if( image_ext == "bmp" )       m_Format = IMGFMT_BMP24; // TODO: support 32-bit image
 	else if ( image_ext == "jpg" ) m_Format = IMGFMT_JPEG;
 	else if ( image_ext == "tga" ) m_Format = IMGFMT_TGA;
 	else if ( image_ext == "png" ) m_Format = IMGFMT_PNG;
-//	else if ( image_ext == "" )    m_Format = ;
+	else if ( image_ext == "dds" ) m_Format = IMGFMT_DDS;
 //	else if ( image_ext == "" )    m_Format = ;
 //	else if ( image_ext == "" )    m_Format = ;
 	else
