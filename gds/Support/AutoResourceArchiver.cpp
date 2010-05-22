@@ -4,7 +4,7 @@ using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
 
-
+/*
 class CClothSimArchiverUnit : public CResourceArchiverUnit
 {
 public:
@@ -16,13 +16,17 @@ public:
 		return Result::UNKNOWN_ERROR;
 	}
 };
-
+*/
 
 void CAutoResourceArchiver::MainLoop( const std::string& desc_filepath )
 {
+	if( m_BuildInfo.m_CompileInfo.empty() )
+		return;
+
 	int resource_index = 0;
-	int num_compile_info = (int)m_BuildInfo.m_CompileInfo.size();
-	while(1)
+//	int num_compile_info = (int)m_BuildInfo.m_CompileInfo.size();
+//	while(1)
+	for(; !m_StopMonitoring; resource_index = (resource_index+1) % (int)m_BuildInfo.m_CompileInfo.size() )
 	{
 		CResourceCompileInfo& compile_info = m_BuildInfo.m_CompileInfo[resource_index];
 
@@ -51,9 +55,26 @@ void CAutoResourceArchiver::MainLoop( const std::string& desc_filepath )
 			printf( "Updating a resource file...\n" );
 			compile_info.PrintInfo();
 //			m_ResourceArchiver.CreateArchive( compile_info );
-			Result::Name res = m_ResourceArchiver.CompileResource( compile_info );
+			CResourceArchiverUnitOutput out;
+			Result::Name res = m_ResourceArchiver.CompileResource( compile_info, out );
 			if( res == Result::SUCCESS )
+			{
 				printf( "Updated a resource file.\n" );
+				map<string,string>::iterator itr;
+				for( itr = out.m_ExtraTargets.begin();
+					 itr != out.m_ExtraTargets.end();
+					 itr++)
+				{
+					CResourceFileInfo *pInfo = m_BuildInfo.GetResourceFileInfo( itr->first );
+					if( !pInfo )
+					{
+						m_BuildInfo.m_CompileInfo.push_back( CResourceCompileInfo(CResourceCompileInfo::TYPE_ARCHIVE) );
+						m_BuildInfo.m_CompileInfo.back().m_mapInputFilepathToModTime[ itr->first ] = CResourceFileInfo();
+						m_BuildInfo.m_CompileInfo.back().m_OutputPath = itr->second;
+					}
+				}
+
+			}
 			else
 				printf( "Failed to update a resource file.\n" );
 		}

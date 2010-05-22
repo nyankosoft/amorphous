@@ -15,6 +15,8 @@ class CAutoResourceArchiver : public thread_class
 
 	std::string m_RootDescFilepath;
 
+	bool m_StopMonitoring;
+
 private:
 
 	void MainLoop( const std::string& desc_filepath );
@@ -23,7 +25,10 @@ private:
 
 public:
 
-	CAutoResourceArchiver() {}
+	CAutoResourceArchiver()
+		:
+	m_StopMonitoring(false)
+	{}
 
 	CResourceArchiver& ResourceArchiver() { return m_ResourceArchiver; }
 
@@ -33,6 +38,8 @@ public:
 
 	// Start monitoring the resource with a separate thread.
 	void StartMonitoring() { start_thread(); }
+
+	void StopMonitoring() { m_StopMonitoring = true; }
 
 	void run() { MainLoop( m_RootDescFilepath ); }
 };

@@ -17,6 +17,21 @@ using namespace GameLib1::Serialization;
 typedef uint timestamp_type;
 
 
+class CResourceArchiverUnitOutput
+{
+public:
+
+	/// Files detected during the compilation and added as targets of compilation.
+	/// maps of input filepath -> output filepath
+	std::map<std::string,std::string> m_ExtraTargets;
+
+	void Reset()
+	{
+		m_ExtraTargets.clear();
+	}
+};
+
+
 class CResourceArchiverUnit
 {
 public:
@@ -30,7 +45,7 @@ public:
 	virtual Result::Name AddFileToDB( const std::string& keyname, const boost::filesystem::path& input_path, CBinaryDatabase<std::string>& db ) { return Result::SUCCESS; }
 
 //	virtual Result::Name CreateArchive( const std::string& input_filepath, boost::shared_ptr<IArchiveObjectBase>& pArchive ) { return Result::SUCCESS; }
-	virtual Result::Name CreateArchive( const std::string& input_filepath, const std::string& output_filepath ) { return Result::SUCCESS; }
+	virtual Result::Name CreateArchive( const std::string& input_filepath, const std::string& output_filepath, CResourceArchiverUnitOutput& out ) { return Result::SUCCESS; }
 };
 
 
@@ -46,6 +61,7 @@ public:
 		if( ext == ".bmp"
 		 || ext == ".jpg"
 		 || ext == ".png"
+		 || ext == ".dds"
 		 || ext == ".tga" )
 		{
 			return true;
@@ -76,7 +92,7 @@ public:
 //		int res = img_archive.LoadFromFile( input_filepath );
 //	}
 
-	Result::Name CreateArchive( const std::string& input_filepath, const std::string& output_filepath )
+	Result::Name CreateArchive( const std::string& input_filepath, const std::string& output_filepath, CResourceArchiverUnitOutput& out )
 //	Result::Name CreateArchive( const std::string& input_filepath, boost::shared_ptr<IArchiveObjectBase>& pArchive )
 	{
 		using namespace std;
@@ -85,6 +101,9 @@ public:
 			return Result::INVALID_ARGS;
 
 		CImageArchive img_archive( input_filepath );
+		if( !img_archive.IsValid() )
+			return Result::UNKNOWN_ERROR;
+
 		img_archive.SaveToFile( output_filepath );
 
 //		boost::shared_ptr<CImageArchive> pImgArchive( new CImageArchive( input_filepath ) );
@@ -206,6 +225,15 @@ public:
 	/// Returns 0 if the requested path was not found.
 	timestamp_type GetLastCompiledTime( const std::string& input_filepath ) const
 	{
+		const CResourceFileInfo *pInfo = GetResourceFileInfo( input_filepath );
+		if( pInfo )
+			return pInfo->m_LastModifiedTime;
+		else
+			return 0;
+	}
+
+	const CResourceFileInfo *GetResourceFileInfo( const std::string& input_filepath ) const
+	{
 		using namespace std;
 
 		const size_t num_elements = m_CompileInfo.size();
@@ -217,12 +245,35 @@ public:
 
 			if( itr != m_CompileInfo[i].m_mapInputFilepathToModTime.end() )
 			{
-//				return itr->second;
-				return itr->second.m_LastModifiedTime;
+				return &(itr->second);
+//				return itr->second.m_LastModifiedTime;
 			}
 		}
 
-		return 0;
+		return NULL;
+//		return 0;
+	}
+
+	CResourceFileInfo *GetResourceFileInfo( const std::string& input_filepath )
+	{
+		using namespace std;
+
+		const size_t num_elements = m_CompileInfo.size();
+		for( size_t i=0; i<num_elements; i++ )
+		{
+//			map<string,timestamp_type>::const_iterator itr
+			map<string,CResourceFileInfo>::iterator itr
+				= m_CompileInfo[i].m_mapInputFilepathToModTime.find( input_filepath );
+
+			if( itr != m_CompileInfo[i].m_mapInputFilepathToModTime.end() )
+			{
+				return &(itr->second);
+//				return itr->second.m_LastModifiedTime;
+			}
+		}
+
+		return NULL;
+//		return 0;
 	}
 
 	void Serialize( IArchive& ar, const unsigned int version )
@@ -279,7 +330,7 @@ private:
 
 	Result::Name CreateDB( const std::vector<keyname_and_filepath>& vecInputFilepath, const std::string& output_filepath );
 
-	Result::Name CreateArchive( const std::string& input_filepath, const boost::filesystem::path& output_filepath );
+	Result::Name CreateArchive( const std::string& input_filepath, const boost::filesystem::path& output_filepath, CResourceArchiverUnitOutput& out );
 
 public:
 
@@ -304,7 +355,7 @@ public:
 
 	Result::Name CreateDB( const std::string& desc_filepath, CResourceCompileInfo& compile_info );
 
-	Result::Name CompileResource( CResourceCompileInfo& compile_info );
+	Result::Name CompileResource( CResourceCompileInfo& compile_info, CResourceArchiverUnitOutput& out );
 };
 
 
@@ -406,11 +457,13 @@ inline Result::Name CResourceArchiver::CreateDB( const std::vector<keyname_and_f
 
 
 inline Result::Name CResourceArchiver::CreateArchive( const std::string& input_filepath,
-									   const boost::filesystem::path& output_filepath )
+									   const boost::filesystem::path& output_filepath,
+									   CResourceArchiverUnitOutput& out )
 {
 	for( size_t i=0; i<m_vecpArchiverUnit.size(); i++ )
 	{
-		Result::Name ret = m_vecpArchiverUnit[i]->CreateArchive( input_filepath, output_filepath.string() );
+		out.Reset();
+		Result::Name ret = m_vecpArchiverUnit[i]->CreateArchive( input_filepath, output_filepath.string(), out );
 		if( ret == Result::SUCCESS )
 			return Result::SUCCESS;
 	}
@@ -419,7 +472,7 @@ inline Result::Name CResourceArchiver::CreateArchive( const std::string& input_f
 }
 
 
-inline Result::Name CResourceArchiver::CompileResource( CResourceCompileInfo& compile_info )
+inline Result::Name CResourceArchiver::CompileResource( CResourceCompileInfo& compile_info, CResourceArchiverUnitOutput& out )
 {
 	using namespace std;
 	using namespace boost;
@@ -435,7 +488,7 @@ inline Result::Name CResourceArchiver::CompileResource( CResourceCompileInfo& co
 	switch( compile_info.m_Type )
 	{
 	case CResourceCompileInfo::TYPE_ARCHIVE:
-		return CreateArchive( compile_info.m_mapInputFilepathToModTime.begin()->first, output_filepath );
+		return CreateArchive( compile_info.m_mapInputFilepathToModTime.begin()->first, output_filepath, out );
 //		break;
 
 	case CResourceCompileInfo::TYPE_DATABASE:
@@ -475,8 +528,8 @@ inline Result::Name CResourceArchiver::CreateDBs( const std::string& desc_filepa
 	{
 		CResourceCompileInfo& compile_info = build_info.m_CompileInfo[i];
 
-		CompileResource( compile_info );
-
+		CResourceArchiverUnitOutput out;
+		CompileResource( compile_info, out );
 	}
 }
 	
@@ -567,13 +620,13 @@ inline Result::Name CResourceArchiver::LoadCompileInfo( const std::string& desc_
 			if( strings.size() <= 1 )
 				continue;
 
-			if( compile_info.empty()
-			 || compile_info.back().m_Type != CResourceCompileInfo::TYPE_ARCHIVE )
-			{
-				compile_info.push_back( CResourceCompileInfo(CResourceCompileInfo::TYPE_ARCHIVE) );
-			}
+//			if( compile_info.empty()
+//			 || compile_info.back().m_Type != CResourceCompileInfo::TYPE_ARCHIVE )
+//			{
+//				compile_info.push_back( CResourceCompileInfo(CResourceCompileInfo::TYPE_ARCHIVE) );
+//			}
 
-			compile_info.push_back( CResourceCompileInfo() );
+			compile_info.push_back( CResourceCompileInfo(CResourceCompileInfo::TYPE_ARCHIVE) );
 			CResourceCompileInfo& rci = compile_info.back();
 			input_path = strings[1];
 			remove_newline_char_at_the_end( input_path );
