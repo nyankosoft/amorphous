@@ -2586,6 +2586,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\gds\Physics\SceneUtility.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Physics\SceneUtility.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Physics\Shape.hpp"
 				>
 				<FileConfiguration
