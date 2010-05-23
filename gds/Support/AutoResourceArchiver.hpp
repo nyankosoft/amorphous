@@ -41,7 +41,7 @@ public:
 
 	void StopMonitoring() { m_StopMonitoring = true; }
 
-	void run() { MainLoop( m_RootDescFilepath ); }
+	void run();
 };
 
 
