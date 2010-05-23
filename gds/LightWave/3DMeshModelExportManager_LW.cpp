@@ -7,9 +7,11 @@ using namespace MeshModel;
 #include "Support/memory_helpers.hpp"
 #include "Support/progress_display.hpp"
 #include "Support/lfs.hpp"
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 
 
 void C3DMeshModelExportManager_LW::Release()
@@ -194,7 +196,14 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 		m_vecpModelBuilder.back()->BuildMeshModel( pModelLoader, build_option_flags );
 
-		m_OutputFilepaths[i] = pModelLoader->GetOutputFilePath();
+		string loader_output_filepath = pModelLoader->GetOutputFilePath();
+		path output_path = path(lwo_filename).parent_path() / loader_output_filepath;
+		if( 0 < loader_output_filepath.length() )
+		{
+			bool saved = m_vecpModelBuilder.back()->GetArchive().SaveToFile( output_path.string() );
+		}
+
+		m_OutputFilepaths[i] = output_path.string();
 	}
 
 	return true;

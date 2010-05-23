@@ -76,9 +76,28 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
 	// check if the mesh should be created as a shadow volume mesh
 	CheckShadowVolume();
 
+	if( build_option_flags && C3DMeshModelBuilder::BOF_CHANGE_TEXTURE_FILE_EXTENSIONS_TO_IA )
+	{
+		const int num_materials = (int)m_MeshModelArchive.GetMaterial().size();
+		for( int i=0; i<num_materials; i++ )
+		{
+			const int num_textures = (int)m_MeshModelArchive.GetMaterial()[i].vecTexture.size();
+			for( int j=0; j<num_textures; j++ )
+			{
+				CMMA_Texture& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
+				if( tex.type != CMMA_Texture::FILENAME )
+					continue;
+
+				lfs::change_ext( tex.strFilename, "ia" );
+			}
+		}
+
+	}
+
 	// save mesh model to file
-	if( 0 < dest_filepath.length() )
-        m_MeshModelArchive.SaveToFile( dest_filepath );
+	// Moved to C3DMeshModelExportManager_LW::BuildMeshModels()
+//	if( 0 < dest_filepath.length() )
+//		m_MeshModelArchive.SaveToFile( dest_filepath );
 
 	// Commented out: decided to do this with AutoResourceArchiver.
 /*	if( build_option_flags && C3DMeshModelBuilder::BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES )
@@ -107,24 +126,6 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
 			}
 		}
 	}*/
-
-	if( build_option_flags && C3DMeshModelBuilder::BOF_CHANGE_TEXTURE_FILE_EXTENSIONS_TO_IA )
-	{
-		const int num_materials = (int)m_MeshModelArchive.GetMaterial().size();
-		for( int i=0; i<num_materials; i++ )
-		{
-			const int num_textures = (int)m_MeshModelArchive.GetMaterial()[i].vecTexture.size();
-			for( int j=0; j<num_textures; j++ )
-			{
-				CMMA_Texture& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
-				if( tex.type != CMMA_Texture::FILENAME )
-					continue;
-
-				lfs::change_ext( tex.strFilename, "ia" );
-			}
-		}
-
-	}
 
 	// debug - output text file
 	if( build_option_flags & BOF_OUTPUT_AS_TEXTFILE )
