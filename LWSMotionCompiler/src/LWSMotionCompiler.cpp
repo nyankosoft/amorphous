@@ -5,7 +5,6 @@
 #include <gds/Support/TextFileScanner.hpp>
 #include <gds/Support/StringAux.hpp>
 #include <gds/base.hpp>
-#include <boost/tokenizer.hpp>
 
 using namespace std;
 using namespace boost;
