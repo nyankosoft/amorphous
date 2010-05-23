@@ -3,8 +3,6 @@
 #include <boost/filesystem.hpp>
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
-#include "XML/xmlch2x.hpp"
-#include "XML/XercesString.hpp"
 #include "XML/XMLDocumentLoader.hpp"
 
 using namespace std;
@@ -133,7 +131,6 @@ int CMotionDatabaseCompiler::GetAnnotationIndex( const std::string& annotation_n
 // CMotionDatabaseBuilder
 //==============================================================================
 
-//bool CMotionDatabaseBuilder::CreateAnnotationTable( xercesc::DOMNode *pAnnotTableNode )
 bool CMotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_node )
 {
 	vector<CXMLNodeReader> vecChild = annot_table_node.GetImmediateChildren( "Annotation" );
@@ -146,23 +143,7 @@ bool CMotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_
 
 		m_vecAnnotationName.push_back( annot_name );
 	}
-/*
-	for( DOMNode *pNode = pAnnotTableNode->getFirstChild();
-		 pNode;
-		 pNode = pNode->getNextSibling() )
-	{
-		const string element_name = to_string( pNode->getNodeName() );
 
-		if( element_name == "Annotation" )
-		{
-			string annot_name = to_string( pNode->getTextContent() );
-
-			g_Log.Print( "found a new annotation: " + annot_name );
-
-			m_vecAnnotationName.push_back( annot_name );
-		}
-	}
-*/
 	return true;
 }
 
@@ -307,33 +288,18 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& inp
 
 void CMotionDatabaseBuilder::CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry )
 {
-	for( DOMNode *pNode = pMotionEntryNode->getFirstChild();
-		 pNode;
-		 pNode = pNode->getNextSibling() )
+	CXMLNodeReader node( pMotionEntryNode );
+	vector<CXMLNodeReader> children = node.GetImmediateChildren( "MotionPrimitive" );
+	for( size_t i=0; i<children.size(); i++ )
 	{
-		const string node_name = to_string(pNode->getNodeName());
-		if( node_name == "MotionPrimitive" )
+		const string motion_primitive_name = children[i].GetAttributeText( "name" );
+		if( motion_primitive_name.length() == 0 )
 		{
-			const xercesc::DOMNamedNodeMap *pAttrib = pNode->getAttributes();
-
-			if( !pAttrib )
-			{
-				LOG_PRINT_ERROR( " - No attribute for motion primitive in HumanoidMotionTable" );
-				return;
-			}
-
-			xercesc::DOMNode *pAttribNode = pAttrib->getNamedItem( XercesString("name") );
-
-			if( !pAttribNode )
-			{
-				LOG_PRINT_ERROR( "" );
-				return;
-			}
-
-			const string motion_primitive_name = to_string(pAttribNode->getNodeValue());
-
-			entry.m_vecMotionPrimitiveName.push_back( motion_primitive_name );
+			LOG_PRINT_ERROR( "A motion primitive must have a name." );
+			continue;
 		}
+
+		entry.m_vecMotionPrimitiveName.push_back( motion_primitive_name );
 	}
 }
 
@@ -390,8 +356,6 @@ void CMotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNo
 
 void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 {
-	xercesc::DOMNode *pRootNode = root_node.GetDOMNode();
-
 	string output_filename;
 	root_node.GetChildElementTextContent( "Output", output_filename );
 	m_OutputFilepath = path( path(m_SourceXMLFilename).parent_path() / output_filename ).string();
@@ -401,25 +365,22 @@ void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 		LOG_PRINT_WARNING( "Output filepath was not found in source XML file. Call SaveMotionDatabaseToFile() to save motion database to disk."  );
 	}
 
-	for( DOMNode *pFileNode = pRootNode->getFirstChild();
-		 pFileNode;
-		 pFileNode = pFileNode->getNextSibling() )
+	vector<CXMLNodeReader> file_nodes = root_node.GetImmediateChildren();
+	for( size_t i=0; i<file_nodes.size(); i++ )
 	{
-		const string node_name = to_string(pFileNode->getNodeName());
+		const string node_name = file_nodes[i].GetName();
 
 		if( node_name == "File" )
 		{
-			CXMLNodeReader node(pFileNode);
-			CreateMotionPrimitiveDescGroup( node );
+			CreateMotionPrimitiveDescGroup( file_nodes[i] );
 		}
 		else if( node_name == "HumanoidMotionTable" )
 		{
-			CreateMotionTable( pFileNode );
+			CreateMotionTable( file_nodes[i].GetDOMNode() );
 		}
 		else if( node_name == "AnnotationTable" )
 		{
-			CXMLNodeReader node(pFileNode);
-			CreateAnnotationTable( node );
+			CreateAnnotationTable( file_nodes[i] );
 		}
 	}
 }
@@ -460,9 +421,7 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 	if( !pXMLDocument )
 		return false;
 
-	CXMLNodeReader root_node_reader = pXMLDocument->GetRootNodeReader();
-
-	xercesc::DOMNode *pRootNode = root_node_reader.GetDOMNode();
+	CXMLNodeReader root_node = pXMLDocument->GetRootNodeReader();
 
 	// (E)
 
@@ -470,11 +429,9 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 	// - Do this after (S) - (E), or the exception ocurrs
 //	fnop::dir_stack dirstk( fnop::get_path(source_script_filename) );
 
-	XercesString xer_root_name = XercesString("root");
-	const XMLCh* pCurrentNodeName = pRootNode->getNodeName();
-	if( XercesString(pRootNode->getNodeName()) == xer_root_name )
+	if( root_node.GetName() == "root" )
 	{
-		ProcessXMLFile( root_node_reader );
+		ProcessXMLFile( root_node );
 	}
 
 	// create motion primitives from descs
