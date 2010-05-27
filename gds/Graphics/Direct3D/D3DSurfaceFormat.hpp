@@ -31,6 +31,7 @@ inline D3DFORMAT ConvertTextureFormatToD3DFORMAT( TextureFormat::Format tex_form
 	switch(tex_format)
 	{
 	case TextureFormat::R16F:          return D3DFMT_R16F;
+	case TextureFormat::R32F:          return D3DFMT_R32F;
 	case TextureFormat::A16R16G16B16F: return D3DFMT_A16B16G16R16F;
 	case TextureFormat::A8R8G8B8:      return D3DFMT_A8R8G8B8;
 	case TextureFormat::X8R8G8B8:      return D3DFMT_X8R8G8B8;
