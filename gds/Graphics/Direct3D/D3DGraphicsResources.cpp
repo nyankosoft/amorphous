@@ -112,6 +112,20 @@ CD3DTextureResource::~CD3DTextureResource()
 }
 
 
+static HRESULT LoadTextureFromImageArchive( CImageArchive& src_img, LPDIRECT3DTEXTURE9& pTexture )
+{
+	HRESULT hr = 
+			D3DXCreateTextureFromFileInMemory(
+			DIRECT3D9.GetDevice(),
+			&src_img.m_Buffer.buffer()[0],
+			(UINT)src_img.m_Buffer.buffer().size(),
+			&pTexture
+			);
+
+	return hr;
+}
+
+
 /**
  Load the texture specified by resource path in the current desc
  does not change the reference count
@@ -138,12 +152,7 @@ bool CD3DTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const st
 		sprintf( title, "D3DXCreateTextureFromFileInMemory (keyname: %s)", keyname.c_str() );
 		LOG_SCOPE( title );
 
-		hr = D3DXCreateTextureFromFileInMemory(
-			DIRECT3D9.GetDevice(),
-			&img.m_Buffer.buffer()[0],
-			(UINT)img.m_Buffer.buffer().size(),
-			&m_pTexture
-			);
+		hr = LoadTextureFromImageArchive( img, m_pTexture );
 	}
 
 /*	D3DXIMAGE_INFO img_info;
@@ -215,7 +224,36 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 
 	SAFE_RELEASE( m_pTexture );
 
-	HRESULT hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
+	HRESULT hr = E_FAIL;
+
+	// For a system that does not use CImageArchive, this suffices.
+//	hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
+
+	if( lfs::get_ext(filepath) == "ia" )
+	{
+		CImageArchive img;
+		bool loaded = img.LoadFromFile( filepath );
+		if( loaded )
+			hr = LoadTextureFromImageArchive( img, m_pTexture );
+//		if( SUCCEEDED(hr) )
+//			m_LoadedFromImageArchive = 1;
+	}
+	else
+	{
+		// Load regular image files, such as .bmp and .png
+		hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
+
+		if( FAILED(hr) )
+		{
+			string ia_filepath( filepath );
+			lfs::change_ext( ia_filepath, "ia" );
+			CImageArchive img( ia_filepath );
+			if( img.IsValid() )
+				hr = LoadTextureFromImageArchive( img, m_pTexture );
+//			if( SUCCEEDED(hr) )
+//				m_LoadedFromImageArchive = 1;
+		}
+	}
 
 	return SUCCEEDED(hr) ? true : false;
 }
