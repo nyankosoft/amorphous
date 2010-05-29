@@ -1,8 +1,5 @@
 #include "D3DFixedFunctionPipelineLightManager.hpp"
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
-//#include <assert.h>
 
 
 CD3DFixedFunctionPipelineLightManager::CD3DFixedFunctionPipelineLightManager()
