@@ -104,12 +104,12 @@ public:
 		if( !img_archive.IsValid() )
 			return Result::UNKNOWN_ERROR;
 
-		img_archive.SaveToFile( output_filepath );
+		bool saved = img_archive.SaveToFile( output_filepath );
 
 //		boost::shared_ptr<CImageArchive> pImgArchive( new CImageArchive( input_filepath ) );
 //		pArchive = pImgArchive;
 
-		return Result::SUCCESS;
+		return saved ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
 };
 
