@@ -61,6 +61,10 @@ m_pEffect(NULL),
 m_NumBlendTransforms(0)
 {
 	SetHandlesToNULL();
+
+	D3DXMatrixIdentity( &m_matWorld );
+	D3DXMatrixIdentity( &m_matView );
+	D3DXMatrixIdentity( &m_matProj );
 }
 
 

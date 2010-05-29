@@ -165,6 +165,10 @@ class CHLSLShaderManager : public CD3DShaderManager
 
 	int m_NumBlendTransforms;
 
+	D3DXMATRIX m_matWorld;
+	D3DXMATRIX m_matView;
+	D3DXMATRIX m_matProj;
+
 	/// the first vacant table entry for registering a technique
 	/// If m_VacantTechniqueEntryIndex = NUM_MAX_TECHNIQUES,
 	/// it indicates no vacancy is left
@@ -297,80 +301,79 @@ public:
 
 inline void CHLSLShaderManager::SetWorldTransform( const D3DXMATRIX& matWorld )
 {
-//	m_pEffect->SetMatrix( "World", &matWorld );
+	// Update cache
+	m_matWorld = matWorld;
+
 	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
 
-	D3DXMATRIX matView;
-//	m_pEffect->GetMatrix ( "View", &matView );
-	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
+	D3DXMATRIX matWorldView;
+	D3DXMatrixMultiply( &matWorldView, &matWorld, &m_matView );
 
-	D3DXMatrixMultiply( &matView, &matWorld, &matView );
-
-//	m_pEffect->SetMatrix( "WorldView", &matView );
-	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matView );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matWorldView );
 
 	// set WorldViewProj
-	D3DXMATRIX matProj;
-//	m_pEffect->GetMatrix ( "Proj", &matProj );
-	m_pEffect->GetMatrix ( m_aMatrixHandle[MATRIX_PROJ], &matProj );
+	D3DXMATRIX matWorldViewProj;
+	D3DXMatrixMultiply( &matWorldViewProj, &matWorldView, &m_matProj );
 
-	D3DXMatrixMultiply( &matProj, &matView, &matProj );
-
-//	m_pEffect->SetMatrix( "WorldViewProj", &matProj );
-	m_pEffect->SetMatrix ( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matProj );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldViewProj );
 }
 
 
 inline void CHLSLShaderManager::SetViewTransform( const D3DXMATRIX& matView )
 {
-	m_pEffect->SetMatrix( "View", &matView );
+	// Update cache
+	m_matView = matView;
 
-	D3DXMATRIX matWorld;
-	m_pEffect->GetMatrix ( "World", &matWorld );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
 
-	D3DXMatrixMultiply( &matWorld, &matWorld, &matView );
+	D3DXMATRIX matWorldView;
+	D3DXMatrixMultiply( &matWorldView, &m_matWorld, &matView );
 
-	m_pEffect->SetMatrix( "WorldView", &matWorld );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matWorldView );
 
 	// set WorldViewProj
-	D3DXMATRIX matProj;
-	m_pEffect->GetMatrix ( "Proj", &matProj );
+	D3DXMATRIX matWorldViewProj;
+	D3DXMatrixMultiply( &matWorldViewProj, &matWorldView, &m_matProj );
 
-	D3DXMatrixMultiply( &matProj, &matWorld, &matProj );
-
-	m_pEffect->SetMatrix( "WorldViewProj", &matProj );}
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldViewProj );
+}
 
 
 inline void CHLSLShaderManager::SetProjectionTransform( const D3DXMATRIX& matProj )
 {
-	m_pEffect->SetMatrix( "Proj", &matProj );
+	// Update cache
+	m_matProj = matProj;
+
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_PROJ], &matProj );
 
 	D3DXMATRIX matWorldView;
-	m_pEffect->GetMatrix( "WorldView", &matWorldView );
+	D3DXMatrixMultiply( &matWorldView, &m_matWorld, &m_matView );
 
 	D3DXMatrixMultiply( &matWorldView, &matWorldView, &matProj );
 
-	m_pEffect->SetMatrix( "WorldViewProj", &matWorldView );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldView );
 }
 
 
-inline void CHLSLShaderManager::SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView  )
+inline void CHLSLShaderManager::SetWorldViewTransform( const D3DXMATRIX& matWorld, const D3DXMATRIX& matView )
 {
-	m_pEffect->SetMatrix( "World", &matWorld );
+	// Update cache
+	m_matWorld = matWorld;
+	m_matView  = matView;
 
-	m_pEffect->SetMatrix( "View", &matView );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
+
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
 
 	D3DXMATRIX matWorldView;
-
 	D3DXMatrixMultiply( &matWorldView, &matWorld, &matView );
 
-	m_pEffect->SetMatrix( "WorldView", &matWorldView );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matWorldView );
 
-	D3DXMATRIX matProj;
-	m_pEffect->GetMatrix ( "Proj", &matProj );
-	D3DXMatrixMultiply( &matWorldView, &matWorldView, &matProj );
+	D3DXMATRIX matWorldViewProj;
+	D3DXMatrixMultiply( &matWorldViewProj, &matWorldView, &m_matProj );
 
-	m_pEffect->SetMatrix( "WorldViewProj", &matWorldView );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldViewProj );
 }
 
 
@@ -378,20 +381,22 @@ inline void CHLSLShaderManager::SetWorldViewProjectionTransform( const D3DXMATRI
 															 const D3DXMATRIX& matView,
 															 const D3DXMATRIX& matProj )
 {
-	m_pEffect->SetMatrix( "World", &matWorld );
-	m_pEffect->SetMatrix( "View", &matView );
-	m_pEffect->SetMatrix( "Proj", &matProj );
+	// Update cache
+	m_matWorld = matWorld;
+	m_matView  = matView;
+	m_matProj  = matProj;
+
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_VIEW],  &matView );
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_PROJ],  &matProj );
 
 	D3DXMATRIX matTrans;
 
 	D3DXMatrixMultiply( &matTrans, &matWorld, &matView );
-
-	m_pEffect->SetMatrix( "WorldView", &matTrans );
-
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matTrans );
 
 	D3DXMatrixMultiply( &matTrans, &matTrans, &matProj );
-
-	m_pEffect->SetMatrix( "WorldViewProj", &matTrans);
+	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matTrans );
 
 
 /*	D3DXMATRIX matWorldView_ = matWorldView;	// save the original world view for test
@@ -410,13 +415,13 @@ inline void CHLSLShaderManager::SetWorldViewProjectionTransform( const D3DXMATRI
 
 inline void CHLSLShaderManager::GetWorldTransform( D3DXMATRIX& matWorld ) const
 {
-	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
+	matWorld = m_matWorld;
 }
 
 
 inline void CHLSLShaderManager::GetViewTransform( D3DXMATRIX& matView ) const
 {
-	m_pEffect->GetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
+	matView = m_matView;
 }
 
 
