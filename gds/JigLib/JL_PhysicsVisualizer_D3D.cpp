@@ -1,24 +1,15 @@
 #include "JL_PhysicsVisualizer_D3D.hpp"
-
 #include "JL_PhysicsManager.hpp"
-
 #include "3DMath/Vector3.hpp"
 #include "3DMath/AABB3.hpp"
-
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/Shader/Shader.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Graphics/UnitCube.hpp"
 //#include "Support/memory_helpers.hpp"
 #include "Support/LineSegmentRenderer.hpp"
-
-#include "Graphics/UnitCube.hpp"
 #include "Support/SafeDelete.hpp"
-
-#include "Support/msgbox.hpp"
-
-#include <d3d9.h>
-#include <d3dx9.h>
+//#include "Support/msgbox.hpp"
 
 
 CJL_PhysicsVisualizer_D3D::CJL_PhysicsVisualizer_D3D( CJL_PhysicsManager *pPhysicsManager )
@@ -52,14 +43,12 @@ CJL_PhysicsVisualizer_D3D::~CJL_PhysicsVisualizer_D3D()
 
 void CJL_PhysicsVisualizer_D3D::RenderVisualInfo()
 {
- 	DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
+	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-
-	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
+/*	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
 	if( pShaderMgr )
 	{
@@ -72,7 +61,7 @@ void CJL_PhysicsVisualizer_D3D::RenderVisualInfo()
 
 //		pEffect->SetMatrix( "World", &matWorld );
 		pEffect->CommitChanges();
-	}
+	}*/
 
 
 	// render visual debug info
@@ -81,11 +70,11 @@ void CJL_PhysicsVisualizer_D3D::RenderVisualInfo()
 	DisplayActorInfo();
 
 
-	if( pEffect )
+/*	if( pEffect )
 	{
 		pEffect->EndPass();
 		pEffect->End();
-	}
+	}*/
 }
 
 
@@ -95,8 +84,8 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 
 	int i;
 
-	D3DXVECTOR3 avLineSegment[6], vContactPoint;
-	D3DXVECTOR3 avContactNormal[2];
+	Vector3 avLineSegment[6], vContactPoint;
+	Vector3 avContactNormal[2];
 
 #ifndef USE_COMBINED_COLLISION_POINTS_INFO  ///////////////////////////////////////////////////
 
@@ -110,12 +99,12 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 		if( m_RenderStateFlag & JL_VIS_CONTACT_POINTS )
 		{	// render contact point
 			vContactPoint = collision_buffer[i].vContactPoint;
-			avLineSegment[0] = vContactPoint - D3DXVECTOR3( 0.2f,  0.0f,  0.0f);
-			avLineSegment[1] = vContactPoint + D3DXVECTOR3( 0.2f,  0.0f,  0.0f);
-			avLineSegment[2] = vContactPoint - D3DXVECTOR3( 0.0f,  0.2f,  0.0f);
-			avLineSegment[3] = vContactPoint + D3DXVECTOR3( 0.0f,  0.2f,  0.0f);
-			avLineSegment[4] = vContactPoint - D3DXVECTOR3( 0.0f,  0.0f,  0.2f);
-			avLineSegment[5] = vContactPoint + D3DXVECTOR3( 0.0f,  0.0f,  0.2f);
+			avLineSegment[0] = vContactPoint - Vector3( 0.2f,  0.0f,  0.0f);
+			avLineSegment[1] = vContactPoint + Vector3( 0.2f,  0.0f,  0.0f);
+			avLineSegment[2] = vContactPoint - Vector3( 0.0f,  0.2f,  0.0f);
+			avLineSegment[3] = vContactPoint + Vector3( 0.0f,  0.2f,  0.0f);
+			avLineSegment[4] = vContactPoint - Vector3( 0.0f,  0.0f,  0.2f);
+			avLineSegment[5] = vContactPoint + Vector3( 0.0f,  0.0f,  0.2f);
 			for( j=0; j<6; j+=2 )
 			{
 				CLineSegmentRenderer::Draw(avLineSegment[j], avLineSegment[j+1], 0xFF3030FF);
@@ -134,8 +123,8 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 
 	vector<CJL_CollisionInfo>& collision_buffer = m_pPhysicsManager->GetCollisionInfo();
 
- 	int j, k, num_colls = collision_buffer.size();
-	D3DXVECTOR3 vContactPos, vNormal;
+ 	int j, k, num_colls = (int)collision_buffer.size();
+	Vector3 vContactPos, vNormal;
 
 	for( i=0; i<num_colls; i++ )
 	{
@@ -146,12 +135,12 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 			if( m_RenderStateFlag & JL_VIS_CONTACT_POINTS )
 			{	// render contact point
 				vContactPos = pt_info.vContactPosition;
-				avLineSegment[0] = vContactPos - D3DXVECTOR3( 0.2f,  0.0f,  0.0f);
-				avLineSegment[1] = vContactPos + D3DXVECTOR3( 0.2f,  0.0f,  0.0f);
-				avLineSegment[2] = vContactPos - D3DXVECTOR3( 0.0f,  0.2f,  0.0f);
-				avLineSegment[3] = vContactPos + D3DXVECTOR3( 0.0f,  0.2f,  0.0f);
-				avLineSegment[4] = vContactPos - D3DXVECTOR3( 0.0f,  0.0f,  0.2f);
-				avLineSegment[5] = vContactPos + D3DXVECTOR3( 0.0f,  0.0f,  0.2f);
+				avLineSegment[0] = vContactPos - Vector3( 0.2f,  0.0f,  0.0f);
+				avLineSegment[1] = vContactPos + Vector3( 0.2f,  0.0f,  0.0f);
+				avLineSegment[2] = vContactPos - Vector3( 0.0f,  0.2f,  0.0f);
+				avLineSegment[3] = vContactPos + Vector3( 0.0f,  0.2f,  0.0f);
+				avLineSegment[4] = vContactPos - Vector3( 0.0f,  0.0f,  0.2f);
+				avLineSegment[5] = vContactPos + Vector3( 0.0f,  0.0f,  0.2f);
 				for( k=0; k<6; k+=2 )
 				{
 					CLineSegmentRenderer::Draw(avLineSegment[k], avLineSegment[k+1], 0xFF3030FF);
@@ -180,13 +169,12 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 
 void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 {
-	D3DXMATRIX matWorld, matIdentity;
-	D3DXVECTOR3 vExtent;
-	D3DXVECTOR3 avLineSegment[2];
+	Vector3 vExtent;
+	Vector3 avLineSegment[2];
 	Vector3 vPos, vVel;
 
-	D3DXMatrixIdentity( &matWorld );
-	D3DXMatrixIdentity( &matIdentity );
+	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+
 	TCPreAllocDynamicLinkList<CJL_PhysicsActor>::LinkListIterator itrActor;
 
 	TCPreAllocDynamicLinkList<CJL_PhysicsActor>& rActorList = m_pPhysicsManager->GetActorList();
@@ -201,12 +189,11 @@ void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 			AABB3& raabb = itrActor->GetWorldAABB();
 			vExtent = raabb.GetExtents() * 2.0f;
 	
-			matWorld._11 = vExtent.x;
-			matWorld._22 = vExtent.y;
-			matWorld._33 = vExtent.z;
-			memcpy( &matWorld._41, &raabb.GetCenterPosition(), sizeof(D3DXVECTOR3) );
+			Matrix34 pose( Matrix34Identity() );
+			pose.vPosition = raabb.GetCenterPosition();
+			ToMatrix44( pose );
 
-			DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+			shader_mgr.SetWorldTransform( ToMatrix44( pose ) * Matrix44Scaling( vExtent.x, vExtent.y, vExtent.z ) );
 
 			if( itrActor->GetActivityState() == CJL_PhysicsActor::ACTIVE )
 			{
@@ -234,7 +221,7 @@ void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 			avLineSegment[1][2] = vVel[2];
 
 
-			DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matIdentity );
+			shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 			avLineSegment[1] += avLineSegment[0];
 			CLineSegmentRenderer::Draw(avLineSegment[0], avLineSegment[1], 0xFF5A00EE);
