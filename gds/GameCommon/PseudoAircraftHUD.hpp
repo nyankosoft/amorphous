@@ -11,7 +11,6 @@
 
 #include <vector>
 #include <string>
-using namespace std;
 
 class CTextureFont;
 class CPseudoAircraftSimulator;

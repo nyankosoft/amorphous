@@ -11,6 +11,8 @@
 #include "Support/memory_helpers.hpp"
 #include "PseudoAircraftSimulator.hpp"
 
+using namespace std;
+
 
 CPseudoAircraftHUD::CPseudoAircraftHUD()
 :

@@ -153,7 +153,7 @@ private:
 	/**
 	 * updates candidates which can be focused on
 	 */
-	void UpdateFocusCandidateTargets( const vector<CCopyEntity *>& vecpEntityBuffer );
+	void UpdateFocusCandidateTargets( const std::vector<CCopyEntity *>& vecpEntityBuffer );
 
 	/**
 	 * focus candidates are updated together
@@ -303,7 +303,7 @@ void InitPlayerAircraft()
 
 inline bool CBE_PlayerPseudoAircraft::IsFocusTargetEntity( int entity_group )
 {
-	vector<int>::iterator itr
+	std::vector<int>::iterator itr
 		= std::find( ms_vecFocusTargetEntityGroup.begin(),
 		             ms_vecFocusTargetEntityGroup.end(),
 			         entity_group );
