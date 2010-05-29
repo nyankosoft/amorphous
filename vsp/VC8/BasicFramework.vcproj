@@ -3031,6 +3031,22 @@
 			Name="App"
 			>
 		</Filter>
+		<Filter
+			Name="Utilities"
+			>
+			<Filter
+				Name="Physics"
+				>
+				<File
+					RelativePath="..\..\gds\Utilities\Physics\PhysicsMeshUtility.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Utilities\Physics\PhysicsMeshUtility.hpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\..\gds\3DMath.hpp"
 			>
