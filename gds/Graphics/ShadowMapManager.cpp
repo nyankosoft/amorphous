@@ -2,21 +2,18 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/2DPrimitive/2DTexRect.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/HemisphericLight.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Support/ParamLoader.hpp"
 
 using namespace std;
 using namespace boost;
 
 
 //std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
-
-
-static const bool gs_Debug = true;
 
 
 class CShadowMapLightVisitor : public CLightVisitor
@@ -62,10 +59,16 @@ public:
 };
 
 
+
+//===================================================================
+// CShadowMapManager
+//===================================================================
+
 CShadowMapManager::CShadowMapManager()
 :
-m_ShadowMapShaderFilename("Shader/ShadowMap.fx"),
-m_DisplayShadowMapTexturesForDebugging(gs_Debug),
+//m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
+m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
+m_DisplayShadowMapTexturesForDebugging(false),
 m_IDCounter(0)
 {
 	SetDefault();
@@ -80,8 +83,9 @@ m_IDCounter(0)
 
 CShadowMapManager::CShadowMapManager( int texture_width, int texture_height )
 :
-m_ShadowMapShaderFilename("Shader/ShadowMap.fx"),
-m_DisplayShadowMapTexturesForDebugging(gs_Debug),
+//m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
+m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
+m_DisplayShadowMapTexturesForDebugging(false),
 m_IDCounter(0)
 {
 	SetDefault();
@@ -143,6 +147,11 @@ void CShadowMapManager::SetDefault()
 	// set the default pose of the scene camera
 	m_SceneCamera.SetPosition( Vector3( 0.0f, 1.0f, -5.0f ) );
 	m_SceneCamera.SetOrientation( Matrix33Identity() );
+
+	UPDATE_PARAM( "debug/graphics_params.txt", "debug_shadowmap", CShadowMap::ms_DebugShadowMap );
+
+	if( CShadowMap::ms_DebugShadowMap )
+		UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_size", m_ShadowMapSize );
 }
 
 
@@ -293,7 +302,8 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
 
-	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::White().GetARGB32() );
+//	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::White().GetARGB32() );
+	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::Yellow().GetARGB32() );
 	m_aShadowTexture[0].SetRenderTarget();
 
 	itr->second->RenderShadowReceivers( camera );
@@ -398,7 +408,14 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 
 	pd3dDev->SetRenderState( D3DRS_ZENABLE, FALSE );
 
-//	m_DisplayShadowMapTexturesForDebugging = true;
+	if( CShadowMap::ms_DebugShadowMap )
+	{
+		static int display_shadowmap_tex = 0;
+		UPDATE_PARAM( "debug/graphics_params.txt", "display_shadowmap_textures", display_shadowmap_tex );
+		m_DisplayShadowMapTexturesForDebugging = (display_shadowmap_tex==1) ? true : false;
+	}
+	else
+		m_DisplayShadowMapTexturesForDebugging = false;
 
 	if( m_DisplayShadowMapTexturesForDebugging )
 	{
@@ -518,7 +535,7 @@ void CShadowMapManager::BeginSceneShadowMap()
 	// set the shadow map shader
 	// meshes that renderes themselves as shadow casters use the techniques
 	// in this shadow map shader
-	CShader::Get()->SetShaderManager( m_Shader.GetShaderManager() );
+//	CShader::Get()->SetShaderManager( m_Shader.GetShaderManager() );
 
 //	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
 
@@ -574,12 +591,12 @@ void CShadowMapManager::BeginSceneDepthMap()
 	// set the shadow map shader
 	// meshes that renderes themselves as shadow casters use the techniques
 	// in this shadow map shader
-	CShader::Get()->SetShaderManager( m_Shader.GetShaderManager() );
+//	CShader::Get()->SetShaderManager( m_Shader.GetShaderManager() );
 
 	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-	D3DXMATRIX matWorld, matView, matProj;
+//	D3DXMATRIX matWorld, matView, matProj;
 
-	D3DXMatrixIdentity( &matWorld );
+//	D3DXMatrixIdentity( &matWorld );
 //	m_SceneCamera.GetCameraMatrix( matView );
 //	m_SceneCamera.GetProjectionMatrix( matProj );
 
@@ -605,6 +622,13 @@ void CShadowMapManager::BeginSceneDepthMap()
 
 
 	pEffect->SetInt( "g_ShadowMapSize", m_ShadowMapSize );
+
+	if( CShadowMap::ms_DebugShadowMap )
+	{
+		static float dist_tolerance = 0.005f;
+		UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_dist_tolerance", dist_tolerance );
+		m_Shader.GetShaderManager()->SetParam( "g_fShadowMapDistTolerance", dist_tolerance );
+	}
 
 //	pd3dDev->BeginScene();
 }

@@ -18,6 +18,8 @@ float g_fShadowMapNearClip = 0.1f;
 float g_fShadowMapFarClip = 100.0f;
 
 
+int CShadowMap::ms_DebugShadowMap = 0;
+
 CShadowMap::~CShadowMap()
 {
 	ReleaseTextures();
@@ -156,7 +158,8 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 	D3DXVECTOR3 vWorldLightPos = m_LightCamera.GetPosition();
 	D3DXVECTOR3 vWorldLightDir = m_LightCamera.GetFrontDirection();
 
-	if( m_UseLightPosInWorldSpace )
+//	if( m_UseLightPosInWorldSpace )
+	if( true )
 	{
 		hr = pEffect->SetFloatArray( "g_vLightPos", (float *)&vWorldLightPos, 3 );
 		hr = pEffect->SetFloatArray( "g_vLightDir", (float *)&vWorldLightDir, 3 );
@@ -188,8 +191,12 @@ void CFlatShadowMap::SetWorldToLightSpaceTransformMatrix()
 	float fOrigCamNearClip = m_LightCamera.GetNearClip();
 	float fOrigCamFarClip  = m_LightCamera.GetFarClip();
 
-	UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
-	UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );
+	if( CShadowMap::ms_DebugShadowMap )
+	{
+		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
+		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );
+	}
+
 	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
 	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
 

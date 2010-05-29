@@ -60,8 +60,8 @@ protected:
 
 	CTextureRenderTarget m_aShadowTexture[2];
 
-	LPDIRECT3DTEXTURE9 m_pShadowedView;
-	LPDIRECT3DSURFACE9 m_pDSShadowedView;
+//	LPDIRECT3DTEXTURE9 m_pShadowedView;
+//	LPDIRECT3DSURFACE9 m_pDSShadowedView;
 
 	CCamera m_SceneCamera;
 

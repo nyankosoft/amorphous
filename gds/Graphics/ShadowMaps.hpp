@@ -186,6 +186,8 @@ public:
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }
 */
+
+	static int ms_DebugShadowMap;
 };
 
 
