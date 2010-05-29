@@ -17,6 +17,10 @@ class CSceneUtility
 
 	CActor *CreateBoxActor( const Vector3& side_lengths, const Matrix34& world_pose, U32 body_flags );
 
+protected:
+
+	CScene *GetScene() { return m_pScene; }
+
 public:
 
 	CSceneUtility( CScene *pScene )
