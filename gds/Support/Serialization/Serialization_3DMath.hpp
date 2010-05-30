@@ -1,10 +1,10 @@
-
 #ifndef __GAMELIB1_3DMATH_SERIALIZATION_H__
 #define __GAMELIB1_3DMATH_SERIALIZATION_H__
 
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix33.hpp"
 #include "3DMath/Matrix34.hpp"
+#include "3DMath/Matrix44.hpp"
 #include "3DMath/Quaternion.hpp"
 #include "3DMath/AABB3.hpp"
 
@@ -50,6 +50,17 @@ inline IArchive& operator & ( IArchive& ar, Matrix34& mat )
 inline IArchive& operator & ( IArchive& ar, Quaternion& q )
 {
 	ar & q.x & q.y & q.z & q.w;
+	return ar;
+}
+
+
+inline IArchive& operator & ( IArchive& ar, Matrix44& mat )
+{
+	ar & mat(0,0) & mat(0,1) & mat(0,2) & mat(0,3);
+	ar & mat(1,0) & mat(1,1) & mat(1,2) & mat(1,3);
+	ar & mat(2,0) & mat(2,1) & mat(2,2) & mat(1,3);
+	ar & mat(3,0) & mat(3,1) & mat(3,2) & mat(3,3);
+
 	return ar;
 }
 
