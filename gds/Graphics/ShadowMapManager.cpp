@@ -296,8 +296,6 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 
 	BeginSceneDepthMap();
 
-	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-
 	// render the first shadow texture
 
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
@@ -322,7 +320,7 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 
 		pEffect->SetTexture( "PrevShadowTexture", m_aShadowTexture[prev_index].GetRenderTargetTexture() );
 
-//		itr->second->CreateShadowTexture( camera );
+//		itr->second->RenderShadowReceivers( camera );
 
 		m_aShadowTexture[shadow_tex_index].ResetRenderTarget();
 
@@ -568,37 +566,10 @@ void CShadowMapManager::EndSceneShadowMap()
 //void CShadowMapManager::BeginSceneForShadowReceiver()
 void CShadowMapManager::BeginSceneDepthMap()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	HRESULT hr;
-
-	// set shadow map texture as a render target
-/*
-	hr = pd3dDev->GetRenderTarget( 0, &m_pOriginalSurface );
-
-	LPDIRECT3DSURFACE9 pShadowSurf;
-	if( SUCCEEDED( m_pShadowedView->GetSurfaceLevel( 0, &pShadowSurf ) ) )
-	{
-		pd3dDev->SetRenderTarget( 0, pShadowSurf );
-		SAFE_RELEASE( pShadowSurf );
-	}
-
-	if( SUCCEEDED( pd3dDev->GetDepthStencilSurface( &m_pOriginalDepthSurface ) ) )
-		pd3dDev->SetDepthStencilSurface( m_pDSShadowedView );
-
-	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFFFF00FF, 1.0f, 0 );
-//	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFFFFFFFF, 1.0f, 0 );
-*/
 	// set the shadow map shader
 	// meshes that renderes themselves as shadow casters use the techniques
 	// in this shadow map shader
 //	CShader::Get()->SetShaderManager( m_Shader.GetShaderManager() );
-
-	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-//	D3DXMATRIX matWorld, matView, matProj;
-
-//	D3DXMatrixIdentity( &matWorld );
-//	m_SceneCamera.GetCameraMatrix( matView );
-//	m_SceneCamera.GetProjectionMatrix( matProj );
 
 	Matrix44 view, proj;
 	m_SceneCamera.GetCameraMatrix( view );
@@ -621,7 +592,7 @@ void CShadowMapManager::BeginSceneDepthMap()
 	}*/
 
 
-	pEffect->SetInt( "g_ShadowMapSize", m_ShadowMapSize );
+	m_Shader.GetShaderManager()->SetParam( "g_ShadowMapSize", m_ShadowMapSize );
 
 	if( CShadowMap::ms_DebugShadowMap )
 	{
