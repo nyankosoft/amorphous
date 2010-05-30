@@ -148,6 +148,159 @@ bool CMotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_
 }
 
 
+void CopyTransformNodesOfBone(
+	const vector<int>& src_locator,
+	const vector<CKeyframe>& src_keyframes,
+//	CSkeleton& src_skeleton,
+//	pSrcSkeleton->GetRootBone(),
+	const vector<int>& dest_locator,
+	vector<CKeyframe>& dest_keyframes
+//	CSkeleton& dest_skeleton,
+//	pDestSkeleton->GetRootBone()
+)
+{
+	int num_keyframes = (int)src_keyframes.size();
+	for( int i=0; i<num_keyframes; i++ )
+	{
+		Transform pose = src_keyframes[i].GetTransform( src_locator );
+		dest_keyframes[i].SetTransform( pose, dest_locator );
+	}
+}
+
+
+Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
+{
+	CMotionMapTarget& tgt = m_MotionMapTarget;
+
+	path mdb_path = path(m_SourceXMLFilename).parent_path() / tgt.m_DestSkeletonMDB;
+	CMotionDatabase dest_skeleton_src_mdb( mdb_path.string() );
+	shared_ptr<CMotionPrimitive> pMotion = dest_skeleton_src_mdb.GetMotionPrimitive( tgt.m_DestSkeletonMotion );
+	if( !pMotion )
+		return Result::UNKNOWN_ERROR;
+
+	shared_ptr<CSkeleton> pDestSkeleton = pMotion->GetSkeleton();
+
+	if( m_vecMotionPrimitive.empty() )
+		return Result::UNKNOWN_ERROR;
+
+	shared_ptr<CSkeleton> pSrcSkeleton = m_vecMotionPrimitive.front().GetSkeleton();
+
+/*	for( map<string,string>::iterator itr = bone_maps.begin(); itr != bone_maps.end(); itr++ )
+	{
+		vector<int> src_locator;
+		bool found = pSrcSkeleton->CreateLocator( itr->first, src_locator );
+
+		vector<int> dest_locator;
+		found = pDestSkeleton->CreateLocator( itr->second, dest_locator );
+	}*/
+
+	const size_t num_motion_primitives = m_vecMotionPrimitive.size();
+
+	const map<string,string>& bone_maps = tgt.m_BoneMaps;
+	for( size_t i=0; i<num_motion_primitives; i++ )
+	{
+		CMotionPrimitive& src_motion = m_vecMotionPrimitive[i];
+		vector<CKeyframe>& src_keyframes = src_motion.GetKeyframeBuffer();
+
+		shared_ptr<CMotionPrimitive> pDestMotion( new CMotionPrimitive );
+		vector<CKeyframe>& dest_keyframes = pDestMotion->GetKeyframeBuffer();
+		dest_keyframes.resize( src_keyframes.size() );
+
+		pDestMotion->SetSkeleton( *pDestSkeleton );
+		pDestMotion->CreateEmptyKeyframes( (uint)src_keyframes.size() );
+
+		map<string,string>::const_iterator itr;
+		for( itr = bone_maps.begin();
+			itr != bone_maps.end();
+			itr++ )
+		{
+			vector<int> src_locator;
+			bool src_found = pSrcSkeleton->CreateLocator( itr->first, src_locator );
+
+			vector<int> dest_locator;
+			bool dest_found = pDestSkeleton->CreateLocator( itr->second, dest_locator );
+
+			if( !src_found || !dest_found )
+				continue;
+
+			CopyTransformNodesOfBone(
+				src_locator,
+				src_keyframes,
+//				*pSrcSkeleton,
+//				pSrcSkeleton->GetRootBone(),
+				dest_locator,
+				dest_keyframes
+//				*pDestSkeleton,
+//				pDestSkeleton->GetRootBone()
+				);
+		}
+
+		// overwrite the motion primitive
+		m_vecMotionPrimitive[i] = *pDestMotion;
+	}
+
+	return Result::SUCCESS;
+
+/*
+	// create node locator for the src bone
+	// create the node locator for the dest bone
+	for( each src bone )
+	{
+		// find the dest bone
+
+		for( each keyframe )
+		{
+			// copy transform nodes
+
+			Transform pose;
+			found = src_keyframe.GetTransform( src_locator, pose );
+			if( !found )
+				continue;
+
+			dest_keyframe.SetTransform( dest_locator, pose );
+		}
+	}
+*/
+}
+
+
+bool CMotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
+{
+	string bone_mapping_file;
+	mapping.GetChildElementTextContent( "BoneMapping", bone_mapping_file );
+
+	if( bone_mapping_file.length() == 0 )
+	{
+		LOG_PRINT_ERROR( " Can't find a 'BoneMapping' node or a valid mapping file" );
+		return false;
+	}
+
+	path mapping_file_path = path(m_SourceXMLFilename).parent_path() / bone_mapping_file;
+	shared_ptr<CXMLDocument> pDoc = CreateXMLDocument( mapping_file_path.string() );
+	if( !pDoc )
+		return false;
+
+	CMotionMapTarget& tgt = m_MotionMapTarget;
+	map<string,string>& bone_maps = tgt.m_BoneMaps;
+	CXMLNodeReader maps_root_node = pDoc->GetRootNodeReader();
+	vector<CXMLNodeReader> children = maps_root_node.GetImmediateChildren( "Map" );
+	for( size_t i=0; i<children.size(); i++ )
+	{
+		string from = children[i].GetAttributeText( "from" );
+		string to   = children[i].GetAttributeText( "to" );
+		if( from == "" || to == "" )
+			continue;
+
+		bone_maps[from] = to;
+	}
+
+	mapping.GetChildElementTextContent( "DestSkeleton/MDB", tgt.m_DestSkeletonMDB );
+	mapping.GetChildElementTextContent( "DestSkeleton/MotionPrimitive", tgt.m_DestSkeletonMotion );
+
+	return true;
+}
+
+
 void CMotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc )
 {
 	vector<CXMLNodeReader> children = root_joint_node.GetImmediateChildren();
@@ -382,6 +535,10 @@ void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 		{
 			CreateAnnotationTable( file_nodes[i] );
 		}
+		else if( node_name == "MotionMappingDestination" )
+		{
+			SetMotionMapTargets( file_nodes[i] );
+		}
 	}
 }
 
@@ -436,6 +593,11 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 
 	// create motion primitives from descs
 	CreateMotionPrimitives();
+
+	if( m_MotionMapTarget.IsValid() )
+	{
+		Result::Name res = MapMotionPrimitivesToAnotherSkeleton();
+	}
 
 	// restore the original working directory (pop)
 //	dirstk.prevdir();

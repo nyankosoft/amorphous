@@ -19,20 +19,22 @@ m_DatabaseFilepath(database_filename)
 
 boost::shared_ptr<CMotionPrimitive> CMotionDatabase::GetMotionPrimitive( const std::string& name )
 {
-	boost::shared_ptr<CMotionPrimitive> pMotion
-		= boost::shared_ptr<CMotionPrimitive>( new CMotionPrimitive() );
+	shared_ptr<CMotionPrimitive> pMotion( new CMotionPrimitive() );
 
 	bool success = m_DB.GetData( name, *(pMotion.get()) );
 
-	if( !success )
+	if( success )
+	{
+		// How would I go about skeleton data?
+		return pMotion;
+	}
+	else
 	{
 		string msg = fmt_string( " Failed to get the motion primitive '%s' from database '%s'", name.c_str(), m_DatabaseFilepath.c_str() );
 		LOG_PRINT_WARNING( msg );
+
+		return shared_ptr<CMotionPrimitive>();
 	}
-
-	// How would I go about skeleton data?
-
-	return pMotion;
 }
 
 

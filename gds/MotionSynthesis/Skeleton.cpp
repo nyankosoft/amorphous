@@ -45,6 +45,53 @@ void CBone::Scale_r( float factor )
 }
 
 
+bool CBone::CreateLocator( const std::string& bone_name, std::vector<int>& locator )
+{
+	const size_t num_children = m_vecChild.size();
+
+/*	if( bone_name == GetName() )
+		return true;
+*/
+	if( num_children == 0 )
+		return false;
+
+	for( size_t i=0; i<num_children; i++ )
+	{
+		if( m_vecChild[i].GetName() == bone_name )
+		{
+			locator.clear();
+			locator.push_back( (int)i );
+			return true;
+		}
+	}
+
+	// The target bone was not found in the immediate children
+	for( size_t i=0; i<num_children; i++ )
+	{
+		bool found = m_vecChild[i].CreateLocator( bone_name, locator );
+		if( found )
+		{
+			locator.insert( locator.begin(), (int)i );
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+void CBone::CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node )
+{
+	const size_t num_children = m_vecChild.size();
+	parent_transform_node.m_vecChildNode.resize( 0 );
+	parent_transform_node.m_vecChildNode.resize( num_children );
+	for( size_t i=0; i<num_children; i++ )
+	{
+		m_vecChild[i].CreateEmptyTransformNodeTree( parent_transform_node.m_vecChildNode[i] );
+	}
+}
+
+
 void CBone::DumpToTextFile( FILE* fp, int depth )
 {
 	for( int i=0; i<depth; i++ ) fprintf( fp, "  " );

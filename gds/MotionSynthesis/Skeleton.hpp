@@ -66,6 +66,10 @@ public:
 
 	/*inline*/ void CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const;
 
+	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator );
+
+	void CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node );
+
 	void DumpToTextFile( FILE* fp, int depth );
 
 	void Serialize( IArchive & ar, const unsigned int version );
@@ -96,6 +100,10 @@ public:
 	void SetBones( const CBone& root_bone ) { m_RootBone = root_bone; }
 
 	void Scale( float scaling_factor ) { m_RootBone.Scale_r( scaling_factor ); }
+
+	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator ) { return m_RootBone.CreateLocator( bone_name, locator ); }
+
+	void CreateEmptyTransformNodeTree( CTransformNode& root_transform_node ) { m_RootBone.CreateEmptyTransformNodeTree( root_transform_node ); }
 
 	void DumpToTextFile( const std::string& output_filepath );
 

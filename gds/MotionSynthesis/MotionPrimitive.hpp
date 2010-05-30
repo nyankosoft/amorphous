@@ -8,6 +8,7 @@
 
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
+#include "3DMath/Transform.hpp"
 #include "BVH/fwd.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
@@ -80,6 +81,10 @@ public:
 
 	void Scale( float scaling_factor ) { m_RootNode.Scale_r( scaling_factor ); }
 
+	inline Transform GetTransform( const std::vector<int>& locator ) const;
+
+	inline void SetTransform( const Transform& pose, const std::vector<int>& locator );
+
 	inline virtual void Serialize( IArchive & ar, const unsigned int version );
 
 	friend class CMotionPrimitive;
@@ -111,6 +116,22 @@ inline void CKeyframe::GetRootPose( Matrix34& dest ) const
 inline void CKeyframe::SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1 )
 {
 	m_RootNode.SetInterpolatedTransform_r( frac, keyframe0.m_RootNode, keyframe1.m_RootNode );
+}
+
+
+inline Transform CKeyframe::GetTransform( const std::vector<int>& locator ) const
+{
+	Transform dest;
+	uint index = 0;
+	m_RootNode.GetTransform( dest, locator, index );
+	return dest;
+}
+
+
+inline void CKeyframe::SetTransform( const Transform& pose, const std::vector<int>& locator )
+{
+	uint index = 0;
+	m_RootNode.SetTransform( pose, locator, index );
 }
 
 
@@ -218,6 +239,8 @@ public:
 
 	/// let the user directly modify keyframe data
 	std::vector<CKeyframe>& GetKeyframeBuffer() { return m_vecKeyframe; }
+
+	Result::Name CreateEmptyKeyframes( uint num_keyframes );
 
 //	void SetSkeleton( const CSkeleton& skeleton ) { m_pSkeleton = skeleton; }
 	void SetSkeleton( const CSkeleton& skeleton ) { m_pSkeleton = boost::shared_ptr<CSkeleton>( new CSkeleton(skeleton) ); }

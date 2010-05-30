@@ -145,6 +145,31 @@ public:
 };
 
 
+class CMotionMapTarget
+{
+public:
+
+	std::string m_DestSkeletonMDB;
+	std::string m_DestSkeletonMotion;
+
+	std::map<std::string,std::string> m_BoneMaps;
+
+	bool IsValid() const
+	{
+		if( !m_BoneMaps.empty()
+		 && 0 < m_DestSkeletonMDB.length()
+		 && 0 < m_DestSkeletonMotion.length() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+};
+
+
 /**
  - input: xml files that contain motion primitive descs
  - output: motion database file
@@ -163,6 +188,8 @@ protected:
 	std::vector<std::string> m_vecAnnotationName;
 
 	CHumanoidMotionTable m_MotionTable;
+
+	CMotionMapTarget m_MotionMapTarget;
 
 	std::string m_SourceXMLFilename;
 
@@ -189,7 +216,11 @@ protected:
 
 	bool CreateAnnotationTable( CXMLNodeReader& annot_table_node );
 
+	bool SetMotionMapTargets( CXMLNodeReader& mapping );
+
 	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc );
+
+	Result::Name MapMotionPrimitivesToAnotherSkeleton();
 
 //	void ProcessFiles();
 

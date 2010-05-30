@@ -46,3 +46,39 @@ void CTransformNode::Scale_r( float factor )
 		m_vecChildNode[i].Scale_r( factor );
 	}
 }
+
+
+void CTransformNode::GetTransform( Transform& pose, const std::vector<int>& node_locator, uint& index ) const
+{
+	if( (uint)node_locator.size() == index )
+	{
+		pose.vTranslation = m_vTranslation;
+		pose.qRotation    = m_Rotation;
+		return;
+	}
+
+	int child_index = node_locator[index];
+	if( 0 <= child_index && child_index < (int)m_vecChildNode.size() )
+	{
+		index++;
+		m_vecChildNode[child_index].GetTransform( pose, node_locator, index );
+	}
+}
+
+
+void CTransformNode::SetTransform( const Transform& pose, const std::vector<int>& node_locator, uint& index )
+{
+	if( (uint)node_locator.size() == index )
+	{
+		m_vTranslation = pose.vTranslation;
+		m_Rotation     = pose.qRotation;
+		return;
+	}
+
+	int child_index = node_locator[index];
+	if( 0 <= child_index && child_index < (int)m_vecChildNode.size() )
+	{
+		index++;
+		m_vecChildNode[child_index].SetTransform( pose, node_locator, index );
+	}
+}

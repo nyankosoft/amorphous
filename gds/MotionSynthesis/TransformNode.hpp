@@ -4,6 +4,7 @@
 
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Quaternion.hpp"
+#include "3DMath/Transform.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
@@ -69,8 +70,13 @@ public:
 
 	std::vector<CTransformNode>& Child() { return m_vecChildNode; }
 
+	void GetTransform( Transform& pose, const std::vector<int>& node_locator, uint& index ) const;
+
+	void SetTransform( const Transform& pose, const std::vector<int>& node_locator, uint& index );
+
 	friend class CKeyframe;
 	friend class CMotionPrimitive;
+	friend class CBone;
 };
 
 

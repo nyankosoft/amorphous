@@ -98,6 +98,26 @@ void CMotionPrimitive::CalculateInterpolatedKeyframe( float time )
 }
 
 
+Result::Name CMotionPrimitive::CreateEmptyKeyframes( uint num_keyframes )
+{
+	if( !m_pSkeleton )
+		return Result::UNKNOWN_ERROR;
+
+	CTransformNode root_node;
+
+	m_pSkeleton->CreateEmptyTransformNodeTree( root_node );
+
+	m_vecKeyframe.resize( num_keyframes );
+	for( uint i=0; i<num_keyframes; i++ )
+	{
+		// set the copy of transform node tree at each keyframe
+		m_vecKeyframe[i].RootNode() = root_node;
+	}
+
+	return Result::SUCCESS;
+}
+
+
 void CMotionPrimitive::Serialize( IArchive & ar, const unsigned int version )
 {
 	ar & m_Name;
