@@ -240,7 +240,7 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 		}
 
 		// render
-		pShaderMgr->SetTechnique( render_method.m_Technique );
+		Result::Name res = pShaderMgr->SetTechnique( render_method.m_Technique );
 		if( m_vecIndicesOfSubsetsToRender.size() == 0 )
 		{
 			// Render all the mesh subsets with a single shader & a single technique 
