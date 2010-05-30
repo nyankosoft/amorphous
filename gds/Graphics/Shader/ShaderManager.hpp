@@ -149,6 +149,9 @@ public:
 	// Sets a texture
 	virtual void SetParam( CShaderParameter<CTextureParam>& tex_param ) {}
 
+	// Sets a column-major 4x4 matrix
+	virtual void SetParam( CShaderParameter<Matrix44>& mat44_param ) {}
+
 	// Sets a single float value
 	virtual void SetParam( const char *parameter_name, int int_param ) {}
 
@@ -166,6 +169,9 @@ public:
 
 	// Sets one or more float values
 	inline void SetParam( const char *parameter_name, const std::vector<float>& float_param );
+
+	// Sets a column-major 4x4 matrix
+	virtual void SetParam( const char *parameter_name, const Matrix44& mat44_param ) {}
 
 //	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
 

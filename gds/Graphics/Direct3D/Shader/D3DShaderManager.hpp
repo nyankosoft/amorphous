@@ -256,6 +256,9 @@ public:
 
 	void SetParam( CShaderParameter<CTextureParam>& tex_param );
 
+	// Sets a column-major 4x4 matrix
+	void SetParam( CShaderParameter<Matrix44>& mat44_param );
+
 	// Sets a single float value
 	void SetParam( const char *parameter_name, int int_param );
 
@@ -270,6 +273,9 @@ public:
 
 	// Sets one or more float values
 	void SetParam( const char *parameter_name, const float *float_param, uint num_float_values );
+
+	// Sets a column-major 4x4 matrix
+	void SetParam( const char *parameter_name, const Matrix44& mat44_param );
 
 //	void SetTextureParam()
 

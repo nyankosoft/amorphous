@@ -344,6 +344,18 @@ void CHLSLShaderManager::SetParam( CShaderParameter<CTextureParam>& tex_param )
 }
 
 
+void CHLSLShaderManager::SetParam( CShaderParameter<Matrix44>& mat44_param )
+{
+	HRESULT hr;
+	int index = GetParameterIndex( mat44_param );
+	if( index < 0 )
+		index = RegisterHLSLParam( mat44_param );
+
+	if( 0 <= index && index < (int)m_vecParamHandle.size() )
+		hr = m_pEffect->SetMatrixTranspose( m_vecParamHandle[index].Handle, (D3DXMATRIX *)&mat44_param );
+}
+
+
 void CHLSLShaderManager::SetParam( const char *parameter_name, int int_param )
 {
 	m_pEffect->SetInt( parameter_name, int_param );
@@ -375,6 +387,23 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const SFloatRGBAC
 void CHLSLShaderManager::SetParam( const char *parameter_name, const float *float_param, uint num_float_values )
 {
 	m_pEffect->SetFloatArray( parameter_name, float_param, (UINT)num_float_values );
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, const Matrix44& mat44_param )
+{
+	D3DXMATRIX mat;
+	mat44_param.GetRowMajorMatrix44( (float *)&mat );
+	m_pEffect->SetMatrix( parameter_name, &mat );
+
+	// test
+//	D3DXMATRIX transposed;
+//	D3DXMatrixTranspose( &transposed, &mat );
+//	Matrix44 test;
+//	test.SetRowMajorMatrix44( (Scalar *)&transposed );
+
+	// wrong
+//	m_pEffect->SetMatrixTranspose( parameter_name, (D3DXMATRIX *)&mat44_param );
 }
 
 
