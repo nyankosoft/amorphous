@@ -2,8 +2,9 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 using namespace std;
 using namespace boost;
@@ -14,7 +15,6 @@ boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::strin
 	boost::shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator
 		= shared_ptr<CBoxMeshGenerator>( new CBoxMeshGenerator );
 
-	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
@@ -50,9 +50,6 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 	res = GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 //	res = GraphicsDevice().SetCullingMode( D3DRS_CULLMODE, D3DCULL_CCW );
 	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
-
-	hr = pd3dDevice->SetVertexShader( NULL );
-	hr = pd3dDevice->SetPixelShader( NULL );
 
 	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
