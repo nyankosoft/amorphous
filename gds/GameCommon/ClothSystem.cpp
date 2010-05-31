@@ -3,7 +3,8 @@
 #include "gds/XML.hpp"
 #include "gds/MotionSynthesis/MotionFSM.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/lfs.hpp"
+#include "gds/Utilities/Physics/PhysicsMeshUtility.hpp"
+//#include "gds/Support/lfs.hpp"
 
 using namespace physics;
 using namespace std;
@@ -90,8 +91,8 @@ void AttachClothToActor( CCloth *pCloth, CActor *pActor )
 
 void CClothObject::Init( physics::CScene *pScene )
 {
-//	CSceneUtility util(pScene);
-//	m_pCloth = util.CreateClothFromMesh( m_Desc );
+	CSceneUtility util(pScene);
+//	m_pCloth = util.CreateClothFromMesh( m_Mesh, Matrix34Identity(), true );
 
 	// load mesh?
 
@@ -99,6 +100,13 @@ void CClothObject::Init( physics::CScene *pScene )
 	{
 		m_pCloth->SetGroup( sg_ClothGroup );
 	}
+}
+
+
+bool CClothObject::LoadMesh()
+{
+	bool res = m_Mesh.LoadFromFile( m_MeshFilepath );
+	return res;
 }
 
 
@@ -403,7 +411,17 @@ void CClothSystem::Release()
 		PhysicsEngine().ReleaseScene( m_pScene );
 
 	m_pScene = NULL;
-};
+}
+
+
+void CClothSystem::LoadMeshes()
+{
+	size_t num_cloths = m_Cloths.size();
+	for( size_t i=0; i<num_cloths; i++ )
+	{
+		bool res = m_Cloths[i].LoadMesh();
+	}
+}
 
 
 void CClothSystem::Serialize( IArchive& ar, const unsigned int version )
@@ -493,7 +511,7 @@ void CClothSystem::RenderObjectsForDebugging()
 	for( int i=0; i<2; i++ )
 	{
 		vector<CClothCollisionObject>& objs = *pObjs[i];
-		for( int j=0; j<objs.size(); j++ )
+		for( int j=0; j<(int)objs.size(); j++ )
 		{
 			CClothCollisionObject& obj = objs[j];
 			if( !obj.m_pActor )

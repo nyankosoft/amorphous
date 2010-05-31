@@ -88,6 +88,8 @@ public:
 
 	void Init( physics::CScene *pScene );
 
+	bool LoadMesh();
+
 	void Release( physics::CScene *pScene );
 
 	physics::CCloth *GetCloth() { return m_pCloth; }
@@ -198,6 +200,8 @@ public:
 	uint GetNumCloths() const { return (uint)m_Cloths.size(); }
 
 	CCustomMesh& GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
+
+	void LoadMeshes();
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
