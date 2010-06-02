@@ -29,8 +29,10 @@ public:
 
 	void VisitPointLight( CPointLight& point_light ) { m_pShadowMap->UpdatePointLight( point_light ); }
 	void VisitDirectionalLight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateDirectionalLight( directional_light ); }
+//	void VisitSpotlight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateSpotlight( directional_light ); }
 	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { m_pShadowMap->UpdatePointLight( hs_point_light ); }
 	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { m_pShadowMap->UpdateDirectionalLight( hs_directional_light ); }
+//	void VisitHemisphericSpotlight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateSpotlight( directional_light ); }
 };
 
 
@@ -44,15 +46,19 @@ public:
 		{
 		case CLight::DIRECTIONAL:
 		case CLight::HEMISPHERIC_DIRECTIONAL:
-			return shared_ptr<CShadowMap>( new CDirectionalLightShadowMap() );
+//			return shared_ptr<CShadowMap>( new CDirectionalLightShadowMap() );
+//			return shared_ptr<CShadowMap>( new CSpotlightShadowMap() );
+			return shared_ptr<CShadowMap>( new COrthoShadowMap() );
 
-		case CLight::POINT:
-		case CLight::HEMISPHERIC_POINT:
-			return shared_ptr<CShadowMap>( new CPointLightShadowMap() );
+//		case CLight::POINT:
+//		case CLight::HEMISPHERIC_POINT:
+//			return shared_ptr<CShadowMap>( new CPointLightShadowMap() );
 
-//		case CLight::SPOT:        return shared_ptr<CShadowMap>( new CSpotLightShadowMap() );
+//		case CLight::SPOT:
+//			return shared_ptr<CShadowMap>( new CSpotlightShadowMap() );
+
 		default:
-			LOG_PRINT_ERROR( " An unsupported type of light was specified. light type id: " + to_string(light.GetLightType()) );
+//			LOG_PRINT_ERROR( " An unsupported type of light was specified. light type id: " + to_string(light.GetLightType()) );
 			return shared_ptr<CShadowMap>();
 		}
 	}
@@ -279,10 +285,14 @@ void CShadowMapManager::RenderShadowCasters( CCamera& camera )
 		 itr != m_mapIDtoShadowMap.end();
 		 itr++ )
 	{
+		m_pCurrentShadowMap = itr->second;
+
 		itr->second->RenderSceneToShadowMap( camera );
 
 		// variance shadow maps are blurred in this call
 		PostProcessShadowMap( *(itr->second.get()) );
+
+		m_pCurrentShadowMap = shared_ptr<CShadowMap>();
 	}
 
 	EndSceneShadowMap();
@@ -300,12 +310,16 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
 
+	m_pCurrentShadowMap = itr->second;
+
 //	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::White().GetARGB32() );
 	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::Yellow().GetARGB32() );
 	m_aShadowTexture[0].SetRenderTarget();
 
 	itr->second->RenderShadowReceivers( camera );
 	itr++;
+
+	m_pCurrentShadowMap = shared_ptr<CShadowMap>();
 
 	m_aShadowTexture[0].ResetRenderTarget();
 
@@ -336,17 +350,37 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 }
 
 
-void CShadowMapManager::SetShaderTechniqueForShadowCaster()
+CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type )
 {
-	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-	HRESULT hr = pEffect->SetTechnique( "ShadowMap" );
+/*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
+//	HRESULT hr = pEffect->SetTechnique( "ShadowMap" );
+	HRESULT hr = pEffect->SetTechnique( "OrthoShadowMap" );
+*/
+//	if( m_pCurrentShadowMap )
+//		m_Shader.GetShaderManager()->SetTechnique( m_pCurrentShadowMap->ShadowMapTechnique() );
+
+	static CShaderTechniqueHandle s_Null;
+	if( m_pCurrentShadowMap )
+		return m_pCurrentShadowMap->ShadowMapTechnique( vertex_blend_type );
+	else
+		return s_Null;
 }
 
 
-void CShadowMapManager::SetShaderTechniqueForShadowReceiver()
+CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type )
 {
-	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-	HRESULT hr = pEffect->SetTechnique( "SceneShadowMap" );
+/*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
+//	HRESULT hr = pEffect->SetTechnique( "SceneShadowMap" );
+	HRESULT hr = pEffect->SetTechnique( "OrthoSceneShadowMap" );
+*/
+//	if( m_pCurrentShadowMap )
+//		m_Shader.GetShaderManager()->SetTechnique( m_pCurrentShadowMap->DepthTestTechnique() );
+
+	static CShaderTechniqueHandle s_Null;
+	if( m_pCurrentShadowMap )
+		return m_pCurrentShadowMap->DepthTestTechnique( vertex_blend_type );
+	else
+		return s_Null;
 }
 
 

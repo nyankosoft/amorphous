@@ -6,6 +6,9 @@
 #include "Graphics/CubeMapManager.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/3DGameMath.hpp"
+#include "Graphics/Meshgenerators.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ParamLoader.hpp"
@@ -83,6 +86,51 @@ void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
 //============================================================================
 // CFlatShadowMap
 //============================================================================
+
+CFlatShadowMap::CFlatShadowMap()
+:
+m_pShadowMap(NULL),
+m_pShadowMapDepthBuffer(NULL)
+{
+	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
+	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
+//	pBoxMeshGenerator->SetTexturePath( texture_filepath );
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
+	bool loaded = m_ShadowCasterBoundingBox.Load( mesh_desc );
+}
+
+
+CShaderTechniqueHandle& CFlatShadowMap::ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type )
+{
+	switch( vertex_blend_type )
+	{
+	case CVertexBlendType::NONE:
+	default:
+		return m_ShadowMapTechnique;
+	case CVertexBlendType::QUATERNION_AND_VECTOR3:
+		return m_VertexBlendShadowMapTechnique;
+//	case CVertexBlendType::MATRIX:
+//		return ???;
+	}
+}
+
+
+CShaderTechniqueHandle& CFlatShadowMap::DepthTestTechnique( CVertexBlendType::Name vertex_blend_type )
+{
+	switch( vertex_blend_type )
+	{
+	case CVertexBlendType::NONE:
+	default:
+		return m_DepthTestTechnique;
+	case CVertexBlendType::QUATERNION_AND_VECTOR3:
+		return m_VertexBlendDepthTestTechnique;
+//	case CVertexBlendType::MATRIX:
+//		return ???;
+	}
+}
+
 
 bool CFlatShadowMap::CreateShadowMapTextures()
 {
@@ -190,40 +238,6 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 }
 
 
-void CFlatShadowMap::SetWorldToLightSpaceTransformMatrix()
-{
-	float fOrigCamNearClip = m_LightCamera.GetNearClip();
-	float fOrigCamFarClip  = m_LightCamera.GetFarClip();
-
-	if( CShadowMap::ms_DebugShadowMap )
-	{
-		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
-		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );
-	}
-
-	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
-	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
-
-	HRESULT hr = S_OK;
-//	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
-	const Matrix44 proj_view
-		= m_LightCamera.GetProjectionMatrix()
-		* m_LightCamera.GetCameraMatrix();
-//	D3DXMATRIX matWorldToLightProj;
-//	proj_view.GetRowMajorMatrix44( (float *)&matWorldToLightProj );
-//	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
-	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
-
-	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
-	D3DVIEWPORT9 vp;
-	DIRECT3D9.GetDevice()->GetViewport( &vp );
-
-
-	m_LightCamera.SetNearClip( fOrigCamNearClip );
-	m_LightCamera.SetFarClip( fOrigCamFarClip );
-}
-
-
 static float sg_fOrigNearClip = 0;
 static float sg_fOrigFarClip = 0;
 
@@ -243,19 +257,22 @@ void CFlatShadowMap::BeginSceneShadowMap()
 
 	hr = pd3dDev->SetDepthStencilSurface( m_pShadowMapDepthBuffer );
 
-	sg_fOrigNearClip = m_LightCamera.GetNearClip();
-	sg_fOrigFarClip = m_LightCamera.GetFarClip();
-	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
-	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
-
-	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
-
-//	SetWorldToLightSpaceTransformMatrix();
-
-	// update light position and direction, etc.
-	UpdateLightPositionAndDirection();
+	UpdateShadowMapSettings();
 
 	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF80FF80, 1.0f, 0 );
+
+/*	shared_ptr<CBasicMesh> pMesh = m_ShadowCasterBoundingBox.GetMesh();
+	if( pMesh )
+	{
+		const float far_clip = 100.0f;//m_LightCamera.GetFarClip();
+		Matrix44 local( Matrix44Scaling( 1000.0f, 1000.0f, far_clip ) );
+//		local(2,3) = far_clip * 0.5f - 5.0f;
+
+		Matrix44 world = ToMatrix44( m_LightCamera.GetPose() ) * local;
+
+		FixedFunctionPipelineManager().SetWorldTransform( world );
+		pMesh->Render();
+	}*/
 
 //	pd3dDev->BeginScene();
 }
@@ -269,6 +286,9 @@ void CFlatShadowMap::EndSceneShadowMap()
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
 
+//	ResetShadowMapSettings();
+
+	// necessary only for spotlight shadow map
 	m_LightCamera.SetNearClip( sg_fOrigNearClip );
 	m_LightCamera.SetFarClip( sg_fOrigFarClip );
 }
@@ -318,23 +338,21 @@ void CFlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& file
 
 
 //============================================================================
-// CDirectionalLightShadowMap
+// COrthoShadowMap
 //============================================================================
 
-float CDirectionalLightShadowMap::ms_fCameraShiftDistance = 50.0f;
+float COrthoShadowMap::ms_fCameraShiftDistance = 50.0f;
 
-CDirectionalLightShadowMap::CDirectionalLightShadowMap()
+COrthoShadowMap::COrthoShadowMap()
 {
-	static float near_clip = 0.5f;
-	static float far_clip = 100.0f;
-	m_LightCamera.SetNearClip( near_clip );
-	m_LightCamera.SetFarClip( far_clip );
-	m_LightCamera.SetFOV( (float)PI / 4.0f );
-	m_LightCamera.SetAspectRatio( 1.0f );
+	m_ShadowMapTechnique.SetTechniqueName( "OrthoShadowMap" );
+	m_DepthTestTechnique.SetTechniqueName( "OrthoSceneShadowMap" );
+	m_VertexBlendShadowMapTechnique.SetTechniqueName( "OrthoShadowMap_VertexBlend" );
+	m_VertexBlendDepthTestTechnique.SetTechniqueName( "OrthoSceneShadowMap_VertexBlend" );
 }
 
 
-void CDirectionalLightShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
+void COrthoShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
 {
 	if( CShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
@@ -348,10 +366,155 @@ void CDirectionalLightShadowMap::UpdateDirectionalLight( CDirectionalLight& ligh
 }
 
 
+void COrthoShadowMap::UpdateLightPositionAndDirection()
+{
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	CShaderManager& shader_mgr = *pShaderMgr;
+
+	Vector3 vWorldLightPos = m_LightCamera.GetPosition();
+	Vector3 vWorldLightDir = m_LightCamera.GetFrontDirection();
+
+	shader_mgr.SetParam( "g_vLightPos", vWorldLightPos );
+	shader_mgr.SetParam( "g_vLightDir", vWorldLightDir );
+
+	// Set the plane that faces along the direction of the light ray
+	// - used for orthographic projection
+	float dist = Vec3Dot( m_LightCamera.GetPosition(), m_LightCamera.GetFrontDirection() );
+	float light_plane[4] = { vWorldLightDir.x, vWorldLightDir.y, vWorldLightDir.z, dist };
+	shader_mgr.GetEffect()->SetFloatArray( "g_vLightPlane", light_plane, 4 );
+}
+
+
+void COrthoShadowMap::UpdateShadowMapSettings()
+{
+	// orthographic projection
+	Matrix44 ortho_proj = Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 50.0f );
+	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera.GetCameraMatrix(), ortho_proj );
+
+	UpdateLightPositionAndDirection();
+}
+
+
+void COrthoShadowMap::SetWorldToLightSpaceTransformMatrix()
+{
+	float fOrigCamNearClip = m_LightCamera.GetNearClip();
+	float fOrigCamFarClip  = m_LightCamera.GetFarClip();
+
+	if( CShadowMap::ms_DebugShadowMap )
+	{
+		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
+		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );
+	}
+
+	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
+	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
+
+	HRESULT hr = S_OK;
+	const Matrix44 proj_view
+		= Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 50.0f )
+		* m_LightCamera.GetCameraMatrix();
+	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
+
+	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
+	CViewport vp;
+	GraphicsDevice().GetViewport( vp );
+
+
+	m_LightCamera.SetNearClip( fOrigCamNearClip );
+	m_LightCamera.SetFarClip( fOrigCamFarClip );
+}
+
+
+
 
 //============================================================================
 // CSpotLightShadowMap
 //============================================================================
+
+float CSpotlightShadowMap::ms_fCameraShiftDistance = 50.0f;
+
+CSpotlightShadowMap::CSpotlightShadowMap()
+{
+	m_ShadowMapTechnique.SetTechniqueName( "ShadowMap" );
+	m_DepthTestTechnique.SetTechniqueName( "SceneShadowMap" );
+	m_VertexBlendShadowMapTechnique.SetTechniqueName( "ShadowMap_VertexBlend" );
+	m_VertexBlendDepthTestTechnique.SetTechniqueName( "SceneShadowMap_VertexBlend" );
+
+	static float near_clip = 0.5f;
+	static float far_clip = 100.0f;
+	m_LightCamera.SetNearClip( near_clip );
+	m_LightCamera.SetFarClip( far_clip );
+	m_LightCamera.SetFOV( (float)PI / 4.0f );
+	m_LightCamera.SetAspectRatio( 1.0f );
+}
+
+
+void CSpotlightShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
+{
+	if( CShadowMap::ms_DebugShadowMap )
+		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
+
+	const float light_cam_shift = ms_fCameraShiftDistance;
+
+	Vector3 vLightCameraPos = m_pSceneCamera->GetPosition() - light.vDirection * light_cam_shift;
+
+	m_LightCamera.SetPosition( vLightCameraPos );
+	m_LightCamera.SetOrientation( CreateOrientFromFwdDir(light.vDirection) );
+}
+
+
+void CSpotlightShadowMap::UpdateShadowMapSettings()
+{
+	sg_fOrigNearClip = m_LightCamera.GetNearClip();
+	sg_fOrigFarClip = m_LightCamera.GetFarClip();
+	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
+	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
+
+	// perspective projection
+	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
+
+//	SetWorldToLightSpaceTransformMatrix();
+
+	// update light position and direction, etc.
+	UpdateLightPositionAndDirection();
+}
+
+
+void CSpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
+{
+	float fOrigCamNearClip = m_LightCamera.GetNearClip();
+	float fOrigCamFarClip  = m_LightCamera.GetFarClip();
+
+	if( CShadowMap::ms_DebugShadowMap )
+	{
+		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
+		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );
+	}
+
+	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
+	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
+
+	HRESULT hr = S_OK;
+//	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
+	const Matrix44 proj_view
+		= m_LightCamera.GetProjectionMatrix()
+		* m_LightCamera.GetCameraMatrix();
+//	D3DXMATRIX matWorldToLightProj;
+//	proj_view.GetRowMajorMatrix44( (float *)&matWorldToLightProj );
+//	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
+	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
+
+	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
+	D3DVIEWPORT9 vp;
+	DIRECT3D9.GetDevice()->GetViewport( &vp );
+
+
+	m_LightCamera.SetNearClip( fOrigCamNearClip );
+	m_LightCamera.SetFarClip( fOrigCamFarClip );
+}
 
 
 

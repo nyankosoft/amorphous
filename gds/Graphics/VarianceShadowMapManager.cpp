@@ -17,7 +17,8 @@ public:
 
 	CVSShadowMapPostProcessor( CVarianceShadowMapManager *pMgr ) { m_pVSShadowMapManager = pMgr; }
 
-	void Visit( CDirectionalLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
+//	void Visit( CDirectionalLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
+	void Visit( COrthoShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
 //	void Visit( CPointLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPointLightShadowMap( shadow_map ); }
 //	void Visit( CSpotLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPSpotLightShadowMap( shadow_map ); }
 };
@@ -243,7 +244,8 @@ void CVarianceShadowMapManager::UpdateLightPositionAndDirection()
 
 /// input: shadow map
 /// final output: shadow map (horizontally and vertically blurred)
-void CVarianceShadowMapManager::PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map )
+//void CVarianceShadowMapManager::PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map )
+void CVarianceShadowMapManager::PostProcessDirectionalLightShadowMap( COrthoShadowMap& shadow_map )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr;

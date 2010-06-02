@@ -45,6 +45,9 @@ protected:
 
 	boost::shared_ptr<CShadowMapSceneRenderer> m_pSceneRenderer;
 
+	// Temporarily stores the shadow map to return shadowmap/depth test technique
+	boost::shared_ptr<CShadowMap> m_pCurrentShadowMap;
+
 	int m_IDCounter;
 
 	/// used to temporarily hold original surfaces
@@ -101,7 +104,7 @@ public:
 
 	void SetSceneRenderer( boost::shared_ptr<CShadowMapSceneRenderer> pSceneRenderer );
 
-	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadwoMap( U32 id, CLight& light );
+	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadwoMap( U32 id, CLight& light );
 
 	Result::Name UpdateLightForShadow( U32 id, CLight& light );
 
@@ -115,9 +118,9 @@ public:
 
 	CShaderHandle& GetShader() { return m_Shader; }
 
-	void SetShaderTechniqueForShadowCaster();
+	CShaderTechniqueHandle ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
 
-	void SetShaderTechniqueForShadowReceiver();
+	CShaderTechniqueHandle ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
 
 //	void Init( int texture_width, int texture_height );
 

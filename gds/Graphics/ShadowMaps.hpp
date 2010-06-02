@@ -7,17 +7,20 @@
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/GenericShaderDesc.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/CubeMapManager.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
 
 #include <assert.h>
 
 
 class CShadowMap;
-class CDirectionalLightShadowMap;
+//class CDirectionalLightShadowMap;
+class COrthoShadowMap;
 class CPointLightShadowMap;
-class CSpotLightShadowMap;
+class CSpotlightShadowMap;
 
 
 class CShadowMapSceneRenderer
@@ -55,9 +58,10 @@ public:
 
 	virtual ~CShadowMapVisitor() {}
 
-	virtual void Visit( CDirectionalLightShadowMap& shadow_map ) {}
+//	virtual void Visit( CDirectionalLightShadowMap& shadow_map ) {}
+	virtual void Visit( COrthoShadowMap& shadow_map ) {}
+	virtual void Visit( CSpotlightShadowMap& shadow_map ) {}
 	virtual void Visit( CPointLightShadowMap& shadow_map ) {}
-	virtual void Visit( CSpotLightShadowMap& shadow_map ) {}
 };
 
 
@@ -106,7 +110,7 @@ public:
 	CShadowMap()
 		:
 	m_pSceneRenderer(NULL),
-	m_ShadowMapSize(512),
+	m_ShadowMapSize(1024),
 	m_ShadowMapTextureFormat(TextureFormat::R32F),
 	m_DisplayShadowMapTexturesForDebugging(false),
 	m_UseLightPosInWorldSpace(true)
@@ -168,7 +172,11 @@ public:
 
 	virtual void UpdateDirectionalLight( CDirectionalLight& light ) {}
 	virtual void UpdatePointLight( CPointLight& light ) {}
+//	virtual void UpdateSpotlight( CSpotlight& light ) {}
 //	virtual void UpdateLight( CSpotLight& light ) {}
+
+	virtual CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
+	virtual CShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
 
 	virtual LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return NULL; }
 
@@ -191,9 +199,15 @@ public:
 };
 
 
+/// Shouldn't this be called "CSingleTextureShadowMap" ?
 class CFlatShadowMap : public CShadowMap
 {
 protected:
+
+	CShaderTechniqueHandle m_ShadowMapTechnique;
+	CShaderTechniqueHandle m_DepthTestTechnique;
+	CShaderTechniqueHandle m_VertexBlendShadowMapTechnique;
+	CShaderTechniqueHandle m_VertexBlendDepthTestTechnique;
 
 	/// Texture to which the shadow map is rendered
 	/// Geometries that cast shadows to others (=shadow casters)
@@ -205,23 +219,26 @@ protected:
 //	LPDIRECT3DTEXTURE9 m_pShadowedView;
 //	LPDIRECT3DSURFACE9 m_pDSShadowedView;
 
+	CMeshObjectHandle m_ShadowCasterBoundingBox;
+
 protected:
 
 	void UpdateLightPositionAndDirection();
 
 	void BeginSceneShadowReceivers();
 
-	void SetWorldToLightSpaceTransformMatrix();
+	virtual void SetWorldToLightSpaceTransformMatrix() = 0;
+
+	virtual void UpdateShadowMapSettings() = 0;
 
 public:
 
-	CFlatShadowMap()
-		:
-	m_pShadowMap(NULL),
-	m_pShadowMapDepthBuffer(NULL)
-	{}
+	CFlatShadowMap();
 
 	virtual ~CFlatShadowMap() {}
+
+	CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type );
+	CShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type );
 
 	virtual bool CreateShadowMapTextures();
 
@@ -241,28 +258,59 @@ public:
 };
 
 
-class CDirectionalLightShadowMap : public CFlatShadowMap
+/// Use this for directional light?
+class COrthoShadowMap : public CFlatShadowMap
 {
-//	boost::weak_ptr<CPhemisphericalDirectionalLight> m_DirectionalLight;
+	void UpdateShadowMapSettings();
+
+	void UpdateLightPositionAndDirection();
+
+	void SetWorldToLightSpaceTransformMatrix();
 
 public:
 
 	static float ms_fCameraShiftDistance;
 
-	CDirectionalLightShadowMap();
+public:
+
+	COrthoShadowMap();
 
 	void UpdateDirectionalLight( CDirectionalLight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
 
-
-class CSpotLightShadowMap : public CFlatShadowMap
+/*
+class CDirectionalLightShadowMap : public CFlatShadowMap
 {
+//	boost::weak_ptr<CHemisphericalDirectionalLight> m_DirectionalLight;
+
 public:
 
-	CSpotLightShadowMap()
-	{}
+	CDirectionalLightShadowMap();
+
+	void UpdateDirectionalLight( CDirectionalLight& light );
+
+	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
+};*/
+
+
+class CSpotlightShadowMap : public CFlatShadowMap
+{
+	void UpdateShadowMapSettings();
+
+	void SetWorldToLightSpaceTransformMatrix();
+
+public:
+
+	/// used when 
+	static float ms_fCameraShiftDistance;
+
+public:
+
+	CSpotlightShadowMap();
+
+	void UpdateDirectionalLight( CDirectionalLight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };

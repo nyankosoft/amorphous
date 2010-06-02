@@ -65,7 +65,8 @@ public:
 
 	void UpdateLightPositionAndDirection();
 
-	void PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map );
+//	void PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map );
+	void PostProcessDirectionalLightShadowMap( COrthoShadowMap& shadow_map );
 
 	void ReleaseGraphicsResources();
 
