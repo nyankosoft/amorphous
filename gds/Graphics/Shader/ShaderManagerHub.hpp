@@ -42,6 +42,8 @@ public:
 
 	CShaderManagerHub();
 
+	inline void PushViewAndProjectionMatrices( const Matrix44& view, const Matrix44& proj );
+
 	/// must be called in pairs with PopViewAndProjectionMatrices()
 	inline void PushViewAndProjectionMatrices( const CCamera& camera );
 
@@ -57,26 +59,27 @@ public:
 };
 
 
-inline void CShaderManagerHub::PushViewAndProjectionMatrices( const CCamera& camera )
+inline void CShaderManagerHub::PushViewAndProjectionMatrices( const Matrix44& view, const Matrix44& proj )
 {
-	Matrix44 matView, matProj;
-
-	camera.GetCameraMatrix( matView );
-	camera.GetProjectionMatrix( matProj );
-
 	// push to the stack
-	m_vecViewMatrix.push_back( matView );
-	m_vecProjMatrix.push_back( matProj );
+	m_vecViewMatrix.push_back( view );
+	m_vecProjMatrix.push_back( proj );
 
 	size_t i, num_shader_mgrs = m_vecpShaderManager.size();
 	for( i=0; i<num_shader_mgrs; i++ )
 	{
-		m_vecpShaderManager[i]->SetViewTransform( matView );
-		m_vecpShaderManager[i]->SetProjectionTransform( matProj );
+		m_vecpShaderManager[i]->SetViewTransform( view );
+		m_vecpShaderManager[i]->SetProjectionTransform( proj );
 	}
 
-	FixedFunctionPipelineManager().SetViewTransform( matView );
-	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
+	FixedFunctionPipelineManager().SetViewTransform( view );
+	FixedFunctionPipelineManager().SetProjectionTransform( proj );
+}
+
+
+inline void CShaderManagerHub::PushViewAndProjectionMatrices( const CCamera& camera )
+{
+	PushViewAndProjectionMatrices( camera.GetCameraMatrix(), camera.GetProjectionMatrix() );
 }
 
 
