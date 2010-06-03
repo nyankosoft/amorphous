@@ -249,7 +249,8 @@ PyObject* SetShadowMapCameraShiftDistance( PyObject* self, PyObject* args )
 	float shift;
 	int result = PyArg_ParseTuple( args, "f", &shift );
 
-	CDirectionalLightShadowMap::ms_fCameraShiftDistance = shift;
+	LOG_PRINT_ERROR( " This is a deprecated function and no longer supported." );
+//	CDirectionalLightShadowMap::ms_fCameraShiftDistance = shift;
 
     Py_INCREF( Py_None );
 	return Py_None;
