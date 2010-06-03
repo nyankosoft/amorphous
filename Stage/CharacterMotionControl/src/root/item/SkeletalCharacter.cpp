@@ -1,10 +1,12 @@
 #include "SkeletalCharacter.hpp"
 #include "gds/Input/InputHub.hpp"
 #include "gds/Graphics/Mesh/SkeletalMesh.hpp"
+#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/MotionSynthesis/MotionDatabase.hpp"
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
 #include "gds/Support/DebugOutput.hpp"
+#include "gds/Stage/BaseEntity_Draw.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -95,10 +97,19 @@ m_fTurnSpeed(0.0f)
 
 	m_pRenderMethod->MeshRenderMethod().resize( 1 );
 //	m_pRenderMethod->MeshRenderMethod()[0].m_ShaderFilepath = "Shader/VertexBlend.fx";
-	m_pRenderMethod->MeshRenderMethod()[0].m_ShaderFilepath = "Shader/Default.fx";
+/*	m_pRenderMethod->MeshRenderMethod()[0].m_ShaderFilepath = "Shader/Default.fx";
 	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "VertBlend_PVL_HSLs" );
-//	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "SingleHSDL_Specular_CTS" );
+//	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "SingleHSDL_Specular_CTS" );*/
 	m_pRenderMethod->LoadRenderMethodResources();
+
+	// TODO: add shader resource desc as a member variable to CSubsetRenderMethod
+	CShaderResourceDesc shader_desc;
+	CGenericShaderDesc gen_shader_desc;
+	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
+	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
+	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
+	m_pRenderMethod->MeshRenderMethod()[0].m_Shader.Load( shader_desc );
+	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "Default" );
 
 	// Init input handler
 	m_pInputHandler.reset( new CMotionFSMInputHandler(m_pMotionGraphManager) );
@@ -132,6 +143,9 @@ void CSkeletalCharacter::OnEntityCreated( CCopyEntity& entity )
 
 	entity.m_MeshHandle = m_MeshContainerRootNode.GetMeshContainer(0)->m_MeshObjectHandle;
 	entity.m_pMeshRenderMethod = m_pRenderMethod;
+
+	entity.RaiseEntityFlags( BETYPE_SHADOW_CASTER );
+	entity.RaiseEntityFlags( BETYPE_SHADOW_RECEIVER );
 }
 
 
