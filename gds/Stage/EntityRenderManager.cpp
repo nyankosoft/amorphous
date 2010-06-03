@@ -496,6 +496,8 @@ void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 
 void CEntityRenderManager::RenderScene( CCamera& rCam )
 {
+	PROFILE_FUNCTION();
+
 	//==================== render the entities ====================
 
 	CEntityNode::ms_NumRenderedEntities = 0;
@@ -804,7 +806,8 @@ bool CEntityRenderManager::EnableSoftShadow( float softness, int shadowmap_size 
 {
 	SafeDelete( m_pShadowManager );
 
-	m_pShadowManager = new CVarianceShadowMapManager();
+//	m_pShadowManager = new CVarianceShadowMapManager();
+	m_pShadowManager = new CShadowMapManager();
 
 	m_pShadowManager->SetSceneRenderer( m_pShadowMapSceneRenderer );
 
