@@ -262,13 +262,27 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 }
 
 
+static void InitShadowCasterReceiverSettings( shared_ptr<CSkeletalMesh> pSkeletalMesh, CBE_MeshObjectProperty& mesh_property )
+{
+	if( !pSkeletalMesh )
+		return;
+
+	shared_ptr<CBlendTransformsLoader> pLoader( new CBlendTransformsLoader );
+	pLoader->SetSkeletalMesh( pSkeletalMesh );
+	mesh_property.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLoader );
+	mesh_property.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLoader );
+
+	mesh_property.m_pBlendTransformsLoader = pLoader;
+}
+
+
 void CBaseEntity::Init3DModel()
 {
 	m_MeshProperty.Release();
 
 	m_MeshProperty.LoadMeshObject();
 
-	CBasicMesh *pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+	shared_ptr<CBasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
 
 	// shader
 	// - load shader of its own if the shader filepath has been specified.
@@ -338,13 +352,27 @@ void CBaseEntity::Init3DModel()
 	m_MeshProperty.m_pShadowReceiverRenderMethod         = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
 	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod   = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
 	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-/*
+
 	// blend matrices loader for shadow maps of skeletal meshes
-	m_MeshProperty.m_pBlendMatricesLoader
+/*	m_MeshProperty.m_pBlendMatricesLoader
 		= shared_ptr<CBlendMatricesLoader>( new CBlendMatricesLoader() );
 	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
 	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
 */
+	m_MeshProperty.m_pShadowCasterRenderMethod->MeshRenderMethod().resize( 1 );
+	m_MeshProperty.m_pShadowReceiverRenderMethod->MeshRenderMethod().resize( 1 );
+	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->MeshRenderMethod().resize( 1 );
+	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->MeshRenderMethod().resize( 1 );
+
+	shared_ptr<CBlendTransformsLoader> pTransformsLoader( new CBlendTransformsLoader );
+	m_MeshProperty.m_pBlendTransformsLoader = pTransformsLoader;
+	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendTransformsLoader );
+	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendTransformsLoader );
+
+//	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
+//	{
+//		InitShadowCasterReceiverSettings( dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh), m_MeshProperty );
+//	}
 }
 
 
@@ -511,8 +539,22 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 		return;
 
 	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
-	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
+	const bool is_skeletal_mesh = (pMesh->GetMeshType() == CMeshType::SKELETAL);
+	if( is_skeletal_mesh )
+	{
 		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowCasterRenderMethod;
+
+		shared_ptr<CSkeletalMesh> pSkeletalMesh
+			= dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+
+//		if( !this->m_MeshProperty.m_pBlendTransformsLoader )
+//			InitShadowCasterReceiverSettings( pSkeletalMesh, this->m_MeshProperty );
+
+		this->m_MeshProperty.m_pBlendTransformsLoader->SetSkeletalMesh( pSkeletalMesh );
+
+//		pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );
+//		pSkeletalMesh->SetLocalTransformsFromCache();
+	}
 	else
 		pMeshRenderMethod = this->m_MeshProperty.m_pShadowCasterRenderMethod;
 
@@ -520,10 +562,13 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	// - Notify if the shadow map manager is changed.
 	if( true /*render_all_subsets*/ )
 	{
-		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
+//		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
 		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
-		mesh_render_method.m_Technique.SetTechniqueName( "ShadowMap" );
+//		const char *tech = is_skeletal_mesh ? "ShadowMap_VertexBlend" : "ShadowMap";
+//		mesh_render_method.m_Technique.SetTechniqueName( tech );
+		CVertexBlendType::Name blend_type = is_skeletal_mesh ? CVertexBlendType::QUATERNION_AND_VECTOR3 : CVertexBlendType::NONE;
+		mesh_render_method.m_Technique = pShadowMgr->ShaderTechniqueForShadowCaster( blend_type );
 //		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 //		pMeshRenderMethod.SetMeshRenderMethod( mesh_render_method, 0 );
 		pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
@@ -550,17 +595,34 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 		return;
 
 	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
-	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
+	const bool is_skeletal_mesh = (pMesh->GetMeshType() == CMeshType::SKELETAL);
+	if( is_skeletal_mesh )
+	{
 		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod;
+
+		shared_ptr<CSkeletalMesh> pSkeletalMesh
+			= dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+
+//		if( !this->m_MeshProperty.m_pBlendTransformsLoader )
+//			InitShadowCasterReceiverSettings( pSkeletalMesh, this->m_MeshProperty );
+
+		this->m_MeshProperty.m_pBlendTransformsLoader->SetSkeletalMesh( pSkeletalMesh );
+
+//		pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );
+//		pSkeletalMesh->SetLocalTransformsFromCache();
+	}
 	else
 		pMeshRenderMethod = this->m_MeshProperty.m_pShadowReceiverRenderMethod;
 
 	if( true /*render_all_subsets*/ )
 	{
-		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
+//		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
 		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
-		mesh_render_method.m_Technique.SetTechniqueName( "SceneShadowMap" );
+//		const char *tech = is_skeletal_mesh ? "SceneShadowMap_VertexBlend" : "SceneShadowMap";
+//		mesh_render_method.m_Technique.SetTechniqueName( tech );
+		CVertexBlendType::Name blend_type = is_skeletal_mesh ? CVertexBlendType::QUATERNION_AND_VECTOR3 : CVertexBlendType::NONE;
+		mesh_render_method.m_Technique = pShadowMgr->ShaderTechniqueForShadowReceiver( blend_type );
 //		render_method.SetMeshRenderMethod( mesh_render_method, 0 );
 		pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
 	}

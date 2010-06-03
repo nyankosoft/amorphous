@@ -27,7 +27,8 @@ class CBSPTree;
 struct SNode_f;
 class CMeshBoneControllerBase;
 class CEntityShaderLightParamsLoader;
-class CBlendMatricesLoader;
+//class CBlendMatricesLoader;
+class CBlendTransformsLoader;
 
 
 /**
@@ -48,7 +49,8 @@ public:
 
 	std::vector< boost::shared_ptr<CShaderParamsLoader> > m_vecpShaderParamsLoader;
 
-	boost::shared_ptr<CBlendMatricesLoader> m_pBlendMatricesLoader;
+//	boost::shared_ptr<CBlendMatricesLoader> m_pBlendMatricesLoader;
+	boost::shared_ptr<CBlendTransformsLoader> m_pBlendTransformsLoader;
 
 	boost::shared_ptr<CEntityShaderLightParamsLoader> m_pShaderLightParamsLoader;
 
