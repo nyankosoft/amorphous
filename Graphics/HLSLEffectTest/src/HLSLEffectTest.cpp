@@ -1,5 +1,5 @@
 #include "HLSLEffectTest.hpp"
-#include "gds/3DMath/Matrix34.hpp"
+#include "gds/3DMath/MatrixConversions.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/AsyncResourceLoader.hpp"
 #include "gds/Support/Timer.hpp"
@@ -19,7 +19,8 @@ extern CPlatformDependentCameraController g_CameraController;
 CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )
 :
 m_LoadingStyle(loading_style),
-m_Pose(pose)
+m_Pose(pose),
+m_fScale(1.0f)
 {
 	m_MeshDesc.ResourcePath = filepath;
 
@@ -67,6 +68,9 @@ m_DisplayDebugInfo(false)
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
 	g_CameraController.SetPosition( Vector3( 0, 1, -30 ) );
+
+	for( int i=0; i<numof(m_EnableLight); i++ )
+		m_EnableLight[i] = 1;
 }
 
 
@@ -98,22 +102,49 @@ bool CHLSLEffectTest::SetShader( int index )
 
 	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 
-	CHemisphericDirectionalLight light;
-	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 0.0f, 1.0f );
-	light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
-	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+	// Set lights
 
 	pShaderLightMgr->ClearLights();
-//	pShaderLightMgr->SetLight( 0, light );
-//	pShaderLightMgr->SetDirectionalLightOffset( 0 );
-//	pShaderLightMgr->SetNumDirectionalLights( 1 );
-	pShaderLightMgr->SetHemisphericDirectionalLight( light );
+
+	if( m_EnableLight[0] )
+	{
+		CHemisphericDirectionalLight dir_light;
+		dir_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 0.0f, 1.0f );
+		dir_light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
+		dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+
+		pShaderLightMgr->SetHemisphericDirectionalLight( dir_light );
+	}
+
+	if( m_EnableLight[1] )
+	{
+		CHemisphericPointLight pnt_light;
+		pnt_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+		pnt_light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
+		pnt_light.vPosition = Vector3( 10.0f, 3.0f, -15.0f );
+		pnt_light.fAttenuation[0] = 0.1f;
+		pnt_light.fAttenuation[1] = 0.1f;
+		pnt_light.fAttenuation[2] = 0.1f;
+		CParamLoader loader( "params.txt" );
+		if( loader.IsReady() )
+		{
+			loader.LoadParam( "pnt_light_position",      pnt_light.vPosition );
+//			loader.LoadParam( "pnt_light_diffuse_upper", pnt_light.Attribute.UpperDiffuseColor );
+//			loader.LoadParam( "pnt_light_diffuse_lower", pnt_light.Attribute.LowerDiffuseColor );
+			float *att = pnt_light.fAttenuation;
+
+			loader.LoadParam( "pnt_light_attenuations", att[0], att[1], att[2] );
+		}
+		pShaderLightMgr->SetHemisphericPointLight( pnt_light );
+	}
+
 	pShaderLightMgr->CommitChanges();
 
 	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
 	m_Shaders[index].GetShaderManager()->SetProjectionTransform( proj );
 
-	shader_mgr.SetParam( "g_vEyeVS", g_Camera.GetCameraMatrix() * g_Camera.GetPosition() );
+//	shader_mgr.SetParam( "g_vEyeVS", g_Camera.GetCameraMatrix() * g_Camera.GetPosition() );
+	shader_mgr.SetParam( "g_vEyePos", g_Camera.GetPosition() );
 
 	m_CurrentShaderIndex = index;
 
@@ -183,6 +214,12 @@ int CHLSLEffectTest::Init()
 
 	m_vecMesh.push_back( CTestMeshHolder( "./models/fw43.msh",              CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
 	m_vecMesh.push_back( CTestMeshHolder( "./models/primitive_meshes.msh",  CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
+	m_vecMesh.push_back( CTestMeshHolder( "./models/9x19mm.msh",            CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
+	m_vecMesh.back().m_fScale = 20.0f;
+	m_vecMesh.push_back( CTestMeshHolder( "./models/5.56x45mm.msh",         CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
+	m_vecMesh.back().m_fScale = 20.0f;
+	m_vecMesh.push_back( CTestMeshHolder( "./models/cz75-1st.msh",          CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
+	m_vecMesh.back().m_fScale = 20.0f;
 //	m_vecMesh.push_back( CTestMeshHolder( "./models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
 
 	InitShaders();
@@ -230,9 +267,11 @@ void CHLSLEffectTest::RenderMesh()
 
 	if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
 	{
+		float s = holder.m_fScale;
+		Matrix44 world = ToMatrix44(holder.m_Pose) * Matrix44Scaling(s,s,s);
 		// set world transform
-		FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
-		pShaderManager->SetWorldTransform( holder.m_Pose );
+		FixedFunctionPipelineManager().SetWorldTransform( world );
+		pShaderManager->SetWorldTransform( world );
 
 		CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
 
@@ -259,6 +298,19 @@ void CHLSLEffectTest::RenderDebugInfo()
 	m_pFont->DrawText(
 		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
 		Vector2( 20, 300 ) );
+
+	if( 0 <= m_CurrentShaderIndex && m_CurrentShaderIndex < (int)m_Shaders.size() )
+	{
+		CShaderHandle& shader = m_Shaders[m_CurrentShaderIndex];
+		if( shader.GetEntry()
+		 && shader.GetEntry()->GetResource() )
+		{
+			string shader_path = 
+				shader.GetEntry()->GetResource()->GetDesc().ResourcePath;
+
+			m_pFont->DrawText( shader_path.c_str(), Vector2( 20, 50 ) );
+		}
+	}
 }
 
 
@@ -322,6 +374,15 @@ void CHLSLEffectTest::HandleInput( const SInputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			m_CurrentMeshIndex = (m_CurrentMeshIndex + (int)m_vecMesh.size() - 1) / (int)m_vecMesh.size(); 
+		}
+		break;
+
+	case '1':
+	case '2':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			bool& toggle = m_EnableLight[ input.iGICode - '1' ];
+			toggle = !toggle;
 		}
 		break;
 

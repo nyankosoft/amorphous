@@ -20,6 +20,7 @@ class CTestMeshHolder
 public:
 	CMeshObjectHandle m_Handle;
 	Matrix34 m_Pose;
+	float m_fScale;
 
 	CMeshResourceDesc m_MeshDesc;
 
@@ -64,6 +65,8 @@ class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 	int m_CurrentShaderIndex;
 
 	CShaderTechniqueHandle m_MeshTechnique;
+
+	bool m_EnableLight[2];
 
 	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
