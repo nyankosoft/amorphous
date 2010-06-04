@@ -1,11 +1,11 @@
 #include "PrimitiveShapeMeshesTest.hpp"
-#include <gds/Graphics.hpp>
-#include <gds/Graphics/AsyncResourceLoader.hpp>
-#include <gds/Graphics/Shader/ShaderLightManager.hpp>
-#include <gds/Support/Timer.hpp>
-#include <gds/Support/Profile.hpp>
-#include <gds/Support/Macro.h>
-#include <gds/GUI.hpp>
+#include "gds/Graphics.hpp"
+#include "gds/Graphics/AsyncResourceLoader.hpp"
+#include "gds/Graphics/Shader/ShaderLightManager.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/Macro.h"
+#include "gds/GUI.hpp"
 
 using namespace std;
 using namespace boost;
@@ -53,7 +53,12 @@ void CPrimitiveShapeMeshesTest::CreateGUIControls()
 bool CPrimitiveShapeMeshesTest::InitShader()
 {
 	// initialize shader
-	bool shader_loaded = m_Shader.Load( "./shaders/PrimitiveShapeMeshesTest.fx" );
+//	bool shader_loaded = m_Shader.Load( "./shaders/PrimitiveShapeMeshesTest.fx" );
+
+	// For now, use the fixed function pipeline.
+	CShaderResourceDesc shader_desc;
+	shader_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
+	bool shader_loaded = m_Shader.Load( shader_desc );
 	
 	if( !shader_loaded )
 		return false;
@@ -154,6 +159,8 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 	pShaderManager->SetTechnique( m_MeshTechnique );
 	pShaderManager->GetShaderLightManager()->CommitChanges();
 
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+
 //	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
 //	{
 		shared_ptr<CBasicMesh> pMesh = m_vecMesh[m_MeshIndex].GetMesh();//mesh.GetMesh();
@@ -166,8 +173,13 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 			pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 			pShaderManager->SetTexture( 0, m_ConeTexture );
-			pShaderManager->GetEffect()->CommitChanges();
-			pMesh->RenderSubset( *pShaderManager, 0 );
+			if( pShaderManager->GetEffect() )
+				pShaderManager->GetEffect()->CommitChanges();
+
+			// TODO: automatically detect the shader type (programmable/non-programmable) by the system.
+			pMesh->Render();
+
+///			pMesh->RenderSubset( *pShaderManager, 0 );
 //			pMesh->Render( *pShaderManager );
 		}
 //	}

@@ -2,8 +2,6 @@
 #define  __PrimitiveShapeMeshesTest_HPP__
 
 
-#include <boost/foreach.hpp>
-#include <boost/shared_ptr.hpp>
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/GraphicsComponentCollector.hpp"
