@@ -60,8 +60,7 @@ public:
 
 					path mesh_output_path = lw_mesh_exporter.GetOutputFilepath( i );
 
-					const path output_path = path(input_filepath).parent_path() / mesh_output_path.parent_path() / material.vecTexture[tex].strFilename;
-//					const path output_path = path(output_filepath).parent_path() / material.vecTexture[tex].strFilename;
+					const path output_path = mesh_output_path.parent_path() / material.vecTexture[tex].strFilename;
 					out.m_ExtraTargets[ orig_tex_paths[mat][tex] ] = output_path.string();
 				}
 			}
