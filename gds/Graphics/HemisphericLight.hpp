@@ -110,6 +110,33 @@ public:
 };
 
 
+
+class CHemisphericSpotlight : public CSpotlight
+{
+public:
+
+	CHemisphericLightAttribute Attribute;
+
+public:
+
+	Type GetLightType() const { return CLight::HEMISPHERIC_SPOTLIGHT; }
+
+	SFloatRGBColor CalcSpotlightColor( float NdotL )
+	{
+		return Attribute.CalcHSLightAmount( ( NdotL + 1.0f ) * 0.5f );
+	}
+
+	void SetDiffuseColor( int index, SFloatRGBColor& diffuse_color ) { SetDiffuseColor( index, diffuse_color ); }
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericSpotlight( *this ); }
+
+	SFloatRGBAColor& UpperColor() { return Attribute.UpperDiffuseColor; }
+	SFloatRGBAColor& LowerColor() { return Attribute.LowerDiffuseColor; }
+};
+
+
 // ================================ inline implementations ================================ 
 
 inline void CHemisphericPointLight::Serialize( IArchive& ar, const unsigned int version )

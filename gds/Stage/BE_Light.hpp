@@ -18,8 +18,10 @@ protected:
 
 	prealloc_pool<CLightHolder> m_DirectionalLightPool;
 	prealloc_pool<CLightHolder> m_PointLightPool;
+	prealloc_pool<CLightHolder> m_SpotlightPool;
 	prealloc_pool<CLightHolder> m_HSDirectionalLightPool;
 	prealloc_pool<CLightHolder> m_HSPointLightPool;
+	prealloc_pool<CLightHolder> m_HSSpotlightPool;
 //	prealloc_pool<CTriPointLight> m_TriPointLightPool;
 //	prealloc_pool<CTriDirctionalLight> m_TriDirectionalLightPool;
 

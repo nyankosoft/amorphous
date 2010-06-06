@@ -29,10 +29,10 @@ public:
 
 	void VisitPointLight( CPointLight& point_light ) { m_pShadowMap->UpdatePointLight( point_light ); }
 	void VisitDirectionalLight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateDirectionalLight( directional_light ); }
-//	void VisitSpotlight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateSpotlight( directional_light ); }
+	void VisitSpotlight( CSpotlight& spotlight ) { m_pShadowMap->UpdateSpotlight( spotlight ); }
 	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { m_pShadowMap->UpdatePointLight( hs_point_light ); }
 	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { m_pShadowMap->UpdateDirectionalLight( hs_directional_light ); }
-//	void VisitHemisphericSpotlight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateSpotlight( directional_light ); }
+	void VisitHemisphericSpotlight( CHemisphericSpotlight& hs_spotlight ) { m_pShadowMap->UpdateSpotlight( hs_spotlight ); }
 };
 
 
@@ -54,8 +54,9 @@ public:
 //		case CLight::HEMISPHERIC_POINT:
 //			return shared_ptr<CShadowMap>( new CPointLightShadowMap() );
 
-//		case CLight::SPOT:
-//			return shared_ptr<CShadowMap>( new CSpotlightShadowMap() );
+		case CLight::SPOTLIGHT:
+		case CLight::HEMISPHERIC_SPOTLIGHT:
+			return shared_ptr<CShadowMap>( new CSpotlightShadowMap() );
 
 		default:
 //			LOG_PRINT_ERROR( " An unsupported type of light was specified. light type id: " + to_string(light.GetLightType()) );
@@ -582,7 +583,7 @@ void CShadowMapManager::EndSceneShadowMap()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	ShaderManagerHub.PopViewAndProjectionMatrices();
+//	ShaderManagerHub.PopViewAndProjectionMatrices();
 
 	// restore the original render tareget
 

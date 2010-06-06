@@ -391,7 +391,7 @@ void COrthoShadowMap::UpdateLightPositionAndDirection()
 void COrthoShadowMap::UpdateShadowMapSettings()
 {
 	// orthographic projection
-	Matrix44 ortho_proj = Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 50.0f );
+	Matrix44 ortho_proj = Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 150.0f );
 	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera.GetCameraMatrix(), ortho_proj );
 
 	UpdateLightPositionAndDirection();
@@ -414,7 +414,7 @@ void COrthoShadowMap::SetWorldToLightSpaceTransformMatrix()
 
 	HRESULT hr = S_OK;
 	const Matrix44 proj_view
-		= Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 50.0f )
+		= Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 150.0f )
 		* m_LightCamera.GetCameraMatrix();
 	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
 
@@ -462,6 +462,13 @@ void CSpotlightShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
 	Vector3 vLightCameraPos = m_pSceneCamera->GetPosition() - light.vDirection * light_cam_shift;
 
 	m_LightCamera.SetPosition( vLightCameraPos );
+	m_LightCamera.SetOrientation( CreateOrientFromFwdDir(light.vDirection) );
+}
+
+
+void CSpotlightShadowMap::UpdateSpotlight( CSpotlight& light )
+{
+	m_LightCamera.SetPosition( light.vPosition );
 	m_LightCamera.SetOrientation( CreateOrientFromFwdDir(light.vDirection) );
 }
 

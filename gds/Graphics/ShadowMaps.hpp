@@ -172,7 +172,7 @@ public:
 
 	virtual void UpdateDirectionalLight( CDirectionalLight& light ) {}
 	virtual void UpdatePointLight( CPointLight& light ) {}
-//	virtual void UpdateSpotlight( CSpotlight& light ) {}
+	virtual void UpdateSpotlight( CSpotlight& light ) {}
 //	virtual void UpdateLight( CSpotLight& light ) {}
 
 	virtual CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
@@ -310,7 +310,10 @@ public:
 
 	CSpotlightShadowMap();
 
+	/// Called when shadow of directional light is done with spotlight shadow map
 	void UpdateDirectionalLight( CDirectionalLight& light );
+
+	void UpdateSpotlight( CSpotlight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };

@@ -143,7 +143,10 @@ public:
 
 	SFloatRGBAColor aColor[3];
 
-	float afAttenuation[3]; /// for point lights
+	float afAttenuation[3]; /// (point light & spotlight) attenuation coefficients
+
+	float fInnerConeAngle; /// (spotlight) angle of the inner cone
+	float fOuterConeAngle; /// (spotlight) angle of the inner cone
 
 	int LightGroup;
 
@@ -153,6 +156,8 @@ public:
 		:
 	LightType(light_type),
 	LightGroup(0),
+	fInnerConeAngle((float)PI * 0.25f),
+	fOuterConeAngle((float)PI * 0.25f),
 	fIntensity(1.0f)
 	{
 		TypeID = CCopyEntityTypeID::LIGHT_ENTITY;

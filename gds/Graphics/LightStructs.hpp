@@ -23,8 +23,10 @@ public:
 	virtual void VisitAmbientLight( CAmbientLight& ambient_light ) {}
 	virtual void VisitPointLight( CPointLight& point_light ) {}
 	virtual void VisitDirectionalLight( CDirectionalLight& directional_light ) {}
+	virtual void VisitSpotlight( CSpotlight& spotlight ) {}
 	virtual void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) {}
 	virtual void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) {}
+	virtual void VisitHemisphericSpotlight( CHemisphericSpotlight& hs_spotlight ) {}
 //	virtual void VisitTriPointLight( CTriPointLight& tri_point_light ) {}
 //	virtual void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) {}
 };
@@ -41,12 +43,26 @@ public:
 		ZONE_AMBIENT,
 		POINT,
 		DIRECTIONAL,
+		SPOTLIGHT,
 		HEMISPHERIC_POINT,
 		HEMISPHERIC_DIRECTIONAL,
+		HEMISPHERIC_SPOTLIGHT,
 		TRI_POINT,
 		TRI_DIRECTIONAL,
 		NUM_LIGHT_TYPES
 	};
+
+protected:
+
+	SFloatRGBColor CalcLightColorFromNdotL( float NdotL )
+	{
+		if( 0.0f < NdotL )
+		{
+			return DiffuseColor * NdotL;
+		}
+		else
+			return SFloatRGBColor(0,0,0);
+	}
 
 public:
 
@@ -101,6 +117,34 @@ public:
 };
 
 
+class CDistAttenuationLight : public CLight
+{
+public:
+
+	float fAttenuation[3];
+
+public:
+
+	inline CDistAttenuationLight();
+
+	virtual ~CDistAttenuationLight() {}
+
+	inline float CalcAttenuation( float dist_to_light )
+	{
+		return 1.0f / ( fAttenuation[0] + fAttenuation[1] * dist_to_light + fAttenuation[2] * dist_to_light * dist_to_light );
+	}
+
+	inline void SetAttenuation( float a0, float a1, float a2 )
+	{
+		fAttenuation[0] = a0;
+		fAttenuation[1] = a1;
+		fAttenuation[2] = a2;
+	}
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+};
+
+
 class CDirectionalLight : public CLight
 {
 public:
@@ -111,6 +155,8 @@ public:
 public:
 
 	inline CDirectionalLight();
+
+	virtual ~CDirectionalLight() {}
 
 	CLight::Type GetLightType() const { return CLight::DIRECTIONAL; }
 
@@ -134,18 +180,19 @@ public:
 };
 
 
-class CPointLight : public CLight
+class CPointLight : public CDistAttenuationLight
 {
 public:
 
 	Vector3 vPosition;
-	float fAttenuation[3];
 
 	int FalloffType;
 
 public:
 
 	inline CPointLight();
+
+	virtual ~CPointLight() {}
 
 	virtual CLight::Type GetLightType() const { return CLight::POINT; }
 
@@ -169,32 +216,84 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-
 	virtual SFloatRGBColor CalcPointLightFactor( float NdotL )
 	{
-		if( 0.0f < NdotL )
-		{
-			return DiffuseColor * NdotL;
-		}
-		else
-			return SFloatRGBColor(0,0,0);
-	}
-
-	inline float CalcAttenuation( float dist_to_light )
-	{
-		return 1.0f / ( fAttenuation[0] + fAttenuation[1] * dist_to_light + fAttenuation[2] * dist_to_light * dist_to_light );
-	}
-
-	inline void SetAttenuation( float a0, float a1, float a2 )
-	{
-		fAttenuation[0] = a0;
-		fAttenuation[1] = a1;
-		fAttenuation[2] = a2;
+		return CalcLightColorFromNdotL( NdotL );
 	}
 
 	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitPointLight( *this ); }
 };
 
+
+class CSpotlight : public CDistAttenuationLight
+{
+public:
+
+	Vector3 vPosition;
+	Vector3 vDirection;
+
+	float fInnerConeAngle;
+	float fOuterConeAngle;
+
+	float fFalloff;
+
+public:
+
+	CSpotlight()
+		:
+	vPosition( Vector3(0,0,0) ),
+	vDirection( Vector3(0,-1,0) ),
+	fInnerConeAngle(3.14159f * 0.25f),
+	fOuterConeAngle(3.14159f * 0.25f),
+	fFalloff(1.0f)
+	{}
+
+	virtual ~CSpotlight() {}
+
+	virtual CLight::Type GetLightType() const { return CLight::SPOTLIGHT; }
+
+	virtual SFloatRGBColor CalcSpotlightColor( float NdotL )
+	{
+		return CalcLightColorFromNdotL( NdotL );
+	}
+
+	SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal )
+	{
+		Vector3 vToLight = vPosition - pos;
+		float dist_to_light = Vec3Length( vToLight );
+		Vector3 vDirToLight = vToLight / dist_to_light;
+
+		if( fRange < dist_to_light )
+			return SFloatRGBColor(0,0,0);
+
+		float dot = Vec3Dot( -vDirToLight, vDirection );
+
+		if( dot < 0 )
+			return SFloatRGBColor(0,0,0);
+
+		const float angle = acos( dot );
+
+		if( fOuterConeAngle < angle )
+			return SFloatRGBColor(0,0,0);
+
+/*		else if( fInnerConeAngle < angle )
+		{
+			if( fFalloff < 1.0f )
+			{
+				// calc attenuation between inner and outer cone
+				return ;
+			}
+		}*/
+
+		float NdotL = Vec3Dot( normal, vDirToLight );
+
+		return CalcSpotlightColor( NdotL ) * fIntensity * CalcAttenuation( dist_to_light );
+	}
+
+	inline virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitLight( *this ); }
+};
 
 
 //------------------------------- ZoneAmbientLight (experimental) -------------------------------
@@ -232,6 +331,23 @@ inline void CLight::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
+inline CDistAttenuationLight::CDistAttenuationLight()
+{
+	fAttenuation[0] = 0.00f;
+	fAttenuation[1] = 0.01f;
+	fAttenuation[2] = 0.00f;
+}
+
+
+inline void CDistAttenuationLight::Serialize( IArchive& ar, const unsigned int version )
+{
+	CLight::Serialize( ar, version );
+
+	for( int i=0; i<3; i++ )
+		ar & fAttenuation[i];
+}
+
+
 inline CDirectionalLight::CDirectionalLight()
 {
 	vDirection      = Vector3(0,-1,0);
@@ -253,21 +369,27 @@ inline CPointLight::CPointLight()
 vPosition(Vector3(0,0,0))
 {
 	FalloffType     = 0;
-	fAttenuation[0] = 0.00f;
-	fAttenuation[1] = 0.01f;
-	fAttenuation[2] = 0.00f;
 }
 
 
 inline void CPointLight::Serialize( IArchive& ar, const unsigned int version )
 {
-	CLight::Serialize( ar, version );
+	CDistAttenuationLight::Serialize( ar, version );
 
 	ar & vPosition;
 	ar & FalloffType;
+}
 
-	for( int i=0; i<3; i++ )
-		ar & fAttenuation[i];
+
+inline void CSpotlight::Serialize( IArchive& ar, const unsigned int version )
+{
+	CDistAttenuationLight::Serialize( ar, version );
+
+	ar & vPosition;
+	ar & vDirection;
+	ar & fInnerConeAngle;
+	ar & fOuterConeAngle;
+	ar & fFalloff;
 }
 
 

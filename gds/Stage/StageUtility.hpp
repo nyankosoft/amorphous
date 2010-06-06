@@ -85,6 +85,12 @@ public:
 	CLightEntityHandle CreateHSDirectionalLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& dir );
+
+	CLightEntityHandle CreateHSSpotlightEntity( const std::string& name,
+		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
+		float intensity, const Vector3& pos, const Vector3& dir,
+		float attenu0, float attenu1, float attenu2,
+		float inner_cone_angle = (float)PI * 0.25f, float outer_cone_angle = -1.0f );
 };
 
 

@@ -1,8 +1,8 @@
-#include <gds/Script/PyModule_StageUtility.hpp>
-#include <gds/Graphics/3DGameMath.hpp>
-#include <gds/Stage/EntityMotionPathRequest.hpp>
-#include <gds/Stage/BE_ScriptedCamera.hpp>
-#include <gds/Support/Log/DefaultLog.hpp>
+#include "gds/Script/PyModule_StageUtility.hpp"
+#include "gds/Graphics/3DGameMath.hpp"
+#include "gds/Stage/EntityMotionPathRequest.hpp"
+#include "gds/Stage/BE_ScriptedCamera.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
 
 using namespace std;
 using namespace boost;
@@ -29,8 +29,10 @@ BOOST_PYTHON_MODULE(stage_util)
 	class_< CStageLightUtility, shared_ptr<CStageLightUtility> >("StageLightUtility")
 		.def( "CreateHSPointLightEntity",        &CStageLightUtility::CreateHSPointLightEntity,       ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("pos") = Vector3(0,0,0), py::arg("attenu0") = 1.0f, py::arg("attenu1") = 1.0f, py::arg("attenu2") = 1.0f ) )
 		.def( "CreateHSDirectionalLightEntity",  &CStageLightUtility::CreateHSDirectionalLightEntity, ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("dir") = Vector3(0,-1,0) ) )
-//		.def( "CreateTriPointLight",       &CStageLightUtility::CreateTriPointLight ) // NOT IMPLEMENTED
-//		.def( "CreateTriirectionalLight",  &CStageLightUtility::CreateTriirectionalLight ) // NOT IMPLEMENTED
+		.def( "CreateHSSpotlightEntity",         &CStageLightUtility::CreateHSSpotlightEntity,        ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("dir") = Vector3(0,-1,0), py::arg("attenu0") = 1.0f, py::arg("attenu1") = 1.0f, py::arg("attenu2") = 1.0f, py::arg("inner_cone_angle") = 1.0f, py::arg("outer_cone_angle") = 1.0f ) )
+//		.def( "CreateTriPointLight",             &CStageLightUtility::CreateTriPointLight )       // NOT IMPLEMENTED
+//		.def( "CreateTriDirectionalLight",       &CStageLightUtility::CreateTriDirectionalLight ) // NOT IMPLEMENTED
+//		.def( "CreateTriSpotlightEntity",        &CStageLightUtility::CreateTriSpotlightEntity )  // NOT IMPLEMENTED
 	;
 
 	class_< CStageMiscUtility, shared_ptr<CStageMiscUtility> >("StageMiscUtility")

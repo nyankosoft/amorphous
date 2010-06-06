@@ -35,8 +35,10 @@ class CLight;
 class CAmbientLight;
 class CDirectionalLight;
 class CPointLight;
+class CSpotlight;
 class CHemisphericDirectionalLight;
 class CHemisphericPointLight;
+class CHemisphericSpotlight;
 
 class C2DRect;
 class C2DFrameRect;
