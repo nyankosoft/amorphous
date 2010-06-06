@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 
 #include "App/GameWindowManager.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Font/Font.hpp"
 #include "Support/Timer.hpp"
 #include "Support/FileOpenDialog_Win32.hpp"
@@ -143,16 +143,17 @@ void GetWindowFrameSize( HWND hWnd, long& frame_width, long& frame_height )
 	int ww, wh, cw, ch;
 
 	// calc boundary width outside the client rect
-	GetClientRect(hWnd, &rect);		// クライアント部分のサイズの取得
-	cw = rect.right - rect.left;	// クライアント領域外の横幅を計算
-	ch = rect.bottom - rect.top;	// クライアント領域外の縦幅を計算
+
+	GetClientRect(hWnd, &rect);
+	cw = rect.right - rect.left; // width of the client area
+	ch = rect.bottom - rect.top; // height of the client area
 
 	// calc the entire window size
-	GetWindowRect(hWnd, &rect);		// ウインドウ全体のサイズ取得
-	ww = rect.right - rect.left;	// ウインドウ全体の幅の横幅を計算
-	wh = rect.bottom - rect.top;	// ウインドウ全体の幅の縦幅を計算
-	frame_width  = ww - cw;			// クライアント領域以外に必要な幅
-	frame_height = wh - ch;			// クライアント領域以外に必要な高さ
+	GetWindowRect(hWnd, &rect);		// the entire window area
+	ww = rect.right - rect.left;	// width of the window 
+	wh = rect.bottom - rect.top;	// height of the window
+	frame_width  = ww - cw;			// window width  - client area width
+	frame_height = wh - ch;			// window height - client area height
 }
 
 
@@ -245,7 +246,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 
 	// initialize font object
-//	g_Font.InitFont( "ＭＳ ゴシック", 12, 24);
+//	g_Font.InitFont( "Arial", 12, 24);
 
 //	g_TexFont.InitFont( "Texture\\MainFont.dds", 256, 256, 16, 8 );
 //	g_TexFont.SetDefaultLetterSize( 8, 16 );
@@ -304,8 +305,3 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
     return 0;
 }
-
-
-
-
-
