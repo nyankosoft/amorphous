@@ -731,6 +731,8 @@ void CMotionGraphManager::LoadMotions( CMotionDatabase& mdb )
 		{
 			m_pBlendNodeRoot->CreateFromSkeleton( pMotion->GetSkeleton()->GetRootBone() );
 		}
+		else
+			LOG_PRINT_WARNING( " Cannot create a blend node tree because the specified source motion '" + m_CompleteSkeletonSourceMotionName + "' was not found in the database." );
 	}
 
 	SetStartBlendNodeToMotionPrimitives();

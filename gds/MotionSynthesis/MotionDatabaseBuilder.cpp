@@ -206,9 +206,16 @@ Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
 		vector<CKeyframe>& dest_keyframes = pDestMotion->GetKeyframeBuffer();
 		dest_keyframes.resize( src_keyframes.size() );
 
+		pDestMotion->SetName( src_motion.GetName() );
 		pDestMotion->SetSkeleton( *pDestSkeleton );
 		pDestMotion->CreateEmptyKeyframes( (uint)src_keyframes.size() );
 
+		// copy keyframe times
+		const int num_keyframes = (int)src_keyframes.size();
+		for( int kf=0; kf<num_keyframes; kf++ )
+			dest_keyframes[kf].SetTime( src_keyframes[kf].GetTime() );
+
+		// convert transform node tree
 		map<string,string>::const_iterator itr;
 		for( itr = bone_maps.begin();
 			itr != bone_maps.end();

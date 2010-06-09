@@ -137,4 +137,9 @@ void CMotionPrimitive::Serialize( IArchive & ar, const unsigned int version )
 void CMotionPrimitive::SearchAndSetStartBlendNode( shared_ptr<CBlendNode>& pRootBlendNode )
 {
 	m_pStartBlendNode = pRootBlendNode->GetBlendNodeByName( m_StartBoneName );
+
+	if( !m_pStartBlendNode )
+	{
+		LOG_PRINT_WARNING( " The start bone '" + m_StartBoneName + "' was not found in the blend node tree." );
+	}
 }

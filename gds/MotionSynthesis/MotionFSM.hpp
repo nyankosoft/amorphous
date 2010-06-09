@@ -127,7 +127,7 @@ public:
 
 	virtual ~CMotionPrimitiveNode() {}
 
-	const std::string& GetName() { return m_Name; }
+	const std::string& GetName() const { return m_Name; }
 
 	void SetFSM( CMotionFSM *pFSM );
 
@@ -313,7 +313,7 @@ public:
 
 	CMotionFSM( const std::string& name = "" );
 
-	CMotionFSM::~CMotionFSM();
+	~CMotionFSM();
 
 	const std::string& GetName() const { return m_Name; }
 
