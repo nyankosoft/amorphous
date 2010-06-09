@@ -242,7 +242,8 @@ public:
 
 	virtual void OnItemAdded( CGM_ListBox& listbox, int index );
 	virtual void OnItemInserted( CGM_ListBox& listbox, int index );
-	virtual void OnItemRemoved( CGM_ListBox& listbox, int index );
+	virtual void OnItemRemoved( CGM_ListBox& listbox, CGM_ListBoxItem& item );
+	virtual void OnAllItemsRemoved( CGM_ListBox& listbox );
 };
 
 

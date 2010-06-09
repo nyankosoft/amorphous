@@ -243,7 +243,10 @@ void CGM_ListBox::RemoveItem( int nIndex )
 	if( nIndex < 0 || nIndex >= (int)m_vecItem.size() )
 		return;
 
-	SafeDelete( m_vecItem.at(nIndex) );
+	if( m_pRenderer )
+		m_pRenderer->BeforeItemRemoved( *this, nIndex );
+
+	CGM_ListBoxItem *pItemToBeRemoved = m_vecItem[nIndex];
 
 	m_vecItem.erase( m_vecItem.begin() + nIndex );
 
@@ -257,6 +260,11 @@ void CGM_ListBox::RemoveItem( int nIndex )
 
 		SetItemSelectionFocus( m_nSelected );
 	}
+
+	if( m_pRenderer )
+		m_pRenderer->OnItemRemoved( *this, *pItemToBeRemoved );
+
+	SafeDelete( pItemToBeRemoved );
 }
 
 
@@ -276,11 +284,17 @@ void CGM_ListBox::RemoveItemByData( void *pUserData )
 //--------------------------------------------------------------------------------------
 void CGM_ListBox::RemoveAllItems()
 {
+	if( m_pRenderer )
+		m_pRenderer->BeforeAllItemsRemoved( *this );
+
 	SafeDeleteVector( m_vecItem );
 
 	m_vecItem.clear();
 
 	m_pScrollBar->SetTrackRange( 0, 1 );
+
+	if( m_pRenderer )
+		m_pRenderer->OnAllItemsRemoved( *this );
 
 //	m_nSelected = -1;
 }

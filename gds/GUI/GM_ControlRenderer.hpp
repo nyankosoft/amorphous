@@ -213,7 +213,14 @@ public:
 	virtual void OnItemSelected( CGM_ListBox& listbox ) {}
 	virtual void OnItemAdded( CGM_ListBox& listbox, int index ) {}
 	virtual void OnItemInserted( CGM_ListBox& listbox, int index ) {}
-	virtual void OnItemRemoved( CGM_ListBox& listbox, int index ) {}
+	virtual void BeforeItemRemoved( CGM_ListBox& listbox, int index ) {}
+
+	/// Be careful when you override this method. This function takes the reference to the item to be removed, not an index, as the second argument.
+	/// The item has been already removed from the list when OnItemRemoved() is called and there is no valid index for it.
+	/// The item is released by the listbox right after OnItemRemoved() is called.
+	virtual void OnItemRemoved( CGM_ListBox& listbox, CGM_ListBoxItem& item ) {}
+	virtual void BeforeAllItemsRemoved( CGM_ListBox& listbox ) {}
+	virtual void OnAllItemsRemoved( CGM_ListBox& listbox ) {}
 	virtual void OnItemTextChanged( CGM_ListBox& listbox, CGM_ListBoxItem& item ) {} ///< called when a listbox item text was set through CGM_ListBoxItem::SetText()
 	virtual void OnItemDescChanged( CGM_ListBox& listbox, CGM_ListBoxItem& item ) {} ///< called when a listbox item desc was set through CGM_ListBoxItem::SetDesc()
 	virtual void OnItemUpdated( CGM_ListBox& listbox, CGM_ListBoxItem& item ) {} ///< called when a listbox item was modified

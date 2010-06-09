@@ -370,8 +370,10 @@ void CGM_StdListBoxRenderer::UpdateItems( CGM_ListBox& listbox, bool update_text
 	const int focused_item_index = listbox.GetSelectedIndex();
 
 	int i;
-	const int num_items_to_display = listbox.GetNumItemsToDisplay();
+	int num_items_to_display = listbox.GetNumItemsToDisplay();
 	const int first_item_index = listbox.GetIndexOfFirstItemToDisplay();
+
+	clamp( num_items_to_display, 0, (int)m_vecpText.size() );
 
 	if( update_text )
 	{
@@ -380,6 +382,12 @@ void CGM_StdListBoxRenderer::UpdateItems( CGM_ListBox& listbox, bool update_text
 			CGM_ListBoxItem *pItem = listbox.GetItem( first_item_index + i );
 			if( pItem )
 				m_vecpText[i]->SetText( pItem->GetText() );
+		}
+
+		int num_item_elements = (int)m_vecpText.size();
+		for( i=num_items_to_display; i<num_item_elements; i++ )
+		{
+			m_vecpText[i]->SetText( "" );
 		}
 	}
 
@@ -427,7 +435,13 @@ void CGM_StdListBoxRenderer::OnItemInserted( CGM_ListBox& listbox, int index )
 }
 
 
-void CGM_StdListBoxRenderer::OnItemRemoved( CGM_ListBox& listbox, int index )
+void CGM_StdListBoxRenderer::OnItemRemoved( CGM_ListBox& listbox, CGM_ListBoxItem& item )
+{
+	UpdateItems( listbox );
+}
+
+
+void CGM_StdListBoxRenderer::OnAllItemsRemoved( CGM_ListBox& listbox )
 {
 	UpdateItems( listbox );
 }
