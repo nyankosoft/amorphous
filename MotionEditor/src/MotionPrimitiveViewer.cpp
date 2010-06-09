@@ -5,11 +5,13 @@
 #include "gds/Input.hpp"
 #include "gds/3DMath/misc.hpp"
 #include "gds/3DMath/MatrixConversions.hpp"
+#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/GUI.hpp"
 #include "gds/MotionSynthesis.hpp"
 //#include "gds/Support/CameraController.hpp"
 #include "gds/Support/memory_helpers.hpp"
 #include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/FileOpenDialog_Win32.hpp"
 
 using namespace std;
 using namespace boost;
@@ -155,13 +157,28 @@ void CSkeletalMeshMotionViewer::Init()
 	LoadParamFromFile<string>( "params.txt", "Model", mesh_filepath );
 	LoadSkeletalMesh( mesh_filepath );
 
-	string shader_filepath;
-	if( m_UseQuaternionForBoneTransformation )
-		shader_filepath = "shaders/QVertexBlend.fx";
-	else
-		shader_filepath = "shaders/VertexBlend.fx";
+	CShaderResourceDesc shader_desc;
+	int use_embedded_shader = 0;//1;
+//	LoadParamFromFile<string>( "config", "UseEmbeddedShader", mesh_filepath );
+	if( use_embedded_shader )
+	{
+		CGenericShaderDesc desc;
+		desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
 
-	bool loaded = m_Shader.Load( shader_filepath );
+		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(desc) );
+	}
+	else
+	{
+		string shader_filepath;
+		if( m_UseQuaternionForBoneTransformation )
+			shader_filepath = "shaders/QVertexBlend.fx";
+		else
+			shader_filepath = "shaders/VertexBlend.fx";
+
+		shader_desc.ResourcePath = shader_filepath;
+	}
+
+	bool loaded = m_Shader.Load( shader_desc );
 //	bool loaded = m_Shader.Load( "shaders/VertexBlend.fx:VertBlend_PVL_1HSDL" );
 	if( !loaded )
 	{
@@ -440,7 +457,7 @@ void CMotionPrimitiveViewer::Init()
 		= pRendererMgr->GetGraphicsElementManager();
 
 //	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
-	pGraphicsElementMgr->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono_Bold_256", CFontBase::FONTTYPE_TEXTURE, 8, 16, 0, 0 );
+	pGraphicsElementMgr->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono-Bold-256", CFontBase::FONTTYPE_TEXTURE, 8, 16, 0, 0 );
 
 	m_pPlaytimeText
 		= pDialog->AddStatic( STC_PLAYTIME, CGraphicsComponent::RectAtLeftBottom( 300, 40, 20, 20 ), "0.0" );
@@ -571,6 +588,32 @@ void CMotionPrimitiveViewer::Render()
 
 	if( m_pDialogManager )
 		m_pDialogManager->Render();
+
+	// help text
+	if( m_pDialogManager
+	 && m_pDialogManager->GetControlRendererManager()
+	 )
+	{
+		// borrow a font from GUI manager
+		shared_ptr<CGraphicsElementManager> pElementMgr
+			= m_pDialogManager->GetControlRendererManager()->GetGraphicsElementManager();
+
+		CFontBase *pFont = NULL;
+		if( pElementMgr )
+			pFont = pElementMgr->GetFont( 0 );
+
+		if( pFont )
+		{
+			int w=0,h=0;
+			pFont->GetFontSize( w, h );
+			pFont->SetFontSize( 8, 16 );
+			int sh = CGraphicsComponent::GetScreenHeight();
+			int y = sh - 20 * 2 - 10;
+			pFont->DrawText( "V: Load a motion database", Vector2(300,(float)y+20*0), 0xFFFFFFFF );
+			pFont->DrawText( "C: Load a skeletal mesh",   Vector2(300,(float)y+20*1), 0xFFFFFFFF );
+			pFont->SetFontSize( w, h );
+		}
+	}
 }
 
 
@@ -632,19 +675,21 @@ void CMotionPrimitiveViewer::OnItemSelected( const CGM_ListBoxItem& item, int it
 }
 
 
-int CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string& filename, const std::string& motion_table_name )
+int CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string& mdb_filepath, const std::string& motion_table_name )
 {
 	msynth::CMotionDatabase db;
-	bool success = db.LoadFromFile( filename );
+	bool success = db.LoadFromFile( mdb_filepath );
 
 	if( !success )
 	{
 		return -1;
 	}
 
+	m_vecpMotionPrimitive.resize( 0 );
+
 	msynth::CHumanoidMotionTable tbl;
 
-	db.GetHumanoidMotionTable( motion_table_name, tbl );
+	bool res = db.GetHumanoidMotionTable( motion_table_name, tbl );
 
 	BOOST_FOREACH( const msynth::CHumanoidMotionEntry& entry, tbl.m_vecEntry )
 	{
@@ -652,7 +697,12 @@ int CMotionPrimitiveViewer::LoadMotionPrimitivesFromDatabase( const std::string&
 		{
 			shared_ptr<CMotionPrimitive> pMotion = db.GetMotionPrimitive( motion_name );
 
-			m_vecpMotionPrimitive.push_back( pMotion );
+			if( pMotion )
+				m_vecpMotionPrimitive.push_back( pMotion );
+			else
+			{
+				LOG_PRINT_ERROR( " The motion '" + motion_name + "' was not found in the database." );
+			}
 		}
 	}
 
@@ -722,6 +772,28 @@ void CMotionPrimitiveViewer::HandleInput( const SInputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 			ToggleDisplaySkeletalMesh();
 		break;
+
+	case 'C':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			string pathname;
+			GetFilename( pathname );
+			if( 0 < pathname.length() )
+			{
+				m_MeshViewer.LoadSkeletalMesh( pathname );
+			}
+		}
+
+	case 'V':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			string pathname;
+			GetFilename( pathname );
+			if( 0 < pathname.length() )
+			{
+				int ret = LoadMotionPrimitivesFromDatabase( pathname );
+			}
+		}
 	default:
 		break;
 	}
