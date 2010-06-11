@@ -1,10 +1,10 @@
 #include "TextureFontTest.hpp"
-#include <gds/Graphics.hpp>
-#include <gds/Graphics/Font/TrueTypeTextureFont.hpp>
-#include <gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp>
-#include <gds/Input.hpp>
-#include <gds/Support/Profile.hpp>
-#include <gds/Support/BitmapImage.hpp>
+#include "gds/Graphics.hpp"
+#include "gds/Graphics/Font/TrueTypeTextureFont.hpp"
+#include "gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "gds/Input.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/BitmapImage.hpp"
 
 using namespace std;
 using namespace boost;

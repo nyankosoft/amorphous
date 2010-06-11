@@ -14,8 +14,6 @@
 
 class CTextureFontTest : public CGraphicsTestBase
 {
-//	CInputHandlerSharedPtr m_pInputHandler;
-
 private:
 
 //	boost::shared_ptr<CTrueTypeTextureFont> m_pFont;
