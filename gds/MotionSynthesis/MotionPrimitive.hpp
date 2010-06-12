@@ -9,7 +9,6 @@
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
 #include "3DMath/Transform.hpp"
-#include "BVH/fwd.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
@@ -85,6 +84,8 @@ public:
 
 	inline void SetTransform( const Transform& pose, const std::vector<int>& locator );
 
+	inline CTransformNode *GetTransformNode( const std::vector<int>& locator );
+
 	inline virtual void Serialize( IArchive & ar, const unsigned int version );
 
 	friend class CMotionPrimitive;
@@ -132,6 +133,13 @@ inline void CKeyframe::SetTransform( const Transform& pose, const std::vector<in
 {
 	uint index = 0;
 	m_RootNode.SetTransform( pose, locator, index );
+}
+
+
+inline CTransformNode *CKeyframe::GetTransformNode( const std::vector<int>& locator )
+{
+	uint index = 0;
+	return m_RootNode.GetNode( locator, index );
 }
 
 
