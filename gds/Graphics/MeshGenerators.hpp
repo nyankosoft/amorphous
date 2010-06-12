@@ -117,7 +117,7 @@ class CConeMeshGenerator : public CMeshGenerator
 
 public:
 
-	CConeMeshGenerator( CConeDesc& desc )
+	CConeMeshGenerator( const CConeDesc& desc )
 		:
 	m_Desc(desc)
 	{}
@@ -132,7 +132,7 @@ class CSphereMeshGenerator : public CMeshGenerator
 
 public:
 
-	CSphereMeshGenerator( CSphereDesc& desc )
+	CSphereMeshGenerator( const CSphereDesc& desc )
 		:
 	m_Desc(desc)
 	{}
@@ -147,7 +147,7 @@ class CCapsuleMeshGenerator : public CMeshGenerator
 
 public:
 
-	CCapsuleMeshGenerator( CCapsuleDesc& desc )
+	CCapsuleMeshGenerator( const CCapsuleDesc& desc )
 		:
 	m_Desc(desc)
 	{}
