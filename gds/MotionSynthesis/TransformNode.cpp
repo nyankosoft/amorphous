@@ -82,3 +82,19 @@ void CTransformNode::SetTransform( const Transform& pose, const std::vector<int>
 		m_vecChildNode[child_index].SetTransform( pose, node_locator, index );
 	}
 }
+
+
+CTransformNode *CTransformNode::GetNode( const std::vector<int>& node_locator, uint& index )
+{
+	if( (uint)node_locator.size() == index )
+		return this;
+
+	int child_index = node_locator[index];
+	if( 0 <= child_index && child_index < (int)m_vecChildNode.size() )
+	{
+		index++;
+		return m_vecChildNode[child_index].GetNode( node_locator, index );
+	}
+	else
+		return NULL;
+}

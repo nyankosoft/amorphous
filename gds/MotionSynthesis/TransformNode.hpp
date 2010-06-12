@@ -70,9 +70,15 @@ public:
 
 	std::vector<CTransformNode>& Child() { return m_vecChildNode; }
 
+	Transform GetTransform() const { return Transform( m_Rotation, m_vTranslation ); }
+
+	void SetTransform( const Transform& transform ) { m_Rotation = transform.qRotation; m_vTranslation = transform.vTranslation; }
+
 	void GetTransform( Transform& pose, const std::vector<int>& node_locator, uint& index ) const;
 
 	void SetTransform( const Transform& pose, const std::vector<int>& node_locator, uint& index );
+
+	CTransformNode *GetNode( const std::vector<int>& node_locator, uint& index );
 
 	friend class CKeyframe;
 	friend class CMotionPrimitive;
