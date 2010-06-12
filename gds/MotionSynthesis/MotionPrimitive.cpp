@@ -1,6 +1,5 @@
 #include "MotionPrimitive.hpp"
 #include "BlendNode.hpp"
-#include "BVH/BVHBone.hpp"
 
 using namespace msynth;
 using namespace boost;

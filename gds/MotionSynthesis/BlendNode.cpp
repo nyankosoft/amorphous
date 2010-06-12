@@ -10,6 +10,13 @@ namespace msynth
 {
 
 
+CBlendNode::CBlendNode()
+:
+m_Priority(0)
+{
+}
+
+
 void CBlendNode::CreateFromSkeleton( const CBone& src_bone )
 {
 	m_Name = src_bone.GetName();

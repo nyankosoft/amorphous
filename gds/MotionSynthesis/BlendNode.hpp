@@ -40,6 +40,8 @@ class CBlendNode
 
 public:
 
+	CBlendNode();
+
 	void SetSelf( boost::weak_ptr<CBlendNode> pSelf ) { m_pSelf = pSelf; }
 
 	void CreateFromSkeleton( const CBone& src_bone );
