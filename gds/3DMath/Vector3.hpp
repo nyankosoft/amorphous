@@ -20,19 +20,24 @@
 
 inline Scalar Vec3GetAngleBetween( const Vector3& a, const Vector3& b )
 {
+	const Scalar margin = 0.000001f;
+
 	const float length_a = Vec3Length(a);
 	const float length_b = Vec3Length(b);
 
-	if( length_a == 0 || length_b == 0 )
+	if( fabs(length_a) < margin || fabs(length_b) < margin )
 		return 0;
 
-	const Scalar margin = 0.00001f;
 	Scalar dot = Vec3Dot( a, b );
 
-	if( dot < -1.0f + margin )     dot = -1.0f + margin;
-	else if( 1.0f - margin < dot ) dot =  1.0f - margin;
+	Scalar acos_arg = dot / ( length_a * length_b );
 
-	return acos( dot / ( length_a * length_b ) );
+//	if( acos_arg < -1.0f + margin )     acos_arg = -1.0f + margin;
+//	else if( 1.0f - margin < acos_arg ) acos_arg =  1.0f - margin;
+	if( acos_arg < -1.0f )     acos_arg = -1.0f;
+	else if( 1.0f < acos_arg ) acos_arg =  1.0f;
+
+	return acos( acos_arg );
 }
 
 
