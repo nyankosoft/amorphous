@@ -39,7 +39,9 @@ m_fPitch(0),
 m_MeshWorldPose( Matrix34Identity() ),
 m_fInitCamShift( 15.0f ),
 m_Lighting(true),
-m_CurrentShaderIndex(0)
+m_CurrentShaderIndex(0),
+m_Playing(false),
+m_fPlayTime(0)
 {
 	m_UseCameraController = false;
 
@@ -233,6 +235,7 @@ void CBVHViewer::RenderBVHSkeleton()
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 	shader_mgr.SetWorldTransform( world );
 
+	m_BVHPlayer.SetWorldTransformation( m_fPlayTime );
 	m_BVHPlayer.Render();
 }
 
@@ -260,6 +263,12 @@ void CBVHViewer::Update( float dt )
 	m_MeshWorldPose.matOrient
 		= Matrix33RotationX(m_fPitch)
 		* Matrix33RotationY(m_fHeading);
+
+	if( m_Playing )
+	{
+		m_fPlayTime += dt;
+		clamp( m_fPlayTime, 0.0f, m_BVHPlayer.GetTotalPlayTime() );
+	}
 }
 
 
@@ -395,6 +404,27 @@ void CBVHViewer::HandleInput( const SInputData& input )
 
 	switch( input.iGICode )
 	{
+	case GIC_SPACE:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_Playing = !m_Playing;
+		}
+		break;
+
+	case GIC_HOME:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_fPlayTime = 0;
+		}
+		break;
+
+	case GIC_END:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_fPlayTime = m_BVHPlayer.GetTotalPlayTime();
+		}
+		break;
+
 	case GIC_F6:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
@@ -417,6 +447,8 @@ void CBVHViewer::HandleInput( const SInputData& input )
 			m_CurrentFileIndex = (m_CurrentFileIndex + 1) % (int)m_Filepaths.size();
 
 			LoadModel( m_Filepaths[m_CurrentFileIndex] );
+			m_fPlayTime = 0.0f;
+			m_Playing = false;
 		}
 		break;
 
@@ -429,6 +461,8 @@ void CBVHViewer::HandleInput( const SInputData& input )
 			m_CurrentFileIndex = (m_CurrentFileIndex + (int)m_Filepaths.size() - 1) % (int)m_Filepaths.size();
 
 			LoadModel( m_Filepaths[m_CurrentFileIndex] );
+			m_fPlayTime = 0.0f;
+			m_Playing = false;
 		}
 		break;
 

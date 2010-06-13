@@ -59,6 +59,10 @@ class CBVHViewer : public CGraphicsApplicationBase
 
 	CBVHPlayer m_BVHPlayer;
 
+	bool m_Playing;
+
+	float m_fPlayTime;
+
 	const std::string GetApplicationTitle() { return "BVHViewer"; }
 
 protected:
