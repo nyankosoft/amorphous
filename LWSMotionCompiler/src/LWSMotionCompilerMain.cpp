@@ -5,6 +5,7 @@
 #include "gds/Support/lfs.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
+#include "gds/Support/MiscAux.hpp"
 
 
 using namespace std;
@@ -55,7 +56,8 @@ int main( int argc, char *argv[] )
 
 	// Open a file for logging
 	path dirpath = path(filepath).parent_path();
-	path html_log_filepath = dirpath / "log.html";
+	string log_filename = "log_" + string(GetBuildInfo()) + "-" + path(filepath).leaf() + ".html";
+	path html_log_filepath = dirpath / log_filename;
 	CLogOutput_HTML html_log( html_log_filepath.string() );
 	g_Log.AddLogOutput( &html_log );
 

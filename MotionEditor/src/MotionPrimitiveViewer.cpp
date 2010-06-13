@@ -158,12 +158,14 @@ void CSkeletalMeshMotionViewer::Init()
 	LoadSkeletalMesh( mesh_filepath );
 
 	CShaderResourceDesc shader_desc;
-	int use_embedded_shader = 0;//1;
+	int use_embedded_shader = 0;
 //	LoadParamFromFile<string>( "config", "UseEmbeddedShader", mesh_filepath );
 	if( use_embedded_shader )
 	{
 		CGenericShaderDesc desc;
 		desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
+		desc.ShaderLightingType = CShaderLightingType::PER_VERTEX;
+		desc.Specular = CSpecularSource::NONE;
 
 		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(desc) );
 	}
