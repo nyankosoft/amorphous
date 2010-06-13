@@ -122,6 +122,9 @@ inline void CKeyframe::SetInterpolatedKeyframe( float frac, const CKeyframe& key
 
 inline Transform CKeyframe::GetTransform( const std::vector<int>& locator ) const
 {
+	if( locator.empty() )
+		return m_RootNode.GetTransform();
+
 	Transform dest;
 	uint index = 0;
 	m_RootNode.GetTransform( dest, locator, index );
@@ -131,6 +134,12 @@ inline Transform CKeyframe::GetTransform( const std::vector<int>& locator ) cons
 
 inline void CKeyframe::SetTransform( const Transform& pose, const std::vector<int>& locator )
 {
+	if( locator.empty() )
+	{
+		m_RootNode.SetTransform( pose );
+		return;
+	}
+
 	uint index = 0;
 	m_RootNode.SetTransform( pose, locator, index );
 }
@@ -138,6 +147,9 @@ inline void CKeyframe::SetTransform( const Transform& pose, const std::vector<in
 
 inline CTransformNode *CKeyframe::GetTransformNode( const std::vector<int>& locator )
 {
+	if( locator.empty() )
+		return &m_RootNode;
+
 	uint index = 0;
 	return m_RootNode.GetNode( locator, index );
 }

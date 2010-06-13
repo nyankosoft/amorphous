@@ -39,6 +39,7 @@ public:
 	/// AverageMotionDirection or
 	/// LocalPositiveZDirection or
 	/// AlignLastKeyframe - put that last keyframe on the x=0 axis
+	/// AlignLastKeyframeBVH - put that last keyframe on the x=0 axis (for BVH motion data)
 	/// None
 	std::string m_NormalizeOrientation;
 
@@ -170,6 +171,31 @@ public:
 };
 
 
+class CJointModification
+{
+public:
+
+	std::string m_Name;
+
+	Matrix33 m_matPreRotation;
+	Matrix33 m_matPostRotation;
+
+	bool m_ApplyPreRotation;
+	bool m_ApplyPostRotation;
+
+public:
+
+	CJointModification()
+		:
+	m_matPreRotation(Matrix33Identity()),
+	m_matPostRotation(Matrix33Identity()),
+	m_ApplyPreRotation(false),
+	m_ApplyPostRotation(false)
+	{}
+};
+
+
+
 /**
  - input: xml files that contain motion primitive descs
  - output: motion database file
@@ -190,6 +216,8 @@ protected:
 	CHumanoidMotionTable m_MotionTable;
 
 	CMotionMapTarget m_MotionMapTarget;
+
+	std::vector<CJointModification> m_vecJointModification;
 
 	std::string m_SourceXMLFilename;
 
@@ -218,6 +246,10 @@ protected:
 
 	bool SetMotionMapTargets( CXMLNodeReader& mapping );
 
+	void ProcessGlobalModificationOptions( CXMLNodeReader& node );
+
+	void ApplyJointModification( const CJointModification& mod );
+
 	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc );
 
 	Result::Name MapMotionPrimitivesToAnotherSkeleton();
@@ -244,6 +276,7 @@ public:
 
 /// Used by derived classes
 extern void AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe );
+extern Matrix33 CalculateHorizontalOrientation( const Matrix34& pose );
 
 
 extern void RegisterMotionPrimitiveCompilerCreator( boost::shared_ptr<CMotionPrimitiveCompilerCreator> pCreator );

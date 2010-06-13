@@ -154,6 +154,21 @@ void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& p
 // CSkeleton
 //==================================================================
 
+bool CSkeleton::CreateLocator( const std::string& bone_name, std::vector<int>& locator )
+{
+	locator.resize( 0 );
+
+	if( m_RootBone.GetName() == bone_name )
+	{
+		// The root bone is the target
+		// - Return the empty locator, which points to the root bone.
+		return true;
+	};
+
+	return m_RootBone.CreateLocator( bone_name, locator );
+}
+
+
 void CSkeleton::DumpToTextFile( const std::string& output_filepath )
 {
 	FILE *fp = fopen( output_filepath.c_str(), "w" );

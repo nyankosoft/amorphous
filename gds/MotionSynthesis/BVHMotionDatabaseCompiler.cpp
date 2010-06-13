@@ -10,6 +10,24 @@ using namespace boost;
 using namespace msynth;
 
 
+static void AlignLastKeyframeBVH( std::vector<CKeyframe>& vecKeyframe )
+{
+	if( vecKeyframe.size() == 0 )
+		return;
+
+	CKeyframe& last_keyframe = vecKeyframe.back();
+
+	Matrix33 rotation_y = CalculateHorizontalOrientation( last_keyframe.GetRootPose() );
+
+	Matrix34 align_h( Vector3(0,0,0), rotation_y );
+
+	BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
+	{
+		keyframe.SetRootPose( align_h * keyframe.GetRootPose() );
+	}
+}
+
+
 bool CBVHMotionDatabaseCompiler::IsValidMotionFile( const std::string& src_filepath )
 {
 	CBVHPlayer bvh_player;
@@ -77,6 +95,8 @@ void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( const CMotionPrimitiveDe
 
 	if( desc.m_NormalizeOrientation == "AlignLastKeyframe" )
 		AlignLastKeyframe( vecKeyframe );
+	if( desc.m_NormalizeOrientation == "AlignLastKeyframeBVH" )
+		AlignLastKeyframeBVH( vecKeyframe );
 
 	if( 0.0001 < abs(1.0 - desc_group.m_fScalingFactor) )
 	{

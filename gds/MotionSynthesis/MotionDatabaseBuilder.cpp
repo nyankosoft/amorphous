@@ -67,6 +67,30 @@ shared_ptr<CMotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::st
 
 
 
+float CalculateHeading( const Matrix34& pose )
+{
+	Vector3 vRootPos = pose.vPosition;
+	vRootPos.y = 0;
+
+	Scalar heading = - Vec3GetAngleBetween( Vector3(0,0,1), vRootPos );
+
+	if( vRootPos.x < 0 )
+		heading *= -1.0f;
+
+	return heading;
+}
+
+
+Matrix33 msynth::CalculateHorizontalOrientation( const Matrix34& pose )
+{
+	const float heading = CalculateHeading( pose );
+
+	Matrix33 rotation_y = Matrix33RotationY( heading );
+
+	return rotation_y;
+}
+
+
 void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
 {
 	if( vecKeyframe.size() == 0 )
@@ -74,6 +98,10 @@ void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
 
 	CKeyframe& last_keyframe = vecKeyframe.back();
 
+	float heading = CalculateHeading( last_keyframe.GetRootPose() );
+
+	Matrix33 rotation_y = Matrix33RotationY( heading );
+/*
 	Vector3 vLastRootPos = last_keyframe.GetRootPose().vPosition;
 	vLastRootPos.y = 0;
 
@@ -83,7 +111,7 @@ void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
 		heading *= -1.0f;
 
 	Matrix33 rotation_y = Matrix33RotationY( heading );
-
+*/
 	BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
 	{
 		keyframe.SetRootPose(
@@ -113,7 +141,6 @@ void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
 		last_keyframe.SetRootPose( last_root_pose );
 	}
 }
-
 
 
 //==============================================================================
@@ -221,14 +248,27 @@ Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
 			itr != bone_maps.end();
 			itr++ )
 		{
+			const std::string& src_name  = itr->first;
+			const std::string& dest_name = itr->second;
+
 			vector<int> src_locator;
-			bool src_found = pSrcSkeleton->CreateLocator( itr->first, src_locator );
+			bool src_found = pSrcSkeleton->CreateLocator( src_name, src_locator );
 
 			vector<int> dest_locator;
 			bool dest_found = pDestSkeleton->CreateLocator( itr->second, dest_locator );
 
 			if( !src_found || !dest_found )
+			{
+				const string msg = fmt_string( " Cannot map from '%s' to '%s'.", src_name.c_str(), dest_name.c_str() );
+				if( !src_found && dest_found )
+					LOG_PRINT_WARNING( msg + fmt_string( " The src bone '%s' was not found.", src_name.c_str() ) );
+				else if( src_found && !dest_found )
+					LOG_PRINT_WARNING( msg + fmt_string( " The dest bone '%s' was not found.", dest_name.c_str() ) );
+				else
+					LOG_PRINT_WARNING( msg + fmt_string( " Neither src nor dest bone was found." ) );
+
 				continue;
+			}
 
 			CopyTransformNodesOfBone(
 				src_locator,
@@ -305,6 +345,42 @@ bool CMotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
 	mapping.GetChildElementTextContent( "DestSkeleton/MotionPrimitive", tgt.m_DestSkeletonMotion );
 
 	return true;
+}
+
+
+void CMotionDatabaseBuilder::ProcessGlobalModificationOptions( CXMLNodeReader& node )
+{
+	vector<CXMLNodeReader> children = node.GetImmediateChildren();
+	for( size_t i=0; i<children.size(); i++ )
+	{
+		const string element_name = children[i].GetName();
+
+		if( element_name == "Joint" )
+		{
+			CJointModification mod;
+			string joint_name = children[i].GetAttributeText("name");
+			if( joint_name.length() == 0 )
+				continue;
+
+			mod.m_Name = joint_name;
+			float b=0,h=0,p=0;
+			bool found_b=false, found_h=false, found_p=false;
+			found_b = children[i].GetChildElementTextContent( "Pre/Rotation/Bank",    b );
+			found_h = children[i].GetChildElementTextContent( "Pre/Rotation/Heading", h );
+			found_p = children[i].GetChildElementTextContent( "Pre/Rotation/Pitch",   p );
+			if( found_b || found_h || found_p )
+			{
+				mod.m_matPreRotation
+					= Matrix33RotationX(deg_to_rad(p))
+					* Matrix33RotationY(deg_to_rad(h))
+					* Matrix33RotationZ(deg_to_rad(b));
+
+				mod.m_ApplyPreRotation = true;
+			}
+
+			m_vecJointModification.push_back( mod );
+		}
+	}
 }
 
 
@@ -546,6 +622,10 @@ void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 		{
 			SetMotionMapTargets( file_nodes[i] );
 		}
+		else if( node_name == "GlobalModifications" )
+		{
+			ProcessGlobalModificationOptions( file_nodes[i] );
+		}
 	}
 }
 
@@ -568,6 +648,44 @@ void CMotionDatabaseBuilder::CreateMotionPrimitives()
 		pCompiler->m_pMotionTable        = &m_MotionTable;
 
 		pCompiler->CreateMotionPrimitives( desc_group );
+	}
+}
+
+
+void CMotionDatabaseBuilder::ApplyJointModification( const CJointModification& mod )
+{
+	const int num_motions = (int)m_vecMotionPrimitive.size();
+	for( int i=0; i<num_motions; i++ )
+	{
+		CMotionPrimitive& motion = m_vecMotionPrimitive[i];
+
+		shared_ptr<CSkeleton> pSkeleton = motion.GetSkeleton();
+		if( !pSkeleton )
+			continue;
+
+		vector<int> locator;
+		bool res = pSkeleton->CreateLocator( mod.m_Name, locator );
+
+		if( mod.m_ApplyPreRotation )
+		{
+			vector<CKeyframe>& keyframes = motion.GetKeyframeBuffer();
+			const int num_keyframes = (int)keyframes.size();
+			for( int kf=0; kf<num_keyframes; kf++ )
+			{
+				CKeyframe& keyframe = keyframes[kf];
+				CTransformNode *pNode = keyframe.GetTransformNode(locator);
+				if( !pNode )
+					break;
+
+				Transform transform = pNode->GetTransform();
+				Transform modified
+					= transform
+					* Transform(Quaternion(mod.m_matPreRotation),Vector3(0,0,0));
+
+				pNode->SetTransform( modified );
+			}
+		}
+
 	}
 }
 
@@ -604,6 +722,14 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 	if( m_MotionMapTarget.IsValid() )
 	{
 		Result::Name res = MapMotionPrimitivesToAnotherSkeleton();
+	}
+
+	if( !m_vecJointModification.empty() )
+	{
+		for( int i=0; i<(int)m_vecJointModification.size(); i++ )
+		{
+//			ApplyJointModification( m_vecJointModification[i] );
+		}
 	}
 
 	// restore the original working directory (pop)

@@ -101,7 +101,7 @@ public:
 
 	void Scale( float scaling_factor ) { m_RootBone.Scale_r( scaling_factor ); }
 
-	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator ) { return m_RootBone.CreateLocator( bone_name, locator ); }
+	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator );
 
 	void CreateEmptyTransformNodeTree( CTransformNode& root_transform_node ) { m_RootBone.CreateEmptyTransformNodeTree( root_transform_node ); }
 
