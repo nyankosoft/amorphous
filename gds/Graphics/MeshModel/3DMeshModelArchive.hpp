@@ -157,6 +157,8 @@ public:
 
 public:
 
+	CMMA_TriangleSet();
+
 	void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual unsigned int GetVersion() const { return 1; }

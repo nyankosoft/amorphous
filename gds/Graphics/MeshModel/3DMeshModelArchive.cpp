@@ -185,6 +185,16 @@ void CMMA_VertexSet::Serialize( IArchive& ar, const unsigned int version )
 // CMMA_TriangleSet
 //=========================================================================================
 
+CMMA_TriangleSet::CMMA_TriangleSet()
+:
+m_iStartIndex(0),
+m_iMinIndex(0),
+m_iNumVertexBlocksToCover(0),
+m_iNumTriangles(0),
+m_AABB( AABB3(Vector3(0,0,0),Vector3(0,0,0)) )
+{}
+
+
 void CMMA_TriangleSet::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_iStartIndex;
