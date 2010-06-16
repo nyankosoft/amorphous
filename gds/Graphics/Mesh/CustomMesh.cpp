@@ -9,13 +9,25 @@ using namespace std;
 U32 ToVFF( uint src )
 {
 	U32 dest = 0;
-	if( src & CMMA_VertexSet::VF_POSITION )     dest |= VFF::POSITION;
-	if( src & CMMA_VertexSet::VF_NORMAL )       dest |= VFF::NORMAL;
-	if( src & CMMA_VertexSet::VF_2D_TEXCOORD0 ) dest |= VFF::TEXCOORD2_0;
-	if( src & CMMA_VertexSet::VF_2D_TEXCOORD1 ) dest |= VFF::TEXCOORD2_1;
-	if( src & CMMA_VertexSet::VF_2D_TEXCOORD2 ) dest |= VFF::TEXCOORD2_2;
-	if( src & CMMA_VertexSet::VF_2D_TEXCOORD3 ) dest |= VFF::TEXCOORD2_3;
+	if( src & CMMA_VertexSet::VF_POSITION )      dest |= VFF::POSITION;
+	if( src & CMMA_VertexSet::VF_NORMAL )        dest |= VFF::NORMAL;
+	if( src & CMMA_VertexSet::VF_DIFFUSE_COLOR ) dest |= VFF::DIFFUSE_COLOR;
+	if( src & CMMA_VertexSet::VF_2D_TEXCOORD0 )  dest |= VFF::TEXCOORD2_0;
+	if( src & CMMA_VertexSet::VF_2D_TEXCOORD1 )  dest |= VFF::TEXCOORD2_1;
+	if( src & CMMA_VertexSet::VF_2D_TEXCOORD2 )  dest |= VFF::TEXCOORD2_2;
+	if( src & CMMA_VertexSet::VF_2D_TEXCOORD3 )  dest |= VFF::TEXCOORD2_3;
 	return dest;
+}
+
+
+CCustomMesh::CCustomMesh()
+:
+m_VertexFlags(0),
+m_VertexSize(0),
+m_NumUpdatedVertices(0),
+m_NumUpdatedIndices(0)
+{
+	memset( m_ElementOffsets, 0, sizeof(m_ElementOffsets) );
 }
 
 

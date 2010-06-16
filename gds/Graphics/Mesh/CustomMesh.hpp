@@ -36,15 +36,7 @@ public:
 
 public:
 
-	CCustomMesh()
-		:
-	m_VertexFlags(0),
-	m_VertexSize(0),
-	m_NumUpdatedVertices(0),
-	m_NumUpdatedIndices(0)
-	{
-		memset( m_ElementOffsets, 0, sizeof(m_ElementOffsets) );
-	}
+	CCustomMesh();
 
 	U32 GetVertexFormatFlags() const { return m_VertexFlags; }
 
