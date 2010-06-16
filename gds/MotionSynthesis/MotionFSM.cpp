@@ -21,11 +21,11 @@ Roles in stage
     e.g., If updating to the calculated world pose causes collision to other objects,
 	client code has to calculate the pose which stop the motion at the collision.
 2. Calculate the keyframe of a specified time
-  - Client code has to call this only when it needs positions of joints of skeletal object.
-    - e.g., Rendering
+  - Client code has to call this only when it needs positions of all the bones of skeletal object.
+    - e.g., Rendering of the character
   - If the client code needs all the positions of the character's body parts for accurate
     collision detection, keyframe needs to be calculated every frame
-    - e.g., testing collisions of between character's hands/foots and obstacles around it, 
+    - e.g., testing collisions between character's hands/foots and obstacles around it. 
 
 
 ----------------------------------------------------------
@@ -68,14 +68,14 @@ Or, make it simpler
 <complete_skeleton name=""/>
 <transitions>
 	<transition from="forward" to="crouch">
-		<trans time="0.2" node="crouch"></trans>
+		<trans time="0.2" goal="crouch"></trans>
 	</transition>
 	<transition from="forward" to="stand">
-		<trans time="0.2" node="stand"></trans>
+		<trans time="0.2" goal="stand"></trans>
 	</transition>
 	<transition from="forward" to="prone">
-		<trans time="0.2" node="crouch"></trans>
-		<trans time="0.2" node="prone"></trans>
+		<trans time="0.2" goal="crouch"></trans>
+		<trans time="0.2" goal="prone"></trans>
 	</transition>
 </transitions>
 
@@ -98,7 +98,7 @@ void LoadLatestVersionFromFile( obj, "xml_file_path", "binary_file_path" );
 
 
 ----------------------------------------------------------
-sour code to set up motion FSMs
+source code to set up motion FSMs
 ----------------------------------------------------------
 
 mpn  = ???;// Motion Primitive Node
@@ -110,7 +110,7 @@ mpn.AddTrans( "prone",  mt( 0.2f, "crouch" ) & mt( 0.2f, "prone" ) )
 Uses of IK
 ----------------------------------------------------------
 
-- Characer may aim different angles
+- Character may aim different angles
 - Angles shift continuously, so the system has to dynamically create motion primitives
   to shift from one aiming angle to another
 - Is IK really necessary in this situation?
@@ -134,7 +134,7 @@ Transitions and conditions
     - Not possible if the character is aiming.
 	- Force to "stand -> walk"?
 - Which module should be responsible for forcing requested transition to another transition
-  - ban run and aim or not -> game-specific settings
+  - Ban run and aim or not -> game-specific settings
   - Have a higher-level module check and regulate transition
   - e.g.) If running and aiming is banned, and character started running while aiming,
     - Transition from aiming to holding.
@@ -149,7 +149,7 @@ Motion primitive nodes and motion variations
   - aiming while standing
   - aiming while courching
   - aiming while prone
-- Should these aiming motions represented by a single motion primitive node or different nodes?
+- Should these aiming motions be represented by a single motion primitive node or different nodes?
   - At least, aiming while standing/crouching and aiming while proning should be separate nodes.
 
 
@@ -157,8 +157,8 @@ Motion primitive nodes and motion variations
 Blending
 ----------------------------------------------------------
 - Weight
-  - When synthesizing motions for 'walking while aiming' upper body motion
-    should completely overwrite walk motions.
+  - When synthesizing motions for 'walking while aiming', the aiming motion
+    should completely overwrite poses upper body parts.
     - Can skip the calculation of upper body nodes of walk motions
   - e.g.) When a character is aiming while walking, upper body motions
     of base walk motions are replaced with aiming pose
@@ -171,9 +171,10 @@ Blending
 - How the actual blending is done
   - preconditions: each keyframe has priority
     - keyframe with a higher priority are set first
-  - 1) Create an empty keyframe with transform nodes that have same hierarchical structure with complete skeleton.
-  - 2) Set keyframe with ...
-  - inomplete motion primitive should store its entry point in order to avoid searching it every frame.
+  1) Create an empty keyframe with transform nodes that have the same hierarchical structure
+     with a complete skeleton.
+  2) Set keyframe with ...
+  - Incomplete motion primitive should store its entry point in order to avoid searching it every frame.
 
 
 ----------------------------------------------------------
@@ -214,8 +215,7 @@ option 1: represent state transition request as an array of states
     and start the state transition to ['forward']
 
 Support different interpolation times between different motion primitives
-
-text data file that describes transition rules
+Support text/XML file that describes transition rules
 
 */
 
@@ -807,6 +807,10 @@ void CMotionGraphManager::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_CompleteSkeletonSourceMotionName;
 
 	ar & m_MotionDatabaseFilepath;
+
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+		m_pBlendNodeRoot.reset(); // Remove the previous tree
+
 }
 
 
