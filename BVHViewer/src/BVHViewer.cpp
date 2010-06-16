@@ -43,7 +43,7 @@ m_CurrentShaderIndex(0),
 m_Playing(false),
 m_fPlayTime(0)
 {
-	m_UseCameraController = false;
+	m_UseCameraController = true;
 
 	Camera().SetPose( Matrix34( Vector3( 0.0f, 0.0f, -m_fInitCamShift ), Matrix33Identity() ) );
 
