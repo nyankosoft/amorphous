@@ -11,6 +11,8 @@ public:
 
 	void RenderMesh( CCustomMesh& mesh );
 
+	void RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr );
+
 	static CGLCustomMeshRenderer ms_Instance;
 };
 

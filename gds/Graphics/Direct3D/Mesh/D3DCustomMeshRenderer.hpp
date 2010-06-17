@@ -7,9 +7,13 @@
 
 class CD3DCustomMeshRenderer : public CCustomMeshRenderer
 {
+	void DrawPrimitives( CCustomMesh& mesh );
+
 public:
 
 	void RenderMesh( CCustomMesh& mesh );
+
+	void RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr );
 
 	static CD3DCustomMeshRenderer ms_Instance;
 };

@@ -135,3 +135,9 @@ void CCustomMesh::Render()
 {
 	GetCustomMeshRenderer().RenderMesh( *this );
 }
+
+
+void CCustomMesh::Render( CShaderManager& rShaderMgr )
+{
+	GetCustomMeshRenderer().RenderMesh( *this, rShaderMgr );
+}

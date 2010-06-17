@@ -110,7 +110,7 @@ public:
 
 	void Render();
 
-	void Render( CShaderManager& rShaderMgr ) {}
+	void Render( CShaderManager& rShaderMgr );
 
 	void RenderSubset( CShaderManager& rShaderMgr, int material_index ) {}
 };

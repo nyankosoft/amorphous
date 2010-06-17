@@ -1,5 +1,6 @@
 #include "GLCustomMeshRenderer.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 using namespace std;
@@ -101,4 +102,10 @@ void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 	if( vert_flags & VFF::NORMAL )
 		glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+
+void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
 }

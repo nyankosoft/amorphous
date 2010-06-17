@@ -3,6 +3,7 @@
 
 
 class CCustomMesh;
+class CShaderManager;
 
 
 class CCustomMeshRenderer
@@ -12,6 +13,8 @@ public:
 	virtual ~CCustomMeshRenderer() {}
 
 	virtual void RenderMesh( CCustomMesh& mesh ) = 0;
+
+	virtual void RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr ) = 0;
 
 	static CCustomMeshRenderer *ms_pInstance;
 

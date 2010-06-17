@@ -1,5 +1,6 @@
 #include "D3DCustomMeshRenderer.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
@@ -9,7 +10,7 @@ using namespace std;
 CD3DCustomMeshRenderer CD3DCustomMeshRenderer::ms_Instance;
 
 
-void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
+void CD3DCustomMeshRenderer::DrawPrimitives( CCustomMesh& mesh )
 {
 	const U32 vert_flags = mesh.GetVertexFormatFlags();
 	DWORD fvf = 0;
@@ -24,14 +25,31 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 	if( fvf == 0 )
 		return;
 
+	const uint num_verts = mesh.GetNumVertices();
+	const uint num_indices = mesh.GetNumIndices();
+
 	void *pV = (void *)mesh.GetVertexBufferPtr();
 	void *pI = (void *)mesh.GetIndexBufferPtr();
 	if( !pV || !pI )
 		return;
 
-	const uint num_verts = mesh.GetNumVertices();
-	const uint num_indices = mesh.GetNumIndices();
+	HRESULT hr = S_OK;
+	hr = DIRECT3D9.GetDevice()->SetFVF( fvf );
+	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
+		D3DPT_TRIANGLELIST,
+		0,
+		num_verts,
+		num_indices / 3,
+		pI,
+		D3DFMT_INDEX16,
+		pV,
+		mesh.GetVertexSize()
+		);
+}
 
+
+void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
+{
 	vector<Vector3> positions;
 	mesh.GetPositions( positions );
 
@@ -88,15 +106,22 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 	HRESULT hr = S_OK;
 	hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
 	hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
-	hr = DIRECT3D9.GetDevice()->SetFVF( fvf );
-	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
-		D3DPT_TRIANGLELIST,
-		0,
-		num_verts,
-		num_indices / 3,
-		pI,
-		D3DFMT_INDEX16,
-		pV,
-		mesh.GetVertexSize()
-		);
+
+	DrawPrimitives( mesh );
+}
+
+
+void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr )
+{
+	const int num_mats = mesh.GetNumMaterials();
+	for( int i=0; i<num_mats; i++ )
+	{
+		const int num_textures = mesh.GetNumTextures(i);
+		for( int j=0; j<num_textures; j++ )
+		{
+			shader_mgr.SetTexture( j, mesh.GetTexture(i,j) );
+		}
+	}
+
+	DrawPrimitives( mesh );
 }
