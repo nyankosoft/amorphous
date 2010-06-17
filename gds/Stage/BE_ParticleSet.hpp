@@ -3,15 +3,42 @@
 
 
 #include <boost/thread/thread.hpp>
-
 #include "BaseEntity.hpp"
-#include "BEC_Billboard.hpp"
 #include "Stage.hpp"
-
-#include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/FloatRGBColor.hpp"
+#include "Graphics/Mesh/CustomMesh.hpp"
 #include "Support/FloatLookUpTable.hpp"
 #include "Support/SafeDelete.hpp"
+
+
+// particle implementations
+//
+//                HW vertex buffer     No HW vertex buffer 
+// --------------------------------------------------------------
+//   shared       
+//   non-shared   
+// 
+// shared:
+// - All the particle sets share the same storage of vertices
+// non-shared:
+// - Each particle set has its own storage of vertices
+
+// Candidates of mesh classes for particle set
+//
+// CCustomMesh
+// CRectSetMesh
+// CBasicMesh
+//
+// Differences between mesh classes
+// - Need / do not need mesh handles
+// - Need / do not need to lock the vertex buffer
+//
+// Features needed in all mesh types
+// - Specify the number of primitives to render
+
+
+
+
 
 
 // comment out the next line to draw particles without using vertex buffer and index buffer
@@ -78,6 +105,28 @@ struct SBE_ParticleSetExtraData
 
 	~SBE_ParticleSetExtraData()
 	{
+		Release();
+	}
+
+	void Init( int flag, int num_particles )
+	{
+		Release();
+
+		iNumParticles = 0;
+		aabb.Nullify();
+
+		if( flag & ParticleSetFlag::POSITION )      pavPosition      = new Vector3 [num_particles];
+		if( flag & ParticleSetFlag::VELOCITY )      pavVelocity      = new Vector3 [num_particles];
+		if( flag & ParticleSetFlag::ORIG_DIR )      pavOrigDirection = new Vector3 [num_particles];
+		if( flag & ParticleSetFlag::ANIM_TIME )     pafAnimationTime = new float   [num_particles];
+		if( flag & ParticleSetFlag::ANIM_DURATION ) pafAnimDuration  = new float   [num_particles];
+		if( flag & ParticleSetFlag::PATTERN )       pasPattern       = new short   [num_particles];
+		if( flag & ParticleSetFlag::FADE_VEL )      pafFadeVel       = new float   [num_particles];
+//		if( flag & ParticleSetFlag::LOCAL_POSITION )pavLocalPosition = new Vector3 [num_particles];
+	}
+
+	void Release()
+	{
 		SafeDeleteArray( pavPosition );
 		SafeDeleteArray( pavVelocity );
 		SafeDeleteArray( pavOrigDirection );
@@ -85,22 +134,8 @@ struct SBE_ParticleSetExtraData
 		SafeDeleteArray( pafAnimDuration );
 		SafeDeleteArray( pasPattern );
 		SafeDeleteArray( pafFadeVel );
+//		SafeDeleteArray( pavLocalPosition );
 	}
-
-	void Init( int flag, int num_particles )
-	{
-		iNumParticles = 0;
-		aabb.Nullify();
-
-		if( flag & ParticleSetFlag::POSITION )      pavPosition = new Vector3 [num_particles];
-		if( flag & ParticleSetFlag::VELOCITY )      pavVelocity = new Vector3 [num_particles];
-		if( flag & ParticleSetFlag::ORIG_DIR )      pavOrigDirection = new Vector3 [num_particles];
-		if( flag & ParticleSetFlag::ANIM_TIME )     pafAnimationTime = new float [num_particles];
-		if( flag & ParticleSetFlag::ANIM_DURATION ) pafAnimDuration = new float [num_particles];
-		if( flag & ParticleSetFlag::PATTERN )       pasPattern = new short [num_particles];
-		if( flag & ParticleSetFlag::FADE_VEL )      pafFadeVel = new float [num_particles];
-	}
-
 //		iNumParticles = 0;
 //		aabb.Nullify();
 //		int i;
@@ -124,7 +159,7 @@ struct SBE_ParticleSetExtraData
 class CParticleThreadStarter;
 
 
-class CBE_ParticleSet : public CBaseEntity, public CBEC_Billboard
+class CBE_ParticleSet : public CBaseEntity
 {
 public:
 
@@ -193,18 +228,27 @@ protected:
 
 	SFloatRGBColor m_VertexColor;
 
+	CCustomMesh m_ParticleSetMesh;
+
+	std::string m_BillboardTextureFilepath;
+
+	CMeshObjectHandle m_ParticleDebugBox;
+
 protected:
 
 	void InitBillboardRects();
 
 	void InitParticles();
 
-//	HRESULT InitVertexBufferAndIndexBuffer();
-
+	void InitParticleSetMesh();
 
 	inline void UpdateParticles( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
 
 	inline void UpdateParticlePositions( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
+
+	void UpdateVertices( CCopyEntity* pCopyEnt );
+
+	void UpdateMesh( CCopyEntity* pCopyEnt );
 
 	inline int GetNewExtraDataID();
 

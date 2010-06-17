@@ -26,12 +26,22 @@ void CBE_Cloud::Init()
 //	const U32 color = 0xFFFFFFFF;
 	const U32 argb_color = 0xA0FFFFFF;
 	int i;
-	for(i=0; i<m_MaxNumParticlesPerSet; i++)
+	const int color_offset = m_ParticleSetMesh.GetVertexElementOffset( VEE::DIFFUSE_COLOR );
+	uchar *pVertexBuffer = m_ParticleSetMesh.GetVertexBufferPtr();
+	const uint vert_size = m_ParticleSetMesh.GetVertexSize();
+	if( 0 <= color_offset )
 	{
-		m_avBillboardRect[i*4+0].color = argb_color;
-		m_avBillboardRect[i*4+1].color = argb_color;
-		m_avBillboardRect[i*4+2].color = argb_color;
-		m_avBillboardRect[i*4+3].color = argb_color;
+		if( true )//m_ParticleSetMesh.GetDiffuseColorType() == ARGB32 )
+		{
+			for(i=0; i<m_MaxNumParticlesPerSet; i++)
+			{
+				uchar *pColorElement = pVertexBuffer + vert_size * i * 4 + color_offset;
+				memcpy( pColorElement,                 &argb_color, sizeof(U32) );
+				memcpy( pColorElement + vert_size * 1, &argb_color, sizeof(U32) );
+				memcpy( pColorElement + vert_size * 2, &argb_color, sizeof(U32) );
+				memcpy( pColorElement + vert_size * 3, &argb_color, sizeof(U32) );
+			}
+		}
 	}
 }
 
@@ -82,9 +92,6 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 //	short sPatternOffset;
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
-	//D3DXMATRIX matWorld;
-	//m_pStage->GetBillboardRotationMatrix( matWorld );
-	//matWorld._44 = 1;
 
 	Matrix34 billboard_pose( Matrix34Identity() );
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
@@ -99,27 +106,35 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 
 	// set transformed particle data to dest buffer 'm_avDestParticle'
 	int vert_offset;
-	TEXTUREVERTEX *pParticleVertex = m_avBillboardRect;
+//	TEXTUREVERTEX *pParticleVertex = m_avBillboardRect;
+	CCustomMesh& mesh = m_ParticleSetMesh;
+	uchar *pParticleVertex = mesh.GetVertexBufferPtr();// = m_avBillboardRect_S;
+	const int pos_offset = mesh.GetVertexElementOffset( VEE::POSITION );
+	const uint vert_size = mesh.GetVertexSize();
+	Vector3 avWorldPos[4];
+	int j = 0;
 	for(i=0; i<num_particles; i++)
 	{
 		vert_offset = i * 4;
 
 		// calc the world position of the particle
 
-		Vector3& rvPos   = rParticleSet.pavPosition[i];	// center position of the billboard in world space
+		const Vector3& rvPos   = rParticleSet.pavPosition[i];	// center position of the billboard in world space
 
-		matWorld(0,3) = rvPos.x;
-		matWorld(1,3) = rvPos.y;
-		matWorld(2,3) = rvPos.z;
+		billboard_pose.vPosition = rvPos;
 
-		pParticleVertex[vert_offset+0].vPosition = matWorld * avBasePos[0];
-		pParticleVertex[vert_offset+1].vPosition = matWorld * avBasePos[1];
-		pParticleVertex[vert_offset+2].vPosition = matWorld * avBasePos[2];
-		pParticleVertex[vert_offset+3].vPosition = matWorld * avBasePos[3];
+		for(j=0; j<4; j++)
+			avWorldPos[j] = billboard_pose * avBasePos[j];
+
+		uchar *pPosElement = pParticleVertex + vert_size * i * 4 + pos_offset;
+		memcpy( pPosElement,                 &avWorldPos[0], sizeof(Vector3) );
+		memcpy( pPosElement + vert_size * 1, &avWorldPos[1], sizeof(Vector3) );
+		memcpy( pPosElement + vert_size * 2, &avWorldPos[2], sizeof(Vector3) );
+		memcpy( pPosElement + vert_size * 3, &avWorldPos[3], sizeof(Vector3) );
 
 		// calc color and alpha value of the particle
-//		DWORD dwColor = 0x00FFFFFF | ( ((int)((1.0f - fFraction) * 255.0f)) << 24 );
-/*		DWORD dwColor = 0xFFFFFFFF;
+//		U32 dwColor = 0x00FFFFFF | ( ((int)((1.0f - fFraction) * 255.0f)) << 24 );
+/*		U32 dwColor = 0xFFFFFFFF;
 
 		pParticleVertex[vert_offset+0].color = dwColor;
 		pParticleVertex[vert_offset+1].color = dwColor;
@@ -138,7 +153,8 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 	sprintf( acStr, "texture: %d", m_BillboardTexture.GetTexture() );
     MessageBox( NULL, acStr, "check", MB_OK|MB_ICONWARNING );*/
 
-	DrawBillboards( num_particles, 0, 0, m_pStage );
+//	DrawBillboards( num_particles, 0, 0, m_pStage );
+	m_ParticleSetMesh.Render();
 }
 
 

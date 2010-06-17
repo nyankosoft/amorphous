@@ -66,6 +66,7 @@ void CBE_SmokeTrace::InitCopyEntity(CCopyEntity* pCopyEnt)
 
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+//	SBE_ParticleSetExtraData& rParticleSet = pParticleSetEntity->m_ParticleSet;
 
 	rParticleSet.iNumParticles = 0;
 
@@ -83,8 +84,10 @@ void CBE_SmokeTrace::InitCopyEntity(CCopyEntity* pCopyEnt)
 	rvLastUpdatePos = rvEmitterPrevPos;
 
 	if( m_SmokeType == ST_PARTICLES_PER_DISTANCE )
+//		MakeDistanceBasedTrailParticles();
         MakeSmokeTrace(pCopyEnt);
 	else // i.e. m_SmokeType == ST_PARTICLES_PER_TIME
+//		MakeTimeBasedTrailParticles();
 		MakeSmoke(pCopyEnt);
 }
 
@@ -116,11 +119,13 @@ void CBE_SmokeTrace::Act( CCopyEntity* pCopyEnt )
 
 //	ProfileEnd( "trail particle (r)" );
 
-	if( m_Type == CBEC_Billboard::TYPE_BILLBOARDARRAYMESH )
+/*	if( m_Type == CBEC_Billboard::TYPE_BILLBOARDARRAYMESH )
 	{
 		// each copy entity (i.e. particle group) has its own paticles vertices
 		UpdateVertexBuffer( pCopyEnt );
-	}
+	}*/
+
+	UpdateVertices( pCopyEnt );
 }
 
 
@@ -299,6 +304,7 @@ void CBE_SmokeTrace::MakeSmoke( CCopyEntity* pCopyEnt )
 
 	// get the external particle object for 'pCopyEnt'
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+//	SBE_ParticleSetExtraData& rParticleSet = pParticleSetEntity->m_ParticleSet;
 
 	int iNumCurrentParticles = rParticleSet.iNumParticles;
 

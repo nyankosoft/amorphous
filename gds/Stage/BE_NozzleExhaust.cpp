@@ -152,8 +152,10 @@ void CBE_NozzleExhaust::Act( CCopyEntity* pCopyEnt )
 		UpdateNozzleExhaust( pCopyEnt, rParticleSet, dt );
 	}
 
-	if( m_Type == CBEC_Billboard::TYPE_BILLBOARDARRAYMESH )
-		UpdateVertexBuffer( pCopyEnt );
+//	if( m_Type == CBEC_Billboard::TYPE_BILLBOARDARRAYMESH )
+//		UpdateVertexBuffer( pCopyEnt );
+
+	UpdateVertices( pCopyEnt );
 }
 
 

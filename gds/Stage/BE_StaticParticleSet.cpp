@@ -232,7 +232,7 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 
 
 	// don't wirte to z-buffer so that smoke should be painted on one another
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
 	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
@@ -245,7 +245,13 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 //		D3DXMatrixIdentity( &matWorld );
 //		pShaderManager->SetWorldTransform( matWorld );
 		pShaderManager->SetWorldTransform( Matrix44Identity() );
-		pShaderManager->SetTexture( 0, m_BillboardTexture.GetTexture() );
+
+//		pShaderManager->SetTexture( 0, m_BillboardTexture.GetTexture() );
+		if( 0 < m_ParticleSetMesh.GetNumMaterials()
+		 && 0 < m_ParticleSetMesh.GetMaterial(0).Texture.size() )
+		{
+			pShaderManager->SetTexture( 0, m_ParticleSetMesh.GetMaterial(0).Texture[0] );
+		}
 
 		if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PseudoNightVision )
 		{
@@ -302,7 +308,7 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 		pEffect->End();
 	}
 
-	pd3dDev->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
 
 
