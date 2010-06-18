@@ -226,6 +226,8 @@ protected:
 
 	bool m_bWorldOffset;
 
+	bool m_bLocalPositionsForVertexElement;
+
 	SFloatRGBColor m_VertexColor;
 
 	CCustomMesh m_ParticleSetMesh;
@@ -245,6 +247,8 @@ protected:
 	inline void UpdateParticles( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
 
 	inline void UpdateParticlePositions( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
+
+	void UpdateVerticesFFP( CCopyEntity* pCopyEnt );
 
 	void UpdateVertices( CCopyEntity* pCopyEnt );
 
