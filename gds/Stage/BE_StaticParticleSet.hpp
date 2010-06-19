@@ -7,10 +7,6 @@
 #include "Support/FixedVector.hpp"
 
 
-#include <vector>
-#include <string>
-
-
 class CBE_StaticParticleSet : public CBE_ParticleSet
 {
 private:
@@ -24,7 +20,7 @@ private:
 //	std::vector<LPDIRECT3DVERTEXBUFFER9> m_vecpVB;
 	TCFixedVector<LPDIRECT3DVERTEXBUFFER9,NUM_MAX_VERTEXBUFFERS> m_vecpVB;
 
-	LPDIRECT3DVERTEXBUFFER9 m_pVB; // Buffer to hold vertices
+//	LPDIRECT3DVERTEXBUFFER9 m_pVB; // Buffer to hold vertices
 	LPDIRECT3DINDEXBUFFER9  m_pIB;
 
 	CTextureHandle m_BillboardTex;

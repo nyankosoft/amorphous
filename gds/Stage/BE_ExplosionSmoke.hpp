@@ -3,10 +3,6 @@
 
 #include "BE_ParticleSet.hpp"
 
-#define TYPE_SMOKE_NORMAL		1
-#define TYPE_SMOKE_DIRECTIONAL	2
-#define TYPE_SMOKE_SHOOTING		3
-
 
 class CBE_ExplosionSmoke : public CBE_ParticleSet
 {

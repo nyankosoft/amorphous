@@ -2,7 +2,7 @@
 
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
-#include "trace.hpp"
+//#include "trace.hpp"
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
@@ -30,8 +30,8 @@ inline static float& NumParticles(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; 
 
 CBE_StaticParticleSet::CBE_StaticParticleSet()
 :
-m_pIB(NULL),
-m_pVB(NULL)
+m_pIB(NULL)
+//m_pVB(NULL)
 {
 
 	m_pParticleVertexDeclaration = NULL;
@@ -46,7 +46,7 @@ CBE_StaticParticleSet::~CBE_StaticParticleSet()
         SAFE_RELEASE(m_vecpVB[i]);
 	m_vecpVB.resize(0);
 
-	SAFE_RELEASE( m_pVB );
+//	SAFE_RELEASE( m_pVB );
 
 	SAFE_RELEASE( m_pIB );
 

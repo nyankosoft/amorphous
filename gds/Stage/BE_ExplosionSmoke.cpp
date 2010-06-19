@@ -1,6 +1,5 @@
 #include "BE_ExplosionSmoke.hpp"
 #include "CopyEntity.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
 #include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"

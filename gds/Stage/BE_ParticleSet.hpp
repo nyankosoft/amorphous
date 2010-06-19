@@ -4,7 +4,7 @@
 
 #include <boost/thread/thread.hpp>
 #include "BaseEntity.hpp"
-#include "Stage.hpp"
+#include "Stage.hpp" // CStage::GetGravityAccel()
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Support/FloatLookUpTable.hpp"

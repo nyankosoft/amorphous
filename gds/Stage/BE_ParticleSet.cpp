@@ -1,8 +1,7 @@
 #include "BE_ParticleSet.hpp"
 #include "GameMessage.hpp"
-#include "CopyEntity.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
+//#include "trace.hpp"
 //#include "ScreenEffectManager.hpp"
 #include "EntityRenderManager.hpp"
 
@@ -221,7 +220,12 @@ void CBE_ParticleSet::Init()
 			m_ParticleThreadGroup.add_thread( new boost::thread(CParticleThreadStarter(this)) );
 	}
 
-//	bool loaded = m_MeshProperty.m_ShaderHandle.Load( "Shader/Particle.fx" );
+/*	string shader_path( "Shader/Particle.fx" );
+	bool shared_loaded = false;
+	if( lfs::path_exists( shader_path ) )
+	{
+		shared_loaded = m_MeshProperty.m_ShaderHandle.Load( shader_path );
+	}*/
 
 	CMeshResourceDesc mesh_desc;
 	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
