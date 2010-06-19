@@ -75,6 +75,8 @@ CBE_ParticleSet::CBE_ParticleSet()
 
 //	m_iNumParticles				= 8;
 	m_fDuration					= 1.0f;
+	m_fAnimTimeOffsetMin        = 0.0f;
+	m_fAnimTimeOffsetMax        = 0.0f;
 	m_fRandomVelocity_XZ		= 0.0f;
 	m_fRandomVelocity_Y			= 0.0f;
 	m_fExpansionFactor			= 1.0f;
@@ -455,6 +457,28 @@ void CBE_ParticleSet::Draw(CCopyEntity* pCopyEnt)
 }
 
 
+static void SetRectDiffuseColorAndAlpha_FRGBA( uchar *pDiffuseColorElement, int vert_size, const float *rgba )
+{
+	memcpy( pDiffuseColorElement,                 rgba, sizeof(float) * 4 );
+	memcpy( pDiffuseColorElement + vert_size * 1, rgba, sizeof(float) * 4 );
+	memcpy( pDiffuseColorElement + vert_size * 2, rgba, sizeof(float) * 4 );
+	memcpy( pDiffuseColorElement + vert_size * 3, rgba, sizeof(float) * 4 );
+}
+
+static void SetRectDiffuseColorAndAlpha_ARGB32( uchar *pDiffuseColorElement, int vert_size, const float *rgba )
+{
+	U32 color
+		= ((int)(rgba[3] * 255.0f)) << 24
+		| ((int)(rgba[0] * 255.0f)) << 16
+		| ((int)(rgba[1] * 255.0f)) << 8
+		| ((int)(rgba[2] * 255.0f));
+	memcpy( pDiffuseColorElement,                 &color, sizeof(U32) );
+	memcpy( pDiffuseColorElement + vert_size * 1, &color, sizeof(U32) );
+	memcpy( pDiffuseColorElement + vert_size * 2, &color, sizeof(U32) );
+	memcpy( pDiffuseColorElement + vert_size * 3, &color, sizeof(U32) );
+}
+
+
 static void SetRectDiffuseColor_FRGBA( uchar *pDiffuseColorElement, int vert_size, const float *rgb )
 {
 	memcpy( pDiffuseColorElement,                 rgb, sizeof(float) * 3 );
@@ -474,6 +498,7 @@ static void SetRectDiffuseColor_ARGB32( uchar *pDiffuseColorElement, int vert_si
 	memcpy( pDiffuseColorElement + vert_size * 2, &color, sizeof(U8) * 3 );
 	memcpy( pDiffuseColorElement + vert_size * 3, &color, sizeof(U8) * 3 );
 }
+
 
 /*
 static void SetRectDiffuseAlpha_FRGBA( uchar *pVertElement, int vert_size, float fAlpha )
@@ -710,9 +735,9 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 
 //	if( mesh.GetDiffuseColorElementSize() == sizeof(U32) )
 	if( true )
-		SetRectDiffuseColor = SetRectDiffuseColor_ARGB32; // mainly used by Direct3D
+		SetRectDiffuseColor = SetRectDiffuseColorAndAlpha_ARGB32; // mainly used by Direct3D
 	else
-		SetRectDiffuseColor = SetRectDiffuseColor_FRGBA;  // mainly used by OpenGL
+		SetRectDiffuseColor = SetRectDiffuseColorAndAlpha_FRGBA;  // mainly used by OpenGL
 
 //	ProfileBegin( "CBE_ParticleSet::UpdateVB() - lock VB" );
 
@@ -726,8 +751,10 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 //	int 2vert_size = vert_size * 2;
 //	int 3vert_size = vert_size * 3;
 
-	float rgb[3] = {0,0,0};
-	const float zero_rgb[3] = {0,0,0};
+//	float rgb[3] = {0,0,0};
+//	const float zero_rgb[3] = {0,0,0};
+	float rgba[4] = {0,0,0,0};
+	const float zero_rgba[4] = {0,0,0,0};
 
 	// for visual debugging
 //	shared_ptr<CBasicMesh> pBoxMesh = m_ParticleDebugBox.GetMesh();
@@ -748,7 +775,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 
 		if( fCurrentTime < 0 || fTotalAnimationTime <= fCurrentTime )
 		{
-			(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, zero_rgb );
+			(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, zero_rgba );
 			continue;
 		}
 	
@@ -780,10 +807,11 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 		float fAlpha = 1.0f - fFraction;
 //		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
 
-		rgb[0] = vert_color.fRed   * fAlpha;
-		rgb[1] = vert_color.fGreen * fAlpha;
-		rgb[2] = vert_color.fBlue  * fAlpha;
-		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgb );
+		rgba[0] = vert_color.fRed   * fAlpha;
+		rgba[1] = vert_color.fGreen * fAlpha;
+		rgba[2] = vert_color.fBlue  * fAlpha;
+		rgba[3] = fAlpha;
+		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgba );
 	}
 
 /*	if( m_bWorldOffset )

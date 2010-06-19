@@ -23,6 +23,8 @@ void CBE_ExplosionSmoke::InitCopyEntity( CCopyEntity* pCopyEnt )
 	float& rfCurrentTime = pCopyEnt->f2;
 	rfCurrentTime = 0.0f;
 
+	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
+
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 

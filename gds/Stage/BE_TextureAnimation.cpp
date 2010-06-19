@@ -242,6 +242,9 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 //		pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
 //	}
 
+	// Diable alpha test to render the rect with a premultiplied alpha texture
+	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
+
 	// disable z-writing
 	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
