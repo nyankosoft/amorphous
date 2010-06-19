@@ -451,6 +451,27 @@ void CBE_ParticleSet::Draw(CCopyEntity* pCopyEnt)
 }
 
 
+static void SetRectDiffuseColor_FRGBA( uchar *pDiffuseColorElement, int vert_size, const float *rgb )
+{
+	memcpy( pDiffuseColorElement,                 rgb, sizeof(float) * 3 );
+	memcpy( pDiffuseColorElement + vert_size * 1, rgb, sizeof(float) * 3 );
+	memcpy( pDiffuseColorElement + vert_size * 2, rgb, sizeof(float) * 3 );
+	memcpy( pDiffuseColorElement + vert_size * 3, rgb, sizeof(float) * 3 );
+}
+
+static void SetRectDiffuseColor_ARGB32( uchar *pDiffuseColorElement, int vert_size, const float *rgb )
+{
+	U32 color
+		= ((int)(rgb[0] * 255.0f)) << 16
+		| ((int)(rgb[1] * 255.0f)) << 8
+		| ((int)(rgb[2] * 255.0f));
+	memcpy( pDiffuseColorElement,                 &color, sizeof(U8) * 3 );
+	memcpy( pDiffuseColorElement + vert_size * 1, &color, sizeof(U8) * 3 );
+	memcpy( pDiffuseColorElement + vert_size * 2, &color, sizeof(U8) * 3 );
+	memcpy( pDiffuseColorElement + vert_size * 3, &color, sizeof(U8) * 3 );
+}
+
+/*
 static void SetRectDiffuseAlpha_FRGBA( uchar *pVertElement, int vert_size, float fAlpha )
 {
 	uchar *pAlphaOffset = pVertElement + sizeof(float) * 3;
@@ -459,10 +480,11 @@ static void SetRectDiffuseAlpha_FRGBA( uchar *pVertElement, int vert_size, float
 	memcpy( pAlphaOffset + vert_size * 2, &fAlpha, sizeof(float) );
 	memcpy( pAlphaOffset + vert_size * 3, &fAlpha, sizeof(float) );
 }
-
+*/
 
 static U32 sg_VertColor = 0xFFFFFFFF;
 
+/*
 static void SetRectDiffuseAlpha_ARGB32( uchar *pVertElement, int vert_size, float fAlpha )
 {
 	U32 color = sg_VertColor | ( ((int)(fAlpha * 255.0f)) << 24 );
@@ -477,7 +499,7 @@ static void SetRectDiffuseAlpha_ARGB32( uchar *pVertElement, int vert_size, floa
 //	memcpy( pVertElement + vert_size * 2, &color, sizeof(U8) );
 //	memcpy( pVertElement + vert_size * 3, &color, sizeof(U8) );
 }
-
+*/
 
 void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 {
@@ -494,16 +516,14 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 //	short sPatternOffset;
 
 	// vertex color - alpha is set later for each particle to make fading effects
-	const U32 vert_color = 0x00FFFFFF & m_VertexColor.GetARGB32();
-	sg_VertColor = vert_color;
+	const SFloatRGBColor vert_color = m_VertexColor;
+	sg_VertColor = 0x00FFFFFF & m_VertexColor.GetARGB32();
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
 	Matrix44 matWorld;
 	Matrix34 billboard_pose;
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
 	ToMatrix44( billboard_pose, matWorld );
-
-//	Vector3 avBasePos[4];
 
 	// set transformed particle data to dest buffer 'm_avDestParticle'
 	int vert_offset;
@@ -515,13 +535,13 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 	else
 		particle_set_anim_time = 0;
 
-	void (*SetRectDiffuseAlpha)( uchar *, int , float ) = NULL;
+	void (*SetRectDiffuseColor)( uchar *, int , const float * ) = NULL;
 
 //	if( mesh.GetDiffuseColorElementSize() == sizeof(U32) )
 	if( true )
-		SetRectDiffuseAlpha = SetRectDiffuseAlpha_ARGB32; // mainly used by Direct3D
+		SetRectDiffuseColor = SetRectDiffuseColor_ARGB32; // mainly used by Direct3D
 	else
-		SetRectDiffuseAlpha = SetRectDiffuseAlpha_FRGBA;  // mainly used by OpenGL
+		SetRectDiffuseColor = SetRectDiffuseColor_FRGBA;  // mainly used by OpenGL
 
 //	ProfileBegin( "CBE_ParticleSet::UpdateVB() - lock VB" );
 
@@ -548,7 +568,10 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 //	int 2vert_size = vert_size * 2;
 //	int 3vert_size = vert_size * 3;
 
-	
+	float rgb[3] = {0,0,0};
+	const float zero_rgb[3] = {0,0,0};
+
+	// for visual debugging
 	shared_ptr<CBasicMesh> pBoxMesh = m_ParticleDebugBox.GetMesh();
 
 	for(i=0; i<num_particles; i++)
@@ -567,11 +590,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 
 		if( fCurrentTime < 0 || fTotalAnimationTime <= fCurrentTime )
 		{
-			(*SetRectDiffuseAlpha)( pVert0 + color_offset, vert_size, 0.0f );
-//			pParticleVertex[vert_offset+0].color = 0;
-//			pParticleVertex[vert_offset+1].color = 0;
-//			pParticleVertex[vert_offset+2].color = 0;
-//			pParticleVertex[vert_offset+3].color = 0;
+			(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, zero_rgb );
 			continue;
 		}
 
@@ -608,19 +627,16 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 //		U32 color = 0x00FFFFFF | ( ((int)((m_FadeTable.GetValue(fFraction)) * 255.0f)) << 24 );
 //		U32 color = 0x00FFFFFF | ( ((int)((1.0f - fFraction) * 255.0f)) << 24 );
 		float fAlpha = 1.0f - fFraction;
-		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
-
-		(*SetRectDiffuseAlpha)( pVert0 + color_offset, vert_size, fAlpha );
+//		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
 
 //		float& rfFadeVel = rParticleSet.pafFadeVel[i];
 //		U32 color = 0x00FFFFFF | (int)( SmoothCD( fFraction, 0.0f, rfFadeVel, fTotalAnimationTime, dt ) );
-
 //		color = 0xFFFFFFFF;
 
-//		pParticleVertex[vert_offset+0].color = color;
-//		pParticleVertex[vert_offset+1].color = color;
-//		pParticleVertex[vert_offset+2].color = color;
-//		pParticleVertex[vert_offset+3].color = color;
+		rgb[0] = vert_color.fRed   * fAlpha;
+		rgb[1] = vert_color.fGreen * fAlpha;
+		rgb[2] = vert_color.fBlue  * fAlpha;
+		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgb );
 	}
 
 /*	bool expand = true;
@@ -665,8 +681,8 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 //	short sPatternOffset;
 
 	// vertex color - alpha is set later for each particle to make fading effects
-	const U32 vert_color = 0x00FFFFFF & m_VertexColor.GetARGB32();
-	sg_VertColor = vert_color;
+	const SFloatRGBColor vert_color = m_VertexColor;
+	sg_VertColor = 0x00FFFFFF & m_VertexColor.GetARGB32();
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
 	Matrix44 matWorld;
@@ -686,13 +702,13 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 	else
 		particle_set_anim_time = 0;
 
-	void (*SetRectDiffuseAlpha)( uchar *, int , float ) = NULL;
+	void (*SetRectDiffuseColor)( uchar *, int , const float * ) = NULL;
 
 //	if( mesh.GetDiffuseColorElementSize() == sizeof(U32) )
 	if( true )
-		SetRectDiffuseAlpha = SetRectDiffuseAlpha_ARGB32; // mainly used by Direct3D
+		SetRectDiffuseColor = SetRectDiffuseColor_ARGB32; // mainly used by Direct3D
 	else
-		SetRectDiffuseAlpha = SetRectDiffuseAlpha_FRGBA;  // mainly used by OpenGL
+		SetRectDiffuseColor = SetRectDiffuseColor_FRGBA;  // mainly used by OpenGL
 
 //	ProfileBegin( "CBE_ParticleSet::UpdateVB() - lock VB" );
 
@@ -706,6 +722,10 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 //	int 2vert_size = vert_size * 2;
 //	int 3vert_size = vert_size * 3;
 
+	float rgb[3] = {0,0,0};
+	const float zero_rgb[3] = {0,0,0};
+
+	// for visual debugging
 //	shared_ptr<CBasicMesh> pBoxMesh = m_ParticleDebugBox.GetMesh();
 
 	for(i=0; i<num_particles; i++)
@@ -724,7 +744,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 
 		if( fCurrentTime < 0 || fTotalAnimationTime <= fCurrentTime )
 		{
-			(*SetRectDiffuseAlpha)( pVert0 + color_offset, vert_size, 0.0f );
+			(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, zero_rgb );
 			continue;
 		}
 	
@@ -754,9 +774,12 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 //		U32 color = 0x00FFFFFF | ( ((int)((m_FadeTable.GetValue(fFraction)) * 255.0f)) << 24 );
 //		U32 color = 0x00FFFFFF | ( ((int)((1.0f - fFraction) * 255.0f)) << 24 );
 		float fAlpha = 1.0f - fFraction;
-		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
+//		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
 
-		(*SetRectDiffuseAlpha)( pVert0 + color_offset, vert_size, fAlpha );
+		rgb[0] = vert_color.fRed   * fAlpha;
+		rgb[1] = vert_color.fGreen * fAlpha;
+		rgb[2] = vert_color.fBlue  * fAlpha;
+		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgb );
 	}
 
 /*	if( m_bWorldOffset )
@@ -866,10 +889,13 @@ void CBE_ParticleSet::UpdateMesh( CCopyEntity* pCopyEnt )
 /// draw particles through billboard array mesh or rect array
 void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 {
-	ProfileBegin( "CBE_ParticleSet::DrawParticles()" );
+	PROFILE_FUNCTION();
 
-//	UpdateVertices( pCopyEnt );
-	UpdateVerticesFFP( pCopyEnt );
+	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	if( pShaderManager )
+		UpdateVertices( pCopyEnt );
+	else
+		UpdateVerticesFFP( pCopyEnt );
 
 /*	if( m_Type != TYPE_BILLBOARDARRAYMESH )
 	{
@@ -878,32 +904,32 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 		UpdateVertexBuffer( pCopyEnt );
 	}*/
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
-	const int num_particles = rParticleSet.iNumParticles;
+//	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+//	const int num_particles = rParticleSet.iNumParticles;
 
-	ProfileBegin( "DrawParticles(): pEffect->SetMatrix(), etc." );
+//	ProfileBegin( "DrawParticles(): pEffect->SetMatrix(), etc." );
+
+	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
+	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
 
 	Matrix33 matRot;
 	D3DXMATRIX matBillboard;
 	m_pStage->GetBillboardRotationMatrix( matRot );
 	matRot.GetRowMajorMatrix44( (Scalar *)&matBillboard );
-	CShaderManager *pShaderManager = NULL;
 	LPD3DXEFFECT pEffect = NULL;
 	HRESULT hr = S_OK;
-	if( (pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager()) &&
+	if( pShaderManager &&
 		(pEffect = pShaderManager->GetEffect()) )
 	{
 		hr = pEffect->SetMatrix( "ParticleWorldRot", &matBillboard );
 	}
 
-	ProfileEnd( "DrawParticles(): pEffect->SetMatrix(), etc." );
-
-	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
-	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
+//	ProfileEnd( "DrawParticles(): pEffect->SetMatrix(), etc." );
 
 	// draw particles
 	if( pShaderManager )
 	{
+		// render particle via programmable shader
 		CShaderTechniqueHandle tech;
 		tech.SetTechniqueName( "Particle" );
 		pShaderManager->SetTechnique( tech );
@@ -912,6 +938,7 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	}
 	else
 	{
+		// render particle via fixed function pipeline
 		GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 		GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
 		GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
@@ -925,8 +952,6 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 		DrawBillboards( num_particles, 0, 0, m_pStage );
 */
 	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
-
-	ProfileEnd( "CBE_ParticleSet::DrawParticles()" );
 }
 
 
@@ -937,20 +962,6 @@ bool CBE_ParticleSet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner 
 	string smoke_type;
 
 	if( scanner.TryScanLine( "TEXTURE", m_BillboardTextureFilepath ) ) return true;
-
-/*	{
-		if( m_ParticleSetMesh.GetNumMaterials() == 0 )
-		{
-			LOG_PRINT_ERROR( " Particle set mesh needs a material." );
-			return true;
-		}
-
-		CMeshMaterial& mat = m_ParticleSetMesh.Material(0);
-		mat.Texture.resize( 1 );
-		mat.TextureDesc.resize( 1 );
-		mat.TextureDesc[0].ResourcePath = texture_file;
-		return true;
-	}*/
 
 	if( scanner.TryScanLine( "PTCL_RADIUS",     m_fParticleRadius ) ) return true;
 	if( scanner.TryScanLine( "DURATION",        m_fDuration ) ) return true;
@@ -995,20 +1006,9 @@ bool CBE_ParticleSet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner 
 }
 
 
-void CBE_ParticleSet::ReleaseGraphicsResources()
-{
-}
-
-
-void CBE_ParticleSet::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-}
-
-
 void CBE_ParticleSet::Serialize( GameLib1::Serialization::IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
-//	SerializeBillboardProperty( ar, version );
 
 	ar & m_ParticleType;
 	ar & m_fParticleRadius;

@@ -298,9 +298,6 @@ public:
 
 	virtual void Serialize( GameLib1::Serialization::IArchive& ar, const unsigned int version );
 
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
-	virtual void ReleaseGraphicsResources();
-
 	void UpdateVertexBuffer(CCopyEntity* pCopyEnt);
 
 	void DrawParticles(CCopyEntity* pCopyEnt);
