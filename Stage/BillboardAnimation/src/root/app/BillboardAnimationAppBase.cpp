@@ -78,8 +78,10 @@ void CBillboardAnimationAppTask::OnTriggerPulled()
 	m_pStage->ClipTrace( tr );
 
 	// create explosion animation at a position where ray hit
+	const char *base_entity_name = "imex";
+//	const char *base_entity_name = "imex_L";
 	CCopyEntityDesc desc;
-	CBaseEntityHandle handle( "imex" );
+	CBaseEntityHandle handle( base_entity_name );
 	desc.pBaseEntityHandle = &handle;
 	desc.WorldPose.vPosition = tr.vEnd;
 	desc.WorldPose.matOrient = Matrix33Identity();
