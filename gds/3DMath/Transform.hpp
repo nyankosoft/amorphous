@@ -43,6 +43,9 @@ public:
 	/// extract the transform as the pose in Matrix34
 	inline void ToMatrix34( Matrix34& dest_pose ) const;
 
+	/// extract the transform as the pose in Matrix34
+	inline Matrix34 ToMatrix34() const;
+
 	inline bool operator==( const Transform& rhs ) const;
 
 	bool operator!=( const Transform& rhs ) const { return !(*this == rhs); }
@@ -116,6 +119,14 @@ inline void Transform::ToMatrix34( Matrix34& dest_pose ) const
 {
 	dest_pose.vPosition = vTranslation;
 	qRotation.ToRotationMatrix( dest_pose.matOrient );
+}
+
+
+inline Matrix34 Transform::ToMatrix34() const
+{
+	Matrix34 dest;
+	ToMatrix34( dest );
+	return dest;
 }
 
 
