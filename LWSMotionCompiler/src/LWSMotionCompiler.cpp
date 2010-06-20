@@ -346,8 +346,12 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 													    vector<CKeyframe>& vecSrcKeyframe )
 {
 	// add a new motion primitive and get the reference to it
-	m_vecpMotionPrimitive->push_back( CMotionPrimitive( desc.m_Name ) );
-	CMotionPrimitive& motion = m_vecpMotionPrimitive->back();
+//	m_vecpMotionPrimitive->push_back( CMotionPrimitive( desc.m_Name ) );
+	shared_ptr<CMotionPrimitive> pMotion( new CMotionPrimitive( desc.m_Name ) );
+	m_pvecpMotionPrimitive->push_back( pMotion );
+	desc.m_pMotionPrimitive = pMotion;
+
+	CMotionPrimitive& motion = *(m_pvecpMotionPrimitive->back());
 
 	if( !m_pSkeleton )
 		return;
