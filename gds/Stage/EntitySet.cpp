@@ -571,11 +571,11 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 	}
 
 	// set the glare type
-	if( rBaseEntity.m_EntityFlag | BETYPE_GLARESOURCE )
+	if( rBaseEntity.m_EntityFlag & BETYPE_GLARESOURCE )
 	{
 		pNewCopyEnt->RaiseEntityFlags( BETYPE_GLARESOURCE );
 	}
-	else if( rBaseEntity.m_EntityFlag | BETYPE_GLAREHINDER )
+	else if( rBaseEntity.m_EntityFlag & BETYPE_GLAREHINDER )
 	{
 		pNewCopyEnt->RaiseEntityFlags( BETYPE_GLAREHINDER );
 	}
@@ -1180,6 +1180,33 @@ void CEntitySet::GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const
 }
 
 
+typedef std::pair<U32,const char *> flag_string_pair;
+
+flag_string_pair g_EntityFlagStringPair[] =
+{
+	flag_string_pair( BETYPE_PLAYER,                      "PLAYER" ),
+	flag_string_pair( BETYPE_TERRESTRIAL,                 "TERRESTRIAL" ),
+	flag_string_pair( BETYPE_FLOATING,                    "FLOATING" ),
+	flag_string_pair( BETYPE_ENEMY,                       "ENEMY" ),
+	flag_string_pair( BETYPE_ITEM,                        "ITEM" ),
+//	flag_string_pair( BETYPE_RIGIDBODY,                   "RIGIDBODY" ),
+	flag_string_pair( BETYPE_RIGIDBODY,                   "PHYSICS_SIM" ),
+	flag_string_pair( BETYPE_INDESTRUCTIBLE,              "INDESTRUCTIBLE" ),
+	flag_string_pair( BETYPE_LIGHTING,                    "LIGHTING" ),
+	flag_string_pair( BETYPE_NOCLIP,                      "NOCLIP" ),
+	flag_string_pair( BETYPE_NOCLIP_WITH_STATIC_GEOMETRY, "NOCLIP_WITH_STATIC_GEOMETRY" ),
+	flag_string_pair( BETYPE_GLARESOURCE,                 "GLARESOURCE" ),
+	flag_string_pair( BETYPE_GLAREHINDER,                 "GLAREHINDER" ),
+	flag_string_pair( BETYPE_USE_ZSORT,                   "USE_ZSORT" ),
+	flag_string_pair( BETYPE_SUPPORT_TRANSPARENT_PARTS,   "SUPPORT_TRANSPARENT_PARTS" ),
+	flag_string_pair( BETYPE_VISIBLE,                     "VISIBLE" ),
+	flag_string_pair( BETYPE_USE_PHYSSIM_RESULTS,         "USE_PHYSSIM_RESULTS" ),
+	flag_string_pair( BETYPE_ENVMAPTARGET,                "ENVMAPTARGET" ),
+	flag_string_pair( BETYPE_SHADOW_CASTER,               "SHADOW_CASTER" ),
+	flag_string_pair( BETYPE_SHADOW_RECEIVER,             "SHADOW_RECEIVER" )
+};
+
+
 void CEntitySet::WriteEntityTreeToFile( const string& filename )
 {
 	if( this->m_NumEntityNodes == 0 )
@@ -1246,6 +1273,20 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 			fprintf( fp, "  world_aabb: %s\n", to_string(pEntity->world_aabb).c_str() );
 
 			fprintf(fp, "  state: %d\n", pEntity->sState);
+
+			fprintf(fp, "flags: ");
+
+			const U32 flags = pEntity->GetEntityFlags();
+			bool first_flag = true;
+			for( int j=0; j<numof(g_EntityFlagStringPair); j++ )
+			{
+				if( flags & g_EntityFlagStringPair[j].first )
+				{
+					fprintf( fp, "%s%s", first_flag ? "" : " | ", g_EntityFlagStringPair[j].second );
+					first_flag = false;
+				}
+			}
+			fprintf( fp, "\n" );
 
 			if( pEntity->bInSolid == true ) fprintf(fp, "  (in solid)\n");
 			else fprintf(fp, "  (not in solid)\n");
