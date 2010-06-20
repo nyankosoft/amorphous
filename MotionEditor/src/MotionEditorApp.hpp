@@ -3,16 +3,10 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include <gds/App/GraphicsApplicationBase.hpp>
-#include <gds/Graphics/fwd.hpp>
-#include <gds/Graphics/Camera.hpp>
-#include <gds/Graphics/MeshObjectHandle.hpp>
-#include <gds/Graphics/TextureHandle.hpp>
-#include <gds/Graphics/ShaderHandle.hpp>
-#include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
-#include <gds/Graphics/Shader/ShaderManager.hpp>
-#include <gds/Input/fwd.hpp>
-#include <gds/Input.hpp>
+#include "gds/App/GraphicsApplicationBase.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Input/fwd.hpp"
 
 
 class CMotionPrimitiveViewer;
