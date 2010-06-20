@@ -60,6 +60,10 @@ public:
 
 	Vector3 GetLocalTranslation() const { return m_vTranslation; }
 
+	Transform GetLocalTransform() const { return Transform( m_Rotation, m_vTranslation ); }
+
+	void SetLocalTransform( const Transform& local_transform ) { m_vTranslation = local_transform.vTranslation; m_Rotation = local_transform.qRotation; }
+
 	// setters
 
 	void SetRotation( const Quaternion& rotation ) { m_Rotation = rotation; }
