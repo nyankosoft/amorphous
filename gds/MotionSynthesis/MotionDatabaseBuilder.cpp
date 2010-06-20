@@ -195,96 +195,77 @@ void CopyTransformNodesOfBone(
 }
 
 
-Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
+Result::Name CMotionDatabaseBuilder::MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<CMotionPrimitive>& pSrcMotion,
+																		  boost::shared_ptr<CSkeleton>& pDestSkeleton )
 {
 	CMotionMapTarget& tgt = m_MotionMapTarget;
 
-	path mdb_path = path(m_SourceXMLFilename).parent_path() / tgt.m_DestSkeletonMDB;
-	CMotionDatabase dest_skeleton_src_mdb( mdb_path.string() );
-	shared_ptr<CMotionPrimitive> pMotion = dest_skeleton_src_mdb.GetMotionPrimitive( tgt.m_DestSkeletonMotion );
-	if( !pMotion )
-		return Result::UNKNOWN_ERROR;
+//	shared_ptr<CSkeleton> pSrcSkeleton = m_vecpMotionPrimitive.front()->GetSkeleton();
+	shared_ptr<CSkeleton> pSrcSkeleton = pSrcMotion->GetSkeleton();
 
-	shared_ptr<CSkeleton> pDestSkeleton = pMotion->GetSkeleton();
-
-	if( m_vecMotionPrimitive.empty() )
-		return Result::UNKNOWN_ERROR;
-
-	shared_ptr<CSkeleton> pSrcSkeleton = m_vecMotionPrimitive.front().GetSkeleton();
-
-/*	for( map<string,string>::iterator itr = bone_maps.begin(); itr != bone_maps.end(); itr++ )
-	{
-		vector<int> src_locator;
-		bool found = pSrcSkeleton->CreateLocator( itr->first, src_locator );
-
-		vector<int> dest_locator;
-		found = pDestSkeleton->CreateLocator( itr->second, dest_locator );
-	}*/
-
-	const size_t num_motion_primitives = m_vecMotionPrimitive.size();
+//	const size_t num_motion_primitives = m_vecpMotionPrimitive.size();
 
 	const map<string,string>& bone_maps = tgt.m_BoneMaps;
-	for( size_t i=0; i<num_motion_primitives; i++ )
+
+	CMotionPrimitive& src_motion = *pSrcMotion;//m_vecpMotionPrimitive[i];
+	vector<CKeyframe>& src_keyframes = src_motion.GetKeyframeBuffer();
+
+	shared_ptr<CMotionPrimitive> pDestMotion( new CMotionPrimitive );
+	vector<CKeyframe>& dest_keyframes = pDestMotion->GetKeyframeBuffer();
+	dest_keyframes.resize( src_keyframes.size() );
+
+	pDestMotion->SetName( src_motion.GetName() );
+	pDestMotion->SetSkeleton( *pDestSkeleton );
+	pDestMotion->CreateEmptyKeyframes( (uint)src_keyframes.size() );
+
+	// copy keyframe times
+	const int num_keyframes = (int)src_keyframes.size();
+	for( int kf=0; kf<num_keyframes; kf++ )
+		dest_keyframes[kf].SetTime( src_keyframes[kf].GetTime() );
+
+	// convert transform node tree
+	map<string,string>::const_iterator itr;
+	for( itr = bone_maps.begin();
+		itr != bone_maps.end();
+		itr++ )
 	{
-		CMotionPrimitive& src_motion = m_vecMotionPrimitive[i];
-		vector<CKeyframe>& src_keyframes = src_motion.GetKeyframeBuffer();
+		const std::string& src_name  = itr->first;
+		const std::string& dest_name = itr->second;
 
-		shared_ptr<CMotionPrimitive> pDestMotion( new CMotionPrimitive );
-		vector<CKeyframe>& dest_keyframes = pDestMotion->GetKeyframeBuffer();
-		dest_keyframes.resize( src_keyframes.size() );
+		vector<int> src_locator;
+		bool src_found = pSrcSkeleton->CreateLocator( src_name, src_locator );
 
-		pDestMotion->SetName( src_motion.GetName() );
-		pDestMotion->SetSkeleton( *pDestSkeleton );
-		pDestMotion->CreateEmptyKeyframes( (uint)src_keyframes.size() );
+		vector<int> dest_locator;
+		bool dest_found = pDestSkeleton->CreateLocator( itr->second, dest_locator );
 
-		// copy keyframe times
-		const int num_keyframes = (int)src_keyframes.size();
-		for( int kf=0; kf<num_keyframes; kf++ )
-			dest_keyframes[kf].SetTime( src_keyframes[kf].GetTime() );
-
-		// convert transform node tree
-		map<string,string>::const_iterator itr;
-		for( itr = bone_maps.begin();
-			itr != bone_maps.end();
-			itr++ )
+		if( !src_found || !dest_found )
 		{
-			const std::string& src_name  = itr->first;
-			const std::string& dest_name = itr->second;
+			const string msg = fmt_string( " Cannot map from '%s' to '%s'.", src_name.c_str(), dest_name.c_str() );
+			if( !src_found && dest_found )
+				LOG_PRINT_WARNING( msg + fmt_string( " The src bone '%s' was not found.", src_name.c_str() ) );
+			else if( src_found && !dest_found )
+				LOG_PRINT_WARNING( msg + fmt_string( " The dest bone '%s' was not found.", dest_name.c_str() ) );
+			else
+				LOG_PRINT_WARNING( msg + fmt_string( " Neither src nor dest bone was found." ) );
 
-			vector<int> src_locator;
-			bool src_found = pSrcSkeleton->CreateLocator( src_name, src_locator );
-
-			vector<int> dest_locator;
-			bool dest_found = pDestSkeleton->CreateLocator( itr->second, dest_locator );
-
-			if( !src_found || !dest_found )
-			{
-				const string msg = fmt_string( " Cannot map from '%s' to '%s'.", src_name.c_str(), dest_name.c_str() );
-				if( !src_found && dest_found )
-					LOG_PRINT_WARNING( msg + fmt_string( " The src bone '%s' was not found.", src_name.c_str() ) );
-				else if( src_found && !dest_found )
-					LOG_PRINT_WARNING( msg + fmt_string( " The dest bone '%s' was not found.", dest_name.c_str() ) );
-				else
-					LOG_PRINT_WARNING( msg + fmt_string( " Neither src nor dest bone was found." ) );
-
-				continue;
-			}
-
-			CopyTransformNodesOfBone(
-				src_locator,
-				src_keyframes,
-//				*pSrcSkeleton,
-//				pSrcSkeleton->GetRootBone(),
-				dest_locator,
-				dest_keyframes
-//				*pDestSkeleton,
-//				pDestSkeleton->GetRootBone()
-				);
+			continue;
 		}
 
-		// overwrite the motion primitive
-		m_vecMotionPrimitive[i] = *pDestMotion;
+		CopyTransformNodesOfBone(
+			src_locator,
+			src_keyframes,
+//			*pSrcSkeleton,
+//			pSrcSkeleton->GetRootBone(),
+			dest_locator,
+			dest_keyframes
+//			*pDestSkeleton,
+//			pDestSkeleton->GetRootBone()
+			);
 	}
+
+	// overwrite the motion primitive
+	pSrcMotion = pDestMotion;
+//	m_vecpMotionPrimitive[i] = pDestMotion;
 
 	return Result::SUCCESS;
 
@@ -308,6 +289,41 @@ Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
 		}
 	}
 */
+}
+
+
+Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
+{
+	CMotionMapTarget& tgt = m_MotionMapTarget;
+
+	path mdb_path = path(m_SourceXMLFilename).parent_path() / tgt.m_DestSkeletonMDB;
+	CMotionDatabase dest_skeleton_src_mdb( mdb_path.string() );
+	shared_ptr<CMotionPrimitive> pMotion = dest_skeleton_src_mdb.GetMotionPrimitive( tgt.m_DestSkeletonMotion );
+	if( !pMotion )
+		return Result::UNKNOWN_ERROR;
+
+	shared_ptr<CSkeleton> pDestSkeleton = pMotion->GetSkeleton();
+
+	Result::Name res = Result::SUCCESS;
+	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	{
+		BOOST_FOREACH( CMotionPrimitiveDesc& desc, desc_group.m_Desc )
+		{
+			if( !desc.m_pMotionPrimitive )
+				continue;
+
+			res = MapMotionPrimitiveToAnotherSkeleton( desc.m_pMotionPrimitive, pDestSkeleton );
+		}
+	}
+
+	return Result::SUCCESS;
+
+//	if( m_vecpMotionPrimitive.empty() )
+//		return Result::UNKNOWN_ERROR;
+
+//	if( !m_vecpMotionPrimitive.front() )
+//		return Result::UNKNOWN_ERROR;
+
 }
 
 
@@ -462,9 +478,14 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 			vector<CXMLNodeReader> root_joints = children[i].GetImmediateChildren();
 			for( size_t j=0; j<root_joints.size(); j++ )
 			{
-				if( root_joints[j].GetName() == "HorizontalElement" )
+				string node_name( root_joints[j].GetName() );
+				if( node_name == "HorizontalElement" )
 				{
 					ProcessRootNodeHorizontalElementOptions( root_joints[j], desc );
+				}
+				else if( node_name == "HeightShift" )
+				{
+					root_joints[j].GetTextContent( desc.m_fRootNodeHeightShift );
 				}
 			}
 		}
@@ -630,9 +651,89 @@ void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 }
 
 
+void RecursivelyApplyPrePostTransforms( CTransformNode& node,
+										const Transform& pre,
+										const Transform& post )
+{
+	Transform local_transform
+		= post * node.GetLocalTransform() * pre;
+
+	node.SetLocalTransform( local_transform );
+
+	const int num_children = node.GetNumChildren();
+	for( int i=0; i<num_children; i++ )
+	{
+		RecursivelyApplyPrePostTransforms( node.ChildNode(i), pre, post );
+	}
+
+}
+
+
+void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc& desc )
+{
+	shared_ptr<CMotionPrimitive>& pMotion = desc.m_pMotionPrimitive;
+
+	if( !pMotion )
+		return;
+
+	std::vector<CKeyframe>& keyframes = pMotion->GetKeyframeBuffer();
+	int num_keyframes = (int)keyframes.size();
+
+	if( 0.001 <= fabs(desc.m_fRootNodeHeightShift) )
+	{
+		const float height_shift = desc.m_fRootNodeHeightShift;
+//		ShiftRootNodeHeight( vecKeyframe, desc.m_fRootNodeHeightShift );
+		for( int i=0; i<num_keyframes; i++ )
+		{
+			const CTransformNode& root_node = keyframes[i].GetRootNode();
+			Transform local_transform = root_node.GetLocalTransform();
+			local_transform.vTranslation.y += height_shift;
+
+			keyframes[i].RootNode().SetLocalTransform( local_transform );
+		}
+	}
+
+	// Apply joint modifications
+	const int num_joint_mods = (int)m_vecJointModification.size();
+	for( int i=0; i<num_joint_mods; i++ )
+	{
+		CJointModification& joint_mod = m_vecJointModification[i];
+
+		shared_ptr<CSkeleton> pSkeleton = pMotion->GetSkeleton();
+		if( !pSkeleton )
+			continue;
+
+		if( joint_mod.m_ApplyPreRotation )//|| joint_mod.m_ApplyPostRotation )
+		{
+			const Transform pre(  Matrix34( Vector3(0,0,0), joint_mod.m_matPreRotation ) );
+//			const Transform post( Matrix34( Vector3(0,0,0), joint_mod.m_matPostRotation ) );
+
+			vector<int> locator;
+			bool located = pSkeleton->CreateLocator( joint_mod.m_Name, locator );
+			for( int j=0; j<num_keyframes; j++ )
+			{
+				CTransformNode *pNode = keyframes[j].GetTransformNode( locator );
+				if( !pNode )
+					continue;
+
+				Transform local_transform = pNode->GetLocalTransform() * pre;
+
+				pNode->SetLocalTransform( local_transform );
+
+				const int num_children = pNode->GetNumChildren();
+				for( int i=0; i<num_children; i++ )
+				{
+					RecursivelyApplyPrePostTransforms( pNode->ChildNode(i), pre, pre.ToMatrix34().GetInverseROT() );
+				}
+			}
+		}
+	}
+}
+
+
 void CMotionDatabaseBuilder::CreateMotionPrimitives()
 {
-	m_vecMotionPrimitive.reserve( 256 );
+	m_vecpMotionPrimitive.reserve( 256 );
 
 	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
 	{
@@ -643,9 +744,9 @@ void CMotionDatabaseBuilder::CreateMotionPrimitives()
 			continue;
 		}
 
-		pCompiler->m_vecpMotionPrimitive = &m_vecMotionPrimitive;
-		pCompiler->m_vecpAnnotationName  = &m_vecAnnotationName;
-		pCompiler->m_pMotionTable        = &m_MotionTable;
+		pCompiler->m_pvecpMotionPrimitive = &m_vecpMotionPrimitive;
+		pCompiler->m_vecpAnnotationName   = &m_vecAnnotationName;
+		pCompiler->m_pMotionTable         = &m_MotionTable;
 
 		pCompiler->CreateMotionPrimitives( desc_group );
 	}
@@ -654,10 +755,10 @@ void CMotionDatabaseBuilder::CreateMotionPrimitives()
 
 void CMotionDatabaseBuilder::ApplyJointModification( const CJointModification& mod )
 {
-	const int num_motions = (int)m_vecMotionPrimitive.size();
+	const int num_motions = (int)m_vecpMotionPrimitive.size();
 	for( int i=0; i<num_motions; i++ )
 	{
-		CMotionPrimitive& motion = m_vecMotionPrimitive[i];
+		CMotionPrimitive& motion = *m_vecpMotionPrimitive[i];
 
 		shared_ptr<CSkeleton> pSkeleton = motion.GetSkeleton();
 		if( !pSkeleton )
@@ -724,11 +825,30 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 		Result::Name res = MapMotionPrimitivesToAnotherSkeleton();
 	}
 
+	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	{
+		BOOST_FOREACH( CMotionPrimitiveDesc& desc, desc_group.m_Desc )
+		{
+			ProcessCreatedMotionPrimitive( desc );
+		}
+	}
+
 	if( !m_vecJointModification.empty() )
 	{
 		for( int i=0; i<(int)m_vecJointModification.size(); i++ )
 		{
 //			ApplyJointModification( m_vecJointModification[i] );
+		}
+	}
+
+	// Copy motion primitives to a single array
+	m_vecpMotionPrimitive.resize( 0 );
+	m_vecpMotionPrimitive.reserve( 0xFF );
+	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	{
+		BOOST_FOREACH( CMotionPrimitiveDesc& desc, desc_group.m_Desc )
+		{
+			m_vecpMotionPrimitive.push_back( desc.m_pMotionPrimitive );
 		}
 	}
 
@@ -765,9 +885,12 @@ bool CMotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_fil
 	if( 0 < m_MotionTable.m_Name.length() )
 		db.m_DB.AddData( m_MotionTable.m_Name, m_MotionTable );
 
-	BOOST_FOREACH( CMotionPrimitive& motion, m_vecMotionPrimitive )
+	BOOST_FOREACH( shared_ptr<CMotionPrimitive>& pMotion, m_vecpMotionPrimitive )
 	{
-		db.m_DB.AddData( motion.GetName(), motion );
+		if( !pMotion )
+			continue;
+
+		db.m_DB.AddData( pMotion->GetName(), *pMotion );
 	}
 
 	return true;

@@ -38,7 +38,7 @@ bool CBVHMotionDatabaseCompiler::IsValidMotionFile( const std::string& src_filep
 
 
 /// output: a new motion primitive
-void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( const CMotionPrimitiveDesc& desc,
+void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDesc& desc,
 												        const CMotionPrimitiveDescGroup& desc_group,
 												        CBVHPlayer& bvh_player )
 {
@@ -46,8 +46,10 @@ void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( const CMotionPrimitiveDe
 	vecKeyframe.reserve( 64 );
 
 	// add a new motion primitive and get the reference to it
-	m_vecpMotionPrimitive->push_back( CMotionPrimitive( desc.m_Name ) );
-	CMotionPrimitive& motion = m_vecpMotionPrimitive->back();
+	shared_ptr<CMotionPrimitive> pMotion( new CMotionPrimitive( desc.m_Name ) );
+	m_pvecpMotionPrimitive->push_back( pMotion );
+	desc.m_pMotionPrimitive = pMotion;
+	CMotionPrimitive& motion = *(m_pvecpMotionPrimitive->back());
 
 	motion.SetSkeleton( desc_group.m_Skeleton );
 

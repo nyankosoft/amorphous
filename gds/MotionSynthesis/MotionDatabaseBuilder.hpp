@@ -35,6 +35,8 @@ public:
 
 	bool m_bResetHorizontalRootPos;
 
+	float m_fRootNodeHeightShift;
+
 	/// how to normalize horizontal orientation of the motion
 	/// AverageMotionDirection or
 	/// LocalPositiveZDirection or
@@ -47,6 +49,9 @@ public:
 
 	std::string m_StartBoneName;
 
+	/// output
+	boost::shared_ptr<CMotionPrimitive> m_pMotionPrimitive;
+
 public:
 
 	CMotionPrimitiveDesc()
@@ -54,10 +59,18 @@ public:
 	m_StartFrame(0),
 	m_EndFrame(0),
 	m_bIsLoopMotion(false),
-	m_bResetHorizontalRootPos(false)
+	m_bResetHorizontalRootPos(false),
+	m_fRootNodeHeightShift(0.0f)
 	{}
 
-	CMotionPrimitiveDesc( int sf, int ef ) : m_StartFrame(sf), m_EndFrame(ef), m_bIsLoopMotion(false) {}
+	CMotionPrimitiveDesc( int sf, int ef )
+		:
+	m_StartFrame(sf),
+	m_EndFrame(ef),
+	m_bIsLoopMotion(false),
+	m_bResetHorizontalRootPos(false),
+	m_fRootNodeHeightShift(0.0f)
+	{}
 };
 
 
@@ -98,7 +111,7 @@ protected:
 
 	/// Borrowed reference set by CMotionDatabaseBuilder and available to derived class
 	/// derived classes are responsible for storing created motion primitives to this variable
-	std::vector<CMotionPrimitive> *m_vecpMotionPrimitive;
+	std::vector< boost::shared_ptr<CMotionPrimitive> > *m_pvecpMotionPrimitive;
 
 	std::vector<std::string> *m_vecpAnnotationName;
 
@@ -115,7 +128,7 @@ public:
 
 	CMotionDatabaseCompiler()
 		:
-	m_vecpMotionPrimitive(NULL),
+	m_pvecpMotionPrimitive(NULL),
 	m_vecpAnnotationName(NULL),
 	m_pMotionTable(NULL)
 	{}
@@ -209,7 +222,8 @@ protected:
 	std::vector<CMotionPrimitiveDescGroup> m_vecDescGroup;
 
 	/// stores motion primitives created from descs above
-	std::vector<CMotionPrimitive> m_vecMotionPrimitive;
+//	std::vector<CMotionPrimitive> m_vecMotionPrimitive;
+	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpMotionPrimitive;
 
 	std::vector<std::string> m_vecAnnotationName;
 
@@ -251,6 +265,11 @@ protected:
 	void ApplyJointModification( const CJointModification& mod );
 
 	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc );
+
+	void ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc& desc ); 
+
+	Result::Name MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<CMotionPrimitive>& pSrcMotion,
+													  boost::shared_ptr<CSkeleton>& pDestSkeleton );
 
 	Result::Name MapMotionPrimitivesToAnotherSkeleton();
 
