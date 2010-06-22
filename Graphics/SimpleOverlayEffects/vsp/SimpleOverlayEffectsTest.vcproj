@@ -206,18 +206,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="MoveToGraphicsModule?"
-				>
-				<File
-					RelativePath="..\..\..\..\Project1\gds\Stage\PseudoNoiseEffect.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\Project1\gds\Stage\PseudoNoiseEffect.hpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\app\params.txt"
