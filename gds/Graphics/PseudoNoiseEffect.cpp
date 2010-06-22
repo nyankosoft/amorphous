@@ -1,5 +1,4 @@
 #include "PseudoNoiseEffect.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
 //#include "../Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/NoiseTextureGenerators.hpp"
 #include "../Support/MTRand.hpp"
@@ -116,10 +115,15 @@ void CPseudoNoiseEffect::RenderNoiseEffect()
 {
 	// single texture & rect class version
 	m_FullscreenRect.SetColor( 0x30FFFFFF );
+
+	// render the rect over the entire screen
+	// - Alpha blend settings are done in C2DRect::Draw() -> C2DPrimitive::Draw() -> C2DPrimitive::SetBasicRenderStates()
+	// - Should this be rendered with premultiplied alpha?
 	m_FullscreenRect.Draw( m_NoiseTexture );
+
 	return;
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	pd3dDev->SetFVF( D3DFVF_TLVERTEX2 );
 	pd3dDev->SetVertexShader( NULL );
@@ -153,13 +157,13 @@ void CPseudoNoiseEffect::RenderNoiseEffect()
 	pd3dDev->SetSamplerState(0, D3DSAMP_ADDRESSV,  D3DTADDRESS_WRAP);
 
 	pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avTextureRect, sizeof(TLVERTEX2) );
-
+*/
 }
 
 
 void CPseudoNoiseEffect::SetNoiseTexture()
 {
-	TLVERTEX2 *pavRect = m_avTextureRect;
+/*	TLVERTEX2 *pavRect = m_avTextureRect;
 	int i;
 	for(i=0; i<4; i++)
 		pavRect[i].tex[0].u = pavRect[i].tex[0].v = 0.0f;
@@ -199,8 +203,14 @@ void CPseudoNoiseEffect::SetNoiseTexture()
 		iRand = 3;
 
 	DIRECT3D9.GetDevice()->SetTexture( 0, m_aNoiseTexture[iRand].GetTexture() );
-
+*/
 	//>>> single texture & rect class version
+	float t = (float)m_iScreenWidth / (float)m_NoiseTextureSize;	// scalse the noise texture according to the screen size
+	float rand_tu = t * RangedRand( 0.0f, 1.0f );
+	float rand_tv = t * RangedRand( 0.0f, 1.0f );
+	TEXCOORD2 shift( TEXCOORD2(rand_tu,rand_tv) );
+
+	int iRand = RangedRand( 0, 3 );
 	int i0=0, i1=0, i2=0, i3=0;
 	switch(iRand)
 	{
@@ -217,7 +227,6 @@ void CPseudoNoiseEffect::SetNoiseTexture()
 
 	float u = (float)m_iScreenWidth  / (float)m_NoiseTextureSize / (float)m_NoisePixelSize;
 	float v = (float)m_iScreenHeight / (float)m_NoiseTextureSize / (float)m_NoisePixelSize;
-	TEXCOORD2 shift( TEXCOORD2(rand_tu,rand_tv) );
 	m_FullscreenRect.SetTextureCoord( i0, 0, TEXCOORD2( 0, 0 ) + shift );
 	m_FullscreenRect.SetTextureCoord( i1, 0, TEXCOORD2( u, 0 ) + shift );
 	m_FullscreenRect.SetTextureCoord( i2, 0, TEXCOORD2( u, v ) + shift );
