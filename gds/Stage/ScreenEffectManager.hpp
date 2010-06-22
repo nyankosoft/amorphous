@@ -117,7 +117,7 @@ public:
 	{
 	public:
 
-		std::string m_TextureFilepath;
+		CTextureResourceDesc m_Desc;
 		CTextureHandle m_Texture;
 		C2DRect Rect;
 
@@ -125,7 +125,7 @@ public:
 
 		CExtraTextureEffect() {}
 
-		void SetTextureFilename( const std::string& texture_filepath ) { m_TextureFilepath = texture_filepath; }
+		void SetTextureFilename( const std::string& texture_filepath ) { m_Desc.ResourcePath = texture_filepath; }
 		bool LoadTexture();
 //		void ReleaseTexture() { m_Texture.Release(); }
 	};

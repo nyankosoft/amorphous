@@ -112,7 +112,7 @@ public:
 
 bool CScreenEffectManager::CExtraTextureEffect::LoadTexture()
 {
-	return m_Texture.Load( m_TextureFilepath );
+	return m_Texture.Load( m_Desc );
 }
 
 
@@ -150,11 +150,11 @@ CScreenEffectManager::~CScreenEffectManager()
 
 bool CScreenEffectManager::Init()
 {
-	m_vecExtraTexEffect.resize( 1 );
 
 	UpdateScreenSize();
 
-	m_NoiseEffect.LoadNoiseTextures();
+//	m_NoiseEffect.LoadNoiseTextures();
+	m_NoiseEffect.Init( 0.5f, 2 );
 	m_NoiseEffect.UpdateScreenSize();
 /*
 	m_TexRenderTarget.Init( 512, 512 );
@@ -167,13 +167,14 @@ bool CScreenEffectManager::Init()
 	// set up textured-rectangles
 	// rectangle sizes have been alreay set in UpdateScreenSize()
 
+	m_vecExtraTexEffect.resize( 1 );
 	m_vecExtraTexEffect[0].Rect.SetTextureUV( TEXCOORD2(0.0f, 0.0f), TEXCOORD2(32.0f, 32.0f) );
 	m_vecExtraTexEffect[0].SetTextureFilename( "Texture\\stripe.dds" );
 	m_vecExtraTexEffect[0].LoadTexture();
 
 
 	// initialize post-process effect manager
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 //	HRESULT hr;
 
 	// retrieve the back buffer size
@@ -438,6 +439,7 @@ void CScreenEffectManager::RenderOverlayEffects()
 
 	if( m_EffectFlag & ScreenEffect::PseudoNightVision )
 	{
+		m_NoiseEffect.SetNoiseTexture();
 		m_NoiseEffect.RenderNoiseEffect();
 		m_vecExtraTexEffect[0].Rect.Draw( m_vecExtraTexEffect[0].m_Texture );
 	}
@@ -819,7 +821,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 /// make sure render tasks for scene are already registered
 void CScreenEffectManager::CreateRenderTasks()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	DoPseudoNightVisionEffectSettings();
 
