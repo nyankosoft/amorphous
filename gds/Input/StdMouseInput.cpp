@@ -92,8 +92,13 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 		m_iPosY = iNewPosY;
 		break;
 
-//	case WM_MOUSEWHEEL:
-//		break;
+	case WM_MOUSEWHEEL:
+		signed short rotated_dist = (signed short)HIWORD(wParam);
+//		input.iGICode = GIC_MOUSE_WHEEL_UP;
+		input.iGICode = ( 0 < rotated_dist ) ? GIC_MOUSE_WHEEL_UP : GIC_MOUSE_WHEEL_DOWN;
+		UpdateInputState( input );
+		InputHub().UpdateInput( input );
+		break;
 	}
 
 }
