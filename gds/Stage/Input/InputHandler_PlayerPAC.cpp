@@ -29,8 +29,7 @@ CInputHandler_PlayerPAC::CInputHandler_PlayerPAC()
 
 CInputHandler_PlayerPAC::~CInputHandler_PlayerPAC()
 {
-	if( m_pInputHandler_Debug )
-		delete m_pInputHandler_Debug;
+	SafeDelete( m_pInputHandler_Debug );
 }
 
 /*
@@ -120,6 +119,7 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 	if( pPlayerBaseEntity->GetPlayerCopyEntity()->fLife <= 0 )
 		return;
 
+	// get the action code for the GI code
 //	int action_code = m_aiActionForGICode[input.iGICode];
 	int action_code           = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_PRIMARY );
 	int secondary_action_code = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_SECONDARY );
@@ -186,7 +186,7 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 	}*/
 
 	// let the player entity handle the input
-	if( SinglePlayerInfo().GetCurrentPlayerBaseEntity()->HandleInput( action_input ) )
+	if( pPlayerBaseEntity->HandleInput( action_input ) )
 		return;
 
 	// input has not been handled yet
