@@ -85,6 +85,7 @@ public:
 	{
 		int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
 
+		gi_codes.resize( 0 );
 		for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 		{
 			if( action_code == pGICodeToActionCode[i] )
@@ -96,6 +97,7 @@ public:
 	{
 		int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
 
+		gi_codes.resize( 0 );
 		for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 		{
 			if( action_code == pGICodeToActionCode[i] 
