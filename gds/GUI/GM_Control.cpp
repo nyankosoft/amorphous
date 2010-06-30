@@ -4,6 +4,7 @@
 #include "GM_DialogManager.hpp"
 #include "GM_ControlRenderer.hpp"
 #include "GM_ControlRendererManager.hpp"
+#include "GM_Keybind.hpp"
 
 using namespace std;
 using namespace boost;
@@ -60,6 +61,29 @@ void CGM_ControlBase::ChangeScale( float factor )
 		m_pRenderer->ChangeScale( factor );
 }
 
+
+int CGM_ControlBase::GetInputCode( CGM_InputData& input )
+{
+	if( m_pKeybind )
+	{
+		int code = m_pKeybind->GetInputCode( input.GeneralInputCode );
+		if( 0 <= code && code < CGM_Input::NUM_INPUT_CODES )
+			return code; // This could be CGM_Input::INVALID, which means the GUI input for the GI code is suppressed.
+		else
+			return input.code;
+	}
+	else
+		return input.code;
+}
+
+
+void CGM_ControlBase::AssignCustomKey( int gi_code, int gui_input_code )
+{
+	if( !m_pKeybind )
+		m_pKeybind.reset( new CGM_SmallKeybind );
+
+	m_pKeybind->Assign( gi_code, (CGM_Input::InputCode)gui_input_code );
+}
 
 
 //========================================================================================

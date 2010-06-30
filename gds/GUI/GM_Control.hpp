@@ -9,6 +9,8 @@ using namespace Graphics;
 
 #include <string>
 
+class CGM_Keybind;
+
 
 /**
  * base class of UI components
@@ -31,6 +33,10 @@ protected:
 	int m_Depth;
 
 	CGM_ControlRendererSharedPtr m_pRenderer;
+
+	/// Used when the control has special keybind.
+	/// If this is NULL, the default keybind of the CGM_DialogManager is used.
+	boost::shared_ptr<CGM_Keybind> m_pKeybind;
 
 public:
 
@@ -64,6 +70,25 @@ public:
 	virtual void UpdateGraphicsProperties();
 
 	virtual void ChangeScale( float factor );
+
+/*	inline bool HandleRawInput( CGM_InputData& input )
+	{
+		if( m_pKeybind )
+		{
+			int code = m_pKeybind->GetInputCode( input.GeneralInputCode );
+			if( 0 <= code && code < NUM_GENERAL_INPUT_CODES )
+				input.code = code;
+		}
+
+		if( input.IsMouseInput() )
+			return pControl->HandleMouseInput( input );	// send moust input
+		else
+			return pControl->HandleKeyboardInput( input );	// send keyboard & gamepad input
+	}*/
+
+	int GetInputCode( CGM_InputData& input );
+
+	void AssignCustomKey( int gi_code, int gui_input_code );
 };
 
 

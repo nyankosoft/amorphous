@@ -4,6 +4,7 @@
 #include "GM_Dialog.hpp"
 #include "GM_Input.hpp"
 #include "GM_ControlRenderer.hpp"
+#include "GM_Keybind.hpp"
 
 
 //========================================================================================
@@ -23,6 +24,13 @@ CGM_Slider::CGM_Slider( CGM_Dialog *pDialog, CGM_SliderDesc *pDesc )
 
 	m_aInputCode[ IC_INCREASE ] = CGM_Input::SHIFT_FOCUS_RIGHT;
 	m_aInputCode[ IC_DECREASE ] = CGM_Input::SHIFT_FOCUS_LEFT;
+
+	// Have to set up custom keybind because GIC_RIGHT & GIC_LEFT are used
+	// as CGM_Input::SHIFT_FOCUS_RIGHT & CGM_Input::SHIFT_FOCUS_LEFT by default
+	// Setting up this custom keybind also makes CGM_Slider dependent on Input module
+	m_pKeybind.reset( new CGM_SmallKeybind );
+	m_pKeybind->Assign( GIC_RIGHT, CGM_Input::INCREASE_SLIDER_VALUE );
+	m_pKeybind->Assign( GIC_LEFT,  CGM_Input::DECREASE_SLIDER_VALUE );
 }
 
 
@@ -42,8 +50,9 @@ bool CGM_Slider::HandleMouseInput( CGM_InputData& input )
         return false;
 
 	SPoint pt = input.pos;
-    switch( input.code )
-    {
+//	switch( input.code )
+	switch( GetInputCode(input) )
+	{
 	case CGM_Input::MOUSE_BUTTON_L:
         if( input.type == CGM_InputData::TYPE_PRESSED )
 		{
@@ -121,6 +130,25 @@ bool CGM_Slider::HandleKeyboardInput( CGM_InputData& input )
     if( !IsEnabled() || !IsVisible() )
         return false;
 
+	switch( GetInputCode(input) )
+	{
+	case CGM_Input::INCREASE_SLIDER_VALUE:
+        if( input.type == CGM_InputData::TYPE_PRESSED )
+		{
+			SetValueInternal( m_iValue + m_iShiftAmount, true );
+			return true;
+		}
+		break;
+
+	case CGM_Input::DECREASE_SLIDER_VALUE:
+        if( input.type == CGM_InputData::TYPE_PRESSED )
+		{
+			SetValueInternal( m_iValue - m_iShiftAmount, true );
+			return true;
+		}
+		break;
+	}
+/*
 	SPoint pt = input.pos;
 	if( input.code == m_aInputCode[ IC_INCREASE ] )
     {
@@ -138,7 +166,7 @@ bool CGM_Slider::HandleKeyboardInput( CGM_InputData& input )
 			return true;
 		}
 	}
-
+*/
 	return false;
 }
 

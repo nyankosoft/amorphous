@@ -1722,6 +1722,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\GUI\GM_Keybind.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\GUI\GM_Keybind.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\GUI\GM_ListBox.cpp"
 				>
 			</File>

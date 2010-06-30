@@ -60,6 +60,8 @@ class CGM_DialogManager
 
 	CGM_ControlRendererSharedPtr m_pCaptionRenderer;
 
+	boost::shared_ptr<CGM_Keybind> m_pKeybind;
+
 private:
 
 	void Init( CGM_ControlRendererManagerSharedPtr pRendererManager );

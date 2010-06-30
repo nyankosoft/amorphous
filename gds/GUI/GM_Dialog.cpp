@@ -114,7 +114,7 @@ bool CGM_Dialog::HandleInput( CGM_InputData& input )
 	{
 		if( m_vecpControl[i]->GetType() == CGM_Control::SUBDIALOGBUTTON )
 		{
-			pSubDialogButton = (CGM_SubDialogButton *)m_vecpControl[i];
+			pSubDialogButton = dynamic_cast<CGM_SubDialogButton *>(m_vecpControl[i]);
 
 			bHandled = pSubDialogButton->HandleInputInSubDialog( input );
 
