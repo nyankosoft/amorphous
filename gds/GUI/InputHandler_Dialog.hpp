@@ -86,14 +86,14 @@ inline SInputData GPD2KBDInputConverter::Convert( const SInputData& gpd_input )
 	case GIC_GPD_LEFT:
 		kbd_input.iGICode = GIC_LEFT;
 		break;*/
-	case GIC_GPD_BUTTON_01:
+/*	case GIC_GPD_BUTTON_01:
 	case GIC_GPD_BUTTON_03:
 		kbd_input.iGICode = GIC_ENTER;
 		break;
 	case GIC_GPD_BUTTON_00:
 	case GIC_GPD_BUTTON_02:
 		kbd_input.iGICode = GIC_BACK;
-		break;
+		break;*/
 	case GIC_GPD_AXIS_X:
 		if( GetNewAnalogKeyInput( AXIS_X, gpd_param, kbd_input ) )
 		{
