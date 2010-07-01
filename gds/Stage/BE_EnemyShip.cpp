@@ -8,16 +8,11 @@
 
 #include "Physics/Actor.hpp"
 #include "Item/ItemDatabaseManager.hpp"
-
-#include "Support/MTRand.hpp"
-
 #include "Item/GI_Weapon.hpp"
 #include "Item/GI_Ammunition.hpp"
-
-#include "Support/memory_helpers.hpp"
+#include "Support/MTRand.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Log/StateLog.hpp"
-#include "Support/StringAux.hpp"
 
 using namespace std;
 using namespace physics;
