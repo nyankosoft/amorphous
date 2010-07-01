@@ -1894,10 +1894,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\ParamLoader.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Support\ParamLoader.hpp"
 				>
 			</File>
@@ -1939,10 +1935,6 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\Support\StringAux.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Support\TextFileScanner.cpp"
 				>
 			</File>
 			<File
@@ -3042,6 +3034,10 @@
 		<Filter
 			Name="Utilities"
 			>
+			<File
+				RelativePath="..\..\gds\Utilities\TextFileScannerExtensions.hpp"
+				>
+			</File>
 			<Filter
 				Name="Physics"
 				>

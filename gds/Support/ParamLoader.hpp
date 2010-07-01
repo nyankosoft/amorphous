@@ -47,56 +47,64 @@ public:
 	void CloseFile() { m_Scanner.CloseFile(); }
 
 	bool IsReady() const { return m_Scanner.IsReady(); }
-/*
-	void ScanLine( std::string& strTag, std::string& str1 );
-	void ScanLine( std::string& strTag, std::string& str1, std::string& str2 );
 
-	void ScanLine( std::string& strTag, float& f );
-	void ScanLine( std::string& strTag, float& f1, float& f2 );
-	void ScanLine( std::string& strTag, float& f1, float& f2, float& f3 );
+//	bool LoadBoolParam( const char *tag, bool& b, const char *true_word = "true", const char *false_word = "false" );
+	bool LoadBoolParam( const char *tag, const std::string& bool_tag_str, bool& b )
+	{
+		if( m_Scanner.FindLineWithTag(tag) )
+		{
+			std::string str_tag;
+			m_Scanner.ScanBool( str_tag, bool_tag_str, b );
+			return true;
+		}
+		else
+			return false;
+	}
 
-	void ScanLine( std::string& strTag, std::string& strEntry, float& f );
+	template<typename T>
+	int LoadParam( const char *tag, T& t )
+	{
+		if( m_Scanner.FindLineWithTag(tag) )
+			return m_Scanner.ScanLine( tag, t );
+		else
+			return 0;
+	}
 
-	void ScanLine( std::string& strTag, int &i );
-	void ScanLine( std::string& strTag, int &i1, int &i2 );
-	void ScanLine( std::string& strTag, int &i1, int &i2, int &i3 );
+	template<typename T0, typename T1>
+	int LoadParam( const char *tag, T0& t0, T1& t1 )
+	{
+		if( m_Scanner.FindLineWithTag(tag) )
+			return m_Scanner.ScanLine( tag, t0, t1 );
+		else
+			return 0;
+	}
 
-	void ScanLine( std::string& strTag, Vector3& v );
-	void ScanLine( std::string& strTag, Vector3& v1, Vector3& v2 );
+	template<typename T0, typename T1, typename T2>
+	int LoadParam( const char *tag, T0& t0, T1& t1, T2& t2 )
+	{
+		if( m_Scanner.FindLineWithTag(tag) )
+			return m_Scanner.ScanLine( tag, t0, t1, t2 );
+		else
+			return 0;
+	}
 
-	void ScanLine( std::string& strTag, int &i, std::string& strEntry );
-	void ScanLine( std::string& strTag, float &f, std::string& strEntry );
+	template<typename T0, typename T1, typename T2, typename T3>
+	int LoadParam( const char *tag, T0& t0, T1& t1, T2& t2, T3& t3 )
+	{
+		if( m_Scanner.FindLineWithTag(tag) )
+			return m_Scanner.ScanLine( tag, t0, t1, t2, t3 );
+		else
+			return 0;
+	}
 
-	void ScanLine( std::string& strTag, std::string& str, Vector3& v );
-*/
-
-	/// try to load params
-	/// \retval true the specified tag was found and params have been loaded if they are properly formatted
-	/// \retval false the specified tag was not found and params have not been loaded
-	bool LoadParam( const char *tag, std::string& str1 );
-	bool LoadParam( const char *tag, std::string& str1, std::string& str2 );
-
-	bool LoadParam( const char *tag, double& f );
-
-	bool LoadParam( const char *tag, float& f );
-	bool LoadParam( const char *tag, float& f1, float& f2 );
-	bool LoadParam( const char *tag, float& f1, float& f2, float& f3 );
-
-	bool LoadParam( const char *tag, std::string& strEntry, float& f );
-
-	bool LoadParam( const char *tag, int &i );
-	bool LoadParam( const char *tag, int &i1, int &i2 );
-	bool LoadParam( const char *tag, int &i1, int &i2, int &i3 );
-
-	bool LoadParam( const char *tag, Vector3& v );
-	bool LoadParam( const char *tag, Vector3& v1, Vector3& v2 );
-
-	bool LoadParam( const char *tag, int &i, std::string& strEntry );
-	bool LoadParam( const char *tag, float &f, std::string& strEntry );
-
-	bool LoadParam( const char *tag, std::string& str, Vector3& v );
-
-	bool LoadBoolParam( const char *tag, const std::string& bool_tag_str, bool& b );
+	template<typename T0, typename T1, typename T2, typename T3, typename T4>
+	int LoadParam( const char *tag, T0& t0, T1& t1, T2& t2, T3& t3, T4& t4 )
+	{
+		if( m_Scanner.FindLineWithTag(tag) )
+			return m_Scanner.ScanLine( tag, t0, t1, t2, t3, t4 );
+		else
+			return 0;
+	}
 };
 
 
