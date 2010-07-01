@@ -1,11 +1,8 @@
-
 #ifndef	__BASEENTITYDOOR_H__
 #define __BASEENTITYDOOR_H__
 
 
 #include "BE_PhysicsBaseEntity.hpp"
-
-#include "3DMath/Vector3.hpp"
 
 
 class CBE_Door : public CBE_PhysicsBaseEntity
@@ -13,8 +10,10 @@ class CBE_Door : public CBE_PhysicsBaseEntity
 	float m_fOpenLength;			// how much the door slides when it opens
 	Vector3 m_vLocalOpenDirection;	// the direction in which the door slides
 
-//	char m_acStartSound[32];
-//	char m_acStopSound[32];
+//	CSoundHandle m_OpenStartSound;
+//	CSoundHandle m_OpenEndSound;
+//	CSoundHandle m_CloseStartSound;
+//	CSoundHandle m_CloseEndSound;
 
 	float m_fSpring;
 	float m_fDamper;

@@ -28,9 +28,6 @@ class CBE_DoorController : public CBaseEntity
 
 	TCFixedVector<SDoorComponentSet, NUM_MAX_DOOR_COMPONENTS> m_vecDoorComponent;
 
-//	char m_acStartSound[32];
-//	char m_acStopSound[32];
-
 	CSoundHandle m_OpenSound;
 	CSoundHandle m_CloseSound;
 
