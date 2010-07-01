@@ -212,17 +212,20 @@ inline std::string ms_to_hhmmssff( U32 time_ms )
  *  SeparateStrings( buf, "pos	1.0 2.0 -3.0", " \t" );
  *  then, you will get buf = [ "pos", "1.0", "2.0", "3.0" ]
  */
-inline void SeparateStrings( std::vector<std::string>& rDestStr, const char *pSrcStr, const char *pSeparaters )
+inline void SeparateStrings( std::vector<std::string>& rDestStr, const char *pSrcStr, const char *pSeparators )
 {
+	if( !pSrcStr || !pSeparators )
+		return;
+
 	size_t i, str_len = strlen(pSrcStr);
-	size_t j, next_pos = 0, num_separaters = strlen(pSeparaters);
+	size_t j, next_pos = 0, num_separaters = strlen(pSeparators);
 	char str[256];
 
 	for( i=0; i<str_len; i++ )
 	{
 		for( j=0; j<num_separaters; j++ )
 		{
-			if( pSrcStr[i] == pSeparaters[j] )
+			if( pSrcStr[i] == pSeparators[j] )
 				break;
 		}
 
