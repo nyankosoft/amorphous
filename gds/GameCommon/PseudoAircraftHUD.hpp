@@ -12,7 +12,6 @@
 #include <vector>
 #include <string>
 
-class CTextureFont;
 class CPseudoAircraftSimulator;
 
 
@@ -34,7 +33,7 @@ class CPseudoAircraftHUD : public CGraphicsComponent
 
 	enum { NUM_MAX_RECTS = 64, NUM_MAX_TGT_INFO = 32 };
 
-	DWORD m_HUDColor;
+	U32 m_HUDColor;
 
 	CTextureHandle m_Texture;
 
@@ -60,7 +59,7 @@ public:
 
 	Vector2 GetScreenCenter() const { return m_vScreenCenter; }
 
-	void SetColor( DWORD color ) { m_HUDColor = color; }
+	void SetColor( U32 color ) { m_HUDColor = color; }
 
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
 	virtual void ReleaseGraphicsResources();

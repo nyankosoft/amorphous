@@ -7,10 +7,9 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-
 #include "Physics/Actor.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 using namespace std;
 

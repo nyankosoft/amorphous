@@ -17,6 +17,7 @@
 #include "Support/StringAux.hpp"
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 #include "Physics/ActorDesc.hpp"
 

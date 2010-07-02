@@ -4,8 +4,8 @@
 #include "Stage.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 using namespace std;
 

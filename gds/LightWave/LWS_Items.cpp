@@ -22,8 +22,7 @@ Key (value) (time) (span type) (curve params) * 6
 
 #include "LWS_Items.hpp"
 #include "Support/Macro.h"
-#include "Support/TextFileScanner.hpp"
-#include "Support/StringAux.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 
 #define MAX_LINE_LENGTH	1024

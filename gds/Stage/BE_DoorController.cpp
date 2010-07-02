@@ -6,8 +6,9 @@
 #include "GameMessage.hpp"
 
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Support/Serialization/Serialization_FixedVector.hpp"
 #include "Sound/Serialization_SoundHandle.hpp"
+#include "Support/Serialization/Serialization_FixedVector.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 #include "JigLib/JL_PhysicsActor.hpp"
 

@@ -2,8 +2,8 @@
 #include "EntityCollisionGroups.hpp"
 #include "CopyEntity.hpp"
 #include "Physics/Enums.hpp"
-
 #include "Support/SafeDeleteVector.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 using namespace std;
 using namespace physics;

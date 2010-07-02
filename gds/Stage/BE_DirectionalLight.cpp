@@ -6,6 +6,7 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/3DGameMath.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 
 CBE_DirectionalLight::CBE_DirectionalLight()

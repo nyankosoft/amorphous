@@ -4,9 +4,9 @@
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 #include  "Graphics/Shader/ShaderManager.hpp"
-#include  "Support/memory_helpers.hpp"
 #include  "Support/Log/DefaultLog.hpp"
 #include  "Support/Serialization/Serialization_3DMath.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 using namespace std;
 

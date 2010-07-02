@@ -4,6 +4,7 @@
 #include "Stage.hpp"
 #include "GameMessage.hpp"
 #include "Sound/SoundManager.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 
 //#include "JigLib/JL_PhysicsActor.hpp"
 #include "Physics/Actor.hpp"

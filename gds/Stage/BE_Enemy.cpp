@@ -5,21 +5,16 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "EntityMotionPathRequest.hpp"
-
 #include "Stage/PlayerInfo.hpp"
-
 #include "Graphics/Shader/ShaderManager.hpp"
-
 #include "Sound/Serialization_SoundHandle.hpp"
 #include "Sound/SoundManager.hpp"
-
-#include "Support/VectorRand.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/MTRand.hpp"
-
 #include "Physics/Actor.hpp"
+#include "Support/VectorRand.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/MTRand.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
+
 
 using namespace std;
 using namespace boost;

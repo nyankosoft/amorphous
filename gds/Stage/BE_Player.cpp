@@ -21,10 +21,9 @@
 // added for laser dot casting test
 #include "Support/VectorRand.hpp"
 #include "Support/Timer.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/Profile.hpp"
+#include "Utilities/TextFileScannerExtensions.hpp"
 #include "GUI/GM_DialogManager.hpp"
 #include "GUI/GM_ControlRendererManager.hpp"
 #include "GUI/InputHandler_Dialog.hpp"

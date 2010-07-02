@@ -41,6 +41,8 @@ CItemDatabaseBuilder::~CItemDatabaseBuilder()
 
 void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner, CGameItem* pItem )
 {
+	LOG_PRINT_ERROR( " Removed." );
+/*
 	scanner.TryScanLine( "name",			pItem->m_strName );
 	scanner.TryScanLine( "max_quantity",	pItem->m_iMaxQuantity );
 	scanner.TryScanLine( "price",			pItem->m_Price );
@@ -50,17 +52,18 @@ void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner
 	scanner.TryScanSentence( "desc_jp",			pItem->m_Desc.text[Lang::Japanese] );
 	scanner.TryScanSentence( "desc_en",			pItem->m_Desc.text[Lang::English] );
 
-/*	scanner.TryScanLine( "model_file",		pItem->m_MeshObjectContainer.m_MeshDesc.ResourcePath );
+//	scanner.TryScanLine( "model_file",		pItem->m_MeshObjectContainer.m_MeshDesc.ResourcePath );
 
-	string type_str;
-	if( scanner.TryScanLine( "mesh_type",	type_str ) )
-	{
-		CMeshType::Name mesh_type = CMeshType::BASIC;
-		if( type_str == "skeletal" )         mesh_type = CMeshType::SKELETAL;
-		else if( type_str == "progressive" ) mesh_type = CMeshType::PROGRESSIVE;
-		else if( type_str == "normal" )      mesh_type = CMeshType::BASIC;
-		pItem->m_MeshObjectContainer.m_MeshDesc.MeshType = mesh_type;
-	}*/
+//	string type_str;
+//	if( scanner.TryScanLine( "mesh_type",	type_str ) )
+//	{
+//		CMeshType::Name mesh_type = CMeshType::BASIC;
+//		if( type_str == "skeletal" )         mesh_type = CMeshType::SKELETAL;
+//		else if( type_str == "progressive" ) mesh_type = CMeshType::PROGRESSIVE;
+//		else if( type_str == "normal" )      mesh_type = CMeshType::BASIC;
+//		pItem->m_MeshObjectContainer.m_MeshDesc.MeshType = mesh_type;
+//	}
+*/
 }
 
 
