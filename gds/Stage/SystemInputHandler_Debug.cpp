@@ -13,9 +13,9 @@
 //#include "GameCommon/ScreenShotManager.hpp"
 //#include "Item/WeaponSystem.hpp"
 
-#include "Task/GameTask_Stage.hpp"
+//#include "Task/GameTask_Stage.hpp"
 
-bool g_bAppExitRequested = false;
+//bool g_bAppExitRequested = false;
 
 
 CSystemInputHandler_Debug::CSystemInputHandler_Debug()
@@ -48,9 +48,8 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 	case GIC_ESC:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			g_bAppExitRequested = true;
+//			g_bAppExitRequested = true;
 		}
-//		else if( input.iType == ITYPE_KEY_RELEASED ) {}
 		break;
 
 	case GIC_F5:	// quick save
@@ -86,7 +85,7 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 	case GIC_F12:
 		break;
 
-	case GIC_MULTIPLY:
+/*	case GIC_MULTIPLY:
 		if( input.iType == ITYPE_KEY_PRESSED )
 			g_pStage->GetScreenEffectManager()->RaiseEffectFlag( ScreenEffect::PseudoNightVision );
 		break;
@@ -95,7 +94,7 @@ void CSystemInputHandler_Debug::ProcessInput(SInputData& input)
 		if( input.iType == ITYPE_KEY_PRESSED )
 			g_pStage->GetScreenEffectManager()->ClearEffectFlag( ScreenEffect::PseudoNightVision );
 		break;
-
+*/
 	default:
 		break;	// no action is assigned to this input
 	}
