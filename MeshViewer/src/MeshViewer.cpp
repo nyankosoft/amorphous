@@ -38,7 +38,8 @@ m_fPitch(0),
 m_MeshWorldPose( Matrix34Identity() ),
 m_fInitCamShift( 20.0f ),
 m_Lighting(true),
-m_CurrentShaderIndex(0)
+m_CurrentShaderIndex(0),
+m_ScalingFactor(1)
 {
 	m_UseCameraController = false;
 
@@ -214,7 +215,8 @@ void CMeshViewer::RenderMeshes()
 	// Scale the mesh to fit its bounding sphere inside the view frustum.
 	float mesh_radius = Vec3Length( pMesh->GetAABB().GetExtents() );
 	float fov = (float)PI / 4.0f; // For Direct3D, see D3DXMatrixPerspectiveFovLH() call in CDirect3D9::InitD3D()
-	float scale = m_fInitCamShift * tan( fov / 2.0f ) / mesh_radius;
+	float magnification = (float)m_ScalingFactor * 1.0f;
+	float scale = m_fInitCamShift * tan( fov / 2.0f ) / mesh_radius * magnification;
 
 	Matrix34 shift( Matrix34Identity() );
 	shift.vPosition = -pMesh->GetAABB().GetCenterPosition();
@@ -475,6 +477,16 @@ void CMeshViewer::HandleInput( const SInputData& input )
 			m_CurrentMouseX = new_x;
 			m_CurrentMouseY = new_y;
 		}
+		break;
+
+	case GIC_MOUSE_WHEEL_UP:
+		m_ScalingFactor += 1;
+		clamp( m_ScalingFactor, 1, 64 );
+		break;
+
+	case GIC_MOUSE_WHEEL_DOWN:
+		m_ScalingFactor -= 1;
+		clamp( m_ScalingFactor, 1, 64 );
 		break;
 
 	case GIC_PAGE_UP:

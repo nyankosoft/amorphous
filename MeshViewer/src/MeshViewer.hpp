@@ -52,6 +52,8 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	float m_fInitCamShift;
 
+	int m_ScalingFactor;
+
 	Matrix34 m_MeshWorldPose;
 
 	bool m_Lighting;
