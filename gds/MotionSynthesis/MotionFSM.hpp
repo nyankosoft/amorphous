@@ -115,7 +115,7 @@ public:
 	m_pFSM(NULL),
 	m_fMotionPlaySpeedFactor(1.0f)
 	{
-		// By default, motion name initialized with the name of the node
+		// By default, motion name is initialized with the name of the node
 		m_MotionName = name;
 	}
 
@@ -417,6 +417,10 @@ class CMotionGraphManager : public IArchiveObjectBase
 	std::string m_CompleteSkeletonSourceMotionName;
 
 	std::string m_MotionDatabaseFilepath;
+
+private:
+
+	void ResetBlendNodeRoot();
 
 public:
 

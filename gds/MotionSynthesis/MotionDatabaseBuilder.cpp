@@ -214,8 +214,11 @@ Result::Name CMotionDatabaseBuilder::MapMotionPrimitiveToAnotherSkeleton( boost:
 	vector<CKeyframe>& dest_keyframes = pDestMotion->GetKeyframeBuffer();
 	dest_keyframes.resize( src_keyframes.size() );
 
-	pDestMotion->SetName( src_motion.GetName() );
+	(*pDestMotion) = src_motion;
+//	pDestMotion->SetName( src_motion.GetName() );
 	pDestMotion->SetSkeleton( *pDestSkeleton );
+//	pDestMotion->SetLoopedMotion( src_motion.IsLoopedMotion() );
+//	pDestMotion->SetStartsBoneName( src_motion.GetStartBoneName() );
 	pDestMotion->CreateEmptyKeyframes( (uint)src_keyframes.size() );
 
 	// copy keyframe times
@@ -796,6 +799,8 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 	m_SourceXMLFilename = source_script_filename;
 
 	shared_ptr<CXMLDocument> pXMLDocument;
+
+	bool file_exists = exists( source_script_filename );
 
 	// (S)
 

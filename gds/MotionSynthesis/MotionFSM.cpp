@@ -711,6 +711,12 @@ void CMotionFSM::SetStartBlendNodeToMotionPrimitives( shared_ptr<CBlendNode> pRo
 
 CMotionGraphManager::CMotionGraphManager()
 {
+	ResetBlendNodeRoot();
+}
+
+
+void CMotionGraphManager::ResetBlendNodeRoot()
+{
 	m_pBlendNodeRoot = shared_ptr<CBlendNode>( new CBlendNode );
 	m_pBlendNodeRoot->SetSelf( m_pBlendNodeRoot );
 }
@@ -809,7 +815,7 @@ void CMotionGraphManager::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_MotionDatabaseFilepath;
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
-		m_pBlendNodeRoot.reset(); // Remove the previous tree
+		ResetBlendNodeRoot(); // Remove the previous tree
 
 }
 
@@ -832,7 +838,7 @@ void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 	pNodes[7] = pFSM->AddNode("crouch-sidestep-right");
 	pNodes[8] = pFSM->AddNode("crouch-sidestep-left");
 
-	pNodes[0]->SetMotionName( "walk-legs" );
+	pNodes[0]->SetMotionName( "walk" );
 
 	// moving forward (walk/run)
 	pNodes[0]->AddTransPath( "standing", mt( 0.1, "standing" ) );

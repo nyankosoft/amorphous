@@ -54,6 +54,7 @@ void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDesc& de
 	motion.SetSkeleton( desc_group.m_Skeleton );
 
 	motion.SetLoopedMotion( desc.m_bIsLoopMotion );
+	motion.SetStartsBoneName( desc.m_StartBoneName );
 
 	vecKeyframe.resize(0);
 
