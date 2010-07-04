@@ -18,9 +18,6 @@ struct SWeaponSlot;
 // CGI_Weapon
 //======================================================================================
 
-class CGI_Weapon;
-typedef boost::shared_ptr<CGI_Weapon> CGI_WeaponSharedPtr;
-
 /**
  game item that represents firearm
 */
@@ -36,9 +33,6 @@ protected:
 	/// fire rate measured by the time between shots
 	// (0.1 means the weapon fires 10 bulletes per sec)
 	float m_fFireInterval;
-
-	/// grouping in 10[m]
-	float m_fGrouping;
 
 	float m_fMuzzleSpeedFactor;
 
@@ -116,14 +110,13 @@ public:
 	// immediate action that follows a pull of the trigger
 //	inline virtual void ImmediateTriggerAction( int iTrigger, CWeaponSystem& rWeaponSystem );
 
-	virtual void Fire();
+	virtual void Fire() {}
 
 	const std::string& GetAmmoType() const { return m_strAmmoType; }
 
 	void SetData(char *pcName, char *pcAmmoType, float fFireInterval);
 	void SetAmmoType( const char* pcAmmoType );
 	void SetFireInterval(float fFireInterval) { m_fFireInterval = fFireInterval; }
-	void SetGrouping(float fGrouping) { m_fGrouping = fGrouping; }
 	void SetMuzzleSpeedFactor(float fMuzzleSpeedFactor) { m_fMuzzleSpeedFactor = fMuzzleSpeedFactor; }
 	void SetFireSoundName( const char* pcFireSoundName );
 
@@ -134,7 +127,7 @@ public:
 	/// since those loaded missiles are held as entity pointers
 	virtual void Disarm() {}
 
-	virtual unsigned int GetArchiveObjectID() const { return ID_FIREARMS; }
+	virtual unsigned int GetArchiveObjectID() const { return ID_WEAPON; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 

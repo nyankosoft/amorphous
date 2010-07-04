@@ -637,9 +637,9 @@ void CGI_MissileLauncher::Fire()
 		y /= 2.718f;
 		Limit( x, -1.0f, 1.0f );
 		Limit( y, -1.0f, 1.0f );
-		vFireDirection = rvMuzzleDirection * 10.0f
-					   + rvMuzzleDir_Right * m_fGrouping * x
-					   + rvMuzzleDir_Up    * m_fGrouping * y;
+		vFireDirection = rvMuzzleDirection * 10.0f;
+//					   + rvMuzzleDir_Right * m_fGrouping * x
+//					   + rvMuzzleDir_Up    * m_fGrouping * y;
 
 		Vec3Normalize( vFireDirection, vFireDirection );
 		missile_entity.SetWorldOrient( CreateOrientFromFwdDir(vFireDirection) );

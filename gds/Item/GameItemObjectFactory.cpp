@@ -9,6 +9,7 @@
 #include "Radar.hpp"
 #include "LandVehicle.hpp"
 #include "RotatableTurret.hpp"
+#include "Firearm.hpp"
 
 
 using namespace item;
@@ -22,7 +23,7 @@ CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
 	case CGameItem::ID_BINOCULAR:		 return new CGI_Binocular;
 	case CGameItem::ID_NIGHT_VISION:	 return new CGI_NightVision;
 	case CGameItem::ID_AMMUNITION:		 return new CGI_Ammunition;
-	case CGameItem::ID_FIREARMS:		 return new CGI_Weapon;
+	case CGameItem::ID_WEAPON:           return new CGI_Weapon;
 	case CGameItem::ID_KEY:				 return new CGI_Key;
 	case CGameItem::ID_SUPPRESSOR:		 return new CGI_Suppressor;
 	case CGameItem::ID_CAMFLOUGE_DEVICE: return new CGI_CamouflageDevice;
@@ -32,6 +33,7 @@ CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
 	case CGameItem::ID_ROTATABLE_TURRET: return new CRotatableTurret;
 	case CGameItem::ID_LAND_VEHICLE:	 return new CLandVehicle;
 	case CGameItem::ID_ARMED_VEHICLE:	 return new CArmedVehicle;
+	case CGameItem::ID_FIREARM:          return new CFirearm;
 //	case CGameItem::ID_:				return new CGI_;
 	default:	return NULL;
 	}

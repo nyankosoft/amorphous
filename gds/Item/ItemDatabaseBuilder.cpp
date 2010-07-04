@@ -73,7 +73,7 @@ void CItemDatabaseBuilder::LoadFirearms( CTextFileScanner& scanner, CGI_Weapon* 
 
 	string str;
 
-	scanner.TryScanLine( "grouping",			pWeapon->m_fGrouping );
+//	scanner.TryScanLine( "grouping",			pWeapon->m_fGrouping );
 	scanner.TryScanLine( "fire_rate",			pWeapon->m_fFireInterval );
 	scanner.TryScanLine( "muzzle_speed_factor",	pWeapon->m_fMuzzleSpeedFactor );
 	scanner.TryScanLine( "num_bursts",			pWeapon->m_iNumBursts );
@@ -400,7 +400,7 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 		case CGameItem::ID_AMMUNITION:
 			LoadAmmunition( scanner, (CGI_Ammunition *)pObject );
 			break;
-		case CGameItem::ID_FIREARMS:
+		case CGameItem::ID_WEAPON:
 			LoadFirearms( scanner, (CGI_Weapon *)pObject );
 			break;
 		case CGameItem::ID_GRAVITY_GUN:
@@ -514,7 +514,7 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string&
 
 int CItemDatabaseBuilder::GetItemID( const string& class_name )
 {
-	if( class_name == "Firearm" )                return CGameItem::ID_FIREARMS;
+	if( class_name == "Firearm" )                return CGameItem::ID_WEAPON;
 	else if( class_name == "Ammunition" )        return CGameItem::ID_AMMUNITION;
 	else if( class_name == "GravityGun" )        return CGameItem::ID_GRAVITY_GUN;
 	else if( class_name == "Binocular" )         return CGameItem::ID_BINOCULAR;
