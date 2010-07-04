@@ -3,7 +3,7 @@
 
 #include "Input/InputHandler.hpp"
 
-extern bool g_bAppExitRequested;
+//extern bool g_bAppExitRequested;
 
 
 class CGlobalInputHandler : public CInputHandler
