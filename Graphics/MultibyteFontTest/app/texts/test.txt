@@ -1,0 +1,1 @@
+text some_simple_日本語表示のテスト_with_UTF-8文字
