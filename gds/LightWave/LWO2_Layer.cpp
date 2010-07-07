@@ -308,8 +308,9 @@ void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 	UINT2 wDimension;
 	char acVMapName[256];
 	int i = 0;
-	int iVLIndexSize1, iVLIndexSize2;	// size of variable length indices (either 2 bytes or 4 bytes)
+	int iVLIndexSize1 = 0, iVLIndexSize2 = 0; // size of variable length indices (either 2 bytes or 4 bytes)
 
+	vector<Vector2> txuv;
 
 	// Prepare for the RGBA subchunk of vertex color maps
 	CLWO2_VertexColorMap new_vcmap;
@@ -327,7 +328,23 @@ void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 	switch(dwType)
 	{
 	case ID_TXUV:
-		AdvanceFP(fp, chunksize - bytesread);
+//		AdvanceFP(fp, chunksize - bytesread);
+
+		if( wDimension != 2 )
+			return;
+
+		txuv.reserve( 1024 );
+		while(bytesread < chunksize)
+		{
+			vertex_color.iIndex        = (int)ReadVLIndex(fp, &iVLIndexSize1);  //index to a vertex in the most recent PNTS chunk
+			vertex_color.iPolygonIndex = (int)ReadVLIndex(fp, &iVLIndexSize2);  //index to a polygon in the most recent POLS chunk? Is this right?
+
+			float u=0,v=0;
+			uiRead = ReadBE4BytesIntoLE(fp); memcpy(&u, &uiRead, sizeof(float));
+			uiRead = ReadBE4BytesIntoLE(fp); memcpy(&v, &uiRead, sizeof(float));
+			txuv.push_back( Vector2(u,v) );
+			bytesread += iVLIndexSize1 +iVLIndexSize2 + 4 * 4;
+		}
 		break;
 
 	case ID_RGBA:	// vertex color map with a dimension of 4
