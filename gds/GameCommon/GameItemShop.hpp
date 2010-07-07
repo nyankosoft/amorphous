@@ -3,12 +3,13 @@
 
 
 #include <vector>
-#include "Item/ItemDatabaseManager.hpp"
+#include <boost/shared_ptr.hpp>
 #include "Support/SafeDeleteVector.hpp"
+#include "Support/Singleton.hpp"
+using namespace NS_KGL;
 
 
 class CGameItem;
-class CCustomer;
 
 
 class CCustomer

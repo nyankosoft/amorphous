@@ -1,6 +1,6 @@
 #include "GameItemShop.hpp"
 #include "Script/PyModule_shop.hpp"
-#include "Item/GameItem.hpp"
+#include "Item/ItemDatabaseManager.hpp"
 
 using namespace std;
 using namespace boost;
