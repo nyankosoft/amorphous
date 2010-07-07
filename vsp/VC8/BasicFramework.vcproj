@@ -1874,11 +1874,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\fnop.hpp"
+				RelativePath="..\..\gds\Support\ImageArchive.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\ImageArchive.hpp"
+				RelativePath="..\..\gds\Support\lfs.hpp"
 				>
 			</File>
 			<File
@@ -2164,6 +2164,30 @@
 					RelativePath="..\..\gds\Support\ZLib\zutil.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="UTF8"
+				>
+				<File
+					RelativePath="..\..\gds\Support\UTF8\utf8.h"
+					>
+				</File>
+				<Filter
+					Name="utf8"
+					>
+					<File
+						RelativePath="..\..\gds\Support\UTF8\utf8\checked.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Support\UTF8\utf8\core.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Support\UTF8\utf8\unchecked.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
