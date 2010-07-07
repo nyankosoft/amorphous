@@ -17,8 +17,7 @@
 #include "Support/TextFileScanner.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDeleteVector.hpp"
-#include "Support/fnop.hpp"
-using namespace fnop;
+#include "Support/lfs.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
@@ -459,8 +458,8 @@ void CItemDatabaseBuilder::LoadItems( CXMLNodeReader& items_node_reader )
 
 bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 {
-	fnop::dir_stack dirstk( fnop::get_path(filepath) );
-	string base_filepath = fnop::get_nopath(filepath);
+	lfs::dir_stack dirstk( lfs::get_parent_path(filepath) );
+	string base_filepath = lfs::get_leaf(filepath);
 
 	CXMLDocumentLoader doc_loader;
 	shared_ptr<CXMLDocument> pDoc
@@ -469,7 +468,7 @@ bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 
 	if( !pDoc )
 	{
-		dirstk.prevdir();
+		dirstk.pop_and_chdir();
 		return false;
 	}
 
@@ -494,7 +493,7 @@ bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 		LoadItems( vecItemsNodes[i] );
 	}
 
-	dirstk.prevdir();
+	dirstk.pop_and_chdir();
 	return true;
 }
 
@@ -528,6 +527,7 @@ int CItemDatabaseBuilder::GetItemID( const string& class_name )
 	else if( class_name == "RotatableTurret" )   return CGameItem::ID_ROTATABLE_TURRET;
 	else if( class_name == "LandVehicle" )       return CGameItem::ID_LAND_VEHICLE;
 	else if( class_name == "ArmedVehicle" )      return CGameItem::ID_ARMED_VEHICLE;
+//	else if( class_name == "Firearm" )           return CGameItem::ID_FIREARM;
 
 	else
 	{
@@ -602,7 +602,7 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFile( const string& src_filename )
 
 	// input&output filenames are given with relative paths
 	// - set the path of src_filename as working directory
-	dir_stack dirstk( get_path(src_filename) );
+	lfs::dir_stack dirstk( lfs::get_parent_path(src_filename) );
 
 	// load item parameters from text
 	size_t i, num_input_files = input_filename_list.size();
@@ -625,11 +625,11 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFile( const string& src_filename )
 	bool db_created = OutputDatabaseFile( output_filename );
 	if( !db_created )
 	{
-	    dirstk.prevdir();	// back to the previous work directory
+	    dirstk.pop_and_chdir();	// back to the previous work directory
 		return false;
 	}
 
-    dirstk.prevdir();	// back to the previous work directory
+    dirstk.pop_and_chdir();	// back to the previous work directory
 
 	return true;
 }
