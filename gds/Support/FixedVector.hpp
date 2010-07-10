@@ -1,6 +1,5 @@
-
-#ifndef __TFIXEDVECTOR_H__
-#define __TFIXEDVECTOR_H__
+#ifndef __fixed_vector_HPP__
+#define __fixed_vector_HPP__
 
 #include <assert.h>
 
@@ -17,6 +16,8 @@ public:
 	inline int size() const { return m_iIndex; }
 
 	inline void clear() { m_iIndex = 0; }
+
+	inline bool empty() const { return (m_iIndex == 0); }
 
 	inline void push_back( const CArrayType& rElement );
 
@@ -163,4 +164,4 @@ inline CPointerType *TCFixedPointerVector<CPointerType, iArraySize>::operator[] 
 }
 
 
-#endif  /*  __TFIXEDVECTOR_H__  */
+#endif  /*  __fixed_vector_HPP__  */
