@@ -1,0 +1,12 @@
+# A male character
+#MotionDescFile  ../../../../CharacterAnimation/male_skinny_young/lws2mdb-male_skinny_young-armed.xml
+#MotionDescFile  ../../../../CharacterAnimation/male_skinny_young/lws2mdb-male_skinny_young-run.xml
+#MotionDescFile  ../../../../CharacterAnimation/male_skinny_young/lws2mdb-fwd.xml
+#MotionDescFile  ../../../../CharacterAnimation/male_skinny_young/lws2mdb-fwd.xml
+MotionDescFile  ../../../../CharacterAnimation/male_skinny_young/bvh/Mocappers/bvh_mocappers_fwd.xml
+
+# A female character
+#MotionDescFile  ../../../../CharacterAnimation/female99-age17-muscle73-weight66-height1.52/walk.xml
+
+# Test mapping motion from one skeleton to another
+#MotionDescFile ../../MotionEditor/resources/bvh/Mocappers/map_to_lws.xml

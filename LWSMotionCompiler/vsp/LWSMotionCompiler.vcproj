@@ -309,6 +309,10 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath="..\app\params.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
