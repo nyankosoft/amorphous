@@ -286,26 +286,25 @@ inline void C2DRectSetImpl_D3D::Draw( int start_rect_index, int num_rects, const
 
 //	SetBasicRenderStates();
 
-	pd3dDev->SetTexture( 0, texture.GetTexture() );
+	HRESULT hr = S_OK;
+
+	hr = pd3dDev->SetTexture( 0, texture.GetTexture() );
 
 	// color blend settings
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG2 );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
+	hr = pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
+//	hr = pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG2 );
+	hr = pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+	hr = pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
+	hr = pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
 
 	// alpha blend settings
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+	hr = pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
+	hr = pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
+	hr = pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
+	hr = pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
 	// draw rectangles
 	draw( start_rect_index, num_rects );
-
-//	if( FAILED(hr) )
-//		MessageBox(NULL, "DrawPrimUP failed.", "Error", MB_OK);
 }
 
 
@@ -314,11 +313,17 @@ inline void C2DRectSetImpl_D3D::draw( int start_rect_index, int num_rects )
 	if( num_rects == 0 )
 		return;
 
+	int num_max_rects = (int)m_vecRectVertex.size() / 4 - start_rect_index;
+	if( num_max_rects < num_rects )
+		num_rects = num_max_rects;
+
 	CRectTriListIndexBuffer::SetNumMaxRects( num_rects );
 
-	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
+	HRESULT hr = S_OK;
 
-	DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP( D3DPT_TRIANGLELIST,
+	hr = DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
+
+	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP( D3DPT_TRIANGLELIST,
 									0,
 									num_rects * 4,
 									num_rects * 2,
@@ -327,6 +332,8 @@ inline void C2DRectSetImpl_D3D::draw( int start_rect_index, int num_rects )
 									&(m_vecRectVertex[start_rect_index*4]),
 									sizeof(TLVERTEX) );
 
+//	if( FAILED(hr) )
+//		MessageBox(NULL, "DrawPrimUP failed.", "Error", MB_OK);
 }
 
 

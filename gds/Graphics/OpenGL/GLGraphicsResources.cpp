@@ -284,6 +284,8 @@ public:
 
 	int GetWidth() { return (int)m_pImageBuffer->size_x(); };
 
+	int GetHeight() { return (int)m_pImageBuffer->size_y(); };
+
 	bool IsValid() const { return (m_pImageBuffer && 0 < m_pImageBuffer->size_x() && 0 < m_pImageBuffer->size_y()); }
 
 	void SetPixelARGB32( int x, int y, U32 argb_color )
@@ -321,6 +323,8 @@ public:
 	{}
 
 	int GetWidth() { return (int)m_pImageBuffer->size_x(); };
+
+	int GetHeight() { return (int)m_pImageBuffer->size_y(); };
 
 	bool IsValid() const { return (m_pImageBuffer && 0 < m_pImageBuffer->size_x() && 0 < m_pImageBuffer->size_y()); }
 

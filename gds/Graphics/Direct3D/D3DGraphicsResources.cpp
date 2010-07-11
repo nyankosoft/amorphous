@@ -56,6 +56,8 @@ public:
 
 	int GetWidth() { return m_Width; }
 
+	int GetHeight() { return m_Height; }
+
 	bool IsValid() const { return (m_pBits != NULL); }
 
 	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) { ((U32 *)m_pBits)[ y * m_Width + x ] = argb_color; }
@@ -328,6 +330,7 @@ bool CD3DTextureResource::CreateFromDesc()
 	if( !desc.pLoader )
 	{
 		LOG_PRINT_WARNING( " Created an empty texture that is not a render target and does not have a texture loader." );
+		SetState( GraphicsResourceState::LOADED );
 		return true;
 	}
 
@@ -407,7 +410,7 @@ bool CD3DTextureResource::Unlock()
 		LOG_PRINT_ERROR( "IDirect3DTexture9::UnlockRect() failed." );
 		return false;
 	}
-
+/*
 //	hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
 
 //	m_pTexture->PreLoad();
@@ -415,7 +418,7 @@ bool CD3DTextureResource::Unlock()
 	if( FAILED(hr) )
 	{
 		LOG_PRINT_ERROR( "D3DXFilterTexture() failed." );
-	}
+	}*/
 
 	return true;
 }

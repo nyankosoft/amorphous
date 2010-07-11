@@ -57,6 +57,8 @@ public:
 
 	virtual int GetWidth() = 0;
 
+	virtual int GetHeight() = 0;
+
 	virtual bool IsValid() const  = 0;
 
 	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) = 0;
