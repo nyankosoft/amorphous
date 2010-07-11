@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextFileScannerTest", "TextFileScannerTest.vcproj", "{7FF77A82-432F-44E4-953E-C5B7F861CE9E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B644E597-E42D-4649-BC22-71B37D80759D} = {B644E597-E42D-4649-BC22-71B37D80759D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "..\..\..\Project1\vsp\VC8\Core.vcproj", "{B644E597-E42D-4649-BC22-71B37D80759D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FF77A82-432F-44E4-953E-C5B7F861CE9E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7FF77A82-432F-44E4-953E-C5B7F861CE9E}.Debug|Win32.Build.0 = Debug|Win32
+		{7FF77A82-432F-44E4-953E-C5B7F861CE9E}.Release|Win32.ActiveCfg = Release|Win32
+		{7FF77A82-432F-44E4-953E-C5B7F861CE9E}.Release|Win32.Build.0 = Release|Win32
+		{B644E597-E42D-4649-BC22-71B37D80759D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B644E597-E42D-4649-BC22-71B37D80759D}.Debug|Win32.Build.0 = Debug|Win32
+		{B644E597-E42D-4649-BC22-71B37D80759D}.Release|Win32.ActiveCfg = Release|Win32
+		{B644E597-E42D-4649-BC22-71B37D80759D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

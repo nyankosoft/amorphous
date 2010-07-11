@@ -1,0 +1,16 @@
+# single parameters
+INT_PARAM_A   10
+INT_PARAM_B   20
+FLOAT_PARAM_A 3.14159
+FLOAT_PARAM_B 0.001
+DOUBLE_PARAM_A 3.14159
+DOUBLE_PARAM_B 0.001
+STRING      string_parameter
+
+# multiple parameters
+INTS		1 2 3
+3_FLOATS		0.05 -3.20 7.3
+3_DOUBLES		0.05 -3.20 7.3
+4_FLOATS		0.05 -3.20 7.3 -0.003
+4_DOUBLES		0.05 -3.20 7.3 -0.003
+4_STRINGS      string_parameter1 another_string yet_another_string 4th_string
