@@ -914,6 +914,14 @@
 					RelativePath="..\..\gds\Graphics\Font\TrueTypeTextureFont.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Font\UTFFont.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Font\UTFFont.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Debug"
