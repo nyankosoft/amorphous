@@ -2,7 +2,7 @@
 #include <boost/foreach.hpp>
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics.hpp"
-#include "gds/Graphics/AsyncResourceLoader.hpp"
+#include "gds/Graphics/Font/UTFFont.hpp"
 #include "gds/Support/lfs.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
@@ -249,7 +249,7 @@ bool CMultibyteFontTest::RenderUTF8TextToBufferToImageFile( const std::string& t
 
 	const string img_filepath = "./results/" + lfs::get_leaf(ttf_filepath) + fmt_string("-%02d-",base_char_height) + ".bmp";
 
-	SaveGrayscaleToImageFile( dest_bitmap_buffer, img_filepath );
+//	SaveGrayscaleToImageFile( dest_bitmap_buffer, img_filepath );
 
 	return true;
 }
@@ -287,6 +287,18 @@ bool CMultibyteFontTest::InitShader()
 }
 */
 
+
+class CPerfRecord
+{
+public:
+	string name;
+	int size;
+	double total_time;
+	double text_draw;
+};
+
+vector<CPerfRecord> g_rec;
+
 int CMultibyteFontTest::Init()
 {
 //	C2DArray<U8> dest_render_buffer;
@@ -300,14 +312,16 @@ int CMultibyteFontTest::Init()
 	if( text.length() == 0 )
 		return -1;
 
+	m_UTFText = text;
+/*
 	const char *fonts[] =
 	{
 		"fonts/ipag.ttf",
 		"fonts/ipagp.ttf",
-		"fonts/ipam.ttf",
-		"fonts/ipamp.ttf",
-		"fonts/cinecaption227.TTF",
-		"fonts/GDhwGoJA-OTF106b.otf"
+//		"fonts/ipam.ttf",
+//		"fonts/ipamp.ttf",
+//		"fonts/cinecaption227.TTF",
+//		"fonts/GDhwGoJA-OTF106b.otf"
 	};
 
 	const int font_sizes[] =
@@ -319,18 +333,37 @@ int CMultibyteFontTest::Init()
 		32,
 		48
 	};
+	
+	CTimer m_Timer;
+	m_Timer.Start();
+
+	vector<CPerfRecord>& rec = g_rec;
+	rec.reserve( numof(fonts) * numof(font_sizes) );
 
 	bool res = false;
 	for( int i=0; i<numof(fonts); i++ )
 	{
 		for( int j=0; j<numof(font_sizes); j++ )
 		{
+			double st = m_Timer.GetTime();
+
 			res = RenderUTF8TextToBufferToImageFile(
 				text,
 				fonts[i],
 				font_sizes[j] );
+
+			double t = m_Timer.GetTime() - st;
+
+			rec.push_back( CPerfRecord() );
+			rec.back().name = string(fonts[i]);
+			rec.back().size = font_sizes[j];
+			rec.back().total_time = t;
 		}
 	}
+*/
+	shared_ptr<CUTFFont> pUTF8Font( new CUTFFont );
+	pUTF8Font->InitFont( "fonts/ipagp.ttf", 32 );
+	m_pUTFFont = pUTF8Font;
 
 	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
@@ -339,7 +372,7 @@ int CMultibyteFontTest::Init()
 
 //	InitShader();
 
-	return res ? 0 : -1;
+//	return res ? 0 : -1;
 
 	return 0;
 }
@@ -361,19 +394,34 @@ void CMultibyteFontTest::Render()
 	if( m_pSampleUI )
 		m_pSampleUI->Render();
 
-	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
+	bool display_graphics_resources_status = false;
+	if( display_graphics_resources_status )
+	{
+		GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
-	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-	Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
-	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-	rect.Draw();
+		Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
+		Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
+		C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
+		rect.Draw();
 
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
+		m_pFont->DrawText( m_TextBuffer, vTopLeft );
+	}
 
 	Vector3 vCamPos = g_Camera.GetPosition();
 	m_pFont->DrawText(
 		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
 		Vector2( 20, 300 ) );
+/*
+	int ch = m_pFont->GetFontHeight();
+	for( size_t i=0; i<g_rec.size(); i++ )
+	{
+		CPerfRecord& rec = g_rec[i];
+		string text = fmt_string( "%s, %dpt: %fs", rec.name.c_str(), rec.size, rec.total_time );
+		m_pFont->DrawText( text, Vector2( 120, 360 + ch * i) );
+	}*/
+
+	if( m_pUTFFont )
+		m_pUTFFont->DrawText( m_UTFText.c_str(), Vector2( 20, 50 ), 0xFFFFFFFF );
 }
 
 

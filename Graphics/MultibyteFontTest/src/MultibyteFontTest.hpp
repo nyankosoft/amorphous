@@ -16,6 +16,9 @@
 #include "../../../_Common/GraphicsTestBase.hpp"
 
 
+class CUTFFont;
+
+
 class CTestMeshHolder
 {
 public:
@@ -56,9 +59,13 @@ class CMultibyteFontTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	boost::shared_ptr<CFontBase> m_pFont;
 
+	boost::shared_ptr<CUTFFont> m_pUTFFont;
+
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	CTextureHandle m_TextBufferTexture;
+
+	std::string m_UTFText;
 
 	char m_TextBuffer[TEXT_BUFFER_SIZE];
 
