@@ -1,5 +1,5 @@
 #include "2DPrimitiveRenderer_GL.hpp"
-#include "App/GameWindowManager_Win32_GL.hpp"
+//#include "App/GameWindowManager_Win32_GL.hpp"
 #include "3DMath/Matrix44.hpp"
 #include "Graphics/OpenGL/GLExtensions.hpp"
 
@@ -87,8 +87,8 @@ void C2DPrimitiveRenderer_GL::RenderGL( CGeneral2DVertex *paVertex, int num_vert
 */
 	glBegin(gl_pt);							// Drawing Using Triangles
 
-	int w = GameWindowManager_Win32().GetScreenWidth();
-	int h = GameWindowManager_Win32().GetScreenHeight();
+//	int w = GameWindowManager_Win32().GetScreenWidth();
+//	int h = GameWindowManager_Win32().GetScreenHeight();
 
 //	Vector3 saved_pos[20];
 //	memset(saved_pos, 0, sizeof(saved_pos));
