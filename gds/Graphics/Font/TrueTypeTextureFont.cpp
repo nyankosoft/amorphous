@@ -9,14 +9,7 @@ using namespace Graphics;
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/ImageArchive.hpp"
 
-
-#ifdef _DEBUG
-#pragma comment( lib, "freetype239_D.lib" )
-#else
-#pragma comment( lib, "freetype239.lib" )
-#endif
-
-
+using namespace std;
 using namespace boost;
 
 

@@ -7,6 +7,12 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#ifdef _DEBUG
+#pragma comment( lib, "freetype239_D.lib" )
+#else
+#pragma comment( lib, "freetype239.lib" )
+#endif
+
 using namespace std;
 
 
