@@ -167,6 +167,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy ..\app\LWSMotionCompiler.exe ..\..\..\bin\mdb.exe"
 			/>
 		</Configuration>
 	</Configurations>
