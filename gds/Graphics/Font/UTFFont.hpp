@@ -54,12 +54,12 @@ public:
 //	virtual float GetHorizontalFactor() const { return GetVerticalFactor(); }
 //	virtual float GetVerticalFactor() const   { return (float)m_FontHeight / (float)m_BaseHeight; }
 
-	virtual void DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor );
+	virtual void DrawText( const char* pcStr, const Vector2& vPos, U32 color );
 
 //	int GetTextWidth( const char *text ) const;
 
 	/// push text data to the buffer
-	void CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor );
+	void CacheText( const char* pcStr, const Vector2& vPos, U32 color );
 
 	virtual int GetFontType() const { return FONTTYPE_UTF; }
 

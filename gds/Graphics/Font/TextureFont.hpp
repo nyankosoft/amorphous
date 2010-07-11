@@ -134,7 +134,7 @@ public:
 	inline void ClearCache() { m_CacheIndex = 0; }
 
 	/// could be of some service if you are using fixed function pipeline...
-	void SetDefaultTextureStageStates();
+//	void SetDefaultTextureStageStates();
 
 	void SetItalic( float italic_weight ) { m_fItalic = italic_weight; }
 

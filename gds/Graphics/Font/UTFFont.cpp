@@ -385,7 +385,7 @@ static inline void ConvertToUTF8CodePoints( const std::string& src_text, std::ve
 //CTextureHandle sg_TestTexture;
 
 
-void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor )
+void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 color )
 {
 //	ONCE( sg_TestTexture.Load( "tex1024_yellow.bmp" ) );
 
@@ -396,6 +396,8 @@ void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 	m_CacheIndex = 0;
 
 	DrawTextToTexture( utf8_code_points );
+
+	m_TextBox.SetColor( color );
 
 	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
 

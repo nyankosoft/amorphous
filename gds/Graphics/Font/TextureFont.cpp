@@ -2,8 +2,6 @@
 #include "SimpleBitmapFontData.hpp"
 #include "GrayscalePixelDataLoader.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
-
-#include <string.h>
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
@@ -61,13 +59,6 @@ CTextureFont::~CTextureFont()
 
 void CTextureFont::InitInternal()
 {
-/*	ZeroMemory(m_avTextBox, sizeof(TLVERTEX) * NUM_MAX_LETTERS * 6);
-	for(int i=0; i<NUM_MAX_LETTERS * 6; i++)
-	{
-		m_avTextBox[i].rhw = 1.0f;
-		m_avTextBox[i].color = 0xff000000;		// actually, these vertex colors are ignored
-	}
-*/
 	m_fItalic = 0.0f;
 
 	m_vShadowShift = Vector2(3,3);
@@ -318,27 +309,6 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 		sy = current_y + char_rect.rect.vMin.y * factor.y;
 		ey = current_y + char_rect.rect.vMax.y * factor.y;
 
-/*
-		m_avTextBox[iVert  ].vPosition = D3DXVECTOR3( sx + italic, sy, 0 );
-		m_avTextBox[iVert  ].SetTextureCoord( 0, 0, TEXCOORD2( su, sv ) );
-		m_avTextBox[iVert  ].tv = sv;
-
-		m_avTextBox[iVert+1].vPosition = D3DXVECTOR3( ex + italic, sy, 0 );
-		m_avTextBox[iVert  ].SetTextureCoord( 1, 0, TEXCOORD2( eu, sv ) );
-
-		m_avTextBox[iVert+2].vPosition = D3DXVECTOR3( sx, ey, 0 );
-		m_avTextBox[iVert  ].SetTextureCoord( 1, 0, TEXCOORD2( su, ev ) );
-		m_avTextBox[iVert+2].tu = su;
-		m_avTextBox[iVert+2].tv = ev;
-
-		m_avTextBox[iVert+3] = m_avTextBox[iVert+1];
-
-		m_avTextBox[iVert+4].vPosition = D3DXVECTOR3( ex, ey, 0 );
-		m_avTextBox[iVert+4].tu = eu;
-		m_avTextBox[iVert+4].tv = ev;
-
-		m_avTextBox[iVert+5] = m_avTextBox[iVert+2];
-*/
 		int vert_index = rect_index * 4;
 
 		// positions
@@ -380,9 +350,6 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 		}
 	}
 
-//	for(int i=0; i<iVert; i++)
-//		m_avTextBox[i].color = dwColor;
-
 	m_TextBox.SetColor( dwColor );
 
 	m_CacheIndex += (int)num_letters;
@@ -391,36 +358,8 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 
 void CTextureFont::DrawCachedText()
 {
-/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
-
-	// set the font texture
-	hr = pd3dDev->SetTexture( 0, m_FontTexture.GetTexture() );
-
-	if( FAILED(hr) )
-		return;
-
-	// enable alpha blending
-    //pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-    //pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-    //pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-
-	// blend texture color and diffuse color
-	//pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-	//pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
-	//pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-	//pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
-
-    //pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-    //pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-    //pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-    //pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-
-	pd3dDev->SetFVF( D3DFVF_TLVERTEX );
-*/
 	// Draw the string
 	const int num_letters = m_CacheIndex;
-//	pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLELIST, num_letters * 2, m_avTextBox, sizeof(TLVERTEX) );
 
 	m_TextBox.SetDestAlphaBlendMode( m_DestAlphaBlend );
 
@@ -430,7 +369,7 @@ void CTextureFont::DrawCachedText()
 	m_TextBox.Draw( 0, num_letters, m_FontTexture );
 }
 
-
+/*
 void CTextureFont::SetDefaultTextureStageStates()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -453,4 +392,4 @@ void CTextureFont::SetDefaultTextureStageStates()
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
     pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-}
+}*/
