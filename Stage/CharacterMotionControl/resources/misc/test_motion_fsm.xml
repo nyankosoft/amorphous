@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<motion_database file="motions/lws-fwd.mdb"/>
+	<!--<motion_database file="motions/lws-fwd.mdb"/>-->
+	<motion_database file="motions/basic_moves__mo.mdb"/>
+	<!--<motion_database file="motions/basic_moves__az.mdb"/>-->
 	<complete_skeleton motion_primitive_name="standing"/>
 	<FSMs>
 		<FSM name="lower_limbs">
 			<nodes>
-				<node name="fwd" motion_primitive_name="walk-legs"></node>
+				<!--<node name="fwd" motion_primitive_name="walk-legs"></node>-->
+				<node name="fwd" motion_primitive_name="walk"></node>
 				<node name="standing"></node>
 				<node name="crouch"></node>
 				<node name="prone"></node>
