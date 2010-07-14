@@ -1,4 +1,5 @@
 #include "ClothSystem.hpp"
+#include "gds/Graphics/MeshGenerators.hpp"
 #include "gds/Physics.hpp"
 #include "gds/XML.hpp"
 #include "gds/MotionSynthesis/MotionFSM.hpp"
@@ -507,6 +508,15 @@ void CClothSystem::RenderObjectsForDebugging()
 {
 	vector<CClothCollisionObject> *pObjs[] = { &m_ClothAttachObjects, &m_ClothCollisionObjects };
 	SFloatRGBAColor colors[] = { SFloatRGBAColor::Blue(), SFloatRGBAColor::Red() };
+
+	static CMeshObjectHandle m_SphereMesh;
+	static CMeshObjectHandle m_CapsuleMesh;
+	if( !m_SphereMesh.IsLoaded() )
+	{
+		CMeshResourceDesc mesh_desc;
+		mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(CSphereDesc()) );
+		m_SphereMesh.Load( mesh_desc );
+	}
 
 	for( int i=0; i<2; i++ )
 	{
