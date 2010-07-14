@@ -94,6 +94,10 @@ void CMotionPrimitive::CalculateInterpolatedKeyframe( float time )
 
 	if( m_pStartBlendNode )
 		m_pStartBlendNode->SetTransformNodes( m_KeyframeBuffer.GetRootNode() );
+	else
+	{
+		LOG_PRINT_WARNING( " The start blend node is missing. Cannot set transforms to blend nodes tree." );
+	}
 }
 
 

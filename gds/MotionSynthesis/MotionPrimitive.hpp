@@ -274,6 +274,10 @@ public:
 
 	void SearchAndSetStartBlendNode( boost::shared_ptr<CBlendNode>& pRootBlendNode );
 
+	boost::shared_ptr<CBlendNode> GetStartBlendNode() { return m_pStartBlendNode; }
+
+	void SetStartBlendNode( boost::shared_ptr<CBlendNode>& pBlendNode ) { m_pStartBlendNode = pBlendNode; }
+
 	void Serialize( IArchive & ar, const unsigned int version );
 
 	unsigned int GetVersion() const { return 1; }
