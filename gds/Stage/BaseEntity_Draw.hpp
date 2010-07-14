@@ -106,7 +106,7 @@ public:
 		//PROFILE_FUNCTION();
 
 		// set identity matrix to the root bone since 
-		m_pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );//	< usu.?
+//		m_pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );//	< usu.?
 
 		m_pSkeletalMesh->SetLocalTransformsFromCache();
 
