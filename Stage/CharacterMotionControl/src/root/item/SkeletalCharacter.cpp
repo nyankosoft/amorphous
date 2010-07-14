@@ -39,9 +39,14 @@ m_fTurnSpeed(0.0f)
 	m_pMotionGraphManager.reset( new CMotionGraphManager );
 //	m_pMotionGraphManager = shared_new<CMotionGraphManager>();
 
+	// Not used: motion database filepaths are specified in resources/misc/test_motion_fsm.xml
+//	string mdb_filepath = "motions/lws-fwd.mdb";
+//	string mdb_filepath = "motions/bvh_to_lws_mapping_test.mdb";
+	string mdb_filepath = "motions/basic_moves__az.mdb";
+
 	bool load_embedded_test_data = false;
 	if( load_embedded_test_data )
-		m_pMotionGraphManager->InitForTest( "motions/lws-fwd.mdb" );
+		m_pMotionGraphManager->InitForTest( mdb_filepath );
 	else
 	{
 		// Load FSM from XML file and update the binary file
@@ -119,7 +124,7 @@ m_fTurnSpeed(0.0f)
 		InputHub().PushInputHandler( 2, m_pInputHandler.get() );
 
 	// save a motion primitive to get skeleton info in Render()
-	CMotionDatabase mdb("motions/lws-fwd.mdb");
+	CMotionDatabase mdb( mdb_filepath );
 	m_pSkeletonSrcMotion = mdb.GetMotionPrimitive("standing");
 
 	m_pMotionGraphManager->GetMotionFSM("lower_limbs")->StartMotion("standing");
@@ -172,7 +177,9 @@ void CSkeletalCharacter::Update( float dt )
 
 	// test collision
 
+	// the world pose of the entity -> always stays horizontal
 	pEntity->SetWorldPose( updated_world_pose );
+//	pEntity->SetWorldPose( Matrix34Identity() );
 
 //	Matrix34 world_pose = m_pMotionGraphManager->GetCurrentWorldPose();
 
