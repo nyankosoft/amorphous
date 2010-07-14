@@ -68,9 +68,9 @@ class CMotionPrimitiveBlender : public CMotionBlender
 
 	unsigned int m_FlipVal;
 	
-	/// hold temporary motion primitive created for interpolation
-//	boost::shared_ptr<CMotionPrimitive> m_pInterpolationMotion;
+	/// stock of temporary motion primitives created for interpolation
 	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpInterpolationMotion;
+//	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpInterpolationMotionInUse;
 
 	/// used by GetCurrentMotionPrimitive() to return an empty motion primitive when
 	/// no motion in the queue
@@ -93,6 +93,12 @@ private:
 								 boost::shared_ptr<CMotionPrimitive> pNextMotion );
 
 	void UpdatePoseAndRootNodePose( boost::shared_ptr<CMotionPrimitive>& pMotion, float time_0, float time_1 );
+
+	void PushInterpolationMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pCurrentMotion,
+		                                   boost::shared_ptr<CMotionPrimitive> pNewMotion,
+										   float interpolation_time );
+
+	void ClearMotionPrimitiveQueue();
 
 public:
 

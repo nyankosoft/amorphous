@@ -476,6 +476,24 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 					desc.m_vecAnnotation.push_back( annotations[j].GetTextContent() );
 			}
 		}
+		else if( element_name == "Modifications" )
+		{
+			vector<CXMLNodeReader> fixes = children[i].GetImmediateChildren( "Fix" );
+			for( size_t j=0; j<fixes.size(); j++ )
+			{
+				CJointFixMod mod;
+				mod.m_JointName = fixes[j].GetAttributeText( "joint_name" );
+				CXMLNodeReader fix_t = fixes[j].GetChild("Translation");
+				if( fix_t.IsValid() )
+				{
+					string tx,ty,tz;
+					tx = (fix_t.GetAttributeText("x")); if( 0 < tx.length() ) { mod.m_TargetFlags |= CJointFixMod::TX; mod.m_Fixed.vPosition.x = to_float(tx); }
+					ty = (fix_t.GetAttributeText("y")); if( 0 < ty.length() ) { mod.m_TargetFlags |= CJointFixMod::TY; mod.m_Fixed.vPosition.y = to_float(ty); }
+					tz = (fix_t.GetAttributeText("z")); if( 0 < tz.length() ) { mod.m_TargetFlags |= CJointFixMod::TZ; mod.m_Fixed.vPosition.z = to_float(tz); }
+				}
+				desc.m_vecFixMod.push_back( mod );
+			}
+		}
 		else if( element_name == "RootJoint" )
 		{
 			vector<CXMLNodeReader> root_joints = children[i].GetImmediateChildren();
@@ -696,7 +714,8 @@ void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc
 		}
 	}
 
-	// Apply joint modifications
+	// Apply joint modifications.
+	// Applied to all the motion primitives
 	const int num_joint_mods = (int)m_vecJointModification.size();
 	for( int i=0; i<num_joint_mods; i++ )
 	{
@@ -730,6 +749,21 @@ void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc
 				}
 			}
 		}
+	}
+
+	int num_desc_groups = (int)m_vecDescGroup.size();
+	for( int i=0; i<num_desc_groups; i++ )
+	{
+		int num_descs = (int)m_vecDescGroup[i].m_Desc.size();
+		for( int j=0; j<num_descs; j++ )
+		{
+			CMotionPrimitiveDesc& desc = m_vecDescGroup[i].m_Desc[j];
+			if( !desc.m_pMotionPrimitive )
+				continue;
+
+			ApplyJointFixModification( desc.m_vecFixMod, *(desc.m_pMotionPrimitive) );
+		}
+
 	}
 }
 
@@ -788,6 +822,43 @@ void CMotionDatabaseBuilder::ApplyJointModification( const CJointModification& m
 
 				pNode->SetTransform( modified );
 			}
+		}
+
+	}
+}
+
+
+void CMotionDatabaseBuilder::ApplyJointFixModification( const std::vector<CJointFixMod>& mods, CMotionPrimitive& target_motion )
+{
+	if( mods.empty() )
+		return;
+
+	shared_ptr<CSkeleton> pSkeleton = target_motion.GetSkeleton();
+	if( !pSkeleton )
+		return;
+
+	const int num_fix_mods = (int)mods.size();
+	for( int i=0; i<num_fix_mods; i++ )
+	{
+		const CJointFixMod& mod = mods[i];
+		vector<int> locator;
+		bool res = pSkeleton->CreateLocator( mods[i].m_JointName, locator );
+
+//		if( locator.empty() )
+//			continue;
+
+		vector<CKeyframe>& keyframes = target_motion.GetKeyframeBuffer();
+		int num_keyframes = (int)keyframes.size();
+		for( int j=0; j<num_keyframes; j++ )
+		{
+			CKeyframe& keyframe = keyframes[j];
+			CTransformNode *pNode = keyframe.GetTransformNode( locator );
+
+			Transform transform = pNode->GetLocalTransform();
+			if( mod.m_TargetFlags & CJointFixMod::TX ) transform.vTranslation.x = mod.m_Fixed.vPosition.x;
+			if( mod.m_TargetFlags & CJointFixMod::TY ) transform.vTranslation.y = mod.m_Fixed.vPosition.y;
+			if( mod.m_TargetFlags & CJointFixMod::TZ ) transform.vTranslation.z = mod.m_Fixed.vPosition.z;
+			pNode->SetLocalTransform( transform );
 		}
 
 	}

@@ -22,6 +22,33 @@ using namespace GameLib1::Serialization;
 namespace msynth
 {
 
+class CJointFixMod
+{
+public:
+
+	enum TargetFlag
+	{
+		TX = (1 << 0),
+		TY = (1 << 1),
+		TZ = (1 << 2),
+		RX = (1 << 3),
+		RY = (1 << 4),
+		RZ = (1 << 5),
+	};
+
+	std::string m_JointName;
+
+	U32 m_TargetFlags;
+
+	Matrix34 m_Fixed;
+
+	CJointFixMod()
+		:
+	m_TargetFlags(0),
+	m_Fixed( Matrix34Identity() )
+	{}
+};
+
 
 class CMotionPrimitiveDesc
 {
@@ -48,6 +75,8 @@ public:
 	std::vector<std::string> m_vecAnnotation;
 
 	std::string m_StartBoneName;
+
+	std::vector<CJointFixMod> m_vecFixMod;
 
 	/// output
 	boost::shared_ptr<CMotionPrimitive> m_pMotionPrimitive;
@@ -263,6 +292,8 @@ protected:
 	void ProcessGlobalModificationOptions( CXMLNodeReader& node );
 
 	void ApplyJointModification( const CJointModification& mod );
+
+	void ApplyJointFixModification( const std::vector<CJointFixMod>& mods, CMotionPrimitive& target_motion );
 
 	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc );
 

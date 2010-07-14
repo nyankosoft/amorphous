@@ -514,6 +514,11 @@ inline void CMotionGraphManager::GetCurrentKeyframe( CKeyframe& dest )
 	// Combine the keyframes of motion primitives
 	m_pBlendNodeRoot->GetKeyframe( dest );
 
+	Vector3 t = dest.GetRootNode().GetLocalTranslation();
+	t.x = 0;
+	t.z = 0;
+	dest.SetRootPose( Matrix34( t, dest.GetRootNode().GetLocalRotationQuaternion().ToRotationMatrix() ) );
+
 	// Commented out - root node pose is set to identity in CBlendMatricesLoader::UpdateShaderParams().
 	// It is, instead, specified as an argument to CMeshContainerRenderMethod::RenderMeshContainer
 /*

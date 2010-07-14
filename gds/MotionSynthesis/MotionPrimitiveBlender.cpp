@@ -38,6 +38,11 @@ inline Matrix34 horizontal( const Matrix34& src )
 }
 
 
+inline static bool IsInterpolationMotion( shared_ptr<CMotionPrimitive> pMotion )
+{
+	return (pMotion->GetName() == "__InterpolationMotion__");
+}
+
 
 CMotionPrimitiveBlender::CMotionPrimitiveBlender()
 :
@@ -60,12 +65,17 @@ m_CurrentHorizontalPose( Matrix34Identity() )
 //	vector<CKeyframe>& rvecDestKeyframe = m_pInterpolationMotion->GetKeyframeBuffer();
 //	rvecDestKeyframe.resize( 2 );
 
-	m_vecpInterpolationMotion.resize( NUM_MAX_INTERPOLATION_MOTION_PRIMITIVES );
-	for( size_t i=0; i<NUM_MAX_INTERPOLATION_MOTION_PRIMITIVES; i++ )
+	bool enable_interpolation = true;
+	if( enable_interpolation )
 	{
-		m_vecpInterpolationMotion[i] = shared_ptr<CMotionPrimitive>( new CMotionPrimitive() );
-		vector<CKeyframe>& rvecDestKeyframe = m_vecpInterpolationMotion[i]->GetKeyframeBuffer();
-		rvecDestKeyframe.resize( 2 );
+		m_vecpInterpolationMotion.resize( NUM_MAX_INTERPOLATION_MOTION_PRIMITIVES );
+		for( size_t i=0; i<NUM_MAX_INTERPOLATION_MOTION_PRIMITIVES; i++ )
+		{
+			m_vecpInterpolationMotion[i] = shared_ptr<CMotionPrimitive>( new CMotionPrimitive() );
+			m_vecpInterpolationMotion[i]->SetName( "__InterpolationMotion__" );
+			vector<CKeyframe>& rvecDestKeyframe = m_vecpInterpolationMotion[i]->GetKeyframeBuffer();
+			rvecDestKeyframe.resize( 2 );
+		}
 	}
 
 	// empty motion primitive
@@ -89,6 +99,66 @@ void CMotionPrimitiveBlender::Release()
 }
 
 
+void CMotionPrimitiveBlender::ClearMotionPrimitiveQueue()
+{
+	// Return the interpolation primitives to the stock
+	for( list< shared_ptr<CMotionPrimitive> >::iterator itr = m_MotionPrimitiveQueue.begin();
+		 itr != m_MotionPrimitiveQueue.end();
+		 itr++ )
+	{
+		if( (*itr)
+		 && IsInterpolationMotion( *itr ) )
+		{
+			m_vecpInterpolationMotion.push_back( (*itr) );
+		}
+	}
+
+	m_MotionPrimitiveQueue.clear();
+}
+
+
+void CMotionPrimitiveBlender::PushInterpolationMotionPrimitive( shared_ptr<CMotionPrimitive> pCurrentMotion,
+															    shared_ptr<CMotionPrimitive> pNewMotion,
+																float interpolation_time )
+{
+	if( m_vecpInterpolationMotion.empty() )
+		return;
+
+	shared_ptr<CMotionPrimitive> pInterpolationMotion = m_vecpInterpolationMotion.back();
+	m_vecpInterpolationMotion.pop_back();
+
+	vector<CKeyframe>& rvecDestKeyframe = pInterpolationMotion->GetKeyframeBuffer();
+
+	// Wait... there is only one interpolation motion instance.
+	// -> An interpolation moiton must be created later when it is needed
+
+	// create a motion primitive for interpolation
+	// - start frame: last frame of the current motion
+	pCurrentMotion->GetLastKeyframe( rvecDestKeyframe[0] );
+	rvecDestKeyframe[0].SetTime( 0 );
+
+	// - end frame: the first frame of the new motion
+	pNewMotion->GetFirstKeyframe( rvecDestKeyframe[1] );
+	rvecDestKeyframe[1].SetTime( interpolation_time );
+
+	Matrix34 root_pose_0 = rvecDestKeyframe[0].GetRootPose();
+	Matrix34 root_pose_1 = rvecDestKeyframe[1].GetRootPose();
+	root_pose_1.vPosition.x = root_pose_0.vPosition.x;
+	root_pose_1.vPosition.z = root_pose_0.vPosition.z;
+	rvecDestKeyframe[1].SetRootPose( root_pose_1 );
+
+	// copy the start blend node of the new motion to the interpolation motion
+	pInterpolationMotion->SetStartBlendNode( pNewMotion->GetStartBlendNode() );
+
+	if( !pNewMotion->GetStartBlendNode() )
+	{
+		LOG_PRINT_WARNING( "The new motion does not have start blend node. " );
+	}
+
+	m_MotionPrimitiveQueue.push_back( pInterpolationMotion );
+}
+
+
 void CMotionPrimitiveBlender::AddMotionPrimitive( shared_ptr<CMotionPrimitive> pNewMotion, int iFlag )
 {
 	if( !pNewMotion )
@@ -96,37 +166,17 @@ void CMotionPrimitiveBlender::AddMotionPrimitive( shared_ptr<CMotionPrimitive> p
 
 	if( 0 < m_MotionPrimitiveQueue.size() )
 	{
-		if( false /*0 < m_vecpInterpolationMotion.size()*/ )
+		if( 0 < m_vecpInterpolationMotion.size() )
+//		if( false )
 		{
 			shared_ptr<CMotionPrimitive> pInterpolationMotion
 				= m_vecpInterpolationMotion.back();
 
-			m_vecpInterpolationMotion.pop_back();
-
-//			vector<CKeyframe>& rvecDestKeyframe = pInterpolationMotion->GetKeyframeBuffer();
-
-			// Wait... there is only one interpolation motion instance.
-			// -> An interpolation moiton must be created later when it is needed
-/*			shared_ptr<CMotionPrimitive> pCurrentMotion
-			= m_MotionPrimitiveQueue.front();
-
-			// create a motion primitive for interpolation
-			// - start frame: last frame of the current motion
-			pCurrentMotion->GetLastKeyframe( rvecDestKeyframe[0] );
-			rvecDestKeyframe[0].SetTime( 0 );
-
-			// - end frame: the first frame of the new motion
-			pNewMotion->GetFirstKeyframe( rvecDestKeyframe[1] );
-			rvecDestKeyframe[1].SetTime( m_fInterpolationTime );
-*/
-			m_MotionPrimitiveQueue.push_back( pInterpolationMotion );
-
-			m_MotionPrimitiveQueue.push_back( pNewMotion );
+			shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
+			PushInterpolationMotionPrimitive( pCurrentMotion, pNewMotion, 0.1f );
 		}
-		else
-		{
-			m_MotionPrimitiveQueue.push_back( pNewMotion );
-		}
+
+		m_MotionPrimitiveQueue.push_back( pNewMotion );
 	}
 	else
 	{
@@ -157,12 +207,16 @@ void CMotionPrimitiveBlender::StartNewMotionPrimitive( float interpolation_motio
 		shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
 
 		// - clear all the previous motion in the queue
-		m_MotionPrimitiveQueue.clear();
+		ClearMotionPrimitiveQueue();
+//		m_MotionPrimitiveQueue.clear();
 
-		if( false /*0 < m_vecpInterpolationMotion.size()*/ )
+		if( 0 < m_vecpInterpolationMotion.size() )
+//		if( false )
 		{
 			// add an interpolation motion
 
+			PushInterpolationMotionPrimitive( pCurrentMotion, pNewMotion, interpolation_motion_length );
+/*
 			shared_ptr<CMotionPrimitive> pInterpolationMotion = m_vecpInterpolationMotion.back();
 
 			m_vecpInterpolationMotion.pop_back();
@@ -181,7 +235,7 @@ void CMotionPrimitiveBlender::StartNewMotionPrimitive( float interpolation_motio
 			// add the interpolation motion primitive to the queue
 			m_MotionPrimitiveQueue.push_back( pInterpolationMotion );
 
-//			m_LastOriginalRootPose = rvecDestKeyframe[0].GetRootPose();
+//			m_LastOriginalRootPose = rvecDestKeyframe[0].GetRootPose();*/
 		}
 //		else
 //			m_LastOriginalRootPose = pNewMotion->GetFirstKeyframe().GetRootPose();
@@ -261,6 +315,11 @@ void CMotionPrimitiveBlender::UpdatePoseAndRootNodePose( shared_ptr<CMotionPrimi
 {
 	Matrix34& current_horizontal_pose = m_CurrentHorizontalPose;
 
+	if( IsInterpolationMotion(pMotion) )
+	{
+		int break_here = 1;
+	}
+
 	CKeyframe k0, k1;
 	pMotion->GetInterpolatedKeyframe( k0, time_0 );
 	pMotion->GetInterpolatedKeyframe( k1, time_1 );
@@ -275,6 +334,9 @@ void CMotionPrimitiveBlender::UpdatePoseAndRootNodePose( shared_ptr<CMotionPrimi
 		* pCurrentMotion->GetLastOrientation()
 		* Matrix33Transpose( pCurrentMotion->GetOrientation( prev_time ) );
 */
+	// experiment with walk motion - always walk on the z-axis
+//	root_pose_0_to_1.vPosition.x = 0;
+
 	// translation of the pose
 	current_horizontal_pose.vPosition += current_horizontal_pose.matOrient * root_pose_0_to_1.vPosition;
 	current_horizontal_pose.vPosition.y = root_pose_1.vPosition.y;
@@ -365,6 +427,11 @@ void CMotionPrimitiveBlender::Update( float dt )
 			// assumes no other motion is currently in the queue
 			AddMotionPrimitive( pCurrentMotion, 0 );
 		}
+
+		// Return the current motion to the stock of interpolation motions
+		// if it is an interpolation motion.
+		if( IsInterpolationMotion(pCurrentMotion) )
+			m_vecpInterpolationMotion.push_back( pCurrentMotion );
 
 		if( m_pCallback )
 		{
@@ -587,6 +654,11 @@ void CMotionPrimitiveBlender::CalculateKeyframe()
 		return;
 
 	shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
+
+	if( IsInterpolationMotion( pCurrentMotion ) )
+	{
+		int break_here = 1;
+	}
 
 	if( m_fCurrentTime < pCurrentMotion->GetTotalTime() )
 	{
