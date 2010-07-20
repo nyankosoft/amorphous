@@ -456,7 +456,10 @@ inline bool CBitmapImage::LoadFromFile( const std::string& pathname, int flag )
 			return true;
 		}
 		else
+		{
+			LOG_PRINT_ERROR( " Failed to load a file: " + pathname );
 			return false;
+		}
 	}
 
 	return false;
