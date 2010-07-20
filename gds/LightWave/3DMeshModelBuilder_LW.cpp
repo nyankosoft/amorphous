@@ -182,12 +182,17 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 	const int iNumPolygons = (int)rvecPolygon.size();
 	int iNumPolVerts;
 
+	const CLWO2_Surface null_surface;
+
 	vector<CIndexedPolygon>& polygon_buffer = m_pMesh->GetPolygonBuffer();
 	for( i=0; i<iNumPolygons; i++ )
 	{
 		CLWO2_Face& rPolygon = rvecPolygon[i];
 
-		CLWO2_Surface& rSurf = m_pSrcObject->FindSurfaceFromTAG( rPolygon.GetSurfaceIndex() );
+		CLWO2_Surface *pSurf = m_pSrcObject->FindSurfaceFromTAG( rPolygon.GetSurfaceIndex() );
+
+		const CLWO2_Surface& rSurf = *pSurf;
+//		const CLWO2_Surface& rSurf = pSurf ? *pSurf : null_surface;
 
 		if( !filter.IncludeSurface( rSurf.GetName() ) )
 			continue;

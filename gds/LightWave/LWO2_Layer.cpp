@@ -343,7 +343,7 @@ void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 			uiRead = ReadBE4BytesIntoLE(fp); memcpy(&u, &uiRead, sizeof(float));
 			uiRead = ReadBE4BytesIntoLE(fp); memcpy(&v, &uiRead, sizeof(float));
 			txuv.push_back( Vector2(u,v) );
-			bytesread += iVLIndexSize1 +iVLIndexSize2 + 4 * 4;
+			bytesread += iVLIndexSize1 +iVLIndexSize2 + 4 * 2;
 		}
 		break;
 
@@ -776,7 +776,7 @@ bool CLWO2_Layer::GetUV( float& u, float& v, int iPointIndex, CLWO2_TextureUVMap
 
 bool CLWO2_Layer::GetVertexColor( SFloatRGBAColor& color,	 // [out] vertex color is stored here if a corresponding one is found
 		  			              const int iPntIndex,		 // [in]  index to a point
-					              CLWO2_Surface& rSurf // [in]
+					              const CLWO2_Surface& rSurf // [in]
 					             )
 {
 	int i, iNumVertexColorMaps = m_vecVertexColorMap.size();

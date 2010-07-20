@@ -90,14 +90,11 @@ private:
 	// TODO: save envelope values
 	float m_afBaseShadingValue[NUM_BASE_SHADING_VALUES];
 
-	float m_fMaxSmoothingAngle;	// [rad]
+	float m_fMaxSmoothingAngle;	///< [rad]
 
 public:
 
 	CLWO2_Surface();
-
-//	bool operator==(CLWO2_Surface& surf){ return (memcmp(this, &surf, sizeof(CLWO2_Surface)) == 0); }
-//	bool operator<(CLWO2_Surface& surf){return (strcmp(pName, surf.pName) < 0);}
 
 	void Clear();
 
@@ -105,24 +102,28 @@ public:
 
 	void ReadSurfaceBlock(UINT2 wBlockSize, FILE* fp);
 
+	/// Returns the angle below which smoothing should be applied to adjacent polygons 
+	float GetMaxSmoothingAngle() const { return m_fMaxSmoothingAngle; }
 
-	float GetMaxSmoothingAngle() { return m_fMaxSmoothingAngle; }	// returns angle below which smoothing should be applied to adjacent polygons 
-
-	std::string& GetName() { return m_strName; }
+	const std::string& GetName() const { return m_strName; }
 
 //	string& GetUVMapName() { return m_strUVMapName; }
 
 //	UINT4 GetImageTag() { return imagetag; }
 
+	const std::vector<CLWO2_SurfaceBlock>& GetSurfaceBlock() const { return m_vecSurfaceBlock; }
+
 	std::vector<CLWO2_SurfaceBlock>& GetSurfaceBlock() { return m_vecSurfaceBlock; }
 
 	CLWO2_SurfaceBlock *GetSurfaceBlockByChannel( UINT4 uiChannelID );
 
-	std::string& GetComment() { return m_strComment; }
+	const std::string& GetComment() const { return m_strComment; }
+
+	const SBSP_VertexColorMap& GetVertexColorMap() const { return VMap; }
 
 	SBSP_VertexColorMap& GetVertexColorMap() { return VMap; }
 
-	float GetBaseShadingValue( int iType ) { return m_afBaseShadingValue[iType]; }
+	float GetBaseShadingValue( int iType ) const { return m_afBaseShadingValue[iType]; }
 
 };
 

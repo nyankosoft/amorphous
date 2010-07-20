@@ -309,7 +309,7 @@ public:
 	void ComputeVertexNormals();
 
 
-	std::string& GetName() { return m_strLayerName; }
+	const std::string& GetName() const { return m_strLayerName; }
 
 	int GetLayerIndex() const { return m_iLayerIndex; }
 
@@ -317,7 +317,11 @@ public:
 
 	const std::vector<Vector3>& GetVertex() const { return m_vecPoint; }
 
+	const std::vector<Vector3>& GetVertexNormal() const { return m_vecVertexNormal; }
+
 	std::vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
+
+	const std::vector<CLWO2_Face>& GetFace() const { return m_vecFace; }
 
 	std::vector<CLWO2_Face>& GetFace() { return m_vecFace; }
 
@@ -341,7 +345,7 @@ public:
 
 	std::vector<CLWO2_PointSelectionSet>& GetPointSelectionSet() { return m_vecPointSelectionSet; }
 
-	bool GetVertexColor( SFloatRGBAColor& color, const int iPntIndex, CLWO2_Surface& rSurf );
+	bool GetVertexColor( SFloatRGBAColor& color, const int iPntIndex, const CLWO2_Surface& rSurf );
 
 	const std::vector<CLWO2_Bone>& GetBone() const { return m_vecBone; }
 

@@ -41,17 +41,11 @@ class CLWO2_StillClip
 public:
 	UINT4 uiClipIndex;
 	std::string strName;
-
+public:
 	CLWO2_StillClip() : uiClipIndex(0) {}
-
-//	bool operator==(CLWO2_StillClip& clip){ return (this->uiClipIndex == clip.uiClipIndex); }
-//	bool operator<(CLWO2_StillClip& clip){return (this->uiClipIndex < clip.uiClipIndex); }
-
 	void Read(UINT4 clipsize, FILE* fp);
-
-	UINT4 GetClipIndex() { return uiClipIndex; }
-//	const char *GetName() { return strName.c_str(); }
-	std::string& GetName() { return strName; }
+	UINT4 GetClipIndex() const { return uiClipIndex; }
+	const std::string& GetName() const { return strName; }
 };
 
 
@@ -109,13 +103,15 @@ public:
 
 	bool LoadLWO2Object( const std::string& object_filename );
 
-	std::string& GetFilename() { return m_strFilename; }
+	const std::string& GetFilename() const { return m_strFilename; }
 
 	std::list<CLWO2_Layer>& GetLayer() { return m_lstLayer; }
 
 	std::vector<CLWO2_Surface>& GetSurface() { return m_vecSurface; }
 
-	CLWO2_Surface& FindSurfaceFromTAG(UINT2 wSurfIndex);
+	const std::vector<CLWO2_Surface>& GetSurface() const { return m_vecSurface; }
+
+	CLWO2_Surface *FindSurfaceFromTAG(UINT2 wSurfIndex);
 
 	/// when a surface tag stored in polygon is handed,
 	/// returns the index of the surface in the array
@@ -124,7 +120,7 @@ public:
 	/// find a uv-mapping associated with the surface
 //	CLWO2_TextureUVMap* FindTextureUVMapFromSurface(CLWO2_Surface& rSurf, CLWO2_Layer& rLayer);
 
-	CLWO2_TextureUVMap* FindTextureUVMapFromSurface( CLWO2_Surface& rSurf,
+	CLWO2_TextureUVMap* FindTextureUVMapFromSurface( const CLWO2_Surface& rSurf,
 		                                             const UINT4 channel_id,
 													 CLWO2_Layer& rLayer);
 
@@ -149,11 +145,11 @@ public:
 	std::vector<CLWO2_Layer *> GetLayersWithKeywords( const std::vector<std::string> keyword,
 		                                              int match_condition = CLWO2_NameMatchCond::EQUAL );
 
-	void WriteDebug( const std::string& filename );
+	void WriteDebug( const std::string& filename ) const;
 
-	int GetNumTagStrings();
+	int GetNumTagStrings() const;
 
-	char *GetTagString( int i );
+	const char *GetTagString( int i ) const;
 
 	int GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_Layer& rLayer );
 

@@ -204,34 +204,6 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 
 	UpdateItemTrees();
 
-/*	FILE* fp = fopen( pcLWS_Filename, "r" );
-
-	if(!fp)
-		return false;
-
-	char acLine[MAX_LINE_LENGTH], acSlag[MAX_LINE_LENGTH];
-	while( fgets(acLine, MAX_LINE_LENGTH-1, fp) )
-	{
-		if( strncmp(acLine, "LoadObjectLayer", 15) == 0 )
-		{
-			CLWS_ObjectLayer new_objectlayer;
-			new_objectlayer.LoadFromFile(acLine, fp);
-			m_vecObjectLayer.push_back( new_objectlayer );
-		}
-
-		else if( strncmp(acLine, "AddLight", 8) == 0 )
-		{
-			CLWS_Light new_light;
-			new_light.LoadFromFile(acLine, fp);
-			m_vecLight.push_back( new_light );
-		}
-
-		TryLoadingFogDataBlock( acLine, fp );
-
-	}
-	
-	fclose(fp);*/
-
 	/// create links from parent items to child items
 	AddParentToChildLinks();
 
@@ -261,6 +233,8 @@ void CLightWaveSceneLoader::AddParentToChildLinks()
 				break;
 			case CLWS_Item::TYPE_BONE:
 				break;*/
+			default:
+				break;
 			}
 		}
 	}

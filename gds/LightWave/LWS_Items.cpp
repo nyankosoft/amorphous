@@ -81,9 +81,8 @@ m_pParent(NULL)
 bool CLWS_Item::LoadChannels( CTextFileScanner& scanner )
 {
 	int num_keys = 0, num_channels = m_iNumChannels;
-	CLWS_Keyframe key;
 	string tag, strLine;
-	char acSlag[256];
+//	char acSlag[256];
 
 	int num_channels_loaded = 0;
 	int channel_index = 0;
@@ -113,13 +112,29 @@ bool CLWS_Item::LoadChannels( CTextFileScanner& scanner )
 		}
 		else if( tag == "Key" )
 		{
-			sscanf( strLine.c_str(), "%s %f %f %d %f %f %f %f %f %f",
-				    acSlag,
-					&key.fValue,
-					&key.fTime,
-					&key.iSpantype,
-					&key.fCurveParam[0], &key.fCurveParam[1], &key.fCurveParam[2],
-					&key.fCurveParam[3], &key.fCurveParam[4], &key.fCurveParam[5] );
+			CLWS_Keyframe key;
+//			sscanf( strLine.c_str(), "%s %f %f %d %f %f %f %f %f %f",
+//				    acSlag,
+//					&key.fValue,
+//					&key.fTime,
+//					&key.iSpantype,
+//					&key.fCurveParam[0], &key.fCurveParam[1], &key.fCurveParam[2],
+//					&key.fCurveParam[3], &key.fCurveParam[4], &key.fCurveParam[5] );
+
+			vector<string> strings;
+			SeparateStrings( strings, strLine.c_str(), " \t" );
+			if( 10 <= strings.size() )
+			{
+				key.fValue         = to_float(strings[1]);
+				key.fTime          = to_float(strings[2]);
+				key.iSpantype      = to_int(strings[3]);
+				key.fCurveParam[0] = to_float(strings[4]);
+				key.fCurveParam[1] = to_float(strings[5]);
+				key.fCurveParam[2] = to_float(strings[6]);
+				key.fCurveParam[3] = to_float(strings[7]);
+				key.fCurveParam[4] = to_float(strings[8]);
+				key.fCurveParam[5] = to_float(strings[9]);
+			}
 
 			m_aChannel[channel_index].vecKey.push_back( key );
 		}

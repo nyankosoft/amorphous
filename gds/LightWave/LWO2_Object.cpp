@@ -1,4 +1,5 @@
 #include "LWO2_Object.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 
@@ -142,7 +143,7 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 	FILE* fp = fopen( object_filename.c_str(), "rb" );  //binary-reading mode
 	if(fp==NULL)
 	{
-///		MessageBox(NULL, "The specified LWO file was not found.", "Error", MB_OK|MB_ICONWARNING);
+		LOG_PRINT_ERROR( "The specified LWO file '" + object_filename +"' was not found." );
 		return false;
 	}
 
@@ -150,7 +151,7 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 	uiRead = ReadBE4BytesIntoLE(fp);
 	if(uiRead != ID_FORM)
 	{
-///		MessageBox(NULL, "Not an IFF file (Missing FORM tag)", "Error", MB_OK|MB_ICONWARNING);
+		LOG_PRINT_ERROR( object_filename + " is not an IFF file (Missing FORM tag)." );
 		return false;
 	}
 
@@ -165,7 +166,7 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 	bytesread += 4;
 	if(uiRead != ID_LWO2)
 	{
-///		MessageBox(NULL, "Not LWO2 format (Missing LWO2 tag)", "Error", MB_OK|MB_ICONWARNING);
+		LOG_PRINT_ERROR( object_filename + " does not have LWO2 format (Missing LWO2 tag)." );
 		return false;
 	}
 
@@ -245,6 +246,9 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 
 		m_ProgressDisplay.set_current_units( bytesread );
 
+		if( m_ProgressDisplay.get_total_units() < m_ProgressDisplay.get_current_units() )
+			LOG_PRINT_ERROR( " Something is wrong with the progress display: total_units < current_units." );
+
 		uiPrevType = uiRead;
 	}
 
@@ -260,7 +264,7 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 }
 
 
-void CLWO2_Object::WriteDebug( const std::string& filename )
+void CLWO2_Object::WriteDebug( const std::string& filename ) const
 {
 	FILE* fp;
 	fp = fopen(filename.c_str(), "w");
@@ -275,7 +279,7 @@ void CLWO2_Object::WriteDebug( const std::string& filename )
 
 	fprintf( fp,"\n----- %d Layers -----\n", (int)m_lstLayer.size() );
 
-	list<CLWO2_Layer>::iterator p;
+	list<CLWO2_Layer>::const_iterator p;
 	for(p = m_lstLayer.begin(); p!=m_lstLayer.end(); p++)
 	{
 		fprintf( fp, "[%02d] %s\n", p->GetLayerIndex(), p->GetName().c_str() );
@@ -289,7 +293,7 @@ void CLWO2_Object::WriteDebug( const std::string& filename )
 	size_t iNumSurfs = m_vecSurface.size();
 	for( i=0; i<iNumSurfs; i++ )
 	{
-		CLWO2_Surface& rSurf = m_vecSurface[i];
+		const CLWO2_Surface& rSurf = m_vecSurface[i];
 
 		fprintf( fp, "name: %s\n", rSurf.GetName().c_str() );
 		fprintf( fp, "texture uv: %s\n", "???"/*rSurf.GetUVMapName().c_str()*/ );
@@ -301,7 +305,7 @@ void CLWO2_Object::WriteDebug( const std::string& filename )
 	size_t iNumClips = m_vecStillClip.size();
 	for( i=0; i<iNumClips; i++ )
 	{
-		CLWO2_StillClip& clip = m_vecStillClip[i];
+		const CLWO2_StillClip& clip = m_vecStillClip[i];
 		fprintf( fp, " [%02d] %s\n", clip.uiClipIndex, clip.strName.c_str() );
 	}
 
@@ -322,27 +326,23 @@ CLWO2_Object::~CLWO2_Object(){
 }*/
 
 
-CLWO2_Surface& CLWO2_Object::FindSurfaceFromTAG( UINT2 wSurfIndex )
+CLWO2_Surface *CLWO2_Object::FindSurfaceFromTAG( UINT2 wSurfIndex )
 {
-	char* pcSurfaceName = m_tag.pTAGStrings + m_tag.piIndex[wSurfIndex];
+	int surf_index = GetSurfaceIndexFromSurfaceTAG( wSurfIndex );
 
-	size_t i, iNumSurfs = m_vecSurface.size();
-	for(i=0; i<iNumSurfs; i++)
+	if( 0 <= surf_index
+	 && surf_index < (int)m_vecSurface.size() )
 	{
-		CLWO2_Surface& rSurf = m_vecSurface.at(i);
-		if( strcmp(pcSurfaceName, rSurf.GetName().c_str()) == 0 )
-			return rSurf;
+		return &m_vecSurface[surf_index];
 	}
-
-//	MessageBox(NULL, "The requested surface was not found in the .lwo file", "Error", MB_OK|MB_ICONWARNING);
-
-	return m_vecSurface.at(0);
+	else
+		return NULL;
 }
 
 
 int CLWO2_Object::GetSurfaceIndexFromSurfaceTAG( const UINT2 wSurfTagIndex )
 {
-	char* pcSurfaceName = m_tag.pTAGStrings + m_tag.piIndex[wSurfTagIndex];
+	const char* pcSurfaceName = m_tag.pTAGStrings + m_tag.piIndex[wSurfTagIndex];
 
 	size_t i, num_surfs = m_vecSurface.size();
 	for(i=0; i<num_surfs; i++)
@@ -352,7 +352,12 @@ int CLWO2_Object::GetSurfaceIndexFromSurfaceTAG( const UINT2 wSurfTagIndex )
 			return (int)i;
 	}
 
-	return -1;	// surface nost found
+	// This issues too many warnings when this function is called
+	// from C3DMeshModelBuilder_LW::ProcessLayer() for every polygon
+	// with invalid index.
+//	LOG_PRINT_WARNING( fmt_string( "The surface with the index '%d' was not found in %s.", (int)wSurfTagIndex, m_strFilename.c_str() ) );
+
+	return -1;	// surface not found
 }
 
 
@@ -402,16 +407,16 @@ CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface(CLWO2_Surface& rSu
 }
 */
 
-CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface( CLWO2_Surface& rSurf,
+CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface( const CLWO2_Surface& rSurf,
 		                                                       const UINT4 channel_id,
 													            CLWO2_Layer& rLayer)
 {
-	vector<CLWO2_SurfaceBlock>& rvecSurfBlock = rSurf.GetSurfaceBlock();
+	const vector<CLWO2_SurfaceBlock>& rvecSurfBlock = rSurf.GetSurfaceBlock();
 	int i, iNumSurfaceBlocks = (int)rvecSurfBlock.size();
 	int index;
 	for( i=0; i<iNumSurfaceBlocks; i++ )
 	{
-		CLWO2_SurfaceBlock& rSurfBlock = rvecSurfBlock[i];
+		const CLWO2_SurfaceBlock& rSurfBlock = rvecSurfBlock[i];
 
 		if( rSurfBlock.m_Channel == channel_id )
 		{
@@ -460,13 +465,13 @@ CLWO2_VertexColorMap* CLWO2_Object::FindVertexColorMapFromSurface(CLWO2_Surface&
 }
 
 
-int CLWO2_Object::GetNumTagStrings()
+int CLWO2_Object::GetNumTagStrings() const
 {
 	return m_tag.iNumTAGs;
 }
 
 
-char *CLWO2_Object::GetTagString( int i )
+const char *CLWO2_Object::GetTagString( int i ) const
 {
 	if( m_tag.iNumTAGs <= i )
 		return NULL;

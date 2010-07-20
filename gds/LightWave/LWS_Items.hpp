@@ -47,12 +47,18 @@ public:
 	int iPreBehavior;
 	int iPostBehavior;
 
+public:
+
+	CLWS_Channel()
+		:
+	iPreBehavior(0),
+	iPostBehavior(0)
+	{}
+
 	void Load(FILE* fp);
 
 	void Quantize( float q );
 };
-
-//#define NUM_MAX_CHANNELS	9
 
 
 
