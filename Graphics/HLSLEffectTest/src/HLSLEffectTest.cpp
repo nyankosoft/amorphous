@@ -1,12 +1,13 @@
 #include "HLSLEffectTest.hpp"
 #include "gds/3DMath/MatrixConversions.hpp"
 #include "gds/Graphics.hpp"
-#include "gds/Graphics/AsyncResourceLoader.hpp"
+//#include "gds/Graphics/AsyncResourceLoader.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/Macro.h"
+#include "gds/Utilities/TextFileScannerExtensions.hpp"
 #include "gds/GUI.hpp"
 
 using namespace std;
@@ -109,7 +110,7 @@ bool CHLSLEffectTest::SetShader( int index )
 	if( m_EnableLight[0] )
 	{
 		CHemisphericDirectionalLight dir_light;
-		dir_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 0.0f, 1.0f );
+		dir_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 		dir_light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
 		dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
 
@@ -146,6 +147,10 @@ bool CHLSLEffectTest::SetShader( int index )
 //	shader_mgr.SetParam( "g_vEyeVS", g_Camera.GetCameraMatrix() * g_Camera.GetPosition() );
 	shader_mgr.SetParam( "g_vEyePos", g_Camera.GetPosition() );
 
+	// for bright rim lights
+	shader_mgr.SetParam( "g_vEyeDir", g_Camera.GetPosition() );
+	shader_mgr.SetTexture( 3, m_LookupTextureForLighting );
+
 	m_CurrentShaderIndex = index;
 
 	return true;
@@ -156,13 +161,14 @@ bool CHLSLEffectTest::InitShaders()
 {
 	vector<string> shaders;
 	vector<string> techs;
-	shaders.resize( 3 );
+	shaders.resize( 4 );
 	techs.resize( shaders.size() );
 
 	shaders[0] = "shaders/PerVertexHSLighting.fx";             techs[0] = "PerVertexHSLighting";
 //	shaders[?] = "shaders/PerPixelHSLighting.fx";              techs[?] = "PVL_HSLs_Specular";
 	shaders[1] = "shaders/PerPixelHSLighting.fx";              techs[1] = "PPL_HSLs";
 	shaders[2] = "shaders/PerPixelHSLightingWithSpecular.fx";  techs[2] = "PPL_HSLs_Specular";
+	shaders[3] = "shaders/PerPixelHSLighting_2DLUT.fx";        techs[3] = "HSLs_2DLUT";
 
 	m_Shaders.resize( shaders.size() );
 	m_Techniques.resize( shaders.size() );
@@ -177,12 +183,32 @@ bool CHLSLEffectTest::InitShaders()
 }
 
 
-int CHLSLEffectTest::Init()
+inline CTextureFont* CreateDefaultBuiltinFontRawPtr()
 {
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	CTextureFont *pTexFont = new CTextureFont;
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 6, 12 );
-	m_pFont = pTexFont;
+	return pTexFont;
+}
+
+
+inline boost::shared_ptr<CTextureFont> CreateDefaultBuiltinFont()
+{
+	boost::shared_ptr<CTextureFont> pTexFont( CreateDefaultBuiltinFontRawPtr() );
+	return pTexFont;
+//	boost::shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+//	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
+//	pTexFont->SetFontSize( 6, 12 );
+//	return pTexFont;
+}
+
+
+int CHLSLEffectTest::Init()
+{
+//	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+//	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
+	m_pFont = CreateDefaultBuiltinFont();
+	m_pFont->SetFontSize( 6, 12 );
 
 /*
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
@@ -220,9 +246,14 @@ int CHLSLEffectTest::Init()
 	m_vecMesh.back().m_fScale = 20.0f;
 	m_vecMesh.push_back( CTestMeshHolder( "./models/cz75-1st.msh",          CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
 	m_vecMesh.back().m_fScale = 20.0f;
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
+	m_vecMesh.push_back( CTestMeshHolder( "./models/male.msh",              CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
 
 	InitShaders();
+
+//	string tex_file( "textures/normal_hs_light.jpg" );
+//	string tex_file( "textures/spectrum-vertical-s256x256.jpg" );
+	string tex_file( "textures/textured_spectrum.jpg" );
+	bool tex_loaded = m_LookupTextureForLighting.Load( tex_file );
 
 	return 0;
 }

@@ -6,6 +6,7 @@
 #include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/TextureHandle.hpp"
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "Input/fwd.hpp"
@@ -81,6 +82,8 @@ class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 	bool m_DisplayDebugInfo;
 
 	int m_CurrentMeshIndex;
+
+	CTextureHandle m_LookupTextureForLighting;
 
 private:
 
