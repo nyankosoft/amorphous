@@ -76,7 +76,7 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
 	// check if the mesh should be created as a shadow volume mesh
 	CheckShadowVolume();
 
-	if( build_option_flags && C3DMeshModelBuilder::BOF_CHANGE_TEXTURE_FILE_EXTENSIONS_TO_IA )
+	if( build_option_flags & C3DMeshModelBuilder::BOF_CHANGE_TEXTURE_FILE_EXTENSIONS_TO_IA )
 	{
 		const int num_materials = (int)m_MeshModelArchive.GetMaterial().size();
 		for( int i=0; i<num_materials; i++ )
