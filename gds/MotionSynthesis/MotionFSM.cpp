@@ -406,6 +406,15 @@ void CMotionPrimitiveNode::LoadMotion( CMotionDatabase& db )
 		{
 			trans[i].pNode = m_pFSM->GetNode( trans[i].name );
 		}
+
+		vector<MotionNodeTrans>::iterator itr = trans.begin();
+		while( itr != trans.end() )
+		{
+			if( !itr->pNode )
+				itr = trans.erase( itr );
+			else
+				itr++;
+		}
 	}
 
 }

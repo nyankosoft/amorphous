@@ -553,6 +553,8 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& inp
 	// load scaling factor
 	m_vecDescGroup.back().m_fScalingFactor = to_float( input_file_node_reader.GetAttributeText( "scaling" ) );
 
+	m_vecDescGroup.back().m_fTimeScalingFactor = to_float( input_file_node_reader.GetAttributeText( "time_scaling" ) );
+
 	vector<CXMLNodeReader> children = input_file_node_reader.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
 	{

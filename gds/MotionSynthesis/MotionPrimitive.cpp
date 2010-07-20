@@ -42,11 +42,11 @@ void CMotionPrimitive::InsertKeyframe( const CKeyframe& keyframe )
 
 	// find the right position to insert the keyframe
 	const size_t num_keyframes = m_vecKeyframe.size();
-	for( size_t i=0; i<num_keyframes-1; i++ )
+	for( size_t i=0; i<num_keyframes; i++ )
 	{
-		if( m_vecKeyframe[i].GetTime() <= keyframe.GetTime() )
+		if( keyframe.GetTime() <= m_vecKeyframe[i].GetTime() )
 		{
-			m_vecKeyframe.insert( m_vecKeyframe.begin() + i + 1, keyframe );
+			m_vecKeyframe.insert( m_vecKeyframe.begin() + i, keyframe );
 			return;
 		}
 	}
@@ -55,9 +55,7 @@ void CMotionPrimitive::InsertKeyframe( const CKeyframe& keyframe )
 }
 
 
-Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe,
-												  float time,
-												  Interpolation::Mode mode )
+Result::Name CMotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, int& i1 )
 {
 	if( time < 0 )
 		return Result::INVALID_ARGS;
@@ -73,9 +71,22 @@ Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpol
 	if( i == 0 || i == iNumFrames )
 		return Result::UNKNOWN_ERROR;
 
-	int i0, i1;
 	i0 = i - 1;
 	i1 = i;
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe,
+												  float time,
+												  Interpolation::Mode mode )
+{
+	int i0=0, i1=0;
+	Result::Name res = GetNearestKeyframeIndices( time, i0, i1 );
+	if( res != Result::SUCCESS )
+		return res;
+
 	const float& time0 = m_vecKeyframe[i0].GetTime();
 	const float& time1 = m_vecKeyframe[i1].GetTime();
 

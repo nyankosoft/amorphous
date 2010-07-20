@@ -251,6 +251,8 @@ public:
 
 	void SetLoopedMotion( bool looped ) { m_bIsLoopedMotion = looped; }
 
+	Result::Name GetNearestKeyframeIndices( float time, int& i0, int& i1 );
+
 	Result::Name GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
 
 	void CalculateInterpolatedKeyframe( float time );
