@@ -175,6 +175,13 @@ end: MeshContainer
 
 bool CSubsetRenderMethod::Load()
 {
+	bool loaded = false;
+	for( size_t i=0; i<m_vecpShaderParamsLoader.size(); i++ )
+	{
+		if( m_vecpShaderParamsLoader[i] )
+			loaded = m_vecpShaderParamsLoader[i]->LoadResource();
+	}
+
 	return m_Shader.Load( m_ShaderFilepath );
 }
 
@@ -293,24 +300,26 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 			if( itr == m_vecSubsetNameToRenderMethod[lod_index].end() )
 				continue;
 
-			CShaderManager *pShaderMgr = (*itr).second.m_Shader.GetShaderManager();
+			CSubsetRenderMethod& subset_render_method = (*itr).second;
+
+			CShaderManager *pShaderMgr = subset_render_method.m_Shader.GetShaderManager();
 			if( !pShaderMgr )
 				continue;
 
 			pShaderMgr->SetWorldTransform( world_transform );
 
-			pShaderMgr->SetTechnique( (*itr).second.m_Technique );
+			pShaderMgr->SetTechnique( subset_render_method.m_Technique );
 
-			for( size_t j=0; j<(*itr).second.m_vecpShaderParamsLoader.size(); j++ )
+			for( size_t j=0; j<subset_render_method.m_vecpShaderParamsLoader.size(); j++ )
 			{
-				(*itr).second.m_vecpShaderParamsLoader[j]->UpdateShaderParams( *pShaderMgr );
+				subset_render_method.m_vecpShaderParamsLoader[j]->UpdateShaderParams( *pShaderMgr );
 			}
 
 			pMesh->RenderSubset( *pShaderMgr, index );
 
-			for( size_t j=0; j<(*itr).second.m_vecpShaderParamsLoader.size(); j++ )
+			for( size_t j=0; j<subset_render_method.m_vecpShaderParamsLoader.size(); j++ )
 			{
-				(*itr).second.m_vecpShaderParamsLoader[j]->ResetShaderParams( *pShaderMgr );
+				subset_render_method.m_vecpShaderParamsLoader[j]->ResetShaderParams( *pShaderMgr );
 			}
 		}
 	}
@@ -417,8 +426,10 @@ void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh
 
 bool CMeshContainerRenderMethod::LoadRenderMethodResources()
 {
+	bool loaded = false;
+
 	for( size_t i=0; i<m_vecMeshRenderMethod.size(); i++ )
-		m_vecMeshRenderMethod[i].Load();
+		loaded = m_vecMeshRenderMethod[i].Load();
 
 	for( size_t i=0; i<m_vecSubsetNameToRenderMethod.size(); i++ )
 	{
@@ -427,7 +438,7 @@ bool CMeshContainerRenderMethod::LoadRenderMethodResources()
 			 itr != m_vecSubsetNameToRenderMethod[i].end();
 			 itr++ )
 		{
-			(*itr).second.Load();
+			loaded = (*itr).second.Load();
 		}
 	}
 

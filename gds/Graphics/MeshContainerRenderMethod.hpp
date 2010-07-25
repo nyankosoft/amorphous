@@ -24,6 +24,8 @@ public:
 	virtual void UpdateShaderParams( CShaderManager& rShaderMgr ) = 0;
 
 	virtual void ResetShaderParams( CShaderManager& rShaderMgr ) {};
+
+	virtual bool LoadResource() { return true; }
 };
 
 

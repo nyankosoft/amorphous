@@ -38,6 +38,11 @@ public:
 	{
 		rShaderMgr.SetParam( m_Parameter );
 	}
+
+	bool LoadResource()
+	{
+		return LoadShaderParam( m_Parameter );
+	}
 };
 
 

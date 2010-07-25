@@ -44,7 +44,7 @@ class CShaderParameter : public IArchiveObjectBase
 	std::string m_ParameterName;
 
 //	std::vector<T> m_vecParameter;
-	T m_Parameter;
+	T m_Parameter; ///< This could be CTextureParam, int, float, Vector3, etc...
 
 public:
 
@@ -98,6 +98,20 @@ public:
 		ar & m_Int & m_Float & m_Texture;
 	}
 };
+
+
+// default behavior of LoadShaderParam - do nothing.
+template<typename T>
+inline bool LoadShaderParam( CShaderParameter<T>& param )
+{
+	return true;
+}
+
+
+inline bool LoadShaderParam( CShaderParameter<CTextureParam>& param )
+{
+	return param.Parameter().m_Handle.Load( param.Parameter().m_Desc );
+}
 
 
 
