@@ -10,7 +10,6 @@
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "Graphics/PseudoNoiseEffect.hpp"
 #include "Input/fwd.hpp"
-#include "Input.hpp"
 #include "GUI/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"

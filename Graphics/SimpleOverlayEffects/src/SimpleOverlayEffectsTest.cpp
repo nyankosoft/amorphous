@@ -8,6 +8,7 @@
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
 #include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Input.hpp"
 #include "gds/GUI.hpp"
 
 using namespace std;
@@ -115,10 +116,8 @@ bool CSimpleOverlayEffectsTest::InitShader()
 
 int CSimpleOverlayEffectsTest::Init()
 {
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
-	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
-	pTexFont->SetFontSize( 6, 12 );
-	m_pFont = pTexFont;
+	m_pFont = CreateDefaultBuiltinFont();
+	m_pFont->SetFontSize( 6, 12 );
 
 	m_PseudoNoiseEffect.Init( 0.5f, 2 );
 
