@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 #include <boost/weak_ptr.hpp>
-#include <d3dx9.h>
 
 #include "Graphics/fwd.hpp"
 #include "KeyState.hpp"

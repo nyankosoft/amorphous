@@ -6,7 +6,7 @@
 #include <boost/foreach.hpp>
 
 #include "gds/Graphics.hpp"
-#include "gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Support/MiscAux.hpp"
 #include "gds/Support/WindowMisc_Win32.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
@@ -118,7 +118,7 @@ void Update( float frametime )
 
 void UpdateCameraMatrices()
 {
-	D3DXMATRIX matView;
+	Matrix44 matView;
 	g_CameraController.GetCameraMatrix( matView );
 //	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW, &matView );
 
@@ -142,13 +142,7 @@ VOID Render()
 
 //	g_Camera.SetPose( g_CameraController.GetPose() );
 	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
-/*
-	D3DXMATRIX matView, matProj;
-	g_Camera.GetCameraMatrix( matView );
-	g_Camera.GetProjectionMatrix( matProj );
-	pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
-	pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
-*/
+
 	g_pTest->UpdateViewTransform( g_Camera.GetCameraMatrix() );
 	g_pTest->UpdateProjectionTransform( g_Camera.GetProjectionMatrix() );
 
@@ -180,7 +174,7 @@ VOID Render()
 	g_pTest->Render();
 
 	// display fps
-	g_pFont->DrawText( to_string(GlobalTimer().GetFPS()).c_str(), D3DXVECTOR2(20,20), 0xFFFFFFFF );
+	g_pFont->DrawText( to_string(GlobalTimer().GetFPS()).c_str(), Vector2(20,20), 0xFFFFFFFF );
 
 	int i=0;
 	const vector<string>& vecProfileResults = GetProfileText();
@@ -327,14 +321,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	ProfileInit();
 
 	// init font
-/*	string font_name
-//		= "Lucida Console";
-		= "DotumChe";
-	g_pFont = pTexFontCFontSharedPtr( new CFont( font_name, 8, 16 ) );*/
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
-	pTexFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
-	pTexFont->SetFontSize( 8, 16 );
-	g_pFont = pTexFont;
+	g_pFont = CreateDefaultBuiltinFont();
+	g_pFont->SetFontSize( 8, 16 );
 
 	// Enter the message loop
 	MSG msg;
