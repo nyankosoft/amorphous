@@ -94,13 +94,6 @@ public:
 
 	virtual bool IsKeyPressed( int general_input_code ) = 0;
 
-	//>>> old D3D-dependent code
-
-	// row major 4x4 matrix
-	inline void GetCameraMatrix( D3DXMATRIX& rmatCamera ) const;
-
-	//<<< old D3D-dependent code
-
 	// column major 4x4 matrix
 	inline void GetCameraMatrix( Matrix44& rmatCamera ) const;
 
@@ -153,23 +146,6 @@ inline void CCameraControllerBase::GetCameraMatrixRowMajor44( Scalar*& pDest ) c
 	// not implemented yet.
 }
 */
-
-inline void CCameraControllerBase::GetCameraMatrix( D3DXMATRIX& rmatCamera ) const
-{
-//	const Matrix34& pose = m_Pose;
-	const Matrix34 pose = GetPose();
-	Vector3 vRight = pose.matOrient.GetColumn(0);
-	Vector3 vUp    = pose.matOrient.GetColumn(1);
-	Vector3 vFwd   = pose.matOrient.GetColumn(2);
-	rmatCamera._11 = vRight.x;	rmatCamera._12 = vUp.x; rmatCamera._13 = vFwd.x; rmatCamera._14 = 0;
-	rmatCamera._21 = vRight.y;	rmatCamera._22 = vUp.y; rmatCamera._23 = vFwd.y; rmatCamera._24 = 0;
-	rmatCamera._31 = vRight.z;	rmatCamera._32 = vUp.z; rmatCamera._33 = vFwd.z; rmatCamera._34 = 0;
-
-	rmatCamera._41= -Vec3Dot( vRight, pose.vPosition );
-	rmatCamera._42= -Vec3Dot( vUp,    pose.vPosition );
-	rmatCamera._43= -Vec3Dot( vFwd,   pose.vPosition );
-	rmatCamera._44=1;
-}
 
 
 /// column major 4x4 matrix
