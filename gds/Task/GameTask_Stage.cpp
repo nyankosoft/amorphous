@@ -8,7 +8,6 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/DebugOutput.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/Font.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "Stage/Stage.hpp"
 #include "Stage/StageLoader.hpp"

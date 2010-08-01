@@ -7,10 +7,9 @@
 
 #include "3DMath/aabb2.hpp"
 
+#include "Graphics/fwd.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Font/Font.hpp"
-#include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/TextureHandle.hpp"
 
 #include "../Support/FixedVector.hpp"
@@ -79,7 +78,7 @@ class CGameTextWindow : public CGraphicsComponent
 //	char m_acTextureFilename[NUM_MAX_ICONTEXTURES][256];
 //	LPDIRECT3DTEXTURE9 m_apTexture[NUM_MAX_ICONTEXTURES];
 
-	CFont* m_pFont;
+	CFontBase* m_pFont;
 	std::string m_strFontName;
 	float m_fFontWidth;
 	float m_fFontHeight;
