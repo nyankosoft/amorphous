@@ -1,6 +1,6 @@
 #include "GraphicsElements.hpp"
 #include "GraphicsElementManager.hpp"
-#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/FontBase.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/TrueTypeTextureFont.hpp"
 #include "Graphics/2DPrimitive/2DPolygon.hpp"

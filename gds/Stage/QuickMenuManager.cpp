@@ -1,7 +1,7 @@
 
 #include "QuickMenuManager.hpp"
 
-#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/FontBase.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 

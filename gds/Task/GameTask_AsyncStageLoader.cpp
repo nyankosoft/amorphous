@@ -2,7 +2,7 @@
 #include "GameTask_Stage.hpp"
 #include "Stage/Stage.hpp"
 
-#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 #include "Input/InputHub.hpp"
 #include "GUI.hpp"
 #include "Support/memory_helpers.hpp"
@@ -29,7 +29,7 @@ m_bTerminateAsyncLoadThread(false)
 
 	int w = 16 * GetScreenWidth() / 800;
 	int h = w * 2;
-	m_pFont = new CFont( "Arial", w, h );
+	m_pFont = CreateDefaultBuiltinFontRawPtr();
 
 	m_fWaitTime = 5.0f;
 

@@ -4,7 +4,6 @@
 #include "Support/StringAux.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/Font/Font.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 
 using namespace std;

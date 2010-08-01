@@ -1,7 +1,7 @@
 #include "GameTextSystem.hpp"
 
 #include <stdlib.h>
-#include "../Graphics/Font/Font.hpp"
+#include "../Graphics/Font/FontBase.hpp"
 #include "../Support/memory_helpers.hpp"
 
 //===========================================================================

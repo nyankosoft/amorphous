@@ -12,7 +12,7 @@ using namespace std;
 
 #include <d3dx9.h>
 
-class CFont;
+class CFontBase;
 class CGameEventCompiler;
 class CGameTextWindow;
 class CGameTextSet;
@@ -49,7 +49,7 @@ public:
 
 	inline int GetLineLength() { return m_strText.size(); }
 
-	void DrawLine( D3DXVECTOR2& rvPos, int iNumChars, CFont *pFont );
+	void DrawLine( D3DXVECTOR2& rvPos, int iNumChars, CFontBase *pFont );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 

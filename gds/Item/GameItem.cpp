@@ -91,7 +91,6 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 //===========================================================================
 
 #include "3DMath/MathMisc.hpp"
-#include "Graphics/Font/Font.hpp"
 #include "Graphics/Camera.hpp"
 #include "GameCommon/CriticalDamping.hpp"
 #include "Stage/PlayerInfo.hpp"

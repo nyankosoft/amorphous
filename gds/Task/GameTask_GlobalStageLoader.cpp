@@ -3,7 +3,7 @@
 #include "Stage/Stage.hpp"
 
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 #include "Input/InputHub.hpp"
 #include "GUI.hpp"
 #include "Support/memory_helpers.hpp"
@@ -24,7 +24,7 @@ CGameTask_GlobalStageLoader::CGameTask_GlobalStageLoader()
 
 	int w = 16 * GetScreenWidth() / 800;
 	int h = w * 2;
-	m_pFont = new CFont( "Arial", w, h );
+	m_pFont = CreateDefaultBuiltinFontRawPtr();
 }
 
 

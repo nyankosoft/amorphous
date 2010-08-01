@@ -1,7 +1,7 @@
 
 #include "GameTextSet.hpp"
 
-#include "Graphics/Font/Font.hpp"
+#include "Graphics/Font/FontBase.hpp"
 
 
 //===========================================================================
@@ -25,7 +25,7 @@ void CGameTextComponent::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CGameTextComponent::DrawLine( D3DXVECTOR2& rvPos, int iNumChars, CFont *pFont )
+void CGameTextComponent::DrawLine( D3DXVECTOR2& rvPos, int iNumChars, CFontBase *pFont )
 {
 	int iStrLength = strlen(m_strText.c_str());
 	if( iStrLength <= iNumChars )

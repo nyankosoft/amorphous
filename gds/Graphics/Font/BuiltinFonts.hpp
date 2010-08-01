@@ -5,6 +5,7 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include "BitstreamVeraSansMono_Bold_256.hpp"
+#include "TextureFont.hpp"
 
 
 inline const CSimpleBitmapFontData *GetBuiltinFontData( const std::string& builtin_font_name )
