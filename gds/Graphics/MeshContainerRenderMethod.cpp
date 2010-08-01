@@ -182,13 +182,13 @@ bool CSubsetRenderMethod::Load()
 			loaded = m_vecpShaderParamsLoader[i]->LoadResource();
 	}
 
-	return m_Shader.Load( m_ShaderFilepath );
+	return m_Shader.Load( m_ShaderDesc );
 }
 
 
 void CSubsetRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	reader.GetChildElementTextContent( "ShaderFilepath", m_ShaderFilepath );
+	reader.GetChildElementTextContent( "ShaderFilepath", m_ShaderDesc.ResourcePath );
 
 	string tech_name;
 	reader.GetChildElementTextContent( "Technique", tech_name );
@@ -198,7 +198,7 @@ void CSubsetRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 
 void CSubsetRenderMethod::Serialize( IArchive& ar, const unsigned int version )
 {
-	ar & m_ShaderFilepath;
+	ar & m_ShaderDesc;
 	ar & m_Technique;
 }
 

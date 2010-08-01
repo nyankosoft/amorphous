@@ -768,12 +768,12 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 		string filepath = "";
 		string technique_name = "";
 
-		subset_render_method.m_ShaderFilepath = filepath;
+		subset_render_method.m_ShaderDesc.ResourcePath = filepath;
 		subset_render_method.m_Technique.SetTechniqueName( technique_name.c_str() );
 	}
 	else
 	{
-		subset_render_method.m_ShaderFilepath = shader_name;
+		subset_render_method.m_ShaderDesc.ResourcePath = shader_name;
 	}
 
 	if( !pEntity->m_pMeshRenderMethod )
