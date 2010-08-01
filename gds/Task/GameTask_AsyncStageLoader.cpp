@@ -30,6 +30,7 @@ m_bTerminateAsyncLoadThread(false)
 	int w = 16 * GetScreenWidth() / 800;
 	int h = w * 2;
 	m_pFont = CreateDefaultBuiltinFontRawPtr();
+	m_pFont->SetFontSize( w, h );
 
 	m_fWaitTime = 5.0f;
 
