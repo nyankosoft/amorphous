@@ -1,5 +1,5 @@
 #include "Graphics/GraphicsElementManager.hpp"
-#include "Graphics/Font/Font.hpp"
+//#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/TrueTypeTextureFont.hpp"
 #include "Graphics/Font/BuiltinFonts.hpp"
@@ -579,11 +579,11 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 
 	switch( font_type )
 	{
-	case CFontBase::FONTTYPE_NORMAL:
-		pFont = new CFont();
-		pFont->InitFont( font_name, w_scaled, h_scaled );
-		m_vecpFont[font_id] = pFont;
-		break;
+//	case CFontBase::FONTTYPE_NORMAL:
+//		pFont = new CFont();
+//		pFont->InitFont( font_name, w_scaled, h_scaled );
+//		m_vecpFont[font_id] = pFont;
+//		break;
 
 	case CFontBase::FONTTYPE_TEXTURE:
 		if( font_name.find( "BuiltinFont::" ) == 0 )

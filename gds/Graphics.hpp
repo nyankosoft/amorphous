@@ -6,7 +6,6 @@
 #include "Graphics/2DPrimitive/2DTriangle.hpp"
 
 // font
-#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/FontBase.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/TrueTypeTextureFont.hpp"

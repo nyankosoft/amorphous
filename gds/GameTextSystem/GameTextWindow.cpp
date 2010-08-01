@@ -1,6 +1,6 @@
 #include "GameTextWindow.hpp"
 #include "GameTextSystem.hpp"
-#include "Graphics/Font/Font.hpp"
+//#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Support/Timer.hpp"
 #include "Support/memory_helpers.hpp"
@@ -52,7 +52,8 @@ void CGameTextWindow::InitFont( const char *pcFontName, float fFontWidth, float 
 	float fScreenWidth = (float)GameWindowManager().GetScreenWidth();
 
 	SafeDelete( m_pFont );
-	CFont *pFont = new CFont;
+//	CFont *pFont = new CFont;
+	CTextureFont *pFont = new CTextureFont;
 	pFont->InitFont( pcFontName, (int)(fFontWidth * fScreenWidth), (int)(fFontHeight * fScreenWidth) );
 	m_pFont = pFont;
 }

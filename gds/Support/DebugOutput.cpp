@@ -1,7 +1,7 @@
 #include "DebugOutput.hpp"
 
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/Font.hpp"
+//#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
@@ -55,7 +55,8 @@ CFontBase* CFontFactory::CreateFont( const string& font_name, int font_width, in
 	}
 	else
 	{
-		return new CFont( font_name, font_width, font_height );
+		return NULL;
+//		return new CFont( font_name, font_width, font_height );
 	}
 }
 
