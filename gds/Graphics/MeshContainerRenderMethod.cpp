@@ -210,13 +210,8 @@ static int sg_iPrevShaderManagerID = -1;
 // - Set the world transform 'world_transform' to shader
 // - Update shader params
 // - Set technique
-void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform )
+void CMeshContainerRenderMethod::RenderMesh( CBasicMesh &mesh, const Matrix34& world_transform )
 {
-	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
-
-	if( !pMesh )
-		return;
-
 	uint lod_index = m_LODIndex;
 	if( 0 < m_vecMeshRenderMethod.size() )
 	{
@@ -251,14 +246,14 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 		if( m_vecIndicesOfSubsetsToRender.size() == 0 )
 		{
 			// Render all the mesh subsets with a single shader & a single technique 
-			pMesh->Render( *pShaderMgr );
+			mesh.Render( *pShaderMgr );
 		}
 		else
 		{
 			// render only the specified subsets with a single shader & a single technique
 			for( int i=0; i<(int)m_vecIndicesOfSubsetsToRender.size(); i++ )
 			{
-				pMesh->RenderSubset( *pShaderMgr, m_vecIndicesOfSubsetsToRender[i] );
+				mesh.RenderSubset( *pShaderMgr, m_vecIndicesOfSubsetsToRender[i] );
 			}
 		}
 
@@ -273,7 +268,7 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 		// render subsets one by one
 
 		// set different shaders / techniques for each subset
-		const int num_subsets = pMesh->GetNumMaterials();
+		const int num_subsets = mesh.GetNumMaterials();
 		std::vector<int> *pvecIndicesOfSubsetsToRender = NULL;
 		if( m_vecIndicesOfSubsetsToRender.size() == 0 )
 		{
@@ -295,7 +290,7 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 			int index = (*pvecIndicesOfSubsetsToRender)[i];
 
 			map< string, CSubsetRenderMethod >::iterator itr
-				= m_vecSubsetNameToRenderMethod[lod_index].find( pMesh->GetMaterial(index).Name );
+				= m_vecSubsetNameToRenderMethod[lod_index].find( mesh.GetMaterial(index).Name );
 
 			if( itr == m_vecSubsetNameToRenderMethod[lod_index].end() )
 				continue;
@@ -315,7 +310,7 @@ void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matr
 				subset_render_method.m_vecpShaderParamsLoader[j]->UpdateShaderParams( *pShaderMgr );
 			}
 
-			pMesh->RenderSubset( *pShaderMgr, index );
+			mesh.RenderSubset( *pShaderMgr, index );
 
 			for( size_t j=0; j<subset_render_method.m_vecpShaderParamsLoader.size(); j++ )
 			{

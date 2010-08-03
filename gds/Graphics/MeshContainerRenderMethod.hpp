@@ -117,8 +117,9 @@ public:
 
 	virtual ~CMeshContainerRenderMethod() {}
 
-	void RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform );
+	void RenderMesh( CBasicMesh &mesh, const Matrix34& world_transform );
 
+	inline void RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform );
 
 	void RenderMeshContainer( CMeshObjectContainer& mesh_container,
 		                      const Matrix34& world_transform );
@@ -196,6 +197,17 @@ public:
 //	boost::shared_ptr<CMeshContainerRenderMethod> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 };
 
+//================================ inline implementations ================================
+
+inline void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform )
+{
+	boost::shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+
+	if( !pMesh )
+		return;
+
+	RenderMesh( *pMesh, world_transform );
+}
 
 
 #endif /* __MeshContainerRenderMethod_HPP__ */
