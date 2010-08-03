@@ -30,6 +30,22 @@ CTransformCacheNode *CTransformCacheNode::GetNode( const std::string& name )
 }
 
 
+const CTransformCacheNode *CTransformCacheNode::GetNode( const std::string& name ) const
+{
+	if( m_Name == name )
+		return this;
+
+	for( int i=0; i<m_NumChildren; i++ )
+	{
+		const CTransformCacheNode *pNode = m_pChildren[i].GetNode( name );
+		if( pNode )
+			return pNode;
+	}
+
+	return NULL;
+}
+
+
 void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone )
 {
 	m_Name = bone.GetName();

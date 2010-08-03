@@ -57,6 +57,8 @@ public:
 
 	CTransformCacheNode *GetNode( const std::string& name );
 
+	const CTransformCacheNode *GetNode( const std::string& name ) const;
+
 //	void CreateTransformCacheNodeTree_r( const CBone& bone, const std::set<std::string>& target_bone_names );
 
 	void CreateTransformCacheNodeTree_r( const CBone& bone );
@@ -107,6 +109,8 @@ public:
 	void RemoveInactiveNodes( const std::set<std::string>& target_bone_names );
 
 	CTransformCacheNode *GetNode( const std::string& name ) { return m_pRootNode->GetNode( name ); }
+
+	const CTransformCacheNode *GetNode( const std::string& name ) const { return m_pRootNode->GetNode( name ); }
 
 	void CalculateWorldTransforms( const CSkeleton& skeleton, const CKeyframe& keyframe, const Matrix34& parent_transform = Matrix34Identity() );
 };
