@@ -39,17 +39,6 @@ bool CGLTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std
 }
 
 
-static inline D3DXIMAGE_FILEFORMAT SuffixToD3DImgFmt( const std::string& suffix )
-{
-	if( suffix == "bmp" ) return D3DXIFF_BMP;
-	else if( suffix == "jpg" ) return D3DXIFF_JPG;
-	else if( suffix == "tga" ) return D3DXIFF_TGA;
-	else if( suffix == "png" ) return D3DXIFF_PNG;
-	else if( suffix == "dds" ) return D3DXIFF_DDS;
-	else return D3DXIFF_BMP;
-}
-
-
 bool CGLTextureResource::SaveTextureToImageFile( const std::string& image_filepath )
 {
 	return false;

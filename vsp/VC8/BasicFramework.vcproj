@@ -879,6 +879,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Font\BuiltinFonts.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\Font\Font.cpp"
 					>
 				</File>
@@ -1906,19 +1910,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\PrecisionTimer.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Support\PrecisionTimer.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Support\Profile.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\gds\Support\Profile.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\ResourceArchiver.hpp"
 				>
 			</File>
 			<File

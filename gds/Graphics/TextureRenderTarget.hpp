@@ -115,7 +115,7 @@ public:
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-	void OutputImageFile( const char* filename );
+	void OutputImageFile( const std::string& filename );
 };
 
 

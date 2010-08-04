@@ -274,22 +274,6 @@ void CCubeMapManager::RenderToCubeMap()
 //void CCubeMapManager::EndRenderToCubeMap(){}
 
 
-inline static D3DXIMAGE_FILEFORMAT GetD3DXImageFormatFromFileExt( const std::string& file_ext )
-{
-	if( file_ext == "bmp" ) return D3DXIFF_BMP;
-	else if( file_ext == "jpg" ) return D3DXIFF_JPG;
-	else if( file_ext == "tga" ) return D3DXIFF_TGA;
-	else if( file_ext == "png" ) return D3DXIFF_PNG;
-	else if( file_ext == "dds" ) return D3DXIFF_DDS;
-	else if( file_ext == "ppm" ) return D3DXIFF_PPM;
-	else if( file_ext == "dib" ) return D3DXIFF_DIB;
-	else if( file_ext == "hdr" ) return D3DXIFF_HDR;
-	else if( file_ext == "pfm" ) return D3DXIFF_PFM;
-	else
-		return D3DXIFF_BMP; // save as bmp image by default
-}
-
-
 void CCubeMapManager::SaveCubeTextureToFile( const std::string& output_filename )
 {
 	if( m_pCurrentCubeMap )

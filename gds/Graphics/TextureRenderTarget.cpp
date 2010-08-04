@@ -2,7 +2,7 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Support/Profile.hpp"
-#include "Support/BMPImageExporter.hpp"
+//#include "Support/BMPImageExporter.hpp"
 
 
 CTextureRenderTarget::CTextureRenderTarget()
@@ -295,20 +295,28 @@ void CTextureRenderTarget::ResetRenderTarget()
 }
 
 
-void CTextureRenderTarget::OutputImageFile( const char* filename )
+void CTextureRenderTarget::OutputImageFile( const std::string& filename )
 {
-	CBMPImageExporter bmp_exporter;
-	DWORD *pdwTexelData;
+//	CBMPImageExporter bmp_exporter;
+//	DWORD *pdwTexelData;
+
+	if( filename.length() <= 4 )
+		return;
 
 	CopyRenderTarget();
 
 	LPDIRECT3DTEXTURE9 pTex = GetRenderTargetCopyTexture();
 
-	D3DLOCKED_RECT locked_rect;
+	std::string ext = filename.substr( filename.length()-3 );
+	D3DXIMAGE_FILEFORMAT img_fmt = GetD3DXImageFormatFromFileExt( ext );
+
+	D3DXSaveTextureToFile( filename.c_str(), img_fmt, pTex, NULL );
+
+/*	D3DLOCKED_RECT locked_rect;
 	pTex->LockRect( 0, &locked_rect, NULL, 0 );
 	pdwTexelData = (DWORD *)locked_rect.pBits;
 
 	bmp_exporter.OutputImage_24Bit( filename, m_TextureDesc.Width, m_TextureDesc.Height, pdwTexelData );
 
-	pTex->UnlockRect( 0 );
+	pTex->UnlockRect( 0 );*/
 }

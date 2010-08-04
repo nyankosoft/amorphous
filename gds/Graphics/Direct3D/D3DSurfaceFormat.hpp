@@ -46,5 +46,36 @@ inline D3DFORMAT ConvertTextureFormatToD3DFORMAT( TextureFormat::Format tex_form
 }
 
 
+inline D3DXIMAGE_FILEFORMAT GetD3DXImageFormatFromFileExt( const std::string& file_ext )
+{
+	if( file_ext == "bmp" ) return D3DXIFF_BMP;
+	else if( file_ext == "jpg" ) return D3DXIFF_JPG;
+	else if( file_ext == "tga" ) return D3DXIFF_TGA;
+	else if( file_ext == "png" ) return D3DXIFF_PNG;
+	else if( file_ext == "dds" ) return D3DXIFF_DDS;
+	else if( file_ext == "ppm" ) return D3DXIFF_PPM;
+	else if( file_ext == "dib" ) return D3DXIFF_DIB;
+	else if( file_ext == "hdr" ) return D3DXIFF_HDR;
+	else if( file_ext == "pfm" ) return D3DXIFF_PFM;
+	else
+	{
+		LOG_PRINT_ERROR( " An unsupported image file format" );
+		return D3DXIFF_BMP; // save as bmp image by default
+	}
+}
+
+
+inline D3DXIMAGE_FILEFORMAT GetD3DXImageFormatFromFilepath( const std::string& pathname )
+{
+	if( pathname.length() <= 4 )
+	{
+		LOG_PRINT_ERROR( " An invalid pathname for an image file." );
+		return D3DXIFF_BMP;
+	}
+
+	const std::string ext = pathname.substr( pathname.length() - 3 );
+	return GetD3DXImageFormatFromFileExt( ext );
+}
+
 
 #endif		/*  __SurfaceFormat_HPP__  */

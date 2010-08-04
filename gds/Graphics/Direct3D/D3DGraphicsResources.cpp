@@ -189,22 +189,11 @@ bool CD3DTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const st
 }
 
 
-static inline D3DXIMAGE_FILEFORMAT SuffixToD3DImgFmt( const std::string& suffix )
-{
-	if( suffix == "bmp" ) return D3DXIFF_BMP;
-	else if( suffix == "jpg" ) return D3DXIFF_JPG;
-	else if( suffix == "tga" ) return D3DXIFF_TGA;
-	else if( suffix == "png" ) return D3DXIFF_PNG;
-	else if( suffix == "dds" ) return D3DXIFF_DDS;
-	else return D3DXIFF_BMP;
-}
-
-
 bool CD3DTextureResource::SaveTextureToImageFile( const std::string& image_filepath )
 {
 	if( m_pTexture )
 	{
-		D3DXIMAGE_FILEFORMAT img_fmt = SuffixToD3DImgFmt( image_filepath.substr( image_filepath.length() - 3, 3 ) );
+		D3DXIMAGE_FILEFORMAT img_fmt = GetD3DXImageFormatFromFilepath( image_filepath );
 		HRESULT hr = D3DXSaveTextureToFile( image_filepath.c_str(), img_fmt, m_pTexture, NULL );
 		if( SUCCEEDED(hr) )
 			return true;
