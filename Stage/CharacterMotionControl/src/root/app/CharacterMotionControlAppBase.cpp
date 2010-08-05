@@ -1,20 +1,20 @@
 #include "CharacterMotionControlAppBase.hpp"
 
-#include <gds/Graphics/GraphicsElementManager.hpp>
-#include <gds/Support.hpp>
-#include <gds/Input.hpp>
-#include <gds/Stage.hpp>
-#include <gds/Task.hpp>
-#include <gds/Script.hpp>
-#include <gds/GUI.hpp>
-#include <gds/GameCommon/MouseCursor.hpp>
-#include <gds/GameCommon/3DActionCode.hpp>
-#include <gds/Item/ItemEntity.hpp>
-#include <gds/App/GameWindowManager_Win32.hpp>
+#include "gds/Graphics/GraphicsElementManager.hpp"
+#include "gds/Support.hpp"
+#include "gds/Input.hpp"
+#include "gds/Stage.hpp"
+#include "gds/Task.hpp"
+#include "gds/Script.hpp"
+#include "gds/GUI.hpp"
+#include "gds/GameCommon/MouseCursor.hpp"
+#include "gds/GameCommon/3DActionCode.hpp"
+#include "gds/Item/ItemEntity.hpp"
+#include "gds/Item/GameItem.hpp"
+#include "gds/App/GameWindowManager.hpp"
 
-#include <gds/Item/GameItem.hpp>
-#include <gds/MotionSynthesis/MotionFSM.hpp>
-#include <gds/Graphics/Mesh/SkeletalMesh.hpp>
+#include "gds/MotionSynthesis/MotionFSM.hpp"
+#include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 
 #include "../item/SkeletalCharacter.hpp"
 
