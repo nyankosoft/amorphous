@@ -36,9 +36,6 @@
 
 #include "Support/memory_helpers.hpp"
 
-/// print a message in a message box
-/// availability: Windows
-
 //#include "Support/NamedResourceHandle.hpp"
 
 #include "Support/ParamLoader.hpp"
