@@ -657,6 +657,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ScaleTo( boost::shared_ptr<CGrap
 
 CGraphicsEffectHandle CAnimatedGraphicsManager::SetPosition( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, const Vector2& vPos )
 {
+	LOG_PRINT_ERROR( " Not implemented yet." );
 	return CGraphicsEffectHandle::Null();
 }
 
@@ -671,8 +672,8 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( boost::shared_ptr<CGra
 
 	CE_ColorShift *p = new CE_ColorShift( pTargetElement, time, time );
 	p->m_ColorIndex = color_index;
-	p->m_StartColor = pTargetElement->GetColor(color_index);
-	p->m_EndColor = color;
+	p->m_StartColor = color;
+	p->m_EndColor   = color;
 
 	return AddGraphicsEffect( p );
 }
