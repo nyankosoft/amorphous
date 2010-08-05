@@ -4,6 +4,7 @@
 #include "gds/XML.hpp"
 #include "gds/MotionSynthesis/MotionFSM.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/Profile.hpp"
 #include "gds/Utilities/Physics/PhysicsMeshUtility.hpp"
 //#include "gds/Support/lfs.hpp"
 
@@ -150,7 +151,7 @@ CClothCollisionObject::~CClothCollisionObject()
 }
 
 
-void CClothCollisionObject::InitTransformNode( msynth::CTransformCacheTree& tree )
+void CClothCollisionObject::InitTransformNode( const msynth::CTransformCacheTree& tree )
 {
 	m_pTransformNode = tree.GetNode( m_BoneName );
 }
@@ -239,7 +240,9 @@ void CClothCollisionObject::UpdateWorldTransform()
 CClothSystem::CClothSystem()
 :
 m_OwnsScene(true),
-m_pScene(NULL)
+m_pScene(NULL),
+m_PhysTimestep(1.0f/50.0f),
+m_PhysOverlapTime(0.0f)
 {}
 
 
@@ -249,6 +252,8 @@ Result::Name CClothSystem::InitMotionSystem( boost::shared_ptr<msynth::CSkeleton
 		return Result::INVALID_ARGS;
 
 	msynth::CSkeleton& skeleton = *pSkeleton;
+
+	m_pSkeleton = pSkeleton;
 
 	m_TransformCacheTree.Create( skeleton );
 
@@ -388,7 +393,7 @@ void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe
 }
 
 
-void CClothSystem::Release()
+void CClothSystem::ReleasePhysics()
 {
 	CScene *pScene = m_pScene;
 	if( !pScene )
@@ -422,6 +427,46 @@ void CClothSystem::LoadMeshes()
 	{
 		bool res = m_Cloths[i].LoadMesh();
 	}
+}
+
+
+void CClothSystem::Update( float dt )
+{
+	if( !m_OwnsScene )
+		return;
+
+	if( !m_pScene )
+		return;
+
+	Scalar total_time = dt + m_PhysOverlapTime;
+
+	if (total_time > 0.1f)
+		total_time = 0.1f;
+
+	int num_loops = (int) (total_time / m_PhysTimestep);
+	Scalar timestep = m_PhysTimestep;
+
+	if ( false /*m_allow_smaller_timesteps*/ )
+	{
+		if (num_loops == 0)
+			num_loops = 1;
+		timestep = total_time / num_loops;
+	}
+
+	m_PhysOverlapTime = total_time - num_loops * timestep;
+
+	for( int i=0; i<num_loops; i++ )
+	{
+		PROFILE_SCOPE( "Physics Simulation" );
+
+		// handle the motions and collisions of rigid body entities
+//		m_pStage->m_pPhysicsManager->Integrate( timestep );
+		m_pScene->Simulate( timestep );
+
+		while( !m_pScene->FetchResults( physics::SimulationStatus::RigidBodyFinished ) )
+		{}
+	}
+
 }
 
 

@@ -134,7 +134,7 @@ public:
 
 	const std::string& GetName() const { return m_Name; }
 
-	void InitTransformNode( msynth::CTransformCacheTree& tree );
+	void InitTransformNode( const msynth::CTransformCacheTree& tree );
 
 	void InitPhysics( physics::CScene *pScene );
 
@@ -158,6 +158,9 @@ public:
 	/// owned or borrowed reference to a scene
 	physics::CScene *m_pScene;
 
+	float m_PhysTimestep;
+	float m_PhysOverlapTime;
+
 	std::vector<CClothObject> m_Cloths;
 
 	std::vector<CClothCollisionObject> m_ClothAttachObjects;
@@ -172,7 +175,7 @@ public:
 
 	CClothSystem();
 
-	virtual ~CClothSystem() { Release(); }
+	virtual ~CClothSystem() { ReleasePhysics(); }
 
 	Result::Name InitMotionSystem( boost::shared_ptr<msynth::CSkeleton> pSkeleton );
 
@@ -182,7 +185,7 @@ public:
 	*/
 	void InitPhysics( physics::CScene *pScene = NULL );
 
-	void Release();
+	void ReleasePhysics();
 
 	void UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe, const Matrix34& world_pose = Matrix34Identity() );
 
@@ -202,6 +205,8 @@ public:
 	CCustomMesh& GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
 
 	void LoadMeshes();
+
+	void Update( float dt );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
