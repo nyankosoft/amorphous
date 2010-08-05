@@ -86,11 +86,15 @@ public:
 	m_pRootNode( new CTransformCacheNode() )
 	{}
 
-	~CTransformCacheTree() { Release(); }
+	~CTransformCacheTree()
+	{
+		Release();
+		SafeDelete( m_pRootNode );
+	}
 
 	void Release()
 	{
-		SafeDelete( m_pRootNode );
+		m_pRootNode->ReleaseChildren();
 	}
 	
 	void Create( const CSkeleton& skeleton );

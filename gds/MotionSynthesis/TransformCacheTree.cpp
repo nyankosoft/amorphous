@@ -48,6 +48,8 @@ const CTransformCacheNode *CTransformCacheNode::GetNode( const std::string& name
 
 void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone )
 {
+	ReleaseChildren();
+
 	m_Name = bone.GetName();
 
 	// found the name in the list
