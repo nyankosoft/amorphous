@@ -3,7 +3,6 @@
 
 #include "BE_Light.hpp"
 #include "BEC_Billboard.hpp"
-#include "Graphics/FVF_TextureVertex.h"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/HemisphericLight.hpp"
 

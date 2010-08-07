@@ -1,8 +1,7 @@
 #include "BillboardArrayMesh.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/Macro.h"
-
-#include <d3dx9.h>
+#include "Graphics/FVF_BillboardVertex.h"
 
 using namespace std;
 

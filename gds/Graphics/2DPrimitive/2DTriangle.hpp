@@ -118,11 +118,13 @@ inline C2DTriangle::C2DTriangle( Direction dir,  const SRect& rect, U32 color )
 
 inline void C2DTriangle::SetDefault()
 {
-	ZeroMemory(m_avVertex, sizeof(TLVERTEX) * 3);
 	for(int i=0; i<3; i++)
 	{
+		m_avVertex[i].m_vPosition = Vector3(0,0,0);
 		m_avVertex[i].m_fRHW = 1.0f;
 		m_avVertex[i].m_DiffuseColor.SetToBlack(); // opaque by default
+		for( int j=0; j<CGeneral2DVertex::NUM_MAX_TEXTURECOORD_SETS; j++ )
+			m_avVertex[i].m_TextureCoord[j] = TEXCOORD2(0,0);
 	}
 
 	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;

@@ -5,7 +5,6 @@
 #include "../../base.hpp"
 #include "3DMath/Vector2.hpp"
 #include "3DMath/Vector3.hpp"
-#include "Graphics/FVF_TLVertex.h"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/2DPrimitive/2DPrimitive.hpp"
 #include "Graphics/2DPrimitive/2DRectSet.hpp"
@@ -59,13 +58,6 @@ public:
 	virtual void SetRectColor( int rect_index, U32 color ) = 0;
 
 	virtual void SetRectVertexColor( int rect_index, int vert_index, const SFloatRGBAColor& color ) = 0;
-
-
-	/// FVF vertex
-
-	//	 virtual void SetRectVertex( int rect_index, int vert_index, const TLVERTEX& vSrc ) = 0;
-
-	//	 virtual void SetVertex( int vert_index, const TLVERTEX& vSrc ) = 0;
 
 
 	virtual int GetNumRects() = 0;
@@ -148,13 +140,6 @@ public:
 	inline void SetRectColor( int rect_index, U32 color );
 
 	inline void SetRectVertexColor( int rect_index, int vert_index, const SFloatRGBAColor& color );
-
-
-	/// FVF vertex
-
-	inline void SetRectVertex( int rect_index, int vert_index, const TLVERTEX& vSrc );
-
-	inline void SetVertex( int vert_index, const TLVERTEX& vSrc );
 
 
 	inline int GetNumRects() { return m_pImpl->GetNumRects(); }

@@ -4,8 +4,6 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-
-#include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/UnitCube.hpp"
 #include "Support/SafeDelete.hpp"
 #include "3DMath/MathMisc.hpp"

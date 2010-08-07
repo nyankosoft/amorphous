@@ -3,7 +3,6 @@
 
 #include "../base.hpp"
 #include "../Graphics/2DPrimitive/2DRect.hpp"
-#include "../Graphics/FVF_TLVertex.h"
 #include "../Graphics/GraphicsComponentCollector.hpp"
 
 #define SCREENEFFECT_FADE_OUT 0

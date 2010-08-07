@@ -2,7 +2,6 @@
 #define  __TEXTUREFONT_H__
 
 #include "FontBase.hpp"
-//#include "Graphics/FVF_TLVertex.h"
 #include "Graphics/fwd.hpp"
 #include "Graphics/AlphaBlend.hpp"
 #include "Graphics/TextureHandle.hpp"
