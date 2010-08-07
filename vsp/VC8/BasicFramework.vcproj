@@ -1950,11 +1950,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\Timer.cpp"
+				RelativePath="..\..\gds\Support\Timer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Support\Timer.hpp"
+				RelativePath="..\..\gds\Support\Timer_Win32.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\Timer_Win32.hpp"
 				>
 			</File>
 			<File
