@@ -1,5 +1,6 @@
-#ifndef __TIMER_H__
-#define __TIMER_H__
+#ifndef __Timer_Win32_HPP__
+#define __Timer_Win32_HPP__
+
 
 #include <windows.h>
 
@@ -79,22 +80,4 @@ protected:
 };
 
 
-inline CTimer& GlobalTimer()
-{
-	// Using an accessor function gives control of the construction order
-	// - This is a non-thread safe implementation of singleton pattern.
-	// - Make sure GlobalTimer() is not called by more than one thread at the same time.
-	static CTimer timer;
-
-	static int initialized = 0;
-	if( initialized == 0 )
-	{
-		timer.Start();
-		initialized = 1;
-	}
-
-	return timer;
-}
-
-
-#endif  /* __TIMER_H__ */
+#endif  /* __Timer_Win32_HPP__ */
