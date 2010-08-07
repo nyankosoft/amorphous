@@ -100,11 +100,3 @@ void CTimer::UpdateFrameTime()
 double CTimer::GetFrameTime64()
 {
 }*/
-
-
-//--------------------------------------------------------------------------------------
-bool CTimer::IsStopped()
-{
-    return m_bTimerStopped;
-}
-

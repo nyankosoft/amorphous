@@ -42,7 +42,8 @@ public:
 	/// updates the timer. must be called once per frame
 	void UpdateFrameTime();
 
-	bool IsStopped(); ///< returns true if timer stopped
+	/// Returns true if timer stopped
+	bool IsStopped() const { return m_bTimerStopped; }
 
 //	void Advance(); // advance the timer by 0.1 seconds
 
@@ -50,25 +51,7 @@ protected:
 
 	/// for PerformanceQueryCounter() version of the timer
 	bool m_bTimerStopped;
-/*	LONGLONG m_llQPFTicksPerSec;
 
-	LONGLONG m_llStopTime;
-	LONGLONG m_llLastElapsedTime;
-	LONGLONG m_llBaseTime;
-
-	/// time of the last FPS update
-	LONGLONG m_llPrevTime;
-
-
-	/// for timeGetTime() version of the timer, which will be used
-	/// when the QueryPerformanceCounter() is not available
-
-	/// time of the last UpdateFrameTime() call
-    DWORD m_dwLastTimeMS;
-
-	/// time of the last FPS update in UpdateFrameTime()
-    DWORD m_dwPrevTimeMS;
-*/
 	int m_count;
 
 	/// stores frametime. updated every frame in UpdateFrameTime()
@@ -82,24 +65,6 @@ protected:
 
 	struct timeval m_LastElapsedTime;
 };
-
-
-inline CTimer& GlobalTimer()
-{
-	// Using an accessor function gives control of the construction order
-	// - This is a non-thread safe implementation of singleton pattern.
-	// - Make sure GlobalTimer() is not called by more than one thread at the same time.
-	static CTimer timer;
-
-	static int initialized = 0;
-	if( initialized == 0 )
-	{
-		timer.Start();
-		initialized = 1;
-	}
-
-	return timer;
-}
 
 
 #endif  /* __Timer_posix_HPP__ */

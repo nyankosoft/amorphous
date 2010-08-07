@@ -41,7 +41,8 @@ public:
 	/// updates the timer. must be called once per frame
 	void UpdateFrameTime();
 
-	bool IsStopped(); ///< returns true if timer stopped
+	/// Returns true if timer stopped
+	bool IsStopped() const { return m_bTimerStopped; }
 
 //	void Advance(); // advance the timer by 0.1 seconds
 

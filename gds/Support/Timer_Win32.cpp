@@ -251,11 +251,3 @@ double CTimer::GetFrameTime64()
 
     return fElapsedTime;
 }*/
-
-
-//--------------------------------------------------------------------------------------
-bool CTimer::IsStopped()
-{
-    return m_bTimerStopped;
-}
-
