@@ -182,11 +182,15 @@
 				Name="Support"
 				>
 				<File
-					RelativePath="..\..\..\Project1\gds\Support\Timer.cpp"
+					RelativePath="..\..\..\Project1\gds\Support\Timer.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\Project1\gds\Support\Timer.hpp"
+					RelativePath="..\..\..\Project1\gds\Support\Timer_Win32.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\Project1\gds\Support\Timer_Win32.hpp"
 					>
 				</File>
 			</Filter>
