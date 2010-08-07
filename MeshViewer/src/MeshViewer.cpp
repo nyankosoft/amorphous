@@ -5,7 +5,7 @@
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Graphics/MeshGenerators.hpp"
-#include "gds/Graphics/Font/Font.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
 #include "gds/Graphics/Direct3D/Direct3D9.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
@@ -388,7 +388,8 @@ int CMeshViewer::Init()
 
 	SetDefaultLinearFog();
 
-	m_pFont = shared_ptr<CFont>( new CFont( "Arial", 16, 32 ) );
+	m_pFont = CreateDefaultBuiltinFont();
+	m_pFont->SetFontSize( 16, 32 );
 
 	return 0;
 }
