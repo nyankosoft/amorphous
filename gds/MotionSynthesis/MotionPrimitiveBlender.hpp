@@ -120,7 +120,7 @@ public:
 	///  - if a motion primitive is currently being played, it will be overridden
 //	void StartMotion( boost::shared_ptr<CMotionPrimitive> ptr, float delay );
 
-	void AddMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pMotionPrimitive, int iFlag );
+	void AddMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pMotionPrimitive, float interpolation_duration, int iFlag );
 
 	void StartNewMotionPrimitive( float interpolation_motion_length,
 		                          boost::shared_ptr<CMotionPrimitive> pNewMotion );

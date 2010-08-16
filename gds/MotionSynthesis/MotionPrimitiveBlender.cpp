@@ -159,21 +159,25 @@ void CMotionPrimitiveBlender::PushInterpolationMotionPrimitive( shared_ptr<CMoti
 }
 
 
-void CMotionPrimitiveBlender::AddMotionPrimitive( shared_ptr<CMotionPrimitive> pNewMotion, int iFlag )
+void CMotionPrimitiveBlender::AddMotionPrimitive( shared_ptr<CMotionPrimitive> pNewMotion,
+												  float interpolation_duration,
+												  int iFlag )
 {
 	if( !pNewMotion )
 		return;
 
 	if( 0 < m_MotionPrimitiveQueue.size() )
 	{
-		if( 0 < m_vecpInterpolationMotion.size() )
+		if( 0 < m_vecpInterpolationMotion.size()
+		 && 0.001f < interpolation_duration )
 //		if( false )
 		{
+			// Push an interpolation motion before the new motion.
 			shared_ptr<CMotionPrimitive> pInterpolationMotion
 				= m_vecpInterpolationMotion.back();
 
 			shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
-			PushInterpolationMotionPrimitive( pCurrentMotion, pNewMotion, 0.1f );
+			PushInterpolationMotionPrimitive( pCurrentMotion, pNewMotion, interpolation_duration );
 		}
 
 		m_MotionPrimitiveQueue.push_back( pNewMotion );
@@ -422,10 +426,12 @@ void CMotionPrimitiveBlender::Update( float dt )
 */
 		prev_time = 0;
 
+		// If the current motion is a looping motion, push the same motion
+		// to the queue to keep playing the same motion.
 		if( pCurrentMotion->IsLoopedMotion() )
 		{
 			// assumes no other motion is currently in the queue
-			AddMotionPrimitive( pCurrentMotion, 0 );
+			AddMotionPrimitive( pCurrentMotion, 0.0f, 0 );
 		}
 
 		// Return the current motion to the stock of interpolation motions
@@ -586,7 +592,7 @@ void CMotionPrimitiveBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
 
 			m_fCurrentTime = fmodf( m_fCurrentTime, pCurrentMotion->GetTotalTime() );
 
-			AddMotionPrimitive( pCurrentMotion, 0 );
+			AddMotionPrimitive( pCurrentMotion, 0.1f, 0 );
 	
 			m_MotionPrimitiveQueue.pop_front();
 
