@@ -18,6 +18,10 @@ struct SLayerSet
 
 	std::vector<CLWO2_Layer *> vecpMeshLayer;
 
+	/// A skeleton is created from the skelegons in this layer and saved
+	/// to the same file with the mesh data extracted from vecpMeshLayer.
+	/// A skeleton of a mesh must be represented as a single skelegon tree
+	/// in a single layer. 
 	CLWO2_Layer *pSkelegonLayer;
 
 	SLayerSet() : pSkelegonLayer(NULL) {}

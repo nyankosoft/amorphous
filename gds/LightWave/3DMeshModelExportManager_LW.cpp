@@ -121,37 +121,47 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 	vector<CLWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", CLWO2_NameMatchCond::START_WITH );
 
-	// for skeletons, target the layers named with either "CreateMesh" or "Skeleton"
-	vecpSkeletonLayer.assign( vecpMeshLayer.begin(), vecpMeshLayer.end() );
+	// if a layer with the name that begins with "Skeleton" was not found, for skeletons, target the layers named with either "CreateMesh" or "Skeleton"
+	vecpSkeletonLayer.insert( vecpSkeletonLayer.end(), vecpMeshLayer.begin(), vecpMeshLayer.end() );
 
-	num_tgt_layers = vecpSkeletonLayer.size();
+//	num_tgt_layers = vecpSkeletonLayer.size();
 
-	// collect skelegon layers
-	for( i=0; i<num_tgt_layers; i++ )
+	const size_t num_skeleton_layers = vecpSkeletonLayer.size();
+	num_layer_sets = vecLayerSet.size();
+	for( i=0; i<num_layer_sets; i++ )
 	{
-		CLWO2_Layer *layer = vecpSkeletonLayer[i];
+		SLayerSet& layer_set = vecLayerSet[i];
 
-		// register as a skeleton layer
-		// skelegons for a mesh are supposed to be collected in one layer
-		// and not to spread across different layers
-		GetOutputFilename( strOutFilename, layer->GetName() );
+		if( layer_set.vecpMeshLayer.empty() )
+			continue; // No mesh data for skeleton: skip this set
 
-		num_layer_sets = vecLayerSet.size();
-		for( j=0; j<num_layer_sets; j++ )
+		if( vecpSkeletonLayer.empty() )
 		{
-			if( vecLayerSet[j].strOutputFilename == strOutFilename )
+			// Assumes that the first layer contains the skelegons
+			layer_set.pSkelegonLayer = layer_set.vecpMeshLayer.front();
+			continue;
+		}
+
+		for( j=0; j<num_skeleton_layers; j++ )
+		{
+			CLWO2_Layer *pSkeletonLayer = vecpSkeletonLayer[j];
+			GetOutputFilename( strOutFilename, pSkeletonLayer->GetName() );
+
+			if( layer_set.strOutputFilename == strOutFilename )
 			{
-				// A layer set with the same output filepath already exists
-				// - register the layer as a skeleton layer for this layer set.
-				vecLayerSet[j].pSkelegonLayer = layer;
+				// Found a skeleton layer that has the same output pathname
+				// as that of the current layer set, layer_set
+				// - Register pSkeletonLayer as a skeleton layer for this layer set.
+				layer_set.pSkelegonLayer = pSkeletonLayer;
 				break;
 			}
 		}
 
-		if( j == num_layer_sets )
+		if( !layer_set.pSkelegonLayer )
 		{
-			vecLayerSet.push_back( SLayerSet(strOutFilename) );
-			vecLayerSet.back().pSkelegonLayer = layer;
+			// The skeleton layer for this layer set was not found in vecpSkeletonLayer
+			// - Use the first mesh layer as the skeleton layer.
+			layer_set.pSkelegonLayer = layer_set.vecpMeshLayer.front();
 		}
 	}
 
