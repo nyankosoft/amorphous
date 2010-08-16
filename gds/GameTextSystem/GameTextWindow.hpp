@@ -2,11 +2,7 @@
 #define  __GAMETEXTWINDOW_H__
 
 
-#include <d3d9.h>
-#include <d3dx9.h>
-
 #include "3DMath/aabb2.hpp"
-
 #include "Graphics/fwd.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
@@ -37,7 +33,6 @@ enum eGameTextWindowInput
 
 class CGameTextComponent;
 class CGameTextSet;
-class CFont;
 
 class CGameTextWindow : public CGraphicsComponent
 {
