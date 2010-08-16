@@ -163,7 +163,9 @@ void CLensFlare::Render()
 
 	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
-	pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_CCW );
+	GraphicsDevice().Enable(  RenderStateType::FACE_CULLING );
+	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+//	pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_CCW );
 
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );

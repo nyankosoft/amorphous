@@ -1,10 +1,10 @@
 #include "SkyboxMisc.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
 
 using namespace std;
 using namespace boost;
@@ -38,18 +38,17 @@ CMeshObjectHandle CreateSkyboxMesh( const std::string& texture_filepath )
 
 void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
 	Result::Name res;
-	HRESULT hr;
+//	HRESULT hr;
 
 	res = GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
 	res = GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
 	res = GraphicsDevice().Disable( RenderStateType::LIGHTING );
 	res = GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 	res = GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
-//	res = GraphicsDevice().SetCullingMode( D3DRS_CULLMODE, D3DCULL_CCW );
-	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+	res = GraphicsDevice().Enable(  RenderStateType::FACE_CULLING );
+	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+//	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 
 	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
