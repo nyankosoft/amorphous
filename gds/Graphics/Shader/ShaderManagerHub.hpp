@@ -3,7 +3,6 @@
 
 
 #include "Graphics/Camera.hpp"
-//#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "3DMath/Matrix44.hpp"
 #include "ShaderManager.hpp"
@@ -107,13 +106,9 @@ inline void CShaderManagerHub::PopViewAndProjectionMatrices()
 		m_vecpShaderManager[i]->SetProjectionTransform( matProj );
 	}
 
+	// update the transforms of fixed function pipeline as well
 	FixedFunctionPipelineManager().SetViewTransform( matView );
 	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
-
-	// update the transforms of fixed function pipeline as well
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	pd3dDev->SetTransform(D3DTS_VIEW, &matView);
-//	pd3dDev->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 
 

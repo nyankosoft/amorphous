@@ -2,7 +2,6 @@
 #define  __RenderTask_H__
 
 
-#include "Direct3D/Direct3D9.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 
@@ -36,7 +35,7 @@ public:
 
 inline void CRenderTask::RenderBase()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 //	HRESULT hr;
 
