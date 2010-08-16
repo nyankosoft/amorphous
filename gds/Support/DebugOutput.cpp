@@ -3,6 +3,8 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 //#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/Font/TrueTypeTextureFont.hpp"
+#include "Graphics/Font/UTFFont.hpp"
 #include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
@@ -22,14 +24,45 @@ class CFontFactory
 {
 public:
 
+	CFontBase* CreateFontRawPtr( CFontBase::FontType type );
+
+	/// Create a font
+	/// Determines the font class from the font_name
+	/// If font_name is a pathname of an image file, CTextureFont is created
+	/// and the image file is loaded as a texture that contains the fixed-pitch ascii characters.
+	/// If font_name is a *.ttf or *.otf file, CUTFFont is created.
+	/// If font_name begins with the string, "BuiltinFont::" CTextureFont is created
+	/// and the specified built-in font is loaded
+	CFontBase* CreateFontRawPtr( const std::string& font_name, int font_width = 16, int font_height = 32 );
+
 	/// returns a owned ref
-	CFontBase* CreateFont( const std::string& font_name, int font_width, int font_height );
+	CFontBase* CreateFontRawPtr( CFontBase::FontType type, const std::string& font_name, int font_width, int font_height );
 };
 
 
-CFontBase* CFontFactory::CreateFont( const string& font_name, int font_width, int font_height )
+CFontBase* CFontFactory::CreateFontRawPtr( CFontBase::FontType type )
 {
-	if( font_name.find(".dds") != string::npos
+	switch( type )
+	{
+	case CFontBase::FONTTYPE_TEXTURE:
+		return new CTextureFont;
+	case CFontBase::FONTTYPE_TRUETYPETEXTURE:
+		return new CTrueTypeTextureFont;
+	case CFontBase::FONTTYPE_UTF:
+		return new CUTFFont;
+//	case CFontBase::FONTTYPE_DIRECT3D:
+//		return new CD3DFont;
+	default:
+		LOG_PRINT_ERROR( " An unsupported font type." );
+		return NULL;
+	}
+}
+
+
+CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int font_width, int font_height )
+{
+	if( font_name.find(".ia")  != string::npos
+	 || font_name.find(".dds") != string::npos
 	 || font_name.find(".bmp") != string::npos
 	 || font_name.find(".tga") != string::npos
 	 || font_name.find(".jpg") != string::npos )
@@ -53,11 +86,31 @@ CFontBase* CFontFactory::CreateFont( const string& font_name, int font_width, in
 			return NULL;
 		}
 	}
-	else
+	else if( 4 < font_name.length() )
 	{
-		return NULL;
-//		return new CFont( font_name, font_width, font_height );
+		const string dot_and_ext = font_name.substr(font_name.length() - 4);
+		if( dot_and_ext == ".ttf"
+		 && dot_and_ext == ".otf" )
+		{
+			// Consider font_name as a filename
+			CUTFFont *pUTFFont = new CUTFFont;
+			pUTFFont->InitFont( font_name );
+			return pUTFFont;
+		}
 	}
+	else
+		return NULL;
+
+//	CTextureFont *pTexFont = new CTextureFont;
+//	pTexFont->InitFont( font_name, 16, 32 );
+//	return pTexFont;
+}
+
+
+CFontBase* CFontFactory::CreateFontRawPtr( CFontBase::FontType type, const string& font_name, int font_width, int font_height )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
+	return NULL;
 }
 
 
@@ -246,7 +299,8 @@ CDebugOutput::CDebugOutput( const std::string& font_name, int w, int h, U32 colo
 //	m_pFont->SetColor( color );
 
 	CFontFactory factory;
-	m_pFont = factory.CreateFont( font_name, w, h );
+	m_pFont = factory.CreateFontRawPtr( font_name );
+	m_pFont->SetFontSize( w, h );
 	m_pFont->SetFontColor( color );
 }
 
