@@ -2,6 +2,7 @@
 //#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/TrueTypeTextureFont.hpp"
+#include "Graphics/Font/UTFFont.hpp"
 #include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/2DPrimitive/2DPolygon.hpp"
 #include "GraphicsElementManager.hpp"
@@ -562,6 +563,7 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 	CFont *pFont = NULL;
 	CTextureFont *pTexFont = NULL;
 	CTrueTypeTextureFont *pTTFont = NULL;
+	CUTFFont *pUTFFont = NULL;
 	int w_scaled = (int)(w * m_fScale);
 	int h_scaled = (int)(h * m_fScale);
 	const int ttf_resolution = 64;
@@ -617,6 +619,14 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 		pTTFont->InitFont( font_name, ttf_resolution, w_scaled, h_scaled );
 		pTTFont->SetItalic( italic );
 		m_vecpFont[font_id] = pTTFont;
+		break;
+
+	case CFontBase::FONTTYPE_UTF:
+		pUTFFont = new CUTFFont();
+		pUTFFont->InitFont( font_name );//, ttf_resolution, w_scaled, h_scaled );
+		pUTFFont->SetFontSize( w_scaled, h_scaled );
+		pUTFFont->SetItalic( italic );
+		m_vecpFont[font_id] = pUTFFont;
 		break;
 
 	default:
