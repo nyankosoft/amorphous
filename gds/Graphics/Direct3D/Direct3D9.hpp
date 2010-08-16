@@ -38,6 +38,8 @@ private:
 
 	float m_fClearDepth;
 
+	CullingMode::Name m_CullMode;
+
 private:
 
 	void SetDefaultRenderStates();
@@ -74,10 +76,10 @@ public:
 
 	D3DFORMAT GetAdapterFormat() { return m_AdapterFormat; }
 
-	/// experimental: Could this be a platform-independent way to retrieve resolutions
+	/// experimental: Could this be a platform-independent way to retrieve resolutions?
 	void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer );
 
-	bool IsCurrentDisplayMode( const CDisplayMode& display_mode );
+	bool IsCurrentDisplayMode( const CDisplayMode& display_mode ) const;
 
 	Result::Name SetTexture( int stage, const CTextureHandle& texture );
 
@@ -88,6 +90,8 @@ public:
 	void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 
 	Result::Name SetFogParams( const CFogParams& fog_params );
+
+	Result::Name SetCullingMode( CullingMode::Name cull_mode );
 
 	Result::Name GetViewport( CViewport& viewport );
 

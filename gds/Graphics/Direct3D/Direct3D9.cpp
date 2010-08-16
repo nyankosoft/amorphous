@@ -264,9 +264,9 @@ void CDirect3D9::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& de
 }
 
 
-bool CDirect3D9::IsCurrentDisplayMode( const CDisplayMode& display_mode )
+bool CDirect3D9::IsCurrentDisplayMode( const CDisplayMode& display_mode ) const
 {
-	D3DPRESENT_PARAMETERS present_params = m_CurrentPresentParameters;
+	const D3DPRESENT_PARAMETERS& present_params = m_CurrentPresentParameters;
 	if( display_mode.Width  == present_params.BackBufferWidth
 	 && display_mode.Height == present_params.BackBufferHeight
 	 && display_mode.Format == FromD3DSurfaceFormat( present_params.BackBufferFormat ) )
@@ -333,7 +333,19 @@ Result::Name CDirect3D9::SetTexture( int stage, const CTextureHandle& texture )
 }
 
 
-bool ToD3DRenderStateType( RenderStateType::Name type, D3DRENDERSTATETYPE& dest )
+static inline D3DCULL ToD3DCullMode( CullingMode::Name cull_mode )
+{
+	switch( cull_mode )
+	{
+	case CullingMode::CLOCKWISE:        return D3DCULL_CW;
+	case CullingMode::COUNTERCLOCKWISE: return D3DCULL_CCW;
+//	case CullingMode::NONE:             return D3DCULL_NONE;
+	default: return D3DCULL_NONE;
+	}
+}
+
+
+static inline bool ToD3DRenderStateType( RenderStateType::Name type, D3DRENDERSTATETYPE& dest )
 {
 	switch(type)
 	{
@@ -374,6 +386,14 @@ Result::Name CDirect3D9::SetRenderState( RenderStateType::Name type, bool enable
 		else
 			m_pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
 		break;
+
+	case RenderStateType::FACE_CULLING:
+		if( enable )
+			m_pD3DDevice->SetRenderState( D3DRS_CULLMODE, ToD3DCullMode(m_CullMode) );
+		else
+			m_pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+		break;
+
 	default:
 		return Result::INVALID_ARGS;
 	}
@@ -431,6 +451,24 @@ Result::Name CDirect3D9::SetFogParams( const CFogParams& fog_params )
 //	hr = m_pD3DDevice->SetRenderState( D3DRS_RANGEFOGENABLE, FALSE );
 
 	return Result::SUCCESS;
+}
+
+
+Result::Name CDirect3D9::SetCullingMode( CullingMode::Name cull_mode )
+{
+	m_CullMode = cull_mode;
+
+	HRESULT hr = S_OK;
+
+	DWORD current_d3d_cull_mode = D3DCULL_NONE;
+	hr = m_pD3DDevice->GetRenderState( D3DRS_CULLMODE, &current_d3d_cull_mode );
+	if( current_d3d_cull_mode != D3DCULL_NONE )
+	{
+		D3DCULL d3d_cull_mode = ToD3DCullMode(cull_mode);
+		hr = m_pD3DDevice->SetRenderState( D3DRS_CULLMODE, d3d_cull_mode );
+	}
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
 

@@ -63,10 +63,9 @@ public:
 
 	void Release();
 
-	/// experimental: Could this be a platform-independent way to retrieve resolutions
 	void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer );
 
-	bool IsCurrentDisplayMode( const CDisplayMode& display_mode );
+	bool IsCurrentDisplayMode( const CDisplayMode& display_mode ) const;
 
 	Result::Name SetTexture( int stage, const CTextureHandle& texture );
 
@@ -77,6 +76,8 @@ public:
 	inline void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 
 	Result::Name SetFogParams( const CFogParams& fog_params );
+
+	Result::Name SetCullingMode( CullingMode::Name cull_mode );
 
 	Result::Name GetViewport( CViewport& viewport );
 

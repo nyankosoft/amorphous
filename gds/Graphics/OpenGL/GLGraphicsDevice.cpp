@@ -89,6 +89,7 @@ void CGLGraphicsDevice::Release()
 
 void CGLGraphicsDevice::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer )
 {
+	LOG_PRINT_ERROR( " Not implemented." );
 /*	if( m_vecAdapterMode.size() == 0 )
 		LOG_PRINT_WARNING( "No adapeter modes are in m_vecAdapterMode." );
 
@@ -96,8 +97,10 @@ void CGLGraphicsDevice::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMo
 }
 
 
-bool CGLGraphicsDevice::IsCurrentDisplayMode( const CDisplayMode& display_mode )
+bool CGLGraphicsDevice::IsCurrentDisplayMode( const CDisplayMode& display_mode ) const
 {
+	LOG_PRINT_ERROR( " Not implemented." );
+
 	return false;
 }
 
@@ -190,6 +193,23 @@ Result::Name CGLGraphicsDevice::SetFogParams( const CFogParams& fog_params )
 	glFogf( GL_FOG_DENSITY, (float)fog_params.Density );
 
 	glHint( GL_FOG_HINT, GL_DONT_CARE ); // or GL_NICEST / GL_FASTEST
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::SetCullingMode( CullingMode::Name cull_mode )
+{
+	glFrontFace( GL_CCW );
+
+	switch( cull_mode )
+	{
+	case CullingMode::CLOCKWISE:        glCullFace( GL_BACK );  break;
+	case CullingMode::COUNTERCLOCKWISE: glCullFace( GL_FRONT ); break;
+	default:
+		glCullFace( GL_BACK );
+		break;
+	}
 
 	return Result::SUCCESS;
 }

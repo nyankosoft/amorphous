@@ -77,6 +77,18 @@ public:
 };
 
 
+class CullingMode
+{
+public:
+	enum Name
+	{
+		CLOCKWISE,
+		COUNTERCLOCKWISE,
+		NUM_CULLING_MODES
+	};
+};
+
+
 class DepthBufferType
 {
 public:
@@ -186,10 +198,10 @@ public:
 //	void Release();
 
 
-	/// experimental: Could this be a platform-independent way to retrieve resolutions
-//	void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer );
+	/// experimental: Could this be a platform-independent way to retrieve resolutions?
+	virtual void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer ) = 0;
 
-//	bool IsCurrentDisplayMode( const CDisplayMode& display_mode );
+	virtual bool IsCurrentDisplayMode( const CDisplayMode& display_mode ) const = 0;
 	
 //	virtual void SetWorldTransform();
 //	virtual void SetViewTransform();
@@ -208,6 +220,8 @@ public:
 	virtual void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode ) = 0;
 
 	virtual Result::Name SetFogParams( const CFogParams& fog_params ) = 0;
+
+	virtual Result::Name SetCullingMode( CullingMode::Name cull_mode ) = 0;
 
 	virtual Result::Name GetViewport( CViewport& viewport ) = 0;
 
