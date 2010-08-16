@@ -7,10 +7,6 @@
 #include "GUI/fwd.hpp"
 
 
-class CInputHandler;
-class CFont;
-
-
 enum eUIControlID
 {
 	ID_UI_DLG_ROOT = 10000,

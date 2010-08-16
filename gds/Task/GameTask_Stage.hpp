@@ -5,8 +5,6 @@
 #include "GameTask.hpp"
 #include "Stage/fwd.hpp"
 
-class CFont;
-class CDebugOutput;
 
 extern CStageSharedPtr g_pStage;
 
