@@ -15,8 +15,6 @@ class CLogOutput_ScrolledTextBuffer;
 // accessed from window message procedure
 
 extern CDirectInputMouse *g_pDIMouse;		// referenced from CGameTask classes
-//extern CDIKeyboard *g_pDIKeyboard;
-//extern CDirectInputGamepad *g_pDIGamepad;
 
 
 // =============================== function externs ===============================

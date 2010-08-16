@@ -25,7 +25,7 @@
 #include "Item/ItemDatabaseManager.hpp"
 #include "Stage/BaseEntityManager.hpp"
 #include "Stage/SurfaceMaterialManager.hpp"
-#include "App/GameWindowManager_Win32.hpp"
+#include "App/GameWindowManager.hpp"
 
 using namespace std;
 using namespace boost;
