@@ -26,7 +26,7 @@ private:
 
 	void InitUTFFontInternal();
 
-	bool DrawTextToTexture( const std::vector<U32>& utf_text );
+	bool DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2& vTopLeftPos );
 
 public:
 

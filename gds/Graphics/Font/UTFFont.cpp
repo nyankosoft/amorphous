@@ -113,15 +113,16 @@ void CUTFFont::InitUTFFontInternal()
 }
 
 
-/// Sets up char rects as well
-void RenderTextToBuffer( FT_Face& face,
+static void RenderTextToBufferAndSetUpRects(
+	                    FT_Face& face,
 						const std::vector<U32> &utf8_code_points,
 						int char_height,
 //						C2DArray<U8>& dest_bitmap_buffer,
 						CLockedTexture& dest_texture,
 //						vector<CUTFFont::CharRect>& char_rects,
 						C2DRectSet& text_boxes,
-						int start_index
+						int start_index,
+						const Vector2& vTopLeftPos
 						)
 {
 	PROFILE_FUNCTION();
@@ -225,7 +226,11 @@ void RenderTextToBuffer( FT_Face& face,
 //		text_boxes.SetRectVertexPosition( rect_index, 1, Vector2( ex + italic, sy ) );
 //		text_boxes.SetRectVertexPosition( rect_index, 2, Vector2( ex,          ey ) );
 //		text_boxes.SetRectVertexPosition( rect_index, 3, Vector2( sx,          ey ) );
-		text_boxes.SetRectMinMax( rect_index, char_rect.rect.vMin, char_rect.rect.vMax );
+		text_boxes.SetRectMinMax(
+			rect_index,
+			char_rect.rect.vMin + vTopLeftPos,
+			char_rect.rect.vMax + vTopLeftPos
+			);
 
 //		text_boxes.SetTextureCoordMinMax( rect_index, su, sv, eu, ev );
 		text_boxes.SetTextureCoordMinMax( rect_index, char_rect.tex_min, char_rect.tex_max );
@@ -280,7 +285,7 @@ bool CUTFFont::InitFont( const std::string& font_file_path, int font_pt, int res
 }
 
 
-bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text )
+bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2& vTopLeftPos )
 {
 	// lock texture
 	if( !m_FontTexture.GetEntry() )
@@ -299,17 +304,21 @@ bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text )
 	if( !pLockedTexture )
 		return false;
 
+	// Clear the texture with the transparent black color
+	pLockedTexture->Clear( SFloatRGBAColor(0,0,0,0) );
+
 	// draw text to texture
 
 	vector<CUTFFont::CharRect>& char_rects = m_vecCharRect;
-	RenderTextToBuffer(
+	RenderTextToBufferAndSetUpRects(
 		m_Face,
 		utf_text,
 		m_FontHeight,
 		*pLockedTexture,
 //		char_rects,
 		m_TextBox,
-		m_CacheIndex
+		m_CacheIndex,
+		vTopLeftPos
 		);
 
 //	m_CacheIndex = (int)char_rects.size();
@@ -394,8 +403,9 @@ void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 color )
 
 	m_vecCharRect.resize( 0 );
 	m_CacheIndex = 0;
+	m_TextBox.SetNumRects( 0 );
 
-	DrawTextToTexture( utf8_code_points );
+	DrawTextToTexture( utf8_code_points, vPos );
 
 	m_TextBox.SetColor( color );
 
@@ -420,5 +430,5 @@ void CUTFFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 	vector<U32> utf8_code_points;
 	ConvertToUTF8CodePoints( string(pcStr), utf8_code_points );
 
-	DrawTextToTexture( utf8_code_points );
+	DrawTextToTexture( utf8_code_points, vPos );
 }
