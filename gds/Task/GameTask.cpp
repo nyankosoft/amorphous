@@ -222,6 +222,11 @@ void CGameTask::RequestTaskTransition( const std::string& next_task_name,
 }
 
 
+/**
+  1. Retrieves the current position of the mouse and update the position of the graphics element(s) for mouse cursor.
+  2. Update animations
+  3. Update task transition-related status
+*/
 int CGameTask::FrameMove( float dt )
 {
 	PROFILE_FUNCTION();
@@ -245,7 +250,7 @@ int CGameTask::FrameMove( float dt )
 	// if the task has received a reuqest to finish and translate
 	// to another task, take appropriate actions
 	// - go into fadeout mode
-	// - pop input handler to ignore any further input
+	// - disable the input handler to ignore any further input
 	ProcessTaskTransitionRequest();
 
 	if( 0 < m_FadeoutStartTimeMS )
@@ -271,21 +276,33 @@ int CGameTask::GetInputHandlerIndex() const
 }
 
 
+/**
+ 1. Clears the back buffer
+ 2. Call the Render() of derived class
+ 3. Render the graphics elements
+ 4. Render the mouse cursor (<- Isn't this created as graphics element(s)?)
+ 5. Render the fade-in/out effect
+*/
 void CGameTask::RenderBase()
 {
 	PROFILE_FUNCTION();
 
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	HRESULT hr;
+/*	HRESULT hr;
 	D3DCOLOR color = D3DCOLOR_XRGB(     64, 64, 64);
 //	D3DCOLOR color = D3DCOLOR_XRGB(      0,  0,255);
 ///	D3DCOLOR color = D3DCOLOR_XRGB(      0,255,  0);
 ///	D3DCOLOR color = D3DCOLOR_ARGB(255,  0,255,255);
 	hr = pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, color, 1.0f, 0 );
+*/
+	Result::Name res = Result::SUCCESS;
+	res = GraphicsDevice().SetClearColor( SFloatRGBAColor(0.3f,0.3f,0.3f,1.0f) );
+	res = GraphicsDevice().SetClearDepth( 1.0f );
+	res = GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
 
-	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
-	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,   false );
+	res = GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
+	res = GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,   false );
 
 	// do the render routine of the base class
 	CGameTask::Render();
