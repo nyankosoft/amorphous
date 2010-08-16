@@ -298,6 +298,7 @@ void CMotionPrimitiveNode::SetFSM( CMotionFSM *pFSM )
 }
 
 
+// Add a transition path from this node to another node.
 void CMotionPrimitiveNode::AddTransPath( const std::string& dest_motion_name, const mt& trans )
 {
 	if( !m_pFSM )
@@ -455,6 +456,8 @@ void CMotionPrimitiveNode::LoadFromXMLDocument( CXMLNodeReader& node )
 	string motion_name = node.GetAttributeText( "motion_primitive_name" );
 	if( 0 < motion_name.length() )
 		m_MotionName = motion_name;
+
+	node.GetAttributeValue( "motion_play_speed_factor", m_fMotionPlaySpeedFactor );
 }
 
 
@@ -469,6 +472,8 @@ void CMotionPrimitiveNode::Serialize( IArchive& ar, const unsigned int version )
 //	ar & m_pMotionPrimitive; // Not serialized. Separately loaded from motion database
 
 	ar & m_fMotionPlaySpeedFactor;
+
+	ar & m_fExtraSpeedFactor;
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 		m_pAlgorithm.reset();
@@ -525,7 +530,7 @@ void CMotionFSM::StartMotion( const std::string& motion_node_name )
 /// Checks the motion curently being played.
 void CMotionFSM::Update( float dt )
 {
-	const float factor = m_pCurrent ? m_pCurrent->GetMotionPlaySpeedFactor() : 1.0f;
+	const float factor = m_pCurrent ? m_pCurrent->GetMotionPlaySpeedFactor() * m_pCurrent->GetExtraSpeedFactor(): 1.0f;
 	m_pMotionPrimitivePlayer->Update( dt * factor );
 
 	if( m_pCurrent && m_pCurrent->GetAlgorithm() )

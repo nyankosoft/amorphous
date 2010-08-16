@@ -107,13 +107,16 @@ class CMotionPrimitiveNode : public IArchiveObjectBase
 
 	float m_fMotionPlaySpeedFactor;
 
+	float m_fExtraSpeedFactor;
+
 public:
 
 	CMotionPrimitiveNode( const std::string& name = "" )
 		:
 	m_Name(name),
 	m_pFSM(NULL),
-	m_fMotionPlaySpeedFactor(1.0f)
+	m_fMotionPlaySpeedFactor(1.0f),
+	m_fExtraSpeedFactor(1.0f)
 	{
 		// By default, motion name is initialized with the name of the node
 		m_MotionName = name;
@@ -198,6 +201,10 @@ public:
 	float GetMotionPlaySpeedFactor() const { return m_fMotionPlaySpeedFactor; }
 
 	void SetMotionPlaySpeedFactor( float factor ) { m_fMotionPlaySpeedFactor = factor; }
+
+	float GetExtraSpeedFactor() const { return m_fExtraSpeedFactor; }
+
+	void SetExtraSpeedFactor( float factor ) { m_fExtraSpeedFactor = factor; }
 
 	boost::shared_ptr<CMotionPrimitive>& MotionPrimitive() { return m_pMotionPrimitive; }
 
