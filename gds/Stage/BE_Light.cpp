@@ -110,6 +110,12 @@ void CBE_Light::InitCopyEntity( CCopyEntity* pCopyEnt )
 }
 
 
+static inline SFloatRGBAColor ToRGBA( const SFloatRGBColor& src )
+{
+	return SFloatRGBAColor(src.fRed,src.fGreen,src.fBlue,1.0f);
+}
+
+
 bool CBE_Light::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
 	string light_type;
@@ -133,14 +139,15 @@ bool CBE_Light::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 		return true;
 	}
 
-	if( scanner.TryScanLine( "BASE_COLOR",   m_DefaultDesc.aColor[0] ) ) return true;
-	if( scanner.TryScanLine( "BASE_COLOR_0", m_DefaultDesc.aColor[0] ) ) return true;
-	if( scanner.TryScanLine( "BASE_COLOR_1", m_DefaultDesc.aColor[1] ) ) return true;
-	if( scanner.TryScanLine( "BASE_COLOR_2", m_DefaultDesc.aColor[2] ) ) return true;
+	SFloatRGBColor c;
+	if( scanner.TryScanLine( "BASE_COLOR",   c ) ) { m_DefaultDesc.aColor[0] = ToRGBA(c); return true; }
+	if( scanner.TryScanLine( "BASE_COLOR_0", c ) ) { m_DefaultDesc.aColor[0] = ToRGBA(c); return true; }
+	if( scanner.TryScanLine( "BASE_COLOR_1", c ) ) { m_DefaultDesc.aColor[1] = ToRGBA(c); return true; }
+	if( scanner.TryScanLine( "BASE_COLOR_2", c ) ) { m_DefaultDesc.aColor[2] = ToRGBA(c); return true; }
 
 	// HS lights
-	if( scanner.TryScanLine( "UPPER_COLOR",  m_DefaultDesc.aColor[0] ) ) return true;
-	if( scanner.TryScanLine( "LOWER_COLOR",  m_DefaultDesc.aColor[1] ) ) return true;
+	if( scanner.TryScanLine( "UPPER_COLOR",  c ) ) { m_DefaultDesc.aColor[0] = ToRGBA(c); return true; }
+	if( scanner.TryScanLine( "LOWER_COLOR",  c ) ) { m_DefaultDesc.aColor[1] = ToRGBA(c); return true; }
 
 	if( scanner.TryScanLine( "BASE_ATTENU_FACTORS",
 		m_DefaultDesc.afAttenuation[0],
