@@ -465,10 +465,11 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	// get mesh filename from the aircraft item and load the mesh
 	m_MeshProperty.Release();
 
+	bool loaded = false;
 //	const CMeshObjectContainer &mesh_container = pAircraft->GetMeshObjectContainer();
 	const CMeshObjectContainer &mesh_container = *(pAircraft->MeshContainerRootNode().MeshContainer(0).get());
 	if( !mesh_container.m_MeshObjectHandle.IsLoaded() )
-		pAircraft->LoadMeshObject(); // load the mesh of the aircraft item - the mesh controller uses it
+		loaded = pAircraft->LoadMeshObject(); // load the mesh of the aircraft item - the mesh controller uses it
 
 	// copy mesh related stuff from item to base entity...
 //	m_MeshProperty.m_MeshDesc         = pAircraft->GetMeshObjectContainer().m_MeshDesc;
@@ -484,7 +485,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
 	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
 
-	m_MeshProperty.m_ShaderHandle.Load( shader_desc ); // Blend transform variables are initilized in this call.
+	loaded = m_MeshProperty.m_ShaderHandle.Load( shader_desc ); // Blend transform variables are initilized in this call.
 	m_MeshProperty.m_ShaderTechnique.resize( 1, 1 );
 	m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "Default" );
 	m_MeshProperty.m_pMeshRenderMethod.reset();
