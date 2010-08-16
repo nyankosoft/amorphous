@@ -6,8 +6,7 @@
 #include <gds/Support/MiscAux.hpp>
 #include <gds/Support/CameraController.hpp>
 #include <gds/Input/InputHub.hpp>
-#include <gds/Graphics/Font/TextureFont.hpp>
-#include <gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp>
+#include <gds/Graphics/Font/BuiltinFonts.hpp>
 #include <gds/Graphics/Shader/ShaderManager.hpp>
 #include <gds/Graphics/Shader/ShaderManagerHub.hpp>
 #include <gds/Graphics/Shader/FixedFunctionPipelineManager.hpp>
@@ -87,14 +86,16 @@ void CGraphicsApplicationBase::RenderBase()
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 //	g_Camera.SetPose( g_CameraController.GetPose() );
+
+	// Set the camera and projection tansforms to
+	// 1. fixed function pipeline
+	// 2. currently loaded shaders
 	ShaderManagerHub.PushViewAndProjectionMatrices( m_Camera );
-/*
-	D3DXMATRIX matView, matProj;
-	g_Camera.GetCameraMatrix( matView );
-	g_Camera.GetProjectionMatrix( matProj );
-	pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
-	pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
-*/
+
+	// Commented out: done by CShaderManagerHub::PushViewAndProjectionMatrices()
+//	FixedFunctionPipelineManager().SetViewTransform( m_Camera.GetCameraMatrix() );
+//	FixedFunctionPipelineManager().SetProjectionTransform( m_Camera.GetProjectionMatrix() );
+
 	Matrix44 mat;
 	m_Camera.GetCameraMatrix( mat );
 //	UpdateViewTransform( mat );
@@ -110,15 +111,9 @@ void CGraphicsApplicationBase::RenderBase()
 //	GraphicsDevice().SetClearDepth( 1.0f );
 //	GraphicsDevice().Clear()
 	const SFloatRGBAColor& bg_color = m_BackgroundColor;
-	if( pd3dDevice )
-	{
-		pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, bg_color.GetARGB32(), 1.0f, 0 );
-	}
-	else
-	{
-		glClearColor( bg_color.fRed, bg_color.fGreen, bg_color.fBlue, bg_color.fAlpha );
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
-	}
+	GraphicsDevice().SetClearColor( m_BackgroundColor );
+	GraphicsDevice().SetClearDepth( 1.0f );
+	GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
 
 //	g_pTest->RenderScene();
 
@@ -129,7 +124,7 @@ void CGraphicsApplicationBase::RenderBase()
 	Render();
 
 	// display FPS
-	m_pFont->DrawText( to_string(GlobalTimer().GetFPS()).c_str(), D3DXVECTOR2(20,20), 0xFFFFFFFF );
+	m_pFont->DrawText( to_string(GlobalTimer().GetFPS()).c_str(), Vector2(20,20), 0xFFFFFFFF );
 
 	int i=0;
 	const vector<string>& vecProfileResults = GetProfileText();
@@ -219,10 +214,11 @@ void CGraphicsApplicationBase::Run()
 //		= "Lucida Console";
 		= "DotumChe";
 	g_pFont = pTexFontCFontSharedPtr( new CFont( font_name, 8, 16 ) );*/
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+/*	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
 	pTexFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
 	pTexFont->SetFontSize( 8, 16 );
-	m_pFont = pTexFont;
+	m_pFont = pTexFont;*/
+	m_pFont = CreateDefaultBuiltinFont();
 
 	::MainLoop( this );
 }
