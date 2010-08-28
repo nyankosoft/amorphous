@@ -1,11 +1,11 @@
 #include "OpenALSoundSourceImpl.hpp"
+#include "OpenALSoundManagerImpl.hpp"
+#include "../base.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/thread_starter.hpp"
 #include "Support/SerializableStream.hpp"
-#include "../base.hpp"
-
-#include "OpenALSoundManagerImpl.hpp"
+#include "OggVorbisAux.hpp"
 
 using namespace std;
 using namespace boost;
@@ -30,19 +30,74 @@ using namespace boost;
 */
 
 
-extern bool GetFormatFrequencyChannelsBufferSize( OggVorbis_File& ogg_vorbis_file,
-										          ulong& ulFormat,
-										          ulong& ulFrequency,
-										          ulong& ulChannels,
-										          ulong& ulBufferSize );
+/// \param [in] ogg_vorbis_file,
+/// \param [out] ulFormat,
+/// \param [out] ulFrequency,
+/// \param [out] ulChannels,
+/// \param [out] ulBufferSize
+bool GetFormatFrequencyChannelsBufferSize( OggVorbis_File& ogg_vorbis_file,
+										   ulong& ulFormat,
+										   ulong& ulFrequency,
+										   ulong& ulChannels,
+										   ulong& ulBufferSize )
+{
+	ulFormat     = 0;
+	ulFrequency  = 0;
+	ulChannels   = 0;
+	ulBufferSize = 0;
 
-extern bool LoadOggVorbisSoundFromDisk( const std::string& resource_path, OggVorbis_File& sOggVorbisFile );
+	// Get some information about the file (Channels, Format, and Frequency)
+	vorbis_info *psVorbisInfo = ov_info(&ogg_vorbis_file, -1);
 
-extern bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
-					                    CSerializableStream& src_stream,
-						                OggVorbis_File& sOggVorbisFile );
+	if( !psVorbisInfo )
+	{
+		LOG_PRINT_ERROR( "ov_info() failed." );
+		return false;
+	}
 
-extern unsigned long DecodeOggVorbis(OggVorbis_File *psOggVorbisFile, char *pDecodeBuffer, unsigned long ulBufferSize, unsigned long ulChannels);
+	// determine the frequency, channels, and format
+	ulFrequency = psVorbisInfo->rate;
+	ulChannels  = psVorbisInfo->channels;
+	if (psVorbisInfo->channels == 1)
+	{
+		ulFormat = AL_FORMAT_MONO16;
+		// Set BufferSize to 250ms (Frequency * 2 (16bit) divided by 4 (quarter of a second))
+		ulBufferSize = ulFrequency >> 1;
+		// IMPORTANT : The Buffer Size must be an exact multiple of the BlockAlignment ...
+		ulBufferSize -= (ulBufferSize % 2);
+	}
+	else if (psVorbisInfo->channels == 2)
+	{
+		ulFormat = AL_FORMAT_STEREO16;
+		// Set BufferSize to 250ms (Frequency * 4 (16bit stereo) divided by 4 (quarter of a second))
+		ulBufferSize = ulFrequency;
+		// IMPORTANT : The Buffer Size must be an exact multiple of the BlockAlignment ...
+		ulBufferSize -= (ulBufferSize % 4);
+	}
+	else if (psVorbisInfo->channels == 4)
+	{
+		ulFormat = alGetEnumValue("AL_FORMAT_QUAD16");
+		// Set BufferSize to 250ms (Frequency * 8 (16bit 4-channel) divided by 4 (quarter of a second))
+		ulBufferSize = ulFrequency * 2;
+		// IMPORTANT : The Buffer Size must be an exact multiple of the BlockAlignment ...
+		ulBufferSize -= (ulBufferSize % 8);
+	}
+	else if (psVorbisInfo->channels == 6)
+	{
+		ulFormat = alGetEnumValue("AL_FORMAT_51CHN16");
+		// Set BufferSize to 250ms (Frequency * 12 (16bit 6-channel) divided by 4 (quarter of a second))
+		ulBufferSize = ulFrequency * 3;
+		// IMPORTANT : The Buffer Size must be an exact multiple of the BlockAlignment ...
+		ulBufferSize -= (ulBufferSize % 12);
+	}
+	else
+	{
+		LOG_PRINT_ERROR( "An unsupported number of channels. (channels: " + to_string(psVorbisInfo->channels) + ")" );
+		return false;
+	}
+
+	return true;
+}
 
 
 //====================================================================================
@@ -293,8 +348,8 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 	ulong   ulFrequency = 0;
 	ulong   ulFormat = 0;
 	ulong   ulChannels = 0;
-	ulong   ulBufferSize;
-	ulong   ulBytesWritten;
+	ulong   ulBufferSize = 0;
+	ulong   ulBytesWritten = 0;
 
 	m_NumTotalBuffersProcessed = 0;
 
@@ -316,14 +371,17 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 
 	GetFormatFrequencyChannelsBufferSize( sOggVorbisFile, ulFormat, ulFrequency, ulChannels, ulBufferSize );
 
-	// temporary buffer to store decoded data
-	char *pDecodeBuffer = new char [ulBufferSize];
+	if( ulBufferSize == 0 )
+		return 1;
 
 	if( ulFormat == 0 )
 	{
 		LOG_PRINT_ERROR( " Failed to find format information, or unsupported format." );
 		return 1;
 	}
+
+	// temporary buffer to store decoded data
+	char *pDecodeBuffer = new char [ulBufferSize];
 
 	alGetError();
 

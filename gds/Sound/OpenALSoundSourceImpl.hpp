@@ -4,7 +4,6 @@
 
 #include "fwd.hpp"
 #include "SoundSource.hpp"
-#include "Sound/SoundManagerImpl.hpp"
 #include "Support/SerializableStream.hpp"
 #include "Support/prealloc_pool.hpp"
 #include "Support/Macro.h"
@@ -13,6 +12,13 @@
 #include <al.h>
 #include <alut.h>
 #include <vorbis/vorbisfile.h>
+
+
+extern bool GetFormatFrequencyChannelsBufferSize( OggVorbis_File& ogg_vorbis_file,
+										          ulong& ulFormat,
+										          ulong& ulFrequency,
+										          ulong& ulChannels,
+										          ulong& ulBufferSize );
 
 
 #define LOG_PRINT_AL_ERROR() { ALenum ret = alGetError();	if( ret != AL_NO_ERROR ) { LOG_PRINT_ERROR( GET_TEXT_FROM_ID( ret, g_OpenALErrors ) ); } }

@@ -2,6 +2,7 @@
 #define  __OpenALSoundManagerImpl_H__
 
 
+#include "Sound/SoundManagerImpl.hpp"
 #include "Sound/OpenALSoundSourceImpl.hpp"
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
@@ -16,16 +17,6 @@
 #pragma comment( lib, "OpenAL32.lib" )
 #pragma comment( lib, "alut.lib" )
 
-
-#ifdef _DEBUG
-	#pragma comment( lib, "ogg_d.lib" )
-	#pragma comment( lib, "vorbis_d.lib" )
-	#pragma comment( lib, "vorbisfile_d.lib" )
-#else
-	#pragma comment( lib, "ogg.lib" )
-	#pragma comment( lib, "vorbis.lib" )
-	#pragma comment( lib, "vorbisfile.lib" )
-#endif
 
 /// Can be used by more than one CSoundSource object
 /// - Not used by CStreamSound

@@ -2210,6 +2210,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Sound\OggVorbisAux.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Sound\OggVorbisAux.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Sound\OpenALSoundManagerImpl.cpp"
 				>
 			</File>
