@@ -1,14 +1,16 @@
+#include "BVHBone.hpp"
+#include "3DMath/MatrixConversions.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/UnitCube.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
-#include "BVHBone.hpp"
-
 using namespace std;
 
 
-DWORD CBVHBone::ms_dwSkeletonColor;
-CD3DXMeshObject *CBVHBone::ms_pTestCube = NULL;
+SFloatRGBAColor CBVHBone::ms_dwSkeletonColor;
+CMeshObjectHandle CBVHBone::ms_TestCube;
 CUnitCube *CBVHBone::ms_pUnitCube = NULL;
 
 
@@ -147,16 +149,14 @@ void CBVHBone::SetChannels( char* pcChannel )
 }
 
 
-void CBVHBone::GetLocalTransformMatrices_r( vector<D3DXMATRIX>* pvecLocalTransform, Vector3 vParentBoneGlobalOffset )
+void CBVHBone::GetLocalTransformMatrices_r( vector<Matrix34>* pvecLocalTransform, Vector3 vParentBoneGlobalOffset )
 {
-	D3DXMATRIX matLocalTransform;
-	D3DXMatrixIdentity( &matLocalTransform );
+	Matrix34 local_transform( Matrix34Identity() );
 
-	matLocalTransform._41 = -vParentBoneGlobalOffset.x;
-	matLocalTransform._42 = -vParentBoneGlobalOffset.y;
-	matLocalTransform._43 = -vParentBoneGlobalOffset.z;
-	pvecLocalTransform->push_back( matLocalTransform );
-	
+	local_transform.vPosition = -vParentBoneGlobalOffset;
+
+	pvecLocalTransform->push_back( local_transform );
+
 	Vector3 vGlobalOffset = m_vOffset + vParentBoneGlobalOffset;
 
 	for(size_t i=0; i<this->m_vecChild.size(); i++)
@@ -273,11 +273,9 @@ void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 	{
 		if( ms_pUnitCube )
 		{
-			D3DXMATRIX matWorldTransform;
-			m_matWorldPose.GetRowMajorMatrix44( (float *)&matWorldTransform );
+			Matrix44 matWorldTransform = ToMatrix44( m_matWorldPose );
 
-			D3DXMATRIX matParentTransform;
-			pParentMatrix->GetRowMajorMatrix44( (float *)&matParentTransform );
+			Matrix44 matParentTransform = pParentMatrix ? ToMatrix44( *pParentMatrix ) : Matrix44Identity();
 
 			// draw bone as a box
 			DrawBoxForBone( matParentTransform, matWorldTransform );
@@ -289,8 +287,8 @@ void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 			memcpy( &(avBoneVertex[1].vPosition), &vWorldPosition, sizeof(float) * 3 );
 //			avBoneVertex[0].vPosition = *pvPrevPosition;
 //			avBoneVertex[1].vPosition = vWorldPosition;
-			avBoneVertex[0].color = ms_dwSkeletonColor;
-			avBoneVertex[1].color = ms_dwSkeletonColor;
+			avBoneVertex[0].color = ms_dwSkeletonColor.GetARGB32();
+			avBoneVertex[1].color = ms_dwSkeletonColor.GetARGB32();
 
 			DIRECT3D9.GetDevice()->SetFVF( D3DFVF_COLORVERTEX );
 			DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
@@ -307,24 +305,26 @@ void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 }
 
 
-void CBVHBone::DrawBoxForBone( D3DXMATRIX &rmatParent, D3DXMATRIX &rmatWorldTransform )
+void CBVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransform )
 {
 
 //	DIRECT3D9.GetDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 
-	D3DXMATRIX matTrans, matScale;
+	Matrix44 matTrans( Matrix44Identity() );
 	float fScale[3];
 	int i;
 
 	// set translation matrix to stretch the cube in the direction of the bone 
-	D3DXMatrixIdentity( &matTrans );
+//	D3DXMatrixIdentity( &matTrans );
 	
 	for( i=0; i<3; i++ )
 	{
 		if( 0 < m_vOffset[i] )
-			((float *)(&matTrans._41))[i] = 0.2f;
+			matTrans(i,3) = 0.2f;
+//			((float *)(&matTrans._41))[i] = 0.2f;
 		else if( m_vOffset[i] < 0 )
-			((float *)(&matTrans._41))[i] = -0.2f;
+			matTrans(i,3) = -0.2f;
+//			((float *)(&matTrans._41))[i] = -0.2f;
 	}
 
 	// scale the cube to the size of each body part
@@ -335,22 +335,23 @@ void CBVHBone::DrawBoxForBone( D3DXMATRIX &rmatParent, D3DXMATRIX &rmatWorldTran
 		else
 			fScale[i] = ((float)fabs(m_vOffset[i]) * 25.0f) * 0.04f;
 	}
-	D3DXMatrixScaling( &matScale, fScale[0], fScale[1], fScale[2] );
+
+	Matrix44 matScale = Matrix44Scaling( fScale[0], fScale[1], fScale[2] );
+
 
 	// combine the matrices to create the world matrix ( = matTrans * matScale * rmatParent )
-	D3DXMatrixMultiply( &matTrans, &matTrans, &matScale );
+	matTrans = rmatParent * matScale * matTrans;
+/*	D3DXMatrixMultiply( &matTrans, &matTrans, &matScale );
 
 //	D3DXMatrixMultiply( &matScale, &matScale, &rmatWorldTransform );
 	D3DXMatrixMultiply( &matTrans, &matTrans, &rmatParent );
-
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matTrans );
+*/
+	FixedFunctionPipelineManager().SetWorldTransform( matTrans );
 //	ms_pTestCube->Draw();
 	ms_pUnitCube->Draw();
 
 	// reset the world transformation matrix
-	D3DXMATRIX matIdentity;
-	D3DXMatrixIdentity( &matIdentity );
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matIdentity );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 }
 
@@ -429,12 +430,9 @@ int CBVHBone::GetNumBones_r()
 }
 
 
-void CBVHBone::SetPointersToLocalTransformMatrix_r(vector<D3DXMATRIX *> *pvecpLocalTransform)
+void CBVHBone::SetPointersToLocalTransformMatrix_r( vector<Matrix34 *> *pvecpLocalTransform )
 {
-	D3DXMATRIX matLocalTransform;
-	m_matLocalPose.GetRowMajorMatrix44( (float *)&matLocalTransform );
-
-	pvecpLocalTransform->push_back( &matLocalTransform );
+	pvecpLocalTransform->push_back( &m_matLocalPose );
 
 	for(size_t i=0; i<m_vecChild.size(); i++)
 	{
@@ -443,28 +441,12 @@ void CBVHBone::SetPointersToLocalTransformMatrix_r(vector<D3DXMATRIX *> *pvecpLo
 }
 
 
-void CBVHBone::SetPointersToGlobalTransformMatrix_r(vector<D3DXMATRIX *> *pvecpGlobalTransform)
+void CBVHBone::SetPointersToGlobalTransformMatrix_r( vector<Matrix34 *> *pvecpGlobalTransform )
 {
-	D3DXMATRIX matWorldTransform;
-	m_matWorldPose.GetRowMajorMatrix44( (float *)&matWorldTransform );
-
-	pvecpGlobalTransform->push_back( &matWorldTransform );
+	pvecpGlobalTransform->push_back( &m_matWorldPose );
 
 	for(size_t i=0; i<m_vecChild.size(); i++)
 	{
 		m_vecChild[i].SetPointersToGlobalTransformMatrix_r( pvecpGlobalTransform );
 	}
 }
-
-
-/*
-CBVHBone CBVHBone::operator =(CBVHBone bone)
-{
-	m_strName, bone.m_strName;
-	this->m_iNumChannels = bone.m_iNumChannels;
-	this->m_vecChild.assign( bone.m_vecChild.begin(), bone.m_vecChild.end() );
-	this->m_vOffset = bone.m_vOffset;
-
-	return *this;
-}
-*/

@@ -15,7 +15,7 @@ struct SBVHFrameData
 
 	inline int GetNumChannles() const { return (int)m_vecfChannelValue.size(); }
 
-	inline float GetValue( int i ) { return m_vecfChannelValue[i]; }
+	inline float GetValue( int i ) const { return m_vecfChannelValue[i]; }
 };
 
 
@@ -82,7 +82,7 @@ public:
 
 	void GetGlobalPositionsAtFrame( int iFrame, std::vector<Vector3>& rvecDestGlobalPositions );
 
-	D3DXMATRIX GetBodyCenterTransformationMatrixAt( int iFrame );
+	Matrix34 GetBodyCenterTransformationMatrixAt( int iFrame );
 
 	Vector3 GetBodyCenterPosition( int iFrame );	//get the position of the body center in world coordinate
 

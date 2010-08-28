@@ -1,8 +1,6 @@
 #include "BVHPlayer.hpp"
-
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/FVF_ColorVertex.h"
-#include "Support/memory_helpers.hpp"
 
 using namespace std;
 
@@ -283,37 +281,29 @@ void CBVHPlayer::GetGlobalPositionsAtFrame( int iFrame, vector<Vector3>& rvecDes
 
 // returns the matrix which transforms a vertex into the local coodinate
 // whose origin is the center of the body
-D3DXMATRIX CBVHPlayer::GetBodyCenterTransformationMatrixAt( int iFrame )
+Matrix34 CBVHPlayer::GetBodyCenterTransformationMatrixAt( int iFrame )
 {
-	SBVHFrameData& rFrame = this->m_vecFrame[iFrame];
-
-	D3DXMATRIX matTrans, matRot, matLocal;
+	const SBVHFrameData& rFrame = this->m_vecFrame[iFrame];
 
 	float fRotAngleZ = rFrame.GetValue(3);
 	float fRotAngleX = rFrame.GetValue(4);
 	float fRotAngleY = rFrame.GetValue(5);
 
-	// rotation around Y-axis
-	D3DXMatrixRotationY( &matRot, fRotAngleY );
-	matTrans = matRot;
+	Matrix34 pose( Matrix34Identity() );
 
-	// rotation around X-axis
-	D3DXMatrixRotationX( &matRot, fRotAngleX );
-	D3DXMatrixMultiply( &matTrans, &matTrans, &matRot);
-
-	// rotation around Z-axis
-	D3DXMatrixRotationZ( &matRot, fRotAngleZ );
-	D3DXMatrixMultiply( &matTrans, &matTrans, &matRot);
+	pose.matOrient
+		= Matrix33RotationZ(fRotAngleZ)
+		* Matrix33RotationX(fRotAngleX)
+		* Matrix33RotationY(fRotAngleY);
 
 	// translation
-	matTrans._41 = rFrame.GetValue(0);
-	matTrans._42 = rFrame.GetValue(1);
-	matTrans._43 = rFrame.GetValue(2);
+	pose.vPosition.x = rFrame.GetValue(0);
+	pose.vPosition.y = rFrame.GetValue(1);
+	pose.vPosition.z = rFrame.GetValue(2);
 
-	//make the inverse matrix
-	D3DXMatrixInverse( &matLocal, NULL, &matTrans );
+	Matrix34 inv = pose.GetInverseROT();
 
-	return matLocal;
+	return inv;
 }
 
 
@@ -347,17 +337,16 @@ void CBVHPlayer::ClearStartPositionOffset( int iStartFrame, int iEndFrame )
 		  iEndFrame < 0 || (int)m_vecFrame.size() <= iEndFrame )
 		  return;
 
-	D3DXVECTOR3 vOffset;
-	float fRotAngleX, fRotAngleY, fRotAngleZ;
+	Vector3 vOffset;
 
 	// get the position and the rotation of start frame
-	SBVHFrameData& rStartFrame = this->m_vecFrame[iStartFrame];
+	const SBVHFrameData& rStartFrame = this->m_vecFrame[iStartFrame];
 	vOffset.x = rStartFrame.GetValue(0);
 	vOffset.y = 0; //rStartFrame.GetValue(1);
 	vOffset.z = rStartFrame.GetValue(2);
-	fRotAngleZ = 0; //rStartFrame.GetValue(3);
-	fRotAngleX = 0; //rStartFrame.GetValue(4);
-	fRotAngleY = 0; //rStartFrame.GetValue(5);
+	float fRotAngleZ = 0; //rStartFrame.GetValue(3);
+	float fRotAngleX = 0; //rStartFrame.GetValue(4);
+	float fRotAngleY = 0; //rStartFrame.GetValue(5);
 
 	int iFrame;
 	for(iFrame = iStartFrame; iFrame <= iEndFrame; iFrame++)
@@ -540,5 +529,5 @@ void CBVHPlayer::SetBoneOffsetMatricesForXMesh( char* pcFilename )
 	
 	int count = 0;
 	m_RootBone.SetBoneOffsetMetricesForXMesh(
-		&vecXMeshBoneInPreorder, count, D3DXVECTOR3(0,0,0) );
+		&vecXMeshBoneInPreorder, count, Vector3(0,0,0) );
 }*/

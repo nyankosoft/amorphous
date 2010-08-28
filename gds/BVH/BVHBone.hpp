@@ -3,11 +3,13 @@
 
 #include <vector>
 #include <string>
+#include "fwd.hpp"
 #include "3DMath/Matrix34.hpp"
+#include "3DMath/Matrix44.hpp"
 #include "3DMath/Quaternion.hpp"
 #include "Graphics/fwd.hpp"
-
-#include "fwd.hpp"
+#include "Graphics/FloatRGBAColor.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
 
 
 enum eChannelType
@@ -41,7 +43,7 @@ class CBVHBone
 
 	Quaternion m_qLocalRot;
 
-	static DWORD ms_dwSkeletonColor;	// shared by all the bones
+	static SFloatRGBAColor ms_dwSkeletonColor;	// shared by all the bones
 
 	static CUnitCube *ms_pUnitCube;
 
@@ -83,23 +85,21 @@ public:
 
 	Matrix34 *GetWorldTransformationMatrix() { return &m_matWorldPose; }
 
-	void SetPointersToLocalTransformMatrix_r(std::vector<D3DXMATRIX *> *pvecpLocalTransform);
-	void SetPointersToGlobalTransformMatrix_r(std::vector<D3DXMATRIX *> *pvecpGlobalTransform);
+	void SetPointersToLocalTransformMatrix_r( std::vector<Matrix34 *> *pvecpLocalTransform );
+	void SetPointersToGlobalTransformMatrix_r( std::vector<Matrix34 *> *pvecpGlobalTransform );
 
-	void GetLocalTransformMatrices_r( std::vector<D3DXMATRIX>* pvecLocalTransform,
+	void GetLocalTransformMatrices_r( std::vector<Matrix34>* pvecLocalTransform,
 		                              Vector3 vParentBoneGlobalOffset );
 
 	void GetLocalTransforms_r( Matrix34* paDestTransforms, int& rIndex ) const;
 
 	void Scale_r( float factor );
 
-//	CBVHBone operator=(CBVHBone bone);
+	void SetSkeletonColor(U32 dwSkeletonColor) { ms_dwSkeletonColor.SetARGB32( dwSkeletonColor ); }
 
-	void SetSkeletonColor(DWORD dwSkeletonColor) { ms_dwSkeletonColor = dwSkeletonColor; }
+	void DrawBoxForBone(Matrix44 &rmatParent, Matrix44 &rmatWorldTransform);
 
-	void DrawBoxForBone(D3DXMATRIX &rmatParent, D3DXMATRIX &rmatWorldTransform);
-
-	static CD3DXMeshObject *ms_pTestCube;
+	static CMeshObjectHandle ms_TestCube;
 
 	friend class CPVC_JointHub;
 
