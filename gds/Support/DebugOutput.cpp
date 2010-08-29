@@ -97,6 +97,8 @@ CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int fon
 			pUTFFont->InitFont( font_name );
 			return pUTFFont;
 		}
+		else
+			return NULL;
 	}
 	else
 		return NULL;
@@ -104,6 +106,8 @@ CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int fon
 //	CTextureFont *pTexFont = new CTextureFont;
 //	pTexFont->InitFont( font_name, 16, 32 );
 //	return pTexFont;
+
+	return NULL;
 }
 
 
