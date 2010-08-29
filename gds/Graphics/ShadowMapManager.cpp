@@ -75,6 +75,7 @@ CShadowMapManager::CShadowMapManager()
 :
 //m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
 m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
+m_pSceneRenderTarget( CTextureRenderTarget::Create() ),
 m_DisplayShadowMapTexturesForDebugging(false),
 m_IDCounter(0)
 {
@@ -92,6 +93,7 @@ CShadowMapManager::CShadowMapManager( int texture_width, int texture_height )
 :
 //m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
 m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
+m_pSceneRenderTarget( CTextureRenderTarget::Create() ),
 m_DisplayShadowMapTexturesForDebugging(false),
 m_IDCounter(0)
 {
@@ -99,7 +101,6 @@ m_IDCounter(0)
 
 	m_iTextureWidth  = texture_width;
 	m_iTextureHeight = texture_height;
-
 }
 
 
@@ -130,7 +131,7 @@ bool CShadowMapManager::Init()
 
 	bool c = CreateSceneShadowMapTextures();
 
-	m_SceneRenderTarget.InitScreenSizeRenderTarget();
+	m_pSceneRenderTarget->InitScreenSizeRenderTarget();
 
 	if( shader_loaded && c )//&& SUCCEEDED(hr) )
 		return true;
@@ -165,7 +166,12 @@ void CShadowMapManager::SetDefault()
 void CShadowMapManager::ReleaseTextures()
 {
 	for( int i=0; i<2; i++ )
-		m_aShadowTexture[i].ReleaseTextures();
+	{
+		if( m_apShadowTexture[i] )
+		{
+			m_apShadowTexture[i]->ReleaseTextures();
+		}
+	}
 
 //	SAFE_RELEASE( m_pShadowedView );
 //	SAFE_RELEASE( m_pDSShadowedView );
@@ -305,6 +311,9 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 	if( m_mapIDtoShadowMap.empty() )
 		return;
 
+	if( !m_apShadowTexture[0] )
+		return;
+
 	BeginSceneDepthMap();
 
 	// render the first shadow texture
@@ -313,16 +322,16 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 
 	m_pCurrentShadowMap = itr->second;
 
-//	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::White().GetARGB32() );
-	m_aShadowTexture[0].SetBackgroundColor( SFloatRGBAColor::Yellow().GetARGB32() );
-	m_aShadowTexture[0].SetRenderTarget();
+//	m_apShadowTexture[0]->SetBackgroundColor( SFloatRGBAColor::White().GetARGB32() );
+	m_apShadowTexture[0]->SetBackgroundColor( SFloatRGBAColor::Yellow() );
+	m_apShadowTexture[0]->SetRenderTarget();
 
 	itr->second->RenderShadowReceivers( camera );
 	itr++;
 
 	m_pCurrentShadowMap = shared_ptr<CShadowMap>();
 
-	m_aShadowTexture[0].ResetRenderTarget();
+	m_apShadowTexture[0]->ResetRenderTarget();
 
 	// render the shadow textures for the rest of shadow maps
 /*
@@ -331,13 +340,13 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 		 itr != m_mapIDtoShadowMap.end();
 		 itr++, prev_index = shadow_tex_index, shadow_tex_index = (shadow_tex_index + 1) % 2 )
 	{
-		m_aShadowTexture[shadow_tex_index].SetRenderTarget();
+		m_apShadowTexture[shadow_tex_index].SetRenderTarget();
 
-		pEffect->SetTexture( "PrevShadowTexture", m_aShadowTexture[prev_index].GetRenderTargetTexture() );
+		pEffect->SetTexture( "PrevShadowTexture", m_apShadowTexture[prev_index].GetRenderTargetTexture() );
 
 //		itr->second->RenderShadowReceivers( camera );
 
-		m_aShadowTexture[shadow_tex_index].ResetRenderTarget();
+		m_apShadowTexture[shadow_tex_index].ResetRenderTarget();
 
 		// combine the shadow textures
 	}
@@ -392,7 +401,8 @@ bool CShadowMapManager::CreateSceneShadowMapTextures()
 
 	for( int i=0; i<2; i++ )
 	{
-		m_aShadowTexture[i].Init( m_iTextureWidth, m_iTextureHeight );
+		m_apShadowTexture[i] = CTextureRenderTarget::Create();
+		m_apShadowTexture[i]->Init( m_iTextureWidth, m_iTextureHeight );
 	}
 
 /*	// create a texture on which the scene is rendered
@@ -437,9 +447,12 @@ void CShadowMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam
 
 void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, FALSE );
+	if( !m_apShadowTexture[0] )
+		return;
+
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 
 	if( CShadowMap::ms_DebugShadowMap )
 	{
@@ -464,25 +477,25 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 
 		C2DRect screen_rect( sx, sy + h, sx + w - 1, sy + h*2 - 1, 0xFFFFFFFF );
 		screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		screen_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture() );
+		screen_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture() );
 
 //		CShaderManager *pShaderMgr = 
 //		PrimitiveRenderer().RenderRect( *pShaderMgr, scree_rect );
 
 		C2DTexRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
 		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		tex_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture(), m_aShadowTexture[0].GetRenderTargetTexture() );
-//		tex_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture(), m_pShadowedView );
+		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture() );
+//		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
 	}
 	else
 	{
 		C2DTexRect tex_rect( sx, sy, ex, ey, 0xFFFFFFFF );
 		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		tex_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture(), m_aShadowTexture[0].GetRenderTargetTexture() );
-//		tex_rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture(), m_pShadowedView );
+		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture() );
+//		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
 	}
 
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, TRUE );
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
 
 /*
@@ -491,7 +504,7 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 	LPD3DXEFFECT pEffect = m_ShaderManager.GetEffect();
 	HRESULT hr = pEffect->SetTechnique( "SceneWithShadow" );
 
-	m_ShaderManager.SetTexture( 0, m_SceneRenderTarget.GetRenderTargetTexture() );
+	m_ShaderManager.SetTexture( 0, m_pSceneRenderTarget->GetRenderTargetTexture() );
 	m_ShaderManager.SetTexture( 1, m_pShadowedView );
 
 	pEffect->CommitChanges();
@@ -500,7 +513,7 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 /*
 
 /*
-	pd3dDev->SetTexture( 0, m_SceneRenderTarget.GetRenderTargetTexture() );
+	pd3dDev->SetTexture( 0, m_pSceneRenderTarget->GetRenderTargetTexture() );
 	pd3dDev->SetTexture( 1, m_pShadowedView );
 
 	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
@@ -545,7 +558,7 @@ void CShadowMapManager::RenderSceneShadowMapTexture( int sx, int sy, int ex, int
 {
 	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
 	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-	rect.Draw( m_aShadowTexture[0].GetRenderTargetTexture() );
+	rect.Draw( m_apShadowTexture[0]->GetRenderTargetTexture() );
 }
 
 
@@ -553,7 +566,7 @@ void CShadowMapManager::RenderSceneWithoutShadow( int sx, int sy, int ex, int ey
 {
 	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
 	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-	rect.Draw( m_SceneRenderTarget.GetRenderTargetTexture() );
+	rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture() );
 //	rect.Draw();
 }
 
@@ -665,7 +678,7 @@ void CShadowMapManager::EndSceneDepthMap()
 
 void CShadowMapManager::BeginScene()
 {
-	m_SceneRenderTarget.SetRenderTarget();
+	m_pSceneRenderTarget->SetRenderTarget();
 
 //	DIRECT3D9.GetDevice()->BeginScene();
 }
@@ -675,13 +688,13 @@ void CShadowMapManager::EndScene()
 {
 //	DIRECT3D9.GetDevice()->EndScene();
 
-	m_SceneRenderTarget.ResetRenderTarget();
+	m_pSceneRenderTarget->ResetRenderTarget();
 }
 
 
 void CShadowMapManager::SaveSceneTextureToFile( const std::string& filename )
 {
-	m_SceneRenderTarget.OutputImageFile( filename.c_str() );
+	m_pSceneRenderTarget->OutputImageFile( filename.c_str() );
 }
 
 

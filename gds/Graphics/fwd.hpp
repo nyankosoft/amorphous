@@ -53,6 +53,8 @@ class CCamera;
 class CShaderManager;
 class CShaderLightManager;
 
+class CTextureRenderTarget;
+
 class CSimpleMotionBlur;
 class CCubeMapManager;
 class CShadowMapManager;

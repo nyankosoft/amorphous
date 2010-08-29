@@ -2,6 +2,7 @@
 #define  __TEXTURERENDERTARGET_H__
 
 #include <d3dx9.h>
+#include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/SurfaceFormat.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
@@ -94,6 +95,8 @@ public:
 
 	void SetBackgroundColor( const DWORD dwBGColor ) { m_dwBackgroundColor = dwBGColor; }
 
+	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_dwBackgroundColor = bg_color.GetARGB32(); }
+
 	void SetRenderTarget();
 
 	void ResetRenderTarget();
@@ -116,6 +119,8 @@ public:
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
 	void OutputImageFile( const std::string& filename );
+
+	static boost::shared_ptr<CTextureRenderTarget> Create() { boost::shared_ptr<CTextureRenderTarget> p( new CTextureRenderTarget ); return p; }
 };
 
 

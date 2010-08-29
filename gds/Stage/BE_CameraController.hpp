@@ -42,7 +42,7 @@ private:
 
 	U32 m_CutsceneEndStartedTime;
 
-	static CTextureRenderTarget ms_aTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
+	static boost::shared_ptr<CTextureRenderTarget> ms_apTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
 
 	static bool ms_TextureRenderTargetsInitialized;
 

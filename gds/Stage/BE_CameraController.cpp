@@ -24,7 +24,7 @@ static const U32 gs_FadeoutTimeMS = 500;
 static const int gs_InputHandlerIndex = 1;
 
 
-CTextureRenderTarget CBE_CameraController::ms_aTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
+shared_ptr<CTextureRenderTarget> CBE_CameraController::ms_apTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
 
 bool CBE_CameraController::ms_TextureRenderTargetsInitialized = false;
 
@@ -64,7 +64,9 @@ void CBE_CameraController::Init()
 	{
 		for( int i=0; i<NUM_MAX_ACTIVE_CAMERAS; i++ )
 		{
-			bool res = ms_aTextureRenderTarget[i].InitScreenSizeRenderTarget();
+			ms_apTextureRenderTarget[i] = CTextureRenderTarget::Create();
+
+			bool res = ms_apTextureRenderTarget[i]->InitScreenSizeRenderTarget();
 			if( res )
 				ms_NumAvailableTextureRenderTargets++;
 		}
@@ -221,6 +223,9 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 		// render the stage to different texture render targets
 		for( uint i=0; i<num_active_cameras; i++ )
 		{
+			if( !ms_apTextureRenderTarget[i] )
+				continue;
+
 			shared_ptr<CCopyEntity> pCameraEntity = pCopyEnt->m_aChild[active_cam_indices[i]].Get();
 
 			if( !IsValidEntity(pCameraEntity.get()) )
@@ -228,11 +233,11 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 
 			apCameraEntity[i] = boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
-			ms_aTextureRenderTarget[i].SetRenderTarget();
+			ms_apTextureRenderTarget[i]->SetRenderTarget();
 
 			pCameraEntity->pBaseEntity->RenderStage( pCameraEntity.get() );
 
-			ms_aTextureRenderTarget[i].ResetRenderTarget();
+			ms_apTextureRenderTarget[i]->ResetRenderTarget();
 		}
 
 		if( apCameraEntity[0]->GetKeyFrames().OptionFlags & CCamOption::SET_BLEND_WEIGHT_FOR_FADE_IN_AND_OUT
@@ -267,8 +272,8 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 			rect.SetColor( 0xFFFFFFFF );
 			rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 			rect.Draw(
-				ms_aTextureRenderTarget[0].GetRenderTargetTexture(),
-				ms_aTextureRenderTarget[1].GetRenderTargetTexture() );
+				ms_apTextureRenderTarget[0].GetRenderTargetTexture(),
+				ms_apTextureRenderTarget[1].GetRenderTargetTexture() );
 */
 			C2DRect rect;
 			rect.SetPositionLTWH( 0, 0, CGraphicsComponent::GetScreenWidth(), CGraphicsComponent::GetScreenHeight() );
@@ -276,11 +281,17 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 
 			// image on the back side - opaque
 			rect.SetColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
-			rect.Draw( ms_aTextureRenderTarget[back].GetRenderTargetTexture() );
+			if( ms_apTextureRenderTarget[back] )
+				rect.Draw( ms_apTextureRenderTarget[back]->GetRenderTargetTexture() );
+			else
+				rect.Draw();
 
 			// image on the front side - use alpha blend
 			rect.SetColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, front_weight ) );
-			rect.Draw( ms_aTextureRenderTarget[front].GetRenderTargetTexture() );
+			if( ms_apTextureRenderTarget[front] )
+				rect.Draw( ms_apTextureRenderTarget[front]->GetRenderTargetTexture() );
+			else
+				rect.Draw();
 		}
 	}
 /*

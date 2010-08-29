@@ -8,9 +8,9 @@
 
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
+#include "Graphics/fwd.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
 #include "GameCommon/CriticalDamping.hpp"
 //#include "Graphics/GraphicsComponentCollector.hpp"
 
@@ -148,7 +148,7 @@ class CSubDisplay// : public CGraphicsComponent
 {
 	C2DRect m_DisplayRect;
 
-	CTextureRenderTarget m_TextureRenderTarget;
+	boost::shared_ptr<CTextureRenderTarget> m_pTextureRenderTarget;
 
 	Vector3 m_vTargetPosition;
 

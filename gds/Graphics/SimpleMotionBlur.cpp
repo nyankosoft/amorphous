@@ -1,15 +1,12 @@
-
 #include "SimpleMotionBlur.hpp"
-
 #include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/D3DMisc.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Support/SafeDelete.hpp"
 #include "Support/Macro.h"
 #include "Support/StringAux.hpp"
 
-#include <string>
 using namespace std;
+using namespace boost;
 
 
 CSimpleMotionBlur::CSimpleMotionBlur()
@@ -20,10 +17,10 @@ CSimpleMotionBlur::CSimpleMotionBlur()
 
 	m_fBlurWeight = 0.35f;
 
-	m_pSceneRenderTarget = NULL;
+//	m_pSceneRenderTarget = NULL;
 
-	m_apTexRenderTarget[0] = NULL;
-	m_apTexRenderTarget[1] = NULL;
+//	m_apTexRenderTarget[0] = NULL;
+//	m_apTexRenderTarget[1] = NULL;
 }
 
 
@@ -35,10 +32,10 @@ CSimpleMotionBlur::CSimpleMotionBlur( int texture_width, int texture_height )
 
 	m_fBlurWeight = 0.35f;
 
-	m_pSceneRenderTarget = NULL;
+//	m_pSceneRenderTarget = NULL;
 
-	m_apTexRenderTarget[0] = NULL;
-	m_apTexRenderTarget[1] = NULL;
+//	m_apTexRenderTarget[0] = NULL;
+//	m_apTexRenderTarget[1] = NULL;
 
 	m_TextureWidth  = texture_width;
 	m_TextureHeight = texture_height;
@@ -57,10 +54,14 @@ void CSimpleMotionBlur::Init( int texture_width, int texture_height )
 {
 	ReleaseTextures();
 
-	m_pSceneRenderTarget = new CTextureRenderTarget( texture_width, texture_height );
+	m_pSceneRenderTarget = CTextureRenderTarget::Create();
+	m_pSceneRenderTarget->Init( texture_width, texture_height );
 
-	m_apTexRenderTarget[0] = new CTextureRenderTarget( texture_width, texture_height );
-	m_apTexRenderTarget[1] = new CTextureRenderTarget( texture_width, texture_height );
+	for( int i=0; i<2; i++ )
+	{
+		m_apTexRenderTarget[i] = CTextureRenderTarget::Create();
+		m_apTexRenderTarget[i]->Init( texture_width, texture_height );
+	}
 
 	InitTextureRenderTargetBGColors();
 
@@ -71,12 +72,12 @@ void CSimpleMotionBlur::InitForScreenSize()
 {
 	ReleaseTextures();
 
-	m_pSceneRenderTarget = new CTextureRenderTarget();
+	m_pSceneRenderTarget = CTextureRenderTarget::Create();
 	m_pSceneRenderTarget->InitScreenSizeRenderTarget();
 
 	for( int i=0; i<2; i++ )
 	{
-		m_apTexRenderTarget[i] = new CTextureRenderTarget();
+		m_apTexRenderTarget[i] = CTextureRenderTarget::Create();
 		m_apTexRenderTarget[i]->InitScreenSizeRenderTarget();
 	}
 
@@ -86,23 +87,22 @@ void CSimpleMotionBlur::InitForScreenSize()
 	// determine rect size
 	m_TextureWidth  = GetScreenWidth();
 	m_TextureHeight = GetScreenHeight();
-
 }
 
 
 void CSimpleMotionBlur::ReleaseTextures()
 {
-	SafeDelete( m_pSceneRenderTarget );
-	SafeDelete( m_apTexRenderTarget[0] );
-	SafeDelete( m_apTexRenderTarget[1] );
+	m_pSceneRenderTarget.reset();
+	m_apTexRenderTarget[0].reset();
+	m_apTexRenderTarget[1].reset();
 }
 
 
 void CSimpleMotionBlur::InitTextureRenderTargetBGColors()
 {
-	m_pSceneRenderTarget->SetBackgroundColor( 0xFFFF00FF );
-	m_apTexRenderTarget[0]->SetBackgroundColor( 0xFF00FFFF );
-	m_apTexRenderTarget[1]->SetBackgroundColor( 0xFF00FFFF );
+	m_pSceneRenderTarget->SetBackgroundColor( SFloatRGBAColor(1,0,1,1) );//( 0xFFFF00FF );
+	m_apTexRenderTarget[0]->SetBackgroundColor( SFloatRGBAColor(0,1,1,1) );//( 0xFF00FFFF );
+	m_apTexRenderTarget[1]->SetBackgroundColor( SFloatRGBAColor(0,1,1,1) );//( 0xFF00FFFF );
 }
 
 
@@ -149,15 +149,15 @@ static void SetRectRenderStates( LPDIRECT3DTEXTURE9 pTexture )
 
 void CSimpleMotionBlur::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	// create a rect that covers the entire screen
 //	C2DRect rect( 0, 0, m_TextureWidth, m_TextureHeight );
 	C2DRect rect( -0.5f, -0.5f, (float)m_TextureWidth - 0.5f, (float)m_TextureHeight - 0.5f );
 	rect.SetTextureUV( TEXCOORD2(0.0f,0.0f), TEXCOORD2(1.0f,1.0f) );
 
-	CTextureRenderTarget* pDestRenderTarget = m_apTexRenderTarget[m_TargetTexIndex];
-	CTextureRenderTarget* pPrevRenderTarget = m_apTexRenderTarget[(m_TargetTexIndex+1)%2];
+	shared_ptr<CTextureRenderTarget>& pDestRenderTarget = m_apTexRenderTarget[m_TargetTexIndex];
+	shared_ptr<CTextureRenderTarget>& pPrevRenderTarget = m_apTexRenderTarget[(m_TargetTexIndex+1)%2];
 
 	if( m_bFirst )
 	{
@@ -193,8 +193,8 @@ void CSimpleMotionBlur::Render()
 //	rect.Draw( pPrevRenderTarget->GetRenderTargetTexture() );
 
 	// render the current scene with alpha
-	DWORD dwColor = 0x00FFFFFF | ( ((int)(m_fBlurWeight * 255.0f)) << 24 );
-	rect.SetColor( dwColor );
+	U32 argb32_color = 0x00FFFFFF | ( ((int)(m_fBlurWeight * 255.0f)) << 24 );
+	rect.SetColor( argb32_color );
 	rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture() );
 //	SetRectRenderStates( m_pSceneRenderTarget->GetRenderTargetTexture() );
 //	rect.draw();
@@ -228,20 +228,4 @@ void CSimpleMotionBlur::Render()
 	rect.DrawWireframe();
 
 	m_TargetTexIndex = ( m_TargetTexIndex + 1 ) % 2;
-}
-
-
-void CSimpleMotionBlur::ReleaseGraphicsResources()
-{
-	// m_pSceneRenderTarget - derived from CGraphicsComponent
-	// m_apTexRenderTarget  - derived from CGraphicsComponent
-}
-
-
-void CSimpleMotionBlur::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	// m_pSceneRenderTarget - derived from CGraphicsComponent
-	// m_apTexRenderTarget  - derived from CGraphicsComponent
-
-	InitTextureRenderTargetBGColors();
 }

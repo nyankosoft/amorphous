@@ -5,6 +5,7 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/3DGameMath.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
 #include "Support/SafeDeleteVector.hpp"
@@ -32,7 +33,7 @@ public:
 			// render the stage to texture render target
 			m_pSubDisplay->GetCurrentMonitor()->Render();
 
-			m_pSubDisplay->m_TextureRenderTarget.ResetRenderTarget();
+			m_pSubDisplay->m_pTextureRenderTarget->ResetRenderTarget();
 		}
 	}
 };
@@ -194,7 +195,8 @@ void SubMonitor_FixedView::Update( float dt )
 CSubDisplay::CSubDisplay()
 :
 m_vTargetPosition(Vector3(0,0,0)),
-m_fTargetRadius(0)
+m_fTargetRadius(0),
+m_pTextureRenderTarget( CTextureRenderTarget::Create() )
 {
 	uint uw=0,uh=0;
 	GraphicsDevice().GetViewportSize(uw,uh);
@@ -204,8 +206,8 @@ m_fTargetRadius(0)
 	int dw = (int)(w * 0.2f);
 	int dh = (int)(h * 0.2f);
 
-	m_TextureRenderTarget.Init( dw, dh );
-	m_TextureRenderTarget.SetBackgroundColor( 0xFF000000 );
+	m_pTextureRenderTarget->Init( dw, dh );
+	m_pTextureRenderTarget->SetBackgroundColor( 0xFF000000 );
 
 	m_DisplayRect.SetPositionLTWH( (int)((w-dw)*0.5f), (int)(h-dh*1.05f), dw, dh );
 	m_DisplayRect.SetTextureUV( TEXCOORD2(0.0f,0.0f), TEXCOORD2(1.0f,1.0f) );
@@ -234,7 +236,7 @@ void CSubDisplay::Render()
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 
-	m_TextureRenderTarget.SetRenderTarget();
+	m_pTextureRenderTarget->SetRenderTarget();
 
 	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
 	pd3dDev->SetRenderState( D3DRS_ZENABLE,  D3DZB_TRUE );
@@ -243,7 +245,7 @@ void CSubDisplay::Render()
 	// render the stage to texture
 	GetCurrentMonitor()->Render();
 
-	m_TextureRenderTarget.ResetRenderTarget();
+	m_pTextureRenderTarget->ResetRenderTarget();
 
 //	pd3dDevice->SetVertexShader( NULL );
 //	pd3dDevice->SetPixelShader( NULL );
@@ -253,7 +255,7 @@ void CSubDisplay::Render()
 	// particles are rendered.
 	// need to use the alpha of rect vertices only
 	// TODO: add option for C2DRect::Draw() to do alpha blending only with rect vertices alpha
-///	m_DisplayRect.Draw( m_TextureRenderTarget.GetRenderTargetTexture() );
+///	m_DisplayRect.Draw( m_pTextureRenderTarget->GetRenderTargetTexture() );
 
 	// set render states for submonitor rect
 
@@ -263,7 +265,7 @@ void CSubDisplay::Render()
 	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
 	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-	pd3dDev->SetTexture( 0, m_TextureRenderTarget.GetRenderTargetTexture() );
+	pd3dDev->SetTexture( 0, m_pTextureRenderTarget->GetRenderTargetTexture() );
 
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
@@ -283,7 +285,7 @@ void CSubDisplay::Render()
 
 void CSubDisplay::CreateRenderTasks()
 {
-	m_TextureRenderTarget.SetRenderTarget();
+	m_pTextureRenderTarget->SetRenderTarget();
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
@@ -293,7 +295,7 @@ void CSubDisplay::CreateRenderTasks()
 	// render task to render the scene of the stage to texture render target
 	GetCurrentMonitor()->CreateRenderTasks();
 
-//	m_TextureRenderTarget.ResetRenderTarget();
+//	m_pTextureRenderTarget->ResetRenderTarget();
 }
 
 

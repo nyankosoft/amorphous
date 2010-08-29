@@ -61,7 +61,7 @@ protected:
 
 	int m_ShadowMapSize;
 
-	CTextureRenderTarget m_aShadowTexture[2];
+	boost::shared_ptr<CTextureRenderTarget> m_apShadowTexture[2];
 
 //	LPDIRECT3DTEXTURE9 m_pShadowedView;
 //	LPDIRECT3DSURFACE9 m_pDSShadowedView;
@@ -73,7 +73,7 @@ protected:
 	/// - "ShadowMap": for shadow map rendering. renders the shadow casters to shadow map texture. m_LightCamera is used to calculate  
 	CShaderHandle m_Shader;
 
-	CTextureRenderTarget m_SceneRenderTarget;
+	boost::shared_ptr<CTextureRenderTarget> m_pSceneRenderTarget;
 
 //	static std::string ms_strDefaultShaderFilename;
 

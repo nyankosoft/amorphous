@@ -1,11 +1,10 @@
-#ifndef  __SimpleMotionBlur_H__
-#define  __SimpleMotionBlur_H__
+#ifndef  __SimpleMotionBlur_HPP__
+#define  __SimpleMotionBlur_HPP__
 
 
-#include <d3d9.h>
-#include <d3dx9.h>
+#include <boost/shared_ptr.hpp>
+#include "Graphics/fwd.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
 
 
 /**
@@ -21,13 +20,14 @@
  // render the scene with motion blur
  blur.Render();
  
+ NOTE: derived from CGraphicsComponent to retrieve the screen resolution in InitForScreenSize()
  */
 class CSimpleMotionBlur : public CGraphicsComponent
 {
 	/// used to render the scene
-	CTextureRenderTarget *m_pSceneRenderTarget;
+	boost::shared_ptr<CTextureRenderTarget> m_pSceneRenderTarget;
 
-	CTextureRenderTarget *m_apTexRenderTarget[2];
+	boost::shared_ptr<CTextureRenderTarget> m_apTexRenderTarget[2];
 
 	int m_TextureWidth;
 	int m_TextureHeight;
@@ -54,7 +54,7 @@ public:
 
 	void Init( int texture_width, int texture_height );
 
-	/// Initialize as screen size motion blur effect.
+	/// Initialize for fullscreen motion blur effect.
 	/// Texture render targets are automatically resized when the screen resolution is changed.
 	void InitForScreenSize();
 
@@ -77,10 +77,10 @@ public:
 
 	void ReleaseTextures();
 
-	void ReleaseGraphicsResources();
+	void ReleaseGraphicsResources() {}
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
 };
 
 
-#endif		/*  __SimpleMotionBlur_H__  */
+#endif		/*  __SimpleMotionBlur_HPP__  */
