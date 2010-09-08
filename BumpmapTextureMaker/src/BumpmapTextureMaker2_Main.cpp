@@ -5,7 +5,6 @@
 
 #include "App/GameWindowManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/Font/Font.hpp"
 #include "Support/Timer.hpp"
 #include "Support/FileOpenDialog_Win32.hpp"
 #include "Support/lfs.hpp"
