@@ -1,6 +1,5 @@
 #include "MotionEditorApp.hpp"
 #include "MotionPrimitiveViewer.h"
-#include "gds/Graphics/Font/Font.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
