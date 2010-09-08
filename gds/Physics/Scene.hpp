@@ -13,6 +13,74 @@ namespace physics
 {
 
 
+class ContactPairFlag
+{
+public:
+	enum Name
+	{
+		IGNORE_PAIR								= (1<<0),  //!< Disable contact generation for this pair
+
+		NOTIFY_ON_START_TOUCH                   = (1<<1),  //!< Pair callback will be called when the pair starts to be in contact
+		NOTIFY_ON_END_TOUCH	                    = (1<<2),  //!< Pair callback will be called when the pair stops to be in contact
+		NOTIFY_ON_TOUCH		                    = (1<<3),  //!< Pair callback will keep getting called while the pair is in contact
+		NOTIFY_ON_IMPACT	                    = (1<<4),  //!< [Not yet implemented] pair callback will be called when it may be appropriate for the pair to play an impact sound
+		NOTIFY_ON_ROLL		                    = (1<<5),  //!< [Not yet implemented] pair callback will be called when the pair is in contact and rolling.
+		NOTIFY_ON_SLIDE		                    = (1<<6),  //!< [Not yet implemented] pair callback will be called when the pair is in contact and sliding (and not rolling).
+		NOTIFY_FORCES		                    = (1<<7),  //!< The (summed total) friction force and normal force will be given in the NxContactPair variable in the contact report.
+		NOTIFY_ON_START_TOUCH_FORCE_THRESHOLD   = (1<<8),  //!< Pair callback will be called when the contact force between two actors exceeds one of the actor-defined force thresholds
+		NOTIFY_ON_END_TOUCH_FORCE_THRESHOLD     = (1<<9),  //!< Pair callback will be called when the contact force between two actors falls below the actor-defined force thresholds
+		NOTIFY_ON_TOUCH_FORCE_THRESHOLD         = (1<<10), //!< Pair callback will keep getting called while the contact force between two actors exceeds one of the actor-defined force thresholds
+
+		NOTIFY_CONTACT_MODIFICATION             = (1<<16), //!< Generate a callback for all associated contact constraints, making it possible to edit the constraint. This flag is not included in NX_NOTIFY_ALL for performance reasons. \see NxUserContactModify
+
+		NOTIFY_ALL                              = (NOTIFY_ON_START_TOUCH|NOTIFY_ON_END_TOUCH|NOTIFY_ON_TOUCH|NOTIFY_ON_IMPACT|NOTIFY_ON_ROLL|NOTIFY_ON_SLIDE|NOTIFY_FORCES|
+													   NOTIFY_ON_START_TOUCH_FORCE_THRESHOLD|NOTIFY_ON_END_TOUCH_FORCE_THRESHOLD|NOTIFY_ON_TOUCH_FORCE_THRESHOLD)
+	};
+};
+
+
+class CTriggerEvent
+{
+public:
+	CShape *pTriggerShape;
+	CShape *pOtherShape;
+	U32 StatusFlags;
+
+	CTriggerEvent()
+		:
+	pTriggerShape(NULL),
+	pOtherShape(NULL),
+	StatusFlags(0)
+	{}
+};
+
+
+class CUserTriggerReport
+{
+public:
+
+	virtual void OnTrigger( const CTriggerEvent& trigger_event ) = 0;
+};
+
+
+class CContactPair
+{
+public:
+	CContactPair() { for(int i=0;i<2;i++ ) { pActors[i] = NULL; } }
+	~CContactPair(){}
+
+	CActor *pActors[2];
+};
+
+
+class CUserContactReport
+{
+public:
+
+	virtual void OnContactNotify( CContactPair& pair, U32 events ) = 0;
+};
+
+
 class CSceneLimits
 {
 public:
@@ -202,22 +270,26 @@ public:
 
 	virtual U32 GetPairFlagArray(NxPairFlag* userArray, NxU32 numPairs) const = 0;
 */
-	virtual void SetGroupCollisionFlag( U16 group1, U16 group2, bool enable ) = 0;
+	virtual void SetGroupCollisionFlag( U16 collision_group1, U16 collision_group2, bool enable ) = 0;
 
-	virtual bool GetGroupCollisionFlag( U16 group1, U16 group2 ) const = 0;
+	virtual bool GetGroupCollisionFlag( U16 collision_group1, U16 collision_group2 ) const = 0;
 /*
 	virtual void SetDominanceGroupPair(NxDominanceGroup group1, NxDominanceGroup group2, NxConstraintDominance & dominance) = 0;
 
 	virtual NxConstraintDominance getDominanceGroupPair(NxDominanceGroup group1, NxDominanceGroup group2) const = 0;
+*/
+	virtual void SetActorGroupPairFlags( U16 actor_group1, U16 actor_group2, U32 flags ) = 0;
 
-	virtual void setActorGroupPairFlags(NxActorGroup group1, NxActorGroup group2, NxU32 flags) = 0;
+	virtual U32 GetActorGroupPairFlags( U16 actor_group1, U16 actor_group2 ) const = 0;
+/*
+	virtual U32 GetNumActorGroupPairs() const = 0;
 
-	virtual U32 getActorGroupPairFlags(NxActorGroup group1, NxActorGroup group2) const = 0;
-
-	virtual U32 getNbActorGroupPairs() const = 0;
-
-	virtual U32 getActorGroupPairArray(NxActorGroupPair * userBuffer, NxU32 bufferSize, NxU32 & userIterator) const = 0;
+	virtual U32 GetActorGroupPairArray(NxActorGroupPair * userBuffer, NxU32 bufferSize, NxU32 & userIterator) const = 0;
  */
+	virtual void SetUserTriggerReport( CUserTriggerReport *pCallback ) = 0;
+
+	virtual void SetUserContactReport( CUserContactReport *pCallback ) = 0;
+
 	/// \param coll_group collision group of the ray
 //	virtual CShape *RaycastClosestShape( const CRay& world_ray, shapetype, CRaycastHit& hit, int coll_group, Scalar max_dist ) = 0;
 

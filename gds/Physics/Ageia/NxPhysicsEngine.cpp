@@ -128,6 +128,8 @@ CScene *CNxPhysicsEngine::CreateScene( CSceneDesc& desc )
 
 	CNxPhysScene *pNxPhysScene = new CNxPhysScene( pNxScene, m_pPhysicsSDK );
 
+	pNxPhysScene->SetUserContactReport( desc.pUserContactReport );
+
 	return pNxPhysScene;
 }
 

@@ -20,7 +20,7 @@ class CNxPhysBoxShape : public CBoxShape
 public:
 
 //	CNxPhysBoxShape() {}
-	CNxPhysBoxShape( NxBoxShape *pBox ) : m_pBox(pBox) {}
+	CNxPhysBoxShape( NxBoxShape *pBox ) : m_pBox(pBox) { m_pBox->userData = this; }
 
 	virtual ~CNxPhysBoxShape() {}
 
@@ -57,7 +57,7 @@ class CNxPhysSphereShape : public CSphereShape
 public:
 
 //	CNxPhysSphereShape() {}
-	CNxPhysSphereShape( NxSphereShape *pSphere ) : m_pSphere(pSphere) {}
+	CNxPhysSphereShape( NxSphereShape *pSphere ) : m_pSphere(pSphere) { m_pSphere->userData = this; }
 
 	virtual ~CNxPhysSphereShape() {}
 
@@ -87,7 +87,7 @@ class CNxPhysCapsuleShape : public CCapsuleShape
 public:
 
 //	CNxPhysCapsuleShape() {}
-	CNxPhysCapsuleShape( NxCapsuleShape *pCapsule ) : m_pCapsule(pCapsule) {}
+	CNxPhysCapsuleShape( NxCapsuleShape *pCapsule ) : m_pCapsule(pCapsule) { m_pCapsule->userData = this; }
 
 	virtual ~CNxPhysCapsuleShape() {}
 
@@ -124,7 +124,7 @@ public:
 
 	CNxPhysTriangleMeshShape( NxTriangleMeshShape *pTriangleMesh )
 		:
-	m_pTriangleMesh(pTriangleMesh) {}
+	m_pTriangleMesh(pTriangleMesh) { m_pTriangleMesh->userData = this; }
 
 	virtual ~CNxPhysTriangleMeshShape() {}
 

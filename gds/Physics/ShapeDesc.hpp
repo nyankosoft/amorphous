@@ -26,6 +26,8 @@ public:
 
 	Matrix34 LocalPose;
 
+	U32 ShapeFlags;
+
 	int MaterialIndex;
 
 public:
@@ -39,6 +41,7 @@ public:
 	void SetDefault()
 	{
 //		pPhysicsActor = NULL;
+		ShapeFlags = 0;
 		MaterialIndex = 0;
 		LocalPose.Identity();
 	}

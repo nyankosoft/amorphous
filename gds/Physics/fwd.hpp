@@ -44,5 +44,7 @@ class CTriangleMeshDesc;
 class CPreprocessor;
 class CPreprocessorImpl;
 
+class CUserContactReport;
+
 
 } // namespace physics

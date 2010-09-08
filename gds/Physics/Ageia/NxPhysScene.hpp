@@ -12,12 +12,64 @@ namespace physics
 {
 
 
+class CNxPhysicsUserTriggerReport : public NxUserTriggerReport
+{
+public:
+//	CNxPhysicsScene *m_pScene;
+	CUserTriggerReport *m_pUserTriggerReport;
+
+	CNxPhysicsUserTriggerReport( CUserTriggerReport *pUserTriggerReport = NULL )
+		:
+	m_pUserTriggerReport(pUserTriggerReport)
+	{}
+
+	void onTrigger(NxShape& triggerShape, NxShape& otherShape, NxTriggerFlag status)
+	{
+		CTriggerEvent trigger_event;
+		trigger_event.pTriggerShape = (CShape *)triggerShape.userData;
+		trigger_event.pOtherShape   = (CShape *)otherShape.userData;
+		trigger_event.StatusFlags   = status;
+
+		m_pUserTriggerReport->OnTrigger( trigger_event );
+	}
+};
+
+
+class CNxPhysicsUserContactReport : public NxUserContactReport
+{
+public:
+//	CNxPhysicsScene *m_pScene;
+	CUserContactReport *m_pUserContactReport;
+
+	CNxPhysicsUserContactReport( CUserContactReport *pUserContactReport = NULL )
+		:
+	m_pUserContactReport(pUserContactReport)
+	{}
+
+	void onContactNotify(NxContactPair& pair, NxU32 events)
+	{
+		CContactPair cp;
+
+		cp.pActors[0] = (CActor *)pair.actors[0]->userData;
+		cp.pActors[1] = (CActor *)pair.actors[1]->userData;
+
+		U32 event_flags = events;
+
+		m_pUserContactReport->OnContactNotify( cp, event_flags );
+	}
+};
+
+
 class CNxPhysScene : public CScene
 {
 	NxScene *m_pScene;
 
 	/// owner of the scene (borrowed reference)
 	NxPhysicsSDK* m_pPhysicsSDK;
+
+	CNxPhysicsUserTriggerReport m_NxUserTriggerReport;
+
+	CNxPhysicsUserContactReport m_NxUserContactReport;
 
 public:
 
@@ -166,11 +218,19 @@ public:
 
 	bool GetGroupCollisionFlag( U16 group1, U16 group2 ) const;
 
+	void SetActorGroupPairFlags( U16 actor_group1, U16 actor_group2, U32 flags );
+
+	U32 GetActorGroupPairFlags( U16 actor_group1, U16 actor_group2 ) const;
+
+	void SetUserTriggerReport( CUserTriggerReport *pCallback );
+
+	void SetUserContactReport( CUserContactReport *pCallback );
+
 	virtual CShape *RaycastClosestShape( const CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist );
 
 	CCloth *CreateCloth( CClothDesc& desc );
 
-	void ReleaseCloth( CCloth*& pCloth ); 
+	void ReleaseCloth( CCloth*& pCloth );
 };
 
 

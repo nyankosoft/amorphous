@@ -27,6 +27,21 @@ public:
 };
 
 
+class ShapeFlag
+{
+public:
+	enum Name
+	{
+		TriggerOnEnter    = (1 << 0),
+		TriggerOnLeave    = (1 << 1),
+		TriggerOnStay     = (1 << 2),
+		DisableCollision  = (1 << 3),
+		DisableRaycasting = (1 << 4),
+		TriggerEnable = (TriggerOnEnter | TriggerOnLeave | TriggerOnStay),
+	};
+};
+
+
 class ActorFlag
 {
 public:

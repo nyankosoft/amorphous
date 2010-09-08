@@ -176,8 +176,6 @@ public:
 
 	/// Saves the state of the shape object to a descriptor. 
 //	virtual void  saveToDesc (NxBoxShapeDesc &desc) const =0 
-
-
 };
 
 

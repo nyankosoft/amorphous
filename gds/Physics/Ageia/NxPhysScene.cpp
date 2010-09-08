@@ -33,6 +33,19 @@ static NxU32 ToNxActorFlag( U32 src_flags )
 }
 
 
+static NxU32 ToNxShapeFlags( U32 src_flags )
+{
+	NxU32 dest_flags = 0;
+	if( src_flags & ShapeFlag::TriggerOnEnter    )      dest_flags |= NX_TRIGGER_ON_ENTER;
+	if( src_flags & ShapeFlag::TriggerOnLeave    )      dest_flags |= NX_TRIGGER_ON_LEAVE;
+	if( src_flags & ShapeFlag::TriggerOnStay     )      dest_flags |= NX_TRIGGER_ON_STAY;
+	if( src_flags & ShapeFlag::DisableCollision  )      dest_flags |= NX_SF_DISABLE_COLLISION;
+	if( src_flags & ShapeFlag::DisableRaycasting )      dest_flags |= NX_SF_DISABLE_RAYCASTING;
+
+	return dest_flags;
+}
+
+
 static NxU32 ToNxBodyFlags( U32 phys_body_flags )
 {
 	NxU32 nx_flags = 0;
@@ -48,7 +61,15 @@ CNxPhysScene::CNxPhysScene( NxScene *pScene, NxPhysicsSDK* pPhysicsSDK )
 :
 m_pScene(pScene),
 m_pPhysicsSDK(pPhysicsSDK)
-{}
+{
+	if( m_pScene )
+	{
+		m_pScene->setUserContactReport( &m_NxUserContactReport );
+		m_pScene->setUserTriggerReport( &m_NxUserTriggerReport );
+	}
+	else
+		LOG_PRINT_ERROR( " The ctor received a NULL pointer of NxScene." );
+}
 
 
 CNxPhysScene::~CNxPhysScene()
@@ -203,7 +224,9 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 //	vector<NxShapeDesc *> vecpNxShapeDesc;
 	for( size_t i=0; i<desc.vecpShapeDesc.size(); i++ )
 	{
-		nx_actor_desc.shapes.push_back( desc_factory.CreateNxShapeDesc( *(desc.vecpShapeDesc[i]) ) );
+		CShapeDesc& src_shape_desc = *(desc.vecpShapeDesc[i]);
+
+		nx_actor_desc.shapes.push_back( desc_factory.CreateNxShapeDesc( src_shape_desc ) );
 		if( !nx_actor_desc.shapes.back() )
 		{
 			LOG_PRINT_WARNING( "Failed to create a shape." );
@@ -211,7 +234,8 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 		}
 
 		// set material index
-		nx_actor_desc.shapes.back()->materialIndex = desc.vecpShapeDesc[i]->MaterialIndex;
+		nx_actor_desc.shapes.back()->materialIndex = src_shape_desc.MaterialIndex;
+		nx_actor_desc.shapes.back()->shapeFlags    = ToNxShapeFlags( src_shape_desc.ShapeFlags );
 //		nx_actor_desc.shapes.push_back = vecpNxShapeDesc[i];
 	}
 
@@ -367,6 +391,18 @@ bool CNxPhysScene::GetGroupCollisionFlag( U16 group1, U16 group2 ) const
 }
 
 
+void CNxPhysScene::SetActorGroupPairFlags( U16 actor_group1, U16 actor_group2, U32 flags )
+{
+	m_pScene->setActorGroupPairFlags( (NxActorGroup)actor_group1, (NxActorGroup)actor_group2, flags );
+}
+
+
+U32 CNxPhysScene::GetActorGroupPairFlags( U16 actor_group1, U16 actor_group2 ) const
+{
+	return m_pScene->getActorGroupPairFlags( (NxActorGroup)actor_group1, (NxActorGroup)actor_group2 );
+}
+
+
 CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist )
 {
 	NxRay nx_ray( ToNxVec3(world_ray.Origin), ToNxVec3(world_ray.Direction) );
@@ -445,4 +481,16 @@ void CNxPhysScene::ReleaseCloth( CCloth*& pCloth )
 	NxMeshData nx_mesh_data;
 	pNxCloth->GetNxCloth()->setMeshData( nx_mesh_data );
 	m_pScene->releaseCloth( *(pNxCloth->GetNxCloth()) );
+}
+
+
+void CNxPhysScene::SetUserTriggerReport( CUserTriggerReport *pCallback )
+{
+	m_NxUserTriggerReport.m_pUserTriggerReport = pCallback;
+}
+
+
+void CNxPhysScene::SetUserContactReport( CUserContactReport *pCallback )
+{
+	m_NxUserContactReport.m_pUserContactReport = pCallback;
 }

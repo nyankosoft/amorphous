@@ -40,7 +40,7 @@ public:
 	// NxUserTriggerReport *  userTriggerReport 
 
 	/// Possible contact callback. 
-	// NxUserContactReport *  userContactReport 
+	CUserContactReport *pUserContactReport;
 
 	/// Maximum substep size. 
 	Scalar  MaxTimestep;
