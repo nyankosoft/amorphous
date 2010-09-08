@@ -8,6 +8,7 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/MTRand.hpp"
 #include "Item/GameItem.hpp"
+#include "Physics/ActorDesc.hpp"
 
 using namespace std;
 using namespace boost;
@@ -163,9 +164,11 @@ void CItemEntity::TerminateDerived()
 /// \return handle to the item entity that contains the item given as the argument
 CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGameItem> pItem,
 															    CBaseEntityHandle& attributes_base_entity_handle,
-													            const Matrix34& pose,
-                                                                const Vector3& vLinearVelocity,
-                                                                const Vector3& vAngularVelocity )
+																physics::CActorDesc& actor_desc,
+																bool create_physics_actor )
+//													            const Matrix34& pose,
+//                                                              const Vector3& vLinearVelocity,
+//                                                              const Vector3& vAngularVelocity )
 
 {
 	shared_ptr<CItemEntity> pEntity = shared_ptr<CItemEntity>( new CItemEntity( pItem ) );
@@ -178,11 +181,12 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 	else
 		pAttribBaseEntityHandle = &m_BaseEntityHandle;
 
-	pEntity->SetWorldPose( pose );
-	pEntity->SetVelocity( vLinearVelocity );
-	pEntity->SetAngularVelocity( vAngularVelocity );
+	pEntity->SetWorldPose( actor_desc.WorldPose );// pose );
+	pEntity->SetVelocity( actor_desc.BodyDesc.LinearVelocity );// vLinearVelocity );
+	pEntity->SetAngularVelocity( actor_desc.BodyDesc.AngularVelocity );// vAngularVelocity );
 
-	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, *pAttribBaseEntityHandle );
+	physics::CActorDesc *pActorDesc = create_physics_actor ?  &actor_desc : NULL;
+	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, *pAttribBaseEntityHandle, pActorDesc );
 
 	pItem->SetItemEntity( entity_handle );
 
@@ -195,4 +199,23 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 	else
 		return shared_ptr<CItemEntity>();
 */
+}
+
+
+CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGameItem> pItem,
+															    CBaseEntityHandle& attributes_base_entity_handle,
+													            const Matrix34& pose,
+                                                                const Vector3& vLinearVelocity,
+                                                                const Vector3& vAngularVelocity )
+{
+	physics::CActorDesc actor_desc;
+	actor_desc.WorldPose = pose;
+	actor_desc.BodyDesc.LinearVelocity  = vLinearVelocity;
+	actor_desc.BodyDesc.AngularVelocity = vAngularVelocity;
+
+	return CreateItemEntity(
+		pItem,
+		attributes_base_entity_handle,
+		actor_desc,
+		false );
 }

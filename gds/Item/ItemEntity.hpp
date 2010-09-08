@@ -92,6 +92,11 @@ public:
 
 	CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
 												 CBaseEntityHandle& attributes_base_entity_handle,
+		                                         physics::CActorDesc& actor_desc,
+												 bool create_physics_actor = false );
+
+	CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+												 CBaseEntityHandle& attributes_base_entity_handle,
 		                                         const Matrix34& pose,
 		                                         const Vector3& vLinearVelocity  = Vector3(0,0,0),
 												 const Vector3& vAngularVelocity = Vector3(0,0,0) );
@@ -115,6 +120,10 @@ public:
 	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
 		                                                const Vector3& vPosition,
 														float heading );
+
+	/// The created entity is registered to the physics scene of the stage
+	inline CEntityHandle<CItemEntity> CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+		                                         physics::CActorDesc& actor_desc );
 };
 
 
@@ -147,6 +156,12 @@ inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::sh
 													                   float heading )
 {
 	return CreateItemEntity( pItem, m_BaseEntityHandle, Matrix34( vPosition, Matrix33RotationY(deg_to_rad(heading)) ) );
+}
+
+inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<CGameItem> pItem,
+																	   physics::CActorDesc& actor_desc )
+{
+	return CreateItemEntity( pItem, m_BaseEntityHandle, actor_desc, true );
 }
 
 
