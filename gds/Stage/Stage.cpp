@@ -123,11 +123,42 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 }
 
 
+class TestTriggerReport : public physics::CUserTriggerReport
+{
+public:
+	void OnTrigger( const CTriggerEvent& trigger_event )
+	{
+		CShape *pShape0 = trigger_event.pTriggerShape;
+		CShape *pShape1 = trigger_event.pOtherShape;
+		U32 status = trigger_event.StatusFlags;
+	}
+};
+
+
+class TestContactReport : public physics::CUserContactReport
+{
+public:
+	void OnContactNotify( CContactPair& pair, U32 events )
+	{
+		CActor *pActor0 = pair.pActors[0];
+		CActor *pActor1 = pair.pActors[1];
+	}
+};
+
+
 bool CStage::InitPhysicsManager()
 {
+	static TestContactReport s_TCR;
+	static TestTriggerReport s_TTR;
+
 	// initialize physics scene
 	CSceneDesc phys_scene_desc;
 	m_pPhysicsScene = PhysicsEngine().CreateScene( phys_scene_desc );
+	m_pPhysicsScene->SetUserContactReport( &s_TCR );
+	m_pPhysicsScene->SetActorGroupPairFlags(0,0,ContactPairFlag::NOTIFY_ALL);
+//	m_pPhysicsScene->SetActorGroupPairFlags(0,0,NX_NOTIFY_ON_START_TOUCH|NX_NOTIFY_ON_TOUCH|NX_NOTIFY_ON_END_TOUCH);
+
+	m_pPhysicsScene->SetUserTriggerReport( &s_TTR );
 
 	// set pairs that don't collide with each other
 /*	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_STATICGEOMETRY,ENTITY_COLL_GROUP_STATICGEOMETRY, false );
