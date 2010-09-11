@@ -1,5 +1,6 @@
 #include "SkeletalCharacter.hpp"
 #include "gds/Input/InputHub.hpp"
+#include "gds/Input/InputDevice.hpp"
 #include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/MotionSynthesis/MotionDatabase.hpp"
@@ -7,6 +8,7 @@
 #include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
 #include "gds/Support/DebugOutput.hpp"
 #include "gds/Stage/BaseEntity_Draw.hpp"
+#include "gds/Physics/Actor.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -70,18 +72,20 @@ m_fTurnSpeed(0.0f)
 
 	shared_ptr<CMotionFSM> pLowerLimbsFSM = m_pMotionGraphManager->GetMotionFSM( "lower_limbs" );
 
-	m_pMotionNodes.resize( 3 );
+	m_pMotionNodes.resize( 4 );
 	m_pMotionNodes[0].reset( new CFwdMotionNode );
-	m_pMotionNodes[1].reset( new CStandingMotionNode );
-	m_pMotionNodes[2].reset( new CJumpMotionNode );
+	m_pMotionNodes[1].reset( new CRunMotionNode );
+	m_pMotionNodes[2].reset( new CStandingMotionNode );
+	m_pMotionNodes[3].reset( new CJumpMotionNode );
 	for( size_t i=0; i<m_pMotionNodes.size(); i++ )
 	{
 		m_pMotionNodes[i]->SetSkeletalCharacter( this );
 	}
 
 	pLowerLimbsFSM->GetNode( "fwd" )->SetAlgorithm( m_pMotionNodes[0] );
-	pLowerLimbsFSM->GetNode( "standing" )->SetAlgorithm( m_pMotionNodes[1] );
-//	pLowerLimbsFSM->GetNode( "jump" )->SetAlgorithm( m_pMotionNodes[2] );
+	pLowerLimbsFSM->GetNode( "run" )->SetAlgorithm( m_pMotionNodes[1] );
+	pLowerLimbsFSM->GetNode( "standing" )->SetAlgorithm( m_pMotionNodes[2] );
+//	pLowerLimbsFSM->GetNode( "jump" )->SetAlgorithm( m_pMotionNodes[3] );
 
 	m_pLowerLimbsMotionsFSM = m_pMotionGraphManager->GetMotionFSM( "lower_limbs" );
 	if( !m_pLowerLimbsMotionsFSM )
@@ -166,6 +170,8 @@ void CSkeletalCharacter::Update( float dt )
 
 	Matrix34 world_pose = pEntity->GetWorldPose();
 
+	static Matrix34 m_PrevWorldPose = world_pose;
+
 	// steering
 	world_pose.matOrient = world_pose.matOrient * Matrix33RotationY( GetTurnSpeed() * dt );
 
@@ -180,6 +186,16 @@ void CSkeletalCharacter::Update( float dt )
 	// the world pose of the entity -> always stays horizontal
 	pEntity->SetWorldPose( updated_world_pose );
 //	pEntity->SetWorldPose( Matrix34Identity() );
+
+	if( 0 < pEntity->m_vecpPhysicsActor.size()
+	 && pEntity->m_vecpPhysicsActor[0] )
+	{
+		physics::CActor& actor = *(pEntity->m_vecpPhysicsActor[0]);
+		Vector3 vPhysActorOffset = Vector3( 0, 1, 0 );
+		Matrix34 phys_actor_world_pose( updated_world_pose );
+		phys_actor_world_pose.vPosition += vPhysActorOffset;
+		actor.SetWorldPose( phys_actor_world_pose );
+	}
 
 //	Matrix34 world_pose = m_pMotionGraphManager->GetCurrentWorldPose();
 
@@ -234,6 +250,46 @@ void CSkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 	m_pKeyBind = pKeyBind;
 	for( size_t i=0; i<m_pMotionNodes.size(); i++ )
 		m_pMotionNodes[i]->SetKeyBind( m_pKeyBind );
+
+	// Create map from action code to GI codes
+
+//	m_pKeyBind->Update( m_ACtoGIC );
+
+	int action_codes_to_update[] = { ACTION_MOV_FORWARD, ACTION_MOV_BOOST };
+	for( int i=0; i<CKeyBind::NUM_ACTION_TYPES; i++ )
+	{
+		map<int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[i];
+
+		for( int j=0; j<numof(action_codes_to_update); j++ )
+		{
+			int action_code = action_codes_to_update[j];
+			vector<int> gics;
+			m_pKeyBind->FindGeneralInputCodesOfAllInputDevices( action_code, i, gics );
+			ac_to_gics[action_code] = gics;
+		}
+	}
+}
+
+
+CInputState::Name CSkeletalCharacter::GetActionInputState( int action_code, CKeyBind::ActionType action_type )
+{
+	map< int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[action_type];
+
+	map< int, vector<int> >::iterator itr = ac_to_gics.find( action_code );
+	if( itr == ac_to_gics.end() )
+		return CInputState::RELEASED;
+
+	for( size_t i=0; i<itr->second.size(); i++ )
+	{
+		CInputState::Name input_stat
+			= InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( itr->second[i] ); 
+
+		// Key is considered pressed if any one of the keys for the general input codes are pressed.
+		if( input_stat == CInputState::PRESSED )
+			return CInputState::PRESSED;
+	}
+
+	return CInputState::RELEASED;
 }
 
 
@@ -275,20 +331,65 @@ void CSkeletalCharacter::ProcessInput( const SInputData& input, int action_code 
 }
 */
 
+void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape )
+{
+/*	physics::CRay ray;
+
+	// Check contact with ground
+	ray.Origin = pMyShape->GetActor().GetWorldPosition() + Vector3(0,-0.5,0);
+	ray.Direction = Vector3( 0, -1, 0 );
+	float ray_max_dist = 10;
+	physics::CRaycastHit hit;
+	bool is_hit = pOtherShape->Raycast( ray, ray_max_dist, 0, hit, false );
+//	if( hit.pShape )
+
+	// Check contact with ceiling
+
+	// Check contact with the environment in the direction of the current motion
+	Vector3 vCovered = world_pose.vPosition - m_PrevPose.vPosition;
+	ray.Origin = m_PrevPose.vPosition;
+	ray.Direction = Vec3GetNormalized(vCovered);
+	is_hit = pOtherShape->Raycast( ray, ray_max_dist, 0, hit, false );
+*/
+
+}
+
+/*
+CInputState::Name CCharacterMotionNodeAlgorithm::GetGeneralInputState( int gi_code )
+{
+//	m_pCharacter->GetActionInputState( ACTION_MOV_BOOST );
+	return InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( gi_code );
+}*/
+
+CInputState::Name CCharacterMotionNodeAlgorithm::GetActionInputState( int action_code )
+{
+	return m_pCharacter->GetActionInputState( action_code );
+}
+
 
 bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int action_code )
 {
 	switch( action_code )
 	{
 	case ACTION_MOV_FORWARD:
-		if( input.iType == ITYPE_KEY_PRESSED )
+		if( input.iType == ITYPE_KEY_PRESSED
+		 || input.iType == ITYPE_VALUE_CHANGED )
 		{
-			m_pCharacter->SetFwdSpeed(  input.fParam1 );
+			float fwd_speed = 0;
+			if( input.IsKeyboardInput() )
+			{
+//				fwd_speed = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( GIC_LSHIFT ) == CInputState::PRESSED ? 1.0f : 0.5f;
+				fwd_speed = (GetActionInputState(ACTION_MOV_BOOST) == CInputState::PRESSED) ? 1.0f : 0.5f;
+			}
+			else // analog input
+				fwd_speed = input.fParam1;
+
+			m_pCharacter->SetFwdSpeed( fwd_speed );
 		}
+/*		if( input.iType == ITYPE_KEY_PRESSED )
+			m_pCharacter->SetFwdSpeed(  input.fParam1 );
 		else if( input.iType == ITYPE_VALUE_CHANGED )
-		{
-			m_pCharacter->SetFwdSpeed(  input.fParam1 );
-		}
+			m_pCharacter->SetFwdSpeed(  input.fParam1 );*/
 		else
 			m_pCharacter->SetFwdSpeed( 0 );
 		break;
@@ -298,6 +399,32 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 			m_pCharacter->SetFwdSpeed( -input.fParam1 );
 //			m_fFwdSpeed = -input.fParam1;
 //			m_pLowerLimbsMotionsFSM->RequestTransition( "bwd" );
+		}
+		break;
+	case ACTION_MOV_BOOST: // Keyboard only. Analog gamepad has analog stick to control walk/run
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			float fwd_speed = 0;
+//			CInputState::Name fwd_input = GetGeneralInputState( GIC_UP );
+			CInputState::Name fwd_input = GetActionInputState( ACTION_MOV_FORWARD );
+			if( fwd_input == CInputState::PRESSED )
+				fwd_speed = 1.0f;
+//			else
+//				fwd_speed = 0.5f;
+
+			m_pCharacter->SetFwdSpeed( fwd_speed );
+		}
+		else if( input.iType == ITYPE_KEY_RELEASED )
+		{
+			float fwd_speed = 0;
+//			CInputState::Name fwd_input = GetGeneralInputState( GIC_UP );
+			CInputState::Name fwd_input = GetActionInputState( ACTION_MOV_FORWARD );
+			if( fwd_input == CInputState::PRESSED )
+				fwd_speed = 0.5f;
+			else
+				fwd_speed = 0.0f;
+
+			m_pCharacter->SetFwdSpeed( fwd_speed );
 		}
 		break;
 	case ACTION_MOV_TURN_R:
@@ -333,14 +460,14 @@ void CFwdMotionNode::Update( float dt )
 	{
 		RequestTransition( "standing" );
 	}
-/*	else if( fFwdSpeed < 0.5f )
+/*	else if( fFwdSpeed < 0.6f )
 	{
 		RequestTransition( "fwd" ); // walk
-	}
-	else
-	{
-		RequestTransition( "fwd" ); // run
 	}*/
+	else if( 0.55 <= fFwdSpeed )
+	{
+		RequestTransition( "run" ); // run
+	}
 }
 
 
@@ -351,14 +478,25 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 	switch( action_code )
 	{
 	case ACTION_MOV_FORWARD:
-		if( input.iType == ITYPE_KEY_PRESSED )
+		if( input.iType == ITYPE_KEY_PRESSED
+		 || input.iType == ITYPE_VALUE_CHANGED )
 		{
-			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
+			m_pNode->SetExtraSpeedFactor( m_pCharacter->GetFwdSpeed() * 0.5f );
+		}
+/*		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
+			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
 		}
 		else if( input.iType == ITYPE_VALUE_CHANGED )
 		{
-			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
-		}
+//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
+			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
+		}*/
+		break;
+	case ACTION_MOV_BOOST:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			RequestTransition( "run" );
 		break;
 	case ACTION_MOV_JUMP:
 		RequestTransition( "jump" );
@@ -378,7 +516,71 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 void CFwdMotionNode::EnterState()
 {
 	// update the forward speed
-	m_pNode->SetMotionPlaySpeedFactor( m_pCharacter->GetFwdSpeed() );
+//	m_pNode->SetMotionPlaySpeedFactor( m_pCharacter->GetFwdSpeed() );
+	m_pNode->SetExtraSpeedFactor( m_pCharacter->GetFwdSpeed() );
+}
+
+
+void CRunMotionNode::Update( float dt )
+{
+	float fFwdSpeed = m_pCharacter->GetFwdSpeed();
+	if( fFwdSpeed < 0.2f )
+	{
+		RequestTransition( "standing" );
+	}
+	else if( fFwdSpeed < 0.6f )
+	{
+		RequestTransition( "fwd" ); // walk
+	}
+/*	else
+	{
+		RequestTransition( "fwd" ); // run
+	}*/
+}
+
+
+bool CRunMotionNode::HandleInput( const SInputData& input, int action_code )
+{
+	CCharacterMotionNodeAlgorithm::HandleInput( input, action_code );
+
+	switch( action_code )
+	{
+	case ACTION_MOV_FORWARD:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
+			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
+		}
+		else if( input.iType == ITYPE_VALUE_CHANGED )
+		{
+//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
+			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
+		}
+		break;
+//	case ACTION_MOV_BOOST:
+//		if( input.iType == ITYPE_KEY_RELEASED )
+//			RequestTransition( "fwd" );
+//		break;
+	case ACTION_MOV_JUMP:
+		RequestTransition( "jump" );
+		break;
+/*	case ACTION_MOV_TURN_L:
+		break;
+	case ACTION_MOV_TURN_R:
+		break;*/
+	default:
+		break;
+	}
+
+	return false;
+}
+
+
+void CRunMotionNode::EnterState()
+{
+	// update the forward speed
+//	m_pNode->SetMotionPlaySpeedFactor( m_pCharacter->GetFwdSpeed() );
+	m_pNode->SetExtraSpeedFactor( m_pCharacter->GetFwdSpeed() );
 }
 
 

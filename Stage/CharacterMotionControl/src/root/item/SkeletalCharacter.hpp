@@ -2,16 +2,27 @@
 #define  __SkeletalCharacter_HPP__
 
 
-#include <gds/Item/GameItem.hpp>
-#include <gds/GameCommon/KeyBind.hpp>
-#include <gds/GameCommon/3DActionCode.hpp>
-#include <gds/MotionSynthesis/MotionFSM.hpp>
+#include "gds/Item/GameItem.hpp"
+#include "gds/GameCommon/KeyBind.hpp"
+#include "gds/GameCommon/3DActionCode.hpp"
+#include "gds/MotionSynthesis/MotionFSM.hpp"
+#include "gds/Physics/fwd.hpp"
 
 using namespace msynth;
 
 
 class CSkeletalCharacter;
 class CCharacterMotionNodeAlgorithm;
+
+
+class CActionCodeToGICodesMap
+{
+public:
+	/// Why vector?
+	/// - Because each action code of an action type can have one OR MORE general input codes.
+	std::map<int, std::vector<int> > m_mapActionCodeToGICodes[CKeyBind::NUM_ACTION_TYPES];
+};
+
 
 /**
   walk, turn
@@ -39,6 +50,8 @@ class CSkeletalCharacter : public CGameItem
 
 	boost::shared_ptr<msynth::CMotionPrimitive> m_pSkeletonSrcMotion;
 
+	CActionCodeToGICodesMap m_ACtoGICs;
+
 public:
 
 	CSkeletalCharacter();
@@ -55,6 +68,8 @@ public:
 
 	void ProcessInput( const SInputData& input, int action_code );
 
+	void OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape );
+
 	float GetFwdSpeed() const { return m_fFwdSpeed; }
 	float GetTurnSpeed() const { return m_fTurnSpeed; }
 
@@ -62,6 +77,8 @@ public:
 	void SetTurnSpeed( float fSpeed ) { m_fTurnSpeed = fSpeed; }
 
 	void SetKeyBind( boost::shared_ptr<CKeyBind> pKeyBind );
+
+	CInputState::Name GetActionInputState( int action_code, CKeyBind::ActionType action_type = CKeyBind::ACTION_TYPE_PRIMARY );
 };
 
 
@@ -125,6 +142,8 @@ public:
 	inline bool HandleInput( const SInputData& input );
 
 	virtual bool HandleInput( const SInputData& input, int action_code );
+
+	CInputState::Name GetActionInputState( int action_code );
 };
 
 
@@ -160,6 +179,17 @@ public:
 	void EnterState();
 };
 
+
+class CRunMotionNode : public CCharacterMotionNodeAlgorithm
+{
+public:
+
+	void Update( float dt );
+
+	bool HandleInput( const SInputData& input, int action_code );
+
+	void EnterState();
+};
 
 
 class CJumpMotionNode : public CCharacterMotionNodeAlgorithm

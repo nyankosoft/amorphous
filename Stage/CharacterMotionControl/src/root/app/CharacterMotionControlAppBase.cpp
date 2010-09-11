@@ -11,6 +11,8 @@
 #include "gds/GameCommon/3DActionCode.hpp"
 #include "gds/Item/ItemEntity.hpp"
 #include "gds/Item/GameItem.hpp"
+#include "gds/Physics/ActorDesc.hpp"
+#include "gds/Physics/Enums.hpp"
 #include "gds/App/GameWindowManager.hpp"
 
 #include "gds/MotionSynthesis/MotionFSM.hpp"
@@ -73,10 +75,11 @@ m_vPrevCamPos( Vector3(0,0,0) )
 {
 	m_pKeyBind = shared_ptr<CKeyBind>( new CKeyBind );
 
-	m_pKeyBind->Assign( GIC_UP,    ACTION_MOV_FORWARD );
-	m_pKeyBind->Assign( GIC_DOWN,  ACTION_MOV_BACKWARD );
-	m_pKeyBind->Assign( GIC_RIGHT, ACTION_MOV_TURN_R );
-	m_pKeyBind->Assign( GIC_LEFT,  ACTION_MOV_TURN_L );
+	m_pKeyBind->Assign( GIC_UP,     ACTION_MOV_FORWARD );
+	m_pKeyBind->Assign( GIC_DOWN,   ACTION_MOV_BACKWARD );
+	m_pKeyBind->Assign( GIC_RIGHT,  ACTION_MOV_TURN_R );
+	m_pKeyBind->Assign( GIC_LEFT,   ACTION_MOV_TURN_L );
+	m_pKeyBind->Assign( GIC_LSHIFT, ACTION_MOV_BOOST );
 
 	// analog input
 	// - may need to invert the fParam1.
@@ -93,15 +96,35 @@ m_vPrevCamPos( Vector3(0,0,0) )
 
 	CameraController()->SetPose( Matrix34( Vector3(0.8f,1.9f,-3.5f), Matrix33Identity() ) );
 
+	// trigger shape that detects collision of the character and other objects
+	physics::CCapsuleShapeDesc cap_desc;
+	cap_desc.fLength = 1.00f;
+	cap_desc.fRadius = 0.25f;
+	cap_desc.ShapeFlags = physics::ShapeFlag::TriggerEnable;
+
+	// core - used to make actor desc valid
+	physics::CBoxShapeDesc core_box_desc;
+	core_box_desc.vSideLength = Vector3(1,1,1) * 0.01f;
+
+	physics::CActorDesc actor_desc;
+	actor_desc.WorldPose = Matrix34Identity();
+	actor_desc.BodyDesc.LinearVelocity = Vector3(0,0,0);
+//	actor_desc.BodyDesc.Flags = physics::PhysBodyFlag::Kinematic;
+//	actor_desc.BodyDesc.Flags = physics::PhysBodyFlag::DisableGravity;
+	actor_desc.vecpShapeDesc.push_back( &cap_desc );
+	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
+
 	CItemStageUtility stg_util( m_pStage );
 	shared_ptr<CSkeletalCharacter> pCharacter( new CSkeletalCharacter ); // create an item
 	shared_ptr<CGameItem> pItem = pCharacter;
-	CEntityHandle<CItemEntity> entity = stg_util.CreateItemEntity( pItem, Vector3(0,0,0) ); // create an entity for the item
+//	CEntityHandle<CItemEntity> entity = stg_util.CreateItemEntity( pItem, Vector3(0,0,0) ); // create an entity for the item
+	CEntityHandle<CItemEntity> entity = stg_util.CreateItemEntity( pItem, actor_desc ); // create an entity for the item
 	shared_ptr<CItemEntity> pEntity = entity.Get();
 	if( pEntity )
 	{
 		pCharacter->OnEntityCreated( *pEntity ); // set pointer of mesh render method to CCopyEntity::m_pMeshRenderMethod
 		pEntity->RaiseEntityFlags( BETYPE_LIGHTING );
+		pEntity->ClearEntityFlags( BETYPE_USE_PHYSSIM_RESULTS );
 		pEntity->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 		pEntity->InitMesh();
 //		pEntity->pBaseEntity->SetMeshRenderMethod( *pEntity ); // error: cannot access protected member declared in class 'CBaseEntity'
