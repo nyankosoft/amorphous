@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!--<motion_database file="motions/lws-fwd.mdb"/>-->
-	<motion_database file="motions/basic_moves__mo.mdb"/>
+	<motion_database file="motions/lws-fwd.mdb"/>
+	<!--<motion_database file="motions/basic_moves__mo.mdb"/>-->
 	<!--<motion_database file="motions/basic_moves__az.mdb"/>-->
 	<complete_skeleton motion_primitive_name="standing"/>
 	<FSMs>
 		<FSM name="lower_limbs">
 			<nodes>
 				<!--<node name="fwd" motion_primitive_name="walk-legs"></node>-->
-				<node name="fwd" motion_primitive_name="walk"></node>
+				<node name="fwd" motion_primitive_name="walk" motion_play_speed_factor="2.5"></node>
+				<node name="run" motion_play_speed_factor="3.0"></node>
 				<node name="standing"></node>
 				<node name="crouch"></node>
 				<node name="prone"></node>
@@ -25,6 +26,15 @@
 				</transition>
 				<transition from="fwd" to="crouch">
 					<trans time="0.2" goal="crouch"/>
+				</transition>
+				<transition from="fwd" to="run">
+					<trans time="0.2" goal="run"/>
+				</transition>
+				<transition from="run" to="fwd">
+					<trans time="0.2" goal="fwd"/>
+				</transition>
+				<transition from="run" to="standing">
+					<trans time="0.2" goal="standing"/>
 				</transition>
 				<transition from="standing" to="fwd">
 					<trans time="0.2" goal="fwd"/>
