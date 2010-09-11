@@ -291,6 +291,24 @@ public:
 };
 
 
+//======================================================================================
+// CMotionPrimitiveNode
+//======================================================================================
+
+CMotionPrimitiveNode::CMotionPrimitiveNode( const std::string& name )
+:
+m_Name(name),
+m_pFSM(NULL),
+m_fMotionPlaySpeedFactor(1.0f),
+m_fExtraSpeedFactor(1.0f)
+{
+	// By default, motion name is initialized with the name of the node
+	m_MotionName = name;
+
+	// Set a null object to skip NULL checks.
+	m_pAlgorithm.reset( new CMotionNodeAlgorithm );
+}
+
 void CMotionPrimitiveNode::SetFSM( CMotionFSM *pFSM )
 {
 	m_pFSM = pFSM;
@@ -440,6 +458,9 @@ void CMotionPrimitiveNode::CalculateKeyframe()
 
 void CMotionPrimitiveNode::SetAlgorithm( boost::shared_ptr<CMotionNodeAlgorithm> pAlgorithm )
 {
+	if( !pAlgorithm )
+		pAlgorithm.reset( new CMotionNodeAlgorithm );
+
 	m_pAlgorithm = pAlgorithm;
 	m_pAlgorithm->m_pNode = this;
 }
@@ -476,7 +497,7 @@ void CMotionPrimitiveNode::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fExtraSpeedFactor;
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
-		m_pAlgorithm.reset();
+		m_pAlgorithm.reset( new CMotionNodeAlgorithm );
 }
 
 

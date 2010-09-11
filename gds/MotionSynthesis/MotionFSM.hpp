@@ -111,16 +111,7 @@ class CMotionPrimitiveNode : public IArchiveObjectBase
 
 public:
 
-	CMotionPrimitiveNode( const std::string& name = "" )
-		:
-	m_Name(name),
-	m_pFSM(NULL),
-	m_fMotionPlaySpeedFactor(1.0f),
-	m_fExtraSpeedFactor(1.0f)
-	{
-		// By default, motion name is initialized with the name of the node
-		m_MotionName = name;
-	}
+	CMotionPrimitiveNode( const std::string& name = "" );
 
 /*	CMotionPrimitiveNode( CMotionFSM *pFSM = NULL )
 		:
@@ -262,6 +253,10 @@ public:
 };
 
 
+/**
+ Base class of motion node algorithm
+ - Also used to create instances of null objects.
+*/
 class CMotionNodeAlgorithm
 {
 protected:
@@ -272,7 +267,7 @@ public:
 
 	CMotionNodeAlgorithm() : m_pNode(NULL) {}
 
-	~CMotionNodeAlgorithm() {}
+	virtual ~CMotionNodeAlgorithm() {}
 
 	virtual void Update( float dt ) {}
 
