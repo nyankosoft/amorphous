@@ -333,14 +333,14 @@ void CSkeletalCharacter::ProcessInput( const SInputData& input, int action_code 
 
 void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape )
 {
-/*	physics::CRay ray;
+	physics::CRay ray;
 
 	// Check contact with ground
-	ray.Origin = pMyShape->GetActor().GetWorldPosition() + Vector3(0,-0.5,0);
+/*	ray.Origin = my_shape.GetActor().GetWorldPosition() + Vector3(0,-0.5,0);
 	ray.Direction = Vector3( 0, -1, 0 );
 	float ray_max_dist = 10;
 	physics::CRaycastHit hit;
-	bool is_hit = pOtherShape->Raycast( ray, ray_max_dist, 0, hit, false );
+	bool is_hit = other_shape.Raycast( ray, ray_max_dist, 0, hit, false );
 //	if( hit.pShape )
 
 	// Check contact with ceiling
@@ -378,7 +378,6 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 			float fwd_speed = 0;
 			if( input.IsKeyboardInput() )
 			{
-//				fwd_speed = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( GIC_LSHIFT ) == CInputState::PRESSED ? 1.0f : 0.5f;
 				fwd_speed = (GetActionInputState(ACTION_MOV_BOOST) == CInputState::PRESSED) ? 1.0f : 0.5f;
 			}
 			else // analog input
@@ -405,7 +404,6 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			float fwd_speed = 0;
-//			CInputState::Name fwd_input = GetGeneralInputState( GIC_UP );
 			CInputState::Name fwd_input = GetActionInputState( ACTION_MOV_FORWARD );
 			if( fwd_input == CInputState::PRESSED )
 				fwd_speed = 1.0f;
@@ -417,7 +415,6 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 		else if( input.iType == ITYPE_KEY_RELEASED )
 		{
 			float fwd_speed = 0;
-//			CInputState::Name fwd_input = GetGeneralInputState( GIC_UP );
 			CInputState::Name fwd_input = GetActionInputState( ACTION_MOV_FORWARD );
 			if( fwd_input == CInputState::PRESSED )
 				fwd_speed = 0.5f;
@@ -460,13 +457,9 @@ void CFwdMotionNode::Update( float dt )
 	{
 		RequestTransition( "standing" );
 	}
-/*	else if( fFwdSpeed < 0.6f )
-	{
-		RequestTransition( "fwd" ); // walk
-	}*/
 	else if( 0.55 <= fFwdSpeed )
 	{
-		RequestTransition( "run" ); // run
+		RequestTransition( "run" );
 	}
 }
 
@@ -483,16 +476,6 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 		{
 			m_pNode->SetExtraSpeedFactor( m_pCharacter->GetFwdSpeed() * 0.5f );
 		}
-/*		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
-			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
-		}
-		else if( input.iType == ITYPE_VALUE_CHANGED )
-		{
-//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
-			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
-		}*/
 		break;
 	case ACTION_MOV_BOOST:
 		if( input.iType == ITYPE_KEY_PRESSED )
@@ -516,7 +499,6 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 void CFwdMotionNode::EnterState()
 {
 	// update the forward speed
-//	m_pNode->SetMotionPlaySpeedFactor( m_pCharacter->GetFwdSpeed() );
 	m_pNode->SetExtraSpeedFactor( m_pCharacter->GetFwdSpeed() );
 }
 
@@ -532,10 +514,6 @@ void CRunMotionNode::Update( float dt )
 	{
 		RequestTransition( "fwd" ); // walk
 	}
-/*	else
-	{
-		RequestTransition( "fwd" ); // run
-	}*/
 }
 
 
@@ -546,14 +524,9 @@ bool CRunMotionNode::HandleInput( const SInputData& input, int action_code )
 	switch( action_code )
 	{
 	case ACTION_MOV_FORWARD:
-		if( input.iType == ITYPE_KEY_PRESSED )
+		if( input.iType == ITYPE_KEY_PRESSED
+		 || input.iType == ITYPE_VALUE_CHANGED )
 		{
-//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
-			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
-		}
-		else if( input.iType == ITYPE_VALUE_CHANGED )
-		{
-//			m_pNode->SetMotionPlaySpeedFactor( input.fParam1 * 0.5f );
 			m_pNode->SetExtraSpeedFactor( input.fParam1 * 0.5f );
 		}
 		break;
@@ -579,7 +552,6 @@ bool CRunMotionNode::HandleInput( const SInputData& input, int action_code )
 void CRunMotionNode::EnterState()
 {
 	// update the forward speed
-//	m_pNode->SetMotionPlaySpeedFactor( m_pCharacter->GetFwdSpeed() );
 	m_pNode->SetExtraSpeedFactor( m_pCharacter->GetFwdSpeed() );
 }
 
