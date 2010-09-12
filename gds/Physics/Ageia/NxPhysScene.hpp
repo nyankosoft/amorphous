@@ -6,6 +6,7 @@
 
 #include "../Scene.hpp"
 #include "NxMathConv.hpp"
+#include "NxPhysContactStreamIterator.hpp"
 
 
 namespace physics
@@ -48,7 +49,9 @@ public:
 
 	void onContactNotify(NxContactPair& pair, NxU32 events)
 	{
-		CContactPair cp;
+		NxContactStreamIterator nx_itr(pair.stream);
+		CNxPhysContactStreamIterator itr( nx_itr );
+		CContactPair cp(itr);
 
 		cp.pActors[0] = (CActor *)pair.actors[0]->userData;
 		cp.pActors[1] = (CActor *)pair.actors[1]->userData;

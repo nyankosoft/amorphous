@@ -44,6 +44,8 @@ class CTriangleMeshDesc;
 class CPreprocessor;
 class CPreprocessorImpl;
 
+class CContactStreamIterator;
+class CContactPair;
 class CUserContactReport;
 
 

@@ -29,6 +29,8 @@ protected:
 
 public:
 
+	void *m_pFrameworkData;
+
 	/// \param pPhysShape owned reference
 	void AddPhysShape( CShape *pPhysShape )
 	{
@@ -49,7 +51,8 @@ public:
 
 	CActor()
 		:
-	m_ActorFlags(0)
+	m_ActorFlags(0),
+	m_pFrameworkData(NULL)
 	{}
 
 	virtual ~CActor() { SafeDeleteVector( m_vecpShape ); }

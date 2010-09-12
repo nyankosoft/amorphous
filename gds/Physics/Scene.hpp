@@ -66,10 +66,14 @@ public:
 class CContactPair
 {
 public:
-	CContactPair() { for(int i=0;i<2;i++ ) { pActors[i] = NULL; } }
+//	CContactPair() { for(int i=0;i<2;i++ ) { pActors[i] = NULL; } }
+	CContactPair( CContactStreamIterator& itr ) : ContactStreamIterator(itr) { for(int i=0;i<2;i++ ) { pActors[i] = NULL; } }
 	~CContactPair(){}
 
 	CActor *pActors[2];
+
+//	CContactStream Stream;
+	CContactStreamIterator& ContactStreamIterator;
 };
 
 

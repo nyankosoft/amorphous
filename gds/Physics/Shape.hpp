@@ -134,16 +134,16 @@ public:
 
 	/// casts a world-space ray against the shape. 
 	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const = 0;
-	 
+
 	/// Checks whether the shape overlaps a world-space sphere or not. 
 //	virtual bool  checkOverlapSphere (const NxSphere &worldSphere) const =0 
-	 
+
 	/// Checks whether the shape overlaps a world-space OBB or not. 
 //	virtual bool  checkOverlapOBB (const NxBox &worldBox) const =0 
-	 
+
 	/// Checks whether the shape overlaps a world-space AABB or not. 
 //	virtual bool  checkOverlapAABB (const NxBounds3 &worldBounds) const =0 
-	 
+
 	/// Checks whether the shape overlaps a world-space capsule or not. 
 //	virtual bool  checkOverlapCapsule (const NxCapsule &worldCapsule) const =0
 
