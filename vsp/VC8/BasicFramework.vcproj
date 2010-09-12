@@ -2442,6 +2442,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\gds\Physics\ContactStreamIterator.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Physics\DescImplFactory.hpp"
 				>
 				<FileConfiguration
@@ -2841,6 +2845,10 @@
 								Name="VCCustomBuildTool"
 							/>
 						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysContactStreamIterator.hpp"
+						>
 					</File>
 					<File
 						RelativePath="..\..\gds\Physics\Ageia\NxPhysConv.hpp"
