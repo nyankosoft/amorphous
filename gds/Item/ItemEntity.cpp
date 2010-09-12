@@ -141,6 +141,18 @@ void CItemEntity::Draw()
 }
 
 
+void CItemEntity::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity& other_entity, physics::CShape& other_shape, U32 trigger_flags )
+{
+	m_pItem->OnPhysicsTrigger( my_shape, other_entity, other_shape, trigger_flags );
+}
+
+
+void CItemEntity::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
+{
+	m_pItem->OnPhysicsContact( pair, other_entity );
+}
+
+
 void CItemEntity::HandleMessage( SGameMessage& msg )
 {
 /*	switch( msg.iEffect )

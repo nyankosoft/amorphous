@@ -5,6 +5,7 @@
 #include "NxPhysics.h"
 
 #include "../Scene.hpp"
+#include "fwd.hpp"
 #include "NxMathConv.hpp"
 #include "NxPhysContactStreamIterator.hpp"
 
@@ -47,19 +48,7 @@ public:
 	m_pUserContactReport(pUserContactReport)
 	{}
 
-	void onContactNotify(NxContactPair& pair, NxU32 events)
-	{
-		NxContactStreamIterator nx_itr(pair.stream);
-		CNxPhysContactStreamIterator itr( nx_itr );
-		CContactPair cp(itr);
-
-		cp.pActors[0] = (CActor *)pair.actors[0]->userData;
-		cp.pActors[1] = (CActor *)pair.actors[1]->userData;
-
-		U32 event_flags = events;
-
-		m_pUserContactReport->OnContactNotify( cp, event_flags );
-	}
+	void onContactNotify(NxContactPair& pair, NxU32 events);
 };
 
 

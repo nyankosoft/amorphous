@@ -57,6 +57,32 @@ static NxU32 ToNxBodyFlags( U32 phys_body_flags )
 }
 
 
+//==================================================================================
+// CNxPhysicsUserContactReport
+//==================================================================================
+
+void CNxPhysicsUserContactReport::onContactNotify(NxContactPair& pair, NxU32 events)
+{
+	NxContactStreamIterator nx_itr(pair.stream);
+	CNxPhysContactStreamIterator itr( nx_itr );
+	CContactPair cp(itr);
+
+	CNxPhysActor *pActor0 = (CNxPhysActor *)pair.actors[0]->userData;
+	CNxPhysActor *pActor1 = (CNxPhysActor *)pair.actors[1]->userData;
+
+	cp.pActors[0] = pActor0;
+	cp.pActors[1] = pActor1;
+
+	U32 event_flags = events;
+
+	m_pUserContactReport->OnContactNotify( cp, event_flags );
+}
+
+
+//==================================================================================
+// CNxPhysScene
+//==================================================================================
+
 CNxPhysScene::CNxPhysScene( NxScene *pScene, NxPhysicsSDK* pPhysicsSDK )
 :
 m_pScene(pScene),
@@ -260,6 +286,9 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 	// create an instance of CNxPhysActor
 	//
 	CNxPhysActor *pPhysActor = new CNxPhysActor( pNxActor );
+
+	// TODO: safe storage of the reference from pNxActor to pPhysActor
+	pNxActor->userData = pPhysActor;
 
 	pPhysActor->m_BodyFlags = desc.BodyDesc.Flags;
 

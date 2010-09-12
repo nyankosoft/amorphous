@@ -159,7 +159,10 @@ public:
 		CCopyEntity *pEntity1 = (CCopyEntity *)pActor1->m_pFrameworkData;
 
 		if( pEntity0 && pEntity1 )
+		{
 			pEntity0->OnPhysicsContact( pair, *pEntity1 );
+			pEntity1->OnPhysicsContact( pair, *pEntity0 );
+		}
 	}
 };
 
