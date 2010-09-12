@@ -15,14 +15,10 @@
 #include "CopyEntityDescFileArchive.hpp"
 
 #include "Graphics/3DGameMath.hpp"
-//#include "JigLib/JL_PhysicsManager.hpp"
-//#include "JigLib/JL_PhysicsActorDesc.hpp"
 #include "Physics/Actor.hpp"
 #include "Physics/Scene.hpp"
-#include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
-#include "Support/msgbox.hpp"
 #include "Support/macro.h"
 #include "Support/Profile.hpp"
 
@@ -644,6 +640,7 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 		{
 			pNewCopyEnt->m_vecpPhysicsActor.resize( 1 );
 			pNewCopyEnt->m_vecpPhysicsActor[0] = pPhysActor;
+			pPhysActor->m_pFrameworkData = pNewCopyEnt;
 		}
 	}
 

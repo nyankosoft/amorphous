@@ -123,6 +123,9 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 }
 
 
+#include "Physics/Actor.hpp"
+#include "Physics/Shape.hpp"
+
 class TestTriggerReport : public physics::CUserTriggerReport
 {
 public:
@@ -130,7 +133,14 @@ public:
 	{
 		CShape *pShape0 = trigger_event.pTriggerShape;
 		CShape *pShape1 = trigger_event.pOtherShape;
+		CActor& actor0 = pShape0->GetActor();
+		CActor& actor1 = pShape1->GetActor();
 		U32 status = trigger_event.StatusFlags;
+		CCopyEntity *pEntity0 = (CCopyEntity *)actor0.m_pFrameworkData;
+		CCopyEntity *pEntity1 = (CCopyEntity *)actor1.m_pFrameworkData;
+
+		if( pEntity0 && pEntity1 )
+			pEntity0->OnPhysicsTrigger( *pShape0, *pEntity1, *pShape1, status );
 	}
 };
 
@@ -142,6 +152,14 @@ public:
 	{
 		CActor *pActor0 = pair.pActors[0];
 		CActor *pActor1 = pair.pActors[1];
+		if( !pActor0 || !pActor1 )
+			return;
+
+		CCopyEntity *pEntity0 = (CCopyEntity *)pActor0->m_pFrameworkData;
+		CCopyEntity *pEntity1 = (CCopyEntity *)pActor1->m_pFrameworkData;
+
+		if( pEntity0 && pEntity1 )
+			pEntity0->OnPhysicsContact( pair, *pEntity1 );
 	}
 };
 

@@ -333,6 +333,10 @@ public:
 	/// DON'T GET CONFUSED WITH CCopyEntity::UpdatePhysics()
 	virtual void UpdatePhysics( float dt ) {}
 
+	virtual void OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity& other_entity, physics::CShape& other_shape, U32 trigger_flags ) {}
+
+	virtual void OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity ) {}
+
 	/// handles a game message
 	/// defualt: do nothing
 	virtual void HandleMessage( SGameMessage& msg ) {}
