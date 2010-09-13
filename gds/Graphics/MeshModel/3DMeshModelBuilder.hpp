@@ -8,7 +8,6 @@
 #include "Graphics/General3DVertex.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
-#include "Support/FixedVector.hpp"
 
 
 namespace MeshModel

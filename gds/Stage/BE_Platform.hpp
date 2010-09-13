@@ -1,4 +1,3 @@
-
 #ifndef	__BE_PLATFORM_H__
 #define __BE_PLATFORM_H__
 
@@ -6,14 +5,7 @@
 #include "BaseEntity.hpp"
 #include "BaseEntityHandle.hpp"
 #include "BE_PhysicsBaseEntity.hpp"
-
-#include "Support/FixedVector.hpp"
-#include "3DMath/Matrix34.hpp"
-
 #include "Sound/SoundHandle.hpp"
-
-#include <string>
-using namespace std;
 
 
 class CBE_Platform : public CBE_PhysicsBaseEntity

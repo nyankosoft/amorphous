@@ -5,7 +5,6 @@
 #include "GraphicsElementManager.hpp"
 #include "GraphicsEffectHandle.hpp"
 
-
 #include "../base.hpp"
 #include "3DMath/Vector2.hpp"
 #include "3DMath/Vector3.hpp"
@@ -16,21 +15,13 @@
 #include "Graphics/2DPrimitive/2DTriangle.hpp"
 #include "Graphics/TextureCoord.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/Font/FontBase.hpp"
-#include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureHandle.hpp"
-
 #include "GameCommon/fwd.hpp"
 #include "GameCommon/CriticalDamping.hpp"
-
-#include "Support/FixedVector.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/memory_helpers.hpp"
-
-#include <vector>
 #include <list>
-#include <string>
 
 
 /*

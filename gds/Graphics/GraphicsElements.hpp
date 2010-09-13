@@ -17,21 +17,12 @@
 #include "Graphics/Font/FontBase.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureHandle.hpp"
-
-// This will load all headers includeing this file...
-// How to avoid including "GraphicsEffectManager.hpp"?
-//#include "Graphics/all.hpp"
-
-
 #include "GameCommon/CriticalDamping.hpp"
-
-#include "Support/FixedVector.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/memory_helpers.hpp"
 
 #include <vector>
 #include <list>
-#include <string>
 #include <algorithm>
 #include <boost/weak_ptr.hpp>
 

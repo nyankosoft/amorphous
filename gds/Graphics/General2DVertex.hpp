@@ -2,7 +2,6 @@
 #define  __GENERAL2DVERTEX_H__
 
 #include "3DMath/Vector3.hpp"
-#include "Support/FixedVector.hpp"
 #include "Graphics/TextureCoord.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 

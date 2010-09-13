@@ -1,21 +1,16 @@
-
 #ifndef  __JL_PHYSICSACTORDESC_H__
 #define  __JL_PHYSICSACTORDESC_H__
 
 
+#include <vector>
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix33.hpp"
-
-#include "Support/FixedVector.hpp"
-
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
-#include <vector>
 
-
-#define JL_NUM_MAX_SHAPES_PER_ACTOR	8
+//#define JL_NUM_MAX_SHAPES_PER_ACTOR	8
 
 class CJL_ShapeDesc;
 

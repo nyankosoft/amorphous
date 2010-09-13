@@ -4,13 +4,7 @@
 
 #include "../fwd.hpp"
 #include "../HemisphericLight.hpp"
-
-
 #include "Support/FixedVector.hpp"
-
-
-//typedef TCFixedVector<class A, int B> fixed_vector<A,B>;
-#define fixed_vector TCFixedVector
 
 
 class CLightCache

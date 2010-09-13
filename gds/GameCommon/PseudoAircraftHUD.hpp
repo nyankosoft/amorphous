@@ -7,8 +7,6 @@
 #include "3DMath/Vector2.hpp"
 #include "3DMath/Vector3.hpp"
 
-#include "Support/FixedVector.hpp"
-
 #include <vector>
 #include <string>
 
@@ -37,7 +35,7 @@ class CPseudoAircraftHUD : public CGraphicsComponent
 
 	CTextureHandle m_Texture;
 
-//	TCFixedVector<HUD_TargetInfo, NUM_MAX_TGT_INFO> m_vecTargetInfo;
+//	fixed_vector<HUD_TargetInfo, NUM_MAX_TGT_INFO> m_vecTargetInfo;
 
 private:
 

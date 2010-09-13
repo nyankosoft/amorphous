@@ -4,14 +4,14 @@
 #include <assert.h>
 
 template <class CArrayType, int iArraySize>
-class TCFixedVector
+class fixed_vector
 {
 	CArrayType m_Array[iArraySize];
 	int m_iIndex;
 
 public:
 
-	TCFixedVector() { m_iIndex = 0; }
+	fixed_vector() { m_iIndex = 0; }
 
 	inline int size() const { return m_iIndex; }
 
@@ -45,16 +45,19 @@ public:
 
 };
 
+/// deprecated
+#define TCFixedVector fixed_vector 
+
 
 template <class CPointerType, int iArraySize>
-class TCFixedPointerVector
+class fixed_pointer_vector
 {
 	CPointerType *m_Array[iArraySize];
 	int m_iIndex;
 
 public:
 
-	inline TCFixedPointerVector() : m_iIndex(0) {}
+	inline fixed_pointer_vector() : m_iIndex(0) {}
 
 	inline int size() { return m_iIndex;}
 	inline void clear() { m_iIndex = 0; }
@@ -64,6 +67,9 @@ public:
 
 };
 
+/// deprecated
+#define TCFixedPointerVector fixed_pointer_vector
+
 
 //======================================================================================
 // inline implementations
@@ -71,14 +77,14 @@ public:
 
 
 template <class CArrayType, int iArraySize>
-inline void TCFixedVector<CArrayType, iArraySize>::push_back( const CArrayType& rElement )
+inline void fixed_vector<CArrayType, iArraySize>::push_back( const CArrayType& rElement )
 {
 	assert( m_iIndex < iArraySize );
 	m_Array[m_iIndex++] = rElement;
 }
 
 template <class CArrayType, int iArraySize>
-inline void TCFixedVector<CArrayType, iArraySize>::resize( int size, const CArrayType& val )
+inline void fixed_vector<CArrayType, iArraySize>::resize( int size, const CArrayType& val )
 {
 	int i;
 	for( i=0; i<size; i++ )
@@ -89,7 +95,7 @@ inline void TCFixedVector<CArrayType, iArraySize>::resize( int size, const CArra
 
 
 template <class CArrayType, int iArraySize>
-inline void TCFixedVector<CArrayType, iArraySize>::insert_at( int pos, const CArrayType& val )
+inline void fixed_vector<CArrayType, iArraySize>::insert_at( int pos, const CArrayType& val )
 {
 	int i, size = this->size();
 
@@ -105,7 +111,7 @@ inline void TCFixedVector<CArrayType, iArraySize>::insert_at( int pos, const CAr
 
 
 template <class CArrayType, int iArraySize>
-inline void TCFixedVector<CArrayType, iArraySize>::erase_at( int pos )
+inline void fixed_vector<CArrayType, iArraySize>::erase_at( int pos )
 {
 	int i, size = this->size();
 
@@ -122,7 +128,7 @@ inline void TCFixedVector<CArrayType, iArraySize>::erase_at( int pos )
 
 /*
 template <class CArrayType, int iArraySize>
-inline void TCFixedVector<CArrayType, iArraySize>::push_back( CArrayType element )
+inline void fixed_vector<CArrayType, iArraySize>::push_back( CArrayType element )
 {
 	assert( m_iIndex < iArraySize );
 	m_Array[m_iIndex++] = element;
@@ -130,7 +136,7 @@ inline void TCFixedVector<CArrayType, iArraySize>::push_back( CArrayType element
 
 
 template <class CArrayType, int iArraySize>
-inline CArrayType& TCFixedVector<CArrayType, iArraySize>::operator[] ( const int iIndex )
+inline CArrayType& fixed_vector<CArrayType, iArraySize>::operator[] ( const int iIndex )
 {
 	assert( iIndex < iArraySize );
 	return m_Array[iIndex];
@@ -138,7 +144,7 @@ inline CArrayType& TCFixedVector<CArrayType, iArraySize>::operator[] ( const int
 
 
 template <class CArrayType, int iArraySize>
-inline const CArrayType& TCFixedVector<CArrayType, iArraySize>::operator[] ( const int iIndex ) const
+inline const CArrayType& fixed_vector<CArrayType, iArraySize>::operator[] ( const int iIndex ) const
 {
 	assert( iIndex < iArraySize );
 	return m_Array[iIndex];
@@ -149,7 +155,7 @@ inline const CArrayType& TCFixedVector<CArrayType, iArraySize>::operator[] ( con
 
 
 template <class CPointerType, int iArraySize>
-inline void TCFixedPointerVector<CPointerType, iArraySize>::push_back( CPointerType *pElement )
+inline void fixed_pointer_vector<CPointerType, iArraySize>::push_back( CPointerType *pElement )
 {
 	assert( m_iIndex < iArraySize );
 	m_Array[m_iIndex++] = pElement;
@@ -157,11 +163,39 @@ inline void TCFixedPointerVector<CPointerType, iArraySize>::push_back( CPointerT
 
 
 template <class CPointerType, int iArraySize>
-inline CPointerType *TCFixedPointerVector<CPointerType, iArraySize>::operator[] (int iIndex)
+inline CPointerType *fixed_pointer_vector<CPointerType, iArraySize>::operator[] (int iIndex)
 {
 	assert( iIndex < iArraySize );
 	return m_Array[iIndex];
 }
 
+
+/// 4:21 AM 9/13/2010 - Commented out: 2 options but both have drawbacks.
+/// 1. Use conversion function from string to other types. See from_string_to_x() below.
+///   - Does not work in the first place because this requires template functions that differs only in return types?
+/// 2. Use conv_to_x() in CTextFileScanner.hpp
+///   - Need to create a temporary object and copy as many times as the number of scanned elements.
+/*
+/// For CTextFileScanner
+template <class T, int iArraySize>
+inline void conv_to_x( std::vector<std::string>& src, int& index, fixed_vector<T,iArraySize>& dest )
+{
+// 1.
+//	dest.resize( 0 );
+//	while( 1 <= (int)src.size() - index )
+//	{
+//		dest.push_back( from_string_to_x<T>(src[index]) );
+//		index += 1;
+//	}
+
+// 2.
+//	dest.resize( 0 );
+//	while( 1 <= (int)src.size() - index )
+//	{
+//		T t;
+//		conv_to_x( src, index, t );
+//		dest.push_back( t );
+//	}
+}*/
 
 #endif  /*  __fixed_vector_HPP__  */
