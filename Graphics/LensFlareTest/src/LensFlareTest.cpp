@@ -2,8 +2,8 @@
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/LensFlare.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/Font.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/SkyboxMisc.hpp"
@@ -76,7 +76,7 @@ int CLensFlareTest::Init()
 {
 	InitLensFlare( "" );
 
-	m_pFont = CFontSharedPtr( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
+	m_pFont = CreateDefaultBuiltinFont();
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );

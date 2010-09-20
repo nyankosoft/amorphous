@@ -188,7 +188,7 @@
 				Name="Test"
 				>
 				<File
-					RelativePath="..\..\..\_Common\GraphicsTestBase.h"
+					RelativePath="..\..\..\_Common\GraphicsTestBase.hpp"
 					>
 				</File>
 				<File
