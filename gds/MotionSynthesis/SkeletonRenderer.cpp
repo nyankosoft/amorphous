@@ -1,6 +1,10 @@
 #include <boost/foreach.hpp>
 #include "SkeletonRenderer.hpp"
-#include "Support/LineSegmentRenderer.hpp"
+//#include "Support/LineSegmentRenderer.hpp"
+#include "3DMath/MatrixConversions.hpp"
+#include "Graphics/PrimitiveRenderer.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 using namespace msynth;
 
@@ -35,7 +39,9 @@ inline Vector3 GetBoneSize( const Vector3& vOffset )
 void CSkeletonRenderer::RenderSkeletonAsLines()
 {
 	for( size_t i=0; i<m_vecLineSegment.size(); i++ )
-		CLineSegmentRenderer::Draw( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal );
+		GetPrimitiveRenderer().DrawLine( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal );
+//		CLineSegmentRenderer::Draw( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal );
+
 /*	Matrix34 dest_transform;
 	bone.CalculateWorldTransform( dest_transform, parent_transform, node );
 
@@ -103,8 +109,8 @@ void CSkeletonRenderer::UpdateBonePoses( const CKeyframe& keyframe )
 
 void CSkeletonRenderer::RenderSkeletonAsBoxes()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	D3DXMATRIX matWorld, matScaling;
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	Matrix44 matWorld, matScaling;
 
 	const size_t num_bones = m_vecBonePose.size();
 	for( size_t i=0; i<num_bones; i++ )
@@ -112,14 +118,17 @@ void CSkeletonRenderer::RenderSkeletonAsBoxes()
 		const Matrix34& pose = m_vecBonePose[i];
 		const Vector3& vSize = m_vecBoneSize[i];
 
-		pose.GetRowMajorMatrix44( (float *)&matWorld );
+		matWorld = ToMatrix44( pose );
+//		pose.GetRowMajorMatrix44( (float *)&matWorld );
 
-		D3DXMatrixScaling( &matScaling, vSize.x, vSize.y, vSize.z );
+		Matrix44 matScaling = Matrix44Scaling( vSize.x, vSize.y, vSize.z );
+/*		D3DXMatrixScaling( &matScaling, vSize.x, vSize.y, vSize.z );
 //		D3DXMatrixScaling( &matScaling, 0.05f, 0.05f, 0.05f );
+*/
+		matWorld = matWorld * matScaling;
 
-		matWorld = matScaling * matWorld;
-
-		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
+		FixedFunctionPipelineManager().SetWorldTransform( matWorld );
+//		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
 
 //		m_Cube.SetPose( pose );
 		m_Cube.Draw();

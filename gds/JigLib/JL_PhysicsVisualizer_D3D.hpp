@@ -2,10 +2,6 @@
 #define  __JL_PHYSICSVISUALIZER_D3D_H__
 
 
-//#include <vector>
-//using namespace std;
-
-
 #include "Graphics/GraphicsComponentCollector.hpp"
 
 
@@ -58,7 +54,6 @@ public:
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-
 };
 
 

@@ -348,6 +348,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\PrimitiveRenderer.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\PseudoNoiseEffect.cpp"
 				>
 			</File>

@@ -11,12 +11,14 @@
 
 // D3D
 #include "Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.hpp"
+#include "Graphics/Direct3D/PrimitiveRenderer_D3D.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Graphics/Direct3D/Mesh/D3DCustomMeshRenderer.hpp"
 
 // OpenGL
 #include "Graphics/OpenGL/2DPrimitive/2DPrimitiveRenderer_GL.hpp"
+#include "Graphics/OpenGL/PrimitiveRenderer_GL.hpp"
 #include "Graphics/OpenGL/Mesh/GLBasicMeshImpl.hpp"
 #include "Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
 #include "Graphics/OpenGL/Mesh/GLCustomMeshRenderer.hpp"
@@ -34,6 +36,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 	{
 		g_pGameWindowManager_Win32 = &GameWindowManager_Win32_D3D();
 		PrimitiveRendererPtr() = &PrimitiveRenderer_D3D();
+		RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_D3D();
 		GraphicsResourceFactory().Init( new CD3DGraphicsResourceFactoryImpl() );
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CD3DMeshImplFactory );
@@ -44,6 +47,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 	{
 		g_pGameWindowManager_Win32 = &GameWindowManager_Win32_GL();
 		PrimitiveRendererPtr() = &PrimitiveRenderer_GL();
+		RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
 		GraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CGLMeshImplFactory );

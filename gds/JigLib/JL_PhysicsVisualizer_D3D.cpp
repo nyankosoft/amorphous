@@ -1,13 +1,13 @@
 #include "JL_PhysicsVisualizer_D3D.hpp"
 #include "JL_PhysicsManager.hpp"
-#include "3DMath/Vector3.hpp"
 #include "3DMath/AABB3.hpp"
 #include "3DMath/MatrixConversions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Graphics/PrimitiveRenderer.hpp"
 #include "Graphics/UnitCube.hpp"
 //#include "Support/memory_helpers.hpp"
-#include "Support/LineSegmentRenderer.hpp"
+//#include "Support/LineSegmentRenderer.hpp"
 #include "Support/SafeDelete.hpp"
 //#include "Support/msgbox.hpp"
 
@@ -107,7 +107,7 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 			avLineSegment[5] = vContactPoint + Vector3( 0.0f,  0.0f,  0.2f);
 			for( j=0; j<6; j+=2 )
 			{
-				CLineSegmentRenderer::Draw(avLineSegment[j], avLineSegment[j+1], 0xFF3030FF);
+				GetPrimitiveRenderer::DrawLine( avLineSegment[j], avLineSegment[j+1], SFloatRGBAColor( 0.19f, 0.19f, 1.00f, 1.00f ) );
 			}
 		}
 
@@ -115,7 +115,7 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 		{	// render contact normal
 			avContactNormal[0] = vContactPoint;
 			avContactNormal[1] = vContactPoint + collision_buffer[i].vNormal * 0.3f;
-			CLineSegmentRenderer::Draw( avContactNormal[0], avContactNormal[1], 0xFFFF3030);
+			GetPrimitiveRenderer::DrawLine( avContactNormal[0], avContactNormal[1], SFloatRGBAColor( 1.00f, 0.19f, 0.19f, 1.00f ) );
 		}
 	}
 
@@ -143,7 +143,8 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 				avLineSegment[5] = vContactPos + Vector3( 0.0f,  0.0f,  0.2f);
 				for( k=0; k<6; k+=2 )
 				{
-					CLineSegmentRenderer::Draw(avLineSegment[k], avLineSegment[k+1], 0xFF3030FF);
+					GetPrimitiveRenderer().DrawLine( avLineSegment[k], avLineSegment[k+1], SFloatRGBAColor(0.19f, 0.19f, 1.00f, 1.00f ) );
+//					CLineSegmentRenderer::Draw(avLineSegment[k], avLineSegment[k+1], 0xFF3030FF);
 				}
 			}
 		}
@@ -153,7 +154,8 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 			vNormal = collision_buffer[i].m_vDirToBody0;
 			avContactNormal[0] = vContactPos;
 			avContactNormal[1] = vContactPos + vNormal * 0.3f;
-			CLineSegmentRenderer::Draw( avContactNormal[0], avContactNormal[1], 0xFFFF3030);
+			GetPrimitiveRenderer().DrawLine( avContactNormal[0], avContactNormal[1], SFloatRGBAColor( 1.00f, 0.19f, 0.19f, 1.00f ) );
+//			CLineSegmentRenderer::Draw( avContactNormal[0], avContactNormal[1], 0xFFFF3030);
 		}
 	}
 
@@ -224,7 +226,8 @@ void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 			shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 			avLineSegment[1] += avLineSegment[0];
-			CLineSegmentRenderer::Draw(avLineSegment[0], avLineSegment[1], 0xFF5A00EE);
+			GetPrimitiveRenderer().DrawLine( avLineSegment[0], avLineSegment[1], SFloatRGBAColor( 0.35f, 0.00f, 0.93f, 1.00f ) );
+//			CLineSegmentRenderer::Draw(avLineSegment[0], avLineSegment[1], 0xFF5A00EE);
 		}
 
 		itrActor++;

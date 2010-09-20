@@ -2,9 +2,9 @@
 #include "3DMath/MatrixConversions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/UnitCube.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/GraphicsDevice.hpp"
+#include "Graphics/PrimitiveRenderer.hpp"
 
 using namespace std;
 
@@ -255,7 +255,7 @@ void CBVHBone::SetMatrixFromBVHData_r( Matrix34* pParentMatrix, float* pafFrameD
 
 void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 {
-	COLORVERTEX avBoneVertex[2];
+//	COLORVERTEX avBoneVertex[2];
 	Vector3 vWorldPosition;
 
 	//' m_matLocalPose' is the local transformation matrix for this bone
@@ -283,7 +283,14 @@ void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 		else
 		{
 			// draw bone as a simple line segment
-			memcpy( &(avBoneVertex[0].vPosition), pvPrevPosition, sizeof(float) * 3 );
+			GraphicsDevice().Disable( RenderStateType::LIGHTING );
+			GetPrimitiveRenderer().DrawLine(
+				*pvPrevPosition,
+				vWorldPosition,
+				ms_dwSkeletonColor
+				);
+
+/*			memcpy( &(avBoneVertex[0].vPosition), pvPrevPosition, sizeof(float) * 3 );
 			memcpy( &(avBoneVertex[1].vPosition), &vWorldPosition, sizeof(float) * 3 );
 //			avBoneVertex[0].vPosition = *pvPrevPosition;
 //			avBoneVertex[1].vPosition = vWorldPosition;
@@ -292,7 +299,7 @@ void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 
 			DIRECT3D9.GetDevice()->SetFVF( D3DFVF_COLORVERTEX );
 			DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
-			DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_LINELIST, 1, avBoneVertex, sizeof(COLORVERTEX) );
+			DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_LINELIST, 1, avBoneVertex, sizeof(COLORVERTEX) );*/
 		}
 	}
 
