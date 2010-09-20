@@ -242,17 +242,6 @@ bool CBE_Decal::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 	return false;
 }
 
-/*
-void CBE_Decal::ReleaseGraphicsResources()
-{
-	CBaseEntity::ReleaseGraphicsResources();
-}
-
-void CBE_Decal::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	CBaseEntity::LoadGraphicsResources( rParam );
-}
-*/
 
 void CBE_Decal::Serialize( IArchive& ar, const unsigned int version )
 {

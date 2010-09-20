@@ -52,9 +52,6 @@ public:
 	virtual unsigned int GetArchiveObjectID() const { return BE_DECAL; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
-
-//	void ReleaseGraphicsResources();
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
 
 #endif /*  __BE_Decal_H__  */
