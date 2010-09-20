@@ -48,9 +48,17 @@ class CSkeletalCharacter : public CGameItem
 
 	std::vector< boost::shared_ptr<CCharacterMotionNodeAlgorithm> > m_pMotionNodes;
 
+	Matrix34 m_PrevWorldPose;
+
+	std::vector<SPlane> m_Walls;
+
 	boost::shared_ptr<msynth::CMotionPrimitive> m_pSkeletonSrcMotion;
 
 	CActionCodeToGICodesMap m_ACtoGICs;
+
+//	std::vector< boost::shared_ptr<CClothing> > m_pClothings;
+
+//	boost::shared_ptr<CClothSystem> m_pClothSystem;
 
 public:
 
@@ -68,7 +76,9 @@ public:
 
 	void ProcessInput( const SInputData& input, int action_code );
 
-	void OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape );
+	void OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape, U32 trigger_flags );
+
+	void OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity );
 
 	float GetFwdSpeed() const { return m_fFwdSpeed; }
 	float GetTurnSpeed() const { return m_fTurnSpeed; }

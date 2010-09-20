@@ -100,19 +100,20 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	physics::CCapsuleShapeDesc cap_desc;
 	cap_desc.fLength = 1.00f;
 	cap_desc.fRadius = 0.25f;
-	cap_desc.ShapeFlags = physics::ShapeFlag::TriggerEnable;
+//	cap_desc.ShapeFlags = physics::ShapeFlag::TriggerEnable;
 
 	// core - used to make actor desc valid
-	physics::CBoxShapeDesc core_box_desc;
-	core_box_desc.vSideLength = Vector3(1,1,1) * 0.01f;
+//	physics::CBoxShapeDesc core_box_desc;
+//	core_box_desc.vSideLength = Vector3(1,1,1) * 0.01f;
 
 	physics::CActorDesc actor_desc;
 	actor_desc.WorldPose = Matrix34Identity();
+	actor_desc.BodyDesc.fMass = 0.1f;
 	actor_desc.BodyDesc.LinearVelocity = Vector3(0,0,0);
 //	actor_desc.BodyDesc.Flags = physics::PhysBodyFlag::Kinematic;
-//	actor_desc.BodyDesc.Flags = physics::PhysBodyFlag::DisableGravity;
+	actor_desc.BodyDesc.Flags = physics::PhysBodyFlag::DisableGravity;
 	actor_desc.vecpShapeDesc.push_back( &cap_desc );
-	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
+//	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
 
 	CItemStageUtility stg_util( m_pStage );
 	shared_ptr<CSkeletalCharacter> pCharacter( new CSkeletalCharacter ); // create an item

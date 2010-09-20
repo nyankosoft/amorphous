@@ -9,6 +9,8 @@
 #include "gds/Support/DebugOutput.hpp"
 #include "gds/Stage/BaseEntity_Draw.hpp"
 #include "gds/Physics/Actor.hpp"
+#include "gds/Physics/Scene.hpp"
+#include "gds/Physics/ContactStreamIterator.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -150,6 +152,8 @@ void CSkeletalCharacter::OnEntityCreated( CCopyEntity& entity )
 
 //	CCopyEntity& entity = *pEntity;
 
+	m_PrevWorldPose = entity.GetWorldPose();
+
 	entity.m_MeshHandle = m_MeshContainerRootNode.GetMeshContainer(0)->m_MeshObjectHandle;
 	entity.m_pMeshRenderMethod = m_pRenderMethod;
 
@@ -157,6 +161,14 @@ void CSkeletalCharacter::OnEntityCreated( CCopyEntity& entity )
 	entity.RaiseEntityFlags( BETYPE_SHADOW_RECEIVER );
 }
 
+static void UpdatePhysicsActorPose( physics::CActor& actor, const Matrix34& world_pose )
+{
+	Vector3 vPhysActorOffset = Vector3( 0, 1, 0 );
+	Matrix34 phys_actor_world_pose( world_pose );
+	phys_actor_world_pose.vPosition += vPhysActorOffset;
+	phys_actor_world_pose.matOrient = Matrix33Identity(); // always keep the upright orientation
+	actor.SetWorldPose( phys_actor_world_pose );
+}
 
 void CSkeletalCharacter::Update( float dt )
 {
@@ -170,7 +182,7 @@ void CSkeletalCharacter::Update( float dt )
 
 	Matrix34 world_pose = pEntity->GetWorldPose();
 
-	static Matrix34 m_PrevWorldPose = world_pose;
+	m_PrevWorldPose = world_pose;
 
 	// steering
 	world_pose.matOrient = world_pose.matOrient * Matrix33RotationY( GetTurnSpeed() * dt );
@@ -183,6 +195,19 @@ void CSkeletalCharacter::Update( float dt )
 
 	// test collision
 
+	Vector3 vHDir = updated_world_pose.matOrient.GetColumn(2) - world_pose.matOrient.GetColumn(2);
+	for( size_t i=0; i<m_Walls.size(); i++ )
+	{
+		if( Vec3Dot( vHDir, m_Walls[i].normal ) < -0.005 )
+		{
+			// blocked by the wall
+			updated_world_pose = world_pose;
+			break;
+		}
+	}
+
+	m_Walls.resize( 0 );
+
 	// the world pose of the entity -> always stays horizontal
 	pEntity->SetWorldPose( updated_world_pose );
 //	pEntity->SetWorldPose( Matrix34Identity() );
@@ -191,10 +216,7 @@ void CSkeletalCharacter::Update( float dt )
 	 && pEntity->m_vecpPhysicsActor[0] )
 	{
 		physics::CActor& actor = *(pEntity->m_vecpPhysicsActor[0]);
-		Vector3 vPhysActorOffset = Vector3( 0, 1, 0 );
-		Matrix34 phys_actor_world_pose( updated_world_pose );
-		phys_actor_world_pose.vPosition += vPhysActorOffset;
-		actor.SetWorldPose( phys_actor_world_pose );
+		UpdatePhysicsActorPose( actor, updated_world_pose );
 	}
 
 //	Matrix34 world_pose = m_pMotionGraphManager->GetCurrentWorldPose();
@@ -331,7 +353,7 @@ void CSkeletalCharacter::ProcessInput( const SInputData& input, int action_code 
 }
 */
 
-void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape )
+void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape, U32 trigger_flags )
 {
 	physics::CRay ray;
 
@@ -349,17 +371,79 @@ void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntit
 	Vector3 vCovered = world_pose.vPosition - m_PrevPose.vPosition;
 	ray.Origin = m_PrevPose.vPosition;
 	ray.Direction = Vec3GetNormalized(vCovered);
-	is_hit = pOtherShape->Raycast( ray, ray_max_dist, 0, hit, false );
+	is_hit = other_shape.Raycast( ray, ray_max_dist, 0, hit, false );
 */
 
 }
 
-/*
-CInputState::Name CCharacterMotionNodeAlgorithm::GetGeneralInputState( int gi_code )
+
+void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
 {
-//	m_pCharacter->GetActionInputState( ACTION_MOV_BOOST );
-	return InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( gi_code );
-}*/
+	physics::CContactStreamIterator& itr = pair.ContactStreamIterator;
+
+	m_Walls.resize( 0 );
+
+	boost::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
+	if( !pEntity )
+		return;
+
+	CCopyEntity& entity = *pEntity;
+
+	// Revert to the prev pose.
+	entity.SetWorldPose( m_PrevWorldPose );
+	UpdatePhysicsActorPose( *pair.pActors[0], m_PrevWorldPose );
+
+	// also revert the pose stored in the motion FSM
+	shared_ptr<CMotionFSM> pFSM = m_pMotionGraphManager->GetMotionFSM("lower_limbs");
+	if( !pFSM )
+		return;
+	Vector3& vFwd = m_PrevWorldPose.matOrient.GetColumn(2);
+	Vec3Normalize( vFwd, vFwd );
+	m_PrevWorldPose.matOrient.Orthonormalize();
+	pFSM->Player()->SetCurrentHorizontalPose( m_PrevWorldPose );
+	LOG_PRINT( " Contact detected. Reverted the world pos: " + to_string(m_PrevWorldPose.vPosition) );
+	//>>---------- revert to the prev pose and return ----------
+//	return;
+	//<<---------- revert to the prev pose and return ----------
+
+	Vector3 prev_pos    = m_PrevWorldPose.vPosition;
+	Vector3 current_pos = entity.GetWorldPose().vPosition;
+//	Vector3 prev_to_current = current_pos - prev_pos;
+
+	while( itr.GoNextPair() ) // user can call getNumPairs() here 
+	{
+		while( itr.GoNextPatch() ) // user can also call getShape() and getNumPatches() here
+		{
+			bool is_wall = false;
+			Vector3 normal = itr.GetPatchNormal();
+			if( 0.6f < normal.y )
+			{
+				// ground or slope
+			}
+			else if( fabs( normal.y ) < 0.25 )
+			{
+				// wall
+				is_wall = true;
+			}
+
+			while( itr.GoNextPoint() ) // user can also call getPatchNormal() and getNumPoints() here
+			{
+				Vector3 pos = itr.GetPoint();
+				SPlane plane( normal, Vec3Dot(normal,pos) );
+				if( is_wall )
+					m_Walls.push_back( plane );
+
+//				float d0 = plane.GetDistanceFromPoint( prev_pos );
+//				float d1 = plane.GetDistanceFromPoint( current_pos );
+//				if( d0 < 0 && 0 < d1 || d0 > 0 && 0 > d1 )
+//				{
+//					entity.SetWorldPose( m_PrevWorldPose );
+//				}
+			}
+		}
+	}
+}
+
 
 CInputState::Name CCharacterMotionNodeAlgorithm::GetActionInputState( int action_code )
 {
