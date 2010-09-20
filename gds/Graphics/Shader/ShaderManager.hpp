@@ -103,6 +103,14 @@ public:
 
 	virtual void GetViewTransform( Matrix44& matView ) const {}
 
+//	virtual void GetProjectionTransform( Matrix44& matProj ) const {}
+
+	inline Matrix44 GetWorldTransform() const;
+
+	inline Matrix44 GetViewTransform() const;
+
+//	inline Matrix44 GetProjectionTransform() const;
+
 
 	virtual void SetViewerPosition( const Vector3& vEyePosition ) {}
 
@@ -193,6 +201,30 @@ inline void CShaderManager::SetParam( const char *parameter_name, const std::vec
 	SetParam( parameter_name, &float_param[0], (uint)float_param.size() );
 }
 
+
+inline Matrix44 CShaderManager::GetWorldTransform() const
+{
+	Matrix44 world;
+	GetWorldTransform( world );
+	return world;
+}
+
+
+inline Matrix44 CShaderManager::GetViewTransform() const
+{
+	Matrix44 view;
+	GetViewTransform( view );
+	return view;
+}
+
+/*
+inline Matrix44 CShaderManager::GetProjectionTransform() const
+{
+	Matrix44 proj;
+	GetProjectionTransform( proj );
+	return proj;
+}
+*/
 
 
 #endif  /*  __HLSLShaderManager_HPP__  */
