@@ -590,26 +590,18 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 //	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 //	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
 
+	// Set pre-multiplied alpha
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
-//	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
-	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
-
-	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
-//	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
-//	pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_iDestBlend );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
+	GraphicsDevice().SetDestBlendMode(   AlphaBlend::InvSrcAlpha );
 
 //	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
 //	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 //	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
 //	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
 
-//	pd3dDev->SetVertexShader( NULL );
-//	pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
-
 	// disable z-writing
 	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
-
-//	pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avBillboardRect, sizeof(TEXTUREVERTEX) );
 
 	m_BillboardRectMesh.Render();
 
