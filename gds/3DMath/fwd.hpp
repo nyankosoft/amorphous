@@ -7,6 +7,7 @@ class Matrix23;
 class AABB2;
 
 class Vector3;
+class Vector4;
 class Matrix33;
 class Matrix34;
 class AABB3;
