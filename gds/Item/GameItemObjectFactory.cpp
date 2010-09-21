@@ -10,6 +10,7 @@
 #include "LandVehicle.hpp"
 #include "RotatableTurret.hpp"
 #include "Firearm.hpp"
+#include "Clothing.hpp"
 
 
 using namespace item;
@@ -34,6 +35,7 @@ CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
 	case CGameItem::ID_LAND_VEHICLE:	 return new CLandVehicle;
 	case CGameItem::ID_ARMED_VEHICLE:	 return new CArmedVehicle;
 	case CGameItem::ID_FIREARM:          return new CFirearm;
+	case CGameItem::ID_CLOTHING:         return new CClothing;
 //	case CGameItem::ID_:				return new CGI_;
 	default:	return NULL;
 	}
