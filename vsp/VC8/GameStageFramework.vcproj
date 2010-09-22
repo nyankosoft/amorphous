@@ -1575,6 +1575,14 @@
 				Name="Item"
 				>
 				<File
+					RelativePath="..\..\gds\Item\Clothing.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\Clothing.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Item\Firearm.cpp"
 					>
 				</File>
