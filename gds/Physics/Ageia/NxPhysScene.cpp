@@ -460,6 +460,58 @@ CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRayc
 }
 
 
+// Performs a linear sweep through space with an oriented box. 
+U32 CNxPhysScene::LinearOBBSweep( const OBB3 &world_box,
+								  const Vector3 &motion,
+								  U32 flags,
+								  void *pUserData,
+								  U32 num_max_shapes,
+								  CSweepQueryHit &shapes,
+								  CUserEntityReport< CSweepQueryHit > *pCallback,
+								  U32 active_groups,
+								  const CGroupsMask *pGroupsMask )
+{
+	NxBox nx_box;
+	nx_box.center  = ToNxVec3( world_box.center.vPosition );
+	nx_box.extents = ToNxVec3( world_box.radii );
+	nx_box.rot     = ToNxMat33( world_box.center.matOrient );
+
+	NxSweepQueryHit nx_query;
+	NxGroupsMask *pNxGroupMask = NULL;
+	NxUserEntityReport<NxSweepQueryHit> *pNxCallback = NULL;
+	m_pScene->linearOBBSweep( nx_box, ToNxVec3(motion), flags, pUserData, num_max_shapes, &nx_query, pNxCallback, active_groups, pNxGroupMask );
+
+	if( nx_query.hitShape )
+		shapes.pHitShape   = (CShape *)nx_query.hitShape->userData;
+
+	if( nx_query.sweepShape )
+		shapes.pSweepShape = (CShape *)nx_query.sweepShape->userData;
+
+	shapes.t      = nx_query.t;
+	shapes.Point  = ToVector3( nx_query.point );
+	shapes.Normal = ToVector3( nx_query.normal );
+
+	return 0;
+}
+
+
+// Performs a linear sweep through space with an oriented capsule. 
+U32 CNxPhysScene::LinearCapsuleSweep( const Capsule &world_capsule,
+									  const Vector3 &motion,
+									  U32 flags,
+									  void *pUserData,
+									  U32 num_max_shapes,
+									  CSweepQueryHit &shapes,
+									  CUserEntityReport< CSweepQueryHit > *pCallback,
+									  U32 active_groups,
+									  const CGroupsMask *pGroupsMask )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
+//	m_pScene->linearCapsuleSweep();
+	return 0;
+}
+
+
 CCloth *CNxPhysScene::CreateCloth( CClothDesc& desc )
 {
 	CNxPhysClothMesh *pClothMesh = dynamic_cast<CNxPhysClothMesh *>(desc.pClothMesh);

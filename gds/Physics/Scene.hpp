@@ -4,6 +4,8 @@
 
 #include "../base.hpp"
 #include "3DMath/Vector3.hpp"
+#include "3DMath/OBB3.hpp"
+#include "3DMath/Capsule.hpp"
 #include "fwd.hpp"
 #include "Ray.hpp"
 #include "Enums.hpp"
@@ -11,6 +13,17 @@
 
 namespace physics
 {
+
+
+class CGroupsMask; ///< Needed in sweep test function. TODO: define this class and add the forward declaration to Physics/fwd.hpp
+
+/// Needed in sweep test function. TODO: define this class and add the forward declaration to Physics/fwd.hpp
+template<class T>
+class CUserEntityReport
+{
+	T t;
+public:
+};
 
 
 class ContactPairFlag
@@ -82,6 +95,32 @@ class CUserContactReport
 public:
 
 	virtual void OnContactNotify( CContactPair& pair, U32 events ) = 0;
+};
+
+
+class CSweepQueryHit
+{
+public:
+	float	t;	                //!< Distance to hit
+	CShape*	pHitShape;			//!< Hit shape
+	CShape*	pSweepShape;		//!< Only nonzero when using NxActor::linearSweep. Shape from NxActor that hits the hitShape.
+	void*	pUserData;			//!< User-defined data
+	U32		InternalFaceID;		//!< ID of touched triangle (internal)
+	U32		FaceID;				//!< ID of touched triangle (external)
+	Vector3 Point;				//!< World-space impact point
+	Vector3 Normal;				//!< World-space impact normal
+
+	CSweepQueryHit()
+		:
+	t(0),	            
+	pHitShape(NULL),
+	pSweepShape(NULL),
+	pUserData(NULL),
+	InternalFaceID(0),
+	FaceID(0),
+	Point( Vector3(0,0,0) ),
+	Normal( Vector3(0,1,0) )
+	{}
 };
 
 
@@ -313,6 +352,19 @@ public:
 	inline CShape *LineSegmentTestClosestShape( const CLineSegment& world_line_segment, CRaycastHit& hit, int coll_group );
 
 //	virtual U32 RaycastAllShapes( const CRay& world_ray, CRacastReport& report, shapetype, int ray_group,  );
+
+	// Creates a sweep cache, for use with NxActor::linearSweep(). See the Guide, "Sweep API" section for more information. 
+//	virtual CSweepCache *CreateSweepCache () = 0;
+
+	// Deletes a sweep cache. See the Guide, "Sweep API" section, for more information on sweep caches. Avoid release calls while the scene is simulating (in between simulate() and fetchResults() calls). 
+//	virtual void  ReleaseSweepCache (CSweepCache *cache) = 0;
+
+	// Performs a linear sweep through space with an oriented box. 
+	virtual U32 LinearOBBSweep (const OBB3 &world_box, const Vector3 &motion, U32 flags, void *pUserData, U32 num_max_shapes, CSweepQueryHit &shapes, CUserEntityReport< CSweepQueryHit > *pCallback, U32 active_groups = 0xffffffff, const CGroupsMask *pGroupsMask = NULL) = 0;
+
+	// Performs a linear sweep through space with an oriented capsule. 
+	virtual U32 LinearCapsuleSweep (const Capsule &world_capsule, const Vector3 &motion, U32 flags, void *pUserData, U32 nbShapes, CSweepQueryHit &shapes, CUserEntityReport< CSweepQueryHit > *pCallback, U32 active_groups = 0xffffffff, const CGroupsMask *pGroupsMask = NULL) = 0;
+
 
 	virtual CCloth *CreateCloth( CClothDesc& desc ) = 0;
 

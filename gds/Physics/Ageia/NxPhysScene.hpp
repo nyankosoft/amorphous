@@ -220,6 +220,19 @@ public:
 
 	virtual CShape *RaycastClosestShape( const CRay& world_ray, CRaycastHit& hit, int coll_gorup, Scalar max_dist );
 
+	// Creates a sweep cache, for use with NxActor::linearSweep(). See the Guide, "Sweep API" section for more information. 
+//	virtual CSweepCache *CreateSweepCache () = 0;
+
+	// Deletes a sweep cache. See the Guide, "Sweep API" section, for more information on sweep caches. Avoid release calls while the scene is simulating (in between simulate() and fetchResults() calls). 
+//	virtual void  ReleaseSweepCache (CSweepCache *cache) = 0;
+
+	// Performs a linear sweep through space with an oriented box. 
+	U32 LinearOBBSweep( const OBB3 &world_box,             const Vector3 &motion, U32 flags, void *pUserData, U32 num_max_shapes, CSweepQueryHit &shapes, CUserEntityReport< CSweepQueryHit > *pCallback, U32 active_groups, const CGroupsMask *pGroupsMask );
+
+	// Performs a linear sweep through space with an oriented capsule. 
+	U32 LinearCapsuleSweep( const Capsule &world_capsule, const Vector3 &motion, U32 flags, void *pUserData, U32 num_max_shapes, CSweepQueryHit &shapes, CUserEntityReport< CSweepQueryHit > *pCallback, U32 active_groups, const CGroupsMask *pGroupsMask );
+
+
 	CCloth *CreateCloth( CClothDesc& desc );
 
 	void ReleaseCloth( CCloth*& pCloth );
