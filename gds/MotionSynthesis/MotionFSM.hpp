@@ -446,6 +446,10 @@ public:
 		return boost::shared_ptr<CMotionFSM>();
 	}
 
+	const std::vector< boost::shared_ptr<CMotionFSM> >& GetMotionFSMs() const { return m_vecpMotionFSM; }
+
+	std::vector< boost::shared_ptr<CMotionFSM> >& MotionFSMs() { return m_vecpMotionFSM; }
+
 	inline void Update( float dt );
 
 	// Transformations are stored in m_pBlendNodeRoot
