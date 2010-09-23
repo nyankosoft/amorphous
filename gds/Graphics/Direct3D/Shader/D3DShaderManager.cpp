@@ -352,7 +352,7 @@ void CHLSLShaderManager::SetParam( CShaderParameter<Matrix44>& mat44_param )
 		index = RegisterHLSLParam( mat44_param );
 
 	if( 0 <= index && index < (int)m_vecParamHandle.size() )
-		hr = m_pEffect->SetMatrixTranspose( m_vecParamHandle[index].Handle, (D3DXMATRIX *)&mat44_param );
+		hr = m_pEffect->SetMatrixTranspose( m_vecParamHandle[index].Handle, (D3DXMATRIX *)&(mat44_param.Parameter()) );
 }
 
 

@@ -462,10 +462,10 @@ Result::Name CDirect3D9::SetCullingMode( CullingMode::Name cull_mode )
 
 	DWORD current_d3d_cull_mode = D3DCULL_NONE;
 	hr = m_pD3DDevice->GetRenderState( D3DRS_CULLMODE, &current_d3d_cull_mode );
-	if( current_d3d_cull_mode != D3DCULL_NONE )
+	D3DCULL dest_d3d_cull_mode = ToD3DCullMode(cull_mode);
+	if( current_d3d_cull_mode != dest_d3d_cull_mode )
 	{
-		D3DCULL d3d_cull_mode = ToD3DCullMode(cull_mode);
-		hr = m_pD3DDevice->SetRenderState( D3DRS_CULLMODE, d3d_cull_mode );
+		hr = m_pD3DDevice->SetRenderState( D3DRS_CULLMODE, dest_d3d_cull_mode );
 	}
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
