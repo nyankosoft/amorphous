@@ -206,6 +206,9 @@ void CSkeletalCharacter::Update( float dt )
 		}
 	}
 
+	// Update the vertical position
+//	UpdateStepHeight( *pEntity );
+
 	m_Walls.resize( 0 );
 
 	// the world pose of the entity -> always stays horizontal
@@ -442,6 +445,28 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 			}
 		}
 	}
+}
+
+
+void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
+{
+	physics::CScene *pPhysScene = entity.GetStage()->GetPhysicsScene();
+	if( !pPhysScene )
+		return;
+
+	OBB3 obb( entity.GetWorldPose(), Vector3(1,1,1) * 0.05f );
+	Vector3 sweep = Vector3( 0, -1, 0 );
+	physics::CSweepQueryHit query;
+	void *pUserData = NULL;
+	pPhysScene->LinearOBBSweep(
+		obb,
+		sweep,
+		0, 
+		pUserData,
+		1, // num max shapes
+		query,
+		NULL
+		);
 }
 
 

@@ -59,6 +59,9 @@ class CSkeletalCharacter : public CGameItem
 //	std::vector< boost::shared_ptr<CClothing> > m_pClothings;
 
 //	boost::shared_ptr<CClothSystem> m_pClothSystem;
+private:
+
+	void UpdateStepHeight( CCopyEntity& entity );
 
 public:
 
