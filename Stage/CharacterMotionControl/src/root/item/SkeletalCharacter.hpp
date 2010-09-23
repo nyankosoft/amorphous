@@ -42,6 +42,8 @@ class CSkeletalCharacter : public CGameItem
 	float m_fFwdSpeed;
 	float m_fTurnSpeed;
 
+	float m_fFloorHeight;
+
 	boost::shared_ptr<msynth::CMotionFSMInputHandler> m_pInputHandler;
 
 	boost::shared_ptr<CKeyBind> m_pKeyBind;

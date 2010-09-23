@@ -38,7 +38,8 @@ public:
 CSkeletalCharacter::CSkeletalCharacter()
 :
 m_fFwdSpeed(0.0f),
-m_fTurnSpeed(0.0f)
+m_fTurnSpeed(0.0f),
+m_fFloorHeight(0.0f)
 {
 	m_pMotionGraphManager.reset( new CMotionGraphManager );
 //	m_pMotionGraphManager = shared_new<CMotionGraphManager>();
@@ -207,7 +208,8 @@ void CSkeletalCharacter::Update( float dt )
 	}
 
 	// Update the vertical position
-//	UpdateStepHeight( *pEntity );
+	UpdateStepHeight( *pEntity );
+	updated_world_pose.vPosition.y = m_fFloorHeight;
 
 	m_Walls.resize( 0 );
 
@@ -503,6 +505,20 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 		query,
 		NULL
 		);
+
+//	if( abs(1.0f - query.t) < 0.001f )
+
+	float floor_height = query.Point.y;
+	m_fFloorHeight = floor_height;
+/*	int num_motion_fsms = (int)m_pMotionGraphManager->GetMotionFSMs.size();
+	for( int i=0; i<num_motion_fsms; i++ )
+	{
+		shared_ptr<CMotionFSM>& pFSM = m_pMotionGraphManager->MotionFSMs()[i];
+		if( !pFSM )
+			continue;
+
+		pFSM->Player()->SetFloorHeight( floor_height );
+	}*/
 }
 
 
