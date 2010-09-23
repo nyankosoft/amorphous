@@ -63,6 +63,8 @@ private:
 
 	void UpdateStepHeight( CCopyEntity& entity );
 
+	void SetCharacterWorldPose( const Matrix34& world_pose, CCopyEntity& entity, physics::CActor &actor );
+
 public:
 
 	CSkeletalCharacter();

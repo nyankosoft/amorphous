@@ -380,6 +380,25 @@ void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntit
 }
 
 
+void CSkeletalCharacter::SetCharacterWorldPose( const Matrix34& world_pose, CCopyEntity& entity, physics::CActor &actor )
+{
+	Matrix34 new_pose( world_pose );
+
+	// Revert to the prev pose.
+	entity.SetWorldPose( world_pose );
+	UpdatePhysicsActorPose( actor, world_pose );
+
+	// also revert the pose stored in the motion FSM
+	shared_ptr<CMotionFSM> pFSM = m_pMotionGraphManager->GetMotionFSM("lower_limbs");
+	if( !pFSM )
+		return;
+	Vector3& vFwd = new_pose.matOrient.GetColumn(2);
+	Vec3Normalize( vFwd, vFwd );
+	new_pose.matOrient.Orthonormalize();
+	pFSM->Player()->SetCurrentHorizontalPose( new_pose );
+}
+
+
 void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
 {
 	physics::CContactStreamIterator& itr = pair.ContactStreamIterator;
@@ -392,19 +411,9 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 
 	CCopyEntity& entity = *pEntity;
 
-	// Revert to the prev pose.
-	entity.SetWorldPose( m_PrevWorldPose );
-	UpdatePhysicsActorPose( *pair.pActors[0], m_PrevWorldPose );
+//	SetCharacterWorldPose( m_PrevWorldPose, entity, *pair.pActors[0] );
 
-	// also revert the pose stored in the motion FSM
-	shared_ptr<CMotionFSM> pFSM = m_pMotionGraphManager->GetMotionFSM("lower_limbs");
-	if( !pFSM )
-		return;
-	Vector3& vFwd = m_PrevWorldPose.matOrient.GetColumn(2);
-	Vec3Normalize( vFwd, vFwd );
-	m_PrevWorldPose.matOrient.Orthonormalize();
-	pFSM->Player()->SetCurrentHorizontalPose( m_PrevWorldPose );
-	LOG_PRINT( " Contact detected. Reverted the world pos: " + to_string(m_PrevWorldPose.vPosition) );
+//	LOG_PRINT( " Contact detected. Reverted the world pos: " + to_string(m_PrevWorldPose.vPosition) );
 	//>>---------- revert to the prev pose and return ----------
 //	return;
 	//<<---------- revert to the prev pose and return ----------
@@ -413,6 +422,7 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 	Vector3 current_pos = entity.GetWorldPose().vPosition;
 //	Vector3 prev_to_current = current_pos - prev_pos;
 
+	Vector3 walll_contact_pos_sum = Vector3(0,0,0);
 	while( itr.GoNextPair() ) // user can call getNumPairs() here 
 	{
 		while( itr.GoNextPatch() ) // user can also call getShape() and getNumPatches() here
@@ -434,7 +444,10 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 				Vector3 pos = itr.GetPoint();
 				SPlane plane( normal, Vec3Dot(normal,pos) );
 				if( is_wall )
+				{
 					m_Walls.push_back( plane );
+					walll_contact_pos_sum += pos;
+				}
 
 //				float d0 = plane.GetDistanceFromPoint( prev_pos );
 //				float d1 = plane.GetDistanceFromPoint( current_pos );
@@ -445,6 +458,29 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 			}
 		}
 	}
+
+	Vector3 wall_normal_sum = Vector3(0,0,0);
+	int num_wall_planes = (int)m_Walls.size();
+	for( int i=0; i<num_wall_planes; i++ )
+	{
+		wall_normal_sum = m_Walls[i].normal;
+	}
+
+//	Vector3 ave_pos    = walll_contact_pos_sum / (float)num_wall_planes;
+	Vector3 ave_normal = wall_normal_sum       / (float)num_wall_planes;
+
+	// Push back the character in the direction of the average normal of contacted walls.
+
+	if( 1.0f - 0.01f < fabs(ave_normal.y) )
+		return;
+
+	ave_normal.y = 0;
+	Vec3Normalize( ave_normal, ave_normal );
+	Matrix34 pose_to_revert_to( m_PrevWorldPose );
+//	Matrix34 pose_to_revert_to( entity.GetWorldPose() );
+	pose_to_revert_to.vPosition += ave_normal * 0.01f;
+
+	SetCharacterWorldPose( pose_to_revert_to, entity, *pair.pActors[0] );
 }
 
 
