@@ -54,9 +54,10 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 	mesh.GetPositions( positions );
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+	HRESULT hr = S_OK;
 
-	pd3dDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
-	pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
+	hr = pd3dDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
+	hr = pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
 
 	const int num_mats = mesh.GetNumMaterials();
 	if( 0 < num_mats && 0 < mesh.GetMaterial(0).Texture.size() )
@@ -85,9 +86,9 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 	}
 
 	// default alpha-blending settings
-	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_ONE);
-	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+	hr = pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+	hr = pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_ONE);
+	hr = pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
 	// alpha-blending settings 
 /*	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
@@ -99,13 +100,13 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 		const int num_textures = mesh.GetNumTextures(i);
 		for( int j=0; j<num_textures; j++ )
 		{
-			pd3dDevice->SetTexture( j, mesh.GetTexture(i,j).GetTexture() );
+			LPDIRECT3DTEXTURE9 pTex = mesh.GetTexture(i,j).GetTexture();
+			hr = pd3dDevice->SetTexture( j, pTex );
 		}
 	}
 
-	HRESULT hr = S_OK;
-	hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
-	hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+	hr = pd3dDevice->SetVertexShader( NULL );
+	hr = pd3dDevice->SetPixelShader( NULL );
 
 	DrawPrimitives( mesh );
 }

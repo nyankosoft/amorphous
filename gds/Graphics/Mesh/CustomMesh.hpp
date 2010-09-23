@@ -65,6 +65,8 @@ public:
 			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(src[i]), sizeof(TEXCOORD2) );
 	}
 
+	void SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors );
+
 	inline void GetPositions( std::vector<Vector3>& dest )
 	{
 		const uint num_verts = GetNumVertices();

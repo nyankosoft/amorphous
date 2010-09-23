@@ -31,6 +31,27 @@ m_NumUpdatedIndices(0)
 }
 
 
+void CCustomMesh::SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors )
+{
+	const int num = (int)diffuse_colors.size();
+	const int offset = m_ElementOffsets[VEE::DIFFUSE_COLOR];
+
+//	if( ms_DiffuseColorFormat == VCF_ARGB32 )
+//	{
+		for( int i=0; i<num; i++ )
+		{
+			U32 argb32 = diffuse_colors[i].GetARGB32();
+			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(argb32), sizeof(U32) );
+		}
+//	}
+//	else if( ms_DiffuseColorFormat == VCF_FRGBA )
+//	{
+//		for( int i=0; i<num; i++ )
+//			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(diffuse_colors[i]), sizeof(SFloatRGBAColor) );
+//	}
+}
+
+
 void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 {
 	m_VertexFlags = vertex_format_flags;
@@ -104,6 +125,9 @@ bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::stri
 		if( flags & tex2_flags[i] )
 			Set2DTexCoords( vs.vecTex[i], i );
 	}
+
+	if( flags & VFF::DIFFUSE_COLOR )
+		SetDiffuseColors( vs.vecDiffuseColor );
 
 //	InitVertexBuffer( num_vertices, VFF::POSITION|VFF::NORMAL );
 
