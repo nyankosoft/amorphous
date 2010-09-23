@@ -98,7 +98,11 @@ void CStdKeyboard::NotifyKeyDown( int iVK_Code )
 {
 	SInputData input;
 
-	input.iGICode= m_aiGICodeForVKCode[iVK_Code];
+	input.iGICode = m_aiGICodeForVKCode[iVK_Code];
+
+	// for now, report shift key event as left shift key event
+	if( iVK_Code == VK_SHIFT )
+		input.iGICode = GIC_LSHIFT;
 
 	if( input.iGICode == GIC_INVALID )
 		return;	// no GIC for this virtual key code
@@ -117,7 +121,11 @@ void CStdKeyboard::NotifyKeyUp( int iVK_Code )
 {
 	SInputData input;
 
-	input.iGICode= m_aiGICodeForVKCode[iVK_Code];
+	input.iGICode = m_aiGICodeForVKCode[iVK_Code];
+
+	// for now, report shift key event as left shift key event
+	if( iVK_Code == VK_SHIFT )
+		input.iGICode = GIC_LSHIFT;
 
 	if( input.iGICode == GIC_INVALID )
 		return;	// no GIC for this virtual key code
