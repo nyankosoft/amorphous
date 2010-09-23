@@ -654,7 +654,7 @@ void CClothTest::MoveClothHolderActor( const Vector3& dist )
 
 void CClothTest::HandleInput( const SInputData& input )
 {
-	if( m_pUIInputHandler )
+/*	if( m_pUIInputHandler )
 	{
 //		CInputHandler::ProcessInput() does not take const SInputData&
 		SInputData input_copy = input;
@@ -662,7 +662,7 @@ void CClothTest::HandleInput( const SInputData& input )
 
 		if( m_pUIInputHandler->PrevInputProcessed() )
 			return;
-	}
+	}*/
 
 	static int m_CurrentMouseX = -1;
 	static int m_CurrentMouseY = -1;
