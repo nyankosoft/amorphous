@@ -2,12 +2,10 @@
 #define  __TextureFontTest_HPP__
 
 
-#include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
-
-#include <gds/base.hpp>
-#include "Graphics/fwd.hpp"
-#include "Graphics/TextureHandle.hpp"
+#include "gds/base.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/TextureHandle.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 

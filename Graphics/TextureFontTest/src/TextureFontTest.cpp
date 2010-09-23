@@ -1,7 +1,6 @@
 #include "TextureFontTest.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/Font/TrueTypeTextureFont.hpp"
-#include "gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
 #include "gds/Input.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/BitmapImage.hpp"
@@ -136,17 +135,3 @@ void CTextureFontTest::HandleInput( const SInputData& input )
 		break;
 	}
 }
-
-/*
-void CTextureFontTest::UpdateViewTransform( const D3DXMATRIX& matView )
-{
-//	m_pCubeMapManager->UpdateViewTransform( matView );
-}
-
-
-void CTextureFontTest::UpdateProjectionTransform( const D3DXMATRIX& matProj )
-{
-//	m_pCubeMapManager->UpdateProjectionTransform( matProj );
-}
-
-*/
