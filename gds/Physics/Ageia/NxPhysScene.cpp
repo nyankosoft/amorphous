@@ -460,6 +460,19 @@ CShape *CNxPhysScene::RaycastClosestShape( const physics::CRay& world_ray, CRayc
 }
 
 
+static void SetDefaultNxSweepQueryHit( NxSweepQueryHit& query )
+{
+	query.t              = 0;
+	query.hitShape       = NULL;
+	query.sweepShape     = NULL;
+	query.userData       = NULL;
+	query.internalFaceID = 0;
+	query.faceID         = 0;
+	query.point          = NxVec3(0,0,0);
+	query.normal         = NxVec3(0,0,0);
+}
+
+
 // Performs a linear sweep through space with an oriented box. 
 U32 CNxPhysScene::LinearOBBSweep( const OBB3 &world_box,
 								  const Vector3 &motion,
@@ -477,14 +490,15 @@ U32 CNxPhysScene::LinearOBBSweep( const OBB3 &world_box,
 	nx_box.rot     = ToNxMat33( world_box.center.matOrient );
 
 	NxSweepQueryHit nx_query;
+	SetDefaultNxSweepQueryHit( nx_query );
 	NxGroupsMask *pNxGroupMask = NULL;
 	NxUserEntityReport<NxSweepQueryHit> *pNxCallback = NULL;
 	m_pScene->linearOBBSweep( nx_box, ToNxVec3(motion), flags, pUserData, num_max_shapes, &nx_query, pNxCallback, active_groups, pNxGroupMask );
 
-	if( nx_query.hitShape )
+	if( nx_query.hitShape && nx_query.hitShape->userData )
 		shapes.pHitShape   = (CShape *)nx_query.hitShape->userData;
 
-	if( nx_query.sweepShape )
+	if( nx_query.sweepShape && nx_query.sweepShape->userData )
 		shapes.pSweepShape = (CShape *)nx_query.sweepShape->userData;
 
 	shapes.t      = nx_query.t;
