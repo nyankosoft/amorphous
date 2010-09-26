@@ -52,6 +52,19 @@ public:
 };
 
 
+class SweepFlag
+{
+public:
+	enum Name
+	{
+		STATICS    = (1<<0), //!< Sweep vs static objects
+		DYNAMICS   = (1<<1), //!< Sweep vs dynamic objects
+		ALL_HITS   = (1<<2), //!< Reports all hits rather than just closest hit
+	};
+};
+
+
+
 class CTriggerEvent
 {
 public:

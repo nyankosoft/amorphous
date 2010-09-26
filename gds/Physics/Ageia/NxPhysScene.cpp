@@ -57,6 +57,17 @@ static NxU32 ToNxBodyFlags( U32 phys_body_flags )
 }
 
 
+static NxU32 ToNxSweepFlags( U32 sweep_flags )
+{
+	NxU32 nx_flags = 0;
+	if( sweep_flags & SweepFlag::STATICS )  nx_flags |= NX_SF_STATICS;
+	if( sweep_flags & SweepFlag::DYNAMICS ) nx_flags |= NX_SF_DYNAMICS;
+	if( sweep_flags & SweepFlag::ALL_HITS ) nx_flags |= NX_SF_ALL_HITS;
+
+	return nx_flags;
+}
+
+
 //==================================================================================
 // CNxPhysicsUserContactReport
 //==================================================================================
@@ -247,7 +258,6 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
  
 
 	CNxPhysShapeDescFactory desc_factory;
-//	vector<NxShapeDesc *> vecpNxShapeDesc;
 	for( size_t i=0; i<desc.vecpShapeDesc.size(); i++ )
 	{
 		CShapeDesc& src_shape_desc = *(desc.vecpShapeDesc[i]);
@@ -259,10 +269,15 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 			continue;
 		}
 
-		// set material index
-		nx_actor_desc.shapes.back()->materialIndex = src_shape_desc.MaterialIndex;
-		nx_actor_desc.shapes.back()->shapeFlags    = ToNxShapeFlags( src_shape_desc.ShapeFlags );
-//		nx_actor_desc.shapes.push_back = vecpNxShapeDesc[i];
+		// Copy the values of member variables from CShapeDesc to NxShapeDesc
+		NxShapeDesc& nx_shape_desc = *(nx_actor_desc.shapes.back());
+		nx_shape_desc.materialIndex    = src_shape_desc.MaterialIndex;
+		nx_shape_desc.shapeFlags       = ToNxShapeFlags( src_shape_desc.ShapeFlags );
+		nx_shape_desc.group            = 0;//src_shape_desc.CollisionGroup;
+		nx_shape_desc.groupsMask.bits0 = 0;
+		nx_shape_desc.groupsMask.bits1 = 0;
+		nx_shape_desc.groupsMask.bits2 = 0;
+		nx_shape_desc.groupsMask.bits3 = 0;
 	}
 
 	if( !nx_actor_desc.isValid() )
@@ -488,12 +503,18 @@ U32 CNxPhysScene::LinearOBBSweep( const OBB3 &world_box,
 	nx_box.center  = ToNxVec3( world_box.center.vPosition );
 	nx_box.extents = ToNxVec3( world_box.radii );
 	nx_box.rot     = ToNxMat33( world_box.center.matOrient );
+	if( !nx_box.isValid() )
+	{
+		LOG_PRINT_WARNING( " An invalid OBB. Returning without performing the specified sweep test." );
+		return 0;
+	}
 
 	NxSweepQueryHit nx_query;
 	SetDefaultNxSweepQueryHit( nx_query );
+	NxU32 nx_sweep_flags = ToNxSweepFlags( flags );
 	NxGroupsMask *pNxGroupMask = NULL;
 	NxUserEntityReport<NxSweepQueryHit> *pNxCallback = NULL;
-	m_pScene->linearOBBSweep( nx_box, ToNxVec3(motion), flags, pUserData, num_max_shapes, &nx_query, pNxCallback, active_groups, pNxGroupMask );
+	NxU32 num_hits = m_pScene->linearOBBSweep( nx_box, ToNxVec3(motion), nx_sweep_flags, pUserData, num_max_shapes, &nx_query, pNxCallback, active_groups, pNxGroupMask );
 
 	if( nx_query.hitShape && nx_query.hitShape->userData )
 		shapes.pHitShape   = (CShape *)nx_query.hitShape->userData;
@@ -505,7 +526,7 @@ U32 CNxPhysScene::LinearOBBSweep( const OBB3 &world_box,
 	shapes.Point  = ToVector3( nx_query.point );
 	shapes.Normal = ToVector3( nx_query.normal );
 
-	return 0;
+	return num_hits;
 }
 
 
