@@ -4,11 +4,7 @@
 
 #include <vector>
 #include <list>
-using namespace std;
-
 #include "3DMath/3DStructs.hpp"
-
-
 #include "BSPMapCompiler/BaseFace.hpp"
 #include "BSPMapCompiler/MapFace.hpp"
 
@@ -56,10 +52,10 @@ class CCell
 {
 public:
 	short m_sNode;
-	vector<short> m_asPortalIndex;
-	list<short> m_sVisCellIndex;
+	std::vector<short> m_asPortalIndex;
+	std::list<short> m_sVisCellIndex;
 	CBSPTreeBuilder* m_pBSPTreeBuilder;
-	vector<CMapFace> m_aInteriorFace;
+	std::vector<CMapFace> m_aInteriorFace;
 
 	CCell(){ m_sNode = 0; m_pBSPTreeBuilder = NULL; }
 	~CCell();
@@ -78,8 +74,7 @@ public:
 
 enum OnPlaneCondition { OPC_IF_NORMAL_SAME_DIRECTION = 1, OPC_DONTCARE_NORMAL_DIRECTION };
 
-extern int ClassifyPoint(SPlane& plane, D3DXVECTOR3& point);
-extern int	ClassifyFace(SPlane& plane, CFace& face,
+extern int	ClassifyFace( const SPlane& plane, CFace& face,
 						 int iOnPlaneCondition = OPC_IF_NORMAL_SAME_DIRECTION);
 extern bool AlmostSamePlanes(SPlane& plane1, SPlane& plane2);
 

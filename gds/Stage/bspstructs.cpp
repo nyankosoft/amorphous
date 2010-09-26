@@ -1,8 +1,7 @@
 #include "bspstructs.hpp"
-#include "../Graphics/FloatRGBColor.hpp"
 
 float g_fEpsilon = 0.001f;
-D3DXVECTOR3 g_vEpsilon(0.001f, 0.001f, 0.001f);
+Vector3 g_vEpsilon(0.001f, 0.001f, 0.001f);
 
 
 //=====================================================================================
@@ -35,16 +34,6 @@ CPortalFace CPortalFace::operator=(CPortalFace face)
 // Global Functions                                                                    /
 //-------------------------------------------------------------------------------------/
 
-int ClassifyPoint(SPlane& plane, D3DXVECTOR3& point)
-{
-	float pdist = D3DXVec3Dot( &point, &plane.normal ) - plane.dist;
-	if( pdist > DIST_EPSILON )   //if point is in front of the plane
-		return PNT_FRONT;
-	if( pdist < -DIST_EPSILON )  //if point is behind the plane
-		return PNT_BACK;
-	return PNT_ONPLANE;          //point is on the plane
-}
-
 
 bool AlmostSamePlanes(SPlane& plane1, SPlane& plane2)
 {
@@ -61,7 +50,7 @@ bool AlmostSamePlanes(SPlane& plane1, SPlane& plane2)
 //	the face is regarded as on-plane if it simply overlaps on the plane 
 // OPC_IF_NORMAL_SAME_DIRECTION (default)
 //	the face is regarded as on-plane if its normal is in the same direction as the plane
-int	ClassifyFace(SPlane& plane, CFace& face, int iOnPlaneCondition)
+int	ClassifyFace( const SPlane& plane, CFace& face, int iOnPlaneCondition )
 {
 	int front = 0;
 	int back = 0;
@@ -73,14 +62,15 @@ int	ClassifyFace(SPlane& plane, CFace& face, int iOnPlaneCondition)
 		{
 		case PNT_FRONT:		front++;	break;
 		case PNT_BACK:		back++;		break;
-		case PNT_ONPLANE:	//平面上に乗っている頂点は分類に関与しないこととする。
+		case PNT_ONPLANE:	// Points on the plane do not affect the classification
 		default:;
 		}
 	}
 
 	if( front == 0 && back == 0 )
 	{
-		SPlane &plane2 = face.GetPlane();
+		// All the points of the face are on the plane.
+		const SPlane &plane2 = face.GetPlane();
 
 		if( iOnPlaneCondition == OPC_DONTCARE_NORMAL_DIRECTION )
 			return FCE_ONPLANE;		//the face is on-plane regardless of its normal direction
@@ -89,11 +79,13 @@ int	ClassifyFace(SPlane& plane, CFace& face, int iOnPlaneCondition)
 		&&  fabs( plane.normal.y - plane2.normal.y ) < NORMAL_EPSILON 
 		&&  fabs( plane.normal.z - plane2.normal.z ) < NORMAL_EPSILON )
 		{
-			return FCE_ONPLANE;	//the 2 normals face the same direction
+			// the normals of the face and the plane face the same direction
+			return FCE_ONPLANE;
 		}
 		else
-		{	//確かに平面上だが、法線が逆向きの面は裏に行く
-			return FCE_BACK;	//the 2 normals face the opposite directions
+		{	// Consider this face is behind the plane although all the points are on the plane.
+			// rationale: the normals of the face and the plane face the opposite directions
+			return FCE_BACK;
 		}
 	}
 	if( front != 0 && back != 0 )

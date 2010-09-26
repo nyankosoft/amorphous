@@ -2,21 +2,15 @@
 #define __BASEFACE_H__
 
 
+#include <vector>
 #include "fwd.hpp"
-
-#include "Graphics/FVF_MapVertex.h"
-
 #include "3DMath/Plane.hpp"
 #include "3DMath/aabb3.hpp"
+#include "Graphics/FVF_MapVertex.h"
 
-
-#include <d3dx9.h>
-
-#include <vector>
-using namespace std;
 
 extern float g_fEpsilon;
-extern D3DXVECTOR3 g_vEpsilon;
+extern Vector3 g_vEpsilon;
 
 
 #define NORMAL_EPSILON 0.001
@@ -39,7 +33,7 @@ class CLineSegment;
 // CPlaneBuffer
 //==========================================================================================
 
-class CPlaneBuffer : public vector<SPlane>
+class CPlaneBuffer : public std::vector<SPlane>
 {
 
 public:
@@ -58,7 +52,7 @@ class CFace
 {
 protected:
 
-	vector<MAPVERTEX> m_pVertices;
+	std::vector<MAPVERTEX> m_pVertices;
 
 	CPlaneBuffer* m_pPlaneBuffer;
 	short m_sPlaneIndex;
@@ -72,11 +66,11 @@ public:
 	~CFace(){}
 
 	// vertex access
-	inline D3DXVECTOR3 GetVertex( int i ) const { return m_pVertices[i].vPosition; }
+	inline Vector3 GetVertex( int i ) const { return m_pVertices[i].vPosition; }
 	inline MAPVERTEX GetMAPVERTEX( int i) const { return m_pVertices[i]; }
 	inline void SetMAPVERTEX( int i, MAPVERTEX& v );
 
-	inline void AddVertex(D3DXVECTOR3& v);
+	inline void AddVertex(Vector3& v);
 	inline void AddMAPVERTEX(MAPVERTEX& v);
 
 	// the number of vertices of this face
@@ -127,7 +121,7 @@ public:
 //============================ inline implementations ============================
 
 
-inline void CFace::AddVertex(D3DXVECTOR3 &v)
+inline void CFace::AddVertex(Vector3 &v)
 {
 	MAPVERTEX vMap;
 	vMap.vPosition = v;

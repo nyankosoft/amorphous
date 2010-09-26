@@ -1,12 +1,8 @@
-
 #include "BaseFace.hpp"
-
-#include "Graphics/FloatRGBColor.hpp"
-
-#include "Stage/bspstructs.hpp"
-
 #include "3DMath/ray.hpp"
 #include "3DMath/Triangle.hpp"
+#include "Graphics/FloatRGBColor.hpp"
+#include "Stage/bspstructs.hpp"
 
 
 //=====================================================================================
@@ -120,9 +116,9 @@ void CFace::SetPlaneFrom(SNode& rNode) // Copy plane data from a node to this fa
 //be on a straight line.
 bool CFace::MakePlane( SPlane& rPlane )
 {
-	D3DXVECTOR3 p0,p1,out;
-	D3DXVECTOR3 normal(0.0f, 0.0f, 0.0f);
-	D3DXVECTOR3 vZeroVector(0.0f, 0.0f, 0.0f);
+	Vector3 p0,p1,out;
+	Vector3 normal(0.0f, 0.0f, 0.0f);
+	Vector3 vZeroVector(0.0f, 0.0f, 0.0f);
 	float dist;
 	int i=0,j,k;
 	int iNumPnts = (int)m_pVertices.size();
@@ -136,8 +132,8 @@ bool CFace::MakePlane( SPlane& rPlane )
 		k = (i+2) % iNumPnts;
 		p0 = GetVertex(i) - GetVertex(j);
 		p1 = GetVertex(k) - GetVertex(j);
-		D3DXVec3Cross(&normal, &p1, &p0 );
-		D3DXVec3Normalize(&out, &normal );
+		Vec3Cross( normal, p1, p0 );
+		Vec3Normalize( out, normal );
 		i++;
 	}
 
@@ -148,7 +144,7 @@ bool CFace::MakePlane( SPlane& rPlane )
 	}
 
 	normal = out;
-	dist = D3DXVec3Dot( &GetVertex(0), &normal );   //Distance between (0,0,0) and this plane
+	dist = Vec3Dot( GetVertex(0), normal );   //Distance between (0,0,0) and this plane
 
 	rPlane.normal = normal;
 	rPlane.dist = dist;
@@ -182,7 +178,7 @@ float CFace::CalculateArea()
 {
 	short i;
 	float fCos, fSin;
-	D3DXVECTOR3 vEdge1, vEdge2;
+	Vector3 vEdge1, vEdge2;
 	float fEdgeLen1, fEdgeLen2;
 	float fArea = 0.0f;
 
@@ -191,11 +187,11 @@ float CFace::CalculateArea()
 	{
 		vEdge1 = GetVertex(i) - GetVertex(0);
 		vEdge2 = GetVertex(i+1) - GetVertex(0);
-		fEdgeLen1 = D3DXVec3Length(&vEdge1);
-		fEdgeLen2 = D3DXVec3Length(&vEdge2);
-		D3DXVec3Normalize(&vEdge1, &vEdge1);
-		D3DXVec3Normalize(&vEdge2, &vEdge2);
-		fCos = D3DXVec3Dot(&vEdge1, &vEdge2);
+		fEdgeLen1 = Vec3Length(vEdge1);
+		fEdgeLen2 = Vec3Length(vEdge2);
+		Vec3Normalize(vEdge1, vEdge1);
+		Vec3Normalize(vEdge2, vEdge2);
+		fCos = Vec3Dot(vEdge1, vEdge2);
 		fSin = sqrtf( 1.0f - fCos * fCos );
 		
 		fArea += fEdgeLen1 * fEdgeLen2 * fSin / 2.0f;
@@ -213,10 +209,10 @@ bool CFace::SharingPointWith(CFace& rFace)
 
 	for(i=0; i<iNumVertices; i++)
 	{
-		D3DXVECTOR3& p1 = GetVertex(i);
+		Vector3& p1 = GetVertex(i);
 		for(j=0; j<jNumVertices; j++)
 		{
-			D3DXVECTOR3& p2 = rFace.GetVertex(j);
+			Vector3& p2 = rFace.GetVertex(j);
 			if( p1 == p2 )
 				return true;
 		}
@@ -245,17 +241,17 @@ void CFace::Split(CFace& front, CFace& back, SPlane& cutplane)
 	{
 		MAPVERTEX& mv0 = m_pVertices[j];
 		MAPVERTEX& mv1 = m_pVertices[(j+1) % uiNumVertices];
-		D3DXVECTOR3& p0 = mv0.vPosition;      //face ‚ÉŠÜ‚Ü‚ê‚é’¸“_(D3DXVECTOR3)‚ð”CˆÓ‚É‚Q‚Â‘I‚Ñ
-		D3DXVECTOR3& p1 = mv1.vPosition;      //‚»‚Ì‚Q’¸“_‚Æplane‚ÌŠÖŒW‚ð’²‚×‚é 
+		Vector3& p0 = mv0.vPosition;      //face ‚ÉŠÜ‚Ü‚ê‚é’¸“_(Vector3)‚ð”CˆÓ‚É‚Q‚Â‘I‚Ñ
+		Vector3& p1 = mv1.vPosition;      //‚»‚Ì‚Q’¸“_‚Æplane‚ÌŠÖŒW‚ð’²‚×‚é 
 		int c0 = ClassifyPoint( cutplane, p0 );
 		int c1 = ClassifyPoint( cutplane, p1 );
 		if( ( c0 == PNT_FRONT && c1 == PNT_BACK ) 	// need split edge
 		||  ( c0 == PNT_BACK && c1 == PNT_FRONT ) )
 		{
-			float d0 = D3DXVec3Dot( &p0, &cutplane.normal ) - cutplane.dist;
-			float d1 = D3DXVec3Dot( &p1, &cutplane.normal ) - cutplane.dist;
+			float d0 = Vec3Dot( p0, cutplane.normal ) - cutplane.dist;
+			float d1 = Vec3Dot( p1, cutplane.normal ) - cutplane.dist;
 			float f = - d0 / ( d1 - d0 );
-			D3DXVECTOR3 pn = p0 + ( p1 - p0 ) * f;  //the cross point between linesegment (p1 - p0) and cutplane
+			Vector3 pn = p0 + ( p1 - p0 ) * f;  //the cross point between linesegment (p1 - p0) and cutplane
 			MAPVERTEX vNew;
 			vNew.vPosition = pn;
 			vNew.vTex0.u = mv0.vTex0.u + (mv1.vTex0.u - mv0.vTex0.u) * f;
@@ -270,8 +266,8 @@ void CFace::Split(CFace& front, CFace& back, SPlane& cutplane)
 			vNew.vTex1.u = mv0.vTex1.u + (mv1.vTex1.u - mv0.vTex1.u) * f;
 			vNew.vTex1.v = mv0.vTex1.v + (mv1.vTex1.v - mv0.vTex1.v) * f;
 
-			D3DXVECTOR3 vTempNormal = mv0.vNormal + (mv1.vNormal - mv0.vNormal) * f;
-			D3DXVec3Normalize( &vNew.vNormal, &vTempNormal );
+			Vector3 vTempNormal = mv0.vNormal + (mv1.vNormal - mv0.vNormal) * f;
+			Vec3Normalize( vNew.vNormal, vTempNormal );
 
 			if( c0 == PNT_FRONT )
 				front.m_pVertices.push_back( mv0 );  //Add P0 vertex to CFace front
@@ -321,21 +317,21 @@ void CFace::MakeLargeFaceFromPlane()
 {
 	SPlane& rPlane = GetPlane();
 	float dist = rPlane.dist;
-	D3DXVECTOR3 vNormal = rPlane.normal;
+	Vector3 vNormal = rPlane.normal;
 
-	D3DXVECTOR3 vUP = D3DXVECTOR3( 0.0f, 1.0f, 0.0f );
+	Vector3 vUP = Vector3( 0.0f, 1.0f, 0.0f );
 	if( fabs(vNormal.x) < 0.001 && fabs(vNormal.z) < 0.001 )
 	{//the plane is almost horizontal
 		//illegal case
-		vUP = D3DXVECTOR3( -vNormal.y, 0.0, 0.0 );
+		vUP = Vector3( -vNormal.y, 0.0, 0.0 );
 	}
-	D3DXVECTOR3 vRight;
-	D3DXVec3Cross( &vRight, &vUP, &vNormal );
-	D3DXVec3Normalize( &vRight, &vRight );
-	D3DXVec3Cross( &vUP, &vNormal, &vRight );
-	D3DXVec3Normalize( &vUP, &vUP );
+	Vector3 vRight;
+	Vec3Cross( vRight, vUP, vNormal );
+	Vec3Normalize( vRight, vRight );
+	Vec3Cross( vUP, vNormal, vRight );
+	Vec3Normalize( vUP, vUP );
 	
-	D3DXVECTOR3 vOrig = vNormal * dist;
+	Vector3 vOrig = vNormal * dist;
 	vUP *= BIG_NUM;
 	vRight *= BIG_NUM;
 	
@@ -347,13 +343,13 @@ void CFace::MakeLargeFaceFromPlane()
 
 void CFace::AddToAABB(AABB3& aabb)
 {
-	D3DXVECTOR3& vMin = aabb.vMin;
-	D3DXVECTOR3& vMax = aabb.vMax;
+	Vector3& vMin = aabb.vMin;
+	Vector3& vMax = aabb.vMax;
 
 	int j;
 	for(j=0; j<GetNumVertices(); j++)
 	{
-		D3DXVECTOR3& v = GetVertex( j );
+		Vector3& v = GetVertex( j );
 		if (v.x < vMin.x) vMin.x = v.x;
 		if (v.y < vMin.y) vMin.y = v.y;
 		if (v.z < vMin.z) vMin.z = v.z;
@@ -366,7 +362,7 @@ void CFace::AddToAABB(AABB3& aabb)
 // clip CFace instance
 bool CFace::ClipVisibility(CFace& rSrcFace, CFace& rDestFace, int iClipStyle)
 {
-	D3DXVECTOR3 v1,v2;
+	Vector3 v1,v2;
 	SPlane clipplane;
 	int i,j, iNumPnts = rSrcFace.GetNumVertices();
 	int c;
@@ -376,11 +372,11 @@ bool CFace::ClipVisibility(CFace& rSrcFace, CFace& rDestFace, int iClipStyle)
 		for(j=0; j<rDestFace.GetNumVertices(); j++)
 		{
 			v2 = rDestFace.GetVertex(j) - rSrcFace.GetVertex(i);
-			D3DXVec3Cross(&clipplane.normal, &v1, &v2 );
-			if (D3DXVec3Length(&clipplane.normal) < DIST_EPSILON)
+			Vec3Cross( clipplane.normal, v1, v2 );
+			if( Vec3Length(clipplane.normal) < DIST_EPSILON )
 				continue;
-			D3DXVec3Normalize(&clipplane.normal, &clipplane.normal );
-			clipplane.dist = D3DXVec3Dot (&rDestFace.GetVertex(j) , &clipplane.normal);
+			Vec3Normalize( clipplane.normal, clipplane.normal );
+			clipplane.dist = Vec3Dot( rDestFace.GetVertex(j), clipplane.normal );
 			c = ClassifyFace( clipplane, rSrcFace );
 			if(c == FCE_ONPLANE)
 				continue;

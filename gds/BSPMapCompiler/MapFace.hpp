@@ -1,10 +1,8 @@
-
 #ifndef __MAPFACE_H__
 #define __MAPFACE_H__
 
 
 #include "BaseFace.hpp"
-
 
 
 class CMapFace : public CFace
@@ -20,7 +18,7 @@ public:
 	int m_iSurfaceMaterialIndex;
 	int m_iPolygonIndex;
 
-	vector<D3DXVECTOR3> m_vecvLightDir;
+	std::vector<Vector3> m_vecvLightDir;
 
 public:
 
@@ -30,8 +28,8 @@ public:
 
 	MAPVERTEX& GetMapVertex(int iIndex);
 	void Split(CFace& front, CFace& back, SPlane& cutplane);
-	D3DXVECTOR3 GetInterpolatedNormal( D3DXVECTOR3& rvPosition );
-	bool IsInSweptVolume( D3DXVECTOR3& rvPosition, float& fDist );
+	Vector3 GetInterpolatedNormal( Vector3& rvPosition );
+	bool IsInSweptVolume( Vector3& rvPosition, float& fDist );
 
 	inline int GetSurfaceIndex() { return m_iSurfaceMaterialIndex; }
 
