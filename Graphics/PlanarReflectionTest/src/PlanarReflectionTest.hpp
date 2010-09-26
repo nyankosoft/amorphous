@@ -34,7 +34,7 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 	CShaderHandle m_PlanarReflectionShader;
 
-//	CTextureHandle m_TestTexture;
+	CTextureHandle m_PerturbationTexture;
 
 	boost::shared_ptr<CFontBase> m_pFont;
 

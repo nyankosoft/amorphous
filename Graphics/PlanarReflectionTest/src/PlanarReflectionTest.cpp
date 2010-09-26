@@ -9,6 +9,7 @@
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/SkyboxMisc.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
+#include "Support/ParamLoader.hpp"
 #include "Support/CameraController_Win32.hpp"
 
 using namespace std;
@@ -70,7 +71,9 @@ int CPlanarReflectionTest::Init()
 	string shader_path = "./shaders/PerPixelSingleHSDirectionalLight.fx";
 	bool shader_loaded = m_Shader.Load( shader_path );
 
-	shader_loaded = m_PlanarReflectionShader.Load( "./shaders/PerPixelSingleHSDirectionalLight_PR.fx" );
+	string pr_shader_path = "./shaders/PerPixelSingleHSDirectionalLight_PR.fx";
+	LoadParamFromFile( "params.txt", "planar_reflection_shader", pr_shader_path );
+	shader_loaded = m_PlanarReflectionShader.Load( pr_shader_path );
 	
 	// load skybox mesh
 	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
@@ -91,6 +94,8 @@ int CPlanarReflectionTest::Init()
 
 	m_pTextureRenderTarget = CTextureRenderTarget::Create();
 	m_pTextureRenderTarget->InitScreenSizeRenderTarget();
+
+	m_PerturbationTexture.Load( "./textures/watersurf_nmap.jpg" );
 
 	return 0;
 }
@@ -146,6 +151,8 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 		return;
 
 	CShaderManager& shader_mgr = *pShaderMgr;
+
+	shader_mgr.SetTexture( 2, m_PerturbationTexture );
 
 	CShaderTechniqueHandle tech;
 	tech.SetTechniqueName( "Default" );
