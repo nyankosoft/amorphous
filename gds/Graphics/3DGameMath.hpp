@@ -8,11 +8,10 @@
 #include <float.h>
 
 
-//bounce factor = 0		no bounce
-//bounce factor = 1		complete bounce
+/// \param fBounceFactor [0,1] 0: no bounce / 1: complete bounce
 inline void ClipVelocity(Vector3& rvOut,
-						 Vector3& rvIn,
-						 Vector3& rvNormal,
+						 const Vector3& rvIn,
+						 const Vector3& rvNormal,
 						 float fBounceFactor = 0)
 {
 	float f = Vec3Dot( rvNormal, rvIn );
