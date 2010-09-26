@@ -401,6 +401,24 @@ void CSkeletalCharacter::SetCharacterWorldPose( const Matrix34& world_pose, CCop
 }
 
 
+static inline bool contains_almost_same_plane( const std::vector<SPlane>& planes, const SPlane& plane )
+{
+	static const double tolerance = 0.001;
+	for( size_t i=0; i<planes.size(); i++ )
+	{
+		if( fabs( planes[i].dist - plane.dist ) < tolerance
+		 && fabs( planes[i].normal.x - plane.normal.x ) < tolerance
+		 && fabs( planes[i].normal.y - plane.normal.y ) < tolerance
+		 && fabs( planes[i].normal.z - plane.normal.z ) < tolerance )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
 {
 	physics::CContactStreamIterator& itr = pair.ContactStreamIterator;
@@ -444,8 +462,10 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 			while( itr.GoNextPoint() ) // user can also call getPatchNormal() and getNumPoints() here
 			{
 				Vector3 pos = itr.GetPoint();
-				SPlane plane( normal, Vec3Dot(normal,pos) );
-				if( is_wall )
+				const SPlane plane( normal, Vec3Dot(normal,pos) );
+
+				if( is_wall
+				 && !contains_almost_same_plane( m_Walls, plane ) )
 				{
 					m_Walls.push_back( plane );
 					walll_contact_pos_sum += pos;
@@ -475,12 +495,32 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 
 	if( 1.0f - 0.01f < fabs(ave_normal.y) )
 		return;
-
+/*
+	//>>> 1. Simply push the character away from the wall (suffers oscillations)
 	ave_normal.y = 0;
 	Vec3Normalize( ave_normal, ave_normal );
 	Matrix34 pose_to_revert_to( m_PrevWorldPose );
 //	Matrix34 pose_to_revert_to( entity.GetWorldPose() );
 	pose_to_revert_to.vPosition += ave_normal * 0.01f;
+	//<<< 1.
+*/
+	//>>> 2. Clip the motion along the wall
+	const Matrix34 current_world_pose( entity.GetWorldPose() );
+	Matrix34 pose_to_revert_to( entity.GetWorldPose() );
+	float cap_radius = 0.25f;
+	for( int i=0; i<(int)m_Walls.size(); i++ )
+	{
+		const SPlane& collision_plane = m_Walls[i];
+		const float dist_from_collision_plane = collision_plane.GetDistanceFromPoint( current_world_pose.vPosition );
+		if( cap_radius < dist_from_collision_plane )
+			continue; // enough distance from the collision wall?
+
+		const float margin = 0.01f;
+		const float dist_to_push = cap_radius - dist_from_collision_plane + margin;
+		pose_to_revert_to.vPosition += collision_plane.normal * dist_to_push;
+	}
+	//>>> 2.
+
 
 	SetCharacterWorldPose( pose_to_revert_to, entity, *pair.pActors[0] );
 }
@@ -493,13 +533,15 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 		return;
 
 	OBB3 obb( entity.GetWorldPose(), Vector3(1,1,1) * 0.05f );
-	Vector3 sweep = Vector3( 0, -1, 0 );
+	obb.center.vPosition += entity.GetWorldPose().matOrient.GetColumn(2) * 2.0f;
+	Vector3 sweep = Vector3( 0, -2, 0 );
 	physics::CSweepQueryHit query;
 	void *pUserData = NULL;
+	U32 sweep_flags = physics::SweepFlag::ALL_HITS;
 	pPhysScene->LinearOBBSweep(
 		obb,
 		sweep,
-		0, 
+		sweep_flags, 
 		pUserData,
 		1, // num max shapes
 		query,

@@ -52,6 +52,8 @@ class CSkeletalCharacter : public CGameItem
 
 	Matrix34 m_PrevWorldPose;
 
+	Matrix34 m_BasePose;
+
 	std::vector<SPlane> m_Walls;
 
 	boost::shared_ptr<msynth::CMotionPrimitive> m_pSkeletonSrcMotion;
