@@ -479,6 +479,17 @@ DOMNode *GetRootNode( xercesc::DOMDocument *pXMLDocument )
 
 
 
+bool HasAttribute( xercesc::DOMNode *pNode, const std::string& attrib_name )
+{
+	const xercesc::DOMNamedNodeMap *pAttribs = pNode->getAttributes();
+	if( !pAttribs )
+		return false; // The node has no attributes.
+
+	xercesc::DOMNode *pAttrib = pAttribs->getNamedItem( XercesString(attrib_name.c_str()) );
+	return pAttrib ? true : false;
+}
+
+
 std::string GetAttributeText( xercesc::DOMNode *pNode, const std::string& attrib_name )
 {
 

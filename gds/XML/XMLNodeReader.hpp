@@ -64,7 +64,37 @@ extern std::string GetTextContentOfImmediateChildNode( xercesc::DOMNode *pParent
 												const std::string& child_node_name );
 extern std::vector<std::string> GetTextContentsOfImmediateChildNodes( xercesc::DOMNode *pParentNode,
 													 const std::string& child_node_name );
+extern bool HasAttribute( xercesc::DOMNode *pNode, const std::string& attrib_name );
 extern std::string GetAttributeText( xercesc::DOMNode *pNode, const std::string& attrib_name );
+
+
+//
+// Inline Global Functions (used by CXMLNodeReader::GetAttributeValue())
+//
+inline void conv_to_x( const std::string& src, int& dest )
+{
+	dest = atoi( src.c_str() );
+}
+
+inline void conv_to_x( const std::string& src, short& dest )
+{
+	dest = (short)atoi( src.c_str() );
+}
+
+inline void conv_to_x( const std::string& src, float& dest )
+{
+	dest = (float)atof( src.c_str() );
+}
+
+inline void conv_to_x( const std::string& src, double& dest )
+{
+	dest = atof( src.c_str() );
+}
+
+inline void conv_to_x( const std::string& src, std::string& dest )
+{
+	dest = src;
+}
 
 
 class CXMLNodeReader
@@ -114,7 +144,8 @@ public:
 
 	inline std::string GetAttributeText( const std::string& attrib_name );
 
-	inline void GetAttributeValue( const std::string& attrib_name, float& dest );
+	template<typename T>
+	inline void GetAttributeValue( const std::string& attrib_name, T& dest );
 
 	inline std::vector<CXMLNodeReader> GetImmediateChildren( const std::string& name );
 
@@ -171,15 +202,20 @@ inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_n
 
 
 /// Udpates the values of dest if the attribute with the specified name is found in the node.
-/// If the attribute is not found, or the attribute text is empty, the value of dest is not changed.
-inline void CXMLNodeReader::GetAttributeValue( const std::string& attrib_name, float& dest )
+/// If the attribute is not found, the value of dest is not changed.
+template<typename T>
+inline void CXMLNodeReader::GetAttributeValue( const std::string& attrib_name, T& dest )
 {
 	if( !m_pNode )
 		return;
 
+	bool has_attrib = ::HasAttribute( m_pNode, attrib_name );
+	if( !has_attrib )
+		return;
+
 	std::string text = ::GetAttributeText( m_pNode, attrib_name );
 	if( 0 < text.length() )
-		dest = to_float( text );
+		conv_to_x( text, dest );
 }
 
 
