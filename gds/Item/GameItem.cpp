@@ -73,6 +73,12 @@ void CGameItem::Render()
 }
 
 
+/**
+- model node (simple version)
+<Model path="box.msh"/>
+- model node (detailed version)
+(See Graphics/MeshObjectContainer.cpp)
+*/
 void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	reader.GetChildElementTextContent( "Name",        m_strName );
@@ -80,7 +86,22 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "MaxQuantity", m_iMaxQuantity );
 
 //	m_MeshContainerRootNode.LoadFromXMLNode( reader.GetChild( "Model/MeshNode" ) );
-	m_MeshContainerRootNode.LoadFromXMLNode( (reader.GetChild( "Model" )).GetChild( "MeshNode" ) );
+	CXMLNodeReader model_node = reader.GetChild( "Model" );
+	if( model_node.IsValid() )
+	{
+		CXMLNodeReader meshnode_node = model_node.GetChild( "MeshNode" );
+		if( meshnode_node.IsValid() )
+			m_MeshContainerRootNode.LoadFromXMLNode( meshnode_node ); // detailed version
+		else
+		{
+			// simplified version: a single mesh file without local offset
+			m_MeshContainerRootNode.ClearMeshContainers();
+			boost::shared_ptr<CMeshObjectContainer> pContainer( new CMeshObjectContainer );
+			m_MeshContainerRootNode.AddMeshContainer(pContainer);
+			m_MeshContainerRootNode.MeshContainer(0)->LoadFromXMLNode( model_node );
+		}
+	}
+
 	m_Desc.LoadFromXMLNode( reader.GetChild( "Desc" ) );
 }
 

@@ -125,12 +125,31 @@ void CMeshObjectContainer::Serialize( IArchive& ar, const unsigned int version )
 
 void CMeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 {
+	// A simplified version - load the path from the attribute "path"
+	string mesh_path;
+	reader.GetAttributeValue( "path", mesh_path );
+	if( 0 < mesh_path.length() )
+		m_MeshDesc.ResourcePath = mesh_path;
+
+	// A detailed version - load mesh properties from a "MeshDesc" node
 	m_MeshDesc.LoadFromXMLNode( reader.GetChild( "MeshDesc" ) );
 
 	reader.GetChildElementTextContent( "ShaderFilepath", m_ShaderFilepath );
 
 	string shader_technique;
 	if( reader.GetChildElementTextContent( "SingleShaderTechnique", shader_technique ) )
+	{
+		m_ShaderTechnique.resize( 1, 1 );
+		m_ShaderTechnique(0,0).SetTechniqueName( shader_technique.c_str() );
+	}
+
+	// Load path and technique as attributes from a single node
+
+	reader.GetChild("Shader").GetAttributeValue("path",     m_ShaderFilepath );
+
+	shader_technique = "";
+	reader.GetChild("Shader").GetAttributeValue("technique",shader_technique );
+	if( 0 < shader_technique.length() )
 	{
 		m_ShaderTechnique.resize( 1, 1 );
 		m_ShaderTechnique(0,0).SetTechniqueName( shader_technique.c_str() );

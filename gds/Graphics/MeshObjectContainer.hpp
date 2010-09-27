@@ -125,6 +125,8 @@ public:
 
 	boost::shared_ptr<CMeshObjectContainer> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 
+	void ClearMeshContainers() { m_vecpMeshContainer.resize( 0 ); }
+
 	void Render( /*const Matrix34& parent_transform*/ );
 
 	void UpdateWorldTransforms( const Matrix34& parent_transform  );
