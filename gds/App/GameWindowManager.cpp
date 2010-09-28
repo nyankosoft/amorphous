@@ -5,6 +5,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Graphics/2DPrimitive/2DRectSet.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/GraphicsResourceCacheManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
@@ -42,6 +43,10 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CD3DMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
 		CCustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
+
+		// For Direct3D, Use ARGB32 as the default vertex diffuse color format to support fixed function pipeline (FFP).
+		// On some graphics cards, the application crashes when floating point RGBA is used for vertex diffuse color in FFP mode.
+		CCustomMesh::SetDefaultVertexDiffuseColorFormat( CCustomMesh::VCF_ARGB32 );
 	}
 	else if( graphics_library_name == "OpenGL" )
 	{
@@ -53,6 +58,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CGLMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
 		CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
+		CCustomMesh::SetDefaultVertexDiffuseColorFormat( CCustomMesh::VCF_FRGBA );
 	}
 	else
 	{

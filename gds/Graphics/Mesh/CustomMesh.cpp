@@ -20,6 +20,9 @@ U32 ToVFF( uint src )
 }
 
 
+CCustomMesh::VertexColorFormat CCustomMesh::ms_DefaultVertexDiffuseColorFormat = CCustomMesh::VCF_FRGBA;
+
+
 CCustomMesh::CCustomMesh()
 :
 m_VertexFlags(0),
@@ -36,19 +39,19 @@ void CCustomMesh::SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_
 	const int num = (int)diffuse_colors.size();
 	const int offset = m_ElementOffsets[VEE::DIFFUSE_COLOR];
 
-//	if( ms_DiffuseColorFormat == VCF_ARGB32 )
-//	{
+	if( ms_DefaultVertexDiffuseColorFormat == VCF_ARGB32 )
+	{
 		for( int i=0; i<num; i++ )
 		{
 			U32 argb32 = diffuse_colors[i].GetARGB32();
 			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(argb32), sizeof(U32) );
 		}
-//	}
-//	else if( ms_DiffuseColorFormat == VCF_FRGBA )
-//	{
-//		for( int i=0; i<num; i++ )
-//			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(diffuse_colors[i]), sizeof(SFloatRGBAColor) );
-//	}
+	}
+	else if( ms_DefaultVertexDiffuseColorFormat == VCF_FRGBA )
+	{
+		for( int i=0; i<num; i++ )
+			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(diffuse_colors[i]), sizeof(SFloatRGBAColor) );
+	}
 }
 
 
@@ -77,8 +80,16 @@ void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 	// The diffuse color element must be defined before texture coords elements
 	if( vertex_format_flags & VFF::DIFFUSE_COLOR )
 	{
-		m_ElementOffsets[VEE::DIFFUSE_COLOR] = vert_size;
-		vert_size += 4;
+		if( ms_DefaultVertexDiffuseColorFormat == VCF_ARGB32 )
+		{
+			m_ElementOffsets[VEE::DIFFUSE_COLOR] = vert_size;
+			vert_size += 4;
+		}
+		else if( ms_DefaultVertexDiffuseColorFormat == VCF_FRGBA )
+		{
+			m_ElementOffsets[VEE::DIFFUSE_COLOR] = vert_size;
+			vert_size += sizeof(float) * 4;
+		}
 	}
 
 	U32 texcoord2_element_flags[] =

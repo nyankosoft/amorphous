@@ -14,7 +14,20 @@ using namespace MeshModel;
 
 class CCustomMesh : public CMeshImpl
 {
+public:
+
+	enum VertexColorFormat
+	{
+		VCF_ARGB32,
+		VCF_FRGBA,
+		NUM_VERTEX_COLOR_FORMATS
+	};
+
+private:
+
 	typedef U16 dest_index_type;
+
+	static VertexColorFormat ms_DefaultVertexDiffuseColorFormat;
 
 public:
 
@@ -115,6 +128,8 @@ public:
 	void Render( CShaderManager& rShaderMgr );
 
 	void RenderSubset( CShaderManager& rShaderMgr, int material_index ) {}
+
+	static void SetDefaultVertexDiffuseColorFormat( VertexColorFormat vcf ) { ms_DefaultVertexDiffuseColorFormat = vcf; }
 };
 
 //================================ inline implementations ================================
