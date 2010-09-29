@@ -2,6 +2,7 @@
 #define  __AXISALIGNEDBOUNDINGBOX_2D_H__
 
 
+#include <float.h>
 #include "Vector2.hpp"
 
 
