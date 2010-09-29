@@ -1,13 +1,6 @@
 #include "CameraController.hpp"
 #include "Input/InputDevice.hpp"
 
-using namespace boost;
-
-
-void CreateCameraMatrixFromCameraPose( const Matrix34& src_camera_pose, D3DXMATRIX& dest_camera_matrix )
-{
-}
-
 
 CCameraController::CCameraController( int input_handler_index )
 :

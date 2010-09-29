@@ -1,6 +1,5 @@
 #include "CameraControllerBase.hpp"
 #include "Input/InputHandler.hpp"
-#include <d3dx9.h>
 
 
 CCameraControllerBase::CCameraControllerBase()
@@ -34,12 +33,8 @@ CCameraControllerBase::~CCameraControllerBase()
 
 void CCameraControllerBase::UpdateCameraPose( float dt )
 {
-	Vector3 vRight = Vector3(1, 0, 0);
-	Vector3 vUp =	 Vector3(0, 1, 0);
-	Vector3 vDir =	 Vector3(0, 0, 1);
-
 	float forward=0, right=0, up=0, spd;
-	D3DXMATRIX matRot;
+//	Matrix33 matRot;
 
 	if( (GetAsyncKeyState(VK_SHIFT) & 0x8000) )
 		spd = m_fTranslationSpeed * 2.0f;
@@ -69,19 +64,9 @@ void CCameraControllerBase::UpdateCameraPose( float dt )
 	if( GetAsyncKeyState('Q') & 0x8000 )	up =  5.0f * spd * dt;
 	if( GetAsyncKeyState('A') & 0x8000 )	up = -5.0f * spd * dt;
 */
-
-//	m_Pose.matOrient = Matrix33RotationY(m_fYaw) * Matrix33RotationY(m_fPitch);
-
-	D3DXMatrixRotationYawPitchRoll( &matRot, m_fYaw, m_fPitch, 0 );
-	D3DXVec3TransformCoord( &vRight, &vRight, &matRot);
-	D3DXVec3TransformCoord( &vUp,    &vUp,    &matRot);
-	D3DXVec3TransformCoord( &vDir,   &vDir,   &matRot);
-
 	Matrix34 pose = GetPose();
 
-	pose.matOrient.SetColumn( 0, vRight );
-	pose.matOrient.SetColumn( 1, vUp );
-	pose.matOrient.SetColumn( 2, vDir );
+	pose.matOrient = Matrix33RotationY(m_fYaw) * Matrix33RotationX(m_fPitch);
 
 	pose.vPosition
 		+= pose.matOrient.GetColumn(2) * forward
@@ -92,7 +77,6 @@ void CCameraControllerBase::UpdateCameraPose( float dt )
 
 //	m_Pose.vPosition += m_vRight * m_fMouseMoveRight + m_vUp * m_fMouseMoveUp;
 //	m_fMouseMoveRight = 0; m_fMouseMoveUp = 0;
-
 }
 
 
