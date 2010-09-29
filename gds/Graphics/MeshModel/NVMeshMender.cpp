@@ -35,8 +35,8 @@ namespace
 {
 	const unsigned int NO_GROUP = 0xFFFFFFFF;
 
-	// IC: Replacement for D3DXVec3Normalize so that we don't have dll dependancies.
-	static Vector3 * Vec3Normalize( Vector3 *pOut, CONST Vector3 *pV ) {
+	// IC: Replacement for Vec3Normalize so that we don't have dll dependancies.
+	static Vector3 * Vec3Normalize( Vector3 *pOut, const Vector3 *pV ) {
 		assert(pOut != NULL);
 		assert(pV != NULL);
 
@@ -75,7 +75,7 @@ public:
 		Vec3Normalize( &tmp1, &tmp1);
 		Vec3Normalize( &tmp2, &tmp2);
 
-		if(D3DXVec3Dot( &tmp1, &tmp2 ) >= minCreaseAngle )
+		if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
 		{
 			return true;
 		}
@@ -103,7 +103,7 @@ public:
 		Vec3Normalize( &tmp1, &tmp1);
 		Vec3Normalize( &tmp2, &tmp2);
 
-		if(D3DXVec3Dot( &tmp1, &tmp2 ) >= minCreaseAngle )
+		if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
 		{
 			return true;
 		}
@@ -131,7 +131,7 @@ public:
 		Vec3Normalize( &tmp1, &tmp1);
 		Vec3Normalize( &tmp2, &tmp2);
 
-		if(D3DXVec3Dot( &tmp1, &tmp2 ) >= minCreaseAngle )
+		if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
 			return true;
 		else if( ( tmp1 == Vector3(0,0,0) ) && ( tmp2 == Vector3(0,0,0) ) )
 		{
@@ -821,7 +821,7 @@ void MeshMender::SetUpFaceVectors(Triangle& t,
 		Vector3 edge0 = verts[t.indices[1]].pos - verts[t.indices[0]].pos;
 		Vector3 edge1 = verts[t.indices[2]].pos - verts[t.indices[0]].pos;
 
-		D3DXVec3Cross( &t.normal, &edge0, &edge1);
+		Vec3Cross( t.normal, edge0, edge1);
 
 		if( WeightNormalsByArea < 1.0f )
 		{
@@ -851,7 +851,7 @@ void MeshMender::OrthogonalizeTangentsAndBinormals(
 	for(size_t i = 0 ; i < len ; ++ i )
 	{
 
-		assert( D3DXVec3Length(&(theVerts[i].normal)) > 0.00001f && 
+		assert( Vec3Length(theVerts[i].normal) > 0.00001f && 
 			"found zero length normal when calculating tangent basis!,\
 			if you are not using mesh mender to compute normals, you\
 			must still pass in valid normals to be used when calculating\
@@ -873,17 +873,17 @@ void MeshMender::OrthogonalizeTangentsAndBinormals(
 		Vector3 tmpBin = theVerts[i].binormal;
 
 
-		Vector3 newT = tmpTan -  (D3DXVec3Dot(&tmpNorm , &tmpTan)  * tmpNorm );
-		Vector3 newB = tmpBin - (D3DXVec3Dot(&tmpNorm , &tmpBin) * tmpNorm)
-							- (D3DXVec3Dot(&newT,&tmpBin)*newT);
+		Vector3 newT = tmpTan -  (Vec3Dot(tmpNorm , tmpTan)  * tmpNorm );
+		Vector3 newB = tmpBin - (Vec3Dot(tmpNorm , tmpBin) * tmpNorm)
+							- (Vec3Dot(newT,tmpBin)*newT);
 
 		Vec3Normalize(&(theVerts[i].tangent), &newT);
 		Vec3Normalize(&(theVerts[i].binormal), &newB);		
 
 		//this is where we can do a final check for zero length vectors
 		//and set them to something appropriate
-		float lenTan = D3DXVec3Length(&(theVerts[i].tangent));
-		float lenBin = D3DXVec3Length(&(theVerts[i].binormal));
+		float lenTan = Vec3Length(theVerts[i].tangent);
+		float lenBin = Vec3Length(theVerts[i].binormal);
 
 		if( (lenTan <= 0.001f) || (lenBin <= 0.001f)  ) //should be approx 1.0f
 		{	
@@ -895,14 +895,14 @@ void MeshMender::OrthogonalizeTangentsAndBinormals(
 			{
 				//the tangent is valid, so we can just use that
 				//to calculate the binormal
-				D3DXVec3Cross(&(theVerts[i].binormal), &(theVerts[i].normal), &(theVerts[i].tangent) );
+				Vec3Cross((theVerts[i].binormal), (theVerts[i].normal), (theVerts[i].tangent) );
 
 			}
 			else if(lenBin > 0.5)
 			{
 				//the binormal is good and we can use it to calculate
 				//the tangent
-				D3DXVec3Cross(&(theVerts[i].tangent), &(theVerts[i].binormal), &(theVerts[i].normal) );
+				Vec3Cross((theVerts[i].tangent), (theVerts[i].binormal), (theVerts[i].normal) );
 			}
 			else
 			{
@@ -915,7 +915,7 @@ void MeshMender::OrthogonalizeTangentsAndBinormals(
 				//I can find out which is further away from it by checking the dot product
 				Vector3 startAxis;
 
-				if( D3DXVec3Dot(&xAxis, &(theVerts[i].normal) )  <  D3DXVec3Dot(&yAxis, &(theVerts[i].normal) ) )
+				if( Vec3Dot(xAxis, (theVerts[i].normal) )  <  Vec3Dot(yAxis, (theVerts[i].normal) ) )
 				{
 					//the xAxis is more different than the yAxis when compared to the normal
 					startAxis = xAxis;
@@ -926,18 +926,18 @@ void MeshMender::OrthogonalizeTangentsAndBinormals(
 					startAxis = yAxis;
 				}
 
-				D3DXVec3Cross(&(theVerts[i].tangent), &(theVerts[i].normal), &startAxis );
-				D3DXVec3Cross(&(theVerts[i].binormal), &(theVerts[i].normal), &(theVerts[i].tangent) );
+				Vec3Cross((theVerts[i].tangent), (theVerts[i].normal), startAxis );
+				Vec3Cross((theVerts[i].binormal), (theVerts[i].normal), (theVerts[i].tangent) );
 
 			}
 		}
 		else
 		{
 			//one final sanity check, make sure that they tangent and binormal are different enough
-			if( D3DXVec3Dot(&(theVerts[i].binormal), &(theVerts[i].tangent) )  > 0.999f )
+			if( Vec3Dot((theVerts[i].binormal), (theVerts[i].tangent) )  > 0.999f )
 			{
 				//then they are too similar lets make them more different
-				D3DXVec3Cross(&(theVerts[i].binormal), &(theVerts[i].normal), &(theVerts[i].tangent) );
+				Vec3Cross((theVerts[i].binormal), (theVerts[i].normal), (theVerts[i].tangent) );
 			}
 
 		}
