@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cstdarg>
 #include <stdio.h>
+#include <string.h> // for memset()
 #include <stdarg.h>
 
 #include "../base.hpp"
