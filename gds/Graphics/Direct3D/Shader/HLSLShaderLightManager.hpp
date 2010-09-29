@@ -2,7 +2,7 @@
 #define  __HLSLLightManager_H__
 
 
-#include <d3d9.h>
+#include <d3dx9.h>
 #include "Graphics/Shader/ShaderLightManager.hpp"
 
 
