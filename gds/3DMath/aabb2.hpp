@@ -3,6 +3,7 @@
 
 
 #include <float.h>
+#include <string.h> // for memset()
 #include "Vector2.hpp"
 
 
