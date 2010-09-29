@@ -13,7 +13,4 @@
 #include "3DMath/AABTree.hpp"
 #include "3DMath/BSPTreeForBox.hpp"
 #include "3DMath/ConvexPolygon.hpp"
-//#include "3DMath/D3DX_Adapter.hpp"
-//#include "3DMath/D3DX_Matrix33_Adapter.hpp"
-//#include "3DMath/D3DXVec3Adapter.hpp"
 #include "3DMath/MathMisc.hpp"
