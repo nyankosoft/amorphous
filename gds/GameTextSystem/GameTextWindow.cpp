@@ -98,7 +98,7 @@ void CGameTextWindow::Render(int iInput)
 
 	// draw complete lines
 	int iLine;
-	D3DXVECTOR2 vTopLeft = D3DXVECTOR2(0.194f, 0.560f) * fScreenWidth;
+	Vector2 vTopLeft = Vector2(0.194f, 0.560f) * fScreenWidth;
 	float fFontHeight = m_fFontHeight;
 	for(iLine=0; iLine<m_iCurrentLine; iLine++)
 	{
@@ -180,14 +180,14 @@ void CGameTextWindow::UpdateScreenSize()
 {
 	int iScreenWidth = GameWindowManager().GetScreenWidth();
 
-	D3DXVECTOR2 vMin, vMax;
+	Vector2 vMin, vMax;
 
-	vMin = D3DXVECTOR2( 0.175f, 0.550f ) * (float)iScreenWidth;
-	vMax = D3DXVECTOR2( 0.962f, 0.725f ) * (float)iScreenWidth;
+	vMin = Vector2( 0.175f, 0.550f ) * (float)iScreenWidth;
+	vMax = Vector2( 0.962f, 0.725f ) * (float)iScreenWidth;
 	m_WindowRect.SetPosition(vMin, vMax);
 
-	vMin = D3DXVECTOR2( 0.025f         , 0.550f          ) * (float)iScreenWidth;
-	vMax = D3DXVECTOR2( 0.025f + 0.138f, 0.550f + 0.138f ) * (float)iScreenWidth;
+	vMin = Vector2( 0.025f         , 0.550f          ) * (float)iScreenWidth;
+	vMax = Vector2( 0.025f + 0.138f, 0.550f + 0.138f ) * (float)iScreenWidth;
 	m_TexturedIcon.SetPosition(vMin, vMax);
 }
 

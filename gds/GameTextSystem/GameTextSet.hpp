@@ -2,15 +2,13 @@
 #define __GTS_GAMETEXTSET_H__
 
 
+#include <vector>
+#include "../base.hpp"
+#include "3DMath/Vector2.hpp"
 //#include "Graphics/32BITCOLOR.h"
-
 #include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
-#include <vector>
-using namespace std;
-
-#include <d3dx9.h>
 
 class CFontBase;
 class CGameEventCompiler;
@@ -33,9 +31,9 @@ class CGameTextComponent : public IArchiveObjectBase
 {
 	char m_Type;
 
-	string m_strText;
+	std::string m_strText;
 
-	DWORD m_TextColor;
+	U32 m_TextColor;
 
 //	SGameTextComponent *pNextString;
 
@@ -49,7 +47,7 @@ public:
 
 	inline int GetLineLength() { return m_strText.size(); }
 
-	void DrawLine( D3DXVECTOR2& rvPos, int iNumChars, CFontBase *pFont );
+	void DrawLine( Vector2& rvPos, int iNumChars, CFontBase *pFont );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
@@ -63,7 +61,7 @@ public:
 
 class CGameTextSet : public IArchiveObjectBase
 {
-	vector<CGameTextComponent> m_vecTextComponent;
+	std::vector<CGameTextComponent> m_vecTextComponent;
 
 //	int m_iNumComponents;
 //	SGameTextComponent* m_paTextComponent;
