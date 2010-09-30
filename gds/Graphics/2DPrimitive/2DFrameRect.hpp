@@ -17,7 +17,7 @@ public:
 
 	inline C2DFrameRect();
 
-	inline C2DFrameRect( const D3DXVECTOR2& rvMin, const D3DXVECTOR2& rvMax, U32 color = 0xFF000000, int border_width = 1 );
+	inline C2DFrameRect( const Vector2& rvMin, const Vector2& rvMax, U32 color = 0xFF000000, int border_width = 1 );
 
 	inline C2DFrameRect( int min_x, int min_y, int max_x, int max_y, U32 color = 0xFF000000, int border_width = 1 );
 
@@ -54,7 +54,7 @@ public:
 
 	inline void SetPositionLTWH( float left, float top, float width, float height );
 
-//	void SetTextureUV( const D3DXVECTOR2& rvMin, const D3DXVECTOR2& rvMax);
+//	void SetTextureUV( const Vector2& rvMin, const Vector2& rvMax);
 
 	void SetColor( U32 color ) { C2DPrimitive::SetColor(color); }
 
@@ -68,7 +68,7 @@ public:
 
 	void ScalePosition( float fScale );
 
-//	D3DXVECTOR2 GetPosition( int iVertex ) { return m_avRectVertex[iVertex]; }
+//	Vector2 GetPosition( int iVertex ) { return m_avRectVertex[iVertex]; }
 };
 
 
@@ -81,7 +81,7 @@ inline C2DFrameRect::C2DFrameRect()
 }
 
 
-inline C2DFrameRect::C2DFrameRect( const D3DXVECTOR2& vMin, const D3DXVECTOR2& vMax, U32 color, int border_width )
+inline C2DFrameRect::C2DFrameRect( const Vector2& vMin, const Vector2& vMax, U32 color, int border_width )
 : m_BorderWidth(border_width)
 {
 	SetDefault();
@@ -141,7 +141,7 @@ inline void C2DFrameRect::draw()
 }
 
 /*
-inline D3DXVECTOR2 C2DFrameRect::GetCornerPos2D( int vert_index ) const
+inline Vector2 C2DFrameRect::GetCornerPos2D( int vert_index ) const
 {
 	GetPosition2D(vert_index);
 }

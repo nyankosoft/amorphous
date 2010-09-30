@@ -245,7 +245,7 @@ inline void C2DTexRect::Rotate( const Matrix22& matOrient )
 
 	for( int i=0; i<4; i++ )
 	{
-		Vector3& vert_pos = m_avRectVertex[i].vPosition;
+		D3DXVECTOR3& vert_pos = m_avRectVertex[i].vPosition;
 		v = matOrient * Vector2(vert_pos.x, vert_pos.y);
 
 		vert_pos.x = v.x;
