@@ -7,6 +7,7 @@
 #include "3DMath/Plane.hpp"
 #include "3DMath/aabb3.hpp"
 #include "Graphics/FVF_MapVertex.h"
+#include "Graphics/Direct3D/Conversions.hpp"
 
 
 extern float g_fEpsilon;
@@ -66,11 +67,11 @@ public:
 	~CFace(){}
 
 	// vertex access
-	inline Vector3 GetVertex( int i ) const { return m_pVertices[i].vPosition; }
+	inline Vector3 GetVertex( int i ) const { return ToVector3( m_pVertices[i].vPosition ); }
 	inline MAPVERTEX GetMAPVERTEX( int i) const { return m_pVertices[i]; }
 	inline void SetMAPVERTEX( int i, MAPVERTEX& v );
 
-	inline void AddVertex(Vector3& v);
+	inline void AddVertex(const Vector3& v);
 	inline void AddMAPVERTEX(MAPVERTEX& v);
 
 	// the number of vertices of this face
@@ -121,10 +122,10 @@ public:
 //============================ inline implementations ============================
 
 
-inline void CFace::AddVertex(Vector3 &v)
+inline void CFace::AddVertex(const Vector3 &v)
 {
 	MAPVERTEX vMap;
-	vMap.vPosition = v;
+	vMap.vPosition = ToD3DXVECTOR3( v );
 	AddMAPVERTEX( vMap );
 
 	m_AABB.AddPoint( v );
@@ -135,7 +136,7 @@ inline void CFace::AddMAPVERTEX(MAPVERTEX& v)
 {
 	m_pVertices.push_back(v);
 
-	m_AABB.AddPoint( v.vPosition );
+	m_AABB.AddPoint( ToVector3( v.vPosition ) );
 }
 
 
@@ -143,7 +144,7 @@ inline void CFace::SetMAPVERTEX( int i, MAPVERTEX& v )
 {
 	m_pVertices[i] = v;
 
-	m_AABB.AddPoint( v.vPosition );
+	m_AABB.AddPoint( ToVector3( v.vPosition ) );
 }
 
 
