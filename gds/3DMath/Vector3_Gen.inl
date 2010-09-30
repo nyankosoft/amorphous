@@ -1,5 +1,5 @@
 //=====================================================================
-//  Vector3_Gen.inl
+//  tVector3_Gen.inl
 //     - inline implementations of generic 3-dimensional vector class
 //
 //                                                  by Takashi Kuamgai
@@ -12,9 +12,10 @@
 
 // global operators
 
-inline Vector3 operator*( const Scalar f, const Vector3& v )
+template<typename T>
+inline tVector3<T> operator*( const T f, const tVector3<T>& v )
 {
-	Vector3 vOut;
+	tVector3<T> vOut;
 	vOut.x = f * v.x;
 	vOut.y = f * v.y;
 	vOut.z = f * v.z;
@@ -24,13 +25,15 @@ inline Vector3 operator*( const Scalar f, const Vector3& v )
 
 // global functions
 
-inline Scalar Vec3Dot( const Vector3& v0, const Vector3& v1 )
+template<typename T>
+inline T Vec3Dot( const tVector3<T>& v0, const tVector3<T>& v1 )
 {
 	return (v0.x * v1.x + v0.y * v1.y + v0.z * v1.z);
 }
 
 
-inline void Vec3Cross( Vector3& vOut, const Vector3& v0, const Vector3& v1 )
+template<typename T>
+inline void Vec3Cross( tVector3<T>& vOut, const tVector3<T>& v0, const tVector3<T>& v1 )
 {
 	vOut.x = v0.y * v1.z - v0.z * v1.y;
 	vOut.y = v0.z * v1.x - v0.x * v1.z;
@@ -38,37 +41,43 @@ inline void Vec3Cross( Vector3& vOut, const Vector3& v0, const Vector3& v1 )
 }
 
 
-inline Vector3 Vec3Cross( const Vector3& v0, const Vector3& v1 )
+template<typename T>
+inline tVector3<T> Vec3Cross( const tVector3<T>& v0, const tVector3<T>& v1 )
 {
-	Vector3 vOut;
+	tVector3<T> vOut;
 	Vec3Cross( vOut, v0, v1 );
 	return vOut;
 }
 
 
-inline Scalar Vec3LengthSq( const Vector3& v )
+template<typename T>
+inline T Vec3LengthSq( const tVector3<T>& v )
 {
 	return ( v.x * v.x + v.y * v.y + v.z * v.z );
 }
 
-inline Scalar Vec3Length( const Vector3& v )
+template<typename T>
+inline T Vec3Length( const tVector3<T>& v )
 {
-	return (Scalar)sqrt( v.x * v.x + v.y * v.y + v.z * v.z );
+	return (T)sqrt( v.x * v.x + v.y * v.y + v.z * v.z );
 }
 
-inline void Vec3Normalize( Vector3& v )
+template<typename T>
+inline void Vec3Normalize( tVector3<T>& v )
 {
 	v /= Vec3Length(v);
 }
 
 
-inline void Vec3Normalize( Vector3& dest, const Vector3& src )
+template<typename T>
+inline void Vec3Normalize( tVector3<T>& dest, const tVector3<T>& src )
 {
 	dest = src / Vec3Length(src);
 }
 
 
-inline Vector3 Vec3GetNormalized( const Vector3& v )
+template<typename T>
+inline tVector3<T> Vec3GetNormalized( const tVector3<T>& v )
 {
 	return v / Vec3Length(v);
 }
@@ -76,13 +85,15 @@ inline Vector3 Vec3GetNormalized( const Vector3& v )
 
 /// Projects v2 onto v1 and reurns the projected vector
 /// \param v2 vector which is projected to v1
-static inline Vector3 Vec3Project(const Vector3 & v1, const Vector3 & v2)
+template<typename T>
+static inline tVector3<T> Vec3Project(const tVector3<T> & v1, const tVector3<T> & v2)
 {
   return Vec3Dot(v1, v2) * v1 / Vec3LengthSq( v1 );
 }
 
 
-bool inline IsSensible( const Vector3& v )
+template<typename T>
+bool inline IsSensible( const tVector3<T>& v )
 {
 	if( !is_finite(v.x) || !is_finite(v.y) || !is_finite(v.z) )
 		return false;
@@ -94,11 +105,13 @@ bool inline IsSensible( const Vector3& v )
 
 // member functions & operators
 
-inline Vector3::Vector3( Scalar _x, Scalar _y, Scalar _z )
+template<typename T>
+inline tVector3<T>::tVector3( T _x, T _y, T _z )
 : x(_x), y(_y), z(_z)
 {}
 
-inline Scalar& Vector3::operator[]( const int i )
+template<typename T>
+inline T& tVector3<T>::operator[]( const int i )
 {
 	switch( i )
 	{
@@ -114,7 +127,8 @@ inline Scalar& Vector3::operator[]( const int i )
 }
 
 
-inline const Scalar& Vector3::operator[]( const int i ) const
+template<typename T>
+inline const T& tVector3<T>::operator[]( const int i ) const
 {
 	switch( i )
 	{
@@ -129,7 +143,8 @@ inline const Scalar& Vector3::operator[]( const int i ) const
 	}
 }
 
-inline Vector3 Vector3::operator=( const Vector3& v )
+template<typename T>
+inline tVector3<T> tVector3<T>::operator=( const tVector3<T>& v )
 {
 	x = v.x;
 	y = v.y;
@@ -138,7 +153,8 @@ inline Vector3 Vector3::operator=( const Vector3& v )
 }
 
 
-inline bool Vector3::operator==( const Vector3& v ) const
+template<typename T>
+inline bool tVector3<T>::operator==( const tVector3<T>& v ) const
 {
 	if( x == v.x && y == v.y && z == v.z )
 		return true;
@@ -147,9 +163,10 @@ inline bool Vector3::operator==( const Vector3& v ) const
 }
 
 
-inline Vector3 Vector3::operator+( const Vector3& v ) const
+template<typename T>
+inline tVector3<T> tVector3<T>::operator+( const tVector3<T>& v ) const
 {
-	Vector3 vOut;
+	tVector3<T> vOut;
 	vOut.x = x + v.x;
 	vOut.y = y + v.y;
 	vOut.z = z + v.z;
@@ -157,9 +174,10 @@ inline Vector3 Vector3::operator+( const Vector3& v ) const
 }
 
 
-inline Vector3 Vector3::operator-( const Vector3& v ) const
+template<typename T>
+inline tVector3<T> tVector3<T>::operator-( const tVector3<T>& v ) const
 {
-	Vector3 vOut;
+	tVector3<T> vOut;
 	vOut.x = x - v.x;
 	vOut.y = y - v.y;
 	vOut.z = z - v.z;
@@ -167,7 +185,8 @@ inline Vector3 Vector3::operator-( const Vector3& v ) const
 }
 
 
-inline void Vector3::operator+=( const Vector3& v )
+template<typename T>
+inline void tVector3<T>::operator+=( const tVector3<T>& v )
 {
 	x += v.x;
 	y += v.y;
@@ -175,7 +194,8 @@ inline void Vector3::operator+=( const Vector3& v )
 }
 
 
-inline void Vector3::operator-=( const Vector3& v )
+template<typename T>
+inline void tVector3<T>::operator-=( const tVector3& v )
 {
 	x -= v.x;
 	y -= v.y;
@@ -183,9 +203,10 @@ inline void Vector3::operator-=( const Vector3& v )
 }
 
 
-inline Vector3 Vector3::operator*( const Scalar f ) const
+template<typename T>
+inline tVector3<T> tVector3<T>::operator*( const T f ) const
 {
-	Vector3 vOut;
+	tVector3<T> vOut;
 	vOut.x = x * f;
 	vOut.y = y * f;
 	vOut.z = z * f;
@@ -193,9 +214,10 @@ inline Vector3 Vector3::operator*( const Scalar f ) const
 }
 
 
-inline Vector3 Vector3::operator/( const Scalar f ) const
+template<typename T>
+inline tVector3<T> tVector3<T>::operator/( const T f ) const
 {
-	Vector3 vOut;
+	tVector3<T> vOut;
 	vOut.x = x / f;
 	vOut.y = y / f;
 	vOut.z = z / f;
@@ -203,7 +225,8 @@ inline Vector3 Vector3::operator/( const Scalar f ) const
 }
 
 
-inline void Vector3::operator*=( const Scalar f )
+template<typename T>
+inline void tVector3<T>::operator*=( const T f )
 {
 	x *= f;
 	y *= f;
@@ -211,7 +234,8 @@ inline void Vector3::operator*=( const Scalar f )
 }
 
 
-inline void Vector3::operator/=( const Scalar f )
+template<typename T>
+inline void tVector3<T>::operator/=( const T f )
 {
 	x /= f;
 	y /= f;
@@ -219,19 +243,22 @@ inline void Vector3::operator/=( const Scalar f )
 }
 
 
-inline void Vector3::Normalize()
+template<typename T>
+inline void tVector3<T>::Normalize()
 {
 	Vec3Normalize(*this);
 }
 
 
-inline Scalar Vector3::GetLength() const
+template<typename T>
+inline T tVector3<T>::GetLength() const
 {
 	return Vec3Length(*this);
 }
 
 
-inline Scalar Vector3::GetLengthSq() const
+template<typename T>
+inline T tVector3<T>::GetLengthSq() const
 {
 	return Vec3LengthSq(*this);
 }

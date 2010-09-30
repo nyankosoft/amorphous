@@ -1,5 +1,5 @@
 //=====================================================================
-//  Vector3_Gen.hpp
+//  tVector3_Gen.hpp
 //     - generic 3-dimensional vector class
 //
 //                                                  by Takashi Kuamgai
@@ -12,53 +12,59 @@
 #include "precision.h"
 
 
-class Vector3
+template<typename T>
+class tVector3
 {
 public:
 
-	Scalar x, y, z;
+	T x, y, z;
 
-	inline Vector3() {}
-	inline Vector3( Scalar _x, Scalar _y, Scalar _z );
+	inline tVector3() {}
+	inline tVector3( T _x, T _y, T _z );
 
-	//	~Vector3();
+	//	~tVector3();
 
 	/// vector - vector operators
 
-	inline bool operator==( const Vector3& v ) const;
+	inline bool operator==( const tVector3& v ) const;
+	inline bool operator!=( const tVector3& v ) const { return !((*this) == v); }
 
-	inline Vector3 operator=( const Vector3& v );
+	inline tVector3 operator=( const tVector3& v );
 
-	inline Vector3 operator+( const Vector3& v ) const;
-	inline Vector3 operator-( const Vector3& v ) const;
+	inline tVector3 operator+( const tVector3& v ) const;
+	inline tVector3 operator-( const tVector3& v ) const;
 
-	inline void operator+=( const Vector3& v );
-	inline void operator-=( const Vector3& v );
+	inline void operator+=( const tVector3& v );
+	inline void operator-=( const tVector3& v );
 
-	inline Vector3 operator-() { return Vector3(-x,-y,-z); }
+	inline tVector3 operator-() const { return tVector3(-x,-y,-z); }
 
 	/// vector - scalar operators
 
-	inline Vector3 operator*( const Scalar f ) const;
-	inline Vector3 operator/( const Scalar f ) const;
+	inline tVector3 operator*( const T f ) const;
+	inline tVector3 operator/( const T f ) const;
 
-	inline void operator*=( const Scalar f );
-	inline void operator/=( const Scalar f );
+	inline void operator*=( const T f );
+	inline void operator/=( const T f );
 
-	inline Scalar& operator[]( const int i );
+	inline T& operator[]( const int i );
 
-	inline const Scalar& operator[]( const int i ) const;
+	inline const T& operator[]( const int i ) const;
 
 	inline void Normalize();
 
-	inline Scalar GetLength() const;
+	inline T GetLength() const;
 
-	inline Scalar GetLengthSq() const;
+	inline T GetLengthSq() const;
 
 };
 
 
 #include "Vector3_Gen.inl"
+
+
+typedef tVector3<float> Vector3;
+typedef tVector3<double> dVector3;
 
 
 #endif		/*  __VECTOR3_GEN_H__  */
