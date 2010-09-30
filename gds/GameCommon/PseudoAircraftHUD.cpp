@@ -241,7 +241,7 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 			if( heading_index < 0 ) heading_index += 8;
 			float heading_x = (heading_index % 2 == 0) ? -font_width * 0.5f : -font_width;
 
-			vTextPos[0] = D3DXVECTOR2(x+heading_x,-y-font_height*1.2f) + vScreenCenter;
+			vTextPos[0] = Vector2(x+heading_x,-y-font_height*1.2f) + vScreenCenter;
 			m_pFont->CacheText( s_DirTable[heading_index], vTextPos[0] );
 
 		}
