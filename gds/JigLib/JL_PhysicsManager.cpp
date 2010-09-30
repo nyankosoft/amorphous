@@ -1,12 +1,8 @@
-
 #include "JL_PhysicsManager.hpp"
-
 #include "JL_CollisionFunctor.hpp"
 #include "JL_CollisionDetect.hpp"
-
 #include "JL_ShapeDesc_TriangleMesh.hpp"
 #include "JL_PhysicsActorDesc.hpp"
-
 #include "GravityFunction.hpp"
 
 using namespace std;
@@ -21,6 +17,21 @@ static const Scalar penetrationShockRelaxationTimesteps = 20;
 
 
 #define DO_FRICTION
+
+
+static inline Vector3 Vec3NormalizeSafe( const Vector3& vSrc, const Vector3& safe = Vector3(0,1,0) )
+{
+	const float lSq = Vec3LengthSq( vSrc );
+	if (lSq > SCALAR_TINY)
+	{
+//		return vSrc * (1.0f / Sqrt(lSq));
+		return vSrc * (1.0f / sqrtf(lSq));
+	}
+	else
+	{
+		return safe;
+	}
+}
 
 
 //==============================================================
