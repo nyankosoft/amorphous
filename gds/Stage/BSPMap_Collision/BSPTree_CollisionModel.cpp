@@ -11,7 +11,7 @@
 
 
 // used to collect polygons which overlap with the volume of a point light
-void CBSPTree_CollisionModel::CheckCollision( D3DXVECTOR3& vCenter,
+void CBSPTree_CollisionModel::CheckCollision( Vector3& vCenter,
 											  float fRadius,
 											  AABB3& aabb,
 											  vector<int>& veciPolygonIndex )
@@ -25,14 +25,14 @@ void CBSPTree_CollisionModel::CheckCollision( D3DXVECTOR3& vCenter,
 
 
 void CBSPTree_CollisionModel::CheckCollision_r( int iNodeIndex,
-											    D3DXVECTOR3& vCenter,
+											    Vector3& vCenter,
 												float fRadius,
 												AABB3& aabb,
 												vector<int>& veciPolygonIndex )
 {
 	int i;
 	float d;
-//	D3DXVECTOR3 vCenter = tr.GetSweptAABB().GetCenterPosition();
+//	Vector3 vCenter = tr.GetSweptAABB().GetCenterPosition();
 	int iPrevNodeIndex = 0;
 
 	while(1)
@@ -67,7 +67,7 @@ void CBSPTree_CollisionModel::CheckCollision_r( int iNodeIndex,
 				m_paCell_CollisionModel[rCurrentNode.iCellIndex].CheckCollision( vCenter, fRadius, aabb, veciPolygonIndex );
 		}
 
-		d = D3DXVec3Dot( &rCurrentNode.plane.normal, &vCenter ) - rCurrentNode.plane.dist;
+		d = Vec3Dot( rCurrentNode.plane.normal, vCenter ) - rCurrentNode.plane.dist;
 
 //		fRadius = tr.GetSweptAABB().GetRadiusForPlane( rCurrentNode.plane );
 

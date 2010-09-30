@@ -51,7 +51,7 @@ protected:
 	int m_iNumCells;
 	CBSPTree_CollisionModel *m_paCell_CollisionModel;
 
-	void CheckCollision_r( int iIndex, D3DXVECTOR3& vCenter, float fRadius, AABB3& aabb,
+	void CheckCollision_r( int iIndex, Vector3& vCenter, float fRadius, AABB3& aabb,
 												  vector<int>& veciPolygonIndex );
 
 public:
@@ -60,7 +60,7 @@ public:
 	void Release();
 	void LoadFromFile(FILE *fp);
 
-	void CheckCollision( D3DXVECTOR3& vCenter, float fRadius, AABB3& aabb,
+	void CheckCollision( Vector3& vCenter, float fRadius, AABB3& aabb,
 												  vector<int>& veciPolygonIndex );
 
 	// The following two functions are intended to be implemented in collision model exporter

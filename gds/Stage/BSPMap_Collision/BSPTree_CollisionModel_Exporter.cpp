@@ -154,7 +154,7 @@ void CBSPTree_CollisionModel_Exporter::SetCollisionModel( CPlaneBuffer *pPlaneBu
 void CBSPTree_CollisionModel_Exporter::MakePolygonFromFace(CConvexPolygon& rPolygon, // [out]
 														   CMapFace& rFace)			 // [in]
 {
-	D3DXVECTOR3 avVertex[128];
+	Vector3 avVertex[128];
 	int i;
 	for( i=0; i<rFace.GetNumVertices(); i++ )
 		avVertex[i] = rFace.GetVertex(i);
@@ -257,8 +257,8 @@ void CBSPTree_CollisionModel_Exporter::SetPolygonCollisionInfo()
 		fDist0 =   rPolygon0.GetDistance();
 
 		// grow aabb slightly
-		aabb0.vMin -= D3DXVECTOR3(0.1f, 0.1f, 0.1f);
-		aabb0.vMax += D3DXVECTOR3(0.1f, 0.1f, 0.1f);
+		aabb0.vMin -= Vector3(0.1f, 0.1f, 0.1f);
+		aabb0.vMax += Vector3(0.1f, 0.1f, 0.1f);
 
 		for( j=0; j<m_iNumPolygons; j++ )
 		{
