@@ -44,33 +44,33 @@ void CBE_PlayerShip::MoveEx(CCopyEntity *pEntity)
 
 	fPitch = s_fPitchSpeed * fFrameTime; 
 
-	D3DXMATRIX matRot;
-	D3DXVECTOR3 vDir   = pEntity->GetDirection();
-	D3DXVECTOR3 vUp    = pEntity->GetUpDirection();
-	D3DXVECTOR3 vRight = pEntity->GetRightDirection();
+	Matrix33 matRot( Matrix33Identity() );
+	Vector3 vDir   = pEntity->GetDirection();
+	Vector3 vUp    = pEntity->GetUpDirection();
+	Vector3 vRight = pEntity->GetRightDirection();
 
-	D3DXMatrixRotationAxis(&matRot, &vUp, fYaw);
-	D3DXVec3TransformCoord(&vDir,   &vDir,   &matRot);
-	D3DXVec3TransformCoord(&vRight, &vRight, &matRot);
+	matRot = Matrix33RotationAxis( fYaw, vUp );
+	vDir   = matRot * vDir;
+	vRight = matRot * vRight;
 
-	D3DXMatrixRotationAxis(&matRot, &vRight, fPitch);
-	D3DXVec3TransformCoord(&vDir, &vDir, &matRot);
-	D3DXVec3TransformCoord(&vUp,  &vUp,  &matRot);
+	matRot = Matrix33RotationAxis( fPitch, vRight );
+	vDir = matRot * vDir;
+	vUp  = matRot * vUp;
 
 	pEntity->SetDirection_Right( vRight );
 	pEntity->SetDirection_Up( vUp );
 	pEntity->SetDirection( vDir );
 
 	// translation
-	D3DXVECTOR3 vWishvel, vWishdir;
+	Vector3 vWishvel, vWishdir;
 	float fWishspeed;
 
 	vWishvel = pEntity->GetDirection() * ( m_afThrust[THRUST_FORWARD] * ( 1.0f + m_fBoost ) - m_afThrust[THRUST_BACKWARD] ) * 10.0f
 		     + pEntity->GetRightDirection()     * ( m_afThrust[THRUST_RIGHT] - m_afThrust[THRUST_LEFT] ) * 10.0f
 		     + pEntity->GetUpDirection()        * ( m_afThrust[THRUST_UP] - m_afThrust[THRUST_DOWN] ) * 10.0f;
 
-	fWishspeed = D3DXVec3Length(&vWishvel);
-	D3DXVec3Normalize(&vWishdir, &vWishvel);
+	fWishspeed = Vec3Length(vWishvel);
+	Vec3Normalize(vWishdir, vWishvel);
 
 
 	if(50 < fWishspeed)

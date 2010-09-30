@@ -46,7 +46,7 @@ void CBE_Floater::SearchManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 	if( m_iRandomSearchManeuver != 0 )
 	{
 		Vector3 vFromCurrentPosToDest = rvTargetPosition - pCopyEnt->GetWorldPosition();
-		float fDist = D3DXVec3LengthSq( &vFromCurrentPosToDest );
+		float fDist = Vec3LengthSq( vFromCurrentPosToDest );
 
 		if( 0.20f < rfCurrentManeuverTime - rfTotalManeuverTime ||
 			rvManeuverDir == Vector3(0,0,0) || fDist < 0.2f )

@@ -134,7 +134,6 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 	static float fYaw = 0.0f;	// turn right / left	(unit: radian)
 	static float fPitch = 0.0f;	// look up / down		(unit: radian)
 	static float fRoll = 0.0f;	// bank right /left		(unit: radian)
-	D3DXMATRIX matRot;
 
 
 	// measure yaw -  difficult for control but seems more appropriate for a space ship
@@ -218,20 +217,20 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 	// change the direction of the ship based on the 'fYaw' and 'fPitch' we have just measured
 
 	// update yaw
-	D3DXMatrixRotationY(&matRot, fYaw);
-	vDir = D3DXVECTOR3(0,0,1);
-	D3DXVec3TransformCoord(&vDir,   &vDir,   &matRot);
-	D3DXVec3TransformCoord(&vRight, &vRight, &matRot);
+	Matrix33 matRot( Matrix33RotationY(fYaw) );
+	vDir = Vector3(0,0,1);
+	vDir   = matRot * vDir;
+	vRight = matRot * vRight;
 
 	// update pitch
-	D3DXMatrixRotationAxis(&matRot, &vRight, fPitch);
-	D3DXVec3TransformCoord(&vDir, &vDir, &matRot);
-	D3DXVec3TransformCoord(&vUp,  &vUp,  &matRot);
+	matRot = Matrix33RotationAxis( fPitch, vRight );
+	vDir = matRot * vDir;
+	vUp  = matRot * vUp;
 
 	// update roll
-	D3DXMatrixRotationAxis(&matRot, &vDir, fRoll);
-	D3DXVec3TransformCoord(&vRight, &vRight, &matRot);
-	D3DXVec3TransformCoord(&vUp,  &vUp,  &matRot);
+	matRot = Matrix33RotationAxis( fRoll, vDir );
+	vRight = matRot * vRight;
+	vUp    = matRot * vUp;
 
 	pCopyEnt->SetDirection( vDir );
 	pCopyEnt->SetDirection_Right( vRight );
@@ -453,7 +452,7 @@ void CBE_PlayerShip::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 		{
 			rfLife = 0;
 			rfTimeAfterDeath = 0;
-			pCopyEnt_Self->vVelocity = D3DXVECTOR3(0,0,0);
+			pCopyEnt_Self->vVelocity = Vector3(0,0,0);
 
 			m_pStage->GetScreenEffectManager()->FadeOutTo( 0xFFFFFFFF, 2.5f, D3DBLEND_ONE );
 		}
@@ -534,10 +533,10 @@ void CBE_PlayerShip::PlayerDead(CCopyEntity* pCopyEnt)
 	{
 		rfTimeAfterDeath = -1;
 		pCopyEnt->fLife = 100.0f;
-		pCopyEnt->GetWorldPosition() = D3DXVECTOR3(0,0,0);
-		pCopyEnt->SetDirection( D3DXVECTOR3(0,0,1) );
-		pCopyEnt->SetDirection_Right( D3DXVECTOR3(1,0,0) );
-		pCopyEnt->SetDirection_Up( D3DXVECTOR3(0,1,0) );
+		pCopyEnt->GetWorldPosition() = Vector3(0,0,0);
+		pCopyEnt->SetDirection( Vector3(0,0,1) );
+		pCopyEnt->SetDirection_Right( Vector3(1,0,0) );
+		pCopyEnt->SetDirection_Up( Vector3(0,1,0) );
 		pCopyEnt->s1 = 0;
 
 		m_pStage->GetScreenEffectManager()->FadeInFrom( 0xFF000000, 1.0f, D3DBLEND_INVSRCALPHA );
@@ -545,7 +544,7 @@ void CBE_PlayerShip::PlayerDead(CCopyEntity* pCopyEnt)
 		return;
 	}
 
-	D3DXVECTOR3 vDir, vRight;
+	Vector3 vDir, vRight;
 	D3DXMATRIX matRotY;
 	float fRotAngle = m_pStage->GetFrameTime() * (2.5f - rfTimeAfterDeath) * (2.5f - rfTimeAfterDeath);
 	D3DXMatrixRotationY( &matRotY, fRotAngle * 2.0f );

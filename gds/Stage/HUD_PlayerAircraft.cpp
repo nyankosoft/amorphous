@@ -381,11 +381,11 @@ void HUD_PlayerAircraft::RenderImpl()
 	float arrow_base_len = 40.0f*scale;
 	Vector2 focus_indicator_offset = Vector2(0,-120*scale);
 	Vector2 screen_center = m_HUD.GetScreenCenter();
-	D3DXVECTOR3 pos;
+	Vector3 pos;
 	D3DXMATRIX matCamera;
 	Matrix44 view;
 	pCamera->GetCameraMatrix( view );
-	view.GetRowMajorMatrix44( (float *)&matCamera );
+//	view.GetRowMajorMatrix44( (float *)&matCamera );
 
 	const HUD_TargetInfo* pTarget = radar_info.GetFocusedTarget();
 	if( pTarget )
@@ -398,7 +398,8 @@ void HUD_PlayerAircraft::RenderImpl()
 
 		focus_indicator[0].y = - arrow_length;
 
-		D3DXVec3TransformCoord( &pos, &pTarget->position, &matCamera );
+//		D3DXVec3TransformCoord( &pos, &pTarget->position, &matCamera );
+		pos = view * pTarget->position;
 		if( pos.z < 0 ||	// target is behind the player
 			15.0f < fabsf(pos.x) && 15.0f < fabsf(pos.y) )	// target is not in the center area of the HUD
 		{
@@ -464,18 +465,19 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 
 //	float scale = GetScreenWidth() / 800.0f;
 
-	D3DXMATRIX matCamera, matProj, matCameraProj;
+//	D3DXMATRIX matCamera, matProj, matCameraProj;
 	Matrix44 view, proj;
 	pCamera->GetCameraMatrix( view );
 	pCamera->GetProjectionMatrix( proj );
-	view.GetRowMajorMatrix44( (float *)&matCamera );
-	proj.GetRowMajorMatrix44( (float *)&matProj );
-	matCameraProj = matCamera * matProj;
+//	view.GetRowMajorMatrix44( (float *)&matCamera );
+//	proj.GetRowMajorMatrix44( (float *)&matProj );
+	Matrix44 proj_view = proj * view;
+//	matCameraProj = matCamera * matProj;
 
 	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
 
 	// render containers on targets
-	D3DXVECTOR3 pos;
+	Vector3 pos;
 	float x,y,r = (float)m_ContainerSize * 0.5f - 0.5f;
 	SFloatRGBAColor color;
 //	rect.SetDestAlphaBlendMode( D3DBLEND_ONE );
@@ -493,8 +495,8 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 	for( i=0; i<num_displayable_targets; i++ )
 	{
 		const HUD_TargetInfo& target = radar_info.GetTargetInfo()[i];
-//		D3DXVECTOR3 vWorldPos = vecpVisibleEntity[i]->Position();
-		D3DXVECTOR3 vWorldPos = target.position;
+//		Vector3 vWorldPos = vecpVisibleEntity[i]->Position();
+		Vector3 vWorldPos = target.position;
 
 		// skip if it's not visible
 		Vector3 vCamToTargetDir = Vec3GetNormalized( vWorldPos - vCamPos );
@@ -508,7 +510,8 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 		 || target.type & HUD_TargetInfo::PLAYER )
 			continue;
 
-		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
+//		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
+		pos = proj_view * vWorldPos;
 
 		x = (  pos.x + 1.0f ) * 0.5f * GetReferenceScreenWidth();// screen_width;
 		y = ( -pos.y + 1.0f ) * 0.5f * GetReferenceScreenHeight();// screen_height;
@@ -879,7 +882,7 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 
 		}
 		color = i == current_weapon_index ? m_aHUDColor[COLOR_HIGHLIGHTED].GetARGB32() : m_aHUDColor[COLOR_NORMAL].GetARGB32();
-		pFont->DrawText( text.c_str(), D3DXVECTOR2( 1260*scale, (1016 + 32 * i)*scale ), color );
+		pFont->DrawText( text.c_str(), Vector2( 1260*scale, (1016 + 32 * i)*scale ), color );
 	}
 
 	// display current life by color

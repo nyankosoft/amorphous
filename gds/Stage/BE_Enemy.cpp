@@ -442,14 +442,12 @@ void CBE_Enemy::AimAlong(CCopyEntity* pCopyEnt, Vector3& rvDesiredDirection)
 		fDeltaYaw = rfDesiredDeltaYaw;
 
 	// get rotation matrix around the y-axis
-	D3DXMATRIX matRot;
-	D3DXMatrixRotationY( &matRot, fDeltaYaw );
+	Matrix33 matRot( Matrix33RotationY(fDeltaYaw) );
 
 	// rotate a little toward the player
-	Vector3 vDirTemp;
-	D3DXVec3TransformCoord( &vDirTemp, &pCopyEnt->GetDirection(), &matRot );
+	Vector3 vDirTemp = matRot * pCopyEnt->GetDirection();
 	pCopyEnt->SetDirection( vDirTemp );
-	D3DXVec3TransformCoord( &rvCurrentDirection_H, &rvCurrentDirection_H, &matRot );
+	rvCurrentDirection_H = matRot * rvCurrentDirection_H;
 
 	// rotate 'vCurrentDirection_H' 90 degrees to update 'right' direction vector
 	Vector3 vRight = pCopyEnt->GetRightDirection();
@@ -484,8 +482,10 @@ void CBE_Enemy::AimAlong(CCopyEntity* pCopyEnt, Vector3& rvDesiredDirection)
 	Limit( fCurrentPitch, -1.48f, 0.785f );
 
 	// get rotation matrix around the axis
-	D3DXMatrixRotationAxis( &matRot, &vRight, fCurrentPitch );
-	D3DXVec3TransformCoord( &vDirection, &rvCurrentDirection_H, &matRot );
+	matRot = Matrix33RotationAxis( fCurrentPitch, vRight );
+	vDirection = matRot * rvCurrentDirection_H;
+//	D3DXMatrixRotationAxis( &matRot, &vRight, fCurrentPitch );
+//	D3DXVec3TransformCoord( &vDirection, &rvCurrentDirection_H, &matRot );
 	Vector3 vUp;
 //	D3DXVec3Cross( &vUp, &pCopyEnt->GetDirection(), &pCopyEnt->GetRightDirection() );
 	Vec3Cross( vUp, vDirection, vRight );

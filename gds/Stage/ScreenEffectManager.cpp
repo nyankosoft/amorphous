@@ -511,7 +511,7 @@ void CScreenEffectManager::UpdateScreenSize()
 	int num_tex_effects = m_vecExtraTexEffect.size();
 	for( i=0; i<num_tex_effects; i++ )
 	{
-		m_vecExtraTexEffect[i].Rect.SetPosition( D3DXVECTOR2(0.0f, 0.0f), D3DXVECTOR2((float)width, (float)height) );
+		m_vecExtraTexEffect[i].Rect.SetPosition( Vector2(0.0f, 0.0f), Vector2((float)width, (float)height) );
 	}
 
 }

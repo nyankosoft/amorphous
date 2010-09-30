@@ -580,12 +580,11 @@ void CBE_Player::PlayerDead(CCopyEntity* pCopyEnt)
 		return;
 	}
 
-	D3DXVECTOR3 vDir, vRight;
-	D3DXMATRIX matRotY;
+	Vector3 vDir, vRight;
 	float fRotAngle = m_pStage->GetFrameTime() * (2.5f - rfTimeAfterDeath) * (2.5f - rfTimeAfterDeath);
-	D3DXMatrixRotationY( &matRotY, fRotAngle * 2.0f );
-	D3DXVec3TransformCoord( &vDir, &pCopyEnt->GetDirection(), &matRotY);
-	D3DXVec3TransformCoord( &vRight, &pCopyEnt->GetRightDirection(), &matRotY);
+	Matrix33 matRotY( Matrix33RotationY( fRotAngle * 2.0f ) );
+	vDir   = matRotY * pCopyEnt->GetDirection();
+	vRight = matRotY * pCopyEnt->GetRightDirection();
 	pCopyEnt->SetDirection( vDir );
 	pCopyEnt->SetDirection_Right( vRight );
 }

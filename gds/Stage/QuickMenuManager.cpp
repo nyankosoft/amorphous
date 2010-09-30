@@ -53,7 +53,7 @@ void CQM_Menu::Render( CFontBase *pFont )
 	// draw a background rect
 	C2DRect bg_rect;
 	bg_rect.SetColor( 0x60000000 );
-	bg_rect.SetPosition( D3DXVECTOR2(350,380), D3DXVECTOR2(450,460) );
+	bg_rect.SetPosition( Vector2(350,380), Vector2(450,460) );
 	bg_rect.Draw();
 
 	// draw item titles
@@ -61,7 +61,7 @@ void CQM_Menu::Render( CFontBase *pFont )
 	int end_index = _cpp_min( GetNumMaxItems() - 1, start_index + 4 );
 
 	float offset_x = 0;
-	D3DXVECTOR2 vPos = D3DXVECTOR2(350 + offset_x, 380);
+	Vector2 vPos = Vector2(350 + offset_x, 380);
 	int text_height = pFont->GetFontHeight();
 	DWORD dwColor;
 
@@ -94,7 +94,7 @@ void CQM_Menu::Render( CFontBase *pFont )
 			sprintf( acQuantity, "%d", quantity );
 			num_digits = strlen(acQuantity);
 
-			pFont->DrawText( acQuantity, vPos + D3DXVECTOR2( 100 - num_digits * 8, 0 ), dwColor );
+			pFont->DrawText( acQuantity, vPos + Vector2( 100 - num_digits * 8, 0 ), dwColor );
 
 		}
 
