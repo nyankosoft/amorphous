@@ -1326,10 +1326,6 @@
 			Name="3DMath"
 			>
 			<File
-				RelativePath="..\..\gds\3DMath\3DMathLibBase.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\3DMath\3DStructs.hpp"
 				>
 			</File>
@@ -1383,18 +1379,6 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\3DMath\Cylinder.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\3DMath\D3DX_Adapter.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\3DMath\D3DX_Matrix33_Adapter.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\3DMath\D3DXVec3Adapter.hpp"
 				>
 			</File>
 			<File

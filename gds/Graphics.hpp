@@ -23,7 +23,6 @@
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/3DRect.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/D3DXVec3Copy.hpp"
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 
