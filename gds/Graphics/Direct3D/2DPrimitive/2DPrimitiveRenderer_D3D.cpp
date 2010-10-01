@@ -1,4 +1,5 @@
 #include "2DPrimitiveRenderer_D3D.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 
@@ -105,7 +106,7 @@ inline void C2DPrimitiveRenderer_D3D::CopyVertices( CGeneral2DVertex *paVertex, 
 
 	for( int i=0; i<num_vertices; i++ )
 	{
-		m_vecTLVertex[i].vPosition   = paVertex[i].m_vPosition;
+		m_vecTLVertex[i].vPosition   = ToD3DXVECTOR3( paVertex[i].m_vPosition );
 		m_vecTLVertex[i].color       = paVertex[i].m_DiffuseColor.GetARGB32();
 		m_vecTLVertex[i].rhw         = paVertex[i].m_fRHW;
 		m_vecTLVertex[i].tu          = paVertex[i].m_TextureCoord[0].u;

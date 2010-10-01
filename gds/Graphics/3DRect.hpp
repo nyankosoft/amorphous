@@ -2,7 +2,9 @@
 #define  __3DRECT_H__
 
 
+#include "3DMath/Vector3.hpp"
 #include "FVF_NormalVertex.h"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
@@ -25,6 +27,8 @@ public:
 
 	inline void SetPosition( D3DXVECTOR3* pavVertex );
 
+	inline void SetPositions( Vector3* pavVertex );
+
 	inline void SetTextureUV( D3DXVECTOR2& rvMin, D3DXVECTOR2& rvMax );
 
 	inline void SetColor( DWORD dwColor, int vert_index = 4 );	//'dwColor' is ARGB format
@@ -35,7 +39,9 @@ public:
 
 	inline void SetNormal( D3DXVECTOR3* pavNormal );
 
-//	D3DXVECTOR2 GetPosition( int iVertex ) { return m_avRectVertex[iVertex]; }
+	inline void SetNormal( const Vector3& vNormal );
+
+	inline void SetNormals( Vector3* pavNormal );
 
 	void Draw();
 
@@ -49,6 +55,15 @@ inline void C3DRect::SetPosition( D3DXVECTOR3* pavVertex )
 
 	for( int i=0; i<4; i++ )
 		pav3DRect[i].vPosition = pavVertex[i];
+}
+
+
+inline void C3DRect::SetPositions( Vector3* pavVertex )
+{
+	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
+
+	for( int i=0; i<4; i++ )
+		pav3DRect[i].vPosition = ToD3DXVECTOR3( pavVertex[i] );
 }
 
 
@@ -108,6 +123,24 @@ inline void C3DRect::SetNormal( D3DXVECTOR3* pavNormal )
 
 	for( int i=0; i<4; i++ )
 		pav3DRect[i].vNormal = pavNormal[i];
+}
+
+
+inline void C3DRect::SetNormal( const Vector3& vNormal )
+{
+	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
+
+	for( int i=0; i<4; i++ )
+		pav3DRect[i].vNormal = ToD3DXVECTOR3( vNormal );
+}
+
+
+inline void C3DRect::SetNormals( Vector3* pavNormal )
+{
+	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
+
+	for( int i=0; i<4; i++ )
+		pav3DRect[i].vNormal = ToD3DXVECTOR3( pavNormal[i] );
 }
 
 

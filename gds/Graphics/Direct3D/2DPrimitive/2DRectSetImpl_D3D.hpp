@@ -7,6 +7,7 @@
 #include "3DMath/Vector3.hpp"
 #include "Graphics/FVF_TLVertex.h"
 #include "Graphics/RectTriListIndex.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DPrimitive.hpp"
 #include "Graphics/2DPrimitive/2DRectSet.hpp"
@@ -136,7 +137,7 @@ inline void C2DRectSetImpl_D3D::SetRectVertexPosition( int rect_index, int vert_
 
 inline void C2DRectSetImpl_D3D::SetRectVertexPosition( int rect_index, int vert_index, const Vector3& vPos )
 {
-	m_vecRectVertex[rect_index*4+vert_index].vPosition = vPos;
+	m_vecRectVertex[rect_index*4+vert_index].vPosition = ToD3DXVECTOR3( vPos );
 }
 
 

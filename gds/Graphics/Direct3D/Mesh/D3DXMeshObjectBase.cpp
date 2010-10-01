@@ -3,6 +3,7 @@
 #include <gds/base.hpp>
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 
 #include "Support/StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -894,7 +895,7 @@ HRESULT CD3DXMeshObjectBase::CreateLocalBoundingSphereFromD3DXMesh( LPD3DXMESH p
 	pVertexBuffer->Unlock();
 	SAFE_RELEASE( pVertexBuffer );
 
-	m_LocalShpere.vCenter = m_vObjectCenter;
+	m_LocalShpere.vCenter = ToVector3( m_vObjectCenter );
 
 	if( FAILED(hr) )
 		return hr;

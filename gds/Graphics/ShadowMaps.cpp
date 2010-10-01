@@ -1,5 +1,6 @@
 #include "ShadowMaps.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/LightStructs.hpp"
@@ -207,14 +208,14 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 
 	CShaderManager& shader_mgr = *pShaderMgr;
 
-	Vector3 vWorldLightPos = m_LightCamera.GetPosition();
-	Vector3 vWorldLightDir = m_LightCamera.GetFrontDirection();
+	D3DXVECTOR3 vWorldLightPos = ToD3DXVECTOR3( m_LightCamera.GetPosition() );
+	D3DXVECTOR3 vWorldLightDir = ToD3DXVECTOR3( m_LightCamera.GetFrontDirection() );
 
 //	if( m_UseLightPosInWorldSpace )
 	if( true )
 	{
-		shader_mgr.SetParam( "g_vLightPos", vWorldLightPos );
-		shader_mgr.SetParam( "g_vLightDir", vWorldLightDir );
+		shader_mgr.SetParam( "g_vLightPos", ToVector3(vWorldLightPos) );
+		shader_mgr.SetParam( "g_vLightDir", ToVector3(vWorldLightDir) );
 	}
 	else
 	{
@@ -232,8 +233,8 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 		matSceneCamView._41 = matSceneCamView._42 = matSceneCamView._43 = 0;
 		D3DXVec3TransformCoord( &vViewLightDir, &vWorldLightDir, &matSceneCamView );
 
-		shader_mgr.SetParam( "g_vLightPos", vViewLightPos );
-		shader_mgr.SetParam( "g_vLightDir", vViewLightDir );
+		shader_mgr.SetParam( "g_vLightPos", ToVector3(vViewLightPos) );
+		shader_mgr.SetParam( "g_vLightDir", ToVector3(vViewLightDir) );
 	}
 }
 

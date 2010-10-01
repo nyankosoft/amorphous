@@ -4,6 +4,7 @@
 
 #include <d3d9.h>
 #include "Graphics/Shader/ShaderLightManager.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
@@ -70,15 +71,6 @@ private:
 
 
 //================================= inline implementations =================================
-
-inline D3DVECTOR ToD3DVECTOR( const Vector3& src )
-{
-	D3DVECTOR dest;
-	dest.x = src.x;
-	dest.y = src.y;
-	dest.z = src.z;
-	return dest;
-}
 
 inline D3DCOLORVALUE ToD3DCOLORVALUE( const SFloatRGBColor& src )
 {

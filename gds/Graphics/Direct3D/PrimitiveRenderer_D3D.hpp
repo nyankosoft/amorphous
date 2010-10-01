@@ -18,8 +18,8 @@ private:
 		verts[0].color = start_color.GetARGB32();
 		verts[1].color =   end_color.GetARGB32();
 
-		verts[0].vPosition = start;
-		verts[1].vPosition = end;
+		verts[0].vPosition = ToD3DXVECTOR3( start );
+		verts[1].vPosition = ToD3DXVECTOR3( end );
 
 		HRESULT hr = S_OK;
 		hr = DIRECT3D9.GetDevice()->SetFVF( D3DFVF_COLORVERTEX );
@@ -38,7 +38,7 @@ public:
 	Result::Name DrawPoint( const Vector3& pos, const SFloatRGBAColor& color )
 	{
 		COLORVERTEX v;
-		v.vPosition = pos;
+		v.vPosition = ToD3DXVECTOR3( pos );
 		v.color =   color.GetARGB32();
 
 		HRESULT hr = S_OK;

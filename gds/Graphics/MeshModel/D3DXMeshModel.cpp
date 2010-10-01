@@ -1,8 +1,5 @@
-
 #include "D3DXMeshModel.hpp"
-
-#include <assert.h>
-
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/FVF_BumpVertex.h"
 #include "Graphics/FVF_BumpWeightVertex.h"
@@ -11,17 +8,12 @@
 #include "Graphics/FVF_NormalVertex.h"
 #include "Graphics/FVF_WeightVertex.h"
 #include "Graphics/FVF_ShadowVertex.h"
-
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
 #include "Support/memory_helpers.hpp"
 #include "Support/lfs.hpp"
-
-#include "Graphics/D3DXVec3Copy.hpp"
-
+#include <assert.h>
 #include <iostream>
 #include <fstream>
 
@@ -88,8 +80,8 @@ void CD3DXMeshModel::LoadVertices( void*& pVBData, int& riSize, C3DMeshModelArch
 		pNVert = (COLORVERTEX *)pVBData;
 		for( i=0; i<iNumVertices; i++ )
 		{
-			pNVert[i].vPosition = rVertexSet.vecPosition[i];
-			pNVert[i].vNormal   = rVertexSet.vecNormal[i];
+			pNVert[i].vPosition = ToD3DXVECTOR3( rVertexSet.vecPosition[i] );
+			pNVert[i].vNormal   = ToD3DXVECTOR3( rVertexSet.vecNormal[i] );
 			pNVert[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
 		}
 		DIRECT3D9.GetDevice()->CreateVertexDeclaration(COLORVERTEX_DECLARATION, &m_pVertexDecleration);
@@ -104,10 +96,10 @@ void CD3DXMeshModel::LoadVertices( void*& pVBData, int& riSize, C3DMeshModelArch
 		pBump = (BUMPVERTEX *)pVBData;
 		for( i=0; i<iNumVertices; i++ )
 		{
-			pBump[i].vPosition = rVertexSet.vecPosition[i];
-			pBump[i].vNormal   = rVertexSet.vecNormal[i];
-			pBump[i].vBinormal = rVertexSet.vecBinormal[i];
-			pBump[i].vTangent  = rVertexSet.vecTangent[i];
+			pBump[i].vPosition = ToD3DXVECTOR3( rVertexSet.vecPosition[i] );
+			pBump[i].vNormal   = ToD3DXVECTOR3( rVertexSet.vecNormal[i] );
+			pBump[i].vBinormal = ToD3DXVECTOR3( rVertexSet.vecBinormal[i] );
+			pBump[i].vTangent  = ToD3DXVECTOR3( rVertexSet.vecTangent[i] );
 			pBump[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
 			pBump[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
 		}
@@ -123,8 +115,8 @@ void CD3DXMeshModel::LoadVertices( void*& pVBData, int& riSize, C3DMeshModelArch
 		pVertex = (NORMALVERTEX *)pVBData;
 		for( i=0; i<iNumVertices; i++ )
 		{
-			pVertex[i].vPosition = rVertexSet.vecPosition[i];
-			pVertex[i].vNormal   = rVertexSet.vecNormal[i];
+			pVertex[i].vPosition = ToD3DXVECTOR3( rVertexSet.vecPosition[i] );
+			pVertex[i].vNormal   = ToD3DXVECTOR3( rVertexSet.vecNormal[i] );
 			pVertex[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
 			pVertex[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
 		}
@@ -140,8 +132,8 @@ void CD3DXMeshModel::LoadVertices( void*& pVBData, int& riSize, C3DMeshModelArch
 		pShadowVert = (SHADOWVERTEX *)pVBData;
 		for( i=0; i<iNumVertices; i++ )
 		{
-			pShadowVert[i].vPosition = rVertexSet.vecPosition[i];
-			pShadowVert[i].vNormal   = rVertexSet.vecNormal[i];
+			pShadowVert[i].vPosition = ToD3DXVECTOR3( rVertexSet.vecPosition[i] );
+			pShadowVert[i].vNormal   = ToD3DXVECTOR3( rVertexSet.vecNormal[i] );
 		}
 		DIRECT3D9.GetDevice()->CreateVertexDeclaration(SHADOWVERTEX_DECLARATION, &m_pVertexDecleration);
 		break;
@@ -154,8 +146,8 @@ void CD3DXMeshModel::LoadVertices( void*& pVBData, int& riSize, C3DMeshModelArch
 		pWeightVert = (WEIGHTVERTEX *)pVBData;
 		for( i=0; i<iNumVertices; i++ )
 		{
-			pWeightVert[i].vPosition = rVertexSet.vecPosition[i];
-			pWeightVert[i].vNormal   = rVertexSet.vecNormal[i];
+			pWeightVert[i].vPosition = ToD3DXVECTOR3( rVertexSet.vecPosition[i] );
+			pWeightVert[i].vNormal   = ToD3DXVECTOR3( rVertexSet.vecNormal[i] );
 			pWeightVert[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
 			pWeightVert[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
 
@@ -174,10 +166,10 @@ void CD3DXMeshModel::LoadVertices( void*& pVBData, int& riSize, C3DMeshModelArch
 		pBumpWeight = (BUMPWEIGHTVERTEX *)pVBData;
 		for( i=0; i<iNumVertices; i++ )
 		{
-			pBumpWeight[i].vPosition = rVertexSet.vecPosition[i];
-			pBumpWeight[i].vNormal   = rVertexSet.vecNormal[i];
-			pBumpWeight[i].vBinormal = rVertexSet.vecBinormal[i];
-			pBumpWeight[i].vTangent  = rVertexSet.vecTangent[i];
+			pBumpWeight[i].vPosition = ToD3DXVECTOR3( rVertexSet.vecPosition[i] );
+			pBumpWeight[i].vNormal   = ToD3DXVECTOR3( rVertexSet.vecNormal[i] );
+			pBumpWeight[i].vBinormal = ToD3DXVECTOR3( rVertexSet.vecBinormal[i] );
+			pBumpWeight[i].vTangent  = ToD3DXVECTOR3( rVertexSet.vecTangent[i] );
 			pBumpWeight[i].color     = rVertexSet.vecDiffuseColor[i].GetARGB32();
 			pBumpWeight[i].tex       = rVertexSet.vecTex[0][i];	// use the first texture coord
 
@@ -196,8 +188,8 @@ void CD3DXMeshModel::LoadVertices( void*& pVBData, int& riSize, C3DMeshModelArch
 		pWeightVert = (WEIGHTVERTEX *)pVBData;
 		for( i=0; i<iNumVertices; i++ )
 		{
-			pWeightVert[i].vPosition = rVertexSet.vecPosition[i];
-			pWeightVert[i].vNormal   = rVertexSet.vecNormal[i];
+			pWeightVert[i].vPosition = ToD3DXVECTOR3( rVertexSet.vecPosition[i] );
+			pWeightVert[i].vNormal   = ToD3DXVECTOR3( rVertexSet.vecNormal[i] );
 			pWeightVert[i].color     = 0;
 			pWeightVert[i].tex       = TEXCOORD2(0,0);
 

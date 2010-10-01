@@ -10,7 +10,7 @@ void CLinePrimitives::SetPoints( const std::vector<Vector3>& vecPoints, U32 colo
 	const size_t num = vecPoints.size();
 	for( size_t i=0; i<num; i++ )
 	{
-		m_vecPoint[i].vPosition = vecPoints[i];
+		m_vecPoint[i].vPosition = ToD3DXVECTOR3( vecPoints[i] );
 
 		m_vecPoint[i].color = color;
 
@@ -94,7 +94,7 @@ void CLineList::AddLineSegment( Vector3 start, Vector3 end, U32 color )
 	{
 //		m_vecPoint.push_back( TEXTUREVERTEX ); // error. why?
 		m_vecPoint.push_back( TEXTUREVERTEX() );
-		m_vecPoint.back().vPosition = pos[i];
+		m_vecPoint.back().vPosition = ToD3DXVECTOR3( pos[i] );
 		m_vecPoint.back().color     = color;
 		m_vecPoint.back().tex       = TEXCOORD2( 0.0f, 0.0f );
 	}
