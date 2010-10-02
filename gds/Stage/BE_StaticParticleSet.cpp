@@ -5,6 +5,7 @@
 //#include "trace.hpp"
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -121,7 +122,7 @@ void CBE_StaticParticleSet::Init()
 void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	IndexOffset(pCopyEnt) = (float)( m_vecParticleVertex.size() / 4 * 6 );
-	D3DXVECTOR3 vCenterPos = pCopyEnt->GetWorldPosition();
+	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
 
 	STATICBILLBOARDVERTEX vert[4];
 	float x,y,z;
@@ -169,7 +170,8 @@ void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 		y = RangedRand( -1.0f, 1.0f );	//GaussianRand( y, w );
 		for( j=0; j<4; j++ )
 		{
-			vert[j].vPosition = vCenterPos + D3DXVECTOR3( x * 200.0f, y * 50.0f, z * 200.0f );
+			Vector3 vVertPos = vCenterPos + Vector3( x * 200.0f, y * 50.0f, z * 200.0f );
+			vert[j].vPosition = ToD3DXVECTOR3( vVertPos );
 
 //			vert[j].offset.x *= factor_x;
 //			vert[j].offset.y *= factor_y;
@@ -180,9 +182,10 @@ void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 			m_vecParticleVertex.push_back( vert[j] );
 		}
 
+		Vector3 vVertPos = ToVector3(vert[0].vPosition);
 		aabb.MergeAABB( AABB3(
-			vert[0].vPosition + Vector3(-r,-r,-r) * 2.0f,
-			vert[0].vPosition + Vector3( r, r, r) * 2.0f ) );
+			vVertPos + Vector3(-r,-r,-r) * 2.0f,
+			vVertPos + Vector3( r, r, r) * 2.0f ) );
 	}
 
 //	pCopyEnt->world_aabb = aabb;

@@ -6,6 +6,7 @@
 #include "Stage.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "3DMath/MatrixConversions.hpp"
 #include "3DMath/MathMisc.hpp"
 
@@ -359,10 +360,10 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 			matWorld(2,3) = vPos.z;
 
 			// set vertices for billboards
-			m_avBillboardRect[vert_offset+0].vPosition = matWorld * avBasePos[0];
-			m_avBillboardRect[vert_offset+1].vPosition = matWorld * avBasePos[1];
-			m_avBillboardRect[vert_offset+2].vPosition = matWorld * avBasePos[2];
-			m_avBillboardRect[vert_offset+3].vPosition = matWorld * avBasePos[3];
+			m_avBillboardRect[vert_offset+0].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[0] );
+			m_avBillboardRect[vert_offset+1].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[1] );
+			m_avBillboardRect[vert_offset+2].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[2] );
+			m_avBillboardRect[vert_offset+3].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[3] );
 			vert_offset += 4;
 		}
 	}

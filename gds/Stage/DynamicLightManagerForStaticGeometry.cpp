@@ -26,9 +26,9 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLight( CLightEntity& rLigh
 															 CBSPMap *pMap )
 {
 	float f, fTexWidth, fDistToSurface;
-	D3DXVECTOR3 vLightPos, vSurfaceToLight, vTexCoordBase;
-	D3DXVECTOR3 vNormal, avAxis[2];
-	D3DXVECTOR3 p0,p1;
+	Vector3 vLightPos, vSurfaceToLight, vTexCoordBase;
+	Vector3 vNormal, avAxis[2];
+	Vector3 p0,p1;
 
 	vLightPos = rLight.GetWorldPose().vPosition;
 
@@ -57,38 +57,38 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLight( CLightEntity& rLigh
 	switch( rPolygon.cPlaneType )
 	{
 	case 0:
-		vNormal = D3DXVECTOR3( 1,0,0); avAxis[0] = D3DXVECTOR3(0, 1,0); avAxis[1] = D3DXVECTOR3(0,0, 1); break;
+		vNormal = Vector3( 1,0,0); avAxis[0] = Vector3(0, 1,0); avAxis[1] = Vector3(0,0, 1); break;
 	case 1:
-		vNormal = D3DXVECTOR3(-1,0,0); avAxis[0] = D3DXVECTOR3(0,-1,0); avAxis[1] = D3DXVECTOR3(0,0,-1); break;
+		vNormal = Vector3(-1,0,0); avAxis[0] = Vector3(0,-1,0); avAxis[1] = Vector3(0,0,-1); break;
 	case 2:
-		vNormal = D3DXVECTOR3(0, 1,0); avAxis[0] = D3DXVECTOR3(0,0, 1); avAxis[1] = D3DXVECTOR3( 1,0,0); break;
+		vNormal = Vector3(0, 1,0); avAxis[0] = Vector3(0,0, 1); avAxis[1] = Vector3( 1,0,0); break;
 	case 3:
-		vNormal = D3DXVECTOR3(0,-1,0); avAxis[0] = D3DXVECTOR3(0,0,-1); avAxis[1] = D3DXVECTOR3(-1,0,0); break;
+		vNormal = Vector3(0,-1,0); avAxis[0] = Vector3(0,0,-1); avAxis[1] = Vector3(-1,0,0); break;
 	case 4:
-		vNormal = D3DXVECTOR3(0,0, 1); avAxis[0] = D3DXVECTOR3( 1,0,0); avAxis[1] = D3DXVECTOR3(0, 1,0); break;
+		vNormal = Vector3(0,0, 1); avAxis[0] = Vector3( 1,0,0); avAxis[1] = Vector3(0, 1,0); break;
 	case 5:
-		vNormal = D3DXVECTOR3(0,0,-1); avAxis[0] = D3DXVECTOR3(-1,0,0); avAxis[1] = D3DXVECTOR3(0,-1,0); break;
+		vNormal = Vector3(0,0,-1); avAxis[0] = Vector3(-1,0,0); avAxis[1] = Vector3(0,-1,0); break;
 	default:	// need to create 3 orthogonal vectors from polygon edges
-		vNormal = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		vNormal = Vector3(0.0f, 0.0f, 0.0f);
 		i=0;
-		while( (D3DXVec3LengthSq(&vNormal) < 0.0000001f) && (i < sNumVertices) )
+		while( (Vec3LengthSq(vNormal) < 0.0000001f) && (i < sNumVertices) )
 		{
-			p0 = v[i].vPosition                    - v[(i+1) % sNumVertices].vPosition;
-			p1 = v[(i+2) % sNumVertices].vPosition - v[(i+1) % sNumVertices].vPosition;
-			D3DXVec3Cross(&vNormal, &p1, &p0 );
-			D3DXVec3Normalize(&vNormal, &vNormal );
+			p0 = ToVector3( v[i].vPosition )                    - ToVector3( v[(i+1) % sNumVertices].vPosition );
+			p1 = ToVector3( v[(i+2) % sNumVertices].vPosition ) - ToVector3( v[(i+1) % sNumVertices].vPosition );
+			Vec3Cross( vNormal, p1, p0 );
+			Vec3Normalize( vNormal, vNormal );
 			i++;
 		}
-		D3DXVec3Cross(&avAxis[0], &vNormal, &p0 );
-		D3DXVec3Normalize(&avAxis[0], &avAxis[0] );
-		D3DXVec3Cross(&avAxis[1], &vNormal, &avAxis[0] );
+		Vec3Cross(avAxis[0], vNormal, p0 );
+		Vec3Normalize(avAxis[0], avAxis[0] );
+		Vec3Cross(avAxis[1], vNormal, avAxis[0] );
 		break;
 	}
 
-	if( D3DXVec3LengthSq(&vNormal) < 0.00001f )
+	if( Vec3LengthSq(vNormal) < 0.00001f )
 		return;
 
-	fDistToSurface = D3DXVec3Dot( &vNormal, &(vLightPos - v[0].vPosition) );
+	fDistToSurface = Vec3Dot( vNormal, vLightPos - ToVector3(v[0].vPosition) );
 
 	if( fDistToSurface < 0 )
 		return;	// polygon is facing away from the light
@@ -103,23 +103,23 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLight( CLightEntity& rLigh
 	vSurfaceToLight = vNormal * fDistToSurface;
 	fTexWidth = 2.0f * (float)sqrt( rLight.GetRadius() * rLight.GetRadius() - fDistToSurface * fDistToSurface );
 
-	D3DXVECTOR3 vLightToVertex;
+	Vector3 vLightToVertex;
 
 	char intensity = rPolygon.acDynamicLightIntensity[0];
 
 	for( i=0; i<sNumVertices; i++ )
 	{
-		vLightToVertex = v[i].vPosition - vLightPos;
+		vLightToVertex = ToVector3( v[i].vPosition ) - vLightPos;
 
 		vTexCoordBase = vSurfaceToLight + vLightToVertex;
-		f = D3DXVec3Dot( &avAxis[0], &vTexCoordBase );
+		f = Vec3Dot( avAxis[0], vTexCoordBase );
 		v[i].vTex2.u = f / fTexWidth + 0.5f;
 
-		f = D3DXVec3Dot( &avAxis[1], &vTexCoordBase );
+		f = Vec3Dot( avAxis[1], vTexCoordBase );
 		v[i].vTex2.v = f / fTexWidth + 0.5f;
 
 		// save light direction to vertex for bump mapping
-		D3DXVec3Normalize( &vLightToVertex, &vLightToVertex );
+		Vec3Normalize( vLightToVertex, vLightToVertex );
 ///		v[i].color = D3DCOLOR_XRGB( (int)( (-vLightToVertex.x + 1.0f) * 0.5f * 255.0f ),
 ///			                        (int)( (-vLightToVertex.y + 1.0f) * 0.5f * 255.0f ),
 ///			                        (int)( (-vLightToVertex.z + 1.0f) * 0.5f * 255.0f ) );
@@ -156,7 +156,7 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLights(CBSPMap *pMap)
 	CSG_Polygon *pMapPolygon = pMap->GetPolygon();
 
 	HRESULT hr;
-	D3DXVECTOR3 vLightPos;
+	Vector3 vLightPos;
 	float fRadius;
 	AABB3 aabb;
 	int iNumLitPolygons;
