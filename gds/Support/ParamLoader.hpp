@@ -118,6 +118,15 @@ inline void LoadParamFromFile( const std::string& filepath, const char *param_na
 }
 
 
+template<typename T0, typename T1>
+inline void LoadParamFromFile( const std::string& filepath, const char *param_name, T0& param0, T1& param1 )
+{
+	CParamLoader loader( filepath );
+	if( loader.IsReady() )
+		loader.LoadParam( param_name, param0, param1 );
+}
+
+
 template<typename T>
 inline T LoadParamFromFile( const std::string& filepath, const char *param_name )
 {
