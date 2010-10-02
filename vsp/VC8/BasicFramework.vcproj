@@ -1434,6 +1434,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\3DMath\Perlin.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DMath\Perlin.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\3DMath\Plane.hpp"
 				>
 			</File>
