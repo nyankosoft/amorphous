@@ -3,6 +3,7 @@
 
 
 #include <float.h>
+#include "../base.hpp"
 #include "../3DMath/Perlin.hpp"
 #include "../Support/2DArray.hpp"
 

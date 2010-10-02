@@ -324,6 +324,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\PerlinNoiseTextureGenerator.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\PerlinNoiseTextureGenerator.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\PostProcessEffect.cpp"
 				>
 			</File>
