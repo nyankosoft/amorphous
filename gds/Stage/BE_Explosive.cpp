@@ -92,7 +92,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 	{
 		vPos = pCopyEnt->GetWorldPosition()
 			+ pCopyEnt->touch_plane.normal * 0.40f
-			+ pCopyEnt->GetRightDirection() * RangedRand( -rfAnimRange, rfAnimRange );
+			+ pCopyEnt->GetRightDirection() * RangedRand( -rfAnimRange, rfAnimRange )
 			+ pCopyEnt->GetUpDirection()    * RangedRand( -rfAnimRange, rfAnimRange );
 
 		explosion.SetWorldPosition( vPos );
