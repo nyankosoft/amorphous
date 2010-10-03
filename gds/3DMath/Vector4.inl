@@ -148,7 +148,7 @@ inline Vector4 Vector4::operator+( const Vector4& v ) const
 	vOut.x = x + v.x;
 	vOut.y = y + v.y;
 	vOut.z = z + v.z;
-	vOut.z = w + v.w;
+	vOut.w = w + v.w;
 	return vOut;
 }
 
