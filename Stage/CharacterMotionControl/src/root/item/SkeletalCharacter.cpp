@@ -11,6 +11,7 @@
 #include "gds/Physics/Actor.hpp"
 #include "gds/Physics/Scene.hpp"
 #include "gds/Physics/ContactStreamIterator.hpp"
+#include "gds/Physics/GroupsMask.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -533,11 +534,15 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 		return;
 
 	OBB3 obb( entity.GetWorldPose(), Vector3(1,1,1) * 0.05f );
-	obb.center.vPosition += entity.GetWorldPose().matOrient.GetColumn(2) * 2.0f;
-	Vector3 sweep = Vector3( 0, -2, 0 );
+//	obb.center.vPosition += entity.GetWorldPose().matOrient.GetColumn(2) * 2.0f;
+	obb.center.vPosition += Vector3(0,1,0);
+	Vector3 sweep = Vector3( 0, -5, 0 );
 	physics::CSweepQueryHit query;
 	void *pUserData = NULL;
-	U32 sweep_flags = physics::SweepFlag::ALL_HITS;
+//	U32 sweep_flags = physics::SweepFlag::ALL_HITS;
+	U32 sweep_flags = physics::SweepFlag::STATICS | physics::SweepFlag::DYNAMICS;
+//	physics::CGroupsMask mask;
+	U32 active_groups = 0xFFFFFFFF;
 	pPhysScene->LinearOBBSweep(
 		obb,
 		sweep,
@@ -545,10 +550,14 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 		pUserData,
 		1, // num max shapes
 		query,
-		NULL
+		NULL,
+		active_groups
+//		&mask
 		);
 
 //	if( abs(1.0f - query.t) < 0.001f )
+
+	const float max_step_height = 0.3f;
 
 	float floor_height = query.Point.y;
 	m_fFloorHeight = floor_height;
