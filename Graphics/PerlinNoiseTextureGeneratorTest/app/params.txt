@@ -1,0 +1,8 @@
+octaves          10
+freq             18
+amp              1
+tilable          1
+range            0.0  1.0
+
+image_size       256
+texture_repeats  1
