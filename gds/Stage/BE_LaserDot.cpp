@@ -21,10 +21,10 @@ CBE_LaserDot::CBE_LaserDot()
 	avRectVertex[2] = Vector3( 0.25f,-0.25f, 0.0f );
 	avRectVertex[3] = Vector3(-0.25f,-0.25f, 0.0f );
 
-	m_LaserDotRect.SetPosition( avRectVertex );
+	m_LaserDotRect.SetPositions( avRectVertex );
 
 	Vector3 aNormal[] = { Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0) };
-	m_LaserDotRect.SetNormal( aNormal );
+	m_LaserDotRect.SetNormals( aNormal );
 
 	m_LaserDotRect.SetColor( 0xFFFFFFFF );
 
