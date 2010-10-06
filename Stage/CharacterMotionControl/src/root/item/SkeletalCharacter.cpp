@@ -40,7 +40,8 @@ CSkeletalCharacter::CSkeletalCharacter()
 :
 m_fFwdSpeed(0.0f),
 m_fTurnSpeed(0.0f),
-m_fFloorHeight(0.0f)
+m_fFloorHeight(0.0f),
+m_FeetOnGround( true )
 {
 	m_pMotionGraphManager.reset( new CMotionGraphManager );
 //	m_pMotionGraphManager = shared_new<CMotionGraphManager>();
@@ -182,7 +183,9 @@ void CSkeletalCharacter::Update( float dt )
 	if( !pEntity )
 		return;
 
-	Matrix34 world_pose = pEntity->GetWorldPose();
+	CCopyEntity& entity = *pEntity;
+
+	Matrix34 world_pose = entity.GetWorldPose();
 
 	m_PrevWorldPose = world_pose;
 
@@ -194,6 +197,11 @@ void CSkeletalCharacter::Update( float dt )
 	m_pMotionGraphManager->Update( dt );
 
 	Matrix34 updated_world_pose = pFSM->Player()->GetCurrentHorizontalPose();
+
+//	if( m_FeetOnGround )
+//		updated_world_pose.vPosition.y += m_fFloorHeight;
+//	else
+//		updated_world_pose.vPosition.y = base_world_pose.vPosition.y;
 
 	// test collision
 
@@ -208,20 +216,36 @@ void CSkeletalCharacter::Update( float dt )
 		}
 	}
 
+	static bool s_prev_feet_on_ground = m_FeetOnGround;
+
 	// Update the vertical position
-	UpdateStepHeight( *pEntity );
-	updated_world_pose.vPosition.y = m_fFloorHeight;
+	UpdateStepHeight( entity );
+
+	if( m_FeetOnGround )
+//	if( s_prev_feet_on_ground )
+	{
+		updated_world_pose.vPosition.y = m_fFloorHeight;
+	}
+	else
+	{
+		updated_world_pose.vPosition.y = world_pose.vPosition.y;
+		entity.SetVelocity( entity.Velocity() + entity.GetStage()->GetGravityAccel() * dt );
+		Vector3 vVerticalMove = entity.Velocity() * dt;
+		updated_world_pose.vPosition += vVerticalMove;
+	}
+
+	s_prev_feet_on_ground = m_FeetOnGround;
 
 	m_Walls.resize( 0 );
 
 	// the world pose of the entity -> always stays horizontal
-	pEntity->SetWorldPose( updated_world_pose );
-//	pEntity->SetWorldPose( Matrix34Identity() );
+	entity.SetWorldPose( updated_world_pose );
+//	entity.SetWorldPose( Matrix34Identity() );
 
-	if( 0 < pEntity->m_vecpPhysicsActor.size()
-	 && pEntity->m_vecpPhysicsActor[0] )
+	if( 0 < entity.m_vecpPhysicsActor.size()
+	 && entity.m_vecpPhysicsActor[0] )
 	{
-		physics::CActor& actor = *(pEntity->m_vecpPhysicsActor[0]);
+		physics::CActor& actor = *(entity.m_vecpPhysicsActor[0]);
 		UpdatePhysicsActorPose( actor, updated_world_pose );
 	}
 
@@ -419,6 +443,16 @@ static inline bool contains_almost_same_plane( const std::vector<SPlane>& planes
 	return false;
 }
 
+/*
+void CSkeletalCharacter::UpdateWhenFeetAreOnGround()
+{
+}
+
+
+void CSkeletalCharacter::UpdateWhenFeetAreOffGround()
+{
+}
+*/
 
 void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
 {
@@ -559,8 +593,52 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 
 	const float max_step_height = 0.3f;
 
-	float floor_height = query.Point.y;
+//	bool m_FeetOnGround = true;
+
+	const float prev_floor_height = m_fFloorHeight;
+	const float floor_height = query.Point.y;
 	m_fFloorHeight = floor_height;
+
+	if( m_FeetOnGround )
+	{
+		if( prev_floor_height < floor_height )
+		{
+			// Detected an obstacle
+			if( floor_height - prev_floor_height <= max_step_height )
+				return; // step up
+//				m_fFloorHeight = floor_height; // step up
+		}
+		else
+		{
+			if( prev_floor_height - floor_height <= max_step_height )
+				return; // step down
+//				m_fFloorHeight = floor_height; // step down
+			else
+			{
+				// fall
+				m_FeetOnGround = false;
+				entity.SetVelocity( Vector3(0,0,0) );
+				m_pMotionGraphManager->GetMotionFSM("lower_limbs")->RequestTransition( "fall" );
+			}
+		}
+	}
+	else
+	{
+		Matrix34 world_pose = entity.GetWorldPose();
+//		if( world_pose.vPosition.y < query.Point.y )
+		if( world_pose.vPosition.y <= query.Point.y + 0.001f )
+		{
+			// landed
+			// - Request transition to landing motion
+			m_FeetOnGround = true;
+			world_pose.vPosition.y = query.Point.y;
+//			entity.SetWorldPose( world_pose );
+//			SetCharacterWorldPose( world_pose, entity, *(entity.m_vecpPhysicsActor[0]) );
+		}
+	}
+
+//	m_fFloorHeight = floor_height;
+
 /*	int num_motion_fsms = (int)m_pMotionGraphManager->GetMotionFSMs.size();
 	for( int i=0; i<num_motion_fsms; i++ )
 	{

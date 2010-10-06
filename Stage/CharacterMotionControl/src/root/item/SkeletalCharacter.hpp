@@ -44,6 +44,8 @@ class CSkeletalCharacter : public CGameItem
 
 	float m_fFloorHeight;
 
+	bool m_FeetOnGround;
+
 	boost::shared_ptr<msynth::CMotionFSMInputHandler> m_pInputHandler;
 
 	boost::shared_ptr<CKeyBind> m_pKeyBind;
