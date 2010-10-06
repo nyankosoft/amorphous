@@ -36,11 +36,7 @@ class CPrimitiveShapeMeshesTest : public CGraphicsTestBase, public CGraphicsComp
 
 	boost::shared_ptr<CFontBase> m_pFont;
 
-	CInputHandlerSharedPtr m_pInputHandler;
-
 	CGM_DialogManagerSharedPtr m_pSampleUI;
-
-	bool m_TestAsyncLoading;
 
 	char m_TextBuffer[TEXT_BUFFER_SIZE];
 

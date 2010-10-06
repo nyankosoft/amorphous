@@ -1,6 +1,5 @@
 #include "PrimitiveShapeMeshesTest.hpp"
 #include "gds/Graphics.hpp"
-#include "gds/Graphics/AsyncResourceLoader.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
@@ -31,8 +30,6 @@ m_NumPrimitiveMeshes(0)
 //	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_MeshTechnique.SetTechniqueName( "SingleHSDL_Specular_CTS" );
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
-
-	m_TestAsyncLoading = false;
 
 
 	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
@@ -192,14 +189,10 @@ void CPrimitiveShapeMeshesTest::Render()
 {
 	PROFILE_FUNCTION();
 
-//	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
-
 	RenderMeshes();
 
 	if( m_pSampleUI )
 		m_pSampleUI->Render();
-
-	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
 
 	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
