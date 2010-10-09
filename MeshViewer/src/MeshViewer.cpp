@@ -12,6 +12,7 @@
 #include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Graphics/FogParams.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "gds/Input.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
@@ -261,7 +262,7 @@ void CMeshViewer::Update( float dt )
 //	float heading = (m_CurrentMouseX - m_LastRMouseClickX) * 0.01f;
 //	float pitch   = (m_CurrentMouseY - m_LastRMouseClickY) * 0.01f;
 
-	m_MeshWorldPose.vPosition = Vector3(0,0,0);
+//	m_MeshWorldPose.vPosition = Vector3(0,0,0);
 	m_MeshWorldPose.matOrient
 		= Matrix33RotationX(m_fPitch)
 		* Matrix33RotationY(m_fHeading);
@@ -398,6 +399,7 @@ int CMeshViewer::Init()
 void CMeshViewer::HandleInput( const SInputData& input )
 {
 	shared_ptr<CInputDeviceGroup> pDeviceGroup = InputDeviceHub().GetInputDeviceGroup(0);
+	int new_x = 0, new_y = 0;
 
 	switch( input.iGICode )
 	{
@@ -459,6 +461,7 @@ void CMeshViewer::HandleInput( const SInputData& input )
 			m_CurrentShaderIndex = (m_CurrentShaderIndex + 1) % (int)m_Shaders.size();
 		break;
 
+	case GIC_MOUSE_BUTTON_L:
 	case GIC_MOUSE_BUTTON_R:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
@@ -469,15 +472,20 @@ void CMeshViewer::HandleInput( const SInputData& input )
 
 	case GIC_MOUSE_AXIS_X:
 	case GIC_MOUSE_AXIS_Y:
+		new_x = input.GetParamH16();
+		new_y = input.GetParamL16();
 		if( pDeviceGroup->GetInputState( GIC_MOUSE_BUTTON_R ) == CInputState::PRESSED )
 		{
-			int new_x = input.GetParamH16();
-			int new_y = input.GetParamL16();
-			m_fHeading -= ( new_x - m_CurrentMouseX ) * 0.01f;;
-			m_fPitch   -= ( new_y - m_CurrentMouseY ) * 0.01f;;
-			m_CurrentMouseX = new_x;
-			m_CurrentMouseY = new_y;
+			m_fHeading -= ( new_x - m_CurrentMouseX ) * 0.01f;
+			m_fPitch   -= ( new_y - m_CurrentMouseY ) * 0.01f;
 		}
+		if( pDeviceGroup->GetInputState( GIC_MOUSE_BUTTON_L ) == CInputState::PRESSED )
+		{
+			m_MeshWorldPose.vPosition.x += ( new_x - m_CurrentMouseX ) * 0.01f;
+			m_MeshWorldPose.vPosition.y -= ( new_y - m_CurrentMouseY ) * 0.01f;
+		}
+		m_CurrentMouseX = new_x;
+		m_CurrentMouseY = new_y;
 		break;
 
 	case GIC_MOUSE_WHEEL_UP:
