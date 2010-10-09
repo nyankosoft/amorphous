@@ -2,145 +2,144 @@
 #define __3DMATH_MATRIX33_H__
 
 #include "../base.hpp"
-#include "precision.h"
 #include "Vector3.hpp"
-#include <math.h>
 
 
 /// A 3x3 matrix
-class Matrix33
+template<typename T>
+class tMatrix33
 {
 public:
-	inline Matrix33( Scalar v11, Scalar v21, Scalar v31, // first column
-					Scalar v12, Scalar v22, Scalar v32, // 2nd column
-					Scalar v13, Scalar v23, Scalar v33  );
+	inline tMatrix33( T v11, T v21, T v31, // first column
+					T v12, T v22, T v32, // 2nd column
+					T v13, T v23, T v33  );
 
-	inline Matrix33( const Vector3 & v1, // first column
-					const Vector3 & v2, 
-					const Vector3 & v3);
+	inline tMatrix33( const tVector3<T> & v1, // first column
+					const tVector3<T> & v2, 
+					const tVector3<T> & v3);
 
-	inline Matrix33();
-	explicit inline Matrix33(Scalar val);
-	inline ~Matrix33();
+	inline tMatrix33();
+	explicit inline tMatrix33(T val);
+	inline ~tMatrix33();
 
-	inline void SetTo(Scalar val);
+	inline void SetTo(T val);
 
 	inline void Orthonormalize();
 
 	inline bool IsSensible() const; // indicates if all is OK
 
-	Scalar & operator()(const uint i, const uint j) {return data[i + 3*j];}
-	const Scalar & operator()(const uint i, const uint j) const {return data[i + 3*j];}
+	T & operator()(const uint i, const uint j) {return data[i + 3*j];}
+	const T & operator()(const uint i, const uint j) const {return data[i + 3*j];}
 
-	inline Vector3 operator()(const int iCol) const { return GetColumn(iCol); }
+	inline tVector3<T> operator()(const int iCol) const { return GetColumn(iCol); }
 
 	/// returns pointer to the first element
-	inline const Scalar * GetData() {return data;} 
-	inline const Scalar * GetData() const {return data;} 
+	inline const T * GetData() {return data;} 
+	inline const T * GetData() const {return data;} 
 
 	/// pointer to value returned from get_data
-	inline void SetData(const Scalar * d); 
+	inline void SetData(const T * d); 
 
 	/// Returns a column - no range checking!
-	inline Vector3 GetColumn(uint i) const;
+	inline tVector3<T> GetColumn(uint i) const;
 
 	/// sets a column
-	inline void SetColumn(uint i, const Vector3 & col);
+	inline void SetColumn(uint i, const tVector3<T> & col);
 
 	/// transform a vector by the transpose of this matrix
-	inline void TransformByTranspose( Vector3 & dest, const Vector3 & src ) const;
+	inline void TransformByTranspose( tVector3<T> & dest, const tVector3<T> & src ) const;
 
 	/// copy data from the row major matrix with a stride of 4
-	inline void CopyRowMajorMatrix4( const Scalar *pSrcData );
+	inline void CopyRowMajorMatrix4( const T *pSrcData );
 
 	/// get matrix data in the form of the row major matrix with a stride of 4
-	inline void GetRowMajorMatrix44( Scalar *pDest ) const;
+	inline void GetRowMajorMatrix44( T *pDest ) const;
 
 	// operators
-	inline Matrix33 & operator+=(const Matrix33 & rhs);
-	inline Matrix33 & operator-=(const Matrix33 & rhs);
+	inline tMatrix33 & operator+=(const tMatrix33 & rhs);
+	inline tMatrix33 & operator-=(const tMatrix33 & rhs);
 
-	inline Matrix33 & operator*=(const Scalar rhs);
-	inline Matrix33 & operator/=(const Scalar rhs);
+	inline tMatrix33 & operator*=(const T rhs);
+	inline tMatrix33 & operator/=(const T rhs);
 
-	inline Matrix33 operator+(const Matrix33 & rhs) const;
-	inline Matrix33 operator-(const Matrix33 & rhs) const;
+	inline tMatrix33 operator+(const tMatrix33 & rhs) const;
+	inline tMatrix33 operator-(const tMatrix33 & rhs) const;
 
 	inline void SetIdentity();
 
 	/// sets a rotation matrix that rotates a point around x-axis
-	inline void SetRotationX( const Scalar angle );
+	inline void SetRotationX( const T angle );
 
 	/// sets a rotation matrix that rotates a point around y-axis
-	inline void SetRotationY( const Scalar angle );
+	inline void SetRotationY( const T angle );
 
 	/// sets a rotation matrix that rotates a point around z-axis
-	inline void SetRotationZ( const Scalar angle );
+	inline void SetRotationZ( const T angle );
 
-	inline bool operator==( const Matrix33& rhs ) const;
+	inline bool operator==( const tMatrix33& rhs ) const;
 
-	bool operator!=( const Matrix33& rhs ) const { return !(*this == rhs); }
+	bool operator!=( const tMatrix33& rhs ) const { return !(*this == rhs); }
 
-	friend Matrix33 operator*(const Matrix33 & lhs, const Scalar rhs);
-	friend Matrix33 operator*(const Scalar lhs, const Matrix33 & rhs);
-	friend Matrix33 operator*(const Matrix33 & lhs, const Matrix33 & rhs);
-
-	friend Matrix33 Matrix33Transpose(const Matrix33 & rhs);
-
-	friend Scalar trace(const Matrix33 & rhs);
-
-	friend Vector3 operator*(const Matrix33 & lhs, const Vector3 & rhs);
+//	friend tMatrix33<T> operator*(const tMatrix33<T> & lhs, const T rhs); // This causes the "unresolved external symbol" link error. The same this applies to the other friend operators and functions.
+	template<typename U> friend tMatrix33<U> operator*(const tMatrix33<U> & lhs, const U rhs);
+	template<typename U> friend tMatrix33<U> operator*(const T lhs, const tMatrix33<T> & rhs);
+	template<typename U> friend tMatrix33<U> operator*(const tMatrix33<T> & lhs, const tMatrix33<T> & rhs);
 
 //  inline void show(const char * str = "") const;
   
 private:
 
-	Scalar data[9];
+	T data[9];
 };
 
 
 // global operators
 
-inline Matrix33 operator*(const Matrix33 & lhs, const Scalar rhs);
-inline Matrix33 operator*(const Scalar lhs, const Matrix33 & rhs) {return rhs * lhs;}
-inline Matrix33 operator*(const Matrix33 & lhs, const Matrix33 & rhs);
-inline Matrix33 Matrix33Transpose(const Matrix33 & rhs);
+template<typename T> inline tMatrix33<T> operator*(const tMatrix33<T> & lhs, const T rhs);
+template<typename T> inline tMatrix33<T> operator*(const T lhs, const tMatrix33<T> & rhs) {return rhs * lhs;}
+template<typename T> inline tMatrix33<T> operator*(const tMatrix33<T> & lhs, const tMatrix33<T> & rhs);
+template<typename T> inline tMatrix33<T> Matrix33Transpose(const tMatrix33<T> & rhs);
 
 
 // matrix * vector
-inline Vector3 operator*(const Matrix33 & lhs, const Vector3 & rhs);
+template<typename T> inline tVector3<T> operator*(const tMatrix33<T> & lhs, const tVector3<T> & rhs);
 
 
-// Some useful rotation Matrix33's
-// alpha returns a matrix that wil rotate alpha around the x axis (etc)
-//inline Matrix33 m3alpha(Scalar alpha);
-//inline Matrix33 m3beta(Scalar beta);
-//inline Matrix33 m3gamma(Scalar gamma);
-
-inline Matrix33 Matrix33RotationX( Scalar alpha );
-inline Matrix33 Matrix33RotationY( Scalar beta );
-inline Matrix33 Matrix33RotationZ( Scalar gamma );
+// matrix for rotation around X, Y, or Z axis
+template<typename T> inline tMatrix33<T> Matrix33RotationX( T alpha );
+template<typename T> inline tMatrix33<T> Matrix33RotationY( T beta );
+template<typename T> inline tMatrix33<T> Matrix33RotationZ( T gamma );
 
 /// returns the matrix that rotates a vertex around an axis
-inline Matrix33 Matrix33RotationAxis( Scalar angle, const Vector3& axis );
+template<typename T> inline tMatrix33<T> Matrix33RotationAxis( T angle, const tVector3<T>& axis );
 
 
-inline const Matrix33 & Matrix33Identity()
+template<typename T>
+inline const tMatrix33<T> & tMatrix33Identity()
 {
-  static const Matrix33 result(1, 0, 0,
-                              0, 1, 0,
-                              0, 0, 1);
+  static const tMatrix33<T> result(1, 0, 0,
+                                   0, 1, 0,
+                                   0, 0, 1);
   return result;
 }
 
 
-//inline Matrix33 rotation_matrix(Scalar ang, const Vector3 & dir);
+//inline tMatrix33 rotation_matrix(T ang, const tVector3<T> & dir);
 
 // converts a rotation matrix into a rotation of degrees about axis
-//inline void calculate_rot_from_matrix(const Matrix33 & matrix, Vector3 & axis, Scalar & degrees);
+//inline void calculate_rot_from_matrix(const tMatrix33 & matrix, tVector3<T> & axis, T & degrees);
 
 
 #include "Matrix33.inl"
+
+
+typedef tMatrix33<float> Matrix33;
+typedef tMatrix33<double> dMatrix33;
+
+#define Matrix33Identity tMatrix33Identity<float>
+#define dMatrix33Identity tMatrix33Identity<double>
+
+
 
 #endif  /*  __3DMATH_MATRIX33_H__  */
 

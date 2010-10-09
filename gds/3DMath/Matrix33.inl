@@ -5,11 +5,8 @@
 */
 
 #include "misc.hpp"
-//#include "log_trace.hpp"
-
 #include <math.h>
-#include <stdio.h>
-#include <assert.h>
+//#include <stdio.h>
 #include <string.h> // for memcpy
 
 
@@ -18,10 +15,15 @@
 //                       Matrix3
 //
 //########################################################################
-inline Matrix33::Matrix33() {};
-inline Matrix33::~Matrix33() {};
 
-inline void Matrix33::SetTo(Scalar val)
+template<typename T>
+inline tMatrix33<T>::tMatrix33() {}
+
+template<typename T>
+inline tMatrix33<T>::~tMatrix33() {}
+
+template<typename T>
+inline void tMatrix33<T>::SetTo(T val)
 {
   data[0] = val;
   data[1] = val;
@@ -34,11 +36,13 @@ inline void Matrix33::SetTo(Scalar val)
   data[8] = val;
 }
 
-inline Matrix33::Matrix33(Scalar val) {SetTo(val);}
+template<typename T>
+inline tMatrix33<T>::tMatrix33(T val) {SetTo(val);}
 
-inline Matrix33::Matrix33(Scalar v11, Scalar v21, Scalar v31, // first column
-                          Scalar v12, Scalar v22, Scalar v32, // 2nd column
-                          Scalar v13, Scalar v23, Scalar v33  )
+template<typename T>
+inline tMatrix33<T>::tMatrix33(T v11, T v21, T v31, // first column
+                          T v12, T v22, T v32, // 2nd column
+                          T v13, T v23, T v33  )
 {
   data[0] = v11;
   data[1] = v21;
@@ -54,9 +58,10 @@ inline Matrix33::Matrix33(Scalar v11, Scalar v21, Scalar v31, // first column
 }
 
 
-inline Matrix33::Matrix33(const Vector3 & v1, // first column
-                        const Vector3 & v2, 
-                        const Vector3 & v3)
+template<typename T>
+inline tMatrix33<T>::tMatrix33(const tVector3<T> & v1, // first column
+                        const tVector3<T> & v2, 
+                        const tVector3<T> & v3)
 {
   data[0] = v1[0];
   data[1] = v1[1];
@@ -72,20 +77,23 @@ inline Matrix33::Matrix33(const Vector3 & v1, // first column
 }
 
 
-inline void Matrix33::SetData(const Scalar * d)
+template<typename T>
+inline void tMatrix33<T>::SetData(const T * d)
 {
-  memcpy(data, d, 9*sizeof(Scalar));
+  memcpy(data, d, 9*sizeof(T));
 }
 
 
-inline Vector3 Matrix33::GetColumn(uint i) const
+template<typename T>
+inline tVector3<T> tMatrix33<T>::GetColumn(uint i) const
 {
   const uint o = i*3; 
-  return Vector3(data[o], data[o+1], data[o+2]);
+  return tVector3<T>(data[o], data[o+1], data[o+2]);
 }
 
 
-inline void Matrix33::SetColumn(uint i, const Vector3 & col)
+template<typename T>
+inline void tMatrix33<T>::SetColumn(uint i, const tVector3<T> & col)
 {
   const uint o = i*3; 
   data[o]   = col[0];
@@ -94,7 +102,8 @@ inline void Matrix33::SetColumn(uint i, const Vector3 & col)
 }
 
 
-inline bool Matrix33::IsSensible() const
+template<typename T>
+inline bool tMatrix33<T>::IsSensible() const
 {
   for (unsigned i = 0 ; i < 9 ; ++i)
   {
@@ -105,10 +114,11 @@ inline bool Matrix33::IsSensible() const
 }
 
 /*
-inline void Matrix33::show(const char * str) const
+template<typename T>
+inline void tMatrix33<T>::show(const char * str) const
 {
   uint i, j;
-  TRACE("%s Matrix33::this = 0x%x \n", str, (int) this);
+  TRACE("%s tMatrix33<T>::this = 0x%x \n", str, (int) this);
   for (i = 0 ; i < 3 ; i++)
   {
     for (j = 0 ; j < 3 ; j++)
@@ -120,7 +130,8 @@ inline void Matrix33::show(const char * str) const
 }*/
 
 
-inline Matrix33 & Matrix33::operator+=(const Matrix33 & rhs)
+template<typename T>
+inline tMatrix33<T> & tMatrix33<T>::operator+=(const tMatrix33<T> & rhs)
 {
   for (uint i = 9 ; i-- != 0 ;)
     data[i] += rhs.data[i];
@@ -128,7 +139,8 @@ inline Matrix33 & Matrix33::operator+=(const Matrix33 & rhs)
 }
 
 
-inline Matrix33 & Matrix33::operator-=(const Matrix33 & rhs)
+template<typename T>
+inline tMatrix33<T> & tMatrix33<T>::operator-=(const tMatrix33<T> & rhs)
 {
   for (uint i = 9 ; i-- != 0 ;)
     data[i] -= rhs.data[i];
@@ -136,7 +148,8 @@ inline Matrix33 & Matrix33::operator-=(const Matrix33 & rhs)
 }
 
 
-inline Matrix33 & Matrix33::operator*=(const Scalar rhs)
+template<typename T>
+inline tMatrix33<T> & tMatrix33<T>::operator*=(const T rhs)
 {
   for (uint i = 9 ; i-- != 0 ;)
 		data[i] *= rhs;
@@ -144,52 +157,60 @@ inline Matrix33 & Matrix33::operator*=(const Scalar rhs)
 }
 
 
-inline Matrix33 & Matrix33::operator/=(const Scalar rhs)
+template<typename T>
+inline tMatrix33<T> & tMatrix33<T>::operator/=(const T rhs)
 {
-  const Scalar inv_rhs = 1.0f/rhs;
+  const T inv_rhs = 1.0f/rhs;
   for (uint i = 9 ; i-- != 0 ;)
 		data[i] *= inv_rhs;
   return *this;
 }
 
 
-inline Matrix33 Matrix33::operator+(const Matrix33 & rhs) const
+template<typename T>
+inline tMatrix33<T> tMatrix33<T>::operator+(const tMatrix33<T> & rhs) const
 {
-  return Matrix33(*this) += rhs;
+  return tMatrix33<T>(*this) += rhs;
 }
 
 
-inline Matrix33 Matrix33::operator-(const Matrix33 & rhs) const
+template<typename T>
+inline tMatrix33<T> tMatrix33<T>::operator-(const tMatrix33<T> & rhs) const
 {
-  return Matrix33(*this) -= rhs;
+  return tMatrix33<T>(*this) -= rhs;
 }
 
 
-inline void Matrix33::SetIdentity()
+template<typename T>
+inline void tMatrix33<T>::SetIdentity()
 {
-	*this = Matrix33Identity();
+	*this = tMatrix33Identity<T>();
 }
 
 
-inline void Matrix33::SetRotationX( const Scalar angle )
+template<typename T>
+inline void tMatrix33<T>::SetRotationX( const T angle )
 {
-	*this = Matrix33RotationX( angle );
+	*this = Matrix33RotationX<T>( angle );
 }
 
 
-inline void Matrix33::SetRotationY( const Scalar angle )
+template<typename T>
+inline void tMatrix33<T>::SetRotationY( const T angle )
 {
-	*this = Matrix33RotationY( angle );
+	*this = Matrix33RotationY<T>( angle );
 }
 
 
-inline void Matrix33::SetRotationZ( const Scalar angle )
+template<typename T>
+inline void tMatrix33<T>::SetRotationZ( const T angle )
 {
-	*this = Matrix33RotationZ( angle );
+	*this = Matrix33RotationZ<T>( angle );
 }
 
 
-inline bool Matrix33::operator==( const Matrix33& rhs ) const
+template<typename T>
+inline bool tMatrix33<T>::operator==( const tMatrix33<T>& rhs ) const
 {
 	for (uint i = 9 ; i-- != 0 ;)
 	{
@@ -201,21 +222,22 @@ inline bool Matrix33::operator==( const Matrix33& rhs ) const
 }
 
 
-inline void Matrix33::Orthonormalize()
+template<typename T>
+inline void tMatrix33<T>::Orthonormalize()
 {
-	Vector3 u1(operator()(0, 0), operator()(1, 0), operator()(2, 0));
-	Vector3 u2(operator()(0, 1), operator()(1, 1), operator()(2, 1));
-	Vector3 u3(operator()(0, 2), operator()(1, 2), operator()(2, 2));
+	tVector3<T> u1(operator()(0, 0), operator()(1, 0), operator()(2, 0));
+	tVector3<T> u2(operator()(0, 1), operator()(1, 1), operator()(2, 1));
+	tVector3<T> u3(operator()(0, 2), operator()(1, 2), operator()(2, 2));
 
-	Vector3 w1, w2, w3;
+	tVector3<T> w1, w2, w3;
 	Vec3Normalize( w1, u1 );
 	Vec3Normalize( w2, (u2 - Vec3Project(w1, u2)) );
 	Vec3Normalize( w3, (u3 - Vec3Project(w1, u3) - Vec3Project(w2, u3)) );
 
-	//  Vector3 w1 = u1.normalise();
+	//  tVector3<T> w1 = u1.normalise();
 
-	//  Vector3 w2 = (u2 - proj(w1, u2)).normalise();
-	//  Vector3 w3 = (u3 - proj(w1, u3) - proj(w2, u3)).normalise();
+	//  tVector3<T> w2 = (u2 - proj(w1, u2)).normalise();
+	//  tVector3<T> w3 = (u3 - proj(w1, u3) - proj(w2, u3)).normalise();
 
 	operator()(0, 0) = w1[0];
 	operator()(1, 0) = w1[1];
@@ -232,12 +254,13 @@ inline void Matrix33::Orthonormalize()
 	if (IsSensible() == false)
 	{
 		//    TRACE("orthonormalize() resulted in bad matrix\n");
-		*this = Matrix33(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(0, 0, 1));
+		*this = tMatrix33<T>(tVector3<T>(1, 0, 0), tVector3<T>(0, 1, 0), tVector3<T>(0, 0, 1));
 	}
 }
 
 
-inline void Matrix33::TransformByTranspose( Vector3 & dest, const Vector3 & src ) const
+template<typename T>
+inline void tMatrix33<T>::TransformByTranspose( tVector3<T> & dest, const tVector3<T> & src ) const
 {
 	dest[0] = operator()(0,0) * src[0] + operator()(1,0) * src[1] + operator()(2,0) * src[2];
 	dest[1] = operator()(0,1) * src[0] + operator()(1,1) * src[1] + operator()(2,1) * src[2];
@@ -245,7 +268,8 @@ inline void Matrix33::TransformByTranspose( Vector3 & dest, const Vector3 & src 
 }
 
 
-inline void Matrix33::CopyRowMajorMatrix4( const Scalar *pSrcData )
+template<typename T>
+inline void tMatrix33<T>::CopyRowMajorMatrix4( const T *pSrcData )
 {
 	operator()(0, 0) = pSrcData[0];
 	operator()(1, 0) = pSrcData[1];
@@ -261,7 +285,8 @@ inline void Matrix33::CopyRowMajorMatrix4( const Scalar *pSrcData )
 }
 
 
-inline void Matrix33::GetRowMajorMatrix44( Scalar *pDest ) const
+template<typename T>
+inline void tMatrix33<T>::GetRowMajorMatrix44( T *pDest ) const
 {
 	// first row
 	pDest[4 * 0 + 0] = operator()(0, 0);
@@ -294,9 +319,10 @@ inline void Matrix33::GetRowMajorMatrix44( Scalar *pDest ) const
 // global operators
 //=============================================================================
 
-inline Matrix33 operator*(const Matrix33 & lhs, const Scalar rhs)
+template<typename T>
+inline tMatrix33<T> operator*(const tMatrix33<T> & lhs, const T rhs)
 {
-  Matrix33 result;
+  tMatrix33<T> result;
   
   for (uint i = 9 ; i-- != 0 ; )
     result.data[i] = rhs * lhs.data[i];
@@ -304,9 +330,10 @@ inline Matrix33 operator*(const Matrix33 & lhs, const Scalar rhs)
 }
 
 
-inline Matrix33 operator*(const Matrix33 & lhs, const Matrix33 & rhs)
+template<typename T>
+inline tMatrix33<T> operator*(const tMatrix33<T> & lhs, const tMatrix33<T> & rhs)
 {
-  static Matrix33 out; // avoid ctor/dtor
+  static tMatrix33<T> out; // avoid ctor/dtor
   
   for (uint oj = 3 ; oj-- != 0 ;)
   {
@@ -323,9 +350,10 @@ inline Matrix33 operator*(const Matrix33 & lhs, const Matrix33 & rhs)
 
 
 // matrix * vector
-inline Vector3 operator*(const Matrix33 & lhs, const Vector3 & rhs)
+template<typename T>
+inline tVector3<T> operator*(const tMatrix33<T> & lhs, const tVector3<T> & rhs)
 {
-  return Vector3(
+  return tVector3<T>(
     lhs(0,0) * rhs[0] +
     lhs(0,1) * rhs[1] +
     lhs(0,2) * rhs[2],
@@ -338,35 +366,39 @@ inline Vector3 operator*(const Matrix33 & lhs, const Vector3 & rhs)
 }
 
 
-inline Matrix33 Matrix33Transpose(const Matrix33 & rhs)
+template<typename T>
+inline tMatrix33<T> Matrix33Transpose(const tMatrix33<T> & rhs)
 {
-  return Matrix33(rhs(0, 0), rhs(0, 1), rhs(0, 2),
+  return tMatrix33<T>(rhs(0, 0), rhs(0, 1), rhs(0, 2),
                  rhs(1, 0), rhs(1, 1), rhs(1, 2),
                  rhs(2, 0), rhs(2, 1), rhs(2, 2) );
 }
 
 
-inline Matrix33 GetSkewSymmetricMatrix( const Vector3 & rhs )
+template<typename T>
+inline tMatrix33<T> GetSkewSymmetricMatrix( const tVector3<T> & rhs )
 {
-	return Matrix33(     0, -rhs.z,  rhs.y,
+	return tMatrix33<T>(     0, -rhs.z,  rhs.y,
 		             rhs.z,      0, -rhs.x,
 					-rhs.y,  rhs.x,      0 );
 }
 
 
-inline Scalar trace(const Matrix33 & rhs)
+template<typename T>
+inline T trace(const tMatrix33<T> & rhs)
 {
   return rhs(0,0) + rhs(1,1) + rhs(2,2);
 }
 
 
 // Some useful rotation Matrix3's
-//inline Matrix33 m3alpha(Scalar alpha)
-inline Matrix33 Matrix33RotationX( Scalar alpha )
+//inline tMatrix33<T> m3alpha(T alpha)
+template<typename T>
+inline tMatrix33<T> Matrix33RotationX( T alpha )
 {
-  Matrix33 result(0);
-  Scalar s = (Scalar) sin(alpha);
-  Scalar c = (Scalar) cos(alpha);
+  tMatrix33<T> result(0);
+  T s = (T) sin(alpha);
+  T c = (T) cos(alpha);
   
   result(0,0) = 1;
   result(1,1) = c;
@@ -377,12 +409,13 @@ inline Matrix33 Matrix33RotationX( Scalar alpha )
   return result;
 }
 
-//inline Matrix33 m3beta(Scalar beta)
-inline Matrix33 Matrix33RotationY( Scalar beta )
+//inline tMatrix33<T> m3beta(T beta)
+template<typename T>
+inline tMatrix33<T> Matrix33RotationY( T beta )
 {
-  Matrix33 result(0);
-  Scalar s = (Scalar) sin(beta);
-  Scalar c = (Scalar) cos(beta);
+  tMatrix33<T> result(0);
+  T s = (T) sin(beta);
+  T c = (T) cos(beta);
   
   result(1,1) = 1;
   result(2,2) = c;
@@ -393,12 +426,13 @@ inline Matrix33 Matrix33RotationY( Scalar beta )
   return result;
 }
 
-//inline Matrix33 m3gamma(Scalar gamma)
-inline Matrix33 Matrix33RotationZ( Scalar gamma )
+//inline tMatrix33<T> m3gamma(T gamma)
+template<typename T>
+inline tMatrix33<T> Matrix33RotationZ( T gamma )
 {
-  Matrix33 result(0);
-  Scalar s = (Scalar) sin(gamma);
-  Scalar c = (Scalar) cos(gamma);
+  tMatrix33<T> result(0);
+  T s = (T) sin(gamma);
+  T c = (T) cos(gamma);
   
   result(2,2) = 1;
   result(0,0) = c;
@@ -410,21 +444,22 @@ inline Matrix33 Matrix33RotationZ( Scalar gamma )
 }
 
 
-inline Matrix33 Matrix33RotationAxis( Scalar angle, const Vector3& axis )
+template<typename T>
+inline tMatrix33<T> Matrix33RotationAxis( T angle, const tVector3<T>& axis )
 {
-	Matrix33 s(       0,  axis.z, -axis.y,
+	tMatrix33<T> s(       0,  axis.z, -axis.y,
 		        -axis.z,       0,  axis.x,
 				 axis.y, -axis.x,       0 );
 
-	return Matrix33Identity() + (Scalar)sin(angle) * s + (1.0f - (Scalar)cos(angle)) * s * s;
+	return tMatrix33Identity<T>() + (T)sin(angle) * s + (1.0f - (T)cos(angle)) * s * s;
 }
 
 
 /*
-inline Matrix33 rotation_matrix(Scalar ang, const Vector3 & dir)
+inline tMatrix33<T> rotation_matrix(T ang, const tVector3<T> & dir)
 {
   // from page 32(45) of glspec.dvi
-  Matrix33 uut(dir[0]*dir[0], dir[1]*dir[0], dir[2]*dir[0],
+  tMatrix33<T> uut(dir[0]*dir[0], dir[1]*dir[0], dir[2]*dir[0],
               dir[0]*dir[1], dir[1]*dir[1], dir[2]*dir[1],
               dir[0]*dir[2], dir[1]*dir[2], dir[2]*dir[2]);
   
@@ -440,7 +475,7 @@ inline Matrix33 rotation_matrix(Scalar ang, const Vector3 & dir)
 //    uut.set(2,1, dir[2]*dir[1]);
 //    uut.set(2,2, dir[2]*dir[2]);
   
-  Matrix33 s(0, dir[2], -dir[1],
+  tMatrix33<T> s(0, dir[2], -dir[1],
             -dir[2], 0, dir[0],
             dir[1], -dir[0], 0);
   
@@ -453,14 +488,14 @@ inline Matrix33 rotation_matrix(Scalar ang, const Vector3 & dir)
 //    s.set(2,0, -dir[1]);
 //    s.set(2,1,  dir[0]);
   
-  return (uut + (Scalar) cos_deg(ang) * 
-          (matrix3_identity() - uut) + (Scalar) sin_deg(ang) * s);
+  return (uut + (T) cos_deg(ang) * 
+          (matrix3_identity() - uut) + (T) sin_deg(ang) * s);
 }
 
 // converts a rotation matrix into a rotation of degrees about axis
-void calculate_rot_from_matrix(const Matrix33 & matrix, Vector3 & axis, Scalar & degrees)
+void calculate_rot_from_matrix(const tMatrix33<T> & matrix, tVector3<T> & axis, T & degrees)
 {
-  Scalar factor = (trace(matrix) - 1.0f) * 0.5f;
+  T factor = (trace(matrix) - 1.0f) * 0.5f;
   if (factor > 1.0f)
     factor = 1.0f;
   else if (factor < -1.0f)
@@ -469,7 +504,7 @@ void calculate_rot_from_matrix(const Matrix33 & matrix, Vector3 & axis, Scalar &
 
   if (degrees == 0.0f)
   {
-    axis = Vector3(1.0f, 0.0f, 0.0f);
+    axis = tVector3<T>(1.0f, 0.0f, 0.0f);
     return;
   }
   else if (degrees == 180.0f)

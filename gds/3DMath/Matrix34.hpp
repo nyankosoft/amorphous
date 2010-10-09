@@ -6,53 +6,52 @@
 #include "Matrix33.hpp"
 
 
-class Matrix34
+template<typename T>
+class tMatrix34
 {
 public:
 
 	/// rotation
-	Matrix33 matOrient;
+	tMatrix33<T> matOrient;
 
 	/// translation
-	Vector3 vPosition;
+	tVector3<T> vPosition;
 
 public:
 
-	inline Matrix34() {}
+	inline tMatrix34() {}
 
-	inline Matrix34( const Vector3& pos, const Matrix33& orientation );
+	inline tMatrix34( const tVector3<T>& pos, const tMatrix33<T>& orientation );
 
 	inline void Identity();
 
 	inline void Default() { Identity(); }
 
 	/// apply the affine transformation to a three element vector
-	inline void Transform( Vector3& rvDest, const Vector3& rvSrc ) const;
+	inline void Transform( tVector3<T>& rvDest, const tVector3<T>& rvSrc ) const;
 
 	/// apply the inverse transformation to a three element vector
-	inline void InvTransform( Vector3& rvDest, const Vector3& rvSrc ) const;
+	inline void InvTransform( tVector3<T>& rvDest, const tVector3<T>& rvSrc ) const;
 
 	/// get the inverse -- assumes that the orientation matrix is orthogonal
-	inline void GetInverseROT( Matrix34& dest ) const;
+	inline void GetInverseROT( tMatrix34<T>& dest ) const;
 
 	/// Non-peformance friendly version of GetInverseROT()
-	inline Matrix34 GetInverseROT() const;
+	inline tMatrix34<T> GetInverseROT() const;
 
 	/// copy orientation & translation from 4x4 row major matrix
 	/// translation needs to be stored in the fourth row of
 	/// the original row major matrix
-	inline void CopyFromRowMajorMatrix44( Scalar *pSrcData );
+	inline void CopyFromRowMajorMatrix44( T *pSrcData );
 
 	/// get data in the form of 4x4 row major matrix
-	inline void GetRowMajorMatrix44( Scalar *pDest ) const;
+	inline void GetRowMajorMatrix44( T *pDest ) const;
 
-	inline bool operator==( const Matrix34& rhs ) const;
+	inline bool operator==( const tMatrix34<T>& rhs ) const;
 
-	bool operator!=( const Matrix34& rhs ) const { return !(*this == rhs); }
+	bool operator!=( const tMatrix34<T>& rhs ) const { return !(*this == rhs); }
 
-	inline Vector3 operator*( const Vector3 &rhs ) const;
-
-	friend Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs);
+	inline tVector3<T> operator*( const tVector3<T> &rhs ) const;
 };
 
 
@@ -61,46 +60,53 @@ public:
 // inline implementations
 //===================================================================================
 
-inline Matrix34::Matrix34( const Vector3& pos, const Matrix33& orientation ) : vPosition(pos), matOrient(orientation) {}
+template<typename T>
+inline tMatrix34<T>::tMatrix34( const tVector3<T>& pos, const tMatrix33<T>& orientation ) : vPosition(pos), matOrient(orientation) {}
 
 
-inline void Matrix34::Identity()
+template<typename T>
+inline void tMatrix34<T>::Identity()
 {
-	vPosition = Vector3(0,0,0);
-	matOrient = Matrix33Identity();
+	vPosition = tVector3<T>(0,0,0);
+	matOrient = tMatrix33Identity<T>();
 }
 
 
-inline void Matrix34::Transform( Vector3& rvDest, const Vector3& rvSrc ) const
+template<typename T>
+inline void tMatrix34<T>::Transform( tVector3<T>& rvDest, const tVector3<T>& rvSrc ) const
 {
 	rvDest = matOrient * rvSrc;
 	rvDest += vPosition;
 }
 
 
-inline void Matrix34::InvTransform( Vector3& rvDest, const Vector3& rvSrc ) const
+template<typename T>
+inline void tMatrix34<T>::InvTransform( tVector3<T>& rvDest, const tVector3<T>& rvSrc ) const
 {
 	matOrient.TransformByTranspose( rvDest, ( rvSrc - vPosition ) );
 }
 
 
-inline void Matrix34::GetInverseROT( Matrix34& dest ) const
+template<typename T>
+inline void tMatrix34<T>::GetInverseROT( tMatrix34<T>& dest ) const
 {
 	dest.matOrient = Matrix33Transpose( matOrient );
 	dest.vPosition = dest.matOrient * ( -1.0f * vPosition );
 }
 
 
-inline Matrix34 Matrix34::GetInverseROT() const
+template<typename T>
+inline tMatrix34<T> tMatrix34<T>::GetInverseROT() const
 {
-	Matrix34 dest;
+	tMatrix34<T> dest;
 	GetInverseROT( dest );
 	return dest;
 }
 
 
 // copy orientation & translation from 4x4 row major matrix
-inline void Matrix34::CopyFromRowMajorMatrix44( Scalar *pSrcData )
+template<typename T>
+inline void tMatrix34<T>::CopyFromRowMajorMatrix44( T *pSrcData )
 {
 	matOrient.CopyRowMajorMatrix4( pSrcData );
 	vPosition.x = *(pSrcData + 4 * 3 + 0);
@@ -109,7 +115,8 @@ inline void Matrix34::CopyFromRowMajorMatrix44( Scalar *pSrcData )
 }
 
 
-inline void Matrix34::GetRowMajorMatrix44( Scalar *pDest ) const
+template<typename T>
+inline void tMatrix34<T>::GetRowMajorMatrix44( T *pDest ) const
 {
 	matOrient.GetRowMajorMatrix44( pDest );
 	*(pDest + 4 * 3 + 0) = vPosition.x;
@@ -118,13 +125,15 @@ inline void Matrix34::GetRowMajorMatrix44( Scalar *pDest ) const
 }
 
 
-inline bool Matrix34::operator==( const Matrix34& rhs ) const
+template<typename T>
+inline bool tMatrix34<T>::operator==( const tMatrix34<T>& rhs ) const
 {
 	return ( (vPosition == rhs.vPosition) && (matOrient == rhs.matOrient) );
 }
 
 
-inline Vector3 Matrix34::operator*( const Vector3 &rhs ) const
+template<typename T>
+inline tVector3<T> tMatrix34<T>::operator*( const tVector3<T> &rhs ) const
 {
 	return matOrient * rhs + vPosition;
 }
@@ -139,9 +148,10 @@ inline Vector3 Matrix34::operator*( const Vector3 &rhs ) const
 // usually, 
 //   lhs == world pose
 //   rhs == local pose
-inline Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs)
+template<typename T>
+inline tMatrix34<T> operator*(const tMatrix34<T> & lhs, const tMatrix34<T> & rhs)
 {
-	Matrix34 out;
+	tMatrix34<T> out;
 
 	out.vPosition = lhs.matOrient * rhs.vPosition + lhs.vPosition;
 	out.matOrient = lhs.matOrient * rhs.matOrient;
@@ -154,10 +164,24 @@ inline Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs)
 // global functions
 //===================================================================================
 
-inline Matrix34 Matrix34Identity()
+template<typename T>
+inline tMatrix34<T> tMatrix34Identity()
 {
-	return Matrix34( Vector3(0,0,0), Matrix33Identity() );
+	return tMatrix34<T>( tVector3<T>(0,0,0), tMatrix33Identity<T>() );
 
 }
+
+
+//===================================================================================
+// typedefs
+//===================================================================================
+
+typedef tMatrix34<float> Matrix34;
+typedef tMatrix34<double> dMatrix34;
+
+#define Matrix34Identity tMatrix34Identity<float>
+#define dMatrix3Identity tMatrix34Identity<double>
+
+
 
 #endif  /*  __MATRIX34_H__  */
