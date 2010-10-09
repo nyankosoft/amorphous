@@ -386,7 +386,9 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const SFloatRGBAC
 
 void CHLSLShaderManager::SetParam( const char *parameter_name, const float *float_param, uint num_float_values )
 {
-	m_pEffect->SetFloatArray( parameter_name, float_param, (UINT)num_float_values );
+	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, float_param, (UINT)num_float_values );
+//	if( FAILED(hr) )
+//		LOG_PRINT_WARNING( " failed to set a shader parameter." );
 }
 
 
