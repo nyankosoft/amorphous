@@ -12,6 +12,7 @@
 #include "gds/Physics/Scene.hpp"
 #include "gds/Physics/ContactStreamIterator.hpp"
 #include "gds/Physics/GroupsMask.hpp"
+#include "gds/Item/Clothing.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -294,6 +295,31 @@ void CSkeletalCharacter::Render()
 ///	Matrix34 pose = Matrix34Identity();
 	Matrix34 pose = pEntity->GetWorldPose();
 	m_pRenderMethod->RenderMeshContainer( *(m_MeshContainerRootNode.MeshContainer( 0 )), pose );
+
+	for( int i=0; i<(int)m_pClothes.size(); i++ )
+	{
+		if( !m_pClothes[i] )
+			continue;
+
+		CClothing& clothes = *m_pClothes[i];
+
+/*		if( clothes.HasSkeleton() )
+		{
+		}
+		else
+		{
+		}
+
+		if( clothes.UseClothSimulation() )
+		{
+		}
+		else
+		{
+		}*/
+
+//		clothes;
+	}
+
 }
 
 
@@ -632,6 +658,7 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 			// - Request transition to landing motion
 			m_FeetOnGround = true;
 			world_pose.vPosition.y = query.Point.y;
+			m_pMotionGraphManager->GetMotionFSM("lower_limbs")->RequestTransition( "standing" );
 //			entity.SetWorldPose( world_pose );
 //			SetCharacterWorldPose( world_pose, entity, *(entity.m_vecpPhysicsActor[0]) );
 		}

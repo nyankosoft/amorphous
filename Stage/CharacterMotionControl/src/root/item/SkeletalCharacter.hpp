@@ -13,6 +13,7 @@ using namespace msynth;
 
 class CSkeletalCharacter;
 class CCharacterMotionNodeAlgorithm;
+class CClothing;
 
 
 class CActionCodeToGICodesMap
@@ -62,7 +63,7 @@ class CSkeletalCharacter : public CGameItem
 
 	CActionCodeToGICodesMap m_ACtoGICs;
 
-//	std::vector< boost::shared_ptr<CClothing> > m_pClothings;
+	std::vector< boost::shared_ptr<CClothing> > m_pClothes;
 
 //	boost::shared_ptr<CClothSystem> m_pClothSystem;
 private:

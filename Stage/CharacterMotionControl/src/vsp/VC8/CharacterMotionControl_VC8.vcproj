@@ -226,6 +226,38 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<Filter
+				Name="misc"
+				>
+				<File
+					RelativePath="..\..\..\resources\misc\test_motion_fsm.xml"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="entities"
+				>
+				<File
+					RelativePath="..\..\..\resources\entity\all.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\resources\entity\BaseEntity.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\resources\entity\core.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\resources\entity\light.txt"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
