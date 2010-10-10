@@ -1,5 +1,6 @@
 #include "LWO2_Layer.hpp"
 #include "LWO2_Object.hpp"
+#include "3DMath/Vector2.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 #include "assert.h"
