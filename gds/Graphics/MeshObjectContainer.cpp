@@ -3,6 +3,7 @@
 #include "XML.hpp"
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 
 using namespace std;
@@ -119,7 +120,11 @@ void CMeshObjectContainer::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_MeshDesc;
 	ar & m_ShaderTechnique;
 	ar & m_vecExtraTextureFilepath;
-	ar & m_ShaderFilepath;
+
+	if( version < 1 )
+		ar & m_ShaderDesc.ResourcePath;
+	else
+		ar & m_ShaderDesc;
 }
 
 
@@ -134,7 +139,7 @@ void CMeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 	// A detailed version - load mesh properties from a "MeshDesc" node
 	m_MeshDesc.LoadFromXMLNode( reader.GetChild( "MeshDesc" ) );
 
-	reader.GetChildElementTextContent( "ShaderFilepath", m_ShaderFilepath );
+	reader.GetChildElementTextContent( "ShaderFilepath", m_ShaderDesc.ResourcePath );
 
 	string shader_technique;
 	if( reader.GetChildElementTextContent( "SingleShaderTechnique", shader_technique ) )
@@ -145,14 +150,28 @@ void CMeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	// Load path and technique as attributes from a single node
 
-	reader.GetChild("Shader").GetAttributeValue("path",     m_ShaderFilepath );
-
-	shader_technique = "";
-	reader.GetChild("Shader").GetAttributeValue("technique",shader_technique );
-	if( 0 < shader_technique.length() )
+	CXMLNodeReader shader_node = reader.GetChild("Shader");
+	if( shader_node.IsValid() )
 	{
-		m_ShaderTechnique.resize( 1, 1 );
-		m_ShaderTechnique(0,0).SetTechniqueName( shader_technique.c_str() );
+		string shader_path( shader_node.GetAttributeText("path") );
+		if( 0 < shader_path.length() )
+			m_ShaderDesc.ResourcePath = shader_path;
+		else
+		{
+			// try to load generic shader attributes
+			CGenericShaderDesc desc;
+//			LoadFromXMLNode( shader_node, desc );
+			m_ShaderDesc.pShaderGenerator.reset( new CGenericShaderGenerator(desc) );
+		}
+		shader_node.GetAttributeValue("path",     m_ShaderDesc.ResourcePath );
+
+		shader_technique = "";
+		shader_node.GetAttributeValue("technique",shader_technique );
+		if( 0 < shader_technique.length() )
+		{
+			m_ShaderTechnique.resize( 1, 1 );
+			m_ShaderTechnique(0,0).SetTechniqueName( shader_technique.c_str() );
+		}
 	}
 }
 
@@ -298,7 +317,7 @@ bool CMeshContainerNode::LoadShadersFromDesc()
 	bool loaded_so_far = true;
 	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
 	{
-		loaded = m_vecpMeshContainer[i]->m_ShaderHandle.Load( m_vecpMeshContainer[i]->m_ShaderFilepath );
+		loaded = m_vecpMeshContainer[i]->m_ShaderHandle.Load( m_vecpMeshContainer[i]->m_ShaderDesc );
 		if( !loaded )
 			loaded_so_far = false;
 	}

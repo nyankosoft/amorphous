@@ -33,7 +33,7 @@ public:
 
 
 	//
-	// shader
+	// default shader
 	//
 
 	/// table of shader techniques
@@ -41,7 +41,7 @@ public:
 	/// - column: corresponds to resolution (intended to be shader version of LOD)
 	C2DArray<CShaderTechniqueHandle> m_ShaderTechnique;
 
-	std::string m_ShaderFilepath;
+	CShaderResourceDesc m_ShaderDesc;
 
 	CShaderHandle m_ShaderHandle;
 
@@ -71,6 +71,8 @@ public:
 	virtual ~CMeshObjectContainer() {}
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	virtual unsigned int GetVersion() const { return 1; }
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 };
