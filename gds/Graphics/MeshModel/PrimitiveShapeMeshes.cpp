@@ -1,8 +1,43 @@
 #include "PrimitiveShapeMeshes.hpp"
 #include "3DMath/Matrix34.hpp"
+#include "3DMeshModelBuilder.hpp"
 
 using namespace std;
 using namespace boost;
+
+
+void SetDefaultMeshAttributes( C3DMeshModelArchive& mesh_archive )
+{
+	vector<CMMA_Material>& material_buffer = mesh_archive.GetMaterial();
+	if( 0 < material_buffer.size() )
+	{
+		material_buffer[0].vecTexture.resize( 1 );
+		CMMA_Texture& tex0 = material_buffer[0].vecTexture[0];
+
+//		if( 0 < m_TexturePath.length() )
+//		{
+//			tex0.type = CMMA_Texture::FILENAME;
+//			tex0.strFilename = m_TexturePath;
+//		}
+//		else
+//		{
+			tex0.type = CMMA_Texture::SINGLECOLOR;
+			tex0.vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
+//		}
+	}
+}
+
+
+Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<CGeneral3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive )
+{
+	C3DMeshModelBuilder mesh_builder;
+	mesh_builder.BuildMeshModelArchive( pSrcMesh );
+	dest_mesh_archive = mesh_builder.GetArchive();
+
+	SetDefaultMeshAttributes( dest_mesh_archive );
+
+	return Result::SUCCESS;
+}
 
 
 static Matrix33 GetRotationMatrixToAlignToAxis( AxisAndDirection::Name axis )
@@ -19,6 +54,12 @@ static Matrix33 GetRotationMatrixToAlignToAxis( AxisAndDirection::Name axis )
 	default:
 		return Matrix33Identity();
 	}
+}
+
+
+void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
 }
 
 
@@ -391,4 +432,39 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 
 	std::vector<CMMA_Material>& material_buffer = mesh.GetMaterialBuffer();
 	material_buffer.resize( 1 );
+}
+
+
+Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelArchive& mesh_archive )
+{
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	CreateCylinderMesh( desc, *pMesh );
+	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
+}
+
+
+Result::Name CreateConeMeshArchive( const CConeDesc& desc, C3DMeshModelArchive& mesh_archive )
+{
+//	CGeneral3DMesh mesh;
+//	CreateConeMesh( desc, mesh );
+//	mesh.Create3DMeshModelArchive( mesh_archive );
+
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	CreateConeMesh( desc, *pMesh );
+	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
+}
+
+Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,   C3DMeshModelArchive& mesh_archive )
+{
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	CreateSphereMesh( desc, *pMesh );
+	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
+}
+
+
+Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc, C3DMeshModelArchive& mesh_archive )
+{
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	CreateCapsuleMesh( desc, *pMesh );
+	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
 }

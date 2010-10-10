@@ -64,9 +64,9 @@ BOOST_PYTHON_MODULE(math3d)
 	;
 
 	def( "Matrix33Identity",  Matrix33IdentityForBoostPython );
-	def( "Matrix33RotationX", Matrix33RotationX );
-	def( "Matrix33RotationY", Matrix33RotationY );
-	def( "Matrix33RotationZ", Matrix33RotationZ );
+	def( "Matrix33RotationX", Matrix33RotationX<float> );
+	def( "Matrix33RotationY", Matrix33RotationY<float> );
+	def( "Matrix33RotationZ", Matrix33RotationZ<float> );
 
 	class_<Matrix34>("Matrix34")
 		.def(init<Vector3,Matrix33>())

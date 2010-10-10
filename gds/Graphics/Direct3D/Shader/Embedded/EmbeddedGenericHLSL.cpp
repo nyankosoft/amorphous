@@ -456,13 +456,14 @@ const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 /// param vLightDirWS [in] direction of the light ray. i.g. direciton from the light to the vertex
 "float CalculateSpecularComponent( float3 vLightDirWS,"\
 								  "float3 vNormalWS,"\
-								  "float3 vToViewerWS )"\
+								  "float3 vToViewerWS,"\
+								  "float specular_power )"\
 "{"\
 	"float3 vReflectionWS = vLightDirWS - 2.0 * dot( vNormalWS, vLightDirWS ) * vNormalWS;"\
 //	vReflectionWS = normalize(vReflectionWS);
 	"float alignment = dot(vReflectionWS,vToViewerWS);"\
 	"if( 0 < alignment )"\
-		"return pow( alignment, g_fSpecularPower );"\
+		"return pow( alignment, specular_power );"\
 	"else\n"\
 		"return 0.0f;"\
 "}\n"\
@@ -472,7 +473,7 @@ const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 // Name: DoHemisphericDirLight()
 // Desc: hemispheric directional light computation
 //-----------------------------------------------------------------------------
-"COLOR_PAIR DoHemisphericDirLight_Specular(float3 vNormalWS, float3 vToViewerWS, int i)"\
+"COLOR_PAIR DoHemisphericDirLight_Specular(float3 vNormalWS, float3 vToViewerWS, int i, float specular_power )"\
 "{"\
 	"COLOR_PAIR Out;"\
 	"float NdotL = dot( vNormalWS, -g_aLight[i].vDir );"\
@@ -487,7 +488,7 @@ const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 	// add specular component
 	"if( 0.0 <= NdotL )"\
 	"{"\
-		"Out.ColorSpec = CalculateSpecularComponent( g_aLight[i].vDir, vNormalWS, vToViewerWS );// * g_aLight[i].vSpecular\n"\
+		"Out.ColorSpec = CalculateSpecularComponent( g_aLight[i].vDir, vNormalWS, vToViewerWS, specular_power );// * g_aLight[i].vSpecular\n"\
 	"}"\
 
 	"return Out;"\
@@ -498,7 +499,7 @@ const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 // Name: DoHemisphericPointLight()
 // Desc: hemispheric point light computation
 //-----------------------------------------------------------------------------
-"COLOR_PAIR DoHemisphericPointLight_Specular(float3 vWorldPos, float3 vNormalWS, float3 vToViewerWS, int i)"\
+"COLOR_PAIR DoHemisphericPointLight_Specular(float3 vWorldPos, float3 vNormalWS, float3 vToViewerWS, int i, float specular_power )"\
 "{"\
 	"float3 vVertToLightWS = g_aLight[i].vPos - vWorldPos;"\
 	"float LD = length( vVertToLightWS );"\
@@ -517,7 +518,7 @@ const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 	// add specular component
 	"if( 0.0 <= NdotL )"\
 	"{"\
-		"Out.ColorSpec = CalculateSpecularComponent( -vDirToLightWS, vNormalWS, vToViewerWS );// * g_aLight[i].vSpecular\n"\
+		"Out.ColorSpec = CalculateSpecularComponent( -vDirToLightWS, vNormalWS, vToViewerWS, specular_power );// * g_aLight[i].vSpecular\n"\
 	"}"\
 
 	"if(LD > g_aLight[i].fRange)"\

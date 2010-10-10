@@ -67,9 +67,14 @@ public:
 	enum Name
 	{
 		NONE,
-		UNIFORM,          ///< uniform specularity
-		DECAL_TEX_ALPHA,  ///< alpha channel of decal texture (stage 0)
-		NORMAL_MAP_ALPHA, ///< alpha channel of normal map texture (stage 1)
+		UNIFORM,                       ///< uniform specularity
+		TEX0_ALPHA,
+		DECAL_TEX_ALPHA = TEX0_ALPHA,  ///< alpha channel of decal texture (stage 0)
+		TEX1_RED,
+		TEX1_GREEN,
+		TEX1_BLUE,
+		TEX1_ALPHA,
+		NORMAL_MAP_ALPHA = TEX1_ALPHA, ///< alpha channel of normal map texture (stage 1)
 		NUM_TYPES
 	};
 };

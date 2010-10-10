@@ -207,23 +207,15 @@ public:
 
 
 
-extern void CreateConeMesh( const CConeDesc& desc,       CGeneral3DMesh& mesh );
-extern void CreateSphereMesh( const CSphereDesc& desc,   CGeneral3DMesh& mesh );
-extern void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh );
+extern void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh );
+extern void CreateConeMesh( const CConeDesc& desc,         CGeneral3DMesh& mesh );
+extern void CreateSphereMesh( const CSphereDesc& desc,     CGeneral3DMesh& mesh );
+extern void CreateCapsuleMesh( const CCapsuleDesc& desc,   CGeneral3DMesh& mesh );
 
-
-inline void CreateConeMeshArchive( const CConeDesc& desc, C3DMeshModelArchive& mesh_archive )
-{
-//	CGeneral3DMesh mesh;
-//	CreateConeMesh( desc, mesh );
-//	mesh.Create3DMeshModelArchive( mesh_archive );
-
-	boost::shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
-	CreateConeMesh( desc, *(pMesh.get()) );
-	C3DMeshModelBuilder mesh_builder;
-	mesh_builder.BuildMeshModelArchive( pMesh );
-	mesh_archive = mesh_builder.GetArchive();
-}
+extern Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelArchive& mesh_archive );
+extern Result::Name CreateConeMeshArchive( const CConeDesc& desc,         C3DMeshModelArchive& mesh_archive );
+extern Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,     C3DMeshModelArchive& mesh_archive );
+extern Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc,   C3DMeshModelArchive& mesh_archive );
 
 
 

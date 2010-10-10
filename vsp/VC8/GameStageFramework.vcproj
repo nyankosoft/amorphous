@@ -989,6 +989,10 @@
 						RelativePath="..\..\gds\Stage\BEC_PseudoAircraft.hpp"
 						>
 					</File>
+					<File
+						RelativePath="..\..\gds\Stage\CoreBaseEntities.cpp"
+						>
+					</File>
 					<Filter
 						Name="components"
 						>

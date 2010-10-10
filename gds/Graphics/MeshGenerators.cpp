@@ -258,34 +258,25 @@ Result::Name CConeMeshGenerator::Generate()
 
 
 
-Result::Name CSphereMeshGenerator::Generate()
+Result::Name CCylinderMeshGenerator::Generate()
 {
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
-
-	CreateSphereMesh( m_Desc, *pMesh );
-
-	C3DMeshModelBuilder mesh_builder;
-	mesh_builder.BuildMeshModelArchive( pMesh );
-	m_MeshArchive = mesh_builder.GetArchive();
-
-	SetMiscMeshAttributes();
-
-	return Result::SUCCESS;
+	Result::Name res = CreateCylinderMeshArchive( m_Desc, m_MeshArchive );
+	SetMiscMeshAttributes(); // set texture filename if it is specified.
+	return res;
 }
 
+
+Result::Name CSphereMeshGenerator::Generate()
+{
+	Result::Name res = CreateSphereMeshArchive( m_Desc, m_MeshArchive );
+	SetMiscMeshAttributes(); // set texture filename if it is specified.
+	return res;
+}
 
 
 Result::Name CCapsuleMeshGenerator::Generate()
 {
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
-
-	CreateCapsuleMesh( m_Desc, *pMesh );
-
-	C3DMeshModelBuilder mesh_builder;
-	mesh_builder.BuildMeshModelArchive( pMesh );
-	m_MeshArchive = mesh_builder.GetArchive();
-
-	SetMiscMeshAttributes();
-
-	return Result::SUCCESS;
+	Result::Name res = CreateCapsuleMeshArchive( m_Desc, m_MeshArchive );
+	SetMiscMeshAttributes(); // set texture filename if it is specified.
+	return res;
 }

@@ -232,6 +232,56 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 "#define GET_SPECULAR normal_map.a\n"\
 "#endif\n"\
 
+"#ifdef SPECTYPE__TEX1_RED\n"\
+"#define GET_SPECULAR normal_map.r\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__TEX1_GREEN\n"\
+"#define GET_SPECULAR normal_map.g\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__TEX1_BLUE\n"\
+"#define GET_SPECULAR normal_map.b\n"\
+"#endif\n"\
+
+
+// glossiness types
+"\n"\
+"#ifdef SPECPOWTYPE__NONE\n"\
+"#define GET_SPECULAR_POWER 8.0\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__UNIFORM\n"\
+"#define GET_SPECULAR_POWER g_fSpecularPower\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__DECAL_TEX_ALPHA\n"\
+"#define GET_SPECULAR_POWER surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__NORMAL_MAP_ALPHA\n"\
+"#define GET_SPECULAR_POWER normal_map.a\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__TEX1_RED\n"\
+"#define GET_SPECULAR_POWER normal_map.r\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__TEX1_GREEN\n"\
+"#define GET_SPECULAR_POWER normal_map.g\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__TEX1_BLUE\n"\
+"#define GET_SPECULAR_POWER normal_map.b\n"\
+"#endif\n"\
+
+"#ifdef GET_SPECULAR_POWER\n"\
+// one of the macros above is used
+"#else\n"\
+"#define GET_SPECULAR_POWER 8.0\n"\
+"#endif\n"\
+
+
 // alpha blend types
 "\n"\
 "#ifdef ALPHABLEND__NONE\n"\
@@ -266,6 +316,12 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 "{"\
 	"float4 surface_color = tex2D( Sampler0, Tex0 ) * ColorDiff;"\
 
+//	"NORMAL_MAP_TEXTURE\n"\
+//	or
+//	"TEXTURE_1\n"\
+
+	"float specular_power = GET_SPECULAR_POWER;"\
+
 	// normal in world space
 	"const float3 vNormalizedNormalWS = normalize(vNormalWS);"\
 
@@ -281,7 +337,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 	"[unroll(1)]"\
 	"for(i = 0; i < iLightDirNum; i++)"\
 	"{"\
-		"COLOR_PAIR ColOut = DoHemisphericDirLight_Specular( vNormalizedNormalWS, vDirToViewerWS, i+iLightDirIni );"\
+		"COLOR_PAIR ColOut = DoHemisphericDirLight_Specular( vNormalizedNormalWS, vDirToViewerWS, i+iLightDirIni, specular_power );"\
 		"Out.Color     += ColOut.Color;"\
 		"Out.ColorSpec += ColOut.ColorSpec;"\
 	"}"\
@@ -290,7 +346,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 	"[unroll(1)]"\
 	"for(i = 0; i < iLightPointNum; i++)"\
 	"{"\
-		"COLOR_PAIR ColOut = DoHemisphericPointLight_Specular( PosWS, vNormalizedNormalWS, vDirToViewerWS, i+iLightPointIni );"\
+		"COLOR_PAIR ColOut = DoHemisphericPointLight_Specular( PosWS, vNormalizedNormalWS, vDirToViewerWS, i+iLightPointIni, specular_power );"\
 		"Out.Color     += ColOut.Color;"\
 		"Out.ColorSpec += ColOut.ColorSpec;"\
 	"}"\

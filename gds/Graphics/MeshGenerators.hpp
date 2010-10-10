@@ -49,6 +49,8 @@ protected:
 	/// generate texture coords based on m_TexCoordStyleFlags.
 	void GenerateTextureCoords( CGeneral3DMesh& mesh );
 
+	Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<CGeneral3DMesh>& pSrcMesh );
+
 public:
 
 	enum Params
@@ -108,6 +110,23 @@ public:
 		U32 vertex_flags = DEFAULT_VERTEX_FLAGS,
 		const SFloatRGBAColor& diffuse_color = SFloatRGBAColor(1.0f, 1.0f, 1.0f, 1.0f),
 		MeshPolygonDirection::Type polygon_direction = MeshPolygonDirection::OUTWARD );
+};
+
+
+class CCylinderMeshGenerator : public CMeshGenerator
+{
+	CCylinderDesc m_Desc;
+
+public:
+
+	CCylinderMeshGenerator( const CCylinderDesc& desc )
+		:
+	m_Desc(desc)
+	{}
+
+	~CCylinderMeshGenerator() {}
+
+	Result::Name Generate();
 };
 
 
