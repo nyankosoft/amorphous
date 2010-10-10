@@ -3,10 +3,10 @@
 
 #include "IK_Node.hpp"
 #include "IK_Tree.hpp"
-#include "Math64/MathMisc.hpp"
-#include "Math64/LinearR3.h"
-#include "Math64/VectorRn.h"
-#include "Math64/MatrixRmn.h"
+#include "3DMath/MathMisc.hpp"
+#include "3DMath/Vector3.hpp"
+#include "3DMath/VectorN.hpp"
+#include "3DMath/MatrixMN.hpp"
 
 
 #ifdef _DYNAMIC
@@ -44,7 +44,7 @@ public:
 	CIK_Jacobian(CIK_Tree*);
 
 	void ComputeJacobian();
-	const MatrixRmn& ActiveJacobian() const { return *Jactive; } 
+	const dMatrixMN& ActiveJacobian() const { return *Jactive; } 
 	void SetJendActive() { Jactive = &Jend; }						// The default setting is Jend.
 	void SetJtargetActive() { Jactive = &Jtarget; }
 
@@ -52,7 +52,7 @@ public:
 
 	void UpdateThetas();
 	double UpdateErrorArray();		// Returns sum of errors
-	const VectorRn& GetErrorArray() const { return errorArray; }
+	const dVectorN& GetErrorArray() const { return errorArray; }
 	void UpdatedSClampValue();
 	void DrawEigenVectors() const;
 
@@ -74,23 +74,23 @@ private:
 	int nRow;			///< Total number of rows the real J (= 3*number of end effectors for now)
 	int nCol;			///< Total number of columns in the real J (= number of joints for now)
 
-	MatrixRmn Jend;		///< Jacobian matrix based on end effector positions
-	MatrixRmn Jtarget;	///< Jacobian matrix based on target positions
-	MatrixRmn Jnorms;	///< Norms of 3-vectors in active Jacobian (SDLS only)
+	dMatrixMN Jend;		///< Jacobian matrix based on end effector positions
+	dMatrixMN Jtarget;	///< Jacobian matrix based on target positions
+	dMatrixMN Jnorms;	///< Norms of 3-vectors in active Jacobian (SDLS only)
 
-	MatrixRmn U;		///< J = U * Diag(w) * V^T	(Singular Value Decomposition)
-	VectorRn w;			
-	MatrixRmn V;
+	dMatrixMN U;		///< J = U * Diag(w) * V^T	(Singular Value Decomposition)
+	dVectorN w;			
+	dMatrixMN V;
 
 	JacobUpdateMode CurrentUpdateMode;
 
-	VectorRn dS;			// delta s
-	VectorRn dT;			// delta t		--  these are delta S values clamped to smaller magnitude
-	VectorRn dSclamp;		// Value to clamp magnitude of dT at.
-	VectorRn dTheta;		// delta theta
-	VectorRn dPreTheta;		// delta theta for single eigenvalue  (SDLS only)
+	dVectorN dS;			// delta s
+	dVectorN dT;			// delta t		--  these are delta S values clamped to smaller magnitude
+	dVectorN dSclamp;		// Value to clamp magnitude of dT at.
+	dVectorN dTheta;		// delta theta
+	dVectorN dPreTheta;		// delta theta for single eigenvalue  (SDLS only)
 
-	VectorRn errorArray;	// Distance of end effectors from target after updating 
+	dVectorN errorArray;	// Distance of end effectors from target after updating 
 
 	// Parameters for pseudoinverses
 	static const double PseudoInverseThresholdFactor;		// Threshold for treating eigenvalue as zero (fraction of largest eigenvalue)
@@ -106,7 +106,7 @@ private:
 	static const double MaxAnglePseudoinverse;
 	static const double MaxAngleDLS;	
 	static const double MaxAngleSDLS;	
-	MatrixRmn* Jactive;
+	dMatrixMN* Jactive;
 
 	void CalcdTClampedFromdS();
 	static const double BaseMaxTargetDist;

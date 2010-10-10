@@ -1,23 +1,11 @@
-
-#include <math.h>
-
-#ifdef WIN32
-#include <windows.h>
-#endif
-/**
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <GL/glui.h>
-**/
-#include "Math64/LinearR3.h"
-#include "Math64/MathMisc.hpp"
 #include "IK_Node.hpp"
+#include "3DMath/Matrix33.hpp"
+#include "3DMath/MathMisc.hpp"
 
 extern int RotAxesOn;
 
 
-CIK_Node::CIK_Node(const VectorR3& attach, const VectorR3& v, double size, Purpose purpose, double minTheta, double maxTheta, double restAngle)
+CIK_Node::CIK_Node(const dVector3& attach, const dVector3& v, double size, Purpose purpose, double minTheta, double maxTheta, double restAngle)
 {
 	CIK_Node::freezed = false;
 	CIK_Node::size = size;
@@ -25,7 +13,7 @@ CIK_Node::CIK_Node(const VectorR3& attach, const VectorR3& v, double size, Purpo
 	seqNumJoint = -1;
 	seqNumEffector = -1;
 	CIK_Node::attach = attach;		// Global attachment point when joints are at zero angle
-	r.Set(0.0, 0.0, 0.0);		// r will be updated when this node is inserted into tree
+	r = dVector3(0.0, 0.0, 0.0);	// r will be updated when this node is inserted into tree
 	CIK_Node::v = v;				// Rotation axis when joints at zero angles
 	theta = 0.0;
 	CIK_Node::minTheta = minTheta;
@@ -40,8 +28,10 @@ void CIK_Node::ComputeS(void)
 	CIK_Node* y = this->realparent;
 	CIK_Node* w = this;
 	s = r;							// Initialize to local (relative) position
-	while ( y ) {
-		s.Rotate( y->theta, y->v );
+	while( y )
+	{
+//		s.Rotate( y->theta, y->v );
+		s = Matrix33RotationAxis( y->theta, y->v ) * s;
 		y = y->realparent;
 		w = w->realparent;
 		s += w->r;
@@ -53,8 +43,10 @@ void CIK_Node::ComputeW(void)
 {
 	CIK_Node* y = this->realparent;
 	w = v;							// Initialize to local rotation axis
-	while (y) {
-		w.Rotate(y->theta, y->v);
+	while (y)
+	{
+//		w.Rotate(y->theta, y->v);
+		w = Matrix33RotationAxis( y->theta, y->v ) * w;
 		y = y->realparent;
 	}
 }
@@ -100,17 +92,17 @@ void CIK_Node::DrawBox() const
 
 void CIK_Node::DrawNode(bool isRoot)
 {
-/**	if (!isRoot) {
+	if (!isRoot) {
 		DrawBox();
 	}
-
+/**
 	if (RotAxesOn) {
 		const double rotAxisLen = 1.3;
 		glDisable(GL_LIGHTING);
 		glColor3f(1.0f, 1.0f, 0.0f);
 		glLineWidth(2.0);
 		glBegin(GL_LINES);
-		VectorR3 temp = r;
+		dVector3 temp = r;
 		temp.AddScaled(v,rotAxisLen*size);
 		glVertex3f( temp.x, temp.y, temp.z );
 		temp.AddScaled(v,-2.0*rotAxisLen*size);

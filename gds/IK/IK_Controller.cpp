@@ -1,4 +1,3 @@
-
 #include "IK_Controller.hpp"
 
 #include "IK_Tree.hpp"
@@ -56,7 +55,7 @@ void CIK_Controller::DoUpdateStep()
 //		UpdateTargets( T );
 	} 
 */
-	Jacobian *jacob = m_pJacobian;
+	CIK_Jacobian *jacob = m_pJacobian;
 
 	if ( UseJacobianTargets )
 	{

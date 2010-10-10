@@ -1,25 +1,13 @@
-
+#include "IK_Jacobian.hpp"
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>
-#include <iostream>
-using namespace std;
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-/**
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <GL/glui.h>
-**/
-#include "IK_Jacobian.hpp"
 
-///void Arrow(const VectorR3& tail, const VectorR3& head);
+///void Arrow(const dVector3& tail, const dVector3& head);
 
-extern RestPositionOn;
-extern VectorR3 target[];
+//extern RestPositionOn;
+extern dVector3 target[];
 
 // Optimal damping values have to be determined in an ad hoc manner  (Yuck!)
 // const double CIK_Jacobian::DefaultDampingLambda = 0.6;		// Optimal for the "Y" shape (any lower gives jitter)
@@ -27,14 +15,18 @@ const double CIK_Jacobian::DefaultDampingLambda = 1.1;			// Optimal for the DLS 
 // const double CIK_Jacobian::DefaultDampingLambda = 0.7;			// Optimal for the DLS "double Y" shape with distance clamping (lower gives jitter)
 
 const double CIK_Jacobian::PseudoInverseThresholdFactor = 0.01;
-const double CIK_Jacobian::MaxAngleJtranspose = 30.0*DegreesToRadians;
-const double CIK_Jacobian::MaxAnglePseudoinverse = 5.0*DegreesToRadians;
-const double CIK_Jacobian::MaxAngleDLS = 45.0*DegreesToRadians;
-const double CIK_Jacobian::MaxAngleSDLS = 45.0*DegreesToRadians;
+const double CIK_Jacobian::MaxAngleJtranspose = deg_to_rad( 30.0 );
+const double CIK_Jacobian::MaxAnglePseudoinverse = deg_to_rad( 5.0 );
+const double CIK_Jacobian::MaxAngleDLS = deg_to_rad( 45.0 );
+const double CIK_Jacobian::MaxAngleSDLS = deg_to_rad( 45.0 );
 const double CIK_Jacobian::BaseMaxTargetDist = 0.4;
+
 
 CIK_Jacobian::CIK_Jacobian(CIK_Tree* tree)
 {
+	if( !tree )
+		return;
+
 	CIK_Jacobian::tree = tree;
 	nEffector = tree->GetNumEffector();
 	nJoint = tree->GetNumJoint();
@@ -86,12 +78,12 @@ void CIK_Jacobian::Reset()
 void CIK_Jacobian::ComputeJacobian() 
 {
 	// Traverse tree to find all end effectors
-	VectorR3 temp;
+	dVector3 temp;
 	CIK_Node* n = tree->GetRoot();
 	while ( n ) {	
 		if ( n->IsEffector() ) {
 			int i = n->GetEffectorNum();
-			const VectorR3& targetPos = target[i];
+			const dVector3& targetPos = target[i];
 
 			// Compute the delta S value (differences from end effectors to target positions.
 			temp = targetPos;
@@ -105,8 +97,8 @@ void CIK_Jacobian::ComputeJacobian()
 				int j = m->GetJointNum();
 				assert ( 0 <=i && i<nEffector && 0<=j && j<nJoint );
 				if ( m->IsFrozen() ) {
-					Jend.SetTriple(i, j, VectorR3::Zero);
-					Jtarget.SetTriple(i, j, VectorR3::Zero);
+					Jend.SetTriple(i, j, dVector3(0,0,0));
+					Jtarget.SetTriple(i, j, dVector3(0,0,0));
 				}
 				else {
 					temp = m->GetS();			// joint pos.
@@ -179,7 +171,7 @@ void CIK_Jacobian::ZeroDeltaThetas()
 // Uses a greedy method to decide scaling factor
 void CIK_Jacobian::CalcDeltaThetasTranspose()
 {
-	const MatrixRmn& J = ActiveJacobian();
+	const dMatrixMN& J = ActiveJacobian();
 
 	J.MultiplyTranspose( dS, dTheta );
 
@@ -197,7 +189,7 @@ void CIK_Jacobian::CalcDeltaThetasTranspose()
 
 void CIK_Jacobian::CalcDeltaThetasPseudoinverse() 
 {	
-	MatrixRmn& J = const_cast<MatrixRmn&>(ActiveJacobian());
+	dMatrixMN& J = const_cast<dMatrixMN&>(ActiveJacobian());
 
 	// Compute Singular Value Decomposition 
 	//	This an inefficient way to do Pseudoinverse, but it is convenient since we need SVD anyway
@@ -220,7 +212,7 @@ void CIK_Jacobian::CalcDeltaThetasPseudoinverse()
 		double alpha = *(wPtr++);
 		if ( fabs(alpha)>pseudoInverseThreshold ) {
 			alpha = 1.0/alpha;
-			MatrixRmn::AddArrayScale(V.GetNumRows(), V.GetColumnPtr(i), 1, dTheta.GetPtr(), 1, dotProdCol*alpha );
+			dMatrixMN::AddArrayScale(V.GetNumRows(), V.GetColumnPtr(i), 1, dTheta.GetPtr(), 1, dotProdCol*alpha );
 		}
 	}
 
@@ -235,14 +227,14 @@ void CIK_Jacobian::CalcDeltaThetasPseudoinverse()
 
 void CIK_Jacobian::CalcDeltaThetasDLS() 
 {	
-	const MatrixRmn& J = ActiveJacobian();
+	const dMatrixMN& J = ActiveJacobian();
 
-	MatrixRmn::MultiplyTranspose(J, J, U);		// U = J * (J^T)
+	dMatrixMN::MultiplyTranspose(J, J, U);		// U = J * (J^T)
 	U.AddToDiagonal( DampingLambdaSq );
 	
 	// Use the next four lines instead of the succeeding two lines for the DLS method with clamped error vector e.
 	// CalcdTClampedFromdS();
-	// VectorRn dTextra(3*nEffector);
+	// dVectorN dTextra(3*nEffector);
 	// U.Solve( dT, &dTextra );
 	// J.MultiplyTranspose( dTextra, dTheta );
 	
@@ -260,7 +252,7 @@ void CIK_Jacobian::CalcDeltaThetasDLS()
 
 void CIK_Jacobian::CalcDeltaThetasDLSwithSVD() 
 {	
-	const MatrixRmn& J = ActiveJacobian();
+	const dMatrixMN& J = ActiveJacobian();
 
 	// Compute Singular Value Decomposition 
 	//	This an inefficient way to do DLS, but it is convenient since we need SVD anyway
@@ -280,7 +272,7 @@ void CIK_Jacobian::CalcDeltaThetasDLSwithSVD()
 		double dotProdCol = U.DotProductColumn( dS, i );		// Dot product with i-th column of U
 		double alpha = *(wPtr++);
 		alpha = alpha/(Square(alpha)+DampingLambdaSq);
-		MatrixRmn::AddArrayScale(V.GetNumRows(), V.GetColumnPtr(i), 1, dTheta.GetPtr(), 1, dotProdCol*alpha );
+		dMatrixMN::AddArrayScale(V.GetNumRows(), V.GetColumnPtr(i), 1, dTheta.GetPtr(), 1, dotProdCol*alpha );
 	}
 
 	// Scale back to not exceed maximum angle changes
@@ -293,7 +285,7 @@ void CIK_Jacobian::CalcDeltaThetasDLSwithSVD()
 
 void CIK_Jacobian::CalcDeltaThetasSDLS() 
 {	
-	const MatrixRmn& J = ActiveJacobian();
+	const dMatrixMN& J = ActiveJacobian();
 
 	// Compute Singular Value Decomposition 
 
@@ -418,12 +410,12 @@ double CIK_Jacobian::UpdateErrorArray()
 	double totalError = 0.0;
 
 	// Traverse tree to find all end effectors
-	VectorR3 temp;
+	dVector3 temp;
 	CIK_Node* n = tree->GetRoot();
 	while ( n ) {	
 		if ( n->IsEffector() ) {
 			int i = n->GetEffectorNum();
-			const VectorR3& targetPos = target[i];
+			const dVector3& targetPos = target[i];
 			temp = targetPos;
 			temp -= n->GetS();
 			double err = temp.Norm();
@@ -439,12 +431,12 @@ double CIK_Jacobian::UpdateErrorArray()
 void CIK_Jacobian::UpdatedSClampValue()
 {
 	// Traverse tree to find all end effectors
-	VectorR3 temp;
+	dVector3 temp;
 	CIK_Node* n = tree->GetRoot();
 	while ( n ) {	
 		if ( n->IsEffector() ) {
 			int i = n->GetEffectorNum();
-			const VectorR3& targetPos = target[i];
+			const dVector3& targetPos = target[i];
 
 			// Compute the delta S value (differences from end effectors to target positions.
 			// While we are at it, also update the clamping values in dSclamp;
@@ -467,8 +459,8 @@ void CIK_Jacobian::UpdatedSClampValue()
 void CIK_Jacobian::DrawEigenVectors() const
 {/**
 	int i, j;
-	VectorR3 tail;
-	VectorR3 head;
+	dVector3 tail;
+	dVector3 head;
 	Node *node;
 
 	for (i=0; i<w.GetLength(); i++) {
@@ -497,8 +489,8 @@ void CIK_Jacobian::DrawEigenVectors() const
 
 void CIK_Jacobian::CompareErrors( const CIK_Jacobian& j1, const CIK_Jacobian& j2, double* weightedDist1, double* weightedDist2 )
 {
-	const VectorRn& e1 = j1.errorArray;
-	const VectorRn& e2 = j2.errorArray;
+	const dVectorN& e1 = j1.errorArray;
+	const dVectorN& e2 = j2.errorArray;
 	double ret1 = 0.0;
 	double ret2 = 0.0;
 	int len = e1.GetLength();
@@ -524,8 +516,8 @@ void CIK_Jacobian::CompareErrors( const CIK_Jacobian& j1, const CIK_Jacobian& j2
 
 void CIK_Jacobian::CountErrors( const CIK_Jacobian& j1, const CIK_Jacobian& j2, int* numBetter1, int* numBetter2, int* numTies )
 {
-	const VectorRn& e1 = j1.errorArray;
-	const VectorRn& e2 = j2.errorArray;
+	const dVectorN& e1 = j1.errorArray;
+	const dVectorN& e2 = j2.errorArray;
 	int b1=0, b2=0, tie=0;
 	int len = e1.GetLength();
 	for ( long i=0; i<len; i++ ) {
@@ -549,7 +541,7 @@ void CIK_Jacobian::CountErrors( const CIK_Jacobian& j1, const CIK_Jacobian& j2, 
 /* THIS VERSION IS NOT AS GOOD.  DO NOT USE!
 void CIK_Jacobian::CalcDeltaThetasSDLSrev2() 
 {	
-	const MatrixRmn& J = ActiveJacobian();
+	const dMatrixMN& J = ActiveJacobian();
 
 	// Compute Singular Value Decomposition 
 
@@ -622,7 +614,7 @@ void CIK_Jacobian::CalcDeltaThetasSDLSrev2()
 
 		// Calculate the dTheta from pure pseudoinverse considerations
 		double scale = alpha*wiInv/(Square(wiInv)+Square(lambda));			// This times i-th column of V is the SDLS response
-		MatrixRmn::AddArrayScale(nCols, V.GetColumnPtr(i), 1, dTheta.GetPtr(), 1, scale );
+		dMatrixMN::AddArrayScale(nCols, V.GetColumnPtr(i), 1, dTheta.GetPtr(), 1, scale );
 	}
 
 	// Scale back to not exceed maximum angle changes

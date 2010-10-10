@@ -1,25 +1,9 @@
-
-#include <iostream>
-using namespace std;
-
-#ifdef WIN32
-#include <windows.h>
-#endif
-
-/*
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-*/
-
-#include "Math64/LinearR3.h"
 #include "IK_Tree.hpp"
-#include "IK_Node.hpp"
 
 
 CIK_Tree::CIK_Tree()
 {
-	root = 0;
+	root = NULL;
 	nNode = nEffector = nJoint = 0;
 }
 
@@ -42,35 +26,57 @@ void CIK_Tree::SetSeqNum( CIK_Node* node )
 
 void CIK_Tree::InsertRoot(CIK_Node* root)
 {
-	assert( nNode==0 );
+	if( !root )
+		return;
+
+	if( nNode == 0 )
+		return;
+
+//	assert( nNode==0 );
 	nNode++;
 	CIK_Tree::root = root;
 	root->r = root->attach;
-	assert( !(root->left || root->right) );
+//	assert( !(root->left || root->right) );
 	SetSeqNum(root);
 }
 
 
 void CIK_Tree::InsertLeftChild(CIK_Node* parent, CIK_Node* child)
 {
-	assert(parent);
+	if( !parent
+	 || !parent->left
+	 || !child
+	 || !child->realparent )
+	{
+		return;
+	}
+
+//	assert(parent);
 	nNode++;
 	parent->left = child;
 	child->realparent = parent;
 	child->r = child->attach - child->realparent->attach;
-	assert( !(child->left || child->right) );
+//	assert( !(child->left || child->right) );
 	SetSeqNum(child);
 }
 
 
 void CIK_Tree::InsertRightSibling(CIK_Node* parent, CIK_Node* child)
 {
-	assert(parent);
+	if( !parent
+	 || !parent->right
+	 || !child
+	 || !child->realparent )
+	{
+		return;
+	}
+
+//	assert(parent);
 	nNode++;
 	parent->right = child;
 	child->realparent = parent->realparent;
 	child->r = child->attach - child->realparent->attach;
-	assert( !(child->left || child->right) );
+//	assert( !(child->left || child->right) );
 	SetSeqNum(child);
 }
 
@@ -135,10 +141,10 @@ CIK_Node* CIK_Tree::GetEffector(int index)
 
 
 // Returns the global position of the effector.
-const VectorR3& CIK_Tree::GetEffectorPosition(int index)
+const dVector3& CIK_Tree::GetEffectorPosition(int index)
 {
 	CIK_Node* effector = GetEffector(index);
-	assert(effector);
+//	assert(effector);
 	return (effector->s);  
 }
 
@@ -162,17 +168,17 @@ void CIK_Tree::Compute(void)
 
 void CIK_Tree::DrawTree(CIK_Node* node)
 {
-/**	if (node != 0) {
-		glPushMatrix();
+	if (node != 0) {
+//		glPushMatrix();
 		node->DrawNode( node==root );	// Recursively draw node and update ModelView matrix
 		if (node->left) {
 			DrawTree(node->left);		// Draw tree of children recursively
 		}
-		glPopMatrix();
+//		glPopMatrix();
 		if (node->right) {
 			DrawTree(node->right);		// Draw right siblings recursively
 		}
-	}**/
+	}
 }
 
 

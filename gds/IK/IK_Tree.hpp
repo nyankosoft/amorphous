@@ -2,18 +2,20 @@
 #define __CLASS_IK_TREE__
 
 
-#include "Math64/LinearR3.h"
 #include "IK_Node.hpp"
 
 
-class CIK_Tree {
+class CIK_Tree
+{
 
 public:
+
 	CIK_Tree();
 
 	int GetNumNode() const { return nNode; }
 	int GetNumEffector() const { return nEffector; }
 	int GetNumJoint() const { return nJoint; }
+
 	void InsertRoot(CIK_Node*);
 	void InsertLeftChild(CIK_Node* parent, CIK_Node* child);
 	void InsertRightSibling(CIK_Node* parent, CIK_Node* child);
@@ -21,7 +23,7 @@ public:
 	// Accessors based on node numbers
 	CIK_Node* GetJoint(int);
 	CIK_Node* GetEffector(int);
-	const VectorR3& GetEffectorPosition(int);
+	const dVector3& GetEffectorPosition(int);
 
 	// Accessors for tree traversal
 	CIK_Node* GetRoot() const { return root; }
@@ -39,6 +41,7 @@ private:
 	int nNode;			// nNode = nEffector + nJoint
 	int nEffector;
 	int nJoint;
+
 	void SetSeqNum(CIK_Node*);
 	CIK_Node* SearchJoint(CIK_Node*, int);
 	CIK_Node* SearchEffector(CIK_Node*, int);

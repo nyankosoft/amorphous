@@ -1,10 +1,8 @@
 #ifndef __CLASS_IK_NODE_H__
 #define __CLASS_IK_NODE_H__
 
-#include "Math64/LinearR3.h"
+#include "../3DMath/Vector3.hpp"
 
-
-class VectorR3;
 
 class CIK_Node
 {
@@ -14,19 +12,19 @@ public:
 
 	enum Purpose {JOINT, EFFECTOR};
 
-	CIK_Node(const VectorR3&, const VectorR3&, double, Purpose, double minTheta = -_PI, double maxTheta = _PI, double restAngle = 0.);
+	CIK_Node(const dVector3&, const dVector3&, double, Purpose, double minTheta = -PI, double maxTheta = PI, double restAngle = 0.);
 
 	void DrawNode(bool);
 	void PrintNode();
 	void InitNode();
 
-	const VectorR3& GetAttach() const { return attach; }
+	const dVector3& GetAttach() const { return attach; }
 
 	double GetTheta() const { return theta; }
 	double AddToTheta( double delta ) { theta += delta; return theta; }
 
-	const VectorR3& GetS() const { return s; }
-	const VectorR3& GetW() const { return w; }
+	const dVector3& GetS() const { return s; }
+	const dVector3& GetW() const { return w; }
 
 	double GetMinTheta() const { return minTheta; }
 	double GetMaxTheta() const { return maxTheta; } 
@@ -50,15 +48,15 @@ private:
 	int seqNumEffector;		// sequence number if this node is an effector
 	double size;			// size
 	Purpose purpose;		// joint / effector / both
-	VectorR3 attach;		// attachment point
-	VectorR3 r;				// relative position vector
-	VectorR3 v;				// rotation axis
+	dVector3 attach;		// attachment point
+	dVector3 r;				// relative position vector
+	dVector3 v;				// rotation axis
 	double theta;			// joint angle (radian)
 	double minTheta;		// lower limit of joint angle
 	double maxTheta;		// upper limit of joint angle
 	double restAngle;		// rest position angle
-	VectorR3 s;				// GLobal Position
-	VectorR3 w;				// Global rotation axis
+	dVector3 s;				// GLobal Position
+	dVector3 w;				// Global rotation axis
 	CIK_Node* left;				// left child
 	CIK_Node* right;			// right sibling
 	CIK_Node* realparent;		// pointer to real parent
