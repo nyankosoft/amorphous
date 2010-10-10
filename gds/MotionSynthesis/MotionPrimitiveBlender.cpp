@@ -335,7 +335,7 @@ void CMotionPrimitiveBlender::UpdatePoseAndRootNodePose( shared_ptr<CMotionPrimi
 /*
 	current_horizontal_pose.matOrient
 		= current_horizontal_pose.matOrient
-		* pCurrentMotion->GetLastOrientation()
+		* pCurrentMotion->GetLastOrientation()	
 		* Matrix33Transpose( pCurrentMotion->GetOrientation( prev_time ) );
 */
 	// experiment with walk motion - always walk on the z-axis
@@ -344,7 +344,19 @@ void CMotionPrimitiveBlender::UpdatePoseAndRootNodePose( shared_ptr<CMotionPrimi
 	// translation of the pose
 	current_horizontal_pose.vPosition += current_horizontal_pose.matOrient * root_pose_0_to_1.vPosition;
 	current_horizontal_pose.vPosition.y = root_pose_1.vPosition.y;
-
+/*
+//	if( pMotion->AreFeetOnGround() )
+	bool are_feet_on_ground = (pMotion->GetName() != "fall" );
+	if( are_feet_on_ground )
+	{
+		// Y is fixed to the root pose y + floor height
+		current_horizontal_pose.vPosition.y = root_pose_1.vPosition.y;// + m_fFloorHeight;
+	}
+//	else
+//	{
+//		current_horizontal_pose.vPosition.y += m_fFloorHeightAtMotionStart;
+//	}
+*/
 	fix_horizontal_pose( current_horizontal_pose );
 
 	// update the pose of the root node

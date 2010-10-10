@@ -92,6 +92,7 @@ private:
 	void SetInterpolationMotion( boost::shared_ptr<CMotionPrimitive> pCurrentMotion,
 								 boost::shared_ptr<CMotionPrimitive> pNextMotion );
 
+	/// Modifies m_CurrentRootPose
 	void UpdatePoseAndRootNodePose( boost::shared_ptr<CMotionPrimitive>& pMotion, float time_0, float time_1 );
 
 	void PushInterpolationMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pCurrentMotion,
