@@ -29,7 +29,7 @@ CBE_Skybox::CBE_Skybox()
 
 	m_BoundingVolumeType = BVTYPE_AABB;
 
-	m_MeshProperty.m_ShaderFilepath = "Shader/HighAltCamSkybox.fx";
+	m_MeshProperty.m_ShaderDesc.ResourcePath = "Shader/HighAltCamSkybox.fx";
 	m_MeshProperty.m_ShaderTechnique.resize(1,1);
 	m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SkySphereFG" );
 }

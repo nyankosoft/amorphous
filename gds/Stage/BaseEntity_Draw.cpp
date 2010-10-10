@@ -289,8 +289,8 @@ void CBaseEntity::Init3DModel()
 	// - borrow the fallback shader of entity render manager if no shader
 	//   filepath has been specified.
 
-	if( 0 < m_MeshProperty.m_ShaderFilepath.length() )
-		m_MeshProperty.m_ShaderHandle.Load( m_MeshProperty.m_ShaderFilepath );
+	if( 0 < m_MeshProperty.m_ShaderDesc.ResourcePath.length() )
+		m_MeshProperty.m_ShaderHandle.Load( m_MeshProperty.m_ShaderDesc.ResourcePath );
 	else
 		m_MeshProperty.m_ShaderHandle = m_pStage->GetEntitySet()->GetRenderManager()->GetFallbackShader();
 
