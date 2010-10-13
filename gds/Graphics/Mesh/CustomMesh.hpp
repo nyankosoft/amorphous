@@ -97,7 +97,7 @@ public:
 
 	uchar *GetIndexBufferPtr() { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : NULL; }
 
-	uint GetNumVertices() const { return (uint)m_VertexBuffer.size() / m_VertexSize; }
+	uint GetNumVertices() const { return (0 < m_VertexSize) ? ((uint)m_VertexBuffer.size() / m_VertexSize) : 0; }
 
 	uint GetNumIndices() const { return (uint)m_IndexBuffer.size() / sizeof(U16); }
 
