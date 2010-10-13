@@ -96,6 +96,14 @@ inline void conv_to_x( const std::string& src, std::string& dest )
 	dest = src;
 }
 
+inline void conv_to_x( const std::string& src, bool& dest )
+{
+	if( src == "true" )
+		dest = true;
+	else if( src == "false" )
+		dest = false;
+}
+
 
 class CXMLNodeReader
 {
