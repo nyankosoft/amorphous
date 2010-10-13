@@ -322,6 +322,9 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 
 void CNxPhysScene::ReleaseActor( CActor*& pActor )
 {
+	if( !pActor )
+		return;
+
 	CNxPhysActor *pNxActor = dynamic_cast<CNxPhysActor *> (pActor);
 
 	m_pScene->releaseActor( *(pNxActor->GetNxActor()) );
@@ -388,6 +391,9 @@ CJoint* CNxPhysScene::CreateJoint( const CJointDesc& desc )
 /// Deletes the specified joint. 
 void CNxPhysScene::ReleaseJoint( CJoint*& pJoint )
 {
+	if( !pJoint )
+		return;
+
 //	m_pScene->releaseJoint( pJoint->GetNxJoint() );
 }
 
@@ -593,6 +599,9 @@ CCloth *CNxPhysScene::CreateCloth( CClothDesc& desc )
 
 void CNxPhysScene::ReleaseCloth( CCloth*& pCloth )
 {
+	if( !pCloth )
+		return;
+
 	CNxPhysCloth *pNxCloth = dynamic_cast<CNxPhysCloth *>(pCloth);
 	NxMeshData nx_mesh_data;
 	pNxCloth->GetNxCloth()->setMeshData( nx_mesh_data );
