@@ -8,10 +8,10 @@
 
 #include "Graphics/fwd.hpp"
 #include "KeyState.hpp"
+#include "3DMath/Matrix34.hpp"
 #include "Input/InputHandler.hpp"
 
 
-class Matrix34;
 class Matrix44;
 class CGraphicsTestBase;
 
