@@ -207,6 +207,9 @@ public:
 	inline int GetNumShapes() const { return (int)m_vecpShape.size(); }
 	inline CShape *GetShape(int i) { return m_vecpShape[i]; }
 
+	/// Creates a new shape and adds it to the list of shapes of this actor.
+	virtual CShape* CreateShape( CShapeDesc& desc ) { return NULL; }
+
 	/// release a shape attached to this actor
 //	virtual void ReleaseShape() {};
 };

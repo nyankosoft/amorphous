@@ -9,6 +9,7 @@
 #include "../RaycastHit.hpp"
 
 #include "NxPhysics.h"
+#include "NxMathConv.hpp"
 
 
 namespace physics
@@ -17,6 +18,19 @@ namespace physics
 //
 // physics to Nx
 //
+
+inline NxU32 ToNxShapeFlags( U32 src_flags )
+{
+	NxU32 dest_flags = 0;
+	if( src_flags & ShapeFlag::TriggerOnEnter    )      dest_flags |= NX_TRIGGER_ON_ENTER;
+	if( src_flags & ShapeFlag::TriggerOnLeave    )      dest_flags |= NX_TRIGGER_ON_LEAVE;
+	if( src_flags & ShapeFlag::TriggerOnStay     )      dest_flags |= NX_TRIGGER_ON_STAY;
+	if( src_flags & ShapeFlag::DisableCollision  )      dest_flags |= NX_SF_DISABLE_COLLISION;
+	if( src_flags & ShapeFlag::DisableRaycasting )      dest_flags |= NX_SF_DISABLE_RAYCASTING;
+
+	return dest_flags;
+}
+
 
 inline NxForceMode ToNxForceMode( ForceMode::Mode mode )
 {

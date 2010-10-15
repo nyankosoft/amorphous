@@ -26,7 +26,7 @@ public:
 
 	virtual int GetMaterialID() const { return (int)m_pBox->getMaterial(); }
 
-	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
 	void SetCollisionGroup ( U16 group ) { m_pBox->setGroup( group ); }
 	U16 GetCollisionGroup() const { return (U16)m_pBox->getGroup(); }
@@ -38,7 +38,7 @@ public:
 };
 
 
-bool CNxPhysBoxShape::Raycast( const CRay &world_ray,
+inline bool CNxPhysBoxShape::Raycast( const CRay &world_ray,
 							   Scalar max_dist, U32 hint_flags,
 							   CRaycastHit &hit,
 							   bool first_hit ) const
@@ -61,7 +61,7 @@ public:
 
 	virtual ~CNxPhysSphereShape() {}
 
-	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
 	void SetCollisionGroup ( U16 group ) { m_pSphere->setGroup( group ); }
 	U16 GetCollisionGroup() const { return (U16)m_pSphere->getGroup(); }
@@ -74,7 +74,7 @@ public:
 };
 
 
-bool CNxPhysSphereShape::Raycast( const CRay &world_ray, Scalar max_dist, U32 hint_flags, CRaycastHit &hit, bool first_hit ) const
+inline bool CNxPhysSphereShape::Raycast( const CRay &world_ray, Scalar max_dist, U32 hint_flags, CRaycastHit &hit, bool first_hit ) const
 {
 	return m_pSphere->raycast( ToNxRay(world_ray), max_dist, hint_flags, ToNxRaycastHit(hit), first_hit );
 }
@@ -91,7 +91,7 @@ public:
 
 	virtual ~CNxPhysCapsuleShape() {}
 
-	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
 	void SetCollisionGroup ( U16 group ) { m_pCapsule->setGroup( group ); }
 	U16 GetCollisionGroup() const { return (U16)m_pCapsule->getGroup(); }
@@ -106,7 +106,7 @@ public:
 };
 
 
-bool CNxPhysCapsuleShape::Raycast ( const CRay &world_ray,
+inline bool CNxPhysCapsuleShape::Raycast ( const CRay &world_ray,
 										   Scalar max_dist,
 										   U32 hint_flags, 
 										   CRaycastHit &hit, bool first_hit ) const
@@ -128,7 +128,7 @@ public:
 
 	virtual ~CNxPhysTriangleMeshShape() {}
 
-	virtual bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
 	void SetCollisionGroup ( U16 group ) { m_pTriangleMesh->setGroup( group ); }
 	U16 GetCollisionGroup() const { return (U16)m_pTriangleMesh->getGroup(); }
@@ -137,7 +137,7 @@ public:
 };
 
 
-bool CNxPhysTriangleMeshShape::Raycast ( const CRay &world_ray,
+inline bool CNxPhysTriangleMeshShape::Raycast ( const CRay &world_ray,
 										   Scalar max_dist,
 										   U32 hint_flags,
 										   CRaycastHit &hit, bool first_hit ) const

@@ -33,19 +33,6 @@ static NxU32 ToNxActorFlag( U32 src_flags )
 }
 
 
-static NxU32 ToNxShapeFlags( U32 src_flags )
-{
-	NxU32 dest_flags = 0;
-	if( src_flags & ShapeFlag::TriggerOnEnter    )      dest_flags |= NX_TRIGGER_ON_ENTER;
-	if( src_flags & ShapeFlag::TriggerOnLeave    )      dest_flags |= NX_TRIGGER_ON_LEAVE;
-	if( src_flags & ShapeFlag::TriggerOnStay     )      dest_flags |= NX_TRIGGER_ON_STAY;
-	if( src_flags & ShapeFlag::DisableCollision  )      dest_flags |= NX_SF_DISABLE_COLLISION;
-	if( src_flags & ShapeFlag::DisableRaycasting )      dest_flags |= NX_SF_DISABLE_RAYCASTING;
-
-	return dest_flags;
-}
-
-
 static NxU32 ToNxBodyFlags( U32 phys_body_flags )
 {
 	NxU32 nx_flags = 0;
@@ -268,16 +255,6 @@ CActor* CNxPhysScene::CreateActor( const CActorDesc& desc )
 			LOG_PRINT_WARNING( "Failed to create a shape." );
 			continue;
 		}
-
-		// Copy the values of member variables from CShapeDesc to NxShapeDesc
-		NxShapeDesc& nx_shape_desc = *(nx_actor_desc.shapes.back());
-		nx_shape_desc.materialIndex    = src_shape_desc.MaterialIndex;
-		nx_shape_desc.shapeFlags       = ToNxShapeFlags( src_shape_desc.ShapeFlags );
-		nx_shape_desc.group            = 0;//src_shape_desc.CollisionGroup;
-		nx_shape_desc.groupsMask.bits0 = 0;
-		nx_shape_desc.groupsMask.bits1 = 0;
-		nx_shape_desc.groupsMask.bits2 = 0;
-		nx_shape_desc.groupsMask.bits3 = 0;
 	}
 
 	if( !nx_actor_desc.isValid() )

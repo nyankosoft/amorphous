@@ -173,6 +173,8 @@ public:
 	virtual void SetMaxAngularVelocity( Scalar max_ang_vel ) { m_pActor->setMaxAngularVelocity( max_ang_vel ); }
 	virtual Scalar GetMaxAngularVelocity() { return m_pActor->getMaxAngularVelocity(); }
 
+	virtual CShape* CreateShape( CShapeDesc& desc );
+
 	/// release shapes attached to this actor
 //	void ReleaseShapes();
 
