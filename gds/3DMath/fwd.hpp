@@ -1,19 +1,21 @@
 #ifndef __FWD_3DMath_HPP__
 #define __FWD_3DMath_HPP__
 
-class Vector2;
+template<typename T> class TVector2;
 class Matrix22;
 class Matrix23;
 class AABB2;
 
-class Vector3;
+template<typename T> class tVector3;
 class Vector4;
-class Matrix33;
-class Matrix34;
+template<typename T> class tMatrix33;
+template<typename T> class tMatrix34;
 class AABB3;
+class OBB3;
 class Quaternion;
 class CTriangle;
 class Sphere;
+class Capsule;
 struct SPlane;
 
 
