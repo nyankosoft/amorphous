@@ -46,4 +46,34 @@ inline CMeshObjectHandle CreateSphereMesh( float radius,
 }
 
 
+inline CMeshObjectHandle CreateConeMesh( const CConeDesc& desc,
+								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
+								const Matrix34& model_pose = Matrix34Identity() )
+{
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator.reset( new CConeMeshGenerator(desc) );
+
+	CMeshObjectHandle mesh;
+	bool loaded = mesh.Load( mesh_desc );
+
+	if( loaded )
+		return mesh;
+	else
+		return CMeshObjectHandle();
+}
+
+
+inline CMeshObjectHandle CreateConeMesh( float radius = 0.5f, float height = 1.0f,
+								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
+								const Matrix34& model_pose = Matrix34Identity() )
+{
+	CConeDesc desc;
+	desc.radius = radius;
+	desc.cone_height = height;
+
+	return CreateConeMesh( desc, diffuse_color, model_pose );
+}
+
+
+
 #endif /* __MeshUtilities_HPP__ */

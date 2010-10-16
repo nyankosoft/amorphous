@@ -73,7 +73,7 @@ public:
 	radius(1),
 	cone_height(1),
 	body_height(1),
-	axis(AxisAndDirection::POS_Z),
+	axis(AxisAndDirection::POS_Y),
 	num_sides(16),
 	num_segments(1)
 	{}
