@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include "gds/3DMath/fwd.hpp"
 #include "gds/Physics/fwd.hpp"
 #include "gds/Physics/ShapeDesc.hpp"
 #include "gds/Physics/Cloth.hpp"
@@ -67,11 +68,13 @@ public:
 class CClothObject : public IArchiveObjectBase
 {
 public:
+	std::string m_Name;
+
 	physics::CCloth *m_pCloth;
 	physics::CClothDesc m_Desc;
 
-//	CMeshObjectHandle m_Mesh;
-	CCustomMesh m_Mesh;
+//	CCustomMesh m_Mesh;
+	CMeshObjectHandle m_Mesh;
 	std::string m_MeshFilepath;
 
 	// The names of target objects to attach the cloth to.
@@ -92,7 +95,17 @@ public:
 
 	void Release( physics::CScene *pScene );
 
+	const std::string& GetName() const { return m_Name; }
+
+	void SetName( const std::string& name ) { m_Name = name; }
+
 	physics::CCloth *GetCloth() { return m_pCloth; }
+
+	const CMeshObjectHandle& GetMesh() const { return m_Mesh; }
+
+	CMeshObjectHandle GetMesh() { return m_Mesh; }
+
+	void SetMesh( const CMeshObjectHandle& cloth_mesh ) { m_Mesh = cloth_mesh; }
 
 	const std::vector<std::string>& GetAttachTargetNames() const { return m_AttachTargetNames; }
 
@@ -122,6 +135,8 @@ public:
 //	boost::shared_ptr<msynth::CBlendNode> m_pBlendNode;
 	const msynth::CTransformCacheNode *m_pTransformNode;
 
+	std::vector<CMeshObjectHandle> m_ShapeMeshes; ///< Used to display the shapes for visual debugging
+
 public:
 
 	CClothCollisionObject()
@@ -149,6 +164,10 @@ public:
 
 class CClothSystem : public IArchiveObjectBase
 {
+	int GetClothObjectIndexByName( const std::string& cloth_name );
+
+	int GetCollisionObjectIndexByBoneName( const std::string& target_bone_name );
+
 public:
 
 	/// set to true if the cloth system has its own scene
@@ -202,7 +221,10 @@ public:
 
 	uint GetNumCloths() const { return (uint)m_Cloths.size(); }
 
-	CCustomMesh& GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
+//	CCustomMesh& GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
+	const CMeshObjectHandle& GetClothMesh( int i ) const { return m_Cloths[i].m_Mesh; }
+
+	CMeshObjectHandle GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
 
 	void LoadMeshes();
 
@@ -217,6 +239,20 @@ public:
 //	unsigned int GetArchiveObjectID() const { return ; }
 
 	void RenderObjectsForDebugging();
+
+//	void SetSkeleton( boost::shared_ptr<msynth::CSkeleton>& pSkeleton ) { m_pSkeleton = pSkeleton; }
+
+	Result::Name AttachClothMesh( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& target_bone_name, const Sphere& vertices_catcher_volume );
+
+	void AttachClothMesh( int mesh_index, const std::string& target_bone_name, const Capsule& vertices_catcher_volume );
+
+//	int AddCloth( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to );
+
+	Result::Name RemoveCloth( const std::string& cloth_name );
+
+	Result::Name AddCollisionSphere( const std::string& target_bone_name, const Sphere& sphere );
+
+	Result::Name AddCollisionCapsule( const std::string& target_bone_name, const Capsule& capsule );
 };
 
 

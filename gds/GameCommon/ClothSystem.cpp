@@ -1,5 +1,9 @@
 #include "ClothSystem.hpp"
 #include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/MeshUtilities.hpp"
+#include "gds/Graphics/GraphicsDevice.hpp"
+#include "gds/Graphics/Shader/ShaderManager.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Physics.hpp"
 #include "gds/XML.hpp"
 #include "gds/MotionSynthesis/MotionFSM.hpp"
@@ -107,7 +111,8 @@ void CClothObject::Init( physics::CScene *pScene )
 
 bool CClothObject::LoadMesh()
 {
-	bool res = m_Mesh.LoadFromFile( m_MeshFilepath );
+//	bool res = m_Mesh.LoadFromFile( m_MeshFilepath );
+	bool res = m_Mesh.Load( m_MeshFilepath );
 	return res;
 }
 
@@ -287,6 +292,7 @@ void CClothSystem::InitPhysics( CScene *pScene )
 		CSceneDesc scene_desc;
 		m_pScene = PhysicsEngine().CreateScene( scene_desc );
 		pScene = m_pScene;
+		pScene->SetGroupCollisionFlag( 96, 96, false );
 	}
 
 	size_t num_attach_objects = m_ClothAttachObjects.size();
@@ -377,7 +383,8 @@ void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe
 
 //		attach_obj.UpdateWorldTransform();
 		Matrix34 world_pose( Matrix34Identity() );
-		attach_obj.m_pActor->SetWorldPose( world_pose );
+		if( attach_obj.m_pActor )
+			attach_obj.m_pActor->SetWorldPose( world_pose );
 	}
 
 	// Update the poses of the collison objects
@@ -388,7 +395,8 @@ void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe
 
 //		coll_obj.UpdateWorldTransform();
 		Matrix34 world_pose( Matrix34Identity() );
-		coll_obj.m_pActor->SetWorldPose( world_pose );
+		if( coll_obj.m_pActor )
+			coll_obj.m_pActor->SetWorldPose( world_pose );
 	}
 }
 
@@ -563,6 +571,9 @@ void CClothSystem::RenderObjectsForDebugging()
 		m_SphereMesh.Load( mesh_desc );
 	}
 
+	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+
 	for( int i=0; i<2; i++ )
 	{
 		vector<CClothCollisionObject>& objs = *pObjs[i];
@@ -572,10 +583,22 @@ void CClothSystem::RenderObjectsForDebugging()
 			if( !obj.m_pActor )
 				continue;
 
+			for( int k=0; k<(int)obj.m_ShapeMeshes.size(); k++ )
+			{
+				shared_ptr<CBasicMesh> pMesh = obj.m_ShapeMeshes[k].GetMesh();
+				if( !pMesh )
+					continue;
+
+//				shader_mgr.SetWorldTransform( Matrix34Identity() );
+				Matrix34 world_transform = obj.m_pTransformNode ? (obj.m_pTransformNode->GetWorldTransform()) : Matrix34Identity();
+				shader_mgr.SetWorldTransform( world_transform );
+				pMesh->Render( shader_mgr );
+			}
+
 			for( int k=0; k<obj.m_pActor->GetNumShapes(); k++ )
 			{
 				CShape *pShape = obj.m_pActor->GetShape(k);
-				switch( pShape->GetType() )
+/*				switch( pShape->GetType() )
 				{
 				case PhysShape::Sphere:
 					{
@@ -599,7 +622,7 @@ void CClothSystem::RenderObjectsForDebugging()
 
 				default:
 					break;
-				}
+				}*/
 			}
 		}
 
@@ -626,4 +649,183 @@ void CClothSystem::RenderObjectsForDebugging()
 		Matrix34 world_pose( Matrix34Identity() );
 		coll_obj.m_pActor->SetWorldPose( world_pose );
 	}
+}
+
+/*
+//void CClothSystem::AddCloth( const std::string& cloth_name, boost::shared_ptr<CCustomMesh>& pClothMesh, const std::string& name_of_bone_to_attach_cloth_to )
+int CClothSystem::AddClothMesh( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to )
+{
+	const int num_cloths = (int)m_Cloths.size();
+	for( int i=0; i<num_cloths; i++ )
+	{
+		if( m_Cloths[i].GetName() == cloth_name )
+			return -1;
+	}
+
+	int index = (int)m_Cloths.size();
+	m_Cloths.push_back( CClothObject() );
+	m_Cloths.back().SetName( cloth_name );
+	m_Cloths.back().SetMesh( cloth_mesh );
+
+	return index;
+}*/
+
+
+Result::Name CClothSystem::RemoveCloth( const std::string& cloth_name )
+{
+	return Result::UNKNOWN_ERROR;
+}
+
+
+bool IsPointInside( const Sphere& sphere, const Vector3& pos )
+{
+	return Vec3LengthSq(sphere.vCenter - pos) < sphere.radius * sphere.radius;
+}
+
+
+boost::shared_ptr<CCustomMesh> GetCustomMesh( CMeshObjectHandle& mesh )
+{
+	return GetCustomMesh( mesh.GetMesh() );
+}
+
+
+int CClothSystem::GetClothObjectIndexByName( const std::string& cloth_name )
+{
+	for( size_t i=0; i<m_Cloths.size(); i++ )
+	{
+		if( m_Cloths[i].m_Name == cloth_name )
+			return (int)i;
+	}
+	return -1;
+}
+
+
+Result::Name CClothSystem::AttachClothMesh( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& target_bone_name, const Sphere& vertices_catcher_volume )
+{
+	// Get one of the shape of the actor stored in the collision object specified by target_bone_name
+	int coll_obj_index = GetCollisionObjectIndexByBoneName( "target_bone_name" );
+	physics::CShape *pTargetShape = NULL;
+	if( !pTargetShape )
+		return Result::INVALID_ARGS;
+
+	vector<int> vert_ids;
+
+
+	int index = GetClothObjectIndexByName( cloth_name );
+	if( 0 <= index )
+		return Result::INVALID_ARGS; // The cloth object with the specified name already exists
+
+	shared_ptr<CBasicMesh> pMesh = cloth_mesh.GetMesh();
+
+	boost::shared_ptr<CCustomMesh> pClothMesh = GetCustomMesh( pMesh );
+	if( !pClothMesh || !pClothMesh->IsValid() )
+		return Result::INVALID_ARGS;
+
+	m_Cloths.push_back( CClothObject() );
+	CClothObject& cloth = m_Cloths.back();
+	cloth.m_Name = cloth_name;
+	cloth.m_Mesh = cloth_mesh;
+
+	const int num_cloth_mesh_vertices = pClothMesh->GetNumVertices();
+	for( int i=0; i<num_cloth_mesh_vertices; i++ )
+	{
+		if( IsPointInside( vertices_catcher_volume, pClothMesh->GetPosition(i) ) )
+			vert_ids.push_back( i );
+	}
+
+	// collect mesh vertices that are in vertices_catcher_volume
+//	CClothObject& cloth_object = GetClothObjectByName( cloth_name );
+	physics::CCloth *pCloth = cloth.GetCloth();
+	if( !pCloth )
+		return Result::UNKNOWN_ERROR;
+
+	for( size_t i=0; i<vert_ids.size(); i++ )
+	{
+		U32 attachment_flags = 0;
+		Vector3 local_pos( Vector3(0,0,0) );
+		pCloth->AttachVertexToShape( vert_ids[i], pTargetShape, local_pos, attachment_flags );
+	}
+
+	return Result::SUCCESS;
+}
+
+
+int CClothSystem::GetCollisionObjectIndexByBoneName( const std::string& target_bone_name )
+{
+	for( size_t i=0; i<m_ClothCollisionObjects.size(); i++ )
+	{
+		if( m_ClothCollisionObjects[i].m_BoneName == target_bone_name )
+			return (int)i;
+	}
+	return -1;
+}
+
+
+Result::Name CClothSystem::AddCollisionSphere( const std::string& target_bone_name, const Sphere& sphere )
+{
+	if( !m_pScene )
+		return Result::UNKNOWN_ERROR;
+
+	CSphereShapeDesc sphere_desc;
+	sphere_desc.Radius = sphere.radius;
+	sphere_desc.LocalPose.matOrient = Matrix33Identity();
+	sphere_desc.LocalPose.vPosition = sphere.vCenter;
+
+	CActor *pActor = NULL;
+	CShape *pShape = NULL;
+	int index = GetCollisionObjectIndexByBoneName( target_bone_name );
+	if( index < 0 )
+	{
+		// The collision for the specified bone does not exist
+		// - Create one now.
+
+		index = (int)m_ClothCollisionObjects.size();
+
+		m_ClothCollisionObjects.push_back( CClothCollisionObject() );
+
+		m_ClothCollisionObjects.back().m_pTransformNode = m_TransformCacheTree.GetNode( target_bone_name );
+		set<string> node_names;
+		node_names.insert( target_bone_name );
+		m_TransformCacheTree.UpdateActiveNodes( node_names );
+
+		CActorDesc actor_desc;
+		actor_desc.WorldPose = Matrix34Identity();
+		actor_desc.CollisionGroup = 96;
+		actor_desc.vecpShapeDesc.push_back( &sphere_desc );
+		actor_desc.BodyDesc.Flags = BodyFlag::DisableGravity;
+		actor_desc.BodyDesc.fMass = 1.0f;
+		pActor = m_pScene->CreateActor( actor_desc );
+
+		if( !pActor )
+			return Result::UNKNOWN_ERROR;
+
+		m_ClothCollisionObjects.back().m_pActor = pActor;
+		pShape = pActor->GetShape(0);
+	}
+	else
+	{
+		pActor = m_ClothCollisionObjects[index].m_pActor;
+
+		if( !pActor )
+			return Result::UNKNOWN_ERROR;
+
+		pShape = pActor->CreateShape( sphere_desc );
+	}
+
+	CClothCollisionObject& coll_obj = m_ClothCollisionObjects[index];
+
+	if( pShape )
+	{
+//		m_ClothCollisionObjects[index].m_pShapes.push_back( pShape );
+		coll_obj.m_ShapeMeshes.push_back( CreateSphereMesh( sphere.radius, SFloatRGBAColor(0.7f,1.0f,0.7f,0.5f) ) );
+		return Result::SUCCESS;
+	}
+	else
+		return Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CClothSystem::AddCollisionCapsule( const std::string& target_bone_name, const Capsule& capsule )
+{
+	return Result::UNKNOWN_ERROR;
 }
