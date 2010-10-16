@@ -79,6 +79,17 @@ public:
 	};
 };
 
+class CEnvMapOption
+{
+public:
+	enum Name
+	{
+		NONE,
+		ENABLED,
+		NUM_OPTIONS
+	};
+};
+
 
 class CGenericShaderDesc
 {
@@ -89,7 +100,7 @@ public:
 	CSpecularSource::Name Specular;
 	CVertexBlendType::Name VertexBlendType;
 	CAlphaBlendType::Name AlphaBlend;
-//	bool env_map;
+	CEnvMapOption::Name EnvMap;
 	int NumPointLights;
 	int NumDirectionalLights;
 	int NumSpotLights;
@@ -103,7 +114,7 @@ public:
 	Specular(CSpecularSource::NONE),
 	VertexBlendType(CVertexBlendType::NONE),
 	AlphaBlend(CAlphaBlendType::NONE),
-//	env_map(false),
+	EnvMap(CEnvMapOption::NONE),
 	NumPointLights(-1),
 	NumDirectionalLights(-1),
 	NumSpotLights(-1)

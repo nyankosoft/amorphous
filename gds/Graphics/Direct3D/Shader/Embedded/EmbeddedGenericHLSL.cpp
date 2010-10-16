@@ -448,12 +448,138 @@ const char *CEmbeddedGenericHLSL::ms_pVertexBlendFunctions =
 */
 
 
+const char *CEmbeddedGenericHLSL::ms_pEnvMapSamplerInclude =
+"texture  CubeMapTexture;"\
+"samplerCUBE CubeMapSampler = "\
+"sampler_state"\
+"{"\
+    "Texture = <CubeMapTexture>;"\
+    "MinFilter = LINEAR;"\
+    "MagFilter = LINEAR;"\
+    "MipFilter = LINEAR;"\
+"};\n";
+
+
+const char *CEmbeddedGenericHLSL::ms_pOptionsMacros =
+//"#define SPECTYPE__UNIFORM\n"\
+
+// specular types
+"\n"\
+"#ifdef SPECTYPE__NONE\n"\
+"#define GET_SPECULAR 0.0\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__UNIFORM\n"\
+"#define GET_SPECULAR g_fSpecular\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__DECAL_TEX_ALPHA\n"\
+"#define GET_SPECULAR surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__NORMAL_MAP_ALPHA\n"\
+"#define GET_SPECULAR normal_map.a\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__TEX1_RED\n"\
+"#define GET_SPECULAR normal_map.r\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__TEX1_GREEN\n"\
+"#define GET_SPECULAR normal_map.g\n"\
+"#endif\n"\
+
+"#ifdef SPECTYPE__TEX1_BLUE\n"\
+"#define GET_SPECULAR normal_map.b\n"\
+"#endif\n"\
+
+
+// glossiness types
+"\n"\
+"#ifdef SPECPOWTYPE__NONE\n"\
+"#define GET_SPECULAR_POWER 8.0\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__UNIFORM\n"\
+"#define GET_SPECULAR_POWER g_fSpecularPower\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__DECAL_TEX_ALPHA\n"\
+"#define GET_SPECULAR_POWER surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__NORMAL_MAP_ALPHA\n"\
+"#define GET_SPECULAR_POWER normal_map.a\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__TEX1_RED\n"\
+"#define GET_SPECULAR_POWER normal_map.r\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__TEX1_GREEN\n"\
+"#define GET_SPECULAR_POWER normal_map.g\n"\
+"#endif\n"\
+
+"#ifdef SPECPOWTYPE__TEX1_BLUE\n"\
+"#define GET_SPECULAR_POWER normal_map.b\n"\
+"#endif\n"\
+
+"#ifdef GET_SPECULAR_POWER\n"\
+// one of the macros above is used
+"#else\n"\
+"#define GET_SPECULAR_POWER 8.0\n"\
+"#endif\n"\
+
+
+// alpha blend types
+"\n"\
+"#ifdef ALPHABLEND__NONE\n"\
+"#define GET_ALPHA 1.0\n"\
+"#endif\n"\
+
+//"#ifdef ALPHABLEND__UNIFORM\n"\
+//"#define GET_ALPHA g_fAlpha\n"\
+//"#endif\n"\
+
+"#ifdef ALPHABLEND__DIFFUSE_ALPHA\n"\
+"#define GET_ALPHA ColorDiff.a\n"\
+"#endif\n"\
+
+"#ifdef ALPHABLEND__DECAL_TEX_ALPHA\n"\
+"#define GET_ALPHA surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n"\
+"#define GET_ALPHA ColorDiff.a * surface_color.a\n"\
+"#endif\n"\
+
+"#ifdef ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n"\
+"#define GET_ALPHA ColorDiff.a * surface_color.a\n"\
+"#endif\n"\
+
+
+// environmental mapping options
+"#ifdef ENVMAP__NONE\n"\
+"#define ENVMAP\n"\
+"#endif\n"\
+
+"#ifdef ENVMAP__ENABLED\n"\
+//"#define ENVMAP color.rgb = texCUBE( CubeMapSampler, mul( Normal, (float3x3)View ) ).rgb * 0.5 + color.rgb * 0.5\n"
+"#define ENVMAP color.rgb = texCUBE( CubeMapSampler, mul( Normal, (float3x3)View ) ).rgb\n"\
+"#endif\n"\
+
+"#ifdef ENVMAP\n"\
+"#else\n"\
+"#define ENVMAP\n"\
+"#endif\n"\
+"\n";
+
+
 const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 "#ifndef __PerPixelHSLighting_Specular_FXH__\n"\
 "#define __PerPixelHSLighting_Specular_FXH__\n"\
 
-
-/// param vLightDirWS [in] direction of the light ray. i.g. direciton from the light to the vertex
+/// param vLightDirWS [in] direction of the light ray. i.e. direciton from the light to the vertex
 "float CalculateSpecularComponent( float3 vLightDirWS,"\
 								  "float3 vNormalWS,"\
 								  "float3 vToViewerWS,"\
@@ -632,14 +758,6 @@ void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( CGenericShaderDesc& d
 {
 }
 
-
-void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
-{
-	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs;
-	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs;
-//	dest.pTechniqueName = "PPL_HSLs";
-}
-
 static const char *GetSpecularTypeMacro( CSpecularSource::Name spec_src )
 {
 	switch( spec_src )
@@ -652,6 +770,16 @@ static const char *GetSpecularTypeMacro( CSpecularSource::Name spec_src )
 	}
 }
 
+static const char *GetEnvMapOptionMacro( CEnvMapOption::Name envmap_option )
+{
+	switch( envmap_option )
+	{
+	case CEnvMapOption::NONE:             return "#define ENVMAP__NONE\n";
+	case CEnvMapOption::ENABLED:          return "#define ENVMAP__ENABLED\n";
+	default: return "#define ENVMAP__NONE\n";
+	}
+}
+
 void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular;
@@ -659,8 +787,19 @@ void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbedded
 
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
+	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
 
 //	dest.pTechniqueName = "PPL_HSLs_Specular";
+}
+
+
+void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+{
+	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs;
+	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs;
+//	dest.pTechniqueName = "PPL_HSLs";
+
+	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
 }
 
 
@@ -677,6 +816,7 @@ void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( CGenericShaderDesc& de
 
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
+	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
 }
 
 /*
@@ -756,6 +896,9 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 		hlsl_effect += hlsl_desc.ps.pDependencies[i];
 	hlsl_effect += hlsl_desc.ps.pContent; // pixel shader
 
+	if( desc.EnvMap != CEnvMapOption::NONE )
+		hlsl_effect = ms_pEnvMapSamplerInclude + hlsl_effect;
+
 	replace_all( hlsl_effect, "#include \"Matrix.fxh\"",                      ms_pMatrix );
 	replace_all( hlsl_effect, "#include \"ColorPair.fxh\"",                   ms_pColorPair );
 	replace_all( hlsl_effect, "#include \"TexDef.fxh\"",                      ms_pTexDef );
@@ -764,6 +907,7 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 	replace_all( hlsl_effect, "#include \"Transform.fxh\"",                   ms_pTransform );
 	replace_all( hlsl_effect, "#include \"QVertexBlendFunctions.fxh\"",       ms_pQVertexBlendFunctions );
 	replace_all( hlsl_effect, "#include \"PerPixelHSLighting_Specular.fxh\"", ms_pPerPixelHSLighting_Specular );
+	replace_all( hlsl_effect, "[[OPTIONS_MACROS]]", ms_pOptionsMacros );
 
 	string tech( ms_pTechniqueTemplate );
 
@@ -781,7 +925,7 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 	hlsl_effect += tech;
 
 	static int s_count = 0;
-	FILE *fp = fopen( fmt_string("mbedded_effect_%03d.fx",s_count++).c_str(),"w");
+	FILE *fp = fopen( fmt_string("embedded_effect_%03d.fx",s_count++).c_str(),"w");
 	if( fp )
 	{
 		fprintf(fp,hlsl_effect.c_str());

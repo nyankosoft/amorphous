@@ -184,6 +184,7 @@ void CCubeMapManager::UpdateCameraOrientation( int face )
 }
 
 
+// Calls RenderSceneToCubeMap() of the cube map scene renderer 6 times
 void CCubeMapManager::RenderToCubeMap()
 {
 	if( !m_pCubeMapSceneRenderer )

@@ -157,7 +157,7 @@ bool CHLSLShaderManager::Init()
 		m_aTextureHandle[i] = m_pEffect->GetParameterByName( NULL, acStr );
 	}
 
-	m_aCubeTextureHandle[0] = m_pEffect->GetParameterByName( NULL, "g_txCubeMap" );
+	m_aCubeTextureHandle[0] = m_pEffect->GetParameterByName( NULL, "CubeMapTexture" );
 
 	m_aHandle[HANDLE_VIEWER_POS]    = m_pEffect->GetParameterByName( NULL, "g_vEyePos" );
 	m_aHandle[HANDLE_AMBIENT_COLOR] = m_pEffect->GetParameterByName( NULL, "g_vAmbientColor" );

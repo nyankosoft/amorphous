@@ -107,6 +107,10 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs = CEmbeddedHLSLShader
 
 "float4 g_vAmbientColor = float4(0,0,0,0);"\
 
+
+"[[OPTIONS_MACROS]]\n"
+
+
 "float4 PS_PPL_HSLs( float4 ColorDiff : COLOR0,"\
                 "float2 Tex0     : TEXCOORD0,"\
                 "float3 PosWS    : TEXCOORD1,"\
@@ -157,8 +161,11 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs = CEmbeddedHLSLShader
 	"}"\
 
 	"float4 color;"\
-	"color.rgb = surface_color * diffuse + g_vAmbientColor;"\
+	"color.rgb = surface_color.rgb * diffuse.rgb + g_vAmbientColor.rgb;"\
 	"color.a = surface_color.a;"\
+
+	"\nENVMAP;\n"\
+
 	"return color;"\
 "}\n"\
 );
@@ -212,101 +219,8 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 "float4 g_vAmbientColor = float4(0,0,0,0);"\
 "float3 g_vEyePos = float3(0,0,0);"\
 
-//"#define SPECTYPE__UNIFORM\n"\
 
-// specular types
-"\n"\
-"#ifdef SPECTYPE__NONE\n"\
-"#define GET_SPECULAR 0.0\n"\
-"#endif\n"\
-
-"#ifdef SPECTYPE__UNIFORM\n"\
-"#define GET_SPECULAR g_fSpecular\n"\
-"#endif\n"\
-
-"#ifdef SPECTYPE__DECAL_TEX_ALPHA\n"\
-"#define GET_SPECULAR surface_color.a\n"\
-"#endif\n"\
-
-"#ifdef SPECTYPE__NORMAL_MAP_ALPHA\n"\
-"#define GET_SPECULAR normal_map.a\n"\
-"#endif\n"\
-
-"#ifdef SPECTYPE__TEX1_RED\n"\
-"#define GET_SPECULAR normal_map.r\n"\
-"#endif\n"\
-
-"#ifdef SPECTYPE__TEX1_GREEN\n"\
-"#define GET_SPECULAR normal_map.g\n"\
-"#endif\n"\
-
-"#ifdef SPECTYPE__TEX1_BLUE\n"\
-"#define GET_SPECULAR normal_map.b\n"\
-"#endif\n"\
-
-
-// glossiness types
-"\n"\
-"#ifdef SPECPOWTYPE__NONE\n"\
-"#define GET_SPECULAR_POWER 8.0\n"\
-"#endif\n"\
-
-"#ifdef SPECPOWTYPE__UNIFORM\n"\
-"#define GET_SPECULAR_POWER g_fSpecularPower\n"\
-"#endif\n"\
-
-"#ifdef SPECPOWTYPE__DECAL_TEX_ALPHA\n"\
-"#define GET_SPECULAR_POWER surface_color.a\n"\
-"#endif\n"\
-
-"#ifdef SPECPOWTYPE__NORMAL_MAP_ALPHA\n"\
-"#define GET_SPECULAR_POWER normal_map.a\n"\
-"#endif\n"\
-
-"#ifdef SPECPOWTYPE__TEX1_RED\n"\
-"#define GET_SPECULAR_POWER normal_map.r\n"\
-"#endif\n"\
-
-"#ifdef SPECPOWTYPE__TEX1_GREEN\n"\
-"#define GET_SPECULAR_POWER normal_map.g\n"\
-"#endif\n"\
-
-"#ifdef SPECPOWTYPE__TEX1_BLUE\n"\
-"#define GET_SPECULAR_POWER normal_map.b\n"\
-"#endif\n"\
-
-"#ifdef GET_SPECULAR_POWER\n"\
-// one of the macros above is used
-"#else\n"\
-"#define GET_SPECULAR_POWER 8.0\n"\
-"#endif\n"\
-
-
-// alpha blend types
-"\n"\
-"#ifdef ALPHABLEND__NONE\n"\
-"#define GET_ALPHA 1.0\n"\
-"#endif\n"\
-
-//"#ifdef ALPHABLEND__UNIFORM\n"\
-//"#define GET_ALPHA g_fAlpha\n"\
-//"#endif\n"\
-
-"#ifdef ALPHABLEND__DIFFUSE_ALPHA\n"\
-"#define GET_ALPHA ColorDiff.a\n"\
-"#endif\n"\
-
-"#ifdef ALPHABLEND__DECAL_TEX_ALPHA\n"\
-"#define GET_ALPHA surface_color.a\n"\
-"#endif\n"\
-
-"#ifdef ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n"\
-"#define GET_ALPHA ColorDiff.a * surface_color.a\n"\
-"#endif\n"\
-
-"#ifdef ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n"\
-"#define GET_ALPHA ColorDiff.a * surface_color.a\n"\
-"#endif\n"\
+"[[OPTIONS_MACROS]]\n"
 
 
 "float4 PS_PPL_HSLs_Specular( float4 ColorDiff : COLOR0,"\
@@ -323,7 +237,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 	"float specular_power = GET_SPECULAR_POWER;"\
 
 	// normal in world space
-	"const float3 vNormalizedNormalWS = normalize(vNormalWS);"\
+	"const float3 Normal = normalize(vNormalWS);"\
 
 	"COLOR_PAIR Out;"\
 	"Out.Color = 0;"\
@@ -337,7 +251,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 	"[unroll(1)]"\
 	"for(i = 0; i < iLightDirNum; i++)"\
 	"{"\
-		"COLOR_PAIR ColOut = DoHemisphericDirLight_Specular( vNormalizedNormalWS, vDirToViewerWS, i+iLightDirIni, specular_power );"\
+		"COLOR_PAIR ColOut = DoHemisphericDirLight_Specular( Normal, vDirToViewerWS, i+iLightDirIni, specular_power );"\
 		"Out.Color     += ColOut.Color;"\
 		"Out.ColorSpec += ColOut.ColorSpec;"\
 	"}"\
@@ -346,13 +260,16 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 	"[unroll(1)]"\
 	"for(i = 0; i < iLightPointNum; i++)"\
 	"{"\
-		"COLOR_PAIR ColOut = DoHemisphericPointLight_Specular( PosWS, vNormalizedNormalWS, vDirToViewerWS, i+iLightPointIni, specular_power );"\
+		"COLOR_PAIR ColOut = DoHemisphericPointLight_Specular( PosWS, Normal, vDirToViewerWS, i+iLightPointIni, specular_power );"\
 		"Out.Color     += ColOut.Color;"\
 		"Out.ColorSpec += ColOut.ColorSpec;"\
 	"}"\
 
 	"float4 color;"\
 	"color.rgb = surface_color * Out.Color + Out.ColorSpec * GET_SPECULAR + g_vAmbientColor;"\
+
+	"\nENVMAP;\n"\
+
 	"color.a = GET_ALPHA;"\
 	"return color;"\
 "}\n"
