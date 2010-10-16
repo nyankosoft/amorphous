@@ -2833,6 +2833,10 @@
 						</FileConfiguration>
 					</File>
 					<File
+						RelativePath="..\..\gds\Physics\Ageia\NxPhysActor.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Physics\Ageia\NxPhysActor.hpp"
 						>
 						<FileConfiguration
