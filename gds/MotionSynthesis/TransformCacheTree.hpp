@@ -70,6 +70,8 @@ public:
 	void CalculateWorldTransforms( const Matrix34& parent_transform, const CBone& bone, const CTransformNode& transform_node );
 
 	void GetWorldTransform( Matrix34& dest ) const { dest = m_WorldTransform; }
+
+	const Matrix34& GetWorldTransform() const { return m_WorldTransform; }
 };
 
 
