@@ -3,6 +3,7 @@
 #include <gds/base.hpp>
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/Direct3D/Conversions.hpp"
 
 #include "Support/StringAux.hpp"

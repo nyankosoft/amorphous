@@ -1,5 +1,5 @@
 #include "D3DXPMeshObject.hpp"
-
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/memory_helpers.hpp"
@@ -328,7 +328,7 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 	cVerticesPerMesh = ( cVerticesMax - cVerticesMin + 10 ) / num_mesh_divisions;
 
 	UINT num_pmeshes;
-	num_pmeshes = max( 1, (DWORD)ceil( (cVerticesMax - cVerticesMin + 1) / (float)cVerticesPerMesh ) );
+	num_pmeshes = take_max( (DWORD)1, (DWORD)ceil( (cVerticesMax - cVerticesMin + 1) / (float)cVerticesPerMesh ) );
 	m_vecpPMesh.resize( num_pmeshes, NULL );
 
 /*	if( m_vecpPMesh == NULL )

@@ -6,6 +6,7 @@
 #include <gl/gl.h>											// Header File For The OpenGL32 Library
 #include <gl/glu.h>											// Header File For The GLu32 Library
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
+#include "gds/Graphics/Mesh/MeshFactory.hpp"
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace GameLib1::Serialization;
 

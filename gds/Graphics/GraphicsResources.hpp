@@ -440,7 +440,7 @@ inline GraphicsResourceState::Name CGraphicsResource::GetState()
 
 
 //================================================================================
-// CGraphicsResource
+// CMeshResource
 //================================================================================
 
 inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMesh()
@@ -457,6 +457,12 @@ inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMeshInLoading()
 	return m_pMeshObject;
 }
 
+
+//---------------------------- forward declarations ----------------------------
+
+boost::shared_ptr<CCustomMesh> GetCustomMesh( CBasicMesh& src_mesh );
+boost::shared_ptr<CCustomMesh> GetCustomMesh( boost::shared_ptr<CBasicMesh> pSrcMesh );
+//boost::shared_ptr<CCustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh );
 
 
 #endif /* __GraphicsResources_HPP__ */

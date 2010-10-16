@@ -12,6 +12,7 @@
 #include "Graphics/FVF_ShadowVertex.h"
 
 #include "Graphics/MeshModel/MeshBone.hpp"
+#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 #include "Support/Log/DefaultLog.hpp"

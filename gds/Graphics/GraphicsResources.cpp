@@ -1,6 +1,8 @@
 #include "GraphicsResources.hpp"
 
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/Mesh/CustomMesh.hpp" // For GetCustomMesh()
+#include "Graphics/Mesh/MeshFactory.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderGenerator.hpp"
@@ -270,6 +272,35 @@ void CTextureResource::GetStatus( char *pDestBuffer )
 //==================================================================================================
 // CMeshResource
 //==================================================================================================
+
+shared_ptr<CCustomMesh> GetCustomMesh( CBasicMesh& src_mesh )
+{
+	shared_ptr<CMeshImpl> pMeshImpl = src_mesh.m_pImpl;
+	if( !pMeshImpl )
+		return shared_ptr<CCustomMesh>();
+
+	shared_ptr<CCustomMesh> pCustomMesh = boost::dynamic_pointer_cast<CCustomMesh,CMeshImpl>( pMeshImpl );
+
+	return pCustomMesh;
+}
+
+
+shared_ptr<CCustomMesh> GetCustomMesh( shared_ptr<CBasicMesh> pSrcMesh )
+{
+	if( !pSrcMesh )
+		return shared_ptr<CCustomMesh>();
+
+	return GetCustomMesh( *pSrcMesh );
+}
+
+/*
+// Need to include MeshObjectHandle.hpp to define this
+// Should move this to MeshObjectHandle.cpp?
+shared_ptr<CCustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh )
+{
+	return GetCustomMesh( src_mesh.GetMesh() );
+}*/
+
 
 CMeshResource::CMeshResource( const CMeshResourceDesc *pDesc )
 {

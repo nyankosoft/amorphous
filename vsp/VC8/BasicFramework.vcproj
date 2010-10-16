@@ -595,6 +595,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Graphics\Mesh\MeshFactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Mesh\MeshFactory.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\MeshGenerators.cpp"
 					>
 				</File>

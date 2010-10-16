@@ -4,6 +4,7 @@
 
 #include "3DMath/Sphere.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/Mesh/MeshFactory.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 

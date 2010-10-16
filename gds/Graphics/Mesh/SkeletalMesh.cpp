@@ -1,4 +1,5 @@
 #include "SkeletalMesh.hpp"
+#include "MeshFactory.hpp" // ctor of CSkeletalMesh needs the mesh impl factory 
 
 
 CSkeletalMesh::CSkeletalMesh()

@@ -1,4 +1,5 @@
 #include "ProgressiveMesh.hpp"
+#include "MeshFactory.hpp" // ctor of CProgressiveMesh needs the mesh impl factory 
 
 
 CProgressiveMesh::CProgressiveMesh()
