@@ -189,6 +189,10 @@ public:
 	// returns the axis-aligned bounding box of the mesh
 	const AABB3& GetAABB() const { return m_AABB; }
 
+	virtual unsigned int GetNumVertices() const { return 0; }
+
+	virtual unsigned int GetNumTriangles() const { return 0; }
+
 	// methods for skeletal mesh
 	// - implementation class of skeletal mesh has to implement these functions
 
@@ -312,6 +316,10 @@ public:
 	const AABB3& GetAABB() const { return m_pImpl->GetAABB(); }
 
 	const AABB3& GetAABB( int material_index ) const { return m_pImpl->GetAABB( material_index ); }
+
+	unsigned int GetNumVertices() const { return m_pImpl->GetNumVertices(); }
+
+	unsigned int GetNumTriangles() const { return m_pImpl->GetNumTriangles(); }
 
 	// methods for skeletal mesh
 	// - skeletal mesh class has to implement these functions

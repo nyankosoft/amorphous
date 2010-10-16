@@ -33,6 +33,8 @@ public:
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return m_pMesh; }
 
+	virtual const LPD3DXBASEMESH GetBaseMesh() const { return m_pMesh; }
+
 	virtual LPD3DXMESH GetMesh() { return m_pMesh; }
 
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::BASIC; }

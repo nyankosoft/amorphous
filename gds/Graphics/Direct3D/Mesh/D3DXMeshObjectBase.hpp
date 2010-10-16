@@ -108,6 +108,8 @@ public:
 
 	virtual LPD3DXBASEMESH GetBaseMesh() { return NULL; }
 
+	virtual const LPD3DXBASEMESH GetBaseMesh() const { return NULL; }
+
 	bool LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags );
 
 	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return false; }
@@ -188,6 +190,10 @@ public:
 
 	/// render object by using the fixed function pipeline
 	void Render();
+
+	virtual unsigned int GetNumVertices() const;
+
+	virtual unsigned int GetNumTriangles() const;
 
 	virtual bool LockVertexBuffer( void*& pLockedVertexBuffer );
 

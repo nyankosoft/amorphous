@@ -915,6 +915,19 @@ HRESULT CD3DXMeshObjectBase::CreateLocalBoundingSphereFromD3DXMesh( LPD3DXMESH p
 	return hr;
 }
 
+
+unsigned int CD3DXMeshObjectBase::GetNumVertices() const
+{
+	return GetBaseMesh() ? (GetBaseMesh()->GetNumVertices()) : 0;
+}
+
+
+unsigned int CD3DXMeshObjectBase::GetNumTriangles() const
+{
+	return GetBaseMesh() ? (GetBaseMesh()->GetNumFaces()) : 0;
+}
+
+
 bool CD3DXMeshObjectBase::LockVertexBuffer( void*& pLockedVertexBuffer )
 {
 	if( GetBaseMesh() )
