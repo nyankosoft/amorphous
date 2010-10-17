@@ -28,7 +28,7 @@
 #include "GUI/GM_ControlRendererManager.hpp"
 #include "GUI/InputHandler_Dialog.hpp"
 
-#include "JigLib/JL_PhysicsActor.hpp"
+//#include "JigLib/JL_PhysicsActor.hpp"
 
 using namespace std;
 using namespace boost;
@@ -37,8 +37,7 @@ using namespace boost;
 //#define APPLY_PHYSICS_TO_PLAYER_SHIP
 
 
-int gs_InputHandlerIndex = 1;
-
+int CBE_Player::ms_InputHandlerIndex = 1;
 
 CBE_Player::CBE_Player()
 {
@@ -137,7 +136,7 @@ void CBE_Player::InitCopyEntity(CCopyEntity* pCopyEnt)
 	// set the input handler for the player entity operations
 	SafeDelete( m_pInputHandler );
 	m_pInputHandler = CreatePlayerInputHandler();
-	InputHub().PushInputHandler( gs_InputHandlerIndex, m_pInputHandler );
+	InputHub().PushInputHandler( ms_InputHandlerIndex, m_pInputHandler );
 
 //	SinglePlayerInfo().SetInputHandlerForPlayerShip();
 }
@@ -426,7 +425,7 @@ void CBE_Player::OnEntityDestroyed(CCopyEntity* pCopyEnt)
 
 	if( m_pInputHandler )
 	{
-		InputHub().RemoveInputHandler( gs_InputHandlerIndex, m_pInputHandler );
+		InputHub().RemoveInputHandler( ms_InputHandlerIndex, m_pInputHandler );
 		SafeDelete( m_pInputHandler );
 	}
 }
@@ -650,20 +649,6 @@ void CBE_Player::SetCommandMenuUI( CGM_DialogManagerSharedPtr pDlgMgr,
 	}
 
 	m_pCmdMenuInputHandler = pDlgInputHandler;
-}
-
-
-void CBE_Player::ReleaseGraphicsResources()
-{
-	CBaseEntity::ReleaseGraphicsResources();
-
-//	SafeDelete( m_pLaserDotX );
-
-}
-
-void CBE_Player::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	CBaseEntity::LoadGraphicsResources( rParam );
 }
 
 

@@ -171,11 +171,6 @@ public:
 		                   std::vector<int>& vecRootDialogID,
 		                   CGM_DialogInputHandlerSharedPtr pDlgInputHandler = CGM_DialogInputHandlerSharedPtr() );
 
-
-//	void AdaptToNewScreenSize() {}
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-	void ReleaseGraphicsResources();
-
 	inline void SetTrigger( int iTriggerState );
 	inline void UnlockTriggerSafety( bool bUnlock );
 
@@ -188,6 +183,10 @@ public:
 	virtual bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	// static member variable(s)
+
+	static int ms_InputHandlerIndex;
 };
 
 
