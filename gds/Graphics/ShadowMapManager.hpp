@@ -104,7 +104,7 @@ public:
 
 	void SetSceneRenderer( boost::shared_ptr<CShadowMapSceneRenderer> pSceneRenderer );
 
-	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadwoMap( U32 id, CLight& light );
+	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadowMap( U32 id, CLight& light );
 
 	Result::Name UpdateLightForShadow( U32 id, CLight& light );
 

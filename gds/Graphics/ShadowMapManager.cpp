@@ -194,7 +194,7 @@ void CShadowMapManager::SetSceneRenderer( shared_ptr<CShadowMapSceneRenderer> pS
 /// returns -1 on failure
 /// \param [in] light must be either directional or point light
 /// TODO: support spotlight
-std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadwoMap( U32 id, CLight& light )
+std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadowMap( U32 id, CLight& light )
 {
 	if( light.GetLightType() != CLight::DIRECTIONAL
 	 && light.GetLightType() != CLight::HEMISPHERIC_DIRECTIONAL
@@ -243,7 +243,7 @@ Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, CLight& light )
 	{
 		// The shadow map for this light does not exist
 		// - create a new shadow map.
-		itrShadowMap = CreateShadwoMap( id, light );
+		itrShadowMap = CreateShadowMap( id, light );
 
 		if( itrShadowMap == m_mapIDtoShadowMap.end() )
 			return Result::UNKNOWN_ERROR;
