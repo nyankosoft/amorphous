@@ -1110,14 +1110,16 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	if( do_not_use_render_task )
 	{
 		UpdateEnvironmentMapTextures();
+//		UpdatePlanerReflectionTextures( rCam );
 	}
 
 	bool rendered_with_shadow = false;
-	if( m_pShadowManager )
+	if( m_pShadowManager ) // A
 	{
+		// A new shadowmap may be created in this function. This must be called before m_pShadowManager->HasShadowMap().
 		UpdateLightsForShadow();
 
-		if( m_pShadowManager->HasShadowMap() )
+		if( m_pShadowManager->HasShadowMap() ) // B
 		{
 			RenderForShadowMaps( rCam );
 
@@ -1130,7 +1132,10 @@ void CEntityRenderManager::Render( CCamera& rCam )
 
 	if( !rendered_with_shadow )
 	{
-		// directly render the scene to the currenet render target
+		// Directly render the scene to the currenet render target.
+		// This happens if one of the following is true:
+		// 1) Shadowmap is disabled (A is false).
+		// 2) Shadowmap is enabled, but there is not light for the shadowmap (B is false).
 		CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );
 		RenderScene( rCam );
 	}
