@@ -17,6 +17,7 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
 using namespace MeshModel;
 //using namespace GameLib1::MeshModel;
 
@@ -377,7 +378,7 @@ bool CD3DXMeshModel::LoadFromArchive( C3DMeshModelArchive& rArchive, const strin
 }
 
 
-void CD3DXMeshModel::Render( const unsigned int RenderFlag )
+void CD3DXMeshModel::Render( const unsigned int RenderFlag, CShaderManager& shader_mgr )
 {
 	if( RenderFlag & RENDER_USE_FIXED_FUNCTION_SHADER )
 	{
@@ -388,8 +389,8 @@ void CD3DXMeshModel::Render( const unsigned int RenderFlag )
 	int i, iNumMaterials = m_iNumMaterials;
 
 	LPDIRECT3DDEVICE9	pd3dDev = DIRECT3D9.GetDevice();
-	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
-	LPD3DXEFFECT pEffect = pShaderMgr->GetEffect();
+//	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
+	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
 
 	if( !pEffect )
 		return;

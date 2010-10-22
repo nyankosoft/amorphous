@@ -1,22 +1,14 @@
-
 #ifndef  __3DMESHMODEL_H__
 #define  __3DMESHMODEL_H__
 
 
-//#include <vector>
 #include <string>
-using namespace std;
-
-
 #include <d3dx9.h>
 
 #include "Graphics/TextureHandle.hpp"
-
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
-#include "Support/memory_helpers.hpp"
-
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "3DMeshModelArchive.hpp"
 #include "MeshBone.hpp"
 
@@ -78,7 +70,7 @@ public:
 
 	bool LoadFromFile( const char *pFilename );
 
-	bool LoadFromArchive( C3DMeshModelArchive& rArchive, const string& strModelFilename = "" );
+	bool LoadFromArchive( C3DMeshModelArchive& rArchive, const std::string& strModelFilename = "" );
 
 	/// apply hierarchical transformations
 	/// given an array of world transform matrices for each bone
@@ -92,7 +84,7 @@ public:
 
 	inline int GetNumBones() const { return m_iNumBones; }
 
-	void Render( const unsigned int RenderFlag = 0 );
+	void Render( const unsigned int RenderFlag = 0, CShaderManager& shader_mgr = FixedFunctionPipelineManager() );
 
 	bool LockVertexBuffer( void*& pVertex );
 
@@ -120,7 +112,7 @@ private:
 
 	void RenderNonHLSL( unsigned int RenderFlag );
 
-	string m_strFilename;
+	std::string m_strFilename;
 
 	int m_iNumMaterials;
 

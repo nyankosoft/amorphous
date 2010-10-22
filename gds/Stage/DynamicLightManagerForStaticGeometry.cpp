@@ -2,7 +2,6 @@
 #include "LightEntityManager.hpp"
 #include "BSPMap.hpp"
 #include "../Graphics/FVF_MapVertex.h"
-#include "../Graphics/Shader/Shader.hpp"
 #include "../Graphics/Shader/ShaderManager.hpp"
 
 
@@ -131,16 +130,13 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLight( CLightEntity& rLigh
 }
 
 
-void CDynamicLightManagerForStaticGeometry::SetDynamicLights(CBSPMap *pMap)
+void CDynamicLightManagerForStaticGeometry::SetDynamicLights( CBSPMap *pMap, CShaderManager& shader_mgr )
 {
 	int i, j;
 	int iNumCurrentDynamicLights;// = m_pLightEntityManager->GetNumDynamicLights();
 
 	// get the pointer to the effect interface
-	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
-	if( !pShaderMgr ) return;
-
-	LPD3DXEFFECT pEffect = pShaderMgr->GetEffect();
+	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
 	if( !pEffect ) return;
 
 	CLightEntity *pLight;

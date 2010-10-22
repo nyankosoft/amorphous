@@ -875,7 +875,8 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 
 		if( LockVertexBuffer() )
 		{
-			m_pDynamicLightManager->SetDynamicLights(this);
+			CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+			m_pDynamicLightManager->SetDynamicLights( this, shader_mgr );
 			UnlockVertexBuffer();
 		}
 		else

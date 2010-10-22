@@ -1,11 +1,8 @@
-
 #ifndef  __DYNAMICLIGHTMANAGERFORSTATICGEOMETRY_H__
 #define  __DYNAMICLIGHTMANAGERFORSTATICGEOMETRY_H__
 
 #include <vector>
-using namespace std;
-
-#include <d3dx9tex.h>
+#include "../Graphics/fwd.hpp"
 
 class CBSPMap;
 class CLightEntity;
@@ -23,7 +20,7 @@ class CDynamicLightManagerForStaticGeometry
 
 	CLightEntity *m_apDynamicLight[NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME];
 
-	vector<int> m_veciLitPolygonIndex[NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME];
+	std::vector<int> m_veciLitPolygonIndex[NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME];
 
 	/// the number of dynamic lights handled by this class during a frame.
 	/// updated every frame
@@ -37,7 +34,7 @@ public:
 
 	void SetLightEntityManager(CLightEntityManager *pLightEntityManager) { m_pLightEntityManager = pLightEntityManager; }
 
-	void SetDynamicLights(CBSPMap *pMap);
+	void SetDynamicLights( CBSPMap *pMap, CShaderManager& shader_mgr );
 
 	void SetDynamicLight( CLightEntity& rLight, CSG_Polygon& rPolygon, CBSPMap *pMap );
 
