@@ -6,8 +6,6 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/PrimitiveRenderer.hpp"
 #include "Graphics/UnitCube.hpp"
-//#include "Support/memory_helpers.hpp"
-//#include "Support/LineSegmentRenderer.hpp"
 #include "Support/SafeDelete.hpp"
 //#include "Support/msgbox.hpp"
 
@@ -48,33 +46,10 @@ void CJL_PhysicsVisualizer_D3D::RenderVisualInfo()
 	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-/*	CShaderManager *pShaderMgr = CShader::Get()->GetCurrentShaderManager();
-	LPD3DXEFFECT pEffect = NULL;
-	if( pShaderMgr )
-	{
-		pEffect = pShaderMgr->GetEffect();
-
-		UINT cPasses;
-		pEffect->SetTechnique( "Default" );	// no vertex & pixel shader
-		pEffect->Begin( &cPasses, 0 );
-		pEffect->BeginPass(0);	// assumes that the technique has only one pass
-
-//		pEffect->SetMatrix( "World", &matWorld );
-		pEffect->CommitChanges();
-	}*/
-
-
 	// render visual debug info
 	DisplayContactPoints();
 
 	DisplayActorInfo();
-
-
-/*	if( pEffect )
-	{
-		pEffect->EndPass();
-		pEffect->End();
-	}*/
 }
 
 
