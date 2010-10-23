@@ -67,8 +67,8 @@ inline void AABB3::AddPoint( const Vector3& v )
 inline void AABB3::AddSphere( const Sphere& rSphere )
 {
 	AABB3 aabb;
-	aabb.vMin = rSphere.vCenter - Vector3( rSphere.radius, rSphere.radius, rSphere.radius );
-	aabb.vMax = rSphere.vCenter + Vector3( rSphere.radius, rSphere.radius, rSphere.radius );
+	aabb.vMin = rSphere.center - Vector3( rSphere.radius, rSphere.radius, rSphere.radius );
+	aabb.vMax = rSphere.center + Vector3( rSphere.radius, rSphere.radius, rSphere.radius );
 	MergeAABB( aabb );
 }
 

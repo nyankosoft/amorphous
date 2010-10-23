@@ -1,27 +1,33 @@
-#ifndef  __BOUNDINGVOLUME_SPHERE_H__
-#define  __BOUNDINGVOLUME_SPHERE_H__
+#ifndef  __3DMath_Sphere_HPP__
+#define  __3DMath_Sphere_HPP__
 
 #include "Vector3.hpp"
 
 
-class Sphere
+template<typename T>
+class tSphere
 {
 public:
-	Vector3 vCenter;
-	float radius;
+	tVector3<T> center;
+	T radius;
 
 public:
 
-	Sphere() : vCenter(Vector3(0,0,0)), radius(1.0f) {}
+	tSphere<T>() : center(tVector3<T>(0,0,0)), radius(1.0f) {}
 
-	Sphere( const Vector3& _center, const float _radius ) : vCenter(_center), radius(_radius) {}
+	tSphere<T>( const tVector3<T>& _center, const float _radius ) : center(_center), radius(_radius) {}
 
-	bool IntersectsWith( const Sphere& sphere )
+	bool IntersectsWith( const tSphere<T>& sphere )
 	{
 		const float r_sum = radius + sphere.radius;
-		return Vec3LengthSq( sphere.vCenter - vCenter ) < r_sum * r_sum;
+		return Vec3LengthSq( sphere.center - center ) < r_sum * r_sum;
 	}
 };
 
 
-#endif /* __BOUNDINGVOLUME_SPHERE_H__ */
+typedef tSphere<float> Sphere;
+typedef tSphere<double> dSphere;
+
+
+
+#endif /* __3DMath_Sphere_HPP__ */

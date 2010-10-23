@@ -896,7 +896,7 @@ HRESULT CD3DXMeshObjectBase::CreateLocalBoundingSphereFromD3DXMesh( LPD3DXMESH p
 	pVertexBuffer->Unlock();
 	SAFE_RELEASE( pVertexBuffer );
 
-	m_LocalShpere.vCenter = ToVector3( m_vObjectCenter );
+	m_LocalShpere.center = ToVector3( m_vObjectCenter );
 
 	if( FAILED(hr) )
 		return hr;

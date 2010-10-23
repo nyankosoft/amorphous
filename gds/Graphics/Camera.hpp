@@ -260,7 +260,7 @@ inline bool CCamera::ViewFrustumIntersectsWith( const Sphere& rSphere ) const
 	for( int i=0; i<6; i++ )
 	{
 		const SPlane& rPlane = m_WorldBSPTree[i].plane;
-		d = rPlane.GetDistanceFromPoint( rSphere.vCenter ) - rSphere.radius;
+		d = rPlane.GetDistanceFromPoint( rSphere.center ) - rSphere.radius;
 
 		if(0 < d)
 			return false;

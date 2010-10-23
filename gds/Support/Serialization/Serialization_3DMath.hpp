@@ -85,7 +85,7 @@ inline IArchive& operator & ( IArchive& ar, SPlane& plane )
 
 inline IArchive& operator & ( IArchive& ar, Sphere& sphere )
 {
-	ar & sphere.vCenter;
+	ar & sphere.center;
 	ar & sphere.radius;
 
 	return ar;
