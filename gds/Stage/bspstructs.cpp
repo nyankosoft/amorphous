@@ -34,18 +34,6 @@ CPortalFace CPortalFace::operator=(CPortalFace face)
 // Global Functions                                                                    /
 //-------------------------------------------------------------------------------------/
 
-
-bool AlmostSamePlanes(SPlane& plane1, SPlane& plane2)
-{
-	if(	fabs(plane1.dist - plane2.dist) < DIST_EPSILON
-		&& fabs( plane1.normal.x - plane2.normal.x ) < NORMAL_EPSILON 
-		&& fabs( plane1.normal.y - plane2.normal.y ) < NORMAL_EPSILON 
-		&& fabs( plane1.normal.z - plane2.normal.z ) < NORMAL_EPSILON )
-		return true;
-	else
-		return false;
-}
-
 // OPC_DONTCARE_NORMAL_DIRECTION
 //	the face is regarded as on-plane if it simply overlaps on the plane 
 // OPC_IF_NORMAL_SAME_DIRECTION (default)

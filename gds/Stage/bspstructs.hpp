@@ -76,6 +76,5 @@ enum OnPlaneCondition { OPC_IF_NORMAL_SAME_DIRECTION = 1, OPC_DONTCARE_NORMAL_DI
 
 extern int	ClassifyFace( const SPlane& plane, CFace& face,
 						 int iOnPlaneCondition = OPC_IF_NORMAL_SAME_DIRECTION);
-extern bool AlmostSamePlanes(SPlane& plane1, SPlane& plane2);
 
 #endif  /*  __BSPSTRUCTS_H__  */
