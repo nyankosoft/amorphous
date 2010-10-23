@@ -47,8 +47,9 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 	res = GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 	res = GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 	res = GraphicsDevice().Enable(  RenderStateType::FACE_CULLING );
-	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
-//	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+
+	// Commented out: don't change the "CullingMode::CLOCKWISE" mode when rendering the scene for a planar reflection texture.
+//	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
 	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
