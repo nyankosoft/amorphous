@@ -42,7 +42,7 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 protected:
 
-	void RenderReflectionSourceMeshes();
+	void RenderReflectionSourceMeshes( const Vector3& camera_pos );
 
 	void RenderReflectionSurface();
 

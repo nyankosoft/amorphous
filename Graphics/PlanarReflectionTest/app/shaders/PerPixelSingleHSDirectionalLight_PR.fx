@@ -1,3 +1,6 @@
+// PerPixelSingleHSDirectionalLight_PR_PT.fx
+// planer reflection
+
 float4 g_vAmbientColor = float4(0.1f, 0.1f, 0.1f, 1.f);
 
 bool g_bSpecular : register(b0) = false;

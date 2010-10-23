@@ -11,6 +11,7 @@
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Support/ParamLoader.hpp"
 #include "Support/CameraController_Win32.hpp"
+#include "Support/Timer.hpp"
 
 using namespace std;
 using namespace boost;
@@ -19,18 +20,10 @@ using namespace boost;
 extern CPlatformDependentCameraController g_CameraController;
 
 
-inline Matrix44 CreateMirrorMatrix( const SPlane& plane )
+Vector3 GetMirroredPosition( const Plane& plane, const Vector3& pos )
 {
-	Matrix44 out;
-	const Vector3& n = plane.normal;
-	const float k = plane.dist;
-
-	out(0,0) = 1-2*n.x*n.x;  out(0,1) =  -2*n.x*n.y;  out(0,2) =  -2*n.x*n.z;  out(0,3) = 2*n.x*k;
-	out(1,0) =  -2*n.y*n.x;  out(1,1) = 1-2*n.y*n.y;  out(1,2) =  -2*n.y*n.z;  out(1,3) = 2*n.y*k;
-	out(2,0) =  -2*n.z*n.x;  out(2,1) =  -2*n.z*n.y;  out(2,2) = 1-2*n.z*n.z;  out(2,3) = 2*n.z*k;
-	out(3,0) = 0;  out(3,1) = 0;  out(3,2) = 0;  out(3,3) = 1;
-
-	return out;
+	float d = plane.GetDistanceFromPoint( pos );
+	return pos - plane.normal * d * 2.0f;
 }
 
 
@@ -106,9 +99,11 @@ void CPlanarReflectionTest::Update( float dt )
 }
 
 
-void CPlanarReflectionTest::RenderReflectionSourceMeshes()
+void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Vector3& camera_pos )
 {
 	C2DRect rect( Vector2( 80, 80 ), Vector2( 100, 100 ), 0xFFFF0000 );
+
+	RenderAsSkybox( m_SkyboxMesh, camera_pos );
 
 	Matrix44 matWorld = Matrix44Identity();
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
@@ -116,8 +111,6 @@ void CPlanarReflectionTest::RenderReflectionSourceMeshes()
 		return;
 
 	CShaderManager& shader_mgr = *pShaderMgr;
-
-//	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
 
 //	Matrix44 matMirror = CreateMirrorMatrix( SPlane( Vector3(0,1,0), 0 ) );
 //	matWorld = matMirror * matWorld;
@@ -160,6 +153,14 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 
 	shader_mgr.SetTexture( 1, m_pTextureRenderTarget->GetRenderTargetTexture() );
 
+	// shift UV of perturbation texture to make the reflection look like water surface with waves
+	vector<float> uv_shift;
+	uv_shift.resize( 2 );
+	uv_shift[0] = (float)GlobalTimer().GetTime() * 0.05f;
+	uv_shift[1] = 0;
+
+	shader_mgr.SetParam( "g_vPerturbationTextureUVShift", uv_shift );
+
 	for( size_t i=0; i<m_ReflectiveSurfaceMeshes.size(); i++ )
 	{
 		shared_ptr<CBasicMesh> pMesh = m_ReflectiveSurfaceMeshes[i].GetMesh();
@@ -174,13 +175,11 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 
 void CPlanarReflectionTest::Render()
 {
-	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
-
 	// Render mirrored scene to the texture render target
 
 	m_pTextureRenderTarget->SetRenderTarget();
 
-	Matrix44 mirror = CreateMirrorMatrix( SPlane( Vector3(0,1,0), 0 ) );
+	Matrix44 mirror = Matrix44Mirror( SPlane( Vector3(0,1,0), 0 ) );
 
 	Matrix44 view = g_Camera.GetCameraMatrix();
 	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, g_Camera.GetProjectionMatrix() );
@@ -197,7 +196,7 @@ void CPlanarReflectionTest::Render()
 	}*/
 
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
-	RenderReflectionSourceMeshes();
+	RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), g_Camera.GetPosition() ) );
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
 
@@ -205,7 +204,7 @@ void CPlanarReflectionTest::Render()
 
 	// Render the scene that has planar reflection
 	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
-	RenderReflectionSourceMeshes();
+	RenderReflectionSourceMeshes( g_Camera.GetPosition() );
 
 	// Render surface that does planar reflection
 	RenderReflectionSurface();
