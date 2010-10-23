@@ -242,6 +242,7 @@ void CDirect3D9::SetDefaultRenderStates()
 	m_pD3DDevice->SetRenderState( D3DRS_NORMALIZENORMALS, TRUE );
 	m_pD3DDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
 	m_pD3DDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR );
+	m_pD3DDevice->SetSamplerState( 0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR );
 }
 
 
