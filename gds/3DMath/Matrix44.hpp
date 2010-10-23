@@ -5,6 +5,7 @@
 #include "precision.h"
 #include "Vector3.hpp"
 #include "Vector4.hpp"
+#include "Plane.hpp"
 #include <math.h>
 
 
@@ -123,8 +124,10 @@ inline Matrix44 operator*(const Matrix44 & lhs, const Matrix44 & rhs);
 
 inline Matrix44 Matrix44Transpose(const Matrix44 & rhs);
 inline Matrix44 Matrix44Scaling( Scalar x, Scalar y, Scalar z );
+inline Matrix44 Matrix44PerspectiveFoV_LH( Scalar fov_y, Scalar aspect_ratio__w_by_h, Scalar z_near, Scalar z_far );
 inline void Matrix44OrthoLH( Scalar w, Scalar h, Scalar z_near, Scalar z_far, Matrix44& dest );
 inline Matrix44 Matrix44OrthoLH( Scalar w, Scalar h, Scalar z_near, Scalar z_far );
+inline Matrix44 Matrix44Mirror( const SPlane& plane );
 
 
 // matrix * vector
@@ -138,22 +141,6 @@ inline Matrix44 Matrix44RotationZ( Scalar gamma );
 /// returns the matrix that rotates a vertex around an axis
 inline Matrix44 Matrix44RotationAxis( Scalar angle, const Vector3& axis );
 */
-
-inline Matrix44 Matrix44PerspectiveFoV_LH( Scalar fov_y = (Scalar)PI / 4.0f, Scalar aspect_ratio__w_by_h = 4.0f / 3.0f, Scalar z_near = 0.1f, Scalar z_far = 500.0f )
-{
-	Scalar y_scale = 1.0f / (Scalar)tan(fov_y * 0.5f);//(cot(fov_y * 0.5f);
-	Scalar x_scale = y_scale / aspect_ratio__w_by_h;
-	Scalar _22 = z_far / (z_far - z_near);
-	Scalar _23 = -z_near*z_far / (z_far - z_near);
-
-	Matrix44 mat;
-	mat(0,0) = x_scale; mat(0,1) = 0;       mat(0,2) = 0;         mat(0,3) = 0;
-	mat(1,0) = 0;       mat(1,1) = y_scale; mat(1,2) = 0;         mat(1,3) = 0;
-	mat(2,0) = 0;       mat(2,1) = 0;       mat(2,2) = _22;       mat(2,3) = _23;
-	mat(3,0) = 0;       mat(3,1) = 0;       mat(3,2) = 1;         mat(3,3) = 0;
-
-	return mat;
-}
 
 
 
@@ -176,4 +163,3 @@ inline const Matrix44 & Matrix44Identity()
 #include "Matrix44.inl"
 
 #endif  /*  __3DMATH_MATRIX44_H__  */
-

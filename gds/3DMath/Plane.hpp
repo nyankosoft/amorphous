@@ -1,38 +1,48 @@
-#ifndef __STRUCT_PLANE_H__
-#define __STRUCT_PLANE_H__
+#ifndef __3DMath_Plane_HPP__
+#define __3DMath_Plane_HPP__
 
 
 #include "Vector3.hpp"
-#include <string.h> // for memset()
 #include <float.h>
 
 
-struct SPlane
+template<typename T>
+class tPlane
 {
-	Vector3	normal;
+public:
 
-	Scalar dist;
+	tVector3<T> normal;
+
+	T dist;
 
 	int type;  // for fast side tests - 0:vertical to x-axis, 1:vertical to y-axis, 2:vertical to z-axis, 3:non-vertical to any axis  
 
+public:
 
-	SPlane() { memset(this, 0, sizeof(SPlane)); type = 3;}
+	/// The ctor creates an invalid plane by default
+	tPlane()
+		:
+	normal( tVector3<T>(0,0,0) ),
+	dist(0),
+	type(3)
+	{}
 
-	SPlane( const Vector3& _normal, Scalar _dist ) : normal(_normal), dist(_dist) { type = 3; }
+	tPlane( const tVector3<T>& _normal, T _dist ) : normal(_normal), dist(_dist) { type = 3; }
 
-	bool operator<(SPlane& plane) { return (dist < plane.dist); }
+	bool operator<(tPlane<T>& plane) const { return (dist < plane.dist); }
 
-	// bool operator==(SPlane& plane);
+	// bool operator==(tPlane<T>& plane);
 
 	inline void Flip() { normal *= (-1); dist *= (-1); }
 
 	/// calculate the signed distance between the plane and a given position
 	/// returns negative value when the point is behind the plane (in a negative half-space)
-	inline float GetDistanceFromPoint( const Vector3& rvPoint ) const;
+	inline T GetDistanceFromPoint( const tVector3<T>& pos ) const;
 };
 
 
-inline float SPlane::GetDistanceFromPoint( const Vector3& rvPoint ) const
+template<typename T>
+inline T tPlane<T>::GetDistanceFromPoint( const tVector3<T>& pos ) const
 {
 /*
 #ifdef _DEBUG
@@ -42,12 +52,12 @@ inline float SPlane::GetDistanceFromPoint( const Vector3& rvPoint ) const
 		return 0.0f;
 #endif*/
 
-		return Vec3Dot( normal, rvPoint ) - dist;
+		return Vec3Dot( normal, pos ) - dist;
 }
 
 
 /*	
-inline float SPlane::GetDistanceFromPoint( Vector3& rvPoint )
+inline float SPlane::GetDistanceFromPoint( tVector3<T>& rvPoint )
 {
 	switch( type )
 	{
@@ -65,7 +75,8 @@ enum ePointStatus { PNT_ONPLANE, PNT_FRONT, PNT_BACK };
 #define DIST_EPSILON	0.001
 
 
-inline int ClassifyPoint( const SPlane& plane, const Vector3& point )
+template<typename T>
+inline int ClassifyPoint( const tPlane<T>& plane, const tVector3<T>& point )
 {
 	float pdist = Vec3Dot( point, plane.normal ) - plane.dist;
 
@@ -76,4 +87,27 @@ inline int ClassifyPoint( const SPlane& plane, const Vector3& point )
 	return PNT_ONPLANE;          // point is on the plane
 }
 
-#endif  /*  __STRUCT_PLANE_H__  */
+
+template<typename T>
+inline bool AlmostSamePlanes( const tPlane<T>& plane0, const tPlane<T>& plane1, const T dist_error = (T)0.001, const T normal_error = (T)0.001 )
+{
+	if(	fabs( plane0.dist - plane1.dist ) < dist_error
+	 && fabs( plane0.normal.x - plane1.normal.x ) < normal_error 
+	 && fabs( plane0.normal.y - plane1.normal.y ) < normal_error 
+	 && fabs( plane0.normal.z - plane1.normal.z ) < normal_error )
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+
+typedef tPlane<float> Plane;
+typedef tPlane<double> dPlane;
+
+typedef tPlane<float> SPlane; // deprecated
+
+
+
+#endif  /*  __3DMath_Plane_HPP__  */

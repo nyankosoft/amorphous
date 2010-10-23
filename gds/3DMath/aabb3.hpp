@@ -16,7 +16,7 @@ public:
 
 public:
 
-	inline AABB3() { memset(this, 0, sizeof(AABB3)); }
+	inline AABB3() : vMin(Vector3(0,0,0)), vMax(Vector3(0,0,0)) {}
 	inline AABB3( const Vector3& min, const Vector3& max ) : vMin(min), vMax(max) {}
 
 	inline void Nullify();
