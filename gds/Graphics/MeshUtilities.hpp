@@ -15,6 +15,7 @@ inline CMeshObjectHandle CreateBoxMesh( const Vector3& whd,
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
+	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
 	CMeshObjectHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
@@ -35,6 +36,7 @@ inline CMeshObjectHandle CreateSphereMesh( float radius,
 	sphere_desc.axis = 1;
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
 	CMeshObjectHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
@@ -52,6 +54,7 @@ inline CMeshObjectHandle CreateConeMesh( const CConeDesc& desc,
 {
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator.reset( new CConeMeshGenerator(desc) );
+	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
 	CMeshObjectHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );

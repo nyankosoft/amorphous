@@ -21,6 +21,15 @@ inline std::string to_string( const SFloatRGBAColor& c, int precision = 3, int n
 
 void CMeshGenerator::SetMiscMeshAttributes()
 {
+	SFloatRGBAColor diffuse_color = m_DiffuseColor;
+	CMMA_VertexSet& vert_set = m_MeshArchive.GetVertexSet();
+	if( vert_set.m_VertexFormatFlag & CMMA_VertexSet::VF_DIFFUSE_COLOR )
+	{
+		const int num_vertices = (int)vert_set.vecDiffuseColor.size();
+		for( int i=0; i<num_vertices; i++ )
+			vert_set.vecDiffuseColor[i] = diffuse_color;
+	}
+
 	vector<CMMA_Material>& material_buffer = m_MeshArchive.GetMaterial();
 	if( 0 < material_buffer.size() )
 	{
@@ -199,12 +208,6 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 	//
 	// additional vertex attributes
 	//
-
-	if( vertex_flags & CMMA_VertexSet::VF_DIFFUSE_COLOR )
-	{
-		for(i=0; i<num_vertices; i++)
-			vecVertex[i].m_DiffuseColor = diffuse_color;
-	}
 
 	if( vertex_flags & CMMA_VertexSet::VF_2D_TEXCOORD0 )
 	{
