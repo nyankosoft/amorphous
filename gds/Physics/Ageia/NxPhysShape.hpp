@@ -26,6 +26,8 @@ public:
 
 	virtual int GetMaterialID() const { return (int)m_pBox->getMaterial(); }
 
+	Matrix34 GetLocalPose () const { return ToMatrix34( m_pBox->getLocalPose() ); }
+
 	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
 	void SetCollisionGroup ( U16 group ) { m_pBox->setGroup( group ); }
@@ -61,6 +63,8 @@ public:
 
 	virtual ~CNxPhysSphereShape() {}
 
+	Matrix34 GetLocalPose () const { return ToMatrix34( m_pSphere->getLocalPose() ); }
+
 	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
 	void SetCollisionGroup ( U16 group ) { m_pSphere->setGroup( group ); }
@@ -90,6 +94,8 @@ public:
 	CNxPhysCapsuleShape( NxCapsuleShape *pCapsule ) : m_pCapsule(pCapsule) { m_pCapsule->userData = this; }
 
 	virtual ~CNxPhysCapsuleShape() {}
+
+	Matrix34 GetLocalPose () const { return ToMatrix34( m_pCapsule->getLocalPose() ); }
 
 	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 
@@ -127,6 +133,8 @@ public:
 	m_pTriangleMesh(pTriangleMesh) { m_pTriangleMesh->userData = this; }
 
 	virtual ~CNxPhysTriangleMeshShape() {}
+
+	Matrix34 GetLocalPose () const { return ToMatrix34( m_pTriangleMesh->getLocalPose() ); }
 
 	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
 

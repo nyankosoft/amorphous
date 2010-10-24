@@ -100,10 +100,10 @@ public:
 	 
 	/// The setLocal*() methods set the pose of the shape in actor space, i.e. relative to the actor they are owned by. 
 //	virtual void  setLocalOrientation (const Matrix33 &mat)=0 
-	 
+
 	/// The getLocal*() methods retrieve the pose of the shape in actor space, i.e. relative to the actor they are owned by. This transformation is identity by default. 
-//	virtual Matrix34  getLocalPose () const =0 
-	 
+	virtual Matrix34 GetLocalPose () const = 0;
+
 	/// The getLocal*() methods retrieve the pose of the shape in actor space, i.e. relative to the actor they are owned by. 
 //	virtual Vector3  getLocalPosition () const =0 
 	 
