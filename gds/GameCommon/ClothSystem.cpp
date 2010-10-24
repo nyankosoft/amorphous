@@ -229,7 +229,7 @@ void CClothCollisionObject::UpdateWorldTransform()
 {
 	if( !m_pTransformNode || !m_pActor )
 		return;
-	
+
 	Matrix34 world_transform;
 	m_pTransformNode->GetWorldTransform( world_transform );
 
@@ -393,10 +393,10 @@ void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe
 	{
 		CClothCollisionObject& coll_obj = m_ClothCollisionObjects[i];
 
-//		coll_obj.UpdateWorldTransform();
-		Matrix34 world_pose( Matrix34Identity() );
-		if( coll_obj.m_pActor )
-			coll_obj.m_pActor->SetWorldPose( world_pose );
+		coll_obj.UpdateWorldTransform();
+//		Matrix34 world_pose( Matrix34Identity() );
+//		if( coll_obj.m_pActor )
+//			coll_obj.m_pActor->SetWorldPose( world_pose );
 	}
 }
 
@@ -679,7 +679,7 @@ Result::Name CClothSystem::RemoveCloth( const std::string& cloth_name )
 
 bool IsPointInside( const Sphere& sphere, const Vector3& pos )
 {
-	return Vec3LengthSq(sphere.vCenter - pos) < sphere.radius * sphere.radius;
+	return Vec3LengthSq(sphere.center - pos) < sphere.radius * sphere.radius;
 }
 
 
@@ -769,7 +769,7 @@ Result::Name CClothSystem::AddCollisionSphere( const std::string& target_bone_na
 	CSphereShapeDesc sphere_desc;
 	sphere_desc.Radius = sphere.radius;
 	sphere_desc.LocalPose.matOrient = Matrix33Identity();
-	sphere_desc.LocalPose.vPosition = sphere.vCenter;
+	sphere_desc.LocalPose.vPosition = sphere.center;
 
 	CActor *pActor = NULL;
 	CShape *pShape = NULL;
