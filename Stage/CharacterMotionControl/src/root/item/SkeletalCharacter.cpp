@@ -12,7 +12,9 @@
 #include "gds/Physics/Scene.hpp"
 #include "gds/Physics/ContactStreamIterator.hpp"
 #include "gds/Physics/GroupsMask.hpp"
+#include "gds/Item/ItemDatabaseManager.hpp"
 #include "gds/Item/Clothing.hpp"
+#include "gds/GameCommon/ClothSystem.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -142,6 +144,28 @@ m_FeetOnGround( true )
 	CDebugItem_MotionFSM *pDbgItem = new CDebugItem_MotionFSM;
 	pDbgItem->m_pMotionGraphManager = m_pMotionGraphManager;
 	DebugOutput.AddDebugItem( "motion_graph_mgr", pDbgItem );
+
+	m_pClothSystem.reset( new CClothSystem );
+	m_pClothSystem->InitPhysics();
+
+	m_pClothSystem->InitMotionSystem( m_pSkeletonSrcMotion->GetSkeleton() );
+//	m_pClothSystem->AddCollisionSphere( "head",    Sphere(Vector3(0,0,0),0.5f) );
+	m_pClothSystem->AddCollisionSphere( "spine1",  Sphere(Vector3(0,0,0),0.2f) );
+	m_pClothSystem->AddCollisionSphere( "spine2",  Sphere(Vector3(0,0,0),0.1f) );
+	m_pClothSystem->AddCollisionSphere( "spine3",  Sphere(Vector3(0,0,0),0.2f) );
+/*	m_pClothSystem->AddCollisionSphere( "spine4",  Sphere(Vector3(0,0,0),0.5f) );
+	m_pClothSystem->AddCollisionSphere( "r-thigh", Sphere(Vector3(0,0,0),0.5f) );
+	m_pClothSystem->AddCollisionSphere( "l-thigh", Sphere(Vector3(0,0,0),0.5f) );
+
+	shared_ptr<CClothing> pClothes = ItemDatabaseManager().GetItem<CClothing>( "vest", 1 );
+	if( pClothes )
+	{
+//		m_pClothSystem->AddClothesMesh( pClothes->GetClothesMesh() );
+
+		// How to attach fixed vertices to the mesh
+		// Physics shapes are needed to fix the vertices
+		// The physics shapes are transformed the same way as the skeleton of the character
+	}*/
 }
 
 /*
@@ -295,6 +319,12 @@ void CSkeletalCharacter::Render()
 ///	Matrix34 pose = Matrix34Identity();
 	Matrix34 pose = pEntity->GetWorldPose();
 	m_pRenderMethod->RenderMeshContainer( *(m_MeshContainerRootNode.MeshContainer( 0 )), pose );
+
+	if( m_pClothSystem )
+	{
+		m_pClothSystem->UpdateCollisionObjectPoses( dest, pose );
+		m_pClothSystem->RenderObjectsForDebugging();
+	}
 
 	for( int i=0; i<(int)m_pClothes.size(); i++ )
 	{

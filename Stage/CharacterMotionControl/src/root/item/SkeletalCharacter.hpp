@@ -14,6 +14,7 @@ using namespace msynth;
 class CSkeletalCharacter;
 class CCharacterMotionNodeAlgorithm;
 class CClothing;
+class CClothSystem;
 
 
 class CActionCodeToGICodesMap
@@ -65,7 +66,8 @@ class CSkeletalCharacter : public CGameItem
 
 	std::vector< boost::shared_ptr<CClothing> > m_pClothes;
 
-//	boost::shared_ptr<CClothSystem> m_pClothSystem;
+	boost::shared_ptr<CClothSystem> m_pClothSystem;
+
 private:
 
 	void UpdateStepHeight( CCopyEntity& entity );
