@@ -65,10 +65,10 @@ void CPseudoAircraftHUD::ReleaseGraphicsResources()
 }
 
 
-const char s_PitchTable[21][3] = { " 0", " 5", "10", "15", "20", "25", "30", "35", "40", "45",
-                                   "50", "55", "60", "65", "70", "75", "80", "85", "90", "XX", "AA" };
+static const char s_PitchTable[21][3] = { " 0", " 5", "10", "15", "20", "25", "30", "35", "40", "45",
+                                          "50", "55", "60", "65", "70", "75", "80", "85", "90", "XX", "AA" };
 
-const char s_DirTable[8][3] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+static const char s_DirTable[8][3] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
 
 void CPseudoAircraftHUD::RenderCenterComponents()
