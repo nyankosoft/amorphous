@@ -279,9 +279,10 @@ void CSkeletalMeshMotionViewer::Render()
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix34Identity() );
 
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	if( pShaderMgr && pShaderMgr->GetEffect() )
+	if( pShaderMgr )//&& pShaderMgr->GetEffect() )
 	{
-		HRESULT hr = pShaderMgr->GetEffect()->SetFloatArray( "g_vEyePos", (float *)m_ViewerPose.vPosition, 3 );
+//		HRESULT hr = pShaderMgr->GetEffect()->SetFloatArray( "g_vEyePos", (float *)m_ViewerPose.vPosition, 3 );
+		pShaderMgr->SetParam( "g_vEyePos", m_ViewerPose.vPosition );
 
 		pShaderMgr->SetWorldTransform( Matrix34Identity() );
 		pShaderMgr->SetTechnique( m_Technique );
