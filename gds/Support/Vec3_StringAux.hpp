@@ -6,6 +6,7 @@
 
 #include "3DMath/AABB3.hpp"
 #include "3DMath/AABB2.hpp"
+#include "3DMath/Quaternion.hpp"
 
 
 inline std::string to_string( const Vector3& v, int precision = 3, int num_zfills = 0 )
@@ -49,6 +50,20 @@ inline std::string to_string( const AABB2& aabb )
 {
 	return std::string( "[aabb2] min" + to_string(aabb.vMin) + ", max" + to_string(aabb.vMax) );
 }
+
+
+inline std::string to_string( const Quaternion& q, int precision = 3, int num_zfills = 0 )
+{
+	std::string fmt_float = "%" + to_string(num_zfills) + "." + to_string(precision) + "f";
+	std::string fmt_buffer = "( " + fmt_float + ", " + fmt_float + ", " + fmt_float + ", " + fmt_float + " )";
+
+	char buffer[80];
+	memset( buffer, 0, sizeof(buffer) );
+	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), q.x, q.y, q.z, q.w );
+
+	return std::string(buffer);
+}
+
 
 
 #endif  /*  __VEC3_STRINGAUX_H__  */
