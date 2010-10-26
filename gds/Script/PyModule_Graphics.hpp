@@ -4,7 +4,6 @@
 #include <gds/Graphics/Rect.hpp>
 #include <gds/Graphics/GraphicsElementManager.hpp>
 #include <gds/Graphics/GraphicsEffectManager.hpp>
-#include <gds/Support/Vec3_StringAux.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <map>
