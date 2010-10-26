@@ -3,8 +3,6 @@
 #include "Support/macro.h"
 #include "Support/memory_helpers.hpp"
 #include "Support/Profile.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/DebugOutput.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
@@ -15,7 +13,6 @@
 #include "Stage/ScreenEffectManager.hpp"
 #include "Stage/PlayerInfo.hpp"
 #include "Input/InputHub.hpp"
-#include "Item/WeaponSystem.hpp"
 #include "Sound/SoundManager.hpp"
 
 using namespace std;

@@ -2,7 +2,6 @@
 
 #include "3DMath/Vector3.hpp"
 #include "Graphics/3DGameMath.hpp"
-#include "Support/Vec3_StringAux.hpp"
 #include "Physics/ActorDesc.hpp"
 
 #include "Stage.hpp"

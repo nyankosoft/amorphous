@@ -16,7 +16,6 @@
 #include "ScreenEffectManager.hpp"
 
 #include "Support/Macro.h"
-#include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 #include "../base.hpp"
