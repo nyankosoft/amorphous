@@ -55,6 +55,8 @@ public:
 	/// - Use the local transforms currently stored in cache.
 	inline void GetBlendTransforms( std::vector<Transform>& dest_transforms ) { m_pImpl->GetBlendTransforms( dest_transforms ); }
 
+	inline void DumpSkeletonToTextFile( const std::string& output_filepath ) const { m_pImpl->DumpSkeletonToTextFile( output_filepath ); }
+
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
 };
 

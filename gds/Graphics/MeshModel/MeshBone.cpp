@@ -1,5 +1,6 @@
 #include "MeshBone.hpp"
 #include "3DMath/MatrixConversions.hpp"
+#include "Support/Vec3_StringAux.hpp"
 #include "3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
@@ -200,4 +201,14 @@ void CMM_Bone::SetBoneToArray_r( vector<CMM_Bone *>& vecpDestArray )
 	{
 		m_paChild[i].SetBoneToArray_r( vecpDestArray );
 	}
+}
+
+
+void CMM_Bone::DumpToTextFile( FILE* fp, int depth )
+{
+	for( int i=0; i<depth; i++ ) fprintf( fp, "  " );
+	fprintf( fp, "%s: t%s, q%s\n", m_strName.c_str(), to_string(m_LocalTransform.vPosition).c_str(), to_string(Quaternion(m_LocalTransform.matOrient)).c_str() );
+
+	for( int i=0; i<m_iNumChildren; i++ )
+		m_paChild[i].DumpToTextFile( fp, depth + 1 );
 }

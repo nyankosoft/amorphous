@@ -221,6 +221,8 @@ public:
 
 	virtual void GetBlendTransforms( std::vector<Transform>& dest_transforms ) {}
 
+	virtual void DumpSkeletonToTextFile( const std::string& output_filepath ) const {}
+
 	virtual void SetVertexDeclaration() {}
 
 	virtual void UpdateVisibility( const CCamera& cam ) {}

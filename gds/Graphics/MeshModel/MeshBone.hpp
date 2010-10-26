@@ -97,6 +97,8 @@ public:
 		return !( (*this) == bone );
 	}
 
+	void DumpToTextFile( FILE* fp, int depth );
+
 //	inline void SetLocalTransform( const Matrix34& local_transform );
 };
 
