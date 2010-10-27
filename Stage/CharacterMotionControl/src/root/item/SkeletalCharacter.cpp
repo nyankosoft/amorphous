@@ -11,7 +11,7 @@
 #include "gds/Physics/Actor.hpp"
 #include "gds/Physics/Scene.hpp"
 #include "gds/Physics/ContactStreamIterator.hpp"
-#include "gds/Physics/GroupsMask.hpp"
+//#include "gds/Physics/GroupsMask.hpp"
 #include "gds/Item/ItemDatabaseManager.hpp"
 #include "gds/Item/Clothing.hpp"
 #include "gds/GameCommon/ClothSystem.hpp"
@@ -148,15 +148,28 @@ m_FeetOnGround( true )
 	m_pClothSystem.reset( new CClothSystem );
 	m_pClothSystem->InitPhysics();
 
-	m_pClothSystem->InitMotionSystem( m_pSkeletonSrcMotion->GetSkeleton() );
-//	m_pClothSystem->AddCollisionSphere( "head",    Sphere(Vector3(0,0,0),0.5f) );
-	m_pClothSystem->AddCollisionSphere( "spine1",  Sphere(Vector3(0,0,0),0.2f) );
-	m_pClothSystem->AddCollisionSphere( "spine2",  Sphere(Vector3(0,0,0),0.1f) );
-	m_pClothSystem->AddCollisionSphere( "spine3",  Sphere(Vector3(0,0,0),0.2f) );
-/*	m_pClothSystem->AddCollisionSphere( "spine4",  Sphere(Vector3(0,0,0),0.5f) );
-	m_pClothSystem->AddCollisionSphere( "r-thigh", Sphere(Vector3(0,0,0),0.5f) );
-	m_pClothSystem->AddCollisionSphere( "l-thigh", Sphere(Vector3(0,0,0),0.5f) );
-
+	Result::Name res = Result::SUCCESS;
+	res = m_pClothSystem->InitMotionSystem( m_pSkeletonSrcMotion->GetSkeleton() );
+//	res = m_pClothSystem->AddCollisionSphere( "head",      Sphere(Vector3(0,0,0),0.5f) );
+	res = m_pClothSystem->AddCollisionSphere( "spine1",    Sphere(Vector3(0,0,0),0.18f) );
+	res = m_pClothSystem->AddCollisionSphere( "spine2",    Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "spine3",    Sphere(Vector3(0,0,0),0.18f) );
+//	res = m_pClothSystem->AddCollisionSphere( "spine4",    Sphere(Vector3(0,0,0),0.5f) );
+	res = m_pClothSystem->AddCollisionSphere( "r-thigh",   Sphere(Vector3(0,0,0),0.12f) );
+	res = m_pClothSystem->AddCollisionSphere( "l-thigh",   Sphere(Vector3(0,0,0),0.12f) );
+	res = m_pClothSystem->AddCollisionSphere( "r-leg",     Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "l-leg",     Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "r-foot",    Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "l-foot",    Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "r-toe",     Sphere(Vector3(0,0,0),0.06f) );
+	res = m_pClothSystem->AddCollisionSphere( "l-toe",     Sphere(Vector3(0,0,0),0.06f) );
+	res = m_pClothSystem->AddCollisionSphere( "r-arm",     Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "l-arm",     Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "r-forearm", Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "l-forearm", Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "r-hand",    Sphere(Vector3(0,0,0),0.1f) );
+	res = m_pClothSystem->AddCollisionSphere( "l-hand",    Sphere(Vector3(0,0,0),0.1f) );
+/*
 	shared_ptr<CClothing> pClothes = ItemDatabaseManager().GetItem<CClothing>( "vest", 1 );
 	if( pClothes )
 	{
@@ -166,6 +179,11 @@ m_FeetOnGround( true )
 		// Physics shapes are needed to fix the vertices
 		// The physics shapes are transformed the same way as the skeleton of the character
 	}*/
+
+	m_pSkeletonSrcMotion->GetSkeleton()->DumpToTextFile( ".debug/msynth_skeleton.txt" );
+	shared_ptr<CSkeletalMesh> pSMesh = dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( m_MeshContainerRootNode.GetMeshContainer(0)->m_MeshObjectHandle.GetMesh() );
+	if( pSMesh )
+		pSMesh->DumpSkeletonToTextFile( ".debug/mesh_skeleton.txt" );
 }
 
 /*
@@ -322,7 +340,8 @@ void CSkeletalCharacter::Render()
 
 	if( m_pClothSystem )
 	{
-		m_pClothSystem->UpdateCollisionObjectPoses( dest, pose );
+//		m_pClothSystem->UpdateCollisionObjectPoses( dest, pose );
+		m_pClothSystem->UpdateCollisionObjectPoses( *pSkeletalMesh, pose );
 		m_pClothSystem->RenderObjectsForDebugging();
 	}
 
