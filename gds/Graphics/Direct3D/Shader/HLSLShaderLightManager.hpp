@@ -180,11 +180,11 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const CHemispher
 	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_ATTENUATION], rLight.fAttenuation, sizeof(float) * 3 );
 
 	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &ambient, sizeof(float) * 4 );
+	hr = m_pEffect->SetFloatArray( m_aHandle[index][LIGHT_AMBIENT_COLOR], ambient, 4 );
 //	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
 
 	float range = 100.0f;
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_RANGE], &range, sizeof(float) );
+	hr = m_pEffect->SetFloat( m_aHandle[index][LIGHT_RANGE], range );
 }
 
 
@@ -197,7 +197,7 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const CHemispher
 	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.vDirection, sizeof(float) * 3 );
 
 	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &ambient, sizeof(float) * 4 );
+	hr = m_pEffect->SetFloatArray( m_aHandle[index][LIGHT_AMBIENT_COLOR], ambient, 4 );
 //	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
 }
 
