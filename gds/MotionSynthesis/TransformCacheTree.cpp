@@ -102,9 +102,10 @@ bool CTransformCacheNode::AreAllChildrenLeafAndInactive() const
 }
 
 
+/// Does not deactivate already active nodes
 bool CTransformCacheNode::UpdateActiveNodes( const std::set<std::string>& target_bone_names )
 {
-	m_Active = true;
+//	m_Active = true;
 
 	for( int i=0; i<m_NumChildren; i++ )
 	{
@@ -112,12 +113,21 @@ bool CTransformCacheNode::UpdateActiveNodes( const std::set<std::string>& target
 
 		// Return true if at least one of the child nodes is active
 		if( are_children_active )
-			return true;
+		{
+			if( !m_Active )
+				m_Active = true;
+
+			// Cannot return here. need to check all the child nodes for all the bones in target_bone_names
+		}
 	}
+
+	if( m_Active )
+		return true; // This node, or at least one of the children is active. 
 
 	set<string>::const_iterator itr = target_bone_names.find( m_Name );
 
-	m_Active = (itr != target_bone_names.end()) ? true : false;
+	if( !m_Active ) // Do not deactivate an already active node.
+		m_Active = (itr != target_bone_names.end()) ? true : false;
 
 	return m_Active;
 }
@@ -154,7 +164,7 @@ void CTransformCacheNode::CalculateWorldTransforms( const Matrix34& parent_trans
 	const int num_children = take_min( m_NumChildren, bone.GetNumChildren(), transform_node.GetNumChildren() );
 	for( int i=0; i<num_children; i++ )
 	{
-		if( m_pChildren[i].m_Active )
+//		if( m_pChildren[i].m_Active )
 			m_pChildren[i].CalculateWorldTransforms( m_WorldTransform, bone.GetChild(i), transform_node.GetChildNode(i) );
 	}
 }
