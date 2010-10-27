@@ -95,7 +95,7 @@ void CBone::CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node 
 void CBone::DumpToTextFile( FILE* fp, int depth )
 {
 	for( int i=0; i<depth; i++ ) fprintf( fp, "  " );
-	fprintf( fp, "%s: %s\n", m_Name.c_str(), to_string(m_vOffset).c_str() );
+	fprintf( fp, "%s: t%s, q%s\n", m_Name.c_str(), to_string(m_vOffset).c_str(), to_string(Quaternion(m_matOrient)).c_str() );
 
 	for( size_t i=0; i<m_vecChild.size(); i++ )
 		m_vecChild[i].DumpToTextFile( fp, depth + 1 );
@@ -135,11 +135,21 @@ void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& p
 	}
 	else
 	{
+		Matrix33 matRotation = input_node.GetLocalRotationQuaternion().ToRotationMatrix() * m_matOrient;
 		dest_transform
 			= parent_transform
 //			* Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() )
 //			* Matrix34( m_vOffset, Matrix33Identity() );
-			* Matrix34( input_node.GetLocalTranslation() + m_vOffset, input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
+///			* Matrix34( input_node.GetLocalTranslation() + m_vOffset, input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
+///			* Matrix34( input_node.GetLocalTranslation() + m_vOffset, matRotation );
+///			* Matrix34( Vector3(0,0,0), matRotation ) * Matrix34( input_node.GetLocalTranslation() + m_vOffset, Matrix33Identity() );
+///			* Matrix34( Vector3(0,0,0), m_matOrient ) * Matrix34( input_node.GetLocalTranslation() + m_vOffset, input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
+//			* Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() ) * Matrix34( m_vOffset, m_matOrient );
+//			* Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() ) * Matrix34( Vector3(0,0,0), m_matOrient ) * Matrix34( m_vOffset, Matrix33Identity() );
+
+			// Transforms for arms are not correctly calculated.
+			// The root and other nodes are not correctly transformed for run motion.
+			* Matrix34( m_vOffset, m_matOrient ) * Matrix34( input_node.GetLocalTranslation(), input_node.GetLocalRotationQuaternion().ToRotationMatrix() );
 	}
   }
   else // if( sg_rev == 2 )
