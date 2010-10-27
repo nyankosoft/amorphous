@@ -74,6 +74,8 @@ public:
 
 	const Vector3& GetLocalOffset() const { return m_vLocalOffset; }
 
+	const Matrix34& GetBoneTransform() const { return m_BoneTransform; }
+
 	const CMM_Bone& GetBoneByName_r( const char *pName ) const;
 
 	void SetBoneToArray_r( std::vector<CMM_Bone *>& vecpDestArray );

@@ -90,3 +90,18 @@ bool CD3DXSMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 
 	return pmesh_loaded;
 }
+
+
+void CD3DXSMeshObject::DumpSkeletonToTextFile( const std::string& output_filepath ) const
+{
+	if( !m_pRootBone )
+		return;
+
+	FILE *fp = fopen(output_filepath.c_str(),"w");
+	if( !fp )
+		return;
+
+	m_pRootBone->DumpToTextFile( fp, 0 );
+
+	fclose(fp);
+}

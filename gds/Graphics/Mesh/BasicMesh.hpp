@@ -9,7 +9,6 @@
 #include <gds/Graphics/fwd.hpp>
 #include <gds/Graphics/TextureHandle.hpp>
 #include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
-#include <gds/Graphics/MeshModel/MeshBone.hpp>
 using namespace MeshModel;
 
 
@@ -200,9 +199,9 @@ public:
 
 //	inline const CMM_Bone& GetBone( int index ) const;
 
-	virtual const CMM_Bone& GetBone( const std::string& bone_name ) const { return CMM_Bone::NullBone(); }
+	virtual const CMM_Bone& GetBone( const std::string& bone_name ) const;
 
-	virtual const CMM_Bone& GetRootBone() const { return CMM_Bone::NullBone(); }
+	virtual const CMM_Bone& GetRootBone() const;
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 	/// calculate hierarchical transforms by handiing an array of matrices

@@ -1,6 +1,7 @@
 #include "BasicMesh.hpp"
 #include "MeshFactory.hpp" // ctor of CBasicMesh needs the mesh impl factory 
 #include "../MeshModel/3DMeshModelArchive.hpp"
+#include "../MeshModel/MeshBone.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -46,6 +47,18 @@ CMeshImpl::CMeshImpl()
 m_NumMaterials(0),
 m_bViewFrustumTest(false)
 {
+}
+
+
+const CMM_Bone& CMeshImpl::GetBone( const std::string& bone_name ) const
+{
+	return CMM_Bone::NullBone();
+}
+
+
+const CMM_Bone& CMeshImpl::GetRootBone() const
+{
+	return CMM_Bone::NullBone();
 }
 
 

@@ -81,6 +81,8 @@ public:
 
 	inline void GetBlendTransforms( std::vector<Transform>& dest_transforms );
 
+	void DumpSkeletonToTextFile( const std::string& output_filepath ) const;
+
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
 };
 

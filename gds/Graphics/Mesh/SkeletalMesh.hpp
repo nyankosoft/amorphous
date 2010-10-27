@@ -3,6 +3,8 @@
 
 
 #include "ProgressiveMesh.hpp"
+#include "../MeshModel/MeshBone.hpp"
+using namespace MeshModel;
 
 
 class CSkeletalMesh : public CProgressiveMesh
