@@ -15,7 +15,7 @@ using namespace MeshModel;
 class CD3DXSMeshObject : public CD3DXPMeshObject
 {
 	/// holds vertex blend matrices (world transforms)
-	D3DXMATRIX *m_paBoneMatrix;
+	Transform *m_paWorldTransforms;
 
 	int m_iNumBones;
 
@@ -75,9 +75,8 @@ public:
 
 	inline void ResetLocalTransformsCache();
 
-	/// returns the pointer to the array of vertex blend matrices (world transforms)
-//	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
-	inline D3DXMATRIX* GetBlendMatrices() { return m_paBoneMatrix; }
+	/// Returns the pointer to the array of vertex blend matrices (world transforms)
+	inline Transform* GetBlendTransforms() { return m_paWorldTransforms; }
 
 	inline void GetBlendTransforms( std::vector<Transform>& dest_transforms );
 

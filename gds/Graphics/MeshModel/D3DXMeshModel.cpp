@@ -36,7 +36,7 @@ CD3DXMeshModel::CD3DXMeshModel()
 	m_paTriangleSet = NULL;
 
 	m_iNumBones = 0;
-	m_paBoneMatrix = NULL;
+	m_paTransforms = NULL;
 
 	m_pRootBone = NULL;
 
@@ -217,7 +217,7 @@ void CD3DXMeshModel::Release()
 	SafeDeleteArray( m_paTriangleSet );
 	m_iNumMaterials = 0;
 
-	SafeDeleteArray( m_paBoneMatrix );
+	SafeDeleteArray( m_paTransforms );
 	m_iNumBones = 0;
 }
 
@@ -363,13 +363,13 @@ bool CD3DXMeshModel::LoadFromArchive( C3DMeshModelArchive& rArchive, const strin
 	m_iNumBones = rArchive.GetNumBones();
 	if( 1 < m_iNumBones )
 	{
-		m_paBoneMatrix = new D3DXMATRIX [m_iNumBones];
+		m_paTransforms = new Transform [m_iNumBones];
 		for( i=0; i<m_iNumBones; i++ )
-			D3DXMatrixIdentity( &m_paBoneMatrix[i] );
+			m_paTransforms[i].SetIdentity();
 
 		int iMatrixIndex = 0;
 		m_pRootBone = new CMM_Bone();
-		m_pRootBone->LoadBone_r( rArchive.GetSkeletonRootBone(), m_paBoneMatrix, iMatrixIndex );
+		m_pRootBone->LoadBone_r( rArchive.GetSkeletonRootBone(), m_paTransforms, iMatrixIndex );
 	}
 	else
 		m_iNumBones = 0;

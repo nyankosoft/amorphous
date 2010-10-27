@@ -34,7 +34,7 @@ const CMM_Bone CMM_Bone::ms_NullBone = CMM_Bone();
 
 
 void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
-						   D3DXMATRIX *paBlendMatrix,
+						   Transform *paBlendTransforms,
 						   int &iNumRegisteredMatrices )
 {
 	m_strName = rSrcBone.strName;
@@ -44,29 +44,23 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 	m_paChild = new CMM_Bone [m_iNumChildren];
 
 	// set pointer to the transform matrix array
-	m_pWorldTransform = paBlendMatrix + iNumRegisteredMatrices;
+	m_pWorldTransform = paBlendTransforms + iNumRegisteredMatrices;
 
 	m_MatrixIndex = iNumRegisteredMatrices;
 
 	iNumRegisteredMatrices++;
 
 	// get a matrix that transforms vertices from local model space to local bone space
-//	rSrcBone.BoneTransform.GetRowMajorMatrix44( (float *)&m_matBoneTransform );
-
 	m_BoneTransform = rSrcBone.BoneTransform;
 
 	m_vLocalOffset = rSrcBone.vLocalOffset;
-
-
-	// bone space to local model space
-//	D3DXMatrixInverse( &m_matLocalTransform, NULL, &m_matBoneTransform );
 
 	m_BoneTransform.GetInverseROT( m_LocalTransform );
 
 
 	for( int i=0; i<m_iNumChildren; i++ )
 	{
-		m_paChild[i].LoadBone_r( rSrcBone.vecChild[i], paBlendMatrix, iNumRegisteredMatrices );
+		m_paChild[i].LoadBone_r( rSrcBone.vecChild[i], paBlendTransforms, iNumRegisteredMatrices );
 	}
 }
 
@@ -111,9 +105,8 @@ void CMM_Bone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int&
 	Matrix34 world_transform( Matrix34Identity() );
 	CalculateWorldTransform( pParentMatrix, paSrcMatrix, rIndex, world_transform );
 
-	world_transform.GetRowMajorMatrix44( (float *)m_pWorldTransform );
-
-//	ToMatrix44( world_transform, *m_pWorldTransform );
+	if( m_pWorldTransform )
+		m_pWorldTransform->FromMatrix34( world_transform );
 
 	for( int i=0; i<m_iNumChildren; i++ )
 	{

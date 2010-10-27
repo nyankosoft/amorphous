@@ -213,10 +213,9 @@ public:
 	virtual void SetLocalTransformToCache( int index, const Matrix34& local_transform ) {}
 	virtual void SetLocalTransformsFromCache() {}
 	virtual void ResetLocalTransformsCache() {}
+
 	/// returns the pointer to the array of vertex blend matrices (world transforms)
-//	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
-//	inline D3DXMATRIX* GetBlendMatrices() { return m_paBoneMatrix; }
-	virtual D3DXMATRIX* GetBlendMatrices() { return NULL; }
+	virtual Transform* GetBlendTransforms() { return NULL; }
 
 	virtual void GetBlendTransforms( std::vector<Transform>& dest_transforms ) {}
 
@@ -338,10 +337,6 @@ public:
 	void SetLocalTransformToCache( int index, const Matrix34& local_transform ) { m_pImpl->SetLocalTransformToCache( index, local_transform ); }
 	void SetLocalTransformsFromCache() { m_pImpl->SetLocalTransformsFromCache(); }
 	void ResetLocalTransformsCache() { m_pImpl->ResetLocalTransformsCache(); }
-	/// returns the pointer to the array of vertex blend matrices (world transforms)
-//	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
-//	inline D3DXMATRIX* GetBlendMatrices() { return m_paBoneMatrix; }
-	D3DXMATRIX* GetBlendMatrices() { return m_pImpl->GetBlendMatrices(); }
 */
 	// Call this before rendering when you render subsets separately by RenderSubsets()
 	void SetVertexDeclaration() { m_pImpl->SetVertexDeclaration(); }

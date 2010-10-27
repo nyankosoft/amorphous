@@ -69,17 +69,21 @@ public:
 
 		// set blend matrices to the shader
 		LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
-		D3DXMATRIX *paBlendMatrix = m_pSkeletalMesh->GetBlendMatrices();
-		if( pEffect && paBlendMatrix )
+		Transform *paBlendTransforms = m_pSkeletalMesh->GetBlendTransforms();
+		if( pEffect && paBlendTransforms )
 		{
 			HRESULT hr;
 			char acParam[32];
 			int i, num_bones = m_pSkeletalMesh->GetNumBones();
 
+			D3DXMATRIX d3d_blend_matrix;
 			for( i=0; i<num_bones; i++ )
 			{
+				Matrix34 world_transform = paBlendTransforms[i].ToMatrix34();
+				world_transform.GetRowMajorMatrix44( (float *)&d3d_blend_matrix );
+
 				sprintf( acParam, "g_aBlendMatrix[%d]", i );
-				hr = pEffect->SetMatrix( acParam, &paBlendMatrix[i] );
+				hr = pEffect->SetMatrix( acParam, &d3d_blend_matrix );
 
 				if( FAILED(hr) ) return;
 			}
@@ -110,8 +114,8 @@ public:
 
 		m_pSkeletalMesh->SetLocalTransformsFromCache();
 
-		D3DXMATRIX *paBlendMatrix = m_pSkeletalMesh->GetBlendMatrices();
-		if( !paBlendMatrix )
+		Transform *paBlendTransforms = m_pSkeletalMesh->GetBlendTransforms();
+		if( !paBlendTransforms )
 			return;
 
 		int i, num_bones = m_pSkeletalMesh->GetNumBones();
@@ -120,9 +124,7 @@ public:
 
 		for( i=0; i<num_bones; i++ )
 		{
-			Matrix34 src;
-			src.CopyFromRowMajorMatrix44( (float *)(&paBlendMatrix[i]) );
-			src_transforms[i].FromMatrix34( src );
+			src_transforms[i] = paBlendTransforms[i];
 		}
 
 		// set blend matrices to the shader

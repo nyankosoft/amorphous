@@ -5,13 +5,13 @@
 
 
 CD3DXSMeshObject::CD3DXSMeshObject()
-: m_iNumBones(0), m_paBoneMatrix(NULL), m_pRootBone(NULL)
+: m_iNumBones(0), m_paWorldTransforms(NULL), m_pRootBone(NULL)
 {
 }
 
 
 CD3DXSMeshObject::CD3DXSMeshObject( const std::string& filename )
-: m_iNumBones(0), m_paBoneMatrix(NULL), m_pRootBone(NULL)
+: m_iNumBones(0), m_paWorldTransforms(NULL), m_pRootBone(NULL)
 {
 	bool loaded = CD3DXMeshObjectBase::LoadFromFile( filename );
 
@@ -28,7 +28,7 @@ CD3DXSMeshObject::~CD3DXSMeshObject()
 
 void CD3DXSMeshObject::Release()
 {
-	SafeDeleteArray( m_paBoneMatrix );
+	SafeDeleteArray( m_paWorldTransforms );
 	m_iNumBones = 0;
 	m_vecpBone.resize(0);
 
@@ -44,13 +44,15 @@ bool CD3DXSMeshObject::LoadSkeletonFromArchive( C3DMeshModelArchive& archive )
 	m_iNumBones = archive.GetNumBones();
 	if( 1 < m_iNumBones )
 	{
-		m_paBoneMatrix = new D3DXMATRIX [m_iNumBones];
+		m_paWorldTransforms = new Transform [m_iNumBones];
+		Transform transform;
+		transform.SetIdentity();
 		for( int j=0; j<m_iNumBones; j++ )
-			D3DXMatrixIdentity( &m_paBoneMatrix[j] );
+			m_paWorldTransforms[j]  = transform;
 
 		int iMatrixIndex = 0;
 		m_pRootBone = new CMM_Bone();
-		m_pRootBone->LoadBone_r( archive.GetSkeletonRootBone(), m_paBoneMatrix, iMatrixIndex );
+		m_pRootBone->LoadBone_r( archive.GetSkeletonRootBone(), m_paWorldTransforms, iMatrixIndex );
 
 		// set pointers to bones to a single array
 		// so that they can be accessed with indices

@@ -50,7 +50,7 @@ public:
 
 	/// returns the pointer to the array of vertex blend matrices (world transforms)
 //	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
-	inline D3DXMATRIX* GetBlendMatrices() { return m_pImpl->GetBlendMatrices(); }
+	inline Transform* GetBlendTransforms() { return m_pImpl->GetBlendTransforms(); }
 
 	/// Get vertex blend transforms
 	/// - The returned vertex blend transforms are in world coordinates

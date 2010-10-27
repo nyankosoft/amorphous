@@ -5,6 +5,7 @@
 #include <string>
 #include <d3dx9.h>
 
+#include "3DMath/Transform.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -74,13 +75,13 @@ public:
 
 	/// apply hierarchical transformations
 	/// given an array of world transform matrices for each bone
-	inline void Transform( Matrix34 *paWorldTransform );
+	inline void UpdateTransforms( Matrix34 *paWorldTransform );
 
 	inline void SetTransforms_Local( Matrix34 *paLocalTransform );
 
 //	inline void GetWorldTransforms( D3DXMATRIX*& paDestWorldTransform ) { paDestWorldTransform = m_paBoneMatrix; }
 
-	inline D3DXMATRIX *GetWorldTransforms() { return m_paBoneMatrix; }
+	inline Transform *GetWorldTransforms() { return m_paTransforms; }
 
 	inline int GetNumBones() const { return m_iNumBones; }
 
@@ -120,7 +121,7 @@ private:
 	CMMA_TriangleSet *m_paTriangleSet;
 
 	/// holds vertex blend matrices (world transforms)
-	D3DXMATRIX *m_paBoneMatrix;
+	Transform *m_paTransforms;
 	int m_iNumBones;
 
 	/// root node of the hierarchical structure
@@ -148,15 +149,15 @@ private:
 
 
 
-inline void CD3DXMeshModel::Transform( Matrix34 *paWorldTransform )
+inline void CD3DXMeshModel::UpdateTransforms( Matrix34 *paWorldTransform )
 {
-	if( !m_pRootBone )
+	if( !m_pRootBone || !m_paTransforms )
 		return;	// the mesh does not have a skeleton
 
 	int i, num_bones = m_iNumBones;
 	for( i=0; i<num_bones; i++ )
 	{
-		paWorldTransform[i].GetRowMajorMatrix44( (float *)&m_paBoneMatrix[i] );
+		m_paTransforms[i].FromMatrix34( paWorldTransform[i] );
 	}
 /*
 	int index = 0;
@@ -187,7 +188,9 @@ inline void CD3DXMeshModel::SetTransforms_Local( Matrix34 *paLocalTransform )
 	for( i=0; i<num_bones; i++ )
 	{
 		sprintf( acParam, "g_aBlendMatrix[%d]", i );
-		hr = pEffect->SetMatrix( acParam, &m_paBoneMatrix[i] );
+		D3DXMATRIX mat;
+		m_paTransforms[i].ToMatrix34().GetRowMajorMatrix44( (float *)mat );
+		hr = pEffect->SetMatrix( acParam, &mat );
 
 		if( FAILED(hr) ) return;
 	}

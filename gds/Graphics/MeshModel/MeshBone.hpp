@@ -4,11 +4,9 @@
 
 #include <vector>
 #include <string>
-#include <d3dx9.h>
 #include "Graphics/fwd.hpp"
 #include "Support/memory_helpers.hpp"
 #include "3DMath/Transform.hpp"
-//#include "3DMeshModelArchive.hpp"
 
 
 //namespace GameLib1
@@ -30,7 +28,7 @@ class CMM_Bone
 	Vector3 m_vLocalOffset;
 
 	/// vertex blend matrix
-	D3DXMATRIX *m_pWorldTransform;
+	Transform *m_pWorldTransform;
 
 	int m_MatrixIndex;
 
@@ -58,7 +56,7 @@ public:
 
 	~CMM_Bone() { SafeDeleteArray( m_paChild ); }
 
-	void LoadBone_r( CMMA_Bone& rSrcBone, D3DXMATRIX *paBoneTransformMatrix, int &iNumRegisteredMatrices );
+	void LoadBone_r( CMMA_Bone& rSrcBone, Transform *paBoneTransformMatrix, int &iNumRegisteredMatrices );
 
 //	void Transform_EulerAngle( float *pafData );
 
