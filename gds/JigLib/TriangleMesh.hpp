@@ -1,13 +1,9 @@
 #ifndef  __TRIANGLEMESH_H__
 #define  __TRIANGLEMESH_H__
 
-#include <stdio.h>
 
 #include <vector>
-using namespace std;
-
 #include "JL_ShapeBase.hpp"
-
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Triangle.hpp"
 #include "3DMath/IndexedTriangle.hpp"
@@ -29,7 +25,7 @@ class CTriangleMesh : public CJL_ShapeBase
 //	vector<Vector3> m_vecVertex;
 //	vector<CIndexedTriangle> m_vecIndexedTriangle;
 
-	vector<int> veciNodeToCheck;	// used at runtime
+	std::vector<int> veciNodeToCheck;	// used at runtime
 
 
 	// used to set edge/vertex flags
@@ -62,9 +58,9 @@ public:
 //	inline void GetGeneralTriangle( CTriangle& dest_triangle, int i );
 
 	// 08:32 2007/09/28 most of the routines were moved to CBSPTreeForTriangleMesh
-	bool CreateMesh( vector<Vector3>& rvecVertex, vector<int>& rveciIndex, vector<short>& rvecsMatIndex );
+	bool CreateMesh( std::vector<Vector3>& rvecVertex, std::vector<int>& rveciIndex, std::vector<short>& rvecsMatIndex );
 
-	inline int GetIntersectingTriangles( vector<int>& rveciTriList, AABB3& raabb );	// get a list of triangles whose aabb intersect with 'raabb'
+	inline int GetIntersectingTriangles( std::vector<int>& rveciTriList, AABB3& raabb );	// get a list of triangles whose aabb intersect with 'raabb'
 
 	/// set flags to edges and vertices to indicate which of them should be checked for collision
 	/// takes some time to calculate when the mesh has many triangles
@@ -103,7 +99,7 @@ struct STriangleMeshHeader
 // inline void CTriangleMesh::GetGeneralTriangle( CTriangle& dest_triangle, int i ) {}
 
 
-inline int CTriangleMesh::GetIntersectingTriangles( vector<int>& rveciTriList, AABB3& raabb )
+inline int CTriangleMesh::GetIntersectingTriangles( std::vector<int>& rveciTriList, AABB3& raabb )
 {
 	m_Tree.GetIntersectingTriangles( raabb, rveciTriList );
 

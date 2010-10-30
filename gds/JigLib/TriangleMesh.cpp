@@ -1,20 +1,14 @@
-
 #include "TriangleMesh.hpp"
 
 #include "JL_PhysicsActor.hpp"
 #include "JL_ShapeDesc_TriangleMesh.hpp"
 #include "JL_LineSegment.hpp"
-
 #include "Stage/trace.hpp"
-
 #include "3DMath/Plane.hpp"
-
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
 
-#include <assert.h>
-
+using namespace std;
 
 
 //=================================================================================================================
