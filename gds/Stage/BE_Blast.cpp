@@ -23,7 +23,6 @@ CBE_Blast::CBE_Blast()
 	m_BoundingVolumeType = BVTYPE_DOT;
 	m_fRadius = 0;
 	m_aabb.SetMaxAndMin( Vector3(0,0,0), Vector3(0,0,0) );
-//	m_sGlareType = CEGT_NOGLARE;
 
 	m_fImpulse = 100.0f;
 

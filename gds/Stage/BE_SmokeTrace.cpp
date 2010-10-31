@@ -18,7 +18,6 @@ CBE_SmokeTrace::CBE_SmokeTrace()
 	m_iParticleSetCurrentIndex = 0;
 	m_bNoClip = true;
 	m_bNoClipAgainstMap = true;
-//	m_sGlareType = CEGT_NOGLARE;
 
 	m_bLighting = false;
 

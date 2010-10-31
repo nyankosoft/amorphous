@@ -75,12 +75,6 @@ m_TypeID(type_id)
 //	m_pMeshNode.reset();
 //	m_pMeshNodeRenderMethod.reset();
 
-	// initialize light information
-/*	sNumLights = 0;
-	int i;
-	for( i=0; i<NUM_MAX_LIGHTS_AT_ENTITY; i++ )
-		asLightIndex[i] = CE_INVALID_LIGHT_INDEX;
-*/
 	// initialize parent/children information
 	m_pParent = NULL;
 

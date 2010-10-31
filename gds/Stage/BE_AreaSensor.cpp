@@ -1,10 +1,3 @@
-
-///#include "CopyEntity.hpp"
-///#include "CopyEntityDesc.hpp"
-///#include "trace.hpp"
-///#include "Stage.hpp"
-///#include "../Stage/PlayerInfo.hpp"
-///#include "../Stage/GameMessage.hpp"
 #include "BE_AreaSensor.hpp"
 ///#include "../GameTextSystem/GameTextSet.hpp"
 ///#include "../Script/GameEventTypes.hpp"
@@ -15,7 +8,6 @@ CBE_AreaSensor::CBE_AreaSensor()
 ///	this->m_BoundingVolumeType = BVTYPE_AABB;
 ///	this->m_bNoClip = true;
 ///	this->m_bNoClipAgainstMap = true;
-//	this->m_sGlareType = CEGT_NOGLARE;
 }
 
 
