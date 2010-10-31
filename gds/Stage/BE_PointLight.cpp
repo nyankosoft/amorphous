@@ -307,16 +307,6 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 	else
 		rfFadeoutTime = BE_PLIGHT_FADEOUTTIME;
 
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-//	D3DXMATRIX matScale;
-
-//	D3DXMatrixScaling( &matScale, rfFadeoutTime / BE_PLIGHT_FADEOUTTIME, rfFadeoutTime / BE_PLIGHT_FADEOUTTIME, 1.0f );
-
-	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
-//	m_pStage->GetBillboardRotationMatrix( matWorld );
-//	matWorld._44 = 1;
-
 	Matrix34 billboard_pose;
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
 	Matrix44 matWorld = ToMatrix44( billboard_pose );
