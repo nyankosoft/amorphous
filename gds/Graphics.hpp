@@ -52,7 +52,6 @@
 
 
 #include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderLightManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
