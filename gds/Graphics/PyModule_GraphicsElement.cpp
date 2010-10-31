@@ -8,7 +8,6 @@
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
 
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
