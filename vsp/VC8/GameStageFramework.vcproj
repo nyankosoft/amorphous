@@ -1691,6 +1691,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Item\MiscGameItems.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\MiscGameItems.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Item\Radar.cpp"
 					>
 				</File>

@@ -2,6 +2,7 @@
 
 #include "Item/GameItemObjectFactory.hpp"
 #include "Item/GameItem.hpp"
+#include "Item/MiscGameItems.hpp"
 #include "Item/GI_Weapon.hpp"
 #include "Item/GI_Ammunition.hpp"
 #include "Item/GI_GravityGun.hpp"
