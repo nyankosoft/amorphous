@@ -239,7 +239,11 @@ Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, CLight& light )
 	map< int, shared_ptr<CShadowMap> >::iterator itrShadowMap
 		= m_mapIDtoShadowMap.find((int)id);
 
-	if( itrShadowMap == m_mapIDtoShadowMap.end() )
+	static uint s_NumMaxShadowMaps = 1;
+
+	uint num_max_shadowmaps = 1;
+	if( itrShadowMap == m_mapIDtoShadowMap.end()
+	 && (uint)m_mapIDtoShadowMap.size() < s_NumMaxShadowMaps )
 	{
 		// The shadow map for this light does not exist
 		// - create a new shadow map.
