@@ -9,12 +9,12 @@
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Physics/fwd.hpp"
 
+#include "fwd.hpp"
 #include "CopyEntityDesc.hpp"
 #include "EntityHandle.hpp"
 #include "CopyEntityCallback.hpp"
 #include "LinkNode.hpp"
 
-#include "fwd.hpp"
 #include "BaseEntity.hpp"
 
 
@@ -48,20 +48,13 @@ enum eEntityFlag
 	BETYPE_VISIBLE                     = (1 << 14), ///< The entity is rendered by Draw() method of its base entity (rendering)
 	BETYPE_USE_PHYSSIM_RESULTS         = (1 << 15), ///< The entity pose & velocity is determined by physics simulator (physics)
 	BETYPE_ENVMAPTARGET                = (1 << 16),
-	BETYPE_SHADOW_CASTER               = (1 << 17), ///< The entity casts shadows to other entities
-	BETYPE_SHADOW_RECEIVER             = (1 << 18), ///< The entity receives shadows cast by other entities  others
-	BETYPE_COPY_PARENT_POSE            = (1 << 19), ///< The entity has a parent entity, it automatically copies the pose of the parent
+	BETYPE_PLANAR_REFLECTOR            = (1 << 17), ///< The scene is reflected in the entity's planar surface.
+	BETYPE_SHADOW_CASTER               = (1 << 18), ///< The entity casts shadows to other entities
+	BETYPE_SHADOW_RECEIVER             = (1 << 19), ///< The entity receives shadows cast by other entities  others
+	BETYPE_COPY_PARENT_POSE            = (1 << 20), ///< The entity has a parent entity, it automatically copies the pose of the parent
 };
 
-/*
-/// glare types - not used any more
-/// - deprecated
-#define CEGT_NOGLARE		0
-#define CEGT_GLARESOURCE	1
-#define CEGT_GLAREHINDER	2
-*/
 
-#define CE_INVALID_LIGHT_INDEX	-1
 #define CE_INVALID_EXTRA_DATA_INDEX	-1
 
 

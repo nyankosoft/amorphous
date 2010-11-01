@@ -1115,6 +1115,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 //				else if( flag_str == "VISIBLE" )                     m_EntityFlag |= BETYPE_VISIBLE;
 				else if( flag_str == "USE_PHYSSIM_RESULTS" )         m_EntityFlag |= BETYPE_USE_PHYSSIM_RESULTS;
 				else if( flag_str == "ENVMAPTARGET" )                m_EntityFlag |= BETYPE_ENVMAPTARGET;
+				else if( flag_str == "BETYPE_PLANAR_REFLECTOR" )     m_EntityFlag |= BETYPE_PLANAR_REFLECTOR;
 				else if( flag_str == "SHADOW_CASTER" )               m_EntityFlag |= BETYPE_SHADOW_CASTER;
 				else if( flag_str == "SHADOW_RECEIVER" )             m_EntityFlag |= BETYPE_SHADOW_RECEIVER;
 				// Create entites to sort transparant alpha

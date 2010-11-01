@@ -1199,6 +1199,7 @@ flag_string_pair g_EntityFlagStringPair[] =
 	flag_string_pair( BETYPE_VISIBLE,                     "VISIBLE" ),
 	flag_string_pair( BETYPE_USE_PHYSSIM_RESULTS,         "USE_PHYSSIM_RESULTS" ),
 	flag_string_pair( BETYPE_ENVMAPTARGET,                "ENVMAPTARGET" ),
+	flag_string_pair( BETYPE_PLANAR_REFLECTOR,            "PLANAR_REFLECTOR" ),
 	flag_string_pair( BETYPE_SHADOW_CASTER,               "SHADOW_CASTER" ),
 	flag_string_pair( BETYPE_SHADOW_RECEIVER,             "SHADOW_RECEIVER" )
 };
