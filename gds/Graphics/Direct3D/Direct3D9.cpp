@@ -534,3 +534,43 @@ Result::Name CDirect3D9::Clear( U32 buffer_mask )
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
+
+
+Result::Name CDirect3D9::SetClipPlane( uint index, const Plane& clip_plane )
+{
+	float coefficients[4] =
+	{
+		clip_plane.normal.x,
+		clip_plane.normal.y,
+		clip_plane.normal.z,
+		clip_plane.dist * (-1.0f)
+	};
+
+	HRESULT hr = m_pD3DDevice->SetClipPlane( index, coefficients );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::EnableClipPlane( uint index )
+{
+	HRESULT hr = S_OK;
+	DWORD current_flags = 0;
+	hr = m_pD3DDevice->GetRenderState( D3DRS_CLIPPLANEENABLE, &current_flags );
+	hr = m_pD3DDevice->SetRenderState( D3DRS_CLIPPLANEENABLE, current_flags | (1 << index) );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::DisableClipPlane( uint index )
+{
+	HRESULT hr = S_OK;
+	DWORD current_flags = 0;
+	hr = m_pD3DDevice->GetRenderState( D3DRS_CLIPPLANEENABLE, &current_flags );
+
+	DWORD flags = current_flags & ( ~(1 << index) );
+	hr = m_pD3DDevice->SetRenderState( D3DRS_CLIPPING, flags );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}

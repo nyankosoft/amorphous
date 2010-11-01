@@ -264,3 +264,33 @@ Result::Name CGLGraphicsDevice::Clear( U32 buffer_mask )
 	glClear( mask );
 	return Result::SUCCESS;
 }
+
+
+Result::Name CGLGraphicsDevice::SetClipPlane( uint index, const Plane& clip_plane )
+{
+	double coefficients[4] =
+	{
+		clip_plane.normal.x,
+		clip_plane.normal.y,
+		clip_plane.normal.z,
+		clip_plane.dist * (-1.0f)
+	};
+
+	glClipPlane( GL_CLIP_PLANE0 + index, coefficients );
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::EnableClipPlane( uint index )
+{
+	glEnable( GL_CLIP_PLANE0 + index );
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::DisableClipPlane( uint index )
+{
+	glDisable( GL_CLIP_PLANE0 + index );
+	return Result::SUCCESS;
+}

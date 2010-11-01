@@ -6,6 +6,7 @@
 #include "AlphaBlend.hpp"
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
+#include "3DMath/Plane.hpp"
 
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
@@ -234,6 +235,12 @@ public:
 	virtual Result::Name SetClearDepth( float depth ) = 0;
 
 	virtual Result::Name Clear( U32 buffer_mask ) = 0;
+
+	virtual Result::Name SetClipPlane( uint index, const Plane& clip_plane ) = 0;
+
+	virtual Result::Name EnableClipPlane( uint index ) = 0;
+
+	virtual Result::Name DisableClipPlane( uint index ) = 0;
 
 	State GetState() const { return m_State; }
 };

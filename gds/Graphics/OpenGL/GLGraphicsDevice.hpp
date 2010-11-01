@@ -88,6 +88,12 @@ public:
 	Result::Name SetClearDepth( float depth );
 
 	Result::Name Clear( U32 buffer_mask );
+
+	Result::Name SetClipPlane( uint index, const Plane& clip_plane );
+
+	Result::Name EnableClipPlane( uint index );
+
+	Result::Name DisableClipPlane( uint index );
 };
 
 
