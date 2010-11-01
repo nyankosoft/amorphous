@@ -3,6 +3,7 @@
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/Direct3D/Shader/D3DShaderManager.hpp"
+#include "Graphics/Direct3D/Shader/D3DCgEffect.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -442,7 +443,18 @@ CD3DShaderResource::~CD3DShaderResource()
 
 CShaderManager *CD3DShaderResource::CreateShaderManager()
 {
-	return new CHLSLShaderManager;
+	const string& resource_path = m_ShaderDesc.ResourcePath;
+	if( 3 < resource_path.length() )
+	{
+		if( resource_path.find(".fx") == resource_path.length() - 3 )
+			return new CHLSLShaderManager;
+		else if( resource_path.find(".cgfx") == resource_path.length() - 5 )
+			return new CD3DCgEffect;
+		else
+			return new CD3DCgEffect;
+	}
+	else
+		return new CHLSLShaderManager; // generic shaders are implemented in HLSL
 }
 
 

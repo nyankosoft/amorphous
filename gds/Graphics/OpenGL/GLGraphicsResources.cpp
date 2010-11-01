@@ -3,6 +3,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "Graphics/OpenGL/glext.h" // GL_BGR
+#include "Graphics/OpenGL/Shader/GLCgEffect.hpp"
 #include "Graphics/OpenGL/Shader/GLShader.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/ImageArchive.hpp"
@@ -448,7 +449,13 @@ CShaderManager *CGLShaderResource::CreateShaderManager()
 	case CShaderType::NON_PROGRAMMABLE:
 		return NULL;//CGLFixedFunctionPipelineManager;
 	case CShaderType::PROGRAMMABLE:
-		return new CGLProgram;
+		{
+			const string& resource_path = m_ShaderDesc.ResourcePath;
+			if( resource_path.find(".cgfx") == resource_path.length() - 5 )
+				return new CGLCgEffect;
+			else
+				return new CGLProgram;
+		}
 	default:
 		LOG_PRINT_ERROR( "An invalid shader type: " + to_string( (int)m_ShaderDesc.ShaderType ) );
 		return NULL;

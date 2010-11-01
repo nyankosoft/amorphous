@@ -463,6 +463,22 @@
 				Name="Shader"
 				>
 				<File
+					RelativePath="..\..\gds\Graphics\Shader\CgEffectBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\CgEffectBase.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\CgEffectLightManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Shader\CgEffectLightManager.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.cpp"
 					>
 				</File>
@@ -1138,6 +1154,14 @@
 					Name="Shader"
 					>
 					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLCgEffect.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLCgEffect.hpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp"
 						>
 					</File>
@@ -1239,6 +1263,14 @@
 				<Filter
 					Name="Shader"
 					>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DCgEffect.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DCgEffect.hpp"
+						>
+					</File>
 					<File
 						RelativePath="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.cpp"
 						>

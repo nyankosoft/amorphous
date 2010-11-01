@@ -3,6 +3,7 @@
 #include <gds/base.hpp>
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/CgEffectBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/Direct3D/Conversions.hpp"
 
@@ -721,16 +722,16 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
-	if( !pEffect )
-		return;
-
-	UINT cPasses;
-//	pEffect->Begin( &cPasses, 0 );
-
 	LPD3DXBASEMESH pMesh = GetBaseMesh();
 	if( !pMesh )
 		return;
+
+	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
+	if( !pEffect )
+		return RenderSubsetsCg( pMesh, rShaderMgr, paMaterialIndex, paShaderTechnique, num_indices );
+
+	UINT cPasses;
+//	pEffect->Begin( &cPasses, 0 );
 
 	hr = pd3dDevice->SetVertexDeclaration( GetVertexDeclaration() );
 
@@ -774,6 +775,66 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 //	pEffect->End();
 }
 
+void CD3DXMeshObjectBase::RenderSubsetsCg( LPD3DXBASEMESH pMesh,
+										   CShaderManager& rShaderMgr,
+										   const int *paMaterialIndex,
+										   CShaderTechniqueHandle *paShaderTechnique,
+										   int num_indices )
+										   // Also need CMeshMaterial *pMaterials = NULL?
+										   // rationale: render the same model with different materials
+{
+	bool single_shader_technique = ( paShaderTechnique == NULL ) ? true : false;
+
+	HRESULT hr;
+	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+
+	CCgEffectBase *pCgEffectMgr = dynamic_cast<CCgEffectBase *>(&rShaderMgr);
+	if( !pCgEffectMgr )
+		return;
+
+	CCgEffectBase& cg_effect_mgr = *pCgEffectMgr;
+
+//	pEffect->Begin( &cPasses, 0 );
+
+	hr = pd3dDevice->SetVertexDeclaration( GetVertexDeclaration() );
+
+	// Meshes are divided into subsets by materials. Render each subset in a loop
+//	const int num_materials = GetNumMaterials();
+//	for( int mat=0; mat<num_materials; mat++ )
+	const size_t num_materials_to_render = num_indices;//vecMaterialIndex.size();
+	for( size_t i=0; i<num_materials_to_render; i++ )
+	{
+		int mat = paMaterialIndex[i];//vecMaterialIndex[i];
+
+		if( m_bViewFrustumTest && !IsMeshVisible(mat) )
+			continue;
+
+		if( !single_shader_technique )
+//		 && i < vecShaderTechnique.size() )
+		{
+//			rShaderMgr.SetTechnique( vecShaderTechnique[i] );
+			cg_effect_mgr.SetTechnique( paShaderTechnique[i] );
+		}
+
+		const int num_textures_for_material = (int)m_vecMaterial[mat].Texture.size();
+		for( int tex=0; tex<num_textures_for_material; tex++ )
+			rShaderMgr.SetTexture( tex, GetTexture( mat, tex ) );
+
+		for( CGpass pass = cg_effect_mgr.GetFirstPass();
+			 pass;
+			 pass = cgGetNextPass(pass) )
+		{
+			bool valid_pass = cgIsPass( pass );
+
+			cgSetPassState(pass);
+
+			// Draw the mesh subset
+			hr = pMesh->DrawSubset( mat );
+
+			cgResetPassState(pass);
+		}
+	}
+}
 
 //-----------------------------------------------------------------------------
 // Name: Render()

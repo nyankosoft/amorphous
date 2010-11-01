@@ -168,6 +168,12 @@ public:
 						CShaderTechniqueHandle *paShaderTechnique,
 						int num_indices );
 
+	void RenderSubsetsCg( LPD3DXBASEMESH pMesh,
+		                  CShaderManager& rShaderMgr,
+		                  const int *paMaterialIndex,
+						  CShaderTechniqueHandle *paShaderTechnique,
+						  int num_indices );
+
 	/// renders subsets of the mesh with the current shader technique
 	/// - the same shader technique is used to render all the subsets
 //	virtual void RenderSubsets( CShaderManager& rShaderMgr,
