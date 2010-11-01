@@ -347,6 +347,8 @@ private:
 
 	void Close();
 
+	void UpdatedFromRequestedState( CAircraftComponentState::Name requested_state );
+
 public:
 
 	CMeshBoneController_Cover()

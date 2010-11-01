@@ -309,17 +309,20 @@ void CMeshBoneController_Cover::Init()
 {
 	CMeshBoneController_AircraftBase::Init();
 
-	for( size_t i=0; i<m_vecConstraint.size(); i++ )
+	if( m_pParent )
 	{
-		m_vecConstraint[i].m_pComponent
-			= m_pParent->GetComponent( m_vecConstraint[i].Name );
+		for( size_t i=0; i<m_vecConstraint.size(); i++ )
+		{
+			m_vecConstraint[i].m_pComponent
+				= m_pParent->GetComponent( m_vecConstraint[i].Name );
+		}
 	}
 }
 
 
-void CMeshBoneController_Cover::Update( float dt )
+void CMeshBoneController_Cover::UpdatedFromRequestedState( CAircraftComponentState::Name requested_state )
 {
-	switch( m_pParent->GetRequestedState() )
+	switch( requested_state )
 	{
 	case CAircraftComponentState::OPEN:
 	case CAircraftComponentState::OPENING:
@@ -365,6 +368,13 @@ void CMeshBoneController_Cover::Update( float dt )
 	default:
 		break;
 	}
+}
+
+
+void CMeshBoneController_Cover::Update( float dt )
+{
+	if( m_pParent )
+		UpdatedFromRequestedState( m_pParent->GetRequestedState() );
 
 	// update rotation angle of the component
 	m_Angle.Update( dt );
