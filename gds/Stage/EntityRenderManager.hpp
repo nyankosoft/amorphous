@@ -21,6 +21,7 @@ class CEntityEnvMapRenderTask;
 class CEntitySceneRenderTask;
 class CCubeTextureParamsLoader;
 class CEntityShadowMapRenderer;
+class CPlanarReflectionGroup;
 
 
 class CEnvMapTarget
@@ -81,9 +82,6 @@ private:
 
 	std::vector<CBaseEntity *> m_vecpSweepRenderBaseEntity;
 
-//	CTextureHandle m_TransparentTexture;
-//	CTextureHandle m_TranslucentTexture;
-
 	std::string m_FallbackShaderFilepath;
 	CShaderHandle m_FallbackShader;
 
@@ -139,8 +137,6 @@ private:
 
 	/// render z-sorted entities
 	void RenderZSortTable();
-
-	void RenderSceneWithShadowMap( CCamera& rCam);
 
 	void RenderScene( CCamera& rCam );
 
@@ -235,7 +231,13 @@ public:
 	void SetOverrideShadowMapLightPosition( const Vector3& pos ) { m_vOverrideShadowMapPosition = pos; }
 	void SetOverrideShadowMapLightDirection( const Vector3& dir ) { m_vOverrideShadowMapDirection = dir; }
 
-	void RenderForShadowMaps( CCamera& rCam );
+	void RenderSceneWithShadows( CCamera& rCam );
+
+	void AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane = Plane(Vector3(0,0,0),0) );
+	void RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group );
+	void UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group );
+	void UpdatePlanarReflectionTextures( CCamera& rCam );
+
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );

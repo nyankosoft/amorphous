@@ -10,6 +10,7 @@
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
@@ -25,6 +26,76 @@
 
 
 using namespace boost;
+
+
+bool IsValidPlane( const Plane& plane )
+{
+	if( fabs(plane.normal.x) < 0.001
+	 && fabs(plane.normal.y) < 0.001
+	 && fabs(plane.normal.z) < 0.001 )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+
+class CPlanarReflectionGroup
+{
+	SPlane m_Plane;
+
+	std::vector< CEntityHandle<> > m_Entities;
+
+	boost::shared_ptr<CTextureRenderTarget> m_pReflectionRenderTarget;
+
+public:
+
+	CPlanarReflectionGroup()
+		:
+	m_Plane( SPlane(Vector3(0,1,0),0) )
+	{}
+
+	void Init()
+	{
+		m_pReflectionRenderTarget = CTextureRenderTarget::Create();
+	}
+
+	void Release()
+	{
+		m_pReflectionRenderTarget.reset();
+	}
+
+	void AddEntity( CEntityHandle<>& entity )
+	{
+		m_Entities.push_back( entity );
+	}
+
+	Result::Name RemoveEntity( CEntityHandle<>& entity )
+	{
+		boost::shared_ptr<CCopyEntity> pEntity = entity.Get();
+		if( !pEntity )
+			return Result::INVALID_ARGS;
+
+		for( size_t i=0; i<m_Entities.size(); i++ )
+		{
+			if( m_Entities[i].Get() == pEntity )
+			{
+				m_Entities.erase( m_Entities.begin() + i );
+				return Result::SUCCESS;
+			}
+		}
+
+		return Result::INVALID_ARGS;
+	}
+
+	friend class CEntityRenderManager;
+};
+
+std::vector<CPlanarReflectionGroup> s_PlanarReflectionGroups;
+
 
 
 class CCubeTextureParamsLoader : public CShaderParamsLoader
@@ -147,7 +218,7 @@ public:
 		// - creates scene depth map
 		// - creates scene texture
 		// each of the three has BeginScene() and EndScene() pair inside
-		m_pRenderManager->RenderForShadowMaps( *m_pCamera/*, m_pScreenEffectManager*/ );
+		m_pRenderManager->RenderSceneWithShadows( *m_pCamera/*, m_pScreenEffectManager*/ );
 
 		ShaderManagerHub.PopViewAndProjectionMatrices();
 	}
@@ -220,6 +291,8 @@ m_pCurrentCamera(NULL)
 	m_pShadowMapSceneRenderer = shared_ptr<CEntityShadowMapRenderer>( new CEntityShadowMapRenderer(this) );
 
 	LoadFallbackShader();
+
+	s_PlanarReflectionGroups.resize( 0 );
 }
 
 
@@ -724,6 +797,117 @@ void CEntityRenderManager::UpdateEnvironmentMapTextures()
 }
 
 
+void CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane )
+{
+	static uint num_max_planar_reflection_groups = 2;
+
+	shared_ptr<CCopyEntity> pEntity = entity.Get();
+	if( !pEntity )
+		return;
+
+	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
+	{
+		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		if( AlmostSamePlanes( group.m_Plane, plane ) )
+		{
+			group.AddEntity( entity );
+			break;
+		}
+	}
+
+	if( num_max_planar_reflection_groups <= (uint)s_PlanarReflectionGroups.size() )
+		return;
+
+	// If the argument plane is valid, just use it as reflection plane.
+	// If not, guess the reflection plane from the mesh of the entity
+	// If the has no mesh, create a reflection plane from the entity's position and up direction.
+	Plane reflection_plane( Vector3(0,1,0), 0 );
+	if( IsValidPlane( plane ) )
+	{
+		reflection_plane = plane;
+	}
+	else
+	{
+		shared_ptr<CBasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
+		if( pMesh )
+		{
+			const AABB3 entity_mesh_aabb = pMesh->GetAABB();
+			if( entity_mesh_aabb.GetExtents().x < 0.001f )      reflection_plane = Plane( Vector3(1,0,0), entity_mesh_aabb.GetCenterPosition().x );
+			else if( entity_mesh_aabb.GetExtents().x < 0.001f ) reflection_plane = Plane( Vector3(0,1,0), entity_mesh_aabb.GetCenterPosition().y );
+			else if( entity_mesh_aabb.GetExtents().x < 0.001f ) reflection_plane = Plane( Vector3(0,0,1), entity_mesh_aabb.GetCenterPosition().z );
+		}
+		else
+		{
+			Vector3 plane_normal = pEntity->GetWorldPose().matOrient.GetColumn(1);
+			reflection_plane = Plane( plane_normal, Vec3Dot( plane_normal, pEntity->GetWorldPosition() ) );
+		}
+	}
+
+	s_PlanarReflectionGroups.push_back( CPlanarReflectionGroup() );
+	s_PlanarReflectionGroups.back().m_Plane = plane;
+	s_PlanarReflectionGroups.back().AddEntity( entity );
+}
+
+
+void CEntityRenderManager::RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group )
+{
+	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
+	{
+		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		Result::Name res = group.RemoveEntity( entity );
+		if( res != Result::SUCCESS )
+			continue; // The entity was not found: try the next group
+
+		if( remove_planar_refelection_group
+		 && group.m_Entities.empty() )
+		{
+			s_PlanarReflectionGroups.erase( s_PlanarReflectionGroups.begin() + i );
+			return;
+		}
+	}
+}
+
+
+void CEntityRenderManager::UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group )
+{
+	if( !group.m_pReflectionRenderTarget )
+		return;
+
+	// matrix settings
+
+	Matrix44 mirror = Matrix44Mirror( group.m_Plane );
+
+	Matrix44 view = rCam.GetCameraMatrix();
+	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, rCam.GetProjectionMatrix() );
+
+//	GraphicsDevice().SetClipPlane( group.m_Plane );
+
+	// set planar reflection texture
+	group.m_pReflectionRenderTarget->SetRenderTarget();
+
+	// render the scene
+	RenderSceneWithShadows( rCam );
+
+	// restore the original render target
+	group.m_pReflectionRenderTarget->ResetRenderTarget();
+
+	ShaderManagerHub.PopViewAndProjectionMatrices();
+}
+
+
+void CEntityRenderManager::UpdatePlanarReflectionTextures( CCamera& rCam )
+{
+	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
+
+	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
+	{
+		UpdatePlanarReflectionTexture( rCam, s_PlanarReflectionGroups[i] );
+	}
+
+	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+}
+
+
 //CTextureHandle CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
 LPDIRECT3DCUBETEXTURE9 CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
 {
@@ -944,18 +1128,13 @@ void CEntityRenderManager::LoadTextures()
 
 
 
-void CEntityRenderManager::RenderSceneWithShadowMap( CCamera& rCam )
-{
-	m_pShadowManager->RenderSceneWithShadow();
-}
-
 
 /**
  - Render the shadow caster entities to shadow map texture(s).
  - Render the shadow receiver entities.
  - Render the scene without shadow to render target texture.
 */
-void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//, 
+void CEntityRenderManager::RenderSceneWithShadows( CCamera& rCam )//, 
 //													 CScreenEffectManager *pScreenEffectMgr )
 {
 	if( m_bOverrideShadowMapLight )
@@ -1017,6 +1196,9 @@ void CEntityRenderManager::RenderForShadowMaps( CCamera& rCam )//,
 
 	// call IDirect3DDevice9::EndScene() and reset the prev render target;
 	m_pShadowManager->EndScene();
+
+	// Render the scene as fullscreen rect with the scene texture and shadow overlay texture
+	m_pShadowManager->RenderSceneWithShadow();
 }
 
 
@@ -1085,52 +1267,57 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	FixedFunctionPipelineManager().SetViewTransform( matView );
 	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
 
+	/// set view and projection matrices to all shader managers
+	ShaderManagerHub.PushViewAndProjectionMatrices( rCam );
+
 	// clear dest buffer
-    pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
+//	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
+	GraphicsDevice().SetClearColor( SFloatRGBAColor(0.3f,0.3f,0.3f,1.0f) );
+	GraphicsDevice().SetClearDepth( 1.0f );
+	GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
 
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
 	// set alpha test
 	pd3dDev->SetRenderState(D3DRS_ALPHAREF, (DWORD)0x00000001);
-    pd3dDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
-    pd3dDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+	GraphicsDevice().Enable( RenderStateType::ALPHA_TEST );
+//	pd3dDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
+	pd3dDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 
 	// enable lights of graphics device for entities
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, true );
 
 	// test - add some ambient light
-//    pd3dDev->SetRenderState( D3DRS_AMBIENT, 0x00202020 );
+//	pd3dDev->SetRenderState( D3DRS_AMBIENT, 0x00202020 );
 
-	/// set view and projection matrices of all shader managers
-	ShaderManagerHub.PushViewAndProjectionMatrices( rCam );
-
+	if( m_pShadowManager )
+	{
+		// A new shadowmap may be created in this function. This must be called before m_pShadowManager->HasShadowMap().
+		// The same light is used for the shadowing both in the real world and the mirrored world.
+		UpdateLightsForShadow();
+	}
 
 	// create env map texture based no the current camera pose
 	bool do_not_use_render_task = true;
 	if( do_not_use_render_task )
 	{
-		UpdateEnvironmentMapTextures();
-//		UpdatePlanerReflectionTextures( rCam );
-	}
-
-	bool rendered_with_shadow = false;
-	if( m_pShadowManager ) // A
-	{
-		// A new shadowmap may be created in this function. This must be called before m_pShadowManager->HasShadowMap().
-		UpdateLightsForShadow();
-
-		if( m_pShadowManager->HasShadowMap() ) // B
+//		if( flags & ENVIRONMENT_MAPPING )
+		if( m_bEnableEnvironmentMap )
 		{
-			RenderForShadowMaps( rCam );
-
-			// render the scene as fullscreen rect with
-			// scene texture and shadow overlay texture
-			RenderSceneWithShadowMap( rCam );
-			rendered_with_shadow = true;
+			UpdateEnvironmentMapTargets();
+			UpdateEnvironmentMapTextures();
 		}
+
+		if( !s_PlanarReflectionGroups.empty() )
+			UpdatePlanarReflectionTextures( rCam );
 	}
 
-	if( !rendered_with_shadow )
+	if( m_pShadowManager // A
+	 && m_pShadowManager->HasShadowMap() ) // B
+	{
+		RenderSceneWithShadows( rCam );
+	}
+	else
 	{
 		// Directly render the scene to the currenet render target.
 		// This happens if one of the following is true:
