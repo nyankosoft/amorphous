@@ -2,7 +2,6 @@
 #include "GraphicsElementManager.hpp"
 #include "Support/Timer.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
 
 #include <algorithm>
 
