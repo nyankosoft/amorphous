@@ -9,11 +9,11 @@ using namespace std;
 
 
 /**
-How to replace D3DXMATRIX CMM_Bone::m_pWorldTransform
+How to replace D3DXMATRIX CMeshBone::m_pWorldTransform
 -----------------------------------------------------
 - Replace with Matrix44
   - pros:
-    - Direct3D and OpenGL implementations may be able to share CMM_Bone.
+    - Direct3D and OpenGL implementations may be able to share CMeshBone.
   - cons:
     - ID3DXEffect::SetMatrixTranspose() is slower than ID3DXEffect::SetMatrix()
 Replace with Transform
@@ -21,19 +21,19 @@ Replace with Transform
     - Less data to send to shader
   - cons:
     - No support for scaling
-	- Need to convert to Matrix34 unless CMM_Bone::m_BoneTransform
-      and CMM_Bone::m_LocalTransform are also Transform.
+	- Need to convert to Matrix34 unless CMeshBone::m_BoneTransform
+      and CMeshBone::m_LocalTransform are also Transform.
 */
 
 
 //=========================================================================================
-// CMM_Bone
+// CMeshBone
 //=========================================================================================
 
-const CMM_Bone CMM_Bone::ms_NullBone = CMM_Bone();
+const CMeshBone CMeshBone::ms_NullBone = CMeshBone();
 
 
-void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
+void CMeshBone::LoadBone_r( CMMA_Bone& rSrcBone,
 						   Transform *paBlendTransforms,
 						   int &iNumRegisteredMatrices )
 {
@@ -41,7 +41,7 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 
 	m_iNumChildren = (int)rSrcBone.vecChild.size();
 
-	m_paChild = new CMM_Bone [m_iNumChildren];
+	m_paChild = new CMeshBone [m_iNumChildren];
 
 	// set pointer to the transform matrix array
 	m_pWorldTransform = paBlendTransforms + iNumRegisteredMatrices;
@@ -65,7 +65,7 @@ void CMM_Bone::LoadBone_r( CMMA_Bone& rSrcBone,
 }
 
 
-inline void CMM_Bone::CalculateWorldTransform( const Matrix34* pParentMatrix,
+inline void CMeshBone::CalculateWorldTransform( const Matrix34* pParentMatrix,
 									           const Matrix34 *paSrcMatrix,
 									           int& rIndex,
 									           Matrix34& dest_world_transform )
@@ -100,7 +100,7 @@ inline void CMM_Bone::CalculateWorldTransform( const Matrix34* pParentMatrix,
 }
 
 
-void CMM_Bone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex )
+void CMeshBone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex )
 {
 	Matrix34 world_transform( Matrix34Identity() );
 	CalculateWorldTransform( pParentMatrix, paSrcMatrix, rIndex, world_transform );
@@ -115,7 +115,7 @@ void CMM_Bone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int&
 }
 
 
-void CMM_Bone::CalculateTransforms_r( const Matrix34 *pParentMatrix,
+void CMeshBone::CalculateTransforms_r( const Matrix34 *pParentMatrix,
 									  const Matrix34 *paSrcMatrix,
 									  int& rIndex,
 									  Transform *paDest )
@@ -132,9 +132,9 @@ void CMM_Bone::CalculateTransforms_r( const Matrix34 *pParentMatrix,
 }
 
 
-int CMM_Bone::GetBoneMatrixIndexByName_r( const char *pName )
+int CMeshBone::GetBoneMatrixIndexByName_r( const char *pName )
 {
-/*	const CMM_Bone& bone = GetBoneByName_r( pName );
+/*	const CMeshBone& bone = GetBoneByName_r( pName );
 
 	if( bone == NullBone() )
 		return -1;
@@ -163,7 +163,7 @@ int CMM_Bone::GetBoneMatrixIndexByName_r( const char *pName )
 }
 
 
-const CMM_Bone& CMM_Bone::GetBoneByName_r( const char *pName ) const
+const CMeshBone& CMeshBone::GetBoneByName_r( const char *pName ) const
 {
 	if( m_strName == pName )
 		return *this;
@@ -175,7 +175,7 @@ const CMM_Bone& CMM_Bone::GetBoneByName_r( const char *pName ) const
 		{
 			for( int i=0; i<m_iNumChildren; i++ )
 			{
-				const CMM_Bone& bone = m_paChild[i].GetBoneByName_r( pName );
+				const CMeshBone& bone = m_paChild[i].GetBoneByName_r( pName );
 				if( bone != NullBone() )
 					return bone;	// found the bone with the specified name
 			}
@@ -186,7 +186,7 @@ const CMM_Bone& CMM_Bone::GetBoneByName_r( const char *pName ) const
 }
 
 
-void CMM_Bone::SetBoneToArray_r( vector<CMM_Bone *>& vecpDestArray )
+void CMeshBone::SetBoneToArray_r( vector<CMeshBone *>& vecpDestArray )
 {
 	vecpDestArray.push_back( this );
 
@@ -197,7 +197,7 @@ void CMM_Bone::SetBoneToArray_r( vector<CMM_Bone *>& vecpDestArray )
 }
 
 
-void CMM_Bone::DumpToTextFile( FILE* fp, int depth )
+void CMeshBone::DumpToTextFile( FILE* fp, int depth )
 {
 	for( int i=0; i<depth; i++ ) fprintf( fp, "  " );
 	fprintf( fp, "%s: t%s, q%s\n", m_strName.c_str(), to_string(m_LocalTransform.vPosition).c_str(), to_string(Quaternion(m_LocalTransform.matOrient)).c_str() );

@@ -51,7 +51,7 @@ bool CD3DXSMeshObject::LoadSkeletonFromArchive( C3DMeshModelArchive& archive )
 			m_paWorldTransforms[j]  = transform;
 
 		int iMatrixIndex = 0;
-		m_pRootBone = new CMM_Bone();
+		m_pRootBone = new CMeshBone();
 		m_pRootBone->LoadBone_r( archive.GetSkeletonRootBone(), m_paWorldTransforms, iMatrixIndex );
 
 		// set pointers to bones to a single array

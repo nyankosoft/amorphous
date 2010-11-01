@@ -197,11 +197,11 @@ public:
 
 	virtual int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return 0; }
 
-//	inline const CMM_Bone& GetBone( int index ) const;
+//	inline const CMeshBone& GetBone( int index ) const;
 
-	virtual const CMM_Bone& GetBone( const std::string& bone_name ) const;
+	virtual const CMeshBone& GetBone( const std::string& bone_name ) const;
 
-	virtual const CMM_Bone& GetRootBone() const;
+	virtual const CMeshBone& GetRootBone() const;
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 	/// calculate hierarchical transforms by handiing an array of matrices
@@ -324,8 +324,8 @@ public:
 /*
 	int GetNumBones() const { return m_pImpl->GetNumBones(); }
 	int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return m_pImpl->GetBoneMatrixIndexByName( bone_name ); }
-//	inline const CMM_Bone& GetBone( int index ) const;
-	const CMM_Bone& GetBone( const std::string& bone_name ) const { return m_pImpl->GetBone( bone_name ); }
+//	inline const CMeshBone& GetBone( int index ) const;
+	const CMeshBone& GetBone( const std::string& bone_name ) const { return m_pImpl->GetBone( bone_name ); }
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 	/// calculate hierarchical transforms by handiing an array of matrices
 	/// that represents local transformations at each bone

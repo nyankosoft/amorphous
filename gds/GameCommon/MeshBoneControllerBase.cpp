@@ -96,17 +96,17 @@ void CMeshBoneController_Flap::SetTransform()
 
 void CMeshBoneControllerBase::Init()
 {
-	vector<CMM_Bone>& vecBone;
+	vector<CMeshBone>& vecBone;
 
 	string tgt_bone_name;
 	size_t i, num_bones = vecBone.size();
 	for( i=0; i<num_bones; i++ )
 	{
-		CMM_Bone& bone = vecBone[i];
+		CMeshBone& bone = vecBone[i];
 		if( bone[i].name.find( "axis: " ) == 0 )
 		{
 			tgt_bone_name = bone[i].name.substr( strlen("axis: "), 1024 );
-			CMM_Bone* tgt_bone = mesh.GetBoneByName( tgt_bone_name );
+			CMeshBone* tgt_bone = mesh.GetBoneByName( tgt_bone_name );
 			m_vecBoneControlParam[ GetIndex( tgt_bone_name ) ]
 				= BoneControlParam( tgt_bone,  ??? axis ???  );
 //			m_vecBoneControlParam.push_back( tgt_bone, bone[i].???vLocalOffset??? );

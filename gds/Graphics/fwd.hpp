@@ -82,7 +82,7 @@ class C3DMeshModelArchive;
 class CD3DXMeshModel;
 class C3DMeshModelBuilder;
 class C3DModelLoader;
-class CMM_Bone;
+class CMeshBone;
 }
 
 class CGeneral3DMesh;

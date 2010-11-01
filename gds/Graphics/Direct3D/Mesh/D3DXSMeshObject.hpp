@@ -21,10 +21,10 @@ class CD3DXSMeshObject : public CD3DXPMeshObject
 
 	/// hold pointers to each bone in a single array
 	/// used to set matrices with indices
-	std::vector<CMM_Bone *> m_vecpBone;
+	std::vector<CMeshBone *> m_vecpBone;
 
 	/// root node of the hierarchical structure
-    CMM_Bone *m_pRootBone;
+    CMeshBone *m_pRootBone;
 
 	std::vector<Matrix34> m_vecLocalTransformCache;
 
@@ -52,11 +52,11 @@ public:
 
 	inline int GetBoneMatrixIndexByName( const std::string& bone_name ) const;
 
-//	inline const CMM_Bone& GetBone( int index ) const;
+//	inline const CMeshBone& GetBone( int index ) const;
 
-	inline const CMM_Bone& GetBone( const std::string& bone_name ) const;
+	inline const CMeshBone& GetBone( const std::string& bone_name ) const;
 
-	inline const CMM_Bone& GetRootBone() const { return m_pRootBone ? *m_pRootBone : CMM_Bone::NullBone(); }
+	inline const CMeshBone& GetRootBone() const { return m_pRootBone ? *m_pRootBone : CMeshBone::NullBone(); }
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 
@@ -95,17 +95,17 @@ inline int CD3DXSMeshObject::GetBoneMatrixIndexByName( const std::string& bone_n
 }
 
 /*
-inline const CMM_Bone& CD3DXSMeshObject::GetBone( int index ) const
+inline const CMeshBone& CD3DXSMeshObject::GetBone( int index ) const
 {
 }
 */
 
-inline const CMM_Bone& CD3DXSMeshObject::GetBone( const std::string& bone_name ) const
+inline const CMeshBone& CD3DXSMeshObject::GetBone( const std::string& bone_name ) const
 {
 	if( m_pRootBone )
 		return m_pRootBone->GetBoneByName_r( bone_name.c_str() );
 	else
-		return CMM_Bone::NullBone();
+		return CMeshBone::NullBone();
 }
 
 

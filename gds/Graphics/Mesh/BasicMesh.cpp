@@ -50,15 +50,15 @@ m_bViewFrustumTest(false)
 }
 
 
-const CMM_Bone& CMeshImpl::GetBone( const std::string& bone_name ) const
+const CMeshBone& CMeshImpl::GetBone( const std::string& bone_name ) const
 {
-	return CMM_Bone::NullBone();
+	return CMeshBone::NullBone();
 }
 
 
-const CMM_Bone& CMeshImpl::GetRootBone() const
+const CMeshBone& CMeshImpl::GetRootBone() const
 {
-	return CMM_Bone::NullBone();
+	return CMeshBone::NullBone();
 }
 
 

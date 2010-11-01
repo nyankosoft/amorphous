@@ -368,7 +368,7 @@ bool CD3DXMeshModel::LoadFromArchive( C3DMeshModelArchive& rArchive, const strin
 			m_paTransforms[i].SetIdentity();
 
 		int iMatrixIndex = 0;
-		m_pRootBone = new CMM_Bone();
+		m_pRootBone = new CMeshBone();
 		m_pRootBone->LoadBone_r( rArchive.GetSkeletonRootBone(), m_paTransforms, iMatrixIndex );
 	}
 	else

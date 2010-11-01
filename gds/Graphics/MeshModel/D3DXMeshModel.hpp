@@ -125,7 +125,7 @@ private:
 	int m_iNumBones;
 
 	/// root node of the hierarchical structure
-    CMM_Bone *m_pRootBone;
+    CMeshBone *m_pRootBone;
 
 	/// flexible vertex format flag
 	DWORD m_dwFVF;

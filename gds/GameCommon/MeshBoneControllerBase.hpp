@@ -27,7 +27,7 @@ protected:
 		std::string Name;
 
 		Vector3 vRotationAxis;
-//		CMM_Bone* pBone;
+//		CMeshBone* pBone;
 
 		// RotationAngleFunction
 

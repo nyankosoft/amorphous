@@ -46,9 +46,9 @@ void CMeshBoneController_AircraftBase::Init()
 
 	for( i=0; i<num_bones; i++ )
 	{
-//		const CMM_Bone& bone = m_pTargetMesh->GetBone( bone_name[i] );
-		const CMM_Bone& bone = m_pTargetMesh->GetBone( m_vecBoneControlParam[i].Name );
-		if( bone != CMM_Bone::NullBone() )
+//		const CMeshBone& bone = m_pTargetMesh->GetBone( bone_name[i] );
+		const CMeshBone& bone = m_pTargetMesh->GetBone( m_vecBoneControlParam[i].Name );
+		if( bone != CMeshBone::NullBone() )
 		{
 			m_vecBoneControlParam[i].MatrixIndex = bone.GetMatrixIndex();
 			m_vecBoneControlParam[i].vRotationAxis = Vec3GetNormalized( bone.GetLocalOffset() );

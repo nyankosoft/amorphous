@@ -20,7 +20,7 @@ namespace MeshModel
  bone for mesh that needs hierarchical transformation
 
  */
-class CMM_Bone
+class CMeshBone
 {
 	/// holds bone name (for debugging)
 	std::string m_strName;
@@ -38,13 +38,13 @@ class CMM_Bone
 	/// bone space to local space
 	Matrix34 m_LocalTransform;
 
-	CMM_Bone *m_paChild;
+	CMeshBone *m_paChild;
 
 	int m_iNumChildren;
 
 	/// for functions that finds a bone and returns its of bone,
 	/// but has return null if the bone is not found
-	static const CMM_Bone ms_NullBone;
+	static const CMeshBone ms_NullBone;
 
 public:
 
@@ -52,9 +52,9 @@ public:
 
 public:
 
-	inline CMM_Bone();
+	inline CMeshBone();
 
-	~CMM_Bone() { SafeDeleteArray( m_paChild ); }
+	~CMeshBone() { SafeDeleteArray( m_paChild ); }
 
 	void LoadBone_r( CMMA_Bone& rSrcBone, Transform *paBoneTransformMatrix, int &iNumRegisteredMatrices );
 
@@ -74,14 +74,14 @@ public:
 
 	const Matrix34& GetBoneTransform() const { return m_BoneTransform; }
 
-	const CMM_Bone& GetBoneByName_r( const char *pName ) const;
+	const CMeshBone& GetBoneByName_r( const char *pName ) const;
 
-	void SetBoneToArray_r( std::vector<CMM_Bone *>& vecpDestArray );
+	void SetBoneToArray_r( std::vector<CMeshBone *>& vecpDestArray );
 
-//	static const CMM_Bone& NullBone() const { return ms_NullBone; }
-	static const CMM_Bone& NullBone() { return ms_NullBone; }
+//	static const CMeshBone& NullBone() const { return ms_NullBone; }
+	static const CMeshBone& NullBone() { return ms_NullBone; }
 
-	bool operator==( const CMM_Bone& bone ) const
+	bool operator==( const CMeshBone& bone ) const
 	{
 		if( m_strName == bone.m_strName
 		 && m_MatrixIndex == bone.m_MatrixIndex
@@ -92,7 +92,7 @@ public:
 			return false;
 	}
 
-	bool operator!=( const CMM_Bone& bone ) const
+	bool operator!=( const CMeshBone& bone ) const
 	{
 		return !( (*this) == bone );
 	}
@@ -105,7 +105,7 @@ public:
 
 //============================= inline implementations =============================
 
-inline CMM_Bone::CMM_Bone()
+inline CMeshBone::CMeshBone()
 :
 m_vLocalOffset( Vector3(0,0,0) ),
 m_pWorldTransform(NULL),
