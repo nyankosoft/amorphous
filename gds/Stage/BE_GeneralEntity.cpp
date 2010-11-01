@@ -220,15 +220,6 @@ void CBE_GeneralEntity::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity
 	}
 }
 
-/*
-void CBE_GeneralEntity::ReleaseGraphicsResources()
-{
-}
-
-void CBE_GeneralEntity::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-}
-*/
 
 bool CBE_GeneralEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {

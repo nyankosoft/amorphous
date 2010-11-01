@@ -50,9 +50,6 @@ public:
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
 	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
-//	void ReleaseGraphicsResources();
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
-
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 
 	virtual unsigned int GetArchiveObjectID() const { return BE_GENERALENTITY; }
