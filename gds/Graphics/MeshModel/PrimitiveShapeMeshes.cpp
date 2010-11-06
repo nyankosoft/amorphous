@@ -1,5 +1,8 @@
 #include "PrimitiveShapeMeshes.hpp"
 #include "3DMath/Matrix34.hpp"
+#include "3DMath/PrimitivePolygonModelMaker.hpp"
+#include "General3DMesh.hpp"
+#include "3DMeshModelArchive.hpp"
 #include "3DMeshModelBuilder.hpp"
 
 using namespace std;
@@ -60,6 +63,25 @@ static Matrix33 GetRotationMatrixToAlignToAxis( AxisAndDirection::Name axis )
 void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
+
+	vector<Vector3> vertices;
+	vector<Vector3> normals;
+	vector< vector<int> > polygons;
+
+	CreateCylinder(
+		desc.height, desc.radii, desc.num_sides, PrimitiveModelStyle::EDGE_VERTICES_WELDED,//desc.edge_option, // [in]
+		vertices, normals, polygons // [out]
+		);
+
+	const size_t num_vertices = vertices.size();
+	vector<CGeneral3DVertex>& vert_buffer = *(mesh.GetVertexBuffer());
+	vert_buffer.resize( num_vertices, CGeneral3DVertex() );
+	for( size_t i=0; i<num_vertices; i++ )
+	{
+		vert_buffer[i].m_vPosition = vertices[i];
+		vert_buffer[i].m_vNormal   = normals[i];
+	}
+
 }
 
 

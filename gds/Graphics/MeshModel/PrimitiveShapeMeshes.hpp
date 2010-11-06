@@ -2,10 +2,9 @@
 #define __PrimitiveShapeMeshes_HPP__
 
 
+#include "../../base.hpp"
 #include "../fwd.hpp"
-#include "Graphics/MeshModel/General3DMesh.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
+#include "../../3DMath/Vector3.hpp"
 using namespace MeshModel;
 
 
@@ -104,6 +103,7 @@ public:
 	int num_sides;
 
 	PrimitivePlacingStyle::Name style;
+//	PrimitiveModelStyle::Name edge_option;
 
 public:
 

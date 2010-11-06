@@ -8,19 +8,6 @@
 #include "SurfaceFormat.hpp"
 
 
-class STATUS
-{
-public:
-	enum type
-	{
-		OK = 0,
-//		ERROR = 1, // error - 'ERROR' is reserved
-		Success = 0,
-		Error = 1,
-	};
-};
-
-
 class CCubeMapSceneRenderer
 {
 public:

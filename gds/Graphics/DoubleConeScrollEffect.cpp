@@ -3,6 +3,8 @@
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/MeshModel/General3DMesh.hpp"
+#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 

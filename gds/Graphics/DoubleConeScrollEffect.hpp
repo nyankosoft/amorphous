@@ -3,16 +3,11 @@
 
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
 #include "fwd.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "GameCommon/CriticalDamping.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
-using namespace GameLib1::Serialization;
 
 
 //namespace ???
