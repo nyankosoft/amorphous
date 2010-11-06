@@ -4,14 +4,13 @@ using namespace MeshModel;
 using namespace std;
 
 
-//--------------------------------------------------------------------------------------
-// Takes an array of CEdgeMapping objects, then returns an index for the edge in the
-// table if such entry exists, or returns an index at which a new entry for the edge
-// can be written.
-// nV1 and nV2 are the vertex indexes for the old edge.
-// nCount is the number of elements in the array.
-// The function returns -1 if an available entry cannot be found.  In reality,
-// this should never happens as we should have allocated enough memory.
+/// Takes an array of CEdgeMapping objects, then returns an index for the edge in the
+/// table if such entry exists, or returns an index at which a new entry for the edge
+/// can be written.
+/// nV1 and nV2 are the vertex indexes for the old edge.
+/// nCount is the number of elements in the array.
+/// The function returns -1 if an available entry cannot be found.  In reality,
+/// this should never happens as we should have allocated enough memory.
 int CShadowVolumeMeshGenerator::FindEdgeInMappingTable( int nV1, int nV2, CEdgeMapping *pMapping, int nCount )
 {
     for( int i = 0; i < nCount; ++i )
@@ -32,12 +31,8 @@ int CShadowVolumeMeshGenerator::FindEdgeInMappingTable( int nV1, int nV2, CEdgeM
 }
 
 
-
-//--------------------------------------------------------------------------------------
-// Takes a mesh and generate a new mesh from it that contains the degenerate invisible
-// quads for shadow volume extrusion.
-//HRESULT GenerateShadowMesh( IDirect3DDevice9 *pd3dDevice, ID3DXMesh *pMesh, ID3DXMesh **ppOutMesh )
-
+/// Takes a mesh and generate a new mesh from it that contains the degenerate invisible
+/// quads for shadow volume extrusion.
 bool CShadowVolumeMeshGenerator::GenerateShadowMesh( C3DMeshModelArchive& rShadowVolumeMesh,
 													 C3DMeshModelArchive& rOriginalMesh )
 {

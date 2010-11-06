@@ -1,11 +1,8 @@
+#ifndef __ShadowVolumeMeshGenerator_HPP__
+#define __ShadowVolumeMeshGenerator_HPP__
 
-#ifndef __SHADOWVOLUMEMESHGENERATOR_H__
-#define __SHADOWVOLUMEMESHGENERATOR_H__
 
-
-//#include "FVF_SHADOWVERTEXex.h"
-
-#include <d3dx9.h>
+#include "../fwd.hpp"
 
 
 namespace MeshModel
@@ -13,7 +10,6 @@ namespace MeshModel
 
 
 class CEdgeMapping;
-class C3DMeshModelArchive;
 
 
 //=========================================================================================
@@ -55,8 +51,14 @@ public:
 
 	CEdgeMapping()
 	{
-		FillMemory( m_anOldEdge, sizeof(m_anOldEdge), -1 );
-		FillMemory( m_aanNewEdge, sizeof(m_aanNewEdge), -1 );
+		for( int i=0; i<2; i++ )
+			m_anOldEdge[i] = -1;
+
+		for( int i=0; i<2; i++ )
+		{
+			for( int j=0; j<2; j++ )
+				m_aanNewEdge[i][j] = -1;
+		}
 	}
 };
 
@@ -64,4 +66,4 @@ public:
 }  /*  MeshModel  */
 
 
-#endif  /*  __SHADOWVOLUMEMESHGENERATOR_H__  */
+#endif  /*  __ShadowVolumeMeshGenerator_HPP__  */
