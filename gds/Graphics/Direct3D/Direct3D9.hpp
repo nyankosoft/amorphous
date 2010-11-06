@@ -109,6 +109,8 @@ public:
 
 	Result::Name DisableClipPlane( uint index );
 
+	Result::Name SetScissorRect( const SRect& rect );
+
 	enum mode
 	{
 		FULLSCREEN,

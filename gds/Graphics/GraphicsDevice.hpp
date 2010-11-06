@@ -7,6 +7,8 @@
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
 #include "3DMath/Plane.hpp"
+#include "Rect.hpp"
+using namespace Graphics;
 
 #include "Support/Singleton.hpp"
 using namespace NS_KGL;
@@ -140,6 +142,7 @@ public:
 		FOG,
 		FACE_CULLING,
 		WRITING_INTO_DEPTH_BUFFER,
+		SCISSOR_TEST,
 		NUM_RENDER_STATES
 	};
 };
@@ -241,6 +244,8 @@ public:
 	virtual Result::Name EnableClipPlane( uint index ) = 0;
 
 	virtual Result::Name DisableClipPlane( uint index ) = 0;
+
+	virtual Result::Name SetScissorRect( const SRect& rect ) = 0;
 
 	State GetState() const { return m_State; }
 };

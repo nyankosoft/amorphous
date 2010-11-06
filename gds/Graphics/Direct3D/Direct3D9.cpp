@@ -350,11 +350,12 @@ static inline bool ToD3DRenderStateType( RenderStateType::Name type, D3DRENDERST
 {
 	switch(type)
 	{
-	case RenderStateType::ALPHA_BLEND:               dest = D3DRS_ALPHABLENDENABLE; return true;
-	case RenderStateType::ALPHA_TEST:                dest = D3DRS_ALPHATESTENABLE;  return true;
-	case RenderStateType::LIGHTING:                  dest = D3DRS_LIGHTING;		    return true;
-	case RenderStateType::FOG:                       dest = D3DRS_FOGENABLE;	    return true;
-	case RenderStateType::WRITING_INTO_DEPTH_BUFFER: dest = D3DRS_ZWRITEENABLE;	    return true;
+	case RenderStateType::ALPHA_BLEND:               dest = D3DRS_ALPHABLENDENABLE;  return true;
+	case RenderStateType::ALPHA_TEST:                dest = D3DRS_ALPHATESTENABLE;   return true;
+	case RenderStateType::LIGHTING:                  dest = D3DRS_LIGHTING;		     return true;
+	case RenderStateType::FOG:                       dest = D3DRS_FOGENABLE;	     return true;
+	case RenderStateType::WRITING_INTO_DEPTH_BUFFER: dest = D3DRS_ZWRITEENABLE;	     return true;
+	case RenderStateType::SCISSOR_TEST:              dest = D3DRS_SCISSORTESTENABLE; return true;
 	default:
 		return false;
 	}
@@ -571,6 +572,21 @@ Result::Name CDirect3D9::DisableClipPlane( uint index )
 
 	DWORD flags = current_flags & ( ~(1 << index) );
 	hr = m_pD3DDevice->SetRenderState( D3DRS_CLIPPING, flags );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::SetScissorRect( const SRect& rect )
+{
+	HRESULT hr = S_OK;
+	RECT dest;
+	dest.left   = rect.left;
+	dest.top    = rect.top;
+	dest.right  = rect.right;
+	dest.bottom = rect.bottom;
+
+	hr = m_pD3DDevice->SetScissorRect( &dest );
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }

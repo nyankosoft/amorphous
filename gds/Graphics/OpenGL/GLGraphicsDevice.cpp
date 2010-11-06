@@ -294,3 +294,10 @@ Result::Name CGLGraphicsDevice::DisableClipPlane( uint index )
 	glDisable( GL_CLIP_PLANE0 + index );
 	return Result::SUCCESS;
 }
+
+
+Result::Name CGLGraphicsDevice::SetScissorRect( const SRect& rect )
+{
+	glScissor( rect.left, rect.top, rect.GetWidth(), rect.GetHeight() );
+	return Result::SUCCESS;
+}

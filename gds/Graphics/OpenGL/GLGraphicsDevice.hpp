@@ -94,6 +94,8 @@ public:
 	Result::Name EnableClipPlane( uint index );
 
 	Result::Name DisableClipPlane( uint index );
+
+	Result::Name SetScissorRect( const SRect& rect );
 };
 
 
