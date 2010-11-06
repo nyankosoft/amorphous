@@ -15,16 +15,6 @@ CPseudoNoiseEffect::CPseudoNoiseEffect()
 m_NoiseTextureSize(512),
 m_NoisePixelSize(1)
 {
-	int i;
-	for(i=0; i<4; i++)
-	{
-		m_avTextureRect[i].color = 0xFFFFFFFF;
-		m_avTextureRect[i].rhw   = 1.0f;
-	}
-	m_avTextureRect[0].tex[0] = TEXCOORD2( 0.0f, 0.0f );
-	m_avTextureRect[1].tex[0] = TEXCOORD2( 1.0f, 0.0f );
-	m_avTextureRect[2].tex[0] = TEXCOORD2( 1.0f, 1.0f );
-	m_avTextureRect[3].tex[0] = TEXCOORD2( 0.0f, 1.0f );
 }
 
 
@@ -64,25 +54,6 @@ void CPseudoNoiseEffect::Init( float strength, uint noise_pixel_size )
 }
 
 
-bool CPseudoNoiseEffect::LoadNoiseTextures()
-{
-	ReleaseGraphicsResources();
-
-	// load textures used for noise
-	char acFilename[256];
-	int i;
-	for(i=0; i<NUM_NVNOISE_TEXTURES; i++)
-	{
-		sprintf( acFilename, "./Texture/pntex%d.dds", i );
-
-		bool res = m_aNoiseTexture[i].Load( acFilename );
-		if( !res )
-			return false;
-	}
-
-	return true;
-}
-
 /*
 void CPseudoNoiseEffect::LoadExtraTexture( const char *pcTextureFilename, float fScale )
 {
@@ -101,11 +72,6 @@ void CPseudoNoiseEffect::UpdateScreenSize()
 
 	float width  = (float)m_iScreenWidth;
 	float height = (float)m_iScreenHeight;
-
-	m_avTextureRect[0].vPosition = D3DXVECTOR3( 0,     0,      0);
-	m_avTextureRect[1].vPosition = D3DXVECTOR3( width, 0,      0);
-	m_avTextureRect[2].vPosition = D3DXVECTOR3( width, height, 0);
-	m_avTextureRect[3].vPosition = D3DXVECTOR3( 0,     height, 0);
 
 	m_FullscreenRect.SetPositionLTRB( 0, 0, m_iScreenWidth - 1, m_iScreenHeight - 1 );
 }
@@ -163,47 +129,6 @@ void CPseudoNoiseEffect::RenderNoiseEffect()
 
 void CPseudoNoiseEffect::SetNoiseTexture()
 {
-/*	TLVERTEX2 *pavRect = m_avTextureRect;
-	int i;
-	for(i=0; i<4; i++)
-		pavRect[i].tex[0].u = pavRect[i].tex[0].v = 0.0f;
-
-//	int iRand = rand() * 4 / RAND_MAX;
-	int iRand = RangedRand( 0, 3 );
-	float t = (float)m_iScreenWidth / 512.0f;	// scalse the noise texture according to the screen size
-	switch(iRand)
-	{
-	case 0:
-		pavRect[1].tex[0].u = t; pavRect[2].tex[0].u = t; pavRect[2].tex[0].v = t; pavRect[3].tex[0].v = t;
-		break;
-	case 1:
-		pavRect[0].tex[0].u = t; pavRect[3].tex[0].u = t; pavRect[3].tex[0].v = t; pavRect[2].tex[0].v = t;
-		break;
-	case 2:
-		pavRect[2].tex[0].u = t; pavRect[1].tex[0].u = t; pavRect[1].tex[0].v = t; pavRect[0].tex[0].v = t;
-		break;
-	case 3:
-	default:
-		pavRect[3].tex[0].u = t; pavRect[0].tex[0].u = t; pavRect[0].tex[0].v = t; pavRect[1].tex[0].v = t;
-		break;
-	}
-
-	// shift the texture coord to make it  appear more random
-	float rand_tu = t * RangedRand( 0.0f, 1.0f );
-	float rand_tv = t * RangedRand( 0.0f, 1.0f );
-	for( i=0; i<4; i++ )
-	{
-		pavRect[i].tex[0].u += rand_tu;
-		pavRect[i].tex[0].v += rand_tv;
-	}
-
-//	iRand = rand() * 4 / RAND_MAX;
-	iRand = RangedRand( 0, 3 );
-	if( 4 <= iRand )
-		iRand = 3;
-
-	DIRECT3D9.GetDevice()->SetTexture( 0, m_aNoiseTexture[iRand].GetTexture() );
-*/
 	//>>> single texture & rect class version
 	float t = (float)m_iScreenWidth / (float)m_NoiseTextureSize;	// scalse the noise texture according to the screen size
 	float rand_tu = t * RangedRand( 0.0f, 1.0f );

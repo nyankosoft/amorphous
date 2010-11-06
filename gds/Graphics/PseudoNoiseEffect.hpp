@@ -3,12 +3,8 @@
 
 
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/FVF_TLVertex.h"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureHandle.hpp"
-
-
-#define NUM_NVNOISE_TEXTURES 4
 
 
 // Implementaions of noise effects
@@ -18,10 +14,6 @@
 //   - Saves texture memory
 class CPseudoNoiseEffect : public CGraphicsComponent
 {
-	TLVERTEX2 m_avTextureRect[4];
-
-	CTextureHandle m_aNoiseTexture[NUM_NVNOISE_TEXTURES];
-
 	C2DRect m_FullscreenRect;
 
 	CTextureHandle m_NoiseTexture;
