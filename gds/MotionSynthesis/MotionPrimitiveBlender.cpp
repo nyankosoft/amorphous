@@ -38,11 +38,14 @@ inline Matrix34 horizontal( const Matrix34& src )
 }
 
 
-inline static bool IsInterpolationMotion( shared_ptr<CMotionPrimitive> pMotion )
+/*
+inline bool CMotionPrimitiveBlender::IsInterpolationMotion( shared_ptr<CMotionPrimitive> pMotion )
 {
 	return (pMotion->GetName() == "__InterpolationMotion__");
 }
+*/
 
+const char *CMotionPrimitiveBlender::ms_pInterpolationMotionName = "__InterpolationMotion__";
 
 CMotionPrimitiveBlender::CMotionPrimitiveBlender()
 :
@@ -122,7 +125,10 @@ void CMotionPrimitiveBlender::PushInterpolationMotionPrimitive( shared_ptr<CMoti
 																float interpolation_time )
 {
 	if( m_vecpInterpolationMotion.empty() )
+	{
+		LOG_PRINT_WARNING( " Ran out of interpolation motion primitives." );
 		return;
+	}
 
 	shared_ptr<CMotionPrimitive> pInterpolationMotion = m_vecpInterpolationMotion.back();
 	m_vecpInterpolationMotion.pop_back();
@@ -155,21 +161,27 @@ void CMotionPrimitiveBlender::PushInterpolationMotionPrimitive( shared_ptr<CMoti
 		LOG_PRINT_WARNING( "The new motion does not have start blend node. " );
 	}
 
+	LOG_PRINT( fmt_string(" addeding an interpolation motion (%f s)", interpolation_time) );
+
+//	pInterpolationMotion->SetSkeleton( pNewMotion->GetSkeleton() );
+
 	m_MotionPrimitiveQueue.push_back( pInterpolationMotion );
 }
 
 
-void CMotionPrimitiveBlender::AddMotionPrimitive( shared_ptr<CMotionPrimitive> pNewMotion,
-												  float interpolation_duration,
+void CMotionPrimitiveBlender::AddMotionPrimitive( float interpolation_motion_length,
+												  shared_ptr<CMotionPrimitive> pNewMotion,
 												  int iFlag )
 {
 	if( !pNewMotion )
 		return;
 
+	LOG_PRINT( fmt_string( "interpolation time: %f / motion: %s", interpolation_motion_length, pNewMotion ? pNewMotion->GetName().c_str() : "-" ) );
+
 	if( 0 < m_MotionPrimitiveQueue.size() )
 	{
 		if( 0 < m_vecpInterpolationMotion.size()
-		 && 0.001f < interpolation_duration )
+		 && 0.001f < interpolation_motion_length )
 //		if( false )
 		{
 			// Push an interpolation motion before the new motion.
@@ -177,7 +189,7 @@ void CMotionPrimitiveBlender::AddMotionPrimitive( shared_ptr<CMotionPrimitive> p
 				= m_vecpInterpolationMotion.back();
 
 			shared_ptr<CMotionPrimitive> pCurrentMotion = m_MotionPrimitiveQueue.front();
-			PushInterpolationMotionPrimitive( pCurrentMotion, pNewMotion, interpolation_duration );
+			PushInterpolationMotionPrimitive( pCurrentMotion, pNewMotion, interpolation_motion_length );
 		}
 
 		m_MotionPrimitiveQueue.push_back( pNewMotion );
@@ -204,7 +216,12 @@ void CMotionPrimitiveBlender::StartNewMotionPrimitive( float interpolation_motio
 													   shared_ptr<CMotionPrimitive> pNewMotion )
 {
 	if( !pNewMotion )
+	{
+		LOG_PRINT( "pNewMotion == NULL" );
 		return;
+	}
+
+	LOG_PRINT( fmt_string( "interpolation time: %f / motion: %s", interpolation_motion_length, pNewMotion ? pNewMotion->GetName().c_str() : "-" ) );
 
 	if( 0 < m_MotionPrimitiveQueue.size() )
 	{
@@ -398,44 +415,7 @@ void CMotionPrimitiveBlender::Update( float dt )
 
 		// move on to the next motion primitive in the queue
 		m_fCurrentTime -= current_motion_total_time;
-/*
-		// move the current world pose of the root node
-		pCurrentMotion->GetInterpolatedKeyframe( prev_keyframe, prev_time );
 
-		Matrix34 root_pose_at_prev_time = prev_keyframe.GetRootPose();
-
-		// root pose at the last keyframe of the current motion
-		Matrix34 root_pose_at_end_keyframe
-			= pCurrentMotion->GetLastKeyframe().GetRootPose();
-
-		Matrix34 prev_to_end_keyframe = root_pose_at_end_keyframe * root_pose_at_prev_time.GetInverseROT();
-
-//		m_CurrentRootPose = prev_to_end_keyframe * m_CurrentRootPose;
-
-		m_CurrentRootPose.matOrient.Orthonormalize();
-
-		// update the horizontal orientation
-
-//		current_horizontal_pose.matOrient
-//			= current_horizontal_pose.matOrient
-//			* pCurrentMotion->GetLastOrientation()
-//			* Matrix33Transpose( pCurrentMotion->GetOrientation( prev_time ) );
-
-		// translation of the pose
-		current_horizontal_pose.vPosition += current_horizontal_pose.matOrient * prev_to_end_keyframe.vPosition;
-		current_horizontal_pose.vPosition.y = root_pose_at_end_keyframe.vPosition.y;
-
-		// update the pose of the root node
-
-		m_CurrentRootPose.matOrient
-			= current_horizontal_pose.matOrient
-			* root_pose_at_end_keyframe.matOrient;
-
-		// Use the same positions for the root node
-		m_CurrentRootPose.vPosition	= current_horizontal_pose.vPosition;
-
-//		m_CurrentRootPose = r * m_CurrentRootPose;
-*/
 		prev_time = 0;
 
 		// If the current motion is a looping motion, push the same motion
@@ -443,13 +423,16 @@ void CMotionPrimitiveBlender::Update( float dt )
 		if( pCurrentMotion->IsLoopedMotion() )
 		{
 			// assumes no other motion is currently in the queue
-			AddMotionPrimitive( pCurrentMotion, 0.0f, 0 );
+			AddMotionPrimitive( 0.0f, pCurrentMotion, 0 );
 		}
 
 		// Return the current motion to the stock of interpolation motions
 		// if it is an interpolation motion.
 		if( IsInterpolationMotion(pCurrentMotion) )
 			m_vecpInterpolationMotion.push_back( pCurrentMotion );
+
+		// Pop the current motion here because the motions in the queue may be cleared in the callback function calls below
+//		m_MotionPrimitiveQueue.pop_front();
 
 		if( m_pCallback )
 		{
@@ -464,11 +447,14 @@ void CMotionPrimitiveBlender::Update( float dt )
 				m_pCallback->OnMotionPrimitiveFinished( pCurrentMotion ); // pCurrentMotion is the only primitive left in the queue
 		}
 
+		// The motions in the queue may have been changed in the callback function calls above.
 		m_MotionPrimitiveQueue.pop_front();
 		if( 0 < m_MotionPrimitiveQueue.size() )
 		{
 			shared_ptr<CMotionPrimitive> pPrevMotion = pCurrentMotion;
 			pCurrentMotion = m_MotionPrimitiveQueue.front();
+
+			LOG_PRINT( fmt_string(" new motion: %s", pCurrentMotion->GetName().c_str()) );
 
 			current_motion_total_time = pCurrentMotion->GetTotalTime();
 		}
@@ -604,7 +590,7 @@ void CMotionPrimitiveBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
 
 			m_fCurrentTime = fmodf( m_fCurrentTime, pCurrentMotion->GetTotalTime() );
 
-			AddMotionPrimitive( pCurrentMotion, 0.1f, 0 );
+			AddMotionPrimitive( 0.1f, pCurrentMotion, 0 );
 	
 			m_MotionPrimitiveQueue.pop_front();
 

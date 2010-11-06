@@ -80,6 +80,8 @@ class CMotionPrimitiveBlender : public CMotionBlender
 
 	boost::shared_ptr<CMotionPrimitivePlayCallback> m_pCallback;
 
+	static const char *ms_pInterpolationMotionName;
+
 private:
 
 	/// calculate the pose of the character from the time updated by 'dt'
@@ -121,7 +123,7 @@ public:
 	///  - if a motion primitive is currently being played, it will be overridden
 //	void StartMotion( boost::shared_ptr<CMotionPrimitive> ptr, float delay );
 
-	void AddMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pMotionPrimitive, float interpolation_duration, int iFlag );
+	void AddMotionPrimitive( float interpolation_motion_length, boost::shared_ptr<CMotionPrimitive> pMotionPrimitive, int iFlag );
 
 	void StartNewMotionPrimitive( float interpolation_motion_length,
 		                          boost::shared_ptr<CMotionPrimitive> pNewMotion );
@@ -149,6 +151,8 @@ public:
 	void SetCurrentHorizontalPose( const Matrix34& pose ) { m_CurrentHorizontalPose = pose; }
 
 	const Matrix34& GetCurrentHorizontalPose() const { return m_CurrentHorizontalPose; }
+
+	static bool IsInterpolationMotion( boost::shared_ptr<CMotionPrimitive> pMotion ) { return pMotion && (pMotion->GetName() == "__InterpolationMotion__"); }
 
 	friend CMotionPrimitiveBlenderStatistics;
 

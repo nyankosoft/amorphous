@@ -164,8 +164,16 @@ public:
 	///        before starting this motion
 	void StartMotion( float interpolation_time )
 	{
-		m_pBlender->StartNewMotionPrimitive( m_pMotionPrimitive );
-//		m_pBlender->AddNewMotion
+		LOG_PRINT( fmt_string( "interpolation time: %f / motion: %s", interpolation_time, m_pMotionPrimitive ? m_pMotionPrimitive->GetName().c_str() : "-" ) );
+
+		m_pBlender->StartNewMotionPrimitive( interpolation_time, m_pMotionPrimitive );
+	}
+
+	void AddMotion( float interpolation_time )
+	{
+		LOG_PRINT( fmt_string( "interpolation time: %f / motion: %s", interpolation_time, m_pMotionPrimitive ? m_pMotionPrimitive->GetName().c_str() : "-" ) );
+
+		m_pBlender->AddMotionPrimitive( interpolation_time, m_pMotionPrimitive, 0 );
 	}
 
 	void Update( float dt )
@@ -341,25 +349,7 @@ public:
 	}
 
 	// Start playing the motion managed by the motion node indexed by m_TransIndex
-	void StartNextMotion()
-	{
-		if( !m_pvecTransToProcess )
-			return;
-
-//		m_TransIndex++;
-
-		std::vector<MotionNodeTrans>& tansitions_to_process = *(m_pvecTransToProcess);
-		if( m_TransIndex < (int)tansitions_to_process.size() )
-		{
-			m_pCurrent->ExitState();
-
-			MotionNodeTrans& transition = tansitions_to_process[m_TransIndex];
-			m_pCurrent = transition.pNode;
-
-			m_pCurrent->EnterState();
-			m_pCurrent->StartMotion( transition.interpolation_time );
-		}
-	}
+	void StartNextMotion();
 
 //	void AddNodeToProcess( boost::shared_ptr<CMotionPrimitiveNode> pNode ) { m_vecpNodesToProcess.push_back( pNode ); }
 

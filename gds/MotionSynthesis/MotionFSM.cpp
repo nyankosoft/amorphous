@@ -234,59 +234,29 @@ public:
 	/// Called when a motion primitive is finished playing and a new primitive is being started playing
 	void OnMotionPrimitiveChanged( boost::shared_ptr<CMotionPrimitive>& pPrev, boost::shared_ptr<CMotionPrimitive>& pNew )
 	{
-//		int num_nodes_to_process = (int)m_pFSM->m_vecpNodesToProcess.size();
+		if( pPrev->IsLoopedMotion() )
+			return;
 
-		// Place all the necessary motion primitives for the current transition in the queue
-		// in advance.
-		//  - Difficult to randomly select motions of a node for variation
-/*		int prev_id = pPrev->GetUserID();
-		if( 0 <= prev_id )
-		{
-			m_pFSM->m_vecpNode[prev_id]->ExitState();
-		}
+		if( !m_pFSM )
+			return;
 
-		int new_id = pNew->GetUserID();
-		if( 0 <= new_id )
-		{
-			m_pFSM->m_vecpNode[new_id]->EnterState();
-		}
+		// Do not proceed to the next motion primitive node until the motion primitive of the actual motion is finished.
+		if( CMotionPrimitiveBlender::IsInterpolationMotion( pPrev ) )
+			return;
 
-		m_pFSM->m_pCurrent = m_vecpNode[new_id];*/
+		m_pFSM->StartNextMotion();
 	}
 
 	void OnMotionPrimitiveFinished( boost::shared_ptr<CMotionPrimitive>& pPrev )
 	{
-/*		int num_nodes_to_process = (int)m_pFSM->m_vecpNodesToProcess.size();
-
-		if( num_nodes_to_process == 0 )
+		if( !m_pFSM )
 			return;
 
-		// copy the first element
-		shared_ptr<CMotionPrimitiveNode> pMotionNode
-			= m_pFSM->m_vecpNodesToProcess.front();
-
-		// pop front
-		m_pFSM->m_vecpNodesToProcess.erase( m_pFSM->m_vecpNodesToProcess.begin() );
-
-		MotionNodeTrans trans;
-		pMotionNode->StartMotion( trans.interpolation_time );*/
-
-/*		if( m_pFSM->m_pCurrent
-		 && m_pFSM->m_pCurrent->IsPlayingLoopedMotion() )
-		{
-		}*/
-
-		if( !m_pFSM->m_pvecTransToProcess )
+		// Do not proceed to the next motion primitive node until the motion primitive of the actual motion is finished.
+		if( CMotionPrimitiveBlender::IsInterpolationMotion( pPrev ) )
 			return;
 
-		m_pFSM->m_TransIndex++;
-
-		vector<MotionNodeTrans>& tansitions_to_process = *(m_pFSM->m_pvecTransToProcess);
-		if( m_pFSM->m_TransIndex < (int)tansitions_to_process.size() )
-		{
-			MotionNodeTrans& transition = tansitions_to_process[m_pFSM->m_TransIndex];
-			transition.pNode->StartMotion( transition.interpolation_time );
-		}
+		m_pFSM->StartNextMotion();
 	}
 };
 
@@ -385,6 +355,9 @@ void CMotionPrimitiveNode::EnterState( /*vector<MotionNodeTrans>& reqs*/ )
 {
 	if( m_pAlgorithm )
 		m_pAlgorithm->EnterState();
+
+	if( this->m_MotionName == "land" )
+		int break_here = 1;
 }
 
 
@@ -392,6 +365,9 @@ void CMotionPrimitiveNode::ExitState()
 {
 	if( m_pAlgorithm )
 		m_pAlgorithm->ExitState();
+
+	if( this->m_MotionName == "land" )
+		int break_here = 1;
 }
 
 
@@ -598,6 +574,38 @@ void CMotionFSM::SetTransitions( shared_ptr< vector<MotionNodeTrans> > pvecTrans
 {
 	m_pvecTransToProcess = pvecTrans;
 	m_TransIndex = 0;
+}
+
+
+void CMotionFSM::StartNextMotion()
+{
+	if( !m_pvecTransToProcess )
+		return;
+
+	std::vector<MotionNodeTrans>& tansitions_to_process = *(m_pvecTransToProcess);
+	if( m_TransIndex < (int)tansitions_to_process.size() )
+	{
+		LOG_PRINT( " Exiting the state: " + m_pCurrent->GetName() );
+		m_pCurrent->ExitState();
+
+		MotionNodeTrans& transition = tansitions_to_process[m_TransIndex];
+		m_pCurrent = transition.pNode;
+
+		LOG_PRINT( " Entering the state: " + m_pCurrent->GetName() );
+		m_pCurrent->EnterState();
+
+		if( m_TransIndex == 0 )
+		{
+			// The first motion: clear the motions in the queue before starting the new motion.
+			m_pCurrent->StartMotion( transition.interpolation_time );
+		}
+		else
+			// Not the first motion: do not clear the previous motion caused it is needed
+			// create an interpolation motion.
+			m_pCurrent->AddMotion( transition.interpolation_time );
+
+		m_TransIndex++;
+	}
 }
 
 
