@@ -4,11 +4,13 @@
 #include "gds/Graphics/GraphicsDevice.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 #include "gds/Physics.hpp"
 #include "gds/XML.hpp"
 #include "gds/MotionSynthesis/MotionFSM.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
 #include "gds/Support/Profile.hpp"
+#include "gds/Support/MTRand.hpp"
 #include "gds/Utilities/Physics/PhysicsMeshUtility.hpp"
 //#include "gds/Support/lfs.hpp"
 
@@ -152,7 +154,25 @@ void CClothObject::Serialize( IArchive& ar, const unsigned int version )
 
 CClothCollisionObject::~CClothCollisionObject()
 {
-	SafeDeleteVector( m_pShapeDescs );
+	// This should be done in ReleasePhysics()
+//	SafeDeleteVector( m_pShapeDescs );
+}
+
+
+void CClothCollisionObject::ReleasePhysics( physics::CScene& scene )
+{
+	if( m_pActor )
+		scene.ReleaseActor( m_pActor );
+
+//	SafeDeleteVector( m_pShapeDescs );
+	m_pShapeDescs.resize( 0 );
+}
+
+
+void CClothCollisionObject::Reset()
+{
+	m_MeshBoneIndex = -2;
+	m_InvBoneTransform = Matrix34Identity();
 }
 
 
@@ -162,16 +182,16 @@ void CClothCollisionObject::InitTransformNode( const msynth::CTransformCacheTree
 }
 
 
-void CClothCollisionObject::InitPhysics( CScene *pScene )
+void CClothCollisionObject::InitPhysics( physics::CScene& scene )
 {
 	CActorDesc actor_desc;
 	const size_t num_shapes = m_pShapeDescs.size();
 	actor_desc.vecpShapeDesc.resize( num_shapes );
 	for( size_t j=0; j<num_shapes; j++ )
-		actor_desc.vecpShapeDesc[j] = m_pShapeDescs[j];
+		actor_desc.vecpShapeDesc[j] = m_pShapeDescs[j].get();
 
 	actor_desc.WorldPose = Matrix34Identity();
-	m_pActor = pScene->CreateActor( actor_desc );
+	m_pActor = scene.CreateActor( actor_desc );
 }
 
 
@@ -179,8 +199,13 @@ void CClothCollisionObject::Serialize( IArchive& ar, const unsigned int version 
 {
 	ar & m_Name;
 
+	if( ar.GetMode() == IArchive::MODE_INPUT )
+//		SafeDeleteVector( m_pShapeDescs );
+		m_pShapeDescs.resize( 0 );
+
 	CShapeDescFactory factory;
 	ar.Polymorphic( m_pShapeDescs, factory );
+
 	ar & m_BoneName;
 }
 
@@ -219,7 +244,9 @@ void CClothCollisionObject::LoadFromXMLNode( CXMLNodeReader& node )
 		if( pShape )
 		{
 			pShape->LocalPose = GetPose( node, "local_pose" );
-			m_pShapeDescs.push_back( pShape );
+//			m_pShapeDescs.push_back( pShape );
+			m_pShapeDescs.push_back( shared_ptr<CShapeDesc>() );
+			m_pShapeDescs.back().reset( pShape );
 		}
 	}
 }
@@ -234,6 +261,31 @@ void CClothCollisionObject::UpdateWorldTransform()
 	m_pTransformNode->GetWorldTransform( world_transform );
 
 	m_pActor->SetWorldPose( world_transform );
+}
+
+
+void CClothCollisionObject::UpdateWorldTransform( CSkeletalMesh& skeletal_mesh, const Matrix34& world_pose )
+{
+	if( m_MeshBoneIndex == -1 || !m_pActor )
+		return;
+
+	if( m_MeshBoneIndex == -2 )
+	{
+		m_MeshBoneIndex = skeletal_mesh.GetBoneMatrixIndexByName( m_BoneName );
+		const CMeshBone& bone = skeletal_mesh.GetBone( m_BoneName );
+		if( bone != CMeshBone::NullBone() )
+		{
+			m_InvBoneTransform = bone.GetBoneTransform().GetInverseROT();
+		}
+	}
+
+	if( 0 <= m_MeshBoneIndex && m_MeshBoneIndex < skeletal_mesh.GetNumBones() )
+	{
+		Matrix34 world_transform;
+		world_transform = skeletal_mesh.GetBlendTransforms()[m_MeshBoneIndex].ToMatrix34();
+
+		m_pActor->SetWorldPose( world_pose * world_transform * m_InvBoneTransform );
+	}
 }
 
 
@@ -299,7 +351,7 @@ void CClothSystem::InitPhysics( CScene *pScene )
 	for( size_t i=0; i<num_attach_objects; i++ )
 	{
 		CClothCollisionObject &obj = m_ClothAttachObjects[i];
-		obj.InitPhysics( pScene );
+		obj.InitPhysics( *pScene );
 		if( obj.m_pActor )
 			obj.m_pActor->SetCollisionGroup( sg_AttachbjGroup );
 	}
@@ -308,7 +360,7 @@ void CClothSystem::InitPhysics( CScene *pScene )
 	for( size_t i=0; i<num_coll_objects; i++ )
 	{
 		CClothCollisionObject &obj = m_ClothCollisionObjects[i];
-		obj.InitPhysics( pScene );
+		obj.InitPhysics( *pScene );
 		if( obj.m_pActor )
 			obj.m_pActor->SetCollisionGroup( sg_CollObjGroup );
 	}
@@ -394,6 +446,21 @@ void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe
 		CClothCollisionObject& coll_obj = m_ClothCollisionObjects[i];
 
 		coll_obj.UpdateWorldTransform();
+//		Matrix34 world_pose( Matrix34Identity() );
+//		if( coll_obj.m_pActor )
+//			coll_obj.m_pActor->SetWorldPose( world_pose );
+	}
+}
+
+/// \param skeletal_mesh [in] a skeletal mesh which has local transforms set at each bone
+void CClothSystem::UpdateCollisionObjectPoses( CSkeletalMesh& skeletal_mesh, const Matrix34& world_pose )
+{
+	const size_t num_coll_objects = m_ClothCollisionObjects.size();
+	for( size_t i=0; i<num_coll_objects; i++ )
+	{
+		CClothCollisionObject& coll_obj = m_ClothCollisionObjects[i];
+
+		coll_obj.UpdateWorldTransform( skeletal_mesh, world_pose );
 //		Matrix34 world_pose( Matrix34Identity() );
 //		if( coll_obj.m_pActor )
 //			coll_obj.m_pActor->SetWorldPose( world_pose );
@@ -562,14 +629,15 @@ void CClothSystem::RenderObjectsForDebugging()
 	vector<CClothCollisionObject> *pObjs[] = { &m_ClothAttachObjects, &m_ClothCollisionObjects };
 	SFloatRGBAColor colors[] = { SFloatRGBAColor::Blue(), SFloatRGBAColor::Red() };
 
-	static CMeshObjectHandle m_SphereMesh;
+/*	static CMeshObjectHandle m_SphereMesh;
 	static CMeshObjectHandle m_CapsuleMesh;
 	if( !m_SphereMesh.IsLoaded() )
 	{
 		CMeshResourceDesc mesh_desc;
 		mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(CSphereDesc()) );
+		mesh_desc.pMeshGenerator->SetDiffuseColor( SFloatRGBAColor( RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), 1.0f ) );
 		m_SphereMesh.Load( mesh_desc );
-	}
+	}*/
 
 	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
@@ -583,7 +651,7 @@ void CClothSystem::RenderObjectsForDebugging()
 			if( !obj.m_pActor )
 				continue;
 
-			for( int k=0; k<(int)obj.m_ShapeMeshes.size(); k++ )
+/*			for( int k=0; k<(int)obj.m_ShapeMeshes.size(); k++ )
 			{
 				shared_ptr<CBasicMesh> pMesh = obj.m_ShapeMeshes[k].GetMesh();
 				if( !pMesh )
@@ -593,11 +661,26 @@ void CClothSystem::RenderObjectsForDebugging()
 				Matrix34 world_transform = obj.m_pTransformNode ? (obj.m_pTransformNode->GetWorldTransform()) : Matrix34Identity();
 				shader_mgr.SetWorldTransform( world_transform );
 				pMesh->Render( shader_mgr );
-			}
+			}*/
 
 			for( int k=0; k<obj.m_pActor->GetNumShapes(); k++ )
 			{
 				CShape *pShape = obj.m_pActor->GetShape(k);
+				if( !pShape )
+					continue;
+
+				if( (int)obj.m_ShapeMeshes.size() <= k )
+					continue;
+
+				shared_ptr<CBasicMesh> pMesh = obj.m_ShapeMeshes[k].GetMesh();
+				if( !pMesh )
+					continue;
+
+//				Matrix34 world_transform = obj.m_pTransformNode ? (obj.m_pTransformNode->GetWorldTransform()) : Matrix34Identity();
+				Matrix34 world_transform = obj.m_pActor->GetWorldPose() * pShape->GetLocalPose();
+				shader_mgr.SetWorldTransform( world_transform );
+				pMesh->Render( shader_mgr );
+
 /*				switch( pShape->GetType() )
 				{
 				case PhysShape::Sphere:
@@ -627,27 +710,6 @@ void CClothSystem::RenderObjectsForDebugging()
 		}
 
 
-	}
-
-	const size_t num_attach_objects = m_ClothAttachObjects.size();
-	for( size_t i=0; i<num_attach_objects; i++ )
-	{
-		CClothCollisionObject& attach_obj = m_ClothAttachObjects[i];
-
-//		attach_obj.UpdateWorldTransform();
-		Matrix34 world_pose( Matrix34Identity() );
-		attach_obj.m_pActor->SetWorldPose( world_pose );
-	}
-
-	// Update the poses of the collison objects
-	const size_t num_coll_objects = m_ClothCollisionObjects.size();
-	for( size_t i=0; i<num_coll_objects; i++ )
-	{
-		CClothCollisionObject& coll_obj = m_ClothCollisionObjects[i];
-
-//		coll_obj.UpdateWorldTransform();
-		Matrix34 world_pose( Matrix34Identity() );
-		coll_obj.m_pActor->SetWorldPose( world_pose );
 	}
 }
 
@@ -783,6 +845,7 @@ Result::Name CClothSystem::AddCollisionSphere( const std::string& target_bone_na
 
 		m_ClothCollisionObjects.push_back( CClothCollisionObject() );
 
+		m_ClothCollisionObjects.back().m_BoneName = target_bone_name;
 		m_ClothCollisionObjects.back().m_pTransformNode = m_TransformCacheTree.GetNode( target_bone_name );
 		set<string> node_names;
 		node_names.insert( target_bone_name );
@@ -816,8 +879,14 @@ Result::Name CClothSystem::AddCollisionSphere( const std::string& target_bone_na
 
 	if( pShape )
 	{
+//		coll_obj.m_pShapeDescs.push_back( new CSphereShapeDesc(sphere_desc) );
+		coll_obj.m_pShapeDescs.push_back( shared_ptr<CShapeDesc>() );
+		coll_obj.m_pShapeDescs.back().reset( new CSphereShapeDesc(sphere_desc) );
+
+		// for debugging
 //		m_ClothCollisionObjects[index].m_pShapes.push_back( pShape );
-		coll_obj.m_ShapeMeshes.push_back( CreateSphereMesh( sphere.radius, SFloatRGBAColor(0.7f,1.0f,0.7f,0.5f) ) );
+		SFloatRGBAColor diffuse_color = SFloatRGBAColor( RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), 0.7f );
+		coll_obj.m_ShapeMeshes.push_back( CreateSphereMesh( sphere.radius, diffuse_color ) );
 		return Result::SUCCESS;
 	}
 	else
