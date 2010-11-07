@@ -693,7 +693,7 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 				// fall
 				m_FeetOnGround = false;
 				entity.SetVelocity( Vector3(0,0,0) );
-				m_pMotionGraphManager->GetMotionFSM("lower_limbs")->RequestTransition( "fall" );
+				m_pMotionGraphManager->GetMotionFSM("lower_limbs")->RequestTransition( "falling" );
 			}
 		}
 	}

@@ -18,8 +18,9 @@
 				<node name="sidestep-left"></node>
 				<node name="crouch-sidestep-right"></node>
 				<node name="crouch-sidestep-left"></node>
-				<node name="fall" motion_primitive_name="standing"></node>
-				<node name="jump" motion_primitive_name="run"></node>
+				<node name="falling"></node>
+				<node name="land"></node>
+				<node name="jump"></node>
 			</nodes>
 			<transitions>
 				<!-- from fwd to standing -->
@@ -63,13 +64,21 @@
 				<transition from="prone" to="crouch">
 					<trans time="0.2" goal="crouch"/>
 				</transition>
-				<transition from="walk" to="fall">
-					<trans time="0.2" goal="fall"/>
+				<transition from="walk" to="falling">
+					<trans time="0.2" goal="falling"/>
 				</transition>
-				<transition from="run" to="fall">
-					<trans time="0.2" goal="fall"/>
+				<transition from="run" to="falling">
+					<trans time="0.2" goal="falling"/>
 				</transition>
-				<transition from="fall" to="standing">
+				<transition from="falling" to="standing">
+					<trans time="0.005" goal="land"/>
+					<trans time="2.0" goal="standing"/>
+				</transition>
+				<transition from="standing" to="jump-up">
+					<trans time="0.2" goal="jump-up"/>
+				</transition>
+				<transition from="jump-up" to="standing">
+					<trans time="0.2" goal="land"/>
 					<trans time="0.2" goal="standing"/>
 				</transition>
 			</transitions>
