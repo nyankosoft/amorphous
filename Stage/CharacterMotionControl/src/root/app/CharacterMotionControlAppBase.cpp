@@ -80,6 +80,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	m_pKeyBind->Assign( GIC_RIGHT,  ACTION_MOV_TURN_R );
 	m_pKeyBind->Assign( GIC_LEFT,   ACTION_MOV_TURN_L );
 	m_pKeyBind->Assign( GIC_LSHIFT, ACTION_MOV_BOOST );
+	m_pKeyBind->Assign( GIC_SPACE,  ACTION_MOV_JUMP );
 
 	// analog input
 	// - may need to invert the fParam1.

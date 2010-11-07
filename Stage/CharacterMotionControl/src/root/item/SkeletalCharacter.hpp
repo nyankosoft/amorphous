@@ -100,6 +100,8 @@ public:
 	void SetFwdSpeed( float fSpeed ) { m_fFwdSpeed = fSpeed; }
 	void SetTurnSpeed( float fSpeed ) { m_fTurnSpeed = fSpeed; }
 
+	void StartVerticalJump( const Vector3& velocity );
+
 	void SetKeyBind( boost::shared_ptr<CKeyBind> pKeyBind );
 
 	CInputState::Name GetActionInputState( int action_code, CKeyBind::ActionType action_type = CKeyBind::ACTION_TYPE_PRIMARY );
@@ -218,11 +220,15 @@ public:
 
 class CJumpMotionNode : public CCharacterMotionNodeAlgorithm
 {
+	boost::shared_ptr<CItemEntity> GetCharacterEntity();
+
 public:
 
 	void Update( float dt );
 
 	bool HandleInput( const SInputData& input, int action_code );
+
+	void EnterState();
 };
 
 

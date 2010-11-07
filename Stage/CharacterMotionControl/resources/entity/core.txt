@@ -62,6 +62,17 @@ FLAGS		SHADOW_CASTER|SHADOW_RECEIVER
 SHADER_TECH	SingleHSDL_Specular_CTS
 END
 
+================= cylinder entity (mesh) ================================ CBE_GeneralEntity
+CLASSNAME	CBE_GeneralEntity
+NAME		__CylinderFromMesh__
+AABB		0.001  0.001  0.001 // overwritten by the dimension of the box mesh specified by the user
+BV_TYPE		BVTYPE_AABB
+LIGHTING	TRUE
+FLAGS		LIGHTING
+FLAGS		SHADOW_CASTER|SHADOW_RECEIVER
+SHADER_TECH	SingleHSDL_Specular_CTS
+END
+
 ================= triangle mesh entity (created from mesh) ================================ CBE_GeneralEntity
 CLASSNAME	CBE_GeneralEntity
 NAME		__TriangleMeshFromMesh__

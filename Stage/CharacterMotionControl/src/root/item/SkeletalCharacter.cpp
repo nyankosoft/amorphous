@@ -90,10 +90,10 @@ m_FeetOnGround( true )
 		m_pMotionNodes[i]->SetSkeletalCharacter( this );
 	}
 
-	pLowerLimbsFSM->GetNode( "fwd" )->SetAlgorithm( m_pMotionNodes[0] );
-	pLowerLimbsFSM->GetNode( "run" )->SetAlgorithm( m_pMotionNodes[1] );
-	pLowerLimbsFSM->GetNode( "standing" )->SetAlgorithm( m_pMotionNodes[2] );
-//	pLowerLimbsFSM->GetNode( "jump" )->SetAlgorithm( m_pMotionNodes[3] );
+	pLowerLimbsFSM->GetNode( "fwd"           )->SetAlgorithm( m_pMotionNodes[0] );
+	pLowerLimbsFSM->GetNode( "run"           )->SetAlgorithm( m_pMotionNodes[1] );
+	pLowerLimbsFSM->GetNode( "standing"      )->SetAlgorithm( m_pMotionNodes[2] );
+	pLowerLimbsFSM->GetNode( "vertical_jump" )->SetAlgorithm( m_pMotionNodes[3] );
 
 	m_pLowerLimbsMotionsFSM = m_pMotionGraphManager->GetMotionFSM( "lower_limbs" );
 	if( !m_pLowerLimbsMotionsFSM )
@@ -382,7 +382,7 @@ void CSkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 
 //	m_pKeyBind->Update( m_ACtoGIC );
 
-	int action_codes_to_update[] = { ACTION_MOV_FORWARD, ACTION_MOV_BOOST };
+	int action_codes_to_update[] = { ACTION_MOV_FORWARD, ACTION_MOV_BOOST, ACTION_MOV_JUMP };
 	for( int i=0; i<CKeyBind::NUM_ACTION_TYPES; i++ )
 	{
 		map<int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[i];
@@ -636,6 +636,34 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 }
 
 
+/// 1. Set velocity for the entity and the physics actor.
+/// 2. Set m_FeetOnGround to false
+void CSkeletalCharacter::StartVerticalJump( const Vector3& velocity )
+{
+	if( !m_FeetOnGround )
+		return; // Can't jump while in the air
+
+	if( velocity.y < 0.001f )
+		return; // Velocity is too small to jump up
+
+	shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
+	if( !pEntity )
+		return;
+
+	CCopyEntity& entity = *pEntity;
+
+	entity.SetVelocity( velocity );
+
+	if( 0 < entity.m_vecpPhysicsActor.size()
+	 && entity.m_vecpPhysicsActor[0] )
+	{
+		entity.m_vecpPhysicsActor[0]->SetLinearVelocity( velocity );
+	}
+
+	m_FeetOnGround = false;
+}
+
+
 void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 {
 	physics::CScene *pPhysScene = entity.GetStage()->GetPhysicsScene();
@@ -701,7 +729,8 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 	{
 		Matrix34 world_pose = entity.GetWorldPose();
 //		if( world_pose.vPosition.y < query.Point.y )
-		if( world_pose.vPosition.y <= query.Point.y + 0.001f )
+		if( world_pose.vPosition.y <= query.Point.y + 0.001f // feed almost on the ground (dist from feet to the ground <= 0.001)?
+		 && entity.Velocity().y < 0.005f ) // not jumping up right now
 		{
 			// landed
 			// - Request transition to landing motion
@@ -848,7 +877,7 @@ bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
 			RequestTransition( "run" );
 		break;
 	case ACTION_MOV_JUMP:
-		RequestTransition( "jump" );
+		RequestTransition( "vertical_jump" );
 		break;
 /*	case ACTION_MOV_TURN_L:
 		break;
@@ -922,8 +951,28 @@ void CRunMotionNode::EnterState()
 }
 
 
+shared_ptr<CItemEntity> CJumpMotionNode::GetCharacterEntity()
+{
+	return m_pCharacter ? (m_pCharacter->GetItemEntity().Get()) : shared_ptr<CItemEntity>();
+}
+
+
 void CJumpMotionNode::Update( float dt )
 {
+	shared_ptr<CCopyEntity> pEntity( GetCharacterEntity() );
+	if( !pEntity )
+		return;
+
+	CCopyEntity& entity = *pEntity;
+
+	if( entity.Velocity().y <= 0 )
+		RequestTransition( "falling" );
+}
+
+
+void CJumpMotionNode::EnterState()
+{
+	m_pCharacter->StartVerticalJump( Vector3(0,5,0) );
 }
 
 
@@ -958,7 +1007,7 @@ bool CStandingMotionNode::HandleInput( const SInputData& input, int action_code 
 		}
 		break;
 	case ACTION_MOV_JUMP:
-		RequestTransition( "jump" );
+		RequestTransition( "vertical_jump" );
 		break;
 /*	case ACTION_MOV_TURN_L:
 		break;

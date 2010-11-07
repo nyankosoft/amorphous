@@ -20,7 +20,8 @@
 				<node name="crouch-sidestep-left"></node>
 				<node name="falling"></node>
 				<node name="land"></node>
-				<node name="jump"></node>
+				<node name="bend_down_for_vertical_jump"></node>
+				<node name="vertical_jump"></node>
 			</nodes>
 			<transitions>
 				<!-- from fwd to standing -->
@@ -64,22 +65,30 @@
 				<transition from="prone" to="crouch">
 					<trans time="0.2" goal="crouch"/>
 				</transition>
-				<transition from="walk" to="falling">
+				<transition from="fwd" to="falling">
 					<trans time="0.2" goal="falling"/>
 				</transition>
 				<transition from="run" to="falling">
 					<trans time="0.2" goal="falling"/>
 				</transition>
+				<transition from="standing" to="falling">
+					<trans time="0.1" goal="falling"/>
+				</transition>
 				<transition from="falling" to="standing">
 					<trans time="0.005" goal="land"/>
-					<trans time="2.0" goal="standing"/>
+					<trans time="0.7" goal="standing"/>
 				</transition>
-				<transition from="standing" to="jump-up">
-					<trans time="0.2" goal="jump-up"/>
+				<transition from="standing" to="vertical_jump">
+					<trans time="0.1" goal="bend_down_for_vertical_jump"/>
+					<trans time="0.001" goal="vertical_jump"/>
 				</transition>
-				<transition from="jump-up" to="standing">
-					<trans time="0.2" goal="land"/>
-					<trans time="0.2" goal="standing"/>
+				<transition from="vertical_jump" to="falling">
+					<trans time="0.1" goal="falling"/>
+				</transition>
+				<!-- Add the transition from 'v.jump' to 'standing' just in case.
+				although the motion 'falling' should be played between 'v.jump' and 'standing'. -->
+				<transition from="vertical_jump" to="standing">
+					<trans time="0.1" goal="standing"/>
 				</transition>
 			</transitions>
 		</FSM>
