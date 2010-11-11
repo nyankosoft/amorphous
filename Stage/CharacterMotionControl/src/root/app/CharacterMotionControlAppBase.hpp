@@ -2,13 +2,16 @@
 #define  __CharacterMotionControlAppBase_HPP__
 
 
-#include <gds/App/GameApplicationBase.hpp>
-#include <gds/Task/StageViewerGameTask.hpp>
-#include <gds/Task/GameTaskFactoryBase.hpp>
-#include <gds/Stage.hpp>
-#include <gds/GameCommon/KeyBind.hpp>
-#include <gds/Item/ItemEntity.hpp>
-#include <gds/Graphics/DoubleConeScrollEffect.hpp>
+#include "gds/App/GameApplicationBase.hpp"
+#include "gds/Task/StageViewerGameTask.hpp"
+#include "gds/Task/GameTaskFactoryBase.hpp"
+#include "gds/Stage.hpp"
+#include "gds/GameCommon/KeyBind.hpp"
+#include "gds/Item/ItemEntity.hpp"
+#include "gds/Graphics/DoubleConeScrollEffect.hpp"
+
+
+class CSkeletalCharacter;
 
 
 enum ShadowAppTaskID
@@ -32,13 +35,13 @@ public:
 	}
 };
 
-
+/*
 class CCharacterEntity : public CCopyEntity
 {
 public:
 
 	void Draw();
-};
+};*/
 
 
 class CCharacterMotionControlAppTask : public CStageViewerGameTask
@@ -51,6 +54,12 @@ class CCharacterMotionControlAppTask : public CStageViewerGameTask
 //	boost::shared_ptr<CCharacterMotionInputHandler> m_pInputHandler;
 
 	CEntityHandle<CItemEntity> m_CharacterItemEntity;
+
+	std::vector< boost::shared_ptr<CSkeletalCharacter> > m_pCharacterItems;
+
+	cdv<Vector3> m_CameraPosition;
+
+	cdv<Quaternion> m_CameraOrientation;
 
 	CDoubleConeScrollEffect m_ScrollEffect;
 

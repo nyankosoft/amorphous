@@ -38,11 +38,11 @@ void CCharacterMotionInputHandler::ProcessInput( SInputData& input )
 }
 */
 
-
+/*
 void CCharacterEntity::Draw()
 {
 }
-
+*/
 
 CApplicationBase *CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
 
@@ -116,26 +116,49 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	actor_desc.vecpShapeDesc.push_back( &cap_desc );
 //	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
 
+	const int num_characters = 2;
+	m_pCharacterItems.resize( num_characters );
+	const char *meshes[] = { "models/male_skinny_young.msh", "models/female99-age17-muscle73-weight66-height1.52.msh" };
+	for( int i=0; i<num_characters; i++ )
+	{
+		m_pCharacterItems[i].reset( new CSkeletalCharacter );
+
+		shared_ptr<CMeshObjectContainer> pMeshContainer;
+		if( m_pCharacterItems[i]->MeshContainerRootNode().GetNumMeshContainers() == 0 )
+		{
+			pMeshContainer.reset( new CMeshObjectContainer );
+			m_pCharacterItems[i]->MeshContainerRootNode().AddMeshContainer( pMeshContainer );
+		}
+		else
+			pMeshContainer = m_pCharacterItems[i]->MeshContainerRootNode().GetMeshContainer( 0 );
+
+		pMeshContainer->m_MeshDesc.ResourcePath = meshes[i];
+		pMeshContainer->m_MeshDesc.MeshType = CMeshType::SKELETAL;
+		bool mesh_loaded = m_pCharacterItems[i]->LoadMeshObject();
+	}
+
 	CItemStageUtility stg_util( m_pStage );
-	shared_ptr<CSkeletalCharacter> pCharacter( new CSkeletalCharacter ); // create an item
-	shared_ptr<CGameItem> pItem = pCharacter;
+//	shared_ptr<CSkeletalCharacter> pCharacter( new CSkeletalCharacter ); // create an item
+	shared_ptr<CGameItem> pItem = m_pCharacterItems[0];
 //	CEntityHandle<CItemEntity> entity = stg_util.CreateItemEntity( pItem, Vector3(0,0,0) ); // create an entity for the item
 	CEntityHandle<CItemEntity> entity = stg_util.CreateItemEntity( pItem, actor_desc ); // create an entity for the item
 	shared_ptr<CItemEntity> pEntity = entity.Get();
 	if( pEntity )
 	{
-		pCharacter->OnEntityCreated( *pEntity ); // set pointer of mesh render method to CCopyEntity::m_pMeshRenderMethod
+		m_pCharacterItems[0]->OnEntityCreated( *pEntity ); // set pointer of mesh render method to CCopyEntity::m_pMeshRenderMethod
 		pEntity->RaiseEntityFlags( BETYPE_LIGHTING );
 		pEntity->ClearEntityFlags( BETYPE_USE_PHYSSIM_RESULTS );
 		pEntity->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 		pEntity->InitMesh();
 //		pEntity->pBaseEntity->SetMeshRenderMethod( *pEntity ); // error: cannot access protected member declared in class 'CBaseEntity'
+
+		m_CameraOrientation.target = m_CameraOrientation.current = Quaternion( pEntity->GetWorldPose().matOrient );
 	}
 
 	m_CharacterItemEntity = entity;
 
 	// set keybind to the character item
-	pCharacter->SetKeyBind( m_pKeyBind );
+	m_pCharacterItems[0]->SetKeyBind( m_pKeyBind );
 
 //	m_pInputHandler.reset( new CCharacterMotionInputHandler(pCharacter,m_pKeyBind) );
 //	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
@@ -145,6 +168,12 @@ m_vPrevCamPos( Vector3(0,0,0) )
 		InputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
 	else
 		InputHub().PushInputHandler( 2, m_pInputHandler.get() );
+
+	m_CameraOrientation.vel = Quaternion(Matrix33Identity());
+	m_CameraOrientation.smooth_time = 0.1f;
+
+	m_CameraPosition.vel = Vector3(1,1,1);
+	m_CameraPosition.smooth_time = 0.1f;
 
 	m_ScrollEffect.SetTextureFilepath( "textures/precipitation_mid-density-512.dds" );
 //	m_ScrollEffect.SetTextureFilepath( "textures/tex1024_red.bmp" );
@@ -165,13 +194,39 @@ int CCharacterMotionControlAppTask::FrameMove( float dt )
 	else
 	{
 		shared_ptr<CItemEntity> pEntity = m_CharacterItemEntity.Get();
-		if( pEntity )
+		if( !pEntity )
+			return ID_INVALID;
+
+		Vector3 vEntityWorldPos = pEntity->GetWorldPosition();
+		const Matrix33 matCamOrientation = m_CameraOrientation.current.ToRotationMatrix();
+		Vector3 vInvCamDir = -matCamOrientation.GetColumn(2);
+		CInputState::Name mouse_r   = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState(GIC_MOUSE_BUTTON_R);
+		CInputState::Name space_key = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState(GIC_SPACE);
+		if( mouse_r   == CInputState::PRESSED
+		 || space_key == CInputState::PRESSED )
 		{
-			Vector3 vPos = pEntity->GetWorldPose().vPosition + Vector3(0.0f, 2.0f, -3.8f);
-			vPos.y = 2.0f;
-			Camera().SetPose( Matrix34( vPos, Matrix33Identity() ) );
+			m_CameraPosition.target
+				= vEntityWorldPos
+				+ vInvCamDir * 1.5f
+				+ Vector3(0.0f, 1.5f, 0.0f);
 		}
-	}
+		else
+		{
+			m_CameraPosition.target
+				= vEntityWorldPos
+				+ vInvCamDir * 3.8f
+				+ Vector3(0.0f, 2.0f, 0.0f);
+		}
+
+		Camera().SetPose( Matrix34( m_CameraPosition.current, matCamOrientation ) );
+/*
+//		Vector3 vPos = pEntity->GetWorldPose().vPosition + Vector3(0.0f, 2.0f, -3.8f);
+		vPos.y = 2.0f;
+		Camera().SetPose( Matrix34( vPos, matCamOrientation ) );
+*/	}
+
+	m_CameraOrientation.Update( dt );
+	m_CameraPosition.Update( dt );
 
 	m_ScrollEffect.SetCameraPose( Camera().GetPose() );
 /*	Vector3 vDist = (Camera().GetPosition() - m_vPrevCamPos);
@@ -206,6 +261,21 @@ void CCharacterMotionControlAppTask::HandleInput( SInputData& input )
 			EnableCameraController( !enabled );
 		}
 		break;
+
+	case GIC_MOUSE_BUTTON_R:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			if( m_pCharacterItems.empty() )
+				return;
+
+			shared_ptr<CItemEntity> pEntity = m_pCharacterItems[0]->GetItemEntity().Get();
+			if( !pEntity )
+				return;
+
+			m_CameraOrientation.target.FromRotationMatrix( pEntity->GetWorldPose().matOrient );
+		}
+		break;
+
 	default:
 		break;
 	}

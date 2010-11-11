@@ -25,7 +25,7 @@ using namespace msynth;
 class CDebugItem_MotionFSM : public CDebugItem_ResourceManager
 {
 public:
-	boost::shared_ptr<msynth::CMotionGraphManager> m_pMotionGraphManager;
+	boost::shared_ptr<msynth::CMotionGraphManager> m_pMotionFSMManager;
 public:
 
 	CDebugItem_MotionFSM() {}
@@ -33,7 +33,7 @@ public:
 	void GetTextInfo()
 	{
 		string buffer;
-		m_pMotionGraphManager->GetDebugInfo( buffer );
+		m_pMotionFSMManager->GetDebugInfo( buffer );
 		strncpy( m_TextBuffer, buffer.c_str(), sizeof(m_TextBuffer) - 1 );
 	}
 };
@@ -46,8 +46,7 @@ m_fTurnSpeed(0.0f),
 m_fFloorHeight(0.0f),
 m_FeetOnGround( true )
 {
-	m_pMotionGraphManager.reset( new CMotionGraphManager );
-//	m_pMotionGraphManager = shared_new<CMotionGraphManager>();
+	m_pMotionFSMManager.reset( new CMotionGraphManager );
 
 	// Not used: motion database filepaths are specified in resources/misc/test_motion_fsm.xml
 //	string mdb_filepath = "motions/lws-fwd.mdb";
@@ -56,29 +55,26 @@ m_FeetOnGround( true )
 
 	bool load_embedded_test_data = false;
 	if( load_embedded_test_data )
-		m_pMotionGraphManager->InitForTest( mdb_filepath );
+		m_pMotionFSMManager->InitForTest( mdb_filepath );
 	else
 	{
 		// Load FSM from XML file and update the binary file
 		string xml_file = "../resources/misc/test_motion_fsm.xml";
 		if( boost::filesystem::exists(xml_file) )
 		{
-			m_pMotionGraphManager->LoadFromXMLFile( xml_file );
-			m_pMotionGraphManager->SaveToFile( "motions/test_motion_fsm.bin" );
+			m_pMotionFSMManager->LoadFromXMLFile( xml_file );
+			m_pMotionFSMManager->SaveToFile( "motions/test_motion_fsm.bin" );
 		}
 
 		// Clear the data loaded from XML
-		m_pMotionGraphManager.reset( new CMotionGraphManager );
+		m_pMotionFSMManager.reset( new CMotionGraphManager );
 
 		// Load from the binary archive
-		bool loaded_from_archive = m_pMotionGraphManager->LoadFromFile( "motions/test_motion_fsm.bin" );
+		bool loaded_from_archive = m_pMotionFSMManager->LoadFromFile( "motions/test_motion_fsm.bin" );
 
 		if( loaded_from_archive )
-			m_pMotionGraphManager->LoadMotions();
+			m_pMotionFSMManager->LoadMotions();
 	}
-
-
-	shared_ptr<CMotionFSM> pLowerLimbsFSM = m_pMotionGraphManager->GetMotionFSM( "lower_limbs" );
 
 	m_pMotionNodes.resize( 4 );
 	m_pMotionNodes[0].reset( new CFwdMotionNode );
@@ -90,17 +86,19 @@ m_FeetOnGround( true )
 		m_pMotionNodes[i]->SetSkeletalCharacter( this );
 	}
 
-	pLowerLimbsFSM->GetNode( "fwd"           )->SetAlgorithm( m_pMotionNodes[0] );
-	pLowerLimbsFSM->GetNode( "run"           )->SetAlgorithm( m_pMotionNodes[1] );
-	pLowerLimbsFSM->GetNode( "standing"      )->SetAlgorithm( m_pMotionNodes[2] );
-	pLowerLimbsFSM->GetNode( "vertical_jump" )->SetAlgorithm( m_pMotionNodes[3] );
+	m_pLowerLimbsMotionsFSM = m_pMotionFSMManager->GetMotionFSM( "lower_limbs" );
 
-	m_pLowerLimbsMotionsFSM = m_pMotionGraphManager->GetMotionFSM( "lower_limbs" );
 	if( !m_pLowerLimbsMotionsFSM )
 		m_pLowerLimbsMotionsFSM.reset( new CMotionFSM ); // avoid NULL checking
 
-	// mesh
+	m_pLowerLimbsMotionsFSM->GetNode( "fwd"           )->SetAlgorithm( m_pMotionNodes[0] );
+	m_pLowerLimbsMotionsFSM->GetNode( "run"           )->SetAlgorithm( m_pMotionNodes[1] );
+	m_pLowerLimbsMotionsFSM->GetNode( "standing"      )->SetAlgorithm( m_pMotionNodes[2] );
+	m_pLowerLimbsMotionsFSM->GetNode( "vertical_jump" )->SetAlgorithm( m_pMotionNodes[3] );
 
+
+	// mesh
+/*
 	shared_ptr<CMeshObjectContainer> pContainer( new CMeshObjectContainer );
 	pContainer->m_MeshDesc.ResourcePath = "models/male_skinny_young.msh";
 	pContainer->m_MeshDesc.MeshType = CMeshType::SKELETAL;
@@ -108,7 +106,7 @@ m_FeetOnGround( true )
 	m_MeshContainerRootNode.SetMeshContainer( 0, pContainer );
 
 	m_MeshContainerRootNode.LoadMeshesFromDesc();
-
+*/
 	m_pRenderMethod.reset( new CMeshContainerRenderMethod );
 //	m_pRenderMethod = shared_new<CMeshContainerRenderMethod>();
 
@@ -129,7 +127,7 @@ m_FeetOnGround( true )
 	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "Default" );
 
 	// Init input handler
-	m_pInputHandler.reset( new CMotionFSMInputHandler(m_pMotionGraphManager) );
+	m_pInputHandler.reset( new CMotionFSMInputHandler(m_pMotionFSMManager) );
 	if( InputHub().GetInputHandler(2) )
 		InputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
 	else
@@ -139,10 +137,10 @@ m_FeetOnGround( true )
 	CMotionDatabase mdb( mdb_filepath );
 	m_pSkeletonSrcMotion = mdb.GetMotionPrimitive("standing");
 
-	m_pMotionGraphManager->GetMotionFSM("lower_limbs")->StartMotion("standing");
+	m_pLowerLimbsMotionsFSM->StartMotion("standing");
 
 	CDebugItem_MotionFSM *pDbgItem = new CDebugItem_MotionFSM;
-	pDbgItem->m_pMotionGraphManager = m_pMotionGraphManager;
+	pDbgItem->m_pMotionFSMManager = m_pMotionFSMManager;
 	DebugOutput.AddDebugItem( "motion_graph_mgr", pDbgItem );
 
 	m_pClothSystem.reset( new CClothSystem );
@@ -218,7 +216,7 @@ static void UpdatePhysicsActorPose( physics::CActor& actor, const Matrix34& worl
 
 void CSkeletalCharacter::Update( float dt )
 {
-	shared_ptr<CMotionFSM> pFSM = m_pMotionGraphManager->GetMotionFSM("lower_limbs");
+	shared_ptr<CMotionFSM> pFSM = m_pMotionFSMManager->GetMotionFSM("lower_limbs");
 	if( !pFSM )
 		return;
 
@@ -237,14 +235,9 @@ void CSkeletalCharacter::Update( float dt )
 
 	pFSM->Player()->SetCurrentHorizontalPose( world_pose );
 
-	m_pMotionGraphManager->Update( dt );
+	m_pMotionFSMManager->Update( dt );
 
 	Matrix34 updated_world_pose = pFSM->Player()->GetCurrentHorizontalPose();
-
-//	if( m_FeetOnGround )
-//		updated_world_pose.vPosition.y += m_fFloorHeight;
-//	else
-//		updated_world_pose.vPosition.y = base_world_pose.vPosition.y;
 
 	// test collision
 
@@ -292,10 +285,10 @@ void CSkeletalCharacter::Update( float dt )
 		UpdatePhysicsActorPose( actor, updated_world_pose );
 	}
 
-//	Matrix34 world_pose = m_pMotionGraphManager->GetCurrentWorldPose();
+//	Matrix34 world_pose = m_pMotionFSMManager->GetCurrentWorldPose();
 
 /*
-	const Matrix34 world_pose = m_pMotionGraphManager->GetRootNodeWorldPose();
+	const Matrix34 world_pose = m_pMotionFSMManager->GetRootNodeWorldPose();
 	SetWorldPose( world_pose );
 	shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 */
@@ -312,6 +305,9 @@ void CSkeletalCharacter::Render()
 		return;
 
 	shared_ptr<CBasicMesh> pMesh = pContainer->m_MeshObjectHandle.GetMesh();
+	if( !pMesh )
+		return;
+
 	CSkeletalMesh *pSkeletalMesh = dynamic_cast<CSkeletalMesh *>(pMesh.get());
 	if( !pSkeletalMesh )
 	{
@@ -330,7 +326,7 @@ void CSkeletalCharacter::Render()
 
 	CKeyframe m_InterpolatedKeyframe;
 	CKeyframe& dest = m_InterpolatedKeyframe;
-	m_pMotionGraphManager->GetCurrentKeyframe( dest );
+	m_pMotionFSMManager->GetCurrentKeyframe( dest );
 	UpdateMeshBoneTransforms( dest, *(m_pSkeletonSrcMotion->GetSkeleton()), *pSkeletalMesh );
 
 	pSkeletalMesh->SetLocalTransformsFromCache();
@@ -491,7 +487,7 @@ void CSkeletalCharacter::SetCharacterWorldPose( const Matrix34& world_pose, CCop
 	UpdatePhysicsActorPose( actor, world_pose );
 
 	// also revert the pose stored in the motion FSM
-	shared_ptr<CMotionFSM> pFSM = m_pMotionGraphManager->GetMotionFSM("lower_limbs");
+	shared_ptr<CMotionFSM> pFSM = m_pMotionFSMManager->GetMotionFSM("lower_limbs");
 	if( !pFSM )
 		return;
 	Vector3& vFwd = new_pose.matOrient.GetColumn(2);
@@ -721,7 +717,7 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 				// fall
 				m_FeetOnGround = false;
 				entity.SetVelocity( Vector3(0,0,0) );
-				m_pMotionGraphManager->GetMotionFSM("lower_limbs")->RequestTransition( "falling" );
+				m_pMotionFSMManager->GetMotionFSM("lower_limbs")->RequestTransition( "falling" );
 			}
 		}
 	}
@@ -736,7 +732,7 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 			// - Request transition to landing motion
 			m_FeetOnGround = true;
 			world_pose.vPosition.y = query.Point.y;
-			m_pMotionGraphManager->GetMotionFSM("lower_limbs")->RequestTransition( "standing" );
+			m_pMotionFSMManager->GetMotionFSM("lower_limbs")->RequestTransition( "standing" );
 //			entity.SetWorldPose( world_pose );
 //			SetCharacterWorldPose( world_pose, entity, *(entity.m_vecpPhysicsActor[0]) );
 		}
@@ -744,10 +740,10 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 
 //	m_fFloorHeight = floor_height;
 
-/*	int num_motion_fsms = (int)m_pMotionGraphManager->GetMotionFSMs.size();
+/*	int num_motion_fsms = (int)m_pMotionFSMManager->GetMotionFSMs.size();
 	for( int i=0; i<num_motion_fsms; i++ )
 	{
-		shared_ptr<CMotionFSM>& pFSM = m_pMotionGraphManager->MotionFSMs()[i];
+		shared_ptr<CMotionFSM>& pFSM = m_pMotionFSMManager->MotionFSMs()[i];
 		if( !pFSM )
 			continue;
 

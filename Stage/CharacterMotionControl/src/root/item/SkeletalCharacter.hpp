@@ -35,7 +35,7 @@ public:
 */
 class CSkeletalCharacter : public CGameItem
 {
-	boost::shared_ptr<msynth::CMotionGraphManager> m_pMotionGraphManager;
+	boost::shared_ptr<msynth::CMotionGraphManager> m_pMotionFSMManager;
 
 	boost::shared_ptr<CMeshContainerRenderMethod> m_pRenderMethod;
 
