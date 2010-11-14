@@ -61,18 +61,15 @@ bool CPrimitiveShapeMeshesTest::InitShader()
 		return false;
 
 	shared_ptr<CShaderLightManager> pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager();
+	if( !pShaderLightMgr )
+		return false;
 
 	CHemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
 
-	shared_ptr<CShaderLightManager> pHLSLShaderLightMgr
-		= dynamic_pointer_cast<CShaderLightManager,CShaderLightManager>(pShaderLightMgr);
-
-//	pHLSLShaderLightMgr->SetDirectionalLightOffset( 0 );
-//	pHLSLShaderLightMgr->SetNumDirectionalLights( 1 );
-	pHLSLShaderLightMgr->SetHemisphericDirectionalLight( light );
+	pShaderLightMgr->SetHemisphericDirectionalLight( light );
 
 	return true;
 }
@@ -91,7 +88,7 @@ int CPrimitiveShapeMeshesTest::Init()
 	m_DefaultTechnique.SetTechniqueName( "NoShader" );
 */
 
-	CMeshResourceDesc mesh_desc[4];
+	CMeshResourceDesc mesh_desc[5];
 	m_vecMesh.resize( numof(mesh_desc) );
 
 	shared_ptr<CBoxMeshGenerator> pBoxGenerator( new CBoxMeshGenerator() );
@@ -124,7 +121,14 @@ int CPrimitiveShapeMeshesTest::Init()
 	mesh_desc[3].ResourcePath = "SphereMesh";
 	m_vecMesh[3].Load( mesh_desc[3] );
 
-	m_NumPrimitiveMeshes = 4;
+	CCylinderDesc cylinder_desc;
+	shared_ptr<CCylinderMeshGenerator> pCylinderGenerator( new CCylinderMeshGenerator(cylinder_desc) );
+	mesh_desc[4].pMeshGenerator = pCylinderGenerator;
+	mesh_desc[4].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
+	mesh_desc[4].ResourcePath = "CylinderMesh";
+	m_vecMesh[4].Load( mesh_desc[4] );
+
+	m_NumPrimitiveMeshes = 5;
 
 	InitShader();
 
@@ -145,16 +149,19 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 	if( !pShaderManager )
 		return;
 
+	CShaderManager& shader_mgr = *pShaderManager;
+
 	// render the scene
 
 	Matrix44 matWorld( Matrix44Identity() );
 
-	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
 
 	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
 
-	pShaderManager->SetTechnique( m_MeshTechnique );
-	pShaderManager->GetShaderLightManager()->CommitChanges();
+	shader_mgr.SetTechnique( m_MeshTechnique );
+	if( shader_mgr.GetShaderLightManager() )
+		shader_mgr.GetShaderLightManager()->CommitChanges();
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
@@ -167,11 +174,11 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 			// set world transform
 //			holder.m_Pose.GetRowMajorMatrix44( matWorld );
 			FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
-			pShaderManager->SetWorldTransform( Matrix44Identity() );
+			shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-			pShaderManager->SetTexture( 0, m_ConeTexture );
-			if( pShaderManager->GetEffect() )
-				pShaderManager->GetEffect()->CommitChanges();
+			shader_mgr.SetTexture( 0, m_ConeTexture );
+			if( shader_mgr.GetEffect() )
+				shader_mgr.GetEffect()->CommitChanges();
 
 			// TODO: automatically detect the shader type (programmable/non-programmable) by the system.
 			pMesh->Render();
