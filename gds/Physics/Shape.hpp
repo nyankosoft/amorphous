@@ -253,6 +253,13 @@ public:
 */
 
 
+class CConvexShape : public CShape
+{
+public:
+	int GetType() const { return PhysShape::Convex; }
+};
+
+
 class CTriangleMeshShape : public CShape
 {
 //	CTriangleMeshShapeImpl *m_pImpl;

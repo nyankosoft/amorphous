@@ -51,6 +51,37 @@ static void FillNxTriangleMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecV
 }
 
 
+static void FillNxConvexMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecVertex, vector<index_type>& vecIndex, NxConvexMeshDesc& dest )
+{
+	if( sizeof(index_type) == sizeof(NxU16) )
+		dest.flags                  = NX_MF_16_BIT_INDICES;
+
+	// copy vertices
+	size_t num_verts = src.m_vecVertex.size();
+//	vector<NxVec3> vecVertex;
+	vecVertex.resize( num_verts );
+	for( size_t i=0; i<num_verts; i++ )
+		vecVertex[i] = ToNxVec3( src.m_vecVertex[i] );
+
+	// copy indices
+	size_t num_indices = src.m_vecIndex.size();
+	size_t num_triangles = num_indices / 3;
+//	vector<index_type> vecIndex;
+	vecIndex.resize( num_indices );
+	for( size_t i=0; i<num_indices; i++ )
+		vecIndex[i] = (index_type)src.m_vecIndex[i];
+
+	dest.numVertices                = (NxU32)num_verts;
+	dest.numTriangles               = (NxU32)num_triangles;
+
+	dest.pointStrideBytes           = sizeof(NxVec3);
+	dest.triangleStrideBytes        = 3*sizeof(index_type);
+
+	dest.points                     = &(vecVertex[0]);
+	dest.triangles                  = &(vecIndex[0]);                         
+}
+
+
 bool CNxPhysPreprocessorImpl::Init()
 {
 	LOG_FUNCTION_SCOPE();
@@ -132,6 +163,64 @@ Result::Name CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDes
 
 		LOG_PRINT_OK_OR_FAILED( "NxCookTriangleMesh()", trimesh_cooked );
 		if( !trimesh_cooked )
+			return Result::UNKNOWN_ERROR;
+	}
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CNxPhysPreprocessorImpl::CreateConvexMeshStream( CTriangleMeshDesc& mesh_desc,
+															  CStream& phys_stream )
+{
+	LOG_FUNCTION_SCOPE();
+
+//	if( !m_pCooking )
+//		return;
+
+	size_t i;
+
+	SetPhysicsEngineName( phys_stream );
+
+	NxConvexMeshDesc meshDesc;
+	vector<NxVec3> vecVertex;
+	vector<index_type> vecIndex;
+
+	// vertices and points
+	FillNxConvexMessDesc( mesh_desc, vecVertex, vecIndex, meshDesc );
+
+	// vecIndex now contains indices of triangles
+	const size_t num_indices = vecIndex.size();
+
+	// copy material indices
+	size_t num_triangles = num_indices / 3;
+	vector<NxU32> vecMatIndex;
+	vecMatIndex.resize( num_triangles );
+	for( i=0; i<num_triangles; i++ )
+		vecMatIndex[i] = (NxU32)mesh_desc.m_vecMaterialIndex[i];
+
+	meshDesc.flags = NX_CF_COMPUTE_CONVEX;
+
+	meshDesc.flags |= NX_CF_16_BIT_INDICES;
+
+//	meshDesc.materialIndexStride        = sizeof(NxU32);
+
+//	meshDesc.materialIndices            = &(vecMatIndex[0]);
+
+	bool valid_desc = meshDesc.isValid();
+	if( !valid_desc )
+	{
+		LOG_PRINT_ERROR( " An invalid convex mesh desc" );
+		return Result::INVALID_ARGS;
+	}
+
+	{
+		LOG_SCOPE( "NxCookingInterface::NxCookConvexMesh()" );
+//		m_pCooking->NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
+		bool convexmesh_cooked = NxCookConvexMesh( meshDesc, CNxPhysStream( &(phys_stream.m_Buffer), false ) );
+
+		LOG_PRINT_OK_OR_FAILED( "NxCookTriangleMesh()", convexmesh_cooked );
+		if( !convexmesh_cooked )
 			return Result::UNKNOWN_ERROR;
 	}
 

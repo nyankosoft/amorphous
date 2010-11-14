@@ -44,6 +44,10 @@ public:
 
 	virtual void ReleaseScene( CScene*& pScene );
 
+	virtual CConvexMesh *CreateConvexMesh( CStream& phys_stream );
+
+	virtual void ReleaseConvexMesh( CConvexMesh*& pConvexMesh );
+
 	virtual CTriangleMesh *CreateTriangleMesh( CStream& phys_stream );
 
 	virtual void ReleaseTriangleMesh( CTriangleMesh*& pTriangleMesh );

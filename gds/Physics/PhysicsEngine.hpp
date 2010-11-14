@@ -29,6 +29,10 @@ public:
 
 	virtual void ReleaseScene( CScene*& pScene ) = 0;
 
+	virtual CConvexMesh *CreateConvexMesh( CStream& phys_stream ) = 0;
+
+	virtual void ReleaseConvexMesh( CConvexMesh*& pConvexMesh ) = 0;
+
 	virtual CTriangleMesh *CreateTriangleMesh( CStream& phys_stream ) = 0;
 
 	virtual void ReleaseTriangleMesh( CTriangleMesh*& pTriangleMesh ) = 0;
@@ -75,6 +79,10 @@ public:
 	inline CScene *CreateScene( CSceneDesc& desc ) { return m_pEngine->CreateScene( desc ); }
 
 	inline void ReleaseScene( CScene*& pScene ) { m_pEngine->ReleaseScene( pScene ); }
+
+	inline CConvexMesh *CreateConvexMesh( CStream& phys_stream ) { return m_pEngine->CreateConvexMesh( phys_stream ); }
+
+	inline void ReleaseConvexMesh( CConvexMesh*& pConvexMesh ) { m_pEngine->ReleaseConvexMesh( pConvexMesh ); }
 
 	inline CTriangleMesh *CreateTriangleMesh( CStream& phys_stream ) { return m_pEngine->CreateTriangleMesh( phys_stream ); }
 

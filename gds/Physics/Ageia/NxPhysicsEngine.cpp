@@ -2,6 +2,7 @@
 #include "NxPhysScene.hpp"
 #include "NxPhysStream.hpp"
 #include "NxPhysTriangleMesh.hpp"
+#include "NxPhysConvexMesh.hpp"
 #include "NxPhysClothMesh.hpp"
 #include "../Stream.hpp"
 #include "../SceneDesc.hpp"
@@ -149,6 +150,24 @@ void CNxPhysicsEngine::ReleaseScene( CScene*& pScene )
 */
 	SafeDelete( pScene );
 
+}
+
+
+CConvexMesh *CNxPhysicsEngine::CreateConvexMesh( CStream& phys_stream )
+{
+	CNxPhysStream nx_stream( &(phys_stream.m_Buffer), true );
+
+	NxConvexMesh *pNxMesh = m_pPhysicsSDK->createConvexMesh( nx_stream );
+	if( !pNxMesh )
+		LOG_PRINT_ERROR( " NxPhysicsSDK::createConvexsMesh() failed. Cannot create a convex mesh." );
+
+	return NULL;
+}
+
+
+void CNxPhysicsEngine::ReleaseConvexMesh( CConvexMesh*& pConvexMesh )
+{
+	SafeDelete( pConvexMesh );
 }
 
 

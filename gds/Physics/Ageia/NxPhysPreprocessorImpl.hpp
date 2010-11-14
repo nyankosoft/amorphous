@@ -41,6 +41,9 @@ public:
 	virtual Result::Name CreateTriangleMeshStream( CTriangleMeshDesc& desc,
 		                                           CStream& phys_stream );
 
+	virtual Result::Name CreateConvexMeshStream( CTriangleMeshDesc& mesh_desc,
+		                                         CStream& phys_stream );
+
 	virtual Result::Name CreateClothMeshStream( CClothMeshDesc& desc,
                                                 CStream& phys_stream );
 

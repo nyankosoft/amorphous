@@ -24,6 +24,7 @@ class CShapeDesc;
 class CBoxShapeDesc;
 class CSphereShapeDesc;
 class CCapsuleShapeDesc;
+class CConvexShapeDesc;
 class CTriangleMeshShapeDesc;
 class CRawTriangleMeshShapeDesc;
 
@@ -37,6 +38,9 @@ class CCloth;
 class CClothDesc;
 class CClothMesh;
 class CClothMeshDesc;
+
+class CConvexMesh;
+class CConvexMeshDesc;
 
 class CTriangleMesh;
 class CTriangleMeshDesc;

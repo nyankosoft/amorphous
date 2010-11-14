@@ -34,6 +34,8 @@ public:
 	/// [out] 
 	virtual Result::Name CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream ) = 0;
 
+	virtual Result::Name CreateConvexMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream ) = 0;
+
 	virtual Result::Name CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream ) = 0;
 
 	virtual const char *GetPhysicsEngineName() const = 0;
@@ -83,6 +85,8 @@ public:
 
 	inline Result::Name CreateTriangleMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream );
 
+	inline Result::Name CreateConvexMeshStream( CTriangleMeshDesc& desc, CStream& phys_stream );
+
 	inline Result::Name CreateClothMeshStream( CClothMeshDesc& desc, CStream& phys_stream );
 
 //	void SetDefault();
@@ -93,6 +97,13 @@ inline Result::Name CPreprocessor::CreateTriangleMeshStream( CTriangleMeshDesc& 
 													 CStream& phys_stream )
 {
 	return m_pImpl->CreateTriangleMeshStream( desc, phys_stream );
+}
+
+
+inline Result::Name CPreprocessor::CreateConvexMeshStream( CTriangleMeshDesc& desc,
+													 CStream& phys_stream )
+{
+	return m_pImpl->CreateConvexMeshStream( desc, phys_stream );
 }
 
 

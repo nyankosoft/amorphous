@@ -16,6 +16,7 @@ public:
 		Sphere,
 		Capsule,
 //		Cylinder,
+		Convex,
 		TriangleMesh,
 		NumShapes
 	};
