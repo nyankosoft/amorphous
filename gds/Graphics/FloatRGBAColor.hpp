@@ -46,6 +46,11 @@ struct SFloatRGBAColor
 	/// \param [in] 32-bit integer that represents ARGB color using 8 bits for each component
 	inline void SetARGB32( U32 color );
 
+	inline U8 GetRedByte()   const { return (U8)get_clamped( (U32)(fRed   * 256.0f), (U32)0, (U32)255 ); }
+	inline U8 GetGreenByte() const { return (U8)get_clamped( (U32)(fGreen * 256.0f), (U32)0, (U32)255 ); }
+	inline U8 GetBlueByte()  const { return (U8)get_clamped( (U32)(fBlue  * 256.0f), (U32)0, (U32)255 ); }
+	inline U8 GetAlphaByte() const { return (U8)get_clamped( (U32)(fAlpha * 256.0f), (U32)0, (U32)255 ); }
+
 	void SetToWhite()   { *this = White(); }
 	void SetToBlack()   { *this = Black(); }
 	void SetToRed()     { *this = Red(); }
