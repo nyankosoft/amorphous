@@ -26,6 +26,24 @@ inline TextureFormat::Format FromD3DSurfaceFormat( D3DFORMAT d3d_fmt )
 }
 
 
+inline const char *GetD3DSurfaceFormatName( D3DFORMAT d3d_fmt )
+{
+	switch(d3d_fmt)
+	{
+	case D3DFMT_R16F:          return "D3DFMT_R16F";
+	case D3DFMT_R32F:          return "D3DFMT_R32F";
+	case D3DFMT_A16B16G16R16F: return "D3DFMT_A16B16G16R16F";
+	case D3DFMT_A8R8G8B8:      return "D3DFMT_A8R8G8B8";
+	case D3DFMT_X8R8G8B8:      return "D3DFMT_X8R8G8B8";
+	case D3DFMT_R5G6B5:        return "D3DFMT_R5G6B5";
+	case D3DFMT_A1R5G5B5:      return "D3DFMT_A1R5G5B5";
+	case D3DFMT_X1R5G5B5:      return "D3DFMT_X1R5G5B5";
+	default:
+		return "An unknown D3DFORMAT";
+	}
+}
+
+
 inline D3DFORMAT ConvertTextureFormatToD3DFORMAT( TextureFormat::Format tex_format )
 {
 	switch(tex_format)
