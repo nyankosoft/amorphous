@@ -1,15 +1,16 @@
 #include "GraphicsApplicationBase.hpp"
-#include <gds/App/GameWindowManager_Win32.hpp>
-#include <gds/Support/Timer.hpp>
-#include <gds/Support/ParamLoader.hpp>
-#include <gds/Support/Profile.hpp>
-#include <gds/Support/MiscAux.hpp>
-#include <gds/Support/CameraController.hpp>
-#include <gds/Input/InputHub.hpp>
-#include <gds/Graphics/Font/BuiltinFonts.hpp>
-#include <gds/Graphics/Shader/ShaderManager.hpp>
-#include <gds/Graphics/Shader/ShaderManagerHub.hpp>
-#include <gds/Graphics/Shader/FixedFunctionPipelineManager.hpp>
+#include "gds/App/GameWindowManager_Win32.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/MiscAux.hpp"
+#include "gds/Support/CameraController.hpp"
+#include "gds/Support/BitmapImage.hpp"
+#include "gds/Input/InputHub.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Graphics/Shader/ShaderManager.hpp"
+#include "gds/Graphics/Shader/ShaderManagerHub.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 using namespace std;
 using namespace boost;
@@ -182,6 +183,8 @@ void CGraphicsApplicationBase::Run()
 
 	CLogOutput_HTML html_log( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
+
+	InitFreeImageErrorReport();
 
 	// Create the instance of the test class
 //	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );

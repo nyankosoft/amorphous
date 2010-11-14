@@ -439,22 +439,11 @@ void CGameApplicationBase::Execute()
 }
 
 
-inline void GDS_FreeImageErrorHandler( FREE_IMAGE_FORMAT fif, const char *message )
-{
-	if( fif != FIF_UNKNOWN )
-	{
-		g_Log.Print( "Free Image: %s Format", FreeImage_GetFormatFromFIF(fif) );
-	}
-
-	g_Log.Print( "Free Image: %s", message );
-}
-
-
 inline void SetFreeImageErrorHandler()
 {
 	// mutex - lock
 
-	ONCE( FreeImage_SetOutputMessage(GDS_FreeImageErrorHandler) );
+	ONCE( InitFreeImageErrorReport() );
 }
 
 
