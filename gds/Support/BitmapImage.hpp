@@ -11,7 +11,12 @@
 #include "Support/ImageArchive.hpp"
 #include "Support/2DArray.hpp"
 #include "Support/Macro.h"
-//#include "Support/Log/DefaultLog.hpp"
+
+// Comment out this header inclusion and do the following replacings
+// if you want to use CBitmapImage class without the log system.
+// 1. Replace 'LOG_PRINT_ERROR(x)' with 'cout << x'.
+// 2. Replace 'g_Log.Print(x)' with 'printf(x)'.
+#include "Support/Log/DefaultLog.hpp"
 
 #pragma comment( lib, "FreeImage.lib" )
 
@@ -132,6 +137,7 @@ private:
 		if( m_pFreeImageBitMap )
 		{
 			FreeImage_Unload( m_pFreeImageBitMap );
+			m_pFreeImageBitMap = NULL;
 			m_BitsPerPixel = 0;
 		}
 	}
@@ -167,6 +173,10 @@ public:
 
 	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a );
 
+	/// Support only 24-bit/32-bit images. Float values are internally converted to U8 values.
+	inline void SetPixel( int x, int y, const SFloatRGBAColor& color );
+
+	/// Support only 24-bit/32-bit images. Float values are internally converted to U8 values.
 	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
 
 	inline void SetPixel( int x, int y, U8 r, U8 g, U8 b );
@@ -187,6 +197,8 @@ public:
 
 	inline bool Rescale( int dest_width, int dest_height/*, CImageFilter::Name filter */ );
 
+	inline bool FlipVertical();
+
 	inline boost::shared_ptr<CBitmapImage> GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const;
 };
 
@@ -196,6 +208,21 @@ inline CBitmapImage::CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer,
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 }
 */
+
+
+inline void LogFreeImageError( FREE_IMAGE_FORMAT fif, const char *message )
+{
+	g_Log.Print( WL_ERROR, "Free Image: %s (image format: %s).",
+		message,
+		(fif != FIF_UNKNOWN) ? FreeImage_GetFormatFromFIF(fif) : "unknown"
+		);
+}
+
+
+inline void InitFreeImageErrorReport()
+{
+	FreeImage_SetOutputMessage(LogFreeImageError);
+}
 
 
 inline CBitmapImage::CBitmapImage( int width, int height, int bpp )
@@ -265,7 +292,7 @@ inline void CBitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b )
 
 inline void CBitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a )
 {
-	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
+	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel / 8 * x;
 
 	r = bits[FI_RGBA_RED];
 	g = bits[FI_RGBA_GREEN];
@@ -307,6 +334,17 @@ inline void CBitmapImage::FillColor( const SFloatRGBAColor& color )
 }
 
 
+inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBAColor& color )
+{
+	// TODO: support float RGBA images
+	if( m_BitsPerPixel == 24
+	 || m_BitsPerPixel == 32 )
+	{
+		SetPixel( x, y, color.GetRedByte(), color.GetGreenByte(), color.GetBlueByte(), color.GetAlphaByte() );
+	}
+}
+
+
 inline void CBitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
 {
 	RGBQUAD quad;
@@ -335,18 +373,16 @@ inline void CBitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a )
 	{
 		SetPixel( x, y, r, g, b );
 	}
-	else
+	else if( m_BitsPerPixel == 32 )
 	{
 		// This code causes crash when the bpp is 32. Why?
 
-		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
+		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel / 8 * x;
 
 		bits[FI_RGBA_RED]   = r;
 		bits[FI_RGBA_GREEN] = g;
 		bits[FI_RGBA_BLUE]  = b;
-
-		if( m_BitsPerPixel == 32 )
-			bits[FI_RGBA_ALPHA] = a;
+		bits[FI_RGBA_ALPHA] = a;
 	}
 }
 
@@ -367,7 +403,7 @@ inline void CBitmapImage::SetAlpha( int x, int y, U8 alpha )
 {
 //	int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
 
-	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel * x;
+	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel / 8 * x;
 
 	bits[FI_RGBA_ALPHA] = alpha;
 }
@@ -399,7 +435,19 @@ inline bool CBitmapImage::Rescale( int dest_width, int dest_height/*, CImageFilt
 		// It returns the scaled image.
 		FIBITMAP *pScaledImage = FreeImage_Rescale( m_pFreeImageBitMap, dest_width, dest_height, FILTER_BILINEAR/*filter*/ );
 		Reset( pScaledImage );
+		return true;
+	}
+	else
 		return false;
+}
+
+
+inline bool CBitmapImage::FlipVertical()
+{
+	if( m_pFreeImageBitMap )
+	{
+		BOOL res = FreeImage_FlipVertical( m_pFreeImageBitMap );
+		return res ? true : false;
 	}
 	else
 		return false;
