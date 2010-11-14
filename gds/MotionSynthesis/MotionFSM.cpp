@@ -809,7 +809,7 @@ void CMotionGraphManager::GetDebugInfo( std::string& dest_text_buffer )
 {
 	dest_text_buffer = "motion graph manager\n";
 	dest_text_buffer += "-------------------------\n";
-	dest_text_buffer += to_string( (int)m_vecpMotionFSM.size() ) + "FSM(s) in total\n";
+	dest_text_buffer += to_string( (int)m_vecpMotionFSM.size() ) + " FSM(s) in total\n";
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 	{
 		dest_text_buffer += fmt_string( "[%d] name: %s\n", (int)i, m_vecpMotionFSM[i]->GetName().c_str() );
