@@ -8,6 +8,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/SafeDeleteVector.hpp"
+#include "Support/BitmapImage.hpp"
 
 #include "Support/Serialization/BinaryDatabase.hpp"
 

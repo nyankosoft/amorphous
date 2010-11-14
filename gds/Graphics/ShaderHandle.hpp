@@ -3,7 +3,6 @@
 
 
 #include "GraphicsResourceHandle.hpp"
-#include "GraphicsResourceManager.hpp"
 
 
 class CShaderHandle : public CGraphicsResourceHandle

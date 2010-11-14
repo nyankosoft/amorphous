@@ -4,7 +4,6 @@
 
 #include "fwd.hpp"
 #include "GraphicsResourceHandle.hpp"
-#include "GraphicsResourceManager.hpp"
 
 #include "Support/Serialization/ArchiveObjectBase.hpp"
 using namespace GameLib1::Serialization;

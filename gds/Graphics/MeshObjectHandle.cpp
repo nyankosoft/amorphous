@@ -1,6 +1,5 @@
 #include "MeshObjectHandle.hpp"
 #include "GraphicsResourceManager.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;

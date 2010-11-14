@@ -7,9 +7,12 @@ using namespace MeshModel;
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceEntries.hpp"
 #include "Support/SafeDelete.hpp"
-#include "Support/BitmapImage.hpp"
+#include "Support/stream_buffer.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
+
+
+class CBitmapImage;
 
 
 const std::string g_NullString = "";

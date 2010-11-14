@@ -10,6 +10,7 @@
 #include "Graphics/Meshgenerators.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "3DMath/MatrixConversions.hpp"
+#include "Support/SafeDelete.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ParamLoader.hpp"
