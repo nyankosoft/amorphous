@@ -1,7 +1,6 @@
 #include "HLSLEffectTest.hpp"
 #include "gds/3DMath/MatrixConversions.hpp"
 #include "gds/Graphics.hpp"
-//#include "gds/Graphics/AsyncResourceLoader.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
@@ -180,26 +179,6 @@ bool CHLSLEffectTest::InitShaders()
 	}
 
 	return true;
-}
-
-
-inline CTextureFont* CreateDefaultBuiltinFontRawPtr()
-{
-	CTextureFont *pTexFont = new CTextureFont;
-	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
-	pTexFont->SetFontSize( 6, 12 );
-	return pTexFont;
-}
-
-
-inline boost::shared_ptr<CTextureFont> CreateDefaultBuiltinFont()
-{
-	boost::shared_ptr<CTextureFont> pTexFont( CreateDefaultBuiltinFontRawPtr() );
-	return pTexFont;
-//	boost::shared_ptr<CTextureFont> pTexFont( new CTextureFont );
-//	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
-//	pTexFont->SetFontSize( 6, 12 );
-//	return pTexFont;
 }
 
 
@@ -387,7 +366,7 @@ void CHLSLEffectTest::HandleInput( const SInputData& input )
 	case GIC_UP:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_CurrentShaderIndex = (m_CurrentShaderIndex + (int)m_Shaders.size() - 1) / (int)m_Shaders.size(); 
+			m_CurrentShaderIndex = (m_CurrentShaderIndex + (int)m_Shaders.size() - 1) % (int)m_Shaders.size(); 
 		}
 		break;
 
@@ -404,7 +383,7 @@ void CHLSLEffectTest::HandleInput( const SInputData& input )
 	case GIC_PAGE_UP:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_CurrentMeshIndex = (m_CurrentMeshIndex + (int)m_vecMesh.size() - 1) / (int)m_vecMesh.size(); 
+			m_CurrentMeshIndex = (m_CurrentMeshIndex + (int)m_vecMesh.size() - 1) % (int)m_vecMesh.size(); 
 		}
 		break;
 

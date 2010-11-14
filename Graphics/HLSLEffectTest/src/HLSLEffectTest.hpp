@@ -73,8 +73,6 @@ class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	boost::shared_ptr<CFontBase> m_pFont;
 
-	CInputHandlerSharedPtr m_pInputHandler;
-
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	char m_TextBuffer[TEXT_BUFFER_SIZE];
