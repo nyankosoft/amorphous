@@ -23,4 +23,24 @@ public:
 };
 
 
+inline const char *GetSurfaceFormatName( TextureFormat::Format format )
+{
+	switch( format )
+	{
+	case TextureFormat::R16F:          return "R16F";
+	case TextureFormat::R32F:          return "R32F";
+	case TextureFormat::A16R16G16B16F: return "A16R16G16B16F";
+	case TextureFormat::A8R8G8B8:      return "A8R8G8B8";
+	case TextureFormat::X8R8G8B8:      return "X8R8G8B8";
+	case TextureFormat::R5G6B5:        return "R5G6B5";
+	case TextureFormat::A1R5G5B5:      return "A1R5G5B5";
+	case TextureFormat::G16R16F:       return "G16R16F";
+	case TextureFormat::G32R32F:       return "G32R32F";
+	default:
+		return "(an unknown surface format)";
+	}
+
+}
+
+
 #endif		/*  __SurfaceFormat_HPP__  */
