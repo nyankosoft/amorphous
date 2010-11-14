@@ -152,7 +152,7 @@ bool CTextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
 		bitmap.m_papTexelRow,
 		grayscale_levels ) );
 
-	string resource_name = "<CSimpleBitmapFontData name=\n" + string(bitmap.m_pName) + "\">";
+	string resource_name = "<CSimpleBitmapFontData name='" + string(bitmap.m_pName) + "'>";
 
 	desc.ResourcePath = resource_name;
 	desc.Width  = bitmap.m_Width;
