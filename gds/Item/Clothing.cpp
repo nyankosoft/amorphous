@@ -42,4 +42,6 @@ void CClothing::Serialize( IArchive& ar, const unsigned int version )
 void CClothing::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGameItem::LoadFromXMLNode( reader );
+
+	reader.GetAttributeValue( "cloth_simulation", m_ApplyClothSimulation );
 }
