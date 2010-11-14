@@ -1,6 +1,6 @@
 #include "LogOutputBase.hpp"
-#include <gds/Support/SafeDelete.hpp>
-#include <gds/base.hpp>
+#include "../../base.hpp"
+#include <boost/algorithm/string/replace.hpp>
 
 using namespace std;
 
@@ -145,10 +145,13 @@ CLogOutput_HTML::~CLogOutput_HTML()
 
 void CLogOutput_HTML::Print( const CLogMessage& msg )
 {
-	string strText;
-	if( msg.m_Text[ msg.m_Text.size() - 1 ] == '\n' )
-		strText = msg.m_Text.substr( 0, msg.m_Text.size() - 1 );
+	string text_in_html( msg.m_Text );
 
+	if( text_in_html[ text_in_html.size() - 1 ] == '\n' )
+		text_in_html = text_in_html.substr( 0, text_in_html.size() - 1 );
+
+	boost::replace_all( text_in_html, "<", "&lt;" );
+	boost::replace_all( text_in_html, ">", "&gt;" );
 
 	int color_index = msg.m_FilterVal & 0x000000FF;	// take out the warning level index from the lowest 8-bits
 	clamp( color_index, 0, NUM_LOGWARNINGLEVELS - 1 );
@@ -157,7 +160,7 @@ void CLogOutput_HTML::Print( const CLogMessage& msg )
 
 	m_OutputFileStream <<
 		"	<tr><td align=\"center\">" + font_tag + msg.m_Time
-		+ "</font></td><td>" + font_tag + msg.m_Text + "</font></td></tr>\n";
+		+ "</font></td><td>" + font_tag + text_in_html + "</font></td></tr>\n";
 
 	m_OutputFileStream.flush();
 }
