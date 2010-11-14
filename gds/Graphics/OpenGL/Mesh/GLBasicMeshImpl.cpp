@@ -1,10 +1,7 @@
 #include "GLBasicMeshImpl.hpp"
 #include "../GLExtensions.hpp"
-
+#include "../GLGraphicsDevice.hpp" // for LOG_GL_ERROR() macro
 #include "Graphics/Shader/ShaderManager.hpp"
-//#include "Graphics/MeshModel/MeshBone.hpp"
-//using namespace MeshModel;
-
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
@@ -133,8 +130,25 @@ bool CGLBasicMeshImpl::LoadFromFile( const std::string& filename, U32 option_fla
 }
 
 
+bool IsValidMeshModelArchive( C3DMeshModelArchive& archive )
+{
+	if( !archive.GetVertexIndex().empty()
+	 && 0 < archive.GetVertexSet().GetNumVertices() )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
+	if( !IsValidMeshModelArchive( archive ) )
+		return false;
+
 	// copy the contents from the archive
 
 	m_strFilename = filename;
@@ -225,7 +239,8 @@ void CGLBasicMeshImpl::BuildVBOs( C3DMeshModelArchive& archive )
 		glBufferData/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, num_vertices*4*sizeof(float), &(vert_set.vecDiffuseColor[0]), GL_STATIC_DRAW/*_ARB*/ );
 	}
 
-	if( vffs & CMMA_VertexSet::VF_2D_TEXCOORD0 )
+	if( vffs & CMMA_VertexSet::VF_2D_TEXCOORD0
+	 && !vert_set.vecTex[0].empty() )
 	{
 		// Generate And Bind The Texture Coordinate Buffer
 		glGenBuffers/*ARB*/( 1, &m_TexCoordBuffer );							// Get A Valid Name
@@ -447,6 +462,8 @@ void CGLBasicMeshImpl::Render()
 		vector<CTextureHandle>& vecTex = m_vecMaterial[0].Texture;
 		for( int j=0; j<(int)vecTex.size(); j++ )
 			glBindTexture( GL_TEXTURE_2D, vecTex[j].GetGLTextureID() );
+
+		LOG_GL_ERROR( "glBindTexture() failed." );
 	}
 
 	// Render
@@ -456,57 +473,6 @@ void CGLBasicMeshImpl::Render()
 	// Disable Pointers
 	glDisableClientState( GL_VERTEX_ARRAY );					// Disable Vertex Arrays
 	glDisableClientState( GL_TEXTURE_COORD_ARRAY );				// Disable Texture Coord Arrays
-
-/*
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-	LPD3DXMESH pMesh = m_pMesh;
-
-	//We use only the first texture stage (stage 0)
-	pd3dDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
-	pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
-
-	// color arguments on texture stage 0
-	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-
-	// alpha arguments on texture stage 0
-	pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-	pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-
-	// alpha-blending settings 
-	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-
-    // Meshes are divided into subsets by materials. Render each subset in a loop
-//	HRESULT hr;
-	LPDIRECT3DTEXTURE9 pTex = NULL;
-    for( int i=0; i<m_NumMaterials; i++ )
-    {
-        // Set the material and texture for this subset
-		pd3dDevice->SetMaterial( &m_pMeshMaterials[i] );
-
-//		if( FAILED(hr) ) MessageBox(NULL, "SetMaterial() Failed", "Error", MB_OK|MB_ICONWARNING);
-
-		if( pTex = GetTexture(i,0).GetTexture() )
-		{
-			// blend color & alpha of vertex & texture
-			pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
-			pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE );
-		}
-		else
-		{
-			// no texture for this material - use only the vertx color & alpha
-			pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG1 );
-			pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1 );
-		}
-
-		pd3dDevice->SetTexture( 0, pTex );
-
-        // Draw the mesh subset
-        m_pMesh->DrawSubset( i );
-    }
-*/
 }
 
 

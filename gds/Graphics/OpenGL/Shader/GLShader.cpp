@@ -2,6 +2,7 @@
 #include <gl/gl.h>
 #include "gds/Graphics/OpenGL/Shader/GLSLShaderLightManager.hpp"
 #include "gds/Support/lfs.hpp"
+#include "gds/Support/SafeDelete.hpp"
 
 using namespace std;
 using namespace boost;

@@ -16,6 +16,47 @@ using namespace std;
 using namespace boost;
 
 
+class CGLLockedTexture : public CLockedTexture
+{
+	boost::shared_ptr<CBitmapImage> m_pImage;
+
+public:
+
+	CGLLockedTexture( boost::shared_ptr<CBitmapImage>& pImage )
+		:
+	m_pImage(pImage)
+	{}
+
+	int GetWidth() { return (int)m_pImage->GetWidth(); }
+
+	int GetHeight() { return (int)m_pImage->GetHeight(); }
+
+	bool IsValid() const { return (m_pImage && 0 < m_pImage->GetWidth() && 0 < m_pImage->GetHeight()); }
+
+	void SetPixelARGB32( int x, int y, U32 argb_color )
+	{
+		SFloatRGBAColor color;
+		color.SetARGB32( argb_color );
+		m_pImage->SetPixel( x, y, color );
+	}
+
+	void SetAlpha( int x, int y, U8 alpha )
+	{
+//		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
+	}
+
+	void Clear( U32 argb_color )
+	{
+		SFloatRGBAColor color;
+		color.SetARGB32( argb_color );
+
+		Clear( color );
+	}
+
+	void Clear( const SFloatRGBAColor& color ) { m_pImage->FillColor( color ); }
+};
+
+
 CGLTextureResource::CGLTextureResource( const CTextureResourceDesc *pDesc )
 :
 CTextureResource(pDesc)
@@ -109,6 +150,56 @@ void GetSrcPixelTypeAndFormat( CBitmapImage& img, GLenum& src_format, GLenum& sr
 }
 
 
+inline static int CalcNumMipmaps( int src )
+{
+	return (1 < src) ? (CalcNumMipmaps(src/2)+1) : 1;
+}
+
+
+inline static int GetNumMipmaps( const CTextureResourceDesc& desc )
+{
+	if( 0 < desc.MipLevels )
+		return desc.MipLevels;
+	else
+		return take_min( CalcNumMipmaps(desc.Width), CalcNumMipmaps(desc.Height) );
+}
+
+
+// Create texture from a bitmap image
+// \param src_img [in] the source image. NOTE: the image is altered by one or more scaling operations to create mipmap textures.
+bool CGLTextureResource::CreateGLTextureFromBitmapImage( CBitmapImage& src_image )
+{
+	GLenum src_format = GL_RGB;
+	GLenum src_type   = GL_UNSIGNED_BYTE;
+	GetSrcPixelTypeAndFormat( src_image, src_format, src_type );
+
+	int num_mipmaps = GetNumMipmaps( m_TextureDesc );
+
+	int next_width  = m_TextureDesc.Width;
+	int next_height = m_TextureDesc.Height;
+	for( int i=0; i<num_mipmaps; i++ )
+	{
+		if( 0 < i )
+		{
+			// Scale the image to the half in width and height to create the mipmap texture(s).
+			next_width  /= 2;
+			next_height /= 2;
+			bool rescaled = src_image.Rescale( next_width, next_height );
+			if( !rescaled )
+			{
+				LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d, path=%s", i, m_TextureDesc.ResourcePath.c_str() ) );
+//				LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d", i ) );
+				break;
+			}
+		}
+
+		bool res = UpdateGLTextureImage( GL_TEXTURE_2D, i, next_width, next_height, src_format, src_type, FreeImage_GetBits(src_image.GetFBITMAP()) );
+	}
+
+	return true;//CreateGLTexture( GL_TEXTURE_2D, src_format, src_type, FreeImage_GetBits(img.GetFBITMAP()) );
+}
+
+
 /*
 FIC_MINISBLACK Monochrome bitmap (1-bit) : first palette entry is black. Palletised bitmap (4 or 8-bit) and single channel non standard bitmap: the bitmap has a greyscale palette
 FIC_MINISWHITE Monochrome bitmap (1-bit) : first palette entry is white. Palletised bitmap (4 or 8-bit) : the bitmap has an inverted greyscale palette
@@ -123,67 +214,53 @@ bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 {
 	CBitmapImage img;
 	bool loaded = img.LoadFromFile( filepath );
-
-	FIBITMAP *pFIBitmap = img.GetFBITMAP();
-
-	if( !pFIBitmap )
-	{
+	if( !loaded )
 		return false;
-	}
 
-	BOOL res = FreeImage_FlipVertical( pFIBitmap );
+	bool res = img.FlipVertical();
 
 	m_TextureDesc.Width  = img.GetWidth();
 	m_TextureDesc.Height = img.GetHeight();
 
-	GLenum src_format = GL_RGB;
-	GLenum src_type   = GL_UNSIGNED_BYTE;
-	GetSrcPixelTypeAndFormat( img, src_format, src_type );
-
 //	GetSourcePixelType( img );
 
-	return CreateGLTexture( GL_TEXTURE_2D, src_format, src_type, FreeImage_GetBits(img.GetFBITMAP()) );
+	glGenTextures( 1, &m_TextureID );
+
+	LOG_GL_ERROR( "glGenTextures() failed." );
+
+	return CreateGLTextureFromBitmapImage( img );
 }
 
 
 /// Creates an empty texture
 bool CGLTextureResource::Create()
 {
-	return CreateGLTexture( GL_PROXY_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
-}
-
-
-static int to_gl_mip_level( int texture_desc_mip_levels )
-{
-	if( texture_desc_mip_levels == 0 )
-	{
-		// Create a complete mipmap chain
-		return 8;
-	}
-	else
-	{
-		return texture_desc_mip_levels - 1;
-	}
-}
-
-
-bool CGLTextureResource::CreateGLTexture( GLenum target, const GLenum& src_format, const GLenum& src_type, void *pImageData )
-{
 	glGenTextures( 1, &m_TextureID );
 
 	LOG_GL_ERROR( "glGenTextures() failed." );
+
+	int level = 0;
+	return UpdateGLTextureImage( GL_PROXY_TEXTURE_2D, level, m_TextureDesc.Width, m_TextureDesc.Height, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+}
+
+
+bool CGLTextureResource::UpdateGLTextureImage( GLenum target, int level, int width, int height, const GLenum& src_format, const GLenum& src_type, void *pImageData )
+{
+//	glGenTextures( 1, &m_TextureID );
+
+//	LOG_GL_ERROR( "glGenTextures() failed." );
 
 	glBindTexture( GL_TEXTURE_2D, m_TextureID );
 
 	LOG_GL_ERROR( "glBindTexture() failed." );
 
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
 	CTextureResourceDesc& desc = m_TextureDesc;
 
-	GLint level = 0;
-//	GLint level = to_gl_mip_level( desc.MipLevels );
+//	GLint level = 0;
+//	GLint level = (0 < desc.MipLevels) ? (desc.MipLevels - 1) : min( mip_level_calc(desc.Width), mip_level_calc(desc.Height) );
 
 	GLint internal_format = ToGLInternalFormat( desc.Format );
 	internal_format = GL_RGBA8;
@@ -193,19 +270,37 @@ bool CGLTextureResource::CreateGLTexture( GLenum target, const GLenum& src_forma
 //	vector<uchar> fake_img_data;
 //	fake_img_data.resize( desc.Width * desc.Height * 3, 0x80 );
 
-	glTexImage2D( target,                 // GLenum target,
-				  level,                  // GLint level,
-				  internal_format,        // GLint internalformat,
-				  desc.Width,             // GLsizei width,
-				  desc.Height,            // GLsizei height,
-				  0,                      // GLint border,
-				  src_format,             // GLenum format,
-				  src_type,               // GLenum type
-				  pImageData // const GLvoid *pixels
-				  //&(fake_img_data[0]) // const GLvoid *pixels
-				  );
+	if( true )//desc.MipLevels == 1 )
+	{
+		glTexImage2D( target,                 // GLenum target,
+					  level,                  // GLint level,
+					  internal_format,        // GLint internalformat,
+					  width,                  // GLsizei width,
+					  height,                 // GLsizei height,
+					  0,                      // GLint border,
+					  src_format,             // GLenum format,
+					  src_type,               // GLenum type
+					  pImageData // const GLvoid *pixels
+					  //&(fake_img_data[0]) // const GLvoid *pixels
+					  );
 
-	LOG_GL_ERROR( "error in glTexImage2D(): " );
+		LOG_GL_ERROR( fmt_string( "glTexImage2D() failed: level=%d, width=%d, height=%d", level, width, height ).c_str() );
+	}
+/*	else
+	{
+		// Build the complete mipmap chain
+		gluBuild2DMipmaps(
+			target,
+			internal_format,
+			desc.Width,
+			desc.Height,
+			src_format,
+			src_type,
+			pImageData );
+	}*/
+
+
+//	LOG_GL_ERROR( "error in glTexImage2D(): " );
 
 	return true;
 /*
@@ -226,10 +321,24 @@ bool CGLTextureResource::CreateFromDesc()
 {
 	const CTextureResourceDesc& desc = m_TextureDesc;
 
-	// create an empty texture
-	bool created = Create();
+	glGenTextures( 1, &m_TextureID );
 
-	if( Lock( 0 ) && m_pLockedTexture->IsValid() )
+	LOG_GL_ERROR( "glGenTextures() failed." );
+
+	// create an empty texture
+//	bool created = Create();
+//	if( !created )
+//		return false;
+
+	int bpp = 32;
+//	if( desc.Format == TextureFormat::X8R8G8B8 )
+//		bpp = 24;
+
+	m_pLockedImage.reset( new CBitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
+
+	shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
+
+	if( pLockedTex->IsValid() )
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
@@ -237,10 +346,12 @@ bool CGLTextureResource::CreateFromDesc()
 		if( pLoader )
 		{
 			// Let the user-defined routine to fill the texture
-			pLoader->FillTexture( *(m_pLockedTexture.get()) );
+			pLoader->FillTexture( *(pLockedTex.get()) );
 		}
 
-		Unlock();
+		CreateGLTextureFromBitmapImage( *m_pLockedImage );
+
+//		Unlock();
 
 		SetState( GraphicsResourceState::LOADED );
 
@@ -261,152 +372,14 @@ U32 ARGB32toRGBA32( U32 src )
 }
 
 
-class CGLLockedTextureRGBA32 : public CLockedTexture
-{
-	shared_ptr< C2DArray<U32> > m_pImageBuffer;
-
-public:
-
-	CGLLockedTextureRGBA32( shared_ptr< C2DArray<U32> > pImgBuffer )
-		:
-	m_pImageBuffer(pImgBuffer)
-	{}
-
-	int GetWidth() { return (int)m_pImageBuffer->size_x(); };
-
-	int GetHeight() { return (int)m_pImageBuffer->size_y(); };
-
-	bool IsValid() const { return (m_pImageBuffer && 0 < m_pImageBuffer->size_x() && 0 < m_pImageBuffer->size_y()); }
-
-	void SetPixelARGB32( int x, int y, U32 argb_color )
-	{
-//		C2DArray<SFloatRGBAColor>& img_buffer = (*m_pImageBuffer.get());
-		(*m_pImageBuffer)(x,y) = ARGB32toRGBA32( argb_color );
-	}
-
-	void SetAlpha( int x, int y, U8 alpha )
-	{
-//		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
-	}
-
-	void Clear( U32 argb_color )
-	{
-		U32 rgba_color = ARGB32toRGBA32( argb_color );
-
-		C2DArray<U32>& img_buffer = *m_pImageBuffer;
-		img_buffer.resize( img_buffer.size_x(), img_buffer.size_y(), rgba_color );
-	}
-
-	void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
-};
-
-
-class CGLLockedTexture : public CLockedTexture
-{
-	shared_ptr< C2DArray<SFloatRGBAColor> > m_pImageBuffer;
-
-public:
-
-	CGLLockedTexture( shared_ptr< C2DArray<SFloatRGBAColor> > pImgBuffer )
-		:
-	m_pImageBuffer(pImgBuffer)
-	{}
-
-	int GetWidth() { return (int)m_pImageBuffer->size_x(); };
-
-	int GetHeight() { return (int)m_pImageBuffer->size_y(); };
-
-	bool IsValid() const { return (m_pImageBuffer && 0 < m_pImageBuffer->size_x() && 0 < m_pImageBuffer->size_y()); }
-
-	void SetPixelARGB32( int x, int y, U32 argb_color )
-	{
-		C2DArray<SFloatRGBAColor>& img_buffer = (*m_pImageBuffer.get());
-
-		SFloatRGBAColor color;
-		color.SetARGB32( argb_color );
-		img_buffer(x,y) = color;
-	}
-
-	void SetAlpha( int x, int y, U8 alpha )
-	{
-//		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
-	}
-
-	void Clear( U32 argb_color )
-	{
-		SFloatRGBAColor color;
-		color.SetARGB32( argb_color );
-
-		C2DArray<SFloatRGBAColor>& img_buffer = *m_pImageBuffer;
-		img_buffer.resize( img_buffer.size_x(), img_buffer.size_y(), color );
-	}
-
-	void Clear( const SFloatRGBAColor& color ) { Clear( color.GetARGB32() ); }
-};
-
-
 bool CGLTextureResource::Lock( uint mip_level )
 {
-	// allocate buffer
-
-	// CBitmapImage <<< currently has no function to create an empty image?
-
-	if( true /*format == RGBA32*/ )
-	{
-		m_pLockedTextureRGBA32ImageBuffer = shared_ptr< C2DArray<U32> >( new C2DArray<U32> );
-		m_pLockedTextureRGBA32ImageBuffer->resize( m_TextureDesc.Width, m_TextureDesc.Height );
-		m_pLockedTexture = shared_ptr<CGLLockedTextureRGBA32>( new CGLLockedTextureRGBA32(m_pLockedTextureRGBA32ImageBuffer) );
-	}
-	else
-	{
-		m_pLockedTextureImageBuffer = shared_ptr< C2DArray<SFloatRGBAColor> >( new C2DArray<SFloatRGBAColor> );
-		m_pLockedTextureImageBuffer->resize( m_TextureDesc.Width, m_TextureDesc.Height );
-		m_pLockedTexture = shared_ptr<CGLLockedTexture>( new CGLLockedTexture(m_pLockedTextureImageBuffer) );
-	}
-
 	return true;
 }
 
 
 bool CGLTextureResource::Unlock()
 {
-//	m_pImageBuffer.reset();
-
-	if( m_TextureDesc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
-	{
-		GLint level = 0;
-//		GLint level = to_gl_mip_level( m_TextureDesc.MipLevels );
-
-		void *pixels = NULL;
-		if( true /*format == RGBA32*/ )
-		{
-			if( m_pLockedTextureRGBA32ImageBuffer )
-				pixels = &((*m_pLockedTextureRGBA32ImageBuffer)(0,0));
-		}
-		else
-		{
-			if( m_pLockedTextureImageBuffer )
-				pixels = &((*m_pLockedTextureImageBuffer)(0,0));
-		}
-
-//		vector<char> dummy;
-//		dummy.resize( m_TextureDesc.Width * m_TextureDesc.Height * sizeof(U32), 0 );
-
-		glBindTexture( GL_TEXTURE_2D, m_TextureID );
-
-		glTexImage2D( GL_TEXTURE_2D,          // GLenum target,
-					  level,                  // GLint level,
-					  GL_RGBA8,               // GLint internalformat,
-					  m_TextureDesc.Width,    // GLsizei width,
-					  m_TextureDesc.Height,   // GLsizei height,
-					  0,                      // GLint border,
-					  GL_RGBA,                // GLenum format,
-					  GL_UNSIGNED_BYTE,       // GLenum type
-					  pixels                  // const GLvoid *pixels
-					  //&dummy[0]
-					  );
-	}
-
 	return true;
 }
 

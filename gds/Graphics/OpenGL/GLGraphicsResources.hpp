@@ -7,7 +7,8 @@
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include <gl/gl.h>
 
-#include "Support/2DArray.hpp"
+//#include "Support/2DArray.hpp"
+#include "Support/BitmapImage.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
@@ -18,11 +19,13 @@ class CGLTextureResource : public CTextureResource
 {
 	GLuint m_TextureID;
 
-	boost::shared_ptr<CLockedTexture> m_pLockedTexture;
+//	boost::shared_ptr<CLockedTexture> m_pLockedTexture;
 
-	boost::shared_ptr< C2DArray<SFloatRGBAColor> > m_pLockedTextureImageBuffer;
+//	boost::shared_ptr< C2DArray<SFloatRGBAColor> > m_pLockedTextureImageBuffer;
 
-	boost::shared_ptr< C2DArray<U32> > m_pLockedTextureRGBA32ImageBuffer;
+//	boost::shared_ptr< C2DArray<U32> > m_pLockedTextureRGBA32ImageBuffer;
+
+	boost::shared_ptr<CBitmapImage> m_pLockedImage;
 
 protected:
 
@@ -41,6 +44,10 @@ protected:
 //	void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc );
 
 	bool CreateGLTexture( GLenum target, const GLenum& src_format, const GLenum& src_type, void *pImageData );
+
+	bool UpdateGLTextureImage( GLenum target, int level, int width, int height, const GLenum& src_format, const GLenum& src_type, void *pImageData );
+
+	bool CreateGLTextureFromBitmapImage( CBitmapImage& src_img );
 
 public:
 

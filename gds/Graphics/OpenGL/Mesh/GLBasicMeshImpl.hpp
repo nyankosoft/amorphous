@@ -34,8 +34,6 @@ private:
 
 	int m_NumIndices;
 
-	std::vector<CMeshMaterial> m_vecMaterial;
-
 private:
 
 	void BuildVBOs( C3DMeshModelArchive& archive );

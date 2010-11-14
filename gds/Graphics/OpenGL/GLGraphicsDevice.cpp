@@ -38,7 +38,7 @@ void LogGLError( const char *fname, const char *msg )
 	}
 
 	if( 0 < errors_text.length() )
-		LOG_PRINT_ERROR( " OpenGL error(s) in function " + string(fname) + "() - " + string(msg) + " " + errors_text );
+		LOG_PRINT_ERROR( " OpenGL error(s) '" + errors_text + "' in function " + string(fname) + "() - " + string(msg) );
 }
 
 
