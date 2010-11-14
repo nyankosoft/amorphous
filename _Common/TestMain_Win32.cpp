@@ -13,6 +13,7 @@
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Profile.hpp"
+#include "gds/Support/BitmapImage.hpp"
 #include "gds/Support/lfs.hpp"
 #include "gds/Input.hpp"
 #include "gds/Input/StdMouseInput.hpp"
@@ -296,6 +297,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	CLogOutput_HTML html_log( GetAppTitle() + "_" + string(GetBuildInfo()) + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
+
+	InitFreeImageErrorReport();
 
 	// Create the instance of the test class
 	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );
