@@ -114,6 +114,15 @@ class CStageMiscUtility : public CStageUtility
 								  const std::string& material_name,
 								  bool static_actor );
 
+	CEntityHandle<> CreateCylinderEntity( CMeshResourceDesc& mesh_desc,
+							  const std::string& entity_name,
+							  const std::string& entity_attributes_name,
+							  const Matrix34& pose,
+							  const Vector3& vel,
+							  float mass,
+							  const std::string& material_name,
+							  bool static_actor );
+
 	CEntityHandle<> CreateTriangleMeshEntityFromMesh( const char *mesh_resource_name,
 							const char *collision_mesh_name,
 							const Matrix34& pose,
@@ -179,6 +188,30 @@ public:
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
 */
+
+
+	CEntityHandle<> CreateCylinderFromMesh( const char *mesh_resource_name,
+							const Matrix34& pose = Matrix34Identity(),
+							float mass = 1.0f,
+							const std::string& material_name = "default",
+							const std::string& entity_name = "",
+							const std::string& entity_attributes_name = "" );
+
+	CEntityHandle<> CreateStaticCylinderFromMesh( const char *mesh_resource_name,
+								const Matrix34& pose = Matrix34Identity(),
+								float mass = 1.0f,
+								const std::string& material_name = "default",
+								const std::string& entity_name = "",
+								const std::string& entity_attributes_name = "" )
+	{
+		CMeshResourceDesc mesh_desc;
+		mesh_desc.ResourcePath = mesh_resource_name;
+		Vector3 vel( Vector3(0,0,0) );
+		std::string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";
+
+		return CreateCylinderEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, true );
+	}
+
 	/// Creates a static triangle mesh actor from a graphics mesh file
 	CEntityHandle<> CreateStaticTriangleMeshFromMesh( const char *mesh_resource_path,
 		                    const char *collision_mesh_name,

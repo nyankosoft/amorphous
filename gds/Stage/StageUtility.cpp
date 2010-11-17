@@ -21,7 +21,6 @@
 
 using namespace std;
 using namespace boost;
-using namespace physics;
 
 
 bool resources_exists( const std::string& resource_path )
@@ -34,7 +33,7 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 								const std::string& base_name,
 								const Matrix34& pose,
 								const Vector3& vel,
-								CActorDesc *pPhysActorDesc )
+								physics::CActorDesc *pPhysActorDesc )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
@@ -322,6 +321,11 @@ CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::strin
 //========================================================================================
 
 #include "Stage/BE_Skybox.hpp"
+#include "Graphics/MeshModel/General3DMesh.hpp"
+#include "Physics/ConvexShapeDesc.hpp"
+#include "Physics/ConvexMesh.hpp"
+
+using namespace physics;
 
 
 Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box_desc )
@@ -341,6 +345,57 @@ Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box
 	// TODO: let client code specify a material by name
 //	box_desc.MaterialName = material_name;
 	box_desc.MaterialIndex = 1;
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name SetCylinderConvexShapeDesc( CMeshObjectHandle& mesh_handle, CConvexShapeDesc& convex_desc )
+{
+	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	if( !pMesh || pMesh->GetNumMaterials() == 0 )
+		return Result::UNKNOWN_ERROR;
+
+	// pMesh (above) == graphical representation of the cylinder and may contain redundant vertex unweldings and polygon subdivisions
+	// pCylinderMesh (below) == 
+
+	shared_ptr<CGeneral3DMesh> pCylinderMesh( new CGeneral3DMesh );
+
+//	const AABB3 aabb = pMesh->GetAABB();
+	AABB3 aabb;
+	aabb.Nullify();
+	for( int i=0; i<pMesh->GetNumMaterials(); i++ )
+		aabb.MergeAABB( pMesh->GetAABB(i) );
+
+	static const int cylinder_mesh_side_subdivisions = 16;
+
+	// Assumes that the cylinder mesh is upright position in model space
+	CCylinderDesc cylinder_desc;
+	cylinder_desc.height    = aabb.vMax.y - aabb.vMin.y;
+	cylinder_desc.radii[0]  = aabb.vMax.x - aabb.vMin.x;
+	cylinder_desc.radii[1]  = aabb.vMax.z - aabb.vMin.z;
+	cylinder_desc.num_sides = cylinder_mesh_side_subdivisions;
+//	cylinder_desc.vertices_welding = WELDED;
+	CreateCylinderMesh( cylinder_desc, *pCylinderMesh );
+
+	CTriangleMeshDesc convex_mesh_desc;
+	physics::CStream convex_mesh_stream;
+	Result::Name res = physics::Preprocessor().CreateConvexMeshStream( convex_mesh_desc, convex_mesh_stream );
+
+	CConvexMesh *pConvexMesh = physics::PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
+	if( !pConvexMesh )
+		return Result::UNKNOWN_ERROR;
+
+	convex_desc.pConvexMesh = pConvexMesh;
+
+	// Where can I release pConvexMesh?
+
+	if( pCylinderMesh->GetPolygonBuffer().empty() )
+		return Result::UNKNOWN_ERROR;
+
+	// TODO: let client code specify a material by name
+//	convex_desc.MaterialName = material_name;
+	convex_desc.MaterialIndex = 1;
 
 	return Result::SUCCESS;
 }
@@ -424,6 +479,35 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 }
 
 
+CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( CMeshResourceDesc& mesh_desc,
+							  const std::string& entity_name,
+							  const std::string& entity_attributes_name,
+							  const Matrix34& pose,
+							  const Vector3& vel,
+							  float mass,
+							  const std::string& material_name,
+							  bool static_actor )
+{
+	CMeshObjectHandle mesh;
+	bool loaded = mesh.Load( mesh_desc );
+	if( !loaded )
+		return CEntityHandle<>();
+
+	CConvexShapeDesc convex_shape_desc;
+	Result::Name res = SetCylinderConvexShapeDesc( mesh, convex_shape_desc );
+	if( res != Result::SUCCESS )
+		return CEntityHandle<>();
+
+	vector<CShapeDesc *> vecpShapeDesc;
+	vecpShapeDesc.push_back( &convex_shape_desc );
+
+//	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
+//	actor_desc.BodyDesc.fMass = mass;
+
+	return CreatePhysicsEntity( mesh_desc, entity_name, entity_attributes_name, pose, vel, vecpShapeDesc, mass, static_actor );
+}
+
+
 CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 											  SFloatRGBAColor diffuse_color,
 											  const Matrix34& pose,
@@ -498,6 +582,24 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 	Vector3 vel = Vector3(0,0,0);
 
 	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *mesh_resource_name,
+						const Matrix34& pose,
+						float mass,
+						const std::string& material_name,
+						const std::string& entity_name,
+						const std::string& entity_attributes_name )
+{
+	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";
+
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.ResourcePath = mesh_resource_name;
+
+	Vector3 vel = Vector3(0,0,0);
+
+	return CreateCylinderEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
 }
 
 
