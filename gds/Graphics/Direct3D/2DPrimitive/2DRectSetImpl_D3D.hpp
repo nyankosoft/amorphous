@@ -24,6 +24,8 @@ class C2DRectSetImpl_D3D : public C2DRectSetImpl
 {
 	std::vector<TLVERTEX> m_vecRectVertex;
 
+	inline void draw_ffp( int start_rect_index, int num_rects );
+
 public:
 
 	/// position
@@ -258,6 +260,17 @@ inline void C2DRectSetImpl_D3D::AddRects( int num_rects )
 }
 
 
+inline void C2DRectSetImpl_D3D::draw_ffp( int start_rect_index, int num_rects )
+{
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+
+	pd3dDev->SetVertexShader( NULL );
+	pd3dDev->SetPixelShader( NULL );
+
+	draw( start_rect_index, num_rects );
+}
+
+
 inline void C2DRectSetImpl_D3D::Draw( int start_rect_index, int num_rects )
 {
 //	SetBasicRenderStates();
@@ -277,7 +290,7 @@ inline void C2DRectSetImpl_D3D::Draw( int start_rect_index, int num_rects )
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
-	draw( start_rect_index, num_rects );
+	draw_ffp( start_rect_index, num_rects );
 }
 
 
@@ -305,7 +318,7 @@ inline void C2DRectSetImpl_D3D::Draw( int start_rect_index, int num_rects, const
 	hr = pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
 	// draw rectangles
-	draw( start_rect_index, num_rects );
+	draw_ffp( start_rect_index, num_rects );
 }
 
 

@@ -1,5 +1,4 @@
 #include "LensFlare.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
 using namespace std;
@@ -157,8 +156,6 @@ void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 
 void CLensFlare::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
@@ -170,9 +167,6 @@ void CLensFlare::Render()
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
-
-	pd3dDev->SetVertexShader( NULL );
-	pd3dDev->SetPixelShader( NULL );
 
 //	UINT pass, cPasses;
 
