@@ -15,6 +15,7 @@
 #include "Graphics/Direct3D/PrimitiveRenderer_D3D.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
+#include "Graphics/Direct3D/D3DTextureRenderTarget.hpp"
 #include "Graphics/Direct3D/Mesh/D3DCustomMeshRenderer.hpp"
 
 // OpenGL
@@ -22,6 +23,7 @@
 #include "Graphics/OpenGL/PrimitiveRenderer_GL.hpp"
 #include "Graphics/OpenGL/Mesh/GLBasicMeshImpl.hpp"
 #include "Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
+#include "Graphics/OpenGL/GLTextureRenderTarget.hpp"
 #include "Graphics/OpenGL/Mesh/GLCustomMeshRenderer.hpp"
 
 using namespace std;
@@ -42,6 +44,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CD3DMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
+		CTextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
 		CCustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
 
 		// For Direct3D, Use ARGB32 as the default vertex diffuse color format to support fixed function pipeline (FFP).
@@ -57,6 +60,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
 		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CGLMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
+		CTextureRenderTarget::SetInstanceCreationFunction( CGLTextureRenderTarget::Create );
 		CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
 		CCustomMesh::SetDefaultVertexDiffuseColorFormat( CCustomMesh::VCF_FRGBA );
 	}

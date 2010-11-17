@@ -1026,6 +1026,14 @@
 					RelativePath="..\..\gds\Graphics\OpenGL\GLGraphicsResources.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLTextureRenderTarget.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\OpenGL\GLTextureRenderTarget.hpp"
+					>
+				</File>
 				<Filter
 					Name="2DPrimitive"
 					>
@@ -1208,6 +1216,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\Direct3D\D3DSurfaceFormat.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\D3DTextureRenderTarget.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\D3DTextureRenderTarget.hpp"
 					>
 				</File>
 				<File

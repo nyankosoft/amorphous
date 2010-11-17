@@ -1,62 +1,27 @@
-#include "GLTextureRenderTargetImpl.hpp"
+#include "GLTextureRenderTarget.hpp"
 #include "GLExtensions.hpp"
 #include "glext.h"
 #include "GLGraphicsDevice.hpp" // LOG_GL_ERROR macro
 
 
-CTextureRenderTargetImpl::CTextureRenderTargetImpl()
-{
-	m_BackgroundColor = SFloatRGBAColor::Blue();
-}
-
-
-
-CGLTextureRenderTargetImpl::CGLTextureRenderTargetImpl()
+CGLTextureRenderTarget::CGLTextureRenderTarget()
 {
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;
-	m_RenderTargetTexture = 0;
+	m_RenderTargetTextureID = 0;
 
 
 //	m_RenderTargetTexture      = 0;
-
-	m_TextureDesc.UsageFlags = UsageFlag::RENDER_TARGET;
-
-	m_TextureDesc.Width  = 1;
-	m_TextureDesc.Height = 1;
-
-	m_TextureDesc.Format = TextureFormat::A8R8G8B8;
 }
 
 
-CGLTextureRenderTargetImpl::CGLTextureRenderTargetImpl( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
-{
-	m_Framebuffer = 0;
-	m_DepthRenderBuffer = 0;
-	m_RenderTargetTexture = 0;
-
-
-//	m_RenderTargetTexture      = 0;
-
-	m_TextureDesc.UsageFlags = UsageFlag::RENDER_TARGET;
-
-	m_TextureDesc.Width  = texture_width;
-	m_TextureDesc.Height = texture_height;
-
-	m_TextureDesc.Format = texture_format;
-
-
-	LoadTextures();
-}
-
-
-CGLTextureRenderTargetImpl::CGLTextureRenderTargetImpl( const CTextureResourceDesc& texture_desc )
+CGLTextureRenderTarget::CGLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 :
-m_TextureDesc(texture_desc)
+CTextureRenderTarget( texture_width, texture_height, texture_format )
 {
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;
-	m_RenderTargetTexture = 0;
+	m_RenderTargetTextureID = 0;
 
 //	m_RenderTargetTexture      = 0;
 
@@ -64,13 +29,27 @@ m_TextureDesc(texture_desc)
 }
 
 
-CGLTextureRenderTargetImpl::~CGLTextureRenderTargetImpl()
+CGLTextureRenderTarget::CGLTextureRenderTarget( const CTextureResourceDesc& texture_desc )
+:
+CTextureRenderTarget(texture_desc)
+{
+	m_Framebuffer = 0;
+	m_DepthRenderBuffer = 0;
+	m_RenderTargetTextureID = 0;
+
+//	m_RenderTargetTexture      = 0;
+
+	LoadTextures();
+}
+
+
+CGLTextureRenderTarget::~CGLTextureRenderTarget()
 {
 	ReleaseGraphicsResources();
 }
 
 
-void CGLTextureRenderTargetImpl::Release()
+void CGLTextureRenderTarget::Release()
 {
 	// Delete resources
 //	glDeleteTextures(1, &color_tex);
@@ -84,7 +63,7 @@ void CGLTextureRenderTargetImpl::Release()
 }
 
 
-bool CGLTextureRenderTargetImpl::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
+bool CGLTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 {
 	m_TextureDesc.Width  = texture_width;
 	m_TextureDesc.Height = texture_height;
@@ -97,7 +76,7 @@ bool CGLTextureRenderTargetImpl::Init( int texture_width, int texture_height, Te
 }
 
 
-bool CGLTextureRenderTargetImpl::Init( const CTextureResourceDesc& texture_desc )
+bool CGLTextureRenderTarget::Init( const CTextureResourceDesc& texture_desc )
 {
 	m_TextureDesc = texture_desc;
 
@@ -107,7 +86,7 @@ bool CGLTextureRenderTargetImpl::Init( const CTextureResourceDesc& texture_desc 
 }
 
 
-bool CGLTextureRenderTargetImpl::InitScreenSizeRenderTarget()
+bool CGLTextureRenderTarget::InitScreenSizeRenderTarget()
 {
 	m_bScreenSizeRenderTarget = true;
 
@@ -115,14 +94,14 @@ bool CGLTextureRenderTargetImpl::InitScreenSizeRenderTarget()
 }
 
 
-void CGLTextureRenderTargetImpl::ReleaseTextures()
+void CGLTextureRenderTarget::ReleaseTextures()
 {
 //	SAFE_RELEASE( m_RenderTargetTexture );
 }
 
 
 
-bool CGLTextureRenderTargetImpl::LoadTextures()
+bool CGLTextureRenderTarget::LoadTextures()
 {
 	ReleaseTextures();
 
@@ -141,7 +120,7 @@ bool CGLTextureRenderTargetImpl::LoadTextures()
 
 //	GLuint m_Framebuffer;  // color render target
 	GLuint depth_rb = m_DepthRenderBuffer; // depth render target
-	GLuint stencil_rb; // depth render target
+//	GLuint stencil_rb; // depth render target
 
 //	m_TextureDesc = ...;
 
@@ -150,10 +129,10 @@ bool CGLTextureRenderTargetImpl::LoadTextures()
 	GLenum type = GL_FLOAT;
 	GLenum texInternalFormat = GL_RGBA8;
 
-	m_Texture.Load( m_TextureDesc );
+	m_RenderTargetTexture.Load( m_TextureDesc );
 
 	GLenum texTarget = GL_TEXTURE_2D;
-	GLenum filterMode = (texTarget == GL_TEXTURE_RECTANGLE_NV) ? GL_NEAREST : GL_LINEAR;
+	GLenum filter_mode = (texTarget == GL_TEXTURE_RECTANGLE_NV) ? GL_NEAREST : GL_LINEAR;
 /*
 	if (!glh_init_extensions("GL_ARB_fragment_program "
 		"GL_ARB_vertex_program "
@@ -172,7 +151,7 @@ bool CGLTextureRenderTargetImpl::LoadTextures()
 	glGenFramebuffersEXT(1, &m_Framebuffer);
 
 	//	glGenTextures(1, &tex);
-	GLuint tex = m_Texture.GetGLTextureID();
+	GLuint tex = m_RenderTargetTexture.GetGLTextureID();
 
 	glGenRenderbuffersEXT(1, &depth_rb);
 
@@ -188,10 +167,10 @@ bool CGLTextureRenderTargetImpl::LoadTextures()
 
 //	GET_GLERROR(NULL);
 
-	glTexParameterf(texTarget, GL_TEXTURE_MIN_FILTER, filterMode);
-	glTexParameterf(texTarget, GL_TEXTURE_MAG_FILTER, filterMode);
-	glTexParameterf(texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(texTarget, GL_TEXTURE_MIN_FILTER, filter_mode);
+	glTexParameteri(texTarget, GL_TEXTURE_MAG_FILTER, filter_mode);
+	glTexParameteri(texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, 
 		texTarget, tex, 0);
@@ -259,32 +238,13 @@ bool CGLTextureRenderTargetImpl::LoadTextures()
 }
 
 
-void CGLTextureRenderTargetImpl::ReleaseGraphicsResources()
-{
-	ReleaseTextures();
-}
-
-
-void CGLTextureRenderTargetImpl::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-	if( m_bScreenSizeRenderTarget )
-	{
-		// resize the render target texture size for a new screen resolution
-		m_TextureDesc.Width  = GetScreenWidth();
-		m_TextureDesc.Height = GetScreenHeight();
-	}
-
-	LoadTextures();
-}
-
-
-void CGLTextureRenderTargetImpl::CopyRenderTarget()
+void CGLTextureRenderTarget::CopyRenderTarget()
 {
 	//	DIRECT3D9.GetDevice()->GetRenderTargetData( m_RenderTargetSurface, m_RenderTargetCopySurface );
 }
 
 
-void CGLTextureRenderTargetImpl::SetRenderTarget()
+void CGLTextureRenderTarget::SetRenderTarget()
 {
 	// save the current framebuffer
 
@@ -298,7 +258,7 @@ void CGLTextureRenderTargetImpl::SetRenderTarget()
 }
 
 
-void CGLTextureRenderTargetImpl::ResetRenderTarget()
+void CGLTextureRenderTarget::ResetRenderTarget()
 {
 	glPopAttrib();
 
@@ -336,6 +296,7 @@ void CGLTextureRenderTargetImpl::ResetRenderTarget()
 }
 
 
-void CGLTextureRenderTargetImpl::OutputImageFile( const char* filename )
+void CGLTextureRenderTarget::OutputImageFile( const std::string& image_file_path )
 {
+	LOG_PRINT_ERROR( " not implemented." );
 }

@@ -488,14 +488,14 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 
 		C2DTexRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
 		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture() );
+		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );
 //		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
 	}
 	else
 	{
 		C2DTexRect tex_rect( sx, sy, ex, ey, 0xFFFFFFFF );
 		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture() );
+		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );
 //		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
 	}
 

@@ -5,12 +5,11 @@
 #include "BaseEntity.hpp"
 #include "BaseEntityHandle.hpp"
 #include "CopyEntity.hpp"
-
 #include "EntityMotionPathRequest.hpp"
 
+#include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/Camera.hpp"
-
 #include "3DMath/Vector2.hpp"
 #include "3DMath/Quaternion.hpp"
 

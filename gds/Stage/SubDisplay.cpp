@@ -207,7 +207,7 @@ m_pTextureRenderTarget( CTextureRenderTarget::Create() )
 	int dh = (int)(h * 0.2f);
 
 	m_pTextureRenderTarget->Init( dw, dh );
-	m_pTextureRenderTarget->SetBackgroundColor( 0xFF000000 );
+	m_pTextureRenderTarget->SetBackgroundColor( SFloatRGBAColor::Black() );
 
 	m_DisplayRect.SetPositionLTWH( (int)((w-dw)*0.5f), (int)(h-dh*1.05f), dw, dh );
 	m_DisplayRect.SetTextureUV( TEXCOORD2(0.0f,0.0f), TEXCOORD2(1.0f,1.0f) );
@@ -265,7 +265,7 @@ void CSubDisplay::Render()
 	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
 	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-	pd3dDev->SetTexture( 0, m_pTextureRenderTarget->GetRenderTargetTexture() );
+	pd3dDev->SetTexture( 0, m_pTextureRenderTarget->GetD3DRenderTargetTexture() );
 
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );

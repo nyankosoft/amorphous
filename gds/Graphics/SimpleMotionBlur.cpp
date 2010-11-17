@@ -188,7 +188,7 @@ void CSimpleMotionBlur::Render()
 	// render the prev scene
 	rect.SetColor( 0xFFFFFFFF );
 ///	rect.Draw();
-	SetRectRenderStates( pPrevRenderTarget->GetRenderTargetTexture() );
+	SetRectRenderStates( pPrevRenderTarget->GetRenderTargetTexture().GetTexture() );
 	rect.draw();
 //	rect.Draw( pPrevRenderTarget->GetRenderTargetTexture() );
 
@@ -212,7 +212,7 @@ void CSimpleMotionBlur::Render()
 //	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	rect.SetColor( 0xFFFFFFFF );
 ///	rect.Draw( pDestRenderTarget->GetRenderTargetTexture() );
-	SetRectRenderStates( pDestRenderTarget->GetRenderTargetTexture() );
+	SetRectRenderStates( pDestRenderTarget->GetRenderTargetTexture().GetTexture() );
 	rect.draw();
 
 	// test

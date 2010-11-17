@@ -1,35 +1,17 @@
-#ifndef  __TEXTURERENDERTARGET_H__
-#define  __TEXTURERENDERTARGET_H__
+#ifndef  __TextureRenderTarget_HPP__
+#define  __TextureRenderTarget_HPP__
 
-#include <d3dx9.h>
+
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/SurfaceFormat.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
+#include "Graphics/TextureHandle.hpp"
 
-/*
-// TODO: rename this to CTextureRenderTarget
-class CTextureRenderTargetBase : public CGraphicsComponent
-{
-public:
 
-//	CTextureRenderTarget( TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
-
-//	CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
-
-	virtual void Init(
-		int texture_width,
-		int texture_height,
-		TextureFormat::Format texture_format = TextureFormat::A8R8G8B8,
-		uint option_flags = 0 )
-	{}
-};
-*/
-
-// TODO: change this to class CD3DTextureRenderTarget : public CTextureRenderTarget
 class CTextureRenderTarget : public CGraphicsComponent
 {
-public:
+protected:
 
 	enum OptionFlags
 	{
@@ -38,35 +20,17 @@ public:
 		OPTFLG_YET_ANOTHER_OPTION = ( 1 << 2 )
 	};
 
-private:
-
-	LPDIRECT3DTEXTURE9 m_pRenderTargetTexture;
-	LPDIRECT3DSURFACE9 m_pRenderTargetSurface;
-	LPDIRECT3DSURFACE9 m_pRenderTargetDepthSurface;
-
-	/// buffer to hold the content of render target surface
-	/// need to access the scene image because the texture created
-	/// as render target is not lockable
-	LPDIRECT3DTEXTURE9 m_pRenderTargetCopyTexture;
-	LPDIRECT3DSURFACE9 m_pRenderTargetCopySurface;
-
-	/// used to temporarily hold original surfaces
-	LPDIRECT3DSURFACE9 m_pOriginalSurface;
-	LPDIRECT3DSURFACE9 m_pOriginalDepthSurface;
-
-	D3DVIEWPORT9 m_OriginalViewport;
-
 	CTextureResourceDesc m_TextureDesc;
 
+	CTextureHandle m_RenderTargetTexture;
 
-
-	DWORD m_dwBackgroundColor;
+	SFloatRGBAColor m_BackgroundColor;
 
 	// Turned on when an instance is initialized by InitScreenSizeRenderTarget().
 	// The texture size is automatically resized to screen size (viewport size)
 	// in LoadGraphicsResources()
 	bool m_bScreenSizeRenderTarget;
-	
+
 public:
 
 	CTextureRenderTarget();
@@ -75,13 +39,18 @@ public:
 
 	CTextureRenderTarget( const CTextureResourceDesc& texture_desc );
 
-	~CTextureRenderTarget();
+	virtual ~CTextureRenderTarget();
+
+//	CTextureRenderTarget( TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
+
+//	CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
 
 	/// Returns true on success
-	bool Init( int texture_width,
-		       int texture_height,
-			   TextureFormat::Format texture_format = TextureFormat::A8R8G8B8,
-			   uint option_flags = 0 );
+	bool Init(
+		int texture_width,
+		int texture_height,
+		TextureFormat::Format texture_format = TextureFormat::A8R8G8B8,
+		uint option_flags = 0 );
 
 	bool Init( const CTextureResourceDesc& texture_desc );
 
@@ -90,38 +59,40 @@ public:
 	///   in LoadGraphicsResources().
 	bool InitScreenSizeRenderTarget();
 
-
 //	void SetTextureWidth( const int width, const int height );
 
-	void SetBackgroundColor( const DWORD dwBGColor ) { m_dwBackgroundColor = dwBGColor; }
+	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
 
-	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_dwBackgroundColor = bg_color.GetARGB32(); }
+	virtual void SetRenderTarget() {}
 
-	void SetRenderTarget();
+	virtual void ResetRenderTarget() {}
 
-	void ResetRenderTarget();
+	virtual void CopyRenderTarget() {}// { GetRenderTargetData( m_RenderTargetSurface, m_RenderTargetCopySurface ); }
 
-	void CopyRenderTarget();// { GetRenderTargetData( m_pRenderTargetSurface, m_pRenderTargetCopySurface ); }
+	CTextureHandle GetRenderTargetTexture() { return m_RenderTargetTexture; }
 
-	inline LPDIRECT3DTEXTURE9 GetRenderTargetTexture() { return m_pRenderTargetTexture; }
+	virtual LPDIRECT3DTEXTURE9 GetD3DRenderTargetTexture() { return NULL; }
 
 	/// returns the lockable texture of the scene
-	inline LPDIRECT3DTEXTURE9 GetRenderTargetCopyTexture() { return m_pRenderTargetCopyTexture; }
+	virtual LPDIRECT3DTEXTURE9 GetD3DRenderTargetCopyTexture() { return NULL; }
 
-	void UpdateScreenSize();
+	virtual bool LoadTextures() { return false; }
 
-	bool LoadTextures();
-
-	void ReleaseTextures();
+	virtual void ReleaseTextures() {}
 
 	void ReleaseGraphicsResources();
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-	void OutputImageFile( const std::string& filename );
+	virtual void OutputImageFile( const std::string& image_file_path ) {}
 
-	static boost::shared_ptr<CTextureRenderTarget> Create() { boost::shared_ptr<CTextureRenderTarget> p( new CTextureRenderTarget ); return p; }
+	static boost::shared_ptr<CTextureRenderTarget> (*ms_pCreateTextureRenderTarget)(void);
+
+	static void SetInstanceCreationFunction( boost::shared_ptr<CTextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateTextureRenderTarget = CreateTextureRenderTarget; }
+
+	static boost::shared_ptr<CTextureRenderTarget> Create();
 };
 
 
-#endif		/*  __TEXTURERENDERTARGET_H__  */
+
+#endif		/*  __TextureRenderTarget_HPP__  */

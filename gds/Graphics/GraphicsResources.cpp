@@ -145,18 +145,19 @@ bool CGraphicsResource::LoadFromDisk()
 
 bool CGraphicsResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
 {
-	if( GetResourceType() == desc.GetResourceType() )
+	if( !GetDesc().Sharable || !desc.Sharable )
+		return false;
+
+	if( GetResourceType() != desc.GetResourceType() )
+		return false;
+
+	if( 0 < GetDesc().ResourcePath.length()
+	 && 0 < desc.ResourcePath.length()
+	 && GetDesc().ResourcePath == desc.ResourcePath )
 	{
-		if( 0 < GetDesc().ResourcePath.length()
-		 && 0 < desc.ResourcePath.length()
-		 && GetDesc().ResourcePath == desc.ResourcePath )
-		{
-			// Treat as sharable only if both of the resources have resource paths
-			// and they are the same ones.
-			return true;
-		}
-		else
-			return false;
+		// Treat as sharable only if both of the resources have resource paths
+		// and they are the same ones.
+		return true;
 	}
 	else
 		return false;
@@ -235,10 +236,14 @@ void CTextureResource::Release()
 
 bool CTextureResource::IsDiskResource() const
 {
-	if( 0 == m_TextureDesc.ResourcePath.length()
-	 || m_TextureDesc.pLoader )
+	if( m_TextureDesc.pLoader
+	 || m_TextureDesc.ResourcePath.length() == 0
+	 || m_TextureDesc.UsageFlags & UsageFlag::RENDER_TARGET )
 	{
-		// Has no resource path or has a loader - non-disk resource
+		// Treat as non-disk resource if any one of the following is true
+		// - Has a texture loader, or an algorithm to fill the texture
+		// - Has no resource path
+		// - Sepcified as a render target texture
 		return false;
 	}
 	else

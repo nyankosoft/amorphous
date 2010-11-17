@@ -70,6 +70,8 @@ public:
 	/// Register to the resource loading state holder if it exists for the caller thread
 	bool RegisterToLoadingStateHolder;
 
+	bool Sharable;
+
 public:
 
 	inline CGraphicsResourceDesc();
@@ -314,7 +316,8 @@ inline CGraphicsResourceDesc::CGraphicsResourceDesc()
 m_IsCachedResource(false),
 LoadingMode(CResourceLoadingMode::SYNCHRONOUS),
 LoadingPriority(0),
-RegisterToLoadingStateHolder(true)
+RegisterToLoadingStateHolder(true),
+Sharable(true)
 {}
 
 
