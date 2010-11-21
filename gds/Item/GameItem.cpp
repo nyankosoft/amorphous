@@ -1,6 +1,7 @@
 #include "GameItem.hpp"
 #include "XML/XMLNodeReader.hpp"
 #include "Support/memory_helpers.hpp"
+#include "Stage/MeshBonesUpdateCallback.hpp"
 
 using namespace std;
 using namespace boost;
@@ -101,4 +102,28 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 	}
 
 	m_Desc.LoadFromXMLNode( reader.GetChild( "Desc" ) );
+}
+
+
+void CGameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
+{
+	if( MeshContainerRootNode().GetNumMeshContainers() == 0 )
+		return; // has no mesh
+
+	shared_ptr<CMeshObjectContainer> pMeshContainer = MeshContainerRootNode().MeshContainer( 0 );
+	if( !pMeshContainer )
+		return;
+
+	shared_ptr<CBasicMesh> pBasicMesh = pMeshContainer->m_MeshObjectHandle.GetMesh();
+	if( !pBasicMesh )
+		return;
+
+	if( pBasicMesh->GetMeshType() != CMeshType::SKELETAL )
+		return;
+
+	boost::shared_ptr<CItemEntity> pItemEntity = GetItemEntity().Get();
+	if( !pItemEntity )
+		return;
+
+	pItemEntity->m_pGraphicsUpdate.reset( new CMeshBonesUpdateCallback );
 }

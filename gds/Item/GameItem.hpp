@@ -170,6 +170,7 @@ public:
 
 	virtual void OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity ) {}
 
+	void SetGraphicsUpdateCallbackForSkeletalMesh();
 
 	enum eTypeFlag
 	{
