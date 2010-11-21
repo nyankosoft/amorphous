@@ -6,12 +6,10 @@
 #include "GameTask_Stage.hpp"
 
 #include "Stage/PlayerInfo.hpp"
-#include "Stage/BE_PlayerShip.hpp"
 //#include "Stage/ScreenEffectManager.hpp"
 #include "Stage/Stage.hpp"
 //#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/memory_helpers.hpp"
 
 using namespace std;
 
