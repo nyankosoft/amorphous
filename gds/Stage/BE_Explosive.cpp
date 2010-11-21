@@ -217,9 +217,9 @@ void CBE_Explosive::FlashScreen(CCopyEntity* pCopyEnt)
 	// alpha = 1 : explosion is close to the camera
 	// alpha = 0 : explosion is far from camera
 	float fAlpha = (fFlashEffectiveDist - fDist) / fFlashEffectiveDist;
-	DWORD dwFlashIntensity = D3DCOLOR_ARGB( ((DWORD)(180.0f * fAlpha)), 255, 255, 255 );
+	SFloatRGBAColor flash_color( 1.0f, 1.0f, 1.0f, fAlpha * 180.0f / 256.0f );
 
-	m_pStage->GetScreenEffectManager()->FadeInFrom( dwFlashIntensity, 0.6f + fAlpha, AlphaBlend::One );
+	m_pStage->GetScreenEffectManager()->FadeInFrom( flash_color.GetARGB32(), 0.6f + fAlpha, AlphaBlend::One );
 
 }
 
