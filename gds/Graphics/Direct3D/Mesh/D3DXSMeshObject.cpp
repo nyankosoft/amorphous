@@ -103,6 +103,8 @@ void CD3DXSMeshObject::DumpSkeletonToTextFile( const std::string& output_filepat
 	if( !fp )
 		return;
 
+	fprintf( fp, "%d total bones\n---\n", m_iNumBones );
+
 	m_pRootBone->DumpToTextFile( fp, 0 );
 
 	fclose(fp);

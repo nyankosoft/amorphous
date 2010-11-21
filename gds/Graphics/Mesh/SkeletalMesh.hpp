@@ -48,6 +48,8 @@ public:
 
 	inline void ResetLocalTransformsCache() { m_pImpl->ResetLocalTransformsCache(); }
 
+	inline void CalculateBlendTransforms( const std::vector<Transform>& src_local_transforms, std::vector<Transform>& dest_blend_transforms ) { m_pImpl->CalculateBlendTransforms( src_local_transforms, dest_blend_transforms ); }
+
 	/// returns the pointer to the array of vertex blend matrices (world transforms)
 //	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
 	inline Transform* GetBlendTransforms() { return m_pImpl->GetBlendTransforms(); }

@@ -70,7 +70,7 @@ inline void CMeshBone::CalculateWorldTransform( const Matrix34* pParentMatrix,
 									           int& rIndex,
 									           Matrix34& dest_world_transform )
 {
-	Matrix34 local_rot = paSrcMatrix[rIndex++];
+	Matrix34 local_rot = paSrcMatrix[rIndex];
 	if( pParentMatrix )
 		local_rot.vPosition = Vector3(0,0,0);
 
@@ -78,6 +78,26 @@ inline void CMeshBone::CalculateWorldTransform( const Matrix34* pParentMatrix,
 
 //	mat = m_LocalTransform * paSrcMatrix[rIndex++] * m_BoneTransform;
 	mat = m_LocalTransform * local_rot * m_BoneTransform;
+
+	if( pParentMatrix )
+		mat = (*pParentMatrix) * mat;
+
+	dest_world_transform = mat;
+}
+
+
+inline void CMeshBone::CalculateBlendTransform( const Transform *pParentTransform,
+									            const Transform& src_local_transform,
+									            Transform& dest_blend_transform )
+{
+	Transform local_rot = src_local_transform;
+	if( pParentTransform )
+		local_rot.vTranslation = Vector3(0,0,0);
+
+	Matrix34 mat;
+
+//	mat = m_LocalTransform * paSrcMatrix[rIndex++] * m_BoneTransform;
+	mat = m_LocalTransform * local_rot.ToMatrix34() * m_BoneTransform;
 
 //>>>------------ test calculations ----------------
 /*
@@ -93,10 +113,10 @@ inline void CMeshBone::CalculateWorldTransform( const Matrix34* pParentMatrix,
 */
 //<<<------------ test calculations ----------------
 
-	if( pParentMatrix )
-		mat = (*pParentMatrix) * mat;
-
-	dest_world_transform = mat;
+	if( pParentTransform )
+		dest_blend_transform = (*pParentTransform) * Transform(mat);
+	else
+		dest_blend_transform = Transform(mat);
 }
 
 
@@ -110,27 +130,38 @@ void CMeshBone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int
 
 	for( int i=0; i<m_iNumChildren; i++ )
 	{
+		rIndex++;
 		m_paChild[i].Transform_r( &world_transform, paSrcMatrix, rIndex );
 	}
 }
 
 
-void CMeshBone::CalculateTransforms_r( const Matrix34 *pParentMatrix,
-									  const Matrix34 *paSrcMatrix,
-									  int& rIndex,
-									  Transform *paDest )
+void CMeshBone::CalculateBlendTransforms_r( Transform* pParentTransform, const Transform *paSrcTransform, Transform *pBlendTransforms, int& rIndex )
 {
-	Matrix34 world_transform;
-	CalculateWorldTransform( pParentMatrix, paSrcMatrix, rIndex, world_transform );
-
-	paDest[m_MatrixIndex] = Transform( world_transform );
+	CalculateBlendTransform( pParentTransform, paSrcTransform[rIndex], pBlendTransforms[rIndex] );
 
 	for( int i=0; i<m_iNumChildren; i++ )
 	{
-		m_paChild[i].CalculateTransforms_r( &world_transform, paSrcMatrix, rIndex, paDest );
+		rIndex++;
+		m_paChild[i].CalculateBlendTransforms_r( &pBlendTransforms[rIndex], paSrcTransform, pBlendTransforms, rIndex );
 	}
 }
 
+/*
+void CMeshBone::CalculateBlendTransforms_r( const Transform *pParentTransform,
+									        const Transform& src_transform,
+									        int& rIndex,
+									        Transform *paDest )
+{
+	CalculateBlendTransform( pParentTransform, paSrcMatrix, paDest[m_MatrixIndex] );
+
+	for( int i=0; i<m_iNumChildren; i++ )
+	{
+		rIndex++;
+		m_paChild[i].CalculateBlendTransforms_r( &blend_transform, src_transform, rIndex, paDest );
+	}
+}
+*/
 
 int CMeshBone::GetBoneMatrixIndexByName_r( const char *pName )
 {

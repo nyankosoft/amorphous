@@ -50,6 +50,8 @@ public:
 
 	inline void CalculateWorldTransform( const Matrix34* pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Matrix34& dest_world_transform );
 
+	inline void CalculateBlendTransform( const Transform *pParentTransform, const Transform& src_local_transform, Transform& dest_blend_transform );
+
 public:
 
 	inline CMeshBone();
@@ -64,7 +66,15 @@ public:
 	/// This function actually calculates world transforms
 	void Transform_r( Matrix34 *pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex );
 
-	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );
+	/// \param pParentMatrix [in]
+	/// \param paSrcMatrix [in]
+	/// \param pBlendTransforms [out]
+	/// \param rIndex [in,out]
+	void CalculateBlendTransforms_r( Transform *pParentTransform, const Transform *paSrcTransform, Transform *pBlendTransforms, int& rIndex );
+
+//	void CalculateTransforms_r( const Matrix34 *pParentMatrix, const Matrix34 *paSrcMatrix, int& rIndex, Transform *paDest );
+
+//	void CalculateBlendTransforms_r( const Transform *pParentTransform, const Transform& src_transform, int& rIndex, Transform *paDest );
 
 	int GetBoneMatrixIndexByName_r( const char *pName );
 

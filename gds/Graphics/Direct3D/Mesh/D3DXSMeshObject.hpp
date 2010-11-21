@@ -75,6 +75,8 @@ public:
 
 	inline void ResetLocalTransformsCache();
 
+	inline void CalculateBlendTransforms( const std::vector<Transform>& src_local_transforms, std::vector<Transform>& dest_blend_transforms );
+
 	/// Returns the pointer to the array of vertex blend matrices (world transforms)
 	inline Transform* GetBlendTransforms() { return m_paWorldTransforms; }
 
@@ -146,6 +148,21 @@ inline void CD3DXSMeshObject::ResetLocalTransformsCache()
 }
 
 
+inline void CD3DXSMeshObject::CalculateBlendTransforms( const std::vector<Transform>& src_local_transforms, std::vector<Transform>& dest_blend_transforms )
+{
+	if( !m_pRootBone )
+		return;
+
+	if( (int)src_local_transforms.size() != m_iNumBones )
+		return;
+
+	dest_blend_transforms.resize( m_iNumBones );
+
+	int index = 0;
+	m_pRootBone->CalculateBlendTransforms_r( NULL, &(src_local_transforms[0]), &(dest_blend_transforms[0]), index );
+}
+
+
 inline void CD3DXSMeshObject::GetBlendTransforms( std::vector<Transform>& dest_transforms )
 {
 	if( !m_pRootBone )
@@ -156,8 +173,13 @@ inline void CD3DXSMeshObject::GetBlendTransforms( std::vector<Transform>& dest_t
 
 	dest_transforms.resize( m_iNumBones );
 
+	std::vector<Transform> src_local_transforms;
+	src_local_transforms.resize( m_vecLocalTransformCache.size() );
+	for( size_t i=0; i<m_vecLocalTransformCache.size(); i++ )
+		src_local_transforms[i].FromMatrix34( m_vecLocalTransformCache[i] );
+
 	int index = 0;
-	m_pRootBone->CalculateTransforms_r( NULL, &m_vecLocalTransformCache[0], index, &(dest_transforms[0]) );
+	m_pRootBone->CalculateBlendTransforms_r( NULL, &(src_local_transforms[0]), &(dest_transforms[0]), index );
 }
 
 

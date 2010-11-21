@@ -213,6 +213,7 @@ public:
 	virtual void SetLocalTransformToCache( int index, const Matrix34& local_transform ) {}
 	virtual void SetLocalTransformsFromCache() {}
 	virtual void ResetLocalTransformsCache() {}
+	virtual void CalculateBlendTransforms( const std::vector<Transform>& src_local_transforms, std::vector<Transform>& dest_blend_transforms ) {}
 
 	/// returns the pointer to the array of vertex blend matrices (world transforms)
 	virtual Transform* GetBlendTransforms() { return NULL; }
