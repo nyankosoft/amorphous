@@ -113,6 +113,17 @@ template<typename T> inline tMatrix33<T> Matrix33RotationZ( T gamma );
 /// returns the matrix that rotates a vertex around an axis
 template<typename T> inline tMatrix33<T> Matrix33RotationAxis( T angle, const tVector3<T>& axis );
 
+/**
+function name HPR (heading, pitch, and roll) is based on the matrix concatination order
+rotation is applied to Vector3 in the following order.
+- 1. roll (rotation around z-axis)
+- 2. pitch (rotation around x-axis)
+- 3. heading (rotation around y-axis)
+*/
+template<typename T> inline tMatrix33<T> Matrix33RotationHPR( T heading, T pitch, T roll );
+
+/// Same as Matrix33RotationHPR, but rotation angles are all interpreted in degrees.
+template<typename T> inline tMatrix33<T> Matrix33RotationHPR_deg( T heading, T pitch, T roll );
 
 template<typename T>
 inline const tMatrix33<T> & tMatrix33Identity()

@@ -455,6 +455,28 @@ inline tMatrix33<T> Matrix33RotationAxis( T angle, const tVector3<T>& axis )
 }
 
 
+template<typename T>
+inline tMatrix33<T> Matrix33RotationHPR( T heading, T pitch, T roll )
+{
+	tMatrix33<T> rotation = tMatrix33Identity<T>();
+
+	if( heading != 0 )
+		rotation = rotation * Matrix33RotationY( heading ); // the last rotation to be applied
+	if( pitch != 0 )
+		rotation = rotation * Matrix33RotationX( pitch );
+	if( roll != 0 )
+		rotation = rotation * Matrix33RotationZ( roll ); // the first rotation to be applied
+
+	return rotation;
+}
+
+
+template<typename T> inline tMatrix33<T> Matrix33RotationHPR_deg( T heading, T pitch, T roll )
+{
+	return Matrix33RotationHPR( (T)rad_to_deg(heading), (T)rad_to_deg(pitch), (T)rad_to_deg(roll) );
+}
+
+
 /*
 inline tMatrix33<T> rotation_matrix(T ang, const tVector3<T> & dir)
 {
