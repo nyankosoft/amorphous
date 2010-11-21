@@ -306,6 +306,16 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 
 void CEntitySet::Render(CCamera& rCam)
 {
+	if( m_pEntityInUse )
+	{
+		for( CCopyEntity* pEntity = m_pEntityInUse.get();
+			 pEntity != NULL;
+			 pEntity = pEntity->m_pNextRawPtr )
+		{
+			pEntity->UpdateGraphics();
+		}
+	}
+
 	m_pRenderManager->Render( rCam );
 }
 

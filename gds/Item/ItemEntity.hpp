@@ -11,6 +11,10 @@
 
 class CGameItem;
 
+class CBlendTransformsLoader;
+
+class CMeshBonesUpdateCallback;
+
 
 class CItemModuleEntityTypeID
 {
@@ -36,6 +40,17 @@ class CItemEntity : public CCopyEntity
 
 	U32 m_ItemEntityFlags;
 
+	/// Variables used by the item which has a skeletal mesh
+
+	/// Set to m_pMeshBonesUpdateCallback
+	boost::shared_ptr<CBlendTransformsLoader> m_pBlendTransformsLoader;
+
+	/// Set to CCopyEntity::m_pGraphicsUpdate
+	boost::shared_ptr<CMeshBonesUpdateCallback> m_pMeshBonesUpdateCallback;
+private:
+
+	void InitMeshRenderMethod();
+
 public:
 
 	CItemEntity();
@@ -58,6 +73,8 @@ public:
 
 	virtual void Draw();
 
+	virtual void DrawAs( CRenderContext& render_context );
+
 	virtual void OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity& other_entity, physics::CShape& other_shape, U32 trigger_flags );
 
 	virtual void OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity );
@@ -69,6 +86,8 @@ public:
 	void SetItemEntityFlags( U32 flags ) { m_ItemEntityFlags = flags; }
 
 	void InitMesh();
+
+	boost::shared_ptr<CMeshBonesUpdateCallback> MeshBonesUpdateCallback() { return m_pMeshBonesUpdateCallback; }
 
 	enum ItemEntityFlags
 	{

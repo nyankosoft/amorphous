@@ -29,6 +29,7 @@ class CMeshBoneControllerBase;
 class CEntityShaderLightParamsLoader;
 //class CBlendMatricesLoader;
 class CBlendTransformsLoader;
+class CRenderContext;
 
 
 /**
@@ -171,10 +172,10 @@ protected:
 						 C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 						 int ShaderLOD = 0 );
 
-	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
-		                   CSkeletalMesh *pSkeletalMesh,
-		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
-						   int ShaderLOD = 0 );
+//	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
+//		                   CSkeletalMesh *pSkeletalMesh,
+//		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
+//						   int ShaderLOD = 0 );
 
 	/// \retval 0 shader for highest resolution mesh
 	/// \retval higher_values shader for lower resolution model
@@ -275,6 +276,8 @@ public:
 	virtual void RenderAsShadowCaster(CCopyEntity* pCopyEnt);
 
 	virtual void RenderAsShadowReceiver(CCopyEntity* pCopyEnt);
+
+	virtual void RenderAs( CCopyEntity& entity, CRenderContext& render_context );
 
 	virtual void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 

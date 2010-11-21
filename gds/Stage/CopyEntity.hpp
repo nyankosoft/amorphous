@@ -14,6 +14,7 @@
 #include "EntityHandle.hpp"
 #include "CopyEntityCallback.hpp"
 #include "LinkNode.hpp"
+#include "GraphicsResourcesUpdateCallback.hpp"
 
 #include "BaseEntity.hpp"
 
@@ -197,6 +198,9 @@ public:
 	/// borrowed reference
 	std::vector<CCopyEntityCallbackBase *> vecpCallback;
 
+	/// Used mainly for updating blend transforms of a skeletal mesh
+	boost::shared_ptr<CGraphicsResourcesUpdateCallback> m_pGraphicsUpdate;
+
 //	boost::shared_ptr<CMeshContainerNode> m_pMeshNode;
 
 //	boost::shared_ptr<CMeshContainerNodeRenderMethod> m_pMeshNodeRenderMethod;
@@ -338,6 +342,8 @@ public:
 	/// default: let the base entity render the entity
 	virtual void Draw() { pBaseEntity->Draw( this ); }
 
+	virtual void DrawAs( CRenderContext& render_context ) { pBaseEntity->RenderAs( *this, render_context ); }
+
 	/// called when the entity is terminated
 	/// - default: do nothing
 	/// - called from CCopyEntity::Terminate()
@@ -347,6 +353,8 @@ public:
 
 	/// called when the entity is used as a camera entity
 	virtual void CreateRenderTasks() {}
+
+	void UpdateGraphics() { if( m_pGraphicsUpdate ) m_pGraphicsUpdate->UpdateGraphics(); }
 
 	inline U32 GetEntityFlags() const { return m_EntityFlags; }
 	inline void SetEntityFlags( U32 flags ) { m_EntityFlags = flags; }

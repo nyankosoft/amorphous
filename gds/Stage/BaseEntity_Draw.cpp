@@ -9,6 +9,7 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderLightManager.hpp"
+#include "Graphics/Shader/BlendTransformsLoader.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Graphics/ShadowMapManager.hpp"
@@ -29,6 +30,36 @@ Alpha entities and render methods
     - This means dynamic memory allocation is done through shared_ptr<> every time an alpha entity is created in a stage.
 /
 
+Skeletal meshes and transforms
+- How transforms are set to shader
+  - 2 stages of updates need to be performed before rendering a skeletal mesh.
+  []: object
+  (): datan
+  (local transforms) -> [seletal mesh] -> (world transforms) -> [shader]
+  - Different types of entities have different mechanisms for updating local transforms
+    - aircrafts: update based on player's input
+    - human characters: updated based on the motion being played.
+
+- Setting local transforms to a skeletal mesh.
+  1. once in some update function before rendering
+    - works if the skeletal mesh is used by a single entity.
+	- no need to set the transforms at every render function (e.g. standard render function, chadow caster render function, etc.)
+  2. every time a render function is called.
+    - necessary if the skeletal mesh is shared by more than one entity.
+
+  - examples:
+    - CBE_PlayerPseudoAircraft calls CGI_Aircraft::UpdateTargetMeshTransforms() in CBE_PlayerPseudoAircraft::Draw()
+
+  plan 1. check if the transforms need to be updated in RenderAs() function
+  if( mesh.is_skeletal() )
+	if( rc.first_render || entity.shared_skeletal_mesh )
+	{
+		// Update local transforms of skeletal mesh
+	}
+
+  plan 2. separate skeletal mesh and storage of world transforms
+  - Every entity which uses skeletal mesh has std::vector<Transform> world_transforms
+  - CSkeletalMesh::CalculateWorldTransformsFromLocalTransforms( local_transforms, world_transforms ); // Calculates world transforms from local transforms based on the skeleton of the mesh.
 
 */
 
@@ -176,6 +207,8 @@ void UpdateLightInfo( CCopyEntity& entity )
 }
 
 
+/// Update shader params loaders for the entity.
+/// Shader params loaders are shared by entities, and need to be updated every time an entity is rendered.
 void UpdateEntityForRendering( CCopyEntity& entity )
 {
 	CBaseEntity& base_entity = *(entity.pBaseEntity);
@@ -216,12 +249,10 @@ void CBaseEntity::RenderEntity( CCopyEntity& entity )
 
 	// default render states for fixed function pipeline
 
-	// alpha-blending settings
+	// default alpha-blending settings (premultiplied alpha)
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
-	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
 	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_SrcAlphaBlend );
-//	pd3dDev->SetRenderState( D3DRS_SRCBLEND,	m_DestAlphaBlend );
 
 	if( entity.m_pMeshRenderMethod )
 	{
@@ -254,7 +285,7 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
 //		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
-		shared_ptr<CBlendTransformsLoader> pBlendMatricesLoader( new CBlendTransformsLoader(pSkeletalMesh) );
+		shared_ptr<CBlendTransformsLoader> pBlendMatricesLoader( new CBlendTransformsLoader );//(pSkeletalMesh) );
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
 	}
 
@@ -264,7 +295,9 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 
 static void InitShadowCasterReceiverSettings( shared_ptr<CSkeletalMesh> pSkeletalMesh, CBE_MeshObjectProperty& mesh_property )
 {
-	if( !pSkeletalMesh )
+	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
+
+/*	if( !pSkeletalMesh )
 		return;
 
 	shared_ptr<CBlendTransformsLoader> pLoader( new CBlendTransformsLoader );
@@ -273,6 +306,7 @@ static void InitShadowCasterReceiverSettings( shared_ptr<CSkeletalMesh> pSkeleta
 	mesh_property.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLoader );
 
 	mesh_property.m_pBlendTransformsLoader = pLoader;
+*/
 }
 
 
@@ -318,8 +352,7 @@ void CBaseEntity::Init3DModel()
 	if( 0 < m_MeshProperty.m_ShaderTechnique.size_x() )
 		render_method.m_Technique = m_MeshProperty.m_ShaderTechnique(0,0);
 
-	m_MeshProperty.m_pMeshRenderMethod
-		= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+	m_MeshProperty.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod() );
 
 	if( m_EntityFlag & BETYPE_LIGHTING )
 	{
@@ -487,11 +520,9 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt )
 //	Draw3DModel( pCopyEnt, m_MeshProperty.m_ShaderTechnique );
 }
 
-
-/**
- * draw skeletal mesh: set local transforms to skeletal mesh object before
- * calling this function
- */
+/*
+/// Renders a skeletal mesh
+/// - Set local transforms to skeletal mesh object before calling this function
 void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 								    CSkeletalMesh *pSkeletalMesh,
 								    C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
@@ -520,12 +551,14 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 	pSkeletalMesh->ResetLocalTransformsCache();
 
 	return;
-}
+}*/
 
 
 
 void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 {
+	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
+/*
 	PROFILE_FUNCTION();
 
 	// set option to disable texture settings
@@ -560,7 +593,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 
 	// Do these settings in advance
 	// - Notify if the shadow map manager is changed.
-	if( true /*render_all_subsets*/ )
+	if( true )//render_all_subsets )
 	{
 //		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
@@ -576,12 +609,14 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	else
 	{
 		// how to render the mesh if each subset is rendered by different render methods
-	}
+	}*/
 }
 
 
 void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 {
+	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
+/*
 	PROFILE_FUNCTION();
 
 	// set option to disable texture settings
@@ -614,7 +649,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	else
 		pMeshRenderMethod = this->m_MeshProperty.m_pShadowReceiverRenderMethod;
 
-	if( true /*render_all_subsets*/ )
+	if( true )//render_all_subsets )
 	{
 //		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
@@ -630,6 +665,12 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	{
 		// how to render the mesh if each subset is rendered by different render methods
 	}
+*/
+}
+
+
+void CBaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context )
+{
 }
 
 
@@ -666,9 +707,9 @@ void SetLightsToShader( CCopyEntity& entity, CShaderManager& rShaderMgr )
 // sets the following shader params loaders to the render method of an entity
 // - CEntityShaderLightParamsLoader
 //   - Set if the BETYPE_LIGHTING flag is on
-// - CBlendMatricesLoader
+// - CBlendTransformsLoader
 //   - Set if pEntity->m_MeshHandle is a skeletal mesh
-void InitMeshRenderMethod( CCopyEntity &entity )
+void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader )
 {
 	if( !entity.m_pMeshRenderMethod )
 	{
@@ -689,9 +730,9 @@ void InitMeshRenderMethod( CCopyEntity &entity )
 		shared_ptr<CSkeletalMesh> pSkeletalMesh
 			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
-//		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
-//		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
-		shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader( new CBlendTransformsLoader(pSkeletalMesh) );
+		if( !pBlendTransformsLoader )
+			pBlendTransformsLoader.reset( new CBlendTransformsLoader() );
+
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
 	}
 
@@ -702,6 +743,9 @@ void InitMeshRenderMethod( CCopyEntity &entity )
 }
 
 
+// Creates a default render method for the entity.
+// - If the lighting is enabled for the entity, a light parameter loader is set
+// - If the mesh of the entity is skeletal, a blend transforms loader is set.
 void CreateMeshRenderMethod( CEntityHandle<>& entity, 
 							 CShaderHandle& shader,
 							 CShaderTechniqueHandle& tech )

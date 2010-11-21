@@ -1,5 +1,7 @@
 #include "ItemEntity.hpp"
 
+#include "Graphics/Shader/BlendTransformsLoader.hpp"
+#include "Stage/MeshBonesUpdateCallback.hpp"
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
@@ -58,6 +60,22 @@ CItemEntity::~CItemEntity()
 }
 
 
+void CItemEntity::InitMeshRenderMethod()
+{
+	if( m_MeshHandle.GetMesh()
+	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
+	{
+		m_pBlendTransformsLoader.reset( new CBlendTransformsLoader );
+
+		m_pMeshBonesUpdateCallback.reset( new CMeshBonesUpdateCallback );
+		m_pMeshBonesUpdateCallback->SetBlendTransformsLoader( m_pBlendTransformsLoader );
+		m_pGraphicsUpdate = m_pMeshBonesUpdateCallback;
+	}
+
+	::InitMeshRenderMethod( *this, m_pBlendTransformsLoader );
+}
+
+
 void CItemEntity::InitMesh()
 {
 	if( m_ItemEntityFlags & CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
@@ -78,13 +96,13 @@ void CItemEntity::InitMesh()
 			// Set shader params loaders
 			// let's assume that shaders are already set to the render method, this->m_pMeshRenderMethod,
 			// or user want to set them later
-			InitMeshRenderMethod( *this );
+			InitMeshRenderMethod();
 		}
 	}
 	else
 	{
 		// Set up shader params loaders without using base entity attributes
-		InitMeshRenderMethod( *this );
+		InitMeshRenderMethod();
 	}
 }
 
@@ -126,7 +144,8 @@ void CItemEntity::Draw()
 
 			this->m_MeshHandle = mesh_container.m_MeshObjectHandle;
 
-			pBaseEntity->Draw3DModel( this );
+			CCopyEntity::Draw();
+//			pBaseEntity->Draw3DModel( this );
 //			pBaseEntity->Draw3DModel( this, mesh_container.m_ShaderTechnique );
 //			pBaseEntity->Draw3DModel( this, pBaseEntity->MeshProperty().m_ShaderTechnique );
 		}
@@ -138,6 +157,12 @@ void CItemEntity::Draw()
 
 		m_pItem->Render();
 	}
+}
+
+
+void CItemEntity::DrawAs( CRenderContext& render_context )
+{
+//	render_context.pRenderMethod->AddSubsetRenderMethod( m_pBlendTransformsLoader );
 }
 
 

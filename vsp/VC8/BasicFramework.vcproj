@@ -463,6 +463,10 @@
 				Name="Shader"
 				>
 				<File
+					RelativePath="..\..\gds\Graphics\Shader\BlendTransformsLoader.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Graphics\Shader\CgEffectBase.cpp"
 					>
 				</File>
