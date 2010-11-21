@@ -11,7 +11,6 @@
 
 #include "Sound/SoundManager.hpp"
 #include "Sound/Serialization_SoundHandle.hpp"
-#include "Sound/SoundManager.hpp"
 
 using namespace std;
 

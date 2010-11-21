@@ -89,8 +89,6 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 		return;
 	}
 
-	D3DXMATRIX matWorld;
-
 //	int shader_tech_id = SHADER_TECH_INVALID;
 /*	if( m_AttribFlag & ATTRIB_OPTCAM )
 		shader_tech_id = SHADER_TECH_DEFAULT;	// SHADER_TECH_ENTITY_OPTCAM;

@@ -1,4 +1,3 @@
-
 #ifndef	__BASEENTITYSUPPLYITEM_H__
 #define __BASEENTITYSUPPLYITEM_H__
 
@@ -47,5 +46,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+
 
 #endif /*  __BASEENTITYSUPPLYITEM_H__  */
