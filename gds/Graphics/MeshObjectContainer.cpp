@@ -3,6 +3,7 @@
 #include "XML.hpp"
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 
@@ -221,14 +222,14 @@ void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 
 		Matrix34 mesh_world_transform = GetMeshContainerWorldTransform( (int)i );
 
-		CShaderManager *pShaderMgr = NULL;
-
 		// Use the shaders stored in the mesh container
-		pShaderMgr = m_vecpMeshContainer[i]->m_ShaderHandle.GetShaderManager();
+		CShaderManager *pShaderMgr = m_vecpMeshContainer[i]->m_ShaderHandle.GetShaderManager();
 //		if( pShaderMgr )
 //			pMesh->Render( *pShaderMgr );
 
-		pShaderMgr->SetWorldTransform( mesh_world_transform );
+		CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+
+		shader_mgr.SetWorldTransform( mesh_world_transform );
 
 		m_vecShaderTechniqueBuffer.resize(0);
 		int res = 0;
@@ -237,7 +238,7 @@ void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 			for( int j=0; j<m_vecpMeshContainer[i]->m_ShaderTechnique.size_x(); j++ )
 				m_vecShaderTechniqueBuffer.push_back( m_vecpMeshContainer[i]->m_ShaderTechnique(j,res) );
 		}
-		pMesh->Render( *pShaderMgr, m_vecShaderTechniqueBuffer );
+		pMesh->Render( shader_mgr, m_vecShaderTechniqueBuffer );
 	}
 
 	for( size_t i=0; i<m_vecpChild.size(); i++ )
