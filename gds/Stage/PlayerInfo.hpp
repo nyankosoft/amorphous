@@ -74,10 +74,10 @@ private:
 	int m_TaskID;
 
 	/// a list of items the player is carrying
-	std::vector<boost::shared_ptr<CGameItem>> m_vecpItem;
+	std::vector< boost::shared_ptr<CGameItem> > m_vecpItem;
 
 	/// lists of items sorted by categories
-	std::vector<boost::shared_ptr<CGameItem>> m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
+	std::vector< boost::shared_ptr<CGameItem> > m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
 
 	/// borrowed ref?
 	std::vector<CGameItem *> m_vecpActiveItem;
@@ -87,12 +87,12 @@ private:
 
 	int m_Money;
 
-	/// aircraft used by flight games (borrowed reference)
+	/// aircraft used by flight games
 	/// a valid aircraft item has to be set before a stage is loaded.
 	/// During the stage initialization, base entities are loaded and initialized.
 	/// In that phase, one base entity, 'CBE_PlayerPseudoAircraft' access this variable
 	/// and saves the borrowed reference, then use it as the player's aircraft in the stage
-	CGI_Aircraft *m_pCurrentAircraft;
+	boost::shared_ptr<CGI_Aircraft> m_pCurrentAircraft;
 
 	CKeyBind m_KeyBind;
 
@@ -181,12 +181,12 @@ public:
 	void RenderHUD();
 
 	/// returns currently selected aircraft
-	CGI_Aircraft *GetAircraft() { return m_pCurrentAircraft; }
+	boost::shared_ptr<CGI_Aircraft> GetAircraft() { return m_pCurrentAircraft; }
 
 	/// sets an aircraft for the player
 	/// must be chosen from the player's item list
 	/// \param pAircraft pointer to an aircraft item selected from m_vecpItem (borrowed reference)
-	void SetAircraft( CGI_Aircraft* pAircraft ) { m_pCurrentAircraft = pAircraft; }
+	void SetAircraft( boost::shared_ptr<CGI_Aircraft> pAircraft ) { m_pCurrentAircraft = pAircraft; }
 
 	int GetMoneyLeft() const { return m_Money; }
 

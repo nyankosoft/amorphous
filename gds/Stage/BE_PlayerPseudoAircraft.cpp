@@ -445,7 +445,7 @@ void CBE_PlayerPseudoAircraft::InitSubDisplay()
 
 bool CBE_PlayerPseudoAircraft::SetAircraft()
 {
-	CGI_Aircraft* pAircraft = SinglePlayerInfo().GetAircraft();
+	shared_ptr<CGI_Aircraft> pAircraft = SinglePlayerInfo().GetAircraft();
 
 	if( !pAircraft )
 	{
@@ -453,7 +453,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 		return false;
 	}
 
-	m_pAircraft = pAircraft;
+	m_pAircraft = pAircraft.get();
 
 	m_CameraLocalPose = m_pAircraft->GetCockpitLocalPose();
 

@@ -1,16 +1,14 @@
 #include "PlayerInfo.hpp"
 
-#include "Graphics/Font/FontBase.hpp"
 #include "Input/InputHub.hpp"
-#include "Input/InputHandler_PlayerShip.hpp"
 #include "Item/GameItem.hpp"
 #include "Item/GI_Ammunition.hpp"
-#include "Item/GI_Aircraft.hpp"
+//#include "Item/GI_Aircraft.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 #include "Item/GameItemObjectFactory.hpp"
 #include "Item/WeaponSystem.hpp"
-#include "HUD_PlayerShip.hpp"
-#include "HUD_PlayerAircraft.hpp"
+//#include "HUD_PlayerShip.hpp"
+//#include "HUD_PlayerAircraft.hpp"
 
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
@@ -36,8 +34,6 @@ CSinglePlayerInfo::CSinglePlayerInfo()
 	m_vecpActiveItem.reserve( 8 );
 	m_pFocusedItem = NULL;
 
-	m_pCurrentAircraft = NULL;
-
 	m_Money = 1000000;
 }
 
@@ -53,6 +49,8 @@ void CSinglePlayerInfo::Release()
 	SafeDelete( m_pWeaponSystem );
 
 	m_vecpItem.resize( 0 );
+
+	m_pCurrentAircraft.reset();
 }
 
 
@@ -312,7 +310,7 @@ void CSinglePlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 
 		m_vecpActiveItem.resize(0);
 
-		m_pCurrentAircraft = NULL;
+		m_pCurrentAircraft.reset();
 	}
 
 	CGameItemObjectFactory factory;
