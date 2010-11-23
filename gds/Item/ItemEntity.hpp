@@ -7,6 +7,7 @@
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/EntityMotionPathRequest.hpp"
 #include "Stage/BaseEntityHandle.hpp"
+#include "Stage/GraphicsResourcesUpdateCallback.hpp"
 
 
 class CGameItem;
@@ -47,6 +48,9 @@ class CItemEntity : public CCopyEntity
 
 	/// Set to CCopyEntity::m_pGraphicsUpdate
 	boost::shared_ptr<CMeshBonesUpdateCallback> m_pMeshBonesUpdateCallback;
+
+	boost::shared_ptr< CGraphicsResourcesUpdateDelegate<CItemEntity> > m_pGraphicsUpdateDelegate;
+	
 private:
 
 	void InitMeshRenderMethod();

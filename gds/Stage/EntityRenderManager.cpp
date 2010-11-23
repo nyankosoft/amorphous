@@ -1253,6 +1253,8 @@ void CEntityRenderManager::Render( CCamera& rCam )
 {
 	PROFILE_FUNCTION();
 
+	m_pEntitySet->UpdateGraphics();
+
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	// update camera matrix & camera's position

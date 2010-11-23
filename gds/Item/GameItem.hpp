@@ -172,6 +172,8 @@ public:
 
 	void SetGraphicsUpdateCallbackForSkeletalMesh();
 
+	virtual void UpdateGraphics() {}
+
 	enum eTypeFlag
 	{
 		TYPE_WEAPON		= (1 << 0),

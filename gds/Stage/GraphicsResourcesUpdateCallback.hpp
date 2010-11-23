@@ -12,10 +12,33 @@ public:
 };
 
 
+
+template<class T>
+class CGraphicsResourcesUpdateDelegate : public CGraphicsResourcesUpdateCallback
+{
+	T *m_pTarget;
+
+public:
+
+	CGraphicsResourcesUpdateDelegate( T *pTarget = NULL )
+		:
+	m_pTarget(pTarget)
+	{}
+
+	void SetTarget( T *pTarget ) { m_pTarget = pTarget; }
+
+	virtual void UpdateGraphics()
+	{
+		if( m_pTarget )
+			m_pTarget->UpdateGraphics();
+	}
+};
+
+
 /*
 /// Used when each set of billboards has its own mesh.
 /// Not used if the sets of billboards share a mesh.
-class CBillboardsUpdateCallback : class CGraphicsResourcesUpdateCallback
+class CBillboardsUpdateCallback : public CGraphicsResourcesUpdateCallback
 {
 public:
 

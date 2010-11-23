@@ -196,6 +196,7 @@ public:
 	inline void UpdateCamera();
 	inline void SetCameraEntity( CCopyEntity *pEntity ) { m_pCameraEntity = pEntity; }
 	inline CCopyEntity *GetCameraEntity() { return m_pCameraEntity; }
+	void UpdateGraphics();
 	void GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const;
 
 	inline boost::shared_ptr<CEntityRenderManager> GetRenderManager() { return m_pRenderManager; }

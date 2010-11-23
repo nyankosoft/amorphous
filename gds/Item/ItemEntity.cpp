@@ -62,6 +62,12 @@ CItemEntity::~CItemEntity()
 
 void CItemEntity::InitMeshRenderMethod()
 {
+//	CGraphicsResourcesUpdateDelegate;
+//	boost::shared_ptr<CGraphicsResourcesUpdateDelegate> pGraphicsUpdate( new CGraphicsResourcesUpdateDelegate(this) );
+
+//	m_pGraphicsUpdate = pGraphicsUpdate;
+	m_pGraphicsUpdate.reset( new CGraphicsResourcesUpdateDelegate<CGameItem>( m_pItem.get() ) );
+
 	if( m_MeshHandle.GetMesh()
 	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
 	{
@@ -69,7 +75,8 @@ void CItemEntity::InitMeshRenderMethod()
 
 		m_pMeshBonesUpdateCallback.reset( new CMeshBonesUpdateCallback );
 		m_pMeshBonesUpdateCallback->SetBlendTransformsLoader( m_pBlendTransformsLoader );
-		m_pGraphicsUpdate = m_pMeshBonesUpdateCallback;
+		m_pMeshBonesUpdateCallback->SetSkeletalMesh( m_MeshHandle );
+//		m_pGraphicsUpdate = m_pMeshBonesUpdateCallback;
 	}
 
 	::InitMeshRenderMethod( *this, m_pBlendTransformsLoader );
