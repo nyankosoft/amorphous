@@ -211,7 +211,7 @@ public:
 	/// NOTE: do not updates transformation for the bone
 	/// use is responsible for calling SetLocalTransformsFromCache() later to updates the transformations for bones
 	virtual void SetLocalTransformToCache( int index, const Matrix34& local_transform ) {}
-	virtual void SetLocalTransformsFromCache() {}
+	virtual void CalculateBlendTransformsFromCachedLocalTransforms() {}
 	virtual void ResetLocalTransformsCache() {}
 	virtual void CalculateBlendTransforms( const std::vector<Transform>& src_local_transforms, std::vector<Transform>& dest_blend_transforms ) {}
 

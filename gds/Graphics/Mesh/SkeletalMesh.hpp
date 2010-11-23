@@ -44,7 +44,7 @@ public:
 	/// use is responsible for calling SetLocalTransformsFromCache() later to updates the transformations for bones
 	inline void SetLocalTransformToCache( int index, const Matrix34& local_transform ) { m_pImpl->SetLocalTransformToCache(index,local_transform); }
 
-	inline void SetLocalTransformsFromCache() { m_pImpl->SetLocalTransformsFromCache(); }
+	inline void CalculateBlendTransformsFromCachedLocalTransforms() { m_pImpl->CalculateBlendTransformsFromCachedLocalTransforms(); }
 
 	inline void ResetLocalTransformsCache() { m_pImpl->ResetLocalTransformsCache(); }
 

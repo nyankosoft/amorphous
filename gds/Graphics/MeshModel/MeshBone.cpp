@@ -140,10 +140,11 @@ void CMeshBone::CalculateBlendTransforms_r( Transform* pParentTransform, const T
 {
 	CalculateBlendTransform( pParentTransform, paSrcTransform[rIndex], pBlendTransforms[rIndex] );
 
+	int current_index = rIndex;
 	for( int i=0; i<m_iNumChildren; i++ )
 	{
 		rIndex++;
-		m_paChild[i].CalculateBlendTransforms_r( &pBlendTransforms[rIndex], paSrcTransform, pBlendTransforms, rIndex );
+		m_paChild[i].CalculateBlendTransforms_r( &pBlendTransforms[current_index], paSrcTransform, pBlendTransforms, rIndex );
 	}
 }
 

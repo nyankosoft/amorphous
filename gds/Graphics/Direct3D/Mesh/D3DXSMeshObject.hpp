@@ -60,9 +60,9 @@ public:
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 
-	/// calculate hierarchical transforms by handiing an array of matrices
+	/// calculate hierarchical transforms by handing an array of matrices
 	/// that represents local transformations at each bone
-	inline void SetLocalTransforms( Matrix34 *paLocalTransform );
+	inline void CalculateBlendTransforms( Matrix34 *paLocalTransform );
 
 	/// Set local transformation for a bone to a cache.
 	/// NOTE: this function does not update the vertex blend matrix of the bone.
@@ -71,7 +71,7 @@ public:
 
 	inline void SetLocalTransformToCache( int index, const Transform& local_transform );
 
-	inline void SetLocalTransformsFromCache();
+	inline void CalculateBlendTransformsFromCachedLocalTransforms();
 
 	inline void ResetLocalTransformsCache();
 
@@ -111,7 +111,7 @@ inline const CMeshBone& CD3DXSMeshObject::GetBone( const std::string& bone_name 
 }
 
 
-inline void CD3DXSMeshObject::SetLocalTransforms( Matrix34 *paLocalTransform )
+inline void CD3DXSMeshObject::CalculateBlendTransforms( Matrix34 *paLocalTransform )
 {
 	if( !m_pRootBone )
 		return;
@@ -135,7 +135,7 @@ inline void CD3DXSMeshObject::SetLocalTransformToCache( int index, const Transfo
 }
 
 
-inline void CD3DXSMeshObject::SetLocalTransformsFromCache()
+inline void CD3DXSMeshObject::CalculateBlendTransformsFromCachedLocalTransforms()
 {
 	if( 0 < m_vecLocalTransformCache.size() )
 		SetLocalTransforms( &m_vecLocalTransformCache[0] );
