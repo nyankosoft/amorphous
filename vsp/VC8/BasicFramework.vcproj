@@ -160,6 +160,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\BoundingVolumeTreeRenderers.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\BoundingVolumeTreeRenderers.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\Camera.cpp"
 				>
 			</File>
@@ -1503,6 +1511,14 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\3DMath\OBB3.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DMath\OBBTree.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\3DMath\OBBTree.hpp"
 				>
 			</File>
 			<File
