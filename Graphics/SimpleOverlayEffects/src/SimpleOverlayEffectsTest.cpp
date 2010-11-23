@@ -95,7 +95,12 @@ bool CSimpleOverlayEffectsTest::InitShader()
 //	if( !shader_loaded )
 //		return false;
 
+	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
+	shader_mgr.SetProjectionTransform( proj );
+
 	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	if( !pShaderLightMgr )
+		return false;
 
 	CHemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
@@ -106,9 +111,6 @@ bool CSimpleOverlayEffectsTest::InitShader()
 //	pShaderLightMgr->SetDirectionalLightOffset( 0 );
 //	pShaderLightMgr->SetNumDirectionalLights( 1 );
 	pShaderLightMgr->SetHemisphericDirectionalLight( light );
-
-	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-	shader_mgr.SetProjectionTransform( proj );
 
 	return true;
 }
