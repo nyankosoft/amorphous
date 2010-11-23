@@ -22,12 +22,9 @@
 using namespace GameLib1::Serialization;
 
 
-//struct SContact;
 class CBSPTree;
-struct SNode_f;
 class CMeshBoneControllerBase;
 class CEntityShaderLightParamsLoader;
-//class CBlendMatricesLoader;
 class CBlendTransformsLoader;
 class CRenderContext;
 
