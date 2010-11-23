@@ -6,6 +6,7 @@
 #include "gds/GameCommon/KeyBind.hpp"
 #include "gds/GameCommon/3DActionCode.hpp"
 #include "gds/MotionSynthesis/MotionFSM.hpp"
+#include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
 #include "gds/Physics/fwd.hpp"
 
 using namespace msynth;
@@ -62,17 +63,26 @@ class CSkeletalCharacter : public CGameItem
 
 	boost::shared_ptr<msynth::CMotionPrimitive> m_pSkeletonSrcMotion;
 
+	CTransformNodeMap m_RootTransformNodeMap;
+
 	CActionCodeToGICodesMap m_ACtoGICs;
 
 	std::vector< boost::shared_ptr<CClothing> > m_pClothes;
 
 	boost::shared_ptr<CClothSystem> m_pClothSystem;
 
+	/// The hierarchical transforms of the character's current pose updated in the last call of UpdateGraphics()
+	CKeyframe m_CurrentInterpolatedKeyframe;
+
+//	GraphicsResourcesUpdateDelegate<CSkeletalCharacter> m_GraphicsUpdate;
+
 private:
 
 	void UpdateStepHeight( CCopyEntity& entity );
 
 	void SetCharacterWorldPose( const Matrix34& world_pose, CCopyEntity& entity, physics::CActor &actor );
+
+	inline boost::shared_ptr<CSkeletalMesh> GetCharacterSkeletalMesh();
 
 public:
 
@@ -93,6 +103,10 @@ public:
 	void OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape, U32 trigger_flags );
 
 	void OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity );
+
+	void UpdateGraphics();
+
+	Result::Name LoadCharacterMesh( const std::string& skeletal_mesh_pathname );
 
 	float GetFwdSpeed() const { return m_fFwdSpeed; }
 	float GetTurnSpeed() const { return m_fTurnSpeed; }

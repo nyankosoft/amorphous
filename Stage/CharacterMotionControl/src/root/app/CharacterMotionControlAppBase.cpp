@@ -116,14 +116,16 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	actor_desc.vecpShapeDesc.push_back( &cap_desc );
 //	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
 
-	const int num_characters = 2;
+	const int num_characters = 1;
 	m_pCharacterItems.resize( num_characters );
 	const char *meshes[] = { "models/male_skinny_young.msh", "models/female99-age17-muscle73-weight66-height1.52.msh" };
 	for( int i=0; i<num_characters; i++ )
 	{
 		m_pCharacterItems[i].reset( new CSkeletalCharacter );
 
-		shared_ptr<CMeshObjectContainer> pMeshContainer;
+		Result::Name res = m_pCharacterItems[i]->LoadCharacterMesh( meshes[i] );
+
+/*		shared_ptr<CMeshObjectContainer> pMeshContainer;
 		if( m_pCharacterItems[i]->MeshContainerRootNode().GetNumMeshContainers() == 0 )
 		{
 			pMeshContainer.reset( new CMeshObjectContainer );
@@ -134,7 +136,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 
 		pMeshContainer->m_MeshDesc.ResourcePath = meshes[i];
 		pMeshContainer->m_MeshDesc.MeshType = CMeshType::SKELETAL;
-		bool mesh_loaded = m_pCharacterItems[i]->LoadMeshObject();
+		bool mesh_loaded = m_pCharacterItems[i]->LoadMeshObject();*/
 	}
 
 	CItemStageUtility stg_util( m_pStage );

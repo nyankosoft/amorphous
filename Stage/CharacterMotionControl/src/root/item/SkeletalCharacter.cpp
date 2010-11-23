@@ -5,9 +5,9 @@
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/MotionSynthesis/MotionDatabase.hpp"
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
-#include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
 #include "gds/Support/DebugOutput.hpp"
 #include "gds/Stage/BaseEntity_Draw.hpp"
+#include "gds/Stage/MeshBonesUpdateCallback.hpp"
 #include "gds/Physics/Actor.hpp"
 #include "gds/Physics/Scene.hpp"
 #include "gds/Physics/ContactStreamIterator.hpp"
@@ -37,6 +37,25 @@ public:
 		strncpy( m_TextBuffer, buffer.c_str(), sizeof(m_TextBuffer) - 1 );
 	}
 };
+
+
+inline boost::shared_ptr<CSkeletalMesh> CSkeletalCharacter::GetCharacterSkeletalMesh()
+{
+	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
+		return shared_ptr<CSkeletalMesh>();
+
+	shared_ptr<CMeshObjectContainer> pContainer = m_MeshContainerRootNode.GetMeshContainer( 0 );
+	if( !pContainer )
+		return shared_ptr<CSkeletalMesh>();
+
+	shared_ptr<CBasicMesh> pMesh = pContainer->m_MeshObjectHandle.GetMesh();
+	if( !pMesh )
+		return shared_ptr<CSkeletalMesh>();
+
+	shared_ptr<CSkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( pMesh );
+
+	return pSkeletalMesh;
+}
 
 
 CSkeletalCharacter::CSkeletalCharacter()
@@ -98,15 +117,8 @@ m_FeetOnGround( true )
 
 
 	// mesh
-/*
-	shared_ptr<CMeshObjectContainer> pContainer( new CMeshObjectContainer );
-	pContainer->m_MeshDesc.ResourcePath = "models/male_skinny_young.msh";
-	pContainer->m_MeshDesc.MeshType = CMeshType::SKELETAL;
-//	pContainer->m_MeshDesc.pMeshGenerator.reset( new CBoxMeshGenerator() );
-	m_MeshContainerRootNode.SetMeshContainer( 0, pContainer );
+	// Previously the character's skeletal mesh was loaded here
 
-	m_MeshContainerRootNode.LoadMeshesFromDesc();
-*/
 	m_pRenderMethod.reset( new CMeshContainerRenderMethod );
 //	m_pRenderMethod = shared_new<CMeshContainerRenderMethod>();
 
@@ -178,10 +190,14 @@ m_FeetOnGround( true )
 		// The physics shapes are transformed the same way as the skeleton of the character
 	}*/
 
-	m_pSkeletonSrcMotion->GetSkeleton()->DumpToTextFile( ".debug/msynth_skeleton.txt" );
-	shared_ptr<CSkeletalMesh> pSMesh = dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( m_MeshContainerRootNode.GetMeshContainer(0)->m_MeshObjectHandle.GetMesh() );
-	if( pSMesh )
-		pSMesh->DumpSkeletonToTextFile( ".debug/mesh_skeleton.txt" );
+	// Debug - dump the skeleton for the motion data and the skeleton of the mesh
+	if( filesystem::exists( ".debug" ) )
+	{
+		m_pSkeletonSrcMotion->GetSkeleton()->DumpToTextFile( ".debug/msynth_skeleton.txt" );
+		shared_ptr<CSkeletalMesh> pSMesh = GetCharacterSkeletalMesh();
+		if( pSMesh )
+			pSMesh->DumpSkeletonToTextFile( ".debug/mesh_skeleton.txt" );
+	}
 }
 
 /*
@@ -297,22 +313,11 @@ void CSkeletalCharacter::Update( float dt )
 
 void CSkeletalCharacter::Render()
 {
-	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
-		return;
-
-	shared_ptr<CMeshObjectContainer> pContainer = m_MeshContainerRootNode.GetMeshContainer( 0 );
-	if( !pContainer )
-		return;
-
-	shared_ptr<CBasicMesh> pMesh = pContainer->m_MeshObjectHandle.GetMesh();
-	if( !pMesh )
-		return;
-
-	CSkeletalMesh *pSkeletalMesh = dynamic_cast<CSkeletalMesh *>(pMesh.get());
+	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
 	if( !pSkeletalMesh )
 	{
-		int non_skeletal_mesh = 1;
-//		return;
+		int skeletal_mesh_not_found = 1;
+		return;
 	}
 
 //	pSkeletalMesh->Render();
@@ -324,12 +329,16 @@ void CSkeletalCharacter::Render()
 	if( !pEntity )
 		return;
 
-	CKeyframe m_InterpolatedKeyframe;
-	CKeyframe& dest = m_InterpolatedKeyframe;
-	m_pMotionFSMManager->GetCurrentKeyframe( dest );
-	UpdateMeshBoneTransforms( dest, *(m_pSkeletonSrcMotion->GetSkeleton()), *pSkeletalMesh );
+	// Get the hierarchical transforms for the current pose of the character
+	CKeyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
 
-	pSkeletalMesh->SetLocalTransformsFromCache();
+	// The previous version of the mesh bone update routine
+	// - Blend transforms are now calculated in UpdateGraphics()
+	// - m_pClothSystem->UpdateCollisionObjectPoses() still needs this
+	UpdateMeshBoneTransforms( current_keyframe, *(m_pSkeletonSrcMotion->GetSkeleton()), *pSkeletalMesh );
+
+	// Render the character's skeletal mesh
+	pSkeletalMesh->CalculateBlendTransformsFromCachedLocalTransforms();
 ///	Matrix34 pose = Matrix34Identity();
 	Matrix34 pose = pEntity->GetWorldPose();
 	m_pRenderMethod->RenderMeshContainer( *(m_MeshContainerRootNode.MeshContainer( 0 )), pose );
@@ -629,6 +638,67 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 
 
 	SetCharacterWorldPose( pose_to_revert_to, entity, *pair.pActors[0] );
+}
+
+
+void CSkeletalCharacter::UpdateGraphics()
+{
+	if( !m_pMotionFSMManager )
+		return;
+
+	boost::shared_ptr<CSkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
+	if( !pSkeletalMesh )
+		return;
+
+	// Update the hierarchical transforms for the current pose of the character
+	CKeyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
+	m_pMotionFSMManager->GetCurrentKeyframe( current_keyframe );
+
+	shared_ptr<CItemEntity> pItemEntity = GetItemEntity().Get();
+	if( pItemEntity
+	 && pItemEntity->MeshBonesUpdateCallback() )
+	{
+		vector<Transform>& mesh_bone_local_transforms
+			= pItemEntity->MeshBonesUpdateCallback()->MeshBoneLocalTransforms();
+
+		mesh_bone_local_transforms.resize( pSkeletalMesh->GetNumBones() );
+		const int num_transforms = (int)mesh_bone_local_transforms.size();
+		for( int i=0; i<num_transforms; i++ )
+			mesh_bone_local_transforms[i].SetIdentity();
+
+		// Get the mesh bone local transforms and store them to mesh_bone_local_transforms.
+//		UpdateMeshBoneTransforms( current_keyframe, m_RootTransformNodeMap, mesh_bone_local_transforms );
+		UpdateMeshBoneTransforms( current_keyframe, *(m_pSkeletonSrcMotion->GetSkeleton()), *pSkeletalMesh, mesh_bone_local_transforms );
+
+		pItemEntity->MeshBonesUpdateCallback()->UpdateGraphics();
+
+//		pItemEntity->MeshBonesUpdateCallback()->SetSkeletalMesh( pContainer->m_MeshObjectHandle );
+	}
+}
+
+
+Result::Name CSkeletalCharacter::LoadCharacterMesh( const std::string& skeletal_mesh_pathname )
+{
+	shared_ptr<CMeshObjectContainer> pContainer( new CMeshObjectContainer );
+	pContainer->m_MeshDesc.ResourcePath = skeletal_mesh_pathname;
+	pContainer->m_MeshDesc.MeshType = CMeshType::SKELETAL;
+//	pContainer->m_MeshDesc.pMeshGenerator.reset( new CBoxMeshGenerator() );
+	m_MeshContainerRootNode.SetMeshContainer( 0, pContainer );
+
+	bool mesh_laoded = m_MeshContainerRootNode.LoadMeshesFromDesc();
+
+	// Update mappings of skeleton bones and mesh bones
+	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
+	if( pSkeletalMesh
+	 && m_pSkeletonSrcMotion
+	 && m_pSkeletonSrcMotion->GetSkeleton() )
+	{
+		CreateTransformMapTree( *(m_pSkeletonSrcMotion->GetSkeleton()), m_RootTransformNodeMap, *pSkeletalMesh );
+	}
+	else
+		LOG_PRINT_WARNING( " Unable to set up the mappings of motion data bones to mesh bones." );
+
+	return mesh_laoded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
 
