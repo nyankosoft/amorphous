@@ -6,6 +6,8 @@
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
 #include "Support/SafeDeleteVector.hpp"
@@ -238,9 +240,16 @@ void CSubDisplay::Render()
 
 	m_pTextureRenderTarget->SetRenderTarget();
 
-	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
-	pd3dDev->SetRenderState( D3DRS_ZENABLE,  D3DZB_TRUE );
-	pd3dDev->SetRenderState( D3DRS_LIGHTING, FALSE );
+//	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
+//	pd3dDev->SetRenderState( D3DRS_ZENABLE,  D3DZB_TRUE );
+//	pd3dDev->SetRenderState( D3DRS_LIGHTING, FALSE );
+
+	U32 buffer_mask = BufferMask::COLOR | BufferMask::DEPTH;
+	GraphicsDevice().SetClearColor( SFloatRGBAColor::Aqua() );
+	GraphicsDevice().SetClearDepth( 1.0f );
+	GraphicsDevice().Clear( buffer_mask );
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 	// render the stage to texture
 	GetCurrentMonitor()->Render();
@@ -260,12 +269,13 @@ void CSubDisplay::Render()
 	// set render states for submonitor rect
 
 	// enable alpha blending
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
 
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-	pd3dDev->SetTexture( 0, m_pTextureRenderTarget->GetD3DRenderTargetTexture() );
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
+
+	FixedFunctionPipelineManager().SetTexture( 0, m_pTextureRenderTarget->GetRenderTargetTexture() );
 
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
@@ -321,13 +331,3 @@ void CSubDisplay::Update( float dt )
 //	if( 0 < m_vecpMonitor.size() )
 //		m_vecpMonitor[m_CurrentMonitor]->Update( dt );
 }
-
-/* tex render target releases / loads its own resources */
-/*
-void CSubDisplay::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-}
-void CSubDisplay::ReleaseGraphicsResources()
-{
-}
-*/
