@@ -387,9 +387,10 @@ void COBBTree::DumpToTextFile( FILE *fp, OBBNODE *pNode, int depth )
 	indent(fp,depth*2); fprintf( fp, "center %.3f %.3f %.3f\n", obb.Center.x, obb.Center.y, obb.Center.z );
 	indent(fp,depth*2); fprintf( fp, "radii %.3f %.3f %.3f\n",  obb.Length[0]*0.5f, obb.Length[1]*0.5f, obb.Length[2]*0.5f );
 
-	indent(fp,depth*2); fprintf( fp, "axes:\nx(%.3f, %.3f, %.3f)\n", obb.Axis[0].x, obb.Axis[0].y, obb.Axis[0].z );
-	indent(fp,depth*2); fprintf( fp, "axes:\ny(%.3f, %.3f, %.3f)\n", obb.Axis[1].x, obb.Axis[1].y, obb.Axis[1].z );
-	indent(fp,depth*2); fprintf( fp, "axes:\nz(%.3f, %.3f, %.3f)\n", obb.Axis[2].x, obb.Axis[2].y, obb.Axis[2].z );
+	indent(fp,depth*2); fprintf( fp, "axes:\n" );
+	indent(fp,depth*2); fprintf( fp, "x(%.3f, %.3f, %.3f)\n", obb.Axis[0].x, obb.Axis[0].y, obb.Axis[0].z );
+	indent(fp,depth*2); fprintf( fp, "y(%.3f, %.3f, %.3f)\n", obb.Axis[1].x, obb.Axis[1].y, obb.Axis[1].z );
+	indent(fp,depth*2); fprintf( fp, "z(%.3f, %.3f, %.3f)\n", obb.Axis[2].x, obb.Axis[2].y, obb.Axis[2].z );
 
 	if( pNode->pOBBNodeL ) DumpToTextFile( fp, pNode->pOBBNodeL, depth + 1 );
 	if( pNode->pOBBNodeR ) DumpToTextFile( fp, pNode->pOBBNodeR, depth + 1 );
