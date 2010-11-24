@@ -204,6 +204,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 		m_vecpModelBuilder.push_back( new C3DMeshModelBuilder() );
 
+		// Convert a general 3D mesh to a mesh archive?
 		m_vecpModelBuilder.back()->BuildMeshModel( pModelLoader, build_option_flags );
 
 		string loader_output_filepath = pModelLoader->GetOutputFilePath();
