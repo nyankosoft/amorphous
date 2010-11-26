@@ -8,6 +8,7 @@
 #include "../../base.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Matrix44.hpp"
+#include "3DMath/MatrixConversions.hpp"
 #include "3DMath/Transform.hpp"
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
@@ -86,7 +87,7 @@ public:
 
 	virtual void Reload() {}
 
-	virtual void SetWorldTransform( const Matrix34& world_pose ) {}
+	virtual void SetWorldTransform( const Matrix34& world_pose ) { SetWorldTransform( ToMatrix44(world_pose) ); }
 
 	virtual void SetWorldTransform( const Matrix44& matWorld ) {}
 
