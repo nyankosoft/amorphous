@@ -1,8 +1,12 @@
 #include "PyModule_Player.hpp"
+#include "../Stage/PyModule_Stage.hpp" // for GetStageForScriptCallback()
 #include "PlayerInfo.hpp"
 #include "BE_Player.hpp"
+#include "Stage.hpp"
 #include "Item/WeaponSystem.hpp"
-#include "3DMath/Matrix34.hpp"
+#include "Item/ItemEntity.hpp"
+#include "Item/GI_Aircraft.hpp"
+#include <boost/weak_ptr.hpp>
 
 using namespace std;
 
@@ -173,6 +177,69 @@ PyObject* LoadAmmo( PyObject* self, PyObject* args )
 }
 
 
+/// NOTE: the specified item is searched in the item list of the single player.
+PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
+{
+    Py_INCREF( Py_None );
+
+//	const char *item_name   = "";
+	const char *entity_name = "";
+	const char *base_name   = "";
+	Vector3 pos = Vector3(0,0,0), vel = Vector3(0,0,0);
+	float heading = 0, pitch = 0, roll = 0;
+
+	int result = PyArg_ParseTuple( args, "|ssfffffffff",
+//		&item_name,
+		&entity_name, &base_name,
+		&pos.x, &pos.y, &pos.z,
+		&heading, &pitch, &roll,
+		&vel.x, &vel.y, &vel.z );
+
+	CStage *pStage = GetStageForScriptCallback();
+	if( !pStage )
+		return Py_None;
+
+	CBaseEntityHandle base_entity_handle;
+	base_entity_handle.SetBaseEntityName( base_name );
+
+	bool loaded = pStage->GetEntitySet()->LoadBaseEntity( base_entity_handle );
+
+	CBaseEntity *pBaseEntity = pStage->GetEntitySet()->FindBaseEntity( base_name );
+	if( !pBaseEntity )
+		return Py_None;
+
+	CItemStageUtility item_stg_util( pStage->GetWeakPtr().lock() );
+
+//	boost::shared_ptr<CGameItem> pItem = SinglePlayerInfo().GetItemByName<CGameItem>(item_name);
+//	if( !pItem )
+//		return Py_None;
+
+	boost::shared_ptr<CGI_Aircraft> pVehicle = SinglePlayerInfo().GetAircraft();
+	if( !pVehicle )
+		return Py_None;
+
+	Matrix33 matOrient = Matrix33RotationHPR_deg( heading, pitch, roll );
+
+	physics::CActorDesc actor_desc = pBaseEntity->GetPhysicsActorDesc();
+	actor_desc.WorldPose.vPosition = pos;
+	actor_desc.WorldPose.matOrient = matOrient;
+
+	CEntityHandle<CItemEntity> entity = item_stg_util.CreateItemEntity( pVehicle, base_entity_handle, actor_desc );
+
+	boost::shared_ptr<CItemEntity> pEntity = entity.Get();
+	if( pEntity )
+	{
+		pEntity->SetName( entity_name );
+		pEntity->GroupIndex = pBaseEntity->GetEntityGroupID();
+		pEntity->SetItemEntityFlags( CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING );
+	}
+	else
+		LOG_PRINT_WARNING( fmt_string(" Failed to create the item entity (entity name: %s).", entity_name) );
+
+	return Py_None;
+}
+
+
 PyMethodDef g_PyModulePlayerMethod[] =
 {
     { "GetPositionX",	GetPositionX,	METH_VARARGS, "Returns x component of the player's position" },
@@ -188,5 +255,6 @@ PyMethodDef g_PyModulePlayerMethod[] =
     { "MountWeapon",	MountWeapon,	METH_VARARGS, "sets an weapon to slot[n]" },
     { "LoadAmmo",		LoadAmmo,		METH_VARARGS, "loads ammo to slot[n]" },
     { "IsInStage",		IsInStage,		METH_VARARGS, "Returns true if the single player entity is in the stage." },
+    { "CreateEntityFromCurrentVehicleItem",CreateEntityFromCurrentVehicleItem,METH_VARARGS, "Creates a player entity as an item entity." },
     {NULL, NULL}
 };
