@@ -68,6 +68,63 @@ void UpdateMeshBoneTransforms_r( const msynth::CTransformNodeMap& map_node,
 }
 
 
+void UpdateMeshBoneTransforms_r( const msynth::CBone& bone,
+                                 const msynth::CTransformNode& node,
+								 const CSkeletalMesh& mesh,
+								 std::vector<Transform>& mesh_bone_local_transforms )
+{
+	// find the matrix index from the bone name (slow).
+	int index = mesh.GetBoneMatrixIndexByName( bone.GetName() );
+	if( index == -1 )
+		return;
+
+	Matrix34 local_transform;
+	local_transform.vPosition = node.GetLocalTranslation();
+	local_transform.matOrient = node.GetLocalRotationQuaternion().ToRotationMatrix();
+
+	if( 0 <= index && index < (int)mesh_bone_local_transforms.size() )
+		mesh_bone_local_transforms[index].FromMatrix34( local_transform );
+
+	const int num_child_bones = bone.GetNumChildren();
+	const int num_child_nodes = node.GetNumChildren();
+	const int num_children = take_min( num_child_bones, num_child_nodes );
+//	const int num_children = node.GetNumChildren();
+	for( int i=0; i<num_children; i++ )
+	{
+		UpdateMeshBoneTransforms_r(
+			bone.GetChild(i),
+			node.GetChildNode(i),
+			mesh,
+			mesh_bone_local_transforms );
+	}
+}
+
+
+void UpdateMeshBoneTransforms_r( const msynth::CTransformNodeMap& map_node,
+                                 const msynth::CTransformNode& node,
+								 std::vector<Transform>& mesh_bone_local_transforms )
+{
+	int index = map_node.m_DestIndex;
+
+	if( 0 <= index && index < (int)mesh_bone_local_transforms.size() )
+	{
+		mesh_bone_local_transforms[index] = node.GetLocalTransform();
+	}
+
+	const int num_child_bones = map_node.GetNumChildren();
+	const int num_child_nodes = node.GetNumChildren();
+	const int num_children = take_min( num_child_bones, num_child_nodes );
+//	const int num_children = node.GetNumChildren();
+	for( int i=0; i<num_children; i++ )
+	{
+		UpdateMeshBoneTransforms_r(
+			map_node.GetChild(i),
+			node.GetChildNode(i),
+			mesh_bone_local_transforms );
+	}
+}
+
+
 void CreateTransformMapTree_r( const msynth::CBone& src_bone,
 							  msynth::CTransformNodeMap& map_node,
 							  const CSkeletalMesh& mesh )
