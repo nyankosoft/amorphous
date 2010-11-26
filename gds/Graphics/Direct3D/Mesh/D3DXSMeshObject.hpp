@@ -138,7 +138,7 @@ inline void CD3DXSMeshObject::SetLocalTransformToCache( int index, const Transfo
 inline void CD3DXSMeshObject::CalculateBlendTransformsFromCachedLocalTransforms()
 {
 	if( 0 < m_vecLocalTransformCache.size() )
-		SetLocalTransforms( &m_vecLocalTransformCache[0] );
+		CalculateBlendTransforms( &m_vecLocalTransformCache[0] );
 }
 
 
