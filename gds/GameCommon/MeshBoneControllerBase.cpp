@@ -36,7 +36,7 @@ void CMeshBoneControllerBase::LoadFromXMLNode( CXMLNodeReader& reader )
 	}
 }
 
-
+/*
 void CMeshBoneControllerBase::UpdateTargetMeshTransforms()
 {
 	if( !m_pTargetMesh )
@@ -47,6 +47,19 @@ void CMeshBoneControllerBase::UpdateTargetMeshTransforms()
 	{
 		CBoneControlParam& rParam = m_vecBoneControlParam[i];
 		m_pTargetMesh->SetLocalTransformToCache( rParam.MatrixIndex, rParam.LocalTransform );
+	}
+}
+*/
+
+void CMeshBoneControllerBase::UpdateMeshBoneLocalTransforms( std::vector<Transform>& dest_mesh_bone_local_transforms )
+{
+	size_t i, num = m_vecBoneControlParam.size();
+	for( i=0; i<num; i++ )
+	{
+		CBoneControlParam& rParam = m_vecBoneControlParam[i];
+
+		if( 0 <= rParam.MatrixIndex && rParam.MatrixIndex < (int)dest_mesh_bone_local_transforms.size() )
+			dest_mesh_bone_local_transforms[rParam.MatrixIndex].FromMatrix34( rParam.LocalTransform );
 	}
 }
 

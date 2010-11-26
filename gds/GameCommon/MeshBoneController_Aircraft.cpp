@@ -37,22 +37,25 @@ public:
 */
 
 
-void CMeshBoneController_AircraftBase::Init()
+void CMeshBoneController_AircraftBase::Init( const CSkeletalMesh& target_mesh )
 {
-	if( !m_pTargetMesh )
-		return;
+//	if( !m_pTargetMesh )
+//		return;
 
 	size_t i, num_bones = m_vecBoneControlParam.size();
 
 	for( i=0; i<num_bones; i++ )
 	{
-//		const CMeshBone& bone = m_pTargetMesh->GetBone( bone_name[i] );
-		const CMeshBone& bone = m_pTargetMesh->GetBone( m_vecBoneControlParam[i].Name );
-		if( bone != CMeshBone::NullBone() )
+//		const CMeshBone& bone = m_pTargetMesh->GetBone( m_vecBoneControlParam[i].Name );
+		const CMeshBone& bone = target_mesh.GetBone( m_vecBoneControlParam[i].Name );
+		if( bone == CMeshBone::NullBone() )
 		{
-			m_vecBoneControlParam[i].MatrixIndex = bone.GetMatrixIndex();
-			m_vecBoneControlParam[i].vRotationAxis = Vec3GetNormalized( bone.GetLocalOffset() );
+			LOG_PRINT_WARNING( fmt_string(" The bone named '%s' was not found in the skeleton of the target mesh.",m_vecBoneControlParam[i].Name.c_str()) );
+			continue;
 		}
+
+		m_vecBoneControlParam[i].MatrixIndex = bone.GetMatrixIndex();
+		m_vecBoneControlParam[i].vRotationAxis = Vec3GetNormalized( bone.GetLocalOffset() );
 	}
 }
 
@@ -67,9 +70,9 @@ void CMeshBoneController_AircraftBase::Init()
 
 
 */
-void CMeshBoneController_Flap::Init()
+void CMeshBoneController_Flap::Init( const CSkeletalMesh& target_skeletal_mesh )
 {
-	CMeshBoneController_AircraftBase::Init();
+	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
 
 
@@ -142,9 +145,9 @@ void CMeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
  - m_Type == TYPE_TWIN:   "VFlapR", "VFlapL"
 
 */
-void CMeshBoneController_VFlap::Init()
+void CMeshBoneController_VFlap::Init( const CSkeletalMesh& target_skeletal_mesh )
 {
-	CMeshBoneController_AircraftBase::Init();
+	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
 
 
@@ -209,7 +212,7 @@ void CMeshBoneController_Rotor::Update( float dt )
 */
 
 
-void CMeshBoneController_Rotor::Init()
+void CMeshBoneController_Rotor::Init( const CSkeletalMesh& target_skeletal_mesh )
 {
 	if( m_vecBoneControlParam.size() != 1 )
 	{
@@ -217,7 +220,7 @@ void CMeshBoneController_Rotor::Init()
 		return;
 	}
 
-	CMeshBoneController_AircraftBase::Init();
+	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
 
 
@@ -305,9 +308,9 @@ void CMeshBoneController_Cover::Close()
 }
 
 
-void CMeshBoneController_Cover::Init()
+void CMeshBoneController_Cover::Init( const CSkeletalMesh& target_skeletal_mesh )
 {
-	CMeshBoneController_AircraftBase::Init();
+	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 
 	if( m_pParent )
 	{
@@ -479,12 +482,12 @@ void CMeshBoneController_Cover::LoadFromXMLNode( CXMLNodeReader& reader )
 //=====================================================================================
 // CMeshBoneController_GearUnit
 //=====================================================================================
-void CMeshBoneController_GearUnit::Init()
+void CMeshBoneController_GearUnit::Init( const CSkeletalMesh& target_skeletal_mesh )
 {
 	for( size_t i=0; i<m_vecpComponent.size(); i++ )
 	{
 		m_vecpComponent[i]->SetParent( this );
-		m_vecpComponent[i]->Init();
+		m_vecpComponent[i]->Init( target_skeletal_mesh );
 	}
 }
 
@@ -528,10 +531,10 @@ void CMeshBoneController_GearUnit::UpdateTransforms()
 
 void CMeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh )
 {
-	CMeshBoneControllerBase::SetTargetMesh( pTargetMesh );
+//	CMeshBoneControllerBase::SetTargetMesh( pTargetMesh );
 
-	for( size_t i=0; i<m_vecpComponent.size(); i++ )
-		m_vecpComponent[i]->SetTargetMesh( pTargetMesh );
+//	for( size_t i=0; i<m_vecpComponent.size(); i++ )
+//		m_vecpComponent[i]->SetTargetMesh( pTargetMesh );
 }
 
 

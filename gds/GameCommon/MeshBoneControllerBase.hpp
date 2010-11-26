@@ -5,8 +5,7 @@
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
-
-#include "3DMath/Matrix34.hpp"
+#include "3DMath/Transform.hpp"
 #include "Graphics/fwd.hpp"
 #include "XML/fwd.hpp"
 
@@ -56,7 +55,7 @@ protected:
 
 
 	/// borrowed reference
-	boost::shared_ptr<CSkeletalMesh> m_pTargetMesh;
+//	boost::shared_ptr<CSkeletalMesh> m_pTargetMesh;
 
 //	std::vector<std::string> m_vecTargetBoneName;
 
@@ -73,19 +72,21 @@ public:
 		NUM_IDS
 	};
 
-	CMeshBoneControllerBase( boost::shared_ptr<CSkeletalMesh> pTargetMesh = boost::shared_ptr<CSkeletalMesh>() )
-		:
-	m_pTargetMesh(pTargetMesh) {}
+	CMeshBoneControllerBase( boost::shared_ptr<CSkeletalMesh> pTargetMesh = boost::shared_ptr<CSkeletalMesh>() ){}
+//		:
+//	m_pTargetMesh(pTargetMesh) {}
 
 	virtual ~CMeshBoneControllerBase() {}
 
-	virtual void Init() {}
+	virtual void Init( const CSkeletalMesh& target_skeletal_mesh ) {}
 
 	virtual void UpdateTransforms() = 0;
 
-	virtual void SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
+//	virtual void SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
 
-	void UpdateTargetMeshTransforms();
+//	void UpdateTargetMeshTransforms();
+
+	void UpdateMeshBoneLocalTransforms( std::vector<Transform>& mesh_bone_local_transforms );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 

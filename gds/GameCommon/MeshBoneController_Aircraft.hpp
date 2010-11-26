@@ -148,7 +148,7 @@ public:
 
 	virtual ~CMeshBoneController_AircraftBase() {}
 
-	virtual void Init();
+	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
 
 	void SetPseudoAircraftSimulator( CPseudoAircraftSimulator *pSimulator ) { m_pSimulator = pSimulator; }
 
@@ -191,7 +191,7 @@ public:
 
 	virtual void UpdateTransforms();
 
-	virtual void Init();
+	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
@@ -238,7 +238,7 @@ public:
 
 	virtual void UpdateTransforms();
 
-	virtual void Init();
+	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
@@ -280,7 +280,7 @@ public:
 
 	virtual void UpdateTransforms();
 
-	virtual void Init();
+	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
 
 	void Update( float dt );
 
@@ -361,7 +361,7 @@ public:
 		m_Angle.vel = 1.0f;
 	}
 
-	void Init();
+	void Init( const CSkeletalMesh& target_skeletal_mesh );
 
 	void Update( float dt );
 
@@ -456,7 +456,7 @@ public:
 
 	virtual void SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh );
 
-	void Init();
+	void Init( const CSkeletalMesh& target_skeletal_mesh );
 
 	void Update( float dt );
 
