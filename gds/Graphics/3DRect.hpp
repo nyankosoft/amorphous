@@ -1,20 +1,24 @@
-#ifndef  __3DRECT_H__
-#define  __3DRECT_H__
+#ifndef  __3DRect_HPP__
+#define  __3DRect_HPP__
 
 
-#include "3DMath/Vector3.hpp"
+#include "../base.hpp"
+#include "../3DMath/Vector3.hpp"
+#include "General3DVertex.hpp"
+#include "Direct3D/Direct3D9.hpp"
+#include "Direct3D/Conversions.hpp"
 #include "FVF_NormalVertex.h"
-#include "Graphics/Direct3D/Conversions.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
 
 
 class C3DRect
 {
-	NORMALVERTEX m_av3DRectVertex[4];
+	CGeneral3DVertex m_RectVertices[4];
+
+//	U32 m_VertexFlags;
 
 public:
 
-	inline C3DRect() {}
+	inline C3DRect() {}//: m_VertexFlags(0) {}
 
 	inline ~C3DRect() {}
 
@@ -22,131 +26,109 @@ public:
 
 //	void LoadTextureFromFile(char* pTextureFilename);
 
-//	void SetPosition(D3DXVECTOR3* pvRectPosition,
-//					 D3DXMATRIX* pMatView, D3DXMATRIX* pMatProj);
-
-	inline void SetPosition( D3DXVECTOR3* pavVertex );
-
 	inline void SetPositions( Vector3* pavVertex );
 
-	inline void SetTextureUV( D3DXVECTOR2& rvMin, D3DXVECTOR2& rvMax );
+	inline void SetTextureUV( TEXCOORD2& rvMin, TEXCOORD2& rvMax );
 
-	inline void SetColor( DWORD dwColor, int vert_index = 4 );	//'dwColor' is ARGB format
+	inline void SetColor( SFloatRGBAColor color, int vert_index = 4 );	//'dwColor' is ARGB format
 
-	inline void SetPosition( int iVertex, const D3DXVECTOR3& rvPosition );
+	inline void SetPosition( int iVertex, const Vector3& rvPosition );
 
 	inline void ScalePosition( float fScale );
-
-	inline void SetNormal( D3DXVECTOR3* pavNormal );
 
 	inline void SetNormal( const Vector3& vNormal );
 
 	inline void SetNormals( Vector3* pavNormal );
 
-	void Draw();
+	// Draw the rectangle with the current shader settings
+	// - Does not switch to fixed function pipeline.
+	void draw() const;
+
+	void Draw() const;
 
 //	void DrawWireframe();
 };
 
 
-inline void C3DRect::SetPosition( D3DXVECTOR3* pavVertex )
-{
-	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
-
-	for( int i=0; i<4; i++ )
-		pav3DRect[i].vPosition = pavVertex[i];
-}
-
-
 inline void C3DRect::SetPositions( Vector3* pavVertex )
 {
-	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
+	CGeneral3DVertex *pav3DRect = m_RectVertices;
 
 	for( int i=0; i<4; i++ )
-		pav3DRect[i].vPosition = ToD3DXVECTOR3( pavVertex[i] );
+		pav3DRect[i].m_vPosition = pavVertex[i];
 }
 
 
-inline void C3DRect::SetColor( DWORD dwColor, int vert_index )
+inline void C3DRect::SetColor( SFloatRGBAColor color, int vert_index )
 {
 	if( vert_index == 4 )
 	{	// set the color for all the 4 vertices at once
 		for(int i=0; i<4; i++)
-			m_av3DRectVertex[i].color = dwColor;
+			m_RectVertices[i].m_DiffuseColor = color;
 	}
 	else if( 0 <= vert_index && vert_index < 4 )
 	{	// set the color for only one vertex specified by 'iVertexNum'
-		m_av3DRectVertex[vert_index].color = dwColor;
+		m_RectVertices[vert_index].m_DiffuseColor = color;
 	}
 }
 
 
-inline void C3DRect::SetPosition( int vert_index, const D3DXVECTOR3& rvPosition )
+inline void C3DRect::SetPosition( int vert_index, const Vector3& rvPosition )
 {
 	if( vert_index < 0 || 4 <= vert_index )
 		return;
 
-	m_av3DRectVertex[vert_index].vPosition = rvPosition;
+	m_RectVertices[vert_index].m_vPosition = rvPosition;
 }
 
 
 inline void C3DRect::ScalePosition( float fScale )
 {
-	m_av3DRectVertex[0].vPosition *= fScale;
-	m_av3DRectVertex[1].vPosition *= fScale;
-	m_av3DRectVertex[2].vPosition *= fScale;
-	m_av3DRectVertex[3].vPosition *= fScale;
+	m_RectVertices[0].m_vPosition *= fScale;
+	m_RectVertices[1].m_vPosition *= fScale;
+	m_RectVertices[2].m_vPosition *= fScale;
+	m_RectVertices[3].m_vPosition *= fScale;
 }
 
 
-inline void C3DRect::SetTextureUV(D3DXVECTOR2& rvMin, D3DXVECTOR2& rvMax)
+inline void C3DRect::SetTextureUV(TEXCOORD2& rvMin, TEXCOORD2& rvMax)
 {
-	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
+	CGeneral3DVertex *pav3DRect = m_RectVertices;
 
-	pav3DRect[0].tex.u = rvMin.x;		// top-left corner of the rectangle
-	pav3DRect[0].tex.v = rvMin.y;
+	pav3DRect[0].m_TextureCoord[0].u = rvMin.u;		// top-left corner of the rectangle
+	pav3DRect[0].m_TextureCoord[0].v = rvMin.v;
 
-	pav3DRect[1].tex.u = rvMax.x;
-	pav3DRect[1].tex.v = rvMin.y;
+	pav3DRect[1].m_TextureCoord[0].u = rvMax.u;
+	pav3DRect[1].m_TextureCoord[0].v = rvMin.v;
 
-	pav3DRect[2].tex.u = rvMax.x;		// bottom-right corner of the rectangle
-	pav3DRect[2].tex.v = rvMax.y;
+	pav3DRect[2].m_TextureCoord[0].u = rvMax.u;		// bottom-right corner of the rectangle
+	pav3DRect[2].m_TextureCoord[0].v = rvMax.v;
 
-	pav3DRect[3].tex.u = rvMin.x;
-	pav3DRect[3].tex.v = rvMax.y;
-}
-
-
-inline void C3DRect::SetNormal( D3DXVECTOR3* pavNormal )
-{
-	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
-
-	for( int i=0; i<4; i++ )
-		pav3DRect[i].vNormal = pavNormal[i];
+	pav3DRect[3].m_TextureCoord[0].u = rvMin.u;
+	pav3DRect[3].m_TextureCoord[0].v = rvMax.v;
 }
 
 
 inline void C3DRect::SetNormal( const Vector3& vNormal )
 {
-	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
+	CGeneral3DVertex *pav3DRect = m_RectVertices;
 
 	for( int i=0; i<4; i++ )
-		pav3DRect[i].vNormal = ToD3DXVECTOR3( vNormal );
+		pav3DRect[i].m_vNormal = vNormal;
 }
 
 
 inline void C3DRect::SetNormals( Vector3* pavNormal )
 {
-	NORMALVERTEX* pav3DRect = m_av3DRectVertex;
+	CGeneral3DVertex *pav3DRect = m_RectVertices;
 
 	for( int i=0; i<4; i++ )
-		pav3DRect[i].vNormal = ToD3DXVECTOR3( pavNormal[i] );
+		pav3DRect[i].m_vNormal = pavNormal[i];
 }
 
 
-inline void C3DRect::Draw()
+inline void C3DRect::draw() const
 {
-
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	// enable alpha blending
@@ -184,15 +166,33 @@ inline void C3DRect::Draw()
 	}
 */
 	// draw a rectangle
-	HRESULT hr ;
+	HRESULT hr = S_OK;
 
-	pd3dDev->SetFVF( NORMALVERTEX::FVF );
+	NORMALVERTEX verts[4];
+	for( int i=0; i<4; i++ )
+	{
+		verts[i].vPosition = ToD3DXVECTOR3( m_RectVertices[i].m_vPosition );
+		verts[i].vNormal   = ToD3DXVECTOR3( m_RectVertices[i].m_vNormal );
+		verts[i].color     = m_RectVertices[i].m_DiffuseColor.GetARGB32();
+		verts[i].tex       = m_RectVertices[i].m_TextureCoord[0];
+	}
 
-	hr = pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_av3DRectVertex, sizeof(NORMALVERTEX) );
+	hr = pd3dDev->SetFVF( NORMALVERTEX::FVF );
+
+	hr = pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_RectVertices, sizeof(NORMALVERTEX) );
 
 	if( FAILED(hr) )
-		MessageBox(NULL, "DrawPrimUP failed.", "Error", MB_OK);
+		MessageBox( NULL, "DrawPrimUP failed.", "Error", MB_OK );
 }
 
 
-#endif		/*  __3DRECT_H__  */
+inline void C3DRect::Draw() const
+{
+	DIRECT3D9.GetDevice()->SetVertexShader( NULL );
+	DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+
+	draw();
+}
+
+
+#endif		/*  __3DRect_HPP__  */
