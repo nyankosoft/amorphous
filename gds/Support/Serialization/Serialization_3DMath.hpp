@@ -5,7 +5,7 @@
 #include "3DMath/Matrix33.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Matrix44.hpp"
-#include "3DMath/Quaternion.hpp"
+#include "3DMath/Transform.hpp"
 #include "3DMath/AABB3.hpp"
 
 #include "3DMath/Vector2.hpp"
@@ -50,6 +50,13 @@ inline IArchive& operator & ( IArchive& ar, Matrix34& mat )
 inline IArchive& operator & ( IArchive& ar, Quaternion& q )
 {
 	ar & q.x & q.y & q.z & q.w;
+	return ar;
+}
+
+
+inline IArchive& operator & ( IArchive& ar, Transform& pose )
+{
+	ar & pose.qRotation & pose.vTranslation;
 	return ar;
 }
 
