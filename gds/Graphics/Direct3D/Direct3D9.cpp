@@ -2,6 +2,7 @@
 
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/FogParams.hpp"
+#include "Graphics/TextureStage.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
@@ -26,6 +27,34 @@ const char *hr_d3d_error_to_string(HRESULT hr)
 	}
 
 	return "Unknown";
+}
+
+
+static DWORD ToD3DTexStageOp( TexStageOp::Name op )
+{
+	switch( op )
+	{
+	case TexStageOp::SELECT_ARG0: return D3DTOP_SELECTARG1;
+	case TexStageOp::SELECT_ARG1: return D3DTOP_SELECTARG2;
+	case TexStageOp::MODULATE:    return D3DTOP_MODULATE;
+	case TexStageOp::DISABLE:     return D3DTOP_DISABLE;
+	default:
+		return D3DTOP_DISABLE;
+	}
+
+}
+
+
+static DWORD ToD3DTexStageArg( TexStageArg::Name tex_arg )
+{
+	switch( tex_arg )
+	{
+	case TexStageArg::PREV:    return D3DTA_CURRENT;
+	case TexStageArg::DIFFUSE: return D3DTA_DIFFUSE;
+	case TexStageArg::TEXTURE: return D3DTA_TEXTURE;
+	default:
+		return D3DTA_DIFFUSE;
+	}
 }
 
 
@@ -331,6 +360,21 @@ Result::Name CDirect3D9::SetTexture( int stage, const CTextureHandle& texture )
 	HRESULT hr = m_pD3DDevice->SetTexture( stage, texture.GetTexture() );
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::SetTextureStageParams( uint stage, const CTextureStage& params )
+{
+	LOG_PRINT_ERROR( " Not implemented yet." );
+	return Result::UNKNOWN_ERROR;
+
+	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLOROP,   ToD3DTexStageOp(params.ColorOp) );
+	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLORARG1, ToD3DTexStageArg(params.ColorArg0) );
+	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLORARG2, ToD3DTexStageArg(params.ColorArg1) );
+
+	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAOP,   ToD3DTexStageOp(params.AlphaOp) );
+	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAARG1, ToD3DTexStageArg(params.AlphaArg0) );
+	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAARG2, ToD3DTexStageArg(params.AlphaArg1) );
 }
 
 

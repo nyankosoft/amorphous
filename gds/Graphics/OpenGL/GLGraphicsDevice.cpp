@@ -120,6 +120,73 @@ Result::Name CGLGraphicsDevice::SetTexture( int stage, const CTextureHandle& tex
 }
 
 
+GLint ToGLCombine( int operation )
+{
+	return GL_MODULATE;
+}
+
+/*
+GLint ToGLTextureStageSource( int src )
+{
+	switch( src )
+	{
+	case CTextureStage::DIFFUSE:  return GL_PRIMARY_COLOR;
+	case CTextureStage::PREVIOUS: return GL_PREVIOUS;
+	case CTextureStage::TEXTURE:  return GL_TEXTURE;
+	default:
+		return GL_TEXTURE;
+	}
+}
+
+
+GLint ToGLOperand( int src )
+{
+	return 0;
+}
+*/
+
+Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const CTextureStage& params )
+{
+	LOG_PRINT_ERROR( " Not implemented yet." );
+	return Result::UNKNOWN_ERROR;
+/*
+	glActiveTextureARB( GL_TEXTURE0_ARB + stage );	 // start populating the stage
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture (GL_TEXTURE_2D, texture0ID); // lit texture
+
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_COMBINE);
+	glTexEnvi( GL_TEXTURE_ENV, GL_COMBINE_RGB_ARB,    ToGLCombine( params.ColorOp ) );
+
+	glTexEnvi( GL_TEXTURE_ENV, GL_SOURCE0_RGB_ARB,    ToGLTextureStageSource( params.ColorArg0 ) );
+	glTexEnvi( GL_TEXTURE_ENV, GL_OPERAND0_RGB_ARB,   GL_SRC_COLOR );
+	glTexEnvi( GL_TEXTURE_ENV, GL_SOURCE1_RGB_ARB,    ToGLTextureStageSource( params.ColorArg1 ) );
+	glTexEnvi( GL_TEXTURE_ENV, GL_OPERAND1_RGB_ARB,   GL_SRC_COLOR );
+
+	glTexEnvi( GL_TEXTURE_ENV, GL_COMBINE_ALPHA_ARB,  GL_MODULATE);
+
+	glTexEnvi( GL_TEXTURE_ENV, GL_SOURCE0_ALPHA_ARB,  ToGLTextureStageSource( params.AlphaArg0 ) );
+	glTexEnvi( GL_TEXTURE_ENV, GL_OPERAND0_ALPHA_ARB, GL_SRC_ALPHA ); // vertex alpha
+	glTexEnvi( GL_TEXTURE_ENV, GL_SOURCE1_ALPHA_ARB,  ToGLTextureStageSource( params.AlphaArg1 ) );
+	glTexEnvi( GL_TEXTURE_ENV, GL_OPERAND1_ALPHA_ARB, GL_SRC_ALPHA ); // this texture's alpha (stage 0)
+
+	//glBindTexture (GL_TEXTURE_2D, texture0ID); // lit texture
+	//glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE,   GL_COMBINE);
+	//glTexEnvi(GL_TEXTURE_2D, GL_COMBINE_RGB_ARB,    GL_MODULATE);
+	//glTexEnvi(GL_TEXTURE_2D, GL_SOURCE0_RGB_ARB,    GL_PRIMARY_COLOR);
+	//glTexEnvi(GL_TEXTURE_2D, GL_OPERAND0_RGB_ARB,   GL_SRC_COLOR); // vertex colors (lit portion)
+	//glTexEnvi(GL_TEXTURE_2D, GL_SOURCE1_RGB_ARB,    GL_TEXTURE);
+	//glTexEnvi(GL_TEXTURE_2D, GL_OPERAND1_RGB_ARB,   GL_SRC_COLOR); // this texture's colors (stage 0)
+	//glTexEnvi(GL_TEXTURE_2D, GL_COMBINE_ALPHA_ARB,  GL_MODULATE);
+	//glTexEnvi(GL_TEXTURE_2D, GL_SOURCE0_ALPHA_ARB,  GL_PRIMARY_COLOR);
+	//glTexEnvi(GL_TEXTURE_2D, GL_OPERAND0_ALPHA_ARB, GL_SRC_ALPHA); // vertex alpha
+	//glTexEnvi(GL_TEXTURE_2D, GL_SOURCE1_ALPHA_ARB,  GL_TEXTURE);
+	//glTexEnvi(GL_TEXTURE_2D, GL_OPERAND1_ALPHA_ARB, GL_SRC_ALPHA); // this texture's alpha (stage 0)
+
+	return Result::SUCCESS;*/
+}
+
+
 bool ToGLenum( RenderStateType::Name type, GLenum& cap )
 {
 	switch(type)

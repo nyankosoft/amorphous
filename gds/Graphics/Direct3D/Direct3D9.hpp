@@ -83,6 +83,8 @@ public:
 
 	Result::Name SetTexture( int stage, const CTextureHandle& texture );
 
+	Result::Name SetTextureStageParams( uint stage, const CTextureStage& params );
+
 	Result::Name SetRenderState( RenderStateType::Name type, bool enable );
 
 	void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode );

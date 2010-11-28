@@ -14,6 +14,9 @@ using namespace Graphics;
 using namespace NS_KGL;
 
 
+class CTextureStage;
+
+
 class CDisplayMode
 {
 public:
@@ -212,6 +215,8 @@ public:
 //	virtual void SetProjectionTransform();
 
 	virtual Result::Name SetTexture( int stage, const CTextureHandle& texture ) = 0;
+
+	virtual Result::Name SetTextureStageParams( uint stage, const CTextureStage& params ) = 0;
 
 	inline Result::Name Enable( RenderStateType::Name type ) { return SetRenderState( type, true ); }
 
