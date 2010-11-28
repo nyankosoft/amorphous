@@ -2,6 +2,7 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/GraphicsComponentCollector.hpp"
 #include "Support/Macro.h"
 #include "Support/StringAux.hpp"
 
@@ -85,8 +86,8 @@ void CSimpleMotionBlur::InitForScreenSize()
 
 	// CSimpleMotionBlur::Render() uses these variables to
 	// determine rect size
-	m_TextureWidth  = GetScreenWidth();
-	m_TextureHeight = GetScreenHeight();
+	m_TextureWidth  = CGraphicsComponent::GetScreenWidth();
+	m_TextureHeight = CGraphicsComponent::GetScreenHeight();
 }
 
 
@@ -149,8 +150,6 @@ static void SetRectRenderStates( LPDIRECT3DTEXTURE9 pTexture )
 
 void CSimpleMotionBlur::Render()
 {
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	// create a rect that covers the entire screen
 //	C2DRect rect( 0, 0, m_TextureWidth, m_TextureHeight );
 	C2DRect rect( -0.5f, -0.5f, (float)m_TextureWidth - 0.5f, (float)m_TextureHeight - 0.5f );
@@ -158,6 +157,12 @@ void CSimpleMotionBlur::Render()
 
 	shared_ptr<CTextureRenderTarget>& pDestRenderTarget = m_apTexRenderTarget[m_TargetTexIndex];
 	shared_ptr<CTextureRenderTarget>& pPrevRenderTarget = m_apTexRenderTarget[(m_TargetTexIndex+1)%2];
+
+	if( !pDestRenderTarget
+	 || !pPrevRenderTarget )
+	{
+		return;
+	}
 
 	if( m_bFirst )
 	{
@@ -185,14 +190,15 @@ void CSimpleMotionBlur::Render()
 //	pd3dDev->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_NONE );
 //	pd3dDev->SetSamplerState( 0, D3DSAMP_MIPFILTER, D3DTEXF_NONE );
 
-	// render the prev scene
+	// Render the prev scene without alpha
+	// - This is the motion blurred scene created from the last few scenes
 	rect.SetColor( 0xFFFFFFFF );
 ///	rect.Draw();
 	SetRectRenderStates( pPrevRenderTarget->GetRenderTargetTexture().GetTexture() );
 	rect.draw();
 //	rect.Draw( pPrevRenderTarget->GetRenderTargetTexture() );
 
-	// render the current scene with alpha
+	// Render the current scene with alpha, on top of the motion blurred scene.
 	U32 argb32_color = 0x00FFFFFF | ( ((int)(m_fBlurWeight * 255.0f)) << 24 );
 	rect.SetColor( argb32_color );
 	rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture() );

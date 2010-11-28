@@ -4,7 +4,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include "Graphics/fwd.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
 
 
 /**
@@ -22,7 +21,7 @@
  
  NOTE: derived from CGraphicsComponent to retrieve the screen resolution in InitForScreenSize()
  */
-class CSimpleMotionBlur : public CGraphicsComponent
+class CSimpleMotionBlur// : public CGraphicsComponent
 {
 	/// used to render the scene
 	boost::shared_ptr<CTextureRenderTarget> m_pSceneRenderTarget;
@@ -77,9 +76,9 @@ public:
 
 	void ReleaseTextures();
 
-	void ReleaseGraphicsResources() {}
+//	void ReleaseGraphicsResources() {}
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
+//	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
 };
 
 
