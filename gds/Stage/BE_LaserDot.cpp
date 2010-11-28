@@ -3,10 +3,18 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "3DMath/MatrixConversions.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/TextureStage.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/3DGameMath.hpp"
+
+
+void Draw3DRectWithProgrammableShader( const C3DRect& rect, CShaderManager& shader_mgr )
+{
+	LOG_PRINT_WARNING( " A function to draw a 3D rect with a programmable shader has not been implemented. Drawing the rect with fixed function pipeline." );
+
+	rect.Draw();
+}
 
 
 CBE_LaserDot::CBE_LaserDot()
@@ -26,7 +34,7 @@ CBE_LaserDot::CBE_LaserDot()
 	Vector3 aNormal[] = { Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0) };
 	m_LaserDotRect.SetNormals( aNormal );
 
-	m_LaserDotRect.SetColor( 0xFFFFFFFF );
+	m_LaserDotRect.SetColor( SFloatRGBAColor::White() );
 
 	m_MeshProperty.m_ShaderTechnique.resize( 1, 1 );
 	m_MeshProperty.m_ShaderTechnique( 0, 0 ).SetTechniqueName( "Default" );
@@ -106,8 +114,6 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-//	D3DXMATRIX matScale, matWorld;
-
 	// increase the size of the dot to improve visibility
 //	D3DXMatrixScaling( &matScale, 5.0f, 5.0f, 1.0f );
 	Matrix44 matScale( Matrix44Scaling( 5.0f, 5.0f, 1.0f ) );
@@ -124,8 +130,6 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 	ToMatrix44( rect_pose, matWorld );
 
 	matWorld = matWorld * matScale;
-	FixedFunctionPipelineManager().SetWorldTransform( matWorld );
-
 
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
@@ -134,29 +138,34 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 //	GraphicsDevice().SetDestBlendMode(  AlphaBlend::InvSrcAlpha );
 
 	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	LPD3DXEFFECT pEffect = NULL;
-	UINT cPasses;
-
-	if( pShaderManager &&
-		(pEffect = pShaderManager->GetEffect()) )
+	if( pShaderManager )
 	{
 		pShaderManager->SetWorldTransform( matWorld );
 
 		pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );
-		pEffect->Begin( &cPasses, 0 );
-		pEffect->BeginPass( 0 );
 
 		pShaderManager->SetTexture( 0, m_LaserDotTex );
 
-		pEffect->CommitChanges();
-
-		m_LaserDotRect.Draw();
-
-		pEffect->EndPass();
-		pEffect->End();
+		Draw3DRectWithProgrammableShader( m_LaserDotRect, *pShaderManager );
 	}
 	else
 	{
+		FixedFunctionPipelineManager().SetWorldTransform( matWorld );
+
+		CTextureStage ts0, ts1;
+		ts0.ColorArg0 = TexStageArg::DIFFUSE;
+		ts0.ColorArg1 = TexStageArg::TEXTURE;
+		ts0.ColorOp   = TexStageOp::MODULATE;
+		ts0.AlphaArg0 = TexStageArg::DIFFUSE;
+		ts0.AlphaArg1 = TexStageArg::TEXTURE;
+		ts0.AlphaOp   = TexStageOp::MODULATE;
+
+		ts1.ColorOp   = TexStageOp::DISABLE;
+		ts1.AlphaOp   = TexStageOp::DISABLE;
+
+		GraphicsDevice().SetTextureStageParams( 0, ts0 );
+		GraphicsDevice().SetTextureStageParams( 1, ts1 );
+/*
 		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
 //		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2 );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
@@ -166,8 +175,8 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-
-		pd3dDev->SetTexture( 0, m_LaserDotTex.GetTexture() );
+*/
+		FixedFunctionPipelineManager().SetTexture( 0, m_LaserDotTex );
 
 		m_LaserDotRect.Draw();
 	}
