@@ -301,11 +301,15 @@ public:
 
 	~C3DMeshModelArchive();
 
+	const CMMA_VertexSet& GetVertexSet() const { return m_VertexSet; }
+
 	CMMA_VertexSet& GetVertexSet() { return m_VertexSet; }
 
 	std::vector<CMMA_TriangleSet>& GetTriangleSet() { return m_vecTriangleSet; }
 
 	unsigned int GetNumVertexIndices() const { return (unsigned int)m_vecVertexIndex.size(); }
+
+	const std::vector<unsigned int>& GetVertexIndex() const { return m_vecVertexIndex; }
 
 	std::vector<unsigned int>& GetVertexIndex() { return m_vecVertexIndex; }
 
