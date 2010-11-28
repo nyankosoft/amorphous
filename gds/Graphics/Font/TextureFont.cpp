@@ -18,10 +18,9 @@ void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend )
 		return;
 
 	// set render states for texture font
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, g_dwD3DBlendMode[dest_alpha_blend] );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
+	GraphicsDevice().SetDestBlendMode( dest_alpha_blend );
 
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
