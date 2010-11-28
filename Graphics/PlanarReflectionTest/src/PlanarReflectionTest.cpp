@@ -20,10 +20,73 @@ using namespace boost;
 extern CPlatformDependentCameraController g_CameraController;
 
 
+template<typename ColorType>
+class TLVertex
+{
+public:
+	TLVertex()
+		:
+	Vector3(0,0,0)
+	{}
+
+	TLVertex( const Vector3& _position, const ColorType& _color ) : position(_position), color(_color)
+	{}
+
+	~TLVertex(){}
+
+	Vector3 position;
+	ColorType color;
+};
+
+
+#include "Graphics/Direct3D/Direct3D9.hpp"
+
+extern D3DPRIMITIVETYPE ToD3DPrimitiveType( PrimitiveType::Name pt ); // in gds/Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.cpp
+
+void DrawPrimitives( PrimitiveType::Name primitive_type, const TLVertex<U32> *vertices, uint num_vertices )//, int u32_color_componets_order == always ARGB )
+{
+	if( !vertices || num_vertices == 0 )
+		return;
+
+	// Support primitives types other than triangle fan and triangle strips
+	uint num_primitives = num_vertices - 2;
+
+	D3DPRIMITIVETYPE d3d_pt = ToD3DPrimitiveType( primitive_type );
+
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr = S_OK;
+
+	DWORD fvf = (D3DFVF_XYZRHW|D3DFVF_DIFFUSE);
+
+	hr = pd3dDev->SetVertexShader( NULL );
+	hr = pd3dDev->SetPixelShader( NULL );
+
+	hr = pd3dDev->SetFVF( fvf );
+
+	hr = pd3dDev->DrawPrimitiveUP( d3d_pt, num_primitives, vertices, sizeof(TLVertex<U32>) );
+}
+
+
+void DrawPrimitives( PrimitiveType::Name primitive_type, const std::vector< TLVertex<U32> >& vertices )
+{
+	if( vertices.empty() )
+		return;
+
+	DrawPrimitives( primitive_type, &vertices[0], (uint)vertices.size() );
+}
+
+
+
 Vector3 GetMirroredPosition( const Plane& plane, const Vector3& pos )
 {
 	float d = plane.GetDistanceFromPoint( pos );
 	return pos - plane.normal * d * 2.0f;
+}
+
+
+void RenderPlane( const Matrix34& plane_pose, float x, float y )
+{
+//	C3DRect rect;
 }
 
 
@@ -40,9 +103,11 @@ extern const std::string GetAppTitle()
 }
 
 
+extern void InitCg();
 
 CPlanarReflectionTest::CPlanarReflectionTest()
 {
+	InitCg();
 }
 
 
@@ -56,7 +121,7 @@ int CPlanarReflectionTest::Init()
 	m_pFont = CreateDefaultBuiltinFont();
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
-	m_MeshTechnique.SetTechniqueName( "NoLighting" );
+	m_MeshTechnique.SetTechniqueName( "Default" );
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );
 
 	// initialize shader
@@ -172,6 +237,95 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 	}
 }
 
+/*
+void RenderReflectionClipPlane() //const Plane& reflection_plane )
+{
+	TLVertex<U32> verts[4] =
+	{
+		TLVertex<U32>( Vector3(-100, 0, 100), 0xFFFF0000 ),//0x00000000 ),
+		TLVertex<U32>( Vector3( 100, 0, 100), 0xFFFF0000 ),//0x00000000 ),
+		TLVertex<U32>( Vector3( 100, 0,-100), 0xFFFF0000 ),//0x00000000 ),
+		TLVertex<U32>( Vector3(-100, 0,-100), 0xFFFF0000 ),//0x00000000 )
+	};
+
+	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
+
+	DrawPrimitives( PrimitiveType::TRIANGLE_FAN, verts, 4 );
+}
+*/
+
+
+void SetClipPlaneViaD3DXFunctions()// const Plane& reflection_plane )
+{
+	D3DXPLANE clipPlane;
+	D3DXVECTOR3 point( 0 , 0, 0 );
+	D3DXVECTOR3 normal( 0, -1, 0 ); // negative of the normal vector.
+	// create and normalize the plane
+	D3DXPlaneFromPointNormal(&clipPlane,&point,&normal);
+	D3DXPlaneNormalize(&clipPlane,&clipPlane);
+
+	// To transform a plane from world space to view space there is a methode D3DXPlaneTransform
+	// but the peculiar thing about this method is that it takes the inverse transpose of the viewprojection matrix
+
+	Matrix44 proj_view = g_Camera.GetProjectionMatrix() * g_Camera.GetCameraMatrix();
+	D3DXMATRIXA16 matrix, view_proj;
+	proj_view.GetRowMajorMatrix44( (float *)&view_proj );
+
+	D3DXMatrixInverse(&matrix, NULL, &view_proj); // second parameter is an out parameter for the determinant
+	D3DXMatrixTranspose(&matrix, &matrix);
+
+	D3DXPLANE viewSpacePlane;
+	D3DXPlaneTransform(&viewSpacePlane, &clipPlane, &matrix);
+
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr = S_OK;
+	hr = pd3dDev->SetClipPlane( 0, (float *)&viewSpacePlane );
+	hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, D3DCLIPPLANE0 );
+}
+
+
+void SetClipPlane( const Plane& reflection_plane )
+{
+	Plane src_plane( reflection_plane );
+	src_plane.Flip();
+
+	Matrix44 proj_view = g_Camera.GetProjectionMatrix() * g_Camera.GetCameraMatrix();
+//	Matrix44 inv_proj_view = Matrix44Transpose( proj_view );
+
+	Plane reflection_plane_in_clipping_space;
+	Vector4 src_plane_normal4( src_plane.normal.x, src_plane.normal.y, src_plane.normal.z, 1.0f );
+	Vector4 reflection_plane_in_clipping_space_normal4 = proj_view * src_plane_normal4;
+	reflection_plane_in_clipping_space.normal = proj_view * src_plane.normal;
+	Vector3 pos_on_plane = src_plane.normal * src_plane.dist;
+	Vector3 pos_on_clipping_space_plane = proj_view * pos_on_plane;
+	reflection_plane_in_clipping_space.dist = Vec3Dot( pos_on_clipping_space_plane, reflection_plane_in_clipping_space.normal );
+
+	float plane_coefficients[] =
+	{
+		reflection_plane_in_clipping_space.normal.x,
+		reflection_plane_in_clipping_space.normal.y,
+		reflection_plane_in_clipping_space.normal.z,
+		reflection_plane_in_clipping_space.dist * (-1.0f)
+	};
+
+	// For fixed function pipeline
+/*	float plane_coefficients[] =
+	{
+		reflection_plane.normal.x,
+		reflection_plane.normal.y,
+		reflection_plane.normal.z,
+		reflection_plane.dist * (-1.0f)
+	};*/
+
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr = S_OK;
+	hr = pd3dDev->SetClipPlane( 0, plane_coefficients );
+	hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, D3DCLIPPLANE0 );
+}
+
 
 void CPlanarReflectionTest::Render()
 {
@@ -179,7 +333,8 @@ void CPlanarReflectionTest::Render()
 
 	m_pTextureRenderTarget->SetRenderTarget();
 
-	Matrix44 mirror = Matrix44Mirror( SPlane( Vector3(0,1,0), 0 ) );
+	Plane reflection_plane( Vector3(0,1,0), 0 );
+	Matrix44 mirror = Matrix44Mirror( reflection_plane );
 
 	Matrix44 view = g_Camera.GetCameraMatrix();
 	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, g_Camera.GetProjectionMatrix() );
@@ -196,7 +351,13 @@ void CPlanarReflectionTest::Render()
 	}*/
 
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
+//	RenderReflectionClipPlane( /*reflection_plane*/ );
+	SetClipPlane( reflection_plane );
+	SetClipPlaneViaD3DXFunctions();
 	RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), g_Camera.GetPosition() ) );
+
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, 0 );
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
 
