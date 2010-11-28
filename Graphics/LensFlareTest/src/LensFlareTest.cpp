@@ -4,6 +4,7 @@
 #include "Graphics/LensFlare.hpp"
 #include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/SkyboxMisc.hpp"
@@ -96,7 +97,11 @@ int CLensFlareTest::Init()
 
 	m_TestTexture.Load( "./textures/flare02.dds" );
 
-	m_LightPosIndicator.Init();
+	CMeshResourceDesc sphere_mesh_desc;
+	CSphereDesc sphere_desc;
+	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 2.0f;
+	sphere_mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+	m_LightPosIndicator.Load( sphere_mesh_desc );
 
 	return 0;
 }
@@ -116,31 +121,37 @@ void CLensFlareTest::Render()
 
 	Matrix44 matWorld = Matrix44Identity();
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	if( !pShaderMgr )
-		return;
+//	if( !pShaderMgr )
+//		return;
+
+	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
 
-	pShaderMgr->SetWorldTransform( matWorld );
+	shader_mgr.SetWorldTransform( matWorld );
 
-	pShaderMgr->SetTechnique( m_MeshTechnique );
-	
-	m_TerrainMesh.GetMesh().get()->Render( *pShaderMgr );
+	shader_mgr.SetTechnique( m_MeshTechnique );
+
+	shared_ptr<CBasicMesh> pTerrainMesh = m_TerrainMesh.GetMesh();
+	if( pTerrainMesh )
+		pTerrainMesh->Render( shader_mgr );
 
 	// display light position
 	Matrix34 light_pose( m_pLensFlare->GetLightPosition(), Matrix33Identity() );
 //	light_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
-	pShaderMgr->SetWorldTransform( light_pose );
+	shader_mgr.SetWorldTransform( light_pose );
 	FixedFunctionPipelineManager().SetWorldTransform( light_pose );
-	m_LightPosIndicator.Draw();
+	shared_ptr<CBasicMesh> pLightPosIndicator = m_LightPosIndicator.GetMesh();
+	if( pLightPosIndicator )
+		pLightPosIndicator->Render();
 
 	// lens flares
 
-	pShaderMgr->SetTechnique( m_DefaultTechnique );
+	shader_mgr.SetTechnique( m_DefaultTechnique );
 
 	rect.Draw();
 
-	m_pLensFlare->Render( *pShaderMgr );
+	m_pLensFlare->Render( shader_mgr );
 }
 
 

@@ -34,7 +34,7 @@ class CLensFlareTest : public CGraphicsTestBase
 
 	CTextureHandle m_TestTexture;
 
-	CUnitSphere m_LightPosIndicator;
+	CMeshObjectHandle m_LightPosIndicator;
 
 //	float m_FOV;// = PI / 4.0f;
 
