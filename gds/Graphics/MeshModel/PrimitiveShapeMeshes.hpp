@@ -81,6 +81,8 @@ public:
 
 class CBoxDesc
 {
+public:
+
 	Vector3 vLengths;
 
 public:
