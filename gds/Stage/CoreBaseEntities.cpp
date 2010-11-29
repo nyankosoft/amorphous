@@ -1,3 +1,4 @@
+#include "CoreBaseEntitiesLoader.hpp"
 #include "BaseEntityFactory.hpp"
 #include "BaseEntity.hpp"
 #include "BE_AreaSensor.hpp"
@@ -7,12 +8,12 @@
 #include "BE_Decal.hpp"
 #include "BE_Door.hpp"
 #include "BE_DoorController.hpp"
-#include "BE_Enemy.hpp"
+//#include "BE_Enemy.hpp"
 #include "BE_EventTrigger.hpp"
 #include "BE_ExplosionSmoke.hpp"
 #include "BE_Explosive.hpp"
 #include "BE_FixedTurretPod.hpp"
-#include "BE_Floater.hpp"
+//#include "BE_Floater.hpp"
 #include "BE_GeneralEntity.hpp"
 #include "BE_HomingMissile.hpp"
 #include "BE_LaserDot.hpp"
@@ -21,41 +22,24 @@
 #include "BE_PhysicsBaseEntity.hpp"
 #include "BE_Platform.hpp"
 #include "BE_Player.hpp"
-#include "BE_PlayerPseudoAircraft.hpp"		// 20061119
-#include "BE_PlayerPseudoLeggedVehicle.hpp"
-#include "BE_PlayerShip.hpp"
+//#include "BE_PlayerPseudoAircraft.hpp"		// 20061119
+//#include "BE_PlayerPseudoLeggedVehicle.hpp"
+//#include "BE_PlayerShip.hpp"
 #include "BE_PointLight.hpp"
 #include "BE_SmokeTrace.hpp"
 #include "BE_SupplyItem.hpp"
 #include "BE_TextureAnimation.hpp"
 #include "BE_Turret.hpp"
-#include "BE_EnemyAircraft.hpp"				// 20070106
+//#include "BE_EnemyAircraft.hpp"				// 20070106
 #include "BE_DirectionalLight.hpp"			// 20070108
 #include "BE_StaticParticleSet.hpp"			// 20070328
 #include "BE_NozzleExhaust.hpp"				// 20070328
-#include "BE_EnemyShip.hpp"					// 20070520
+//#include "BE_EnemyShip.hpp"					// 20070520
 #include "BE_StaticGeometry.hpp"				// 20070817
 #include "BE_Skybox.hpp"						// 20070817
 #include "BE_CameraController.hpp"			// 20070909
 #include "BE_ScriptedCamera.hpp"				// 20070909
 #include "BE_IndividualEntity.hpp"				// 20070909
-
-
-class CCoreBaseEntitiesLoader
-{
-	void AddBlast( const char *name, float base_damage, float max_blast_radius, float blast_duration, float impulse, std::vector<CBaseEntity *>& pBaseEntities );
-	void AddExplosion( const char *name, const char *blast_name, float anim_time_offset, std::vector<CBaseEntity *>& pBaseEntities );
-	void AddDefaultLight( CBE_Light *pLight, const char *name, std::vector<CBaseEntity *>& pBaseEntities );
-
-	void AddPhysicsObjects();
-
-public:
-
-	CCoreBaseEntitiesLoader(){}
-	~CCoreBaseEntitiesLoader(){}
-
-	void LoadCoreBaseEntities( std::vector<CBaseEntity *>& pBaseEntities );
-};
 
 
 
@@ -108,35 +92,41 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 //	CBE_GeneralEntity *pBox  = new CBE_GeneralEntity;
 //	CBE_Explosive *pImEx     = new CBE_Explosive;
 
+	CBE_CameraController *pCutsceneCamController = CreateBaseEntity<CBE_CameraController>( CBaseEntity::BE_CAMERACONTROLLER );
+	pCutsceneCamController->m_strName = "CutsceneCameraController";
+	pCutsceneCamController->m_bUseCutsceneInputHandler = true;
+	pBaseEntities.push_back( pCutsceneCamController );
+
 	CBE_CameraController *pCamController = CreateBaseEntity<CBE_CameraController>( CBaseEntity::BE_CAMERACONTROLLER );
-//	pCamController->m_strName = "CameraController";
+	pCamController->m_strName = "CameraController";
+	pCamController->m_bUseCutsceneInputHandler = false;
 	pBaseEntities.push_back( pCamController );
 
 	CBE_ScriptedCamera *pCam = CreateBaseEntity<CBE_ScriptedCamera>( CBaseEntity::BE_SCRIPTEDCAMERA );
-//	pCam->m_strName = "ScriptedCamera";
+	pCam->m_strName = "ScriptedCamera";
 	pBaseEntities.push_back( pCam );
 
 	CBE_EventTrigger *pET = CreateBaseEntity<CBE_EventTrigger>( CBaseEntity::BE_EVENTTRIGGER );
-//	pET->m_strName = "EventBox";
-//	pET->m_BoundingVolumeType = BVTYPE_AABB;
+	pET->m_strName = "EventBox";
+	pET->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pET );
 
 	CBE_StaticGeometry *pSG = CreateBaseEntity<CBE_StaticGeometry>( CBaseEntity::BE_STATICGEOMETRY );
-//	pSG->m_strName = "StaticGeometry";
+	pSG->m_strName = "StaticGeometry";
 	pBaseEntities.push_back( pSG );
 
 	CBE_Skybox *pSkybox = CreateBaseEntity<CBE_Skybox>( CBaseEntity::BE_SKYBOX );
-//	pSkybox->m_strName = "skybox";
-//	pSkybox->m_BoundingVolumeType = BVTYPE_AABB;
+	pSkybox->m_strName = "skybox";
+	pSkybox->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pSkybox );
 
 
 	CBE_IndividualEntity *pAlphaEntityBase = CreateBaseEntity<CBE_IndividualEntity>( CBaseEntity::BE_INDIVIDUALENTITY );
-//	pAlphaEntityBase->m_strName = "AlphaEntityBase";
+	pAlphaEntityBase->m_strName = "AlphaEntityBase";
 	pBaseEntities.push_back( pAlphaEntityBase );
 
 	CBE_IndividualEntity *pForItemEntity = CreateBaseEntity<CBE_IndividualEntity>( CBaseEntity::BE_INDIVIDUALENTITY );
-//	pForItemEntity->m_strName = "__ForItemEntity__";
+	pForItemEntity->m_strName = "__ForItemEntity__";
 	pBaseEntities.push_back( pForItemEntity );
 
 	// Add preset base entities for games

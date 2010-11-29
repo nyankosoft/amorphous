@@ -75,6 +75,8 @@ public:
 	void GrenadeMove(CCopyEntity* pCopyEnt);
 	void Explode(CCopyEntity* pCopyEnt);
 	void FlashScreen(CCopyEntity* pCopyEnt);
+
+	friend class CCoreBaseEntitiesLoader;
 };
 
 #endif	/*  __BE_EXPLOSIVE_H__  */

@@ -78,6 +78,8 @@ public:
 
 	const CLightEntityDesc& GetDefaultDesc() const { return m_DefaultDesc; }
 
+	friend class CCoreBaseEntitiesLoader;
+
 public:
 
 	static const SFloatRGBAColor ms_InvalidColor;

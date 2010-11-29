@@ -27,6 +27,7 @@ class CMeshBoneControllerBase;
 class CEntityShaderLightParamsLoader;
 class CBlendTransformsLoader;
 class CRenderContext;
+class CCoreBaseEntitiesLoader;
 
 
 /**
@@ -341,6 +342,7 @@ public:
 	// friend class
 	//
 	friend class CEntitySet;
+	friend class CCoreBaseEntitiesLoader;
 
 	enum BaseEntityID
 	{

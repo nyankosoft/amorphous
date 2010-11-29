@@ -85,7 +85,8 @@ public:
 	virtual void UpdateCamera( CCopyEntity *pCopyEnt ) {}
 //	virtual CCamera *GetCamera() { return &m_Camera; }
 
-	friend CInputHandler_Cutscene;
+	friend class CInputHandler_Cutscene;
+	friend class CCoreBaseEntitiesLoader;
 };
 
 #endif  /*  __BE_CameraController_H__  */
