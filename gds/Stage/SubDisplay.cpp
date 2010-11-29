@@ -2,7 +2,7 @@
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/TextureStage.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
@@ -235,9 +235,6 @@ void CSubDisplay::Render()
 		|| GetCurrentMonitor()->GetType() == SubMonitor::TYPE_NULL )
 		return;
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-
 	m_pTextureRenderTarget->SetRenderTarget();
 
 //	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
@@ -277,15 +274,19 @@ void CSubDisplay::Render()
 
 	FixedFunctionPipelineManager().SetTexture( 0, m_pTextureRenderTarget->GetRenderTargetTexture() );
 
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
+	CTextureStage ts0, ts1;
+	ts0.ColorOp = TexStageOp::MODULATE;
+	ts0.ColorArg0 = TexStageArg::DIFFUSE;
+	ts0.ColorArg1 = TexStageArg::TEXTURE;
+	ts0.AlphaOp = TexStageOp::SELECT_ARG0;
+	ts0.AlphaArg0 = TexStageArg::DIFFUSE;
+	ts0.AlphaArg1 = TexStageArg::TEXTURE;
 
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+	ts1.ColorOp   = TexStageOp::DISABLE;
+	ts1.AlphaOp   = TexStageOp::DISABLE;
+
+	GraphicsDevice().SetTextureStageParams( 0, ts0 );
+	GraphicsDevice().SetTextureStageParams( 1, ts1 );
 
 	m_DisplayRect.draw();
 
@@ -297,10 +298,11 @@ void CSubDisplay::CreateRenderTasks()
 {
 	m_pTextureRenderTarget->SetRenderTarget();
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,0,255,255), 1.0f, 0 );
-	pd3dDev->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-	pd3dDev->SetRenderState( D3DRS_LIGHTING, FALSE );
+	GraphicsDevice().SetClearColor( SFloatRGBAColor::Aqua() );
+	GraphicsDevice().SetClearDepth( 1.0f );
+	GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 	// render task to render the scene of the stage to texture render target
 	GetCurrentMonitor()->CreateRenderTasks();
