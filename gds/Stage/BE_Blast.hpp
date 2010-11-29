@@ -26,7 +26,7 @@ class CBE_Blast : public CBaseEntity
 	/// and applied to the entity if it overlaps with the blast volume
 	float m_fImpulse;
 
-	boost::shared_ptr<CUnitCube> m_pUnitCube;	// draw boundary for debug
+//	boost::shared_ptr<CUnitCube> m_pUnitCube;	// draw boundary for debug
 
 public:
 	CBE_Blast();
@@ -44,6 +44,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
+	friend class CCoreBaseEntitiesLoader;
 };
 
 

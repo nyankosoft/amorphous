@@ -4,9 +4,12 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/UnitCube.hpp"
-#include "Support/SafeDelete.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+//#include "Graphics/UnitCube.hpp"
+//#include "Support/SafeDelete.hpp"
 #include "3DMath/MathMisc.hpp"
+#include "3DMath/MatrixConversions.hpp"
 
 using namespace std;
 using namespace boost;
@@ -16,6 +19,8 @@ using namespace boost;
 
 
 float& CurrentBlastTime( CCopyEntity *pEntity ) { return pEntity->f2; }
+float& CurrentBlastRadius( CCopyEntity *pEntity ) { return pEntity->f3; }
+
 
 CBE_Blast::CBE_Blast()
 {
@@ -43,8 +48,8 @@ CBE_Blast::~CBE_Blast()
 
 void CBE_Blast::Init()
 {
-	m_pUnitCube = shared_ptr<CUnitCube>( new CUnitCube );
-	m_pUnitCube->Init();
+//	m_pUnitCube = shared_ptr<CUnitCube>( new CUnitCube );
+//	m_pUnitCube->Init();
 //	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
 }
 
@@ -105,7 +110,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 	msg.effect = GM_DAMAGE;
 	msg.s1 = DMG_BLAST;
 	msg.fParam1 = m_fBaseDamage * fBlastFrameTime;	// amount of damage
-	size_t iNumOvelappingEntities = tr.GetNumTouchEntities();
+	int iNumOvelappingEntities = (int)tr.GetNumTouchEntities();
 	CCopyEntity* pTouchedEntity;
 
 //	LOG_PRINTF(( " entity id: %d - Checking overlapping entities (%d) ", pCopyEnt->GetID(), iNumOvelappingEntities ));
@@ -182,27 +187,20 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 
 void CBE_Blast::Draw(CCopyEntity* pCopyEnt)
 {
-/*	float fCurrentBlastRadius = pCopyEnt->f3;
-
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	memcpy( &matWorld._41, &pCopyEnt->GetWorldPosition(), sizeof(D3DXVECTOR3) );
+	Matrix44 matWorld = ToMatrix44( pCopyEnt->GetWorldPose() );
 
 	// show the center position of the blast ( in black )
-	matWorld._11 = matWorld._22 = matWorld._33 = 0.2f;
+	FixedFunctionPipelineManager().SetWorldTransform( matWorld * Matrix44Scaling(0.2f,0.2f,0.2f) );
 
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-
-	m_pUnitCube->SetUniformColor( 0.0f, 0.0f, 0.0f, 0.9f );
-	m_pUnitCube->Draw();
+//	m_pUnitCube->SetUniformColor( 0.0f, 0.0f, 0.0f, 0.9f );
+//	m_pUnitCube->Draw();
 
 	// show the blast range ( in red )
-	matWorld._11 = matWorld._22 = matWorld._33 = pCopyEnt->f3 * 2.0f;
+	float s = CurrentBlastRadius(pCopyEnt) * 2.0f;
+	FixedFunctionPipelineManager().SetWorldTransform( matWorld * Matrix44Scaling(s,s,s) );
 
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
-
-	m_pUnitCube->SetUniformColor( 1.0f, 0.0f, 0.0f, 0.6f );
-	m_pUnitCube->Draw();*/
+//	m_pUnitCube->SetUniformColor( 1.0f, 0.0f, 0.0f, 0.6f );
+//	m_pUnitCube->Draw();
 }
 
 
