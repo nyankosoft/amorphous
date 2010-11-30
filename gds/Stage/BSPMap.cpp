@@ -11,10 +11,6 @@
 #include "Graphics/Direct3D/TextureTool.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-
-//#include "JigLib/JL_PhysicsManager.hpp"
-//#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
-//#include "JigLib/JL_PhysicsActor.hpp"
 #include "JigLib/TriangleMesh.hpp"
 
 #include "Support/memory_helpers.hpp"
