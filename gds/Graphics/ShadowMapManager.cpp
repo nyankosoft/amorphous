@@ -242,9 +242,11 @@ Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, CLight& light )
 	static uint s_NumMaxShadowMaps = 1;
 
 	uint num_max_shadowmaps = 1;
-	if( itrShadowMap == m_mapIDtoShadowMap.end()
-	 && (uint)m_mapIDtoShadowMap.size() < s_NumMaxShadowMaps )
+	if( itrShadowMap == m_mapIDtoShadowMap.end() )
 	{
+		if( s_NumMaxShadowMaps <= (uint)m_mapIDtoShadowMap.size() )
+			return Result::UNKNOWN_ERROR; // Cannot create any more shadowmaps
+
 		// The shadow map for this light does not exist
 		// - create a new shadow map.
 		itrShadowMap = CreateShadowMap( id, light );
