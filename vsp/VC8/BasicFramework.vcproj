@@ -412,6 +412,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\ShapeDetector.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\ShapeDetector.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\SimpleMotionBlur.cpp"
 				>
 			</File>
@@ -612,6 +620,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\General3DMesh.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp"
 					>
 				</File>
 				<File
