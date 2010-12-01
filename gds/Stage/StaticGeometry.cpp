@@ -4,7 +4,7 @@
 
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/Direct3D/Mesh/D3DXMeshObject.hpp"
+#include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/GraphicsResourceCacheManager.hpp"
 
 #include "Physics/PhysicsEngine.hpp"
