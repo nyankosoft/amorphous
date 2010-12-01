@@ -241,15 +241,7 @@
 				Name="entities"
 				>
 				<File
-					RelativePath="..\..\..\resources\entity\all.txt"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\resources\entity\BaseEntity.txt"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\resources\entity\core.txt"
 					>
 				</File>
 				<File
