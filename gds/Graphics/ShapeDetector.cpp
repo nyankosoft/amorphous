@@ -11,6 +11,21 @@ using namespace std;
 using namespace boost;
 
 
+
+/*
+Should concave polygons be supported by physics engine?
+- rationale: make client code of the physics engine simpler,
+
+  Steps in PhysX engine
+  1. Dividing a polygon mesh into a set of convex meshes
+  2. Create convex mesh shapes
+  3. Create an actor
+- Should define a mesh type?
+  - ConvexSets, in addition to the convex and concave meshes
+  - Mesh suited for dividing into convex meshes
+*/
+
+
 /// Used for matching 2 normals, not for ordering planes.
 class plane_normal_comparision
 {
@@ -41,12 +56,63 @@ static inline bool have_shared_point( const CIndexedPolygon& polygon0, const CIn
 
 bool CShapeDetector::IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb )
 {
-	LOG_PRINT_ERROR( " Not implemented." );
-	return false;
+	float aa_plane_dists[6] = {0,0,0,0,0,0};
+	int aa_plane_found[6];
+	memset( aa_plane_found, 0, sizeof(aa_plane_found) );
+
+	const Vector3 aa_normals[] =
+	{
+		Vector3(1,0,0),
+		Vector3(0,1,0),
+		Vector3(0,0,1),
+		Vector3(-1,0,0),
+		Vector3(0,-1,0),
+		Vector3(0,0,-1),
+	};
+
+	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
+	const int num_polygons = (int)polygons.size();
+	for( int i=0; i<num_polygons; i++ )
+	{
+		const Plane& plane = polygons[i].GetPlane();
+		bool is_plane_aa = false;
+		for( int j=0; j<6; j++ )
+		{
+			if( 0.001f < Vec3LengthSq( plane.normal - aa_normals[j] ) )
+				continue;
+
+			// aligned along the j-th axis
+
+			if( aa_plane_found[j] )
+			{
+				// The plane must be the same with those of the other polygons aligned along this axis
+				if( 0.001f < fabsf( plane.dist - aa_plane_dists[j] ) )
+					return false; // has the same normal but the planes are different.
+			}
+			else
+			{
+				aa_plane_dists[j] = plane.dist;
+				is_plane_aa = true;
+				break;
+			}
+		}
+
+		if( !is_plane_aa )
+			return false;
+	}
+
+	aabb.vMax.x = aa_plane_dists[0];
+	aabb.vMax.y = aa_plane_dists[1];
+	aabb.vMax.z = aa_plane_dists[2];
+	aabb.vMin.x = aa_plane_dists[3];
+	aabb.vMin.y = aa_plane_dists[4];
+	aabb.vMin.z = aa_plane_dists[5];
+
+	return true;
 }
 
 
-bool CShapeDetector::IsBox( const CGeneral3DMesh& connected_mesh, CBoxDesc& desc, Matrix34& pose )
+bool CShapeDetector::IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose )
 {
 	// collect normals
 	// If the mesh
@@ -57,7 +123,7 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& connected_mesh, CBoxDesc& desc
 
 //	std::set<Vector3> polygon_normals;
 	std::set<Plane,plane_normal_comparision> polygon_planes;
-	const std::vector<CIndexedPolygon>& polygons = connected_mesh.GetPolygonBuffer();
+	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
@@ -127,11 +193,11 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& connected_mesh, CBoxDesc& desc
 }
 
 
-bool CShapeDetector::IsConvex( const CGeneral3DMesh& connected_mesh )
+bool CShapeDetector::IsConvex( const CGeneral3DMesh& src_mesh )
 {
 	bool is_not_sphere = false;
 
-	const shared_ptr< vector<CGeneral3DVertex> >& pVertBuffer = connected_mesh.GetVertexBuffer();
+	const shared_ptr< vector<CGeneral3DVertex> >& pVertBuffer = src_mesh.GetVertexBuffer();
 	if( !pVertBuffer )
 		return false;
 
@@ -139,7 +205,7 @@ bool CShapeDetector::IsConvex( const CGeneral3DMesh& connected_mesh )
 
 	// max_angle_between_normals_of_connected_polygons
 	float max_angle = -FLT_MAX;
-	const std::vector<CIndexedPolygon>& polygons = connected_mesh.GetPolygonBuffer();
+	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
@@ -305,14 +371,46 @@ bool CShapeDetector::IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule
 }
 
 /*
-bool CShapeDetector::IsCylinder( const CGeneral3DMesh& connected_mesh, CCylinderDesc& cylinder );
+bool CShapeDetector::IsCylinder( const CGeneral3DMesh& src_mesh, CCylinderDesc& cylinder );
 {
 	return false;
 }
 */
 
-bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh )
+bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectionResults& results )
 {
-	LOG_PRINT_ERROR( " Not implemented." );
+	AABB3 aabb;
+	CBoxDesc box_desc;
+	Matrix34 pose( Matrix34Identity() );
+	Sphere sphere;
+//	Capsule cap;
+
+	if( IsAABox( src_mesh, aabb ) )
+	{
+		results.shape = MeshShape::AXIS_ALIGNED_BOX;
+		return true;
+	}
+	else if( IsBox( src_mesh, box_desc, pose ) )
+	{
+		results.shape = MeshShape::ORIENTED_BOX;
+		results.pose = pose;
+		return true;
+	}
+	else if( IsSphere( src_mesh, sphere ) )
+	{
+		results.shape = MeshShape::SPHERE;
+		return true;
+	}
+//	else if( IsCapsule( src_mesh, cap ) )
+//	{
+//		results.shape = MeshShape::CAPSULE;
+//		return true;
+//	}
+	else if( IsConvex( src_mesh ) )
+	{
+		results.shape = MeshShape::CONVEX;
+		return true;
+	}
+
 	return false;
 }

@@ -25,6 +25,14 @@ public:
 };
 
 
+class CShapeDetectionResults
+{
+public:
+	MeshShape::Name shape;
+
+	Matrix34 pose;
+};
+
 /*
 class Capsule
 {
@@ -54,18 +62,18 @@ class CShapeDetector
 public:
 	bool IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb );
 
-	bool IsBox( const CGeneral3DMesh& connected_mesh, CBoxDesc& desc, Matrix34& pose );
+	bool IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose );
 
-	bool IsConvex( const CGeneral3DMesh& connected_mesh );
+	bool IsConvex( const CGeneral3DMesh& src_mesh );
 
 	bool IsSphere( const CGeneral3DMesh& src_mesh, Sphere& sphere );
 
 	bool IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule );
 
-//	bool IsCylinder( const CGeneral3DMesh& connected_mesh, CCylinderDesc& cylinder );
+//	bool IsCylinder( const CGeneral3DMesh& src_mesh, CCylinderDesc& cylinder );
 
 	/// How to represent the detection results?
-	bool DetectShape( const CGeneral3DMesh& src_mesh );
+	bool DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectionResults& results );
 };
 
 
