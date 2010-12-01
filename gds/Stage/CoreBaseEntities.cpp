@@ -87,6 +87,20 @@ void CCoreBaseEntitiesLoader::AddDefaultLight( CBE_Light *pLight, const char *na
 }
 
 
+void CCoreBaseEntitiesLoader::AddPhysicsBaseEntity( const char *name, std::vector<CBaseEntity *>& pBaseEntities )
+{
+	CBE_GeneralEntity *pBaseEntity = CreateBaseEntity<CBE_GeneralEntity>( CBaseEntity::BE_GENERALENTITY );
+	pBaseEntity->m_strName         = name;
+	// The AABB is overwritten by the dimension of the box mesh specified by the user
+	pBaseEntity->m_aabb.vMin = Vector3(1,1,1) * -0.001f;
+	pBaseEntity->m_aabb.vMax = Vector3(1,1,1) *  0.001f;
+	pBaseEntity->RaiseEntityFlag( BETYPE_LIGHTING | BETYPE_SHADOW_CASTER | BETYPE_SHADOW_RECEIVER );
+	pBaseEntity->m_MeshProperty.m_ShaderTechnique.resize(1,1);
+	pBaseEntity->m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SingleHSDL_Specular_CTS" );
+	pBaseEntities.push_back( pBaseEntity );
+}
+
+
 void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& pBaseEntities )
 {
 //	CBE_GeneralEntity *pBox  = new CBE_GeneralEntity;
@@ -123,10 +137,17 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 
 	CBE_IndividualEntity *pAlphaEntityBase = CreateBaseEntity<CBE_IndividualEntity>( CBaseEntity::BE_INDIVIDUALENTITY );
 	pAlphaEntityBase->m_strName = "AlphaEntityBase";
+	pAlphaEntityBase->m_BoundingVolumeType = BVTYPE_AABB;
+	pAlphaEntityBase->m_bNoClip = true;
+	pAlphaEntityBase->RaiseEntityFlag( BETYPE_SUPPORT_TRANSPARENT_PARTS | BETYPE_SHADOW_CASTER | BETYPE_SHADOW_RECEIVER );
+	pAlphaEntityBase->ClearEntityFlag( BETYPE_RIGIDBODY );
+	pAlphaEntityBase->m_MeshProperty.m_ShaderTechnique.resize(1,1);
+	pAlphaEntityBase->m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SingleHSPL_Specular_CTS" );
 	pBaseEntities.push_back( pAlphaEntityBase );
 
 	CBE_IndividualEntity *pForItemEntity = CreateBaseEntity<CBE_IndividualEntity>( CBaseEntity::BE_INDIVIDUALENTITY );
 	pForItemEntity->m_strName = "__ForItemEntity__";
+	pForItemEntity->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pForItemEntity );
 
 	// Add preset base entities for games
@@ -153,6 +174,10 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 	AddDefaultLight( pPLight,   "__PointLight__",                  pBaseEntities );
 	AddDefaultLight( pHSDLight, "__HemisphericDirectionalLight__", pBaseEntities );
 	AddDefaultLight( pHSPLight, "__HemisphericPointLight__",       pBaseEntities );
+
+	AddPhysicsBaseEntity( "__BoxFromDimension__",     pBaseEntities );
+	AddPhysicsBaseEntity( "__BoxFromMesh__",          pBaseEntities );
+	AddPhysicsBaseEntity( "__TriangleMeshFromMesh__", pBaseEntities );
 
 //	BE_GeneralEntity *pBox = new BE_GeneralEntity;
 //	BE_GeneralEntity *pBox = new BE_GeneralEntity;

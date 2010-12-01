@@ -1,6 +1,7 @@
 #include "BaseEntityManager.hpp"
 #include "BaseEntity.hpp"
 #include "BaseEntityFactory.hpp"
+#include "CoreBaseEntitiesLoader.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
@@ -235,6 +236,9 @@ bool CBaseEntityManager::UpdateDatabase( const string& strSrcTextFile )
 {
 	vector<CBaseEntity *> vecpBaseEntity;
 	vecpBaseEntity.reserve( 64 );
+
+	CCoreBaseEntitiesLoader core_base_entity_loader;
+	core_base_entity_loader.LoadCoreBaseEntities( vecpBaseEntity );
 
 //	LoadAllBaseEntitiesFromTextFile( strSrcTextFile, vecpBaseEntity );
 	LoadAllBaseEntitiesFromRootTextFile( strSrcTextFile, vecpBaseEntity );
