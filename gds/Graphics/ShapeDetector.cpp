@@ -1,6 +1,11 @@
 #include "ShapeDetector.hpp"
+#include "3DGameMath.hpp"
+#include "MeshModel/General3DMesh.hpp"
+#include "MeshModel/PrimitiveShapeMeshes.hpp"
 #include "../3DMath.hpp"
+#include "../3DMath/Capsule.hpp"
 #include "../Support/Log/DefaultLog.hpp"
+#include <set>
 
 using namespace std;
 using namespace boost;
@@ -17,13 +22,13 @@ public:
 	}
 };
 
-static inline have_shared_point( const CIndexedPolygon& polygon0, const CIndexedPolygon& polygon1 )
+static inline bool have_shared_point( const CIndexedPolygon& polygon0, const CIndexedPolygon& polygon1 )
 {
 	const uint num_verts0 = (uint)polygon0.m_index.size();
 	const uint num_verts1 = (uint)polygon1.m_index.size();
-	for( uint i=0; i<num_elements; i++ )
+	for( uint i=0; i<num_verts0; i++ )
 	{
-		for( uint j=0; j<num_elements; j++ )
+		for( uint j=0; j<num_verts1; j++ )
 		{
 			if( polygon0.m_index[i] == polygon1.m_index[j] )
 				return true;
@@ -37,7 +42,6 @@ static inline have_shared_point( const CIndexedPolygon& polygon0, const CIndexed
 bool CShapeDetector::IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
-
 	return false;
 }
 
@@ -125,7 +129,7 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& connected_mesh, CBoxDesc& desc
 
 bool CShapeDetector::IsConvex( const CGeneral3DMesh& connected_mesh )
 {
-	is_not_sphere = false;
+	bool is_not_sphere = false;
 
 	const shared_ptr< vector<CGeneral3DVertex> >& pVertBuffer = connected_mesh.GetVertexBuffer();
 	if( !pVertBuffer )
@@ -139,20 +143,20 @@ bool CShapeDetector::IsConvex( const CGeneral3DMesh& connected_mesh )
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
-		// angles between normals
-		if( have_shared_point( polygons[i], polygons[j] ) )
-		{
-			float angle = Vec3GetAngleBetween( polygons[i].GetPlane().normal, polygons[j].GetPlane().normal );
-			if( 60.0f < rad_to_deg(angle) )
-				is_not_sphere = true;
-//			if( max_angle < angle )
-//				max_angle = angle;
-		}
-
 		float convex_normal_tolerance = 0.000001f;
 		const Plane& plane = polygons[i].GetPlane();
 		for( int j=i+1; j<num_polygons; j++ )
 		{
+			// angles between normals
+			if( have_shared_point( polygons[i], polygons[j] ) )
+			{
+				float angle = Vec3GetAngleBetween( polygons[i].GetPlane().normal, polygons[j].GetPlane().normal );
+				if( 60.0f < rad_to_deg(angle) )
+					is_not_sphere = true;
+//				if( max_angle < angle )
+//					max_angle = angle;
+			}
+
 			const int num_verts = (int)polygons[j].m_index.size();
 			for( int k=0; k<num_verts; k++ )
 			{
@@ -169,7 +173,10 @@ bool CShapeDetector::IsConvex( const CGeneral3DMesh& connected_mesh )
 
 bool CShapeDetector::IsSphere( const CGeneral3DMesh& src_mesh, Sphere& sphere )
 {
-	vector<CGeneral3DVertex>& vertex_buffer = src_mesh.GetVertexBuffer();
+	if( !src_mesh.GetVertexBuffer() )
+		return false;
+
+	const vector<CGeneral3DVertex>& vertex_buffer = *(src_mesh.GetVertexBuffer());
 	const int num_vertices = (int)vertex_buffer.size();
 
 	if( num_vertices < 5 )
@@ -193,8 +200,10 @@ bool CShapeDetector::IsSphere( const CGeneral3DMesh& src_mesh, Sphere& sphere )
 			return false;
 	}
 
-	sphere.vCenter = vCenter
+	// Save the detected sphere
+	sphere.center = vCenter;
 	sphere.radius = sqrtf( ref_radius_sq );
+
 	return true;
 }
 
@@ -209,7 +218,7 @@ bool CShapeDetector::IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule
 	if( !src_mesh.GetVertexBuffer() )
 		return false;
 
-	vector<CGeneral3DVertex>& vertex_buffer = src_mesh.GetVertexBuffer();
+	const vector<CGeneral3DVertex>& vertex_buffer = *(src_mesh.GetVertexBuffer());
 
 	const int num_polygons = 0;
 	const int num_vertices = (int)vertex_buffer.size();
@@ -249,7 +258,8 @@ bool CShapeDetector::IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule
 	max_dist_sq = 0;
 	for( int i=0; i<num_vertices; i++ )
 	{
-		const Vector3 vFromEndPos0 = vPos[i] - vEndPos[0];
+		const Vector3 vPos = vertex_buffer[i].m_vPosition;
+		const Vector3 vFromEndPos0 = vPos - vEndPos[0];
 		const float proj = Vec3Dot( vFromEndPos0, vAxis );
 		Vector3 vAxisToPos = - vAxis * proj + vFromEndPos0;
 		dist_sq = Vec3LengthSq(vAxisToPos);
@@ -283,10 +293,13 @@ bool CShapeDetector::IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule
 		}
 	}
 
-	capsule.pose.qRotation.FromMatrix33( CreateOrientationFromFwdDirection( Vec3GetNormalized(vEndPos[1] - vEndPos[0]) ) );
-	capsule.pose.vTranslation = (vEndPos[1] + vEndPos[0]) * 0.5f;
+	Transform pose;
+	pose.qRotation.FromRotationMatrix( CreateOrientFromFwdDir( Vec3GetNormalized(vEndPos[1] - vEndPos[0]) ) );
+	pose.vTranslation = (vEndPos[1] + vEndPos[0]) * 0.5f;
 	capsule.radius = r;
-	capsule.length = Vec3Length( vEndPos[1] - vEndPos[0] );
+//	capsule.length = Vec3Length( vEndPos[1] - vEndPos[0] );
+	capsule.p0 = vEndPos[0];
+	capsule.p1 = vEndPos[1];
 
 	return true;
 }
@@ -297,3 +310,9 @@ bool CShapeDetector::IsCylinder( const CGeneral3DMesh& connected_mesh, CCylinder
 	return false;
 }
 */
+
+bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
+	return false;
+}
