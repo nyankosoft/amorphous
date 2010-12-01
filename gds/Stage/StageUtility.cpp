@@ -158,13 +158,13 @@ CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::str
 }
 
 
-#include "Stage/LightEntity.hpp"
-#include "Graphics/3DGameMath.hpp"
-
 
 //========================================================================================
 // CStageLightUtility
 //========================================================================================
+
+#include "Stage/LightEntity.hpp"
+#include "Graphics/3DGameMath.hpp"
 
 CLightEntityHandle ReturnLightEntityHandle( CCopyEntity *pEntity )
 {
@@ -322,6 +322,8 @@ CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::strin
 
 #include "Stage/BE_Skybox.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
+#include "Graphics/MeshModel/MeshArchiveToGeneral3DMeshConverer.hpp"
+#include "Graphics/ShapeDetector.hpp"
 #include "Physics/ConvexShapeDesc.hpp"
 #include "Physics/ConvexMesh.hpp"
 
@@ -478,6 +480,67 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 	return CreatePhysicsEntity( mesh_desc, entity_name, entity_attributes_name, pose, vel, vecpShapeDesc, mass, static_actor );
 }
 
+/*
+void CreateOBBTreeFrom3DMeshModelArchive( C3DMeshModelArchive& mesh_archive, COBBTree& tree, int level )
+{
+	bool created = tree.Create(
+		mesh_archive.GetVertexSet().vecPosition,
+		mesh_archive.GetVertexIndex(),
+		level
+		);
+
+	if( !created )
+		LOG_PRINT_ERROR( " Failed to create an OBB tree from a mesh archive." );
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( CMeshResourceDesc& mesh_desc,
+							  const std::string& entity_name,
+							  const std::string& entity_attributes_name,
+							  const Matrix34& pose,
+							  const Vector3& vel,
+							  float mass,
+							  const std::string& material_name,
+							  bool static_actor )
+{
+//	CMeshObjectHandle mesh;
+//	bool loaded = mesh.Load( mesh_desc );
+//	if( !loaded )
+//		return CEntityHandle<>();
+
+//	COBBTree obb_tree;
+	C3DMeshModelArchive mesh_archive;
+	bool mesh_archive_loaded = mesh_archive.LoadFromFile( mesh_desc.ResourcePath );
+	if( !mesh_archive_loaded )
+		return CEntityHandle<>();
+
+	int obb_tree_level = 3;
+//	bool created = CreateOBBTreeFrom3DMeshModelArchive( mesh_archive, obb_tree, obb_tree_level );
+
+	vector<OBB3> obbs;
+//	obb_tree.GetLeafOBBs( obbs );
+	if( obbs.empty() )
+		return CEntityHandle<>();
+
+	vector<CShapeDesc *> vecpShapeDesc;
+	vecpShapeDesc.reserve( obbs.size() );
+
+	vector<CBoxShapeDesc> box_descs;
+	box_descs.resize( obbs.size() );
+	for( size_t i=0; i<obbs.size(); i++ )
+	{
+		box_descs[i].LocalPose   = obbs[i].center;
+		box_descs[i].vSideLength = obbs[i].radii;
+
+		vecpShapeDesc.push_back( &box_descs[i] );
+	}
+
+//	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
+//	actor_desc.BodyDesc.fMass = mass;
+
+	return CreatePhysicsEntity( mesh_desc, entity_name, entity_attributes_name, pose, vel, vecpShapeDesc, mass, static_actor );
+}
+*/
 
 CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( CMeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
@@ -750,6 +813,93 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_
 		false );
 
 	return CEntityHandle<>();
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateEntity(
+		const char *model,
+		const char *name,
+		const Vector3& position,
+		const float heading,
+		const float pitch,
+		const float bank,
+		const float mass,
+		const char *shape,
+		bool is_static )
+{
+	Matrix34 pose;
+	pose.matOrient
+		= Matrix33RotationY(deg_to_rad(heading))
+		* Matrix33RotationX(deg_to_rad(pitch))
+		* Matrix33RotationZ(deg_to_rad(bank));
+
+	pose.vPosition = position;
+
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.ResourcePath = model;
+
+	const string shape_name = shape ? shape : "";
+	if( shape_name == "box" )
+	{
+		return CreateBoxEntity(      mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
+	}/*
+//	else if( shape_name == "boxes" )
+//	{
+//		return CreateBoxesEntity(    mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
+//	}
+//	else if( shape_name == "capsule" )
+//	{
+//		return CreateCapsuleEntity(  mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
+//	}
+	else if( shape_name == "cylinder" )
+	{
+		return CreateCylinderEntity( mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
+	}*/
+//	else if( shape_name == "sphere" )
+//	{
+//		CreateSphereEntity( mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
+//	}
+	else if( shape_name == "mesh" )
+	{
+		return CreateTriangleMeshEntityFromMesh( model, model, pose, mass, "", name, "", is_static );
+	}
+//	else if( shape_name == "convex" )
+//	{
+//		return CreateTriangleMeshEntityFromMesh( model, model, pose, mass, "", name, "", is_static );
+//	}
+	else
+	{
+		string shape_desc_file = model;
+		lfs::change_ext( shape_desc_file, "sd" );
+		if( lfs::file_exists(shape_desc_file) )
+		{
+			LOG_PRINT_ERROR( " Shape desc file is not supported yet." );
+			return CEntityHandle<>();
+
+//			CShapeContainerGroup scg;
+//			bool loaded = scg.LoadArchiveFromFile( shape_desc_file );
+			// Load shape(s) from the shape desc file
+		}
+		else
+		{
+			// Guess shape(s) from the model
+			C3DMeshModelArchive ma;
+			bool ma_loaded = ma.LoadFromFile( model );
+			boost::shared_ptr<CGeneral3DMesh> pMesh = CreateGeneral3DMesh();
+			if( !pMesh )
+				return CEntityHandle<>();
+			CMeshArchiveToGeneral3DMeshConverer converter;
+			Result::Name res = converter.Convert( ma, *pMesh );
+			CShapeDetector shape_detector;
+			CShapeDetectionResults results;
+			bool shape_detected = shape_detector.DetectShape( *pMesh, results );
+			if( !shape_detected )
+				return CEntityHandle<>();
+//			switch( sdr.shape )
+		}
+
+		return CEntityHandle<>();
+	}
 }
 
 

@@ -123,6 +123,15 @@ class CStageMiscUtility : public CStageUtility
 							  const std::string& material_name,
 							  bool static_actor );
 
+	CEntityHandle<> CreateBoxesEntity( CMeshResourceDesc& mesh_desc,
+							  const std::string& entity_name,
+							  const std::string& entity_attributes_name,
+							  const Matrix34& pose,
+							  const Vector3& vel,
+							  float mass,
+							  const std::string& material_name,
+							  bool static_actor );
+
 	CEntityHandle<> CreateTriangleMeshEntityFromMesh( const char *mesh_resource_name,
 							const char *collision_mesh_name,
 							const Matrix34& pose,
@@ -228,6 +237,17 @@ public:
 							const std::string& material_name = "default",
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
+
+	CEntityHandle<> CreateEntity(
+		const char *model,
+		const char *name = "",
+		const Vector3& position = Vector3(0,0,0),
+		const float heading = 0,
+		const float pitch   = 0,
+		const float bank    = 0,
+		const float mass = 1.0f,
+		const char *shape = "",
+		bool is_static = false);
 
 	void CreateSkybox( const std::string& mesh_resource_path, const std::string& texture_resource_path = "BuiltinTexture::ClearSkyGrad" );
 
