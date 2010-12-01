@@ -10,8 +10,6 @@
 #include "Support/Serialization/Serialization_FixedVector.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
-#include "JigLib/JL_PhysicsActor.hpp"
-
 using namespace std;
 
 

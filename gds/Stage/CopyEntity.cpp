@@ -1,8 +1,6 @@
 #include "CopyEntity.hpp"
 #include "BaseEntity.hpp"
 //#include "EntitySet.hpp"
-
-//#include "JigLib/JL_PhysicsActor.hpp"
 #include "Physics/Actor.hpp"
 using namespace physics;
 

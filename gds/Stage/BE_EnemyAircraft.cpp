@@ -11,7 +11,6 @@
 
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "3DMath/MathMisc.hpp"
-//#include "JigLib/JL_PhysicsActor.hpp"
 #include "Physics/Actor.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 #include "Support/MTRand.hpp"
