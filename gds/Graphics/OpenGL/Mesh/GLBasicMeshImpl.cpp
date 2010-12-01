@@ -2,10 +2,15 @@
 #include "../GLExtensions.hpp"
 #include "../GLGraphicsDevice.hpp" // for LOG_GL_ERROR() macro
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
 //using namespace boost;
+
+
+#define GL_INDEX_BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 
 /*
 // VBO Extension Definitions, From glext.h
@@ -80,6 +85,19 @@ bool IsExtensionSupported( char* szTargetExtension )
 }
 //~TUTORIAL
 */
+
+
+static void SetGLTextures( CMeshMaterial& mat )
+{
+	vector<CTextureHandle>& vecTex = mat.Texture;
+	for( int j=0; j<(int)vecTex.size(); j++ )
+	{
+		GLuint texture_id = vecTex[j].GetGLTextureID();
+		glBindTexture( GL_TEXTURE_2D, texture_id );
+
+		LOG_GL_ERROR( "glBindTexture() failed." );
+	}
+}
 
 
 CGLBasicMeshImpl::CGLBasicMeshImpl()
@@ -166,6 +184,8 @@ bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 */
 	// load surface materials & textures
 	LoadMaterialsFromArchive( archive, option_flags );
+
+	m_vecTriangleSet = archive.GetTriangleSet();
 
 /*	hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
 
@@ -268,6 +288,8 @@ void CGLBasicMeshImpl::BuildVBOs( C3DMeshModelArchive& archive )
 		vecUShortIndex[i] = (ushort)archive.GetVertexIndex()[i];
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(ushort) * m_NumIndices, &(vecUShortIndex[0]), GL_STATIC_DRAW);
 
+	m_vecIndex = vecUShortIndex;
+
 	// when drawing...
 
 	/* setup your gl*Pointers as usual */
@@ -362,32 +384,47 @@ void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
 		                     const std::vector<int>& vecMaterialIndex,
 							 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
 {
-/*	CMMA_TriangleSet ts;
+	if( !glDrawRangeElements )
+		return;
 
-	// setup your gl*Pointers as usual
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER_ARB, m_IndexBuffer );
+	if( m_vecIndex.empty() )
+		return;
 
-	glDrawRangeElements(
-		GL_TRIANGLES,
-		0,        // start,
-		100000,      // end,
-		ts.m_iNumTriangles,       // *3???  // count,
-		GL_UNSIGNED_SHORT,        // type
-		0
-		);
+	const int num_subsets_to_draw = (int)vecMaterialIndex.size();
+	for( int i=0; i<num_subsets_to_draw; i++ )
+	{
+		int subset_index = vecMaterialIndex[i];
+		if( subset_index < 0 || (int)m_vecTriangleSet.size() <= subset_index )
+			continue;
 
-	glBindBuffer( GL_ARRAY_BUFFER_ARB, 0 );
-*/
+		const CMMA_TriangleSet& ts = m_vecTriangleSet[ subset_index ];
 
-/*
-	glDrawRangeElements(
-        GL_TRIANGLES, // GLenum  	mode,
- 		// GLuint  	start,
- 		// GLuint  	end,
- 		// GLsizei  	count,
- 		// GLenum  	type,
- 		// const GLvoid *  	indices);
-*/
+		if( (int)m_vecIndex.size() < ts.m_iStartIndex + ts.m_iNumTriangles * 3 )
+			continue;
+
+		if( subset_index < (int)m_vecMaterial.size() )
+			SetGLTextures( m_vecMaterial[subset_index] );
+
+		// setup your gl*Pointers as usual
+//		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER_ARB, m_IndexBuffer ); // Is this eeded? pointer to the indices is set in glDrawRangeElements() 
+
+		LOG_GL_ERROR( "glBindBuffer() failed." );
+
+		glDrawRangeElements(
+			GL_TRIANGLES,                    // GLenum mode,
+			0,                               // GLuint start,
+			50000,                           // GLuint end,
+			ts.m_iNumTriangles * 3,          // GLsizei count,
+			GL_UNSIGNED_SHORT,               // GLenum type
+			GL_INDEX_BUFFER_OFFSET( ts.m_iStartIndex * sizeof(unsigned short) ) // const GLvoid *indices
+			);
+
+		LOG_GL_ERROR( "glDrawRangeElements() failed." );
+
+//		glBindBuffer( GL_ARRAY_BUFFER_ARB, 0 );
+
+		LOG_GL_ERROR( "glBindBuffer() for release failed." );
+	}
 }
 
 
@@ -439,10 +476,14 @@ void CGLBasicMeshImpl::Render()
                       );
 
 		// vertex normal?
-		glNormalPointer( GL_FLOAT,     // GLenum type,
-                         0,            // GLsizei	stride,
-                         (char *) NULL // const GLvoid *pointer
-                       );
+		if( m_NormalBuffer != 0 )
+		{
+			glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_NormalBuffer );
+			glNormalPointer( GL_FLOAT,     // GLenum type,
+							 0,            // GLsizei	stride,
+							 (char *) NULL // const GLvoid *pointer
+						   );
+		}
 
 		// index buffer
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER/*_ARB*/, m_IndexBuffer );
@@ -456,19 +497,21 @@ void CGLBasicMeshImpl::Render()
 		glTexCoordPointer( 2, GL_FLOAT, 0, m_pTexCoords ); // Set The Vertex Pointer To Our TexCoord Data
 	}
 */
-	// FIXME: support multiple subsets
-	if( 0 < m_vecMaterial.size() )
+
+	if( m_vecTriangleSet.size() == 1 )
 	{
-		vector<CTextureHandle>& vecTex = m_vecMaterial[0].Texture;
-		for( int j=0; j<(int)vecTex.size(); j++ )
-			glBindTexture( GL_TEXTURE_2D, vecTex[j].GetGLTextureID() );
+		if( 0 < m_vecMaterial.size() )
+			SetGLTextures( m_vecMaterial[0] );
 
-		LOG_GL_ERROR( "glBindTexture() failed." );
+		// Render
+	//	glDrawArrays( GL_TRIANGLES, 0, m_nVertexCount );	// Draw all of the triangles at once
+		glDrawElements( GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_SHORT, 0 );
 	}
-
-	// Render
-//	glDrawArrays( GL_TRIANGLES, 0, m_nVertexCount );	// Draw all of the triangles at once
-	glDrawElements( GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_SHORT, 0 );
+	else if( 1 < m_vecTriangleSet.size() )
+	{
+		vector<CShaderTechniqueHandle> shader_techniques( m_vecTriangleSet.size() );
+		RenderSubsets( FixedFunctionPipelineManager(), m_vecFullMaterialIndices, shader_techniques );
+	}
 
 	// Disable Pointers
 	glDisableClientState( GL_VERTEX_ARRAY );					// Disable Vertex Arrays

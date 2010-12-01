@@ -34,6 +34,8 @@ private:
 
 	int m_NumIndices;
 
+	std::vector<unsigned short> m_vecIndex;
+
 private:
 
 	void BuildVBOs( C3DMeshModelArchive& archive );
