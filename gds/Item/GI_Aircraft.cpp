@@ -9,6 +9,7 @@
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Stage/Stage.hpp"
+#include "Stage/MeshBonesUpdateCallback.hpp"
 #include "Input/ForceFeedback/ForceFeedbackEffect.hpp"
 
 
@@ -277,6 +278,12 @@ void CGI_Aircraft::Update( float dt )
 }
 
 
+void CGI_Aircraft::UpdateGraphics()
+{
+	UpdateTargetMeshTransforms();
+}
+
+
 bool CGI_Aircraft::HandleInput( int input_code, int input_type, float fParam )
 {
 	// let the weapons handle the input first
@@ -390,8 +397,8 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<CSkeletalMesh> pMesh )
 	size_t i, num = m_vecpMeshController.size();
 	for( i=0; i<num; i++ )
 	{
-		m_vecpMeshController[i]->SetTargetMesh( pTargetMesh );
-		m_vecpMeshController[i]->Init();
+//		m_vecpMeshController[i]->SetTargetMesh( pTargetMesh );
+		m_vecpMeshController[i]->Init( *pTargetMesh );
 	}
 
 	return true;
@@ -410,9 +417,9 @@ void CGI_Aircraft::ResetMeshController()
 	if( !mesh_container.m_MeshObjectHandle.GetMesh() )
 		return;
 
-	size_t i, num = m_vecpMeshController.size();
-	for( i=0; i<num; i++ )
-		m_vecpMeshController[i]->SetTargetMesh( shared_ptr<CSkeletalMesh>() );
+//	size_t i, num = m_vecpMeshController.size();
+//	for( i=0; i<num; i++ )
+//		m_vecpMeshController[i]->SetTargetMesh( shared_ptr<CSkeletalMesh>() );
 }
 
 
@@ -422,9 +429,24 @@ void CGI_Aircraft::UpdateTargetMeshTransforms()
 	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
 		return;
 
-	size_t i, num = m_vecpMeshController.size();
-	for( i=0; i<num; i++ )
-		m_vecpMeshController[i]->UpdateTargetMeshTransforms();
+	const int num = (int)m_vecpMeshController.size();
+//	for( int i=0; i<num; i++ )
+//		m_vecpMeshController[i]->UpdateTargetMeshTransforms();
+
+
+	CEntityHandle<CItemEntity> item_entity = GetItemEntity();
+	shared_ptr<CItemEntity> pEntity = item_entity.Get();
+	if( !pEntity )
+		return;
+
+	shared_ptr<CMeshBonesUpdateCallback> pMeshUpdate = item_entity.Get()->MeshBonesUpdateCallback();
+	if( !pMeshUpdate )
+		return;
+
+	for( int i=0; i<num; i++ )
+		m_vecpMeshController[i]->UpdateMeshBoneLocalTransforms( pMeshUpdate->MeshBoneLocalTransforms() );
+
+	pMeshUpdate->UpdateGraphics();
 }
 
 

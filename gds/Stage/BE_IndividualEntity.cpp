@@ -53,13 +53,14 @@ void CBE_IndividualEntity::Act(CCopyEntity* pCopyEnt)
 }
 
 
+/// - 1:33 AM 11/22/2010 Uncommented pCopyEnt->Draw(), and changed it to Draw3DModel( pCopyEnt ). Why did it have to be commented out?
 /// Does not draw.
 /// - Assumes CCopyEntity::Draw() is overridden.
 void CBE_IndividualEntity::Draw(CCopyEntity* pCopyEnt)
 {
 	pCopyEnt->sState |= CESTATE_LIGHT_INFORMATION_INVALID;
 
-//	pCopyEnt->Draw();
+	Draw3DModel( pCopyEnt );
 }
 
 

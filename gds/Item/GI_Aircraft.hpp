@@ -158,6 +158,8 @@ public:
 	/// Calls Update() of weapon items currently used by the aircraft
 	virtual void Update( float dt );
 
+	void UpdateGraphics();
+
 	/// controls pseudo-aircraft simulator
 	virtual bool HandleInput( int input_code, int input_type, float fParam );
 

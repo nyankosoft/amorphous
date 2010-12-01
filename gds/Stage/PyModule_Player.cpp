@@ -232,6 +232,7 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 		pEntity->SetName( entity_name );
 		pEntity->GroupIndex = pBaseEntity->GetEntityGroupID();
 		pEntity->SetItemEntityFlags( CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING );
+		pEntity->InitMesh();
 	}
 	else
 		LOG_PRINT_WARNING( fmt_string(" Failed to create the item entity (entity name: %s).", entity_name) );

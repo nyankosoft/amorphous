@@ -53,12 +53,15 @@ class CItemEntity : public CCopyEntity
 	
 private:
 
-	void InitMeshRenderMethod();
+//	void InitMeshRenderMethod();
 
 public:
 
 	CItemEntity();
 
+	/// A game item
+	/// - must be set via this ctor.
+	/// - cannot be changed later.
 	CItemEntity( boost::shared_ptr<CGameItem> pItem );
 
 	virtual ~CItemEntity();
@@ -90,6 +93,11 @@ public:
 	void SetItemEntityFlags( U32 flags ) { m_ItemEntityFlags = flags; }
 
 	void InitMesh();
+
+	// Needs to be called when a skeletal mesh of the item is loaded.
+	void UpdateGraphicsUpdateCallbacks();
+
+	void RenderAs( CRenderContext& rc );
 
 	boost::shared_ptr<CMeshBonesUpdateCallback> MeshBonesUpdateCallback() { return m_pMeshBonesUpdateCallback; }
 

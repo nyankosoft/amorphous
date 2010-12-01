@@ -281,10 +281,9 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 
 	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{
-		shared_ptr<CSkeletalMesh> pSkeletalMesh
-			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+//		shared_ptr<CSkeletalMesh> pSkeletalMesh
+//			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
-//		shared_ptr<CBlendMatricesLoader> pBlendMatricesLoader( new CBlendMatricesLoader(pSkeletalMesh) );
 		shared_ptr<CBlendTransformsLoader> pBlendMatricesLoader( new CBlendTransformsLoader );//(pSkeletalMesh) );
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
 	}
@@ -671,6 +670,17 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 
 void CBaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context )
 {
+/*	CRenderContext rc;
+
+	rc.SetShaderTechnique( CRenderContext::ROT_3D_MODEL );
+
+	CShaderManager& shader_mgr = rc.GetShaderManager( CRenderContext::ROT_3D_MODEL );
+
+	shader_mgr.SetWorldTransform( entity.GetWorldPose() );
+
+	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+	if( pMesh )
+		pMesh->Render( shader_mgr );*/
 }
 
 
@@ -724,17 +734,23 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<CBlendTransformsLoade
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLightParamsLoader );
 	}
 
+	// Not used now.
+	// Item entities set this in its own member function CItemEntity::InitMesh().
+	// Does any entity other than item entty need this?
+	if( pBlendTransformsLoader )
+		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
+/*
 	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
 	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{
-		shared_ptr<CSkeletalMesh> pSkeletalMesh
-			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+//		shared_ptr<CSkeletalMesh> pSkeletalMesh
+//			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
 
 		if( !pBlendTransformsLoader )
 			pBlendTransformsLoader.reset( new CBlendTransformsLoader() );
 
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
-	}
+	}*/
 
 	if( true /* world position of entity has large values */ )
 	{

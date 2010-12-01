@@ -6,6 +6,7 @@
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
 #include "Stage/BaseEntity_Draw.hpp"
+#include "Stage/RenderContext.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/MTRand.hpp"
@@ -38,6 +39,34 @@ using namespace boost;
 
 */
 
+// Make these member functions of CGameItem if they are frequently called.
+
+CMeshObjectHandle GetPrimaryMeshHandle( CGameItem& item )
+{
+	if( 0 < item.GetMeshContainerRootNode().GetNumMeshContainers()
+	 && item.GetMeshContainerRootNode().GetMeshContainer(0) )
+	{
+		return item.GetMeshContainerRootNode().GetMeshContainer(0)->m_MeshObjectHandle;
+	}
+	else
+		return CMeshObjectHandle();
+}
+
+boost::shared_ptr<CBasicMesh> GetPrimaryMesh( CGameItem& item )
+{
+	boost::shared_ptr<CBasicMesh> pMesh = GetPrimaryMeshHandle(item).GetMesh();
+	return pMesh;
+}
+
+boost::shared_ptr<CSkeletalMesh> GetPrimarySkeletalMesh( CGameItem& item )
+{
+	boost::shared_ptr<CSkeletalMesh> pSkeletalMesh
+		= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( GetPrimaryMesh(item) );
+
+	return pSkeletalMesh;
+}
+
+
 CItemEntity::CItemEntity()
 :
 m_ItemEntityFlags(0)
@@ -52,6 +81,7 @@ CCopyEntity(CItemModuleEntityTypeID::ITEM_ENTITY),
 m_pItem(pItem),
 m_ItemEntityFlags(0)
 {
+	m_pGraphicsUpdate.reset( new CGraphicsResourcesUpdateDelegate<CGameItem>( m_pItem.get() ) );
 }
 
 
@@ -60,27 +90,59 @@ CItemEntity::~CItemEntity()
 }
 
 
-void CItemEntity::InitMeshRenderMethod()
+void CItemEntity::UpdateGraphicsUpdateCallbacks()
 {
-//	CGraphicsResourcesUpdateDelegate;
-//	boost::shared_ptr<CGraphicsResourcesUpdateDelegate> pGraphicsUpdate( new CGraphicsResourcesUpdateDelegate(this) );
+//	if( m_MeshHandle.GetMesh()
+//	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
 
-//	m_pGraphicsUpdate = pGraphicsUpdate;
-	m_pGraphicsUpdate.reset( new CGraphicsResourcesUpdateDelegate<CGameItem>( m_pItem.get() ) );
+	CMeshObjectHandle mesh = GetPrimaryMeshHandle( *m_pItem );
+	boost::shared_ptr<CSkeletalMesh> pSkeletalMesh
+		= dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( mesh.GetMesh() );
 
-	if( m_MeshHandle.GetMesh()
-	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
+	if( pSkeletalMesh )
 	{
-		m_pBlendTransformsLoader.reset( new CBlendTransformsLoader );
+		if( !m_pBlendTransformsLoader )
+			m_pBlendTransformsLoader.reset( new CBlendTransformsLoader );
 
 		m_pMeshBonesUpdateCallback.reset( new CMeshBonesUpdateCallback );
 		m_pMeshBonesUpdateCallback->SetBlendTransformsLoader( m_pBlendTransformsLoader );
-		m_pMeshBonesUpdateCallback->SetSkeletalMesh( m_MeshHandle );
+		m_pMeshBonesUpdateCallback->SetSkeletalMesh( mesh );
+		m_pMeshBonesUpdateCallback->MeshBoneLocalTransforms().resize( pSkeletalMesh->GetNumBones(), IdentityTransform() );
 //		m_pGraphicsUpdate = m_pMeshBonesUpdateCallback;
 	}
-
-	::InitMeshRenderMethod( *this, m_pBlendTransformsLoader );
 }
+
+
+void CItemEntity::RenderAs( CRenderContext& rc )
+{
+	if( !m_pItem )
+		return;
+
+	bool render_skeletal_mesh = m_pBlendTransformsLoader ? true : false;
+	CRenderContext::RenderObjectType model_type
+		= render_skeletal_mesh ? CRenderContext::ROT_SKELETAL_3D_MODEL : CRenderContext::ROT_3D_MODEL;
+
+	rc.SetShaderTechnique( model_type );
+
+	CShaderManager& shader_mgr = rc.GetShaderManager( model_type );
+
+	shader_mgr.SetWorldTransform( this->GetWorldPose() );
+
+	if( render_skeletal_mesh )
+		shader_mgr.SetVertexBlendTransforms( m_pBlendTransformsLoader->BlendTransforms() );
+
+	shared_ptr<CBasicMesh> pMesh = GetPrimaryMesh(*m_pItem);
+	if( pMesh )
+		pMesh->Render( shader_mgr );
+}
+
+
+
+/*
+void CItemEntity::InitMeshRenderMethod()
+{
+	::InitMeshRenderMethod( *this, m_pBlendTransformsLoader );
+}*/
 
 
 void CItemEntity::InitMesh()
@@ -103,13 +165,22 @@ void CItemEntity::InitMesh()
 			// Set shader params loaders
 			// let's assume that shaders are already set to the render method, this->m_pMeshRenderMethod,
 			// or user want to set them later
-			InitMeshRenderMethod();
+			InitMeshRenderMethod( *this );
 		}
 	}
 	else
 	{
 		// Set up shader params loaders without using base entity attributes
-		InitMeshRenderMethod();
+		InitMeshRenderMethod( *this );
+	}
+
+	UpdateGraphicsUpdateCallbacks();
+
+	if( GetPrimarySkeletalMesh(*m_pItem)
+	 && m_pBlendTransformsLoader
+	 && m_pMeshRenderMethod )
+	{
+		m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_pBlendTransformsLoader );
 	}
 }
 
