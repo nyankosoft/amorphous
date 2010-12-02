@@ -1,11 +1,12 @@
 #include "GraphicsElementsTest.hpp"
-#include <gds/3DMath/Matrix34.hpp>
-#include <gds/Graphics.hpp>
-#include <gds/Graphics/AsyncResourceLoader.hpp>
-#include <gds/Support/Timer.hpp>
-#include <gds/Support/Profile.hpp>
-#include <gds/Support/Macro.h>
-#include <gds/GUI.hpp>
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics.hpp"
+//#include "gds/Graphics/AsyncResourceLoader.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Support/Macro.h"
+#include "gds/Input.hpp"
+#include "gds/GUI.hpp"
 
 using namespace std;
 using namespace boost;
@@ -44,8 +45,7 @@ void CGraphicsElementsTest::CreateSampleUI()
 
 int CGraphicsElementsTest::Init()
 {
-	m_pFont = shared_ptr<CFontBase>( new CFont( "ÇlÇr ÉSÉVÉbÉN", 6, 12 ) );
-//	m_pFont = shared_ptr<CFontBase>( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
+	m_pFont = CreateDefaultBuiltinFont();
 
 /*
 	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
@@ -116,18 +116,17 @@ void CGraphicsElementsTest::Update( float dt )
 		m_pSampleUI->Update( dt );
 
 
-	if( !GraphicsResourceManager().IsAsyncLoadingAllowed() )
+/*	if( !GraphicsResourceManager().IsAsyncLoadingAllowed() )
 	{
 		// async loading is not enabled
 		// - The primary thread (this thread) loads the resources from the disk/memory.
 		AsyncResourceLoader().ProcessResourceLoadRequest();
-	}
+	}*/
 }
 
 
 void CGraphicsElementsTest::RenderGraphicsElements()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 }
 
 
