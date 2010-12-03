@@ -2,11 +2,6 @@
 #define  __PostProcessEffectTest_HPP__
 
 
-#include <vector>
-#include <string>
-#include <boost/shared_ptr.hpp>
-using namespace boost;
-
 #include "3DMath/Vector3.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/Camera.hpp"
@@ -18,8 +13,6 @@ using namespace boost;
 #include "Graphics/Shader/ShaderLightManager.hpp"
 #include "Graphics/PostProcessEffectManager.hpp"
 #include "Input/fwd.hpp"
-#include "Input.hpp"
-#include "Graphics/UnitSphere.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
@@ -106,17 +99,17 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 
 //	shared_ptr<CShaderManager> m_pShaderManager;
 
-	CShaderLightManager m_ShaderLightManager;
+//	CShaderLightManager m_ShaderLightManager;
 
-	CUnitSphere m_LightPosIndicator;
+//	CUnitSphere m_LightPosIndicator;
 
 //	CShaderLightManager m_ShaderLightManager;
 
-	Vector3 m_vLightPosition;
+//	Vector3 m_vLightPosition;
 
 	CFontSharedPtr m_pFont;
 
-	CInputHandlerSharedPtr m_pInputHandler;
+//	CInputHandlerSharedPtr m_pInputHandler;
 
 //	float m_fKeyValue;
 

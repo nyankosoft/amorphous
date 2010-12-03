@@ -1,11 +1,13 @@
 #include "PostProcessEffectTest.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/MeshGenerators.hpp"
-#include "Graphics/Font/Font.hpp"
+#include "Graphics/GraphicsResourceManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/SkyboxMisc.hpp"
 #include "Support/CameraController_Win32.hpp"
 #include "Support/ParamLoader.hpp"
+#include "Input.hpp"
 
 using namespace std;
 using namespace boost;
@@ -238,6 +240,8 @@ void CPostProcessEffectTest::RenderMeshes()
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
+	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+
 	for( int i=0; i<4; i++ )
 	{
 		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
@@ -257,16 +261,19 @@ void CPostProcessEffectTest::RenderMeshes()
 	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
 	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	LPD3DXEFFECT pEffect = pShaderManager->GetEffect();
-	if( pEffect )
+/*	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	if( pShaderManager )
 	{
-		hr = pEffect->SetValue( "m_vEyePos", &(g_Camera.GetPosition()), sizeof(float) * 3 );
+		pShaderManager->SetParam( "m_vEyePos", g_Camera.GetPosition() );
+//		hr = pEffect->SetValue( "m_vEyePos", &(g_Camera.GetPosition()), sizeof(float) * 3 );
 
-//		hr = pEffect->SetTechnique( "Default" );
-//		hr = pEffect->SetTechnique( "NullShader" );
-		hr = pEffect->SetTechnique( "QuickTest" );
-	}
+		CShaderTechniqueHandle tech_handle;
+//		tech_handle.SetTechniqueName( "Default" );
+//		tech_handle.SetTechniqueName( "NullShader" );
+		tech_handle.SetTechniqueName( "QuickTest" );
+		pShaderManager->SetTechnique( tech_handle );
+//		hr = pEffect->SetTechnique( "QuickTest" );
+	}*/
 
 //	if( FAILED(hr) )
 //		return;
@@ -387,7 +394,7 @@ void CPostProcessEffectTest::Render()
 	UpdateShaderParams();
 //	DIRECT3D9.GetDevice()->EndScene();
 
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	HRESULT hr;
 
 	// update the camera matrix
@@ -537,7 +544,7 @@ int CPostProcessEffectTest::Init()
 	// load models
 	loaded = LoadModels();
 
-	m_pFont = shared_ptr<CFont>( new CFont( "Arial", 16, 32 ) );
+	m_pFont = CreateDefaultBuiltinFont();
 
 	return 0;
 }
