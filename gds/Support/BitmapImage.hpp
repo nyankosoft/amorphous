@@ -200,6 +200,8 @@ public:
 	inline bool FlipVertical();
 
 	inline boost::shared_ptr<CBitmapImage> GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const;
+
+	inline const char *GetColorTypeName() const;
 };
 
 /*
@@ -468,6 +470,26 @@ inline boost::shared_ptr<CBitmapImage> CBitmapImage::GetRescaled( int dest_width
 		return boost::shared_ptr<CBitmapImage>();
 }
 
+
+inline const char *CBitmapImage::GetColorTypeName() const
+{
+	if( !m_pFreeImageBitMap )
+		return "(image is not loaded)";
+
+	FREE_IMAGE_COLOR_TYPE color_type = FreeImage_GetColorType( m_pFreeImageBitMap );
+
+	switch( color_type )
+	{
+	case FIC_MINISWHITE: return "MINISWHITE";
+	case FIC_MINISBLACK: return "MINISBLACK";
+	case FIC_RGB:        return "RGB";
+	case FIC_PALETTE:    return "PALETTE";
+	case FIC_RGBALPHA:   return "RGBA";
+	case FIC_CMYK:       return "CMYK";
+	default:
+		return "(an unknown color type)";
+	}
+}
 
 
 // ----------------------------------------------------------
