@@ -108,14 +108,16 @@ GLint ToGLInternalFormat( TextureFormat::Format fmt )
  \param [out] src_format
  \param [out] src_type
 */
-void GetSrcPixelTypeAndFormat( CBitmapImage& img, GLenum& src_format, GLenum& src_type )
+Result::Name GetSrcPixelTypeAndFormat( CBitmapImage& img, GLenum& src_format, GLenum& src_type )
 {
 	src_format = GL_RGB;
 	src_type   = GL_UNSIGNED_BYTE;
 
 	FIBITMAP *pFIBitmap = img.GetFBITMAP();
 	if( !pFIBitmap )
-		return;
+		return Result::UNKNOWN_ERROR;
+
+	bool supported = true;
 
 	FREE_IMAGE_COLOR_TYPE color_type = FreeImage_GetColorType( pFIBitmap );
 	unsigned int bpp = FreeImage_GetBPP( pFIBitmap );
@@ -130,6 +132,7 @@ void GetSrcPixelTypeAndFormat( CBitmapImage& img, GLenum& src_format, GLenum& sr
 			src_type = GL_UNSIGNED_BYTE;
 			break;
 		default:
+			supported = false;
 			break;
 		}
 		break;
@@ -141,12 +144,17 @@ void GetSrcPixelTypeAndFormat( CBitmapImage& img, GLenum& src_format, GLenum& sr
 			src_type = GL_UNSIGNED_BYTE;
 			break;
 		default:
+			supported = false;
 			break;
 		}
 		break;
 	default:
+		supported = false;
+		LOG_PRINT_ERROR( fmt_string( " An unsupported image format: color type = %s", img.GetColorTypeName() ) );
 		break;
 	}
+
+	return supported ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
 
@@ -171,7 +179,9 @@ bool CGLTextureResource::CreateGLTextureFromBitmapImage( CBitmapImage& src_image
 {
 	GLenum src_format = GL_RGB;
 	GLenum src_type   = GL_UNSIGNED_BYTE;
-	GetSrcPixelTypeAndFormat( src_image, src_format, src_type );
+	Result::Name res = GetSrcPixelTypeAndFormat( src_image, src_format, src_type );
+	if( res != Result::SUCCESS )
+		return false;
 
 	int num_mipmaps = GetNumMipmaps( m_TextureDesc );
 
