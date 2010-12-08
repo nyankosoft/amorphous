@@ -27,6 +27,19 @@ public:
 	{}
 
 	~Capsule() {}
+
+	bool IsValid() const
+	{
+		if( 0.000001f <= Vec3LengthSq( p1 - p0 )
+		 && 0.000001f <= radius )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
 
