@@ -7,8 +7,11 @@
 #include "3DMath/Matrix44.hpp"
 #include "3DMath/Transform.hpp"
 #include "3DMath/AABB3.hpp"
+#include "3DMath/OBB3.hpp"
+#include "3DMath/Capsule.hpp"
 
 #include "3DMath/Vector2.hpp"
+#include "3DMath/Matrix22.hpp"
 #include "3DMath/AABB2.hpp"
 
 #include "Archive.hpp"
@@ -81,6 +84,15 @@ inline IArchive& operator & ( IArchive& ar, AABB3& aabb )
 }
 
 
+inline IArchive& operator & ( IArchive& ar, OBB3& obb )
+{
+	ar & obb.center;
+	ar & obb.radii;
+
+	return ar;
+}
+
+
 inline IArchive& operator & ( IArchive& ar, SPlane& plane )
 {
 	ar & plane.normal;
@@ -99,9 +111,28 @@ inline IArchive& operator & ( IArchive& ar, Sphere& sphere )
 }
 
 
+inline IArchive& operator & ( IArchive& ar, Capsule& capsule )
+{
+	ar & capsule.p0;
+	ar & capsule.p1;
+	ar & capsule.radius;
+
+	return ar;
+}
+
+
 inline IArchive& operator & ( IArchive& ar, Vector2& v )
 {
 	ar & v.x & v.y;
+	return ar;
+}
+
+
+inline IArchive& operator & ( IArchive& ar, Matrix22& mat )
+{
+	ar & mat(0,0) & mat(0,1);
+	ar & mat(1,0) & mat(1,1);
+
 	return ar;
 }
 
