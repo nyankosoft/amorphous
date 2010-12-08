@@ -16,7 +16,8 @@ class IArchiveObjectFactory
 
 public:
 //	IArchiveObjectFactory() {}
-//	~IArchiveObjectFactory() {}
+
+	virtual ~IArchiveObjectFactory() {}
 
 	virtual IArchiveObjectBase *CreateObject(const unsigned int id) = 0;
 
