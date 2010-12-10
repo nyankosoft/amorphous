@@ -5,8 +5,9 @@
 #include "StringAux.hpp"
 
 #include "3DMath/AABB3.hpp"
-#include "3DMath/AABB2.hpp"
+#include "3DMath/OBB3.hpp"
 #include "3DMath/Quaternion.hpp"
+#include "3DMath/AABB2.hpp"
 
 
 inline std::string to_string( const Vector3& v, int precision = 3, int num_zfills = 0 )
@@ -62,6 +63,12 @@ inline std::string to_string( const Quaternion& q, int precision = 3, int num_zf
 	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), q.x, q.y, q.z, q.w );
 
 	return std::string(buffer);
+}
+
+
+inline std::string to_string( const OBB3& obb )
+{
+	return std::string( "[obb3] radii" + to_string(obb.radii) + ", center" + to_string(obb.center.vPosition) + ", rotation" + to_string(Quaternion(obb.center.matOrient)) );
 }
 
 
