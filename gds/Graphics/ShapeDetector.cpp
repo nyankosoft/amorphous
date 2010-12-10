@@ -3,7 +3,6 @@
 #include "MeshModel/General3DMesh.hpp"
 #include "MeshModel/PrimitiveShapeMeshes.hpp"
 #include "../3DMath.hpp"
-#include "../3DMath/Capsule.hpp"
 #include "../Support/Log/DefaultLog.hpp"
 #include <set>
 
@@ -33,7 +32,7 @@ public:
 	bool operator()(const Plane& left, const Plane& right) const
 	{
 		const  float normal_test_tolerance_sq = 0.000001f;
-		return normal_test_tolerance_sq < Vec3LengthSq(left.normal - right.normal);
+		return Vec3LengthSq(left.normal - right.normal) < normal_test_tolerance_sq;
 	}
 };
 
@@ -101,12 +100,12 @@ bool CShapeDetector::IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb )
 			return false;
 	}
 
-	aabb.vMax.x = aa_plane_dists[0];
-	aabb.vMax.y = aa_plane_dists[1];
-	aabb.vMax.z = aa_plane_dists[2];
-	aabb.vMin.x = aa_plane_dists[3];
-	aabb.vMin.y = aa_plane_dists[4];
-	aabb.vMin.z = aa_plane_dists[5];
+	aabb.vMax.x =  aa_plane_dists[0];
+	aabb.vMax.y =  aa_plane_dists[1];
+	aabb.vMax.z =  aa_plane_dists[2];
+	aabb.vMin.x = -aa_plane_dists[3];
+	aabb.vMin.y = -aa_plane_dists[4];
+	aabb.vMin.z = -aa_plane_dists[5];
 
 	return true;
 }
@@ -121,17 +120,14 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matr
 	// 3. 3 pairs have perpendicular normals,
 	// detect it as a box
 
-//	std::set<Vector3> polygon_normals;
 	std::set<Plane,plane_normal_comparision> polygon_planes;
 	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
-//		polygon_normals.insert( polygons[i].GetPlane().normal );
 		polygon_planes.insert( polygons[i].GetPlane() );
 	}
 
-//		if( polygon_normals.size() != 6 )
 	if( polygon_planes.size() != 6 )
 		return false;
 
@@ -383,29 +379,41 @@ bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectio
 	CBoxDesc box_desc;
 	Matrix34 pose( Matrix34Identity() );
 	Sphere sphere;
-//	Capsule cap;
+	Capsule cap;
+
+	if( !src_mesh.GetVertexBuffer()
+	 || src_mesh.GetVertexBuffer()->empty()
+	 || src_mesh.GetPolygonBuffer().empty() )
+	{
+		return false;
+	}
 
 	if( IsAABox( src_mesh, aabb ) )
 	{
+		LOG_PRINT( " Detected an AABB: " + to_string(aabb) );
 		results.shape = MeshShape::AXIS_ALIGNED_BOX;
 		return true;
 	}
 	else if( IsBox( src_mesh, box_desc, pose ) )
 	{
+		LOG_PRINT( " Detected an OBB." );
 		results.shape = MeshShape::ORIENTED_BOX;
 		results.pose = pose;
 		return true;
 	}
 	else if( IsSphere( src_mesh, sphere ) )
 	{
+		LOG_PRINT( " Detected a sphere." );
 		results.shape = MeshShape::SPHERE;
 		return true;
 	}
-//	else if( IsCapsule( src_mesh, cap ) )
-//	{
-//		results.shape = MeshShape::CAPSULE;
-//		return true;
-//	}
+	else if( IsCapsule( src_mesh, cap ) )
+	{
+		LOG_PRINT( " Detected a capsule." );
+		results.shape = MeshShape::CAPSULE;
+		results.capsule = cap;
+		return true;
+	}
 	else if( IsConvex( src_mesh ) )
 	{
 		results.shape = MeshShape::CONVEX;

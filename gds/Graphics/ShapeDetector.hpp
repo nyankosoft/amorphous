@@ -5,6 +5,7 @@
 #include "../3DMath/fwd.hpp"
 #include "../3DMath/Sphere.hpp"
 #include "../3DMath/Transform.hpp"
+#include "../3DMath/Capsule.hpp"
 #include "../Graphics/fwd.hpp"
 #include "../Graphics/MeshModel/PrimitiveShapeMeshes.hpp"
 
@@ -31,6 +32,15 @@ public:
 	MeshShape::Name shape;
 
 	Matrix34 pose;
+
+	Vector3 radii; ///< stores the radii of the detected OBB
+
+	Capsule capsule; ///< Stores the detected capsule
+
+	CShapeDetectionResults()
+		:
+	radii(Vector3(0,0,0))
+	{}
 };
 
 /*
