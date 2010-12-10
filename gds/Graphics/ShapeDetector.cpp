@@ -120,12 +120,25 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matr
 	// 3. 3 pairs have perpendicular normals,
 	// detect it as a box
 
-	std::set<Plane,plane_normal_comparision> polygon_planes;
+	std::vector<Plane> polygon_planes;
 	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
-		polygon_planes.insert( polygons[i].GetPlane() );
+		bool is_on_new_plane = false;
+		for( int j=0; j<(int)polygon_planes.size(); j++ )
+		{
+			if( AlmostSamePlanes( polygons[i].GetPlane(), polygon_planes[j] ) )
+				continue;
+
+			is_on_new_plane = true;
+			break;
+		}
+		
+		polygon_planes.push_back( polygons[i].GetPlane() );
+
+		if( 6 < polygon_planes.size() )
+			break;
 	}
 
 	if( polygon_planes.size() != 6 )
@@ -173,7 +186,7 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matr
 
 	float dist_sums[3] = {0,0,0};
 	for( int i=0; i<3; i++ )
-		dist_sums[i] = six_planes[perpendicular_pairs[i].first].dist - six_planes[perpendicular_pairs[i].second].dist;
+		dist_sums[i] = six_planes[perpendicular_pairs[i].first].dist + six_planes[perpendicular_pairs[i].second].dist;
 
 	// Take the absolutes just in case, although sum of dists should always be positive.
 	desc.vLengths.x = fabsf( dist_sums[0] );
@@ -396,7 +409,7 @@ bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectio
 	}
 	else if( IsBox( src_mesh, box_desc, pose ) )
 	{
-		LOG_PRINT( " Detected an OBB." );
+		LOG_PRINT( " Detected an OBB: " + to_string(OBB3(pose,box_desc.vLengths*0.5f)) );
 		results.shape = MeshShape::ORIENTED_BOX;
 		results.pose = pose;
 		return true;
