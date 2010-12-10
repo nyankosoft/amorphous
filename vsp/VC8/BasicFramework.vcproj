@@ -420,6 +420,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\ShapesExtractor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\ShapesExtractor.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\SimpleMotionBlur.cpp"
 				>
 			</File>
@@ -620,6 +628,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\MeshModel\General3DMesh.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.hpp"
 					>
 				</File>
 				<File
