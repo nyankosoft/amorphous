@@ -166,6 +166,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\LightWave\3DShapesExporter_LW.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\LightWave\3DShapesExporter_LW.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\LightWave\CompositeMeshExporter_LW.cpp"
 				>
 			</File>
