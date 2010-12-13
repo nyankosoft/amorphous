@@ -179,7 +179,7 @@ inline void C3DRect::draw() const
 
 	hr = pd3dDev->SetFVF( NORMALVERTEX::FVF );
 
-	hr = pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_RectVertices, sizeof(NORMALVERTEX) );
+	hr = pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, verts, sizeof(NORMALVERTEX) );
 
 	if( FAILED(hr) )
 		MessageBox( NULL, "DrawPrimUP failed.", "Error", MB_OK );
