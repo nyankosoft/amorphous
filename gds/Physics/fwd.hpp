@@ -29,7 +29,11 @@ class CTriangleMeshShapeDesc;
 class CRawTriangleMeshShapeDesc;
 
 class CJoint;
+class CJointImpl;
 class CJointDesc;
+class CFixedJointDesc;
+class CSphericalJointDesc;
+class CRevoluteJointDesc;
 // derived joint classes
 class CMaterial;
 class CMaterialDesc;

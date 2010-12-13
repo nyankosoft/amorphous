@@ -5,6 +5,7 @@
 #include "3DMath/Matrix34.hpp"
 #include "../Actor.hpp"
 #include "../Ray.hpp"
+#include "../SpringDesc.hpp"
 #include "../Enums.hpp"
 #include "../RaycastHit.hpp"
 
@@ -50,6 +51,12 @@ inline NxForceMode ToNxForceMode( ForceMode::Mode mode )
 inline NxRay ToNxRay( const CRay& ray )
 {
 	return NxRay( ToNxVec3(ray.Origin), ToNxVec3(ray.Direction) );
+}
+
+
+inline NxSpringDesc ToNxSpringDesc( const CSpringDesc& src )
+{
+	return NxSpringDesc( src.Spring, src.Damper, src.TargetValue );
 }
 
 

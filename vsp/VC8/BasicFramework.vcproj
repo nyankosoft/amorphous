@@ -368,6 +368,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\PrimitiveShapeRenderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\PrimitiveShapeRenderer.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\PseudoNoiseEffect.cpp"
 				>
 			</File>
@@ -2730,6 +2738,10 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\gds\Physics\Scene.cpp"
+				>
 			</File>
 			<File
 				RelativePath="..\..\gds\Physics\Scene.hpp"

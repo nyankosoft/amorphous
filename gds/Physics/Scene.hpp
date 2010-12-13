@@ -170,6 +170,12 @@ public:
 
 class CScene
 {
+protected:
+
+	CJointImpl *GetJointImpl( CJoint& joint );
+
+	void SetJointImpl( CJoint& joint, CJointImpl& impl );
+
 public:
 
 	CScene() {}

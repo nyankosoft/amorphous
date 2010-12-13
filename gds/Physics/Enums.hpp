@@ -97,6 +97,19 @@ public:
 };
 
 
+class JointType
+{
+public:
+	enum Name
+	{
+		FIXED,
+		REVOLUTE,
+		SPHERICAL,
+		NUM_JOINT_TYPES
+	};
+};
+
+
 } // namespace physics
 
 

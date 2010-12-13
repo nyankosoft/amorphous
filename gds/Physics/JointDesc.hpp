@@ -5,7 +5,7 @@
 
 #include "3DMath/precision.h"
 #include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"
@@ -13,6 +13,19 @@ using namespace GameLib1::Serialization;
 
 namespace physics
 {
+
+
+class CJointDescVisitor
+{
+public:
+	CJointDescVisitor() {}
+	virtual ~CJointDescVisitor() {}
+
+	virtual void VisitFixedJointDesc( const CFixedJointDesc& desc ) {}
+	virtual void VisitSphericalJointDesc( const CSphericalJointDesc& desc ) {}
+	virtual void VisitRevoluteJointDesc( const CRevoluteJointDesc& desc ) {}
+};
+
 
 
 class CJointDesc : public IArchiveObjectBase
@@ -50,7 +63,9 @@ public:
 
 	CJointDesc() { SetDefault(); }
 
-	~CJointDesc() {}
+	virtual ~CJointDesc() {}
+
+	virtual JointType::Name GetType() const = 0;
 
 	void SetDefault()
 	{
@@ -64,6 +79,8 @@ public:
 		MaxForce  = FLT_MAX;
 		MaxTorque = FLT_MAX;
 	}
+
+	virtual void Accept( CJointDescVisitor& visitor ) const {}
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{

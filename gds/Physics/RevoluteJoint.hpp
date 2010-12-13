@@ -2,8 +2,6 @@
 #define  __PhysRevoluteJoint_H__
 
 
-#include "3DMath/Matrix34.hpp"
-#include "fwd.hpp"
 #include "Joint.hpp"
 
 
@@ -21,40 +19,40 @@ public:
 	~CRevoluteJoint() {}
 /*
 	/// Sets angular joint limits. 
-	SetLimits (const NxJointLimitPairDesc &pair)=0 
+	SetLimits( const NxJointLimitPairDesc &pair ) { return m_pImpl->(); }
 
 	/// Retrieves the joint limits. 
-	virtual bool  GetLimits (NxJointLimitPairDesc &pair)=0 
+	virtual bool  GetLimits(NxJointLimitPairDesc &pair ) { return m_pImpl->(); }
 
 	/// Sets motor parameters for the joint. 
-	virtual void  SetMotor (const NxMotorDesc &motorDesc)=0 
+	virtual void  SetMotor( const NxMotorDesc &motorDesc ) { return m_pImpl->(); }
 
 	/// Reads back the motor parameters. 
-	virtual bool  GetMotor (NxMotorDesc &motorDesc)=0 
+	virtual bool  GetMotor(NxMotorDesc &motorDesc ) { return m_pImpl->(); }
 
 	/// Sets spring parameters. 
-	virtual void  SetSpring (const SpringDesc &springDesc)=0 
+	virtual void  SetSpring( const SpringDesc &springDesc ) { return m_pImpl->(); }
 
 	/// Retrieves spring settings. 
-	virtual bool  GetSpring (NxSpringDesc &springDesc)=0 
+	virtual bool  GetSpring(NxSpringDesc &springDesc ) { return m_pImpl->(); }
 
 	/// Retrieves the current revolute joint angle. 
-	virtual Scalar  GetAngle ()=0 
+	virtual Scalar  GetAngle() { return m_pImpl->(); }
 
 	/// Retrieves the revolute joint angle's rate of change (angular velocity). 
-	virtual Scalar  GetVelocity ()=0 
+	virtual Scalar  GetVelocity() { return m_pImpl->(); }
 
 	/// Sets the flags to enable/disable the spring/motor/limit. 
-	virtual void  SetFlags (U32 flags)=0 
+	virtual void  SetFlags (U32 flags ) { return m_pImpl->(); }
 
 	/// Retrieve the revolute joints flags. 
-	virtual U32  GetFlags ()=0 
+	virtual U32  GetFlags() { return m_pImpl->(); }
 
 	/// Sets the joint projection mode. 
-	virtual void  SetProjectionMode (NxJointProjectionMode projectionMode)=0 
+	virtual void  SetProjectionMode (NxJointProjectionMode projectionMode ) { return m_pImpl->(); }
 
 	/// Retrieves the joints projection mode. 
-	virtual NxJointProjectionMode  GetProjectionMode ()=0 
+	virtual NxJointProjectionMode  GetProjectionMode() { return m_pImpl->(); }
 */
 };
 

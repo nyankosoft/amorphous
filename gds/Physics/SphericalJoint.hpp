@@ -27,10 +27,10 @@ public:
 //	virtual void  saveToDesc (NxSphericalJointDesc &desc) = 0;
 	 
 	/// Sets the flags to enable/disable the spring/motor/limit. 
-	virtual void SetFlags (U32 flags) = 0;
+	virtual void SetFlags(U32 flags) { m_pImpl->SetFlags( flags ); }
 	 
 	/// Returns the current flag settings. 
-	virtual U32 GetFlags () = 0;
+	virtual U32 GetFlags() { return m_pImpl->GetFlags(); }
 	 
 	/// Sets the joint projection mode. 
 //	virtual void SetProjectionMode (JointProjectionMode projectionMode) = 0;

@@ -1,13 +1,17 @@
 #include "NxPhysScene.hpp"
 #include "NxPhysActor.hpp"
+#include "NxPhysJointImpls.hpp"
 #include "NxPhysCloth.hpp"
-//#include "NxPhysJoint.hpp"
+#include "NxPhysJointDescVisitor.hpp"
 #include "NxPhysMaterial.hpp"
 #include "NxPhysConv.hpp"
 #include "NxPhysShapeDescFactory.hpp"
 #include "NxPhysShapeFactory.hpp"
 #include "NxPhysClothMesh.hpp"
 
+#include "../FixedJoint.hpp"
+#include "../RevoluteJoint.hpp"
+#include "../SphericalJoint.hpp"
 #include "../MaterialDesc.hpp"
 #include "../ClothDesc.hpp"
 #include "../RaycastHit.hpp"
@@ -310,9 +314,45 @@ void CNxPhysScene::ReleaseActor( CActor*& pActor )
 }
 
 
+physics::CJoint *CreateJoint( physics::JointType::Name type )
+{
+	using namespace physics;
+
+	switch( type )
+	{
+	case JointType::FIXED:     return new CFixedJoint;
+	case JointType::REVOLUTE:  return new CRevoluteJoint;
+	case JointType::SPHERICAL: return new CSphericalJoint;
+	default:
+		return NULL;
+	}
+}
+
+
+static physics::CNxPhysJointImpl *CreateNxJointImpl( physics::JointType::Name type )
+{
+	using namespace physics;
+
+	switch( type )
+	{
+	case JointType::FIXED:     return new CNxPhysFixedJointImpl;
+	case JointType::REVOLUTE:  return new CNxPhysRevoluteJointImpl;
+	case JointType::SPHERICAL: return new CNxPhysSphericalJointImpl;
+	default:
+		return NULL;
+	}
+}
+
+
 CJoint* CNxPhysScene::CreateJoint( const CJointDesc& desc )
 {
 	if( !m_pScene )
+		return NULL;
+
+	CNxPhysJointDescVisitor jd_visitor;
+	desc.Accept( jd_visitor );
+
+	if( !jd_visitor.m_pNxJointDesc )
 		return NULL;
 /*
 	NxJointDesc nx_joint_desc;
@@ -327,19 +367,12 @@ CJoint* CNxPhysScene::CreateJoint( const CJointDesc& desc )
 	nx_joint_desc.userData       =
 //	nx_joint_desc.name           =
 	nx_joint_desc.jointFlags     =
-
-	CNxPhysShapeDescFactory desc_factory;
-	vector<NxShapeDesc *> vecpNxShapeDesc;
-	for( size_t i=0; i<nx_actor_desc.vecpShapeDesc.size(); i++ )
-	{
-		vecpNxShapeDesc.push_back( desc_factory.CreateNxShapeDesc( desc.vecpShapeDesc[i] ) );
-		nx_actor_desc.shapes.push_back = vecpNxShapeDesc[i];
-	}
+*/
 
 	// create an actor of ageia physics
-	NxActor *pNxJoint = m_pScene->createJoint( nx_joint_desc );
+	NxJoint *pNxJoint = m_pScene->createJoint( *(jd_visitor.m_pNxJointDesc) );
 
-	SafeDeleteVector( vecpNxShapeDesc );
+//	SafeDeleteVector( vecpNxShapeDesc );
 
 	if( !pNxJoint )
 	{
@@ -347,31 +380,48 @@ CJoint* CNxPhysScene::CreateJoint( const CJointDesc& desc )
 		return NULL;
 	}
 
-	//
-	// create a derived class instance of CNxPhysJoint
-	//
-	CNxPhysJoint *pPhysJoint = new CreateNxJoint( pNxJoint );
+	CJoint *pJoint = ::CreateJoint( desc.GetType() );
 
-	// retrieve shapes from 'pNxActor' and set them to 'pPhysActor'
-	CNxPhysShapeFactory factory;
-	NxU32 j, num_shapes = pNxActor->getNbShapes();
-	NxShape *apShape = pNxActor->getShapes();
-	for( j=0; j<num_shapes; j++ )
-	{
-		pPhysActor->AddPhysShape( factory.CreateNxPhysShape( apShape[j] ) );
-	}
-*/
-	return NULL;
+	CNxPhysJointImpl *pNxJointImpl = CreateNxJointImpl( desc.GetType() );
+
+	pNxJointImpl->m_pNxJoint = pNxJoint;
+
+	SetJointImpl( *pJoint, *pNxJointImpl );
+
+	return pJoint;
 }
 
 
 /// Deletes the specified joint. 
 void CNxPhysScene::ReleaseJoint( CJoint*& pJoint )
 {
+	if( !m_pScene )
+		return;
+
 	if( !pJoint )
 		return;
 
-//	m_pScene->releaseJoint( pJoint->GetNxJoint() );
+	CJointImpl *pImpl = GetJointImpl( *pJoint );
+	if( !pImpl )
+	{
+		LOG_PRINT_ERROR( " The impl of the specified joint is missing." );
+		return;
+	}
+
+	CNxPhysJointImpl* pNxJointImpl = dynamic_cast<CNxPhysJointImpl *>(pImpl);
+	if( !pNxJointImpl )
+	{
+		LOG_PRINT_ERROR( " An invalid joint impl." );
+		return;
+	}
+
+	if( !pNxJointImpl->m_pNxJoint )
+	{
+		LOG_PRINT_ERROR( " The NxJoint is missing." );
+		return;
+	}
+
+	m_pScene->releaseJoint( *(pNxJointImpl->m_pNxJoint) );
 }
 
 

@@ -7,7 +7,10 @@
 #include "../CapsuleShapeDesc.hpp"
 #include "../TriangleMeshDesc.hpp"
 #include "../TriangleMeshShapeDesc.hpp"
+#include "../ConvexShapeDesc.hpp"
+#include "../PlaneShapeDesc.hpp"
 #include "NxPhysTriangleMesh.hpp"
+#include "NxPhysConvexMesh.hpp"
 
 
 namespace physics
@@ -56,6 +59,28 @@ NxShapeDesc *CNxPhysShapeDescFactory::CreateNxShapeDesc( CShapeDesc &src_desc )
 			// retrieve the triangle mesh of Ageia PhysX
 			CNxPhysTriangleMesh *pNxPhysMesh = dynamic_cast<CNxPhysTriangleMesh *>(pSrcTriMeshDesc->pTriangleMesh);
 			pDesc->meshData = pNxPhysMesh->GetNxTriangleMesh();
+			pNxShapeDesc = pDesc;
+		}
+		break;
+
+	case PhysShape::Convex:
+		{
+			CConvexShapeDesc *pSrConvexDesc = dynamic_cast<CConvexShapeDesc *>(&src_desc);
+			NxConvexShapeDesc *pDesc = new NxConvexShapeDesc();
+
+			// retrieve the convex mesh of Ageia PhysX
+			CNxPhysConvexMesh *pNxPhysMesh = dynamic_cast<CNxPhysConvexMesh *>(pSrConvexDesc->pConvexMesh);
+			pDesc->meshData = pNxPhysMesh->GetNxConvexMesh();
+			pNxShapeDesc = pDesc;
+		}
+		break;
+
+	case PhysShape::Plane:
+		{
+			CPlaneShapeDesc *pSrcPlaneDesc = dynamic_cast<CPlaneShapeDesc *>(&src_desc);
+			NxPlaneShapeDesc *pDesc = new NxPlaneShapeDesc();
+			pDesc->d      = pSrcPlaneDesc->plane.dist;
+			pDesc->normal = ToNxVec3( pSrcPlaneDesc->plane.normal );
 			pNxShapeDesc = pDesc;
 		}
 		break;

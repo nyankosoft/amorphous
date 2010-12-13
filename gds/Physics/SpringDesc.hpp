@@ -39,6 +39,13 @@ public:
 		Damper = 0.1f;
 		TargetValue = 0.0f;
 	}
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & Spring;
+		ar & Damper;
+		ar & TargetValue;
+	}
 };
 
 

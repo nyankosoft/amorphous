@@ -18,6 +18,7 @@ public:
 //		Cylinder,
 		Convex,
 		TriangleMesh,
+		Plane,
 		NumShapes
 	};
 };

@@ -6,6 +6,8 @@
 
 #include "fwd.hpp"
 #include "JointDesc.hpp"
+#include "Enums.hpp"
+#include "SpringDesc.hpp"
 
 
 namespace physics
@@ -23,10 +25,10 @@ public:
 	Scalar  projectionDistance;
 
 	/// limits rotation around twist axis 
-	NxJointLimitPairDesc  twistLimit;
+//	NxJointLimitPairDesc  TwistLimit;
 
 	/// limits swing of twist axis 
-	NxJointLimitDesc  swingLimit;
+//	NxJointLimitDesc  SwingLimit;
 
 	/// spring that works against twisting 
 	CSpringDesc  TwistSpring;
@@ -38,16 +40,20 @@ public:
 	CSpringDesc  JointSpring;
 
 	/// This is a combination of the bits defined by NxSphericalJointFlag . 
-	U32  flags;
+	U32  Flags;
 
 	/// use this to enable joint projection 
-	NxJointProjectionMode  projectionMode;
+//	NxJointProjectionMode  ProjectionMode;
 
 public:
 
 	CSphericalJointDesc() {}
 
 	~CSphericalJointDesc() {}
+
+	JointType::Name GetType() const { return JointType::SPHERICAL; }
+
+	void Accept( CJointDescVisitor& visitor ) const { visitor.VisitSphericalJointDesc( *this ); }
 };
 
 
