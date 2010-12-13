@@ -12,31 +12,14 @@ using namespace std;
 using namespace boost;
 
 
-void CreatePhysicsShapes( CShapeSet& shape_set )
+void CreatePhysicsShapes( CShapeContainerSet& shape_set )
 {
 }
 
 
-class CShapeSet : public IArchiveObjectBase
-{
-public:
-
-	std::vector<CShapeContainer *> m_pShapes;
-
-	CShapeSet() {}
-	~CShapeSet() { SafeDeleteVector(m_pShapes); }
-
-	void Serialize( IArchive& ar, const unsigned int version )
-	{
-		CShapeContainerFactory factory;
-		ar.Polymorphic( m_pShapes, factory );
-	}
-};
-
-
 void CShapesExtractor::AddShapeContainer( CGeneral3DMesh& connected_mesh,
 											  const CShapeDetectionResults& results,
-											  CShapeSet& shape_set )
+											  CShapeContainerSet& shape_set )
 {
 	AABB3 aabb;
 
@@ -71,7 +54,7 @@ void CShapesExtractor::AddShapeContainer( CGeneral3DMesh& connected_mesh,
 }
 
 
-Result::Name CShapesExtractor::ExtractShapes( shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeSet& shape_set )
+Result::Name CShapesExtractor::ExtractShapes( shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeContainerSet& shape_set )
 {
 	if( !pSrcMesh )
 		return Result::INVALID_ARGS;
@@ -98,7 +81,7 @@ Result::Name CShapesExtractor::ExtractShapes( shared_ptr<CGeneral3DMesh> pSrcMes
 	LOG_PRINT( fmt_string(" Found %d connected meshes.", (int)pConnectedMeshes.size() ) );
 
 	// For each connected sets, detect a shape
-//	CShapeSet shape_set;
+//	CShapeContainerSet shape_set;
 	const int num_connected_meshes = (int)pConnectedMeshes.size();
 	for( int i=0; i<num_connected_meshes; i++ )
 	{
@@ -121,7 +104,7 @@ Result::Name CShapesExtractor::ExtractShapes( shared_ptr<CGeneral3DMesh> pSrcMes
 
 Result::Name CShapesExtractor::ExtractShapes( shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath )
 {
-	CShapeSet shape_set;
+	CShapeContainerSet shape_set;
 	Result::Name res = ExtractShapes( pSrcMesh, shape_set );
 
 	bool saved = shape_set.SaveToFile( output_filepath );

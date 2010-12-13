@@ -8,13 +8,13 @@
 #include "../Graphics/fwd.hpp"
 
 
-class CShapeSet;
+class CShapeContainerSet;
 class CShapeDetectionResults;
 
 
 class CShapesExtractor
 {
-	void AddShapeContainer( CGeneral3DMesh& connected_mesh, const CShapeDetectionResults& results, CShapeSet& shape_set );
+	void AddShapeContainer( CGeneral3DMesh& connected_mesh, const CShapeDetectionResults& results, CShapeContainerSet& shape_set );
 
 public:
 
@@ -22,7 +22,7 @@ public:
 
 	~CShapesExtractor(){}
 
-	Result::Name ExtractShapes( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeSet& shape_set );
+	Result::Name ExtractShapes( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeContainerSet& shape_set );
 
 	Result::Name ExtractShapes( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath );
 };
