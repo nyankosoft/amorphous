@@ -3225,6 +3225,10 @@
 					RelativePath="..\..\gds\Utilities\Physics\PhysicsMeshUtility.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\gds\Utilities\Physics\PhysicsShapeMakerVisitor.hpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<File
