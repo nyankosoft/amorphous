@@ -412,6 +412,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\ShapeContainers.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\ShapeDetector.cpp"
 				>
 			</File>
