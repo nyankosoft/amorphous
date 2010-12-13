@@ -121,6 +121,11 @@ bool C3DMeshModelBuilder_LW::BuildMeshModel( SLayerSet& rLayerInfo )
 
 void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryFilter& filter )
 {
+	if( !m_pSrcObject )
+	{
+		LOG_PRINT_ERROR( " m_pSrcObject == NULL" );
+		return;
+	}
 
 	// get the current size of the destination vertex buffer
 	// used to offest the vertex indices in the polygons
@@ -296,6 +301,12 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 
 void C3DMeshModelBuilder_LW::SetMaterials()
 {
+	if( !m_pSrcObject )
+	{
+		LOG_PRINT_ERROR( " m_pSrcObject == NULL" );
+		return;
+	}
+
 	vector<CLWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	size_t i, iNumSurfaces = rvecSurface.size();
 
@@ -403,6 +414,12 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 
 void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 {
+	if( !m_pSrcObject )
+	{
+		LOG_PRINT_ERROR( " m_pSrcObject == NULL" );
+		return;
+	}
+
 	vector<CLWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	size_t i, num_surfaces = rvecSurface.size();
 	size_t pos;
@@ -692,6 +709,9 @@ void C3DMeshModelBuilder_LW::LoadMeshModel()
 	const int num_mesh_layers = (int)m_TargetLayerInfo.vecpMeshLayer.size();
 	for( int i=0; i<num_mesh_layers; i++ )
 	{
+		if( !m_TargetLayerInfo.vecpMeshLayer[i] )
+			continue;
+
 		ProcessLayer( *(m_TargetLayerInfo.vecpMeshLayer[i]) );
 	}
 
