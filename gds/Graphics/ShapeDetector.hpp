@@ -3,7 +3,7 @@
 
 
 #include "../3DMath/fwd.hpp"
-#include "../3DMath/Sphere.hpp"
+#include "../3DMath/AABB3.hpp"
 #include "../3DMath/Transform.hpp"
 #include "../3DMath/Capsule.hpp"
 #include "../Graphics/fwd.hpp"
@@ -30,6 +30,8 @@ class CShapeDetectionResults
 {
 public:
 	MeshShape::Name shape;
+
+	AABB3 aabb; ///< stores the detected AABB
 
 	Matrix34 pose;
 

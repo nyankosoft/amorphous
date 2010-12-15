@@ -405,6 +405,7 @@ bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectio
 	{
 		LOG_PRINT( " Detected an AABB: " + to_string(aabb) );
 		results.shape = MeshShape::AXIS_ALIGNED_BOX;
+		results.aabb = aabb;
 		return true;
 	}
 	else if( IsBox( src_mesh, box_desc, pose ) )

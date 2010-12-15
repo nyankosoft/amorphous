@@ -26,8 +26,7 @@ void CShapesExtractor::AddShapeContainer( CGeneral3DMesh& connected_mesh,
 	switch( results.shape )
 	{
 	case MeshShape::AXIS_ALIGNED_BOX:
-		CalculateAABB( connected_mesh, aabb );
-		shape_set.m_pShapes.push_back( new CAABB3Container( aabb ) );
+		shape_set.m_pShapes.push_back( new CAABB3Container( results.aabb ) );
 		break;
 
 	case MeshShape::ORIENTED_BOX:
