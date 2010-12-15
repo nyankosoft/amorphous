@@ -104,6 +104,8 @@ public:
 	const Matrix33 & GetWorldInertia() const { return m_matWorldInertia; }
 */
 
+	virtual bool UpdateMassFromShapes( Scalar density, Scalar total_mass ) = 0;
+
 	//
 	// functions to Add forces etc
 	//

@@ -94,6 +94,7 @@ NxShapeDesc *CNxPhysShapeDescFactory::CreateNxShapeDesc( CShapeDesc &src_desc )
 
 	// Copy the values of member variables from CShapeDesc to NxShapeDesc
 	NxShapeDesc& desc = *pNxShapeDesc;
+	desc.localPose        = ToNxMat34( src_desc.LocalPose );
 	desc.materialIndex    = src_desc.MaterialIndex;
 	desc.shapeFlags       = ToNxShapeFlags( src_desc.ShapeFlags );
 	desc.group            = 0;//src_shape_desc.CollisionGroup;

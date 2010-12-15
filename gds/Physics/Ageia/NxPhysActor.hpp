@@ -76,6 +76,8 @@ public:
 //	const Matrix33 & GetWorldInvInertia() const { return m_matWorldInvInertia; }
 //	const Matrix33 & GetWorldInertia() const { return m_matWorldInertia; }
 
+	bool UpdateMassFromShapes( Scalar density, Scalar total_mass ) { return m_pActor->updateMassFromShapes( density, total_mass ); }
+
 	//
 	// functions to Add forces etc
 	//
