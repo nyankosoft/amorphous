@@ -168,6 +168,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\gds\Graphics\BuiltinImageTextureLoader.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\BuiltinSkyTextures.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Graphics\BuiltinSkyTextures.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\gds\Graphics\Camera.cpp"
 				>
 			</File>
@@ -1979,6 +1991,10 @@
 			</File>
 			<File
 				RelativePath="..\..\gds\Support\BMPImageExporter.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\gds\Support\BuiltinImage.hpp"
 				>
 			</File>
 			<File
