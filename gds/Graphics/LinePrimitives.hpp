@@ -5,6 +5,7 @@
 #include <vector>
 #include "Graphics.hpp"
 #include "3DMath/Matrix34.hpp"
+#include "Direct3D/FVF_TextureVertex.h"
 
 
 /**

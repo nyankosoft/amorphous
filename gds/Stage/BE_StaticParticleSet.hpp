@@ -2,7 +2,7 @@
 #define __BE_STATICPARTICLESET_H__
 
 #include "BE_ParticleSet.hpp"
-#include "Graphics/FVF_BillboardVertex.h"
+#include "Graphics/Direct3D/FVF_BillboardVertex.h"
 #include "Graphics/TextureHandle.hpp"
 #include "Support/FixedVector.hpp"
 

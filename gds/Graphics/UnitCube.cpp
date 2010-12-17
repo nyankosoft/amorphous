@@ -1,6 +1,6 @@
 #include "UnitCube.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/FVF_ColorVertex.h"
+#include "Graphics/Direct3D/FVF_ColorVertex.h"
 
 
 CUnitCube::CUnitCube()

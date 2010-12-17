@@ -1,4 +1,3 @@
-
 #ifndef __FVF_SHADOW_VERTEX_H__
 #define __FVF_SHADOW_VERTEX_H__
 

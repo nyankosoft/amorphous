@@ -6,7 +6,7 @@
 #include "fwd.hpp"
 #include "3DMath/Plane.hpp"
 #include "3DMath/aabb3.hpp"
-#include "Graphics/FVF_MapVertex.h"
+#include "Graphics/Direct3D/FVF_MapVertex.h"
 #include "Graphics/Direct3D/Conversions.hpp"
 
 

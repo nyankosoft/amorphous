@@ -1,7 +1,7 @@
 #include "DynamicLightManagerForStaticGeometry.hpp"
 #include "LightEntityManager.hpp"
 #include "BSPMap.hpp"
-#include "../Graphics/FVF_MapVertex.h"
+#include "../Graphics/Direct3D/FVF_MapVertex.h"
 #include "../Graphics/Shader/ShaderManager.hpp"
 
 

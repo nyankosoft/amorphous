@@ -7,7 +7,7 @@
 #include "General3DVertex.hpp"
 #include "Direct3D/Direct3D9.hpp"
 #include "Direct3D/Conversions.hpp"
-#include "FVF_NormalVertex.h"
+#include "Direct3D/FVF_NormalVertex.h"
 
 
 class C3DRect

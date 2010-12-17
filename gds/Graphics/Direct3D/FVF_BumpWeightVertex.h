@@ -6,8 +6,7 @@
 
 
 #include <d3dx9.h>
-
-#include "TextureCoord.hpp"
+#include "../TextureCoord.hpp"
 
 
 const D3DVERTEXELEMENT9 BUMPWEIGHTVERTEX_DECLARATION[] =

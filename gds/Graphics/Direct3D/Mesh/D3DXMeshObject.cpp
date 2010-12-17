@@ -1,13 +1,7 @@
 #include "D3DXMeshObject.hpp"
 
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/FVF_BumpVertex.h"
-#include "Graphics/FVF_BumpWeightVertex.h"
-#include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/FVF_NormalVertex.h"
-#include "Graphics/FVF_WeightVertex.h"
-#include "Graphics/FVF_ShadowVertex.h"
+#include "Graphics/Direct3D/FVF_Vertices.h"
 
 #include "Graphics/MeshModel/MeshBone.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"

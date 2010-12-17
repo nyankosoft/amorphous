@@ -26,7 +26,6 @@
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 
-#include "Graphics/FVF_Vertices.h"
 #include "Graphics/General3DVertex.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/HemisphericLight.hpp"

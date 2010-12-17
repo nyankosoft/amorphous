@@ -1,13 +1,11 @@
-
 #ifndef __FVF_BUMPVERTEX_H__
 #define __FVF_BUMPVERTEX_H__
 
 // BUMPVERTEX
 //  for objects that use normal maps
 
-#include "TextureCoord.hpp"
-
 #include <d3dx9.h>
+#include "../TextureCoord.hpp"
 
 
 // FVF format - possible for this bump vertex?

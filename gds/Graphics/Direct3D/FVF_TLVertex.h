@@ -1,10 +1,8 @@
 #ifndef  __FVFTLVERTEX_H__
 #define  __FVFTLVERTEX_H__
 
-#include <d3d9.h>
 #include <d3dx9.h>
-
-#include "TextureCoord.hpp"
+#include "../TextureCoord.hpp"
 
 struct TLVERTEX
 {

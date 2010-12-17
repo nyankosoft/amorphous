@@ -3,7 +3,7 @@
 
 
 #include "../PrimitiveRenderer.hpp"
-#include "../FVF_ColorVertex.h"
+#include "../Direct3D/FVF_ColorVertex.h"
 
 
 class CPrimitiveRenderer_D3D : public CPrimitiveRenderer

@@ -4,8 +4,8 @@
 
 #include "Graphics/AlphaBlend.hpp"
 #include "Graphics/TextureHandle.hpp"
-#include "Graphics/FVF_TextureVertex.h"
-#include "Graphics/FVF_BillboardVertex.h"
+#include "Graphics/Direct3D/FVF_TextureVertex.h"
+#include "Graphics/Direct3D/FVF_BillboardVertex.h"
 #include "Graphics/BillboardArrayMesh.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 

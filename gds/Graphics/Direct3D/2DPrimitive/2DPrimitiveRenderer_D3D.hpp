@@ -4,7 +4,7 @@
 
 #include "../../2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/fwd.hpp"
-#include "Graphics/FVF_TLVertex.h"
+#include "Graphics/Direct3D/FVF_TLVertex.h"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 

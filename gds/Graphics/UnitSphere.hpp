@@ -3,7 +3,7 @@
 
 
 #include <d3dx9.h>
-#include "Graphics/FVF_ColorVertex.h"
+#include "Graphics/Direct3D/FVF_ColorVertex.h"
 
 #define UNITCUBE_NUM_VERTICES 24
 

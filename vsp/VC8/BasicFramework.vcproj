@@ -224,46 +224,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\gds\Graphics\FVF_BumpVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_BumpWeightVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_ColorVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_MapVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_NormalVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_ShadowVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_TextureVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_TextureVertex2.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_TLVertex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\gds\Graphics\FVF_WeightVertex.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\gds\Graphics\General2DVertex.hpp"
 				>
 			</File>
@@ -1300,6 +1260,54 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Graphics\Direct3D\Direct3D9.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_BillboardVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_BumpVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_BumpWeightVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_ColorVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_MapVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_NormalVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_ShadowVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_TextureVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_TextureVertex2.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_TLVertex.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_Vertices.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Graphics\Direct3D\FVF_WeightVertex.h"
 					>
 				</File>
 				<File
