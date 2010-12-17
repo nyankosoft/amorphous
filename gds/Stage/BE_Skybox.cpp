@@ -9,6 +9,8 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/BuiltinSkyTextures.hpp"
+#include "Graphics/BuiltinImageTextureLoader.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
@@ -182,7 +184,24 @@ void CBE_Skybox::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 
 bool CBE_Skybox::LoadSkyboxTexture( const std::string& texture_filename )
 {
-	return m_SkyboxTexture.Load( texture_filename );
+	CTextureResourceDesc desc;
+	if( texture_filename.length() == 0 )
+	{
+		const CBuiltinImage& default_sky_image = GetDefaultBuiltinSkyTexture();
+		m_SkyboxTexture = CreateTextureFromBuiltinImage( default_sky_image );
+		return m_SkyboxTexture.IsLoaded();
+	}
+//	else if( texture_filename.find( "Builtin::" ) == 0
+//	 && strlen("Builtin::") < texture_filename.length() )
+//	{
+//		const CBuiltinImage& sky_image = GetBuiltinSkyTexture( texture_filename.substr(strlen("Builtin::")) );
+//		m_SkyboxTexture = CreateTextureFromBuiltinImage( sky_image );
+//		return m_SkyboxTexture.IsLoaded();
+//	}
+	else
+		desc.ResourcePath = texture_filename;
+
+	return m_SkyboxTexture.Load( desc );
 }
 
 
