@@ -259,7 +259,17 @@ m_BitsPerPixel(0)
 /// only valid for bitmap of 32 bpp
 inline U32 CBitmapImage::GetPixelARGB32( int x, int y )
 {
-	int bytes_per_pixel = FreeImage_GetBPP(m_pFreeImageBitMap) / sizeof(BYTE);
+	U8 r=0, g=0, b=0, a=255;
+	GetPixel( x, y, r, g, b, a );
+	U32 argb32
+		= (U32)a << 24
+		| (U32)r << 16
+		| (U32)g << 8
+		| (U32)b;
+
+	return argb32;
+
+/*	int bytes_per_pixel = FreeImage_GetBPP(m_pFreeImageBitMap) / sizeof(BYTE);
 
 	if( bytes_per_pixel != 4 )
 	{
@@ -276,7 +286,7 @@ inline U32 CBitmapImage::GetPixelARGB32( int x, int y )
 		| (U32)bits[FI_RGBA_GREEN] << 8
 		| (U32)bits[FI_RGBA_BLUE];
 
-	return argb32;
+	return argb32;*/
 }
 
 
