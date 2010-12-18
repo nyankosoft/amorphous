@@ -1,14 +1,9 @@
 #ifndef __VIEWFRUSTUMTEST_H__
 #define __VIEWFRUSTUMTEST_H__
 
-#include <stdio.h>
-
 #include <vector>
-using namespace std;
-
-
-class CCamera;
-class CCopyEntity;
+#include "../Graphics/fwd.hpp"
+#include "fwd.hpp"
 
 
 #define NUM_MAX_VISIBLEENTITIES 256
@@ -26,7 +21,7 @@ public:
 
 	int m_Flag;
 
-	vector<CCopyEntity *> *m_pvecpVisibleEntity;
+	std::vector<CCopyEntity *> *m_pvecpVisibleEntity;
 
 public:
 
@@ -40,7 +35,7 @@ public:
 	inline void SetCamera(CCamera *pCamera) { m_pCamera  = pCamera; }
 	inline CCamera *GetCamera() { return m_pCamera; }
 
-	inline void SetBuffer( vector<CCopyEntity *>& rvecpVisibleEntity ) { m_pvecpVisibleEntity = &rvecpVisibleEntity; }
+	inline void SetBuffer( std::vector<CCopyEntity *>& rvecpVisibleEntity ) { m_pvecpVisibleEntity = &rvecpVisibleEntity; }
 
 	inline int GetNumVisibleEntities() { return (int)m_pvecpVisibleEntity->size(); }
 

@@ -89,7 +89,7 @@ protected:
 
 	int m_FireTargetIndex;
 
-	vector<CCopyEntity *> m_vecpVisibleEntity;
+	std::vector<CCopyEntity *> m_vecpVisibleEntity;
 
 	//----------------- used when m_LauncherType == TYPE_LOAD_AND_RELEASE
 
