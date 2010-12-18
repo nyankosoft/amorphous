@@ -76,6 +76,11 @@ inline void conv_to_x( const std::string& src, int& dest )
 	dest = atoi( src.c_str() );
 }
 
+inline void conv_to_x( const std::string& src, uint& dest )
+{
+	dest = (uint)atoi( src.c_str() );
+}
+
 inline void conv_to_x( const std::string& src, short& dest )
 {
 	dest = (short)atoi( src.c_str() );
@@ -123,10 +128,8 @@ public:
 	inline xercesc::DOMNode *GetTargetElementNode( const std::string& name );
 
 	/// get the text content of a child node
-	inline bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest );
-	inline bool GetChildElementTextContent( const std::string& child_element_path, float& dest );
-	inline bool GetChildElementTextContent( const std::string& child_element_path, double& dest );
-	inline bool GetChildElementTextContent( const std::string& child_element_path, int& dest );
+	template<typename T>
+	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest );
 	inline bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest );
 	inline bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest );
 	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest );
@@ -136,9 +139,8 @@ public:
 
 	/// get the text content of the current node
 	inline std::string GetTextContent() { std::string dest; GetTextContent(dest); return dest; }
-	inline bool GetTextContent( std::string& dest )         { return GetChildElementTextContent( "", dest ); }
-	inline bool GetTextContent( float& dest )               { return GetChildElementTextContent( "", dest ); }
-	inline bool GetTextContent( int& dest )                 { return GetChildElementTextContent( "", dest ); }
+	template<typename T>
+	inline bool GetTextContent( T& dest )                   { return GetChildElementTextContent( "", dest ); }
 	inline bool GetTextContentLTWH( SRect& dest )           { return GetChildElementTextContentLTWH( "", dest ); }
 	inline bool GetTextContentLTRB( SRect& dest )           { return GetChildElementTextContentLTRB( "", dest ); }
 	inline bool GetTextContentRGB( SFloatRGBColor& dest )   { return GetChildElementTextContentRGB( "", dest ); }
@@ -346,56 +348,19 @@ inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child
 
 }
 
-inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, std::string& text )
+
+template<typename T>
+inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, T& dest )
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
 	{
-		text = to_string(pNode->getTextContent());
+		conv_to_x( to_string(pNode->getTextContent()), dest );
 		return true;
 	}
 	else
 		return false;
 }
-
-inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, float& val )
-{
-	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
-	if( pNode )
-	{
-		sscanf( to_string(pNode->getTextContent()).c_str(), "%f", &val );
-		return true;
-	}
-	else
-		return false;
-}
-
-inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, double& val )
-{
-	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
-	if( pNode )
-	{
-		sscanf( to_string(pNode->getTextContent()).c_str(), "%f", &val );
-		return true;
-	}
-	else
-		return false;
-}
-
-
-inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, int& val )
-{
-	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
-	if( pNode )
-	{
-		sscanf( to_string(pNode->getTextContent()).c_str(), "%d", &val );
-		return true;
-	}
-	else
-		return false;
-}
-
-
 
 /*
 template<class T>
