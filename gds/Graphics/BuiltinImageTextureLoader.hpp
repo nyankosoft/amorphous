@@ -37,6 +37,8 @@ public:
 			return;
 		}
 
+		img.FlipVertical();
+
 		for( int y=0; y<h; y++ )
 		{
 			for( int x=0; x<w; x++ )
