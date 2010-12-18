@@ -107,7 +107,6 @@ void CItemDatabaseBuilder::LoadAmmunition( CTextFileScanner& scanner, CGI_Ammuni
 
 	scanner.TryScanLine( "muzzle_speed",	pAmmo->m_fMuzzleSpeed );
 	scanner.TryScanLine( "power",			pAmmo->m_fPower );
-	scanner.TryScanLine( "num_pellets",		pAmmo->m_iNumPellets );
 	scanner.TryScanLine( "ammo_type",		pAmmo->m_strAmmoType );
 	scanner.TryScanLine( "caliber",			pAmmo->m_strAmmoType );
 	if( scanner.TryScanLine( "ammo_entity", str ) )
@@ -514,7 +513,9 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string&
 
 int CItemDatabaseBuilder::GetItemID( const string& class_name )
 {
-	if( class_name == "Firearm" )                return CGameItem::ID_WEAPON;
+	if( class_name == "Cartridge" )              return CGameItem::ID_CARTRIDGE;
+	else if( class_name == "Magazine" )          return CGameItem::ID_MAGAZINE;
+	else if( class_name == "Firearm" )           return CGameItem::ID_FIREARM;
 	else if( class_name == "Ammunition" )        return CGameItem::ID_AMMUNITION;
 	else if( class_name == "GravityGun" )        return CGameItem::ID_GRAVITY_GUN;
 	else if( class_name == "Binocular" )         return CGameItem::ID_BINOCULAR;
@@ -528,7 +529,6 @@ int CItemDatabaseBuilder::GetItemID( const string& class_name )
 	else if( class_name == "RotatableTurret" )   return CGameItem::ID_ROTATABLE_TURRET;
 	else if( class_name == "LandVehicle" )       return CGameItem::ID_LAND_VEHICLE;
 	else if( class_name == "ArmedVehicle" )      return CGameItem::ID_ARMED_VEHICLE;
-//	else if( class_name == "Firearm" )           return CGameItem::ID_FIREARM;
 
 	else
 	{

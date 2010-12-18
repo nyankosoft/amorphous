@@ -10,6 +10,8 @@
 #include "Radar.hpp"
 #include "LandVehicle.hpp"
 #include "RotatableTurret.hpp"
+#include "Cartridge.hpp"
+#include "Magazine.hpp"
 #include "Firearm.hpp"
 #include "Clothing.hpp"
 
@@ -35,6 +37,8 @@ CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
 	case CGameItem::ID_ROTATABLE_TURRET: return new CRotatableTurret;
 	case CGameItem::ID_LAND_VEHICLE:	 return new CLandVehicle;
 	case CGameItem::ID_ARMED_VEHICLE:	 return new CArmedVehicle;
+	case CGameItem::ID_CARTRIDGE:        return new CCartridge;
+	case CGameItem::ID_MAGAZINE:         return new CMagazine;
 	case CGameItem::ID_FIREARM:          return new CFirearm;
 	case CGameItem::ID_CLOTHING:         return new CClothing;
 //	case CGameItem::ID_:				return new CGI_;

@@ -1179,6 +1179,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\GameCommon\Caliber.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\GameCommon\ClothSystem.cpp"
 					>
 				</File>
@@ -1579,6 +1583,14 @@
 				Name="Item"
 				>
 				<File
+					RelativePath="..\..\gds\Item\Cartridge.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\Cartridge.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Item\Clothing.cpp"
 					>
 				</File>
@@ -1688,6 +1700,14 @@
 				</File>
 				<File
 					RelativePath="..\..\gds\Item\LandVehicle.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\Magazine.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\Magazine.hpp"
 					>
 				</File>
 				<File

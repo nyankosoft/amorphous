@@ -1,57 +1,19 @@
 #ifndef  __GameItem_Firearm_HPP__
 #define  __GameItem_Firearm_HPP__
 
+#include "../GameCommon/Caliber.hpp"
 #include "GI_Weapon.hpp"
 
 class CWeaponSystem;
 struct SWeaponSlot;
+class CGI_Ammunition;
+class CCartridge;
+class CMagazine;
 
 
 //======================================================================================
 // CFirearm
 //======================================================================================
-
-
-class CartridgeType
-{
-public:
-	enum Name
-	{
-		// handgun cartridges
-		_22LR,              ///< .22 Long Rifle
-		_9MM,               ///< 9x19mm Luger Parabellum
-		_25_ACP,            ///< .25 ACP
-		_380_ACP,           ///< .380 ACP
-		_45_ACP,            ///< .45 ACP
-		_40_SW,             ///< .40 S&W (10x22mm)
-		_357_MAGNUM,        ///< .357 Magnum
-		_45_COLT,           ///< .45 Colt
-		_44_MAGNUM,         ///< .44 Magnum
-		_50_AE,             ///< .50 Action Express
-
-		// shotgun cartridges
-		_410_BORE,          ///< .410 bore
-		_20_GAUGE,          ///< 20 gauge shotgun shell
-		_12_GAUGE,          ///< 12 gauge shotgun shell
-
-		// rifle cartridges
-		_5_7X28,            ///< 5.7x28mm
-		_5_56X45,           ///< 5.56x45mm
-		_7_62X51,           ///< 7.62x51mm
-//		_380_WINCHESTER,    ///< 
-		_30_60_SPRINGFIELD, ///< .30-06 Springfield
-		_50BMG,             ///< .50 BMG
-//		_12_7X99,           ///<
-		_7_62X39,           ///< 7.62x39mm
-		_7_62X54R,          ///< 7.62x54mmR
-
-		_25MM,
-		_30MM,
-
-		OTHER,
-		NUM_CARTRIDGE_TYPES
-	};
-};
 
 
 /**
@@ -61,11 +23,25 @@ class CFirearm : public CGI_Weapon
 {
 protected:
 
-	CartridgeType::Name m_PrimaryCartridge;
+	Caliber::Name m_PrimaryCaliber;
 
-	std::vector<CartridgeType::Name> m_Cartridges;
+	std::vector<Caliber::Name> m_Calibers;
 
 	int m_StandardMagazineCapacity;
+
+	boost::shared_ptr<CCartridge> m_pChamberedCartridge;
+
+	boost::shared_ptr<CMagazine> m_pMagazine;
+
+	enum FirearmState
+	{
+		FS_SLIDE_FORWARD,
+		FS_SLIDE_MOVING_FORWARD,
+		FS_SLIDE_OPEN,
+		NUM_FIREARM_STATES
+	};
+
+	FirearmState m_FirearmState;
 
 //	SWeaponSlot *m_pWeaponSlot;
 
@@ -143,10 +119,6 @@ public:
 //							            const Vector3& rvShooterVelocity,
 //										const Vector3& rvShooterAngVelocity );
 
-//	int GetWeaponState() const { return m_WeaponState; }
-
-//	void SetWeaponState( int state ) { m_WeaponState = state; }
-
 	/// return true if selected as either primary or secondary weapon in weapon system
 //	bool IsWeaponSelected() { return ( GetWeaponState() == STATE_SELECTED_AS_PRIMARY_WEAPON || GetWeaponState() == STATE_SELECTED_AS_SECONDARY_WEAPON ); }
 
@@ -172,6 +144,14 @@ public:
 	/// missile lauchner needs to unload the loaded missiles
 	/// since those loaded missiles are held as entity pointers
 	virtual void Disarm() {}
+
+	void UpdateFirearmState( CStage& stage );
+
+	void ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine );
+
+	bool IsSlideOpen() const { return false; }
+
+	void FeedNextCartridge();
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_FIREARM; }
 

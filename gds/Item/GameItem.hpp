@@ -191,6 +191,8 @@ public:
 	enum eID
 	{
 		ID_AMMUNITION = 0,
+		ID_CARTRIDGE,
+		ID_MAGAZINE,
 		ID_WEAPON,
 		ID_FIREARM,
 		ID_CLOTHING,

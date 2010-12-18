@@ -1,6 +1,7 @@
 #include "Firearm.hpp"
-#include "GI_Ammunition.hpp"
 #include "WeaponSystem.hpp"
+#include "Cartridge.hpp"
+#include "Magazine.hpp"
 
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/3DGameMath.hpp"
@@ -25,31 +26,14 @@ using namespace std;
 
 CFirearm::CFirearm()
 :
-m_PrimaryCartridge( CartridgeType::OTHER ),
+m_PrimaryCaliber( Caliber::OTHER ),
 m_StandardMagazineCapacity( 1 ),
-m_fGrouping( 0.0f )
+m_fGrouping( 0.0f ),
+m_FirearmState( FS_SLIDE_FORWARD )
 {
 	m_TypeFlag |= (TYPE_WEAPON);
 
-/*	m_pWeaponSlot = NULL;
-
-	m_fFireInterval = 0.2f;
-
-	m_fMuzzleSpeedFactor = 1.0f;
-
-	m_vLocalRecoilForce = Vector3(0,0,-5);
-
-	// fire mode is set to full-auto by default
-	m_iNumBursts = ~( 1 << (sizeof(int)*8-1) );	// a large value
-
-	m_dLastFireTime = 0;
-
-	m_iCurrentBurstCount = 0;
-
-	m_aTriggerState[0] = m_aTriggerState[1] = 0;
-
-	m_WeaponState = 0;
-
+/*
 //	m_fBurstInterval = 1.0f;
 
 	m_MuzzleEndLocalPose.Identity();
@@ -64,6 +48,86 @@ m_fGrouping( 0.0f )
 
 void CFirearm::Update( float dt )
 {
+	CStageSharedPtr pStage = m_pStage.lock();
+	if( !pStage )
+		return;
+
+	UpdateFirearmState( *pStage );
+}
+
+
+void CFirearm::UpdateFirearmState( CStage& stage )
+{
+	switch( m_FirearmState )
+	{
+	case FS_SLIDE_FORWARD:
+		break;
+
+	case FS_SLIDE_MOVING_FORWARD:
+		{
+			const double slide_back_to_forward_time = 0.05;
+
+			double dCurrentTime = stage.GetElapsedTime();
+			double dTimeSinceLastFire = dCurrentTime - m_dLastFireTime;
+			if( slide_back_to_forward_time < dTimeSinceLastFire )
+				m_FirearmState = FS_SLIDE_FORWARD;
+		}
+		break;
+
+	case FS_SLIDE_OPEN:
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+void CFirearm::ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine )
+{
+	if( m_PrimaryCaliber != pNewMagazine->GetCaliber() )
+		return;
+
+	m_pMagazine = pNewMagazine;
+}
+
+
+/// If the firearm is in a hold open state, close the slide.
+/// If the slide is in the forward position, pull the slide
+void CFirearm::FeedNextCartridge()
+{
+	if( IsSlideOpen() )
+	{
+//		CloseSlide();
+		if( m_pMagazine )
+		{
+			if( m_pMagazine->IsEmpty() )
+				return;
+			else
+				m_pChamberedCartridge = m_pMagazine->TakeNextCartridge();
+		}
+	}
+	else
+	{
+		// Empty the chamber is the round is in it.
+//		ExtractCartridge();
+		if( m_pChamberedCartridge )
+		{
+			// TODO: create an entity to display the extracted cartridge
+
+			m_pChamberedCartridge->ReduceLoadedQuantity( 1 );
+			m_pChamberedCartridge.reset();
+		}
+
+		if( m_pMagazine )
+		{
+			if( m_pMagazine->IsEmpty() )
+				return;
+//				SlideHoldOpen();
+			else
+				m_pChamberedCartridge = m_pMagazine->TakeNextCartridge();
+		}
+	}
 }
 
 
@@ -71,10 +135,11 @@ void CFirearm::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGI_Weapon::Serialize( ar, version );
 
-//	ar & m_strAmmoType;
+	ar & (uint&)m_PrimaryCaliber;
 
 	/* weapon data */
 //	ar & m_fFireInterval;
+	ar & m_StandardMagazineCapacity;
 	ar & m_fGrouping;	// grouping in 10[m]
 //	ar & m_fMuzzleSpeedFactor;
 
@@ -96,7 +161,6 @@ void CFirearm::Serialize( IArchive& ar, const unsigned int version )
 		m_dLastFireTime = 0;
 		m_iCurrentBurstCount = 0;
 		m_aTriggerState[0] = m_aTriggerState[1] = 0;
-		m_WeaponState = 0;
 
 		//m_MuzzleEndWorldPose = m_MuzzleEndLocalPose;
 		//m_vMuzzleEndVelocity = Vector3(0,0,0);
@@ -109,7 +173,8 @@ void CFirearm::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGI_Weapon::LoadFromXMLNode( reader );
 
-//	reader.GetChildElementTextContent( "AmmoType",                 m_strAmmoType );
+	m_PrimaryCaliber = GetCaliberFromName( reader.GetChild( "Caliber" ).GetTextContent().c_str() );
+
 //	reader.GetChildElementTextContent( "FireInterval",             m_fFireInterval );
 	reader.GetChildElementTextContent( "StandardMagazineCapacity", m_StandardMagazineCapacity );
 	reader.GetChildElementTextContent( "Grouping",                 m_fGrouping ); // grouping in 10[m]
@@ -215,16 +280,15 @@ void CFirearm::Fire()
 	if( !pStage )
 		return;
 
-	if( !m_pWeaponSlot )
-		return;
+	UpdateFirearmState( *pStage );
 
-	if( !m_pWeaponSlot->pChargedAmmo )
-		return;		// ammo is not loaded
+	if( m_FirearmState != FS_SLIDE_FORWARD )
+		return; // The slide is not in the forward position: not ready to fire.
 
-	CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
+	if( !m_pChamberedCartridge )
+		return; // no round in the chamber
 
-	if( rCurrentAmmo.GetCurrentQuantity() == 0 )
-		return;	// out of ammo
+	CCartridge& cartridge = *m_pChamberedCartridge;
 
 	// TODO: use a large integer for current time
 	double dCurrentTime = pStage->GetElapsedTime();
@@ -258,10 +322,15 @@ void CFirearm::Fire()
 
 	bullet_entity.SetWorldPosition( rvMuzzleEndPosition );
 
-	for(int i=0; i<rCurrentAmmo.GetNumPellets(); i++)
+	// set group for the bullet
+	// e.g.) projectile fired by the player is marked as 'CE_GROUP_PLAYER_PROJECTILE'
+	// this is used to avoid hitting the shooter
+	bullet_entity.sGroupID = m_pWeaponSlot ? m_pWeaponSlot->ProjectileGroup : 0;
+
+	for( uint i=0; i<cartridge.GetNumPellets(); i++ )
 	{
 		// set pointer to the base entity which serves as the bullet of this weapon
-		bullet_entity.pBaseEntityHandle = &rCurrentAmmo.GetBaseEntityHandle();
+		bullet_entity.pBaseEntityHandle = &cartridge.GetBaseEntityHandle();
 
 /*		vFireDirection = rvMuzzleDirection
 					   + rvMuzzleDir_Right * m_fGrouping / 10.0f * RangedRand( -0.5f, 0.5f )
@@ -282,26 +351,40 @@ void CFirearm::Fire()
 		bullet_entity.SetWorldOrient( CreateOrientFromFwdDir(vFireDirection) );
 
 		bullet_entity.vVelocity
-			= vFireDirection * rCurrentAmmo.GetMuzzleSpeed() * m_fMuzzleSpeedFactor
+			= vFireDirection * cartridge.GetMuzzleSpeed() * m_fMuzzleSpeedFactor
 			+ m_vMuzzleEndVelocity;
 
-		// set group for the bullet
-		// e.g.) projectile fired by the player is marked as 'CE_GROUP_PLAYER_PROJECTILE'
-		// this is used to avoid hitting the shooter
-		bullet_entity.sGroupID = m_pWeaponSlot->ProjectileGroup;
-
 		pStage->CreateEntity( bullet_entity );
-
-		// create muzzle flash
-		CCopyEntityDesc& rMuzzleFlashDesc = bullet_entity;	// reuse the desc object 
-		rMuzzleFlashDesc.pBaseEntityHandle = &rCurrentAmmo.GetMuzzleFlashHandle();
-		rMuzzleFlashDesc.vVelocity = m_vMuzzleEndVelocity * 0.8f; // Vector3(0,0,0);
-		pStage->CreateEntity( rMuzzleFlashDesc );
-
 	}
 
+	// create muzzle flash
+	CCopyEntityDesc& rMuzzleFlashDesc = bullet_entity;	// reuse the desc object 
+	rMuzzleFlashDesc.pBaseEntityHandle = &cartridge.GetMuzzleFlashHandle();
+	rMuzzleFlashDesc.vVelocity = m_vMuzzleEndVelocity * 0.8f; // Vector3(0,0,0);
+	pStage->CreateEntity( rMuzzleFlashDesc );
 
-	rCurrentAmmo.ReduceQuantity( 1 );
+	// A bullet has been fired: feed the next round
+
+	m_pChamberedCartridge->ReduceLoadedQuantity( 1 );
+	m_pChamberedCartridge.reset();
+
+	// m_pChamberedCartridge has been reset. Do not touch 'cartridge' after this
+
+	if( m_pMagazine )
+	{
+		if( m_pMagazine->IsEmpty() )
+		{
+			m_FirearmState = FS_SLIDE_OPEN;
+		}
+		else
+		{
+			m_pChamberedCartridge = m_pMagazine->TakeNextCartridge();
+		}
+	}
+	else
+	{ 
+		m_FirearmState = FS_SLIDE_MOVING_FORWARD;
+	}
 
 	// recoil effect
 	SGameMessage msg;

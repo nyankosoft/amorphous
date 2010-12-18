@@ -10,11 +10,14 @@ using namespace std;
 //======================================================================================
 
 CGI_Ammunition::CGI_Ammunition()
+:
+m_NumLoaded(0),
+m_fMuzzleSpeed(100.0f),
+m_fPower(1.0f),
+m_fRange(100000.0f)
 {
 	m_MuzzleFlashBaseEntity.SetBaseEntityName( "mflsh" );
 	m_TypeFlag |= (TYPE_AMMO);
-	m_iNumPellets = 1;
-	m_fRange = 100000.0f;
 }
 
 
@@ -24,7 +27,7 @@ void CGI_Ammunition::SetData( char* pcAmmoType, float fMuzzleSpeed, float fPower
 	m_strAmmoType  = pcAmmoType;
 	m_fMuzzleSpeed = fMuzzleSpeed;
 	m_fPower       = fPower;
-	m_iNumPellets  = iNumPellets;
+//	m_iNumPellets  = iNumPellets;
 	m_AmmoBaseEntity.SetBaseEntityName( pcBaseEntityName );
 }
 
@@ -37,7 +40,6 @@ void CGI_Ammunition::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_fMuzzleSpeed;
 	ar & m_fPower;
-	ar & m_iNumPellets;
 
 	ar & m_fRange;
 
@@ -64,7 +66,6 @@ void CGI_Ammunition::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "MuzzleSpeed",           m_fMuzzleSpeed );
 	reader.GetChildElementTextContent( "Power",                 m_fPower );
 	reader.GetChildElementTextContent( "Range",                 m_fRange );
-	reader.GetChildElementTextContent( "NumPellets",            m_iNumPellets );
 
 	string ammo_base_entity_name;
 	reader.GetChildElementTextContent( "AmmoBaseEntity",        ammo_base_entity_name );
