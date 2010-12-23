@@ -134,6 +134,10 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 	pSkybox->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pSkybox );
 
+	CBE_Bullet *pBullet = CreateBaseEntity<CBE_Bullet>( CBaseEntity::BE_BULLET );
+	pBullet->m_strName = "__DefaultBullet__";
+	pBullet->m_BoundingVolumeType = BVTYPE_DOT;
+	pBaseEntities.push_back( pBullet );
 
 	CBE_IndividualEntity *pAlphaEntityBase = CreateBaseEntity<CBE_IndividualEntity>( CBaseEntity::BE_INDIVIDUALENTITY );
 	pAlphaEntityBase->m_strName = "AlphaEntityBase";
