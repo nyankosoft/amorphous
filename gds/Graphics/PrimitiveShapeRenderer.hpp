@@ -6,11 +6,14 @@
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/FloatRGBAColor.hpp"
+#include "gds/Graphics/Mesh/CustomMesh.hpp"
 
 
 class CPrimitiveShapeRenderer
 {
 	CShaderHandle m_Shader; ///< default: fixed function pipeline manager
+
+	static CCustomMesh ms_BoxMesh;
 
 public:
 

@@ -2,6 +2,7 @@
 #include "Shader/FixedFunctionPipelineManager.hpp"
 #include "Shader/ShaderManager.hpp"
 #include "TextureHandle.hpp"
+#include "MeshGenerators.hpp"
 #include "3DRect.hpp"
 
 using namespace std;
@@ -24,6 +25,9 @@ CTextureHandle CreateSingleColorTexture( uint size_x = 1, uint size_y = 1, const
 
 
 
+CCustomMesh CPrimitiveShapeRenderer::ms_BoxMesh;
+
+
 CPrimitiveShapeRenderer::CPrimitiveShapeRenderer()
 {
 //	CShaderResourceDesc desc;
@@ -39,6 +43,20 @@ void CPrimitiveShapeRenderer::RenderSphere( const Sphere& sphere, const SFloatRG
 
 void CPrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& color )
 {
+	CShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
+
+	Vector3 s( vEdgeLengths );
+	shader_mgr.SetWorldTransform( ToMatrix44(world_pose) * Matrix44Scaling(s.x,s.y,s.z) );
+
+	if( ms_BoxMesh.GetNumVertices() == 0 )
+	{
+		CBoxMeshGenerator generator;
+		generator.Generate( Vector3(1,1,1), CMeshGenerator::DEFAULT_VERTEX_FLAGS, color );
+		C3DMeshModelArchive mesh_archive( generator.GetMeshArchive() );
+		bool loaded = ms_BoxMesh.LoadFromArchive( mesh_archive );
+	}
+
+	ms_BoxMesh.Render();
 }
 
 
