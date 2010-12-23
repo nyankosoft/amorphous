@@ -3,7 +3,6 @@
 
 
 #include <string>
-#include "../Support/shared_ptr.hpp"
 #include <boost/weak_ptr.hpp>
 #include <boost/thread.hpp>
 #include "fwd.hpp"
