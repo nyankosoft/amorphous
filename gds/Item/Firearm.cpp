@@ -85,10 +85,27 @@ void CFirearm::UpdateFirearmState( CStage& stage )
 
 void CFirearm::ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine )
 {
+	if( !pNewMagazine )
+		return;
+
 	if( m_PrimaryCaliber != pNewMagazine->GetCaliber() )
 		return;
 
+	if( m_pMagazine )
+		m_pMagazine->SetInserted( false );
+
 	m_pMagazine = pNewMagazine;
+
+	m_pMagazine->SetInserted( true );
+}
+
+
+bool CFirearm::IsSlideOpen() const
+{
+	if( m_FirearmState == FS_SLIDE_OPEN )
+		return true;
+	else
+		return false;
 }
 
 
@@ -131,6 +148,18 @@ void CFirearm::FeedNextCartridge()
 }
 
 
+bool CFirearm::IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazine ) const
+{
+	for( size_t i=0; i<m_ComplientMagazineNames.size(); i++ )
+	{
+		if( m_ComplientMagazineNames[i] == pMagazine->GetName() )
+			return true;
+	}
+
+	return false;
+}
+
+
 void CFirearm::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGI_Weapon::Serialize( ar, version );
@@ -141,6 +170,7 @@ void CFirearm::Serialize( IArchive& ar, const unsigned int version )
 //	ar & m_fFireInterval;
 	ar & m_StandardMagazineCapacity;
 	ar & m_fGrouping;	// grouping in 10[m]
+	ar & m_ComplientMagazineNames;
 //	ar & m_fMuzzleSpeedFactor;
 
 //	ar & m_vLocalRecoilForce;
@@ -180,6 +210,12 @@ void CFirearm::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "Grouping",                 m_fGrouping ); // grouping in 10[m]
 //	reader.GetChildElementTextContent( "MuzzleSpeedFactor",        m_fMuzzleSpeedFactor );
 //	reader.GetChildElementTextContent( "LocalRecoilForce",         m_vLocalRecoilForce );
+
+	vector<CXMLNodeReader> mags = reader.GetChild( "CompliantMagazines" ).GetImmediateChildren( "Magazine" );
+	m_ComplientMagazineNames.resize( mags.size() );
+	for( size_t i=0; i<mags.size(); i++ )
+		m_ComplientMagazineNames[i] = mags[i].GetTextContent();
+
 
 /*	string fire_sound_name;
 	reader.GetChildElementTextContent( "FireSound",          fire_sound_name );
@@ -306,8 +342,15 @@ void CFirearm::Fire()
 
 	// ------------------ new fire ------------------
 
-	const Vector3& rvMuzzleEndPosition	= m_MuzzleEndWorldPose.vPosition;
-	const Matrix33& matMuzzleOrient		= m_MuzzleEndWorldPose.matOrient;
+	Matrix34 muzzle_end_world_pose( Matrix34Identity() );
+	boost::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
+	if( pEntity )
+		muzzle_end_world_pose = pEntity->GetWorldPose() * m_MuzzleEndLocalPose;
+	else
+		muzzle_end_world_pose = m_MuzzleEndWorldPose;
+
+	const Vector3& rvMuzzleEndPosition	= muzzle_end_world_pose.vPosition;
+	const Matrix33& matMuzzleOrient		= muzzle_end_world_pose.matOrient;
 	const Vector3& rvMuzzleDir_Right	= matMuzzleOrient.GetColumn(0);
 	const Vector3& rvMuzzleDir_Up		= matMuzzleOrient.GetColumn(1);
 	const Vector3& rvMuzzleDirection	= matMuzzleOrient.GetColumn(2);
@@ -358,10 +401,14 @@ void CFirearm::Fire()
 	}
 
 	// create muzzle flash
-	CCopyEntityDesc& rMuzzleFlashDesc = bullet_entity;	// reuse the desc object 
-	rMuzzleFlashDesc.pBaseEntityHandle = &cartridge.GetMuzzleFlashHandle();
-	rMuzzleFlashDesc.vVelocity = m_vMuzzleEndVelocity * 0.8f; // Vector3(0,0,0);
-	pStage->CreateEntity( rMuzzleFlashDesc );
+	if( cartridge.GetMuzzleFlashHandle().GetBaseEntityName()
+	 && 0 < strlen(cartridge.GetMuzzleFlashHandle().GetBaseEntityName()) )
+	{
+		CCopyEntityDesc& rMuzzleFlashDesc = bullet_entity;	// reuse the desc object 
+		rMuzzleFlashDesc.pBaseEntityHandle = &cartridge.GetMuzzleFlashHandle();
+		rMuzzleFlashDesc.vVelocity = m_vMuzzleEndVelocity * 0.8f; // Vector3(0,0,0);
+		pStage->CreateEntity( rMuzzleFlashDesc );
+	}
 
 	// A bullet has been fired: feed the next round
 

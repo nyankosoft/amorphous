@@ -17,17 +17,22 @@ class CMagazine : public CGameItem
 
 	std::stack< boost::shared_ptr<CCartridge> > m_pLoadedCartridges;
 
+	bool m_IsInserted; ///< true if the magazine is currently in the gun
+
 public:
 
 	CMagazine()
 		:
 	m_Caliber(Caliber::OTHER),
-	m_Capacity(0)
+	m_Capacity(0),
+	m_IsInserted(false)
 	{}
 
 	~CMagazine() {}
 
 	Caliber::Name GetCaliber() const { return m_Caliber; }
+
+	uint GetCapacity() const { return m_Capacity; }
 
 	bool IsEmpty() const { return m_pLoadedCartridges.empty(); }
 
@@ -48,6 +53,10 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+
+	void SetInserted( bool inserted ) { m_IsInserted = inserted; }
+
+	bool IsInserted() const { return m_IsInserted; }
 };
 
 

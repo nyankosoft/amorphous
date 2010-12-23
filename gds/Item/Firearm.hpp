@@ -33,6 +33,8 @@ protected:
 
 	boost::shared_ptr<CMagazine> m_pMagazine;
 
+	std::vector<std::string> m_ComplientMagazineNames;
+
 	enum FirearmState
 	{
 		FS_SLIDE_FORWARD,
@@ -149,9 +151,17 @@ public:
 
 	void ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine );
 
-	bool IsSlideOpen() const { return false; }
+	boost::shared_ptr<CMagazine> DropMagazine() { boost::shared_ptr<CMagazine> pMag = m_pMagazine; m_pMagazine.reset(); return pMag; }
+
+	const boost::shared_ptr<CMagazine> GetMagazine() const { return m_pMagazine; }
+
+	bool IsSlideOpen() const;
+
+	bool IsCartridgeChambered() const { return m_pChamberedCartridge ? true : false; }
 
 	void FeedNextCartridge();
+
+	bool IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazine ) const;
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_FIREARM; }
 
