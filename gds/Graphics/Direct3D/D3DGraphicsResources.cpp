@@ -61,6 +61,8 @@ public:
 
 	bool IsValid() const { return (m_pBits != NULL); }
 
+	void GetPixel( int x, int y, SFloatRGBAColor& dest ) { U32 argb = ((U32 *)m_pBits)[ y * m_Width + x ]; dest.SetARGB32( argb ); }
+
 	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) { ((U32 *)m_pBits)[ y * m_Width + x ] = argb_color; }
 
 	/// \param alpha [0,255]

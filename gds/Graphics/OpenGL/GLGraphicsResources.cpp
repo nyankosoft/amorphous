@@ -33,6 +33,18 @@ public:
 
 	bool IsValid() const { return (m_pImage && 0 < m_pImage->GetWidth() && 0 < m_pImage->GetHeight()); }
 
+	void GetPixel( int x, int y, SFloatRGBAColor& dest )
+	{
+		U8 r=0, g=0, b=0, a=255;
+		m_pImage->GetPixel( x, y, r, g, b, a );
+		dest.SetRGBA(
+			(float)r/255.0f,
+			(float)g/255.0f,
+			(float)b/255.0f,
+			(float)a/255.0f
+			);
+	}
+
 	void SetPixelARGB32( int x, int y, U32 argb_color )
 	{
 		SFloatRGBAColor color;

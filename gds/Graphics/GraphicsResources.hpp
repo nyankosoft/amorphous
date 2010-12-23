@@ -59,6 +59,8 @@ public:
 
 	virtual bool IsValid() const  = 0;
 
+	virtual void GetPixel( int x, int y, SFloatRGBAColor& dest ) = 0;
+
 	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) = 0;
 
 	/// \param alpha [0,255]
