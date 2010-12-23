@@ -1,9 +1,6 @@
 #include "GraphicsResourceHandle.hpp"
 #include "GraphicsResourceEntries.hpp"
 
-//#include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/Serialization.hpp"
-
 using namespace std;
 using namespace boost;
 
