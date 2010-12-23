@@ -1414,6 +1414,14 @@
 							RelativePath="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.hpp"
 							>
 						</File>
+						<File
+							RelativePath="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.hpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
