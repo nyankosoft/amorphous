@@ -136,6 +136,8 @@ public:
 
 	virtual void SetShadowColor( const SFloatRGBAColor& shadow_color ) {}
 
+	virtual void SetItalic( float italic_weight ) {}
+
 	virtual int GetFontType() const = 0;
 };
 
