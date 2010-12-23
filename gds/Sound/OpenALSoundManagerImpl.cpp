@@ -183,7 +183,7 @@ bool COpenALSoundManagerImpl::Init()
 
 	// start the thread for sound manager
 	ThreadStarter starter(this);
-	m_pThread = shared_ptr<thread>( new thread(starter) );
+	m_pThread.reset( new thread(starter) );
 
 	return true;
 }

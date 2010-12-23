@@ -7,8 +7,9 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include <boost/foreach.hpp>
 
-
-using namespace std;
+using std::string;
+using std::vector;
+using std::map;
 using namespace boost;
 
 
@@ -588,7 +589,7 @@ void CMeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 	m_vecpContainerRenderMethod.resize( vecReader.size() );
 	for( size_t i=0; i<vecReader.size(); i++ )
 	{
-		m_vecpContainerRenderMethod[i] = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
+		m_vecpContainerRenderMethod[i].reset( new CMeshContainerRenderMethod() );
 		m_vecpContainerRenderMethod[i]->LoadFromXMLNode( vecReader[i] );
 	}
 
@@ -596,7 +597,7 @@ void CMeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 	m_vecpChild.resize( vecChild.size() );
 	for( size_t i=0; i<vecChild.size(); i++ )
 	{
-		m_vecpChild[i] = shared_ptr<CMeshContainerNodeRenderMethod>( new CMeshContainerNodeRenderMethod() ); 
+		m_vecpChild[i].reset( new CMeshContainerNodeRenderMethod() ); 
 		m_vecpChild[i]->LoadFromXMLNode( vecChild[i] );
 	}
 }

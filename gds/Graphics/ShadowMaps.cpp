@@ -15,7 +15,7 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ParamLoader.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 

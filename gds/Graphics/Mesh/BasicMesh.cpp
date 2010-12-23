@@ -17,7 +17,7 @@ void SetSingleColorTextureDesc( CTextureResourceDesc& desc,
 	desc.Width  = tex_width;
 	desc.Height = tex_height;
 	desc.Format = TextureFormat::A8R8G8B8;
-	desc.pLoader = shared_ptr<CTextureFillingAlgorithm>( new CSignleColorTextureFilling(SFloatRGBAColor::White()) );
+	desc.pLoader.reset( new CSignleColorTextureFilling(SFloatRGBAColor::White()) );
 }
 
 
@@ -136,9 +136,7 @@ Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive,
 			{
 				CTextureResourceDesc& current_desc = m_vecMaterial[i].TextureDesc[tex];
 
-				current_desc.pLoader
-					= shared_ptr<CSignleColorTextureFilling>(
-					new CSignleColorTextureFilling( texture_archive.vecfTexelData(0,0) ) );
+				current_desc.pLoader.reset( new CSignleColorTextureFilling( texture_archive.vecfTexelData(0,0) ) );
 
 				current_desc.Width  = texture_archive.vecfTexelData.size_x();
 				current_desc.Height = texture_archive.vecfTexelData.size_y();
@@ -269,5 +267,5 @@ public:
 CBasicMesh::CBasicMesh()
 {
 	CMeshImpl *pImpl = MeshImplFactory()->CreateBasicMeshImpl();
-	m_pImpl = shared_ptr<CMeshImpl>( pImpl );
+	m_pImpl.reset( pImpl );
 }

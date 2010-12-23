@@ -12,8 +12,7 @@ using namespace boost;
 
 boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath )
 {
-	boost::shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator
-		= shared_ptr<CBoxMeshGenerator>( new CBoxMeshGenerator );
+	boost::shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
 
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
@@ -51,7 +50,7 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 	// Commented out: don't change the "CullingMode::CLOCKWISE" mode when rendering the scene for a planar reflection texture.
 //	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
-	shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+	boost::shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
 	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 

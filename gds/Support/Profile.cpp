@@ -20,7 +20,6 @@
 #include "Support/Timer.hpp"
 
 using namespace std;
-using namespace boost;
 
 
 // TODO: move this to some "win32 platform" module
@@ -80,7 +79,7 @@ static bool g_ProfileRequestedState = true;
 
 static vector<string> g_vecstrProfileText;
 
-static shared_ptr<CProfileTimer> g_pTimer;
+static boost::shared_ptr<CProfileTimer> g_pTimer;
 
 
 vector<string>& GetProfileText()
@@ -116,7 +115,7 @@ static float GetExactTime()
 	static int s_TimerInitialized = 0;
 	if( !s_TimerInitialized )
 	{
-		g_pTimer = shared_ptr<CProfileTimer>( new CProfileTimer_Win32() );
+		g_pTimer.reset( new CProfileTimer_Win32() );
 		s_TimerInitialized = 1;
 	}
 

@@ -8,7 +8,8 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 

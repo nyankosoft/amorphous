@@ -3,7 +3,6 @@
 #include "../base.hpp"
 #include <boost/thread/xtime.hpp>
 
-using namespace std;
 using namespace boost;
 
 

@@ -5,9 +5,8 @@
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/ShaderHandle.hpp"
 
-
-using namespace std;
-using namespace boost;
+using std::list;
+using boost::shared_ptr;
 
 
 CResourceLoadingState::CResourceLoadingState()

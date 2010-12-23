@@ -178,14 +178,14 @@ bool CVarianceShadowMapManager::Init()
 
 	bool initialized = false;
 
-	m_pHBlurredShadowMap = shared_ptr<CTextureRenderTarget>( new CTextureRenderTarget() );
+	m_pHBlurredShadowMap = CTextureRenderTarget::Create();
 
 	initialized = m_pHBlurredShadowMap->Init( desc );
 
 	if( !initialized )
 		return false;
 
-	m_pBlurredShadowMap  = shared_ptr<CTextureRenderTarget>( new CTextureRenderTarget() );
+	m_pBlurredShadowMap  = CTextureRenderTarget::Create();
 
 	initialized = m_pBlurredShadowMap->Init( desc );
 

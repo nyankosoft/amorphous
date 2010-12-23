@@ -7,7 +7,8 @@ using namespace Graphics;
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/UTF8/utf8.h"
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 typedef CTextureFont CASCIIFont;
@@ -291,7 +292,7 @@ bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector
 	if( !m_FontTexture.GetEntry() )
 		return false;
 
-	shared_ptr<CTextureResource> pTexture = m_FontTexture.GetEntry()->GetTextureResource();
+	boost::shared_ptr<CTextureResource> pTexture = m_FontTexture.GetEntry()->GetTextureResource();
 	if( !pTexture )
 		return false;
 
@@ -299,7 +300,7 @@ bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector
 	if( !locked )
 		return false;
 
-	shared_ptr<CLockedTexture> pLockedTexture;
+	boost::shared_ptr<CLockedTexture> pLockedTexture;
 	pTexture->GetLockedTexture( pLockedTexture );
 	if( !pLockedTexture )
 		return false;

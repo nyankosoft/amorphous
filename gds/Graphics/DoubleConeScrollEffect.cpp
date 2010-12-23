@@ -8,7 +8,7 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
-using namespace std;
+using std::vector;
 using namespace boost;
 
 

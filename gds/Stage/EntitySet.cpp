@@ -69,7 +69,7 @@ m_paEntityTree(NULL)
 	tree.m_NumNodes = 1;
 	tree.m_NumPlanes = 0;*/
 	SNode_f node;
-	node.aabb = AABB3( Vector3(-100,-100,-100), Vector3( 100, 100, 100) );
+	node.aabb = AABB3( Vector3(-1000000,-1000000,-1000000), Vector3( 1000000, 1000000, 1000000) );
 	node.sBackChild = -1;
 	node.sFrontChild = -1;
 	node.sCellIndex = 0;

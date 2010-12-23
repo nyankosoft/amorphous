@@ -206,7 +206,7 @@ bool CShapeDetector::IsConvex( const CGeneral3DMesh& src_mesh )
 {
 	bool is_not_sphere = false;
 
-	const shared_ptr< vector<CGeneral3DVertex> >& pVertBuffer = src_mesh.GetVertexBuffer();
+	const boost::shared_ptr< vector<CGeneral3DVertex> >& pVertBuffer = src_mesh.GetVertexBuffer();
 	if( !pVertBuffer )
 		return false;
 

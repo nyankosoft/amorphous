@@ -145,7 +145,7 @@ void CInputDevice::SetImplToForceFeedbackEffect( boost::shared_ptr<CForceFeedbac
 CInputDeviceHub::CInputDeviceHub()
 {
 	m_vecpGroup.resize( 1 );
-	m_vecpGroup.back() = shared_ptr<CInputDeviceGroup>( new CInputDeviceGroup() );
+	m_vecpGroup.back().reset( new CInputDeviceGroup() );
 }
 
 
@@ -185,7 +185,7 @@ void CInputDeviceHub::RegisterInputDeviceToGroup( CInputDevice *pDevice )
 
 		if( m_vecpGroup.size() == i )	
 		{
-			shared_ptr<CInputDeviceGroup> pGroup( new CInputDeviceGroup() );
+			boost::shared_ptr<CInputDeviceGroup> pGroup( new CInputDeviceGroup() );
 			m_vecpGroup.push_back( pGroup );
 			m_vecpGroup.back()->m_vecpDevice.push_back( pDevice );
 			pDevice->SetGroup( m_vecpGroup.back().get() );

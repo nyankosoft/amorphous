@@ -545,7 +545,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 		return false;
 	}
 
-	shared_ptr<CBitmapImage> pSrcImg = shared_ptr<CBitmapImage>( new CBitmapImage() );
+	boost::shared_ptr<CBitmapImage> pSrcImg( new CBitmapImage() );
 	if( !pSrcImg->LoadFromFile( src_tex_filename ) )
 	{
 		LOG_PRINT_ERROR( " - cannot load file: " + src_tex_filename );

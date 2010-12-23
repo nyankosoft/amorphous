@@ -3,7 +3,6 @@
 #include "SkeletalMesh.hpp"
 #include "CustomMesh.hpp"
 
-using namespace std;
 using namespace boost;
 
 
@@ -90,52 +89,3 @@ CBasicMesh* CMeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_a
 		return NULL;
 	}
 }
-
-
-
-#include "MeshFactory.hpp"
-#include "Graphics/OpenGL/Mesh/GLBasicMeshImpl.hpp"
-#include "Graphics/OpenGL/Mesh/GLProgressiveMeshImpl.hpp"
-#include "Graphics/OpenGL/Mesh/GLSkeletalMeshImpl.hpp"
-
-
-//class CMeshFactoryImpl_GL : public CMeshFactoryImpl
-class CGLMeshFactory : public CMeshFactory
-{
-public:
-
-//	boost::shared_ptr<CBasicMesh> CreateBasicMeshImpl()
-	boost::shared_ptr<CMeshImpl> CreateBasicMeshImpl()
-	{
-		shared_ptr<CGLBasicMeshImpl> pImpl( new CGLBasicMeshImpl );
-		return pImpl;
-//		shared_ptr<CBasicMesh> p( new CBasicMesh(pImpl) );
-//		return p;
-	}
-
-//	boost::shared_ptr<CProgressiveMesh> CreateProgressiveMeshImpl()
-	boost::shared_ptr<CMeshImpl> CreateProgressiveMeshImpl()
-	{
-		shared_ptr<CGLProgressiveMeshImpl> pImpl( new CGLProgressiveMeshImpl );
-		return pImpl;
-//		shared_ptr<CProgressiveMesh> p( new CProgressiveMesh(pImpl) );
-//		return p;
-	}
-
-//	boost::shared_ptr<CSkeletalMesh> CreateSkeletalMeshImpl()
-	boost::shared_ptr<CMeshImpl> CreateSkeletalMeshImpl()
-	{
-		shared_ptr<CGLSkeletalMeshImpl> pImpl( new CGLSkeletalMeshImpl );
-		return pImpl;
-//		shared_ptr<CSkeletalMesh> p( new CSkeletalMesh(pImpl) );
-//		return p;
-	}
-};
-
-/*
-extern void InitMeshFactory( boost::shared_ptr<CMeshFactory>& pMeshFactory )
-{
-	if( 
-}
-*/
-

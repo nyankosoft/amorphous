@@ -5,9 +5,6 @@
 #include "GM_DialogManager.hpp"
 #include "GM_ControlRenderer.hpp"
 #include "GM_ControlRendererManager.hpp"
-
-#include "XML/XercesString.hpp"
-#include "XML/xmlch2x.hpp"
 #include "XML/XMLDocumentLoader.hpp"
 #include "XML/XMLNodeReader.hpp"
 #include "Support/SafeDelete.hpp"
@@ -15,7 +12,8 @@
 
 #include "GUI.hpp"
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 /*

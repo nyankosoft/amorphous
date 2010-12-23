@@ -8,11 +8,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/SafeDeleteVector.hpp"
-#include "Support/BitmapImage.hpp"
 
-#include "Support/Serialization/BinaryDatabase.hpp"
+//#include "Support/Serialization/BinaryDatabase.hpp"
 
-using namespace std;
+using std::vector;
 using namespace boost;
 
 
@@ -37,10 +36,7 @@ void CreateResourceLoadingStateHolderForCurrentThread()
 
 boost::shared_ptr<CResourceLoadingStateHolder> GetResourceLoadingStateHolderForCurrentThread()
 {
-	using namespace std;
-	using namespace boost;
-
-	map<thread::id, shared_ptr<CResourceLoadingStateHolder> >::iterator itr
+	std::map<thread::id, shared_ptr<CResourceLoadingStateHolder> >::iterator itr
 		= sg_ThreadIDToLoadingStateHolder.find( this_thread::get_id() );
 
 	if( itr == sg_ThreadIDToLoadingStateHolder.end() )

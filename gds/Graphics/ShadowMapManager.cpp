@@ -9,7 +9,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/ParamLoader.hpp"
 
-using namespace std;
+using std::map;
 using namespace boost;
 
 

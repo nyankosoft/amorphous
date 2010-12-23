@@ -3,8 +3,8 @@
 #include "MeshModel/General3DMesh.hpp"
 #include "MeshModel/3DMeshModelBuilder.hpp"
 
-using namespace std;
-using namespace boost;
+using std::vector;
+using boost::shared_ptr;
 
 
 inline std::string to_string( const SFloatRGBAColor& c, int precision = 3, int num_zfills = 0 )

@@ -143,7 +143,7 @@ bool CTextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
 	CTextureResourceDesc desc;
 
 	const int grayscale_levels = 16;
-	desc.pLoader = shared_ptr<CTextureFillingAlgorithm>( new CGrayscaleImageLoader(
+	desc.pLoader.reset( new CGrayscaleImageLoader(
 		bitmap.m_Width,
 		bitmap.m_Height, 
 		bitmap.m_StartRow, 

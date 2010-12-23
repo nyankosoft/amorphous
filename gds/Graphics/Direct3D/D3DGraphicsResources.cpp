@@ -13,7 +13,9 @@
 #include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
-using namespace std;
+using std::string;
+using std::vector;
+using std::map;
 using namespace boost;
 
 
@@ -330,10 +332,9 @@ bool CD3DTextureResource::CreateFromDesc()
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
-		shared_ptr<CTextureFillingAlgorithm> pLoader = desc.pLoader;
-		if( pLoader )
+		if( desc.pLoader )
 		{
-			pLoader->FillTexture( *(m_pLockedTexture.get()) );
+			desc.pLoader->FillTexture( *(m_pLockedTexture.get()) );
 		}
 
 		bool unlocked = Unlock();

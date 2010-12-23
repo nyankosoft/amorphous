@@ -27,7 +27,6 @@
 #include "Graphics/OpenGL/Mesh/GLCustomMeshRenderer.hpp"
 
 using namespace std;
-using namespace boost;
 
 
 CGameWindowManager *g_pGameWindowManager = NULL;
@@ -42,7 +41,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_D3D();
 		GraphicsResourceFactory().Init( new CD3DGraphicsResourceFactoryImpl() );
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
-		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CD3DMeshImplFactory );
+		MeshImplFactory().reset( new CD3DMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
 		CTextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
 		CCustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
@@ -58,7 +57,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 		RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
 		GraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
 		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
-		MeshImplFactory() = shared_ptr<CMeshImplFactory>( new CGLMeshImplFactory );
+		MeshImplFactory().reset( new CGLMeshImplFactory );
 		CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
 		CTextureRenderTarget::SetInstanceCreationFunction( CGLTextureRenderTarget::Create );
 		CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);

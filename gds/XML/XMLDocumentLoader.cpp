@@ -6,8 +6,9 @@
 #include "XercesString.hpp"
 #include "xmlch2x.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 boost::shared_ptr<CXMLParserInitReleaseManager> sg_pXMLParserInitReleaseMgr;
@@ -225,7 +226,7 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
 	if( !loaded )
 		return shared_ptr<CXMLDocument>();
 
-	shared_ptr<CXMLDocument> pDocument = shared_ptr<CXMLDocument>( new CXMLDocument( pDoc, pParser ) );
+	shared_ptr<CXMLDocument> pDocument( new CXMLDocument( pDoc, pParser ) );
 
 	return pDocument;
 }

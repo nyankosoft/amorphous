@@ -5,7 +5,7 @@
 #include "3DMeshModelArchive.hpp"
 #include "3DMeshModelBuilder.hpp"
 
-using namespace std;
+using std::vector;
 using namespace boost;
 
 

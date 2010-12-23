@@ -4,7 +4,6 @@
 #include <boost/thread/xtime.hpp>
 
 using namespace std;
-using namespace boost;
 
 
 static LPDIRECTINPUTDEVICE8 g_pDITempJoystickDevice = NULL;
@@ -50,8 +49,7 @@ void CDIInputDeviceMonitor::ResetEnumStatus()
 
 bool CDIInputDeviceMonitor::CreateDevice( CDIInputDeviceContainer& container )
 {
-	container.m_pGamepad
-		= shared_ptr<CDirectInputGamepad>( new CDirectInputGamepad() );
+	container.m_pGamepad.reset( new CDirectInputGamepad() );
 
 	Result::Name res = container.m_pGamepad->InitDevice( container.m_DeviceInstance );
 

@@ -113,7 +113,7 @@ void CTrueTypeTextureFont::InitTrueTypeFontInternal()
 
 	m_BaseHeight = 64;
 
-	m_pTextureLoader = shared_ptr<CFontTextureLoader>( new CFontTextureLoader(this) );
+	m_pTextureLoader.reset( new CFontTextureLoader(this) );
 }
 
 

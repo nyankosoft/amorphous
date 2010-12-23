@@ -62,7 +62,7 @@ void OnInputDevicePlugged()
 
 CForceFeedbackEffect::CForceFeedbackEffect()
 {
-	shared_ptr<CDIForceFeedbackEffectImpl> pDIFFImpl( new CDIForceFeedbackEffectImpl );
+	boost::shared_ptr<CDIForceFeedbackEffectImpl> pDIFFImpl( new CDIForceFeedbackEffectImpl );
 
 	// register the FF effect impl to the list
 	DIForceFeedbackEffectImplList().Register( pDIFFImpl );

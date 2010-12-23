@@ -214,7 +214,7 @@ void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 
 	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
 	{
-		shared_ptr<CBasicMesh> pMesh
+		boost::shared_ptr<CBasicMesh> pMesh
 			= m_vecpMeshContainer[i]->m_MeshObjectHandle.GetMesh();
 
 		if( !pMesh )
@@ -354,7 +354,7 @@ void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 	m_vecMeshLocalPose.resize( vecReader.size(), Matrix34Identity() );
 	for( size_t i=0; i<vecReader.size(); i++ )
 	{
-		m_vecpMeshContainer[i] = shared_ptr<CMeshObjectContainer>( new CMeshObjectContainer() );
+		m_vecpMeshContainer[i] = boost::shared_ptr<CMeshObjectContainer>( new CMeshObjectContainer() );
 		m_vecpMeshContainer[i]->LoadFromXMLNode( vecReader[i].GetChild( "MeshContainer" ) );
 		::LoadFromXMLNode( vecReader[i].GetChild( "MeshLocalPose" ), m_vecMeshLocalPose[i] );
 	}
@@ -363,7 +363,7 @@ void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 	m_vecpChild.resize( vecChild.size() );
 	for( size_t i=0; i<vecChild.size(); i++ )
 	{
-		m_vecpChild[i] = shared_ptr<CMeshContainerNode>( new CMeshContainerNode() ); 
+		m_vecpChild[i].reset( new CMeshContainerNode() ); 
 		m_vecpChild[i]->LoadFromXMLNode( vecChild[i] );
 	}
 }

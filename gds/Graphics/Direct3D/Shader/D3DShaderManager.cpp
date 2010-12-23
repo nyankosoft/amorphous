@@ -167,7 +167,7 @@ bool CHLSLShaderManager::Init()
 
 	pD3DShaderLightMgr->Init();
 
-	m_pHLSLShaderLightManager = shared_ptr<CHLSLShaderLightManager>( pD3DShaderLightMgr );
+	m_pHLSLShaderLightManager.reset( pD3DShaderLightMgr );
 
 	m_vecParamHandle.reserve( 8 );
 

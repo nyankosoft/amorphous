@@ -13,7 +13,7 @@
 #include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 

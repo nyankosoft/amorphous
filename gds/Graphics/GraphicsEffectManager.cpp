@@ -5,7 +5,7 @@
 
 #include <algorithm>
 
-using namespace std;
+using std::vector;
 using namespace boost;
 
 
@@ -373,7 +373,7 @@ CAnimatedGraphicsManager::CAnimatedGraphicsManager()
 
 	SetTimeOffset();
 
-	m_pGraphicsElementManager = shared_ptr<CGraphicsElementManager>( new CGraphicsElementManager() );
+	m_pGraphicsElementManager.reset( new CGraphicsElementManager() );
 
 	// register callback that releases the effect when its target element gets released
 	CGraphicsElementManagerCallbackSharedPtr pCallback

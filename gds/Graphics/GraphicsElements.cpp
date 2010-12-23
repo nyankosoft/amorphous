@@ -8,8 +8,9 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 inline int get_num_rows( const string& str )

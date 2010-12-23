@@ -164,7 +164,7 @@ HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
 
 	// force feedback related init (draft)
 
-	m_pFFParams = shared_ptr<CDIFFParams>( new CDIFFParams );
+	m_pFFParams.reset( new CDIFFParams );
 
 	DWORD dwNumForceFeedbackAxis = 0;
 
@@ -795,7 +795,7 @@ CForceFeedbackEffect CDirectInputGamepad::CreateForceFeedbackEffect( const CForc
 	if( !m_pDIJoystick )
 		return ffe;
 
-	shared_ptr<CDIForceFeedbackEffectImpl> pImpl( new CDIForceFeedbackEffectImpl() );
+	boost::shared_ptr<CDIForceFeedbackEffectImpl> pImpl( new CDIForceFeedbackEffectImpl() );
 
 	Result::Name res = pImpl->Init( desc, m_pFFParams );
 	if( res != Result::SUCCESS )

@@ -1,17 +1,14 @@
 #include "Graphics/GraphicsElementManager.hpp"
-//#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/Font/TrueTypeTextureFont.hpp"
-#include "Graphics/Font/UTFFont.hpp"
-#include "Graphics/Font/BuiltinFonts.hpp"
+#include "Graphics/Font/FontFactory.hpp"
 #include "Graphics/2DPrimitive/2DPolygon.hpp"
 #include "GraphicsElementManager.hpp"
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
-#include <algorithm>
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 
@@ -560,10 +557,6 @@ int CGraphicsElementManager::LoadTexture( const std::string& tex_filename )
 
 bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, int font_type, int w, int h, float bold, float italic, float shadow )
 {
-	CFont *pFont = NULL;
-	CTextureFont *pTexFont = NULL;
-	CTrueTypeTextureFont *pTTFont = NULL;
-	CUTFFont *pUTFFont = NULL;
 	int w_scaled = (int)(w * m_fScale);
 	int h_scaled = (int)(h * m_fScale);
 	const int ttf_resolution = 64;
@@ -579,59 +572,16 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 
 	m_vecOrigFontSize[font_id] = Vector2( (float)w, (float)h );
 
-	switch( font_type )
-	{
-//	case CFontBase::FONTTYPE_NORMAL:
-//		pFont = new CFont();
-//		pFont->InitFont( font_name, w_scaled, h_scaled );
-//		m_vecpFont[font_id] = pFont;
-//		break;
-
-	case CFontBase::FONTTYPE_TEXTURE:
-		if( font_name.find( "BuiltinFont::" ) == 0 )
-		{
-			const string builtin_font_name = font_name.substr( strlen("BuiltinFont::") );
-			pTexFont = new CTextureFont;
-			bool initialized = pTexFont->InitFont( GetBuiltinFontData( builtin_font_name ) );
-
-			if( initialized )
-			{
-				pTexFont->SetFontSize( w_scaled, h_scaled );
-			}
-			else
-			{
-				SafeDelete( pTexFont );
-				return false;
-			}
-		}
-		else
-		{
-			pTexFont = new CTextureFont();
-			pTexFont->InitFont( font_name, w_scaled, h_scaled );
-		}
-
-		pTexFont->SetItalic( italic );
-		m_vecpFont[font_id] = pTexFont;
-		break;
-
-	case CFontBase::FONTTYPE_TRUETYPETEXTURE:
-		pTTFont = new CTrueTypeTextureFont();
-		pTTFont->InitFont( font_name, ttf_resolution, w_scaled, h_scaled );
-		pTTFont->SetItalic( italic );
-		m_vecpFont[font_id] = pTTFont;
-		break;
-
-	case CFontBase::FONTTYPE_UTF:
-		pUTFFont = new CUTFFont();
-		pUTFFont->InitFont( font_name );//, ttf_resolution, w_scaled, h_scaled );
-		pUTFFont->SetFontSize( w_scaled, h_scaled );
-		pUTFFont->SetItalic( italic );
-		m_vecpFont[font_id] = pUTFFont;
-		break;
-
-	default:
+	CFontFactory font_factory;
+	CFontBase *pFont = font_factory.CreateFontRawPtr( font_name );
+	if( !pFont )
 		return false;
-	}
+
+	pFont->SetFontSize( w_scaled, h_scaled );
+
+	pFont->SetItalic( italic );
+
+	m_vecpFont[font_id] = pFont;
 
 	return true;
 }

@@ -2,8 +2,7 @@
 #include "Graphics/Direct3D/D3DGraphicsResources.hpp"
 #include "Graphics/OpenGL/GLGraphicsResources.hpp"
 
-using namespace std;
-using namespace boost;
+using boost::shared_ptr;
 
 
 //===============================================================

@@ -13,7 +13,6 @@
 using namespace GameLib1::Serialization;
 
 using namespace std;
-using namespace boost;
 
 
 class CGLLockedTexture : public CLockedTexture
@@ -358,13 +357,13 @@ bool CGLTextureResource::CreateFromDesc()
 
 	m_pLockedImage.reset( new CBitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
 
-	shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
+	boost::shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
 
 	if( pLockedTex->IsValid() )
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
-		shared_ptr<CTextureFillingAlgorithm> pLoader = desc.pLoader;
+		boost::shared_ptr<CTextureFillingAlgorithm> pLoader = desc.pLoader;
 		if( pLoader )
 		{
 			// Let the user-defined routine to fill the texture
