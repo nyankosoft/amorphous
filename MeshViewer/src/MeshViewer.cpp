@@ -12,7 +12,9 @@
 #include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Graphics/FogParams.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
 #include "gds/Input.hpp"
+#include "gds/App/GameWindowManager.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
@@ -278,6 +280,22 @@ void CMeshViewer::Render()
 	UpdateShaderParams();
 
 	RenderMeshes();
+
+	int screen_w = GameWindowManager().GetScreenWidth();
+	int screen_h = GameWindowManager().GetScreenHeight();
+	C2DRect rect( 0, screen_h - 25, screen_w - 1, screen_h - 1 );
+	rect.SetColor( SFloatRGBAColor(0,0,0,0.6f) );
+	rect.Draw();
+
+	boost::shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	if( pMesh )
+	{
+		int num_subsets   = pMesh->GetNumMaterials();
+		unsigned int num_vertices  = pMesh->GetNumVertices();
+		unsigned int num_triangles = pMesh->GetNumTriangles();
+		m_pFont->SetFontSize( 8, 16 );
+		m_pFont->DrawText( fmt_string( "%u vertices | %u triangles | %d subsets", num_vertices, num_triangles, num_subsets ), Vector2( 20, screen_h - 20 ) );
+	}
 
 	// render the text info
 //	string text = fmt_string( "gray mid value: %f", m_HDRLightingParams.key_value );
