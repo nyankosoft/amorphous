@@ -1735,6 +1735,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\gds\Item\SkeletalCharacter.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\gds\Item\SkeletalCharacter.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\gds\Item\WeaponSystem.cpp"
 					>
 				</File>
