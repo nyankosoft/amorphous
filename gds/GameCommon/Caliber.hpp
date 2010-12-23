@@ -38,8 +38,8 @@ public:
 		_7_62X39,           ///< 7.62x39mm
 		_7_62X54R,          ///< 7.62x54mmR
 
-		_25MM,
-		_30MM,
+		_25X137MM,
+		_30X173MM,
 
 		OTHER,
 		NUM_CALIBERS
@@ -63,25 +63,25 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::_50_AE:             return ".50 Action Express";
 
 	// shotgun cartridge
-	case Caliber::_410_BORE:          return "";
-	case Caliber::_20_GAUGE:          return "";
-	case Caliber::_12_GAUGE:          return "";
+	case Caliber::_410_BORE:          return ".410 bore";
+	case Caliber::_20_GAUGE:          return "20 gauge shell";
+	case Caliber::_12_GAUGE:          return "12 gauge shell";
 
 	// rifle cartridge
-	case Caliber::_5_7X28:            return "";
-	case Caliber::_5_56X45:           return "";
-	case Caliber::_7_62X51:           return "";
+	case Caliber::_5_7X28:            return "5.7x28mm";
+	case Caliber::_5_56X45:           return "5.56x45mm NATO";
+	case Caliber::_7_62X51:           return "7.62x51mm NATO";
 //	case Caliber::_380_WINCHESTER:    return "";
-	case Caliber::_30_60_SPRINGFIELD: return "";
-	case Caliber::_50BMG:             return "";
+	case Caliber::_30_60_SPRINGFIELD: return ".30-06 Springfield";
+	case Caliber::_50BMG:             return ".50 BMG";
 //	case Caliber::_12_7X99:           return "";
-	case Caliber::_7_62X39:           return "";
-	case Caliber::_7_62X54R:          return "";
+	case Caliber::_7_62X39:           return "7.62x39mm";
+	case Caliber::_7_62X54R:          return "7.62x54mmR";
 
-	case Caliber::_25MM:              return "";
-	case Caliber::_30MM:              return "";
+	case Caliber::_25X137MM:          return "25x137mm";
+	case Caliber::_30X173MM:          return "30x173mm";
 
-	case Caliber::OTHER:              return "";
+	case Caliber::OTHER:              return "other";
 
 	default:
 		return "(unknown)";
@@ -96,6 +96,8 @@ inline const char *GetAbbreviatedCaliberName( Caliber::Name cal )
 	case Caliber::_22LR:              return ".22 LR";
 	case Caliber::_9MM:               return "9x19mm";
 	case Caliber::_44_MAGNUM:         return ".44 Magnum";
+	case Caliber::_5_56X45:           return "5.56x45mm";
+	case Caliber::_7_62X51:           return "7.62x51mm";
 	default:
 		return GetCaliberName( cal );
 	}
