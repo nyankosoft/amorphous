@@ -14,6 +14,7 @@
 
 #include "gds/Graphics/MeshModel/3DMeshModelBuilder.hpp"
 #include "gds/LightWave/3DMeshModelExportManager_LW.hpp"
+#include "gds/LightWave/3DShapesExporter_LW.hpp"
 
 //#include <vld.h>
 
@@ -29,6 +30,8 @@ public:
 
 	C3DMeshModelExportManager_LW m_Exporter;
 
+	C3DShapesExporter_LW m_ShapesExporter;
+
 	bool m_CompilationFinished;
 
 	std::string m_TargetFilepath;
@@ -41,9 +44,34 @@ public:
 	m_CompilationFinished(false)
 	{}
 
+	bool MakeShapesFile()
+	{
+		// Decide on the filename of the shapes file
+		string shapes_file = m_Exporter.GetOutputFilepath(0);
+		if( shapes_file.length() == 0 )
+			shapes_file = m_TargetFilepath;
+
+		if( shapes_file.length() == 0 )
+			return false;
+
+		if( shapes_file.rfind( "." ) == string::npos )
+			return false;
+
+		lfs::change_ext( shapes_file, "sd" );
+
+		if( m_TargetFilepath == shapes_file )
+			return false; // Avoid overwriting the source model file.
+
+		// Extract shapes and save to disk
+		return m_ShapesExporter.ExtractShapes( m_Exporter.GetLWO2Object(), shapes_file );
+	}
+
 	void run()
 	{
+		// Build mesh archive(s) and save to disk
 		m_Exporter.BuildMeshModels( m_TargetFilepath, C3DMeshModelBuilder::BOF_OUTPUT_AS_TEXTFILE );
+
+		bool res = MakeShapesFile();
 
 		m_CompilationFinished = true;
 	}
