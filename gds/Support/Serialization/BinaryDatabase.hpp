@@ -91,7 +91,7 @@ class CBinaryDatabase : public IArchive
 
 	bool KeyAlreadyExists( const KeyType& key )
 	{
-		map<KeyType, long>::const_iterator key_itr = m_KeyOffsetPair.find(key);
+		std::map<KeyType, long>::const_iterator key_itr = m_KeyOffsetPair.find(key);
 		if( key_itr != m_KeyOffsetPair.end() )
 			return true;	// the specified key already exists in the map
 		else
@@ -100,7 +100,7 @@ class CBinaryDatabase : public IArchive
 
 	bool SetReadPos( const KeyType& key )
 	{
-		map<KeyType, long>::const_iterator key_itr = m_KeyOffsetPair.find(key);
+		std::map<KeyType, long>::const_iterator key_itr = m_KeyOffsetPair.find(key);
 		if( key_itr == m_KeyOffsetPair.end() )
 			return false;	// the specified key was not found in the map
 
