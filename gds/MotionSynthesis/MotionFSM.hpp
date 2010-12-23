@@ -393,7 +393,7 @@ public:
 };
 
 
-class CMotionGraphManager : public IArchiveObjectBase
+class CMotionFSMManager : public IArchiveObjectBase
 {
 	std::vector< boost::shared_ptr<CMotionFSM> > m_vecpMotionFSM;
 
@@ -416,7 +416,7 @@ private:
 
 public:
 
-	CMotionGraphManager();
+	CMotionFSMManager();
 
 	void LoadFromDatabase();
 
@@ -473,7 +473,7 @@ public:
 
 //================================ inline implementations ================================
 
-inline void CMotionGraphManager::Update( float dt )
+inline void CMotionFSMManager::Update( float dt )
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->Update( dt );
@@ -482,7 +482,7 @@ inline void CMotionGraphManager::Update( float dt )
 
 /// Combine different keyframes of motions currenltly being played in each FSM
 /// Store the resuts to ???
-inline void CMotionGraphManager::CalculateKeyframe()
+inline void CMotionFSMManager::CalculateKeyframe()
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->CalculateKeyframe();
@@ -491,7 +491,7 @@ inline void CMotionGraphManager::CalculateKeyframe()
 }
 
 
-inline void CMotionGraphManager::GetCurrentKeyframe( CKeyframe& dest )
+inline void CMotionFSMManager::GetCurrentKeyframe( CKeyframe& dest )
 {
 	if( m_vecpMotionFSM.empty() )
 		return;
@@ -528,14 +528,14 @@ inline void CMotionGraphManager::GetCurrentKeyframe( CKeyframe& dest )
 }
 
 
-inline void CMotionGraphManager::SetStartBlendNodeToMotionPrimitives()
+inline void CMotionFSMManager::SetStartBlendNodeToMotionPrimitives()
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->SetStartBlendNodeToMotionPrimitives( m_pBlendNodeRoot );
 }
 
 
-inline void CMotionGraphManager::HandleInput( const SInputData& input )
+inline void CMotionFSMManager::HandleInput( const SInputData& input )
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->HandleInput( input );
@@ -545,11 +545,11 @@ inline void CMotionGraphManager::HandleInput( const SInputData& input )
 class CMotionFSMInputHandler : public CInputHandler
 {
 //	CMotionFSM *m_pFSM;
-	boost::shared_ptr<CMotionGraphManager> m_pMotionGraphManager;
+	boost::shared_ptr<CMotionFSMManager> m_pMotionGraphManager;
 
 public:
 
-	CMotionFSMInputHandler(boost::shared_ptr<CMotionGraphManager>& pMgr) : m_pMotionGraphManager(pMgr) {}
+	CMotionFSMInputHandler(boost::shared_ptr<CMotionFSMManager>& pMgr) : m_pMotionGraphManager(pMgr) {}
 
 	inline void ProcessInput(SInputData& input);
 };

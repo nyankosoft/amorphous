@@ -34,6 +34,8 @@ class CHumanoidMotionTable;
 class CBlendNode;
 class CMotionPrimitiveNode;
 class CMotionFSM;
+class CMotionFSMManager;
+class CMotionFSMInputHandler;
 
 // more classes
 class CTransformCacheNode;

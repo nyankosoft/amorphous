@@ -749,23 +749,23 @@ void CMotionFSM::SetStartBlendNodeToMotionPrimitives( shared_ptr<CBlendNode> pRo
 
 
 //=======================================================================================
-// CMotionGraphManager
+// CMotionFSMManager
 //=======================================================================================
 
-CMotionGraphManager::CMotionGraphManager()
+CMotionFSMManager::CMotionFSMManager()
 {
 	ResetBlendNodeRoot();
 }
 
 
-void CMotionGraphManager::ResetBlendNodeRoot()
+void CMotionFSMManager::ResetBlendNodeRoot()
 {
 	m_pBlendNodeRoot = shared_ptr<CBlendNode>( new CBlendNode );
 	m_pBlendNodeRoot->SetSelf( m_pBlendNodeRoot );
 }
 
 
-void CMotionGraphManager::LoadMotions( CMotionDatabase& mdb )
+void CMotionFSMManager::LoadMotions( CMotionDatabase& mdb )
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->LoadMotions( mdb );
@@ -792,7 +792,7 @@ void CMotionGraphManager::LoadMotions( CMotionDatabase& mdb )
 }
 
 
-Result::Name CMotionGraphManager::LoadMotions()
+Result::Name CMotionFSMManager::LoadMotions()
 {
 	CMotionDatabase mdb;
 	bool loaded = mdb.LoadFromFile( m_MotionDatabaseFilepath );
@@ -805,7 +805,7 @@ Result::Name CMotionGraphManager::LoadMotions()
 }
 
 
-void CMotionGraphManager::GetDebugInfo( std::string& dest_text_buffer )
+void CMotionFSMManager::GetDebugInfo( std::string& dest_text_buffer )
 {
 	dest_text_buffer = "motion graph manager\n";
 	dest_text_buffer += "-------------------------\n";
@@ -818,7 +818,7 @@ void CMotionGraphManager::GetDebugInfo( std::string& dest_text_buffer )
 }
 
 
-void CMotionGraphManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
+void CMotionFSMManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
 {
 	m_MotionDatabaseFilepath = root_node.GetChild( "motion_database" ).GetAttributeText( "file" );
 	m_CompleteSkeletonName = root_node.GetChild( "complete_skeleton" ).GetAttributeText( "name" );
@@ -834,7 +834,7 @@ void CMotionGraphManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
 }
 
 
-void CMotionGraphManager::LoadFromXMLFile( const string& xml_file_path )
+void CMotionFSMManager::LoadFromXMLFile( const string& xml_file_path )
 {
 	shared_ptr<CXMLDocument> pDoc = CreateXMLDocument( xml_file_path );
 	if( !pDoc )
@@ -844,7 +844,7 @@ void CMotionGraphManager::LoadFromXMLFile( const string& xml_file_path )
 }
 
 
-void CMotionGraphManager::Serialize( IArchive& ar, const unsigned int version )
+void CMotionFSMManager::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecpMotionFSM;
 
@@ -863,7 +863,7 @@ void CMotionGraphManager::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
+void CMotionFSMManager::InitForTest( const string& motion_db_filepath )
 {
 	shared_ptr<CMotionFSM> pFSM( new CMotionFSM("lower_limbs") );
 
@@ -943,7 +943,7 @@ void CMotionGraphManager::InitForTest( const string& motion_db_filepath )
 }
 
 
-void CMotionGraphManager::LoadFromDatabase()
+void CMotionFSMManager::LoadFromDatabase()
 {
 	CMotionDatabase db;
 	bool db_ready = db.LoadFromFile( m_MotionDatabaseFilepath );
