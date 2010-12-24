@@ -5,7 +5,6 @@
 #include "Support/StringAux.hpp"
 
 using namespace std;
-using namespace boost;
 using namespace msynth;
 
 
@@ -19,7 +18,7 @@ m_DatabaseFilepath(database_filename)
 
 boost::shared_ptr<CMotionPrimitive> CMotionDatabase::GetMotionPrimitive( const std::string& name )
 {
-	shared_ptr<CMotionPrimitive> pMotion( new CMotionPrimitive() );
+	boost::shared_ptr<CMotionPrimitive> pMotion( new CMotionPrimitive() );
 
 	bool success = m_DB.GetData( name, *(pMotion.get()) );
 
@@ -33,7 +32,7 @@ boost::shared_ptr<CMotionPrimitive> CMotionDatabase::GetMotionPrimitive( const s
 		string msg = fmt_string( " Failed to get the motion primitive '%s' from database '%s'", name.c_str(), m_DatabaseFilepath.c_str() );
 		LOG_PRINT_WARNING( msg );
 
-		return shared_ptr<CMotionPrimitive>();
+		return boost::shared_ptr<CMotionPrimitive>();
 	}
 }
 

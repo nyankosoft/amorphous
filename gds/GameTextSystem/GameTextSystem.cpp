@@ -4,6 +4,9 @@
 #include "../Graphics/Font/FontBase.hpp"
 #include "../Support/memory_helpers.hpp"
 
+using namespace std;
+
+
 //===========================================================================
 // CGameTextComponent
 //===========================================================================

@@ -12,9 +12,9 @@
 #include "Stage/MeshBonesUpdateCallback.hpp"
 #include "Input/ForceFeedback/ForceFeedbackEffect.hpp"
 
-
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 /*
 void CBE_PseudoAircraft::Init()
@@ -85,7 +85,7 @@ CGI_Aircraft::CGI_Aircraft()
 	m_fArmor = 0.5f;
 	m_fRCS = 1.0f;
 
-	m_pFFBrake = shared_ptr<CForceFeedbackEffect>( new CForceFeedbackEffect );
+	m_pFFBrake.reset( new CForceFeedbackEffect );
 	CConstantForceFeedbackEffectDesc ffb;
 	ffb.gain = 10000;
 	ffb.duration = 10000;//CForceFeedbackEffect::INFINITE_DURATION;

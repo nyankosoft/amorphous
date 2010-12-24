@@ -18,7 +18,7 @@ inline void replace_chars( std::string& src, char from, char to )
 }
 
 
-void CInputHandler_StageDebug::WriteEntityTreeToFile( shared_ptr<CStage> pStage )
+void CInputHandler_StageDebug::WriteEntityTreeToFile( boost::shared_ptr<CStage> pStage )
 {
 	using namespace gregorian;
 

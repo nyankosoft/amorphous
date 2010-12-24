@@ -13,9 +13,9 @@
 #include "Item/RotatableTurret.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 
-
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 using namespace item;
 
 

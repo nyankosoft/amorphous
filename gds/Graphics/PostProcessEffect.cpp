@@ -3,12 +3,14 @@
 #include "Graphics/SurfaceFormat.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
 
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 
@@ -182,10 +184,11 @@ void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottom
 	svQuad[3].p = D3DXVECTOR4( fWidth5, fHeight5, 0.5f, 1.0f );
 	svQuad[3].t = D3DXVECTOR2( fRightU, fBottomV );
 
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
-	pd3dDevice->SetFVF( ScreenVertex::FVF );
-	pd3dDevice->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, svQuad, sizeof( ScreenVertex ) );
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
+	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
+	hr = pd3dDevice->SetFVF( ScreenVertex::FVF );
+	hr = pd3dDevice->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, svQuad, sizeof( ScreenVertex ) );
+	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
 }
 
 
@@ -204,15 +207,15 @@ void RenderFullScreenQuad( LPD3DXEFFECT pEffect, const CoordRect& c )
 
 	for( uiPass = 0; uiPass < uiPassCount; uiPass++ )
 	{
-		pEffect->BeginPass( uiPass );
+		hr = pEffect->BeginPass( uiPass );
 
 		// Draw a fullscreen quad to sample the RT
 		DrawFullScreenQuad( 0.0f, 0.0f, 1.0f, 1.0f );
 
-		pEffect->EndPass();
+		hr = pEffect->EndPass();
 	}
 
-	pEffect->End();
+	hr = pEffect->End();
 }
 
 
@@ -648,16 +651,36 @@ void CFilter::RenderBase( CFilter& prev_filter )
 
 	hr = pShaderMgr->GetEffect()->CommitChanges();
 
-	Render();
+	if( GetDebugImageFilenameExtraString() == "-for-gaussblur" )
+	{
+		Render();
+/*		static CTextureHandle test_tex;
+		static bool tex_loaded = false;
+		ONCE( tex_loaded = test_tex.Load( "debug/post-process_effect/test_tex.png" ) );
+		C2DRect test_rect( 0, 0, 199, 149, SFloatRGBAColor::White().GetARGB32() );
+		test_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+		pd3dDevice->SetVertexShader( NULL );
+		pd3dDevice->SetPixelShader( NULL );
+		pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+		pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+		test_rect.draw();
+//		test_rect.draw( m_pPrevScene->m_Texture );
+//		test_rect.Draw();
+//		test_rect.Draw( test_tex );
+		if( 0 < CFilter::ms_SaveFilterResultsAtThisFrame )
+			m_pPrevScene->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/prev_scene_of_gauss_blur.png" );
+*/	}
+	else
+		Render();
 
 	if( 0 < CFilter::ms_SaveFilterResultsAtThisFrame && m_pDest )
 	{
-		D3DXIMAGE_FILEFORMAT img_fmt;
+//		D3DXIMAGE_FILEFORMAT img_fmt;
 		string ext;
 /*		if( m_pDest->m_Desc.Format == TextureFormat::A8R8G8B8)
 		{*/
-			img_fmt = D3DXIFF_BMP;
-			ext = ".bmp";
+//			img_fmt = D3DXIFF_PNG;
+			ext = ".png";
 /*		}
 		else
 		{
@@ -665,12 +688,13 @@ void CFilter::RenderBase( CFilter& prev_filter )
 			ext = ".pfm";
 		}*/
 
-		boost::filesystem::create_directories( "debug/post-process_effect" );
-		hr = D3DXSaveTextureToFile(
-			string("debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext ).c_str(),
-			img_fmt,
-			m_pDest->m_Texture.GetTexture(),
-			NULL );
+//		boost::filesystem::create_directories( "debug/post-process_effect" ); // Done in CPostProcessEffectManager::RenderPostProcessEffects()
+		string image_pathname = "debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext;
+		bool saved = m_pDest->m_Texture.SaveTextureToImageFile( image_pathname );
+//		hr = D3DXSaveTextureToFile(
+//			img_fmt,
+//			m_pDest->m_Texture.GetTexture(),
+//			NULL );
 	}
 
 	if( m_pDest )
@@ -787,10 +811,12 @@ void CDownScale4x4Filter::Render()
 	GetSampleOffsets_DownScale4x4( prev_scene_width, prev_scene_height, avSampleOffsets );
 	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
 
-//	pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
+	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
+	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+
+	hr = pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 
 	RenderFullScreenQuad( pEffect, coords );
 }

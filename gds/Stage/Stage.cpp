@@ -66,7 +66,7 @@ m_pStageDebugInputHandler(NULL)
 	m_pTimer = new CTimer();
 	PauseTimer();	// don't start until the initialization is complete
 
-	m_pScreenEffectManager = shared_ptr<CScreenEffectManager>( new CScreenEffectManager );
+	m_pScreenEffectManager.reset( new CScreenEffectManager );
 	m_pScreenEffectManager->Init();
 
 	m_pEntitySet = new CEntitySet( this );

@@ -15,9 +15,7 @@
 #include "Input/InputHandler_Cutscene.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
-
-using namespace std;
-using namespace boost;
+using boost::shared_ptr;
 
 
 static const U32 gs_FadeoutTimeMS = 500;

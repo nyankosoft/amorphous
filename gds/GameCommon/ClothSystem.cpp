@@ -14,9 +14,11 @@
 #include "gds/Utilities/Physics/PhysicsMeshUtility.hpp"
 //#include "gds/Support/lfs.hpp"
 
+using std::string;
+using std::vector;
+using std::set;
+using boost::shared_ptr;
 using namespace physics;
-using namespace std;
-using namespace boost;
 
 
 static U16 sg_ClothGroup    = 0;

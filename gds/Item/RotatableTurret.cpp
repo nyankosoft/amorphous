@@ -9,8 +9,9 @@
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 CRotatableTurret::CRotatableTurret()

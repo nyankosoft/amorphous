@@ -14,7 +14,7 @@
 
 #include "BE_Player.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 

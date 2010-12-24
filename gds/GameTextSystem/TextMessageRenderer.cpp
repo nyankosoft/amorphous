@@ -5,7 +5,6 @@
 #include "../Support/Log/DefaultLog.hpp"
 #include "../Support/StringAux.hpp"
 
-using namespace std;
 using namespace boost;
 
 

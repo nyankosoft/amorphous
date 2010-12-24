@@ -8,7 +8,6 @@
 #include "GameCommon/3DActionCode.hpp"
 #include "Input/InputHandler.hpp"
 
-using namespace std;
 using namespace boost;
 
 

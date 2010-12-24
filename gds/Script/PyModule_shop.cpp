@@ -4,16 +4,15 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
 
-
-using namespace std;
-using namespace boost;
-
-
-bool (CGameItemShop::*AddItemByItemPointer)( boost::shared_ptr<CGameItem> pItem ) = &CGameItemShop::AddItem;
-int (CGameItemShop::*AddItemByNameAndQuantity)( const std::string& item_name, int quantity ) = &CGameItemShop::AddItem;
+using std::string;
+using boost::shared_ptr;
 
 
-boost::shared_ptr<CGameItemShop> GetGameItemShop( const string& name )
+bool (CGameItemShop::*AddItemByItemPointer)( shared_ptr<CGameItem> pItem ) = &CGameItemShop::AddItem;
+int (CGameItemShop::*AddItemByNameAndQuantity)( const string& item_name, int quantity ) = &CGameItemShop::AddItem;
+
+
+shared_ptr<CGameItemShop> GetGameItemShop( const string& name )
 {
 	return GameItemShopList().GetShop( name );
 }

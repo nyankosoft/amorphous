@@ -4,8 +4,7 @@
 #include "Physics/Actor.hpp"
 using namespace physics;
 
-using namespace std;
-using namespace boost;
+using boost::shared_ptr;
 
 
 void CCopyEntity::ApplyWorldImpulse( const Vector3& vImpulse, const Vector3& vContactPoint )

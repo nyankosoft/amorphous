@@ -16,7 +16,8 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 

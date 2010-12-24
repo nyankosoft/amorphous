@@ -2,8 +2,7 @@
 #include "Item/ItemDatabaseManager.hpp"
 #include "PyModule_ShopMethods.hpp"
 
-using namespace std;
-using namespace boost;
+using boost::shared_ptr;
 
 
 PyObject* AddItem( PyObject* self, PyObject* args )

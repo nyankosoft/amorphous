@@ -6,8 +6,6 @@
 #include "Stage/BE_ScriptedCamera.hpp"
 #include "Support/memory_helpers.hpp"
 
-
-using namespace std;
 using namespace boost;
 
 

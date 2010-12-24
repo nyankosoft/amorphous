@@ -3,7 +3,6 @@
 #include "Support/memory_helpers.hpp"
 #include "Stage/MeshBonesUpdateCallback.hpp"
 
-using namespace std;
 using namespace boost;
 
 
@@ -29,8 +28,7 @@ m_TypeFlag(0)
 {
 	// create a mesh container in the root node
 	// - used as a default mesh container
-	shared_ptr<CMeshObjectContainer> pMeshContainer
-		= shared_ptr<CMeshObjectContainer>( new CMeshObjectContainer() );
+	shared_ptr<CMeshObjectContainer> pMeshContainer( new CMeshObjectContainer() );
 
 	m_MeshContainerRootNode.AddMeshContainer( pMeshContainer, Matrix34Identity() );
 }

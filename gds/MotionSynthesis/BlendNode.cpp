@@ -2,7 +2,6 @@
 #include "Skeleton.hpp"
 #include <map>
 
-using namespace std;
 using namespace boost;
 
 

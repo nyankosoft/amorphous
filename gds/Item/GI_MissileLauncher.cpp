@@ -21,7 +21,6 @@
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
 
-using namespace std;
 using namespace boost;
 
 

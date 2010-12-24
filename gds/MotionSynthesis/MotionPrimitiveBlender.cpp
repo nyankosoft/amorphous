@@ -3,8 +3,9 @@
 #include "Support/Macro.h"
 #include "Support/memory_helpers.hpp"
 
-using namespace std;
-using namespace boost;
+using std::vector;
+using std::list;
+using boost::shared_ptr;
 using namespace msynth;
 
 

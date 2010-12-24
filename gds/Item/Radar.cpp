@@ -7,7 +7,7 @@
 #include "Stage/HUD_PlayerAircraft.hpp"
 #include "XML/XMLNodeReader.hpp"
 
-using namespace std;
+using std::map;
 using namespace boost;
 
 

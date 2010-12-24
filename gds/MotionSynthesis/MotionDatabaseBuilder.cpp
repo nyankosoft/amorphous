@@ -5,8 +5,10 @@
 #include "Support/StringAux.hpp"
 #include "XML/XMLDocumentLoader.hpp"
 
-using namespace std;
-using namespace boost;
+using std::vector;
+using std::string;
+using std::map;
+using boost::shared_ptr;
 using namespace boost::filesystem;
 using namespace msynth;
 
@@ -38,7 +40,7 @@ shared_ptr<CMotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::st
 {
 	// The extension returned by boost::filesystem::path::extension() includes "."
 	// before the extension.
-	string ext = filesystem::path(filepath).extension();
+	string ext = path(filepath).extension();
 
 	BOOST_FOREACH( shared_ptr<CMotionPrimitiveCompilerCreator>& pCreator, sg_vecpExtAndMotionPrimitiveCompiler )
 	{

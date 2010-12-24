@@ -18,8 +18,7 @@
 #include <gds/Support/Vec3_StringAux.hpp>
 #include <gds/Support/Log/DefaultLog.hpp>
 
-
-using namespace std;
+using std::vector;
 using namespace boost;
 
 

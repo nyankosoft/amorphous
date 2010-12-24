@@ -9,7 +9,6 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/memory_helpers.hpp"
 
-using namespace std;
 using namespace boost;
 
 

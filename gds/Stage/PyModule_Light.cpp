@@ -17,8 +17,7 @@
 
 #include "../base.hpp"
 
-using namespace std;
-using namespace boost;
+using boost::shared_ptr;
 
 
 class  CScriptGenMode

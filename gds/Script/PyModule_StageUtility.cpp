@@ -4,8 +4,7 @@
 #include "gds/Stage/BE_ScriptedCamera.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
 
-using namespace std;
-using namespace boost;
+using boost::shared_ptr;
 
 using namespace physics;
 

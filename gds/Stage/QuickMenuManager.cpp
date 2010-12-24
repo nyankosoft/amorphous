@@ -9,7 +9,7 @@
 
 #include "Item/WeaponSystem.hpp"
 
-using namespace boost;
+using boost::shared_ptr;
 
 
 //--------------------------------------------------------------------
@@ -57,8 +57,8 @@ void CQM_Menu::Render( CFontBase *pFont )
 	bg_rect.Draw();
 
 	// draw item titles
-	int start_index = _cpp_max( m_iCurrentItem - 2, 0 );
-	int end_index = _cpp_min( GetNumMaxItems() - 1, start_index + 4 );
+	int start_index = take_max( m_iCurrentItem - 2, 0 );
+	int end_index = take_min( GetNumMaxItems() - 1, start_index + 4 );
 
 	float offset_x = 0;
 	Vector2 vPos = Vector2(350 + offset_x, 380);

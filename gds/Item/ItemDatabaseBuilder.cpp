@@ -24,8 +24,9 @@
 #include "Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 CItemDatabaseBuilder::CItemDatabaseBuilder()

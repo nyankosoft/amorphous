@@ -16,8 +16,11 @@
 #include "gds/GameCommon/ClothSystem.hpp"
 #include <boost/filesystem.hpp>
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using std::map;
+using boost::shared_ptr;
+using namespace boost::filesystem;
 using namespace msynth;
 
 
@@ -128,7 +131,7 @@ m_FeetOnGround( true )
 	}*/
 
 	// Debug - dump the skeleton for the motion data and the skeleton of the mesh
-	if( filesystem::exists( ".debug" ) )
+	if( exists( ".debug" ) )
 	{
 		m_pSkeletonSrcMotion->GetSkeleton()->DumpToTextFile( ".debug/msynth_skeleton.txt" );
 		shared_ptr<CSkeletalMesh> pSMesh = GetCharacterSkeletalMesh();

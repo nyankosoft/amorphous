@@ -6,12 +6,10 @@
 #include "Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.hpp"
 #include <boost/filesystem.hpp>
 
-
-using namespace std;
 using namespace boost;
 
 
-#define V(x) { hr = x; if( FAILED(hr) ) { LOG_PRINT_ERROR( string(#x) + " failed." ); } }
+#define V(x) { hr = x; if( FAILED(hr) ) { LOG_PRINT_ERROR( std::string(#x) + " failed." ); } }
 #define V_RETURN(x) { hr = x; if(FAILED(hr)) return hr; }
 
 
@@ -216,7 +214,8 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
         }
     }
 */
-	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A16R16G16B16F;
+//	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A16R16G16B16F;
+	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A8R8G8B8;
 
 	SPlane2 bb = GetBackBufferWidthAndHeight();
 	m_pOrigSceneHolder = shared_ptr<CRenderTargetTextureHolder>( new CRenderTargetTextureHolder() );
@@ -359,6 +358,12 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 
 	// increment the lock count of the original scene because it is decremented by the first filter
 	m_pOrigSceneHolder->IncrementLockCount();
+
+	if( CFilter::ms_SaveFilterResultsAtThisFrame == 1 )
+	{
+		boost::filesystem::create_directories( "debug/post-process_effect" );
+		m_pOrigSceneHolder->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/orig_scene.png" );
+	}
 
 	// send the base scene to the first filter and start the post process effects
 	// The last filter renders the result to m_pTextureCache->m_pOrigRenderTarget(=m_pSurfLDR), the original render target
@@ -634,6 +639,10 @@ void CPostProcessEffectManager::DisplayAdaptedLuminance()
 
 		CShaderManager *pShader
 			= pFilterShader->GetShader().GetShaderManager();
+
+		if( !pShader )
+			return;
+
 //		pShader->SetTexture( tex_index, pRTTexHolder->m_Texture );
 		DIRECT3D9.GetDevice()->SetTexture( tex_index, pRTTexHolder->m_Texture.GetTexture() );
 /*

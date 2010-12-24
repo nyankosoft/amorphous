@@ -10,6 +10,7 @@
 #include "Physics/PhysicsEngine.hpp"
 #include "Physics/Preprocessor.hpp"
 #include "Physics/Enums.hpp"
+#include "Physics/FixedJointDesc.hpp"
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
 #include "Stage/Stage.hpp"
@@ -19,7 +20,9 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
 
-using namespace std;
+using std::string;
+using std::vector;
+using std::map;
 using namespace boost;
 
 
@@ -900,6 +903,107 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 
 		return CEntityHandle<>();
 	}
+}
+
+
+static CCopyEntity *GetEntityFromEntityName( const char *entity_name, CStage& stage )
+{
+	if( !entity_name
+	 || strlen(entity_name) == 0 )
+	{
+		return NULL;
+	}
+
+	return stage.GetEntitySet()->GetEntityByName( entity_name );
+}
+
+
+static physics::CActor *GetPrimaryActor( CCopyEntity& entity )
+{
+	if( entity.m_vecpPhysicsActor.empty() )
+		return NULL;
+
+	return entity.m_vecpPhysicsActor[0];
+}
+
+
+Result::Name CStageMiscUtility::GlueEntities(
+		const char *entity0_name,
+		const char *entity1_name,
+		float max_force,
+		float max_torque )
+{
+	if( !entity0_name || strlen(entity0_name) == 0
+	 || !entity1_name || strlen(entity1_name) == 0 )
+	{
+		return Result::INVALID_ARGS;
+	}
+
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return Result::UNKNOWN_ERROR;
+
+	CCopyEntity *pEntity0 = pStage->GetEntitySet()->GetEntityByName( entity0_name );
+	CCopyEntity *pEntity1 = pStage->GetEntitySet()->GetEntityByName( entity1_name );
+
+	if( !pEntity0 || pEntity0->m_vecpPhysicsActor.empty()
+	 || !pEntity1 || pEntity1->m_vecpPhysicsActor.empty() )
+	{
+		return Result::UNKNOWN_ERROR;
+	}
+
+	physics::CActor *pActor0 = pEntity0->m_vecpPhysicsActor[0];
+	physics::CActor *pActor1 = pEntity1->m_vecpPhysicsActor[0];
+
+	if( !pActor0 || !pActor1 )
+		return Result::UNKNOWN_ERROR;
+
+	physics::CFixedJointDesc fixed_joint_desc;
+	fixed_joint_desc.pActor[0] = pActor0;
+	fixed_joint_desc.pActor[1] = pActor1;
+	fixed_joint_desc.MaxForce  = max_force;
+	fixed_joint_desc.MaxTorque = max_torque;
+
+	physics::CScene *pScene = pStage->GetPhysicsScene();
+	if( !pScene )
+		return Result::UNKNOWN_ERROR;
+
+	physics::CJoint *pJoint = pScene->CreateJoint( fixed_joint_desc );
+
+	if( !pJoint )
+		return Result::UNKNOWN_ERROR;
+
+	pEntity0->m_vecpPhysicsJoint.push_back( pJoint );
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CStageMiscUtility::ConnectEntitiesWithRevoluteJoint(
+		const char *entity0_name,
+		const char *entity1_name,
+		const Vector3& axis,
+		const Vector3& anchor,
+		float max_force,
+		float max_torque )
+{
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return Result::UNKNOWN_ERROR;
+
+	CCopyEntity *pEntity0 = GetEntityFromEntityName( entity0_name, *pStage );
+	CCopyEntity *pEntity1 = GetEntityFromEntityName( entity1_name, *pStage );
+
+	if( !pEntity0 || !pEntity1 )
+		return Result::UNKNOWN_ERROR;
+
+	physics::CActor *pActor0 = GetPrimaryActor( *pEntity0 );
+	physics::CActor *pActor1 = GetPrimaryActor( *pEntity1 );
+
+	if( !pActor0 || !pActor1 )
+		return Result::UNKNOWN_ERROR;
+
+	return Result::SUCCESS;
 }
 
 

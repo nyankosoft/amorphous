@@ -13,7 +13,6 @@
 #include "Item/GameItem.hpp"
 #include "Physics/ActorDesc.hpp"
 
-using namespace std;
 using namespace boost;
 
 
@@ -96,7 +95,7 @@ void CItemEntity::UpdateGraphicsUpdateCallbacks()
 //	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
 
 	CMeshObjectHandle mesh = GetPrimaryMeshHandle( *m_pItem );
-	boost::shared_ptr<CSkeletalMesh> pSkeletalMesh
+	shared_ptr<CSkeletalMesh> pSkeletalMesh
 		= dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( mesh.GetMesh() );
 
 	if( pSkeletalMesh )

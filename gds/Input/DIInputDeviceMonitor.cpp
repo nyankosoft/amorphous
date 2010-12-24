@@ -92,8 +92,8 @@ int CDIInputDeviceMonitor::GetContainerIndex( const GUID& guid )
 bool CDIInputDeviceMonitor::AlreadyRequested( const GUID& guid )
 {
 	tbb::concurrent_queue<CDIInputDeviceManagementRequest>::iterator itr;
-	for( itr = m_queDIDeviceRequest.begin();
-		 itr != m_queDIDeviceRequest.end();
+	for( itr = m_queDIDeviceRequest.unsafe_begin();
+		 itr != m_queDIDeviceRequest.unsafe_end();
 		 itr++ )
 	{
 		if( itr->m_DeviceInstance.guidInstance == guid )
@@ -210,11 +210,11 @@ void CDIInputDeviceMonitor::ProcessRequest()
 {
 	tbb::mutex::scoped_lock(m_DeviceContainerMutex);
 
-	size_t num_requests = m_queDIDeviceRequest.size();
+	size_t num_requests = m_queDIDeviceRequest.unsafe_size();
 
 	CDIInputDeviceManagementRequest req;
 
-	m_queDIDeviceRequest.pop_if_present( req );
+	bool popped = m_queDIDeviceRequest.try_pop( req );
 
 	switch( req.m_Type )
 	{

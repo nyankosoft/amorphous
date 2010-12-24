@@ -4,12 +4,7 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
-
-#include <vector>
-#include <string>
-using namespace std;
 
 #include "CopyEntityDesc.hpp"
 
@@ -22,10 +17,10 @@ class CCopyEntityDescFileData : public IArchiveObjectBase
 {
 public:
 
-	string strBaseEntityName;
+	std::string strBaseEntityName;
 	CCopyEntityDesc CopyEntityDesc;
 
-	vector<CCopyEntityDescFileData> vecChild;
+	std::vector<CCopyEntityDescFileData> vecChild;
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
@@ -39,7 +34,7 @@ public:
 
 class CCopyEntityDescFileArchive : public IArchiveObjectBase
 {
-	vector<CCopyEntityDescFileData> m_vecCopyEntityDesc;
+	std::vector<CCopyEntityDescFileData> m_vecCopyEntityDesc;
 
 
 public:

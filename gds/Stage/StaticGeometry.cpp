@@ -52,7 +52,7 @@ void CreateCachedResources()
 
 
 // temporary measure to avoid D3DXFilterTexture() calls in async loading at runtime
-static void ForceTextureMipMapLevelsToOne( shared_ptr<CBasicMesh> pMesh )
+static void ForceTextureMipMapLevelsToOne( boost::shared_ptr<CBasicMesh> pMesh )
 {
 	if( !pMesh )
 		return;
@@ -624,8 +624,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 			m_Archive.m_vecMesh[i].Load();
 
 			// temporary measure to avoid D3DXFilterTexture() calls at runtime
-			shared_ptr<CBasicMesh> pMesh = m_Archive.m_vecMesh[i].m_Mesh.GetMesh();
-			ForceTextureMipMapLevelsToOne( pMesh );
+			ForceTextureMipMapLevelsToOne( m_Archive.m_vecMesh[i].m_Mesh.GetMesh() );
 		}
 	}
 

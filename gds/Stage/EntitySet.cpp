@@ -22,8 +22,9 @@
 #include "Support/macro.h"
 #include "Support/Profile.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 using namespace physics;
 
 
@@ -51,7 +52,7 @@ m_paEntityTree(NULL)
 
 	m_PhysTimestep = ms_DefaultPhysTimestep;
 
-	m_pRenderManager = shared_ptr<CEntityRenderManager>( new CEntityRenderManager( this ) );
+	m_pRenderManager.reset( new CEntityRenderManager( this ) );
 
 	// enable collision between all the groups
 	memset( m_EntityCollisionTable, 1, sizeof(char) * NUM_MAX_ENTITY_GROUP_IDS * NUM_MAX_ENTITY_GROUP_IDS );

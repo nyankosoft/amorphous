@@ -36,8 +36,10 @@
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using std::map;
+using boost::shared_ptr;
 using namespace physics;
 
 

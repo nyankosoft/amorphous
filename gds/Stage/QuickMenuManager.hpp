@@ -2,8 +2,6 @@
 #define  __QUICKMENU_H__
 
 #include <vector>
-using namespace std;
-
 #include <boost/shared_ptr.hpp>
 
 #include "Input/InputHandler.hpp"
@@ -231,7 +229,7 @@ inline boost::shared_ptr<CGameItem> CQM_Menu::GetCurrentItem()
 	}
 	else
 	{
-		vector<boost::shared_ptr<CGameItem>>& rvecpItemList = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
+		std::vector< boost::shared_ptr<CGameItem> >& rvecpItemList = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
 		if( m_iCurrentItem < (int)rvecpItemList.size() )	// check if the item index is valid
 			return rvecpItemList[m_iCurrentItem];
 		else

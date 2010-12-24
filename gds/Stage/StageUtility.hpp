@@ -249,6 +249,20 @@ public:
 		const char *shape = "",
 		bool is_static = false);
 
+	Result::Name GlueEntities(
+		const char *entity0_name,
+		const char *entity1_name,
+		float max_force  = FLT_MAX,
+		float max_torque = FLT_MAX );
+
+	Result::Name ConnectEntitiesWithRevoluteJoint(
+		const char *entity0_name,
+		const char *entity1_name,
+		const Vector3& axis,
+		const Vector3& anchor,
+		float max_force  = FLT_MAX,
+		float max_torque = FLT_MAX );
+
 	void CreateSkybox( const std::string& mesh_resource_path, const std::string& texture_resource_path = "BuiltinTexture::ClearSkyGrad" );
 
 //	void CreateSkysphere( const std::string& texture_resource_path = "BuiltinTexture::ClearSkyGrad" );

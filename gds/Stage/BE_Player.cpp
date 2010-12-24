@@ -30,8 +30,9 @@
 
 //#include "JigLib/JL_PhysicsActor.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 //#define APPLY_PHYSICS_TO_PLAYER_SHIP

@@ -2,8 +2,10 @@
 #include "MotionDatabase.hpp"
 #include "gds/XML.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using std::pair;
+using boost::shared_ptr;
 
 
 namespace msynth

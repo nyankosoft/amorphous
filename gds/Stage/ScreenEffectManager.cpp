@@ -183,7 +183,7 @@ bool CScreenEffectManager::Init()
 //	pd3dDev->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
 //	pBackBuffer->GetDesc( &back_buffer_desc );
 
-	m_pPPEffectManager = shared_ptr<CPostProcessEffectManager>( new CPostProcessEffectManager );
+	m_pPPEffectManager.reset( new CPostProcessEffectManager );
 	Result::Name res = m_pPPEffectManager->Init( "Shader/PostProcessEffect" );
 
 /*
