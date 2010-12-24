@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.vc/$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.vc/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../gds;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)BasicFramework_d.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)BasicFramework.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\gds\Graphics\BillboardArrayMesh.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\BuiltinSkyTextures.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Camera.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\CubeMapManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\DoubleConeScrollEffect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Font\FontFactory.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsComponentCollector.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsDevice.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\IndexedPolygon.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\LensFlare.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\LogOutput_OnScreen.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshContainerRenderMethod.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshObjectContainer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\NoiseTextureGenerators.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PostProcessEffect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PostProcessEffectManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PostProcessManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PrimitiveShapeRenderer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PseudoNoiseEffect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\RectTriListIndex.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\RenderTaskProcessor.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\ShadowMapManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\ShadowMaps.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\ShapeDetector.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\ShapesExtractor.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\SimpleMotionBlur.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\SkyboxMisc.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\TextureRenderTarget.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\UnitCube.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\UnitSphere.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\VarianceShadowMapManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectBase.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectLightManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Shader\Shader.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Shader\ShaderLightManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Shader\ShaderManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Shader\ShaderManagerHub.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\BasicMesh.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\CustomMesh.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\D3DXMeshModel.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshBone.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\MeshFactory.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshGenerators.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\NVMeshMender.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\ProgressiveMesh.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\RectSetMesh.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\SkeletalMesh.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\AsyncResourceLoader.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceCacheManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceDescs.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceEntries.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceHandle.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceLoaders.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsResources.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshObjectHandle.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\ResourceLoadingStateHolder.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\ShaderHandle.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\TextureHandle.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DFrameRect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DPolygon.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DPrimitive.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DRect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DRectSet.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DRoundRect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DTexRect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DTriangle.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsEffectManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsElementManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\GraphicsElements.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PyModule_GraphicsElement.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Font\Font.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Font\TextureFont.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Font\TrueTypeTextureFont.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Font\UTFFont.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\LinePrimitives.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\RectTree.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLExtensions.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLGraphicsDevice.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLGraphicsResources.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLTextureRenderTarget.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLCgEffect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLShader.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLSLShaderLightManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DGraphicsResources.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DTextureRenderTarget.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Direct3D9.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\TextureTool.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DCgEffect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DShaderManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\HLSLShaderLightManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObject.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXPMeshObject.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXSMeshObject.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\aabb3.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\AABTree.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\BSPTreeForBox.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\BSPTreeForTriangleMesh.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\ConvexPolygon.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\OBBTree.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\Perlin.cpp" />
+    <ClCompile Include="..\..\gds\3DMath\PrimitivePolygonModelMaker.cpp" />
+    <ClCompile Include="..\..\gds\Input\DIInputDeviceMonitor.cpp" />
+    <ClCompile Include="..\..\gds\Input\DIKeyboard.cpp" />
+    <ClCompile Include="..\..\gds\Input\DirectInput.cpp" />
+    <ClCompile Include="..\..\gds\Input\DirectInputGamepad.cpp" />
+    <ClCompile Include="..\..\gds\Input\DirectInputMouse.cpp" />
+    <ClCompile Include="..\..\gds\Input\InputDevice.cpp" />
+    <ClCompile Include="..\..\gds\Input\InputHub.cpp" />
+    <ClCompile Include="..\..\gds\Input\StdKeyboard.cpp" />
+    <ClCompile Include="..\..\gds\Input\StdMouseInput.cpp" />
+    <ClCompile Include="..\..\gds\Input\ForceFeedback\DIForceFeedbackEffectImpl.cpp" />
+    <ClCompile Include="..\..\gds\Input\ForceFeedback\ForceFeedbackEffect.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_Aux.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_Button.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_Control.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_ControlDescBase.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_ControlRenderer.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_ControlRendererManager.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_Dialog.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_DialogCloseButton.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_DialogDesc.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_DialogManager.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_Keybind.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_ListBox.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_ScrollBar.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_Slider.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_SoundPlayer.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_Static.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_StdControlRenderer.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_StdControlRendererManager.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_SubDialogButton.cpp" />
+    <ClCompile Include="..\..\gds\GUI\GM_XMLParser.cpp" />
+    <ClCompile Include="..\..\gds\GUI\InputHandler_Dialog.cpp" />
+    <ClCompile Include="..\..\gds\Support\BMPImageExporter.cpp" />
+    <ClCompile Include="..\..\gds\Support\CameraController.cpp" />
+    <ClCompile Include="..\..\gds\Support\CameraController_Win32.cpp" />
+    <ClCompile Include="..\..\gds\Support\CameraControllerBase.cpp" />
+    <ClCompile Include="..\..\gds\Support\DebugOutput.cpp" />
+    <ClCompile Include="..\..\gds\Support\MTRand.cpp" />
+    <ClCompile Include="..\..\gds\Support\Profile.cpp" />
+    <ClCompile Include="..\..\gds\Support\Timer_Win32.cpp" />
+    <ClCompile Include="..\..\gds\Support\Log\DefaultLog.cpp" />
+    <ClCompile Include="..\..\gds\Support\Log\LogInputBase.cpp" />
+    <ClCompile Include="..\..\gds\Support\Log\LogOutputBase.cpp" />
+    <ClCompile Include="..\..\gds\Support\Log\StateLog.cpp" />
+    <ClCompile Include="..\..\gds\Support\Serialization\ArchiveObjectBase.cpp" />
+    <ClCompile Include="..\..\gds\Support\Serialization\BinaryArchive_Input.cpp" />
+    <ClCompile Include="..\..\gds\Support\Serialization\BinaryArchive_Output.cpp" />
+    <ClCompile Include="..\..\gds\Support\Serialization\BinaryDatabase.cpp" />
+    <ClCompile Include="..\..\gds\Support\ZLib\adler32.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\compress.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\crc32.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\deflate.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\infback.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\inffast.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\inflate.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\inftrees.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\trees.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\uncompr.c" />
+    <ClCompile Include="..\..\gds\Support\ZLib\zpipe_stream.cpp" />
+    <ClCompile Include="..\..\gds\Support\ZLib\zutil.c" />
+    <ClCompile Include="..\..\gds\Sound\OggVorbisAux.cpp" />
+    <ClCompile Include="..\..\gds\Sound\OpenALSoundManagerImpl.cpp" />
+    <ClCompile Include="..\..\gds\Sound\OpenALSoundSourceImpl.cpp" />
+    <ClCompile Include="..\..\gds\Sound\PyModule_SoundMethods.cpp" />
+    <ClCompile Include="..\..\gds\Sound\SoundManager.cpp" />
+    <ClCompile Include="..\..\gds\Sound\WaveFile.cpp" />
+    <ClCompile Include="..\..\gds\BVH\BVHBone.cpp" />
+    <ClCompile Include="..\..\gds\BVH\BVHPlayer.cpp" />
+    <ClCompile Include="..\..\gds\XML\XercesString.cpp" />
+    <ClCompile Include="..\..\gds\XML\XMLDocumentLoader.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Actor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Physics\PhysicsEngine.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Preprocessor.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Scene.cpp" />
+    <ClCompile Include="..\..\gds\Physics\SceneUtility.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysActor.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysicsEngine.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysScene.cpp" />
+    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.cpp" />
+    <ClCompile Include="..\..\gds\App\ApplicationBase.cpp" />
+    <ClCompile Include="..\..\gds\App\GameWindowManager.cpp" />
+    <ClCompile Include="..\..\gds\App\GameWindowManager_Win32.cpp" />
+    <ClCompile Include="..\..\gds\App\GameWindowManager_Win32_D3D.cpp" />
+    <ClCompile Include="..\..\gds\App\GameWindowManager_Win32_GL.cpp" />
+    <ClCompile Include="..\..\gds\App\GraphicsApplicationBase.cpp" />
+    <ClCompile Include="..\..\gds\Utilities\Physics\PhysicsMeshUtility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\BuiltinImageTextureLoader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\BuiltinSkyTextures.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Camera.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\CubeMapManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\D3DMisc.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\DoubleConeScrollEffect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\FloatRGBAColor.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\FloatRGBColor.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\FontFactory.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\General2DVertex.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\General3DVertex.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsComponentCollector.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsDevice.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\HemisphericLight.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\IndexedPolygon.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\LensFlare.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\LightStructs.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\LogOutput_OnScreen.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshContainerRenderMethod.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshObjectContainer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\NoiseTextureGenerators.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PostProcessEffect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PostProcessEffectManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PostProcessManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PrimitiveRenderer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PrimitiveShapeRenderer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PseudoNoiseEffect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\RectTriListIndex.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\RenderTask.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\RenderTaskProcessor.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\ShadowMapManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\ShadowMaps.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\ShapeContainers.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\ShapeDetector.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\ShapesExtractor.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\SimpleMotionBlur.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\SkyboxMisc.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\SurfaceFormat.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureCoord.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureRenderTarget.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\UnitCube.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\UnitSphere.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\VarianceShadowMapManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\BlendTransformsLoader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\CgEffectBase.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\CgEffectLightManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\GenericShaderDesc.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\GenericShaderGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\Shader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderLightManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderManagerHub.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderParameter.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderTechniqueHandle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderVariableLoader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\BasicMesh.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\CustomMesh.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\D3DXMeshModel.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\General3DMesh.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\MeshBone.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\MeshFactory.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\NVMeshMender.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\ProgressiveMesh.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\RectSetMesh.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\SkeletalMesh.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\TangentSpace.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\AsyncResourceLoader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceCacheManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceDescs.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceEntries.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceHandle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceLoaders.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsResources.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshObjectHandle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\ResourceLoadingStateHolder.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\ShaderHandle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureHandle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DFrameRect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DPolygon.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DPrimitive.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DRect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DRectSet.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DRoundRect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DTexRect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DTriangle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsEffectHandle.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsEffectManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsElementManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\GraphicsElements.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PyModule_GraphicsElement.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\BuiltinFonts.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\Font.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\FontBase.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\GrayscalePixelDataLoader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\SimpleBitmapFontData.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\TextureFont.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\TrueTypeTextureFont.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Font\UTFFont.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\LinePrimitives.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Point.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Rect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\RectTree.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\glext.h" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLExtensions.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLGraphicsDevice.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLGraphicsResources.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLTextureRenderTarget.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLCgEffect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLShader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLSLShaderLightManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DGraphicsResources.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DSurfaceFormat.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DTextureRenderTarget.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Direct3D9.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_BillboardVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_BumpVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_BumpWeightVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_ColorVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_MapVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_NormalVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_ShadowVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_TextureVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_TextureVertex2.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_TLVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_Vertices.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_WeightVertex.h" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\TextureTool.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\2DPrimitive\2DRectSetImpl_D3D.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DCgEffect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DShaderManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\HLSLShaderLightManager.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObject.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXPMeshObject.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXSMeshObject.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\3DStructs.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\aabb2.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\aabb3.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\AABTree.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\BSPTreeForBox.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\BSPTreeForTriangleMesh.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\ConvexPolygon.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Cylinder.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\index.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\IndexedTriangle.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\MathMisc.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Matrix22.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Matrix23.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Matrix33.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Matrix34.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Matrix44.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\MatrixConversions.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\misc.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\OBB3.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\OBBTree.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Perlin.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Plane.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\precision.h" />
+    <ClInclude Include="..\..\gds\3DMath\PrimitivePolygonModelMaker.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Quaternion.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\ray.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Sphere.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\stream.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Transform.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Triangle.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Vector2.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Vector2_Gen.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Vector3.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\Vector3_Gen.hpp" />
+    <ClInclude Include="..\..\gds\Input\DIInputDeviceMonitor.hpp" />
+    <ClInclude Include="..\..\gds\Input\DIKeyboard.hpp" />
+    <ClInclude Include="..\..\gds\Input\DirectInput.hpp" />
+    <ClInclude Include="..\..\gds\Input\DirectInputGamepad.hpp" />
+    <ClInclude Include="..\..\gds\Input\DirectInputMouse.hpp" />
+    <ClInclude Include="..\..\gds\Input\fwd.hpp" />
+    <ClInclude Include="..\..\gds\Input\GameInput.hpp" />
+    <ClInclude Include="..\..\gds\Input\GICodeTitle.hpp" />
+    <ClInclude Include="..\..\gds\Input\InputDevice.hpp" />
+    <ClInclude Include="..\..\gds\Input\InputDeviceGroup.hpp" />
+    <ClInclude Include="..\..\gds\Input\InputHandler.hpp" />
+    <ClInclude Include="..\..\gds\Input\InputHub.hpp" />
+    <ClInclude Include="..\..\gds\Input\StdKeyboard.hpp" />
+    <ClInclude Include="..\..\gds\Input\StdMouseInput.hpp" />
+    <ClInclude Include="..\..\gds\Input\ForceFeedback\DIForceFeedbackEffectImpl.hpp" />
+    <ClInclude Include="..\..\gds\Input\ForceFeedback\ForceFeedbackEffect.hpp" />
+    <ClInclude Include="..\..\gds\Input\ForceFeedback\fwd.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Aux.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Button.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Control.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_ControlDescBase.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_ControlRenderer.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_ControlRendererManager.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Controls.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Dialog.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_DialogCloseButton.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_DialogDesc.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_DialogManager.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Event.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_EventHandlerBase.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Input.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Keybind.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_ListBox.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_ListBoxDesc.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_ScrollBar.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_ScrollBarDesc.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Slider.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_SoundPlayer.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_Static.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_StdControlRenderer.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_StdControlRendererManager.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_SubDialogButton.hpp" />
+    <ClInclude Include="..\..\gds\GUI\GM_XMLParser.hpp" />
+    <ClInclude Include="..\..\gds\GUI\InputHandler_Dialog.hpp" />
+    <ClInclude Include="..\..\gds\GUI\ui.hpp" />
+    <ClInclude Include="..\..\gds\GUI\ui_fwd.hpp" />
+    <ClInclude Include="..\..\gds\Support\BitmapImage.hpp" />
+    <ClInclude Include="..\..\gds\Support\BMPImageExporter.hpp" />
+    <ClInclude Include="..\..\gds\Support\BuiltinImage.hpp" />
+    <ClInclude Include="..\..\gds\Support\CameraController.hpp" />
+    <ClInclude Include="..\..\gds\Support\CameraController_Win32.hpp" />
+    <ClInclude Include="..\..\gds\Support\CameraControllerBase.hpp" />
+    <ClInclude Include="..\..\gds\Support\DebugOutput.hpp" />
+    <ClInclude Include="..\..\gds\Support\ImageArchive.hpp" />
+    <ClInclude Include="..\..\gds\Support\lfs.hpp" />
+    <ClInclude Include="..\..\gds\Support\Macro.hpp" />
+    <ClInclude Include="..\..\gds\Support\MTRand.hpp" />
+    <ClInclude Include="..\..\gds\Support\ParamLoader.hpp" />
+    <ClInclude Include="..\..\gds\Support\Profile.hpp" />
+    <ClInclude Include="..\..\gds\Support\ResourceArchiver.hpp" />
+    <ClInclude Include="..\..\gds\Support\SafeDelete.hpp" />
+    <ClInclude Include="..\..\gds\Support\SafeDeleteVector.hpp" />
+    <ClInclude Include="..\..\gds\Support\SerializableStream.hpp" />
+    <ClInclude Include="..\..\gds\Support\Singleton.hpp" />
+    <ClInclude Include="..\..\gds\Support\stream_buffer.hpp" />
+    <ClInclude Include="..\..\gds\Support\StringAux.hpp" />
+    <ClInclude Include="..\..\gds\Support\TextFileScanner.hpp" />
+    <ClInclude Include="..\..\gds\Support\Timer.hpp" />
+    <ClInclude Include="..\..\gds\Support\Timer_Win32.hpp" />
+    <ClInclude Include="..\..\gds\Support\Vec3_StringAux.hpp" />
+    <ClInclude Include="..\..\gds\Support\Log\DefaultLog.hpp" />
+    <ClInclude Include="..\..\gds\Support\Log\Log.hpp" />
+    <ClInclude Include="..\..\gds\Support\Log\LogInputBase.hpp" />
+    <ClInclude Include="..\..\gds\Support\Log\LogOutputBase.hpp" />
+    <ClInclude Include="..\..\gds\Support\Log\StateLog.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Archive.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\ArchiveObjectBase.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\BinaryArchive_Input.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\BinaryArchive_Output.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\BinaryDatabase.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_2DArray.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_32BitColor.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_3DCommon.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_3DMath.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_Color.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_FixedVector.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_Light.hpp" />
+    <ClInclude Include="..\..\gds\Support\ZLib\crc32.hpp" />
+    <ClInclude Include="..\..\gds\Support\ZLib\deflate.hpp" />
+    <ClInclude Include="..\..\gds\Support\ZLib\inffast.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\inffixed.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\inflate.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\inftrees.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\trees.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\zconf.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\zconf.in.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\zlib.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\zpipe_stream.h" />
+    <ClInclude Include="..\..\gds\Support\ZLib\zutil.h" />
+    <ClInclude Include="..\..\gds\Support\UTF8\utf8.h" />
+    <ClInclude Include="..\..\gds\Support\UTF8\utf8\checked.h" />
+    <ClInclude Include="..\..\gds\Support\UTF8\utf8\core.h" />
+    <ClInclude Include="..\..\gds\Support\UTF8\utf8\unchecked.h" />
+    <ClInclude Include="..\..\gds\Sound\fwd.hpp" />
+    <ClInclude Include="..\..\gds\Sound\OggVorbisAux.hpp" />
+    <ClInclude Include="..\..\gds\Sound\OpenALSoundManagerImpl.hpp" />
+    <ClInclude Include="..\..\gds\Sound\OpenALSoundSourceImpl.hpp" />
+    <ClInclude Include="..\..\gds\Sound\PyModule_SoundMethods.hpp" />
+    <ClInclude Include="..\..\gds\Sound\Serialization_SoundHandle.hpp" />
+    <ClInclude Include="..\..\gds\Sound\SoundDesc.hpp" />
+    <ClInclude Include="..\..\gds\Sound\SoundHandle.hpp" />
+    <ClInclude Include="..\..\gds\Sound\SoundManager.hpp" />
+    <ClInclude Include="..\..\gds\Sound\SoundManagerImpl.hpp" />
+    <ClInclude Include="..\..\gds\Sound\SoundSource.hpp" />
+    <ClInclude Include="..\..\gds\Sound\WaveFile.hpp" />
+    <ClInclude Include="..\..\gds\BVH\BVHBone.hpp" />
+    <ClInclude Include="..\..\gds\BVH\BVHPlayer.hpp" />
+    <ClInclude Include="..\..\gds\BVH\fwd.hpp" />
+    <ClInclude Include="..\..\gds\XML\XercesString.hpp" />
+    <ClInclude Include="..\..\gds\XML\xmlch2x.hpp" />
+    <ClInclude Include="..\..\gds\XML\XMLDocumentLoader.hpp" />
+    <ClInclude Include="..\..\gds\XML\XMLNodeReader.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Actor.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\ActorDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\BodyDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\BoxShapeDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\CapsuleShapeDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Cloth.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\ClothDesc.hpp" />
+    <ClInclude Include="..\..\gds\Physics\ContactStreamIterator.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\DescImplFactory.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Enums.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\fwd.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Joint.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\JointDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Material.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\MaterialDesc.hpp" />
+    <ClInclude Include="..\..\gds\Physics\MeshData.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\PhysicsEngine.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Preprocessor.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\RawTriangleMeshShapeDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ray.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\RaycastHit.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\RevoluteJoint.Desc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\RevoluteJoint.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Scene.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\SceneDesc.hpp" />
+    <ClInclude Include="..\..\gds\Physics\SceneUtility.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Shape.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\ShapeDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\ShapeDescFactory.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\ShapeEnums.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\ShapeImpl.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\SphereShapeDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\SphericalJoint.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\SphericalJointDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\SpringDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Stream.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\TriangleMesh.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\TriangleMeshDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\TriangleMeshShapeDesc.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\fwd.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxMathConv.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysActor.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysCloth.hpp" />
+    <ClInclude Include="..\..\gds\Physics\Ageia\NxPhysContactStreamIterator.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysConv.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysicsEngine.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysJoint.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysMaterial.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysOutputStream.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysScene.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShape.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShapeFactory.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShapeImpl.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysStream.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysTriangleMesh.hpp" />
+    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxShapeDescImplFactory.hpp" />
+    <ClInclude Include="..\..\gds\App\ApplicationBase.hpp" />
+    <ClInclude Include="..\..\gds\App\GameWindowManager.hpp" />
+    <ClInclude Include="..\..\gds\App\GameWindowManager_Win32.hpp" />
+    <ClInclude Include="..\..\gds\App\GameWindowManager_Win32_D3D.hpp" />
+    <ClInclude Include="..\..\gds\App\GameWindowManager_Win32_GL.hpp" />
+    <ClInclude Include="..\..\gds\App\GraphicsApplicationBase.hpp" />
+    <ClInclude Include="..\..\gds\Utilities\TextFileScannerExtensions.hpp" />
+    <ClInclude Include="..\..\gds\Utilities\Physics\PhysicsMeshUtility.hpp" />
+    <ClInclude Include="..\..\gds\Utilities\Physics\PhysicsShapeMakerVisitor.hpp" />
+    <ClInclude Include="..\..\gds\3DMath.hpp" />
+    <ClInclude Include="..\..\gds\base.hpp" />
+    <ClInclude Include="..\..\gds\Graphics.hpp" />
+    <ClInclude Include="..\..\gds\GUI.hpp" />
+    <ClInclude Include="..\..\gds\Input.hpp" />
+    <ClInclude Include="..\..\gds\Physics.hpp" />
+    <ClInclude Include="..\..\gds\Platform.hpp" />
+    <ClInclude Include="..\..\gds\Platform_Win32.hpp" />
+    <ClInclude Include="..\..\gds\Support.hpp" />
+    <ClInclude Include="..\..\gds\XML.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\gds\Graphics\FloatRGBAColor.inl" />
+    <None Include="..\..\gds\Graphics\FloatRGBColor.inl" />
+    <None Include="..\..\gds\3DMath\AABTree.inl" />
+    <None Include="..\..\gds\3DMath\Matrix22.inl" />
+    <None Include="..\..\gds\3DMath\Matrix33.inl" />
+    <None Include="..\..\gds\3DMath\Matrix44.inl" />
+    <None Include="..\..\gds\3DMath\Quaternion.inl" />
+    <None Include="..\..\gds\3DMath\Vector2_Gen.inl" />
+    <None Include="..\..\gds\3DMath\Vector3_Gen.inl" />
+    <CustomBuildStep Include="..\..\gds\Physics\Actor.inl">
+      <FileType>Document</FileType>
+    </CustomBuildStep>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
