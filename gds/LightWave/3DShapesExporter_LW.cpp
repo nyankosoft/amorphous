@@ -3,7 +3,6 @@
 #include "LWO2_Object.hpp"
 #include "Graphics/ShapesExtractor.hpp"
 
-using namespace std;
 using namespace boost;
 
 

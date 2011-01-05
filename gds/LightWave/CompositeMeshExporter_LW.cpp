@@ -7,7 +7,9 @@
 
 #include "Graphics/MeshModel/ShadowVolumeMeshGenerator.hpp"
 
-using namespace std;
+using std::string;
+using std::vector;
+using std::list;
 using namespace boost;
 
 
@@ -91,7 +93,7 @@ void CCompositeMeshExporter_LW::SetIndicesForMeshAndMassSpringModel()
 
             // correct normal direction if necessary
 			if( Vec3Dot(vNormal,rVertex.vecNormal[vert_index[0]]) < 0 )
-				swap( pNormalIndex[0], pNormalIndex[1] );
+				std::swap( pNormalIndex[0], pNormalIndex[1] );
 		}
 		else if( iNumSamePosPoints == 2 )
 		{

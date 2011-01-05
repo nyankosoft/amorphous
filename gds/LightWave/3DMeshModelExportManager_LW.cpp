@@ -9,7 +9,8 @@ using namespace MeshModel;
 #include "Support/lfs.hpp"
 #include <boost/filesystem.hpp>
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 using namespace boost::filesystem;
 

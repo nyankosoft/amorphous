@@ -22,7 +22,7 @@ class CMassSpringExporter_LW : public CMassSpringExporter
 		float fMass;
 
 		/// indices to the connected points (the original point index of the LightWave object)
-		vector<int> veciAdjacentPointIndex;
+		std::vector<int> veciAdjacentPointIndex;
 
 		STempPointInfo() { iNewIndex = -1; bIsFixed = false; iFixedPointGroup = -1; fMass = 0.1f; }
 
@@ -30,7 +30,7 @@ class CMassSpringExporter_LW : public CMassSpringExporter
 
 	struct STempSpringInfo
 	{
-		string strName;
+		std::string strName;
 		float fSpring;
 		int iTagIndex;
 
@@ -40,7 +40,7 @@ class CMassSpringExporter_LW : public CMassSpringExporter
 	// used to create collision objects
 	struct STempPolygonGroup
 	{
-		vector<int> vecIndex;
+		std::vector<int> vecIndex;
 		int iOrigBoneIndex;
 		int iDestBoneIndex;	// used as the matrix index during runtime
 		
@@ -53,41 +53,41 @@ class CMassSpringExporter_LW : public CMassSpringExporter
 
 private:
 
-	void SetSpringInfo( vector<STempSpringInfo>& rvecSpringInfo, CLWO2_Object& rOrigObject );
+	void SetSpringInfo( std::vector<STempSpringInfo>& rvecSpringInfo, CLWO2_Object& rOrigObject );
 
-	bool GetPointInfo( vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer );
+	bool GetPointInfo( std::vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer );
 
 	/// find mass for each control point
-	void SetMass( vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer );
+	void SetMass( std::vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer );
 
-	int FindSpringInfo( int iPartIndex, vector<STempSpringInfo>& rvecSpringInfo );
+	int FindSpringInfo( int iPartIndex, std::vector<STempSpringInfo>& rvecSpringInfo );
 
-	void SetPointsForNormalCalculation( vector<CMS_PointProperty>& rvecControlPoint,
-		                                vector<STempPointInfo>& rvecPointInfo );
+	void SetPointsForNormalCalculation( std::vector<CMS_PointProperty>& rvecControlPoint,
+		                                std::vector<STempPointInfo>& rvecPointInfo );
 
 	void SetIndicesToFixedPoints();
 
 	/// for collision shape creation
 
-	void GroupConnectedPolygons( CLWO2_Layer& rLayer, vector<STempPolygonGroup>& vecPolygonGroup );
+	void GroupConnectedPolygons( CLWO2_Layer& rLayer, std::vector<STempPolygonGroup>& vecPolygonGroup );
 
 	void GroupConnectedPolygons_r( STempPolygonGroup& rGroup,
-								   vector<CLWO2_Face>& rvecPolygon,
-								   vector<bool>& Selected );
+								   std::vector<CLWO2_Face>& rvecPolygon,
+								   std::vector<bool>& Selected );
 
 	/// set fixed group indices for control points
 	void SetFixedGroupIndex( CLWO2_Layer& rLayer,
 							 CLWO2_Object& rOrigObject,
-							 vector<STempPointInfo>& rvecPointInfo,
-							 vector<int>& rvecDestBoneIndex );
+							 std::vector<STempPointInfo>& rvecPointInfo,
+							 std::vector<int>& rvecDestBoneIndex );
 
 	/// set fixed group indices for collision shapes
-	void SetFixedGroupIndex( vector<STempPolygonGroup>& rvecPolygonGroup,
+	void SetFixedGroupIndex( std::vector<STempPolygonGroup>& rvecPolygonGroup,
 							 CLWO2_Layer& rLayer,
 							 CLWO2_Object& rOrigObject,
-							 vector<int>& rvecDestBoneIndex );
+							 std::vector<int>& rvecDestBoneIndex );
 
-    void BuildCollisionShapes( CLWO2_Layer& rLayer, vector<STempPolygonGroup>& vecPolygonGroup );
+    void BuildCollisionShapes( CLWO2_Layer& rLayer, std::vector<STempPolygonGroup>& vecPolygonGroup );
 
 public:
 
@@ -99,11 +99,11 @@ public:
 
 	bool CreateMassSpringModel( CLWO2_Layer& rLayer,
 		                        CLWO2_Object& rOrigObject,
-								vector<int>& rvecDestBoneIndex );
+								std::vector<int>& rvecDestBoneIndex );
 
 	void CreateCollisionShapes( CLWO2_Layer& rLayer,
 		                        CLWO2_Object& rOrigObject,
-								vector<int>& rvecDestBoneIndex );
+								std::vector<int>& rvecDestBoneIndex );
 
 //	void SetBoneIndexMap( vector<int>& rvecDestBoneIndex )
 

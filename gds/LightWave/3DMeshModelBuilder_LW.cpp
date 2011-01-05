@@ -9,7 +9,9 @@
 #include "3DMeshModelBuilder_LW.hpp"
 using namespace MeshModel;
 
-using namespace std;
+using std::string;
+using std::vector;
+using std::list;
 using namespace boost;
 
 

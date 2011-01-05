@@ -2,7 +2,8 @@
 #include "Support/TextFileScanner.hpp"
 #include "Support/StringAux.hpp"
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 
