@@ -1,9 +1,5 @@
-
 #ifndef  __MASSSPRINGEXPORTER_H__
 #define  __MASSSPRINGEXPORTER_H__
-
-#include <vector>
-using namespace std;
 
 
 #include "PhysicsSim/MassSpringSim.hpp"

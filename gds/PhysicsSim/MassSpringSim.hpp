@@ -3,8 +3,6 @@
 
 
 #include <vector>
-using namespace std;
-
 #include "3DMath/Vector3.hpp"
 #include "3DMath/AABTree.hpp"
 
@@ -112,14 +110,14 @@ public:
 
 	float m_fSpringConst;
 
-	vector<CMS_PointProperty> m_vecControlPoint;
+	std::vector<CMS_PointProperty> m_vecControlPoint;
 
 	/// indices to pinned points
-	vector<int> m_veciFixedPointIndex;
+	std::vector<int> m_veciFixedPointIndex;
 
 	/// collision objects
-	vector<CMS_Sphere> m_vecSphere;
-//	vector<CMS_Plane> m_vecPlane;
+	std::vector<CMS_Sphere> m_vecSphere;
+//	std::vector<CMS_Plane> m_vecPlane;
 
 public:
 
@@ -153,8 +151,8 @@ class CMS_MassSpringSim
 	Vector3 m_vWindForce;
 
 	/// collision objects
-//	vector<CMS_Sphere> m_vecSphere; // maintained by aabtree
-	vector<CMS_Plane> m_vecPlane;
+//	std::vector<CMS_Sphere> m_vecSphere; // maintained by aabtree
+	std::vector<CMS_Plane> m_vecPlane;
 
 	CNonLeafyAABTree<CMS_Sphere> m_AABTree;
 
@@ -208,7 +206,7 @@ public:
 	/// update the positions of control points that are pinned to the mesh
 	void UpdateFixedMSpringPointPositions( Matrix34 *paMatrix );
 
-	vector<CMS_Sphere>& GetCollisionSphere() { return m_AABTree.GetGeometryBuffer(); }
+	std::vector<CMS_Sphere>& GetCollisionSphere() { return m_AABTree.GetGeometryBuffer(); }
 
 };
 
