@@ -1,9 +1,6 @@
 #ifndef  __COMPOSITEMESH_H__
 #define  __COMPOSITEMESH_H__
 
-#include <vector>
-using namespace std;
-
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/D3DXMeshModel.hpp"
 //#include "Graphics/MeshModel/MeshBone.hpp"
@@ -57,7 +54,7 @@ public:
 
 	/// indices from control points in the mass spring to mesh vertices
 	/// which have to be updated after physics is done in the mass spring simulation
-	vector<CMSPointToMeshVertexMap> m_vecMeshVertexIndex;
+	std::vector<CMSPointToMeshVertexMap> m_vecMeshVertexIndex;
 
 
 	CMA_CompositeMeshArchive() { m_OptionFlag = CMA_MESH; }
@@ -77,7 +74,7 @@ public:
 
 class CCompositeMesh
 {
-	string m_strFilename;
+	std::string m_strFilename;
 
 	CD3DXMeshModel *m_pMesh;
 
@@ -111,7 +108,7 @@ public:
 
 	bool LoadFromFile( const char *pcFilename );
 
-	string& GetFilename() { return m_strFilename; }
+	std::string& GetFilename() { return m_strFilename; }
 
 	void Render();
 
