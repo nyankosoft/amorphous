@@ -13,8 +13,6 @@
 #pragma comment( lib, "freetype244.lib" )
 #endif
 
-using namespace std;
-
 
 class CFreeTypeLibrary
 {
