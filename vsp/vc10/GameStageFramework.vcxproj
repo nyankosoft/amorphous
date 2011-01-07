@@ -41,6 +41,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.vc/$(Configuration)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.vc/$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -75,6 +76,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\gds\Script.hpp" />
+    <ClInclude Include="..\..\gds\Stage.hpp" />
     <ClInclude Include="..\..\gds\Stage\BinaryNode.hpp" />
     <ClInclude Include="..\..\gds\Stage\BSPMap.hpp" />
     <CustomBuildStep Include="..\..\gds\Stage\BSPMapFileExporter.hpp">
@@ -190,6 +193,7 @@
     <ClInclude Include="..\..\gds\Stage\CopyEntityDescFileArchive.hpp" />
     <ClInclude Include="..\..\gds\Stage\EntityHandle.hpp" />
     <ClInclude Include="..\..\gds\Stage\LightEntity.hpp" />
+    <ClInclude Include="..\..\gds\Task.hpp" />
     <ClInclude Include="..\..\gds\Task\GameTask.hpp" />
     <ClInclude Include="..\..\gds\Task\GameTask_AsyncStageLoader.hpp" />
     <ClInclude Include="..\..\gds\Task\GameTask_GlobalStageLoader.hpp" />
@@ -544,6 +548,12 @@
   <ItemGroup>
     <None Include="..\..\gds\Stage\CopyEntity.inl" />
     <None Include="..\..\gds\JigLib\JL_PhysicsActor.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BasicFramework.vcxproj">
+      <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
