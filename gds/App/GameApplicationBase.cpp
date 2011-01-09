@@ -47,8 +47,9 @@ void UpdateBaseEntityDatabase()
 	{
 		CScopeLog sl( "- Initializing & updating the base entity database" );
 
-		BaseEntityManager().UpdateDatabase( "../resources/entity/BaseEntity.txt" );
-		BaseEntityManager().OpenDatabase( "./System/BaseEntity.bin" );
+		string default_db_filepath = "./System/BaseEntity.bin";
+		BaseEntityManager().UpdateDatabase( "../resources/entity/BaseEntity.txt", default_db_filepath );
+		BaseEntityManager().OpenDatabase( default_db_filepath );
 		s_bBaseEntityDatabase_Initialized = true;
 	}
 }
@@ -218,16 +219,25 @@ bool CGameApplicationBase::InitBase()
 
 //	LOG_PRINT( " - Initialized the input devices." );
 
-	// initialize sound
-	SoundManager().Init( global_params.AudioLibraryName );
+
+	//
+	// Sound Module Initialization
+	//
+
+	bool sound_module_init = SoundManager().Init( global_params.AudioLibraryName );
+
+	LOG_PRINT( " Sound module initialization: " + string(sound_module_init ? "[  OK  ]" : "[FAILED]") );
+
 	SoundManager().LoadSoundsFromList( "./Sound/SoundList.lst" );
 
-//	LOG_PRINT( " - Initialized the sound manager" );
+
+	//
+	// Physics Engine Initialization
+	//
 
 	bool phys_init = physics::PhysicsEngine().Init();
 
-	if( phys_init )
-		LOG_PRINT( " Initialization of the physics engine: " + string(phys_init ? "[  OK  ]" : "[FAILED]") );
+	LOG_PRINT( " Physics engine initialization: " + string(phys_init ? "[  OK  ]" : "[FAILED]") );
 
 	// update & load the item database
 //	ItemDatabaseManager().Update( "..." );
