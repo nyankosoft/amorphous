@@ -10,7 +10,6 @@
 #include "Graphics/SkyboxMisc.hpp"
 #include "Support/CameraController_Win32.hpp"
 
-using namespace std;
 using namespace boost;
 
 
@@ -25,7 +24,7 @@ extern CGraphicsTestBase *CreateTestInstance()
 
 extern const std::string GetAppTitle()
 {
-	return string("Simple Motion Blur Test");
+	return std::string("Simple Motion Blur Test");
 }
 
 

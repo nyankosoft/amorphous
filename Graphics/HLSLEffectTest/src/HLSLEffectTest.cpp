@@ -9,7 +9,8 @@
 #include "gds/Utilities/TextFileScannerExtensions.hpp"
 #include "gds/GUI.hpp"
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 

@@ -7,8 +7,9 @@
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
 #include "gds/GUI.hpp"
+#include <boost/foreach.hpp>
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 
@@ -76,11 +77,6 @@ CGLSLTest::CGLSLTest()
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
-
-//	m_TestAsyncLoading = true;
-
-//	GraphicsResourceManager().AllowAsyncLoading( m_TestAsyncLoading );
-
 
 	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
 //	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );

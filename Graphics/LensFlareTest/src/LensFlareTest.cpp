@@ -10,7 +10,7 @@
 #include "Graphics/SkyboxMisc.hpp"
 #include "Support/CameraController_Win32.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 

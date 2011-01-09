@@ -2,10 +2,9 @@
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/Font/TrueTypeTextureFont.hpp"
 #include "gds/Input.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/BitmapImage.hpp"
+#include "gds/Support/ParamLoader.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 
@@ -49,7 +48,9 @@ int CTextureFontTest::Init()
 	m_pFont->SetShadowColor( SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.5f ) );
 //	m_pFont->SetShadowShift( Vector2( 10, 10 ) );
 
-	m_BGTexture.Load( "images/bg.jpg" );
+	string bg_image = "images/bg.jpg";
+	LoadParamFromFile( "params.txt", "background", bg_image );
+	bool image_loaded = m_BGTexture.Load( bg_image );
 
 	return 0;
 }

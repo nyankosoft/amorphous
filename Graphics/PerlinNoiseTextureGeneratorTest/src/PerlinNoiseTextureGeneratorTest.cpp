@@ -11,7 +11,7 @@
 #include "gds/Utilities/PerlinAux.hpp"
 #include "gds/GUI.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 

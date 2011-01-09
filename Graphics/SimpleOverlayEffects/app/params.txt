@@ -1,3 +1,4 @@
-model          models/Chevelle.msh
+#model          models/Chevelle.msh
+model          models/fw43.msh
 stripe_width   1
 stripe_opacity 0.3

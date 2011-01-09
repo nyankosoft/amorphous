@@ -15,28 +15,6 @@
 #include "../../../_Common/GraphicsTestBase.hpp"
 
 
-class CTestMeshHolder
-{
-public:
-	CMeshObjectHandle m_Handle;
-	Matrix34 m_Pose;
-
-	CMeshResourceDesc m_MeshDesc;
-
-	enum LoadingStyleName
-	{
-		LOAD_SYNCHRONOUSLY,
-		LOAD_MESH_AND_TEX_TOGETHER,
-		LOAD_MESH_AND_TEX_SEPARATELY,
-		NUM_LOADING_STYLES
-	};
-
-	LoadingStyleName m_LoadingStyle;
-
-	CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose );
-};
-
-
 class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public CGraphicsComponent
 {
 	enum UIID
@@ -58,8 +36,7 @@ class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public CGraphicsComp
 
 	bool m_EnableStripeEffect;
 
-//	std::vector<CMeshObjectHandle> m_vecMesh;
-	std::vector<CTestMeshHolder> m_vecMesh;
+	std::vector<CMeshObjectHandle> m_Meshes;
 
 	CShaderHandle m_Shader;
 

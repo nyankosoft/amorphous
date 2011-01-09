@@ -13,7 +13,7 @@
 //#include "Graphics/SkyboxMisc.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 
@@ -76,6 +76,9 @@ int COBBTreeTest::Init()
 	mesh_archive.LoadFromFile( model_pathname );
 
 	InitOBBTree( mesh_archive );
+
+	if( m_pOBBTree )
+		m_pOBBTree->DumpToTextFile( model_pathname + "-obbtree.txt" );
 
 	return 0;
 }

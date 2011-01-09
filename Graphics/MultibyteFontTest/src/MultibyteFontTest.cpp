@@ -1,5 +1,4 @@
 #include "MultibyteFontTest.hpp"
-#include <boost/foreach.hpp>
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/Font/UTFFont.hpp"
@@ -12,7 +11,8 @@
 #include "gds/Support/UTF8/utf8.h"
 #include "gds/GUI.hpp"
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 /*

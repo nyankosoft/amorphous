@@ -6,7 +6,7 @@
 #include "gds/Support/Macro.h"
 #include "gds/GUI.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 

@@ -9,7 +9,7 @@
 #include "Support/ParamLoader.hpp"
 #include "Input.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 

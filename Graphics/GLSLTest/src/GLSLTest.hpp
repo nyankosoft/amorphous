@@ -3,20 +3,17 @@
 
 
 #include <vector>
-#include <boost/foreach.hpp>
-#include <boost/shared_ptr.hpp>
-using namespace boost;
-
-#include <gds/3DMath/Matrix34.hpp>
-#include <gds/Graphics/fwd.hpp>
-#include <gds/Graphics/GraphicsComponentCollector.hpp>
-#include <gds/Graphics/MeshObjectHandle.hpp>
-#include <gds/Graphics/ShaderHandle.hpp>
-#include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
-#include <gds/Input/fwd.hpp>
-#include <gds/Input.hpp>
-#include <gds/GUI/fwd.hpp>
-#include <gds/Graphics/OpenGL/Shader/GLShader.hpp>
+#include "boost/shared_ptr.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/Graphics/ShaderHandle.hpp"
+#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Input/fwd.hpp"
+#include "gds/Input.hpp"
+#include "gds/GUI/fwd.hpp"
+#include "gds/Graphics/OpenGL/Shader/GLShader.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
@@ -71,17 +68,13 @@ class CGLSLTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	CShaderTechniqueHandle m_MeshTechnique;
 
-	shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
+	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
 	boost::shared_ptr<CFontBase> m_pFont;
-
-	CInputHandlerSharedPtr m_pInputHandler;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	boost::shared_ptr<CGLProgram> m_pGLProgram;
-
-//	bool m_TestAsyncLoading;
 
 	char m_TextBuffer[TEXT_BUFFER_SIZE];
 

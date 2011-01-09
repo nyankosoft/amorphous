@@ -11,40 +11,12 @@
 #include "gds/Input.hpp"
 #include "gds/GUI.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 
 extern CPlatformDependentCameraController g_CameraController;
 
-
-CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )
-:
-m_LoadingStyle(loading_style),
-m_Pose(pose)
-{
-	m_MeshDesc.ResourcePath = filepath;
-
-	if( loading_style == LOAD_MESH_AND_TEX_TOGETHER )
-	{
-		m_MeshDesc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
-		m_MeshDesc.LoadOptionFlags = MeshLoadOption::LOAD_TEXTURES_ASYNC;
-	}
-	else if( loading_style == LOAD_MESH_AND_TEX_SEPARATELY )
-	{
-		m_MeshDesc.LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
-		m_MeshDesc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
-		m_Handle.Load( m_MeshDesc );
-	}
-	else if( loading_style == LOAD_SYNCHRONOUSLY )
-	{
-		m_MeshDesc.LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
-		m_Handle.Load( m_MeshDesc );
-	}
-//	else
-//	{
-//	}
-}
 
 extern CGraphicsTestBase *CreateTestInstance()
 {
@@ -146,42 +118,10 @@ int CSimpleOverlayEffectsTest::Init()
 	m_DefaultTechnique.SetTechniqueName( "NoShader" );
 */
 
-/*	string mesh_file[] =
-	{
-		"./models/sample_level_00.msh", // manually load textures
-		"./models/FlakySlate.msh",      // load mesh and texture asnchronously
-		"./models/HighAltitude.msh",
-		"./models/RustPeel.msh",
-		"./models/SmashedGrayMarble.msh"
-	};
-
-	BOOST_FOREACH( const string& filepath, mesh_file )
-	{
-		m_vecMesh.push_back( CMeshObjectHandle() );
-
-		CMeshResourceDesc desc;
-		desc.ResourcePath = filepath;
-
-		if( m_TestAsyncLoading )
-			desc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
-
-		m_vecMesh.back().Load( desc );
-	}
-*/
-
 	string model = "models/fw43.msh";
 	LoadParamFromFile( "params.txt", "model", model );
-
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/sample_level_00.msh",   CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.push_back( CTestMeshHolder( model,                            CTestMeshHolder::LOAD_SYNCHRONOUSLY,   Matrix34Identity() ) );
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/RustPeel.msh",          CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1,-100), Matrix33Identity() ) ) );
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/SmashedGrayMarble.msh", CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3(-25,1,-100), Matrix33Identity() ) ) );
-
-	for( size_t i=0; i<m_vecMesh.size(); i++ )
-	{
-		m_vecMesh[i].m_Handle.Load( m_vecMesh[i].m_MeshDesc );
-	}
+	m_Meshes.resize( 1 );
+	m_Meshes[0].Load( model );
 
 	InitShader();
 
@@ -211,22 +151,14 @@ void CSimpleOverlayEffectsTest::RenderMeshes()
 	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
-//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
-	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
+	BOOST_FOREACH( CMeshObjectHandle& mesh, m_Meshes )
 	{
-//		CBasicMesh *pMesh = mesh.GetMesh().get();
+		shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
-		{
-			// set world transform
-//			FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
-			shader_mgr.SetWorldTransform( holder.m_Pose );
+		CBasicMesh *pMesh = mesh.GetMesh().get();
 
-			CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
-
-			if( pMesh )
-				pMesh->Render( shader_mgr );
-		}
+		if( pMesh )
+			pMesh->Render( shader_mgr );
 	}
 
 	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
