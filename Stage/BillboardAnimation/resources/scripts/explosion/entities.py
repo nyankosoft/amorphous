@@ -8,7 +8,7 @@ import stage_util
 
 misc_util = stage_util.CreateStageMiscUtility()
 
-misc_util.CreateSkybox( texture_path = "textures/skygrad-sunny_cloudless-s1x256.jpg" )
+misc_util.CreateSkybox()
 
 misc_util.CreateStaticBox( edge_lengths = math3d.Vector3(200,1,200), diffuse_color = gfx.Color(0.50,0.45,0.45,1.0), pose = math3d.Matrix34( math3d.Vector3(0.0,-0.5,0.0), math3d.Matrix33Identity() ) )
 
