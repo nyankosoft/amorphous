@@ -925,7 +925,7 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 	hlsl_effect += tech;
 
 	static int s_count = 0;
-	FILE *fp = fopen( fmt_string("embedded_effect_%03d.fx",s_count++).c_str(),"w");
+	FILE *fp = fopen( fmt_string("./debug/embedded_effect_%03d.fx",s_count++).c_str(),"w");
 	if( fp )
 	{
 		fprintf(fp,hlsl_effect.c_str());
