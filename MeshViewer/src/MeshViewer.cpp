@@ -13,6 +13,7 @@
 #include "gds/Graphics/FogParams.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Graphics/GraphicsResourceManager.hpp"
 #include "gds/Input.hpp"
 #include "gds/App/GameWindowManager.hpp"
 #include "gds/Support/ParamLoader.hpp"
@@ -20,7 +21,8 @@
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 #include <boost/filesystem.hpp>
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 using namespace boost::filesystem;
 
@@ -287,14 +289,20 @@ void CMeshViewer::Render()
 	rect.SetColor( SFloatRGBAColor(0,0,0,0.6f) );
 	rect.Draw();
 
-	boost::shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 	{
 		int num_subsets   = pMesh->GetNumMaterials();
 		unsigned int num_vertices  = pMesh->GetNumVertices();
 		unsigned int num_triangles = pMesh->GetNumTriangles();
+		const Vector3 whd = pMesh->GetAABB().vMax - pMesh->GetAABB().vMin; // width, height and depth
 		m_pFont->SetFontSize( 8, 16 );
-		m_pFont->DrawText( fmt_string( "%u vertices | %u triangles | %d subsets", num_vertices, num_triangles, num_subsets ), Vector2( 20, screen_h - 20 ) );
+		m_pFont->DrawText(
+			fmt_string( "%u vertices | %u triangles | %d subsets | %.03f x %.03f x %.03f[m]",
+			num_vertices, num_triangles, num_subsets,
+			whd.x, whd.y, whd.z ),
+			Vector2( 20, screen_h - 20 )
+			);
 	}
 
 	// render the text info
