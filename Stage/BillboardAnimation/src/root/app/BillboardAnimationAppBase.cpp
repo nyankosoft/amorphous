@@ -9,7 +9,7 @@
 #include "gds/Script.hpp"
 #include "gds/GUI.hpp"
 #include "gds/GameCommon/MouseCursor.hpp"
-#include "gds/App/GameWindowManager_Win32.hpp"
+#include "gds/App/GameWindowManager.hpp"
 
 
 using namespace std;
