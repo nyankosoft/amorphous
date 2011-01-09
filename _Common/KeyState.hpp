@@ -8,7 +8,7 @@ public:
 
 	enum Code
 	{
-		Enter,
+		Enter = 0xFF,
 		Space,
 		Down,
 		Up,
@@ -28,7 +28,7 @@ public:
 		Alt,
 //		RightAlt,
 //		LeftAlt,
-		NumKeyCodes
+		NumKeyCodes = Alt - Enter + 1
 	};
 };
 

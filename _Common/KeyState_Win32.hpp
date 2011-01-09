@@ -10,6 +10,9 @@ inline void init_vkcode_table( int* tbl, int array_size )
 	for( int i=0; i<array_size; i++ )
 		tbl[i] = VK_RETURN;
 
+	for( int i=0; i<'Z' - 'A' + 1; i++ )
+		tbl['A'+i] = 'A'+i;
+
 	tbl[KeyCode::Enter]      = VK_RETURN;
 	tbl[KeyCode::Space]      = VK_SPACE;
 	tbl[KeyCode::Down]       = VK_DOWN;

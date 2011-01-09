@@ -13,11 +13,11 @@
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Profile.hpp"
-#include "gds/Support/BitmapImage.hpp"
+#include "gds/Support/BitmapImage.hpp" // For InitFreeImageErrorReport()
 #include "gds/Support/lfs.hpp"
 #include "gds/Input.hpp"
 #include "gds/Input/StdMouseInput.hpp"
-#include "gds/XML.hpp"
+//#include "gds/XML.hpp"
 #include "gds/App/GameWindowManager_Win32.hpp"
 //#include <gl/gl.h>
 
@@ -264,12 +264,12 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	g_CmdLine = lpCmdLine;
 
 	const string iwd = lfs::get_cwd(); // initial working directory
-	if( iwd.substr( iwd.length() - 4 ) != "/_App"
-	 && iwd.substr( iwd.length() - 4 ) != "\\_App" )
+	if( iwd.substr( iwd.length() - 4 ) != "/app"
+	 && iwd.substr( iwd.length() - 4 ) != "\\app" )
 	{
 		// working directory is not set to the directory which contains the application binary
 //		chdir( "../../../_App" );
-		chdir( "../app" );
+		chdir( "../../app" );
 	}
 
 	// draft - register the render thread id
@@ -295,7 +295,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	if( res != Result::SUCCESS )
 		return 0;
 
-	CLogOutput_HTML html_log( GetAppTitle() + "_" + string(GetBuildInfo()) + "_Log.html" );
+	CLogOutput_HTML html_log( GetAppTitle() + "_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
 
 	InitFreeImageErrorReport();
