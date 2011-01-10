@@ -8,10 +8,9 @@
 #include "Script.hpp"
 #include "GUI.hpp"
 #include "GameCommon/MouseCursor.hpp"
-#include "App/GameWindowManager_Win32.hpp"
+#include "App/GameWindowManager.hpp"
 
-
-using namespace std;
+using std::string;
 using namespace boost;
 
 
@@ -166,26 +165,8 @@ bool CBasicPhysicsAppBase::Init()
 		return false;
 
 
-	//
-	// Do initial settings using scripts
-	//
-
 	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GameWindowManager().GetScreenWidth()) / 800.0f;
 	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
-/*
-	CScriptManager script_mgr;
-	script_mgr.AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
-	script_mgr.LoadScriptArchiveFile( "Script/init.bin" );
-	script_mgr.Update();
-
-	//
-	// Register (task name) : (task ID) maps
-	//
-
-	CGameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
-*/
 	return true;
 }
