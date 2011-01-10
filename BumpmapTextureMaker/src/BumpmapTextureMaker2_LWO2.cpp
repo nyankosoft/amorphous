@@ -7,13 +7,14 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Support/fnop.hpp"
 #include "Support/Macro.h"
-#include "Support/BMPImageExporter.hpp"
+//#include "Support/BMPImageExporter.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "LightWave/LightWaveObject.hpp"
 #include "LightWave/3DMeshModelBuilder_LW.hpp"
 
-using namespace std;
+using std::string;
+using std::list;
 using namespace boost;
 
 
@@ -233,7 +234,7 @@ void CBumpmapTextureMaker2_LWO2::RenderBackground()
 
 	float w = 512;
 
-	background_rect.SetPosition( D3DXVECTOR2(0,0), D3DXVECTOR2(w,w) );
+	background_rect.SetPosition( Vector2(0,0), Vector2(w,w) );
 
 	DWORD dwColor;
 	if( m_TechniqueID == BTM_RENDERMODE_NORMALMAP )
@@ -346,11 +347,15 @@ void CBumpmapTextureMaker2_LWO2::SetRenderMode( unsigned int render_mode )
 
 void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 {
-	CTextureRenderTarget tex_render_target;
+	shared_ptr<CTextureRenderTarget> pTextureRenderTarget = CTextureRenderTarget::Create();
+	if( !pTextureRenderTarget )
+		return;
+
+	CTextureRenderTarget& tex_render_target = *pTextureRenderTarget;
 
 	tex_render_target.Init( width, height );
 
-	tex_render_target.SetBackgroundColor( 0xFF000000 );
+	tex_render_target.SetBackgroundColor( SFloatRGBAColor::Black() );
 
 	int i;
 	string strTexFilename[3];
@@ -369,8 +374,8 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 	  BTM_RENDERMODE_NORMALMAP,
 	  BTM_RENDERMODE_BUMPY_TEXTURED_SURFACE };
 
-	CBMPImageExporter bmp_exporter;
-	DWORD *pdwTexelData;
+//	CBMPImageExporter bmp_exporter;
+//	DWORD *pdwTexelData;
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -403,14 +408,15 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 
 		tex_render_target.CopyRenderTarget();
 
-		LPDIRECT3DTEXTURE9 pTex = tex_render_target.GetRenderTargetCopyTexture();
+		CTextureHandle tex = tex_render_target.GetRenderTargetTexture();
+		tex.SaveTextureToImageFile( strTexFilename[i] );
 
-		// gain the access to the texel data of the texture surface
-		D3DLOCKED_RECT locked_rect;
-		pTex->LockRect( 0, &locked_rect, NULL, 0 );
-		pdwTexelData = (DWORD *)locked_rect.pBits;
+		// Get the access to the texel data of the texture surface
+//		D3DLOCKED_RECT locked_rect;
+//		pTex->LockRect( 0, &locked_rect, NULL, 0 );
+//		pdwTexelData = (DWORD *)locked_rect.pBits;
 
-		bmp_exporter.OutputImage_24Bit( strTexFilename[i].c_str(), width, height, pdwTexelData );
+//		bmp_exporter.OutputImage_24Bit( strTexFilename[i].c_str(), width, height, pdwTexelData );
 	}
 
 	m_TechniqueID = orig_tech_id;

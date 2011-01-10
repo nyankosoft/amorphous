@@ -80,9 +80,13 @@ public:
 
 int main( int argc, char *argv[] )
 {
-	string init_wd( lfs::get_cwd() );
-	if( init_wd.find( "\\app" ) != init_wd.length() - 4 )
-		lfs::set_wd( "../app" );
+	const string init_wd( lfs::get_cwd() );
+
+	if( init_wd.find( "\\app" ) != init_wd.length() - 4
+	 && init_wd.find( "/app" )  != init_wd.length() - 4 )
+	{
+		lfs::set_wd( "../../app" );
+	}
 
 	string src_filepath;
 	if( 2 <= argc )

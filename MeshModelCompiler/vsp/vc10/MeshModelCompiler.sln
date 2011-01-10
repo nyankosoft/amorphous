@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshModelCompiler", "MeshModelCompiler.vcxproj", "{1B062B0F-6E8A-4027-924F-687C1E1BE134}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicFramework", "..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj", "{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Framework", "..\..\..\..\Project1\vsp\vc10\LW_Framework.vcxproj", "{F9CA35B1-066F-49DE-8228-20E959F55651}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_FrameworkEx", "..\..\..\..\Project1\vsp\vc10\LW_FrameworkEx.vcxproj", "{FFCFEADA-BFD4-4AEB-BF0E-9400918B4B46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B062B0F-6E8A-4027-924F-687C1E1BE134}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1B062B0F-6E8A-4027-924F-687C1E1BE134}.Debug|Win32.Build.0 = Debug|Win32
+		{1B062B0F-6E8A-4027-924F-687C1E1BE134}.Release|Win32.ActiveCfg = Release|Win32
+		{1B062B0F-6E8A-4027-924F-687C1E1BE134}.Release|Win32.Build.0 = Release|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Debug|Win32.Build.0 = Debug|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Release|Win32.ActiveCfg = Release|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Release|Win32.Build.0 = Release|Win32
+		{F9CA35B1-066F-49DE-8228-20E959F55651}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F9CA35B1-066F-49DE-8228-20E959F55651}.Debug|Win32.Build.0 = Debug|Win32
+		{F9CA35B1-066F-49DE-8228-20E959F55651}.Release|Win32.ActiveCfg = Release|Win32
+		{F9CA35B1-066F-49DE-8228-20E959F55651}.Release|Win32.Build.0 = Release|Win32
+		{FFCFEADA-BFD4-4AEB-BF0E-9400918B4B46}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FFCFEADA-BFD4-4AEB-BF0E-9400918B4B46}.Debug|Win32.Build.0 = Debug|Win32
+		{FFCFEADA-BFD4-4AEB-BF0E-9400918B4B46}.Release|Win32.ActiveCfg = Release|Win32
+		{FFCFEADA-BFD4-4AEB-BF0E-9400918B4B46}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

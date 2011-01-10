@@ -13,7 +13,6 @@
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 
-using namespace std;
 using namespace boost;
 
 
@@ -36,27 +35,14 @@ static const float g_fIndicatorHeight = 0.05f;
 // Graphics.SetDepthBufferMode( DepthBuffer::W )
 // Graphics.SetDepthBufferMode( DepthBuffer::Disabled )
 
-class Culling
-{
-	enum Mode
-	{
-		CCW,
-		CW,
-		None,
-		NumModes
-	};
-};
-
-// Graphics.SetCulling( Culling::Mode mode )
 
 // Graphics.SetVertexFog( color, min_dist, max_dist )
 // Graphics.SetPixelFog( color, min_dist, max_dist )
 
-// Graphics.SetAlphaBlend( true );
-// bool alpha_blend_enabled = Graphics.GetAlphaBlend();
 
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace msynth;
 
 /*
@@ -236,7 +222,8 @@ void CSkeletalMeshMotionViewer::UpdateVertexBlendTransforms( CShaderManager& sha
 	if( !shader_mgr.GetEffect() )
 		return;
 
-	skeletal_mesh.SetLocalTransformsFromCache();
+//	skeletal_mesh.SetLocalTransformsFromCache();
+	skeletal_mesh.CalculateBlendTransformsFromCachedLocalTransforms();
 
 	vector<Transform> vert_blend_transforms;
 	skeletal_mesh.GetBlendTransforms( vert_blend_transforms );
@@ -251,8 +238,13 @@ void CSkeletalMeshMotionViewer::UpdateVertexBlendMatrices( CShaderManager& shade
 
 	HRESULT hr = S_OK;
 
-	skeletal_mesh.SetLocalTransformsFromCache();
+//	skeletal_mesh.SetLocalTransformsFromCache();
+	skeletal_mesh.CalculateBlendTransformsFromCachedLocalTransforms();
 
+	vector<Transform> blend_transforms;
+	skeletal_mesh.GetBlendTransforms( blend_transforms );
+	shader_mgr.SetVertexBlendTransforms( blend_transforms );
+/*
 	int num_max_matrices = 36;
 	int num_bones = skeletal_mesh.GetNumBones();
 	int num_matrices = take_min( num_bones, num_max_matrices );
@@ -265,7 +257,7 @@ void CSkeletalMeshMotionViewer::UpdateVertexBlendMatrices( CShaderManager& shade
 
 		if( FAILED(hr) )
 			return;
-	}
+	}*/
 }
 
 

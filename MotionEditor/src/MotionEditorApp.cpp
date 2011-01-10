@@ -10,7 +10,7 @@
 
 #include <boost/filesystem.hpp>
 
-using namespace std;
+using std::string;
 using namespace boost;
 using namespace boost::filesystem;
 

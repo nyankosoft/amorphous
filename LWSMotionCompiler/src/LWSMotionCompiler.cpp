@@ -6,7 +6,8 @@
 #include <gds/Support/StringAux.hpp>
 #include <gds/base.hpp>
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 using namespace boost::filesystem;
 using namespace msynth;

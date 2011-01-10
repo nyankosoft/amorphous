@@ -13,12 +13,14 @@
 #include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Graphics/FogParams.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "gds/Graphics/GraphicsResourceManager.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 #include <boost/filesystem.hpp>
 
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 using namespace boost::filesystem;
 

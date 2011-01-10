@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{ea1cc91a-14a5-45dc-929e-37956e6cbf36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework">
+      <UniqueIdentifier>{9f311c15-bc3b-4689-8e91-18cf83ab216e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework\App">
+      <UniqueIdentifier>{6a76a2f3-3837-41ef-9536-3ecf60039f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework\MotionSynthesis">
+      <UniqueIdentifier>{7e848c68-65f5-4e18-bc8f-21c9bd8a51ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\LWSMotionCompiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LWSMotionCompilerMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.cpp">
+      <Filter>Source Files\Framework\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\BlendNode.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHMotionDatabaseCompiler.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\HumanoidMotionSynthesizer.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionBlender.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabase.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabaseBuilder.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitive.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitiveBlender.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\Skeleton.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\SkeletonRenderer.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\TransformNode.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\LWSMotionCompiler.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\App\GameWindowManager.hpp">
+      <Filter>Source Files\Framework\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.hpp">
+      <Filter>Source Files\Framework\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\BlendNode.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHMotionDatabaseCompiler.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\fwd.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\HumanoidMotionSynthesizer.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\HumanoidMotionTable.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionBlender.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabase.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabaseBuilder.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitive.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitiveBlender.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\Skeleton.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\SkeletonRenderer.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\TransformNode.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\app\params.txt" />
+  </ItemGroup>
+</Project>
