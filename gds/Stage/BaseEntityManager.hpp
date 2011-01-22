@@ -39,7 +39,8 @@ private:
 	CBaseEntity* CreateBaseEntity( const std::string& baseentity_classname );
 
 	bool LoadAllBaseEntitiesFromRootTextFile( const std::string& strRootTextFile,
-											  std::vector<CBaseEntity *>& vecpBaseEntity );
+											  std::vector<CBaseEntity *>& vecpBaseEntity,
+											  std::string& db_filepath );
 
 	bool LoadAllBaseEntitiesFromTextFile( const std::string& strDestDBFile,
 		                                  std::vector<CBaseEntity *>& vecpBaseEntity );
@@ -67,9 +68,9 @@ public:
 	/**
 	 * updates binary database of base entities
 	 * \param strSrcTextFile a text file which contains input filenames and an output database filename
-	 * the filename of the output database is set with 'output' keyword in the source text file.
+	 * The filename of the output database can be overriden set with 'output' keyword in the source text file.
 	 */
-	bool UpdateDatabase( const std::string& strSrcTextFile/*, const std::string& strDestDBFile = ""*/ );
+	bool UpdateDatabase( const std::string& strSrcTextFile, std::string& db_filepath );
 
 	bool OpenDatabase( const std::string& filename );
 };

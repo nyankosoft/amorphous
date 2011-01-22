@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace boost::filesystem;
 
 
 CSingleton<CBaseEntityManager> CBaseEntityManager::m_obj;
@@ -73,46 +74,41 @@ CBaseEntityManager::~CBaseEntityManager()
 
 
 bool CBaseEntityManager::LoadAllBaseEntitiesFromRootTextFile( const string& strRootTextFile,
-															  vector<CBaseEntity *>& vecpBaseEntity )
+															  vector<CBaseEntity *>& vecpBaseEntity,
+															  std::string& db_filepath )
 {
-	using namespace filesystem;
-
 	CTextFileScanner scanner;
 	if( !scanner.OpenFile( strRootTextFile ) )
 	{
-		LOG_PRINT_ERROR( " - Cannot open file: " + strRootTextFile );
+		LOG_PRINT_WARNING( " - Cannot open file: " + strRootTextFile );
 		return false;
 	}
 
 	// change to the directory of 'strRootTextFile'
-//	dir_stack dir_stk( get_path( strRootTextFile ) );
 	path parent_path = path(strRootTextFile).parent_path();
 
 	vector<string> vecSrcTextFile;
-	string tag, filename, database_filename;
+	string filename, relative_db_filepath;
 	for( ; !scanner.End(); scanner.NextLine() )
 	{
-		tag = scanner.GetTagString();
-
 		if( scanner.TryScanLine( "input", filename ) )
 			vecSrcTextFile.push_back( path(parent_path / filename).string() );
 
-		scanner.TryScanLine( "output", database_filename );
+		scanner.TryScanLine( "output", relative_db_filepath );
 	}
 
-	if( database_filename.length() == 0 )	{ LOG_PRINT_ERROR( " - output filename is not specified." ); return false; }
-	if( vecSrcTextFile.size() == 0 )		{ LOG_PRINT_ERROR( " - no input file is specified." ); return false; }
+	if( vecSrcTextFile.size() == 0 )		 { LOG_PRINT_ERROR( " - no input file is specified." ); return false; }
+
+	if( 0 < relative_db_filepath.length() )
+	{
+		db_filepath = path( parent_path / relative_db_filepath ).string();
+	}
 
 	size_t i, num_input_files = vecSrcTextFile.size();
 	for( i=0; i<num_input_files; i++ )
 	{
 		LoadAllBaseEntitiesFromTextFile( vecSrcTextFile[i], vecpBaseEntity );
 	}
-
-	path db_filepath = parent_path / database_filename;
-	OutputDatabaseFile( db_filepath.string(), vecpBaseEntity );
-
-//	dir_stk.prevdir();
 
 	return true;
 }
@@ -232,7 +228,7 @@ bool CBaseEntityManager::OpenDatabase( const std::string& filename )
 }
 
 
-bool CBaseEntityManager::UpdateDatabase( const string& strSrcTextFile )
+bool CBaseEntityManager::UpdateDatabase( const string& strSrcTextFile, string& db_filepath )
 {
 	vector<CBaseEntity *> vecpBaseEntity;
 	vecpBaseEntity.reserve( 64 );
@@ -241,7 +237,9 @@ bool CBaseEntityManager::UpdateDatabase( const string& strSrcTextFile )
 	core_base_entity_loader.LoadCoreBaseEntities( vecpBaseEntity );
 
 //	LoadAllBaseEntitiesFromTextFile( strSrcTextFile, vecpBaseEntity );
-	LoadAllBaseEntitiesFromRootTextFile( strSrcTextFile, vecpBaseEntity );
+	LoadAllBaseEntitiesFromRootTextFile( strSrcTextFile, vecpBaseEntity, db_filepath );
+
+	OutputDatabaseFile( db_filepath, vecpBaseEntity );
 
 	SafeDeleteVector( vecpBaseEntity );
 
