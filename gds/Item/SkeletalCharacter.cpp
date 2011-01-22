@@ -6,6 +6,7 @@
 #include "gds/MotionSynthesis/MotionDatabase.hpp"
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "gds/Support/DebugOutput.hpp"
+#include "gds/Support/ParamLoader.hpp"
 #include "gds/Stage/BaseEntity_Draw.hpp"
 #include "gds/Stage/MeshBonesUpdateCallback.hpp"
 #include "gds/Physics/Actor.hpp"
@@ -65,8 +66,11 @@ CSkeletalCharacter::CSkeletalCharacter()
 :
 m_fFwdSpeed(0.0f),
 m_fTurnSpeed(0.0f),
+m_fMaxTurnSpeed(0.0f),
 m_fFloorHeight(0.0f),
-m_FeetOnGround( true )
+m_FeetOnGround( true ),
+m_CameraDependentMotionControl( true ),
+m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 {
 	// The mesh
 	// Previously the character's skeletal mesh was loaded here
@@ -138,6 +142,8 @@ m_FeetOnGround( true )
 		if( pSMesh )
 			pSMesh->DumpSkeletonToTextFile( ".debug/mesh_skeleton.txt" );
 	}
+
+	LoadParamFromFile( ".debug/skeletal_character.txt", "camera_dependent_motion_control", m_CameraDependentMotionControl );
 }
 
 
@@ -246,6 +252,18 @@ static void UpdatePhysicsActorPose( physics::CActor& actor, const Matrix34& worl
 	actor.SetWorldPose( phys_actor_world_pose );
 }
 
+static void UpdatePoseStoredInMotionPrimitivePlayer(
+	boost::shared_ptr<msynth::CMotionFSMManager>& pMotionFSMManager,
+	const Matrix34& pose )
+{
+	shared_ptr<CMotionFSM> pFSM = pMotionFSMManager->GetMotionFSM("lower_limbs");
+	if( !pFSM )
+		return;
+
+	pFSM->Player()->SetCurrentHorizontalPose( pose );
+}
+
+
 void CSkeletalCharacter::Update( float dt )
 {
 	shared_ptr<CMotionFSM> pFSM = m_pMotionFSMManager->GetMotionFSM("lower_limbs");
@@ -263,7 +281,13 @@ void CSkeletalCharacter::Update( float dt )
 	m_PrevWorldPose = world_pose;
 
 	// steering
-	world_pose.matOrient = world_pose.matOrient * Matrix33RotationY( GetTurnSpeed() * dt );
+	if( IsCameraDependentMotionControlEnabled() )
+	{
+		TurnIfNecessary( dt, m_fMaxTurnSpeed );
+		world_pose.matOrient = entity.GetWorldPose().matOrient;
+	}
+	else
+		world_pose.matOrient = world_pose.matOrient * Matrix33RotationY( GetTurnSpeed() * dt );
 
 	pFSM->Player()->SetCurrentHorizontalPose( world_pose );
 
@@ -408,7 +432,13 @@ void CSkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 
 //	m_pKeyBind->Update( m_ACtoGIC );
 
-	int action_codes_to_update[] = { ACTION_MOV_FORWARD, ACTION_MOV_BOOST, ACTION_MOV_JUMP };
+	int action_codes_to_update[] = {
+		ACTION_MOV_FORWARD,
+		ACTION_MOV_BOOST,
+		ACTION_MOV_JUMP,
+		ACTION_CAMERA_ALIGN
+	};
+
 	for( int i=0; i<CKeyBind::NUM_ACTION_TYPES; i++ )
 	{
 		map<int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[i];
@@ -456,7 +486,7 @@ void CSkeletalCharacter::HandleInput( const SInputData& input_data )
 			m_pOperations[i]->HandleInput( input_data, action_code );
 	}
 
-	// The input handler for the motion FSM is regiered as a child
+	// The input handler for the motion FSM is registered as a child
 	// of the character's main input handler, and is called after this function.
 }
 
@@ -728,6 +758,55 @@ void CSkeletalCharacter::StartVerticalJump( const Vector3& velocity )
 }
 
 
+/// \param turn_speed radians per second
+void CSkeletalCharacter::TurnIfNecessary( float dt, float turn_speed )
+{
+	if( !IsCameraDependentMotionControlEnabled() )
+		return;
+
+	if( m_vDesiredHorizontalDirection.GetLength() < 0.1f )
+		return;
+
+	// Do not check m_FeetOnGround
+	// - The character's motion FSM nodes decide whether the character should turn or not.
+
+	shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
+	if( !pEntity )
+		return;
+
+	CCopyEntity& entity = *pEntity;
+
+	Matrix33 world_orient = entity.GetWorldPose().matOrient;
+
+	const Matrix33 horizontal_world_orient = GetHorizontalized( world_orient );
+
+	Vector3 vCurrentHorizontalDirection = horizontal_world_orient.GetColumn(2);
+
+	Vec3Dot( vCurrentHorizontalDirection, m_vDesiredHorizontalDirection );
+	float angles_to_cover = Vec3GetAngleBetween( vCurrentHorizontalDirection, m_vDesiredHorizontalDirection );
+
+	float max_coverable_angles = dt * turn_speed;
+
+	float angles = take_min( max_coverable_angles, angles_to_cover );
+
+	Vector3 vCross = Vec3Cross( vCurrentHorizontalDirection, m_vDesiredHorizontalDirection );
+	if( vCross.y < 0.0f )
+		angles *= -1.0f;
+
+	world_orient = Matrix33RotationY( angles ) * horizontal_world_orient;
+
+	entity.SetWorldOrientation( world_orient );
+
+//	if( 0 < entity.m_vecpPhysicsActor.size()
+//	 && entity.m_vecpPhysicsActor[0] )
+//	{
+//		UpdatePhysicsActorPose( *(entity.m_vecpPhysicsActor[0]), entity.GetWorldPose() );
+//	}
+
+//	UpdatePoseStoredInMotionPrimitivePlayer( m_pMotionFSMManager, entity.GetWorldPose() );
+}
+
+
 void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 {
 	physics::CScene *pPhysScene = entity.GetStage()->GetPhysicsScene();
@@ -884,7 +963,8 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 		}
 		break;
 	case ACTION_MOV_TURN_R:
-		if( input.iType == ITYPE_KEY_PRESSED )
+		if( input.iType == ITYPE_KEY_PRESSED
+		 || input.iType == ITYPE_VALUE_CHANGED )
 		{
 			m_pCharacter->SetTurnSpeed(  input.fParam1 );
 //			m_fTurnSpeed =  input.fParam1;
@@ -893,7 +973,8 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 			m_pCharacter->SetTurnSpeed( 0 );
 		break;
 	case ACTION_MOV_TURN_L:
-		if( input.iType == ITYPE_KEY_PRESSED )
+		if( input.iType == ITYPE_KEY_PRESSED
+		 || input.iType == ITYPE_VALUE_CHANGED )
 		{
 			m_pCharacter->SetTurnSpeed( -input.fParam1 );
 //			m_fTurnSpeed = -input.fParam1;
@@ -916,10 +997,15 @@ void CFwdMotionNode::Update( float dt )
 	{
 		RequestTransition( "standing" );
 	}
-	else if( 0.55 <= fFwdSpeed )
+	else if( 0.55f <= fFwdSpeed )
 	{
 		RequestTransition( "run" );
 	}
+
+	m_pNode->SetExtraSpeedFactor( 0.5f );
+
+	m_pCharacter->SetMaxTurnSpeed( 2.5f );
+//	m_pCharacter->TurnIfNecessary( dt, 3.0f );
 }
 
 
@@ -1049,6 +1135,14 @@ bool CJumpMotionNode::HandleInput( const SInputData& input, int action_code )
 
 void CStandingMotionNode::Update( float dt )
 {
+	float fFwdSpeed = m_pCharacter->GetFwdSpeed();
+	if( 0.2f < fFwdSpeed )
+	{
+		RequestTransition( "fwd" );
+	}
+
+	m_pCharacter->SetMaxTurnSpeed( 45.0f );
+//	m_pCharacter->TurnIfNecessary( dt, 50.0f );
 }
 
 

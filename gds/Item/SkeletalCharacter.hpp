@@ -18,6 +18,21 @@ class CClothing;
 class CClothSystem;
 
 
+inline void Horizontalize( Matrix33& target )
+{
+	target.SetColumn( 1, Vector3(0,1,0) );
+	target.Orthonormalize();
+}
+
+
+inline Matrix33 GetHorizontalized( Matrix33& src )
+{
+	Matrix33 dest( src );
+	Horizontalize( dest );
+	return dest;
+}
+
+
 class CSkeletalCharacterOperations// : public IArchiveObjectBase
 {
 public:
@@ -58,6 +73,11 @@ class CSkeletalCharacter : public CGameItem
 	float m_fFwdSpeed;
 	float m_fTurnSpeed;
 
+	/// The maximum speed at which the character can turn.
+	/// Note that the character does not have to turn
+	/// if it's already moving along the desired direction.
+	float m_fMaxTurnSpeed;
+
 	float m_fFloorHeight;
 
 	bool m_FeetOnGround;
@@ -92,6 +112,10 @@ class CSkeletalCharacter : public CGameItem
 	std::vector< boost::shared_ptr<CGameItem> > m_pProperty;
 
 	std::vector< boost::shared_ptr<CSkeletalCharacterOperations> > m_pOperations;
+
+	bool m_CameraDependentMotionControl;
+	
+	Vector3 m_vDesiredHorizontalDirection;
 
 //	GraphicsResourcesUpdateDelegate<CSkeletalCharacter> m_GraphicsUpdate;
 
@@ -131,11 +155,17 @@ public:
 
 	float GetFwdSpeed() const { return m_fFwdSpeed; }
 	float GetTurnSpeed() const { return m_fTurnSpeed; }
+	float GetMaxTurnSpeed() const { return m_fMaxTurnSpeed; }
 
 	void SetFwdSpeed( float fSpeed ) { m_fFwdSpeed = fSpeed; }
 	void SetTurnSpeed( float fSpeed ) { m_fTurnSpeed = fSpeed; }
+	void SetMaxTurnSpeed( float fSpeed ) { m_fMaxTurnSpeed = fSpeed; }
+
+	void SetDesiredHorizontalDirection( Vector3 vHorizontalDirection ) { m_vDesiredHorizontalDirection = vHorizontalDirection; }
 
 	void StartVerticalJump( const Vector3& velocity );
+
+	void TurnIfNecessary( float dt, float turn_speed );
 
 	void SetKeyBind( boost::shared_ptr<CKeyBind> pKeyBind );
 
@@ -146,6 +176,8 @@ public:
 	void AddItems( std::vector< boost::shared_ptr<CGameItem> >& pItems ) { if( pItems.empty() ) return; m_pProperty.insert( m_pProperty.end(), pItems.begin(), pItems.end() ); }
 
 	void AddOperationsAlgorithm( boost::shared_ptr<CSkeletalCharacterOperations> pOperations ) { m_pOperations.push_back( pOperations ); }
+
+	bool IsCameraDependentMotionControlEnabled() const { return m_CameraDependentMotionControl; }
 
 	static int ms_DefaultInputHandlerIndex;
 
@@ -180,6 +212,8 @@ public:
 
 	CCharacterMotionNodeAlgorithm() : m_pCharacter(NULL) {}
 
+	virtual ~CCharacterMotionNodeAlgorithm() {}
+
 	void SetSkeletalCharacter( CSkeletalCharacter *pCharacter ) { m_pCharacter = pCharacter; }
 
 	void SetKeyBind( boost::shared_ptr<CKeyBind>& pKeybind ) { m_pKeybind = pKeybind; }
@@ -194,6 +228,9 @@ public:
 
 inline bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input )
 {
+	if( m_pCharacter && m_pCharacter->IsCameraDependentMotionControlEnabled() )
+		return false;
+
 	SInputData input_copy = input;
 
 	if( !m_pKeybind )
