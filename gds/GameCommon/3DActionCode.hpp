@@ -91,6 +91,8 @@ enum eActionCode
 	ACTION_ATK_FIRE2,
 	ACTION_ATK_FIRE3,
 
+	ACTION_CAMERA_ALIGN, ///< Align the camera angle with that of the character's eye direction. Used by 3rd person cameras.
+
 
 	// action codes for command menu
 
