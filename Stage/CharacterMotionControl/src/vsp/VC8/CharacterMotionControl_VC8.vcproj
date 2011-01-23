@@ -201,18 +201,6 @@
 				Name="base"
 				>
 			</Filter>
-			<Filter
-				Name="Item"
-				>
-				<File
-					RelativePath="..\..\root\item\SkeletalCharacter.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\root\item\SkeletalCharacter.hpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Debug"
