@@ -78,22 +78,23 @@ inline void Matrix44::SetData(const Scalar * d)
 	memcpy( data, d, NUM_ELEMENTS*sizeof(Scalar) );
 }
 
-/*
-inline Vector3 Matrix44::GetColumn(uint i) const
+
+inline Vector4 Matrix44::GetColumn(unsigned int i) const
 {
-  const uint o = i*3; 
-  return Vector3(data[o], data[o+1], data[o+2]);
+  const uint o = i*4;
+  return Vector4(data[o], data[o+1], data[o+2], data[o+3]);
 }
 
 
-inline void Matrix44::SetColumn(uint i, const Vector3 & col)
+inline void Matrix44::SetColumn(unsigned int i, const Vector4 & col)
 {
-  const uint o = i*3; 
+  const uint o = i*4;
   data[o]   = col[0];
   data[o+1] = col[1];
   data[o+2] = col[2];
+  data[o+3] = col[3];
 }
-*/
+
 
 inline bool Matrix44::IsSensible() const
 {

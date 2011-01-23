@@ -45,10 +45,10 @@ public:
 	inline void SetData(const Scalar * d); 
 
 	/// Returns a column - no range checking!
-//	inline Vector3 GetColumn(uint i) const;
+	inline Vector4 GetColumn(unsigned int i) const;
 
 	/// sets a column
-//	inline void SetColumn(uint i, const Vector3 & col);
+	inline void SetColumn(unsigned int i, const Vector4 & col);
 
 	/// transform a vector by the transpose of this matrix
 //	inline void TransformByTranspose( Vector3 & dest, const Vector3 & src ) const;
