@@ -3,3 +3,4 @@
 #include "Stage/BaseEntityManager.hpp"
 #include "Stage/BaseEntityFactory.hpp"
 #include "Stage/StageLoader.hpp"
+#include "Stage/trace.hpp"
