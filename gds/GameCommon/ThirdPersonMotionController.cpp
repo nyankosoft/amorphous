@@ -96,15 +96,6 @@ void CThirdPersonMotionController::HandleInput( int action_code, const SInputDat
 	switch( action_code )
 	{
 	case ACTION_MOV_FORWARD:
-//		if( input.iType == ITYPE_KEY_PRESSED
-//		 || input.iType == ITYPE_VALUE_CHANGED )
-//		{
-//			m_fVerticalMotion = input.fParam1;
-//		}
-//		else if( input.iType == ITYPE_KEY_RELEASED )
-//		{
-//			m_fVerticalMotion = 0;
-//		}
 		LOG_PRINT( " ACTION_MOV_FORWARD: " + to_string(input.fParam1) );
 		m_fVeritcalCameraSpaceInput = GetAnalogMotionInput( input, 1.0f );
 		break;
