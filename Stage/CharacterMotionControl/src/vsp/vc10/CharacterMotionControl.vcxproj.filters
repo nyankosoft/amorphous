@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{81cada03-efa0-437a-8386-d23a35a90647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\App">
+      <UniqueIdentifier>{6c54c252-4bc2-43da-8b4a-235794b66f73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Task">
+      <UniqueIdentifier>{024c64b2-5416-4d8e-b265-ac7de45eddeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{cc24f03b-feb8-4306-b7de-230ab637d761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\base">
+      <UniqueIdentifier>{08501e18-f204-4a9d-af32-c95a91dcb2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{0620bf84-adee-4278-ace9-6c797f4bdf5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStageFrameworkAppMain">
+      <UniqueIdentifier>{220f6951-cab5-4b6f-8c08-35a51c0ab752}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4ad712fc-a699-4e78-9927-cc21fd1abf85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\misc">
+      <UniqueIdentifier>{041e404e-1a65-4af6-b980-f4a6c9d18f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\entities">
+      <UniqueIdentifier>{714e0869-14b5-4cda-9c27-33341f170442}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\root\app\CharacterMotionControlAppBase.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Project1\gds\App\AppMain.cpp">
+      <Filter>GameStageFrameworkAppMain</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\root\app\CharacterMotionControlAppBase.hpp">
+      <Filter>Source Files\App</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\resources\misc\test_motion_fsm.xml">
+      <Filter>Resource Files\misc</Filter>
+    </None>
+    <None Include="..\..\..\resources\entity\BaseEntity.txt">
+      <Filter>Resource Files\entities</Filter>
+    </None>
+    <None Include="..\..\..\resources\entity\light.txt">
+      <Filter>Resource Files\entities</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -18,9 +18,9 @@
 #include "gds/MotionSynthesis/MotionFSM.hpp"
 #include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 
-#include "../item/SkeletalCharacter.hpp"
+#include "gds/Item/SkeletalCharacter.hpp"
 
-using namespace std;
+using std::string;
 using namespace boost;
 
 
