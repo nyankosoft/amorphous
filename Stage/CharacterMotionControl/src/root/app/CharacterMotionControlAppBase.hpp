@@ -12,6 +12,8 @@
 
 
 class CSkeletalCharacter;
+class CThirdPersonCameraController;
+class CThirdPersonMotionController;
 
 
 enum ShadowAppTaskID
@@ -57,13 +59,17 @@ class CCharacterMotionControlAppTask : public CStageViewerGameTask
 
 	std::vector< boost::shared_ptr<CSkeletalCharacter> > m_pCharacterItems;
 
-	cdv<Vector3> m_CameraPosition;
+	boost::shared_ptr<CThirdPersonCameraController> m_pThirdPersonCameraController;
 
-	cdv<Quaternion> m_CameraOrientation;
+	boost::shared_ptr<CThirdPersonMotionController> m_pThirdPersonMotionController;
 
 	CDoubleConeScrollEffect m_ScrollEffect;
 
 	Vector3 m_vPrevCamPos;
+
+private:
+
+	void UpdateThirdPersonCamera( float dt );
 
 public:
 

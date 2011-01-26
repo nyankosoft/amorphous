@@ -9,6 +9,8 @@
 #include "gds/GUI.hpp"
 #include "gds/GameCommon/MouseCursor.hpp"
 #include "gds/GameCommon/3DActionCode.hpp"
+#include "gds/GameCommon/ThirdPersonCameraController.hpp"
+#include "gds/GameCommon/ThirdPersonMotionController.hpp"
 #include "gds/Item/ItemEntity.hpp"
 #include "gds/Item/GameItem.hpp"
 #include "gds/Physics/ActorDesc.hpp"
@@ -73,14 +75,25 @@ CCharacterMotionControlAppTask::CCharacterMotionControlAppTask()
 :
 m_vPrevCamPos( Vector3(0,0,0) )
 {
+	CScriptManager::ms_UseBoostPythonModules = true;
+
 	m_pKeyBind = shared_ptr<CKeyBind>( new CKeyBind );
 
-	m_pKeyBind->Assign( GIC_UP,     ACTION_MOV_FORWARD );
-	m_pKeyBind->Assign( GIC_DOWN,   ACTION_MOV_BACKWARD );
-	m_pKeyBind->Assign( GIC_RIGHT,  ACTION_MOV_TURN_R );
-	m_pKeyBind->Assign( GIC_LEFT,   ACTION_MOV_TURN_L );
-	m_pKeyBind->Assign( GIC_LSHIFT, ACTION_MOV_BOOST );
-	m_pKeyBind->Assign( GIC_SPACE,  ACTION_MOV_JUMP );
+	// keyboad & mouse keybinds
+	m_pKeyBind->Assign( GIC_UP,              ACTION_MOV_FORWARD );
+	m_pKeyBind->Assign( GIC_DOWN,            ACTION_MOV_BACKWARD );
+	m_pKeyBind->Assign( GIC_RIGHT,           ACTION_MOV_TURN_R );
+	m_pKeyBind->Assign( GIC_LEFT,            ACTION_MOV_TURN_L );
+	m_pKeyBind->Assign( GIC_LSHIFT,          ACTION_MOV_BOOST );
+	m_pKeyBind->Assign( GIC_SPACE,           ACTION_MOV_JUMP );
+	m_pKeyBind->Assign( GIC_MOUSE_BUTTON_L,  ACTION_ATK_FIRE);
+	m_pKeyBind->Assign( 'G',                 ACTION_ATK_FIRE);
+	m_pKeyBind->Assign( GIC_MOUSE_BUTTON_R,  ACTION_CAMERA_ALIGN );
+	m_pKeyBind->Assign( 'Z',                 ACTION_CAMERA_ALIGN );
+
+	// gamepad keybinds
+	m_pKeyBind->Assign( GIC_GPD_BUTTON_00,   ACTION_CAMERA_ALIGN );
+	m_pKeyBind->Assign( GIC_GPD_BUTTON_01,   ACTION_MOV_JUMP );
 
 	// analog input
 	// - may need to invert the fParam1.
@@ -89,13 +102,15 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	m_pKeyBind->Assign( GIC_GPD_AXIS_X,  ACTION_MOV_TURN_R );
 //	m_pKeyBind->Assign( GIC_GPD_AXIS_Z,  ACTION_MOV_TURN_R );
 
-	CScriptManager::ms_UseBoostPythonModules = true;
-
 	CStageLoader stg_loader;
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
 	CameraController()->SetPose( Matrix34( Vector3(0.8f,1.9f,-3.5f), Matrix33Identity() ) );
+
+	m_pThirdPersonCameraController.reset( new CThirdPersonCameraController );
+
+	m_pThirdPersonMotionController.reset( new CThirdPersonMotionController );
 
 	// trigger shape that detects collision of the character and other objects
 	physics::CCapsuleShapeDesc cap_desc;
@@ -109,6 +124,8 @@ m_vPrevCamPos( Vector3(0,0,0) )
 
 	physics::CActorDesc actor_desc;
 	actor_desc.WorldPose = Matrix34Identity();
+//	actor_desc.WorldPose.vPosition = Vector3( 380.0f, 20.0f, 320.0f );
+	actor_desc.WorldPose.vPosition = Vector3( 0.0f, 1.0f, 0.0f );
 	actor_desc.BodyDesc.fMass = 0.1f;
 	actor_desc.BodyDesc.LinearVelocity = Vector3(0,0,0);
 //	actor_desc.BodyDesc.Flags = physics::PhysBodyFlag::Kinematic;
@@ -154,13 +171,19 @@ m_vPrevCamPos( Vector3(0,0,0) )
 		pEntity->InitMesh();
 //		pEntity->pBaseEntity->SetMeshRenderMethod( *pEntity ); // error: cannot access protected member declared in class 'CBaseEntity'
 
-		m_CameraOrientation.target = m_CameraOrientation.current = Quaternion( pEntity->GetWorldPose().matOrient );
+		if( m_pThirdPersonCameraController )
+			m_pThirdPersonCameraController->SetCameraPose( pEntity->GetWorldPose() );
+//		m_CameraOrientation.target = m_CameraOrientation.current = Quaternion( pEntity->GetWorldPose().matOrient );
 	}
 
 	m_CharacterItemEntity = entity;
 
+	m_pThirdPersonCameraController->SetTargetEntity( CEntityHandle<>( weak_ptr<CCopyEntity>(pEntity) ) );
+
 	// set keybind to the character item
 	m_pCharacterItems[0]->SetKeyBind( m_pKeyBind );
+
+	m_pThirdPersonMotionController->SetSkeletalCharacter( m_pCharacterItems[0] );
 
 //	m_pInputHandler.reset( new CCharacterMotionInputHandler(pCharacter,m_pKeyBind) );
 //	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
@@ -171,15 +194,31 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	else
 		InputHub().PushInputHandler( 2, m_pInputHandler.get() );
 
-	m_CameraOrientation.vel = Quaternion(Matrix33Identity());
-	m_CameraOrientation.smooth_time = 0.1f;
-
-	m_CameraPosition.vel = Vector3(1,1,1);
-	m_CameraPosition.smooth_time = 0.1f;
-
 	m_ScrollEffect.SetTextureFilepath( "textures/precipitation_mid-density-512.dds" );
 //	m_ScrollEffect.SetTextureFilepath( "textures/tex1024_red.bmp" );
 	m_ScrollEffect.Init();
+}
+
+
+void CCharacterMotionControlAppTask::UpdateThirdPersonCamera( float dt )
+{
+	if( m_pCharacterItems.empty()
+	 || !m_pCharacterItems[0] )
+	{
+		return;
+	}
+
+	if( !m_pThirdPersonCameraController )
+		return;
+
+	CInputState::Name input_state = m_pCharacterItems[0]->GetActionInputState( ACTION_CAMERA_ALIGN );
+
+	bool close_up_camera = (input_state == CInputState::PRESSED) ? true : false;
+	m_pThirdPersonCameraController->EnableCloseUpCamera( close_up_camera );
+
+	m_pThirdPersonCameraController->Update( dt );
+
+	Camera().SetPose( m_pThirdPersonCameraController->GetCameraPose() );
 }
 
 
@@ -195,40 +234,14 @@ int CCharacterMotionControlAppTask::FrameMove( float dt )
 	}
 	else
 	{
-		shared_ptr<CItemEntity> pEntity = m_CharacterItemEntity.Get();
-		if( !pEntity )
-			return ID_INVALID;
+		UpdateThirdPersonCamera( dt );
 
-		Vector3 vEntityWorldPos = pEntity->GetWorldPosition();
-		const Matrix33 matCamOrientation = m_CameraOrientation.current.ToRotationMatrix();
-		Vector3 vInvCamDir = -matCamOrientation.GetColumn(2);
-		CInputState::Name mouse_r   = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState(GIC_MOUSE_BUTTON_R);
-		CInputState::Name space_key = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState(GIC_SPACE);
-		if( mouse_r   == CInputState::PRESSED
-		 || space_key == CInputState::PRESSED )
+		if( m_pThirdPersonMotionController )
 		{
-			m_CameraPosition.target
-				= vEntityWorldPos
-				+ vInvCamDir * 1.5f
-				+ Vector3(0.0f, 1.5f, 0.0f);
+			m_pThirdPersonMotionController->SetCameraPose( Camera().GetPose() );
+			m_pThirdPersonMotionController->Update();
 		}
-		else
-		{
-			m_CameraPosition.target
-				= vEntityWorldPos
-				+ vInvCamDir * 3.8f
-				+ Vector3(0.0f, 2.0f, 0.0f);
-		}
-
-		Camera().SetPose( Matrix34( m_CameraPosition.current, matCamOrientation ) );
-/*
-//		Vector3 vPos = pEntity->GetWorldPose().vPosition + Vector3(0.0f, 2.0f, -3.8f);
-		vPos.y = 2.0f;
-		Camera().SetPose( Matrix34( vPos, matCamOrientation ) );
-*/	}
-
-	m_CameraOrientation.Update( dt );
-	m_CameraPosition.Update( dt );
+	}
 
 	m_ScrollEffect.SetCameraPose( Camera().GetPose() );
 /*	Vector3 vDist = (Camera().GetPosition() - m_vPrevCamPos);
@@ -253,6 +266,8 @@ void CCharacterMotionControlAppTask::Render()
 
 void CCharacterMotionControlAppTask::HandleInput( SInputData& input )
 {
+	int action_code = m_pKeyBind ? m_pKeyBind->GetActionCode( input.iGICode ) : ACTION_NOT_ASSIGNED;
+
 	switch( input.iGICode )
 	{
 	case '1':
@@ -274,13 +289,19 @@ void CCharacterMotionControlAppTask::HandleInput( SInputData& input )
 			if( !pEntity )
 				return;
 
-			m_CameraOrientation.target.FromRotationMatrix( pEntity->GetWorldPose().matOrient );
+//			m_CameraOrientation.target.FromRotationMatrix( pEntity->GetWorldPose().matOrient );
 		}
 		break;
 
 	default:
 		break;
 	}
+
+	if( m_pThirdPersonMotionController )
+	{
+		m_pThirdPersonMotionController->HandleInput( action_code, input );
+	}
+
 }
 
 
