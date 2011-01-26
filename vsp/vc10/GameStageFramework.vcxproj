@@ -76,6 +76,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\gds\GameCommon\ThirdPersonCameraController.hpp" />
+    <ClInclude Include="..\..\gds\GameCommon\ThirdPersonMotionController.hpp" />
     <ClInclude Include="..\..\gds\Script.hpp" />
     <ClInclude Include="..\..\gds\Stage.hpp" />
     <ClInclude Include="..\..\gds\Stage\BinaryNode.hpp" />
@@ -328,6 +330,8 @@
     <ClInclude Include="..\..\gds\MotionSynthesis\TransformNode.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\gds\GameCommon\ThirdPersonCameraController.cpp" />
+    <ClCompile Include="..\..\gds\GameCommon\ThirdPersonMotionController.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
