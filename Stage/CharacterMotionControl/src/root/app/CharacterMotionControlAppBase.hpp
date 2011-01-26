@@ -24,34 +24,12 @@ enum ShadowAppTaskID
 };
 
 
-template<class T>
-class CDelegateInputHandler : public CInputHandler
-{
-	T *m_pTarget;
-public:
-	CDelegateInputHandler(T *pTarget) : m_pTarget(pTarget) {}
-
-	void ProcessInput( SInputData& input )
-	{
-		m_pTarget->HandleInput( input );
-	}
-};
-
-/*
-class CCharacterEntity : public CCopyEntity
-{
-public:
-
-	void Draw();
-};*/
-
-
 class CCharacterMotionControlAppTask : public CStageViewerGameTask
 {
 	boost::shared_ptr<CKeyBind> m_pKeyBind;
 
 
-	boost::shared_ptr< CDelegateInputHandler<CCharacterMotionControlAppTask> > m_pInputHandler;
+	boost::shared_ptr< CInputDataDelegate<CCharacterMotionControlAppTask> > m_pInputHandler;
 
 //	boost::shared_ptr<CCharacterMotionInputHandler> m_pInputHandler;
 

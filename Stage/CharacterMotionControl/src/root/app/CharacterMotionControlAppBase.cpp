@@ -188,7 +188,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 //	m_pInputHandler.reset( new CCharacterMotionInputHandler(pCharacter,m_pKeyBind) );
 //	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
 
-	m_pInputHandler.reset( new CDelegateInputHandler<CCharacterMotionControlAppTask>( this ) );
+	m_pInputHandler.reset( new CInputDataDelegate<CCharacterMotionControlAppTask>( this ) );
 	if( InputHub().GetInputHandler(2) )
 		InputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
 	else
