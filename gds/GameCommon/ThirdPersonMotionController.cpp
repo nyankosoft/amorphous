@@ -13,6 +13,28 @@ m_fHorizontalCameraSpaceInput(0)
 }
 
 
+/// Returns a vector extended to the borders of the box which has the dimension of x:[-1,1] / y[-1,1]
+Vector2 GetExtendedInputVector( const Vector2& vInput )
+{
+	if( fabs(vInput.x) < fabs(vInput.y) )
+	{
+		// clip at y=1 / y=-1 border
+		if( 0 < vInput.y )
+			return Vector2( vInput.x / vInput.y, 1 );
+		else
+			return Vector2( vInput.x / vInput.y,-1 );
+	}
+	else
+	{
+		// clip at x=1 / x=-1 border
+		if( 0 < vInput.x )
+			return Vector2( 1, vInput.y / vInput.x );
+		else
+			return Vector2( -1, vInput.y / vInput.x );
+	}
+}
+
+
 void CThirdPersonMotionController::Update()
 {
 	if( !m_pCharacter )
@@ -33,8 +55,10 @@ void CThirdPersonMotionController::Update()
 	}
 
 	Vector3 vInput = Vector3( m_fHorizontalCameraSpaceInput, 0, m_fVeritcalCameraSpaceInput );
-	float input_vector_length = vInput.GetLength();
-	vInput /= input_vector_length;
+	const float input_vector_length = vInput.GetLength();
+	const Vector3 vInputDirection = vInput / input_vector_length;
+	Vector2 vExtended = GetExtendedInputVector( Vector2(vInput.x,vInput.z) );
+	vInput = vInput / vExtended.GetLength();
 
 //	if( 1.0f < vInput.GetLength() )
 //		vInput = vInput / GetLength();
@@ -55,13 +79,13 @@ void CThirdPersonMotionController::Update()
 	Horizontalize( cam_orient );
 
 	// Calculate the desired direction in world space
-	Vector3 vWorldDesiredDirection = cam_orient * vInput;
+	Vector3 vWorldDesiredDirection = cam_orient * vInputDirection;
 
 	skeletal_character.SetDesiredHorizontalDirection( vWorldDesiredDirection );
 
 	// gamepad analog axis-x/y: [0,2]
 	// keyboad up/down/left/right: [0,1]
-	float fwd_speed = input_vector_length * 0.5f;
+	float fwd_speed = vInput.GetLength() * 0.5f;
 	if(skeletal_character.GetActionInputState(ACTION_MOV_BOOST) == CInputState::PRESSED)
 		fwd_speed *= 2.0f;
 	clamp( fwd_speed, 0.0f, 1.0f );
