@@ -1059,6 +1059,8 @@ void CRunMotionNode::Update( float dt )
 	{
 		RequestTransition( "fwd" ); // walk
 	}
+
+	m_pNode->SetExtraSpeedFactor( fFwdSpeed );
 }
 
 
