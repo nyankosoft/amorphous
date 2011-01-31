@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source files">
+      <UniqueIdentifier>{64d881c9-fc45-416e-baac-d8467823bf12}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\gds\LightWave\3DMeshModelBuilder_LW.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\3DMeshModelExportManager_LW.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\3DShapesExporter_LW.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\CompositeMeshExporter_LW.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\MassSpringExporter_LW.cpp">
+      <Filter>source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\gds\LightWave\3DMeshModelBuilder_LW.hpp">
+      <Filter>source files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\3DMeshModelExportManager_LW.hpp">
+      <Filter>source files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\3DShapesExporter_LW.hpp">
+      <Filter>source files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\CompositeMeshExporter_LW.hpp">
+      <Filter>source files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\MassSpringExporter_LW.hpp">
+      <Filter>source files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

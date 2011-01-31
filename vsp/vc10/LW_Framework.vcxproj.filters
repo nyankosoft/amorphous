@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source files">
+      <UniqueIdentifier>{e4a818d7-1df0-4f1c-8772-85a049094eb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source files\modeler">
+      <UniqueIdentifier>{2fef5280-8a5e-469e-9b2c-7998025c240d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source files\scene">
+      <UniqueIdentifier>{49e67653-1548-4232-8be5-e6b5cf9525ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\gds\LightWave\LightWaveObject.hpp">
+      <Filter>source files\modeler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\LWO2_Common.hpp">
+      <Filter>source files\modeler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\LWO2_Layer.hpp">
+      <Filter>source files\modeler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\LWO2_Object.hpp">
+      <Filter>source files\modeler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\LWO2_Surface.hpp">
+      <Filter>source files\modeler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\LightWaveSceneLoader.hpp">
+      <Filter>source files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\LWS_Items.hpp">
+      <Filter>source files\scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\gds\LightWave\LWO2_Common.cpp">
+      <Filter>source files\modeler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\LWO2_Layer.cpp">
+      <Filter>source files\modeler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\LWO2_Object.cpp">
+      <Filter>source files\modeler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\LWO2_Surface.cpp">
+      <Filter>source files\modeler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\LightWaveSceneLoader.cpp">
+      <Filter>source files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\LightWave\LWS_Items.cpp">
+      <Filter>source files\scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
