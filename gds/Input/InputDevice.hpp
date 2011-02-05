@@ -126,5 +126,26 @@ inline CInputDeviceHub& InputDeviceHub()
 }
 
 
+template<class CInputDeviceClass>
+inline CInputDeviceClass *GetPrimaryInputDevice()
+{
+	boost::shared_ptr<CInputDeviceGroup> pGroup = InputDeviceHub().GetInputDeviceGroup(0);
+	if( !pGroup )
+		return NULL;
+
+	const std::vector<CInputDevice *>& pInputDevices = pGroup->InputDevice();
+	for( size_t i=0; i<pInputDevices.size(); i++ )
+	{
+		CInputDeviceClass *pDest = dynamic_cast<CInputDeviceClass *>( pInputDevices[i] );
+		if( !pDest )
+			continue;
+
+		return pDest;
+	}
+
+	return NULL;
+}
+
+
 
 #endif  /*  __InputDevice_H__  */
