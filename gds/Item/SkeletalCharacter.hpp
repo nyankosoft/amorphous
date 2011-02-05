@@ -35,14 +35,23 @@ inline Matrix33 GetHorizontalized( Matrix33& src )
 
 class CSkeletalCharacterOperations// : public IArchiveObjectBase
 {
+	boost::weak_ptr<CSkeletalCharacter> m_pSkeletalCharacter;
+
+protected:
+
+	boost::weak_ptr<CSkeletalCharacter> GetSkeletalCharacter() { return m_pSkeletalCharacter; }
+
 public:
+
 	CSkeletalCharacterOperations() {}
 
 	virtual ~CSkeletalCharacterOperations() {}
 
 	virtual void Update( float dt ) {}
 
-	virtual void HandleInput( const SInputData& input_data, int action_code ) {}
+	virtual bool HandleInput( const SInputData& input_data, int action_code ) { return false; }
+
+	friend class CSkeletalCharacter;
 };
 
 
@@ -175,7 +184,7 @@ public:
 
 	void AddItems( std::vector< boost::shared_ptr<CGameItem> >& pItems ) { if( pItems.empty() ) return; m_pProperty.insert( m_pProperty.end(), pItems.begin(), pItems.end() ); }
 
-	void AddOperationsAlgorithm( boost::shared_ptr<CSkeletalCharacterOperations> pOperations ) { m_pOperations.push_back( pOperations ); }
+	void AddOperationsAlgorithm( boost::shared_ptr<CSkeletalCharacterOperations> pOperations );
 
 	bool IsCameraDependentMotionControlEnabled() const { return m_CameraDependentMotionControl; }
 

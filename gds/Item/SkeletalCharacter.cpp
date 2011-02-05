@@ -454,6 +454,14 @@ void CSkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 }
 
 
+void CSkeletalCharacter::AddOperationsAlgorithm( boost::shared_ptr<CSkeletalCharacterOperations> pOperations )
+{
+	m_pOperations.push_back( pOperations );
+	pOperations->m_pSkeletalCharacter
+		= boost::dynamic_pointer_cast<CSkeletalCharacter,CGameItem>( m_pMyself.lock() );
+}
+
+
 CInputState::Name CSkeletalCharacter::GetActionInputState( int action_code, CKeyBind::ActionType action_type )
 {
 	map< int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[action_type];
