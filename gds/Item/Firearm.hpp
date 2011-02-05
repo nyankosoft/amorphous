@@ -115,7 +115,7 @@ public:
 
 	virtual void Update( float dt );
 
-	virtual bool HandleInput( int input_code, int input_type, float fParam );
+	virtual bool HandleInput( int action_code, int input_type, float fParam );
 
 //	virtual void UpdateWorldProperties( const Matrix34& rShooterWorldPose,
 //							            const Vector3& rvShooterVelocity,

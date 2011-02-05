@@ -263,9 +263,9 @@ void CFirearm::Update( float dt )
 
 static bool SafetyOff() { return true; }
 
-bool CFirearm::HandleInput( int input_code, int input_type, float fParam )
+bool CFirearm::HandleInput( int action_code, int input_type, float fParam )
 {
-	switch( input_code )
+	switch( action_code )
 	{
 	case ACTION_ATK_FIRE:
 		if( input_type == ITYPE_KEY_PRESSED )
