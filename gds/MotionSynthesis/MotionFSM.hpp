@@ -213,54 +213,6 @@ public:
 };
 
 
-class CForward : public CMotionPrimitiveNode
-{
-public:
-
-//	void TurnBy( float angle_in_degree )
-//	{
-//	}
-};
-
-
-class CStand : public CMotionPrimitiveNode
-{
-public:
-};
-
-
-class CCrouch : public CMotionPrimitiveNode
-{
-public:
-};
-
-
-class CStanding : public CMotionPrimitiveNode
-{
-public:
-};
-
-
-class CCrouching : public CMotionPrimitiveNode
-{
-public:
-};
-
-
-class CProne : public CMotionPrimitiveNode
-{
-public:
-};
-
-
-
-
-class CJump : public CMotionPrimitiveNode
-{
-public:
-};
-
-
 /**
  Base class of motion node algorithm
  - Also used to create instances of null objects.
@@ -280,6 +232,7 @@ public:
 	virtual void Update( float dt ) {}
 
 	/// Returns true if the input was handled.
+	/// - Called if m_pNode is the current motion node of the motion FSM that owns m_pNode.
 	virtual bool HandleInput( const SInputData& input ) { return false; }
 
 	void RequestTransition( const std::string& dest_motion_name )
