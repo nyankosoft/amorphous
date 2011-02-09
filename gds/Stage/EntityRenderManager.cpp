@@ -4,6 +4,7 @@
 #include "trace.hpp"
 #include "ViewFrustumTest.hpp"
 #include "RenderContext.hpp"
+#include "BE_Skybox.hpp"
 
 #include "Graphics/ShadowMapManager.hpp"
 #include "Graphics/VarianceShadowMapManager.hpp"
@@ -12,6 +13,7 @@
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/FogParams.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
@@ -25,8 +27,9 @@
 
 #include "ScreenEffectManager.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 bool IsValidPlane( const Plane& plane )
@@ -289,7 +292,7 @@ m_pCurrentCamera(NULL)
 	m_vOverrideShadowMapPosition = Vector3(0,0,0);
 	m_vOverrideShadowMapDirection = Vector3(0,-1,0);
 
-	m_pShadowMapSceneRenderer = shared_ptr<CEntityShadowMapRenderer>( new CEntityShadowMapRenderer(this) );
+	m_pShadowMapSceneRenderer.reset( new CEntityShadowMapRenderer(this) );
 
 	LoadFallbackShader();
 
@@ -578,6 +581,12 @@ void CEntityRenderManager::RenderScene( CCamera& rCam )
 
 	// move the skybox to the head of the list to render it first
 	MoveSkyboxToListHead();
+
+	if( true )//m_EnableFog )
+	{
+		UpdateFogParams( rCam );
+		GraphicsDevice().Enable( RenderStateType::FOG );
+	}
 
 	// render the entity tree by downward traversal
 	RenderDownward_r( 0, rCam );
@@ -1267,6 +1276,33 @@ void CEntityRenderManager::CreateRenderTasks( bool create_scene_render_task )
 
 	if( create_scene_render_task )
 		CreateSceneRenderTask( *m_pCurrentCamera );
+}
+
+
+void CEntityRenderManager::UpdateFogParams( const CCamera& rCam )
+{
+	CFogParams fog_params;
+
+	float far_clip_margin = 10.0f;
+	fog_params.End = rCam.GetFarClip() - far_clip_margin;
+
+	fog_params.Start = fog_params.End * 0.5f;
+
+	if( m_paEntityTree
+	 && m_paEntityTree[0].m_EntityLinkHead.pNext
+	 && m_paEntityTree[0].m_EntityLinkHead.pNext->pOwner->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_SKYBOX )
+	{
+		// TODO: have the copy entity of skybox
+		CBE_Skybox *pBaseEntity = dynamic_cast<CBE_Skybox *>(m_paEntityTree[0].m_EntityLinkHead.pNext->pOwner->pBaseEntity);
+		if( pBaseEntity )
+		{
+			SFloatRGBAColor color( 0.7f, 0.7f, 0.7f, 1.0f );
+			pBaseEntity->GetFogColor( color );
+			fog_params.Color = color;
+		}
+	}
+
+	GraphicsDevice().SetFogParams( fog_params );
 }
 
 

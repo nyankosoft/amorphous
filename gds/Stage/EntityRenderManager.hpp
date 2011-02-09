@@ -159,6 +159,7 @@ private:
 	/// envmap to render itself
 	void UpdateEnvironmentMapTextures();
 
+	void UpdateFogParams( const CCamera& rCam );
 
 	void CreateEnvMapRenderTasks();
 
