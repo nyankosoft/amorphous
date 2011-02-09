@@ -40,11 +40,6 @@ void CCharacterMotionInputHandler::ProcessInput( SInputData& input )
 }
 */
 
-/*
-void CCharacterEntity::Draw()
-{
-}
-*/
 
 CApplicationBase *CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
 
@@ -77,7 +72,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 {
 	CScriptManager::ms_UseBoostPythonModules = true;
 
-	m_pKeyBind = shared_ptr<CKeyBind>( new CKeyBind );
+	m_pKeyBind.reset( new CKeyBind );
 
 	// keyboad & mouse keybinds
 	m_pKeyBind->Assign( GIC_UP,              ACTION_MOV_FORWARD );
@@ -91,6 +86,12 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	m_pKeyBind->Assign( GIC_MOUSE_BUTTON_R,  ACTION_CAMERA_ALIGN );
 	m_pKeyBind->Assign( 'Z',                 ACTION_CAMERA_ALIGN );
 
+	// for FPS dudes
+	m_pKeyBind->Assign( 'W',                 ACTION_MOV_FORWARD );
+	m_pKeyBind->Assign( 'S',                 ACTION_MOV_BACKWARD );
+	m_pKeyBind->Assign( 'D',                 ACTION_MOV_TURN_R );
+	m_pKeyBind->Assign( 'A',                 ACTION_MOV_TURN_L );
+
 	// gamepad keybinds
 	m_pKeyBind->Assign( GIC_GPD_BUTTON_00,   ACTION_CAMERA_ALIGN );
 	m_pKeyBind->Assign( GIC_GPD_BUTTON_01,   ACTION_MOV_JUMP );
@@ -98,7 +99,8 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	// analog input
 	// - may need to invert the fParam1.
 	// - inversion is currently turned on, and is done in CCharacterMotionNodeAlgorithm::HandleInput()
-	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,  ACTION_MOV_FORWARD );
+//	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,  ACTION_MOV_FORWARD );
+	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,  ACTION_MOV_BACKWARD );
 	m_pKeyBind->Assign( GIC_GPD_AXIS_X,  ACTION_MOV_TURN_R );
 //	m_pKeyBind->Assign( GIC_GPD_AXIS_Z,  ACTION_MOV_TURN_R );
 
@@ -279,19 +281,19 @@ void CCharacterMotionControlAppTask::HandleInput( SInputData& input )
 		}
 		break;
 
-	case GIC_MOUSE_BUTTON_R:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-			if( m_pCharacterItems.empty() )
-				return;
-
-			shared_ptr<CItemEntity> pEntity = m_pCharacterItems[0]->GetItemEntity().Get();
-			if( !pEntity )
-				return;
-
+//	case GIC_MOUSE_BUTTON_R:
+//		if( input.iType == ITYPE_KEY_PRESSED )
+//		{
+//			if( m_pCharacterItems.empty() )
+//				return;
+//
+//			shared_ptr<CItemEntity> pEntity = m_pCharacterItems[0]->GetItemEntity().Get();
+//			if( !pEntity )
+//				return;
+//
 //			m_CameraOrientation.target.FromRotationMatrix( pEntity->GetWorldPose().matOrient );
-		}
-		break;
+//		}
+//		break;
 
 	default:
 		break;
