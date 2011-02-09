@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8d9d8197-a726-469a-8745-563957b5fee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\App">
+      <UniqueIdentifier>{d894d8be-2bab-424e-9690-d5f5b189e133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Task">
+      <UniqueIdentifier>{95098242-3b89-4e4a-a6bf-c47ec7f80a20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{1119c908-13e8-4e4d-a75d-8cc145ea99ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\base">
+      <UniqueIdentifier>{155f1cbb-5e68-4444-b52c-58dad38f6280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{2bd7eb23-9be4-4ae9-9d04-70f20d39ec67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStageFrameworkAppMain">
+      <UniqueIdentifier>{48ad0209-90c6-474e-ba6a-3d087b71ac38}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\root\app\LightingAppBase.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Project1\gds\App\AppMain.cpp">
+      <Filter>GameStageFrameworkAppMain</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\root\app\LightingAppBase.hpp">
+      <Filter>Source Files\App</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
