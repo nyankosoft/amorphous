@@ -29,6 +29,22 @@ public:
  */
 class CDirectInputGamepad : public CInputDevice
 {
+public:
+
+	/// NOTE: update s_GICodeForBinarizedAnalogInput in DirectInputGamepad.cpp when these enums are modified
+	enum Axis
+	{
+		AXIS_X,
+		AXIS_Y,
+		AXIS_Z,
+		ROTATION_X,
+		ROTATION_Y,
+		ROTATION_Z,
+		NUM_ANALOG_CONTROLS
+	};
+
+private:
+
 	LPDIRECTINPUTDEVICE8 m_pDIJoystick;
 
 	DIJOYSTATE2 m_InputState;
@@ -39,18 +55,6 @@ class CDirectInputGamepad : public CInputDevice
 	{
 		DIJOYSTICK_BUFFER_SIZE = 32,    ///< size of the buffer to hold input data from mouse (DirectInput)
 		VALUE_NOT_FOUND = -1000000,     ///< used in ReadBufferedData() to mean that input data for an axis was not found
-	};
-
-	/// NOTE: update s_GICodeForBinarizedAnalogInput in DirectInputGamepad.cpp when these enums are modified
-	enum axis
-	{
-		AXIS_X,
-		AXIS_Y,
-		AXIS_Z,
-		ROTATION_X,
-		ROTATION_Y,
-		ROTATION_Z,
-		NUM_ANALOG_CONTROLS
 	};
 
 	enum pov
@@ -78,6 +82,11 @@ class CDirectInputGamepad : public CInputDevice
 	bool m_bSendExtraDigitalInputFromAnalogInput;
 
 	bool m_bSendExtraDigitalInputFromPOVInput;
+
+	/// Used to scale the analog input to values other than 1.0 (default: 1.0).
+	/// e.g. To change the value range of AXIS_X to [0,2] instead of [0,1],
+	/// set m_afAnalogInputScale[AXIS_X] to 2
+	float m_afAnalogInputScale[NUM_ANALOG_CONTROLS];
 
 private:
 
@@ -122,6 +131,8 @@ public:
 	CForceFeedbackEffect CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc );
 
 	Result::Name InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl );
+
+	void SetAnalogInputScale( Axis analog_axis, float scale ) { m_afAnalogInputScale[analog_axis] = scale; }
 
 	void GetStatus( std::vector<std::string>& buffer );
 };

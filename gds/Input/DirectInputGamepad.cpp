@@ -54,6 +54,9 @@ m_pDIJoystick(NULL)
 
 	m_bSendExtraDigitalInputFromPOVInput = true;
 
+	for( i=0; i<NUM_ANALOG_CONTROLS; i++ )
+        m_afAnalogInputScale[i] = 1.0f;
+
 	InputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
@@ -604,6 +607,7 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 		// analog input value has changed
 		input.iGICode = gi_codes[i];
 		input.fParam1 = (float)m_aAxisPosition[i] * 0.001f; // floating point value scaled to [0,1]
+		input.fParam1 *= m_afAnalogInputScale[i]; // scale to a user defined value if necessary
 //		input.iParam = m_aAxisPosition[i]; // non-scaled original value (signed integer)
 
 		InputHub().UpdateInput(input);
