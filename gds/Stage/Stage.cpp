@@ -53,8 +53,6 @@ CStage::CStage()
 //m_pPhysicsManager(NULL),
 m_pPhysicsScene(NULL),
 //m_pPhysicsVisualizer(NULL),
-m_pMaterialManager(NULL),
-m_pScriptManager(NULL),
 m_pStaticGeometry(NULL),
 m_pCamera(NULL),
 m_pStageDebugInputHandler(NULL)
@@ -77,7 +75,7 @@ m_pStageDebugInputHandler(NULL)
 
 	// create the script manager so that an application can add custom modules
 	// before calling CStage::Initialize() and running scripts for initialization
-	m_pScriptManager = new CScriptManager;
+	m_pScriptManager.reset( new CScriptManager );
 }
 
 
@@ -91,10 +89,10 @@ CStage::~CStage()
 	SafeDelete( m_pStaticGeometry );
 	SafeDelete( m_pEntitySet );
 	m_pScreenEffectManager.reset();
-	SafeDelete( m_pScriptManager );
+	m_pScriptManager.reset();
 //	SafeDelete( m_pPhysicsManager );
 	PhysicsEngine().ReleaseScene( m_pPhysicsScene );
-	SafeDelete( m_pMaterialManager );
+	m_pMaterialManager.reset();
 
 //	SafeDelete( m_pPhysicsVisualizer );
 
@@ -190,15 +188,30 @@ bool CStage::InitPhysicsManager()
 	m_pPhysicsManager->SetCollisionGroupState( ENTITY_COLL_GROUP_NOCLIP,		false );
 */
 
-	// Register a material as a default
-	CMaterialDesc mat_desc;
-	mat_desc.StaticFriction  = 1.5f;
-	mat_desc.DynamicFriction = 1.2f;
-	mat_desc.Restitution     = 0.5f;
-	physics::CMaterial *pDefaultMaterial = m_pPhysicsScene->CreateMaterial( mat_desc );
-	int mat_id = pDefaultMaterial->GetMaterialID();
+	int default_material_index = 0;
+	CMaterial *pDefaultMaterial = m_pPhysicsScene->GetMaterial( default_material_index );
+	float default_static_friction  = 1.5f;
+	float default_dynamic_friction = 1.2f;
+	float default_restitution      = 0.5f;
+	float rc = 0;
+	if( pDefaultMaterial )
+	{
+		// Peek at some default parameter values of the default material
+		float sf = pDefaultMaterial->GetStaticFriction();
+		float df = pDefaultMaterial->GetDynamicFriction();
+		float rc = pDefaultMaterial->GetRestitution();
+		pDefaultMaterial->SetStaticFriction( default_static_friction );
+		pDefaultMaterial->SetDynamicFriction( default_dynamic_friction );
+		pDefaultMaterial->SetRestitution( default_restitution );
+	}
 
-//	MsgBoxFmt( "physics visualizer created: %d", m_pPhysicsVisualizer );
+	// Register another material as a fallback
+	CMaterialDesc mat_desc;
+	mat_desc.StaticFriction  = default_static_friction;
+	mat_desc.DynamicFriction = default_dynamic_friction;
+	mat_desc.Restitution     = default_restitution;
+	physics::CMaterial *pFallbackMaterial = m_pPhysicsScene->CreateMaterial( mat_desc );
+	int mat_id = pFallbackMaterial->GetMaterialID();
 
 	return true;
 }
@@ -595,30 +608,33 @@ bool CStage::LoadMaterial( /* const string& material_filename */)
 
 	string material_filename = "./Stage/material.bin";
 
-	SafeDelete( m_pMaterialManager );
-
-	m_pMaterialManager = new CSurfaceMaterialManager;
+	m_pMaterialManager.reset( new CSurfaceMaterialManager );
 	
 	bool b = m_pMaterialManager->LoadFromFile( material_filename );
 
 	if( !b )
 		return false;
 
-	// register materials to physics simulator
-	int i, iNumMaterials = m_pMaterialManager->GetNumMaterials();
-	m_vecpMaterial.resize( iNumMaterials );
-	for( i=0; i<iNumMaterials; i++ )
+	if( m_pPhysicsScene )
 	{
-		CSurfaceMaterial& src_material = m_pMaterialManager->GetSurfaceMaterial(i);
+		// register materials to physics simulator
+		const int num_materials = m_pMaterialManager->GetNumMaterials();
+		m_vecpMaterial.resize( num_materials );
+		for( int i=0; i<num_materials; i++ )
+		{
+			const CSurfaceMaterial& src_material = m_pMaterialManager->GetSurfaceMaterial(i);
 
-		CMaterialDesc desc;
-		desc.SetDefault();
-		desc.StaticFriction  = src_material.GetPhysicsMaterial().fStaticFriction;
-		desc.DynamicFriction = src_material.GetPhysicsMaterial().fDynamicFriction;
-		desc.Restitution     = src_material.GetPhysicsMaterial().fElasticity;
+			CMaterialDesc desc;
+			desc.SetDefault();
+			desc.StaticFriction  = src_material.GetPhysicsMaterial().fStaticFriction;
+			desc.DynamicFriction = src_material.GetPhysicsMaterial().fDynamicFriction;
+			desc.Restitution     = src_material.GetPhysicsMaterial().fElasticity;
 
-		m_vecpMaterial[i] = m_pPhysicsScene->CreateMaterial( desc );
+			m_vecpMaterial[i] = m_pPhysicsScene->CreateMaterial( desc );
+		}
 	}
+	else
+		LOG_PRINT_WARNING( " The physics engine has not been initialized yet." );
 
 	return true;
 }

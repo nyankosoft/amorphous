@@ -35,12 +35,12 @@ class CStage
 	/// handles physics simulation
 	physics::CScene *m_pPhysicsScene;
 
-	CSurfaceMaterialManager *m_pMaterialManager;
+	boost::shared_ptr<CSurfaceMaterialManager> m_pMaterialManager;
 
 	std::vector<physics::CMaterial *> m_vecpMaterial;
 
 	/// manages scripted events
-	CScriptManager *m_pScriptManager;
+	boost::shared_ptr<CScriptManager> m_pScriptManager;
 
 	boost::shared_ptr<CScreenEffectManager> m_pScreenEffectManager;
 
@@ -196,7 +196,7 @@ public:
 
 	physics::CScene *GetPhysicsScene() { return m_pPhysicsScene; }
 
-	CScriptManager *GetScriptManager() { return m_pScriptManager; }
+	boost::shared_ptr<CScriptManager> GetScriptManager() { return m_pScriptManager; }
 
 	friend class CStageLoader;
 	friend class CEntitySet;
