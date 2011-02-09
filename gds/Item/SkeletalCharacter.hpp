@@ -188,6 +188,8 @@ public:
 
 	bool IsCameraDependentMotionControlEnabled() const { return m_CameraDependentMotionControl; }
 
+	std::vector< boost::shared_ptr<CCharacterMotionNodeAlgorithm> >& MotionNodeAlgorithms() { return m_pMotionNodes; }
+
 	static int ms_DefaultInputHandlerIndex;
 
 	friend class CArmedCharacterOperations;
@@ -217,6 +219,10 @@ protected:
 
 	boost::shared_ptr<CKeyBind> m_pKeybind;
 
+	/// pair contains an input condition
+	/// first: action code / second: input type (pressed, released or value changed)
+	std::map<std::pair<int,int>,std::string> m_ActionInputsToMotionNodes;
+
 public:
 
 	CCharacterMotionNodeAlgorithm() : m_pCharacter(NULL) {}
@@ -232,6 +238,8 @@ public:
 	virtual bool HandleInput( const SInputData& input, int action_code );
 
 	CInputState::Name GetActionInputState( int action_code );
+
+	void AddActionCodeToMotionNodeMap( int action_code, int input_type, const std::string& motion_node_name );
 };
 
 

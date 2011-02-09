@@ -20,6 +20,7 @@
 using std::string;
 using std::vector;
 using std::map;
+using std::pair;
 using boost::shared_ptr;
 using namespace boost::filesystem;
 using namespace msynth;
@@ -915,6 +916,13 @@ CInputState::Name CCharacterMotionNodeAlgorithm::GetActionInputState( int action
 
 bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int action_code )
 {
+	map<pair<int,int>,string>::iterator itr = m_ActionInputsToMotionNodes.find( pair<int,int>(action_code,input.iType) );
+	if( itr != m_ActionInputsToMotionNodes.end() )
+	{
+		RequestTransition( itr->second );
+		return true;
+	}
+
 	switch( action_code )
 	{
 	case ACTION_MOV_FORWARD:
@@ -995,6 +1003,12 @@ bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int ac
 	}
 
 	return false;
+}
+
+
+void CCharacterMotionNodeAlgorithm::AddActionCodeToMotionNodeMap( int action_code, int input_type, const std::string& motion_node_name )
+{
+	m_ActionInputsToMotionNodes[ pair<int,int>(action_code,input_type) ] = motion_node_name;
 }
 
 
