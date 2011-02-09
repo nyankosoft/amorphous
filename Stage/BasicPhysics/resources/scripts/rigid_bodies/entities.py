@@ -8,6 +8,8 @@ import stage_util
 
 misc_util = stage_util.CreateStageMiscUtility()
 
+misc_util.CreateSkybox()
+
 # floor
 #static_box = misc_util.CreateStaticBox( edge_lengths = math3d.Vector3(50,1,50), diffuse_color = gfx.Color(1,1,1,1), pose = math3d.Matrix34Identity() )
 
