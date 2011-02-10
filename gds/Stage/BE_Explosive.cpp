@@ -37,6 +37,8 @@ CBE_Explosive::CBE_Explosive()
 
 void CBE_Explosive::Init()
 {
+	CBE_PhysicsBaseEntity::Init();
+
 	Init3DModel();
 
 	if( strlen(m_aExplosionAnimation[AT_EXPLOSION].GetBaseEntityName()) == 0 )
@@ -70,6 +72,8 @@ void CBE_Explosive::InitCopyEntity( CCopyEntity* pCopyEnt )
 		float& rfTimer = pCopyEnt->f3;
 		rfTimer = m_fTimer;
 	}
+
+	pCopyEnt->m_MeshHandle = m_MeshProperty.m_MeshObjectHandle;
 }
 
 
