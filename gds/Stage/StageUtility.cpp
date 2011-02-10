@@ -18,6 +18,7 @@
 #include "Stage/StaticGeometry.hpp"
 #include "Stage/BE_StaticGeometry.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Utilities/Physics/MeshConversions.hpp"
 #include <boost/filesystem.hpp>
 
 using std::string;
@@ -55,6 +56,8 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 
 	desc.vVelocity = vel;
 	desc.fSpeed = Vec3Length(vel);
+
+	desc.sGroupID = 0;
 
 	CCopyEntity *pEntity = pStage->CreateEntity( desc );
 
@@ -384,6 +387,9 @@ Result::Name SetCylinderConvexShapeDesc( CMeshObjectHandle& mesh_handle, CConvex
 	CreateCylinderMesh( cylinder_desc, *pCylinderMesh );
 
 	CTriangleMeshDesc convex_mesh_desc;
+	convex_mesh_desc.m_vecIndex;
+	convex_mesh_desc.m_vecVertex;
+	General3DMeshToTriangleMeshDesc( *pCylinderMesh, convex_mesh_desc );
 	physics::CStream convex_mesh_stream;
 	Result::Name res = physics::Preprocessor().CreateConvexMeshStream( convex_mesh_desc, convex_mesh_stream );
 
@@ -651,21 +657,40 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *mesh_resource_name,
+CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
+						const char *name,
 						const Matrix34& pose,
 						float mass,
-						const std::string& material_name,
-						const std::string& entity_name,
-						const std::string& entity_attributes_name )
+						const std::string& material_name )
 {
-	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";
+//	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";
+	string actual_entity_attributes_name = "__CylinderFromMesh__";
 
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.ResourcePath = mesh_resource_name;
+	mesh_desc.ResourcePath = model;
 
 	Vector3 vel = Vector3(0,0,0);
 
-	return CreateCylinderEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
+	return CreateCylinderEntity( mesh_desc, name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
+						const char *name,
+						const Vector3& position,
+						float heading,
+						float pitch,
+						float bank,
+						float mass,
+						const std::string& material_name )
+{
+	return CreateCylinderFromMesh(
+		model,
+		name,
+		Matrix34( position, Matrix33RotationHPR_deg( heading, pitch, bank ) ),
+		mass,
+		material_name
+		);
 }
 
 
@@ -819,6 +844,36 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_
 }
 
 
+CEntityHandle<> CStageMiscUtility::CreateEntityFromBaseEntity( 
+	const char *model,
+	const char *name,
+	const Matrix34& pose )
+{
+	boost::shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return CEntityHandle<>();
+
+	if( !model
+	 || strlen(model) == 0 )
+	{
+		return CEntityHandle<>();
+	}
+
+	CCopyEntityDesc entity_desc;
+	CBaseEntityHandle base_entity( model );
+	entity_desc.pBaseEntityHandle = &base_entity;
+	if( name )
+		entity_desc.strName = name;
+	entity_desc.WorldPose = pose;
+
+	CCopyEntity *pEntity = pStage->CreateEntity( entity_desc );
+	if( pEntity )
+		return CEntityHandle<>( pEntity->Self() );
+	else
+		return CEntityHandle<>();
+}
+
+
 CEntityHandle<> CStageMiscUtility::CreateEntity(
 		const char *model,
 		const char *name,
@@ -830,14 +885,20 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 		const char *shape,
 		bool is_static )
 {
-	Matrix34 pose;
-	pose.matOrient
-		= Matrix33RotationY(deg_to_rad(heading))
-		* Matrix33RotationX(deg_to_rad(pitch))
-		* Matrix33RotationZ(deg_to_rad(bank));
+	Matrix34 pose( position, Matrix33RotationHPR_deg( heading, pitch, bank ) );
 
-	pose.vPosition = position;
+	if( !model
+	 || strlen(model) == 0 )
+	{
+		return CEntityHandle<>();
+	}
 
+	if( string(model).rfind(".msh") != string(model).length() - 4 )
+	{
+		// Not the mesh file. Consider this as a base entity name
+		CreateEntityFromBaseEntity( model, name, pose );
+	}
+	
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = model;
 
@@ -853,11 +914,11 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 //	else if( shape_name == "capsule" )
 //	{
 //		return CreateCapsuleEntity(  mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
-//	}
+//	}*/
 	else if( shape_name == "cylinder" )
 	{
 		return CreateCylinderEntity( mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
-	}*/
+	}
 //	else if( shape_name == "sphere" )
 //	{
 //		CreateSphereEntity( mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );

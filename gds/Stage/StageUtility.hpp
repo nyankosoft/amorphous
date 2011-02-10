@@ -143,6 +143,11 @@ class CStageMiscUtility : public CStageUtility
 
 	Result::Name SetTriangleMeshShapeDesc( const char *collision_mesh_name,
 		physics::CTriangleMeshShapeDesc& trimeshshapedesc );
+
+	CEntityHandle<> CreateEntityFromBaseEntity( const char *model,
+		const char *name,
+		const Matrix34& pose );
+
 public:
 
 	/// default ctor. Added to compile this code with boost::python.
@@ -199,26 +204,34 @@ public:
 */
 
 
-	CEntityHandle<> CreateCylinderFromMesh( const char *mesh_resource_name,
+	CEntityHandle<> CreateCylinderFromMesh( const char *model,
+							const char *name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,
-							const std::string& material_name = "default",
-							const std::string& entity_name = "",
-							const std::string& entity_attributes_name = "" );
+							const std::string& material_name = "default" );
 
-	CEntityHandle<> CreateStaticCylinderFromMesh( const char *mesh_resource_name,
+	CEntityHandle<> CreateCylinderFromMesh( const char *model,
+						const char *name,
+						const Vector3& position = Vector3(0,0,0),
+						float heading = 0.0f,
+						float pitch = 0.0f,
+						float bank = 0.0f,
+						float mass = 1.0f,
+						const std::string& material_name = "default" );
+
+	CEntityHandle<> CreateStaticCylinderFromMesh( const char *model,
+								const char *name,
 								const Matrix34& pose = Matrix34Identity(),
 								float mass = 1.0f,
-								const std::string& material_name = "default",
-								const std::string& entity_name = "",
-								const std::string& entity_attributes_name = "" )
+								const std::string& material_name = "default" )
 	{
 		CMeshResourceDesc mesh_desc;
-		mesh_desc.ResourcePath = mesh_resource_name;
+		mesh_desc.ResourcePath = model;
 		Vector3 vel( Vector3(0,0,0) );
-		std::string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";
+//		std::string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";
+		std::string actual_entity_attributes_name = "__CylinderFromMesh__";
 
-		return CreateCylinderEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, true );
+		return CreateCylinderEntity( mesh_desc, name, actual_entity_attributes_name, pose, vel, mass, material_name, true );
 	}
 
 	/// Creates a static triangle mesh actor from a graphics mesh file
