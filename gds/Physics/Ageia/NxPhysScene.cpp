@@ -19,6 +19,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/memory_helpers.hpp"
 
+using std::vector;
 using namespace physics;
 
 
@@ -97,6 +98,12 @@ m_pPhysicsSDK(pPhysicsSDK)
 	}
 	else
 		LOG_PRINT_ERROR( " The ctor received a NULL pointer of NxScene." );
+
+	// Set up the default material
+	int defualt_nx_material_index = 0;
+	NxMaterial *pNxMaterial = m_pScene->getMaterialFromIndex( defualt_nx_material_index );
+	m_vecpNxPhysMaterial.resize( 1 );
+	m_vecpNxPhysMaterial[0].reset( new CNxPhysMaterial( pNxMaterial, m_pScene ) );
 }
 
 
@@ -440,19 +447,36 @@ CMaterial *CNxPhysScene::CreateMaterial (const CMaterialDesc &desc)
 //	nx_desc.spring                  = (NxSpringDesc *)desc.;
 
 	NxMaterial *pNxMaterial = m_pScene->createMaterial( nx_desc );
+	NxMaterialIndex material_index = pNxMaterial->getMaterialIndex();
+	if( 256 <= material_index )
+		ONCE( LOG_PRINT_WARNING( " You are actually using quite a few materials or PhysX implementation changed?" ) );
+
+	while( (NxMaterialIndex)m_vecpNxPhysMaterial.size() <= material_index )
+		m_vecpNxPhysMaterial.push_back( boost::shared_ptr<CNxPhysMaterial>() );
+
+	m_vecpNxPhysMaterial[material_index].reset( new CNxPhysMaterial( pNxMaterial, m_pScene ) );
+
 	return new CNxPhysMaterial( pNxMaterial, m_pScene );
 }
 
 
 void CNxPhysScene::ReleaseMaterial( CMaterial*& pMaterial )
 {
-//	CNxPhysMaterial *pNxMat = dynamic_cast<CNxPhysMaterial *> (pMaterial);
+	int material_id = pMaterial->GetMaterialID();
+	if( material_id < 0 || (int)m_vecpNxPhysMaterial.size() <= material_id )
+		return;
 
-//	m_pScene->releaseMaterial( *(pNxMat->GetNxMaterial()) );
+	// the NxMaterial object is released from the NxScene object it belongs to in the dtor of CNxPhysMaterial
+	m_vecpNxPhysMaterial[material_id].reset();
+}
 
-//	SafeDelete( pNxMat );
 
-	SafeDelete( pMaterial );
+CMaterial *CNxPhysScene::GetMaterial( int material_id )
+{
+	if( material_id < 0 || (int)m_vecpNxPhysMaterial.size() <= material_id )
+		return NULL;
+
+	return m_vecpNxPhysMaterial[material_id] ? m_vecpNxPhysMaterial[material_id].get() : NULL;
 }
 
 

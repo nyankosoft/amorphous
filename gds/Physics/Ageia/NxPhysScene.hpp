@@ -4,6 +4,8 @@
 
 #include "NxPhysics.h"
 
+#include <vector>
+#include <boost/shared_ptr.hpp>
 #include "../Scene.hpp"
 #include "fwd.hpp"
 #include "NxMathConv.hpp"
@@ -62,6 +64,8 @@ class CNxPhysScene : public CScene
 	CNxPhysicsUserTriggerReport m_NxUserTriggerReport;
 
 	CNxPhysicsUserContactReport m_NxUserContactReport;
+
+	std::vector< boost::shared_ptr<CNxPhysMaterial> > m_vecpNxPhysMaterial;
 
 public:
 
@@ -196,6 +200,8 @@ public:
 
 	/// Deletes the specified material. 
 	virtual void ReleaseMaterial( CMaterial*& pMaterial );
+
+	virtual CMaterial *GetMaterial( int material_id );
 /*
 	/// Creates a scene compartment. 
 	virtual NxCompartment * CreateCompartment (const NxCompartmentDesc &compDesc);

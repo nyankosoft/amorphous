@@ -309,6 +309,8 @@ public:
 
 	/// Deletes the specified material. 
 	virtual void ReleaseMaterial( CMaterial*& pMaterial ) = 0;
+
+	virtual CMaterial *GetMaterial ( int material_id ) = 0;
 /*
 	/// Creates a scene compartment. 
 	virtual NxCompartment * CreateCompartment (const NxCompartmentDesc &compDesc) = 0; 
