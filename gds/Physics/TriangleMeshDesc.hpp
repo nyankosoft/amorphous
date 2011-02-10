@@ -42,6 +42,19 @@ public:
 		ar & m_vecVertex & m_vecIndex & m_vecMaterialIndex;
 	}
 
+	bool IsValid() const
+	{
+		if( 3 <= m_vecVertex.size()
+		 && 2 <= m_vecIndex.size() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 //	unsigned int GetArchiveObjectID() const { return ; }
 
 /*	void Scale( float factor )
