@@ -219,7 +219,7 @@ Result::Name CNxPhysPreprocessorImpl::CreateConvexMeshStream( CTriangleMeshDesc&
 //		m_pCooking->NxCookTriangleMesh( meshDesc, CNxPhysStream( &phys_stream, false ) );
 		bool convexmesh_cooked = NxCookConvexMesh( meshDesc, CNxPhysStream( &(phys_stream.m_Buffer), false ) );
 
-		LOG_PRINT_OK_OR_FAILED( "NxCookTriangleMesh()", convexmesh_cooked );
+		LOG_PRINT_OK_OR_FAILED( "NxCookConvexMesh()", convexmesh_cooked );
 		if( !convexmesh_cooked )
 			return Result::UNKNOWN_ERROR;
 	}
