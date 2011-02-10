@@ -205,6 +205,31 @@ bool CBE_Skybox::LoadSkyboxTexture( const std::string& texture_filename )
 }
 
 
+bool CBE_Skybox::GetFogColor( SFloatRGBAColor& dest )
+{
+	if( !GetSkyboxTexture().GetEntry() )
+		return false;
+
+	boost::shared_ptr<CTextureResource> pTexResource = GetSkyboxTexture().GetEntry()->GetTextureResource();
+	if( !pTexResource )
+		return false;
+
+	if( !pTexResource->Lock() )
+		return false;
+
+	boost::shared_ptr<CLockedTexture> pLockedTex;
+	pTexResource->GetLockedTexture( pLockedTex );
+	if( pLockedTex )
+	{
+		pLockedTex->GetPixel( pLockedTex->GetWidth() / 2, pLockedTex->GetHeight() / 2, dest );
+
+		pTexResource->Unlock();
+	}
+
+	return true;
+}
+
+
 bool CBE_Skybox::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
 	return false;

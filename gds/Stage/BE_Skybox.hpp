@@ -35,6 +35,12 @@ public:
 
 	bool LoadSkyboxTexture( const std::string& texture_filename );
 
+	CTextureHandle GetSkyboxTexture() { return m_SkyboxTexture; }
+
+	/// Returns a single color for simple fog effect
+	/// Right now, it simply returns the texel at the center of the skybox texture, the texel which mapped near the horizon
+	/// on the skybox mesh.
+	bool GetFogColor( SFloatRGBAColor& dest );
 };
 
 #endif  /*  __BE_Skybox_H__  */
