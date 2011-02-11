@@ -36,6 +36,8 @@ CBE_GeneralEntity::~CBE_GeneralEntity()
 
 void CBE_GeneralEntity::Init()
 {
+	CBE_PhysicsBaseEntity::Init();
+
 	Init3DModel();
 
 	m_ActorDesc.CollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
