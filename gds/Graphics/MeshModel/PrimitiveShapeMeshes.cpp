@@ -73,6 +73,17 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 		vertices, normals, polygons // [out]
 		);
 
+	if( desc.style == PLACE_ON_PLANE )
+	{
+		LOG_PRINT_ERROR( " Not implemented - does not work when the cylinder's axis is not (0,1,0)." );
+		const float half_height = desc.height * 0.5f;
+		const int num_points = (int)vertices.size();
+		for( int i=0; i<num_points; i++ )
+		{
+			vertices[i].y += half_height;
+		}
+	}
+
 	const size_t num_vertices = vertices.size();
 	vector<CGeneral3DVertex>& vert_buffer = *(mesh.GetVertexBuffer());
 	vert_buffer.resize( num_vertices, CGeneral3DVertex() );
