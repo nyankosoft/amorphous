@@ -1,11 +1,12 @@
-#ifndef __3DGAMEMATH_H__
-#define __3DGAMEMATH_H__
+#ifndef __3DGameMath_HPP__
+#define __3DGameMath_HPP__
 
 
 #include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix33.hpp"
+#include "3DMath/Quaternion.hpp"
 
-#include <float.h>
+//#include <float.h>
 
 
 /// \param fBounceFactor [0,1] 0: no bounce / 1: complete bounce
@@ -116,4 +117,57 @@ inline Matrix33 CreateOrientFromFwdDir( const Vector3& vFwd )
 }
 
 
-#endif	/*  __3DGAMEMATH_H__  */
+inline void Horizontalize( Vector3& target )
+{
+	if( abs(target.x) < 0.000001
+	 && abs(target.z) < 0.000001 )
+	{
+		target = Vector3(0,0,1);
+	}
+
+	target.y = 0;
+	target.Normalize();
+}
+
+
+inline Vector3 GetHorizontalized( const Vector3& src )
+{
+	Vector3 dest( src );
+	Horizontalize( dest );
+	return dest;
+}
+
+
+inline void Horizontalize( Matrix33& target )
+{
+	target.SetColumn( 1, Vector3(0,1,0) );
+	target.Orthonormalize();
+}
+
+
+inline Matrix33 GetHorizontalized( const Matrix33& src )
+{
+	Matrix33 dest( src );
+	Horizontalize( dest );
+	return dest;
+}
+
+
+inline void Horizontalize( Quaternion& target )
+{
+	Matrix33 mat( target.ToRotationMatrix() );
+	Horizontalize( mat );
+	target.FromRotationMatrix( mat );
+}
+
+
+inline Quaternion GetHorizontalized( const Quaternion& src )
+{
+	Quaternion dest( src );
+	Horizontalize( dest );
+	return dest;
+}
+
+
+
+#endif	/*  __3DGameMath_HPP__  */

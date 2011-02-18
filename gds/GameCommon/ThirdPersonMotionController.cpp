@@ -1,4 +1,5 @@
 #include "ThirdPersonMotionController.hpp"
+#include "../Graphics/3DGameMath.hpp"
 #include "../Item/SkeletalCharacter.hpp"
 #include "../Input/InputHandler.hpp"
 
