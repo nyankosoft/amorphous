@@ -159,9 +159,12 @@ CConvexMesh *CNxPhysicsEngine::CreateConvexMesh( CStream& phys_stream )
 
 	NxConvexMesh *pNxMesh = m_pPhysicsSDK->createConvexMesh( nx_stream );
 	if( !pNxMesh )
+	{
 		LOG_PRINT_ERROR( " NxPhysicsSDK::createConvexsMesh() failed. Cannot create a convex mesh." );
+		return NULL;
+	}
 
-	return NULL;
+	return new CNxPhysConvexMesh( pNxMesh, m_pPhysicsSDK );
 }
 
 
@@ -177,7 +180,10 @@ CTriangleMesh *CNxPhysicsEngine::CreateTriangleMesh( physics::CStream& phys_stre
 
 	NxTriangleMesh *pNxMesh = m_pPhysicsSDK->createTriangleMesh( nx_stream );
 	if( !pNxMesh )
+	{
 		LOG_PRINT_ERROR( " NxPhysicsSDK::createTriangleMesh() failed. Cannot create a triangle mesh." );
+		return NULL;
+	}
 
 	return new CNxPhysTriangleMesh( pNxMesh, m_pPhysicsSDK );
 }
