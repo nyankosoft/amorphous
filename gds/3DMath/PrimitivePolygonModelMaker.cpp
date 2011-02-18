@@ -20,7 +20,12 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 	Vector3 vUp = Vector3(0,1,0);//vDirFromBottomToTop = Vec3GetNormalized( vCore );
 //	const Matrix33 matOrient = CreateOrientFromFwdDir( vDirFromBottomToTop );
 //	const Matrix34 pose[2] = { Matrix34( vPos0_Top, matOrient ), Matrix34( vPos1_Bottom, matOrient ) };
-	const Matrix34 pose[2] = { Matrix34( vUp * height, Matrix33Identity() ), Matrix34Identity() };
+//	const Matrix34 pose[2] = { Matrix34( vUp * height, Matrix33Identity() ), Matrix34Identity() };
+	const Matrix34 pose[2] =
+	{
+		Matrix34(  vUp * height * 0.5f, Matrix33Identity() ),
+		Matrix34( -vUp * height * 0.5f, Matrix33Identity() )
+	};
 	const float afRadius[2] = { pafRadius[0], pafRadius[1] };
 	vector<Vector3> vecNormal;
 
