@@ -109,6 +109,24 @@ m_pPhysicsSDK(pPhysicsSDK)
 
 CNxPhysScene::~CNxPhysScene()
 {
+	// clear the materials for the following 2 reasons
+	// 1. Release the default material at m_vecpNxPhysMaterial[0]
+	//    The default material is created in the ctor of CNxPhysScene
+	//    and always released here.
+	// 2. Set NULL to m_pScene of all the materials
+	//    This prevents access to an already released m_pScene pointer
+	//    when client code does not release the materials
+	//    via CNxPhysScene::ReleaseMaterial() before releasing the scene.
+	for( size_t i=0; i<m_vecpNxPhysMaterial.size(); i++ )
+	{
+		if( !m_vecpNxPhysMaterial[i] )
+			continue;
+
+		m_vecpNxPhysMaterial[i]->m_pScene = NULL;
+
+		m_vecpNxPhysMaterial[i].reset();
+	}
+
 	m_pPhysicsSDK->releaseScene( *m_pScene );
 	m_pScene = NULL;
 }

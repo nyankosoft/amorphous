@@ -25,7 +25,12 @@ public:
 	m_pScene(pScene)
 	{}
 
-	virtual ~CNxPhysMaterial() { m_pScene->releaseMaterial( *m_pNxMaterial ); }
+	virtual ~CNxPhysMaterial()
+	{
+		// m_pScene is set to NULL in the dtor of the scene if the scene is released first
+		if( m_pScene )
+			m_pScene->releaseMaterial( *m_pNxMaterial );
+	}
 
 	/// materials ids are set to shape descs
 	virtual int GetMaterialID() { return (int)m_pNxMaterial->getMaterialIndex(); }
@@ -48,6 +53,7 @@ public:
 	/// Retrieves the coefficient of restitution. 
 	virtual Scalar  GetRestitution () const { return m_pNxMaterial->getRestitution(); } 
 
+	friend class CNxPhysScene;
 };
 
 
