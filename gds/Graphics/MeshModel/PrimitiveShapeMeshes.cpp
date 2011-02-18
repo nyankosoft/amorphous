@@ -73,7 +73,7 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 		vertices, normals, polygons // [out]
 		);
 
-	if( desc.style == PLACE_ON_PLANE )
+	if( desc.style == PrimitivePlacingStyle::PLACE_ON_PLANE )
 	{
 		LOG_PRINT_ERROR( " Not implemented - does not work when the cylinder's axis is not (0,1,0)." );
 		const float half_height = desc.height * 0.5f;
