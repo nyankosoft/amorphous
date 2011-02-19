@@ -329,7 +329,9 @@ HRESULT CDirectInputMouse::UpdateInput()
 	input.SetParamH16( (short)(pos_x / scale) );
 	input.SetParamL16( (short)(pos_y / scale) );
 
-	input.iType = ITYPE_KEY_PRESSED;
+	// Send input data for mouse movements in the X and Y directions
+
+	input.iType = ITYPE_VALUE_CHANGED;
 
 //	m_fPrevMoveFractionX = (float)iMoveX * scale;
 //	m_fPrevMoveFractionY = (float)iMoveY * scale;
