@@ -26,6 +26,8 @@ public:
 	virtual CCapsuleShape *CreateCapsuleShape( NxCapsuleShape* pNxCapsuleShape ) { return new CNxPhysCapsuleShape( pNxCapsuleShape ); }
 
 	virtual CTriangleMeshShape *CreateTriangleMeshShape( NxTriangleMeshShape* pNxTriMeshShape ) { return new CNxPhysTriangleMeshShape( pNxTriMeshShape ); }
+
+	virtual CConvexShape *CreateConvexShape( NxConvexShape* pNxConvexShape ) { return new CNxPhysConvexShape( pNxConvexShape ); }
 };
 
 
@@ -37,6 +39,7 @@ inline CShape *CNxPhysShapeFactory::CreateShape( NxShape *pNxShape )
 	case NX_SHAPE_SPHERE:  return CreateSphereShape( pNxShape->isSphere() );
 	case NX_SHAPE_CAPSULE: return CreateCapsuleShape( pNxShape->isCapsule() );
 	case NX_SHAPE_MESH:    return CreateTriangleMeshShape( pNxShape->isTriangleMesh() );
+	case NX_SHAPE_CONVEX:  return CreateConvexShape( pNxShape->isConvexMesh() );
 	default: return NULL;
 	}
 }
