@@ -157,6 +157,42 @@ inline bool CNxPhysTriangleMeshShape::Raycast ( const CRay &world_ray,
 }
 
 
+class CNxPhysConvexShape : public CConvexShape
+{
+	NxConvexShape *m_pConvex;
+
+public:
+
+	CNxPhysConvexShape( NxConvexShape *pConvex )
+		:
+	m_pConvex(pConvex) { m_pConvex->userData = this; }
+
+	virtual ~CNxPhysConvexShape() {}
+
+	Matrix34 GetLocalPose () const { return ToMatrix34( m_pConvex->getLocalPose() ); }
+
+	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+
+	void SetCollisionGroup ( U16 group ) { m_pConvex->setGroup( group ); }
+	U16 GetCollisionGroup() const { return (U16)m_pConvex->getGroup(); }
+
+	NxShape *GetNxShape() const { return m_pConvex; }
+};
+
+
+inline bool CNxPhysConvexShape::Raycast ( const CRay &world_ray,
+										   Scalar max_dist,
+										   U32 hint_flags,
+										   CRaycastHit &hit, bool first_hit ) const
+{
+	NxRaycastHit nx_hit = ToNxRaycastHit(hit);
+	bool res = m_pConvex->raycast( ToNxRay(world_ray), max_dist, hint_flags, nx_hit, first_hit );
+	hit = FromNxRaycastHit( nx_hit );
+	return res;
+}
+
+
+
 } // namespace physics
 
 
