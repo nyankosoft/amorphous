@@ -51,10 +51,10 @@ static void FillNxTriangleMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecV
 }
 
 
-static void FillNxConvexMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecVertex, vector<index_type>& vecIndex, NxConvexMeshDesc& dest )
+static void FillNxConvexMeshDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecVertex, vector<index_type>& vecIndex, NxConvexMeshDesc& dest )
 {
-	if( sizeof(index_type) == sizeof(NxU16) )
-		dest.flags                  = NX_MF_16_BIT_INDICES;
+//	if( sizeof(index_type) == sizeof(NxU16) )
+//		dest.flags                  = NX_MF_16_BIT_INDICES;
 
 	// copy vertices
 	size_t num_verts = src.m_vecVertex.size();
@@ -62,7 +62,7 @@ static void FillNxConvexMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecVer
 	vecVertex.resize( num_verts );
 	for( size_t i=0; i<num_verts; i++ )
 		vecVertex[i] = ToNxVec3( src.m_vecVertex[i] );
-
+/*
 	// copy indices
 	size_t num_indices = src.m_vecIndex.size();
 	size_t num_triangles = num_indices / 3;
@@ -70,15 +70,15 @@ static void FillNxConvexMessDesc( CTriangleMeshDesc& src, vector<NxVec3>& vecVer
 	vecIndex.resize( num_indices );
 	for( size_t i=0; i<num_indices; i++ )
 		vecIndex[i] = (index_type)src.m_vecIndex[i];
-
+*/
 	dest.numVertices                = (NxU32)num_verts;
-	dest.numTriangles               = (NxU32)num_triangles;
+//	dest.numTriangles               = (NxU32)num_triangles;
 
 	dest.pointStrideBytes           = sizeof(NxVec3);
-	dest.triangleStrideBytes        = 3*sizeof(index_type);
+//	dest.triangleStrideBytes        = 3*sizeof(index_type);
 
 	dest.points                     = &(vecVertex[0]);
-	dest.triangles                  = &(vecIndex[0]);                         
+//	dest.triangles                  = &(vecIndex[0]);                         
 }
 
 
@@ -187,7 +187,7 @@ Result::Name CNxPhysPreprocessorImpl::CreateConvexMeshStream( CTriangleMeshDesc&
 	vector<index_type> vecIndex;
 
 	// vertices and points
-	FillNxConvexMessDesc( mesh_desc, vecVertex, vecIndex, meshDesc );
+	FillNxConvexMeshDesc( mesh_desc, vecVertex, vecIndex, meshDesc );
 
 	// vecIndex now contains indices of triangles
 	const size_t num_indices = vecIndex.size();
@@ -199,13 +199,10 @@ Result::Name CNxPhysPreprocessorImpl::CreateConvexMeshStream( CTriangleMeshDesc&
 	for( i=0; i<num_triangles; i++ )
 		vecMatIndex[i] = (NxU32)mesh_desc.m_vecMaterialIndex[i];
 
-	meshDesc.flags = NX_CF_COMPUTE_CONVEX;
-
-	meshDesc.flags |= NX_CF_16_BIT_INDICES;
-
 //	meshDesc.materialIndexStride        = sizeof(NxU32);
-
 //	meshDesc.materialIndices            = &(vecMatIndex[0]);
+
+	meshDesc.flags |= NX_CF_COMPUTE_CONVEX;
 
 	bool valid_desc = meshDesc.isValid();
 	if( !valid_desc )
