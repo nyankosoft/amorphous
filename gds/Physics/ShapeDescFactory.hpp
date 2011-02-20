@@ -8,8 +8,9 @@ using namespace GameLib1::Serialization;
 
 #include "ShapeDesc.hpp"
 #include "BoxShapeDesc.hpp"
-//#include "ShpereShapeDesc.hpp"
+#include "SphereShapeDesc.hpp"
 #include "CapsuleShapeDesc.hpp"
+#include "ConvexShapeDesc.hpp"
 #include "TriangleMeshShapeDesc.hpp"
 
 
@@ -46,7 +47,7 @@ inline CShapeDesc *CShapeDescFactory::CreateShapeDesc( const unsigned int id )
 	switch(id)
 	{
 	case PhysShape::Box:          return new CBoxShapeDesc();
-//	case PhysShape::Sphere:       return new CSphereShapeDesc();
+	case PhysShape::Sphere:       return new CSphereShapeDesc();
 	case PhysShape::Capsule:      return new CCapsuleShapeDesc();
 	case PhysShape::TriangleMesh: return new CTriangleMeshShapeDesc();
 //	case :	return new C*ShapeDesc();
