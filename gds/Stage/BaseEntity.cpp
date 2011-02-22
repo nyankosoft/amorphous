@@ -20,6 +20,8 @@
 #include "Utilities/TextFileScannerExtensions.hpp"
 
 #include "Physics/ActorDesc.hpp"
+#include "Physics/RaycastHit.hpp"
+#include "Physics.hpp"
 
 using std::string;
 using std::vector;
@@ -363,6 +365,41 @@ const physics::CActorDesc& CBaseEntity::GetPhysicsActorDesc()
 void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 {
 	PROFILE_FUNCTION();
+
+	if( 0 < pMyself->m_vecpPhysicsActor.size()
+	 && pMyself->m_vecpPhysicsActor[0] )
+	{
+		float trace_length = Vec3Length( *rTrace.pvGoal - *rTrace.pvStart );
+		physics::CRay ray;
+		ray.Origin    = *rTrace.pvStart;
+		ray.Direction = ( *rTrace.pvGoal - *rTrace.pvStart ) / trace_length;
+		physics::CRaycastHit hit;
+		bool hit_detected = false;
+		physics::CActor *pActor = pMyself->m_vecpPhysicsActor[0];
+
+		// Overwrite the actor's pose with the entity's to synchronize
+		// - Temporarily added to synchronize the poses of enemy aircrafts
+		pActor->SetWorldPose( pMyself->GetWorldPose() );
+
+		if( 0 < pActor->GetNumShapes() )
+			hit_detected = pActor->GetShape(0)->Raycast( ray, trace_length, 0, hit, true );
+
+		// bug: ray hit is not detected againt the box shape of enemy aircrafts.
+
+		Matrix34 actor_world_pose = pMyself->m_vecpPhysicsActor[0]->GetWorldPose();
+
+		if( hit_detected )
+		{
+			if( pMyself->GetName() == "player" )
+				int break_here = 1;
+
+			rTrace.vEnd = hit.WorldImpactPos;
+			rTrace.fFraction = Vec3Length( hit.WorldImpactPos - *rTrace.pvStart ) / trace_length;
+			rTrace.pTouchedEntity = pMyself;
+		}
+
+		return;
+	}
 
 	STrace local_trace = rTrace;
 	Vector3 vS, vG;
