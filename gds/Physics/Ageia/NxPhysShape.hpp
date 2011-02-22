@@ -13,116 +13,105 @@ namespace physics
 {
 
 
-class CNxPhysBoxShape : public CBoxShape
+class CNxPhysShapeImpl : public CShapeImpl
+{
+	NxShape *m_pNxShape;
+
+public:
+
+	CNxPhysShapeImpl( NxShape *pNxShape ) : m_pNxShape(pNxShape) {}
+
+	virtual ~CNxPhysShapeImpl() {}
+
+	int GetMaterialID() const { return (int)m_pNxShape->getMaterial(); }
+
+	Matrix34 GetLocalPose() const { return ToMatrix34( m_pNxShape->getLocalPose() ); }
+
+	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
+
+	void SetCollisionGroup( U16 group ) { m_pNxShape->setGroup( group ); }
+
+	U16 GetCollisionGroup() const { return (U16)m_pNxShape->getGroup(); }
+
+	NxShape *GetNxShape() const { return m_pNxShape; }
+};
+
+
+inline bool CNxPhysShapeImpl::Raycast( const CRay &world_ray,
+							   Scalar max_dist, U32 hint_flags,
+							   CRaycastHit &hit,
+							   bool first_hit ) const
+{
+	NxRaycastHit nx_rayhit;// = ToNxRaycastHit(hit);
+	bool res = m_pNxShape->raycast( ToNxRay(world_ray), max_dist, hint_flags, nx_rayhit, first_hit );
+	if( res )
+	{
+		hit = FromNxRaycastHit(nx_rayhit);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+
+class CNxPhysBoxShape : public CNxPhysShapeImpl
 {
 	NxBoxShape *m_pBox;
 
 public:
 
 //	CNxPhysBoxShape() {}
-	CNxPhysBoxShape( NxBoxShape *pBox ) : m_pBox(pBox) { m_pBox->userData = this; }
+	CNxPhysBoxShape( NxBoxShape *pBox ) : CNxPhysShapeImpl(pBox), m_pBox(pBox) { m_pBox->userData = this; }
 
 	virtual ~CNxPhysBoxShape() {}
 
-	virtual int GetMaterialID() const { return (int)m_pBox->getMaterial(); }
-
-	Matrix34 GetLocalPose () const { return ToMatrix34( m_pBox->getLocalPose() ); }
-
-	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
-
-	void SetCollisionGroup ( U16 group ) { m_pBox->setGroup( group ); }
-	U16 GetCollisionGroup() const { return (U16)m_pBox->getGroup(); }
-
 	/// returns radii of the box
-	virtual Vector3 GetDimensions () const { return ToVector3( m_pBox->getDimensions() ); }
+	virtual Vector3 GetDimensions() const { return ToVector3( m_pBox->getDimensions() ); }
 
 	NxShape *GetNxShape() const { return m_pBox; }
 };
 
 
-inline bool CNxPhysBoxShape::Raycast( const CRay &world_ray,
-							   Scalar max_dist, U32 hint_flags,
-							   CRaycastHit &hit,
-							   bool first_hit ) const
-{
-	NxRaycastHit nx_rayhit;// = ToNxRaycastHit(hit);
-	bool res = m_pBox->raycast( ToNxRay(world_ray), max_dist, hint_flags, nx_rayhit, first_hit );
-	hit = FromNxRaycastHit(nx_rayhit);
-	return res;
-}
-
-
-class CNxPhysSphereShape : public CSphereShape
+class CNxPhysSphereShape : public CNxPhysShapeImpl
 {
 	NxSphereShape *m_pSphere;
 
 public:
 
 //	CNxPhysSphereShape() {}
-	CNxPhysSphereShape( NxSphereShape *pSphere ) : m_pSphere(pSphere) { m_pSphere->userData = this; }
+	CNxPhysSphereShape( NxSphereShape *pSphere ) : CNxPhysShapeImpl(pSphere), m_pSphere(pSphere) { m_pSphere->userData = this; }
 
 	virtual ~CNxPhysSphereShape() {}
 
-	Matrix34 GetLocalPose () const { return ToMatrix34( m_pSphere->getLocalPose() ); }
-
-	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
-
-	void SetCollisionGroup ( U16 group ) { m_pSphere->setGroup( group ); }
-	U16 GetCollisionGroup() const { return (U16)m_pSphere->getGroup(); }
-
-	virtual Scalar GetRadius () const { return (Scalar)(m_pSphere->getRadius()); }
+	virtual Scalar GetRadius() const { return (Scalar)(m_pSphere->getRadius()); }
 
 	virtual void SetRadius( Scalar radius ) { m_pSphere->setRadius( radius ); }
-
-	NxShape *GetNxShape() const { return m_pSphere; }
 };
 
 
-inline bool CNxPhysSphereShape::Raycast( const CRay &world_ray, Scalar max_dist, U32 hint_flags, CRaycastHit &hit, bool first_hit ) const
-{
-	return m_pSphere->raycast( ToNxRay(world_ray), max_dist, hint_flags, ToNxRaycastHit(hit), first_hit );
-}
-
-
-class CNxPhysCapsuleShape : public CCapsuleShape
+class CNxPhysCapsuleShape : public CNxPhysShapeImpl
 {
 	NxCapsuleShape *m_pCapsule;
 
 public:
 
 //	CNxPhysCapsuleShape() {}
-	CNxPhysCapsuleShape( NxCapsuleShape *pCapsule ) : m_pCapsule(pCapsule) { m_pCapsule->userData = this; }
+	CNxPhysCapsuleShape( NxCapsuleShape *pCapsule ) : CNxPhysShapeImpl(pCapsule), m_pCapsule(pCapsule) { m_pCapsule->userData = this; }
 
 	virtual ~CNxPhysCapsuleShape() {}
 
-	Matrix34 GetLocalPose () const { return ToMatrix34( m_pCapsule->getLocalPose() ); }
+	Scalar GetRadius() const { return m_pCapsule->getRadius(); }
+	Scalar GetLength() const { return m_pCapsule->getHeight(); }
 
-	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
-
-	void SetCollisionGroup ( U16 group ) { m_pCapsule->setGroup( group ); }
-	U16 GetCollisionGroup() const { return (U16)m_pCapsule->getGroup(); }
-
-	virtual Scalar GetRadius () const { return m_pCapsule->getRadius(); }
-	virtual Scalar GetLength () const { return m_pCapsule->getHeight(); }
-
-	virtual void SetRadius( Scalar radius ) { m_pCapsule->setRadius( radius ); }
-	virtual void SetLength( Scalar length ) { m_pCapsule->setHeight( length ); }
-
-	NxShape *GetNxShape() const { return m_pCapsule; }
+	void SetRadius( Scalar radius ) { m_pCapsule->setRadius( radius ); }
+	void SetLength( Scalar length ) { m_pCapsule->setHeight( length ); }
 };
 
 
-inline bool CNxPhysCapsuleShape::Raycast ( const CRay &world_ray,
-										   Scalar max_dist,
-										   U32 hint_flags, 
-										   CRaycastHit &hit, bool first_hit ) const
-{
-	return m_pCapsule->raycast( ToNxRay(world_ray), max_dist, hint_flags, ToNxRaycastHit(hit), first_hit );
-}
-
-
-
-class CNxPhysTriangleMeshShape : public CTriangleMeshShape
+class CNxPhysTriangleMeshShape : public CNxPhysShapeImpl
 {
 	NxTriangleMeshShape *m_pTriangleMesh;
 
@@ -130,66 +119,26 @@ public:
 
 	CNxPhysTriangleMeshShape( NxTriangleMeshShape *pTriangleMesh )
 		:
-	m_pTriangleMesh(pTriangleMesh) { m_pTriangleMesh->userData = this; }
+	CNxPhysShapeImpl(pTriangleMesh),
+	m_pTriangleMesh(pTriangleMesh)
+	{
+		m_pTriangleMesh->userData = this;
+	}
 
 	virtual ~CNxPhysTriangleMeshShape() {}
-
-	Matrix34 GetLocalPose () const { return ToMatrix34( m_pTriangleMesh->getLocalPose() ); }
-
-	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
-
-	void SetCollisionGroup ( U16 group ) { m_pTriangleMesh->setGroup( group ); }
-	U16 GetCollisionGroup() const { return (U16)m_pTriangleMesh->getGroup(); }
-
-	NxShape *GetNxShape() const { return m_pTriangleMesh; }
 };
 
 
-inline bool CNxPhysTriangleMeshShape::Raycast ( const CRay &world_ray,
-										   Scalar max_dist,
-										   U32 hint_flags,
-										   CRaycastHit &hit, bool first_hit ) const
-{
-	NxRaycastHit nx_hit = ToNxRaycastHit(hit);
-	bool res = m_pTriangleMesh->raycast( ToNxRay(world_ray), max_dist, hint_flags, nx_hit, first_hit );
-	hit = FromNxRaycastHit( nx_hit );
-	return res;
-}
-
-
-class CNxPhysConvexShape : public CConvexShape
+class CNxPhysConvexShape : public CNxPhysShapeImpl
 {
 	NxConvexShape *m_pConvex;
 
 public:
 
-	CNxPhysConvexShape( NxConvexShape *pConvex )
-		:
-	m_pConvex(pConvex) { m_pConvex->userData = this; }
+	CNxPhysConvexShape( NxConvexShape *pConvex ) : CNxPhysShapeImpl(pConvex), m_pConvex(pConvex) { m_pConvex->userData = this; }
 
 	virtual ~CNxPhysConvexShape() {}
-
-	Matrix34 GetLocalPose () const { return ToMatrix34( m_pConvex->getLocalPose() ); }
-
-	inline bool Raycast ( const CRay &world_ray, Scalar max_dist, U32 hintFlags, CRaycastHit &hit, bool first_hit ) const;
-
-	void SetCollisionGroup ( U16 group ) { m_pConvex->setGroup( group ); }
-	U16 GetCollisionGroup() const { return (U16)m_pConvex->getGroup(); }
-
-	NxShape *GetNxShape() const { return m_pConvex; }
 };
-
-
-inline bool CNxPhysConvexShape::Raycast ( const CRay &world_ray,
-										   Scalar max_dist,
-										   U32 hint_flags,
-										   CRaycastHit &hit, bool first_hit ) const
-{
-	NxRaycastHit nx_hit = ToNxRaycastHit(hit);
-	bool res = m_pConvex->raycast( ToNxRay(world_ray), max_dist, hint_flags, nx_hit, first_hit );
-	hit = FromNxRaycastHit( nx_hit );
-	return res;
-}
 
 
 
