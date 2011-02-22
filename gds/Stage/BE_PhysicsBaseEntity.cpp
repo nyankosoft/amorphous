@@ -183,7 +183,6 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 		// parse the full lengths of the 3 edges of the box
 		CBoxShapeDesc *pBoxDesc = new CBoxShapeDesc;
 		pBoxDesc->vSideLength = vBoxSideLength * 0.5f;
-		pBoxDesc->MaterialIndex = 1;
 		m_ActorDesc.vecpShapeDesc.push_back( pBoxDesc );
 		return true;
 	}
