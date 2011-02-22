@@ -89,6 +89,8 @@ void CBE_Bullet::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 	TraveledDist(pCopyEnt) = 0.0f;
 
+	Power(pCopyEnt) = 1.0f;
+
 	// init reflection count
 	float& rfNumCurrentReflections = pCopyEnt->f3;
 	rfNumCurrentReflections = 0;
@@ -435,12 +437,13 @@ void CBE_Bullet::Move( CCopyEntity* pCopyEnt )
 
 void CBE_Bullet::Act(CCopyEntity* pCopyEnt)
 {
-	pCopyEnt->f1 = Vec3LengthSq( pCopyEnt->Velocity() );
+	CCopyEntity& bullet = *pCopyEnt;
+	const float speed_sq = Vec3LengthSq( bullet.Velocity() );
 
-	if( pCopyEnt->f1 < 1.0f )
-		pCopyEnt->sState |= CESTATE_ATREST;
+	if( speed_sq < 1.0f )
+		bullet.sState |= CESTATE_ATREST;
 
-	if( pCopyEnt->sState & CESTATE_ATREST || m_fMaxRange < TraveledDist(pCopyEnt) )
+	if( bullet.sState & CESTATE_ATREST || m_fMaxRange < TraveledDist(&bullet) )
 	{
 		m_pStage->TerminateEntity( pCopyEnt );
 		return;
@@ -448,25 +451,25 @@ void CBE_Bullet::Act(CCopyEntity* pCopyEnt)
 
 	// velocity update - make it less affected by gravity
 	if( !m_MeshProperty.m_MeshObjectHandle.IsLoaded() )
-	{	// bullet which is represented by 3D mesh object is not affected gravity
+	{
+		// bullet which is represented by 3D mesh object is not affected gravity
 		Vector3 vGravityAccel = this->m_pStage->GetGravityAccel();
-		pCopyEnt->vVelocity += vGravityAccel * m_pStage->GetFrameTime() * 0.5f;
+		bullet.vVelocity += vGravityAccel * m_pStage->GetFrameTime() * 0.5f;
 	}
 
 	// move the bullet
-	Move( pCopyEnt );
+	Move( &bullet );
 
 	// update child entity (dynamic light that moves with the bullet)
-	CCopyEntity *pChild = pCopyEnt->GetChild(0);
+	CCopyEntity *pChild = bullet.GetChild(0);
 	if( pChild )
 		pChild->Act();
-
 
 }
 
 
 /**
- When a bullet hit a polygon of the map, the decal entity is placed to make a bullet hole.
+ When a bullet hits static geometry, the decal entity is placed to make a bullet hole.
  Bullet holes decals are placed only on the surface of the static geometry.
  They are not placed on entities that move or disappear.
  */
@@ -486,12 +489,18 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 
 		// amount of damage given by this bullet
 		//msg.fParam1 = Vec3LengthSq( pCopyEnt_Self->vVelocity ) * this->m_fBulletPower;
-		msg.fParam1 = pCopyEnt->f1 * this->m_fBulletPower;
+		msg.fParam1 = this->m_fBulletPower * Power(pCopyEnt);
+
+		if( pCopyEnt->s1 & DFF_SQUARED_SPEED )
+			msg.fParam1 *= Vec3LengthSq( pCopyEnt->Velocity() );
+		else if( pCopyEnt->s1 & DFF_SPEED )
+			msg.fParam1 *= Vec3Length( pCopyEnt->Velocity() );
 
 		SendGameMessageTo( msg, pCopyEnt_Other );
 
 		if( pCopyEnt_Other->GetEntityFlags() & BETYPE_RIGIDBODY )
-		{	// apply impulse to the entity hit by this bullet
+		{
+			// apply impulse to the entity hit by this bullet
 			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() / 50.0f, pCopyEnt->GetWorldPosition() );
 		}
 		else if( pCopyEnt_Other->GetEntityFlags() & BETYPE_PLAYER )
@@ -564,8 +573,6 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 {
 	// set the world transformation matrix
-	Matrix44 matWorld;
-//	Matrix44 matRotZ;
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
 //	m_pStage->GetBillboardRotationMatrix( matWorld );
@@ -573,13 +580,12 @@ void CBE_Bullet::DrawBillboradTexture( CCopyEntity* pCopyEnt )
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
 	billboard_pose.vPosition = pCopyEnt->GetWorldPosition();	// current position of this billboard
 
-	ToMatrix44( billboard_pose, matWorld );
+	Matrix44 matWorld = ToMatrix44( billboard_pose );
 
 //	if( /* random rotation is */ true )
 /*	{	// randomly rotates billboards to make them look more diverse
 		float& rfRotAngle = pCopyEnt->f4;
-		D3DXMatrixRotationZ( &matRotZ, rfRotAngle );
-		D3DXMatrixMultiply( &matWorld, &matRotZ, &matWorld );
+		matWorld = matWorld * Matrix34( Vector3(0,0,0), Matrix33RotationZ( rfRotAngle ) );
 	}*/
 
 	FixedFunctionPipelineManager().SetWorldTransform( matWorld );
@@ -657,33 +663,19 @@ void CBE_Bullet::Serialize( IArchive& ar, const unsigned int version )
 /*
 void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 {
-
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-//	short& rsRenderBullet = pCopyEnt->s1;
-//	if( rsRenderBullet == 0 )
-//		return;
-
 	if(m_p3DModel)
 	{
 		Draw3DModel(pCopyEnt);
 		return;
 	}
 
-	COLORVERTEX avBulletTrace[2];
-
-	avBulletTrace[0].color = 0xCCFFEE50;
-	avBulletTrace[1].color = 0xCCFFEE50;
-
-	D3DXVECTOR3& rvPrevPosition = pCopyEnt->v1;
-	avBulletTrace[0].vPosition = rvPrevPosition;
-	avBulletTrace[1].vPosition = pCopyEnt->GetWorldPosition();
+	Vector3& rvPrevPosition = pCopyEnt->v1;
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
+	GraphicsDevice().SetDestBlendMode(   AlphaBlend::InvSrcAlpha );
 
 	//use only the vertex colors to draw the bullet trace
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
@@ -694,9 +686,7 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
 
-	pd3dDev->SetFVF( D3DFVF_COLORVERTEX );
-
-	pd3dDev->DrawPrimitiveUP(D3DPT_LINELIST, 1, avBulletTrace, sizeof(COLORVERTEX));
+	RenderLineSegment( rvPrevPosition, pCopyEnt->GetWorldPosition(), 0xCCFFEE50 );
 
 	rvPrevPosition = pCopyEnt->GetWorldPosition();
 }*/

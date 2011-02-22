@@ -74,25 +74,34 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
+	static float& Power(CCopyEntity* pCopyEnt) { return pCopyEnt->f1; }
+	static float& Power(boost::shared_ptr<CCopyEntity> pEntity) { return pEntity->f1; }
 
-//	inline void CreateBulletHoleDecal(D3DXVECTOR3& rvPosition, D3DXVECTOR3& rvNormal);
+	enum DamageFactorFlag
+	{
+		DFF_SPEED         = (1 << 0), ///< mutually exclusive with DFF_SQUARED_SPEED
+		DFF_SQUARED_SPEED = (1 << 1), ///< mutually exclusive with DFF_SPEED
+	};
+
+
+//	inline void CreateBulletHoleDecal(Vector3& rvPosition, Vector3& rvNormal);
 };
 
 
 // ================================ inline implementations ================================ 
 
 /*
-inline void CBE_Bullet::CreateBulletHoleDecal(D3DXVECTOR3& rvPosition, D3DXVECTOR3& rvNormal)
+inline void CBE_Bullet::CreateBulletHoleDecal(Vector3& rvPosition, Vector3& rvNormal)
 {
 	// When a bullet hit a polygon of the map, we put the decal to make a bullet hole.
 	// Bullet holes are made on only static geometry. When it hit other entities,
 	// no holes are made on them because they can move and disappear.
-	this->m_pStage->CreateEntity( m_BulletHole, rvPosition, D3DXVECTOR3(0,0,0), rvNormal );
+	this->m_pStage->CreateEntity( m_BulletHole, rvPosition, Vector3(0,0,0), rvNormal );
 
 	// generate particles to show spark
-//	this->m_pStage->CreateEntity( "sprk", rvPosition, rvNormal * 1.8f, D3DXVECTOR3(0,0,0) );
+//	this->m_pStage->CreateEntity( "sprk", rvPosition, rvNormal * 1.8f, Vector3(0,0,0) );
 	// generate a smoke that shoot out from the bullet hole
-///	this->m_pStage->CreateEntity( "htsmk", rvPosition,	D3DXVECTOR3(0,0,0), rvNormal );
+///	this->m_pStage->CreateEntity( "htsmk", rvPosition,	Vector3(0,0,0), rvNormal );
 }
 */
 
