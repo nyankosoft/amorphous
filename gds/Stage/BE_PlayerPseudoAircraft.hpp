@@ -140,6 +140,8 @@ private:
 
 	static std::vector<int> ms_vecFocusTargetEntityGroup;
 
+	static int ms_EntityGroup;
+
 private:
 
 	void InitSubDisplay();
@@ -273,6 +275,8 @@ public:
 	static std::map<int,int>& EntityGroupToTargetTypeFlagMap() { return  ms_mapEntityGroupToTargetTypeFlag; }
 
 	static std::vector<int>& FocusTargetEntityGroup() { return ms_vecFocusTargetEntityGroup; }
+
+	static void SetEntityGroup( int group ) { ms_EntityGroup = group; }
 
 //	const std::vector<CCopyEntity *>& GetVisibleEntity() const { return m_vecpVisibleEntity; }
 

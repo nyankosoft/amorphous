@@ -87,6 +87,8 @@ map<int,int> CBE_PlayerPseudoAircraft::ms_mapEntityGroupToTargetTypeFlag;
 
 vector<int> CBE_PlayerPseudoAircraft::ms_vecFocusTargetEntityGroup;
 
+int CBE_PlayerPseudoAircraft::ms_EntityGroup = 0;
+
 
 CBE_PlayerPseudoAircraft::CBE_PlayerPseudoAircraft()
 :
@@ -1098,7 +1100,7 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	trace.pSourceEntity = pCopyEnt;
 	trace.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 //	trace.SetAABB();
-//	trace.GroupIndex = CE_GROUP_PLAYER_PROJECTILE;	// avoid hitting the player
+	trace.GroupIndex = (short)ms_EntityGroup;	// avoid hitting the player / missile
 	m_pStage->ClipTrace( trace );
 
 //	PERIODICAL( 1500, MsgBoxFmt( "start: %s, goal: %s", to_string(vOrigPos).c_str(), to_string(vUpdatedPos).c_str() ) )
