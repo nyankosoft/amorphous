@@ -5,9 +5,8 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/Macro.h"
-//#include "Support/BMPImageExporter.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "LightWave/LightWaveObject.hpp"
@@ -117,7 +116,7 @@ bool CBumpmapTextureMaker2_LWO2::LoadModel( const char *pFilename )
 		{
 			// the layer name is "LYR_BumpSource" - register this as a mesh layer
 			strMeshFilename = pFilename;
-			fnop::change_ext( strMeshFilename, "msh" );
+			lfs::change_ext( strMeshFilename, "msh" );
 
 			layer_set.strOutputFilename = strMeshFilename;
 //			layer_set.vecitrMeshLayer.push_back( itrLayer );
@@ -179,7 +178,7 @@ void CBumpmapTextureMaker2_LWO2::SetViewWidth( float fViewVolumeWidth )
 
 	m_fViewVolumeWidth = fViewVolumeWidth;
 
-	D3DXMATRIX matProj;
+/*	D3DXMATRIX matProj;
 
 	D3DXMatrixOrthoLH( &matProj,	// D3DXMATRIX *pOut
 		               m_fViewVolumeWidth,                // w  - Width of the view volume
@@ -188,7 +187,7 @@ void CBumpmapTextureMaker2_LWO2::SetViewWidth( float fViewVolumeWidth )
 					   0.1f,		// zn - Minimum z-value of the view volume which is referred to as z-near
 					   100.0f		// zf - Maximum z-value of the view volume which is referred to as z-far
 					   );
-/*
+*/
 	// TODO: Create MatrixOrtho function for Matrix44
 	Matrix44 proj = Matrix44OrthoLH(
 		m_fViewVolumeWidth,
@@ -196,15 +195,16 @@ void CBumpmapTextureMaker2_LWO2::SetViewWidth( float fViewVolumeWidth )
 		0.1f,
 		100.0f
 		);
-*/
-	Matrix44 proj;
-	proj.SetRowMajorMatrix44( (Scalar *)&matProj );
+
+//	Matrix44 proj;
+//	proj.SetRowMajorMatrix44( (Scalar *)&matProj );
 
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( pShaderManager )
 		pShaderManager->SetProjectionTransform( proj );
 
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+	FixedFunctionPipelineManager().SetProjectionTransform( proj );
+//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 }
 
 
@@ -293,12 +293,8 @@ void CBumpmapTextureMaker2_LWO2::RenderTexture()
 	pEffect->CommitChanges();
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
-//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 
-	hr = pShaderManager->SetTechnique( m_aShaderTechnique[m_TechniqueID] );
-
-//	if( FAILED(hr) )
-//		return;
+	Result::Name res = pShaderManager->SetTechnique( m_aShaderTechnique[m_TechniqueID] );
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -360,11 +356,11 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 	int i;
 	string strTexFilename[3];
 	strTexFilename[0] = m_strBaseFilename;
-	fnop::change_ext( strTexFilename[0], "bmp" );
+	lfs::change_ext( strTexFilename[0], "bmp" );
 	strTexFilename[1] = strTexFilename[0];
-	fnop::append_to_body( strTexFilename[1], "_NM" );
+	lfs::append_before_ext( strTexFilename[1], "_NM" );
 	strTexFilename[2] = strTexFilename[0];
-	fnop::append_to_body( strTexFilename[2], "_FB" );
+	lfs::append_before_ext( strTexFilename[2], "_FB" );
 
 	// save current technique, or the rendering mode
 	int orig_tech_id = m_TechniqueID;
@@ -373,9 +369,6 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 	{ BTM_RENDERMODE_FLAT_TEXTURED_SURFACE,
 	  BTM_RENDERMODE_NORMALMAP,
 	  BTM_RENDERMODE_BUMPY_TEXTURED_SURFACE };
-
-//	CBMPImageExporter bmp_exporter;
-//	DWORD *pdwTexelData;
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -410,13 +403,6 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 
 		CTextureHandle tex = tex_render_target.GetRenderTargetTexture();
 		tex.SaveTextureToImageFile( strTexFilename[i] );
-
-		// Get the access to the texel data of the texture surface
-//		D3DLOCKED_RECT locked_rect;
-//		pTex->LockRect( 0, &locked_rect, NULL, 0 );
-//		pdwTexelData = (DWORD *)locked_rect.pBits;
-
-//		bmp_exporter.OutputImage_24Bit( strTexFilename[i].c_str(), width, height, pdwTexelData );
 	}
 
 	m_TechniqueID = orig_tech_id;

@@ -211,7 +211,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	g_pBumpTexMaker = new CBumpmapTextureMaker2_LWO2;
 
-	string shader_filename = "..\\resources\\Shaders\\bump_tex_maker.fx";
+	string shader_filename = "../resources/Shaders/bump_tex_maker.fx";
 
 	bool shader_loaded = g_pBumpTexMaker->LoadShader( shader_filename );
 	if( !shader_loaded )
@@ -248,9 +248,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	// initialize font object
 //	g_Font.InitFont( "Arial", 12, 24);
-
-//	g_TexFont.InitFont( "Texture\\MainFont.dds", 256, 256, 16, 8 );
-//	g_TexFont.SetDefaultLetterSize( 8, 16 );
 
     // Enter the message loop
     MSG msg;

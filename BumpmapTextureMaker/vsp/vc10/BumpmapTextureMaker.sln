@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BumpmapTextureMaker", "BumpmapTextureMaker.vcxproj", "{80133BD3-BB6B-4D66-A73D-941C76E8D721}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9CA35B1-066F-49DE-8228-20E959F55651} = {F9CA35B1-066F-49DE-8228-20E959F55651}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicFramework", "..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj", "{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}"
 EndProject
