@@ -3,6 +3,7 @@
 #include "gds/Input/InputDevice.hpp"
 #include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "gds/Graphics/3DGameMath.hpp"
 #include "gds/MotionSynthesis/MotionDatabase.hpp"
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "gds/Support/DebugOutput.hpp"
@@ -242,6 +243,9 @@ void CSkeletalCharacter::OnEntityCreated( CCopyEntity& entity )
 
 	entity.RaiseEntityFlags( BETYPE_SHADOW_CASTER );
 	entity.RaiseEntityFlags( BETYPE_SHADOW_RECEIVER );
+
+	Vector3 vImpactNormal = Vector3(0,1,0);
+	m_fFloorHeight = GetFloorHeight( entity, vImpactNormal );
 }
 
 static void UpdatePhysicsActorPose( physics::CActor& actor, const Matrix34& world_pose )
@@ -321,6 +325,7 @@ void CSkeletalCharacter::Update( float dt )
 	}
 	else
 	{
+		// Freefall - update the position and the velocity.
 		updated_world_pose.vPosition.y = world_pose.vPosition.y;
 		entity.SetVelocity( entity.Velocity() + entity.GetStage()->GetGravityAccel() * dt );
 		Vector3 vVerticalMove = entity.Velocity() * dt;
@@ -605,9 +610,20 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 			{
 				// ground or slope
 			}
+			else if( normal.y < -0.6f )
+			{
+				// ceiling
+			}
 			else if( fabs( normal.y ) < 0.25 )
 			{
 				// wall
+				is_wall = true;
+			}
+			else
+			{
+				// i.e. 0.25 < normal.y < 0.6
+				// somewhat steep slope - for now, treat this as a wall
+				// Looks like this also prevents the penerations into thin plates placed horizontally at about 40cm from ground
 				is_wall = true;
 			}
 
@@ -633,6 +649,9 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 		}
 	}
 
+	if( m_Walls.empty() )
+		return; // No walls to clip the motion against
+
 	Vector3 wall_normal_sum = Vector3(0,0,0);
 	int num_wall_planes = (int)m_Walls.size();
 	for( int i=0; i<num_wall_planes; i++ )
@@ -656,6 +675,12 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 	pose_to_revert_to.vPosition += ave_normal * 0.01f;
 	//<<< 1.
 */
+	ClipMotion( entity );
+}
+
+
+void CSkeletalCharacter::ClipMotion( CCopyEntity& entity )
+{
 	//>>> 2. Clip the motion along the wall
 	const Matrix34 current_world_pose( entity.GetWorldPose() );
 	Matrix34 pose_to_revert_to( entity.GetWorldPose() );
@@ -670,11 +695,20 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 		const float margin = 0.01f;
 		const float dist_to_push = cap_radius - dist_from_collision_plane + margin;
 		pose_to_revert_to.vPosition += collision_plane.normal * dist_to_push;
+
+		// This alone does not prevent the character walking up a steep slope
+//		pose_to_revert_to.vPosition += GetHorizontalized( collision_plane.normal ) * dist_to_push;
 	}
 	//>>> 2.
 
 
-	SetCharacterWorldPose( pose_to_revert_to, entity, *pair.pActors[0] );
+//	SetCharacterWorldPose( pose_to_revert_to, entity, *pair.pActors[0] );
+
+	if( 0 < entity.m_vecpPhysicsActor.size()
+		 && entity.m_vecpPhysicsActor[0] )
+	{
+		SetCharacterWorldPose( pose_to_revert_to, entity, *(entity.m_vecpPhysicsActor[0]) );
+	}
 }
 
 
@@ -816,16 +850,16 @@ void CSkeletalCharacter::TurnIfNecessary( float dt, float turn_speed )
 }
 
 
-void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
+float CSkeletalCharacter::GetFloorHeight( CCopyEntity& entity, Vector3& impact_normal )
 {
 	physics::CScene *pPhysScene = entity.GetStage()->GetPhysicsScene();
 	if( !pPhysScene )
-		return;
+		return 0;
 
 	OBB3 obb( entity.GetWorldPose(), Vector3(1,1,1) * 0.05f );
 //	obb.center.vPosition += entity.GetWorldPose().matOrient.GetColumn(2) * 2.0f;
 	obb.center.vPosition += Vector3(0,1,0);
-	Vector3 sweep = Vector3( 0, -5, 0 );
+	Vector3 sweep = Vector3( 0, -50, 0 );
 	physics::CSweepQueryHit query;
 	void *pUserData = NULL;
 //	U32 sweep_flags = physics::SweepFlag::ALL_HITS;
@@ -846,25 +880,54 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 
 //	if( abs(1.0f - query.t) < 0.001f )
 
+//	return query.Point.y;
+
+	if( 0.5f < fabs(query.Normal.y) )
+	{
+		return query.Point.y;
+	}
+	else
+	{
+		// Too steep for floor
+		return m_fFloorHeight;
+	}
+}
+
+
+void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
+{
 	const float max_step_height = 0.3f;
 
 //	bool m_FeetOnGround = true;
 
+	Vector3 vImpactNormal = Vector3(0,1,0);
 	const float prev_floor_height = m_fFloorHeight;
-	const float floor_height = query.Point.y;
-	m_fFloorHeight = floor_height;
+	const float floor_height = GetFloorHeight( entity, vImpactNormal );
+//	m_fFloorHeight = floor_height;
 
 	if( m_FeetOnGround )
 	{
 		if( prev_floor_height < floor_height )
 		{
-			// Detected an obstacle
+			// There is an obstacle before the character,
+			// or the character is walking up a sloped floor
 			if( floor_height - prev_floor_height <= max_step_height )
-				return; // step up
-//				m_fFloorHeight = floor_height; // step up
+			{
+				// step up
+				m_fFloorHeight = floor_height;
+				return;
+			}
+			else
+			{
+				int cannot_simply_step_up_this_height = 1;
+			}
 		}
 		else
 		{
+			// floor height is lower than that of the previous frame
+			// - Adopt this as a new floor height
+			m_fFloorHeight = floor_height;
+
 			if( prev_floor_height - floor_height <= max_step_height )
 				return; // step down
 //				m_fFloorHeight = floor_height; // step down
@@ -879,22 +942,24 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 	}
 	else
 	{
+		// The character is currenly not on ground
+		// - Update the floor height anyway
+		m_fFloorHeight = floor_height;
+
 		Matrix34 world_pose = entity.GetWorldPose();
 //		if( world_pose.vPosition.y < query.Point.y )
-		if( world_pose.vPosition.y <= query.Point.y + 0.001f // feed almost on the ground (dist from feet to the ground <= 0.001)?
+		if( world_pose.vPosition.y <= floor_height + 0.001f // feet almost on the ground (dist from feet to the ground <= 0.001)?
 		 && entity.Velocity().y < 0.005f ) // not jumping up right now
 		{
 			// landed
 			// - Request transition to landing motion
 			m_FeetOnGround = true;
-			world_pose.vPosition.y = query.Point.y;
+			world_pose.vPosition.y = floor_height;
 			m_pMotionFSMManager->GetMotionFSM("lower_limbs")->RequestTransition( "standing" );
 //			entity.SetWorldPose( world_pose );
 //			SetCharacterWorldPose( world_pose, entity, *(entity.m_vecpPhysicsActor[0]) );
 		}
 	}
-
-//	m_fFloorHeight = floor_height;
 
 /*	int num_motion_fsms = (int)m_pMotionFSMManager->GetMotionFSMs.size();
 	for( int i=0; i<num_motion_fsms; i++ )

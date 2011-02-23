@@ -18,21 +18,6 @@ class CClothing;
 class CClothSystem;
 
 
-inline void Horizontalize( Matrix33& target )
-{
-	target.SetColumn( 1, Vector3(0,1,0) );
-	target.Orthonormalize();
-}
-
-
-inline Matrix33 GetHorizontalized( Matrix33& src )
-{
-	Matrix33 dest( src );
-	Horizontalize( dest );
-	return dest;
-}
-
-
 class CSkeletalCharacterOperations// : public IArchiveObjectBase
 {
 	boost::weak_ptr<CSkeletalCharacter> m_pSkeletalCharacter;
@@ -130,11 +115,15 @@ class CSkeletalCharacter : public CGameItem
 
 private:
 
+	float GetFloorHeight( CCopyEntity& entity, Vector3& impact_normal );
+
 	void UpdateStepHeight( CCopyEntity& entity );
 
 	void SetCharacterWorldPose( const Matrix34& world_pose, CCopyEntity& entity, physics::CActor &actor );
 
 	inline boost::shared_ptr<CSkeletalMesh> GetCharacterSkeletalMesh();
+
+	void ClipMotion( CCopyEntity& entity );
 
 public:
 
