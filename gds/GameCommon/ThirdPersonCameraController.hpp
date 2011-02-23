@@ -15,6 +15,10 @@ class CThirdPersonCameraController
 
 	cdv<Quaternion> m_CameraOrientation;
 
+	cdv<float> m_VerticalAngle;
+
+	Matrix33 m_CurrentCameraOrientation;
+
 	bool m_CloseUpCamera;
 
 public:
@@ -31,6 +35,10 @@ public:
 	void EnableCloseUpCamera( bool enable ) { m_CloseUpCamera = enable; }
 
 	void SetTargetEntity( CEntityHandle<> target ) { m_TargetEntity = target; }
+
+	void SetTargetVerticalAngle( float target_vertical_angle ) { m_VerticalAngle.target = target_vertical_angle; }
+
+	float GetTargetVerticalAngle() { return m_VerticalAngle.target; }
 };
 
 

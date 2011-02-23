@@ -1,4 +1,5 @@
 #include "ThirdPersonCameraController.hpp"
+#include "../Graphics/3DGameMath.hpp"
 #include "../Stage.hpp"
 
 using namespace boost;
@@ -11,6 +12,11 @@ CThirdPersonCameraController::CThirdPersonCameraController()
 
 	m_CameraPosition.vel = Vector3(1,1,1);
 	m_CameraPosition.smooth_time = 0.1f;
+
+	m_VerticalAngle.vel = 1.0f;
+	m_VerticalAngle.target = 1.0f;
+	m_VerticalAngle.current = 1.0f;
+	m_VerticalAngle.smooth_time = 0.05f;
 }
 
 
@@ -18,6 +24,7 @@ void CThirdPersonCameraController::Update( float dt )
 {
 	m_CameraOrientation.Update( dt );
 	m_CameraPosition.Update( dt );
+	m_VerticalAngle.Update( dt );
 
 	shared_ptr<CCopyEntity> pEntity = m_TargetEntity.Get();
 	if( !pEntity )
@@ -56,12 +63,19 @@ void CThirdPersonCameraController::Update( float dt )
 
 	if( close_up_camera )
 		m_CameraOrientation.target.FromRotationMatrix( pEntity->GetWorldPose().matOrient );
+
+	Horizontalize( m_CameraOrientation.target );
+
+	m_CurrentCameraOrientation
+		= m_CameraOrientation.current.ToRotationMatrix()
+		* Matrix33RotationX( m_VerticalAngle.current );
 }
 
 
 Matrix34 CThirdPersonCameraController::GetCameraPose() const
 {
-	return Matrix34( m_CameraPosition.current, m_CameraOrientation.current.ToRotationMatrix() );
+//	return Matrix34( m_CameraPosition.current, m_CameraOrientation.current.ToRotationMatrix() );
+	return Matrix34( m_CameraPosition.current, m_CurrentCameraOrientation );
 }
 
 
