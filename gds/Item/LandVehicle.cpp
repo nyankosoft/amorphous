@@ -53,10 +53,8 @@ void CLandVehicle::Update( float dt )
 
 		STrace tr;
 		tr.bvType = BVTYPE_DOT;
-		Vector3 vStart = vEntityPos + Vector3(0,1,0) * test_trace_length * 0.5f;
-		tr.pvStart = &vStart;
-		Vector3 vGoal  = vEntityPos - Vector3(0,1,0) * test_trace_length * 0.5f;
-		tr.pvGoal  = &vGoal;
+		tr.vStart = vEntityPos + Vector3(0,1,0) * test_trace_length * 0.5f;
+		tr.vGoal  = vEntityPos - Vector3(0,1,0) * test_trace_length * 0.5f;
 //		tr.SetLineSegment( vStart, vGoal );
 		m_vecpEntityBuffer.resize( 0 );
 //		tr.SetTouchEntityBuffer( &m_vecpEntityBuffer );

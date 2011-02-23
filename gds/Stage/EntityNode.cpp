@@ -414,10 +414,8 @@ void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
 		// the trace is clipped by 'pEntity', if collision occurs
 
 		STrace copy_trace = tr;
-		Vector3 vS = *tr.pvStart;
-		Vector3 vG = *tr.pvGoal;
-		copy_trace.pvStart = &vS;
-		copy_trace.pvGoal = &vG;
+		copy_trace.vStart = tr.vStart;
+		copy_trace.vGoal  = tr.vGoal;
 		copy_trace.fFraction = tr.fFraction;
 		copy_trace.vEnd = tr.vEnd;
 

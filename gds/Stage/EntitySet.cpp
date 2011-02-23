@@ -1333,7 +1333,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 
 	STrace tr;
 	tr.bvType = BVTYPE_DOT;
-	tr.pvGoal = &pEntity->GetWorldPosition();
+	tr.vGoal = pEntity->GetWorldPosition();
 //	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 	tr.sTraceType = TRACETYPE_IGNORE_ALL_ENTITIES;
 //	tr.pSourceEntity = pEntity;
@@ -1368,12 +1368,12 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 //			if( pLightEntity->GetLightType() == D3DLIGHT_POINT )
 //			{
 //				vLightCenterPos = pLightEntity->GetPosition();
-//				tr.pvStart = &vLightCenterPos;
+//				tr.vStart = vLightCenterPos;
 //			}
 //			else if( pLightEntity->GetLightType() == D3DLIGHT_DIRECTIONAL )
 //			{
 //				vLightRefPos = pEntity->GetWorldPosition() - pLightEntity->GetHemisphericDirLight().vDirection * s_DirLightCheckDist;
-//				tr.pvStart = &vLightRefPos;
+//				tr.vStart = vLightRefPos;
 //			}
 //			else
 //			{

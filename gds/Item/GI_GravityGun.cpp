@@ -46,9 +46,9 @@ void CGI_GravityGun::Update( float dt )
 
 		STrace tr;
 		tr.bvType = BVTYPE_DOT;
-		tr.pvStart = &vOwnerMuzzlePos;
+		tr.vStart = vOwnerMuzzlePos;
 		Vector3 vGoal = pTarget->GetWorldPosition();
-		tr.pvGoal = &vGoal;
+		tr.vGoal = vGoal;
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 /*
 		CTrace tr;
@@ -159,8 +159,8 @@ bool CGI_GravityGun::GraspObjectInAimDirection()
 	Vector3 vGoal = vMuzzleEndPos + m_MuzzleEndLocalPose.matOrient.GetColumn(2) * m_fMaxRange;
 
 	STrace tr;
-	tr.pvStart = &vMuzzleEndPos;
-	tr.pvGoal = &vGoal;
+	tr.vStart = vMuzzleEndPos;
+	tr.vGoal = vGoal;
 	tr.bvType = BVTYPE_DOT;
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 

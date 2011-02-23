@@ -132,10 +132,8 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 		tr2.iNumTouches = 0;
 		tr2.pSourceEntity = pCopyEnt;
 		tr2.pTouchedEntity = NULL;
-		Vector3 vStart = pCopyEnt->GetWorldPosition();
-		tr2.pvStart = &vStart;
-		Vector3 vGoal = tr.GetTouchEntity(i)->GetWorldPosition();
-		tr2.pvGoal = &vGoal;
+		tr2.vStart = pCopyEnt->GetWorldPosition();
+		tr2.vGoal  = tr.GetTouchEntity(i)->GetWorldPosition();
 
 
 		// check if there is any obstacle between the blast center and the candidate

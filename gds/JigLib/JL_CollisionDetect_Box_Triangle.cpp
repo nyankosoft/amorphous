@@ -265,8 +265,8 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 		if( box_aabb.IsPointInside( pavLocalEdge[acIndex[i]] ) )
 			continue;	// the vertex is included in the box
 
-		tr.pvStart = &pavLocalEdge[ acIndex[i] ];
-		tr.pvGoal  = &pavLocalEdge[ acIndex[i+1] ];
+//		tr.vStart = pavLocalEdge[ acIndex[i] ];
+//		tr.vGoal  = pavLocalEdge[ acIndex[i+1] ];
 		tr.fFraction = 1.0f;
 //		tr.in_solid = false;
 ///		bsptree.ClipLineTrace( tr );

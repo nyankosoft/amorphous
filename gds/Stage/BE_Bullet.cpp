@@ -142,9 +142,9 @@ void CBE_Bullet::BulletMove(CCopyEntity* pCopyEnt)
 	//Vector3 vVel = pCopyEnt->GetDirection() * pCopyEnt->fSpeed;
 
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
+	tr.vStart = vStart;
 	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * fFrametime;
-	tr.pvGoal = &vGoal;
+	tr.vGoal = vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
 	tr.fRadius = this->m_fRadius;
@@ -203,9 +203,9 @@ void CBE_Bullet::PenetrationMove(CCopyEntity* pCopyEnt)
 
 	STrace tr;
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
+	tr.vStart = vStart;
 	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * fFrametime;
-	tr.pvGoal = &vGoal;
+	tr.vGoal = vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
 	tr.fRadius = this->m_fRadius;
@@ -299,8 +299,8 @@ void CBE_Bullet::PenetrationIteration( CCopyEntity* pCopyEnt, float fFrameTime_L
 
 			// calculate the exit point by going back the trace
 			Vector3 vCurrentPos = tr.vEnd;
-			tr.pvStart = &vCurrentPos;
-			tr.pvGoal  = &vPrevPos;
+			tr.vStart = vCurrentPos;
+			tr.vGoal  = vPrevPos;
 			tr.fFraction = 1.0f;
 			m_pStage->ClipTrace( tr );
 
@@ -355,9 +355,9 @@ void CBE_Bullet::ReflectiveMove(CCopyEntity* pCopyEnt)
 
 		// check the next position
 		Vector3 vStart = pCopyEnt->GetWorldPosition();
-		tr.pvStart = &vStart;
+		tr.vStart = vStart;
 		vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * fFrameTime_Left;
-		tr.pvGoal = &vGoal;
+		tr.vGoal = vGoal;
 		tr.fFraction = 1.0f;
 		tr.pTouchedEntity = NULL;
 		this->m_pStage->ClipTrace( tr );

@@ -268,8 +268,8 @@ bool CBE_PointLight::CheckRayToCamera( CCopyEntity* pCopyEnt )
 
 	STrace tr;
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
-	tr.pvGoal = &vCameraPos;
+	tr.vStart = vStart;
+	tr.vGoal = vCameraPos;
 	tr.bvType = BVTYPE_DOT;
 	tr.pSourceEntity = pCopyEnt;
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;

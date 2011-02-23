@@ -76,8 +76,8 @@ void CBE_LaserDot::Act(CCopyEntity* pCopyEnt)
 //	Vector3 vGoal  = pLaserEmitter->Position() + pLaserEmitter->Direction() * 20.0f;
 
 	STrace tr;
-	tr.pvStart = &vWorldMuzzlePos;
-	tr.pvGoal  = &vGoal;
+	tr.vStart = vWorldMuzzlePos;
+	tr.vGoal  = vGoal;
 	tr.bvType  = BVTYPE_DOT;
 	tr.pSourceEntity = pLaserEmitter;
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;

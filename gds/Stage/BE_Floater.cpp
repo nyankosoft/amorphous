@@ -135,10 +135,8 @@ void CBE_Floater::AttackManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 		tr.bvType = BVTYPE_AABB;
 		tr.aabb   = this->m_aabb;
 		tr.pSourceEntity = pCopyEnt;
-		Vector3 vStart = pCopyEnt->GetWorldPosition();
-		tr.pvStart       = &vStart;
-		Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * 1.2f;
-		tr.pvGoal        = &vGoal;
+		tr.vStart       = pCopyEnt->GetWorldPosition();
+		tr.vGoal        = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * 1.2f;
 		tr.SetAABB();
 		m_pStage->ClipTrace(tr);
 		// since the entity is heading for some obstacle, correct the velocity to avoid it

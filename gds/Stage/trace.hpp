@@ -22,8 +22,8 @@ class CCopyEntity;
 //=========================================================================================
 struct STrace
 {
-	Vector3* pvStart;	///< [in] start of the line segment
-	Vector3* pvGoal;	///< [in] end of the line segment
+	Vector3 vStart; ///< [in] start of the line segment
+	Vector3 vGoal;  ///< [in] end of the line segment
 
 	/// [in] volume of the entity approximated by aabb (local space)
 	AABB3 aabb;
@@ -77,27 +77,14 @@ struct STrace
 
 inline STrace::STrace()
 :
-pvStart(NULL), pvGoal(NULL), fFraction(1.0f), vEnd(Vector3(0,0,0)), bvType(BVTYPE_AABB),
+vStart(Vector3(0,0,0)), vGoal(Vector3(0,0,0)), fFraction(1.0f), vEnd(Vector3(0,0,0)), bvType(BVTYPE_AABB),
 fRadius(0.0f), pSourceEntity(NULL), iNumTouches(0), pTouchedEntity(NULL),
 iMaterialIndex(-1), in_solid(false), sTraceType(0)
 {
-//	memset( this, 0, sizeof(STrace) );
-//	pvStart = NULL;
-//	pvGoal = NULL;
 	aabb.Nullify();
 	aabb_swept.Nullify();
-//	vEnd = Vector3(0,0,0);
-//	fFraction = 1.0f;	//
-//	pSourceEntity = NULL;
-//	bvType = BVTYPE_AABB;	//
-//	fRadius = 0;
 	plane.normal = Vector3(0,0,0);
 	plane.dist = 0;
-//	pTouchedEntity = NULL;
-//	iNumTouches = 0;
-//	iMaterialIndex = -1;
-//	in_solid = false;
-//	sTraceType = 0;
 
 	// TODO: use valid enum value for group index
 	GroupIndex = 0;
@@ -106,13 +93,13 @@ iMaterialIndex(-1), in_solid(false), sTraceType(0)
 
 inline void STrace::SetAABB()
 {
-	aabb_swept.vMin.x = pvStart->x < pvGoal->x ? pvStart->x : pvGoal->x;
-	aabb_swept.vMin.y = pvStart->y < pvGoal->y ? pvStart->y : pvGoal->y;
-	aabb_swept.vMin.z = pvStart->z < pvGoal->z ? pvStart->z : pvGoal->z;
+	aabb_swept.vMin.x = vStart.x < vGoal.x ? vStart.x : vGoal.x;
+	aabb_swept.vMin.y = vStart.y < vGoal.y ? vStart.y : vGoal.y;
+	aabb_swept.vMin.z = vStart.z < vGoal.z ? vStart.z : vGoal.z;
 
-	aabb_swept.vMax.x = pvStart->x < pvGoal->x ? pvGoal->x : pvStart->x;
-	aabb_swept.vMax.y = pvStart->y < pvGoal->y ? pvGoal->y : pvStart->y;
-	aabb_swept.vMax.z = pvStart->z < pvGoal->z ? pvGoal->z : pvStart->z;
+	aabb_swept.vMax.x = vStart.x < vGoal.x ? vGoal.x : vStart.x;
+	aabb_swept.vMax.y = vStart.y < vGoal.y ? vGoal.y : vStart.y;
+	aabb_swept.vMax.z = vStart.z < vGoal.z ? vGoal.z : vStart.z;
 
 	if(bvType != BVTYPE_DOT)
 	{

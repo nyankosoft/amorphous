@@ -336,9 +336,9 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 
 		Vector3 vStart = pCopyEnt->GetWorldPosition() + pCopyEnt->GetDirection() * (m_aabb.vMax.z * 2.0f);
 		STrace tr;
-		tr.pvStart = &vStart;	// current missile position
+		tr.vStart = vStart;	// current missile position
 		Vector3 vGoal = pTarget->GetWorldPosition();	// target position
-		tr.pvGoal = &vGoal;
+		tr.vGoal = vGoal;
 		tr.bvType = BVTYPE_DOT;
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 		tr.GroupIndex = pCopyEnt->GroupIndex;
@@ -451,9 +451,9 @@ void CBE_HomingMissile::MissileMove( CCopyEntity* pCopyEnt, float frametime )
 //	Vector3 vGravityAccel = this->m_pStage->GetGravityAccel();
 //	pCopyEnt->vVelocity += vGravityAccel * fFrametime * 0.5f;
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
+	tr.vStart = vStart;
 	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * frametime;
-	tr.pvGoal = &vGoal;
+	tr.vGoal = vGoal;
 	tr.aabb = this->m_aabb;
 //	tr.bvType = this->m_BoundingVolumeType;
 	tr.bvType = BVTYPE_SMALLSPHERE;

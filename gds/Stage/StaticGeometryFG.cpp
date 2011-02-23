@@ -441,8 +441,8 @@ int CStaticGeometryFG::ClipTrace(STrace& tr)
 	// - Not tested since converted from JibLib to Physics module.
 	ONCE( LOG_PRINT_WARNING( " Calling CShape::Raycast(). Not tested since converted from JibLib to Physics module." ) );
 	physics::CRay ray;
-	ray.Origin = *(tr.pvStart);
-	ray.Direction = Vec3GetNormalized( *(tr.pvGoal) - *(tr.pvStart) );
+	ray.Origin = tr.vStart;
+	ray.Direction = Vec3GetNormalized( tr.vGoal - tr.vStart );
 	physics::CRaycastHit ray_hit;
 	m_pTriangleMesh->GetShape(0)->Raycast( ray, 1000000.0f, 0, ray_hit, true );
 

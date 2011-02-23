@@ -248,7 +248,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	STrace tr;
 	tr.bvType = BVTYPE_DOT;
 	Vector3 vGoal = pEntity->GetWorldPosition();
-	tr.pvGoal = &vGoal;
+	tr.vGoal = vGoal;
 //	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 	tr.sTraceType = TRACETYPE_IGNORE_ALL_ENTITIES;
 //	tr.pSourceEntity = pEntity;
@@ -263,7 +263,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	)
 	{
 		vLightCenterPos = this->GetWorldPosition();
-		tr.pvStart = &vLightCenterPos;
+		tr.vStart = vLightCenterPos;
 	}
 	else if( light_type == CLight::DIRECTIONAL
 	      || light_type == CLight::HEMISPHERIC_DIRECTIONAL
@@ -271,7 +271,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 	)
 	{
 		vLightRefPos = pEntity->GetWorldPosition() - this->GetDirection() * s_DirLightCheckDist;
-		tr.pvStart = &vLightRefPos;
+		tr.vStart = vLightRefPos;
 	}
 	else
 	{

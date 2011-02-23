@@ -42,8 +42,8 @@ void CTriangleMesh::ClipTrace( STrace& tr )
 	if( iNumTris == 0 )
 		return;	// no intersection
 
-	Vector3 vStart = *tr.pvStart;
-	Vector3 vEnd  = *tr.pvGoal;
+	Vector3 vStart = tr.vStart;
+	Vector3 vEnd  = tr.vGoal;
 //	Vector3 vEnd;	// store contact point
 //	float frac = 1.0f;
 	for( i=0; i<iNumTris; i++ )
@@ -66,7 +66,7 @@ void CTriangleMesh::ClipTrace( STrace& tr )
 		}
 	}
 
-	Vector3 vOrigTrace = *tr.pvGoal - vStart;
+	Vector3 vOrigTrace = tr.vGoal - vStart;
 	tr.fFraction = Vec3Dot( vEnd - vStart, vOrigTrace ) / Vec3LengthSq( vOrigTrace );
 	tr.vEnd = vEnd;
 

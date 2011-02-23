@@ -202,8 +202,8 @@ void CBE_Explosive::FlashScreen(CCopyEntity* pCopyEnt)
 
 	// check if there is any obstacle between explosion and camera
 /*	STrace tr;
-	tr.pvStart = &pCamera->GetPosition();
-	tr.pvGoal = &pCopyEnt->GetWorldPosition();
+	tr.vStart = pCamera->GetPosition();
+	tr.vGoal = pCopyEnt->GetWorldPosition();
 	tr.bvType = BVTYPE_DOT;
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES
 	tr.pSourceEntity = pCopyEnt;
@@ -260,9 +260,9 @@ void CBE_Explosive::GrenadeMove(CCopyEntity* pCopyEnt)
 //	pCopyEnt->vVelocity += vGravityAccel * fFrametime * 0.5f;
 
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
+	tr.vStart = vStart;
 	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->vVelocity * fFrametime;
-	tr.pvGoal = &vGoal;
+	tr.vGoal = vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
 	tr.fRadius = this->m_fRadius;

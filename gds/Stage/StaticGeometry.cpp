@@ -650,8 +650,8 @@ int CStaticGeometry::ClipTrace( STrace& tr )
 		return 0;
 
 	physics::CRay ray;
-	ray.Origin = *tr.pvStart;
-	Vector3 vStoG = *tr.pvGoal- *tr.pvStart;
+	ray.Origin = tr.vStart;
+	Vector3 vStoG = tr.vGoal- tr.vStart;
 	Vec3Normalize( ray.Direction, vStoG );
 	float ray_length = Vec3Dot( ray.Direction, vStoG );
 
@@ -671,7 +671,7 @@ int CStaticGeometry::ClipTrace( STrace& tr )
 	if( !hit )
 		return 0;
 
-	const float fraction = Vec3Dot( ray.Direction, rayhit.WorldImpactPos - *tr.pvStart ) / ray_length;
+	const float fraction = Vec3Dot( ray.Direction, rayhit.WorldImpactPos - tr.vStart ) / ray_length;
 	if( 1.0f <= fraction )
 		return 0;
 

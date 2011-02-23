@@ -1092,8 +1092,8 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	Vector3 vUpdatedPos = pseudo_simulator.GetWorldPose().vPosition;
 	STrace trace;
 	vOrigPos = vOrigPos - (vUpdatedPos - vOrigPos) * 20.0f;
-	trace.pvStart = &vOrigPos;
-	trace.pvGoal = &vUpdatedPos;
+	trace.vStart = vOrigPos;
+	trace.vGoal = vUpdatedPos;
 	trace.aabb = AABB3(-Vector3(0.1f,0.1f,0.1f), Vector3(0.1f,0.1f,0.1f) );
 	trace.bvType = BVTYPE_SMALLSPHERE;//BVTYPE_DOT;
 	trace.fRadius = 0.1f;

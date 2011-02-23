@@ -122,14 +122,14 @@ short CBSPTree::CheckPosition( Vector3& rvPoint, short sStartNodeIndex )
 #define MAX_DIVIDE_NUM 64
 
 // Clip the line-segment according to the BSP-Tree traversal
-// Doesn't change the source data 'tr.pvStart' & 'tr.pvGoal'
+// Doesn't change the source data 'tr.vStart' & 'tr.vGoal'
 // clipped position is output to the 'tr.vEnd'
 //This function dynamically shifts the plane of each node, acording to the volume
 //of the AABB of the trace
 
 short CBSPTree::ClipTrace( STrace& tr )
 {
-	if( Vec3LengthSq( *tr.pvGoal - *tr.pvStart ) < 0.000000001f )
+	if( Vec3LengthSq( tr.vGoal - tr.vStart ) < 0.000000001f )
 		return CONTENTS_EMPTY;
 
 	short nodenum, prev_nodenum;
@@ -149,13 +149,13 @@ short CBSPTree::ClipTrace( STrace& tr )
 
 	nodenum = 0; prev_nodenum = 0;
 
-	Vector3 &vP0 = *tr.pvStart;
+	Vector3 &vP0 = tr.vStart;
 
 	fStart = 0;
-	vP1 = *tr.pvStart;
+	vP1 = tr.vStart;
 	fGoal = 1;
 	if(tr.fFraction == 1)	//hasn't hit anything yet
-		vP2 = *tr.pvGoal;
+		vP2 = tr.vGoal;
 	else	//already hit something
 		vP2 = tr.vEnd;
 
@@ -276,7 +276,7 @@ short CBSPTree::ClipTrace( STrace& tr )
 					//MessageBox(NULL, "Cannot get out of the solid area.","Error", MB_OK|MB_ICONWARNING);
 					tr.fFraction = 0.0f;
 ///					tr.vEnd = vP1;
-					tr.vEnd = *tr.pvStart;
+					tr.vEnd = tr.vStart;
 					tr.in_solid = true;
 					return CONTENTS_SOLID;
 				}
@@ -300,7 +300,7 @@ short CBSPTree::ClipTrace( STrace& tr )
 /*
 short CBSPTree::ClipTrace( STrace& tr )
 {
-	ClipTrace_r( 0, 0, 1, *tr.pvStart, *tr.pvGoal, tr);
+	ClipTrace_r( 0, 0, 1, tr.vStart, tr.vGoal, tr);
 	return 0;
 }
 */

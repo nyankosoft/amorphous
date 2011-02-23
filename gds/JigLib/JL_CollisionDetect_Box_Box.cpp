@@ -301,7 +301,8 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 
 			if( !b0 )
 			{
-				tr.pvStart = &vLocalStart; tr.pvGoal  = &vLocalGoal;
+				tr.vStart = vLocalStart;
+				tr.vGoal  = vLocalGoal;
 
 				tr.fFraction = 1.0f;
 //				tr.in_solid = false;
@@ -332,7 +333,8 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 			}
 			if( !b1 )
 			{
-				tr.pvStart = &vLocalGoal; tr.pvGoal  = &vLocalStart;
+				tr.vStart = vLocalGoal;
+				tr.vGoal  = vLocalStart;
 
 				tr.fFraction = 1.0f;
 ///				bsptree.ClipLineTrace( tr );

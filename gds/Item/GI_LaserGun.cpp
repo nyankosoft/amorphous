@@ -55,8 +55,8 @@ void CGI_LaserGun::Update( float dt )
 
 		STrace tr;
 		tr.bvType = BVTYPE_DOT;
-		tr.pvStart = &vOwnerMuzzlePos;
-		tr.pvGoal = &pTarget->Position();
+		tr.vStart = vOwnerMuzzlePos;
+		tr.vGoal = pTarget->Position();
 		tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 
 //		CTrace tr;

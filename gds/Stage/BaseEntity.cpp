@@ -369,10 +369,10 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 	if( 0 < pMyself->m_vecpPhysicsActor.size()
 	 && pMyself->m_vecpPhysicsActor[0] )
 	{
-		float trace_length = Vec3Length( *rTrace.pvGoal - *rTrace.pvStart );
+		float trace_length = Vec3Length( rTrace.vGoal - rTrace.vStart );
 		physics::CRay ray;
-		ray.Origin    = *rTrace.pvStart;
-		ray.Direction = ( *rTrace.pvGoal - *rTrace.pvStart ) / trace_length;
+		ray.Origin    = rTrace.vStart;
+		ray.Direction = ( rTrace.vGoal - rTrace.vStart ) / trace_length;
 		physics::CRaycastHit hit;
 		bool hit_detected = false;
 		physics::CActor *pActor = pMyself->m_vecpPhysicsActor[0];
@@ -394,7 +394,7 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 				int break_here = 1;
 
 			rTrace.vEnd = hit.WorldImpactPos;
-			rTrace.fFraction = Vec3Length( hit.WorldImpactPos - *rTrace.pvStart ) / trace_length;
+			rTrace.fFraction = Vec3Length( hit.WorldImpactPos - rTrace.vStart ) / trace_length;
 			rTrace.pTouchedEntity = pMyself;
 		}
 
@@ -412,10 +412,10 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 
 	case BVTYPE_AABB:
 //	default:
-		vS = *rTrace.pvStart - pMyself->GetWorldPosition();
-		vG = *rTrace.pvGoal  - pMyself->GetWorldPosition();
-		local_trace.pvStart = &vS;
-		local_trace.pvGoal = &vG;
+		vS = rTrace.vStart - pMyself->GetWorldPosition();
+		vG = rTrace.vGoal  - pMyself->GetWorldPosition();
+		local_trace.vStart = vS;
+		local_trace.vGoal  = vG;
 		local_trace.fFraction = rTrace.fFraction;
 		local_trace.vEnd = rTrace.vEnd - pMyself->GetWorldPosition();
 
@@ -441,10 +441,10 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 	case BVTYPE_CONVEX:
 	case BVTYPE_COMPLEX:
 		// transform 'rTrace' to local coord
-		pMyself->GetWorldPose().InvTransform( vS, *rTrace.pvStart );
-		pMyself->GetWorldPose().InvTransform( vG, *rTrace.pvGoal );
-		local_trace.pvStart = &vS;
-		local_trace.pvGoal = &vG;
+		pMyself->GetWorldPose().InvTransform( vS, rTrace.vStart );
+		pMyself->GetWorldPose().InvTransform( vG, rTrace.vGoal );
+		local_trace.vStart = vS;
+		local_trace.vGoal  = vG;
 		local_trace.fFraction = rTrace.fFraction;
 		pMyself->GetWorldPose().InvTransform( local_trace.vEnd, rTrace.vEnd );
 
@@ -497,9 +497,9 @@ void CBaseEntity::FreeFall(CCopyEntity* pCopyEnt)
 	vVel += vGravityAccel * fFrametime;	//Update velocity;
 	
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
+	tr.vStart = vStart;
 	Vector3 vGoal = pCopyEnt->GetWorldPosition() + fFrametime * vVel;
-	tr.pvGoal = &vGoal;
+	tr.vGoal = vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
 	tr.fRadius = this->m_fRadius;
@@ -573,8 +573,8 @@ char CBaseEntity::SlideMove(CCopyEntity* pCopyEnt)
 		vGoalPos = pCopyEnt->GetWorldPosition() + fTimeLeft * pCopyEnt->vVelocity;
 
 		Vector3 vStart = pCopyEnt->GetWorldPosition();
-		tr.pvStart = &vStart;
-		tr.pvGoal = &vGoalPos;
+		tr.vStart = vStart;
+		tr.vGoal = vGoalPos;
 		tr.aabb = this->m_aabb;
 		tr.bvType = this->m_BoundingVolumeType;
 		tr.fFraction = 1;
@@ -714,8 +714,8 @@ void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 
 	//first try moving to the next spot
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
-	tr.pvGoal = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal = vGoal;
 	tr.aabb = this->m_aabb;
 	tr.bvType = this->m_BoundingVolumeType;
 	tr.fFraction = 1;
@@ -747,8 +747,8 @@ void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 	vGoal.y += 0.3f;                        //Step Size
 
 	vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
-	tr.pvGoal = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal = vGoal;
 	tr.fFraction = 1;
 	tr.pSourceEntity = pCopyEnt;
 	this->m_pStage->ClipTrace( tr );
@@ -766,8 +766,8 @@ void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 	vGoal.y -= 0.3f;                        //Step Size
 
 	vStart = pCopyEnt->GetWorldPosition();
-	tr.pvStart = &vStart;
-	tr.pvGoal = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal = vGoal;
 	tr.fFraction = 1;
 	tr.pSourceEntity = pCopyEnt;
 	this->m_pStage->ClipTrace( tr );
@@ -832,8 +832,8 @@ void CBaseEntity::ApplyFriction(CCopyEntity* pCopyEnt, float fFriction)
 		vGoal = vStart;
 		vGoal.y -= 0.9f;
 	}
-	tr.pvStart = &vStart;
-	tr.pvGoal =  &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal =  vGoal;
 	tr.aabb = pCopyEnt->local_aabb;
 	tr.pSourceEntity = pCopyEnt;
 
@@ -919,8 +919,8 @@ void CBaseEntity::CategorizePosition(CCopyEntity* pCopyEnt)
 		vPoint = pCopyEnt->GetWorldPosition();
 		vPoint.y -= 0.02f;  //2cm
 		Vector3 vStart = pCopyEnt->GetWorldPosition();
-		tr.pvStart = &vStart;
-		tr.pvGoal = &vPoint;
+		tr.vStart = vStart;
+		tr.vGoal = vPoint;
 		tr.aabb = pCopyEnt->local_aabb;
 		tr.pSourceEntity = pCopyEnt;
 

@@ -116,8 +116,8 @@ void CBE_Decal::InitCopyEntity( CCopyEntity* pCopyEnt )
 	Vector3 vGoal = vStart - rvNormal * 0.1f;
 	STrace tr;
 	tr.bvType = BVTYPE_DOT;
-	tr.pvStart = &vStart;
-	tr.pvGoal  = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal  = vGoal;
 	tr.vEnd = vGoal;
 	tr.aabb.vMin = tr.aabb.vMax = Vector3(0,0,0);
 	tr.SetAABB();

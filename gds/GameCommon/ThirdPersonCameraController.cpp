@@ -47,8 +47,8 @@ void CThirdPersonCameraController::Update( float dt )
 		= vStart
 		+ vInvCamDir * cam_shift
 		+ Vector3(0,1,0) * cam_up;
-	tr.pvStart = &vStart;
-	tr.pvGoal  = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal  = vGoal;
 	tr.GroupIndex = 15;
 	tr.aabb.vMin = tr.aabb.vMax = Vector3(0,0,0);
 	tr.SetAABB();

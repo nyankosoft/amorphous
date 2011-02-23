@@ -354,16 +354,16 @@ void CStage::ClipTrace(STrace& tr)
 {
 	PROFILE_FUNCTION();
 
-	if( *tr.pvStart == *tr.pvGoal )
+	if( tr.vStart == tr.vGoal )
 	{
-		tr.vEnd = *tr.pvStart;
+		tr.vEnd = tr.vStart;
 ///		tr.fFraction = 0;			// commented out at 17:22 2007/04/15
 
 		return;
 	}
 
 	tr.SetAABB();
-	tr.vEnd = *tr.pvStart + (*tr.pvGoal - *tr.pvStart) * tr.fFraction;
+	tr.vEnd = tr.vStart + (tr.vGoal - tr.vStart) * tr.fFraction;
 
 	if( m_pStaticGeometry && !(tr.sTraceType & TRACETYPE_IGNORE_MAP) )
 		m_pStaticGeometry->ClipTrace( tr );
@@ -417,8 +417,8 @@ void CStage::CheckCollision(CTrace& tr)
 		{
 			STrace tr2;
 			tr2.bvType = BVTYPE_DOT;
-			tr2.pvStart = &tr.GetStartPosition();
-			tr2.pvGoal  = &tr.GetGoalPosition();
+			tr2.vStart = tr.GetStartPosition();
+			tr2.vGoal  = tr.GetGoalPosition();
 			tr2.aabb.SetMaxAndMin( Vector3(0,0,0), Vector3(0,0,0) );
 			tr2.SetAABB();
 			tr2.sTraceType = tr.GetTraceType();
@@ -463,8 +463,8 @@ void CStage::GetVisibleEntities( CViewFrustumTest& vf_test )
 	if( 300 < iNumPotentiallyVisibles )
 		int iTooManyVisibleEntities = 1;
 
-	tr.pvStart = &vStart;
-	tr.pvGoal  = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal  = vGoal;
 	tr.bvType = BVTYPE_DOT;
 	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
 

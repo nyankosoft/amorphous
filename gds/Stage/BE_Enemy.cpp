@@ -253,8 +253,8 @@ void CBE_Enemy::CheckRayToPlayer(CCopyEntity* pCopyEnt)
 	STrace tr;
 	Vector3 vStart = pCopyEnt->GetWorldPosition();
 	Vector3 vGoal =  pPlayer->GetWorldPosition();
-	tr.pvStart = &vStart;
-	tr.pvGoal  = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal  = vGoal;
 	tr.bvType = BVTYPE_DOT;
 	tr.fRadius = 0;
 	tr.pSourceEntity = pCopyEnt;
@@ -300,8 +300,8 @@ bool CBE_Enemy::CheckRayToPlayer( CCopyEntity* pCopyEnt )
 	STrace tr;
 	Vector3 vCurrentPos = pCopyEnt->GetWorldPosition();
 	Vector3 vGoal       = pPlayer->GetWorldPosition();
-	tr.pvStart       = &vCurrentPos;
-	tr.pvGoal        = &vGoal;
+	tr.vStart        = vCurrentPos;
+	tr.vGoal         = vGoal;
 	tr.bvType        = BVTYPE_DOT;
 	tr.fRadius       = 0;
 	tr.pSourceEntity = pCopyEnt;
@@ -315,7 +315,7 @@ bool CBE_Enemy::CheckRayToPlayer( CCopyEntity* pCopyEnt )
 	{
 		if( sRadarState == ERS_NOT_IN_SOLID )
 		{	// check trace to the player
-//			tr.pvStart = &vCurrentPos;
+//			tr.vStart = vCurrentPos;
 //			vGoal  =  &pPlayer->GetWorldPosition();
 			tr.in_solid = false;
 			tr.fFraction = 1.0f;

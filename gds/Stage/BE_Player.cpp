@@ -216,8 +216,8 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 		tr.bvType = BVTYPE_DOT;
 		vStart = pCopyEnt->GetWorldPosition() + pCopyEnt->GetUpDirection() * fUp;
 		vGoal = vStart + pCopyEnt->GetDirection() * fForward;
-		tr.pvStart = &vStart;
-		tr.pvGoal = &vGoal;
+		tr.vStart = vStart;
+		tr.vGoal = vGoal;
 		m_pStage->ClipTrace( tr );
 
 		if( tr.fFraction < 1 )

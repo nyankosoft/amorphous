@@ -48,7 +48,7 @@ bool CBSPTreeForBox::ClipTrace( Vector3& vEndPos,
 	vP1 = vStart;
 	fGoal = 1;
 /*	if(tr.fFraction == 1)	//hasn't hit anything yet
-		vP2 = *tr.pvGoal;
+		vP2 = tr.vGoal;
 	else	//already hit something
 		vP2 = tr.vEnd;
 */
@@ -160,7 +160,7 @@ bool CBSPTreeForBox::ClipTrace( Vector3& vEndPos,
 					// MessageBox(NULL, "Cannot get out of the solid area.","Error", MB_OK|MB_ICONWARNING);
 					tr.fFraction = 0.0f;
 ///					tr.vEnd = vP1;
-					tr.vEnd = *tr.pvStart;
+					tr.vEnd = tr.vStart;
 					tr.in_solid = true;
 					return CONTENTS_SOLID;
 				}
