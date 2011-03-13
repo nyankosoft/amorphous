@@ -170,6 +170,7 @@ const char g_GeneralInputCodeTitle[][20] =
 	"PAGE_UP",
 	"PAGE_DOWN",
 	
+	"CONVERT",
 	"NOCONVERT",
 
 	"F01",
