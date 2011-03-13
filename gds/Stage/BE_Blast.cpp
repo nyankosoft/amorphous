@@ -7,19 +7,11 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 //#include "Graphics/UnitCube.hpp"
-//#include "Support/SafeDelete.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "3DMath/MatrixConversions.hpp"
 
 using namespace std;
 using namespace boost;
-
-
-#define LOG_PRINTF(x) LOG_PRINT( string(" ") + fmt_string x )
-
-
-float& CurrentBlastTime( CCopyEntity *pEntity ) { return pEntity->f2; }
-float& CurrentBlastRadius( CCopyEntity *pEntity ) { return pEntity->f3; }
 
 
 CBE_Blast::CBE_Blast()
@@ -90,7 +82,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 	Limit( fCurrentBlastRadius, 0.0f, m_fMaxBlastRadius );
 
 	// save blast radius
-	pCopyEnt->f3 = fCurrentBlastRadius;
+	CurrentBlastRadius(pCopyEnt) = fCurrentBlastRadius;
 
 	// check if there is any entity which is overlapping the bounding sphere
 	// of the current blast (rough estimate)

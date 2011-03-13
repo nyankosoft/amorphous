@@ -2,6 +2,7 @@
 #define __BASEENTITYBLAST_H__
 
 #include "BaseEntity.hpp"
+#include "CopyEntity.hpp"
 #include "Graphics/fwd.hpp"
 
 
@@ -43,6 +44,9 @@ public:
 	virtual unsigned int GetArchiveObjectID() const { return BE_BLAST; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
+
+	static float& CurrentBlastTime( CCopyEntity *pEntity )   { return pEntity->f2; }
+	static float& CurrentBlastRadius( CCopyEntity *pEntity ) { return pEntity->f3; }
 
 	friend class CCoreBaseEntitiesLoader;
 };
