@@ -479,6 +479,10 @@ void CMotionPrimitiveNode::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
+const string CMotionNodeAlgorithm::ms_NullString;
+
+
+
 //===========================================================================
 // CMotionFSM
 //===========================================================================

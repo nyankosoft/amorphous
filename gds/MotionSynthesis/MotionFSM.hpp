@@ -223,11 +223,15 @@ protected:
 
 	CMotionPrimitiveNode *m_pNode;
 
+	static const std::string ms_NullString;
+
 public:
 
 	CMotionNodeAlgorithm() : m_pNode(NULL) {}
 
 	virtual ~CMotionNodeAlgorithm() {}
+
+	const std::string& GetNodeName() const { return m_pNode ? m_pNode->GetName() : ms_NullString; }
 
 	virtual void Update( float dt ) {}
 
