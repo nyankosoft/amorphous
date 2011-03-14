@@ -23,7 +23,7 @@ bool C3DShapesExporter_LW::ExtractShapes( boost::shared_ptr<CLWO2_Object> pObjec
 	}
 
 	// Build general 3D mesh(es)
-	boost::shared_ptr<C3DMeshModelBuilder_LW> pLoader( new C3DMeshModelBuilder_LW( pObject ) );
+	shared_ptr<C3DMeshModelBuilder_LW> pLoader( new C3DMeshModelBuilder_LW( pObject ) );
 	pLoader->BuildMeshModel( layer_set );
 
 	shared_ptr<CGeneral3DMesh> pSrcMesh = pLoader->GetGeneral3DMeshSharedPtr();
