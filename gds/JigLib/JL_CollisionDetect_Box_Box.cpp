@@ -338,7 +338,7 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 
 				tr.fFraction = 1.0f;
 ///				bsptree.ClipLineTrace( tr );
-				bsp_tree.ClipTrace( tr.vEnd, tr.fFraction, vLocalStart, vLocalGoal, 0 );
+				bsp_tree.ClipTrace( tr.vEnd, tr.fFraction, vLocalGoal, vLocalStart, 0 );
 				if( tr.fFraction < 1.0f )
 				{	// found collision
 					if( tr.fFraction < SCALAR_TINY )
