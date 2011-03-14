@@ -14,12 +14,12 @@
 class CPhysicsShapeMakerVisitor : public CShapeContainerVisitor
 {
 public:
-	std::vector<physics::CShapeDesc *> m_pShapeDescs;
+	std::vector<physics::CShapeDesc *>& m_pShapeDescs;
 
-	~CPhysicsShapeMakerVisitor()
-	{
-		SafeDeleteVector( m_pShapeDescs );
-	}
+	CPhysicsShapeMakerVisitor( std::vector<physics::CShapeDesc *>& pShapeDescs )
+		:
+	m_pShapeDescs(pShapeDescs)
+	{}
 
 	void VisitAABB3Container( CAABB3Container& aabb3_container )
 	{
