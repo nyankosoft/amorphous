@@ -4,8 +4,6 @@
 #include "JL_ShapeBase.hpp"
 
 
-#include "Stage/bsptree.hpp"
-
 class CTriangle;
 
 // stores a pair of indices to edge points
@@ -25,9 +23,6 @@ class CJL_Shape_Box : public CJL_ShapeBase
 	Vector3 m_avWorldEdgePoint[8];
 
 	static const SEdgeIndex ms_aEdgeIndex[12];
-
-	/// represented in local space of the box
-	CBSPTree m_BSPTree;
 
 public:
 	CJL_Shape_Box();
@@ -60,16 +55,6 @@ public:
 
 		rfMin = fCenter - fRadius;
 		rfMax = fCenter + fRadius;
-	}
-
-	inline void ClipLocalTrace( STrace& tr )
-	{
-		m_BSPTree.ClipTrace( tr );
-	}
-
-	inline short CheckPosition( Vector3& vPos )
-	{
-		return m_BSPTree.CheckPosition( vPos );
 	}
 
 	inline void GetWorldEdge(int i, Vector3& v0, Vector3& v1 )

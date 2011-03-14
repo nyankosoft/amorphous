@@ -1,12 +1,8 @@
-
 #include "JL_CollisionDetect.hpp"
-
 #include "JL_Shape_Box.hpp"
 #include "JL_PhysicsActor.hpp"
 #include "JL_CollisionFunctor.hpp"
-
 #include "Geometry/JL_Box.hpp"
-
 #include "3DMath/BSPTreeForBox.hpp"
 
 //#include "Stage/bsptree.hpp"
@@ -217,7 +213,7 @@ static void AddCollisionPoints( TCFixedVector< CJL_CollPointInfo, MAX_CONTACTS_P
 	TCFixedVector<Vector3,MAX_CONTACTS_PER_BOX_PAIR> vecPts;
 	GetBoxBoxIntersectionPoints( vecPts, rBox0, rBox1, 0.01f );
 
-	for( unsigned i=0; i<vecPts.size(); i++ )
+	for( int i=0; i<vecPts.size(); i++ )
 	{
 		const Vector3& vNewActorPos0 = rBox0.GetPhysicsActor()->GetPosition();
 		const Vector3& vNewActorPos1 = rBox1.GetPhysicsActor()->GetPosition();
@@ -252,9 +248,8 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 	contact.fPenetrationDepth = fPenetrationDepth;
 
 	///// check box edges against box
-	STrace tr;
-	tr.bvType = BVTYPE_DOT;
-///	CBSPTreeForAABB bsptree;
+	float fFraction = 1.0f;
+	Vector3 vEnd = Vector3(0,0,0);
 
 	CBSPTreeForBox bsp_tree;
 
@@ -301,27 +296,23 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 
 			if( !b0 )
 			{
-				tr.vStart = vLocalStart;
-				tr.vGoal  = vLocalGoal;
-
-				tr.fFraction = 1.0f;
-//				tr.in_solid = false;
-///				bsptree.ClipLineTrace( tr );
-				bsp_tree.ClipTrace( tr.vEnd, tr.fFraction, vLocalStart, vLocalGoal, 0 );
-				if( tr.fFraction < 1.0f )
-				{	// found collision
-					if( tr.fFraction < SCALAR_TINY )
+				fFraction = 1.0f;
+				bsp_tree.ClipTrace( vEnd, fFraction, vLocalStart, vLocalGoal, 0 );
+				if( fFraction < 1.0f )
+				{
+					// found collision
+					if( fFraction < SCALAR_TINY )
 					{
-						tr.fFraction = 0;
-						tr.vEnd = vLocalStart;
+						fFraction = 0;
+						vEnd = vLocalStart;
 					}
-					else if( 1 - SCALAR_TINY < tr.fFraction )
+					else if( 1 - SCALAR_TINY < fFraction )
 					{
-						tr.fFraction = 1.0f;
-						tr.vEnd = vLocalGoal;
+						fFraction = 1.0f;
+						vEnd = vLocalGoal;
 					}
 					// transform contact point from the local space of pBox[i] to the world space
-					pBox[i]->GetWorldPose().Transform( contact.vContactPoint, tr.vEnd );
+					pBox[i]->GetWorldPose().Transform( contact.vContactPoint, vEnd );
 					
 					// transform contact normal (orientation only)
 //					contact.vNormal = pBox[i]->GetWorldOrient() * tr.plane.normal;
@@ -333,26 +324,23 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 			}
 			if( !b1 )
 			{
-				tr.vStart = vLocalGoal;
-				tr.vGoal  = vLocalStart;
-
-				tr.fFraction = 1.0f;
-///				bsptree.ClipLineTrace( tr );
-				bsp_tree.ClipTrace( tr.vEnd, tr.fFraction, vLocalGoal, vLocalStart, 0 );
-				if( tr.fFraction < 1.0f )
-				{	// found collision
-					if( tr.fFraction < SCALAR_TINY )
+				fFraction = 1.0f;
+				bsp_tree.ClipTrace( vEnd, fFraction, vLocalGoal, vLocalStart, 0 );
+				if( fFraction < 1.0f )
+				{
+					// found collision
+					if( fFraction < SCALAR_TINY )
 					{
-						tr.fFraction = 0;
-						tr.vEnd = vLocalStart;
+						fFraction = 0;
+						vEnd = vLocalStart;
 					}
-					else if( 1 - SCALAR_TINY < tr.fFraction )
+					else if( 1 - SCALAR_TINY < fFraction )
 					{
-						tr.fFraction = 1.0f;
-						tr.vEnd = vLocalGoal;
+						fFraction = 1.0f;
+						vEnd = vLocalGoal;
 					}
 					// transform contact point from the local space of pBox[i] to the world space
-					pBox[i]->GetWorldPose().Transform( contact.vContactPoint, tr.vEnd );
+					pBox[i]->GetWorldPose().Transform( contact.vContactPoint, vEnd );
 					
 					if( vecPts.size() < MAX_CONTACTS_PER_BOX_PAIR )
 						vecPts.push_back( contact.vContactPoint );

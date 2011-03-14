@@ -235,11 +235,9 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 	}
 
 	///// 2. check triangle edges against box
-	STrace tr;
-	tr.bvType = BVTYPE_DOT;
-	CBSPTreeForAABB bsptree;
+	float fFraction = 1.0f;
+	Vector3 vEnd = Vector3(0,0,0);
 	Vector3 vHalfLength = rBox.GetSideLength() * 0.5f;
-	bsptree.SetAABB( vHalfLength );
 	AABB3 box_aabb;
 	box_aabb.vMin = -vHalfLength;
 	box_aabb.vMax =  vHalfLength;
@@ -267,23 +265,23 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 
 //		tr.vStart = pavLocalEdge[ acIndex[i] ];
 //		tr.vGoal  = pavLocalEdge[ acIndex[i+1] ];
-		tr.fFraction = 1.0f;
+		fFraction = 1.0f;
 //		tr.in_solid = false;
 ///		bsptree.ClipLineTrace( tr );
 
-		bsp_tree.ClipTrace( tr.vEnd,
-			                tr.fFraction,
+		bsp_tree.ClipTrace( vEnd,
+			                fFraction,
 							pavLocalEdge[acIndex[i]],
 							pavLocalEdge[acIndex[i+1]],
 							0 );
 
-		if( !IsSensible( tr.vEnd ) )
+		if( !IsSensible( vEnd ) )
 			int error = 1;
 
-		if( tr.fFraction < 1.0f )
+		if( fFraction < 1.0f )
 		{	// found collision
 			// transform contact point from box space to world space
-			rBox.GetWorldPose().Transform( vWorldGoal, tr.vEnd );
+			rBox.GetWorldPose().Transform( vWorldGoal, vEnd );
 			AddPoint( vecvContactPoint, vWorldGoal, fMaxCombinationDistSq );
 		}
 	}
