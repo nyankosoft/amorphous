@@ -34,7 +34,22 @@ class CKeyBind : public IArchiveObjectBase
 
 private:
 
+	/// Change the const version below when you change this.
 	int *GetGICodeToActionCodeTable( int action_type )
+	{
+		switch( action_type )
+		{
+		case ACTION_TYPE_PRIMARY:   return m_aGICodeToActionCode;
+		case ACTION_TYPE_SECONDARY: return m_aGICodeToSecondaryActionCode;
+		case ACTION_TYPE_SYSTEM:    return m_aGICodeToSystemMenuCode;
+		default: return m_aGICodeToActionCode;
+		}
+
+		return m_aGICodeToActionCode;
+	}
+
+	/// Change the non-const version above when you change this.
+	const int *GetGICodeToActionCodeTable( int action_type ) const
 	{
 		switch( action_type )
 		{
@@ -80,9 +95,9 @@ public:
 		}
 	}*/
 
-	void FindGeneralInputCodesOfAllInputDevices( int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes )
+	void FindGeneralInputCodesOfAllInputDevices( int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes ) const
 	{
-		int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
+		const int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
 
 		gi_codes.resize( 0 );
 		for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
@@ -92,9 +107,9 @@ public:
 		}
 	}
 
-	void FindGeneralInputCodes( int action_code, int action_type, bool(*IsGICodeOfSpecifiedInputDevice)(int), std::vector<int>& gi_codes )
+	void FindGeneralInputCodes( int action_code, int action_type, bool(*IsGICodeOfSpecifiedInputDevice)(int), std::vector<int>& gi_codes ) const
 	{
-		int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
+		const int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
 
 		gi_codes.resize( 0 );
 		for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
@@ -105,14 +120,14 @@ public:
 		}
 	}
 
-	void FindKeyboardInputCodes( int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes ) { FindGeneralInputCodes( action_code, action_type, IsKeyboardInputCode, gi_codes ); }
-	void FindMouseInputCodes(    int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes ) { FindGeneralInputCodes( action_code, action_type, IsMouseInputCode,    gi_codes ); }
-	void FindGamepadInputCodes(  int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes ) { FindGeneralInputCodes( action_code, action_type, IsGamepadInputCode,  gi_codes ); }
+	void FindKeyboardInputCodes( int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes ) const { FindGeneralInputCodes( action_code, action_type, IsKeyboardInputCode, gi_codes ); }
+	void FindMouseInputCodes(    int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes ) const { FindGeneralInputCodes( action_code, action_type, IsMouseInputCode,    gi_codes ); }
+	void FindGamepadInputCodes(  int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, std::vector<int>& gi_codes ) const { FindGeneralInputCodes( action_code, action_type, IsGamepadInputCode,  gi_codes ); }
 
 	/// \param action_code [in]
 	/// \param gi_codes [out]
 	/// \brief Returns general input codes that are mapped to the given action code of the given action type
-	void FindGeneralInputCodes( int action_code, int action_type, InputDeviceType input_device_type, std::vector<int>& gi_codes )
+	void FindGeneralInputCodes( int action_code, int action_type, InputDeviceType input_device_type, std::vector<int>& gi_codes ) const
 	{
 		switch(input_device_type)
 		{
@@ -127,9 +142,9 @@ public:
 	}
 
 
-	int FindGeneralInputCode( int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, bool(*IsGICodeOfSpecifiedInputDevice)(int) )
+	int FindGeneralInputCode( int action_code, int action_type /*= CKeyBind::ACTION_TYPE_PRIMARY*/, bool(*IsGICodeOfSpecifiedInputDevice)(int) ) const
 	{
-		int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
+		const int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
 
 		for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 		{
@@ -140,9 +155,9 @@ public:
 		return -1;
 	}
 
-	int FindGeneralInputCodeOfAnyInputDevice( int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY )
+	int FindGeneralInputCodeOfAnyInputDevice( int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) const
 	{
-		int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
+		const int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
 
 		for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 		{
@@ -152,14 +167,14 @@ public:
 		return -1;
 	}
 
-	int FindKeyboardInputCode( int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) { return FindGeneralInputCode( action_code, action_type, IsKeyboardInputCode ); }
-	int FindMouseInputCode(    int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) { return FindGeneralInputCode( action_code, action_type, IsMouseInputCode    ); }
-	int FindGamepadInputCode(  int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) { return FindGeneralInputCode( action_code, action_type, IsGamepadInputCode  ); }
+	int FindKeyboardInputCode( int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) const { return FindGeneralInputCode( action_code, action_type, IsKeyboardInputCode ); }
+	int FindMouseInputCode(    int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) const { return FindGeneralInputCode( action_code, action_type, IsMouseInputCode    ); }
+	int FindGamepadInputCode(  int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) const { return FindGeneralInputCode( action_code, action_type, IsGamepadInputCode  ); }
 
 	/// \return a general input code mapped to the given action
 	/// \return -1 if corresponding general input code was not found
 	/// Returns only one input 
-	int FindGeneralInputCode( int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY, InputDeviceType input_device_type = ANY )
+	int FindGeneralInputCode( int action_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY, InputDeviceType input_device_type = ANY ) const
 	{
 		switch(input_device_type)
 		{
@@ -174,9 +189,9 @@ public:
 	}
 
 
-	int GetActionCode( int gi_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY )
+	int GetActionCode( int gi_code, int action_type = CKeyBind::ACTION_TYPE_PRIMARY ) const
 	{
-		int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
+		const int *pGICodeToActionCode = GetGICodeToActionCodeTable(action_type);
 
 		if( gi_code < 0 || NUM_GENERAL_INPUT_CODES <= gi_code )
 			return -1;
