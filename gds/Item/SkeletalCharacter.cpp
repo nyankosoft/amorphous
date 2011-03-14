@@ -431,8 +431,8 @@ void CSkeletalCharacter::Render()
 void CSkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 {
 	m_pKeyBind = pKeyBind;
-	for( size_t i=0; i<m_pMotionNodes.size(); i++ )
-		m_pMotionNodes[i]->SetKeyBind( m_pKeyBind );
+//	for( size_t i=0; i<m_pMotionNodes.size(); i++ )
+//		m_pMotionNodes[i]->SetKeyBind( m_pKeyBind );
 
 	// Create map from action code to GI codes
 
@@ -465,6 +465,18 @@ void CSkeletalCharacter::AddOperationsAlgorithm( boost::shared_ptr<CSkeletalChar
 	m_pOperations.push_back( pOperations );
 	pOperations->m_pSkeletalCharacter
 		= boost::dynamic_pointer_cast<CSkeletalCharacter,CGameItem>( m_pMyself.lock() );
+}
+
+
+void CSkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_name, boost::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm )
+{
+	shared_ptr<CMotionPrimitiveNode> pNode = m_pLowerLimbsMotionsFSM->GetNode( motion_node_name );
+	if( !pNode )
+		return;
+
+	pNode->SetAlgorithm( pMotionNodeAlgorithm );
+
+	pMotionNodeAlgorithm->SetSkeletalCharacter( this );
 }
 
 
@@ -973,6 +985,19 @@ void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 }
 
 
+bool CCharacterMotionNodeAlgorithm::HandleInputForTransition( const SInputData& input, int action_code )
+{
+	map<pair<int,int>,string>::iterator itr = m_ActionInputsToMotionNodes.find( pair<int,int>(action_code,input.iType) );
+	if( itr != m_ActionInputsToMotionNodes.end() )
+	{
+		RequestTransition( itr->second );
+		return true;
+	}
+	else
+		return false;
+}
+
+
 CInputState::Name CCharacterMotionNodeAlgorithm::GetActionInputState( int action_code )
 {
 	return m_pCharacter->GetActionInputState( action_code );
@@ -981,12 +1006,12 @@ CInputState::Name CCharacterMotionNodeAlgorithm::GetActionInputState( int action
 
 bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int action_code )
 {
-	map<pair<int,int>,string>::iterator itr = m_ActionInputsToMotionNodes.find( pair<int,int>(action_code,input.iType) );
-	if( itr != m_ActionInputsToMotionNodes.end() )
-	{
-		RequestTransition( itr->second );
+	bool res = HandleInputForTransition( input, action_code );
+	if( res )
 		return true;
-	}
+
+	if( m_pCharacter && m_pCharacter->IsCameraDependentMotionControlEnabled() )
+		return false;
 
 	switch( action_code )
 	{

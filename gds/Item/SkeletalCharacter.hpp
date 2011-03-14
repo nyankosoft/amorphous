@@ -165,6 +165,8 @@ public:
 
 	void TurnIfNecessary( float dt, float turn_speed );
 
+	const boost::shared_ptr<CKeyBind>& GetKeyBind() const { return m_pKeyBind; }
+
 	void SetKeyBind( boost::shared_ptr<CKeyBind> pKeyBind );
 
 	CInputState::Name GetActionInputState( int action_code, CKeyBind::ActionType action_type = CKeyBind::ACTION_TYPE_PRIMARY );
@@ -178,6 +180,8 @@ public:
 	bool IsCameraDependentMotionControlEnabled() const { return m_CameraDependentMotionControl; }
 
 	std::vector< boost::shared_ptr<CCharacterMotionNodeAlgorithm> >& MotionNodeAlgorithms() { return m_pMotionNodes; }
+
+	void SetMotionNodeAlgorithm( const std::string& motion_node_name, boost::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm );
 
 	static int ms_DefaultInputHandlerIndex;
 
@@ -206,11 +210,15 @@ protected:
 
 	CSkeletalCharacter *m_pCharacter;
 
-	boost::shared_ptr<CKeyBind> m_pKeybind;
+//	boost::shared_ptr<CKeyBind> m_pKeybind;
 
 	/// pair contains an input condition
 	/// first: action code / second: input type (pressed, released or value changed)
 	std::map<std::pair<int,int>,std::string> m_ActionInputsToMotionNodes;
+
+protected:
+
+	bool HandleInputForTransition( const SInputData& input, int action_code );
 
 public:
 
@@ -220,7 +228,9 @@ public:
 
 	void SetSkeletalCharacter( CSkeletalCharacter *pCharacter ) { m_pCharacter = pCharacter; }
 
-	void SetKeyBind( boost::shared_ptr<CKeyBind>& pKeybind ) { m_pKeybind = pKeybind; }
+	const boost::shared_ptr<CKeyBind> GetKeyBind() const { return m_pCharacter ? m_pCharacter->GetKeyBind() : boost::shared_ptr<CKeyBind>(); }
+
+//	void SetKeyBind( boost::shared_ptr<CKeyBind>& pKeybind ) { m_pKeybind = pKeybind; }
 
 	inline bool HandleInput( const SInputData& input );
 
@@ -234,19 +244,17 @@ public:
 
 inline bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input )
 {
-	if( m_pCharacter && m_pCharacter->IsCameraDependentMotionControlEnabled() )
-		return false;
-
 	SInputData input_copy = input;
 
-	if( !m_pKeybind )
+	const boost::shared_ptr<CKeyBind> pKeybind = GetKeyBind();
+	if( !pKeybind )
 		return false;
 
 	if( input.iGICode == GIC_GPD_AXIS_Y )
 		input_copy.fParam1 *= -1.0f;
 
 
-	int action_code = m_pKeybind->GetActionCode( input.iGICode );
+	int action_code = pKeybind->GetActionCode( input.iGICode );
 
 	if( action_code == ACTION_NOT_ASSIGNED )
 		return false;
