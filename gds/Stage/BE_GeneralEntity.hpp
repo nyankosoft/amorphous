@@ -1,7 +1,7 @@
 #ifndef __BE_GENERALENTITY_H__
 #define __BE_GENERALENTITY_H__
 
-#include "BaseEntity.hpp"
+#include "CopyEntity.hpp"
 #include "BaseEntityHandle.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 #include "BE_PhysicsBaseEntity.hpp"
@@ -57,6 +57,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	void SetSmokeTrace( CCopyEntity* pCopyEnt );
+
+	static float& LifeTimer( CCopyEntity* pCopyEnt ) { return pCopyEnt->f3; }
 };
 
 #endif  /*  __BE_GENERALENTITY_H__  */

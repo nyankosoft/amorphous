@@ -1,10 +1,6 @@
 #include "BE_GeneralEntity.hpp"
-
 #include "GameMessage.hpp"
-#include "CopyEntityDesc.hpp"
-#include "CopyEntity.hpp"
 #include "EntityRenderManager.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 #include "Physics/Actor.hpp"
@@ -70,8 +66,7 @@ void CBE_GeneralEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 
 	if( m_sGEAttribute & GETYPE_LIFETIMER )
 	{
-		float& rfLifeTimer = pCopyEnt->f3;
-		rfLifeTimer = m_fLifeTime;
+		LifeTimer(pCopyEnt) = m_fLifeTime;
 	}
 
 //	if( 0 < strlen(m_SmokeTrace.GetBaseEntityName()) )
@@ -137,7 +132,7 @@ void CBE_GeneralEntity::Act(CCopyEntity* pCopyEnt)
 	float frametime = m_pStage->GetFrameTime();
 	if( m_sGEAttribute & GETYPE_LIFETIMER )
 	{
-		float& rfLifeTimer = pCopyEnt->f3;
+		float& rfLifeTimer = LifeTimer(pCopyEnt);
 		rfLifeTimer -= frametime;
 
 		if( rfLifeTimer <= 0.0f )
@@ -211,7 +206,7 @@ void CBE_GeneralEntity::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity
 			if( 0 < strlen(m_Explosion.GetBaseEntityName()) )
 			{
 				// create explosion animation
-				PrintLog( "creating an explosion entity: " + string(m_Explosion.GetBaseEntityName()) );
+				LOG_PRINT_VERBOSE( "creating an explosion entity: " + string(m_Explosion.GetBaseEntityName()) );
 				m_pStage->CreateEntity( m_Explosion, pCopyEnt_Self->GetWorldPosition(), Vector3(0,0,0), pCopyEnt_Self->GetDirection() );
 			}
 
