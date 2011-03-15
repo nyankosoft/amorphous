@@ -77,6 +77,8 @@ public:
 	static float& Power(CCopyEntity* pCopyEnt) { return pCopyEnt->f1; }
 	static float& Power(boost::shared_ptr<CCopyEntity> pEntity) { return pEntity->f1; }
 
+	static float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }
+
 	enum DamageFactorFlag
 	{
 		DFF_SPEED         = (1 << 0), ///< mutually exclusive with DFF_SQUARED_SPEED

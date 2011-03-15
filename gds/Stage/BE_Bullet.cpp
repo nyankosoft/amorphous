@@ -18,8 +18,6 @@ using namespace std;
 using namespace boost;
 
 
-inline float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }
-
 CBE_Bullet::CBE_Bullet()
 {
 	m_BoundingVolumeType = BVTYPE_DOT;
@@ -479,6 +477,8 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 
 	if( pCopyEnt_Other )
 	{
+		CCopyEntity& hit_entity = *pCopyEnt_Other;
+
 		// send message to the entity hit by the bullet
 		SGameMessage msg;
 
@@ -496,16 +496,16 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 		else if( pCopyEnt->s1 & DFF_SPEED )
 			msg.fParam1 *= Vec3Length( pCopyEnt->Velocity() );
 
-		SendGameMessageTo( msg, pCopyEnt_Other );
+		SendGameMessageTo( msg, &hit_entity );
 
-		if( pCopyEnt_Other->GetEntityFlags() & BETYPE_RIGIDBODY )
+		if( hit_entity.GetEntityFlags() & BETYPE_RIGIDBODY )
 		{
 			// apply impulse to the entity hit by this bullet
-			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() / 50.0f, pCopyEnt->GetWorldPosition() );
+			hit_entity.ApplyWorldImpulse( pCopyEnt->Velocity() / 50.0f, pCopyEnt->GetWorldPosition() );
 		}
-		else if( pCopyEnt_Other->GetEntityFlags() & BETYPE_PLAYER )
+		else if( hit_entity.GetEntityFlags() & BETYPE_PLAYER )
 		{
-			pCopyEnt_Other->ApplyWorldImpulse( pCopyEnt->Velocity() * m_pStage->GetFrameTime(), pCopyEnt->GetWorldPosition() );
+			hit_entity.ApplyWorldImpulse( pCopyEnt->Velocity() * m_pStage->GetFrameTime(), pCopyEnt->GetWorldPosition() );
 		}
 
 		this->m_pStage->CreateEntity( m_Spark, pCopyEnt->GetWorldPosition(),
