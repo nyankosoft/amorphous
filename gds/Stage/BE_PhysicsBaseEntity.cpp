@@ -2,10 +2,12 @@
 #include "EntityCollisionGroups.hpp"
 #include "CopyEntity.hpp"
 #include "3DMath/PrimitivePolygonModelMaker.hpp"
+#include "Graphics/ShapeContainers.hpp"
 #include "Physics/Enums.hpp"
 #include "Physics/PhysicsEngine.hpp"
 #include "Physics/Preprocessor.hpp"
 #include "Support/SafeDeleteVector.hpp"
+#include "Utilities/Physics/PhysicsShapeMakerVisitor.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
 using namespace std;
@@ -48,6 +50,34 @@ void CBE_PhysicsBaseEntity::ExtractShapeFromMesh( CCopyEntity *pCopyEnt )
 
 void CBE_PhysicsBaseEntity::Init()
 {
+	if( m_ActorDesc.vecpShapeDesc.empty() )
+	{
+		// The user has specified no shape - check for shapes (.sd) file.
+		string pathname = m_MeshProperty.m_MeshDesc.ResourcePath;
+		lfs::change_ext( pathname, "sd" );
+		if( lfs::path_exists( pathname ) )
+		{
+			CShapeContainerSet containers;
+			bool loaded = containers.LoadFromFile( pathname );
+			if( !loaded )
+				return;
+
+			for( size_t i=0; i<containers.m_pShapes.size(); i++ )
+			{
+				CPhysicsShapeMakerVisitor shape_descs_maker( m_ActorDesc.vecpShapeDesc );
+				if( !containers.m_pShapes[i] )
+					continue;
+
+				containers.m_pShapes[i]->Accept( shape_descs_maker );
+			}
+
+			if( containers.m_pShapes.empty() )
+			{
+				LOG_PRINT_WARNING( " A shapes file (" + pathname + ") was loaded, but not shape desc were created." );
+			}
+		}
+	}
+
 	if( m_ConvexMeshDesc.IsValid() )
 	{
 		physics::CStream convex_mesh_stream;
