@@ -69,7 +69,8 @@ void CGI_Ammunition::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	string ammo_base_entity_name;
 	reader.GetChildElementTextContent( "AmmoBaseEntity",        ammo_base_entity_name );
-	m_AmmoBaseEntity.SetBaseEntityName( ammo_base_entity_name.c_str() );
+	if( 0 < ammo_base_entity_name.length() )
+		m_AmmoBaseEntity.SetBaseEntityName( ammo_base_entity_name.c_str() );
 
 	string muzzle_flash_base_entity_name;
 	reader.GetChildElementTextContent( "MuzzleFlashBaseEntity", muzzle_flash_base_entity_name );
