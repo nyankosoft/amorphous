@@ -93,9 +93,6 @@ void CBE_Bullet::InitCopyEntity( CCopyEntity* pCopyEnt )
 	float& rfNumCurrentReflections = pCopyEnt->f3;
 	rfNumCurrentReflections = 0;
 
-	// test using bullet of 20[g]
-//	pCopyEnt->fMass_inv = 50.0f;
-
 	// bullet is approximated by point - but is it okay to set the inverse of inertia tensor to zero?
 //	memset( &pCopyEnt->GetWorldInvInertia(), 0, sizeof(float) * 16 );
 //	pCopyEnt->GetWorldInvInertia()._44 = 1.0f;

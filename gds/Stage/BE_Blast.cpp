@@ -51,9 +51,6 @@ void CBE_Blast::InitCopyEntity( CCopyEntity* pCopyEnt )
 	CurrentBlastTime(pCopyEnt) = 0;
 //	memset( &pCopyEnt->GetWorldInvInertia(), 0, sizeof(float) * 16 );
 //	pCopyEnt->GetWorldInvInertia()._44 = 1.0f;
-
-//	pCopyEnt->fMass = 5.0f;
-//	pCopyEnt->fMass_inv = 1.0f / pCopyEnt->fMass;
 }
 
 
