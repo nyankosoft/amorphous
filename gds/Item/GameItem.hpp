@@ -14,6 +14,15 @@ using namespace GameLib1::Serialization;
 #include "fwd.hpp"
 
 
+template<class T>
+inline boost::shared_ptr<T> CreateGameItem()
+{
+	boost::shared_ptr<T> pItem( new T );
+	pItem->SetWeakPtr( pItem );
+	return pItem;
+}
+
+
 /**
  * item description
  *
@@ -216,6 +225,8 @@ public:
 	friend class CItemDatabaseBuilder;
 	friend class CGameItemInfo;
 	friend class CItemDatabaseManager;
+	template<class T> friend inline boost::shared_ptr<T> CreateGameItem();
+
 };
 
 
