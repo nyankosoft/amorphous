@@ -17,7 +17,8 @@
 #include "Stage/GameMessage.hpp"
 #include "Stage/PlayerInfo.hpp"
 
-using namespace std;
+using std::vector;
+using boost::shared_ptr;
 
 
 //======================================================================================
@@ -29,7 +30,12 @@ CFirearm::CFirearm()
 m_PrimaryCaliber( Caliber::OTHER ),
 m_StandardMagazineCapacity( 1 ),
 m_fGrouping( 0.0f ),
-m_FirearmState( FS_SLIDE_FORWARD )
+m_FirearmState( FS_SLIDE_FORWARD ),
+m_IsSlideHeld(false),
+m_IsSlideStopEngaged(false),
+m_fSlidePosition(0.0f),
+m_fSlideStrokeDistance(0.5f),
+m_vLocalHammerPivot( Vector3(0,0,0) )
 {
 	m_TypeFlag |= (TYPE_WEAPON);
 
@@ -48,7 +54,11 @@ m_FirearmState( FS_SLIDE_FORWARD )
 
 void CFirearm::Update( float dt )
 {
-	CStageSharedPtr pStage = m_pStage.lock();
+	shared_ptr<CItemEntity> pEntity = GetItemEntity().Get();
+	if( !pEntity )
+		return;
+
+	CStage *pStage = pEntity->GetStage();
 	if( !pStage )
 		return;
 
@@ -56,8 +66,66 @@ void CFirearm::Update( float dt )
 }
 
 
+bool CFirearm::IsSlideAtItsMostRearwardPosition( float error ) const
+{
+	return ( fabs( (-m_fSlidePosition) - m_fSlideStrokeDistance ) < error );
+}
+
+
 void CFirearm::UpdateFirearmState( CStage& stage )
 {
+	const float dt = 0.02f;
+
+	bool bIsSlideMovingBackwardAfterFiring = false;
+	if( bIsSlideMovingBackwardAfterFiring )
+	{
+		float slide_bkwd_speed = 25.0f;
+		float d = slide_bkwd_speed * dt;
+		m_fSlidePosition = get_clamped( m_fSlidePosition - d, -m_fSlideStrokeDistance, 0.0f );
+
+		if( IsSlideAtItsMostRearwardPosition() )
+			bIsSlideMovingBackwardAfterFiring = false;
+
+		if( m_pMagazine && m_pMagazine->IsEmpty() )
+			m_IsSlideStopEngaged = true;
+	}
+	else
+	{
+		UpdateSlideMotionFromRearwardToForward( stage );
+	}
+}
+
+
+void CFirearm::UpdateSlideMotionFromRearwardToForward( CStage& stage )
+{
+	const float dt = 0.02f;
+
+	// Update the slide position
+	if( m_IsSlideHeld )
+	{
+		// Slide is held at its current position by the user
+		// - Do nothing.
+	}
+	else if( m_IsSlideStopEngaged )
+	{
+		if( IsSlideAtItsMostRearwardPosition() )
+		{
+			// The slide is held at its most rearward position by the slide stop
+			m_fSlidePosition = -m_fSlideStrokeDistance;
+		}
+		else
+		{
+			// Slide is not at its most rearward position:
+			// the slide stop cannot be engaged
+			m_IsSlideStopEngaged = false;
+//			SlideForwardMotion(  );
+		}
+	}
+
+	float slide_fwd_speed = 20.0f;
+	float d = slide_fwd_speed * dt;
+	m_fSlidePosition = get_clamped( m_fSlidePosition + d, -m_fSlideStrokeDistance, 0.0f );
+
 	switch( m_FirearmState )
 	{
 	case FS_SLIDE_FORWARD:
@@ -71,6 +139,7 @@ void CFirearm::UpdateFirearmState( CStage& stage )
 			double dTimeSinceLastFire = dCurrentTime - m_dLastFireTime;
 			if( slide_back_to_forward_time < dTimeSinceLastFire )
 				m_FirearmState = FS_SLIDE_FORWARD;
+
 		}
 		break;
 
@@ -113,7 +182,8 @@ bool CFirearm::IsSlideOpen() const
 /// If the slide is in the forward position, pull the slide
 void CFirearm::FeedNextCartridge()
 {
-	if( IsSlideOpen() )
+//	if( IsSlideOpen() )
+	if( false )
 	{
 //		CloseSlide();
 		if( m_pMagazine )
@@ -126,7 +196,7 @@ void CFirearm::FeedNextCartridge()
 	}
 	else
 	{
-		// Empty the chamber is the round is in it.
+		// Empty the chamber if the round is in it.
 //		ExtractCartridge();
 		if( m_pChamberedCartridge )
 		{
@@ -148,6 +218,12 @@ void CFirearm::FeedNextCartridge()
 }
 
 
+void CFirearm::DisengageSlideStop()
+{
+	m_IsSlideStopEngaged = false;
+}
+
+
 bool CFirearm::IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazine ) const
 {
 	for( size_t i=0; i<m_ComplientMagazineNames.size(); i++ )
@@ -157,6 +233,62 @@ bool CFirearm::IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazin
 	}
 
 	return false;
+}
+
+
+void CFirearm::PullSlide( float fraction, bool hold_slide )
+{
+	if( IsSlideAtItsMostRearwardPosition() )
+		return; // Cannot pull any further
+
+	m_IsSlideHeld = hold_slide;
+
+	clamp( fraction, 0.0f, 1.0f );
+
+	m_fSlidePosition = -m_fSlideStrokeDistance * fraction;
+
+	if( IsSlideAtItsMostRearwardPosition() )
+	{
+		if( m_pMagazine && m_pMagazine->IsEmpty() )
+			m_IsSlideStopEngaged = true;
+
+		// Feed the cartridge when the slide is full open to simplify the mechanism
+		if( !IsCartridgeChambered() )
+			FeedNextCartridge();
+	}
+
+//	SetSlidePulledDistance( fraction );
+}
+
+
+void CFirearm::ReleaseSlide()
+{
+	m_IsSlideHeld = false;
+
+	if( !m_pMagazine )
+	{
+		// the slide stop is activated
+		m_FirearmState = FS_SLIDE_OPEN;
+	}
+}
+
+/*
+void CFirearm::PushDownSlideRelease()
+{
+	if( m_FirearmState == FS_SLIDE_FORWARD
+	 || m_FirearmState == FS_SLIDE_MOVING_FORWARD )
+	{
+		// The slide is already closing/closed - do nothing
+	}
+	else if( m_FirearmState == FS_SLIDE_OPEN )
+	{
+		m_FirearmState = FS_SLIDE_MOVING_FORWARD;
+	}
+}
+*/
+
+void CFirearm::Decock()
+{
 }
 
 
@@ -210,6 +342,7 @@ void CFirearm::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "Grouping",                 m_fGrouping ); // grouping in 10[m]
 //	reader.GetChildElementTextContent( "MuzzleSpeedFactor",        m_fMuzzleSpeedFactor );
 //	reader.GetChildElementTextContent( "LocalRecoilForce",         m_vLocalRecoilForce );
+	reader.GetChildElementTextContent( "LocalHammerPivot",         m_vLocalHammerPivot );
 
 	vector<CXMLNodeReader> mags = reader.GetChild( "CompliantMagazines" ).GetImmediateChildren( "Magazine" );
 	m_ComplientMagazineNames.resize( mags.size() );
@@ -310,16 +443,32 @@ bool CFirearm::HandleInput( int action_code, int input_type, float fParam )
 }
 
 
+bool CFirearm::IsReadyToFire() const
+{
+	return ( fabs(m_fSlidePosition) < 0.001f );
+}
+
+
 void CFirearm::Fire()
 {
-	CStageSharedPtr pStage = m_pStage.lock();
+//	CStageSharedPtr pStage = m_pStage.lock();
+
+	if( !IsReadyToFire() )
+		return;
+
+	shared_ptr<CItemEntity> pEntity = GetItemEntity().Get();
+	if( !pEntity )
+		return;
+
+	CStage *pStage = pEntity->GetStage();
+
 	if( !pStage )
 		return;
 
 	UpdateFirearmState( *pStage );
 
-	if( m_FirearmState != FS_SLIDE_FORWARD )
-		return; // The slide is not in the forward position: not ready to fire.
+//	if( m_FirearmState != FS_SLIDE_FORWARD )
+//		return; // The slide is not in the forward position: not ready to fire.
 
 	if( !m_pChamberedCartridge )
 		return; // no round in the chamber
@@ -343,7 +492,7 @@ void CFirearm::Fire()
 	// ------------------ new fire ------------------
 
 	Matrix34 muzzle_end_world_pose( Matrix34Identity() );
-	boost::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
+//	boost::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
 	if( pEntity )
 		muzzle_end_world_pose = pEntity->GetWorldPose() * m_MuzzleEndLocalPose;
 	else
@@ -417,10 +566,14 @@ void CFirearm::Fire()
 
 	// m_pChamberedCartridge has been reset. Do not touch 'cartridge' after this
 
+	// For now, slide instantly goes to its full backward position
+	m_fSlidePosition = -m_fSlideStrokeDistance;
+
 	if( m_pMagazine )
 	{
 		if( m_pMagazine->IsEmpty() )
 		{
+			m_IsSlideStopEngaged = true;
 			m_FirearmState = FS_SLIDE_OPEN;
 		}
 		else
@@ -444,7 +597,7 @@ void CFirearm::Fire()
 			   + vImpact.x * rvMuzzleDir_Right;
 */
 
-	SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() );
+//	SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetPlayerCopyEntity() );
 
 //	if( m_pOwnerEntity )
 //		SendGameMessageTo( msg, m_pOwnerEntity );

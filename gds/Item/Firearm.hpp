@@ -21,6 +21,16 @@ class CMagazine;
 */
 class CFirearm : public CGI_Weapon
 {
+public:
+
+	enum FirearmState
+	{
+		FS_SLIDE_FORWARD,
+		FS_SLIDE_MOVING_FORWARD,
+		FS_SLIDE_OPEN,
+		NUM_FIREARM_STATES
+	};
+
 protected:
 
 	Caliber::Name m_PrimaryCaliber;
@@ -35,15 +45,17 @@ protected:
 
 	std::vector<std::string> m_ComplientMagazineNames;
 
-	enum FirearmState
-	{
-		FS_SLIDE_FORWARD,
-		FS_SLIDE_MOVING_FORWARD,
-		FS_SLIDE_OPEN,
-		NUM_FIREARM_STATES
-	};
-
 	FirearmState m_FirearmState;
+
+	bool m_IsSlideHeld;
+
+	bool m_IsSlideStopEngaged;
+
+	float m_fSlidePosition;
+
+	float m_fSlideStrokeDistance;
+
+	Vector3 m_vLocalHammerPivot;
 
 //	SWeaponSlot *m_pWeaponSlot;
 
@@ -96,6 +108,13 @@ protected:
 	/// the entity which owns the weapon (borrowed reference)
 	CCopyEntity *m_pOwnerEntity;
 */
+
+private:
+
+	void UpdateSlideMotionFromRearwardToForward( CStage& stage );
+
+	void UpdateFirearmState( CStage& stage );
+
 public:
 
 /*	enum eWeaponStates
@@ -147,8 +166,6 @@ public:
 	/// since those loaded missiles are held as entity pointers
 	virtual void Disarm() {}
 
-	void UpdateFirearmState( CStage& stage );
-
 	void ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine );
 
 	boost::shared_ptr<CMagazine> DropMagazine() { boost::shared_ptr<CMagazine> pMag = m_pMagazine; m_pMagazine.reset(); return pMag; }
@@ -161,7 +178,27 @@ public:
 
 	void FeedNextCartridge();
 
+	void DisengageSlideStop();
+
 	bool IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazine ) const;
+
+	FirearmState GetFirearmState() const { return m_FirearmState; }
+
+	void PullSlide( float fraction = 1.0f, bool hold_slide = false );
+
+	void ReleaseSlide();
+
+	void PushDownSlideRelease();
+
+	void Decock();
+
+	bool IsSlideAtItsMostRearwardPosition( float error = 0.001f ) const;
+
+	bool IsReadyToFire() const;
+
+	bool IsSlideHeld() const { return m_IsSlideHeld; }
+
+	bool IsSlideStopEngaged() const { return m_IsSlideStopEngaged; }
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_FIREARM; }
 
