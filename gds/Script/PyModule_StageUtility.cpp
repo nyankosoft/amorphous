@@ -48,7 +48,7 @@ BOOST_PYTHON_MODULE(stage_util)
 	;
 
 	class_< CStageEntityUtility, shared_ptr<CStageEntityUtility> >("StageEntityUtility")
-		.def( "SetShader",          &CStageEntityUtility::SetShader,         ( py::arg("entity"), py::arg("shader_name"), py::arg("subset_name")="" ) )
+		.def( "SetShader",          &CStageEntityUtility::SetShader,         ( py::arg("entity"), py::arg("shader"), py::arg("technique")="Default", py::arg("subset")="" ) )
 	;
 
 	def( "CreateStageCameraUtility",  CreateStageCameraUtility );
