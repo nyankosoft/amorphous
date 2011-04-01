@@ -136,17 +136,16 @@ void CBE_Bullet::BulletMove(CCopyEntity* pCopyEnt)
 	float fFrametime = m_pStage->GetFrameTime();
 	//Vector3 vVel = pCopyEnt->GetDirection() * pCopyEnt->fSpeed;
 
-	Vector3 vStart = pCopyEnt->GetWorldPosition();
-	tr.vStart = vStart;
-	Vector3 vGoal = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * fFrametime;
-	tr.vGoal = vGoal;
-	tr.aabb = this->m_aabb;
-	tr.bvType = this->m_BoundingVolumeType;
-	tr.fRadius = this->m_fRadius;
+	tr.vStart        = pCopyEnt->GetWorldPosition();
+	tr.vGoal         = pCopyEnt->GetWorldPosition() + pCopyEnt->Velocity() * fFrametime;
+	tr.aabb          = this->m_aabb;
+	tr.bvType        = this->m_BoundingVolumeType;
+	tr.fRadius       = this->m_fRadius;
 	tr.pSourceEntity = pCopyEnt;
-	tr.fFraction = 1.0f;
-	tr.sTraceType = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
-	tr.sTraceType |= TRACETYPE_GET_MATERIAL_INFO;
+	tr.fFraction     = 1.0f;
+	tr.sTraceType    = TRACETYPE_IGNORE_NOCLIP_ENTITIES;
+	tr.sTraceType    |= TRACETYPE_GET_MATERIAL_INFO;
+	tr.GroupIndex    = pCopyEnt->GroupIndex;
 
 
 	this->m_pStage->ClipTrace( tr );
