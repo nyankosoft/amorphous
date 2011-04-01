@@ -1,5 +1,5 @@
 #include "OBBTree.hpp"
-#include "Graphics/Direct3D/Conversions.hpp"
+#include "3DMath/Matrix34.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <float.h>
 
@@ -22,7 +22,7 @@ void COBBTree::ReleaseNodes( OBBNODE *pOBBNode )
 	delete pOBBNode;
 	pOBBNode = NULL;
 }
-
+/*
 bool COBBTree::Create( LPD3DXMESH pMesh, int Level )
 {
 	// Get vertices
@@ -86,7 +86,7 @@ bool COBBTree::Create( LPD3DXMESH pMesh, int Level )
 	
 	return true;
 }
-
+*/
 bool COBBTree::Create( const std::vector<Vector3>& vertices, const std::vector<unsigned int>& triangle_indices, int Level )
 {
 	FACES Faces;
@@ -123,10 +123,8 @@ void COBBTree::Create( FACES &Faces, int Level, OBBNODE *pOBBNode )
 		FacesL.clear();
 		FacesR.clear();
 		for( int i = 0; i < (int)Faces.size(); ++i ){
-			D3DXVECTOR4 Vec4;
-			D3DXVECTOR3 Center = ToD3DXVECTOR3( Faces[i].Center );
-			D3DXVec3Transform( &Vec4, &Center, &pOBBNode->OBBData.Matrix );
-			float v[3] = { Vec4.x, Vec4.y, Vec4.z };
+			Vector3 Vec = pOBBNode->OBBData.Matrix * Faces[i].Center;
+			float v[3] = { Vec.x, Vec.y, Vec.z };
 
 			if( v[j] < pOBBNode->OBBData.Length[j] / 2 ) FacesL.push_back( Faces[i] );
 			else FacesR.push_back( Faces[i] );
@@ -236,28 +234,24 @@ void COBBTree::CreateOBB( std::vector < FACE > &Face, OBBDATA &OBBData )
 		  + OBBData.Axis[1] * OBBData.Length[1]
 		  + OBBData.Axis[2] * OBBData.Length[2] ) / 2;
 
-	OBBData.Matrix = D3DXMATRIX(
-		OBBData.Axis[0].x, OBBData.Axis[1].x, OBBData.Axis[2].x, 0,
-		OBBData.Axis[0].y, OBBData.Axis[1].y, OBBData.Axis[2].y, 0,
-		OBBData.Axis[0].z, OBBData.Axis[1].z, OBBData.Axis[2].z, 0,
-		-Vec3Dot( OBBData.Axis[0], G ), -Vec3Dot( OBBData.Axis[1], G ), -Vec3Dot( OBBData.Axis[2], G ), 1 );
+	OBBData.Matrix.matOrient.SetColumn( 0, Vector3( OBBData.Axis[0].x, OBBData.Axis[1].x, OBBData.Axis[2].x ) );
+	OBBData.Matrix.matOrient.SetColumn( 1, Vector3( OBBData.Axis[0].y, OBBData.Axis[1].y, OBBData.Axis[2].y ) );
+	OBBData.Matrix.matOrient.SetColumn( 2, Vector3( OBBData.Axis[0].z, OBBData.Axis[1].z, OBBData.Axis[2].z ) );
+	OBBData.Matrix.vPosition.x = -Vec3Dot( OBBData.Axis[0], G );
+	OBBData.Matrix.vPosition.y = -Vec3Dot( OBBData.Axis[1], G );
+	OBBData.Matrix.vPosition.z = -Vec3Dot( OBBData.Axis[2], G );
 }
 
 bool COBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
 {
 	// Transform to the space where 3 axes of BoxA become xyz axes
-	D3DXVECTOR4 Axis[3];
-	D3DXMATRIX Matrix = BoxA.Matrix;
-	Matrix._41 = 0; Matrix._42 = 0; Matrix._43 = 0;
+	Vector3 Axis[3];
+	Matrix34 Matrix = BoxA.Matrix;
 	for( int i = 0; i < 3; ++i )
-	{
-		D3DXVECTOR3 BoxB_Axis = ToD3DXVECTOR3( BoxB.Axis[i] );
-		D3DXVec3Transform( &Axis[i], &BoxB_Axis, &Matrix );
-	}
+		Axis[i] = Matrix.matOrient * BoxB.Axis[i];
 
-	D3DXVECTOR4 VecAtoBTrans;
-	D3DXVECTOR3 BoxA_Center_to_BoxB_Center = ToD3DXVECTOR3( BoxB.Center - BoxA.Center );
-	D3DXVec3Transform( &VecAtoBTrans, &BoxA_Center_to_BoxB_Center, &Matrix ); // Use Matrix instead of BoxA.Matrix because we need to cancel the translation component
+	Vector3 BoxA_Center_to_BoxB_Center = BoxB.Center - BoxA.Center;
+	Vector3 VecAtoBTrans = Matrix * BoxA_Center_to_BoxB_Center;
 
 	// Do some preprocessings to avoid redundant calculations
 	float B[3][3] = {
@@ -307,26 +301,14 @@ bool COBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
 	return true;
 }
 
-bool COBBTree::CheckCollision( OBBNODE *pNodeA, OBBNODE *pNodeB, D3DXMATRIX &TransMat, D3DXMATRIX &RotMat )
+bool COBBTree::CheckCollision( OBBNODE *pNodeA, OBBNODE *pNodeB, Matrix34 &TransMat, Matrix33 &RotMat )
 {
 	// Transform the BoxB to the space viewed from BoxA
 	OBBDATA OBBDataB = pNodeB->OBBData;
 
-	D3DXVECTOR4 Center;
-	D3DXVECTOR3 OBBDataB_Center = ToD3DXVECTOR3( OBBDataB.Center );
-	D3DXVec3Transform( &Center, &OBBDataB_Center, &TransMat );
-	OBBDataB.Center.x = Center.x;
-	OBBDataB.Center.y = Center.y;
-	OBBDataB.Center.z = Center.z;
-
-	for( int i = 0; i < 3; ++i ){
-		D3DXVECTOR4 Vec;
-		D3DXVECTOR3 Axis = ToD3DXVECTOR3( OBBDataB.Axis[i] );
-		D3DXVec3Transform( &Vec, &Axis, &RotMat );
-		OBBDataB.Axis[i].x = Vec.x;
-		OBBDataB.Axis[i].y = Vec.y;
-		OBBDataB.Axis[i].z = Vec.z;
-	}
+	OBBDataB.Center = TransMat * OBBDataB.Center;
+	for( int i = 0; i < 3; ++i )
+		OBBDataB.Axis[i] = RotMat * OBBDataB.Axis[i];
 
 	OBBNODE *pAL = pNodeA->pOBBNodeL, *pAR = pNodeA->pOBBNodeR, *pBL = pNodeB->pOBBNodeL, *pBR = pNodeB->pOBBNodeR;
 	bool Result = false;
@@ -355,15 +337,11 @@ EXIT:
 	return Result;
 }
 
-bool COBBTree::CheckCollision( COBBTree &OBBTreeA, D3DXMATRIX &TransMatA,
-					 COBBTree &OBBTreeB, D3DXMATRIX &TransMatB )
+bool COBBTree::CheckCollision( COBBTree &OBBTreeA, Matrix34 &TransMatA,
+					 COBBTree &OBBTreeB, Matrix34 &TransMatB )
 {
-	D3DXMATRIX TransMat, InvMat;
-	D3DXMatrixMultiply( &TransMat, &TransMatB, D3DXMatrixInverse( &InvMat, NULL, &TransMatA ) );
-
-	D3DXMATRIX RotMat = TransMat;
-	RotMat._41 = 0; RotMat._42 = 0; RotMat._43 = 0;
-	return CheckCollision( OBBTreeA.pOBBTopNode, OBBTreeB.pOBBTopNode, TransMat, RotMat );
+	Matrix34 TransMat = TransMatA.GetInverseROT() * TransMatB;
+	return CheckCollision( OBBTreeA.pOBBTopNode, OBBTreeB.pOBBTopNode, TransMat, TransMat.matOrient );
 }
 
 void COBBTree::GetLeafOBBs( const OBBNODE *pNode, std::vector<OBBDATA>& obbs )
