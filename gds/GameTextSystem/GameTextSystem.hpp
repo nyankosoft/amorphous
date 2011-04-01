@@ -1,12 +1,9 @@
 #ifndef  __GAMETEXTSYSTEM_H__
 #define  __GAMETEXTSYSTEM_H__
 
-#include <d3d9.h>
-#include <d3dx9.h>
+
 #include <string>
-
 #include "GameTextSet.hpp"
-
 #include "Support/Serialization/Serialization.hpp"
 
 

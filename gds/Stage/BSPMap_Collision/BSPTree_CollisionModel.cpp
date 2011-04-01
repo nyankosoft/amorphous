@@ -6,9 +6,6 @@
 
 #include "Support/memory_helpers.hpp"
 
-#include <d3d9.h>
-#include <d3dx9.h>
-
 
 // used to collect polygons which overlap with the volume of a point light
 void CBSPTree_CollisionModel::CheckCollision( Vector3& vCenter,
