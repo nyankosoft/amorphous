@@ -301,7 +301,7 @@ public:
 	CStageUtility(pStage)
 	{}
 
-	Result::Name SetShader( CEntityHandle<>& entity, const std::string& shader_name, const std::string& subset_name, int lod = 0 );
+	Result::Name SetShader( CEntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod = 0 );
 
 	Result::Name RemoveAllShaders( CEntityHandle<>& entity );
 };

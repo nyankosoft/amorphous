@@ -1167,11 +1167,8 @@ CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 #include "Graphics/MeshContainerRenderMethod.hpp"
 
 
-Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std::string& shader_name, const std::string& subset_name, int lod )
+Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod )
 {
-	CSubsetRenderMethod subset_render_method;
-	size_t pos = shader_name.find( "::" );
-
 	shared_ptr<CCopyEntity> pEntity = entity.Get();
 	if( !pEntity )
 		return Result::INVALID_ARGS;
@@ -1180,26 +1177,14 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 	if( lod < 0 || max_shader_lod <= lod )
 		return Result::INVALID_ARGS;
 
-	if( pos != string::npos )
-	{
-		string filepath = "";
-		string technique_name = "";
-
-		subset_render_method.m_ShaderDesc.ResourcePath = filepath;
-		subset_render_method.m_Technique.SetTechniqueName( technique_name.c_str() );
-	}
-	else
-	{
-		subset_render_method.m_ShaderDesc.ResourcePath = shader_name;
-	}
+	CSubsetRenderMethod subset_render_method;
+	subset_render_method.m_ShaderDesc.ResourcePath = shader;
+	subset_render_method.m_Technique.SetTechniqueName( technique.c_str() );
 
 	if( !pEntity->m_pMeshRenderMethod )
-	{
-		pEntity->m_pMeshRenderMethod
-			= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod );
-	}
+		pEntity->m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
 
-	if( 0 == subset_name.length() )
+	if( 0 == subset.length() )
 	{
 		vector<CSubsetRenderMethod>& vecRenderMethod
 			= pEntity->m_pMeshRenderMethod->MeshRenderMethod();
@@ -1217,7 +1202,7 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 		while( (int)mapRenderMethodMap.size() <= lod )
 			mapRenderMethodMap.push_back( map<string,CSubsetRenderMethod>() );
 
-		mapRenderMethodMap[lod][subset_name] = subset_render_method;
+		mapRenderMethodMap[lod][subset] = subset_render_method;
 	}
 
 	return Result::SUCCESS;
