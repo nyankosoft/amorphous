@@ -1,6 +1,43 @@
 #include "EmbeddedMiscHLSL.hpp"
 
 
+const char *CEmbeddedMiscHLSL::ms_pSingleDiffuseColor =
+"float4 DiffuseColor = float4(1,1,1,1);"\
+"float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
+"void VS( float4 Pos : POSITION,"\
+         "out float4 oPos : POSITION )"\
+"{ oPos = mul( Pos, WorldViewProj ); }\n"\
+"void PS( out float4 Color : COLOR ) { Color = DiffuseColor; }\n";
+
+
+const char *CEmbeddedMiscHLSL::ms_pShadedSingleDiffuseColor =
+"float4 DiffuseColor = float4(1,1,1,1);"\
+"float3 LightDirection = float3(0,-1,0);"\
+"float4x4 World : WORLD;\n"\
+"float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
+"void VS( float4 Pos : POSITION,"\
+         "float3 Normal : NORMAL,"\
+         "out float4 oPos : POSITION,"\
+         "out float3 WorldNormal : TEXCOORD0 )"\
+"{"\
+	"oPos = mul( Pos, WorldViewProj );"\
+	"WorldNormal = mul( Normal, (float3x3)World );"\
+"}\n"\
+"void PS( float3 WorldNormal : TEXCOORD0, out float4 Color : COLOR )"\
+"{"\
+	"WorldNormal = normalize(WorldNormal);"\
+	"float d = -dot( LightDirection, WorldNormal );"\
+
+	// clamp to [0,1]
+	"d = (d + 1.0) * 0.5;"\
+
+	// clamp to [0.3,1.0]
+	"d = (1.0-0.3) * d + 0.3;"\
+
+	"Color.rgb = DiffuseColor.rgb * d;"\
+	"Color.a   = DiffuseColor.a;"\
+"}\n";
+
 const char *CEmbeddedMiscHLSL::ms_pDepthRenderingInViewSpace =
 "float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
 
@@ -37,14 +74,15 @@ const char *CEmbeddedMiscHLSL::ms_pDepthRenderingPixelShaderAndTechnique =
 	// Depth is z / w
 	"Color = Depth.x / Depth.y;"\
 	"Color.g = Color.b = 0;"\
-"}\n"
+"}\n";
 
+const char *CEmbeddedMiscHLSL::ms_pTechniqueTemplate =
 "technique Default"\
 "{"\
 	"pass P0"\
 	"{"\
 		"VertexShader = compile vs_2_0 VS();"\
-		"PixelShader  = compile vs_2_0 PS();"\
+		"PixelShader  = compile ps_2_0 PS();"\
 
 		"CullMode = Ccw;"\
 		"ZEnable = True;"\
@@ -57,14 +95,26 @@ Result::Name CEmbeddedMiscHLSL::GetShader( CEmbeddedMiscShader::ID shader_id, st
 {
 	switch( shader_id )
 	{
+	case CEmbeddedMiscShader::SINGLE_DIFFUSE_COLOR:
+		hlsl_effect = ms_pSingleDiffuseColor;
+		hlsl_effect += ms_pTechniqueTemplate;
+		return Result::SUCCESS;
+
+	case CEmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
+		hlsl_effect = ms_pShadedSingleDiffuseColor;
+		hlsl_effect += ms_pTechniqueTemplate;
+		return Result::SUCCESS;
+
 	case CEmbeddedMiscShader::DEPTH_RENDERING_IN_VIEW_SPACE:
 		hlsl_effect = ms_pDepthRenderingInViewSpace;
 		hlsl_effect += ms_pDepthRenderingPixelShaderAndTechnique;
+		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
 	case CEmbeddedMiscShader::DEPTH_RENDERING_IN_PROJECTION_SPACE:
 		hlsl_effect = ms_pDepthRenderingInProjectionSpace;
 		hlsl_effect += ms_pDepthRenderingPixelShaderAndTechnique;
+		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
 //	case MiscShader::ANOTHER_MISC_SHADER:
