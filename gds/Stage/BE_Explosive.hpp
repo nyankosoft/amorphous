@@ -52,6 +52,8 @@ protected:
 	CBaseEntityHandle m_ExplosionLight;
 	float m_fTimer;
 
+	float m_fMinimumExplodeImpactSpeed;
+
 	CSoundHandle m_ExplosionSound;
 
 public:

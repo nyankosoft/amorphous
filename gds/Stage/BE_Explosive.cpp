@@ -32,6 +32,8 @@ CBE_Explosive::CBE_Explosive()
 	m_bLighting = true;
 
 	m_ExplosionSound.SetResourceName( "bom30" );
+
+	m_fMinimumExplodeImpactSpeed = 1000000.0f;
 }
 
 
@@ -246,7 +248,7 @@ void CBE_Explosive::Act( CCopyEntity* pCopyEnt )
 //	char blocked = SlideMove( pCopyEnt );
 	GrenadeMove( pCopyEnt );
 
-	if( pCopyEnt->bInSolid || pCopyEnt->vVelocity == Vector3(0,0,0) )
+	if( pCopyEnt->bInSolid && false )//m_ExplosiveFlags & EF_EXPLODE_WHEN_STUCK )
 		Explode( pCopyEnt );
 }
 
@@ -310,7 +312,9 @@ void CBE_Explosive::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Othe
 	if( pCopyEnt_Other && pCopyEnt_Other->bNoClip )
 		return;
 
-	if( 3.0f * 3.0f < pCopyEnt_Self->f1 )	// check the energy of motion recorded before the velocity is clipped
+	// check the energy of motion recorded before the velocity is clipped
+//	if( 3.0f * 3.0f < Vec3LengthSq( pCopyEnt_Self->vVelocity ) )
+	if( square( m_fMinimumExplodeImpactSpeed ) < Vec3LengthSq( pCopyEnt_Self->vVelocity ) )
 	{
 		Explode( pCopyEnt_Self );
 	}
