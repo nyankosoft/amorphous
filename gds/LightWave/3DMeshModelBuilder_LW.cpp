@@ -121,6 +121,23 @@ bool C3DMeshModelBuilder_LW::BuildMeshModel( SLayerSet& rLayerInfo )
 }
 
 
+int GetAnyPolygonGroup( const CLWO2_Layer& rLayer, int polygon_index )
+{
+	const std::vector<CLWO2_PolygonGroup>& groups = rLayer.GetPolygonGroup();
+	for( size_t i=0; i<groups.size(); i++ )
+	{
+		const CLWO2_PolygonGroup& group = groups[i];
+		for( size_t j=0; j<group.m_vecPolygonIndex.size(); j++ )
+		{
+			if( polygon_index == group.m_vecPolygonIndex[j] )
+				return group.m_vecTag[j];
+		}
+	}
+
+	return -1;
+}
+
+
 void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryFilter& filter )
 {
 	if( !m_pSrcObject )
@@ -223,6 +240,8 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 		polygon_buffer.push_back( CIndexedPolygon( m_pMesh->GetVertexBuffer() ) );
 		polygon_buffer.back().m_MaterialIndex = iMatIndex;
 
+		m_PolygonGroupIndices.push_back( GetAnyPolygonGroup( rLayer, i ) );
+
 		for( j=0; j<iNumPolVerts; j++ )
 		{
 			polygon_buffer.back().m_index.push_back( (int)vertex_offset + (int)rvecIndex[j] );
@@ -298,6 +317,67 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 		vertex_buffer[ vertex_offset + i ] = TempVertexBuffer[i];
 	}
 
+}
+
+
+static int get_material_index( int group_index, vector<int>& already_appeared_group_indices )
+{
+	for( size_t i=0; i<already_appeared_group_indices.size(); i++ )
+	{
+		if( group_index == already_appeared_group_indices[i] )
+			return (int)i;
+	}
+
+	already_appeared_group_indices.push_back( group_index );
+	return (int)already_appeared_group_indices.size() - 1;
+}
+
+
+void C3DMeshModelBuilder_LW::BreakPolygonsIntoSubsetsByPolygonGroups()
+{
+	if( !m_pSrcObject )
+		return;
+
+	vector<int> already_appeared_group_indices;
+	const vector<CMMA_Material>& materials = GetMaterialBuffer();
+	const int num_materials = (int)materials.size();
+	std::vector<CIndexedPolygon>& polygons = m_pMesh->GetPolygonBuffer();
+	const int num_polygons = (int)polygons.size();
+	vector<CMMA_Material> new_materials;
+
+	int mat_index_offset = 0;
+	for( int i=0; i<num_materials; i++ )
+	{
+		mat_index_offset = (int)already_appeared_group_indices.size();
+		already_appeared_group_indices.clear();
+		for( int j=0; j<num_polygons; j++ )
+		{
+			if( polygons[j].m_MaterialIndex != i )
+				continue;
+
+			int new_index
+			= mat_index_offset
+			+ get_material_index( m_PolygonGroupIndices[j], already_appeared_group_indices );
+
+			if( new_materials.size() <= new_index )
+			{
+				// Create a new material by copying the polygons[j]'s
+				new_materials.push_back( CMMA_Material() );
+				new_materials[new_index] = materials[ polygons[j].m_MaterialIndex ];
+			}
+
+			polygons[j].m_MaterialIndex = new_index;
+
+			if( 0 <= m_PolygonGroupIndices[j] )
+			{
+				const char *group_name = m_pSrcObject->GetTagString( m_PolygonGroupIndices[j] );
+				if( group_name )
+					new_materials[new_index].Name = group_name;
+			}
+		}
+	}
+
+	GetMaterialBuffer() = new_materials;
 }
 
 
@@ -721,6 +801,17 @@ void C3DMeshModelBuilder_LW::LoadMeshModel()
 
 	// create mesh materials from the surfaces of the LightWave object
 	SetMaterials();
+
+	for( int i=0; i<num_mesh_layers; i++ )
+	{
+		if( !m_TargetLayerInfo.vecpMeshLayer[i] )
+			continue;
+
+		CLWO2_Layer& layer = *(m_TargetLayerInfo.vecpMeshLayer[i]);
+
+		if( !layer.GetPolygonGroup().empty() )
+			BreakPolygonsIntoSubsetsByPolygonGroups();
+	}
 
 	// load additional options written as the comment on the surface dialog
 	LoadSurfaceCommentOptions();

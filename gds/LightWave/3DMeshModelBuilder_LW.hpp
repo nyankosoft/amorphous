@@ -59,6 +59,8 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 
 	bool m_UseBoneStartAsBoneLocalOrigin;
 
+	std::vector<int> m_PolygonGroupIndices;
+
 private:
 
 	void BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
@@ -82,6 +84,8 @@ private:
 
 	/// load options written in the comment text box on the surface editor dialog
 	void LoadSurfaceCommentOptions();
+
+	void BreakPolygonsIntoSubsetsByPolygonGroups();
 
 public:
 
