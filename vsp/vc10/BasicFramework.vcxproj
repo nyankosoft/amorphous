@@ -83,6 +83,7 @@
     <ClCompile Include="..\..\gds\Graphics\BuiltinSkyTextures.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Camera.cpp" />
     <ClCompile Include="..\..\gds\Graphics\CubeMapManager.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Font\D3DXFont.cpp" />
     <ClCompile Include="..\..\gds\Graphics\DoubleConeScrollEffect.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Font\FontFactory.cpp" />
     <ClCompile Include="..\..\gds\Graphics\GraphicsComponentCollector.cpp" />
@@ -162,7 +163,6 @@
     <ClCompile Include="..\..\gds\Graphics\GraphicsElements.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PyModule_GraphicsElement.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\Font\Font.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Font\TextureFont.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Font\TrueTypeTextureFont.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Font\UTFFont.cpp" />
@@ -333,6 +333,7 @@
     <ClInclude Include="..\..\gds\Graphics\Camera.hpp" />
     <ClInclude Include="..\..\gds\Graphics\CubeMapManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\D3DMisc.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Font\D3DXFont.hpp" />
     <ClInclude Include="..\..\gds\Graphics\DoubleConeScrollEffect.hpp" />
     <ClInclude Include="..\..\gds\Graphics\FloatRGBAColor.hpp" />
     <ClInclude Include="..\..\gds\Graphics\FloatRGBColor.hpp" />
@@ -435,7 +436,6 @@
     <ClInclude Include="..\..\gds\Graphics\PyModule_GraphicsElement.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Font\BuiltinFonts.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\Font\Font.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Font\FontBase.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Font\GrayscalePixelDataLoader.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Font\SimpleBitmapFontData.hpp" />
