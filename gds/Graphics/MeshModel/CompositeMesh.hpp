@@ -127,7 +127,7 @@ public:
 
 	CMS_MassSpringSim *GetMassSpringSim() { return &m_MassSpringSim; }
 
-	CD3DXMeshModel *GetMeshModel() { return m_pMesh; }
+//	CD3DXMeshModel *GetMeshModel() { return m_pMesh; }
 };
 
 
