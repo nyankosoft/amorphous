@@ -73,7 +73,7 @@ public:
 
 	inline CBVHBone *GetRootBone() { return &m_RootBone; }
 
-	inline int GetNumBones() { return m_RootBone.GetNumBones_r(); }
+	inline int GetNumBones() const { return m_RootBone.GetNumBones_r(); }
 
 	/// basic bvh file information
 	inline int GetNumTotalFrames() const { return (int)m_vecFrame.size(); }

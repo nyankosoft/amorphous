@@ -1,6 +1,8 @@
 #include "BVHPlayer.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/Direct3D/FVF_ColorVertex.h"
+#include "Graphics/TextureStage.hpp"
+#include "Graphics/GraphicsDevice.hpp"
+//#include "Graphics/Direct3D/Direct3D9.hpp"
+//#include "Graphics/Direct3D/FVF_ColorVertex.h"
 
 using namespace std;
 
@@ -232,7 +234,7 @@ bool CBVHPlayer::SetWorldTransformation( float fTime )
 
 bool CBVHPlayer::Render()
 {
-
+/*
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 //	pd3dDev->SetVertexShader( NULL );
@@ -248,9 +250,20 @@ bool CBVHPlayer::Render()
 	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 
 	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+*/
+	CTextureStage stg0, stg1;
+	stg0.ColorOp   = TexStageOp::SELECT_ARG0;
+	stg0.ColorArg0 = TexStageArg::DIFFUSE;
+	stg0.AlphaOp   = TexStageOp::SELECT_ARG0;
+	stg0.AlphaArg0 = TexStageArg::DIFFUSE;
+	stg1.ColorOp   = TexStageOp::DISABLE;
+	stg1.AlphaOp   = TexStageOp::DISABLE;
+	GraphicsDevice().SetTextureStageParams( 0, stg0 );
+	GraphicsDevice().SetTextureStageParams( 1, stg1 );
 
+	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
-	CBVHBone::ms_pUnitCube = NULL;
+//	CBVHBone::ms_pUnitCube = NULL;
 
 	m_RootBone.SetSkeletonColor( 0xFFFFFFFF );
 	m_RootBone.Draw_r();

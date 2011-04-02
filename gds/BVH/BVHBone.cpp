@@ -2,16 +2,17 @@
 #include "3DMath/MatrixConversions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/UnitCube.hpp"
+//#include "Graphics/UnitCube.hpp"
 #include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/PrimitiveRenderer.hpp"
+#include "Graphics/PrimitiveShapeRenderer.hpp"
 
 using namespace std;
 
 
 SFloatRGBAColor CBVHBone::ms_dwSkeletonColor;
-CMeshObjectHandle CBVHBone::ms_TestCube;
-CUnitCube *CBVHBone::ms_pUnitCube = NULL;
+//CMeshObjectHandle CBVHBone::ms_TestCube;
+//CUnitCube *CBVHBone::ms_pUnitCube = NULL;
 
 
 CBVHBone::CBVHBone()
@@ -271,7 +272,8 @@ void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 
 	if( pvPrevPosition )
 	{
-		if( ms_pUnitCube )
+//		if( ms_pUnitCube )
+		if( false )
 		{
 			Matrix44 matWorldTransform = ToMatrix44( m_matWorldPose );
 
@@ -355,7 +357,9 @@ void CBVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransfor
 */
 	FixedFunctionPipelineManager().SetWorldTransform( matTrans );
 //	ms_pTestCube->Draw();
-	ms_pUnitCube->Draw();
+//	ms_pUnitCube->Draw();
+	CPrimitiveShapeRenderer renderer;
+	renderer.RenderBox( Vector3(1,1,1), Matrix34Identity() );
 
 	// reset the world transformation matrix
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
@@ -364,7 +368,7 @@ void CBVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransfor
 
 
 void CBVHBone::GetGlobalPositions_r( vector<Vector3>& rvecDestGlobalPositions,
-									 Matrix34* pParentMatrix )
+									 Matrix34* pParentMatrix ) const
 {
 	Vector3 vWorldPosition;
 	Matrix34 matWorldTransform;
@@ -396,7 +400,7 @@ void CBVHBone::GetGlobalPositions_r( vector<Vector3>& rvecDestGlobalPositions,
 }
 
 
-void CBVHBone::GetChannelType_r( vector<int>* pvecChannelType )
+void CBVHBone::GetChannelType_r( vector<int>* pvecChannelType ) const
 {
 	if( this->m_iNumChannels == 0 )
 		return;
@@ -426,7 +430,7 @@ void CBVHBone::GetChannelType_r( vector<int>* pvecChannelType )
 }
 
 
-int CBVHBone::GetNumBones_r()
+int CBVHBone::GetNumBones_r() const
 {
 	int i = 0;
 

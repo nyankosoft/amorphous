@@ -45,7 +45,7 @@ class CBVHBone
 
 	static SFloatRGBAColor ms_dwSkeletonColor;	// shared by all the bones
 
-	static CUnitCube *ms_pUnitCube;
+//	static CUnitCube *ms_pUnitCube;
 
 	void SetChannels( char* pcChannel );
 
@@ -73,11 +73,11 @@ public:
 
 	void SetMatrixFromBVHData_r( Matrix34* pParentMatrix, float* pafBVHFrameData, int& riCount);
 
-	void GetGlobalPositions_r( std::vector<Vector3>& rvecDestGlobalPositions, Matrix34* pParentMatrix = NULL );
+	void GetGlobalPositions_r( std::vector<Vector3>& rvecDestGlobalPositions, Matrix34* pParentMatrix = NULL ) const;
 
-	void GetChannelType_r( std::vector<int>* pvecChannelType );
+	void GetChannelType_r( std::vector<int>* pvecChannelType ) const;
 
-	int GetNumBones_r();
+	int GetNumBones_r() const;
 
 	int GetNumChannels() const { return m_iNumChannels; }
 
@@ -99,7 +99,7 @@ public:
 
 	void DrawBoxForBone(Matrix44 &rmatParent, Matrix44 &rmatWorldTransform);
 
-	static CMeshObjectHandle ms_TestCube;
+//	static CMeshObjectHandle ms_TestCube;
 
 	friend class CPVC_JointHub;
 
