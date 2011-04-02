@@ -1,4 +1,4 @@
-#include "Font.hpp"
+#include "D3DXFont.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
@@ -7,7 +7,7 @@
 using namespace std;
 
 
-CFont::CFont( const std::string font_name, int font_width, int font_height, int type_flag )
+CD3DXFont::CD3DXFont( const std::string font_name, int font_width, int font_height, int type_flag )
 :
 m_pD3DXFont(NULL)
 {
@@ -15,13 +15,13 @@ m_pD3DXFont(NULL)
 }
 
 
-CFont::~CFont()
+CD3DXFont::~CD3DXFont()
 {
 	Release();
 }
 
 
-int CFont::InitFont( const std::string font_name, int font_width, int font_height, int type_flag )
+int CD3DXFont::InitFont( const std::string font_name, int font_width, int font_height, int type_flag )
 {
 	LPD3DXFONT pTempD3DXFont;
 
@@ -66,19 +66,19 @@ int CFont::InitFont( const std::string font_name, int font_width, int font_heigh
 }
 
 
-void CFont::Release()
+void CD3DXFont::Release()
 {
 	SAFE_RELEASE( m_pD3DXFont );
 }
 
 
-void CFont::Reload()
+void CD3DXFont::Reload()
 {
 	InitFont( m_strFontName, m_FontWidth, m_FontHeight );
 }
 
 
-void CFont::SetFontSize(int font_width, int font_height)
+void CD3DXFont::SetFontSize(int font_width, int font_height)
 {
 	if( m_FontWidth == font_width && m_FontHeight == font_height )
 		return;
@@ -95,7 +95,7 @@ void CFont::SetFontSize(int font_width, int font_height)
 #define FONT_MAX_HEIGHT	1024
 
 
-void CFont::DrawText(const char *pStr, const Vector2& vPos, U32 color)
+void CD3DXFont::DrawText(const char *pStr, const Vector2& vPos, U32 color)
 {
 	if( !m_pD3DXFont )
 		return;
@@ -114,11 +114,11 @@ void CFont::DrawText(const char *pStr, const Vector2& vPos, U32 color)
 
 
 /*
-void CFont::DrawText( const char *str, const Vector2& vPos, DWORD color )
+void CD3DXFont::DrawText( const char *str, const Vector2& vPos, DWORD color )
 {
 	if( 1023 <= strlen(str) )
 	{
-		MessageBox( NULL, "text buffer overflow", "CFont::DrawText() error", MB_OK|MB_ICONWARNING);
+		MessageBox( NULL, "text buffer overflow", "CD3DXFont::DrawText() error", MB_OK|MB_ICONWARNING);
 		return;
 	}
 
