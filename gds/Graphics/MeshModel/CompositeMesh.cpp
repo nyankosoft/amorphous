@@ -1,8 +1,5 @@
-
 #include "CompositeMesh.hpp"
-
 #include "Support/memory_helpers.hpp"
-
 
 #include "Graphics/FVF_NormalVertex.h"
 #include "Graphics/FVF_BumpVertex.h"
@@ -42,9 +39,6 @@ void CMA_CompositeMeshArchive::Serialize( IArchive& ar, const unsigned int versi
 
 CCompositeMesh::CCompositeMesh()
 {
-	m_pMesh = NULL;
-	m_pShadowVolumeMesh = NULL;
-
 	m_iNumMassSpringPoints = 0;
 	m_pMSpringToMeshVertexIndex = NULL;
 }
@@ -58,9 +52,9 @@ CCompositeMesh::~CCompositeMesh()
 
 void CCompositeMesh::Release()
 {
-	SafeDelete( m_pMesh );
+	m_Mesh.reset();
 
-	SafeDelete( m_pShadowVolumeMesh );
+	m_ShadowVolumeMesh.reset();
 
 	SafeDelete( m_pMSpringToMeshVertexIndex );
 }
@@ -79,7 +73,7 @@ bool CCompositeMesh::LoadFromFile( const char *pcFilename )
 	Release();
 
     // load archive data for runtime use
-	m_pMesh = new CD3DXMeshModel;
+	m_pMesh.reset( new CSkeletalMesh );
 	if( !m_pMesh->LoadFromArchive( model_archive.m_Mesh, pcFilename ) )
 		return false;
 
@@ -87,7 +81,7 @@ bool CCompositeMesh::LoadFromFile( const char *pcFilename )
 	if( model_archive.GetOptionFlag() & CMA_CompositeMeshArchive::CMA_SHADOWVOLUMEMESH )
 	{
 		// the archive has the mesh for shadow volume rendering
-        m_pShadowVolumeMesh = new CD3DXMeshModel;
+		m_pShadowVolumeMesh.reset( new CSkeletalMesh );
 		if( !m_pShadowVolumeMesh->LoadFromArchive( model_archive.m_ShadowVolumeMesh ) )
 			return false;
 	}

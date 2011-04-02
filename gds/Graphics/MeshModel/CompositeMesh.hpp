@@ -2,7 +2,7 @@
 #define  __COMPOSITEMESH_H__
 
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/MeshModel/D3DXMeshModel.hpp"
+#include "Graphics/MeshObjectHandle.hpp"
 //#include "Graphics/MeshModel/MeshBone.hpp"
 using namespace MeshModel;
 
@@ -76,9 +76,9 @@ class CCompositeMesh
 {
 	std::string m_strFilename;
 
-	CD3DXMeshModel *m_pMesh;
+	boost::shared_ptr<CSkeletalMesh> m_pMesh;
 
-	CD3DXMeshModel *m_pShadowVolumeMesh;
+	boost::shared_ptr<CSkeletalMesh> m_pShadowVolumeMesh;
 
 	CMS_MassSpringSim m_MassSpringSim;
 
