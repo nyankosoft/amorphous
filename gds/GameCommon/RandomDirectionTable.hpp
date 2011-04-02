@@ -2,8 +2,8 @@
 #define  __RANDOMDIRECTIONTABLE_H__
 
 
-#include <d3d9.h>
-#include <d3dx9.h>
+#include "../3DMath/Vector3.hpp"
+
 
 #define  RANDDIRTBL_NUM_RANDOM_DIRECTIONS	(32*32)
 
@@ -12,7 +12,7 @@
 class CRandomDirectionTable
 {
 private:
-	D3DXVECTOR3 m_avRandomDirectionTable[RANDDIRTBL_NUM_RANDOM_DIRECTIONS];
+	Vector3 m_avRandomDirectionTable[RANDDIRTBL_NUM_RANDOM_DIRECTIONS];
 
 protected:
 	CRandomDirectionTable();		//singleton
@@ -21,7 +21,7 @@ public:
 	static CRandomDirectionTable ms_SingletonInstance_;	//single instance of 'CRandomDirectionTable'
 
 //	~CRandomDirectionTable();
-	inline D3DXVECTOR3 GetRandomDirection();
+	inline Vector3 GetRandomDirection();
 
 };
 
@@ -29,7 +29,7 @@ public:
 
 // ================================ inline implementations ================================ 
 
-inline D3DXVECTOR3 CRandomDirectionTable::GetRandomDirection()
+inline Vector3 CRandomDirectionTable::GetRandomDirection()
 {
 	int iRandNum = rand() * RANDDIRTBL_NUM_RANDOM_DIRECTIONS / RAND_MAX;
 
