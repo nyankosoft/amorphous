@@ -1,4 +1,5 @@
 #include "BoundingVolumeTreeRenderers.hpp"
+#include "GraphicsDevice.hpp"
 #include "Direct3D/Direct3D9.hpp"
 #include "../3DMath/OBBTree.hpp"
 
@@ -43,9 +44,9 @@ static void DrawOBB( const OBBDATA& OBBData )
 	DIRECT3D9.GetDevice()->SetPixelShader( NULL );
 	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_XYZ_COLOR );
 	DIRECT3D9.GetDevice()->SetTexture( 0, NULL );
-    DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, false );
 	DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP( D3DPT_LINELIST, 0, 8, 12, Index, D3DFMT_INDEX16, Vertex, sizeof( VERTEX_XYZ_COLOR ) );
-    DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, TRUE );
+//	DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, TRUE );
 }
 
 
