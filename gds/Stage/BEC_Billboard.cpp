@@ -4,6 +4,7 @@
 #include "ScreenEffectManager.hpp"
 
 #include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/Direct3D/D3DAlphaBlend.hpp"
 #include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/RectTriListIndex.hpp"
