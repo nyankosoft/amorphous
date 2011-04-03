@@ -1,15 +1,69 @@
 #include "GlobalInputHandler.hpp"
 
-#include "App/GameWindowManager_Win32.hpp"
+#include "App/GameWindowManager.hpp"
 #include "App/GameApplicationBase.hpp"
 #include "Task/GameTaskManager.hpp"
 #include "Task/GameTask.hpp"
 
 #include "Graphics/GraphicsresourceManager.hpp"
-#include "GameCommon/ImageCapture.hpp"
-#include "GameCommon/ScreenShotManager.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
+//#include "GameCommon/ImageCapture.hpp"
+//#include "GameCommon/ScreenShotManager.hpp"
 
 #include "Support/DebugOutput.hpp"
+
+using std::string;
+
+
+
+#include <boost/filesystem.hpp>
+
+
+inline int GetCurrentCountOfCounterFileAndIncrementCount( const std::string& counter_file_path, int max_count = 1000 )
+{
+	using namespace boost::filesystem;
+
+	int current_index = 0, next_index;
+
+	FILE *fp = fopen( counter_file_path.c_str(), "rb" );
+
+	if(!fp)
+	{
+		// the file which records screenshot count is missing
+		// either the application is running for the first time or the record file has been deleted
+		fp = fopen( counter_file_path.c_str(), "wb" );
+		if( !fp )
+		{
+			// probably the directory 'screenshots' does not exist
+			create_directories( path(counter_file_path).parent_path() );
+			fp = fopen( counter_file_path.c_str(), "wb" );
+			if(!fp)
+				return -1;
+		}
+		next_index = 1;
+		fwrite( &next_index, sizeof(int), 1, fp );
+		fclose(fp);
+		return 0;
+	}
+
+	fread( &current_index, sizeof(int), 1, fp );
+	fclose(fp);
+
+	// Write out the new counter file
+
+	fp = fopen( counter_file_path.c_str(), "wb" );
+	if( !fp )
+		return -1;
+
+	next_index = current_index + 1;
+	fwrite( &next_index, sizeof(int), 1, fp );
+	fclose(fp);
+
+	if( max_count <= current_index )
+		current_index %= max_count;
+
+	return current_index;
+}
 
 
 CGlobalInputHandler::CGlobalInputHandler()
@@ -24,9 +78,9 @@ CGlobalInputHandler::~CGlobalInputHandler()
 
 void CGlobalInputHandler::ProcessInput(SInputData& input)
 {
-	CImageCapture image_capture;
-	DWORD *pdwImageData = NULL;
-	CScreenShotManager screenshot;
+//	CImageCapture image_capture;
+//	DWORD *pdwImageData = NULL;
+//	CScreenShotManager screenshot;
 
 	switch( input.iGICode )
 	{
@@ -71,10 +125,13 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 	case GIC_F12:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+			boost::shared_ptr<CTextureRenderTarget> pTextureRenderTarget = CTextureRenderTarget::Create();
 			int screen_width  = GameWindowManager().GetScreenWidth();
 			int screen_height = GameWindowManager().GetScreenHeight();
-			image_capture.SetImageSize( screen_width, screen_height );
-			image_capture.EnterCaptureMode();
+//			image_capture.SetImageSize( screen_width, screen_height );
+//			image_capture.EnterCaptureMode();
+			pTextureRenderTarget->Init( screen_width, screen_height );
+			pTextureRenderTarget->SetRenderTarget();
 
 			if( g_pGameAppBase
 			 && g_pGameAppBase->GetTaskManager()
@@ -83,12 +140,20 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 				g_pGameAppBase->GetTaskManager()->GetCurrentTask()->Render();
 			}
 
-			image_capture.ExitCaptureMode();
-			pdwImageData = new DWORD [screen_width * screen_height];
-			image_capture.GetCapturedImage( pdwImageData );
-			image_capture.Release();
-			screenshot.OutputImageDataToFile( pdwImageData, screen_width, screen_height );
-			delete [] pdwImageData;
+			pTextureRenderTarget->ResetRenderTarget();
+
+			int count = GetCurrentCountOfCounterFileAndIncrementCount( "./Screenshots/ssr.dat" );
+
+			string img_ext = "png";
+			string img_file_path = fmt_string( "./Screenshots/image%04d", count ) + "." + img_ext;
+			pTextureRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( img_file_path );
+
+//			image_capture.ExitCaptureMode();
+//			pdwImageData = new DWORD [screen_width * screen_height];
+//			image_capture.GetCapturedImage( pdwImageData );
+//			image_capture.Release();
+//			screenshot.OutputImageDataToFile( pdwImageData, screen_width, screen_height );
+//			delete [] pdwImageData;
 		}
 		break;
 
