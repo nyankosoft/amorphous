@@ -2,7 +2,7 @@
 #define __Direct3D_Conversions_HPP__
 
 
-#include "d3dx9.h"
+#include <d3dx9.h>
 #include "../../3DMath/Vector3.hpp"
 
 // Direct3D to 3DMath
