@@ -58,7 +58,9 @@ public:
 
 	bool LoadFromFile( const std::string& filename, U32 option_flags = 0 );
 
-	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement );
+//	bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement );
+
+	bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags );
 
 	/// render object by using the fixed function pipeline
 	void Render();

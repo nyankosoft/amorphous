@@ -201,11 +201,11 @@ bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 	return true;
 }
 
-
+/*
 bool CGLBasicMeshImpl::CreateMesh( int num_vertices, int num_indices, U32 option_flags,
 								  std::vector<D3DVERTEXELEMENT9>& vecVertexElement )
 {
-/*	HRESULT hr;
+	HRESULT hr;
 	hr = D3DXCreateMesh(
 			num_indices / 3,         // DWORD NumFaces,
 			num_vertices,            // DWORD NumVertices,
@@ -216,7 +216,15 @@ bool CGLBasicMeshImpl::CreateMesh( int num_vertices, int num_indices, U32 option
 		);
 
 	return (m_pMesh != NULL);
+
+	return false;
+}
 */
+
+
+bool CGLBasicMeshImpl::CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
 	return false;
 }
 

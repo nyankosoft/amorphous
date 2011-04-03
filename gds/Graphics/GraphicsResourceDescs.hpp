@@ -4,7 +4,7 @@
 
 #include <string>
 #include <boost/weak_ptr.hpp>
-#include <d3dx9.h>
+#include "D3DHeaders.hpp"
 
 #include "../base.hpp"
 #include "fwd.hpp"
@@ -205,7 +205,7 @@ public:
 	//
 
 	int VertexSize;
-	std::vector<D3DVERTEXELEMENT9> vecVertElement;
+//	std::vector<D3DVERTEXELEMENT9> vecVertElement;
 
 public:
 

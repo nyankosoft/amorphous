@@ -31,6 +31,8 @@ public:
 
 	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement );
 
+	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags );
+
 	virtual LPD3DXBASEMESH GetBaseMesh() { return m_pMesh; }
 
 	virtual const LPD3DXBASEMESH GetBaseMesh() const { return m_pMesh; }

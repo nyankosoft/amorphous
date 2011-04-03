@@ -165,7 +165,9 @@ public:
 
 	/// D3D-specific feature
 
-	bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return false; }
+//	bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return false; }
+
+	bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags ) { return false; }
 
 	bool LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags ) { return false; }
 
@@ -296,7 +298,9 @@ public:
 		const int* paMaterialIndex,
 		int num_indices /* some option to specify handles for texture */) { m_pImpl->RenderSubsets( rShaderMgr, paMaterialIndex, num_indices ); }
 
-	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return m_pImpl->CreateMesh( num_vertices, num_indices, option_flags, vecVertexElement ); }
+//	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return m_pImpl->CreateMesh( num_vertices, num_indices, option_flags, vecVertexElement ); }
+
+	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags ) { return m_pImpl->CreateMesh( num_vertices, num_indices, option_flags, vertex_format_flags ); }
 
 	bool LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags ) { return m_pImpl->LoadNonAsyncResources( rArchive, option_flags ); }
 

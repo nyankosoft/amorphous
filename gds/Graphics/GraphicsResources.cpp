@@ -473,12 +473,26 @@ bool CMeshResource::Create()
 		return true;
 	}
 
-	bool mesh_created = m_pMeshObject->CreateMesh(
+	bool mesh_created = false;
+//	if( 0 < m_MeshDesc.vecVertElement.size() )
+	if( false )
+	{
+//		mesh_created = m_pMeshObject->CreateMesh(
+//		m_MeshDesc.NumVertices,
+//		m_MeshDesc.NumIndices,
+//		0,
+//		m_MeshDesc.vecVertElement
+//		);
+	}
+	else
+	{
+		mesh_created = m_pMeshObject->CreateMesh(
 		m_MeshDesc.NumVertices,
 		m_MeshDesc.NumIndices,
 		0,
-		m_MeshDesc.vecVertElement
+		m_MeshDesc.VertexFormatFlags
 		);
+	}
 
 	if( mesh_created )
 	{

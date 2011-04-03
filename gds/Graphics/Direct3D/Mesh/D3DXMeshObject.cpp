@@ -108,3 +108,26 @@ bool CD3DXMeshObject::CreateMesh( int num_vertices, int num_indices, U32 option_
 
 	return (m_pMesh != NULL);
 }
+
+
+bool CD3DXMeshObject::CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
+	return false;
+/*
+	DWORD fvf = ToFVF( vertex_format_flags );
+	HRESULT hr;
+	hr = D3DXCreateMeshFVF(
+			num_indices / 3,         // DWORD NumFaces,
+			num_vertices,            // DWORD NumVertices,
+			option_flags,            // DWORD Options,
+			fvf,                     // DWORD FVF
+			DIRECT3D9.GetDevice(),   // LPDIRECT3DDEVICE9 pD3DDevice,
+			&m_pMesh
+		);
+
+	if( FAILED(hr) )
+		LOG_PRINT_ERROR( fmt_string( " D3DXCreateMesh() failed. (%d faces, %d vertices, flags: %d)", num_indices / 3, num_vertices, option_flags ) );
+
+	return (m_pMesh != NULL);*/
+}

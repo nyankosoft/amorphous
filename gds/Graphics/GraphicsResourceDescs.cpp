@@ -90,7 +90,13 @@ int CMeshResourceDesc::CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) con
 
 	// use as cache only if all the vertex elements exactly match
 
-	if( desc.vecVertElement.size() != this->vecVertElement.size() )
+	if( desc.VertexFormatFlags != this->VertexFormatFlags )
+	{
+		// The vertex elements are not identical.
+		return 0;
+	}
+
+/*	if( desc.vecVertElement.size() != this->vecVertElement.size() )
 		return 0; // different vertex elements
 
 	for( size_t i=0; i<this->vecVertElement.size(); i++ )
@@ -103,7 +109,7 @@ int CMeshResourceDesc::CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) con
 		 || desc.vecVertElement[i].UsageIndex != this->vecVertElement[i].UsageIndex
 		 )
 			return 0;
-	}
+	}*/
 
 	int score
 		= (desc.NumVertices - this->NumVertices + 1)
