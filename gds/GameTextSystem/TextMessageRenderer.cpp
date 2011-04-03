@@ -59,8 +59,8 @@ CTextMessageRenderer(pEffectMgr)
 	m_aFontID[FONT_TEXT]    = offset;
 	m_aFontID[FONT_SPEAKER] = offset + 1;
 
-	pGraphicsMgr->LoadFont( m_aFontID[FONT_TEXT],    "‚l‚r ‚oƒSƒVƒbƒN", CFontBase::FONTTYPE_NORMAL, 20, 40 );
-	pGraphicsMgr->LoadFont( m_aFontID[FONT_SPEAKER], "Arial",           CFontBase::FONTTYPE_NORMAL, 12, 24 );
+	pGraphicsMgr->LoadFont( m_aFontID[FONT_TEXT],    "‚l‚r ‚oƒSƒVƒbƒN", CFontBase::FONTTYPE_UTF, 20, 40 );
+	pGraphicsMgr->LoadFont( m_aFontID[FONT_SPEAKER], "Arial",           CFontBase::FONTTYPE_UTF, 12, 24 );
 
 	m_fBGRectAlpha = 0.3f;
 	SRect bg_rect = RectAtCenterTop( 1000, 110, 45 );

@@ -601,7 +601,7 @@ bool CGraphicsElementManager::LoadFont( int font_id, const std::string& font_nam
 	}
 	else
 	{
-		font_type = CFontBase::FONTTYPE_NORMAL; // D3D Font
+		font_type = CFontBase::FONTTYPE_UTF;
 	}
 
 	return LoadFont( font_id, font_name, font_type, width, height, bold, italic, shadow );
