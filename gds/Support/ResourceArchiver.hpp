@@ -7,10 +7,10 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
 #include "../base.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Support/SerializableStream.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "Support/ImageArchive.hpp"
+#include "TextFileScanner.hpp"
+#include "SerializableStream.hpp"
+#include "Serialization/BinaryDatabase.hpp"
+#include "ImageArchive.hpp"
 using namespace GameLib1::Serialization;
 
 

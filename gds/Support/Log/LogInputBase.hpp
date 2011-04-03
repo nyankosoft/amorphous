@@ -6,7 +6,7 @@
 #include <string>
 
 #include "LogOutputBase.hpp"
-#include <gds/Support/TimeFormats.hpp>
+#include "../TimeFormats.hpp"
 
 
 class CLogOutputBase;

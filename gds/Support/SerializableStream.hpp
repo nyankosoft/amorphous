@@ -2,10 +2,10 @@
 #define  __SerializableStream_HPP__
 
 
-#include "Support/stream_buffer.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "stream_buffer.hpp"
+#include "Log/DefaultLog.hpp"
+#include "Serialization/Serialization.hpp"
+#include "Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 
