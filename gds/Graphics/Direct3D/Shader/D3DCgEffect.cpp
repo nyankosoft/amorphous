@@ -47,7 +47,7 @@ inline Result::Name CD3DCgEffect::SetTexture( const int iStage, const CTextureHa
 }
 
 
-inline HRESULT CD3DCgEffect::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+inline Result::Name CD3DCgEffect::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
 {
 	return E_FAIL;
 //	if( m_aCubeTextureHandle[index] )

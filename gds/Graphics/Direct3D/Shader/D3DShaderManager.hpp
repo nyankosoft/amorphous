@@ -223,7 +223,7 @@ public:
 
 	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
 
-	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
+	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
 	inline void Begin();
 
@@ -476,12 +476,15 @@ inline Result::Name CHLSLShaderManager::SetTexture( const int iStage, const CTex
 }
 
 
-inline HRESULT CHLSLShaderManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+inline Result::Name CHLSLShaderManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
 {
 	if( m_aCubeTextureHandle[index] )
-        return m_pEffect->SetTexture( m_aCubeTextureHandle[index], pCubeTexture );
+	{
+        HRESULT hr = m_pEffect->SetTexture( m_aCubeTextureHandle[index], pCubeTexture );
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	}
 	else
-		return E_FAIL;
+		return Result::UNKNOWN_ERROR;
 }
 
 

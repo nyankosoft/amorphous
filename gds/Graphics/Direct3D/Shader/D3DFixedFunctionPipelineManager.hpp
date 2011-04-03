@@ -70,14 +70,14 @@ public:
 
 	void Reload();
 
-	inline void SetViewerPosition( const D3DXVECTOR3& vEyePosition );
+	inline void SetViewerPosition( const Vector3& vEyePosition );
 
 
 	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
 
 	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
 
-	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
+	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
 	inline void Begin();
 
@@ -171,7 +171,7 @@ inline void CD3DFixedFunctionPipelineManager::GetViewTransform( D3DXMATRIX& matV
 }
 
 
-inline void CD3DFixedFunctionPipelineManager::SetViewerPosition( const D3DXVECTOR3& vEyePosition )
+inline void CD3DFixedFunctionPipelineManager::SetViewerPosition( const Vector3& vEyePosition )
 {
 //	m_pEffect->SetValue( m_aHandle[HANDLE_VIEWER_POS], &vEyePosition, sizeof(D3DXVECTOR3) );
 }
@@ -190,10 +190,13 @@ inline Result::Name CD3DFixedFunctionPipelineManager::SetTexture( const int iSta
 }
 
 
-inline HRESULT CD3DFixedFunctionPipelineManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+inline Result::Name CD3DFixedFunctionPipelineManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
 {
 //	if( m_aCubeTextureHandle[index] )
-        return DIRECT3D9.GetDevice()->SetTexture( index, pCubeTexture );
+//	{
+		HRESULT hr = DIRECT3D9.GetDevice()->SetTexture( index, pCubeTexture );
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+//	}
 //	else
 //		return E_FAIL;
 }

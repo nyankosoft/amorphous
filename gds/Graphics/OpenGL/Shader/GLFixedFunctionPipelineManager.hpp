@@ -202,12 +202,15 @@ inline Result::Name CGLFixedFunctionPipelineManager::SetTexture( const int iStag
 }
 
 /*
-inline HRESULT CGLFixedFunctionPipelineManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+inline Result::Name CGLFixedFunctionPipelineManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
 {
 	if( m_aCubeTextureHandle[index] )
-        return m_pEffect->SetTexture( m_aCubeTextureHandle[index], pCubeTexture );
+	{
+        m_pEffect->SetTexture( m_aCubeTextureHandle[index], pCubeTexture );
+		return ???;
+	}
 	else
-		return E_FAIL;
+		return Result::UNKNOWN_ERROR;
 }
 */
 
