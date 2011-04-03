@@ -4,7 +4,6 @@
 
 #include <sys/stat.h>
 #include <string>
-#include <d3dx9tex.h>
 #include <boost/weak_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread.hpp>
