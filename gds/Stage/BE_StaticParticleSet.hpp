@@ -2,7 +2,6 @@
 #define __BE_STATICPARTICLESET_H__
 
 #include "BE_ParticleSet.hpp"
-#include "Graphics/Direct3D/FVF_BillboardVertex.h"
 #include "Graphics/TextureHandle.hpp"
 #include "Support/FixedVector.hpp"
 
@@ -16,7 +15,7 @@ private:
 		NUM_MAX_PARTICLES_PER_VB = 2048,
 		NUM_MAX_VERTEXBUFFERS = 8,
 	};
-
+/*
 //	std::vector<LPDIRECT3DVERTEXBUFFER9> m_vecpVB;
 	TCFixedVector<LPDIRECT3DVERTEXBUFFER9,NUM_MAX_VERTEXBUFFERS> m_vecpVB;
 
@@ -28,8 +27,10 @@ private:
 	std::vector<STATICBILLBOARDVERTEX> m_vecParticleVertex;
 
     LPDIRECT3DVERTEXDECLARATION9 m_pParticleVertexDeclaration;
-
+*/
 	CShaderTechniqueHandle m_aShaderTechHandle[2];
+
+	void InitStaticParticleSetMesh();
 
 public:
 
@@ -51,7 +52,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-    HRESULT InitIndexBuffer();
+//	HRESULT InitIndexBuffer();
 
 	void CommitStaticParticles();
 };

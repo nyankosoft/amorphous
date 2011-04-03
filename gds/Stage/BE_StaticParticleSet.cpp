@@ -1,23 +1,18 @@
 #include "BE_StaticParticleSet.hpp"
-
-#include "GameMessage.hpp"
+//#include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 //#include "trace.hpp"
 #include "Stage.hpp"
-#include "ScreenEffectManager.hpp"
-#include "Graphics/Direct3D/Conversions.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/MTRand.hpp"
-
-#include "Support/memory_helpers.hpp"
-#include "Support/msgbox.hpp"
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
-using namespace std;
+using std::vector;
+using namespace boost;
 
 
 // num particles
@@ -30,31 +25,16 @@ inline static float& NumParticles(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; 
 
 
 CBE_StaticParticleSet::CBE_StaticParticleSet()
-:
-m_pIB(NULL)
-//m_pVB(NULL)
 {
-
-	m_pParticleVertexDeclaration = NULL;
-
 	m_aShaderTechHandle[0].SetTechniqueName( "StaticBillboard" );
 }
 
 
 CBE_StaticParticleSet::~CBE_StaticParticleSet()
 {
-	for( size_t i=0; i<m_vecpVB.size(); i++ )
-        SAFE_RELEASE(m_vecpVB[i]);
-	m_vecpVB.resize(0);
-
-//	SAFE_RELEASE( m_pVB );
-
-	SAFE_RELEASE( m_pIB );
-
-	SAFE_RELEASE( m_pParticleVertexDeclaration );
 }
 
-
+/*
 HRESULT CBE_StaticParticleSet::InitIndexBuffer()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -106,6 +86,25 @@ HRESULT CBE_StaticParticleSet::InitIndexBuffer()
 	m_pIB->Unlock();
 
     return S_OK;
+}*/
+
+
+void CBE_StaticParticleSet::InitStaticParticleSetMesh()
+{
+/*	CCustomMesh& mesh = m_StaticParticleSetMesh;
+
+	U32 vertex_format_flags
+		= VFF::POSITION
+		| VFF::DIFFUSE_COLOR
+		| VFF::TEXCOORD2_0
+		| VFF::TEXCOORD2_1;
+
+	mesh.InitVertexBuffer( NUM_MAX_PARTICLES_PER_VB, vertex_format_flags );
+
+	mesh.InitIndexBuffer( NUM_MAX_PARTICLES_PER_VB * 6 );
+
+	CRectTriListIndexBuffer::SetNumMaxRects( NUM_MAX_PARTICLES_PER_VB );
+	mesh.SetIndices( CRectTriListIndexBuffer::GetIndexBuffer() );*/
 }
 
 
@@ -113,18 +112,22 @@ void CBE_StaticParticleSet::Init()
 {
 	CBE_ParticleSet::Init();
 
-	InitIndexBuffer();
-	
-	DIRECT3D9.GetDevice()->CreateVertexDeclaration( STATICBILLBOARDVERTEX_DECLARATION, &m_pParticleVertexDeclaration );
+//	InitIndexBuffer();
+
+	InitStaticParticleSetMesh();
 }
 
 
 void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-	IndexOffset(pCopyEnt) = (float)( m_vecParticleVertex.size() / 4 * 6 );
+	LOG_PRINT_ERROR( " The static particle system has not been implemented yet." ) ;
+
+//	CCustomMesh& mesh = m_StaticParticleSetMesh;
+
+	IndexOffset(pCopyEnt) = 0;//(float)( m_vecParticleVertex.size() / 4 * 6 );
 	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
 
-	STATICBILLBOARDVERTEX vert[4];
+//	STATICBILLBOARDVERTEX vert[4];
 	float x,y,z;
 	int i, j, num_particls_per_set = (int)(m_MaxNumParticlesPerSet * RangedRand(0.75f,0.95f));
 //	rParticleSet.iNumParticles = num_particls_per_particles;
@@ -138,6 +141,25 @@ void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 	AABB3 aabb;
 	aabb.Nullify();
 
+	CMMA_VertexSet vertex_set;
+	vertex_set.SetVertexFormat(
+		  CMMA_VertexSet::VF_POSITION
+		| CMMA_VertexSet::VF_DIFFUSE_COLOR
+		| CMMA_VertexSet::VF_2D_TEXCOORD0
+		| CMMA_VertexSet::VF_2D_TEXCOORD1
+		);
+
+	const int num_vertices = num_particls_per_set * 4;
+//	vertex_set.Resize(  );
+	vertex_set.vecPosition.resize( num_vertices );
+	vertex_set.vecDiffuseColor.resize( num_vertices, SFloatRGBAColor::White() );
+	vertex_set.vecTex.resize( 2 );
+	vertex_set.vecTex[0].resize( num_vertices );
+	vertex_set.vecTex[1].resize( num_vertices );
+
+//	vector<Vector3> positions;
+//	positions.resize( num_vertices );
+
 //	ONCE( MsgBoxFmt( "creating static particle set at %s(radius: %f)", to_string(vCenterPos).c_str(), r ) )
 
 	for( i=0; i<num_particls_per_set; i++ )
@@ -146,32 +168,50 @@ void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 		vert[1].offset = D3DXVECTOR2( r, r );
 		vert[2].offset = D3DXVECTOR2( r,-r );
 		vert[3].offset = D3DXVECTOR2(-r,-r );*/
-		vert[0].local_offset.x = -r;
+/*		vert[0].local_offset.x = -r;
 		vert[0].local_offset.y =  r;
 		vert[1].local_offset.x =  r;
 		vert[1].local_offset.y =  r;
 		vert[2].local_offset.x =  r;
 		vert[2].local_offset.y = -r;
 		vert[3].local_offset.x = -r;
-		vert[3].local_offset.y = -r;
+		vert[3].local_offset.y = -r;*/
 		factor_x = RangedRand( 0.8f, 1.6f );
 		factor_y = RangedRand( 0.6f, 1.2f );
+
+		Vector2 local_offsets[4] = 
+		{
+			Vector2( -r,  r ),
+			Vector2(  r,  r ),
+			Vector2(  r, -r ),
+			Vector2( -r, -r )
+		};
+
+		for( j=0; j<4; j++ )
+		{
+			vertex_set.vecTex[1][i*4+j].u = local_offsets[j].x * factor_x;
+			vertex_set.vecTex[1][i*4+j].v = local_offsets[j].y * factor_y;
+		}
 
 		offset = RangedRand( 0, num_tex_patterns - 1 );
 		u = (float)(offset % num_tex_segs) * fTex;
 		v = (float)(offset / num_tex_segs) * fTex;
 
-		vert[0].tex = TEXCOORD2(u,        v       );
-		vert[1].tex = TEXCOORD2(u + fTex, v       );
-		vert[2].tex = TEXCOORD2(u + fTex, v + fTex);
-		vert[3].tex = TEXCOORD2(u,        v + fTex);
+//		vert[0].tex = TEXCOORD2(u,        v       );
+//		vert[1].tex = TEXCOORD2(u + fTex, v       );
+//		vert[2].tex = TEXCOORD2(u + fTex, v + fTex);
+//		vert[3].tex = TEXCOORD2(u,        v + fTex);
+		vertex_set.vecTex[0][i*4  ] = TEXCOORD2(u,        v       );
+		vertex_set.vecTex[0][i*4+1] = TEXCOORD2(u + fTex, v       );
+		vertex_set.vecTex[0][i*4+2] = TEXCOORD2(u + fTex, v + fTex);
+		vertex_set.vecTex[0][i*4+3] = TEXCOORD2(u,        v + fTex);
 
 		GaussianRand( x, z );
 		y = RangedRand( -1.0f, 1.0f );	//GaussianRand( y, w );
 		for( j=0; j<4; j++ )
 		{
 			Vector3 vVertPos = vCenterPos + Vector3( x * 200.0f, y * 50.0f, z * 200.0f );
-			vert[j].vPosition = ToD3DXVECTOR3( vVertPos );
+/*			vert[j].vPosition = ToD3DXVECTOR3( vVertPos );
 
 //			vert[j].offset.x *= factor_x;
 //			vert[j].offset.y *= factor_y;
@@ -179,14 +219,17 @@ void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 			vert[j].local_offset.y *= factor_y;
 			vert[j].color = 0xFFFFFFFF;
 
-			m_vecParticleVertex.push_back( vert[j] );
+			m_vecParticleVertex.push_back( vert[j] );*/
+			vertex_set.vecPosition.push_back( vVertPos );
 		}
 
-		Vector3 vVertPos = ToVector3(vert[0].vPosition);
+		Vector3 vVertPos = vertex_set.vecPosition.back();//ToVector3(vert[0].vPosition);
 		aabb.MergeAABB( AABB3(
 			vVertPos + Vector3(-r,-r,-r) * 2.0f,
 			vVertPos + Vector3( r, r, r) * 2.0f ) );
 	}
+
+	// Set the data to the custom mesh
 
 //	pCopyEnt->world_aabb = aabb;
 
@@ -203,8 +246,8 @@ void CBE_StaticParticleSet::Act(CCopyEntity* pCopyEnt)
 
 void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 {
-	if( m_vecpVB.size() == 0 )
-		return;
+//	if( m_vecpVB.size() == 0 )
+//		return;
 
 //	PERIODICAL( 2000, MsgBoxFmt( "CBE_StaticParticleSet::Draw()" ) )
 
@@ -212,66 +255,42 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 	int num_particles = (int)NumParticles(pCopyEnt);
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
-	Matrix33 matRot;
-	D3DXMATRIX matWorld;
-	m_pStage->GetBillboardRotationMatrix( matRot );
-	matRot.GetRowMajorMatrix44( (Scalar *)&matWorld );
-	matWorld._44 = 1;
-
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	HRESULT hr;
-	hr = pd3dDev->SetFVF( STATICBILLBOARDVERTEX::FVF );
-	pd3dDev->SetVertexDeclaration( m_pParticleVertexDeclaration );
-
-	if( FAILED(hr) ) MsgBox( "CBE_StaticParticleSet - invalid FVF" );
-
-	// bind the vertex buffer to the device data stream.
-	pd3dDev->SetStreamSource( 0, m_vecpVB[0], 0, sizeof(STATICBILLBOARDVERTEX) );
-	
-	// set index data
-	hr = pd3dDev->SetIndices(m_pIB);
-	if( FAILED(hr) ) MsgBox( "CBE_StaticParticleSet - cannot set index buffer" );
-
+	Matrix34 for_rotation( Matrix34Identity() );
+	m_pStage->GetBillboardRotationMatrix( for_rotation.matOrient );
+	Matrix44 matWorld = ToMatrix44( for_rotation );
 
 	// don't wirte to z-buffer so that smoke should be painted on one another
 	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
 	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	LPD3DXEFFECT pEffect = NULL;
-	UINT pass, cPasses;
-	if( pShaderManager &&
-		(pEffect = pShaderManager->GetEffect()) )
+	if( pShaderManager )
 	{
-		pEffect->SetMatrix( "WorldRot", &matWorld );
+		CShaderManager& shader_mgr = *pShaderManager;
 
-//		D3DXMatrixIdentity( &matWorld );
-//		pShaderManager->SetWorldTransform( matWorld );
-		pShaderManager->SetWorldTransform( Matrix44Identity() );
+		shader_mgr.SetParam( "WorldRot", matWorld );
 
-//		pShaderManager->SetTexture( 0, m_BillboardTexture.GetTexture() );
+		shader_mgr.SetWorldTransform( Matrix44Identity() );
+
+//		shader_mgr.SetTexture( 0, m_BillboardTexture.GetTexture() );
 		if( 0 < m_ParticleSetMesh.GetNumMaterials()
 		 && 0 < m_ParticleSetMesh.GetMaterial(0).Texture.size() )
 		{
-			pShaderManager->SetTexture( 0, m_ParticleSetMesh.GetMaterial(0).Texture[0] );
+			shader_mgr.SetTexture( 0, m_ParticleSetMesh.GetMaterial(0).Texture[0] );
 		}
 
-		if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PseudoNightVision )
-		{
-			pShaderManager->SetTechnique( m_aShaderTechHandle[0] );
-		}
-		else
-		{
-			pShaderManager->SetTechnique( m_aShaderTechHandle[0] );
-		}
+		shader_mgr.SetTechnique( m_aShaderTechHandle[0] );
 	
-		pEffect->CommitChanges();
+//		pEffect->CommitChanges();
 
-		pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-//		pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+		GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, false );
+//		GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, true );
 //		pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
 //		pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA /*m_DestAlphaBlendMode*/ );
 
+		shared_ptr<CBasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+		if( pMesh )
+			pMesh->Render( shader_mgr );
+/*
 		hr = pEffect->Begin( &cPasses, 0 );
 
 		for( pass=0; pass<cPasses; pass++ )
@@ -308,7 +327,7 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 			}
 		}
 
-		pEffect->End();
+		pEffect->End();*/
 	}
 
 	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
@@ -348,7 +367,7 @@ void CBE_StaticParticleSet::Serialize( IArchive& ar, const unsigned int version 
 
 void CBE_StaticParticleSet::CommitStaticParticles()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 //	SAFE_RELEASE(m_pVB);
 
@@ -385,5 +404,5 @@ void CBE_StaticParticleSet::CommitStaticParticles()
 	{
 //		g_Log.Print( "v[%d] - pos%s, offset(%f,%f), color: 0x%lx",
 //			i, to_string(vert.vPosition).c_str(), vert.offset.x, vert.offset.y, vert.color );
-	}
+	}*/
 }
