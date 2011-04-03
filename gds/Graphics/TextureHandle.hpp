@@ -7,7 +7,6 @@
 #include "GraphicsResourceDescs.hpp"
 #include "GraphicsResourceHandle.hpp"
 #include <boost/weak_ptr.hpp>
-#include <d3dx9tex.h>
 
 
 class CTextureHandle : public CGraphicsResourceHandle
