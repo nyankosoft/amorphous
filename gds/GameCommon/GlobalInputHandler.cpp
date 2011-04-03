@@ -7,8 +7,6 @@
 
 #include "Graphics/GraphicsresourceManager.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
-//#include "GameCommon/ImageCapture.hpp"
-//#include "GameCommon/ScreenShotManager.hpp"
 
 #include "Support/DebugOutput.hpp"
 
@@ -78,10 +76,6 @@ CGlobalInputHandler::~CGlobalInputHandler()
 
 void CGlobalInputHandler::ProcessInput(SInputData& input)
 {
-//	CImageCapture image_capture;
-//	DWORD *pdwImageData = NULL;
-//	CScreenShotManager screenshot;
-
 	switch( input.iGICode )
 	{
 	case GIC_ESC:
@@ -128,8 +122,6 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 			boost::shared_ptr<CTextureRenderTarget> pTextureRenderTarget = CTextureRenderTarget::Create();
 			int screen_width  = GameWindowManager().GetScreenWidth();
 			int screen_height = GameWindowManager().GetScreenHeight();
-//			image_capture.SetImageSize( screen_width, screen_height );
-//			image_capture.EnterCaptureMode();
 			pTextureRenderTarget->Init( screen_width, screen_height );
 			pTextureRenderTarget->SetRenderTarget();
 
@@ -147,13 +139,6 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 			string img_ext = "png";
 			string img_file_path = fmt_string( "./Screenshots/image%04d", count ) + "." + img_ext;
 			pTextureRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( img_file_path );
-
-//			image_capture.ExitCaptureMode();
-//			pdwImageData = new DWORD [screen_width * screen_height];
-//			image_capture.GetCapturedImage( pdwImageData );
-//			image_capture.Release();
-//			screenshot.OutputImageDataToFile( pdwImageData, screen_width, screen_height );
-//			delete [] pdwImageData;
 		}
 		break;
 
