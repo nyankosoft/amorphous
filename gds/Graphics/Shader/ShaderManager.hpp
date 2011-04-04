@@ -2,9 +2,7 @@
 #define __ShaderManager_HPP__
 
 
-#include <d3dx9.h>
 #include <boost/shared_ptr.hpp>
-
 #include "../../base.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Matrix44.hpp"
@@ -13,6 +11,7 @@
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
 #include "Graphics/fwd.hpp"
+#include "Graphics/D3DHeaders.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Support/stream_buffer.hpp"
 
