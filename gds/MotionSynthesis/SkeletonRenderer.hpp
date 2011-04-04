@@ -25,7 +25,7 @@ class CSkeletonRenderer
 	
 	std::vector<CLineSegment> m_vecLineSegment;
 
-	CUnitCube m_Cube;
+//	CUnitCube m_Cube;
 
 private:
 

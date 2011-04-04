@@ -110,8 +110,6 @@
     <ClCompile Include="..\..\gds\Graphics\SimpleMotionBlur.cpp" />
     <ClCompile Include="..\..\gds\Graphics\SkyboxMisc.cpp" />
     <ClCompile Include="..\..\gds\Graphics\TextureRenderTarget.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\UnitCube.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\UnitSphere.cpp" />
     <ClCompile Include="..\..\gds\Graphics\VarianceShadowMapManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectBase.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectLightManager.cpp" />
@@ -372,8 +370,6 @@
     <ClInclude Include="..\..\gds\Graphics\SurfaceFormat.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureCoord.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureRenderTarget.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\UnitCube.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\UnitSphere.hpp" />
     <ClInclude Include="..\..\gds\Graphics\VarianceShadowMapManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\BlendTransformsLoader.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\CgEffectBase.hpp" />

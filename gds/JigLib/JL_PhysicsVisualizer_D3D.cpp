@@ -5,7 +5,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/PrimitiveRenderer.hpp"
-#include "Graphics/UnitCube.hpp"
+//#include "Graphics/UnitCube.hpp"
 #include "Support/SafeDelete.hpp"
 //#include "Support/msgbox.hpp"
 
@@ -20,18 +20,16 @@ CJL_PhysicsVisualizer_D3D::CJL_PhysicsVisualizer_D3D( CJL_PhysicsManager *pPhysi
 	m_RenderStateFlag = 0;
 #endif
 
-	m_pUnitCube = new CUnitCube;
-	m_pUnitCube->Init();
-	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );
-	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
+//	m_pUnitCube = new CUnitCube;
+//	m_pUnitCube->Init();
+//	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );
+//	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
 }
 
 
 CJL_PhysicsVisualizer_D3D::~CJL_PhysicsVisualizer_D3D()
 {
-//	Release();
-//	MsgBox( "CJL_PhysicsVisualizer_D3D::dtor() - releaseing the unit cube..." );
-	SafeDelete( m_pUnitCube );
+//	SafeDelete( m_pUnitCube );
 }
 
 
@@ -172,7 +170,7 @@ void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 
 			shader_mgr.SetWorldTransform( ToMatrix44( pose ) * Matrix44Scaling( vExtent.x, vExtent.y, vExtent.z ) );
 
-			if( itrActor->GetActivityState() == CJL_PhysicsActor::ACTIVE )
+/*			if( itrActor->GetActivityState() == CJL_PhysicsActor::ACTIVE )
 			{
 				if( 0 < itrActor->GetCollisionIndexBuffer().size() )
 					m_pUnitCube->SetUniformColor( 1.0f, 0.68f, 0.49f );	// colliding with other actors
@@ -182,7 +180,7 @@ void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 			else
 				m_pUnitCube->SetUniformColor( 0.5f, 0.5f, 0.5f );
 
-			m_pUnitCube->Draw();
+			m_pUnitCube->Draw();*/
 		}
 
 		if( m_RenderStateFlag & JL_VIS_VELOCITY )
@@ -212,13 +210,13 @@ void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 
 void CJL_PhysicsVisualizer_D3D::ReleaseGraphicsResources()
 {
-	m_pUnitCube->Release();
+//	m_pUnitCube->Release();
 }
 
 
 void CJL_PhysicsVisualizer_D3D::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	m_pUnitCube->Init();
-	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );
-	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
+//	m_pUnitCube->Init();
+//	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );
+//	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
 }

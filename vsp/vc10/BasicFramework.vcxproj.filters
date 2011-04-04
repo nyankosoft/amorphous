@@ -219,12 +219,6 @@
     <ClCompile Include="..\..\gds\Graphics\TextureRenderTarget.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\UnitCube.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\UnitSphere.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\VarianceShadowMapManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -912,12 +906,6 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\TextureRenderTarget.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\UnitCube.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\UnitSphere.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\VarianceShadowMapManager.hpp">

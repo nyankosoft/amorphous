@@ -1,4 +1,3 @@
-#include <boost/foreach.hpp>
 #include "SkeletonRenderer.hpp"
 //#include "Support/LineSegmentRenderer.hpp"
 #include "3DMath/MatrixConversions.hpp"
@@ -10,9 +9,9 @@ using namespace msynth;
 
 
 CSkeletonRenderer::CSkeletonRenderer()
-{
+{/*
 	m_Cube.Init();
-	//m_Cube.SetUniformColor( 0.9f, 0.9f, 0.9f, 1.0f );
+	//m_Cube.SetUniformColor( 0.9f, 0.9f, 0.9f, 1.0f );*/
 }
 
 
@@ -129,9 +128,9 @@ void CSkeletonRenderer::RenderSkeletonAsBoxes()
 
 		FixedFunctionPipelineManager().SetWorldTransform( matWorld );
 //		pd3dDev->SetTransform( D3DTS_WORLD, &matWorld );
-
+/*
 //		m_Cube.SetPose( pose );
-		m_Cube.Draw();
+		m_Cube.Draw();*/
 	}
 }
 

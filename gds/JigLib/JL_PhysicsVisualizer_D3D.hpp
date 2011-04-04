@@ -6,7 +6,7 @@
 
 
 class CJL_PhysicsManager;
-class CUnitCube;
+//class CUnitCube;
 
 
 #define JL_VIS_CONTACT_POINTS	1
@@ -26,7 +26,7 @@ class CJL_PhysicsVisualizer_D3D : public CGraphicsComponent
 {
 	CJL_PhysicsManager *m_pPhysicsManager;
 
-	CUnitCube *m_pUnitCube;
+//	CUnitCube *m_pUnitCube;
 
 	int m_RenderStateFlag;
 
