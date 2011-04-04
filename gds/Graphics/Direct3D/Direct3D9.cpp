@@ -1,6 +1,7 @@
 #include "Direct3D9.hpp"
 
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
+#include "Graphics/Direct3D/D3DAlphaBlend.hpp"
 #include "Graphics/FogParams.hpp"
 #include "Graphics/TextureStage.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -365,16 +366,20 @@ Result::Name CDirect3D9::SetTexture( int stage, const CTextureHandle& texture )
 
 Result::Name CDirect3D9::SetTextureStageParams( uint stage, const CTextureStage& params )
 {
-	LOG_PRINT_ERROR( " Not implemented yet." );
-	return Result::UNKNOWN_ERROR;
+//	LOG_PRINT_ERROR( " Not implemented yet." );
+//	return Result::UNKNOWN_ERROR;
 
-	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLOROP,   ToD3DTexStageOp(params.ColorOp) );
-	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLORARG1, ToD3DTexStageArg(params.ColorArg0) );
-	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLORARG2, ToD3DTexStageArg(params.ColorArg1) );
+	HRESULT hr = S_OK;
 
-	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAOP,   ToD3DTexStageOp(params.AlphaOp) );
-	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAARG1, ToD3DTexStageArg(params.AlphaArg0) );
-	m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAARG2, ToD3DTexStageArg(params.AlphaArg1) );
+	hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLOROP,   ToD3DTexStageOp(params.ColorOp) );
+	hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLORARG1, ToD3DTexStageArg(params.ColorArg0) );
+	hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_COLORARG2, ToD3DTexStageArg(params.ColorArg1) );
+
+	hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAOP,   ToD3DTexStageOp(params.AlphaOp) );
+	hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAARG1, ToD3DTexStageArg(params.AlphaArg0) );
+	hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_ALPHAARG2, ToD3DTexStageArg(params.AlphaArg1) );
+
+	return Result::SUCCESS;
 }
 
 
