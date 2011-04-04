@@ -471,9 +471,6 @@
     <ClInclude Include="..\..\gds\GameCommon\HUD_TimerDisplay.hpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GameCommon\ImageCapture.hpp">
-      <Filter>Source Files\GameCommon</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gds\GameCommon\KeyBind.hpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClInclude>
@@ -1158,9 +1155,6 @@
       <Filter>Source Files\GameCommon</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\GameCommon\HUD_TimerDisplay.cpp">
-      <Filter>Source Files\GameCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gds\GameCommon\ImageCapture.cpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\GameCommon\MeshBoneController_Aircraft.cpp">

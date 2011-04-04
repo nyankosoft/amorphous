@@ -222,7 +222,6 @@
     <ClInclude Include="..\..\gds\GameCommon\GlobalInputHandler.hpp" />
     <ClInclude Include="..\..\gds\GameCommon\GlobalParams.hpp" />
     <ClInclude Include="..\..\gds\GameCommon\HUD_TimerDisplay.hpp" />
-    <ClInclude Include="..\..\gds\GameCommon\ImageCapture.hpp" />
     <ClInclude Include="..\..\gds\GameCommon\KeyBind.hpp" />
     <ClInclude Include="..\..\gds\GameCommon\LangID.hpp" />
     <ClInclude Include="..\..\gds\GameCommon\MeshBoneController_Aircraft.hpp" />
@@ -453,7 +452,6 @@
     <ClCompile Include="..\..\gds\GameCommon\GlobalInputHandler.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\GlobalParams.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\HUD_TimerDisplay.cpp" />
-    <ClCompile Include="..\..\gds\GameCommon\ImageCapture.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\MeshBoneController_Aircraft.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\MeshBoneControllerBase.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\MeshBoneControllerFactory.cpp" />
