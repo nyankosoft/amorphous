@@ -1,8 +1,5 @@
 #include "ShadowMaps.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Direct3D/Conversions.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/CubeMapManager.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
@@ -90,9 +87,6 @@ void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
 //============================================================================
 
 CFlatShadowMap::CFlatShadowMap()
-:
-m_pShadowMap(NULL),
-m_pShadowMapDepthBuffer(NULL)
 {
 	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
@@ -136,7 +130,7 @@ CShaderTechniqueHandle& CFlatShadowMap::DepthTestTechnique( CVertexBlendType::Na
 
 bool CFlatShadowMap::CreateShadowMapTextures()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+/*	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
 	HRESULT hr;
 
@@ -192,9 +186,18 @@ bool CFlatShadowMap::CreateShadowMapTextures()
 		LOG_PRINT_ERROR( " Failed to create depth buffer for shadowmap texture" );
 		return false;
 	}
-
+*/
 	// Initialize the shadow projection matrix
 //	D3DXMatrixPerspectiveFovLH( &m_mShadowProj, g_fLightFov, 1, 0.01f, 100.0f);
+
+	uint option_flags = 0;
+	m_pShadowmapRenderTarget = CTextureRenderTarget::Create();
+	m_pShadowmapRenderTarget->Init(
+		m_ShadowMapSize,
+		m_ShadowMapSize,
+		GetShadowMapTextureFormat(),
+		0
+		);
 
 	return true;
 }
@@ -202,40 +205,44 @@ bool CFlatShadowMap::CreateShadowMapTextures()
 
 void CFlatShadowMap::UpdateLightPositionAndDirection()
 {
-//	HRESULT hr;
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
 	CShaderManager& shader_mgr = *pShaderMgr;
 
-	D3DXVECTOR3 vWorldLightPos = ToD3DXVECTOR3( m_LightCamera.GetPosition() );
-	D3DXVECTOR3 vWorldLightDir = ToD3DXVECTOR3( m_LightCamera.GetFrontDirection() );
+	Vector3 vWorldLightPos = m_LightCamera.GetPosition();
+	Vector3 vWorldLightDir = m_LightCamera.GetFrontDirection();
 
 //	if( m_UseLightPosInWorldSpace )
 	if( true )
 	{
-		shader_mgr.SetParam( "g_vLightPos", ToVector3(vWorldLightPos) );
-		shader_mgr.SetParam( "g_vLightDir", ToVector3(vWorldLightDir) );
+		shader_mgr.SetParam( "g_vLightPos", vWorldLightPos );
+		shader_mgr.SetParam( "g_vLightDir", vWorldLightDir );
 	}
 	else
 	{
 		// set light pos and dir in scene camera space
 		Matrix44 scene_cam_view;
 		m_pSceneCamera->GetCameraMatrix( scene_cam_view );
-		D3DXMATRIX matSceneCamView;
-		scene_cam_view.GetRowMajorMatrix44( (float *)&matSceneCamView );
+//		D3DXMATRIX matSceneCamView;
+//		scene_cam_view.GetRowMajorMatrix44( (float *)&matSceneCamView );
 
-		D3DXVECTOR3 vViewLightPos, vViewLightDir;
-		D3DXVec3TransformCoord( &vViewLightPos, &vWorldLightPos, &matSceneCamView );
+		Vector3 vViewLightPos, vViewLightDir;
+//		D3DXVec3TransformCoord( &vViewLightPos, &vWorldLightPos, &matSceneCamView );
+		vViewLightPos = scene_cam_view * vWorldLightPos;
 
 		// Apply only the rotation to direction vector
 		// - set translation to zero
-		matSceneCamView._41 = matSceneCamView._42 = matSceneCamView._43 = 0;
-		D3DXVec3TransformCoord( &vViewLightDir, &vWorldLightDir, &matSceneCamView );
+//		matSceneCamView._41 = matSceneCamView._42 = matSceneCamView._43 = 0;
+//		D3DXVec3TransformCoord( &vViewLightDir, &vWorldLightDir, &matSceneCamView );
+		scene_cam_view(0,3) = 0;
+		scene_cam_view(1,3) = 0;
+		scene_cam_view(2,3) = 0;
+		vViewLightDir = scene_cam_view * vWorldLightDir;
 
-		shader_mgr.SetParam( "g_vLightPos", ToVector3(vViewLightPos) );
-		shader_mgr.SetParam( "g_vLightDir", ToVector3(vViewLightDir) );
+		shader_mgr.SetParam( "g_vLightPos", vViewLightPos );
+		shader_mgr.SetParam( "g_vLightDir", vViewLightDir );
 	}
 }
 
@@ -245,7 +252,7 @@ static float sg_fOrigFarClip = 0;
 
 void CFlatShadowMap::BeginSceneShadowMap()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr;
 
 	// set shadow map texture as a render target
@@ -258,10 +265,15 @@ void CFlatShadowMap::BeginSceneShadowMap()
 	}
 
 	hr = pd3dDev->SetDepthStencilSurface( m_pShadowMapDepthBuffer );
+*/
+	m_pShadowmapRenderTarget->SetBackgroundColor( SFloatRGBAColor( 0.5f, 1.0f, 0.5f, 1.0f ) );
+
+	m_pShadowmapRenderTarget->SetRenderTarget();
 
 	UpdateShadowMapSettings();
 
-	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF80FF80, 1.0f, 0 );
+//	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF80FF80, 1.0f, 0 );
+
 
 /*	shared_ptr<CBasicMesh> pMesh = m_ShadowCasterBoundingBox.GetMesh();
 	if( pMesh )
@@ -282,11 +294,12 @@ void CFlatShadowMap::BeginSceneShadowMap()
 
 void CFlatShadowMap::EndSceneShadowMap()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 //	pd3dDev->EndScene();
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
+
+	if( m_pShadowmapRenderTarget )
+		m_pShadowmapRenderTarget->ResetRenderTarget();
 
 //	ResetShadowMapSettings();
 
@@ -300,7 +313,11 @@ void CFlatShadowMap::BeginSceneShadowReceivers()
 {
 	// set the shadow map texture to determine shadowed pixels
 //	m_ShaderManager.SetTexture( 3, m_pShadowMap );
-	m_Shader.GetShaderManager()->GetEffect()->SetTexture( "g_txShadow", m_pShadowMap );
+//	m_Shader.GetShaderManager()->GetEffect()->SetTexture( "g_txShadow", m_pShadowMap );
+	CShaderParameter<CTextureParam> tex;
+	tex.SetParameterName( "g_txShadow" );
+	tex.Parameter().m_Handle = m_pShadowmapRenderTarget->GetRenderTargetTexture();
+	m_Shader.GetShaderManager()->SetParam( tex );
 
 	UpdateLightPositionAndDirection();
 
@@ -310,8 +327,8 @@ void CFlatShadowMap::BeginSceneShadowReceivers()
 
 void CFlatShadowMap::ReleaseTextures()
 {
-	SAFE_RELEASE( m_pShadowMap );
-	SAFE_RELEASE( m_pShadowMapDepthBuffer );
+//	SAFE_RELEASE( m_pShadowMap );
+//	SAFE_RELEASE( m_pShadowMapDepthBuffer );
 }
 
 
@@ -319,7 +336,8 @@ void CFlatShadowMap::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
 {
 	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
 	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-	rect.Draw( m_pShadowMap );
+//	rect.Draw( m_pShadowMap );
+	rect.Draw( m_pShadowmapRenderTarget->GetRenderTargetTexture() );
 }
 
 
@@ -334,7 +352,9 @@ std::string CFlatShadowMap::CreateTextureFilename()
 
 void CFlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& filepath )
 {
-	HRESULT hr = D3DXSaveTextureToFile( filepath.c_str(), D3DXIFF_DDS, m_pShadowMap, NULL );
+//	HRESULT hr = D3DXSaveTextureToFile( filepath.c_str(), D3DXIFF_DDS, m_pShadowMap, NULL );
+	if( m_pShadowmapRenderTarget )
+		m_pShadowmapRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( filepath );
 }
 
 

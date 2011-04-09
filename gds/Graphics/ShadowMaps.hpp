@@ -1,7 +1,6 @@
 #ifndef  __ShadowMaps_H__
 #define  __ShadowMaps_H__
 
-#include <d3dx9.h>
 #include <boost/shared_ptr.hpp>
 #include "fwd.hpp"
 #include "Graphics/ShaderHandle.hpp"
@@ -209,15 +208,14 @@ protected:
 	CShaderTechniqueHandle m_VertexBlendShadowMapTechnique;
 	CShaderTechniqueHandle m_VertexBlendDepthTestTechnique;
 
-	/// Texture to which the shadow map is rendered
+	/// Texture to which the shadow map is rendered.
 	/// Geometries that cast shadows to others (=shadow casters)
 	/// are rendered to this texture.
-	LPDIRECT3DTEXTURE9 m_pShadowMap;
+//	LPDIRECT3DTEXTURE9 m_pShadowMap;
 
-	LPDIRECT3DSURFACE9 m_pShadowMapDepthBuffer; ///< Depth-stencil buffer for rendering to shadow map
+//	LPDIRECT3DSURFACE9 m_pShadowMapDepthBuffer; ///< Depth-stencil buffer for rendering to shadow map
 
-//	LPDIRECT3DTEXTURE9 m_pShadowedView;
-//	LPDIRECT3DSURFACE9 m_pDSShadowedView;
+	boost::shared_ptr<CTextureRenderTarget> m_pShadowmapRenderTarget;
 
 	CMeshObjectHandle m_ShadowCasterBoundingBox;
 
@@ -252,7 +250,7 @@ public:
 
 	std::string CreateTextureFilename();
 
-	LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return m_pShadowMap; }
+//	LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return m_pShadowMap; }
 
 	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath);
 };

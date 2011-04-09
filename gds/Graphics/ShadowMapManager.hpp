@@ -3,11 +3,12 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
-#include <d3dx9.h>
+//#include <d3dx9.h>
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/3DGameMath.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "ShadowMaps.hpp"
 
 
@@ -51,10 +52,11 @@ protected:
 	int m_IDCounter;
 
 	/// used to temporarily hold original surfaces
-	LPDIRECT3DSURFACE9 m_pOriginalSurface;
-	LPDIRECT3DSURFACE9 m_pOriginalDepthSurface;
+//	LPDIRECT3DSURFACE9 m_pOriginalSurface;
+//	LPDIRECT3DSURFACE9 m_pOriginalDepthSurface;
 
-	D3DVIEWPORT9 m_OriginalViewport;
+//	D3DVIEWPORT9 m_OriginalViewport;
+	CViewport m_OriginalViewport;
 
 	int m_iTextureWidth;
 	int m_iTextureHeight;
@@ -62,9 +64,6 @@ protected:
 	int m_ShadowMapSize;
 
 	boost::shared_ptr<CTextureRenderTarget> m_apShadowTexture[2];
-
-//	LPDIRECT3DTEXTURE9 m_pShadowedView;
-//	LPDIRECT3DSURFACE9 m_pDSShadowedView;
 
 	CCamera m_SceneCamera;
 

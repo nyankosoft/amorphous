@@ -1,5 +1,5 @@
 #include "ShadowMapManager.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+//#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
@@ -172,10 +172,8 @@ void CShadowMapManager::ReleaseTextures()
 			m_apShadowTexture[i]->ReleaseTextures();
 		}
 	}
-
-//	SAFE_RELEASE( m_pShadowedView );
-//	SAFE_RELEASE( m_pDSShadowedView );
 }
+
 
 void CShadowMapManager::SetSceneRenderer( shared_ptr<CShadowMapSceneRenderer> pSceneRenderer )
 {
@@ -581,8 +579,8 @@ void CShadowMapManager::RenderSceneWithoutShadow( int sx, int sy, int ex, int ey
 //void CShadowMapManager::BeginSceneForShadowCaster()
 void CShadowMapManager::BeginSceneShadowMap()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	HRESULT hr;
 
 	// set the shadow map shader
 	// meshes that renderes themselves as shadow casters use the techniques
@@ -592,15 +590,15 @@ void CShadowMapManager::BeginSceneShadowMap()
 //	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
 
 	// save the current settings
-	hr = pd3dDev->GetRenderTarget( 0, &m_pOriginalSurface );
-	hr = pd3dDev->GetDepthStencilSurface( &m_pOriginalDepthSurface );
+//	hr = pd3dDev->GetRenderTarget( 0, &m_pOriginalSurface );
+//	hr = pd3dDev->GetDepthStencilSurface( &m_pOriginalDepthSurface );
 }
 
 
 //void CShadowMapManager::EndSceneForShadowCaster()
 void CShadowMapManager::EndSceneShadowMap()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 //	ShaderManagerHub.PopViewAndProjectionMatrices();
 
@@ -613,7 +611,7 @@ void CShadowMapManager::EndSceneShadowMap()
 	}
 
 	pd3dDev->SetRenderTarget( 0, m_pOriginalSurface );
-	SAFE_RELEASE( m_pOriginalSurface );
+	SAFE_RELEASE( m_pOriginalSurface );*/
 }
 
 
@@ -669,7 +667,7 @@ void CShadowMapManager::EndSceneDepthMap()
 //	ShaderManagerHub.PopViewAndProjectionMatrices();
 
 	// restore the original render tareget
-
+/*
 	if( m_pOriginalDepthSurface )
 	{
 		pd3dDev->SetDepthStencilSurface( m_pOriginalDepthSurface );
@@ -678,7 +676,7 @@ void CShadowMapManager::EndSceneDepthMap()
 	}
 
 	pd3dDev->SetRenderTarget( 0, m_pOriginalSurface );
-	SAFE_RELEASE( m_pOriginalSurface );
+	SAFE_RELEASE( m_pOriginalSurface );*/
 }
 
 
