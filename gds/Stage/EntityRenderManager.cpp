@@ -264,16 +264,11 @@ m_pCubeMapManager(NULL),
 m_pShadowManager(NULL),
 m_pCurrentCamera(NULL)
 {
-	m_pacRendered = NULL;
-
 	// clear z-sort table
 	for(int i=0; i<SIZE_ZSORTTABLE; i++)
 	{
 		m_apZSortTable[i] = NULL;
 	}
-
-	// load texture for glare effect
-	LoadTextures();
 
 	m_fCameraFarClipDist = 1000.0f;
 
@@ -306,7 +301,7 @@ CEntityRenderManager::~CEntityRenderManager()
 
 	m_vecpSweepRenderBaseEntity.resize( 0 );
 
-	SafeDeleteArray( m_pacRendered );
+	m_EntityNodeRendered.clear();
 
 	SafeDelete( m_pShadowManager );
 
@@ -326,13 +321,11 @@ bool CEntityRenderManager::LoadFallbackShader()
 	CGenericShaderDesc shader_desc;
 	shader_desc.Specular = CSpecularSource::UNIFORM;
 	desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_desc) );
-	m_FallbackShader.Load( desc );
+	bool loaded = m_FallbackShader.Load( desc );
 
-	// check if the shader file has been properly loaded
-	LPD3DXEFFECT pEffect = m_FallbackShader.GetShaderManager()->GetEffect();
-	if( !pEffect )
+	if( !loaded )
 	{
-		return false;
+		LOG_PRINT_WARNING( " Failed to load the fallback shader." );
 	}
 
 	// CLightEntityManager needs global shader in its CLightEntityManager::InitShaderLightManager()
@@ -347,9 +340,8 @@ void CEntityRenderManager::UpdateEntityTree( CEntityNode* pRootNode, int num_nod
 	m_paEntityTree = pRootNode;
 	m_NumEntityNodes = num_nodes;
 
-	SafeDeleteArray( m_pacRendered );
-	m_pacRendered = new char [ m_NumEntityNodes ];
-	memset( m_pacRendered, 0, m_NumEntityNodes );
+	m_EntityNodeRendered.clear();
+	m_EntityNodeRendered.resize( m_NumEntityNodes, 0 );
 }
 
 
@@ -365,9 +357,9 @@ void CEntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, CCamera& r
 	CEntityNode* pEntNode = pFirstEntNode + sEntNodeIndex;
 
 	pEntNode->Render(rCam);
-	m_pacRendered[sEntNodeIndex] = 1;	// mark this entity node as an already rendered one
+	m_EntityNodeRendered[sEntNodeIndex] = 1;	// mark this entity node as an already rendered one
 
-	if( pEntNode->sParent != -1 && m_pacRendered[ pEntNode->sParent ] != 1)
+	if( pEntNode->sParent != -1 && m_EntityNodeRendered[ pEntNode->sParent ] != 1)
 		RenderEntityNodeUp_r( pEntNode->sParent, rCam);
 }
 
@@ -1144,18 +1136,6 @@ void CEntityRenderManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 	// m_pCubeMapManager - graphics component
 	// m_pShadowManager - graphics component
 }
-
-
-void CEntityRenderManager::LoadTextures()
-{
-	// load texture for glare effect
-//	m_TransparentTexture.Load( "Texture\\TransparentTex.dds" );
-
-//	m_TranslucentTexture.Load( "Texture\\TranslucentTex.dds" );
-}
-
-
-
 
 
 

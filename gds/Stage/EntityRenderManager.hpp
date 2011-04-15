@@ -65,7 +65,7 @@ private:
 	CEntityNode* m_paEntityTree;	///< pointer to the first node of a binary tree that holds copy-entities
 
 
-	char* m_pacRendered;
+	std::vector<char> m_EntityNodeRendered;
 
 	/// entities that have transparent parts are z-sorted
 	CCopyEntity* m_apZSortTable[SIZE_ZSORTTABLE];
@@ -130,8 +130,6 @@ private:
 	void RenderShadowReceiversDownward_r( short sEntNodeIndex, CCamera& rCam );
 
 	void RenderAllButEnvMapTargetDownward_r( short sEntNodeIndex, CCamera& rCam, U32 target_entity_id );
-
-	void LoadTextures();
 
 	void MoveSkyboxToListHead();
 
