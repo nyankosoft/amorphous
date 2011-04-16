@@ -2,6 +2,7 @@
 #define  __KeyBind_H__
 
 #include "Input/InputHandler.hpp"
+#include "3DActionCode.hpp"
 
 #include "Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
@@ -228,9 +229,9 @@ inline CKeyBind::CKeyBind()
 {
 	for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 	{
-		m_aGICodeToActionCode[i]          = -1;
-		m_aGICodeToSecondaryActionCode[i] = -1;
-		m_aGICodeToSystemMenuCode[i]      = -1;
+		m_aGICodeToActionCode[i]          = ACTION_NOT_ASSIGNED;
+		m_aGICodeToSecondaryActionCode[i] = ACTION_NOT_ASSIGNED;
+		m_aGICodeToSystemMenuCode[i]      = ACTION_NOT_ASSIGNED;
 	}
 }
 
