@@ -30,6 +30,17 @@ private:
 		return hr;
 	}
 
+	HRESULT D3DDrawConnectedLines( int num_primitives_to_draw )
+	{
+		HRESULT hr = S_OK;
+		hr = DIRECT3D9.GetDevice()->SetFVF( D3DFVF_COLORVERTEX );
+		hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
+		hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+		hr = DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_LINESTRIP, num_primitives_to_draw, &(m_ColorVertices[0]), sizeof(COLORVERTEX) );
+
+		return hr;
+	}
+
 public:
 
 	CPrimitiveRenderer_D3D(){}
@@ -69,6 +80,48 @@ public:
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
+
+	Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
+	{
+		if( points.size() < 2 )
+			return Result::INVALID_ARGS;
+
+		const size_t num_points = points.size();
+
+		const D3DCOLOR d3d_color = color.GetARGB32();
+		m_ColorVertices.resize( 0 );
+		m_ColorVertices.resize( num_points );
+		for( size_t i=0; i<num_points; i++ )
+		{
+			m_ColorVertices[i].vPosition = ToD3DXVECTOR3( points[i] );
+			m_ColorVertices[i].color     = d3d_color;
+		}
+
+		HRESULT hr = D3DDrawConnectedLines( num_points - 1 );
+
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	}
+
+	Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors )
+	{
+		if( points.size() < 2 || points.size() != colors.size() )
+			return Result::INVALID_ARGS;
+
+		const size_t num_points = points.size();
+
+		m_ColorVertices.resize( 0 );
+		m_ColorVertices.resize( num_points );
+		for( size_t i=0; i<num_points; i++ )
+		{
+			m_ColorVertices[i].vPosition = ToD3DXVECTOR3( points[i] );
+			m_ColorVertices[i].color     = colors[i].GetARGB32();
+		}
+
+		HRESULT hr = D3DDrawConnectedLines( num_points - 1 );
+
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	}
+
 /*
 	Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const SFloatRGBAColor& color )
 	{

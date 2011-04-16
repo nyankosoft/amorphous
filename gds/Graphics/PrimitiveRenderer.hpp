@@ -36,6 +36,10 @@ public:
 
 	virtual Result::Name DrawLine( const Vector3& start, const Vector3& end, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color ) = 0;
 
+	virtual Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
+
+	virtual Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors ) = 0;
+
 //	virtual Result::Name DrawLines( const std::vector<Vector3>& vertices, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
 
 //	virtual Result::Name DrawLines( const std::vector<Vector3>& vertices, const std::vector<SFloatRGBAColor>& colors ) = 0;

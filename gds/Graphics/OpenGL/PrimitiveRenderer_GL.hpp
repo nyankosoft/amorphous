@@ -40,6 +40,42 @@ public:
 
 		return Result::SUCCESS;
 	}
+
+	Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
+	{
+		if( points.size() < 2 )
+			return Result::INVALID_ARGS;
+
+		glBegin(GL_LINE_STRIP);
+		const size_t num_points = points.size();
+		const SFloatRGBAColor line_color = color;
+		for( size_t i=0; i<num_points; i++ )
+		{
+			glColor4f( line_color.fRed, line_color.fGreen, line_color.fBlue, line_color.fAlpha );
+			glVertex3f( points[i].x, points[i].y, points[i].z );
+		}
+		glEnd();
+
+		return Result::SUCCESS;
+	}
+
+	Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors )
+	{
+		if( points.size() < 2 || points.size() != colors.size() )
+			return Result::INVALID_ARGS;
+
+		glBegin(GL_LINE_STRIP);
+		const size_t num_points = points.size();
+		for( size_t i=0; i<num_points; i++ )
+		{
+			glColor4f( colors[i].fRed, colors[i].fGreen, colors[i].fBlue, colors[i].fAlpha );
+			glVertex3f( points[i].x, points[i].y, points[i].z );
+		}
+		glEnd();
+
+		return Result::SUCCESS;
+	}
+
 /*
 	Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const SFloatRGBAColor& color )
 	{
