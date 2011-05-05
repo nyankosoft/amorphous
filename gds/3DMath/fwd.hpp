@@ -17,6 +17,7 @@ class OBB3;
 class Quaternion;
 class CTriangle;
 class Capsule;
+class Matrix44;
 
 
 #endif /* __FWD_3DMath_HPP__ */
