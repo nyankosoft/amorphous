@@ -67,6 +67,7 @@ public:
 	{
 		SHADE_DIFFUSE = 0,
 		SHADE_SPECULAR,
+		SHADE_GLOSSINESS,
 		SHADE_LUMINOSITY,
 		SHADE_REFLECTION,
 		SHADE_TRANSPARENCY,
@@ -115,7 +116,7 @@ public:
 
 	std::vector<CLWO2_SurfaceBlock>& GetSurfaceBlock() { return m_vecSurfaceBlock; }
 
-	CLWO2_SurfaceBlock *GetSurfaceBlockByChannel( UINT4 uiChannelID );
+	const CLWO2_SurfaceBlock *GetSurfaceBlockByChannel( UINT4 uiChannelID ) const;
 
 	const std::string& GetComment() const { return m_strComment; }
 

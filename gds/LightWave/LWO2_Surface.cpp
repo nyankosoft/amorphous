@@ -201,6 +201,13 @@ void CLWO2_Surface::ReadOneSurface(UINT4 chunksize, FILE* fp)
 			bytesread += wSize;
 			break;
 
+		case ID_GLOS:
+			uiRead = ReadBE4BytesIntoLE(fp);
+			memcpy( &m_afBaseShadingValue[SHADE_GLOSSINESS], &uiRead, sizeof(float) );
+			ReadVLIndex(fp, &iVLIndexSize);			// TODO: save envelope value
+			bytesread += wSize;
+			break;
+
 		case ID_LUMI:
 			uiRead = ReadBE4BytesIntoLE(fp);
 			memcpy( &m_afBaseShadingValue[SHADE_LUMINOSITY], &uiRead, sizeof(float) );
@@ -229,7 +236,6 @@ void CLWO2_Surface::ReadOneSurface(UINT4 chunksize, FILE* fp)
 			bytesread += wSize;
 			break;
 
-		case ID_GLOS:
 		case ID_BUMP:
 			AdvanceFP(fp, wSize);
 			bytesread += wSize;
@@ -247,7 +253,7 @@ void CLWO2_Surface::ReadOneSurface(UINT4 chunksize, FILE* fp)
 }
 
 
-CLWO2_SurfaceBlock *CLWO2_Surface::GetSurfaceBlockByChannel( UINT4 uiChannelID )
+const CLWO2_SurfaceBlock *CLWO2_Surface::GetSurfaceBlockByChannel( UINT4 uiChannelID ) const
 {
 	int i, iNumBlocks = m_vecSurfaceBlock.size();
 	for( i=0; i<iNumBlocks; i++ )
