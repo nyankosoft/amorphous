@@ -99,7 +99,18 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 	// The input handler
 	InitInputHandler( ms_DefaultInputHandlerIndex );
 
-	InitMotionFSMs();
+//	InitMotionFSMs();
+
+//	InitClothSystem();
+
+	LoadParamFromFile( ".debug/skeletal_character.txt", "camera_dependent_motion_control", m_CameraDependentMotionControl );
+}
+
+
+Result::Name CSkeletalCharacter::InitClothSystem()
+{
+	if( !m_pSkeletonSrcMotion )
+		return Result::UNKNOWN_ERROR;
 
 	m_pClothSystem.reset( new CClothSystem );
 	m_pClothSystem->InitPhysics();
@@ -145,7 +156,7 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 			pSMesh->DumpSkeletonToTextFile( ".debug/mesh_skeleton.txt" );
 	}
 
-	LoadParamFromFile( ".debug/skeletal_character.txt", "camera_dependent_motion_control", m_CameraDependentMotionControl );
+	return Result::SUCCESS;
 }
 
 
@@ -163,48 +174,26 @@ void CSkeletalCharacter::InitInputHandler( int input_handler_index )
 }
 
 
-Result::Name CSkeletalCharacter::InitMotionFSMs()
+Result::Name CSkeletalCharacter::InitMotionFSMs( const std::string& motion_fsm_file )
 {
 	m_pMotionFSMManager.reset( new CMotionFSMManager );
 
-	string motion_fsm_filepath = "motions/test_motion_fsm.bin";
-
-	// Load FSM from XML file and update the binary file
-	string xml_file = "../resources/misc/test_motion_fsm.xml";
-	if( boost::filesystem::exists(xml_file) )
-	{
-		m_pMotionFSMManager->LoadFromXMLFile( xml_file );
-		m_pMotionFSMManager->SaveToFile( motion_fsm_filepath );
-	}
-
-	// Clear the data loaded from XML
-	m_pMotionFSMManager.reset( new CMotionFSMManager );
-
 	// Load from the binary archive
-	bool loaded_from_archive = m_pMotionFSMManager->LoadFromFile( motion_fsm_filepath );
+	bool loaded_from_archive = m_pMotionFSMManager->LoadFromFile( motion_fsm_file );
+
+	if( !loaded_from_archive )
+	{
+		LOG_PRINT_ERROR( " Failed to load the motion FSM file: " + motion_fsm_file );
+		return Result::INVALID_ARGS;
+	}
 
 	if( loaded_from_archive )
 		m_pMotionFSMManager->LoadMotions();
-
-	m_pMotionNodes.resize( 4 );
-	m_pMotionNodes[0].reset( new CFwdMotionNode );
-	m_pMotionNodes[1].reset( new CRunMotionNode );
-	m_pMotionNodes[2].reset( new CStandingMotionNode );
-	m_pMotionNodes[3].reset( new CJumpMotionNode );
-	for( size_t i=0; i<m_pMotionNodes.size(); i++ )
-	{
-		m_pMotionNodes[i]->SetSkeletalCharacter( this );
-	}
 
 	m_pLowerLimbsMotionsFSM = m_pMotionFSMManager->GetMotionFSM( "lower_limbs" );
 
 	if( !m_pLowerLimbsMotionsFSM )
 		m_pLowerLimbsMotionsFSM.reset( new CMotionFSM ); // avoid NULL checking
-
-	m_pLowerLimbsMotionsFSM->GetNode( "fwd"           )->SetAlgorithm( m_pMotionNodes[0] );
-	m_pLowerLimbsMotionsFSM->GetNode( "run"           )->SetAlgorithm( m_pMotionNodes[1] );
-	m_pLowerLimbsMotionsFSM->GetNode( "standing"      )->SetAlgorithm( m_pMotionNodes[2] );
-	m_pLowerLimbsMotionsFSM->GetNode( "vertical_jump" )->SetAlgorithm( m_pMotionNodes[3] );
 
 	// Init input handler
 	if( !m_pInputHandler )
@@ -214,9 +203,11 @@ Result::Name CSkeletalCharacter::InitMotionFSMs()
 	m_pInputHandler->AddChild( m_pMotionFSMInputHandler.get() );
 
 	// save a motion primitive to get skeleton info in Render()
-	string mdb_filepath = "motions/lws-fwd.mdb";
-	CMotionDatabase mdb( mdb_filepath );
-	m_pSkeletonSrcMotion = mdb.GetMotionPrimitive("standing");
+//	string mdb_filepath = "motions/lws-fwd.mdb";
+//	CMotionDatabase mdb( mdb_filepath );
+//	m_pSkeletonSrcMotion = mdb.GetMotionPrimitive("standing");
+	m_pSkeletonSrcMotion = m_pMotionFSMManager->GetCompleteSkeletonSourceMotion();
+
 
 	m_pLowerLimbsMotionsFSM->StartMotion("standing");
 
@@ -256,7 +247,7 @@ static void UpdatePhysicsActorPose( physics::CActor& actor, const Matrix34& worl
 	phys_actor_world_pose.matOrient = Matrix33Identity(); // always keep the upright orientation
 	actor.SetWorldPose( phys_actor_world_pose );
 }
-
+/*
 static void UpdatePoseStoredInMotionPrimitivePlayer(
 	boost::shared_ptr<msynth::CMotionFSMManager>& pMotionFSMManager,
 	const Matrix34& pose )
@@ -267,11 +258,11 @@ static void UpdatePoseStoredInMotionPrimitivePlayer(
 
 	pFSM->Player()->SetCurrentHorizontalPose( pose );
 }
-
+*/
 
 void CSkeletalCharacter::Update( float dt )
 {
-	shared_ptr<CMotionFSM> pFSM = m_pMotionFSMManager->GetMotionFSM("lower_limbs");
+	shared_ptr<CMotionFSM> pFSM = m_pLowerLimbsMotionsFSM;
 	if( !pFSM )
 		return;
 
@@ -470,6 +461,9 @@ void CSkeletalCharacter::AddOperationsAlgorithm( boost::shared_ptr<CSkeletalChar
 
 void CSkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_name, boost::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm )
 {
+	if( !m_pLowerLimbsMotionsFSM )
+		return;
+
 	shared_ptr<CMotionPrimitiveNode> pNode = m_pLowerLimbsMotionsFSM->GetNode( motion_node_name );
 	if( !pNode )
 		return;
@@ -477,6 +471,9 @@ void CSkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_
 	pNode->SetAlgorithm( pMotionNodeAlgorithm );
 
 	pMotionNodeAlgorithm->SetSkeletalCharacter( this );
+
+	// Saves the motion node algorithm in a single array.
+	m_pMotionNodes.push_back( pMotionNodeAlgorithm );
 }
 
 
@@ -508,6 +505,9 @@ void CSkeletalCharacter::HandleInput( const SInputData& input_data )
 
 	for( size_t i=0; i<m_pOperations.size(); i++ )
 	{
+		if( input_data.iGICode == GIC_MOUSE_BUTTON_L )
+			int break_here = 1;
+
 		if( m_pOperations[i] )
 			m_pOperations[i]->HandleInput( input_data, action_code );
 	}
@@ -550,7 +550,7 @@ void CSkeletalCharacter::SetCharacterWorldPose( const Matrix34& world_pose, CCop
 	UpdatePhysicsActorPose( actor, world_pose );
 
 	// also revert the pose stored in the motion FSM
-	shared_ptr<CMotionFSM> pFSM = m_pMotionFSMManager->GetMotionFSM("lower_limbs");
+	shared_ptr<CMotionFSM> pFSM = m_pLowerLimbsMotionsFSM;
 	if( !pFSM )
 		return;
 	Vector3& vFwd = new_pose.matOrient.GetColumn(2);

@@ -131,7 +131,9 @@ public:
 
 	~CSkeletalCharacter() {}
 
-	Result::Name InitMotionFSMs();
+	Result::Name InitMotionFSMs( const std::string& motion_fsm_file );
+
+	Result::Name InitClothSystem();
 
 	void InitInputHandler( int input_handler_index );
 
