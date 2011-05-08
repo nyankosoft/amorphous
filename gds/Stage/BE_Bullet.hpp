@@ -36,6 +36,11 @@ class CBE_Bullet : public CBaseEntity
 	CBaseEntityHandle m_Spark;
 	CBaseEntityHandle m_Light;
 
+	// For visual debugging
+	std::vector< boost::shared_ptr< std::vector<Vector3> > > m_pTrajectoryPoints;
+
+	int m_RenderTrajectory;
+
 private:
 
 	void BulletMove(CCopyEntity* pCopyEnt);
@@ -51,6 +56,11 @@ private:
 	void DrawBillboradTexture(CCopyEntity* pCopyEnt);
 
     void Draw3DObjectBullet(CCopyEntity* pCopyEnt);
+
+	// Return the buffer to store trajectory points. Used for visual debugging
+	boost::shared_ptr< std::vector<Vector3> > GetTrajectoryPoints( CCopyEntity& bullet );
+
+	void ReleaseTrajectoryPoints( CCopyEntity& bullet );
 
 public:
 

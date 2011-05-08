@@ -12,9 +12,12 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/PrimitiveRenderer.hpp"
 #include "Sound/SoundManager.hpp"
+#include "Support/ParamLoader.hpp"
 
-using namespace std;
+using std::vector;
+using std::string;
 using namespace boost;
 
 
@@ -35,6 +38,8 @@ CBE_Bullet::CBE_Bullet()
 	m_fBillboardRadius = 0.1f;
 
 	m_bLighting = false;
+
+	m_RenderTrajectory = 0;
 }
 
 
@@ -74,6 +79,10 @@ void CBE_Bullet::Init()
 
 	LoadBaseEntity( m_Spark );
 	LoadBaseEntity( m_Light );
+
+	LoadParamFromFile( ".debug/Stage/BaseEntity.txt", "render_trajectory", m_RenderTrajectory );
+	if( m_RenderTrajectory )
+		m_pTrajectoryPoints.resize( 64 );
 }
 
 
@@ -113,6 +122,7 @@ void CBE_Bullet::InitCopyEntity( CCopyEntity* pCopyEnt )
 		m_pStage->CreateEntity( light );
 	}
 
+	pCopyEnt->iExtraDataIndex = -1;
 }
 
 
@@ -216,6 +226,9 @@ void CBE_Bullet::PenetrationMove(CCopyEntity* pCopyEnt)
 
 	if( tr.in_solid && tr.plane.normal == Vector3(0,0,0) )
 	{
+		if( m_RenderTrajectory )
+			ReleaseTrajectoryPoints(*pCopyEnt);
+
 		m_pStage->TerminateEntity( pCopyEnt );
 		return;
 	}
@@ -434,11 +447,16 @@ void CBE_Bullet::Act(CCopyEntity* pCopyEnt)
 	CCopyEntity& bullet = *pCopyEnt;
 	const float speed_sq = Vec3LengthSq( bullet.Velocity() );
 
+	const Vector3 vPrevPos = bullet.GetWorldPosition();
+
 	if( speed_sq < 1.0f )
 		bullet.sState |= CESTATE_ATREST;
 
 	if( bullet.sState & CESTATE_ATREST || m_fMaxRange < TraveledDist(&bullet) )
 	{
+		if( m_RenderTrajectory )
+			ReleaseTrajectoryPoints(*pCopyEnt);
+
 		m_pStage->TerminateEntity( pCopyEnt );
 		return;
 	}
@@ -453,6 +471,13 @@ void CBE_Bullet::Act(CCopyEntity* pCopyEnt)
 
 	// move the bullet
 	Move( &bullet );
+
+	if( m_RenderTrajectory )
+	{
+		shared_ptr< vector<Vector3> > pTrajectory = GetTrajectoryPoints(bullet);
+		if( pTrajectory && pTrajectory->size() < 256 )
+			pTrajectory->push_back( bullet.GetWorldPosition() );
+	}
 
 	// update child entity (dynamic light that moves with the bullet)
 	CCopyEntity *pChild = bullet.GetChild(0);
@@ -563,6 +588,14 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 	{
 		DrawBillboradTexture(pCopyEnt);
 	}
+
+	if( m_RenderTrajectory )
+	{
+		GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, false );
+		shared_ptr< vector<Vector3> > pTrajectory = GetTrajectoryPoints(*pCopyEnt);
+		if( pTrajectory )
+			GetPrimitiveRenderer().DrawConnectedLines( *pTrajectory, SFloatRGBAColor(1.0f,0.6f,0.2f,1.0f) );
+	}
 }
 
 
@@ -654,6 +687,34 @@ void CBE_Bullet::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_Light;
 }
 
+
+shared_ptr< vector<Vector3> > CBE_Bullet::GetTrajectoryPoints( CCopyEntity& bullet )
+{
+	if( 0 <= bullet.iExtraDataIndex && bullet.iExtraDataIndex < (int)m_pTrajectoryPoints.size() )
+		return m_pTrajectoryPoints[bullet.iExtraDataIndex];
+
+	for( size_t i=0; i<m_pTrajectoryPoints.size(); i++ )
+	{
+		if( !m_pTrajectoryPoints[i] )
+		{
+			m_pTrajectoryPoints[i].reset( new vector<Vector3>() );
+			bullet.iExtraDataIndex = (int)i;
+			return m_pTrajectoryPoints[i];
+		}
+	}
+
+	return shared_ptr< vector<Vector3> >();
+}
+
+
+void CBE_Bullet::ReleaseTrajectoryPoints( CCopyEntity& bullet )
+{
+	if( bullet.iExtraDataIndex < 0 || (int)m_pTrajectoryPoints.size() < bullet.iExtraDataIndex )
+		return;
+
+	m_pTrajectoryPoints[bullet.iExtraDataIndex].reset();
+	bullet.iExtraDataIndex = -1;
+}
 
 
 /*
