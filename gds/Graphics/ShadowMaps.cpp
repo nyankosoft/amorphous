@@ -537,8 +537,8 @@ void CSpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
 	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
 
 	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
-	D3DVIEWPORT9 vp;
-	DIRECT3D9.GetDevice()->GetViewport( &vp );
+	CViewport vp;
+	GraphicsDevice().GetViewport( vp );
 
 
 	m_LightCamera.SetNearClip( fOrigCamNearClip );

@@ -3,7 +3,6 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
-//#include <d3dx9.h>
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/Camera.hpp"
@@ -55,7 +54,6 @@ protected:
 //	LPDIRECT3DSURFACE9 m_pOriginalSurface;
 //	LPDIRECT3DSURFACE9 m_pOriginalDepthSurface;
 
-//	D3DVIEWPORT9 m_OriginalViewport;
 	CViewport m_OriginalViewport;
 
 	int m_iTextureWidth;
@@ -173,6 +171,10 @@ public:
 	void RenderSceneShadowMapTexture( int sx, int sy, int ex, int ey );
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
+
+//	boost::shared_ptr<CTextureRenderTarget> GetSceneShadowTexture() { return m_apShadowTexture[0]; }
+
+	CTextureHandle GetSceneShadowTexture();
 
 //	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
 	void SetShadowMapShaderFilename( const std::string& filename ) { m_ShadowMapShaderFilename = filename; }

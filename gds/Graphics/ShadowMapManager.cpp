@@ -1,5 +1,4 @@
 #include "ShadowMapManager.hpp"
-//#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
@@ -11,6 +10,9 @@
 
 using std::map;
 using namespace boost;
+
+
+const char *sg_pShadowMapDebugParamsFile = ".debug/shadowmap.txt";
 
 
 //std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
@@ -156,10 +158,10 @@ void CShadowMapManager::SetDefault()
 	m_SceneCamera.SetPosition( Vector3( 0.0f, 1.0f, -5.0f ) );
 	m_SceneCamera.SetOrientation( Matrix33Identity() );
 
-	UPDATE_PARAM( "debug/graphics_params.txt", "debug_shadowmap", CShadowMap::ms_DebugShadowMap );
+	UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "debug_shadowmap", CShadowMap::ms_DebugShadowMap );
 
 	if( CShadowMap::ms_DebugShadowMap )
-		UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_size", m_ShadowMapSize );
+		UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "shadowmap_size", m_ShadowMapSize );
 }
 
 
@@ -327,7 +329,7 @@ void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
 	m_pCurrentShadowMap = itr->second;
 
 //	m_apShadowTexture[0]->SetBackgroundColor( SFloatRGBAColor::White().GetARGB32() );
-	m_apShadowTexture[0]->SetBackgroundColor( SFloatRGBAColor::Yellow() );
+	m_apShadowTexture[0]->SetBackgroundColor( SFloatRGBAColor::Magenta() );
 	m_apShadowTexture[0]->SetRenderTarget();
 
 	itr->second->RenderShadowReceivers( camera );
@@ -400,9 +402,6 @@ CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowReceiver( CVer
 
 bool CShadowMapManager::CreateSceneShadowMapTextures()
 {
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	HRESULT hr;
-
 	for( int i=0; i<2; i++ )
 	{
 		m_apShadowTexture[i] = CTextureRenderTarget::Create();
@@ -451,8 +450,6 @@ void CShadowMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam
 
 void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 {
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	if( !m_apShadowTexture[0] )
 		return;
 
@@ -461,7 +458,7 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 	if( CShadowMap::ms_DebugShadowMap )
 	{
 		static int display_shadowmap_tex = 0;
-		UPDATE_PARAM( "debug/graphics_params.txt", "display_shadowmap_textures", display_shadowmap_tex );
+		UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "display_shadowmap_textures", display_shadowmap_tex );
 		m_DisplayShadowMapTexturesForDebugging = (display_shadowmap_tex==1) ? true : false;
 	}
 	else
@@ -479,17 +476,19 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 
 		RenderSceneShadowMapTexture( sx + w, sy, sx + w*2 - 1, sy + h - 1 );
 
-		C2DRect screen_rect( sx, sy + h, sx + w - 1, sy + h*2 - 1, 0xFFFFFFFF );
-		screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		screen_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture() );
+		if( m_pSceneRenderTarget )
+		{
+			C2DRect screen_rect( sx, sy + h, sx + w - 1, sy + h*2 - 1, 0xFFFFFFFF );
+			screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+			screen_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture() );
 
-//		CShaderManager *pShaderMgr = 
-//		PrimitiveRenderer().RenderRect( *pShaderMgr, scree_rect );
-
-		C2DTexRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
-		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );
-//		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
+//			CShaderManager *pShaderMgr = 
+//			PrimitiveRenderer().RenderRect( *pShaderMgr, scree_rect );
+			C2DTexRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
+			tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+			tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );
+//			tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
+		}
 	}
 	else
 	{
@@ -575,18 +574,15 @@ void CShadowMapManager::RenderSceneWithoutShadow( int sx, int sy, int ex, int ey
 }
 
 
+CTextureHandle CShadowMapManager::GetSceneShadowTexture()
+{
+	return m_apShadowTexture[0] ? m_apShadowTexture[0]->GetRenderTargetTexture() : CTextureHandle();
+}
+
 
 //void CShadowMapManager::BeginSceneForShadowCaster()
 void CShadowMapManager::BeginSceneShadowMap()
 {
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	HRESULT hr;
-
-	// set the shadow map shader
-	// meshes that renderes themselves as shadow casters use the techniques
-	// in this shadow map shader
-//	CShader::Get()->SetShaderManager( m_Shader.GetShaderManager() );
-
 //	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
 
 	// save the current settings
@@ -598,8 +594,7 @@ void CShadowMapManager::BeginSceneShadowMap()
 //void CShadowMapManager::EndSceneForShadowCaster()
 void CShadowMapManager::EndSceneShadowMap()
 {
-/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
+/*
 //	ShaderManagerHub.PopViewAndProjectionMatrices();
 
 	// restore the original render tareget
@@ -618,16 +613,15 @@ void CShadowMapManager::EndSceneShadowMap()
 //void CShadowMapManager::BeginSceneForShadowReceiver()
 void CShadowMapManager::BeginSceneDepthMap()
 {
-	// set the shadow map shader
-	// meshes that renderes themselves as shadow casters use the techniques
-	// in this shadow map shader
-//	CShader::Get()->SetShaderManager( m_Shader.GetShaderManager() );
-
 	Matrix44 view, proj;
 	m_SceneCamera.GetCameraMatrix( view );
 	m_SceneCamera.GetProjectionMatrix( proj );
 
-	m_Shader.GetShaderManager()->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	pShaderMgr->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
 //	ShaderManagerHub.PushViewAndProjectionMatrices( m_SceneCamera );
 
@@ -644,13 +638,13 @@ void CShadowMapManager::BeginSceneDepthMap()
 	}*/
 
 
-	m_Shader.GetShaderManager()->SetParam( "g_ShadowMapSize", m_ShadowMapSize );
+	pShaderMgr->SetParam( "g_ShadowMapSize", m_ShadowMapSize );
 
 	if( CShadowMap::ms_DebugShadowMap )
 	{
 		static float dist_tolerance = 0.005f;
-		UPDATE_PARAM( "debug/graphics_params.txt", "shadowmap_dist_tolerance", dist_tolerance );
-		m_Shader.GetShaderManager()->SetParam( "g_fShadowMapDistTolerance", dist_tolerance );
+		UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "shadowmap_dist_tolerance", dist_tolerance );
+		pShaderMgr->SetParam( "g_fShadowMapDistTolerance", dist_tolerance );
 	}
 
 //	pd3dDev->BeginScene();
@@ -660,8 +654,6 @@ void CShadowMapManager::BeginSceneDepthMap()
 //void CShadowMapManager::EndSceneForShadowReceiver()
 void CShadowMapManager::EndSceneDepthMap()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 //	pd3dDev->EndScene();
 
 //	ShaderManagerHub.PopViewAndProjectionMatrices();
