@@ -65,7 +65,9 @@ bool CGameItem::LoadMeshObject()
 
 void CGameItem::Render()
 {
-	m_MeshContainerRootNode.UpdateWorldTransforms( Matrix34Identity() );
+	boost::shared_ptr<CItemEntity> pItemEntity = GetItemEntity().Get();
+
+	m_MeshContainerRootNode.UpdateWorldTransforms( pItemEntity ? pItemEntity->GetWorldPose() : Matrix34Identity() );
 	m_MeshContainerRootNode.Render();
 }
 
