@@ -530,6 +530,8 @@ int CItemDatabaseBuilder::GetItemID( const string& class_name )
 	else if( class_name == "RotatableTurret" )   return CGameItem::ID_ROTATABLE_TURRET;
 	else if( class_name == "LandVehicle" )       return CGameItem::ID_LAND_VEHICLE;
 	else if( class_name == "ArmedVehicle" )      return CGameItem::ID_ARMED_VEHICLE;
+//	else if( class_name == "SkeletalCharacter" ) return CGameItem::ID_SKELETAL_CHARACTER;
+//	else if( class_name == "Clothing" )          return CGameItem::ID_CLOTHING;
 
 	else
 	{
