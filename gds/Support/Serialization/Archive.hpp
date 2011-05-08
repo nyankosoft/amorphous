@@ -152,6 +152,14 @@ public:
 		return (*this);
 	}
 
+
+	template<class T1, class T2>
+	IArchive& operator & (std::pair<T1,T2>& data)
+	{
+		(*this) & data.first & data.second;
+		return (*this);
+	}
+
 	
 	template<class T>
 	void Array( T* pData, const int iArraySize )
