@@ -700,7 +700,9 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 		entity_group_id = rBaseEntity.GetEntityGroupID();
 	}
 
-	if( !rBaseEntity.m_bNoClip )
+	if( false )
+//	if( !rBaseEntity.m_bNoClip )
+//	 && rCopyEntityDesc.DontCreateIfOverlapIsDetected )
 	{	// check for overlaps with other entities
 		// to see if the new entity is in a valid position
 //		if( rCopyEnt.bvType == BVTYPE_AABB || rCopyEnt.bvType == BVTYPE_DOT )
