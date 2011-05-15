@@ -400,8 +400,6 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 	vector<CLWO2_StillClip>& rvecClip = m_pSrcObject->GetStillClip();
 	size_t k, iNumClips = rvecClip.size();
 
-	CLWO2_SurfaceBlock *pBlock;
-
 	vecMaterial.resize( iNumSurfaces );
 
 	UINT         tex_channel_tags[]    = { ID_COLR, ID_BUMP };
@@ -411,13 +409,20 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 	{
 		CMMA_Material &material = vecMaterial[i];
 
-		material.Name = rvecSurface[i].GetName();
+		const CLWO2_Surface& src_furface = rvecSurface[i];
 
-		material.fSpecular = rvecSurface[i].GetBaseShadingValue( CLWO2_Surface::SHADE_SPECULAR );
+		material.Name = src_furface.GetName();
+
+		material.fSpecular = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_SPECULAR );
+
+		material.m_Params.fSpecularity = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_SPECULAR);
+		material.m_Params.fLuminosity  = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_LUMINOSITY );
+		material.m_Params.fGlossiness  = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_GLOSSINESS );
+		material.m_Params.fReflection  = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_REFLECTION );
 
 		for( j=0; j<numof(tex_channel_tags); j++ )
 		{
-			pBlock = rvecSurface[i].GetSurfaceBlockByChannel( tex_channel_tags[j] );
+			const CLWO2_SurfaceBlock *pBlock = src_furface.GetSurfaceBlockByChannel( tex_channel_tags[j] );
 
 			if( pBlock )
 			{
