@@ -90,6 +90,18 @@ public:
 	};
 };
 
+class CPlanerReflectionOption
+{
+public:
+	enum Name
+	{
+		NONE,
+		FLAT,
+		PERTURBED,
+		NUM_OPTIONS
+	};
+};
+
 
 class CGenericShaderDesc
 {
@@ -101,6 +113,7 @@ public:
 	CVertexBlendType::Name VertexBlendType;
 	CAlphaBlendType::Name AlphaBlend;
 	CEnvMapOption::Name EnvMap;
+	CPlanerReflectionOption::Name PlanerReflection;
 	int NumPointLights;
 	int NumDirectionalLights;
 	int NumSpotLights;
@@ -115,6 +128,7 @@ public:
 	VertexBlendType(CVertexBlendType::NONE),
 	AlphaBlend(CAlphaBlendType::NONE),
 	EnvMap(CEnvMapOption::NONE),
+	PlanerReflection(CPlanerReflectionOption::NONE),
 	NumPointLights(-1),
 	NumDirectionalLights(-1),
 	NumSpotLights(-1)
