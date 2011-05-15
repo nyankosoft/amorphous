@@ -414,6 +414,8 @@ public:
 	// Open the motion database specified by m_MotionDatabaseFilepath and load motions.
 	Result::Name LoadMotions();
 
+	boost::shared_ptr<CMotionPrimitive> GetCompleteSkeletonSourceMotion();
+
 	inline void HandleInput( const SInputData& input );
 
 	void GetDebugInfo( std::string& dest_text_buffer );

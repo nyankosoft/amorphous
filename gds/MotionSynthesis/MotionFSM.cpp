@@ -798,6 +798,20 @@ void CMotionFSMManager::LoadMotions( CMotionDatabase& mdb )
 }
 
 
+shared_ptr<CMotionPrimitive> CMotionFSMManager::GetCompleteSkeletonSourceMotion()
+{
+	if( m_CompleteSkeletonSourceMotionName.length() == 0 )
+		return shared_ptr<CMotionPrimitive>();
+
+	CMotionDatabase mdb;
+	bool loaded = mdb.LoadFromFile( m_MotionDatabaseFilepath );
+	if( !loaded )
+		return shared_ptr<CMotionPrimitive>();
+
+	return mdb.GetMotionPrimitive( m_CompleteSkeletonSourceMotionName );
+}
+
+
 Result::Name CMotionFSMManager::LoadMotions()
 {
 	CMotionDatabase mdb;
