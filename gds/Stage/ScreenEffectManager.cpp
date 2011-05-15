@@ -1,13 +1,14 @@
 #include "ScreenEffectManager.hpp"
 #include <algorithm>
 #include "3DMath/MathMisc.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+//#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
 //#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/PostProcessEffectManager.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"
 #include "Graphics/LensFlare.hpp"
+#include "Graphics/NoiseTextureGenerators.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
@@ -16,7 +17,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
-using namespace std;
+//using namespace std;
 using namespace boost;
 
 
@@ -169,9 +170,13 @@ bool CScreenEffectManager::Init()
 
 	m_vecExtraTexEffect.resize( 1 );
 	m_vecExtraTexEffect[0].Rect.SetTextureUV( TEXCOORD2(0.0f, 0.0f), TEXCOORD2(32.0f, 32.0f) );
-	m_vecExtraTexEffect[0].SetTextureFilename( "Texture\\stripe.dds" );
+//	m_vecExtraTexEffect[0].SetTextureFilename( "Texture\\stripe.dds" );
+	shared_ptr<CStripeTextureGenerator> pTexLoader( new CStripeTextureGenerator );
+	pTexLoader->m_Color0.SetRGBA( 0.0f, 0.0f, 0.0f, 0.0f );
+	pTexLoader->m_Color1.SetRGBA( 0.0f, 0.0f, 0.0f, 0.5f );
+	pTexLoader->m_StripeWidth = 4;
+	m_vecExtraTexEffect[0].m_Desc.pLoader = pTexLoader;
 	m_vecExtraTexEffect[0].LoadTexture();
-
 
 	// initialize post-process effect manager
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -424,9 +429,9 @@ void CScreenEffectManager::UpdateMonochromeColorEffect()
 
 void CScreenEffectManager::RenderOverlayEffects()
 {
-	HRESULT hr;
-	hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
-	hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+//	HRESULT hr;
+//	hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
+//	hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
 
 	int i;
 	for( i=0; i<NUM_MAX_SIMULTANEOUS_FADES; i++ )
