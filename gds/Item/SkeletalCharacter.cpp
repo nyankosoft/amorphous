@@ -80,7 +80,7 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 	m_pRenderMethod.reset( new CMeshContainerRenderMethod );
 //	m_pRenderMethod = shared_new<CMeshContainerRenderMethod>();
 
-	m_pRenderMethod->MeshRenderMethod().resize( 1 );
+//	m_pRenderMethod->MeshRenderMethod().resize( 1 );
 //	m_pRenderMethod->MeshRenderMethod()[0].m_ShaderFilepath = "Shader/VertexBlend.fx";
 /*	m_pRenderMethod->MeshRenderMethod()[0].m_ShaderFilepath = "Shader/Default.fx";
 	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "VertBlend_PVL_HSLs" );
@@ -93,8 +93,8 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
 	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
 	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
-	m_pRenderMethod->MeshRenderMethod()[0].m_Shader.Load( shader_desc );
-	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "Default" );
+	m_pRenderMethod->PrimaryMeshRenderMethod().m_Shader.Load( shader_desc );
+	m_pRenderMethod->PrimaryMeshRenderMethod().m_Technique.SetTechniqueName( "Default" );
 
 	// The input handler
 	InitInputHandler( ms_DefaultInputHandlerIndex );
