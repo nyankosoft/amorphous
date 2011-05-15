@@ -2,13 +2,14 @@
 #define __BasicMesh_HPP__
 
 
-#include <gds/base.hpp>
-#include <gds/3DMath/AABB3.hpp>
-#include <gds/3DMath/Transform.hpp>
+#include "../../base.hpp"
+#include "../../3DMath/AABB3.hpp"
+#include "../../3DMath/Transform.hpp"
 //#include "MeshImpl.hpp"
-#include <gds/Graphics/fwd.hpp>
-#include <gds/Graphics/TextureHandle.hpp>
-#include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
+#include "BasicMaterialParams.hpp"
+#include "../../Graphics/fwd.hpp"
+#include "../../Graphics/TextureHandle.hpp"
+#include "../../Graphics/Shader/ShaderTechniqueHandle.hpp"
 using namespace MeshModel;
 
 
@@ -27,21 +28,11 @@ public:
 };
 
 
-class CMaterial
-{
-public:
-	float fEmmisive;
-	float fSpecular;
-	float fGlossiness;
-	float fReflection;
-};
-
-
 class CMeshMaterial
 {
 public:
 
-	CMaterial m_Mat;
+	CBasicMaterialParams m_Mat;
 
 	// array of textures for a material
 	// - possible usages

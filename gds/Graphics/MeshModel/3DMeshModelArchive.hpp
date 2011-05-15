@@ -11,6 +11,7 @@
 #include "Graphics/FloatRGBAColor.hpp"
 #include "Graphics/32BitColor.hpp"
 #include "Graphics/VertexFormat.hpp"
+#include "../Mesh/BasicMaterialParams.hpp"
 
 #include "Support/Serialization/SerializationEx.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
@@ -220,6 +221,8 @@ public:
 //	SFloatRGBAColor Specular;
 //	SFloatRGBAColor Emissive;
 
+	CBasicMaterialParams m_Params;
+
 	std::vector<CMMA_Texture> vecTexture;
 
 	/// minimum alpha value of diffuse colors of vertices that belong to the material
@@ -238,7 +241,7 @@ public:
 
 	// version 1: changed from SurfaceTexture & NormalMapTexture
 	// to vecTexture
-	virtual unsigned int GetVersion() const { return 3; }
+	virtual unsigned int GetVersion() const { return 4; }
 };
 
 

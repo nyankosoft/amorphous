@@ -95,6 +95,10 @@ Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive,
 
 		m_vecMaterial[i].Name = rvecSrcMaterial[i].Name;
 
+		// materials
+
+		m_vecMaterial[i].m_Mat = rvecSrcMaterial[i].m_Params;
+
 		// texture(s)
 
 		const size_t num_textures = rvecSrcMaterial[i].vecTexture.size();

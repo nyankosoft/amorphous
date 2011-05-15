@@ -233,8 +233,9 @@ void CMMA_Material::Serialize( IArchive& ar, const unsigned int version )
 		ar & Name;
 
 	ar & fSpecular;
-//	ar & SurfaceTexture;
-//	ar & NormalMapTexture;
+
+	if( 4 <= version )
+		ar & m_Params;
 
 	if( version < 1 )
 		assert( !string( string(__FUNCTION__) + " : archive version outdated - no longer supported" ).c_str() );
