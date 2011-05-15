@@ -282,6 +282,8 @@ public:
 
 	CEntityHandle<> CreateStaticGeometry( const std::string& resource_path );
 
+	CEntityHandle<> CreateStaticWater( const std::string& model, const std::string& name, const Vector3& position );
+
 	CEntityHandle<> CreateStaticSmokeSource( const Vector3& pos,
 			const SFloatRGBAColor& color, float diameter, float rise_speed, float thickness, float density,
 			const std::string& entity_attributes_name = "" );

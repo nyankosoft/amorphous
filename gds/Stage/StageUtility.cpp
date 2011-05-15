@@ -3,6 +3,7 @@
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderVariableLoader.hpp"
+#include "Graphics/Shader/GenericShaderDesc.hpp"
 #include "Physics/ActorDesc.hpp"
 #include "Physics/BoxShapeDesc.hpp"
 #include "Physics/TriangleMeshDesc.hpp"
@@ -74,6 +75,27 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 */
 
 		pEntity->m_pMeshRenderMethod = mesh_property.m_pMeshRenderMethod;
+	}
+	else
+	{
+		pEntity->pBaseEntity->InitEntityGraphics( *pEntity );
+/*
+		// Create the shader based on the mesh 
+		boost::shared_ptr<CBasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
+		if( pMesh )
+		{
+			CGenericShaderDesc shader_desc;
+			for( int i=0; i<pMesh->GetNumMaterials(); i++ )
+			{
+				const CMeshMaterial& mat = pMesh->GetMaterial( i );
+//				if( 0.001f <= mat.m_Mat.fReflection )
+//					shader_desc.PlanerReflection or env map = true;
+//				if( 0.001f < mat.m_Mat.fSpecularity )
+//					shader_desc.Specular = CSpecularSource::?
+			}
+
+//			pMesh
+		}*/
 	}
 
 	return pEntity ? CEntityHandle<>( pEntity->Self() ) : CEntityHandle<>();
@@ -752,7 +774,7 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char 
 	{
 		if( mesh_resource_path && 0 < strlen(mesh_resource_path) )
 		{
-			// Use the graphisc mesh as the collision geometry
+			// Use the graphics mesh as the collision geometry
 			collision_mesh_name = mesh_resource_path;
 		}
 	}
@@ -925,7 +947,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 //	}
 	else if( shape_name == "mesh" )
 	{
-		return CreateTriangleMeshEntityFromMesh( model, model, pose, mass, "", name, "", is_static );
+		return CreateTriangleMeshEntityFromMesh( model, model, pose, mass, "", name, "__TriangleMeshFromMesh__", is_static );
 	}
 //	else if( shape_name == "convex" )
 //	{
@@ -1132,6 +1154,30 @@ CEntityHandle<> CStageMiscUtility::CreateStaticGeometry( const std::string& reso
 }
 
 
+CEntityHandle<> CStageMiscUtility::CreateStaticWater( const string& model, const string& name, const Vector3& position )
+{
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return CEntityHandle<>();
+
+	CBaseEntityHandle basehandle;
+	basehandle.SetBaseEntityName( "__StaticLiquidWater__" );
+
+	CCopyEntityDesc desc;
+	desc.strName           = name;
+	desc.WorldPose         = Matrix34Identity();
+	desc.pBaseEntityHandle = &basehandle;
+
+	CCopyEntity *pStaticWater = pStage->CreateEntity( desc );
+	if( !pStaticWater )
+		return CEntityHandle<>();
+
+	CEntityHandle<> entity( pStaticWater->Self() );
+
+	return entity;
+}
+
+
 // Creates a particle generator
 // The particle generator keeps generating smoke particles
 CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
@@ -1186,13 +1232,14 @@ Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std:
 
 	if( 0 == subset.length() )
 	{
-		vector<CSubsetRenderMethod>& vecRenderMethod
-			= pEntity->m_pMeshRenderMethod->MeshRenderMethod();
-
-		while( (int)vecRenderMethod.size() <= lod )
-			vecRenderMethod.push_back( CSubsetRenderMethod() );
-
-			vecRenderMethod[lod] = subset_render_method;
+//		vector<CSubsetRenderMethod>& vecRenderMethod
+//			= pEntity->m_pMeshRenderMethod->MeshRenderMethod();
+//
+//		while( (int)vecRenderMethod.size() <= lod )
+//			vecRenderMethod.push_back( CSubsetRenderMethod() );
+//
+//			vecRenderMethod[lod] = subset_render_method;
+		pEntity->m_pMeshRenderMethod->PrimaryMeshRenderMethod() = subset_render_method;
 	}
 	else
 	{
@@ -1273,9 +1320,9 @@ static void SetShaderParamLoaderToEntity( CEntityHandle<>& entity, const char *p
 	}
 
 	bool found_param_loader = false;
-	for( size_t i=0; i<pRenderMethod->m_vecMeshRenderMethod.size(); i++ )
+	for( size_t i=0; i<pRenderMethod->RenderMethodsAndSubsetIndices().size(); i++ )
 	{
-		CSubsetRenderMethod& subset_render_method = pRenderMethod->m_vecMeshRenderMethod[i];
+		CSubsetRenderMethod& subset_render_method = pRenderMethod->RenderMethodsAndSubsetIndices()[i].first;
 
 		for( size_t j=0; j<subset_render_method.m_vecpShaderParamsLoader.size(); j++ )
 		{
@@ -1293,8 +1340,6 @@ static void SetShaderParamLoaderToEntity( CEntityHandle<>& entity, const char *p
 				found_param_loader = true;
 			}
 		}
-
-		pRenderMethod->m_vecMeshRenderMethod.size();
 	}
 
 	if( !found_param_loader )
