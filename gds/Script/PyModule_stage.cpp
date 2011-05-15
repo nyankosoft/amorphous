@@ -30,22 +30,24 @@ void SetShaderToEntity( CEntityHandle<>& entity, CShaderHandle& shader, CShaderT
 
 	if( !pEntity->m_pMeshRenderMethod )
 	{
-		pEntity->m_pMeshRenderMethod = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod );
+		pEntity->m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
 	}
 
-	vector<CSubsetRenderMethod>& render_method
-		= pEntity->m_pMeshRenderMethod->m_vecMeshRenderMethod;
+//	vector<CSubsetRenderMethod>& render_methods
+//		= pEntity->m_pMeshRenderMethod->m_vecMeshRenderMethod;
 
-	if( render_method.empty() )
-		render_method.resize( 1 );
+//	if( render_methods.empty() )
+//		render_methods.resize( 1 );
 
-	render_method[0].m_Shader = shader;
-	render_method[0].m_Technique = tech;
+	CSubsetRenderMethod& render_method = pEntity->m_pMeshRenderMethod->PrimaryMeshRenderMethod();
+
+	render_method.m_Shader = shader;
+	render_method.m_Technique = tech;
 
 	if( pEntity->GetEntityFlags() & BETYPE_LIGHTING )
 	{
 		vector< shared_ptr<CShaderParamsLoader> >& params_loaders =
-			render_method[0].m_vecpShaderParamsLoader;
+			render_method.m_vecpShaderParamsLoader;
 
 		int params_loader_index = -1;
 		for( size_t i=0; i<params_loaders.size(); i++ )
