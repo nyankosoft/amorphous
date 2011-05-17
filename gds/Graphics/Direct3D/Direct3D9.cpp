@@ -1,5 +1,6 @@
 #include "Direct3D9.hpp"
-
+#include "3DMath/Matrix44.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/Direct3D/D3DAlphaBlend.hpp"
 #include "Graphics/FogParams.hpp"
@@ -98,6 +99,8 @@ m_DeviceType(D3DDEVTYPE_HAL),
 m_BehaviorFlags(0)
 {
 	m_CurrentDepthBufferType = D3DZB_TRUE;
+
+	m_vecClipPlane.resize( 8 );
 }
 
 
@@ -588,17 +591,24 @@ Result::Name CDirect3D9::Clear( U32 buffer_mask )
 
 Result::Name CDirect3D9::SetClipPlane( uint index, const Plane& clip_plane )
 {
-	float coefficients[4] =
-	{
-		clip_plane.normal.x,
-		clip_plane.normal.y,
-		clip_plane.normal.z,
-		clip_plane.dist * (-1.0f)
-	};
+	if( (uint)m_vecClipPlane.size() <= index )
+		return Result::INVALID_ARGS;
 
-	HRESULT hr = m_pD3DDevice->SetClipPlane( index, coefficients );
+	m_vecClipPlane[index] = clip_plane;
 
-	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+//	float coefficients[4] =
+//	{
+//		clip_plane.normal.x,
+//		clip_plane.normal.y,
+//		clip_plane.normal.z,
+//		clip_plane.dist * (-1.0f)
+//	};
+
+//	HRESULT hr = m_pD3DDevice->SetClipPlane( index, coefficients );
+
+//	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+
+	return Result::SUCCESS;
 }
 
 
@@ -621,6 +631,42 @@ Result::Name CDirect3D9::DisableClipPlane( uint index )
 
 	DWORD flags = current_flags & ( ~(1 << index) );
 	hr = m_pD3DDevice->SetRenderState( D3DRS_CLIPPING, flags );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::UpdateViewProjectionTransformsForClipPlane( uint index, const Matrix44& view_transform, const Matrix44& proj_transform )
+{
+	if( (uint)m_vecClipPlane.size() <= index )
+		return Result::INVALID_ARGS;
+
+	const Plane clip_plane = m_vecClipPlane[index];
+
+	D3DXPLANE clipPlane;
+	D3DXVECTOR3 point = ToD3DXVECTOR3( clip_plane.normal * clip_plane.dist );// point( 0 , 0, 0 );
+	D3DXVECTOR3 normal = ToD3DXVECTOR3( clip_plane.normal * (-1.0f) );//normal( 0, -1, 0 ); // negative of the normal vector.
+	// create and normalize the plane
+	D3DXPlaneFromPointNormal(&clipPlane,&point,&normal);
+	D3DXPlaneNormalize(&clipPlane,&clipPlane);
+
+	// To transform a plane from world space to view space there is a methode D3DXPlaneTransform
+	// but the peculiar thing about this method is that it takes the inverse transpose of the viewprojection matrix
+
+	Matrix44 proj_view = proj_transform * view_transform;
+	D3DXMATRIXA16 matrix, view_proj;
+	proj_view.GetRowMajorMatrix44( (float *)&view_proj );
+
+	D3DXMatrixInverse(&matrix, NULL, &view_proj); // second parameter is an out parameter for the determinant
+	D3DXMatrixTranspose(&matrix, &matrix);
+
+	D3DXPLANE viewSpacePlane;
+	D3DXPlaneTransform(&viewSpacePlane, &clipPlane, &matrix);
+
+	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+	HRESULT hr = S_OK;
+	hr = pd3dDev->SetClipPlane( 0, (float *)&viewSpacePlane );
+	hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, D3DCLIPPLANE0 );
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }

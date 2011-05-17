@@ -40,6 +40,8 @@ private:
 
 	CullingMode::Name m_CullMode;
 
+	std::vector<Plane> m_vecClipPlane;
+
 private:
 
 	void SetDefaultRenderStates();
@@ -110,6 +112,8 @@ public:
 	Result::Name EnableClipPlane( uint index );
 
 	Result::Name DisableClipPlane( uint index );
+
+	Result::Name UpdateViewProjectionTransformsForClipPlane( uint index, const Matrix44& view_transform, const Matrix44& proj_transform );
 
 	Result::Name SetScissorRect( const SRect& rect );
 

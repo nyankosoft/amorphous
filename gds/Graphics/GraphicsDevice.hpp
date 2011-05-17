@@ -6,6 +6,7 @@
 #include "AlphaBlend.hpp"
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
+#include "3DMath/fwd.hpp"
 #include "3DMath/Plane.hpp"
 #include "Rect.hpp"
 using namespace Graphics;
@@ -249,6 +250,8 @@ public:
 	virtual Result::Name EnableClipPlane( uint index ) = 0;
 
 	virtual Result::Name DisableClipPlane( uint index ) = 0;
+
+	virtual Result::Name UpdateViewProjectionTransformsForClipPlane( uint index, const Matrix44& view_transform, const Matrix44& proj_transform ) = 0;
 
 	virtual Result::Name SetScissorRect( const SRect& rect ) = 0;
 

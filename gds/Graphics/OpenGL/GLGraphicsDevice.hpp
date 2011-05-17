@@ -97,6 +97,8 @@ public:
 
 	Result::Name DisableClipPlane( uint index );
 
+	Result::Name UpdateViewProjectionTransformsForClipPlane( uint index, const Matrix44& view_transform, const Matrix44& proj_transform ) { return Result::SUCCESS; }
+
 	Result::Name SetScissorRect( const SRect& rect );
 };
 
