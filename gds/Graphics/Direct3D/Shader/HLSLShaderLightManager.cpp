@@ -10,6 +10,8 @@ CHLSLShaderLightManager::CHLSLShaderLightManager()
 :
 m_pEffect(NULL)
 {
+	memset( m_aPropertyHandle, 0, sizeof(m_aPropertyHandle) );
+	memset( m_aHandle,         0, sizeof(m_aHandle) );
 }
 
 
@@ -17,6 +19,8 @@ CHLSLShaderLightManager::CHLSLShaderLightManager( LPD3DXEFFECT pEffect )
 :
 m_pEffect(pEffect)
 {
+	memset( m_aPropertyHandle, 0, sizeof(m_aPropertyHandle) );
+	memset( m_aHandle,         0, sizeof(m_aHandle) );
 }
 
 
