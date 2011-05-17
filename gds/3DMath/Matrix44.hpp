@@ -61,6 +61,11 @@ public:
 
 	inline Vector3 TransformCoord( const Vector3& rhs ) const;
 
+	inline bool GetInverse( Matrix44& dest ) const;
+
+	/// Returns a zero matrix if the determinant is too small.
+	inline Matrix44 GetInverse() const;
+
 	// operators
 	inline Matrix44 & operator+=(const Matrix44 & rhs);
 	inline Matrix44 & operator-=(const Matrix44 & rhs);

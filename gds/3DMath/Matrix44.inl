@@ -311,6 +311,62 @@ inline Vector3 Matrix44::TransformCoord(const Vector3 & rhs) const
 }
 
 
+/// Based on the implementation of the 4x4 inverse matrix calculation in Wild Magic 5.5
+inline bool Matrix44::GetInverse( Matrix44& dest ) const
+{
+	Scalar a0 = data[ 0]*data[ 5] - data[ 1]*data[ 4];
+	Scalar a1 = data[ 0]*data[ 6] - data[ 2]*data[ 4];
+	Scalar a2 = data[ 0]*data[ 7] - data[ 3]*data[ 4];
+	Scalar a3 = data[ 1]*data[ 6] - data[ 2]*data[ 5];
+	Scalar a4 = data[ 1]*data[ 7] - data[ 3]*data[ 5];
+	Scalar a5 = data[ 2]*data[ 7] - data[ 3]*data[ 6];
+	Scalar b0 = data[ 8]*data[13] - data[ 9]*data[12];
+	Scalar b1 = data[ 8]*data[14] - data[10]*data[12];
+	Scalar b2 = data[ 8]*data[15] - data[11]*data[12];
+	Scalar b3 = data[ 9]*data[14] - data[10]*data[13];
+	Scalar b4 = data[ 9]*data[15] - data[11]*data[13];
+	Scalar b5 = data[10]*data[15] - data[11]*data[14];
+
+	Scalar det = a0*b5 - a1*b4 + a2*b3 + a3*b2 - a4*b1 + a5*b0;
+
+	Scalar epsilon = (Scalar)0.000001;
+	if( abs(det) < epsilon )
+		return false;
+
+	Matrix44& inverse = dest;
+	inverse.data[ 0] = + data[ 5]*b5 - data[ 6]*b4 + data[ 7]*b3;
+	inverse.data[ 4] = - data[ 4]*b5 + data[ 6]*b2 - data[ 7]*b1;
+	inverse.data[ 8] = + data[ 4]*b4 - data[ 5]*b2 + data[ 7]*b0;
+	inverse.data[12] = - data[ 4]*b3 + data[ 5]*b1 - data[ 6]*b0;
+	inverse.data[ 1] = - data[ 1]*b5 + data[ 2]*b4 - data[ 3]*b3;
+	inverse.data[ 5] = + data[ 0]*b5 - data[ 2]*b2 + data[ 3]*b1;
+	inverse.data[ 9] = - data[ 0]*b4 + data[ 1]*b2 - data[ 3]*b0;
+	inverse.data[13] = + data[ 0]*b3 - data[ 1]*b1 + data[ 2]*b0;
+	inverse.data[ 2] = + data[13]*a5 - data[14]*a4 + data[15]*a3;
+	inverse.data[ 6] = - data[12]*a5 + data[14]*a2 - data[15]*a1;
+	inverse.data[10] = + data[12]*a4 - data[13]*a2 + data[15]*a0;
+	inverse.data[14] = - data[12]*a3 + data[13]*a1 - data[14]*a0;
+	inverse.data[ 3] = - data[ 9]*a5 + data[10]*a4 - data[11]*a3;
+	inverse.data[ 7] = + data[ 8]*a5 - data[10]*a2 + data[11]*a1;
+	inverse.data[11] = - data[ 8]*a4 + data[ 9]*a2 - data[11]*a0;
+	inverse.data[15] = + data[ 8]*a3 - data[ 9]*a1 + data[10]*a0;
+
+	Scalar inv_det = ((Scalar)1)/det;
+	for( int i=0; i<NUM_ELEMENTS; i++ )
+		inverse.data[i] *= inv_det;
+
+	return true;
+}
+
+
+inline Matrix44 Matrix44::GetInverse() const
+{
+	Matrix44 out = Matrix44(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0 );
+	GetInverse( out );
+	return out;
+}
+
+
 
 //=============================================================================
 // global operators
