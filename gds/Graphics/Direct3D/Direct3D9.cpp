@@ -629,8 +629,9 @@ Result::Name CDirect3D9::DisableClipPlane( uint index )
 	DWORD current_flags = 0;
 	hr = m_pD3DDevice->GetRenderState( D3DRS_CLIPPLANEENABLE, &current_flags );
 
+	DWORD mask = ( ~(1 << index) );
 	DWORD flags = current_flags & ( ~(1 << index) );
-	hr = m_pD3DDevice->SetRenderState( D3DRS_CLIPPING, flags );
+	hr = m_pD3DDevice->SetRenderState( D3DRS_CLIPPLANEENABLE, flags );
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
