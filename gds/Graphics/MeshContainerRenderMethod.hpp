@@ -74,7 +74,7 @@ public:
 	/// Leave this empty to render all the subsets.
 	/// - default: empty
 //	std::vector<std::string> m_vecSubsetsToRender;
-	std::vector<int>& IndicesOfSubsetsToRender() { return m_vecIndicesOfSubsetsToRender; }
+//	std::vector<int>& IndicesOfSubsetsToRender() { return m_vecIndicesOfSubsetsToRender; }
 
 	//
 	// shader
@@ -83,7 +83,9 @@ public:
 	/// Used when m_vecSubsetNameToRenderMethod is empty
 	/// - Applies the same shader and same techniques to all the subsets of the mesh
 	/// - Uses array to support LOD of shader
-	std::vector<CSubsetRenderMethod> m_vecMeshRenderMethod;
+//	std::vector<CSubsetRenderMethod> m_vecMeshRenderMethod;
+
+	std::vector< std::pair< CSubsetRenderMethod, std::vector<int> > > m_RenderMethodsAndSubsetIndices;
 
 	/// Different shader & technique for each mesh subset
 	/// - Uses array to support LOD of shader
@@ -108,6 +110,14 @@ public:
 	/// - look-up texture for membrane effect
 	std::vector<CTextureHandle> m_vecExtraTexture;
 */
+private:
+
+	void RenderMeshOrMeshSubsets(
+		CBasicMesh &mesh,
+		const std::vector<int>& subset_indices,
+		CSubsetRenderMethod& render_method,
+		const Matrix34& world_transform );
+
 public:
 
 	CMeshContainerRenderMethod()
@@ -125,13 +135,23 @@ public:
 		                      const Matrix34& world_transform );
 							  //std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter );
 
-	std::vector<CSubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
+//	std::vector<CSubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
+
+	CSubsetRenderMethod& PrimaryMeshRenderMethod()
+	{
+		if( m_RenderMethodsAndSubsetIndices.empty() )
+			m_RenderMethodsAndSubsetIndices.resize( 1 );
+
+		return m_RenderMethodsAndSubsetIndices[0].first;
+	}
+
+	std::vector< std::pair< CSubsetRenderMethod, std::vector<int> > >& RenderMethodsAndSubsetIndices() { return m_RenderMethodsAndSubsetIndices; }
 
 	std::vector< std::map<std::string,CSubsetRenderMethod> >& SubsetRenderMethodMaps() { return m_vecSubsetNameToRenderMethod; }
 
 	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
 
-	void RemoveShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
+	void RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
 
 	/// Creates a copy or copies of render methods at each LoD for subsets whose names are specified by the argument.
 	void BreakMeshRenderMethodsToSubsetRenderMethods( const std::vector<std::string>& vecName );

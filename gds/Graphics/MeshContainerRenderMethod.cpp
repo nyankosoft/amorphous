@@ -204,8 +204,61 @@ void CSubsetRenderMethod::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-static int sg_iPrevShaderManagerID = -1;
+//static int sg_iPrevShaderManagerID = -1;
 
+
+void CMeshContainerRenderMethod::RenderMeshOrMeshSubsets( CBasicMesh &mesh,
+	                                                      const vector<int>& subset_indices,
+//														  CShaderManager& shader_mgr,
+														  CSubsetRenderMethod& render_method,
+														  const Matrix34& world_transform )
+{
+	// Render with a single shader & a single technique 
+//	CShaderManager *pShaderMgr = m_vecMeshRenderMethod[lod_index].m_Shader.GetShaderManager();
+	CShaderManager *pShaderMgr = render_method.m_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	CShaderManager& shader_mgr = (*pShaderMgr);
+
+	shader_mgr.SetWorldTransform( world_transform );
+
+/*	if( true )//sg_iPrevShaderManagerID != pShaderMgr->GetShaderManagerID() )
+	{
+		for( size_t i=0; i<vecpShaderParamsWriter.size(); i++ )
+			vecpShaderParamsWriter[i]->UpdateShaderParams( *pShaderMgr );
+	}*/
+
+//	CSubsetRenderMethod& render_method = m_vecMeshRenderMethod[lod_index];
+
+	// update shader params
+	for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
+	{
+		render_method.m_vecpShaderParamsLoader[i]->UpdateShaderParams( shader_mgr );
+	}
+
+	// render
+	Result::Name res = shader_mgr.SetTechnique( render_method.m_Technique );
+	if( subset_indices.size() == 0 )
+	{
+		// Render all the mesh subsets with a single shader & a single technique 
+		mesh.Render( shader_mgr );
+	}
+	else
+	{
+		// render only the specified subsets with a single shader & a single technique
+		for( int i=0; i<(int)subset_indices.size(); i++ )
+		{
+			mesh.RenderSubset( shader_mgr, subset_indices[i] );
+		}
+	}
+
+	// reset shader params if necessary
+	for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
+	{
+		render_method.m_vecpShaderParamsLoader[i]->ResetShaderParams( shader_mgr );
+	}
+}
 
 
 // - Set the world transform 'world_transform' to shader
@@ -213,55 +266,26 @@ static int sg_iPrevShaderManagerID = -1;
 // - Set technique
 void CMeshContainerRenderMethod::RenderMesh( CBasicMesh &mesh, const Matrix34& world_transform )
 {
-	uint lod_index = m_LODIndex;
-	if( 0 < m_vecMeshRenderMethod.size() )
+	if( !m_RenderMethodsAndSubsetIndices.empty() )
 	{
-		// render all the subsets at once
-
-		if( (uint)m_vecMeshRenderMethod.size() <= lod_index )
-			return;
-
-		// Render with a single shader & a single technique 
-		CShaderManager *pShaderMgr = m_vecMeshRenderMethod[lod_index].m_Shader.GetShaderManager();
-		if( !pShaderMgr )
-			return;
-
-		pShaderMgr->SetWorldTransform( world_transform );
-
-/*		if( true )//sg_iPrevShaderManagerID != pShaderMgr->GetShaderManagerID() )
+		if( m_RenderMethodsAndSubsetIndices.size() == 1
+		 && m_RenderMethodsAndSubsetIndices[0].second.empty() )
 		{
-			for( size_t i=0; i<vecpShaderParamsWriter.size(); i++ )
-				vecpShaderParamsWriter[i]->UpdateShaderParams( *pShaderMgr );
-		}*/
-
-		CSubsetRenderMethod& render_method = m_vecMeshRenderMethod[lod_index];
-
-		// update shader params
-		for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
-		{
-			render_method.m_vecpShaderParamsLoader[i]->UpdateShaderParams( *pShaderMgr );
-		}
-
-		// render
-		Result::Name res = pShaderMgr->SetTechnique( render_method.m_Technique );
-		if( m_vecIndicesOfSubsetsToRender.size() == 0 )
-		{
-			// Render all the mesh subsets with a single shader & a single technique 
-			mesh.Render( *pShaderMgr );
+			// render all the subsets at once
+			RenderMeshOrMeshSubsets( mesh, m_RenderMethodsAndSubsetIndices[0].second, m_RenderMethodsAndSubsetIndices[0].first, world_transform );
 		}
 		else
 		{
-			// render only the specified subsets with a single shader & a single technique
-			for( int i=0; i<(int)m_vecIndicesOfSubsetsToRender.size(); i++ )
+			for( int i=0; i<(int)m_RenderMethodsAndSubsetIndices.size(); i++ )
 			{
-				mesh.RenderSubset( *pShaderMgr, m_vecIndicesOfSubsetsToRender[i] );
-			}
-		}
+				CSubsetRenderMethod& render_method = m_RenderMethodsAndSubsetIndices[i].first;
+				const vector<int>& subset_indices  = m_RenderMethodsAndSubsetIndices[i].second;
 
-		// reset shader params if necessary
-		for( size_t i=0; i<render_method.m_vecpShaderParamsLoader.size(); i++ )
-		{
-			render_method.m_vecpShaderParamsLoader[i]->ResetShaderParams( *pShaderMgr );
+				for( int j=0; j<(int)subset_indices.size(); j++ )
+				{
+					RenderMeshOrMeshSubsets( mesh, subset_indices, render_method, world_transform );
+				}
+			}
 		}
 	}
 	else if( 0 < m_vecSubsetNameToRenderMethod.size() )
@@ -285,6 +309,7 @@ void CMeshContainerRenderMethod::RenderMesh( CBasicMesh &mesh, const Matrix34& w
 			pvecIndicesOfSubsetsToRender = &m_vecIndicesOfSubsetsToRender;
 		}
 
+		int lod_index = 0;
 //		for( i=0; i<num_subsets; i++ )
 		for( size_t i=0; i<pvecIndicesOfSubsetsToRender->size(); i++ )
 		{
@@ -324,9 +349,9 @@ void CMeshContainerRenderMethod::RenderMesh( CBasicMesh &mesh, const Matrix34& w
 
 void CMeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader )
 {
-	for( size_t i=0; i<m_vecMeshRenderMethod.size(); i++ )
+	for( size_t i=0; i<m_RenderMethodsAndSubsetIndices.size(); i++ )
 	{
-		m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
+		m_RenderMethodsAndSubsetIndices[i].first.m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
 	}
 
 //	typedef pair<string,CSubsetRenderMethod> str_rendermethod;
@@ -347,17 +372,17 @@ void CMeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( bo
 }
 
 
-void CMeshContainerRenderMethod::RemoveShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader )
+void CMeshContainerRenderMethod::RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader )
 {
-	for( size_t i=0; i<m_vecMeshRenderMethod.size(); i++ )
+	for( size_t i=0; i<m_RenderMethodsAndSubsetIndices.size(); i++ )
 	{
 		vector< shared_ptr<CShaderParamsLoader> >::iterator itrParamsLoader
-			= m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.begin();
-		while( itrParamsLoader != m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.end() )
+			= m_RenderMethodsAndSubsetIndices[i].first.m_vecpShaderParamsLoader.begin();
+		while( itrParamsLoader != m_RenderMethodsAndSubsetIndices[i].first.m_vecpShaderParamsLoader.end() )
 		{
 			if( (*itrParamsLoader) == pShaderParamsLoader )
 			{
-				itrParamsLoader = m_vecMeshRenderMethod[i].m_vecpShaderParamsLoader.erase( itrParamsLoader );
+				itrParamsLoader = m_RenderMethodsAndSubsetIndices[i].first.m_vecpShaderParamsLoader.erase( itrParamsLoader );
 			}
 			else
 				itrParamsLoader++;
@@ -394,21 +419,23 @@ void CMeshContainerRenderMethod::RemoveShaderParamsLoaderToAllMeshRenderMethods(
 
 void CMeshContainerRenderMethod::BreakMeshRenderMethodsToSubsetRenderMethods( const vector<string>& vecSubsetName )
 {
-	size_t num_lods = m_vecMeshRenderMethod.size();
+//	size_t num_lods = m_vecMeshRenderMethod.size();
 
-	if( num_lods == 0 )
-		return;
+//	if( num_lods == 0 )
+//		return;
 
-	m_vecSubsetNameToRenderMethod.resize( num_lods );
+//	m_vecSubsetNameToRenderMethod.resize( num_lods );
+	m_vecSubsetNameToRenderMethod.resize( 1 );
 
-	for( size_t i=0; i<num_lods; i++ )
+//	for( size_t i=0; i<num_lods; i++ )
 //	BOOST_FOREACH( CSubsetRenderMethod& render_method, m_vecMeshRenderMethod )
-	{
+//	{
 		BOOST_FOREACH( const string& subset_name, vecSubsetName )
 		{
-			m_vecSubsetNameToRenderMethod[i][subset_name] = m_vecMeshRenderMethod[i];
+//			m_vecSubsetNameToRenderMethod[i][subset_name] = m_vecMeshRenderMethod[i];
+			m_vecSubsetNameToRenderMethod[0][subset_name] = PrimaryMeshRenderMethod();
 		}
-	}
+//	}
 }
 
 
@@ -424,8 +451,8 @@ bool CMeshContainerRenderMethod::LoadRenderMethodResources()
 {
 	bool loaded = false;
 
-	for( size_t i=0; i<m_vecMeshRenderMethod.size(); i++ )
-		loaded = m_vecMeshRenderMethod[i].Load();
+	for( size_t i=0; i<m_RenderMethodsAndSubsetIndices.size(); i++ )
+		loaded = m_RenderMethodsAndSubsetIndices[i].first.Load();
 
 	for( size_t i=0; i<m_vecSubsetNameToRenderMethod.size(); i++ )
 	{
@@ -466,7 +493,7 @@ void CMeshContainerRenderMethod::Serialize( IArchive& ar, const unsigned int ver
 	ar & m_vecIndicesOfSubsetsToRender;
 	ar & m_LODIndex;
 	ar & m_vecSubsetNameToRenderMethod;
-	ar & m_vecMeshRenderMethod;
+	ar & m_RenderMethodsAndSubsetIndices;
 }
 
 
@@ -477,26 +504,26 @@ void CMeshContainerRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 //	m_MeshRenderMethod.LoadFromXMLNode( reader );
 
 	vector<CXMLNodeReader> vecMeshRenderMethod = reader.GetImmediateChildren( "MeshRenderMethod" );
-	m_vecMeshRenderMethod.resize( vecMeshRenderMethod.size() );
+	m_RenderMethodsAndSubsetIndices.resize( vecMeshRenderMethod.size() );
 	for( size_t i=0; i<vecMeshRenderMethod.size(); i++ )
 	{
-		m_vecMeshRenderMethod[i].LoadFromXMLNode( vecMeshRenderMethod[i] );
+		m_RenderMethodsAndSubsetIndices[i].first.LoadFromXMLNode( vecMeshRenderMethod[i] );
 	}
 
 	vector<CXMLNodeReader> vecSubsetRenderMethod = reader.GetImmediateChildren( "SubsetRenderMethod" );
 	for( size_t i=0; i<vecSubsetRenderMethod.size(); i++ )
 	{
 		int lod = 0;
-		string lod_str = vecSubsetRenderMethod[i].GetAttributeText( "lod" );
-		if( lod_str == "" )
-			lod = 0;
-		else
-			lod = to_int(lod_str);
-
-		clamp( lod, 0, 7 );
-
-		while( (int)m_vecSubsetNameToRenderMethod.size() <= lod )
-			m_vecSubsetNameToRenderMethod.push_back( map< string, CSubsetRenderMethod >() );
+//		string lod_str = vecSubsetRenderMethod[i].GetAttributeText( "lod" );
+//		if( lod_str == "" )
+//			lod = 0;
+//		else
+//			lod = to_int(lod_str);
+//
+//		clamp( lod, 0, 7 );
+//
+//		while( (int)m_vecSubsetNameToRenderMethod.size() <= lod )
+//			m_vecSubsetNameToRenderMethod.push_back( map< string, CSubsetRenderMethod >() );
 
 		string subset_name = "";
 		vecSubsetRenderMethod[i].GetChildElementTextContent( "Name", subset_name );
