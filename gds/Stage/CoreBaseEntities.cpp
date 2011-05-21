@@ -30,16 +30,17 @@
 #include "BE_SupplyItem.hpp"
 #include "BE_TextureAnimation.hpp"
 #include "BE_Turret.hpp"
-//#include "BE_EnemyAircraft.hpp"				// 20070106
-#include "BE_DirectionalLight.hpp"			// 20070108
-#include "BE_StaticParticleSet.hpp"			// 20070328
-#include "BE_NozzleExhaust.hpp"				// 20070328
-//#include "BE_EnemyShip.hpp"					// 20070520
-#include "BE_StaticGeometry.hpp"				// 20070817
-#include "BE_Skybox.hpp"						// 20070817
-#include "BE_CameraController.hpp"			// 20070909
-#include "BE_ScriptedCamera.hpp"				// 20070909
-#include "BE_IndividualEntity.hpp"				// 20070909
+//#include "BE_EnemyAircraft.hpp"    // 20070106
+#include "BE_DirectionalLight.hpp"   // 20070108
+#include "BE_StaticParticleSet.hpp"  // 20070328
+#include "BE_NozzleExhaust.hpp"      // 20070328
+//#include "BE_EnemyShip.hpp"        // 20070520
+#include "BE_StaticGeometry.hpp"     // 20070817
+#include "BE_Skybox.hpp"             // 20070817
+#include "BE_CameraController.hpp"   // 20070909
+#include "BE_ScriptedCamera.hpp"     // 20070909
+#include "BE_IndividualEntity.hpp"   // 20070909
+#include "BE_StaticLiquid.hpp"       // 20110418
 
 
 
@@ -153,6 +154,11 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 	pForItemEntity->m_strName = "__ForItemEntity__";
 	pForItemEntity->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pForItemEntity );
+
+	CBE_StaticLiquid *pStaticLiquid = CreateBaseEntity<CBE_StaticLiquid>( CBaseEntity::BE_STATICLIQUID );
+	pStaticLiquid->m_strName = "__StaticLiquidWater__";
+	pStaticLiquid->m_BoundingVolumeType = BVTYPE_AABB;
+	pBaseEntities.push_back( pStaticLiquid );
 
 	// Add preset base entities for games
 

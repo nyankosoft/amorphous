@@ -80,6 +80,7 @@
     <ClInclude Include="..\..\gds\GameCommon\ThirdPersonMotionController.hpp" />
     <ClInclude Include="..\..\gds\Script.hpp" />
     <ClInclude Include="..\..\gds\Stage.hpp" />
+    <ClInclude Include="..\..\gds\Stage\BE_StaticLiquid.hpp" />
     <ClInclude Include="..\..\gds\Stage\BinaryNode.hpp" />
     <ClInclude Include="..\..\gds\Stage\BSPMap.hpp" />
     <CustomBuildStep Include="..\..\gds\Stage\BSPMapFileExporter.hpp">
@@ -103,6 +104,7 @@
     <ClInclude Include="..\..\gds\Stage\HUD_PlayerAircraft.hpp" />
     <ClInclude Include="..\..\gds\Stage\HUD_PlayerBase.hpp" />
     <ClInclude Include="..\..\gds\Stage\HUD_PlayerShip.hpp" />
+    <ClInclude Include="..\..\gds\Stage\MirroredSceneTextureParam.hpp" />
     <ClInclude Include="..\..\gds\Stage\OverlapTestAABB.hpp" />
     <ClInclude Include="..\..\gds\Stage\ParticleThreadManager.hpp" />
     <ClInclude Include="..\..\gds\Stage\PlayerInfo.hpp" />
@@ -331,6 +333,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonCameraController.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonMotionController.cpp" />
+    <ClCompile Include="..\..\gds\Stage\BE_StaticLiquid.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

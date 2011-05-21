@@ -23,7 +23,7 @@
 #include "BE_PhysicsBaseEntity.hpp"
 #include "BE_Platform.hpp"
 #include "BE_Player.hpp"
-#include "BE_PlayerPseudoAircraft.hpp"		// 20061119
+#include "BE_PlayerPseudoAircraft.hpp"      // 20061119
 #include "BE_PlayerPseudoLeggedVehicle.hpp"
 #include "BE_PlayerShip.hpp"
 #include "BE_PointLight.hpp"
@@ -31,16 +31,17 @@
 #include "BE_SupplyItem.hpp"
 #include "BE_TextureAnimation.hpp"
 #include "BE_Turret.hpp"
-#include "BE_EnemyAircraft.hpp"				// 20070106
-#include "BE_DirectionalLight.hpp"			// 20070108
-#include "BE_StaticParticleSet.hpp"			// 20070328
-#include "BE_NozzleExhaust.hpp"				// 20070328
-#include "BE_EnemyShip.hpp"					// 20070520
-#include "BE_StaticGeometry.hpp"				// 20070817
-#include "BE_Skybox.hpp"						// 20070817
-#include "BE_CameraController.hpp"			// 20070909
-#include "BE_ScriptedCamera.hpp"				// 20070909
-#include "BE_IndividualEntity.hpp"				// 20070909
+#include "BE_EnemyAircraft.hpp"             // 20070106
+#include "BE_DirectionalLight.hpp"          // 20070108
+#include "BE_StaticParticleSet.hpp"         // 20070328
+#include "BE_NozzleExhaust.hpp"             // 20070328
+#include "BE_EnemyShip.hpp"                 // 20070520
+#include "BE_StaticGeometry.hpp"            // 20070817
+#include "BE_Skybox.hpp"                    // 20070817
+#include "BE_CameraController.hpp"          // 20070909
+#include "BE_ScriptedCamera.hpp"            // 20070909
+#include "BE_IndividualEntity.hpp"          // 20070909
+#include "BE_StaticLiquid.hpp"              // 20110418
 
 using namespace std;
 
@@ -109,6 +110,7 @@ CBaseEntity *CBaseEntityFactory::CreateBaseEntity( const unsigned int id )
 		case CBaseEntity::BE_CAMERACONTROLLER:	return new CBE_CameraController;
 		case CBaseEntity::BE_SCRIPTEDCAMERA:	return new CBE_ScriptedCamera;
 		case CBaseEntity::BE_INDIVIDUALENTITY:	return new CBE_IndividualEntity;
+		case CBaseEntity::BE_STATICLIQUID:		return new CBE_StaticLiquid;
 
 		default:
 			LOG_PRINT_ERROR( "invalid base entity id: " + to_string(id) );

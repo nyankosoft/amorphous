@@ -314,6 +314,10 @@ public:
 
 	void CreateAlphaEntities( CCopyEntity *pCopyEnt );
 
+	void InitEntityGraphics( CCopyEntity &entity,
+                             CShaderHandle& shader = CShaderHandle(),
+                             CShaderTechniqueHandle& tech = CShaderTechniqueHandle() );
+
 	virtual void UpdateBaseEntity( float frametime )
 	{
 		int pass = 1;
@@ -380,11 +384,12 @@ public:
 		BE_DIRECTIONALLIGHT,
 		BE_SCRIPTEDCAMERA,
 		BE_STATICPARTICLESET,
-		BE_NOZZLEEXHAUST,		// 00:19 2007/04/18
-		BE_STATICGEOMETRY,		// 17:27 2007/08/17
-		BE_SKYBOX,				// 17:27 2007/08/17
-		BE_CAMERACONTROLLER,	// 02:48 2007/09/09
+		BE_NOZZLEEXHAUST,       // 00:19 2007/04/18
+		BE_STATICGEOMETRY,      // 17:27 2007/08/17
+		BE_SKYBOX,              // 17:27 2007/08/17
+		BE_CAMERACONTROLLER,    // 02:48 2007/09/09
 		BE_INDIVIDUALENTITY,    // 01:23 2008/02/25
+		BE_STATICLIQUID,        // 22:21 2011/04/19
 		NUM_BASE_ENTITIES
 	};
 

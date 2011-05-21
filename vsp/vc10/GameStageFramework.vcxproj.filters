@@ -801,6 +801,12 @@
     <ClInclude Include="..\..\gds\GameCommon\ThirdPersonMotionController.hpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Stage\BE_StaticLiquid.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Stage\MirroredSceneTextureParam.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp">
@@ -1429,6 +1435,9 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonMotionController.cpp">
       <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Stage\BE_StaticLiquid.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
