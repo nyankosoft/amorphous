@@ -294,14 +294,17 @@ void SetClipPlane( const Plane& reflection_plane )
 	src_plane.Flip();
 
 	Matrix44 proj_view = g_Camera.GetProjectionMatrix() * g_Camera.GetCameraMatrix();
-//	Matrix44 inv_proj_view = Matrix44Transpose( proj_view );
+	Matrix44 inv_proj_view = proj_view.GetInverse();
+	Matrix44 inv_transpose_proj_view = Matrix44Transpose( inv_proj_view );
+
+	Matrix44 res = proj_view * inv_proj_view;
 
 	Plane reflection_plane_in_clipping_space;
 	Vector4 src_plane_normal4( src_plane.normal.x, src_plane.normal.y, src_plane.normal.z, 1.0f );
-	Vector4 reflection_plane_in_clipping_space_normal4 = proj_view * src_plane_normal4;
-	reflection_plane_in_clipping_space.normal = proj_view * src_plane.normal;
+	Vector4 reflection_plane_in_clipping_space_normal4 = inv_transpose_proj_view * src_plane_normal4;
+	reflection_plane_in_clipping_space.normal = inv_transpose_proj_view * src_plane.normal;
 	Vector3 pos_on_plane = src_plane.normal * src_plane.dist;
-	Vector3 pos_on_clipping_space_plane = proj_view * pos_on_plane;
+	Vector3 pos_on_clipping_space_plane = inv_transpose_proj_view * pos_on_plane;
 	reflection_plane_in_clipping_space.dist = Vec3Dot( pos_on_clipping_space_plane, reflection_plane_in_clipping_space.normal );
 
 	float plane_coefficients[] =
@@ -351,14 +354,24 @@ void CPlanarReflectionTest::Render()
 		pShaderMgr->SetViewTransform( view * mirror );
 	}*/
 
+	GraphicsDevice().SetClipPlane( 0, reflection_plane );
+	GraphicsDevice().EnableClipPlane( 0 );
+	GraphicsDevice().UpdateViewProjectionTransformsForClipPlane(
+		0,
+		g_Camera.GetCameraMatrix(),
+		g_Camera.GetProjectionMatrix()
+		);
+
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
 //	RenderReflectionClipPlane( /*reflection_plane*/ );
-	SetClipPlane( reflection_plane );
-	SetClipPlaneViaD3DXFunctions();
+/*	SetClipPlane( reflection_plane );
+	SetClipPlaneViaD3DXFunctions();*/
 	RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), g_Camera.GetPosition() ) );
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, 0 );
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	HRESULT hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, 0 );
+
+	GraphicsDevice().DisableClipPlane( 0 );
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
 
