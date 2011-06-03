@@ -9,7 +9,6 @@
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "Input/fwd.hpp"
-#include "Graphics/UnitSphere.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
