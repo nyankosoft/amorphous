@@ -4,8 +4,8 @@
 
 #include <list>
 #include "fwd.hpp"
-#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
-#include "Graphics/MeshModel/General3DMesh.hpp"
+#include "gds/Graphics/MeshModel/3DMeshModelBuilder.hpp"
+#include "gds/Graphics/MeshModel/General3DMesh.hpp"
 
 
 namespace MeshModel

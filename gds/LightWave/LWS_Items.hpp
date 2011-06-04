@@ -11,7 +11,7 @@
 #include <vector>
 #include <list>
 #include <boost/shared_ptr.hpp>
-#include "3DMath/Matrix34.hpp"
+#include "gds/3DMath/Matrix34.hpp"
 
 
 class CTextFileScanner;

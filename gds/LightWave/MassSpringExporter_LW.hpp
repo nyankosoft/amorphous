@@ -1,11 +1,9 @@
-
 #ifndef  __MASSSPRINGEXPORTER_LW_H__
 #define  __MASSSPRINGEXPORTER_LW_H__
 
 
-#include "PhysicsSim/MassSpringExporter.hpp"
-
-#include "LightWave/LightWaveObject.hpp"
+#include "gds/PhysicsSim/MassSpringExporter.hpp"
+#include "gds/LightWave/LightWaveObject.hpp"
 
 
 //==========================================================================

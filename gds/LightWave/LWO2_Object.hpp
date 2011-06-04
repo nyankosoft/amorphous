@@ -4,7 +4,7 @@
 
 #include "LWO2_Surface.hpp"
 #include "LWO2_Layer.hpp"
-#include "Support/progress_display.hpp"
+#include "gds/Support/progress_display.hpp"
 
 
 //=========================================================================================

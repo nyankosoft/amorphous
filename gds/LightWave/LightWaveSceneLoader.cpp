@@ -1,6 +1,6 @@
 #include "LightWaveSceneLoader.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Support/StringAux.hpp"
+#include "gds/Support/TextFileScanner.hpp"
+#include "gds/Support/StringAux.hpp"
 
 using std::string;
 using std::vector;

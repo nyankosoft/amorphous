@@ -1,7 +1,7 @@
 #include "3DShapesExporter_LW.hpp"
 #include "3DMeshModelBuilder_LW.hpp"
 #include "LWO2_Object.hpp"
-#include "Graphics/ShapesExtractor.hpp"
+#include "gds/Graphics/ShapesExtractor.hpp"
 
 using namespace boost;
 

@@ -3,9 +3,8 @@
 
 
 #include <boost/shared_ptr.hpp>
-
-#include "LightWave/LightWaveObject.hpp"
-#include "Graphics/MeshModel/CompositeMesh.hpp"
+#include "gds/LightWave/fwd.hpp"
+#include "gds/Graphics/MeshModel/CompositeMesh.hpp"
 
 
 //==========================================================================

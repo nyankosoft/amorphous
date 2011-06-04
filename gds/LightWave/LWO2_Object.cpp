@@ -1,5 +1,5 @@
 #include "LWO2_Object.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
 
 using namespace std;
 

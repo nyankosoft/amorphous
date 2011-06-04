@@ -1,11 +1,11 @@
 #include "CompositeMeshExporter_LW.hpp"
 #include "MassSpringExporter_LW.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "gds/Support/StringAux.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/LightWave/LightWaveObject.hpp"
+#include "gds/LightWave/3DMeshModelBuilder_LW.hpp"
 
-#include "LightWave/3DMeshModelBuilder_LW.hpp"
-
-#include "Graphics/MeshModel/ShadowVolumeMeshGenerator.hpp"
+#include "gds/Graphics/MeshModel/ShadowVolumeMeshGenerator.hpp"
 
 using std::string;
 using std::vector;

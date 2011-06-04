@@ -4,9 +4,9 @@ using namespace MeshModel;
 
 #include "LWO2_Common.hpp"
 #include "LWO2_Object.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/progress_display.hpp"
-#include "Support/lfs.hpp"
+#include "gds/Support/memory_helpers.hpp"
+#include "gds/Support/progress_display.hpp"
+#include "gds/Support/lfs.hpp"
 #include <boost/filesystem.hpp>
 
 using std::string;

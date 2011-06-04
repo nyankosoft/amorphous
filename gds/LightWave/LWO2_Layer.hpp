@@ -5,9 +5,9 @@
 #include "fwd.hpp"
 #include "LWO2_Surface.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Support/memory_helpers.hpp"
+#include "gds/3DMath/Vector3.hpp"
+#include "gds/Graphics/FloatRGBAColor.hpp"
+#include "gds/Support/memory_helpers.hpp"
 
 
 #include <vector>

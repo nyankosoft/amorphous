@@ -1,7 +1,7 @@
 #include "LWO2_Layer.hpp"
 #include "LWO2_Object.hpp"
-#include "3DMath/Vector2.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "gds/3DMath/Vector2.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
 
 #include "assert.h"
 #include <algorithm>
@@ -389,7 +389,7 @@ void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 }
 
 
-#include "Support/FixedVector.hpp"
+//#include "../Support/FixedVector.hpp"
 
 
 

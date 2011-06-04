@@ -1,11 +1,7 @@
-
 #include "MassSpringExporter_LW.hpp"
-
-#include "LightWave/3DMeshModelBuilder_LW.hpp"
-
-#include "PhysicsSim/MassSpringSim.hpp"
-
-#include "assert.h"
+#include "gds/LightWave/3DMeshModelBuilder_LW.hpp"
+#include "gds/PhysicsSim/MassSpringSim.hpp"
+//#include "assert.h"
 
 using namespace std;
 

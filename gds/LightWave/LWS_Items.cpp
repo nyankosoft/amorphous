@@ -1,3 +1,15 @@
+#include "LWS_Items.hpp"
+#include "gds/Support/Macro.h"
+#include "gds/Utilities/TextFileScannerExtensions.hpp"
+
+
+#define MAX_LINE_LENGTH	1024
+
+
+using namespace std;
+using namespace boost;
+
+
 /**
 Notes on LWS scene file
 
@@ -18,18 +30,6 @@ Each Line in a Channel
 Key (value) (time) (span type) (curve params) * 6
 
 */
-
-
-#include "LWS_Items.hpp"
-#include "Support/Macro.h"
-#include "Utilities/TextFileScannerExtensions.hpp"
-
-
-#define MAX_LINE_LENGTH	1024
-
-
-using namespace std;
-using namespace boost;
 
 
 void CLWS_Channel::Load( FILE* fp )
