@@ -3,10 +3,7 @@
 
 #pragma warning(disable:4786)
 #include <vector>
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
-//#include "3DMath/fwd.hpp"
-#include "3DMath/Matrix34.hpp"
+#include "Matrix34.hpp"
 
 #define for if( 0 );else for
 
