@@ -6,7 +6,7 @@
 #include "InputHandler.hpp"
 
 #include "../base.hpp"
-#include "Support/SafeDelete.hpp"
+#include "../Support/SafeDelete.hpp"
 
 
 /**

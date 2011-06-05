@@ -1,17 +1,11 @@
-#ifndef  __BINARYDATABASE_H__
-#define  __BINARYDATABASE_H__
+#ifndef  __BinaryDatabase_HPP__
+#define  __BinaryDatabase_HPP__
 
-
-#include <stdio.h>
-
-#include <vector>
-#include <string>
-#include <map>
 
 #include "Archive.hpp"
 #include "ArchiveObjectBase.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
+#include "../Log/DefaultLog.hpp"
 
 
 namespace GameLib1
@@ -430,4 +424,4 @@ public:
 
 
 
-#endif		/*  __BINARYDATABASE_H__  */
+#endif		/*  __BinaryDatabase_HPP__  */

@@ -6,8 +6,8 @@
 #include "InputHandler.hpp"
 
 /// auto repeat control requires the timer
-#include "Support/Timer.hpp"
-#include "Support/FixedVector.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/FixedVector.hpp"
 
 
 class CInputDeviceGroup

@@ -1,18 +1,14 @@
 #ifndef __GAMELIB1_3DMATH_SERIALIZATION_H__
 #define __GAMELIB1_3DMATH_SERIALIZATION_H__
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Matrix44.hpp"
-#include "3DMath/Transform.hpp"
-#include "3DMath/AABB3.hpp"
-#include "3DMath/OBB3.hpp"
-#include "3DMath/Capsule.hpp"
-
-#include "3DMath/Vector2.hpp"
-#include "3DMath/Matrix22.hpp"
-#include "3DMath/AABB2.hpp"
+#include "../../3DMath/Matrix34.hpp"
+#include "../../3DMath/Matrix44.hpp"
+#include "../../3DMath/Transform.hpp"
+#include "../../3DMath/AABB3.hpp"
+#include "../../3DMath/OBB3.hpp"
+#include "../../3DMath/Capsule.hpp"
+#include "../../3DMath/Matrix22.hpp"
+#include "../../3DMath/AABB2.hpp"
 
 #include "Archive.hpp"
 

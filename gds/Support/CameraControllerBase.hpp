@@ -2,8 +2,8 @@
 #define  __CameraControllerBase_H__
 
 
-#include "Graphics/Camera.hpp"
-#include "Input/fwd.hpp"
+#include "../Graphics/Camera.hpp"
+#include "../Input/fwd.hpp"
 
 
 class CameraControl

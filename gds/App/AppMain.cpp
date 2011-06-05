@@ -1,8 +1,8 @@
 #include "ApplicationBase.hpp"
-#include "Support/lfs.hpp"
-#include "Support/Profile.hpp"
-#include "Input/StdKeyboard.hpp"
-#include "Input/StdMouseInput.hpp"
+#include "gds/Support/lfs.hpp"
+#include "gds/Support/Profile.hpp"
+#include "gds/Input/StdKeyboard.hpp"
+#include "gds/Input/StdMouseInput.hpp"
 
 // Windows headers
 #include <windows.h>

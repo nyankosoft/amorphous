@@ -4,10 +4,10 @@
 
 #include <boost/shared_ptr.hpp>
 #include "ApplicationBase.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Support/CameraController.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Graphics/FloatRGBAColor.hpp"
+#include "gds/Support/CameraController.hpp"
 
 
 /**

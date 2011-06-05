@@ -6,17 +6,17 @@
 #include <boost/shared_ptr.hpp>
 #include "FreeImage.h"
 
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Support/ImageArchive.hpp"
-#include "Support/2DArray.hpp"
-#include "Support/Macro.h"
+#include "../Graphics/FloatRGBColor.hpp"
+#include "../Graphics/FloatRGBAColor.hpp"
+#include "ImageArchive.hpp"
+#include "2DArray.hpp"
+#include "Macro.h"
 
 // Comment out this header inclusion and do the following replacings
 // if you want to use CBitmapImage class without the log system.
 // 1. Replace 'LOG_PRINT_ERROR(x)' with 'cout << x'.
 // 2. Replace 'g_Log.Print(x)' with 'printf(x)'.
-#include "Support/Log/DefaultLog.hpp"
+#include "Log/DefaultLog.hpp"
 
 #pragma comment( lib, "FreeImage.lib" )
 

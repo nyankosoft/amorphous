@@ -4,7 +4,7 @@
 
 #include <string>
 #include <vector>
-#include "Input/fwd.hpp"
+#include "gds/Input/fwd.hpp"
 
 class CApplicationBase;
 

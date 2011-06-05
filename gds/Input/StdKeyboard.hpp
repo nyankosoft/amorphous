@@ -2,7 +2,7 @@
 #define  __STDKEYBOARD_H__
 
 
-#include "Input/InputDevice.hpp"
+#include "InputDevice.hpp"
 
 
 /**
