@@ -2,7 +2,10 @@
 #define __D3DHeaders_HPP__
 
 
+// Always build with Direct3D on VC++
+#ifdef _MSC_VER
 #define BUILD_WITH_DIRECT3D
+#endif _MSC_VER
 
 
 #ifdef BUILD_WITH_DIRECT3D
