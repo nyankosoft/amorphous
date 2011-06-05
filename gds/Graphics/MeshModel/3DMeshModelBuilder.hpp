@@ -2,12 +2,12 @@
 #define  __3DMESHMODELBUILDER_H__
 
 
-#include "Graphics/IndexedPolygon.hpp"
-#include "Graphics/TextureCoord.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/General3DVertex.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/MeshModel/General3DMesh.hpp"
+#include "../IndexedPolygon.hpp"
+#include "../TextureCoord.hpp"
+#include "../FloatRGBAColor.hpp"
+#include "../General3DVertex.hpp"
+#include "3DMeshModelArchive.hpp"
+#include "General3DMesh.hpp"
 
 
 namespace MeshModel

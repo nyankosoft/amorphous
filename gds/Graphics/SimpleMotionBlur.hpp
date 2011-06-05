@@ -3,7 +3,7 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "Graphics/fwd.hpp"
+#include "fwd.hpp"
 
 
 /**

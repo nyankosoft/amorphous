@@ -6,13 +6,12 @@
 #include <string>
 #include <boost/weak_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/thread.hpp>
 
 #include "fwd.hpp"
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceDescs.hpp"
 
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "../Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 //template<class T>class CBinaryDatabase<T>;

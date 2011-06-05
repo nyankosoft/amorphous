@@ -4,11 +4,11 @@
 
 #include <vector>
 
-#include "Graphics/fwd.hpp"
-#include "Graphics/Rect.hpp"
+#include "fwd.hpp"
+#include "Rect.hpp"
 using namespace Graphics;
 
-#include "Support/Singleton.hpp"
+#include "../Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

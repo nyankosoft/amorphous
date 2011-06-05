@@ -5,12 +5,12 @@
 #include <vector>
 #include <d3dx9.h>
 #include "../base.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/SurfaceFormat.hpp"
-#include "Graphics/GraphicsResourceDescs.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "Direct3D/Direct3D9.hpp"
+#include "TextureHandle.hpp"
+#include "SurfaceFormat.hpp"
+#include "GraphicsResourceDescs.hpp"
+#include "GraphicsComponentCollector.hpp"
+#include "Shader/ShaderTechniqueHandle.hpp"
 
 
 class CPostProcessFilterShader;

@@ -2,7 +2,7 @@
 #define  __2DPrimitiveRenderer_GL_HPP__
 
 
-#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "../../2DPrimitive/2DPrimitiveRenderer.hpp"
 #include <gl/gl.h>
 
 

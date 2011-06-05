@@ -2,11 +2,9 @@
 #define  __SkyboxMisc_HPP__
 
 
-#include <string>
 #include <boost/shared_ptr.hpp>
-#include <3DMath/Vector3.hpp>
-#include <Graphics/fwd.hpp>
-#include <Graphics/MeshObjectHandle.hpp>
+#include "../3DMath/Vector3.hpp"
+#include "MeshObjectHandle.hpp"
 
 
 //namespace graphics

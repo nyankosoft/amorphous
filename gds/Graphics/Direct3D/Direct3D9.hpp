@@ -2,7 +2,7 @@
 #define __DIRECT3D9_H__
 
 
-#include "Graphics/GraphicsDevice.hpp"
+#include "../GraphicsDevice.hpp"
 #include <d3dx9.h>
 
 //#pragma comment( lib, "d3dx9dt.lib" )

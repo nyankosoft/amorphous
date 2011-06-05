@@ -47,6 +47,8 @@ public:
 
 	Matrix34 m_MeshTransform;
 
+	std::vector<Matrix34> m_vecSubsetTransform;
+
 
 	//
 	// extra textures

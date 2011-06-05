@@ -3,15 +3,15 @@
 
 #include <vector>
 #include "../base.hpp"
+#include "../3DMath/fwd.hpp"
+#include "../3DMath/Plane.hpp"
 #include "AlphaBlend.hpp"
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
-#include "3DMath/fwd.hpp"
-#include "3DMath/Plane.hpp"
 #include "Rect.hpp"
 using namespace Graphics;
 
-#include "Support/Singleton.hpp"
+#include "../Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

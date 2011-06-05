@@ -1,13 +1,13 @@
 #ifndef  __COMPOSITEMESH_H__
 #define  __COMPOSITEMESH_H__
 
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-//#include "Graphics/MeshModel/MeshBone.hpp"
+#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+//#include "gds/Graphics/MeshModel/MeshBone.hpp"
 using namespace MeshModel;
 
 
-#include "PhysicsSim/MassSpringSim.hpp"
+#include "gds/PhysicsSim/MassSpringSim.hpp"
 
 
 

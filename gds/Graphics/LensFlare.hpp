@@ -2,12 +2,11 @@
 #define  __LensFlare_H__
 
 #include "../base.hpp"
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix44.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/2DPrimitive/2DRectSet.hpp"
+#include "../3DMath/Vector3.hpp"
+#include "../3DMath/Matrix44.hpp"
+#include "TextureHandle.hpp"
+#include "FloatRGBAColor.hpp"
+#include "2DPrimitive/2DRectSet.hpp"
 
 #include <vector>
 #include <string>

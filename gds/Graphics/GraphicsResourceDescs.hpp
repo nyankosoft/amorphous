@@ -8,9 +8,9 @@
 
 #include "../base.hpp"
 #include "fwd.hpp"
-#include "Graphics/SurfaceFormat.hpp"
-#include "XML/fwd.hpp"
-#include "Support/Serialization/Serialization.hpp"
+#include "SurfaceFormat.hpp"
+#include "../XML/fwd.hpp"
+#include "../Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

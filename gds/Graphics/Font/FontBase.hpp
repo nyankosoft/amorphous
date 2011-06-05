@@ -3,9 +3,9 @@
 
 
 #include "../../base.hpp"
-#include "3DMath/Vector2.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/AlphaBlend.hpp"
+#include "../../3DMath/Vector2.hpp"
+#include "../FloatRGBAColor.hpp"
+#include "../AlphaBlend.hpp"
 
 #include <string>
 

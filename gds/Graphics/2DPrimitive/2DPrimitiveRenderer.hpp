@@ -2,8 +2,8 @@
 #define  __2DPrimitiveRenderer_HPP__
 
 
-#include "Graphics/General2DVertex.hpp"
-#include "Graphics/GraphicsDevice.hpp"
+#include "../General2DVertex.hpp"
+#include "../GraphicsDevice.hpp"
 
 
 class C2DPrimitiveRenderer

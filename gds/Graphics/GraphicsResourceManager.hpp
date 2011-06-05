@@ -8,11 +8,9 @@
 
 #include "GraphicsComponentCollector.hpp"
 #include "GraphicsResources.hpp"
-#include "GraphicsResourceDescs.hpp"
-#include "GraphicsResourceEntries.hpp"
 #include "GraphicsResourceLoaders.hpp"
 
-#include "Support/Singleton.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

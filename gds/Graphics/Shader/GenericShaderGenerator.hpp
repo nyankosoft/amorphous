@@ -3,9 +3,9 @@
 
 
 #include "GenericShaderDesc.hpp"
-#include "Graphics/Shader/ShaderGenerator.hpp"
+#include "ShaderGenerator.hpp"
 
-#include "Graphics/Direct3D/Shader/Embedded/EmbeddedGenericHLSL.hpp"
+#include "../Direct3D/Shader/Embedded/EmbeddedGenericHLSL.hpp"
 
 
 class CGenericShaderGenerator : public CShaderGenerator

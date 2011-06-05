@@ -2,9 +2,9 @@
 #define  __PseudoNoiseEffect_H__
 
 
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/TextureHandle.hpp"
+#include "2DPrimitive/2DRect.hpp"
+#include "GraphicsComponentCollector.hpp"
+#include "TextureHandle.hpp"
 
 
 // Implementaions of noise effects

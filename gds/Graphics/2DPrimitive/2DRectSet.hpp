@@ -3,12 +3,11 @@
 
 
 #include "../../base.hpp"
-#include "3DMath/Vector2.hpp"
-#include "3DMath/Vector3.hpp"
-#include "Graphics/RectTriListIndex.hpp"
-#include "Graphics/2DPrimitive/2DPrimitive.hpp"
-#include "Graphics/2DPrimitive/2DRectSet.hpp"
-#include "Graphics/TextureHandle.hpp"
+#include "../../3DMath/Vector2.hpp"
+#include "../../3DMath/Vector3.hpp"
+#include "../RectTriListIndex.hpp"
+#include "../TextureHandle.hpp"
+#include "2DPrimitive.hpp"
 
 
 //=============================================================================
@@ -281,7 +280,7 @@ public:
 };
 
 
-#include "Graphics/Direct3D/2DPrimitive/2DRectSetImpl_D3D.hpp"
+#include "../Direct3D/2DPrimitive/2DRectSetImpl_D3D.hpp"
 
 class C2DPrimitiveFactoryImpl_D3D : public C2DPrimitiveFactoryImpl
 {
@@ -296,7 +295,7 @@ public:
 
 
 
-#include "Graphics/OpenGL/2DPrimitive/2DRectSetImpl_GL.hpp"
+#include "../OpenGL/2DPrimitive/2DRectSetImpl_GL.hpp"
 
 class C2DPrimitiveFactoryImpl_GL : public C2DPrimitiveFactoryImpl
 {

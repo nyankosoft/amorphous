@@ -3,15 +3,10 @@
 
 
 #include "../../base.hpp"
-#include "3DMath/Vector2.hpp"
-#include "3DMath/Vector3.hpp"
-#include "Graphics/RectTriListIndex.hpp"
-#include "Graphics/Direct3D/FVF_TLVertex.h"
-#include "Graphics/Direct3D/Conversions.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/2DPrimitive/2DPrimitive.hpp"
-#include "Graphics/2DPrimitive/2DRectSet.hpp"
-#include "Graphics/TextureHandle.hpp"
+#include "../FVF_TLVertex.h"
+#include "../Conversions.hpp"
+#include "../Direct3D9.hpp"
+#include "../2DPrimitive/2DRectSet.hpp"
 
 #include <vector>
 

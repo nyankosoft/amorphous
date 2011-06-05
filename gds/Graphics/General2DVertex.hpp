@@ -1,9 +1,9 @@
 #ifndef  __GENERAL2DVERTEX_H__
 #define  __GENERAL2DVERTEX_H__
 
-#include "3DMath/Vector3.hpp"
-#include "Graphics/TextureCoord.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
+#include "../3DMath/Vector3.hpp"
+#include "TextureCoord.hpp"
+#include "FloatRGBAColor.hpp"
 
 
 //=========================================================================================

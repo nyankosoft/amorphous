@@ -6,12 +6,11 @@
 #include <string>
 
 #include "fwd.hpp"
-#include "3DMath/Vector3.hpp"
 #include "FloatRGBColor.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/Serialization_Color.hpp"
+#include "gds/3DMath/Vector3.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/Serialization_3DMath.hpp"
+#include "gds/Support/Serialization/Serialization_Color.hpp"
 using namespace GameLib1::Serialization;
 
 
@@ -300,7 +299,7 @@ public:
 // A light which is applied to objects included in an aabb
 // - introduced experimentally to adjust the indoor brightness
 
-#include "3DMath/AABB3.hpp"
+#include "gds/3DMath/AABB3.hpp"
 
 class CZoneAmbientLight : public CLight
 {

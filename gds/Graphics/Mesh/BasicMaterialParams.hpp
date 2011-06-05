@@ -2,7 +2,7 @@
 #define __BasicMaterialParams_HPP__
 
 
-#include "Support/Serialization/SerializationEx.hpp"
+#include "../../Support/Serialization/SerializationEx.hpp"
 using namespace GameLib1::Serialization;
 
 

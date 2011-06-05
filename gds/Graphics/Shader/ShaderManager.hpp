@@ -3,17 +3,15 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "../../base.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Matrix44.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "3DMath/Transform.hpp"
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/D3DHeaders.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Support/stream_buffer.hpp"
+#include "../D3DHeaders.hpp"
+#include "../../base.hpp"
+#include "../../3DMath/Matrix34.hpp"
+#include "../../3DMath/Matrix44.hpp"
+#include "../../3DMath/MatrixConversions.hpp"
+#include "../../3DMath/Transform.hpp"
+#include "../../Support/stream_buffer.hpp"
 
 
 class CShaderManager

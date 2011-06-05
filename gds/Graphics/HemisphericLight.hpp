@@ -1,7 +1,7 @@
 #ifndef  __HEMISPHERICLIGHT_H__
 #define  __HEMISPHERICLIGHT_H__
 
-#include "3DMath/Vector3.hpp"
+#include "../3DMath/Vector3.hpp"
 #include "FloatRGBColor.hpp"
 #include "LightStructs.hpp"
 

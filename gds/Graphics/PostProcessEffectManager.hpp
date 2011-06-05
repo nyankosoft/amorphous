@@ -2,7 +2,7 @@
 #define  __PostProcessEffectManager_HPP__
 
 
-#include "Graphics/ShaderHandle.hpp"
+#include "ShaderHandle.hpp"
 #include "PostProcessEffect.hpp"
 
 

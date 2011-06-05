@@ -4,7 +4,7 @@
 
 #include "../fwd.hpp"
 #include "../HemisphericLight.hpp"
-#include "Support/FixedVector.hpp"
+#include "../../Support/FixedVector.hpp"
 
 
 class CLightCache

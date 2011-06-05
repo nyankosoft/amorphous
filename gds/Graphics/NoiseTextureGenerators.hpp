@@ -5,7 +5,7 @@
 #include "fwd.hpp"
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceDescs.hpp"
-#include "Support/MTRand.hpp"
+#include "../Support/MTRand.hpp"
 
 
 class CUniformNoiseTextureGenerator : public CTextureFillingAlgorithm

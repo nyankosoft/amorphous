@@ -3,8 +3,8 @@
 
 
 #include "../base.hpp"
-#include "Graphics/MeshModel/PrimitiveShapeMeshes.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "MeshModel/PrimitiveShapeMeshes.hpp"
+#include "MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

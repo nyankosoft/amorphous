@@ -5,20 +5,20 @@
 #include <string>
 #include <vector>
 
-#include "3DMath/Vector3.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/TextureCoord.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/32BitColor.hpp"
-#include "Graphics/VertexFormat.hpp"
+#include "../../3DMath/Vector3.hpp"
+#include "../fwd.hpp"
+#include "../TextureCoord.hpp"
+#include "../FloatRGBAColor.hpp"
+#include "../32BitColor.hpp"
+#include "../VertexFormat.hpp"
 #include "../Mesh/BasicMaterialParams.hpp"
 
-#include "Support/Serialization/SerializationEx.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "../../Support/2DArray.hpp"
+#include "../../Support/Serialization/SerializationEx.hpp"
+#include "../../Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 
-#include "Support/2DArray.hpp"
 
 
 //namespace GameLib1

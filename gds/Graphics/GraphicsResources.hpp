@@ -6,11 +6,10 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/thread.hpp>
 #include "fwd.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/GraphicsResourceDescs.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "Support/fwd.hpp"
+#include "GraphicsResourceDescs.hpp"
+#include "FloatRGBAColor.hpp"
+#include "../Support/Serialization/BinaryDatabase.hpp"
+#include "../Support/fwd.hpp"
 #include <gl/gl.h>
 
 

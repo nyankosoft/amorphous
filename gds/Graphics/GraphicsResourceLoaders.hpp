@@ -2,14 +2,14 @@
 #define  __GraphicsResourceLoaders_H__
 
 
-#include "Graphics/fwd.hpp"
-using namespace MeshModel;
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceEntries.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/stream_buffer.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "../Support/SafeDelete.hpp"
+#include "../Support/stream_buffer.hpp"
+#include "../Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
+
+using namespace MeshModel;
 
 
 class CBitmapImage;
