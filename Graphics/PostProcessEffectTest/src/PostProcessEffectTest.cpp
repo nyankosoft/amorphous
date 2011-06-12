@@ -1,13 +1,14 @@
 #include "PostProcessEffectTest.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/MeshGenerators.hpp"
-#include "Graphics/GraphicsResourceManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/Font/BuiltinFonts.hpp"
-#include "Graphics/SkyboxMisc.hpp"
-#include "Support/CameraController_Win32.hpp"
-#include "Support/ParamLoader.hpp"
-#include "Input.hpp"
+#include "gds/Graphics/Mesh/BasicMesh.hpp"
+#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/GraphicsResourceManager.hpp"
+#include "gds/Graphics/Shader/ShaderManager.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Graphics/SkyboxMisc.hpp"
+#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Input.hpp"
 
 using std::string;
 using namespace boost;

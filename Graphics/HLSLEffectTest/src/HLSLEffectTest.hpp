@@ -2,16 +2,13 @@
 #define  __HLSLEffectTest_H__
 
 
-#include "3DMath/Matrix34.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/ShaderHandle.hpp"
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "Input/fwd.hpp"
-#include "Input.hpp"
-#include "GUI/fwd.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/Graphics/TextureHandle.hpp"
+#include "gds/Graphics/ShaderHandle.hpp"
+#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Input/fwd.hpp"
+#include "gds/GUI/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 

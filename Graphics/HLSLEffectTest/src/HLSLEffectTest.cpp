@@ -7,6 +7,7 @@
 #include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/Macro.h"
 #include "gds/Utilities/TextFileScannerExtensions.hpp"
+#include "gds/Input.hpp"
 #include "gds/GUI.hpp"
 
 using std::string;

@@ -2,17 +2,11 @@
 #define  __PostProcessEffectTest_HPP__
 
 
-#include "3DMath/Vector3.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/ShaderHandle.hpp"
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/ShaderLightManager.hpp"
-#include "Graphics/PostProcessEffectManager.hpp"
-#include "Input/fwd.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/Graphics/ShaderHandle.hpp"
+#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Graphics/PostProcessEffectManager.hpp"
+#include "gds/Input/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
