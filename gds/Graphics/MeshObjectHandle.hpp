@@ -5,9 +5,6 @@
 #include "fwd.hpp"
 #include "GraphicsResourceHandle.hpp"
 
-#include "../Support/Serialization/ArchiveObjectBase.hpp"
-using namespace GameLib1::Serialization;
-
 
 class CMeshObjectHandle : public CGraphicsResourceHandle
 {

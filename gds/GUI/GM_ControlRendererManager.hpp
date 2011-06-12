@@ -8,7 +8,6 @@
 
 #include "fwd.hpp"
 #include "GM_ControlRenderer.hpp"
-#include "Graphics/fwd.hpp"
 
 
 /**

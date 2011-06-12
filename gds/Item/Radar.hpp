@@ -1,11 +1,8 @@
 #ifndef  __Radar_H__
 #define  __Radar_H__
 
-//#include "3DMath/Matrix34.hpp"
+
 #include "GameItem.hpp"
-#include "Stage/EntityHandle.hpp"
-#include "Stage/fwd.hpp"
-#include "../base.hpp"
 
 
 class CRadar;

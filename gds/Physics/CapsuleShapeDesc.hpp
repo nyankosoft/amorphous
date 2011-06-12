@@ -2,8 +2,6 @@
 #define  __PhysCapsuleShapeDesc_H__
 
 
-#include "3DMath/Matrix34.hpp"
-
 #include "fwd.hpp"
 #include "ShapeDesc.hpp"
 

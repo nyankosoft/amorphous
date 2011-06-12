@@ -9,8 +9,6 @@
 #include "gds/MotionSynthesis/BlendNode.hpp"
 #include "gds/Input/InputHandler.hpp"
 #include "gds/XML/fwd.hpp"
-#include "Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
 
 
 namespace msynth

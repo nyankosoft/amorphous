@@ -3,7 +3,6 @@
 
 //#include <queue>
 #include <list>
-#include "3DMath/Matrix34.hpp"
 #include "MotionPrimitive.hpp"
 #include "MotionBlender.hpp"
 #include "fwd.hpp"

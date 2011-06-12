@@ -5,10 +5,6 @@
 #include "fwd.hpp"
 #include "ShapeDesc.hpp"
 
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
-
 #include <assert.h>
 
 

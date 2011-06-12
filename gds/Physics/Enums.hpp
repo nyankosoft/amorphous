@@ -2,7 +2,6 @@
 #define  __PhysEnums_H__
 
 
-#include "3DMath/Vector3.hpp"
 #include "fwd.hpp"
 #include "Ray.hpp"
 
