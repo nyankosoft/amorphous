@@ -55,14 +55,16 @@ static void CreateScriptFileListBySearchingDirectory( path script_dir_path,
 	      script_itr != end_itr;
 	      ++script_itr )
 	{
-		if( is_directory( *script_itr ) )
+		const path pathname = (*script_itr).path();
+
+		if( is_directory( pathname ) )
 			continue;
 
 		// load the python script files
-		if( lfs::get_ext((*script_itr).string()) != "py" )
+		if( lfs::get_ext(pathname.string()) != "py" )
 			continue;
 
-		script_file_list.push_back( (*script_itr).string() );
+		script_file_list.push_back( pathname.string() );
 
 //		MsgBox( string("script file: ") + (*script_itr).string() );
 	}
@@ -91,7 +93,7 @@ void UpdateScriptArchives( const std::string & src_dir_path,
 		if ( !is_directory( *itr ) )
 			continue;
 
-		if( (*itr).string().find(".svn") != string::npos )
+		if( (*itr).path().string().find(".svn") != string::npos )
 			continue;
 
 		path script_dir_path = *itr;
@@ -130,7 +132,7 @@ void UpdateScriptArchives( const std::string & src_dir_path,
 
 		if( 0 < script_archive.m_vecBuffer.size() )
 		{
-			string output_filename = output_dir_path + script_dir_path.leaf() + ".bin";
+			string output_filename = output_dir_path + script_dir_path.leaf().string() + ".bin";
 //			MsgBox( string("output archive file: ") + output_filename );
 			script_archive.SaveToFile( output_filename );
 		}

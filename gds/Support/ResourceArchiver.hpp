@@ -55,7 +55,7 @@ public:
 
 	bool IsImageFormatSupported( const boost::filesystem::path& image_filepath ) const
 	{
-		std::string ext = image_filepath.extension();
+		std::string ext = image_filepath.extension().string();
 		boost::algorithm::to_lower( ext );
 
 		if( ext == ".bmp"
