@@ -4,9 +4,9 @@
 
 #include <float.h>
 
-#include "3DMath/Matrix34.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "../3DMath/Matrix34.hpp"
+#include "../Support/Serialization/Serialization.hpp"
+#include "../Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"

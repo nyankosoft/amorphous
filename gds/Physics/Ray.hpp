@@ -2,7 +2,7 @@
 #define  __PhysRay_H__
 
 
-#include "3DMath/Matrix34.hpp"
+#include "../3DMath/Matrix34.hpp"
 #include "fwd.hpp"
 
 

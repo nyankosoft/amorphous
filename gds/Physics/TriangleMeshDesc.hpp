@@ -3,11 +3,9 @@
 
 
 #include <vector>
-#include "3DMath/Vector3.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "../3DMath/Vector3.hpp"
+#include "../Support/Serialization/Serialization.hpp"
+#include "../Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"

@@ -1,4 +1,3 @@
-
 #ifndef  __DEBUGOUTPUT_H__
 #define  __DEBUGOUTPUT_H__
 
@@ -6,10 +5,10 @@
 #include <vector>
 #include <string>
 
-#include "base.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
+#include "../base.hpp"
+#include "../Graphics/fwd.hpp"
+#include "../Graphics/2DPrimitive/2DRect.hpp"
+#include "../Graphics/GraphicsComponentCollector.hpp"
 
 
 template<class T>
@@ -247,8 +246,8 @@ public:
 
 
 
-#include "Support/SafeDelete.hpp"
-#include "Support/Singleton.hpp"
+#include "SafeDelete.hpp"
+#include "Singleton.hpp"
 using namespace NS_KGL;
 
 #define GlobalDebugOutput (*CGlobalDebugOutput::Get())

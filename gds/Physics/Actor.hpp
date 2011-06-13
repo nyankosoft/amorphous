@@ -4,8 +4,8 @@
 
 #include <vector>
 #include "../base.hpp"
-#include "3DMath.hpp"
-#include "Support/SafeDeleteVector.hpp"
+#include "../3DMath.hpp"
+#include "../Support/SafeDeleteVector.hpp"
 
 #include "fwd.hpp"
 #include "Enums.hpp"

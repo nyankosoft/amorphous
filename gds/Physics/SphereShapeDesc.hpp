@@ -6,11 +6,6 @@
 #include "ShapeDesc.hpp"
 
 
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
-
-
 namespace physics
 {
 

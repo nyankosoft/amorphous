@@ -2,8 +2,8 @@
 #define __PYMODULE_TEXTMESSAGE_H__
 
 
-#include "Script/PythonHeaders.hpp"
 #include "fwd.hpp"
+#include "../Script/PythonHeaders.hpp"
 
 
 //extern void SetTextMessageManager( CTextMessageManager* pTextMessageMgr );

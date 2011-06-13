@@ -1,7 +1,7 @@
 #include "TextMessageRenderer.hpp"
 
 #include "../Graphics/GraphicsEffectManager.hpp"
-#include "../Support/memory_helpers.hpp"
+#include "../Graphics/Font/FontBase.hpp"
 #include "../Support/Log/DefaultLog.hpp"
 #include "../Support/StringAux.hpp"
 
