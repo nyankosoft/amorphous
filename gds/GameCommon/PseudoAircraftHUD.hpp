@@ -2,10 +2,10 @@
 #define  __PSEUDOAIRCRAFT_HUD_H__
 
 
-#include "Graphics/2DPrimitive/2DRectSet.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "3DMath/Vector2.hpp"
-#include "3DMath/Vector3.hpp"
+#include "gds/Graphics/2DPrimitive/2DRectSet.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/3DMath/Vector2.hpp"
+#include "gds/3DMath/Vector3.hpp"
 
 #include <vector>
 #include <string>

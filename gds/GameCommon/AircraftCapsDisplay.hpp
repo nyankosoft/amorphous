@@ -4,11 +4,8 @@
 
 #include <vector>
 #include <string>
-#include "GUI/GM_StdControlRendererManager.hpp"
 #include "CriticalDamping.hpp"
-
-#include "Graphics/Rect.hpp"
-using namespace Graphics;
+#include "gds/GUI/GM_StdControlRendererManager.hpp"
 
 
 class CGI_Aircraft;

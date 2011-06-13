@@ -2,8 +2,8 @@
 #define __RangedSet_H__
 
 
-#include "Support/MTRand.hpp"
-#include "Support/Serialization/Serialization.hpp"
+#include "gds/Support/MTRand.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

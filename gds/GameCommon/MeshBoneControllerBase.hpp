@@ -5,11 +5,11 @@
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "3DMath/Transform.hpp"
-#include "Graphics/fwd.hpp"
-#include "XML/fwd.hpp"
+#include "gds/3DMath/Transform.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/XML/fwd.hpp"
 
-#include "Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

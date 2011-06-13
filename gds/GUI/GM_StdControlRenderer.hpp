@@ -6,14 +6,9 @@
 #include "GM_ControlRenderer.hpp"
 #include "GM_Control.hpp"
 
-#include "Graphics/fwd.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/GraphicsEffectHandle.hpp"
-#include "Graphics/Point.hpp"
-#include "Graphics/Rect.hpp"
-using namespace Graphics;
+#include "gds/Graphics/FloatRGBAColor.hpp"
+#include "gds/Graphics/GraphicsEffectHandle.hpp"
 
-#include <string>
 #include <vector>
 
 

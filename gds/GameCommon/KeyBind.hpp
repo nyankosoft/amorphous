@@ -1,10 +1,10 @@
 #ifndef  __KeyBind_H__
 #define  __KeyBind_H__
 
-#include "Input/InputHandler.hpp"
-#include "3DActionCode.hpp"
 
-#include "Support/Serialization/Serialization.hpp"
+#include "3DActionCode.hpp"
+#include "gds/Input/InputHandler.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

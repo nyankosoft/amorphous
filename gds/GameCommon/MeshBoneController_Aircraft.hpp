@@ -3,8 +3,8 @@
 
 
 #include "MeshBoneControllerBase.hpp"
-#include "GameCommon/RangedSet.hpp"
-#include "GameCommon/CriticalDamping.hpp"
+#include "gds/GameCommon/RangedSet.hpp"
+#include "gds/GameCommon/CriticalDamping.hpp"
 
 
 /**

@@ -2,13 +2,13 @@
 #define __MouseCursor_SINGLETON_H__
 
 
-#include "Support/Singleton.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
 
-#include "../base.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/Rect.hpp"
+#include "gds/base.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Graphics/TextureHandle.hpp"
+#include "gds/Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <string>

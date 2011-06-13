@@ -2,11 +2,11 @@
 #define __NozzleFlameParams_H__
 
 
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "gds/Utilities/TextFileScannerExtensions.hpp"
 
 /*
 class AircraftRecord : public IArchiveObjectBase

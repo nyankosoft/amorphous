@@ -4,10 +4,8 @@
 
 #include <string>
 
-#include "Support/Timer.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

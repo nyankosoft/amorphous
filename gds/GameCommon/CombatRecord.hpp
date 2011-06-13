@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "3DMath/Vector3.hpp"
+#include "gds/3DMath/Vector3.hpp"
 
 
 // TODO:

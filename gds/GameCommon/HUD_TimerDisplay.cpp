@@ -1,4 +1,5 @@
 #include "HUD_TimerDisplay.hpp"
+#include "Graphics/Font/FontBase.hpp"
 
 
 void HUD_TimerDisplay::Render( CFontBase *pFont, int sx, int sy )

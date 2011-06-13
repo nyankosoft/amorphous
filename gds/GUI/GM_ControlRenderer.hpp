@@ -18,8 +18,10 @@
 */
 
 
-#include "Graphics/fwd.hpp"
-#include "3DMath/Vector2.hpp"
+#include "gds/3DMath/Vector2.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/Rect.hpp"
+using namespace Graphics;
 
 #include "fwd.hpp"
 #include "GM_Static.hpp"
@@ -29,14 +31,6 @@
 #include "GM_ScrollBar.hpp"
 #include "GM_SubDialogButton.hpp"
 #include "GM_Dialog.hpp"
-
-#include "Graphics/Point.hpp"
-#include "Graphics/Rect.hpp"
-using namespace Graphics;
-
-#include <string>
-#include <vector>
-
 
 
 /**

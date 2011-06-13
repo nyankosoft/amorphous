@@ -4,8 +4,7 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "Support/SafeDeleteVector.hpp"
-#include "Support/Singleton.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

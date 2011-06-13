@@ -4,9 +4,9 @@
 
 #include <vector>
 #include <string>
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "GameCommon/CriticalDamping.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/3DMath/MathMisc.hpp"
+#include "gds/GameCommon/CriticalDamping.hpp"
 
 
 class CPseudoAircraftSimulator

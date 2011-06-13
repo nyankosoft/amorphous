@@ -2,12 +2,11 @@
 #define  __GM_CONTROL_H__
 
 
+#include <string>
 #include "fwd.hpp"
-#include "Graphics/Point.hpp"
-#include "Graphics/Rect.hpp"
+#include "gds/Graphics/Rect.hpp"
 using namespace Graphics;
 
-#include <string>
 
 class CGM_Keybind;
 

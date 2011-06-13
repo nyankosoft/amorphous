@@ -2,8 +2,8 @@
 #define  __GameApplicationBase_HPP__
 
 
-#include "Input/fwd.hpp"
-#include "Task/fwd.hpp"
+#include "gds/Input/fwd.hpp"
+#include "gds/Task/fwd.hpp"
 #include "ApplicationBase.hpp"
 
 class CGlobalInputHandler;

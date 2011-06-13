@@ -2,13 +2,7 @@
 #define __PYMODULE_GAMEITEMSHOP_H__
 
 
-#include "Script/PythonHeaders.hpp"
-#include <vector>
-#include <string>
-#include <boost/shared_ptr.hpp>
-
-#include "Support/Singleton.hpp"
-using namespace NS_KGL;
+#include "gds/Script/PythonHeaders.hpp"
 
 
 extern PyMethodDef g_PyModuleShopMethod[];

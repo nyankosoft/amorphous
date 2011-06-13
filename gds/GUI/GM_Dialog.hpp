@@ -1,15 +1,12 @@
 #ifndef  __GM_DIALOG_H__
 #define  __GM_DIALOG_H__
 
-#include "../base.hpp"
+#include "gds/base.hpp"
 #include "fwd.hpp"
 #include "GM_Event.hpp"
 #include "GM_Control.hpp"
 #include "GM_EventHandlerBase.hpp"
 #include <vector>
-
-#include "Graphics/Point.hpp"
-using namespace Graphics;
 
 
 //========================================================================================

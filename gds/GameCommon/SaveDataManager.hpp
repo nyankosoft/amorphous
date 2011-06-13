@@ -4,13 +4,12 @@
 
 #include <vector>
 #include <string>
-#include "Support/StringAux.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "gds/Support/StringAux.hpp"
+#include "gds/Support/Serialization/BinaryDatabase.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
-#include "Support/Singleton.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
 
 
