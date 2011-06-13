@@ -1,7 +1,7 @@
 #ifndef  __TRIANGLE_H__
 #define  __TRIANGLE_H__
 
-#include "gds/3DMath/Vector3.hpp"
+#include "gds/3DMath/Plane.hpp"
 #include "gds/3DMath/MathMisc.hpp"
 
 
