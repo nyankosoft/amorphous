@@ -4,7 +4,7 @@
 
 #include "fwd.hpp"
 #include "SoundSource.hpp"
-#include "3DMath/Vector3.hpp"
+#include "../3DMath/Vector3.hpp"
 #include <string>
 
 

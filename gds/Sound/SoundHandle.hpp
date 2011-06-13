@@ -4,9 +4,9 @@
 
 #include <string>
 #include "fwd.hpp"
-#include "Support/prealloc_pool.hpp"
-#include "Support/Serialization/ArchiveObjectBase.hpp"
-#include "Support/Serialization/Archive.hpp"
+#include "../Support/prealloc_pool.hpp"
+#include "../Support/Serialization/ArchiveObjectBase.hpp"
+#include "../Support/Serialization/Archive.hpp"
 using namespace GameLib1;
 using namespace Serialization;
 
