@@ -8,7 +8,7 @@
 #include <boost/python.hpp>
 #include <boost/thread.hpp>
 #include "ScriptArchive.hpp"
-#include "Support/Singleton.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

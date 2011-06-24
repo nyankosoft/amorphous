@@ -2,7 +2,7 @@
 #define  __ScriptArchive_H__
 
 
-#include "Support/SerializableStream.hpp"
+#include "gds/Support/SerializableStream.hpp"
 
 
 /**
