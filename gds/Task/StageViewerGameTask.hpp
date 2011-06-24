@@ -3,8 +3,8 @@
 
 
 #include "SingleStageGameTask.hpp"
-#include "Graphics/Camera.hpp"
-#include "Support/CameraController.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Support/CameraController.hpp"
 #include <boost/shared_ptr.hpp>
 
 

@@ -3,10 +3,10 @@
 
 
 #include "GameTask.hpp"
-#include "GUI/fwd.hpp"
-#include "Stage/fwd.hpp"
-#include "Stage/StageLoader.hpp"
-#include "Support/Timer.hpp"
+#include "gds/GUI/fwd.hpp"
+#include "gds/Stage/fwd.hpp"
+#include "gds/Stage/StageLoader.hpp"
+#include "gds/Support/Timer.hpp"
 
 class CFontBase;
 

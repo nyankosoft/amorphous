@@ -3,7 +3,7 @@
 
 
 #include "GameTask.hpp"
-#include "Stage/fwd.hpp"
+#include "gds/Stage/fwd.hpp"
 
 
 extern CStageSharedPtr g_pStage;

@@ -4,15 +4,15 @@
 // base class for game task classes
 
 
-#include "../base.hpp"
-#include "Support/Timer.hpp"
-#include "Input/fwd.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Support/SafeDelete.hpp"
+#include "gds/base.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Input/fwd.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Support/SafeDelete.hpp"
 
-#include "Graphics/RenderTask.hpp"
+#include "gds/Graphics/RenderTask.hpp"
 
 #include <map>
 

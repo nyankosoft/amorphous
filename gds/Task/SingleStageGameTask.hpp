@@ -3,9 +3,9 @@
 
 
 #include "GUIGameTask.hpp"
-#include "Graphics/fwd.hpp"
-#include "GUI/fwd.hpp"
-#include "Stage/fwd.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/GUI/fwd.hpp"
+#include "gds/Stage/fwd.hpp"
 
 
 class CSingleStageGameTask : public CGUIGameTask

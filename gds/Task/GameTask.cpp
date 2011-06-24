@@ -8,6 +8,7 @@
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "Graphics/PyModule_GraphicsElement.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
+#include "Graphics/Font/FontBase.hpp"
 #include "Support/DebugOutput.hpp"
 #include "Support/Profile.hpp"
 
