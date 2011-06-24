@@ -2,7 +2,7 @@
 #define  __MASSSPRINGEXPORTER_H__
 
 
-#include "PhysicsSim/MassSpringSim.hpp"
+#include "gds/PhysicsSim/MassSpringSim.hpp"
 
 
 class CMassSpringExporter

@@ -3,15 +3,11 @@
 
 
 #include <vector>
-#include "3DMath/Vector3.hpp"
-#include "3DMath/AABTree.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "gds/3DMath/Vector3.hpp"
+#include "gds/3DMath/AABTree.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
-
-
-#include <d3dx9.h>
 
 
 class CMS_Sphere : public IArchiveObjectBase
@@ -199,7 +195,7 @@ public:
 
 	inline CMS_PointState *GetControlPoints() { return m_paPoint; }
 
-	void UpdateWorldProperties( D3DXMATRIX *paWorldTransform );
+//	void UpdateWorldProperties( D3DXMATRIX *paWorldTransform );
 
 	void UpdateWorldProperties( Matrix34 *paWorldTransform );
 
