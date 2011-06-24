@@ -2,11 +2,11 @@
 #define  __TextureRenderTarget_HPP__
 
 
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/SurfaceFormat.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/GraphicsResourceDescs.hpp"
-#include "Graphics/TextureHandle.hpp"
+#include "FloatRGBAColor.hpp"
+#include "SurfaceFormat.hpp"
+#include "GraphicsComponentCollector.hpp"
+#include "GraphicsResourceDescs.hpp"
+#include "TextureHandle.hpp"
 
 
 class CTextureRenderTarget : public CGraphicsComponent

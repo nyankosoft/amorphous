@@ -4,10 +4,10 @@
 
 #include <vector>
 #include "fwd.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "GameCommon/CriticalDamping.hpp"
+#include "TextureHandle.hpp"
+#include "MeshObjectHandle.hpp"
+#include "../3DMath/Matrix34.hpp"
+#include "../GameCommon/CriticalDamping.hpp"
 
 
 //namespace ???

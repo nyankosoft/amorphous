@@ -2,7 +2,7 @@
 #define __PYMODULE_GRAPHICSELEMENT_H__
 
 
-#include "Script/PythonHeaders.hpp"
+#include "../Script/PythonHeaders.hpp"
 
 
 extern PyMethodDef g_PyModuleGraphicsElementMethod[];

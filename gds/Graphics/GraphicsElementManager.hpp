@@ -3,30 +3,16 @@
 
 
 #include "../base.hpp"
-#include "Graphics/GraphicsElements.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/2DPrimitive/2DFrameRect.hpp"
-#include "Graphics/2DPrimitive/2DRoundRect.hpp"
-#include "Graphics/2DPrimitive/2DTriangle.hpp"
-#include "Graphics/TextureCoord.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/Font/FontBase.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "3DMath/Vector2.hpp"
-#include "3DMath/Vector3.hpp"
-#include "3DMath/aabb2.hpp"
-
-// This will load all headers includeing this file...
-// How to avoid including "GraphicsEffectManager.hpp"?
-//#include "Graphics/all.hpp"
-
-
-#include "GameCommon/CriticalDamping.hpp"
-
-#include "Support/FixedVector.hpp"
-#include "Support/memory_helpers.hpp"
+#include "../Graphics/fwd.hpp"
+#include "../Graphics/GraphicsElements.hpp"
+#include "../Graphics/2DPrimitive/2DRect.hpp"
+#include "../Graphics/2DPrimitive/2DFrameRect.hpp"
+#include "../Graphics/2DPrimitive/2DRoundRect.hpp"
+#include "../Graphics/2DPrimitive/2DTriangle.hpp"
+#include "../Graphics/GraphicsComponentCollector.hpp"
+#include "../Graphics/TextureHandle.hpp"
+#include "../GameCommon/CriticalDamping.hpp"
+#include "../Support/FixedVector.hpp"
 
 #include <list>
 #include <algorithm>
