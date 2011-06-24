@@ -2,11 +2,10 @@
 #define  __ShaderManagerHub_H__
 
 
-#include "Graphics/Camera.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "3DMath/Matrix44.hpp"
+#include "FixedFunctionPipelineManager.hpp"
 #include "ShaderManager.hpp"
-#include "Support/Singleton.hpp"
+#include "../Camera.hpp"
+#include "../../Support/Singleton.hpp"
 using namespace NS_KGL;
 
 

@@ -2,6 +2,9 @@
 #define  __ShaderTechniqueHandle_H__
 
 
+#include <string.h>
+
+
 /**
   - Don't use a shader technique handle for different shader managers.
     even if the shaders have techniques with the same name.

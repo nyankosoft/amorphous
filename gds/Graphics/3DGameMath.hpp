@@ -2,9 +2,9 @@
 #define __3DGameMath_HPP__
 
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
-#include "3DMath/Quaternion.hpp"
+#include "../3DMath/Vector3.hpp"
+#include "../3DMath/Matrix33.hpp"
+#include "../3DMath/Quaternion.hpp"
 
 //#include <float.h>
 

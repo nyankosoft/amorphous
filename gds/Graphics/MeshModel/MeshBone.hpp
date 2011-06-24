@@ -4,9 +4,9 @@
 
 #include <vector>
 #include <string>
-#include "Graphics/fwd.hpp"
-#include "Support/memory_helpers.hpp"
-#include "3DMath/Transform.hpp"
+#include "../fwd.hpp"
+#include "../../Support/memory_helpers.hpp"
+#include "../../3DMath/Transform.hpp"
 
 
 //namespace GameLib1
