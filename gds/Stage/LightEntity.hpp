@@ -2,11 +2,10 @@
 #define  __LightEntity_H__
 
 
-#include "Support/prealloc_pool.hpp"
-#include "Graphics/HemisphericLight.hpp"
-#include "Graphics/FloatRGBColor.hpp"
+#include "gds/Support/prealloc_pool.hpp"
+#include "gds/Graphics/HemisphericLight.hpp"
+#include "gds/Graphics/FloatRGBColor.hpp"
 #include "CopyEntity.hpp"
-#include "CopyEntityDesc.hpp"
 
 
 class CBE_Light;

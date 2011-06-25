@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/GraphicsEffectManager.hpp"
-#include "GameCommon/HUD_TimerDisplay.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/Graphics/GraphicsEffectManager.hpp"
+#include "gds/GameCommon/HUD_TimerDisplay.hpp"
 
 
 class CGameTextWindow;

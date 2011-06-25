@@ -2,10 +2,10 @@
 #define __ENTITYNODE_H__
 
 
-#include "../base.hpp"
+#include "gds/base.hpp"
+#include "gds/Graphics/fwd.hpp"
 
 #include "fwd.hpp"
-#include "Graphics/fwd.hpp"
 #include "CopyEntity.hpp"
 #include "OverlapTestAABB.hpp"
 

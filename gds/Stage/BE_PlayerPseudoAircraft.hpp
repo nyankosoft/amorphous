@@ -1,18 +1,18 @@
 #ifndef  __BE_PLAYERPSEUDOAIRCRAFT_H__
 #define  __BE_PLAYERPSEUDOAIRCRAFT_H__
 
-#include <Stage/BE_Player.hpp>
-#include <Stage/BaseEntityHandle.hpp>
-#include <Stage/CopyEntity.hpp>
-#include <Stage/GameMessage.hpp>
-#include <Stage/BEC_PseudoAircraft.hpp>
-#include <Stage/HUD_PlayerAircraft.hpp>
-#include <Stage/SubDisplay.hpp>
+#include "gds/Stage/BE_Player.hpp"
+#include "gds/Stage/BaseEntityHandle.hpp"
+#include "gds/Stage/CopyEntity.hpp"
+#include "gds/Stage/GameMessage.hpp"
+#include "gds/Stage/BEC_PseudoAircraft.hpp"
+#include "gds/Stage/HUD_PlayerAircraft.hpp"
+#include "gds/Stage/SubDisplay.hpp"
 
-#include "Support/FixedVector.hpp"
-#include "GameCommon/PseudoAircraftSimulator.hpp"
-#include "Item/GI_Aircraft.hpp"
-#include "Item/Radar.hpp"
+#include "gds/Support/FixedVector.hpp"
+#include "gds/GameCommon/PseudoAircraftSimulator.hpp"
+#include "gds/Item/GI_Aircraft.hpp"
+#include "gds/Item/Radar.hpp"
 
 
 class CPlayerVisionMode

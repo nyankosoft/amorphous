@@ -2,7 +2,7 @@
 #define __PyModule_HUD_H__
 
 
-#include "Script/PythonHeaders.hpp"
+#include "gds/Script/PythonHeaders.hpp"
 #include <string>
 
 extern PyMethodDef g_PyModuleHUDMethod[];

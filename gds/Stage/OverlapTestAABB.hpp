@@ -1,10 +1,10 @@
 #ifndef  __OverlapTestAABB__H__
 #define  __OverlapTestAABB__H__
 
-#include "3DMath/AABB3.hpp"
-#include <vector>
 
-class CCopyEntity;
+#include <vector>
+#include "gds/3DMath/AABB3.hpp"
+#include "fwd.hpp"
 
 
 class COverlapTestAABB

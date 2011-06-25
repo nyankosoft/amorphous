@@ -3,22 +3,18 @@
 
 
 #include "fwd.hpp"
-#include "Graphics/fwd.hpp"
-#include "Physics/fwd.hpp"
-
 #include "EntityGroupHandle.hpp"
-#include "3DMath/AABB3.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/MeshObjectContainer.hpp"
-#include "Graphics/MeshContainerRenderMethod.hpp"
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "Support/TextFileScanner.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "gds/Physics/fwd.hpp"
+#include "gds/3DMath/AABB3.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics/TextureHandle.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/Graphics/MeshObjectContainer.hpp"
+#include "gds/Graphics/MeshContainerRenderMethod.hpp"
+#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "gds/Support/TextFileScanner.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

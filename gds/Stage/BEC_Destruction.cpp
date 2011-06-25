@@ -1,6 +1,6 @@
 #include "GameCommon/RandomDirectionTable.hpp"
-#include "Support/MTRand.hpp"
 #include "Physics/Actor.hpp"
+#include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 #include "Stage/BEC_Destruction.hpp"

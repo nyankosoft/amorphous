@@ -2,8 +2,8 @@
 #define __BE_PHYSICSBASEENTITY_H__
 
 #include "BaseEntity.hpp"
-#include "Physics/ActorDesc.hpp"
-#include "Physics/TriangleMeshDesc.hpp"
+#include "gds/Physics/ActorDesc.hpp"
+#include "gds/Physics/TriangleMeshDesc.hpp"
 
 
 class CBE_PhysicsBaseEntity : public CBaseEntity

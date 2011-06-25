@@ -5,16 +5,14 @@
 #include <boost/shared_ptr.hpp>
 
 #include "fwd.hpp"
-#include "Physics/fwd.hpp"
-
-#include "3DMath/AABB3.hpp"
 #include "CopyEntity.hpp"
 #include "EntityNode.hpp"
 #include "EntityGroupHandle.hpp"
 #include "BaseEntityHandle.hpp"
 #include "OverlapTestAABB.hpp"
 
-#include "Graphics/Camera.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Physics/fwd.hpp"
 
 class CBSPTree;
 

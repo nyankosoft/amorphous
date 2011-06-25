@@ -1,8 +1,8 @@
 #ifndef  __INPUTHANDLER_PLAYERBASE_H__
 #define  __INPUTHANDLER_PLAYERBASE_H__
 
-#include "Input/InputHandler.hpp"
-#include "GameCommon/3DActionCode.hpp"
+#include "gds/Input/InputHandler.hpp"
+#include "gds/GameCommon/3DActionCode.hpp"
 
 
 class CSystemInputHandler_Debug;

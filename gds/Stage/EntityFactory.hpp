@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "Support/shared_prealloc_pool.hpp"
-#include "Stage/fwd.hpp"
+#include "gds/Support/shared_prealloc_pool.hpp"
+#include "fwd.hpp"
 
 
 class CEntityFactory

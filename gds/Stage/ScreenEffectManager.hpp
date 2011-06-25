@@ -3,14 +3,14 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
-#include "../base.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "Graphics/PseudoNoiseEffect.hpp"
-#include "Support/FixedVector.hpp"
+#include "gds//base.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Graphics/TextureRenderTarget.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Graphics/PseudoNoiseEffect.hpp"
+#include "gds/Support/FixedVector.hpp"
 #include "ScreenEffect.hpp"
 
 

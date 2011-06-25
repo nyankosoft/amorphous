@@ -4,12 +4,11 @@
 
 #include "HUD_PlayerBase.hpp"
 
-#include "Graphics/fwd.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/Font/TextureFont.hpp"
-#include "GameTextSystem/fwd.hpp"
-#include "GameCommon/PseudoAircraftHUD.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/TextureHandle.hpp"
+#include "gds/Graphics/FloatRGBAColor.hpp"
+#include "gds/GameTextSystem/fwd.hpp"
+#include "gds/GameCommon/PseudoAircraftHUD.hpp"
 
 
 class CBE_PlayerPseudoAircraft;

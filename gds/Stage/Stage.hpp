@@ -2,15 +2,15 @@
 #define __STAGE_H__
 
 
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Physics/fwd.hpp"
+#include "gds/Sound/fwd.hpp"
+#include "gds/Input/fwd.hpp"
+
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Support/Timer.hpp"
+
 #include "fwd.hpp"
-#include "Graphics/fwd.hpp"
-#include "Physics/fwd.hpp"
-#include "Sound/fwd.hpp"
-#include "Input/fwd.hpp"
-
-#include "Graphics/Camera.hpp"
-#include "Support/Timer.hpp"
-
 #include "CopyEntity.hpp"
 #include "EntitySet.hpp"
 #include "EntityCollisionGroups.hpp"

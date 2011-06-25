@@ -2,10 +2,10 @@
 #define __PyModule_Stage_H__
 
 
-#include "Script/PythonHeaders.hpp"
-#include "Stage/fwd.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Physics/fwd.hpp"
+#include "fwd.hpp"
+#include "gds/Script/PythonHeaders.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Physics/fwd.hpp"
 
 
 extern PyMethodDef g_PyModuleStageMethod[];

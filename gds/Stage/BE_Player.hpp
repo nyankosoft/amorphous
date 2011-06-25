@@ -2,21 +2,17 @@
 #define  __BE_PLAYER_H__
 
 
-#include "../base.hpp"
 #include "BE_PhysicsBaseEntity.hpp"
 #include "BaseEntityHandle.hpp"
 #include "CopyEntity.hpp"
 #include "GameMessage.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/fwd.hpp"
-#include "Input/InputHandler.hpp"
-
-#include "GameCommon/3DActionCode.hpp"
-
-#include "GameCommon/CombatRecord.hpp"
-#include "../GUI/fwd.hpp" // Need to use the relative path to include the GUI/fwd.hpp of GameStageFramework. Otherwise the DefaultKeyBindFG.cpp of the FlightGame project include GUI/fwd.hpp of its project
-
-#include "Sound/SoundHandle.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Input/InputHandler.hpp"
+#include "gds/GameCommon/3DActionCode.hpp"
+#include "gds/GameCommon/CombatRecord.hpp"
+#include "gds/GUI/fwd.hpp"
+#include "gds/Sound/SoundHandle.hpp"
 
 class CInputHandler_PlayerBase;
 class HUD_PlayerBase;

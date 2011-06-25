@@ -2,12 +2,9 @@
 #define __PYMODULE_CAMERA_H__
 
 
-#include "Script/PythonHeaders.hpp"
+#include "fwd.hpp"
+#include "gds/Script/PythonHeaders.hpp"
 
-#include <string>
-
-
-class CStage;
 
 /*
  =======================================

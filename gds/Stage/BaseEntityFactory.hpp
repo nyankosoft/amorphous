@@ -2,9 +2,7 @@
 #define  __BaseEntityFactory_H__
 
 
-#include <string>
-
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"

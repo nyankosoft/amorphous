@@ -2,14 +2,13 @@
 #define  __STATICGEOMETRYFG_H__
 
 
-#include "Stage/fwd.hpp"
-#include "Stage/StaticGeometryBase.hpp"
-#include "Stage/StaticGeometryArchiveFG.hpp"
-#include "Physics/fwd.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "gds/Stage/fwd.hpp"
+#include "gds/Stage/StaticGeometryBase.hpp"
+#include "gds/Stage/StaticGeometryArchiveFG.hpp"
+#include "gds/Physics/fwd.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/Graphics/TextureHandle.hpp"
+#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

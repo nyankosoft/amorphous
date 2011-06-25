@@ -2,13 +2,12 @@
 #define __STAGEGRAPH_SINGLETON_H__
 
 
-#include "Script/PythonHeaders.hpp"
+#include "gds/Script/PythonHeaders.hpp"
 
-#include "Support/Singleton.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 

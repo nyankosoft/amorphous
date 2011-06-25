@@ -2,7 +2,7 @@
 #define  __EntityHandle_H__
 
 
-#include "3DMath/Matrix34.hpp"
+#include "gds/3DMath/Matrix34.hpp"
 #include <boost/weak_ptr.hpp>
 
 class CCopyEntity;

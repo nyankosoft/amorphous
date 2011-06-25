@@ -3,16 +3,11 @@
 
 
 #include "fwd.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Shader/ShaderParameter.hpp"
-#include "3DMath/Vector3.hpp"
-#include "3DMath/AABB3.hpp"
-#include "Physics/fwd.hpp"
-
-#include <vector>
-#include <string>
+#include "gds/Graphics/FloatRGBAColor.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/Graphics/Shader/ShaderParameter.hpp"
+#include "gds/3DMath/AABB3.hpp"
+#include "gds/Physics/fwd.hpp"
 
 
 class CStaticGeometryBase : public CGraphicsComponent

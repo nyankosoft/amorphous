@@ -4,7 +4,7 @@
 #include "BE_PhysicsBaseEntity.hpp"
 
 #include "BaseEntityHandle.hpp"
-#include "Sound/SoundHandle.hpp"
+#include "gds/Sound/SoundHandle.hpp"
 
 
 class CBE_Explosive : public CBE_PhysicsBaseEntity

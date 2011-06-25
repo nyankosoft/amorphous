@@ -2,16 +2,17 @@
 #define  __BEC_Destruction_H__
 
 
-#include "Support/Serialization/Archive.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "gds/GameCommon/RangedSet.hpp"
+#include "gds/Support/Serialization/Archive.hpp"
+#include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
-#include "GameCommon/RangedSet.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Stage/BaseEntityHandle.hpp"
-#include "Stage/Serialization_BaseEntityHandle.hpp"
-#include "Stage/fwd.hpp"
+#include "BaseEntityHandle.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
+#include "fwd.hpp"
+
+
+class CTextFileScanner;
 
 
 /**

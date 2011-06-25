@@ -1,14 +1,11 @@
 #ifndef  __STATICGEOMETRYARCHIVEFG_H__
 #define  __STATICGEOMETRYARCHIVEFG_H__
 
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+
+#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
-
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-
-#include "Support/Serialization/SerializationEx.hpp"
-using namespace GameLib1::Serialization;
 
 
 class CMeshSubset : public IArchiveObjectBase

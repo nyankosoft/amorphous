@@ -1,15 +1,14 @@
 #ifndef  __PLAYERINFO_H__
 #define  __PLAYERINFO_H__
 
-#include "Task/GameTask.hpp"
 #include "fwd.hpp"
 #include "BE_Player.hpp"
-#include "GameCommon/KeyBind.hpp"
-#include "GameCommon/SaveDataManager.hpp"
-#include "GameCommon/PlayTime.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Singleton.hpp"
+#include "gds/Task/GameTask.hpp"
+#include "gds/GameCommon/KeyBind.hpp"
+#include "gds/GameCommon/SaveDataManager.hpp"
+#include "gds/GameCommon/PlayTime.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
 
 #include <boost/shared_ptr.hpp>

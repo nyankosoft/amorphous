@@ -2,8 +2,8 @@
 #define __PyModule_VisualEffect_H__
 
 
-#include "Script/PythonHeaders.hpp"
-#include "Stage/fwd.hpp"
+#include "fwd.hpp"
+#include "gds/Script/PythonHeaders.hpp"
 
 
 namespace gsf

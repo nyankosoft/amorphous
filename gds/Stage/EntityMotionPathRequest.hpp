@@ -2,12 +2,12 @@
 #define __ENTITYMOTIONPATHREQUEST_H__
 
 
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "Support/memory_helpers.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/3DMath/Quaternion.hpp"
+#include "gds/Support/memory_helpers.hpp"
+#include "fwd.hpp"
 #include <vector>
 
-class CCopyEntity;
 
 /**
  * holds a position of a path which an entity should follow

@@ -2,11 +2,11 @@
 #define  __CopyEntityDesc_H__
 
 
-#include "3DMath/Matrix34.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/Physics/fwd.hpp"
 #include "EntityGroupHandle.hpp"
 #include "fwd.hpp"
-#include "Physics/fwd.hpp"
 
 #include <string>
 

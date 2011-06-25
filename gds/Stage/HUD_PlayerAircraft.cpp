@@ -8,6 +8,7 @@
 #include "Graphics/2DPrimitive/2DFrameRect.hpp"
 #include "Graphics/2DPrimitive/2DTriangle.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
+#include "Graphics/Font/TextureFont.hpp"
 #include "GameTextSystem/TextMessageManager.hpp"
 #include "GameTextSystem/TextMessageRenderer.hpp"
 #include "Support/StringAux.hpp"
