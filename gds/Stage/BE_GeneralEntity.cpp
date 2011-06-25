@@ -85,7 +85,8 @@ void CBE_GeneralEntity::InitCopyEntity(CCopyEntity* pCopyEnt)
 		m_pStage->CreateEntity( light );
 	}
 
-	pCopyEnt->m_MeshHandle = m_MeshProperty.m_MeshObjectHandle;
+	if( !pCopyEnt->m_MeshHandle.IsLoaded() )
+		pCopyEnt->m_MeshHandle = m_MeshProperty.m_MeshObjectHandle;
 
 	if( m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
 		CreateAlphaEntities( pCopyEnt );
