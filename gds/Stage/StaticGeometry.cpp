@@ -636,7 +636,7 @@ bool CStaticGeometry::LoadFromFile( const std::string& db_filename, bool bLoadGr
 		CreateCollisionGeometry( *(m_pStage->GetPhysicsScene()) );
 	}
 
-	m_Archive.m_MeshSubsetTree.WriteToFile( "./debug/sg_aabtree-" + filesystem::path(db_filename).leaf() + ".txt" );
+	m_Archive.m_MeshSubsetTree.WriteToFile( "./debug/sg_aabtree-" + filesystem::path(db_filename).leaf().string() + ".txt" );
 
 //	double elapsed_time_in_stage_at_end = m_pStage->GetElapsedTime();
 
