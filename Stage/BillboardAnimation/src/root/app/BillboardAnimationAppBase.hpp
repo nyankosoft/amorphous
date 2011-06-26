@@ -2,9 +2,9 @@
 #define  __BillboardAnimationAppBase_HPP__
 
 
-#include "App/GameApplicationBase.hpp"
-#include "Task/StageViewerGameTask.hpp"
-#include "Task/GameTaskFactoryBase.hpp"
+#include "gds/App/GameApplicationBase.hpp"
+#include "gds/Task/StageViewerGameTask.hpp"
+#include "gds/Task/GameTaskFactoryBase.hpp"
 
 
 enum ShadowAppTaskID
