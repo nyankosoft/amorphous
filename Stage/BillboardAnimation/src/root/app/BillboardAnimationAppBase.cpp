@@ -71,8 +71,8 @@ void CBillboardAnimationAppTask::OnTriggerPulled()
 	Vector3 vStart = cam_pose.vPosition;
 	Vector3 vGoal  = vStart + cam_pose.matOrient.GetColumn(2) * 10.0f;
 	STrace tr;
-	tr.pvStart = &vStart;
-	tr.pvGoal  = &vGoal;
+	tr.vStart = vStart;
+	tr.vGoal  = vGoal;
 	tr.bvType = BVTYPE_DOT;
 
 	m_pStage->ClipTrace( tr );
