@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 

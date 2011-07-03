@@ -4,12 +4,12 @@
 #include <vector>
 #include <string>
 #include "fwd.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Matrix44.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
+#include "../3DMath/Matrix34.hpp"
+#include "../3DMath/Matrix44.hpp"
+#include "../3DMath/Quaternion.hpp"
+#include "../Graphics/fwd.hpp"
+#include "../Graphics/FloatRGBAColor.hpp"
+#include "../Graphics/MeshObjectHandle.hpp"
 
 
 enum eChannelType

@@ -2,10 +2,10 @@
 #define  __Skeleton_H__
 
 
-#include "3DMath/Vector3.hpp"
-#include "BVH/fwd.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "gds/3DMath/Vector3.hpp"
+#include "gds/BVH/fwd.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"

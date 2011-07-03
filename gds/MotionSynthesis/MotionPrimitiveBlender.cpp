@@ -1,7 +1,7 @@
 #include "MotionPrimitiveBlender.hpp"
 
 #include "Support/Macro.h"
-#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 using std::vector;
 using std::list;

@@ -8,6 +8,7 @@
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "gds/MotionSynthesis/BlendNode.hpp"
 #include "gds/Input/InputHandler.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
 #include "gds/XML/fwd.hpp"
 
 

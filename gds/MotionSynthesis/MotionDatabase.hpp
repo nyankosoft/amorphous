@@ -2,8 +2,8 @@
 #define  __MotionDatabase_H__
 
 
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/BinaryDatabase.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"

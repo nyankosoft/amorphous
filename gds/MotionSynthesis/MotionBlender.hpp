@@ -2,19 +2,9 @@
 #define  __MotionBlender_H__
 
 
-#include <vector>
-#include <string>
-#include <boost/array.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include <boost/foreach.hpp>
-
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
-
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/3DMath/MathMisc.hpp"
 #include "MotionPrimitive.hpp"
 
 

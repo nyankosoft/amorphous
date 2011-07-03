@@ -5,7 +5,7 @@
 #include "Skeleton.hpp"
 #include "TransformNode.hpp"
 #include "MotionPrimitive.hpp"
-#include "Graphics/fwd.hpp"
+#include "gds/Graphics/fwd.hpp"
 
 
 namespace msynth
