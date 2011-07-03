@@ -3,15 +3,15 @@
 // Desc: 
 //-----------------------------------------------------------------------------
 
-#include "App/GameWindowManager.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/GraphicsResourceManager.hpp"
-#include "Support/Timer.hpp"
-#include "Support/FileOpenDialog_Win32.hpp"
-#include "Support/lfs.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/MiscAux.hpp"
-#include "Support/SafeDelete.hpp"
+#include "gds/App/GameWindowManager.hpp"
+#include "gds/Graphics/Direct3D/Direct3D9.hpp"
+#include "gds/Graphics/GraphicsResourceManager.hpp"
+#include "gds/Support/Timer.hpp"
+#include "gds/Support/FileOpenDialog_Win32.hpp"
+#include "gds/Support/lfs.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/MiscAux.hpp"
+#include "gds/Support/SafeDelete.hpp"
 
 #include "BumpmapTextureMaker2_LWO2.h"
 
