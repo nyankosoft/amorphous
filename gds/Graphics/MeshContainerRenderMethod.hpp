@@ -5,14 +5,10 @@
 #include "TextureHandle.hpp"
 #include "MeshObjectHandle.hpp"
 #include "ShaderHandle.hpp"
-#include "MeshObjectContainer.hpp"
 #include "Shader/ShaderTechniqueHandle.hpp"
 #include "Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "XML/fwd.hpp"
-#include "Support/2DArray.hpp"
-#include "Support/Serialization/Serialization_2DArray.hpp"
-using namespace GameLib1::Serialization;
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/XML/fwd.hpp"
 
 
 class CShaderParamsLoader

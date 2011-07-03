@@ -3,7 +3,7 @@
 
 
 #include "ShaderTechniqueHandle.hpp"
-#include "Support/Serialization/Archive.hpp"
+#include "gds/Support/Serialization/Archive.hpp"
 
 
 namespace GameLib1

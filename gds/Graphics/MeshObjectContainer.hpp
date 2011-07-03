@@ -7,10 +7,10 @@
 #include "ShaderHandle.hpp"
 #include "Shader/ShaderTechniqueHandle.hpp"
 #include "Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "XML/fwd.hpp"
-#include "Support/2DArray.hpp"
-#include "Support/Serialization/Serialization_2DArray.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/XML/fwd.hpp"
+#include "gds/Support/2DArray.hpp"
+#include "gds/Support/Serialization/Serialization_2DArray.hpp"
 using namespace GameLib1::Serialization;
 
 
