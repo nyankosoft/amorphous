@@ -74,7 +74,7 @@ void CBVHViewer::RefreshFileList( const std::string& directory_path )
 //		else if ( IsMeshFile( itr ) )
 		else if ( itr->path().extension() == ".bvh" )
 		{
-			m_Filepaths.push_back( itr->string() );
+			m_Filepaths.push_back( itr->path().string() );
 		}
 	}
 }
