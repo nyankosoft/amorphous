@@ -2,18 +2,18 @@
 #define __StageUtility_HPP__
 
 
-#include "Stage/Stage.hpp"
-#include "Stage/EntityHandle.hpp"
-#include "Physics/fwd.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/AABB3.hpp"
+#include "gds/Stage/Stage.hpp"
+#include "gds/Stage/EntityHandle.hpp"
+#include "gds/Physics/fwd.hpp"
+#include "gds/Graphics/FloatRGBAColor.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/3DMath/AABB3.hpp"
 
 // for CStageCameraUtility
-#include "Stage/BE_ScriptedCamera.hpp"
+#include "gds/Stage/BE_ScriptedCamera.hpp"
 
 // for CStageLightUtility
-#include "Stage/LightEntity.hpp"
+#include "gds/Stage/LightEntity.hpp"
 
 
 class CStageUtility
@@ -33,11 +33,15 @@ public:
 	m_pStage(pStage)
 	{}
 
+	CEntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
+									const std::string& base_name );
+
 	CEntityHandle<> CreateNamedEntity( const std::string& entity_name,
 								const std::string& base_name,
 								const Matrix34& pose,
 								const Vector3& vel,
-								physics::CActorDesc *pPhysActorDesc );
+								physics::CActorDesc *pPhysActorDesc,
+								CMeshObjectHandle& mesh );
 };
 
 

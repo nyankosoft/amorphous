@@ -34,31 +34,12 @@ bool resources_exists( const std::string& resource_path )
 }
 
 
-CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name,
-								const std::string& base_name,
-								const Matrix34& pose,
-								const Vector3& vel,
-								physics::CActorDesc *pPhysActorDesc )
+CEntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
+								const std::string& base_name )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
 		return CEntityHandle<>();
-
-	CBaseEntityHandle baseentity_handle;
-	baseentity_handle.SetBaseEntityName( base_name.c_str() );
-
-	CCopyEntityDesc desc;
-	desc.SetDefault();
-	desc.pBaseEntityHandle = &baseentity_handle;
-	desc.strName = entity_name;
-	desc.WorldPose = pose;
-	desc.pPhysActorDesc = pPhysActorDesc;
-//	desc.SetWorldOrient( CreateOrientFromFwdDir( dir ) );
-
-	desc.vVelocity = vel;
-	desc.fSpeed = Vec3Length(vel);
-
-	desc.sGroupID = 0;
 
 	CCopyEntity *pEntity = pStage->CreateEntity( desc );
 
@@ -68,13 +49,11 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 	CBE_MeshObjectProperty& mesh_property = pEntity->pBaseEntity->MeshProperty();
 	if( 0 < mesh_property.m_ShaderTechnique.size_x() )
 	{
-/*		pEntity->m_pMeshRenderMethod
-			= shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-
-		pEntity->m_pMeshRenderMethod->MeshRenderMethod().push_back( CSubsetRenderMethod() );
-*/
-
 		pEntity->m_pMeshRenderMethod = mesh_property.m_pMeshRenderMethod;
+
+		pEntity->pBaseEntity->InitEntityGraphics( *pEntity,
+			mesh_property.m_ShaderHandle,
+			mesh_property.m_ShaderTechnique(0,0) );
 	}
 	else
 	{
@@ -99,6 +78,42 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 	}
 
 	return pEntity ? CEntityHandle<>( pEntity->Self() ) : CEntityHandle<>();
+}
+
+
+CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name,
+								const std::string& base_name,
+								const Matrix34& pose,
+								const Vector3& vel,
+								physics::CActorDesc *pPhysActorDesc,
+								CMeshObjectHandle& mesh
+								)
+{
+	shared_ptr<CStage> pStage = m_pStage.lock();
+	if( !pStage )
+		return CEntityHandle<>();
+
+	CBaseEntityHandle baseentity_handle;
+	baseentity_handle.SetBaseEntityName( base_name.c_str() );
+
+	CCopyEntityDesc desc;
+	desc.SetDefault();
+	desc.pBaseEntityHandle = &baseentity_handle;
+	desc.strName = entity_name;
+	desc.WorldPose = pose;
+	desc.pPhysActorDesc = pPhysActorDesc;
+//	desc.SetWorldOrient( CreateOrientFromFwdDir( dir ) );
+
+	desc.vVelocity = vel;
+	desc.fSpeed = Vec3Length(vel);
+
+	desc.MeshObjectHandle = mesh;
+
+	desc.sGroupID = 0;
+
+	return CreateNamedEntity( desc, base_name );
+
+//	return pEntity ? CEntityHandle<>( pEntity->Self() ) : CEntityHandle<>();
 }
 
 
@@ -470,7 +485,7 @@ CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( CMeshResourceDesc& mesh_
 	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
 	actor_desc.BodyDesc.fMass = mass;
 
-	CEntityHandle<> entity = CreateNamedEntity( entity_name, entity_attributes_name, pose, vel, &actor_desc );
+	CEntityHandle<> entity = CreateNamedEntity( entity_name, entity_attributes_name, pose, vel, &actor_desc, mesh_handle );
 	CCopyEntity *pEntityRawPtr = entity.GetRawPtr();
 	if( !pEntityRawPtr )
 		return CEntityHandle<>();
@@ -917,7 +932,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 
 	if( string(model).rfind(".msh") != string(model).length() - 4 )
 	{
-		// Not the mesh file. Consider this as a base entity name
+		// 'model' is not a pathname of a mesh file. Consider this as a base entity name
 		CreateEntityFromBaseEntity( model, name, pose );
 	}
 	
