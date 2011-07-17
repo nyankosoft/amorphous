@@ -1,21 +1,14 @@
 #ifndef  __WEAPONSYSTEM_H__
 #define  __WEAPONSYSTEM_H__
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <memory.h>
 
-#include "3DMath/Vector3.hpp"
-
-#include "GameItem.hpp"
 #include "GI_Weapon.hpp"
 #include "GI_Ammunition.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Stage/fwd.hpp"
-//#include "Stage/BaseEntityHandle.hpp"
-#include "Stage/EntityGroupHandle.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "gds/Stage/fwd.hpp"
+//#include "gds/Stage/BaseEntityHandle.hpp"
+#include "gds/Stage/EntityGroupHandle.hpp"
 
 
 // forward declerations

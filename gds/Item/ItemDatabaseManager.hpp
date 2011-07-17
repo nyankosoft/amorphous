@@ -4,10 +4,10 @@
 
 #include "fwd.hpp"
 #include "GameItem.hpp"
-#include "Support/Singleton.hpp"
+#include "gds/Support/Singleton.hpp"
 using namespace NS_KGL;
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
+#include "gds/Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 #include <boost/shared_ptr.hpp>

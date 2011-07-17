@@ -4,6 +4,7 @@
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntity.hpp"
 #include "Stage/CopyEntityDesc.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 //======================================================================================

@@ -3,14 +3,12 @@
 
 #include "GI_Weapon.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix34.hpp"
-
-#include "Graphics/Camera.hpp"
-#include "Stage/fwd.hpp"
-#include "Stage/ViewFrustumTest.hpp"
-#include "../base.hpp"
-#include "Input/ForceFeedback/fwd.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Stage/fwd.hpp"
+#include "gds/Stage/ViewFrustumTest.hpp"
+#include "gds/base.hpp"
+#include "gds/Input/ForceFeedback/fwd.hpp"
 
 
 class CWeaponSystem;

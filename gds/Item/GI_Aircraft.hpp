@@ -5,17 +5,17 @@
 #include "GameItem.hpp"
 #include "WeaponSystem.hpp"
 
-#include "Stage/BaseEntityHandle.hpp"
-#include "Stage/Serialization_BaseEntityHandle.hpp"
+#include "gds/Stage/BaseEntityHandle.hpp"
+#include "gds/Stage/Serialization_BaseEntityHandle.hpp"
 
-#include "Graphics/fwd.hpp"
-#include "GameCommon/PseudoAircraftSimulator.hpp"
-#include "GameCommon/NozzleFlameParams.hpp"
-#include "GameCommon/MeshBoneController_Aircraft.hpp"
-#include "GameCommon/MeshBoneControllerFactory.hpp"
-#include "GameCommon/RangedSet.hpp"
-#include "XML/fwd.hpp"
-#include "Input/ForceFeedback/fwd.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/GameCommon/PseudoAircraftSimulator.hpp"
+#include "gds/GameCommon/NozzleFlameParams.hpp"
+#include "gds/GameCommon/MeshBoneController_Aircraft.hpp"
+#include "gds/GameCommon/MeshBoneControllerFactory.hpp"
+#include "gds/GameCommon/RangedSet.hpp"
+#include "gds/XML/fwd.hpp"
+#include "gds/Input/ForceFeedback/fwd.hpp"
 
 
 //class CMeshBoneController_AircraftBase;

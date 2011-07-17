@@ -2,12 +2,12 @@
 #define  __ItemEntity_H__
 
 
-#include "Stage/fwd.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/EntityMotionPathRequest.hpp"
-#include "Stage/BaseEntityHandle.hpp"
-#include "Stage/GraphicsResourcesUpdateCallback.hpp"
+#include "gds/Stage/fwd.hpp"
+#include "gds/Stage/CopyEntity.hpp"
+#include "gds/Stage/CopyEntityDesc.hpp"
+#include "gds/Stage/EntityMotionPathRequest.hpp"
+#include "gds/Stage/BaseEntityHandle.hpp"
+#include "gds/Stage/GraphicsResourcesUpdateCallback.hpp"
 
 
 class CGameItem;

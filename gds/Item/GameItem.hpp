@@ -2,13 +2,13 @@
 #define  __GAMEITEM_H__
 
 
-#include "Item/ItemEntity.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/MeshObjectContainer.hpp"
-#include "GameCommon/LangID.hpp"
-#include "Stage/fwd.hpp"
-#include "XML/fwd.hpp"
-#include "Support/Serialization/Serialization.hpp"
+#include "gds/Item/ItemEntity.hpp"
+#include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/MeshObjectContainer.hpp"
+#include "gds/GameCommon/LangID.hpp"
+#include "gds/Stage/fwd.hpp"
+#include "gds/XML/fwd.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 #include "fwd.hpp"

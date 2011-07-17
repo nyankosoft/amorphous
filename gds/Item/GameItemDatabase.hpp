@@ -2,9 +2,8 @@
 #define  __GAMEITEMDATABASE_H__
 
 
-#include "Support/memory_helpers.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
+#include "gds/Support/memory_helpers.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 class CGameItem;

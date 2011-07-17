@@ -3,12 +3,11 @@
 
 #include "GameItem.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Sound/SoundHandle.hpp"
-#include "Sound/Serialization_SoundHandle.hpp"
-#include "Stage/fwd.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Sound/SoundHandle.hpp"
+#include "gds/Sound/Serialization_SoundHandle.hpp"
+#include "gds/Stage/fwd.hpp"
+#include "gds/Support/Serialization/Serialization_3DMath.hpp"
 
 class CWeaponSystem;
 struct SWeaponSlot;
