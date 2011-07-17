@@ -200,8 +200,16 @@ int CBaseEntity::GetEntityGroupID( CEntityGroupHandle& entity_group_handle )
 	if( base_entity_group == ENTITY_GROUP_ID_UNINITIALIZED )
 	{
 		// not initialized - try to get the id for the current entity group name
-		base_entity_group = m_pStage->GetEntitySet()->GetEntityGroupFromName( entity_group_handle.GetGroupName() );
-		entity_group_handle.SetID( base_entity_group );
+		if( 0 < entity_group_handle.GetGroupName().length() )
+		{
+			base_entity_group = m_pStage->GetEntitySet()->GetEntityGroupFromName( entity_group_handle.GetGroupName() );
+			entity_group_handle.SetID( base_entity_group );
+		}
+		else
+		{
+			// No group name is specified by the user. Set the group 0
+			base_entity_group = 0;
+		}
 	}
 
 	return base_entity_group;
@@ -264,8 +272,8 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 
 	bool src_mesh_uses_subset_render_methods = 0 < pContainerRenderMethod->SubsetRenderMethodMaps().size();
 
-	if( !src_mesh_uses_subset_render_methods && pContainerRenderMethod->MeshRenderMethod().empty() )
-		return;
+//	if( !src_mesh_uses_subset_render_methods && pContainerRenderMethod->MeshRenderMethod().empty() )
+//		return;
 
 	// support only single LOD for now.
 
@@ -274,12 +282,12 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 	if( !src_mesh_uses_subset_render_methods )
 	{
 		// create the list of material names
-		vector<string> vecName;
+		vector<string> subset_names;
 		for( int i=0; i<num_materials; i++ )
-			vecName.push_back( pMesh->Material(i).Name );
+			subset_names.push_back( pMesh->Material(i).Name );
 
-		pContainerRenderMethod->BreakMeshRenderMethodsToSubsetRenderMethods( vecName );
-		pContainerRenderMethod->MeshRenderMethod().resize( 0 );
+		pContainerRenderMethod->BreakMeshRenderMethodsToSubsetRenderMethods( subset_names );
+		pContainerRenderMethod->RenderMethodsAndSubsetIndices().resize( 0 );
 	}
 
 	const int num_alpha_subsets = (int)subsets_with_transparency.size();
