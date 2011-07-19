@@ -3,20 +3,13 @@
 
 #include "BE_PhysicsBaseEntity.hpp"
 #include "BaseEntityHandle.hpp"
-#include "Serialization_BaseEntityHandle.hpp"
 #include "CopyEntity.hpp"
-
 #include "EnemyState.hpp"
+#include "Serialization_BaseEntityHandle.hpp"
+#include "Support/Serialization/Serialization_3DMath.hpp"
 
 #include "Sound/SoundHandle.hpp"
 #include "GameCommon/RangedSet.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
-
-
-#define NUM_MAX_EXTRADATA  96
 
 
 class CBEC_MotionPath;
@@ -64,17 +57,18 @@ class CBE_Enemy : public CBE_PhysicsBaseEntity
 {
 protected:
 
+	enum eParams
+	{
+		NUM_BULLET_TYPES    = 2,
+		NUM_MAX_FRAGMENTS   = 16,
+		NUM_MAX_EXTRADATA   = 96,
+	};
+
 	SBE_EnemyExtraData m_aExtraData[NUM_MAX_EXTRADATA];
 	int m_iExtraDataIndex;
 	CEnemyState *m_apEnemyState[CEnemyState::NUM_STATES];
 
 	CEntityGroupHandle m_ProjectileEntityGroup;
-
-	enum eParams
-	{
-		NUM_BULLET_TYPES	= 2,
-		NUM_MAX_FRAGMENTS	= 16,
-	};
 
 	enum eAttrib
 	{

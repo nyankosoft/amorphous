@@ -4,8 +4,6 @@
 #include "BaseEntity.hpp"
 #include "BaseEntityHandle.hpp"
 
-#include <string>
-
 
 class CBE_FixedTurretPod : public CBaseEntity
 {
