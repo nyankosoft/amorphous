@@ -13,7 +13,8 @@ using namespace physics;
 
 CBE_IndividualEntity::CBE_IndividualEntity()
 {
-	m_bLighting = true;
+	SetLighting( true );
+
 	m_bNoClip = false;
 }
 

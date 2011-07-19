@@ -67,7 +67,7 @@ CBE_Enemy::CBE_Enemy()
 {
 	m_iExtraDataIndex = 0;
 
-	m_bLighting = true;
+	SetLighting( true );
 
 	m_AttribFlag = 0;
 

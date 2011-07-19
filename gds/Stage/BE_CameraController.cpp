@@ -35,7 +35,8 @@ m_pInputHandler(NULL),
 m_bEndingCutscene(false),
 m_CutsceneEndStartedTime(0)
 {
-	m_bLighting = false;
+	SetLighting( false );
+
 	m_bNoClip = true;
 
 	m_bUseCutsceneInputHandler = true;

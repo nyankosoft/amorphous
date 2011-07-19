@@ -14,8 +14,9 @@ CBE_GeneralEntity::CBE_GeneralEntity()
 {
 	m_sGEAttribute = 0;
 	m_fLifeTime = 0;
-	m_bLighting = true;
 	m_bNoClip = false;
+
+	SetLighting( true );
 
 //	m_MeshProperty.m_ShaderTechniqueID = SHADER_TECH_MESH_PPL_PNTLIGHT;
 	m_MeshProperty.m_ShaderTechnique.resize(1,1);

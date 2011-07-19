@@ -19,7 +19,7 @@ CBE_SmokeTrace::CBE_SmokeTrace()
 	m_bNoClip = true;
 	m_bNoClipAgainstMap = true;
 
-	m_bLighting = false;
+	SetLighting( false );
 
 	m_SmokeType = ST_PARTICLES_PER_DISTANCE;
 	m_iNumParticlesPerSec = 1;

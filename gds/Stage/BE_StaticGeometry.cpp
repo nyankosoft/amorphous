@@ -27,7 +27,7 @@ CBE_StaticGeometry::CBE_StaticGeometry()
 	m_bNoClip = true;
 	m_bNoClipAgainstMap = true;
 
-	m_bLighting = false;
+	SetLighting( false );
 }
 
 

@@ -37,7 +37,7 @@ CBE_Bullet::CBE_Bullet()
 
 	m_fBillboardRadius = 0.1f;
 
-	m_bLighting = false;
+	SetLighting( false );
 
 	m_RenderTrajectory = 0;
 }

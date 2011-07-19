@@ -367,7 +367,7 @@ void CScriptedCameraEntityHandle::SetUniformCameraShake( float start_time, float
 
 CBE_ScriptedCamera::CBE_ScriptedCamera()
 {
-	m_bLighting = false;
+	SetLighting( false );
 	m_bNoClip = true;
 }
 

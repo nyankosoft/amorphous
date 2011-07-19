@@ -774,11 +774,6 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 	pNewCopyEnt->touch_plane.dist   = 0;
 	pNewCopyEnt->touch_plane.normal = Vector3(0,0,0);
 
-	if( rBaseEntity.m_bLighting )
-		pNewCopyEnt->RaiseEntityFlags( BETYPE_LIGHTING );
-
-//	pNewCopyEnt->bLighting = rBaseEntity.m_bLighting;
-
 	InitEntity( pNewEntitySharedPtr, rCopyEntityDesc.pParent, pBaseEntity, rCopyEntityDesc.pPhysActorDesc );
 
 	pNewCopyEnt->Init( rCopyEntityDesc );

@@ -15,7 +15,7 @@ CBE_Door::CBE_Door()
 	m_bNoClip = false;
 	m_bNoClipAgainstMap = true;
 
-	m_bLighting = true;
+	SetLighting( true );
 
 	m_fOpenLength = 1.0f;
 	m_vLocalOpenDirection = Vector3(1,0,0);

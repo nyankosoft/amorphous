@@ -15,7 +15,8 @@ using namespace std;
 CBE_FixedTurretPod::CBE_FixedTurretPod()
 {
 	m_bNoClip = true;
-	m_bLighting = true;
+
+	SetLighting( true );
 
 	m_vTurretGunLocalOffset = Vector3(0,0,0);
 

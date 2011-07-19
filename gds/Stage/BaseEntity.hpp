@@ -151,9 +151,6 @@ protected:
 
 	float m_fLife;
 
-	/// indicates whether lighting should be applied to entity
-	bool m_bLighting;
-
 protected:
 
 	//
@@ -226,6 +223,9 @@ public:
 	inline void ClearEntityFlag( const unsigned int flag ) { m_EntityFlag &= (~flag); }
 
 	float GetRadius() const { return m_fRadius; }
+
+	/// Enable / disable the lighting to the entities created from this base entity
+	void SetLighting( bool lighting );
 
 	/// returns an id for an arbitrary entity group
     int GetEntityGroupID( CEntityGroupHandle& entity_group_handle );

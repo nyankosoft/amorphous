@@ -20,7 +20,8 @@ void Draw3DRectWithProgrammableShader( const C3DRect& rect, CShaderManager& shad
 CBE_LaserDot::CBE_LaserDot()
 {
 	m_bNoClip = true;
-	m_bLighting = false;
+
+	SetLighting( false );
 
 	Vector3 avRectVertex[4];
 

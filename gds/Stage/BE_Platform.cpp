@@ -16,7 +16,7 @@ CBE_Platform::CBE_Platform()
 	m_bNoClip = false;
 	m_bNoClipAgainstMap = true;
 
-	m_bLighting = true;
+	SetLighting( true );
 
 //	m_fSpring = 1.20f;
 //	m_fDamper = 0.05f;

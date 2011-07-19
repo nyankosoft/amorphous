@@ -163,7 +163,8 @@ CBaseEntity::CBaseEntity()
 
 	m_fLife = 0;
 
-	m_bLighting = false;	// lighting is disabled by dafault
+	// lighting is disabled by dafault
+	SetLighting( false );
 
 }
 
@@ -191,6 +192,15 @@ void CBaseEntity::SetStagePtr( CStageWeakPtr pStage )
 bool CBaseEntity::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
 {
 	return m_pStage->LoadBaseEntity( base_entity_handle );
+}
+
+
+void CBaseEntity::SetLighting( bool lighting )
+{
+	if( lighting )
+		RaiseEntityFlag( BETYPE_LIGHTING );
+	else
+		ClearEntityFlag( BETYPE_LIGHTING );
 }
 
 
@@ -1214,9 +1224,9 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 		if( scanner.TryScanLine( "LIGHTING", str ) )
 		{
 			if( str == "TRUE" )
-				m_bLighting = true;
+				SetLighting( true );
 			else
-				m_bLighting = false;
+				SetLighting( false );
 			continue;
 		}
 
@@ -1311,8 +1321,6 @@ void CBaseEntity::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_bNoClipAgainstMap;
 
 	ar & m_fLife;
-
-	ar & m_bLighting;
 
 	ar & m_bSweepRender;
 

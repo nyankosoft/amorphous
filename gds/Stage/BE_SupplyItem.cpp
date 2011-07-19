@@ -23,7 +23,7 @@ CBE_SupplyItem::CBE_SupplyItem()
 	m_iEffect = GM_HEALING;
 	m_fAmount = 0;
 
-	m_bLighting = true;
+	SetLighting( true );
 
 	RaiseEntityFlag( BETYPE_ITEM );
 

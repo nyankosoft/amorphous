@@ -29,7 +29,7 @@ CBE_Explosive::CBE_Explosive()
 	m_fExplosionAnimTimeOffset = 0;
 	m_fExplosionAnimRange = 0.4f;
 
-	m_bLighting = true;
+	SetLighting( true );
 
 	m_ExplosionSound.SetResourceName( "bom30" );
 
