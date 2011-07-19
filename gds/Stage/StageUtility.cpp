@@ -933,7 +933,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 	if( string(model).rfind(".msh") != string(model).length() - 4 )
 	{
 		// 'model' is not a pathname of a mesh file. Consider this as a base entity name
-		CreateEntityFromBaseEntity( model, name, pose );
+		return CreateEntityFromBaseEntity( model, name, pose );
 	}
 	
 	CMeshResourceDesc mesh_desc;
