@@ -133,6 +133,27 @@ public:
 	NumDirectionalLights(-1),
 	NumSpotLights(-1)
 	{}
+
+	bool operator==( const CGenericShaderDesc& rhs ) const
+	{
+		if( LightingTechnique    == rhs.LightingTechnique
+		 && ShaderLightingType   == rhs.ShaderLightingType
+		 && Specular             == rhs.Specular
+		 && VertexBlendType      == rhs.VertexBlendType
+		 && AlphaBlend           == rhs.AlphaBlend
+		 && EnvMap               == rhs.EnvMap
+		 && PlanerReflection     == rhs.PlanerReflection
+		 && NumPointLights       == rhs.NumPointLights
+		 && NumDirectionalLights == rhs.NumDirectionalLights
+		 && NumSpotLights        == rhs.NumSpotLights )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
 
