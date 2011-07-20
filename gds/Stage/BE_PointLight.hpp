@@ -2,7 +2,7 @@
 #define __BE_PointLight_H__
 
 #include "BE_Light.hpp"
-#include "BEC_Billboard.hpp"
+//#include "BEC_Billboard.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/HemisphericLight.hpp"
 
@@ -10,7 +10,7 @@
 #define CEDL_HAS_PARENT	1	// TODO: better parent/child control system
 
 
-class CBE_PointLight : public CBE_Light, CBEC_Billboard
+class CBE_PointLight : public CBE_Light//, CBEC_Billboard
 {
 private:
 

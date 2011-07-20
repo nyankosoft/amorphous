@@ -5,8 +5,7 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Direct3D/Conversions.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "3DMath/MatrixConversions.hpp"
 #include "3DMath/MathMisc.hpp"
 
@@ -27,7 +26,7 @@ CBE_PointLight::CBE_PointLight()
 
 	m_fGlareDiameter = 0.1f;
 
-	SetBillboardType( CBEC_Billboard::TYPE_RECT_ARRAY_AND_INDICES );
+//	SetBillboardType( CBEC_Billboard::TYPE_RECT_ARRAY_AND_INDICES );
 
 	m_fTimer = 0.0f;
 }
@@ -41,13 +40,13 @@ void CBE_PointLight::Init()
 		m_GlareTexture.Load( m_GlareTextureFilepath );
 */
 
-	CBEC_Billboard::Init();
+//	CBEC_Billboard::Init();
 
 //	float r = m_fGlareDiameter / 2.0f;
 
 	// calc texture coords & vertex colors since they don't change during runtime
 	// positions are calculated every frame
-	int i,j;
+/*	int i,j;
 	for(i=0; i<NUM_MAX_BILLBOARDS_PER_ENTITY; i++)
 	{
 		m_avBillboardRect[i*4+0].tex = TEXCOORD2(0,0);
@@ -58,25 +57,7 @@ void CBE_PointLight::Init()
 		for(j=0; j<4; j++)
 //			m_avBillboardRect[i*4+j].color = 0x40FFFFFF;
 			m_avBillboardRect[i*4+j].color = 0x30FFFFFF;
-	}
-
-/*
-	m_avGlareRect[0].vPosition = Vector3(-r, r, 0);
-	m_avGlareRect[1].vPosition = Vector3( r, r, 0);
-	m_avGlareRect[2].vPosition = Vector3( r,-r, 0);
-	m_avGlareRect[3].vPosition = Vector3(-r,-r, 0);
-
-		
-	// set the local coordinate of the billboard rectangle
-	m_avBillboardRect[0].tex = TEXCOORD2(0,0);
-	m_avBillboardRect[1].tex = TEXCOORD2(1,0);
-	m_avBillboardRect[2].tex = TEXCOORD2(1,1);
-	m_avBillboardRect[3].tex = TEXCOORD2(0,1);
-
-
-	for(int i=0; i<4; i++)
-		m_avGlareRect[i].color = 0x40FFFFFF;
-*/
+	}*/
 }
 
 
@@ -350,22 +331,18 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 			matWorld(2,3) = vPos.z;
 
 			// set vertices for billboards
-			m_avBillboardRect[vert_offset+0].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[0] );
-			m_avBillboardRect[vert_offset+1].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[1] );
-			m_avBillboardRect[vert_offset+2].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[2] );
-			m_avBillboardRect[vert_offset+3].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[3] );
+//			m_avBillboardRect[vert_offset+0].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[0] );
+//			m_avBillboardRect[vert_offset+1].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[1] );
+//			m_avBillboardRect[vert_offset+2].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[2] );
+//			m_avBillboardRect[vert_offset+3].vPosition = ToD3DXVECTOR3( matWorld * avBasePos[3] );
 			vert_offset += 4;
 		}
 	}
 
-//	DWORD dwZBufMode;
-//	pd3dDev->GetRenderState( D3DRS_ZENABLE, &dwZBufMode );
-//	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
 	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 
-	DrawBillboards( num_rects[0] * num_rects[1], 0, 0, m_pStage );
+//	DrawBillboards( num_rects[0] * num_rects[1], 0, 0, m_pStage );
 
-//	pd3dDev->SetRenderState( D3DRS_ZENABLE, dwZBufMode );
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
 }
@@ -386,7 +363,7 @@ bool CBE_PointLight::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
 	CBE_Light::LoadSpecificPropertiesFromFile( scanner );
 
-	CBEC_Billboard::LoadSpecificPropertiesFromFile( scanner );
+//	CBEC_Billboard::LoadSpecificPropertiesFromFile( scanner );
 
 
 	float r,g,b, a0,a1,a2;
@@ -424,7 +401,7 @@ bool CBE_PointLight::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 void CBE_PointLight::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_Light::Serialize( ar, version );
-	CBEC_Billboard::SerializeBillboardProperty( ar, version );
+//	CBEC_Billboard::SerializeBillboardProperty( ar, version );
 
 	ar & m_fGlareDiameter;
 	ar & m_GlareTextureFilepath;
