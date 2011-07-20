@@ -1,10 +1,7 @@
 #include "BE_DirectionalLight.hpp"
-#include "GameMessage.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
-#include "Stage/LightEntity.hpp"
+#include "LightEntity.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/3DGameMath.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
