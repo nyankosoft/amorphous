@@ -1,9 +1,6 @@
 #include "HLSLShaderLightManager.hpp"
-
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-
-#include <assert.h>
+#include "Support/Log/DefaultLog.hpp"
 
 
 CHLSLShaderLightManager::CHLSLShaderLightManager()
@@ -39,16 +36,9 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 {
 	if( !m_pEffect )
 	{
-		if( !(CShader::Get()->GetCurrentShaderManager()) )
-			return false;
-
-		m_pEffect = CShader::Get()->GetCurrentShaderManager()->GetEffect();
-	}
-
-	assert( m_pEffect != NULL );
-
-	if( !m_pEffect )
+		LOG_PRINT_ERROR( " m_pEffect is NULL." );
 		return false;
+	}
 
 	m_aPropertyHandle[LPH_NUM_DIRECTIONAL_LIGHTS]	= m_pEffect->GetParameterByName( NULL, "iLightDirNum" );
 	m_aPropertyHandle[LPH_DIRECTIONAL_LIGHT_OFFSET]	= m_pEffect->GetParameterByName( NULL, "iLightDirIni" );
