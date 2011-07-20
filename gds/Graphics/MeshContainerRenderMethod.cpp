@@ -1,4 +1,5 @@
 #include "MeshContainerRenderMethod.hpp"
+#include "MeshObjectContainer.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 #include "XML.hpp"
 #include "XML/LoadFromXMLNode_3DMath.hpp"
