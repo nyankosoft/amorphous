@@ -5,9 +5,6 @@
 
 class CBE_Floater : public CBE_Enemy
 {
-private:
-//	char m_acTurretName[32];	// name of the base entity which is used as a weapon for this floater
-
 public:
 
 	CBE_Floater();
