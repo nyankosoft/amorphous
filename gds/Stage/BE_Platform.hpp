@@ -2,8 +2,6 @@
 #define __BE_PLATFORM_H__
 
 
-#include "BaseEntity.hpp"
-#include "BaseEntityHandle.hpp"
 #include "BE_PhysicsBaseEntity.hpp"
 #include "Sound/SoundHandle.hpp"
 

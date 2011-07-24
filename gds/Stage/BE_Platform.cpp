@@ -4,7 +4,6 @@
 #include "Stage.hpp"
 #include "GameMessage.hpp"
 #include "Sound/SoundManager.hpp"
-#include "3DMath/Vector3.hpp"
 #include "Physics/Actor.hpp"
 
 using namespace boost;
