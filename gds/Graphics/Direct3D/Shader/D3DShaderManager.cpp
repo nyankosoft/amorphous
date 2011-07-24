@@ -211,7 +211,7 @@ bool CHLSLShaderManager::LoadShaderFromFile( const string& filename )
 
 	if( FAILED(hr) )
 	{
-		LOG_PRINT_ERROR( " - Failed create an effect object from the HLSL effect file from '" + filename + "' (error: " + string(hr_d3d_error_to_string(hr)) + ")." );
+		LOG_PRINT_ERROR( " - Failed to create an effect object from the HLSL effect file from '" + filename + "' (error: " + string(hr_d3d_error_to_string(hr)) + ")." );
 		PrintCompilerErrors( pCompileErrors );
 		LoadNullShader();
 		return false;
