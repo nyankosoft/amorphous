@@ -55,16 +55,39 @@ class CPlanarReflectionGroup
 
 	boost::shared_ptr<CTextureRenderTarget> m_pReflectionRenderTarget;
 
+	bool m_TextureUpdated;
+
+	int FindEntity( CEntityHandle<>& entity )
+	{
+		boost::shared_ptr<CCopyEntity> pEntity = entity.Get();
+		if( !pEntity )
+			return -1;
+
+		for( size_t i=0; i<m_Entities.size(); i++ )
+		{
+			boost::shared_ptr<CCopyEntity> pOtherEntity = m_Entities[i].Get();
+			if( pOtherEntity
+			 && pOtherEntity->GetID() == pEntity->GetID() )
+			{
+				return (int)i;
+			}
+		}
+
+		return -1;
+	}
+
 public:
 
 	CPlanarReflectionGroup()
 		:
-	m_Plane( SPlane(Vector3(0,1,0),0) )
+	m_Plane( SPlane(Vector3(0,1,0),0) ),
+	m_TextureUpdated(false)
 	{}
 
 	void Init()
 	{
 		m_pReflectionRenderTarget = CTextureRenderTarget::Create();
+		bool res = m_pReflectionRenderTarget->InitScreenSizeRenderTarget();
 	}
 
 	void Release()
@@ -74,25 +97,26 @@ public:
 
 	void AddEntity( CEntityHandle<>& entity )
 	{
-		m_Entities.push_back( entity );
+		int entity_index = FindEntity( entity );
+		if( entity_index == -1 )
+			m_Entities.push_back( entity );
+		else
+		{
+			// already registered
+			return;
+		}
 	}
 
 	Result::Name RemoveEntity( CEntityHandle<>& entity )
 	{
-		boost::shared_ptr<CCopyEntity> pEntity = entity.Get();
-		if( !pEntity )
-			return Result::INVALID_ARGS;
-
-		for( size_t i=0; i<m_Entities.size(); i++ )
+		int entity_index = FindEntity( entity );
+		if( 0 <= entity_index && entity_index < (int)m_Entities.size() )
 		{
-			if( m_Entities[i].Get() == pEntity )
-			{
-				m_Entities.erase( m_Entities.begin() + i );
-				return Result::SUCCESS;
-			}
+			m_Entities.erase( m_Entities.begin() + entity_index );
+			return Result::SUCCESS;
 		}
-
-		return Result::INVALID_ARGS;
+		else
+			return Result::INVALID_ARGS;
 	}
 
 	friend class CEntityRenderManager;
@@ -262,7 +286,9 @@ CEntityRenderManager::CEntityRenderManager( CEntitySet* pEntitySet )
 m_pEntitySet(pEntitySet),
 m_pCubeMapManager(NULL),
 m_pShadowManager(NULL),
-m_pCurrentCamera(NULL)
+m_pCurrentCamera(NULL),
+m_IsRenderingMirroredScene(false),
+m_CurrentlyRenderedPlanarReflectionSceneID(-1)
 {
 	// clear z-sort table
 	for(int i=0; i<SIZE_ZSORTTABLE; i++)
@@ -832,13 +858,23 @@ void CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SP
 		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
 		if( AlmostSamePlanes( group.m_Plane, plane ) )
 		{
+			// Found a group with almost the same plane
+			pEntity->s1 = (short)i;
 			group.AddEntity( entity );
-			break;
+			return;
 		}
 	}
 
 	if( num_max_planar_reflection_groups <= (uint)s_PlanarReflectionGroups.size() )
 		return;
+
+/*	if( !m_pMirroredScene )
+	{
+		m_pMirroredScene = CTextureRenderTarget::Create();
+		bool initialized = m_pMirroredScene->InitScreenSizeRenderTarget();
+		if( !initialized )
+			LOG_PRINT_WARNING( " Failed to create a render target for mirrored scene." );
+	}*/
 
 	// If the argument plane is valid, just use it as reflection plane.
 	// If not, guess the reflection plane from the mesh of the entity
@@ -865,7 +901,9 @@ void CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SP
 		}
 	}
 
+	pEntity->s1 = (short)s_PlanarReflectionGroups.size();
 	s_PlanarReflectionGroups.push_back( CPlanarReflectionGroup() );
+	s_PlanarReflectionGroups.back().Init();
 	s_PlanarReflectionGroups.back().m_Plane = plane;
 	s_PlanarReflectionGroups.back().AddEntity( entity );
 }
@@ -893,6 +931,7 @@ void CEntityRenderManager::RemovePlanarReflector( CEntityHandle<>& entity, bool 
 void CEntityRenderManager::UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group )
 {
 	if( !group.m_pReflectionRenderTarget )
+//	if( !m_pMirroredScene )
 		return;
 
 	// matrix settings
@@ -902,18 +941,38 @@ void CEntityRenderManager::UpdatePlanarReflectionTexture( CCamera& rCam, CPlanar
 	Matrix44 view = rCam.GetCameraMatrix();
 	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, rCam.GetProjectionMatrix() );
 
-//	GraphicsDevice().SetClipPlane( group.m_Plane );
+	GraphicsDevice().SetClipPlane( 0, group.m_Plane );
+
+	GraphicsDevice().UpdateViewProjectionTransformsForClipPlane( 0, view, rCam.GetProjectionMatrix() );
 
 	// set planar reflection texture
 	group.m_pReflectionRenderTarget->SetRenderTarget();
+//	m_pMirroredScene->SetRenderTarget();
 
-	// render the scene
-	RenderSceneWithShadows( rCam );
+	// render the mirrored scene
+//	RenderSceneWithShadows( rCam );
+	RenderScene( rCam );
 
 	// restore the original render target
 	group.m_pReflectionRenderTarget->ResetRenderTarget();
+//	m_pMirroredScene->ResetRenderTarget();
+
+//	PERIODICAL( 500, group.m_pReflectionRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( ".debug/mirrored_scene.bmp" ) );
 
 	ShaderManagerHub.PopViewAndProjectionMatrices();
+
+	// Render the entities that belong to this planar reflection group
+	// This is a draft version.
+	// TODO: Use the entity tree for better performance.
+/*	const int num_entities = (int)group.m_Entities.size();
+	for( int i=0; i<num_entities; i++ )
+	{
+		shared_ptr<CCopyEntity> pEntity = group.m_Entities[i].Get();
+		if( !pEntity )
+			continue;
+
+		pEntity->Draw();
+	}*/
 }
 
 
@@ -921,12 +980,96 @@ void CEntityRenderManager::UpdatePlanarReflectionTextures( CCamera& rCam )
 {
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
 
+	GraphicsDevice().EnableClipPlane( 0 );
+
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
+		m_CurrentlyRenderedPlanarReflectionSceneID = i;
+
 		UpdatePlanarReflectionTexture( rCam, s_PlanarReflectionGroups[i] );
 	}
 
+	GraphicsDevice().DisableClipPlane( 0 );
+
 	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+}
+
+
+CTextureHandle CEntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& entity )
+{
+	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
+	{
+		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		if( !group.m_pReflectionRenderTarget )
+			continue;
+
+		for( int j=0; j<(int)group.m_Entities.size(); j++ )
+		{
+			shared_ptr<CCopyEntity> pEntity = group.m_Entities[j].Get();
+			if( !pEntity )
+				continue;
+
+			if( entity.GetID() == pEntity->GetID() )
+			{
+				if( !group.m_TextureUpdated && m_pCurrentCamera )
+				{
+					UpdatePlanarReflectionTexture( *m_pCurrentCamera, group );
+					group.m_TextureUpdated = true;
+				}
+
+				return group.m_pReflectionRenderTarget->GetRenderTargetTexture();
+			}
+		}
+	}
+
+	return CTextureHandle();
+}
+
+
+int CEntityRenderManager::GetCurrentlyRenderedPlanarReflectionSceneID() const
+{
+	return m_CurrentlyRenderedPlanarReflectionSceneID;
+}
+
+
+void CEntityRenderManager::RenderPlanerReflectionSurfaces()
+{
+}
+
+
+void CEntityRenderManager::RenderMirroredScene()
+{
+/*	const Matrix44 view = m_pCurrentCamera ? m_pCurrentCamera->GetCameraMatrix()     : Matrix44Identity();
+	const Matrix44 proj = m_pCurrentCamera ? m_pCurrentCamera->GetProjectionMatrix() : Matrix44Identity();
+	int num_planer_reflection_groups = (int)s_PlanarReflectionGroups.size();
+	for( int i=0; i<num_planer_reflection_groups; i++ )
+	{
+		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+
+		Plane reflection_plane = group.m_Plane;
+//		Plane reflection_plane( Vector3(0,1,0), 0 );
+		Matrix44 mirror = Matrix44Mirror( reflection_plane );
+
+		ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, proj );
+
+		m_pMirroredScene->SetRenderTarget();
+
+		GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
+//		RenderReflectionClipPlane( //reflection_plane );
+		GraphicsDevice().EnableClipPlane( i );
+//		SetClipPlane( reflection_plane );
+//		SetClipPlaneViaD3DXFunctions();
+
+//		RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), g_Camera.GetPosition() ) );
+
+//		LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//		HRESULT hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, 0 );
+		GraphicsDevice().DisableClipPlane( i );
+
+		ShaderManagerHub.PopViewAndProjectionMatrices();
+
+		m_pMirroredScene->ResetRenderTarget();
+	}*/
 }
 
 
@@ -993,7 +1136,7 @@ bool CEntityRenderManager::RemoveEnvMapTarget( CCopyEntity *pEntity )
 		{
 			if( pEntity->m_pMeshRenderMethod )
 			{
-				pEntity->m_pMeshRenderMethod->RemoveShaderParamsLoaderToAllMeshRenderMethods(
+				pEntity->m_pMeshRenderMethod->RemoveShaderParamsLoaderFromAllMeshRenderMethods(
 					m_vecEnvMapTarget[i].m_pCubeMapTextureLoader
 					);
 			}
@@ -1326,6 +1469,8 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	// enable lights of graphics device for entities
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, true );
 
+	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+
 	// test - add some ambient light
 //	pd3dDev->SetRenderState( D3DRS_AMBIENT, 0x00202020 );
 
@@ -1335,6 +1480,8 @@ void CEntityRenderManager::Render( CCamera& rCam )
 		// The same light is used for the shadowing both in the real world and the mirrored world.
 		UpdateLightsForShadow();
 	}
+
+	m_CurrentlyRenderedPlanarReflectionSceneID = -1;
 
 	// create env map texture based no the current camera pose
 	bool do_not_use_render_task = true;
@@ -1375,4 +1522,19 @@ void CEntityRenderManager::Render( CCamera& rCam )
 			m_pShadowManager->SaveSceneTextureToFile( "debug/scene_for_shadowmap.bmp" );
 		s_SaveSceneTextureOfShadowMapToFile = 0;
 	}
+
+	// >>> experiment - render planar reflectors
+	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
+	{
+		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		for( int j=0; j<(int)group.m_Entities.size(); j++ )
+		{
+			shared_ptr<CCopyEntity> pEntity = group.m_Entities[j].Get();
+			if( !pEntity )
+				continue;
+
+			pEntity->Draw();
+		}
+	}
+	// <<< experiment - render planar reflectors
 }

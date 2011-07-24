@@ -88,6 +88,13 @@ void CEntityNode::Render( CCamera& rCam )
 		if( !(pEntity->GetEntityFlags() & BETYPE_VISIBLE) )
 			continue;
 
+		if( pEntity->GetEntityFlags() & BETYPE_PLANAR_REFLECTOR )
+		{
+			int id = this->m_pEntitySet->GetRenderManager()->GetCurrentlyRenderedPlanarReflectionSceneID();
+			if( 0 <= id || id == pEntity->s1 )
+				continue;
+		}
+
 		if( pEntity->GetEntityFlags() & BETYPE_USE_ZSORT )
 		{	// 'pEntity' includes transparent polygons
 			this->m_pEntitySet->GetRenderManager()->SendToZSortTable( pEntity );

@@ -119,6 +119,12 @@ private:
 
 	U32 m_CurrentEnvMapTargetEntityID;
 
+	// planar reflection
+
+	int m_CurrentlyRenderedPlanarReflectionSceneID;
+
+	bool m_IsRenderingMirroredScene;
+
 private:
 
 	void RenderEntityNodeUp_r( short sEntNodeIndex, CCamera& rCam );
@@ -236,7 +242,12 @@ public:
 	void RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group );
 	void UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group );
 	void UpdatePlanarReflectionTextures( CCamera& rCam );
+	CTextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );
+	int GetCurrentlyRenderedPlanarReflectionSceneID() const;
 
+	void RenderPlanerReflectionSurfaces();
+	void RenderMirroredScene();
+	bool IsRenderingMirroredScene() const { return m_IsRenderingMirroredScene; }
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
