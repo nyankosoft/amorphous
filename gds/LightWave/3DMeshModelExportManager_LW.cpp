@@ -38,7 +38,7 @@ void C3DMeshModelExportManager_LW::GetOutputFilename( string& dest_filename, con
 
 	if( pos == string::npos )
 	{
-		dest_filename = m_strBaseOutFilename;
+//		dest_filename = m_strBaseOutFilename;
 	}
 	else
 	{
@@ -92,13 +92,29 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 	vector<CLWO2_Layer *> vecpMeshLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", CLWO2_NameMatchCond::START_WITH );
 	size_t num_tgt_layers = vecpMeshLayer.size();
+	vector<string> words;
 
 	// layers with names that start with "CreateMesh" - registered as mesh layers
 	for( i=0; i<num_tgt_layers; i++ )
 	{
 		CLWO2_Layer *layer = vecpMeshLayer[i];
 
+		SeparateStrings( words, layer->GetName().c_str(), " \t" );
+
 		GetOutputFilename( strOutFilename, layer->GetName() );
+
+		int group_number = -1;
+		for( j=0; j<words.size(); j++ )
+		{
+			// is the word a group option, i.e. -g0, -g1, ...?
+			if( words[j].find( "-g" ) == 0 )
+			{
+				// The program assumes that the "-g" is immediately followed by a group number,
+				// and nothing comes after the group number
+				group_number = atoi( words[j].substr( 2 ).c_str() );
+				break;
+			}
+		}
 
 		for( j=0; j<num_layer_sets; j++ )
 		{
@@ -109,6 +125,17 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 				vecLayerSet[j].vecpMeshLayer.push_back( layer );
 				break;
 			}
+			else if( vecLayerSet[j].GroupNumber == group_number )
+			{
+				// A layer with the same group number already exists.
+				// - add the layer to this layer set.
+				vecLayerSet[j].vecpMeshLayer.push_back( layer );
+
+				if( vecLayerSet[j].strOutputFilename == "" )
+					vecLayerSet[j].strOutputFilename = strOutFilename;
+
+				break;
+			}
 		}
 
 		if( j == num_layer_sets )
@@ -116,9 +143,16 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 			// create a new layer set for an output mesh file
 			vecLayerSet.push_back( SLayerSet(strOutFilename) );
 			vecLayerSet.back().vecpMeshLayer.push_back( layer );
+			vecLayerSet.back().GroupNumber = group_number;
 			num_layer_sets++;
 		}
 	}
+
+	if( vecLayerSet.size() == 1 && vecLayerSet[0].strOutputFilename == "" )
+	{
+		vecLayerSet[0].strOutputFilename = m_strBaseOutFilename;
+	}
+
 
 	vector<CLWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", CLWO2_NameMatchCond::START_WITH );
 

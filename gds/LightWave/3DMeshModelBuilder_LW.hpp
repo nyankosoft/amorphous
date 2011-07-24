@@ -16,6 +16,8 @@ struct SLayerSet
 {
 	std::string strOutputFilename;
 
+	int GroupNumber;
+
 	std::vector<CLWO2_Layer *> vecpMeshLayer;
 
 	/// A skeleton is created from the skelegons in this layer and saved
@@ -24,12 +26,27 @@ struct SLayerSet
 	/// in a single layer. 
 	CLWO2_Layer *pSkelegonLayer;
 
-	SLayerSet() : pSkelegonLayer(NULL) {}
+public:
+
+	SLayerSet()
+		:
+	GroupNumber(-1),
+	pSkelegonLayer(NULL)
+	{}
 
 	SLayerSet( const std::vector<CLWO2_Layer *>& mesh_layer )
-		: vecpMeshLayer(mesh_layer), pSkelegonLayer(NULL) {}
+		:
+	GroupNumber(-1),
+	vecpMeshLayer(mesh_layer),
+	pSkelegonLayer(NULL)
+	{}
 
-	SLayerSet(const std::string& output_filename) : strOutputFilename(output_filename), pSkelegonLayer(NULL) {}
+	SLayerSet(const std::string& output_filename)
+		:
+	strOutputFilename(output_filename),
+	GroupNumber(-1),
+	pSkelegonLayer(NULL)
+	{}
 };
 
 
