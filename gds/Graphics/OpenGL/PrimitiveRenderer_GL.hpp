@@ -31,6 +31,8 @@ public:
 
 	Result::Name DrawLine( const Vector3& start, const Vector3& end, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color )
 	{
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
 		glBegin(GL_LINES);
 		glColor4f( start_color.fRed, start_color.fGreen, start_color.fBlue, start_color.fAlpha );
 		glVertex3f( start.x, start.y, start.z );
