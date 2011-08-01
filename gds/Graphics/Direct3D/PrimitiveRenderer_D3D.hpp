@@ -24,6 +24,8 @@ private:
 		HRESULT hr = S_OK;
 		hr = DIRECT3D9.GetDevice()->SetFVF( D3DFVF_COLORVERTEX );
 
+		hr = DIRECT3D9.GetDevice()->SetTexture( 0, NULL );
+
 		// render the line
 		hr = DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_LINELIST, 1, verts, sizeof(COLORVERTEX) );
 
