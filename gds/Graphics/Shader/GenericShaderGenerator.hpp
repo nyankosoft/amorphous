@@ -25,6 +25,20 @@ public:
 	{
 		Result::Name res = CEmbeddedGenericHLSL::GenerateShader( m_Desc, shader );
 	}
+
+//	void Accept( CShaderGeneratorVisitor& visitor ) { visitor.Visit( *this ); }
+
+	bool IsSharableWith( const CShaderGenerator& other ) const
+	{
+		const CGenericShaderGenerator *pOther = dynamic_cast<const CGenericShaderGenerator *>(&other);
+		if( pOther
+		 && pOther->m_Desc == m_Desc )
+		{
+			return true;
+		}
+		else
+			return false;
+	}
 };
 
 

@@ -22,6 +22,8 @@ public:
 
 	/// pixel(fragment) shader
 	virtual void GetPixelShader( std::string& shader ) {};
+
+	virtual bool IsSharableWith( const CShaderGenerator& other ) const { return false; }
 };
 
 
