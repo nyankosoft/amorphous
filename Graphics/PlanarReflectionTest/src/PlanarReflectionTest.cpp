@@ -1,17 +1,16 @@
 #include "PlanarReflectionTest.hpp"
-#include "3DMath/Matrix34.hpp"
-//#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/Font/BuiltinFonts.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/Shader/ShaderManagerHub.hpp"
-#include "Graphics/SkyboxMisc.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Support/ParamLoader.hpp"
-#include "Support/CameraController_Win32.hpp"
-#include "Support/Timer.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics/Mesh/BasicMesh.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Graphics/Shader/ShaderManager.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/Shader/ShaderManagerHub.hpp"
+#include "gds/Graphics/SkyboxMisc.hpp"
+#include "gds/Graphics/TextureRenderTarget.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/Timer.hpp"
 
 using std::string;
 using std::vector;
@@ -40,7 +39,7 @@ public:
 };
 
 
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "gds/Graphics/Direct3D/Direct3D9.hpp"
 
 extern D3DPRIMITIVETYPE ToD3DPrimitiveType( PrimitiveType::Name pt ); // in gds/Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.cpp
 
