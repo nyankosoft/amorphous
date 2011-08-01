@@ -291,6 +291,8 @@ public:
 
 	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CShaderResourceDesc>( new CShaderResourceDesc(*this) ); }
 
+	virtual bool CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const;
+
 	int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
 
 	void UpdateCachedTextureResourceDesc( CMeshResourceDesc& desc ) const

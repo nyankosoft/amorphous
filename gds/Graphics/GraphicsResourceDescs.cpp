@@ -1,4 +1,5 @@
 #include "GraphicsResourceDescs.hpp"
+#include "Shader/ShaderGenerator.hpp"
 #include "XML.hpp"
 
 using namespace std;
@@ -153,4 +154,24 @@ bool CShaderResourceDesc::IsValid() const
 			return false;
 		}
 	}
+}
+
+
+bool CShaderResourceDesc::CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const
+{
+	if( 0 < this->ResourcePath.length()
+	 && 0 < desc.ResourcePath.length()
+	 && this->ResourcePath == desc.ResourcePath )
+	{
+		return true;
+	}
+
+	if( this->pShaderGenerator
+	 && desc.pShaderGenerator
+	 && this->pShaderGenerator->IsSharableWith( *desc.pShaderGenerator ) )
+	{
+		return true;
+	}
+
+	return false;
 }

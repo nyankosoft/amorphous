@@ -401,7 +401,7 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
-//	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
 
 	inline CShaderManager *GetShaderManager() { return m_pShaderManager; }
 

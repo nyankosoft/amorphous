@@ -644,6 +644,12 @@ bool CShaderResource::LoadFromFile( const std::string& filepath )
 }
 
 
+bool CShaderResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+{
+	return desc.CanBeSharedAsSameShaderResource( m_ShaderDesc );
+}
+
+
 void CShaderResource::Release()
 {
 //	LOG_FUNCTION_SCOPE();
