@@ -338,7 +338,7 @@ inline void CLeafyAABTree<TGeometry>::Build()
 	InitRootNode();
 
 	// stack of nodes we need to process
-	vector<int> veciNodeToProcess;
+	std::vector<int> veciNodeToProcess;
 	veciNodeToProcess.reserve( 256 );
 	veciNodeToProcess.push_back(0);	// put the root node
 
@@ -435,11 +435,11 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 	InitRootNode();
 
 	// stack of nodes we need to process
-	vector<int> veciNodeToProcess;
+	std::vector<int> veciNodeToProcess;
 	veciNodeToProcess.reserve( 256 );
 	veciNodeToProcess.push_back(0);	// put the root node
 
-	vector<int> veciGeometryIndex;
+	std::vector<int> veciGeometryIndex;
 	veciGeometryIndex.reserve( m_vecGeometry.size() );
 	size_t j;
 	while( !veciNodeToProcess.empty() )
