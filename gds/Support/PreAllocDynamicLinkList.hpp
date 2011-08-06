@@ -10,7 +10,6 @@ struct SLinkListNode;
 
 #include <vector>
 #include <algorithm>
-using namespace std;
 
 
 /*
@@ -47,7 +46,7 @@ protected:
 	SLinkListNode *m_pActiveList;
 
 	/// used for soring
-	vector<SLinkListNode *> m_vecpTempList;
+	std::vector<SLinkListNode *> m_vecpTempList;
 
 public:
 
@@ -262,7 +261,7 @@ public:
 
 private:
 
-	void _QSort( vector<SLinkListNode *>& v, int left, int right,
+	void _QSort( std::vector<SLinkListNode *>& v, int left, int right,
 		bool (*CompFunc)( CElementType*, CElementType* ) )
 	{
 		// qsort
