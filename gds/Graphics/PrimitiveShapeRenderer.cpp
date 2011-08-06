@@ -4,6 +4,7 @@
 #include "TextureHandle.hpp"
 #include "MeshGenerators.hpp"
 #include "3DRect.hpp"
+#include "PrimitiveRenderer.hpp"
 
 using namespace std;
 
@@ -114,4 +115,49 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane( uint axis, const Vector3& 
 	rect.SetNormal( normal );
 
 	rect.Draw();
+}
+
+
+void CPrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color )
+{
+	CShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
+
+	Vector3 r( vEdgeLengths * 0.5f );
+	shader_mgr.SetWorldTransform( ToMatrix44(world_pose) * Matrix44Scaling(r.x,r.y,r.z) );
+
+//	Vector3 radii = vEdgeLengths * 0.5f;
+	Vector3 vertices[8] =
+	{
+		Vector3( 1, 1, 1),// * radii,
+		Vector3( 1, 1,-1),// * radii,
+		Vector3(-1, 1,-1),// * radii,
+		Vector3(-1, 1, 1),// * radii,
+		Vector3( 1,-1, 1),// * radii,
+		Vector3( 1,-1,-1),// * radii,
+		Vector3(-1,-1,-1),// * radii,
+		Vector3(-1,-1, 1),// * radii,
+	};
+/*
+	uint indices[24] =
+	{
+		0, 1, 1, 2, 2, 3, 3, 0,
+		0, 1, 1, 2, 2, 3, 3, 0,
+		0, 1, 1, 2, 2, 3, 3, 0
+	};
+
+	GetPrimitiveRenderer().DrawIndexedLines( vertices, 8, indices, 24, wireframe_color );
+*/
+	Vector3 *v = vertices;
+	const Vector3 points[24] =
+	{
+		v[0], v[1], v[1], v[2], v[2], v[3], v[3], v[0],
+		v[0], v[4], v[1], v[5], v[2], v[6], v[3], v[7],
+		v[4], v[5], v[5], v[6], v[6], v[7], v[7], v[4],
+	};
+
+	const int num_edges = 12;
+	for( int i=0; i<num_edges; i++ )
+	{
+		GetPrimitiveRenderer().DrawLine( points[i*2], points[i*2+1], wireframe_color, wireframe_color );
+	}
 }

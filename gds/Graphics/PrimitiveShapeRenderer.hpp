@@ -31,6 +31,9 @@ public:
 	void RenderAxisAlignedPlane( uint axis = 1, const Vector3& vCenter = Vector3(0,0,0), float span_0 = 100.0f, float span_1 = 100.0f, const SFloatRGBAColor& color = SFloatRGBAColor::White() );
 
 
+	void RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color = SFloatRGBAColor::White() );
+
+
 	void SetShader( CShaderHandle& shader );
 };
 
