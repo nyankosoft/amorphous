@@ -1,7 +1,7 @@
 #include "TextureFont.hpp"
 #include "SimpleBitmapFontData.hpp"
 #include "GrayscalePixelDataLoader.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/TextureStage.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
@@ -13,23 +13,24 @@ const std::string CTextureFont::ms_Characters = " !\"#$%&'()*+,-./0123456789:;<=
 
 void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	if( !pd3dDev )
-		return;
-
 	// set render states for texture font
 	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 	GraphicsDevice().SetDestBlendMode( dest_alpha_blend );
 
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
+	CTextureStage tex_stage_0, tex_stage_1;
 
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
+	tex_stage_0.ColorOp   = TexStageOp::MODULATE;
+	tex_stage_0.ColorArg0 = TexStageArg::DIFFUSE;
+	tex_stage_0.ColorArg1 = TexStageArg::TEXTURE;
+	tex_stage_0.AlphaOp   = TexStageOp::MODULATE;
+	tex_stage_0.AlphaArg0 = TexStageArg::DIFFUSE;
+	tex_stage_0.AlphaArg1 = TexStageArg::TEXTURE;
+	GraphicsDevice().SetTextureStageParams( 0, tex_stage_0 );
+
+	tex_stage_1.ColorOp = TexStageOp::DISABLE;
+	tex_stage_1.AlphaOp = TexStageOp::DISABLE;
+	GraphicsDevice().SetTextureStageParams( 1, tex_stage_1 );
 }
 
 

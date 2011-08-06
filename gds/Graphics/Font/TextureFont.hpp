@@ -11,7 +11,6 @@
 #include "../../Support/Serialization/Serialization.hpp"
 #include "../../Support/Serialization/Serialization_3DCommon.hpp"
 #include "../../Support/Serialization/Serialization_3DMath.hpp"
-#include "../../Support/Serialization/BinaryDatabase.hpp"
 using namespace GameLib1::Serialization;
 
 
