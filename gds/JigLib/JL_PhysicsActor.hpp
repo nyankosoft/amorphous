@@ -1,23 +1,13 @@
-
 #ifndef __JL_PHYSICSACTOR_H__
 #define __JL_PHYSICSACTOR_H__
 
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/Quaternion.hpp"
-
 #include "3DMath/AABB3.hpp"
 
-#include "JL_PhysicsActorDesc.hpp"
+#include "fwd.hpp"
 #include "JL_ShapeBase.hpp"
-
-#include <vector>
-using namespace std;
-
-class CJL_ShapeBase;
-class CJL_PhysicsManager;
 
 
 enum eJL_ActorTypeFlag
@@ -32,7 +22,6 @@ enum eJL_ActorTypeFlag
 
 //#define JL_ACTOR_NUM_MAX_SHAPES		16
 
-class CJL_PhysicsManager;
 
 class CJL_PhysicsActor
 {
@@ -282,7 +271,7 @@ public:
   }
 
   /// collision index
-  inline vector<int>& GetCollisionIndexBuffer() { return m_veciCollisionIndex; }
+  inline std::vector<int>& GetCollisionIndexBuffer() { return m_veciCollisionIndex; }
 
 
   /// function for shapes
@@ -403,7 +392,7 @@ private:
 
   // shapes
 //  TCFixedVector<CJL_ShapeBase *, JL_ACTOR_NUM_MAX_SHAPES> m_vecpShape;
-  vector<CJL_ShapeBase *> m_vecpShape;
+	std::vector<CJL_ShapeBase *> m_vecpShape;
 };
 
 

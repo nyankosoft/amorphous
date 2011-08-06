@@ -1,4 +1,3 @@
-
 #include "JL_PhysicsActorDesc.hpp"
 #include "JL_ShapeDesc.hpp"
 #include "JL_ShapeDescFactory.hpp"

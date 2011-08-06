@@ -1,4 +1,3 @@
-
 #ifndef __GRAVITYFUNCTION_H__
 #define __GRAVITYFUNCTION_H__
 

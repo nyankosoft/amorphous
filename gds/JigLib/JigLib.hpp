@@ -1,4 +1,3 @@
-
 #ifndef  __JIGLIB_H__
 #define  __JIGLIB_H__
 

@@ -45,4 +45,4 @@ void JL_CollisionDetect_Capsule_TriangleMesh( CJL_Shape_Capsule& rCapsule, CTria
 //}
 
 
-#endif
+#endif /* __JL_COLLISIONDETECT_H__ */

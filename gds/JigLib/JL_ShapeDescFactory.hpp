@@ -1,4 +1,3 @@
-
 #ifndef __CJL_ShapeDescFACTORY_H__
 #define __CJL_ShapeDescFACTORY_H__
 

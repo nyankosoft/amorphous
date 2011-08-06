@@ -4,17 +4,10 @@
 //#include "constraint.hpp"
 
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
-
 #include "Support/PreAllocDynamicLinkList.hpp"
-
-#include <assert.h>
-#include <vector>
 
 #include "JL_PhysicsActorDesc.hpp"
 #include "JL_PhysicsActor.hpp"
-
 #include "JL_Shape_Box.hpp"
 #include "JL_Shape_Capsule.hpp"
 #include "TriangleMesh.hpp"
@@ -31,9 +24,6 @@
 
 class Constraint;
 class Physics_controller;
-
-class CJL_SurfaceMaterial;
-class CJL_LineSegment;
 
 
 class CJL_PhysicsManager
@@ -113,7 +103,7 @@ public:
   /// create static geometry from the vertices and indices.
   /// this is just a wrappter function.
   /// you can use this to create static geometry without filling out CJL_ActorDesc and CJL_ShapeDesc.
-//  CJL_PhysicsActor *CreateStaticTriangleMesh( vector<Vector3>& rvecvVertex, vector<int>& rveciTriangleIndex );
+//  CJL_PhysicsActor *CreateStaticTriangleMesh( std::vector<Vector3>& rvecvVertex, std::vector<int>& rveciTriangleIndex );
 
 
   // allow actors direct access to lists of shapes
@@ -268,7 +258,7 @@ private:
 
   /////==============================================================/////
 
-  vector<CJL_SurfaceMaterial> m_vecMaterial;
+  std::vector<CJL_SurfaceMaterial> m_vecMaterial;
 
   typedef bool (CJL_PhysicsManager::*ProcessCollisionFn)( CJL_CollisionInfo& collision,
 	                                                      Scalar dt );

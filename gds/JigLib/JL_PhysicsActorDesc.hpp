@@ -3,7 +3,6 @@
 
 
 #include <vector>
-#include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix33.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"

@@ -2,15 +2,11 @@
 #define  __JL_SHAPEBASE_H__
 
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
 #include "3DMath/Matrix34.hpp"
 #include "3DMath/AABB3.hpp"
 
+#include "fwd.hpp"
 #include "JL_ShapeDesc.hpp"
-
-class CJL_PhysicsActor;
-class CJL_ShapeDesc;
 
 
 class CJL_ShapeBase

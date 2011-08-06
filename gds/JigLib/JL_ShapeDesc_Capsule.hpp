@@ -1,15 +1,8 @@
-
 #ifndef  __JL_SHAPEDESC_CAPSULE_H__
 #define  __JL_SHAPEDESC_CAPSULE_H__
 
 
 #include "JL_ShapeDesc.hpp"
-
-
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
 
 
 class CJL_ShapeDesc_Capsule : public CJL_ShapeDesc

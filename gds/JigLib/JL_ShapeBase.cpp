@@ -1,4 +1,3 @@
-
 #include "JL_ShapeBase.hpp"
 
 

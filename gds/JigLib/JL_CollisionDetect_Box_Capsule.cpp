@@ -1,4 +1,3 @@
-
 #include "JL_Shape_Box.hpp"
 #include "JL_Shape_Capsule.hpp"
 #include "JL_CollisionFunctor.hpp"

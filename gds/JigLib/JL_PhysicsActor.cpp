@@ -1,5 +1,5 @@
-
 #include "JL_PhysicsActor.hpp"
+#include "JL_PhysicsActorDesc.hpp"
 #include "JL_PhysicsManager.hpp"
 
 #include "JL_Shape_Box.hpp"
@@ -8,6 +8,7 @@
 
 #include "Support/MsgBox.hpp"
 
+using namespace std;
 
 
 bool CJL_PhysicsActor::m_indicate_frozen_objects = true;

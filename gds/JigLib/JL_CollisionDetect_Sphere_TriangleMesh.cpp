@@ -1,4 +1,3 @@
-
 #include "JL_CollisionDetect.hpp"
 
 #include "TriangleMesh.hpp"
@@ -6,8 +5,6 @@
 #include "JL_CollisionFunctor.hpp"
 #include "Geometry/distance.hpp"
 
-#include <vector>
-using namespace std;
 using namespace JigLib;
 
 

@@ -1,4 +1,3 @@
-
 #ifndef  __JL_SHAPEDESC_TRIANGLEMESH_H__
 #define  __JL_SHAPEDESC_TRIANGLEMESH_H__
 
@@ -15,12 +14,6 @@
 // XXX so the user is responsible for releasing the source object
 
 class CTriangleMesh;
-
-
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
 
 
 class CJL_ShapeDesc_TriangleMesh : public CJL_ShapeDesc

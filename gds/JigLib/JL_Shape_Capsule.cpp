@@ -1,6 +1,4 @@
-
 #include "JL_Shape_Capsule.hpp"
-
 #include "JL_ShapeDesc_Capsule.hpp"
 #include "JL_PhysicsActor.hpp"
 

@@ -1,4 +1,3 @@
-
 #include "JL_CollisionDetect.hpp"
 
 #include "TriangleMesh.hpp"

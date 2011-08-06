@@ -1,7 +1,4 @@
-
 #include "JL_ShapeDescFactory.hpp"
-
-
 #include "JL_ShapeDesc.hpp"
 #include "JL_ShapeDesc_Box.hpp"
 #include "JL_ShapeDesc_Capsule.hpp"

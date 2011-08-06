@@ -1,8 +1,4 @@
-
-#include <algorithm>
-
 #include "JL_CollisionDetect.hpp"
-
 #include "JL_ShapeBase.hpp"
 #include "JL_PhysicsActor.hpp"
 #include "JL_PhysicsManager.hpp"
@@ -13,6 +9,11 @@ class CTriangleMesh;
 
 #include "3DMath/Vector2.hpp"
 #include "3DMath/aabb2.hpp"
+
+#include <algorithm>
+
+using namespace std;
+
 
 bool g_DoContactPointReduction = false;
 

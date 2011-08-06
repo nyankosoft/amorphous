@@ -4,17 +4,12 @@
 
 #include <vector>
 #include "JL_ShapeBase.hpp"
-#include "3DMath/Vector3.hpp"
 #include "3DMath/Triangle.hpp"
 #include "3DMath/IndexedTriangle.hpp"
 #include "3DMath/BSPTreeForTriangleMesh.hpp"
 
-//#include "Support/Serialization/SerializationEx.hpp"
-//using namespace GameLib1::Serialization;
-
 
 struct STrace;
-class CJL_LineSegment;
 
 
 class CTriangleMesh : public CJL_ShapeBase

@@ -1,4 +1,3 @@
-
 #ifndef  __JK_COLLISIONFUNCTOR_H__
 #define  __JK_COLLISIONFUNCTOR_H__
 
@@ -8,7 +7,6 @@
 #include "JL_PhysicsActor.hpp"
 
 #include <vector>
-using namespace std;
 
 
 #ifndef USE_COMBINED_COLLISION_POINTS_INFO  /////////////////////////////////////////////////////////
@@ -16,7 +14,7 @@ using namespace std;
 
 class CJL_CollisionFunctor
 {
-	vector<CJL_ContactInfo> *m_pvecContact;
+	std::vector<CJL_ContactInfo> *m_pvecContact;
 
 public:
 	inline CJL_CollisionFunctor() { m_pvecContact = NULL; m_fCollTolerance = 0.001f; }
@@ -109,14 +107,14 @@ inline void CJL_CollisionFunctor::AddTemporaryContacts( CJL_ShapeBase *pBody0,
 
 class CJL_CollisionFunctor
 {
-	vector<CJL_CollisionInfo> *m_pvecCollInfo;
+	std::vector<CJL_CollisionInfo> *m_pvecCollInfo;
 
 public:
 	inline CJL_CollisionFunctor() { m_pvecCollInfo = NULL; m_fCollTolerance = 0.001f; }
 
 	Scalar m_fCollTolerance;
 
-	inline void SetCollisionBuffer( vector<CJL_CollisionInfo> *pvecCollisionBuffer )
+	inline void SetCollisionBuffer( std::vector<CJL_CollisionInfo> *pvecCollisionBuffer )
 	{
 		m_pvecCollInfo = pvecCollisionBuffer;
 	}

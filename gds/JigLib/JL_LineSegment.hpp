@@ -1,4 +1,3 @@
-
 #ifndef __JL_LINESEGMENT_H__
 #define __JL_LINESEGMENT_H__
 

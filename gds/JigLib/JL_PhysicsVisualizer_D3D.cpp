@@ -6,8 +6,8 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/PrimitiveRenderer.hpp"
 //#include "Graphics/UnitCube.hpp"
-#include "Support/SafeDelete.hpp"
-//#include "Support/msgbox.hpp"
+
+using namespace std;
 
 
 CJL_PhysicsVisualizer_D3D::CJL_PhysicsVisualizer_D3D( CJL_PhysicsManager *pPhysicsManager )

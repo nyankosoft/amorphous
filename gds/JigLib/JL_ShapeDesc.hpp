@@ -1,9 +1,7 @@
-
 #ifndef  __JL_SHAPEDESC_H__
 #define  __JL_SHAPEDESC_H__
 
 
-#include "3DMath/Vector3.hpp"
 #include "3DMath/Matrix33.hpp"
 
 #include "Support/Serialization/Serialization.hpp"
