@@ -2,6 +2,9 @@
 #define __TextureStage_HPP__
 
 
+#include "../base.hpp"
+
+
 class TexStageArg
 {
 public:
@@ -49,6 +52,17 @@ public:
 	TexStageOp::Name AlphaOp;
 	TexStageArg::Name AlphaArg0, AlphaArg1;
 };
+
+
+class CTextureTransformParams
+{
+public:
+	CTextureTransformParams() : NumElements(0) {}
+	~CTextureTransformParams(){}
+
+	uint NumElements;
+};
+
 
 
 

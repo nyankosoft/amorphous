@@ -71,6 +71,10 @@ public:
 
 	Result::Name SetTextureStageParams( uint stage, const CTextureStage& params );
 
+	Result::Name SetTextureTrasnformParams( uint stage, const CTextureTransformParams& params );
+
+	Result::Name SetTextureCoordTrasnform( uint stage, const Matrix44& transform );
+
 	Result::Name SetRenderState( RenderStateType::Name type, bool enable );
 
 	inline void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode );

@@ -386,6 +386,54 @@ Result::Name CDirect3D9::SetTextureStageParams( uint stage, const CTextureStage&
 }
 
 
+Result::Name CDirect3D9::SetTextureTrasnformParams( uint stage, const CTextureTransformParams& params )
+{
+	HRESULT hr = S_OK;
+	DWORD count_flags = 0;
+	switch( params.NumElements )
+	{
+	case 2: count_flags = D3DTTFF_COUNT2; break;
+	case 3: count_flags = D3DTTFF_COUNT3; break;
+	default:
+		break;
+	}
+
+	if( count_flags != 0 )
+		hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2 );
+
+	hr = m_pD3DDevice->SetTextureStageState( stage, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU);
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name CDirect3D9::SetTextureCoordTrasnform( uint stage, const Matrix44& transform )
+{
+	D3DTRANSFORMSTATETYPE ts = D3DTS_TEXTURE0;
+
+	switch( stage )
+	{
+	case 0: ts = D3DTS_TEXTURE0; break;
+	case 1: ts = D3DTS_TEXTURE1; break;
+	case 2: ts = D3DTS_TEXTURE2; break;
+	case 3: ts = D3DTS_TEXTURE3; break;
+	case 4: ts = D3DTS_TEXTURE4; break;
+	case 5: ts = D3DTS_TEXTURE5; break;
+	case 6: ts = D3DTS_TEXTURE6; break;
+	case 7: ts = D3DTS_TEXTURE7; break;
+	default:
+		ts = D3DTS_TEXTURE0;
+		break;
+	}
+
+	D3DXMATRIX mat;
+	transform.GetRowMajorMatrix44( (Scalar *)&mat );
+	m_pD3DDevice->SetTransform( ts, &mat );
+
+	return Result::SUCCESS;
+}
+
+
 static inline D3DCULL ToD3DCullMode( CullingMode::Name cull_mode )
 {
 	switch( cull_mode )

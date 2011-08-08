@@ -16,6 +16,7 @@ using namespace NS_KGL;
 
 
 class CTextureStage;
+class CTextureTransformParams;
 
 
 class CDisplayMode
@@ -218,6 +219,10 @@ public:
 	virtual Result::Name SetTexture( int stage, const CTextureHandle& texture ) = 0;
 
 	virtual Result::Name SetTextureStageParams( uint stage, const CTextureStage& params ) = 0;
+
+	virtual Result::Name SetTextureTrasnformParams( uint stage, const CTextureTransformParams& params ) = 0;
+
+	virtual Result::Name SetTextureCoordTrasnform( uint stage, const Matrix44& transform ) = 0;
 
 	inline Result::Name Enable( RenderStateType::Name type ) { return SetRenderState( type, true ); }
 

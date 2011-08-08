@@ -1,5 +1,6 @@
 #include "GLGraphicsDevice.hpp"
 #include "gds/base.hpp"
+#include "gds/3DMath/Matrix44.hpp"
 #include "gds/Graphics/FogParams.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
 #include "gds/Support/Macro.h"
@@ -184,6 +185,22 @@ Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const CTextur
 	//glTexEnvi(GL_TEXTURE_2D, GL_OPERAND1_ALPHA_ARB, GL_SRC_ALPHA); // this texture's alpha (stage 0)
 
 	return Result::SUCCESS;*/
+}
+
+
+Result::Name CGLGraphicsDevice::SetTextureTrasnformParams( uint stage, const CTextureTransformParams& params )
+{
+	return Result::SUCCESS;
+}
+
+
+Result::Name CGLGraphicsDevice::SetTextureCoordTrasnform( uint stage, const Matrix44& transform )
+{
+	glMatrixMode( GL_TEXTURE );
+
+	glLoadMatrixf( transform.GetData() );
+
+	return Result::SUCCESS;
 }
 
 
