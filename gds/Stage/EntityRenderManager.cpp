@@ -14,6 +14,7 @@
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/FogParams.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
