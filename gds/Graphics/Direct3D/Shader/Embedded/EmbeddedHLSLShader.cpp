@@ -84,7 +84,10 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs = CEmbeddedHLSLShader
 	"out float4 oDiffuse  : COLOR0,"\
 	"out float2 oTex0     : TEXCOORD0,"\
 	"out float3 oPosWS    : TEXCOORD1,"\
-	"out float3 oNormalWS : TEXCOORD2 )"\
+	"out float3 oNormalWS : TEXCOORD2,"\
+	// for sampling a mirrored scene texture to render planer reflection surface
+	"out float4 oPosPS    : TEXCOORD3"\
+	")"\
 "{"\
 	"oPos         = mul( vModelSpacePos, WorldViewProj );"\
 	"float4 PosWS = mul( vModelSpacePos, World );"\
@@ -92,6 +95,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs = CEmbeddedHLSLShader
 	"oNormalWS    = mul( vModelSpaceNormal, (float3x3)World );"\
 	"oDiffuse     = vDiffuse;"\
 	"oTex0        = vTex0;"\
+	"oPosPS       = oPos;"\
 "}\n"\
 );
 
@@ -114,8 +118,13 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs = CEmbeddedHLSLShader
 "float4 PS_PPL_HSLs( float4 ColorDiff : COLOR0,"\
                 "float2 Tex0     : TEXCOORD0,"\
                 "float3 PosWS    : TEXCOORD1,"\
-				"float3 NormalWS : TEXCOORD2 ) : COLOR0"\
+				"float3 NormalWS : TEXCOORD2,"\
+				// for sampling a mirrored scene texture to render planer reflection surface
+				"float4 PosPS    : TEXCOORD3"\
+				") : COLOR0"\
 "{"\
+	"\nPLANAR_REFLECTION\n"\
+
 	"float4 surface_color = tex2D( Sampler0, Tex0 ) * ColorDiff;"\
 
 	// normal in world space
@@ -165,6 +174,8 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs = CEmbeddedHLSLShader
 	"color.a = surface_color.a;"\
 
 	"\nENVMAP;\n"\
+
+	"\nPLANAR_REFLECTION_COLOR_UPDATE\n"\
 
 	"return color;"\
 "}\n"\
@@ -228,7 +239,9 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
                 "float3 PosWS     : TEXCOORD1,"\
 				"float3 vNormalWS : TEXCOORD2 ) : COLOR0"\
 "{"\
-	"float4 surface_color = tex2D( Sampler0, Tex0 ) * ColorDiff;"\
+	"\nPLANAR_REFLECTION\n"\
+
+	"float4 surface_color = tex2D( Sampler0, Tex0 ) * ColorDiff;\n"\
 
 //	"NORMAL_MAP_TEXTURE\n"\
 //	or
@@ -269,6 +282,8 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 	"color.rgb = surface_color * Out.Color + Out.ColorSpec * GET_SPECULAR + g_vAmbientColor;"\
 
 	"\nENVMAP;\n"\
+
+	"\nPLANAR_REFLECTION_COLOR_UPDATE\n"\
 
 	"color.a = GET_ALPHA;"\
 	"return color;"\

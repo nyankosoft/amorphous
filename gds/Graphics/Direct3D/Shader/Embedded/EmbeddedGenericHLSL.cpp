@@ -1,6 +1,7 @@
 #include "EmbeddedGenericHLSL.hpp"
 #include "EmbeddedHLSLShader.hpp"
 #include "Graphics/Shader/GenericShaderDesc.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/algorithm/string/replace.hpp>
 
@@ -572,6 +573,51 @@ const char *CEmbeddedGenericHLSL::ms_pOptionsMacros =
 "#else\n"\
 "#define ENVMAP\n"\
 "#endif\n"\
+
+
+// planer reflection options
+// Replace PlanarMirrorTextureSampler with Sampler0 and set g_fPlanarReflection to 1
+// in order to see if the scene is rendered to the mirror texture is created or not.
+"#ifdef PLANAR_REFLECTION__NONE\n"\
+"#define PLANAR_REFLECTION\n"\
+"#define PLANAR_REFLECTION_COLOR_UPDATE\n"\
+"#endif\n"\
+
+"#ifdef PLANAR_REFLECTION__FLAT\n"\
+"texture PlanarMirrorTexture;"\
+"sampler PlanarMirrorTextureSampler = sampler_state"\
+"{"\
+	"Texture   = <PlanarMirrorTexture>;"\
+	"MipFilter = LINEAR;"\
+	"MinFilter = LINEAR;"\
+	"MagFilter = LINEAR;"\
+"};"\
+
+"float g_fPlanarReflection = 1.0f;\n"
+"#define PLANAR_REFLECTION float2 pr_tex = float2( PosPS.x / PosPS.w, -PosPS.y / PosPS.w ) * 0.5 + 0.5;"\
+"float4 pr_tex_color = float4( tex2D(PlanarMirrorTextureSampler, pr_tex).xyz, 1 );\n"\
+"#define PLANAR_REFLECTION_COLOR_UPDATE color = color * (1-g_fPlanarReflection) + pr_tex_color * g_fPlanarReflection;\n"\
+
+//"#define PLANAR_REFLECTION\n"\
+//"#define PLANAR_REFLECTION_COLOR_UPDATE\n"\
+
+"#endif\n"\
+
+"#ifdef PLANAR_REFLECTION__PERTURBED\n"\
+"float g_fPlanarReflection = 0.2f;\n"
+"float2 g_vPerturbationTextureUVShift = float2(0,0);\n"
+"#define PLANAR_REFLECTION float2 pr_tex = float2( PosPS.x, -PosPS.y ) * 0.5 + 0.5;"\
+"float2 perturbation = ( tex2D(Sampler2, Tex0 + g_vPerturbationTextureUVShift).xy - float2(0.5,0.5) ) * 0.1;"\
+"pr_tex += perturbation;"\
+"Tex0 += perturbation;"\
+"float4 pr_tex_color = float4( tex2D(Sampler1, pr_tex).xyz, 1 );\n"\
+"#define PLANAR_REFLECTION_COLOR_UPDATE color = color * (1-g_fPlanarReflection) + pr_tex_color * g_fPlanarReflection;\n"\
+"#endif\n"\
+
+"#ifdef PLANAR_REFLECTION\n"\
+"#else\n"\
+"#define PLANAR_REFLECTION\n"\
+"#endif\n"\
 "\n";
 
 
@@ -673,7 +719,7 @@ const char *CEmbeddedGenericHLSL::ms_pTechniqueTemplate =
 		"VertexShader = compile vs_$VS_VER $(VS)();"\
 		"PixelShader  = compile ps_$PS_VER $(PS)();"\
 
-		"CullMode = Ccw;"\
+/*		"CullMode = None;"\*/
 		"ZEnable = True;"\
 		"AlphaBlendEnable = True;"\
 		"SrcBlend = SrcAlpha;"\
@@ -780,6 +826,17 @@ static const char *GetEnvMapOptionMacro( CEnvMapOption::Name envmap_option )
 	}
 }
 
+static const char *GetPlanerReflectionOptionMacro( CPlanerReflectionOption::Name pr_option )
+{
+	switch( pr_option )
+	{
+	case CPlanerReflectionOption::NONE:         return "#define PLANAR_REFLECTION__NONE\n";
+	case CPlanerReflectionOption::FLAT:         return "#define PLANAR_REFLECTION__FLAT\n";
+	case CPlanerReflectionOption::PERTURBED:    return "#define PLANAR_REFLECTION__PERTURBED\n";
+	default: return "#define PLANAR_REFLECTION__NONE\n";
+	}
+}
+
 void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular;
@@ -788,6 +845,7 @@ void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbedded
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
+	dest.ps.pDependencies.push_back( GetPlanerReflectionOptionMacro(desc.PlanerReflection) );
 
 //	dest.pTechniqueName = "PPL_HSLs_Specular";
 }
@@ -800,6 +858,7 @@ void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffec
 //	dest.pTechniqueName = "PPL_HSLs";
 
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
+	dest.ps.pDependencies.push_back( GetPlanerReflectionOptionMacro(desc.PlanerReflection) );
 }
 
 
@@ -817,6 +876,7 @@ void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( CGenericShaderDesc& de
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
+	dest.ps.pDependencies.push_back( GetPlanerReflectionOptionMacro(desc.PlanerReflection) );
 }
 
 /*
@@ -919,8 +979,26 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 	replace_first( tech, "$(VS)", hlsl_desc.vs.pName );
 	replace_first( tech, "$(PS)", hlsl_desc.ps.pName );
 
-	replace_first( tech, "$VS_VER",   "2_0" );
+/*	replace_first( tech, "$VS_VER",   "2_0" );
 	replace_first( tech, "$PS_VER",   "2_0" );
+*/
+	// >>> Experiment - Compile with the highest shader verison
+	D3DCAPS9 caps;
+	HRESULT hr = DIRECT3D9.GetD3D()->GetDeviceCaps( 0, D3DDEVTYPE_HAL, &caps );
+	const UINT ps_major = D3DSHADER_VERSION_MAJOR(caps.PixelShaderVersion);
+	const UINT ps_minor = D3DSHADER_VERSION_MINOR(caps.PixelShaderVersion);
+	const UINT vs_major = D3DSHADER_VERSION_MAJOR(caps.VertexShaderVersion);
+	const UINT vs_minor = D3DSHADER_VERSION_MINOR(caps.VertexShaderVersion);
+
+	char ps_ver[16], vs_ver[16];
+	memset( ps_ver, 0, sizeof(ps_ver) );
+	memset( vs_ver, 0, sizeof(vs_ver) );
+	sprintf( ps_ver, "%u_%u", ps_major, ps_minor );
+	sprintf( vs_ver, "%u_%u", vs_major, vs_minor );
+
+	replace_first( tech, "$VS_VER", ps_ver );
+	replace_first( tech, "$PS_VER", vs_ver );
+	// <<< Experiment - Compile with the highest shader verison
 
 	hlsl_effect += tech;
 
