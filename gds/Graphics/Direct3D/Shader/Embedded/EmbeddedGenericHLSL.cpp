@@ -826,13 +826,13 @@ static const char *GetEnvMapOptionMacro( CEnvMapOption::Name envmap_option )
 	}
 }
 
-static const char *GetPlanerReflectionOptionMacro( CPlanerReflectionOption::Name pr_option )
+static const char *GetPlanarReflectionOptionMacro( CPlanarReflectionOption::Name pr_option )
 {
 	switch( pr_option )
 	{
-	case CPlanerReflectionOption::NONE:         return "#define PLANAR_REFLECTION__NONE\n";
-	case CPlanerReflectionOption::FLAT:         return "#define PLANAR_REFLECTION__FLAT\n";
-	case CPlanerReflectionOption::PERTURBED:    return "#define PLANAR_REFLECTION__PERTURBED\n";
+	case CPlanarReflectionOption::NONE:         return "#define PLANAR_REFLECTION__NONE\n";
+	case CPlanarReflectionOption::FLAT:         return "#define PLANAR_REFLECTION__FLAT\n";
+	case CPlanarReflectionOption::PERTURBED:    return "#define PLANAR_REFLECTION__PERTURBED\n";
 	default: return "#define PLANAR_REFLECTION__NONE\n";
 	}
 }
@@ -845,7 +845,7 @@ void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbedded
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
-	dest.ps.pDependencies.push_back( GetPlanerReflectionOptionMacro(desc.PlanerReflection) );
+	dest.ps.pDependencies.push_back( GetPlanarReflectionOptionMacro(desc.PlanarReflection) );
 
 //	dest.pTechniqueName = "PPL_HSLs_Specular";
 }
@@ -858,7 +858,7 @@ void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffec
 //	dest.pTechniqueName = "PPL_HSLs";
 
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
-	dest.ps.pDependencies.push_back( GetPlanerReflectionOptionMacro(desc.PlanerReflection) );
+	dest.ps.pDependencies.push_back( GetPlanarReflectionOptionMacro(desc.PlanarReflection) );
 }
 
 
@@ -876,7 +876,7 @@ void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( CGenericShaderDesc& de
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
-	dest.ps.pDependencies.push_back( GetPlanerReflectionOptionMacro(desc.PlanerReflection) );
+	dest.ps.pDependencies.push_back( GetPlanarReflectionOptionMacro(desc.PlanarReflection) );
 }
 
 /*

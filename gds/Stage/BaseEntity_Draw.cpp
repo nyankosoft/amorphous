@@ -834,7 +834,7 @@ bool RegisterAsMirrorIfReflective( CCopyEntity& entity, CBasicMesh& mesh, int su
 	if( subset_triangles_on_plane )
 	{
 		RegisterAsPlanarMirror( entity, mesh, subset_index );
-		shader_desc.PlanerReflection = CPlanerReflectionOption::FLAT;
+		shader_desc.PlanarReflection = CPlanarReflectionOption::FLAT;
 		return true;
 	}
 	else

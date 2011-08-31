@@ -245,7 +245,7 @@ public:
 	CTextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );
 	int GetCurrentlyRenderedPlanarReflectionSceneID() const;
 
-	void RenderPlanerReflectionSurfaces();
+	void RenderPlanarReflectionSurfaces();
 	void RenderMirroredScene();
 	bool IsRenderingMirroredScene() const { return m_IsRenderingMirroredScene; }
 

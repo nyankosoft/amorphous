@@ -90,7 +90,7 @@ public:
 	};
 };
 
-class CPlanerReflectionOption
+class CPlanarReflectionOption
 {
 public:
 	enum Name
@@ -113,7 +113,8 @@ public:
 	CVertexBlendType::Name VertexBlendType;
 	CAlphaBlendType::Name AlphaBlend;
 	CEnvMapOption::Name EnvMap;
-	CPlanerReflectionOption::Name PlanerReflection;
+	CPlanarReflectionOption::Name PlanarReflection;
+	int NormalMapTextureIndex;
 	int NumPointLights;
 	int NumDirectionalLights;
 	int NumSpotLights;
@@ -128,7 +129,8 @@ public:
 	VertexBlendType(CVertexBlendType::NONE),
 	AlphaBlend(CAlphaBlendType::NONE),
 	EnvMap(CEnvMapOption::NONE),
-	PlanerReflection(CPlanerReflectionOption::NONE),
+	PlanarReflection(CPlanarReflectionOption::NONE),
+	NormalMapTextureIndex(-1),
 	NumPointLights(-1),
 	NumDirectionalLights(-1),
 	NumSpotLights(-1)
@@ -142,7 +144,7 @@ public:
 		 && VertexBlendType      == rhs.VertexBlendType
 		 && AlphaBlend           == rhs.AlphaBlend
 		 && EnvMap               == rhs.EnvMap
-		 && PlanerReflection     == rhs.PlanerReflection
+		 && PlanarReflection     == rhs.PlanarReflection
 		 && NumPointLights       == rhs.NumPointLights
 		 && NumDirectionalLights == rhs.NumDirectionalLights
 		 && NumSpotLights        == rhs.NumSpotLights )

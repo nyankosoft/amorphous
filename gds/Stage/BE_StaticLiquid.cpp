@@ -76,7 +76,7 @@ void CBE_StaticLiquid::Init()
 	CSubsetRenderMethod& render_method = m_MeshProperty.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
 
 	CGenericShaderDesc shader_desc;
-	shader_desc.PlanerReflection = CPlanerReflectionOption::PERTURBED;
+	shader_desc.PlanarReflection = CPlanarReflectionOption::PERTURBED;
 
 	CShaderResourceDesc& desc = render_method.m_ShaderDesc;
 	desc.pShaderGenerator.reset( new CGenericShaderGenerator( shader_desc ) );

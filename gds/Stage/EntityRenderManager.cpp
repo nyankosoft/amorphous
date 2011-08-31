@@ -1033,7 +1033,7 @@ int CEntityRenderManager::GetCurrentlyRenderedPlanarReflectionSceneID() const
 }
 
 
-void CEntityRenderManager::RenderPlanerReflectionSurfaces()
+void CEntityRenderManager::RenderPlanarReflectionSurfaces()
 {
 }
 
