@@ -501,7 +501,10 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 	FILE *fp = fopen( filename.c_str(), "w" );
 
 	if( !fp )
+	{
+		LOG_PRINT_ERROR( " Failed to open the file: " + filename );
 		return;
+	}
 
 	int i, iNumVeritices = m_VertexSet.GetNumVertices();
 
