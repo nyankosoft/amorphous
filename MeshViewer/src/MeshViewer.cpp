@@ -12,6 +12,7 @@
 #include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Graphics/FogParams.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "gds/Graphics/Shader/MiscEmbeddedShaderGenerator.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
 #include "gds/Graphics/GraphicsResourceManager.hpp"
 #include "gds/Input.hpp"
@@ -44,7 +45,9 @@ m_MeshWorldPose( Matrix34Identity() ),
 m_fInitCamShift( 20.0f ),
 m_Lighting(true),
 m_CurrentShaderIndex(0),
-m_ScalingFactor(1)
+m_ScalingFactor(1),
+m_UseSingleDiffuseColorShader(false),
+m_CurrentSDCShaderIndex(0)
 {
 	m_UseCameraController = false;
 
@@ -73,7 +76,7 @@ void CMeshViewer::RefreshFileList( const std::string& directory_path )
 //		else if ( IsMeshFile( itr ) )
 		else if ( itr->path().extension() == ".msh" )
 		{
-			m_vecMeshFilepath.push_back( itr->string() );
+			m_vecMeshFilepath.push_back( itr->path().string() );
 		}
 	}
 }
@@ -164,7 +167,27 @@ void CMeshViewer::LoadShaders()
 			m_Techniques.push_back( CShaderTechniqueHandle() );
 			m_Techniques.back().SetTechniqueName( "Default" );
 		}
+	}
 
+	// miscellaneous shaders
+	CEmbeddedMiscShader::ID shader_ids[] =
+	{
+		CEmbeddedMiscShader::SINGLE_DIFFUSE_COLOR,
+		CEmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR
+	};
+
+	for( size_t i=0; i<numof(shader_ids); i++ )
+	{
+		shader_desc.pShaderGenerator.reset( new CMiscEmbeddedShaderGenerator(shader_ids[i]) );
+		CShaderHandle shader;
+		bool loaded = shader.Load( shader_desc );
+
+		if( loaded )
+		{
+			m_SingleDiffuseColorShaders.push_back( shader );
+			m_SingleDiffuseColorShaderTechniques.push_back( CShaderTechniqueHandle() );
+			m_SingleDiffuseColorShaderTechniques.back().SetTechniqueName( "Default" );
+		}
 	}
 
 	// added shader manager that uses fixed function pipeline as a fallback
@@ -172,6 +195,13 @@ void CMeshViewer::LoadShaders()
 	default_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
 	m_Shaders.push_back( CShaderHandle() );
 	m_Shaders.back().Load( default_desc );
+	m_Techniques.push_back( CShaderTechniqueHandle() );
+	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
+
+	CShaderResourceDesc vegetation_shader_desc;
+	vegetation_shader_desc.ResourcePath = "shaders/vegetation.fx";
+	m_Shaders.push_back( CShaderHandle() );
+	m_Shaders.back().Load( vegetation_shader_desc );
 	m_Techniques.push_back( CShaderTechniqueHandle() );
 	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
 }
@@ -203,14 +233,23 @@ void CMeshViewer::RenderMeshes()
 	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
 	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
-	CShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
+//	CShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
+	CShaderManager *pShaderManager
+		= m_UseSingleDiffuseColorShader ?
+		m_SingleDiffuseColorShaders[ m_CurrentSDCShaderIndex ].GetShaderManager() :
+		m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
+
 	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	shader_mgr.SetParam( "g_vEyePos", GetCameraController()->GetPosition() );
 
-	SetLights( shader_mgr );
+	if( !m_UseSingleDiffuseColorShader )
+		SetLights( shader_mgr );
 
-	shader_mgr.SetTechnique( m_Techniques[m_CurrentShaderIndex] );
+	if( m_UseSingleDiffuseColorShader )
+		shader_mgr.SetTechnique( m_SingleDiffuseColorShaderTechniques[m_CurrentSDCShaderIndex] );
+	else
+		shader_mgr.SetTechnique( m_Techniques[m_CurrentShaderIndex] );
 
 	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
 	if(	!pMesh )
@@ -237,7 +276,26 @@ void CMeshViewer::RenderMeshes()
 
 //	if( pMesh )
 //		pMesh->Render( shader_mgr );
-	if( pMesh )
+
+	if( m_UseSingleDiffuseColorShader )
+	{
+		SFloatRGBAColor colors[] =
+		{
+			SFloatRGBAColor( 1.0f, 0.6f, 0.6f, 1.0f ),
+			SFloatRGBAColor( 0.6f, 1.0f, 0.6f, 1.0f ),
+			SFloatRGBAColor( 0.6f, 0.6f, 1.0f, 1.0f ),
+			SFloatRGBAColor( 0.6f, 1.0f, 1.0f, 1.0f ),
+			SFloatRGBAColor( 1.0f, 0.6f, 1.0f, 1.0f ),
+			SFloatRGBAColor( 1.0f, 1.0f, 0.6f, 1.0f ),
+		};
+		for( int i=0; i<pMesh->GetNumMaterials(); i++ )
+		{
+			int color_index = i % numof(colors);
+			shader_mgr.SetParam( "DiffuseColor", colors[color_index] );
+			pMesh->RenderSubset( shader_mgr, i );
+		}
+	}
+	else
 	{
 		if( m_CurrentShaderIndex == (int)m_Shaders.size() - 1 )
 			pMesh->Render();
@@ -476,15 +534,24 @@ void CMeshViewer::HandleInput( const SInputData& input )
 			m_Lighting = !m_Lighting;
 		break;
 
-	case 'M':
+	case 'D':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+			if( !m_UseSingleDiffuseColorShader )
+				m_UseSingleDiffuseColorShader = true;
+			else
+				m_CurrentSDCShaderIndex = (m_CurrentSDCShaderIndex + 1) % (int)m_SingleDiffuseColorShaders.size();
 		}
 		break;
 
 	case 'S':
 		if( input.iType == ITYPE_KEY_PRESSED )
-			m_CurrentShaderIndex = (m_CurrentShaderIndex + 1) % (int)m_Shaders.size();
+		{
+			if( m_UseSingleDiffuseColorShader )
+				m_UseSingleDiffuseColorShader = false;
+			else
+				m_CurrentShaderIndex = (m_CurrentShaderIndex + 1) % (int)m_Shaders.size();
+		}
 		break;
 
 	case GIC_MOUSE_BUTTON_L:

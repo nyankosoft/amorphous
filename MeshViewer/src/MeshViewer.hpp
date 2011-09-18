@@ -34,6 +34,14 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	int m_CurrentShaderIndex;
 
+	bool m_UseSingleDiffuseColorShader;
+
+	std::vector<CShaderHandle> m_SingleDiffuseColorShaders;
+
+	std::vector<CShaderTechniqueHandle> m_SingleDiffuseColorShaderTechniques;
+
+	int m_CurrentSDCShaderIndex;
+
 //	CUnitSphere m_LightPosIndicator;
 
 	Vector3 m_vLightPosition;
