@@ -458,7 +458,7 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 		{
 			string filepath = material.vecTexture[j].strFilename;
 
-			if( filepath[1] == ':' )
+			if( 2 <= filepath.length() && filepath[1] == ':' )
 			{
 				// absolute path
 				// - change it to a valid path string for Win32 platform
