@@ -11,54 +11,9 @@ void C2DRect::Release()
 }
 
 
-/// draws the rect with render state settings
-/// if the rect has a texture, or is handed one as the argument
-/// it will be rendered with the texture
-/// alpha blend is enabled. The user can set the blend mode
-/// by calling SetDestAlphaBlendMode()
-/// the default blend mode is D3DBLEND_INVSRCALPHA
-void C2DRect::Draw(	const LPDIRECT3DTEXTURE9 pTexture )
-{
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	SetBasicRenderStates();
-
-//	GraphicsDevice().Draw( m_avRectVertex, texture );
-
-//	SetStdRenderStatesForTexture();
-
-	pd3dDev->SetTexture( 0, pTexture );
-
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-//	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG2 );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
-
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-	pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-
-	// draw a rectangle
-//	HRESULT hr ;
-
-	draw();
-/*
-	pd3dDev->SetVertexShader( NULL );
-	pd3dDev->SetPixelShader( NULL );
-	pd3dDev->SetFVF( D3DFVF_TLVERTEX );
-	hr = pd3dDev->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectVertex, sizeof(TLVERTEX) );
-
-	if( FAILED(hr) )
-		MessageBox(NULL, "DrawPrimUP failed.", "Error", MB_OK);
-*/
-}
-
-
 void C2DRect::DrawWireframe()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	// enable alpha blending
     pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
@@ -79,7 +34,7 @@ void C2DRect::DrawWireframe()
 
 //	C2DPrimitiveRenderer_D3D renderer;
 //	renderer.Render( m_avRectVertex, 4, PrimitiveType::LINE_STRIP );
-
+*/
 
 /*
 	// draw a rectangle

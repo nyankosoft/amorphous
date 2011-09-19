@@ -3,7 +3,6 @@
 
 
 #include "../../base.hpp"
-#include "../../Graphics/Direct3D/Direct3D9.hpp"
 #include "../../Graphics/TextureCoord.hpp"
 #include "../../Graphics/AlphaBlend.hpp"
 #include "../../Graphics/TextureHandle.hpp"
@@ -11,6 +10,7 @@
 #include "../../Graphics/Rect.hpp"
 #include "../../Graphics/General2DVertex.hpp"
 #include "../../Graphics/GraphicsDevice.hpp"
+#include "../../Graphics/TextureStage.hpp"
 using namespace::Graphics;
 
 #include "../../3DMath/Vector2.hpp"
@@ -141,29 +141,43 @@ inline void C2DPrimitive::SetStdRenderStates()
 {
 	GraphicsDevice().SetTexture( 0, CTextureHandle() );
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	if( pd3dDev )
-	{
+//	if( pd3dDev )
+//	{
 		// no texture
 		// - use only the vertex color & alpha
-		pd3dDev->SetTexture( 0, NULL );
+//		pd3dDev->SetTexture( 0, NULL );
 
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-		pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
+//		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+//		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+//		pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
 
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-	}
+//		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+//		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
+//		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+//	}
+
+	GraphicsDevice().SetTexture( 0, CTextureHandle() );
+
+	CTextureStage tex_stage_0, tex_stage_1;
+
+	tex_stage_0.ColorOp   = TexStageOp::SELECT_ARG0;
+	tex_stage_0.ColorArg0 = TexStageArg::DIFFUSE;
+	tex_stage_0.AlphaOp   = TexStageOp::SELECT_ARG0;
+	tex_stage_0.AlphaArg0 = TexStageArg::DIFFUSE;
+	GraphicsDevice().SetTextureStageParams( 0, tex_stage_0 );
+
+	tex_stage_1.ColorOp = TexStageOp::DISABLE;
+	tex_stage_1.AlphaOp = TexStageOp::DISABLE;
+	GraphicsDevice().SetTextureStageParams( 1, tex_stage_1 );
 }
 
 
 inline void C2DPrimitive::SetStdRenderStatesForTexture( const CTextureHandle& texture )
 {
 	GraphicsDevice().SetTexture( 0, texture );
-
+/*
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	if( pd3dDev )
@@ -181,6 +195,20 @@ inline void C2DPrimitive::SetStdRenderStatesForTexture( const CTextureHandle& te
 		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
 		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 	}
+*/
+	CTextureStage tex_stage_0, tex_stage_1;
+
+	tex_stage_0.ColorOp   = TexStageOp::MODULATE;
+	tex_stage_0.ColorArg0 = TexStageArg::DIFFUSE;
+	tex_stage_0.ColorArg1 = TexStageArg::TEXTURE;
+	tex_stage_0.AlphaOp   = TexStageOp::MODULATE;
+	tex_stage_0.AlphaArg0 = TexStageArg::DIFFUSE;
+	tex_stage_0.AlphaArg1 = TexStageArg::TEXTURE;
+	GraphicsDevice().SetTextureStageParams( 0, tex_stage_0 );
+
+	tex_stage_1.ColorOp = TexStageOp::DISABLE;
+	tex_stage_1.AlphaOp = TexStageOp::DISABLE;
+	GraphicsDevice().SetTextureStageParams( 1, tex_stage_1 );
 }
 
 

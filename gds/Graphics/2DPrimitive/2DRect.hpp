@@ -46,8 +46,6 @@ public:
 
 	void Draw( const CTextureHandle& texture ) { C2DPrimitive::Draw( texture ); }
 
-	void Draw( const LPDIRECT3DTEXTURE9 pTexture );
-
 	void DrawWireframe();
 
 	inline virtual Vector2 GetPosition2D( int vert_index ) const;
