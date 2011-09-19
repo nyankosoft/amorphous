@@ -3,11 +3,11 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/3DGameMath.hpp"
-#include "Graphics/GraphicsDevice.hpp"
+#include "GraphicsComponentCollector.hpp"
+#include "TextureRenderTarget.hpp"
+#include "Camera.hpp"
+#include "3DGameMath.hpp"
+#include "GraphicsDevice.hpp"
 #include "ShadowMaps.hpp"
 
 

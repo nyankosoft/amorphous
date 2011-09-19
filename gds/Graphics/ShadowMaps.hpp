@@ -3,14 +3,14 @@
 
 #include <boost/shared_ptr.hpp>
 #include "fwd.hpp"
-#include "Graphics/ShaderHandle.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/GenericShaderDesc.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/CubeMapManager.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
+#include "ShaderHandle.hpp"
+#include "GraphicsComponentCollector.hpp"
+#include "Shader/ShaderManager.hpp"
+#include "Shader/GenericShaderDesc.hpp"
+#include "TextureRenderTarget.hpp"
+#include "Camera.hpp"
+#include "CubeMapManager.hpp"
+#include "MeshObjectHandle.hpp"
 
 #include <assert.h>
 
