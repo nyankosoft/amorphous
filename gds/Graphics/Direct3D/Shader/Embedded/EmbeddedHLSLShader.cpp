@@ -189,23 +189,40 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular = CEmbeddedHLS
 
 //================================= Vertex Shader =================================
 
+"#ifdef BUMPMAP\n"\
+"#define BUMPMAP_VS_IN  float3 vModelSpaceTangent : TANGENT,\n"\
+"#define BUMPMAP_VS     oTangentWS  = mul( vModelSpaceBinormal,(float3x3)World );\n"\
+"#define BUMPMAP_VS_OUT ,out float3 oTangentWS : TEXCOORD2\n"\
+"#else\n"\
+"#define BUMPMAP_VS_IN\n"\
+"#define BUMPMAP_VS\n"\
+"#define BUMPMAP_VS_OUT\n"\
+"#endif\n"\
+
 "void VS_PPL_HSLs_Specular("\
 	"float4 vModelSpacePos     : POSITION,"\
 	"float3 vModelSpaceNormal  : NORMAL,"\
+	"BUMPMAP_VS_IN "\
 	"float4 vDiffuse           : COLOR0,"\
 	"float2 vTex0              : TEXCOORD0,"\
-	"out float4 oPos      : POSITION,"\
-	"out float4 oDiffuse  : COLOR0,"\
-	"out float2 oTex0     : TEXCOORD0,"\
-	"out float3 oPosWS    : TEXCOORD1,"\
-	"out float3 oNormalWS : TEXCOORD2 )"\
+	"out float4 oPos       : POSITION,"\
+	"out float4 oDiffuse   : COLOR0,"\
+	"out float2 oTex0      : TEXCOORD0,"\
+	"out float3 oPosWS     : TEXCOORD1,"\
+	"out float3 oNormalWS  : TEXCOORD2 "\
+	"BUMPMAP_VS_OUT"\
+	" )"\
 "{"\
 	"oPos         = mul( vModelSpacePos, WorldViewProj );"\
 	"float4 PosWS = mul( vModelSpacePos, World );"\
 	"oPosWS       = PosWS.xyz / PosWS.w;"\
-	"oNormalWS    = mul( vModelSpaceNormal, (float3x3)World );"\
+	"oNormalWS    = mul( vModelSpaceNormal,  (float3x3)World );"\
+	"BUMPMAP_VS\n"\
 	"oDiffuse     = vDiffuse;"\
 	"oTex0        = vTex0;"\
+/*	"float3 vTangentWS = cross( oBinormalWS, oNormalWS );"\
+	"float4 q = quaternion_from_axes( vTangentWS, oBinormalWS, oNormalWS );*/
+	
 "}\n"\
 );
 
@@ -233,24 +250,40 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 
 "[[OPTIONS_MACROS]]\n"
 
+"#ifdef BUMPMAP\n"\
+	"#define BUMPMAP_PS_IN ,float3 vTangentWS : TEXCOORD3\n"\
+	"#define CALCULATE_WORLD_NORMAL  "\
+	"float4 normal_map = tex2D( BUMPMAP_SAMPLER, Tex0 );"\
+	"float3 vNormalTS = normal_map.xyz * 2.0 - float3(1,1,1);"\
+	"vNormalWS = normalize(vNormalWS);"\
+	"float3 vBinormalWS = cross( vNormalWS, vTangentWS );"\
+	"vBinormalWS = normalize(vBinormalWS);"\
+	"vTangentWS = cross( vBinormalWS, vNormalWS );"\
+	"const float3 Normal = float3( "\
+	"dot( vNormalTS, vTangentWS ), "\
+	"dot( vNormalTS, vBinormalWS ), "\
+	"dot( vNormalTS, vNormalWS ) );\n"\
+"#else\n"\
+	"#define BUMPMAP_PS_IN\n"\
+	"#define CALCULATE_WORLD_NORMAL  const float3 Normal = normalize(vNormalWS);\n"\
+"#endif\n"\
+
 
 "float4 PS_PPL_HSLs_Specular( float4 ColorDiff : COLOR0,"\
-                "float2 Tex0      : TEXCOORD0,"\
-                "float3 PosWS     : TEXCOORD1,"\
-				"float3 vNormalWS : TEXCOORD2 ) : COLOR0"\
+                "float2 Tex0       : TEXCOORD0,"\
+                "float3 PosWS      : TEXCOORD1,"\
+				"float3 vNormalWS  : TEXCOORD2"\
+				"\nBUMPMAP_PS_IN"\
+				") : COLOR0"
 "{"\
 	"\nPLANAR_REFLECTION\n"\
 
 	"float4 surface_color = tex2D( Sampler0, Tex0 ) * ColorDiff;\n"\
 
-//	"NORMAL_MAP_TEXTURE\n"\
-//	or
-//	"TEXTURE_1\n"\
-
 	"float specular_power = GET_SPECULAR_POWER;"\
 
-	// normal in world space
-	"const float3 Normal = normalize(vNormalWS);"\
+	// normal in world space stored to Normal
+	"\nCALCULATE_WORLD_NORMAL\n"\
 
 	"COLOR_PAIR Out;"\
 	"Out.Color = 0;"\

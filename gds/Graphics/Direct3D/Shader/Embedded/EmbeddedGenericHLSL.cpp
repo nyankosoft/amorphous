@@ -816,6 +816,28 @@ static const char *GetSpecularTypeMacro( CSpecularSource::Name spec_src )
 	}
 }
 
+static const char *GetBumpMapOptionMacro( int index )
+{
+	if( index < 0 )
+		return "";
+	else
+		return "#define BUMPMAP\n";
+}
+
+static const char *GetBumpMapSamplerMacro( int index )
+{
+	switch( index )
+	{
+	case 0: return "#define BUMPMAP_SAMPLER Sampler0\n";
+	case 1: return "#define BUMPMAP_SAMPLER Sampler1\n";
+	case 2: return "#define BUMPMAP_SAMPLER Sampler2\n";
+	case 3: return "#define BUMPMAP_SAMPLER Sampler3\n";
+	default:
+		return "";
+	}
+
+}
+
 static const char *GetEnvMapOptionMacro( CEnvMapOption::Name envmap_option )
 {
 	switch( envmap_option )
@@ -844,6 +866,8 @@ void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbedded
 
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
+	dest.ps.pDependencies.push_back( GetBumpMapOptionMacro(desc.NormalMapTextureIndex) );
+	dest.ps.pDependencies.push_back( GetBumpMapSamplerMacro(desc.NormalMapTextureIndex) );
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
 	dest.ps.pDependencies.push_back( GetPlanarReflectionOptionMacro(desc.PlanarReflection) );
 
@@ -857,6 +881,8 @@ void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffec
 	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs;
 //	dest.pTechniqueName = "PPL_HSLs";
 
+	dest.ps.pDependencies.push_back( GetBumpMapOptionMacro(desc.NormalMapTextureIndex) );
+	dest.ps.pDependencies.push_back( GetBumpMapSamplerMacro(desc.NormalMapTextureIndex) );
 	dest.ps.pDependencies.push_back( GetEnvMapOptionMacro(desc.EnvMap) );
 	dest.ps.pDependencies.push_back( GetPlanarReflectionOptionMacro(desc.PlanarReflection) );
 }
@@ -979,9 +1005,9 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 	replace_first( tech, "$(VS)", hlsl_desc.vs.pName );
 	replace_first( tech, "$(PS)", hlsl_desc.ps.pName );
 
-/*	replace_first( tech, "$VS_VER",   "2_0" );
-	replace_first( tech, "$PS_VER",   "2_0" );
-*/
+//	replace_first( tech, "$VS_VER",   "2_0" );
+//	replace_first( tech, "$PS_VER",   "2_0" );
+
 	// >>> Experiment - Compile with the highest shader verison
 	D3DCAPS9 caps;
 	HRESULT hr = DIRECT3D9.GetD3D()->GetDeviceCaps( 0, D3DDEVTYPE_HAL, &caps );
