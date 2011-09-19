@@ -55,19 +55,56 @@ inline std::string get_ext( const std::string& filename )
 }
 
 
-inline std::string get_leaf( const std::string& filename )
+inline std::string get_leaf( const std::string& pathname )
 {
-	size_t pos = filename.rfind("\\");
+	using std::string;
 
-	if( pos != std::string::npos
-	 && pos != filename.length() - 1 ) 
-		return filename.substr( pos+1 );
+	struct local
+	{
+		static size_t rfind_separator( const std::string& pathname, size_t reverse_search_start_pos = std::string::npos )
+		{
+			using std::string;
+
+			const size_t slash_pos     = pathname.rfind( "/",  reverse_search_start_pos );
+			const size_t backslash_pos = pathname.rfind( "\\", reverse_search_start_pos );
+			if( slash_pos == string::npos )
+			{
+				if( backslash_pos == string::npos )
+					return string::npos;
+				else
+					return backslash_pos;
+			}
+			else
+			{
+				if( backslash_pos == string::npos )
+					return slash_pos;
+				else
+					return (slash_pos < backslash_pos) ? backslash_pos : slash_pos;
+			}
+		}
+	};
+
+	if( pathname.length() == 0 )
+		return string();
+
+	const size_t separator_pos = local::rfind_separator( pathname );
+
+	if( separator_pos == string::npos )
+	{
+		// Has no path separator - pathname is a leaf
+		return pathname;
+	}
 	else
 	{
-		pos = filename.rfind("/");
-		if( pos != std::string::npos
-		 && pos != filename.length() - 1 ) 
-			return filename.substr( pos+1 );
+		if( separator_pos == pathname.length() - 1 )
+		{
+			// The pathname ends with a separator character ('/' or '\\').
+			return string();
+		}
+		else
+		{
+			return pathname.substr( separator_pos + 1 );
+		}
 	}
 
 	return std::string();
