@@ -155,4 +155,12 @@ inline void CHemisphericDirectionalLight::Serialize( IArchive& ar, const unsigne
 }
 
 
+inline void CHemisphericSpotlight::Serialize( IArchive& ar, const unsigned int version )
+{
+	CSpotlight::Serialize( ar, version );
+
+	ar & Attribute;
+}
+
+
 #endif		/*  __HEMISPHERICLIGHT_H__  */
