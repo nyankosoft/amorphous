@@ -48,7 +48,7 @@ inline void conv_to_x( std::vector<std::string>& src, int& index, int& dest )
 }
 
 
-inline void conv_to_x( std::vector<std::string>& src, int& index, uint& dest )
+inline void conv_to_x( std::vector<std::string>& src, int& index, unsigned int& dest )
 {
 	if( 1 <= (int)src.size() - index )
 	{
@@ -70,7 +70,7 @@ inline void conv_to_x( std::vector<std::string>& src, int& index, short& dest )
 }
 
 
-inline void conv_to_x( std::vector<std::string>& src, int& index, ushort& dest )
+inline void conv_to_x( std::vector<std::string>& src, int& index, unsigned short& dest )
 {
 	if( 1 <= (int)src.size() - index )
 	{
