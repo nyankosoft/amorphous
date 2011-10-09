@@ -97,6 +97,23 @@ public:
 };
 
 
+class CompareFunc
+{
+public:
+	enum Name
+	{
+		ALWAYS,
+		NEVER,
+		LESS_THAN,                ///< Passes if the incoming alpha value is less than the reference value
+		LESS_THAN_OR_EQUAL_TO,
+		EQUAL_TO,
+		GERATER_THAN_OR_EQUAL_TO,
+		GREATER_THAN,
+		NUM_ALPHA_FUNCTIONS
+	};
+};
+
+
 class DepthBufferType
 {
 public:
@@ -233,6 +250,8 @@ public:
 	virtual void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode ) = 0;
 
 	virtual void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode ) = 0;
+
+	virtual void SetAlphaFunction( CompareFunc::Name alpha_func ) = 0;
 
 	virtual Result::Name SetFogParams( const CFogParams& fog_params ) = 0;
 

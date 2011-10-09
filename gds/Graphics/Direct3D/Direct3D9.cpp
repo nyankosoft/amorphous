@@ -518,6 +518,26 @@ void CDirect3D9::SetDestBlendMode( AlphaBlend::Mode dest_blend_mode )
 }
 
 
+static inline D3DCMPFUNC ToD3DAlphaFunc( CompareFunc::Name alpha_func )
+{
+	switch( alpha_func )
+	{
+	case CompareFunc::ALWAYS :               return D3DCMP_ALWAYS;
+	case CompareFunc::NEVER:                 return D3DCMP_NEVER;
+	case CompareFunc::LESS_THAN:             return D3DCMP_LESS;
+	case CompareFunc::LESS_THAN_OR_EQUAL_TO: return D3DCMP_LESSEQUAL;
+	default: return D3DCMP_ALWAYS;
+	}
+}
+
+
+void CDirect3D9::SetAlphaFunction( CompareFunc::Name alpha_func )
+{
+	if( m_pD3DDevice )
+		m_pD3DDevice->SetRenderState( D3DRS_ALPHAFUNC, ToD3DAlphaFunc(alpha_func) );
+}
+
+
 static inline D3DFOGMODE ToD3DFogMode( FogMode::Name fog_mode )
 {
 	switch( fog_mode )

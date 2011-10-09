@@ -81,6 +81,8 @@ public:
 
 	inline void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 
+	void SetAlphaFunction( CompareFunc::Name alpha_func );
+
 	Result::Name SetFogParams( const CFogParams& fog_params );
 
 	Result::Name SetCullingMode( CullingMode::Name cull_mode );

@@ -251,6 +251,11 @@ Result::Name CGLGraphicsDevice::SetRenderState( RenderStateType::Name type, bool
 }
 
 
+void CGLGraphicsDevice::SetAlphaFunction( CompareFunc::Name alpha_func )
+{
+}
+
+
 static inline int ToGLFogMode( FogMode::Name fog_mode )
 {
 	switch( fog_mode )
