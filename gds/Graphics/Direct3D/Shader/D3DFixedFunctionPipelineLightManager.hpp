@@ -32,8 +32,10 @@ public:
 	inline void SetAmbientLight( const CAmbientLight& light );
 	inline void SetDirectionalLight( const CDirectionalLight& light );
 	inline void SetPointLight( const CPointLight& light );
+	inline void SetSpotlight( const CSpotlight& light );
 	inline void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
 	inline void SetHemisphericPointLight( const CHemisphericPointLight& light );
+	inline void SetHemisphericSpotlight( const CHemisphericSpotlight& light );
 //	inline void SetTriDirectionalLight( const CTriDirectionalLight& light );
 //	inline void SetTriPointLight( const CTriPointLight& light );
 
@@ -178,6 +180,31 @@ inline void CD3DFixedFunctionPipelineLightManager::SetPointLight( const CPointLi
 }
 
 
+inline void CD3DFixedFunctionPipelineLightManager::SetSpotlight( const CSpotlight& light )
+{
+//	m_LightCache.vecPointLight.push_back( light );
+	D3DLIGHT9 d3d_light;
+	d3d_light.Type          = D3DLIGHT_SPOT;
+	d3d_light.Diffuse       = ToD3DCOLORVALUE( light.DiffuseColor );
+	d3d_light.Specular      = ToD3DCOLORVALUE( SFloatRGBColor::Black() );
+	d3d_light.Ambient       = ToD3DCOLORVALUE( SFloatRGBColor::Black() );
+	d3d_light.Position      = ToD3DVECTOR( light.vPosition );
+	d3d_light.Direction     = ToD3DVECTOR( Vector3(0,0,0) );
+	d3d_light.Range         = 100000.0f;
+	d3d_light.Falloff       = 0.0f;
+	d3d_light.Attenuation0  = light.fAttenuation[0]; 
+	d3d_light.Attenuation1  = light.fAttenuation[1]; 
+	d3d_light.Attenuation2  = light.fAttenuation[2]; 
+	d3d_light.Theta         = 0.0f;
+	d3d_light.Phi           = 0.0f;
+
+	HRESULT hr = S_OK;
+	hr = DIRECT3D9.GetDevice()->LightEnable( m_NumLights, TRUE );
+	hr = DIRECT3D9.GetDevice()->SetLight( m_NumLights, &d3d_light );
+	m_NumLights += 1;
+}
+
+
 inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light )
 {
 //	m_LightCache.vecHSDirecitonalLight.push_back( light );
@@ -188,6 +215,13 @@ inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericPointLight( con
 {
 //	m_LightCache.vecHSPointLight.push_back( light );
 }
+
+
+inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericSpotlight( const CHemisphericSpotlight& light )
+{
+//	m_LightCache.vecHSSpotlight.push_back( light );
+}
+
 
 
 #endif /* __D3DFixedFunctionPipelineLightManager_HPP__ */

@@ -44,6 +44,8 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 	m_aPropertyHandle[LPH_DIRECTIONAL_LIGHT_OFFSET]	= m_pEffect->GetParameterByName( NULL, "iLightDirIni" );
 	m_aPropertyHandle[LPH_NUM_POINT_LIGHTS]			= m_pEffect->GetParameterByName( NULL, "iLightPointNum" );
 	m_aPropertyHandle[LPH_POINT_LIGHT_OFFSET]		= m_pEffect->GetParameterByName( NULL, "iLightPointIni" );
+	m_aPropertyHandle[LPH_NUM_SPOTLIGHTS]			= m_pEffect->GetParameterByName( NULL, "iSpotlightNum" );
+	m_aPropertyHandle[LPH_SPOTLIGHT_OFFSET]			= m_pEffect->GetParameterByName( NULL, "iSpotlightIni" );
 
 	int i;
 	for( i=0; i<NUM_LIGHTING_PROPERTIES; i++ )
@@ -125,10 +127,11 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 /// - hemispheric point lights
 void CHLSLShaderLightManager::CommitChanges()
 {
-	int i;
+	int i = 0;
 
 	const int num_directional_lights = (int)m_LightCache.vecHSDirecitonalLight.size();
 	const int num_point_lights       = (int)m_LightCache.vecHSPointLight.size();
+	const int num_spotlights         = (int)m_LightCache.vecHSSpotlight.size();
 
 	SetDirectionalLightOffset( 0 );
 	SetNumDirectionalLights( num_directional_lights );
@@ -144,6 +147,14 @@ void CHLSLShaderLightManager::CommitChanges()
 	for( i=0; i<num_point_lights; i++ )
 	{
 		SetLight( num_directional_lights + i, m_LightCache.vecHSPointLight[i] );
+	}
+
+//	SetSpotightOffset( num_directional_lights );
+//	SetNumSpotlights( num_point_lights );
+
+	for( i=0; i<num_spotlights; i++ )
+	{
+		SetLight( num_directional_lights + num_point_lights + i, m_LightCache.vecHSSpotlight[i] );
 	}
 
 	m_pEffect->CommitChanges();

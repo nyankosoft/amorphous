@@ -12,8 +12,10 @@ class CLightCache
 public:
 	fixed_vector<CDirectionalLight,8> vecDirecitonalLight;
 	fixed_vector<CPointLight,8> vecPointLight;
+	fixed_vector<CSpotlight,8> vecSpotlight;
 	fixed_vector<CHemisphericDirectionalLight,8> vecHSDirecitonalLight;
 	fixed_vector<CHemisphericPointLight,8> vecHSPointLight;
+	fixed_vector<CHemisphericSpotlight,8> vecHSSpotlight;
 
 public:
 
@@ -21,8 +23,10 @@ public:
 	{
 		vecDirecitonalLight.resize(0);
 		vecPointLight.resize(0);
+		vecSpotlight.resize(0);
 		vecHSDirecitonalLight.resize(0);
 		vecHSPointLight.resize(0);
+		vecHSSpotlight.resize(0);
 	}
 };
 
@@ -37,8 +41,10 @@ public:
 	virtual void SetAmbientLight( const CAmbientLight& light ) {}
 	virtual void SetDirectionalLight( const CDirectionalLight& light ) {}
 	virtual void SetPointLight( const CPointLight& light ) {}
+	virtual void SetSpotlight( const CSpotlight& light ) {}
 	virtual void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light ) {}
 	virtual void SetHemisphericPointLight( const CHemisphericPointLight& light ) {}
+	virtual void SetHemisphericSpotlight( const CHemisphericSpotlight& light ) {}
 //	virtual void SetTriDirectionalLight( const CTriDirectionalLight& light ) {}
 //	virtual void SetTriPointLight( const CTriPointLight& light ) {}
 

@@ -34,6 +34,8 @@ class CHLSLShaderLightManager : public CShaderLightManager
 		LPH_DIRECTIONAL_LIGHT_OFFSET,
 		LPH_NUM_POINT_LIGHTS,
 		LPH_POINT_LIGHT_OFFSET,
+		LPH_NUM_SPOTLIGHTS,
+		LPH_SPOTLIGHT_OFFSET,
 		NUM_LIGHTING_PROPERTIES
 	};
 
@@ -59,8 +61,10 @@ public:
 	inline void SetAmbientLight( const CAmbientLight& light );
 	inline void SetDirectionalLight( const CDirectionalLight& light );
 	inline void SetPointLight( const CPointLight& light );
+	inline void SetSpotlight( const CSpotlight& light );
 	inline void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
 	inline void SetHemisphericPointLight( const CHemisphericPointLight& light );
+	inline void SetHemisphericSpotlight( const CHemisphericSpotlight& light );
 //	inline void SetTriDirectionalLight( const CTriDirectionalLight& light );
 //	inline void SetTriPointLight( const CTriPointLight& light );
 
@@ -73,6 +77,8 @@ public:
 	inline void SetLight( const int index, const CHemisphericPointLight& rLight );
 
 	inline void SetLight( const int index, const CHemisphericDirectionalLight& rLight );
+
+	inline void SetLight( const int index, const CHemisphericSpotlight& rLight );
 
 	/// set the number of directional lights
 	/// user is responsible for calling CommitChanges() after this call
@@ -202,6 +208,20 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const CHemispher
 }
 
 
+inline void CHLSLShaderLightManager::SetLight( const int index, const CHemisphericSpotlight& rLight )
+{
+	HRESULT hr;
+	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+
+	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.vDirection, sizeof(float) * 3 );
+
+	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
+	hr = m_pEffect->SetFloatArray( m_aHandle[index][LIGHT_AMBIENT_COLOR], ambient, 4 );
+//	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
+}
+
+
 inline void CHLSLShaderLightManager::SetAmbientLight( const CAmbientLight& light )
 {
 }
@@ -219,6 +239,12 @@ inline void CHLSLShaderLightManager::SetPointLight( const CPointLight& light )
 }
 
 
+inline void CHLSLShaderLightManager::SetSpotlight( const CSpotlight& light )
+{
+	m_LightCache.vecSpotlight.push_back( light );
+}
+
+
 inline void CHLSLShaderLightManager::SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light )
 {
 	m_LightCache.vecHSDirecitonalLight.push_back( light );
@@ -229,6 +255,13 @@ inline void CHLSLShaderLightManager::SetHemisphericPointLight( const CHemispheri
 {
 	m_LightCache.vecHSPointLight.push_back( light );
 }
+
+
+inline void CHLSLShaderLightManager::SetHemisphericSpotlight( const CHemisphericSpotlight& light )
+{
+	m_LightCache.vecHSSpotlight.push_back( light );
+}
+
 
 
 #endif /* __HLSLLightManager_H__ */

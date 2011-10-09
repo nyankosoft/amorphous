@@ -180,10 +180,10 @@ const char *CEmbeddedGenericHLSL::ms_pLightDef =
 //initial and range of directional, point and spot lights within the light array
 "int iLightDirIni   = 0;"\
 "int iLightDirNum   = 0;"\
-"int iLightPointIni = 1;"\
+"int iLightPointIni = 0;"\
 "int iLightPointNum = 0;"\
-//int iLightSpotIni;
-//int iLightSpotNum;
+"int iSpotlightIni  = 0;"\
+"int iSpotlightNum  = 0;"\
 
 
 //-----------------------------------------------------------------------------

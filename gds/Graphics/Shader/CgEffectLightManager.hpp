@@ -59,8 +59,10 @@ public:
 	inline void SetAmbientLight( const CAmbientLight& light );
 	inline void SetDirectionalLight( const CDirectionalLight& light );
 	inline void SetPointLight( const CPointLight& light );
+	inline void SetSpotlight( const CSpotlight& light );
 	inline void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
 	inline void SetHemisphericPointLight( const CHemisphericPointLight& light );
+	inline void SetHemisphericSpotlight( const CHemisphericSpotlight& light );
 //	inline void SetTriDirectionalLight( const CTriDirectionalLight& light );
 //	inline void SetTriPointLight( const CTriPointLight& light );
 
@@ -182,6 +184,12 @@ inline void CCgEffectLightManager::SetDirectionalLight( const CDirectionalLight&
 }
 
 
+inline void CCgEffectLightManager::SetSpotlight( const CSpotlight& light )
+{
+	m_LightCache.vecSpotlight.push_back( light );
+}
+
+
 inline void CCgEffectLightManager::SetPointLight( const CPointLight& light )
 {
 	m_LightCache.vecPointLight.push_back( light );
@@ -197,6 +205,12 @@ inline void CCgEffectLightManager::SetHemisphericDirectionalLight( const CHemisp
 inline void CCgEffectLightManager::SetHemisphericPointLight( const CHemisphericPointLight& light )
 {
 	m_LightCache.vecHSPointLight.push_back( light );
+}
+
+
+inline void CCgEffectLightManager::SetHemisphericSpotlight( const CHemisphericSpotlight& light )
+{
+	m_LightCache.vecHSSpotlight.push_back( light );
 }
 
 
