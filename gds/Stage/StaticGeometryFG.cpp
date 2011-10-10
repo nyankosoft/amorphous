@@ -5,6 +5,7 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
