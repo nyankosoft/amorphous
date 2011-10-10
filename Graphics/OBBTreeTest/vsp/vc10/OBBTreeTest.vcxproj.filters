@@ -24,4 +24,7 @@
       <Filter>Source Files\Test</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\app\params.txt" />
+  </ItemGroup>
 </Project>
