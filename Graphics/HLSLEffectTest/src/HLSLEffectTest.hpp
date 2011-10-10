@@ -38,16 +38,6 @@ public:
 
 class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum UIID
-	{
-		UIID_DLG_ROOT = 1000,
-		UIID_DLG_SLIDERS,
-		UIID_DLG_RESOLUTION,
-		UIID_LBX_RESOLUTION,
-		UIID_DLG_LISTBOXGROUP,
-		UIID_OTHER
-	};
-
 	enum Params
 	{
 		TEXT_BUFFER_SIZE = 4096
