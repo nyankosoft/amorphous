@@ -710,13 +710,13 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 			if( 0 < strSurfaceTexture.length() )
 			{
 //				strSurfaceTexture = m_strTexPath + "\\" + strTemp;
-				strSurfaceTexture = m_strTexPath + "\\" + fnop::get_nopathfilename(strSurfaceTexture);
+				strSurfaceTexture = m_strTexPath + "\\" + lfs::get_leaf(strSurfaceTexture);
 			}
 
 			if( 0 < strNormalMapTexture.length() )
 			{
 //				strNormalMapTexture = m_strTexPath + "\\" + strTemp;
-				strNormalMapTexture = m_strTexPath + "\\" + fnop::get_nopathfilename(strNormalMapTexture);
+				strNormalMapTexture = m_strTexPath + "\\" + lfs::get_leaf(strNormalMapTexture);
 			}
 			break;
 

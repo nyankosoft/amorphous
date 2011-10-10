@@ -154,7 +154,7 @@ void CGraphicsApplicationBase::Run()
 
 //	g_CmdLine = lpCmdLine;
 /*
-	const string iwd = fnop::get_cwd(); // initial working directory
+	const string iwd = lfs::get_cwd(); // initial working directory
 	if( iwd.substr( iwd.length() - 4 ) != "/_App"
 	 && iwd.substr( iwd.length() - 4 ) != "\\_App" )
 	{

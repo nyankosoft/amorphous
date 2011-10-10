@@ -259,7 +259,7 @@ bool CTrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( C2DArray<U8>& dest
 
 	RenderTextToBuffer( face, text, char_height, dest_bitmap_buffer, m_vecCharRect );
 
-//	SaveGrayscaleToImageFile( dest_bitmap_buffer, "./results/" + fnop::get_nopath(ttf_filepath) + ".bmp" );
+//	SaveGrayscaleToImageFile( dest_bitmap_buffer, "./results/" + lfs::get_leaf(ttf_filepath) + ".bmp" );
 
 	return true;
 }

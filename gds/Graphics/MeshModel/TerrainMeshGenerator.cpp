@@ -539,7 +539,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 
 //	g_Log.Print( "splitting texture image (src filename: %s)", src_tex_filename.c_str() );
 
-	if( !fnop::file_exists(src_tex_filename) )
+	if( !lfs::path_exists(src_tex_filename) )
 	{
 		LOG_PRINT_ERROR( " - cannot find file: " + src_tex_filename );
 		return false;
