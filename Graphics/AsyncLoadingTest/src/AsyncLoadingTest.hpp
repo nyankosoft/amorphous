@@ -9,7 +9,6 @@
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "gds/Input/fwd.hpp"
-#include "gds/Input.hpp"
 #include "gds/GUI/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
@@ -39,16 +38,6 @@ public:
 
 class CAsyncLoadingTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum UIID
-	{
-		UIID_DLG_ROOT = 1000,
-		UIID_DLG_SLIDERS,
-		UIID_DLG_RESOLUTION,
-		UIID_LBX_RESOLUTION,
-		UIID_DLG_LISTBOXGROUP,
-		UIID_OTHER
-	};
-
 	enum Params
 	{
 		TEXT_BUFFER_SIZE = 4096
@@ -64,8 +53,6 @@ class CAsyncLoadingTest : public CGraphicsTestBase, public CGraphicsComponent
 	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
 	boost::shared_ptr<CFontBase> m_pFont;
-
-	CInputHandlerSharedPtr m_pInputHandler;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 

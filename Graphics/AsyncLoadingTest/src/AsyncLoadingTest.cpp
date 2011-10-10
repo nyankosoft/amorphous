@@ -3,7 +3,6 @@
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/AsyncResourceLoader.hpp"
-#include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
@@ -277,18 +276,13 @@ void CAsyncLoadingTest::Update( float dt )
 
 void CAsyncLoadingTest::RenderMeshes()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-	pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( !pShaderManager )
 		return;
 
 	// render the scene
-
-//	D3DXMATRIX matWorld;
-//	D3DXMatrixIdentity( &matWorld );
 
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 
