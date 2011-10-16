@@ -5,7 +5,7 @@
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
 #include "Support/BitmapImage.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
 
@@ -35,7 +35,7 @@ public:
 	std::string Print( int index )
 	{
 		std::string dest = m_SrcFilepath;
-		fnop::append_to_body( dest, fmt_string( "_%03d", index ) );
+		lfs::insert_before_extension( dest, fmt_string( "_%03d", index ) );
 		return dest;
 	}
 };
