@@ -2,7 +2,6 @@
 #include "GameMessage.hpp"
 #include "CopyEntityDesc.hpp"
 #include "CopyEntity.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 

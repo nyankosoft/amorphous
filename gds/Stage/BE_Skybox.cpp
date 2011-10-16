@@ -2,7 +2,6 @@
 #include "BaseEntity_Draw.hpp"
 
 //#include "GameMessage.hpp"
-//#include "trace.hpp"
 #include "CopyEntity.hpp"
 #include "Stage.hpp"
 #include "Graphics/MeshGenerators.hpp"

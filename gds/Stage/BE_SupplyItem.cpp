@@ -3,7 +3,6 @@
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 
