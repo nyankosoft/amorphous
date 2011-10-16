@@ -4,7 +4,7 @@
 
 #include <string>
 #include "../../base.hpp"
-#include "../StringAux.hpp"
+#include "../time_string.hpp"
 #include "DefaultLog.hpp"
 
 
