@@ -10,7 +10,7 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
-#include "Support/fnop.hpp"
+#include "Support/lfs.hpp"
 #include "Support/macro.h"
 
 #include "bsptree.hpp"
@@ -399,7 +399,7 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 		 && 0 < skybox_mat[0].vecTexture.size() )
 		{
 			string fade_tex_filepath = skybox_mat[0].vecTexture[0].strFilename;
-			fnop::append_to_body( fade_tex_filepath, "_fade" );
+			lfs::insert_before_extension( fade_tex_filepath, "_fade" );
 			m_FadeTex.Load( fade_tex_filepath );
 		}
 	}
