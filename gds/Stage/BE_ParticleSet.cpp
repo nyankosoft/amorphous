@@ -160,6 +160,16 @@ void CBE_ParticleSet::InitParticleSetMesh()
 }
 
 
+void CBE_ParticleSet::InitParticleSetEntity( CCopyEntity& entity )
+{
+	CurrentTime(&entity) = 0.0f;
+
+	entity.RaiseEntityFlags( BETYPE_USE_ZSORT );
+
+	entity.iExtraDataIndex = GetNewExtraDataID();
+}
+
+
 void CBE_ParticleSet::Init()
 {
 	// allocate buffer for particle sets

@@ -244,6 +244,8 @@ protected:
 
 	void InitParticleSetMesh();
 
+	void InitParticleSetEntity( CCopyEntity& entity );
+
 	inline void UpdateParticles( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
 
 	inline void UpdateParticlePositions( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );

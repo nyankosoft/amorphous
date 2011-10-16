@@ -2,10 +2,7 @@
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
-#include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-
 #include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 #include "Support/Profile.hpp"
@@ -61,9 +58,8 @@ void CBE_SmokeTrace::Init()
 
 void CBE_SmokeTrace::InitCopyEntity(CCopyEntity* pCopyEnt)
 {
-	CurrentTime(pCopyEnt) = 0.0f;
+	InitParticleSetEntity( *pCopyEnt );
 
-	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 //	SBE_ParticleSetExtraData& rParticleSet = pParticleSetEntity->m_ParticleSet;
 
@@ -75,8 +71,6 @@ void CBE_SmokeTrace::InitCopyEntity(CCopyEntity* pCopyEnt)
 		rParticleSet.pasPattern[i] = RangedRand( m_iNumTextureSegments * m_iNumTextureSegments * 4 - 1 );
 		rParticleSet.pafAnimationTime[i] = 0.0f;
 	}
-
-	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 
 	Vector3& rvEmitterPrevPos = pCopyEnt->v1;	// this is supposed to be set by emitter entity
 	Vector3& rvLastUpdatePos  = pCopyEnt->v2;
@@ -131,7 +125,7 @@ void CBE_SmokeTrace::Act( CCopyEntity* pCopyEnt )
 void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
 {
 	float fFrameTime = m_pStage->GetFrameTime();
-	float& rfCurrentTime = pCopyEnt->f2;
+	float& rfCurrentTime = CurrentTime(pCopyEnt);
 	float& rfTotalFrameTime = pCopyEnt->f4;
 	CCopyEntity *pSmokeEmitter = pCopyEnt->GetParent();
 	Vector3& rvLastUpdatePos = pCopyEnt->v2;
@@ -293,7 +287,7 @@ void CBE_SmokeTrace::MakeSmoke( CCopyEntity* pCopyEnt )
 {
 	float fFrameTime = m_pStage->GetFrameTime();
 
-	float& rfCurrentTime = pCopyEnt->f2;
+	float& rfCurrentTime = CurrentTime(pCopyEnt);
 	float& rfTotalFrameTime = pCopyEnt->f4;
 	CCopyEntity *pSmokeEmitter = pCopyEnt->GetParent();
 //	float num_particles_per_sec = m_iNumParticlesPerSec;

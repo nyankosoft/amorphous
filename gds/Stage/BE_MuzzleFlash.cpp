@@ -31,7 +31,7 @@ void CBE_MuzzleFlash::Init()
 	// suppose a circle on xy-plane
 	for( i=0; i<CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS; i++ )
 	{
-		t = D3DX_PI * (float)i / (float)CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS;
+		t = (float)PI * (float)i / (float)CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS;
 		m_avRandDir_Circle[i] = Vector3( (float)cos(t), (float)sin(t), 0 );
 	}
 
@@ -41,12 +41,8 @@ void CBE_MuzzleFlash::Init()
 
 void CBE_MuzzleFlash::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-	float& rfCurrentTime = pCopyEnt->f2;
-	rfCurrentTime = 0.0f;
+	InitParticleSetEntity( *pCopyEnt );
 
-//	pCopyEnt->bUseZSort = true;
-	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
-	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	// set the number of particles for this particle set
@@ -55,10 +51,10 @@ void CBE_MuzzleFlash::InitCopyEntity( CCopyEntity* pCopyEnt )
 	float fMaxRadius = m_fMuzzleFlash_MaxRadius;
 
 	Vector3 vPos;
-	Vector3	vBasePos = pCopyEnt->GetWorldPosition();
-	Vector3 vDir = pCopyEnt->GetDirection();
-	Vector3 vRight = pCopyEnt->GetRightDirection();
-	Vector3	vUp = pCopyEnt->GetUpDirection();
+	Vector3	vBasePos  = pCopyEnt->GetWorldPosition();
+	Vector3 vDir      = pCopyEnt->GetDirection();
+	Vector3 vRight    = pCopyEnt->GetRightDirection();
+	Vector3	vUp       = pCopyEnt->GetUpDirection();
 	Vector3	vVelocity = pCopyEnt->Velocity();
 	Vector3 vRandDir;
 
