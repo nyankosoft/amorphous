@@ -20,9 +20,6 @@ CBE_Door::CBE_Door()
 	m_fOpenLength = 1.0f;
 	m_vLocalOpenDirection = Vector3(1,0,0);
 
-//	m_acStartSound[0] = '\0';
-//	m_acStopSound[0] = '\0';
-
 	m_fSpring = 1.20f;
 	m_fDamper = 0.05f;
 

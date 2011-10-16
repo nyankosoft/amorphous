@@ -25,10 +25,6 @@ CBE_DoorController::CBE_DoorController()
 	m_bNoClipAgainstMap = true;
 
 	m_strKeyCode = "NO_LOCK";
-
-//	m_acStartSound[0] = '\0';
-//	m_acStopSound[0] = '\0';
-
 }
 
 

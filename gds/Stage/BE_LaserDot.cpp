@@ -113,8 +113,6 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 		pCopyEnt->s1 & BE_LASERDOT_OFF_SURFACE )
 		return;	// laser is either swithed off or not reaching a surface
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	// increase the size of the dot to improve visibility
 //	D3DXMatrixScaling( &matScale, 5.0f, 5.0f, 1.0f );
 	Matrix44 matScale( Matrix44Scaling( 5.0f, 5.0f, 1.0f ) );
