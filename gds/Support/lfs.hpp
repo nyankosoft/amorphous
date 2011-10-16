@@ -210,7 +210,7 @@ inline std::string get_no_ext( const std::string& filename )
  - example: string filename = "readme.txt"; append_before_ext( filename, "_en" );
  - result: filename = "readme_en.txt"
 */
-inline void append_before_ext( std::string& dest_filename, const std::string& str )
+inline void insert_before_extension( std::string& dest_filename, const std::string& str )
 {
 	size_t dot_pos = dest_filename.rfind( "." );
 	if( dot_pos == std::string::npos )
