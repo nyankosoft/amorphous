@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{30e0290c-1daf-4995-b27c-95d7d95ed0d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support">
+      <UniqueIdentifier>{be149f8c-4b03-497d-aa21-b5ff974fc042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support\Log">
+      <UniqueIdentifier>{6498e14d-bee8-4818-8fdb-d48b6fa7ac5f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FreeTypeTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Log\DefaultLog.cpp">
+      <Filter>Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogInputBase.cpp">
+      <Filter>Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.cpp">
+      <Filter>Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Timer_Win32.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Timer.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\DefaultLog.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\Log.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogInputBase.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\ScopeLog.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Timer_Win32.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

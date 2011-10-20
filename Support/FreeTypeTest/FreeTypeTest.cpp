@@ -1,6 +1,3 @@
-#include <string>
-#include <vector>
-#include <boost/foreach.hpp>
 #include "gds/base.hpp"
 #include "gds/Support/lfs.hpp"
 #include "gds/Support/Timer.hpp"
@@ -13,13 +10,6 @@
 #include "gds/Support/UTF8/utf8.h"
 
 using namespace std;
-
-
-#ifdef _DEBUG
-#pragma comment( lib, "freetype239_D.lib" )
-#else
-#pragma comment( lib, "freetype239.lib" )
-#endif
 
 
 bool LoadTextFromFile( const std::string& src_file, std::string& dest )
@@ -229,7 +219,7 @@ int StartFreeTypeTests()
 		"fonts/ipam.ttf",
 		"fonts/ipamp.ttf",
 		"fonts/cinecaption227.TTF",
-		"fonts/GDhwGoJA-OTF106b.otf"
+		"fonts/GDhwGoJA-OTF107b.otf"
 	};
 
 	const int font_sizes[] =
@@ -239,7 +229,8 @@ int StartFreeTypeTests()
 		16,
 		24,
 		32,
-		48
+		48,
+		64
 	};
 	
 /*	CTimer m_Timer;
