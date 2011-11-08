@@ -4,7 +4,7 @@
 
 #ifdef _MSC_VER
 
-#include <clipboard_utils_win32.hpp>
+#include "clipboard_utils_win32.hpp"
 
 #else /* _MSC_VER */
 
