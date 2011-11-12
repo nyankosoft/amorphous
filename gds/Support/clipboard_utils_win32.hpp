@@ -2,11 +2,33 @@
 #define __clipboard_utils_win32_HPP__
 
 
+#include <Windows.h>
 #include <string>
 
 
 inline void get_from_clipboard( std::string& text )
 {
+	if( !OpenClipboard( NULL ) )
+	{
+		printf( "Cannot open the Clipboard.\n" );
+		return;
+	}
+
+	// For the appropriate data formats...
+	HANDLE hClipboardData = ::GetClipboardData( CF_TEXT );
+	if( !hClipboardData )
+		return;
+
+//	LPTSTR lptstr = GlobalLock( hClipboardData );
+	const char *lptstr = (const char *)GlobalLock( hClipboardData );
+	if( !lptstr )
+		return;
+
+	text = lptstr;
+
+	GlobalUnlock(hClipboardData);
+
+	CloseClipboard();
 }
 
 
