@@ -6,10 +6,10 @@
 #include <string>
 #include <boost/weak_ptr.hpp>
 
-#include "Graphics/fwd.hpp"
+#include "gds/Graphics/fwd.hpp"
 #include "KeyState.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Input/InputHandler.hpp"
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Input/InputHandler.hpp"
 
 
 class Matrix44;
