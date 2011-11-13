@@ -3,6 +3,15 @@
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/AsyncResourceLoader.hpp"
+//#include "gds/Graphics/GraphicsResourceCacheManager.hpp"
+//#include "gds/Graphics/Camera.hpp"
+//#include "gds/Graphics/HemisphericLight.hpp"
+//#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+//#include "gds/Graphics/Mesh/BasicMesh.hpp"
+//#include "gds/Graphics/Shader/ShaderManager.hpp"
+//#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+//#include "gds/Graphics/Shader/ShaderLightManager.hpp"
+//#include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
@@ -136,8 +145,6 @@ int CAsyncLoadingTest::Init()
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 6, 12 );
 	m_pFont = pTexFont;
-//	m_pFont = shared_ptr<CFontBase>( new CFont( "ÇlÇr ÉSÉVÉbÉN", 6, 12 ) );
-//	m_pFont = shared_ptr<CFontBase>( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
 
 /*
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
@@ -324,6 +331,7 @@ void CAsyncLoadingTest::Render()
 
 	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
 
+	m_TextBuffer.resize( 0 );
 	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
 	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );

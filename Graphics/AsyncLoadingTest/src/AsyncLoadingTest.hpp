@@ -38,11 +38,6 @@ public:
 
 class CAsyncLoadingTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 //	std::vector<CMeshObjectHandle> m_vecMesh;
 	std::vector<CTestMeshHolder> m_vecMesh;
 
@@ -62,7 +57,7 @@ class CAsyncLoadingTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	int m_NumTextureMipmaps;
 
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 private:
 
