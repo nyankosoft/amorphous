@@ -280,7 +280,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 	if( m_TextBox.GetNumRects() < num_total_letters )
 		m_TextBox.AddRects( num_total_letters - m_TextBox.GetNumRects() );
 
-	for(int i=0; i<num_letters; i++)//, col++, rect_index++)
+	for(int i=0; i<num_letters; i++)//, col++)
 	{
 		iCharCode = (int)pcStr[i];
 
@@ -313,9 +313,6 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 
 		int vert_index = rect_index * 4;
 
-		if( vert_index == 92 )
-			int break_here = 1;
-
 		// positions
 		m_TextBox.SetRectVertexPosition( rect_index, 0, Vector2( sx + italic, sy ) );
 		m_TextBox.SetRectVertexPosition( rect_index, 1, Vector2( ex + italic, sy ) );
@@ -328,7 +325,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 
 		iVert += 6;
 
-		// Not incremented when either of the following 2 cases is true
+		// The following 2 variables are not incremented when either of the following 2 cases is true
 		// 1. The character is a '\n'.
 		// 2. The character code is invalid.
 		rect_index += 1;
@@ -371,9 +368,6 @@ void CTextureFont::DrawCachedText()
 {
 	// Draw the string
 	const int num_letters = m_CacheIndex;
-
-//	const int num_letters = 16 < m_CacheIndex ? 16 : m_CacheIndex;
-//	const int num_letters = 32 < m_CacheIndex ? 32 : m_CacheIndex;
 
 	m_TextBox.SetDestAlphaBlendMode( m_DestAlphaBlend );
 
