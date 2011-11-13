@@ -249,7 +249,6 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 
 	if( NUM_MAX_LETTERS <= m_CacheIndex + num_letters )
 	{
-//		assert( !"CTextureFont - text data overflow" );
 		LOG_PRINT_WARNING( " - text data overflow" );
 		return;
 	}
@@ -268,24 +267,27 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 	float su, sv, eu, ev;
 	float sx, sy, ex, ey;
 	int iVert = m_CacheIndex * 6;
-	int col=0;
+//	int col=0;
 	int char_index = 0;
 	float current_y = vPos.y;
 	float current_x = vPos.x;
 	int rect_index = m_CacheIndex;
 	int num_total_letters = m_CacheIndex + num_letters;
 
+	// The number of characters which does not include '\n's and invalid characters.
+	int num_characters_to_render = 0;
+
 	if( m_TextBox.GetNumRects() < num_total_letters )
 		m_TextBox.AddRects( num_total_letters - m_TextBox.GetNumRects() );
 
-	for(int i=0; i<num_letters; i++, col++, rect_index++)
+	for(int i=0; i<num_letters; i++)//, col++, rect_index++)
 	{
 		iCharCode = (int)pcStr[i];
 
 		if( iCharCode == '\n' )
 		{
 			// line feed
-			col = 0;
+			//col = 0;
 			current_x = vPos.x;
 			current_y += font_height;// * factor.y;
 			continue;
@@ -311,6 +313,9 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 
 		int vert_index = rect_index * 4;
 
+		if( vert_index == 92 )
+			int break_here = 1;
+
 		// positions
 		m_TextBox.SetRectVertexPosition( rect_index, 0, Vector2( sx + italic, sy ) );
 		m_TextBox.SetRectVertexPosition( rect_index, 1, Vector2( ex + italic, sy ) );
@@ -322,6 +327,12 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 		current_x += char_rect.advance * factor.x;
 
 		iVert += 6;
+
+		// Not incremented when either of the following 2 cases is true
+		// 1. The character is a '\n'.
+		// 2. The character code is invalid.
+		rect_index += 1;
+		num_characters_to_render += 1;
 	}
 
 //	m_vShadowShift = Vector2(3,3);
@@ -352,7 +363,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 
 	m_TextBox.SetColor( dwColor );
 
-	m_CacheIndex += (int)num_letters;
+	m_CacheIndex += (int)num_characters_to_render;
 }
 
 
@@ -360,6 +371,9 @@ void CTextureFont::DrawCachedText()
 {
 	// Draw the string
 	const int num_letters = m_CacheIndex;
+
+//	const int num_letters = 16 < m_CacheIndex ? 16 : m_CacheIndex;
+//	const int num_letters = 32 < m_CacheIndex ? 32 : m_CacheIndex;
 
 	m_TextBox.SetDestAlphaBlendMode( m_DestAlphaBlend );
 

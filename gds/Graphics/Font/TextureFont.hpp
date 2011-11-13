@@ -41,7 +41,7 @@ public:
 
 	enum Params
 	{
-		NUM_MAX_LETTERS = 1024,
+		NUM_MAX_LETTERS = 0x1000,
 		CHAR_OFFSET = ' '
 	};
 	
@@ -61,7 +61,6 @@ protected:
 	int m_NumTexDivisionsX;
 	int m_NumTexDivisionsY;
 
-//	TLVERTEX m_avTextBox[NUM_MAX_LETTERS * 6];
 	C2DRectSet m_TextBox;
 
 	C2DRectSet m_ShadowTextBox;
