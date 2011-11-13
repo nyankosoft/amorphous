@@ -63,15 +63,15 @@ inline bool str_includes( const std::string& src, const std::string& target )
 // CGraphicsResourceEntry
 //==================================================================================================
 
-void CGraphicsResourceEntry::GetStatus( char *pDestBuffer )
+void CGraphicsResourceEntry::GetStatus( std::string& dest_buffer )
 {
-	sprintf( pDestBuffer, "ref: %02d", m_iRefCount );
+	dest_buffer += "ref: ";
+
+	char buffer[16];
+	memset( buffer, 0, sizeof(buffer) );
+	sprintf( buffer, "%02d", m_iRefCount );
+	dest_buffer += buffer;
 
 	if( GetResource() )
-	{
-		char buffer[512];
-		GetResource()->GetStatus( buffer );
-		strcat( pDestBuffer, buffer );
-	}
+		GetResource()->GetStatus( dest_buffer );
 }
-

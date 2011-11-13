@@ -470,23 +470,43 @@ void CGraphicsResourceManager::AllowAsyncLoading( bool allow )
 }
 
 
-void CGraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, char *pDestBuffer )
+void CGraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::string& dest_buffer )
 {
 	boost::mutex::scoped_lock scoped_lock(m_ResourceLock);
 
 	size_t i, num_entries = m_vecpResourceEntry.size();
-	char buffer[1024];
-	sprintf( pDestBuffer, "%d resources in total\n", num_entries );
-	strcat(  pDestBuffer, "----------------------------------------------------------\n" );
+	dest_buffer = to_string(num_entries) + " resources in total\n";
+	dest_buffer += "----------------------------------------------------------\n";
 
 	for( i=0; i<num_entries; i++ )
 	{
 		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i];
 		if( pEntry )
-			pEntry->GetStatus( buffer );
+			pEntry->GetStatus( dest_buffer );
 
-		strcat( pDestBuffer, buffer );
-		strcat( pDestBuffer, "\n" );
+		dest_buffer += "\n";
+	}
+}
+
+
+void CGraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::vector<std::string>& dest_buffer )
+{
+	boost::mutex::scoped_lock scoped_lock(m_ResourceLock);
+
+	dest_buffer.reserve( 0xFF );
+
+	size_t i, num_entries = m_vecpResourceEntry.size();
+	dest_buffer.push_back( to_string(num_entries) + " resources in total" );
+	dest_buffer.push_back( "----------------------------------------------------------" );
+
+	for( i=0; i<num_entries; i++ )
+	{
+		shared_ptr<CGraphicsResourceEntry> pEntry = m_vecpResourceEntry[i];
+		if( pEntry )
+		{
+			dest_buffer.push_back( std::string() );
+			pEntry->GetStatus( dest_buffer.back() );
+		}
 	}
 }
 

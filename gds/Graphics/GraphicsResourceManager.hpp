@@ -100,7 +100,9 @@ public:
 
 	void AddCache( CGraphicsResourceDesc& desc );
 
-	void GetStatus( GraphicsResourceType::Name type, char *pDestBuffer );
+	void GetStatus( GraphicsResourceType::Name type, std::string& dest_buffer );
+
+	void GetStatus( GraphicsResourceType::Name type, std::vector<std::string>& dest_buffer );
 
 	friend class CGraphicsResourceHandle;
 	friend class CTextureHandle;

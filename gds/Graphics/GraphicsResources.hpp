@@ -200,7 +200,8 @@ public:
 
 	inline GraphicsResourceState::Name GetState();
 
-	virtual void GetStatus( char *pDestBuffer );
+	/// Appends a string which represents the status of the graphics resource to dest_buffer
+	virtual void GetStatus( std::string& dest_buffer );
 
 	friend class CGraphicsResourceManager;
 	friend class CGraphicsResourceCacheManager;
@@ -284,7 +285,7 @@ public:
 	/// - Returns an object that provides access to the locked texture surface
 	bool GetLockedTexture( boost::shared_ptr<CLockedTexture>& pLockedTexture );
 
-	void GetStatus( char *pDestBuffer );
+	void GetStatus( std::string& dest_buffer );
 
 	friend class CGraphicsResourceManager;
 };
@@ -347,7 +348,7 @@ public:
 
 	const CGraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
 
-	void GetStatus( char *pDestBuffer );
+	void GetStatus( std::string& dest_buffer );
 
 //	bool Lock();
 

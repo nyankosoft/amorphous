@@ -164,11 +164,9 @@ bool CGraphicsResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& 
 }
 
 
-void CGraphicsResource::GetStatus( char *pDestBuffer )
+void CGraphicsResource::GetStatus( std::string& dest_buffer )
 {
-	const CGraphicsResourceDesc& desc = GetDesc();
-
-	sprintf( pDestBuffer, " / %s",	desc.ResourcePath.c_str() );
+	dest_buffer += ( " / " + GetDesc().ResourcePath );
 }
 
 
@@ -261,15 +259,13 @@ bool CTextureResource::IsDiskResource() const
 }
 
 
-void CTextureResource::GetStatus( char *pDestBuffer )
+void CTextureResource::GetStatus( std::string& dest_buffer )
 {
-	CGraphicsResource::GetStatus( pDestBuffer );
+	CGraphicsResource::GetStatus( dest_buffer );
 
-	char buffer[256];
 	const CTextureResourceDesc& desc = m_TextureDesc;
 
-	sprintf( buffer, " / %d x %d", desc.Width, desc.Height );
-	strcat( pDestBuffer, buffer );
+	dest_buffer += ( " / " + to_string(desc.Width) + " x " + to_string(desc.Height) );
 }
 
 
@@ -566,15 +562,13 @@ bool CMeshResource::LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive )
 }
 
 
-void CMeshResource::GetStatus( char *pDestBuffer )
+void CMeshResource::GetStatus( std::string& dest_buffer )
 {
-	CGraphicsResource::GetStatus( pDestBuffer );
+	CGraphicsResource::GetStatus( dest_buffer );
 
-	char buffer[256];
 	const CMeshResourceDesc& desc = m_MeshDesc;
 
-	sprintf( buffer, " / %d", desc.MeshType );
-	strcat( pDestBuffer, buffer );
+	dest_buffer += " / " + to_string((int)desc.MeshType);
 }
 
 

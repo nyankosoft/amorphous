@@ -77,7 +77,7 @@ public:
 	const boost::shared_ptr<CMeshResource> GetMeshResource() const { return m_pMeshResource; }
 	const boost::shared_ptr<CShaderResource> GetShaderResource() const { return m_pShaderResource; }
 
-	void GetStatus( char *pDestBuffer );
+	void GetStatus( std::string& dest_buffer );
 
 	friend class CGraphicsResourceManager;
 
