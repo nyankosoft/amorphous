@@ -199,7 +199,7 @@ class CDebugItem_ResourceManager : public CDebugItemBase
 {
 protected:
 
-	char m_TextBuffer[4096];
+	std::string m_TextBuffer;
 
 public:
 

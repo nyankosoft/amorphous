@@ -137,7 +137,6 @@ void CDebugItem_StateLog::Render()
 
 CDebugItem_ResourceManager::CDebugItem_ResourceManager()
 {
-	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
 }
 
 
@@ -163,14 +162,20 @@ void CDebugItem_ResourceManager::Render()
 
 void CDebugItem_GraphicsResourceManager::GetTextInfo()
 {
-	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
+	m_TextBuffer.resize( 0 );
 	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
+
+	// Debug info of graphics resource tends to grow too big.
+	// For now, we just cut them short because they will not fit to the screen any way.
+	// TODO: support scrolling mechanism to let developers view the entire content.
+	const int max_buffer_size = 2048;
+	m_TextBuffer.resize( max_buffer_size );
 }
 
 
 void CDebugItem_SoundManager::GetTextInfo()
 {
-	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
+	m_TextBuffer.resize( 0 );
 	SoundManager().GetTextInfo( m_TextBuffer );
 }
 
@@ -179,13 +184,9 @@ void CDebugItem_InputDevice::GetTextInfo()
 {
 	InputDeviceHub().GetInputDeviceStatus( m_vecTextBuffer );
 
-	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
-	int left = sizeof(m_TextBuffer) - 1;
-	for( size_t i=0; i<m_vecTextBuffer.size() && 0 < left; i++ )
-	{
-		strncat( m_TextBuffer, m_vecTextBuffer[i].c_str(), left );
-		left -= (int)m_vecTextBuffer[i].size();
-	}
+	m_TextBuffer.resize( 0 );
+	for( size_t i=0; i<m_vecTextBuffer.size(); i++ )
+		m_TextBuffer += m_vecTextBuffer[i];
 }
 
 
