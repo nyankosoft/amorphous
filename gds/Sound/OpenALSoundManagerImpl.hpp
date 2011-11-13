@@ -188,7 +188,7 @@ public:
 
 //	void CommitDeferredSettings()
 
-	void GetTextInfo( char *pDestBuffer );
+	void GetTextInfo( std::string& dest_buffer );
 
 //	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type );
 

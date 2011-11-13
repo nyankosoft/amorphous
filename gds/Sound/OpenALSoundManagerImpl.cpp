@@ -646,38 +646,33 @@ void COpenALSoundManagerImpl::Update()
 }
 
 
-void COpenALSoundManagerImpl::GetTextInfo( char *pDestBuffer )
+void COpenALSoundManagerImpl::GetTextInfo( std::string& dest_buffer )
 {
 	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
 
 	const size_t num_buffers = m_ActiveSoundBuffer.size();
 
 	char text[1024];
-	sprintf( text, "Sound Buffers (%d in total)\n----------------------------------------\n",
-		num_buffers );
-	strcat( pDestBuffer, text );
+	dest_buffer = fmt_string( "Sound Buffers (%d in total)\n----------------------------------------\n", num_buffers );
 
 	map< string, CSoundBuffer *>::iterator itr;
 	for( itr =  m_ActiveSoundBuffer.begin();
 		 itr != m_ActiveSoundBuffer.end();
 		 itr++ )
 	{
-		sprintf( text, "name: %s / buffer id: %d\n", 
-		itr->second->m_ResourcePath.c_str(),
-		itr->second->m_uiBuffer
-		);
-
-		strcat( pDestBuffer, text );
+		dest_buffer += "name: ";
+		dest_buffer += itr->second->m_ResourcePath;
+		dest_buffer += " / buffer id: ";
+		dest_buffer += to_string(itr->second->m_uiBuffer);
+		dest_buffer += "\n";
 	}
 
-	strcat( pDestBuffer, "\n" );
+	dest_buffer += "\n";
 
 	string text_buffer;
 	const size_t num_sources = m_ActiveSoundList.size();
 
-	sprintf( text, "Sound Sources (%d in total)\n----------------------------------------\n",
-		num_sources );
-	strcat( pDestBuffer, text );
+	dest_buffer += fmt_string( "Sound Sources (%d in total)\n----------------------------------------\n", num_sources );
 
 	std::list<CSoundSource *>::iterator itrSource;
 	for( itrSource =  m_ActiveSoundList.begin();
@@ -685,8 +680,7 @@ void COpenALSoundManagerImpl::GetTextInfo( char *pDestBuffer )
 		 itrSource++ )
 	{
 		(*itrSource)->GetTextInfo( text_buffer );
-
-		strcat( pDestBuffer, text_buffer.c_str() );
+		dest_buffer += text_buffer;
 	}
 }
 
