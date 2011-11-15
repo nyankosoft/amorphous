@@ -274,7 +274,7 @@ std::string TerrainMeshTree::CreateSubdividedTextureFilepath( const string& src_
 	dest_filename = dest_filepath.string();
 //	dest_filename = ".\\temp" + fnop::get_nopath(src_tex_filename);
 
-	lfs::append_before_ext( dest_filename, fmt_string("%02d",index) );
+	lfs::insert_before_extension( dest_filename, fmt_string("%02d",index) );
 
 	lfs::change_ext( dest_filename, m_OutputTextureImageFormat );
 
