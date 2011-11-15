@@ -6,13 +6,10 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "3DMath/Transform.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
-using namespace GameLib1::Serialization;
+#include "gds/3DMath/Matrix34.hpp"
+#include "gds/3DMath/Quaternion.hpp"
+#include "gds/3DMath/Transform.hpp"
+#include "gds/Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
 #include "fwd.hpp"
 #include "Skeleton.hpp"
@@ -78,6 +75,8 @@ public:
 
 	inline void SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1 );
 
+	inline void SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1, const CKeyframe& keyframe2, const CKeyframe& keyframe3 );
+
 	void Scale( float scaling_factor ) { m_RootNode.Scale_r( scaling_factor ); }
 
 	inline Transform GetTransform( const std::vector<int>& locator ) const;
@@ -117,6 +116,11 @@ inline void CKeyframe::GetRootPose( Matrix34& dest ) const
 inline void CKeyframe::SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1 )
 {
 	m_RootNode.SetInterpolatedTransform_r( frac, keyframe0.m_RootNode, keyframe1.m_RootNode );
+}
+
+inline void CKeyframe::SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1, const CKeyframe& keyframe2, const CKeyframe& keyframe3 )
+{
+	m_RootNode.SetInterpolatedTransform_r( frac, keyframe0.m_RootNode, keyframe1.m_RootNode, keyframe2.m_RootNode, keyframe3.m_RootNode );
 }
 
 
@@ -252,6 +256,8 @@ public:
 	void SetLoopedMotion( bool looped ) { m_bIsLoopedMotion = looped; }
 
 	Result::Name GetNearestKeyframeIndices( float time, int& i0, int& i1 );
+
+	Result::Name GetNearestKeyframeIndices( float time, int& i0, int& i1, int& i2, int& i3 );
 
 	Result::Name GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
 

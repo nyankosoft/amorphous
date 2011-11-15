@@ -1,31 +1,12 @@
 #include "MotionPrimitive.hpp"
 #include "BlendNode.hpp"
 
+#include "../3DMath/Matrix44.hpp"
+#include "../Support/Log/DefaultLog.hpp"
+#include "../Support/ParamLoader.hpp"
+
 using namespace msynth;
 using namespace boost;
-
-
-void CTransformNode::SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1 )
-{
-	m_vTranslation = node0.m_vTranslation * ( 1.0f - frac ) + node1.m_vTranslation * frac;
-
-//	m_Rotation = node0.m_Rotation * ( 1.0f - frac ) + node1.m_Rotation * frac;
-	m_Rotation.Slerp( frac, node0.m_Rotation, node1.m_Rotation );
-
-	const Matrix33 mat = m_Rotation.ToRotationMatrix(); // check the rotation for debugging
-
-	const size_t num_children = node0.m_vecChildNode.size();
-
-	if( m_vecChildNode.size() != num_children )
-	{
-		m_vecChildNode.resize( num_children );
-	}
-
-	for( size_t i=0; i<num_children; i++ )
-	{
-		m_vecChildNode[i].SetInterpolatedTransform_r( frac, node0.m_vecChildNode[i], node1.m_vecChildNode[i] );
-	}
-}
 
 
 //==========================================================================
@@ -78,6 +59,43 @@ Result::Name CMotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, i
 }
 
 
+Result::Name CMotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, int& i1, int& i2, int& i3 )
+{
+	if( time < 0 )
+		return Result::INVALID_ARGS;
+
+	// find the adjacent two frames which are closest to 'time'
+	int i, iNumFrames = (int)m_vecKeyframe.size();
+	for( i=0; i<iNumFrames; i++ )
+	{
+		if( time < m_vecKeyframe[i].GetTime() )
+			break;
+	}
+
+	if( i == 0 || i == iNumFrames )
+		return Result::UNKNOWN_ERROR;
+
+	if( m_bIsLoopedMotion
+	 || ( 4 <= iNumFrames && 2 <= i && i < iNumFrames - 1 ) )
+	{
+		// ' % iNumFrames' is for looped motions
+		i0 = (i - 2 + iNumFrames) % iNumFrames;
+		i1 = i - 1;
+		i2 = i;
+		i3 = (i + 1) % iNumFrames;
+	}
+	else
+	{
+		i0 = -1;
+		i1 = i - 1;
+		i2 = i;
+		i3 = -1;
+	}
+
+	return Result::SUCCESS;
+}
+
+
 Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe,
 												  float time,
 												  Interpolation::Mode mode )
@@ -92,7 +110,29 @@ Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpol
 
 	float fFrac = ( time - time0 ) / ( time1 - time0 );
 
-	dest_interpolated_keyframe.SetInterpolatedKeyframe( fFrac, m_vecKeyframe[i0], m_vecKeyframe[i1] );
+	int test_spline_interpolation = 0;
+	LoadParamFromFile( ".debug/MotionSynthesis.txt", "test_spline_interpolation", test_spline_interpolation );
+	if( test_spline_interpolation == 0 )
+	{
+		dest_interpolated_keyframe.SetInterpolatedKeyframe( fFrac, m_vecKeyframe[i0], m_vecKeyframe[i1] );
+	}
+	else
+	{
+		int i0=0, i1=0, i2=0, i3=0;
+		Result::Name res = GetNearestKeyframeIndices( time, i0, i1, i2, i3 );
+		if( res != Result::SUCCESS )
+			return res;
+
+		const float& time1 = m_vecKeyframe[i1].GetTime();
+		const float& time2 = m_vecKeyframe[i2].GetTime();
+
+		float fFrac = ( time - time1 ) / ( time2 - time1 );
+
+		if( i0 == -1 )
+			dest_interpolated_keyframe.SetInterpolatedKeyframe( fFrac, m_vecKeyframe[i1], m_vecKeyframe[i2] );
+		else
+			dest_interpolated_keyframe.SetInterpolatedKeyframe( fFrac, m_vecKeyframe[i0], m_vecKeyframe[i1], m_vecKeyframe[i2], m_vecKeyframe[i3] );
+	}
 
 	return Result::SUCCESS;
 }

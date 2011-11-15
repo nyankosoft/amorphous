@@ -2,11 +2,11 @@
 #define  __TransformNode_H__
 
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "3DMath/Transform.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "gds/3DMath/Vector3.hpp"
+#include "gds/3DMath/Quaternion.hpp"
+#include "gds/3DMath/Transform.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
+#include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 
@@ -43,6 +43,8 @@ public:
 	~CTransformNode() {}
 
 	void SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1 );
+
+	void SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1, const CTransformNode& node2, const CTransformNode& node3 );
 
 	void CopyFrame_r( CBVHBone& src_bone );
 
