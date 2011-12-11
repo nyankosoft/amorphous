@@ -4,9 +4,6 @@
 
 #include "TextureFont.hpp"
 #include "Support/2DArray.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
 
 
 class CTrueTypeTextureFont;
