@@ -26,6 +26,11 @@ private:
 
 	void InitUTFFontInternal();
 
+	/**
+	- 1. Lock the font texture.
+	- 2. Render the text to the locked texture.
+	- 3. Unlock the texture.
+	*/
 	bool DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2& vTopLeftPos );
 
 public:
