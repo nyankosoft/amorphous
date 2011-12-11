@@ -3,14 +3,11 @@
 
 
 #include <vector>
-#include <string>
 #include <queue>
-#include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
 #include "GraphicsResourceDescs.hpp"
-#include "GraphicsResourceManager.hpp"
+#include "GraphicsComponentCollector.hpp"
 
-#include "Support/Singleton.hpp"
+#include "../Support/Singleton.hpp"
 using namespace NS_KGL;
 
 
