@@ -73,6 +73,8 @@ public:
 
 	inline CBVHBone *GetRootBone() { return &m_RootBone; }
 
+	inline const CBVHBone *GetRootBone() const { return &m_RootBone; }
+
 	inline int GetNumBones() const { return m_RootBone.GetNumBones_r(); }
 
 	/// basic bvh file information

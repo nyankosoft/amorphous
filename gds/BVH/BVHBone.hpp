@@ -67,6 +67,8 @@ public:
 
 	inline CBVHBone *GetChild( int i ) { return &m_vecChild[i]; }
 
+	inline const CBVHBone *GetChild( int i ) const { return &m_vecChild[i]; }
+
 	inline Vector3 GetLocalOffset() const { return m_vOffset; }
 
 	void Draw_r( Vector3* pvPrevPosition = NULL, Matrix34* pParentMatrix = NULL );
