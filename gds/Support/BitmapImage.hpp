@@ -169,6 +169,10 @@ public:
 
 	inline U32 GetPixelARGB32( int x, int y );
 
+	inline void GetPixel( int x, int y, SFloatRGBAColor& color );
+
+	inline SFloatRGBAColor GetPixel( int x, int y );
+
 	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b );
 
 	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a );
@@ -287,6 +291,25 @@ inline U32 CBitmapImage::GetPixelARGB32( int x, int y )
 		| (U32)bits[FI_RGBA_BLUE];
 
 	return argb32;*/
+}
+
+
+inline void CBitmapImage::GetPixel( int x, int y, SFloatRGBAColor& color )
+{
+	U8 r=0, g=0, b=0, a=0;
+	GetPixel( x, y, r, g, b, a );
+	color.fRed   = (float)r / (float)255.0f;
+	color.fGreen = (float)g / (float)255.0f;
+	color.fBlue  = (float)b / (float)255.0f;
+	color.fAlpha = (float)a / (float)255.0f;
+}
+
+
+inline SFloatRGBAColor CBitmapImage::GetPixel( int x, int y )
+{
+	SFloatRGBAColor dest;
+	GetPixel( x, y, dest );
+	return dest;
 }
 
 
@@ -650,6 +673,27 @@ inline bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::s
 	int width  = texel.size_x();
 	int height = texel.size_y();
 	const int depth = 24;
+
+	CBitmapImage img( width, height, depth );
+
+	for( y=0; y<height ; y++ )
+	{
+		for( x=0; x<width; x++ )
+		{
+			img.SetPixel( x, y, texel(x,y) );
+		}
+	}
+
+	return img.SaveToFile( filepath );
+}
+
+
+inline bool SaveToImageFile( const C2DArray<SFloatRGBAColor>& texel, const std::string& filepath )
+{
+	int x,y;
+	int width  = texel.size_x();
+	int height = texel.size_y();
+	const int depth = 32;
 
 	CBitmapImage img( width, height, depth );
 
