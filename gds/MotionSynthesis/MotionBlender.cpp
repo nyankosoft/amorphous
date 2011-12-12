@@ -1,15 +1,11 @@
 #include "MotionBlender.hpp"
 #include "MotionPrimitiveBlender.hpp"
 #include "MotionDatabase.hpp"
-#include "HumanoidMotionTable.hpp"
+//#include "HumanoidMotionTable.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/memory_helpers.hpp"
-
-#include <boost/foreach.hpp>
+#include "gds/Support/Log/DefaultLog.hpp"
 
 using namespace std;
-
 using namespace msynth;
 
 

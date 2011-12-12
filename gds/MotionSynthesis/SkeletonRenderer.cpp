@@ -1,9 +1,10 @@
 #include "SkeletonRenderer.hpp"
+#include "MotionPrimitive.hpp"
 //#include "Support/LineSegmentRenderer.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "Graphics/PrimitiveRenderer.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/3DMath/MatrixConversions.hpp"
+#include "gds/Graphics/PrimitiveRenderer.hpp"
+#include "gds/Graphics/Shader/ShaderManager.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 using namespace msynth;
 

@@ -1,7 +1,7 @@
 #include "MotionPrimitiveBlender.hpp"
 
-#include "Support/Macro.h"
-#include "Support/Log/DefaultLog.hpp"
+#include "gds/Support/Macro.h"
+#include "gds/Support/Log/DefaultLog.hpp"
 
 using std::vector;
 using std::list;
@@ -789,8 +789,8 @@ void CPVC_MotionPrimitivePlayManager::PlayInterpolaitonMotion( float dt )
 */
 
 
-#include "Support/StringAux.hpp"
-#include "Support/Vec3_StringAux.hpp"
+#include "gds/Support/StringAux.hpp"
+#include "gds/Support/Vec3_StringAux.hpp"
 
 void CMotionPrimitiveBlenderStatistics::Update()
 {

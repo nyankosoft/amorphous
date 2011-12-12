@@ -1,5 +1,5 @@
-#include "BVH/BVHBone.hpp"
 #include "TransformNode.hpp"
+#include "gds/BVH/BVHBone.hpp"
 #include "gds/3DMath/TCBSpline.hpp"
 
 using namespace msynth;

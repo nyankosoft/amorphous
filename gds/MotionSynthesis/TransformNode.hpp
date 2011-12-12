@@ -2,9 +2,9 @@
 #define  __TransformNode_H__
 
 
-#include "gds/3DMath/Vector3.hpp"
 #include "gds/3DMath/Quaternion.hpp"
 #include "gds/3DMath/Transform.hpp"
+#include "gds/BVH/fwd.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;

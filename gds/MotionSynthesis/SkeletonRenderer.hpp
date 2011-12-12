@@ -6,9 +6,7 @@
 
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/3DMath/ray.hpp"
-#include "gds/Graphics/UnitCube.hpp"
 #include "Skeleton.hpp"
-#include "MotionPrimitive.hpp"
 
 
 namespace msynth
