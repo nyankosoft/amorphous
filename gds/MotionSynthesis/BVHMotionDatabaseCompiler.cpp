@@ -1,8 +1,9 @@
 #include "BVHMotionDatabaseCompiler.hpp"
-#include "BVH/BVHPlayer.hpp"
-#include "XML/XMLDocumentLoader.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/StringAux.hpp"
+#include "BVHUtilities.hpp"
+#include "gds/BVH/BVHPlayer.hpp"
+#include "gds/XML/XMLDocumentLoader.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/StringAux.hpp"
 #include <boost/foreach.hpp>
 
 using std::string;
@@ -137,7 +138,8 @@ void CBVHMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGro
 	}
 
 	// copy skeleton structure
-	desc_group.m_Skeleton.CopyFromBVHSkeleton( *bvh_player.GetRootBone() );
+//	desc_group.m_Skeleton.CopyFromBVHSkeleton( *bvh_player.GetRootBone() );
+	CopySkeletonFromBVH( bvh_player, desc_group.m_Skeleton );
 
 	desc_group.m_Skeleton.Scale( desc_group.m_fScalingFactor );
 

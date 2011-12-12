@@ -36,8 +36,6 @@ public:
 
 	CBone() : m_vOffset(Vector3(0,0,0)), m_matOrient(Matrix33Identity()) {}
 
-	CBone( CBVHBone& bvh_bone );
-
 	const std::string& GetName() const { return m_Name; }
 
 	void SetName( const std::string& name ) { m_Name = name; }
@@ -66,7 +64,7 @@ public:
 
 	/*inline*/ void CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const;
 
-	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator );
+	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const;
 
 	void CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node );
 
@@ -93,15 +91,13 @@ class CSkeleton : public IArchiveObjectBase
 
 public:
 
-	void CopyFromBVHSkeleton( CBVHBone& root_bone ) { m_RootBone.CopyBones_r( root_bone ); }
-
 	const CBone& GetRootBone() const { return m_RootBone; }
 
 	void SetBones( const CBone& root_bone ) { m_RootBone = root_bone; }
 
 	void Scale( float scaling_factor ) { m_RootBone.Scale_r( scaling_factor ); }
 
-	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator );
+	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const;
 
 	void CreateEmptyTransformNodeTree( CTransformNode& root_transform_node ) { m_RootBone.CreateEmptyTransformNodeTree( root_transform_node ); }
 
