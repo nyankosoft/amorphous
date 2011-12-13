@@ -2,8 +2,8 @@
 #define __MeshUtilities_HPP__
 
 
-#include "Graphics/MeshGenerators.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
+#include "MeshGenerators.hpp"
+#include "MeshObjectHandle.hpp"
 
 
 /// \param whd [in] width(x), height(y), and depth of the box
