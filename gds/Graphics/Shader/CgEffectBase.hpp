@@ -265,14 +265,17 @@ inline void CCgEffectBase::SetWorldTransform( const Matrix44& matWorld )
 	// Update cache
 	m_matWorld = matWorld;
 	cgSetMatrixParameterfc( m_aMatrixHandle[MATRIX_WORLD], matWorld.GetData() );
+	CheckForCgError( "Called cgSetMatrixParameterfc() a world matrix." );
 
 	// view * world
 	Matrix44 matViewWorld = m_matView * matWorld;
 	cgSetMatrixParameterfc( m_aMatrixHandle[MATRIX_WORLD_VIEW], matViewWorld.GetData() );
+	CheckForCgError( "Called cgSetMatrixParameterfc() a WorldView matrix." );
 
 	// proj * view * world
 	Matrix44 matProjViewWorld = m_matProj * matViewWorld;
 	cgSetMatrixParameterfc( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], matProjViewWorld.GetData() );
+	CheckForCgError( "Called cgSetMatrixParameterfc() a WorldViewProj matrix." );
 }
 
 

@@ -83,9 +83,11 @@ inline Result::Name CD3DCgEffect::SetTechnique( CShaderTechniqueHandle& tech_han
 
 
 extern CGcontext g_myCgContext;
+extern void InitCg();
 
 uint CD3DCgEffect::ms_RefCount = 0;
 boost::shared_ptr<CD3DCgManager> CD3DCgEffect::ms_pD3DCgManager;
+
 
 CD3DCgEffect::CD3DCgEffect()
 {
@@ -101,10 +103,9 @@ CD3DCgEffect::CD3DCgEffect()
 	cgD3D9SetManageTextureParameters(m_CgContext, CG_TRUE);
 	CheckForCgError("manage texture parameters");
 */
-	cgD3D9RegisterStates(g_myCgContext);
-	CheckForCgError("registering standard CgFX states");
-	cgD3D9SetManageTextureParameters(g_myCgContext, CG_TRUE);
-	CheckForCgError("manage texture parameters");
+	ONCE( InitCg() );
+
+	ONCE( InitCgContext() );
 }
 
 
@@ -119,4 +120,13 @@ CD3DCgEffect::~CD3DCgEffect()
 void CD3DCgEffect::SetCGTextureParameter( CGparameter& param, CTextureHandle& texture )
 {
 	cgD3D9SetTextureParameter( param, texture.GetTexture() );
+}
+
+
+void CD3DCgEffect::InitCgContext()
+{
+	cgD3D9RegisterStates(g_myCgContext);
+	CheckForCgError("registering standard CgFX states");
+	cgD3D9SetManageTextureParameters(g_myCgContext, CG_TRUE);
+	CheckForCgError("manage texture parameters");
 }

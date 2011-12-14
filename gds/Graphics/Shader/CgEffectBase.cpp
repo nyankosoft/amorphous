@@ -1,6 +1,7 @@
 #include "CgEffectBase.hpp"
 //#include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Support/Macro.h"
 
 using namespace std;
 using namespace boost;
@@ -25,6 +26,12 @@ m_VacantTechniqueEntryIndex(0)
 	// Don't call cgCreateContext() here because cgD3D9SetDevice needs to be called first in Direct3D mode
 //	m_CgContext = cgCreateContext();
 //	CheckForCgError("creating context");
+
+	for( int i=0; i<numof(m_aHandle); i++ )
+		m_aHandle[i] = 0;
+
+	for( int i=0; i<numof(m_aCubeTextureHandle); i++ )
+		m_aCubeTextureHandle[i] = 0;
 }
 
 
@@ -61,18 +68,23 @@ void CCgEffectBase::CheckForCgError( const char *situation )
 	CGerror error;
 	const char *error_string = cgGetLastErrorString(&error);
 
+//	const char *es = cgGetErrorString(error);
+
 	if( error != CG_NO_ERROR )
 	{
 		string error_log;
 		if( error == CG_COMPILER_ERROR )
 		{
+			string last_listing = cgGetLastListing(g_myCgContext);
+
 			error_log = fmt_string(
 			"Program: %s\n"
 			"Situation: %s\n"
 			"Error: %s\n\n"
 			"Cg compiler output...\n%s",
 			m_EffectPath.c_str(), situation, error_string,
-			cgGetLastListing(m_CgContext) );
+//			cgGetLastListing(m_CgContext) );
+			cgGetLastListing(g_myCgContext) );
 		}
 		else
 		{

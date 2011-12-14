@@ -19,6 +19,8 @@ class CD3DCgEffect : public CCgEffectBase
 
 	static boost::shared_ptr<CD3DCgManager> ms_pD3DCgManager;
 
+	void InitCgContext();
+
 public:
 
 	CD3DCgEffect();

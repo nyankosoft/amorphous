@@ -12,6 +12,8 @@ class CGLCgEffect : public CCgEffectBase
 {
 	void SetCGTextureParameter( CGparameter& param, CTextureHandle& texture );
 
+	void InitCgContext();
+
 public:
 	CGLCgEffect();
 
