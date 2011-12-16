@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\gds\GameCommon\ThirdPersonCameraController.hpp" />
     <ClInclude Include="..\..\gds\GameCommon\ThirdPersonMotionController.hpp" />
+    <ClInclude Include="..\..\gds\MotionSynthesis\BVHUtilities.hpp" />
     <ClInclude Include="..\..\gds\Script.hpp" />
     <ClInclude Include="..\..\gds\Stage.hpp" />
     <ClInclude Include="..\..\gds\Stage\BE_StaticLiquid.hpp" />
@@ -333,6 +334,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonCameraController.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonMotionController.cpp" />
+    <ClCompile Include="..\..\gds\MotionSynthesis\BVHUtilities.cpp" />
     <ClCompile Include="..\..\gds\Stage\BE_StaticLiquid.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">

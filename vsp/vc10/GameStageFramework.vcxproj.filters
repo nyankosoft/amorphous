@@ -807,6 +807,9 @@
     <ClInclude Include="..\..\gds\Stage\MirroredSceneTextureParam.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\MotionSynthesis\BVHUtilities.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp">
@@ -1438,6 +1441,9 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\Stage\BE_StaticLiquid.cpp">
       <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\MotionSynthesis\BVHUtilities.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
