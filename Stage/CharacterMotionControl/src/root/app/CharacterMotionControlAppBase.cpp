@@ -66,6 +66,19 @@ public:
 };
 */
 
+
+void ScaleAnalogInputValueRanges()
+{
+	CDirectInputGamepad *pGamepad = GetPrimaryInputDevice<CDirectInputGamepad>();
+	if( !pGamepad )
+		return;
+
+	pGamepad->SetAnalogInputScale( CDirectInputGamepad::AXIS_X, 2.0f );
+	pGamepad->SetAnalogInputScale( CDirectInputGamepad::AXIS_Y, 2.0f );
+}
+
+
+
 CCharacterMotionControlAppTask::CCharacterMotionControlAppTask()
 :
 m_vPrevCamPos( Vector3(0,0,0) )
@@ -99,10 +112,12 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	// analog input
 	// - may need to invert the fParam1.
 	// - inversion is currently turned on, and is done in CCharacterMotionNodeAlgorithm::HandleInput()
-//	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,  ACTION_MOV_FORWARD );
-	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,  ACTION_MOV_BACKWARD );
-	m_pKeyBind->Assign( GIC_GPD_AXIS_X,  ACTION_MOV_TURN_R );
-//	m_pKeyBind->Assign( GIC_GPD_AXIS_Z,  ACTION_MOV_TURN_R );
+//	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,   ACTION_MOV_FORWARD );
+	m_pKeyBind->Assign( GIC_GPD_AXIS_Y,   ACTION_MOV_BACKWARD );
+	m_pKeyBind->Assign( GIC_GPD_AXIS_X,   ACTION_MOV_TURN_R );
+//	m_pKeyBind->Assign( GIC_GPD_AXIS_Z,   ACTION_MOV_TURN_R );
+
+	m_pKeyBind->Assign( GIC_MOUSE_AXIS_Y, ACTION_MOV_LOOK_UP );
 
 	CStageLoader stg_loader;
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
@@ -199,6 +214,8 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	m_ScrollEffect.SetTextureFilepath( "textures/precipitation_mid-density-512.dds" );
 //	m_ScrollEffect.SetTextureFilepath( "textures/tex1024_red.bmp" );
 	m_ScrollEffect.Init();
+
+	ScaleAnalogInputValueRanges();
 }
 
 
@@ -294,6 +311,27 @@ void CCharacterMotionControlAppTask::HandleInput( SInputData& input )
 //			m_CameraOrientation.target.FromRotationMatrix( pEntity->GetWorldPose().matOrient );
 //		}
 //		break;
+
+	default:
+		break;
+	}
+
+	switch( action_code )
+	{
+	case ACTION_MOV_LOOK_UP:
+		if( input.IsMouseInput() && input.iType == ITYPE_VALUE_CHANGED )
+		{
+			if( m_pThirdPersonCameraController )
+			{
+				const bool invert_mouse = true;
+				const float s = invert_mouse ? -1 : 1;
+				const float angle
+					= m_pThirdPersonCameraController->GetTargetVerticalAngle()
+					+ input.fParam1 * 0.005f * s;
+				m_pThirdPersonCameraController->SetTargetVerticalAngle( angle );
+			}
+		}
+		break;
 
 	default:
 		break;
