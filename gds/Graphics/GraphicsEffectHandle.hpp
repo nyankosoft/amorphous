@@ -4,6 +4,8 @@
 
 #include "fwd.hpp"
 #include "TextureCoord.hpp"
+#include "FloatRGBAColor.hpp"
+#include "../3DMath/Vector2.hpp"
 
 
 class CGraphicsEffectHandle

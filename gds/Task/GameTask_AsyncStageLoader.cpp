@@ -3,6 +3,7 @@
 #include "Stage/Stage.hpp"
 
 #include "Graphics/Font/BuiltinFonts.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Input/InputHub.hpp"
 #include "GUI.hpp"
 #include "Support/memory_helpers.hpp"

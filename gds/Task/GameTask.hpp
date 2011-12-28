@@ -9,8 +9,6 @@
 #include "gds/Input/fwd.hpp"
 #include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Support/SafeDelete.hpp"
 
 #include "gds/Graphics/RenderTask.hpp"
 
