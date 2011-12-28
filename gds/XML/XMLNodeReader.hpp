@@ -3,11 +3,11 @@
 
 #include <string>
 #include <vector>
-#include "Support/StringAux.hpp"
-#include "3DMath/Vector3.hpp"
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/Rect.hpp"
+#include "../Support/StringAux.hpp"
+#include "../3DMath/Vector3.hpp"
+#include "../Graphics/FloatRGBColor.hpp"
+#include "../Graphics/FloatRGBAColor.hpp"
+#include "../Graphics/Rect.hpp"
 using namespace Graphics;
 
 #include <xercesc/dom/DOM.hpp>
