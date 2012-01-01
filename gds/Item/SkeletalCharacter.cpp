@@ -37,9 +37,7 @@ public:
 
 	void GetTextInfo()
 	{
-		string buffer;
-		m_pMotionFSMManager->GetDebugInfo( buffer );
-		strncpy( m_TextBuffer, buffer.c_str(), sizeof(m_TextBuffer) - 1 );
+		m_pMotionFSMManager->GetDebugInfo( m_TextBuffer );
 	}
 };
 
