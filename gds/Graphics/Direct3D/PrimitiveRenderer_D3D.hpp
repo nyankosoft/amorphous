@@ -32,13 +32,13 @@ private:
 		return hr;
 	}
 
-	HRESULT D3DDrawConnectedLines( int num_primitives_to_draw )
+	HRESULT D3DDrawPrimitives( D3DPRIMITIVETYPE primitive_type, int num_primitives_to_draw )
 	{
 		HRESULT hr = S_OK;
 		hr = DIRECT3D9.GetDevice()->SetFVF( D3DFVF_COLORVERTEX );
 		hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
 		hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
-		hr = DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_LINESTRIP, num_primitives_to_draw, &(m_ColorVertices[0]), sizeof(COLORVERTEX) );
+		hr = DIRECT3D9.GetDevice()->DrawPrimitiveUP( primitive_type, num_primitives_to_draw, &(m_ColorVertices[0]), sizeof(COLORVERTEX) );
 
 		return hr;
 	}
@@ -63,7 +63,24 @@ public:
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
 
-//	Result::Name DrawPoints();
+	Result::Name DrawPoints( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
+	{
+		if( points.empty() )
+			return Result::INVALID_ARGS;
+
+		const size_t num_points = points.size();
+
+		const D3DCOLOR d3d_color = color.GetARGB32();
+		m_ColorVertices.resize( 0 );
+		m_ColorVertices.resize( num_points );
+		for( size_t i=0; i<num_points; i++ )
+		{
+			m_ColorVertices[i].vPosition = ToD3DXVECTOR3( points[i] );
+			m_ColorVertices[i].color     = d3d_color;
+		}
+
+		HRESULT hr = D3DDrawPrimitives( D3DPT_POINTLIST, num_points );
+	}
 
 	Result::Name DrawLine( const Vector3& start, const Vector3& end, const SFloatRGBAColor& color )
 	{
@@ -99,7 +116,7 @@ public:
 			m_ColorVertices[i].color     = d3d_color;
 		}
 
-		HRESULT hr = D3DDrawConnectedLines( num_points - 1 );
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1 );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
@@ -119,7 +136,7 @@ public:
 			m_ColorVertices[i].color     = colors[i].GetARGB32();
 		}
 
-		HRESULT hr = D3DDrawConnectedLines( num_points - 1 );
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1 );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}

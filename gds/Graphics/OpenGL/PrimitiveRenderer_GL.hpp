@@ -21,7 +21,10 @@ public:
 		return Result::SUCCESS;
 	}
 
-//	Result::Name DrawPoints();
+	Result::Name DrawPoints( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
+	{
+		return Result::UNKNOWN_ERROR;
+	}
 
 	Result::Name DrawLine( const Vector3& start, const Vector3& end, const SFloatRGBAColor& color )
 	{

@@ -28,7 +28,7 @@ public:
 
 	virtual Result::Name DrawPoint( const Vector3& pos, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
 
-//	virtual Result::Name DrawPoints( const std::vector<Vector3>& points, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
+	virtual Result::Name DrawPoints( const std::vector<Vector3>& points, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
 
 //	virtual Result::Name DrawPoints( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors ) = 0;
 
