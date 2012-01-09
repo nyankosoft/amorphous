@@ -99,6 +99,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	{
 		CLWO2_Layer *layer = vecpMeshLayer[i];
 
+		words.resize( 0 );
 		SeparateStrings( words, layer->GetName().c_str(), " \t" );
 
 		GetOutputFilename( strOutFilename, layer->GetName() );
@@ -125,9 +126,11 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 				vecLayerSet[j].vecpMeshLayer.push_back( layer );
 				break;
 			}
-			else if( vecLayerSet[j].GroupNumber == group_number )
+			else if( group_number != -1
+			 && vecLayerSet[j].GroupNumber == group_number )
 			{
-				// A layer with the same group number already exists.
+				// A valid group number has been specified
+				// && a layer with the same group number already exists.
 				// - add the layer to this layer set.
 				vecLayerSet[j].vecpMeshLayer.push_back( layer );
 
