@@ -150,9 +150,8 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
 
 	// create D3D device
 
-	bool res;
-	res = CreateD3DDevice( D3DPresentParam, hWnd );
-	if( !res )
+	bool d3d_device_created = CreateD3DDevice( D3DPresentParam, hWnd );
+	if( !d3d_device_created )
 		return false;
 
 	// set up default render states
@@ -167,9 +166,13 @@ bool CDirect3D9::InitD3D( HWND hWnd, int iWindowWidth, int iWindowHeight, int sc
 
 	m_pD3DDevice->SetTransform( D3DTS_VIEW,  &matView );
 
+	float aspect_ratio
+		= (float)m_CurrentPresentParameters.BackBufferWidth
+		/ (float)m_CurrentPresentParameters.BackBufferHeight;
+
     // set up default projection matrix
     D3DXMATRIXA16 matProj;
-    D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 500.0f );
+    D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, aspect_ratio, 0.5f, 500.0f );
     m_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
 
 	m_State = CGraphicsDevice::STATE_INITIALIZED;
@@ -260,7 +263,14 @@ bool CDirect3D9::ResetD3DDevice( HWND hWnd, int iWindowWidth, int iWindowHeight,
 	// reset D3D device
 //	HRESULT hr = m_pD3DDevice->Reset(&present_param);
 
-	return CreateD3DDevice( present_param, hWnd );
+	bool d3d_device_created = CreateD3DDevice( present_param, hWnd );
+	if( !d3d_device_created )
+		return false;
+
+	// set up default render states
+	SetDefaultRenderStates();
+
+	return true;
 }
 
 
@@ -301,9 +311,10 @@ void CDirect3D9::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& de
 bool CDirect3D9::IsCurrentDisplayMode( const CDisplayMode& display_mode ) const
 {
 	const D3DPRESENT_PARAMETERS& present_params = m_CurrentPresentParameters;
-	if( display_mode.Width  == present_params.BackBufferWidth
-	 && display_mode.Height == present_params.BackBufferHeight
-	 && display_mode.Format == FromD3DSurfaceFormat( present_params.BackBufferFormat ) )
+	if( display_mode.Width       == present_params.BackBufferWidth
+	 && display_mode.Height      == present_params.BackBufferHeight
+	 && display_mode.Format      == FromD3DSurfaceFormat( present_params.BackBufferFormat ) )
+//	 && display_mode.RefreshRate == present_params.FullScreen_RefreshRateInHz )
 	{
 		// What about refresh rates?
 		return true;
