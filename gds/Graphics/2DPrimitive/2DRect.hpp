@@ -21,6 +21,8 @@ public:
 
 	inline C2DRect( const Vector2& vMin, const Vector2& vMax, U32 color = 0xFF000000 );
 
+	inline C2DRect( const Vector2& vMin, const Vector2& vMax, const SFloatRGBAColor& color );
+
 	inline C2DRect( int min_x, int min_y, int max_x, int max_y, U32 color = 0xFF000000 );
 
 	inline C2DRect( float min_x, float min_y, float max_x, float max_y, U32 color = 0xFF000000 );
@@ -117,6 +119,14 @@ inline C2DRect::C2DRect( const Vector2& vMin, const Vector2& vMax, U32 color )
 	SetDefault();
 	SetPosition( vMin, vMax );
 	C2DPrimitive::SetColor( color );
+}
+
+
+inline C2DRect::C2DRect( const Vector2& vMin, const Vector2& vMax, const SFloatRGBAColor& color )
+{
+	SetDefault();
+	SetPosition( vMin, vMax );
+	SetColor( color );
 }
 
 
