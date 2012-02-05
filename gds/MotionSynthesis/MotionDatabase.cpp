@@ -1,8 +1,8 @@
 #include "MotionDatabase.hpp"
 #include "MotionBlender.hpp"
 #include "HumanoidMotionTable.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/StringAux.hpp"
+#include "../Support/Log/DefaultLog.hpp"
+#include "../Support/StringAux.hpp"
 
 using namespace std;
 using namespace msynth;
