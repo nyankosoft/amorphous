@@ -85,6 +85,8 @@ public:
 
 	inline CTransformNode *GetTransformNode( const std::vector<int>& locator );
 
+	inline Result::Name SetBoneLocalRotation( const std::vector<int>& locator, float heading, float pitch, float bank );
+
 	inline virtual void Serialize( IArchive & ar, const unsigned int version );
 
 	friend class CMotionPrimitive;
@@ -156,6 +158,32 @@ inline CTransformNode *CKeyframe::GetTransformNode( const std::vector<int>& loca
 
 	uint index = 0;
 	return m_RootNode.GetNode( locator, index );
+}
+
+
+inline Result::Name CKeyframe::SetBoneLocalRotation( const std::vector<int>& locator, float heading, float pitch, float bank )
+{
+	const Quaternion rotation(
+		  Matrix33RotationY( heading )
+		* Matrix33RotationX( pitch )
+		* Matrix33RotationZ( bank )
+		);
+
+	if( locator.empty() )
+	{
+		m_RootNode.SetRotation( rotation );
+		return Result::SUCCESS;
+	}
+
+	uint index = 0;
+	CTransformNode *pNode = m_RootNode.GetNode( locator, index );
+	if( pNode )
+	{
+		pNode->SetRotation( rotation );
+		return Result::SUCCESS;
+	}
+	else
+		return Result::INVALID_ARGS;
 }
 
 
