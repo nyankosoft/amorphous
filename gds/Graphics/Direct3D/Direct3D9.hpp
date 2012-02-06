@@ -99,6 +99,8 @@ public:
 
 	void SetAlphaFunction( CompareFunc::Name alpha_func );
 
+	void SetReferenceAlphaValue( float ref_alpha );
+
 	Result::Name SetFogParams( const CFogParams& fog_params );
 
 	Result::Name SetCullingMode( CullingMode::Name cull_mode );

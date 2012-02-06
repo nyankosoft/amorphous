@@ -40,6 +40,10 @@ private:
 	GLenum m_SourceBlend;
 	GLenum m_DestBlend;
 
+	GLenum m_AlphaFunc;
+
+	float m_fReferenceAlphaValue;
+
 private:
 
 	void SetDefaultRenderStates();
@@ -82,6 +86,8 @@ public:
 	inline void SetDestBlendMode( AlphaBlend::Mode dest_blend_mode );
 
 	void SetAlphaFunction( CompareFunc::Name alpha_func );
+
+	void SetReferenceAlphaValue( float ref_alpha );
 
 	Result::Name SetFogParams( const CFogParams& fog_params );
 

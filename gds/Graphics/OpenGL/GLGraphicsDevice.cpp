@@ -43,6 +43,21 @@ void LogGLError( const char *fname, const char *msg )
 }
 
 
+static inline GLenum ToGLAlphaFunc( CompareFunc::Name alpha_func )
+{
+	switch( alpha_func )
+	{
+	case CompareFunc::ALWAYS :                  return GL_ALWAYS;
+	case CompareFunc::NEVER:                    return GL_NEVER;
+	case CompareFunc::LESS_THAN:                return GL_LESS;
+	case CompareFunc::LESS_THAN_OR_EQUAL_TO:    return GL_LEQUAL;
+	case CompareFunc::GREATER_THAN:             return GL_GREATER;
+	case CompareFunc::GREATER_THAN_OR_EQUAL_TO: return GL_GEQUAL;
+	default: return GL_ALWAYS;
+	}
+}
+
+
 
 //========================================================================
 // CGLGraphicsDevice
@@ -53,6 +68,9 @@ CGLGraphicsDevice CGLGraphicsDevice::ms_CGLGraphicsDevice_;
 
 
 CGLGraphicsDevice::CGLGraphicsDevice()
+:
+m_AlphaFunc(GL_ALWAYS),
+m_fReferenceAlphaValue(0.0f)
 {
 	m_SourceBlend = ToGLBlendModeEnum( AlphaBlend::SrcAlpha );
 	m_DestBlend   = ToGLBlendModeEnum( AlphaBlend::InvSrcAlpha );
@@ -253,6 +271,15 @@ Result::Name CGLGraphicsDevice::SetRenderState( RenderStateType::Name type, bool
 
 void CGLGraphicsDevice::SetAlphaFunction( CompareFunc::Name alpha_func )
 {
+	m_AlphaFunc = ToGLAlphaFunc(alpha_func);
+	glAlphaFunc( m_AlphaFunc, m_fReferenceAlphaValue );
+}
+
+
+void CGLGraphicsDevice::SetReferenceAlphaValue( float ref_alpha )
+{
+	m_fReferenceAlphaValue = ref_alpha;
+	glAlphaFunc( m_AlphaFunc, m_fReferenceAlphaValue );
 }
 
 
