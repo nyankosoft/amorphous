@@ -190,6 +190,7 @@ void CCustomMeshTest::Render()
 //	if( m_pSampleUI )
 //		m_pSampleUI->Render();
 
+//	m_TextBuffer.clear();
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
 	Vector2 vTopLeft(     (float)GetWindowWidth() / 4,  (float)16 );
@@ -197,7 +198,6 @@ void CCustomMeshTest::Render()
 //	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
 //	rect.Draw();
 
-	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
 	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
 	Vector3 vCamPos = g_Camera.GetPosition();
