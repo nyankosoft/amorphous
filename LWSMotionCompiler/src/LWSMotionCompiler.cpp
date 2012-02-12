@@ -231,7 +231,7 @@ void CLWSMotionDatabaseCompiler::CollectKeyFrameTimes( CLWS_Bone& bone, vector<f
 
 
 // Recursively copies the bones and creates a tree which has CBone class objects as its nodes
-void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
+void CopyBones( const shared_ptr<CLWS_Bone> pSrcBone,
 			    const Matrix34& parent_space,
 			    CBone& dest_bone )
 {
@@ -508,8 +508,8 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 	dest_node.SetNumChildren( (int)num_children );
 
 	// debug
-	Matrix33 mat1 = pBone->GetOrientationAt( fTime ) * pBone->GetBoneRestOrientation(); // debug
-	Matrix33 mat2 = pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()); // debug
+//	Matrix33 mat1 = pBone->GetOrientationAt( fTime ) * pBone->GetBoneRestOrientation(); // debug
+//	Matrix33 mat2 = pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()); // debug
 
   if( g_htrans_rev == 1 )
   {
