@@ -57,6 +57,9 @@
     <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\TransformNode.cpp">
       <Filter>Source Files\Framework\MotionSynthesis</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.cpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\LWSMotionCompiler.hpp">
@@ -105,6 +108,9 @@
       <Filter>Source Files\Framework\MotionSynthesis</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\TransformNode.hpp">
+      <Filter>Source Files\Framework\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.hpp">
       <Filter>Source Files\Framework\MotionSynthesis</Filter>
     </ClInclude>
   </ItemGroup>

@@ -89,6 +89,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.cpp" />
     <ClCompile Include="..\..\src\LWSMotionCompiler.cpp" />
     <ClCompile Include="..\..\src\LWSMotionCompilerMain.cpp" />
     <ClCompile Include="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.cpp" />
@@ -105,6 +106,7 @@
     <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\TransformNode.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.hpp" />
     <ClInclude Include="..\..\src\LWSMotionCompiler.hpp" />
     <ClInclude Include="..\..\..\..\Project1\gds\App\GameWindowManager.hpp" />
     <ClInclude Include="..\..\..\..\Project1\gds\App\GameWindowManager_Win32.hpp" />
