@@ -28,12 +28,6 @@ CGraphicsTestBase *CreateTestInstance()
 	return new CPostProcessEffectTest();
 }
 
-/*
-void CPostProcessEffectTestInputHandler::ProcessInput( SInputData& input )
-{
-	m_pTest->ProcessInput( input );
-}
-*/
 
 void CPostProcessEffectTest::HandleInput( const SInputData& input )
 {
@@ -42,7 +36,7 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 	case GIC_F6:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			CFilter::ms_SaveFilterResultsAtThisFrame = 1;
+			CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 1;
 		}
 		break;
 
@@ -290,7 +284,6 @@ void CPostProcessEffectTest::RenderMeshes()
 	}
 
 	// reset the world transform matrix
-//	CD3DFixedFunctionPipelineManager ffp_mgr;
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 	DWORD fog_colors[] =
@@ -314,61 +307,6 @@ void CPostProcessEffectTest::RenderMeshes()
 
 void CPostProcessEffectTest::UpdateShaderParams()
 {
-/*	float weight[7];
-
-	float x2;
-	float s2 = m_fBlurFactor * m_fBlurFactor;
-	for( int i=0; i<7; i++ )
-	{
-		x2 = (float)(i*i);
-		weight[i] = pow( 2.72f, - 0.5f * x2 / s2 ); 
-//		weight[i] = 0.2f * pow( 2.72f, - 0.5f * x2 / s2 ); 
-	}
-
-	float sum = weight[0];
-	for( int i=1; i<7; i++ )
-		sum += weight[i] * 2.0f;
-
-	for( int i=0; i<7; i++ )
-		weight[i] /= sum;
-
-	LPD3DXEFFECT pEffect[2];
-	pEffect[0] = m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_GBLUR_H]).GetEffect();
-	pEffect[1] = m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_GBLUR_V]).GetEffect();
-
-	HRESULT hr;
-	char str[32];
-	for( int j=0; j<2; j++ )
-	{
-		if( !pEffect[j] )
-			continue;
-
-		pEffect[j]->SetFloat( "BlurWeights[6]", weight[0] );
-
-		for( int i=1; i<6; i++ )
-		{
-			sprintf( str, "BlurWeights[%d]", 6-i );
-			hr = pEffect[j]->SetFloat( str, weight[i] );
-
-			sprintf( str, "BlurWeights[%d]", 6+i );
-			hr = pEffect[j]->SetFloat( str, weight[i] );
-		}
-	}
-
-//	float up_scale = m_fBlurFactor * 2.0f;
-//	float down_scale = 1.0f / up_scale;
-
-	float up_scale = ( m_fBlurFactor + 1.0f ) * 2.0f;
-	float down_scale = 1.0f / up_scale;
-
-//	m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_DOWNFILTER4]).SetScale( down_scale, down_scale );
-//	m_pPPManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_UPFILTER4]).SetScale( up_scale, up_scale );
-
-	if( m_aPostProcessEffect[PP_GBLUR2] )
-	{
-		m_pPPManager->GetPostProcessInstance()[m_aFilterIndex[SF_DOWNFILTER_FOR_BLUR]].SetScale( down_scale, down_scale );
-		m_pPPManager->GetPostProcessInstance()[m_aFilterIndex[SF_UPFILTER_FOR_BLUR]].SetScale( up_scale, up_scale );
-	}*/
 }
 
 
@@ -438,7 +376,7 @@ bool CPostProcessEffectTest::LoadModels()
 
 	m_vecMesh.resize( 3 );
 	CMeshResourceDesc skybox_mesh_desc;
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator = shared_ptr<CBoxMeshGenerator>( new CBoxMeshGenerator );
+	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
@@ -478,9 +416,6 @@ void SetDefaultLinearFog()
 
 int CPostProcessEffectTest::Init()
 {
-//	m_pShaderManager
-//		= shared_ptr<CShaderManager>( new CShaderManager() );
-
 	g_CameraController.SetPosition( Vector3(0,50,0) );
 
 	bool loaded = m_Shader.Load( "shaders/mesh.fx" );
@@ -490,20 +425,23 @@ int CPostProcessEffectTest::Init()
 		return 1;
 
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-
-//	CShader::Get()->SetShaderManager( &m_pShaderManager );
+	if( !pShaderManager )
+		return 1;
 
 	// set the world matrix to the identity
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity( &matWorld );
-	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+//	D3DXMATRIX matWorld;
+//	D3DXMatrixIdentity( &matWorld );
+//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 	pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 	// set the projection matrix
-    D3DXMATRIX matProj;
-    D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
-    DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
-	pShaderManager->SetProjectionTransform( Matrix44PerspectiveFoV_LH( D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f ) );
+//	D3DXMATRIX matProj;
+//	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
+//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
+	Matrix44 proj = Matrix44PerspectiveFoV_LH( D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
+	FixedFunctionPipelineManager().SetProjectionTransform( proj );
+	pShaderManager->SetProjectionTransform( proj );
 /*
 	// initialize the light for the shader
 	m_ShaderLightManager.Init();
@@ -526,16 +464,13 @@ int CPostProcessEffectTest::Init()
 	DIRECT3D9.GetDevice()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
 	pBackBuffer->GetDesc( &back_buffer_desc );
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	HRESULT hr;
-
 	SetDefaultLinearFog();
 
 	// init post process effect manager
 	bool test_ppeffect_mgr = true;
 	if( test_ppeffect_mgr )
 	{
-		m_pPostProcessEffectManager = shared_ptr<CPostProcessEffectManager>( new CPostProcessEffectManager );
+		m_pPostProcessEffectManager.reset( new CPostProcessEffectManager );
 
 		Result::Name res = m_pPostProcessEffectManager->Init( "shaders" );
 		if( res != Result::SUCCESS )

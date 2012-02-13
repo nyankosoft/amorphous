@@ -10,7 +10,7 @@
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
-
+/*
 enum ePPEffectFile
 {
 	PP_COLOR_GBLUR_H,
@@ -45,37 +45,21 @@ enum eSizeFilterType
 	SF_BRIGHTPASS,
 	NUM_SIZE_FILTERS,
 };
-
-/*
-class CPostProcessEffectTest;
-
-
-class CPostProcessEffectTestInputHandler : public CInputHandler
-{
-	CPostProcessEffectTest* m_pTest;
-
-public:
-
-	CPostProcessEffectTestInputHandler( CPostProcessEffectTest* pTest )
-		:
-	m_pTest(pTest) {}
-
-	virtual void ProcessInput(SInputData& input);
-};
 */
+
 
 class CPostProcessEffectTest : public CGraphicsTestBase
 {
 //	shared_ptr<CPostProcessManager> m_pPPManager;
 	boost::shared_ptr<CPostProcessEffectManager> m_pPostProcessEffectManager;
 
-	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
+//	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
 
-	int m_aPostProcessEffect[NUM_PP_EFFECTS];
+//	int m_aPostProcessEffect[NUM_PP_EFFECTS];
 
 	float m_fBlurFactor;
 
-	int m_aFilterIndex[NUM_SIZE_FILTERS];
+//	int m_aFilterIndex[NUM_SIZE_FILTERS];
 
 	float m_fLuminance;
 
@@ -91,10 +75,6 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 
 	CShaderHandle m_Shader;
 
-//	shared_ptr<CShaderManager> m_pShaderManager;
-
-//	CShaderLightManager m_ShaderLightManager;
-
 //	CUnitSphere m_LightPosIndicator;
 
 //	CShaderLightManager m_ShaderLightManager;
@@ -102,8 +82,6 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 //	Vector3 m_vLightPosition;
 
 	CFontSharedPtr m_pFont;
-
-//	CInputHandlerSharedPtr m_pInputHandler;
 
 //	float m_fKeyValue;
 
