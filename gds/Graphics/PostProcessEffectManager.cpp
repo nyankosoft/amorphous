@@ -318,7 +318,7 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	shared_ptr<CFilter> pLastFilter;
+	shared_ptr<CPostProcessEffectFilter> pLastFilter;
 	if( m_pHDRLightingFilter && (m_EnabledEffectFlags & CPostProcessEffect::TF_HDR_LIGHTING) )
 	{
 		m_pHDRLightingFilter->ClearNextFilters();
@@ -359,7 +359,7 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 	// increment the lock count of the original scene because it is decremented by the first filter
 	m_pOrigSceneHolder->IncrementLockCount();
 
-	if( CFilter::ms_SaveFilterResultsAtThisFrame == 1 )
+	if( CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame == 1 )
 	{
 		boost::filesystem::create_directories( "debug/post-process_effect" );
 		m_pOrigSceneHolder->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/orig_scene.png" );
@@ -369,10 +369,10 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 	// The last filter renders the result to m_pTextureCache->m_pOrigRenderTarget(=m_pSurfLDR), the original render target
 	m_pFilter->RenderBase( *(m_pOriginalSceneFilter.get()) );
 
-	m_pFilter = shared_ptr<CFilter>();
+	m_pFilter = shared_ptr<CPostProcessEffectFilter>();
 
 	// reset the debug setting
-	CFilter::ms_SaveFilterResultsAtThisFrame = 0;
+	CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 0;
 
 	// If using floating point multi sampling, stretchrect to the rendertarget
 /*	if( m_bUseMultiSampleFloat16 )

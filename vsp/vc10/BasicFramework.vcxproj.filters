@@ -780,6 +780,9 @@
     <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DCGraphicsResourceLoaders.cpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\PostProcessEffectFilter.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -1805,6 +1808,9 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp">
       <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\PostProcessEffectFilter.hpp">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

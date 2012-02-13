@@ -3,10 +3,13 @@
 
 
 #include "ShaderHandle.hpp"
-#include "PostProcessEffect.hpp"
+#include "PostProcessEffectFilter.hpp"
 
 
-//class CHDRLightingFilter;
+class CHDRLightingFilter;
+class COriginalSceneFilter;
+class CFullScreenBlurFilter;
+class CMonochromeColorFilter;
 
 
 class CHDRLightingParams
@@ -158,7 +161,7 @@ class CPostProcessEffectManager : public CGraphicsComponent
 
 	boost::shared_ptr<COriginalSceneFilter> m_pOriginalSceneFilter;
 
-	boost::shared_ptr<CFilter> m_pFilter;
+	boost::shared_ptr<CPostProcessEffectFilter> m_pFilter;
 
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pOrigSceneHolder;
 

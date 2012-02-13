@@ -97,6 +97,7 @@
     <ClCompile Include="..\..\gds\Graphics\NoiseTextureGenerators.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffect.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\PostProcessEffectFilter.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PrimitiveShapeRenderer.cpp" />
@@ -352,6 +353,7 @@
     <ClInclude Include="..\..\gds\Graphics\NoiseTextureGenerators.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffect.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\PostProcessEffectFilter.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PrimitiveRenderer.hpp" />
