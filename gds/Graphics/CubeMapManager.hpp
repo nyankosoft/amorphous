@@ -3,8 +3,8 @@
 
 
 #include <d3dx9.h>
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Camera.hpp"
+#include "GraphicsComponentCollector.hpp"
+#include "Camera.hpp"
 #include "SurfaceFormat.hpp"
 
 
