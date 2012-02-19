@@ -158,7 +158,7 @@ void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottom
 	// Acquire render target width and height
 	hr = pd3dDevice->GetRenderTarget( 0, &pSurfRT );
 	hr = pSurfRT->GetDesc( &dtdsdRT );
-	hr = pSurfRT->Release();
+	ULONG ref_count = pSurfRT->Release();
 
 	// Ensure that we're directly mapping texels to pixels by offset by 0.5
 	// For more info see the doc page titled "Directly Mapping Texels to Pixels"
@@ -180,6 +180,16 @@ void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottom
 	svQuad[3].p = D3DXVECTOR4( fWidth5, fHeight5, 0.5f, 1.0f );
 	svQuad[3].t = D3DXVECTOR2( fRightU, fBottomV );
 
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+	pd3dDevice->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
+
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
+	pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE );
+	pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
+
+	hr = pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+	hr = pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
 	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
 	hr = pd3dDevice->SetFVF( ScreenVertex::FVF );
@@ -520,8 +530,8 @@ void CDownScale4x4Filter::Render()
 //	m_Desc.Width  = prev_scene_width;
 //	m_Desc.Height = prev_scene_height;
 //	m_pDest = GetRenderTarget( m_Desc );
-	if( !m_pDest )
-		return;
+///	if( !m_pDest )
+///		return;
 
 //	DWORD dwCropWidth = ???;
 //	DWORD dwCropHeight = ???;
@@ -546,7 +556,17 @@ void CDownScale4x4Filter::Render()
 
 	// Get the texture coordinates for the render target
 	CoordRect coords;
-	GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, NULL, &coords );
+	if( m_pDest )
+	{
+		GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, NULL, &coords );
+	}
+	else
+	{
+		coords.fLeftU   = 0;
+		coords.fTopV    = 0;
+		coords.fRightU  = 1;
+		coords.fBottomV = 1;
+	}
 
 	// Get the sample offsets used within the pixel shader
 	GetSampleOffsets_DownScale4x4( prev_scene_width, prev_scene_height, avSampleOffsets );
@@ -564,7 +584,7 @@ void CDownScale4x4Filter::Render()
 
 
 //============================================================================
-// CDownScale4x4Filter
+// CDownScale2x2Filter
 //============================================================================
 
 CDownScale2x2Filter::CDownScale2x2Filter()
@@ -758,13 +778,25 @@ void CGaussianBlurFilter::Render()
 	// Decrease the rectangle to adjust for the single pixel black border.
 	RECT rectDest;
 //	GetTextureRect( m_pDest->m_Texture, &rectDest );
-	GetTextureRect( m_pDest, &rectDest );
+	if( m_pDest )
+		GetTextureRect( m_pDest, &rectDest );
+	else
+		GetTextureRect( m_pCache->m_pOrigSceneHolder, &rectDest );
+
 	InflateRect( &rectDest, -1, -1 );
 
 	// Get the correct texture coordinates to apply to the rendered quad in order 
 	// to sample from the source rectangle and render into the destination rectangle
 	CoordRect coords;
-	GetTextureCoords( m_pPrevScene->m_Texture, NULL, m_pDest->m_Texture, &rectDest, &coords );
+	if( m_pDest )
+		GetTextureCoords( m_pPrevScene->m_Texture, NULL, m_pDest->m_Texture, &rectDest, &coords );
+	else
+	{
+		coords.fLeftU = 0;
+		coords.fTopV  = 0;
+		coords.fRightU  = 1;
+		coords.fBottomV = 1;
+	}
 
 	// Get the sample offsets used within the pixel shader
 	D3DSURFACE_DESC desc;
@@ -1697,6 +1729,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	tex_desc.Width  = cbb.width  / 4;
 	tex_desc.Height = cbb.height / 4;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	int num = m_pCache->GetNumTextures( tex_desc );
 	for( int i=num; i<2; i++ )
 		m_pCache->AddTexture( tex_desc );
@@ -1704,6 +1737,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	tex_desc.Width  = cbb.width  / 4 + 2;
 	tex_desc.Height = cbb.height / 4 + 2;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	num = m_pCache->GetNumTextures( tex_desc );
 	for( int i=num; i<2; i++ )
 		m_pCache->AddTexture( tex_desc );
@@ -1711,6 +1745,9 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	m_pDownScale4x4Filter->AddNextFilter( m_pBloomFilter );
 
 	m_pLastFilter = m_pBloomFilter;
+
+	// test the 4x4 down scale filter
+//	m_pLastFilter = m_pDownScale4x4Filter;
 
 	return Result::SUCCESS;
 }
@@ -1720,7 +1757,9 @@ void CFullScreenBlurFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
 {
 	m_pBloomFilter->SetBlurStrength( m_fBlurStrength );
 
-	m_pDownScale4x4Filter->RenderBase( prev_filter );
+//	m_pDownScale4x4Filter->RenderBase( prev_filter );
+
+	m_pBloomFilter->RenderBase( prev_filter );
 }
 
 

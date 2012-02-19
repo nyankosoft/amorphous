@@ -57,6 +57,17 @@ Result::Name CRenderTargetTextureCache::AddTexture( const CTextureResourceDesc& 
 }
 
 
+Result::Name CRenderTargetTextureCache::AddTexture( int width, int height, TextureFormat::Format format )
+{
+	CTextureResourceDesc tex_desc;
+	tex_desc.Width  = width;
+	tex_desc.Height = height;
+	tex_desc.Format = format;
+	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
+	return AddTexture( tex_desc );
+}
+
+
 boost::shared_ptr<CRenderTargetTextureHolder> CRenderTargetTextureCache::GetTexture( const CTextureResourceDesc& desc )
 {
 	size_t i=0;
@@ -121,6 +132,7 @@ Result::Name CPostProcessEffectFilter::SetRenderTarget( CPostProcessEffectFilter
 	HRESULT hr = S_OK;
 	if( 0 < m_vecpNextFilter.size() )
 	{
+		// Find a texture render target currently available, and set it to m_pDest
 		/*bool found = */GetRenderTarget( prev_filter );
 //		if( !found )
 //			return Result::UNKNOWN_ERROR;
@@ -128,10 +140,14 @@ Result::Name CPostProcessEffectFilter::SetRenderTarget( CPostProcessEffectFilter
 
 		if( m_pDest )
 		{
+			// Note that this increases the internal reference count of m_pDest->m_pTexSurf
 			hr = m_pDest->m_Texture.GetTexture()->GetSurfaceLevel( 0, &(m_pDest->m_pTexSurf) );
 
+			ULONG ref_count = 0;
 			if( FAILED( hr ) )
 				return Result::UNKNOWN_ERROR;	// return DXUT_ERR( L"GetSurfaceLevel", hr );
+			else
+				ref_count = m_pDest->m_pTexSurf->Release(); // Decrement the reference count
 
 			hr = DIRECT3D9.GetDevice()->SetRenderTarget( 0, m_pDest->m_pTexSurf );
 		}
@@ -211,7 +227,13 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 		int failed_to_set_technique = 1;
 
 	HRESULT hr;
-	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() );
+	LPDIRECT3DTEXTURE9 pTexture = m_pPrevScene->m_Texture.GetTexture();
+	if( !pTexture )
+		int texture_is_not_loaded = 1;
+
+	hr = pd3dDevice->SetTexture( 0, pTexture );
+	if( FAILED(hr) )
+		int failed_to_set_texture = 1;
 
 	hr = pShaderMgr->GetEffect()->CommitChanges();
 
@@ -261,8 +283,8 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 //			NULL );
 	}
 
-	if( m_pDest )
-		m_pDest->ReleaseSurface();
+///	if( m_pDest )
+///		m_pDest->ReleaseSurface();
 //	m_pDest = shared_ptr<CRenderTargetTextureHolder>();
 
 	m_pPrevScene->DecrementLockCount();

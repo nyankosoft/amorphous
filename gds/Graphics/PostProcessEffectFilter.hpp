@@ -125,6 +125,8 @@ public:
 
 	LPDIRECT3DSURFACE9 m_pOrigRenderTarget;
 
+	boost::shared_ptr<CRenderTargetTextureHolder> m_pOrigSceneHolder;
+
 	boost::weak_ptr<CRenderTargetTextureCache> m_pSelf;
 
 public:
@@ -140,6 +142,8 @@ public:
 	int GetNumTextures( const CTextureResourceDesc& desc );
 
 	Result::Name AddTexture( const CTextureResourceDesc& desc );
+
+	Result::Name AddTexture( int width, int height, TextureFormat::Format format );
 
 	boost::shared_ptr<CRenderTargetTextureHolder> GetTexture( const CTextureResourceDesc& desc );
 
@@ -171,6 +175,7 @@ protected:
 
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pPrevScene;
 
+	/// The specification of the render target.
 	CTextureResourceDesc m_Desc;
 
 	RECT m_SourceRect;
@@ -254,8 +259,13 @@ public:
 
 //	void Render( CPostProcessEffectFilter& prev_filter );
 
+	/// \brief Sets the render target of the previous filter, i.e. the input for this filter,
+	/// to the stage 0 of the fixed function pipeline.
 	virtual void RenderBase( CPostProcessEffectFilter& prev_filter );
 
+	/// \brief Renders the post processsed scene to the render target texture.
+	/// The render target of the previous filter, i.e. the input for this filter,
+	/// is set in RenderBase() before this function is called.
 	virtual void Render() {}
 
 	virtual void StorePrevFilterResults( CPostProcessEffectFilter& prev_filter );

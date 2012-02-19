@@ -27,7 +27,7 @@ class CCombinedFilter : public CPostProcessEffectFilter
 {
 protected:
 
-	std::vector< boost::shared_ptr<CPostProcessEffectFilter> > m_vecpChildFilter;
+//	std::vector< boost::shared_ptr<CPostProcessEffectFilter> > m_vecpChildFilter;
 
 	boost::shared_ptr<CPostProcessEffectFilter> m_pLastFilter;
 
@@ -59,7 +59,7 @@ public:
 	void SetWidth( float fWidth ) {}
 	void SetHeight( float fHeight ) {}
 
-	void Update();
+//	void Update();
 };
 
 
