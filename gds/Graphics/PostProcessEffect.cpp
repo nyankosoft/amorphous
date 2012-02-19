@@ -63,7 +63,7 @@ SPlane2 GetCropWidthAndHeight()
 }
 
 
-void GetTextureRect( boost::shared_ptr<CRenderTargetTextureHolder>& pSrc, RECT *pDest )
+void GetTextureRect( shared_ptr<CRenderTargetTextureHolder>& pSrc, RECT *pDest )
 {
 	pDest->left   = 0;
 	pDest->top    = 0;
@@ -82,13 +82,13 @@ void GetTextureRect( boost::shared_ptr<CRenderTargetTextureHolder>& pSrc, RECT *
 // Desc: Get the texture coordinate offsets to be used inside the DownScale4x4
 //       pixel shader.
 //-----------------------------------------------------------------------------
-HRESULT GetSampleOffsets_DownScale4x4( DWORD dwWidth, DWORD dwHeight, D3DXVECTOR2 avSampleOffsets[] )
+Result::Name GetSampleOffsets_DownScale4x4( unsigned int width, unsigned int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
-        return E_INVALIDARG;
+		return Result::INVALID_ARGS;
 
-    float tU = 1.0f / dwWidth;
-    float tV = 1.0f / dwHeight;
+    float tU = 1.0f / (float)width;
+    float tV = 1.0f / (float)height;
 
     // Sample from the 16 surrounding points. Since the center point will be in
     // the exact center of 16 texels, a 0.5f offset is needed to specify a texel
@@ -105,7 +105,7 @@ HRESULT GetSampleOffsets_DownScale4x4( DWORD dwWidth, DWORD dwHeight, D3DXVECTOR
         }
     }
 
-    return S_OK;
+	return Result::SUCCESS;
 }
 
 
@@ -115,13 +115,13 @@ HRESULT GetSampleOffsets_DownScale4x4( DWORD dwWidth, DWORD dwHeight, D3DXVECTOR
 // Desc: Get the texture coordinate offsets to be used inside the DownScale2x2
 //       pixel shader.
 //-----------------------------------------------------------------------------
-HRESULT GetSampleOffsets_DownScale2x2( DWORD dwWidth, DWORD dwHeight, D3DXVECTOR2 avSampleOffsets[] )
+Result::Name GetSampleOffsets_DownScale2x2( unsigned int width, unsigned int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
-        return E_INVALIDARG;
+		return Result::INVALID_ARGS;
 
-    float tU = 1.0f / dwWidth;
-    float tV = 1.0f / dwHeight;
+    float tU = 1.0f / (float)width;
+    float tV = 1.0f / (float)height;
 
     // Sample from the 4 surrounding points. Since the center point will be in
     // the exact center of 4 texels, a 0.5f offset is needed to specify a texel
@@ -138,7 +138,7 @@ HRESULT GetSampleOffsets_DownScale2x2( DWORD dwWidth, DWORD dwHeight, D3DXVECTOR
         }
     }
 
-    return S_OK;
+	return Result::SUCCESS;
 }
 
 
@@ -244,7 +244,7 @@ void RenderFullScreenQuad( LPD3DXEFFECT pEffect, float fLeftU, float fTopV, floa
 */
 float GaussianDistribution( float x, float y, float rho )
 {
-    float g = 1.0f / sqrtf( 2.0f * D3DX_PI * rho * rho );
+    float g = 1.0f / sqrtf( 2.0f * (float)PI * rho * rho );
     g *= expf( -( x * x + y * y ) / ( 2 * rho * rho ) );
 
     return g;
@@ -520,7 +520,7 @@ void CDownScale4x4Filter::Render()
 	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	HRESULT hr = S_OK;
 
-	D3DXVECTOR2 avSampleOffsets[MAX_SAMPLES];
+	Vector2 avSampleOffsets[MAX_SAMPLES];
 	memset( avSampleOffsets, 0, sizeof(avSampleOffsets) );
 
 //	const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
@@ -569,7 +569,7 @@ void CDownScale4x4Filter::Render()
 	}
 
 	// Get the sample offsets used within the pixel shader
-	GetSampleOffsets_DownScale4x4( prev_scene_width, prev_scene_height, avSampleOffsets );
+	GetSampleOffsets_DownScale4x4( (unsigned int)prev_scene_width, (unsigned int)prev_scene_height, avSampleOffsets );
 	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
 
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
@@ -616,7 +616,7 @@ void CDownScale2x2Filter::Render()
 
 	HRESULT hr = S_OK;
 
-	D3DXVECTOR2 avSampleOffsets[MAX_SAMPLES];
+	Vector2 avSampleOffsets[MAX_SAMPLES];
 	memset( avSampleOffsets, 0, sizeof(avSampleOffsets) );
 
 	// Get the rectangle describing the sampled portion of the source texture.
@@ -645,7 +645,7 @@ void CDownScale2x2Filter::Render()
 	if( FAILED( hr ) )
 		return;// hr;
 
-	GetSampleOffsets_DownScale2x2( desc.Width, desc.Height, avSampleOffsets );
+	GetSampleOffsets_DownScale2x2( (unsigned int)desc.Width, (unsigned int)desc.Height, avSampleOffsets );
 	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
 
 	// Create an exact 1/2 x 1/2 copy of the source texture
@@ -1742,12 +1742,12 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	for( int i=num; i<2; i++ )
 		m_pCache->AddTexture( tex_desc );
 
-	m_pDownScale4x4Filter->AddNextFilter( m_pBloomFilter );
+//	m_pDownScale4x4Filter->AddNextFilter( m_pBloomFilter );
 
 	m_pLastFilter = m_pBloomFilter;
 
 	// test the 4x4 down scale filter
-//	m_pLastFilter = m_pDownScale4x4Filter;
+	m_pLastFilter = m_pDownScale4x4Filter;
 
 	return Result::SUCCESS;
 }
@@ -1757,9 +1757,9 @@ void CFullScreenBlurFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
 {
 	m_pBloomFilter->SetBlurStrength( m_fBlurStrength );
 
-//	m_pDownScale4x4Filter->RenderBase( prev_filter );
+	m_pDownScale4x4Filter->RenderBase( prev_filter );
 
-	m_pBloomFilter->RenderBase( prev_filter );
+//	m_pBloomFilter->RenderBase( prev_filter );
 }
 
 
