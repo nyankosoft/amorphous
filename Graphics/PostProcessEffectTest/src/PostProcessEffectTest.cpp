@@ -333,15 +333,6 @@ void CPostProcessEffectTest::Render()
 	UpdateShaderParams();
 //	DIRECT3D9.GetDevice()->EndScene();
 
-//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-//	HRESULT hr;
-
-	// update the camera matrix
-	//	m_CameraController.SetCameraMatrix();
-	//	D3DXMATRIX matCamera;
-	//	m_CameraController.GetCameraMatrix( matCamera );
-	//	m_pShaderManager->SetViewTransform( matCamera );
-
 	if( m_pPostProcessEffectManager )
 		m_pPostProcessEffectManager->BeginRender();
 
@@ -352,11 +343,6 @@ void CPostProcessEffectTest::Render()
 		m_pPostProcessEffectManager->EndRender();
 		m_pPostProcessEffectManager->RenderPostProcessEffects();
 	}
-
-//	D3DXMatrixIdentity( &matCamera );
-//	m_CameraController.GetCameraMatrix( matCamera );
-//	m_pShaderManager->SetViewTransform( matCamera );
-
 
 	// render the text info
 	string text = fmt_string( "gray mid value: %f", m_HDRLightingParams.key_value );
@@ -429,16 +415,10 @@ int CPostProcessEffectTest::Init()
 		return 1;
 
 	// set the world matrix to the identity
-//	D3DXMATRIX matWorld;
-//	D3DXMatrixIdentity( &matWorld );
-//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_WORLD, &matWorld );
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 	pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 	// set the projection matrix
-//	D3DXMATRIX matProj;
-//	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
-//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
 	Matrix44 proj = Matrix44PerspectiveFoV_LH( D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
 	FixedFunctionPipelineManager().SetProjectionTransform( proj );
 	pShaderManager->SetProjectionTransform( proj );
@@ -455,9 +435,6 @@ int CPostProcessEffectTest::Init()
 	light.vDirection = vDir;
 	m_ShaderLightManager.SetLight( 0, light );
 */
-	// create default texture
-//	DWORD dwColor = 0xFFF0F0F0;
-//	CTextureTool::CreateTexture( &dwColor, 1, 1, &m_pDefaultTexture );
 
 	D3DSURFACE_DESC back_buffer_desc;
 	IDirect3DSurface9 *pBackBuffer;

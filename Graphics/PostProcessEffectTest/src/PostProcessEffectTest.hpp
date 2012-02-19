@@ -75,12 +75,6 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 
 	CShaderHandle m_Shader;
 
-//	CUnitSphere m_LightPosIndicator;
-
-//	CShaderLightManager m_ShaderLightManager;
-
-//	Vector3 m_vLightPosition;
-
 	CFontSharedPtr m_pFont;
 
 //	float m_fKeyValue;
