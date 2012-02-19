@@ -261,26 +261,7 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 
 	if( 0 < CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame && m_pDest )
 	{
-//		D3DXIMAGE_FILEFORMAT img_fmt;
-		string ext;
-/*		if( m_pDest->m_Desc.Format == TextureFormat::A8R8G8B8)
-		{*/
-//			img_fmt = D3DXIFF_PNG;
-			ext = ".png";
-/*		}
-		else
-		{
-			img_fmt = D3DXIFF_PFM;
-			ext = ".pfm";
-		}*/
-
-//		boost::filesystem::create_directories( "debug/post-process_effect" ); // Done in CPostProcessEffectManager::RenderPostProcessEffects()
-		string image_pathname = "debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext;
-		bool saved = m_pDest->m_Texture.SaveTextureToImageFile( image_pathname );
-//		hr = D3DXSaveTextureToFile(
-//			img_fmt,
-//			m_pDest->m_Texture.GetTexture(),
-//			NULL );
+		SaveProcessedSceneToImageFile();
 	}
 
 ///	if( m_pDest )
@@ -295,4 +276,26 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 	{
 		m_vecpNextFilter[i]->RenderBase( *this );
 	}
+}
+
+
+void CPostProcessEffectFilter::SaveProcessedSceneToImageFile()
+{
+//	D3DXIMAGE_FILEFORMAT img_fmt;
+	string ext;
+/*	if( m_pDest->m_Desc.Format == TextureFormat::A8R8G8B8)
+	{*/
+//		img_fmt = D3DXIFF_PNG;
+		ext = ".png";
+/*	}
+	else
+	{
+		img_fmt = D3DXIFF_PFM;
+		ext = ".pfm";
+	}*/
+
+//	boost::filesystem::create_directories( "debug/post-process_effect" ); // Done in CPostProcessEffectManager::RenderPostProcessEffects()
+	string image_pathname = "debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext;
+	bool saved = m_pDest->m_Texture.SaveTextureToImageFile( image_pathname );
+//	hr = D3DXSaveTextureToFile( img_fmt, m_pDest->m_Texture.GetTexture(), NULL );
 }

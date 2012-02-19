@@ -184,6 +184,9 @@ private:
 
 	Result::Name CPostProcessEffectFilter::SetRenderTarget( CPostProcessEffectFilter& prev_filter );
 
+	/// For debugging
+	void SaveProcessedSceneToImageFile();
+
 protected:
 
 	virtual bool GetRenderTarget( CPostProcessEffectFilter& prev_filter );
