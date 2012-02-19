@@ -217,7 +217,7 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 //	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A16R16G16B16F;
 	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A8R8G8B8;
 
-	SPlane2 bb = GetBackBufferWidthAndHeight();
+	SRectangular bb = GetBackBufferWidthAndHeight();
 	m_pOrigSceneHolder = shared_ptr<CRenderTargetTextureHolder>( new CRenderTargetTextureHolder() );
 	m_pOrigSceneHolder->m_Desc.Width  = bb.width;
 	m_pOrigSceneHolder->m_Desc.Height = bb.height;
@@ -233,6 +233,8 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 //									  D3DPOOL_DEFAULT, &m_SceneRenderTarget, NULL );
 
 	m_pOriginalSceneFilter = shared_ptr<COriginalSceneFilter>( new COriginalSceneFilter( m_pOrigSceneHolder ) );
+
+	m_pTextureCache->m_pOrigSceneHolder = m_pOrigSceneHolder;
 
 	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
@@ -490,7 +492,7 @@ Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
 	Result::Name res;
 	res = m_pMonochromeColorFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
 
-	const SPlane2 cbb = GetCropWidthAndHeight();
+	const SRectangular cbb = GetCropWidthAndHeight();
 	m_pMonochromeColorFilter->SetRenderTargetSize( cbb.width, cbb.height );
 
 	CTextureResourceDesc tex_desc;

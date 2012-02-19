@@ -132,7 +132,7 @@ class CCombinedBloomFilter : public CCombinedFilter
 	boost::shared_ptr<CHorizontalBloomFilter> m_pHBloomFilter;
 	boost::shared_ptr<CVerticalBloomFilter>   m_pVBloomFilter;
 
-	SPlane2 m_BasePlane;
+	SRectangular m_BasePlane;
 
 public:
 
@@ -145,7 +145,7 @@ public:
 
 	void RenderBase( CPostProcessEffectFilter& prev_filter );
 
-	void SetBasePlane( SPlane2 base_plane ) { m_BasePlane = base_plane; }
+	void SetBasePlane( SRectangular base_plane ) { m_BasePlane = base_plane; }
 
 	void UseAsGaussianBlurFilter( bool use_as_gauss_blur );
 

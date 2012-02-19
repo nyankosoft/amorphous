@@ -5,6 +5,7 @@
 #include <vector>
 #include <d3dx9.h>
 #include "../base.hpp"
+#include "../3DMath/Rectangular.hpp"
 #include "Direct3D/Direct3D9.hpp"
 #include "TextureHandle.hpp"
 #include "SurfaceFormat.hpp"
@@ -17,27 +18,9 @@ class CPostProcessFilterShader;
 class CFilterShaderContainer;
 
 
-template<typename T>
-class TPlane2
-{
-public:
-
-	T width, height;
-
-public:
-
-	TPlane2() : width(0), height(0) {}
-	TPlane2( int w, int h ) : width(w), height(h) {}
-};
-
-
-typedef TPlane2<float> Plane2;
-typedef TPlane2<int> SPlane2;
-
-
 const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc();
-SPlane2 GetBackBufferWidthAndHeight();
-SPlane2 GetCropWidthAndHeight();
+SRectangular GetBackBufferWidthAndHeight();
+SRectangular GetCropWidthAndHeight();
 
 
 class CPostProcessEffect

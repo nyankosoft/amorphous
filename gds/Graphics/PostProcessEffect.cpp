@@ -49,17 +49,17 @@ const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc()
 }
 
 
-SPlane2 GetBackBufferWidthAndHeight()
+SRectangular GetBackBufferWidthAndHeight()
 {
 	const D3DSURFACE_DESC *pBB = GetD3D9BackBufferSurfaceDesc();
-	return SPlane2( (int)(pBB->Width), (int)(pBB->Height) );
+	return SRectangular( (int)(pBB->Width), (int)(pBB->Height) );
 }
 
 
-SPlane2 GetCropWidthAndHeight()
+SRectangular GetCropWidthAndHeight()
 {
-	SPlane2 bb = GetBackBufferWidthAndHeight();
-	return SPlane2( bb.width - bb.width % 8, bb.height - bb.height % 8 );
+	SRectangular bb = GetBackBufferWidthAndHeight();
+	return SRectangular( bb.width - bb.width % 8, bb.height - bb.height % 8 );
 }
 
 
@@ -982,7 +982,7 @@ void CVerticalBloomFilter::GetSampleOffsets()
 
 CCombinedBloomFilter::CCombinedBloomFilter()
 {
-	SPlane2 cbb = GetCropWidthAndHeight(); // cropped back buffer
+	SRectangular cbb = GetCropWidthAndHeight(); // cropped back buffer
 
 	// based on the original Direct3D HDR Lighting sample
 	m_BasePlane.width  = cbb.width  / 8;
@@ -994,10 +994,10 @@ Result::Name CCombinedBloomFilter::Init( CRenderTargetTextureCache& cache, CFilt
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
-	SPlane2 bb = GetBackBufferWidthAndHeight();
-	SPlane2 cbb = GetCropWidthAndHeight(); // cropped back buffer
+	SRectangular bb = GetBackBufferWidthAndHeight();
+	SRectangular cbb = GetCropWidthAndHeight(); // cropped back buffer
 
-	const SPlane2 base_plane = m_BasePlane;
+	const SRectangular base_plane = m_BasePlane;
 
 	// shared settings for bloom textures
 	CTextureResourceDesc desc;
@@ -1509,7 +1509,7 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 
 	Result::Name res = Result::SUCCESS;
 
-	SPlane2 cbb = GetCropWidthAndHeight();
+	SRectangular cbb = GetCropWidthAndHeight();
 
 	m_pDownScale4x4Filter = shared_ptr<CDownScale4x4Filter>( new CDownScale4x4Filter );
 	m_pDownScale4x4Filter->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
@@ -1700,7 +1700,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	m_pCache = cache.GetSelfPtr().lock();
 
 	Result::Name res;
-	const SPlane2 cbb = GetCropWidthAndHeight();
+	const SRectangular cbb = GetCropWidthAndHeight();
 
 	m_pDownScale4x4Filter = shared_ptr<CDownScale4x4Filter>( new CDownScale4x4Filter );
 	m_pDownScale4x4Filter->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
@@ -1721,7 +1721,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 */
 
 	m_pBloomFilter = shared_ptr<CCombinedBloomFilter>( new CCombinedBloomFilter );
-	m_pBloomFilter->SetBasePlane( SPlane2( cbb.width / 4, cbb.height / 4 ) );
+	m_pBloomFilter->SetBasePlane( SRectangular( cbb.width / 4, cbb.height / 4 ) );
 	res = m_pBloomFilter->Init( cache, filter_shader_container );
 	m_pBloomFilter->UseAsGaussianBlurFilter( true );
 
@@ -1773,7 +1773,7 @@ CMonochromeColorFilter::CMonochromeColorFilter()
 	m_Technique.SetTechniqueName( "MonochromeColor" );
 
 	// set the render target size to that of back buffer by default
-	const SPlane2 cbb = GetCropWidthAndHeight();
+	const SRectangular cbb = GetCropWidthAndHeight();
 	SetRenderTargetSize( cbb.width, cbb.height );
 
 	SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
