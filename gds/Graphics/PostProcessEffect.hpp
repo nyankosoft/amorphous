@@ -3,6 +3,8 @@
 
 
 #include "PostProcessEffectFilter.hpp"
+#include "../3DMath/Vector2.hpp"
+#include "../3DMath/Vector4.hpp"
 
 
 class COriginalSceneFilter : public CPostProcessEffectFilter
@@ -73,8 +75,8 @@ protected:
 	};
 
 	float m_afSampleOffsets[MAX_SAMPLES];
-	D3DXVECTOR2 m_avSampleOffsets[MAX_SAMPLES];
-	D3DXVECTOR4 m_avSampleWeights[MAX_SAMPLES];
+	Vector2 m_avSampleOffsets[MAX_SAMPLES];
+	Vector4 m_avSampleWeights[MAX_SAMPLES];
 
 	bool m_DoScissorTesting;
 
@@ -225,9 +227,9 @@ private:
 
 	bool GetRenderTarget( CPostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest );
 
-	void GetSampleOffsets_DownScale3x3( int width, int height, D3DXVECTOR2 avSampleOffsets[] );
+	void GetSampleOffsets_DownScale3x3( int width, int height, Vector2 avSampleOffsets[] );
 
-	void GetSampleOffsets_DownScale4x4( int width, int height, D3DXVECTOR2 avSampleOffsets[] );
+	void GetSampleOffsets_DownScale4x4( int width, int height, Vector2 avSampleOffsets[] );
 
 public:
 

@@ -162,8 +162,8 @@ void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottom
 
 	// Ensure that we're directly mapping texels to pixels by offset by 0.5
 	// For more info see the doc page titled "Directly Mapping Texels to Pixels"
-	FLOAT fWidth5 = ( FLOAT )dtdsdRT.Width - 0.5f;
-	FLOAT fHeight5 = ( FLOAT )dtdsdRT.Height - 0.5f;
+	float fWidth5 = ( float )dtdsdRT.Width - 0.5f;
+	float fHeight5 = ( float )dtdsdRT.Height - 0.5f;
 
 	// Draw the quad
 	ScreenVertex svQuad[4];
@@ -254,16 +254,16 @@ float GaussianDistribution( float x, float y, float rho )
 /**
  Get the texture coordinate offsets to be used inside the GaussBlur5x5 pixel shader.
 */
-HRESULT GetSampleOffsets_GaussBlur5x5( DWORD dwD3DTexWidth,
-                                       DWORD dwD3DTexHeight,
-                                       D3DXVECTOR2* avTexCoordOffset,
-                                       D3DXVECTOR4* avSampleWeight,
-                                       FLOAT fMultiplier = 1.0f )
+HRESULT GetSampleOffsets_GaussBlur5x5( unsigned int dwD3DTexWidth,
+                                       unsigned int dwD3DTexHeight,
+                                       Vector2* avTexCoordOffset,
+                                       Vector4* avSampleWeight,
+                                       float fMultiplier = 1.0f )
 {
     float tu = 1.0f / ( float )dwD3DTexWidth;
     float tv = 1.0f / ( float )dwD3DTexHeight;
 
-    D3DXVECTOR4 vWhite( 1.0f, 1.0f, 1.0f, 1.0f );
+    Vector4 vWhite( 1.0f, 1.0f, 1.0f, 1.0f );
 
     float totalWeight = 0.0f;
     int index = 0;
@@ -279,7 +279,7 @@ HRESULT GetSampleOffsets_GaussBlur5x5( DWORD dwD3DTexWidth,
                 continue;
 
             // Get the unscaled Gaussian intensity for this offset
-            avTexCoordOffset[index] = D3DXVECTOR2( x * tu, y * tv );
+            avTexCoordOffset[index] = Vector2( x * tu, y * tv );
             avSampleWeight[index] = vWhite * GaussianDistribution( ( float )x, ( float )y, 1.0f );
             totalWeight += avSampleWeight[index].x;
 
@@ -324,7 +324,7 @@ HRESULT GetSampleOffsets_GaussBlur5x5( DWORD dwD3DTexWidth,
 */
 Result::Name GetSampleOffsets_Bloom( DWORD dwD3DTexSize,
 							   float afTexCoordOffset[15],
-							   D3DXVECTOR4* avColorWeight,
+							   Vector4* avColorWeight,
 							   float fDeviation,
 							   float fMultiplier )
 {
@@ -333,7 +333,7 @@ Result::Name GetSampleOffsets_Bloom( DWORD dwD3DTexSize,
 
 	// Fill the center texel
 	float weight = fMultiplier * GaussianDistribution( 0, 0, fDeviation );
-	avColorWeight[0] = D3DXVECTOR4( weight, weight, weight, 1.0f );
+	avColorWeight[0] = Vector4( weight, weight, weight, 1.0f );
 
 	afTexCoordOffset[0] = 0.0f;
 
@@ -344,7 +344,7 @@ Result::Name GetSampleOffsets_Bloom( DWORD dwD3DTexSize,
 		weight = fMultiplier * GaussianDistribution( ( float )i, 0, fDeviation );
 		afTexCoordOffset[i] = i * tu;
 
-		avColorWeight[i] = D3DXVECTOR4( weight, weight, weight, 1.0f );
+		avColorWeight[i] = Vector4( weight, weight, weight, 1.0f );
 	}
 
 	// Mirror to the second half
@@ -363,7 +363,7 @@ Result::Name GetSampleOffsets_Bloom( DWORD dwD3DTexSize,
 */
 Result::Name GetSampleOffsets_Star( DWORD dwD3DTexSize,
 							  float afTexCoordOffset[15],
-							  D3DXVECTOR4* avColorWeight,
+							  Vector4* avColorWeight,
 							  float fDeviation )
 {
 	int i = 0;
@@ -371,7 +371,7 @@ Result::Name GetSampleOffsets_Star( DWORD dwD3DTexSize,
 
 	// Fill the center texel
 	float weight = 1.0f * GaussianDistribution( 0, 0, fDeviation );
-	avColorWeight[0] = D3DXVECTOR4( weight, weight, weight, 1.0f );
+	avColorWeight[0] = Vector4( weight, weight, weight, 1.0f );
 
 	afTexCoordOffset[0] = 0.0f;
 
@@ -382,7 +382,7 @@ Result::Name GetSampleOffsets_Star( DWORD dwD3DTexSize,
 		weight = 1.0f * GaussianDistribution( ( float )i, 0, fDeviation );
 		afTexCoordOffset[i] = i * tu;
 
-		avColorWeight[i] = D3DXVECTOR4( weight, weight, weight, 1.0f );
+		avColorWeight[i] = Vector4( weight, weight, weight, 1.0f );
 	}
 
 	// Mirror to the second half
@@ -771,8 +771,8 @@ void CGaussianBlurFilter::Render()
 
 	HRESULT hr = S_OK;
 
-	D3DXVECTOR2 avSampleOffsets[MAX_SAMPLES];
-	D3DXVECTOR4 avSampleWeights[MAX_SAMPLES];
+	Vector2 avSampleOffsets[MAX_SAMPLES];
+	Vector4 avSampleWeights[MAX_SAMPLES];
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
@@ -956,7 +956,7 @@ void CHorizontalBloomFilter::GetSampleOffsets()
 	HRESULT hr = GetSampleOffsets_Bloom( m_Desc.Width, m_afSampleOffsets, m_avSampleWeights, m_fDeviation, 2.0f );
 	for( int i = 0; i < MAX_SAMPLES; i++ )
 	{
-		m_avSampleOffsets[i] = D3DXVECTOR2( m_afSampleOffsets[i], 0.0f );
+		m_avSampleOffsets[i] = Vector2( m_afSampleOffsets[i], 0.0f );
 	}
 }
 
@@ -974,7 +974,7 @@ void CVerticalBloomFilter::GetSampleOffsets()
 	HRESULT hr = GetSampleOffsets_Bloom( m_Desc.Height, m_afSampleOffsets, m_avSampleWeights, m_fDeviation, 2.0f );
 	for( int i = 0; i < MAX_SAMPLES; i++ )
 	{
-		m_avSampleOffsets[i] = D3DXVECTOR2( 0.0f, m_afSampleOffsets[i] );
+		m_avSampleOffsets[i] = Vector2( 0.0f, m_afSampleOffsets[i] );
 	}
 }
 
@@ -1155,7 +1155,7 @@ bool CLuminanceCalcFilter::GetRenderTarget( CPostProcessEffectFilter& prev_filte
 }
 
 
-void CLuminanceCalcFilter::GetSampleOffsets_DownScale3x3( int width, int height, D3DXVECTOR2 avSampleOffsets[] )
+void CLuminanceCalcFilter::GetSampleOffsets_DownScale3x3( int width, int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
         return;
@@ -1185,7 +1185,7 @@ void CLuminanceCalcFilter::GetSampleOffsets_DownScale3x3( int width, int height,
 // Desc: Get the texture coordinate offsets to be used inside the DownScale4x4
 //       pixel shader.
 //-----------------------------------------------------------------------------
-void CLuminanceCalcFilter::GetSampleOffsets_DownScale4x4( int width, int height, D3DXVECTOR2 avSampleOffsets[] )
+void CLuminanceCalcFilter::GetSampleOffsets_DownScale4x4( int width, int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
         return;
@@ -1216,7 +1216,7 @@ void CLuminanceCalcFilter::Render()
 	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	HRESULT hr = S_OK;
 
-	D3DXVECTOR2 avSampleOffsets[MAX_SAMPLES];
+	Vector2 avSampleOffsets[MAX_SAMPLES];
 	memset( avSampleOffsets, 0, sizeof(avSampleOffsets) );
 
 	int w = m_pDest->m_Desc.Width;
