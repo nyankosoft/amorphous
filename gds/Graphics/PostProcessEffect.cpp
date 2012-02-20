@@ -322,7 +322,7 @@ HRESULT GetSampleOffsets_GaussBlur5x5( unsigned int dwD3DTexWidth,
   [15] 0.00000000
   sum: approx. 1.976
 */
-Result::Name GetSampleOffsets_Bloom( DWORD dwD3DTexSize,
+Result::Name GetSampleOffsets_Bloom( unsigned int dwD3DTexSize,
 							   float afTexCoordOffset[15],
 							   Vector4* avColorWeight,
 							   float fDeviation,
@@ -361,7 +361,7 @@ Result::Name GetSampleOffsets_Bloom( DWORD dwD3DTexSize,
 /**
  Get the texture coordinate offsets to be used inside the Bloom pixel shader.
 */
-Result::Name GetSampleOffsets_Star( DWORD dwD3DTexSize,
+Result::Name GetSampleOffsets_Star( unsigned int dwD3DTexSize,
 							  float afTexCoordOffset[15],
 							  Vector4* avColorWeight,
 							  float fDeviation )
