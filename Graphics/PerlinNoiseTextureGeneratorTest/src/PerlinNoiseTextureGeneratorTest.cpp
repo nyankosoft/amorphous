@@ -1,6 +1,6 @@
 #include "PerlinNoiseTextureGeneratorTest.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/PerlinNoiseTextureGenerator.hpp" //<<< This header contains the classes to test
 #include "gds/Support/Timer.hpp"

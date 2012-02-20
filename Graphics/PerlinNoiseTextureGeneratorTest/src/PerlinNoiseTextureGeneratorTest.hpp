@@ -14,21 +14,6 @@
 
 class CPerlinNoiseTextureGeneratorTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum UIID
-	{
-		UIID_DLG_ROOT = 1000,
-		UIID_DLG_SLIDERS,
-		UIID_DLG_RESOLUTION,
-		UIID_LBX_RESOLUTION,
-		UIID_DLG_LISTBOXGROUP,
-		UIID_OTHER
-	};
-
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 //	CShaderHandle m_Shader;
 
 	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
@@ -47,7 +32,7 @@ class CPerlinNoiseTextureGeneratorTest : public CGraphicsTestBase, public CGraph
 
 	float m_fTextureRepeats;
 
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 private:
 
