@@ -95,7 +95,7 @@ class CSignleColorTextureFilling : public CTextureFillingAlgorithm
 
 public:
 
-	CSignleColorTextureFilling( const SFloatRGBAColor& color )
+	CSignleColorTextureFilling( const SFloatRGBAColor& color = SFloatRGBAColor::White() )
 		:
 	m_Color(color)
 	{
@@ -104,16 +104,6 @@ public:
 	void FillTexture( CLockedTexture& texture )
 	{
 		texture.Clear( m_Color );
-
-/*		const int w = texture.GetWidth();
-		const int h = texture.GetHeight();
-		for( int y=0; y<h; y++ )
-		{
-			for( int x=0; x<w; x++ )
-			{
-				texture.SetPixelColor( x, y, m_Color );
-			}
-		}*/
 	}
 };
 
