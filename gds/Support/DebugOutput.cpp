@@ -1,10 +1,7 @@
 #include "DebugOutput.hpp"
 
 #include "Graphics/2DPrimitive/2DRect.hpp"
-//#include "Graphics/Font/Font.hpp"
 #include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/Font/TrueTypeTextureFont.hpp"
-#include "Graphics/Font/UTFFont.hpp"
 #include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/Font/FontFactory.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
