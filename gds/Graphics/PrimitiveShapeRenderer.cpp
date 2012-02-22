@@ -16,7 +16,7 @@ CTextureHandle CreateSingleColorTexture( uint size_x = 1, uint size_y = 1, const
 	desc.Height    = size_y;
 	desc.MipLevels = 0;
 	desc.Format    = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new CSignleColorTextureFilling( color ) );
+	desc.pLoader.reset( new CSingleColorTextureFilling( color ) );
 
 	CTextureHandle tex;
 	bool loaded = tex.Load( desc );

@@ -89,13 +89,13 @@ public:
 };
 
 
-class CSignleColorTextureFilling : public CTextureFillingAlgorithm
+class CSingleColorTextureFilling : public CTextureFillingAlgorithm
 {
 	SFloatRGBAColor m_Color;
 
 public:
 
-	CSignleColorTextureFilling( const SFloatRGBAColor& color = SFloatRGBAColor::White() )
+	CSingleColorTextureFilling( const SFloatRGBAColor& color = SFloatRGBAColor::White() )
 		:
 	m_Color(color)
 	{

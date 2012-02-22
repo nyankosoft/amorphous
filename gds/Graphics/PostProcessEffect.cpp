@@ -1372,7 +1372,7 @@ m_StarEffectEnabled(false)
 	desc.Width  = 16;
 	desc.Height = 16;
 	desc.Format = TextureFormat::A8R8G8B8;
-	desc.pLoader = shared_ptr<CSignleColorTextureFilling>( new CSignleColorTextureFilling( SFloatRGBAColor::Black() ) );
+	desc.pLoader.reset( new CSingleColorTextureFilling( SFloatRGBAColor::Black() ) );
 	m_BlancTextureForDisabledStarEffect.Load( desc );
 }
 
