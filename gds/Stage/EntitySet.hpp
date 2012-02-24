@@ -323,35 +323,6 @@ inline void CEntitySet::UpdateCamera()
 	m_pCameraEntity->pBaseEntity->UpdateCamera( m_pCameraEntity );
 }
 
-/**
- * \return [out] rotation matrix for billboard
- */
-/* 10:30 PM 8/18/2007 - moved to EntitySet.cpp since the new version calls a method of CStage through m_pStage
-inline void CEntitySet::GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const
-{
-	if( !m_pCameraEntity )
-		return;
-
-	CCopyEntity* pCameraEntity = m_pCameraEntity;
-
-	CCamera *pCamera = pCameraEntity->pBaseEntity->GetCamera();
-		if( pCamera )
-			pCamera->GetOrientation( rmatBillboard );
-		else
-			pCameraEntity->GetOrientation( rmatBillboard );
-			
-}*/
-
-
-/*	D3DXVECTOR3& rvDir   = pCameraEntity->GetDirection();	// the direction in which billboard polygons should face
-	D3DXVECTOR3& rvRight = pCameraEntity->GetRight();
-	D3DXVECTOR3& rvUp    = pCameraEntity->GetUp();
-
-	rmatBillboard._11 = rvRight.x; rmatBillboard._12 = rvRight.y; rmatBillboard._13 = rvRight.z; rmatBillboard._14 = 0;
-	rmatBillboard._21 =    rvUp.x; rmatBillboard._22 =    rvUp.y; rmatBillboard._23 =    rvUp.z; rmatBillboard._24 = 0;
-	rmatBillboard._31 =   rvDir.x; rmatBillboard._32 =   rvDir.y; rmatBillboard._33 =   rvDir.z; rmatBillboard._34 = 0;
-//	rmatBillboard._41 =   rvPos.x; rmatBillboard._42 =   rvPos.y; rmatBillboard._43 =   rvPos.z; rmatBillboard._44 = 1;
-*/
 
 /*
 inline int CEntitySet::RegisterLight( CCopyEntity& rLightEntity, short sLightType )
