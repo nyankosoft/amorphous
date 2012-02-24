@@ -116,6 +116,12 @@ bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::stri
 	if( flags & VFF::NORMAL )
 		SetNormals( vs.vecNormal );
 
+	if( flags & VFF::TANGENT )
+		SetTangents( vs.vecTangent );
+
+	if( flags & VFF::BINORMAL )
+		SetBinormals( vs.vecBinormal );
+
 	U32 tex2_flags[] = { VFF::TEXCOORD2_0, VFF::TEXCOORD2_1, VFF::TEXCOORD2_2, VFF::TEXCOORD2_3 };
 	for( int i=0; i<4; i++ )
 	{
@@ -134,6 +140,8 @@ bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::stri
 	SetIndices( archive.GetVertexIndex() );
 
 	LoadMaterialsFromArchive( archive, option_flags );
+
+	m_TriangleSets = archive.GetTriangleSet();
 
 	return true;
 }

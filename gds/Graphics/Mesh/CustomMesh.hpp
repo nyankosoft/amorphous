@@ -29,6 +29,8 @@ private:
 
 	static VertexColorFormat ms_DefaultVertexDiffuseColorFormat;
 
+	std::vector<CMMA_TriangleSet> m_TriangleSets;
+
 public:
 
 	U32 m_VertexFlags;
@@ -63,6 +65,8 @@ public:
 
 	inline void SetPositions( const std::vector<Vector3>& positions )  { SetVec3Elements( positions, VEE::POSITION, VFF::POSITION ); }
 	inline void SetNormals( const std::vector<Vector3>& normals )      { SetVec3Elements( normals,   VEE::NORMAL,   VFF::NORMAL ); }
+	inline void SetTangents( const std::vector<Vector3>& tangents )    { SetVec3Elements( tangents,  VEE::TANGENT,  VFF::TANGENT ); }
+	inline void SetBinormals( const std::vector<Vector3>& binormals )  { SetVec3Elements( binormals, VEE::BINORMAL, VFF::BINORMAL ); }
 	inline void Set2DTexCoords( const std::vector<TEXCOORD2>& tex_coords, int tex_coord_index )
 	{
 		const std::vector<TEXCOORD2>& src = tex_coords;
@@ -96,6 +100,10 @@ public:
 	uchar *GetVertexBufferPtr() { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : NULL; }
 
 	uchar *GetIndexBufferPtr() { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : NULL; }
+
+	const uchar *GetVertexBufferPtr() const { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : NULL; }
+
+	const uchar *GetIndexBufferPtr() const { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : NULL; }
 
 	uint GetNumVertices() const { return (0 < m_VertexSize) ? ((uint)m_VertexBuffer.size() / m_VertexSize) : 0; }
 
