@@ -96,32 +96,6 @@ void C2DTexRect::Draw()
 	SetRenderStates();
 	DrawRect();
 }
-/*
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	// enable alpha blending
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//  pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_DestAlphaBlend );
-
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-	//pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_NONE );
-
-///	if( !pTexture )
-///		pTexture = m_pTexture;	// use the default texture
-
-	{	// use only the vertex color & alpha
-		pd3dDev->SetTexture( 0, NULL );
-
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG1 );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-		pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
-
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1 );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-	}
-*/
 
 
 void C2DTexRect::SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax)
