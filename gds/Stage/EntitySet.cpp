@@ -1265,28 +1265,33 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 		{
 			pEntity = pNode->pOwner;
 
+			if( !pEntity )
+				continue;
+
+			CCopyEntity& entity = *pEntity;
+
 			fprintf( fp, "--------------------------------------------------------\n" );
 
-			fprintf( fp, "name:         %s\n", pEntity->GetName().c_str() );
-			fprintf( fp, "id:           %d\n", pEntity->GetID() );
-			fprintf( fp, "type id:      %d\n", pEntity->GetEntityTypeID() );
-			fprintf( fp, "base name:    %s\n", pEntity->pBaseEntity->GetName() );
-			fprintf( fp, "created time: %f s\n", pEntity->GetCreatedTime() );
-			fprintf( fp, "group:        %d\n", pEntity->GroupIndex );
+			fprintf( fp, "name:         %s\n",   entity.GetName().c_str() );
+			fprintf( fp, "id:           %d\n",   entity.GetID() );
+			fprintf( fp, "type id:      %d\n",   entity.GetEntityTypeID() );
+			fprintf( fp, "base name:    %s\n",   entity.pBaseEntity->GetName() );
+			fprintf( fp, "created time: %f s\n", entity.GetCreatedTime() );
+			fprintf( fp, "group:        %d\n",   entity.GroupIndex );
 
-			strPos = to_string(pEntity->GetWorldPosition() );
-			strDir = to_string(pEntity->GetDirection() );
-			fprintf( fp, "  pos%s, dir%s, spd: %.2f\n", strPos.c_str(), strDir.c_str(), pEntity->fSpeed );
+			strPos = to_string(entity.GetWorldPosition() );
+			strDir = to_string(entity.GetDirection() );
+			fprintf( fp, "  pos%s, dir%s, spd: %.3f\n", strPos.c_str(), strDir.c_str(), entity.fSpeed );
 
-			fprintf( fp, "  local_aabb: %s\n", to_string(pEntity->local_aabb).c_str() );
+			fprintf( fp, "  local_aabb: %s\n", to_string(entity.local_aabb).c_str() );
 
-			fprintf( fp, "  world_aabb: %s\n", to_string(pEntity->world_aabb).c_str() );
+			fprintf( fp, "  world_aabb: %s\n", to_string(entity.world_aabb).c_str() );
 
-			fprintf(fp, "  state: %d\n", pEntity->sState);
+			fprintf( fp, "  state: %d\n", entity.sState );
 
-			fprintf(fp, "flags: ");
+			fprintf( fp, "flags: " );
 
-			const U32 flags = pEntity->GetEntityFlags();
+			const U32 flags = entity.GetEntityFlags();
 			bool first_flag = true;
 			for( int j=0; j<numof(g_EntityFlagStringPair); j++ )
 			{
@@ -1298,8 +1303,23 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 			}
 			fprintf( fp, "\n" );
 
-			if( pEntity->bInSolid == true ) fprintf(fp, "  (in solid)\n");
-			else fprintf(fp, "  (not in solid)\n");
+			fprintf( fp, "num light(s): %d\n", (int)entity.m_vecLight.size() );
+//			// LightEntity.hpp needs to be included in order to compile the following code.
+//			fprintf( fp, "light(s) (%d): ", (int)entity.m_vecLight.size() );
+//			bool first_light = true;
+//			for( int i=0; i<(int)entity.m_vecLight.size(); i++ )
+//			{
+//				shared_ptr<CLightEntity> pLight = entity.m_vecLight[i].Get();
+//				if( !pLight )
+//					continue;
+//
+//				fprintf( fp, "%s%s", first_light ? "" : ", ", pLight->GetName().c_str() );
+//				first_light = false;
+//			}
+
+			fprintf( fp, "mesh: %s\n",     entity.m_MeshHandle.IsLoaded() ? "loaded" : "not loaded" );
+			fprintf( fp, "in solid: %s\n", entity.bInSolid ? "yes" : "no" );
+			fprintf( fp, "parent: %s\n",   entity.m_pParent ? entity.m_pParent->GetName().c_str() : "(none)" );
 
 			fprintf(fp, "\n");
 		}
