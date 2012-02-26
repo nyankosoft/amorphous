@@ -66,14 +66,11 @@ protected:
 
 	std::string m_strFilename;
 
-	/// Number of materials
-	int m_NumMaterials;
-
 	/// materials for each subset
 	std::vector<CMeshMaterial> m_vecMaterial;
 
 	/// Holds material indices
-	/// The values are always set to [0,m_NumMaterials-1]
+	/// The values are always set to [0,m_vecMaterial.size()-1]
 	/// Used to avoid dynamic memory allocation in RenderSubsets()
 	std::vector<int> m_vecFullMaterialIndices;
 
@@ -162,12 +159,14 @@ public:
 
 	bool LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags ) { return false; }
 
-	int GetNumMaterials() const { return m_NumMaterials; }
+	int GetNumMaterials() const { return (int)m_vecMaterial.size(); }
 
 	/// returns const reference to the i-th material
 	const CMeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
 
 	CMeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
+
+	std::vector<CMeshMaterial>& Materials() { return m_vecMaterial; }
 
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }

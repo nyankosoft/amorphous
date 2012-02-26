@@ -119,7 +119,7 @@ public:
 	/// - LockAttributeBuffer() is not a member of LPD3DXBASEMESH
 	virtual LPD3DXMESH GetMesh() { return NULL; }
 
-	inline int GetNumMaterials() const { return m_NumMaterials; }
+	inline int GetNumMaterials() const { return (int)m_vecMaterial.size(); }
 
 	inline const D3DMATERIAL9& GetD3DMaterial( int i ) const { return m_pMeshMaterials[i]; }
 
@@ -143,7 +143,7 @@ public:
 	inline bool IsMeshVisible( int triset_index ) const { return m_IsVisible[triset_index]==1 ? true : false; }
 
 
-	inline bool IsMeshVisible() const { return m_IsVisible[m_NumMaterials]==1 ? true : false; }
+	inline bool IsMeshVisible() const { return m_IsVisible[m_vecMaterial.size()]==1 ? true : false; }
 
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
@@ -241,7 +241,6 @@ public:
 
 inline CD3DXMeshObjectBase::CD3DXMeshObjectBase()
 :
-//m_NumMaterials(0L),
 m_pMeshMaterials(NULL),
 m_iVertexSize(0),
 m_paVertexElements(NULL),

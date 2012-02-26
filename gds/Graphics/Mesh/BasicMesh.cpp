@@ -44,7 +44,6 @@ void CMeshMaterial::LoadTextureAsync( int i )
 
 CMeshImpl::CMeshImpl()
 :
-m_NumMaterials(0),
 m_bViewFrustumTest(false)
 {
 }
@@ -68,28 +67,28 @@ Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive,
 
 //	InitMaterials( (int)rvecSrcMaterial.size() );
 
-	m_NumMaterials = (int)rvecSrcMaterial.size();
-	m_vecMaterial.resize( m_NumMaterials );
+	const int num_materials = (int)rvecSrcMaterial.size();
+	m_vecMaterial.resize( num_materials );
 
 	// create list of material indices
 	// - used by Render() to render all the materials in the default order
-	m_vecFullMaterialIndices.resize( m_NumMaterials );
-	for( int i=0; i<m_NumMaterials; i++ )
+	m_vecFullMaterialIndices.resize( num_materials );
+	for( int i=0; i<num_materials; i++ )
 		m_vecFullMaterialIndices[i] = i;
 
 	// load AABBs
 	m_AABB = rArchive.GetAABB(); // aabb for the mesh
-	m_vecAABB.resize(m_NumMaterials);
-	for( int mat=0; mat < m_NumMaterials; mat++ )
+	m_vecAABB.resize(num_materials);
+	for( int mat=0; mat < num_materials; mat++ )
 		m_vecAABB[mat] = rArchive.GetTriangleSet()[mat].m_AABB; // AABBs that represent bounding boxes for each triangle set
 
 	// all triangle sets are set visible by default
-	m_IsVisible.resize( m_NumMaterials + 1, 1 );
+	m_IsVisible.resize( num_materials + 1, 1 );
 
 	string tex_filename;
 
 	bool loaded = false;
-	for( int i=0; i<m_NumMaterials; i++ )
+	for( int i=0; i<num_materials; i++ )
 	{
 		// name
 

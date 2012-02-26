@@ -26,7 +26,6 @@ Result::Name CRectSetMesh::Init( uint num_rects, U32 vertex_format_flags )
 	SetIndices( indices );
 
 	m_vecMaterial.resize( 1 );
-	m_NumMaterials = 1;
 
 	return Result::SUCCESS;
 }

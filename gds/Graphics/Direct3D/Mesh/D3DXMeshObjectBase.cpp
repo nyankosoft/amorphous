@@ -64,8 +64,6 @@ void CD3DXMeshObjectBase::Release()
 
 	SafeDeleteArray( m_pMeshMaterials );
 
-	m_NumMaterials = 0;
-
 	m_vecMaterial.resize( 0 );
 }
 
@@ -139,14 +137,14 @@ HRESULT CD3DXMeshObjectBase::LoadD3DMaterialsFromArchive( C3DMeshModelArchive& a
 {
 	const vector<CMMA_Material>& rvecSrcMaterial = archive.GetMaterial();
 
-	m_NumMaterials = (int)rvecSrcMaterial.size();
-	if( m_NumMaterials == 0 )
+	const int num_materials = (int)rvecSrcMaterial.size();
+	if( num_materials == 0 )
 		return E_FAIL;
 
 	SafeDeleteArray( m_pMeshMaterials );
-	m_pMeshMaterials = new D3DMATERIAL9[m_NumMaterials];
+	m_pMeshMaterials = new D3DMATERIAL9[num_materials];
 
-	for( int i=0; i<m_NumMaterials; i++ )
+	for( int i=0; i<num_materials; i++ )
 	{
 		memset( &m_pMeshMaterials[i], 0, sizeof(D3DMATERIAL9) );
 
@@ -480,16 +478,14 @@ HRESULT CD3DXMeshObjectBase::LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num
 	// allocate material buffers, etc.
 //	InitMaterials( num_materials );
 
-	m_NumMaterials = num_materials;
-
 	if( m_vecMaterial.size() == 0 )
 		m_vecMaterial.resize( num_materials );
 
 	SafeDeleteArray( m_pMeshMaterials );
-	m_pMeshMaterials = new D3DMATERIAL9 [m_NumMaterials];
+	m_pMeshMaterials = new D3DMATERIAL9 [num_materials];
 
 	// Copy the materials and load the textures
-	for( int i = 0; i < m_NumMaterials; i++ )
+	for( int i = 0; i < num_materials; i++ )
 	{
 		m_pMeshMaterials[i] = d3dxMaterials[i].MatD3D;
 		m_pMeshMaterials[i].Ambient = m_pMeshMaterials[i].Diffuse;
@@ -632,13 +628,14 @@ HRESULT CD3DXMeshObjectBase::SetAttributeTable( LPD3DXMESH pMesh,
 	vector<D3DXATTRIBUTERANGE> vecAttributeRange;
 	GetAttributeTableFromTriangleSet( vecTriangleSet, vecAttributeRange );
 
-	HRESULT hr = pMesh->SetAttributeTable( &(vecAttributeRange[0]), m_NumMaterials );
+	const int num_materials = (int)m_vecMaterial.size();
+	HRESULT hr = pMesh->SetAttributeTable( &(vecAttributeRange[0]), (DWORD)num_materials );
 
 	// set attribute IDs for each face
 	DWORD *pdwBuffer = NULL;
 	pMesh->LockAttributeBuffer( 0, &pdwBuffer );
 	DWORD face = 0;
-	for( int i=0; i<m_NumMaterials; i++ )
+	for( int i=0; i<num_materials; i++ )
 	{
 		const CMMA_TriangleSet& triangle_set = vecTriangleSet[i];
 
@@ -872,7 +869,8 @@ void CD3DXMeshObjectBase::Render()
     // Meshes are divided into subsets by materials. Render each subset in a loop
 //	HRESULT hr;
 	LPDIRECT3DTEXTURE9 pTex = NULL;
-    for( int i=0; i<m_NumMaterials; i++ )
+	const int num_materials = (int)m_vecMaterial.size();
+    for( int i=0; i<num_materials; i++ )
     {
         // Set the material and texture for this subset
 		pd3dDevice->SetMaterial( &m_pMeshMaterials[i] );

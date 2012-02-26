@@ -218,7 +218,6 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 						NULL );
 	if( FAILED(hr) )
 	{
-		m_NumMaterials = 0;
 		goto End;
 	}
 
@@ -238,7 +237,6 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 										(DWORD*)pAdjacencyBuffer->GetBufferPointer(),
 										(DWORD*)pAdjacencyBuffer->GetBufferPointer(), NULL, NULL ) ) )
 	{
-		m_NumMaterials = 0;
 		goto End;
 	}
 	*/
@@ -246,7 +244,6 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 	// Verify validity of mesh for simplification
 	if( FAILED( hr = D3DXValidMesh( pMesh, (DWORD*)pAdjacencyBuffer->GetBufferPointer(), NULL ) ) )
 	{
-		m_NumMaterials = 0;
 		goto End;
 	}
 
