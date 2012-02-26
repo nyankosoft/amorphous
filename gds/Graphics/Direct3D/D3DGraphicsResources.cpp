@@ -251,6 +251,21 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 		}
 	}
 
+	// Retrieve the width and hight of the top level texture, and set them to the desc
+	if( SUCCEEDED(hr) && m_pTexture )
+	{
+		LPDIRECT3DSURFACE9 pSurfaceLevel = NULL;
+		HRESULT surf_hr = m_pTexture->GetSurfaceLevel( 0, &pSurfaceLevel );
+		if( SUCCEEDED(surf_hr) && pSurfaceLevel )
+		{
+			D3DSURFACE_DESC surf_desc;
+			pSurfaceLevel->GetDesc( &surf_desc );
+			pSurfaceLevel->Release();
+			m_TextureDesc.Width  = (int)surf_desc.Width;
+			m_TextureDesc.Height = (int)surf_desc.Height;
+		}
+	}
+
 	return SUCCEEDED(hr) ? true : false;
 }
 
