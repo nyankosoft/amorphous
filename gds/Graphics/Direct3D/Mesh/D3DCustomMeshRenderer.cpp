@@ -1,6 +1,7 @@
 #include "D3DCustomMeshRenderer.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
@@ -10,7 +11,7 @@ using namespace std;
 CD3DCustomMeshRenderer CD3DCustomMeshRenderer::ms_Instance;
 
 
-void CD3DCustomMeshRenderer::DrawPrimitives( CCustomMesh& mesh )
+static HRESULT SetD3DFVF( const CCustomMesh& mesh )
 {
 	const U32 vert_flags = mesh.GetVertexFormatFlags();
 	DWORD fvf = 0;
@@ -23,18 +24,25 @@ void CD3DCustomMeshRenderer::DrawPrimitives( CCustomMesh& mesh )
 	if( vert_flags & (VFF::TEXCOORD2_0 & VFF::TEXCOORD2_1 & VFF::TEXCOORD2_2) )   fvf |= D3DFVF_TEX3;
 
 	if( fvf == 0 )
-		return;
+		return E_FAIL;
 
-	const uint num_verts = mesh.GetNumVertices();
+	return DIRECT3D9.GetDevice()->SetFVF( fvf );
+}
+
+
+void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh )
+{
+
+	const uint num_verts   = mesh.GetNumVertices();
 	const uint num_indices = mesh.GetNumIndices();
 
-	void *pV = (void *)mesh.GetVertexBufferPtr();
-	void *pI = (void *)mesh.GetIndexBufferPtr();
+	const void *pV = (void *)mesh.GetVertexBufferPtr();
+	const void *pI = (void *)mesh.GetIndexBufferPtr();
 	if( !pV || !pI )
 		return;
 
-	HRESULT hr = S_OK;
-	hr = DIRECT3D9.GetDevice()->SetFVF( fvf );
+	HRESULT hr = SetD3DFVF( mesh );
+
 	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
 		D3DPT_TRIANGLELIST,
 		0,
@@ -50,9 +58,6 @@ void CD3DCustomMeshRenderer::DrawPrimitives( CCustomMesh& mesh )
 
 void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 {
-	vector<Vector3> positions;
-	mesh.GetPositions( positions );
-
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	HRESULT hr = S_OK;
 
@@ -91,10 +96,13 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 	hr = pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
 	// alpha-blending settings 
-/*	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+//	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 //	pd3dDevice->SetRenderState( D3DRS_SRCBLEND,  D3DBLEND_SRCALPHA );
 //	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-*/
+/**/
+//	static LPDIRECT3DTEXTURE9 s_pTex = NULL;
+//	if( !s_pTex )
+//		D3DXCreateTextureFromFile( pd3dDevice, "textures/SmashedGrayMarble.jpg", &s_pTex );
 	for( int i=0; i<num_mats; i++ )
 	{
 		const int num_textures = mesh.GetNumTextures(i);
@@ -114,6 +122,13 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 
 void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr )
 {
+	if( &shader_mgr == &FixedFunctionPipelineManager() )
+	{
+		// Render the mesh via the fixed function pipeline.
+		RenderMesh( mesh );
+		return;
+	}
+
 	const int num_mats = mesh.GetNumMaterials();
 	for( int i=0; i<num_mats; i++ )
 	{
@@ -124,5 +139,24 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shad
 		}
 	}
 
-	DrawPrimitives( mesh );
+	SetD3DFVF( mesh );
+
+	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
+	if( !pEffect )
+		return;
+
+	pEffect->CommitChanges();
+
+	UINT cPasses = 0;
+	pEffect->Begin( &cPasses, 0 );
+	for( UINT p = 0; p < cPasses; ++p )
+	{
+		pEffect->BeginPass( p );
+
+		// Draw the mesh subset
+		DrawPrimitives( mesh );
+
+		pEffect->EndPass();
+	}
+	pEffect->End();
 }

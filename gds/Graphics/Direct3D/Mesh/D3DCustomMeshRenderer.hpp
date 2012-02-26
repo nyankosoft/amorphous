@@ -7,7 +7,7 @@
 
 class CD3DCustomMeshRenderer : public CCustomMeshRenderer
 {
-	void DrawPrimitives( CCustomMesh& mesh );
+	void DrawPrimitives( const CCustomMesh& mesh );
 
 public:
 
