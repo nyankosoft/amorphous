@@ -14,12 +14,10 @@
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/FogParams.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
 
-#include "Support/memory_helpers.hpp"
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
@@ -1436,8 +1434,6 @@ void CEntityRenderManager::Render( CCamera& rCam )
 
 	m_pEntitySet->UpdateGraphics();
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	// update camera matrix & camera's position
 	rCam.GetPose( m_CameraPose );
 	m_fCameraFarClipDist = rCam.GetFarClip();
@@ -1462,10 +1458,12 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
 	// set alpha test
-	pd3dDev->SetRenderState(D3DRS_ALPHAREF, (DWORD)0x00000001);
 	GraphicsDevice().Enable( RenderStateType::ALPHA_TEST );
+	GraphicsDevice().SetAlphaFunction( CompareFunc::GREATER_THAN_OR_EQUAL_TO );
+	GraphicsDevice().SetReferenceAlphaValue( 1.0f / 256.0f );
+//	pd3dDev->SetRenderState(D3DRS_ALPHAREF, (DWORD)0x00000001);
 //	pd3dDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
-	pd3dDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+//	pd3dDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 
 	// enable lights of graphics device for entities
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, true );
