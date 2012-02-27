@@ -38,8 +38,6 @@ private:
 
 	float m_fClearDepth;
 
-	CullingMode::Name m_CullMode;
-
 	std::vector<Plane> m_vecClipPlane;
 
 private:
@@ -90,6 +88,8 @@ public:
 	Result::Name SetTextureTrasnformParams( uint stage, const CTextureTransformParams& params );
 
 	Result::Name SetTextureCoordTrasnform( uint stage, const Matrix44& transform );
+
+	bool GetRenderState( RenderStateType::Name type );
 
 	Result::Name SetRenderState( RenderStateType::Name type, bool enable );
 

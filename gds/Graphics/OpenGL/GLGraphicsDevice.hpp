@@ -79,6 +79,8 @@ public:
 
 	Result::Name SetTextureCoordTrasnform( uint stage, const Matrix44& transform );
 
+	bool GetRenderState( RenderStateType::Name type );
+
 	Result::Name SetRenderState( RenderStateType::Name type, bool enable );
 
 	inline void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode );

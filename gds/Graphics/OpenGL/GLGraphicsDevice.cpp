@@ -238,6 +238,29 @@ bool ToGLenum( RenderStateType::Name type, GLenum& cap )
 }
 
 
+bool CGLGraphicsDevice::GetRenderState( RenderStateType::Name type )
+{
+	GLenum cap = 0;
+	bool res = ToGLenum( type, cap );
+
+	if( res )
+	{
+		return false;
+	}
+
+	// 'type' is not a state type to switch on/off by glEnable() / glDisable()
+	switch(type)
+	{
+	case RenderStateType::WRITING_INTO_DEPTH_BUFFER:
+		return false;
+//	case RenderStateType::UNKNOWN:
+//		break;
+	default:
+		return Result::INVALID_ARGS;
+	}
+}
+
+
 Result::Name CGLGraphicsDevice::SetRenderState( RenderStateType::Name type, bool enable )
 {
 	GLenum cap = 0;
@@ -316,6 +339,8 @@ Result::Name CGLGraphicsDevice::SetFogParams( const CFogParams& fog_params )
 
 Result::Name CGLGraphicsDevice::SetCullingMode( CullingMode::Name cull_mode )
 {
+	m_CullMode = cull_mode;
+
 	glFrontFace( GL_CCW );
 
 	switch( cull_mode )

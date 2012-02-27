@@ -280,7 +280,7 @@ void CDirect3D9::SetDefaultRenderStates()
 	m_pD3DDevice->SetRenderState( D3DRS_LIGHTING,         FALSE );
 	m_pD3DDevice->SetRenderState( D3DRS_DITHERENABLE,     TRUE );
 	m_pD3DDevice->SetRenderState( D3DRS_ZENABLE,          TRUE );
-	m_pD3DDevice->SetRenderState( D3DRS_CULLMODE,         D3DCULL_NONE );
+	m_pD3DDevice->SetRenderState( D3DRS_CULLMODE,         D3DCULL_CCW );
 	m_pD3DDevice->SetRenderState( D3DRS_AMBIENT,          0x33333333 );
 	m_pD3DDevice->SetRenderState( D3DRS_NORMALIZENORMALS, TRUE );
 	m_pD3DDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
@@ -473,6 +473,41 @@ static inline bool ToD3DRenderStateType( RenderStateType::Name type, D3DRENDERST
 }
 
 
+bool CDirect3D9::GetRenderState( RenderStateType::Name type )
+{
+	HRESULT hr = S_OK;
+	D3DRENDERSTATETYPE d3d_rst;
+	DWORD val = 0;
+	bool res = ToD3DRenderStateType( type, d3d_rst );
+	if( res )
+	{
+		hr = m_pD3DDevice->GetRenderState( d3d_rst, &val );
+		if( SUCCEEDED(hr) )
+			return (val == TRUE) ? true : false;
+		else
+			return false;
+	}
+
+	switch(type)
+	{
+	case RenderStateType::DEPTH_TEST:
+		m_pD3DDevice->GetRenderState( D3DRS_ZENABLE, &val );
+		return (val == D3DZB_FALSE) ? false : true;
+
+	case RenderStateType::FACE_CULLING:
+		m_pD3DDevice->GetRenderState( D3DRS_CULLMODE, &val );
+		if( val == D3DCULL_NONE )
+			int culling_is_off = 1;
+		return (val == D3DCULL_NONE) ? false : true;
+
+	default:
+		return false;
+	}
+
+	return false;
+}
+
+
 Result::Name CDirect3D9::SetRenderState( RenderStateType::Name type, bool enable )
 {
 	if( !m_pD3DDevice )
@@ -608,6 +643,8 @@ Result::Name CDirect3D9::SetCullingMode( CullingMode::Name cull_mode )
 	D3DCULL dest_d3d_cull_mode = ToD3DCullMode(cull_mode);
 	if( current_d3d_cull_mode != dest_d3d_cull_mode )
 	{
+		if( dest_d3d_cull_mode == D3DCULL_NONE )
+			int setting_culling_mode_to_D3DCULL_NONE = 1;
 		hr = m_pD3DDevice->SetRenderState( D3DRS_CULLMODE, dest_d3d_cull_mode );
 	}
 

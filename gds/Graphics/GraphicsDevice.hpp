@@ -202,6 +202,10 @@ protected:
 
 	State m_State;
 
+	/// Each implementation is responsible for setting the culling mode
+	/// to this variable in its SetCullingMode().
+	CullingMode::Name m_CullMode;
+
 private:
 
 //	void SetDefaultRenderStates();
@@ -245,6 +249,8 @@ public:
 
 	inline Result::Name Disable( RenderStateType::Name type ) { return SetRenderState( type, false ); }
 
+	virtual bool GetRenderState( RenderStateType::Name type ) = 0;
+
 	virtual Result::Name SetRenderState( RenderStateType::Name type, bool enable ) = 0;
 
 	virtual void SetSourceBlendMode( AlphaBlend::Mode src_blend_mode ) = 0;
@@ -256,6 +262,8 @@ public:
 	virtual void SetReferenceAlphaValue( float ref_alpha ) = 0;
 
 	virtual Result::Name SetFogParams( const CFogParams& fog_params ) = 0;
+
+	virtual CullingMode::Name GetCullingMode() { return m_CullMode; }
 
 	virtual Result::Name SetCullingMode( CullingMode::Name cull_mode ) = 0;
 
