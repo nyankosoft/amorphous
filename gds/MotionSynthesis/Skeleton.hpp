@@ -3,7 +3,6 @@
 
 
 #include "gds/3DMath/Vector3.hpp"
-#include "gds/BVH/fwd.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
@@ -57,8 +56,6 @@ public:
 	std::vector<CBone>& Children() { return m_vecChild; }
 
 	void AddChildBone( CBone& bone ) { m_vecChild.push_back( bone ); }
-
-	void CopyBones_r( CBVHBone& src_bone );
 
 	void Scale_r( float factor );
 
