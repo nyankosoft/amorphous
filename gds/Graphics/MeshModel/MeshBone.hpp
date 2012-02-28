@@ -107,6 +107,12 @@ public:
 		return !( (*this) == bone );
 	}
 
+	unsigned int GetNumChildren() const { return (unsigned int)m_iNumChildren; }
+
+	inline const CMeshBone& GetChild( unsigned int index ) const;
+
+	const std::string& GetName() const { return m_strName; }
+
 	void DumpToTextFile( FILE* fp, int depth );
 
 //	inline void SetLocalTransform( const Matrix34& local_transform );
@@ -125,6 +131,18 @@ m_LocalTransform( Matrix34Identity() ),
 m_paChild(NULL),
 m_iNumChildren(0)
 {}
+
+
+inline const CMeshBone& CMeshBone::GetChild( unsigned int index ) const
+{
+	if( !m_paChild
+	 || m_iNumChildren <= (int)index )
+	{
+		return ms_NullBone;
+	}
+
+	return m_paChild[index];
+}
 
 
 
