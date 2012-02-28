@@ -93,6 +93,8 @@ public:
 
 	const CBone& GetRootBone() const { return m_RootBone; }
 
+	CBone& RootBone() { return m_RootBone; }
+
 	void SetBones( const CBone& root_bone ) { m_RootBone = root_bone; }
 
 	void Scale( float scaling_factor ) { m_RootBone.Scale_r( scaling_factor ); }
