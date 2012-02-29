@@ -185,10 +185,6 @@ shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton
 	CKeyframe& full_stride_left  = keyframes[1];
 	CKeyframe& on_left           = keyframes[2];
 	CKeyframe& full_stride_right = keyframes[3];
-	on_right.SetTime(          0.0f );
-	full_stride_left.SetTime(  0.5f );
-	on_left.SetTime(           1.0f );
-	full_stride_right.SetTime( 1.5f );
 
 //	CKeyframe on_right(0.0f), full_stride_left(0.5f), on_left(1.0f), full_stride_right(1.5f);
 
@@ -250,6 +246,12 @@ shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton
 	// Shift root bone positions
 //	SetFootPositionToTheGround( on_right, r_foot );
 //	Vector3 r_foot_pos = on_right.GetBonePosition( r_foot );
+
+	// Set keyframe times
+	on_right.SetTime(          0.0f );
+	full_stride_left.SetTime(  0.5f );
+	on_left.SetTime(           1.0f );
+	full_stride_right.SetTime( 1.5f );
 
 	return pWalkMotion;
 }
