@@ -28,7 +28,7 @@ public:
 
 	inline void SetPositions( Vector3* pavVertex );
 
-	inline void SetTextureUV( TEXCOORD2& rvMin, TEXCOORD2& rvMax );
+	inline void SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax );
 
 	inline void SetColor( SFloatRGBAColor color, int vert_index = 4 );	//'dwColor' is ARGB format
 
@@ -91,7 +91,7 @@ inline void C3DRect::ScalePosition( float fScale )
 }
 
 
-inline void C3DRect::SetTextureUV(TEXCOORD2& rvMin, TEXCOORD2& rvMax)
+inline void C3DRect::SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax)
 {
 	CGeneral3DVertex *pav3DRect = m_RectVertices;
 
