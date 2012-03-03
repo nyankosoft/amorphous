@@ -9,7 +9,7 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/BuiltinSkyTextures.hpp"
-#include "Graphics/BuiltinImageTextureLoader.hpp"
+#include "Graphics/TextureGenerators/BuiltinImageTextureLoader.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
