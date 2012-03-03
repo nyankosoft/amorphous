@@ -2,9 +2,9 @@
 #define __BuiltinImageTextureLoader_HPP__
 
 
-#include "Graphics/BuiltinSkyTextures.hpp"
-#include "Graphics/GraphicsResources.hpp"
-#include "Support/BuiltinImage.hpp"
+#include "../BuiltinSkyTextures.hpp"
+#include "../GraphicsResources.hpp"
+#include "../../Support/BuiltinImage.hpp"
 
 
 class CBuiltinImageTextureLoader : public CTextureFillingAlgorithm

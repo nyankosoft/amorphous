@@ -2,10 +2,9 @@
 #define  __NoiseTextureGenerators_HPP__
 
 
-#include "fwd.hpp"
-#include "GraphicsResources.hpp"
-#include "GraphicsResourceDescs.hpp"
-#include "../Support/MTRand.hpp"
+#include "../GraphicsResources.hpp"
+#include "../GraphicsResourceDescs.hpp"
+#include "../../Support/MTRand.hpp"
 
 
 class CUniformNoiseTextureGenerator : public CTextureFillingAlgorithm

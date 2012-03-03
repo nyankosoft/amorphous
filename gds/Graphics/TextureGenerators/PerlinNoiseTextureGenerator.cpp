@@ -1,5 +1,5 @@
 #include "PerlinNoiseTextureGenerator.hpp"
-#include "3DMath/Vector3.hpp"
+#include "../../3DMath/Vector3.hpp"
 
 
 void CPerlinNoiseTextureGenerator::FillTexture( CLockedTexture& texture )

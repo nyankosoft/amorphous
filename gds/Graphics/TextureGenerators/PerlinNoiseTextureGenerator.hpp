@@ -2,8 +2,8 @@
 #define __PerlinNoiseTextureGenerator_HPP__
 
 
-#include "GraphicsResources.hpp"
-#include "../Utilities/PerlinAux.hpp"
+#include "../GraphicsResources.hpp"
+#include "../../Utilities/PerlinAux.hpp"
 
 
 class CPerlinNoiseTextureGenerator : public CTextureFillingAlgorithm

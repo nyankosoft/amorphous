@@ -1,6 +1,6 @@
 #include "PseudoNoiseEffect.hpp"
 //#include "../Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/NoiseTextureGenerators.hpp"
+#include "TextureGenerators/NoiseTextureGenerators.hpp"
 #include "../Support/MTRand.hpp"
 
 using namespace boost;
