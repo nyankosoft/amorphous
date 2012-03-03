@@ -8,7 +8,7 @@
 #include "Graphics/PostProcessEffectManager.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"
 #include "Graphics/LensFlare.hpp"
-#include "Graphics/NoiseTextureGenerators.hpp"
+#include "Graphics/TextureGenerators/NoiseTextureGenerators.hpp"
 
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
