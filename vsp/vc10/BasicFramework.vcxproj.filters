@@ -130,6 +130,9 @@
     <Filter Include="Graphics\Direct3D\Font">
       <UniqueIdentifier>{3c0933ad-b9b1-4b5c-acec-14f6b72339b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\TextureGenerators">
+      <UniqueIdentifier>{c13d7b69-7284-4c30-9781-e12db4f01c64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Graphics\BillboardArrayMesh.cpp">
@@ -169,12 +172,6 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\MeshObjectContainer.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\NoiseTextureGenerators.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffect.cpp">
@@ -783,15 +780,18 @@
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectFilter.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\BuiltinImageTextureLoader.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\BuiltinSkyTextures.hpp">
@@ -846,12 +846,6 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\MeshObjectContainer.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\NoiseTextureGenerators.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffect.hpp">
@@ -1811,6 +1805,18 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectFilter.hpp">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GridTextureGenerator.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

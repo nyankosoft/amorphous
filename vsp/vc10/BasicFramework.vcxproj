@@ -94,8 +94,6 @@
     <ClCompile Include="..\..\gds\Graphics\LogOutput_OnScreen.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshContainerRenderMethod.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshObjectContainer.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\NoiseTextureGenerators.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffect.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectFilter.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectManager.cpp" />
@@ -110,6 +108,8 @@
     <ClCompile Include="..\..\gds\Graphics\ShapesExtractor.cpp" />
     <ClCompile Include="..\..\gds\Graphics\SimpleMotionBlur.cpp" />
     <ClCompile Include="..\..\gds\Graphics\SkyboxMisc.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp" />
     <ClCompile Include="..\..\gds\Graphics\TextureRenderTarget.cpp" />
     <ClCompile Include="..\..\gds\Graphics\VarianceShadowMapManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectBase.cpp" />
@@ -328,7 +328,6 @@
     <ClInclude Include="..\..\gds\3DMath\Vector4.hpp" />
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp" />
     <ClInclude Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\BuiltinImageTextureLoader.hpp" />
     <ClInclude Include="..\..\gds\Graphics\BuiltinSkyTextures.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Camera.hpp" />
     <ClInclude Include="..\..\gds\Graphics\CubeMapManager.hpp" />
@@ -350,8 +349,6 @@
     <ClInclude Include="..\..\gds\Graphics\LogOutput_OnScreen.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshContainerRenderMethod.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshObjectContainer.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\NoiseTextureGenerators.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\PerlinNoiseTextureGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffect.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectFilter.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectManager.hpp" />
@@ -371,6 +368,10 @@
     <ClInclude Include="..\..\gds\Graphics\SkyboxMisc.hpp" />
     <ClInclude Include="..\..\gds\Graphics\SurfaceFormat.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureCoord.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GridTextureGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureRenderTarget.hpp" />
     <ClInclude Include="..\..\gds\Graphics\VarianceShadowMapManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\BlendTransformsLoader.hpp" />
