@@ -15,6 +15,8 @@ class CPrimitiveShapeRenderer
 
 	static CCustomMesh ms_BoxMesh;
 
+	static CCustomMesh ms_RectMesh;
+
 public:
 
 	CPrimitiveShapeRenderer();
@@ -27,14 +29,34 @@ public:
 
 	void RenderCylinder( float radius, float height, const Matrix34& world_pose, const SFloatRGBAColor& color = SFloatRGBAColor::White() );
 
-	/// \param axis [in] [0,2] for x, y, and z axis in the positive direction respectively. [3,5] in the negative direction.
-	void RenderAxisAlignedPlane( uint axis = 1, const Vector3& vCenter = Vector3(0,0,0), float span_0 = 100.0f, float span_1 = 100.0f, const SFloatRGBAColor& color = SFloatRGBAColor::White() );
+	void RenderPlane(
+		const Matrix34& pose = Matrix34Identity(),
+		float width  = 100.0f,
+		float height = 100.0f,
+		const SFloatRGBAColor& color = SFloatRGBAColor::White(),
+		CTextureHandle& tex = CTextureHandle(),
+		const TEXCOORD2& top_left     = TEXCOORD2(0,0),
+		const TEXCOORD2& bottom_right = TEXCOORD2(1,1)
+		);
 
+	/// \param axis [in] [0,2] for x, y, and z axis in the positive direction respectively. [3,5] in the negative direction.
+	void RenderAxisAlignedPlane(
+		uint axis = 1,
+		const Vector3& vCenter = Vector3(0,0,0),
+		float span_0 = 100.0f,
+		float span_1 = 100.0f,
+		const SFloatRGBAColor& color = SFloatRGBAColor::White(),
+		CTextureHandle& texture = CTextureHandle(),
+		const TEXCOORD2& top_left     = TEXCOORD2(0,0),
+		const TEXCOORD2& bottom_right = TEXCOORD2(1,1)
+		);
+
+	void RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, CTextureHandle& texture = CTextureHandle(), const TEXCOORD2& top_left = TEXCOORD2(0,0), const TEXCOORD2& bottom_right = TEXCOORD2(1,1) );
 
 	void RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color = SFloatRGBAColor::White() );
 
 
-	void SetShader( CShaderHandle& shader );
+	void SetShader( CShaderHandle& shader ) { m_Shader = shader; }
 };
 
 
