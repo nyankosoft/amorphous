@@ -9,13 +9,15 @@
 /// \param whd [in] width(x), height(y), and depth of the box
 inline CMeshObjectHandle CreateBoxMesh( const Vector3& whd,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
-								const Matrix34& model_pose = Matrix34Identity() )
+								const Matrix34& model_pose = Matrix34Identity(),
+								const std::string& texture_pathname = "" )
 {
 	boost::shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
+	mesh_desc.pMeshGenerator->SetTexturePath( texture_pathname );
 
 	CMeshObjectHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
