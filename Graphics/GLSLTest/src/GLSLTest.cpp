@@ -1,19 +1,18 @@
 #include "GLSLTest.hpp"
-#include "gds/Graphics.hpp"
-#include "gds/Graphics/AsyncResourceLoader.hpp"
-#include "gds/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Graphics/Camera.hpp"
+#include "gds/Graphics/Mesh/BasicMesh.hpp"
+#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
-#include "gds/GUI.hpp"
 #include <boost/foreach.hpp>
 
 using std::string;
 using namespace boost;
-
-
-static int gs_TextureMipLevels = 1;
 
 
 extern CGraphicsTestBase *CreateTestInstance()
@@ -84,11 +83,6 @@ CGLSLTest::CGLSLTest()
 
 
 CGLSLTest::~CGLSLTest()
-{
-}
-
-
-void CGLSLTest::CreateSampleUI()
 {
 }
 
@@ -164,8 +158,6 @@ bool CGLSLTest::InitShader()
 
 int CGLSLTest::Init()
 {
-//	m_pFont = shared_ptr<CFontBase>( new CFont( "ÇlÇr ÉSÉVÉbÉN", 6, 12 ) );
-//	m_pFont = shared_ptr<CFontBase>( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
 	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 8, 16 );
@@ -217,36 +209,12 @@ int CGLSLTest::Init()
 	// init shader
 	InitShader();
 
-//	if( m_TestAsyncLoading )
-//		CreateCachedResources();
-
 	return 0;
 }
 
 
 void CGLSLTest::Update( float dt )
 {
-	if( m_pSampleUI )
-		m_pSampleUI->Update( dt );
-
-/*
-	if( true //m_TestAsyncLoading/ )
-	{
-//		LoadTexturesAsync();
-
-		BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
-		{
-			//if( holder.m_LoadingStyle != CTestMeshHolder::LOAD_SYNCHRONOUSLY )
-				LoadResourcesAsync( holder );
-		}
-	}
-
-	if( !GraphicsResourceManager().IsAsyncLoadingAllowed() )
-	{
-		// async loading is not enabled
-		// - The primary thread (this thread) loads the resources from the disk/memory.
-		AsyncResourceLoader().ProcessResourceLoadRequest();
-	}*/
 }
 
 
@@ -266,7 +234,7 @@ void CGLSLTest::RenderMeshes()
 
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+//	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
 
 	pShaderManager->SetTechnique( m_MeshTechnique );
 //	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
@@ -286,7 +254,7 @@ void CGLSLTest::RenderMeshes()
 		}
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+//	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -294,14 +262,7 @@ void CGLSLTest::Render()
 {
 	PROFILE_FUNCTION();
 
-//	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
-
 	RenderMeshes();
-
-	if( m_pSampleUI )
-		m_pSampleUI->Render();
-
-//	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
 
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
@@ -323,16 +284,6 @@ void CGLSLTest::Render()
 
 void CGLSLTest::HandleInput( const SInputData& input )
 {
-	if( m_pUIInputHandler )
-	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}
-
 	switch( input.iGICode )
 	{
 	case GIC_F12:
@@ -345,7 +296,6 @@ void CGLSLTest::HandleInput( const SInputData& input )
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-//			m_pSampleUI->GetDialog(UIID_DLG_RESOLUTION)->Open();
 		}
 		break;
 	default:
@@ -356,11 +306,9 @@ void CGLSLTest::HandleInput( const SInputData& input )
 
 void CGLSLTest::ReleaseGraphicsResources()
 {
-//	m_pSampleUI.reset();
 }
 
 
 void CGLSLTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-//	CreateSampleUI();
 }

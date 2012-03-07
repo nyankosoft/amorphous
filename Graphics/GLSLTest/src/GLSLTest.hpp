@@ -46,16 +46,6 @@ public:
 
 class CGLSLTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum UIID
-	{
-		UIID_DLG_ROOT = 1000,
-		UIID_DLG_SLIDERS,
-		UIID_DLG_RESOLUTION,
-		UIID_LBX_RESOLUTION,
-		UIID_DLG_LISTBOXGROUP,
-		UIID_OTHER
-	};
-
 	enum Params
 	{
 		TEXT_BUFFER_SIZE = 4096
@@ -68,19 +58,13 @@ class CGLSLTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	CShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
-
 	boost::shared_ptr<CFontBase> m_pFont;
-
-	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	boost::shared_ptr<CGLProgram> m_pGLProgram;
 
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 private:
-
-	void CreateSampleUI();
 
 	bool InitShader();
 
