@@ -103,7 +103,7 @@ void CGLSLTest::SetLights()
 	CDirectionalLight dir_light;
 	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
 	dir_light.fIntensity = 1.0f;
-	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, 0.9f ) );
 	pShaderLightMgr->SetDirectionalLight( dir_light );
 
 	bool set_pnt_light = false;
@@ -143,8 +143,8 @@ bool CGLSLTest::InitShader()
 
 //	SetLights();
 
-	Matrix44 matProj
-		= Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
+	const float aspect_ratio = (float)GetWindowWidth() / (float)GetWindowHeight();
+	Matrix44 matProj = Matrix44PerspectiveFoV_LH( (float)PI / 4, aspect_ratio, 0.1f, 500.0f );
 
 	if( m_Shader.GetShaderManager() )
 		m_Shader.GetShaderManager()->SetProjectionTransform( matProj );
@@ -220,9 +220,6 @@ void CGLSLTest::Update( float dt )
 
 void CGLSLTest::RenderMeshes()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-//	pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
 	CShaderManager *pShaderManager = m_pGLProgram.get();
@@ -262,21 +259,18 @@ void CGLSLTest::Render()
 {
 	PROFILE_FUNCTION();
 
+	SetLights();
+
 	RenderMeshes();
 
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
-	Vector2 vTopLeft(     (float)GetWindowWidth() / 4,  (float)16 );
-	Vector2 vBottomRight( (float)GetWindowWidth() - 16, (float)GetWindowHeight() * 3 / 2 );
-	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-	rect.Draw();
+//	Vector2 vTopLeft(     (float)GetWindowWidth() / 4,  (float)16 );
+//	Vector2 vBottomRight( (float)GetWindowWidth() - 16, (float)GetWindowHeight() * 3 / 2 );
+//	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
+//	rect.Draw();
 
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
-
-	Vector3 vCamPos = g_Camera.GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
+//	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 }
 
 
