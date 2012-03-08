@@ -63,7 +63,7 @@ void CGLFixedPipelineLightManager::SetDirectionalLight( const CDirectionalLight&
 	if( GL_MAX_LIGHTS <= m_NumCurrentLights )
 		return;
 
-	GLenum light_id = m_NumCurrentLights;
+	GLenum light_id = GL_LIGHT0 + m_NumCurrentLights;
 
 	SetBaseLight( light, light_id );
 	float dir[4] = { light.vDirection.x, light.vDirection.y, light.vDirection.z, 0.0f };
