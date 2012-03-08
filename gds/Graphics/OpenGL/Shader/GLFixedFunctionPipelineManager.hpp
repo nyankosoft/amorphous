@@ -3,14 +3,14 @@
 
 
 #include "../../../base.hpp" // windows.h is included in this header. Need to be included before gl.h on Windows platform
+#include "../../../Support/stream_buffer.hpp"
 
 #include <GL/gl.h>
-#include "Graphics/fwd.hpp"
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "Graphics/Shader/ShaderParameter.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/OpenGL/fwd.hpp"
-#include "Support/stream_buffer.hpp"
+#include "../../fwd.hpp"
+#include "../../Shader/ShaderTechniqueHandle.hpp"
+#include "../../Shader/ShaderParameter.hpp"
+#include "../../Shader/ShaderManager.hpp"
+#include "../fwd.hpp"
 
 
 /**
