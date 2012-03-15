@@ -2,10 +2,7 @@
 #define  __GameWindowManager_Win32_GL_H__
 
 
-#include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "GameWindowManager_Win32.hpp"
-#include <gl/gl.h>			// Header File For The OpenGL32 Library
-#include <gl/glu.h>			// Header File For The GLu32 Library
 #include "../base.hpp"
 
 

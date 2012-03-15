@@ -1,8 +1,8 @@
 #include "GameWindowManager_Win32_GL.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "Graphics/OpenGL/GLExtensions.hpp"
-
 #include "Support/WindowMisc_Win32.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"

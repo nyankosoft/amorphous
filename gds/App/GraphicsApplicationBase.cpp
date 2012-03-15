@@ -11,6 +11,7 @@
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/ShaderManagerHub.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/Direct3D/Direct3D9.hpp"
 
 using namespace std;
 using namespace boost;
