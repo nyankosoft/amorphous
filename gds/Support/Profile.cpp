@@ -82,7 +82,7 @@ static vector<string> g_vecstrProfileText;
 static boost::shared_ptr<CProfileTimer> g_pTimer;
 
 
-vector<string>& GetProfileText()
+const vector<string>& GetProfileText()
 {
 	return g_vecstrProfileText;
 }

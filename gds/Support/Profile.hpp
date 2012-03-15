@@ -46,7 +46,7 @@ void StoreProfileInHistory( char* name, float percent );
 
 void GetProfileFromHistory( char* name, float* ave, float* min, float* max );
 
-std::vector<std::string>& GetProfileText();
+const std::vector<std::string>& GetProfileText();
 
 int GetNumProfileTextRows();
 
