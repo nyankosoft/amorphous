@@ -786,6 +786,12 @@
     <ClCompile Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DInitialization.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLInitialization.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -1817,6 +1823,12 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DInitialization.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLInitialization.hpp">
+      <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

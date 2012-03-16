@@ -280,35 +280,6 @@ public:
 };
 
 
-#include "../Direct3D/2DPrimitive/2DRectSetImpl_D3D.hpp"
-
-class C2DPrimitiveFactoryImpl_D3D : public C2DPrimitiveFactoryImpl
-{
-public:
-
-	boost::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl()
-	{
-		boost::shared_ptr<C2DRectSetImpl> pImpl( new C2DRectSetImpl_D3D );
-		return pImpl;
-	}
-};
-
-
-
-#include "../OpenGL/2DPrimitive/2DRectSetImpl_GL.hpp"
-
-class C2DPrimitiveFactoryImpl_GL : public C2DPrimitiveFactoryImpl
-{
-public:
-
-	boost::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl()
-	{
-		boost::shared_ptr<C2DRectSetImpl> pImpl( new C2DRectSetImpl_GL );
-		return pImpl;
-	}
-};
-
-
 
 //=============================================================================
 // C2DPrimitiveFactory

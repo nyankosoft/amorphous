@@ -1,30 +1,13 @@
 #include "GameWindowManager.hpp"
-#include "GameWindowManager_Win32.hpp"
 #include "GameWindowManager_Win32_GL.hpp"
-#include "GameWindowManager_Win32_D3D.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Graphics/2DPrimitive/2DRectSet.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/GraphicsResourceCacheManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Graphics/OpenGL/GLInitialization.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
-// D3D
-#include "Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.hpp"
-#include "Graphics/Direct3D/PrimitiveRenderer_D3D.hpp"
-#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
-#include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
-#include "Graphics/Direct3D/D3DTextureRenderTarget.hpp"
-#include "Graphics/Direct3D/Mesh/D3DCustomMeshRenderer.hpp"
-
-// OpenGL
-#include "Graphics/OpenGL/2DPrimitive/2DPrimitiveRenderer_GL.hpp"
-#include "Graphics/OpenGL/PrimitiveRenderer_GL.hpp"
-#include "Graphics/OpenGL/Mesh/GLBasicMeshImpl.hpp"
-#include "Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
-#include "Graphics/OpenGL/GLTextureRenderTarget.hpp"
-#include "Graphics/OpenGL/Mesh/GLCustomMeshRenderer.hpp"
+#ifdef BUILD_WITH_DIRECT3D
+#include "GameWindowManager_Win32_D3D.hpp"
+#include "Graphics/Direct3D/D3DInitialization.hpp"
+#endif /* BUILD_WITH_DIRECT3D */
 
 using namespace std;
 
@@ -34,35 +17,18 @@ CGameWindowManager *g_pGameWindowManager = NULL;
 
 Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 {
-	if( graphics_library_name == "Direct3D" )
-	{
-		g_pGameWindowManager_Win32 = &GameWindowManager_Win32_D3D();
-		PrimitiveRendererPtr() = &PrimitiveRenderer_D3D();
-		RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_D3D();
-		GraphicsResourceFactory().Init( new CD3DGraphicsResourceFactoryImpl() );
-		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
-		MeshImplFactory().reset( new CD3DMeshImplFactory );
-		CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
-		CTextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
-		CCustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
-
-		// For Direct3D, Use ARGB32 as the default vertex diffuse color format to support fixed function pipeline (FFP).
-		// On some graphics cards, the application crashes when floating point RGBA is used for vertex diffuse color in FFP mode.
-		CCustomMesh::SetDefaultVertexDiffuseColorFormat( CCustomMesh::VCF_ARGB32 );
-	}
-	else if( graphics_library_name == "OpenGL" )
+	if( graphics_library_name == "OpenGL" )
 	{
 		g_pGameWindowManager_Win32 = &GameWindowManager_Win32_GL();
-		PrimitiveRendererPtr() = &PrimitiveRenderer_GL();
-		RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
-		GraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
-		Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
-		MeshImplFactory().reset( new CGLMeshImplFactory );
-		CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
-		CTextureRenderTarget::SetInstanceCreationFunction( CGLTextureRenderTarget::Create );
-		CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
-		CCustomMesh::SetDefaultVertexDiffuseColorFormat( CCustomMesh::VCF_FRGBA );
+		InitializeOpenGLClasses();
 	}
+#ifdef BUILD_WITH_DIRECT3D
+	else if( graphics_library_name == "Direct3D" )
+	{
+		g_pGameWindowManager_Win32 = &GameWindowManager_Win32_D3D();
+		InitializeDirect3DClasses();
+	}
+#endif /* BUILD_WITH_DIRECT3D */
 	else
 	{
 		LOG_PRINT_ERROR( "Unsupported graphics library: " + graphics_library_name );

@@ -33,37 +33,6 @@ public:
 
 
 //=======================================================================================
-// CD3DGraphicsResourceFactoryImpl
-//=======================================================================================
-
-class CD3DGraphicsResourceFactoryImpl : public CGraphicsResourceFactoryImpl
-{
-public:
-
-//	CreateGraphicsResource( CGraphicsResourceDesc &desc );
-
-	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc );
-	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc );
-	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc );
-};
-
-//=======================================================================================
-// CD3DGraphicsResourceFactoryImpl
-//=======================================================================================
-
-class CGLGraphicsResourceFactoryImpl : public CGraphicsResourceFactoryImpl
-{
-public:
-
-//	CreateGraphicsResource( CGraphicsResourceDesc &desc );
-
-	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc );
-	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc );
-	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc );
-};
-
-
-//=======================================================================================
 // CGraphicsResourceFactory
 //=======================================================================================
 
@@ -89,9 +58,9 @@ public:
 
 	boost::shared_ptr<CGraphicsResource> CreateGraphicsResource( const CGraphicsResourceDesc &desc );// { return m_pImpl->CreateGraphicsResource(desc); }
 
-	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc ) { return m_pImpl->CreateTextureResource(desc); }
-	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc )       { return m_pImpl->CreateMeshResource(desc); }
-	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc )   { return m_pImpl->CreateShaderResource(desc); }
+	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc ) { return ( m_pImpl ? m_pImpl->CreateTextureResource(desc) : boost::shared_ptr<CTextureResource>() ); }
+	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc )       { return ( m_pImpl ? m_pImpl->CreateMeshResource(desc)    : boost::shared_ptr<CMeshResource>()    ); }
+	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc )   { return ( m_pImpl ? m_pImpl->CreateShaderResource(desc)  : boost::shared_ptr<CShaderResource>()  ); }
 };
 
 

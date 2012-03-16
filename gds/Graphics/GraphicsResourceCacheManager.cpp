@@ -1,50 +1,8 @@
 #include "GraphicsResourceCacheManager.hpp"
-#include "Graphics/Direct3D/D3DGraphicsResources.hpp"
-#include "Graphics/OpenGL/GLGraphicsResources.hpp"
+#include "GraphicsResources.hpp"
+
 
 using boost::shared_ptr;
-
-
-//===============================================================
-// CD3DGraphicsResourceFactoryImpl
-//===============================================================
-
-shared_ptr<CTextureResource> CD3DGraphicsResourceFactoryImpl::CreateTextureResource( const CTextureResourceDesc& desc )
-{
-	return shared_ptr<CD3DTextureResource>( new CD3DTextureResource(&desc) );
-}
-
-shared_ptr<CMeshResource> CD3DGraphicsResourceFactoryImpl::CreateMeshResource( const CMeshResourceDesc& desc )
-{
-	return shared_ptr<CMeshResource>( new CMeshResource(&desc) );
-}
-
-shared_ptr<CShaderResource> CD3DGraphicsResourceFactoryImpl::CreateShaderResource( const CShaderResourceDesc& desc )
-{
-	return shared_ptr<CShaderResource>( new CD3DShaderResource(&desc) );
-}
-
-
-//===============================================================
-// CGLGraphicsResourceFactoryImpl
-//===============================================================
-
-shared_ptr<CTextureResource> CGLGraphicsResourceFactoryImpl::CreateTextureResource( const CTextureResourceDesc& desc )
-{
-	return shared_ptr<CGLTextureResource>( new CGLTextureResource(&desc) );
-}
-
-shared_ptr<CMeshResource> CGLGraphicsResourceFactoryImpl::CreateMeshResource( const CMeshResourceDesc& desc )
-{
-	return shared_ptr<CMeshResource>( new CMeshResource(&desc) );
-}
-
-shared_ptr<CShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource( const CShaderResourceDesc& desc )
-{
-	return shared_ptr<CShaderResource>( new CGLShaderResource(&desc) );
-}
-
-
 
 
 //===============================================================
@@ -57,7 +15,6 @@ CSingleton<CGraphicsResourceFactory> CGraphicsResourceFactory::m_obj;
 
 CGraphicsResourceFactory::CGraphicsResourceFactory()
 {
-	m_pImpl = shared_ptr<CD3DGraphicsResourceFactoryImpl>( new CD3DGraphicsResourceFactoryImpl );
 }
 
 
