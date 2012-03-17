@@ -1,11 +1,12 @@
 #include "CustomMeshTest.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/VertexFormat.hpp"
+#include "gds/Graphics/Shader/GenericShaderDesc.hpp"
+#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
 #include "gds/Input.hpp"
-//#include "gds/GUI.hpp"
 
 using std::string;
 using namespace boost;
@@ -39,7 +40,7 @@ CCustomMeshTest::~CCustomMeshTest()
 }
 
 
-void CCustomMeshTest::SetLights()
+void CCustomMeshTest::SetLights( bool use_hemespheric_light )
 {
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 //	if( !pShaderMgr )
@@ -53,17 +54,26 @@ void CCustomMeshTest::SetLights()
 
 	pShaderLightMgr->ClearLights();
 
-	CDirectionalLight dir_light;
-	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
-	dir_light.fIntensity = 1.0f;
-	dir_light.vDirection = Vec3GetNormalized( Vector3( 1.2f, -1.8f, 1.0f ) );
-	pShaderLightMgr->SetDirectionalLight( dir_light );
-
-	CHemisphericDirectionalLight light;
-	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
-	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
-	pShaderLightMgr->SetHemisphericDirectionalLight( light );
+	if( use_hemespheric_light )
+	{
+//		CHemisphericDirectionalLight light;
+//		light.Attribute.UpperDiffuseColor.SetRGBA( 0.0f, 1.0f, 1.0f, 1.0f );
+//		light.Attribute.LowerDiffuseColor.SetRGBA( 1.0f, 0.1f, 0.1f, 1.0f );
+//		light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+		CHemisphericDirectionalLight light;
+		light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+		light.Attribute.LowerDiffuseColor.SetRGBA( 0.0f, 0.0f, 0.0f, 1.0f );
+		light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.5f, -0.9f ) );
+		pShaderLightMgr->SetHemisphericDirectionalLight( light );
+	}
+	else
+	{
+		CDirectionalLight dir_light;
+		dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
+		dir_light.fIntensity = 1.0f;
+		dir_light.vDirection = Vec3GetNormalized( Vector3( 1.2f, -1.8f, 1.0f ) );
+		pShaderLightMgr->SetDirectionalLight( dir_light );
+	}
 
 	bool set_pnt_light = false;
 	if( set_pnt_light )
@@ -77,21 +87,19 @@ void CCustomMeshTest::SetLights()
 		pnt_light.fAttenuation[2] = 1.0f;
 		pShaderLightMgr->SetPointLight( pnt_light );
 	}
+
+	pShaderLightMgr->CommitChanges();
 }
 
 
 bool CCustomMeshTest::InitShader()
 {
-	// initialize shader
-/*	bool shader_loaded = m_Shader.Load( "shaders/glsl_test.vert|shaders/glsl_test.frag" );
-
-	if( !shader_loaded )
-		return false;
-*/
-//	string shader_filepath = "shaders/shader.vert|shaders/shader.frag";
-	string shader_filepath = LoadParamFromFile<string>( "config", "Shader" );
-
-	SetLights();
+	CShaderResourceDesc shader_desc;
+	CGenericShaderDesc gen_shader_desc;
+	gen_shader_desc.LightingTechnique = CLightingTechnique::HEMISPHERIC;
+//	gen_shader_desc.Specular = CSpecularSource::NONE;
+	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
+	bool shader_loaded = m_Shader.Load( shader_desc );
 
 	Matrix44 matProj
 		= Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
@@ -116,18 +124,36 @@ int CCustomMeshTest::Init()
 //	m_vecMesh.back().m_MeshDesc.OptionFlags |= GraphicsResourceOption::DONT_SHARE;
 	m_vecMesh.back().Load();
 */
-	CBoxMeshGenerator box_mesh_generator;
-//	box_mesh_generator.Generate( Vector3(1,1,1) );
-	box_mesh_generator.Generate( Vector3(1,1,1), CMeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::Magenta() );
-	C3DMeshModelArchive ar = box_mesh_generator.GetMeshArchive();
-	bool loaded = m_Mesh.LoadFromArchive( ar );
+	bool loaded = false;
+	string mesh_file_pathname;
+	LoadParamFromFile( "params.txt", "model", mesh_file_pathname );
+	if( 0 < mesh_file_pathname.length() )
+	{
+		loaded = m_Mesh.LoadFromFile( mesh_file_pathname );
+	}
+	else
+	{
+		CBoxMeshGenerator box_mesh_generator;
+//		box_mesh_generator.Generate( Vector3(1,1,1) );
+		box_mesh_generator.Generate( Vector3(1,1,1), CMeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
+		C3DMeshModelArchive ar = box_mesh_generator.GetMeshArchive();
+		loaded = m_Mesh.LoadFromArchive( ar );
+	}
 /*
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_DefaultTechnique.SetTechniqueName( "NoShader" );
 */
 
-	// init shader
-	InitShader();
+	int use_programmable_shader = 1;
+	LoadParamFromFile( "params.txt", "use_programmable_shader", use_programmable_shader );
+	if( use_programmable_shader )
+		InitShader();
+
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator.reset( new CBoxMeshGenerator );
+	m_RegularMesh.Load( mesh_desc );
+
+//	SetLights();
 
 	return 0;
 }
@@ -135,8 +161,6 @@ int CCustomMeshTest::Init()
 
 void CCustomMeshTest::Update( float dt )
 {
-//	if( m_pSampleUI )
-//		m_pSampleUI->Update( dt );
 }
 
 
@@ -144,20 +168,23 @@ void CCustomMeshTest::RenderMeshes()
 {
 	GraphicsDevice().Enable( RenderStateType::LIGHTING );
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
-/*
-//	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	if( !pShaderManager )
-		return;
+
+	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 	// render the scene
 
-	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
-*/
+	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
+
+	SetLights( pShaderMgr ? true : false );
+
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+//	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
 
-	GetCustomMeshRenderer().RenderMesh( m_Mesh );
+	m_Mesh.Render( shader_mgr );
 /*
 	pShaderManager->SetTechnique( m_MeshTechnique );
 //	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
@@ -177,7 +204,7 @@ void CCustomMeshTest::RenderMeshes()
 		}
 	}
 */
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+//	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -207,20 +234,8 @@ void CCustomMeshTest::Render()
 }
 
 
-
-
 void CCustomMeshTest::HandleInput( const SInputData& input )
 {
-/*	if( m_pUIInputHandler )
-	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}*/
-
 	switch( input.iGICode )
 	{
 	case GIC_F12:
@@ -233,7 +248,6 @@ void CCustomMeshTest::HandleInput( const SInputData& input )
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-//			m_pSampleUI->GetDialog(UIID_DLG_RESOLUTION)->Open();
 		}
 		break;
 	default:

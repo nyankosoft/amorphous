@@ -27,13 +27,15 @@ class CCustomMeshTest : public CGraphicsTestBase
 
 	CCustomMesh m_Mesh;
 
+	CMeshObjectHandle m_RegularMesh;
+
 private:
 
 	bool InitShader();
 
 	void RenderMeshes();
 
-	void SetLights();
+	void SetLights( bool use_hemespheric_light );
 
 public:
 
@@ -48,8 +50,6 @@ public:
 	void Update( float dt );
 
 	void Render();
-
-//	virtual void RenderBase();
 
 	virtual void HandleInput( const SInputData& input );
 };
