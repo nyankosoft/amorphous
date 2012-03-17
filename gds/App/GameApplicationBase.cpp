@@ -406,8 +406,6 @@ void CGameApplicationBase::UpdateFrame()
 
 void CGameApplicationBase::Execute()
 {
-//	MSGBOX_FUNCTION_SCOPE();
-
 	if( !InitBase() )
 		return;
 
@@ -433,8 +431,6 @@ void CGameApplicationBase::Execute()
 	DIInputDeviceMonitor().UnregisterCallback();
 
 	CGameTask::ReleaseAnimatedGraphicsManager();
-
-//	MessageBox( NULL, "exit the main loop", "msg", MB_OK );
 }
 
 
@@ -448,8 +444,6 @@ inline void SetFreeImageErrorHandler()
 
 void CGameApplicationBase::Run()
 {
-//	MSGBOX_FUNCTION_SCOPE();
-
 	const char *app_id = GetUniqueID();
 	if( app_id && 0 < strlen(app_id) && is_another_instance_running(app_id) )
 		return;
