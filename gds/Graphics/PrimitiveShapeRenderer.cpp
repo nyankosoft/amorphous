@@ -1,28 +1,12 @@
 #include "PrimitiveShapeRenderer.hpp"
 #include "Shader/FixedFunctionPipelineManager.hpp"
 #include "Shader/ShaderManager.hpp"
-#include "TextureHandle.hpp"
+#include "TextureUtilities.hpp"
 #include "MeshGenerators.hpp"
 #include "3DRect.hpp"
 #include "PrimitiveRenderer.hpp"
 
 using namespace std;
-
-
-CTextureHandle CreateSingleColorTexture( uint size_x = 1, uint size_y = 1, const SFloatRGBAColor& color = SFloatRGBAColor::White() )
-{
-	CTextureResourceDesc desc;
-	desc.Width     = size_x;
-	desc.Height    = size_y;
-	desc.MipLevels = 0;
-	desc.Format    = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new CSingleColorTextureFilling( color ) );
-
-	CTextureHandle tex;
-	bool loaded = tex.Load( desc );
-
-	return tex;
-}
 
 
 /// Used when a rectangle in 3D space is rendered via custom mesh
@@ -147,7 +131,7 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane( uint axis, const Vector3& 
 	else
 	{
 		if( !default_texture.IsLoaded() )
-			default_texture = CreateSingleColorTexture( 1, 1, SFloatRGBAColor::White() );
+			default_texture = CreateSingleColorTexture( SFloatRGBAColor::White(), 1, 1 );
 		texture_to_set = default_texture;
 	}
 
