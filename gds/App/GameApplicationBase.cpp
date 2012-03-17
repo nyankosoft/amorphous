@@ -5,6 +5,7 @@
 #include "Support.hpp"
 #include "Support/MiscAux.hpp"
 #include "Support/MTRand.hpp"
+#include "Support/single_instance.hpp"
 #include "XML/XMLDocumentLoader.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
@@ -448,6 +449,10 @@ inline void SetFreeImageErrorHandler()
 void CGameApplicationBase::Run()
 {
 //	MSGBOX_FUNCTION_SCOPE();
+
+	const char *app_id = GetUniqueID();
+	if( app_id && 0 < strlen(app_id) && is_another_instance_running(app_id) )
+		return;
 
 	g_pGameAppBase = dynamic_cast<CGameApplicationBase *>( CApplicationBase::GetInstance() );
 

@@ -51,6 +51,12 @@ protected:
 
 	virtual const std::string GetApplicationTitle() { return "Some Application"; }
 
+	/// \brief Override this virtual function and return a unique ID, such as a GUID,
+	/// to limit the application to one instance on OS.
+	/// If this virtual function is not overriden, the system allows multiple instances
+	/// of the application on OS.
+	virtual const char *GetUniqueID() const { return ""; }
+
 	/// Implement either GetStartTaskName() or GetStartTaskID() to tell
 	/// the system which game task you want to use as a start-up task
 
