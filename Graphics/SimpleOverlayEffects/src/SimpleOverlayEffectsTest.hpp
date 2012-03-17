@@ -17,17 +17,6 @@
 
 class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum UIID
-	{
-		UIID_DLG_ROOT = 1000,
-		UIID_OTHER
-	};
-
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 	CPseudoNoiseEffect m_PseudoNoiseEffect;
 
 	bool m_EnableNoiseEffect;
@@ -42,13 +31,9 @@ class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public CGraphicsComp
 
 	CShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
-
 	boost::shared_ptr<CFontBase> m_pFont;
 
-	CGM_DialogManagerSharedPtr m_pSampleUI;
-
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 	bool m_DisplayResourceInfo;
 

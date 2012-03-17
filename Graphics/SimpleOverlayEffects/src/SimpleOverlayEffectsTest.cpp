@@ -2,7 +2,7 @@
 #include <boost/foreach.hpp>
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics.hpp"
-#include "gds/Graphics/NoiseTextureGenerators.hpp"
+#include "gds/Graphics/TextureGenerators/NoiseTextureGenerators.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
@@ -131,8 +131,6 @@ int CSimpleOverlayEffectsTest::Init()
 
 void CSimpleOverlayEffectsTest::Update( float dt )
 {
-	if( m_pSampleUI )
-		m_pSampleUI->Update( dt );
 }
 
 
@@ -208,9 +206,6 @@ void CSimpleOverlayEffectsTest::Render()
 		rect.Draw( m_StripeTexture );
 	}
 
-	if( m_pSampleUI )
-		m_pSampleUI->Render();
-
 	if( m_DisplayResourceInfo )
 		DisplayResourceInfo();
 }
@@ -218,16 +213,6 @@ void CSimpleOverlayEffectsTest::Render()
 
 void CSimpleOverlayEffectsTest::HandleInput( const SInputData& input )
 {
-	if( m_pUIInputHandler )
-	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}
-
 	switch( input.iGICode )
 	{
 	case 'N':
@@ -249,7 +234,6 @@ void CSimpleOverlayEffectsTest::HandleInput( const SInputData& input )
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-//			m_pSampleUI->GetDialog(UIID_DLG_RESOLUTION)->Open();
 		}
 		break;
 	default:
