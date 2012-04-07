@@ -36,11 +36,16 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	bool m_UseSingleDiffuseColorShader;
 
+	/// default: -1 (do not use normal map textures)
+	int m_NormalMapTextureIndex;
+
 	std::vector<CShaderHandle> m_SingleDiffuseColorShaders;
 
 	std::vector<CShaderTechniqueHandle> m_SingleDiffuseColorShaderTechniques;
 
 	int m_CurrentSDCShaderIndex;
+
+	bool m_RenderSubsetsInformation;
 
 //	CUnitSphere m_LightPosIndicator;
 
@@ -82,6 +87,8 @@ protected:
 	void SetLights( CShaderManager& shader_mgr );
 
 	void LoadBlankTextures( CBasicMesh& mesh );
+
+	void RenderSubsetsInformation( CBasicMesh& mesh );
 
 public:
 

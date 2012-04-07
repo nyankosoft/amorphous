@@ -47,7 +47,9 @@ m_Lighting(true),
 m_CurrentShaderIndex(0),
 m_ScalingFactor(1),
 m_UseSingleDiffuseColorShader(false),
-m_CurrentSDCShaderIndex(0)
+m_NormalMapTextureIndex(-1),
+m_CurrentSDCShaderIndex(0),
+m_RenderSubsetsInformation(false)
 {
 	m_UseCameraController = false;
 
@@ -131,15 +133,73 @@ void CMeshViewer::LoadBlankTextures( CBasicMesh& mesh )
 			mat.TextureDesc[0].Width  = 1;
 			mat.TextureDesc[0].Height = 1;
 			mat.TextureDesc[0].Format = TextureFormat::A8R8G8B8;
-			mat.TextureDesc[0].pLoader.reset( new CSignleColorTextureFilling(SFloatRGBAColor::White()) );
+			mat.TextureDesc[0].pLoader.reset( new CSingleColorTextureFilling(SFloatRGBAColor::White()) );
 			mat.Texture[0].Load( mat.TextureDesc[0] );
 		}
 	}
 }
 
 
+void CMeshViewer::RenderSubsetsInformation( CBasicMesh& mesh )
+{
+	const int screen_width  = CGraphicsComponent::GetScreenWidth();
+	const int screen_height = CGraphicsComponent::GetScreenWidth();
+	SRect screen_rect = RectLTWH( 0, 0, screen_width, screen_height );
+	screen_rect.Inflate( -16, -16 );
+
+	C2DRect bg_rect( screen_rect );
+//	bg_rect.SetPositionLTWH( 20, 20, 640, 400 );
+	bg_rect.SetColor( SFloatRGBAColor( 0.0f, 0.1f, 0.1f, 0.6f ) );
+	bg_rect.Draw();
+	
+	if( m_pFont )
+		m_pFont->SetFontSize( 6, 12 );
+
+	const int num_subsets = mesh.GetNumMaterials();
+	for( int i=0; i<num_subsets; i++ )
+	{
+		if( m_pFont )
+			m_pFont->DrawText( fmt_string( "[%02d]", i ), 24, 24 );
+
+//		const CMeshSubset& subset = mesh.GetSubset(i);
+//		subset.GetNumVertices();
+//		subset.GetNumTriangles();
+
+		const CMeshMaterial& mat = mesh.GetMaterial(i);
+		const int num_textures = (int)mat.Texture.size();
+		for( int j=0; j<num_textures; j++ )
+		{
+			int rect_edge_len = 64;
+			C2DRect rect;
+			int left = 64;
+			int top  = 24 + (rect_edge_len + 8) * j;
+			rect.SetPositionLTRB(
+				left,  // left
+				top, // top
+				left  + rect_edge_len - 1, // right
+				top   + rect_edge_len - 1  // bottom
+				);
+
+			rect.Draw( mat.Texture[j] );
+
+			const CTextureResourceDesc& desc = mat.TextureDesc[j];
+			if( !m_pFont )
+				continue;
+
+			string text = fmt_string( "%dx%d / %s", desc.Width, desc.Height, desc.ResourcePath.c_str() );
+			m_pFont->DrawText( text, left + rect_edge_len + 8, top );
+		}
+
+	}
+
+}
+
+
 void CMeshViewer::LoadShaders()
 {
+	// Clear all the shaders
+	m_Shaders.resize( 0 );
+
 	vector<CGenericShaderDesc> shader_descs;
 	shader_descs.resize( 2 );
 
@@ -148,8 +208,12 @@ void CMeshViewer::LoadShaders()
 	shader_descs[0].ShaderLightingType = CShaderLightingType::PER_PIXEL;
 	shader_descs[0].Specular = CSpecularSource::NONE;
 
+	shader_descs[0].NormalMapTextureIndex = m_NormalMapTextureIndex;
+
 	shader_descs[1].ShaderLightingType = CShaderLightingType::PER_PIXEL;
 	shader_descs[1].Specular = CSpecularSource::DECAL_TEX_ALPHA;
+
+	shader_descs[1].NormalMapTextureIndex = m_NormalMapTextureIndex;
 
 	CShaderResourceDesc shader_desc;
 
@@ -366,6 +430,12 @@ void CMeshViewer::Render()
 	// render the text info
 //	string text = fmt_string( "gray mid value: %f", m_HDRLightingParams.key_value );
 //	m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
+
+	if( m_RenderSubsetsInformation
+	 && pMesh )
+	{
+		RenderSubsetsInformation( *pMesh );
+	}
 }
 
 
@@ -544,6 +614,18 @@ void CMeshViewer::HandleInput( const SInputData& input )
 		}
 		break;
 
+	case 'N':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_NormalMapTextureIndex += 1;
+			if( 4 <= m_NormalMapTextureIndex )
+				m_NormalMapTextureIndex = -1;
+
+			// Reload the shaders with the new settings.
+			LoadShaders();
+		}
+		break;
+
 	case 'S':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
@@ -552,6 +634,11 @@ void CMeshViewer::HandleInput( const SInputData& input )
 			else
 				m_CurrentShaderIndex = (m_CurrentShaderIndex + 1) % (int)m_Shaders.size();
 		}
+		break;
+
+	case 'T':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_RenderSubsetsInformation = !m_RenderSubsetsInformation;
 		break;
 
 	case GIC_MOUSE_BUTTON_L:
