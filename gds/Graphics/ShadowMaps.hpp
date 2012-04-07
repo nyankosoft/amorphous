@@ -1,13 +1,11 @@
 #ifndef  __ShadowMaps_H__
 #define  __ShadowMaps_H__
 
-#include <boost/shared_ptr.hpp>
 #include "fwd.hpp"
 #include "ShaderHandle.hpp"
 #include "GraphicsComponentCollector.hpp"
-#include "Shader/ShaderManager.hpp"
+#include "Shader/ShaderTechniqueHandle.hpp"
 #include "Shader/GenericShaderDesc.hpp"
-#include "TextureRenderTarget.hpp"
 #include "Camera.hpp"
 #include "CubeMapManager.hpp"
 #include "MeshObjectHandle.hpp"
@@ -169,10 +167,10 @@ public:
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
-	virtual void UpdateDirectionalLight( CDirectionalLight& light ) {}
-	virtual void UpdatePointLight( CPointLight& light ) {}
-	virtual void UpdateSpotlight( CSpotlight& light ) {}
-//	virtual void UpdateLight( CSpotLight& light ) {}
+	virtual void UpdateDirectionalLight( const CDirectionalLight& light ) {}
+	virtual void UpdatePointLight( const CPointLight& light ) {}
+	virtual void UpdateSpotlight( const CSpotlight& light ) {}
+//	virtual void UpdateLight( const CSpotLight& light ) {}
 
 	virtual CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
 	virtual CShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
@@ -252,7 +250,7 @@ public:
 
 //	LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return m_pShadowMap; }
 
-	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath);
+	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath );
 };
 
 
@@ -273,7 +271,7 @@ public:
 
 	COrthoShadowMap();
 
-	void UpdateDirectionalLight( CDirectionalLight& light );
+	void UpdateDirectionalLight( const CDirectionalLight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
@@ -309,9 +307,9 @@ public:
 	CSpotlightShadowMap();
 
 	/// Called when shadow of directional light is done with spotlight shadow map
-	void UpdateDirectionalLight( CDirectionalLight& light );
+	void UpdateDirectionalLight( const CDirectionalLight& light );
 
-	void UpdateSpotlight( CSpotlight& light );
+	void UpdateSpotlight( const CSpotlight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
@@ -356,7 +354,7 @@ public:
 
 	void EndSceneShadowMap();
 
-	void UpdatePointLight( CPointLight& light );
+	void UpdatePointLight( const CPointLight& light );
 
 	std::string CreateTextureFilename();
 

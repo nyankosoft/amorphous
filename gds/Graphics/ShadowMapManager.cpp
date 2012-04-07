@@ -18,7 +18,7 @@ const char *sg_pShadowMapDebugParamsFile = ".debug/shadowmap.txt";
 //std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
 
 
-class CShadowMapLightVisitor : public CLightVisitor
+class CShadowMapLightVisitor : public CConstLightVisitor
 {
 	CShadowMap *m_pShadowMap;
 
@@ -29,12 +29,12 @@ public:
 	m_pShadowMap(pShadowMap)
 	{}
 
-	void VisitPointLight( CPointLight& point_light ) { m_pShadowMap->UpdatePointLight( point_light ); }
-	void VisitDirectionalLight( CDirectionalLight& directional_light ) { m_pShadowMap->UpdateDirectionalLight( directional_light ); }
-	void VisitSpotlight( CSpotlight& spotlight ) { m_pShadowMap->UpdateSpotlight( spotlight ); }
-	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { m_pShadowMap->UpdatePointLight( hs_point_light ); }
-	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { m_pShadowMap->UpdateDirectionalLight( hs_directional_light ); }
-	void VisitHemisphericSpotlight( CHemisphericSpotlight& hs_spotlight ) { m_pShadowMap->UpdateSpotlight( hs_spotlight ); }
+	void VisitPointLight( const CPointLight& point_light )                   { m_pShadowMap->UpdatePointLight( point_light ); }
+	void VisitDirectionalLight( const CDirectionalLight& directional_light ) { m_pShadowMap->UpdateDirectionalLight( directional_light ); }
+	void VisitSpotlight( const CSpotlight& spotlight )                       { m_pShadowMap->UpdateSpotlight( spotlight ); }
+	void VisitHemisphericPointLight( const CHemisphericPointLight& hs_point_light )                   { m_pShadowMap->UpdatePointLight( hs_point_light ); }
+	void VisitHemisphericDirectionalLight( const CHemisphericDirectionalLight& hs_directional_light ) { m_pShadowMap->UpdateDirectionalLight( hs_directional_light ); }
+	void VisitHemisphericSpotlight( const CHemisphericSpotlight& hs_spotlight )                       { m_pShadowMap->UpdateSpotlight( hs_spotlight ); }
 };
 
 
@@ -44,26 +44,33 @@ public:
 
 	shared_ptr<CShadowMap> CreateShadowMap( const CLight& light )
 	{
+		shared_ptr<CShadowMap> pShadowMap;
+
 		switch( light.GetLightType() )
 		{
 		case CLight::DIRECTIONAL:
 		case CLight::HEMISPHERIC_DIRECTIONAL:
-//			return shared_ptr<CShadowMap>( new CDirectionalLightShadowMap() );
-//			return shared_ptr<CShadowMap>( new CSpotlightShadowMap() );
-			return shared_ptr<CShadowMap>( new COrthoShadowMap() );
+//			pShadowMap.reset( new CDirectionalLightShadowMap() );
+//			pShadowMap.reset( new CSpotlightShadowMap() );
+			pShadowMap.reset( new COrthoShadowMap() );
+			break;
 
 //		case CLight::POINT:
 //		case CLight::HEMISPHERIC_POINT:
-//			return shared_ptr<CShadowMap>( new CPointLightShadowMap() );
+//			pShadowMap.reset( new CPointLightShadowMap() );
+			break;
 
 		case CLight::SPOTLIGHT:
 		case CLight::HEMISPHERIC_SPOTLIGHT:
-			return shared_ptr<CShadowMap>( new CSpotlightShadowMap() );
+			pShadowMap.reset( new CSpotlightShadowMap() );
+			break;
 
 		default:
 //			LOG_PRINT_ERROR( " An unsupported type of light was specified. light type id: " + to_string(light.GetLightType()) );
-			return shared_ptr<CShadowMap>();
+			break;
 		}
+
+		return pShadowMap;
 	}
 };
 
@@ -79,36 +86,28 @@ CShadowMapManager::CShadowMapManager()
 m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
 m_pSceneRenderTarget( CTextureRenderTarget::Create() ),
 m_DisplayShadowMapTexturesForDebugging(false),
-m_IDCounter(0)
+m_IDCounter(0),
+m_ShadowMapSize( 1024 )
 {
 	SetDefault();
 
-	m_iTextureWidth  = GetScreenWidth();
-	m_iTextureHeight = GetScreenHeight();
+	SetSceneShadowTextureSize( GetScreenWidth(), GetScreenHeight() );
 
 //	m_iTextureWidth  = 1;
 //	m_iTextureHeight = 1;
 }
 
 
-CShadowMapManager::CShadowMapManager( int texture_width, int texture_height )
-:
-//m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
-m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
-m_pSceneRenderTarget( CTextureRenderTarget::Create() ),
-m_DisplayShadowMapTexturesForDebugging(false),
-m_IDCounter(0)
-{
-	SetDefault();
-
-	m_iTextureWidth  = texture_width;
-	m_iTextureHeight = texture_height;
-}
-
-
 CShadowMapManager::~CShadowMapManager()
 {
 	ReleaseGraphicsResources();
+}
+
+
+void CShadowMapManager::SetSceneShadowTextureSize( int texture_width, int texture_height )
+{
+	m_iTextureWidth  = texture_width;
+	m_iTextureHeight = texture_height;
 }
 
 
@@ -146,14 +145,6 @@ void CShadowMapManager::SetDefault()
 {
 	m_ShadowMapSize = 512;
 
-	// set default light direction & position
-/*	Vector3 vLightDir =  Vector3(-0.56568f, -0.70711f, -0.42426f);
-	Vector3 vLightPos =  Vector3( 5.0f, 10.0f,  6.0f );
-	m_LightCamera.SetOrientation( CreateOrientFromFwdDir( vLightDir ) );
-	m_LightCamera.SetPosition( vLightPos );
-//	m_LightCamera.SetNearClip( 0.1f );
-//	m_LightCamera.SetFarClip( 100.0f );
-*/
 	// set the default pose of the scene camera
 	m_SceneCamera.SetPosition( Vector3( 0.0f, 1.0f, -5.0f ) );
 	m_SceneCamera.SetOrientation( Matrix33Identity() );
@@ -167,7 +158,7 @@ void CShadowMapManager::SetDefault()
 
 void CShadowMapManager::ReleaseTextures()
 {
-	for( int i=0; i<2; i++ )
+	for( int i=0; i<NUM_MAX_SCENE_SHADOW_TEXTURES; i++ )
 	{
 		if( m_apShadowTexture[i] )
 		{
@@ -194,7 +185,7 @@ void CShadowMapManager::SetSceneRenderer( shared_ptr<CShadowMapSceneRenderer> pS
 /// returns -1 on failure
 /// \param [in] light must be either directional or point light
 /// TODO: support spotlight
-std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadowMap( U32 id, CLight& light )
+std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadowMap( U32 id, const CLight& light )
 {
 	if( light.GetLightType() != CLight::DIRECTIONAL
 	 && light.GetLightType() != CLight::HEMISPHERIC_DIRECTIONAL
@@ -234,7 +225,7 @@ std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::Crea
 }
 
 
-Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, CLight& light )
+Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, const CLight& light )
 {
 	map< int, shared_ptr<CShadowMap> >::iterator itrShadowMap
 		= m_mapIDtoShadowMap.find((int)id);
@@ -274,7 +265,7 @@ void CShadowMapManager::RemoveShadowForLight( int shadowmap_id )
 }
 
 
-void CShadowMapManager::UpdateLight( int shadowmap_id, CLight& light )
+void CShadowMapManager::UpdateLight( int shadowmap_id, const CLight& light )
 {
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.find( shadowmap_id );
 
@@ -300,6 +291,9 @@ void CShadowMapManager::RenderShadowCasters( CCamera& camera )
 	{
 		m_pCurrentShadowMap = itr->second;
 
+		// Render a shadow map to a shadow map texture.
+		// In the case of an ortho shadowmap, i.e. simplest type,
+		// distances from a light to each sampling point are saved to a shadow map texture
 		itr->second->RenderSceneToShadowMap( camera );
 
 		// variance shadow maps are blurred in this call
@@ -435,16 +429,6 @@ bool CShadowMapManager::CreateSceneShadowMapTextures()
 	if( FAILED(hr) ) return false;
 */
 	return true;
-}
-
-
-void CShadowMapManager::ReleaseGraphicsResources()
-{
-}
-
-
-void CShadowMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
 }
 
 
@@ -692,101 +676,3 @@ void CShadowMapManager::SaveSceneTextureToFile( const std::string& filename )
 {
 	m_pSceneRenderTarget->OutputImageFile( filename.c_str() );
 }
-
-
-
-
-/*
-void CALLBACK OnFrameRender( IDirect3DDevice9* pd3dDevice, double fTime, float fElapsedTime, void* pUserContext )
-{
-	// If the settings dialog is being shown, then
-	// render it instead of rendering the app's scene
-	if( g_SettingsDlg.IsActive() )
-	{
-		g_SettingsDlg.OnRender( fElapsedTime );
-		return;
-	}
-
-	HRESULT hr;
-
-	//
-	// Compute the view matrix for the light
-	// This changes depending on the light mode
-	// (free movement or attached)
-	//
-	D3DXMATRIXA16 mLightView;
-	if( g_bFreeLight )
-		mLightView = *g_LCamera.GetViewMatrix();
-	else
-	{
-		// Light attached to car.
-		mLightView = g_Obj[2].m_mWorld;
-		D3DXVECTOR3 vPos( mLightView._41, mLightView._42, mLightView._43 );  // Offset z by -2 so that it's closer to headlight
-		D3DXVECTOR4 vDir = D3DXVECTOR4( 0.0f, 0.0f, -1.0f, 1.0f );  // In object space, car is facing -Z
-		mLightView._41 = mLightView._42 = mLightView._43 = 0.0f;  // Remove the translation
-		D3DXVec4Transform( &vDir, &vDir, &mLightView );  // Obtain direction in world space
-		vDir.w = 0.0f;  // Set w 0 so that the translation part below doesn't come to play
-		D3DXVec4Normalize( &vDir, &vDir );
-		vPos.x += vDir.x * 4.0f;  // Offset the center by 4 so that it's closer to the headlight
-		vPos.y += vDir.y * 4.0f;
-		vPos.z += vDir.z * 4.0f;
-		vDir.x += vPos.x;  // vDir denotes the look-at point
-		vDir.y += vPos.y;
-		vDir.z += vPos.z;
-		D3DXVECTOR3 vUp( 0.0f, 1.0f, 0.0f );
-		D3DXMatrixLookAtLH( &mLightView, &vPos, (D3DXVECTOR3*)&vDir, &vUp );
-	}
-
-	//
-	// Render the shadow map
-	//
-	LPDIRECT3DSURFACE9 pOldRT = NULL;
-	V( pd3dDevice->GetRenderTarget( 0, &pOldRT ) );
-	LPDIRECT3DSURFACE9 pShadowSurf;
-	if( SUCCEEDED( m_pShadowMap->GetSurfaceLevel( 0, &pShadowSurf ) ) )
-	{
-		pd3dDevice->SetRenderTarget( 0, pShadowSurf );
-		SAFE_RELEASE( pShadowSurf );
-	}
-	LPDIRECT3DSURFACE9 pOldDS = NULL;
-	if( SUCCEEDED( pd3dDevice->GetDepthStencilSurface( &pOldDS ) ) )
-		pd3dDevice->SetDepthStencilSurface( m_pDSShadow );
-
-	{
-		CDXUTPerfEventGenerator g( DXUT_PERFEVENTCOLOR, L"Shadow Map" );
-		RenderScene( pd3dDevice, true, fElapsedTime, &mLightView, &m_mShadowProj );
-	}
-
-	if( pOldDS )
-	{
-		pd3dDevice->SetDepthStencilSurface( pOldDS );
-		pOldDS->Release();
-	}
-	pd3dDevice->SetRenderTarget( 0, pOldRT );
-	SAFE_RELEASE( pOldRT );
-
-	//
-	// Now that we have the shadow map, render the scene.
-	//
-	const D3DXMATRIX *pmView = g_bCameraPerspective ? g_VCamera.GetViewMatrix() :
-													  &mLightView;
-
-	// Initialize required parameter
-	V( m_pEffect->SetTexture( "g_txShadow", m_pShadowMap ) );
-	// Compute the matrix to transform from view space to
-	// light projection space.  This consists of
-	// the inverse of view matrix * view matrix of light * light projection matrix
-	D3DXMATRIXA16 mViewToLightProj;
-	mViewToLightProj = *pmView;
-	D3DXMatrixInverse( &mViewToLightProj, NULL, &mViewToLightProj );
-	D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &mLightView );
-	D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &m_mShadowProj );
-	V( m_pEffect->SetMatrix( "g_mViewToLightProj", &mViewToLightProj ) );
-
-	{
-		CDXUTPerfEventGenerator g( DXUT_PERFEVENTCOLOR, L"Scene" );
-		RenderScene( pd3dDevice, false, fElapsedTime, pmView, g_VCamera.GetProjMatrix() );
-	}
-	m_pEffect->SetTexture( "g_txShadow", NULL );
-}
-*/

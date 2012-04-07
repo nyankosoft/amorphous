@@ -2,7 +2,6 @@
 #define  __ShadowMapManager_H__
 
 #include <map>
-#include <boost/shared_ptr.hpp>
 #include "GraphicsComponentCollector.hpp"
 #include "TextureRenderTarget.hpp"
 #include "Camera.hpp"
@@ -39,6 +38,11 @@ class CShadowMapManager : public CGraphicsComponent
 {
 protected:
 
+	enum Params
+	{
+		NUM_MAX_SCENE_SHADOW_TEXTURES = 2,
+	};
+
 	typedef std::map< int, boost::shared_ptr<CShadowMap> > IDtoShadowMap;
 
 	IDtoShadowMap m_mapIDtoShadowMap;
@@ -61,7 +65,10 @@ protected:
 
 	int m_ShadowMapSize;
 
-	boost::shared_ptr<CTextureRenderTarget> m_apShadowTexture[2];
+	/// Holds textures(s) with the original screen size.
+	/// Shadows of the scene are rendered to this texture, then overlayed
+	/// to the original, non-shadowed scene.
+	boost::shared_ptr<CTextureRenderTarget> m_apShadowTexture[NUM_MAX_SCENE_SHADOW_TEXTURES];
 
 	CCamera m_SceneCamera;
 
@@ -92,22 +99,23 @@ public:
 
 	CShadowMapManager();
 
-	CShadowMapManager( int texture_width, int texture_height );
-
 	~CShadowMapManager();
 
 	/// returns true on success
 	virtual bool Init();
 
+	/// The system sets the size to the screen width and height by default.
+	void SetSceneShadowTextureSize( int texture_width, int texture_height );
+
 	void SetSceneRenderer( boost::shared_ptr<CShadowMapSceneRenderer> pSceneRenderer );
 
-	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadowMap( U32 id, CLight& light );
+	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadowMap( U32 id, const CLight& light );
 
-	Result::Name UpdateLightForShadow( U32 id, CLight& light );
+	Result::Name UpdateLightForShadow( U32 id, const CLight& light );
 
 	void RemoveShadowForLight( int shadowmap_id );
 
-	void UpdateLight( int shadowmap_id, CLight& light );
+	void UpdateLight( int shadowmap_id, const CLight& light );
 
 	void RenderShadowCasters( CCamera& camera );
 
@@ -156,9 +164,9 @@ public:
 
 	void ReleaseTextures();
 
-	void ReleaseGraphicsResources();
+	virtual void ReleaseGraphicsResources() {}
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
 
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }

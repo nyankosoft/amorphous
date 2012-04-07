@@ -1,11 +1,13 @@
 #include "ShadowMaps.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/LightStructs.hpp"
-#include "Graphics/CubeMapManager.hpp"
-#include "Graphics/Shader/ShaderManagerHub.hpp"
-#include "Graphics/3DGameMath.hpp"
-#include "Graphics/Meshgenerators.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
+#include "2DPrimitive/2DRect.hpp"
+#include "LightStructs.hpp"
+#include "CubeMapManager.hpp"
+#include "TextureRenderTarget.hpp"
+#include "Shader/ShaderManagerHub.hpp"
+#include "Shader/ShaderManager.hpp"
+#include "3DGameMath.hpp"
+#include "Meshgenerators.hpp"
+#include "Mesh/BasicMesh.hpp"
 #include "3DMath/MatrixConversions.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -374,7 +376,7 @@ COrthoShadowMap::COrthoShadowMap()
 }
 
 
-void COrthoShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
+void COrthoShadowMap::UpdateDirectionalLight( const CDirectionalLight& light )
 {
 	if( CShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
@@ -406,7 +408,8 @@ void COrthoShadowMap::UpdateLightPositionAndDirection()
 	// - used for orthographic projection
 	float dist = Vec3Dot( m_LightCamera.GetPosition(), m_LightCamera.GetFrontDirection() );
 	float light_plane[4] = { vWorldLightDir.x, vWorldLightDir.y, vWorldLightDir.z, dist };
-	shader_mgr.GetEffect()->SetFloatArray( "g_vLightPlane", light_plane, 4 );
+//	shader_mgr.GetEffect()->SetFloatArray( "g_vLightPlane", light_plane, 4 );
+	shader_mgr.SetParam( "g_vLightPlane", light_plane, 4 );
 }
 
 
@@ -474,7 +477,7 @@ CSpotlightShadowMap::CSpotlightShadowMap()
 }
 
 
-void CSpotlightShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
+void CSpotlightShadowMap::UpdateDirectionalLight( const CDirectionalLight& light )
 {
 	if( CShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
@@ -488,7 +491,7 @@ void CSpotlightShadowMap::UpdateDirectionalLight( CDirectionalLight& light )
 }
 
 
-void CSpotlightShadowMap::UpdateSpotlight( CSpotlight& light )
+void CSpotlightShadowMap::UpdateSpotlight( const CSpotlight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
 	m_LightCamera.SetOrientation( CreateOrientFromFwdDir(light.vDirection) );
@@ -595,7 +598,7 @@ void CPointLightShadowMap::EndSceneShadowMap()
 }
 
 
-void CPointLightShadowMap::UpdatePointLight( CPointLight& light )
+void CPointLightShadowMap::UpdatePointLight( const CPointLight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
 }
