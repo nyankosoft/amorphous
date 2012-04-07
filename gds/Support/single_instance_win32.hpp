@@ -4,8 +4,8 @@
 
 #include <windows.h> 
 
-// This code is from Q243953 in case you lose the article and wonder
-// where this code came from.
+/// This code is from Q243953 in case you lose the article and wonder
+/// where this code came from.
 class CLimitSingleInstance
 {
 protected:
@@ -33,7 +33,7 @@ public:
 		}
 	}
 
-	BOOL IsAnotherInstanceRunning()
+	bool IsAnotherInstanceRunning()
 	{
 		return (ERROR_ALREADY_EXISTS == m_dwLastError);
 	}
