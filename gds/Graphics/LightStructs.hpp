@@ -31,6 +31,23 @@ public:
 };
 
 
+class CConstLightVisitor
+{
+public:
+
+	virtual void VisitLight( const CLight& light ) {}
+	virtual void VisitAmbientLight( const CAmbientLight& ambient_light ) {}
+	virtual void VisitPointLight( const CPointLight& point_light ) {}
+	virtual void VisitDirectionalLight( const CDirectionalLight& directional_light ) {}
+	virtual void VisitSpotlight( const CSpotlight& spotlight ) {}
+	virtual void VisitHemisphericPointLight( const CHemisphericPointLight& hs_point_light ) {}
+	virtual void VisitHemisphericDirectionalLight( const CHemisphericDirectionalLight& hs_directional_light ) {}
+	virtual void VisitHemisphericSpotlight( const CHemisphericSpotlight& hs_spotlight ) {}
+//	virtual void VisitTriPointLight( const CTriPointLight& tri_point_light ) {}
+//	virtual void VisitTriDirectionalLight( const CTriDirectionalLight& tri_directional_light ) {}
+};
+
+
 class CLight : public IArchiveObjectBase
 {
 public:
@@ -93,6 +110,8 @@ public:
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitLight( *this ); }
+
+	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitLight( *this ); }
 };
 
 
@@ -113,6 +132,8 @@ public:
 //	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitAmbientLight( *this ); }
+
+	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitAmbientLight( *this ); }
 };
 
 
@@ -176,6 +197,8 @@ public:
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitDirectionalLight( *this ); }
+
+	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitDirectionalLight( *this ); }
 };
 
 
@@ -221,6 +244,8 @@ public:
 	}
 
 	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitPointLight( *this ); }
+
+	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitPointLight( *this ); }
 };
 
 
@@ -291,7 +316,9 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitLight( *this ); }
+	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitSpotlight( *this ); }
+
+	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitSpotlight( *this ); }
 };
 
 
