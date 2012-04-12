@@ -39,6 +39,9 @@ public:
 	std::vector<uchar> m_IndexBuffer;
 	int m_ElementOffsets[VEE::NUM_VERTEX_ELEMENTS];
 
+	/// Indices of z-sorted polygons. Used when RenderZSorted() is called.
+	std::vector<uchar> m_ZSortedIndexBuffer;
+
 	inline void SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag );
 
 public:
@@ -61,7 +64,7 @@ public:
 
 	void SetVertices( const std::vector<CGeneral3DVertex>& vertices, U32 vertex_format_flags );
 
-	Vector3 GetPosition( int i ) { Vector3 v(Vector3(0,0,0)); memcpy( &v, &(m_VertexBuffer[0]) + m_VertexSize * i, sizeof(Vector3) ); return v; }
+	Vector3 GetPosition( int i ) const { Vector3 v(Vector3(0,0,0)); memcpy( &v, &(m_VertexBuffer[0]) + m_VertexSize * i, sizeof(Vector3) ); return v; }
 
 	inline void SetPositions( const std::vector<Vector3>& positions )  { SetVec3Elements( positions, VEE::POSITION, VFF::POSITION ); }
 	inline void SetNormals( const std::vector<Vector3>& normals )      { SetVec3Elements( normals,   VEE::NORMAL,   VFF::NORMAL ); }
@@ -84,7 +87,7 @@ public:
 
 	void SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors );
 
-	inline void GetPositions( std::vector<Vector3>& dest )
+	inline void GetPositions( std::vector<Vector3>& dest ) const
 	{
 		const uint num_verts = GetNumVertices();
 		dest.resize( num_verts );
@@ -104,6 +107,8 @@ public:
 	const uchar *GetVertexBufferPtr() const { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : NULL; }
 
 	const uchar *GetIndexBufferPtr() const { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : NULL; }
+
+	const uchar *GetZSortedIndexBufferPtr() const { return (0 < m_ZSortedIndexBuffer.size()) ? &(m_ZSortedIndexBuffer[0]) : NULL; }
 
 	uint GetNumVertices() const { return (0 < m_VertexSize) ? ((uint)m_VertexBuffer.size() / m_VertexSize) : 0; }
 
@@ -134,6 +139,8 @@ public:
 	void Render();
 
 	void Render( CShaderManager& rShaderMgr );
+
+	void RenderZSorted( CShaderManager& rShaderMgr );
 
 	void RenderSubset( CShaderManager& rShaderMgr, int material_index ) {}
 

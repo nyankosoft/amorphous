@@ -30,14 +30,14 @@ static HRESULT SetD3DFVF( const CCustomMesh& mesh )
 }
 
 
-void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh )
+void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset_index, bool use_zsorted_indices )
 {
-
 	const uint num_verts   = mesh.GetNumVertices();
 	const uint num_indices = mesh.GetNumIndices();
 
 	const void *pV = (void *)mesh.GetVertexBufferPtr();
-	const void *pI = (void *)mesh.GetIndexBufferPtr();
+//	const void *pI = (void *)mesh.GetIndexBufferPtr();
+	const void *pI = use_zsorted_indices ? (void *)mesh.GetZSortedIndexBufferPtr() : (void *)mesh.GetIndexBufferPtr();
 	if( !pV || !pI )
 		return;
 
@@ -56,7 +56,7 @@ void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh )
 }
 
 
-void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
+void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, bool use_zsorted_indices )
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	HRESULT hr = S_OK;
@@ -103,6 +103,10 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 //	static LPDIRECT3DTEXTURE9 s_pTex = NULL;
 //	if( !s_pTex )
 //		D3DXCreateTextureFromFile( pd3dDevice, "textures/SmashedGrayMarble.jpg", &s_pTex );
+
+	hr = pd3dDevice->SetVertexShader( NULL );
+	hr = pd3dDevice->SetPixelShader( NULL );
+
 	for( int i=0; i<num_mats; i++ )
 	{
 		const int num_textures = mesh.GetNumTextures(i);
@@ -111,16 +115,13 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 			LPDIRECT3DTEXTURE9 pTex = mesh.GetTexture(i,j).GetTexture();
 			hr = pd3dDevice->SetTexture( j, pTex );
 		}
+
+		DrawPrimitives( mesh, i, use_zsorted_indices );
 	}
-
-	hr = pd3dDevice->SetVertexShader( NULL );
-	hr = pd3dDevice->SetPixelShader( NULL );
-
-	DrawPrimitives( mesh );
 }
 
 
-void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr )
+void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr, bool use_zsorted_indices )
 {
 	if( &shader_mgr == &FixedFunctionPipelineManager() )
 	{
@@ -129,23 +130,11 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shad
 		return;
 	}
 
-	const int num_mats = mesh.GetNumMaterials();
-	for( int i=0; i<num_mats; i++ )
-	{
-		const int num_textures = mesh.GetNumTextures(i);
-		for( int j=0; j<num_textures; j++ )
-		{
-			shader_mgr.SetTexture( j, mesh.GetTexture(i,j) );
-		}
-	}
-
 	SetD3DFVF( mesh );
 
 	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
 	if( !pEffect )
 		return;
-
-	pEffect->CommitChanges();
 
 	UINT cPasses = 0;
 	pEffect->Begin( &cPasses, 0 );
@@ -153,8 +142,20 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shad
 	{
 		pEffect->BeginPass( p );
 
-		// Draw the mesh subset
-		DrawPrimitives( mesh );
+		const int num_mats = mesh.GetNumMaterials();
+		for( int i=0; i<num_mats; i++ )
+		{
+			const int num_textures = mesh.GetNumTextures(i);
+			for( int j=0; j<num_textures; j++ )
+			{
+				shader_mgr.SetTexture( j, mesh.GetTexture(i,j) );
+			}
+
+			pEffect->CommitChanges();
+
+			// Draw the i-th subset of the mesh
+			DrawPrimitives( mesh, i, use_zsorted_indices );
+		}
 
 		pEffect->EndPass();
 	}

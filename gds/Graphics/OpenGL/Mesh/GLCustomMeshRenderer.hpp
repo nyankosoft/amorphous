@@ -11,7 +11,11 @@ public:
 
 	void RenderMesh( CCustomMesh& mesh );
 
+	void RenderZSortedMesh( CCustomMesh& mesh ) { RenderMesh( mesh ); }
+
 	void RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr );
+
+	void RenderZSortedMesh( CCustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr ); }
 
 	static CGLCustomMeshRenderer ms_Instance;
 };

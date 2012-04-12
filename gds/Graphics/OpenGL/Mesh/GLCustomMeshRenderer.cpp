@@ -1,6 +1,8 @@
 #include "GLCustomMeshRenderer.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Support/Profile.hpp"
 
 
 using namespace std;
@@ -11,6 +13,8 @@ CGLCustomMeshRenderer CGLCustomMeshRenderer::ms_Instance;
 
 void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 {
+	PROFILE_FUNCTION();
+
 	uchar *pV = mesh.GetVertexBufferPtr();
 	if( !pV )
 		return;
@@ -45,7 +49,7 @@ void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 		glEnableClientState(GL_COLOR_ARRAY);
 
 		uchar *pDiffuseColor = pV + mesh.GetVertexElementOffset( VEE::DIFFUSE_COLOR );
-		glColorPointer( 4, GL_UNSIGNED_BYTE, vertex_size, pDiffuseColor );
+		glColorPointer( 4, GL_FLOAT, vertex_size, pDiffuseColor );
 	}
 
 	const int num_mats = mesh.GetNumMaterials();
@@ -87,14 +91,15 @@ void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 //		glDrawRangeElements( GL_TRIANGLES, 0, num_verts-1, num_triangles, index_type, pI );
 //	}
 //	else
-//	{
-		glDrawElements( GL_TRIANGLES, num_triangles, index_type, pI );
-//	}
+	{
+		PROFILE_SCOPE( "glDrawElements( GL_TRIANGLES, num_indices, index_type, pI )" );
+		glDrawElements( GL_TRIANGLES, num_indices, index_type, pI );
+	}
 
 	if( vert_flags & VFF::TEXCOORD2_0 )
 	{
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL_TEXTURE_2D);
+//		glDisable(GL_TEXTURE_2D);
 	}
 
 	if( vert_flags & VFF::DIFFUSE_COLOR )
@@ -107,5 +112,9 @@ void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 
 void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr )
 {
-	LOG_PRINT_ERROR( " Not implemented." );
+//	LOG_PRINT_ERROR( " Not implemented." );
+
+	shader_mgr.Begin();
+
+	RenderMesh( mesh );
 }
