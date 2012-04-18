@@ -398,6 +398,9 @@ static bool SafetyOff() { return true; }
 
 bool CFirearm::HandleInput( int action_code, int input_type, float fParam )
 {
+	if( action_code == ACTION_NOT_ASSIGNED )
+		return false;
+
 	switch( action_code )
 	{
 	case ACTION_ATK_FIRE:
