@@ -35,7 +35,8 @@ m_IsSlideHeld(false),
 m_IsSlideStopEngaged(false),
 m_fSlidePosition(0.0f),
 m_fSlideStrokeDistance(0.5f),
-m_vLocalHammerPivot( Vector3(0,0,0) )
+m_vLocalHammerPivot( Vector3(0,0,0) ),
+m_NumTotalFiredRounds(0)
 {
 	m_TypeFlag |= (TYPE_WEAPON);
 
@@ -303,6 +304,8 @@ void CFirearm::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_StandardMagazineCapacity;
 	ar & m_fGrouping;	// grouping in 10[m]
 	ar & m_ComplientMagazineNames;
+	ar & m_NumTotalFiredRounds;
+
 //	ar & m_fMuzzleSpeedFactor;
 
 //	ar & m_vLocalRecoilForce;

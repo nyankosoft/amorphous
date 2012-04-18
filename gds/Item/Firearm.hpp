@@ -57,6 +57,8 @@ protected:
 
 	Vector3 m_vLocalHammerPivot;
 
+	U32 m_NumTotalFiredRounds;
+
 //	SWeaponSlot *m_pWeaponSlot;
 
 	/// caliber
@@ -129,8 +131,6 @@ public:
 	CFirearm();
 
 	virtual ~CFirearm() {}
-
-	void SetWeaponSlot( SWeaponSlot *pSlot ) { m_pWeaponSlot = pSlot; }
 
 	virtual void Update( float dt );
 
