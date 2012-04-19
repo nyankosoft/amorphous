@@ -87,6 +87,11 @@ inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CTransfor
 /// to its corresponding mesh bone transform in the transform array of the skeletal mesh
 void CreateTransformMapTree( const CSkeleton& src_skeleton, CTransformNodeMap& root_map_node, const CSkeletalMesh& mesh );
 
+/// \param src_skeletal_mesh [in] source
+/// \param dest_skeleton [out] destination
+void CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh, msynth::CSkeleton& dest_skeleton );
+
+boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh );
 
 } // namespace msynth
 

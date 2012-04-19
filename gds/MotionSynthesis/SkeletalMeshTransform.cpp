@@ -153,4 +153,33 @@ void CreateTransformMapTree( const msynth::CSkeleton& src_skeleton, msynth::CTra
 }
 
 
+void CreateMSynthSkeletonFromMeshSkeleton_r( const CMeshBone& src_bone, msynth::CBone& dest_bone )
+{
+	dest_bone.SetOffset( src_bone.GetLocalOffset() );
+	dest_bone.SetOrient( Matrix33Identity() );
+	dest_bone.SetName( src_bone.GetName() );
+	dest_bone.Children().resize( src_bone.GetNumChildren() );
+
+	for( uint i=0; i<src_bone.GetNumChildren(); i++ )
+	{
+		CreateMSynthSkeletonFromMeshSkeleton_r( src_bone.GetChild( (unsigned int)i ), dest_bone.Child(i) );
+	}
+}
+
+
+void CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh, msynth::CSkeleton& dest_skeleton )
+{
+	CreateMSynthSkeletonFromMeshSkeleton_r( src_skeletal_mesh.GetRootBone(), dest_skeleton.RootBone() );
+}
+
+
+boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh )
+{
+	boost::shared_ptr<msynth::CSkeleton> pSkeleton( new msynth::CSkeleton );
+	CreateSkeletonFromMeshSkeleton( src_skeletal_mesh, *pSkeleton );
+	return pSkeleton;
+}
+
+
+
 } // namespace msynth
