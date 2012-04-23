@@ -1,9 +1,7 @@
 #include "ScreenEffectManager.hpp"
 #include <algorithm>
 #include "3DMath/MathMisc.hpp"
-//#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Camera.hpp"
-//#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/PostProcessEffectManager.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"
