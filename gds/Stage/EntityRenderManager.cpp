@@ -9,7 +9,6 @@
 #include "Graphics/ShadowMapManager.hpp"
 #include "Graphics/VarianceShadowMapManager.hpp"
 #include "Graphics/CubeMapManager.hpp"
-#include "Graphics/Shader/Shader.hpp"
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
@@ -352,9 +351,6 @@ bool CEntityRenderManager::LoadFallbackShader()
 	{
 		LOG_PRINT_WARNING( " Failed to load the fallback shader." );
 	}
-
-	// CLightEntityManager needs global shader in its CLightEntityManager::InitShaderLightManager()
-	CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );
 
 	return true;
 }
@@ -1353,8 +1349,6 @@ void CEntityRenderManager::RenderSceneWithShadows( CCamera& rCam )//,
 	// set texture render target and call IDirect3DDevice9::BeginScene();
 	m_pShadowManager->BeginScene();
 
-	CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );
-
 	RenderScene( rCam );
 
 	// call IDirect3DDevice9::EndScene() and reset the prev render target;
@@ -1519,7 +1513,6 @@ void CEntityRenderManager::Render( CCamera& rCam )
 		// This happens if one of the following is true:
 		// 1) Shadowmap is disabled (A is false).
 		// 2) Shadowmap is enabled, but there is not light for the shadowmap (B is false).
-		CShader::Get()->SetShaderManager( m_FallbackShader.GetShaderManager() );
 		RenderScene( rCam );
 	}
 
