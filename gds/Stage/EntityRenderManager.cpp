@@ -516,10 +516,14 @@ void CEntityRenderManager::RenderZSortTable()
 
 			pEntity = pEntity->m_pNextEntityInZSortTable;
 		}
-
-		// clear z-sort table
-		m_apZSortTable[i] = NULL;
 	}
+}
+
+
+void CEntityRenderManager::ClearZSortTable()
+{
+	for( int i=0; i<SIZE_ZSORTTABLE; i++ )
+		m_apZSortTable[i] = NULL;
 }
 
 
@@ -609,7 +613,13 @@ void CEntityRenderManager::RenderScene( CCamera& rCam )
 	RenderDownward_r( 0, rCam );
 
 	// render entities that have translucent polygons
+	// NOTE: commenting out the this line alone will cause infinite loop because the z-sort table
+	// is cleared in RenderZSortTable()
 	RenderZSortTable();
+
+	// Clear the Z-sort table.
+	// Note that the Z-sort table must be cleared every frame whether or not RenderZSortTable() is called.
+	ClearZSortTable();
 
 	// render groups of copy entities that belong to a same base entity and should be rendered in succession 
 	// e.g. bullet hold decals
@@ -977,6 +987,7 @@ void CEntityRenderManager::UpdatePlanarReflectionTexture( CCamera& rCam, CPlanar
 
 void CEntityRenderManager::UpdatePlanarReflectionTextures( CCamera& rCam )
 {
+	// Render all the polygons in the mirrored scene.
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
 
 	GraphicsDevice().EnableClipPlane( 0 );

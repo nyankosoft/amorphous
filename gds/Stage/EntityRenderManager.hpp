@@ -142,6 +142,8 @@ private:
 	/// render z-sorted entities
 	void RenderZSortTable();
 
+	void ClearZSortTable();
+
 	void RenderScene( CCamera& rCam );
 
 	void RenderShadowCasters( CCamera& rCam );
