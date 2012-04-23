@@ -164,6 +164,8 @@ public:
 	/// returns const reference to the i-th material
 	const CMeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
 
+	const std::vector<CMeshMaterial>& GetMaterials() const { return m_vecMaterial; }
+
 	CMeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
 
 	std::vector<CMeshMaterial>& Materials() { return m_vecMaterial; }
@@ -298,6 +300,8 @@ public:
 
 	/// returns const reference to the i-th material
 	const CMeshMaterial& GetMaterial( int material_index ) const { return m_pImpl->GetMaterial( material_index ); }
+
+	const std::vector<CMeshMaterial>& GetMaterials() const { m_pImpl->GetMaterials(); }
 
 	CMeshMaterial& Material( int material_index ) { return m_pImpl->Material( material_index ); }
 
