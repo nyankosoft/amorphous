@@ -19,10 +19,7 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDeleteVector.hpp"
 #include "Support/lfs.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
 
 using std::string;
 using std::vector;
