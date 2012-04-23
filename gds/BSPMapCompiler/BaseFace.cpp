@@ -241,8 +241,8 @@ void CFace::Split(CFace& front, CFace& back, SPlane& cutplane)
 	{
 		MAPVERTEX& mv0 = m_pVertices[j];
 		MAPVERTEX& mv1 = m_pVertices[(j+1) % uiNumVertices];
-		Vector3& p0 = mv0.vPosition;      //face に含まれる頂点(Vector3)を任意に２つ選び
-		Vector3& p1 = mv1.vPosition;      //その２頂点とplaneの関係を調べる 
+		Vector3& p0 = mv0.vPosition;      // Pick up 2 of the vertices which belong to this face,
+		Vector3& p1 = mv1.vPosition;      // and find their relations with cutplane 
 		int c0 = ClassifyPoint( cutplane, p0 );
 		int c1 = ClassifyPoint( cutplane, p1 );
 		if( ( c0 == PNT_FRONT && c1 == PNT_BACK ) 	// need split edge
@@ -288,9 +288,9 @@ void CFace::Split(CFace& front, CFace& back, SPlane& cutplane)
 }
 
 //
-//	faceを分断平面でクリップします。
-//	平面上のfaceと、表のfaceは生き残り。
-//	裏に位置するfaceは捨てられます。
+// Split the face with rPlane.
+// The face in front of / on the plane overwrites this face.
+// The face behind the plane is discarded.
 void CFace::ClipFaceWithPlane(SPlane& rPlane)
 {
 	CFace frontface = *this;
@@ -380,13 +380,13 @@ bool CFace::ClipVisibility(CFace& rSrcFace, CFace& rDestFace, int iClipStyle)
 			c = ClassifyFace( clipplane, rSrcFace );
 			if(c == FCE_ONPLANE)
 				continue;
-			//clipstyleがCLIP_NORMALの時、作った平面の裏側にrSrcFaceがあるようにする
-			//clipstyleがCLIP_INVERTの時、作った平面の表側にrSrcFaceがあるようにする
+			// clipstyle == CLIP_NORMAL: rSrcFace needs to be behind the created plane.
+			// clipstyle == CLIP_INVERT: rSrcFace needs to be in front of the created plane.
 			if( c != (iClipStyle==CLIP_NORMAL?FCE_BACK:FCE_FRONT) )
 				clipplane.Flip();
 
-			//iClipStyleがCLIP_NORMALの時、rDestFaceが、表側にある時、その平面の表側が見える最大範囲
-			//iClipStyleがCLIP_INVERTの時、rDestFaceが、裏側にある時、その平面の表側が見える最大範囲
+			// clipstyle == CLIP_NORMAL: the visible portions of rDestFace in the positive half space of clipplane when rDestFace is in front of clipplane
+			// clipstyle == CLIP_INVERT: the visible portions of rDestFace in the positive half space of clipplane when rDestFace is behind clipplane
 			c = ClassifyFace( clipplane, rDestFace );
 			if( c == (iClipStyle==CLIP_NORMAL?FCE_FRONT:FCE_BACK) )
 			{
