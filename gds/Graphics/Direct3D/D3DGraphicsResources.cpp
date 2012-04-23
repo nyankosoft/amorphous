@@ -143,7 +143,7 @@ bool CD3DTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const st
 
 	string image_archive_key = keyname;
 
-	HRESULT hr;
+	HRESULT hr = S_OK;
 
 	CImageArchive img;
 	bool img_found = db.GetData( image_archive_key, img );
@@ -210,6 +210,25 @@ bool CD3DTextureResource::SaveTextureToImageFile( const std::string& image_filep
 }
 
 
+HRESULT CD3DTextureResource::CreateD3DTextureFromFile( const std::string& filepath )
+{
+	SAFE_RELEASE( m_pTexture );
+	return D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
+}
+
+
+LPDIRECT3DSURFACE9 CD3DTextureResource::GetPrimaryTextureSurface()
+{
+	if( !m_pTexture )
+		return NULL;
+
+	LPDIRECT3DSURFACE9 pSurfaceLevel = NULL;
+	HRESULT surf_hr = m_pTexture->GetSurfaceLevel( 0, &pSurfaceLevel );
+
+	return pSurfaceLevel;
+}
+
+
 // May only be called by render thread
 // Used in synchronous loading
 bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
@@ -237,7 +256,8 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 	else
 	{
 		// Load regular image files, such as .bmp and .png
-		hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
+		hr = CreateD3DTextureFromFile( filepath );
+	//	hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
 
 		if( FAILED(hr) )
 		{
@@ -252,11 +272,10 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 	}
 
 	// Retrieve the width and hight of the top level texture, and set them to the desc
-	if( SUCCEEDED(hr) && m_pTexture )
+	if( SUCCEEDED(hr) )
 	{
-		LPDIRECT3DSURFACE9 pSurfaceLevel = NULL;
-		HRESULT surf_hr = m_pTexture->GetSurfaceLevel( 0, &pSurfaceLevel );
-		if( SUCCEEDED(surf_hr) && pSurfaceLevel )
+		LPDIRECT3DSURFACE9 pSurfaceLevel = GetPrimaryTextureSurface();
+		if( /*SUCCEEDED(surf_hr) &&*/ pSurfaceLevel )
 		{
 			D3DSURFACE_DESC surf_desc;
 			pSurfaceLevel->GetDesc( &surf_desc );
@@ -270,6 +289,21 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 }
 
 
+HRESULT CD3DTextureResource::CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool )
+{
+	HRESULT hr = D3DXCreateTexture( DIRECT3D9.GetDevice(),
+	                                (UINT)desc.Width,
+									(UINT)desc.Height,
+									(UINT)desc.MipLevels,
+									usage,
+									ConvertTextureFormatToD3DFORMAT( desc.Format ),
+									pool,
+									&m_pTexture );
+
+	return hr;
+}
+
+
 extern const char *hr_d3d_error_to_string(HRESULT hr);
 
 bool CD3DTextureResource::Create()
@@ -278,7 +312,7 @@ bool CD3DTextureResource::Create()
 
 	const CTextureResourceDesc& desc = m_TextureDesc;
 
-	HRESULT hr;
+	HRESULT hr = E_FAIL;
 	DWORD usage = 0;
 	D3DPOOL pool = D3DPOOL_MANAGED;
 //	DWORD usage = D3DUSAGE_DYNAMIC;
@@ -300,17 +334,10 @@ bool CD3DTextureResource::Create()
 		sprintf( title, "D3DXCreateTexture (%dx%d)", desc.Width, desc.Height );
 		LOG_SCOPE( title );
 
-	hr = D3DXCreateTexture( DIRECT3D9.GetDevice(),
-	                                (UINT)desc.Width,
-									(UINT)desc.Height,
-									(UINT)desc.MipLevels,
-									usage,
-									ConvertTextureFormatToD3DFORMAT( desc.Format ),
-									pool,
-									&m_pTexture );
+		hr = CreateD3DTexture( desc, usage, pool );
 	}
 
-	if( FAILED(hr) || !m_pTexture )
+	if( FAILED(hr) || !GetD3DBaseTexture() )
 	{
 		LOG_PRINT_ERROR( " D3DXCreateTexture() failed. Error: " + string(hr_d3d_error_to_string(hr)) );
 		return false;
@@ -358,7 +385,8 @@ bool CD3DTextureResource::CreateFromDesc()
 
 		HRESULT hr = S_OK;
 
-		hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+//		hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
+		hr = D3DXFilterTexture( GetD3DBaseTexture(), NULL, 0, D3DX_FILTER_TRIANGLE );
 
 //		hr = D3DXSaveTextureToFile( string(desc.ResourcePath + ".dds").c_str(), D3DXIFF_DDS, m_pTexture, NULL );
 
@@ -441,6 +469,45 @@ void CD3DTextureResource::Release()
 	SetState( GraphicsResourceState::RELEASED );
 }
 
+
+//==================================================================================================
+// CD3DCubeTextureResource
+//==================================================================================================
+
+
+HRESULT CD3DCubeTextureResource::CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool )
+{
+	SAFE_RELEASE( m_pCubeTexture );
+
+	HRESULT hr = D3DXCreateCubeTexture( DIRECT3D9.GetDevice(),
+	                                (UINT)desc.Width,
+									(UINT)desc.MipLevels,
+									usage,
+									ConvertTextureFormatToD3DFORMAT( desc.Format ),
+									pool,
+									&m_pCubeTexture );
+
+	return hr;
+}
+
+
+HRESULT CD3DCubeTextureResource::CreateD3DTextureFromFile( const std::string& filepath )
+{
+	SAFE_RELEASE( m_pCubeTexture );
+	return D3DXCreateCubeTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pCubeTexture );
+}
+
+
+LPDIRECT3DSURFACE9 CD3DCubeTextureResource::GetPrimaryTextureSurface()
+{
+	if( !m_pCubeTexture )
+		return NULL;
+
+	LPDIRECT3DSURFACE9 pSurfaceLevel = NULL;
+	HRESULT surf_hr = m_pCubeTexture->GetCubeMapSurface( D3DCUBEMAP_FACE_POSITIVE_X, 0, &pSurfaceLevel );
+
+	return pSurfaceLevel;
+}
 
 
 //==================================================================================================

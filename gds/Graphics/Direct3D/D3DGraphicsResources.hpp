@@ -28,6 +28,14 @@ protected:
 
 //	void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc );
 
+	virtual LPDIRECT3DBASETEXTURE9 GetD3DBaseTexture() { return m_pTexture; }
+
+	virtual HRESULT CreateD3DTextureFromFile( const std::string& filepath );
+
+	virtual LPDIRECT3DSURFACE9 GetPrimaryTextureSurface();
+
+	virtual HRESULT CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool );
+
 public:
 
 	CD3DTextureResource( const CTextureResourceDesc *pDesc );
@@ -68,6 +76,23 @@ public:
 
 	friend class CGraphicsResourceManager;
 };
+
+
+class CD3DCubeTextureResource : public CD3DTextureResource
+{
+	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
+
+private:
+
+	LPDIRECT3DBASETEXTURE9 GetD3DBaseTexture() { return m_pCubeTexture; }
+
+	HRESULT CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool );
+
+	HRESULT CreateD3DTextureFromFile( const std::string& filepath );
+
+	LPDIRECT3DSURFACE9 GetPrimaryTextureSurface();
+};
+
 
 /*
 class CMeshSubResource
