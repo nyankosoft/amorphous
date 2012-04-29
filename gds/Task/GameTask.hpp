@@ -99,6 +99,10 @@ public:
 
 	static void AddTaskNameToTaskIDMap( std::string task_name, int task_id ) { ms_TaskNameStringToTaskID[task_name] = task_id; }
 
+	virtual void OnEnterTask() {}
+
+	virtual void OnLeaveTask() {}
+
 	/**
 	   must be called from FrameMove() of derived classes
 
