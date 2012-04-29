@@ -1,11 +1,5 @@
 #include "SingleStageGameTask.hpp"
-
-#include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/Timer.hpp"
-#include "Graphics/GraphicsElementManager.hpp"
-#include "Input/InputHub.hpp"
-#include "Script/ScriptArchive.hpp"
 #include "Stage.hpp"
 #include "GUI.hpp"
 #include <boost/filesystem.hpp>
@@ -15,7 +9,6 @@ using namespace std;
 
 CSingleStageGameTask::CSingleStageGameTask()
 {
-	LoadStage();
 }
 
 
@@ -25,19 +18,29 @@ CSingleStageGameTask::~CSingleStageGameTask()
 
 
 
-void CSingleStageGameTask::LoadStage()
+void CSingleStageGameTask::LoadStage( const std::string& script_name )
 {
-	// Only support archived script file for now
-	std::string stage_script_filepath = GetStageScriptFilepath();
+	using namespace boost::filesystem;
 
-	if( boost::filesystem::exists( stage_script_filepath ) == false )
+	string name_of_script_to_load;
+
+	if( exists( script_name ) )
+		name_of_script_to_load = script_name;
+	else
 	{
-		LOG_PRINT_WARNING( string(" Script'") + stage_script_filepath + "'does not exist." );
-		return;
+		std::string stage_script_filepath = GetStageScriptFilepath();
+
+		if( exists( stage_script_filepath ) )
+			name_of_script_to_load = stage_script_filepath;
+		else
+		{
+			LOG_PRINT_WARNING( string(" Script'") + stage_script_filepath + "'does not exist." );
+			return;
+		}
 	}
 
 	CStageLoader stage_loader;
-	m_pStage = stage_loader.LoadStage( stage_script_filepath );
+	m_pStage = stage_loader.LoadStage( name_of_script_to_load );
 }
 
 

@@ -20,9 +20,13 @@ public:
 
 	virtual ~CSingleStageGameTask();
 
-	void LoadStage();
+	/// Synchronously loads a stage
+	/// \param script_name [in] a script archive which contains the stage information
+	/// If the argument string is omitted, the string returned by GetStageScriptFilepath() is used.
+	/// Only supports archived script files for now.
+	void LoadStage( const std::string& script_name = "" );
 
-	const std::string GetStageScriptFilepath() { return std::string("default_stage.bin"); }
+	virtual std::string GetStageScriptFilepath() const { return std::string("default_stage.bin"); }
 
 	virtual int FrameMove( float dt );
 
