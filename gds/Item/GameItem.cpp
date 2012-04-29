@@ -72,6 +72,12 @@ void CGameItem::Render()
 }
 
 
+void CGameItem::GetStatusForDebugging( std::string& dest_buffer ) const
+{
+	dest_buffer += fmt_string( "name: %s\n", GetName().c_str() );
+}
+
+
 /**
 - model node (simple version)
 <Model path="box.msh"/>

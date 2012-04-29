@@ -137,6 +137,8 @@ public:
 	/// item staus expressed with a text format
 	virtual void GetStatus( std::string& dest_buffer ) {}
 
+	virtual void GetStatusForDebugging( std::string& dest_buffer ) const;
+
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
