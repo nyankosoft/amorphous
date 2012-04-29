@@ -76,14 +76,25 @@ void CGameTaskManager::Update( float dt )
                 m_vecTaskIDStack.push_back( m_CurrentTaskID );
 //			if( TASKID_STACK_SIZE < m_vecTaskIDStack.size() )
 //				m_vecTaskIDStack.erase( m_vecTaskIDStack.begin() );
+
+			m_pCurrentTask->OnLeaveTask();
+
 			delete m_pCurrentTask;
+
+			m_pCurrentTask = NULL;
 		}
 
 		// create a new task
 		m_pCurrentTask = CreateTask( next_task_id );
 
 		// init
-		m_pCurrentTask->SetPrevTaskID( 0 < m_vecTaskIDStack.size() ? m_vecTaskIDStack.back() : CGameTask::ID_INVALID );
+		if( m_pCurrentTask )
+		{
+			int prev_task_id = 0 < m_vecTaskIDStack.size() ? m_vecTaskIDStack.back() : CGameTask::ID_INVALID;
+			m_pCurrentTask->SetPrevTaskID( prev_task_id );
+
+			m_pCurrentTask->OnEnterTask();
+		}
 
 		// save the current task id
 		m_CurrentTaskID = next_task_id;
