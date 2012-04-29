@@ -9,6 +9,12 @@
 #include <iostream>
 
 
+Vector3 (*Vec3Cross_2Args)( const Vector3& lhs, const Vector3& rhs ) = Vec3Cross;
+void (*Vec3Cross_3Args)( Vector3& out, const Vector3& lhs, const Vector3& rhs ) = Vec3Cross;
+void (*Vec3Normalize_SingleArg)( Vector3& in ) = Vec3Normalize;
+void (*Vec3Normalize_2Args)( Vector3& out, const Vector3& in ) = Vec3Normalize;
+
+
 static Matrix33 Matrix33IdentityForBoostPython()
 {
 	return Matrix33Identity();
@@ -33,8 +39,14 @@ BOOST_PYTHON_MODULE(math3d)
 		.def(self / float())
 	;
 
-//	def( "Vec3Length", Vec3Length );
-//	def( "Vec3GetNormalized", Vec3GetNormalized );
+	def( "Vec3Dot",    Vec3Dot<float> );
+	def( "Vec3Cross",  Vec3Cross_2Args );
+	def( "Vec3Cross",  Vec3Cross_3Args );
+	def( "Vec3LengthSq", Vec3LengthSq<float> );
+	def( "Vec3Length",   Vec3Length<float> );
+	def( "Vec3Normalize", Vec3Normalize_SingleArg );
+	def( "Vec3Normalize", Vec3Normalize_2Args );
+	def( "Vec3GetNormalized", Vec3GetNormalized<float> );
 
 	class_<Vector2>("Vector2")
 		.def(init<float,float>())
