@@ -81,6 +81,28 @@ inline CMeshObjectHandle CreateConeMesh( float radius = 0.5f, float height = 1.0
 }
 
 
+inline CMeshObjectHandle CreateCylinderMesh( float radius = 0.5f, float height = 1.0f,
+								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
+								const Matrix34& model_pose = Matrix34Identity() )
+{
+	CCylinderDesc cylinder_desc;
+	cylinder_desc.radii[0] = cylinder_desc.radii[1] = radius;
+	cylinder_desc.height = height;
+
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator.reset( new CCylinderMeshGenerator(cylinder_desc) );
+	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
+
+	CMeshObjectHandle mesh;
+	bool loaded = mesh.Load( mesh_desc );
+
+	if( loaded )
+		return mesh;
+	else
+		return CMeshObjectHandle();
+}
+
+
 inline Result::Name Set6FaceColors(
 	CCustomMesh& box_mesh,
 	const SFloatRGBAColor& px = SFloatRGBAColor::Red(),
