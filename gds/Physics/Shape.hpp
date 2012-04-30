@@ -44,10 +44,10 @@ public:
 //	virtual NX_BOOL  getFlag (NxShapeFlag flag) const =0 
 
 	/// Assigns a material index to the shape.
-//	virtual void  SetMaterial ( int material_id ) = 0;
+	virtual void SetMaterialID( int material_id ) = 0;
 
 	/// Retrieves the material index currently assigned to the shape. 
-//	virtual int GetMaterialID () const = 0;
+	virtual int GetMaterialID() const = 0;
 
 	/// Sets the skin width. See NxShapeDesc::skinWidth. 
 //	virtual void  setSkinWidth (Scalar skinWidth)=0 
@@ -190,10 +190,10 @@ public:
 //	virtual NX_BOOL  getFlag (NxShapeFlag flag) const =0 
 
 	/// Assigns a material index to the shape.
-//	virtual void  SetMaterial ( int material_id ) = 0;
+	void SetMaterialID( int material_id ) { m_pImpl->SetMaterialID( material_id ); }
 
 	/// Retrieves the material index currently assigned to the shape. 
-//	virtual int GetMaterialID () const = 0;
+	int GetMaterialID() const { return m_pImpl->GetMaterialID(); }
 
 	/// Sets the skin width. See NxShapeDesc::skinWidth. 
 //	virtual void  setSkinWidth (Scalar skinWidth)=0 

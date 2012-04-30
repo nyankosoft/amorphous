@@ -23,6 +23,8 @@ public:
 
 	virtual ~CNxPhysShapeImpl() {}
 
+	void SetMaterialID( int material_id ) { m_pNxShape->setMaterial( (NxMaterialIndex)material_id ); }
+
 	int GetMaterialID() const { return (int)m_pNxShape->getMaterial(); }
 
 	Matrix34 GetLocalPose() const { return ToMatrix34( m_pNxShape->getLocalPose() ); }
