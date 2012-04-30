@@ -127,6 +127,15 @@ class CStageMiscUtility : public CStageUtility
 							  const std::string& material_name,
 							  bool static_actor );
 
+	CEntityHandle<> CreateSphereEntity( CMeshResourceDesc& mesh_desc,
+								  const std::string& entity_name,
+								  const std::string& entity_attributes_name,
+								  const Matrix34& pose,
+								  const Vector3& vel,
+								  float mass,
+								  const std::string& material_name,
+								  bool static_actor );
+
 	CEntityHandle<> CreateBoxesEntity( CMeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
@@ -170,6 +179,17 @@ public:
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
+	CEntityHandle<> CreateBox( Vector3 edge_lengths,
+		SFloatRGBAColor diffuse_color,
+		const Vector3& pos,
+		const float heading = 0.0f,
+		const float pitch = 0.0f,
+		const float bank = 0.0f,
+		float mass = 1.0f,
+		const std::string& material_name = "default",
+		const std::string& entity_name = "",
+		const std::string& entity_attributes_name = "" );
+
 	CEntityHandle<> CreateStaticBox( Vector3 edge_lengths,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
@@ -183,15 +203,15 @@ public:
 							const std::string& material_name = "default",
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
-/*
-	CEntityHandle<> CreateBall( float radius,
+
+	CEntityHandle<> CreateSphere( float diameter = 1.0f,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
 		float mass = 1.0f,
 		const std::string& material_name = "default",
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
-
+/*
 	CEntityHandle<> CreateStaticBall( float radius,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),

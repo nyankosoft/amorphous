@@ -68,7 +68,7 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
 			{
 				const CMeshMaterial& mat = pMesh->GetMaterial( i );
 //				if( 0.001f <= mat.m_Mat.fReflection )
-//					shader_desc.PlanerReflection or env map = true;
+//					shader_desc.PlanarReflection or env map = true;
 //				if( 0.001f < mat.m_Mat.fSpecularity )
 //					shader_desc.Specular = CSpecularSource::?
 			}
@@ -449,6 +449,28 @@ Result::Name SetCylinderConvexShapeDesc( CMeshObjectHandle& mesh_handle, CConvex
 }
 
 
+Result::Name SetSphereShapeDesc( CMeshObjectHandle& mesh_handle, CSphereShapeDesc& sphere_desc )
+{
+	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	if( !pMesh || pMesh->GetNumMaterials() == 0 )
+		return Result::UNKNOWN_ERROR;
+
+//	const AABB3 aabb = pMesh->GetAABB();
+	AABB3 aabb;
+	aabb.Nullify();
+	for( int i=0; i<pMesh->GetNumMaterials(); i++ )
+		aabb.MergeAABB( pMesh->GetAABB(i) );
+
+	sphere_desc.Radius = aabb.vMax.z;
+
+	// TODO: let client code specify a material by name
+//	sphere_desc.MaterialName = material_name;
+	sphere_desc.MaterialIndex = 1;
+
+	return Result::SUCCESS;
+}
+
+
 CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( CMeshResourceDesc& mesh_desc,
 						      //CActorDesc& actor_desc,
 							  const std::string& entity_name,
@@ -617,6 +639,35 @@ CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( CMeshResourceDesc& mesh
 }
 
 
+CEntityHandle<> CStageMiscUtility::CreateSphereEntity( CMeshResourceDesc& mesh_desc,
+							  const std::string& entity_name,
+							  const std::string& entity_attributes_name,
+							  const Matrix34& pose,
+							  const Vector3& vel,
+							  float mass,
+							  const std::string& material_name,
+							  bool static_actor )
+{
+	CMeshObjectHandle mesh;
+	bool loaded = mesh.Load( mesh_desc );
+	if( !loaded )
+		return CEntityHandle<>();
+
+	CSphereShapeDesc sphere_desc;
+	Result::Name res = SetSphereShapeDesc( mesh, sphere_desc );
+	if( res != Result::SUCCESS )
+		return CEntityHandle<>();
+
+	vector<CShapeDesc *> vecpShapeDesc;
+	vecpShapeDesc.push_back( &sphere_desc );
+
+//	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
+//	actor_desc.BodyDesc.fMass = mass;
+
+	return CreatePhysicsEntity( mesh_desc, entity_name, entity_attributes_name, pose, vel, vecpShapeDesc, mass, static_actor );
+}
+
+
 CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 											  SFloatRGBAColor diffuse_color,
 											  const Matrix34& pose,
@@ -628,14 +679,6 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 {
 //	printf( "Creating box at %s - size: %s, color: %s\n",
 //		to_string(pos).c_str(), to_string(edge_lengths).c_str(), to_string(diffuse_color).c_str() );
-/*
-	Matrix34 pose;
-	pose.vPosition = pos;
-	pose.matOrient
-		= Matrix33RotationY( deg_to_rad(heading) )
-		* Matrix33RotationX( deg_to_rad(pitch) )
-		* Matrix33RotationZ( deg_to_rad(bank) );
-*/
 
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromDimension__";
 
@@ -648,6 +691,30 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 	Vector3 vel = Vector3(0,0,0);
 
 	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
+											  SFloatRGBAColor diffuse_color,
+											  const Vector3& pos,
+											  const float heading,
+											  const float pitch,
+											  const float bank,
+											  const float mass,
+					                          const std::string& material_name,
+					                          const std::string& entity_name,
+					                          const std::string& entity_attributes_name
+					                          )
+{
+	return CreateBox(
+		edge_lengths,
+		diffuse_color,
+		Matrix34( pos, Matrix33RotationHPR_deg( heading, pitch, bank ) ),
+		mass,
+		material_name,
+		entity_name,
+		entity_attributes_name
+		);
 }
 
 
@@ -691,6 +758,30 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 	Vector3 vel = Vector3(0,0,0);
 
 	return CreateBoxEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
+}
+
+
+CEntityHandle<> CStageMiscUtility::CreateSphere( float diameter,
+											  SFloatRGBAColor diffuse_color,
+											  const Matrix34& pose,
+											  const float mass,
+					                          const std::string& material_name,
+					                          const std::string& entity_name,
+					                          const std::string& entity_attributes_name
+					                          )
+{
+	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromDimension__";
+
+	CSphereDesc sphere_desc;
+	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = diameter * 0.5f;
+	shared_ptr<CSphereMeshGenerator> pSphereMeshGenerator( new CSphereMeshGenerator(sphere_desc) );
+	pSphereMeshGenerator->SetDiffuseColor( diffuse_color );
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator = pSphereMeshGenerator;
+
+	Vector3 vel = Vector3(0,0,0);
+
+	return CreateSphereEntity( mesh_desc, entity_name, actual_entity_attributes_name, pose, vel, mass, material_name, false );
 }
 
 
@@ -956,10 +1047,10 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 	{
 		return CreateCylinderEntity( mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
 	}
-//	else if( shape_name == "sphere" )
-//	{
-//		CreateSphereEntity( mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
-//	}
+	else if( shape_name == "sphere" )
+	{
+		CreateSphereEntity( mesh_desc, name, "", pose, Vector3(0,0,0), mass, "", is_static );
+	}
 	else if( shape_name == "mesh" )
 	{
 		return CreateTriangleMeshEntityFromMesh( model, model, pose, mass, "", name, "__TriangleMeshFromMesh__", is_static );
