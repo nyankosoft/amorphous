@@ -63,9 +63,6 @@
     <ClInclude Include="..\..\gds\Stage\BinaryNode.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Stage\BSPMap.hpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gds\Stage\bspstructs.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
@@ -810,11 +807,11 @@
     <ClInclude Include="..\..\gds\MotionSynthesis\BVHUtilities.hpp">
       <Filter>Source Files\MotionSynthesis</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Stage\BSPMap.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\gds\Stage\BSPMap.cpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
@@ -1444,6 +1441,9 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\MotionSynthesis\BVHUtilities.cpp">
       <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Stage\BSPMap.cpp">
+      <Filter>Source Files\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
