@@ -1,7 +1,7 @@
 
 // screen resolution
 // aspect ratio must be w:h = 4:3
-resolution	800	600
+resolution	1280 720
 //resolution	1024	768
 //resolution	1600	900
 
