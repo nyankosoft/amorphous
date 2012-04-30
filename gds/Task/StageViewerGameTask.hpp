@@ -20,9 +20,13 @@ class CStageViewerGameTask : public CSingleStageGameTask
 
 protected:
 
-	CCamera& Camera() { return m_Camera; }
+	const CCamera& GetCamera() const { return m_Camera; }
 
 	boost::shared_ptr<CCameraController> CameraController() { return m_pCameraController; }
+
+	void SetCameraPosition( const Vector3& pos ) { m_Camera.SetPosition(pos); m_pCameraController->SetPosition(pos); }
+
+	void SetCameraPose( const Matrix34& pose ) { m_Camera.SetPose(pose); m_pCameraController->SetPose(pose); }
 
 public:
 
