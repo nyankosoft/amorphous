@@ -34,6 +34,8 @@ public:
 
 	uint GetCapacity() const { return m_Capacity; }
 
+	uint GetNumLoadedCartridges() const { return (uint)m_pLoadedCartridges.size(); }
+
 	bool IsEmpty() const { return m_pLoadedCartridges.empty(); }
 
 	int LoadCartridges( boost::shared_ptr<CCartridge>& pCartridge, uint num_max_rounds_to_load );
