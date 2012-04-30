@@ -57,8 +57,8 @@ public:
 	CGlobalParams()
 		:
 	FullScreen(false),
-	ScreenWidth(800),
-	ScreenHeight(600),
+	ScreenWidth(1280),
+	ScreenHeight(720),
 	WindowLeftPos(-1),
 	WindowTopPos(-1),
 	ScreenshotImageFormat( "bmp" ),
