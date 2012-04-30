@@ -1,5 +1,6 @@
 #include "Stage/Stage.hpp"
-#include "Stage/BSPMap.hpp"
+//#include "Stage/BSPMap.hpp"
+#include "Stage/bsptree.hpp"
 #include "Stage/StaticGeometry.hpp"
 #include "Stage/EntitySet.hpp"
 #include "Stage/EntityRenderManager.hpp"
@@ -108,11 +109,10 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 {
 	string ext = lfs::get_ext( filename );
 
-	if( ext == "bspx" ) // bsp level file (deprecated)
-		return new CBSPMap( pStage );
-	else if( ext == "sga" ) // static geometry archive
-//		return new CStaticGeometryFG( pStage );
+	if( ext == "sga" ) // static geometry archive
 		return new CStaticGeometry( pStage );
+//	else if( ext == "bspx" ) // bsp level file (deprecated)
+//		return new CBSPMap( pStage );
 	else
 	{
 		LOG_PRINT_WARNING( "an invalid static geometry filename: " + filename );
