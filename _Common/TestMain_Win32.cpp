@@ -121,7 +121,6 @@ void UpdateCameraMatrices()
 {
 	Matrix44 matView;
 	g_CameraController.GetCameraMatrix( matView );
-//	DIRECT3D9.GetDevice()->SetTransform( D3DTS_VIEW, &matView );
 
 	Matrix44 view;
 	view.SetRowMajorMatrix44( (Scalar *)&matView );
@@ -161,6 +160,7 @@ VOID Render()
 	}
 	else
 	{
+		PROFILE_SCOPE( "Clear the color and depth buffers" );
 		const SFloatRGBAColor c = g_pTest->GetBackgroundColor();
 		glClearColor( c.fRed, c.fGreen, c.fBlue, c.fAlpha );
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
@@ -181,7 +181,7 @@ VOID Render()
 	const vector<string>& vecProfileResults = GetProfileText();
 	BOOST_FOREACH( const string& text, vecProfileResults )
 	{
-//		g_pFont->DrawText( text.c_str(), Vector2( 20, 40 + i*16 ), 0xF0F0F0FF );
+		g_pFont->DrawText( text.c_str(), Vector2( 20, 40 + i*16 ), 0xF0F0F0FF );
 		i++;
 	}
 
@@ -307,6 +307,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	int h = g_pTest->GetWindowHeight(); //  768;
 	GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
 	GameWindowManager().CreateGameWindow( w, h, mode, app_title );
+	g_Camera.SetAspectRatio( (float)w / (float)h );
 
 	try
 	{
