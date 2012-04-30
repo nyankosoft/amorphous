@@ -1,14 +1,14 @@
 #include "BasicPhysicsAppBase.hpp"
 
-#include "Graphics/GraphicsElementManager.hpp"
-#include "Support.hpp"
-#include "Input.hpp"
-#include "Stage.hpp"
-#include "Task.hpp"
-#include "Script.hpp"
-#include "GUI.hpp"
-#include "GameCommon/MouseCursor.hpp"
-#include "App/GameWindowManager.hpp"
+#include "gds/Graphics/GraphicsElementManager.hpp"
+#include "gds/Support.hpp"
+#include "gds/Input.hpp"
+#include "gds/Stage.hpp"
+#include "gds/Task.hpp"
+#include "gds/Script.hpp"
+#include "gds/GUI.hpp"
+#include "gds/GameCommon/MouseCursor.hpp"
+#include "gds/App/GameWindowManager.hpp"
 
 using std::string;
 using namespace boost;
@@ -55,7 +55,7 @@ CBasicPhysicsAppTask::CBasicPhysicsAppTask()
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
-	CameraController()->SetPose( Matrix34( Vector3(0,20,-15), Matrix33Identity() ) );
+	SetCameraPose( Matrix34( Vector3(0,20,-15), Matrix33Identity() ) );
 }
 
 
