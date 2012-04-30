@@ -452,6 +452,9 @@ void CNxPhysScene::ReleaseJoint( CJoint*& pJoint )
 
 CMaterial *CNxPhysScene::CreateMaterial (const CMaterialDesc &desc)
 {
+	if( !m_pScene )
+		return NULL;
+
 	NxMaterialDesc nx_desc;
 	nx_desc.dynamicFriction         = (NxReal)desc.DynamicFriction;
 	nx_desc.staticFriction          = (NxReal)desc.StaticFriction;
@@ -465,6 +468,9 @@ CMaterial *CNxPhysScene::CreateMaterial (const CMaterialDesc &desc)
 //	nx_desc.spring                  = (NxSpringDesc *)desc.;
 
 	NxMaterial *pNxMaterial = m_pScene->createMaterial( nx_desc );
+	if( !pNxMaterial )
+		return NULL;
+
 	NxMaterialIndex material_index = pNxMaterial->getMaterialIndex();
 	if( 256 <= material_index )
 		ONCE( LOG_PRINT_WARNING( " You are actually using quite a few materials or PhysX implementation changed?" ) );
