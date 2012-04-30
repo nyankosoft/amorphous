@@ -19,10 +19,10 @@ int (CGraphicsElementManager::*LoadTextureWithoutID)( const std::string& ) = &CG
 bool (CGraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
 int (CGraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
 
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode );
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode );
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode );
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode );
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode ) = &CAnimatedGraphicsManager::ChangeColor;
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode )    = &CAnimatedGraphicsManager::ChangeColor;
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode ) = &CAnimatedGraphicsManager::ChangeColorTo;
+CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode )   = &CAnimatedGraphicsManager::ChangeColorTo;
 
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(gem_member_overloads, CreateText, 1, 3)
 
