@@ -42,8 +42,8 @@ public:
 
 	CGraphicsTestBase()
 		:
-	m_WindowWidth(800),
-	m_WindowHeight(600),
+	m_WindowWidth(1280),
+	m_WindowHeight(720),
 	m_UseRenderBase(false),
 	m_BackgroundColor( SFloatRGBAColor( 0.19f, 0.19f, 0.19f, 1.00f ) )
 	{}
