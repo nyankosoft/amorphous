@@ -136,6 +136,8 @@ public:
 
 	virtual bool HandleInput( int action_code, int input_type, float fParam );
 
+	virtual void GetStatusForDebugging( std::string& dest_buffer ) const;
+
 //	virtual void UpdateWorldProperties( const Matrix34& rShooterWorldPose,
 //							            const Vector3& rvShooterVelocity,
 //										const Vector3& rvShooterAngVelocity );
@@ -199,6 +201,8 @@ public:
 	bool IsSlideHeld() const { return m_IsSlideHeld; }
 
 	bool IsSlideStopEngaged() const { return m_IsSlideStopEngaged; }
+
+	void InitFirearmMesh();
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_FIREARM; }
 

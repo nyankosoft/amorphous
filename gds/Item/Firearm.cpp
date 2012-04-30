@@ -449,9 +449,56 @@ bool CFirearm::HandleInput( int action_code, int input_type, float fParam )
 }
 
 
+//void CFirearm::GetStatus( std::string& dest_buffer )
+void CFirearm::GetStatusForDebugging( std::string& dest_buffer ) const
+{
+	CGameItem::GetStatusForDebugging( dest_buffer );
+
+	dest_buffer += "chamber: ";
+	if( m_pChamberedCartridge )
+	{
+		dest_buffer += m_pChamberedCartridge->GetName() + "\n";
+	}
+	else
+	{
+		dest_buffer += "<empty>\n";
+	}
+
+	dest_buffer += "mag: ";
+	const boost::shared_ptr<CMagazine> pMag = GetMagazine();
+	if( pMag )
+	{
+		dest_buffer += fmt_string( "%s [%02u / %02u]\n", pMag->GetName().c_str(), pMag->GetNumLoadedCartridges(), pMag->GetCapacity() );
+	}
+	else
+	{
+		dest_buffer += "<not inserted>\n";
+	}
+
+	dest_buffer += fmt_string( "state: %d\n", m_FirearmState );
+
+	dest_buffer += fmt_string( "slide stop: %s\n", m_IsSlideStopEngaged ? "engaged" : "disengaged" );
+
+	dest_buffer += fmt_string( "total fired rounds: %u\n", m_NumTotalFiredRounds );
+}
+
+
 bool CFirearm::IsReadyToFire() const
 {
 	return ( fabs(m_fSlidePosition) < 0.001f );
+}
+
+void CFirearm::InitFirearmMesh()
+{
+	CBasicMesh *pMesh = NULL;
+	if( !pMesh )
+		return;
+
+	CBasicMesh& mesh = *pMesh;
+
+//	CMeshContainerRenderMethod render_method;
+//	CSubsetRenderMethod slide_render_method;
+//	render_method.m_vecSubsetNameToRenderMethod["slide"] = slide_render_method;
 }
 
 
@@ -564,6 +611,8 @@ void CFirearm::Fire()
 		rMuzzleFlashDesc.vVelocity = m_vMuzzleEndVelocity * 0.8f; // Vector3(0,0,0);
 		pStage->CreateEntity( rMuzzleFlashDesc );
 	}
+
+	m_NumTotalFiredRounds += 1;
 
 	// A bullet has been fired: feed the next round
 
