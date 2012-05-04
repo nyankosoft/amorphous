@@ -115,6 +115,11 @@ public:
 		strncpy( m_buffer, rhs, MaxLength - 1 );
 		return *this;
 	}
+
+	bool operator==( const char *rhs ) const
+	{
+		return ( strcmp( m_buffer, rhs ) == 0 );
+	}
 };
 
 /*
