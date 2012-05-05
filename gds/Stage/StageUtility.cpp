@@ -58,23 +58,6 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
 	else
 	{
 		pEntity->pBaseEntity->InitEntityGraphics( *pEntity );
-/*
-		// Create the shader based on the mesh 
-		boost::shared_ptr<CBasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
-		if( pMesh )
-		{
-			CGenericShaderDesc shader_desc;
-			for( int i=0; i<pMesh->GetNumMaterials(); i++ )
-			{
-				const CMeshMaterial& mat = pMesh->GetMaterial( i );
-//				if( 0.001f <= mat.m_Mat.fReflection )
-//					shader_desc.PlanarReflection or env map = true;
-//				if( 0.001f < mat.m_Mat.fSpecularity )
-//					shader_desc.Specular = CSpecularSource::?
-			}
-
-//			pMesh
-		}*/
 	}
 
 	return pEntity ? CEntityHandle<>( pEntity->Self() ) : CEntityHandle<>();
