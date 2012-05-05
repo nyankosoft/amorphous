@@ -13,13 +13,8 @@
 #include "../../../_Common/GraphicsTestBase.hpp"
 
 
-class CPrimitiveShapeMeshesTest : public CGraphicsTestBase, public CGraphicsComponent
+class CPrimitiveShapeMeshesTest : public CGraphicsTestBase
 {
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 	std::vector<CMeshObjectHandle> m_vecMesh;
 //	std::vector<CTestMeshHolder> m_vecMesh;
 
@@ -29,11 +24,7 @@ class CPrimitiveShapeMeshesTest : public CGraphicsTestBase, public CGraphicsComp
 
 	CShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
-
 	boost::shared_ptr<CFontBase> m_pFont;
-
-	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	std::string m_TextBuffer;
 
@@ -66,9 +57,6 @@ public:
 	void Render();
 
 	void HandleInput( const SInputData& input );
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
 
 

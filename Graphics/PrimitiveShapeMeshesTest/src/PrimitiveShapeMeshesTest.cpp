@@ -4,7 +4,6 @@
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/Macro.h"
-#include "gds/GUI.hpp"
 
 using std::string;
 using namespace boost;
@@ -140,8 +139,6 @@ int CPrimitiveShapeMeshesTest::Init()
 
 void CPrimitiveShapeMeshesTest::Update( float dt )
 {
-	if( m_pSampleUI )
-		m_pSampleUI->Update( dt );
 }
 
 
@@ -200,9 +197,6 @@ void CPrimitiveShapeMeshesTest::Render()
 
 	RenderMeshes();
 
-	if( m_pSampleUI )
-		m_pSampleUI->Render();
-
 	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
 	Vector2 vTopLeft(     640,       16 );
@@ -221,16 +215,6 @@ void CPrimitiveShapeMeshesTest::Render()
 
 void CPrimitiveShapeMeshesTest::HandleInput( const SInputData& input )
 {
-	if( m_pUIInputHandler )
-	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}
-
 	switch( input.iGICode )
 	{
 	case GIC_DOWN:
@@ -259,16 +243,4 @@ void CPrimitiveShapeMeshesTest::HandleInput( const SInputData& input )
 	default:
 		break;
 	}
-}
-
-
-void CPrimitiveShapeMeshesTest::ReleaseGraphicsResources()
-{
-//	m_pSampleUI.reset();
-}
-
-
-void CPrimitiveShapeMeshesTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-//	CreateGUIControls();
 }
