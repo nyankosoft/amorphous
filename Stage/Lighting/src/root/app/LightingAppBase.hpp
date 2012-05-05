@@ -2,48 +2,29 @@
 #define  __LightingAppBase_HPP__
 
 
-#include "App/GameApplicationBase.hpp"
-#include "Task/StageViewerGameTask.hpp"
-#include "Task/GameTaskFactoryBase.hpp"
+#include "gds/App/GameApplicationBase.hpp"
+#include "gds/Task/StageViewerGameTask.hpp"
+#include "gds/Task/GameTaskFactoryBase.hpp"
 
 
 enum ShadowAppTaskID
 {
-//	GAMETASK_ID_SHADOWS_TEST_STAGE,
-	GAMETASK_ID_BASIC_PHYSICS,
-	NUM_SHADOW_APP_GAMETASK_IDS
+	GAMETASK_ID_LIGHTING,
+	NUM_LIGHTING_APP_GAMETASK_IDS
 };
 
 
 class CLightingAppTask : public CStageViewerGameTask
 {
+	void DisplayEntityPositions( CAnimatedGraphicsManager& animated_graphics_manager );
+
 public:
 
 	CLightingAppTask();
 
 	~CLightingAppTask() {}
 
-};
-
-class CLightingAppGUITask : public CGUIGameTask
-{
-	enum GUI_ID
-	{
-		GUI_ID_DLG_ROOT_STAGE_SELECT = 1000,
-		GUI_ID_LBX_STAGE_SELECT,
-	};
-
-	std::string m_StageScriptToLoad;
-
-public:
-
-	CLightingAppGUITask();
-
-	~CLightingAppGUITask() {}
-
 	int FrameMove( float dt );
-
-	void LoadStage( const std::string& stage_script_name );
 };
 
 
@@ -55,10 +36,8 @@ public:
 	{
 		switch( iTaskID )
 		{
-		case GAMETASK_ID_BASIC_PHYSICS:
+		case GAMETASK_ID_LIGHTING:
 			return new CLightingAppTask();
-//		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
-//			return new CLightingAppGUITask();
 		default:
 			return CGameTaskFactoryBase::CreateTask( iTaskID );
 		}

@@ -1,17 +1,19 @@
 #include "LightingAppBase.hpp"
 
-#include <gds/Graphics/GraphicsElementManager.hpp>
-#include <gds/Support.hpp>
-#include <gds/Input.hpp>
-#include <gds/Stage.hpp>
-#include <gds/Task.hpp>
-#include <gds/Script.hpp>
-#include <gds/GUI.hpp>
-#include <gds/GameCommon/MouseCursor.hpp>
-#include <gds/App/GameWindowManager_Win32.hpp>
+#include "gds/Graphics/GraphicsElementManager.hpp"
+#include "gds/Graphics/GraphicsEffectManager.hpp"
+#include "gds/Graphics/3DtoScreenSpaceConversions.hpp"
+#include "gds/Support.hpp"
+#include "gds/Input.hpp"
+#include "gds/Stage.hpp"
+#include "gds/Task.hpp"
+#include "gds/Script.hpp"
+#include "gds/GUI.hpp"
+#include "gds/GameCommon/MouseCursor.hpp"
+#include "gds/App/GameWindowManager.hpp"
 
-
-using namespace std;
+using std::string;
+using std::vector;
 using namespace boost;
 
 
@@ -19,33 +21,6 @@ static string sg_TestStageScriptToLoad = "./Script/hs_lights.bin";
 
 
 extern CApplicationBase *CreateApplicationInstance() { return new CLightingAppBase(); }
-
-
-class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
-{
-	CLightingAppGUITask *m_pTask;
-
-public:
-
-	StageSelectListBoxEventHandler( CLightingAppGUITask *pTask )
-		:
-	m_pTask(pTask)
-	{
-	}
-
-	void OnItemSelected( CGM_ListBoxItem& item, int item_index )
-	{
-		switch( item_index )
-		{
-		case 0:
-			m_pTask->LoadStage( "./Script/???.bin" );
-			break;
-		default:
-			break;
-		}
-
-	}
-};
 
 
 CLightingAppTask::CLightingAppTask()
@@ -60,61 +35,99 @@ CLightingAppTask::CLightingAppTask()
 }
 
 
-CLightingAppGUITask::CLightingAppGUITask()
+void CLightingAppTask::DisplayEntityPositions( CAnimatedGraphicsManager& animated_graphics_manager )
 {
-/*	int w = 1200, h = 300;
-	SRect root_dlg_rect = RectLTWH( 50, 50, w, h );
-	CGM_Dialog *pRootDlg
-		= DialogBoxManager()->AddRootDialog(
-		GUI_ID_DLG_ROOT_STAGE_SELECT,
-		root_dlg_rect,
-		"shadows test",
-		CGM_Dialog::STYLE_ALWAYS_OPEN
-		);
+	AABB3 aabb;
+	aabb.vMin = Vector3(1,1,1) * (-100.0f);
+	aabb.vMax = Vector3(1,1,1) * (100.0f);
+	vector<CCopyEntity *> pEntities;
+	COverlapTestAABB aabb_test( aabb, &pEntities );
+	m_pStage->GetEntitySet()->GetOverlappingEntities( aabb_test );
 
-	SRect lbx_rect = RectLTWH( 10, 10, w - 20, h - 20 );
+	shared_ptr<CGraphicsElementManager> pElementMgr = animated_graphics_manager.GetGraphicsElementManager();
 
-	CGM_ListBox *pStageSelectListBox
-		= pRootDlg->AddListBox( GUI_ID_LBX_STAGE_SELECT, lbx_rect, "", 0, 40 );
+	static vector< shared_ptr<CFrameRectElement> > pFrameRects;
+	const size_t num_max_frame_rects = 128;
+	const int frame_width = 4;
+	int rect_edge_length = 50;
+	int layer = 0;
+	if( pFrameRects.empty() )
+	{
+		pFrameRects.resize( num_max_frame_rects );
+		for( size_t i=0; i<pFrameRects.size(); i++ )
+			pFrameRects[i] = pElementMgr->CreateFrameRect( SRect(0,0,rect_edge_length,rect_edge_length), SFloatRGBAColor(0,0,0,0), frame_width, layer );
+	}
 
-	DialogBoxManager()->OpenRootDialog( GUI_ID_DLG_ROOT_STAGE_SELECT );
+	for( size_t i=0; i<pFrameRects.size(); i++ )
+	{
+		pFrameRects[i]->SetLocalTopLeftPos( Vector2(500,20) );
+		pFrameRects[i]->SetColor( 0, SFloatRGBAColor(0,0,0,0) );
+	}
+	
+	static int s_layer = 10;
+	for( size_t i=0; i<pFrameRects.size(); i++ )
+		pFrameRects[i]->SetLayer( s_layer );
 
-	pStageSelectListBox->InsertItem( 0, "directional light", NULL );
-	pStageSelectListBox->InsertItem( 1, "point light", NULL );
-	pStageSelectListBox->InsertItem( 2, "spotlight", NULL );
+	size_t num_displayed_entities = 0;
+	const size_t num_entities = pEntities.size();
+	for( size_t i=0; i<num_entities; i++ )
+	{
 
-	shared_ptr<CGM_ListBoxEventHandler> pEventHandler( new StageSelectListBoxEventHandler(this) );
-	pStageSelectListBox->SetEventHandler( pEventHandler );
+		if( num_displayed_entities == pFrameRects.size() )
+			break;
 
-	shared_ptr<CGraphicsElementManager> pGraphicsElemetMgr
-		= GetGUIRendererManager()->GetGraphicsElementManager();
+		if( !pEntities[i] )
+			continue;
 
-	pGraphicsElemetMgr->LoadFont( 0, "./Fonts/mono966_rld_b.TTF", 24, 48 );
-*/
+		bool entity_is_in_camera = GetCamera().ViewFrustumIntersectsWith( Sphere( pEntities[i]->GetWorldPosition(), 0.1f ) );
+		if( !entity_is_in_camera )
+			continue;
+
+		bool is_light_entity = false;
+		const uint archive_id = pEntities[i]->GetBaseEntity()->GetArchiveObjectID();
+		if( archive_id == CBaseEntity::BE_POINTLIGHT
+		 || archive_id == CBaseEntity::BE_DIRECTIONALLIGHT )
+		{
+			is_light_entity = true;
+		}
+		else if( pEntities[i]->bNoClip )
+			continue;
+		else
+			is_light_entity = false;
+
+		Vector2 pos = CalculateScreenCoordsFromWorldPosition( GetCamera(), pEntities[i]->GetWorldPosition() );
+//		Vector2 pos = Vector2(0,0);
+//		clamp( pos.x, 0.0f, 800.0f );
+//		clamp( pos.y, 0.0f, 600.0f );
+
+		if( 0 <= pos.x && pos.x <= CGraphicsComponent::GetReferenceScreenWidth()
+		 && 0 <= pos.y && pos.y <= CGraphicsComponent::GetReferenceScreenHeight() )
+		{
+			// display the entity position
+			Vector2 top_left_pos = pos - Vector2((float)rect_edge_length,(float)rect_edge_length) * 0.5f;
+			pFrameRects[num_displayed_entities]->SetLocalTopLeftPos( top_left_pos );
+
+			SFloatRGBAColor color = is_light_entity ? SFloatRGBAColor(1.0f,0.6f,0.6f,0.7f) : SFloatRGBAColor(0.6f,1.0f,0.6f,0.7f);
+			pFrameRects[num_displayed_entities]->SetColor( 0, color );
+			num_displayed_entities++;
+		}
+	}
 }
 
 
-void CLightingAppGUITask::LoadStage( const std::string& stage_script_name )
+int CLightingAppTask::FrameMove( float dt )
 {
-	m_StageScriptToLoad = stage_script_name;
-}
-
-
-int CLightingAppGUITask::FrameMove( float dt )
-{
-	int ret = CGUIGameTask::FrameMove(dt);
+	int ret = CStageViewerGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
-/*
-	if( 0 < m_StageScriptToLoad.length() )
+
+	if( GetAnimatedGraphicsManager() )
 	{
-		sg_TestStageScriptToLoad = m_StageScriptToLoad;
-		return GAMETASK_ID_SHADOWS_TEST_STAGE;
+		DisplayEntityPositions( *GetAnimatedGraphicsManager() );
 	}
-*/
+
 	return ID_INVALID;
 }
-
 
 
 
@@ -147,7 +160,7 @@ const std::string CLightingAppBase::GetStartTaskName() const
 int CLightingAppBase::GetStartTaskID() const
 {
 //	return CGameTask::ID_STAGE_VIEWER_TASK;
-	return GAMETASK_ID_BASIC_PHYSICS;
+	return GAMETASK_ID_LIGHTING;
 }
 
 
