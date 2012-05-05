@@ -35,11 +35,13 @@ class CPrimitiveShapeMeshesTest : public CGraphicsTestBase, public CGraphicsComp
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 	int m_MeshIndex;
 
 	int m_NumPrimitiveMeshes;
+
+	bool m_Lighting;
 
 private:
 

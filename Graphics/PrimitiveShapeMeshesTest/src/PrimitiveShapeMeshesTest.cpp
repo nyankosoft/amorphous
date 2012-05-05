@@ -25,7 +25,8 @@ extern const std::string GetAppTitle()
 CPrimitiveShapeMeshesTest::CPrimitiveShapeMeshesTest()
 :
 m_MeshIndex(0),
-m_NumPrimitiveMeshes(0)
+m_NumPrimitiveMeshes(0),
+m_Lighting(false)
 {
 //	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_MeshTechnique.SetTechniqueName( "SingleHSDL_Specular_CTS" );
@@ -122,6 +123,7 @@ int CPrimitiveShapeMeshesTest::Init()
 	m_vecMesh[3].Load( mesh_desc[3] );
 
 	CCylinderDesc cylinder_desc;
+	cylinder_desc.num_sides = 24;
 	shared_ptr<CCylinderMeshGenerator> pCylinderGenerator( new CCylinderMeshGenerator(cylinder_desc) );
 	mesh_desc[4].pMeshGenerator = pCylinderGenerator;
 	mesh_desc[4].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
@@ -203,8 +205,8 @@ void CPrimitiveShapeMeshesTest::Render()
 
 	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
-	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-	Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
+	Vector2 vTopLeft(     640,       16 );
+	Vector2 vBottomRight( 640 + 256, 16 + 400 );
 /*	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
 	rect.Draw();
 */
@@ -246,6 +248,12 @@ void CPrimitiveShapeMeshesTest::HandleInput( const SInputData& input )
 	case GIC_F12:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+		}
+		break;
+	case 'L':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_Lighting = !m_Lighting;
 		}
 		break;
 	default:
