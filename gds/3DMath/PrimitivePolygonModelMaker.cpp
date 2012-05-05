@@ -8,37 +8,26 @@
 using namespace std;
 
 
-// Place the created cylinder on the horizontal plane
+// Place the created cylinder on the horizontal plane (= plane perpendicular to y-axis)
+// Vertices on the side of the cylinder are created before the ones on top & bottom
+// - Rationale: top / bottom polygons are optional
 void CreateCylinder( float height, const float *pafRadius, int num_segments,
                      PrimitiveModelStyle::Name style,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
 					 vector< vector<int> >& vecDestPoly )
 {
-
-//	Vector3 vCore = vPos0_Top - vPos1_Bottom;
+	bool create_top_polygons    = true;
+	bool create_bottom_polygons = true;
 	Vector3 vUp = Vector3(0,1,0);//vDirFromBottomToTop = Vec3GetNormalized( vCore );
-//	const Matrix33 matOrient = CreateOrientFromFwdDir( vDirFromBottomToTop );
-//	const Matrix34 pose[2] = { Matrix34( vPos0_Top, matOrient ), Matrix34( vPos1_Bottom, matOrient ) };
-//	const Matrix34 pose[2] = { Matrix34( vUp * height, Matrix33Identity() ), Matrix34Identity() };
-	const Matrix34 pose[2] =
-	{
-		Matrix34(  vUp * height * 0.5f, Matrix33Identity() ),
-		Matrix34( -vUp * height * 0.5f, Matrix33Identity() )
-	};
 	const float afRadius[2] = { pafRadius[0], pafRadius[1] };
 	vector<Vector3> vecNormal;
 
-//	LOG_PRINT( "vDirFromBottomToTop: " + to_string( vDirFromBottomToTop ) );
-
-//	const Vector3 vHorizAxis = matOrient.GetColumn(0);
-//	const Vector3 vVertAxis  = matOrient.GetColumn(1);
-//	const Vector2 vHorizAxis2D = Vector2(vHorizAxis.x,vHorizAxis.y);
-
 	// create vertices
-	for( int i=0; i<2; i++ )
+	int num_divisions = 1;
+	for( int i=0; i<num_divisions+1; i++ )
 	{
-		vecDestPos.push_back( pose[i].vPosition );
+		const Matrix34 pose = Matrix34( -vUp * height * ( (float)i / (float)num_divisions - 0.5f ), Matrix33Identity() );
 
 		for( int j=0; j<num_segments; j++ )
 		{
@@ -46,95 +35,123 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 			Vector2 vLocalPos = Matrix22Rotation( angle ) * Vector2(1,0);//vHorizAxis2D;
 			vLocalPos.x *= afRadius[0];
 			vLocalPos.y *= afRadius[1];
-//			Vector3 vPos = pose[i] * Vector3( vLocalPos.x, vLocalPos.y, 0 );
-			Vector3 vPos = pose[i] * Vector3( vLocalPos.x, 0, vLocalPos.y );
+//			Vector3 vPos = pose * Vector3( vLocalPos.x, vLocalPos.y, 0 );
+			Vector3 vPos = pose * Vector3( vLocalPos.x, 0, vLocalPos.y );
 
 //			LOG_PRINT( "cylinder vertex: " + to_string( vPos ) );
 
 			vecDestPos.push_back( vPos );
 
-			vecNormal.push_back( Vec3GetNormalized( vPos - pose[i].vPosition ) );
+			vecNormal.push_back( Vec3GetNormalized( vPos - pose.vPosition ) );
 		}
 	}
 
-	if( style == PrimitiveModelStyle::EDGE_VERTICES_WELDED )
+	int top_center_vertex_index    = 0;
+	int bottom_center_vertex_index = 0;
+	Vector3 top_center    =  vUp * height * 0.5f;
+	Vector3 bottom_center = -vUp * height * 0.5f;
+
+	if( create_top_polygons )
 	{
-		// No need to duplicate points on the top and bottom rims
+		top_center_vertex_index    = vecDestPos.size();
+		vecDestPos.push_back( top_center );
+		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		{
+			// Duplicate the points on the rims (top)
+			vecDestPos.insert( vecDestPos.end(), vecDestPos.begin(), vecDestPos.begin() + num_segments );
+		}
+//		else // i.e. style == PrimitiveModelStyle::EDGE_VERTICES_WELDED
+			// No need to duplicate points on the top and bottom rims
 	}
-	else if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+
+	if( create_bottom_polygons )
 	{
-		// Duplicate the points on the rims (top & bottom)
-		for( int i=0; i<num_segments; i++ )
-			vecDestPos.push_back( vecDestPos[ 1 + i ] );
-		
-		for( int i=0; i<num_segments; i++ )
-			vecDestPos.push_back( vecDestPos[ num_segments + 2 + i ] );
+		bottom_center_vertex_index = vecDestPos.size();
+		vecDestPos.push_back( bottom_center );
+		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		{
+			// Duplicate the points on the rims (bottom)
+			vector<Vector3>::iterator start = vecDestPos.begin() + num_segments * num_divisions;
+			vecDestPos.insert( vecDestPos.end(), start, start + num_segments );
+		}
 	}
 
 	// Add normals
-	vecDestNormal.resize( 0 );
-	if( style == PrimitiveModelStyle::EDGE_VERTICES_WELDED )
+
+	// side vertices
+	vector<Vector3> rim_normals;
+	rim_normals.resize( num_segments );
+	for( int i=0; i<num_segments; i++ )
 	{
-		vecDestNormal.resize( vecDestPos.size() );
-		const Vector3 vCenter = ( pose[0].vPosition + pose[1].vPosition ) * 0.5f;
-		for( size_t i=0; i<vecDestPos.size(); i++ )
-			vecDestNormal[i] = Vec3GetNormalized( vecDestPos[i] - vCenter );
+		Vector3 pos = vecDestPos[i];
+		rim_normals[i] = Vec3GetNormalized( Vector3( pos.x, 0, pos.z ) );
 	}
-	else
+
+	vecDestNormal.resize( 0 );
+	for( int i=0; i<num_divisions+1; i++ )
+		vecDestNormal.insert( vecDestNormal.end(), rim_normals.begin(), rim_normals.end() );
+
+	if( create_top_polygons )
 	{
-//		vecDestNormal.insert( vecDestNormal.begin(), num_segments+1,  vDirFromBottomToTop ); // top
-//		vecDestNormal.insert( vecDestNormal.end(),   num_segments+1, -vDirFromBottomToTop ); // bottom
-		vecDestNormal.insert( vecDestNormal.begin(), num_segments+1,  vUp ); // top
-		vecDestNormal.insert( vecDestNormal.end(),   num_segments+1, -vUp ); // bottom
-		vector<Vector3> vecRimNormal;
+		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+			vecDestNormal.insert( vecDestNormal.end(), num_segments+1,  vUp ); // top
+		else
+			vecDestNormal.push_back(  vUp );
+	}
 
-		vecRimNormal.resize( num_segments );
-		for( int i=0; i<num_segments; i++ )
-			vecRimNormal[i] = Vec3GetNormalized( vecDestPos[i+1] - pose[0].vPosition );
-
-		// normals for side vertices
-		for( int i=0; i<2; i++ )
-		{
-			for( int j=0; j<num_segments; j++ )
-				vecDestNormal.push_back( vecRimNormal[j] );
-		}
+	if( create_bottom_polygons )
+	{
+		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+			vecDestNormal.insert( vecDestNormal.end(), num_segments+1, -vUp ); // bottom
+		else
+			vecDestNormal.push_back( -vUp );
 	}
 
 	// create polygon indices
-	const int center[2] = { 0, num_segments + 1 };
-	for( int i=0; i<2; i++ )
-	{
-		// invert the indexing order of vertices for triangles on top(i==0) of the cylinder.
-		const int idx0 = (i==0) ? 2 : 1;
-		const int idx1 = (i==0) ? 1 : 2;
 
-		// triangles on top & bottom of the cylinder
+	// side (quads)
+	for( int i=0; i<num_divisions; i++ )
+	{
+		// polygons on the enclosing side of the cylinder
+		int upper_start = num_segments * i;
+		int lower_start = num_segments * (i+1);
 		for( int j=0; j<num_segments; j++ )
 		{
-			const int triangle_indices[3] =
-			{
-				 center[i],
-				 center[i] + 1 + j,
-				 center[i] + 1 + ((j+1) % num_segments)
-			};
-
 			vecDestPoly.push_back( vector<int>() );
-			vecDestPoly.back().push_back( triangle_indices[0] );
-			vecDestPoly.back().push_back( triangle_indices[idx0] );
-			vecDestPoly.back().push_back( triangle_indices[idx1] );
+			vecDestPoly.back().resize( 4 );
+			vecDestPoly.back()[0] = upper_start  +  j;
+			vecDestPoly.back()[1] = upper_start  + (j + 1) % num_segments;
+			vecDestPoly.back()[2] = lower_start  + (j + 1) % num_segments;
+			vecDestPoly.back()[3] = lower_start  +  j;
 		}
 	}
 
-	// polygons on the enclosing side of the cylinder
-	int top_start    = (style == PrimitiveModelStyle::EDGE_VERTICES_WELDED) ? 1 : (num_segments+1) * 2;
-	int bottom_start = (style == PrimitiveModelStyle::EDGE_VERTICES_WELDED) ? num_segments+2 : (num_segments+1) * 2 + num_segments;
-	for( int i=0; i<num_segments; i++ )
+	// top (triangles)
+	if( create_top_polygons )
 	{
-		vecDestPoly.push_back( vector<int>() );
-		vecDestPoly.back().push_back( top_start    +  i );
-		vecDestPoly.back().push_back( top_start    + (i + 1) % num_segments );
-		vecDestPoly.back().push_back( bottom_start + (i + 1) % num_segments );
-		vecDestPoly.back().push_back( bottom_start +  i );
+		int rim_vertex_offset  = (style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
+		for( int i=0; i<num_segments; i++ )
+		{
+			vecDestPoly.push_back( vector<int>() );
+			vecDestPoly.back().resize( 3 );
+			vecDestPoly.back()[0] = top_center_vertex_index;
+			vecDestPoly.back()[1] = rim_vertex_offset + (i+1) % num_segments;
+			vecDestPoly.back()[2] = rim_vertex_offset + i;
+		}
+	}
+
+	// bottom (triangles)
+	if( create_bottom_polygons )
+	{
+		int rim_vertex_offset  = (style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? bottom_center_vertex_index + 1 : num_segments * num_divisions;
+		for( int i=0; i<num_segments; i++ )
+		{
+			vecDestPoly.push_back( vector<int>() );
+			vecDestPoly.back().resize( 3 );
+			vecDestPoly.back()[0] = bottom_center_vertex_index;
+			vecDestPoly.back()[1] = rim_vertex_offset + i;
+			vecDestPoly.back()[2] = rim_vertex_offset + (i+1) % num_segments;
+		}
 	}
 }
 
