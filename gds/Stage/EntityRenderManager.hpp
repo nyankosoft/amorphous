@@ -240,8 +240,8 @@ public:
 
 	void RenderSceneWithShadows( CCamera& rCam );
 
-	void AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane = Plane(Vector3(0,0,0),0) );
-	void RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group );
+	Result::Name AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane = Plane(Vector3(0,0,0),0) );
+	Result::Name RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group );
 	void UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group );
 	void UpdatePlanarReflectionTextures( CCamera& rCam );
 	CTextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );

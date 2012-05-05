@@ -850,13 +850,13 @@ void CEntityRenderManager::UpdateEnvironmentMapTextures()
 }
 
 
-void CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane )
+Result::Name CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane )
 {
 	static uint num_max_planar_reflection_groups = 2;
 
 	shared_ptr<CCopyEntity> pEntity = entity.Get();
 	if( !pEntity )
-		return;
+		return Result::INVALID_ARGS;
 
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
@@ -866,12 +866,12 @@ void CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SP
 			// Found a group with almost the same plane
 			pEntity->s1 = (short)i;
 			group.AddEntity( entity );
-			return;
+			return Result::SUCCESS;
 		}
 	}
 
 	if( num_max_planar_reflection_groups <= (uint)s_PlanarReflectionGroups.size() )
-		return;
+		return Result::UNKNOWN_ERROR;
 
 /*	if( !m_pMirroredScene )
 	{
@@ -896,8 +896,8 @@ void CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SP
 		{
 			const AABB3 entity_mesh_aabb = pMesh->GetAABB();
 			if( entity_mesh_aabb.GetExtents().x < 0.001f )      reflection_plane = Plane( Vector3(1,0,0), entity_mesh_aabb.GetCenterPosition().x );
-			else if( entity_mesh_aabb.GetExtents().x < 0.001f ) reflection_plane = Plane( Vector3(0,1,0), entity_mesh_aabb.GetCenterPosition().y );
-			else if( entity_mesh_aabb.GetExtents().x < 0.001f ) reflection_plane = Plane( Vector3(0,0,1), entity_mesh_aabb.GetCenterPosition().z );
+			else if( entity_mesh_aabb.GetExtents().y < 0.001f ) reflection_plane = Plane( Vector3(0,1,0), entity_mesh_aabb.GetCenterPosition().y );
+			else if( entity_mesh_aabb.GetExtents().z < 0.001f ) reflection_plane = Plane( Vector3(0,0,1), entity_mesh_aabb.GetCenterPosition().z );
 		}
 		else
 		{
@@ -906,30 +906,40 @@ void CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SP
 		}
 	}
 
+	if( !IsValidPlane( reflection_plane ) )
+		reflection_plane = Plane( Vector3(0,1,0), 0 );
+
 	pEntity->s1 = (short)s_PlanarReflectionGroups.size();
 	s_PlanarReflectionGroups.push_back( CPlanarReflectionGroup() );
 	s_PlanarReflectionGroups.back().Init();
-	s_PlanarReflectionGroups.back().m_Plane = plane;
+	s_PlanarReflectionGroups.back().m_Plane = reflection_plane;
 	s_PlanarReflectionGroups.back().AddEntity( entity );
+
+	return Result::SUCCESS;
 }
 
 
-void CEntityRenderManager::RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group )
+Result::Name CEntityRenderManager::RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group )
 {
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
 		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
 		Result::Name res = group.RemoveEntity( entity );
-		if( res != Result::SUCCESS )
-			continue; // The entity was not found: try the next group
-
-		if( remove_planar_refelection_group
-		 && group.m_Entities.empty() )
+		if( res == Result::SUCCESS )
 		{
-			s_PlanarReflectionGroups.erase( s_PlanarReflectionGroups.begin() + i );
-			return;
+			if( remove_planar_refelection_group
+			 && group.m_Entities.empty() )
+			{
+				s_PlanarReflectionGroups.erase( s_PlanarReflectionGroups.begin() + i );
+			}
+
+			return Result::SUCCESS;
 		}
+//		else
+//			continue; // The entity was not found: try the next group
 	}
+
+	return Result::INVALID_ARGS;
 }
 
 
