@@ -94,6 +94,18 @@ public:
 };
 
 
+class CCylinderMeshStyleFlags
+{
+public:
+	enum Flags
+	{
+		TOP_POLYGONS    = (1 << 0),
+		BOTTOM_POLYGONS = (1 << 1),
+		WELD_VERTICES   = (1 << 3),
+	};
+};
+
+
 class CCylinderDesc
 {
 public:
@@ -102,10 +114,17 @@ public:
 	float height;
 	AxisAndDirection::Name axis;
 
+	/// How finely the cylinder is divided on its side.
+	/// Greater value makes the cylinder closer to the circular shape.
 	int num_sides;
 
+	/// How many times the cylinder is divided along the direction of its axis.
+	/// This value does not change the appearance of the mesh.
+	int num_divisions;
+
 	PrimitivePlacingStyle::Name style;
-//	PrimitiveModelStyle::Name edge_option;
+
+	U32 style_flags; ///< default = TOP_POLYGONS | BOTTOM_POLYGONS
 
 public:
 
@@ -114,10 +133,12 @@ public:
 	height(1),
 	axis(AxisAndDirection::POS_Y),
 	num_sides(6),
-	style(PrimitivePlacingStyle::PLACE_CENTER_AT_ORIGIN)
+	num_divisions(1),
+	style(PrimitivePlacingStyle::PLACE_CENTER_AT_ORIGIN),
+	style_flags( CCylinderMeshStyleFlags::TOP_POLYGONS | CCylinderMeshStyleFlags::BOTTOM_POLYGONS )
 	{
-		for( int i = 0; i<sizeof(float)/sizeof(radii); i++ )
-			radii[i] = 1.0f;
+		for( int i = 0; i<sizeof(radii)/sizeof(float); i++ )
+			radii[i] = 0.5f;
 	}
 
 	bool IsValid() const

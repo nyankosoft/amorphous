@@ -62,11 +62,20 @@ static Matrix33 GetRotationMatrixToAlignToAxis( AxisAndDirection::Name axis )
 
 void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 {
-	LOG_PRINT_ERROR( " Not implemented." );
+	mesh.SetVertexFormatFlags(
+		 CMMA_VertexSet::VF_POSITION
+		|CMMA_VertexSet::VF_NORMAL
+		|CMMA_VertexSet::VF_DIFFUSE_COLOR
+		|CMMA_VertexSet::VF_2D_TEXCOORD0 );
 
 	vector<Vector3> vertices;
 	vector<Vector3> normals;
 	vector< vector<int> > polygons;
+
+	PrimitiveModelStyle::Name style
+		= (desc.style_flags & CCylinderMeshStyleFlags::WELD_VERTICES) ?
+		 PrimitiveModelStyle::EDGE_VERTICES_WELDED
+		:PrimitiveModelStyle::EDGE_VERTICES_UNWELDED;
 
 	CreateCylinder(
 		desc.height, desc.radii, desc.num_sides, PrimitiveModelStyle::EDGE_VERTICES_WELDED,//desc.edge_option, // [in]
@@ -91,8 +100,21 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 	{
 		vert_buffer[i].m_vPosition = vertices[i];
 		vert_buffer[i].m_vNormal   = normals[i];
+		vert_buffer[i].m_TextureCoord.resize( 1 );
 	}
 
+	const int num_polygons = (int)polygons.size();
+	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
+	polygon_buffer.resize( num_polygons );
+	for( int i=0; i<num_polygons; i++ )
+	{
+		polygon_buffer[i].m_index = polygons[i];
+	}
+
+//	UpdateAABBs( polygon_buffer );
+
+	std::vector<CMMA_Material>& material_buffer = mesh.GetMaterialBuffer();
+	material_buffer.resize( 1 );
 }
 
 
