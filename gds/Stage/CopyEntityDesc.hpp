@@ -19,6 +19,7 @@ public:
 		DEFAULT = 0,
 		ALPHA_ENTITY,
 		LIGHT_ENTITY,
+		SOUND_ENTITY,
 		SCRIPTED_CAMERA_ENTITY,
 
 		/// id offset of the entity types which are defined by other module(s) of the GameStageFramework.
