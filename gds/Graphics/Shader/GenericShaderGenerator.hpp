@@ -39,6 +39,8 @@ public:
 		else
 			return false;
 	}
+
+	const CGenericShaderDesc& GetGenericShaderDesc() const { return m_Desc; }
 };
 
 
