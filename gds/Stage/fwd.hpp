@@ -6,6 +6,7 @@ class CStage;
 class CCopyEntity;
 class CCopyEntityDesc;
 class CLightEntity;
+class CSoundEntity;
 class CAlphaEntity;
 class CScriptedCameraEntity;
 class CEntityFactory;

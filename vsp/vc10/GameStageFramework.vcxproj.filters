@@ -810,6 +810,9 @@
     <ClInclude Include="..\..\gds\Stage\BSPMap.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Stage\SoundEntity.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
@@ -1444,6 +1447,9 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp">
       <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Stage\SoundEntity.cpp">
+      <Filter>Source Files\Stage\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

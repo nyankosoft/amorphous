@@ -17,6 +17,8 @@ class CEntityFactory
 
 	shared_prealloc_pool<CLightEntity> m_LightEntityPool;
 
+	shared_prealloc_pool<CSoundEntity> m_SoundEntityPool;
+
 	shared_prealloc_pool<CScriptedCameraEntity> m_ScriptedCameraEntityPool;
 
 public:
@@ -26,6 +28,7 @@ public:
 		DEFAULT_MAX_NUM_ENTITIES = 1024,
 		DEFAULT_MAX_NUM_ALPHA_ENTITIES = 64,
 		DEFAULT_MAX_NUM_LIGHT_ENTITIES = 64,
+		DEFAULT_MAX_NUM_SOUND_ENTITIES = 128,
 		DEFAULT_MAX_NUM_SCRIPTED_CAMERA_ENTITIES = 16,
 	};
 

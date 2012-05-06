@@ -115,6 +115,7 @@
     <ClInclude Include="..\..\gds\Stage\ScreenEffect.hpp" />
     <ClInclude Include="..\..\gds\Stage\ScreenEffectManager.hpp" />
     <ClInclude Include="..\..\gds\Stage\Serialization_BaseEntityHandle.hpp" />
+    <ClInclude Include="..\..\gds\Stage\SoundEntity.hpp" />
     <ClInclude Include="..\..\gds\Stage\Stage.hpp" />
     <ClInclude Include="..\..\gds\Stage\StageEntryPoint.hpp" />
     <ClInclude Include="..\..\gds\Stage\StageGraph.hpp" />
@@ -361,6 +362,7 @@
     <ClCompile Include="..\..\gds\Stage\QuickMenuManager.cpp" />
     <ClCompile Include="..\..\gds\Stage\ScreenEffect.cpp" />
     <ClCompile Include="..\..\gds\Stage\ScreenEffectManager.cpp" />
+    <ClCompile Include="..\..\gds\Stage\SoundEntity.cpp" />
     <ClCompile Include="..\..\gds\Stage\Stage.cpp" />
     <ClCompile Include="..\..\gds\Stage\StageEntryPoint.cpp" />
     <ClCompile Include="..\..\gds\Stage\StageGraph.cpp" />

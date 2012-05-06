@@ -3,6 +3,7 @@
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/LightEntity.hpp"
 #include "Stage/AlphaEntity.hpp"
+#include "Stage/SoundEntity.hpp"
 #include "Stage/BE_ScriptedCamera.hpp"
 #include "Support/memory_helpers.hpp"
 
@@ -25,6 +26,7 @@ void CEntityFactory::Init()
 	m_CopyEntityPool.init( DEFAULT_MAX_NUM_ENTITIES );
 	m_AlphaEntityPool.init( DEFAULT_MAX_NUM_ALPHA_ENTITIES );
 	m_LightEntityPool.init( DEFAULT_MAX_NUM_LIGHT_ENTITIES );
+	m_LightEntityPool.init( DEFAULT_MAX_NUM_SOUND_ENTITIES );
 	m_ScriptedCameraEntityPool.init( DEFAULT_MAX_NUM_SCRIPTED_CAMERA_ENTITIES );
 }
 
@@ -43,6 +45,8 @@ shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_i
 		pLightEntity->m_pLightEntitySelf = pLightEntity;
 		return pLightEntity;
 	}
+	case CCopyEntityTypeID::SOUND_ENTITY:
+		return m_SoundEntityPool.get_new_object();
 	case CCopyEntityTypeID::SCRIPTED_CAMERA_ENTITY:
 		return m_ScriptedCameraEntityPool.get_new_object();
 
