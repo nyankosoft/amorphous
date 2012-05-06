@@ -60,6 +60,23 @@ static Matrix33 GetRotationMatrixToAlignToAxis( AxisAndDirection::Name axis )
 }
 
 
+static Matrix33 GetRotationMatrixToAlignToAxisForCylinder( AxisAndDirection::Name axis )
+{
+	// rotate
+	switch(axis)
+	{
+	case AxisAndDirection::POS_X: return Matrix33RotationZ( (Scalar)(-PI * 0.5) );
+	case AxisAndDirection::NEG_X: return Matrix33RotationZ( (Scalar)( PI * 0.5) );
+	case AxisAndDirection::POS_Y: return Matrix33Identity();
+	case AxisAndDirection::NEG_Y: return Matrix33RotationX( (Scalar)( PI * 1.0) );
+	case AxisAndDirection::POS_Z: return Matrix33RotationX( (Scalar)( PI * 0.5) );
+	case AxisAndDirection::NEG_Z: return Matrix33RotationX( (Scalar)(-PI * 0.5) );
+	default:
+		return Matrix33Identity();
+	}
+}
+
+
 void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 {
 	mesh.SetVertexFormatFlags(
@@ -78,7 +95,12 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 		:PrimitiveModelStyle::EDGE_VERTICES_UNWELDED;
 
 	CreateCylinder(
-		desc.height, desc.radii, desc.num_sides, PrimitiveModelStyle::EDGE_VERTICES_WELDED,//desc.edge_option, // [in]
+		desc.height,
+		desc.radii,
+		desc.num_sides,
+		style,//desc.edge_option, // [in]
+		desc.style_flags & CCylinderMeshStyleFlags::TOP_POLYGONS,
+		desc.style_flags & CCylinderMeshStyleFlags::BOTTOM_POLYGONS,
 		vertices, normals, polygons // [out]
 		);
 
@@ -93,13 +115,15 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 		}
 	}
 
+	Matrix33 rotation = GetRotationMatrixToAlignToAxisForCylinder( desc.axis );
+
 	const size_t num_vertices = vertices.size();
 	vector<CGeneral3DVertex>& vert_buffer = *(mesh.GetVertexBuffer());
 	vert_buffer.resize( num_vertices, CGeneral3DVertex() );
 	for( size_t i=0; i<num_vertices; i++ )
 	{
-		vert_buffer[i].m_vPosition = vertices[i];
-		vert_buffer[i].m_vNormal   = normals[i];
+		vert_buffer[i].m_vPosition = rotation * vertices[i];
+		vert_buffer[i].m_vNormal   = rotation * normals[i];
 		vert_buffer[i].m_TextureCoord.resize( 1 );
 	}
 
