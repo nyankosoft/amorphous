@@ -127,6 +127,8 @@ public:
 
 	CShaderTechniqueHandle ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
 
+	CShaderTechniqueHandle ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
+
 //	void Init( int texture_width, int texture_height );
 
 //	void SetTextureWidth( const int width, const int height );

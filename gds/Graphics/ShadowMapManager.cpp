@@ -394,6 +394,15 @@ CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowReceiver( CVer
 }
 
 
+CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type )
+{
+	CShaderTechniqueHandle tech;
+	tech.SetTechniqueName( "SceneShadowMap_NonShadowed" );
+
+	return tech;
+}
+
+
 bool CShadowMapManager::CreateSceneShadowMapTextures()
 {
 	for( int i=0; i<2; i++ )
@@ -450,6 +459,7 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 
 	if( m_DisplayShadowMapTexturesForDebugging )
 	{
+//		DisplayTextureRenderTargetsForDebugging();
 		int w = (ex - sx + 1) / 2;
 		int h = (ey - sy + 1) / 2;
 
@@ -476,6 +486,9 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 	}
 	else
 	{
+		// Render the fullscreen rect with 2 textures
+		// - The original scene texture
+		// - The shadow overlay texture
 		C2DTexRect tex_rect( sx, sy, ex, ey, 0xFFFFFFFF );
 		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );
@@ -626,7 +639,7 @@ void CShadowMapManager::BeginSceneDepthMap()
 
 	if( CShadowMap::ms_DebugShadowMap )
 	{
-		static float dist_tolerance = 0.005f;
+		static float dist_tolerance = 0.05f;
 		UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "shadowmap_dist_tolerance", dist_tolerance );
 		pShaderMgr->SetParam( "g_fShadowMapDistTolerance", dist_tolerance );
 	}
