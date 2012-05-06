@@ -169,10 +169,13 @@ void CEntityNode::RenderShadowReceivers( CCamera& rCam )
 	{
 		pEntity = pLinkNode->pOwner;
 
-		if( (pEntity->GetEntityFlags() & BETYPE_VISIBLE)
-		 && (pEntity->GetEntityFlags() & BETYPE_SHADOW_RECEIVER) )
+		const U32 entity_flags = pEntity->GetEntityFlags();
+		if( entity_flags & BETYPE_VISIBLE
+//		 && (entity_flags & BETYPE_SHADOW_RECEIVER) )
+		 && (entity_flags & BETYPE_SHADOW_CASTER || entity_flags & BETYPE_SHADOW_RECEIVER) )
 		{
 			// render the entity as a shadow receiver
+			// Note that the shadow casters are also rendered as non-shadowed geometries
 			pEntity->pBaseEntity->RenderAsShadowReceiver( pEntity );
 		}
 	}
