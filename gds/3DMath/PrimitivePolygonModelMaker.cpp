@@ -13,12 +13,12 @@ using namespace std;
 // - Rationale: top / bottom polygons are optional
 void CreateCylinder( float height, const float *pafRadius, int num_segments,
                      PrimitiveModelStyle::Name style,
+                     bool create_top_polygons,
+                     bool create_bottom_polygons,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
 					 vector< vector<int> >& vecDestPoly )
 {
-	bool create_top_polygons    = true;
-	bool create_bottom_polygons = true;
 	Vector3 vUp = Vector3(0,1,0);//vDirFromBottomToTop = Vec3GetNormalized( vCore );
 	const float afRadius[2] = { pafRadius[0], pafRadius[1] };
 	vector<Vector3> vecNormal;
@@ -158,6 +158,8 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 
 void CreateCylinder( const Vector3& vPos0_Top, const Vector3& vPos1_Bottom, const float *pafRadius, int num_segments,
                      PrimitiveModelStyle::Name style,
+                     bool create_top_polygons,
+                     bool create_bottom_polygons,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
 					 vector< vector<int> >& vecDestPoly )
@@ -170,7 +172,7 @@ void CreateCylinder( const Vector3& vPos0_Top, const Vector3& vPos1_Bottom, cons
 //	const float afRadius[2] = { pafRadius[0], pafRadius[1] };
 	vector<Vector3> vecNormal;
 
-	::CreateCylinder( Vec3Length(vCore), pafRadius, num_segments, style,
+	::CreateCylinder( Vec3Length(vCore), pafRadius, num_segments, style, create_top_polygons, create_bottom_polygons,
 		vecDestPos, vecDestNormal, vecDestPoly );
 
 	const int num_verts = (int)vecDestPos.size();
