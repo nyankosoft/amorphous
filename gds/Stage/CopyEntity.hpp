@@ -196,7 +196,7 @@ public:
 	std::vector<physics::CJoint *> m_vecpPhysicsJoint;
 
 	/// borrowed reference
-	std::vector<CCopyEntityCallbackBase *> vecpCallback;
+	boost::shared_ptr<CCopyEntityCallbackBase> m_pCallback;
 
 	/// Used mainly for updating blend transforms of a skeletal mesh
 	boost::shared_ptr<CGraphicsResourcesUpdateCallback> m_pGraphicsUpdate;
@@ -378,7 +378,7 @@ public:
 	void DisconnectFromParentAndChildren();
 	inline void CopyParentPose();
 
-	inline void AddCallback( CCopyEntityCallbackBase* pCallback ) { vecpCallback.push_back(pCallback); }
+	inline void SetCallback( boost::shared_ptr<CCopyEntityCallbackBase> pCallback ) { m_pCallback = pCallback; }
 
 	/// Release and create alpha entities if BETYPE_SUPPORT_TRANSPARENT_PARTS is on.
 	inline void UpdateMesh();

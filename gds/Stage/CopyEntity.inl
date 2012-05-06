@@ -99,10 +99,9 @@ inline void CCopyEntity::Unlink()
 /// - Set 'inuse' to false
 inline void CCopyEntity::Terminate()
 {
-	size_t i, num_callbacks = vecpCallback.size();
-	for( i=0; i<num_callbacks; i++ )
-		vecpCallback[i]->OnCopyEntityDestroyed( this );
-	vecpCallback.resize( 0 );
+	if( m_pCallback )
+		m_pCallback->OnCopyEntityDestroyed( this );
+	m_pCallback.reset();
 
 	// termination routine for derived entity
 	// - does nothing by default
