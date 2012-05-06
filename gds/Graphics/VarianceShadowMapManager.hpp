@@ -3,6 +3,7 @@
 
 
 #include "ShadowMapManager.hpp"
+#include "Shader/ShaderParameter.hpp"
 
 
 typedef CShaderParameter< std::vector<float> > CShaderParamFloatArray;
@@ -43,8 +44,6 @@ private:
 public:
 
 	CVarianceShadowMapManager();
-
-	CVarianceShadowMapManager( int texture_width, int texture_height );
 
 	~CVarianceShadowMapManager();
 

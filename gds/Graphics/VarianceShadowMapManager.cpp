@@ -110,16 +110,6 @@ CVarianceShadowMapManager::CVarianceShadowMapManager()
 }
 
 
-CVarianceShadowMapManager::CVarianceShadowMapManager( int texture_width, int texture_height )
-:
-CShadowMapManager(texture_width,texture_height)
-//m_pHBlurredShadowMap(NULL),
-//m_pBlurredShadowMap(NULL)
-{
-	m_ShadowMapShaderFilename = gs_pDefaultShaderName;
-}
-
-
 CVarianceShadowMapManager::~CVarianceShadowMapManager()
 {
 	ReleaseGraphicsResources();
