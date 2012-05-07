@@ -3,9 +3,9 @@
 
 
 CCameraControllerBase::CCameraControllerBase()
+:
+m_Pose( Matrix34Identity() )
 {
-//s	m_Pose = Matrix34Identity();
-
 	m_fYaw = 0.0f;
 	m_fPitch = 0.0f;
 

@@ -58,9 +58,7 @@ class CCameraControllerBase
 	float m_fYaw;
 	float m_fPitch;
 
-//	Matrix34 m_Pose;
-
-	CCamera m_Camera;
+	Matrix34 m_Pose;
 
 	/// camera translation speed (meter per second)
 	float m_fTranslationSpeed;
@@ -104,13 +102,13 @@ public:
 	inline Vector3 GetUpDirection() const      { return GetPose().matOrient.GetColumn(1); }
 	inline Vector3 GetForwardDirection() const { return GetPose().matOrient.GetColumn(2); }
 
-	inline void GetPose( Matrix34& rDestPose ) const { rDestPose = m_Camera.GetPose(); }
+	inline void GetPose( Matrix34& rDestPose ) const { rDestPose = m_Pose; }
 
-	inline const Matrix34 GetPose() const { return m_Camera.GetPose(); }
+	inline const Matrix34 GetPose() const { return m_Pose; }
 
-	inline void SetPosition( const Vector3& vPosition ) { m_Camera.SetPosition( vPosition ); }
+	inline void SetPosition( const Vector3& vPosition ) { m_Pose.vPosition = vPosition; }
 
-	inline void SetPose( const Matrix34& rSrcPose ) { m_Camera.SetPose( rSrcPose ); }
+	inline void SetPose( const Matrix34& rSrcPose ) { m_Pose = rSrcPose; }
 
 	inline void Move( float fRight, float fUp, float fDir )
 	{
