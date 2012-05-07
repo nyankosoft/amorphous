@@ -38,6 +38,8 @@ protected:
 
 	void SetBackgroundColor( const SFloatRGBAColor& color ) { m_BackgroundColor = color; }
 
+	const CCamera& GetCurrentCamera() const { return g_Camera; };
+
 public:
 
 	CGraphicsTestBase()
