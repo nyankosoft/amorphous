@@ -51,18 +51,12 @@ void CCameraControllerBase::UpdateCameraPose( float dt )
 	if( IsKeyPressed(kb[CameraControl::Down]) )        up      = -spd * dt * 3.0f;
 
 /*
-	if( (GetAsyncKeyState(VK_UP) & 0x8000) || (GetAsyncKeyState('E') & 0x8000) )	forward =  spd * dt;
-	if( (GetAsyncKeyState(VK_DOWN) & 0x8000) || (GetAsyncKeyState('D') & 0x8000) )	forward = -spd * dt;
-	if( GetAsyncKeyState(VK_RIGHT) & 0x8000 || (GetAsyncKeyState('F') & 0x8000)  )	right   =  spd * dt;
-	if( GetAsyncKeyState(VK_LEFT) & 0x8000 || (GetAsyncKeyState('S') & 0x8000)  )	right   = -spd * dt;
 //	if( GetAsyncKeyState('X') & 0x8000 )	m_fYaw += 3.141592f * dt;
 //	if( GetAsyncKeyState('Z') & 0x8000	)	m_fYaw -= 3.141592f * dt;
 //	if( GetAsyncKeyState('Q') & 0x8000 )	m_fPitch += 3.141592f * dt;
 //	if( GetAsyncKeyState('A') & 0x8000	)	m_fPitch -= 3.141592f * dt;
 //	if( GetAsyncKeyState('Q') & 0x8000 )	m_vCameraPosition.y += 2.0f * dt;
 //	if( GetAsyncKeyState('A') & 0x8000	)	m_vCameraPosition.y -= 2.0f * dt;
-	if( GetAsyncKeyState('Q') & 0x8000 )	up =  5.0f * spd * dt;
-	if( GetAsyncKeyState('A') & 0x8000 )	up = -5.0f * spd * dt;
 */
 	Matrix34 pose = GetPose();
 
@@ -86,6 +80,20 @@ void CCameraControllerBase::AddYaw( float fYaw )
 }
 
 
+bool CCameraControllerBase::IsKeyPressed( int general_input_code )
+{
+	switch( general_input_code )
+	{
+	case GIC_MOUSE_BUTTON_L: return (m_IsMouseButtonPressed[MBTN_LEFT ] == 1);
+	case GIC_MOUSE_BUTTON_R: return (m_IsMouseButtonPressed[MBTN_RIGHT] == 1);
+	default:
+		return false;
+	}
+
+	return false;
+}
+
+
 void CCameraControllerBase::AddPitch( float fPitch )
 {
 	m_fPitch += fPitch;
@@ -103,16 +111,12 @@ void CCameraControllerBase::AssignKeyForCameraControl( int general_input_code, C
 
 void CCameraControllerBase::HandleInput( const SInputData& input )
 {
-	int iMousePosX = 0, iMousePosY = 0, iMouseMoveX = 0, iMouseMoveY = 0;
-
 	switch( input.iGICode )
     {
 	case GIC_MOUSE_BUTTON_L:
 	case GIC_MOUSE_BUTTON_R:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_iPrevMousePosX = input.GetParamH16();
-			m_iPrevMousePosY = input.GetParamL16();
 			switch( input.iGICode )
 			{
 			case GIC_MOUSE_BUTTON_L: m_IsMouseButtonPressed[MBTN_LEFT]  = 1; break;
@@ -130,31 +134,22 @@ void CCameraControllerBase::HandleInput( const SInputData& input )
 			}
 		}
 		break;
+
 	case GIC_MOUSE_AXIS_X:
+		if( IsKeyPressed( GIC_MOUSE_BUTTON_R ) )
+			AddYaw( input.fParam1 / 500.0f ); // rotation
+		else if( IsKeyPressed( GIC_MOUSE_BUTTON_L ) )
+			Move( input.fParam1 / 200.0f, 0.0f, 0.0f ); // translation
+		break;
+
 	case GIC_MOUSE_AXIS_Y:
-		if( m_IsMouseButtonPressed[MBTN_LEFT] == 0
-		 && m_IsMouseButtonPressed[MBTN_RIGHT] == 0 )
-			break;
+		if( IsKeyPressed( GIC_MOUSE_BUTTON_R ) )
+			AddPitch( input.fParam1 / 500.0f * (-1.0f) ); // rotation
+		else if( IsKeyPressed( GIC_MOUSE_BUTTON_L ) )
+			Move( 0.0f, input.fParam1 / 200.0f, 0.0f ); // translation
+		break;
 
-		iMousePosX = input.GetParamH16();
-		iMousePosY = input.GetParamL16();
-		iMouseMoveX = iMousePosX - m_iPrevMousePosX;
-		iMouseMoveY = iMousePosY - m_iPrevMousePosY;
-
-		if( m_IsMouseButtonPressed[MBTN_RIGHT] == 1 )
-		{
-			// camera roration
-			AddYaw( (float)iMouseMoveX / 450.0f );
-			AddPitch( - (float)iMouseMoveY / 450.0f );
-		}
-		else
-		{
-			// camera translation
-			Move( (float)iMouseMoveX / 200.0f, (float)iMouseMoveY / 200.0f, 0.0f );
-		}
-
-		m_iPrevMousePosX = iMousePosX;
-		m_iPrevMousePosY = iMousePosY;
+	default:
 		break;
 	}
 }

@@ -6,34 +6,38 @@ CCameraController::CCameraController( int input_handler_index )
 :
 m_InputHandlerIndex(input_handler_index)
 {
-	m_pInputHandler.reset( new CCameraControllerInputHandler(this) );
+	m_pInputDataDelagate.reset( new CInputDataDelegate<CCameraController>(this) );
 
 	if( InputHub().GetInputHandler(input_handler_index) )
-		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler.get() );
+		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputDataDelagate.get() );
 	else
-		InputHub().PushInputHandler( input_handler_index, m_pInputHandler.get() );
+		InputHub().PushInputHandler( input_handler_index, m_pInputDataDelagate.get() );
 }
 
 
 CCameraController::CCameraController( CInputHandler *pParentInputHandler )
 {
-	m_pInputHandler.reset( new CCameraControllerInputHandler(this) );
+	m_pInputDataDelagate.reset( new CInputDataDelegate<CCameraController>(this) );
 
 	if( !pParentInputHandler )
 		return;
 
-	pParentInputHandler->AddChild( m_pInputHandler.get() );
+	pParentInputHandler->AddChild( m_pInputDataDelagate.get() );
 }
 
 
 CCameraController::~CCameraController()
 {
-	InputHub().RemoveInputHandler( m_InputHandlerIndex, m_pInputHandler.get() );
+	InputHub().RemoveInputHandler( m_InputHandlerIndex, m_pInputDataDelagate.get() );
 }
 
 
 bool CCameraController::IsKeyPressed( int general_input_code )
 {
+	bool res = CCameraControllerBase::IsKeyPressed( general_input_code );
+	if( res )
+		return true;
+
 	if( !IsValidGeneralInputCode( general_input_code ) )
 		return false;
 
@@ -44,24 +48,6 @@ bool CCameraController::IsKeyPressed( int general_input_code )
 
 // Need to avoid calling this when mouse operation is notified by Win32 message
 // - See CameraController_Win32.cpp
-void CCameraControllerInputHandler::ProcessInput(SInputData& input)
-{
-//	if( IsMouseInput(input.iGICode) )
-//		m_pCameraController->
-
-    switch( input.iGICode )
-    {
-		case GIC_MOUSE_AXIS_X:
-			if( m_pCameraController->IsKeyPressed( GIC_MOUSE_BUTTON_R ) )
-				m_pCameraController->AddYaw( input.fParam1 / 500.0f );
-			break;
-
-		case GIC_MOUSE_AXIS_Y:
-			if( m_pCameraController->IsKeyPressed( GIC_MOUSE_BUTTON_R ) )
-				m_pCameraController->AddPitch( input.fParam1 / 500.0f * (-1.0f) );
-			break;
-
-		default:
-			break;
-	}
-}
+//void CCameraControllerInputHandler::HandleInput( const SInputData& input )
+//{
+//}

@@ -14,7 +14,7 @@ class CCameraController : public CCameraControllerBase
 {
 	int m_InputHandlerIndex;
 
-	boost::shared_ptr<CCameraControllerInputHandler> m_pInputHandler;
+	boost::shared_ptr< CInputDataDelegate<CCameraController> > m_pInputDataDelagate;
 
 public:
 
@@ -27,20 +27,6 @@ public:
 	bool IsKeyPressed( int general_input_code );
 };
 
-
-class CCameraControllerInputHandler : public CInputHandler
-{
-	CCameraController *m_pCameraController;
-
-public:
-
-	CCameraControllerInputHandler( CCameraController *pCameraController )
-		:
-	m_pCameraController(pCameraController)
-	{}
-
-	void ProcessInput(SInputData& input);
-};
 
 
 #endif		/*  __CameraController_H__  */

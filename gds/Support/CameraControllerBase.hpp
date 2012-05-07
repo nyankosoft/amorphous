@@ -92,7 +92,7 @@ public:
 	/// must be called every frame
 	void UpdateCameraPose( float dt );
 
-	virtual bool IsKeyPressed( int general_input_code ) = 0;
+	virtual bool IsKeyPressed( int general_input_code );
 
 	void AddYaw( float fYaw );
 
@@ -131,7 +131,7 @@ public:
 	/// Handles mouse movements
 	/// Don't use this with CPlatformDependentCameraController::HandleMessage( UINT, WPARAM, LPARAM ),
 	/// otherwise the mouse input will be processed twice
-	inline void HandleInput( const SInputData& input );
+	void HandleInput( const SInputData& input );
 };
 
 
