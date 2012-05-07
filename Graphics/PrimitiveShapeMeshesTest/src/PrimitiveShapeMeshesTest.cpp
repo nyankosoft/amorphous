@@ -1,9 +1,11 @@
 #include "PrimitiveShapeMeshesTest.hpp"
 #include "gds/Graphics.hpp"
+#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/Macro.h"
+#include "gds/Support/ParamLoader.hpp"
 
 using std::string;
 using namespace boost;
@@ -28,7 +30,7 @@ m_NumPrimitiveMeshes(0),
 m_Lighting(false)
 {
 //	m_MeshTechnique.SetTechniqueName( "NoLighting" );
-	m_MeshTechnique.SetTechniqueName( "SingleHSDL_Specular_CTS" );
+	m_MeshTechnique.SetTechniqueName( "Default" );
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
 
@@ -54,13 +56,28 @@ bool CPrimitiveShapeMeshesTest::InitShader()
 
 	// For now, use the fixed function pipeline.
 	CShaderResourceDesc shader_desc;
-	shader_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
-	bool shader_loaded = m_Shader.Load( shader_desc );
-	
-	if( !shader_loaded )
-		return false;
+	int use_fixed_function_pipeline = 1;
+	LoadParamFromFile( "params.txt", "use_fixed_function_pipeline", use_fixed_function_pipeline );
+	if( use_fixed_function_pipeline )
+	{
+		return true;
+//		shader_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
+	}
+	else
+	{
+		CGenericShaderDesc gen_shader_desc;
+		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
 
-	shared_ptr<CShaderLightManager> pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager();
+		bool shader_loaded = m_Shader.Load( shader_desc );
+	
+		if( !shader_loaded )
+			return false;
+	}
+
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	CShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+
+	shared_ptr<CShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
 	if( !pShaderLightMgr )
 		return false;
 
@@ -145,10 +162,8 @@ void CPrimitiveShapeMeshesTest::Update( float dt )
 void CPrimitiveShapeMeshesTest::RenderMeshes()
 {
 	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	if( !pShaderManager )
-		return;
 
-	CShaderManager& shader_mgr = *pShaderManager;
+	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	// render the scene
 
@@ -180,7 +195,7 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 				shader_mgr.GetEffect()->CommitChanges();
 
 			// TODO: automatically detect the shader type (programmable/non-programmable) by the system.
-			pMesh->Render();
+			pMesh->Render( shader_mgr );
 
 ///			pMesh->RenderSubset( *pShaderManager, 0 );
 //			pMesh->Render( *pShaderManager );
