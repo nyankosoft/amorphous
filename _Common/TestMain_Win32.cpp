@@ -120,7 +120,7 @@ void Update( float frametime )
 void UpdateCameraMatrices()
 {
 	Matrix44 matView;
-	g_CameraController.GetCameraMatrix( matView );
+	g_Camera.GetCameraMatrix( matView );
 
 	Matrix44 view;
 	view.SetRowMajorMatrix44( (Scalar *)&matView );
