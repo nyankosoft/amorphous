@@ -2,7 +2,7 @@
 #define  __CameraControllerBase_H__
 
 
-#include "../Graphics/Camera.hpp"
+#include "../3DMath/Matrix34.hpp"
 #include "../Input/fwd.hpp"
 
 
