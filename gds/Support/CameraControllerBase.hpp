@@ -94,12 +94,6 @@ public:
 
 	virtual bool IsKeyPressed( int general_input_code ) = 0;
 
-	// column major 4x4 matrix
-	inline void GetCameraMatrix( Matrix44& rmatCamera ) const;
-
-	// column major 4x4 matrix
-	inline Matrix44 GetCameraMatrix() const;
-
 	void AddYaw( float fYaw );
 
 	void AddPitch( float fPitch );
@@ -139,29 +133,6 @@ public:
 	/// otherwise the mouse input will be processed twice
 	inline void HandleInput( const SInputData& input );
 };
-
-/*
-inline void CCameraControllerBase::GetCameraMatrixRowMajor44( Scalar*& pDest ) const
-{
-	// not implemented yet.
-}
-*/
-
-
-/// column major 4x4 matrix
-inline void CCameraControllerBase::GetCameraMatrix( Matrix44& rmatCamera ) const
-{
-	m_Camera.GetCameraMatrix( rmatCamera );
-}
-
-
-/// column major 4x4 matrix
-inline Matrix44 CCameraControllerBase::GetCameraMatrix() const
-{
-	Matrix44 dest;
-	GetCameraMatrix( dest );
-	return dest;
-}
 
 
 
