@@ -563,7 +563,7 @@ void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 {
 	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
-/*
+
 	PROFILE_FUNCTION();
 
 	// set option to disable texture settings
@@ -576,7 +576,18 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	if( !pMesh )
 		return;
 
-	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
+	CShaderHandle shader = pShadowMgr->GetShader();
+	CShaderManager *pShaderMgr = shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	pShaderMgr->SetWorldTransform( pCopyEnt->GetWorldPose() );
+
+	pShaderMgr->SetTechnique( pShadowMgr->ShaderTechniqueForShadowCaster( CVertexBlendType::NONE ) );
+
+	pMesh->Render( *pShaderMgr );
+
+/*	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
 	const bool is_skeletal_mesh = (pMesh->GetMeshType() == CMeshType::SKELETAL);
 	if( is_skeletal_mesh )
 	{
@@ -621,7 +632,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 {
 	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
-/*
+
 	PROFILE_FUNCTION();
 
 	// set option to disable texture settings
@@ -634,7 +645,25 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	if( !pMesh )
 		return;
 
-	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
+	CShaderHandle shader = pShadowMgr->GetShader();
+	CShaderManager *pShaderMgr = shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	pShaderMgr->SetWorldTransform( pCopyEnt->GetWorldPose() );
+
+	CShaderTechniqueHandle tech;
+	const U32 entity_flags = pCopyEnt->GetEntityFlags();
+	if( entity_flags & BETYPE_SHADOW_RECEIVER )
+		tech = pShadowMgr->ShaderTechniqueForShadowReceiver( CVertexBlendType::NONE );
+	else // i.e. entity_flags & BETYPE_SHADOW_CASTER. See CEntityNode::RenderShadowReceivers() for details.
+		tech = pShadowMgr->ShaderTechniqueForNonShadowedCasters( CVertexBlendType::NONE );
+
+	pShaderMgr->SetTechnique( tech );
+
+	pMesh->Render( *pShaderMgr );
+
+/*	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
 	const bool is_skeletal_mesh = (pMesh->GetMeshType() == CMeshType::SKELETAL);
 	if( is_skeletal_mesh )
 	{
@@ -765,7 +794,7 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<CBlendTransformsLoade
 }
 
 
-void RegisterAsPlanarMirror( CCopyEntity& entity, CBasicMesh& mesh, int subset_index )
+Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, CBasicMesh& mesh, int subset_index )
 {
 	const AABB3& aabb = mesh.GetAABB(subset_index);
 
@@ -784,14 +813,28 @@ void RegisterAsPlanarMirror( CCopyEntity& entity, CBasicMesh& mesh, int subset_i
 	plane.normal[plane_axis] = 1;
 	plane.dist = aabb.vMax[plane_axis];
 
-	entity_render_mgr.AddPlanarReflector( CEntityHandle<>( entity.Self() ), plane );
+	Result::Name res = entity_render_mgr.AddPlanarReflector( CEntityHandle<>( entity.Self() ), plane );
+
+	if( res != Result::SUCCESS )
+		return Result::UNKNOWN_ERROR;
 
 	entity.RaiseEntityFlags( BETYPE_PLANAR_REFLECTOR );
 
 	// Create shader variable loader for mirror 
 
 	if( !entity.m_pMeshRenderMethod )
-		return;
+	{
+		if( entity.pBaseEntity->MeshProperty().m_pMeshRenderMethod )
+		{
+			entity.m_pMeshRenderMethod
+				= entity.pBaseEntity->MeshProperty().m_pMeshRenderMethod->CreateCopy();
+
+			if( !entity.m_pMeshRenderMethod )
+				return Result::UNKNOWN_ERROR;
+		}
+		else
+			return Result::UNKNOWN_ERROR;
+	}
 
 	// create a planar reflection entity
 //	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethodCopy
@@ -807,6 +850,8 @@ void RegisterAsPlanarMirror( CCopyEntity& entity, CBasicMesh& mesh, int subset_i
 
 	// Move the indices of the planar reflection subset(s)
 	// to the render method of the planar reflection entity
+
+	return Result::SUCCESS;
 }
 
 
@@ -874,6 +919,10 @@ void CreateMeshRenderMethod( CEntityHandle<>& entity,
 
 
 // Initializes CCopyEntity::m_pMeshRenderMethod
+// - Initialize the mesh render method
+// - Initialize shader parameter loaders
+// - Create alpha entities
+// - Creates a shader
 void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
                                       CShaderHandle& shader,
                                       CShaderTechniqueHandle& tech )
@@ -891,67 +940,87 @@ void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
 
 	// create transparent parts of the model as separate entities
 	if( m_EntityFlag & BETYPE_SUPPORT_TRANSPARENT_PARTS )
-		CreateAlphaEntities( &entity );
-
-	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
-	if( pMesh )
 	{
-		CBasicMesh& mesh = *pMesh;
-		const int num_mesh_materials = mesh.GetNumMaterials();
-
-		std::vector<CGenericShaderDesc> shader_descs;
-		shader_descs.resize( num_mesh_materials );
-
-		std::vector<int> mirror_subsets_indices;
-//		std::vector<int> non_mirror_subsets_indices;
-
-		for( int i=0; i<num_mesh_materials; i++ )
+		// Remove any previous alpha entities
+		int next_child_index = 0;
+		while( next_child_index < entity.GetNumChildren() )
+//		for( int i=0; i<entity.GetNumChildren(); i++ )
 		{
-			bool registered_as_mirror = RegisterAsMirrorIfReflective( entity, *pMesh, i, shader_descs[i] );
-			if( registered_as_mirror )
-				mirror_subsets_indices.push_back( i );
+			shared_ptr<CCopyEntity> pChild = entity.m_aChild[next_child_index].Get();
+			if( IsValidEntity(pChild.get())
+			 && pChild->GetEntityTypeID() == CCopyEntityTypeID::ALPHA_ENTITY )
+			{
+				CCopyEntity *pChildRawPtr = pChild.get();
+				m_pStage->TerminateEntity( pChildRawPtr );
+			}
+			else
+				next_child_index += 1;
 		}
 
-		if( m_MeshProperty.m_MeshDesc.IsValid() )
-//		if( true )
+		CreateAlphaEntities( &entity );
+	}
+
+	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+	if( !pMesh )
+		return;
+
+	CBasicMesh& mesh = *pMesh;
+	const int num_mesh_materials = mesh.GetNumMaterials();
+
+	std::vector<CGenericShaderDesc> shader_descs;
+	shader_descs.resize( num_mesh_materials );
+
+	std::vector<int> mirror_subsets_indices;
+//	std::vector<int> non_mirror_subsets_indices;
+
+	if( m_MeshProperty.m_MeshDesc.IsValid() )
+//	if( true )
+	{
+		// The mesh is specified in the base entity
+	}
+	else
+	{
+		// base entity has no mesh
+		// - entity's mesh is individual
+		shader_descs.resize( num_mesh_materials );
+		for( int i=0; i<num_mesh_materials; i++ )
 		{
-			// The mesh is specified in the base entity
+			// Fill out the shader desc based on the parameter values of the material
+
+			// reflection
+			bool registered_as_mirror = RegisterAsMirrorIfReflective( entity, mesh, i, shader_descs[i] );
+			if( registered_as_mirror )
+				mirror_subsets_indices.push_back( i );
+
+			// specularity
+			if( 0.001f < mesh.GetMaterial(i).m_Mat.fSpecularity )
+				shader_descs[i].Specular = CSpecularSource::UNIFORM;
+			else
+				shader_descs[i].Specular = CSpecularSource::NONE;
+		}
+
+		vector< pair< CGenericShaderDesc, vector<unsigned int> > > grouped_descs;
+		group_elements( shader_descs, grouped_descs );
+
+		// Do a NULL check just in case
+		// The mesh render method is initialized by InitMeshRenderMethod() above.
+		if( !entity.m_pMeshRenderMethod )
+			entity.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+
+		bool shader_loaded = false;
+		if( grouped_descs.size() == 1 )
+		{
+			CSubsetRenderMethod& render_method = entity.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
+
+			render_method.m_Technique.SetTechniqueName( "Default" );
+			render_method.m_ShaderDesc.pShaderGenerator.reset( new CGenericShaderGenerator( grouped_descs[0].first ) );
+
+//			shader_loaded = render_method.Load();
+			shader_loaded = render_method.m_Shader.Load( render_method.m_ShaderDesc );
 		}
 		else
 		{
-			// base entity has no mesh
-			// - entity's mesh is individual
-			shader_descs.resize( num_mesh_materials );
-			for( int i=0; i<num_mesh_materials; i++ )
-			{
-				if( 0.001f < pMesh->GetMaterial(i).m_Mat.fSpecularity )
-					shader_descs[i].Specular = CSpecularSource::UNIFORM;
-				else
-					shader_descs[i].Specular = CSpecularSource::NONE;
-			}
-
-			vector< pair< CGenericShaderDesc, vector<unsigned int> > > grouped_descs;
-			group_elements( shader_descs, grouped_descs );
-
-			// Do a NULL check just in case
-			// The mesh render method is initialized by InitMeshRenderMethod() above.
-			if( !entity.m_pMeshRenderMethod )
-				entity.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
-
-			bool shader_loaded = false;
-			if( grouped_descs.size() == 1 )
-			{
-				CSubsetRenderMethod& render_method = entity.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
-
-				render_method.m_Technique.SetTechniqueName( "Default" );
-				render_method.m_ShaderDesc.pShaderGenerator.reset( new CGenericShaderGenerator( grouped_descs[0].first ) );
-
-//				shader_loaded = render_method.Load();
-				render_method.m_Shader.Load( render_method.m_ShaderDesc );
-			}
-			else
-			{
-			}
+			LOG_PRINT_WARNING( "Mesh materials need different shaders. This situation is not supported yet (the total number of materials: " + to_string(num_mesh_materials) + ")." );
 		}
 	}
 }
