@@ -253,7 +253,7 @@ void CCharacterMotionControlAppTask::UpdateThirdPersonCamera( float dt )
 
 	m_pThirdPersonCameraController->Update( dt );
 
-	Camera().SetPose( m_pThirdPersonCameraController->GetCameraPose() );
+	SetCameraPose( m_pThirdPersonCameraController->GetCameraPose() );
 }
 
 
@@ -273,12 +273,12 @@ int CCharacterMotionControlAppTask::FrameMove( float dt )
 
 		if( m_pThirdPersonMotionController )
 		{
-			m_pThirdPersonMotionController->SetCameraPose( Camera().GetPose() );
+			m_pThirdPersonMotionController->SetCameraPose( GetCamera().GetPose() );
 			m_pThirdPersonMotionController->Update();
 		}
 	}
 
-	m_ScrollEffect.SetCameraPose( Camera().GetPose() );
+	m_ScrollEffect.SetCameraPose( GetCamera().GetPose() );
 /*	Vector3 vDist = (Camera().GetPosition() - m_vPrevCamPos);
 	if( 0.000001f < Vec3LengthSq( vDist ) )
 		m_ScrollEffect.SetCameraVelocity( vDist / get_clamped( dt, 0.005f, 1.0f ) );
