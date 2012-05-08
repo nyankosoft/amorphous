@@ -23,6 +23,7 @@
 #include "gds/Item/SkeletalCharacter.hpp"
 
 using std::string;
+using std::vector;
 using namespace boost;
 
 
@@ -150,6 +151,8 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	actor_desc.vecpShapeDesc.push_back( &cap_desc );
 //	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
 
+	string motion_fsm_filepath = "motions/test_motion_fsm.bin";
+
 	const int num_characters = 1;
 	m_pCharacterItems.resize( num_characters );
 	const char *meshes[] = { "models/male_skinny_young.msh", "models/female99-age17-muscle73-weight66-height1.52.msh" };
@@ -158,6 +161,19 @@ m_vPrevCamPos( Vector3(0,0,0) )
 		m_pCharacterItems[i].reset( new CSkeletalCharacter );
 
 		Result::Name res = m_pCharacterItems[i]->LoadCharacterMesh( meshes[i] );
+
+		m_pCharacterItems[i]->InitMotionFSMs( motion_fsm_filepath );
+
+		vector< shared_ptr<CCharacterMotionNodeAlgorithm> > pMotionNodes;
+		pMotionNodes.resize( 4 );
+		pMotionNodes[0].reset( new CFwdMotionNode );
+		pMotionNodes[1].reset( new CRunMotionNode );
+		pMotionNodes[2].reset( new CStandingMotionNode );
+		pMotionNodes[3].reset( new CJumpMotionNode );
+
+		const char *motion_names[] = { "fwd", "run", "standing", "vertical_jump" };
+		for( size_t j=0; j<pMotionNodes.size(); j++ )
+			m_pCharacterItems[i]->SetMotionNodeAlgorithm( motion_names[j], pMotionNodes[j] );  
 
 /*		shared_ptr<CMeshObjectContainer> pMeshContainer;
 		if( m_pCharacterItems[i]->MeshContainerRootNode().GetNumMeshContainers() == 0 )
