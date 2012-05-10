@@ -58,7 +58,7 @@ CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int fon
 	{
 		const string dot_and_ext = font_name.substr(font_name.length() - 4);
 		if( dot_and_ext == ".ttf"
-		 && dot_and_ext == ".otf" )
+		 || dot_and_ext == ".otf" )
 		{
 			// Consider font_name as a filename
 			CUTFFont *pUTFFont = new CUTFFont;
