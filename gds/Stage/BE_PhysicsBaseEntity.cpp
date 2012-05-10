@@ -156,7 +156,7 @@ void CBE_PhysicsBaseEntity::CreatePseudoCylinderMeshDesc( float radius, float he
 	vector<Vector3> normals;
 	vector< vector<int> > polygons;
 	float radii[2] = { radius, radius };
-	CreateCylinder( height, radii, sg_cylinder_mesh_side_subdivisions, PrimitiveModelStyle::EDGE_VERTICES_WELDED,
+	CreateCylinder( height, radii, sg_cylinder_mesh_side_subdivisions, PrimitiveModelStyle::EDGE_VERTICES_WELDED, true, true,
 		m_ConvexMeshDesc.m_vecVertex, normals, polygons );
 
 	const int num_polygons = (int)polygons.size();
