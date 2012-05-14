@@ -1,9 +1,9 @@
 #include "MotionDatabaseBuilder.hpp"
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/StringAux.hpp"
-#include "XML/XMLDocumentLoader.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/StringAux.hpp"
+#include "gds/XML/XMLDocumentLoader.hpp"
 
 using std::vector;
 using std::string;
@@ -40,7 +40,7 @@ shared_ptr<CMotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::st
 {
 	// The extension returned by boost::filesystem::path::extension() includes "."
 	// before the extension.
-	string ext = path(filepath).extension();
+	string ext = path(filepath).extension().string();
 
 	BOOST_FOREACH( shared_ptr<CMotionPrimitiveCompilerCreator>& pCreator, sg_vecpExtAndMotionPrimitiveCompiler )
 	{
@@ -443,6 +443,8 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 		return;
 	}
 
+	string root_bone_name = node_reader.GetAttributeText( "root_bone" );
+
 	// get the current desc group
 	CMotionPrimitiveDescGroup& desc_group = m_vecDescGroup.back();
 
@@ -450,6 +452,8 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 
 	// save the name of the motion primitive
 	desc.m_Name = motion_primitive_name;
+
+	desc.m_RootBoneName = root_bone_name;
 
 	vector<CXMLNodeReader> children = node_reader.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )

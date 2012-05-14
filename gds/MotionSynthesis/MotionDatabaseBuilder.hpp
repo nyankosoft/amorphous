@@ -2,15 +2,8 @@
 #define  __MotionDatabaseBuilder_H__
 
 
-#include <sys/stat.h>
-#include <boost/shared_ptr.hpp>
-
-#include "XML/XMLNodeReader.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+#include "gds/XML/XMLNodeReader.hpp"
+#include "gds/Support/Log/DefaultLog.hpp"
 
 #include "fwd.hpp"
 #include "MotionPrimitive.hpp"
@@ -57,6 +50,9 @@ public:
 	std::string m_Name;
 	int m_StartFrame;
 	int m_EndFrame;
+
+	/// If this is left empty, the first of the scene's root bones is used.
+	std::string m_RootBoneName;
 
 	bool m_bIsLoopMotion;
 
