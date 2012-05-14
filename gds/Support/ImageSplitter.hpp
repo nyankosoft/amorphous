@@ -4,10 +4,8 @@
 
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
-#include "Support/BitmapImage.hpp"
-#include "Support/lfs.hpp"
-#include "Graphics/Rect.hpp"
-using namespace Graphics;
+#include "BitmapImage.hpp"
+#include "lfs.hpp"
 
 
 class CTBBImageSplitterImpl;
@@ -68,7 +66,7 @@ public:
 	m_BaseDestFilepath(base_dest_filepath),
 	m_pSplitImageFilepathPrinter(pDestFilepathPrinter)
 	{
-		m_pBitmapImage = boost::shared_ptr<CBitmapImage>( new CBitmapImage() );
+		m_pBitmapImage.reset( new CBitmapImage() );
 		bool loaded = m_pBitmapImage->LoadFromFile( src_image_filepath );
 		if( !loaded )
 		{
