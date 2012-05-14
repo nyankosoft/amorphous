@@ -138,7 +138,12 @@ public:
 		CCopyEntity *pEntity1 = (CCopyEntity *)actor1.m_pFrameworkData;
 
 		if( pEntity0 && pEntity1 )
+		{
 			pEntity0->OnPhysicsTrigger( *pShape0, *pEntity1, *pShape1, status );
+
+			if( pEntity0->m_pCallback )
+				pEntity0->m_pCallback->OnPhysicsTrigger( *pShape0, *pEntity1, *pShape1, status );
+		}
 	}
 };
 
@@ -160,6 +165,11 @@ public:
 		{
 			pEntity0->OnPhysicsContact( pair, *pEntity1 );
 			pEntity1->OnPhysicsContact( pair, *pEntity0 );
+
+			if( pEntity0->m_pCallback )
+				pEntity0->m_pCallback->OnPhysicsContact( pair, *pEntity1 );
+			if( pEntity1->m_pCallback )
+				pEntity1->m_pCallback->OnPhysicsContact( pair, *pEntity0 );
 		}
 	}
 };
