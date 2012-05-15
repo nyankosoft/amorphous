@@ -84,6 +84,12 @@ int Test()
 		scanner.TryScanLine( "4_STRINGS", str4[0], str4[1], str4[2], str4[3] );
 	}
 
+	printf( "a=%d,  b=%d\n",  a, b );
+	printf( "fa=%f, fb=%f\n", fa, fb );
+	printf( "da=%f, db=%f\n", da, db );
+	printf( "s=%d,  us=%u\n", s, us );
+	printf( "name=\"%s\"\n",  name.c_str() );
+
 	bool tf;
 	scanner.TryScanBool( "BOOL", "TRUE/FALSE", tf );
 
