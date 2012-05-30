@@ -3,7 +3,8 @@
 
 
 #include "TextureFont.hpp"
-#include "Support/2DArray.hpp"
+#include "../../Support/2DArray.hpp"
+#include "../../Support/ImageArchive.hpp"
 
 
 class CTrueTypeTextureFont;
@@ -31,8 +32,12 @@ class CTrueTypeTextureFont;
 		Need to be (binary db filepath)::(keyname)
 		=========================================================
 
+    - As such, the texture image is saved as a separate data in a database of CBinaryDatabase<std::string>
+      because the Direct3D should be able to separately load the image after releasing
+	  and re-creating the D3D device object.
+
   - Why a separate archive class? What about deriving font class from IArchiveObjectBase?
-    - CFontBase would need to be an archive object to avoid mulitple inheritance. 
+    - CFontBase would need to be an archive object to avoid mulitple inheritance.
 */
 class CTextureFontArchive : public IArchiveObjectBase
 {
@@ -42,15 +47,13 @@ public:
 
 	std::vector<CTextureFont::CharRect> vecCharRect;
 
-//	CImageArchive TextureImage;
-
 public:
 
 	CTextureFontArchive() : BaseCharHeight(64) {}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		ar & BaseCharHeight & vecCharRect;// & TextureImage;
+		ar & BaseCharHeight & vecCharRect;
 	}
 };
 
@@ -130,6 +133,10 @@ public:
 	virtual int GetFontType() const { return FONTTYPE_TRUETYPETEXTURE; }
 
 	bool SaveTextureAndCharacterSet( const std::string& filepath ); 
+
+	bool SaveTextureFontArchive( const std::string& pathname );
+
+	static const char *GetTextureFontArchiveExtension() { return "tfd"; }
 
 	friend class CFontTextureLoader;
 };

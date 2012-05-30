@@ -7,12 +7,13 @@ using namespace Graphics;
 #include "Support/FreeTypeAux.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/ImageArchive.hpp"
+#include "Support/Serialization/BinaryDatabase.hpp"
 
 using namespace std;
 using namespace boost;
 
 
+static const std::string gs_FontBasicInfoKeyname = "Base";
 static const std::string gs_FontTextureImageKeyname = "Texture";
 
 
@@ -291,6 +292,34 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		// First, create the texture
 //		bool tex_created = CreateFontTextureFromTrueTypeFont();
 	}
+	else if( dot_and_3char_suffix == string(".") + GetTextureFontArchiveExtension() )
+	{
+		// Assume the user has specified texture font database
+		CBinaryDatabase<string> db;
+		bool db_open = db.Open( filename, CBinaryDatabase<string>::DB_MODE_APPEND );
+		if( db_open )
+		{
+			CTextureFontArchive archive;
+			bool loaded = db.GetData( gs_FontBasicInfoKeyname, archive );
+			if( loaded )
+			{
+				m_vecCharRect = archive.vecCharRect;
+				m_BaseHeight  = archive.BaseCharHeight;
+			}
+			else
+				return false;
+
+			// Close before loading the texture
+			// - The resource manager needs to open the db
+			db.Close();
+
+			CTextureResourceDesc tex_desc;
+			tex_desc.ResourcePath = filename + "::" + gs_FontTextureImageKeyname;
+			return m_FontTexture.Load( tex_desc );
+		}
+		else
+			return false;
+	}
 	else
 	{
 		// load as image file for font texture
@@ -312,33 +341,6 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		
 		return true;
 	}
-/*	else if( dot_and_3char_suffix == ".tfd" )
-	{
-		// Assume the user has specified texture font database
-		CBinaryDatabase<string> db;
-		bool db_open = db.Open( filename, CBinaryDatabase<string>::DB_MODE_APPEND );
-		if( db_open )
-		{
-			CTextureFontArchive archive;
-			bool loaded = db.GetData( "Base", archive );
-			if( loaded )
-			{
-				m_vecCharRect    = archive.vecCharRect;
-				m_BaseCharHeight = archive.BaseCharHeight;
-			}
-			else
-				return false;
-
-			// Close before loading the texture
-			// - The resource manager needs to open the db
-			db.Close();
-
-			m_FontTexture.filename = filename + "::" + gs_FontTextureImageKeyname;
-			return m_FontTexture.Load();
-		}
-		else
-			return false;
-	}*/
 
 	return false;
 }
@@ -357,4 +359,41 @@ bool CTrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& textur
 	bool saved = tex_font_archive.SaveToFile( charset_filepath );
 
 	return saved;
+}
+
+
+bool CTrueTypeTextureFont::SaveTextureFontArchive( const std::string& pathname )
+{
+	string temporary_texture_pathname = "temporary_font_texture.png";
+	bool tex_saved = m_FontTexture.SaveTextureToImageFile( temporary_texture_pathname );
+	if( !tex_saved )
+		return false;
+
+	CTextureFontArchive tex_font_archive;
+	tex_font_archive.BaseCharHeight = m_BaseHeight;
+	tex_font_archive.vecCharRect    = m_vecCharRect;
+//	bool image_loaded = tex_font_archive.TextureImage.LoadFromFile( temporary_texture_pathname );
+//	if( !image_loaded )
+//		return false;
+//
+//	bool saved = tex_font_archive.SaveToFile( pathname );
+//
+//	return saved;
+
+	CBinaryDatabase<string> db;
+	bool db_open = db.Open( pathname, CBinaryDatabase<string>::DB_MODE_NEW );
+	if( !db_open )
+		return false;
+
+	CImageArchive ia;
+	bool image_loaded = ia.LoadFromFile( temporary_texture_pathname );
+	if( !image_loaded )
+		return false;
+
+	bool basic_info_added = db.AddData( gs_FontBasicInfoKeyname,    tex_font_archive );
+	bool texture_added    = db.AddData( gs_FontTextureImageKeyname, ia );
+
+	db.Close();
+
+	return (basic_info_added && texture_added);
 }
