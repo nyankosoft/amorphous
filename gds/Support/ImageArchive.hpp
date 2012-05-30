@@ -44,6 +44,8 @@ public:
 
 //	bool LoadImage_FloatRGBA( vector<SFloatRGBAColor>& dest_buffer );
 
+	inline bool LoadFromFile( const std::string& image_filename );
+
 	/// returns true on success
 	inline bool SetFormatFromFileExtension( const std::string& image_ext );
 
@@ -65,18 +67,24 @@ inline CImageArchive::CImageArchive( const std::string& image_filename )
 :
 m_Format(IMGFMT_INVALID)
 {
+	LoadFromFile( image_filename );
+}
+
+
+inline bool CImageArchive::LoadFromFile( const std::string& image_filename )
+{
 	// get the suffix from the filename
 	size_t dot_pos = image_filename.rfind(".");
 	if( dot_pos == std::string::npos )
-		return;
+		return false;
 
 	// set image format
 	bool res = SetFormatFromFileExtension( image_filename.substr( dot_pos + 1, image_filename.length() ) );
 	if( !res )
-		return;
+		return false;
 
 	// load image data to buffer
-	CSerializableStream::LoadBinaryStream(image_filename);
+	return CSerializableStream::LoadBinaryStream(image_filename);
 }
 
 
