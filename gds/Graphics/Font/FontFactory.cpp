@@ -29,13 +29,23 @@ CFontBase* CFontFactory::CreateFontRawPtr( CFontBase::FontType type )
 
 CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int font_width, int font_height )
 {
-	if( font_name.find(".ia")  != string::npos
-	 || font_name.find(".dds") != string::npos
-	 || font_name.find(".bmp") != string::npos
-	 || font_name.find(".tga") != string::npos
-	 || font_name.find(".jpg") != string::npos )
+	string ext;
+	size_t pos = font_name.rfind( "." );
+	if( pos != string::npos && 4 <= font_name.length() && pos <= font_name.length() - 2 )
+		ext = font_name.substr( pos + 1 );
+
+	if( ext == "ia"
+	 || ext == "png"
+	 || ext == "dds"
+	 || ext == "bmp"
+	 || ext == "tga"
+	 || ext == "jpg" )
 	{
 		return new CTextureFont( font_name, font_width, font_height );
+	}
+	else if( ext == CTrueTypeTextureFont::GetTextureFontArchiveExtension() )
+	{
+		return new CTrueTypeTextureFont( font_name, font_width, font_height );
 	}
 	else if( font_name.find( "BuiltinFont::" ) == 0 )
 	{
