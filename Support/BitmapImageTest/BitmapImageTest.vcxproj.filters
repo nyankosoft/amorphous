@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{db2763e0-da82-4115-a4a4-d0692e9ab696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Support">
+      <UniqueIdentifier>{9f5b3bb1-118f-4a13-b508-2f8860a2dd0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Support\Log">
+      <UniqueIdentifier>{a96a5f24-25d0-4fff-b581-d996307e1ff0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BitmapImageTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogInputBase.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Log\DefaultLog.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\gds\Support\Timer_Win32.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Project1\gds\Support\BitmapImage.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\DefaultLog.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\Log.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogInputBase.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Timer.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\gds\Support\Timer_Win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
