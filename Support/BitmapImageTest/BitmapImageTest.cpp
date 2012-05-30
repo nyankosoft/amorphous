@@ -5,7 +5,6 @@
 #include "gds/base.hpp"
 
 using namespace std;
-using namespace boost;
 
 
 void LoadImageForTest( const std::string& image_filepath )
@@ -38,7 +37,7 @@ void TestPerformanceToOpenImageFiles()
 }
 
 
-int RunTests()
+int TestImageArchive()
 {
 	CImageArchive img_archive( "./images/src.bmp" );
 
@@ -48,8 +47,16 @@ int RunTests()
 	CBitmapImage img( img_archive );
 
 	bool saved = img.SaveToFile( "./images/dest.jpg" );
-	if( !saved )
+	if( saved )
+		return 0;
+	else
 		return -1;
+}
+
+
+int RunTests()
+{
+	TestImageArchive();
 
 	TestPerformanceToOpenImageFiles();
 
@@ -59,8 +66,10 @@ int RunTests()
 
 int main( int argc, char *argv[] )
 {
+	InitFreeImage();
+
 	string log_filepath = "BitmapImageTest-" + string(GetBuildInfo()) + ".html";
-	shared_ptr<CLogOutput_HTML> pLog( new CLogOutput_HTML(log_filepath) );
+	boost::shared_ptr<CLogOutput_HTML> pLog( new CLogOutput_HTML(log_filepath) );
 	g_Log.AddLogOutput( pLog.get() );
 
 	return RunTests();
