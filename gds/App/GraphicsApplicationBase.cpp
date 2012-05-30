@@ -185,7 +185,7 @@ void CGraphicsApplicationBase::Run()
 	CLogOutput_HTML html_log( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
 
-	InitFreeImageErrorReport();
+	InitFreeImage();
 
 	// Create the instance of the test class
 //	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );

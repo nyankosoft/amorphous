@@ -434,14 +434,6 @@ void CGameApplicationBase::Execute()
 }
 
 
-inline void SetFreeImageErrorHandler()
-{
-	// mutex - lock
-
-	ONCE( InitFreeImageErrorReport() );
-}
-
-
 void CGameApplicationBase::Run()
 {
 	const char *app_id = GetUniqueID();
@@ -458,7 +450,10 @@ void CGameApplicationBase::Run()
 	CLogOutput_HTML html_log( "./debug/log_" + string(GetBuildInfo()) + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
-	SetFreeImageErrorHandler();
+	{
+		// mutex - lock
+		ONCE( InitFreeImage() );
+	}
 
 	try
 	{

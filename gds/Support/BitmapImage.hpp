@@ -218,16 +218,18 @@ inline CBitmapImage::CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer,
 
 inline void LogFreeImageError( FREE_IMAGE_FORMAT fif, const char *message )
 {
-	g_Log.Print( WL_ERROR, "Free Image: %s (image format: %s).",
+	g_Log.Print( WL_ERROR, "FreeImage: %s (image format: %s).",
 		message,
 		(fif != FIF_UNKNOWN) ? FreeImage_GetFormatFromFIF(fif) : "unknown"
 		);
 }
 
 
-inline void InitFreeImageErrorReport()
+inline void InitFreeImage()
 {
 	FreeImage_SetOutputMessage(LogFreeImageError);
+
+	LOG_PRINT( std::string("FreeImage version: ") + FreeImage_GetVersion() );
 }
 
 
