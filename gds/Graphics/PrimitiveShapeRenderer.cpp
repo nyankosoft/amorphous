@@ -76,6 +76,8 @@ void CPrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matr
 		C3DMeshModelArchive mesh_archive( generator.GetMeshArchive() );
 		bool loaded = ms_BoxMesh.LoadFromArchive( mesh_archive );
 	}
+	else
+		ms_BoxMesh.SetDiffuseColors( color );
 
 	ms_BoxMesh.Render( shader_mgr );
 }
@@ -220,6 +222,8 @@ void CPrimitiveShapeRenderer::RenderPlane(
 
 	if( ms_RectMesh.GetNumVertices() == 0 )
 		InitRectMesh( ms_RectMesh, color );
+	else
+		ms_RectMesh.SetDiffuseColors( color );
 
 	vector<Vector3> positions;
 	vector<TEXCOORD2> tex_coords;
