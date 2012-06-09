@@ -2,7 +2,7 @@
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
 #include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Graphics/PerlinNoiseTextureGenerator.hpp" //<<< This header contains the classes to test
+#include "gds/Graphics/TextureGenerators/PerlinNoiseTextureGenerator.hpp" //<<< This header contains the classes to test
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
@@ -44,11 +44,6 @@ m_fTextureRepeats( 1.0f )
 
 
 CPerlinNoiseTextureGeneratorTest::~CPerlinNoiseTextureGeneratorTest()
-{
-}
-
-
-void CPerlinNoiseTextureGeneratorTest::CreateSampleUI()
 {
 }
 
@@ -132,17 +127,12 @@ int CPerlinNoiseTextureGeneratorTest::Init()
 
 void CPerlinNoiseTextureGeneratorTest::Update( float dt )
 {
-	if( m_pSampleUI )
-		m_pSampleUI->Update( dt );
 }
 
 
 void CPerlinNoiseTextureGeneratorTest::Render()
 {
 	PROFILE_FUNCTION();
-
-	if( m_pSampleUI )
-		m_pSampleUI->Render();
 
 /*	shared_ptr<CGraphicsResourceEntry> pTexEntry( m_PerlinNoiseTexture.GetEntry() );
 	if( pTexEntry )
@@ -201,16 +191,6 @@ void CPerlinNoiseTextureGeneratorTest::SaveTexturesAsImageFiles()
 
 void CPerlinNoiseTextureGeneratorTest::HandleInput( const SInputData& input )
 {
-	if( m_pUIInputHandler )
-	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}
-
 	switch( input.iGICode )
 	{
 	case GIC_F5:
@@ -229,22 +209,9 @@ void CPerlinNoiseTextureGeneratorTest::HandleInput( const SInputData& input )
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-//			m_pSampleUI->GetDialog(UIID_DLG_RESOLUTION)->Open();
 		}
 		break;
 	default:
 		break;
 	}
-}
-
-
-void CPerlinNoiseTextureGeneratorTest::ReleaseGraphicsResources()
-{
-//	m_pSampleUI.reset();
-}
-
-
-void CPerlinNoiseTextureGeneratorTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
-{
-//	CreateSampleUI();
 }

@@ -7,20 +7,15 @@
 #include "gds/Graphics/TextureHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "gds/Input/fwd.hpp"
-#include "gds/GUI/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
 
-class CPerlinNoiseTextureGeneratorTest : public CGraphicsTestBase, public CGraphicsComponent
+class CPerlinNoiseTextureGeneratorTest : public CGraphicsTestBase
 {
 //	CShaderHandle m_Shader;
 
-	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
-
 	boost::shared_ptr<CFontBase> m_pFont;
-
-	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	boost::shared_ptr<CTimer> m_pTimer;
 
@@ -61,9 +56,6 @@ public:
 //	virtual void RenderBase();
 
 	virtual void HandleInput( const SInputData& input );
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
 
 
