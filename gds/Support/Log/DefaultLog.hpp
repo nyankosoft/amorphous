@@ -21,11 +21,11 @@ extern CLogInput_Default g_Log;
 #define LOG_PRINT_ERROR( text )   g_Log.Print( WL_ERROR,   std::string(__FUNCTION__) + " " + std::string(text) )
 #define LOG_PRINT( text )         g_Log.Print( WL_INFO,    std::string(__FUNCTION__) + " " + std::string(text) )
 
-#define LOG_PRINTF_VERBOSE(x) LOG_PRINT_VERBOSE( string(" ") + fmt_string x )
-#define LOG_PRINTF_CAUTION(x) LOG_PRINT_CAUTION( string(" ") + fmt_string x )
-#define LOG_PRINTF_WARNING(x) LOG_PRINT_WARNING( string(" ") + fmt_string x )
-#define LOG_PRINTF_ERROR(x)   LOG_PRINT_ERROR(   string(" ") + fmt_string x )
-#define LOG_PRINTF(x)         LOG_PRINT(         string(" ") + fmt_string x )
+#define LOG_PRINTF_VERBOSE(x) LOG_PRINT_VERBOSE( std::string(" ") + fmt_string x )
+#define LOG_PRINTF_CAUTION(x) LOG_PRINT_CAUTION( std::string(" ") + fmt_string x )
+#define LOG_PRINTF_WARNING(x) LOG_PRINT_WARNING( std::string(" ") + fmt_string x )
+#define LOG_PRINTF_ERROR(x)   LOG_PRINT_ERROR(   std::string(" ") + fmt_string x )
+#define LOG_PRINTF(x)         LOG_PRINT(         std::string(" ") + fmt_string x )
 
 #include "ScopeLog.hpp"
 
