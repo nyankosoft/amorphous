@@ -72,6 +72,24 @@ void CreateMirroredKeyframe(
 }
 
 
+void ShiftNodePosition( const CSkeleton& skeleton, const vector<int>& node_locator, const Vector3& dest_pos, CKeyframe& target )
+{
+	Vector3 shift = skeleton.CalculateNodePositionInSkeletonSpace( node_locator, target );
+
+	Matrix34 root_pose = target.GetRootPose();
+	root_pose.vPosition -= shift;
+	target.SetRootPose( root_pose );
+}
+
+
+void ShiftRootNodePosition( const Vector3& shift, CKeyframe& target )
+{
+	Matrix34 root_pose = target.GetRootPose();
+	root_pose.vPosition += shift;
+	target.SetRootPose( root_pose );
+}
+
+
 void SetLeftAndRightArmsRotationsForWalkMotion( vector< vector<int> >& locators, CKeyframe& dest_keyframe )
 {
 	typedef vector<int> bone_locator;
@@ -252,6 +270,41 @@ shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton
 	full_stride_left.SetTime(  0.5f );
 	on_left.SetTime(           1.0f );
 	full_stride_right.SetTime( 1.5f );
+
+	Vector3 stride
+		= skeleton.CalculateNodePositionInSkeletonSpace( l_foot, full_stride_left )
+		- skeleton.CalculateNodePositionInSkeletonSpace( r_foot, full_stride_left );
+
+//	ShiftNodePosition( skeleton, r_foot, Vector3(0,0,0), on_right );
+//	ShiftNodePosition( skeleton, r_foot, Vector3(0,0,0), full_stride_left );
+//	ShiftNodePosition( skeleton, l_foot, stride, on_left );
+//	ShiftNodePosition( skeleton, l_foot, stride, full_stride_right );
+
+	Vector3 r_foot_pos = Vector3(0,0,0), l_foot_pos = Vector3(0,0,0);
+
+	r_foot_pos = skeleton.CalculateNodePositionInSkeletonSpace( r_foot, on_right );
+
+	ShiftRootNodePosition( Vector3(0,0,-r_foot_pos.z), on_right );
+
+	r_foot_pos = skeleton.CalculateNodePositionInSkeletonSpace( r_foot, full_stride_left );
+
+	ShiftRootNodePosition( Vector3(0,0,-r_foot_pos.z), full_stride_left );
+
+	l_foot_pos = skeleton.CalculateNodePositionInSkeletonSpace( l_foot, on_left );
+
+	ShiftRootNodePosition( Vector3(0,0,-l_foot_pos.z-r_foot_pos.z), on_left );
+
+	l_foot_pos = skeleton.CalculateNodePositionInSkeletonSpace( l_foot, full_stride_right );
+
+	ShiftRootNodePosition( Vector3(0,0,-l_foot_pos.z-r_foot_pos.z), full_stride_right );
+
+	shared_ptr<CMotionPrimitive> pNoMotion( new CMotionPrimitive );
+	pNoMotion->SetSkeleton( skeleton );
+	pNoMotion->CreateEmptyKeyframes( 1 );
+	vector<CKeyframe>& kf = pNoMotion->GetKeyframeBuffer();
+	Vector3 default_r_foot_pos = skeleton.CalculateNodePositionInSkeletonSpace( r_foot, kf[0] );
+
+//	Vector3 r_foot_pos_diff = 
 
 	return pWalkMotion;
 }
