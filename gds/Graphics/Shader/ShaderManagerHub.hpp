@@ -50,9 +50,6 @@ public:
 
 	inline void PopViewAndProjectionMatrices_NoRestore();
 
-
-//	inline void SetCubeTexture( int index, LPDIRECT3DCUBETEXTURE9 pCubeTexture );
-
 	friend class CShaderManager;
 };
 
@@ -120,15 +117,6 @@ inline void CShaderManagerHub::PopViewAndProjectionMatrices_NoRestore()
 	m_vecProjMatrix.pop_back();
 }
 
-
-//inline void CShaderManagerHub::SetCubeTexture( int index, LPDIRECT3DCUBETEXTURE9 pCubeTexture )
-//{
-//	size_t i, num_shader_mgrs = m_vecpShaderManager.size();
-//	for( i=0; i<num_shader_mgrs; i++ )
-//	{
-//		m_vecpShaderManager[i]->SetCubeTexture( index, pCubeTexture );
-//	}
-//}
 
 
 #endif		/*  __ShaderManagerHub_H__  */
