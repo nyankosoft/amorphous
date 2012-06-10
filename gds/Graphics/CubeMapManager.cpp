@@ -23,7 +23,7 @@ m_pCubeMapSceneRenderer(NULL)
 	m_NumCubes = 1;
 
 	// set projection matrix proerties of the camera
-	m_Camera.SetFOV( D3DX_PI * 0.5f );
+	m_Camera.SetFOV( (float)PI * 0.5f );
 	m_Camera.SetAspectRatio( 1.0f );
 	m_Camera.SetNearClip( 0.1f );
 	m_Camera.SetFarClip( 500.0f );
@@ -114,7 +114,7 @@ void CCubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format
                                                 &m_pDepthCube,
                                                 NULL );
 
-	if( !m_pCurrentCubeMap )
+	if( FAILED(hr) || !m_pCurrentCubeMap )
 	{
 		LOG_PRINT_WARNING( "CreateDepthStencilSurface() failed. Cannot create depth stencil surface." );
 		return;
@@ -263,9 +263,6 @@ void CCubeMapManager::RenderToCubeMap()
 
     pd3dDevice->SetRenderTarget( 0, m_pOrigRenderTarget );
     SAFE_RELEASE( m_pOrigRenderTarget );	// decrement the ref count
-
-	// set cube texture to shader managers
-	ShaderManagerHub.SetCubeTexture( 0, m_pCubeMap32 );
 }
 
 
