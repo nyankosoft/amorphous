@@ -6,13 +6,11 @@
 #include "gds/Graphics/MeshGenerators.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
 
 using namespace boost;
-
-
-extern CPlatformDependentCameraController g_CameraController;
 
 
 extern CGraphicsTestBase *CreateTestInstance()
@@ -58,7 +56,9 @@ int CSimpleMotionBlurTest::Init()
 	mesh_desc.MeshType     = CMeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
-	g_CameraController.SetPosition( Vector3( 0, 3, 0 ) );
+//	g_CameraController.SetPosition( Vector3( 0, 3, 0 ) );
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3( 0, 3, 0 ) );
 
 	return 0;
 }
@@ -79,7 +79,7 @@ void CSimpleMotionBlurTest::RenderScene()
 
 	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
-	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
+	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPosition() );
 
 	shader_mgr.SetWorldTransform( matWorld );
 

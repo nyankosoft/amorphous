@@ -17,9 +17,6 @@ using std::string;
 using namespace boost;
 
 
-extern CPlatformDependentCameraController g_CameraController;
-
-
 extern CGraphicsTestBase *CreateTestInstance()
 {
 	return new COBBTreeTest();
@@ -38,7 +35,6 @@ COBBTreeTest::COBBTreeTest()
 m_DrawLevel(0),
 m_NumDrawLevels(8)
 {
-	g_CameraController.SetPosition( Vector3(0,1,-3) );
 }
 
 
@@ -49,6 +45,9 @@ COBBTreeTest::~COBBTreeTest()
 
 int COBBTreeTest::Init()
 {
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3(0,1,-3) );
+
 	m_pFont = CreateDefaultBuiltinFont();
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );

@@ -1,6 +1,7 @@
 #include "LensFlareTest.hpp"
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
+#include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/LensFlare.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
@@ -12,9 +13,6 @@
 
 using std::string;
 using namespace boost;
-
-
-extern CPlatformDependentCameraController g_CameraController;
 
 
 extern CGraphicsTestBase *CreateTestInstance()
@@ -126,7 +124,7 @@ void CLensFlareTest::Render()
 
 	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
-	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
+	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPosition() );
 
 	shader_mgr.SetWorldTransform( matWorld );
 
