@@ -70,6 +70,26 @@ void CCustomMesh::SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_
 }
 
 
+void CCustomMesh::SetDiffuseColors( const SFloatRGBAColor& diffuse_color )
+{
+	const int num_vertices = GetNumVertices();
+	const int offset = m_ElementOffsets[VEE::DIFFUSE_COLOR];
+
+	if( ms_DefaultVertexDiffuseColorFormat == VCF_ARGB32 )
+	{
+		U32 argb32 = diffuse_color.GetARGB32();
+		for( int i=0; i<num_vertices; i++ )
+			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(argb32), sizeof(U32) );
+	}
+	else if( ms_DefaultVertexDiffuseColorFormat == VCF_FRGBA )
+	{
+		const SFloatRGBAColor rgba_color( diffuse_color );
+		for( int i=0; i<num_vertices; i++ )
+			memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &rgba_color, sizeof(SFloatRGBAColor) );
+	}
+}
+
+
 void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 {
 	m_VertexFlags = vertex_format_flags;

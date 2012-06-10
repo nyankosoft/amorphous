@@ -92,6 +92,8 @@ public:
 
 	void SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors );
 
+	void SetDiffuseColors( const SFloatRGBAColor& diffuse_color );
+
 	inline void GetPositions( std::vector<Vector3>& dest ) const;
 
 	void InitVertexBuffer( int num_vertices, U32 vertex_format_flags );
@@ -189,7 +191,7 @@ inline void CCustomMesh::AddVertices( const unsigned int num_vertices )
 	if( m_VertexFlags == 0 || m_VertexSize == 0 )
 		return;
 
-	m_VertexBuffer.insert( m_VertexBuffer.end(), m_VertexSize * num_vertices );
+	m_VertexBuffer.insert( m_VertexBuffer.end(), m_VertexSize * num_vertices, 0 );
 }
 
 
