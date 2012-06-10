@@ -129,7 +129,7 @@ void CBVHViewer::LoadBlankTextures( CBasicMesh& mesh )
 			mat.TextureDesc[0].Width  = 1;
 			mat.TextureDesc[0].Height = 1;
 			mat.TextureDesc[0].Format = TextureFormat::A8R8G8B8;
-			mat.TextureDesc[0].pLoader.reset( new CSignleColorTextureFilling(SFloatRGBAColor::White()) );
+			mat.TextureDesc[0].pLoader.reset( new CSingleColorTextureFilling(SFloatRGBAColor::White()) );
 			mat.Texture[0].Load( mat.TextureDesc[0] );
 		}
 	}
