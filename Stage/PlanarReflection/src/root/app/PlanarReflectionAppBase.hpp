@@ -29,12 +29,6 @@ public:
 
 class CPlanarReflectionAppGUITask : public CGUIGameTask
 {
-	enum GUI_ID
-	{
-		GUI_ID_DLG_ROOT_STAGE_SELECT = 1000,
-		GUI_ID_LBX_STAGE_SELECT,
-	};
-
 	std::string m_StageScriptToLoad;
 
 public:

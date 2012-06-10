@@ -83,35 +83,6 @@ void CPlanarReflectionAppTask::HandleInput( const SInputData& input )
 
 CPlanarReflectionAppGUITask::CPlanarReflectionAppGUITask()
 {
-/*	int w = 1200, h = 300;
-	SRect root_dlg_rect = RectLTWH( 50, 50, w, h );
-	CGM_Dialog *pRootDlg
-		= DialogBoxManager()->AddRootDialog(
-		GUI_ID_DLG_ROOT_STAGE_SELECT,
-		root_dlg_rect,
-		"shadows test",
-		CGM_Dialog::STYLE_ALWAYS_OPEN
-		);
-
-	SRect lbx_rect = RectLTWH( 10, 10, w - 20, h - 20 );
-
-	CGM_ListBox *pStageSelectListBox
-		= pRootDlg->AddListBox( GUI_ID_LBX_STAGE_SELECT, lbx_rect, "", 0, 40 );
-
-	DialogBoxManager()->OpenRootDialog( GUI_ID_DLG_ROOT_STAGE_SELECT );
-
-	pStageSelectListBox->InsertItem( 0, "directional light", NULL );
-	pStageSelectListBox->InsertItem( 1, "point light", NULL );
-	pStageSelectListBox->InsertItem( 2, "spotlight", NULL );
-
-	shared_ptr<CGM_ListBoxEventHandler> pEventHandler( new StageSelectListBoxEventHandler(this) );
-	pStageSelectListBox->SetEventHandler( pEventHandler );
-
-	shared_ptr<CGraphicsElementManager> pGraphicsElemetMgr
-		= GetGUIRendererManager()->GetGraphicsElementManager();
-
-	pGraphicsElemetMgr->LoadFont( 0, "./Fonts/mono966_rld_b.TTF", 24, 48 );
-*/
 }
 
 
