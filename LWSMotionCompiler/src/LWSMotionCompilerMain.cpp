@@ -32,7 +32,7 @@ int main( int argc, char *argv[] )
 	path init_wd = lfs::get_cwd();
 
 	if( init_wd.leaf() != "app" )
-		lfs::set_wd( "../app" );
+		lfs::set_wd( "../../app" );
 
 	path app_wd = lfs::get_cwd();
 
