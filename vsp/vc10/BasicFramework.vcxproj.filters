@@ -792,6 +792,9 @@
     <ClCompile Include="..\..\gds\Graphics\OpenGL\GLInitialization.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -1829,6 +1832,9 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\OpenGL\GLInitialization.hpp">
       <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.hpp">
+      <Filter>Graphics\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

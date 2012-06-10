@@ -95,6 +95,7 @@
     <ClCompile Include="..\..\gds\Graphics\LogOutput_OnScreen.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshContainerRenderMethod.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshObjectContainer.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.cpp" />
     <ClCompile Include="..\..\gds\Graphics\OpenGL\GLInitialization.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffect.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectFilter.cpp" />
@@ -352,6 +353,7 @@
     <ClInclude Include="..\..\gds\Graphics\LogOutput_OnScreen.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshContainerRenderMethod.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshObjectContainer.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.hpp" />
     <ClInclude Include="..\..\gds\Graphics\OpenGL\GLInitialization.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffect.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectFilter.hpp" />
