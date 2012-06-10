@@ -2,7 +2,6 @@
 #define  __Skeleton_H__
 
 
-#include "gds/3DMath/Vector3.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
@@ -65,6 +64,13 @@ public:
 
 	void CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node );
 
+	Vector3 CalculateNodePositionInSkeletonSpace(
+		const std::vector<int>& node_locator,
+		uint& index,
+		const Transform& parent_transform,
+		const CTransformNode& parent_transform_node
+		) const;
+
 	void DumpToTextFile( FILE* fp, int depth );
 
 	void Serialize( IArchive & ar, const unsigned int version );
@@ -99,6 +105,8 @@ public:
 	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const;
 
 	void CreateEmptyTransformNodeTree( CTransformNode& root_transform_node ) { m_RootBone.CreateEmptyTransformNodeTree( root_transform_node ); }
+
+	Vector3 CalculateNodePositionInSkeletonSpace( const std::vector<int> node_locator, const CKeyframe& keyframe ) const;
 
 	void DumpToTextFile( const std::string& output_filepath );
 

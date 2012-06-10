@@ -1,4 +1,5 @@
 #include "Skeleton.hpp"
+#include "Keyframe.hpp"
 #include "../Support/Vec3_StringAux.hpp"
 
 using namespace msynth;
@@ -65,6 +66,41 @@ void CBone::CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node 
 	{
 		m_vecChild[i].CreateEmptyTransformNodeTree( parent_transform_node.m_vecChildNode[i] );
 	}
+}
+
+
+Vector3 CBone::CalculateNodePositionInSkeletonSpace(
+	const std::vector<int>& node_locator,
+	uint& index,
+	const Transform& parent_transform,
+	const CTransformNode& parent_transform_node
+	) const
+{
+	if( (uint)node_locator.size() == index )
+	{
+		return parent_transform * m_vOffset;
+	}
+
+	int bone_and_node_index = node_locator[index];
+	const int num_children = (int)m_vecChild.size();
+	if( num_children <= bone_and_node_index
+	 || parent_transform_node.GetNumChildren() <= bone_and_node_index )
+	{
+		return Vector3(0,0,0);
+	}
+
+	index++;
+
+	const CTransformNode& child_transform_node = parent_transform_node.GetChildNode(bone_and_node_index);
+	Transform offset_transform = Transform( Quaternion().FromRotationMatrix(Matrix33Identity()), m_vOffset );
+	Matrix34 transform;
+	CalculateWorldTransform( transform, parent_transform.ToMatrix34(), child_transform_node );
+	return m_vecChild[bone_and_node_index].CalculateNodePositionInSkeletonSpace(
+		node_locator,
+		index,
+		parent_transform * child_transform_node.GetLocalTransform() * offset_transform,
+		child_transform_node
+		);
 }
 
 
@@ -164,4 +200,12 @@ void CSkeleton::DumpToTextFile( const std::string& output_filepath )
 	m_RootBone.DumpToTextFile( fp, 0 );
 
 	fclose(fp);
+}
+
+
+Vector3 CSkeleton::CalculateNodePositionInSkeletonSpace( const std::vector<int> node_locator, const CKeyframe& keyframe ) const
+{
+	unsigned int index = 0;
+	Transform transform = Transform( Matrix34Identity() );
+	return m_RootBone.CalculateNodePositionInSkeletonSpace( node_locator, index, transform, keyframe.GetRootNode() );
 }
