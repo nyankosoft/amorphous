@@ -231,6 +231,9 @@ void CLWSMotionDatabaseCompiler::CollectKeyFrameTimes( CLWS_Bone& bone, vector<f
 
 
 // Recursively copies the bones and creates a tree which has CBone class objects as its nodes
+/// \param pSrcBone [in] source from which skeletal structure is extracted
+/// \param parent_space [in]
+/// \param dest_bone [out] a destination buffer
 void CopyBones( const shared_ptr<CLWS_Bone> pSrcBone,
 			    const Matrix34& parent_space,
 			    CBone& dest_bone )
@@ -306,6 +309,7 @@ void CopyBones( const shared_ptr<CLWS_Bone> pSrcBone,
 //void CLWSMotionDatabaseCompiler::CreateSkeleton()
 
 /// Returns a valid root bone on success
+/// Also, a valid skeleton is set to m_pSkeleton if everything works fine.
 shared_ptr<CLWS_Bone> CLWSMotionDatabaseCompiler::CreateSkeleton()
 {
 	if( !m_pScene )
@@ -333,6 +337,8 @@ shared_ptr<CLWS_Bone> CLWSMotionDatabaseCompiler::CreateSkeleton()
 
 	CBone root_bone;
 
+	// Extract skeletal structure from the LWS data and create a skeletal structure
+	// on root_bone
 	CopyBones( pRootBone, Matrix34Identity(), root_bone );
 
 	m_pSkeleton = shared_ptr<CSkeleton>( new CSkeleton );
