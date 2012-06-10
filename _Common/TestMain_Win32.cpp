@@ -15,6 +15,7 @@
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/BitmapImage.hpp" // For InitFreeImage()
 #include "gds/Support/lfs.hpp"
+#include "gds/Support/CameraController.hpp"
 #include "gds/Input.hpp"
 #include "gds/Input/StdMouseInput.hpp"
 //#include "gds/XML.hpp"
@@ -73,14 +74,15 @@ boost::shared_ptr<CInputHandler> g_pInputHandler;
 
 CFontSharedPtr g_pFont;
 
-CPlatformDependentCameraController g_CameraController;
-
 CCamera g_Camera;
 
 float g_FOV = (float)PI / 4.0f;
 
 const int g_WindowWidth  = 800;
 const int g_WindowHeight = 600;
+
+static const int sg_CameraControllerInputHandlerIndex = 0;
+static const int sg_GraphicsTestInputHandlerIndex = 1;
 
 
 void ReleaseGraphicsResources()
@@ -108,7 +110,13 @@ void Update( float frametime )
 {
 	PROFILE_FUNCTION();
 
-	g_pTest->Update( frametime );
+	if( g_pTest )
+	{
+		// Update the pose stored in the camera controller
+		g_pTest->UpdateCameraController( frametime );
+
+		g_pTest->Update( frametime );
+	}
 }
 
 
@@ -202,8 +210,6 @@ VOID Render()
 //-----------------------------------------------------------------------------
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	g_CameraController.HandleMessage( msg, wParam, lParam );
-
 	static CStdMouseInput s_Mouse;
 
 	s_Mouse.UpdateInput( msg, wParam, lParam );
@@ -243,9 +249,11 @@ bool Init()
 {
 	g_pTest->Init();
 
-	g_pInputHandler = boost::shared_ptr<CInputHandler>( new CGraphicsTestInputHandler(g_pTest) );
+	g_pInputHandler.reset( new CGraphicsTestInputHandler(g_pTest) );
 
-	InputHub().SetInputHandler( g_pInputHandler.get() );
+	InputHub().SetInputHandler( sg_GraphicsTestInputHandlerIndex, g_pInputHandler.get() );
+
+//	g_pCameraController.reset( new CCameraController( sg_CameraControllerInputHandlerIndex ) );
 
 	return true;
 }
@@ -345,8 +353,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		{
 			GlobalTimer().UpdateFrameTime();
 
-			g_CameraController.UpdateCameraPose( GlobalTimer().GetFrameTime() );
-
 			UpdateCameraMatrices();
 
 			float frametime = GlobalTimer().GetFrameTime();
@@ -355,7 +361,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 			Update( frametime );
 
-			g_Camera.SetPose( g_CameraController.GetPose() );
+			if( g_pTest->GetCameraController() )
+				g_Camera.SetPose( g_pTest->GetCameraController()->GetPose() );
 
 			if( g_pTest->UseRenderBase() )
 				g_pTest->RenderBase();

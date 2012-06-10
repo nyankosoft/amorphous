@@ -10,6 +10,7 @@
 #include "KeyState.hpp"
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Input/InputHandler.hpp"
+#include "gds/Support/CameraController.hpp"
 
 
 class Matrix44;
@@ -32,6 +33,12 @@ class CGraphicsTestBase
 
 	SFloatRGBAColor m_BackgroundColor;
 
+	boost::shared_ptr<CCameraController> m_pCameraController;
+
+protected:
+
+	static const int ms_CameraControllerInputHandlerIndex = 0;
+
 protected:
 
 	void SetUseRenderBase( bool use_render_base ) { m_UseRenderBase = use_render_base; }
@@ -48,7 +55,9 @@ public:
 	m_WindowHeight(720),
 	m_UseRenderBase(false),
 	m_BackgroundColor( SFloatRGBAColor( 0.19f, 0.19f, 0.19f, 1.00f ) )
-	{}
+	{
+		m_pCameraController.reset( new CCameraController( ms_CameraControllerInputHandlerIndex ) );
+	}
 
 	virtual ~CGraphicsTestBase() {}
 
@@ -68,6 +77,12 @@ public:
 
 	bool UseRenderBase() const { return m_UseRenderBase; }
 	virtual void RenderBase() {}
+
+	void UpdateCameraController( float dt ) { if( m_pCameraController ) m_pCameraController->UpdateCameraPose( dt ); }
+
+	const boost::shared_ptr<CCameraController> GetCameraController() const { return m_pCameraController; }
+
+	boost::shared_ptr<CCameraController> CameraController() { return m_pCameraController; }
 
 	virtual void UpdateCameraPose( const Matrix34& camera_pose ) {}
 
