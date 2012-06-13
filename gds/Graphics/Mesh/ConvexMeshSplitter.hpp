@@ -62,6 +62,13 @@ class CConvexMeshSplitter
 		std::vector<U16>& split_surface_vertex_indices_back
 		);
 
+	Result::Name CreateTrianglesOnSplitSurface(
+		CCustomMesh& dest_front,
+		CCustomMesh& dest_back,
+		std::vector<U16>& front_mesh_indices,
+		std::vector<U16>& back_mesh_indices
+		);
+
 public:
 
 	CConvexMeshSplitter(){}

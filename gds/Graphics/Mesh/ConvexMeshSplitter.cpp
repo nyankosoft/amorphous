@@ -1,5 +1,6 @@
 #include "ConvexMeshSplitter.hpp"
 #include "CustomMesh.hpp"
+#include "../../3DMath/ConvexPolygonUtilities.hpp"
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 
@@ -23,180 +24,109 @@ public:
 	}
 };
 
-
-bool DoesEdgeOverlapsWithTriangle( const std::vector<Vector3>& points, const Vector3& normal, const pair<U16,U16>& edge_to_test, const fixed_vector<U16,3>& triangle_to_test )
-{
-	Plane edge_plane;
-	edge_plane.normal = Vec3Cross( normal, points[edge_to_test.first] - points[edge_to_test.second] );
-	edge_plane.normal.Normalize();
-	edge_plane.dist = Vec3Dot( edge_plane.normal, points[edge_to_test.first] );
-
-	float d0 = edge_plane.GetDistanceFromPoint( points[ triangle_to_test[0] ] );
-	float d1 = edge_plane.GetDistanceFromPoint( points[ triangle_to_test[1] ] );
-	float d2 = edge_plane.GetDistanceFromPoint( points[ triangle_to_test[2] ] );
-
-	if( d0 < -0.001f && 0.001f < d1
-	 || d1 < -0.001f && 0.001f < d0
-	 || d1 < -0.001f && 0.001f < d2
-	 || d2 < -0.001f && 0.001f < d1
-	 || d2 < -0.001f && 0.001f < d0
-	 || d0 < -0.001f && 0.001f < d2 )
-	{
-		return true;
-	}
-	else
-		return false;
-}
-
-bool DoesEdgeOverlapAnyTriangle( const std::vector<Vector3>& points, const Vector3& normal, const std::pair<U16,U16>& edge_to_test, std::vector< fixed_vector<U16,3> >& triangles )
-{
-	typedef std::pair<U16,U16> edge;
-
-	for( int i=0; i<triangles.size(); i++ )
-	{
-		bool found_overlap = DoesEdgeOverlapsWithTriangle( points, normal, edge_to_test, triangles[i] );
-		if( found_overlap )
-			return true;
-	}
-
-	return false;
-}
-
-
-bool get_unconnected_point_index( std::vector<char>& processed, U16& dest )
-{
-	for( size_t i=0; i<processed.size(); i++ )
-	{
-		if( processed[i] == 0 )
-		{
-			processed[i] = 1;
-			dest = (U16)i;
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
-//void FindAdjacentNonOverlappingTriangle( std::vector< boost::tuple<U16,U16,U16> >& triangles )
-void FindAdjacentNonOverlappingTriangle(
-	std::vector< fixed_vector<U16,3> >& triangles,
-	const std::vector<Vector3>& points,
-	const Vector3& normal,
-	std::vector<char>& processed
+Result::Name CConvexMeshSplitter::CreateTrianglesOnSplitSurface(
+	CCustomMesh& dest_front,
+	CCustomMesh& dest_back,
+	std::vector<U16>& front_mesh_indices,
+	std::vector<U16>& back_mesh_indices
 	)
 {
-	if( triangles.empty() )
-		return; // Needs at least one triangle
-
-	typedef std::pair<U16,U16> edge;
 	typedef fixed_vector<U16,3> triangle;
-//	typedef boost::tuple<U16,U16,U16> triangle;
 
-	const triangle base_triangle = triangles.back();
+	const int num_points = m_SplitSurfacePoints.size();
 
-	for( int i=0; i<3; i++ )
+	vector<int> point_indices;
+	CalculateConvexPolygonIndices( m_SplitSurfacePoints, point_indices );
+
+	vector<int> triangle_indices;
+	TriangulateConvexPolygon( m_SplitSurfacePoints, point_indices, triangle_indices );
+
+	Plane created_polygon_plane;
+	created_polygon_plane.normal = Vector3(0,1,0);
+	if( triangle_indices.size() < 3 )
+		return Result::UNKNOWN_ERROR;
+
+	created_polygon_plane.normal = Vec3Cross(
+		m_SplitSurfacePoints[ triangle_indices[2] ] - m_SplitSurfacePoints[ triangle_indices[1] ],
+		m_SplitSurfacePoints[ triangle_indices[0] ] - m_SplitSurfacePoints[ triangle_indices[1] ]
+	);
+
+	Vec3Normalize( created_polygon_plane.normal, created_polygon_plane.normal );
+	created_polygon_plane.dist = Vec3Dot( created_polygon_plane.normal, m_SplitSurfacePoints[0] );
+
+	// dist and normal of created_polygon_plane have the same absolute values
+	// as thoese of split_plane, but their signs may be different.
+
+	uint vert_index_offsets[2] =
 	{
-		U16 unconnected_point_index = 0;
-		bool found = get_unconnected_point_index( processed, unconnected_point_index );
-		if( !found )
-			return;
+		dest_front.GetNumVertices(),
+		dest_back.GetNumVertices(),
+	};
 
-		bool edge_overlaps_with_triangle = false;
+	for( int i=0; i<2; i++ )
+	{
+		CCustomMesh& dest_mesh = (i==0) ? dest_front : dest_back;
+//		Vector3 normal = split_plane.normal;
+//		if( i==1 )
+//			normal *= (-1);
 
-		// Check whether the 2 edges not part of the focused triangle cross any triangle created so far.
-		for( int j=0; j<2; j++ )
+		// See whether we have to flip the triangles on the split surface
+		bool flip_triangles = false;
+		for( uint j=0; j<dest_mesh.GetNumVertices(); j++ )
 		{
-			U16 focused_triangle_point_index = base_triangle[(i+j)%3];
-			edge edge_to_test( focused_triangle_point_index, unconnected_point_index );
-//			boost::geometry::segment_identifier
-
-			bool found_overlap = DoesEdgeOverlapAnyTriangle( points, normal, edge_to_test, triangles );
-			if( found_overlap )
+			float d = created_polygon_plane.GetDistanceFromPoint( dest_mesh.GetPosition(j) );
+			if( 0.000001 < fabs(d) )
 			{
-				edge_overlaps_with_triangle = true;
+				flip_triangles = (0 < d);
 				break;
 			}
 		}
 
-		if( edge_overlaps_with_triangle == false )
+		Vector3 normal = created_polygon_plane.normal;
+		if( flip_triangles )
+			normal *= (-1);
+
+		SFloatRGBAColor diffuse_color = SFloatRGBAColor::White();
+
+		dest_mesh.AddVertices(  (uint)m_SplitSurfacePoints.size() );
+
+		for( int j=0; j<(int)m_SplitSurfacePoints.size(); j++ )
 		{
-			triangle new_triangle;
-			new_triangle.resize( 3 );
-			new_triangle[0] = triangles.back()[i];
-			new_triangle[0] = triangles.back()[(i+1)%3];
-			triangles.push_back( new_triangle );
+			uint vert_index = vert_index_offsets[i] + j;
+			dest_mesh.SetPosition(     vert_index, m_SplitSurfacePoints[j] );
+			if( dest_mesh.GetVertexFormatFlags() & VFF::NORMAL )
+				dest_mesh.SetNormal( vert_index, normal );
+			if( dest_mesh.GetVertexFormatFlags() & VFF::DIFFUSE_COLOR )
+				dest_mesh.SetDiffuseColor( vert_index, diffuse_color );
 		}
 
-		triangles.back();
+		vector<U16>& dest_mesh_indices = (i==0) ? front_mesh_indices : back_mesh_indices;
+//		for( int j=0; j<(int)triangle_indices.size(); j++ )
+//			dest_mesh_indices.push_back( vert_index_offsets[i] + triangle_indices[j] );
+		int r0 = flip_triangles ? 2 : 0;
+		int r1 = flip_triangles ? 0 : 2;
+		for( int j=0; j<(int)triangle_indices.size()/3; j++ )
+		{
+			dest_mesh_indices.push_back( vert_index_offsets[i] + triangle_indices[j*3+r0] );
+			dest_mesh_indices.push_back( vert_index_offsets[i] + triangle_indices[j*3+1 ] );
+			dest_mesh_indices.push_back( vert_index_offsets[i] + triangle_indices[j*3+r1] );
+		}
 	}
-}
 
-
-bool Get3PointsToCreateTriangle( const std::vector<Vector3>& points, U16& i0, U16& i1, U16& i2 )
-{
-	for( size_t i=0; i<points.size(); i++ )
+/*	vector<triangle> triangles;
+	CreateTrianglesOnSplitSurface( m_SplitSurfacePoints, split_plane.normal, triangles );
+	const U16 front_mesh_vertex_index_offset = (U16)dest_front.GetNumVertices();
+	for( size_t i=0; i<triangles.size(); i++ )
 	{
-		for( size_t j=i+1; j<points.size(); j++ )
-		{
-			for( size_t k=j+1; k<points.size(); k++ )
-			{
-				const Vector3 cross = Vec3Cross( points[j] - points[i], points[k] - points[i] );
-				if( 0.000001f < cross.GetLengthSq() )
-				{
-					i0 = i;
-					i1 = j;
-					i2 = k;
-					return true;
-				}
-			}
-		}
-	}
+		// Add triangle indices
+//		front_mesh_indices.push_back( triangles[i][0] + front_mesh_vertex_index_offset );
+//		front_mesh_indices.push_back( triangles[i][1] + front_mesh_vertex_index_offset );
+//		front_mesh_indices.push_back( triangles[i][2] + front_mesh_vertex_index_offset );
+	}*/
 
-	return true;
+	return Result::SUCCESS;
 }
 
-
-/// \param points [in] 
-/// \param triangles [out] 
-//void CreateTrianglesOnSplitSurface( const std::vector<Vector3>& points, std::vector< boost::tuple<U16,U16,U16> >& triangles )
-void CreateTrianglesOnSplitSurface( const std::vector<Vector3>& points, const Vector3& normal, std::vector< fixed_vector<U16,3> >& triangles )
-{
-	typedef std::pair<U16,U16> edge;
-//	typedef boost::tuple<U16,U16,U16> triangle;
-	typedef fixed_vector<U16,3> triangle;
-
-	vector<char> connected;
-	connected.resize( points.size(), 0 );
-
-	if( points.size() < 3 )
-		return;
-
-	U16 i0=0, i1=0, i2=0;
-	bool found = Get3PointsToCreateTriangle( points, i0, i1, i2 );
-	if( !found )
-		return;
-
-	triangle first_triangle;
-	first_triangle.resize( 3 );
-	first_triangle[0] = i0;
-	first_triangle[1] = i1;
-	first_triangle[2] = i2;
-	triangles.push_back( first_triangle );
-	connected[i0] = 1;
-	connected[i1] = 1;
-	connected[i2] = 1;
-
-	// For each edge, find an adjacent triangle which does not overlap
-	// with any of the triangles created so far.
-	FindAdjacentNonOverlappingTriangle( triangles, points, normal, connected );
-}
-
-
-void CreatePolygonsOnSplitSurface()
-{
-}
 
 
 /*
@@ -414,7 +344,7 @@ void CConvexMeshSplitter::SplitTriangle(
 				const float f = d0 / (d0 - d1);
 				const Vector3 p = p0 * (1.0f - f) + p1 * f;
 
-				bool create_single_convex_polygon_on_split_surface = false;
+				bool create_single_convex_polygon_on_split_surface = true;
 				if( create_single_convex_polygon_on_split_surface )
 				{
 					std::vector<Vector3>::iterator itr
@@ -670,64 +600,46 @@ Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CCustomMesh& src, cons
 		}
 	}
 
-	bool add_vertices_for_each_split_edge = false;
-	if( add_vertices_for_each_split_edge )//options.close_split_surfaces )
-	{
-		CreatePolygonsOnSplitSurface();
+//	bool add_vertices_for_each_split_edge = false;
+//	if( add_vertices_for_each_split_edge )//options.close_split_surfaces )
+//	{
+//		CreatePolygonsOnSplitSurface();
+//
+//		typedef fixed_vector<U16,3> triangle;
+//
+//		vector<Vector3> front_points;
+//		front_points.resize( split_surface_vertex_indices_front.size() );
+//		for( size_t i=0; i<split_surface_vertex_indices_front.size(); i++ )
+//			front_points[i] = dest_front.GetPosition( split_surface_vertex_indices_front[i] );
+//
+//		vector<Vector3> back_points;
+//		back_points.resize( split_surface_vertex_indices_back.size() );
+//		for( size_t i=0; i<split_surface_vertex_indices_back.size(); i++ )
+//			back_points[i] = dest_back.GetPosition( split_surface_vertex_indices_back[i] );
+//
+//		vector<triangle> front_triangles, back_triangles;
+//		CreateTrianglesOnSplitSurface( front_points, split_plane.normal, front_triangles );
+//		CreateTrianglesOnSplitSurface( back_points,  split_plane.normal, back_triangles );
+//
+//		for( size_t i=0; i<front_triangles.size(); i++ )
+//		{
+//			front_mesh_indices.push_back( front_triangles[i][0] );
+//			front_mesh_indices.push_back( front_triangles[i][1] );
+//			front_mesh_indices.push_back( front_triangles[i][2] );
+//		}
+//
+//		for( size_t i=0; i<back_triangles.size(); i++ )
+//		{
+//			back_mesh_indices.push_back( back_triangles[i][0] );
+//			back_mesh_indices.push_back( back_triangles[i][1] );
+//			back_mesh_indices.push_back( back_triangles[i][2] );
+//		}
+//	}
 
-		typedef fixed_vector<U16,3> triangle;
-
-		vector<Vector3> front_points;
-		front_points.resize( split_surface_vertex_indices_front.size() );
-		for( size_t i=0; i<split_surface_vertex_indices_front.size(); i++ )
-			front_points[i] = dest_front.GetPosition( split_surface_vertex_indices_front[i] );
-
-		vector<Vector3> back_points;
-		back_points.resize( split_surface_vertex_indices_back.size() );
-		for( size_t i=0; i<split_surface_vertex_indices_back.size(); i++ )
-			back_points[i] = dest_back.GetPosition( split_surface_vertex_indices_back[i] );
-
-		vector<triangle> front_triangles, back_triangles;
-		CreateTrianglesOnSplitSurface( front_points, split_plane.normal, front_triangles );
-		CreateTrianglesOnSplitSurface( back_points,  split_plane.normal, back_triangles );
-
-		for( size_t i=0; i<front_triangles.size(); i++ )
-		{
-			front_mesh_indices.push_back( front_triangles[i][0] );
-			front_mesh_indices.push_back( front_triangles[i][1] );
-			front_mesh_indices.push_back( front_triangles[i][2] );
-		}
-
-		for( size_t i=0; i<back_triangles.size(); i++ )
-		{
-			back_mesh_indices.push_back( back_triangles[i][0] );
-			back_mesh_indices.push_back( back_triangles[i][1] );
-			back_mesh_indices.push_back( back_triangles[i][2] );
-		}
-	}
-
-	bool create_single_convex_polygon_on_split_surface = false;
+	bool create_single_convex_polygon_on_split_surface = true;
 	if( create_single_convex_polygon_on_split_surface )
 	{
-		typedef fixed_vector<U16,3> triangle;
-
-		const int num_points = m_SplitSurfacePoints.size();
-
-		vector<triangle> triangles;
-		CreateTrianglesOnSplitSurface( m_SplitSurfacePoints, split_plane.normal, triangles );
-		const U16 front_mesh_vertex_index_offset = (U16)dest_front.GetNumVertices();
-		for( size_t i=0; i<triangles.size(); i++ )
-		{
-			// Add triangle indices
-//			front_mesh_indices.push_back( triangles[i][0] + front_mesh_vertex_index_offset );
-//			front_mesh_indices.push_back( triangles[i][1] + front_mesh_vertex_index_offset );
-//			front_mesh_indices.push_back( triangles[i][2] + front_mesh_vertex_index_offset );
-		}
-
-		for( int i=0; i<num_points; i++ )
-		{
-			// Add vertices
-		}
+		CreateTrianglesOnSplitSurface( dest_front, dest_back, front_mesh_indices, back_mesh_indices );
 	}
 
 	dest_front.SetIndices( front_mesh_indices );
