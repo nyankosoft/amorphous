@@ -328,6 +328,7 @@
     <ClCompile Include="..\..\gds\Utilities\Physics\PhysicsMeshUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\gds\3DMath\ConvexPolygonUtilities.hpp" />
     <ClInclude Include="..\..\gds\3DMath\Vector4.hpp" />
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp" />
     <ClInclude Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.hpp" />

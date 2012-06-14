@@ -1836,6 +1836,9 @@
     <ClInclude Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\3DMath\ConvexPolygonUtilities.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\gds\Graphics\FloatRGBAColor.inl">
