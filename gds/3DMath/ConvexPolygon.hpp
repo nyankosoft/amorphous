@@ -2,9 +2,9 @@
 #define  __CONVEXPOLYGON_H__
 
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Plane.hpp"
-#include "3DMath/AABB3.hpp"
+#include "Vector3.hpp"
+#include "Plane.hpp"
+#include "AABB3.hpp"
 
 #include <stdio.h>
 

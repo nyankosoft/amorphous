@@ -3,7 +3,7 @@
 
 #include "AABB3.hpp"
 
-#include "Support/Serialization/SerializationEx.hpp"
+#include "../Support/Serialization/SerializationEx.hpp"
 using namespace GameLib1::Serialization;
 
 
