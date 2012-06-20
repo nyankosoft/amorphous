@@ -1232,7 +1232,7 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 		return;
 
 	int i;
-	string strPlaneNormal, strPos, strDir;
+	string strPlaneNormal, strPos, strDir, strVel;
 
 	fprintf(fp, "time: %f s\n", m_pStage->GetElapsedTime() );
 	fprintf(fp, "total entity nodes: %d\n\n", m_NumEntityNodes );
@@ -1268,7 +1268,7 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 			if( !pEntity )
 				continue;
 
-			CCopyEntity& entity = *pEntity;
+			const CCopyEntity& entity = *pEntity;
 
 			fprintf( fp, "--------------------------------------------------------\n" );
 
@@ -1281,7 +1281,9 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 
 			strPos = to_string(entity.GetWorldPosition() );
 			strDir = to_string(entity.GetDirection() );
-			fprintf( fp, "  pos%s, dir%s, spd: %.3f\n", strPos.c_str(), strDir.c_str(), entity.fSpeed );
+			strVel = to_string(entity.GetVelocity() );
+			fprintf( fp, "  pos%s, dir%s\n", strPos.c_str(), strDir.c_str() );
+			fprintf( fp, "  vel%s, spd: %.3f\n", strVel.c_str(), entity.fSpeed );
 
 			fprintf( fp, "  local_aabb: %s\n", to_string(entity.local_aabb).c_str() );
 
@@ -1316,6 +1318,8 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 //				fprintf( fp, "%s%s", first_light ? "" : ", ", pLight->GetName().c_str() );
 //				first_light = false;
 //			}
+
+			fprintf( fp, "%d physics actor(s)\n",     (int)entity.m_vecpPhysicsActor.size() );
 
 			fprintf( fp, "mesh: %s\n",     entity.m_MeshHandle.IsLoaded() ? "loaded" : "not loaded" );
 			fprintf( fp, "in solid: %s\n", entity.bInSolid ? "yes" : "no" );
