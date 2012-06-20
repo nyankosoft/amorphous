@@ -47,6 +47,8 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	bool m_RenderSubsetsInformation;
 
+	bool m_RenderZSorted;
+
 //	CUnitSphere m_LightPosIndicator;
 
 	Vector3 m_vLightPosition;

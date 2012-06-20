@@ -49,7 +49,8 @@ m_ScalingFactor(1),
 m_UseSingleDiffuseColorShader(false),
 m_NormalMapTextureIndex(-1),
 m_CurrentSDCShaderIndex(0),
-m_RenderSubsetsInformation(false)
+m_RenderSubsetsInformation(false),
+m_RenderZSorted(false)
 {
 	m_UseCameraController = false;
 
@@ -361,10 +362,16 @@ void CMeshViewer::RenderMeshes()
 	}
 	else
 	{
-		if( m_CurrentShaderIndex == (int)m_Shaders.size() - 1 )
-			pMesh->Render();
+		CShaderManager& mesh_shader
+			= ( m_CurrentShaderIndex == (int)m_Shaders.size() - 1 ) ? FixedFunctionPipelineManager() : shader_mgr;
+		
+		if( m_RenderZSorted )
+		{
+			GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+			pMesh->RenderZSorted( mesh_shader );
+		}
 		else
-			pMesh->Render( shader_mgr );
+			pMesh->Render( mesh_shader );
 	}
 }
 
@@ -443,7 +450,11 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 {
 	LOG_PRINT( " Opening a mesh file: " + mesh_filepath );
 
-	bool loaded = m_Mesh.Load( mesh_filepath );
+//	bool loaded = m_Mesh.Load( mesh_filepath );
+	CMeshResourceDesc desc;
+	desc.ResourcePath = mesh_filepath;
+	desc.LoadOptionFlags |= MeshLoadOption::CUSTOM_MESH;
+	bool loaded = m_Mesh.Load( desc );
 
 	if( loaded && m_Mesh.GetMesh() )
 	{
@@ -639,6 +650,28 @@ void CMeshViewer::HandleInput( const SInputData& input )
 	case 'T':
 		if( input.iType == ITYPE_KEY_PRESSED )
 			m_RenderSubsetsInformation = !m_RenderSubsetsInformation;
+		break;
+
+	case 'A':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_RenderZSorted = !m_RenderZSorted;
+		break;
+
+	case 'B':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			static int color_index = 0;
+			SFloatRGBAColor bg_colors[] =
+			{
+				SFloatRGBAColor::Blue(),
+				SFloatRGBAColor(0,0,0,1),
+				SFloatRGBAColor(0.2f,0.2f,0.2f,1.0f)
+			};
+
+			color_index = (color_index+1) % numof(bg_colors);
+
+			SetBackgroundColor( bg_colors[color_index] );
+		}
 		break;
 
 	case GIC_MOUSE_BUTTON_L:
