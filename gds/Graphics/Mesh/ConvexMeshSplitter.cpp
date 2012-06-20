@@ -180,7 +180,9 @@ std::pair<U16,U16> AddSplitVertices(
 		dest_back.SetPosition(  new_index1+1, p );
 	}
 
-	if( src.GetVertexFormatFlags() & VFF::NORMAL )
+	const U32 vertex_format_flags = src.GetVertexFormatFlags();
+
+	if( vertex_format_flags & VFF::NORMAL )
 	{
 		Vector3 n0 = src.GetNormal( vertex_index0 );
 		Vector3 n1 = src.GetNormal( vertex_index1 );
@@ -194,15 +196,15 @@ std::pair<U16,U16> AddSplitVertices(
 		}
 	}
 
-	if( src.GetVertexFormatFlags() & VFF::BINORMAL )
+	if( vertex_format_flags & VFF::BINORMAL )
 	{
 	}
 
-	if( src.GetVertexFormatFlags() & VFF::TANGENT )
+	if( vertex_format_flags & VFF::TANGENT )
 	{
 	}
 
-	if( src.GetVertexFormatFlags() & VFF::DIFFUSE_COLOR )
+	if( vertex_format_flags & VFF::DIFFUSE_COLOR )
 	{
 		SFloatRGBAColor c0 = src.GetDiffuseColor( vertex_index0 );
 		SFloatRGBAColor c1 = src.GetDiffuseColor( vertex_index1 );
@@ -226,7 +228,7 @@ std::pair<U16,U16> AddSplitVertices(
 
 	for( int i=0; i<numof(tex_coord_flags); i++ )
 	{
-		if( src.GetVertexFormatFlags() & tex_coord_flags[i] )
+		if( vertex_format_flags & tex_coord_flags[i] )
 		{
 			TEXCOORD2 t0 = src.Get2DTexCoord( vertex_index0, i );
 			TEXCOORD2 t1 = src.Get2DTexCoord( vertex_index1, i );
