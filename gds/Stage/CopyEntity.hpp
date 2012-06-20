@@ -266,6 +266,7 @@ public:
 
 	inline void AddTouchedEntity( CCopyEntity* pCopyEnt );
 
+	inline const Vector3& GetVelocity() const { return vVelocity; }
 	inline Vector3& Velocity() { return vVelocity; }
 	inline Vector3& AngularVelocity() { return vAngularVelocity; }
 	inline float GetSpeed() const { return fSpeed; }
