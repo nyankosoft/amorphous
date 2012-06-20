@@ -106,7 +106,7 @@ public:
 
 //	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes ) { return false; }
 
-	virtual bool IsValid() { return true; }
+	virtual bool IsValid() const { return true; }
 
 	/// D3D mesh access
 
@@ -150,6 +150,9 @@ public:
 	virtual void RenderSubsets( CShaderManager& rShaderMgr,
 		                        const int* paMaterialIndex,
 	                            int num_indices /* some option to specify handles for texture */) {}
+
+	/// Currently implemented only by CustomMesh
+	virtual void RenderZSorted( CShaderManager& rShaderMgr ) {};
 
 	/// D3D-specific feature
 
@@ -241,7 +244,7 @@ public:
 
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::BASIC; }
 
-	bool CBasicMesh::IsValid() { return m_pImpl->IsValid(); }
+	bool IsValid() const { return m_pImpl->IsValid(); }
 
 	/// returns true on success
 	bool LoadFromFile( const std::string& filename, U32 option_flags = 0 ) { return m_pImpl->LoadFromFile( filename, option_flags ); }
@@ -289,6 +292,8 @@ public:
 	void RenderSubsets( CShaderManager& rShaderMgr,
 		const int* paMaterialIndex,
 		int num_indices /* some option to specify handles for texture */) { m_pImpl->RenderSubsets( rShaderMgr, paMaterialIndex, num_indices ); }
+
+	void RenderZSorted( CShaderManager& rShaderMgr ) { m_pImpl->RenderZSorted( rShaderMgr ); }
 
 //	virtual bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return m_pImpl->CreateMesh( num_vertices, num_indices, option_flags, vecVertexElement ); }
 
