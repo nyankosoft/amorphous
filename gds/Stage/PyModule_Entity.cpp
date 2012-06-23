@@ -5,9 +5,11 @@
 #include "EntitySet.hpp"
 #include "CopyEntityDesc.hpp"
 #include "BE_StaticParticleSet.hpp"
+#include "BaseEntity_Draw.hpp"
 
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.hpp"
+#include "Support/fixed_string.hpp"
 
 using namespace std;
 
@@ -355,6 +357,49 @@ PyObject* SetEntityGroup( PyObject* self, PyObject* args )
 }
 
 
+PyObject* SetMeshMaterialParamValue( PyObject* self, PyObject* args )
+{
+	Py_INCREF( Py_None );
+
+	const char *property_name = NULL;
+	float value = 0.0f;
+	int subset_index = 0;
+	int result = PyArg_ParseTuple( args, "isf", &subset_index, &property_name, &value );
+
+	if( !IsValidEntity(gs_pTargetEntity) )
+		return Py_None;
+
+	boost::shared_ptr<CBasicMesh> pMesh = gs_pTargetEntity->m_MeshHandle.GetMesh();
+	if( !pMesh )
+		return Py_None;
+
+	if( subset_index < 0 || (int)pMesh->GetNumMaterials() <= subset_index )
+		return Py_None;
+
+	CBasicMaterialParams& mat = pMesh->Material(subset_index).m_Mat;
+
+	fixed_string<16> name(property_name);
+	if(      name == "luminosity" )  mat.fLuminosity  = value;
+	else if( name == "specularity" ) mat.fSpecularity = value;
+	else if( name == "glossiness" )  mat.fGlossiness  = value;
+	else if( name == "reflection" )
+	{
+		const float prev_reflection = mat.fReflection;
+		mat.fReflection = value; // mat.fReflection needs be updated before InitEntityGraphics() is called.
+		if( 0.001 < abs(value - prev_reflection) )
+		{
+			// Initialize it again for the following reasons.
+			// 1. reflective/non-reflective meshes use different shaders.
+			// 2. need to register/unregister as the planar reflector or as a env map target
+			//    if parameter is changed from 0 to x(>0)/x(>0) to 0.
+			gs_pTargetEntity->pBaseEntity->InitEntityGraphics( *gs_pTargetEntity );
+		}
+	}
+
+	return Py_None;
+}
+
+
 PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
 {
 	{ "StartPath",				  EntityStartPath,                 METH_VARARGS, "notify the start of motion path set routine" },
@@ -370,5 +415,6 @@ PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
 	{ "SetTarget",                gsf::py::entity::SetTarget,      METH_VARARGS, "find and lock the target entity for the subsequent calls" },
 	{ "SetPosition",              gsf::py::entity::SetPosition,    METH_VARARGS, "" },
 	{ "SetEntityGroup",           SetEntityGroup,                  METH_VARARGS, "Sets an entity group to the entity currently selected as the target" },
+	{ "SetMeshMaterialParamValue",SetMeshMaterialParamValue,       METH_VARARGS, "" },
 	{NULL, NULL}
 };
