@@ -23,7 +23,19 @@ public:
 
 	Result::Name DrawPoints( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
 	{
-		return Result::UNKNOWN_ERROR;
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
+		glBegin(GL_POINTS);
+		const size_t num_points = points.size();
+		const SFloatRGBAColor c = color;
+		for( size_t i=0; i<num_points; i++ )
+		{
+			glColor4f( c.fRed, c.fGreen, c.fBlue, c.fAlpha );
+			glVertex3f( points[i].x, points[i].y, points[i].z );
+		}
+		glEnd();
+
+		return Result::SUCCESS;
 	}
 
 	Result::Name DrawLine( const Vector3& start, const Vector3& end, const SFloatRGBAColor& color )
@@ -51,6 +63,8 @@ public:
 		if( points.size() < 2 )
 			return Result::INVALID_ARGS;
 
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
 		glBegin(GL_LINE_STRIP);
 		const size_t num_points = points.size();
 		const SFloatRGBAColor line_color = color;
@@ -68,6 +82,8 @@ public:
 	{
 		if( points.size() < 2 || points.size() != colors.size() )
 			return Result::INVALID_ARGS;
+
+		glBindTexture( GL_TEXTURE_2D, 0 );
 
 		glBegin(GL_LINE_STRIP);
 		const size_t num_points = points.size();
