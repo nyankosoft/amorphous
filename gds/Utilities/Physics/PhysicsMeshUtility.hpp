@@ -21,7 +21,9 @@ public:
 	{}
 
 	// NOTE: not implemented.
-	CActor *CreateStaticTriangleMeshFromMeshFile( const std::string& filepath );
+	CActor *CreateStaticTriangleMeshActorFromMeshFile( const std::string& filepath );
+
+	CActor *CreateConvexActorFromMesh( const CCustomMesh& src_mesh, const Matrix34& world_pose = Matrix34Identity(), Vector3 linear_velocity = Vector3(0,0,0), float mass = 1.0f, int material_index = 0 );
 
 	CCloth *CreateClothFromMeshFile( const std::string& filepath, const Matrix34& world_pose );
 

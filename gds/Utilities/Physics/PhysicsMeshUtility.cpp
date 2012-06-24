@@ -1,17 +1,59 @@
 #include "PhysicsMeshUtility.hpp"
 #include "gds/Graphics/Mesh/CustomMesh.hpp"
+#include "gds/Physics/ActorDesc.hpp"
+#include "gds/Physics/ConvexShapeDesc.hpp"
 #include "gds/Physics/Stream.hpp"
 #include "gds/Physics/PhysicsEngine.hpp"
 #include "gds/Physics/PreProcessor.hpp"
 #include "gds/Physics/Scene.hpp"
 #include "gds/Physics/ClothMeshDesc.hpp"
 #include "gds/Physics/Cloth.hpp"
+#include "gds/3DMath/PrimitivePolygonModelMaker.hpp"
 
 using namespace std;
 using namespace physics;
 
 
 static U16 g_mesh_indices[0xFFFF];
+
+
+CActor *CPhysicsMeshUtility::CreateConvexActorFromMesh( const CCustomMesh& src_mesh, const Matrix34& world_pose, Vector3 linear_velocity, float mass, int material_index )
+{
+	CConvexShapeDesc convex_shape_desc;
+	CTriangleMeshDesc trimeshdesc;
+
+	if( !src_mesh.IsValid() )
+		return NULL;
+
+	// copy indices
+	uint num_indices = src_mesh.GetNumIndices();
+	trimeshdesc.m_vecIndex.resize( num_indices );
+	for( uint i=0; i<num_indices; i++ )
+		trimeshdesc.m_vecIndex[i] = (int)src_mesh.GetIndex(i);
+
+	// copy vertices
+	src_mesh.GetPositions( trimeshdesc.m_vecVertex );
+
+	trimeshdesc.m_vecMaterialIndex.resize( num_indices / 3, material_index );
+
+	physics::CStream convex_mesh_stream;
+	Result::Name res = physics::Preprocessor().CreateConvexMeshStream( trimeshdesc, convex_mesh_stream );
+	convex_mesh_stream.m_Buffer.reset_pos();
+
+	CConvexMesh *pConvexMesh = PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
+	if( !pConvexMesh )
+		return NULL;
+
+	convex_shape_desc.pConvexMesh = pConvexMesh;
+
+	CActorDesc actor_desc;
+	actor_desc.vecpShapeDesc.push_back( &convex_shape_desc );
+	actor_desc.BodyDesc.fMass = mass;
+	actor_desc.WorldPose = world_pose;
+	actor_desc.BodyDesc.LinearVelocity = linear_velocity;
+
+	return GetScene()->CreateActor( actor_desc );
+}
 
 
 CCloth *CPhysicsMeshUtility::CreateClothFromMesh( CCustomMesh& mesh, const Matrix34& world_pose, bool set_mesh_data )
