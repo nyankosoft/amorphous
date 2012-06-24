@@ -1,9 +1,9 @@
 #ifndef  __PhysMaterialDesc_H__
 #define  __PhysMaterialDesc_H__
 
-#include "3DMath/precision.h"
+#include "../3DMath/precision.h"
 
-#include "Support/Serialization/Serialization.hpp"
+#include "../Support/Serialization/Serialization.hpp"
 using namespace GameLib1::Serialization;
 
 

@@ -3,9 +3,8 @@
 
 
 #include <string>
-#include "3DMath/precision.h"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Singleton.hpp"
+#include "../3DMath/precision.h"
+#include "../Support/Singleton.hpp"
 using namespace NS_KGL;
 
 #include "fwd.hpp"

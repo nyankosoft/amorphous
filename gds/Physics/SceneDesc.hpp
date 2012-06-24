@@ -6,14 +6,14 @@
 #include "fwd.hpp"
 #include "Enums.hpp"
 
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/AABB3.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "../3DMath/Matrix34.hpp"
+#include "../3DMath/AABB3.hpp"
+#include "../Support/Serialization/Serialization.hpp"
+#include "../Support/Serialization/Serialization_3DMath.hpp"
 using namespace GameLib1::Serialization;
 
 
-#include "Support/msgbox.hpp"
+#include "../Support/msgbox.hpp"
 
 
 namespace physics

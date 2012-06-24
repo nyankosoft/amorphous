@@ -3,9 +3,8 @@
 
 
 #include "../base.hpp"
-#include "3DMath/Vector3.hpp"
-#include "3DMath/OBB3.hpp"
-#include "3DMath/Capsule.hpp"
+#include "../3DMath/OBB3.hpp"
+#include "../3DMath/Capsule.hpp"
 #include "fwd.hpp"
 #include "Ray.hpp"
 #include "Enums.hpp"

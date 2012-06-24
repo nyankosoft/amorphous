@@ -13,6 +13,7 @@
 #include "Physics/SphereShapeDesc.hpp"
 #include "Physics/CapsuleShapeDesc.hpp"
 #include "Physics/ConvexShapeDesc.hpp"
+#include "Physics/PlaneShapeDesc.hpp"
 #include "Physics/Cloth.hpp"
 #include "Physics/ClothMeshDesc.hpp"
 

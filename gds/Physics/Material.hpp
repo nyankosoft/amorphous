@@ -1,7 +1,7 @@
 #ifndef  __PhysMaterial_H__
 #define  __PhysMaterial_H__
 
-#include "3DMath/precision.h"
+#include "../3DMath/precision.h"
 
 
 namespace physics
