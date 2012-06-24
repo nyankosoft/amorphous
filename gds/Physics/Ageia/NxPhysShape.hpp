@@ -143,6 +143,18 @@ public:
 };
 
 
+class CNxPhysPlaneShape : public CNxPhysShapeImpl
+{
+	NxPlaneShape *m_pPlane;
+
+public:
+
+	CNxPhysPlaneShape( NxPlaneShape *pPlane ) : CNxPhysShapeImpl(pPlane), m_pPlane(pPlane) { m_pPlane->userData = this; }
+
+	virtual ~CNxPhysPlaneShape() {}
+};
+
+
 
 } // namespace physics
 

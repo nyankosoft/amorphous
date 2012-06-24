@@ -2,16 +2,14 @@
 #define __PhysShapeDescFactory_H__
 
 
-#include "../Support/Serialization/Serialization.hpp"
-#include "../Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
-
-#include "ShapeDesc.hpp"
 #include "BoxShapeDesc.hpp"
 #include "SphereShapeDesc.hpp"
 #include "CapsuleShapeDesc.hpp"
 #include "ConvexShapeDesc.hpp"
 #include "TriangleMeshShapeDesc.hpp"
+#include "PlaneShapeDesc.hpp"
+
+#include "../Support/Serialization/ArchiveObjectFactory.hpp"
 
 
 namespace physics
@@ -50,6 +48,7 @@ inline CShapeDesc *CShapeDescFactory::CreateShapeDesc( const unsigned int id )
 	case PhysShape::Sphere:       return new CSphereShapeDesc();
 	case PhysShape::Capsule:      return new CCapsuleShapeDesc();
 	case PhysShape::TriangleMesh: return new CTriangleMeshShapeDesc();
+	case PhysShape::Plane:        return new CPlaneShapeDesc();
 //	case :	return new C*ShapeDesc();
 	default: return NULL;
 	}

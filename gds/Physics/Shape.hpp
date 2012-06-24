@@ -427,6 +427,16 @@ public:
 };
 
 
+class CPlaneShape : public CShape
+{
+public:
+
+	CPlaneShape( CShapeImpl *pImpl ) : CShape(pImpl) {}
+
+	int GetType() const { return PhysShape::Plane; }
+};
+
+
 } // namespace physics
 
 

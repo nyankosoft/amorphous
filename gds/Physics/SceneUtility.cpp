@@ -69,3 +69,21 @@ CActor *CSceneUtility::CreateStaticCapsuleActor( float radius, float length, con
 
 	return m_pScene->CreateActor( actor_desc );
 }
+
+
+CActor *CSceneUtility::CreateStaticPlaneActor( const Plane& plane, int material_index )
+{
+	if( !m_pScene )
+		return NULL;
+
+	CActorDesc actor_desc;
+	actor_desc.WorldPose = Matrix34Identity();
+	actor_desc.BodyDesc.Flags = PhysBodyFlag::Static;
+
+	CPlaneShapeDesc plane_desc;
+	plane_desc.MaterialIndex = material_index;
+	plane_desc.plane = plane;
+	actor_desc.vecpShapeDesc.push_back(&plane_desc);
+
+	return m_pScene->CreateActor( actor_desc );
+}

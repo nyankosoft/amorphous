@@ -2,9 +2,10 @@
 #define __SceneUtility_HPP__
 
 
-#include "gds/Graphics/fwd.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Physics/fwd.hpp"
+#include "../Graphics/fwd.hpp"
+#include "../3DMath/Matrix34.hpp"
+#include "../3DMath/Plane.hpp"
+#include "fwd.hpp"
 
 
 namespace physics
@@ -39,6 +40,8 @@ public:
 	CActor *CreateStaticCapsuleActor( float radius, float length, const Matrix34& world_pose );
 
 	CActor *CreateStaticSphereActor( Scalar radius, const Matrix34& world_pose );
+
+	CActor *CreateStaticPlaneActor( const Plane& plane, int material_index = 0 );
 };
 
 
