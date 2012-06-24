@@ -43,11 +43,6 @@ public:
 
 class CMultibyteFontTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 //	std::vector<CMeshObjectHandle> m_vecMesh;
 //	std::vector<CTestMeshHolder> m_vecMesh;
 
@@ -67,7 +62,7 @@ class CMultibyteFontTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	std::string m_UTFText;
 
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 private:
 
