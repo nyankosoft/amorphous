@@ -41,7 +41,7 @@ public:
 };
 
 
-class CMultibyteFontTest : public CGraphicsTestBase, public CGraphicsComponent
+class CMultibyteFontTest : public CGraphicsTestBase
 {
 //	std::vector<CMeshObjectHandle> m_vecMesh;
 //	std::vector<CTestMeshHolder> m_vecMesh;
@@ -91,9 +91,6 @@ public:
 	void Render();
 
 	virtual void HandleInput( const SInputData& input );
-
-	void ReleaseGraphicsResources() {}
-	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
 };
 
 

@@ -406,11 +406,6 @@ void CMultibyteFontTest::Render()
 
 		m_pFont->DrawText( m_TextBuffer, vTopLeft );
 	}
-
-	Vector3 vCamPos = g_Camera.GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
 /*
 	int ch = m_pFont->GetFontHeight();
 	for( size_t i=0; i<g_rec.size(); i++ )
@@ -421,7 +416,7 @@ void CMultibyteFontTest::Render()
 	}*/
 
 	if( m_pUTFFont )
-		m_pUTFFont->DrawText( m_UTFText.c_str(), Vector2( 20, 50 ), 0xFFFFFFFF );
+		m_pUTFFont->DrawText( m_UTFText.c_str(), Vector2( 20, 200 ), 0xFFFFFFFF );
 }
 
 
