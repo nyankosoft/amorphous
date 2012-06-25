@@ -3,13 +3,15 @@
 #include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/MeshUtilities.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Input.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
-#include <boost/foreach.hpp>
 
 using std::string;
 using namespace boost;
@@ -25,50 +27,6 @@ extern const std::string GetAppTitle()
 {
 	return string("GLSLTest");
 }
-
-
-CTestMeshHolder::CTestMeshHolder()
-:
-m_LoadingStyle(LOAD_SYNCHRONOUSLY),
-m_Pose(Matrix34Identity())
-{
-}
-
-
-CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )
-:
-m_LoadingStyle(loading_style),
-m_Pose(pose)
-{
-	m_MeshDesc.ResourcePath = filepath;
-
-	if( loading_style == LOAD_MESH_AND_TEX_TOGETHER )
-	{
-		m_MeshDesc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
-		m_MeshDesc.LoadOptionFlags = MeshLoadOption::LOAD_TEXTURES_ASYNC;
-	}
-	else if( loading_style == LOAD_MESH_AND_TEX_SEPARATELY )
-	{
-		m_MeshDesc.LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
-		m_MeshDesc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
-		m_Handle.Load( m_MeshDesc );
-	}
-	else if( loading_style == LOAD_SYNCHRONOUSLY )
-	{
-		m_MeshDesc.LoadingMode = CResourceLoadingMode::SYNCHRONOUS;
-		m_Handle.Load( m_MeshDesc );
-	}
-//	else
-//	{
-//	}
-}
-
-
-void CTestMeshHolder::Load()
-{
-	m_Handle.Load( m_MeshDesc );
-}
-
 
 
 CGLSLTest::CGLSLTest()
@@ -89,6 +47,8 @@ CGLSLTest::~CGLSLTest()
 
 void CGLSLTest::SetLights()
 {
+	PROFILE_FUNCTION();
+
 //	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	CShaderManager *pShaderMgr = m_pGLProgram.get();
 	if( !pShaderMgr )
@@ -138,7 +98,7 @@ bool CGLSLTest::InitShader()
 //	string shader_filepath = "shaders/shader.vert|shaders/shader.frag";
 	string shader_filepath = LoadParamFromFile<string>( "config", "Shader" );
 
-	m_pGLProgram = shared_ptr<CGLProgram>( new CGLProgram );
+	m_pGLProgram.reset( new CGLProgram );
 	m_pGLProgram->LoadShaderFromFile( shader_filepath );
 
 //	SetLights();
@@ -163,47 +123,22 @@ int CGLSLTest::Init()
 	pTexFont->SetFontSize( 8, 16 );
 	m_pFont = pTexFont;
 
-	m_vecMesh.push_back( CTestMeshHolder() );
+	m_Meshes.push_back( CMeshObjectHandle() );
 	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );
-	m_vecMesh.back().m_MeshDesc.pMeshGenerator = pBoxMeshGenerator;
-//	m_vecMesh.back().m_MeshDesc.OptionFlags |= GraphicsResourceOption::DONT_SHARE;
-	m_vecMesh.back().Load();
+	CMeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
+//	mesh_desc.OptionFlags |= GraphicsResourceOption::DONT_SHARE;
+	m_Meshes.back().Load( mesh_desc );
+
+	m_Meshes.push_back( CreateSphereMesh( 0.5f ) );
+//	m_Meshes.push_back( CreateConeMesh() );
+//	m_Meshes.push_back( CreateCylinderMesh() );
 
 /*
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_DefaultTechnique.SetTechniqueName( "NoShader" );
-*/
-
-/*	string mesh_file[] =
-	{
-		"./models/sample_level_00.msh", // manually load textures
-		"./models/FlakySlate.msh",      // load mesh and texture asnchronously
-		"./models/HighAltitude.msh",
-		"./models/RustPeel.msh",
-		"./models/SmashedGrayMarble.msh"
-	};
-
-	BOOST_FOREACH( const string& filepath, mesh_file )
-	{
-		m_vecMesh.push_back( CMeshObjectHandle() );
-
-		CMeshResourceDesc desc;
-		desc.ResourcePath = filepath;
-
-		if( m_TestAsyncLoading )
-			desc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
-
-		m_vecMesh.back().Load( desc );
-	}
-*/
-/*
-	m_vecMesh.push_back( CTestMeshHolder( "./models/sample_level_00.msh",   CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.push_back( CTestMeshHolder( "./models/FlakySlate.msh",        CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1, 100), Matrix33Identity() ) ) );
-	m_vecMesh.push_back( CTestMeshHolder( "./models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/RustPeel.msh",          CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1,-100), Matrix33Identity() ) ) );
-//	m_vecMesh.push_back( CTestMeshHolder( "./models/SmashedGrayMarble.msh", CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3(-25,1,-100), Matrix33Identity() ) ) );
 */
 
 	// init shader
@@ -220,38 +155,70 @@ void CGLSLTest::Update( float dt )
 
 void CGLSLTest::RenderMeshes()
 {
+	PROFILE_FUNCTION();
+
+	if( m_Meshes.empty() )
+		return;
+
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,   true );
 
 	CShaderManager *pShaderManager = m_pGLProgram.get();
 //	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	if( !pShaderManager )
-		return;
+//	CShaderManager *pShaderManager = NULL;
+	CShaderManager &shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
 
 	// render the scene
 
-	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
 
 //	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
 
-	pShaderManager->SetTechnique( m_MeshTechnique );
-//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
-	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
-	{
-		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
-		{
-			// set world transform
-			const Matrix34 mesh_world_pose = holder.m_Pose;
-//			FixedPipelineManager().SetWorldTransform( mesh_world_pose );
-			pShaderManager->SetWorldTransform( mesh_world_pose );
+	shader_mgr.SetTechnique( m_MeshTechnique );
 
-			shared_ptr<CBasicMesh> pMesh = holder.m_Handle.GetMesh();
+	int mesh_index = 0;
+	for( int x=-1; x<=1; x++ )
+	{
+		PROFILE_SCOPE( "the mesh rendering loop" );
+		for( int z=-1; z<=1; z++ )
+		{
+			const Matrix34 mesh_world_pose = Matrix34( Vector3((float)x,0,(float)z) * 2.0f, Matrix33Identity() );
+			shader_mgr.SetWorldTransform( mesh_world_pose );
+			shared_ptr<CBasicMesh> pMesh = m_Meshes[mesh_index].GetMesh();
 
 			if( pMesh )
-				pMesh->Render( *pShaderManager );
+				pMesh->Render( shader_mgr );
+
+			mesh_index = (mesh_index+1) % (int)m_Meshes.size();
 		}
 	}
 
+
+//	Vector3 mesh_positions[] =
+//	{
+//		Vector3(-1,0,2),
+//		Vector3( 1,0,2),
+//		Vector3( 1,0,1),
+//		Vector3(-1,0,1)
+//	};
+
+//	const int num_meshes_to_render = take_min( (int)numof(mesh_positions), (int)m_Meshes.size() );
+//	for( int i=0; i<num_meshes_to_render; i++ )
+//	{
+//		// set world transform
+//		const Matrix34 mesh_world_pose = Matrix34( mesh_positions[i], Matrix33Identity() );
+//		shader_mgr.SetWorldTransform( mesh_world_pose );
+//
+//		shared_ptr<CBasicMesh> pMesh = m_Meshes[i].GetMesh();
+//
+//		if( pMesh )
+//			pMesh->Render( shader_mgr );
+//	}
+
 //	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+
+//	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, true );
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,    false );
 }
 
 
@@ -262,6 +229,8 @@ void CGLSLTest::Render()
 	SetLights();
 
 	RenderMeshes();
+
+	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
 
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
@@ -280,6 +249,19 @@ void CGLSLTest::HandleInput( const SInputData& input )
 {
 	switch( input.iGICode )
 	{
+	case 'L':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			const std::vector<string>& buffer = GetProfileText();
+			FILE *fp = fopen( "profile.txt", "w" );
+			if( !fp )
+				break;
+			for( size_t i=0; i<buffer.size(); i++ )
+				fprintf( fp, "%s", buffer[i].c_str() );
+
+			fclose(fp);
+		}
+		break;
 	case GIC_F12:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{

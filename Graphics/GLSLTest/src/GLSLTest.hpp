@@ -11,48 +11,15 @@
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "gds/Input/fwd.hpp"
-#include "gds/Input.hpp"
 #include "gds/GUI/fwd.hpp"
 #include "gds/Graphics/OpenGL/Shader/GLShader.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
 
-class CTestMeshHolder
-{
-public:
-	CMeshObjectHandle m_Handle;
-	Matrix34 m_Pose;
-
-	CMeshResourceDesc m_MeshDesc;
-
-	enum LoadingStyleName
-	{
-		LOAD_SYNCHRONOUSLY,
-		LOAD_MESH_AND_TEX_TOGETHER,
-		LOAD_MESH_AND_TEX_SEPARATELY,
-		NUM_LOADING_STYLES
-	};
-
-	LoadingStyleName m_LoadingStyle;
-
-	CTestMeshHolder();
-
-	CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose );
-
-	void Load();
-};
-
-
 class CGLSLTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
-//	std::vector<CMeshObjectHandle> m_vecMesh;
-	std::vector<CTestMeshHolder> m_vecMesh;
+	std::vector<CMeshObjectHandle> m_Meshes;
 
 	CShaderHandle m_Shader;
 
