@@ -26,7 +26,7 @@ void CEntityFactory::Init()
 	m_CopyEntityPool.init( DEFAULT_MAX_NUM_ENTITIES );
 	m_AlphaEntityPool.init( DEFAULT_MAX_NUM_ALPHA_ENTITIES );
 	m_LightEntityPool.init( DEFAULT_MAX_NUM_LIGHT_ENTITIES );
-	m_LightEntityPool.init( DEFAULT_MAX_NUM_SOUND_ENTITIES );
+	m_SoundEntityPool.init( DEFAULT_MAX_NUM_SOUND_ENTITIES );
 	m_ScriptedCameraEntityPool.init( DEFAULT_MAX_NUM_SCRIPTED_CAMERA_ENTITIES );
 }
 
@@ -80,6 +80,9 @@ void CEntityFactory::ReleaseEntity( shared_ptr<CCopyEntity> pEntity )
 //	case CCopyEntityTypeID::LIGHT_ENTITY:
 //		???
 //		break;
+	case CCopyEntityTypeID::SOUND_ENTITY:
+		m_SoundEntityPool.release( pEntity );
+		break;
 	case CCopyEntityTypeID::SCRIPTED_CAMERA_ENTITY:
 		m_ScriptedCameraEntityPool.release<CCopyEntity>( pEntity );
 		break;
@@ -98,6 +101,10 @@ void CEntityFactory::ReleaseAllEntities()
 	m_CopyEntityPool.release_all();
 
 	m_AlphaEntityPool.release_all();
+
+	m_SoundEntityPool.release_all();
+
+	m_ScriptedCameraEntityPool.release_all();
 
 	ReleaseAllDerivedEntities();
 }
