@@ -356,9 +356,9 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 	strTexFilename[0] = m_strBaseFilename;
 	lfs::change_ext( strTexFilename[0], "bmp" );
 	strTexFilename[1] = strTexFilename[0];
-	lfs::append_before_ext( strTexFilename[1], "_NM" );
+	lfs::insert_before_extension( strTexFilename[1], "_NM" );
 	strTexFilename[2] = strTexFilename[0];
-	lfs::append_before_ext( strTexFilename[2], "_FB" );
+	lfs::insert_before_extension( strTexFilename[2], "_FB" );
 
 	// save current technique, or the rendering mode
 	int orig_tech_id = m_TechniqueID;
