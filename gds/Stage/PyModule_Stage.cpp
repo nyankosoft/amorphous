@@ -8,6 +8,8 @@
 #include "CopyEntityDesc.hpp"
 #include "StaticGeometryFG.hpp"	// used by SetFogColor()
 #include "BE_Skybox.hpp"	// used by SetFogColor()
+#include "StageUtility.hpp"
+#include "../Script/convert_python_to_x.hpp"
 
 using namespace std;
 
@@ -111,6 +113,74 @@ PyObject* CreateEntityHrz( PyObject* self, PyObject* args )
 	CreateNamedEntityHrz( "", base_name, pos, ang_h, speed );
 
     Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* CreateStaticEntityFromMesh( PyObject* self, PyObject* args, PyObject *keywords )
+{
+	Py_INCREF( Py_None );
+
+	char *entity_name   = NULL;
+	char *mesh_pathname = NULL;
+	Vector3 pos( Vector3(0,0,0) );
+	float heading = 0, pitch = 0, bank = 0;
+
+	static char *kw_list[] = { "mesh", "name", "position", "heading", "pitch", "bank" , NULL };
+
+	int result = PyArg_ParseTupleAndKeywords( args, keywords, "s|sO&fff", kw_list,
+		&mesh_pathname, &entity_name,
+		convert_python_to_cpp_Vector3, &pos,
+		&heading, &pitch, &bank
+		);
+
+	Matrix34 pose( pos, Matrix33RotationHPR_deg(heading,pitch,bank) );
+
+	if( !gs_pTargetStage )
+		return Py_None;
+
+	boost::shared_ptr<CStage> pStage = gs_pTargetStage->GetWeakPtr().lock();
+	if( !pStage )
+		return Py_None;
+
+	CStageMiscUtility util( pStage );
+	CEntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
+
+	return Py_None;
+}
+
+
+PyObject* CreateEntity( PyObject* self, PyObject* args, PyObject *keywords )
+{
+	Py_INCREF( Py_None );
+
+	char *base_entity_or_mesh_name = NULL;
+	char *entity_name   = NULL;
+	Vector3 pos( Vector3(0,0,0) );
+	float heading = 0, pitch = 0, bank = 0;
+
+	static char *kw_list[] = { "model", "name", "position", "heading", "pitch", "bank", NULL };
+
+	int result = PyArg_ParseTupleAndKeywords( args, keywords, "s|sO&fff", kw_list,
+		&base_entity_or_mesh_name, &entity_name,
+		convert_python_to_cpp_Vector3, &pos,
+		&heading, &pitch, &bank
+		);
+
+	string model_name = base_entity_or_mesh_name;
+
+	Matrix34 pose( pos, Matrix33RotationHPR_deg(heading,pitch,bank) );
+
+	if( !gs_pTargetStage )
+		return Py_None;
+
+	boost::shared_ptr<CStage> pStage = gs_pTargetStage->GetWeakPtr().lock();
+	if( !pStage )
+		return Py_None;
+
+//	CStageMiscUtility util( pStage );
+//	CEntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
+
 	return Py_None;
 }
 
@@ -502,6 +572,7 @@ PyMethodDef g_PyModuleStageMethod[] =
 	{ "CreateEntityAt",			CreateEntityAt,			METH_VARARGS, "creates an entity at a given position" },
 	{ "CreateNamedEntityHrz",	CreateNamedEntityHrz,	METH_VARARGS, "creates an entity at a given position" },
 	{ "CreateEntityHrz",		CreateEntityHrz,		METH_VARARGS, "creates an entity at a given position" },
+	{ "CreateStaticEntityFromMesh",	(PyCFunction)CreateStaticEntityFromMesh,	METH_VARARGS | METH_KEYWORDS, "creates an entity at a given position" },
 
 	{ "LoadStaticGeometry",		LoadStaticGeometry,		METH_VARARGS, "loads static geometry with a given filename" },
 	{ "LoadSkybox",				LoadSkybox,				METH_VARARGS, "loads a skybox" },
