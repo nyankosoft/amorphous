@@ -591,6 +591,7 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 
 	if( m_RenderTrajectory )
 	{
+		FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 		GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, false );
 		shared_ptr< vector<Vector3> > pTrajectory = GetTrajectoryPoints(*pCopyEnt);
 		if( pTrajectory )
