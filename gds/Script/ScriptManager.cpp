@@ -127,7 +127,7 @@ static string GetExtraErrorInfo()
 	}
 */
 
-	PyObject *pType, *pValue, *pTraceback;
+	PyObject *pType = NULL, *pValue = NULL, *pTraceback = NULL;
 	PyErr_Fetch( &pType, &pValue, &pTraceback );
 
 	char *err_type = NULL, *err_value = NULL, *err_traceback = NULL;
@@ -141,10 +141,12 @@ static string GetExtraErrorInfo()
 	if( pTraceback )
 		err_traceback = PyString_AsString( pTraceback );
 
-	if( err_value )
-		return string(err_value);
-	else
-		return string();
+	string out
+		= string("type: ")         + ( err_type      ? err_type      : "" )
+		+ string(", value: ")     + ( err_value     ? err_value     : "" )
+		+ string(", traceback: ") + ( err_traceback ? err_traceback : "" );
+
+	return out;
 }
 
 
