@@ -21,6 +21,8 @@ class C2DRectSetImpl_D3D : public C2DRectSetImpl
 
 	inline void draw_ffp( int start_rect_index, int num_rects );
 
+	inline void WriteVerticesToFileForDebugging( int start_rect_index, int num_rects );
+
 public:
 
 	/// position
@@ -341,8 +343,35 @@ inline void C2DRectSetImpl_D3D::draw( int start_rect_index, int num_rects )
 									&(m_vecRectVertex[start_rect_index*4]),
 									sizeof(TLVERTEX) );
 
+	static int write_verts = 0;
+	if( write_verts )
+	{
+		WriteVerticesToFileForDebugging( start_rect_index, num_rects );
+		write_verts = 0;
+	}
+
 //	if( FAILED(hr) )
 //		MessageBox(NULL, "DrawPrimUP failed.", "Error", MB_OK);
+}
+
+
+inline void C2DRectSetImpl_D3D::WriteVerticesToFileForDebugging( int start_rect_index, int num_rects )
+{
+	FILE *fp = fopen( "./.debug/rect_vertices.txt", "w" );
+	if( !fp )
+		return;
+
+	const int num_vertices = (int)m_vecRectVertex.size();
+	fprintf( fp, "start_rect_index: %d\n", start_rect_index );
+	fprintf( fp, "num_rects: %d\n", num_rects );
+	fprintf( fp, "num_vertices: %d\n", num_vertices );
+	for( int i=0; i<num_vertices; i++ )
+	{
+		const D3DXVECTOR3 pos = m_vecRectVertex[i].vPosition;
+		fprintf( fp, "[%03d] (%f, %f, %f)\n", (int)i, pos.x, pos.y, pos.z );
+	}
+
+	fclose( fp );
 }
 
 
