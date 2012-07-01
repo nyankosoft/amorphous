@@ -1,11 +1,9 @@
 #include "BE_EventTrigger.hpp"
 #include "CopyEntity.hpp"
-#include "trace.hpp"
+#include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
 #include "../Stage/PlayerInfo.hpp"
 #include "../Stage/HUD_PlayerBase.hpp"
-
-//#include "../GameTextSystem/GameTextSet.hpp"
 #include "../Script/GameEventTypes.hpp"
 
 
