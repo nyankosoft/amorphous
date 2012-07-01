@@ -271,7 +271,7 @@ void CBE_PlayerPseudoAircraft::SetVisionMode( int vision_mode )
 		break;
 
 	case CPlayerVisionMode::NightVision:
-		pScreenEffectManager->FadeInFrom( 0xFF000000, 0.6f, AlphaBlend::One );
+		pScreenEffectManager->FadeInFrom( SFloatRGBAColor::Black(), 0.6f, AlphaBlend::One );
 		pScreenEffectManager->RaiseEffectFlag( ScreenEffect::PseudoNightVision );
 		pScreenEffectManager->RaiseEffectFlag( ScreenEffect::MonochromeColor );
 		pScreenEffectManager->SetMonochromeEffect( -0.1f, 0.3f, -0.1f );
@@ -1107,7 +1107,8 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 
 	if( trace.fFraction < 1.0f )
 	{
-		m_pStage->GetScreenEffectManager()->FadeInFrom( 0xFFF60606, 1.0f, AlphaBlend::One );
+		SFloatRGBAColor dest_color = SFloatRGBAColor( 0.965f, 0.024f, 0.024f, 1.0f );
+		m_pStage->GetScreenEffectManager()->FadeInFrom( dest_color, 1.0f, AlphaBlend::One );
 		SGameMessage msg( GM_DAMAGE );
 		SetMissionState( MSTATE_CRASHED );
 		m_WorldPoseOnMissionFailed.vPosition = trace.vEnd;

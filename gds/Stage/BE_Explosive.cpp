@@ -225,7 +225,7 @@ void CBE_Explosive::FlashScreen(CCopyEntity* pCopyEnt)
 	float fAlpha = (fFlashEffectiveDist - fDist) / fFlashEffectiveDist;
 	SFloatRGBAColor flash_color( 1.0f, 1.0f, 1.0f, fAlpha * 180.0f / 256.0f );
 
-	m_pStage->GetScreenEffectManager()->FadeInFrom( flash_color.GetARGB32(), 0.6f + fAlpha, AlphaBlend::One );
+	m_pStage->GetScreenEffectManager()->FadeInFrom( flash_color, 0.6f + fAlpha, AlphaBlend::One );
 
 }
 

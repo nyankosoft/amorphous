@@ -98,7 +98,7 @@ void CBE_SupplyItem::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* p
 		switch( this->m_iEffect )
 		{	// use screen effect according to the effect of the current item
 		case GM_HEALING:
-			m_pStage->GetScreenEffectManager()->FadeInFrom( 0x504060FF, 1.0f, AlphaBlend::One );	// flash with blue 
+			m_pStage->GetScreenEffectManager()->FadeInFrom( SFloatRGBAColor( 0.250f, 0.376f, 1.000f, 0.314f ), 1.0f, AlphaBlend::One );	// flash with blue 
 			break;
 		}
 

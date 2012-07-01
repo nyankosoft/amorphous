@@ -340,7 +340,7 @@ void CBE_CameraController::SkipCutscene( CCopyEntity* pCopyEnt )
 	float fade_out_time_margin = 0.1f;
 	float fade_out_time = (float)gs_FadeoutTimeMS * 0.001f + fade_out_time_margin;
 
-	m_pStage->GetScreenEffectManager()->FadeOutTo( 0xFF000000, fade_out_time, AlphaBlend::InvSrcAlpha );
+	m_pStage->GetScreenEffectManager()->FadeOutTo( SFloatRGBAColor::Black(), fade_out_time, AlphaBlend::InvSrcAlpha );
 }
 
 
@@ -379,7 +379,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 
 	m_CutsceneEndStartedTime = 0;
 
-	m_pStage->GetScreenEffectManager()->FadeInFrom( 0xFF000000, 0.2f, AlphaBlend::InvSrcAlpha );
+	m_pStage->GetScreenEffectManager()->FadeInFrom( SFloatRGBAColor::Black(), 0.2f, AlphaBlend::InvSrcAlpha );
 }
 
 

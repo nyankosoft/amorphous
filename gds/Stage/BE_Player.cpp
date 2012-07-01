@@ -335,7 +335,7 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 		SoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->GetWorldPosition() );
 
 		// flash screen with red
-		m_pStage->GetScreenEffectManager()->FadeInFrom( 0x40F82000, 0.20f, AlphaBlend::InvSrcAlpha );
+		m_pStage->GetScreenEffectManager()->FadeInFrom( SFloatRGBAColor( 0.973f, 0.125f, 0.000f, 0.250f ), 0.20f, AlphaBlend::InvSrcAlpha );
 
 ///		rfLife -= rGameMessage.fParam1;
 		if( rfLife <= 0 && rfTimeAfterDeath < 0 )
@@ -344,7 +344,7 @@ void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 			rfTimeAfterDeath = 0;
 			pCopyEnt_Self->vVelocity = Vector3(0,0,0);
 
-			m_pStage->GetScreenEffectManager()->FadeOutTo( 0xFFFFFFFF, 2.5f, AlphaBlend::One );
+			m_pStage->GetScreenEffectManager()->FadeOutTo( SFloatRGBAColor::White(), 2.5f, AlphaBlend::One );
 		}
 
 		if( rGameMessage.s1 == DMG_BLAST )
@@ -575,7 +575,7 @@ void CBE_Player::PlayerDead(CCopyEntity* pCopyEnt)
 		pCopyEnt->SetWorldPose( Matrix34Identity() );
 		pCopyEnt->s1 = 0;
 
-		m_pStage->GetScreenEffectManager()->FadeInFrom( 0xFF000000, 1.0f, AlphaBlend::InvSrcAlpha );
+		m_pStage->GetScreenEffectManager()->FadeInFrom( SFloatRGBAColor::Black(), 1.0f, AlphaBlend::InvSrcAlpha );
 
 		return;
 	}
