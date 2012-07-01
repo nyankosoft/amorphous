@@ -18,6 +18,9 @@
 #include "Script/PyModule_visual_effect.hpp"
 #include "Script/PyModules.hpp"
 #include "Script/ScriptManager.hpp"
+#include "Script/convert_python_to_x.hpp"
+#include "Script/EmbeddedPythonModule.hpp"
+#include "Script/EmbeddedPythonModules.hpp"
 #include "Support/Timer.hpp"
 #include "Support/macro.h"
 #include "Support/memory_helpers.hpp"
@@ -660,6 +663,9 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 {
 	LOG_FUNCTION_SCOPE();
 
+	if( !m_pScriptManager )
+		return false;
+
 	m_ScriptArchiveFilename = script_archive_filename;
 
 	if( CScriptManager::ms_UseBoostPythonModules )
@@ -686,6 +692,9 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 		m_pScriptManager->AddModule( "Task",			gsf::py::task::g_PyModuleTaskMethod );
 		m_pScriptManager->AddModule( "Light",		gsf::py::light::g_PyModuleLightMethod );
 		m_pScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
+
+		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_math3d() );
+//		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_gfx() );
 	}
 
 
@@ -693,7 +702,7 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 
 	if( !res )
 	{
-		LOG_PRINT_ERROR( "unable to load script: " + script_archive_filename );
+		LOG_PRINT_ERROR( "unable to load the script (archive): " + script_archive_filename );
 		return false;
 	}
 
