@@ -58,5 +58,33 @@ inline Matrix44 Matrix44CameraMatrixFromCameraPose( const Matrix34& src_cam_pose
 }
 
 
+inline Matrix34 GetCameraPoseFromCameraMatrix( const Matrix44& camera_matrix )
+{
+	Matrix34 camera_pose( Matrix34Identity() );
+	camera_pose.matOrient.SetColumn( 0, Vector3( camera_matrix(0,0), camera_matrix(0,1), camera_matrix(0,2) ) );
+	camera_pose.matOrient.SetColumn( 1, Vector3( camera_matrix(1,0), camera_matrix(1,1), camera_matrix(1,2) ) );
+	camera_pose.matOrient.SetColumn( 2, Vector3( camera_matrix(2,0), camera_matrix(2,1), camera_matrix(2,2) ) );
+
+	const Matrix44 inv_camera_matrix = camera_matrix.GetInverse();
+	camera_pose.vPosition.x = inv_camera_matrix(0,3);
+	camera_pose.vPosition.y = inv_camera_matrix(1,3);
+	camera_pose.vPosition.z = inv_camera_matrix(2,3);
+
+	return camera_pose;
+}
+
+
+inline void ToMatrix34( const Matrix44& src, Matrix34& dest )
+{
+	dest.matOrient.SetColumn( 0, Vector3( src(0,0), src(1,0), src(2,0) ) );
+	dest.matOrient.SetColumn( 1, Vector3( src(0,1), src(1,1), src(2,1) ) );
+	dest.matOrient.SetColumn( 2, Vector3( src(0,2), src(1,2), src(2,2) ) );
+
+	dest.vPosition.x = src(0,3);
+	dest.vPosition.y = src(1,3);
+	dest.vPosition.z = src(2,3);
+}
+
+
 
 #endif /* __3DMath_MatrixConversions_HPP__ */
