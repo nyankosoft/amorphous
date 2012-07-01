@@ -6,7 +6,7 @@ CFadeEffect::CFadeEffect()
 {
 	in_use = false;
 	m_iType = SCREENEFFECT_FADE_IN;
-	m_dwColor = 0xFF000000;
+	m_Color = SFloatRGBAColor::Black();
 	m_fCurrentTime = 0.0f;
 	m_fTotalTime = 0.0f;
 	m_fMaxAlpha = 0.0f;
@@ -22,19 +22,22 @@ void CFadeEffect::Draw()
 	if( m_iType == SCREENEFFECT_FADE_IN )
 		fCurrentAlpha = m_fMaxAlpha - fCurrentAlpha;
 
-	U32 dwCurrentAlpha = D3DCOLOR_ARGB( ((int)(fCurrentAlpha)), 0, 0, 0 );
+	clamp( fCurrentAlpha, 0.0f, 1.0f );
 
-	m_ScreenRect.SetColor( dwCurrentAlpha | m_dwColor );
+	m_Color.fAlpha = fCurrentAlpha;
+
+	m_ScreenRect.SetColor( m_Color );
 
 	m_ScreenRect.Draw();
 }
 
 
-void CFadeEffect::SetFadeEffect(int iType, U32 dest_color, float fTotalTime, AlphaBlend::Mode blend_mode )
+void CFadeEffect::SetFadeEffect(int iType, const SFloatRGBAColor& dest_color, float fTotalTime, AlphaBlend::Mode blend_mode )
 {
 	m_iType = iType;
-	m_fMaxAlpha = (float)( (dest_color & 0xFF000000) >> 24 );
-	m_dwColor = dest_color & 0x00FFFFFF;	// 'm_dwColor' is transparent in itself - alpha value is determined during the drawing routine
+	m_fMaxAlpha = dest_color.fAlpha;//(float)( (dest_color & 0xFF000000) >> 24 );
+	m_Color = dest_color;
+	m_Color.fAlpha = 0.0f; // Set the alpha of the current color to 0 and change it over time until it reaches the value specified in the dest_color.
 	m_fTotalTime = fTotalTime;
 
 	in_use = true;

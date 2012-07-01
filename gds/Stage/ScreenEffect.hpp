@@ -13,7 +13,7 @@ struct CFadeEffect
 {
 	bool in_use;
 	int m_iType;
-	U32 m_dwColor; ///< ARGB color
+	SFloatRGBAColor m_Color;
 	float m_fMaxAlpha;	// between 0 and 255
 	float m_fCurrentTime;
 	float m_fTotalTime;
@@ -27,7 +27,7 @@ public:
 
 	void Draw();
 
-	void SetFadeEffect( int iType, U32 dest_color, float fTotalTime, AlphaBlend::Mode blend_mode );
+	void SetFadeEffect( int iType, const SFloatRGBAColor& dest_color, float fTotalTime, AlphaBlend::Mode blend_mode );
 
 	bool IsInUse() { return in_use; }
 

@@ -462,7 +462,7 @@ void CScreenEffectManager::Update( float frametime )
 }
 
 
-void CScreenEffectManager::SetFadeEffect( int iType, U32 dwColor, float fTime, AlphaBlend::Mode alpha_blend_mode )
+void CScreenEffectManager::SetFadeEffect( int iType, const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
 {
 	int i;
 	for( i=0; i<NUM_MAX_SIMULTANEOUS_FADES; i++ )
@@ -470,22 +470,22 @@ void CScreenEffectManager::SetFadeEffect( int iType, U32 dwColor, float fTime, A
 		if( m_aFadeEffect[i].IsInUse() )
 			continue;
 
-		m_aFadeEffect[i].SetFadeEffect( iType, dwColor, fTime, alpha_blend_mode );
+		m_aFadeEffect[i].SetFadeEffect( iType, color, fTime, alpha_blend_mode );
 		break;
 	}
 	
 }
 
 
-void CScreenEffectManager::FadeOutTo( U32 dwColor, float fTime, AlphaBlend::Mode alpha_blend_mode )
+void CScreenEffectManager::FadeOutTo( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
 {
-	SetFadeEffect( SCREENEFFECT_FADE_OUT, dwColor, fTime, alpha_blend_mode );
+	SetFadeEffect( SCREENEFFECT_FADE_OUT, color, fTime, alpha_blend_mode );
 }
 
 
-void CScreenEffectManager::FadeInFrom( U32 dwColor, float fTime, AlphaBlend::Mode alpha_blend_mode )
+void CScreenEffectManager::FadeInFrom( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
 {
-	SetFadeEffect( SCREENEFFECT_FADE_IN, dwColor, fTime, alpha_blend_mode );
+	SetFadeEffect( SCREENEFFECT_FADE_IN, color, fTime, alpha_blend_mode );
 }
 
 

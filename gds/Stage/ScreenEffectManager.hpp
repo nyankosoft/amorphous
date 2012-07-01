@@ -225,9 +225,9 @@ public:
 	void Update( float frametime );
 
 //	void AddScreenColor( U32 dwColor );
-	void FadeOutTo( U32 dwColor, float fTime, AlphaBlend::Mode alpha_blend_mode );
-	void FadeInFrom( U32 dwColor, float fTime, AlphaBlend::Mode alpha_blend_mode );
-	void SetFadeEffect( int iType, U32 dwColor, float fTime, AlphaBlend::Mode alpha_blend_mode );
+	void FadeOutTo( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode );
+	void FadeInFrom( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode );
+	void SetFadeEffect( int iType, const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode );
 //	bool LoadShader();
 
 	unsigned int GetEffectFlag() const { return m_EffectFlag; }
