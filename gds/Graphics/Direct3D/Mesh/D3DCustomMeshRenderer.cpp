@@ -29,15 +29,44 @@ static HRESULT SetD3DFVF( const CCustomMesh& mesh )
 	return DIRECT3D9.GetDevice()->SetFVF( fvf );
 }
 
-
-void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset_index, bool use_zsorted_indices )
+/*
+///  Render the only subset of the mesh
+///  - Replaced by the implementation below this function.
+void CD3DCustomMeshRenderer::DrawPrimitivesOfSingleSubsetMesh( const CCustomMesh& mesh, bool use_zsorted_indices )
 {
 	const uint num_verts   = mesh.GetNumVertices();
 	const uint num_indices = mesh.GetNumIndices();
 
+	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
+		D3DPT_TRIANGLELIST,
+		0,
+		num_verts,
+		num_indices / 3,
+		pI,
+		D3DFMT_INDEX16,
+		pV,
+		mesh.GetVertexSize()
+		);
+}
+*/
+
+void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset_index, bool use_zsorted_indices )
+{
+	if( use_zsorted_indices && 1 < mesh.GetTriangleSets().size() )
+		return; // z-sorting is not supported for mesh with multiple subsets 
+
+	if( (int)mesh.GetTriangleSets().size() <= subset_index )
+		return;
+
+	const CMMA_TriangleSet& ts = mesh.GetTriangleSets()[subset_index];
+
 	const void *pV = (void *)mesh.GetVertexBufferPtr();
 //	const void *pI = (void *)mesh.GetIndexBufferPtr();
-	const void *pI = use_zsorted_indices ? (void *)mesh.GetZSortedIndexBufferPtr() : (void *)mesh.GetIndexBufferPtr();
+	const void *pI
+		= use_zsorted_indices
+		? (void *)mesh.GetZSortedIndexBufferPtr()
+		: (void *)( mesh.GetIndexBufferPtr() + (ts.m_iStartIndex * mesh.GetIndexSize()) );
+
 	if( !pV || !pI )
 		return;
 
@@ -45,9 +74,9 @@ void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset
 
 	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
 		D3DPT_TRIANGLELIST,
-		0,
-		num_verts,
-		num_indices / 3,
+		ts.m_iMinIndex,
+		ts.m_iNumVertexBlocksToCover,
+		ts.m_iNumTriangles,
 		pI,
 		D3DFMT_INDEX16,
 		pV,
