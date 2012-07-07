@@ -213,10 +213,7 @@ public:
 	/// \return borrowed reference to a font object
 	inline CFontBase *GetFont( int font_id );
 
-//	bool RemoveElement( CGraphicsElementGroup*& pGroupElement );
-	bool RemoveElement( boost::shared_ptr<CGraphicsElementGroup>& pGroupElement );
-
-	bool RemoveElement( boost::shared_ptr<CGraphicsElement>& pElement );
+	bool RemoveElement( boost::shared_ptr<CGraphicsElement> pElement );
 
 	/// deletes all the graphics elements.
 	/// vector elements are not resized to zero

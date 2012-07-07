@@ -647,18 +647,15 @@ int CGraphicsElementManager::LoadTextureFont( const string& font_texture_filenam
 }
 
 
-bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElementGroup>& pGroupElement )
+bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElement> pElement )
 {
-	boost::shared_ptr<CGraphicsElement> pElement = pGroupElement;
-	pGroupElement = shared_ptr<CGraphicsElementGroup>();
-	return RemoveElement( pElement );
-}
-
-
-bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElement>& pElement )
-{
-	if( !pElement )
+	if( !pElement // invalid argument
+	 || !(pElement->m_pManager) ) // already released
+	{
 		return false;
+	}
+
+	pElement->OnRemovalRequested();
 
 	int element_id = pElement->GetElementIndex();
 
@@ -670,17 +667,7 @@ bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElement>& pElem
 //	if( pElement->GetElementType() != CGraphicsElement::TYPE_GROUP )
 	if( pElement->BelongsToLayer() )
 	{
-		// remove the element from the layer
-		int layer_index = pElement->GetLayerIndex();
-		CLayer& rLayer = m_vecLayer[layer_index];
-//		rLayer.m_vecElement
-
-        vector<int>::iterator itrTarget = find( rLayer.m_vecElement.begin(), rLayer.m_vecElement.end(), layer_index );
-
-		if( itrTarget != rLayer.m_vecElement.end() )
-		{
-			rLayer.m_vecElement.erase( itrTarget );
-		}
+		RemoveFromLayer( pElement );
 	}
 
 	// remove the element from the group to which it currently belongs
@@ -696,11 +683,25 @@ bool CGraphicsElementManager::RemoveElement( shared_ptr<CGraphicsElement>& pElem
 //	SAFE_DELETE( m_vecpElement[element_id] );
 	m_vecpElement[element_id].reset();
 
-	pElement.reset();
+	pElement->Release();
 
 	return true;
 }
 
+/*
+bool CGraphicsElementManager::RemoveElement( boost::shared_ptr<CCombinedPrimitiveElement> pElement )
+{
+	boost::shared_ptr<CGraphicsElement> pFilElement   = pElement->FillElement();
+	boost::shared_ptr<CGraphicsElement> pFrameElement = pElement->FrameElement();
+	RemoveElement( pFilElement );
+	RemoveElement( pFrameElement );
+
+	boost::shared_ptr<CGraphicsElement> pCombinedPrimitiveElement   = pElement;
+	RemoveElement( pCombinedPrimitiveElement );
+
+	return true;
+}
+*/
 
 bool CGraphicsElementManager::RemoveAllElements()
 {
@@ -708,6 +709,7 @@ bool CGraphicsElementManager::RemoveAllElements()
 	for( i=0; i<num; i++ )
 	{
 		RemoveElement( m_vecpElement[i] );
+		m_vecpElement[i].reset();
 	}
 
 	return true;

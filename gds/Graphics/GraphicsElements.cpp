@@ -44,6 +44,23 @@ inline void erase_dupulicate_elements( std::vector<T>& vec )
 	}
 }
 
+void CGraphicsElement::Release()
+{
+	m_pManager = NULL;
+	m_LocalAABB.Nullify();
+	m_TextureID = -1;
+	m_fScale = 1.0f;
+	m_GroupID = -1;
+	m_ElementIndex = -1;
+	m_LayerIndex = -1;
+	m_vLocalTopLeftPos = Vector2(0,0);
+//	m_vLocalRotationCenterPos = Vector2(0,0);
+	m_LocalTransform = Matrix23Identity();
+	m_ParentTransform = Matrix23Identity();
+	for( int i=0; i<NUM_COLORS; i++ )
+		m_aColor[i] = SFloatRGBAColor(1,1,1,1);
+}
+
 
 void CGraphicsElement::UpdateTransform( const Matrix23& parent_transform )
 {
@@ -561,6 +578,33 @@ void CFillPolygonElement::SetVertexColor( int vertex, int color_index, const SFl
 }
 
 
+void CCombinedPrimitiveElement::OnRemovalRequested()
+{
+	if( m_pFillElement )
+	{
+		m_pManager->RemoveElement( m_pFillElement );
+		m_pFillElement.reset();
+	}
+
+	if( m_pFrameElement )
+	{
+		m_pManager->RemoveElement( m_pFrameElement );
+		m_pFrameElement.reset();
+	}
+}
+
+
+void CCombinedPrimitiveElement::Release()
+{
+	CGraphicsElement::Release();
+
+//	OnRemovalRequested();
+
+	m_pFillElement.reset();
+	m_pFrameElement.reset();
+}
+
+
 //==========================================================================================
 // CTextElement
 //==========================================================================================
@@ -581,6 +625,23 @@ m_vTextPos(Vector2(x,y))
 //		m_LocalAABB.vMax = 
 }
 */
+
+
+void CTextElement::Release()
+{
+	CGraphicsElement::Release();
+
+	m_FontID = -1;
+	m_Text   = "";
+	m_vTextPos         = Vector2(0,0);
+	m_vScaledPos       = Vector2(0,0);
+	m_vLocalTextOffset = Vector2(0,0);
+	m_ScaledWidth  = 0;
+	m_ScaledHeight = 0;
+	m_FontWidth    = 0;
+	m_FontHeight   = 0;
+}
+
 
 void CTextElement::Draw()
 {

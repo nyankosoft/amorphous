@@ -127,6 +127,10 @@ protected:
 
 	virtual ~CGraphicsElement() {}
 
+	virtual void Release();
+
+	virtual void OnRemovalRequested() {}
+
 	virtual void SetTopLeftPosInternal( Vector2 vPos ) {}
 
 	virtual void UpdatePositionsInternal( const Matrix23& global_transform ) {}
@@ -583,6 +587,8 @@ public:
 
 	virtual ~CCombinedPrimitiveElement() {}
 
+	virtual void Release();
+
 	bool BelongsToLayer() const { return false; }
 
 	void SetTopLeftPosInternal( Vector2 vPos )
@@ -649,6 +655,8 @@ public:
 
 	boost::shared_ptr<CPrimitiveElement>& FillElement() { return m_pFillElement; }
 	boost::shared_ptr<CPrimitiveElement>& FrameElement() { return m_pFrameElement; }
+
+	void OnRemovalRequested();
 };
 
 
@@ -670,6 +678,14 @@ public:
 	}
 
 	int GetElementType() const { return TYPE_COMBINEDRECT; }
+
+	virtual void Release()
+	{
+		CCombinedPrimitiveElement::Release();
+
+		m_pFillRectElement.reset();
+		m_pFrameRectElement.reset();
+	}
 
 	void Draw() {}
 
@@ -697,6 +713,14 @@ public:
 
 	int GetElementType() const { return TYPE_COMBINEDROUNDRECT; }
 
+	virtual void Release()
+	{
+		CCombinedPrimitiveElement::Release();
+
+		m_pRoundFillRectElement.reset();
+		m_pRoundFrameRectElement.reset();
+	}
+
 	void Draw() {}
 
 	boost::shared_ptr<CRoundFillRectElement> RoundFillRectElement() { return m_pRoundFillRectElement; }
@@ -722,6 +746,14 @@ public:
 	}
 
 	virtual int GetElementType() const { return TYPE_COMBINEDTRIANGLE; }
+
+	virtual void Release()
+	{
+		CCombinedPrimitiveElement::Release();
+
+		m_pFillTriangleElement.reset();
+		m_pFrameTriangleElement.reset();
+	}
 
 	void Draw() {}
 
@@ -873,6 +905,8 @@ public:
 //	CTextElement( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 );
 
 	virtual int GetElementType() const { return TYPE_TEXT; }
+
+	void Release();
 
 	/**
 	 draws text
