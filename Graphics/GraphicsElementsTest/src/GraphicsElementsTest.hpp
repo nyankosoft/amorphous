@@ -3,7 +3,6 @@
 
 
 #include <vector>
-#include "gds/3DMath/Vector3.hpp"
 #include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/GraphicsElementManager.hpp"
 #include "gds/Graphics/GraphicsComponentCollector.hpp"
@@ -17,38 +16,17 @@
 
 class CGraphicsElementsTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum UIID
-	{
-		UIID_DLG_ROOT = 1000,
-		UIID_DLG_SLIDERS,
-		UIID_DLG_RESOLUTION,
-		UIID_LBX_RESOLUTION,
-		UIID_DLG_LISTBOXGROUP,
-		UIID_OTHER
-	};
-
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
-
-	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
 	boost::shared_ptr<CFontBase> m_pFont;
 
-	CInputHandlerSharedPtr m_pInputHandler;
+//	CGM_DialogManagerSharedPtr m_pSampleUI;
 
-	CGM_DialogManagerSharedPtr m_pSampleUI;
-
-	bool m_TestAsyncLoading;
-
-	boost::shared_ptr<CCombinedRectElement> m_apRect[0xFF];
+	std::vector< boost::shared_ptr<CCombinedRectElement> > m_pRects;
 
 	boost::shared_ptr<CCombinedTriangleElement> m_apTriangle[0xFF];
 
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 private:
 
@@ -57,6 +35,10 @@ private:
 	void RenderGraphicsElements();
 
 	void CreateGraphicsElements();
+
+	void ReleaseGraphicsElements();
+
+	void ReleaseAllGraphicsElements();
 
 	void TestRotations();
 
