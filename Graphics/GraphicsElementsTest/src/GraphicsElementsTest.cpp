@@ -79,6 +79,17 @@ void CGraphicsElementsTest::CreateGraphicsElements()
 		m_pRects[index++] = pMgr->CreateRect( RectAtLeftTop( w, grof(w), 50 + 400, y ), FRGBA::Blue(),  FRGBA::Yellow(),  border_widths[i] );
 	}
 
+	index = 0;
+	m_pRoundRects.resize( 3 * numof(border_widths) );
+	for( int i=0; i<numof(border_widths); i++ )
+	{
+		int y = 50 + (grof(w) + 20) * i;
+//		float corner_radius = 10;
+		m_pRoundRects[index++] = pMgr->CreateRoundRect( RectAtRightTop( w, grof(w), 50,       y ), FRGBA::Red(),   FRGBA::Aqua(),     5, border_widths[i] );
+		m_pRoundRects[index++] = pMgr->CreateRoundRect( RectAtRightTop( w, grof(w), 50 + 200, y ), FRGBA::Green(), FRGBA::Magenta(), 10, border_widths[i] );
+		m_pRoundRects[index++] = pMgr->CreateRoundRect( RectAtRightTop( w, grof(w), 50 + 400, y ), FRGBA::Blue(),  FRGBA::Yellow(),  15, border_widths[i] );
+	}
+
 	// rotate around the center of the rect
 	Vector2 vCenter = m_pRects[0]->GetAABB().GetCenterPosition();
 
@@ -120,6 +131,13 @@ void CGraphicsElementsTest::ReleaseGraphicsElements()
 		m_pRects[i].reset();
 	}
 	m_pRects.resize( 0 );
+
+	for( size_t i=0; i<m_pRoundRects.size(); i++ )
+	{
+		m_pGraphicsElementManager->RemoveElement( m_pRoundRects[i] );
+		m_pRoundRects[i].reset();
+	}
+	m_pRoundRects.resize( 0 );
 
 	const int num_trianlges = numof(m_apTriangle);
 	for( int i=0; i<num_trianlges; i++ )

@@ -24,6 +24,8 @@ class CGraphicsElementsTest : public CGraphicsTestBase, public CGraphicsComponen
 
 	std::vector< boost::shared_ptr<CCombinedRectElement> > m_pRects;
 
+	std::vector< boost::shared_ptr<CCombinedRoundRectElement> > m_pRoundRects;
+
 	boost::shared_ptr<CCombinedTriangleElement> m_apTriangle[0xFF];
 
 	std::string m_TextBuffer;
