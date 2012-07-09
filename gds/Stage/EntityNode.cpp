@@ -1,5 +1,6 @@
 #include "EntityNode.hpp"
 #include "EntitySet.hpp"
+#include "EntityRenderer.hpp"
 #include "EntityRenderManager.hpp"
 #include "BaseEntity.hpp"
 #include "bsptree.hpp"
@@ -70,7 +71,7 @@ inline bool CEntityNode::CheckCollisionGroup( int group0, int group1 )
 //   Rendering Copy Entities
 //               Draw all the copy entities linked to this node
 //=====================================================================
-void CEntityNode::Render( CCamera& rCam )
+void CEntityNode::RenderEntities( CEntityRenderer& entity_renderer, CCamera& rCam )
 {
 //	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
 //		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
@@ -85,128 +86,38 @@ void CEntityNode::Render( CCamera& rCam )
 	{
 		pEntity = pLinkNode->pOwner;
 
-		if( !(pEntity->GetEntityFlags() & BETYPE_VISIBLE) )
+		if( !entity_renderer.ShouldRenderEntity( *pEntity ) )
 			continue;
 
-		if( pEntity->GetEntityFlags() & BETYPE_PLANAR_REFLECTOR )
-		{
-			int id = this->m_pEntitySet->GetRenderManager()->GetCurrentlyRenderedPlanarReflectionSceneID();
-			if( 0 <= id || id == pEntity->s1 )
-				continue;
-		}
-
-		if( pEntity->GetEntityFlags() & BETYPE_USE_ZSORT )
-		{	// 'pEntity' includes transparent polygons
-			this->m_pEntitySet->GetRenderManager()->SendToZSortTable( pEntity );
-		}
-		else
-		{
-/*			if( pEntity->Lighting() )
-			{
-				if( pEntity->sState & CESTATE_LIGHT_INFORMATION_INVALID )
-				{
-					// need to update light information - find lights that reaches to this entity
-					pEntity->ClearLights();
-					m_pEntitySet->UpdateLightInfo( pEntity );
-					pEntity->sState &= ~CESTATE_LIGHT_INFORMATION_INVALID;
-				}
-
-				// turn on lights that reach 'pCopyEnt'
-				m_pEntitySet->EnableLightForEntity();
-				m_pEntitySet->SetLightsForEntity( pEntity );
-			}
-			else
-			{	// turn off lights
-				m_pEntitySet->DisableLightForEntity();
-			}*/
-
-			// render the entity
-			pEntity->Draw();
-		}
+		entity_renderer.RenderEntity( *pEntity );
 
 		ms_NumRenderedEntities++;
 	}
 }
 
 
-void CEntityNode::RenderShadowCasters( CCamera& rCam )
+void CEntityNode::RenderEntitiesWithDownwardTraversal(
+	CEntityNode *pEntityTree,
+	CEntityRenderer& entity_renderer,
+	CCamera& rCam,
+	bool do_camera_frustom_culling
+	)
 {
-//	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
-//		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
-//		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
-
-	// Get the pointer to the first copy entity on this entity node
-	CLinkNode<CCopyEntity> *pLinkNode;
-	CCopyEntity* pEntity;
-	for( pLinkNode = m_EntityLinkHead.pNext;
-		 pLinkNode;
-		 pLinkNode = pLinkNode->pNext )
+	if( do_camera_frustom_culling )
 	{
-		pEntity = pLinkNode->pOwner;
-
-		if( (pEntity->GetEntityFlags() & BETYPE_VISIBLE)
-		 && (pEntity->GetEntityFlags() & BETYPE_SHADOW_CASTER) )
-		{
-			// render the entity as a shadow caster
-			pEntity->pBaseEntity->RenderAsShadowCaster( pEntity );
-		}
+		// Shadow casters skip this.
+		// TODO: implement culling for shadow caster objects
+		if( !rCam.ViewFrustumIntersectsWith( m_AABB ) )
+			return;
 	}
-}
 
+	RenderEntities( entity_renderer, rCam );
 
-void CEntityNode::RenderShadowReceivers( CCamera& rCam )
-{
-//	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
-//		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
-//		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
+	if( this->leaf )
+		return;
 
-	// Get the pointer to the first copy entity on this entity node
-	CLinkNode<CCopyEntity> *pLinkNode;
-	CCopyEntity* pEntity;
-	for( pLinkNode = m_EntityLinkHead.pNext;
-		 pLinkNode;
-		 pLinkNode = pLinkNode->pNext )
-	{
-		pEntity = pLinkNode->pOwner;
-
-		const U32 entity_flags = pEntity->GetEntityFlags();
-		if( entity_flags & BETYPE_VISIBLE
-//		 && (entity_flags & BETYPE_SHADOW_RECEIVER) )
-		 && (entity_flags & BETYPE_SHADOW_CASTER || entity_flags & BETYPE_SHADOW_RECEIVER) )
-		{
-			// render the entity as a shadow receiver
-			// Note that the shadow casters are also rendered as non-shadowed geometries
-			pEntity->pBaseEntity->RenderAsShadowReceiver( pEntity );
-		}
-	}
-}
-
-
-void CEntityNode::RenderAllButEnvMapTraget( CCamera& rCam, U32 target_entity_id  )
-{
-//	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
-//		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
-//		return;	// entities in the current entity node is not visible because the corresponding cell is not visible
-
-	// Get the pointer to the first copy entity on this entity node
-	CLinkNode<CCopyEntity> *pLinkNode;
-	CCopyEntity* pEntity;
-	for( pLinkNode = m_EntityLinkHead.pNext;
-		 pLinkNode;
-		 pLinkNode = pLinkNode->pNext )
-	{
-		pEntity = pLinkNode->pOwner;
-
-		if( pEntity->GetID() == target_entity_id
-		 && pEntity->GetEntityFlags() & BETYPE_ENVMAPTARGET )
-		{
-			// envmap target
-			// - should no be rendered to the cube texture of its own envmap
-			continue;
-		}
-
-		pEntity->pBaseEntity->Draw( pEntity );
-	}
+	pEntityTree[this->sFrontChild].RenderEntitiesWithDownwardTraversal( pEntityTree, entity_renderer, rCam, do_camera_frustom_culling );
+	pEntityTree[this->sBackChild ].RenderEntitiesWithDownwardTraversal( pEntityTree, entity_renderer, rCam, do_camera_frustom_culling );
 }
 
 

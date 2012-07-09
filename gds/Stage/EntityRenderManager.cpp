@@ -1,5 +1,6 @@
 #include "EntityRenderManager.hpp"
 #include "EntitySet.hpp"
+#include "MiscEntityRenderers.hpp"
 #include "LightEntity.hpp"
 #include "trace.hpp"
 #include "ViewFrustumTest.hpp"
@@ -377,66 +378,12 @@ void CEntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, CCamera& r
 	CEntityNode* pFirstEntNode = m_paEntityTree;
 	CEntityNode* pEntNode = pFirstEntNode + sEntNodeIndex;
 
-	pEntNode->Render(rCam);
+	CStandardEntityRenderer entity_renderer( this );
+	pEntNode->RenderEntities( entity_renderer, rCam );
 	m_EntityNodeRendered[sEntNodeIndex] = 1;	// mark this entity node as an already rendered one
 
 	if( pEntNode->sParent != -1 && m_EntityNodeRendered[ pEntNode->sParent ] != 1)
 		RenderEntityNodeUp_r( pEntNode->sParent, rCam);
-}
-
-
-void CEntityRenderManager::RenderDownward_r( short sEntNodeIndex, CCamera& rCam )
-{
-	CEntityNode& rThisEntNode = m_paEntityTree[sEntNodeIndex];
-
-	if( !rCam.ViewFrustumIntersectsWith( rThisEntNode.m_AABB ) )
-		return;
-
-	rThisEntNode.Render( rCam );
-
-	if( rThisEntNode.leaf )
-		return;
-
-	RenderDownward_r( rThisEntNode.sFrontChild, rCam );
-	RenderDownward_r( rThisEntNode.sBackChild,  rCam );
-
-}
-
-
-void CEntityRenderManager::RenderShadowCastersDownward_r( short sEntNodeIndex, CCamera& rCam )
-{
-	CEntityNode& rThisEntNode = m_paEntityTree[sEntNodeIndex];
-
-	// TODO: proper culing of shadow caster objects
-//	if( !rCam.ViewFrustumIntersectsWith( rThisEntNode.m_AABB ) )
-//		return;
-
-	rThisEntNode.RenderShadowCasters( rCam );
-
-	if( rThisEntNode.leaf )
-		return;
-
-	RenderShadowCastersDownward_r( rThisEntNode.sFrontChild, rCam );
-	RenderShadowCastersDownward_r( rThisEntNode.sBackChild,  rCam );
-
-}
-
-
-void CEntityRenderManager::RenderShadowReceiversDownward_r( short sEntNodeIndex, CCamera& rCam )
-{
-	CEntityNode& rThisEntNode = m_paEntityTree[sEntNodeIndex];
-
-	if( !rCam.ViewFrustumIntersectsWith( rThisEntNode.m_AABB ) )
-		return;
-
-	rThisEntNode.RenderShadowReceivers( rCam );
-
-	if( rThisEntNode.leaf )
-		return;
-
-	RenderShadowReceiversDownward_r( rThisEntNode.sFrontChild, rCam );
-	RenderShadowReceiversDownward_r( rThisEntNode.sBackChild,  rCam );
-
 }
 
 
@@ -606,7 +553,9 @@ void CEntityRenderManager::RenderScene( CCamera& rCam )
 	}
 
 	// render the entity tree by downward traversal
-	RenderDownward_r( 0, rCam );
+	CStandardEntityRenderer entity_renderer( this );
+	if( m_paEntityTree )
+		m_paEntityTree[0].RenderEntitiesWithDownwardTraversal( m_paEntityTree, entity_renderer, rCam, true );
 
 	// render entities that have translucent polygons
 	// NOTE: commenting out the this line alone will cause infinite loop because the z-sort table
@@ -628,25 +577,6 @@ void CEntityRenderManager::RenderScene( CCamera& rCam )
 }
 
 
-void CEntityRenderManager::RenderAllButEnvMapTargetDownward_r( short sEntNodeIndex,
-															  CCamera& rCam,
-															  U32 target_entity_id )
-{
-	CEntityNode& rThisEntNode = m_paEntityTree[sEntNodeIndex];
-
-	if( !rCam.ViewFrustumIntersectsWith( rThisEntNode.m_AABB ) )
-		return;
-
-	rThisEntNode.RenderAllButEnvMapTraget( rCam, target_entity_id );
-
-	if( rThisEntNode.leaf )
-		return;
-
-	RenderAllButEnvMapTargetDownward_r( rThisEntNode.sFrontChild, rCam, target_entity_id );
-	RenderAllButEnvMapTargetDownward_r( rThisEntNode.sBackChild,  rCam, target_entity_id );
-}
-
-
 void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_entity_id )
 {
 	//==================== render the entities ====================
@@ -654,10 +584,14 @@ void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_e
 	CEntityNode::ms_NumRenderedEntities = 0;
 
 	// render the entity tree by downward traversal
-	RenderAllButEnvMapTargetDownward_r( 0, rCam, target_entity_id );
+	CNonEnvMapTargetEntityRenderer non_em_tgt_renderer( target_entity_id );
+	if( m_paEntityTree )
+		m_paEntityTree[0].RenderEntitiesWithDownwardTraversal( m_paEntityTree, non_em_tgt_renderer, rCam, true );
 
 	// render entities that have translucent polygons
 	RenderZSortTable();
+
+	ClearZSortTable();
 
 	// render groups of copy entities that belong to a same base entity and should be rendered in succession 
 	// e.g. bullet hold decals
@@ -698,7 +632,9 @@ void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
 //	MoveSkyboxToListHead();
 
 	// render the entity tree by downward traversal
-	RenderShadowCastersDownward_r( 0, rCam );
+	CShadowCasterEntityRenderer shadow_caster_entity_renderer;
+	if( m_paEntityTree )
+		m_paEntityTree[0].RenderEntitiesWithDownwardTraversal( m_paEntityTree, shadow_caster_entity_renderer, rCam, false );
 
 	// render groups of copy entities that belong to a same base entity and should be rendered in succession 
 	// e.g. bullet hold decals
@@ -717,7 +653,9 @@ void CEntityRenderManager::RenderShadowReceivers( CCamera& rCam )
 	//==================== render the entities ====================
 
 	// render the entity tree by downward traversal
-	RenderShadowReceiversDownward_r( 0, rCam );
+	CShadowReceiverEntityRenderer shadow_receiver_entity_renderer;
+	if( m_paEntityTree )
+		m_paEntityTree[0].RenderEntitiesWithDownwardTraversal( m_paEntityTree, shadow_receiver_entity_renderer, rCam, true );
 
 	// render groups of copy entities that belong to a same base entity and should be rendered in succession 
 	// e.g. bullet hold decals

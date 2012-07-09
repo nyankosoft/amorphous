@@ -822,6 +822,12 @@
     <ClInclude Include="..\..\gds\Script\EmbeddedPythonModule.hpp">
       <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Stage\EntityRenderer.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Stage\MiscEntityRenderers.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">

@@ -60,15 +60,16 @@ public:
 	/// 'pEntity' is set to the head element of the entity list of this entity node
 	void Link(CCopyEntity* pEntity) { m_EntityLinkHead.InsertNext( &pEntity->m_EntityLink ); }
 
-	/// render all the entites in this sub-space(entity tree node)
-	void Render( CCamera& rCam );
+	/// Render all the entites on this entity tree node.
+	void RenderEntities( CEntityRenderer& entity_renderer, CCamera& rCam );
 
-	void RenderShadowCasters( CCamera& rCam );
-
-	void RenderShadowReceivers( CCamera& rCam );
-
-	void RenderAllButEnvMapTraget( CCamera& rCam, U32 target_entity_id  );
-
+	/// Recursively render all the entites in this sub-space.
+	void RenderEntitiesWithDownwardTraversal(
+		CEntityNode *pEntityTree,
+		CEntityRenderer& entity_renderer,
+		CCamera& rCam,
+		bool do_camera_frustom_culling
+	);
 
 	/// link a light entity entity management
 	void LinkLightEntity_r(CLightEntity *pLightEntity, CEntityNode* paEntTree);

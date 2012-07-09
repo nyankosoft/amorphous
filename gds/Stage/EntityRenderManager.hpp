@@ -129,14 +129,6 @@ private:
 
 	void RenderEntityNodeUp_r( short sEntNodeIndex, CCamera& rCam );
 
-	void RenderDownward_r( short sEntNodeIndex, CCamera& rCam );
-
-	void RenderShadowCastersDownward_r( short sEntNodeIndex, CCamera& rCam );
-
-	void RenderShadowReceiversDownward_r( short sEntNodeIndex, CCamera& rCam );
-
-	void RenderAllButEnvMapTargetDownward_r( short sEntNodeIndex, CCamera& rCam, U32 target_entity_id );
-
 	void MoveSkyboxToListHead();
 
 	/// render z-sorted entities

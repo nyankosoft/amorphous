@@ -15,6 +15,7 @@ class CBaseEntity;
 class CBaseEntityFactory;
 class CBaseEntityHandle;
 class CEntityNode;
+class CEntityRenderer;
 class CEntitySet;
 class CEntityRenderManager;
 class CStaticGeometryBase;
