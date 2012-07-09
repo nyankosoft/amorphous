@@ -58,6 +58,9 @@
     <Filter Include="Source Files\MotionSynthesis">
       <UniqueIdentifier>{8d0988f8-3dfd-4764-9009-2f6012318b5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Script\EmbeddedPythonModules">
+      <UniqueIdentifier>{0e51837f-4efc-44ea-b86f-9915b317c69b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Stage\BinaryNode.hpp">
@@ -813,6 +816,12 @@
     <ClInclude Include="..\..\gds\Stage\SoundEntity.hpp">
       <Filter>Source Files\Stage\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Script\math3d_py.hpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Script\EmbeddedPythonModule.hpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
@@ -1450,6 +1459,12 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\Stage\SoundEntity.cpp">
       <Filter>Source Files\Stage\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Script\math3d_py.cpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Script\EmbeddedPythonModule.cpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -80,6 +80,8 @@
     <ClInclude Include="..\..\gds\GameCommon\ThirdPersonMotionController.hpp" />
     <ClInclude Include="..\..\gds\MotionSynthesis\BVHUtilities.hpp" />
     <ClInclude Include="..\..\gds\Script.hpp" />
+    <ClInclude Include="..\..\gds\Script\EmbeddedPythonModule.hpp" />
+    <ClInclude Include="..\..\gds\Script\math3d_py.hpp" />
     <ClInclude Include="..\..\gds\Stage.hpp" />
     <ClInclude Include="..\..\gds\Stage\BE_StaticLiquid.hpp" />
     <ClInclude Include="..\..\gds\Stage\BinaryNode.hpp" />
@@ -338,6 +340,8 @@
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonCameraController.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonMotionController.cpp" />
     <ClCompile Include="..\..\gds\MotionSynthesis\BVHUtilities.cpp" />
+    <ClCompile Include="..\..\gds\Script\EmbeddedPythonModule.cpp" />
+    <ClCompile Include="..\..\gds\Script\math3d_py.cpp" />
     <ClCompile Include="..\..\gds\Stage\BE_StaticLiquid.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
