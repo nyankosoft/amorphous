@@ -55,26 +55,32 @@ int GetNumProfileTextRows();
 class CScopeProfile
 {
 	const char *m_pProfileName;
+	const bool m_Enabled;
 
 public:
 
-	CScopeProfile( const char *pProfileName)
+	CScopeProfile( const char *pProfileName, bool enabled = true )
 	:
-	m_pProfileName(pProfileName)
+	m_pProfileName(pProfileName),
+	m_Enabled(enabled)
 	{
-		ProfileBegin( m_pProfileName );
+		if( m_Enabled )
+			ProfileBegin( m_pProfileName );
 	}
 
 	~CScopeProfile()
 	{
-		ProfileEnd( m_pProfileName );
+		if( m_Enabled )
+			ProfileEnd( m_pProfileName );
 	}
 };
 
 
 /// put this at the start of a function or a loop to profile the scope
-#define PROFILE_FUNCTION()          CScopeProfile scope_profile(__FUNCTION__)
-#define PROFILE_SCOPE( scope_name ) CScopeProfile scope_profile( scope_name )
+#define PROFILE_FUNCTION()                      CScopeProfile scope_profile( __FUNCTION__, true )
+#define PROFILE_FUNCTION_IF( enabled )          CScopeProfile scope_profile( __FUNCTION__, enabled )
+#define PROFILE_SCOPE( scope_name )             CScopeProfile scope_profile( scope_name, true )
+#define PROFILE_SCOPE_IF( scope_name, enabled ) CScopeProfile scope_profile( scope_name, enabled )
 
 
 #endif /* __PROFILE_H__ */
