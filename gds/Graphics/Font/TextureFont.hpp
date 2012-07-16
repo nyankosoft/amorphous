@@ -47,6 +47,8 @@ public:
 	
 	static const std::string ms_Characters;
 
+	static bool ms_ProfileTextureFont;
+
 protected:
 
 	std::string m_strTextureFilename;
@@ -142,6 +144,8 @@ public:
 	void SetShadowShift( int x, int y ) { m_vShadowShift = Vector2((float)x,(float)y); }
 
 	virtual int GetFontType() const { return FONTTYPE_TEXTURE; }
+
+	static void ProfileTextureFont( bool enable ) { ms_ProfileTextureFont = enable; }
 };
 
 

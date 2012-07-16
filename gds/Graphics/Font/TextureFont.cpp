@@ -3,12 +3,14 @@
 #include "GrayscalePixelDataLoader.hpp"
 #include "Graphics/TextureStage.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Support/Profile.hpp"
 
 using namespace std;
 using namespace boost;
 
 
 const std::string CTextureFont::ms_Characters = " !\"#$%&'()*+,-./0123456789:;<=>?`ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~";
+bool CTextureFont::ms_ProfileTextureFont = false;
 
 
 void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend )
@@ -366,6 +368,8 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 
 void CTextureFont::DrawCachedText()
 {
+	PROFILE_FUNCTION_IF( ms_ProfileTextureFont );
+
 	// Draw the string
 	const int num_letters = m_CacheIndex;
 
