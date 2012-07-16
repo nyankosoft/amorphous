@@ -160,6 +160,15 @@ bool CGLShader::LoadFromFile( const std::string& filepath )
 
 	LOG_GL_ERROR( "glCompileShaderARB() failed. Failed to compile a shader" );
 
+	const int max_log_length = 2048;
+	char log_buffer[max_log_length];
+	memset( log_buffer, 0, sizeof(log_buffer) );
+	int log_length = 0;
+	glGetInfoLogARB( m_Shader, max_log_length - 1, &log_length, log_buffer );
+
+	if( 0 < log_length )
+		LOG_PRINT_ERROR( log_buffer );
+
 	return true;
 /*
 	p = glCreateProgramObjectARB();
@@ -307,6 +316,8 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 
 //	glLinkProgramARB( m_Program );
 //	glUseProgramObjectARB( m_Program );
+
+	LOG_GL_ERROR( "Detected a GL error at the end of the function." );
 
 	return true;
 }
