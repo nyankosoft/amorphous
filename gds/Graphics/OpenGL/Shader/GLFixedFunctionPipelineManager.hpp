@@ -27,6 +27,8 @@ class CGLFixedFunctionPipelineManager : public CShaderManager
 	Matrix44 m_matView;
 	Matrix44 m_matProjection;
 
+	boost::shared_ptr<CGLFixedPipelineLightManager> m_pFFPLightManager;
+
 private:
 
 	CGLFixedFunctionPipelineManager();
@@ -44,6 +46,8 @@ public:
 	void Release();
 
 	void Reload();
+
+	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const Matrix44& matWorld );
 

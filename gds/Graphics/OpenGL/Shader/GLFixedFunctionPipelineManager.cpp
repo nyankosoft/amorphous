@@ -1,4 +1,5 @@
 #include "GLFixedFunctionPipelineManager.hpp"
+#include "GLFixedPipelineLightManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
@@ -12,6 +13,8 @@ m_matProjection(Matrix44Identity())
 {
 	// register the instance to the shader manager hub
 //	ShaderManagerHub.RegisterShaderManager( this );
+
+	m_pFFPLightManager.reset( new CGLFixedPipelineLightManager );
 }
 
 
@@ -31,6 +34,12 @@ void CGLFixedFunctionPipelineManager::Release()
 
 void CGLFixedFunctionPipelineManager::Reload()
 {
+}
+
+
+boost::shared_ptr<CShaderLightManager> CGLFixedFunctionPipelineManager::GetShaderLightManager()
+{
+	return m_pFFPLightManager;
 }
 
 
