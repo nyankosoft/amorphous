@@ -43,6 +43,8 @@ void SetBaseLight( const CLight& light, GLenum light_id )
 
 	FRGBAtoFloat4( /*light.SpecularColor*/SFloatRGBAColor::Black(), rgba );
 	glLightfv( light_id, GL_SPECULAR, (GLfloat *)rgba );
+
+	glEnable( light_id );
 }
 
 
@@ -114,4 +116,10 @@ void CGLFixedPipelineLightManager::SetHemisphericPointLight( const CHemisphericP
 void CGLFixedPipelineLightManager::ClearLights()
 {
 	m_NumCurrentLights = 0;
+
+	// Disable all the lights
+	// Lights are enabled in CGLFixedPipelineLightManager::SetBaseLight()
+	// every time a new light is added.
+	for( int i=0; i<GL_MAX_LIGHTS; i++ )
+		glDisable( GL_LIGHT0 + i );
 }
