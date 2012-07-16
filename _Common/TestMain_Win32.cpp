@@ -182,6 +182,9 @@ VOID Render()
 
 	g_pTest->Render();
 
+	GraphicsDevice().Enable(  RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+
 	// display fps
 	g_pFont->DrawText( to_string(GlobalTimer().GetFPS()).c_str(), Vector2(20,20), 0xFFFFFFFF );
 
@@ -296,7 +299,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	if( param_loader.IsReady() )
 	{
 		param_loader.LoadParam( "GraphicsLibrary", graphics_library_name );
-		param_loader.CloseFile();
 	}
 
 	Result::Name res = SelectGraphicsLibrary( graphics_library_name );
@@ -311,8 +313,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	// Create the instance of the test class
 	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );
 
-	int w = g_pTest->GetWindowWidth();  // 1024;
-	int h = g_pTest->GetWindowHeight(); //  768;
+	int w = g_pTest->GetWindowWidth();  // 1280;
+	int h = g_pTest->GetWindowHeight(); //  720;
+	param_loader.LoadParam( "ScreenResolution", w, h );
 	GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
 	GameWindowManager().CreateGameWindow( w, h, mode, app_title );
 	g_Camera.SetAspectRatio( (float)w / (float)h );
