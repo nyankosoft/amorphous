@@ -102,10 +102,6 @@ inline void CGLFixedFunctionPipelineManager::SetWorldTransform( const Matrix44& 
 	glMatrixMode( GL_MODELVIEW );
 	glLoadMatrixf( matWorldView.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
-
-	// debug - check the values of the current matrix
-	float mat[16];
-	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
 }
 
 
