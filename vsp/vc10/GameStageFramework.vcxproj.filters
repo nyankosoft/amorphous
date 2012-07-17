@@ -360,12 +360,6 @@
     <ClInclude Include="..\..\gds\Stage\BE_Turret.hpp">
       <Filter>Source Files\Stage\BaseEntity</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Stage\BEC_Billboard.hpp">
-      <Filter>Source Files\Stage\BaseEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Stage\BEC_BillboardSerialization.hpp">
-      <Filter>Source Files\Stage\BaseEntity</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gds\Stage\BEC_PseudoAircraft.hpp">
       <Filter>Source Files\Stage\BaseEntity</Filter>
     </ClInclude>
@@ -1098,9 +1092,6 @@
       <Filter>Source Files\Stage\BaseEntity</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Stage\BE_Turret.cpp">
-      <Filter>Source Files\Stage\BaseEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gds\Stage\BEC_Billboard.cpp">
       <Filter>Source Files\Stage\BaseEntity</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Stage\BEC_PseudoAircraft.cpp">

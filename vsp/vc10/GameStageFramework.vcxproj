@@ -194,8 +194,6 @@
     <ClInclude Include="..\..\gds\Stage\BE_SupplyItem.hpp" />
     <ClInclude Include="..\..\gds\Stage\BE_TextureAnimation.hpp" />
     <ClInclude Include="..\..\gds\Stage\BE_Turret.hpp" />
-    <ClInclude Include="..\..\gds\Stage\BEC_Billboard.hpp" />
-    <ClInclude Include="..\..\gds\Stage\BEC_BillboardSerialization.hpp" />
     <ClInclude Include="..\..\gds\Stage\BEC_PseudoAircraft.hpp" />
     <ClInclude Include="..\..\gds\Stage\BEC_Destruction.hpp" />
     <ClInclude Include="..\..\gds\Stage\AlphaEntity.hpp" />
@@ -442,7 +440,6 @@
     <ClCompile Include="..\..\gds\Stage\BE_SupplyItem.cpp" />
     <ClCompile Include="..\..\gds\Stage\BE_TextureAnimation.cpp" />
     <ClCompile Include="..\..\gds\Stage\BE_Turret.cpp" />
-    <ClCompile Include="..\..\gds\Stage\BEC_Billboard.cpp" />
     <ClCompile Include="..\..\gds\Stage\BEC_PseudoAircraft.cpp" />
     <ClCompile Include="..\..\gds\Stage\CoreBaseEntities.cpp" />
     <ClCompile Include="..\..\gds\Stage\BEC_Destruction.cpp" />
