@@ -5,6 +5,7 @@
 #include "../../base.hpp"
 #include "../../2DPrimitive/2DRectSet.hpp"
 #include "../../GraphicsDevice.hpp"
+#include "../../../Support/Profile.hpp"
 
 #include <vector>
 #include "2DPrimitiveRenderer_GL.hpp"
@@ -260,6 +261,8 @@ inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects )
 
 inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const CTextureHandle& texture )
 {
+	PROFILE_FUNCTION_IF( PrimitiveRenderer().m_Profile );
+
 	GraphicsDevice().SetTexture( 0, texture );
 
 	// draw rectangles
@@ -269,6 +272,8 @@ inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const 
 
 inline void C2DRectSetImpl_GL::draw( int start_rect_index, int num_rects )
 {
+	PROFILE_FUNCTION_IF( PrimitiveRenderer().m_Profile );
+
 	if( m_vecRectVertex.size() == 0
 	 || (int)m_vecRectVertex.size() < (start_rect_index + num_rects)*4 )
 		return;

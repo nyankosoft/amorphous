@@ -2,6 +2,7 @@
 //#include "App/GameWindowManager_Win32_GL.hpp"
 #include "3DMath/Matrix44.hpp"
 #include "Graphics/OpenGL/GLExtensions.hpp"
+#include "Support/Profile.hpp"
 
 
 GLenum ToGLPrimitiveType( PrimitiveType::Name pt )
@@ -46,6 +47,8 @@ void C2DPrimitiveRenderer_GL::RenderRect( CShaderManager& rShaderManager, const 
 
 void C2DPrimitiveRenderer_GL::RenderGL( CGeneral2DVertex *paVertex, int num_vertices, GLenum primitive_type )
 {
+	PROFILE_FUNCTION_IF( m_Profile );
+
 	if( !paVertex )
 		return;
 
