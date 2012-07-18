@@ -80,6 +80,8 @@ public:
 		}
 
 		HRESULT hr = D3DDrawPrimitives( D3DPT_POINTLIST, num_points );
+
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
 
 	Result::Name DrawLine( const Vector3& start, const Vector3& end, const SFloatRGBAColor& color )
