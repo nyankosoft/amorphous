@@ -652,7 +652,6 @@ void COpenALSoundManagerImpl::GetTextInfo( std::string& dest_buffer )
 
 	const size_t num_buffers = m_ActiveSoundBuffer.size();
 
-	char text[1024];
 	dest_buffer = fmt_string( "Sound Buffers (%d in total)\n----------------------------------------\n", num_buffers );
 
 	map< string, CSoundBuffer *>::iterator itr;
