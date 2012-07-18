@@ -106,7 +106,18 @@ public:
 
 //	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes ) { return false; }
 
-	virtual bool IsValid() const { return true; }
+	virtual bool IsValid() const
+	{
+		if( 0 < GetNumVertices()
+		 && 0 < GetNumIndices() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	/// D3D mesh access
 
@@ -186,6 +197,8 @@ public:
 	virtual unsigned int GetNumVertices() const { return 0; }
 
 	virtual unsigned int GetNumTriangles() const { return 0; }
+
+	virtual unsigned int GetNumIndices() const { return 0; }
 
 	// methods for skeletal mesh
 	// - implementation class of skeletal mesh has to implement these functions
@@ -322,6 +335,8 @@ public:
 	unsigned int GetNumVertices() const { return m_pImpl->GetNumVertices(); }
 
 	unsigned int GetNumTriangles() const { return m_pImpl->GetNumTriangles(); }
+
+	unsigned int GetNumIndices() const { return m_pImpl->GetNumIndices(); }
 
 	// methods for skeletal mesh
 	// - skeletal mesh class has to implement these functions

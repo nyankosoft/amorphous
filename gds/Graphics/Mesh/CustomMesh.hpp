@@ -112,6 +112,8 @@ public:
 
 	uint GetNumVertices() const { return (0 < m_VertexSize) ? ((uint)m_VertexBuffer.size() / m_VertexSize) : 0; }
 
+	uint GetNumTriangles() const { return GetNumIndices() / 3; }
+
 	uint GetNumIndices() const { return (uint)m_IndexBuffer.size() / sizeof(U16); }
 
 	uint GetIndexSize() const { return sizeof(dest_index_type); }
@@ -123,6 +125,8 @@ public:
 		memcpy( &dest, &(m_IndexBuffer[0]) + sizeof(U16) * i, sizeof(U16) );
 		return dest;
 	}
+
+	const std::vector<CMMA_TriangleSet>& GetTriangleSets() const { return m_TriangleSets; }
 
 	template<typename src_index_type>
 	inline void SetIndices( const std::vector<src_index_type>& src );
