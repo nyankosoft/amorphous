@@ -16,6 +16,19 @@ typedef unsigned int   uint;
 typedef unsigned long  ulong;
 
 
+#include <boost/integer.hpp>
+
+typedef boost::uint8_t  U8;
+typedef boost::uint16_t U16;
+typedef boost::uint32_t U32;
+typedef boost::uint64_t U64;
+
+typedef boost::int8_t  I8;
+typedef boost::int16_t I16;
+typedef boost::int32_t I32;
+typedef boost::int64_t I64;
+
+
 //
 // macros
 //
@@ -105,23 +118,11 @@ public:
 #ifdef _MSC_VER
 
 #define NOMINMAX // avoid error in nxmath.h of Ageia PhysX SDK
-#include <windows.h>
+#include <Windows.h> // "#include <GL/gl.h>" causes lots of mysterious errors when Windows.h is not included before it.
 
-//
-// platform-dependent typedefs
-//
+#else // _MSC_VER
 
-typedef BYTE  U8;
-typedef WORD  U16;
-typedef DWORD U32;
-//typedef ????? U64;
-
-#else // _MSC_VER - non-Win32 platform. How to typedef the variables above?
-
-typedef unsigned char  U8;
-typedef unsigned short U16;
-typedef unsigned int   U32;
-
+// Put things linux needs in common.
 
 #endif // _MSC_VER
 
