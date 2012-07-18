@@ -399,7 +399,7 @@ void CGameApplicationBase::UpdateFrame()
 		RequestAppExit();
 	}
 
-	Sleep( ms_DefaultSleepTimeMS );
+	boost::this_thread::sleep( boost::posix_time::milliseconds(ms_DefaultSleepTimeMS) );
 //	PERIODICAL( 2, Sleep(5) );
 }
 

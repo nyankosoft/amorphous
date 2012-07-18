@@ -11,6 +11,12 @@ extern void CreateResourceLoadingStateHolderForCurrentThread();
 extern CResourceLoadingStateSet::Name GetGraphicsResourceLoadingState();
 
 
+inline static void sleep_milliseonds( int64_t ms )
+{
+	boost::this_thread::sleep( boost::posix_time::milliseconds(ms) );
+}
+
+
 class CASyncStageLoaderThread
 {
 	CASyncStageLoader *m_pStageLoader;
@@ -136,7 +142,7 @@ void CASyncStageLoaderThread::operator()()
 
 	while( GetGraphicsResourceLoadingState() == CResourceLoadingStateSet::NOT_READY )
 	{
-		Sleep( 10 );
+		sleep_milliseonds( 10 );
 	}
 
 	m_pStageLoader->m_bIsLoaded = true;
@@ -153,6 +159,6 @@ void CASyncStageLoaderThread::operator()()
 			g_Log.Print( "'m_bIsLoaded' changed to false" );
 		}
 
-		Sleep( 10 );
+		sleep_milliseonds( 10 );
 	}
 }

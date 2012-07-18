@@ -43,7 +43,7 @@ void CBE_ParticleSet::ParticleThreadMain()
 	const int num_particle_sets = m_MaxNumParticleSets;
 	while( !m_TerminateParticleThread )
 	{
-		Sleep(10);
+		boost::this_thread::sleep( boost::posix_time::milliseconds(10) );
 
 		if( m_fFrameTimeLeft <= 0 )
 			continue;

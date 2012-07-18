@@ -288,7 +288,7 @@ void COpenALSoundManagerImpl::ThreadMain()
 	{
 		Update();
 
-		Sleep( 100 );
+		boost::this_thread::sleep( boost::posix_time::milliseconds(100) );
 	}
 }
 

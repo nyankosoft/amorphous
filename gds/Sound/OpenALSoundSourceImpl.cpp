@@ -11,6 +11,11 @@ using namespace std;
 using namespace boost;
 
 
+inline static void sleep_milliseonds( int64_t ms )
+{
+	boost::this_thread::sleep( boost::posix_time::milliseconds(ms) );
+}
+
 
 
 /**
@@ -327,7 +332,7 @@ void COpenALStreamedSoundSourceImpl::StreamMain()
 {
 	while( !m_ExitStreamThread )
 	{
-		Sleep( m_ServiceUpdatePeriodMS );
+		sleep_milliseonds( m_ServiceUpdatePeriodMS );
 
 		if( GetRequestedState() == CSoundSource::State_Playing )
 		{
@@ -430,7 +435,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 	ALint state;
 	while( GetRequestedState() != CSoundSource::State_Stopped )
 	{
-		Sleep( m_ServiceUpdatePeriodMS );
+		sleep_milliseonds( m_ServiceUpdatePeriodMS );
 
 		alGetSourcei( m_uiSource, AL_SOURCE_STATE, &state );
 		if( GetRequestedState() == CSoundSource::State_Paused
@@ -440,7 +445,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 			alSourcePause( m_uiSource );
 			while( GetRequestedState() == CSoundSource::State_Paused )
 			{
-				Sleep( m_ServiceUpdatePeriodMS );
+				sleep_milliseonds( m_ServiceUpdatePeriodMS );
 			}
 
 			if( GetRequestedState() == CSoundSource::State_Playing )
@@ -452,7 +457,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 			//   - e.g., When this bug happens, UI event sounds played afterwards gets some noise
 
 			// What about sleeping here a little?
-			Sleep( 100 );
+			sleep_milliseonds( 100 );
 		}
 
 /*		if( GetRequestedState() == CSoundSource::State_Playing

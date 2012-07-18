@@ -75,7 +75,7 @@ void CGraphicsApplicationBase::UpdateFrame()
 
 	GameWindowManager_Win32().OnMainLoopFinished();
 
-	Sleep( 2 );
+	boost::this_thread::sleep( boost::posix_time::milliseconds( 2 ) );
 }
 
 
