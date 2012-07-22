@@ -116,6 +116,19 @@ void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 		}
 	}
 
+//	static const int num_blend_transforms_per_vertex = 4;
+//	if( vertex_format_flags & VFF::BLEND_WEIGHTS )
+//	{
+//		m_ElementOffsets[VEE::BLEND_WEIGHTS] = vert_size;
+//		vert_size += sizeof(float) * num_blend_transforms_per_vertex;
+//	}
+//
+//	if( vertex_format_flags & VFF::BLEND_TRANSFORM_INDICES )
+//	{
+//		m_ElementOffsets[VEE::BLEND_TRANSFORM_INDICES] = vert_size;
+//		vert_size += sizeof(int) * num_blend_transforms_per_vertex;
+//	}
+
 	m_VertexBuffer.resize( vert_size * num_vertices );
 
 	m_VertexSize = vert_size;
@@ -152,6 +165,16 @@ bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::stri
 
 	if( flags & VFF::DIFFUSE_COLOR )
 		SetDiffuseColors( vs.vecDiffuseColor );
+
+	if( false )//flags & VFF::BLEND_TRANSFORM_INDICES )
+	{
+		vs.veciMatrixIndex;
+	}
+
+	if( false )//flags & VFF::BLEND_WEIGHTS )
+	{
+		vs.vecfMatrixWeight;
+	}
 
 //	InitVertexBuffer( num_vertices, VFF::POSITION|VFF::NORMAL );
 
@@ -265,4 +288,10 @@ void CCustomMesh::RenderZSorted( CShaderManager& rShaderMgr )
 	memcpy( &m_ZSortedIndexBuffer[0], &indices[0], index_data_size );
 
 	GetCustomMeshRenderer().RenderZSortedMesh( *this, rShaderMgr );
+}
+
+
+void CCustomMesh::RenderSubset( CShaderManager& rShaderMgr, int material_index )
+{
+	GetCustomMeshRenderer().RenderSubset( *this, rShaderMgr, material_index );
 }

@@ -128,6 +128,8 @@ public:
 
 	const std::vector<CMMA_TriangleSet>& GetTriangleSets() const { return m_TriangleSets; }
 
+	void SetTriangleSets( const std::vector<CMMA_TriangleSet>& triangle_sets ) { m_TriangleSets = triangle_sets; }
+
 	template<typename src_index_type>
 	inline void SetIndices( const std::vector<src_index_type>& src );
 
@@ -148,7 +150,7 @@ public:
 
 	void RenderZSorted( CShaderManager& rShaderMgr );
 
-	void RenderSubset( CShaderManager& rShaderMgr, int material_index ) {}
+	void RenderSubset( CShaderManager& rShaderMgr, int material_index );
 
 	static void SetDefaultVertexDiffuseColorFormat( VertexColorFormat vcf ) { ms_DefaultVertexDiffuseColorFormat = vcf; }
 };

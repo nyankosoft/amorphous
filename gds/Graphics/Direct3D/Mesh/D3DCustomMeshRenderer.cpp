@@ -50,6 +50,21 @@ void CD3DCustomMeshRenderer::DrawPrimitivesOfSingleSubsetMesh( const CCustomMesh
 }
 */
 
+
+const std::vector<int>& CD3DCustomMeshRenderer::GetAllSubsetIndices( const CCustomMesh& mesh )
+{
+	if( (int)m_SubsetIndices.size() < mesh.GetNumMaterials() )
+	{
+		int start_index = (int)m_SubsetIndices.size();
+		m_SubsetIndices.insert( m_SubsetIndices.end(), mesh.GetNumMaterials() - start_index, 0 );
+		for( int i=0; i<mesh.GetNumMaterials() - start_index; i++ )
+			m_SubsetIndices[start_index+i] = start_index+i;
+	}
+
+	return m_SubsetIndices;
+}
+
+
 void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset_index, bool use_zsorted_indices )
 {
 	if( use_zsorted_indices && 1 < mesh.GetTriangleSets().size() )
@@ -85,7 +100,7 @@ void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset
 }
 
 
-void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, bool use_zsorted_indices )
+void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, const std::vector<int> subsets_to_render, bool use_zsorted_indices )
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	HRESULT hr = S_OK;
@@ -150,7 +165,10 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, bool use_zsorted_ind
 }
 
 
-void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr, bool use_zsorted_indices )
+void CD3DCustomMeshRenderer::RenderMesh(
+	CCustomMesh& mesh, CShaderManager& shader_mgr,
+	const std::vector<int> subsets_to_render,
+	bool use_zsorted_indices )
 {
 	if( &shader_mgr == &FixedFunctionPipelineManager() )
 	{
@@ -171,22 +189,40 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shad
 	{
 		pEffect->BeginPass( p );
 
-		const int num_mats = mesh.GetNumMaterials();
-		for( int i=0; i<num_mats; i++ )
+//		const int num_mats = mesh.GetNumMaterials();
+//		for( int i=0; i<num_mats; i++ )
+		for( int i=0; i<(int)subsets_to_render.size(); i++ )
 		{
+			int subset_index = subsets_to_render[i];
+
 			const int num_textures = mesh.GetNumTextures(i);
 			for( int j=0; j<num_textures; j++ )
 			{
-				shader_mgr.SetTexture( j, mesh.GetTexture(i,j) );
+				shader_mgr.SetTexture( j, mesh.GetTexture(subset_index,j) );
 			}
 
 			pEffect->CommitChanges();
 
 			// Draw the i-th subset of the mesh
-			DrawPrimitives( mesh, i, use_zsorted_indices );
+			DrawPrimitives( mesh, subset_index, use_zsorted_indices );
 		}
 
 		pEffect->EndPass();
 	}
 	pEffect->End();
+}
+
+
+void CD3DCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, int subset_index )
+{
+	LOG_PRINT_ERROR( " Not implemented." );
+}
+
+
+void CD3DCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, CShaderManager& shader_mgr, int subset_index )
+{
+	vector<int> single_subset;
+	single_subset.resize( 1 );
+	single_subset[0] = subset_index;
+	RenderMesh( mesh, shader_mgr, single_subset, false );
 }
