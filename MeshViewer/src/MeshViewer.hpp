@@ -2,9 +2,7 @@
 #define  __MeshViewer_HPP__
 
 
-#include <boost/shared_ptr.hpp>
 #include "gds/App/GraphicsApplicationBase.hpp"
-#include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/MeshObjectHandle.hpp"
 #include "gds/Graphics/TextureHandle.hpp"
