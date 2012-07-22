@@ -460,6 +460,25 @@ void C3DMeshModelArchive::Scale( float factor )
 }
 
 
+void C3DMeshModelArchive::FlipTriangles()
+{
+	if( m_vecVertexIndex.size() % 3 != 0 )
+		return;
+
+	CMMA_VertexSet& vertex_set = GetVertexSet();
+
+	if( vertex_set.GetVertexFormat() & CMMA_VertexSet::VF_NORMAL )
+	{
+		for( size_t i=0; i<vertex_set.vecNormal.size(); i++ )
+			vertex_set.vecNormal[i] *= -1.0f;
+	}
+
+	const int num_triangles = (int)m_vecVertexIndex.size() / 3;
+	for( int i=0; i<num_triangles; i++ )
+		std::swap( m_vecVertexIndex[i*3], m_vecVertexIndex[i*3+2] );
+}
+
+
 #define INVALID_POINT_REPRESENTATIVE	65535
 
 void C3DMeshModelArchive::GeneratePointRepresentatives( vector<unsigned short>& rvecusPtRep )

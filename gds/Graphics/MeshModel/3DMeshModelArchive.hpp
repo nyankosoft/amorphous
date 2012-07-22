@@ -332,6 +332,11 @@ public:
 
 	void Scale( float factor );
 
+	/// \brief Does the following 2 things to flip the triangles of the mesh archive.
+	/// - Reverses the index order of each triangle.
+	/// - Flips the normals.
+	void FlipTriangles();
+
 	/// calculates axis-aligned bounding boxes for each triangle set
 	void UpdateAABBs();
 
