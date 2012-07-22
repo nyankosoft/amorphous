@@ -39,6 +39,8 @@ protected:
 
 	U32 m_TexCoordStyleFlags;
 
+	MeshPolygonDirection::Type m_PolygonDirection;
+
 protected:
 
 	/// Generate() of subclasses need to call this after creating mesh
@@ -66,7 +68,8 @@ public:
 		:
 	m_DiffuseColor( SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f) ),
 	m_RequestedVertexFormatFlags( DEFAULT_VERTEX_FLAGS ),
-	m_TexCoordStyleFlags(0)
+	m_TexCoordStyleFlags(0),
+	m_PolygonDirection(MeshPolygonDirection::OUTWARD)
 	{}
 
 	virtual ~CMeshGenerator() {}
@@ -83,6 +86,8 @@ public:
 
 	void SetTexCoordStyleFlags( U32 flags ) { m_TexCoordStyleFlags = flags; }
 
+	void SetPolygonDirection( MeshPolygonDirection::Type polygon_direction ) { m_PolygonDirection = polygon_direction; }
+
 	virtual Result::Name Generate() = 0;
 };
 
@@ -91,8 +96,6 @@ class CBoxMeshGenerator : public CMeshGenerator
 {
 	Vector3 m_vEdgeLengths;
 
-	MeshPolygonDirection::Type m_PolygonDirection;
-
 public:
 
 	CBoxMeshGenerator();
@@ -100,8 +103,6 @@ public:
 	~CBoxMeshGenerator() {}
 
 	void SetEdgeLengths( Vector3 vEdgeLengths ) { m_vEdgeLengths = vEdgeLengths; }
-
-	void SetPolygonDirection( MeshPolygonDirection::Type polygon_direction ) { m_PolygonDirection = polygon_direction; }
 
 	Result::Name Generate();
 

@@ -48,6 +48,9 @@ void CMeshGenerator::SetMiscMeshAttributes()
 			tex0.vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
 		}
 	}
+
+	if( m_PolygonDirection == MeshPolygonDirection::INWARD )
+		m_MeshArchive.FlipTriangles();
 }
 
 
@@ -90,8 +93,7 @@ void CMeshGenerator::GenerateTextureCoords( CGeneral3DMesh& mesh )
 
 CBoxMeshGenerator::CBoxMeshGenerator()
 :
-m_vEdgeLengths(Vector3(1,1,1)),
-m_PolygonDirection(MeshPolygonDirection::OUTWARD)
+m_vEdgeLengths(Vector3(1,1,1))
 {
 }
 
@@ -201,7 +203,7 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 		polygon_buffer[i].m_index.resize( 4 );
 		for( int j=0; j<4; j++ )
 		{
-			int local_index = (polygon_direction == MeshPolygonDirection::OUTWARD) ? j : 3-j;
+			int local_index = j;
 			polygon_buffer[i].m_index[j] = i*4+local_index;
 		}
 	}
