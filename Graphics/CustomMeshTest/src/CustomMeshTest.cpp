@@ -101,13 +101,7 @@ bool CCustomMeshTest::InitShader()
 	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 
-	Matrix44 matProj
-		= Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-
-	if( m_Shader.GetShaderManager() )
-		m_Shader.GetShaderManager()->SetProjectionTransform( matProj );
-
-	return true;
+	return shader_loaded;
 }
 
 
