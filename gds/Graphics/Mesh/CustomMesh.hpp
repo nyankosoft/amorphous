@@ -94,6 +94,10 @@ public:
 
 	void SetDiffuseColors( const SFloatRGBAColor& diffuse_color );
 
+	void SetBlendWeights( const std::vector< TCFixedVector<float,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& vecfMatrixWeight );
+
+	void SetBlendIndices( const std::vector< TCFixedVector<int,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& veciMatrixIndex );
+
 	inline void GetPositions( std::vector<Vector3>& dest ) const;
 
 	void InitVertexBuffer( int num_vertices, U32 vertex_format_flags );

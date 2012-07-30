@@ -62,24 +62,92 @@ void CCustomMesh::SetDiffuseColors( const SFloatRGBAColor& diffuse_color )
 }
 
 
+void CCustomMesh::SetBlendWeights( const std::vector< TCFixedVector<float,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& vecfMatrixWeight )
+{
+	const int offset = m_ElementOffsets[VEE::BLEND_WEIGHTS];
+	float zeros[CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX];
+
+	for( int i=0; i<CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX; i++ )
+		zeros[i] = 0;
+
+	int num_blend_weights_in_vertex = take_min( 4, (int)CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX );
+
+	for( size_t i=0; i<vecfMatrixWeight.size(); i++ )
+	{
+		// Claculate the destination address
+		void *dest = &(m_VertexBuffer[0]) + m_VertexSize * i + offset;
+
+		// Initialize the area with 0s
+		memcpy( dest, zeros, sizeof(float) * num_blend_weights_in_vertex );
+
+		// Copy the weights
+		if( 0 < vecfMatrixWeight[i].size() )
+		{
+			memcpy(
+				dest,
+				&(vecfMatrixWeight[i][0]),
+				sizeof(float) * take_min( num_blend_weights_in_vertex, (int)(vecfMatrixWeight[i].size()) )
+				);
+		}
+	}
+}
+
+
+void CCustomMesh::SetBlendIndices( const std::vector< TCFixedVector<int,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& veciMatrixIndex )
+{
+	const int offset = m_ElementOffsets[VEE::BLEND_INDICES];
+	for( size_t i=0; i<veciMatrixIndex.size(); i++ )
+	{
+		U32 indices
+			= ((U8)veciMatrixIndex[i][0])
+			| ((U8)veciMatrixIndex[i][1] << 8)
+			| ((U8)veciMatrixIndex[i][2] << 16)
+			| ((U8)veciMatrixIndex[i][3] << 24);
+
+		memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &indices, sizeof(U32) );
+	}
+}
+
+
 void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 {
 	m_VertexFlags = vertex_format_flags;
 	uint vert_size = 0;
 
-	U32 vec3_element_flags[] =
+	if( vertex_format_flags & VFF::POSITION )
 	{
-		VFF::POSITION,
-		VFF::NORMAL,
-		VFF::BINORMAL,
-		VFF::TANGENT
+		m_ElementOffsets[VEE::POSITION] = vert_size;
+		vert_size += sizeof(Vector3);
+	}
+
+	// vertex blend weights and indices are placed right after vertex positions
+	// because flexible vertex format flags of Direct3D require them to be so.
+	// See D3DFVF_XYZB5 and D3DFVF_LASTBETA_UBYTE4 for more details.
+
+	if( vertex_format_flags & VFF::BLEND_WEIGHTS )
+	{
+		m_ElementOffsets[VEE::BLEND_WEIGHTS] = vert_size;
+		vert_size += sizeof(float) * 4;//CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX;
+	}
+
+	if( vertex_format_flags & VFF::BLEND_INDICES )
+	{
+		m_ElementOffsets[VEE::BLEND_INDICES] = vert_size;
+		vert_size += sizeof(U32);
+	}
+
+	pair<int,U32> vec3_element_and_flags[] =
+	{
+		pair<int,U32>( VEE::NORMAL,   VFF::NORMAL ),
+		pair<int,U32>( VEE::BINORMAL, VFF::BINORMAL ),
+		pair<int,U32>( VEE::TANGENT,  VFF::TANGENT )
 	};
 
-	for( int i=0; i<numof(vec3_element_flags); i++ )
+	for( int i=0; i<numof(vec3_element_and_flags); i++ )
 	{
-		if( vertex_format_flags & vec3_element_flags[i] )
+		if( vertex_format_flags & vec3_element_and_flags[i].second )
 		{
-			m_ElementOffsets[VEE::POSITION + i] = vert_size;
+			m_ElementOffsets[ vec3_element_and_flags[i].first ] = vert_size;
 			vert_size += sizeof(Vector3);
 		}
 	}
@@ -116,19 +184,6 @@ void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 		}
 	}
 
-//	static const int num_blend_transforms_per_vertex = 4;
-//	if( vertex_format_flags & VFF::BLEND_WEIGHTS )
-//	{
-//		m_ElementOffsets[VEE::BLEND_WEIGHTS] = vert_size;
-//		vert_size += sizeof(float) * num_blend_transforms_per_vertex;
-//	}
-//
-//	if( vertex_format_flags & VFF::BLEND_TRANSFORM_INDICES )
-//	{
-//		m_ElementOffsets[VEE::BLEND_TRANSFORM_INDICES] = vert_size;
-//		vert_size += sizeof(int) * num_blend_transforms_per_vertex;
-//	}
-
 	m_VertexBuffer.resize( vert_size * num_vertices );
 
 	m_VertexSize = vert_size;
@@ -146,6 +201,12 @@ bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::stri
 
 	if( flags & VFF::POSITION )
 		SetPositions( vs.vecPosition );
+
+	if( flags & VFF::BLEND_WEIGHTS )
+		SetBlendWeights( vs.vecfMatrixWeight );
+
+	if( flags & VFF::BLEND_INDICES )
+		SetBlendIndices( vs.veciMatrixIndex );
 
 	if( flags & VFF::NORMAL )
 		SetNormals( vs.vecNormal );
@@ -165,16 +226,6 @@ bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::stri
 
 	if( flags & VFF::DIFFUSE_COLOR )
 		SetDiffuseColors( vs.vecDiffuseColor );
-
-	if( false )//flags & VFF::BLEND_TRANSFORM_INDICES )
-	{
-		vs.veciMatrixIndex;
-	}
-
-	if( false )//flags & VFF::BLEND_WEIGHTS )
-	{
-		vs.vecfMatrixWeight;
-	}
 
 //	InitVertexBuffer( num_vertices, VFF::POSITION|VFF::NORMAL );
 
