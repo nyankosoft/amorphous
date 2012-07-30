@@ -366,6 +366,7 @@ inline U32 ToVFF( uint src )
 	if( src & CMMA_VertexSet::VF_2D_TEXCOORD1 )  dest |= VFF::TEXCOORD2_1;
 	if( src & CMMA_VertexSet::VF_2D_TEXCOORD2 )  dest |= VFF::TEXCOORD2_2;
 	if( src & CMMA_VertexSet::VF_2D_TEXCOORD3 )  dest |= VFF::TEXCOORD2_3;
+	if( src & CMMA_VertexSet::VF_WEIGHT )        dest |= (VFF::BLEND_WEIGHTS|VFF::BLEND_INDICES);
 	return dest;
 }
 
