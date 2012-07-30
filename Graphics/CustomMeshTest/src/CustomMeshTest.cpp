@@ -214,6 +214,8 @@ void CCustomMeshTest::Render()
 //	m_TextBuffer.clear();
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+
 	Vector2 vTopLeft(     (float)GetWindowWidth() / 4,  (float)16 );
 //	Vector2 vBottomRight( (float)GetWindowWidth() - 16, (float)GetWindowHeight() * 3 / 2 );
 //	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
@@ -222,9 +224,7 @@ void CCustomMeshTest::Render()
 	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
 	Vector3 vCamPos = g_Camera.GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
+	m_pFont->DrawText( string("camera: ") + to_string( vCamPos ), Vector2( 20, 300 ) );
 }
 
 
