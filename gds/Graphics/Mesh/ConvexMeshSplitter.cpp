@@ -647,6 +647,22 @@ Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CCustomMesh& src, cons
 	dest_front.SetIndices( front_mesh_indices );
 	dest_back.SetIndices(  back_mesh_indices );
 
+	// Set the triangle sets
+	vector<CMMA_TriangleSet> ts_front, ts_back;
+	ts_front.resize( 1 );
+	ts_front[0].m_iStartIndex             = 0;
+	ts_front[0].m_iMinIndex               = 0;
+	ts_front[0].m_iNumVertexBlocksToCover = (int)dest_front.GetNumVertices();
+	ts_front[0].m_iNumTriangles           = (int)front_mesh_indices.size() / 3;
+	ts_back.resize( 1 );
+	ts_back[0].m_iStartIndex             = 0;
+	ts_back[0].m_iMinIndex               = 0;
+	ts_back[0].m_iNumVertexBlocksToCover = (int)dest_back.GetNumVertices();
+	ts_back[0].m_iNumTriangles           = (int)back_mesh_indices.size() / 3;
+
+	dest_front.SetTriangleSets( ts_front );
+	dest_back.SetTriangleSets( ts_back );
+
 	LOG_PRINTF_VERBOSE(( "front: %u vertices / %u triangles", dest_front.GetNumVertices(), dest_front.GetNumIndices() / 3 ));
 	LOG_PRINTF_VERBOSE(( "back:  %u vertices / %u triangles", dest_back.GetNumVertices(),  dest_back.GetNumIndices() / 3 ));
 
