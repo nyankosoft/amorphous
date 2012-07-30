@@ -22,6 +22,8 @@ static HRESULT SetD3DFVF( const CCustomMesh& mesh )
 	if( vert_flags &  VFF::TEXCOORD2_0 )  fvf |= D3DFVF_TEX1;
 	if( vert_flags & (VFF::TEXCOORD2_0 & VFF::TEXCOORD2_1) )   fvf |= D3DFVF_TEX2;
 	if( vert_flags & (VFF::TEXCOORD2_0 & VFF::TEXCOORD2_1 & VFF::TEXCOORD2_2) )   fvf |= D3DFVF_TEX3;
+	if( vert_flags & (VFF::BLEND_WEIGHTS|VFF::BLEND_INDICES) )      fvf |= (D3DFVF_XYZB5|D3DFVF_LASTBETA_UBYTE4);
+//	if( vert_flags & (VFF::BLEND_WEIGHTS|VFF::BLEND_INDICES) )      fvf |= (D3DFVF_XYZB4|D3DFVF_LASTBETA_UBYTE4);
 
 	if( fvf == 0 )
 		return E_FAIL;
@@ -37,14 +39,16 @@ void CD3DCustomMeshRenderer::DrawPrimitivesOfSingleSubsetMesh( const CCustomMesh
 	const uint num_verts   = mesh.GetNumVertices();
 	const uint num_indices = mesh.GetNumIndices();
 
-	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
+	HRESULT hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
 		D3DPT_TRIANGLELIST,
 		0,
 		num_verts,
 		num_indices / 3,
-		pI,
+//		pI,
+		mesh.GetIndexBufferPtr(),
 		D3DFMT_INDEX16,
-		pV,
+//		pV,
+		mesh.GetVertexBufferPtr(),
 		mesh.GetVertexSize()
 		);
 }
@@ -162,6 +166,8 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, const std::vector<in
 
 		DrawPrimitives( mesh, i, use_zsorted_indices );
 	}
+
+//	DrawPrimitivesOfSingleSubsetMesh( mesh, use_zsorted_indices );
 }
 
 
@@ -205,6 +211,12 @@ void CD3DCustomMeshRenderer::RenderMesh(
 
 			// Draw the i-th subset of the mesh
 			DrawPrimitives( mesh, subset_index, use_zsorted_indices );
+
+			// To see if the triangle set is correct, commet out the line above
+			// and uncomment the following two lines. Note that this works only
+			// if the mesh has just one subset.
+//			DrawPrimitivesOfSingleSubsetMesh( mesh, use_zsorted_indices );
+//			break;
 		}
 
 		pEffect->EndPass();
