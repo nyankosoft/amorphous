@@ -13,6 +13,7 @@ public:
 	{
 		SINGLE_DIFFUSE_COLOR,
 		SHADED_SINGLE_DIFFUSE_COLOR,
+		VERTEX_WEIGHT_MAP_DISPLAY,
 		DEPTH_RENDERING_IN_VIEW_SPACE,
 		DEPTH_RENDERING_IN_PROJECTION_SPACE,
 		NUM_IDS
@@ -30,6 +31,8 @@ public:
 	static const char *ms_pSingleDiffuseColor;
 
 	static const char *ms_pShadedSingleDiffuseColor;
+
+	static const char *ms_pVertexWeightMapDisplay;
 
 	static const char *ms_pDepthRenderingInViewSpace;
 

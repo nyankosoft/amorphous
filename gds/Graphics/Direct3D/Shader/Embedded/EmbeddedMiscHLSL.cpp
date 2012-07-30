@@ -38,6 +38,55 @@ const char *CEmbeddedMiscHLSL::ms_pShadedSingleDiffuseColor =
 	"Color.a   = DiffuseColor.a;"\
 "}\n";
 
+const char *CEmbeddedMiscHLSL::ms_pVertexWeightMapDisplay =
+"float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
+"float4x4 World			: WORLD;\n"\
+"#define NUM_MAX_COLORS 22\n"\
+"float4 g_Colors[NUM_MAX_COLORS] ="\
+"{"\
+	"float4(1.00,0.25,0.25,1),"\
+	"float4(0.25,1.00,0.25,1),"\
+	"float4(0.25,0.25,1.00,1),"\
+	"float4(1.00,0.25,1.00,1),"\
+	"float4(0.25,1.00,1.00,1),"\
+	"float4(1.00,0.25,1.00,1),"\
+	"float4(0.25,0.25,0.25,1),"\
+	"float4(1.0,0.5,0.5,1),"\
+	"float4(0.5,1.0,0.5,1),"\
+	"float4(0.5,0.5,1.0,1),"\
+	"float4(1.0,0.5,1.0,1),"\
+	"float4(0.5,1.0,1.0,1),"\
+	"float4(1.0,0.5,1.0,1),"\
+	"float4(0.5,0.5,0.5,1),"\
+	"float4(1.00,0.75,0.75,1),"\
+	"float4(0.75,1.00,0.75,1),"\
+	"float4(0.75,0.75,1.00,1),"\
+	"float4(1.00,0.75,1.00,1),"\
+	"float4(0.75,1.00,1.00,1),"\
+	"float4(1.00,0.75,1.00,1),"\
+	"float4(0.75,0.75,0.75,1),"\
+	"float4(1,1,1,1)"\
+"};\n"\
+"float3 g_LightDirection = float3(0,-1,0);"\
+"float4x4 WorldView      : WORLDVIEW;\n"\
+"void VS( float4 Pos : POSITION,"\
+         "float4 BlendWeights : BLENDWEIGHT,"\
+         "int4 BlendIndices : BLENDINDICES,"\
+         "float3 Normal : NORMAL,"\
+         "out float4 oPos : POSITION,"\
+         "out float3 oNormal : TEXCOORD0,"\
+		 "out float4 oDiffuse : COLOR0 )"\
+"{"\
+	"oPos = mul( Pos, WorldViewProj );"\
+	"oNormal = mul( Normal, (float3x3)World );"\
+	"oDiffuse = g_Colors[BlendIndices[0]%NUM_MAX_COLORS];"\
+"}\n"\
+"void PS( float4 Diffuse : COLOR0, float3 Normal : TEXCOORD0, out float4 Color : COLOR )"\
+"{"\
+	"Normal = normalize(Normal);"\
+	"Color = Diffuse * (dot(Normal,-g_LightDirection) + 1.0) * 0.5;"\
+"}\n";
+
 const char *CEmbeddedMiscHLSL::ms_pDepthRenderingInViewSpace =
 "float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
 
@@ -102,6 +151,11 @@ Result::Name CEmbeddedMiscHLSL::GetShader( CEmbeddedMiscShader::ID shader_id, st
 
 	case CEmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
 		hlsl_effect = ms_pShadedSingleDiffuseColor;
+		hlsl_effect += ms_pTechniqueTemplate;
+		return Result::SUCCESS;
+
+	case CEmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
+		hlsl_effect = ms_pVertexWeightMapDisplay;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
