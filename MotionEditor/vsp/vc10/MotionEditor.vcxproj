@@ -137,6 +137,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.cpp" />
     <ClCompile Include="..\..\src\MotionEditorApp.cpp" />
     <ClCompile Include="..\..\src\MotionPrimitiveViewer.cpp" />
     <ClCompile Include="..\..\..\..\Project1\gds\MotionSynthesis\BlendNode.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="..\..\..\..\Project1\gds\App\AppMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.hpp" />
     <ClInclude Include="..\..\src\MotionEditorApp.hpp" />
     <ClInclude Include="..\..\src\MotionPrimitiveViewer.h" />
     <ClInclude Include="..\..\..\..\Project1\gds\MotionSynthesis\BlendNode.hpp" />
