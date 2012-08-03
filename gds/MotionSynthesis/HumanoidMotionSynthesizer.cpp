@@ -4,8 +4,8 @@
 #include "MotionDatabase.hpp"
 #include "HumanoidMotionTable.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/memory_helpers.hpp"
+#include "../Support/Log/DefaultLog.hpp"
+#include "../Support/memory_helpers.hpp"
 
 #include <boost/foreach.hpp>
 
