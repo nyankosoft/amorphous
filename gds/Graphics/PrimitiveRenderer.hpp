@@ -26,6 +26,11 @@ public:
 	CPrimitiveRenderer() {}
 	virtual ~CPrimitiveRenderer() {}
 
+	/**
+	NOTE: The caller is responsible for setting the appropriate transforms
+	via FixedFunctionPipelineManager().Set*Transform() (* = World, View, or Projection).
+	Especially, don't forget to set the world transform.
+	*/
 	virtual Result::Name DrawPoint( const Vector3& pos, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
 
 	virtual Result::Name DrawPoints( const std::vector<Vector3>& points, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
