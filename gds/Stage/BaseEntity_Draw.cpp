@@ -451,113 +451,13 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 							      int ShaderLOD )
 {
 	PROFILE_FUNCTION();
-/*
-	bool use_offset_world_transform = true;
-
-	bool bSingleTechnique
-		= ( m_MeshProperty.m_PropertyFlags & CBE_MeshObjectProperty::PF_USE_SINGLE_TECHNIQUE_FOR_ALL_MATERIALS );
-
-	if( pShaderManager )
-	{
-		// render the mesh with an HLSL shader
-
-		pShaderManager->SetWorldTransform( matWorld );
-
-		if( use_offset_world_transform )
-            SetOffsetWorldTransform( pShaderManager, m_pStage->GetCurrentCamera()->GetPosition() );
-
-		if( bSingleTechnique )
-		{
-			// render the meshes of all the materials with the same shader technique
-			// - no need to change techniques for every material
-			pShaderManager->SetTechnique( rShaderTechHandleTable( 0, ShaderLOD ) );
-
-			// pMeshObject->Render( *pShaderManager );
-
-			if( vecTargetMaterialIndex.size() == 0 )
-			{
-				// render all the materials (subsets) with the current shader technique
-				pMeshObject->Render( *pShaderManager );
-			}
-			else
-			{
-				// render target materials with the current shader technique
-				// - Models that does not include transparency
-				//   -> Render all the materials of the mesh
-				// - Models that includes material(s) with transparency
-				//   -> Render the non-transparent materials
-				pMeshObject->RenderSubsets( *pShaderManager,
-					                        vecTargetMaterialIndex );
-			}
-		}
-		else
-		{
-			// shader technique needs to be set for each material
-			// - set up the array of shader techniques
-			m_vecShaderTechniqueHolder.resize( 0 );
-			for( int i=0; i<rShaderTechHandleTable.size_x(); i++ )
-				m_vecShaderTechniqueHolder.push_back( rShaderTechHandleTable( i, ShaderLOD ) );
-
-			if( m_MeshProperty.m_vecTargetMaterialIndex.size() == 0 )
-			{
-				// render all the materials (subsets)
-				pMeshObject->Render( *pShaderManager, m_vecShaderTechniqueHolder );
-			}
-			else
-			{
-				// render target materials
-				pMeshObject->RenderSubsets( *pShaderManager,
-					                        vecTargetMaterialIndex,
-											m_vecShaderTechniqueHolder
-											);
-			}
-		}
-
-		if( use_offset_world_transform )
-			RestoreOffsetWorldTransform( pShaderManager );
-	}*/
 }
 
 
 void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt )
 {
 	RenderEntity( *pCopyEnt );
-//	Draw3DModel( pCopyEnt, m_MeshProperty.m_ShaderTechnique );
 }
-
-/*
-/// Renders a skeletal mesh
-/// - Set local transforms to skeletal mesh object before calling this function
-void CBaseEntity::DrawSkeletalMesh( CCopyEntity* pCopyEnt,
-								    CSkeletalMesh *pSkeletalMesh,
-								    C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
-									int ShaderLOD )
-{
-	PROFILE_FUNCTION();
-
-	// World & View matrices are recalculated to avoid occilation in large coord
-	// Thus, world & blend matrices need to be set in a special way
-
-//	pSMesh->SetLocalTransformToCache( 0, pCopyEnt->GetWorldPose() );
-
-	// set identity matrix to the root bone since 
-	pSkeletalMesh->SetLocalTransformToCache( 0, Matrix34Identity() );//	< usu.?
-
-	pSkeletalMesh->SetLocalTransformsFromCache();
-
-//	SetBlendMatrices( pSkeletalMesh );
-
-	DrawMeshObject( pCopyEnt->GetWorldPose(),
-		            pSkeletalMesh,
-					m_MeshProperty.m_vecTargetMaterialIndex,
-					rShaderTechHandleTable,
-					ShaderLOD );
-
-	pSkeletalMesh->ResetLocalTransformsCache();
-
-	return;
-}*/
-
 
 
 void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
