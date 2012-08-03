@@ -6,6 +6,7 @@
 #include "gds/3DMath/misc.hpp"
 #include "gds/3DMath/MatrixConversions.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "gds/Graphics/MeshUtilities.hpp"
 #include "gds/GUI.hpp"
 #include "gds/MotionSynthesis.hpp"
 //#include "gds/Support/CameraController.hpp"
@@ -401,8 +402,10 @@ m_DisplaySkeletalMesh(true),
 m_pPlaytimeText(NULL),
 m_Playing(false)
 {
-	m_pUnitCube = boost::shared_ptr<CUnitCube>( new CUnitCube() );
-	m_pUnitCube->Init();
+	CBoxMeshGenerator box_mesh_generator;
+	box_mesh_generator.Generate( Vector3(1,1,1) );
+	C3DMeshModelArchive archive = box_mesh_generator.GetMeshArchive();
+	m_UnitCube.LoadFromArchive( archive );
 
 	m_MeshViewer.Init();
 }
@@ -512,8 +515,8 @@ void CMotionPrimitiveViewer::Update( float dt )
 
 void CMotionPrimitiveViewer::RenderFloor()
 {
-//	m_pUnitCube->SetUniformColor( 0.7f, 0.7f, 0.7f, 0.5f );
-	m_pUnitCube->SetUniformColor( 0.6f, 0.6f, 0.6f, 1.0f );
+//	m_UnitCube.SetDiffuseColors( SFloatRGBAColor( 0.7f, 0.7f, 0.7f, 0.5f ) );
+	m_UnitCube.SetDiffuseColors( SFloatRGBAColor( 0.6f, 0.6f, 0.6f, 1.0f ) );
 
 	Matrix34 pose = Matrix34Identity();
 
@@ -527,7 +530,7 @@ void CMotionPrimitiveViewer::RenderFloor()
 			Matrix44 scaling = Matrix44Scaling( 0.99f, 0.01f, 0.99f );
 			FixedFunctionPipelineManager().SetWorldTransform( ToMatrix44(pose) * scaling );
 
-			m_pUnitCube->Draw();
+			m_UnitCube.Render();
 		}
 	}
 
@@ -537,8 +540,8 @@ void CMotionPrimitiveViewer::RenderFloor()
 
 void CMotionPrimitiveViewer::RenderPoles()
 {
-//	m_pUnitCube->SetUniformColor( 0.7f, 0.7f, 0.7f, 0.5f );
-	m_pUnitCube->SetUniformColor( 0.7f, 0.7f, 0.7f, 0.3f );
+//	m_UnitCube.SetDiffuseColors( SFloatRGBAColor( 0.7f, 0.7f, 0.7f, 0.5f ) );
+	m_UnitCube.SetDiffuseColors( SFloatRGBAColor( 0.7f, 0.7f, 0.7f, 0.3f ) );
 
 	Matrix34 pose = Matrix34Identity();
 
@@ -554,7 +557,7 @@ void CMotionPrimitiveViewer::RenderPoles()
 			Matrix44 scaling = Matrix44Scaling( 0.02f, pole_height, 0.02f );
 			FixedFunctionPipelineManager().SetWorldTransform( ToMatrix44(pose) * scaling );
 
-			m_pUnitCube->Draw();
+			m_UnitCube.Render();
 		}
 	}
 }

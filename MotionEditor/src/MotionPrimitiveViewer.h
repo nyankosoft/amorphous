@@ -65,7 +65,7 @@ class CMotionPrimitiveViewer
 
 	msynth::CSkeletonRenderer m_SkeletonRenderer;
 
-	boost::shared_ptr<CUnitCube> m_pUnitCube;
+	CCustomMesh m_UnitCube;
 
 	CLineStrip m_MotionTrace;
 
