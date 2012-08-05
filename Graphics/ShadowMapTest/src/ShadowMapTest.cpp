@@ -14,6 +14,7 @@
 #include "gds/Graphics/TextureRenderTarget.hpp"
 #include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/ParamLoader.hpp"
 
 using std::string;
 using std::vector;
@@ -79,7 +80,9 @@ int CShadowMapTest::Init()
 	// load skybox mesh
 	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
 
-	m_Mesh.Load( "models/shadow_map_test.msh" );
+	string model = "models/shadow_map_test.msh";
+	LoadParamFromFile( "params.txt", "model", model );
+	m_Mesh.Load( model );
 
 	// load the terrain mesh
 	CMeshResourceDesc mesh_desc;
@@ -139,7 +142,7 @@ void CShadowMapTest::RenderScene( CShaderManager& shader_mgr )
 	for( int i=0; i<num_mesh_rows; i++ )
 	{
 		Matrix34 pose( Matrix34Identity() );
-		pose.vPosition = Vector3( 0.0f, (float)i, (float)i * 5.0f + 2.0f );
+		pose.vPosition = Vector3( 0.0f, (float)i * 1.25f, (float)i * 5.0f + 2.0f );
 
 		shader_mgr.SetWorldTransform( pose );
 
