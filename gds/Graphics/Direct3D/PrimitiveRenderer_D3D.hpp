@@ -32,12 +32,13 @@ private:
 		return hr;
 	}
 
-	HRESULT D3DDrawPrimitives( D3DPRIMITIVETYPE primitive_type, int num_primitives_to_draw )
+	HRESULT D3DDrawPrimitives( D3DPRIMITIVETYPE primitive_type, int num_primitives_to_draw, LPDIRECT3DTEXTURE9 pTexture )
 	{
 		HRESULT hr = S_OK;
 		hr = DIRECT3D9.GetDevice()->SetFVF( D3DFVF_COLORVERTEX );
 		hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
 		hr = DIRECT3D9.GetDevice()->SetPixelShader( NULL );
+		hr = DIRECT3D9.GetDevice()->SetTexture( 0, pTexture );
 		hr = DIRECT3D9.GetDevice()->DrawPrimitiveUP( primitive_type, num_primitives_to_draw, &(m_ColorVertices[0]), sizeof(COLORVERTEX) );
 
 		return hr;
@@ -79,7 +80,7 @@ public:
 			m_ColorVertices[i].color     = d3d_color;
 		}
 
-		HRESULT hr = D3DDrawPrimitives( D3DPT_POINTLIST, num_points );
+		HRESULT hr = D3DDrawPrimitives( D3DPT_POINTLIST, num_points, NULL );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
@@ -118,7 +119,7 @@ public:
 			m_ColorVertices[i].color     = d3d_color;
 		}
 
-		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1 );
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1, NULL );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
@@ -138,7 +139,7 @@ public:
 			m_ColorVertices[i].color     = colors[i].GetARGB32();
 		}
 
-		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1 );
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1, NULL );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
