@@ -5,16 +5,13 @@
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Input.hpp"
 
 using std::string;
 using namespace boost;
-
-
-extern CPlatformDependentCameraController g_CameraController;
 
 
 const std::string GetAppTitle()
@@ -280,7 +277,7 @@ void CPostProcessEffectTest::RenderMeshes()
 
 	if( 0 < num_meshes )
 	{
-		RenderAsSkybox( m_vecMesh[0], g_CameraController.GetPosition() );
+		RenderAsSkybox( m_vecMesh[0], GetCurrentCamera().GetPosition() );
 	}
 
 	// reset the world transform matrix
@@ -402,7 +399,7 @@ void SetDefaultLinearFog()
 
 int CPostProcessEffectTest::Init()
 {
-	g_CameraController.SetPosition( Vector3(0,50,0) );
+//	g_CameraController.SetPosition( Vector3(0,50,0) );
 
 	bool loaded = m_Shader.Load( "shaders/mesh.fx" );
 
