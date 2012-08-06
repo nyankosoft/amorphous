@@ -1,7 +1,7 @@
 #include "Graphics/DoubleConeScrollEffect.hpp"
 #include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/MeshGenerators.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/TextureStage.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
 #include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
@@ -231,6 +231,8 @@ void CDoubleConeScrollEffect::Init()
 
 	CMeshResourceDesc mesh_desc;
 	shared_ptr<CDoubleConeMeshGenerator> pMeshGenerator( new CDoubleConeMeshGenerator );
+	pMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
+	pMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );
 	pMeshGenerator->SetTexturePath( m_TextureFilepath );
 	mesh_desc.pMeshGenerator = pMeshGenerator;
 	bool res = m_DoubleConeMesh.Load( mesh_desc );
@@ -245,7 +247,25 @@ void CDoubleConeScrollEffect::Init()
 void CDoubleConeScrollEffect::Render()
 {
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
-	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+//	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+
+	GraphicsDevice().Disable( RenderStateType::FACE_CULLING );
+//	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
+
+	CTextureStage ts;
+	ts.ColorArg0 = TexStageArg::DIFFUSE;
+	ts.ColorArg1 = TexStageArg::TEXTURE;
+	ts.ColorOp   = TexStageOp::SELECT_ARG1;
+	ts.AlphaArg0 = TexStageArg::DIFFUSE;
+	ts.AlphaArg1 = TexStageArg::TEXTURE;
+	ts.AlphaOp   = TexStageOp::SELECT_ARG1;
+	GraphicsDevice().SetTextureStageParams( 0, ts );
+	ts.ColorOp = TexStageOp::DISABLE;
+	ts.AlphaOp = TexStageOp::DISABLE;
+	GraphicsDevice().SetTextureStageParams( 1, ts );
 
 	shared_ptr<CBasicMesh> pMesh = m_DoubleConeMesh.GetMesh();
 	if( !pMesh )
@@ -283,24 +303,15 @@ void CDoubleConeScrollEffect::Render()
 //	shader_mgr.SetWorldTransform( Matrix34( Vector3(0,0,0), matScaling ) ); // Use this to see the geometry from outside
 //	shader_mgr.SetWorldTransform( Matrix34Identity() );
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	if( pd3dDev )
-	{
-		D3DXMATRIXA16 matTexTranslation;
-		D3DXMatrixIdentity( &matTexTranslation );
-		float fTexShiftV = m_fTexShiftV;// 0.0f;
-		matTexTranslation._32 = fTexShiftV;
-		pd3dDev->SetTransform( D3DTS_TEXTURE0, &matTexTranslation );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2 );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU);
-	}
+	Matrix44 tex_translation( Matrix44Identity() );
+	tex_translation( 1, 2 ) = m_fTexShiftV;
+	GraphicsDevice().SetTextureCoordTrasnform( 0, tex_translation );
+
+	CTextureTransformParams params;
+	params.NumElements = 2;
+	GraphicsDevice().SetTextureTrasnformParams( 0, params );
 
 	pMesh->Render();
 
-	if( pd3dDev )
-	{
-		D3DXMATRIXA16 matIdentity;
-		D3DXMatrixIdentity( &matIdentity );
-		pd3dDev->SetTransform( D3DTS_TEXTURE0, &matIdentity );
-	}
+	GraphicsDevice().SetTextureCoordTrasnform( 0, Matrix44Identity() );
 }
