@@ -255,9 +255,6 @@
     <ClCompile Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\D3DXMeshModel.cpp">
-      <Filter>Graphics\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
@@ -975,9 +972,6 @@
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.hpp">
-      <Filter>Graphics\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\D3DXMeshModel.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\MeshModel\General3DMesh.hpp">

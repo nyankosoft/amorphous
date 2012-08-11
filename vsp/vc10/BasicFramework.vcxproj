@@ -127,7 +127,6 @@
     <ClCompile Include="..\..\gds\Graphics\Mesh\BasicMesh.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Mesh\CustomMesh.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\D3DXMeshModel.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshBone.cpp" />
@@ -401,7 +400,6 @@
     <ClInclude Include="..\..\gds\Graphics\Mesh\BasicMesh.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Mesh\CustomMesh.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\D3DXMeshModel.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshModel\General3DMesh.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp" />
