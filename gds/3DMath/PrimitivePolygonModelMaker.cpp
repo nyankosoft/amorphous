@@ -11,10 +11,12 @@ using namespace std;
 // Place the created cylinder on the horizontal plane (= plane perpendicular to y-axis)
 // Vertices on the side of the cylinder are created before the ones on top & bottom
 // - Rationale: top / bottom polygons are optional
-void CreateCylinder( float height, const float *pafRadius, int num_segments,
-                     PrimitiveModelStyle::Name style,
+void CreateCylinder( float height, const float *pafRadius,
+                     int num_segments, int num_divisions,
                      bool create_top_polygons,
+                     PrimitiveModelStyle::Name top_style,
                      bool create_bottom_polygons,
+                     PrimitiveModelStyle::Name bottom_style,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
 					 vector< vector<int> >& vecDestPoly )
@@ -23,8 +25,12 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 	const float afRadius[2] = { pafRadius[0], pafRadius[1] };
 	vector<Vector3> vecNormal;
 
+	if( vecDestPos.size() != vecDestNormal.size() )
+		return;
+
+	int vertex_index_offset = (int)vecDestPos.size();
+
 	// create vertices
-	int num_divisions = 1;
 	for( int i=0; i<num_divisions+1; i++ )
 	{
 		const Matrix34 pose = Matrix34( -vUp * height * ( (float)i / (float)num_divisions - 0.5f ), Matrix33Identity() );
@@ -55,7 +61,7 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 	{
 		top_center_vertex_index    = vecDestPos.size();
 		vecDestPos.push_back( top_center );
-		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
 		{
 			// Duplicate the points on the rims (top)
 			vecDestPos.insert( vecDestPos.end(), vecDestPos.begin(), vecDestPos.begin() + num_segments );
@@ -68,7 +74,7 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 	{
 		bottom_center_vertex_index = vecDestPos.size();
 		vecDestPos.push_back( bottom_center );
-		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
 		{
 			// Duplicate the points on the rims (bottom)
 			vector<Vector3>::iterator start = vecDestPos.begin() + num_segments * num_divisions;
@@ -93,7 +99,7 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 
 	if( create_top_polygons )
 	{
-		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
 			vecDestNormal.insert( vecDestNormal.end(), num_segments+1,  vUp ); // top
 		else
 			vecDestNormal.push_back(  vUp );
@@ -101,13 +107,20 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 
 	if( create_bottom_polygons )
 	{
-		if( style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
 			vecDestNormal.insert( vecDestNormal.end(), num_segments+1, -vUp ); // bottom
 		else
 			vecDestNormal.push_back( -vUp );
 	}
 
 	// create polygon indices
+
+	const int num_polygons
+		= num_divisions * num_segments
+		+ (create_top_polygons    ? num_segments : 0)
+		+ (create_bottom_polygons ? num_segments : 0);
+
+	vecDestPoly.reserve( vecDestPoly.size() + num_polygons );
 
 	// side (quads)
 	for( int i=0; i<num_divisions; i++ )
@@ -119,47 +132,49 @@ void CreateCylinder( float height, const float *pafRadius, int num_segments,
 		{
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 4 );
-			vecDestPoly.back()[0] = upper_start  +  j;
-			vecDestPoly.back()[1] = upper_start  + (j + 1) % num_segments;
-			vecDestPoly.back()[2] = lower_start  + (j + 1) % num_segments;
-			vecDestPoly.back()[3] = lower_start  +  j;
+			vecDestPoly.back()[0] = vertex_index_offset + upper_start  +  j;
+			vecDestPoly.back()[1] = vertex_index_offset + upper_start  + (j + 1) % num_segments;
+			vecDestPoly.back()[2] = vertex_index_offset + lower_start  + (j + 1) % num_segments;
+			vecDestPoly.back()[3] = vertex_index_offset + lower_start  +  j;
 		}
 	}
 
 	// top (triangles)
 	if( create_top_polygons )
 	{
-		int rim_vertex_offset  = (style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
+		int rim_vertex_offset  = (top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
 		for( int i=0; i<num_segments; i++ )
 		{
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 3 );
-			vecDestPoly.back()[0] = top_center_vertex_index;
-			vecDestPoly.back()[1] = rim_vertex_offset + (i+1) % num_segments;
-			vecDestPoly.back()[2] = rim_vertex_offset + i;
+			vecDestPoly.back()[0] = vertex_index_offset + top_center_vertex_index;
+			vecDestPoly.back()[1] = vertex_index_offset + rim_vertex_offset + (i+1) % num_segments;
+			vecDestPoly.back()[2] = vertex_index_offset + rim_vertex_offset + i;
 		}
 	}
 
 	// bottom (triangles)
 	if( create_bottom_polygons )
 	{
-		int rim_vertex_offset  = (style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? bottom_center_vertex_index + 1 : num_segments * num_divisions;
+		int rim_vertex_offset  = (bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? bottom_center_vertex_index + 1 : num_segments * num_divisions;
 		for( int i=0; i<num_segments; i++ )
 		{
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 3 );
-			vecDestPoly.back()[0] = bottom_center_vertex_index;
-			vecDestPoly.back()[1] = rim_vertex_offset + i;
-			vecDestPoly.back()[2] = rim_vertex_offset + (i+1) % num_segments;
+			vecDestPoly.back()[0] = vertex_index_offset + bottom_center_vertex_index;
+			vecDestPoly.back()[1] = vertex_index_offset + rim_vertex_offset + i;
+			vecDestPoly.back()[2] = vertex_index_offset + rim_vertex_offset + (i+1) % num_segments;
 		}
 	}
 }
 
 
-void CreateCylinder( const Vector3& vPos0_Top, const Vector3& vPos1_Bottom, const float *pafRadius, int num_segments,
-                     PrimitiveModelStyle::Name style,
+void CreateCylinder( const Vector3& vPos0_Top, const Vector3& vPos1_Bottom, const float *pafRadius,
+                     int num_segments, int num_divisions,
                      bool create_top_polygons,
+                     PrimitiveModelStyle::Name top_style,
                      bool create_bottom_polygons,
+                     PrimitiveModelStyle::Name bottom_style,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
 					 vector< vector<int> >& vecDestPoly )
@@ -172,7 +187,8 @@ void CreateCylinder( const Vector3& vPos0_Top, const Vector3& vPos1_Bottom, cons
 //	const float afRadius[2] = { pafRadius[0], pafRadius[1] };
 	vector<Vector3> vecNormal;
 
-	::CreateCylinder( Vec3Length(vCore), pafRadius, num_segments, style, create_top_polygons, create_bottom_polygons,
+	::CreateCylinder( Vec3Length(vCore), pafRadius, num_segments, num_divisions,
+		create_top_polygons, top_style, create_bottom_polygons, bottom_style,
 		vecDestPos, vecDestNormal, vecDestPoly );
 
 	const int num_verts = (int)vecDestPos.size();
