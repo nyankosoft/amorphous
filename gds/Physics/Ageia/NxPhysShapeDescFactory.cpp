@@ -41,6 +41,17 @@ NxShapeDesc *CNxPhysShapeDescFactory::CreateNxShapeDesc( CShapeDesc &src_desc )
 		}
 		break;
 
+	case PhysShape::Cylinder:
+		{
+			LOG_PRINT_ERROR( " Cylinder shape is not supported." );
+//			CCylinderShapeDesc *pSrcCylinderDesc = dynamic_cast<CCylinderShapeDesc *>(&src_desc);
+//			NxCapsuleShapeDesc *pDesc = new NxCapsuleShapeDesc();
+//			pDesc->radius = pSrcCapsuleDesc->fRadius;
+//			pDesc->height = pSrcCapsuleDesc->fLength;
+//			pNxShapeDesc = pDesc;
+		}
+		break;
+
 	case PhysShape::Capsule:
 		{
 			CCapsuleShapeDesc *pSrcCapsuleDesc = dynamic_cast<CCapsuleShapeDesc *>(&src_desc);

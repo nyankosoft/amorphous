@@ -14,8 +14,8 @@ public:
 	{
 		Box,
 		Sphere,
+		Cylinder,
 		Capsule,
-//		Cylinder,
 		Convex,
 		TriangleMesh,
 		Plane,
