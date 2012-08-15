@@ -11,15 +11,21 @@ public:
 	enum Name
 	{
 		// handgun cartridges
-		_22LR,              ///< .22 Long Rifle
-		_9MM,               ///< 9x19mm Luger Parabellum
+		_22_SHORT,          ///< .22 Short
+		_22_LR,             ///< .22 Long Rifle
+		_22_WMR,            ///< .22 Winchester Magnum Rimfire
 		_25_ACP,            ///< .25 ACP
+		_32_ACP,            ///< .32 ACP
 		_380_ACP,           ///< .380 ACP
+		_9MM,               ///< 9x19mm Luger Parabellum
+		_357_SIG,           ///< .357 SIG
 		_45_ACP,            ///< .45 ACP
 		_40_SW,             ///< .40 S&W (10x22mm)
+		_10MM_AUTO,         ///< 10mm Auto
 		_357_MAGNUM,        ///< .357 Magnum
 		_45_COLT,           ///< .45 Colt
 		_44_MAGNUM,         ///< .44 Magnum
+		_500_SW_MAGNUM,     ///< .500 S&W Magnum
 		_50_AE,             ///< .50 Action Express
 
 		// shotgun cartridges
@@ -30,6 +36,7 @@ public:
 		// rifle cartridges
 		_5_7X28,            ///< 5.7x28mm
 		_5_56X45,           ///< 5.56x45mm
+		_300_AAC_BLACKOUT,  ///< 300 AAC Blackout (7.62×35mm)
 		_7_62X51,           ///< 7.62x51mm
 //		_380_WINCHESTER,    ///< 
 		_30_60_SPRINGFIELD, ///< .30-06 Springfield
@@ -51,15 +58,21 @@ inline const char *GetCaliberName( Caliber::Name cal )
 {
 	switch( cal )
 	{
-	case Caliber::_22LR:              return ".22 Long Rifle";
-	case Caliber::_9MM:               return "9x19mm Parabellum";
+	case Caliber::_22_SHORT:          return ".22 Short";
+	case Caliber::_22_LR:             return ".22 Long Rifle";
+	case Caliber::_22_WMR:            return ".22 Winchester Magnum Rimfire";
 	case Caliber::_25_ACP:            return ".25 ACP";
+	case Caliber::_32_ACP:            return ".32 ACP";
 	case Caliber::_380_ACP:           return ".380 ACP";
+	case Caliber::_9MM:               return "9x19mm Parabellum";
+	case Caliber::_357_SIG:           return ".357 SIG";
 	case Caliber::_45_ACP:            return ".45 ACP";
 	case Caliber::_40_SW:             return ".40 S&W";
+	case Caliber::_10MM_AUTO:         return "10mm Auto";
 	case Caliber::_357_MAGNUM:        return ".357 S&W Magnum";
 	case Caliber::_45_COLT:           return ".45 Colt";
 	case Caliber::_44_MAGNUM:         return ".44 Remington Magnum";
+	case Caliber::_500_SW_MAGNUM:     return ".500 S&W Magnum";
 	case Caliber::_50_AE:             return ".50 Action Express";
 
 	// shotgun cartridge
@@ -70,6 +83,7 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	// rifle cartridge
 	case Caliber::_5_7X28:            return "5.7x28mm";
 	case Caliber::_5_56X45:           return "5.56x45mm NATO";
+	case Caliber::_300_AAC_BLACKOUT:  return "300 AAC Blackout";
 	case Caliber::_7_62X51:           return "7.62x51mm NATO";
 //	case Caliber::_380_WINCHESTER:    return "";
 	case Caliber::_30_60_SPRINGFIELD: return ".30-06 Springfield";
@@ -93,10 +107,12 @@ inline const char *GetAbbreviatedCaliberName( Caliber::Name cal )
 {
 	switch( cal )
 	{
-	case Caliber::_22LR:              return ".22 LR";
+	case Caliber::_22_LR:             return ".22 LR";
+	case Caliber::_22_WMR:            return ".22 WMR";
 	case Caliber::_9MM:               return "9x19mm";
 	case Caliber::_44_MAGNUM:         return ".44 Magnum";
 	case Caliber::_5_56X45:           return "5.56x45mm";
+	case Caliber::_300_AAC_BLACKOUT:  return "300 BLK";
 	case Caliber::_7_62X51:           return "7.62x51mm";
 	default:
 		return GetCaliberName( cal );
