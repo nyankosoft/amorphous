@@ -98,9 +98,11 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 		desc.height,
 		desc.radii,
 		desc.num_sides,
+		1,
+		desc.style_flags & CCylinderMeshStyleFlags::TOP_POLYGONS,    // bool create_top_polygons
 		style,//desc.edge_option, // [in]
-		desc.style_flags & CCylinderMeshStyleFlags::TOP_POLYGONS,
-		desc.style_flags & CCylinderMeshStyleFlags::BOTTOM_POLYGONS,
+		desc.style_flags & CCylinderMeshStyleFlags::BOTTOM_POLYGONS, // bool create_bottom_polygons
+		style,//desc.edge_option, // [in]
 		vertices, normals, polygons // [out]
 		);
 
