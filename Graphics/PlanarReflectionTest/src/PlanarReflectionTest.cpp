@@ -17,9 +17,6 @@ using std::vector;
 using namespace boost;
 
 
-extern CPlatformDependentCameraController g_CameraController;
-
-
 template<typename ColorType>
 class TLVertex
 {
@@ -339,8 +336,8 @@ void CPlanarReflectionTest::Render()
 	Plane reflection_plane( Vector3(0,1,0), 0 );
 	Matrix44 mirror = Matrix44Mirror( reflection_plane );
 
-	Matrix44 view = g_Camera.GetCameraMatrix();
-	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, g_Camera.GetProjectionMatrix() );
+	Matrix44 view = GetCurrentCamera().GetCameraMatrix();
+	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, GetCurrentCamera().GetProjectionMatrix() );
 
 /*	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 	Matrix44 view = ffp_mgr.GetViewTransform();
@@ -357,15 +354,15 @@ void CPlanarReflectionTest::Render()
 	GraphicsDevice().EnableClipPlane( 0 );
 	GraphicsDevice().UpdateViewProjectionTransformsForClipPlane(
 		0,
-		g_Camera.GetCameraMatrix(),
-		g_Camera.GetProjectionMatrix()
+		GetCurrentCamera().GetCameraMatrix(),
+		GetCurrentCamera().GetProjectionMatrix()
 		);
 
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
 //	RenderReflectionClipPlane( /*reflection_plane*/ );
 /*	SetClipPlane( reflection_plane );
 	SetClipPlaneViaD3DXFunctions();*/
-	RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), g_Camera.GetPosition() ) );
+	RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), GetCurrentCamera().GetPosition() ) );
 
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 //	HRESULT hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, 0 );
@@ -378,7 +375,7 @@ void CPlanarReflectionTest::Render()
 
 	// Render the scene that has planar reflection
 	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
-	RenderReflectionSourceMeshes( g_Camera.GetPosition() );
+	RenderReflectionSourceMeshes( GetCurrentCamera().GetPosition() );
 
 	// Render surface that does planar reflection
 	RenderReflectionSurface();
