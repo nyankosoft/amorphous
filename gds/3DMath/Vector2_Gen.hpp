@@ -26,6 +26,9 @@ public:
 
 	/// vector - vector operators
 
+	inline bool operator==( const TVector2& v ) const;
+	inline bool operator!=( const TVector2& v ) const { return !((*this) == v); }
+
 	inline TVector2 operator=( const TVector2& v );
 
 	inline TVector2 operator+( const TVector2& v ) const;

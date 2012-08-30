@@ -104,6 +104,15 @@ inline const TScalar& TVector2<TScalar>::operator[]( int i ) const
 
 
 template<class TScalar>
+inline bool TVector2<TScalar>::operator==( const TVector2& v ) const
+{
+	if( x == v.x && y == v.y )
+		return true;
+	else
+		return false;
+}
+
+template<class TScalar>
 inline TVector2<TScalar> TVector2<TScalar>::operator=( const TVector2<TScalar>& v )
 {
 	x = v.x;
