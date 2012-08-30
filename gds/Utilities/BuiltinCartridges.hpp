@@ -11,6 +11,24 @@ namespace firearm
 {
 
 
+//class CartridgeIandDescPair
+//{
+//public:
+//	const Caliber::Name caliber;
+//	const char *name;
+//	CartridgeDesc desc;
+//};
+//
+//
+//const CartridgeDesc[] =
+//{
+//	{ Caliber::_9MM, "FMJ 9mm", { BulletDesc(), } },
+//};
+
+
+bool GetFMJBulletDesc( Caliber::Name caliber, BulletDesc& dest );
+
+
 bool GetCaseDesc( Caliber::Name caliber, CaseDesc& dest );
 
 
