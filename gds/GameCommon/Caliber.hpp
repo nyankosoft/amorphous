@@ -39,7 +39,8 @@ public:
 		_300_AAC_BLACKOUT,  ///< 300 AAC Blackout (7.62×35mm)
 		_7_62X51,           ///< 7.62x51mm
 //		_380_WINCHESTER,    ///< 
-		_30_60_SPRINGFIELD, ///< .30-06 Springfield
+		_30_06_SPRINGFIELD, ///< .30-06 Springfield
+		_338_LAPUA_MAGNUM,  ///< .338 Lapua Magnum
 		_50BMG,             ///< .50 BMG
 //		_12_7X99,           ///<
 		_7_62X39,           ///< 7.62x39mm
@@ -86,7 +87,8 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::_300_AAC_BLACKOUT:  return "300 AAC Blackout";
 	case Caliber::_7_62X51:           return "7.62x51mm NATO";
 //	case Caliber::_380_WINCHESTER:    return "";
-	case Caliber::_30_60_SPRINGFIELD: return ".30-06 Springfield";
+	case Caliber::_30_06_SPRINGFIELD: return ".30-06 Springfield";
+	case Caliber::_338_LAPUA_MAGNUM:  return ".338 Lapua Magnum";
 	case Caliber::_50BMG:             return ".50 BMG";
 //	case Caliber::_12_7X99:           return "";
 	case Caliber::_7_62X39:           return "7.62x39mm";
