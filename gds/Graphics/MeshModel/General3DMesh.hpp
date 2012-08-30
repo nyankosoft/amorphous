@@ -145,7 +145,12 @@ public:
 
 	inline void FlipPolygons();
 
+	inline void CalculateVertexNormalsFromPolygonPlanes();
+
 //	void Append( CGeneral3DMesh& mesh );
+	
+	template<typename T>
+	inline void SetPolygons( const std::vector< std::vector<T> >& polygons );
 
 	friend class C3DModelLoader;
 };
@@ -223,6 +228,67 @@ inline void CGeneral3DMesh::FlipPolygons()
 	for( size_t i=0; i<num_polygons; i++ )
 	{
 		m_vecPolygon[i].Flip();
+	}
+}
+
+
+inline void CGeneral3DMesh::CalculateVertexNormalsFromPolygonPlanes()
+{
+	using std::vector;
+
+	boost::shared_ptr< std::vector<CGeneral3DVertex> > pVB = GetVertexBuffer();
+	if( !pVB )
+		return;
+
+	std::vector<CGeneral3DVertex>& vertices = *pVB;
+
+	if( vertices.empty() )
+		return;
+
+	// indices of polygons that share the i-th vertex
+	vector< vector<int> > polygon_indices;
+	polygon_indices.resize( vertices.size() );
+
+	for( size_t i=0; i<m_vecPolygon.size(); i++ )
+	{
+		for( size_t j=0; j<m_vecPolygon[i].m_index.size(); j++ )
+		{
+			polygon_indices[ m_vecPolygon[i].m_index[j] ].push_back( (int)i );
+		}
+	}
+
+	for( size_t i=0; i<vertices.size(); i++ )
+	{
+		Vector3 sum_normal = Vector3(0,0,0);
+		for( size_t j=0; j<polygon_indices[i].size(); j++ )
+		{
+			sum_normal += m_vecPolygon[ polygon_indices[i][j] ].GetPlane().normal;
+		}
+
+		sum_normal.Normalize();
+
+		vertices[i].m_vNormal = sum_normal;
+	}
+}
+
+
+/// T must be a singed or an unsigned integer type
+template<typename T>
+inline void CGeneral3DMesh::SetPolygons( const std::vector< std::vector<T> >& polygons )
+{
+	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	polygon_buffer.resize( 0 );
+
+	size_t num_polygons = polygons.size();
+	polygon_buffer.resize( num_polygons );
+	for( size_t i=0; i<num_polygons; i++ )
+	{
+		const size_t num_points = polygons[i].size();
+		polygon_buffer[i].m_index.resize( num_points );
+		for( size_t j=0; j<num_points; j++ )
+			polygon_buffer[i].m_index[j] = (int)polygons[i][j];
+
+		polygon_buffer[i].SetVertexBuffer( GetVertexBuffer() );
 	}
 }
 
