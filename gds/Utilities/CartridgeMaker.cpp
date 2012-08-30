@@ -1,5 +1,6 @@
 #include "CartridgeMaker.hpp"
 #include "../3DMath/PrimitivePolygonModelMaker.hpp"
+#include "../3DMath/TCBSpline.hpp"
 #include "../Graphics/MeshModel/General3DMesh.hpp"
 
 using namespace std;
@@ -53,7 +54,7 @@ static float CalculateNormalAngle( const vector< pair<float,float> >& diameter_a
 //   - Note that when radii are scaled later, the normals need to be recalculated as well.
 // - In order to create UV texture coords, the cartridge maker needs cylinder segments whose vertices are duplicated at one vertex.
 //   - CreateCylinder() can support this with some modifications, but the recalculations at duplicated vertices would be tricky.
-//
+// - The vertices are addd from bottom to top
 void CartridgeMaker::AddSegments(
                      const vector< pair<float,float> >& diameter_and_height,
                      int num_sides,
@@ -76,7 +77,7 @@ void CartridgeMaker::AddSegments(
 	if( vecDestPos.size() != vecDestNormal.size() )
 		return;
 
-	int vertex_index_offset = (int)vecDestPos.size();
+	const int vertex_index_offset = (int)vecDestPos.size();
 
 	bool is_normal_const = false;
 	Vector3 const_normal( Vector3(0,0,0) );
@@ -123,24 +124,10 @@ void CartridgeMaker::AddSegments(
 		}
 	}
 
-//	int top_center_vertex_index    = 0;
+	int top_center_vertex_index    = 0;
 	int bottom_center_vertex_index = 0;
 //	Vector3 top_center    = vUp * diameter_and_height.back().second;
 	Vector3 bottom_center = Vector3(0,0,0);//vUp * diameter_and_height.front().second;
-
-//	if( create_top_polygons )
-//	{
-//		top_center_vertex_index    = vecDestPos.size();
-//		vecDestPos.push_back( top_center );
-//		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
-//		{
-//			// Duplicate the points on the rims (top)
-//			// Note that the duplicated vertex position is copied
-//			vecDestPos.insert( vecDestPos.end(), vecDestPos.begin(), vecDestPos.begin() + num_sides );
-//		}
-////		else // i.e. style == PrimitiveModelStyle::EDGE_VERTICES_WELDED
-//			// No need to duplicate points on the top and bottom rims
-//	}
 
 	if( create_bottom_polygons )
 	{
@@ -167,6 +154,38 @@ void CartridgeMaker::AddSegments(
 			Vector3 bottom_normal( Vector3(0,-1,0) );
 			vecDestNormal.insert( vecDestNormal.begin(), num_sides + 1, bottom_normal );
 		}
+	}
+
+	if( create_top_polygons )
+	{
+		top_center_vertex_index = (int)vecDestPos.size();
+
+		bool weld_top_rim_vertices = false;
+		if( weld_top_rim_vertices )
+		{
+		}
+		else
+		{
+			Vector3 top_center = Vector3( 0, vecDestPos.back().y, 0 );
+			// Duplicate the points on the rims (top)
+			vector<Vector3> top_vertices;
+			top_vertices.reserve( num_sides + 1 ); // rims + center
+			top_vertices.push_back( top_center ); // center vertex
+			top_vertices.insert( top_vertices.end(), vecDestPos.end() - num_sides - 1, vecDestPos.end() - 1 ); // rim vertices
+			vecDestPos.insert( vecDestPos.end(), top_vertices.begin(), top_vertices.end() ); // append to the destination vector
+			Vector3 top_normal( Vector3(0,1,0) );
+			vecDestNormal.insert( vecDestNormal.end(), num_sides + 1, top_normal );
+		}
+//		top_center_vertex_index    = vecDestPos.size();
+//		vecDestPos.push_back( top_center );
+//		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+//		{
+//			// Duplicate the points on the rims (top)
+//			// Note that the duplicated vertex position is copied
+//			vecDestPos.insert( vecDestPos.end(), vecDestPos.begin(), vecDestPos.begin() + num_sides );
+//		}
+////		else // i.e. style == PrimitiveModelStyle::EDGE_VERTICES_WELDED
+//			// No need to duplicate points on the top and bottom rims
 	}
 
 	// Add normals
@@ -231,18 +250,18 @@ void CartridgeMaker::AddSegments(
 	}
 
 	// top (triangles)
-//	if( create_top_polygons )
-//	{
-//		int rim_vertex_offset  = (top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
-//		for( int i=0; i<num_segments; i++ )
-//		{
-//			vecDestPoly.push_back( vector<int>() );
-//			vecDestPoly.back().resize( 3 );
-//			vecDestPoly.back()[0] = vertex_index_offset + top_center_vertex_index;
-//			vecDestPoly.back()[1] = vertex_index_offset + rim_vertex_offset + (i+1) % num_segments;
-//			vecDestPoly.back()[2] = vertex_index_offset + rim_vertex_offset + i;
-//		}
-//	}
+	if( create_top_polygons )
+	{
+		int global_rim_vertex_offset  = (int)vecDestPos.size() - num_sides;//(top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
+		for( int i=0; i<num_sides; i++ )
+		{
+			vecDestPoly.push_back( vector<int>() );
+			vecDestPoly.back().resize( 3 );
+			vecDestPoly.back()[0] = top_center_vertex_index;
+			vecDestPoly.back()[1] = global_rim_vertex_offset + (i+1) % num_sides;
+			vecDestPoly.back()[2] = global_rim_vertex_offset + i;
+		}
+	}
 
 	// bottom (triangles)
 	if( create_bottom_polygons )
@@ -263,18 +282,77 @@ void CartridgeMaker::AddSegments(
 Result::Name CartridgeMaker::MakeBullet(
 	const BulletDesc& bullet_desc,
 	unsigned int num_sides,
+	float case_top_height,
 	vector<Vector3>& points,
 	vector<Vector3>& normals,
 	vector< vector<int> >& polygons
 	)
 {
-	if( bullet_desc.length < 0.001f
-	 || bullet_desc.diameter < 0.001f )
+//	if( bullet_desc.length < 0.001f
+//	 || bullet_desc.diameter < 0.001f )
+//	{
+//		return Result::INVALID_ARGS;
+//	}
+
+	int num_segments = 0;
+	int i =0;
+	while( i<BulletDesc::NUM_MAX_BULLET_CURVE_PIONTS )
 	{
-		return Result::INVALID_ARGS;
+		if( bullet_desc.bullet_curve_points[i].diameter < 0.001f )
+			break;
+		else
+			i++;
 	}
 
-	return Result::UNKNOWN_ERROR;
+//	float case_top_height = 0.05f;
+
+	vector< pair<float,float> > d_and_h_pairs;
+
+	const int num_control_points = (bullet_desc.num_control_points < BulletDesc::NUM_MAX_BULLET_SLICES) ?
+		bullet_desc.num_control_points : BulletDesc::NUM_MAX_BULLET_SLICES;
+
+	const float bullet_length
+		= bullet_desc.bullet_slice_control_points[num_control_points].position.y
+		- bullet_desc.bullet_slice_control_points[0].position.y;
+	float height_offset = case_top_height - (bullet_length - bullet_desc.exposed_length);
+	for( int i=0; i<num_control_points-1; i++ )
+	{
+//		if( bullet_desc.create_model_only_for_exposed_part
+//		 &&  )
+//		{
+//		}
+
+		const BulletSliceControlPoint& prev_cp = (i==0) ? bullet_desc.bullet_slice_control_points[0] : bullet_desc.bullet_slice_control_points[i-1];
+		const BulletSliceControlPoint& cp      = bullet_desc.bullet_slice_control_points[i];
+		const BulletSliceControlPoint& next_cp = bullet_desc.bullet_slice_control_points[i+1];
+		const BulletSliceControlPoint& cp_after_next = (i<num_control_points-2) ? bullet_desc.bullet_slice_control_points[i+2] : bullet_desc.bullet_slice_control_points[num_control_points-1];
+//		if( cp.position == Vector2(0,0) )
+//			break;
+		int num_sub_segs_per_segment = 4;
+		for( int j=0; j<num_sub_segs_per_segment; j++ )
+		{
+			const Vector2& p0 = prev_cp.position;
+			const Vector2& p1 = cp.position;
+			const Vector2& p2 = next_cp.position;
+			const Vector2& p3 = cp_after_next.position;
+			float frac = (float)j / (float)num_sub_segs_per_segment;
+			Vector2 position = InterpolateWithTCBSpline(
+				frac, p0, p1, p2, p3, cp.tension, cp.continuity, cp.bias );
+
+			d_and_h_pairs.push_back( pair<float,float>( position.x * 2.0f, height_offset + position.y ) );
+		}
+	}
+
+	AddSegments( d_and_h_pairs,
+		num_sides,
+		true,
+		false,
+		points,
+		normals,
+		polygons
+		);
+
+	return Result::SUCCESS;
 }
 
 
@@ -357,12 +435,19 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 		
 		int point_offset = (int)points.size();
 
+		// Close the top if
+		// - reached the bottom of the inside,
+		// - or reached the top and the client code has specified to close the top.
+		bool create_top_polygons
+			= (end_segment_index == src_desc.num_case_slices-1)
+			|| (end_segment_index == src_desc.top_outer_slice_index && src_desc.create_internal_polygons == false);
+
 		bool create_bottom_polygons = (start_segment_index == 0) ? true : false;
 
 		AddSegments(
 			diameter_and_height_pairs,
 			num_sides,
-			false,
+			create_top_polygons,
 //			top_style,
 			create_bottom_polygons,
 //			bottom_style,
@@ -391,7 +476,10 @@ Result::Name CartridgeMaker::Make(
 	if( case_res != Result::SUCCESS )
 		return case_res;
 
-	Result::Name bullet_res = MakeBullet( src_desc.bullet_desc, num_sides, points, normals, polygons );
+	Result::Name bullet_res = MakeBullet(
+		src_desc.bullet_desc, num_sides, src_desc.case_desc.GetTopHeight(),
+		points, normals, polygons
+		);
 
 	return bullet_res;
 }
