@@ -43,6 +43,7 @@ public:
 		_338_LAPUA_MAGNUM,  ///< .338 Lapua Magnum
 		_50BMG,             ///< .50 BMG
 //		_12_7X99,           ///<
+		_5_45X39,           ///< 5.45x39mm
 		_7_62X39,           ///< 7.62x39mm
 		_7_62X54R,          ///< 7.62x54mmR
 
@@ -91,6 +92,7 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::_338_LAPUA_MAGNUM:  return ".338 Lapua Magnum";
 	case Caliber::_50BMG:             return ".50 BMG";
 //	case Caliber::_12_7X99:           return "";
+	case Caliber::_5_45X39:           return "5.45x39mm";
 	case Caliber::_7_62X39:           return "7.62x39mm";
 	case Caliber::_7_62X54R:          return "7.62x54mmR";
 
