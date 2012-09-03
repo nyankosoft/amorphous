@@ -1,6 +1,6 @@
 #include "MeshViewer.hpp"
 #include "gds/3DMath/MatrixConversions.hpp"
-#include "gds/Graphics/Mesh/BasicMesh.hpp"
+#include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
@@ -238,7 +238,8 @@ void CMeshViewer::LoadShaders()
 	CEmbeddedMiscShader::ID shader_ids[] =
 	{
 		CEmbeddedMiscShader::SINGLE_DIFFUSE_COLOR,
-		CEmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR
+		CEmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR,
+		CEmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY
 	};
 
 	for( size_t i=0; i<numof(shader_ids); i++ )
@@ -426,12 +427,17 @@ void CMeshViewer::Render()
 		unsigned int num_triangles = pMesh->GetNumTriangles();
 		const Vector3 whd = pMesh->GetAABB().vMax - pMesh->GetAABB().vMin; // width, height and depth
 		m_pFont->SetFontSize( 8, 16 );
-		m_pFont->DrawText(
-			fmt_string( "%u vertices | %u triangles | %d subsets | %.03f x %.03f x %.03f[m]",
+		string text = fmt_string( "%u vertices | %u triangles | %d subsets | %.03f x %.03f x %.03f[m]",
 			num_vertices, num_triangles, num_subsets,
-			whd.x, whd.y, whd.z ),
-			Vector2( 20, screen_h - 20 )
-			);
+			whd.x, whd.y, whd.z );
+
+		// Display the number of bones if it's a skeletal mesh
+		shared_ptr<CSkeletalMesh> pSkeletalMesh
+			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+		if( pSkeletalMesh )
+			text += fmt_string( " | %d bones", pSkeletalMesh->GetNumBones() );
+
+		m_pFont->DrawText( text, Vector2( 20, screen_h - 20 ) );
 	}
 
 	// render the text info
@@ -454,6 +460,7 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 	CMeshResourceDesc desc;
 	desc.ResourcePath = mesh_filepath;
 	desc.LoadOptionFlags |= MeshLoadOption::CUSTOM_MESH;
+//	desc.MeshType = CMeshType::SKELETAL;
 	bool loaded = m_Mesh.Load( desc );
 
 	if( loaded && m_Mesh.GetMesh() )
