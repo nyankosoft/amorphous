@@ -34,6 +34,7 @@ public:
 		_12_GAUGE,          ///< 12 gauge shotgun shell
 
 		// rifle cartridges
+		HK_4_6X30,          ///< HK 4.6x30mm
 		_5_7X28,            ///< 5.7x28mm
 		_5_56X45,           ///< 5.56x45mm
 		_300_AAC_BLACKOUT,  ///< 300 AAC Blackout (7.62×35mm)
@@ -46,6 +47,7 @@ public:
 		_5_45X39,           ///< 5.45x39mm
 		_7_62X39,           ///< 7.62x39mm
 		_7_62X54R,          ///< 7.62x54mmR
+		_7_92X57_MAUSER,    ///< 7.92x57mm Mauser
 
 		_25X137MM,
 		_30X173MM,
@@ -83,6 +85,7 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::_12_GAUGE:          return "12 gauge shell";
 
 	// rifle cartridge
+	case Caliber::HK_4_6X30:          return "HK 4.6x30mm";
 	case Caliber::_5_7X28:            return "5.7x28mm";
 	case Caliber::_5_56X45:           return "5.56x45mm NATO";
 	case Caliber::_300_AAC_BLACKOUT:  return "300 AAC Blackout";
@@ -95,6 +98,7 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::_5_45X39:           return "5.45x39mm";
 	case Caliber::_7_62X39:           return "7.62x39mm";
 	case Caliber::_7_62X54R:          return "7.62x54mmR";
+	case Caliber::_7_92X57_MAUSER:    return "7.92x57mm Mauser";
 
 	case Caliber::_25X137MM:          return "25x137mm";
 	case Caliber::_30X173MM:          return "30x173mm";
