@@ -1,15 +1,16 @@
-
 #ifndef __TEXTURECOORD_H__
 #define __TEXTURECOORD_H__
 
 
-struct TEXCOORD2
+class TEXCOORD2
 {
+public:
+
 	float u,v;
 
-	TEXCOORD2() { u = v = 0; }
+	TEXCOORD2() : u(0), v(0) {}
 
-	TEXCOORD2( float _u, float _v ) { u = _u; v = _v; }
+	TEXCOORD2( float _u, float _v ) : u(_u), v(_v) {}
 
 	inline TEXCOORD2 operator+( TEXCOORD2 t ) const;
 	inline TEXCOORD2 operator-( TEXCOORD2 t ) const;
