@@ -7,15 +7,15 @@
 #include "Camera.hpp"
 
 
-inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const Vector3& vWorldPos )
+inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const Vector3& vWorldPos, int screen_width, int screen_height )
 {
 	Vector3 vProjPos
 		= cam.GetProjectionMatrix()
 		* cam.GetCameraMatrix()
 		* vWorldPos;
 
-	float x = (  vProjPos.x + 1.0f ) * 0.5f * CGraphicsComponent::GetReferenceScreenWidth();// screen_width;
-	float y = ( -vProjPos.y + 1.0f ) * 0.5f * CGraphicsComponent::GetReferenceScreenHeight();// screen_height;
+	float x = (  vProjPos.x + 1.0f ) * 0.5f * (float)screen_width;
+	float y = ( -vProjPos.y + 1.0f ) * 0.5f * (float)screen_height;
 
 	return Vector2(x,y);
 }
@@ -23,13 +23,15 @@ inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const
 
 inline void CalculateScreenCoordsFromWorldPositions( const CCamera& cam,
 											   const std::vector<Vector3>& vWorldPos,
+											   int screen_width,
+											   int screen_height,
 											   std::vector<Vector2>& vDest )
 {
 	vDest.resize( vWorldPos.size() );
 
 	const Matrix44 proj_view = cam.GetProjectionMatrix() * cam.GetCameraMatrix();
-	const float reference_screen_width  = (float)CGraphicsComponent::GetReferenceScreenWidth();// screen_width;
-	const float reference_screen_height = (float)CGraphicsComponent::GetReferenceScreenHeight();// screen_height;
+	const float reference_screen_width  = (float)screen_width;
+	const float reference_screen_height = (float)screen_height;
 
 	for( size_t i=0; i<vWorldPos.size(); i++ )
 	{
@@ -38,6 +40,26 @@ inline void CalculateScreenCoordsFromWorldPositions( const CCamera& cam,
 		float y = ( -vProjPos.y + 1.0f ) * 0.5f * reference_screen_height;
 		vDest[i] = Vector2(x,y);
 	}
+}
+
+
+inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const Vector3& vWorldPos )
+{
+	return CalculateScreenCoordsFromWorldPosition( cam, vWorldPos, CGraphicsComponent::GetReferenceScreenWidth(), CGraphicsComponent::GetReferenceScreenHeight() );
+}
+
+
+inline void CalculateScreenCoordsFromWorldPositions( const CCamera& cam,
+											   const std::vector<Vector3>& vWorldPos,
+											   std::vector<Vector2>& vDest )
+{
+	CalculateScreenCoordsFromWorldPositions(
+		cam,
+		vWorldPos,
+		CGraphicsComponent::GetReferenceScreenWidth(),
+		CGraphicsComponent::GetReferenceScreenHeight(),
+		vDest
+		);
 }
 
 
