@@ -71,6 +71,8 @@ class CGeneral3DVertex;
 class CLensFlare;
 class CFogParams;
 
+class TEXCOORD2;
+
 
 namespace MeshModel
 {
