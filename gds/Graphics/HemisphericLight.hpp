@@ -20,6 +20,18 @@ public:
 
 public:
 
+	CHemisphericLightAttribute()
+		:
+	UpperDiffuseColor( SFloatRGBAColor::Black() ),
+	LowerDiffuseColor( SFloatRGBAColor::Black() )
+	{}
+
+	CHemisphericLightAttribute( const SFloatRGBAColor& upper_diffuse_color, const SFloatRGBAColor& lower_diffuse_color )
+		:
+	UpperDiffuseColor( upper_diffuse_color ),
+	LowerDiffuseColor( lower_diffuse_color )
+	{}
+
 	inline SFloatRGBColor CalcHSLightAmount( float d )
 	{
 		return ToRGBColor( UpperDiffuseColor * d + LowerDiffuseColor * ( 1.0f - d ) );
@@ -88,7 +100,15 @@ public:
 
 public:
 
-//	CHemisphericDirectionalLight();
+	CHemisphericDirectionalLight() {}
+
+	CHemisphericDirectionalLight( const Vector3& direction, const SFloatRGBAColor& upper_diffuse_color, const SFloatRGBAColor& lower_diffuse_color )
+	{
+		vDirection = direction;
+		Attribute.UpperDiffuseColor = upper_diffuse_color;
+		Attribute.LowerDiffuseColor = lower_diffuse_color;
+	}
+
 //	~CHemisphericDirectionalLight();
 
 	Type GetLightType() const { return CLight::HEMISPHERIC_DIRECTIONAL; }
