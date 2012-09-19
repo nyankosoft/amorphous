@@ -282,7 +282,7 @@ float CLWS_Item::GetValueAt( int channel_index, float fTime )
 
 //	for(int i=0; i<3; i++)
 //	{
-		CLWS_Channel& channel = m_aChannel[channel_index];
+		const CLWS_Channel& channel = m_aChannel[channel_index];
 
 //		if( channel.vecKey.size()
 
