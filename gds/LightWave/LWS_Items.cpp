@@ -71,7 +71,6 @@ m_ParentID( -1 ),
 m_pParent(NULL)
 {
 	m_iNumChannels	= 0;
-	memset( m_aChannel, 0, sizeof(m_aChannel) );
 
 	for( int i=0; i<numof(m_afPivotRotationAngle); i++ )
 		m_afPivotRotationAngle[i] = 0.0f;
