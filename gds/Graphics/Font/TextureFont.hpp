@@ -115,14 +115,16 @@ public:
 
 	virtual void DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor );
 
+	virtual void DrawText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor );
+
 	int GetTextWidth( const char *text ) const;
 
 	/// push text data to the buffer
-	void CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor );
+	void CacheText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor );
 
-	inline void CacheText( const char* pcStr, const Vector2& vPos )
+	inline void CacheText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint = Vector2(0,0), float rotation_angle = 0.0f )
 	{
-		CacheText( pcStr, vPos, m_dwFontColor );
+		CacheText( pcStr, vPos, vPivotPoint, rotation_angle, m_dwFontColor );
 	}
 
 	/// draw text in the buffer

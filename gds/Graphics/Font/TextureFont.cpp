@@ -192,7 +192,16 @@ void CTextureFont::SetFontSize(int font_width, int font_height)
 void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 {
 	m_CacheIndex = 0;
-	CacheText( pcStr, vPos, dwColor );
+	CacheText( pcStr, vPos, Vector2(0,0), 0, dwColor );
+
+	DrawCachedText();
+}
+
+
+void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor )
+{
+	m_CacheIndex = 0;
+	CacheText( pcStr, vPos, vPivotPoint, rotation_angle, dwColor );
 
 	DrawCachedText();
 }
@@ -239,7 +248,7 @@ int CTextureFont::GetTextWidth( const char *text ) const
 }
 
 
-void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor )
+void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor )
 {
 	if( m_vecCharRect.size() == 0 )
 		return;
@@ -274,6 +283,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 	float current_y = vPos.y;
 	float current_x = vPos.x;
 	int rect_index = m_CacheIndex;
+	const int start_rect_index = rect_index;
 	int num_total_letters = m_CacheIndex + num_letters;
 
 	// The number of characters which does not include '\n's and invalid characters.
@@ -334,6 +344,8 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 		num_characters_to_render += 1;
 	}
 
+	const int num_rects_created_in_this_call = rect_index - start_rect_index;
+
 //	m_vShadowShift = Vector2(3,3);
 	if( m_TypeFlag & CFontBase::SHADOW )
 	{
@@ -361,6 +373,28 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColo
 	}
 
 	m_TextBox.SetColor( dwColor );
+
+	if( 0.000001 < fabs(rotation_angle) )
+//		RotateText();
+	{
+		Matrix22 rotation_matrix = Matrix22Rotation( deg_to_rad(rotation_angle) );
+
+		const int num_text_boxes = (m_TypeFlag & CFontBase::SHADOW) ? 2 : 1;
+		for( int n=0; n<num_text_boxes; n++ )
+		{
+			C2DRectSet& text_box = (n==0) ? m_TextBox : m_ShadowTextBox;
+
+			for( int i=0; i<num_rects_created_in_this_call; i++ )
+			{
+				for( int j=0; j<4; j++ )
+				{
+					Vector2 pos = text_box.GetRectVertexPosition( start_rect_index + i, j );
+					pos = rotation_matrix * (pos - vPivotPoint) + vPivotPoint;
+					text_box.SetRectVertexPosition( start_rect_index + i, j, pos );
+				}
+			}
+		}
+	}
 
 	m_CacheIndex += (int)num_characters_to_render;
 }

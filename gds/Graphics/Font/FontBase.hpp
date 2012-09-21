@@ -86,6 +86,9 @@ public:
 
 	virtual void DrawText( const char *text, const Vector2& vPos, U32 color ) = 0;
 
+	/// \param rotation_angle [in] rotation angle in degrees
+	virtual void DrawText( const char *text, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 color ) {}
+
 	inline void DrawText( const char *text, const Vector2& vPos )
 	{
 		DrawText( text, vPos, m_dwFontColor );
@@ -120,6 +123,27 @@ public:
 	inline void DrawText( const std::string& text, int x, int y )
 	{
 		DrawText( text.c_str(), x, y, m_dwFontColor );
+	}
+
+	inline void DrawText(
+		const std::string& text,
+		const Vector2& vPos,
+		const Vector2& vPivotPoint,
+		float rotation_angle,
+		const SFloatRGBAColor& color
+		)
+	{
+		DrawText( text.c_str(), vPos, vPivotPoint, rotation_angle, color.GetARGB32() );
+	}
+
+	inline void DrawText(
+		const std::string& text,
+		const Vector2& vPos,
+		const Vector2& vPivotPoint,
+		float rotation_angle
+		)
+	{
+		DrawText( text.c_str(), vPos, vPivotPoint, rotation_angle, m_dwFontColor );
 	}
 
 	virtual int GetTextWidth( const char *text ) const
