@@ -49,14 +49,6 @@ public:
 
 	boost::shared_ptr<CEntityShaderLightParamsLoader> m_pShaderLightParamsLoader;
 
-	boost::shared_ptr<CMeshContainerRenderMethod> m_pShadowCasterRenderMethod;
-
-	boost::shared_ptr<CMeshContainerRenderMethod> m_pShadowReceiverRenderMethod;
-
-	boost::shared_ptr<CMeshContainerRenderMethod> m_pSkeletalShadowCasterRenderMethod;
-
-	boost::shared_ptr<CMeshContainerRenderMethod> m_pSkeletalShadowReceiverRenderMethod;
-
 	/// subsets of the mesh that should be rendered by the entity
 	/// - Holds non-transparant materials(subsets) of the mesh
 	/// - Used to separate material(s) that have transparant polygons

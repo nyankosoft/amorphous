@@ -384,33 +384,6 @@ void CBaseEntity::Init3DModel()
 		//   and each entity has its own separate render method.
 //		m_MeshProperty.m_pBlendMatricesLoader = ;
 	}
-
-
-	m_MeshProperty.m_pShadowCasterRenderMethod           = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-	m_MeshProperty.m_pShadowReceiverRenderMethod         = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod   = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod = shared_ptr<CMeshContainerRenderMethod>( new CMeshContainerRenderMethod() );
-
-	// blend matrices loader for shadow maps of skeletal meshes
-/*	m_MeshProperty.m_pBlendMatricesLoader
-		= shared_ptr<CBlendMatricesLoader>( new CBlendMatricesLoader() );
-	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
-	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendMatricesLoader );
-*/
-	m_MeshProperty.m_pShadowCasterRenderMethod->RenderMethodsAndSubsetIndices().resize( 1 );
-	m_MeshProperty.m_pShadowReceiverRenderMethod->RenderMethodsAndSubsetIndices().resize( 1 );
-	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->RenderMethodsAndSubsetIndices().resize( 1 );
-	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->RenderMethodsAndSubsetIndices().resize( 1 );
-
-	shared_ptr<CBlendTransformsLoader> pTransformsLoader( new CBlendTransformsLoader );
-	m_MeshProperty.m_pBlendTransformsLoader = pTransformsLoader;
-	m_MeshProperty.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendTransformsLoader );
-	m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( m_MeshProperty.m_pBlendTransformsLoader );
-
-//	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
-//	{
-//		InitShadowCasterReceiverSettings( dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh), m_MeshProperty );
-//	}
 }
 
 
@@ -460,6 +433,7 @@ void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt )
 }
 
 
+// How to render meshes that are stored in a mesh node tree and have different world transforms?
 void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 {
 	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
