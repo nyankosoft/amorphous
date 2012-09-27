@@ -14,9 +14,9 @@ using namespace std;
 void CreateCylinder( float height, const float *pafRadius,
                      int num_segments, int num_divisions,
                      bool create_top_polygons,
-                     PrimitiveModelStyle::Name top_style,
+                     PolygonModelStyle::Name top_style,
                      bool create_bottom_polygons,
-                     PrimitiveModelStyle::Name bottom_style,
+                     PolygonModelStyle::Name bottom_style,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
 					 vector< vector<int> >& vecDestPoly )
@@ -61,12 +61,12 @@ void CreateCylinder( float height, const float *pafRadius,
 	{
 		top_center_vertex_index    = vecDestPos.size();
 		vecDestPos.push_back( top_center );
-		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( top_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED )
 		{
 			// Duplicate the points on the rims (top)
 			vecDestPos.insert( vecDestPos.end(), vecDestPos.begin(), vecDestPos.begin() + num_segments );
 		}
-//		else // i.e. style == PrimitiveModelStyle::EDGE_VERTICES_WELDED
+//		else // i.e. style == PolygonModelStyle::EDGE_VERTICES_WELDED
 			// No need to duplicate points on the top and bottom rims
 	}
 
@@ -74,7 +74,7 @@ void CreateCylinder( float height, const float *pafRadius,
 	{
 		bottom_center_vertex_index = vecDestPos.size();
 		vecDestPos.push_back( bottom_center );
-		if( bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( bottom_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED )
 		{
 			// Duplicate the points on the rims (bottom)
 			vector<Vector3>::iterator start = vecDestPos.begin() + num_segments * num_divisions;
@@ -99,7 +99,7 @@ void CreateCylinder( float height, const float *pafRadius,
 
 	if( create_top_polygons )
 	{
-		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( top_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED )
 			vecDestNormal.insert( vecDestNormal.end(), num_segments+1,  vUp ); // top
 		else
 			vecDestNormal.push_back(  vUp );
@@ -107,7 +107,7 @@ void CreateCylinder( float height, const float *pafRadius,
 
 	if( create_bottom_polygons )
 	{
-		if( bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
+		if( bottom_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED )
 			vecDestNormal.insert( vecDestNormal.end(), num_segments+1, -vUp ); // bottom
 		else
 			vecDestNormal.push_back( -vUp );
@@ -142,7 +142,7 @@ void CreateCylinder( float height, const float *pafRadius,
 	// top (triangles)
 	if( create_top_polygons )
 	{
-		int rim_vertex_offset  = (top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
+		int rim_vertex_offset  = (top_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
 		for( int i=0; i<num_segments; i++ )
 		{
 			vecDestPoly.push_back( vector<int>() );
@@ -156,7 +156,7 @@ void CreateCylinder( float height, const float *pafRadius,
 	// bottom (triangles)
 	if( create_bottom_polygons )
 	{
-		int rim_vertex_offset  = (bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? bottom_center_vertex_index + 1 : num_segments * num_divisions;
+		int rim_vertex_offset  = (bottom_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED) ? bottom_center_vertex_index + 1 : num_segments * num_divisions;
 		for( int i=0; i<num_segments; i++ )
 		{
 			vecDestPoly.push_back( vector<int>() );
@@ -172,9 +172,9 @@ void CreateCylinder( float height, const float *pafRadius,
 void CreateCylinder( const Vector3& vPos0_Top, const Vector3& vPos1_Bottom, const float *pafRadius,
                      int num_segments, int num_divisions,
                      bool create_top_polygons,
-                     PrimitiveModelStyle::Name top_style,
+                     PolygonModelStyle::Name top_style,
                      bool create_bottom_polygons,
-                     PrimitiveModelStyle::Name bottom_style,
+                     PolygonModelStyle::Name bottom_style,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
 					 vector< vector<int> >& vecDestPoly )
