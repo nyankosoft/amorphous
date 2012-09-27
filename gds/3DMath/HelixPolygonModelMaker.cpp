@@ -47,6 +47,8 @@ void CreateUniformCylindricalHelix(
 		return;
 	}
 
+	unsigned int vertex_index_offset = (unsigned int)positions.size();
+
 	const float single_helix_length = helix_length / (float)num_coils;
 	const float tilt_angle = atan( single_helix_length / (2.0f * (float)PI * helix_radius) );
 	const Matrix33 face_tilt( Matrix33RotationZ( tilt_angle ) );
@@ -109,7 +111,7 @@ void CreateUniformCylindricalHelix(
 	unsigned int num_helix_sections = num_helix_sides * num_coils;
 	for( int i=0; i<num_helix_sections; i++ )
 	{
-		unsigned int face_vertices_offset = num_cord_sides * i;
+		unsigned int face_vertices_offset = vertex_index_offset + num_cord_sides * i;
 		for( unsigned int j=0; j<num_cord_sides; j++ )
 		{
 			polygons.push_back( std::vector<unsigned int>() );
