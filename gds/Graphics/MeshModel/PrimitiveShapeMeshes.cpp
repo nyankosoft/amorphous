@@ -89,10 +89,10 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 	vector<Vector3> normals;
 	vector< vector<int> > polygons;
 
-	PrimitiveModelStyle::Name style
+	PolygonModelStyle::Name style
 		= (desc.style_flags & CCylinderMeshStyleFlags::WELD_VERTICES) ?
-		 PrimitiveModelStyle::EDGE_VERTICES_WELDED
-		:PrimitiveModelStyle::EDGE_VERTICES_UNWELDED;
+		 PolygonModelStyle::EDGE_VERTICES_WELDED
+		:PolygonModelStyle::EDGE_VERTICES_UNWELDED;
 
 	CreateCylinder(
 		desc.height,
