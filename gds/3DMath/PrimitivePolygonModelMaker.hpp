@@ -3,20 +3,8 @@
 
 
 #include <vector>
-#include <gds/3DMath/Vector3.hpp>
-
-
-class PrimitiveModelStyle
-{
-public:
-	enum Name
-	{
-		EDGE_VERTICES_WELDED,
-		EDGE_VERTICES_UNWELDED,
-		NUM_STYLES
-	};
-};
-
+#include "Vector3.hpp"
+#include "PolygonModelStyle.hpp"
 
 
 /// \param height                 [in] height of the cylinder
