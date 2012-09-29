@@ -17,6 +17,10 @@ private:
 //	boost::shared_ptr<CTrueTypeTextureFont> m_pFont;
 	boost::shared_ptr<CFontBase> m_pFont;
 
+	bool m_EnableRotation;
+
+	float m_fRotationAngle;
+
 	U32 m_FontFlags;
 	int m_FontWidth;
 	int m_FontHeight;

@@ -24,7 +24,9 @@ CTextureFontTest::CTextureFontTest()
 :
 m_FontWidth(24),
 m_FontHeight(48),
-m_FontFlags(0)
+m_FontFlags(0),
+m_EnableRotation(false),
+m_fRotationAngle(0.0f)
 {
 }
 
@@ -52,6 +54,14 @@ int CTextureFontTest::Init()
 	LoadParamFromFile( "params.txt", "background", bg_image );
 	bool image_loaded = m_BGTexture.Load( bg_image );
 
+	int rotation = 0;
+	LoadParamFromFile( "params.txt", "rotation", rotation );
+	m_EnableRotation = (rotation != 0) ? true : false;
+
+	float rotation_angle = 0;
+	LoadParamFromFile( "params.txt", "rotation_angle", rotation_angle );
+	m_fRotationAngle = rotation_angle;
+
 	return 0;
 }
 
@@ -76,7 +86,10 @@ void CTextureFontTest::Render()
 //	string text = "abcdefg ABCDEFG 0123456789";
 	string text = "Jackdaws love my big sphinx of quartz. 12334567890";
 
-	m_pFont->DrawText( text.c_str(), Vector2( 10, 100 ), 0xFFFFFFFF );
+	if( m_EnableRotation )
+		m_pFont->DrawText( text.c_str(), Vector2( 10, 100 ), Vector2( 10, 100 ), m_fRotationAngle, SFloatRGBAColor::White() );
+	else
+		m_pFont->DrawText( text.c_str(), Vector2( 10, 100 ), 0xFFFFFFFF );
 }
 
 
@@ -87,10 +100,8 @@ void CTextureFontTest::HandleInput( const SInputData& input )
 	case '0':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			shared_ptr<CTextureFont> pFont( new CTextureFont() );
-			pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
-			pFont->SetFontSize( 24, 48 );
-			m_pFont = pFont;
+			m_pFont = CreateDefaultBuiltinFont();
+			m_pFont->SetFontSize( 24, 48 );
 		}
 		break;
 
@@ -101,6 +112,21 @@ void CTextureFontTest::HandleInput( const SInputData& input )
 			if( m_pFont )
 				m_pFont->SetFlags( m_FontFlags );
 		}
+		break;
+
+	case 'R':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_EnableRotation = !m_EnableRotation;
+		break;
+
+	case 'T':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_fRotationAngle += 0.5f;
+		break;
+
+	case 'Y':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_fRotationAngle -= 0.5f;
 		break;
 
 	case GIC_PAGE_UP:
@@ -124,6 +150,18 @@ void CTextureFontTest::HandleInput( const SInputData& input )
 
 			if( m_pFont )
 				m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
+		}
+		break;
+
+	case GIC_UP:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+		}
+		break;
+
+	case GIC_DOWN:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
 		}
 		break;
 
