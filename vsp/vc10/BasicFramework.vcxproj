@@ -100,7 +100,6 @@
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffect.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectFilter.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectManager.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\PostProcessManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PrimitiveShapeRenderer.cpp" />
     <ClCompile Include="..\..\gds\Graphics\PseudoNoiseEffect.cpp" />
     <ClCompile Include="..\..\gds\Graphics\RectTriListIndex.cpp" />
@@ -358,7 +357,6 @@
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffect.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectFilter.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectManager.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\PostProcessManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PrimitiveRenderer.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PrimitiveShapeRenderer.hpp" />
     <ClInclude Include="..\..\gds\Graphics\PseudoNoiseEffect.hpp" />

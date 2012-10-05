@@ -35,7 +35,6 @@
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
 #include "Graphics/MeshObjectContainer.hpp"
-#include "Graphics/PostProcessManager.hpp"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"
 #include "Graphics/TextureCoord.hpp"

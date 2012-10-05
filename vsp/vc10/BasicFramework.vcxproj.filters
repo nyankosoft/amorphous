@@ -180,9 +180,6 @@
     <ClCompile Include="..\..\gds\Graphics\PostProcessEffectManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PostProcessManager.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\PrimitiveShapeRenderer.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -858,9 +855,6 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\PostProcessEffectManager.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PostProcessManager.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\PrimitiveRenderer.hpp">
