@@ -14,33 +14,6 @@ using std::map;
 using namespace boost;
 
 
-class CCubeTextureParamsLoader : public CShaderParamsLoader
-{
-	int m_CubeTexIndex;
-	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
-
-public:
-
-//	CCubeTextureParamsLoader( int stage, CTextureHandle& cube_texture );
-	CCubeTextureParamsLoader( int cube_tex_index = 0, LPDIRECT3DCUBETEXTURE9 pCubeTexture = NULL )
-		:
-	m_CubeTexIndex(cube_tex_index),
-	m_pCubeTexture(pCubeTexture)
-	{}
-
-	void SetCubeTexture( int cube_tex_index, LPDIRECT3DCUBETEXTURE9 pCubeTexture )
-	{
-		m_CubeTexIndex = cube_tex_index;
-		m_pCubeTexture = pCubeTexture;
-	}
-
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
-	{
-		rShaderMgr.SetCubeTexture( m_CubeTexIndex, m_pCubeTexture );
-	}
-};
-
-
 /*
 Defines a method to render the meshes in a mesh container node
 XML sample for MeshContainerNode CGameItem::m_MeshContainerRootNode
