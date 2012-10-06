@@ -19,33 +19,8 @@
 class CUTFFont;
 
 
-class CTestMeshHolder
-{
-public:
-	CMeshObjectHandle m_Handle;
-	Matrix34 m_Pose;
-
-	CMeshResourceDesc m_MeshDesc;
-
-	enum LoadingStyleName
-	{
-		LOAD_SYNCHRONOUSLY,
-		LOAD_MESH_AND_TEX_TOGETHER,
-		LOAD_MESH_AND_TEX_SEPARATELY,
-		NUM_LOADING_STYLES
-	};
-
-	LoadingStyleName m_LoadingStyle;
-
-	CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose );
-};
-
-
 class CMultibyteFontTest : public CGraphicsTestBase
 {
-//	std::vector<CMeshObjectHandle> m_vecMesh;
-//	std::vector<CTestMeshHolder> m_vecMesh;
-
 	CShaderHandle m_Shader;
 
 	CShaderTechniqueHandle m_MeshTechnique;
