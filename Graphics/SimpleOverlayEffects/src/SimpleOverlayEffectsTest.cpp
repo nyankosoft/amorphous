@@ -15,9 +15,6 @@ using std::string;
 using namespace boost;
 
 
-extern CPlatformDependentCameraController g_CameraController;
-
-
 extern CGraphicsTestBase *CreateTestInstance()
 {
 	return new CSimpleOverlayEffectsTest();
@@ -40,9 +37,8 @@ m_DisplayResourceInfo(false)
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	g_CameraController.SetPosition( Vector3( 0, 1, -30 ) );
-	g_Camera.SetPosition( Vector3( 0, 1, -30 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 5, -30 ) );
 }
 
 
