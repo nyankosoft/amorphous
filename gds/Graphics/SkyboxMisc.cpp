@@ -40,7 +40,6 @@ template<class MeshClass>
 void RenderAsSkybox( MeshClass& mesh, const Vector3& vCamPos )
 {
 	Result::Name res;
-//	HRESULT hr;
 
 	res = GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
 	res = GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
@@ -56,7 +55,6 @@ void RenderAsSkybox( MeshClass& mesh, const Vector3& vCamPos )
 	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 
 	Matrix44 matWorld = Matrix44Identity();
-//	const Vector3 vCamPos = g_CameraController.GetPosition();
 	matWorld(0,3) = vCamPos.x;
 	matWorld(1,3) = vCamPos.y;
 	matWorld(2,3) = vCamPos.z;
