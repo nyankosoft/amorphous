@@ -2,6 +2,7 @@
 #include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
+#include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
@@ -35,7 +36,8 @@ CMeshObjectHandle CreateSkyboxMesh( const std::string& texture_filepath )
 }
 
 
-void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
+template<class MeshClass>
+void RenderAsSkybox( MeshClass& mesh, const Vector3& vCamPos )
 {
 	Result::Name res;
 //	HRESULT hr;
@@ -46,11 +48,10 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 	res = GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 	res = GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 	res = GraphicsDevice().Enable(  RenderStateType::FACE_CULLING );
+//	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
 	// Commented out: don't change the "CullingMode::CLOCKWISE" mode when rendering the scene for a planar reflection texture.
 //	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
-
-	boost::shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
 	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 
@@ -61,9 +62,45 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
 	matWorld(2,3) = vCamPos.z;
 	ffp_mgr.SetWorldTransform( matWorld );
 
-	if( pMesh )
-		pMesh->Render();
+	mesh.Render();
 
 	res = GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 	res = GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
+}
+
+
+void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
+{
+	boost::shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+
+	if( pMesh )
+		RenderAsSkybox( *pMesh, vCamPos );
+}
+
+
+void RenderSkybox( CTextureHandle& sky_texture, const Vector3& vCamPos )
+{
+	static CCustomMesh s_SkyboxMesh;
+
+	if( !s_SkyboxMesh.IsValid() )
+	{
+		boost::shared_ptr<CBoxMeshGenerator> pSkyboxMeshGenerator
+			= CreateSkyboxMeshGenerator( "" );
+		if( pSkyboxMeshGenerator )
+		{
+			pSkyboxMeshGenerator->Generate();
+			C3DMeshModelArchive mesh_archive = pSkyboxMeshGenerator->GetMeshArchive();
+			s_SkyboxMesh.LoadFromArchive( mesh_archive, "static_skybox_mesh", 0 );
+		}
+	}
+
+	if( 0 < s_SkyboxMesh.GetNumMaterials() )
+	{
+		if( s_SkyboxMesh.Material(0).Texture.empty() )
+			s_SkyboxMesh.Material(0).Texture.resize(1);
+
+		s_SkyboxMesh.Material(0).Texture[0] = sky_texture;
+	}
+
+	RenderAsSkybox( s_SkyboxMesh, vCamPos );
 }

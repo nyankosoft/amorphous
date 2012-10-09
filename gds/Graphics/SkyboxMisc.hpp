@@ -14,6 +14,7 @@
 boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath );
 CMeshObjectHandle CreateSkyboxMesh( const std::string& texture_filepath );
 void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos );
+void RenderSkybox( CTextureHandle& sky_texture, const Vector3& vCamPos );
 
 
 //}
