@@ -283,6 +283,19 @@ extern void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 								         bool bUseTextureBasenameForKey = true );
 
 
+/// \brief Creates a single-material, relatively simple mesh.
+/// - single tex coords
+/// - no binormals/tangents and no vertex blending)
+extern Result::Name CreateSingleSubsetMeshArchive(
+	const std::vector<Vector3>& positions,
+	const std::vector<Vector3>& normals,
+	const std::vector<SFloatRGBAColor>& diffuse_colors,
+	const std::vector<TEXCOORD2>& tex_coords,
+	const std::vector< std::vector<unsigned int> >& polygons,
+	C3DMeshModelArchive& dest_mesh
+	);
+
+
 class C3DMeshModelArchive : public IArchiveObjectBase
 {
 	CMMA_VertexSet m_VertexSet;

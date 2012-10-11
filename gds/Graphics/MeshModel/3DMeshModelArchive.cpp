@@ -42,6 +42,8 @@ void CMMA_VertexSet::Resize( int i )
 
 void CMMA_VertexSet::Clear()
 {
+	SetVertexFormat( 0 );
+
 	vecPosition.clear();
 	vecNormal.clear();
 	vecBinormal.clear();
@@ -343,6 +345,73 @@ void MeshModel::AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 				LOG_PRINT_ERROR( " - invalid texture filepath: " + tex_filename );
 		}
 	}
+}
+
+
+Result::Name MeshModel::CreateSingleSubsetMeshArchive(
+	const vector<Vector3>& positions,
+	const vector<Vector3>& normals,
+	const vector<SFloatRGBAColor>& diffuse_colors,
+	const vector<TEXCOORD2>& tex_coords,
+	const vector< vector<unsigned int> >& polygons,
+	C3DMeshModelArchive& dest_mesh
+	)
+{
+	if( positions.empty() )
+	{
+		return Result::INVALID_ARGS;
+	}
+
+	CMMA_VertexSet& vs = dest_mesh.GetVertexSet();
+
+	vs.Clear();
+
+	vs.vecPosition     = positions;
+	vs.vecNormal       = normals;
+	vs.vecDiffuseColor = diffuse_colors;
+
+	if( 0 < tex_coords.size() )
+	{
+		vs.vecTex.resize( 1 );
+		vs.vecTex[0] = tex_coords;
+	}
+
+	vs.SetVertexFormat(
+		CMMA_VertexSet::VF_POSITION
+		| ( (0 < normals.size())        ? CMMA_VertexSet::VF_NORMAL        : 0 )
+		| ( (0 < diffuse_colors.size()) ? CMMA_VertexSet::VF_DIFFUSE_COLOR : 0 )
+		| ( (0 < tex_coords.size())     ? CMMA_VertexSet::VF_2D_TEXCOORD0  : 0 )
+		);
+
+	dest_mesh.GetVertexIndex().resize( 0 );
+	dest_mesh.GetVertexIndex().reserve( polygons.size() * 3 );
+
+	const int num_polygons = (int)polygons.size();
+	for( int i=0; i<num_polygons; i++ )
+	{
+		int num_polygon_vertices = (int)polygons[i].size();
+		for( int j=1; j<num_polygon_vertices-1; j++ )
+		{
+			dest_mesh.GetVertexIndex().push_back( polygons[i][0] );
+			dest_mesh.GetVertexIndex().push_back( polygons[i][j] );
+			dest_mesh.GetVertexIndex().push_back( polygons[i][j+1] );
+		}
+	}
+
+	dest_mesh.GetMaterial().resize( 1 );
+	dest_mesh.GetMaterial()[0].vecTexture.resize( 1 );
+	dest_mesh.GetMaterial()[0].vecTexture[0].strFilename = "default.png";
+
+	vector<CMMA_TriangleSet>& triangle_sets = dest_mesh.GetTriangleSet();
+	triangle_sets.resize( 1 );
+	triangle_sets[0].m_iStartIndex             = 0;
+	triangle_sets[0].m_iMinIndex               = 0;
+	triangle_sets[0].m_iNumVertexBlocksToCover = (int)positions.size();
+	triangle_sets[0].m_iNumTriangles           = (int)dest_mesh.GetVertexIndex().size() / 3;
+
+	dest_mesh.UpdateAABBs();
+
+	return Result::SUCCESS;
 }
 
 
