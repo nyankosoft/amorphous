@@ -2,6 +2,7 @@
 #include "../3DMath/PrimitivePolygonModelMaker.hpp"
 #include "../3DMath/TCBSpline.hpp"
 #include "../Graphics/MeshModel/General3DMesh.hpp"
+#include "../Graphics/TextureCoord.hpp"
 
 using namespace std;
 
@@ -26,13 +27,13 @@ static float CalculateNormalAngle( const vector< pair<float,float> >& diameter_a
 	{
 		float next_radius = diameter_and_height[1].first * 0.5f;
 		float next_height = diameter_and_height[1].second;
-		return atan( (next_radius - radius) / (next_height-height) );
+		return -atan( (next_radius - radius) / (next_height-height) );
 	}
 	else if( i==diameter_and_height.size()-1 )
 	{
 		float prev_radius = diameter_and_height[i-1].first * 0.5f;
 		float prev_height = diameter_and_height[i-1].second;
-		return atan( (radius - prev_radius) / (height-prev_height) );
+		return -atan( (radius - prev_radius) /  (height-prev_height) );
 	}
 	else
 	{
@@ -41,8 +42,8 @@ static float CalculateNormalAngle( const vector< pair<float,float> >& diameter_a
 		float prev_height = diameter_and_height[i-1].second;
 		float next_radius = diameter_and_height[i+1].first * 0.5f;
 		float next_height = diameter_and_height[i+1].second;
-		float lower_normal_angle = atan( (radius - prev_radius) / (height-prev_height) );
-		float upper_normal_angle = atan( (next_radius - radius) / (next_height-height) );
+		float lower_normal_angle = -atan( (radius - prev_radius) / (height-prev_height) );
+		float upper_normal_angle = -atan( (next_radius - radius) / (next_height-height) );
 		return (lower_normal_angle + upper_normal_angle) * 0.5f;
 	}
 }
@@ -64,6 +65,7 @@ void CartridgeMaker::AddSegments(
                      //PrimitiveModelStyle::Name bottom_style,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
+                     vector<TEXCOORD2>& vecDestTexUV,
 					 vector< vector<int> >& vecDestPoly )
 {
 	Vector3 vUp = Vector3(0,1,0);//vDirFromBottomToTop = Vec3GetNormalized( vCore );
@@ -84,6 +86,7 @@ void CartridgeMaker::AddSegments(
 	if( diameter_and_height.size() == 2
 	 && fabs(diameter_and_height[1].second - diameter_and_height[0].second) < 0.000001 )
 	{
+		// single segment && segment is horizontal
 		is_normal_const = true;
 		float radius_diff = diameter_and_height[1].first - diameter_and_height[0].first;
 		if( radius_diff <= 0 )
@@ -100,6 +103,8 @@ void CartridgeMaker::AddSegments(
 //		const Matrix34 pose = Matrix34( -vUp * height * ( (float)i / (float)num_divisions - 0.5f ), Matrix33Identity() );
 
 		const float normal_angle = is_normal_const ? 0 : CalculateNormalAngle( diameter_and_height, i );
+
+//		const float circumfirence = 2.0f * (float)PI * radius;
 
 		for( int j=0; j<num_sides+1; j++ )
 		{
@@ -121,6 +126,10 @@ void CartridgeMaker::AddSegments(
 //			vecNormal.push_back( Vec3GetNormalized( vPos - pose.vPosition ) );
 //			vecNormal.push_back( Vec3GetNormalized( Vector3( vDir.x, 0, vDir.y ) ) );
 			vecDestNormal.push_back( normal );
+
+//			float u = circumfirence * ( angle / (2.0f * (float)PI) );
+			float u = radius * angle;
+			vecDestTexUV.push_back( TEXCOORD2( u, height ) * 10.0f );
 		}
 	}
 
@@ -153,6 +162,18 @@ void CartridgeMaker::AddSegments(
 			// Copy normals as well (all the normals points down)
 			Vector3 bottom_normal( Vector3(0,-1,0) );
 			vecDestNormal.insert( vecDestNormal.begin(), num_sides + 1, bottom_normal );
+
+			vector<TEXCOORD2> bottom_uvs;
+			TEXCOORD2 bottom_uv_offset = TEXCOORD2(1,1);
+			float bottom_uv_scale = 0.125f;
+			bottom_uvs.push_back( ( TEXCOORD2(0,0) + bottom_uv_offset ) * bottom_uv_scale );
+			for( int i=0; i<num_sides; i++ )
+			{
+				const float angle = (float)i / (float)num_sides * 2.0f * (float)PI;
+				const TEXCOORD2 t = TEXCOORD2( cos(angle), sin(angle) ) + bottom_uv_offset;
+				bottom_uvs.push_back( t * bottom_uv_scale );
+			}
+			vecDestTexUV.insert( vecDestTexUV.begin(), bottom_uvs.begin(), bottom_uvs.end() );
 		}
 	}
 
@@ -175,6 +196,16 @@ void CartridgeMaker::AddSegments(
 			vecDestPos.insert( vecDestPos.end(), top_vertices.begin(), top_vertices.end() ); // append to the destination vector
 			Vector3 top_normal( Vector3(0,1,0) );
 			vecDestNormal.insert( vecDestNormal.end(), num_sides + 1, top_normal );
+
+			TEXCOORD2 top_uv_offset = TEXCOORD2(1,1);
+			float top_uv_scale = 0.125f;
+			vecDestTexUV.push_back( ( TEXCOORD2(0,0) + top_uv_offset ) * top_uv_scale );
+			for( int i=0; i<num_sides; i++ )
+			{
+				const float angle = (float)i / (float)num_sides * 2.0f * (float)PI;
+				const TEXCOORD2 t = TEXCOORD2( cos(angle), sin(angle) ) + top_uv_offset;
+				vecDestTexUV.push_back( t * top_uv_scale );
+			}
 		}
 //		top_center_vertex_index    = vecDestPos.size();
 //		vecDestPos.push_back( top_center );
@@ -285,6 +316,7 @@ Result::Name CartridgeMaker::MakeBullet(
 	float case_top_height,
 	vector<Vector3>& points,
 	vector<Vector3>& normals,
+	vector<TEXCOORD2>& tex_uvs,
 	vector< vector<int> >& polygons
 	)
 {
@@ -349,6 +381,7 @@ Result::Name CartridgeMaker::MakeBullet(
 		false,
 		points,
 		normals,
+		tex_uvs,
 		polygons
 		);
 
@@ -371,7 +404,7 @@ pair<float,float> CalculateInetrpolatedDiameterAndHeight( const pair<float,float
 }
 
 
-Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, vector< vector<int> >& polygons )
+Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, vector<TEXCOORD2>& tex_uvs, vector< vector<int> >& polygons )
 {
 //	vector<Vector3> points, normals;
 //	vector< vector<int> > polygons;
@@ -453,6 +486,7 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 //			bottom_style,
 			points,
 			normals,
+			tex_uvs,
 			polygons
 			);
 
@@ -468,17 +502,18 @@ Result::Name CartridgeMaker::Make(
 		unsigned int num_sides,
 		std::vector<Vector3>& points,
 		std::vector<Vector3>& normals,
+		std::vector<TEXCOORD2>& tex_uvs,
 		std::vector< std::vector<int> >& polygons
 		)
 {
-	Result::Name case_res   = MakeCase( src_desc.case_desc, num_sides, points, normals, polygons );
+	Result::Name case_res   = MakeCase( src_desc.case_desc, num_sides, points, normals, tex_uvs, polygons );
 
 	if( case_res != Result::SUCCESS )
 		return case_res;
 
 	Result::Name bullet_res = MakeBullet(
 		src_desc.bullet_desc, num_sides, src_desc.case_desc.GetTopHeight(),
-		points, normals, polygons
+		points, normals, tex_uvs, polygons
 		);
 
 	return bullet_res;

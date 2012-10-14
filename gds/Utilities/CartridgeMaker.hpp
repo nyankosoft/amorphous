@@ -121,6 +121,12 @@ public:
 
 	uint num_sides;
 
+	/// internal diameter of the case top (= (outer diameter) - (wall thickness at the top) * 2)
+	/// When low polygon model is preferred, internals are created by simply beveling in
+	/// the top surface norizontally to create wall and then vertically down
+	/// to create simple internal models.
+	float top_internal_diameter;
+
 public:
 
 	CaseDesc()
@@ -134,6 +140,19 @@ public:
 	~CaseDesc(){}
 	
 	float GetTopHeight() const { return case_slices[top_outer_slice_index].height; };
+
+	float GetMaxDiameter() const
+	{
+		float max_diameter = 0;
+		const int num_actual_slices = (num_case_slices < MAX_NUM_CASE_SLICES) ? num_case_slices : MAX_NUM_CASE_SLICES;
+		for( int i=0; i<num_case_slices; i++ )
+		{
+			if( max_diameter < case_slices[i].diameter )
+				max_diameter = case_slices[i].diameter;
+		}
+
+		return max_diameter;
+	}
 };
 
 
@@ -175,6 +194,7 @@ class CartridgeMaker
                      //PrimitiveModelStyle::Name bottom_style,
                      std::vector<Vector3>& vecDestPos,
                      std::vector<Vector3>& vecDestNormal,
+                     std::vector<TEXCOORD2>& vecDestTexUV,
 					 std::vector< std::vector<int> >& vecDestPoly );
 
 public:
@@ -194,6 +214,7 @@ public:
 		float case_top_height,
 		std::vector<Vector3>& points,
 		std::vector<Vector3>& normals,
+		std::vector<TEXCOORD2>& tex_uvs,
 		std::vector< std::vector<int> >& polygons
 		);
 
@@ -202,6 +223,7 @@ public:
 		unsigned int num_sides,
 		std::vector<Vector3>& points,
 		std::vector<Vector3>& normals,
+		std::vector<TEXCOORD2>& tex_uvs,
 		std::vector< std::vector<int> >& polygons
 		);
 
@@ -210,6 +232,7 @@ public:
 		unsigned int num_sides,
 		std::vector<Vector3>& points,
 		std::vector<Vector3>& normals,
+		std::vector<TEXCOORD2>& tex_uvs,
 		std::vector< std::vector<int> >& polygons
 		);
 };
