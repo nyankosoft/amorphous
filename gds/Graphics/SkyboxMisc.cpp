@@ -24,6 +24,25 @@ boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::strin
 }
 
 
+static boost::shared_ptr<CCylinderMeshGenerator> CreateSkyCylinderMeshGenerator( const std::string& texture_filepath )
+{
+	CCylinderDesc desc;
+	desc.style_flags |= CCylinderMeshStyleFlags::WELD_VERTICES;
+	desc.num_sides = 32;
+	desc.radii[0] = desc.radii[1] = 10.0f;
+	desc.height = 10.0f;
+
+	boost::shared_ptr<CCylinderMeshGenerator> pCylinderMeshGenerator( new CCylinderMeshGenerator(desc) );
+
+//	pCylinderMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
+	pCylinderMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_Y | TexCoordStyle::LINEAR_SHIFT_INV_Y );
+	pCylinderMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
+	pCylinderMeshGenerator->SetTexturePath( texture_filepath );
+
+	return pCylinderMeshGenerator;
+}
+
+
 CMeshObjectHandle CreateSkyboxMesh( const std::string& texture_filepath )
 {
 	CMeshResourceDesc skybox_mesh_desc;
@@ -37,7 +56,7 @@ CMeshObjectHandle CreateSkyboxMesh( const std::string& texture_filepath )
 
 
 template<class MeshClass>
-void RenderAsSkybox( MeshClass& mesh, const Vector3& vCamPos )
+void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 {
 	Result::Name res;
 
@@ -54,10 +73,28 @@ void RenderAsSkybox( MeshClass& mesh, const Vector3& vCamPos )
 
 	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 
+	const Vector3 vCamPos = vCamPose.vPosition;
+
 	Matrix44 matWorld = Matrix44Identity();
 	matWorld(0,3) = vCamPos.x;
 	matWorld(1,3) = vCamPos.y;
 	matWorld(2,3) = vCamPos.z;
+
+	const Vector3 vCamUpDir  = vCamPose.matOrient.GetColumn(1);
+	if( true )//0.000001 < fabs(vCamUpDir.y) )
+	{
+		const Vector3 vCamFwdDir = vCamPose.matOrient.GetColumn(2);
+		const Vector3 vHDir = Vec3GetNormalized(Vector3(vCamFwdDir.x,0,vCamFwdDir.z));
+
+		float heading = Vec3GetAngleBetween( Vector3(0,0,1), vHDir );
+		if( Vec3Cross( Vector3(0,0,1), vHDir ).y < 0 )
+			heading *= -1.0f;
+		Matrix34 skybox_orientation( Vector3(0,0,0), Matrix33RotationY(heading) );
+
+		// Apply the scaling to hide the both corners of the box.
+		matWorld = matWorld * ToMatrix44(skybox_orientation) * Matrix44Scaling( 2.0f, 1.0f, 1.0f );
+	}
+
 	ffp_mgr.SetWorldTransform( matWorld );
 
 	mesh.Render();
@@ -67,16 +104,30 @@ void RenderAsSkybox( MeshClass& mesh, const Vector3& vCamPos )
 }
 
 
-void RenderAsSkybox( CMeshObjectHandle& mesh, const Vector3& vCamPos )
+void RenderAsSkybox( CMeshObjectHandle& mesh, const Matrix34& vCamPose )
 {
 	boost::shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
 
 	if( pMesh )
-		RenderAsSkybox( *pMesh, vCamPos );
+		RenderAsSkybox( *pMesh, vCamPose );
 }
 
 
-void RenderSkybox( CTextureHandle& sky_texture, const Vector3& vCamPos )
+void RenderSkyMesh( CCustomMesh& mesh, CTextureHandle& sky_texture, const Matrix34& vCamPose )
+{
+	if( 0 < mesh.GetNumMaterials() )
+	{
+		if( mesh.Material(0).Texture.empty() )
+			mesh.Material(0).Texture.resize(1);
+
+		mesh.Material(0).Texture[0] = sky_texture;
+	}
+
+	RenderAsSkybox( mesh, vCamPose );
+}
+
+
+void RenderSkybox( CTextureHandle& sky_texture, const Matrix34& vCamPose )
 {
 	static CCustomMesh s_SkyboxMesh;
 
@@ -92,13 +143,29 @@ void RenderSkybox( CTextureHandle& sky_texture, const Vector3& vCamPos )
 		}
 	}
 
-	if( 0 < s_SkyboxMesh.GetNumMaterials() )
-	{
-		if( s_SkyboxMesh.Material(0).Texture.empty() )
-			s_SkyboxMesh.Material(0).Texture.resize(1);
+	RenderSkyMesh( s_SkyboxMesh, sky_texture, vCamPose );
+}
 
-		s_SkyboxMesh.Material(0).Texture[0] = sky_texture;
+
+/// This does not work because the rim is obvious when the user looks up the sky.
+/// Always use RenderSkybox()
+/// I have a real heartbun for leaving this function knowing that it does not work
+/// at least for rendering the sky, but decided to keep it for now as a reminder.
+void RenderSkyCylinder( CTextureHandle& sky_texture, const Matrix34& vCamPose )
+{
+	static CCustomMesh s_SkyCylinderMesh;
+
+	if( !s_SkyCylinderMesh.IsValid() )
+	{
+		boost::shared_ptr<CCylinderMeshGenerator> pSkyCylinderMeshGenerator
+			= CreateSkyCylinderMeshGenerator( "" );
+		if( pSkyCylinderMeshGenerator )
+		{
+			pSkyCylinderMeshGenerator->Generate();
+			C3DMeshModelArchive mesh_archive = pSkyCylinderMeshGenerator->GetMeshArchive();
+			s_SkyCylinderMesh.LoadFromArchive( mesh_archive, "static_sky_cylinder_mesh", 0 );
+		}
 	}
 
-	RenderAsSkybox( s_SkyboxMesh, vCamPos );
+	RenderSkyMesh( s_SkyCylinderMesh, sky_texture, vCamPose );
 }
