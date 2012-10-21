@@ -35,11 +35,11 @@ Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<CGeneral3DMesh>& 
 {
 	C3DMeshModelBuilder mesh_builder;
 	mesh_builder.BuildMeshModelArchive( pSrcMesh );
-	dest_mesh_archive = mesh_builder.GetArchive();
+	Result::Name result = mesh_builder.GetArchive( dest_mesh_archive );
 
 	SetDefaultMeshAttributes( dest_mesh_archive );
 
-	return Result::SUCCESS;
+	return result;
 }
 
 
