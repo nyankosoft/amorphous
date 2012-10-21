@@ -33,6 +33,8 @@ class CLensFlareTest : public CGraphicsTestBase
 
 	CTextureHandle m_TestTexture;
 
+	CTextureHandle m_SkyTexture;
+
 	CMeshObjectHandle m_LightPosIndicator;
 
 //	float m_FOV;// = PI / 4.0f;
@@ -44,6 +46,8 @@ class CLensFlareTest : public CGraphicsTestBase
 protected:
 
 	void RenderFloor();
+
+	void InitSkyTexture();
 	
 	void InitLensFlare( const std::string& strPath );
 

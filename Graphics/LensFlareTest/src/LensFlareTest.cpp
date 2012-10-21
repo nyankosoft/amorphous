@@ -9,7 +9,10 @@
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Graphics/TextureGenerators/GradationTextureGenerators.hpp"
+#include "gds/Graphics/TextureGenerators/TCBSplineGradationTextureGenerators.hpp"
+#include "gds/Utilities/TextFileScannerExtensions.hpp"
+#include "gds/Support/ParamLoader.hpp"
 
 using std::string;
 using namespace boost;
@@ -38,6 +41,20 @@ CLensFlareTest::~CLensFlareTest()
 }
 
 
+void CLensFlareTest::InitSkyTexture()
+{
+	SFloatRGBAColor top_color, mid_color, bottom_color;
+	LoadParamFromFile( "params.txt", "bg_color_top",    top_color );
+	LoadParamFromFile( "params.txt", "bg_color_mid",    mid_color );
+	LoadParamFromFile( "params.txt", "bg_color_bottom", bottom_color );
+
+//	m_SkyTexture = CreateHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
+	m_SkyTexture = CreateTCBSplineHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
+
+	m_SkyTexture.SaveTextureToImageFile( "sky_texture.png" );
+}
+
+
 static inline SFloatRGBAColor ARGB32toFloatRGBA( U32 argb )
 {
 	SFloatRGBAColor dest;
@@ -51,7 +68,8 @@ void CLensFlareTest::InitLensFlare( const string& strPath )
 	m_pLensFlare = shared_ptr<CLensFlare>( new CLensFlare() );
 
 //	m_pLensFlare->AddTexture( "./textures/LensFlareTex/flare00.dds", 0, 1, 1 );
-	m_pLensFlare->AddTexture( "./textures/flare01.dds", 0, 1, 1 );
+//	m_pLensFlare->AddTexture( "./textures/flare01.dds", 0, 1, 1 );
+	m_pLensFlare->AddTexture( "./textures/ring.png",    0, 1, 1 );
 	m_pLensFlare->AddTexture( "./textures/flare02.dds", 1, 1, 1 );
 	m_pLensFlare->AddTexture( "./textures/flare06.dds", 2, 1, 1 );
 //	m_pLensFlare->AddTexture( "./textures/LensFlareTex/flare07.dds", 2, 1, 1 );
@@ -85,7 +103,10 @@ int CLensFlareTest::Init()
 	bool shader_loaded = m_Shader.Load( "./shaders/LensFlareTest.fx" );
 
 	// load skybox mesh
-	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
+//	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
+	m_SkyboxMesh = CreateSkyboxMesh( "./textures/dark_chrome.jpg" );
+
+	InitSkyTexture();
 
 	// load the terrain mesh
 	CMeshResourceDesc mesh_desc;
@@ -124,7 +145,9 @@ void CLensFlareTest::Render()
 
 	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
-	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPosition() );
+//	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPose() );
+	RenderSkybox( m_SkyTexture, GetCurrentCamera().GetPose() );
+//	RenderSkyCylinder( m_SkyTexture, GetCurrentCamera().GetPosition() );
 
 	shader_mgr.SetWorldTransform( matWorld );
 
