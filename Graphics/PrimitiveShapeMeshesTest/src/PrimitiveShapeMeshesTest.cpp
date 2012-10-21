@@ -221,7 +221,7 @@ void CPrimitiveShapeMeshesTest::Render()
 */
 	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
-	Vector3 vCamPos = g_Camera.GetPosition();
+	Vector3 vCamPos = GetCurrentCamera().GetPosition();
 	m_pFont->DrawText(
 		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
 		Vector2( 20, 300 ) );
