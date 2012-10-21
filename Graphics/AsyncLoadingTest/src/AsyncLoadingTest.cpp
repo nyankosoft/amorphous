@@ -1,6 +1,5 @@
 #include "AsyncLoadingTest.hpp"
 #include <boost/foreach.hpp>
-#include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/AsyncResourceLoader.hpp"
 //#include "gds/Graphics/GraphicsResourceCacheManager.hpp"
@@ -80,8 +79,9 @@ m_NumTextureMipmaps( 1 )
 	GraphicsResourceManager().AllowAsyncLoading( m_TestAsyncLoading );
 
 
-	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+//	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 1, -50 ) );
 }
 
 
@@ -195,7 +195,7 @@ int CAsyncLoadingTest::Init()
 //void CAsyncLoadingTest::LoadTexturesAsync()
 void CAsyncLoadingTest::LoadResourcesAsync( CTestMeshHolder& holder )
 {
-	const Vector3 vCamPos = g_Camera.GetPosition();
+	const Vector3 vCamPos = GetCurrentCamera().GetPosition();
 
 //	if( m_vecMesh.size() == 0 )
 //		return;
@@ -291,9 +291,9 @@ void CAsyncLoadingTest::RenderMeshes()
 
 	// render the scene
 
-	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
+	pShaderManager->SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	pShaderManager->SetTechnique( m_MeshTechnique );
 //	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
@@ -341,7 +341,7 @@ void CAsyncLoadingTest::Render()
 
 	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
-	Vector3 vCamPos = g_Camera.GetPosition();
+	Vector3 vCamPos = GetCurrentCamera().GetPosition();
 	m_pFont->DrawText(
 		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
 		Vector2( 20, 300 ) );
