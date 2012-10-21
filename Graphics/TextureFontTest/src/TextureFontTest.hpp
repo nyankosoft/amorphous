@@ -6,6 +6,7 @@
 #include "gds/base.hpp"
 #include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/TextureHandle.hpp"
+#include "gds/Support/indexed_vector.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
@@ -16,6 +17,8 @@ private:
 
 //	boost::shared_ptr<CTrueTypeTextureFont> m_pFont;
 	boost::shared_ptr<CFontBase> m_pFont;
+
+	indexed_vector<std::string> m_FontFilePathnames;
 
 	bool m_EnableRotation;
 
@@ -44,6 +47,10 @@ public:
 //	virtual void RenderBase();
 
 	virtual void HandleInput( const SInputData& input );
+
+	void LoadCurrentFont();
+
+	void RenderText();
 };
 
 

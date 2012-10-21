@@ -3,7 +3,9 @@
 #include "gds/Graphics/Font/TrueTypeTextureFont.hpp"
 #include "gds/Input.hpp"
 #include "gds/Support/ParamLoader.hpp"
+#include "gds/Support/filesystem_aux.hpp"
 
+using std::vector;
 using std::string;
 using namespace boost;
 
@@ -38,17 +40,30 @@ CTextureFontTest::~CTextureFontTest()
 
 int CTextureFontTest::Init()
 {
+	string font_directory = "fonts";
+	LoadParamFromFile( "params.txt", "font_directory", font_directory );
+	vector<string> font_file_pathnames;
+	find_files_in_directory( font_directory, font_file_pathnames );
+	m_FontFilePathnames = font_file_pathnames;
+
+	LoadCurrentFont();
+/*
 	shared_ptr<CTrueTypeTextureFont> pFont( new CTrueTypeTextureFont() );
 //	m_pFont = shared_ptr<CTrueTypeTextureFont>( new CTrueTypeTextureFont() );
 	pFont->InitFont( "fonts/rationalinteger.ttf", 64, 8, 16 );
+*/
+	if( m_pFont )
+	{
+//		m_pFont = pFont;
+		m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
+		m_pFont->SetFontColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
 
-	m_pFont = pFont;
-	m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
-	m_pFont->SetFontColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
-
-	m_pFont->SetFlags( CFontBase::SHADOW );
-	m_pFont->SetShadowColor( SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.5f ) );
-//	m_pFont->SetShadowShift( Vector2( 10, 10 ) );
+		U32 initial_flags = CFontBase::SHADOW;
+		m_pFont->SetFlags( initial_flags );
+		m_FontFlags = initial_flags;
+		m_pFont->SetShadowColor( SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.5f ) );
+//		m_pFont->SetShadowShift( Vector2( 10, 10 ) );
+	}
 
 	string bg_image = "images/bg.jpg";
 	LoadParamFromFile( "params.txt", "background", bg_image );
@@ -71,10 +86,31 @@ void CTextureFontTest::Update( float dt )
 }
 
 
-void CTextureFontTest::Render()
+void CTextureFontTest::RenderText()
 {
 	if( !m_pFont )
 		return;
+
+//	string text = "abcdefg ABCDEFG 0123456789";
+
+	string font_file_pathname;
+	m_FontFilePathnames.get_current( font_file_pathname );
+
+	string text =  font_file_pathname + "\n";
+	text += "Jackdaws love my big sphinx of quartz.\n";
+	text += "12334567890\n";
+	text += "_+-*/=<>[]{}@#$%^&!?|;:,.\n";
+
+	Vector2 position = Vector2( 10, 120 );
+	if( m_EnableRotation )
+		m_pFont->DrawText( text.c_str(), position, position, m_fRotationAngle, SFloatRGBAColor::White() );
+	else
+		m_pFont->DrawText( text.c_str(), position, 0xFFFFFFFF );
+}
+
+
+void CTextureFontTest::Render()
+{
 
 	C2DRect bg_rect( RectLTWH( 0, 0, CGraphicsComponent::GetScreenWidth(), CGraphicsComponent::GetScreenHeight() ) );
 	bg_rect.SetColor( SFloatRGBAColor::White() );
@@ -83,13 +119,7 @@ void CTextureFontTest::Render()
 
 	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
 
-//	string text = "abcdefg ABCDEFG 0123456789";
-	string text = "Jackdaws love my big sphinx of quartz. 12334567890";
-
-	if( m_EnableRotation )
-		m_pFont->DrawText( text.c_str(), Vector2( 10, 100 ), Vector2( 10, 100 ), m_fRotationAngle, SFloatRGBAColor::White() );
-	else
-		m_pFont->DrawText( text.c_str(), Vector2( 10, 100 ), 0xFFFFFFFF );
+	RenderText();
 }
 
 
@@ -156,12 +186,17 @@ void CTextureFontTest::HandleInput( const SInputData& input )
 	case GIC_UP:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+			m_FontFilePathnames--;
+			LoadCurrentFont();
 		}
+
 		break;
 
 	case GIC_DOWN:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+			m_FontFilePathnames++;
+			LoadCurrentFont();
 		}
 		break;
 
@@ -173,4 +208,23 @@ void CTextureFontTest::HandleInput( const SInputData& input )
 	default:
 		break;
 	}
+}
+
+
+void CTextureFontTest::LoadCurrentFont()
+{
+	string font_file_pathname;
+	m_FontFilePathnames.get_current( font_file_pathname );
+
+	shared_ptr<CTrueTypeTextureFont> pFont( new CTrueTypeTextureFont() );
+//	m_pFont = shared_ptr<CTrueTypeTextureFont>( new CTrueTypeTextureFont() );
+	bool initialized = pFont->InitFont( font_file_pathname, 64, 8, 16 );
+	if( initialized )
+	{
+		m_pFont = pFont;
+		m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
+		m_pFont->SetFlags( m_FontFlags );
+	}
+	else
+		m_pFont.reset();
 }
