@@ -152,6 +152,16 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMes
 }
 
 
+Result::Name C3DMeshModelBuilder::GetArchive( C3DMeshModelArchive& dest )
+{
+	if( m_MeshModelArchive.GetVertexSet().GetNumVertices() == 0 )
+		return Result::UNKNOWN_ERROR;
+
+	dest = m_MeshModelArchive;
+
+	return Result::SUCCESS;
+}
+
 
 void C3DMeshModelBuilder::CreateMeshArchive()
 {

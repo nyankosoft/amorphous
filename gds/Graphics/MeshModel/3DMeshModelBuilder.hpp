@@ -228,6 +228,8 @@ public:
 	/// returns a mesh archive object which has been created by BuildMeshModel() call
 	C3DMeshModelArchive& GetArchive() { return m_MeshModelArchive; }
 
+	Result::Name GetArchive( C3DMeshModelArchive& dest );
+
 	std::vector<CIndexedPolygon>& GetNonTriangulatedPolygonBuffer() { return m_vecNonTriangulatedPolygon; }
 
 //	const std::map<std::string,std::string> GetDetectedTextureFilepaths() const { return m_DetectedTextureFilepaths; }
