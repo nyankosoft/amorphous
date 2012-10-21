@@ -88,7 +88,7 @@ CMultibyteFontTest::~CMultibyteFontTest()
 
 
 /// Sets up char rects as well
-void RenderUTF8TextToBuffer( FT_Face& face,
+void RenderUTF8TextToBuffer( const FT_Face& face,
 						const std::string &text,
 						int char_height,
 						C2DArray<U8>& dest_bitmap_buffer,                 ///< [out] buffer to render the text to
