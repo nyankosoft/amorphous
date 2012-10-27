@@ -190,6 +190,25 @@ void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 }
 
 
+void CCustomMesh::GetVertexIndices( std::vector<unsigned int>& dest )
+{
+	if( m_IndexBuffer.empty() )
+		return;
+
+	const uint num_indices = GetNumIndices();
+
+	vector<U16> copied_indices;
+	copied_indices.resize( num_indices );
+
+	memcpy( &(copied_indices[0]), &(m_IndexBuffer[0]), sizeof(U16) );
+
+	dest.resize( 0 );
+	dest.resize( num_indices );
+	for( uint i=0; i<num_indices; i++ )
+		dest[i] = (uint)copied_indices[i];
+}
+
+
 bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
 	const CMMA_VertexSet& vs = archive.GetVertexSet();

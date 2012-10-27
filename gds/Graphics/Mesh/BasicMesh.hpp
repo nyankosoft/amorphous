@@ -200,6 +200,8 @@ public:
 
 	virtual unsigned int GetNumIndices() const { return 0; }
 
+	virtual void GetVertexIndices( std::vector<unsigned int>& dest ) {}
+
 	// methods for skeletal mesh
 	// - implementation class of skeletal mesh has to implement these functions
 
@@ -337,6 +339,8 @@ public:
 	unsigned int GetNumTriangles() const { return m_pImpl->GetNumTriangles(); }
 
 	unsigned int GetNumIndices() const { return m_pImpl->GetNumIndices(); }
+
+	void GetVertexIndices( std::vector<unsigned int>& dest ) const { m_pImpl->GetVertexIndices( dest ); }
 
 	// methods for skeletal mesh
 	// - skeletal mesh class has to implement these functions

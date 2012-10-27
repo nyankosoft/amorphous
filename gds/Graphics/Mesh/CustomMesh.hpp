@@ -120,6 +120,8 @@ public:
 
 	uint GetNumIndices() const { return (uint)m_IndexBuffer.size() / sizeof(U16); }
 
+	void GetVertexIndices( std::vector<unsigned int>& dest );
+
 	uint GetIndexSize() const { return sizeof(dest_index_type); }
 
 	/// Returns the i-th vertex index
