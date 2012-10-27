@@ -1,5 +1,5 @@
 #include "ResolutionChangeTest.hpp"
-#include "gds/3DMath/Matrix34.hpp"
+#include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
@@ -12,14 +12,13 @@
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 //#include "gds/Graphics/SkyboxMisc.hpp"
 #include "gds/App/GameWindowManager.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/CameraController.hpp"
 
 using std::string;
 using std::vector;
 using namespace boost;
 
 
-extern CPlatformDependentCameraController g_CameraController;
 extern CCamera g_Camera;
 
 
