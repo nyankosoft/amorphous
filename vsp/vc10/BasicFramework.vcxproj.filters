@@ -1827,6 +1827,9 @@
     <ClInclude Include="..\..\gds\3DMath\ConvexPolygonUtilities.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GradationTextureGenerators.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\gds\Graphics\FloatRGBAColor.inl">

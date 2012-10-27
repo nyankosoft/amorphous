@@ -373,6 +373,7 @@
     <ClInclude Include="..\..\gds\Graphics\SurfaceFormat.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureCoord.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GradationTextureGenerators.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GridTextureGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp" />
