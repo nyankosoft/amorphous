@@ -2,6 +2,7 @@
 #include "MeshFactory.hpp" // ctor of CBasicMesh needs the mesh impl factory 
 #include "../MeshModel/3DMeshModelArchive.hpp"
 #include "../MeshModel/MeshBone.hpp"
+#include "../TextureGenerators/SingleColorTextureGenerator.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -17,7 +18,7 @@ void SetSingleColorTextureDesc( CTextureResourceDesc& desc,
 	desc.Width  = tex_width;
 	desc.Height = tex_height;
 	desc.Format = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new CSingleColorTextureFilling(SFloatRGBAColor::White()) );
+	desc.pLoader.reset( new CSingleColorTextureGenerator(SFloatRGBAColor::White()) );
 }
 
 
@@ -139,7 +140,7 @@ Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive,
 			{
 				CTextureResourceDesc& current_desc = m_vecMaterial[i].TextureDesc[tex];
 
-				current_desc.pLoader.reset( new CSingleColorTextureFilling( texture_archive.vecfTexelData(0,0) ) );
+				current_desc.pLoader.reset( new CSingleColorTextureGenerator( texture_archive.vecfTexelData(0,0) ) );
 
 				current_desc.Width  = texture_archive.vecfTexelData.size_x();
 				current_desc.Height = texture_archive.vecfTexelData.size_y();

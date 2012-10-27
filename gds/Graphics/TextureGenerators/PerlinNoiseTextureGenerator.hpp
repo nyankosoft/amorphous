@@ -2,7 +2,7 @@
 #define __PerlinNoiseTextureGenerator_HPP__
 
 
-#include "../GraphicsResources.hpp"
+#include "TextureFillingAlgorithm.hpp"
 #include "../../Utilities/PerlinAux.hpp"
 
 

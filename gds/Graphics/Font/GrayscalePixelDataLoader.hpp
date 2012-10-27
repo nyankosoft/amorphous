@@ -2,8 +2,7 @@
 #define  __GrayscaleImageLoader_HPP__
 
 
-#include <gds/base.hpp>
-#include <gds/Graphics/GraphicsResources.hpp>
+#include "../TextureGenerators/TextureFillingAlgorithm.hpp"
 
 
 class CGrayscaleImageLoader : public CTextureFillingAlgorithm

@@ -2,8 +2,7 @@
 #define  __NoiseTextureGenerators_HPP__
 
 
-#include "../GraphicsResources.hpp"
-#include "../GraphicsResourceDescs.hpp"
+#include "TextureFillingAlgorithm.hpp"
 #include "../../Support/MTRand.hpp"
 
 

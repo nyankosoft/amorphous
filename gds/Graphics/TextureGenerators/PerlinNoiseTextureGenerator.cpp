@@ -1,4 +1,6 @@
 #include "PerlinNoiseTextureGenerator.hpp"
+#include "../fwd.hpp"
+#include "../GraphicsResources.hpp"
 #include "../../3DMath/Vector3.hpp"
 
 

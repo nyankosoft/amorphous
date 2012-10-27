@@ -267,7 +267,14 @@ Result::Name CConeMeshGenerator::Generate()
 
 Result::Name CCylinderMeshGenerator::Generate()
 {
-	Result::Name res = CreateCylinderMeshArchive( m_Desc, m_MeshArchive );
+//	Result::Name res = CreateCylinderMeshArchive( m_Desc, m_MeshArchive );
+
+	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	CreateCylinderMesh( m_Desc, *pMesh );
+	GenerateTextureCoords( *pMesh );
+
+	Result::Name res = ::CreateArchiveFromGeneral3DMesh( pMesh, m_MeshArchive );
+
 	SetMiscMeshAttributes(); // set texture filename if it is specified.
 	return res;
 }

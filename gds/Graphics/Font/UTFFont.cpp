@@ -1,5 +1,6 @@
 #include "UTFFont.hpp"
-#include "Graphics/Rect.hpp"
+#include "../TextureGenerators/TextureFillingAlgorithm.hpp"
+#include "../Rect.hpp"
 using namespace Graphics;
 
 #include "Support/FreeTypeAux.hpp"

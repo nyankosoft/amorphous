@@ -3,11 +3,9 @@
 
 
 #include "TextureFont.hpp"
+#include "../TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "../../Support/2DArray.hpp"
 #include "../../Support/ImageArchive.hpp"
-
-
-class CTrueTypeTextureFont;
 
 
 /**
