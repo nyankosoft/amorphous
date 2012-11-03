@@ -161,10 +161,10 @@ void CBE_PhysicsBaseEntity::CreatePseudoCylinderMeshDesc( float radius, float he
 		radii,
 		sg_cylinder_mesh_side_subdivisions,
 		1,
-		true,                                       // [in] create_top_polygons
-		PrimitiveModelStyle::EDGE_VERTICES_WELDED,  // [in] top_style
-		true,                                       // [in] create_top_polygons
-		PrimitiveModelStyle::EDGE_VERTICES_WELDED,  // [in] bottom_style
+		true,                                     // [in] create_top_polygons
+		PolygonModelStyle::EDGE_VERTICES_WELDED,  // [in] top_style
+		true,                                     // [in] create_top_polygons
+		PolygonModelStyle::EDGE_VERTICES_WELDED,  // [in] bottom_style
 		m_ConvexMeshDesc.m_vecVertex,
 		normals,
 		polygons
