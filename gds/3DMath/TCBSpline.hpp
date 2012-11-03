@@ -27,7 +27,7 @@ inline Vector3 TCBSplineMultiply( const Vector3& p1, const Vector3& p2, const Ve
 }
 
 
-Quaternion TCBSplineMultiply( const Quaternion& p1, const Quaternion& p2, const Quaternion& incoming_tangent, const Quaternion& outgoing_tangent, const Vector4& hS )
+inline Quaternion TCBSplineMultiply( const Quaternion& p1, const Quaternion& p2, const Quaternion& incoming_tangent, const Quaternion& outgoing_tangent, const Vector4& hS )
 {
 	Quaternion dest;
 	dest.x = p1.x * hS.x + p2.x * hS.y + incoming_tangent.x * hS.z + outgoing_tangent.x * hS.w;
