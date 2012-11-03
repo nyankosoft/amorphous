@@ -21,9 +21,10 @@ int CRenderTargetTextureCache::GetNumTextures( const CTextureResourceDesc& desc 
 	for( i=0; i<m_vecpHolder.size(); i++ )
 	{
 		CTextureResourceDesc& current = m_vecpHolder[i]->m_Desc;
-		if( current.Width  == desc.Width
-		 && current.Height == desc.Height
-		 && current.Format == desc.Format )
+		if( current.Width     == desc.Width
+		 && current.Height    == desc.Height
+		 && current.Format    == desc.Format
+		 && current.MipLevels == desc.MipLevels )
 		{
 			num_matches++;
 		}
@@ -60,9 +61,10 @@ Result::Name CRenderTargetTextureCache::AddTexture( const CTextureResourceDesc& 
 Result::Name CRenderTargetTextureCache::AddTexture( int width, int height, TextureFormat::Format format )
 {
 	CTextureResourceDesc tex_desc;
-	tex_desc.Width  = width;
-	tex_desc.Height = height;
-	tex_desc.Format = format;
+	tex_desc.Width     = width;
+	tex_desc.Height    = height;
+	tex_desc.Format    = format;
+	tex_desc.MipLevels = 1;
 	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	return AddTexture( tex_desc );
 }
@@ -73,10 +75,11 @@ boost::shared_ptr<CRenderTargetTextureHolder> CRenderTargetTextureCache::GetText
 	size_t i=0;
 	for( i=0; i<m_vecpHolder.size(); i++ )
 	{
-		CTextureResourceDesc& current = m_vecpHolder[i]->m_Desc;
-		if( current.Width  == desc.Width
-		 && current.Height == desc.Height
-		 && current.Format == desc.Format
+		const CTextureResourceDesc& current = m_vecpHolder[i]->m_Desc;
+		if( current.Width     == desc.Width
+		 && current.Height    == desc.Height
+		 && current.Format    == desc.Format
+		 && current.MipLevels == desc.MipLevels
 		 && m_vecpHolder[i]->GetLockCount() == 0 )
 		{
 			return m_vecpHolder[i];
@@ -150,6 +153,12 @@ Result::Name CPostProcessEffectFilter::SetRenderTarget( CPostProcessEffectFilter
 				ref_count = m_pDest->m_pTexSurf->Release(); // Decrement the reference count
 
 			hr = DIRECT3D9.GetDevice()->SetRenderTarget( 0, m_pDest->m_pTexSurf );
+
+			// set viewport
+			D3DSURFACE_DESC surf_desc;
+			hr = m_pDest->m_pTexSurf->GetDesc( &surf_desc );
+			D3DVIEWPORT9 viewport = { 0, 0, surf_desc.Width, surf_desc.Height, 0.0f, 1.0f };
+			hr = DIRECT3D9.GetDevice()->SetViewport( &viewport );
 		}
 		else
 		{
@@ -234,6 +243,7 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 	hr = pd3dDevice->SetTexture( 0, pTexture );
 	if( FAILED(hr) )
 		int failed_to_set_texture = 1;
+	hr = pd3dDevice->SetTexture( 1, pTexture );
 
 	hr = pShaderMgr->GetEffect()->CommitChanges();
 

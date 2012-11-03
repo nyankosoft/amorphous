@@ -223,6 +223,7 @@ public:
 		m_fScalingFactor(1.0f),
 		m_ExtraTexelBorderWidth(0)
 	{
+		m_Desc.MipLevels = 1;
 //		ZeroMemory( m_avParam, sizeof( m_avParam ) );
 	}
 
