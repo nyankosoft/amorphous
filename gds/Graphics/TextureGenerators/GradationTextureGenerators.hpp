@@ -2,7 +2,7 @@
 #define __GradationTextureGenerators_HPP__
 
 
-#include "../GraphicsResources.hpp"
+#include "TextureFillingAlgorithm.hpp"
 #include "../../Support/linear_interpolation_table.hpp"
 #include "../TextureHandle.hpp"
 

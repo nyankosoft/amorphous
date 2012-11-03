@@ -2,8 +2,7 @@
 #define __BuiltinImageTextureLoader_HPP__
 
 
-#include "../BuiltinSkyTextures.hpp"
-#include "../GraphicsResources.hpp"
+#include "TextureFillingAlgorithm.hpp"
 #include "../../Support/BuiltinImage.hpp"
 
 
