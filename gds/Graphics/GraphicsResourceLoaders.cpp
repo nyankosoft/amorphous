@@ -3,6 +3,7 @@
 #include "AsyncResourceLoader.hpp"
 //#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Profile.hpp"
