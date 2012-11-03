@@ -62,7 +62,7 @@ class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
+	std::string m_TextBuffer;
 
 	bool m_DisplayDebugInfo;
 

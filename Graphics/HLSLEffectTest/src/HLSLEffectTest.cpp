@@ -15,9 +15,6 @@ using std::vector;
 using namespace boost;
 
 
-extern CPlatformDependentCameraController g_CameraController;
-
-
 CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )
 :
 m_LoadingStyle(loading_style),
@@ -69,7 +66,8 @@ m_DisplayDebugInfo(false)
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	g_CameraController.SetPosition( Vector3( 0, 1, -30 ) );
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3( 0, 1, -30 ) );
 
 	for( int i=0; i<numof(m_EnableLight); i++ )
 		m_EnableLight[i] = 1;
@@ -306,7 +304,7 @@ void CHLSLEffectTest::RenderDebugInfo()
 
 	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
-	Vector3 vCamPos = g_Camera.GetPosition();
+	Vector3 vCamPos = GetCurrentCamera().GetPosition();
 	m_pFont->DrawText(
 		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
 		Vector2( 20, 300 ) );
