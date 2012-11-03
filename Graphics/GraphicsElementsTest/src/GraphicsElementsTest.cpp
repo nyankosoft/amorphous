@@ -1,7 +1,5 @@
 #include "GraphicsElementsTest.hpp"
-#include "gds/3DMath/Matrix34.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/Macro.h"
 #include "gds/Input.hpp"
@@ -61,10 +59,14 @@ int CGraphicsElementsTest::Init()
 void CGraphicsElementsTest::CreateGraphicsElements()
 {
 	typedef SFloatRGBAColor FRGBA;
+	typedef CGraphicsComponent gc;
 
 	int left = 0, top = 0, w = 0, h = 0;
 
 	shared_ptr<CGraphicsElementManager> pMgr = m_pGraphicsElementManager;
+
+	if( !pMgr )
+		return;
 
 	int i = 0;
 	w = 80;
@@ -74,9 +76,10 @@ void CGraphicsElementsTest::CreateGraphicsElements()
 	for( int i=0; i<numof(border_widths); i++ )
 	{
 		int y = 50 + (grof(w) + 20) * i;
-		m_pRects[index++] = pMgr->CreateRect( RectAtLeftTop( w, grof(w), 50,       y ), FRGBA::Red(),   FRGBA::Aqua(),    border_widths[i] );
-		m_pRects[index++] = pMgr->CreateRect( RectAtLeftTop( w, grof(w), 50 + 200, y ), FRGBA::Green(), FRGBA::Magenta(), border_widths[i] );
-		m_pRects[index++] = pMgr->CreateRect( RectAtLeftTop( w, grof(w), 50 + 400, y ), FRGBA::Blue(),  FRGBA::Yellow(),  border_widths[i] );
+		int border_width = border_widths[i];
+		m_pRects[index++] = pMgr->CreateRect( gc::RectAtLeftTop( w, grof(w), 50,       y ), FRGBA::Red(),   FRGBA::Aqua(),    border_width );
+		m_pRects[index++] = pMgr->CreateRect( gc::RectAtLeftTop( w, grof(w), 50 + 200, y ), FRGBA::Green(), FRGBA::Magenta(), border_width );
+		m_pRects[index++] = pMgr->CreateRect( gc::RectAtLeftTop( w, grof(w), 50 + 400, y ), FRGBA::Blue(),  FRGBA::Yellow(),  border_width );
 	}
 
 	index = 0;
@@ -84,10 +87,11 @@ void CGraphicsElementsTest::CreateGraphicsElements()
 	for( int i=0; i<numof(border_widths); i++ )
 	{
 		int y = 50 + (grof(w) + 20) * i;
+		int border_width = border_widths[i];
 //		float corner_radius = 10;
-		m_pRoundRects[index++] = pMgr->CreateRoundRect( RectAtRightTop( w, grof(w), 50,       y ), FRGBA::Red(),   FRGBA::Aqua(),     5, border_widths[i] );
-		m_pRoundRects[index++] = pMgr->CreateRoundRect( RectAtRightTop( w, grof(w), 50 + 200, y ), FRGBA::Green(), FRGBA::Magenta(), 10, border_widths[i] );
-		m_pRoundRects[index++] = pMgr->CreateRoundRect( RectAtRightTop( w, grof(w), 50 + 400, y ), FRGBA::Blue(),  FRGBA::Yellow(),  15, border_widths[i] );
+		m_pRoundRects[index++] = pMgr->CreateRoundRect( gc::RectAtRightTop( w, grof(w), 50,       y ), FRGBA::Red(),   FRGBA::Aqua(),     5, border_width );
+		m_pRoundRects[index++] = pMgr->CreateRoundRect( gc::RectAtRightTop( w, grof(w), 50 + 200, y ), FRGBA::Green(), FRGBA::Magenta(), 10, border_width );
+		m_pRoundRects[index++] = pMgr->CreateRoundRect( gc::RectAtRightTop( w, grof(w), 50 + 400, y ), FRGBA::Blue(),  FRGBA::Yellow(),  15, border_width );
 	}
 
 	// rotate around the center of the rect
@@ -178,7 +182,8 @@ void CGraphicsElementsTest::Render()
 {
 	PROFILE_FUNCTION();
 
-	m_pGraphicsElementManager->Render();
+	if( m_pGraphicsElementManager )
+		m_pGraphicsElementManager->Render();
 
 //	if( m_pSampleUI )
 //		m_pSampleUI->Render();

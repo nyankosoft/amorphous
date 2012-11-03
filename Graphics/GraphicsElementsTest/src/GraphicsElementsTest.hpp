@@ -3,18 +3,16 @@
 
 
 #include <vector>
-#include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/GraphicsElementManager.hpp"
 #include "gds/Graphics/GraphicsComponentCollector.hpp"
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "gds/Input/fwd.hpp"
-#include "gds/GUI/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
 
-class CGraphicsElementsTest : public CGraphicsTestBase, public CGraphicsComponent
+class CGraphicsElementsTest : public CGraphicsTestBase//, public CGraphicsComponent
 {
 	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
 
