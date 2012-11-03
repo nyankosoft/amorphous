@@ -5,6 +5,7 @@
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 
@@ -1003,6 +1004,7 @@ Result::Name CCombinedBloomFilter::Init( CRenderTargetTextureCache& cache, CFilt
 	CTextureResourceDesc desc;
 	desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	desc.Format     = TextureFormat::A8R8G8B8;
+	desc.MipLevels  = 1;
 
 	desc.Width      = base_plane.width  + 2;
 	desc.Height     = base_plane.height + 2;
@@ -1372,7 +1374,7 @@ m_StarEffectEnabled(false)
 	desc.Width  = 16;
 	desc.Height = 16;
 	desc.Format = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new CSingleColorTextureFilling( SFloatRGBAColor::Black() ) );
+	desc.pLoader.reset( new CSingleColorTextureGenerator( SFloatRGBAColor::Black() ) );
 	m_BlancTextureForDisabledStarEffect.Load( desc );
 }
 
@@ -1588,6 +1590,7 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 	tex_desc.Width  = cbb.width  / 4;
 	tex_desc.Height = cbb.height / 4;
 	tex_desc.Format = TextureFormat::A16R16G16B16F;
+	tex_desc.MipLevels = 1;
 	if( m_pCache->GetNumTextures( tex_desc ) == 0 )
 		m_pCache->AddTexture( tex_desc );
 
@@ -1595,6 +1598,7 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 	tex_desc.Width  = cbb.width  / 4 + 2;
 	tex_desc.Height = cbb.height / 4 + 2;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.MipLevels = 1;
 	int num = m_pCache->GetNumTextures( tex_desc );
 	for( int i=num; i<2; i++ )
 		m_pCache->AddTexture( tex_desc );
@@ -1603,12 +1607,14 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 	tex_desc.Width  = cbb.width  / 8;
 	tex_desc.Height = cbb.height / 8;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.MipLevels = 1;
 	if( m_pCache->GetNumTextures( tex_desc ) == 0 )
 		m_pCache->AddTexture( tex_desc );
 
 	tex_desc.Width  = cbb.width  / 8 + 2;
 	tex_desc.Height = cbb.height / 8 + 2;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.MipLevels = 1;
 	num = m_pCache->GetNumTextures( tex_desc );
 	for( int i=num; i<3; i++ )
 		m_pCache->AddTexture( tex_desc );
@@ -1618,6 +1624,7 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 	tex_desc.Width  = cbb.width;
 	tex_desc.Height = cbb.height;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.MipLevels = 1;
 	if( m_pCache->GetNumTextures( tex_desc ) == 0 )
 		m_pCache->AddTexture( tex_desc );
 
@@ -1730,6 +1737,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	tex_desc.Height = cbb.height / 4;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
 	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
+	tex_desc.MipLevels = 1;
 	int num = m_pCache->GetNumTextures( tex_desc );
 	for( int i=num; i<2; i++ )
 		m_pCache->AddTexture( tex_desc );
@@ -1738,6 +1746,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	tex_desc.Height = cbb.height / 4 + 2;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
 	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
+	tex_desc.MipLevels = 1;
 	num = m_pCache->GetNumTextures( tex_desc );
 	for( int i=num; i<2; i++ )
 		m_pCache->AddTexture( tex_desc );
