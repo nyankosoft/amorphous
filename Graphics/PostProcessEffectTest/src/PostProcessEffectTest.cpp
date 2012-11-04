@@ -277,7 +277,7 @@ void CPostProcessEffectTest::RenderMeshes()
 
 	if( 0 < num_meshes )
 	{
-		RenderAsSkybox( m_vecMesh[0], GetCurrentCamera().GetPosition() );
+		RenderAsSkybox( m_vecMesh[0], GetCurrentCamera().GetPose() );
 	}
 
 	// reset the world transform matrix
