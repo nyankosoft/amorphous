@@ -1,6 +1,4 @@
 #include "TextureRenderTargetTest.hpp"
-#include "gds/Graphics/MeshModel/General3DMesh.hpp"
-#include "gds/Graphics/MeshModel/3DMeshModelBuilder.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Graphics/PrimitiveShapeRenderer.hpp"
 #include "gds/Graphics/HemisphericLight.hpp"
@@ -17,7 +15,6 @@
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
 #include "gds/Support/Timer.hpp"
-#include "gds/GUI.hpp"
 
 using std::string;
 using std::vector;
@@ -150,7 +147,7 @@ void CTextureRenderTargetTest::RenderMeshes()
 
 	// render the scene
 
-	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
 	CCamera cam;
 	cam.SetAspectRatio( 16.0f / 9.0f );
