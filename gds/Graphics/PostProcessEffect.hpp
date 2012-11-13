@@ -225,8 +225,6 @@ class CLuminanceCalcFilter : public CPostProcessEffectFilter
 
 private:
 
-	bool GetRenderTarget( CPostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest );
-
 	void GetSampleOffsets_DownScale3x3( int width, int height, Vector2 avSampleOffsets[] );
 
 	void GetSampleOffsets_DownScale4x4( int width, int height, Vector2 avSampleOffsets[] );

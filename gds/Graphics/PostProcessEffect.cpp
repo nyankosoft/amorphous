@@ -1112,6 +1112,7 @@ void GetLuminanceTextureDesc( CTextureResourceDesc& dest )
         luminance_format = D3DFMT_R16F;
 
 	dest.Format = FromD3DSurfaceFormat( luminance_format );
+//	dest.MipLevels = 1;
 	dest.UsageFlags = UsageFlag::RENDER_TARGET;
 }
 
@@ -1143,17 +1144,6 @@ Result::Name CLuminanceCalcFilter::Init( CRenderTargetTextureCache& cache, CFilt
 		res = m_pCache->AddTexture( m_Desc );
 
 	return res;
-}
-
-
-bool CLuminanceCalcFilter::GetRenderTarget( CPostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
-{
-	m_pDest = m_pCache->GetTexture( m_Desc );
-
-	if( m_pDest )
-		return true;
-	else
-		return false;
 }
 
 
@@ -1280,20 +1270,22 @@ Result::Name CAdaptationCalcFilter::Init( CRenderTargetTextureCache& cache, CFil
 	int num_cached_texes = cache.GetNumTextures( m_Desc );
 
 //	shared_ptr<CRenderTargetTextureHolder> apHolder[2];
-	for( int i=num_cached_texes; i<2; i++ )
+//	for( int i=num_cached_texes; i<2; i++ )
+	for( int i=0; i<2; i++ )
 	{
 		cache.AddTexture( m_Desc );
 	}
 
-	m_pTexAdaptedLuminanceLast = cache.GetTexture( m_Desc );
-	m_pTexAdaptedLuminanceCur  = cache.GetTexture( m_Desc );
+	// Get the textures and lock them at this init phase and always keep them.
 
-	// Lock at this init phase and always keep them.
+	m_pTexAdaptedLuminanceLast = cache.GetTexture( m_Desc );
 
 	if( m_pTexAdaptedLuminanceLast )
 		m_pTexAdaptedLuminanceLast->IncrementLockCount();
 	else
 		LOG_PRINT_ERROR( "Failed to get texture for storing adapted luminance (last)." );
+
+	m_pTexAdaptedLuminanceCur  = cache.GetTexture( m_Desc );
 
 	if( m_pTexAdaptedLuminanceCur )
 		m_pTexAdaptedLuminanceCur->IncrementLockCount();
@@ -1768,7 +1760,7 @@ void CFullScreenBlurFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
 
 	m_pDownScale4x4Filter->RenderBase( prev_filter );
 
-//	m_pBloomFilter->RenderBase( prev_filter );
+	m_pBloomFilter->RenderBase( prev_filter );
 }
 
 
