@@ -222,6 +222,7 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 	m_pOrigSceneHolder->m_Desc.Width  = bb.width;
 	m_pOrigSceneHolder->m_Desc.Height = bb.height;
 	m_pOrigSceneHolder->m_Desc.Format = orig_scene_buffer_format;
+	m_pOrigSceneHolder->m_Desc.MipLevels = 1;
 	m_pOrigSceneHolder->m_Desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	bool loaded = m_pOrigSceneHolder->m_Texture.Load( m_pOrigSceneHolder->m_Desc );
 	if( !loaded )
@@ -499,6 +500,7 @@ Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
 	tex_desc.Width  = cbb.width;
 	tex_desc.Height = cbb.height;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.MipLevels = 1;
 	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	int num = m_pTextureCache->GetNumTextures( tex_desc );
 	for( int i=num; i<2; i++ )
