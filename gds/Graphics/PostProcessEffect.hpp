@@ -250,6 +250,10 @@ class CAdaptationCalcFilter : public CPostProcessEffectFilter
 
 	float m_fLuminanceAdaptationRate;
 
+private:
+
+	Result::Name SetRenderTarget( CPostProcessEffectFilter& prev_filter );
+
 public:
 
 	CAdaptationCalcFilter();

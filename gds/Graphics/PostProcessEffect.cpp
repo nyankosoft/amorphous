@@ -1259,6 +1259,13 @@ CAdaptationCalcFilter::~CAdaptationCalcFilter()
 }
 
 
+Result::Name CAdaptationCalcFilter::SetRenderTarget( CPostProcessEffectFilter& prev_filter )
+{
+	// The render target is set in CAdaptationCalcFilter::Render()
+	return Result::SUCCESS;
+}
+
+
 Result::Name CAdaptationCalcFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
