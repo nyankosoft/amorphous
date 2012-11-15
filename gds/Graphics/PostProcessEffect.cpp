@@ -1029,21 +1029,21 @@ Result::Name CCombinedBloomFilter::Init( CRenderTargetTextureCache& cache, CFilt
 			LOG_PRINT_ERROR( " Failed to create a render target texture." );
 	}
 
-	m_pGaussianBlurFilter = shared_ptr<CGaussianBlurFilter>( new CGaussianBlurFilter );
+	m_pGaussianBlurFilter.reset( new CGaussianBlurFilter );
 	m_pGaussianBlurFilter->SetRenderTargetSize( base_plane.width + 2, base_plane.height + 2 );
 	m_pGaussianBlurFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.GetFilterShader( "GaussBlur5x5" ) );
 	m_pGaussianBlurFilter->SetTextureCache( cache.GetSelfPtr().lock() );
 	m_pGaussianBlurFilter->SetDebugImageFilenameExtraString( "-for-bloom" );
 
-	m_pHBloomFilter = shared_ptr<CHorizontalBloomFilter>( new CHorizontalBloomFilter );
+	m_pHBloomFilter.reset( new CHorizontalBloomFilter );
 	m_pHBloomFilter->SetRenderTargetSize( base_plane.width + 2, base_plane.height + 2 );
 	m_pHBloomFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pHBloomFilter->SetFilterShader( filter_shader_container.GetFilterShader( "Bloom" ) );
 	m_pHBloomFilter->SetTextureCache( cache.GetSelfPtr().lock() );
 	m_pHBloomFilter->SetDebugImageFilenameExtraString( "-for-horizontal-bloom" );
 
-	m_pVBloomFilter = shared_ptr<CVerticalBloomFilter>( new CVerticalBloomFilter );
+	m_pVBloomFilter.reset( new CVerticalBloomFilter );
 	m_pVBloomFilter->SetRenderTargetSize( base_plane.width,     base_plane.height );
 	m_pVBloomFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pVBloomFilter->SetFilterShader( filter_shader_container.GetFilterShader( "Bloom" ) );
@@ -1512,20 +1512,20 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 
 	SRectangular cbb = GetCropWidthAndHeight();
 
-	m_pDownScale4x4Filter = shared_ptr<CDownScale4x4Filter>( new CDownScale4x4Filter );
+	m_pDownScale4x4Filter.reset( new CDownScale4x4Filter );
 	m_pDownScale4x4Filter->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
 	m_pDownScale4x4Filter->SetRenderTargetSurfaceFormat( TextureFormat::A16R16G16B16F );
 	m_pDownScale4x4Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pDownScale4x4Filter->Init( cache, filter_shader_container );
 
-	m_pBrightPassFilter = shared_ptr<CHDRBrightPassFilter>( new CHDRBrightPassFilter );
+	m_pBrightPassFilter.reset( new CHDRBrightPassFilter );
 	m_pBrightPassFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pBrightPassFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pBrightPassFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pBrightPassFilter->Init( cache, filter_shader_container );
 //	m_pBrightPassFilter->SetExtraTexelBorderWidth( 1 );
 
-	m_pGaussianBlurFilter = shared_ptr<CGaussianBlurFilter>( new CGaussianBlurFilter );
+	m_pGaussianBlurFilter.reset( new CGaussianBlurFilter );
 	m_pGaussianBlurFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pGaussianBlurFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
@@ -1534,7 +1534,7 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 //	m_pGaussianBlurFilter->Init();
 //	m_pDownScale2x2Filter->SetExtraTexelBorderWidth( 1 );
 
-	m_pDownScale2x2Filter = shared_ptr<CDownScale2x2Filter>( new CDownScale2x2Filter );
+	m_pDownScale2x2Filter.reset( new CDownScale2x2Filter );
 	m_pDownScale2x2Filter->SetRenderTargetSize( cbb.width / 8 + 2, cbb.height / 8 + 2 );
 	m_pDownScale2x2Filter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pDownScale2x2Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
@@ -1543,16 +1543,13 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 
 	if( m_EnableStarFilter )
 	{
-		m_pStarFilter = shared_ptr<CStarFilter>( new CStarFilter );
+		m_pStarFilter.reset( new CStarFilter );
 	}
 
-	m_apLumCalcFilter[0] = shared_ptr<CLuminanceCalcFilter>( new CLuminanceCalcFilter( "SampleAvgLum",  9, 64 ) );
-
-	m_apLumCalcFilter[1] = shared_ptr<CLuminanceCalcFilter>( new CLuminanceCalcFilter( "ResampleAvgLum", 16, 16 ) );
-
-	m_apLumCalcFilter[2] = shared_ptr<CLuminanceCalcFilter>( new CLuminanceCalcFilter( "ResampleAvgLum", 16,  4 ) );
-
-	m_apLumCalcFilter[3] = shared_ptr<CLuminanceCalcFilter>( new CLuminanceCalcFilter( "ResampleAvgLumExp", 16,  1 ) );
+	m_apLumCalcFilter[0].reset( new CLuminanceCalcFilter( "SampleAvgLum",       9, 64 ) );
+	m_apLumCalcFilter[1].reset( new CLuminanceCalcFilter( "ResampleAvgLum",    16, 16 ) );
+	m_apLumCalcFilter[2].reset( new CLuminanceCalcFilter( "ResampleAvgLum",    16,  4 ) );
+	m_apLumCalcFilter[3].reset( new CLuminanceCalcFilter( "ResampleAvgLumExp", 16,  1 ) );
 
 	for( int i=0; i<NUM_TONEMAP_TEXTURES; i++ )
 	{
@@ -1560,17 +1557,17 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 		m_apLumCalcFilter[i]->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	}
 
-	m_pAdaptationCalcFilter = shared_ptr<CAdaptationCalcFilter>( new CAdaptationCalcFilter() );
+	m_pAdaptationCalcFilter.reset( new CAdaptationCalcFilter() );
 	m_pAdaptationCalcFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pAdaptationCalcFilter->Init( cache, filter_shader_container );
 
-	m_pBloomFilter = shared_ptr<CCombinedBloomFilter>( new CCombinedBloomFilter );
+	m_pBloomFilter.reset( new CCombinedBloomFilter );
 	res = m_pBloomFilter->Init( cache, filter_shader_container );
 
 //	m_pHorizontalBloomFilter = shared_ptr<CDownScale2x2Filter>( new CDownScale2x2Filter );
 //	m_pVerticalBloomFilter   = shared_ptr<CDownScale2x2Filter>( new CDownScale2x2Filter );
 
-	m_pFinalPassFilter = shared_ptr<CHDRLightingFinalPassFilter>( new CHDRLightingFinalPassFilter );
+	m_pFinalPassFilter.reset( new CHDRLightingFinalPassFilter );
 //	m_pFinalPassFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pFinalPassFilter->SetRenderTargetSize( cbb.width, cbb.height );
 	m_pFinalPassFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
