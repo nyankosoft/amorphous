@@ -469,8 +469,11 @@ void CPostProcessEffectManager::SetFirstFilterParams()
 
 Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
 {
+	if( !m_pTextureCache )
+		return Result::UNKNOWN_ERROR;
+
 	m_pHDRLightingFilter.reset( new CHDRLightingFilter );
-	Result::Name res = m_pHDRLightingFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
+	Result::Name res = m_pHDRLightingFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
 	if( res != Result::SUCCESS )
 	{
 		LOG_PRINT_ERROR(( "Failed to initialize HDR filter." ));
@@ -482,8 +485,11 @@ Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
 
 Result::Name CPostProcessEffectManager::InitBlurFilter()
 {
+	if( !m_pTextureCache )
+		return Result::UNKNOWN_ERROR;
+
 	m_pFullScreenBlurFilter.reset( new CFullScreenBlurFilter );
-	return m_pFullScreenBlurFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
+	return m_pFullScreenBlurFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
 }
 
 
@@ -495,19 +501,6 @@ Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
 	m_pMonochromeColorFilter.reset( new CMonochromeColorFilter );
 	Result::Name res;
 	res = m_pMonochromeColorFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
-
-	const SRectangular cbb = GetCropWidthAndHeight();
-	m_pMonochromeColorFilter->SetRenderTargetSize( cbb.width, cbb.height );
-
-	CTextureResourceDesc tex_desc;
-	tex_desc.Width  = cbb.width;
-	tex_desc.Height = cbb.height;
-	tex_desc.Format = TextureFormat::A8R8G8B8;
-	tex_desc.MipLevels = 1;
-	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
-	int num = m_pTextureCache->GetNumTextures( tex_desc );
-	for( int i=num; i<2; i++ )
-		m_pTextureCache->AddTexture( tex_desc );
 
 	return res;
 }

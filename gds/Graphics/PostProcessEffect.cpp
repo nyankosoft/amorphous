@@ -1793,6 +1793,19 @@ Result::Name CMonochromeColorFilter::Init( CRenderTargetTextureCache& cache, CFi
 	m_pCache = cache.GetSelfPtr().lock();
 	SetFilterShader( filter_shader_container.GetShader( "HDRPostProcessor" ) );
 
+	const SRectangular cbb = GetCropWidthAndHeight();
+	SetRenderTargetSize( cbb.width, cbb.height );
+
+	CTextureResourceDesc tex_desc;
+	tex_desc.Width  = cbb.width;
+	tex_desc.Height = cbb.height;
+	tex_desc.Format = TextureFormat::A8R8G8B8;
+	tex_desc.MipLevels = 1;
+	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
+	int num = cache.GetNumTextures( tex_desc );
+	for( int i=num; i<2; i++ )
+		cache.AddTexture( tex_desc );
+
 	return Result::SUCCESS;
 }
 
