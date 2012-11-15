@@ -2,6 +2,7 @@
 #define  __PostProcessEffectManager_HPP__
 
 
+#include "../3DMath/Vector4.hpp"
 #include "ShaderHandle.hpp"
 #include "PostProcessEffectFilter.hpp"
 
@@ -69,14 +70,14 @@ class CPostProcessFilterShader
 	std::string m_ShaderFilename;
 
 	/// PostProcess technique handle
-	D3DXHANDLE   m_hTPostProcess;
+//	D3DXHANDLE   m_hTPostProcess;
 
 	/// Render target channel this PP outputs
 //	int          m_nRenderTarget;
 
-	D3DXHANDLE   m_hTexSource[4];        ///< Handle to the post-process source textures
+//	D3DXHANDLE   m_hTexSource[4];        ///< Handle to the post-process source textures
 
-	D3DXHANDLE   m_hTexScene[4];         ///< Handle to the saved scene texture
+//	D3DXHANDLE   m_hTexScene[4];         ///< Handle to the saved scene texture
 
 	/// Indicates whether the post-process technique
 	///   outputs data for this render target.
@@ -93,7 +94,7 @@ class CPostProcessFilterShader
 	/// components of float4 are used.
 	int          m_anParamSize[NUM_PARAMS];
 
-	D3DXVECTOR4  m_avParamDef[NUM_PARAMS]; ///< Parameter default
+	Vector4      m_avParamDef[NUM_PARAMS]; ///< Parameter default
 
 public:
 

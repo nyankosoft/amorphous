@@ -59,18 +59,18 @@ public:
 //========================================================================
 
 CPostProcessFilterShader::CPostProcessFilterShader()
-:
-m_hTPostProcess(NULL)//,
+//:
+//m_hTPostProcess(NULL),
 //m_nRenderTarget(0)
 {
-	ZeroMemory( m_hTexSource,    sizeof(m_hTexSource) );
-	ZeroMemory( m_hTexScene,     sizeof(m_hTexScene) );
-	ZeroMemory( m_bWrite,        sizeof(m_bWrite) );
-	ZeroMemory( m_ahParam,       sizeof(m_ahParam) );
-	ZeroMemory( m_awszParamName, sizeof(m_awszParamName) );
-	ZeroMemory( m_awszParamDesc, sizeof(m_awszParamDesc) );
-	ZeroMemory( m_anParamSize,   sizeof(m_anParamSize) );
-	ZeroMemory( m_avParamDef,    sizeof(m_avParamDef) );
+//	memset( m_hTexSource,    0, sizeof(m_hTexSource) );
+//	memset( m_hTexScene,     0, sizeof(m_hTexScene) );
+	memset( m_bWrite,        0, sizeof(m_bWrite) );
+	memset( m_ahParam,       0, sizeof(m_ahParam) );
+	memset( m_awszParamName, 0, sizeof(m_awszParamName) );
+	memset( m_awszParamDesc, 0, sizeof(m_awszParamDesc) );
+	memset( m_anParamSize,   0, sizeof(m_anParamSize) );
+	memset( m_avParamDef,    0, sizeof(m_avParamDef) );
 }
 
 
