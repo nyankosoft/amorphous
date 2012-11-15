@@ -86,7 +86,7 @@ Result::Name CPostProcessFilterShader::Init( const std::string& filename )
 Result::Name CFilterShaderContainer::AddShader( const std::string& filepath )
 {
 	m_vecpShader.resize( 1 );
-	m_vecpShader[0] = shared_ptr<CPostProcessFilterShader>( new CPostProcessFilterShader );
+	m_vecpShader[0].reset( new CPostProcessFilterShader );
 
 	return m_vecpShader[0]->Init( filepath );
 }
@@ -150,7 +150,7 @@ m_pSurfDS(NULL),
 m_pFloatMSRT(NULL),
 m_pFloatMSDS(NULL)
 {
-	m_pTextureCache = shared_ptr<CRenderTargetTextureCache>( new CRenderTargetTextureCache );
+	m_pTextureCache.reset( new CRenderTargetTextureCache );
 	m_pTextureCache->m_pSelf = m_pTextureCache;
 }
 
@@ -218,7 +218,7 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A8R8G8B8;
 
 	SRectangular bb = GetBackBufferWidthAndHeight();
-	m_pOrigSceneHolder = shared_ptr<CRenderTargetTextureHolder>( new CRenderTargetTextureHolder() );
+	m_pOrigSceneHolder.reset( new CRenderTargetTextureHolder() );
 	m_pOrigSceneHolder->m_Desc.Width  = bb.width;
 	m_pOrigSceneHolder->m_Desc.Height = bb.height;
 	m_pOrigSceneHolder->m_Desc.Format = orig_scene_buffer_format;
@@ -233,7 +233,7 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 //									  1, D3DUSAGE_RENDERTARGET, D3DFMT_A16B16G16R16F,
 //									  D3DPOOL_DEFAULT, &m_SceneRenderTarget, NULL );
 
-	m_pOriginalSceneFilter = shared_ptr<COriginalSceneFilter>( new COriginalSceneFilter( m_pOrigSceneHolder ) );
+	m_pOriginalSceneFilter.reset( new COriginalSceneFilter( m_pOrigSceneHolder ) );
 
 	m_pTextureCache->m_pOrigSceneHolder = m_pOrigSceneHolder;
 
@@ -469,7 +469,7 @@ void CPostProcessEffectManager::SetFirstFilterParams()
 
 Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
 {
-	m_pHDRLightingFilter = shared_ptr<CHDRLightingFilter>( new CHDRLightingFilter );
+	m_pHDRLightingFilter.reset( new CHDRLightingFilter );
 	Result::Name res = m_pHDRLightingFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
 	if( res != Result::SUCCESS )
 	{
@@ -482,16 +482,19 @@ Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
 
 Result::Name CPostProcessEffectManager::InitBlurFilter()
 {
-	m_pFullScreenBlurFilter = shared_ptr<CFullScreenBlurFilter>( new CFullScreenBlurFilter );
+	m_pFullScreenBlurFilter.reset( new CFullScreenBlurFilter );
 	return m_pFullScreenBlurFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
 }
 
 
 Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
 {
-	m_pMonochromeColorFilter = shared_ptr<CMonochromeColorFilter>( new CMonochromeColorFilter );
+	if( !m_pTextureCache )
+		return Result::UNKNOWN_ERROR;
+
+	m_pMonochromeColorFilter.reset( new CMonochromeColorFilter );
 	Result::Name res;
-	res = m_pMonochromeColorFilter->Init( *(m_pTextureCache.get()), m_FilterShaderContainer );
+	res = m_pMonochromeColorFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
 
 	const SRectangular cbb = GetCropWidthAndHeight();
 	m_pMonochromeColorFilter->SetRenderTargetSize( cbb.width, cbb.height );
