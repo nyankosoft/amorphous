@@ -5,19 +5,22 @@
 #include "gds/Graphics/VertexFormat.hpp"
 #include "gds/Graphics/ShapesExtractor.hpp"
 #include "gds/Graphics/PrimitiveShapeRenderer.hpp"
+#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
 #include "gds/Support/MTRand.hpp"
+#include "gds/Support/Vec3_StringAux.hpp"
 #include "gds/Utilities/Physics/PhysicsShapeMakerVisitor.hpp"
 #include "gds/GUI.hpp"
 #include "gds/Physics.hpp"
 #include "gds/Physics/SceneUtility.hpp"
 #include "gds/Physics/RaycastHit.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 using namespace boost::filesystem;
 using namespace physics;
 
@@ -45,7 +48,7 @@ m_StartPhysicsSimulation(false),
 m_DefaultMaterialID(0),
 m_fActorInitHeight( ms_fActorStartInitHeight )
 {
-	m_MeshTechnique.SetTechniqueName( "NoLighting" );
+	m_MeshTechnique.SetTechniqueName( "Default" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
@@ -88,14 +91,13 @@ void CMultiShapeActorsTest::SetLights()
 
 	pShaderLightMgr->ClearLights();
 
-	CDirectionalLight dir_light;
-	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
-	dir_light.fIntensity = 1.0f;
-	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -2.5f, -0.9f ) );
-	pShaderLightMgr->SetDirectionalLight( dir_light );
-	pShaderLightMgr->CommitChanges();
+//	CDirectionalLight dir_light;
+//	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
+//	dir_light.fIntensity = 1.0f;
+//	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -2.5f, -0.9f ) );
+//	pShaderLightMgr->SetDirectionalLight( dir_light );
 
-	bool set_pnt_light = true;
+	bool set_pnt_light = false;
 	if( set_pnt_light )
 	{
 		CPointLight pnt_light;
@@ -106,34 +108,39 @@ void CMultiShapeActorsTest::SetLights()
 		pnt_light.fAttenuation[1] = 1.0f;
 		pnt_light.fAttenuation[2] = 0.1f;
 		pShaderLightMgr->SetPointLight( pnt_light );
-		pShaderLightMgr->CommitChanges();
 	}
 
-/*	CHemisphericDirectionalLight light;
-	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
-	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
-	pShaderLightMgr->SetHemisphericDirectionalLight( light );
-*/}
+	CHemisphericDirectionalLight hdir_light;
+	hdir_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
+	hdir_light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
+	hdir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -2.5f, -0.9f ) );
+	pShaderLightMgr->SetHemisphericDirectionalLight( hdir_light );
+
+	pShaderLightMgr->CommitChanges();
+}
 
 
 bool CMultiShapeActorsTest::InitShader()
 {
 	// initialize shader
-/*	bool shader_loaded = m_Shader.Load( "shaders/MultiShapeActorsTest.fx" );
+	CGenericShaderDesc gsd;
+	CShaderResourceDesc sd;
+	gsd.Specular = CSpecularSource::NONE;
+	sd.pShaderGenerator.reset( new CGenericShaderGenerator(gsd) );
+	bool shader_loaded = m_Shader.Load( sd );
 	if( !shader_loaded )
 		return false;
-*/
+
 
 //	string shader_filepath = LoadParamFromFile<string>( "config", "Shader" );
 
 	SetLights();
 
-	Matrix44 matProj
-		= Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-
-	if( m_Shader.GetShaderManager() )
-		m_Shader.GetShaderManager()->SetProjectionTransform( matProj );
+//	Matrix44 matProj
+//		= Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
+//
+//	if( m_Shader.GetShaderManager() )
+//		m_Shader.GetShaderManager()->SetProjectionTransform( matProj );
 
 	return true;
 }
@@ -144,7 +151,9 @@ void CMultiShapeActorsTest::CreateActors( const std::string& model, int quantity
 	if( !m_pPhysScene )
 		return;
 
-	CPhysicsShapeMakerVisitor visitor;
+	CActorDesc actor_desc;
+
+	CPhysicsShapeMakerVisitor visitor( actor_desc.vecpShapeDesc );
 	visitor;
 	string shape_descs_file( model );
 	lfs::change_ext( shape_descs_file, "sd" );
@@ -161,7 +170,6 @@ void CMultiShapeActorsTest::CreateActors( const std::string& model, int quantity
 
 	// 'visitor' contains shape descs
 
-	CActorDesc actor_desc;
 	actor_desc.BodyDesc.fMass = 1.0f;
 
 	for( int i=0; i<quantity; i++ )
@@ -363,7 +371,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 /*
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 */
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetWorldTransform( ToMatrix44( Matrix34(Vector3(0.0f,0.05f,0.0f),Matrix33Identity()) ) * Matrix44Scaling( 100.0f, 100.0f, 0.1f ) );
 
@@ -391,6 +399,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 		const int num_shapes = m_pActors[i]->GetNumShapes();
 		const Matrix34 actor_world_pose = m_pActors[i]->GetWorldPose();
 		CPrimitiveShapeRenderer renderer;
+		renderer.SetShader( m_Shader );
 		for( int j=0; j<num_shapes; j++ )
 		{
 			if( m_pActors[i]->GetShape(j)->GetType() == PhysShape::Box )
@@ -417,7 +426,15 @@ void CMultiShapeActorsTest::Render()
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
+	SetLights();
+
+	Result::Name res = Result::SUCCESS;
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( pShaderMgr )
+		res = pShaderMgr->SetTechnique( m_MeshTechnique );
+
 	CPrimitiveShapeRenderer renderer;
+	renderer.SetShader( m_Shader );
 	renderer.RenderAxisAlignedPlane();
 
 	RenderMeshes();
@@ -425,18 +442,8 @@ void CMultiShapeActorsTest::Render()
 	if( m_pSampleUI )
 		m_pSampleUI->Render();
 
-	Vector2 vTopLeft(     (float)GetWindowWidth() / 4,  (float)16 );
-	Vector2 vBottomRight( (float)GetWindowWidth() - 16, (float)GetWindowHeight() * 3 / 2 );
-/*	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-	rect.Draw();
-*/
-	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
-
-	Vector3 vCamPos = g_Camera.GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
+	Vector3 vCamPos = GetCurrentCamera().GetPosition();
+	m_pFont->DrawText( to_string( vCamPos ), Vector2( 20, 300 ) );
 }
 
 

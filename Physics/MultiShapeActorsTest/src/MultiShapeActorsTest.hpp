@@ -20,11 +20,6 @@
 
 class CMultiShapeActorsTest : public CGraphicsTestBase, public CGraphicsComponent
 {
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 //	std::vector<CTestMeshHolder> m_vecMesh;
 	std::vector<CMeshObjectHandle> m_Meshes;
 
@@ -49,8 +44,6 @@ class CMultiShapeActorsTest : public CGraphicsTestBase, public CGraphicsComponen
 	Scalar m_PhysOverlapTime;
 
 //	std::vector<CRigidBodyObject> m_RigidBodies;
-
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
 
 	cdv<Vector3> m_vWindForce;
 
