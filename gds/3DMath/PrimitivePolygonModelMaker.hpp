@@ -40,6 +40,15 @@ void CreateCylinder( const Vector3& vPos0, const Vector3& vPos1, const float *pa
 					 std::vector< std::vector<int> >& vecDestPoly );
 
 
+void CreatePipe( float length, const float outer_radius, const float inner_radius,
+                 int num_segments, int num_divisions,
+                 bool create_top_polygons,
+                 PolygonModelStyle::Name top_style,
+                 bool create_bottom_polygons,
+                 PolygonModelStyle::Name bottom_style,
+                 std::vector<Vector3>& vecDestPos,
+                 std::vector<Vector3>& vecDestNormal,
+                 std::vector< std::vector<int> >& vecDestPoly );
 
 
 
