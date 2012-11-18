@@ -1,9 +1,11 @@
 #include "GLGraphicsDevice.hpp"
-#include "gds/base.hpp"
-#include "gds/3DMath/Matrix44.hpp"
-#include "gds/Graphics/FogParams.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/Macro.h"
+#include "GLExtensions.hpp"
+#include "../TextureStage.hpp"
+#include "../FogParams.hpp"
+#include "../../3DMath/Matrix44.hpp"
+#include "../../Support/Log/DefaultLog.hpp"
+#include "../../Support/Macro.h"
+#include "../../Support/Profile.hpp"
 
 using namespace std;
 
@@ -131,6 +133,8 @@ void CGLGraphicsDevice::EnumAdapterModesForDefaultAdapter()
 
 Result::Name CGLGraphicsDevice::SetTexture( int stage, const CTextureHandle& texture )
 {
+//	PROFILE_FUNCTION();
+
 	glBindTexture( GL_TEXTURE_2D, texture.GetGLTextureID() );
 
 	LOG_GL_ERROR( "glBindTexture() failed." );
@@ -144,14 +148,14 @@ GLint ToGLCombine( int operation )
 	return GL_MODULATE;
 }
 
-/*
+
 GLint ToGLTextureStageSource( int src )
 {
 	switch( src )
 	{
-	case CTextureStage::DIFFUSE:  return GL_PRIMARY_COLOR;
-	case CTextureStage::PREVIOUS: return GL_PREVIOUS;
-	case CTextureStage::TEXTURE:  return GL_TEXTURE;
+	case TexStageArg::DIFFUSE:  return GL_PRIMARY_COLOR;
+	case TexStageArg::PREV:     return GL_PREVIOUS;
+	case TexStageArg::TEXTURE:  return GL_TEXTURE;
 	default:
 		return GL_TEXTURE;
 	}
@@ -162,12 +166,28 @@ GLint ToGLOperand( int src )
 {
 	return 0;
 }
-*/
+
 
 Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const CTextureStage& params )
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
-	return Result::UNKNOWN_ERROR;
+//	return Result::UNKNOWN_ERROR;
+
+	if( stage == 0 )
+	{
+//		glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE,   GL_COMBINE);
+		glTexEnvi(GL_TEXTURE_2D, GL_COMBINE_RGB_ARB,    GL_MODULATE);
+		glTexEnvi(GL_TEXTURE_2D, GL_SOURCE0_RGB_ARB,    ToGLTextureStageSource(params.ColorArg0) );
+		glTexEnvi(GL_TEXTURE_2D, GL_OPERAND0_RGB_ARB,   GL_SRC_COLOR); // vertex colors (lit portion)
+		glTexEnvi(GL_TEXTURE_2D, GL_SOURCE1_RGB_ARB,    ToGLTextureStageSource(params.ColorArg1) );
+		glTexEnvi(GL_TEXTURE_2D, GL_OPERAND1_RGB_ARB,   GL_SRC_COLOR); // this texture's colors (stage 0)
+//		glTexEnvi(GL_TEXTURE_2D, GL_COMBINE_ALPHA_ARB,  GL_MODULATE);
+//		glTexEnvi(GL_TEXTURE_2D, GL_SOURCE0_ALPHA_ARB,  GL_PRIMARY_COLOR);
+//		glTexEnvi(GL_TEXTURE_2D, GL_OPERAND0_ALPHA_ARB, GL_SRC_ALPHA); // vertex alpha
+//		glTexEnvi(GL_TEXTURE_2D, GL_SOURCE1_ALPHA_ARB,  GL_TEXTURE);
+//		glTexEnvi(GL_TEXTURE_2D, GL_OPERAND1_ALPHA_ARB, GL_SRC_ALPHA); // this texture's alpha (stage 0)
+	}
+	return Result::SUCCESS;
 /*
 	glActiveTextureARB( GL_TEXTURE0_ARB + stage );	 // start populating the stage
 	glEnable(GL_TEXTURE_2D);
@@ -226,12 +246,14 @@ bool ToGLenum( RenderStateType::Name type, GLenum& cap )
 {
 	switch(type)
 	{
-	case RenderStateType::DEPTH_TEST:   cap = GL_DEPTH_TEST; return true;
-	case RenderStateType::ALPHA_BLEND:  cap = GL_BLEND;	    return true;
-	case RenderStateType::ALPHA_TEST:   cap = GL_ALPHA_TEST; return true;
-	case RenderStateType::LIGHTING:	    cap = GL_LIGHTING;   return true;
-	case RenderStateType::FOG:		    cap = GL_FOG;	    return true;
-	case RenderStateType::FACE_CULLING: cap = GL_CULL_FACE;  return true;
+	case RenderStateType::DEPTH_TEST:                cap = GL_DEPTH_TEST;   return true;
+	case RenderStateType::ALPHA_BLEND:               cap = GL_BLEND;        return true;
+	case RenderStateType::ALPHA_TEST:                cap = GL_ALPHA_TEST;   return true;
+	case RenderStateType::LIGHTING:	                 cap = GL_LIGHTING;     return true;
+	case RenderStateType::FOG:                       cap = GL_FOG;          return true;
+	case RenderStateType::FACE_CULLING:              cap = GL_CULL_FACE;    return true;
+	case RenderStateType::WRITING_INTO_DEPTH_BUFFER: // Handled separately. See GetRenderState() & SetRenderState()
+	case RenderStateType::SCISSOR_TEST:              cap = GL_SCISSOR_TEST; return true;
 	default:
 		return false;
 	}
