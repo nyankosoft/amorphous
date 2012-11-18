@@ -34,7 +34,7 @@ class CPrimitiveShapeMeshesTest : public CGraphicsTestBase
 
 private:
 
-	void CreateGUIControls();
+	int CreatePrimitiveShapeMeshes();
 
 	bool InitShader();
 

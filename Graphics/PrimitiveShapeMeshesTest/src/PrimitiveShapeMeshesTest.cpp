@@ -33,18 +33,12 @@ m_Lighting(false)
 	m_MeshTechnique.SetTechniqueName( "Default" );
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-
-	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3( 0, 1, -3 ) );
 }
 
 
 CPrimitiveShapeMeshesTest::~CPrimitiveShapeMeshesTest()
-{
-}
-
-
-void CPrimitiveShapeMeshesTest::CreateGUIControls()
 {
 }
 
@@ -92,18 +86,11 @@ bool CPrimitiveShapeMeshesTest::InitShader()
 }
 
 
-int CPrimitiveShapeMeshesTest::Init()
+int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 {
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont() );
-	pTexFont->InitFont( GetBuiltinFontData("BitstreamVeraSansMono-Bold-256") );
-	pTexFont->SetFontSize( 8, 16 );
-	m_pFont = pTexFont;
-
-	m_ConeTexture.Load( "./textures/white.bmp" );
-/*
-	m_MeshTechnique.SetTechniqueName( "NoLighting" );
-	m_DefaultTechnique.SetTechniqueName( "NoShader" );
-*/
+	int show_texture = 0;
+	LoadParamFromFile( "params.txt", "show_texture", show_texture );
+	string texture_pathname = show_texture ? "./textures/AshySandstone.jpg" : "./textures/white.png";
 
 	CMeshResourceDesc mesh_desc[5];
 	m_vecMesh.resize( numof(mesh_desc) );
@@ -111,7 +98,7 @@ int CPrimitiveShapeMeshesTest::Init()
 	shared_ptr<CBoxMeshGenerator> pBoxGenerator( new CBoxMeshGenerator() );
 	pBoxGenerator->SetEdgeLengths( Vector3( 1.0f, 1.0f, 1.0f ) );
 	mesh_desc[0].pMeshGenerator = pBoxGenerator;
-	mesh_desc[0].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
+	mesh_desc[0].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[0].ResourcePath = "BoxMesh";
 	m_vecMesh[0].Load( mesh_desc[0] );
 
@@ -120,21 +107,23 @@ int CPrimitiveShapeMeshesTest::Init()
 	cone_desc.body_height = 4.0f;
 	mesh_desc[1].pMeshGenerator = shared_ptr<CMeshGenerator>( new CConeMeshGenerator( cone_desc ) );
 	mesh_desc[1].ResourcePath = "ConeMesh";
-	mesh_desc[1].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
+	mesh_desc[1].pMeshGenerator->SetTexturePath( texture_pathname );
 	m_vecMesh[1].Load( mesh_desc[1] );
 
 	CCapsuleDesc capsule_desc;
 	shared_ptr<CCapsuleMeshGenerator> pCapsuleGenerator( new CCapsuleMeshGenerator(capsule_desc) );
 	mesh_desc[2].pMeshGenerator = pCapsuleGenerator;
-	mesh_desc[2].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
+	mesh_desc[2].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[2].ResourcePath = "CapsuleMesh";
 	m_vecMesh[2].Load( mesh_desc[2] );
 
 	CSphereDesc shpere_desc;
+	shpere_desc.num_sides = 32;
+	shpere_desc.num_segments = 16;
 //	shpere_desc.poly_dir = MeshPolygonDirection::INWARD;
 	shared_ptr<CSphereMeshGenerator> pSphereGenerator( new CSphereMeshGenerator(shpere_desc) );
 	mesh_desc[3].pMeshGenerator = pSphereGenerator;
-	mesh_desc[3].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
+	mesh_desc[3].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[3].ResourcePath = "SphereMesh";
 	m_vecMesh[3].Load( mesh_desc[3] );
 
@@ -142,13 +131,31 @@ int CPrimitiveShapeMeshesTest::Init()
 	cylinder_desc.num_sides = 24;
 	shared_ptr<CCylinderMeshGenerator> pCylinderGenerator( new CCylinderMeshGenerator(cylinder_desc) );
 	mesh_desc[4].pMeshGenerator = pCylinderGenerator;
-	mesh_desc[4].pMeshGenerator->SetTexturePath( "./textures/AshySandstone.jpg" );
+	mesh_desc[4].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[4].ResourcePath = "CylinderMesh";
 	m_vecMesh[4].Load( mesh_desc[4] );
 
 	m_NumPrimitiveMeshes = 5;
 
+	return 0;
+}
+
+
+int CPrimitiveShapeMeshesTest::Init()
+{
+	shared_ptr<CTextureFont> pTexFont( new CTextureFont() );
+	pTexFont->InitFont( GetBuiltinFontData("BitstreamVeraSansMono-Bold-256") );
+	pTexFont->SetFontSize( 8, 16 );
+	m_pFont = pTexFont;
+
+	m_ConeTexture.Load( "./textures/white.png" );
+/*
+	m_MeshTechnique.SetTechniqueName( "NoLighting" );
+	m_DefaultTechnique.SetTechniqueName( "NoShader" );
+*/
 	InitShader();
+
+	CreatePrimitiveShapeMeshes();
 
 	return 0;
 }
@@ -169,9 +176,9 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 
 	Matrix44 matWorld( Matrix44Identity() );
 
-	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 	if( shader_mgr.GetShaderLightManager() )
