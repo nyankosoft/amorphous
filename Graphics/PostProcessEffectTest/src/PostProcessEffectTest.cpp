@@ -415,10 +415,6 @@ int CPostProcessEffectTest::Init()
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 	pShaderManager->SetWorldTransform( Matrix44Identity() );
 
-	// set the projection matrix
-	Matrix44 proj = Matrix44PerspectiveFoV_LH( D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
-	FixedFunctionPipelineManager().SetProjectionTransform( proj );
-	pShaderManager->SetProjectionTransform( proj );
 /*
 	// initialize the light for the shader
 	m_ShaderLightManager.Init();
