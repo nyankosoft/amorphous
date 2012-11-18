@@ -76,7 +76,7 @@ bool C3DShapesExporter_LW::ExtractShapes( boost::shared_ptr<CLWO2_Object> pObjec
 			return false;
 
 		CShapesExtractor shapes_extractor;
-		Result::Name extract_result = shapes_extractor.ExtractShapes( pSrcMesh, output_filepaths[i] );
+		Result::Name extract_result = shapes_extractor.ExtractShapesAndSaveToFile( pSrcMesh, output_filepaths[i] );
 		if( extract_result != Result::SUCCESS )
 			res = extract_result;
 	}

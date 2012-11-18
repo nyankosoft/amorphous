@@ -24,7 +24,8 @@ public:
 
 	Result::Name ExtractShapes( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeContainerSet& shape_set );
 
-	Result::Name ExtractShapes( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath );
+	/// \param output_filepath [in] pathname of output file.
+	Result::Name ExtractShapesAndSaveToFile( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath );
 };
 
 

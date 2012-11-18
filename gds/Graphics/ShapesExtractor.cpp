@@ -102,7 +102,7 @@ Result::Name CShapesExtractor::ExtractShapes( shared_ptr<CGeneral3DMesh> pSrcMes
 }
 
 
-Result::Name CShapesExtractor::ExtractShapes( shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath )
+Result::Name CShapesExtractor::ExtractShapesAndSaveToFile( shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath )
 {
 	CShapeContainerSet shape_set;
 	Result::Name res = ExtractShapes( pSrcMesh, shape_set );
