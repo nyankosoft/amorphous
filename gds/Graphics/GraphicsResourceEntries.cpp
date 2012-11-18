@@ -1,7 +1,6 @@
 #include "GraphicsResourceEntries.hpp"
 
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
-#include "Graphics/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/ImageArchive.hpp"

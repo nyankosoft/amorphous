@@ -5,7 +5,6 @@
 #include "Graphics/Direct3D/Shader/D3DShaderManager.hpp"
 #include "Graphics/Direct3D/Shader/D3DCgEffect.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
-#include "Graphics/MeshGenerators.hpp"
 #include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/ImageArchive.hpp"
