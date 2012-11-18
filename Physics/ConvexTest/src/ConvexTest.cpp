@@ -12,7 +12,7 @@
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/MeshUtilities.hpp"
-#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
