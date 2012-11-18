@@ -2,7 +2,7 @@
 #define __GridTextureGenerator_HPP__
 
 
-#include "../GraphicsResources.hpp"
+#include "TextureFillingAlgorithm.hpp"
 
 class CGridTextureGenerator : public CTextureFillingAlgorithm
 {
