@@ -245,6 +245,9 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 // Set a render target on which client renders the scene.
 Result::Name CPostProcessEffectManager::BeginRender()
 {
+	if( !m_pOrigSceneHolder )
+		return Result::UNKNOWN_ERROR;
+
 	m_IsRedering = true;
 
 	if( m_EnabledEffectFlags == 0 )
