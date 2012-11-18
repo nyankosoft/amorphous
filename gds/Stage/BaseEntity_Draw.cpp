@@ -12,7 +12,7 @@
 #include "Graphics/Shader/ShaderLightManager.hpp"
 #include "Graphics/Shader/BlendTransformsLoader.hpp"
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
-#include "Graphics/MeshGenerators.hpp"
+#include "Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Graphics/ShadowMapManager.hpp"
 

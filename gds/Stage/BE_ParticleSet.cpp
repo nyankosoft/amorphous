@@ -10,7 +10,7 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/RectTriListIndex.hpp"
-#include "Graphics/MeshGenerators.hpp" // box mesh for debugging
+#include "Graphics/MeshGenerators/MeshGenerators.hpp" // box mesh for debugging
 #include "GameCommon/CriticalDamping.hpp"
 #include "Support/Profile.hpp"
 #include "Support/MTRand.hpp"

@@ -1,5 +1,5 @@
 #include "ClothSystem.hpp"
-#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "gds/Graphics/MeshUtilities.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"

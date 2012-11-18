@@ -4,7 +4,7 @@
 //#include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "Stage.hpp"
-#include "Graphics/MeshGenerators.hpp"
+#include "Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"

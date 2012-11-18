@@ -1,7 +1,7 @@
 #include "StageUtility.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/MeshGenerators.hpp"
+#include "Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderVariableLoader.hpp"
 #include "Graphics/Shader/GenericShaderDesc.hpp"
 #include "Physics/ActorDesc.hpp"

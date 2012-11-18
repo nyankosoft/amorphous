@@ -18,7 +18,7 @@
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Mesh/CustomMeshRenderer.hpp"
-#include "Graphics/MeshGenerators.hpp"
+#include "Graphics/MeshGenerators/MeshGenerators.hpp"
 
 // others
 #include "Graphics/3DGameMath.hpp"
