@@ -61,6 +61,8 @@ public:
 
 	std::string GetOutputFilepath( uint model_index );
 
+	uint GetNumOutputFilepaths() const { return (uint)m_OutputFilepaths.size(); }
+
 	boost::shared_ptr<CLWO2_Object> GetLWO2Object() { return m_pObject; }
 
 	std::vector< std::vector<std::string> > GetOriginalTextureFilepaths( uint model_index );

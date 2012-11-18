@@ -145,6 +145,10 @@ public:
 };
 
 
+/// \param words [in] layer name separated by spaces or tabs
+int GetGroupNumber( const std::vector<std::string>& words );
+
+
 }
 
 

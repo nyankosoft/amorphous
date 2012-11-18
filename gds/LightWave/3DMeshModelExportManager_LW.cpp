@@ -59,6 +59,13 @@ void C3DMeshModelExportManager_LW::GetOutputFilename( string& dest_filename, con
 }
 
 
+class sort_by_group_number
+{
+public:
+	bool operator()( const SLayerSet& lhs, const SLayerSet& rhs ) const { return lhs.GroupNumber < rhs.GroupNumber; }
+};
+
+
 bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, U32 build_option_flags )
 {
 	Release();
@@ -104,18 +111,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 		GetOutputFilename( strOutFilename, layer->GetName() );
 
-		int group_number = -1;
-		for( j=0; j<words.size(); j++ )
-		{
-			// is the word a group option, i.e. -g0, -g1, ...?
-			if( words[j].find( "-g" ) == 0 )
-			{
-				// The program assumes that the "-g" is immediately followed by a group number,
-				// and nothing comes after the group number
-				group_number = atoi( words[j].substr( 2 ).c_str() );
-				break;
-			}
-		}
+		int group_number = GetGroupNumber( words );
 
 		for( j=0; j<num_layer_sets; j++ )
 		{
@@ -156,6 +152,10 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 		vecLayerSet[0].strOutputFilename = m_strBaseOutFilename;
 	}
 
+	// This ensures that the output filepaths stored in m_OutputFilepaths are in the same orders
+	// as the group numbers.
+	if( 1 < vecLayerSet.size() )
+		std::sort( vecLayerSet.begin(), vecLayerSet.end(), sort_by_group_number() );
 
 	vector<CLWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", CLWO2_NameMatchCond::START_WITH );
 

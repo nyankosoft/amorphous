@@ -32,6 +32,8 @@ public:
 
 	void Release();
 
+	bool ExtractShapes( boost::shared_ptr<CLWO2_Object> pObject, const std::vector<std::string>& output_filepaths );
+
 	bool ExtractShapes( boost::shared_ptr<CLWO2_Object> pObject, const std::string& output_filepath );
 };
 

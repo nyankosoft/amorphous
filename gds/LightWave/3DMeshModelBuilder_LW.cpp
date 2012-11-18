@@ -23,6 +23,25 @@ static const unsigned int gs_DefaultVertexFlags_LW
 | CMMA_VertexSet::VF_DIFFUSE_COLOR;
 
 
+int MeshModel::GetGroupNumber( const std::vector<std::string>& words )
+{
+	int group_number = -1;
+	for( size_t i=0; i<words.size(); i++ )
+	{
+		// is the word a group option, i.e. -g0, -g1, ...?
+		if( words[i].find( "-g" ) == 0 )
+		{
+			// The program assumes that the "-g" is immediately followed by a group number,
+			// and nothing comes after the group number
+			group_number = atoi( words[i].substr( 2 ).c_str() );
+			break;
+		}
+	}
+
+	return group_number;
+}
+
+
 C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW()
 :
 m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
