@@ -2,7 +2,7 @@
 #define __MeshUtilities_HPP__
 
 
-#include "MeshGenerators.hpp"
+#include "MeshGenerators/MeshGenerators.hpp"
 #include "MeshObjectHandle.hpp"
 #include "Mesh/CustomMesh.hpp"
 
