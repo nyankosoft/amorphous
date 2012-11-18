@@ -1,7 +1,7 @@
 #include "MeshGenerators.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "MeshModel/General3DMesh.hpp"
-#include "MeshModel/3DMeshModelBuilder.hpp"
+#include "../../Support/Vec3_StringAux.hpp"
+#include "../MeshModel/General3DMesh.hpp"
+#include "../MeshModel/3DMeshModelBuilder.hpp"
 
 using std::vector;
 using boost::shared_ptr;

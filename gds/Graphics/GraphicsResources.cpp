@@ -3,7 +3,7 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp" // For GetCustomMesh()
 #include "Graphics/Mesh/MeshFactory.hpp"
-#include "Graphics/MeshGenerators.hpp"
+#include "Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/ShaderGenerator.hpp"
 #include "Support/SafeDelete.hpp"

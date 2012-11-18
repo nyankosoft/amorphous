@@ -1,6 +1,6 @@
 #include "Graphics/DoubleConeScrollEffect.hpp"
 #include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/MeshGenerator.hpp"
+#include "Graphics/Meshgenerators/MeshGenerator.hpp"
 #include "Graphics/TextureStage.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"

@@ -2,9 +2,8 @@
 #define __MeshGenerator_HPP__
 
 
-#include "../base.hpp"
-#include "MeshModel/PrimitiveShapeMeshes.hpp"
-#include "MeshModel/3DMeshModelArchive.hpp"
+#include "../MeshModel/PrimitiveShapeMeshes.hpp"
+#include "../MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
 

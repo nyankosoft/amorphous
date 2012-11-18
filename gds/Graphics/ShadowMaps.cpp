@@ -6,7 +6,7 @@
 #include "Shader/ShaderManagerHub.hpp"
 #include "Shader/ShaderManager.hpp"
 #include "3DGameMath.hpp"
-#include "Meshgenerators.hpp"
+#include "Meshgenerators/Meshgenerators.hpp"
 #include "Mesh/BasicMesh.hpp"
 #include "3DMath/MatrixConversions.hpp"
 #include "Support/SafeDelete.hpp"
