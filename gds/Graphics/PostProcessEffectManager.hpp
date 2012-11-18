@@ -84,11 +84,11 @@ class CPostProcessFilterShader
 	bool         m_bWrite[4];            
 	                                     
 
-	WCHAR        m_awszParamName[NUM_PARAMS][MAX_PATH]; ///< Names of changeable parameters
+	std::string  m_awszParamName[NUM_PARAMS]; ///< Names of changeable parameters
 
-	WCHAR        m_awszParamDesc[NUM_PARAMS][MAX_PATH]; ///< Description of parameters
+	std::string  m_awszParamDesc[NUM_PARAMS]; ///< Description of parameters
 
-	D3DXHANDLE   m_ahParam[NUM_PARAMS];  ///< Handles to the changeable parameters
+//	D3DXHANDLE   m_ahParam[NUM_PARAMS];  ///< Handles to the changeable parameters
 
 	/// Size of the parameter. Indicates how many
 	/// components of float4 are used.

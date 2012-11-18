@@ -66,9 +66,7 @@ CPostProcessFilterShader::CPostProcessFilterShader()
 //	memset( m_hTexSource,    0, sizeof(m_hTexSource) );
 //	memset( m_hTexScene,     0, sizeof(m_hTexScene) );
 	memset( m_bWrite,        0, sizeof(m_bWrite) );
-	memset( m_ahParam,       0, sizeof(m_ahParam) );
-	memset( m_awszParamName, 0, sizeof(m_awszParamName) );
-	memset( m_awszParamDesc, 0, sizeof(m_awszParamDesc) );
+//	memset( m_ahParam,       0, sizeof(m_ahParam) );
 	memset( m_anParamSize,   0, sizeof(m_anParamSize) );
 	memset( m_avParamDef,    0, sizeof(m_avParamDef) );
 }
