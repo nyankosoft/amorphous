@@ -133,6 +133,9 @@
     <Filter Include="Graphics\TextureGenerators">
       <UniqueIdentifier>{c13d7b69-7284-4c30-9781-e12db4f01c64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\MeshGenerators">
+      <UniqueIdentifier>{2c2b3307-3c8f-4f79-a619-4a1a683f6dd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Graphics\BillboardArrayMesh.cpp">
@@ -262,9 +265,6 @@
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\Mesh\MeshFactory.cpp">
-      <Filter>Graphics\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshGenerators.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\MeshModel\NVMeshMender.cpp">
@@ -789,6 +789,9 @@
     <ClCompile Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -981,9 +984,6 @@
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\Mesh\MeshFactory.hpp">
-      <Filter>Graphics\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshGenerators.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\MeshModel\NVMeshMender.hpp">
@@ -1829,6 +1829,15 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GradationTextureGenerators.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

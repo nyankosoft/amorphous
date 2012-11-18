@@ -94,6 +94,7 @@
     <ClCompile Include="..\..\gds\Graphics\LensFlare.cpp" />
     <ClCompile Include="..\..\gds\Graphics\LogOutput_OnScreen.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshContainerRenderMethod.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.cpp" />
     <ClCompile Include="..\..\gds\Graphics\OpenGL\GLInitialization.cpp" />
@@ -130,7 +131,6 @@
     <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshBone.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Mesh\MeshFactory.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\MeshGenerators.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshModel\NVMeshMender.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Mesh\ProgressiveMesh.cpp" />
@@ -351,6 +351,9 @@
     <ClInclude Include="..\..\gds\Graphics\LightStructs.hpp" />
     <ClInclude Include="..\..\gds\Graphics\LogOutput_OnScreen.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshContainerRenderMethod.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.hpp" />
     <ClInclude Include="..\..\gds\Graphics\OpenGL\GLInitialization.hpp" />
@@ -404,7 +407,6 @@
     <ClInclude Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshModel\MeshBone.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Mesh\MeshFactory.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\MeshGenerators.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshModel\NVMeshMender.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Mesh\ProgressiveMesh.hpp" />
