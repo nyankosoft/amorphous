@@ -22,10 +22,10 @@ public:
 
 	~CShapesExtractor(){}
 
-	Result::Name ExtractShapes( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeContainerSet& shape_set );
+	Result::Name ExtractShapes( const boost::shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeContainerSet& shape_set );
 
 	/// \param output_filepath [in] pathname of output file.
-	Result::Name ExtractShapesAndSaveToFile( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath );
+	Result::Name ExtractShapesAndSaveToFile( const boost::shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath );
 };
 
 
