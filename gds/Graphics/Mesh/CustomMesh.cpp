@@ -21,6 +21,17 @@ m_NumUpdatedIndices(0)
 }
 
 
+void CCustomMesh::SetNormals( const Vector3& normal )
+{
+	const int num_vertices = GetNumVertices();
+	const int offset = m_ElementOffsets[VEE::NORMAL];
+	const Vector3 n = normal;
+
+	for( int i=0; i<num_vertices; i++ )
+		memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &n, sizeof(Vector3) );
+}
+
+
 void CCustomMesh::SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors )
 {
 	const int num = (int)diffuse_colors.size();

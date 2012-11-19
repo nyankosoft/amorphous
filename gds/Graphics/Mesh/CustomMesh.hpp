@@ -44,6 +44,8 @@ public:
 
 	inline Vector3 GetVec3Element( unsigned int vertex_index, VEE::ElementName element ) const;
 
+	inline void SetVec3Elements( const Vector3 *src, const unsigned int num_src_elements, VEE::ElementName element, U32 flag );
+
 	inline void SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag );
 
 	inline void SetVec3Element( uint vertex_index, const Vector3& src, VEE::ElementName element, U32 flag );
@@ -77,6 +79,12 @@ public:
 	inline TEXCOORD2 Get2DTexCoord( uint vertex_index, int tex_coord_index ) const;
 	inline SFloatRGBAColor GetDiffuseColor( uint vertex_index ) const;
 
+	inline void SetPositions(   const Vector3 *positions, unsigned int num_elements ) { SetVec3Elements( positions, num_elements, VEE::POSITION, VFF::POSITION ); }
+	inline void SetNormals(     const Vector3 *normals,   unsigned int num_elements ) { SetVec3Elements( normals,   num_elements, VEE::NORMAL,   VFF::NORMAL ); }
+	inline void SetTangents(    const Vector3 *tangents,  unsigned int num_elements ) { SetVec3Elements( tangents,  num_elements, VEE::TANGENT,  VFF::TANGENT ); }
+	inline void SetBinormals(   const Vector3 *binormals, unsigned int num_elements ) { SetVec3Elements( binormals, num_elements, VEE::BINORMAL, VFF::BINORMAL ); }
+	inline void Set2DTexCoords( const TEXCOORD2 *tex_coords, unsigned int num_elements, int tex_coord_index );
+
 	inline void SetPositions(   const std::vector<Vector3>& positions ) { SetVec3Elements( positions, VEE::POSITION, VFF::POSITION ); }
 	inline void SetNormals(     const std::vector<Vector3>& normals )   { SetVec3Elements( normals,   VEE::NORMAL,   VFF::NORMAL ); }
 	inline void SetTangents(    const std::vector<Vector3>& tangents )  { SetVec3Elements( tangents,  VEE::TANGENT,  VFF::TANGENT ); }
@@ -89,6 +97,9 @@ public:
 	inline void SetBinormal(     uint vertex_index, const Vector3& binormal )   { SetVec3Element( vertex_index, binormal, VEE::BINORMAL, VFF::BINORMAL ); }
 	inline void Set2DTexCoord(   uint vertex_index, const TEXCOORD2& tex_coord, int tex_coord_index );
 	inline void SetDiffuseColor( uint vertex_index, const SFloatRGBAColor& color );
+
+	/// Sets the same normal to all the vertices. Used to render a single rectangle.
+	void SetNormals( const Vector3& normal );
 
 	void SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors );
 
@@ -176,15 +187,23 @@ inline Vector3 CCustomMesh::GetVec3Element( unsigned int vertex_index, VEE::Elem
 }
 
 
-inline void CCustomMesh::SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag )
+inline void CCustomMesh::SetVec3Elements( const Vector3 *src, const unsigned int num_src_elements, VEE::ElementName element, U32 flag )
 {
 	if( !(m_VertexFlags & flag) || m_VertexBuffer.empty() )
 		return;
 
 	const uint vertex_size = m_VertexSize;
-	const int num = (int)src.size();
-	for( int i=0; i<num; i++ )
+	for( unsigned int i=0; i<num_src_elements; i++ )
 		memcpy( &(m_VertexBuffer[0]) + vertex_size * i + m_ElementOffsets[element], &(src[i]), sizeof(Vector3) );
+}
+
+
+inline void CCustomMesh::SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag )
+{
+	if( src.empty() )
+		return;
+
+	SetVec3Elements( &(src[0]), (unsigned int)src.size(), element, flag );
 }
 
 
@@ -244,20 +263,31 @@ inline SFloatRGBAColor CCustomMesh::GetDiffuseColor( unsigned int vertex_index )
 }
 
 
-inline void CCustomMesh::Set2DTexCoords( const std::vector<TEXCOORD2>& tex_coords, int tex_coord_index )
+inline void CCustomMesh::Set2DTexCoords( const TEXCOORD2 *tex_coords, unsigned int num_elements, int tex_coord_index )
 {
-	const std::vector<TEXCOORD2>& src = tex_coords;
+	if( !tex_coords )
+		return;
+
 	int element = VEE::TEXCOORD2_0 + tex_coord_index;
 	U32 flag = VFF::TEXCOORD2_0 << tex_coord_index;
 
 	if( !(m_VertexFlags & flag) || m_VertexBuffer.empty() )
 		return;
 
-	const int num = (int)src.size();
 	const int offset = m_ElementOffsets[element];
-	for( int i=0; i<num; i++ )
-		memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(src[i]), sizeof(TEXCOORD2) );
+	for( unsigned int i=0; i<num_elements; i++ )
+		memcpy( &(m_VertexBuffer[0]) + m_VertexSize * i + offset, &(tex_coords[i]), sizeof(TEXCOORD2) );
 }
+
+
+inline void CCustomMesh::Set2DTexCoords( const std::vector<TEXCOORD2>& tex_coords, int tex_coord_index )
+{
+	if( tex_coords.empty() )
+		return;
+
+	Set2DTexCoords( &(tex_coords[0]), (unsigned int)tex_coords.size(), tex_coord_index );
+}
+
 
 inline void CCustomMesh::Set2DTexCoord( uint vertex_index, const TEXCOORD2& tex_coord, int tex_coord_index )
 {
