@@ -16,6 +16,18 @@ class CPrimitiveShapeRenderer
 	static CCustomMesh ms_BoxMesh;
 
 	static CCustomMesh ms_RectMesh;
+	
+private:
+
+	Result::Name RenderPlane(
+		const Vector3 *positions,
+		const Vector3& normal,
+		const SFloatRGBAColor& color,
+		CTextureHandle& texture,
+		const TEXCOORD2& top_left,
+		const TEXCOORD2& bottom_right,
+		CShaderManager& shader_mgr
+		);
 
 public:
 

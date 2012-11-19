@@ -2,8 +2,7 @@
 #include "Shader/FixedFunctionPipelineManager.hpp"
 #include "Shader/ShaderManager.hpp"
 #include "TextureUtilities.hpp"
-#include "MeshGenerators.hpp"
-#include "3DRect.hpp"
+#include "MeshGenerators/MeshGenerators.hpp"
 #include "PrimitiveRenderer.hpp"
 
 using namespace std;
@@ -22,13 +21,9 @@ static void InitRectMesh( CCustomMesh& mesh, const SFloatRGBAColor& vertex_diffu
 
 	mesh.InitVertexBuffer( 4, vertex_format_flags );
 
-	vector<Vector3> normals;
-	normals.resize( 4, Vector3(0,0,1) );
-	mesh.SetNormals( normals );
+	mesh.SetNormals( Vector3(0,0,1) );
 
-	vector<SFloatRGBAColor> diffuse_colors;
-	diffuse_colors.resize( 4, vertex_diffuse_color );
-	mesh.SetDiffuseColors( diffuse_colors );
+	mesh.SetDiffuseColors( vertex_diffuse_color );
 
 	vector<unsigned int> indices;
 	indices.resize( 6 );
@@ -40,6 +35,16 @@ static void InitRectMesh( CCustomMesh& mesh, const SFloatRGBAColor& vertex_diffu
 	indices[5] = 2;
 
 	mesh.SetIndices<unsigned int>( indices );
+
+	vector<CMMA_TriangleSet> triangle_sets;
+	triangle_sets.resize( 1 );
+	triangle_sets[0].m_iStartIndex             = 0;
+	triangle_sets[0].m_iMinIndex               = 0;
+	triangle_sets[0].m_iNumVertexBlocksToCover = 4;
+	triangle_sets[0].m_iNumTriangles           = 2;
+	triangle_sets[0].m_AABB                    = AABB3( Vector3(0,0,0), Vector3(0,0,0) );
+
+	mesh.SetTriangleSets( triangle_sets );
 }
 
 
@@ -93,7 +98,95 @@ void CPrimitiveShapeRenderer::RenderCylinder( float radius, float height, const 
 }
 
 
-void CPrimitiveShapeRenderer::RenderAxisAlignedPlane( uint axis, const Vector3& vCenter, float span_0, float span_1, const SFloatRGBAColor& color, CTextureHandle& texture, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
+Result::Name CPrimitiveShapeRenderer::RenderPlane(
+	const Vector3 *positions,
+	const Vector3& normal,
+	const SFloatRGBAColor& color,
+	CTextureHandle& texture,
+	const TEXCOORD2& top_left,
+	const TEXCOORD2& bottom_right,
+	CShaderManager& shader_mgr
+	)
+{
+	if( ms_RectMesh.GetNumVertices() == 0 )
+		InitRectMesh( ms_RectMesh, color );
+	else
+		ms_RectMesh.SetDiffuseColors( color );
+
+	// Set the four vertices of the rectangle.
+	const unsigned int num_vertices_to_set = 4;
+	ms_RectMesh.SetPositions( positions, num_vertices_to_set );
+
+	ms_RectMesh.SetNormals( normal );
+
+	TEXCOORD2 tex_coords[4] =
+	{
+		TEXCOORD2( top_left.u,     top_left.v ),
+		TEXCOORD2( bottom_right.u, top_left.v ),
+		TEXCOORD2( bottom_right.u, bottom_right.v ),
+		TEXCOORD2( top_left.u,     bottom_right.v )
+	};
+
+	ms_RectMesh.Set2DTexCoords( tex_coords, num_vertices_to_set, 0 );
+
+//	if( ms_RectMesh.GetNumMaterials() == 0 )
+//		return Result::UNKNOWN_ERROR;
+
+	// Temporarily override the texture
+	ms_RectMesh.Materials().resize( 1 );
+	ms_RectMesh.Material(0).Texture.resize( 1 );
+	ms_RectMesh.Material(0).Texture[0] = texture;
+
+	ms_RectMesh.Render( shader_mgr );
+
+	ms_RectMesh.Material(0).Texture[0] = CTextureHandle();
+
+	return Result::SUCCESS;
+}
+
+
+void CPrimitiveShapeRenderer::RenderPlane(
+	const Matrix34& pose,
+	float width,
+	float height,
+	const SFloatRGBAColor& color,
+	CTextureHandle& texture,
+	const TEXCOORD2& top_left,
+	const TEXCOORD2& bottom_right
+	)
+{
+	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+
+	shader_mgr.SetWorldTransform( pose );
+
+	float hr = width  * 0.5f; // horizontal raidus
+	float vr = height * 0.5f; // vertical raidus
+
+	const Vector3 positions[4] =
+	{
+		Vector3(-hr, vr,0),
+		Vector3( hr, vr,0),
+		Vector3( hr,-vr,0),
+		Vector3(-hr,-vr,0)
+	};
+
+	const Vector3 normal = pose.matOrient.GetColumn(1);
+
+	RenderPlane( positions, normal, color, texture, top_left, bottom_right, shader_mgr );
+}
+
+
+void CPrimitiveShapeRenderer::RenderAxisAlignedPlane(
+	uint axis,
+	const Vector3& vCenter,
+	float span_0,
+	float span_1,
+	const SFloatRGBAColor& color,
+	CTextureHandle& texture,
+	const TEXCOORD2& top_left,
+	const TEXCOORD2& bottom_right
+	)
 {
 	if( 6 <= axis )
 		return;
@@ -116,13 +209,14 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane( uint axis, const Vector3& 
 		vCenter,
 		vCenter
 	};
-	corners[0][span_index_0] += span_0 * 0.5f;
+
+	corners[0][span_index_0] -= span_0 * 0.5f;
 	corners[0][span_index_1] += span_1 * 0.5f;
-	corners[1][span_index_0] -= span_0 * 0.5f;
+	corners[1][span_index_0] += span_0 * 0.5f;
 	corners[1][span_index_1] += span_1 * 0.5f;
-	corners[2][span_index_0] -= span_0 * 0.5f;
+	corners[2][span_index_0] += span_0 * 0.5f;
 	corners[2][span_index_1] -= span_1 * 0.5f;
-	corners[3][span_index_0] += span_0 * 0.5f;
+	corners[3][span_index_0] -= span_0 * 0.5f;
 	corners[3][span_index_1] -= span_1 * 0.5f;
 
 	CTextureHandle default_texture;
@@ -139,15 +233,13 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane( uint axis, const Vector3& 
 
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
-	shader_mgr.SetTexture( 0, texture_to_set );
 
-	C3DRect rect;
-	rect.SetPositions( corners );
-	rect.SetColor( color );
-	rect.SetNormal( normal );
-	rect.SetTextureUV( top_left, bottom_right );
+	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-	rect.Draw();
+	Result::Name res = shader_mgr.SetTexture( 0, texture_to_set );
+	res = shader_mgr.SetTexture( 1, texture_to_set );
+
+	RenderPlane( corners, normal, color, texture_to_set, top_left, bottom_right, shader_mgr );
 }
 
 
@@ -199,59 +291,4 @@ void CPrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, c
 	{
 		GetPrimitiveRenderer().DrawLine( points[i*2], points[i*2+1], wireframe_color, wireframe_color );
 	}
-}
-
-
-void CPrimitiveShapeRenderer::RenderPlane(
-	const Matrix34& pose,
-	float width,
-	float height,
-	const SFloatRGBAColor& color,
-	CTextureHandle& tex,
-	const TEXCOORD2& top_left,
-	const TEXCOORD2& bottom_right
-	)
-{
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
-
-	shader_mgr.SetWorldTransform( pose );
-
-	float hr = width  * 0.5f; // horizontal raidus
-	float vr = height * 0.5f; // vertical raidus
-
-	if( ms_RectMesh.GetNumVertices() == 0 )
-		InitRectMesh( ms_RectMesh, color );
-	else
-		ms_RectMesh.SetDiffuseColors( color );
-
-	vector<Vector3> positions;
-	vector<TEXCOORD2> tex_coords;
-	positions.resize( 4 );
-	tex_coords.resize( 4 );
-
-	positions[0] = Vector3(-hr, vr,0);
-	positions[1] = Vector3( hr, vr,0);
-	positions[2] = Vector3( hr,-vr,0);
-	positions[3] = Vector3(-hr,-vr,0);
-
-	tex_coords[0] = TEXCOORD2( top_left.u,     top_left.v );
-	tex_coords[1] = TEXCOORD2( bottom_right.u, top_left.v );
-	tex_coords[2] = TEXCOORD2( bottom_right.u, bottom_right.v );
-	tex_coords[3] = TEXCOORD2( top_left.u,     bottom_right.v );
-
-	ms_RectMesh.SetPositions( positions );
-	ms_RectMesh.Set2DTexCoords( tex_coords, 0 );
-
-//	if( ms_RectMesh.GetNumMaterials() == 0 )
-//		return Result::UNKNOWN_ERROR;
-
-	// Temporarily override the texture
-	ms_RectMesh.Materials().resize( 1 );
-	ms_RectMesh.Material(0).Texture.resize( 1 );
-	ms_RectMesh.Material(0).Texture[0] = tex;
-
-	ms_RectMesh.Render( shader_mgr );
-
-	ms_RectMesh.Material(0).Texture[0] = CTextureHandle();
 }
