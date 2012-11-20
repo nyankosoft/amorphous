@@ -500,8 +500,8 @@ Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
 		return Result::UNKNOWN_ERROR;
 
 	m_pMonochromeColorFilter.reset( new CMonochromeColorFilter );
-	Result::Name res;
-	res = m_pMonochromeColorFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
+
+	Result::Name res = m_pMonochromeColorFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
 
 	return res;
 }
