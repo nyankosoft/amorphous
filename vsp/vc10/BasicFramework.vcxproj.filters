@@ -792,6 +792,9 @@
     <ClCompile Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.cpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -1838,6 +1841,9 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

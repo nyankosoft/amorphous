@@ -86,6 +86,7 @@
     <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DCGraphicsResourceLoaders.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DInitialization.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Direct3D\Font\D3DXFont.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp" />
     <ClCompile Include="..\..\gds\Graphics\DoubleConeScrollEffect.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Font\FontFactory.cpp" />
     <ClCompile Include="..\..\gds\Graphics\GraphicsComponentCollector.cpp" />
@@ -337,6 +338,7 @@
     <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DInitialization.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Direct3D\Font\D3DXFont.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp" />
     <ClInclude Include="..\..\gds\Graphics\DoubleConeScrollEffect.hpp" />
     <ClInclude Include="..\..\gds\Graphics\FloatRGBAColor.hpp" />
     <ClInclude Include="..\..\gds\Graphics\FloatRGBColor.hpp" />
