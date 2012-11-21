@@ -148,6 +148,11 @@ public:
 	inline void CalculateVertexNormalsFromPolygonPlanes();
 
 //	void Append( CGeneral3DMesh& mesh );
+
+	/// Sets positoins, normals, and texture coordinates.
+	/// NOTE: the vertex format flags are not updated. Client code is responsible
+	///       for updating the the vertex format flags.
+	inline void SetVertices( const std::vector<Vector3>& positions, const std::vector<Vector3>& normals, const std::vector<TEXCOORD2>& tex_uvs );
 	
 	template<typename T>
 	inline void SetPolygons( const std::vector< std::vector<T> >& polygons );
@@ -272,11 +277,41 @@ inline void CGeneral3DMesh::CalculateVertexNormalsFromPolygonPlanes()
 }
 
 
+inline void CGeneral3DMesh::SetVertices(
+	const std::vector<Vector3>& positions,
+	const std::vector<Vector3>& normals,
+	const std::vector<TEXCOORD2>& tex_uvs )
+{
+	if( positions.size() != normals.size()
+	 || normals.size()   != tex_uvs.size() )
+	{
+		return;
+	}
+
+	const size_t num_vertices = positions.size();
+
+	boost::shared_ptr< std::vector<CGeneral3DVertex> > pVB = GetVertexBuffer();
+	if( !pVB )
+		return;
+
+	std::vector<CGeneral3DVertex>& vertices = *pVB;
+
+	vertices.resize( num_vertices );
+	for( size_t i=0; i<num_vertices; i++ )
+	{
+		vertices[i].m_vPosition = positions[i];
+		vertices[i].m_vNormal   = normals[i];
+		vertices[i].m_TextureCoord.resize( 1 );
+		vertices[i].m_TextureCoord[0] = tex_uvs[i];
+	}
+}
+
+
 /// T must be a singed or an unsigned integer type
 template<typename T>
 inline void CGeneral3DMesh::SetPolygons( const std::vector< std::vector<T> >& polygons )
 {
-	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	std::vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
 	polygon_buffer.resize( 0 );
 
 	size_t num_polygons = polygons.size();
