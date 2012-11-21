@@ -3,7 +3,8 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.hpp"
+#include "Graphics/Direct3D/Shader/Embedded/EmbeddedPostProcessEffectHLSLShader.hpp"
+#include "Support/ParamLoader.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace boost;
@@ -72,21 +73,38 @@ CPostProcessFilterShader::CPostProcessFilterShader()
 }
 
 
-Result::Name CPostProcessFilterShader::Init( const std::string& filename )
+Result::Name CPostProcessFilterShader::Init( const CShaderResourceDesc& shader_desc )
 {
-	m_ShaderFilename = filename;
-	bool loaded = m_Shader.Load( m_ShaderFilename );
+	m_ShaderDesc = shader_desc;
+	bool loaded = m_Shader.Load( m_ShaderDesc );
 
 	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
 
-Result::Name CFilterShaderContainer::AddShader( const std::string& filepath )
+Result::Name CPostProcessFilterShader::Init( const std::string& filename )
+{
+	m_ShaderDesc.ResourcePath = filename;
+	bool loaded = m_Shader.Load( m_ShaderDesc );
+
+	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CFilterShaderContainer::AddShader( const CShaderResourceDesc& shader_desc )
 {
 	m_vecpShader.resize( 1 );
 	m_vecpShader[0].reset( new CPostProcessFilterShader );
 
-	return m_vecpShader[0]->Init( filepath );
+	return m_vecpShader[0]->Init( shader_desc );
+}
+
+
+Result::Name CFilterShaderContainer::AddShader( const std::string& filepath )
+{
+	CShaderResourceDesc shader_desc;
+	shader_desc.ResourcePath = filepath;
+	return AddShader( shader_desc );
 }
 
 
@@ -166,10 +184,20 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 
     const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
 
-	path shader_filepath = path(base_shader_directory_path) / path("HDRPostProcessor.fx");
-
+	CShaderResourceDesc shader_desc;
+	if( base_shader_directory_path.length() == 0 )
+	{
+		// Create the shader which contains all the effects.
+		shader_desc.pShaderGenerator.reset( new CPostProcessEffectFilterShaderGenerator );
+	}
+	else
+	{
+		path shader_filepath = path(base_shader_directory_path) / path("HDRPostProcessor.fx");
+		shader_desc.ResourcePath = shader_filepath.string();
+	}
+	
 	// load shader
-	m_FilterShaderContainer.AddShader( shader_filepath.string() );
+	Result::Name res = m_FilterShaderContainer.AddShader( shader_desc );
 /*
 	m_FilterShaderContainer.m_vecpShader.resize( 1 );
 	m_FilterShaderContainer.m_vecpShader[0]
@@ -234,6 +262,10 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 	m_pOriginalSceneFilter.reset( new COriginalSceneFilter( m_pOrigSceneHolder ) );
 
 	m_pTextureCache->m_pOrigSceneHolder = m_pOrigSceneHolder;
+
+	int display_adapted_luminance = 0;
+	LoadParamFromFile( ".debug/PostProcessEffectManager.txt", "display_adapted_luminance", display_adapted_luminance );
+	m_DisplayAdaptedLuminance = (display_adapted_luminance == 0) ? false : true;
 
 	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
@@ -396,8 +428,7 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 
 	m_IsRedering = false;
 
-	bool debug_hdr_luminance_calc = true;
-	if( debug_hdr_luminance_calc && m_pHDRLightingFilter )
+	if( m_DisplayAdaptedLuminance && m_pHDRLightingFilter )
 	{
 		DisplayAdaptedLuminance();
 	}

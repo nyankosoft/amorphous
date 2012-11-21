@@ -67,7 +67,7 @@ class CPostProcessFilterShader
 //	LPD3DXEFFECT m_pEffect;
 
 	/// filepath of the HLSL effect file for the effect interface above
-	std::string m_ShaderFilename;
+	CShaderResourceDesc m_ShaderDesc;
 
 	/// PostProcess technique handle
 //	D3DXHANDLE   m_hTPostProcess;
@@ -102,9 +102,11 @@ public:
 
 	inline ~CPostProcessFilterShader() {}//{ Cleanup(); }
 
+	Result::Name Init( const CShaderResourceDesc& shader_desc );
+
 	Result::Name Init( const std::string& filename );
 	
-	const std::string& GetShaderFilename() { return m_ShaderFilename; }
+	const std::string& GetShaderFilename() const { return m_ShaderDesc.ResourcePath; }
 
 	CShaderHandle GetShader() { return m_Shader; }
 
@@ -119,7 +121,10 @@ public:
 class CFilterShaderContainer
 {
 	std::vector< boost::shared_ptr<CPostProcessFilterShader> > m_vecpShader;
+
 public:
+
+	Result::Name AddShader( const CShaderResourceDesc& shader_desc );
 
 	Result::Name AddShader( const std::string& name );
 
@@ -179,8 +184,13 @@ class CPostProcessEffectManager : public CGraphicsComponent
 	PDIRECT3DSURFACE9 m_pSurfLDR; /// Low dynamic range surface for final output (original render target)
 	PDIRECT3DSURFACE9 m_pSurfDS;  /// Low dynamic range depth stencil surface
 
-	/// Displays adapted luminance on a small rectangle at the top-left corner of the display.
-	/// - Used for debugging
+	/// When set to true, displays adapted luminance on a small rectangle at the top-left corner of the display.
+	/// - Used for debugging.
+	bool m_DisplayAdaptedLuminance;
+
+private:
+
+	/// Used for debugging. See the member variable 'm_DisplayAdaptedLuminance' above.
 	void DisplayAdaptedLuminance();
 
 public:
