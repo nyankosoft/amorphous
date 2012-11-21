@@ -1705,7 +1705,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	Result::Name res;
 	const SRectangular cbb = GetCropWidthAndHeight();
 
-	m_pDownScale4x4Filter = shared_ptr<CDownScale4x4Filter>( new CDownScale4x4Filter );
+	m_pDownScale4x4Filter.reset( new CDownScale4x4Filter );
 	m_pDownScale4x4Filter->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
 	m_pDownScale4x4Filter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pDownScale4x4Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
@@ -1723,7 +1723,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	res = m_pDownScale4x4Filter->Init( cache, filter_shader_container );
 */
 
-	m_pBloomFilter = shared_ptr<CCombinedBloomFilter>( new CCombinedBloomFilter );
+	m_pBloomFilter.reset( new CCombinedBloomFilter );
 	m_pBloomFilter->SetBasePlane( SRectangular( cbb.width / 4, cbb.height / 4 ) );
 	res = m_pBloomFilter->Init( cache, filter_shader_container );
 	m_pBloomFilter->UseAsGaussianBlurFilter( true );
