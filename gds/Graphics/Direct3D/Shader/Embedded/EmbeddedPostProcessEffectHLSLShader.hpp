@@ -15,6 +15,8 @@ public:
 
 	static const char *m_pTextureSamplers;
 
+	static const char *m_pSampleOffsetsAndWeights;
+
 	static const char *m_pBloom;
 
 	static const char *m_pDownScale2x2;
@@ -24,11 +26,15 @@ public:
 	static const char *m_pGaussBlur5x5;
 
 	static const char *m_pMonochrome;
+
+	static const char *m_pHDR;
 };
 
 
 class CPostProcessEffectFilterShaderGenerator : public CShaderGenerator
 {
+	void GetCombinedShader( std::string& shader );
+
 public:
 
 	std::string m_EffectName;
