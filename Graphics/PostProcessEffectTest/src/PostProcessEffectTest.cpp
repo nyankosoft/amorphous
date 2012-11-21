@@ -1,6 +1,6 @@
 #include "PostProcessEffectTest.hpp"
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
-#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "gds/Graphics/GraphicsResourceManager.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
