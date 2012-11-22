@@ -442,7 +442,15 @@ int CPostProcessEffectTest::Init()
 	{
 		m_pPostProcessEffectManager.reset( new CPostProcessEffectManager );
 
-		Result::Name res = m_pPostProcessEffectManager->Init( "shaders" );
+		int load_embedded_effect_shader = 1;
+		LoadParamFromFile( "params.txt", "load_embedded_effect_shader", load_embedded_effect_shader );
+
+		Result::Name res = Result::SUCCESS;
+		if( load_embedded_effect_shader )
+			res = m_pPostProcessEffectManager->Init();
+		else
+			res = m_pPostProcessEffectManager->Init( "shaders" );
+
 		if( res != Result::SUCCESS )
 			return -1;
 	}
