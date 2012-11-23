@@ -40,6 +40,17 @@ class CEmbeddedHLSLShaders
 {
 public:
 
+	// About member variable naming:
+	//
+	// ms_?S_P?L_*L{s}{_QVertexBlend}{_Specular}
+	//   [1] [2] [3]  [4]            [5]
+	//
+	// [1]: VS (vertex shader) or PS (pixel shader)
+	// [2]: PVL (per-vertex lighting) or PPL (per-pixel lighting)
+	// [3]: HSL(s) = hemishperical lights.
+	// [4]: _QVertexBlend = vertex blending via quaternion
+	// [5]: _Specular = supports specular highlight
+
 	static CEmbeddedHLSLShader ms_VS_PVL_HSLs_QVertexBlend;
 	static CEmbeddedHLSLShader ms_PS_PVL_HSLs_QVertexBlend;
 
