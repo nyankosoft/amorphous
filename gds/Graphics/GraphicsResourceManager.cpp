@@ -298,6 +298,8 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadGraphicsResourc
 {
 	LOG_FUNCTION_SCOPE();
 
+	LOG_PRINT_VERBOSE( "desc.ResourcePath: " + desc.ResourcePath );
+
 	if( GraphicsDevice().GetState() != CGraphicsDevice::STATE_INITIALIZED )
 	{
 		LOG_PRINT_ERROR( "Not ready to load / create graphics resources. Check if a graphics device has been initialized." );
