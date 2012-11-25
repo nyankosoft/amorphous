@@ -112,6 +112,8 @@ public:
 //	void UpdateProjectionTransform( const D3DXMATRIX& matProj );
 
 	void HandleInput( const SInputData& input );
+
+	void LoadHDRParamValues();
 };
 
 

@@ -55,6 +55,8 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 			if( !m_pPostProcessEffectManager )
 				return;
 
+//			LoadHDRParamValues();
+
 			if( !m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_HDR_LIGHTING) )
 			{
 				m_pPostProcessEffectManager->EnableHDRLighting( true );
@@ -215,10 +217,7 @@ m_fBlurStrength(1.0f)
 {
 	m_HDRLightingParams.key_value = 3.5f;
 
-	CParamLoader pl( "params.txt" );
-	pl.LoadParam( "tone_mapping_key_value",    m_HDRLightingParams.key_value );
-	pl.LoadParam( "luminance_adaptation_rate", m_HDRLightingParams.luminance_adaptation_rate );
-//	pl.LoadBoolParam( "tone_mapping", m_HDRLightingParams.tone_mapping );
+	LoadHDRParamValues();
 }
 
 
@@ -461,4 +460,13 @@ int CPostProcessEffectTest::Init()
 	m_pFont = CreateDefaultBuiltinFont();
 
 	return 0;
+}
+
+
+void CPostProcessEffectTest::LoadHDRParamValues()
+{
+	CParamLoader pl( "params.txt" );
+	pl.LoadParam( "hdr.tone_mapping_key_value",    m_HDRLightingParams.key_value );
+	pl.LoadParam( "hdr.luminance_adaptation_rate", m_HDRLightingParams.luminance_adaptation_rate );
+//	pl.LoadBoolParam( "hdr.tone_mapping", m_HDRLightingParams.tone_mapping );
 }
