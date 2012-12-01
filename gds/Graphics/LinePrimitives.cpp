@@ -1,4 +1,6 @@
 #include "LinePrimitives.hpp"
+#include "Direct3D/Direct3D9.hpp"
+#include "Direct3D/Conversions.hpp"
 
 using namespace std;
 
