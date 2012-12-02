@@ -1,8 +1,9 @@
 #include "SimpleMotionBlur.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Support/Macro.h"
 #include "Support/StringAux.hpp"
 
@@ -125,17 +126,15 @@ void CSimpleMotionBlur::End()
 }
 
 
-static void SetRectRenderStates( LPDIRECT3DTEXTURE9 pTexture )
+static void SetRectRenderStates( CTextureHandle& texture )
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
 	// enable alpha blending
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
+	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 //	pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_NONE );
 
-	pd3dDev->SetTexture( 0, pTexture );
-
+	FixedFunctionPipelineManager().SetTexture( 0, texture );
+/*
 //	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2 );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
@@ -145,6 +144,20 @@ static void SetRectRenderStates( LPDIRECT3DTEXTURE9 pTexture )
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
+*/
+	CTextureStage ts0, ts1;
+
+	ts0.ColorOp   = TexStageOp::SELECT_ARG1;
+	ts0.ColorArg0 = TexStageArg::DIFFUSE;
+	ts0.ColorArg1 = TexStageArg::TEXTURE;
+	ts0.AlphaOp   = TexStageOp::MODULATE;
+	ts0.AlphaArg0 = TexStageArg::DIFFUSE;
+	ts0.AlphaArg1 = TexStageArg::TEXTURE;
+	GraphicsDevice().SetTextureStageParams( 0, ts0 );
+
+	ts0.ColorOp = TexStageOp::DISABLE;
+	ts0.AlphaOp = TexStageOp::DISABLE;
+	GraphicsDevice().SetTextureStageParams( 1, ts1 );
 }
 
 
@@ -194,7 +207,7 @@ void CSimpleMotionBlur::Render()
 	// - This is the motion blurred scene created from the last few scenes
 	rect.SetColor( 0xFFFFFFFF );
 ///	rect.Draw();
-	SetRectRenderStates( pPrevRenderTarget->GetRenderTargetTexture().GetTexture() );
+	SetRectRenderStates( pPrevRenderTarget->GetRenderTargetTexture() );
 	rect.draw();
 //	rect.Draw( pPrevRenderTarget->GetRenderTargetTexture() );
 
@@ -218,7 +231,7 @@ void CSimpleMotionBlur::Render()
 //	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	rect.SetColor( 0xFFFFFFFF );
 ///	rect.Draw( pDestRenderTarget->GetRenderTargetTexture() );
-	SetRectRenderStates( pDestRenderTarget->GetRenderTargetTexture().GetTexture() );
+	SetRectRenderStates( pDestRenderTarget->GetRenderTargetTexture() );
 	rect.draw();
 
 	// test
