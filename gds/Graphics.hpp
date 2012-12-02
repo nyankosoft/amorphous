@@ -43,7 +43,7 @@
 #include "Graphics/GraphicsResourceHandle.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 
-#include "Graphics/LinePrimitives.hpp"
+//#include "Graphics/LinePrimitives.hpp"
 
 #include "Graphics/GraphicsElementManager.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
