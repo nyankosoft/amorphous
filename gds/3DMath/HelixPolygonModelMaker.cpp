@@ -109,7 +109,7 @@ void CreateUniformCylindricalHelix(
 	polygons.reserve( polygons.size() + num_helix_sides * num_cord_sides * num_coils );
 
 	unsigned int num_helix_sections = num_helix_sides * num_coils;
-	for( int i=0; i<num_helix_sections; i++ )
+	for( unsigned int i=0; i<num_helix_sections; i++ )
 	{
 		unsigned int face_vertices_offset = vertex_index_offset + num_cord_sides * i;
 		for( unsigned int j=0; j<num_cord_sides; j++ )
