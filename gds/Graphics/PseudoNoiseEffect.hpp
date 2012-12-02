@@ -35,6 +35,9 @@ public:
 
 	void Init( float strength, uint noise_pixel_size );
 
+	/// Returns true if the noise effect has already been initialized.
+	bool IsInitialized() const { return m_NoiseTexture.IsLoaded(); }
+
 //	void SetPosition( Vector2& rvMin, Vector2& rvMax );
 
 	bool LoadNoiseTextures();
