@@ -33,8 +33,6 @@ class CSimpleMotionBlur// : public CGraphicsComponent
 
 	int m_TargetTexIndex;
 
-//	DWORD m_dwBackgroundColor;
-
 	float m_fBlurWeight;
 
 	bool m_bFirst;
@@ -57,7 +55,6 @@ public:
 	/// Texture render targets are automatically resized when the screen resolution is changed.
 	void InitForScreenSize();
 
-//	void SetBackgroundColor( const DWORD dwBGColor ) { m_dwBackgroundColor = dwBGColor; }
 //	void SetRenderTarget();
 //	void ResetRenderTarget();
 
