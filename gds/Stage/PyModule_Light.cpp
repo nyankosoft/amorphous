@@ -176,7 +176,7 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, PyObject *ke
 			dir = Vector3(0,-1,0);
 	}
 
-	color.fAlpha = 1.0f;
+	color.alpha = 1.0f;
 
 	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
@@ -249,7 +249,7 @@ PyObject* GeneratePointLight( PyObject* self, PyObject* args, PyObject *keywords
 			&shadow_for_light );
 	}
 
-	color.fAlpha = 1.0f;
+	color.alpha = 1.0f;
 
 	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
@@ -534,7 +534,7 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 		pLightEntity->SetColor( index, color );
 	}
 
-/*	const Vector3 vColor = Vector3( color.fRed, color.fGreen, color.fBlue );
+/*	const Vector3 vColor = Vector3( color.red, color.green, color.blue );
 
 	switch( index )
 	{
@@ -567,7 +567,7 @@ PyObject* gsf::py::light::SetColor( PyObject* self, PyObject* args )
 {
 	int index;
 	SFloatRGBColor color;
-	int result = PyArg_ParseTuple( args, "ifff", &index, &color.fRed, &color.fGreen, &color.fBlue );
+	int result = PyArg_ParseTuple( args, "ifff", &index, &color.red, &color.green, &color.blue );
 
 	SetLightColor( index, color );
 

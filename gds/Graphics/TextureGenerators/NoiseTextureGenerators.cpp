@@ -7,9 +7,9 @@ void CUniformSingleColorNoiseTextureGenerator::FillTexture( CLockedTexture& text
 	float min_val = m_fMin;
 	float max_val = m_fMax;
 	float range = m_fMax - m_fMin;
-	float r = m_Color.fRed;
-	float g = m_Color.fGreen;
-	float b = m_Color.fBlue;
+	float r = m_Color.red;
+	float g = m_Color.green;
+	float b = m_Color.blue;
 
 	const int w = texture.GetWidth();//dest_bitmap_buffer.size_x();
 	const int h = w;// Assumes that the textute is square. dest_bitmap_buffer.size_y();

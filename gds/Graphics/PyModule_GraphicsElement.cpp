@@ -133,7 +133,7 @@ PyObject* CreateRect( PyObject* self, PyObject* args )
 	float l, t, r, b;
 	SFloatRGBAColor color = SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f );
 	float z = 0;
-	int result = PyArg_ParseTuple( args, "ffff|fffff", &l, &t, &r, &b, &color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha, &z );
+	int result = PyArg_ParseTuple( args, "ffff|fffff", &l, &t, &r, &b, &color.red, &color.green, &color.blue, &color.alpha, &z );
 
 	int layer_index = (int)z;
 
@@ -180,7 +180,7 @@ PyObject* CreateFrameRect( PyObject* self, PyObject* args )
 	float border_width = 2;
 	float z = 0;
 	int result = PyArg_ParseTuple( args, "ffff|ffffff",
-		&l, &t, &r, &b, &color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha, &border_width, &z );
+		&l, &t, &r, &b, &color.red, &color.green, &color.blue, &color.alpha, &border_width, &z );
 
 	int layer_index = (int)z;
 
@@ -221,7 +221,7 @@ PyObject* CreateRoundRect( PyObject* self, PyObject* args )
 	int layer_index = 0;
 	int result = PyArg_ParseTuple( args, "ffff|ffffi",
 		&l, &t, &r, &b,
-		&color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha,
+		&color.red, &color.green, &color.blue, &color.alpha,
 		&corner_radius, &layer_index );
 
 	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateRoundFillRect( SRect( l,t,r,b ), color, corner_radius, layer_index );
@@ -261,7 +261,7 @@ PyObject* CreateRoundFrameRect( PyObject* self, PyObject* args )
 	int layer_index = 0;
 	int result = PyArg_ParseTuple( args, "ffff|ffffffi",
 		&l, &t, &r, &b,
-		&color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha,
+		&color.red, &color.green, &color.blue, &color.alpha,
 		&corner_radius, &border_width, &layer_index );
 
 	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateRoundFrameRect( SRect( l,t,r,b ),
@@ -305,7 +305,7 @@ PyObject* CreateText( PyObject* self, PyObject* args )
 	float font_w=0, font_h=0;
 	int result = PyArg_ParseTuple( args, "isff|fffff",
 		&font_id, &text_buffer, &x, &y,
-		&color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha, &font_w, &font_h );
+		&color.red, &color.green, &color.blue, &color.alpha, &font_w, &font_h );
 
 	int layer_index = 0;
 

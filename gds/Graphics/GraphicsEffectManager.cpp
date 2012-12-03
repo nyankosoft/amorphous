@@ -181,10 +181,10 @@ void CE_NonLinearVertexColorShift::Update( double current_time, double dt )
 		return;
 
 	SFloatRGBAColor diff = m_Color.target - m_Color.current;
-	if( diff.fRed   < 0.001f
-	 && diff.fGreen < 0.001f
-	 && diff.fBlue  < 0.001f
-	 && diff.fAlpha < 0.001f )
+	if( diff.red   < 0.001f
+	 && diff.green < 0.001f
+	 && diff.blue  < 0.001f
+	 && diff.alpha < 0.001f )
 		return;
 
 	m_Color.Update( (float)dt );
@@ -476,13 +476,13 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( boost::shared_ptr<C
 
 	p->m_ColorIndex = color_index;
 
-	p->m_StartColor.fRed   = start_color.fRed;
-	p->m_StartColor.fGreen = start_color.fGreen;
-	p->m_StartColor.fBlue  = start_color.fBlue;
+	p->m_StartColor.red   = start_color.red;
+	p->m_StartColor.green = start_color.green;
+	p->m_StartColor.blue  = start_color.blue;
 
-	p->m_EndColor.fRed   = end_color.fRed;
-	p->m_EndColor.fGreen = end_color.fGreen;
-	p->m_EndColor.fBlue  = end_color.fBlue;
+	p->m_EndColor.red   = end_color.red;
+	p->m_EndColor.green = end_color.green;
+	p->m_EndColor.blue  = end_color.blue;
 
 	// do not change alpha component
 	p->SetTargetChannels( CE_ColorShift::COMPONENTS_RGB );
@@ -566,7 +566,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( boost::share
 CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double interval, int color_index )
 {
 	CE_AlphaBlink *pEffect = new CE_AlphaBlink( pTargetElement );
-	pEffect->m_afAlpha[0] = pTargetElement->GetColor(0).fAlpha;
+	pEffect->m_afAlpha[0] = pTargetElement->GetColor(0).alpha;
 	pEffect->m_afAlpha[1] = 0.0f;
 	pEffect->m_afDuration[0] = interval;
 	pEffect->m_afDuration[1] = interval;

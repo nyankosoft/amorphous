@@ -304,7 +304,7 @@ inline void CLightEntity::SetAttenuationFactors( float a0, float a1, float a2 )
 
 inline void CLightEntity::SetColor( int index, const SFloatRGBColor& color )
 {
-	SetColor( index, SFloatRGBAColor( color.fRed, color.fGreen, color.fBlue, 1.0f ) );
+	SetColor( index, SFloatRGBAColor( color.red, color.green, color.blue, 1.0f ) );
 }
 
 

@@ -17,9 +17,9 @@ namespace Serialization
 
 inline IArchive& operator & ( IArchive& ar, SFloatRGBColor& color )
 {
-	ar & color.fRed;
-	ar & color.fGreen;
-	ar & color.fBlue;
+	ar & color.red;
+	ar & color.green;
+	ar & color.blue;
 
 	return ar;
 }
@@ -27,10 +27,10 @@ inline IArchive& operator & ( IArchive& ar, SFloatRGBColor& color )
 
 inline IArchive& operator & ( IArchive& ar, SFloatRGBAColor& color )
 {
-	ar & color.fRed;
-	ar & color.fGreen;
-	ar & color.fBlue;
-	ar & color.fAlpha;
+	ar & color.red;
+	ar & color.green;
+	ar & color.blue;
+	ar & color.alpha;
 
 	return ar;
 }

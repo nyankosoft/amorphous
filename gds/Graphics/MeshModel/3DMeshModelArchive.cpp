@@ -504,7 +504,7 @@ void C3DMeshModelArchive::UpdateMinimumVertexDiffuseAlpha()
 		const size_t end_index   = rTriSet.m_iStartIndex + rTriSet.m_iNumTriangles * 3;
 		for( size_t j=start_index; j<end_index; j++ )
 		{
-			alpha = vecDiffuseColor[ m_vecVertexIndex[j] ].fAlpha;
+			alpha = vecDiffuseColor[ m_vecVertexIndex[j] ].alpha;
 			if( alpha < min_alpha )
 				min_alpha = alpha;
 		}
@@ -626,7 +626,7 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 		for( i=0; i<iNumVeritices; i++ )
 		{
 			const SFloatRGBAColor& color = m_VertexSet.vecDiffuseColor[i];
-			fprintf( fp, "%.2f %.2f %.2f %.2f\n", color.fRed, color.fGreen, color.fBlue, color.fAlpha );
+			fprintf( fp, "%.2f %.2f %.2f %.2f\n", color.red, color.green, color.blue, color.alpha );
 		}
 	}
 

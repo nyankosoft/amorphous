@@ -164,9 +164,9 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLights( CBSPMap *pMap, CSh
 		// set the light color to the pixel shader constant
 		if( pLight->GetLightObject() )
 		{
-			rgba[0] = pLight->GetLightObject()->DiffuseColor.fRed;
-			rgba[1] = pLight->GetLightObject()->DiffuseColor.fGreen;
-			rgba[2] = pLight->GetLightObject()->DiffuseColor.fBlue;
+			rgba[0] = pLight->GetLightObject()->DiffuseColor.red;
+			rgba[1] = pLight->GetLightObject()->DiffuseColor.green;
+			rgba[2] = pLight->GetLightObject()->DiffuseColor.blue;
 			rgba[3] = 1.0f;
 		}
 		else

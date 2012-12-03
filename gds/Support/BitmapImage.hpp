@@ -300,10 +300,10 @@ inline void CBitmapImage::GetPixel( int x, int y, SFloatRGBAColor& color )
 {
 	U8 r=0, g=0, b=0, a=0;
 	GetPixel( x, y, r, g, b, a );
-	color.fRed   = (float)r / (float)255.0f;
-	color.fGreen = (float)g / (float)255.0f;
-	color.fBlue  = (float)b / (float)255.0f;
-	color.fAlpha = (float)a / (float)255.0f;
+	color.red   = (float)r / (float)255.0f;
+	color.green = (float)g / (float)255.0f;
+	color.blue  = (float)b / (float)255.0f;
+	color.alpha = (float)a / (float)255.0f;
 }
 
 
@@ -345,10 +345,10 @@ inline void CBitmapImage::FillColor( const SFloatRGBAColor& color )
 	if( !m_pFreeImageBitMap )
 		return;
 
-	U8 r = (U8)(color.fRed   * 255);
-	U8 g = (U8)(color.fGreen * 255);
-	U8 b = (U8)(color.fBlue  * 255);
-	U8 a = (U8)(color.fAlpha * 255);
+	U8 r = (U8)(color.red   * 255);
+	U8 g = (U8)(color.green * 255);
+	U8 b = (U8)(color.blue  * 255);
+	U8 a = (U8)(color.alpha * 255);
 
 	const int w = GetWidth();
 	const int h = GetHeight();

@@ -137,9 +137,9 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 	SFloatRGBAColor ambient_color = m_AmbientColor;
 	if( m_pStage->GetScreenEffectManager()->GetEffectFlag() & ScreenEffect::PseudoNightVision )
 	{
-		ambient_color.fRed		+= 0.25f;
-		ambient_color.fGreen	+= 0.25f;
-		ambient_color.fBlue		+= 0.25f;
+		ambient_color.red		+= 0.25f;
+		ambient_color.green	+= 0.25f;
+		ambient_color.blue		+= 0.25f;
 	}
 
 	hr = pEffect->SetVector( "g_AmbientColor",	(D3DXVECTOR4 *)&ambient_color );

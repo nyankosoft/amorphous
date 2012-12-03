@@ -596,9 +596,9 @@ void CBSPMapFileExporter::WriteLightmapTexture(FILE* fp)
 			for( x=0; x<iTexWidth; x++ )
 			{
 				color = rLightmapTexture.Texel(x,y);
-				red   = (BYTE)(color.fRed   * 255); fwrite(&red,   sizeof(BYTE), 1, fp);
-				green = (BYTE)(color.fGreen * 255); fwrite(&green, sizeof(BYTE), 1, fp);
-				blue  = (BYTE)(color.fBlue  * 255); fwrite(&blue,  sizeof(BYTE), 1, fp);
+				red   = (BYTE)(color.red   * 255); fwrite(&red,   sizeof(BYTE), 1, fp);
+				green = (BYTE)(color.green * 255); fwrite(&green, sizeof(BYTE), 1, fp);
+				blue  = (BYTE)(color.blue  * 255); fwrite(&blue,  sizeof(BYTE), 1, fp);
 			}
 		}
 //		for(j=0; j<iTexWidth*iTexWidth; j++)

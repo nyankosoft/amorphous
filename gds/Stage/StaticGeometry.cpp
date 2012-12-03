@@ -700,10 +700,10 @@ int CStaticGeometry::ClipTrace( STrace& tr )
 inline static void SetRGBAColor( const SFloatRGBAColor& src_color, CShaderParameter< vector<float> >& dest_param )
 {
 	dest_param.Parameter().resize( 4 ); // 4 float values for rgba
-	dest_param.Parameter()[0] = src_color.fRed;
-	dest_param.Parameter()[1] = src_color.fGreen;
-	dest_param.Parameter()[2] = src_color.fBlue;
-	dest_param.Parameter()[3] = src_color.fAlpha;
+	dest_param.Parameter()[0] = src_color.red;
+	dest_param.Parameter()[1] = src_color.green;
+	dest_param.Parameter()[2] = src_color.blue;
+	dest_param.Parameter()[3] = src_color.alpha;
 }
 
 

@@ -894,9 +894,9 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 
 		pd3dDev->SetRenderState(D3DRS_FOGCOLOR,
 			D3DCOLOR_ARGB(0, 
-			(BYTE)(m_Fog.color.fRed * 255.0f),
-			(BYTE)(m_Fog.color.fGreen * 255.0f),
-			(BYTE)(m_Fog.color.fBlue * 255.0f)) );	//set color of the fog
+			(BYTE)(m_Fog.color.red * 255.0f),
+			(BYTE)(m_Fog.color.green * 255.0f),
+			(BYTE)(m_Fog.color.blue * 255.0f)) );	//set color of the fog
 		pd3dDev->SetRenderState(D3DRS_FOGSTART, *(DWORD *)(&m_Fog.fMinDist));
 		pd3dDev->SetRenderState(D3DRS_FOGEND, *(DWORD *)(&m_Fog.fMaxDist));
 	}

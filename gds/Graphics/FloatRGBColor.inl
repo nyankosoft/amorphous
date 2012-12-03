@@ -5,7 +5,7 @@
 
 inline SFloatRGBColor operator*( const float f, const SFloatRGBColor& src )
 {
-//	return SFloatRGBColor( src.fRed * f, src.fGreen * f, src.fBlue * f );
+//	return SFloatRGBColor( src.red * f, src.green * f, src.blue * f );
 	return SFloatRGBColor( src ) * f;
 }
 
@@ -15,74 +15,74 @@ inline SFloatRGBColor operator*( const float f, const SFloatRGBColor& src )
 //================================================================================
 
 inline SFloatRGBColor::SFloatRGBColor()
-: fRed(0), fGreen(0), fBlue(0)
+: red(0), green(0), blue(0)
 {
-//	fRed = fGreen = fBlue = 0.0f;
+//	red = green = blue = 0.0f;
 }
 
 inline SFloatRGBColor::SFloatRGBColor( float r, float g, float b )
-: fRed(r), fGreen(g), fBlue(b)
+: red(r), green(g), blue(b)
 {
 }
 
 
 inline void SFloatRGBColor::SetRGB( float r, float g, float b )
 {
-	fRed   = r;
-	fGreen = g;
-	fBlue  = b;
+	red   = r;
+	green = g;
+	blue  = b;
 }
 
 
 inline SFloatRGBColor SFloatRGBColor::operator *(const float f) const
 {
 	SFloatRGBColor color;
-	color.fRed   = this->fRed * f;
-	color.fGreen = this->fGreen * f;
-	color.fBlue  = this->fBlue * f;
+	color.red   = this->red * f;
+	color.green = this->green * f;
+	color.blue  = this->blue * f;
 	return color;
 }
 
 inline SFloatRGBColor SFloatRGBColor::operator /(const float f) const
 {
 	SFloatRGBColor color;
-	color.fRed   = this->fRed / f;
-	color.fGreen = this->fGreen / f;
-	color.fBlue  = this->fBlue / f;
+	color.red   = this->red / f;
+	color.green = this->green / f;
+	color.blue  = this->blue / f;
 	return color;
 }
 
 inline SFloatRGBColor SFloatRGBColor::operator +(const SFloatRGBColor& rColor) const
 {
 	SFloatRGBColor color;
-	color.fRed   = this->fRed + rColor.fRed;
-	color.fGreen = this->fGreen + rColor.fGreen;
-	color.fBlue  = this->fBlue + rColor.fBlue;
+	color.red   = this->red + rColor.red;
+	color.green = this->green + rColor.green;
+	color.blue  = this->blue + rColor.blue;
 	return color;
 }
 
 inline SFloatRGBColor SFloatRGBColor::operator -(const SFloatRGBColor& rColor) const
 {
 	SFloatRGBColor color;
-	color.fRed   = this->fRed - rColor.fRed;
-	color.fGreen = this->fGreen - rColor.fGreen;
-	color.fBlue  = this->fBlue - rColor.fBlue;
+	color.red   = this->red - rColor.red;
+	color.green = this->green - rColor.green;
+	color.blue  = this->blue - rColor.blue;
 	return color;
 }
 
 inline SFloatRGBColor SFloatRGBColor::operator +=(const SFloatRGBColor& rColor)
 {
-	this->fRed += rColor.fRed;
-	this->fGreen += rColor.fGreen;
-	this->fBlue += rColor.fBlue;
+	this->red += rColor.red;
+	this->green += rColor.green;
+	this->blue += rColor.blue;
 	return *this;
 }
 
 inline SFloatRGBColor SFloatRGBColor::operator -=(const SFloatRGBColor& rColor)
 {
-	this->fRed -= rColor.fRed;
-	this->fGreen -= rColor.fGreen;
-	this->fBlue -= rColor.fBlue;
+	this->red -= rColor.red;
+	this->green -= rColor.green;
+	this->blue -= rColor.blue;
 	return *this;
 }
 
@@ -90,26 +90,26 @@ inline SFloatRGBColor SFloatRGBColor::operator -=(const SFloatRGBColor& rColor)
 inline SFloatRGBColor SFloatRGBColor::operator *(const SFloatRGBColor& rColor) const
 {
 	return SFloatRGBColor(
-		this->fRed   * rColor.fRed,
-		this->fGreen * rColor.fGreen,
-		this->fBlue  * rColor.fBlue
+		this->red   * rColor.red,
+		this->green * rColor.green,
+		this->blue  * rColor.blue
 		);
 }
 
 
 inline U32 SFloatRGBColor::GetARGB32() const
 {
-	return /*( ((int)(fAlpha * 255.0f)) << 24 ) &*/ 0xFF000000 |
-		   ( ((int)(fRed   * 255.0f)) << 16 ) & 0x00FF0000 |
-		   ( ((int)(fGreen * 255.0f)) <<  8 ) & 0x0000FF00 |
-		     ((int)(fBlue  * 255.0f))         & 0x000000FF;
+	return /*( ((int)(alpha * 255.0f)) << 24 ) &*/ 0xFF000000 |
+		   ( ((int)(red   * 255.0f)) << 16 ) & 0x00FF0000 |
+		   ( ((int)(green * 255.0f)) <<  8 ) & 0x0000FF00 |
+		     ((int)(blue  * 255.0f))         & 0x000000FF;
 }
 
 
 inline void SFloatRGBColor::SetARGB32( U32 color )
 {
-//	fAlpha	= (float)( (color >> 24) & 0x000000FF ) / 256.0f;
-	fRed	= (float)( (color >> 16) & 0x000000FF ) / 256.0f;
-	fGreen	= (float)( (color >>  8) & 0x000000FF ) / 256.0f;
-	fBlue	= (float)( (color)       & 0x000000FF ) / 256.0f;
+//	alpha	= (float)( (color >> 24) & 0x000000FF ) / 256.0f;
+	red	= (float)( (color >> 16) & 0x000000FF ) / 256.0f;
+	green	= (float)( (color >>  8) & 0x000000FF ) / 256.0f;
+	blue	= (float)( (color)       & 0x000000FF ) / 256.0f;
 }

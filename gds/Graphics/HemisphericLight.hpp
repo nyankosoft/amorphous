@@ -7,7 +7,7 @@
 
 inline SFloatRGBColor ToRGBColor( const SFloatRGBAColor& src )
 {
-	return SFloatRGBColor( src.fRed, src.fGreen, src.fBlue );
+	return SFloatRGBColor( src.red, src.green, src.blue );
 }
 
 

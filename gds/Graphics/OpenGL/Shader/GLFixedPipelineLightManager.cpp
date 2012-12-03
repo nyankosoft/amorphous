@@ -6,19 +6,19 @@ using namespace std;
 
 inline void FRGBtoFloat4( const SFloatRGBColor& src, float *dest )
 {
-	dest[0] = src.fRed;
-	dest[1] = src.fGreen;
-	dest[2] = src.fBlue;
+	dest[0] = src.red;
+	dest[1] = src.green;
+	dest[2] = src.blue;
 	dest[3] = 1.0f;
 }
 
 
 inline void FRGBAtoFloat4( const SFloatRGBAColor& src, float *dest )
 {
-	dest[0] = src.fRed;
-	dest[1] = src.fGreen;
-	dest[2] = src.fBlue;
-	dest[3] = src.fAlpha;
+	dest[0] = src.red;
+	dest[1] = src.green;
+	dest[2] = src.blue;
+	dest[3] = src.alpha;
 }
 
 

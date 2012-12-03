@@ -38,9 +38,9 @@ inline void conv_to_x( std::vector<std::string>& src, int& index, SFloatRGBColor
 {
 	if( 3 <= (int)src.size() - index )
 	{
-		dest.fRed   = (float)atof( src[index].c_str() );
-		dest.fGreen = (float)atof( src[index+1].c_str() );
-		dest.fBlue  = (float)atof( src[index+2].c_str() );
+		dest.red   = (float)atof( src[index].c_str() );
+		dest.green = (float)atof( src[index+1].c_str() );
+		dest.blue  = (float)atof( src[index+2].c_str() );
 		index += 3;
 	}
 }
@@ -50,10 +50,10 @@ inline void conv_to_x( std::vector<std::string>& src, int& index, SFloatRGBAColo
 {
 	if( 4 <= (int)src.size() - index )
 	{
-		dest.fRed   = (float)atof( src[index].c_str() );
-		dest.fGreen = (float)atof( src[index+1].c_str() );
-		dest.fBlue  = (float)atof( src[index+2].c_str() );
-		dest.fAlpha = (float)atof( src[index+3].c_str() );
+		dest.red   = (float)atof( src[index].c_str() );
+		dest.green = (float)atof( src[index+1].c_str() );
+		dest.blue  = (float)atof( src[index+2].c_str() );
+		dest.alpha = (float)atof( src[index+3].c_str() );
 		index += 4;
 	}
 }

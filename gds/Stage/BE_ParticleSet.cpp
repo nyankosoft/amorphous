@@ -672,9 +672,9 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 //		U32 color = 0x00FFFFFF | (int)( SmoothCD( fFraction, 0.0f, rfFadeVel, fTotalAnimationTime, dt ) );
 //		color = 0xFFFFFFFF;
 
-		rgb[0] = vert_color.fRed   * fAlpha;
-		rgb[1] = vert_color.fGreen * fAlpha;
-		rgb[2] = vert_color.fBlue  * fAlpha;
+		rgb[0] = vert_color.red   * fAlpha;
+		rgb[1] = vert_color.green * fAlpha;
+		rgb[2] = vert_color.blue  * fAlpha;
 		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgb );
 	}
 
@@ -817,9 +817,9 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 		float fAlpha = 1.0f - fFraction;
 //		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
 
-		rgba[0] = vert_color.fRed   * fAlpha;
-		rgba[1] = vert_color.fGreen * fAlpha;
-		rgba[2] = vert_color.fBlue  * fAlpha;
+		rgba[0] = vert_color.red   * fAlpha;
+		rgba[1] = vert_color.green * fAlpha;
+		rgba[2] = vert_color.blue  * fAlpha;
 		rgba[3] = fAlpha;
 		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgba );
 	}
@@ -1021,7 +1021,7 @@ bool CBE_ParticleSet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner 
 //	}
 
 	SFloatRGBColor& color = m_VertexColor;
-	if( scanner.TryScanLine( "VERT_COLOR",	color.fRed, color.fGreen, color.fBlue ) ) return true;
+	if( scanner.TryScanLine( "VERT_COLOR",	color.red, color.green, color.blue ) ) return true;
 
 	if( scanner.TryScanLine( "NUM_TEXSEGS", m_iNumTextureSegments ) )
 	{

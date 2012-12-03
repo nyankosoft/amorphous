@@ -186,7 +186,7 @@ void CCgEffectBase::SetParam( CShaderParameter<SFloatRGBAColor>& color_param )
 	{
 //		SetRGBAColorAs4Floats( color_param.GetParameter(), m_vecParamHandle[index].Handle, m_pEffect );
 		const SFloatRGBAColor& c = color_param.GetParameter();
-		const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+		const float rgba[4] = { c.red, c.green, c.blue, c.alpha };
 		cgSetParameter4fv( m_vecParamHandle[index].Handle, rgba );
 	}
 }
@@ -299,7 +299,7 @@ void CCgEffectBase::SetParam( const char *parameter_name, const SFloatRGBAColor&
 {
 //	SetRGBAColorAs4Floats( color_param, parameter_name, m_pEffect );
 	const SFloatRGBAColor& c = color_param;
-	const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+	const float rgba[4] = { c.red, c.green, c.blue, c.alpha };
 	CGparameter cg_param = cgGetNamedEffectParameter( m_CgEffect, parameter_name );
 	cgSetParameter4fv( cg_param, rgba );
 }

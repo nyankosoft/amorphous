@@ -88,14 +88,14 @@ void CScreenShotManager::OutputImageDataToFile( U32 *pdwImageData, int iImageWid
 		for( x=0; x<iImageWidth; x++ )
 		{
 			SFloatRGBColor pixel;
-			pixel.fRed   = (float)( 0x000000FF & (pdwImageData[y * iImageWidth + x] >> 16) ) / 256.0f;
-			pixel.fGreen = (float)( 0x000000FF & (pdwImageData[y * iImageWidth + x] >>  8) ) / 256.0f;
-			pixel.fBlue  = (float)( 0x000000FF &  pdwImageData[y * iImageWidth + x] )        / 256.0f;
+			pixel.red   = (float)( 0x000000FF & (pdwImageData[y * iImageWidth + x] >> 16) ) / 256.0f;
+			pixel.green = (float)( 0x000000FF & (pdwImageData[y * iImageWidth + x] >>  8) ) / 256.0f;
+			pixel.blue  = (float)( 0x000000FF &  pdwImageData[y * iImageWidth + x] )        / 256.0f;
 
 			img.SetPixel( x, y, pixel );
 
 //			if( fp )
-//				fprintf( fp, "%.3f, %.3f, %.3f\n", pixel.fRed, pixel.fGreen, pixel.fBlue );
+//				fprintf( fp, "%.3f, %.3f, %.3f\n", pixel.red, pixel.green, pixel.blue );
 		}
 	}
 

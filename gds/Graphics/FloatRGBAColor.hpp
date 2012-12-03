@@ -12,10 +12,10 @@
 */
 struct SFloatRGBAColor
 {
-	float fRed;
-	float fGreen;
-	float fBlue;
-	float fAlpha;
+	float red;
+	float green;
+	float blue;
+	float alpha;
 
 	inline SFloatRGBAColor operator *( const float f) const;
 	inline SFloatRGBAColor operator /( const float f) const;
@@ -46,10 +46,10 @@ struct SFloatRGBAColor
 	/// \param [in] 32-bit integer that represents ARGB color using 8 bits for each component
 	inline void SetARGB32( U32 color );
 
-	inline U8 GetRedByte()   const { return (U8)get_clamped( (U32)(fRed   * 256.0f), (U32)0, (U32)255 ); }
-	inline U8 GetGreenByte() const { return (U8)get_clamped( (U32)(fGreen * 256.0f), (U32)0, (U32)255 ); }
-	inline U8 GetBlueByte()  const { return (U8)get_clamped( (U32)(fBlue  * 256.0f), (U32)0, (U32)255 ); }
-	inline U8 GetAlphaByte() const { return (U8)get_clamped( (U32)(fAlpha * 256.0f), (U32)0, (U32)255 ); }
+	inline U8 GetRedByte()   const { return (U8)get_clamped( (U32)(red   * 256.0f), (U32)0, (U32)255 ); }
+	inline U8 GetGreenByte() const { return (U8)get_clamped( (U32)(green * 256.0f), (U32)0, (U32)255 ); }
+	inline U8 GetBlueByte()  const { return (U8)get_clamped( (U32)(blue  * 256.0f), (U32)0, (U32)255 ); }
+	inline U8 GetAlphaByte() const { return (U8)get_clamped( (U32)(alpha * 256.0f), (U32)0, (U32)255 ); }
 
 	void SetToWhite()   { *this = White(); }
 	void SetToBlack()   { *this = Black(); }

@@ -99,8 +99,8 @@ void C2DPrimitiveRenderer_GL::RenderGL( CGeneral2DVertex *paVertex, int num_vert
 	for( int i=0; i<num_vertices /*&& i<numof(saved_pos)*/; i++ )
 	{
 		const SFloatRGBAColor& color = paVertex[i].m_DiffuseColor;
-		glColor4f( color.fRed, color.fGreen, color.fBlue, color.fAlpha );
-//		glColor3f( color.fRed, color.fGreen, color.fBlue );
+		glColor4f( color.red, color.green, color.blue, color.alpha );
+//		glColor3f( color.red, color.green, color.blue );
 
 		const TEXCOORD2& tex = paVertex[i].m_TextureCoord[0];
 		glTexCoord2f( tex.u, tex.v );

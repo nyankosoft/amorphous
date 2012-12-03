@@ -304,7 +304,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& ch
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
 	{
-		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.fRed, &color.fGreen, &color.fBlue );
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.red, &color.green, &color.blue );
 		return true;
 	}
 	else
@@ -316,7 +316,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& ch
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
 	{
-		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.fRed, &color.fGreen, &color.fBlue );
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.red, &color.green, &color.blue );
 		return true;
 	}
 	else
@@ -328,7 +328,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentRGBA( const std::string& c
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
 	{
-		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f %f", &color.fRed, &color.fGreen, &color.fBlue, &color.fAlpha );
+		sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f %f", &color.red, &color.green, &color.blue, &color.alpha );
 		return true;
 	}
 	else
@@ -421,7 +421,7 @@ inline bool CXMLNodeReader::get( const std::string& name, SFloatRGBColor& color 
 	if( !pNode )
 		return false;
 
-	sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.fRed, &color.fGreen, &color.fBlue );
+	sscanf( to_string(pNode->getTextContent()).c_str(), "%f %f %f", &color.red, &color.green, &color.blue );
 
 	return true;
 }

@@ -73,7 +73,7 @@ void CStaticGeometryArchiveFG::WriteToTextFile( const string& filename )
 	for( size_t i=0; i<m_vecMeshArchiveKey.size(); i++ )
 		ofs << m_vecMeshArchiveKey[i];
 
-	ofs << fmt_string( "fog color: %f %f %f", m_FogColor.fRed, m_FogColor.fGreen, m_FogColor.fBlue );
+	ofs << fmt_string( "fog color: %f %f %f", m_FogColor.red, m_FogColor.green, m_FogColor.blue );
 
 	ofs << m_AABB;
 

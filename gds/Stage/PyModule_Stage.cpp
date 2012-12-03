@@ -306,7 +306,7 @@ static inline void SetAmbientColor( const SFloatRGBAColor& ambient_color )
 PyObject* SetAmbientColor( PyObject* self, PyObject* args )
 {
 	SFloatRGBAColor ambient_color;
-	int result = PyArg_ParseTuple( args, "fff", &ambient_color.fRed, &ambient_color.fGreen, &ambient_color.fBlue );
+	int result = PyArg_ParseTuple( args, "fff", &ambient_color.red, &ambient_color.green, &ambient_color.blue );
 
 	SetAmbientColor( ambient_color );
 
@@ -345,7 +345,7 @@ static inline void SetFogColor( const SFloatRGBAColor& fog_color )
 PyObject* SetFogColor( PyObject* self, PyObject* args )
 {
 	SFloatRGBAColor fog_color;
-	int result = PyArg_ParseTuple( args, "fff", &fog_color.fRed, &fog_color.fGreen, &fog_color.fBlue );
+	int result = PyArg_ParseTuple( args, "fff", &fog_color.red, &fog_color.green, &fog_color.blue );
 
 	SetFogColor( fog_color );
 

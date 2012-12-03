@@ -14,7 +14,7 @@ inline std::string to_string( const SFloatRGBAColor& c, int precision = 3, int n
 
 	char buffer[80];
 	memset( buffer, 0, sizeof(buffer) );
-	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), c.fRed, c.fGreen, c.fBlue, c.fAlpha );
+	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), c.red, c.green, c.blue, c.alpha );
 
 	return std::string(buffer);
 }

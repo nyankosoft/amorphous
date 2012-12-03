@@ -344,7 +344,7 @@ Result::Name CGLGraphicsDevice::SetFogParams( const CFogParams& fog_params )
 {
 	glFogi(GL_FOG_MODE, ToGLFogMode(fog_params.Mode) );		// Fog Mode
 
-	float rgba[] = { fog_params.Color.fRed, fog_params.Color.fGreen, fog_params.Color.fBlue, fog_params.Color.fAlpha };
+	float rgba[] = { fog_params.Color.red, fog_params.Color.green, fog_params.Color.blue, fog_params.Color.alpha };
 	glFogfv(GL_FOG_COLOR, rgba );
 
 	glFogf( GL_FOG_START,   (float)fog_params.Start );
@@ -406,7 +406,7 @@ Result::Name CGLGraphicsDevice::SetViewport( const CViewport& viewport )
 
 Result::Name CGLGraphicsDevice::SetClearColor( const SFloatRGBAColor& color )
 {
-	glClearColor( color.fRed, color.fGreen, color.fBlue, color.fAlpha );
+	glClearColor( color.red, color.green, color.blue, color.alpha );
 	return Result::SUCCESS;
 }
 

@@ -15,7 +15,7 @@ extern const char *hr_d3d_error_to_string(HRESULT hr);
 /*
 inline static void SetRGBAColorAs4Floats( const SFloatRGBAColor& c, D3DXHANDLE handle, LPD3DXEFFECT pEffect )
 {
-	const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+	const float rgba[4] = { c.red, c.green, c.blue, c.alpha };
 	HRESULT hr = pEffect->SetFloatArray( handle, rgba, 4 );
 }*/
 
@@ -293,7 +293,7 @@ void CHLSLShaderManager::SetParam( CShaderParameter<SFloatRGBAColor>& color_para
 	{
 //		SetRGBAColorAs4Floats( color_param.GetParameter(), m_vecParamHandle[index].Handle, m_pEffect );
 		const SFloatRGBAColor& c = color_param.GetParameter();
-		const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+		const float rgba[4] = { c.red, c.green, c.blue, c.alpha };
 		HRESULT hr = m_pEffect->SetFloatArray( m_vecParamHandle[index].Handle, rgba, 4 );
 	}
 }
@@ -379,7 +379,7 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const SFloatRGBAC
 {
 //	SetRGBAColorAs4Floats( color_param, parameter_name, m_pEffect );
 	const SFloatRGBAColor& c = color_param;
-	const float rgba[4] = { c.fRed, c.fGreen, c.fBlue, c.fAlpha };
+	const float rgba[4] = { c.red, c.green, c.blue, c.alpha };
 	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, rgba, 4 );
 }
 

@@ -243,11 +243,11 @@ public:
 
 	/// sets RGB
 	/// - does not change alpha component
-	virtual void SetColor( int color_index, const SFloatRGBColor& color ) { m_aColor[color_index].SetRGB( color.fRed, color.fGreen, color.fBlue ); }
+	virtual void SetColor( int color_index, const SFloatRGBColor& color ) { m_aColor[color_index].SetRGB( color.red, color.green, color.blue ); }
 
-	float GetAlpha( int color_index ) const { return m_aColor[color_index].fAlpha; }
+	float GetAlpha( int color_index ) const { return m_aColor[color_index].alpha; }
 
-	virtual void SetAlpha( int color_index, float a ) { m_aColor[color_index].fAlpha = a; }
+	virtual void SetAlpha( int color_index, float a ) { m_aColor[color_index].alpha = a; }
 
 	virtual void SetDestAlphaBlendMode( AlphaBlend::Mode mode ) {}
 

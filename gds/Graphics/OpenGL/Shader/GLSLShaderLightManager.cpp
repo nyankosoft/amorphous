@@ -35,8 +35,8 @@ void CGLSLShaderLightManager::Init()
 void CGLSLShaderLightManager::SetHSDiffuseColors( const CHemisphericLightAttribute& hs_light, GLenum light_id )
 {
 	const SFloatRGBAColor& ldc = hs_light.LowerDiffuseColor;
-	glUniform4f( m_VSLowerLightColor[light_id], ldc.fRed, ldc.fGreen, ldc.fBlue, ldc.fAlpha );
-	glUniform4f( m_FSLowerLightColor[light_id], ldc.fRed, ldc.fGreen, ldc.fBlue, ldc.fAlpha );
+	glUniform4f( m_VSLowerLightColor[light_id], ldc.red, ldc.green, ldc.blue, ldc.alpha );
+	glUniform4f( m_FSLowerLightColor[light_id], ldc.red, ldc.green, ldc.blue, ldc.alpha );
 
 //	float rgba[4];
 //	FRGBtoFloat4( hs_light.UpperDiffuseColor, rgba );

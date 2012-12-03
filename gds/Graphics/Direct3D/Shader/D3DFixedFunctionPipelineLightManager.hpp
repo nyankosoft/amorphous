@@ -77,9 +77,9 @@ private:
 inline D3DCOLORVALUE ToD3DCOLORVALUE( const SFloatRGBColor& src )
 {
 	D3DCOLORVALUE dest;
-	dest.r = src.fRed;
-	dest.g = src.fGreen;
-	dest.b = src.fBlue;
+	dest.r = src.red;
+	dest.g = src.green;
+	dest.b = src.blue;
 	dest.a = 1.0f;
 	return dest;
 }
@@ -87,10 +87,10 @@ inline D3DCOLORVALUE ToD3DCOLORVALUE( const SFloatRGBColor& src )
 inline D3DCOLORVALUE ToD3DCOLORVALUE( const SFloatRGBAColor& src )
 {
 	D3DCOLORVALUE dest;
-	dest.r = src.fRed;
-	dest.g = src.fGreen;
-	dest.b = src.fBlue;
-	dest.a = src.fAlpha;
+	dest.r = src.red;
+	dest.g = src.green;
+	dest.b = src.blue;
+	dest.a = src.alpha;
 	return dest;
 }
 
