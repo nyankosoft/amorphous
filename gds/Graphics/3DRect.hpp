@@ -40,13 +40,45 @@ public:
 
 	~C3DRect(){}
 
-	void SetPositions( const Vector3* positions );
+	/// \param positions [in] An array which contains 4 or more Vector3 elements
+	void SetPositions( const Vector3* positions )
+	{
+		if( positions )
+			return;
 
-	void SetNormals( const Vector3& normal );
+		for( int i=0; i<NUM_VERTICES; i++ )
+			m_Positions[i] = positions[i];
+	}
 
-	void SetDiffuseColors( const DiffuseColorType& color );
+	void SetNormals( const Vector3& normal )
+	{
+		for( int i=0; i<NUM_VERTICES; i++ )
+			m_Normals[i] = normal;
+	}
 
-	void SetTextureCoordsLTRB( unsigned int tex_coord_index, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right );
+	void SetDiffuseColors( const DiffuseColorType& color )
+	{
+		for( int i=0; i<NUM_VERTICES; i++ )
+			m_DiffuseColor[i] = color;
+	}
+
+	void SetTextureCoordsLTRB( unsigned int tex_coord_index, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
+	{
+		if( NumTextureCoords <= tex_coord_index )
+			return;
+
+		m_TexCoords[tex_coord_index][0].u = top_left.u;		// top-left corner of the rectangle
+		m_TexCoords[tex_coord_index][0].v = top_left.v;
+
+		m_TexCoords[tex_coord_index][1].u = bottom_right.u;
+		m_TexCoords[tex_coord_index][1].v = top_left.v;
+
+		m_TexCoords[tex_coord_index][2].u = bottom_right.u;		// bottom-right corner of the rectangle
+		m_TexCoords[tex_coord_index][2].v = bottom_right.v;
+
+		m_TexCoords[tex_coord_index][3].u = top_left.u;
+		m_TexCoords[tex_coord_index][3].v = bottom_right.v;
+	}
 
 	void Draw();
 
