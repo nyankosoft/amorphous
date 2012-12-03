@@ -45,6 +45,10 @@ public:
 
 	virtual Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors ) = 0;
 
+	/// \param positions [in] 
+	/// \param normals [in] 
+	virtual Result::Name DrawRect( const Vector3 *positions, const Vector3 *normals, const SFloatRGBAColor *diffuse_colors, const TEXCOORD2 *tex_coords_0 ) = 0;
+
 //	virtual Result::Name DrawLines( const std::vector<Vector3>& vertices, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
 
 //	virtual Result::Name DrawLines( const std::vector<Vector3>& vertices, const std::vector<SFloatRGBAColor>& colors ) = 0;

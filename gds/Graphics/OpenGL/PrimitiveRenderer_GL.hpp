@@ -97,6 +97,11 @@ public:
 		return Result::SUCCESS;
 	}
 
+	Result::Name DrawRect( const Vector3 *positions, const Vector3 *normals, const SFloatRGBAColor *diffuse_colors, const TEXCOORD2 *tex_coords_0 )
+	{
+		return Result::UNKNOWN_ERROR;
+	}
+
 /*
 	Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const SFloatRGBAColor& color )
 	{
