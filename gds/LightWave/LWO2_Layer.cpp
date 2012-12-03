@@ -816,10 +816,10 @@ bool CLWO2_Layer::GetVertexColor( SFloatRGBAColor& color,	 // [out] vertex color
 		if( rVertexColor.iIndex == iPntIndex )
 		{
 			// found the matching index
-			color.fAlpha = rVertexColor.fAlpha;
-			color.fRed   = rVertexColor.fRed;
-			color.fGreen = rVertexColor.fGreen;
-			color.fBlue  = rVertexColor.fBlue;
+			color.alpha = rVertexColor.fAlpha;
+			color.red   = rVertexColor.fRed;
+			color.green = rVertexColor.fGreen;
+			color.blue  = rVertexColor.fBlue;
 			return true;
 		}
 		else
