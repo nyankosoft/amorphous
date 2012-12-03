@@ -169,7 +169,7 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 		// colors
 		for( int i=0; i<numof(light_desc.aColor); i++ )
 		{
-			if( fabs(pLightDesc->aColor[i].fAlpha - CBE_Light::ms_InvalidColor.fAlpha) < 0.001f )
+			if( fabs(pLightDesc->aColor[i].alpha - CBE_Light::ms_InvalidColor.alpha) < 0.001f )
 				light_desc.aColor[i] = default_desc.aColor[i];
 			else
 				light_desc.aColor[i] = pLightDesc->aColor[i];
