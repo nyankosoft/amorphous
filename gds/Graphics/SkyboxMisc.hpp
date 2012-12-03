@@ -17,6 +17,11 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Matrix34& vCamPose );
 void RenderSkybox( CTextureHandle& sky_texture, const Matrix34& vCamPose );
 void RenderSkyCylinder( CTextureHandle& sky_texture, const Matrix34& vCamPose );
 
+CTextureHandle CreateClearDaySkyTexture();
+CTextureHandle CreateCloudyDaySkyTexture();
+CTextureHandle CreateClearNightSkyTexture();
+CTextureHandle CreateCloudyNightSkyTexture();
+
 
 //}
 

@@ -1,11 +1,12 @@
 #include "SkyboxMisc.hpp"
 #include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/MeshGenerators.hpp"
+#include "Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Graphics/TextureGenerators/GradationTextureGenerators.hpp"
 
 using namespace std;
 using namespace boost;
@@ -168,4 +169,38 @@ void RenderSkyCylinder( CTextureHandle& sky_texture, const Matrix34& vCamPose )
 	}
 
 	RenderSkyMesh( s_SkyCylinderMesh, sky_texture, vCamPose );
+}
+
+
+CTextureHandle CreateClearDaySkyTexture()
+{
+	return CreateHorizontalGradationTexture(
+		256,
+		256,
+		TextureFormat::A8R8G8B8,
+		SFloatRGBAColor( 0.573f, 0.651f, 0.678f, 1.0f ),
+		SFloatRGBAColor( 0.950f, 0.980f, 0.999f, 1.0f ),
+		SFloatRGBAColor( 0.620f, 0.545f, 0.522f, 1.0f )
+		);
+}
+
+
+CTextureHandle CreateCloudyDaySkyTexture()
+{
+	LOG_PRINT_ERROR( " Not implemented yet." );
+	return CTextureHandle();
+}
+
+
+CTextureHandle CreateClearNightSkyTexture()
+{
+	LOG_PRINT_ERROR( " Not implemented yet." );
+	return CTextureHandle();
+}
+
+
+CTextureHandle CreateCloudyNightSkyTexture()
+{
+	LOG_PRINT_ERROR( " Not implemented yet." );
+	return CTextureHandle();
 }
