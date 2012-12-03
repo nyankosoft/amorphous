@@ -24,7 +24,7 @@ void CFadeEffect::Draw()
 
 	clamp( fCurrentAlpha, 0.0f, 1.0f );
 
-	m_Color.fAlpha = fCurrentAlpha;
+	m_Color.alpha = fCurrentAlpha;
 
 	m_ScreenRect.SetColor( m_Color );
 
@@ -35,9 +35,9 @@ void CFadeEffect::Draw()
 void CFadeEffect::SetFadeEffect(int iType, const SFloatRGBAColor& dest_color, float fTotalTime, AlphaBlend::Mode blend_mode )
 {
 	m_iType = iType;
-	m_fMaxAlpha = dest_color.fAlpha;//(float)( (dest_color & 0xFF000000) >> 24 );
+	m_fMaxAlpha = dest_color.alpha;//(float)( (dest_color & 0xFF000000) >> 24 );
 	m_Color = dest_color;
-	m_Color.fAlpha = 0.0f; // Set the alpha of the current color to 0 and change it over time until it reaches the value specified in the dest_color.
+	m_Color.alpha = 0.0f; // Set the alpha of the current color to 0 and change it over time until it reaches the value specified in the dest_color.
 	m_fTotalTime = fTotalTime;
 
 	in_use = true;

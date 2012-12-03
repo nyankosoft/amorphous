@@ -89,10 +89,10 @@ inline void convert_python_to_cpp_FloatRGBA( PyObject* src, void *address )
 	PyArg_Parse( attr_g, "d", &g );
 	PyArg_Parse( attr_b, "d", &b );
 	PyArg_Parse( attr_a, "d", &a );
-	dest.fRed   = (float)r;
-	dest.fGreen = (float)g;
-	dest.fBlue  = (float)b;
-	dest.fAlpha = (float)a;
+	dest.red   = (float)r;
+	dest.green = (float)g;
+	dest.blue  = (float)b;
+	dest.alpha = (float)a;
 
 	memcpy( address, &dest, sizeof(dest) );
 }

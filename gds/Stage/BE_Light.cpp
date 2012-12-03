@@ -112,7 +112,7 @@ void CBE_Light::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 static inline SFloatRGBAColor ToRGBA( const SFloatRGBColor& src )
 {
-	return SFloatRGBAColor(src.fRed,src.fGreen,src.fBlue,1.0f);
+	return SFloatRGBAColor(src.red,src.green,src.blue,1.0f);
 }
 
 

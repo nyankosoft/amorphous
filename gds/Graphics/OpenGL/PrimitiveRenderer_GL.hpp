@@ -14,7 +14,7 @@ public:
 	Result::Name DrawPoint( const Vector3& pos, const SFloatRGBAColor& color )
 	{
 		glBegin(GL_POINTS);
-		glColor4f( color.fRed, color.fGreen, color.fBlue, color.fAlpha );
+		glColor4f( color.red, color.green, color.blue, color.alpha );
 		glVertex3f( pos.x, pos.y, pos.z );
 		glEnd();
 
@@ -30,7 +30,7 @@ public:
 		const SFloatRGBAColor c = color;
 		for( size_t i=0; i<num_points; i++ )
 		{
-			glColor4f( c.fRed, c.fGreen, c.fBlue, c.fAlpha );
+			glColor4f( c.red, c.green, c.blue, c.alpha );
 			glVertex3f( points[i].x, points[i].y, points[i].z );
 		}
 		glEnd();
@@ -49,9 +49,9 @@ public:
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
 		glBegin(GL_LINES);
-		glColor4f( start_color.fRed, start_color.fGreen, start_color.fBlue, start_color.fAlpha );
+		glColor4f( start_color.red, start_color.green, start_color.blue, start_color.alpha );
 		glVertex3f( start.x, start.y, start.z );
-		glColor4f( end_color.fRed,   end_color.fGreen,   end_color.fBlue,   end_color.fAlpha );
+		glColor4f( end_color.red,   end_color.green,   end_color.blue,   end_color.alpha );
 		glVertex3f( end.x,   end.y,   end.z );
 		glEnd();
 
@@ -70,7 +70,7 @@ public:
 		const SFloatRGBAColor line_color = color;
 		for( size_t i=0; i<num_points; i++ )
 		{
-			glColor4f( line_color.fRed, line_color.fGreen, line_color.fBlue, line_color.fAlpha );
+			glColor4f( line_color.red, line_color.green, line_color.blue, line_color.alpha );
 			glVertex3f( points[i].x, points[i].y, points[i].z );
 		}
 		glEnd();
@@ -89,7 +89,7 @@ public:
 		const size_t num_points = points.size();
 		for( size_t i=0; i<num_points; i++ )
 		{
-			glColor4f( colors[i].fRed, colors[i].fGreen, colors[i].fBlue, colors[i].fAlpha );
+			glColor4f( colors[i].red, colors[i].green, colors[i].blue, colors[i].alpha );
 			glVertex3f( points[i].x, points[i].y, points[i].z );
 		}
 		glEnd();
@@ -113,7 +113,7 @@ public:
 		{
 			const Vector3& p0 = points[i*2];
 			const Vector3& p1 = points[i*2+1];
-			glColor4f( line_color.fRed, line_color.fGreen, line_color.fBlue, line_color.fAlpha );
+			glColor4f( line_color.red, line_color.green, line_color.blue, line_color.alpha );
 			glVertex3f( p0.x, p0.y, p0.z );
 			glVertex3f( p1.x, p1.y, p1.z );
 		}
