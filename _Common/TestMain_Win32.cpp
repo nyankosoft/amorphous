@@ -7,6 +7,7 @@
 
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Graphics/Direct3D/Direct3D9.hpp"
 #include "gds/Support/MiscAux.hpp"
 #include "gds/Support/WindowMisc_Win32.hpp"
 #include "gds/Support/CameraController_Win32.hpp"
@@ -170,7 +171,7 @@ VOID Render()
 	{
 		PROFILE_SCOPE( "Clear the color and depth buffers" );
 		const SFloatRGBAColor c = g_pTest->GetBackgroundColor();
-		glClearColor( c.fRed, c.fGreen, c.fBlue, c.fAlpha );
+		glClearColor( c.red, c.green, c.blue, c.alpha );
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
 	}
 
