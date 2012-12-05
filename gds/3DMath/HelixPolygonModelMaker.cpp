@@ -133,7 +133,7 @@ void CreateUniformCylindricalHelix(
 		{
 			// Add vertices and polygons
 			size_t bottom_face_vertices_offset = positions.size();
-			positions.insert( positions.end(), single_helix_face_vertices.begin(), single_helix_face_vertices.end() );
+			positions.insert( positions.end(), face_vertices.begin(), face_vertices.end() );
 			CreateHelix_AddCordFacePolygon( bottom_face_vertices_offset, num_cord_sides, false, polygons );
 		}
 	}
@@ -150,7 +150,7 @@ void CreateUniformCylindricalHelix(
 		{
 			// Add vertices and polygons
 			size_t top_face_vertices_offset = positions.size();
-			positions.insert( positions.end(), single_helix_face_vertices.begin(), single_helix_face_vertices.end() );
+			positions.insert( positions.end(), face_vertices.begin(), face_vertices.end() );
 			for( size_t i=top_face_vertices_offset; i<positions.size(); i++ )
 				positions[i].y += helix_length;
 
