@@ -11,7 +11,6 @@
 #include "Graphics/RenderTask.hpp"
 #include "Graphics/RenderTaskProcessor.hpp"
 
-#include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
@@ -118,8 +117,6 @@ bool CScreenEffectManager::CExtraTextureEffect::LoadTexture()
 CScreenEffectManager::CScreenEffectManager()
 :
 m_EffectFlag(0),
-//m_pShaderManager(NULL),
-//m_pPPEffectManager(NULL),
 m_pTargetSceneRenderer(NULL)
 {
 	ClearBlurEffect();
@@ -131,8 +128,6 @@ m_pTargetSceneRenderer(NULL)
 //	m_EffectFlag |= ScreenEffect::Glare;
 //	SetGlareLuminanceThreshold( 0.09f );
 
-	m_pSimpleMotionBlur = NULL;
-
 	m_DefaultShaderTechnique.SetTechniqueName( "Default" );
 
 	m_pLensFlare.reset( new CLensFlare );
@@ -142,8 +137,6 @@ m_pTargetSceneRenderer(NULL)
 CScreenEffectManager::~CScreenEffectManager()
 {
 	ReleaseGraphicsResources();
-
-	SafeDelete( m_pSimpleMotionBlur );
 }
 
 
@@ -151,10 +144,6 @@ bool CScreenEffectManager::Init()
 {
 
 	UpdateScreenSize();
-
-//	m_NoiseEffect.LoadNoiseTextures();
-	m_NoiseEffect.Init( 0.5f, 2 );
-	m_NoiseEffect.UpdateScreenSize();
 /*
 	m_TexRenderTarget.Init( 512, 512 );
 //	m_TexRenderTarget.Init( 256, 256 );
@@ -176,7 +165,6 @@ bool CScreenEffectManager::Init()
 	m_vecExtraTexEffect[0].m_Desc.pLoader = pTexLoader;
 	m_vecExtraTexEffect[0].LoadTexture();
 
-	// initialize post-process effect manager
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 //	HRESULT hr;
 
@@ -186,42 +174,58 @@ bool CScreenEffectManager::Init()
 //	pd3dDev->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
 //	pBackBuffer->GetDesc( &back_buffer_desc );
 
+	return true;
+}
+
+
+Result::Name CScreenEffectManager::InitPostProcessEffect()
+{
 	m_pPPEffectManager.reset( new CPostProcessEffectManager );
 	Result::Name res = m_pPPEffectManager->Init( "Shader/PostProcessEffect" );
 
-/*
-	m_pPPEffectManager = new CPostProcessEffectManager;
-//	hr = m_pPPEffectManager->OnCreateDevice( pd3dDev, &back_buffer_desc, "Shader\\PostProcess\\PostProcess.fx", NULL );
-	Result::Name res = m_pPPEffectManager->OnCreateDevice( "Shader\\PostProcess\\PostProcess.fx" );
-	if( res == Result::SUCCESS )
-	{
-//		hr = m_pPPEffectManager->OnResetDevice( pd3dDev, &back_buffer_desc, NULL );
-		hr = m_pPPEffectManager->OnResetDevice();
+	return res;
+}
 
-		m_aPPEffectIndex[PP_COLOR_GBLUR_H]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurH.fx" );
-		m_aPPEffectIndex[PP_COLOR_GBLUR_V]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorGBlurV.fx" );
-		m_aPPEffectIndex[PP_COLOR_INVERSE]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorInverse.fx" );
-		m_aPPEffectIndex[PP_COLOR_MONOCHROME]  = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorMonochrome.fx" );
-		m_aPPEffectIndex[PP_COLOR_DOWNFILTER4] = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorDownFilter4.fx" );
-		m_aPPEffectIndex[PP_COLOR_UPFILTER4]   = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorUpFilter4.fx" );
-		m_aPPEffectIndex[PP_COLOR_BLOOM_H]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomH.fx" );
-		m_aPPEffectIndex[PP_COLOR_BLOOM_V]     = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBloomV.fx" );
-		m_aPPEffectIndex[PP_COLOR_BRIGHTPASS]  = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorBrightPass.fx" );
-		m_aPPEffectIndex[PP_COLOR_COMBINE4]    = m_pPPEffectManager->AddPostProcessShader( "Shader\\PostProcess\\PP_ColorCombine4.fx" );
 
-		m_pPPEffectManager->GetPostProcessInstance().reserve( 16 );
-	}
-	else
-		SafeDelete( m_pPPEffectManager );
-*/
+void CScreenEffectManager::ReleasePostProcessEffect()
+{
+	m_pPPEffectManager.reset();
+}
 
-	m_pSimpleMotionBlur = new CSimpleMotionBlur();
+
+Result::Name CScreenEffectManager::InitMotionBlurEffect()
+{
+	m_pSimpleMotionBlur.reset( new CSimpleMotionBlur );
+
 	m_pSimpleMotionBlur->InitForScreenSize();
 	m_pSimpleMotionBlur->SetBlurWeight( 0.85f );
 //	m_pSimpleMotionBlur->SetBlurWeight( 1.00f );
 
-	return true;
+	return Result::SUCCESS;
 }
+
+
+void CScreenEffectManager::ReleaseMotionBlurEffect()
+{
+	m_pSimpleMotionBlur.reset();
+}
+
+
+Result::Name CScreenEffectManager::InitNoiseEffect()
+{
+//	m_NoiseEffect.LoadNoiseTextures();
+	m_NoiseEffect.Init( 0.5f, 2 );
+	m_NoiseEffect.UpdateScreenSize();
+
+	return Result::SUCCESS;
+}
+
+
+void CScreenEffectManager::ReleaseNoiseEffect()
+{
+//	m_NoiseEffect.Release();
+}
+
 
 /*
 void CScreenEffectManager::BeginRender( const CCamera &rCam )
@@ -417,7 +421,7 @@ void CScreenEffectManager::UpdateMonochromeColorEffect()
 	LPD3DXEFFECT pEffect = m_pPPEffectManager->GetPostProcess(m_aPPEffectIndex[PP_COLOR_MONOCHROME]).GetEffect();
 */
 	const SFloatRGBColor color = m_mapMonochromeColor.begin()->second;
-//	const float rgba[4] = { color.fRed, color.fGreen, color.fBlue, 1.0f }; // always set alpha to 1.0
+//	const float rgba[4] = { color.red, color.green, color.blue, 1.0f }; // always set alpha to 1.0
 //	pEffect->SetFloatArray( "ColorOffset", rgba, 4 );
 
 	m_pPPEffectManager->EnableEffect( CPostProcessEffect::TF_MONOCHROME_COLOR );
@@ -442,6 +446,9 @@ void CScreenEffectManager::RenderOverlayEffects()
 
 	if( m_EffectFlag & ScreenEffect::PseudoNightVision )
 	{
+		if( !m_NoiseEffect.IsInitialized() )
+			InitNoiseEffect();
+
 		m_NoiseEffect.SetNoiseTexture();
 		m_NoiseEffect.RenderNoiseEffect();
 		m_vecExtraTexEffect[0].Rect.Draw( m_vecExtraTexEffect[0].m_Texture );
@@ -558,23 +565,10 @@ void CScreenEffectManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 //	m_pSimpleMotionBlur - graphics component
 }
 
-void CScreenEffectManager::DoPseudoNightVisionEffectSettings()
-{
-	LPD3DXEFFECT pEffect = NULL;//m_pShaderManager->GetEffect();
-
-	if( pEffect )
-	{
-		if( m_EffectFlag & ScreenEffect::PseudoNightVision )
-			pEffect->SetBool( "g_bNightVision", true );
-		else
-			pEffect->SetBool( "g_bNightVision", false );
-	}
-}
-
 
 void CScreenEffectManager::BeginRender( const CCamera &rCam )
 {
-	DoPseudoNightVisionEffectSettings();
+//	DoPseudoNightVisionEffectSettings();
 
 	m_bPseudoMotionBlurEnabled
 		= GetEffectFlag() & ScreenEffect::PseudoMotionBlur 
@@ -594,17 +588,27 @@ void CScreenEffectManager::BeginRender( const CCamera &rCam )
 
 	if( m_bPseudoMotionBlurEnabled )
 	{
-		// set motion blur strength
-		UpdateMotionBlurParams();
+		Result::Name res = Result::SUCCESS;
+		if( !m_pSimpleMotionBlur )
+			res = InitMotionBlurEffect();
 
-		// set texture render target for psedo motion blur
-		m_pSimpleMotionBlur->Begin();
-		// TODO: save flag for effect flag changes during BeginRender() & RenderPostProcessEffects()
-//		m_bMotionBlurOn = true;
+		if( res == Result::SUCCESS && m_pSimpleMotionBlur )
+		{
+			// set motion blur strength
+			UpdateMotionBlurParams();
+
+			// set texture render target for psedo motion blur
+			m_pSimpleMotionBlur->Begin();
+			// TODO: save flag for effect flag changes during BeginRender() & RenderPostProcessEffects()
+//			m_bMotionBlurOn = true;
+		}
 	}
 
 	if( m_bPostProcessEffectEnabled )
 	{
+		if( !m_pPPEffectManager )
+			InitPostProcessEffect();
+
 		// clear all the previous post process effects
 //		m_pPPEffectManager->GetPostProcessInstance().resize( 0 );
 
@@ -666,7 +670,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 {
 	PROFILE_FUNCTION();
 
-	if( m_bPostProcessEffectEnabled )
+	if( m_bPostProcessEffectEnabled && m_pPPEffectManager )
 	{
 /*		// perform post-processes on the scene
 		m_pPPEffectManager->PerformPostProcess();
@@ -681,7 +685,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 		m_pPPEffectManager->RenderPostProcessEffects();
 	}
 
-	if( m_bPseudoMotionBlurEnabled )
+	if( m_bPseudoMotionBlurEnabled && m_pSimpleMotionBlur )
 	{
 		m_pSimpleMotionBlur->End();
 		m_pSimpleMotionBlur->Render();
@@ -826,7 +830,7 @@ void CScreenEffectManager::CreateRenderTasks()
 {
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	DoPseudoNightVisionEffectSettings();
+//	DoPseudoNightVisionEffectSettings();
 
 	bool bExtraRenderTarget = false;
 
@@ -904,6 +908,6 @@ void CScreenEffectManager::CreateRenderTasks()
 			RenderTaskProcessor.AddRenderTask( new CPostProcessRenderTask( m_pPPEffectManager.get() ) );
 		}
 
-		RenderTaskProcessor.AddRenderTask( new CSimpleMotionBlurRenderTask( m_pSimpleMotionBlur ) );
+		RenderTaskProcessor.AddRenderTask( new CSimpleMotionBlurRenderTask( m_pSimpleMotionBlur.get() ) );
 	}
 }

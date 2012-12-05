@@ -146,7 +146,7 @@ private:
 
 //	int m_aFilterIndex[NUM_FILTERS];
 
-	CSimpleMotionBlur *m_pSimpleMotionBlur;
+	boost::shared_ptr<CSimpleMotionBlur> m_pSimpleMotionBlur;
 
 	CPseudoNoiseEffect m_NoiseEffect;
 
@@ -199,13 +199,23 @@ private:
 
 	void RenderOverlayEffects();
 
-	void DoPseudoNightVisionEffectSettings();
-
 public:
 
 	CScreenEffectManager();
 
 	~CScreenEffectManager();
+
+	Result::Name InitPostProcessEffect();
+
+	void ReleasePostProcessEffect();
+
+	Result::Name InitMotionBlurEffect();
+
+	void ReleaseMotionBlurEffect();
+
+	Result::Name InitNoiseEffect();
+
+	void ReleaseNoiseEffect();
 
 	bool Init();
 
