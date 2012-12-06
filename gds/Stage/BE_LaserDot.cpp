@@ -3,18 +3,11 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "3DMath/MatrixConversions.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/TextureStage.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/3DGameMath.hpp"
-
-
-void Draw3DRectWithProgrammableShader( const C3DRect& rect, CShaderManager& shader_mgr )
-{
-	LOG_PRINT_WARNING( " A function to draw a 3D rect with a programmable shader has not been implemented. Drawing the rect with fixed function pipeline." );
-
-	rect.Draw();
-}
 
 
 CBE_LaserDot::CBE_LaserDot()
@@ -30,12 +23,11 @@ CBE_LaserDot::CBE_LaserDot()
 	avRectVertex[2] = Vector3( 0.25f,-0.25f, 0.0f );
 	avRectVertex[3] = Vector3(-0.25f,-0.25f, 0.0f );
 
-	m_LaserDotRect.SetPositions( avRectVertex );
+	m_LaserDotRect.SetPositions( avRectVertex );//, 4 );
 
-	Vector3 aNormal[] = { Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0) };
-	m_LaserDotRect.SetNormals( aNormal );
+	m_LaserDotRect.SetNormals( Vector3(0,0,0) );
 
-	m_LaserDotRect.SetColor( SFloatRGBAColor::White() );
+	m_LaserDotRect.SetDiffuseColors( SFloatRGBAColor::White() );
 
 	m_MeshProperty.m_ShaderTechnique.resize( 1, 1 );
 	m_MeshProperty.m_ShaderTechnique( 0, 0 ).SetTechniqueName( "Default" );
@@ -48,6 +40,12 @@ void CBE_LaserDot::Init()
 	Init3DModel();
 
 	m_LaserDotTex.Load( m_LaserDotTexFilepath );
+
+//	CRectMeshGenerator rect_mesh_generator;
+//	rect_mesh_generator.Generate();
+//	m_LaserDotRect.LoadFromArchive( rect_mesh_generator.GetMeshArchive() );
+
+//	m_LaserDotRect.SetTexture( 0, m_LaserDotTex );
 }
 
 
@@ -145,7 +143,7 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 
 		pShaderManager->SetTexture( 0, m_LaserDotTex );
 
-		Draw3DRectWithProgrammableShader( m_LaserDotRect, *pShaderManager );
+//		m_LaserDotRect.Render( *pShaderManager );
 	}
 	else
 	{
@@ -177,7 +175,7 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 */
 		FixedFunctionPipelineManager().SetTexture( 0, m_LaserDotTex );
 
-		m_LaserDotRect.Draw();
+//		m_LaserDotRect.Render();
 	}
 }
 

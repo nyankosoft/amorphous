@@ -15,7 +15,7 @@ class CBE_LaserDot : public CBaseEntity
 {
 private:
 
-	C3DRect m_LaserDotRect;
+	C3DRect<SFloatRGBAColor,1> m_LaserDotRect;
 
 	std::string m_LaserDotTexFilepath;
 	CTextureHandle m_LaserDotTex;
