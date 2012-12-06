@@ -166,7 +166,57 @@ PyObject* RemoveEnvMapTarget( PyObject* self, PyObject* args )
 }
 
 
+PyObject* AddPlanarReflector( PyObject* self, PyObject* args )
+{
+	const char *entity_name = NULL;
+	int result = PyArg_ParseTuple( args, "s", &entity_name );
 
+	CStage *pStage = GetStageForScriptCallback();
+
+	CCopyEntity *pEntity = pStage->GetEntitySet()->GetEntityByName( entity_name );
+
+	if( IsValidEntity(pEntity) )
+	{
+//		CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
+//		if( pRenderMgr )
+//		{
+//			pEntity->RaiseEntityFlags( BETYPE_PLANAR_REFLECTOR );
+//			pRenderMgr->AddPlanarReflector( CEntityHandle<>(pEntity->Self()) );
+//		}
+		boost::shared_ptr<CBasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
+		int target_subset_index = 0;
+//		if( pMesh )
+//			RegisterAsPlanarMirror( *pEntity, *pMesh, target_subset_index );
+	}
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
+
+
+PyObject* RemovePlanarReflector( PyObject* self, PyObject* args )
+{
+	const char *entity_name = NULL;
+	int result = PyArg_ParseTuple( args, "s", &entity_name );
+
+	CStage *pStage = GetStageForScriptCallback();
+
+	CCopyEntity *pEntity = pStage->GetEntitySet()->GetEntityByName( entity_name );
+
+	if( IsValidEntity(pEntity) )
+	{
+		CEntityRenderManager *pRenderMgr = GetEntityRenderManager();
+		if( pRenderMgr )
+		{
+			bool remove_planar_refelection_group = true;
+			pEntity->ClearEntityFlags( BETYPE_PLANAR_REFLECTOR );
+			pRenderMgr->RemovePlanarReflector( CEntityHandle<>(pEntity->Self()), remove_planar_refelection_group );
+		}
+	}
+
+    Py_INCREF( Py_None );
+	return Py_None;
+}
 
 
 PyObject* EnableSoftShadow( PyObject* self, PyObject* args )
@@ -427,6 +477,8 @@ PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 	{ "AddEnvMapTarget",                 AddEnvMapTarget,                 METH_VARARGS, "" },
 	{ "RemoveEnvMapTarget",              RemoveEnvMapTarget,              METH_VARARGS, "" },
 	{ "SaveEnvMapTextureToFile",         SaveEnvMapTextureToFile,         METH_VARARGS, "" },
+	{ "AddPlanarReflector",              AddPlanarReflector,              METH_VARARGS, "" },
+	{ "RemovePlanarReflector",           RemovePlanarReflector,           METH_VARARGS, "" },
 
 	{ "EnableShadowMap",                 EnableShadowMap,                 METH_VARARGS, "" },
 	{ "DisableShadowMap",                DisableShadowMap,                METH_VARARGS, "" },
