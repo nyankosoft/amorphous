@@ -3,7 +3,7 @@
 
 
 #include "math3d_py.hpp"
-//#include "gfx_py.hpp"
+#include "gfx_py.hpp"
 
 
 
