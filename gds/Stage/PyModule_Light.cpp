@@ -21,18 +21,6 @@
 using boost::shared_ptr;
 
 
-class  CScriptGenMode
-{
-public:
-	enum Name
-	{
-		CREATE,
-		LOAD,
-		NUM_MODES
-	};
-};
-
-
 class CStageLightAttributeHolder
 {
 	enum DefaultBaseEntityHandleIndex
@@ -119,7 +107,7 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
 }
 
 
-PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords, CScriptGenMode::Name mode )
+PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	CLightEntityDesc desc( CLight::DIRECTIONAL );
 	char *base_name = "";
@@ -130,51 +118,35 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, PyObject *ke
 
 	int result = 0;
 
-	static char *kw_list[] = { "model", "name", "direction", "diffuse_color", "intensity", "light_group", NULL };
+	static char *kw_list[] = { "model", "name", "direction", "diffuse_color", "intensity", "light_group", "shadow_for_light", NULL };
 
 	CBaseEntityHandle basehandle( "__DirectionalLight__" );
-	if( mode == CScriptGenMode::LOAD )
+	GetInvalidDesc( desc );
+	dir = CBE_Light::ms_vInvalidDirection;
+	desc.WorldPose.matOrient.SetColumn( 0, dir );
+	desc.WorldPose.matOrient.SetColumn( 1, dir );
+	desc.WorldPose.matOrient.SetColumn( 2, dir );
+
+	result = PyArg_ParseTupleAndKeywords( args, keywords, "|ssO&O&fii", kw_list,
+		&base_name,  // model
+		&light_name,
+		convert_python_to_cpp_Vector3, &dir,
+		convert_python_to_cpp_FloatRGBA, &color,
+		&desc.fIntensity,
+		&desc.LightGroup,
+		&shadow_for_light );
+
+	// Leave it if it is CBE_Light::ms_vInvalidDirection
+	if( dir != CBE_Light::ms_vInvalidDirection )
 	{
-		GetInvalidDesc( desc );
-		dir = CBE_Light::ms_vInvalidDirection;
-		desc.WorldPose.matOrient.SetColumn( 0, dir );
-		desc.WorldPose.matOrient.SetColumn( 1, dir );
-		desc.WorldPose.matOrient.SetColumn( 2, dir );
-
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "s|sO&O&fdd", kw_list,
-			&base_name,
-			&light_name,
-			convert_python_to_cpp_Vector3, &dir,
-			convert_python_to_cpp_FloatRGBA, &color,
-			&desc.fIntensity,
-			&desc.LightGroup,
-			&shadow_for_light );
-
-		// Leave it if it is CBE_Light::ms_vInvalidDirection
-		if( dir != CBE_Light::ms_vInvalidDirection )
-		{
-			// User wants to overwrite the db value - check if it is a valid direction
-			Vec3Normalize( dir, dir );
-			if( Vec3Length( dir ) < 0.001f )
-				dir = Vector3(0,-1,0);
-		}
-
-		basehandle.SetBaseEntityName( base_name );
-	}
-	else
-	{
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "|sO&O&fdd", kw_list,
-			&light_name,
-			convert_python_to_cpp_Vector3, &dir,
-			convert_python_to_cpp_FloatRGBA, &color,
-			&desc.fIntensity,
-			&desc.LightGroup,
-			&shadow_for_light );
-
+		// User wants to overwrite the db value - check if it is a valid direction
 		Vec3Normalize( dir, dir );
 		if( Vec3Length( dir ) < 0.001f )
 			dir = Vector3(0,-1,0);
 	}
+
+	if( 0 < strlen(base_name) )
+		basehandle.SetBaseEntityName( base_name );
 
 	color.alpha = 1.0f;
 
@@ -190,19 +162,7 @@ PyObject* GenerateDirectionalLight( PyObject* self, PyObject* args, PyObject *ke
 }
 
 
-PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GenerateDirectionalLight( self, args, keywords, CScriptGenMode::CREATE );
-}
-
-
-PyObject* gsf::py::light::LoadDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GenerateDirectionalLight( self, args, keywords, CScriptGenMode::LOAD );
-}
-
-
-PyObject* GeneratePointLight( PyObject* self, PyObject* args, PyObject *keywords, CScriptGenMode::Name mode )
+PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	CLightEntityDesc desc( CLight::POINT );
 	char *base_name = "";
@@ -214,40 +174,25 @@ PyObject* GeneratePointLight( PyObject* self, PyObject* args, PyObject *keywords
 
 	int result = 0;
 
-	static char *kw_list[] = { "model", "name", "position", "diffuse_color", "intensity", "att0", "att1", "att2", "light_group", NULL };
+	static char *kw_list[] = { "model", "name", "position", "diffuse_color", "intensity", "att0", "att1", "att2", "light_group", "shadow_for_light", NULL };
 
 	CBaseEntityHandle basehandle( "__PointLight__" );
-	if( mode == CScriptGenMode::LOAD )
-	{
-		GetInvalidDesc( desc );
 
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "s|sO&O&ffffdd", kw_list,
-			&base_name,
-			&light_name,
-			convert_python_to_cpp_Vector3, &pos,
-			convert_python_to_cpp_FloatRGBA, &color,
-			&desc.fIntensity,
-			&pAttenu[0],
-			&pAttenu[1],
-			&pAttenu[2],
-			&desc.LightGroup,
-			&shadow_for_light );
+	GetInvalidDesc( desc );
 
-		basehandle.SetBaseEntityName( base_name );
-	}
-	else
-	{
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "|sO&O&ffffdd", kw_list,
-			&light_name,
-			convert_python_to_cpp_Vector3, &pos,
-			convert_python_to_cpp_FloatRGBA, &color,
-			&desc.fIntensity,
-			&pAttenu[0],
-			&pAttenu[1],
-			&pAttenu[2],
-			&desc.LightGroup,
-			&shadow_for_light );
-	}
+	result = PyArg_ParseTupleAndKeywords( args, keywords, "|ssO&O&ffffii", kw_list,
+		&base_name,
+		&light_name,
+		convert_python_to_cpp_Vector3, &pos,
+		convert_python_to_cpp_FloatRGBA, &color,
+		&desc.fIntensity,
+		&pAttenu[0],
+		&pAttenu[1],
+		&pAttenu[2],
+		&desc.LightGroup,
+		&shadow_for_light );
+
+	basehandle.SetBaseEntityName( base_name );
 
 	color.alpha = 1.0f;
 
@@ -263,26 +208,16 @@ PyObject* GeneratePointLight( PyObject* self, PyObject* args, PyObject *keywords
 }
 
 
-PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GeneratePointLight( self, args, keywords, CScriptGenMode::CREATE );
-}
-
-
-PyObject* gsf::py::light::LoadPointLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GeneratePointLight( self, args, keywords, CScriptGenMode::LOAD );
-}
-
-
 PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args, PyObject *keywords )
 {
+	LOG_PRINT_ERROR( "Not implemented yet." );
+
 	Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
-PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords, CScriptGenMode::Name mode )
+PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
 
@@ -297,66 +232,43 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *
 
 	int result = 0;
 
-	static char *kw_list[] = { "model", "name", "direction", "upper_diffuse_color", "lower_diffuse_color", "intensity", "light_group", NULL };
 
 	CBaseEntityHandle basehandle;
-	if( mode == CScriptGenMode::LOAD )
+
+	static char *kw_list[] = { "model", "name", "direction", "upper_diffuse_color", "lower_diffuse_color", "intensity", "light_group", "shadow_for_light", NULL };
+
+	// 'load' mode
+	// set invalid values to see which default values the caller
+	// intends to override
+	GetInvalidDesc( desc );
+	dir = CBE_Light::ms_vInvalidDirection;
+	desc.WorldPose.matOrient.SetColumn( 0, dir );
+	desc.WorldPose.matOrient.SetColumn( 1, dir );
+	desc.WorldPose.matOrient.SetColumn( 2, dir );
+
+	result = PyArg_ParseTupleAndKeywords( args, keywords, "|ssO&O&O&fii", kw_list,
+		&base_name, // model
+		&light_name,
+		convert_python_to_cpp_Vector3, &dir,
+		convert_python_to_cpp_FloatRGBA, &uc,
+		convert_python_to_cpp_FloatRGBA, &lc,
+		&desc.fIntensity,
+		&desc.LightGroup,
+		&shadow_for_light );
+
+	// Leave it if it is CBE_Light::ms_vInvalidDirection
+	if( dir != CBE_Light::ms_vInvalidDirection )
 	{
-		// 'load' mode
-		// set invalid values to see which default values the caller
-		// intends to override
-		GetInvalidDesc( desc );
-		dir = CBE_Light::ms_vInvalidDirection;
-		desc.WorldPose.matOrient.SetColumn( 0, dir );
-		desc.WorldPose.matOrient.SetColumn( 1, dir );
-		desc.WorldPose.matOrient.SetColumn( 2, dir );
-
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "s|sO&O&O&fdd", kw_list,
-			&base_name,
-			&light_name,
-			convert_python_to_cpp_Vector3, &dir,
-			convert_python_to_cpp_FloatRGBA, &uc,
-			convert_python_to_cpp_FloatRGBA, &lc,
-			&desc.fIntensity,
-			&desc.LightGroup,
-			&shadow_for_light );
-
-		// Leave it if it is CBE_Light::ms_vInvalidDirection
-		if( dir != CBE_Light::ms_vInvalidDirection )
-		{
-			// User wants to overwrite the db value - check if it is a valid direction
-			Vec3Normalize( dir, dir );
-			if( Vec3Length( dir ) < 0.001f )
-				dir = Vector3(0,-1,0);
-		}
-
-		basehandle.SetBaseEntityName( base_name );
-	}
-	else
-	{
-		// 'create' mode
-		// user is responsible for setting all the necessary values through the script API
-
-		basehandle.SetBaseEntityName( "__HemisphericDirectionalLight__" );
-
-		// set default colors
-		uc = SFloatRGBAColor(1,1,1,1); // default color
-		lc = SFloatRGBAColor(0,0,0,1); // default color
-
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "|sO&O&O&fdd", kw_list,
-			&light_name,
-			convert_python_to_cpp_Vector3, &dir,
-			convert_python_to_cpp_FloatRGBA, &uc,
-			convert_python_to_cpp_FloatRGBA, &lc,
-			&desc.fIntensity,
-			&desc.LightGroup,
-			&shadow_for_light );
-
+		// User wants to overwrite the db value - check if it is a valid direction
 		Vec3Normalize( dir, dir );
 		if( Vec3Length( dir ) < 0.001f )
 			dir = Vector3(0,-1,0);
-
 	}
+
+	if( 0 < strlen(base_name) )
+		basehandle.SetBaseEntityName( base_name );
+	else
+		basehandle.SetBaseEntityName( "__HemisphericDirectionalLight__" );
 
 	desc.WorldPose.matOrient = CreateOrientFromFwdDir( dir );
 	desc.pBaseEntityHandle = &basehandle;
@@ -368,18 +280,8 @@ PyObject* GenerateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *
 	return Py_None;
 }
 
-PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GenerateHSDirectionalLight( self, args, keywords, CScriptGenMode::CREATE );
-}
 
-PyObject* gsf::py::light::LoadHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GenerateHSDirectionalLight( self, args, keywords, CScriptGenMode::LOAD );
-}
-
-
-PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, PyObject *keywords, CScriptGenMode::Name mode )
+PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
 
@@ -396,52 +298,32 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, PyObject *keywor
 	float *pAttenu = desc.afAttenuation;
 
 	int result = 0;
-
-	static char *kw_list[] = { "model", "name", "position", "upper_diffuse_color", "lower_diffuse_color", "att0", "att1", "att2", "intensity", "light_group", NULL };
+		
+	static char *kw_list[] = { "model", "name", "position", "upper_diffuse_color", "lower_diffuse_color", "att0", "att1", "att2", "intensity", "light_group", "shadow_for_light", NULL };
 
 	CBaseEntityHandle basehandle;
-	if( mode == CScriptGenMode::LOAD )
-	{
-		// pos = ???
-		// position must always be specified.
-		// This is true for 'load' mode as well as 'create' mode
-		GetInvalidDesc( desc );
+	// pos = ???
+	// position must always be specified.
+	// This is true for 'load' mode as well as 'create' mode
+	GetInvalidDesc( desc );
 
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "s|sO&O&O&ffffdd", kw_list,
-			&base_name,
-			&light_name,
-			convert_python_to_cpp_Vector3, &pos,
-			convert_python_to_cpp_FloatRGBA, &uc,
-			convert_python_to_cpp_FloatRGBA, &lc,
-			&desc.fIntensity,
-			&pAttenu[0],
-			&pAttenu[1],
-			&pAttenu[2],
-			&desc.LightGroup,
-			&shadow_for_light );
+	result = PyArg_ParseTupleAndKeywords( args, keywords, "|ssO&O&O&ffffii", kw_list,
+		&base_name,
+		&light_name,
+		convert_python_to_cpp_Vector3, &pos,
+		convert_python_to_cpp_FloatRGBA, &uc,
+		convert_python_to_cpp_FloatRGBA, &lc,
+		&desc.fIntensity,
+		&pAttenu[0],
+		&pAttenu[1],
+		&pAttenu[2],
+		&desc.LightGroup,
+		&shadow_for_light );
 
+	if( 0 < strlen(base_name) )
 		basehandle.SetBaseEntityName( base_name );
-	}
 	else
-	{
 		basehandle.SetBaseEntityName( "__HemisphericPointLight__" );
-
-		// set default colors
-		uc = SFloatRGBAColor(1,1,1,1);
-		lc = SFloatRGBAColor(0,0,0,1);
-
-		result = PyArg_ParseTupleAndKeywords( args, keywords, "|sO&O&O&ffffdd", kw_list,
-			&light_name,
-			convert_python_to_cpp_Vector3, &pos,
-			convert_python_to_cpp_FloatRGBA, &uc,
-			convert_python_to_cpp_FloatRGBA, &lc,
-			&desc.fIntensity,
-			&pAttenu[0],
-			&pAttenu[1],
-			&pAttenu[2],
-			&desc.LightGroup,
-			&shadow_for_light );
-	}
 
 	desc.pBaseEntityHandle = &basehandle;
 	desc.strName = light_name;
@@ -452,19 +334,11 @@ PyObject* GenerateHSPointLight( PyObject* self, PyObject* args, PyObject *keywor
 	return Py_None;
 }
 
-PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GenerateHSPointLight( self, args, keywords, CScriptGenMode::CREATE );
-}
-
-PyObject* gsf::py::light::LoadHSPointLight( PyObject* self, PyObject* args, PyObject *keywords )
-{
-	return GenerateHSPointLight( self, args, keywords, CScriptGenMode::LOAD );
-}
-
 
 PyObject* gsf::py::light::CreateHSSpotlight( PyObject* self, PyObject* args, PyObject *keywords )
 {
+	LOG_PRINT_ERROR( "Not implemented yet." );
+
 	Py_INCREF( Py_None );
 	return Py_None;
 }
@@ -617,38 +491,28 @@ PyObject* gsf::py::light::SetTargetLight( PyObject* self, PyObject* args )
 
 PyMethodDef gsf::py::light::g_PyModuleLightMethod[] =
 {
-	{ "CreateDirectionalLight",    (PyCFunction)gsf::py::light::CreateDirectionalLight,       METH_VARARGS, "" },
-	{ "CreatePointLight",          (PyCFunction)gsf::py::light::CreatePointLight,             METH_VARARGS, "" },
-	{ "CreateSpotlight",           (PyCFunction)gsf::py::light::CreateSpotlight,              METH_VARARGS, "" },
-	{ "CreateHSDirectionalLight",  (PyCFunction)gsf::py::light::CreateHSDirectionalLight,     METH_VARARGS, "" },
-	{ "CreateHSPointLight",        (PyCFunction)gsf::py::light::CreateHSPointLight,           METH_VARARGS, "" },
-	{ "CreateHSSpotlight",         (PyCFunction)gsf::py::light::CreateHSSpotlight,            METH_VARARGS, "" },
-//	{ "CreateTriPointLight",       (PyCFunction)gsf::py::light::CreateTriPointLight,          METH_VARARGS, "" },
-//	{ "CreateTriDirectionalLight", (PyCFunction)gsf::py::light::CreateTriDirectionalLight,    METH_VARARGS, "" },
-//	{ "CreateTriSpotlight",        (PyCFunction)gsf::py::light::CreateTriSpotlight,           METH_VARARGS, "" },
-
-	{ "LoadDirectionalLight",      (PyCFunction)gsf::py::light::LoadDirectionalLight,         METH_VARARGS, "" },
-	{ "LoadPointLight",            (PyCFunction)gsf::py::light::LoadPointLight,               METH_VARARGS, "" },
-//	{ "LoadSpotlight",             (PyCFunction)gsf::py::light::LoadSpotlight,                METH_VARARGS, "" },
-	{ "LoadHSDirectionalLight",    (PyCFunction)gsf::py::light::LoadHSDirectionalLight,       METH_VARARGS, "" },
-	{ "LoadHSPointLight",          (PyCFunction)gsf::py::light::LoadHSPointLight,             METH_VARARGS, "" },
-//	{ "LoadHSSpotlight",           (PyCFunction)gsf::py::light::LoadHSSpotlight,              METH_VARARGS, "" },
-//	{ "LoadTriPointLight",         (PyCFunction)gsf::py::light::LoadTriPointLight,            METH_VARARGS, "" },
-//	{ "LoadTriDirectionalLight",   (PyCFunction)gsf::py::light::LoadTriDirectionalLight,      METH_VARARGS, "" },
-//	{ "LoadTriSpotlight",          (PyCFunction)gsf::py::light::LoadTriSpotlight,             METH_VARARGS, "" },
+	{ "CreateDirectionalLight",    (PyCFunction)gsf::py::light::CreateDirectionalLight,       METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreatePointLight",          (PyCFunction)gsf::py::light::CreatePointLight,             METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateSpotlight",           (PyCFunction)gsf::py::light::CreateSpotlight,              METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateHSDirectionalLight",  (PyCFunction)gsf::py::light::CreateHSDirectionalLight,     METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateHSPointLight",        (PyCFunction)gsf::py::light::CreateHSPointLight,           METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateHSSpotlight",         (PyCFunction)gsf::py::light::CreateHSSpotlight,            METH_VARARGS | METH_KEYWORDS, "" },
+//	{ "CreateTriPointLight",       (PyCFunction)gsf::py::light::CreateTriPointLight,          METH_VARARGS | METH_KEYWORDS, "" },
+//	{ "CreateTriDirectionalLight", (PyCFunction)gsf::py::light::CreateTriDirectionalLight,    METH_VARARGS | METH_KEYWORDS, "" },
+//	{ "CreateTriSpotlight",        (PyCFunction)gsf::py::light::CreateTriSpotlight,           METH_VARARGS | METH_KEYWORDS, "" },
 
 //	{ "RemoveLight",               gsf::py::light::RemoveLight,                  METH_VARARGS, "" },
 //	{ "RemoveNamedLight",          gsf::py::light::RemoveNamedLight,             METH_VARARGS, "" },
 
 	// used to set/change light properies after creating the light
-	{ "SetTargetLight",         gsf::py::light::SetTargetLight,  METH_VARARGS, "" },
-	{ "SetColor",               gsf::py::light::SetColor,        METH_VARARGS, "" },
-//	{ "SetUpperColor",          gsf::py::light::SetUpperColor,   METH_VARARGS, "" },
-//	{ "SetLowerColor",          gsf::py::light::SetLowerColor,   METH_VARARGS, "" },
-	{ "SetColorU32",            gsf::py::light::SetColorU32,     METH_VARARGS, "" },
-	{ "SetPosition",            gsf::py::light::SetPosition,	 METH_VARARGS, "" },
-//	{ "SetDirection",           gsf::py::light::SetDirection,	 METH_VARARGS, "" },
-	{ "SetAttenuationFactors",  SetAttenuationFactors,	         METH_VARARGS, "set attenuation factors for point lights" },
+	{ "SetTargetLight",         gsf::py::light::SetTargetLight,       METH_VARARGS, "" },
+	{ "SetColor",               gsf::py::light::SetColor,             METH_VARARGS, "" },
+//	{ "SetUpperDiffuseColor",   gsf::py::light::SetUpperDiffuseColor, METH_VARARGS, "" },
+//	{ "SetLowerDiffuseColor",   gsf::py::light::SetLowerDiffuseColor, METH_VARARGS, "" },
+	{ "SetColorU32",            gsf::py::light::SetColorU32,          METH_VARARGS, "" },
+	{ "SetPosition",            gsf::py::light::SetPosition,	      METH_VARARGS, "" },
+//	{ "SetDirection",           gsf::py::light::SetDirection,	      METH_VARARGS, "" },
+	{ "SetAttenuationFactors",  SetAttenuationFactors,	              METH_VARARGS, "set attenuation factors for point lights" },
 //	{ "SetDirection",      gsf::py::light::SetDirection,	METH_VARARGS, "" },
 //	{ "",       SetTarget,				METH_VARARGS, "" },
 	{NULL, NULL}
