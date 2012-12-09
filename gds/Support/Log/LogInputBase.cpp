@@ -6,10 +6,10 @@
 #include "LogInputBase.hpp"
 #include "LogOutputBase.hpp"
 
-#include "gds/Platform.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/SafeDelete.hpp"
-#include "gds/Support/time_string.hpp"
+#include "../../Platform.hpp"
+#include "../../Support/Timer.hpp"
+#include "../../Support/SafeDelete.hpp"
+#include "../../Support/time_string.hpp"
 
 using namespace std;
 
