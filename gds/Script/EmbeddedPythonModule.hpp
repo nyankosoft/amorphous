@@ -2,6 +2,10 @@
 #define __EmbeddedPythonModule_HPP__
 
 
+// Include the boost python header even if you are not using it
+// for the application to run.
+// i.e. Do not include Python.h directly if you link with the boost python library
+// whether you are using boost python or not.
 #include <boost/python.hpp>
 
 
