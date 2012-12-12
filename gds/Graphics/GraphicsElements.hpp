@@ -7,7 +7,6 @@
 #include "../3DMath/Vector3.hpp"
 #include "../3DMath/aabb2.hpp"
 #include "../Graphics/fwd.hpp"
-#include "../Graphics/3DGameMath.hpp"
 #include "../Graphics/2DPrimitive/2DRect.hpp"
 #include "../Graphics/2DPrimitive/2DFrameRect.hpp"
 #include "../Graphics/2DPrimitive/2DRoundRect.hpp"

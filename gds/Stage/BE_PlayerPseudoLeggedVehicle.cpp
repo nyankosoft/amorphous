@@ -17,8 +17,6 @@
 #include "Stage/BE_LaserDot.hpp"
 
 // added for laser dot casting test
-#include "Graphics/3DGameMath.hpp"
-#include "Support/memory_helpers.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/StringAux.hpp"
 #include "trace.hpp"

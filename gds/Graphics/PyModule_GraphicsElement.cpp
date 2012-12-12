@@ -4,9 +4,7 @@
 
 #include "../base.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Graphics/3DGameMath.hpp"
 #include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/3DGameMath.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/Rect.hpp"
 using namespace Graphics;
