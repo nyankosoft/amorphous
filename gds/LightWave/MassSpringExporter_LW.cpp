@@ -115,7 +115,7 @@ void CMassSpringExporter_LW::SetMass( vector<STempPointInfo>& rvecPointInfo, CLW
 		{
 			if( rVertColorMap.FindVertexColor( (UINT4)j, color ) )
 			{
-				rvecPointInfo[j].fMass = color.fAlpha;
+				rvecPointInfo[j].fMass = color.alpha;
 			}
 		}
 	}
