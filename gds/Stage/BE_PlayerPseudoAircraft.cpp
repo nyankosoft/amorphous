@@ -27,7 +27,6 @@
 #include "GameCommon/ShockWaveCameraEffect.hpp"
 #include "GameCommon/PseudoAircraftSimulator.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
-#include "Graphics/3DGameMath.hpp"
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "Physics/Actor.hpp"
 #include "GameTextSystem/TextMessageManager.hpp"
