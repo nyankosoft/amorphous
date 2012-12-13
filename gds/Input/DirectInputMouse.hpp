@@ -6,27 +6,16 @@
 
 #include <dinput.h>
 #include "../base.hpp"
-#include "InputDevice.hpp"
+#include "MouseInputDevice.hpp"
 
 #pragma comment( lib, "dinput8.lib" )
-
-enum eMouseAction
-{
-	MOUSE_BUTTON_L = 0,
-	MOUSE_BUTTON_R,
-	MOUSE_BUTTON_M,
-	MOUSE_AXIS_X,
-	MOUSE_AXIS_Y,
-	MOUSE_AXIS_Z
-
-};
 
 
 /// - Send mouse positions in reference screen coordinates
 /// - When the screen resolution is changed, the mouse device object needs to be notified
 ///   by CDirectInputMouse::UpdateScreenSize()
 /// - Internally, CDirectInputMouse stores the cursor position in non-scaled coordinates
-class CDirectInputMouse : public CInputDevice
+class CDirectInputMouse : public MouseInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pDIMouse;
 
@@ -56,8 +45,6 @@ public:
 	CDirectInputMouse();
 
 	~CDirectInputMouse();
-
-	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_MOUSE; }
 
 	Result::Name Init();
 

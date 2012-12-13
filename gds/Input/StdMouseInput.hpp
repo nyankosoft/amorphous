@@ -1,31 +1,18 @@
 #ifndef  __STDMOUSEINPUT_H__
 #define  __STDMOUSEINPUT_H__
 
-#include "InputDevice.hpp"
+#include "MouseInputDevice.hpp"
 #include <windows.h>
 
 
-class CStdMouseInput : public CInputDevice
+class CStdMouseInput : public MouseInputDevice
 {
 	int m_iPosX, m_iPosY;	// current mouse position
-	
-	enum eMouseAction
-	{
-		MOUSE_BUTTON_L = 0,
-		MOUSE_BUTTON_R,
-		MOUSE_BUTTON_M,
-		MOUSE_AXIS_X,
-		MOUSE_AXIS_Y,
-		MOUSE_AXIS_Z
-
-	};
 
 public:
 
 	CStdMouseInput();
 	~CStdMouseInput() {}
-
-	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_MOUSE; }
 
 	Result::Name SendBufferedInputToInputHandlers();
 

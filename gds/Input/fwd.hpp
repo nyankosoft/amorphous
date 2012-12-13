@@ -6,6 +6,7 @@ struct SInputData;
 class CInputHandler;
 
 class CInputDevice;
+class MouseInputDevice;
 class CInputDeviceStateCallback;
 class CStdKeyboard;        /// for Windows platform
 class CStdMouseInput;      /// for Windows platform
