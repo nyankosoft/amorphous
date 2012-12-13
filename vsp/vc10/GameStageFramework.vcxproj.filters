@@ -822,6 +822,9 @@
     <ClInclude Include="..\..\gds\Stage\MiscEntityRenderers.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Script\gfx_py.hpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
@@ -1461,6 +1464,9 @@
       <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\EmbeddedPythonModule.cpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Script\gfx_py.cpp">
       <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
     </ClCompile>
   </ItemGroup>
