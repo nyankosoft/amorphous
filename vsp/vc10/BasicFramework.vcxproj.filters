@@ -795,6 +795,9 @@
     <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\3DMath\HelixPolygonModelMaker.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -1844,6 +1847,9 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\3DMath\HelixPolygonModelMaker.hpp">
+      <Filter>3DMath</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

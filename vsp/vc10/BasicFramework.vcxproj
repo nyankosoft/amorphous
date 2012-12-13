@@ -78,6 +78,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\gds\3DMath\HelixPolygonModelMaker.cpp" />
     <ClCompile Include="..\..\gds\Graphics\BillboardArrayMesh.cpp" />
     <ClCompile Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.cpp" />
     <ClCompile Include="..\..\gds\Graphics\BuiltinSkyTextures.cpp" />
@@ -328,6 +329,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\3DMath\ConvexPolygonUtilities.hpp" />
+    <ClInclude Include="..\..\gds\3DMath\HelixPolygonModelMaker.hpp" />
     <ClInclude Include="..\..\gds\3DMath\Vector4.hpp" />
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp" />
     <ClInclude Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.hpp" />
