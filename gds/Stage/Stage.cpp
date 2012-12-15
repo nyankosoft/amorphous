@@ -694,7 +694,7 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 		m_pScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
 
 		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_math3d() );
-//		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_gfx() );
+		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_gfx() );
 	}
 
 
