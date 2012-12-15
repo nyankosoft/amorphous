@@ -3,7 +3,7 @@
 
 
 #include "../../Graphics/ShapeContainers.hpp"
-#include "../../Graphics/3DGameMath.hpp"
+#include "../../3DMath/3DGameMath.hpp"
 #include "../../Physics/BoxShapeDesc.hpp"
 #include "../../Physics/SphereShapeDesc.hpp"
 #include "../../Physics/CapsuleShapeDesc.hpp"

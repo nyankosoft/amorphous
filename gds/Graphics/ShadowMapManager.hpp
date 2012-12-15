@@ -2,10 +2,10 @@
 #define  __ShadowMapManager_H__
 
 #include <map>
+#include "../3DMath/3DGameMath.hpp"
 #include "GraphicsComponentCollector.hpp"
 #include "TextureRenderTarget.hpp"
 #include "Camera.hpp"
-#include "3DGameMath.hpp"
 #include "GraphicsDevice.hpp"
 #include "ShadowMaps.hpp"
 

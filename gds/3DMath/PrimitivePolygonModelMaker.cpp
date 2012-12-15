@@ -1,7 +1,7 @@
 #include <gds/3DMath/PrimitivePolygonModelMaker.hpp>
 #include <gds/3DMath/Matrix23.hpp>
 #include <gds/3DMath/Matrix34.hpp>
-#include <gds/Graphics/3DGameMath.hpp>
+#include <gds/3DMath/3DGameMath.hpp>
 //#include <gds/Support/Log/DefaultLog.hpp>
 #include <gds/Support/Vec3_StringAux.hpp>
 

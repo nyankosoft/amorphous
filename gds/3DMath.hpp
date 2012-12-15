@@ -14,3 +14,4 @@
 #include "3DMath/BSPTreeForBox.hpp"
 #include "3DMath/ConvexPolygon.hpp"
 #include "3DMath/MathMisc.hpp"
+#include "3DMath/3DGameMath.hpp"

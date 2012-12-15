@@ -3,11 +3,11 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "3DMath/MatrixConversions.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/TextureStage.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/3DGameMath.hpp"
 
 
 CBE_LaserDot::CBE_LaserDot()

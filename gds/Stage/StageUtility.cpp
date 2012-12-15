@@ -190,7 +190,7 @@ CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::str
 //========================================================================================
 
 #include "Stage/LightEntity.hpp"
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 
 CLightEntityHandle ReturnLightEntityHandle( CCopyEntity *pEntity )
 {

@@ -21,7 +21,6 @@
 #include "Graphics/MeshGenerators/MeshGenerators.hpp"
 
 // others
-#include "Graphics/3DGameMath.hpp"
 #include "Graphics/3DRect.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/FloatRGBAColor.hpp"

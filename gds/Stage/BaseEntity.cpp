@@ -7,7 +7,7 @@
 #include "Stage.hpp"
 #include "bsptree.hpp"
 
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "GameCommon/GameMathMisc.hpp"
 #include "GameCommon/MeshBoneControllerBase.hpp"

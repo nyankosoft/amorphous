@@ -2,7 +2,7 @@
 #include "Stage.hpp"
 #include "LightEntity.hpp"
 #include "Graphics/Camera.hpp"
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
 

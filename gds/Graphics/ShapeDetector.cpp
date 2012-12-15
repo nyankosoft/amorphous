@@ -1,5 +1,4 @@
 #include "ShapeDetector.hpp"
-#include "3DGameMath.hpp"
 #include "MeshModel/General3DMesh.hpp"
 #include "MeshModel/PrimitiveShapeMeshes.hpp"
 #include "../3DMath.hpp"

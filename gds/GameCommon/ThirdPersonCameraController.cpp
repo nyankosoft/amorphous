@@ -1,5 +1,5 @@
 #include "ThirdPersonCameraController.hpp"
-#include "../Graphics/3DGameMath.hpp"
+#include "../3DMath/3DGameMath.hpp"
 #include "../Stage.hpp"
 
 using namespace boost;

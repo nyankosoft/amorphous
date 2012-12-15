@@ -14,7 +14,7 @@
 #include "BE_PhysicsBaseEntity.hpp"
 #include "CopyEntityDescFileArchive.hpp"
 
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Physics/Actor.hpp"
 #include "Physics/Scene.hpp"
 #include "Support/Log/DefaultLog.hpp"

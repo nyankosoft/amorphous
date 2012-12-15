@@ -5,7 +5,7 @@
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"

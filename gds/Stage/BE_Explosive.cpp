@@ -8,7 +8,7 @@
 #include "Serialization_BaseEntityHandle.hpp"
 #include "../Stage/ScreenEffectManager.hpp"
 
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Graphics/Camera.hpp"
 
 #include "Support/MTRand.hpp"

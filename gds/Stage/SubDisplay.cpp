@@ -4,7 +4,7 @@
 
 #include "Graphics/TextureStage.hpp"
 #include "3DMath/MathMisc.hpp"
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
