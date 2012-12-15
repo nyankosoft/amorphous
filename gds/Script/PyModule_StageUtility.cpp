@@ -1,5 +1,4 @@
 #include "gds/Script/PyModule_StageUtility.hpp"
-#include "gds/Graphics/3DGameMath.hpp"
 #include "gds/Stage/EntityMotionPathRequest.hpp"
 #include "gds/Stage/BE_ScriptedCamera.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
