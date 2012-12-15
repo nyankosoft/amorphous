@@ -36,7 +36,7 @@ using namespace boost;
 
 CGameApplicationBase *g_pGameAppBase = NULL;
 
-CDirectInputMouse *g_pDIMouse = NULL;
+CDirectInputMouse *m_pMouse = NULL;
 
 
 void UpdateBaseEntityDatabase()
@@ -68,7 +68,6 @@ CGameApplicationBase::CGameApplicationBase()
 {
 	m_pTaskManager = NULL;
 
-	g_pDIMouse = NULL;
 	m_pDIKeyboard = NULL;
 //	m_pDIGamepad = NULL;
 
@@ -98,8 +97,9 @@ CGameTaskFactoryBase *CGameApplicationBase::CreateGameTaskFactory() const
 void CGameApplicationBase::Release()
 {
 	SafeDelete( m_pTaskManager );
+	CGameTask::SetMouseInputDevice( shared_ptr<MouseInputDevice>() );
 
-	SafeDelete( g_pDIMouse );
+	m_pMouse.reset();
 	SafeDelete( m_pDIKeyboard );
 //	SafeDelete( m_pDIGamepad );
 
@@ -200,8 +200,10 @@ bool CGameApplicationBase::InitBase()
 		GameWindowManager().SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
 
 	// create DirectInput mouse device
-	g_pDIMouse = new CDirectInputMouse;
-	g_pDIMouse->Init();
+	m_pMouse.reset( new CDirectInputMouse );
+	m_pMouse->Init();
+
+	CGameTask::SetMouseInputDevice( m_pMouse );
 
 	LOG_PRINT( " - Initialized the direct input mouse device." );
 
@@ -338,8 +340,8 @@ void CGameApplicationBase::AcquireInputDevices()
 	if( m_pDIKeyboard )
 		m_pDIKeyboard->Acquire();
 
-	if( g_pDIMouse && GameWindowManager().IsMouseCursorInClientArea() )
-		g_pDIMouse->AcquireMouse();
+	if( m_pMouse && GameWindowManager().IsMouseCursorInClientArea() )
+		m_pMouse->AcquireMouse();
 
 	DIInputDeviceMonitor().AcquireInputDevices();
 //	if( m_pDIGamepad )
@@ -354,9 +356,9 @@ void CGameApplicationBase::UpdateFrame()
 
 	const float frametime = GlobalTimer().GetFrameTime();
 
-	if( g_pDIMouse )
+	if( m_pMouse )
 	{
-		g_pDIMouse->UpdateScreenSize(
+		m_pMouse->UpdateScreenSize(
 			GameWindowManager().GetScreenWidth(),
 			GameWindowManager().GetScreenHeight() );
 
@@ -366,8 +368,8 @@ void CGameApplicationBase::UpdateFrame()
 
 		// MouseCursor() uses non-scaled screen coordinates
 		MouseCursor().UpdateCursorPosition(
-			(int)( g_pDIMouse->GetCurrentPositionX() ),
-			(int)( g_pDIMouse->GetCurrentPositionY() ) );
+			(int)( m_pMouse->GetCurrentPositionX() ),
+			(int)( m_pMouse->GetCurrentPositionY() ) );
 	}
 
 	/// Update input

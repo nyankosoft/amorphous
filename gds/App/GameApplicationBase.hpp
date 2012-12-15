@@ -14,8 +14,6 @@ class CLogOutput_ScrolledTextBuffer;
 // input devices
 // accessed from window message procedure
 
-extern CDirectInputMouse *g_pDIMouse;		// referenced from CGameTask classes
-
 
 // =============================== function externs ===============================
 extern void MainLoop( CApplicationBase *pApp );
@@ -29,6 +27,7 @@ extern CGameApplicationBase *g_pGameAppBase;
  */
 class CGameApplicationBase : public CApplicationBase
 {
+	boost::shared_ptr<MouseInputDevice> m_pMouse;
 	CDIKeyboard *m_pDIKeyboard;
 	CDirectInputGamepad *m_pDIGamepad;
 

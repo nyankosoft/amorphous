@@ -23,6 +23,10 @@ public:
 };
 
 
+// Static member variables
+
+boost::shared_ptr<MouseInputDevice> CGameTask::ms_pMouse;
+
 CAnimatedGraphicsManager *CGameTask::ms_pAnimatedGraphicsManager = NULL;
 
 std::map<std::string,int> CGameTask::ms_TaskNameStringToTaskID;
@@ -236,10 +240,10 @@ int CGameTask::FrameMove( float dt )
 
 	if( m_pMouseCursorElement )
 	{
-		if( g_pDIMouse )
+		if( ms_pMouse )
 		{
 			int x,y;
-			g_pDIMouse->GetCurrentPosition( x, y );
+			ms_pMouse->GetCurrentPosition( x, y );
 			float scale = (float)GetScreenWidth() / (float)REFERENCE_SCREEN_WIDTH;
 			m_pMouseCursorElement->SetLocalTopLeftPos( Vector2((float)x,(float)y) * scale );
 		}
@@ -333,8 +337,8 @@ void CGameTask::CreateRenderTasks()
 
 void CGameTask::GetCurrentMousePosition( int& x, int& y )
 {
-	if( g_pDIMouse )
-		g_pDIMouse->GetCurrentPosition( x, y );
+	if( ms_pMouse )
+		ms_pMouse->GetCurrentPosition( x, y );
 }
 
 

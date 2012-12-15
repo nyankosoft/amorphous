@@ -68,6 +68,8 @@ class CGameTask : public CGraphicsComponent
 
 	bool m_bIsAppExitRequested;
 
+	static boost::shared_ptr<MouseInputDevice> ms_pMouse;
+
 	/// shared by all the game tasks
 	static CAnimatedGraphicsManager *ms_pAnimatedGraphicsManager;
 
@@ -202,6 +204,10 @@ public:
 	void DrawMouseCursor();
 
 	void SetGraphicsElementGroupForMouseCursor( boost::shared_ptr<CGraphicsElementGroup> pElementGroup ) { m_pMouseCursorElement = pElementGroup; }
+
+	// Static member functions
+
+	static void SetMouseInputDevice( boost::shared_ptr<MouseInputDevice> pMouse ) { ms_pMouse = pMouse; }
 
 	static void InitAnimatedGraphicsManager();
 	static CAnimatedGraphicsManager *GetAnimatedGraphicsManager() { return ms_pAnimatedGraphicsManager; }
