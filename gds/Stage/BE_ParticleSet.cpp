@@ -954,17 +954,11 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
 
-	Matrix33 matRot;
-	D3DXMATRIX matBillboard;
-	m_pStage->GetBillboardRotationMatrix( matRot );
-	matRot.GetRowMajorMatrix44( (Scalar *)&matBillboard );
-	LPD3DXEFFECT pEffect = NULL;
-	HRESULT hr = S_OK;
-	if( pShaderManager &&
-		(pEffect = pShaderManager->GetEffect()) )
-	{
-		hr = pEffect->SetMatrix( "ParticleWorldRot", &matBillboard );
-	}
+	Matrix34 billboard_pose( Matrix34Identity() );
+	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
+	const Matrix44 billboard_matrix = ToMatrix44( billboard_pose );
+	if( pShaderManager )
+		pShaderManager->SetParam( "ParticleWorldRot", billboard_matrix );
 
 //	ProfileEnd( "DrawParticles(): pEffect->SetMatrix(), etc." );
 
