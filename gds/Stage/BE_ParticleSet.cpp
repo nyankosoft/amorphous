@@ -188,9 +188,6 @@ void CBE_ParticleSet::Init()
 	// Initialize the particle set mesh
 	InitBillboardRects();
 
-	// load billboard texture
-//	CBEC_Billboard::Init();
-
 	InitParticles();
 
 //	m_Type = TYPE_RECT_ARRAY_AND_INDICES;
@@ -317,14 +314,6 @@ void CBE_ParticleSet::InitBillboardRects()
 	// set rect vertex positions in local space
 	// these values are not changed during particle rendering
 	const float r = m_fParticleRadius;
-/*	for(i=0; i<m_MaxNumParticlesPerSet; i++)
-	{
-		m_avBillboardRect_S[i*4+0].local_offset = D3DXVECTOR2(-r, r);
-		m_avBillboardRect_S[i*4+1].local_offset = D3DXVECTOR2( r, r);
-		m_avBillboardRect_S[i*4+2].local_offset = D3DXVECTOR2( r,-r);
-		m_avBillboardRect_S[i*4+3].local_offset = D3DXVECTOR2(-r,-r);
-	}*/
-
 	int lo_offset = mesh.GetVertexElementOffset( VEE::TEXCOORD2_1 );
 	bool use_local_offset = (0 <= lo_offset) && m_bLocalPositionsForVertexElement;
 //	bool use_local_offset = false;
@@ -854,77 +843,7 @@ void CBE_ParticleSet::UpdateMesh( CCopyEntity* pCopyEnt )
 		}
 	}*/
 
-/*	switch( m_Type )
-	{
-	case TYPE_BILLBOARDARRAYMESH:
-		{
-			LPD3DXMESH pMesh = m_pBillboardArrayMesh->GetMesh();
-			void *pBuffer;
-//			pMesh->LockVertexBuffer( 0, &pBuffer );
-			hr = pMesh->LockVertexBuffer( D3DLOCK_NOSYSLOCK, &pBuffer );
-			if( SUCCEEDED(hr) )
-			{
-				pParticleVertex = (BILLBOARDVERTEX *)pBuffer;
-				pParticleVertex = pParticleVertex + pCopyEnt->iExtraDataIndex * m_MaxNumParticlesPerSet;
-			}
-		}
-		break;
-	case TYPE_BILLBOARDARRAYMESH_SHARED:
-		{
-			LPD3DXMESH pMesh = m_pBillboardArrayMesh->GetMesh();
-			void *pBuffer;
-//			pMesh->LockVertexBuffer( 0, &pBuffer );
-			hr = pMesh->LockVertexBuffer( D3DLOCK_NOSYSLOCK, &pBuffer );
-			if( SUCCEEDED(hr) )
-			{
-				pParticleVertex = (BILLBOARDVERTEX *)pBuffer;
-			}
-		}
-		break;
-	case TYPE_RECT_ARRAY_AND_INDICES:
-	{
-//		pParticleVertex = m_avBillboardRect_S;
-		pParticleVertex = &(m_avBillboardRect_S[0]);
-		// Limit( num_particles, 0, (int)(numof(m_avBillboardRect_S) / 4) );
-		if( numof(m_avBillboardRect_S) / 4 < num_particles )
-			int too_many_particles = 1;
-		break;
-	}
-	default:
-		pParticleVertex = NULL;s
-		break;
-	}
-
-	ProfileEnd( "CBE_ParticleSet::UpdateVB() - lock VB" );
-
-	if( !pParticleVertex )
-	{
-		// TODO: lock / unlock if the particles use vertex buffers
-		if( m_Type == TYPE_BILLBOARDARRAYMESH
-		 || m_Type == TYPE_BILLBOARDARRAYMESH_SHARED )
-		{
-			LPD3DXMESH pMesh = m_pBillboardArrayMesh->GetMesh();
-			if( pMesh )
-				pMesh->UnlockVertexBuffer();
-		}
-		return;
-	}
-
-	ProfileBegin( "CBE_ParticleSet::UpdateVB() - VB setup" );
-*/
-
 //	UpdateVertices();
-
-/*	char acStr[256];
-	sprintf( acStr, "texture: %d", m_BillboardTexture.GetTexture() );
-    MessageBox( NULL, acStr, "check", MB_OK|MB_ICONWARNING );*/
-
-/*	if( m_Type == TYPE_BILLBOARDARRAYMESH
-	 || m_Type == TYPE_BILLBOARDARRAYMESH_SHARED )
-	{
-		LPD3DXMESH pMesh = m_pBillboardArrayMesh->GetMesh();
-		pMesh->UnlockVertexBuffer();
-	}*/
 }
 
 
