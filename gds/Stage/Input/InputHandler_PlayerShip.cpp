@@ -1,6 +1,4 @@
-
 #include "InputHandler_PlayerShip.hpp"
-
 #include "Stage/PlayerInfo.hpp"
 #include "Stage/HUD_PlayerBase.hpp"
 #include "Stage/BE_Player.hpp"
@@ -8,9 +6,6 @@
 #include "Item/WeaponSystem.hpp"
 
 #include "Task/GameTask.hpp"
-
-#include "Stage/SystemInputHandler_Debug.hpp"
-
 
 
 CInputHandler_PlayerShip::CInputHandler_PlayerShip()
@@ -25,16 +20,11 @@ CInputHandler_PlayerShip::CInputHandler_PlayerShip()
 	SetDefaultKeyBind();
 
 	ResetActionState();
-
-
-	m_pInputHandler_Debug = new CSystemInputHandler_Debug;
 }
 
 
 CInputHandler_PlayerShip::~CInputHandler_PlayerShip()
 {
-	if( m_pInputHandler_Debug )
-		delete m_pInputHandler_Debug;
 }
 
 
@@ -199,9 +189,4 @@ void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
 		SinglePlayerInfo().RequestTaskChange( CGameTask::ID_MAIN_MENU );
 		break;
 	}
-
-	if( m_pInputHandler_Debug )
-		m_pInputHandler_Debug->ProcessInput( input );
-
-
 }

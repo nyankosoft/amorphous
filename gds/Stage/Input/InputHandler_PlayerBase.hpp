@@ -5,8 +5,6 @@
 #include "gds/GameCommon/3DActionCode.hpp"
 
 
-class CSystemInputHandler_Debug;
-
 class CInputHandler_PlayerBase : public CInputHandler
 {
 protected:
@@ -23,9 +21,6 @@ protected:
 	unsigned int m_adwLastInputTimeOfGICode[NUM_GENERAL_INPUT_CODES];
 
 	float m_afActionState[NUM_ACTION_CODES];
-
-
-	CSystemInputHandler_Debug *m_pInputHandler_Debug;
 
 public:
 

@@ -4,14 +4,11 @@
 #include "Input/InputHandler.hpp"
 
 
-class CSystemInputHandler_Debug;
 class CCopyEntity;
 class CBE_CameraController;
 
 class CInputHandler_Cutscene : public CInputHandler
 {
-	CSystemInputHandler_Debug *m_pInputHandler_Debug;
-
 	CCopyEntity *m_pEntity;
 	CBE_CameraController *m_pCameraController;
 

@@ -174,9 +174,6 @@
     <ClInclude Include="..\..\gds\Stage\SurfaceMaterialManager.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Stage\SystemInputHandler_Debug.hpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gds\Stage\trace.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
@@ -909,9 +906,6 @@
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Stage\SurfaceMaterialManager.cpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gds\Stage\SystemInputHandler_Debug.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Stage\trace.cpp">

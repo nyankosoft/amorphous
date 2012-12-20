@@ -3,7 +3,6 @@
 #include "Stage/PlayerInfo.hpp"
 #include "Stage/BE_Player.hpp"
 #include "Item/WeaponSystem.hpp"
-#include "Stage/SystemInputHandler_Debug.hpp"
 #include "Support/StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Task/GameTask.hpp"
@@ -21,15 +20,11 @@ CInputHandler_PlayerPAC::CInputHandler_PlayerPAC()
 //	UpdateKeyBind();
 
 	ResetActionState();
-
-
-	m_pInputHandler_Debug = new CSystemInputHandler_Debug;
 }
 
 
 CInputHandler_PlayerPAC::~CInputHandler_PlayerPAC()
 {
-	SafeDelete( m_pInputHandler_Debug );
 }
 
 /*
@@ -245,9 +240,4 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 		}
 		break;
 	}
-
-	if( m_pInputHandler_Debug )
-		m_pInputHandler_Debug->ProcessInput( input );
-
-
 }

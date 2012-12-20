@@ -1,6 +1,5 @@
 #include "InputHandler_Cutscene.hpp"
 #include "GameCommon/3DActionCode.hpp"
-#include "../SystemInputHandler_Debug.hpp"
 #include "../BE_CameraController.hpp"
 
 
@@ -17,16 +16,11 @@ m_pCameraController(pCameraController)
 //	UpdateKeyBind();
 
 //	ResetActionState();
-
-
-	m_pInputHandler_Debug = new CSystemInputHandler_Debug;
 }
 
 
 CInputHandler_Cutscene::~CInputHandler_Cutscene()
 {
-	if( m_pInputHandler_Debug )
-		delete m_pInputHandler_Debug;
 }
 
 
@@ -79,7 +73,4 @@ void CInputHandler_Cutscene::ProcessInput( SInputData& input )
 	default:
 		break;	// no action is assigned to this input
 	}
-
-	if( m_pInputHandler_Debug )
-		m_pInputHandler_Debug->ProcessInput( input );
 }

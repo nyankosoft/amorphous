@@ -6,7 +6,6 @@
 
 //#define NUM_PLAYERSHIP_ACTIONS 256
 
-class CSystemInputHandler_Debug;
 
 class CInputHandler_PlayerShip : public CInputHandler_PlayerBase
 {
@@ -17,8 +16,6 @@ class CInputHandler_PlayerShip : public CInputHandler_PlayerBase
 	unsigned int m_adwLastInputTimeOfGICode[NUM_GENERAL_INPUT_CODES];
 
 	float m_afActionState[NUM_PLAYERSHIP_ACTIONS];
-
-	CSystemInputHandler_Debug *m_pInputHandler_Debug;
 */
 
 public:

@@ -133,7 +133,6 @@
     <ClInclude Include="..\..\gds\Stage\SubDisplay.hpp" />
     <ClInclude Include="..\..\gds\Stage\SurfaceMaterial.hpp" />
     <ClInclude Include="..\..\gds\Stage\SurfaceMaterialManager.hpp" />
-    <ClInclude Include="..\..\gds\Stage\SystemInputHandler_Debug.hpp" />
     <ClInclude Include="..\..\gds\Stage\trace.hpp" />
     <ClInclude Include="..\..\gds\Stage\ViewFrustumTest.hpp" />
     <ClInclude Include="..\..\gds\Stage\BSPMap_Collision\BSPTree_CollisionModel.hpp" />
@@ -380,7 +379,6 @@
     <ClCompile Include="..\..\gds\Stage\SubDisplay.cpp" />
     <ClCompile Include="..\..\gds\Stage\SurfaceMaterial.cpp" />
     <ClCompile Include="..\..\gds\Stage\SurfaceMaterialManager.cpp" />
-    <ClCompile Include="..\..\gds\Stage\SystemInputHandler_Debug.cpp" />
     <ClCompile Include="..\..\gds\Stage\trace.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMap_Collision\BSPTree_CollisionModel.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMap_Collision\BSPTree_CollisionModel_Base.cpp" />
