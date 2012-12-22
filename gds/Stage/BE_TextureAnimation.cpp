@@ -39,7 +39,7 @@ void CBE_TextureAnimation::Init()
 
 		rect_mesh.Init( 1, VFF::POSITION | VFF::DIFFUSE_COLOR | VFF::TEXCOORD2_0 );
 
-		rect_mesh.SetColor( SFloatRGBAColor::White() );
+		rect_mesh.SetDiffuseColors( SFloatRGBAColor::White() );
 
 		CMeshMaterial& mat = rect_mesh.Material(0);
 		mat.TextureDesc.resize( 1 );
@@ -156,8 +156,8 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 	const SFloatRGBAColor diffuse_color_rear(  fFrac,    fFrac,    fFrac,    fFrac );
 //	const SFloatRGBAColor diffuse_color_front( 1.0f, 1.0f, 1.0f, 1.0f - fCurrentFrameTime );
 //	const SFloatRGBAColor diffuse_color_rear(  1.0f, 1.0f, 1.0f, fCurrentFrameTime );
-	m_FrontRectMesh.SetColorARGB32( diffuse_color_front.GetARGB32() );
-	m_RearRectMesh.SetColorARGB32( diffuse_color_rear.GetARGB32() );
+	m_FrontRectMesh.SetDiffuseColors( diffuse_color_front );
+	m_RearRectMesh.SetDiffuseColors( diffuse_color_rear );
 
 	// tested with D3DCOLOR_ARGB() - couldn't solve the flickering.
 //	m_FrontRectMesh.SetColorARGB32( D3DCOLOR_ARGB( ((int)(255.0f * (1.0f - fCurrentFrameTime))), 255, 255, 255 ) );
