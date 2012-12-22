@@ -7,7 +7,6 @@
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "gds/Input/fwd.hpp"
-#include "gds/GUI/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
