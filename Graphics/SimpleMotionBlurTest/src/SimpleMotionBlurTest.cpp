@@ -3,12 +3,12 @@
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Camera.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/CameraController.hpp"
 
 using namespace boost;
 
@@ -48,7 +48,9 @@ int CSimpleMotionBlurTest::Init()
 	bool shader_loaded = m_Shader.Load( "./shaders/SimpleMotionBlurTest.fx" );
 
 	// load skybox mesh
-	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
+//	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
+	m_SkyTexture = CreateClearDaySkyTexture();
+	m_SkyTexture.SaveTextureToImageFile( "sky.png" );
 
 	// load the terrain mesh
 	CMeshResourceDesc mesh_desc;
@@ -79,7 +81,8 @@ void CSimpleMotionBlurTest::RenderScene()
 
 	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
-	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPosition() );
+//	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPose() );
+	RenderSkybox( m_SkyTexture, GetCurrentCamera().GetPose() );
 
 	shader_mgr.SetWorldTransform( matWorld );
 

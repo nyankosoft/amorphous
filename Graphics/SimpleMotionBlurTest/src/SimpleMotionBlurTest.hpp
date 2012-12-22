@@ -15,7 +15,8 @@ class CSimpleMotionBlurTest : public CGraphicsTestBase
 {
 	boost::shared_ptr<CSimpleMotionBlur> m_pSimpleMotionBlur;
 
-	CMeshObjectHandle m_SkyboxMesh;
+//	CMeshObjectHandle m_SkyboxMesh;
+	CTextureHandle m_SkyTexture;
 
 	CMeshObjectHandle m_TerrainMesh;
 
