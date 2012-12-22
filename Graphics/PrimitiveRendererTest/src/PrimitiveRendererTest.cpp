@@ -9,6 +9,7 @@
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
+#include "gds/Support/linear_interpolation.hpp"
 
 using std::string;
 using std::vector;
@@ -90,12 +91,50 @@ void CPrimitiveRendererTest::Update( float dt )
 }
 
 
+void RenderColoredLines()
+{
+	SFloatRGBAColor colors[] =
+	{
+		SFloatRGBAColor::Red(),
+		SFloatRGBAColor::Green(),
+		SFloatRGBAColor::Blue(),
+		SFloatRGBAColor::Magenta(),
+		SFloatRGBAColor::Aqua(),
+		SFloatRGBAColor::Yellow()
+	};
+
+	vector<Vector3> points;
+	points.resize( 5 );
+	points[0] = Vector3( 1, 0, 1) + Vector3(-1,0,0);
+	points[1] = Vector3( 1, 0,-1) + Vector3(-1,0,0);
+	points[2] = Vector3(-1, 0,-1) + Vector3(-1,0,0);
+	points[3] = Vector3(-1, 0, 1) + Vector3(-1,0,0);
+	points[4] = points[0];
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+	int num_loops = 50;
+	for( int i=0; i<=num_loops; i++ )
+	{
+		for( size_t j=0; j<points.size(); j++ )
+			points[j].y = i * 0.2f;
+
+		SFloatRGBAColor color = get_linearly_interpolated_value( colors, numof(colors), (float)i / (float)num_loops );
+
+		GetPrimitiveRenderer().DrawConnectedLines( points, color );
+	}
+
+}
+
+
 void CPrimitiveRendererTest::Render()
 {
 	PROFILE_FUNCTION();
 
 //	m_TextBuffer.resize( 0 );
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
+
+	FixedFunctionPipelineManager().SetTexture( 0, CTextureHandle() );
+
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 	Vector3 shift = Vector3(2,0,0);
 	vector<Vector3> points;
@@ -133,6 +172,8 @@ void CPrimitiveRendererTest::Render()
 		points[i*2  ] = Vector3(-2,y,5);
 		points[i*2+1] = Vector3(-1,y,5);
 	}
+
+	RenderColoredLines();
 
 //	GetPrimitiveRenderer().DrawConnectedLines( points, SFloatRGBAColor::White() );
 
