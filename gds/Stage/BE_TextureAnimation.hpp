@@ -6,6 +6,9 @@
 #include "Graphics/Mesh/RectSetMesh.hpp"
 
 
+/// A note about alpha blending: the class does not have source/dest alpha blend settings
+/// because it always uses pre-multiplied alpha, which is the default blend setting
+/// of the mesh class.
 class CBE_TextureAnimation : public CBaseEntity
 {
 public:
@@ -29,9 +32,6 @@ private:
 
 	int m_iTextureWidth;
 
-	/// alpha blend option
-//	int m_iDestBlend;
-
 	/// how much the texture expands over the course of the animation
 	float m_fExpansionFactor;
 
@@ -54,7 +54,6 @@ public:
 	void Draw(CCopyEntity* pCopyEnt);
 	//void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
 	//void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
-//	void SetTextureCoord( TEXTUREVERTEX *pavRactangle, int iCurrentFrame );
 	void SetTextureCoord( CRectSetMesh& rect_mesh, int iCurrentFrame );
 
 //	void DrawGlare(CCopyEntity* pCopyEnt) { Draw( pCopyEnt ); }

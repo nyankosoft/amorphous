@@ -14,8 +14,6 @@ CBE_TextureAnimation::CBE_TextureAnimation()
 	m_BoundingVolumeType = BVTYPE_AABB;
 	m_bNoClip = true;
 
-//	m_iDestBlend = D3DBLEND_ONE;
-
 	m_AnimTypeFlag = TA_BILLBOARD;
 
 	m_fExpansionFactor = 1.0f;
@@ -212,34 +210,11 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 			pShaderManager->SetTechnique( SHADER_TECH_BILLBOARD );
 		}*/
 
-//		if( m_iDestBlend == D3DBLEND_ONE )			pEffect->BeginPass( SHADER_PASS_ALPHA_BLEND_DEST_ADD );
-//		else			pEffect->BeginPass( SHADER_PASS_ALPHA_BLEND_DEST_INVSRCALPHA );
-
 		// Supposed to be set by rect mesh.
 		// Remove this after comfirming that the rect mesh sets the texture
 		shader_mgr.SetTexture( 0, m_AnimTexture );
 
 //		shader_mgr.CommitChanges();
-//	}
-
-//	if( iFixedFunctionShader )
-//	{
-/*		pd3dDev->SetTexture( 0, m_AnimTexture.GetTexture() );
-
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-		pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE );
-
-		pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-		pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//		pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_iDestBlend );
-
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
-*/
-//		pd3dDev->SetFVF( D3DFVF_TEXTUREVERTEX );
 //	}
 
 	// Diable alpha test to render the rect with a premultiplied alpha texture
@@ -285,21 +260,10 @@ bool CBE_TextureAnimation::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 	string blend_mode, texanim_type;
 
 	if( scanner.TryScanLine( "TEX_FILE",	m_AnimTextureFilepath ) )	return true;
-	if( scanner.TryScanLine( "TEX_WIDTH",	m_iTextureWidth ) )				return true;
-	if( scanner.TryScanLine( "TEX_SEGS",	m_iNumTextureSegments ) )		return true;
-	if( scanner.TryScanLine( "ANIM_TIME",	m_fTotalAnimationTime ) )		return true;
-	if( scanner.TryScanLine( "EXPANSION",	m_fExpansionFactor ) )			return true;
-
-	if( scanner.TryScanLine( "BLEND", blend_mode ) )
-	{
-/*		if( blend_mode == "ONE")
-			m_iDestBlend = D3DBLEND_ONE;
-		else if( blend_mode == "INVSRCALPHA" )
-			m_iDestBlend = D3DBLEND_INVSRCALPHA;
-		else
-			m_iDestBlend = D3DBLEND_INVSRCALPHA;
-		return true;*/
-	}
+	if( scanner.TryScanLine( "TEX_WIDTH",	m_iTextureWidth ) )			return true;
+	if( scanner.TryScanLine( "TEX_SEGS",	m_iNumTextureSegments ) )	return true;
+	if( scanner.TryScanLine( "ANIM_TIME",	m_fTotalAnimationTime ) )	return true;
+	if( scanner.TryScanLine( "EXPANSION",	m_fExpansionFactor ) )		return true;
 
 	if( scanner.TryScanLine( "TEXANIM_TYPE", texanim_type ) )
 	{
