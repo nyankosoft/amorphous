@@ -152,14 +152,25 @@ static void RenderTextToBufferAndSetUpRects(
 //	int img_width = 1024;
 //	dest_bitmap_buffer.resize( img_width, img_width, 0 );
 
-	int sx = 0;
-	int sy = char_height;
+	const int line_height = char_height;
+
+	const int sx = 0;
+	const int sy = char_height;
 	pen_x = sx;
 	pen_y = sy;
 	int margin = 4;
 	float sum_advance = 0;
+	unsigned int row = 0;
 	for ( n = 0; n < num_chars; n++ )
 	{
+		if( text[n] == '\n' )
+		{
+			// line feed
+			sum_advance = 0;
+			row += 1;
+			continue;
+		}
+
 		/* load glyph image into the slot (erase previous one) */
 		error = FT_Load_Char( face, text[n], FT_LOAD_RENDER );
 
@@ -213,8 +224,9 @@ static void RenderTextToBufferAndSetUpRects(
 		char_rect.tex_min = TEXCOORD2( (float)_left  / (float)img_width, (float)_top    / (float)img_height );
 		char_rect.tex_max = TEXCOORD2( (float)_right / (float)img_width, (float)_bottom / (float)img_height );
 
-		char_rect.rect.vMin = Vector2( (float)slot->bitmap_left,                      (float)char_height - slot->bitmap_top );
-		char_rect.rect.vMax = Vector2( (float)slot->bitmap_left + slot->bitmap.width, (float)char_height - slot->bitmap_top + slot->bitmap.rows );
+		int top = char_height - slot->bitmap_top + row * line_height;
+		char_rect.rect.vMin = Vector2( (float)slot->bitmap_left,                      (float)top );
+		char_rect.rect.vMax = Vector2( (float)slot->bitmap_left + slot->bitmap.width, (float)top + slot->bitmap.rows );
 
 		char_rect.advance = (float)(slot->advance.x >> 6);
 
