@@ -1,10 +1,9 @@
 #ifndef	__BASEENTITY_TEXTUREANIMATION_H__
 #define __BASEENTITY_TEXTUREANIMATION_H__
 
-#include "BaseEntity.hpp"
 
+#include "BaseEntity.hpp"
 #include "Graphics/Mesh/RectSetMesh.hpp"
-#include "Graphics/TextureHandle.hpp"
 
 
 class CBE_TextureAnimation : public CBaseEntity
