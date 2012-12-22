@@ -27,6 +27,15 @@ Result::Name CRectSetMesh::Init( uint num_rects, U32 vertex_format_flags )
 
 	m_vecMaterial.resize( 1 );
 
+	vector<CMMA_TriangleSet> triangle_sets;
+	triangle_sets.resize( 1 );
+	triangle_sets[0].m_iStartIndex             = 0;
+	triangle_sets[0].m_iMinIndex               = 0;
+	triangle_sets[0].m_iNumVertexBlocksToCover = num_rects * 4;
+	triangle_sets[0].m_iNumTriangles           = num_rects * 2;
+
+	SetTriangleSets( triangle_sets );
+
 	return Result::SUCCESS;
 }
 
