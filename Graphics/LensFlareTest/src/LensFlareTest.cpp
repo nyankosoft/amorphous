@@ -5,7 +5,7 @@
 #include "gds/Graphics/LensFlare.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/SkyboxMisc.hpp"
