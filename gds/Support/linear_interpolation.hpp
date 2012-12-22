@@ -1,5 +1,5 @@
-#ifndef __linear_interpolation_table_HPP__
-#define __linear_interpolation_table_HPP__
+#ifndef __linear_interpolation_HPP__
+#define __linear_interpolation_HPP__
 
 
 /// \brief Performes a uniform linear interpolation.
@@ -119,4 +119,4 @@ public:
 
 
 
-#endif /* __linear_interpolation_table_HPP__ */
+#endif /* __linear_interpolation_HPP__ */

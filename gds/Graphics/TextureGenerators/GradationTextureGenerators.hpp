@@ -3,7 +3,7 @@
 
 
 #include "TextureFillingAlgorithm.hpp"
-#include "../../Support/linear_interpolation_table.hpp"
+#include "../../Support/linear_interpolation.hpp"
 #include "../TextureHandle.hpp"
 
 
