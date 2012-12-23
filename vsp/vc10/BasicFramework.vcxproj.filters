@@ -798,6 +798,9 @@
     <ClCompile Include="..\..\gds\3DMath\HelixPolygonModelMaker.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">

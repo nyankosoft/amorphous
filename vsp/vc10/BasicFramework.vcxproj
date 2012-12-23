@@ -97,6 +97,7 @@
     <ClCompile Include="..\..\gds\Graphics\LogOutput_OnScreen.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshContainerRenderMethod.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.cpp" />
     <ClCompile Include="..\..\gds\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.cpp" />
     <ClCompile Include="..\..\gds\Graphics\OpenGL\GLInitialization.cpp" />
