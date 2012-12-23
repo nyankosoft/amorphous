@@ -1,5 +1,6 @@
 #include "PrimitiveShapeMeshesTest.hpp"
 #include "gds/Graphics.hpp"
+#include "gds/Graphics/Meshgenerators/PipeMeshGenerator.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Support/Timer.hpp"
@@ -92,7 +93,7 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	LoadParamFromFile( "params.txt", "show_texture", show_texture );
 	string texture_pathname = show_texture ? "./textures/AshySandstone.jpg" : "./textures/white.png";
 
-	CMeshResourceDesc mesh_desc[5];
+	CMeshResourceDesc mesh_desc[6];
 	m_vecMesh.resize( numof(mesh_desc) );
 
 	shared_ptr<CBoxMeshGenerator> pBoxGenerator( new CBoxMeshGenerator() );
@@ -135,7 +136,13 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	mesh_desc[4].ResourcePath = "CylinderMesh";
 	m_vecMesh[4].Load( mesh_desc[4] );
 
-	m_NumPrimitiveMeshes = 5;
+	shared_ptr<PipeMeshGenerator> pPipeGenerator( new PipeMeshGenerator );
+	mesh_desc[5].pMeshGenerator = pPipeGenerator;
+	mesh_desc[5].pMeshGenerator->SetTexturePath( texture_pathname );
+	mesh_desc[5].ResourcePath = "PipeMesh";
+	m_vecMesh[5].Load( mesh_desc[5] );
+
+	m_NumPrimitiveMeshes = 6;
 
 	return 0;
 }
