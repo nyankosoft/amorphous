@@ -36,16 +36,9 @@ bool LoadTextFromFile( const std::string& src_file, std::string& dest )
 	if( !scanner.IsReady() )
 		return false;
 
-	string text;
 	for( ; !scanner.End(); scanner.NextLine() )
 	{
-		if( scanner.TryScanLine( "text", text ) )
-		{
-			if( text.length() == 0 )
-				continue;
-
-			dest += text;
-		}
+		dest += scanner.GetCurrentLine();
 	}
 
 	return true;
@@ -305,9 +298,25 @@ int CMultibyteFontTest::Init()
 //	bool res = CreateFontTextureFromTrueTypeFont( dest_render_buffer );
 
 	string text;
-	bool loaded = LoadTextFromFile( "texts/test.txt", text );
-	if( !loaded )
-		return -1;
+	bool read_with_std_ifs = false;
+	if( read_with_std_ifs )
+	{
+		std::ifstream ifs( "texts/test.txt", std::ifstream::in );
+		if( !ifs.is_open() )
+			return -1;
+
+		char buffer[1024];
+		memset( buffer, 0, sizeof(buffer) );
+		ifs.read( buffer, sizeof(buffer) - 1 );
+
+		text = buffer;
+	}
+	else
+	{
+		bool loaded = LoadTextFromFile( "texts/test.txt", text );
+		if( !loaded )
+			return -1;
+	}
 
 	if( text.length() == 0 )
 		return -1;
@@ -416,7 +425,7 @@ void CMultibyteFontTest::Render()
 	}*/
 
 	if( m_pUTFFont )
-		m_pUTFFont->DrawText( m_UTFText.c_str(), Vector2( 20, 200 ), 0xFFFFFFFF );
+		m_pUTFFont->DrawText( m_UTFText.c_str(), Vector2( 20, 180 ), 0xFFFFFFFF );
 }
 
 
