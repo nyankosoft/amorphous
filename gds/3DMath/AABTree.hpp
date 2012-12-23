@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 
-#include "gds/3DMath/Vector3.hpp"
-#include "gds/3DMath/AABB3.hpp"
-#include "gds/3DMath/ray.hpp"
+#include "Vector3.hpp"
+#include "AABB3.hpp"
+#include "ray.hpp"
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"

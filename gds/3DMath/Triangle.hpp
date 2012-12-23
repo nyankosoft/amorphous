@@ -1,8 +1,8 @@
 #ifndef  __TRIANGLE_H__
 #define  __TRIANGLE_H__
 
-#include "gds/3DMath/Plane.hpp"
-#include "gds/3DMath/MathMisc.hpp"
+#include "Plane.hpp"
+#include "MathMisc.hpp"
 
 
 class CTriangle
