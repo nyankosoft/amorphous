@@ -5,11 +5,15 @@
 #include "gds/Graphics/PrimitiveRenderer.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
+//#include "gds/Graphics/3DtoScreenSpaceConversions.hpp"
 
 using namespace msynth;
 
 
 CSkeletonRenderer::CSkeletonRenderer()
+:
+m_DisplayBoneNames(false)
 {/*
 	m_Cube.Init();
 	//m_Cube.SetUniformColor( 0.9f, 0.9f, 0.9f, 1.0f );*/
@@ -38,8 +42,10 @@ inline Vector3 GetBoneSize( const Vector3& vOffset )
 
 void CSkeletonRenderer::RenderSkeletonAsLines()
 {
+	SFloatRGBAColor start_color = SFloatRGBAColor::Aqua(), end_color = SFloatRGBAColor::White();
 	for( size_t i=0; i<m_vecLineSegment.size(); i++ )
-		GetPrimitiveRenderer().DrawLine( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal );
+//		GetPrimitiveRenderer().DrawLine( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal );
+		GetPrimitiveRenderer().DrawLine( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal, start_color, end_color );
 //		CLineSegmentRenderer::Draw( m_vecLineSegment[i].vStart, m_vecLineSegment[i].vGoal );
 
 /*	Matrix34 dest_transform;
@@ -140,4 +146,23 @@ void CSkeletonRenderer::Render()
 {
 //	RenderSkeletonAsBoxes();
 	RenderSkeletonAsLines();
+
+	if( m_DisplayBoneNames )
+	{
+		if( !m_pFont )
+			m_pFont = CreateDefaultBuiltinFont();
+
+		if( m_pFont )
+		{
+			m_pFont->SetFontColor( SFloatRGBAColor::White() );
+//			m_pFont->SetFontSize( 16, 32 );
+//			m_pFont->DrawText( "Drawing some text for test...", 150, 150 );
+		}
+
+		const int num_bones = (int)m_vecLineSegment.size();
+		for( int i=0; i<num_bones; i++ )
+		{
+//			CalculateScreenCoordsFromWorldPosition( camera, m_vecLineSegment[i].vStart );
+		}
+	}
 }

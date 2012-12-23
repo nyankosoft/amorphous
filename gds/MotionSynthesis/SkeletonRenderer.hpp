@@ -6,6 +6,7 @@
 
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/3DMath/ray.hpp"
+#include "gds/Graphics/fwd.hpp"
 #include "Skeleton.hpp"
 
 
@@ -24,6 +25,10 @@ class CSkeletonRenderer
 	std::vector<CLineSegment> m_vecLineSegment;
 
 //	CUnitCube m_Cube;
+
+	boost::shared_ptr<CFontBase> m_pFont;
+
+	bool m_DisplayBoneNames;
 
 private:
 
@@ -46,6 +51,8 @@ public:
 //	void SetSkeleton( const CSkeleton& skeleton ) { m_pSkeleton = skeleton; }
 
 	void Render();
+
+	void SetDisplayBoneNames( bool display ) { m_DisplayBoneNames = display; }
 };
 
 
