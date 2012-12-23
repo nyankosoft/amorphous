@@ -129,13 +129,7 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 		vert_buffer[i].m_TextureCoord.resize( 1 );
 	}
 
-	const int num_polygons = (int)polygons.size();
-	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
-	polygon_buffer.resize( num_polygons );
-	for( int i=0; i<num_polygons; i++ )
-	{
-		polygon_buffer[i].m_index = polygons[i];
-	}
+	mesh.SetPolygons( polygons );
 
 //	UpdateAABBs( polygon_buffer );
 
