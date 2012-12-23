@@ -161,11 +161,15 @@ void CPlanarReflectionTest::Update( float dt )
 }
 
 
-void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Vector3& camera_pos )
+void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode )
 {
 	C2DRect rect( Vector2( 80, 80 ), Vector2( 100, 100 ), 0xFFFF0000 );
 
-	RenderAsSkybox( m_SkyboxMesh, camera_pos );
+	GraphicsDevice().SetCullingMode( culling_mode );
+
+	RenderAsSkybox( m_SkyboxMesh, camera_pose );
+
+	GraphicsDevice().SetCullingMode( culling_mode );
 
 	Matrix44 matWorld = Matrix44Identity();
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
@@ -173,9 +177,6 @@ void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Vector3& camera_
 		return;
 
 	CShaderManager& shader_mgr = *pShaderMgr;
-
-//	Matrix44 matMirror = CreateMirrorMatrix( SPlane( Vector3(0,1,0), 0 ) );
-//	matWorld = matMirror * matWorld;
 
 	shader_mgr.SetWorldTransform( matWorld );
 
@@ -358,11 +359,18 @@ void CPlanarReflectionTest::Render()
 		GetCurrentCamera().GetProjectionMatrix()
 		);
 
-	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
+//	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
+
 //	RenderReflectionClipPlane( /*reflection_plane*/ );
 /*	SetClipPlane( reflection_plane );
 	SetClipPlaneViaD3DXFunctions();*/
-	RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), GetCurrentCamera().GetPosition() ) );
+
+//	RenderReflectionSourceMeshes( GetCurrentCamera().GetPose(), CullingMode::CLOCKWISE );
+//	RenderReflectionSourceMeshes( GetMirroredPose( Plane(Vector3(0,1,0),0), GetCurrentCamera().GetPose() ), CullingMode::CLOCKWISE );
+//	RenderReflectionSourceMeshes( GetMirroredPosition( Plane(Vector3(0,1,0),0), GetCurrentCamera().GetPosition() ), CullingMode::CLOCKWISE );
+//	RenderReflectionSourceMeshes( GetCameraPoseFromCameraMatrix( mirror ), CullingMode::CLOCKWISE );
+	Matrix34 camera_pose = GetCurrentCamera().GetPose();
+	RenderReflectionSourceMeshes( Matrix34( GetMirroredPosition(Plane(Vector3(0,1,0),0),camera_pose.vPosition), camera_pose.matOrient ), CullingMode::CLOCKWISE );
 
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 //	HRESULT hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, 0 );
@@ -374,8 +382,8 @@ void CPlanarReflectionTest::Render()
 	m_pTextureRenderTarget->ResetRenderTarget();
 
 	// Render the scene that has planar reflection
-	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
-	RenderReflectionSourceMeshes( GetCurrentCamera().GetPosition() );
+//	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+	RenderReflectionSourceMeshes( GetCurrentCamera().GetPose(), CullingMode::COUNTERCLOCKWISE );
 
 	// Render surface that does planar reflection
 	RenderReflectionSurface();

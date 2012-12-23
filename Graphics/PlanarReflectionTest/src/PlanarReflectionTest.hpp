@@ -8,6 +8,7 @@
 #include "gds/Graphics/TextureHandle.hpp"
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "gds/Graphics/GraphicsDevice.hpp"
 #include "gds/Input/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
@@ -41,7 +42,7 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 protected:
 
-	void RenderReflectionSourceMeshes( const Vector3& camera_pos );
+	void RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode );
 
 	void RenderReflectionSurface();
 
