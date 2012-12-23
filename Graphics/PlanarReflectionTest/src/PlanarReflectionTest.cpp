@@ -180,13 +180,7 @@ void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera
 
 	shader_mgr.SetWorldTransform( matWorld );
 
-	shader_mgr.SetTechnique( m_MeshTechnique );
-
-//	m_TerrainMesh.GetMesh().get()->Render( *pShaderMgr );
-
-	CShaderTechniqueHandle tech;
-	tech.SetTechniqueName( "Default" );
-	Result::Name res = shader_mgr.SetTechnique( tech );
+	Result::Name res = shader_mgr.SetTechnique( m_MeshTechnique );
 
 	for( size_t i=0; i<m_ReflectionSourceMeshes.size(); i++ )
 	{
