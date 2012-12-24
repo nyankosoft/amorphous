@@ -108,7 +108,8 @@ int CCustomMeshTest::Init()
 */
 	bool loaded = false;
 	string mesh_file_pathname;
-	LoadParamFromFile( "params.txt", "model", mesh_file_pathname );
+	LoadParamFromFile( "CustomMeshDemo/params.txt", "model", mesh_file_pathname );
+	mesh_file_pathname = "CustomMeshDemo/" + mesh_file_pathname;
 	if( 0 < mesh_file_pathname.length() )
 	{
 		loaded = m_Mesh.LoadFromFile( mesh_file_pathname );

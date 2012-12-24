@@ -61,10 +61,10 @@ m_NumTextureMipmaps( 1 )
 	m_TestAsyncLoading = true;
 
 	int enabled = 1;
-	LoadParamFromFile( "params.txt", "cached_resource", enabled );
+	LoadParamFromFile( "AsyncLoadingDemo/params.txt", "cached_resource", enabled );
 	m_UseCachedResources = (enabled == 1);
 
-	LoadParamFromFile( "params.txt", "num_texture_mipmaps", m_NumTextureMipmaps );
+	LoadParamFromFile( "AsyncLoadingDemo/params.txt", "num_texture_mipmaps", m_NumTextureMipmaps );
 
 	GraphicsResourceManager().AllowAsyncLoading( m_TestAsyncLoading );
 
@@ -88,7 +88,7 @@ void CAsyncLoadingTest::CreateSampleUI()
 bool CAsyncLoadingTest::InitShader()
 {
 	// initialize shader
-	bool shader_loaded = m_Shader.Load( "./shaders/AsyncLoadingTest.fx" );
+	bool shader_loaded = m_Shader.Load( "AsyncLoadingDemo/shaders/AsyncLoadingTest.fx" );
 	
 	if( !shader_loaded )
 		return false;
@@ -164,9 +164,9 @@ int CAsyncLoadingTest::Init()
 	}
 */
 
-	m_vecMesh.push_back( CTestMeshHolder( "./models/sample_level_00.msh",   CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.push_back( CTestMeshHolder( "./models/FlakySlate.msh",        CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1, 100), Matrix33Identity() ) ) );
-	m_vecMesh.push_back( CTestMeshHolder( "./models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
+	m_vecMesh.push_back( CTestMeshHolder( "AsyncLoadingDemo/models/sample_level_00.msh",   CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
+	m_vecMesh.push_back( CTestMeshHolder( "AsyncLoadingDemo/models/FlakySlate.msh",        CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1, 100), Matrix33Identity() ) ) );
+	m_vecMesh.push_back( CTestMeshHolder( "AsyncLoadingDemo/models/HighAltitude.msh",      CTestMeshHolder::LOAD_MESH_AND_TEX_SEPARATELY,   Matrix34( Vector3(-25,1, 100), Matrix33Identity() ) ) );
 //	m_vecMesh.push_back( CTestMeshHolder( "./models/RustPeel.msh",          CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3( 25,1,-100), Matrix33Identity() ) ) );
 //	m_vecMesh.push_back( CTestMeshHolder( "./models/SmashedGrayMarble.msh", CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER,   Matrix34( Vector3(-25,1,-100), Matrix33Identity() ) ) );
 

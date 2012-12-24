@@ -25,7 +25,7 @@
 //-----------------------------------------------------------------------------
 
 
-
+#include "TexDef.fxh"
 
 //-----------------------------------------------------------------------------
 // Global constants
@@ -400,9 +400,14 @@ float4 DownScale4x4PS
 
 	for( int i=0; i < 16; i++ )
 	{
-		sample += tex2D( s0, vScreenPosition + g_avSampleOffsets[i] );
+//		sample += tex2D( s0, vScreenPosition + g_avSampleOffsets[i] );
+		sample += tex2D( s1, vScreenPosition + g_avSampleOffsets[i] );
+//		sample += tex2D( Sampler0, vScreenPosition + g_avSampleOffsets[i] );
 	}
 
+//	return float4( 1,1,0,1 );
+//	return float4( vScreenPosition.x, vScreenPosition.y, 1, 1 );
+//	return float4( tex2D( s1, vScreenPosition ).rgb, 1 );
 	return sample / 16;
 }
 
@@ -453,6 +458,7 @@ float4 GaussBlur5x5PS
 	}
 
 	return sample;
+//	return float4(1,vScreenPosition.x,vScreenPosition.y,1);
 }
 
 
@@ -519,9 +525,12 @@ float4 BloomPS
 		vSample += g_avSampleWeights[iSample]*vColor;
 	}
 
-	return float4( vSample.rgb * g_fBloomFactor, vSample.a );
+//	return float4( 1,0,1,1 );
+//	return float4( tex2D(s0, vScreenPosition).rgb, 1 );
+//	return float4( vSample.rgb * g_fBloomFactor, vSample.a );
 //	return float4( vSample.rgb / 2.0f, vSample.a );
 //	return float4( vSample.rgb, vSample.a );
+	return float4( vSample.rgb, 1 );
 }
 
 
@@ -756,7 +765,50 @@ float4 g_vMonochromeColorOffset= { 0.0f, 0.0f, 0.0f, 0.0f };
 float4 MonochromeColorPS( float2 Tex : TEXCOORD0 ) : COLOR0
 {
 	float4 monochrome_color = dot( (float3)tex2D( s0, Tex ), g_vLuminanceConv );
+	monochrome_color.a = 1;
     return monochrome_color + g_vMonochromeColorOffset;
+}
+
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: SinCosTrick
+// Desc: 
+//-----------------------------------------------------------------------------
+float4 g_vTint = (0,0,0,1);
+float g_fWave         = 3.14159265 / 0.75; ///< pi/.75 is a good default
+float g_fDistortion   = 1.0;               ///< 1 is a good default
+float2 g_vCenterCoord = float2(0.5,0.5);   ///< 0.5,0.5 is the screen center
+
+//float g_fTime         = 0.0;
+
+float4 CosTrickPS( float2 Tex : TEXCOORD0 ) : COLOR0 
+//float4 MonochromeColorPS( float2 Tex : TEXCOORD0 ) : COLOR0 
+{	
+	float2 distance = abs(Tex - g_vCenterCoord)/5.0;
+    float scalar = length(distance);
+
+    // invert the scale so 1 is centerpoint
+    scalar = abs(1 - scalar);
+        
+    // calculate how far to distort for this pixel    
+    float sinoffset = cos(g_fWave / scalar);
+    sinoffset = clamp(sinoffset, 0, 1);
+    
+    // calculate which direction to distort
+    float sinsign = cos(g_fWave / scalar);        
+    // reduce the distortion effect
+    sinoffset = sinoffset * g_fDistortion/32.0;
+    
+    // pick a pixel on the screen for this pixel, based on
+    // the calculated offset and direction
+    float4 color = tex2D( s0, Tex+(sinoffset*sinsign) ) * g_vTint;       
+	
+//	return color;
+//	return float4( 1, 1, sinoffset, 1 );
+	return float4( 1, 1, scalar, 1 );
+//	return float4( 1, 1, (sinoffset*sinsign), 1 );
+//	return float4(0,1,1,1);
 }
 
 
@@ -897,6 +949,7 @@ technique DownScale4x4
 	pass P0
 	{
 		PixelShader  = compile ps_2_0 DownScale4x4PS();
+        ZEnable = false;
 	}
 }
 
@@ -1118,7 +1171,7 @@ technique MergeTextures_8
 
 
 //-----------------------------------------------------------------------------
-// Technique: PostProcess
+// Technique: MonochromeColor
 // Desc: Performs post-processing effect that converts a colored image to
 //       black and white.
 //-----------------------------------------------------------------------------

@@ -30,6 +30,7 @@ int CTextureFontTest::Init()
 {
 	string font_directory = "fonts";
 	LoadParamFromFile( "params.txt", "font_directory", font_directory );
+	font_directory = "TextureFontDemo/" + font_directory;
 	vector<string> font_file_pathnames;
 	find_files_in_directory( font_directory, font_file_pathnames );
 	m_FontFilePathnames = font_file_pathnames;
@@ -54,7 +55,8 @@ int CTextureFontTest::Init()
 	}
 
 	string bg_image = "images/bg.jpg";
-	LoadParamFromFile( "params.txt", "background", bg_image );
+	LoadParamFromFile( "TextureFontDemo/params.txt", "background", bg_image );
+	bg_image = "TextureFontDemo/" + bg_image;
 	bool image_loaded = m_BGTexture.Load( bg_image );
 
 	int rotation = 0;

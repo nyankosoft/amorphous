@@ -64,21 +64,22 @@ int CShadowMapTest::Init()
 //		m_Technique.SetTechniqueName( "Default" );
 
 	// load skybox mesh
-	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
+	m_SkyboxMesh = CreateSkyboxMesh( "ShadowMapDemo/textures/skygrad_slim_01.jpg" );
 
 	string model = "models/shadow_map_test.msh";
-	LoadParamFromFile( "params.txt", "model", model );
+	LoadParamFromFile( "ShadowMapDemo/params.txt", "model", model );
+	model = "ShadowMapDemo/" + model;
 	m_Mesh.Load( model );
 
 	// load the terrain mesh
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.ResourcePath = "./models/floor.msh";
+	mesh_desc.ResourcePath = "ShadowMapDemo/models/floor.msh";
 	mesh_desc.MeshType     = CMeshType::BASIC;
 	m_FloorMesh.Load( mesh_desc );
 //	m_FloorMesh = CreateBoxMesh();
 
 	m_pShadowMapManager.reset( new CShadowMapManager );
-	m_pShadowMapManager->SetShadowMapShaderFilename( "shaders/SimpleShadowMap.fx" );
+	m_pShadowMapManager->SetShadowMapShaderFilename( "ShadowMapDemo/shaders/SimpleShadowMap.fx" );
 	bool initialized = m_pShadowMapManager->Init();
 
 	// Create a light

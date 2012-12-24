@@ -285,11 +285,14 @@ int CMultibyteFontTest::Init()
 //	C2DArray<U8> dest_render_buffer;
 //	bool res = CreateFontTextureFromTrueTypeFont( dest_render_buffer );
 
+	string text_file = "texts/test.txt";
+
+	string text_file_pathname = "MultibyteFontDemo/" + text_file;
 	string text;
 	bool read_with_std_ifs = false;
 	if( read_with_std_ifs )
 	{
-		std::ifstream ifs( "texts/test.txt", std::ifstream::in );
+		std::ifstream ifs( text_file_pathname.c_str(), std::ifstream::in );
 		if( !ifs.is_open() )
 			return -1;
 
@@ -301,7 +304,7 @@ int CMultibyteFontTest::Init()
 	}
 	else
 	{
-		bool loaded = LoadTextFromFile( "texts/test.txt", text );
+		bool loaded = LoadTextFromFile( text_file_pathname, text );
 		if( !loaded )
 			return -1;
 	}
@@ -359,7 +362,7 @@ int CMultibyteFontTest::Init()
 	}
 */
 	shared_ptr<CUTFFont> pUTF8Font( new CUTFFont );
-	pUTF8Font->InitFont( "fonts/ipagp.ttf", 32 );
+	pUTF8Font->InitFont( "MultibyteFontDemo/fonts/ipagp.ttf", 32 );
 	m_pUTFFont = pUTF8Font;
 
 	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
