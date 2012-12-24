@@ -31,9 +31,9 @@ CLensFlareTest::~CLensFlareTest()
 void CLensFlareTest::InitSkyTexture()
 {
 	SFloatRGBAColor top_color, mid_color, bottom_color;
-	LoadParamFromFile( "params.txt", "bg_color_top",    top_color );
-	LoadParamFromFile( "params.txt", "bg_color_mid",    mid_color );
-	LoadParamFromFile( "params.txt", "bg_color_bottom", bottom_color );
+	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_top",    top_color );
+	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_mid",    mid_color );
+	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_bottom", bottom_color );
 
 //	m_SkyTexture = CreateHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
 	m_SkyTexture = CreateTCBSplineHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
@@ -54,12 +54,13 @@ void CLensFlareTest::InitLensFlare( const string& strPath )
 {
 	m_pLensFlare = shared_ptr<CLensFlare>( new CLensFlare() );
 
-//	m_pLensFlare->AddTexture( "./textures/LensFlareTex/flare00.dds", 0, 1, 1 );
-//	m_pLensFlare->AddTexture( "./textures/flare01.dds", 0, 1, 1 );
-	m_pLensFlare->AddTexture( "./textures/ring.png",    0, 1, 1 );
-	m_pLensFlare->AddTexture( "./textures/flare02.dds", 1, 1, 1 );
-	m_pLensFlare->AddTexture( "./textures/flare06.dds", 2, 1, 1 );
-//	m_pLensFlare->AddTexture( "./textures/LensFlareTex/flare07.dds", 2, 1, 1 );
+	string texture_directory = "LensFlareDemo/textures/";
+//	m_pLensFlare->AddTexture( texture_directory + "flare00.dds", 0, 1, 1 );
+//	m_pLensFlare->AddTexture( texture_directory + "flare01.dds", 0, 1, 1 );
+	m_pLensFlare->AddTexture( texture_directory + "ring.png",    0, 1, 1 );
+	m_pLensFlare->AddTexture( texture_directory + "flare02.dds", 1, 1, 1 );
+	m_pLensFlare->AddTexture( texture_directory + "flare06.dds", 2, 1, 1 );
+//	m_pLensFlare->AddTexture( texture_directory + "LensFlareTex/flare07.dds", 2, 1, 1 );
 
 	m_pLensFlare->AddLensFlareRect( 0.09f, 1.0f, 0.70f, ARGB32toFloatRGBA(0x40FF5030), 0 );
 	m_pLensFlare->AddLensFlareRect( 0.08f, 1.0f, 1.50f, ARGB32toFloatRGBA(0x28FFD040), 0 );
@@ -87,21 +88,21 @@ int CLensFlareTest::Init()
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );
 
 	// initialize shader
-	bool shader_loaded = m_Shader.Load( "./shaders/LensFlareTest.fx" );
+	bool shader_loaded = m_Shader.Load( "LensFlareDemo/shaders/LensFlareTest.fx" );
 
 	// load skybox mesh
-//	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
-	m_SkyboxMesh = CreateSkyboxMesh( "./textures/dark_chrome.jpg" );
+//	m_SkyboxMesh = CreateSkyboxMesh( "LensFlareDemo/textures/skygrad_slim_01.jpg" );
+	m_SkyboxMesh = CreateSkyboxMesh( "LensFlareDemo/textures/dark_chrome.jpg" );
 
 	InitSkyTexture();
 
 	// load the terrain mesh
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.ResourcePath = "./models/terrain06.msh";
+	mesh_desc.ResourcePath = "LensFlareDemo/models/terrain06.msh";
 	mesh_desc.MeshType     = CMeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
-	m_TestTexture.Load( "./textures/flare02.dds" );
+	m_TestTexture.Load( "LensFlareDemo/textures/flare02.dds" );
 
 	CMeshResourceDesc sphere_mesh_desc;
 	CSphereDesc sphere_desc;

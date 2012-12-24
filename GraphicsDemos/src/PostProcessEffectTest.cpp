@@ -339,10 +339,10 @@ bool CPostProcessEffectTest::LoadModels()
 {
 	m_vecMeshFilepath.resize( 3 );
 	m_vecMeshFilepath[0] = ""; // skybox
-//	m_vecMeshFilepath[1] = "./models/compact_000-r01-low_poly.msh";
-//	m_vecMeshFilepath[1] = "./models/underground_entrance.msh";
-	m_vecMeshFilepath[1] = "./models/uge-terrain.msh";
-	m_vecMeshFilepath[2] = "./models/uge-underground.msh";
+//	m_vecMeshFilepath[1] = "PostProcessEffectDemo/models/compact_000-r01-low_poly.msh";
+//	m_vecMeshFilepath[1] = "PostProcessEffectDemo/models/underground_entrance.msh";
+	m_vecMeshFilepath[1] = "PostProcessEffectDemo/models/uge-terrain.msh";
+	m_vecMeshFilepath[2] = "PostProcessEffectDemo/models/uge-underground.msh";
 
 	m_vecMesh.resize( 3 );
 	CMeshResourceDesc skybox_mesh_desc;
@@ -351,7 +351,7 @@ bool CPostProcessEffectTest::LoadModels()
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
-	pBoxMeshGenerator->SetTexturePath( "models/textures/skygrad_slim_01.jpg" );
+	pBoxMeshGenerator->SetTexturePath( "PostProcessEffectDemo/models/textures/skygrad_slim_01.jpg" );
 	skybox_mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 	bool loaded = m_vecMesh[0].Load( skybox_mesh_desc );
 
@@ -388,7 +388,7 @@ int CPostProcessEffectTest::Init()
 {
 //	g_CameraController.SetPosition( Vector3(0,50,0) );
 
-	bool loaded = m_Shader.Load( "shaders/mesh.fx" );
+	bool loaded = m_Shader.Load( "PostProcessEffectDemo/shaders/mesh.fx" );
 
 //	if( !m_pShaderManager->LoadShaderFromFile( "shaders/mesh.fx" ) )
 	if( !loaded )
@@ -430,7 +430,7 @@ int CPostProcessEffectTest::Init()
 		m_pPostProcessEffectManager.reset( new CPostProcessEffectManager );
 
 		int load_embedded_effect_shader = 1;
-		LoadParamFromFile( "params.txt", "load_embedded_effect_shader", load_embedded_effect_shader );
+		LoadParamFromFile( "PostProcessEffectDemo/params.txt", "load_embedded_effect_shader", load_embedded_effect_shader );
 
 		Result::Name res = Result::SUCCESS;
 		if( load_embedded_effect_shader )
@@ -453,7 +453,7 @@ int CPostProcessEffectTest::Init()
 
 void CPostProcessEffectTest::LoadHDRParamValues()
 {
-	CParamLoader pl( "params.txt" );
+	CParamLoader pl( "PostProcessEffectDemo/params.txt" );
 	pl.LoadParam( "hdr.tone_mapping_key_value",    m_HDRLightingParams.key_value );
 	pl.LoadParam( "hdr.luminance_adaptation_rate", m_HDRLightingParams.luminance_adaptation_rate );
 //	pl.LoadBoolParam( "hdr.tone_mapping", m_HDRLightingParams.tone_mapping );
