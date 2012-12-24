@@ -610,22 +610,6 @@ void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
 	if( !m_pShadowManager )
 		return;
 */
-	CVertexBlendType::Name vert_blend_types[CRenderContext::NUM_RENDER_OBJECT_TYPES] =
-	{
-		CVertexBlendType::NONE,
-		CVertexBlendType::QUATERNION_AND_VECTOR3,
-		CVertexBlendType::NONE
-	};
-
-	CRenderContext rc;
-	for( int i=0; i<CRenderContext::NUM_RENDER_OBJECT_TYPES; i++ )
-	{
-		rc.m_Shaders[i] = m_pShadowManager->GetShader();
-		rc.m_ShaderTechniques[i] = m_pShadowManager->ShaderTechniqueForShadowCaster(vert_blend_types[i]);
-	}
-
-//	rRootNode.RenderAs( rc );
-
 	//==================== render the entities ====================
 
 	// move the skybox to the head of the list to render it first
