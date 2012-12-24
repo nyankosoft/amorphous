@@ -24,6 +24,8 @@ public:
 
 	inline boost::shared_ptr<CBasicMesh> GetMesh();
 
+	boost::shared_ptr<CSkeletalMesh> GetSkeletalMesh();
+
 	bool Load( const std::string& resource_path );
 
 	bool Load( const CMeshResourceDesc& desc );

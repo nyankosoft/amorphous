@@ -1,5 +1,6 @@
 #include "MeshObjectHandle.hpp"
 #include "GraphicsResourceManager.hpp"
+#include "Mesh/SkeletalMesh.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 using namespace std;
@@ -57,6 +58,16 @@ bool CMeshObjectHandle::Load( const CMeshResourceDesc& desc )
 		return true;
 	else
 		return false;
+}
+
+
+boost::shared_ptr<CSkeletalMesh> CMeshObjectHandle::GetSkeletalMesh()
+{
+	boost::shared_ptr<CBasicMesh> pBasicMesh = GetMesh();
+	if( pBasicMesh )
+		return boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pBasicMesh);
+	else
+		return boost::shared_ptr<CSkeletalMesh>();
 }
 
 
