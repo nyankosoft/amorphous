@@ -96,8 +96,11 @@ void CCoreBaseEntitiesLoader::AddPhysicsBaseEntity( const char *name, std::vecto
 	pBaseEntity->m_aabb.vMin = Vector3(1,1,1) * -0.001f;
 	pBaseEntity->m_aabb.vMax = Vector3(1,1,1) *  0.001f;
 	pBaseEntity->RaiseEntityFlag( BETYPE_LIGHTING | BETYPE_SHADOW_CASTER | BETYPE_SHADOW_RECEIVER );
-	pBaseEntity->m_MeshProperty.m_ShaderTechnique.resize(1,1);
-	pBaseEntity->m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SingleHSDL_Specular_CTS" );
+
+	// Shader techniques are not set up here.
+	// By default, generic shader is used for the mesh, and the shader technique "Default" is set.
+//	pBaseEntity->m_MeshProperty.m_ShaderTechnique
+
 	pBaseEntities.push_back( pBaseEntity );
 }
 
