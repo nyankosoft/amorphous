@@ -3,7 +3,7 @@
 #include "gds/Input/InputDevice.hpp"
 #include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "gds/Graphics/3DGameMath.hpp"
+#include "gds/3DMath/3DGameMath.hpp"
 #include "gds/MotionSynthesis/MotionDatabase.hpp"
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "gds/Support/DebugOutput.hpp"
