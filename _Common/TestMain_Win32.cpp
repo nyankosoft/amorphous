@@ -32,7 +32,6 @@ using namespace boost;
 
 
 extern CGraphicsTestBase *CreateTestInstance();
-extern const std::string GetAppTitle();
 
 // draft
 extern void SetCurrentThreadAsRenderThread();
@@ -270,9 +269,6 @@ bool Init()
 
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
-	const std::string app_title = GetAppTitle();
-	const std::string app_class_name = app_title;
-
 	g_CmdLine = lpCmdLine;
 
 	const string iwd = lfs::get_cwd(); // initial working directory
@@ -306,13 +302,18 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	if( res != Result::SUCCESS )
 		return 0;
 
-	CLogOutput_HTML html_log( GetAppTitle() + "_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
+	CLogOutput_HTML html_log( "app_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
 
 	InitFreeImage();
 
 	// Create the instance of the test class
 	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );
+	if( !g_pTest )
+		return 0;
+
+	const std::string app_title = g_pTest->GetAppTitle();
+	const std::string app_class_name = app_title;
 
 	int w = g_pTest->GetWindowWidth();  // 1280;
 	int h = g_pTest->GetWindowHeight(); //  720;

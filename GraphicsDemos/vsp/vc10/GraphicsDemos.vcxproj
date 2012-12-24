@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{545FD317-0215-4111-AE8C-914D5003899B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>GraphicsDemos</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <OutDir>..\..\app\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\Project1</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>BasicFramework_d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\Project1\vsp\vc10\Debug</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp" />
+    <ClInclude Include="..\..\..\_Common\KeyState.hpp" />
+    <ClInclude Include="..\..\..\_Common\KeyState_Win32.hpp" />
+    <ClInclude Include="..\..\src\AsyncLoadingTest.hpp" />
+    <ClInclude Include="..\..\src\CustomMeshTest.hpp" />
+    <ClInclude Include="..\..\src\EnvMapTest.hpp" />
+    <ClInclude Include="..\..\src\GenericShaderTest.hpp" />
+    <ClInclude Include="..\..\src\GLSLTest.hpp" />
+    <ClInclude Include="..\..\src\GraphicsElementsTest.hpp" />
+    <ClInclude Include="..\..\src\HLSLEffectTest.hpp" />
+    <ClInclude Include="..\..\src\LensFlareTest.hpp" />
+    <ClInclude Include="..\..\src\MeshSplitterTest.hpp" />
+    <ClInclude Include="..\..\src\MultibyteFontTest.hpp" />
+    <ClInclude Include="..\..\src\OBBTreeTest.hpp" />
+    <ClInclude Include="..\..\src\PerlinNoiseTextureGeneratorTest.hpp" />
+    <ClInclude Include="..\..\src\PlanarReflectionTest.hpp" />
+    <ClInclude Include="..\..\src\PostProcessEffectTest.hpp" />
+    <ClInclude Include="..\..\src\PrimitiveRendererTest.hpp" />
+    <ClInclude Include="..\..\src\PrimitiveShapeMeshesTest.hpp" />
+    <ClInclude Include="..\..\src\ResolutionChangeTest.hpp" />
+    <ClInclude Include="..\..\src\ShadowMapTest.hpp" />
+    <ClInclude Include="..\..\src\SimpleMotionBlurTest.hpp" />
+    <ClInclude Include="..\..\src\SimpleOverlayEffectsTest.hpp" />
+    <ClInclude Include="..\..\src\TextureFontTest.hpp" />
+    <ClInclude Include="..\..\src\TextureRenderTargetTest.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp" />
+    <ClCompile Include="..\..\src\AsyncLoadingTest.cpp" />
+    <ClCompile Include="..\..\src\CustomMeshTest.cpp" />
+    <ClCompile Include="..\..\src\EnvMapTest.cpp" />
+    <ClCompile Include="..\..\src\GenericShaderTest.cpp" />
+    <ClCompile Include="..\..\src\GLSLTest.cpp" />
+    <ClCompile Include="..\..\src\GraphicsDemos.cpp" />
+    <ClCompile Include="..\..\src\GraphicsElementsTest.cpp" />
+    <ClCompile Include="..\..\src\HLSLEffectTest.cpp" />
+    <ClCompile Include="..\..\src\LensFlareTest.cpp" />
+    <ClCompile Include="..\..\src\MeshSplitterTest.cpp" />
+    <ClCompile Include="..\..\src\MultibyteFontTest.cpp" />
+    <ClCompile Include="..\..\src\OBBTreeTest.cpp" />
+    <ClCompile Include="..\..\src\PerlinNoiseTextureGeneratorTest.cpp" />
+    <ClCompile Include="..\..\src\PlanarReflectionTest.cpp" />
+    <ClCompile Include="..\..\src\PostProcessEffectTest.cpp" />
+    <ClCompile Include="..\..\src\PrimitiveRendererTest.cpp" />
+    <ClCompile Include="..\..\src\PrimitiveShapeMeshesTest.cpp" />
+    <ClCompile Include="..\..\src\ResolutionChangeTest.cpp" />
+    <ClCompile Include="..\..\src\ShadowMapTest.cpp" />
+    <ClCompile Include="..\..\src\SimpleMotionBlurTest.cpp" />
+    <ClCompile Include="..\..\src\SimpleOverlayEffectsTest.cpp" />
+    <ClCompile Include="..\..\src\TextureFontTest.cpp" />
+    <ClCompile Include="..\..\src\TextureRenderTargetTest.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

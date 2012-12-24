@@ -61,6 +61,8 @@ public:
 
 	virtual ~CGraphicsTestBase() {}
 
+	virtual const char *GetAppTitle() const { return ""; }
+
 	/// returns 0 on success
 	virtual int Init() { return 0; }
 
