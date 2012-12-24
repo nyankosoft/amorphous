@@ -3,7 +3,7 @@
 
 
 #include "TextureFont.hpp"
-#include "Support/FreeTypeAux.hpp"
+#include "../../Support/FreeTypeAux.hpp"
 
 
 /**
