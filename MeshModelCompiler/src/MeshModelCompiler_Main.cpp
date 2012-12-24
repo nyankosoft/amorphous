@@ -47,23 +47,30 @@ public:
 	bool MakeShapesFile()
 	{
 		// Decide on the filename of the shapes file
-		string shapes_file = m_Exporter.GetOutputFilepath(0);
-		if( shapes_file.length() == 0 )
-			shapes_file = m_TargetFilepath;
+		vector<string> shape_files;
+		for( uint i=0; i<m_Exporter.GetNumOutputFilepaths(); i++ )
+		{
+			string shapes_file = m_Exporter.GetOutputFilepath(i);
 
-		if( shapes_file.length() == 0 )
-			return false;
+			if( shapes_file.length() == 0 )
+				shapes_file = m_TargetFilepath;
 
-		if( shapes_file.rfind( "." ) == string::npos )
-			return false;
+			if( shapes_file.length() == 0 )
+				continue;
 
-		lfs::change_ext( shapes_file, "sd" );
+			if( shapes_file.rfind( "." ) == string::npos )
+				continue;
 
-		if( m_TargetFilepath == shapes_file )
-			return false; // Avoid overwriting the source model file.
+			lfs::change_ext( shapes_file, "sd" );
+
+			if( m_TargetFilepath == shapes_file )
+				continue; // Avoid overwriting the source model file.
+
+			shape_files.push_back( shapes_file );
+		}
 
 		// Extract shapes and save to disk
-		return m_ShapesExporter.ExtractShapes( m_Exporter.GetLWO2Object(), shapes_file );
+		return m_ShapesExporter.ExtractShapes( m_Exporter.GetLWO2Object(), shape_files );
 	}
 
 	void run()
