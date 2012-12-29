@@ -1,6 +1,8 @@
 #include "MotionFSM.hpp"
 #include "MotionDatabase.hpp"
 #include "gds/XML.hpp"
+#include "gds/Support/ParamLoader.hpp"
+#include <boost/filesystem.hpp>
 
 using std::string;
 using std::vector;
@@ -221,6 +223,10 @@ Support text/XML file that describes transition rules
 
 */
 
+
+static int sg_OutputSkeletonAfterLoadingMotion = 0;
+
+
 class CMotionFSMCallback : public CMotionPrimitivePlayCallback
 {
 	CMotionFSM *m_pFSM;
@@ -378,6 +384,15 @@ void CMotionPrimitiveNode::LoadMotion( CMotionDatabase& db )
 	if( 0 < m_MotionName.length() )
 		m_pMotionPrimitive = db.GetMotionPrimitive( m_MotionName );
 
+	if( sg_OutputSkeletonAfterLoadingMotion
+	 && m_pMotionPrimitive
+	 && m_pMotionPrimitive->GetSkeleton() )
+	{
+		static int s_counter = 0;
+		string pathname = "./.debug/skeletons/skeleton_" + fmt_string("%02d_",s_counter++) + m_pMotionPrimitive->GetName() + ".bin";
+		m_pMotionPrimitive->GetSkeleton()->SaveToFile( pathname );
+	}
+
 	if( m_pMotionPrimitive
 	 && m_pMotionPrimitive->GetKeyframeBuffer().size() == 0 )
 	{
@@ -498,7 +513,10 @@ m_TransIndex(0)
 	// when the player finished playing one and moving on to another
 	shared_ptr<CMotionPrimitivePlayCallback> pCallback( new CMotionFSMCallback(this) );
 	m_pMotionPrimitivePlayer->SetCallback( pCallback );
-	
+
+	LoadParamFromFile( "./.debug/MotionSynthesis.txt", "MotionPrimitiveNode.OutputSkeletonAfterLoadingMotion", sg_OutputSkeletonAfterLoadingMotion );
+	if( sg_OutputSkeletonAfterLoadingMotion )
+		boost::filesystem::create_directories( "./.debug/skeletons" );
 }
 
 
