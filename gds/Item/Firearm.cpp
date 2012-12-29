@@ -4,7 +4,7 @@
 #include "Magazine.hpp"
 
 #include "3DMath/MathMisc.hpp"
-#include "Graphics/3DGameMath.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "Support/MTRand.hpp"
 #include "Sound/SoundManager.hpp"
