@@ -3,6 +3,8 @@
 #include "gds/Input/InputDevice.hpp"
 #include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "gds/Graphics/PrimitiveRenderer.hpp"
 #include "gds/3DMath/3DGameMath.hpp"
 #include "gds/MotionSynthesis/MotionDatabase.hpp"
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
@@ -27,6 +29,8 @@ using namespace boost::filesystem;
 using namespace msynth;
 
 
+static int sg_DisplayCharacterPosition = 0;
+
 class CDebugItem_MotionFSM : public CDebugItem_ResourceManager
 {
 public:
@@ -40,6 +44,21 @@ public:
 		m_pMotionFSMManager->GetDebugInfo( m_TextBuffer );
 	}
 };
+
+
+/// For debugging
+void DisplayCharacterPosition( const Vector3& world_position )
+{
+	vector<Vector3> points;
+	points.resize( 5 );
+	points[0] = world_position + Vector3( 0.5f, 0.1f, 0.5f);
+	points[1] = world_position + Vector3( 0.5f, 0.1f,-0.5f);
+	points[2] = world_position + Vector3(-0.5f, 0.1f,-0.5f);
+	points[3] = world_position + Vector3(-0.5f, 0.1f, 0.5f);
+	points[4] = points[0];
+	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+	GetPrimitiveRenderer().DrawConnectedLines( points, SFloatRGBAColor::White() );
+}
 
 
 inline boost::shared_ptr<CSkeletalMesh> CSkeletalCharacter::GetCharacterSkeletalMesh()
@@ -368,6 +387,9 @@ void CSkeletalCharacter::Render()
 	shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 	if( !pEntity )
 		return;
+
+	if( sg_DisplayCharacterPosition )
+		DisplayCharacterPosition( pEntity->GetWorldPosition() );
 
 	// Get the hierarchical transforms for the current pose of the character
 	CKeyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
