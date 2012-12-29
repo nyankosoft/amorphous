@@ -93,9 +93,10 @@ class CGeneral3DMesh;
 
 class CMeshObjectContainer;
 class CMeshContainerNode;
-class CShaderParamsLoader;
 class CMeshContainerRenderMethod;
 class CMeshContainerNodeRenderMethod;
+class CShaderParamsLoader;
+class CBlendTransformsLoader;
 
 
 class CBasicMesh;
