@@ -20,6 +20,7 @@ class CEntitySet;
 class CEntityRenderManager;
 class CStaticGeometryBase;
 class CStaticGeometryArchiveFG;
+class CMeshBonesUpdateCallback;
 class CBSPTree;
 struct STrace;
 class CTrace;
@@ -32,7 +33,6 @@ struct SGameMessage;
 class CBEC_MotionPath;
 class EntityMotionPathRequest;
 //class CDynamicLightManagerForStaticGeometry;
-
 class CScriptManager;
 
 #include <boost/shared_ptr.hpp>
